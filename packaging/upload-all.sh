@@ -21,5 +21,3 @@ upload linux/deb openra_${LINUXVERSION}_all.deb
 upload linux/rpm openra-${LINUXVERSION}-1.noarch.rpm
 upload linux/arch openra-${LINUXVERSION}-1-any.pkg.tar.xz
 upload . ${TAG}.tar.gz
-
-curl http://${SERVER}/home/syncdownloads
