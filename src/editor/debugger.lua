@@ -961,6 +961,10 @@ local function debuggerCreateWatchWindow()
   watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_UPDATE_UI,
     function (event) event:Enable(watchCtrl:GetSelectedItemCount() > 0) end)
 
+  watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_ITEM_ACTIVATED, function (event)
+      watchCtrl:EditLabel(event:GetIndex())
+    end)
+
   watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
     function (event)
       local row = event:GetIndex()
