@@ -502,7 +502,13 @@ debugger.listen = function()
               end
 
               if ide.config.debugger.outputfilter then
-                m = ide.config.debugger.outputfilter(m)
+                local ok, res = pcall(ide.config.debugger.outputfilter, m)
+                if ok then
+                  m = res
+                else
+                  DisplayOutputLn("Output filter failed: "..res)
+                  return
+                end
               elseif m then
                 local max = 240
                 m = #m < max+4 and m or m:sub(1,max) .. "...\n"
