@@ -224,8 +224,8 @@ tsbuild: OpenRA.TilesetBuilder.FormBuilder.resources OpenRA.TilesetBuilder.FormN
 utility_SRCS		:= $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET		= OpenRA.Utility.exe
 utility_KIND		= exe
-utility_DEPS        = $(fileformats_TARGET) $(game_TARGET)
-utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
+utility_DEPS		= $(fileformats_TARGET) $(game_TARGET)
+utility_LIBS		= $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
 PROGRAMS 			+= utility
 utility: $(utility_TARGET)
 
