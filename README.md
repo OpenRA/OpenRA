@@ -41,4 +41,4 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 
 * Sponsor a mirror server if you have some bandwidth to spare (ask in IRC).
 * You can immediately set up a [Dedicated](https://github.com/OpenRA/OpenRA/wiki/Dedicated) Game Server.
-* Fund development by creating [Bounties](https://www.bountysource.com/#repos/OpenRA/OpenRA) on specific tasks.
+* Fund development by creating [Bounties](https://www.bountysource.com/trackers/36085-openra) on specific tasks.
