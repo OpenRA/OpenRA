@@ -1,12 +1,12 @@
 --
--- MobDebug 0.5402
+-- MobDebug 0.5403
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.5402,
+  _VERSION = 0.5403,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -843,7 +843,8 @@ local function start(controller_host, controller_port)
   controller_host = lasthost or "localhost"
   controller_port = lastport or mobdebug.port
 
-  server = (socket.connect4 or socket.connect)(controller_host, controller_port)
+  local err
+  server, err = (socket.connect4 or socket.connect)(controller_host, controller_port)
   if server then
     -- correct stack depth which already has some calls on it
     -- so it doesn't go into negative when those calls return
@@ -880,7 +881,8 @@ local function start(controller_host, controller_port)
     step_into = true -- start with step command
     return true
   else
-    print("Could not connect to " .. controller_host .. ":" .. controller_port)
+    print(("Could not connect to %s:%s: %s")
+      :format(controller_host, controller_port, err or "unknown error"))
   end
 end
 
@@ -895,7 +897,8 @@ local function controller(controller_host, controller_port, scratchpad)
   controller_port = lastport or mobdebug.port
 
   local exitonerror = not scratchpad
-  server = (socket.connect4 or socket.connect)(controller_host, controller_port)
+  local err
+  server, err = (socket.connect4 or socket.connect)(controller_host, controller_port)
   if server then
     local function report(trace, err)
       local msg = err .. "\n" .. trace
@@ -942,7 +945,8 @@ local function controller(controller_host, controller_port, scratchpad)
       end
     end
   else
-    print("Could not connect to " .. controller_host .. ":" .. controller_port)
+    print(("Could not connect to %s:%s: %s")
+      :format(controller_host, controller_port, err or "unknown error"))
     return false
   end
   return true
