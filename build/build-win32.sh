@@ -42,6 +42,7 @@ fi
 
 WXLUASTRIP="/strip"
 WXWIDGETSDEBUG="--disable-debug"
+WXLUABUILD="MinSizeRel"
 
 # iterate through the command line arguments
 for ARG in "$@"; do
@@ -75,7 +76,8 @@ for ARG in "$@"; do
     ;;
   debug)
     WXLUASTRIP=""
-    WXWIDGETSDEBUG="--enable-debug"
+    WXWIDGETSDEBUG="--enable-debug=max --enable-debug_gdb"
+    WXLUABUILD="Debug"
     ;;
   all)
     BUILD_WXWIDGETS=true
@@ -201,7 +203,7 @@ if [ $BUILD_WXLUA ]; then
 
   cp "$INSTALL_DIR/lib/libwxscintilla-2.9.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-2.9.a"
   echo "set_target_properties(wxLuaModule PROPERTIES LINK_FLAGS -static)" >> modules/luamodule/CMakeLists.txt
-  cmake -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=FALSE \
+  cmake -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$WXLUABUILD -DBUILD_SHARED_LIBS=FALSE \
     -DwxWidgets_CONFIG_EXECUTABLE="$INSTALL_DIR/bin/wx-config" \
     -DwxWidgets_COMPONENTS="stc;html;aui;adv;core;net;base" \
     -DwxLuaBind_COMPONENTS="stc;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
