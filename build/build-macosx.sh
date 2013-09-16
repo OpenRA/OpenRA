@@ -37,6 +37,7 @@ fi
 
 WXLUASTRIP="/strip"
 WXWIDGETSDEBUG="--disable-debug"
+WXLUABUILD="MinSizeRel"
 
 # iterate through the command line arguments
 for ARG in "$@"; do
@@ -61,7 +62,8 @@ for ARG in "$@"; do
     ;;
   debug)
     WXLUASTRIP=""
-    WXWIDGETSDEBUG="--enable-debug"
+    WXWIDGETSDEBUG="--enable-debug=max"
+    WXLUABUILD="Debug"
     ;;
   all)
     BUILD_WXWIDGETS=true
@@ -174,7 +176,7 @@ if [ $BUILD_WXLUA ]; then
   # the following patches wxlua source to fix live coding support in wxlua apps
   # http://www.mail-archive.com/wxlua-users@lists.sourceforge.net/msg03225.html
   sed -i "" 's/\(m_wxlState = wxLuaState(wxlState.GetLuaState(), wxLUASTATE_GETSTATE|wxLUASTATE_ROOTSTATE);\)/\/\/ removed by ZBS build process \/\/ \1/' modules/wxlua/wxlcallb.cpp
-  cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=FALSE \
+  cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$WXLUABUILD -DBUILD_SHARED_LIBS=FALSE \
     -DCMAKE_OSX_ARCHITECTURES=$MACOSX_ARCH -DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_VERSION CMAKE_OSX_SYSROOT="$MACOSX_SDK_PATH" \
     -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DwxWidgets_CONFIG_EXECUTABLE="$INSTALL_DIR/bin/wx-config" \
     -DwxWidgets_COMPONENTS="stc;html;aui;adv;core;net;base" \
@@ -182,7 +184,7 @@ if [ $BUILD_WXLUA ]; then
     -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/liblua.dylib" .
   (cd modules/luamodule; make $MAKEFLAGS) || { echo "Error: failed to build wxLua"; exit 1; }
   (cd modules/luamodule; make install$WXLUASTRIP)
-  strip -u -r "$INSTALL_DIR/lib/libwx.dylib"
+  if [ $WXLUASTRIP ]; then strip -u -r "$INSTALL_DIR/lib/libwx.dylib"; fi
   [ -f "$INSTALL_DIR/lib/libwx.dylib" ] || { echo "Error: libwx.dylib isn't found"; exit 1; }
   cd ../..
   rm -rf "$WXLUA_BASENAME"
