@@ -1094,6 +1094,12 @@ function CreateEditor()
       event:Skip()
     end)
 
+  editor:Connect(wxstc.wxEVT_STC_ZOOM,
+    function(event)
+      editor:SetMarginWidth(margin.LINENUMBER, editor:TextWidth(DEFAULT_STYLE, "99999_"))
+      event:Skip()
+    end)
+
   local pos, value, instances
   editor:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
