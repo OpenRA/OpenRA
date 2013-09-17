@@ -65,7 +65,7 @@ namespace OpenRA.Traits
 			return a / step;
 		}
 
-		public static WPos BetweenCells(CPos from, CPos to)
+		public static WPos BetweenCells(World w, CPos from, CPos to)
 		{
 			return WPos.Lerp(from.CenterPosition, to.CenterPosition, 1, 2);
 		}

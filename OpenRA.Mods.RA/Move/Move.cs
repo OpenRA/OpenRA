@@ -152,7 +152,7 @@ namespace OpenRA.Mods.RA.Move
 				var move = new MoveFirstHalf(
 					this,
 					mobile.fromCell.CenterPosition + MobileInfo.SubCellOffsets[mobile.fromSubCell],
-					Util.BetweenCells(mobile.fromCell, mobile.toCell) + (MobileInfo.SubCellOffsets[mobile.fromSubCell] + MobileInfo.SubCellOffsets[mobile.toSubCell]) / 2,
+					Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (MobileInfo.SubCellOffsets[mobile.fromSubCell] + MobileInfo.SubCellOffsets[mobile.toSubCell]) / 2,
 					mobile.Facing,
 					mobile.Facing,
 					0);
@@ -359,8 +359,8 @@ namespace OpenRA.Mods.RA.Move
 						var nextSubcellOffset = MobileInfo.SubCellOffsets[nextCell.Value.Second];
 						var ret = new MoveFirstHalf(
 							move,
-							Util.BetweenCells(mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
-							Util.BetweenCells(mobile.toCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
+							Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
+							Util.BetweenCells(self.World, mobile.toCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
 							mobile.Facing,
 							Util.GetNearestFacing(mobile.Facing, Util.GetFacing(nextCell.Value.First - mobile.toCell, mobile.Facing)),
 							moveFraction - moveFractionTotal);
@@ -374,7 +374,7 @@ namespace OpenRA.Mods.RA.Move
 
 				var ret2 = new MoveSecondHalf(
 					move,
-					Util.BetweenCells(mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
+					Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
 					mobile.toCell.CenterPosition + toSubcellOffset,
 					mobile.Facing,
 					mobile.Facing,
