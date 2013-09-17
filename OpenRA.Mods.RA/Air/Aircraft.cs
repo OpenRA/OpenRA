@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Air
 
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
-		public CPos TopLeft { get { return CenterPosition.ToCPos(); } }
+		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 		public IDisposable Reservation;
 		public int ROT { get { return info.ROT; } }
 
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.RA.Air
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			if (order.OrderID == "Move")
-				return new Order(order.OrderID, self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
+				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 
 			return null;
 		}
@@ -246,7 +246,7 @@ namespace OpenRA.Mods.RA.Air
 				return false;
 
 			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-			cursor = self.World.Map.Contains(target.CenterPosition.ToCPos()) ? "move" : "move-blocked";
+			cursor = self.World.Map.Contains(self.World.Map.CellContaining(target.CenterPosition)) ? "move" : "move-blocked";
 			return true;
 		}
 

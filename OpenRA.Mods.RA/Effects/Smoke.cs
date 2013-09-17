@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			this.world = world;
 			this.pos = pos;
-			this.cell = pos.ToCPos();
+			this.cell = world.Map.CellContaining(pos);
 
 			anim = new Animation(world, trail);
 			anim.PlayThen("idle",

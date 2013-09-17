@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (info.ContrailLength > 0)
 				trail.Update(pos);
 
-			var cell = pos.ToCPos();
+			var cell = world.Map.CellContaining(pos);
 
 			var shouldExplode = (pos.Z < 0) // Hit the ground
 				|| (dist.LengthSquared < MissileCloseEnough.Range * MissileCloseEnough.Range) // Within range
@@ -186,7 +186,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (info.ContrailLength > 0)
 				yield return trail;
 
-			if (!args.SourceActor.World.FogObscures(pos.ToCPos()))
+			if (!args.SourceActor.World.FogObscures(wr.world.Map.CellContaining(pos)))
 			{
 				var palette = wr.Palette(args.Weapon.Palette);
 				foreach (var r in anim.Render(pos, palette))

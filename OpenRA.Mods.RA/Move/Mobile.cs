@@ -266,7 +266,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public void SetPosition(Actor self, WPos pos)
 		{
-			var cell = pos.ToCPos();
+			var cell = self.World.Map.CellContaining(pos);
 			SetLocation(cell, fromSubCell, cell, fromSubCell);
 			SetVisualPosition(self, pos);
 			FinishedMoving(self);
@@ -306,7 +306,7 @@ namespace OpenRA.Mods.RA.Move
 				if (Info.OnRails)
 					return null;
 
-				return new Order("Move", self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
+				return new Order("Move", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 			}
 			return null;
 		}
@@ -573,7 +573,7 @@ namespace OpenRA.Mods.RA.Move
 				if (rejectMove || !target.IsValidFor(self))
 					return false;
 
-				var location = target.CenterPosition.ToCPos();
+				var location = self.World.Map.CellContaining(target.CenterPosition);
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 				cursor = "move";
 

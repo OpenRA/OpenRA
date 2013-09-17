@@ -138,9 +138,9 @@ namespace OpenRA.Traits
 			return result.Keys;
 		}
 
-		public static IEnumerable<CPos> AdjacentCells(Target target)
+		public static IEnumerable<CPos> AdjacentCells(World w, Target target)
 		{
-			var cells = target.Positions.Select(p => p.ToCPos()).Distinct();
+			var cells = target.Positions.Select(p => w.Map.CellContaining(p)).Distinct();
 			return ExpandFootprint(cells, true);
 		}
 	}

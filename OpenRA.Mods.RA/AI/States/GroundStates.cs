@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.AI
 				if (owner.attackOrFleeFuzzy.CanAttack(owner.units, enemyUnits))
 				{
 					foreach (var u in owner.units)
-						owner.world.IssueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.Target.CenterPosition.ToCPos() });
+						owner.world.IssueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.Target.Location });
 
 					// We have gathered sufficient units. Attack the nearest enemy unit.
 					owner.fsm.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.AI
 			{
 				owner.world.IssueOrder(new Order("Stop", leader, false));
 				foreach (var unit in owner.units.Where(a => !ownUnits.Contains(a)))
-					owner.world.IssueOrder(new Order("AttackMove", unit, false) { TargetLocation = leader.CenterPosition.ToCPos() });
+					owner.world.IssueOrder(new Order("AttackMove", unit, false) { TargetLocation = leader.Location });
 			}
 			else
 			{

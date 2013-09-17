@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA
 		{
 			self.World.ActorMap.RemoveInfluence(self, this);
 			CenterPosition = pos;
-			TopLeft = pos.ToCPos();
+			TopLeft = self.World.Map.CellContaining(pos);
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.UpdatePosition(self, this);
 			self.World.ScreenMap.Update(self);

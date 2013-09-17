@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			switch (order.OrderID)
 			{
 				case "BeginMinefield":
-					var start = target.CenterPosition.ToCPos();
+					var start = self.World.Map.CellContaining(target.CenterPosition);
 					self.World.OrderGenerator = new MinefieldOrderGenerator(self, start);
 					return new Order("BeginMinefield", self, false) { TargetLocation = start };
 				case "PlaceMine":
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.RA
 				if (target.Type != TargetType.Terrain)
 					return false;
 
-				var location = target.CenterPosition.ToCPos();
+				var location = self.World.Map.CellContaining(target.CenterPosition);
 				if (!self.World.Map.Contains(location))
 					return false;
 

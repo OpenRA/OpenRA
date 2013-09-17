@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			// TODO: Queue a move order to the transport? need to be
 			// careful about units that can't path to the transport
-			var cells = Util.AdjacentCells(Target.FromActor(transport));
+			var cells = Util.AdjacentCells(self.World, Target.FromActor(transport));
 			if (!cells.Contains(self.Location))
 				return NextActivity;
 

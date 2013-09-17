@@ -100,6 +100,11 @@ namespace OpenRA.Graphics
 			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 		}
 
+		public CPos ViewToWorld(int2 view)
+		{
+			return worldRenderer.world.Map.CellContaining(worldRenderer.Position(ViewToWorldPx(view)));
+		}
+
 		public int2 ViewToWorldPx(int2 view) { return (1f / Zoom * view.ToFloat2()).ToInt2() + TopLeft; }
 		public int2 WorldToViewPx(int2 world) { return (Zoom * (world - TopLeft).ToFloat2()).ToInt2(); }
 
@@ -149,8 +154,8 @@ namespace OpenRA.Graphics
 				{
 					// Calculate the intersection of the visible rectangle and the map.
 					var map = worldRenderer.world.Map;
-					var tl = map.Clamp(worldRenderer.Position(TopLeft).ToCPos() - new CVec(1, 1));
-					var br = map.Clamp(worldRenderer.Position(BottomRight).ToCPos());
+					var tl = map.Clamp(map.CellContaining(worldRenderer.Position(TopLeft)) - new CVec(1, 1));
+					var br = map.Clamp(map.CellContaining(worldRenderer.Position(BottomRight)));
 
 					cells = new CellRegion(tl, br);
 					cellsDirty = false;

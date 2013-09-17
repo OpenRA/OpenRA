@@ -158,8 +158,8 @@ namespace OpenRA.Mods.RA.Widgets
 			// Draw viewport rect
 			if (hasRadar)
 			{
-				var tl = CellToMinimapPixel(worldRenderer.Position(worldRenderer.Viewport.TopLeft).ToCPos());
-				var br = CellToMinimapPixel(worldRenderer.Position(worldRenderer.Viewport.BottomRight).ToCPos());
+				var tl = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.Position(worldRenderer.Viewport.TopLeft)));
+				var br = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.Position(worldRenderer.Viewport.BottomRight)));
 
 				Game.Renderer.EnableScissor(mapRect);
 				DrawRadarPings();
@@ -180,7 +180,8 @@ namespace OpenRA.Mods.RA.Widgets
 			foreach (var radarPing in radarPings.Pings.Where(e => e.IsVisible()))
 			{
 				var c = radarPing.Color;
-				var points = radarPing.Points(CellToMinimapPixel(radarPing.Position.ToCPos())).ToArray();
+				var pingCell = world.Map.CellContaining(radarPing.Position);
+				var points = radarPing.Points(CellToMinimapPixel(pingCell)).ToArray();
 
 				lr.DrawLine(points[0], points[1], c, c);
 				lr.DrawLine(points[1], points[2], c, c);

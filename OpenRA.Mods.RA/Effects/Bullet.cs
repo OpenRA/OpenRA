@@ -134,7 +134,7 @@ namespace OpenRA.Mods.RA.Effects
 				trail.Update(pos);
 
 			if (ticks++ >= length || (!info.High && world.ActorMap
-				.GetUnitsAt(pos.ToCPos()).Any(a => a.HasTrait<IBlocksBullets>())))
+				.GetUnitsAt(world.Map.CellContaining(pos)).Any(a => a.HasTrait<IBlocksBullets>())))
 			{
 				Explode(world);
 			}
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (anim == null || ticks >= length)
 				yield break;
 
-			var cell = pos.ToCPos();
+			var cell = wr.world.Map.CellContaining(pos);
 			if (!args.SourceActor.World.FogObscures(cell))
 			{
 				if (info.Shadow)

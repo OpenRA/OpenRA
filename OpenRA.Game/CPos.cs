@@ -104,15 +104,4 @@ namespace OpenRA
 
 		#endregion
 	}
-
-	public static class RectangleExtensions
-	{
-		public static CPos TopLeftAsCPos(this Rectangle r) { return new CPos(r.Left, r.Top); }
-		public static CPos BottomRightAsCPos(this Rectangle r) { return new CPos(r.Right, r.Bottom); }
-	}
-
-	public static class WorldCoordinateExtensions
-	{
-		public static CPos ToCPos(this WPos a) { return new CPos(a.X / 1024, a.Y / 1024); }
-	}
 }

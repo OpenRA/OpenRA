@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (target.Type != TargetType.Actor)
 				return NextActivity;
 
-			if (!Util.AdjacentCells(target).Any(c => c == self.Location))
+			if (!Util.AdjacentCells(self.World, target).Any(c => c == self.Location))
 				return Util.SequenceActivities(new MoveAdjacentTo(self, target), this);
 
 			// Move to the middle of the target, ignoring impassable tiles

@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Activities
 			movementClass = (uint)mobile.Info.GetMovementClass(self.World.TileSet);
 
 			if (target.IsValidFor(self))
-				targetPosition = target.CenterPosition.ToCPos();
+				targetPosition = self.World.Map.CellContaining(target.CenterPosition);
 
 			repath = true;
 		}
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Activities
 			{
 				// Check if the target has moved
 				var oldTargetPosition = targetPosition;
-				targetPosition = target.CenterPosition.ToCPos();
+				targetPosition = self.World.Map.CellContaining(target.CenterPosition);
 
 				var shroudStop = ShouldStop(self, oldTargetPosition);
 				if (shroudStop || (!repath && ShouldRepath(self, oldTargetPosition)))
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		protected virtual IEnumerable<CPos> CandidateMovementCells(Actor self)
 		{
-			return Util.AdjacentCells(target);
+			return Util.AdjacentCells(self.World, target);
 		}
 
 		void UpdateInnerPath(Actor self)

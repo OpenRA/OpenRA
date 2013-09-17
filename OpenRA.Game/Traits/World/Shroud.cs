@@ -181,7 +181,7 @@ namespace OpenRA.Traits
 					return cells.Select(c => c.First);
 			}
 
-			return new[] { a.CenterPosition.ToCPos() };
+			return new[] { a.World.Map.CellContaining(a.CenterPosition) };
 		}
 
 		public void Explore(World world, CPos center, WRange range)

@@ -79,14 +79,14 @@ namespace OpenRA.Mods.RA.Orders
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public void RenderAfterWorld(WorldRenderer wr, World world)
 		{
-			var position = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
-			var topLeft = position - FootprintUtils.AdjustForBuildingSize(BuildingInfo);
+			var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
+			var topLeft = xy - FootprintUtils.AdjustForBuildingSize(BuildingInfo);
 
 			var rules = world.Map.Rules;
 
 			var actorInfo = rules.Actors[Building];
 			foreach (var dec in actorInfo.Traits.WithInterface<IPlaceBuildingDecoration>())
-				dec.Render(wr, world, actorInfo, world.Map.CenterOfCell(position));
+				dec.Render(wr, world, actorInfo, world.Map.CenterOfCell(xy));
 
 			var cells = new Dictionary<CPos, bool>();
 			// Linebuild for walls.

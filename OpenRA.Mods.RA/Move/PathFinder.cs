@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Move
 			using (new PerfSample("Pathfinder"))
 			{
 				var mi = self.Info.Traits.Get<MobileInfo>();
-				var targetCell = target.ToCPos();
+				var targetCell = self.World.Map.CellContaining(target);
 				var rangeSquared = range.Range*range.Range;
 
 				// Correct for SubCell offset

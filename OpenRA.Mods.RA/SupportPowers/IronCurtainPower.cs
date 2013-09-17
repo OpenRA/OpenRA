@@ -100,14 +100,14 @@ namespace OpenRA.Mods.RA
 
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
+				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				foreach (var unit in power.UnitsInRange(xy))
 					wr.DrawSelectionBox(unit, Color.Red);
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
-				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
+				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var pal = wr.Palette("terrain");
 
 				foreach (var t in world.Map.FindTilesInCircle(xy, range))

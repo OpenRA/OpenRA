@@ -85,8 +85,8 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(Location, SubCell.FullCell); }
 
 		public WPos CenterPosition { get; private set; }
-		public void SetPosition(Actor self, WPos pos) { SetPosition(self, pos.ToCPos()); }
-		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos.ToCPos()); }
+		public void SetPosition(Actor self, WPos pos) { SetPosition(self, self.World.Map.CellContaining(pos)); }
+		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, self.World.Map.CellContaining(pos)); }
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
 		{

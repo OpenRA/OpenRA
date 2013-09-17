@@ -471,6 +471,11 @@ namespace OpenRA
 			return new WPos(1024 * c.X + 512, 1024 * c.Y + 512, 0);
 		}
 
+		public CPos CellContaining(WPos pos)
+		{
+			return new CPos(pos.X / 1024, pos.Y / 1024);
+		}
+
 		public void Resize(int width, int height)		// editor magic.
 		{
 			var oldMapTiles = MapTiles.Value;

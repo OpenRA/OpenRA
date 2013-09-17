@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Air
 			var rp = hasHost ? host.TraitOrDefault<RallyPoint>() : null;
 
 			var destination = rp != null ? rp.rallyPoint :
-				(hasHost ? host.CenterPosition.ToCPos() : self.CenterPosition.ToCPos());
+				(hasHost ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
 
 			return new AttackMove.AttackMoveActivity(self, self.Trait<IMove>().MoveTo(destination, 1));
 		}
