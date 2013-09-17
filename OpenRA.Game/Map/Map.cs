@@ -461,7 +461,15 @@ namespace OpenRA
 			return dataStream.ToArray();
 		}
 
-		public bool Contains(CPos xy) { return Bounds.Contains(xy.X, xy.Y); }
+		public bool Contains(CPos cell)
+		{
+			return Bounds.Contains(cell.X, cell.Y);
+		}
+
+		public WPos CenterOfCell(CPos c)
+		{
+			return new WPos(1024 * c.X + 512, 1024 * c.Y + 512, 0);
+		}
 
 		public void Resize(int width, int height)		// editor magic.
 		{
@@ -604,8 +612,8 @@ namespace OpenRA
 
 		public WRange DistanceToEdge(WPos pos, WVec dir)
 		{
-			var tl = Bounds.TopLeftAsCPos().TopLeft;
-			var br = Bounds.BottomRightAsCPos().BottomRight;
+			var tl = CenterOfCell(new CPos(Bounds.Left, Bounds.Top)) - new WVec(512, 512, 0);
+			var br = CenterOfCell(new CPos(Bounds.Right, Bounds.Bottom)) + new WVec(511, 511, 0);
 			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? tl.X : br.X) - pos.X) / dir.X;
 			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? tl.Y : br.Y) - pos.Y) / dir.Y;
 			return new WRange(Math.Min(x, y) * dir.Length);

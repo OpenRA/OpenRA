@@ -40,10 +40,6 @@ namespace OpenRA
 		public float2 ToFloat2() { return new float2(X, Y); }
 		public int2 ToInt2() { return new int2(X, Y); }
 
-		public WPos CenterPosition { get { return new WPos(1024 * X + 512, 1024 * Y + 512, 0); } }
-		public WPos TopLeft { get { return new WPos(1024 * X, 1024 * Y, 0); } }
-		public WPos BottomRight { get { return new WPos(1024 * X + 1023, 1024 * Y + 1023, 0); } }
-
 		public CPos Clamp(Rectangle r)
 		{
 			return new CPos(Math.Min(r.Right, Math.Max(X, r.Left)),

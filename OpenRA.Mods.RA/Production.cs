@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA
 		{
 			var exit = self.Location + exitinfo.ExitCell;
 			var spawn = self.CenterPosition + exitinfo.SpawnOffset;
-			var to = exit.CenterPosition;
+			var to = self.World.Map.CenterOfCell(exit);
 
 			var fi = producee.Traits.Get<IFacingInfo>();
 			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi.GetInitialFacing()) : exitinfo.Facing;

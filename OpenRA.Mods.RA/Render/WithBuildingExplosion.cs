@@ -22,8 +22,7 @@ namespace OpenRA.Mods.RA.Render
 			//TODO: Make palette for this customizable as well
 			var bi = self.Info.Traits.Get<BuildingInfo>();
 			FootprintUtils.UnpathableTiles(self.Info.Name, bi, self.Location).Do(
-				t => self.World.AddFrameEndTask(
-					w => w.Add(new Explosion(w, t.CenterPosition, "building", "effect"))));
+				t => self.World.AddFrameEndTask(w => w.Add(new Explosion(w, w.Map.CenterOfCell(t), "building", "effect"))));
 		}
 	}
 }

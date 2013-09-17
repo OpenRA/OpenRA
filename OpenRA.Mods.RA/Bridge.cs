@@ -122,7 +122,7 @@ namespace OpenRA.Mods.RA
 		{
 			return footprint.Select(c => (IRenderable)(new SpriteRenderable(
 				wr.Theater.TileSprite(new TerrainTile(template, c.Value)),
-				c.Key.CenterPosition, WVec.Zero, -512, palette, 1f, true))).ToArray();
+				wr.world.Map.CenterOfCell(c.Key), WVec.Zero, -512, palette, 1f, true))).ToArray();
 		}
 
 		bool initialized;

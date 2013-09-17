@@ -42,13 +42,14 @@ namespace OpenRA.Mods.RA
 			this.self = init.self;
 
 			TopLeft = init.Get<LocationInit, CPos>();
-			CenterPosition = init.Contains<CenterPositionInit>() ? init.Get<CenterPositionInit, WPos>() : TopLeft.CenterPosition;
+			CenterPosition = init.Contains<CenterPositionInit>() ? init.Get<CenterPositionInit, WPos>() : init.world.Map.CenterOfCell(TopLeft);
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 128;
 
 			var speed = init.Contains<HuskSpeedInit>() ? init.Get<HuskSpeedInit, int>() : 0;
-			var distance = (TopLeft.CenterPosition - CenterPosition).Length;
+			var finalPos = init.world.Map.CenterOfCell(TopLeft);
+			var distance = (finalPos - CenterPosition).Length;
 			if (speed > 0 && distance > 0)
-				self.QueueActivity(new Drag(CenterPosition, TopLeft.CenterPosition, distance / speed));
+				self.QueueActivity(new Drag(CenterPosition, finalPos, distance / speed));
 		}
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
@@ -69,8 +70,8 @@ namespace OpenRA.Mods.RA
 		}
 
 		public bool CanEnterCell(CPos cell) { return CanEnterCell(cell, null, true); }
+		public void SetPosition(Actor self, CPos cell) { SetPosition(self, self.World.Map.CenterOfCell(cell)); }
 
-		public void SetPosition(Actor self, CPos cell) { SetPosition(self, cell.CenterPosition); }
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;

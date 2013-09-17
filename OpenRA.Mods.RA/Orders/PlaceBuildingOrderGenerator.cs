@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA.Orders
 
 			var actorInfo = rules.Actors[Building];
 			foreach (var dec in actorInfo.Traits.WithInterface<IPlaceBuildingDecoration>())
-				dec.Render(wr, world, actorInfo, position.CenterPosition);	/* hack hack */
+				dec.Render(wr, world, actorInfo, world.Map.CenterOfCell(position));
 
 			var cells = new Dictionary<CPos, bool>();
 			// Linebuild for walls.
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA.Orders
 					initialized = true;
 				}
 
-				var offset = topLeft.CenterPosition + FootprintUtils.CenterOffset(BuildingInfo) - WPos.Zero;
+				var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(BuildingInfo) - WPos.Zero;
 				foreach (var r in preview)
 					r.OffsetBy(offset).Render(wr);
 
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.RA.Orders
 			foreach (var c in cells)
 			{
 				var tile = c.Value ? buildOk : buildBlocked;
-				new SpriteRenderable(tile, c.Key.CenterPosition,
+				new SpriteRenderable(tile, world.Map.CenterOfCell(c.Key),
 					WVec.Zero, -511, pal, 1f, true).Render(wr);
 			}
 		}

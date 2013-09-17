@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Returns the center of a cell in world coordinates.")]
 		public WPos CenterOfCell(CPos cell)
 		{
-			return cell.CenterPosition;
+			return context.World.Map.CenterOfCell(cell);
 		}
 	}
 }

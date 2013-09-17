@@ -35,7 +35,7 @@ namespace OpenRA.Traits
 
 				var c = render[cell];
 				if (c.Sprite != null)
-					new SpriteRenderable(c.Sprite, cell.CenterPosition,
+					new SpriteRenderable(c.Sprite, wr.world.Map.CenterOfCell(cell),
 						WVec.Zero, -511, c.Type.Palette, 1f, true).Render(wr);
 			}
 		}

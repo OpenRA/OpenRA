@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString != "PlaceBeacon")
 				return;
 
-			var pos = order.TargetLocation.CenterPosition;
+			var pos = self.World.Map.CenterOfCell(order.TargetLocation);
 
 			self.World.AddFrameEndTask(w =>
 			{

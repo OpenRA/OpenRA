@@ -77,9 +77,10 @@ namespace OpenRA.Mods.RA
 			var rb = self.Trait<RenderSimple>();
 			rb.PlayCustomAnim(self, "active");
 
+			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
 			var missile = new NukeLaunch(self.Owner, npi.MissileWeapon,
 				self.CenterPosition + body.LocalToWorld(npi.SpawnOffset),
-				order.TargetLocation.CenterPosition,
+				targetPosition,
 				npi.FlightVelocity, npi.FlightDelay, npi.SkipAscent);
 
 			self.World.AddFrameEndTask(w => w.Add(missile));
@@ -103,7 +104,7 @@ namespace OpenRA.Mods.RA
 			{
 				var beacon = new Beacon(
 					order.Player,
-					order.TargetLocation.CenterPosition,
+					targetPosition,
 					Info.BeaconPalettePrefix,
 					Info.BeaconPoster,
 					Info.BeaconPosterPalette,

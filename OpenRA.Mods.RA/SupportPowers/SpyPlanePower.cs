@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 
 			var plane = self.World.CreateActor("u2", new TypeDictionary
 			{
-				new CenterPositionInit(enterCell.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+				new CenterPositionInit(self.World.Map.CenterOfCell(enterCell) + new WVec(WRange.Zero, WRange.Zero, altitude)),
 				new OwnerInit(self.Owner),
 				new FacingInit(Util.GetFacing(order.TargetLocation - enterCell, 0))
 			});

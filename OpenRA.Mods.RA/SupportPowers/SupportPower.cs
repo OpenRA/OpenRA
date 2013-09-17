@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 			{
 				ping = manager.RadarPings.Value.Add(
 					() => order.Player.IsAlliedWith(self.World.RenderPlayer),
-					order.TargetLocation.CenterPosition,
+					self.World.Map.CenterOfCell(order.TargetLocation),
 					order.Player.Color.RGB,
 					Info.RadarPingDuration);
 			}

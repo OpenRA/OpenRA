@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<WPos> TargetablePositions(Actor self)
 		{
-			return building.OccupiedCells().Select(c => c.First.CenterPosition);
+			return building.OccupiedCells().Select(c => self.World.Map.CenterOfCell(c.First));
 		}
 
 		public bool RequiresForceFire { get { return info.RequiresForceFire; } }

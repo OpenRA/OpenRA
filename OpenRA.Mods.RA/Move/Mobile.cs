@@ -246,7 +246,7 @@ namespace OpenRA.Mods.RA.Move
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				SetVisualPosition(self, fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
+				SetVisualPosition(self, init.world.Map.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell]);
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -260,7 +260,7 @@ namespace OpenRA.Mods.RA.Move
 		public void SetPosition(Actor self, CPos cell)
 		{
 			SetLocation(cell, fromSubCell, cell, fromSubCell);
-			SetVisualPosition(self, fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
+			SetVisualPosition(self, self.World.Map.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell]);
 			FinishedMoving(self);
 		}
 
@@ -611,7 +611,7 @@ namespace OpenRA.Mods.RA.Move
 			SetVisualPosition(self, pos);
 
 			// Animate transition
-			var to = cell.CenterPosition;
+			var to = self.World.Map.CenterOfCell(cell);
 			var speed = MovementSpeedForCell(self, cell);
 			var length = speed > 0 ? (to - pos).Length / speed : 0;
 

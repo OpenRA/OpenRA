@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA
 					var altitude = w.Map.Rules.Actors[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
 					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
 					{
-						new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+						new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WRange.Zero, WRange.Zero, altitude)),
 						new OwnerInit(w.WorldActor.Owner),
 						new FacingInit(Util.GetFacing(p - startPos, 0))
 					});

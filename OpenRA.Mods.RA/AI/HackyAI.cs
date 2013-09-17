@@ -348,7 +348,7 @@ namespace OpenRA.Mods.RA.AI
 				for (var k = MaxBaseDistance; k >= 0; k--)
 				{
 					var tlist = Map.FindTilesInCircle(center, k)
-						.OrderBy(a => (a.CenterPosition - pos).LengthSquared);
+						.OrderBy(a => (world.Map.CenterOfCell(a) - pos).LengthSquared);
 
 					foreach (var t in tlist)
 						if (world.CanPlaceBuilding(actorType, bi, t, null))
@@ -360,10 +360,11 @@ namespace OpenRA.Mods.RA.AI
 				return null;
 			};
 
+			var baseCenterPos = world.Map.CenterOfCell(baseCenter);
 			switch (type)
 			{
 				case BuildingType.Defense:
-					var enemyBase = FindEnemyBuildingClosestToPos(baseCenter.CenterPosition);
+					var enemyBase = FindEnemyBuildingClosestToPos(baseCenterPos);
 					return enemyBase != null ? findPos(enemyBase.CenterPosition, defenseCenter) : null;
 
 				case BuildingType.Refinery:
@@ -371,10 +372,11 @@ namespace OpenRA.Mods.RA.AI
 						.Where(a => resourceTypeIndices.Contains(Map.GetTerrainIndex(new CPos(a.X, a.Y))));
 					if (tilesPos.Any())
 					{
-						var pos = tilesPos.MinBy(a => (a.CenterPosition - baseCenter.CenterPosition).LengthSquared);
-						return findPos(pos.CenterPosition, baseCenter);
+						var pos = tilesPos.MinBy(a => (world.Map.CenterOfCell(a) - baseCenterPos).LengthSquared);
+						return findPos(world.Map.CenterOfCell(pos), baseCenter);
 					}
 					return null;
+
 
 				case BuildingType.Building:
 					for (var k = 0; k < maxBaseDistance; k++)
@@ -441,7 +443,7 @@ namespace OpenRA.Mods.RA.AI
 			// Pick something worth attacking owned by that player
 			var target = world.Actors
 				.Where(a => a.Owner == enemy && a.HasTrait<IOccupySpace>())
-				.ClosestTo(baseCenter.CenterPosition);
+				.ClosestTo(world.Map.CenterOfCell(baseCenter));
 
 			if (target == null)
 			{
@@ -661,7 +663,7 @@ namespace OpenRA.Mods.RA.AI
 
 			if (!protectSq.IsValid)
 			{
-				var ownUnits = world.FindActorsInCircle(baseCenter.CenterPosition, WRange.FromCells(Info.ProtectUnitScanRadius))
+				var ownUnits = world.FindActorsInCircle(world.Map.CenterOfCell(baseCenter), WRange.FromCells(Info.ProtectUnitScanRadius))
 					.Where(unit => unit.Owner == p && !unit.HasTrait<Building>()
 						&& unit.HasTrait<AttackBase>()).ToList();
 
@@ -790,8 +792,8 @@ namespace OpenRA.Mods.RA.AI
 			{
 				for (var j = 0; j < y; j += radiusOfPower * 2)
 				{
-					var pos = new CPos(i, j);
-					var targets = world.FindActorsInCircle(pos.CenterPosition, WRange.FromCells(radiusOfPower)).ToList();
+					var pos = world.Map.CenterOfCell(new CPos(i, j));
+					var targets = world.FindActorsInCircle(pos, WRange.FromCells(radiusOfPower)).ToList();
 					var enemies = targets.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
 					var ally = targets.Where(unit => p.Stances[unit.Owner] == Stance.Ally || unit.Owner == p).ToList();
 

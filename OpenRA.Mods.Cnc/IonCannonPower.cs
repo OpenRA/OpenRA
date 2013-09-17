@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc
 			self.World.AddFrameEndTask(w =>
 			{
 				var info = Info as IonCannonPowerInfo;
-				Sound.Play(Info.LaunchSound, order.TargetLocation.CenterPosition);
+				Sound.Play(Info.LaunchSound, self.World.Map.CenterOfCell(order.TargetLocation));
 				w.Add(new IonCannon(self.Owner, info.Weapon, w, order.TargetLocation, info.Effect, info.EffectPalette));
 
 				if (info.CameraActor == null)

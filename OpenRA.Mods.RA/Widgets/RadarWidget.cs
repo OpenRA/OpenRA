@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA.Widgets
 				return null;
 
 			var cell = MinimapPixelToCell(pos);
-			var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(cell.CenterPosition));
+			var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(world.Map.CenterOfCell(cell)));
 
 			var mi = new MouseInput
 			{
@@ -113,9 +113,9 @@ namespace OpenRA.Mods.RA.Widgets
 				return true;
 
 			var cell = MinimapPixelToCell(mi.Location);
-			var pos = cell.CenterPosition;
+			var pos = world.Map.CenterOfCell(cell);
 			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
-				worldRenderer.Viewport.Center(cell.CenterPosition);
+				worldRenderer.Viewport.Center(world.Map.CenterOfCell(cell));
 
 			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Right)
 			{
