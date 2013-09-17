@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Air
 
 				UnReserve();
 
-				self.SetTargetLine(Target.FromOrder(order), Color.Green);
+				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Green);
 
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));

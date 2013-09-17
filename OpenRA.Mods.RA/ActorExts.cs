@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 		{
 			// Not targeting a frozen actor
 			if (order.ExtraData == 0)
-				return Target.FromOrder(order);
+				return Target.FromOrder(self.World, order);
 
 			// Targeted an actor under the fog
 			var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();

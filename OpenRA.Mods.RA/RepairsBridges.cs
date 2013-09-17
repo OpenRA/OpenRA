@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 				if (bridge.BridgeDamageState == DamageState.Undamaged)
 					return;
 
-				self.SetTargetLine(Target.FromOrder(order), Color.Yellow);
+				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Yellow);
 
 				self.CancelActivity();
 				self.QueueActivity(new Enter(order.TargetActor, new RepairBridge(order.TargetActor)));

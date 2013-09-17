@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA
 				if (!CanEnter(order.TargetActor)) return;
 				if (!IsCorrectCargoType(order.TargetActor)) return;
 
-				var target = Target.FromOrder(order);
+				var target = Target.FromOrder(self.World, order);
 				self.SetTargetLine(target, Color.Green);
 
 				self.CancelActivity();

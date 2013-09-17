@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA
 				});
 
 				a.CancelActivity();
-				a.QueueActivity(new FlyAttack(Target.FromOrder(order)));
+				a.QueueActivity(new FlyAttack(Target.FromOrder(self.World, order)));
 				a.Trait<ParaDrop>().SetLZ(order.TargetLocation);
 
 				var cargo = a.Trait<Cargo>();
