@@ -12,7 +12,9 @@ local notebook = ide.frame.notebook
 local funclist = ide.frame.toolBar.funclist
 local edcfg = ide.config.editor
 local styles = ide.config.styles
-local projcombobox = ide.frame.projpanel.projcombobox
+
+local DEFAULT_STYLE = 32
+local margin = { LINENUMBER = 0, MARKER = 1, FOLD = 2 }
 
 -- ----------------------------------------------------------------------------
 -- Update the statusbar text of the frame using the given editor.
@@ -624,20 +626,20 @@ function CreateEditor()
 
   editor:SetVisiblePolicy(wxstc.wxSTC_VISIBLE_STRICT, 3)
 
-  editor:SetMarginWidth(0, editor:TextWidth(32, "99999_")) -- line # margin
+  editor:SetMarginWidth(margin.LINENUMBER, editor:TextWidth(DEFAULT_STYLE, "99999_"))
 
-  editor:SetMarginWidth(1, 16) -- marker margin
-  editor:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL)
-  editor:SetMarginSensitive(1, true)
+  editor:SetMarginWidth(margin.MARKER, 16)
+  editor:SetMarginType(margin.MARKER, wxstc.wxSTC_MARGIN_SYMBOL)
+  editor:SetMarginSensitive(margin.MARKER, true)
 
   editor:MarkerDefine(StylesGetMarker("currentline"))
   editor:MarkerDefine(StylesGetMarker("breakpoint"))
 
   if ide.config.editor.fold then
-    editor:SetMarginWidth(2, 16) -- fold margin
-    editor:SetMarginType(2, wxstc.wxSTC_MARGIN_SYMBOL)
-    editor:SetMarginMask(2, wxstc.wxSTC_MASK_FOLDERS)
-    editor:SetMarginSensitive(2, true)
+    editor:SetMarginWidth(margin.FOLD, 16)
+    editor:SetMarginType(margin.FOLD, wxstc.wxSTC_MARGIN_SYMBOL)
+    editor:SetMarginMask(margin.FOLD, wxstc.wxSTC_MASK_FOLDERS)
+    editor:SetMarginSensitive(margin.FOLD, true)
   end
 
   editor:SetFoldFlags(wxstc.wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED +
@@ -752,7 +754,6 @@ function CreateEditor()
       -- auto-indent
       local LF = string.byte("\n")
       local ch = event:GetKey()
-      local eol = editor:GetEOLMode()
       local pos = editor:GetCurrentPos()
       local line = editor:GetCurrentLine()
       local linetx = editor:GetLine(line)
