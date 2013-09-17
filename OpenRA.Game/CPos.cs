@@ -114,6 +114,5 @@ namespace OpenRA
 	public static class WorldCoordinateExtensions
 	{
 		public static CPos ToCPos(this WPos a) { return new CPos(a.X / 1024, a.Y / 1024); }
-		public static CVec ToCVec(this WVec a) { return new CVec(a.X / 1024, a.Y / 1024); }
 	}
 }
