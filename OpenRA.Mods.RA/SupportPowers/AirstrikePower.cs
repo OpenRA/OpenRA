@@ -157,7 +157,7 @@ namespace OpenRA.Mods.RA
 					});
 
 					var attack = a.Trait<AttackBomber>();
-					attack.SetTarget(target + targetOffset);
+					attack.SetTarget(w, target + targetOffset);
 					attack.OnEnteredAttackRange += onEnterRange;
 					attack.OnExitedAttackRange += onExitRange;
 					attack.OnRemovedFromWorld += onExitRange;

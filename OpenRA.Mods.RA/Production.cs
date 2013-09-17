@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi.GetInitialFacing()) : exitinfo.Facing;
 
 			var exitLocation = rp.Value != null ? rp.Value.rallyPoint : exit;
-			var target = Target.FromCell(exitLocation);
+			var target = Target.FromCell(self.World, exitLocation);
 			var nearEnough = rp.Value != null ? WRange.FromCells(rp.Value.nearEnough) : WRange.Zero;
 
 			self.World.AddFrameEndTask(w =>
@@ -87,7 +87,6 @@ namespace OpenRA.Mods.RA
 					if (exitinfo.MoveIntoWorld)
 					{
 						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
-
 						newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
 							newUnit, move.MoveWithinRange(target, nearEnough)));
 					}

@@ -375,7 +375,7 @@ namespace OpenRA.Mods.RA.Move
 
 			self.QueueActivity(new Move(currentLocation, 8));
 
-			self.SetTargetLine(Target.FromCell(currentLocation), Color.Green);
+			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
 		}
 
 		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
@@ -542,7 +542,7 @@ namespace OpenRA.Mods.RA.Move
 			if (moveTo.HasValue)
 			{
 				self.CancelActivity();
-				self.SetTargetLine(Target.FromCell(moveTo.Value), Color.Green, false);
+				self.SetTargetLine(Target.FromCell(self.World, moveTo.Value), Color.Green, false);
 				self.QueueActivity(new Move(moveTo.Value, 0));
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",

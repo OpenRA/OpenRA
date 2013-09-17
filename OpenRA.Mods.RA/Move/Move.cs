@@ -251,9 +251,9 @@ namespace OpenRA.Mods.RA.Move
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			if (path != null)
-				return Enumerable.Reverse(path).Select(c => Target.FromCell(c));
+				return Enumerable.Reverse(path).Select(c => Target.FromCell(self.World, c));
 			if (destination != null)
-				return new Target[] { Target.FromCell(destination.Value) };
+				return new Target[] { Target.FromCell(self.World, destination.Value) };
 			return Target.None;
 		}
 

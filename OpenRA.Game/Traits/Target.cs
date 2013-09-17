@@ -28,12 +28,12 @@ namespace OpenRA.Traits
 		int generation;
 
 		public static Target FromPos(WPos p) { return new Target { pos = p, type = TargetType.Terrain }; }
-		public static Target FromCell(CPos c) { return new Target { pos = c.CenterPosition, type = TargetType.Terrain }; }
+		public static Target FromCell(World w, CPos c) { return new Target { pos = c.CenterPosition, type = TargetType.Terrain }; }
 		public static Target FromOrder(World w, Order o)
 		{
 			return o.TargetActor != null
 				? FromActor(o.TargetActor)
-				: FromCell(o.TargetLocation);
+				: FromCell(w, o.TargetLocation);
 		}
 
 		public static Target FromActor(Actor a)
