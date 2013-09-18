@@ -2,7 +2,7 @@
 -- (C) 2012 Paul Kulchenko
 
 local M, LA, LI, T = {}
-local FAST = false
+local FAST = true
 
 local function init()
   if LA then return end
