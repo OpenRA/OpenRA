@@ -524,8 +524,7 @@ function CreateAutoCompList(editor,key)
   if (tab == ac) then
     local _, krest = rest:match("([%w_]+)["..sep.."]([%w_]+)%s*$")
     if (krest) then
-      if (#krest < 3) then return end
-      tab = tip.finfo
+      tab = #krest < 3 and {} or tip.finfo
       rest = krest:gsub("[^%w_]","")
     else
       rest = rest:gsub("[^%w_]","")
@@ -540,7 +539,7 @@ function CreateAutoCompList(editor,key)
   -- only if api search couldnt descend
   -- ie we couldnt find matching sub items
   local dw = ""
-  if (tab == ac and last and #last >= (ide.config.acandtip.startat or 2)) then
+  if (last and #last >= (ide.config.acandtip.startat or 2)) then
     last = last:lower()
     if dynamicwords[last] then
       local list = dynamicwords[last]
