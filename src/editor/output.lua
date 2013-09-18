@@ -111,9 +111,8 @@ local function unHideWindow(pidAssign)
       or action == hide and win:is_visible() then
         -- use show_async call (ShowWindowAsync) to avoid blocking the IDE
         -- if the app is busy or is being debugged
-        win:show_async(show and winapi.SW_SHOW or winapi.SW_HIDE)
-        notebook:SetFocus() -- set focus back to the IDE window
-        pid = nil
+        win:show_async(action == show and winapi.SW_SHOW or winapi.SW_HIDE)
+        pid = nil -- indicate that unhiding is done
       end
     end
   end
