@@ -206,9 +206,9 @@ namespace OpenRA.Widgets
 				directions |= ScrollDirection.Left;
 			if (Viewport.LastMousePos.Y < EdgeScrollThreshold)
 				directions |= ScrollDirection.Up;
-			if (Viewport.LastMousePos.X >= Game.viewport.Width - EdgeScrollThreshold)
+			if (Viewport.LastMousePos.X >= Game.Renderer.Resolution.Width - EdgeScrollThreshold)
 				directions |= ScrollDirection.Right;
-			if (Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeScrollThreshold)
+			if (Viewport.LastMousePos.Y >= Game.Renderer.Resolution.Height - EdgeScrollThreshold)
 				directions |= ScrollDirection.Down;
 
 			return directions;

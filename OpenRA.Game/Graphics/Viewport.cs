@@ -22,15 +22,13 @@ namespace OpenRA.Graphics
 
 	public class Viewport
 	{
-		readonly int2 screenSize;
-		readonly Renderer renderer;
 		readonly Rectangle mapBounds;
 		Rectangle scrollLimits;
 		int2 scrollPosition;
 
 		// Top-left of the viewport, in world-px units
 		public float2 Location { get { return scrollPosition; } }
-		public float2 CenterLocation { get { return scrollPosition + 0.5f/Zoom*screenSize.ToFloat2(); } }
+		public float2 CenterLocation { get { return scrollPosition + 0.5f/Zoom * new float2(Game.Renderer.Resolution); } }
 
 		public Rectangle WorldRect
 		{
@@ -38,13 +36,10 @@ namespace OpenRA.Graphics
 			{
 				return new Rectangle(scrollPosition.X / Game.CellSize,
 									 scrollPosition.Y / Game.CellSize,
-									 (int)(screenSize.X / Zoom / Game.CellSize),
-									 (int)(screenSize.Y / Zoom / Game.CellSize));
+									 (int)(Game.Renderer.Resolution.Width / Zoom / Game.CellSize),
+				                     (int)(Game.Renderer.Resolution.Height / Zoom / Game.CellSize));
 			}
 		}
-
-		public int Width { get { return screenSize.X; } }
-		public int Height { get { return screenSize.Y; } }
 
 		float zoom = 1f;
 		public float Zoom
@@ -61,13 +56,13 @@ namespace OpenRA.Graphics
 				// Update scroll limits
 				var viewTL = (Game.CellSize*new float2(mapBounds.Left, mapBounds.Top)).ToInt2();
 				var viewBR = (Game.CellSize*new float2(mapBounds.Right, mapBounds.Bottom)).ToInt2();
-				var border = (.5f/Zoom * screenSize.ToFloat2()).ToInt2();
+				var border = (.5f/Zoom * new float2(Game.Renderer.Resolution)).ToInt2();
 				scrollLimits = Rectangle.FromLTRB(viewTL.X - border.X,
 											  viewTL.Y - border.Y,
 											  viewBR.X - border.X,
 											  viewBR.Y - border.Y);
 				// Re-center viewport
-				scrollPosition = NormalizeScrollPosition((oldCenter - 0.5f / Zoom * screenSize.ToFloat2()).ToInt2());
+				scrollPosition = NormalizeScrollPosition((oldCenter - 0.5f / Zoom * new float2(Game.Renderer.Resolution)).ToInt2());
 			}
 		}
 
@@ -108,32 +103,30 @@ namespace OpenRA.Graphics
 			return ret;
 		}
 
-		public Viewport(int2 screenSize, Rectangle mapBounds, Renderer renderer)
+		public Viewport(Rectangle mapBounds)
 		{
-			this.screenSize = screenSize;
-			this.renderer = renderer;
 			this.mapBounds = mapBounds;
 
 			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 			scrollPosition = new int2(scrollLimits.Location) + new int2(scrollLimits.Size)/2;
 		}
 
-		public void DrawRegions( WorldRenderer wr, IInputHandler inputHandler )
+		public void DrawRegions(WorldRenderer wr, IInputHandler inputHandler)
 		{
-			renderer.BeginFrame(scrollPosition, Zoom);
+			Game.Renderer.BeginFrame(scrollPosition, Zoom);
 			if (wr != null)
 				wr.Draw();
 
-			using( new PerfSample("render_widgets") )
+			using (new PerfSample("render_widgets"))
 			{
 				Ui.Draw();
 				var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-				CursorProvider.DrawCursor(renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
+				CursorProvider.DrawCursor(Game.Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
 			}
 
-			using( new PerfSample("render_flip") )
+			using (new PerfSample("render_flip"))
 			{
-				renderer.EndFrame( inputHandler );
+				Game.Renderer.EndFrame(inputHandler);
 			}
 		}
 
@@ -154,7 +147,7 @@ namespace OpenRA.Graphics
 
 		public void Center(float2 loc)
 		{
-			scrollPosition = NormalizeScrollPosition((Game.CellSize * loc - 1f/(2*Zoom)*screenSize.ToFloat2()).ToInt2());
+			scrollPosition = NormalizeScrollPosition((Game.CellSize * loc - 1f/(2*Zoom)*new float2(Game.Renderer.Resolution)).ToInt2());
 		}
 
 		public void Center(IEnumerable<Actor> actors)
@@ -172,8 +165,8 @@ namespace OpenRA.Graphics
 			var origin = Location.ToInt2();
 			var left = Math.Max(0, Game.CellSize * r.Left - origin.X)*Zoom;
 			var top = Math.Max(0, Game.CellSize * r.Top - origin.Y)*Zoom;
-			var right = Math.Min((Game.CellSize * r.Right - origin.X) * Zoom, Width);
-			var bottom = Math.Min((Game.CellSize * r.Bottom - origin.Y) * Zoom, Height);
+			var right = Math.Min((Game.CellSize * r.Right - origin.X) * Zoom, Game.Renderer.Resolution.Width);
+			var bottom = Math.Min((Game.CellSize * r.Bottom - origin.Y) * Zoom, Game.Renderer.Resolution.Height);
 
 			return Rectangle.FromLTRB((int)left, (int)top, (int)right, (int)bottom);
 		}
@@ -188,7 +181,7 @@ namespace OpenRA.Graphics
 			{
 				var boundary = new int2(1,1); // Add a curtain of cells around the viewport to account for rounding errors
 				var tl = ViewToWorld(int2.Zero).ToInt2() - boundary;
-				var br = ViewToWorld(new int2(Width, Height)).ToInt2() + boundary;
+				var br = ViewToWorld(new int2(Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)).ToInt2() + boundary;
 
 				cachedRect = Rectangle.Intersect(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y), world.Map.Bounds);
 				cachedScroll = scrollPosition;

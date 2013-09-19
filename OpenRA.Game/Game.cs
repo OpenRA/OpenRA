@@ -212,7 +212,7 @@ namespace OpenRA
 			BeforeGameStart();
 
 			var map = modData.PrepareMap(mapUID);
-			viewport = new Viewport(new int2(Renderer.Resolution), map.Bounds, Renderer);
+			viewport = new Viewport(map.Bounds);
 			orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
 			worldRenderer = new WorldRenderer(orderManager.world);
 			orderManager.world.LoadComplete(worldRenderer);
@@ -328,7 +328,7 @@ namespace OpenRA
 			PerfHistory.items["render_flip"].hasNormalTick = false;
 
 			JoinLocal();
-			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
+			viewport = new Viewport(Rectangle.Empty);
 
 			if (Game.Settings.Server.Dedicated)
 			{

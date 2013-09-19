@@ -28,9 +28,10 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			if (!IsVisible()) return;
 
+			// TODO: Don't hardcode the screen position
 			var font = Game.Renderer.Fonts["Bold"];
 			var text = Format.F(WidgetUtils.FormatTime(Timer.TicksLeft));
-			var pos = new float2(Game.viewport.Width * 0.5f - font.Measure(text).X / 2, Game.viewport.Height * 0.1f);
+			var pos = new float2(Game.Renderer.Resolution.Width * 0.5f - font.Measure(text).X / 2, Game.Renderer.Resolution.Height * 0.1f);
 			font.DrawTextWithContrast(text, pos, Timer.TicksLeft <= 25 * 60 && Game.LocalTick % 50 < 25 ? Color.Red : Color.White, Color.Black, 1);
 		}
 	}
@@ -45,8 +46,9 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			if (!IsVisible()) return;
 
+			// TODO: Don't hardcode the screen position
 			var font = Game.Renderer.Fonts["Bold"];
-			var pos = new float2(Game.viewport.Width * 0.5f - font.Measure(Text).X / 2, Game.viewport.Height * 0.1f);
+			var pos = new float2(Game.Renderer.Resolution.Width * 0.5f - font.Measure(Text).X / 2, Game.Renderer.Resolution.Height * 0.1f);
 			font.DrawTextWithContrast(Text, pos, Color.White, Color.Black, 1);
 		}
 	}

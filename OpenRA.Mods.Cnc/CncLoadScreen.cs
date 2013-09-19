@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc
 			if (r == null) return;
 
 			var s = new Sheet("mods/cnc/uibits/chrome.png");
-			var res = Renderer.Resolution;
+			var res = r.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
 
 			ss = new[]

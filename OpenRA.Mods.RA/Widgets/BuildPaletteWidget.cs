@@ -69,8 +69,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void Initialize(WidgetArgs args)
 		{
-			paletteOpenOrigin = new float2(Game.viewport.Width - Columns*IconWidth - 23, 280);
-			paletteClosedOrigin = new float2(Game.viewport.Width - 16, 280);
+			paletteOpenOrigin = new float2(Game.Renderer.Resolution.Width - Columns*IconWidth - 23, 280);
+			paletteClosedOrigin = new float2(Game.Renderer.Resolution.Width - 16, 280);
 			paletteOrigin = paletteClosedOrigin;
 			base.Initialize(args);
 		}
@@ -280,19 +280,19 @@ namespace OpenRA.Mods.RA.Widgets
 				// Tooltip
 				if (tooltipItem != null && !paletteAnimating && paletteOpen)
 					DrawProductionTooltip(world, tooltipItem,
-						new float2(Game.viewport.Width, origin.Y + numActualRows * IconHeight + 9).ToInt2());
+						new float2(Game.Renderer.Resolution.Width, origin.Y + numActualRows * IconHeight + 9).ToInt2());
 			}
 
 			// Palette Dock
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-top"),
-				new float2(Game.viewport.Width - 14, origin.Y - 23));
+				new float2(Game.Renderer.Resolution.Width - 14, origin.Y - 23));
 
 			for (int i = 0; i < numActualRows; i++)
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-" + (i % 4).ToString()),
-					new float2(Game.viewport.Width - 14, origin.Y + IconHeight * i));
+					new float2(Game.Renderer.Resolution.Width - 14, origin.Y + IconHeight * i));
 
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-bottom"),
-				new float2(Game.viewport.Width - 14, origin.Y - 1 + IconHeight * numActualRows));
+				new float2(Game.Renderer.Resolution.Width - 14, origin.Y - 1 + IconHeight * numActualRows));
 
 			return IconHeight * y + 9;
 		}
@@ -456,7 +456,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var longDescSize = Game.Renderer.Fonts["Regular"].Measure(tooltip.Description.Replace("\\n", "\n")).Y;
 			if (!canBuildThis) longDescSize += 8;
 
-			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize + 65));
+			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.Renderer.Resolution.Width - 300, pos.Y, 300, longDescSize + 65));
 
 			Game.Renderer.Fonts["Bold"].DrawText(
 				tooltip.Name + ((buildable.Hotkey != null) ? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
