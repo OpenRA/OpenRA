@@ -150,6 +150,9 @@ SectionGroup /e "Settings"
 	Section "Portable Install" PORTABLE
 		CreateDirectory $INSTDIR\Support
 	SectionEnd
+	Section "Shortcut" SHORTCUT
+		CreateShortCut "$DESKTOP\OpenRA.lnk" "$INSTDIR\OpenRA.Game.exe"
+	SectionEnd
 SectionGroupEnd
 
 Function .onInit
@@ -261,6 +264,7 @@ LangString DESC_RA ${LANG_ENGLISH} "Base Red Alert mod"
 LangString DESC_CNC ${LANG_ENGLISH} "Base Command and Conquer mod"
 LangString DESC_D2K ${LANG_ENGLISH} "Base Dune 2000 mod"
 LangString DESC_PORTABLE ${LANG_ENGLISH} "Store support files in the install directory."
+LangString DESC_SHORTCUT ${LANG_ENGLISH} "Place shortcut on the Desktop."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 	!insertmacro MUI_DESCRIPTION_TEXT ${CLIENT} $(DESC_CLIENT)
@@ -269,6 +273,7 @@ LangString DESC_PORTABLE ${LANG_ENGLISH} "Store support files in the install dir
 	!insertmacro MUI_DESCRIPTION_TEXT ${CNC} $(DESC_CNC)
 	!insertmacro MUI_DESCRIPTION_TEXT ${D2K} $(DESC_D2K)
 	!insertmacro MUI_DESCRIPTION_TEXT ${PORTABLE} $(DESC_PORTABLE)
+	!insertmacro MUI_DESCRIPTION_TEXT ${SHORTCUT} $(DESC_SHORTCUT)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;***************************
