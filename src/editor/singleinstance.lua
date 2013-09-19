@@ -50,9 +50,10 @@ if success then -- ok, server was started, we are solo
           svr:sendto(protocol.server.answerok,ip,port)
           local filename = msg:match(protocol.client.requestloading:gsub("%%s","(.+)$"))
           if filename then
-            if LoadFile(filename, nil, true)
-            then RequestAttention()
-            else DisplayOutput("Can't open requested file '"..filename.."'.\n") end
+            RequestAttention()
+            if not LoadFile(filename, nil, true) then
+              DisplayOutputLn("Can't open requested file '"..filename.."'.")
+            end
           end
         end
       end
