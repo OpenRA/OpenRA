@@ -733,25 +733,35 @@ end
 debugger.loadstring = function(file, string)
   return debugger.handle("loadstring '" .. file .. "' " .. string)
 end
-debugger.update = function()
-  copas.step(0)
-  -- if there are any pending activations
-  if debugger.activate then
-    local file, line, content = (table.unpack or unpack)(debugger.activate)
-    if content then
-      local editor = NewFile()
-      editor:SetText(content)
-      if not ide.config.debugger.allowediting
-      and not (debugger.options or {}).allowediting then
-        editor:SetReadOnly(true)
-      end
-      activateDocument(file, line)
-    elseif LoadFile(file) then
-      activateDocument(file, line)
+
+do
+  local nextupdatedelta = 0.250
+  local nextupdate = TimeGet() + nextupdatedelta
+  debugger.update = function()
+    if debugger.server or debugger.listening and TimeGet() > nextupdate then
+      copas.step(0)
+      nextupdate = TimeGet() + nextupdatedelta
     end
-    debugger.activate = nil
+
+    -- if there are any pending activations
+    if debugger.activate then
+      local file, line, content = (table.unpack or unpack)(debugger.activate)
+      if content then
+        local editor = NewFile()
+        editor:SetText(content)
+        if not ide.config.debugger.allowediting
+        and not (debugger.options or {}).allowediting then
+          editor:SetReadOnly(true)
+        end
+        activateDocument(file, line)
+      elseif LoadFile(file) then
+        activateDocument(file, line)
+      end
+      debugger.activate = nil
+    end
   end
 end
+
 debugger.terminate = function()
   if debugger.server then
     if debugger.pid then -- if there is PID, try local kill
