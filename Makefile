@@ -63,7 +63,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = fileformats rcg rgl rsdl rnull game utility geoip
+CORE = fileformats rcg rgl rsdl rnull game utility geoip irc
 TOOLS = editor tsbuild ralint
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
@@ -96,6 +96,14 @@ game_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) \
 game_FLAGS			= -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS 			+= game
 game: $(game_TARGET)
+
+irc_SRCS			:= $(shell find OpenRA.Irc/ -iname '*.cs')
+irc_TARGET			= OpenRA.Irc.dll
+irc_KIND			= library
+irc_DEPS			= $(fileformats_TARGET) $(game_TARGET)
+irc_LIBS			= $(COMMON_LIBS) $(irc_DEPS)
+PROGRAMS			+= irc
+irc: $(irc_TARGET)
 
 # Renderer dlls
 rsdl_SRCS			:= $(shell find OpenRA.Renderer.SdlCommon/ -iname '*.cs')
@@ -141,8 +149,8 @@ STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 mod_ra_SRCS			:= $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET			= mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND			= library
-mod_ra_DEPS			= $(STD_MOD_DEPS) $(utility_TARGET) $(geoip_TARGET)
-mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(utility_TARGET) $(geoip_TARGET)
+mod_ra_DEPS			= $(STD_MOD_DEPS) $(utility_TARGET) $(geoip_TARGET) $(irc_TARGET)
+mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(utility_TARGET) $(geoip_TARGET) $(irc_TARGET)
 PROGRAMS 			+= mod_ra
 mod_ra: $(mod_ra_TARGET)
 
