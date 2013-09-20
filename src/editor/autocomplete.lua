@@ -522,9 +522,9 @@ function CreateAutoCompList(editor,key)
   if not (progress) then return end
 
   if (tab == ac) then
-    local _, krest = rest:match("([%w_]+)["..sep.."]([%w_]+)%s*$")
+    local _, krest = rest:match("([%w_]+)["..sep.."]([%w_]*)%s*$")
     if (krest) then
-      tab = #krest < 3 and {} or tip.finfo
+      tab = #krest >= (ide.config.acandtip.startat or 2) and tip.finfo or {}
       rest = krest:gsub("[^%w_]","")
     else
       rest = rest:gsub("[^%w_]","")
@@ -638,5 +638,5 @@ function CreateAutoCompList(editor,key)
   -- concat final, list complete first
   local li = (compstr .. dw)
   
-  return li ~= "" and (#li > 1024 and li:sub(1,1024).."..." or li)
+  return li ~= "" and (#li > 1024 and li:sub(1,1024).."..." or li) or nil
 end

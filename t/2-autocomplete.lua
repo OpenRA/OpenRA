@@ -2,6 +2,7 @@ local editor = NewFile()
 ok(editor, "Open New file.")
 ok(editor.assignscache ~= nil, "Auto-complete cache is assigned.")
 
+editor:SetText('') -- use Set/Add to position cursor after added text
 editor:AddText([[
   local line = '123'
   line = line:gsub('1','4')
@@ -63,6 +64,9 @@ EditorAutoComplete(editor)
 editor.UserListShow = ULS
 
 ok(value and value:find("close"), "Auto-complete is shown after comma.")
+
+ok(not (CreateAutoCompList(editor, "pri.") or ""):match('print'),
+  "Auto-complete doesn't offer 'print' after 'pri.'.")
 
 -- cleanup
 ide:GetDocument(editor).isModified = false
