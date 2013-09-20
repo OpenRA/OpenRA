@@ -179,24 +179,6 @@ namespace OpenRA.Graphics
 				selectable.DrawRollover(this, unit);
 		}
 
-		public void DrawLocus(Color c, CPos[] cells)
-		{
-			var dict = cells.ToDictionary(a => a, a => 0);
-			var wlr = Game.Renderer.WorldLineRenderer;
-
-			foreach (var t in dict.Keys)
-			{
-				if (!dict.ContainsKey(t + new CVec(-1, 0)))
-					wlr.DrawLine(t.ToPPos().ToFloat2(), (t + new CVec(0, 1)).ToPPos().ToFloat2(), c, c);
-				if (!dict.ContainsKey(t + new CVec(1, 0)))
-					wlr.DrawLine((t + new CVec(1, 0)).ToPPos().ToFloat2(), (t + new CVec(1, 1)).ToPPos().ToFloat2(), c, c);
-				if (!dict.ContainsKey(t + new CVec(0, -1)))
-					wlr.DrawLine(t.ToPPos().ToFloat2(), (t + new CVec(1, 0)).ToPPos().ToFloat2(), c, c);
-				if (!dict.ContainsKey(t + new CVec(0, 1)))
-					wlr.DrawLine((t + new CVec(0, 1)).ToPPos().ToFloat2(), (t + new CVec(1, 1)).ToPPos().ToFloat2(), c, c);
-			}
-		}
-
 		public void DrawRangeCircle(Color c, float2 location, float range)
 		{
 			for (var i = 0; i < 32; i++)
