@@ -18,6 +18,9 @@
 # to install with development tools, run:
 #   make [prefix=/foo] [bindir=/bar/bin] install-all
 #
+# to install Linux desktop files and icons:
+#   make install-shortcuts
+#
 # to uninstall, run:
 #   make uninstall
 #
@@ -334,12 +337,6 @@ install-core: default
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra
 
-	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
-	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
-
-	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
-	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
-
 install-tools: tools
 	@-echo "Installing OpenRA tools to $(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
@@ -354,6 +351,13 @@ install-tools: tools
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra-editor "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra-editor
+
+install-shortcuts: shortcuts
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
+	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
+
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
 
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
 	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
@@ -390,6 +394,9 @@ help:
 	@echo
 	@echo to install with development tools, run:
 	@echo \ \ make \[prefix=/foo\] \[bindir=/bar/bin\] install-all
+	@echo
+	@echo to install Linux desktop files and icons
+	@echo \ \ make install-shortcuts
 	@echo
 	@echo to uninstall, run:
 	@echo \ \ make uninstall
