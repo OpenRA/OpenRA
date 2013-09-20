@@ -151,6 +151,7 @@ namespace OpenRA.Graphics
 
 		public PPos ViewToWorldPx(int2 loc) { return (PPos)(1f/Zoom*loc.ToFloat2() + Location).ToInt2(); }
 		public PPos ViewToWorldPx(MouseInput mi) { return ViewToWorldPx(mi.Location); }
+		public int2 WorldToViewPx(PPos loc) { return (Zoom * (loc.ToFloat2() - Location)).ToInt2(); }
 
 		public void Center(float2 loc)
 		{

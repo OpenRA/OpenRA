@@ -42,11 +42,13 @@ namespace OpenRA.Mods.RA.Widgets
 		Sprite shroudSprite;
 
 		readonly World world;
+		readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public RadarWidget(World world)
+		public RadarWidget(World world, WorldRenderer worldRenderer)
 		{
 			this.world = world;
+			this.worldRenderer = worldRenderer;
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -104,19 +106,21 @@ namespace OpenRA.Mods.RA.Widgets
 			if (!hasRadar)
 				return true;
 
-			var loc = MinimapPixelToCell(mi.Location);
+			var cell = MinimapPixelToCell(mi.Location);
+			var pos = cell.CenterPosition;
 			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
-				Game.viewport.Center(loc.ToFloat2());
+				Game.viewport.Center(cell.ToFloat2());
 
 			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Right)
 			{
 				// fake a mousedown/mouseup here
+				var location = Game.viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(pos));
 				var fakemi = new MouseInput
 				{
 					Event = MouseInputEvent.Down,
 					Button = MouseButton.Right,
 					Modifiers = mi.Modifiers,
-					Location = (loc.ToPPos().ToFloat2() - Game.viewport.Location).ToInt2()
+					Location = location
 				};
 
 				if (WorldInteractionController != null)
