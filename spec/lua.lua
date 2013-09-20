@@ -89,8 +89,8 @@ return {
   end,
 
   typeassigns = function(editor)
-    local line = editor:GetCurrentLine()
-    line = line-1
+    local line = editor:GetCurrentLine()-1
+    local maxlines = 48 -- scan up to this many lines back
 
     local scopestart = {"if","do","while","function", "local%s+function", "for", "else", "elseif"}
     local scopeend = {"end"}
@@ -101,7 +101,7 @@ return {
     -- iterate up until a line starts with scopestart
     -- always ignore lines whose first symbol is styled as comment
     local endline = line
-    while (line >= 0) do
+    while (line > math.max(endline-maxlines, 0)) do
       local ls = editor:PositionFromLine(line)
       local s = bit.band(editor:GetStyleAt(ls),31)
 
@@ -110,7 +110,7 @@ return {
         local leftscope
 
         for i,v in ipairs(scopestart) do
-          if (tx:match("^"..v)) then
+          if (tx:match("^%s*"..v)) then
             leftscope = true
           end
         end
@@ -158,6 +158,17 @@ return {
                  or s:find('^"[^"]*"$')
                  or s:find('^%[=*%[.*%]=*%]$')) and 'string' or s
           end)
+
+          -- filter out everything that is not needed
+          if typ
+          and (not typ:match('^'..identifier..'$') -- not an identifier
+               or typ:match('^%d') -- not an identifier
+               or editor.api.tip.keys[typ] -- or a keyword
+               or editor.api.tip.staticnames[typ] -- or a static name
+              ) then
+            typ = nil
+          end
+
           if (var and typ) then
             class,func = typ:match(varname.."[%.:]"..varname)
             if (assigns[typ]) then
