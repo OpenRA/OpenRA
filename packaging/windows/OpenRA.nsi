@@ -258,7 +258,7 @@ SectionEnd
 LangString DESC_CLIENT ${LANG_ENGLISH} "OpenRA game and dependencies"
 LangString DESC_EDITOR ${LANG_ENGLISH} "OpenRA map editor"
 LangString DESC_RA ${LANG_ENGLISH} "Base Red Alert mod"
-LangString DESC_CNC ${LANG_ENGLISH} "Base Command and Conquer mod"
+LangString DESC_CNC ${LANG_ENGLISH} "Base Tiberian Dawn mod"
 LangString DESC_D2K ${LANG_ENGLISH} "Base Dune 2000 mod"
 LangString DESC_PORTABLE ${LANG_ENGLISH} "Store support files in the install directory."
 
