@@ -2622,6 +2622,8 @@ Rules:
 		Health:
 			HP: 2000
 	SILO:
+		Infiltratable:
+			Type: Cash
 		InfiltrateForCash:
 	DOME.NoInfiltrate:
 		Inherits: DOME
