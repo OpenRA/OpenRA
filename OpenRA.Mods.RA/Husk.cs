@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 			this.self = init.self;
 
 			TopLeft = init.Get<LocationInit, CPos>();
-			CenterPosition = init.Contains<CenterLocationInit>() ? init.Get<CenterLocationInit, PPos>().ToWPos(0) : TopLeft.CenterPosition;
+			CenterPosition = init.Contains<CenterPositionInit>() ? init.Get<CenterPositionInit, WPos>() : TopLeft.CenterPosition;
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 128;
 
 			var speed = init.Contains<HuskSpeedInit>() ? init.Get<HuskSpeedInit, int>() : 0;
