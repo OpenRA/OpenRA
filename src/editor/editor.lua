@@ -851,12 +851,6 @@ function CreateEditor()
       event:Skip()
     end)
 
-  editor:Connect(wx.wxEVT_SET_FOCUS,
-    function (event)
-      PackageEventHandle("onEditorFocusSet", editor)
-      event:Skip()
-    end)
-
   editor:Connect(wx.wxEVT_KILL_FOCUS,
     function (event)
       if editor:AutoCompActive() then editor:AutoCompCancel() end
@@ -985,6 +979,7 @@ function CreateEditor()
       event:Skip()
       if inhandler or ide.exitingProgram then return end
       inhandler = true
+      PackageEventHandle("onEditorFocusSet", editor)
       isFileAlteredOnDisk(editor)
       inhandler = false
     end)
