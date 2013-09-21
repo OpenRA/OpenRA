@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA
 		public void SetPosition(Actor self, CPos cell)
 		{
 			if (self.IsInWorld)
-				self.World.ActorMap.Remove(self, this);
+				self.World.ActorMap.RemoveInfluence(self, this);
 
 			Location = cell;
 			CenterPosition = cell.CenterPosition;
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.RA
 
 			if (self.IsInWorld)
 			{
-				self.World.ActorMap.Add(self, this);
+				self.World.ActorMap.AddInfluence(self, this);
 				self.World.ScreenMap.Update(self);
 			}
 		}
@@ -128,11 +128,13 @@ namespace OpenRA.Mods.RA
 
 		public void AddedToWorld(Actor self)
 		{
+			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ScreenMap.Add(self);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
+			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ScreenMap.Remove(self);
 		}
 	}

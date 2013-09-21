@@ -37,9 +37,6 @@ namespace OpenRA.Traits
 		{
 			map = world.Map;
 			influence = new InfluenceNode[world.Map.MapSize.X, world.Map.MapSize.Y];
-
-			world.ActorAdded += a => Add(a, a.OccupiesSpace);
-			world.ActorRemoved += a => Remove(a, a.OccupiesSpace);
 		}
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a)
@@ -95,21 +92,19 @@ namespace OpenRA.Traits
 			return false;
 		}
 
-		public void Add(Actor self, IOccupySpace unit)
+		public void AddInfluence(Actor self, IOccupySpace ios)
 		{
-			if (unit != null)
-				foreach (var c in unit.OccupiedCells())
-					influence[c.First.X, c.First.Y] = new InfluenceNode { next = influence[c.First.X, c.First.Y], subCell = c.Second, actor = self };
+			foreach (var c in ios.OccupiedCells())
+				influence[c.First.X, c.First.Y] = new InfluenceNode { next = influence[c.First.X, c.First.Y], subCell = c.Second, actor = self };
 		}
 
-		public void Remove(Actor self, IOccupySpace unit)
+		public void RemoveInfluence(Actor self, IOccupySpace ios)
 		{
-			if (unit != null)
-				foreach (var c in unit.OccupiedCells())
-					RemoveInner(ref influence[c.First.X, c.First.Y], self);
+			foreach (var c in ios.OccupiedCells())
+				RemoveInfluenceInner(ref influence[c.First.X, c.First.Y], self);
 		}
 
-		void RemoveInner(ref InfluenceNode influenceNode, Actor toRemove)
+		void RemoveInfluenceInner(ref InfluenceNode influenceNode, Actor toRemove)
 		{
 			if (influenceNode == null)
 				return;
@@ -117,14 +112,7 @@ namespace OpenRA.Traits
 				influenceNode = influenceNode.next;
 
 			if (influenceNode != null)
-				RemoveInner(ref influenceNode.next, toRemove);
-		}
-
-		public void Update(Actor self, IOccupySpace unit)
-		{
-			Remove(self, unit);
-			if (!self.IsDead())
-				Add(self, unit);
+				RemoveInfluenceInner(ref influenceNode.next, toRemove);
 		}
 	}
 }

@@ -237,11 +237,13 @@ namespace OpenRA.Mods.RA.Move
 
 		public void AddedToWorld(Actor self)
 		{
+			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ScreenMap.Add(self);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
+			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ScreenMap.Remove(self);
 		}
 
@@ -442,13 +444,13 @@ namespace OpenRA.Mods.RA.Move
 		public void AddInfluence()
 		{
 			if (self.IsInWorld)
-				self.World.ActorMap.Add(self, this);
+				self.World.ActorMap.AddInfluence(self, this);
 		}
 
 		public void RemoveInfluence()
 		{
 			if (self.IsInWorld)
-				self.World.ActorMap.Remove(self, this);
+				self.World.ActorMap.RemoveInfluence(self, this);
 		}
 
 		public void Nudge(Actor self, Actor nudger, bool force)

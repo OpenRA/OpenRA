@@ -33,11 +33,13 @@ namespace OpenRA.Traits
 
 		public void AddedToWorld(Actor self)
 		{
+			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ScreenMap.Add(self);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
+			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ScreenMap.Remove(self);
 		}
 	}
