@@ -21,24 +21,13 @@ namespace OpenRA
 {
 	public static class WorldUtils
 	{
-		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
-		{
-			var loc = Game.viewport.ViewToWorldPx(mouseLocation).ToWPos(0);
-			return FindActorsInBox(world, loc, loc).Where(a => !world.FogObscures(a));
-		}
-
 		public static readonly IEnumerable<FrozenActor> NoFrozenActors = new FrozenActor[0].AsEnumerable();
 		public static IEnumerable<FrozenActor> FindFrozenActorsAtMouse(this World world, int2 mouseLocation)
 		{
 			if (world.RenderPlayer == null)
 				return NoFrozenActors;
 
-			var frozenLayer = world.RenderPlayer.PlayerActor.TraitOrDefault<FrozenActorLayer>();
-			if (frozenLayer == null)
-				return NoFrozenActors;
-
-			var loc = Game.viewport.ViewToWorldPx(mouseLocation).ToInt2();
-			return frozenLayer.FrozenActorsAt(loc);
+			return world.ScreenMap.FrozenActorsAt(world.RenderPlayer, Game.viewport.ViewToWorldPx(mouseLocation).ToInt2());
 		}
 
 		public static IEnumerable<Actor> FindActorsInBox(this World world, CPos tl, CPos br)
@@ -73,13 +62,8 @@ namespace OpenRA
 				// Target ranges are calculated in 2D, so ignore height differences
 				var vec = new WVec(r, r, WRange.Zero);
 				var rSq = r.Range*r.Range;
-				return world.FindActorsInBox(origin - vec, origin + vec).Where(a =>
-				{
-					var pos = a.CenterPosition;
-					var dx = (long)(pos.X - origin.X);
-					var dy = (long)(pos.Y - origin.Y);
-					return dx*dx + dy*dy <= rSq;
-				});
+				return world.FindActorsInBox(origin - vec, origin + vec).Where(
+					a => (a.CenterPosition - origin).HorizontalLengthSquared <= rSq);
 			}
 		}
 

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Mine(init, this); }
 	}
 
-	class Mine : ICrushable, IOccupySpace, ISync
+	class Mine : ICrushable, IOccupySpace, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly Actor self;
 		readonly MineInfo info;
@@ -62,6 +62,16 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
 		public WPos CenterPosition { get { return location.CenterPosition; } }
+
+		public void AddedToWorld(Actor self)
+		{
+			self.World.ScreenMap.Add(self);
+		}
+
+		public void RemovedFromWorld(Actor self)
+		{
+			self.World.ScreenMap.Remove(self);
+		}
 	}
 
 	/* tag trait for stuff that shouldnt trigger mines */

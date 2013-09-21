@@ -42,6 +42,7 @@ Player:
 	PlayerStatistics:
 
 World:
+	ScreenMap:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	BuildingInfluence:

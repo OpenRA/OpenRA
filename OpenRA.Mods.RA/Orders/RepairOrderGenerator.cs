@@ -30,8 +30,8 @@ namespace OpenRA.Mods.RA.Orders
 		{
 			if (mi.Button == MouseButton.Left)
 			{
-				var underCursor = world.FindUnitsAtMouse(mi.Location)
-					.Where(a => a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) && a.HasTrait<RepairableBuilding>()).FirstOrDefault();
+				var underCursor = world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(mi.Location))
+					.Where(a => !world.FogObscures(a) && a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) && a.HasTrait<RepairableBuilding>()).FirstOrDefault();
 
 				if (underCursor == null)
 					yield break;

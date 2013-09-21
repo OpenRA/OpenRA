@@ -39,9 +39,8 @@ namespace OpenRA.Mods.RA.Orders
 		{
 			if (mi.Button == MouseButton.Left)
 			{
-				var underCursor = world.FindUnitsAtMouse(mi.Location)
-					.Where(a => a.Owner == world.LocalPlayer
-						&& a.HasTrait<T>()).FirstOrDefault();
+				var underCursor = world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(mi.Location))
+					.Where(a => a.Owner == world.LocalPlayer && a.HasTrait<T>()).FirstOrDefault();
 
 				if (underCursor != null)
 					yield return new Order(order, underCursor, false);

@@ -238,6 +238,7 @@
     <Compile Include="Graphics\Theater.cs" />
     <Compile Include="Traits\Player\PlayerColorPalette.cs" />
     <Compile Include="Traits\Player\PlayerHighlightPalette.cs" />
+    <Compile Include="Traits\World\ScreenMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

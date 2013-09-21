@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 	}
 
-	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, ISync, ITechTreePrerequisite
+	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, ISync, ITechTreePrerequisite, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
@@ -156,6 +156,16 @@ namespace OpenRA.Mods.RA.Buildings
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
+		}
+
+		public void AddedToWorld(Actor self)
+		{
+			self.World.ScreenMap.Add(self);
+		}
+
+		public void RemovedFromWorld(Actor self)
+		{
+			self.World.ScreenMap.Remove(self);
 		}
 	}
 }

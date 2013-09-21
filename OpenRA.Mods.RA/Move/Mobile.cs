@@ -144,7 +144,7 @@ namespace OpenRA.Mods.RA.Move
 		public int GetInitialFacing() { return InitialFacing; }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -231,6 +231,18 @@ namespace OpenRA.Mods.RA.Move
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
+			if (self.IsInWorld)
+				self.World.ScreenMap.Update(self);
+		}
+
+		public void AddedToWorld(Actor self)
+		{
+			self.World.ScreenMap.Add(self);
+		}
+
+		public void RemovedFromWorld(Actor self)
+		{
+			self.World.ScreenMap.Remove(self);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(Info); } }

@@ -73,12 +73,11 @@ namespace OpenRA.Graphics
 
 		List<IRenderable> GenerateRenderables()
 		{
-			var bounds = Game.viewport.WorldBounds(world);
 			var comparer = new RenderableComparer(this);
-
-			var tl = bounds.TopLeftAsCPos();
-			var br = bounds.BottomRightAsCPos();
-			var actors = world.FindActorsInBox(tl, br)
+			var vb = Game.viewport.ViewBounds(world);
+			var tl = Game.viewport.ViewToWorldPx(new int2(vb.Left, vb.Top)).ToInt2();
+			var br = Game.viewport.ViewToWorldPx(new int2(vb.Right, vb.Bottom)).ToInt2();
+			var actors = world.ScreenMap.ActorsInBox(tl, br)
 				.Append(world.WorldActor)
 				.ToList();
 

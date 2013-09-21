@@ -206,6 +206,7 @@ Player:
 	FrozenActorLayer:
 
 World:
+	ScreenMap:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	CncMenuPaletteEffect:

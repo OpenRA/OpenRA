@@ -106,7 +106,8 @@ namespace OpenRA.Mods.RA
 					yield break;
 				}
 
-				var underCursor = world.FindUnitsAtMouse(mi.Location)
+				var underCursor = world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(mi.Location))
+					.Where(a => !world.FogObscures(a))
 					.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>()
 						? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
 					.FirstOrDefault();

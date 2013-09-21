@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 				yield break;
 			}
 
-			var target = FriendlyGuardableUnitsAtMouse(world, mi).FirstOrDefault();
+			var target = FriendlyGuardableUnits(world, mi).FirstOrDefault();
 
 			if (target == null || subjects.All(s => s.IsDead()))
 				yield break;
@@ -79,19 +79,19 @@ namespace OpenRA.Mods.RA
 
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
-			if (world.Map.IsInMap(xy))
-			{
-				var targets = FriendlyGuardableUnitsAtMouse(world, mi);
-				if (targets.Any() && (subjects.Count() > 1 || (subjects.Count() == 1 && subjects.First() != targets.First())))
-					return "guard";
-			}
-			return "move-blocked";
+			var multiple = subjects.Count() > 1;
+			var canGuard = FriendlyGuardableUnits(world, mi)
+				.Any(a => multiple || a != subjects.First());
+
+			return canGuard ? "guard" : "move-blocked";
 		}
 
-		static IEnumerable<Actor> FriendlyGuardableUnitsAtMouse(World world, MouseInput mi)
+		static IEnumerable<Actor> FriendlyGuardableUnits(World world, MouseInput mi)
 		{
-			return world.FindUnitsAtMouse(mi.Location)
-				.Where(a => !a.IsDead() && a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) && a.HasTrait<Guardable>());
+			return world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(mi.Location))
+				.Where(a => !world.FogObscures(a) && !a.IsDead() &&
+					a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) &&
+					a.HasTrait<Guardable>());
 		}
 	}
 

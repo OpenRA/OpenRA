@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Air
 		public int GetInitialFacing() { return InitialFacing; }
 	}
 
-	public class Aircraft : IFacing, IPositionable, ISync, INotifyKilled, IIssueOrder, IOrderVoice
+	public class Aircraft : IFacing, IPositionable, ISync, INotifyKilled, IIssueOrder, IOrderVoice, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = new Pair<CPos, SubCell>[] { };
 
@@ -101,14 +101,27 @@ namespace OpenRA.Mods.RA.Air
 			UnReserve();
 		}
 
-		public void SetPosition(Actor self, CPos cell)
+		public void SetPosition(Actor self, WPos pos)
 		{
-			// Changes position, but not altitude
-			CenterPosition = cell.CenterPosition + new WVec(0, 0, CenterPosition.Z);
+			CenterPosition = pos;
+
+			if (self.IsInWorld)
+				self.World.ScreenMap.Update(self);
 		}
 
-		public void SetPosition(Actor self, WPos pos) { CenterPosition = pos; }
+		// Changes position, but not altitude
+		public void SetPosition(Actor self, CPos cell) { SetPosition(self, cell.CenterPosition + new WVec(0, 0, CenterPosition.Z)); }
 		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos); }
+
+		public void AddedToWorld(Actor self)
+		{
+			self.World.ScreenMap.Add(self);
+		}
+
+		public void RemovedFromWorld(Actor self)
+		{
+			self.World.ScreenMap.Remove(self);
+		}
 
 		public bool AircraftCanEnter(Actor a)
 		{
