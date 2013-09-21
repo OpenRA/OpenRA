@@ -596,6 +596,7 @@ function CreateEditor()
 
   editor.matchon = false
   editor.assignscache = false
+  editor.autocomplete = false
   editor.jumpstack = {}
 
   editor:SetBufferedDraw(not ide.config.hidpi and true or false)
@@ -811,8 +812,7 @@ function CreateEditor()
       elseif ide.config.autocomplete then -- code completion prompt
         local trigger = linetxtopos:match("["..editor.spec.sep.."%w_]+$")
         if (trigger and (#trigger > 1 or trigger:match("["..editor.spec.sep.."]"))) then
-          ide.frame:AddPendingEvent(wx.wxCommandEvent(
-            wx.wxEVT_COMMAND_MENU_SELECTED, ID_AUTOCOMPLETE))
+          editor.autocomplete = true
         end
       end
     end)
@@ -937,6 +937,12 @@ function CreateEditor()
         firstvisible)
       MarkupStyle(editor,minupdated or firstline,lastline)
       editor.ev = {}
+
+      -- show auto-complete if needed
+      if editor.autocomplete then
+        EditorAutoComplete(editor)
+        editor.autocomplete = false
+      end
     end)
 
   editor:Connect(wx.wxEVT_LEFT_DOWN,
