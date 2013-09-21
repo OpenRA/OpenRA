@@ -26,11 +26,12 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new ScreenMap(init.world, this); }
 	}
 
-	public class ScreenMap
+	public class ScreenMap : IWorldLoaded
 	{
 		ScreenMapInfo info;
-		Cache<Player, List<FrozenActor>[]> frozen;
-		List<Actor>[] actors;
+		WorldRenderer worldRenderer;
+		Cache<Player, Dictionary<FrozenActor, Rectangle>[]> frozen;
+		Dictionary<Actor, Rectangle>[] actors;
 		int rows, cols;
 
 		public ScreenMap(World world, ScreenMapInfo info)
@@ -39,33 +40,39 @@ namespace OpenRA.Traits
 			cols = world.Map.MapSize.X * Game.CellSize / info.BinSize + 1;
 			rows = world.Map.MapSize.Y * Game.CellSize / info.BinSize + 1;
 
-			frozen = new Cache<Player, List<FrozenActor>[]>(InitializeFrozenActors);
-			actors = new List<Actor>[rows * cols];
+			frozen = new Cache<Player, Dictionary<FrozenActor, Rectangle>[]>(InitializeFrozenActors);
+			actors = new Dictionary<Actor, Rectangle>[rows * cols];
 			for (var j = 0; j < rows; j++)
 				for (var i = 0; i < cols; i++)
-					actors[j * cols + i] = new List<Actor>();
+					actors[j * cols + i] = new Dictionary<Actor, Rectangle>();
 		}
 
-		List<FrozenActor>[] InitializeFrozenActors(Player p)
+		public void WorldLoaded(World w, WorldRenderer wr) { worldRenderer = wr; }
+
+		Dictionary<FrozenActor, Rectangle>[] InitializeFrozenActors(Player p)
 		{
-			var f = new List<FrozenActor>[rows * cols];
+			var f = new Dictionary<FrozenActor, Rectangle>[rows * cols];
 			for (var j = 0; j < rows; j++)
 				for (var i = 0; i < cols; i++)
-					f[j * cols + i] = new List<FrozenActor>();
+					f[j * cols + i] = new Dictionary<FrozenActor, Rectangle>();
 
 			return f;
 		}
 
 		public void Add(Player viewer, FrozenActor fa)
 		{
-			var top = Math.Max(0, fa.Bounds.Top / info.BinSize);
-			var left = Math.Max(0, fa.Bounds.Left / info.BinSize);
-			var bottom = Math.Min(rows - 1, fa.Bounds.Bottom / info.BinSize);
-			var right = Math.Min(cols - 1, fa.Bounds.Right / info.BinSize);
+			var pos = worldRenderer.ScreenPxPosition(fa.CenterPosition);
+			var bounds = fa.Bounds;
+			bounds.Offset(pos.X, pos.Y);
+
+			var top = Math.Max(0, bounds.Top / info.BinSize);
+			var left = Math.Max(0, bounds.Left / info.BinSize);
+			var bottom = Math.Min(rows - 1, bounds.Bottom / info.BinSize);
+			var right = Math.Min(cols - 1, bounds.Right / info.BinSize);
 
 			for (var j = top; j <= bottom; j++)
 				for (var i = left; i <= right; i++)
-					frozen[viewer][j*cols + i].Add(fa);
+					frozen[viewer][j*cols + i].Add(fa, bounds);
 		}
 
 		public void Remove(Player viewer, FrozenActor fa)
@@ -76,15 +83,18 @@ namespace OpenRA.Traits
 
 		public void Add(Actor a)
 		{
-			var b = a.Bounds.Value;
-			var top = Math.Max(0, b.Top / info.BinSize);
-			var left = Math.Max(0, b.Left / info.BinSize);
-			var bottom = Math.Min(rows - 1, b.Bottom / info.BinSize);
-			var right = Math.Min(cols - 1, b.Right / info.BinSize);
+			var pos = worldRenderer.ScreenPxPosition(a.CenterPosition);
+			var bounds = a.Bounds.Value;
+			bounds.Offset(pos.X, pos.Y);
+
+			var top = Math.Max(0, bounds.Top / info.BinSize);
+			var left = Math.Max(0, bounds.Left / info.BinSize);
+			var bottom = Math.Min(rows - 1, bounds.Bottom / info.BinSize);
+			var right = Math.Min(cols - 1, bounds.Right / info.BinSize);
 
 			for (var j = top; j <= bottom; j++)
 				for (var i = left; i <= right; i++)
-					actors[j * cols + i].Add(a);
+					actors[j * cols + i].Add(a, bounds);
 		}
 
 		public void Remove(Actor a)
@@ -103,14 +113,18 @@ namespace OpenRA.Traits
 		{
 			var i = (pxPos.X / info.BinSize).Clamp(0, cols - 1);
 			var j = (pxPos.Y / info.BinSize).Clamp(0, rows - 1);
-			return frozen[viewer][j*cols + i].Where(fa => fa.Bounds.Contains(pxPos) && fa.IsValid);
+			return frozen[viewer][j*cols + i]
+				.Where(kv => kv.Key.IsValid && kv.Value.Contains(pxPos))
+				.Select(kv => kv.Key);
 		}
 
 		public IEnumerable<Actor> ActorsAt(int2 pxPos)
 		{
 			var i = (pxPos.X / info.BinSize).Clamp(0, cols - 1);
 			var j = (pxPos.Y / info.BinSize).Clamp(0, rows - 1);
-			return actors[j*cols + i].Where(a => a.Bounds.Value.Contains(pxPos) && a.IsInWorld);
+			return actors[j * cols + i]
+				.Where(kv => kv.Key.IsInWorld && kv.Value.Contains(pxPos))
+				.Select(kv => kv.Key);
 		}
 
 		// Legacy fallback
@@ -129,9 +143,17 @@ namespace OpenRA.Traits
 			var bottom = (r.Bottom / info.BinSize).Clamp(0, rows - 1);
 
 			for (var j = top; j <= bottom; j++)
+			{
 				for (var i = left; i <= right; i++)
-					foreach (var a in actors[j*cols + i].Where(b => b.Bounds.Value.IntersectsWith(r) && b.IsInWorld))
+				{
+					var ret = actors[j * cols + i]
+						.Where(kv => kv.Key.IsInWorld && kv.Value.IntersectsWith(r))
+						.Select(kv => kv.Key);
+
+					foreach (var a in ret)
 						yield return a;
+				}
+			}
 		}
 	}
 }

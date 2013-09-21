@@ -34,7 +34,10 @@ namespace OpenRA.Traits
 			if (self.World.FogObscures(self))
 				return;
 
+			var pos = wr.ScreenPxPosition(self.CenterPosition);
 			var bounds = self.Bounds.Value;
+			bounds.Offset(pos.X, pos.Y);
+
 			var xy = new float2(bounds.Left, bounds.Top);
 			var xY = new float2(bounds.Left, bounds.Bottom);
 
