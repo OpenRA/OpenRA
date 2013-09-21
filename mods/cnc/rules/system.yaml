@@ -207,6 +207,7 @@ Player:
 
 World:
 	ScreenMap:
+	ActorMap:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	CncMenuPaletteEffect:

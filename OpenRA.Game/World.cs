@@ -123,7 +123,7 @@ namespace OpenRA
 			SharedRandom = new XRandom(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
 			WorldActor = CreateActor("World", new TypeDictionary());
-			ActorMap = new ActorMap(this);
+			ActorMap = WorldActor.Trait<ActorMap>();
 			ScreenMap = WorldActor.Trait<ScreenMap>();
 
 			// Add players
