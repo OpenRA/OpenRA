@@ -32,16 +32,13 @@ namespace OpenRA
 
 		public static IEnumerable<Actor> FindActorsInBox(this World world, CPos tl, CPos br)
 		{
+			// TODO: Support diamond boxes for isometric maps?
 			return world.FindActorsInBox(tl.TopLeft, br.BottomRight);
 		}
 
 		public static IEnumerable<Actor> FindActorsInBox(this World world, WPos tl, WPos br)
 		{
-			var a = PPos.FromWPos(tl);
-			var b = PPos.FromWPos(br);
-			var u = PPos.Min(a, b);
-			var v = PPos.Max(a, b);
-			return world.WorldActor.Trait<SpatialBins>().ActorsInBox(u,v);
+			return world.ActorMap.ActorsInBox(tl, br);
 		}
 
 		public static Actor ClosestTo(this IEnumerable<Actor> actors, Actor a)

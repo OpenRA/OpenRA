@@ -124,8 +124,6 @@ World:
 		BaseActor: mcv
 	MPStartLocations:
 	SpawnMPUnits:
-	SpatialBins:
-		BinSize: 4
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

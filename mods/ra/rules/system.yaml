@@ -682,8 +682,6 @@ World:
 		OuterSupportRadius: 5
 	MPStartLocations:
 	SpawnMPUnits:
-	SpatialBins:
-		BinSize: 4
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

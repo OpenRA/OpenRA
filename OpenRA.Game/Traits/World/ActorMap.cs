@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -149,6 +150,31 @@ namespace OpenRA.Traits
 		{
 			RemovePosition(a, ios);
 			AddPosition(a, ios);
+		}
+
+		public IEnumerable<Actor> ActorsInBox(WPos a, WPos b)
+		{
+			var left = Math.Min(a.X, b.X);
+			var top = Math.Min(a.Y, b.Y);
+			var right = Math.Max(a.X, b.X);
+			var bottom = Math.Max(a.Y, b.Y);
+			var i1 = (left / info.BinSize).Clamp(0, cols - 1);
+			var i2 = (right / info.BinSize).Clamp(0, cols - 1);
+			var j1 = (top / info.BinSize).Clamp(0, rows - 1);
+			var j2 = (bottom / info.BinSize).Clamp(0, rows - 1);
+
+			for (var j = j1; j <= j2; j++)
+			{
+				for (var i = i1; i <= i2; i++)
+				{
+					foreach (var actor in actors[j*cols + i])
+					{
+						var c = actor.CenterPosition;
+						if (left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom)
+							yield return actor;
+					}
+				}
+			}
 		}
 	}
 }

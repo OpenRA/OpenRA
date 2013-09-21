@@ -476,8 +476,6 @@ World:
 		Races: ordos
 		BaseActor: mcvo
 	SpawnMPUnits:
-	SpatialBins:
-		BinSize: 4
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
