@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,8 +9,8 @@
 #endregion
 
 using System;
-using OpenRA.Traits;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -19,13 +19,13 @@ namespace OpenRA.Mods.RA
 		"heal process then. It also won't work with buildings (use RepairsUnits: for them)")]
 	public class AttackMedicInfo : AttackFrontalInfo
 	{
-		public override object Create( ActorInitializer init ) { return new AttackMedic( init.self, this ); }
+		public override object Create(ActorInitializer init) { return new AttackMedic(init.self, this); }
 	}
 
 	public class AttackMedic : AttackFrontal
 	{
 		public AttackMedic(Actor self, AttackMedicInfo info)
-			: base( self, info ) {}
+			: base(self, info) { }
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 				return null;
 
 			// TODO: Define weapon ranges as WRange
-			var range = new WRange(Math.Max(0,(int)(1024*a.Weapon.Range)));
+			var range = new WRange(Math.Max(0, (int)(1024 * a.Weapon.Range)));
 			return new Activities.Heal(newTarget, range, allowMove);
 		}
 	}
