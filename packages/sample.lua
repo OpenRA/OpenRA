@@ -27,7 +27,7 @@ local events = {
   onEditorKeyDown =    function(self, editor, event) end, -- return false
   onEditorCharAdded =  function(self, editor, event) end, -- return false
   onMenuEditor =       function(self, menu, editor, event) end,
-  onMenuEditorTab =    function(self, menu, notebook, event) end,
+  onMenuEditorTab =    function(self, menu, notebook, event, index) end,
   onMenuFiletree =     function(self, menu, tree, event) end,
   onProjectLoad =      function(self, project) end,
   onProjectClose =     function(self, project) end,
@@ -65,8 +65,7 @@ local events = {
     DisplayOutputLn(self:GetFileName(), "onMenuEditor")
   end
 
-  P.onMenuEditorTab = function(self, menu, notebook, event)
-    local index = event:GetSelection()
+  P.onMenuEditorTab = function(self, menu, notebook, event, index)
     menu:Append(id, ">> Sample item; tab "..index)
     menu:Enable(id, true)
 

@@ -183,7 +183,7 @@ local function createNotebook(frame)
       menu:AppendSeparator()
       menu:Append(ID_SHOWLOCATION, TR("Show Location"))
 
-      PackageEventHandle("onMenuEditorTab", menu, notebook, event)
+      PackageEventHandle("onMenuEditorTab", menu, notebook, event, selection)
 
       notebook:PopupMenu(menu)
     end)
