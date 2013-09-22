@@ -164,7 +164,15 @@ local function createNotebook(frame)
   local selection
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_UP,
     function (event)
-      selection = event:GetSelection() -- save tab index the event is for
+      -- event:GetSelection() returns the index *inside the current tab*;
+      -- for split notebooks, this may not be the same as the index
+      -- in the notebook we are interested in here
+      local idx = event:GetSelection()
+      local tabctrl = event:GetEventObject():DynamicCast("wxAuiTabCtrl")
+
+      -- save tab index the event is for
+      selection = notebook:GetPageIndex(tabctrl:GetPage(idx).window)
+
       local menu = wx.wxMenu()
       menu:Append(ID_CLOSE, TR("&Close Page"))
       menu:Append(ID_CLOSEALL, TR("Close A&ll Pages"))
