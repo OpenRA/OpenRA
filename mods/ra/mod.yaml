@@ -85,6 +85,7 @@ ChromeLayout:
 	mods/ra/chrome/tooltips.yaml
 	mods/ra/chrome/assetbrowser.yaml
 	mods/ra/chrome/convertassets.yaml
+	mods/ra/chrome/irc.yaml
 
 Weapons:
 	mods/ra/weapons.yaml

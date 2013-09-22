@@ -46,7 +46,6 @@ namespace OpenRA.Widgets
 			base.RemoveChildren();
 		}
 
-
 		public override void AddChild(Widget child)
 		{
 			// Initial setup of margins/height
