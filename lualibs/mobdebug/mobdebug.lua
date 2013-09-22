@@ -1,12 +1,12 @@
 --
--- MobDebug 0.5403
+-- MobDebug 0.541
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.5403,
+  _VERSION = 0.541,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -1404,7 +1404,9 @@ local function moai()
   if not moconew then return end
   MOAICoroutine.new = function(...)
     local thread = moconew(...)
-    local mt = getmetatable(thread)
+    -- need to support both thread.run and getmetatable(thread).run, which
+    -- was used in earlier MOAI versions
+    local mt = thread.run and thread or getmetatable(thread)
     local patched = mt.run
     mt.run = function(self, f, ...)
       return patched(self,  function(...)
