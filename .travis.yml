@@ -5,12 +5,15 @@
 language: c
 
 # Make sure build dependencies are installed.
+before_install:
+ - sudo apt-get update
 install:
- - sudo apt-get update && sudo apt-get install mono-gmcs cli-common-dev libsdl1.2debian libgl1-mesa-glx libopenal1 libfreetype6
+ - sudo apt-get install mono-gmcs cli-common-dev libsdl1.2debian libgl1-mesa-glx libopenal1 libfreetype6
 
 # Run the build script which will automatically call RALint and ensure that the IDE project files are still valid.
 script:
  - make all
+ - make test
  - xbuild
 
 # Only watch the development branch.
