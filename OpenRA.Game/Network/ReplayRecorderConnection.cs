@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OpenRA.Widgets;
 
 namespace OpenRA.Network
 {
@@ -23,7 +24,7 @@ namespace OpenRA.Network
 		Func<string> chooseFilename;
 		MemoryStream preStartBuffer = new MemoryStream();
 
-		public ReplayRecorderConnection( IConnection inner, Func<string> chooseFilename )
+		public ReplayRecorderConnection(IConnection inner, Func<string> chooseFilename)
 		{
 			this.chooseFilename = chooseFilename;
 			this.inner = inner;
@@ -34,18 +35,16 @@ namespace OpenRA.Network
 		void StartSavingReplay(byte[] initialContent)
 		{
 			var filename = chooseFilename();
-			var replaysDirectory = Path.Combine(Platform.SupportDir, "Replays");
+			var dir = new[] { Platform.SupportDir, "Replays", WidgetUtils.ActiveModId(), WidgetUtils.ActiveModVersion() }.Aggregate(Path.Combine);
 
-			if (!Directory.Exists(replaysDirectory))
-				Directory.CreateDirectory(replaysDirectory);
+			if (!Directory.Exists(dir))
+				Directory.CreateDirectory(dir);
 
 			FileStream file = null;
 			var id = -1;
 			while (file == null)
 			{
-				var fullFilename = Path.Combine(replaysDirectory, id < 0
-					? "{0}.rep".F(filename)
-					: "{0}-{1}.rep".F(filename, id));
+				var fullFilename = Path.Combine(dir, id < 0 ? "{0}.rep".F(filename) : "{0}-{1}.rep".F(filename, id));
 				id++;
 				try
 				{
@@ -61,11 +60,11 @@ namespace OpenRA.Network
 		public int LocalClientId { get { return inner.LocalClientId; } }
 		public ConnectionState ConnectionState { get { return inner.ConnectionState; } }
 
-		public void Send( int frame, List<byte[]> orders ) { inner.Send( frame, orders ); }
-		public void SendImmediate( List<byte[]> orders ) { inner.SendImmediate( orders ); }
-		public void SendSync( int frame, byte[] syncData ) { inner.SendSync( frame, syncData ); }
+		public void Send(int frame, List<byte[]> orders) { inner.Send(frame, orders); }
+		public void SendImmediate(List<byte[]> orders) { inner.SendImmediate(orders); }
+		public void SendSync(int frame, byte[] syncData) { inner.SendSync(frame, syncData); }
 
-		public void Receive( Action<int, byte[]> packetFn )
+		public void Receive(Action<int, byte[]> packetFn)
 		{
 			inner.Receive((client, data) =>
 				{
@@ -81,7 +80,7 @@ namespace OpenRA.Network
 					writer.Write(data.Length);
 					writer.Write(data);
 					packetFn(client, data);
-				} );
+				});
 		}
 
 		bool IsGameStart(byte[] data)
@@ -92,15 +91,14 @@ namespace OpenRA.Network
 				return false;
 
 			var frame = BitConverter.ToInt32(data, 0);
-			return frame == 0 && data.ToOrderList(null).Any(
-				o => o.OrderString == "StartGame");
+			return frame == 0 && data.ToOrderList(null).Any(o => o.OrderString == "StartGame");
 		}
 
 		bool disposed;
 
 		public void Dispose()
 		{
-			if( disposed )
+			if (disposed)
 				return;
 
 			writer.Close();
@@ -114,4 +112,3 @@ namespace OpenRA.Network
 		}
 	}
 }
-
