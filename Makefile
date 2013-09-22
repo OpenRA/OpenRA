@@ -6,11 +6,20 @@
 # to compile with development tools, run:
 #   make all
 #
+# to check the official mods for erroneous yaml files, run:
+#   make test
+#
+# to generate documentation aimed at modders, run:
+#   make docs
+#
 # to install, run:
 #   make [prefix=/foo] [bindir=/bar/bin] install
 #
 # to install with development tools, run:
 #   make [prefix=/foo] [bindir=/bar/bin] install-all
+#
+# to install Linux desktop files and icons:
+#   make install-shortcuts
 #
 # to uninstall, run:
 #   make uninstall
@@ -134,7 +143,6 @@ mod_ra_TARGET			= mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND			= library
 mod_ra_DEPS			= $(STD_MOD_DEPS) $(utility_TARGET) $(geoip_TARGET)
 mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(utility_TARGET) $(geoip_TARGET)
-mod_ra_EXTRA_CMDS		= mono --debug RALint.exe ra
 PROGRAMS 			+= mod_ra
 mod_ra: $(mod_ra_TARGET)
 
@@ -144,7 +152,6 @@ mod_cnc_TARGET		= mods/cnc/OpenRA.Mods.Cnc.dll
 mod_cnc_KIND		= library
 mod_cnc_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET)
 mod_cnc_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
-mod_cnc_EXTRA_CMDS	= mono --debug RALint.exe cnc
 PROGRAMS 		+= mod_cnc
 mod_cnc: $(mod_cnc_TARGET)
 
@@ -154,7 +161,6 @@ mod_d2k_TARGET		= mods/d2k/OpenRA.Mods.D2k.dll
 mod_d2k_KIND		= library
 mod_d2k_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET) $(mod_cnc_TARGET)
 mod_d2k_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
-mod_d2k_EXTRA_CMDS	= mono --debug RALint.exe d2k
 PROGRAMS 		+= mod_d2k
 mod_d2k: $(mod_d2k_TARGET)
 
@@ -164,7 +170,6 @@ mod_ts_TARGET		= mods/ts/OpenRA.Mods.TS.dll
 mod_ts_KIND		= library
 mod_ts_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET)
 mod_ts_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
-mod_ts_EXTRA_CMDS	= mono --debug RALint.exe ts
 PROGRAMS 		+= mod_ts
 mod_ts: $(mod_ts_TARGET)
 
@@ -187,13 +192,23 @@ OpenRA.Editor.Form1.resources:
 editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
 
 # Analyses mod yaml for easy to detect errors
-ralint_SRCS			:= $(shell find RALint/ -iname '*.cs')
-ralint_TARGET			= RALint.exe
+ralint_SRCS			:= $(shell find OpenRA.Lint/ -iname '*.cs')
+ralint_TARGET			= OpenRA.Lint.exe
 ralint_KIND			= exe
 ralint_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS			= $(COMMON_LIBS) $(ralint_DEPS)
 PROGRAMS 			+= ralint
 ralint: $(ralint_TARGET)
+
+test:
+	@mono --debug OpenRA.Lint.exe ra
+	@echo "OpenRA.Lint: ra mod yaml checks passed."
+	@mono --debug OpenRA.Lint.exe cnc
+	@echo "OpenRA.Lint: cnc mod yaml checks passed."
+	@mono --debug OpenRA.Lint.exe d2k
+	@echo "OpenRA.Lint: d2k mod yaml checks passed."
+	@mono --debug OpenRA.Lint.exe ts
+	@echo "OpenRA.Lint: ts mod yaml checks passed."
 
 # Builds and exports tilesets from a bitmap
 tsbuild_SRCS		:= $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
@@ -218,8 +233,8 @@ tsbuild: OpenRA.TilesetBuilder.FormBuilder.resources OpenRA.TilesetBuilder.FormN
 utility_SRCS		:= $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET		= OpenRA.Utility.exe
 utility_KIND		= exe
-utility_DEPS        = $(fileformats_TARGET) $(game_TARGET)
-utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
+utility_DEPS		= $(fileformats_TARGET) $(game_TARGET)
+utility_LIBS		= $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
 PROGRAMS 			+= utility
 utility: $(utility_TARGET)
 
@@ -318,10 +333,8 @@ install-core: default
 	@echo 'DATADIR="$${ROOTDIR}/'"$(datadir)"'"'	>> openra
 	@echo 'cd "$${DATADIR}/openra"' 		>> openra
 	@echo 'exec mono OpenRA.Game.exe "$$@"' 	>> openra
-
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
-
 	@-$(RM) openra
 
 install-tools: tools
@@ -335,16 +348,33 @@ install-tools: tools
 	@echo 'DATADIR="$${ROOTDIR}/'"$(datadir)"'"'	>> openra-editor
 	@echo 'cd "$${DATADIR}/openra"'			>> openra-editor
 	@echo 'exec mono OpenRA.Editor.exe "$$@"'	>> openra-editor
-
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra-editor "$(BIN_INSTALL_DIR)"
-
 	@-$(RM) openra-editor
+
+install-shortcuts: shortcuts
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
+	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
+
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
+
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
 
 uninstall:
 	@-$(RM_R) "$(DATA_INSTALL_DIR)"
 	@-$(RM_F) "$(BIN_INSTALL_DIR)/openra"
 	@-$(RM_F) "$(BIN_INSTALL_DIR)/openra-editor"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra.desktop"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra-editor.desktop"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/16x16/apps/openra.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/openra.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/openra-editor.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/openra.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/openra-editor.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/64x64/apps/openra.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/128x128/apps/openra.png"
 
 help:
 	@echo to compile, run:
@@ -353,11 +383,20 @@ help:
 	@echo to compile with development tools, run:
 	@echo \ \ make all
 	@echo
+	@echo to check the official mods for erroneous yaml files, run:
+	@echo \ \ make test
+	@echo
+	@echo to generate documentation aimed at modders, run:
+	@echo \ \ make docs
+	@echo
 	@echo to install, run:
 	@echo \ \ make \[prefix=/foo\] \[bindir=/bar/bin\] install
 	@echo
 	@echo to install with development tools, run:
 	@echo \ \ make \[prefix=/foo\] \[bindir=/bar/bin\] install-all
+	@echo
+	@echo to install Linux desktop files and icons
+	@echo \ \ make install-shortcuts
 	@echo
 	@echo to uninstall, run:
 	@echo \ \ make uninstall
