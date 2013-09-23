@@ -14,16 +14,20 @@ Windows
 	(http://www.microsoft.com/downloads/details.aspx?FamilyID=AB99342F-5D1A-413D-8319-81DA479AB0D7&displaylang=en)
 * Cg Toolkit >= 2.2 (optional, for Cg renderer)
 	(https://developer.nvidia.com/cg-toolkit-download)
+* SDL 1.2 (included)
+	(http://libsdl.org/download-1.2.php)
+* FreeType (included)
+	(http://gnuwin32.sourceforge.net/packages/freetype.htm)
+* zlib (included)
+	(http://gnuwin32.sourceforge.net/packages/zlib.htm)
+* OpenAL (included)
+	(http://kcat.strangesoft.net/openal.html)
 
 To compile OpenRA, open the OpenRA.sln solution in the main folder,
 or build it from the command-line with MSBuild.
 
-Execute `copy-dependencies.bat' to place the DLLs we conveniently
-bundle for you. They include binaries of:
-* http://libsdl.org/download-1.2.php
-* http://gnuwin32.sourceforge.net/packages/freetype.htm
-* http://gnuwin32.sourceforge.net/packages/zlib.htm
-* http://kcat.strangesoft.net/openal.html
+Copy both the native DLLs from .\packaging\windows
+and the CLI images from .\thirdparty to the main folder.
 
 Run the game with `OpenRA.Game.exe Game.Mods=ra` for Red Alert
 or `OpenRA.Game.exe Game.Mods=cnc` for Command & Conquer
