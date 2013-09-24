@@ -52,7 +52,7 @@ can then run from the `openra` shortcut.
 Slackware
 ---------
 
-The following packages from slackbuilds.org are required, on 13.37 32bit:
+The following packages from slackbuilds.org are required, on 13.37 32-bit:
 * libgdiplus
 * mono
 * openAL
@@ -66,3 +66,11 @@ openSUSE
 * freetype2
 * SDL
 * cg (optional, for Cg renderer)
+
+Gentoo
+------
+
+* dev-lang/mono
+* dev-dotnet/libgdiplus
+* media-libs/openal
+* media-gfx/nvidia-cg-toolkit (optional, for Cg renderer)
