@@ -410,7 +410,7 @@ loadPackages()
 
 for _, file in ipairs({
     "markup", "settings", "singleinstance", "iofilters",
-    "gui", "filetree", "output", "debugger", "package",
+    "package", "gui", "filetree", "output", "debugger",
     "editor", "findreplace", "commands", "autocomplete", "shellbox",
     "menu_file", "menu_edit", "menu_search",
     "menu_view", "menu_project", "menu_tools", "menu_help",

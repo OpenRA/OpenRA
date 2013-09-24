@@ -235,6 +235,85 @@ local function createBottomNotebook(frame)
     wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
     - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
 
+  -- this handler allows dragging tabs into this bottom notebook
+  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND,
+    function (event)
+      local notebookfrom = event:GetDragSource()
+      if notebookfrom ~= ide.frame.notebook then
+        event:Allow()
+        notebookfrom:GetParent():Hide()
+        ide.frame.uimgr:DetachPane(notebookfrom)
+      end
+    end)
+
+  -- these handlers allow dragging tabs out of this bottom notebook.
+  -- I couldn't find a good way to stop dragging event as it's not known
+  -- where the event is going to end when it's started, so we manipulate
+  -- the flag that allows splits and disable it when needed.
+  -- It is then enabled in BEGIN_DRAG event.
+  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_BEGIN_DRAG,
+    function (event)
+      event:Skip()
+
+      -- allow dragging if it was disabled earlier
+      local flags = bottomnotebook:GetWindowStyleFlag()
+      if bit.band(flags, wxaui.wxAUI_NB_TAB_SPLIT) == 0 then
+        bottomnotebook:SetWindowStyleFlag(flags + wxaui.wxAUI_NB_TAB_SPLIT)
+      end
+    end)
+
+  -- there is currently no support in wxAuiNotebook for dragging tabs out.
+  -- This is implemented as removing a tab that was dragged out and
+  -- recreating it with the right control. This is complicated by the fact
+  -- that tabs can be split, so if the destination is withing the area where
+  -- splits happen, the tab is not removed.
+  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_END_DRAG,
+    function (event)
+      event:Skip()
+
+      local mgr = ide.frame.uimgr
+      local win = mgr:GetPane(bottomnotebook).window
+      local x = win:GetScreenPosition():GetX()
+      local y = win:GetScreenPosition():GetY()
+      local w, h = win:GetSize():GetWidth(), win:GetSize():GetHeight()
+
+      local mouse = wx.wxGetMouseState()
+      local mx, my = mouse:GetX(), mouse:GetY()
+
+      if mx >= x and mx <= x + w and my >= y and my <= y + h then return end
+
+      -- disallow split as the target is outside the notebook
+      local flags = bottomnotebook:GetWindowStyleFlag()
+      if bit.band(flags, wxaui.wxAUI_NB_TAB_SPLIT) ~= 0 then
+        bottomnotebook:SetWindowStyleFlag(flags - wxaui.wxAUI_NB_TAB_SPLIT)
+      end
+
+      -- don't allow any dragging to the are of the pane header as it
+      -- splits already split notebooks incorrectly (wxwidgets bug).
+      if my >= y - 30 then return end
+
+      -- don't allow dragging out single tabs from tab ctrl
+      -- as wxwidgets doesn't like removing pages from split notebooks.
+      local tabctrl = event:GetEventObject():DynamicCast("wxAuiTabCtrl")
+      if tabctrl:GetPageCount() == 1 then return end
+
+      local idx = event:GetSelection() -- index within the current tab ctrl
+      local selection = bottomnotebook:GetPageIndex(tabctrl:GetPage(idx).window)
+      local label = bottomnotebook:GetPageText(selection)
+
+      -- names are translated on labels, so need to translate here as well
+      local dragout = ({[TR("Watch")] = DebuggerAddWatchWindow,
+                        [TR("Stack")] = DebuggerAddStackWindow})[label]
+      if not dragout then return end
+
+      bottomnotebook:RemovePage(event:GetOldSelection())
+
+      local pane = mgr:GetPane(dragout())
+      pane:FloatingPosition(mx-10, my-10)
+      pane:Show()
+      mgr:Update()
+    end)
+
   local errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
 
