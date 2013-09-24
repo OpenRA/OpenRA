@@ -75,8 +75,8 @@ namespace OpenRA.Graphics
 		{
 			var comparer = new RenderableComparer(this);
 			var vb = Game.viewport.ViewBounds(world);
-			var tl = Game.viewport.ViewToWorldPx(new int2(vb.Left, vb.Top)).ToInt2();
-			var br = Game.viewport.ViewToWorldPx(new int2(vb.Right, vb.Bottom)).ToInt2();
+			var tl = Game.viewport.ViewToWorldPx(new int2(vb.Left, vb.Top));
+			var br = Game.viewport.ViewToWorldPx(new int2(vb.Right, vb.Bottom));
 			var actors = world.ScreenMap.ActorsInBox(tl, br)
 				.Append(world.WorldActor)
 				.ToList();
