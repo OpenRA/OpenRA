@@ -82,16 +82,17 @@ namespace OpenRA.Mods.RA.Widgets
 			if (world == null || !hasRadar)
 				return null;
 
-			var loc = MinimapPixelToCell(pos);
+			var cell = MinimapPixelToCell(pos);
+			var location = Game.viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(cell.CenterPosition));
 
 			var mi = new MouseInput
 			{
-				Location = loc.ToInt2(),
+				Location = location,
 				Button = MouseButton.Right,
 				Modifiers = Game.GetModifierKeys()
 			};
 
-			var cursor = world.OrderGenerator.GetCursor(world, loc, mi);
+			var cursor = world.OrderGenerator.GetCursor(world, cell, mi);
 			if (cursor == null)
 				return "default";
 
