@@ -68,6 +68,15 @@ function ide:GetConfig() return self.config end
 function ide:GetOutput() return self.frame.bottomnotebook.errorlog end
 function ide:GetEditorNotebook() return self.frame.notebook end
 
+function ide:GetSetting(path, setting)
+  local settings = self.settings
+  local curpath = settings:GetPath()
+  settings:SetPath(path)
+  local ok, value = settings:Read(setting)
+  settings:SetPath(curpath)
+  return ok and value or nil
+end
+
 function ide:AddInterpreter(name, interpreter)
   self.interpreters[name] = setmetatable(interpreter, ide.proto.Interpreter)
   UpdateInterpreters()
