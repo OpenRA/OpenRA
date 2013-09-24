@@ -395,7 +395,7 @@ function SettingsRestoreView()
     local panes = frame.uimgr:GetAllPanes()
     for _, name in pairs({"stackpanel", "watchpanel"}) do
       local pane = frame.uimgr:GetPane(name)
-      if not layout:find(name) then pane:Float() end
+      if pane:IsOk() and not layout:find(name) then pane:Float() end
     end
     -- unfortunately need to explicitly (re-)assign the caption,
     -- as it's going to be restored from the config regardless of how
@@ -404,6 +404,20 @@ function SettingsRestoreView()
   end
   uimgr:Update()
   
+  local layoutcur = saveNotebook(frame.bottomnotebook)
+  local layout = settingsReadSafe(settings,"nbbtmlayout",layoutcur)
+  if (layout ~= layoutcur) then
+    loadNotebook(ide.frame.bottomnotebook,layout,
+      -- treat "Output (running)" same as "Output"
+      function(name) return
+        name:match(TR("Output")) or name:match("Output") or name end)
+  end
+
+  -- always select Output tab
+  local bottomnotebook = frame.bottomnotebook
+  local index = bottomnotebook:GetPageIndex(bottomnotebook.errorlog)
+  if index >= 0 then bottomnotebook:SetSelection(index) end
+
   local layoutcur = saveNotebook(frame.notebook)
   local layout = settingsReadSafe(settings,"nblayout",layoutcur)
   if (layout ~= layoutcur) then
@@ -415,15 +429,9 @@ function SettingsRestoreView()
       openDocuments[nb:GetPage(i):GetId()].index = i
     end
   end
-  
-  local layoutcur = saveNotebook(frame.bottomnotebook)
-  local layout = settingsReadSafe(settings,"nbbtmlayout",layoutcur)
-  if (layout ~= layoutcur) then
-    loadNotebook(ide.frame.bottomnotebook,layout,
-      -- treat "Output (running)" same as "Output"
-      function(name) return
-        name:match(TR("Output")) or name:match("Output") or name end)
-  end
+
+  local editor = GetEditor()
+  if editor then editor:SetFocus() end
 
   settings:SetPath(path)
 end
