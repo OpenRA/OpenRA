@@ -235,5 +235,10 @@ namespace OpenRA.Graphics
 		}
 
 		public float ScreenZPosition(WPos pos, int zOffset) { return (pos.Y + pos.Z + zOffset)*Game.CellSize/1024f; }
+
+		public WPos Position(int2 screenPx)
+		{
+			return new WPos(1024 * screenPx.X / Game.CellSize, 1024 * screenPx.Y / Game.CellSize, 0);
+		}
 	}
 }
