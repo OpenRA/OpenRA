@@ -45,7 +45,7 @@ local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 local function updateWatchesSync(num)
   local watchCtrl = debugger.watchCtrl
   if watchCtrl and debugger.server and not debugger.running
-  and ide.frame.uimgr:GetPane("watchpanel"):IsShown()
+  and watchCtrl:IsShown()
   and not debugger.scratchpad and not (debugger.options or {}).noeval then
     local bgcl = watchCtrl:GetBackgroundColour()
     local hicl = wx.wxColour(math.floor(bgcl:Red()*.9),
@@ -91,7 +91,7 @@ end
 local function updateStackSync()
   local stackCtrl = debugger.stackCtrl
   if stackCtrl and debugger.server and not debugger.running
-  and ide.frame.uimgr:GetPane("stackpanel"):IsShown()
+  and stackCtrl:IsShown()
   and not debugger.scratchpad then
     local stack, _, err = debugger.stack()
     if not stack or #stack == 0 then
@@ -1034,7 +1034,7 @@ DebuggerRefreshPanels = updateStackAndWatches
 function DebuggerAddWatch(watch)
   local mgr = ide.frame.uimgr
   local pane = mgr:GetPane("watchpanel")
-  if (not pane:IsShown()) then
+  if (pane:IsOk() and not pane:IsShown()) then
     pane:Show()
     mgr:Update()
   end
