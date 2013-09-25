@@ -240,9 +240,17 @@ local function createBottomNotebook(frame)
     function (event)
       local notebookfrom = event:GetDragSource()
       if notebookfrom ~= ide.frame.notebook then
+        local mgr = ide.frame.uimgr
+        local pane = mgr:GetPane(notebookfrom)
+        if not pane:IsOk() then return end -- not a managed window
+        if pane:IsFloating() then
+          notebookfrom:GetParent():Hide()
+        else
+          pane:Hide()
+          mgr:Update()
+        end
+        mgr:DetachPane(notebookfrom)
         event:Allow()
-        notebookfrom:GetParent():Hide()
-        ide.frame.uimgr:DetachPane(notebookfrom)
       end
     end)
 
