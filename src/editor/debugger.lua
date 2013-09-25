@@ -872,7 +872,10 @@ function debuggerCreateStackWindow()
 
   stackCtrl:SetImageList(imglist)
 
-  stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
+  stackCtrl:Connect(wx.wxEVT_SET_FOCUS,
+    function (event) updateStackAndWatches() end)
+
+  stackCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
       local item_id = event:GetItem()
       local count = stackCtrl:GetChildrenCount(item_id, false)
@@ -972,10 +975,11 @@ local function debuggerCreateWatchWindow()
     if row >= 0 then watchCtrl:DeleteItem(row) end
   end
 
+  watchCtrl:Connect(wx.wxEVT_SET_FOCUS,
+    function (event) updateStackAndWatches() end)
+
   watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
-    function (event)
-      watchCtrl:PopupMenu(watchMenu)
-    end)
+    function (event) watchCtrl:PopupMenu(watchMenu) end)
 
   watchCtrl:Connect(wx.wxEVT_KEY_DOWN,
     function (event)
@@ -997,9 +1001,8 @@ local function debuggerCreateWatchWindow()
   watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_UPDATE_UI,
     function (event) event:Enable(watchCtrl:GetSelectedItemCount() > 0) end)
 
-  watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_ITEM_ACTIVATED, function (event)
-      watchCtrl:EditLabel(event:GetIndex())
-    end)
+  watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
+    function (event) watchCtrl:EditLabel(event:GetIndex()) end)
 
   watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
     function (event)
