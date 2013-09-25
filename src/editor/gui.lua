@@ -314,7 +314,7 @@ local function createBottomNotebook(frame)
                         [TR("Stack")] = DebuggerAddStackWindow})[label]
       if not dragout then return end
 
-      bottomnotebook:RemovePage(event:GetOldSelection())
+      bottomnotebook:RemovePage(selection)
 
       local pane = mgr:GetPane(dragout())
       pane:FloatingPosition(mx-10, my-10)
