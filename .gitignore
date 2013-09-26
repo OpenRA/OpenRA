@@ -57,3 +57,6 @@ DOCUMENTATION.md
 
 # StyleCop
 *.Cache
+
+# Stupid windows thumbs thingy
+Thumbs.db

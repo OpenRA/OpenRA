@@ -79,6 +79,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\Tao\Tao.OpenAl.dll</HintPath>
     </Reference>
+    <Reference Include="dbus-sharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5675b0c3093115b5">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\thirdparty\dbus-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
@@ -86,6 +90,8 @@
     <Compile Include="ActorMap.cs" />
     <Compile Include="ActorReference.cs" />
     <Compile Include="Graphics\QuadRenderer.cs" />
+    <Compile Include="SpecialHardware\GSeries.cs" />
+    <Compile Include="SpecialHardware\DMcLgLCD.cs" />
     <Compile Include="PVecInt.cs" />
     <Compile Include="PPos.cs" />
     <Compile Include="Download.cs" />
