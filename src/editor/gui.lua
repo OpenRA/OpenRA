@@ -250,6 +250,14 @@ local function createBottomNotebook(frame)
           mgr:Update()
         end
         mgr:DetachPane(notebookfrom)
+
+        -- this is a workaround for wxwidgets bug (2.9.5+) that combines
+        -- content from two windows when tab is dragged over an active tab.
+        local mouse = wx.wxGetMouseState()
+        local mouseatpoint = wx.wxPoint(mouse:GetX(), mouse:GetY())
+        local ok, tabs = pcall(function() return wx.wxFindWindowAtPoint(mouseatpoint):DynamicCast("wxAuiTabCtrl") end)
+        tabs:SetNoneActive()
+
         event:Allow()
       end
     end)
