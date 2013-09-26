@@ -45,7 +45,6 @@ unhidewindow = { -- allow unhiding of GUI windows
   ConsoleWindowClass = 2,
   IME = 0,
   ['MSCTFIME UI'] = 0,
-  -- GLUT/opengl applications (for example, moai)
-  GLUT = 1,
-  FREEGLUT = 1,
+  -- GLUT/opengl/SDL applications (for example, moai)
+  GLUT = 1, FREEGLUT = 1, SDL_app = 1,
 }
