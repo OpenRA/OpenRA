@@ -1,16 +1,49 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Aug 29 2013)
+## Current master (Sep 25 2013)
+
+### Highlights
+  - Added Lua 5.2 support out of the box.
+  - Added suggesting dynamic words as fields in auto-complete.
+  - Added 'go to definition' (Ctrl/Cmd+Alt+Click) and 'jump to previous location' (Alt+Left).
+  - Added abbreviation of project directories to keep unique parts visible.
+  - Fixed breakpoints with Marmalade Quick.
+  - Switched to using LuaJIT interpreter by default.
+  - Upgraded Luasocket (3.0-rc1), copas, and coxpcall libraries.
 
 ### Special thanks
   - To Chow CheeWen for Chinese translation.
   - To [Riidom](https://github.com/Riidom) for German translation.
-  - To [ardente](https://github.com/ardente) for user home patch for Windows.
+  - To [ardente](https://github.com/ardente) for user home patch for Windows and separating Lua 5.1 and 5.2 paths in user config.
   - To [Mika Attila](https://github.com/crumblingstatue) for code folding patch.
   - To [Tim Mensch](https://github.com/TimMensch) for auto-save, auto-reload, and debugger improvements.
   - To [Florian](https://github.com/SiENcE) for Notepad++ color scheme.
+  - To [Michal Kottman](https://github.com/mkottman) for 'go to definition' and Alt+Left navigation patch.
+  - To [Christoph Kubisch](https://github.com/CrazyButcher) for dx11 and glslc updates.
+  - To [jpoag](https://github.com/jpoag) for improved activation during debugging on Windows.
 
 ### Improvements
+  - Added activation of windows with SDL_app class name (Moai support).
+  - Added support for joining/splitting Watch/Stack with Output/Console tabs.
+  - Added package GetSetting method (ref #166).
+  - Added selected index to package onMenuEditorTab event (ref #166).
+  - Added activation of windows with FREEGLUT class name (Moai support).
+  - Added hiding console window for Corona (2013.8.28+) applications (Windows).
+  - Added suggesting dynamic words as fields in auto-complete.
+  - Added socket.connect for compatibility with socket.core <3.0 (fixes #208).
+  - Added recalculating line number margin width after zooming (fixes #207).
+  - Added margin constants and removed unused variables.
+  - Added reporting of socket error for initial debugger calls (Mobdebug 0.5403).
+  - Added error handling/reporting for `debugger.outputfilter`.
+  - Added 'debug' option to OSX build script.
+  - Added ability to modify exe path in base interpreter (ref #197).
+  - Added package GetEditorNotebook method (ref #166).
+  - Added 'molokai' color scheme (ref #200).
+  - added hlsl spec and basic api (note: currently autocomplete doesn't work on object functions, need fix). also fixed cg syntax lexer settings
+  - Added file activation for abbreviated file names in error messages.
+  - Added abbreviation of project directories to keep unique parts visible.
+  - Added `debugger.redirect` configuration option.
+  - Added `editor.saveallonrun` configuration option.
   - Added package GetOutput method (ref #166).
   - Added package onAppLoad/onAppClose events (ref #166).
   - Added package onIdleOnce event (ref #166).
@@ -47,14 +80,21 @@
   - Added an example of styling individual keywords.
   - Added fold indication of a current block (ref #168).
   - Added reporting of process id for a conflicting process.
+  - allow to define separate lua 5.1 and 5.2 paths in user config
+  - Changed 'go to definition' to Ctrl/Cmd+Alt+Click (ref #203).
   - Changed `un/comment` to act from the beginning of the line for multi-line selection.
   - Disabled markup styling for specs without comment styles.
   - Disabled showing tooltip when auto-complete suggestions are shown.
   - Disabled error reporting after debugging has been terminated.
   - Disabled 'Fold' menu instead of removing when no folding is allowed (ref #169).
+  - dx11 and glslc updates
+  - Enabled editing watches with doubleclick or Enter.
+  - Enable Ctrl+Click and Alt+Left navigation on local variables
   - Enabled support for xml/html folding.
   - Enabled path remapping for local debugging.
   - Enabled slower and more thorough static analysis (ref #149; ref #168).
+  - Improved file/debugger activation on Windows (ref #199).
+  - Improved IDE activation during debugging on Windows (closes #199); thanks to jpoag.
   - Improved logic to jump to file/line indicated in error messages.
   - Limited activation of code fragments to the beginning of debugging session.
   - Make code folding optional (thanks to [Mika Attila](https://github.com/crumblingstatue))
@@ -62,13 +102,24 @@
   - OpenGL 4.4 and ARB extensions added as well as NV_gpu_shader5 functions
   - Optimized line count calculation for dynamic words when text is deleted.
   - Optimized dynamic word processing for large files.
+  - Reduced CPU usage while idle (ref #204, #206).
   - Renamed package onEditorPostSave event to onEditorSave for consistency (ref #166).
   - Removed comment from default spec as it forces undesired markup styling.
   - Removed auto-complete suggestion when it is already typed (ref #101).
+  - Reorganized auto-complete handling; should fix #164.
+  - Reorganized path separator handling to minimize use of global variables.
   - Reorganized API processing to allow loading API description from a plugin.
   - Replaced package onEditorActivated event with onEditorFocus* events (ref #166).
   - Set search in subdirectories as default in Find in Files dialog (ref #162).
   - Switched to using POSIX compatible regexp with '()' used for captures.
+  - Updated support for MOAI coroutine debugging (Mobdebug 0.541).
+  - Updated type assignment logic to remove spurious types.
+  - Updated Windows build script to enable gdb debugging.
+  - Updated OSX build script to not strip debug builds.
+  - Updated Corona interpreter to handle failure to copy debugger to Resources/ folder.
+  - Updated build scripts with proper INSTALL_PREFIX option.
+  - Updated CFBundleIdentifier in plist files to allow references from OSX programs.
+  - Updated un/comment to toggle selection as a group rather than line by line.
   - Updated `NewFile` to accept a file name.
   - Updated 'get hostname' logic to avoid using non-resolvable names (mostly on OSX).
   - Updated tooltip to use the same type inference as auto-complete (ref #101).
@@ -79,9 +130,20 @@
   - Updated static analyzer to report only first instance of 'unknown field'.
   - Updated filename/source code heuristic in the debugger (Mobdebug 0.5362).
   - Updated `SaveAll` to allow saving (only) files with filenames (ref #172).
+  - Upgraded copas and coxpcall libraries (closes #144).
   - windows: adopt native user home (thanks to [ardente](https://github.com/ardente))
 
 ### Fixes
+  - Fixed incorrect editor tab acted upon in split notebook situations.
+  - Fixed auto-complete suggestions for indentifiers matching partial function names.
+  - Fixed hiding launched windows when running/debugging (Windows).
+  - Fixed showing known functions in auto-complete.
+  - Fixed showing output with invalid UTF8 characters in Stack and Console windows.
+  - Fixed debugging on/off handling in 'main' thread for LuaJIT (MobDebug 0.5402).
+  - Fixed having duplicate tabs after SaveAs with existing file name.
+  - Fixed showing redirected 'print' messages after debugging is terminated.
+  - Fixed using default interpreter when no interpreter is selected.
+  - Fixed stepping through blocks with undefined variables when 'strict' is in effect (upgraded Mobdebug to 0.5401).
   - Fixed loading of files with incorrect UTF-8 encoding and control characters (fixes #198).
   - Fixed package sample to take into account new documents.
   - Fixed crash on OSX after opening 'application' in 'Open File' dialog.
@@ -530,7 +592,7 @@
 ### Special thanks
   - To Andy Bower and Atilim Cetin for their assistance with Gideros integration and live coding.
   - To toiffel for Linux/OSX/Windows CMake-based launcher build.
-  - To Christoph Kubisch for help with Estrela merge.
+  - To [Christoph Kubisch](https://github.com/CrazyButcher) for help with Estrela merge.
 
 ### Improvements
   - Added configuration option to specify hostname when the default one is not reachable (fixes #68).
