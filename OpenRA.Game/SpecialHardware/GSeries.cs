@@ -62,7 +62,7 @@ namespace OpenRA
 		public static bool unsupported_detected = false;
 
 		public static bool ingame = false;
-		public static bool bgdrawn = false;
+		public static bool lowpower = false;
 		public static bool splashdrawn = false;
 
 		public static void Initialize()
@@ -172,6 +172,29 @@ namespace OpenRA
 			}
 		}
 
+		public static void LowPower()
+		{
+			if (Game.Settings.Game.EnableGSeriesLCD)
+			{
+				lowpower = true;
+				frame = new Bitmap("gseries/lowpower.bmp");
+				if (Platform.CurrentPlatform == PlatformType.Windows)
+				{
+					DMcLgLCD.LcdUpdateBitmap(device, frame.GetHbitmap(), DMcLgLCD.LGLCD_DEVICE_BW);
+					DMcLgLCD.LcdSetAsLCDForegroundApp(device, DMcLgLCD.LGLCD_FORE_YES);
+				}
+				else if (Platform.CurrentPlatform == PlatformType.Linux)
+				{
+					frame.Save("/dev/shm/ora_lcdfrm", System.Drawing.Imaging.ImageFormat.MemoryBmp);
+					page.NewSurface();
+					page.Image("/dev/shm/ora_lcdfrm", 0, 0, 160, 43);
+					page.DrawSurface();
+					page.Redraw();
+				}
+				frame.Dispose();
+			}
+		}
+
 		public static void Splash()
 		{
 			if (!splashdrawn)
@@ -226,7 +249,11 @@ namespace OpenRA
 				try
 				{
 					if (Game.LocalTick % 25 == 1) //1500 = 60sec, 25 = 1sec
-						if (ingame)
+						if (lowpower)
+						{
+							LowPower();
+						}
+						else if (ingame)
 						{
 							Default();
 						}
@@ -254,21 +281,17 @@ namespace OpenRA
 					ingame = false;
 					splashdrawn = false;
 				}
-				bgdrawn = false;
 			}
 		}
 
 		public static void Default()
 		{
+			lowpower = false;
 			try
 			{
 				Font tFont = new Font("Arial Bold", 14);
 				DateTime curtime = DateTime.Now;
-				if (!bgdrawn)
-				{
-					frame = new Bitmap(160, 43);
-					bgdrawn = true;
-				}
+				frame = new Bitmap(160, 43);
 				System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(frame);
 				Image eva = Image.FromFile("mods/" + mod[0] + "/gseries/ui/15/time.bmp");
 				g.DrawImage(eva, 0, 0);
@@ -295,11 +318,7 @@ namespace OpenRA
 			{
 				Font tFont = new Font("Arial Bold", 24);
 				DateTime curtime = DateTime.Now;
-				if (!bgdrawn)
-				{
-					frame = new Bitmap(160, 43);
-					bgdrawn = true;
-				}
+				frame = new Bitmap(160, 43);
 				System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(frame);
 				Rectangle rect = new Rectangle(0, 0, 160, 43);
 				StringFormat format = new StringFormat();

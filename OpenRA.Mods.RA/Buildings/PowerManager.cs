@@ -90,6 +90,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		int nextPowerAdviceTime = 0;
 		bool wasLowPower = false;
+		bool wasNormPower = false;
 		bool wasHackEnabled;
 
 		public void Tick(Actor self)
@@ -101,8 +102,19 @@ namespace OpenRA.Mods.RA.Buildings
 			}
 
 			var lowPower = totalProvided < totalDrained;
+			var normPower = totalProvided >= totalDrained;
+
+			if (normPower && !wasNormPower)
+			{
+				GSeries.Default();
+			}
+			wasNormPower = normPower;
+
 			if (lowPower && !wasLowPower)
+			{
 				nextPowerAdviceTime = 0;
+				GSeries.LowPower();
+			}
 			wasLowPower = lowPower;
 
 			if (--nextPowerAdviceTime <= 0)
