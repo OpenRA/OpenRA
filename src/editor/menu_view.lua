@@ -35,11 +35,10 @@ local function togglePanel(event)
 end
 
 local function checkPanel(event)
-  local panel = panels[event:GetId()]
-  local shown = ide.frame.uimgr:GetPane(panel):IsShown()
-  if ide.frame.menuBar:IsChecked(event:GetId()) ~= shown then
-    ide.frame.menuBar:Check(event:GetId(), shown)
-  end
+  local menubar = ide.frame.menuBar
+  local pane = ide.frame.uimgr:GetPane(panels[event:GetId()])
+  menubar:Enable(event:GetId(), pane:IsOk()) -- disable if doesn't exist
+  menubar:Check(event:GetId(), pane:IsOk() and pane:IsShown())
 end
 
 frame:Connect(ID_VIEWDEFAULTLAYOUT, wx.wxEVT_COMMAND_MENU_SELECTED,

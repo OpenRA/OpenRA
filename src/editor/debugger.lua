@@ -45,7 +45,7 @@ local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 local function updateWatchesSync(num)
   local watchCtrl = debugger.watchCtrl
   if watchCtrl and debugger.server and not debugger.running
-  and ide.frame.uimgr:GetPane("watchpanel"):IsShown()
+  and watchCtrl:IsShown()
   and not debugger.scratchpad and not (debugger.options or {}).noeval then
     local bgcl = watchCtrl:GetBackgroundColour()
     local hicl = wx.wxColour(math.floor(bgcl:Red()*.9),
@@ -91,7 +91,7 @@ end
 local function updateStackSync()
   local stackCtrl = debugger.stackCtrl
   if stackCtrl and debugger.server and not debugger.running
-  and ide.frame.uimgr:GetPane("stackpanel"):IsShown()
+  and stackCtrl:IsShown()
   and not debugger.scratchpad then
     local stack, _, err = debugger.stack()
     if not stack or #stack == 0 then
@@ -836,6 +836,33 @@ do
 end
 
 local width, height = 360, 200
+
+function debuggerAddWindow(ctrl, panel, name)
+  local notebook = wxaui.wxAuiNotebook(ide.frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
+    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+  notebook:AddPage(ctrl, TR(name), true)
+
+  local mgr = ide.frame.uimgr
+  mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
+              Name(panel):Float():
+              MinSize(width/2,height/2):
+              BestSize(width,height):FloatingSize(width,height):
+              PinButton(true):Hide())
+  mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
+
+  return notebook
+end
+
+function DebuggerAddStackWindow()
+  return debuggerAddWindow(debugger.stackCtrl, "stackpanel", "Stack")
+end
+
+function DebuggerAddWatchWindow()
+  return debuggerAddWindow(debugger.watchCtrl, "watchpanel", "Watch")
+end
+
 function debuggerCreateStackWindow()
   local stackCtrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(width, height),
@@ -845,7 +872,10 @@ function debuggerCreateStackWindow()
 
   stackCtrl:SetImageList(imglist)
 
-  stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
+  stackCtrl:Connect(wx.wxEVT_SET_FOCUS,
+    function (event) updateStackAndWatches() end)
+
+  stackCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
       local item_id = event:GetItem()
       local count = stackCtrl:GetChildrenCount(item_id, false)
@@ -885,19 +915,12 @@ function debuggerCreateStackWindow()
     end
   end)
 
-  local notebook = wxaui.wxAuiNotebook(ide.frame, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize,
-    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
-  notebook:AddPage(stackCtrl, TR("Stack"), true)
-
-  local mgr = ide.frame.uimgr
-  mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
-              Name("stackpanel"):Float():
-              MinSize(width/2,height/2):
-              BestSize(width,height):FloatingSize(width,height):
-              PinButton(true):Hide())
-  mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
+  local layout = ide:GetSetting("/view", "uimgrlayout")
+  if layout and not layout:find("stackpanel") then
+    ide.frame.bottomnotebook:AddPage(stackCtrl, TR("Stack"), true)
+    return
+  end
+  DebuggerAddStackWindow()
 end
 
 local function debuggerCreateWatchWindow()
@@ -952,10 +975,11 @@ local function debuggerCreateWatchWindow()
     if row >= 0 then watchCtrl:DeleteItem(row) end
   end
 
+  watchCtrl:Connect(wx.wxEVT_SET_FOCUS,
+    function (event) updateStackAndWatches() end)
+
   watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
-    function (event)
-      watchCtrl:PopupMenu(watchMenu)
-    end)
+    function (event) watchCtrl:PopupMenu(watchMenu) end)
 
   watchCtrl:Connect(wx.wxEVT_KEY_DOWN,
     function (event)
@@ -977,9 +1001,8 @@ local function debuggerCreateWatchWindow()
   watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_UPDATE_UI,
     function (event) event:Enable(watchCtrl:GetSelectedItemCount() > 0) end)
 
-  watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_ITEM_ACTIVATED, function (event)
-      watchCtrl:EditLabel(event:GetIndex())
-    end)
+  watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
+    function (event) watchCtrl:EditLabel(event:GetIndex()) end)
 
   watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
     function (event)
@@ -995,19 +1018,12 @@ local function debuggerCreateWatchWindow()
       event:Skip()
     end)
 
-  local notebook = wxaui.wxAuiNotebook(ide.frame, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize,
-    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
-  notebook:AddPage(watchCtrl, TR("Watch"), true)
-
-  local mgr = ide.frame.uimgr
-  mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
-              Name("watchpanel"):Float():
-              MinSize(width/2,height/2):
-              BestSize(width,height):FloatingSize(width,height):
-              PinButton(true):Hide())
-  mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
+  local layout = ide:GetSetting("/view", "uimgrlayout")
+  if layout and not layout:find("watchpanel") then
+    ide.frame.bottomnotebook:AddPage(watchCtrl, TR("Watch"), true)
+    return
+  end
+  DebuggerAddWatchWindow()
 end
 
 debuggerCreateStackWindow()
@@ -1021,7 +1037,7 @@ DebuggerRefreshPanels = updateStackAndWatches
 function DebuggerAddWatch(watch)
   local mgr = ide.frame.uimgr
   local pane = mgr:GetPane("watchpanel")
-  if (not pane:IsShown()) then
+  if (pane:IsOk() and not pane:IsShown()) then
     pane:Show()
     mgr:Update()
   end
