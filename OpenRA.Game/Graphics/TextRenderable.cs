@@ -46,7 +46,7 @@ namespace OpenRA.Graphics
 		public void BeforeRender(WorldRenderer wr) {}
 		public void Render(WorldRenderer wr)
 		{
-			var screenPos = wr.Viewport.Zoom*(wr.ScreenPosition(pos) - wr.Viewport.Location) - 0.5f*font.Measure(text).ToFloat2();
+			var screenPos = wr.Viewport.Zoom*(wr.ScreenPosition(pos) - wr.Viewport.TopLeft.ToFloat2()) - 0.5f*font.Measure(text).ToFloat2();
 			var screenPxPos = new float2((float)Math.Round(screenPos.X), (float)Math.Round(screenPos.Y));
 			font.DrawTextWithContrast(text, screenPxPos, color, Color.Black, 1);
 		}

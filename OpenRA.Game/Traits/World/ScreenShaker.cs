@@ -50,7 +50,7 @@ namespace OpenRA.Traits
 
 		float GetIntensity()
 		{
-			var cp = worldRenderer.Position(worldRenderer.Viewport.CenterLocation.ToInt2());
+			var cp = worldRenderer.Position(worldRenderer.Viewport.CenterLocation);
 			var intensity = 100 * 1024 * 1024 * shakeEffects.Sum(
 				e => (float)e.Intensity / (e.Position - cp).LengthSquared);
 

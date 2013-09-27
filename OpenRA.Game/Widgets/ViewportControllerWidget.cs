@@ -152,7 +152,7 @@ namespace OpenRA.Widgets
 				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
 			{
 				var d = scrolltype == MouseScrollType.Inverted ? -1 : 1;
-				worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d);
+				worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
 				return true;
 			}
 
@@ -195,7 +195,7 @@ namespace OpenRA.Widgets
 				var length = Math.Max(1, scroll.Length);
 				scroll *= (1f / length) * Game.Settings.Game.ViewportEdgeScrollStep;
 
-				worldRenderer.Viewport.Scroll(scroll);
+				worldRenderer.Viewport.Scroll(scroll, false);
 			}
 		}
 

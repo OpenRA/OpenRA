@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var cell = MinimapPixelToCell(mi.Location);
 			var pos = cell.CenterPosition;
 			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
-				worldRenderer.Viewport.Center(cell.ToFloat2());
+				worldRenderer.Viewport.Center(cell.CenterPosition);
 
 			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Right)
 			{
@@ -153,10 +153,8 @@ namespace OpenRA.Mods.RA.Widgets
 			// Draw viewport rect
 			if (hasRadar)
 			{
-				var wr = worldRenderer.Viewport.WorldRect;
-				var wro = new CPos(wr.X, wr.Y);
-				var tl = CellToMinimapPixel(wro);
-				var br = CellToMinimapPixel(wro + new CVec(wr.Width, wr.Height));
+				var tl = CellToMinimapPixel(worldRenderer.Position(worldRenderer.Viewport.TopLeft).ToCPos());
+				var br = CellToMinimapPixel(worldRenderer.Position(worldRenderer.Viewport.BottomRight).ToCPos());
 
 				Game.Renderer.EnableScissor(mapRect.Left, mapRect.Top, mapRect.Width, mapRect.Height);
 				Game.Renderer.LineRenderer.DrawRect(tl, br, Color.White);

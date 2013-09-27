@@ -46,35 +46,13 @@ namespace OpenRA.Graphics
 
 		public void Draw(WorldRenderer wr, Viewport viewport)
 		{
-			int verticesPerRow = 4*map.Bounds.Width;
-
-			int visibleRows = (int)(Game.Renderer.Resolution.Height * 1f / Game.CellSize / viewport.Zoom + 2);
-
-			int firstRow = (int)(viewport.Location.Y * 1f / Game.CellSize - map.Bounds.Top);
-			int lastRow = firstRow + visibleRows;
+			var verticesPerRow = 4*map.Bounds.Width;
+			var bounds = viewport.CellBounds;
+			var firstRow = bounds.Top - map.Bounds.Top;
+			var lastRow = bounds.Bottom - map.Bounds.Top;
 
 			if (lastRow < 0 || firstRow > map.Bounds.Height)
 				return;
-
-			if (world.VisibleBounds.HasValue)
-			{
-				var r = world.VisibleBounds.Value;
-				if (firstRow < r.Top - map.Bounds.Top)
-					firstRow = r.Top - map.Bounds.Top;
-
-				if (firstRow > r.Bottom - map.Bounds.Top)
-					firstRow = r.Bottom - map.Bounds.Top;
-			}
-
-			// Sanity checking
-			if (firstRow < 0)
-				firstRow = 0;
-
-			if (lastRow > map.Bounds.Height)
-				lastRow = map.Bounds.Height;
-
-			if (lastRow < firstRow)
-				lastRow = firstRow;
 
 			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
 				vertexBuffer, verticesPerRow * firstRow, verticesPerRow * (lastRow - firstRow),

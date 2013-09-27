@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 					rt.info.PaletteRef = wr.Palette(rt.info.Palette);
 			}
 
-			var clip = wr.Viewport.WorldBounds(world);
+			var clip = wr.Viewport.CellBounds;
 			for (var x = clip.Left; x < clip.Right; x++)
 			{
 				for (var y = clip.Top; y < clip.Bottom; y++)

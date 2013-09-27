@@ -90,12 +90,8 @@ namespace OpenRA.Widgets
 					if (MultiClick)
 					{
 						var unit = world.ScreenMap.ActorsAt(xy).FirstOrDefault();
-
-						var visibleWorld = worldRenderer.Viewport.ViewBounds(world);
-						var topLeft = worldRenderer.Viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top));
-						var bottomRight = worldRenderer.Viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom));
-						var newSelection2= SelectActorsInBox(world, topLeft, bottomRight, 
-						                                      a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
+						var newSelection2 = SelectActorsInBox(world, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight, 
+							a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
 							
 						world.Selection.Combine(world, newSelection2, true, false);
 					}
