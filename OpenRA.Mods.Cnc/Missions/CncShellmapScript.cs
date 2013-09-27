@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.RA
 		static CPos viewportOrigin;
 		Dictionary<string, Actor> actors;
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			var b = w.Map.Bounds;
 			viewportOrigin = new CPos(b.Left + b.Width / 2, b.Top + b.Height / 2);

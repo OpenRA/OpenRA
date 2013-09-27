@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.RA
 	{
 		Dictionary<uint, MovementClassDomainIndex> domainIndexes;
 
-		public void WorldLoaded(World world)
+		public void WorldLoaded(World world, WorldRenderer wr)
 		{
 			domainIndexes = new Dictionary<uint, MovementClassDomainIndex>();
 			var movementClasses = new HashSet<uint>(

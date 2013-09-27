@@ -135,8 +135,12 @@ namespace OpenRA
 						p.Stances[q] = Stance.Neutral;
 
 			Sound.SoundVolumeModifier = 1.0f;
+		}
+
+		public void LoadComplete(WorldRenderer wr)
+		{
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
-				wlh.WorldLoaded(this);
+				wlh.WorldLoaded(this, wr);
 		}
 
 		public Actor CreateActor( string name, TypeDictionary initDict )

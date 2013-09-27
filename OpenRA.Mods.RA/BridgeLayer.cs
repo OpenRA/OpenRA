@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.RA
 			this.world = self.World;
 		}
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			Bridges = new Bridge[w.Map.MapSize.X, w.Map.MapSize.Y];
 

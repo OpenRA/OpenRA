@@ -13,6 +13,7 @@ using System.Linq;
 using System;
 using System.Drawing;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
@@ -351,7 +352,7 @@ namespace OpenRA.Mods.RA.Missions
 			
 		bool producing = true;
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
 			allies = w.Players.SingleOrDefault(p => p.InternalName == "Allies");

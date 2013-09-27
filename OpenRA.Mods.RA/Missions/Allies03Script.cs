@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
@@ -335,7 +336,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				new OwnerInit(owner),
 				new LocationInit(entry),
-				new FacingInit(Util.GetFacing(to - entry, 0))
+				new FacingInit(Traits.Util.GetFacing(to - entry, 0))
 			});
 			unit.QueueActivity(new Move.Move(to));
 			return unit;
@@ -380,7 +381,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
 

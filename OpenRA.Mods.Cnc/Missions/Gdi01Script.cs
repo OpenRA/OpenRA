@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
@@ -28,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Missions
 		Dictionary<string, Actor> actors;
 		Dictionary<string, Player> players;
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			players = w.Players.ToDictionary(p => p.InternalName);
 			actors = w.WorldActor.Trait<SpawnMapActors>().Actors;

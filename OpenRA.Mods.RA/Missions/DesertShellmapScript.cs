@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
@@ -90,7 +91,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				var actor = OffmapAttackers.Random(world.SharedRandom);
 				var spawn = offmapAttackerSpawns.Random(world.SharedRandom);
-				var u = world.CreateActor(actor, soviets, spawn.Location, Util.GetFacing(attackLocation.Location - spawn.Location, 0));
+				var u = world.CreateActor(actor, soviets, spawn.Location, Traits.Util.GetFacing(attackLocation.Location - spawn.Location, 0));
 				var cargo = u.TraitOrDefault<Cargo>();
 				if (cargo != null)
 				{
@@ -176,7 +177,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			foreach (var tank in HeavyTanks)
 			{
-				var u = world.CreateActor(tank, soviets, heavyTankSpawn.Location, Util.GetFacing(heavyTankWP.Location - heavyTankSpawn.Location, 0));
+				var u = world.CreateActor(tank, soviets, heavyTankSpawn.Location, Traits.Util.GetFacing(heavyTankWP.Location - heavyTankSpawn.Location, 0));
 				u.QueueActivity(new AttackMove.AttackMoveActivity(u, new Move.Move(heavyTankWP.Location, 0)));
 			}
 			ironCurtain.Trait<IronCurtainPower>().Activate(ironCurtain, new Order { TargetLocation = heavyTankSpawn.Location });
@@ -187,7 +188,7 @@ namespace OpenRA.Mods.RA.Missions
 			var chronoInfo = new List<Pair<Actor, CPos>>();
 			foreach (var tank in MediumTanks.Select((x, i) => new { x, i }))
 			{
-				var u = world.CreateActor(tank.x, allies, mediumTankChronoSpawn.Location, Util.GetFacing(heavyTankWP.Location - mediumTankChronoSpawn.Location, 0));
+				var u = world.CreateActor(tank.x, allies, mediumTankChronoSpawn.Location, Traits.Util.GetFacing(heavyTankWP.Location - mediumTankChronoSpawn.Location, 0));
 				chronoInfo.Add(Pair.New(u, new CPos(mediumTankChronoSpawn.Location.X + tank.i, mediumTankChronoSpawn.Location.Y)));
 			}
 			RASpecialPowers.Chronoshift(world, chronoInfo, chronosphere, -1, false);
@@ -201,7 +202,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				new OwnerInit(soviets),
 				new LocationInit(waypoints[0]),
-				new FacingInit(Util.GetFacing(waypoints[1] - waypoints[0], 0))
+				new FacingInit(Traits.Util.GetFacing(waypoints[1] - waypoints[0], 0))
 			});
 			foreach (var waypoint in waypoints)
 				m.QueueActivity(Fly.ToCell(waypoint));
@@ -210,7 +211,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SendChinookReinforcements(CPos entry, Actor lz)
 		{
-			var chinook = world.CreateActor("tran", allies, entry, Util.GetFacing(lz.Location - entry, 0));
+			var chinook = world.CreateActor("tran", allies, entry, Traits.Util.GetFacing(lz.Location - entry, 0));
 			var cargo = chinook.Trait<Cargo>();
 
 			while (cargo.HasSpace(1))
@@ -234,7 +235,7 @@ namespace OpenRA.Mods.RA.Missions
 			alliedWarFactory.Trait<PrimaryBuilding>().SetPrimaryProducer(alliedWarFactory, true);
 		}
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
 

@@ -213,8 +213,11 @@ namespace OpenRA
 			viewport = new Viewport(new int2(Renderer.Resolution), map.Bounds, Renderer);
 			orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
 			worldRenderer = new WorldRenderer(orderManager.world);
+			orderManager.world.LoadComplete(worldRenderer);
 
-			if (orderManager.GameStarted) return;
+			if (orderManager.GameStarted)
+				return;
+
 			Ui.MouseFocusWidget = null;
 			Ui.KeyboardFocusWidget = null;
 
