@@ -33,6 +33,11 @@ namespace OpenRA
 
 		public static ModData modData;
 		static WorldRenderer worldRenderer;
+		public static float Zoom
+		{
+			get { return worldRenderer.Viewport.Zoom; }
+			set { worldRenderer.Viewport.Zoom = value; }
+		}
 
 		public static Viewport viewport;
 		public static Settings Settings;

@@ -682,8 +682,9 @@ namespace OpenRA
 			Al.alSourcei(source, Al.AL_LOOPING, looping ? Al.AL_TRUE : Al.AL_FALSE);
 			Al.alSourcei(source, Al.AL_SOURCE_RELATIVE, relative ? 1 : 0);
 
-			Al.alSourcef(source, Al.AL_REFERENCE_DISTANCE, Game.viewport.WorldRect.Width / 8);
-			Al.alSourcef(source, Al.AL_MAX_DISTANCE, 2*Game.viewport.WorldRect.Width);
+			var width = Game.Renderer.Resolution.Width / (Game.Zoom * Game.CellSize);
+			Al.alSourcef(source, Al.AL_REFERENCE_DISTANCE, width / 8);
+			Al.alSourcef(source, Al.AL_MAX_DISTANCE, 2 * width);
 			Al.alSourcePlay(source);
 		}
 

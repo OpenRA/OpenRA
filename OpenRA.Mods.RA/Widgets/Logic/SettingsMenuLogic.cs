@@ -132,7 +132,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			pixelDoubleCheckbox.OnClick = () =>
 			{
 				gs.PixelDouble ^= true;
-				Game.viewport.Zoom = gs.PixelDouble ? 2 : 1;
+				Game.Zoom = gs.PixelDouble ? 2 : 1;
 			};
 
 			var capFrameRateCheckbox = display.Get<CheckboxWidget>("CAPFRAMERATE_CHECKBOX");
