@@ -159,12 +159,10 @@ namespace OpenRA.Graphics
 
 		public void Center(IEnumerable<Actor> actors)
 		{
-			if (!actors.Any()) return;
+			if (!actors.Any())
+				return;
 
-			var avgPos = actors
-				.Select(a => (PVecInt)a.CenterLocation)
-				.Aggregate((a, b) => a + b) / actors.Count();
-			scrollPosition = NormalizeScrollPosition((avgPos.ToFloat2() - (1f / (2 * Zoom) * screenSize.ToFloat2())).ToInt2());
+			Center(actors.Select(a => a.CenterPosition).Average().ToCPos().ToFloat2());
 		}
 
 		// Rectangle (in viewport coords) that contains things to be drawn
