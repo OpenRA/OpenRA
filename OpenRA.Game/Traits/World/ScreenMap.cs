@@ -109,8 +109,12 @@ namespace OpenRA.Traits
 			Add(a);
 		}
 
+		public static readonly IEnumerable<FrozenActor> NoFrozenActors = new FrozenActor[0].AsEnumerable();
 		public IEnumerable<FrozenActor> FrozenActorsAt(Player viewer, int2 pxPos)
 		{
+			if (viewer == null)
+				return NoFrozenActors;
+
 			var i = (pxPos.X / info.BinSize).Clamp(0, cols - 1);
 			var j = (pxPos.Y / info.BinSize).Clamp(0, rows - 1);
 			return frozen[viewer][j*cols + i]

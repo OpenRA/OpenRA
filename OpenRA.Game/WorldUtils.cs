@@ -21,15 +21,6 @@ namespace OpenRA
 {
 	public static class WorldUtils
 	{
-		public static readonly IEnumerable<FrozenActor> NoFrozenActors = new FrozenActor[0].AsEnumerable();
-		public static IEnumerable<FrozenActor> FindFrozenActorsAtMouse(this World world, int2 mouseLocation)
-		{
-			if (world.RenderPlayer == null)
-				return NoFrozenActors;
-
-			return world.ScreenMap.FrozenActorsAt(world.RenderPlayer, Game.viewport.ViewToWorldPx(mouseLocation));
-		}
-
 		public static IEnumerable<Actor> FindActorsInBox(this World world, CPos tl, CPos br)
 		{
 			// TODO: Support diamond boxes for isometric maps?
