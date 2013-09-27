@@ -144,7 +144,7 @@ namespace OpenRA.Mods.RA.Move
 		public int GetInitialFacing() { return InitialFacing; }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -231,6 +231,25 @@ namespace OpenRA.Mods.RA.Move
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
+			if (self.IsInWorld)
+			{
+				self.World.ScreenMap.Update(self);
+				self.World.ActorMap.UpdatePosition(self, this);
+			}
+		}
+
+		public void AddedToWorld(Actor self)
+		{
+			self.World.ActorMap.AddInfluence(self, this);
+			self.World.ActorMap.AddPosition(self, this);
+			self.World.ScreenMap.Add(self);
+		}
+
+		public void RemovedFromWorld(Actor self)
+		{
+			self.World.ActorMap.RemoveInfluence(self, this);
+			self.World.ActorMap.RemovePosition(self, this);
+			self.World.ScreenMap.Remove(self);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(Info); } }
@@ -430,13 +449,13 @@ namespace OpenRA.Mods.RA.Move
 		public void AddInfluence()
 		{
 			if (self.IsInWorld)
-				self.World.ActorMap.Add(self, this);
+				self.World.ActorMap.AddInfluence(self, this);
 		}
 
 		public void RemoveInfluence()
 		{
 			if (self.IsInWorld)
-				self.World.ActorMap.Remove(self, this);
+				self.World.ActorMap.RemoveInfluence(self, this);
 		}
 
 		public void Nudge(Actor self, Actor nudger, bool force)

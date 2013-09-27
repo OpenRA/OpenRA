@@ -83,7 +83,6 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="ActorInitializer.cs" />
-    <Compile Include="ActorMap.cs" />
     <Compile Include="ActorReference.cs" />
     <Compile Include="Graphics\QuadRenderer.cs" />
     <Compile Include="PVecInt.cs" />
@@ -185,7 +184,6 @@
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
-    <Compile Include="Traits\World\SpatialBins.cs" />
     <Compile Include="Widgets\BackgroundWidget.cs" />
     <Compile Include="Widgets\ButtonWidget.cs" />
     <Compile Include="Widgets\ChatDisplayWidget.cs" />
@@ -238,6 +236,8 @@
     <Compile Include="Graphics\Theater.cs" />
     <Compile Include="Traits\Player\PlayerColorPalette.cs" />
     <Compile Include="Traits\Player\PlayerHighlightPalette.cs" />
+    <Compile Include="Traits\World\ScreenMap.cs" />
+    <Compile Include="Traits\World\ActorMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

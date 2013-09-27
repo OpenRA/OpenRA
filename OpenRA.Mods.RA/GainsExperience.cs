@@ -117,9 +117,12 @@ namespace OpenRA.Mods.RA
 			if (self.World.FogObscures(self))
 				yield break;
 
+			var pos = wr.ScreenPxPosition(self.CenterPosition);
 			var bounds = self.Bounds.Value;
-			var pos = new PPos(bounds.Right, bounds.Bottom - 2).ToWPos(0);
-			yield return new SpriteRenderable(RankAnim.Image, pos, WVec.Zero, 0, wr.Palette("effect"), 1f, true);
+			bounds.Offset(pos.X, pos.Y);
+
+			var effectPos = new PPos(bounds.Right, bounds.Bottom - 2).ToWPos(0);
+			yield return new SpriteRenderable(RankAnim.Image, effectPos, WVec.Zero, 0, wr.Palette("effect"), 1f, true);
 		}
 	}
 

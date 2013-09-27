@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Traits;
 
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.RA
 	{
 		public Dictionary<Player, CPos> Start = new Dictionary<Player, CPos>();
 
-		public void WorldLoaded(World world)
+		public void WorldLoaded(World world, WorldRenderer wr)
 		{
 			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != null)
 				.Select(c => (CPos) world.Map.GetSpawnPoints()[c.SpawnPoint-1]).ToList();

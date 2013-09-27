@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		World world;
 		public bool Visible;
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			this.world = w;
 			this.refreshTick = 0;

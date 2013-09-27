@@ -174,7 +174,7 @@ namespace OpenRA.Traits
 	public interface UsesInit<T> where T : IActorInit { }
 
 	public interface INotifySelection { void SelectionChanged(); }
-	public interface IWorldLoaded { void WorldLoaded(World w); }
+	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
 	public interface IBotInfo { string Name { get; } }

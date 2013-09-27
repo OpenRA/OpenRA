@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
@@ -107,7 +108,7 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					new OwnerInit(ussr),
 					new LocationInit(entry),
-					new FacingInit(Util.GetFacing(airfield.Location - entry, 0)),
+					new FacingInit(Traits.Util.GetFacing(airfield.Location - entry, 0)),
 					new AltitudeInit(Rules.Info["yak"].Traits.Get<PlaneInfo>().CruiseAltitude)
 				});
 
@@ -133,7 +134,7 @@ namespace OpenRA.Mods.RA.Missions
 			}));
 		}
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
 

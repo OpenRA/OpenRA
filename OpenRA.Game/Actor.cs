@@ -24,12 +24,10 @@ namespace OpenRA
 
 		public readonly World World;
 		public readonly uint ActorID;
+		public Lazy<Rectangle> Bounds;
 
 		Lazy<IOccupySpace> occupySpace;
 		Lazy<IFacing> facing;
-
-		public Cached<Rectangle> Bounds;
-		public Cached<Rectangle> ExtendedBounds;
 
 		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
 
@@ -76,27 +74,25 @@ namespace OpenRA
 
 			facing = Lazy.New(() => TraitOrDefault<IFacing>());
 
-			size = Lazy.New(() =>
-			{
-				var si = Info.Traits.GetOrDefault<SelectableInfo>();
-				if (si != null && si.Bounds != null)
-					return new int2(si.Bounds[0], si.Bounds[1]);
-
-				return TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
-			});
-
 			applyIRender = (x, wr) => x.Render(this, wr);
 			applyRenderModifier = (m, p, wr) => p.ModifyRender(this, wr, m);
 
-			Bounds = Cached.New(() => CalculateBounds(false));
-			ExtendedBounds = Cached.New(() => CalculateBounds(true));
+			Bounds = Lazy.New(() =>
+			{
+				var si = Info.Traits.GetOrDefault<SelectableInfo>();
+				var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
+				    TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+
+				var offset = -size / 2;
+				if (si != null && si.Bounds != null && si.Bounds.Length > 2)
+					offset += new int2(si.Bounds[2], si.Bounds[3]);
+
+				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
+			});
 		}
 
 		public void Tick()
 		{
-			Bounds.Invalidate();
-			ExtendedBounds.Invalidate();
-
 			currentActivity = Traits.Util.RunActivity(this, currentActivity);
 		}
 
@@ -104,8 +100,6 @@ namespace OpenRA
 		{
 			get { return currentActivity == null; }
 		}
-
-		OpenRA.FileFormats.Lazy<int2> size;
 
 		// note: these delegates are cached to avoid massive allocation.
 		Func<IRender, WorldRenderer, IEnumerable<IRenderable>> applyIRender;
@@ -115,34 +109,6 @@ namespace OpenRA
 			var mods = TraitsImplementing<IRenderModifier>();
 			var sprites = TraitsImplementing<IRender>().SelectMany(x => applyIRender(x, wr));
 			return mods.Aggregate(sprites, (m, p) => applyRenderModifier(m, p, wr));
-		}
-
-		// When useAltitude = true, the bounding box is extended
-		// vertically to altitude = 0 to support FindUnitsInCircle queries
-		// When false, the bounding box is given for the actor
-		// at its current altitude
-		Rectangle CalculateBounds(bool useAltitude)
-		{
-			var sizeVector = (PVecInt)size.Value;
-			var loc = CenterLocation - sizeVector / 2;
-
-			var si = Info.Traits.GetOrDefault<SelectableInfo>();
-			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
-			{
-				loc += new PVecInt(si.Bounds[2], si.Bounds[3]);
-			}
-
-			var ios = occupySpace.Value;
-			if (ios != null)
-			{
-				var altitude = ios.CenterPosition.Z * Game.CellSize / 1024;
-				loc -= new PVecInt(0, altitude);
-
-				if (useAltitude)
-					sizeVector = new PVecInt(sizeVector.X, sizeVector.Y + altitude);
-			}
-
-			return new Rectangle(loc.X, loc.Y, sizeVector.X, sizeVector.Y);
 		}
 
 		public bool IsInWorld { get; internal set; }

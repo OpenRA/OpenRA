@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -28,7 +29,7 @@ namespace OpenRA.Mods.RA
 			this.Info = Info;
 		}
 
-		public void WorldLoaded(World world)
+		public void WorldLoaded(World world, WorldRenderer wr)
 		{
 			// Clear any existing widget state
 			if (Info.ClearRoot)

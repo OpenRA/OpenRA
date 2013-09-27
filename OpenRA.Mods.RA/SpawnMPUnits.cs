@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.RA
 
 	public class SpawnMPUnits : IWorldLoaded
 	{
-		public void WorldLoaded(World world)
+		public void WorldLoaded(World world, WorldRenderer wr)
 		{
 			foreach (var s in world.WorldActor.Trait<MPStartLocations>().Start)
 				SpawnUnitsForPlayer(world, s.Key, s.Value);

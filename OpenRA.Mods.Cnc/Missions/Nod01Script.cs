@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.Cnc;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
@@ -162,7 +163,7 @@ namespace OpenRA.Mods.Cnc.Missions
 			nr3.QueueActivity(nr3.Trait<Mobile>().ScriptedMove(nr3.Location - new CVec(0, -5)));
 		}
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
 			nod = w.Players.Single(p => p.InternalName == "NOD");

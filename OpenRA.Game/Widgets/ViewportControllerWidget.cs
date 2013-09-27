@@ -103,8 +103,8 @@ namespace OpenRA.Widgets
 				return;
 			}
 
-			var underCursor = world.FindUnitsAtMouse(Viewport.LastMousePos)
-				.Where(a => a.HasTrait<IToolTip>())
+			var underCursor = world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(Viewport.LastMousePos))
+				.Where(a => !world.FogObscures(a) && a.HasTrait<IToolTip>())
 				.OrderByDescending(a => a.Info.SelectionPriority())
 				.FirstOrDefault();
 
