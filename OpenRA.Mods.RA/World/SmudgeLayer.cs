@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA
 
 		public void Render(WorldRenderer wr)
 		{
-			var cliprect = Game.viewport.WorldBounds(world);
+			var cliprect = wr.Viewport.WorldBounds(world);
 			var pal = wr.Palette("terrain");
 
 			foreach (var kv in tiles)

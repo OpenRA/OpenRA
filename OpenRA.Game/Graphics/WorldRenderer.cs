@@ -75,9 +75,9 @@ namespace OpenRA.Graphics
 		List<IRenderable> GenerateRenderables()
 		{
 			var comparer = new RenderableComparer(this);
-			var vb = Game.viewport.ViewBounds(world);
-			var tl = Game.viewport.ViewToWorldPx(new int2(vb.Left, vb.Top));
-			var br = Game.viewport.ViewToWorldPx(new int2(vb.Right, vb.Bottom));
+			var vb = Viewport.ViewBounds(world);
+			var tl = Viewport.ViewToWorldPx(new int2(vb.Left, vb.Top));
+			var br = Viewport.ViewToWorldPx(new int2(vb.Right, vb.Bottom));
 			var actors = world.ScreenMap.ActorsInBox(tl, br)
 				.Append(world.WorldActor)
 				.ToList();
@@ -116,10 +116,10 @@ namespace OpenRA.Graphics
 				return;
 
 			var renderables = GenerateRenderables();
-			var bounds = Game.viewport.ViewBounds(world);
+			var bounds = Viewport.ViewBounds(world);
 			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
-			terrainRenderer.Draw(this, Game.viewport);
+			terrainRenderer.Draw(this, Viewport);
 			Game.Renderer.Flush();
 
 			for (var i = 0; i < renderables.Count; i++)

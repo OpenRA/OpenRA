@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA
 			var doDim = refreshTick - world.FrameNumber <= 0;
 			if (doDim) refreshTick = world.FrameNumber + 20;
 
-			var viewBounds = Game.viewport.WorldBounds(world);
+			var viewBounds = wr.Viewport.WorldBounds(world);
 
 			foreach (var pair in layers)
 			{

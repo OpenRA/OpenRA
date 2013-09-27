@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 		{
 			if (shakeEffects.Any())
 			{
-				Game.viewport.Scroll(GetScrollOffset(), true);
+				worldRenderer.Viewport.Scroll(GetScrollOffset(), true);
 				shakeEffects.RemoveAll(t => t.ExpiryTime == ticks);
 			}
 
@@ -50,7 +50,7 @@ namespace OpenRA.Traits
 
 		float GetIntensity()
 		{
-			var cp = worldRenderer.Position(Game.viewport.CenterLocation.ToInt2());
+			var cp = worldRenderer.Position(worldRenderer.Viewport.CenterLocation.ToInt2());
 			var intensity = 100 * 1024 * 1024 * shakeEffects.Sum(
 				e => (float)e.Intensity / (e.Position - cp).LengthSquared);
 

@@ -48,10 +48,9 @@ namespace OpenRA.Widgets
 				worldRenderer.DrawRollover(u);
 		}
 
-
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			var xy = Game.viewport.ViewToWorldPx(mi.Location);
+			var xy = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
 
 			var UseClassicMouseStyle = Game.Settings.Game.UseClassicMouseStyle;
 
@@ -92,9 +91,9 @@ namespace OpenRA.Widgets
 					{
 						var unit = world.ScreenMap.ActorsAt(xy).FirstOrDefault();
 
-						var visibleWorld = Game.viewport.ViewBounds(world);
-						var topLeft = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top));
-						var bottomRight = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom));
+						var visibleWorld = worldRenderer.Viewport.ViewBounds(world);
+						var topLeft = worldRenderer.Viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top));
+						var bottomRight = worldRenderer.Viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom));
 						var newSelection2= SelectActorsInBox(world, topLeft, bottomRight, 
 						                                      a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
 							
@@ -155,7 +154,7 @@ namespace OpenRA.Widgets
 				if (SelectionBox != null)
 					return null;
 
-				var xy = Game.viewport.ViewToWorldPx(screenPos);
+				var xy = worldRenderer.Viewport.ViewToWorldPx(screenPos);
 				var pos = worldRenderer.Position(xy);
 				var cell = pos.ToCPos();
 
