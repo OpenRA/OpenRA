@@ -66,8 +66,6 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		float cursorFrame = 0f;
-
 		public static int TicksSinceLastMove = 0;
 		public static int2 LastMousePos;
 
@@ -109,30 +107,6 @@ namespace OpenRA.Graphics
 
 			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 			scrollPosition = new int2(scrollLimits.Location) + new int2(scrollLimits.Size)/2;
-		}
-
-		public void DrawRegions(WorldRenderer wr, IInputHandler inputHandler)
-		{
-			Game.Renderer.BeginFrame(scrollPosition, Zoom);
-			if (wr != null)
-				wr.Draw();
-
-			using (new PerfSample("render_widgets"))
-			{
-				Ui.Draw();
-				var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-				CursorProvider.DrawCursor(Game.Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
-			}
-
-			using (new PerfSample("render_flip"))
-			{
-				Game.Renderer.EndFrame(inputHandler);
-			}
-		}
-
-		public void Tick()
-		{
-			cursorFrame += 0.5f;
 		}
 
 		// Convert from viewport coords to cell coords (not px)

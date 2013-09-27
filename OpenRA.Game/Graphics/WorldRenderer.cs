@@ -34,7 +34,7 @@ namespace OpenRA.Graphics
 	{
 		public readonly World world;
 		public readonly Theater Theater;
-		public Viewport Viewport { get { return Game.viewport; } }
+		public Viewport Viewport { get; private set; }
 
 		internal readonly TerrainRenderer terrainRenderer;
 		internal readonly ShroudRenderer shroudRenderer;
@@ -45,6 +45,7 @@ namespace OpenRA.Graphics
 		internal WorldRenderer(World world)
 		{
 			this.world = world;
+			Viewport = new Viewport(world.Map.Bounds);
 			palette = new HardwarePalette();
 
 			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
