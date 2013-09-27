@@ -150,12 +150,17 @@ namespace OpenRA.Graphics
 			scrollPosition = NormalizeScrollPosition((Game.CellSize * loc - 1f/(2*Zoom)*new float2(Game.Renderer.Resolution)).ToInt2());
 		}
 
+		public void Center(WPos pos)
+		{
+			Center(new float2(pos.X / 1024f, (pos.Y + pos.Z) / 1024f));
+		}
+
 		public void Center(IEnumerable<Actor> actors)
 		{
 			if (!actors.Any())
 				return;
 
-			Center(actors.Select(a => a.CenterPosition).Average().ToCPos().ToFloat2());
+			Center(actors.Select(a => a.CenterPosition).Average());
 		}
 
 		// Rectangle (in viewport coords) that contains things to be drawn

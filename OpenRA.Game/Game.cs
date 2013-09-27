@@ -45,11 +45,6 @@ namespace OpenRA
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;
 
-		public static void MoveViewport(float2 loc)
-		{
-			viewport.Center(loc);
-		}
-
 		public static void JoinServer(string host, int port)
 		{
 			JoinInner(new OrderManager(host, port,

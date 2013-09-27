@@ -468,10 +468,9 @@ namespace OpenRA.Mods.RA.Missions
 			shroud.Explore(w, sam4.Location, 2);
 
 			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
-				Game.MoveViewport(chinookHusk.Location.ToFloat2());
-
+				wr.Viewport.Center(chinookHusk.CenterPosition);
 			else
-				Game.MoveViewport(allies2BasePoint.Location.ToFloat2());
+				wr.Viewport.Center(allies2BasePoint.CenterPosition);
 
 			MissionUtils.PlayMissionMusic();
 		}

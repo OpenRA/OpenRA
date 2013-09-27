@@ -22,13 +22,15 @@ namespace OpenRA.Mods.RA
 	class DefaultShellmapScript: IWorldLoaded, ITick
 	{
 		Dictionary<string, Actor> Actors;
-		static CPos ViewportOrigin;
+		static WPos ViewportOrigin;
+		WorldRenderer worldRenderer;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
+			worldRenderer = wr;
 			var b = w.Map.Bounds;
-			ViewportOrigin = new CPos(b.Left + b.Width/2, b.Top + b.Height/2);
-			Game.MoveViewport(ViewportOrigin.ToFloat2());
+			ViewportOrigin = new CPos(b.Left + b.Width/2, b.Top + b.Height/2).CenterPosition;
+			worldRenderer.Viewport.Center(ViewportOrigin);
 
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			Sound.SoundVolumeModifier = 0.25f;
@@ -38,12 +40,9 @@ namespace OpenRA.Mods.RA
 		float speed = 4f;
 		public void Tick(Actor self)
 		{
-			var loc = new float2(
-				(float)(System.Math.Sin((ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed) * 15f + ViewportOrigin.X),
-				(float)(System.Math.Cos((ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed) * 10f + ViewportOrigin.Y)
-			);
-
-			Game.MoveViewport(loc);
+			var t = (ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed;
+			var offset = new float2(15360, 10240) * float2.FromAngle((float)t);
+			worldRenderer.Viewport.Center(ViewportOrigin + new WVec((int)offset.X, (int)offset.Y, 0));
 
 			if (ticks == 50)
 			{
@@ -53,7 +52,6 @@ namespace OpenRA.Mods.RA
 					Pair.New(Actors["ca2"], new CPos(98, 72))
 				}, Actors["pdox"], -1, false);
 			}
-
 
 			if (ticks == 100)
 				Actors["mslo1"].Trait<NukePower>().Activate(Actors["mslo1"], new Order() { TargetLocation = new CPos(98, 52) });

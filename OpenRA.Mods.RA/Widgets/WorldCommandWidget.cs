@@ -22,12 +22,14 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	public class WorldCommandWidget : Widget
 	{
-		World world;
+		readonly World world;
+		readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public WorldCommandWidget(World world)
+		public WorldCommandWidget(World world, WorldRenderer worldRenderer)
 		{
 			this.world = world;
+			this.worldRenderer = worldRenderer;
 		}
 
 		public override string GetCursor(int2 pos) { return null; }
@@ -207,13 +209,13 @@ namespace OpenRA.Mods.RA.Widgets
 			if (eventNotifier.lastAttackTime < 0)
 				return true;
 
-			Game.viewport.Center(eventNotifier.lastAttackLocation.ToFloat2());
+			worldRenderer.Viewport.Center(eventNotifier.lastAttackLocation.CenterPosition);
 			return true;
 		}
 
 		bool ToSelection()
 		{
-			Game.viewport.Center(world.Selection.Actors);
+			worldRenderer.Viewport.Center(world.Selection.Actors);
 			return true;
 		}
 	}

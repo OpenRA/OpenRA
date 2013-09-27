@@ -176,7 +176,7 @@ namespace OpenRA.Widgets
 			{
 				if (e.KeyName.Length == 1 && char.IsDigit(e.KeyName[0]))
 				{
-					world.Selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers, e.MultiTapCount);
+					world.Selection.DoControlGroup(world, worldRenderer, e.KeyName[0] - '0', e.Modifiers, e.MultiTapCount);
 					return true;
 				}
 

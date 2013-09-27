@@ -34,6 +34,7 @@ namespace OpenRA.Graphics
 	{
 		public readonly World world;
 		public readonly Theater Theater;
+		public Viewport Viewport { get { return Game.viewport; } }
 
 		internal readonly TerrainRenderer terrainRenderer;
 		internal readonly ShroudRenderer shroudRenderer;
