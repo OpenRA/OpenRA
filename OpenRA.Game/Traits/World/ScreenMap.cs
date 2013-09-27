@@ -127,6 +127,11 @@ namespace OpenRA.Traits
 				.Select(kv => kv.Key);
 		}
 
+		public IEnumerable<Actor> ActorsAt(MouseInput mi)
+		{
+			return ActorsAt(worldRenderer.Viewport.ViewToWorldPx(mi.Location));
+		}
+
 		public IEnumerable<Actor> ActorsInBox(int2 a, int2 b)
 		{
 			return ActorsInBox(Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)));
