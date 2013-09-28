@@ -545,9 +545,9 @@ MRJ:
 		Owner: allies
 		Hotkey: k
 	Health:
-		HP: 200
+		HP: 220
 	Armor:
-		Type: Light
+		Type: Heavy
 	Mobile:
 		Speed: 6
 	RevealsShroud:
