@@ -499,9 +499,9 @@ MGG:
 		Name: Mobile Gap Generator
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
 	Health:
-		HP: 200
+		HP: 220
 	Armor:
-		Type: Light
+		Type: Heavy
 	Mobile:
 		Speed: 6
 	RevealsShroud:
