@@ -931,7 +931,6 @@ FACT:
 		Offset:1,1
 		Facing: 96
 	ProductionBar:
-	-Sellable:
 	DeadBuildingState:
 
 PROC:
