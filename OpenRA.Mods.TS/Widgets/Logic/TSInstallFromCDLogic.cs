@@ -72,14 +72,8 @@ namespace OpenRA.Mods.TS.Widgets.Logic
 			var dest = new string[] { Platform.SupportDir, "Content", "ts" }.Aggregate(Path.Combine);
 			var copyFiles = new string[] { "install/tibsun.mix", "scores.mix", "multi.mix"};
 
-			//tibsun.mix needs to be decrypted to be extracted
-			var extractPackage = "tibsun.mix";
-			var extractFiles = new string[] { "sidenc01.mix", "sidenc02.mix", "cache.mix", "conquer.mix",
-					"isosnow.mix", "isotemp.mix", "local.mix", "sidec01.mix", "sidec02.mix", "sno.mix", 
-					"snow.mix", "sounds.mix", "speech01.mix", "speech02.mix", "tem.mix", "temperat.mix"};
-
 			var installCounter = 0;
-			var installTotal = copyFiles.Count() + extractFiles.Count();
+			var installTotal = copyFiles.Count();
 			var onProgress = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
 				progressBar.Percentage = installCounter*100/installTotal;
@@ -100,9 +94,6 @@ namespace OpenRA.Mods.TS.Widgets.Logic
 				try
 				{
 					if (!InstallUtils.CopyFiles(source, copyFiles, dest, onProgress, onError))
-						return;
-
-					if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest, onProgress, onError))
 						return;
 
 					Game.RunAfterTick(() =>
