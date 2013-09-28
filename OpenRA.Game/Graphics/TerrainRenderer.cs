@@ -30,12 +30,15 @@ namespace OpenRA.Graphics
 			int nv = 0;
 
 			for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+			{
 				for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
 				{
 					var tile = wr.Theater.TileSprite(map.MapTiles.Value[i, j]);
-					Util.FastCreateQuad(vertices, Game.CellSize * new float2(i, j), tile, terrainPalette, nv, tile.size);
+					var pos = wr.ScreenPosition(new CPos(i, j).CenterPosition) - 0.5f * tile.size;
+					Util.FastCreateQuad(vertices, pos, tile, terrainPalette, nv, tile.size);
 					nv += 4;
 				}
+			}
 
 			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(vertices.Length);
 			vertexBuffer.SetData(vertices, nv);
