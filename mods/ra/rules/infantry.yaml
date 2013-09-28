@@ -103,7 +103,7 @@ E3:
 	Health:
 		HP: 45
 	Mobile:
-		Speed: 3
+		Speed: 4
 	Armament@PRIMARY:
 		Weapon: RedEye
 		LocalOffset: 0,0,555
@@ -134,7 +134,7 @@ E4:
 	Health:
 		HP: 40
 	Mobile:
-		Speed: 3
+		Speed: 4
 	Armament:
 		Weapon: Flamer
 		LocalOffset: 427,0,341
@@ -430,7 +430,7 @@ SHOK:
 	Health:
 		HP: 80
 	Mobile:
-		Speed: 3
+		Speed: 4
 	RevealsShroud:
 		Range: 4
 	Armament:
