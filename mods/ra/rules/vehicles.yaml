@@ -494,7 +494,7 @@ MGG:
 		Owner: allies
 		Hotkey: y
 	Valued:
-		Cost: 1500
+		Cost: 1200
 	Tooltip:
 		Name: Mobile Gap Generator
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed

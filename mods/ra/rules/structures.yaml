@@ -45,7 +45,7 @@ GAP:
 	RequiresPower:
 	CanPowerDown:
 	Valued:
-		Cost: 1000
+		Cost: 800
 	Tooltip:
 		Name: Gap Generator
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
