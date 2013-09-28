@@ -420,7 +420,7 @@ SHOK:
 		Owner: soviet
 		Hotkey: l
 	Valued:
-		Cost: 500
+		Cost: 400
 	Tooltip:
 		Name: Tesla Trooper
 		Description: Infantry with tesla coils\n Strong vs Infantry\n Weak vs Vehicles
