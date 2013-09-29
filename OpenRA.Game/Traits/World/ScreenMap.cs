@@ -139,18 +139,14 @@ namespace OpenRA.Traits
 			var top = (r.Top / info.BinSize).Clamp(0, rows - 1);
 			var bottom = (r.Bottom / info.BinSize).Clamp(0, rows - 1);
 
+			var actorsInBox = new List<Actor>();
 			for (var j = top; j <= bottom; j++)
-			{
 				for (var i = left; i <= right; i++)
-				{
-					var ret = actors[j * cols + i]
+					actorsInBox.AddRange(actors[j * cols + i]
 						.Where(kv => kv.Key.IsInWorld && kv.Value.IntersectsWith(r))
-						.Select(kv => kv.Key);
+						.Select(kv => kv.Key));
 
-					foreach (var a in ret)
-						yield return a;
-				}
-			}
+			return actorsInBox.Distinct();
 		}
 	}
 }
