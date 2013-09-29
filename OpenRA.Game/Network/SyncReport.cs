@@ -196,11 +196,12 @@ namespace OpenRA.Network
 						foreach (var f in e.Fields)
 							Log.Write("sync", "\t\t {0}: {1}".F(f.Key, f.Value));
 					}
+
 					return;
 				}
-
-				Log.Write("sync", "No sync report available!");
 			}
+
+			Log.Write("sync", "No sync report available!");
 		}
 
 		class Report
