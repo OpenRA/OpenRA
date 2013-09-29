@@ -46,37 +46,37 @@ namespace OpenRA.Mods.RA
 
 		public void Render(WorldRenderer wr)
 		{
-			if (!Visible) return;
+			if (!Visible)
+				return;
 
 			var qr = Game.Renderer.WorldQuadRenderer;
-			bool doDim = refreshTick - world.FrameNumber <= 0;
+			var doDim = refreshTick - world.FrameNumber <= 0;
 			if (doDim) refreshTick = world.FrameNumber + 20;
 
 			var viewBounds = Game.viewport.WorldBounds(world);
-			var mapBounds = world.Map.Bounds;
 
 			foreach (var pair in layers)
 			{
-				Color c = (pair.Key != null) ? pair.Key.Color.RGB : Color.PaleTurquoise;
+				var c = (pair.Key != null) ? pair.Key.Color.RGB : Color.PaleTurquoise;
 				var layer = pair.Value;
 
-				for (int j = mapBounds.Top; j <= mapBounds.Bottom; ++j)
-					for (int i = mapBounds.Left; i <= mapBounds.Right; ++i)
+				// Only render quads in viewing range:
+				for (var j = viewBounds.Top; j <= viewBounds.Bottom; ++j)
+				{
+					for (var i = viewBounds.Left; i <= viewBounds.Right; ++i)
 					{
-						if (layer[i, j] <= 0) continue;
+						if (layer [i, j] <= 0)
+							continue;
 
-						var w = Math.Max(0, Math.Min(layer[i, j], 128));
+						var w = Math.Max(0, Math.Min(layer [i, j], 128));
 						if (doDim)
-						{
-							layer[i, j] = layer[i, j] * 5 / 6;
-						}
+							layer [i, j] = layer [i, j] * 5 / 6;
 
-						if (!viewBounds.Contains(i, j)) continue;
-
-						// Only render quads in viewing range:
-						var ploc = new CPos(i, j).ToPPos();
-						qr.FillRect(new RectangleF(ploc.X, ploc.Y, Game.CellSize, Game.CellSize), Color.FromArgb(w, c));
+						// TODO: This doesn't make sense for isometric terrain
+						var tl = wr.ScreenPxPosition(new CPos(i, j).CenterPosition) - new int2(Game.CellSize, Game.CellSize);
+						qr.FillRect(new RectangleF(tl.X, tl.Y, Game.CellSize, Game.CellSize), Color.FromArgb(w, c));
 					}
+				}
 			}
 		}
 	}

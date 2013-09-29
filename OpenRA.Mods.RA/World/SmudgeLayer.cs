@@ -106,7 +106,9 @@ namespace OpenRA.Mods.RA
 				if (world.ShroudObscures(kv.Key))
 					continue;
 
-				smudgeSprites[kv.Value.Type - 1][kv.Value.Index].DrawAt(kv.Key.ToPPos().ToFloat2(), pal);
+				var tile = smudgeSprites[kv.Value.Type - 1][kv.Value.Index];
+				new SpriteRenderable(tile, kv.Key.CenterPosition,
+					WVec.Zero, -511, pal, 1f, true).Render(wr);
 			}
 		}
 	}

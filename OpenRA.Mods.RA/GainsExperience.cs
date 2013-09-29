@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA
 			var bounds = self.Bounds.Value;
 			bounds.Offset(pos.X, pos.Y);
 
-			var effectPos = new PPos(bounds.Right, bounds.Bottom - 2).ToWPos(0);
+			var effectPos = wr.Position(new int2(bounds.Right, bounds.Bottom - 2));
 			yield return new SpriteRenderable(RankAnim.Image, effectPos, WVec.Zero, 0, wr.Palette("effect"), 1f, true);
 		}
 	}

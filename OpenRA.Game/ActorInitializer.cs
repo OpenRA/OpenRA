@@ -80,12 +80,12 @@ namespace OpenRA
 		public SubCell Value(World world) { return (SubCell)value; }
 	}
 
-	public class CenterLocationInit : IActorInit<PPos>
+	public class CenterPositionInit : IActorInit<WPos>
 	{
-		[FieldFromYamlKey] public readonly int2 value = int2.Zero;
-		public CenterLocationInit() { }
-		public CenterLocationInit(PPos init) { value = init.ToInt2(); }
-		public PPos Value(World world) { return (PPos)value; }
+		[FieldFromYamlKey] public readonly WPos value = WPos.Zero;
+		public CenterPositionInit() { }
+		public CenterPositionInit(WPos init) { value = init; }
+		public WPos Value(World world) { return value; }
 	}
 
 	public class OwnerInit : IActorInit<Player>

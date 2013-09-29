@@ -91,7 +91,7 @@ namespace OpenRA
 			return defaultDevices.Concat(alDevices).ToArray();
 		}
 
-		public static void SetListenerPosition(float2 position) { soundEngine.SetListenerPosition(position); }
+		public static void SetListenerPosition(WPos position) { soundEngine.SetListenerPosition(position); }
 
 		static ISound Play(Player player, string name, bool headRelative, WPos pos, float volumeModifier)
 		{
@@ -101,7 +101,7 @@ namespace OpenRA
 				return null;
 
 			return soundEngine.Play2D(sounds[name],
-				false, headRelative, PPos.FromWPosHackZ(pos).ToFloat2(),
+				false, headRelative, pos,
 				InternalSoundVolume * volumeModifier, true);
 		}
 
@@ -115,7 +115,7 @@ namespace OpenRA
 		public static void PlayVideo(byte[] raw)
 		{
 			rawSource = LoadSoundRaw(raw);
-			video = soundEngine.Play2D(rawSource, false, true, float2.Zero, InternalSoundVolume, false);
+			video = soundEngine.Play2D(rawSource, false, true, WPos.Zero, InternalSoundVolume, false);
 		}
 
 		public static void PlayVideo()
@@ -174,7 +174,7 @@ namespace OpenRA
 			if (sound == null)
 				return;
 
-			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume, false);
+			music = soundEngine.Play2D(sound, false, true, WPos.Zero, MusicVolume, false);
 			currentMusic = m;
 			MusicPlaying = true;
 		}
@@ -322,7 +322,7 @@ namespace OpenRA
 
 			if (!String.IsNullOrEmpty(name)	&& (p == null || p == p.World.LocalPlayer))
 				soundEngine.Play2D(sounds[name],
-					false, true, float2.Zero,
+					false, true, WPos.Zero,
 					InternalSoundVolume, attentuateVolume);
 
 			return true;
@@ -354,13 +354,13 @@ namespace OpenRA
 	interface ISoundEngine
 	{
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);
-		ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume, bool attenuateVolume);
+		ISound Play2D(ISoundSource sound, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume);
 		float Volume { get; set; }
 		void PauseSound(ISound sound, bool paused);
 		void StopSound(ISound sound);
 		void SetAllSoundsPaused(bool paused);
 		void StopAllSounds();
-		void SetListenerPosition(float2 position);
+		void SetListenerPosition(WPos position);
 		void SetSoundVolume(float volume, ISound music, ISound video);
 	}
 
@@ -397,7 +397,7 @@ namespace OpenRA
 		{
 			public bool isActive;
 			public int frameStarted;
-			public float2 pos;
+			public WPos pos;
 			public bool isRelative;
 			public ISoundSource sound;
 		}
@@ -507,10 +507,10 @@ namespace OpenRA
 		}
 
 		const int maxInstancesPerFrame = 3;
-		const int groupDistance = 64;
+		const int groupDistance = 2730;
 		const int groupDistanceSqr = groupDistance * groupDistance;
 
-		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume, bool attenuateVolume)
+		public ISound Play2D(ISoundSource sound, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume)
 		{
 			if (sound == null)
 			{
@@ -635,11 +635,12 @@ namespace OpenRA
 			}
 		}
 
-		public void SetListenerPosition(float2 position)
+		public void SetListenerPosition(WPos position)
 		{
-			var orientation = new[] { 0f, 0f, 1f, 0f, -1f, 0f };
+			// Move the listener out of the plane so that sounds near the middle of the screen aren't too positional
+			Al.alListener3f(Al.AL_POSITION, position.X, position.Y, position.Z + 5*1024);
 
-			Al.alListener3f(Al.AL_POSITION, position.X, position.Y, 50);
+			var orientation = new[] { 0f, 0f, 1f, 0f, -1f, 0f };
 			Al.alListenerfv(Al.AL_ORIENTATION, ref orientation[0]);
 			Al.alListenerf(Al.AL_METERS_PER_UNIT, .01f);
 		}
@@ -669,19 +670,20 @@ namespace OpenRA
 		public readonly int source = -1;
 		float volume = 1f;
 
-		public OpenAlSound(int source, int buffer, bool looping, bool relative, float2 pos, float volume)
+		public OpenAlSound(int source, int buffer, bool looping, bool relative, WPos pos, float volume)
 		{
 			if (source == -1) return;
 			this.source = source;
 			Al.alSourcef(source, Al.AL_PITCH, 1f);
 			Volume = volume;
-			Al.alSource3f(source, Al.AL_POSITION, pos.X, pos.Y, 0f);
+			Al.alSource3f(source, Al.AL_POSITION, pos.X, pos.Y, pos.Z);
 			Al.alSource3f(source, Al.AL_VELOCITY, 0f, 0f, 0f);
 			Al.alSourcei(source, Al.AL_BUFFER, buffer);
 			Al.alSourcei(source, Al.AL_LOOPING, looping ? Al.AL_TRUE : Al.AL_FALSE);
 			Al.alSourcei(source, Al.AL_SOURCE_RELATIVE, relative ? 1 : 0);
-			Al.alSourcef(source, Al.AL_REFERENCE_DISTANCE, 160);
-			Al.alSourcef(source, Al.AL_MAX_DISTANCE, 3200 / Game.viewport.Zoom);
+
+			Al.alSourcef(source, Al.AL_REFERENCE_DISTANCE, Game.viewport.WorldRect.Width / 8);
+			Al.alSourcef(source, Al.AL_MAX_DISTANCE, 2*Game.viewport.WorldRect.Width);
 			Al.alSourcePlay(source);
 		}
 
@@ -728,7 +730,7 @@ namespace OpenRA
 			return new NullSoundSource();
 		}
 
-		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume, bool attenuateVolume)
+		public ISound Play2D(ISoundSource sound, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume)
 		{
 			return new NullSound();
 		}
@@ -737,7 +739,7 @@ namespace OpenRA
 		public void StopSound(ISound sound) {}
 		public void SetAllSoundsPaused(bool paused) {}
 		public void StopAllSounds() {}
-		public void SetListenerPosition(float2 position) {}
+		public void SetListenerPosition(WPos position) {}
 		public void SetSoundVolume(float volume, ISound music, ISound video) {}
 
 		public float Volume { get; set; }

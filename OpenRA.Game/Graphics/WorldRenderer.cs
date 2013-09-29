@@ -75,8 +75,8 @@ namespace OpenRA.Graphics
 		{
 			var comparer = new RenderableComparer(this);
 			var vb = Game.viewport.ViewBounds(world);
-			var tl = Game.viewport.ViewToWorldPx(new int2(vb.Left, vb.Top)).ToInt2();
-			var br = Game.viewport.ViewToWorldPx(new int2(vb.Right, vb.Bottom)).ToInt2();
+			var tl = Game.viewport.ViewToWorldPx(new int2(vb.Left, vb.Top));
+			var br = Game.viewport.ViewToWorldPx(new int2(vb.Right, vb.Bottom));
 			var actors = world.ScreenMap.ActorsInBox(tl, br)
 				.Append(world.WorldActor)
 				.ToList();
@@ -155,21 +155,21 @@ namespace OpenRA.Graphics
 			var pos = ScreenPxPosition(a.CenterPosition);
 			var bounds = a.Bounds.Value;
 
-			var xy = pos + new float2(bounds.Left, bounds.Top);
-			var Xy = pos + new float2(bounds.Right, bounds.Top);
-			var xY = pos + new float2(bounds.Left, bounds.Bottom);
-			var XY = pos + new float2(bounds.Right, bounds.Bottom);
+			var tl = pos + new float2(bounds.Left, bounds.Top);
+			var tr = pos + new float2(bounds.Right, bounds.Top);
+			var bl = pos + new float2(bounds.Left, bounds.Bottom);
+			var br = pos + new float2(bounds.Right, bounds.Bottom);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(xy, xy + new float2(4, 0), c, c);
-			wlr.DrawLine(xy, xy + new float2(0, 4), c, c);
-			wlr.DrawLine(Xy, Xy + new float2(-4, 0), c, c);
-			wlr.DrawLine(Xy, Xy + new float2(0, 4), c, c);
+			wlr.DrawLine(tl, tl + new float2(4, 0), c, c);
+			wlr.DrawLine(tl, tl + new float2(0, 4), c, c);
+			wlr.DrawLine(tr, tr + new float2(-4, 0), c, c);
+			wlr.DrawLine(tr, tr + new float2(0, 4), c, c);
 
-			wlr.DrawLine(xY, xY + new float2(4, 0), c, c);
-			wlr.DrawLine(xY, xY + new float2(0, -4), c, c);
-			wlr.DrawLine(XY, XY + new float2(-4, 0), c, c);
-			wlr.DrawLine(XY, XY + new float2(0, -4), c, c);
+			wlr.DrawLine(bl, bl + new float2(4, 0), c, c);
+			wlr.DrawLine(bl, bl + new float2(0, -4), c, c);
+			wlr.DrawLine(br, br + new float2(-4, 0), c, c);
+			wlr.DrawLine(br, br + new float2(0, -4), c, c);
 		}
 
 		public void DrawRollover(Actor unit)
@@ -177,24 +177,6 @@ namespace OpenRA.Graphics
 			var selectable = unit.TraitOrDefault<Selectable>();
 			if (selectable != null)
 				selectable.DrawRollover(this, unit);
-		}
-
-		public void DrawLocus(Color c, CPos[] cells)
-		{
-			var dict = cells.ToDictionary(a => a, a => 0);
-			var wlr = Game.Renderer.WorldLineRenderer;
-
-			foreach (var t in dict.Keys)
-			{
-				if (!dict.ContainsKey(t + new CVec(-1, 0)))
-					wlr.DrawLine(t.ToPPos().ToFloat2(), (t + new CVec(0, 1)).ToPPos().ToFloat2(), c, c);
-				if (!dict.ContainsKey(t + new CVec(1, 0)))
-					wlr.DrawLine((t + new CVec(1, 0)).ToPPos().ToFloat2(), (t + new CVec(1, 1)).ToPPos().ToFloat2(), c, c);
-				if (!dict.ContainsKey(t + new CVec(0, -1)))
-					wlr.DrawLine(t.ToPPos().ToFloat2(), (t + new CVec(1, 0)).ToPPos().ToFloat2(), c, c);
-				if (!dict.ContainsKey(t + new CVec(0, 1)))
-					wlr.DrawLine((t + new CVec(0, 1)).ToPPos().ToFloat2(), (t + new CVec(1, 1)).ToPPos().ToFloat2(), c, c);
-			}
 		}
 
 		public void DrawRangeCircle(Color c, float2 location, float range)
@@ -210,9 +192,10 @@ namespace OpenRA.Graphics
 
 		public void DrawRangeCircleWithContrast(Color fg, float2 location, float range, Color bg, int offset)
 		{
-			if (offset > 0) {
-				DrawRangeCircle(bg, location, range + (float) offset/Game.CellSize);
-				DrawRangeCircle(bg, location, range - (float) offset/Game.CellSize);
+			if (offset > 0)
+			{
+				DrawRangeCircle(bg, location, range + (float)offset / Game.CellSize);
+				DrawRangeCircle(bg, location, range - (float)offset / Game.CellSize);
 			}
 
 			DrawRangeCircle(fg, location, range);
@@ -227,8 +210,8 @@ namespace OpenRA.Graphics
 		// Conversion between world and screen coordinates
 		public float2 ScreenPosition(WPos pos)
 		{
-			var c = Game.CellSize/1024f;
-			return new float2(c*pos.X, c*(pos.Y - pos.Z));
+			var c = Game.CellSize / 1024f;
+			return new float2(c * pos.X, c * (pos.Y - pos.Z));
 		}
 
 		public int2 ScreenPxPosition(WPos pos)
@@ -241,8 +224,8 @@ namespace OpenRA.Graphics
 		// For scaling vectors to pixel sizes in the voxel renderer
 		public float[] ScreenVector(WVec vec)
 		{
-			var c = Game.CellSize/1024f;
-			return new float[] {c*vec.X, c*vec.Y, c*vec.Z, 1};
+			var c = Game.CellSize / 1024f;
+			return new float[] { c * vec.X, c * vec.Y, c * vec.Z, 1 };
 		}
 
 		public int2 ScreenPxOffset(WVec vec)
@@ -252,6 +235,14 @@ namespace OpenRA.Graphics
 			return new int2((int)Math.Round(px[0]), (int)Math.Round(px[1] - px[2]));
 		}
 
-		public float ScreenZPosition(WPos pos, int zOffset) { return (pos.Y + pos.Z + zOffset)*Game.CellSize/1024f; }
+		public float ScreenZPosition(WPos pos, int offset)
+		{
+			return (pos.Y + pos.Z + offset) * Game.CellSize / 1024f;
+		}
+
+		public WPos Position(int2 screenPx)
+		{
+			return new WPos(1024 * screenPx.X / Game.CellSize, 1024 * screenPx.Y / Game.CellSize, 0);
+		}
 	}
 }

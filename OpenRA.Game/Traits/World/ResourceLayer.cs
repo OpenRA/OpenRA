@@ -48,11 +48,8 @@ namespace OpenRA.Traits
 
 					var c = render[x, y];
 					if (c.Image != null)
-					{
-						var tile = c.Image[c.Density];
-						var px = wr.ScreenPxPosition(pos.CenterPosition) - 0.5f * tile.size;
-						tile.DrawAt(px, c.Type.info.PaletteRef);
-					}
+						new SpriteRenderable(c.Image[c.Density], pos.CenterPosition,
+							WVec.Zero, -511, c.Type.info.PaletteRef, 1f, true).Render(wr);
 				}
 			}
 		}

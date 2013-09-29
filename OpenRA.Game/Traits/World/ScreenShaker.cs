@@ -11,15 +11,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
 	public class ScreenShakerInfo : TraitInfo<ScreenShaker> { }
 
-	public class ScreenShaker : ITick
+	public class ScreenShaker : ITick, IWorldLoaded
 	{
+		WorldRenderer worldRenderer;
 		List<ShakeEffect> shakeEffects = new List<ShakeEffect>();
 		int ticks = 0;
+
+		public void WorldLoaded(World w, WorldRenderer wr) { worldRenderer = wr; }
 
 		public void Tick(Actor self)
 		{
@@ -46,7 +50,7 @@ namespace OpenRA.Traits
 
 		float GetIntensity()
 		{
-			var cp = ((PPos)Game.viewport.CenterLocation.ToInt2()).ToWPos(0);
+			var cp = worldRenderer.Position(Game.viewport.CenterLocation.ToInt2());
 			var intensity = 100 * 1024 * 1024 * shakeEffects.Sum(
 				e => (float)e.Intensity / (e.Position - cp).LengthSquared);
 

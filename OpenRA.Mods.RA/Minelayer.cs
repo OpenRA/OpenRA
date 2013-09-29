@@ -34,28 +34,34 @@ namespace OpenRA.Mods.RA
 		public CPos[] minefield = null;
 		[Sync] CPos minefieldStart;
 		Actor self;
+		Sprite tile;
 
-		public Minelayer(Actor self) { this.self = self; }
+		public Minelayer(Actor self)
+		{
+			this.self = self;
+
+			var tileset = self.World.TileSet.Id.ToLower();
+			tile = SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new BeginMinefieldOrderTargeter(); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if( order is BeginMinefieldOrderTargeter )
-			{
-				var start = target.CenterPosition.ToCPos();
-				self.World.OrderGenerator = new MinefieldOrderGenerator( self, start );
-				return new Order("BeginMinefield", self, false) { TargetLocation = start };
-			}
-			return null;
+			if (!(order is BeginMinefieldOrderTargeter))
+				return null;
+
+			var start = target.CenterPosition.ToCPos();
+			self.World.OrderGenerator = new MinefieldOrderGenerator(self, start);
+			return new Order("BeginMinefield", self, false) { TargetLocation = start };
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if( order.OrderString == "BeginMinefield" )
+			if (order.OrderString == "BeginMinefield")
 				minefieldStart = order.TargetLocation;
 
 			if (order.OrderString == "PlaceMinefield")
@@ -91,12 +97,33 @@ namespace OpenRA.Mods.RA
 						yield return new CPos(i, j);
 		}
 
+		public void RenderAfterWorld(WorldRenderer wr)
+		{
+			if (self.Owner != self.World.LocalPlayer || minefield == null)
+				return;
+
+			var pal = wr.Palette("terrain");
+			foreach (var c in minefield)
+				new SpriteRenderable(tile, c.CenterPosition,
+					WVec.Zero, -511, pal, 1f, true).Render(wr);
+		}
+
 		class MinefieldOrderGenerator : IOrderGenerator
 		{
 			readonly Actor minelayer;
 			readonly CPos minefieldStart;
+			readonly Sprite tileOk;
+			readonly Sprite tileBlocked;
 
-			public MinefieldOrderGenerator(Actor self, CPos xy ) { minelayer = self; minefieldStart = xy; }
+			public MinefieldOrderGenerator(Actor self, CPos xy)
+			{
+				minelayer = self;
+				minefieldStart = xy;
+
+				var tileset = self.World.TileSet.Id.ToLower();
+				tileOk = SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+				tileBlocked = SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
+			}
 
 			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 			{
@@ -134,22 +161,18 @@ namespace OpenRA.Mods.RA
 
 				var movement = minelayer.Trait<IPositionable>();
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
-					minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
-					.Where(p => movement.CanEnterCell(p)).ToArray();
+					minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth);
 
-				wr.DrawLocus(Color.Cyan, minefield);
+				var pal = wr.Palette("terrain");
+				foreach (var c in minefield)
+				{
+					var tile = movement.CanEnterCell(c) ? tileOk : tileBlocked;
+					new SpriteRenderable(tile, c.CenterPosition,
+						WVec.Zero, -511, pal, 1f, true).Render(wr);
+				}
 			}
 
 			public string GetCursor(World world, CPos xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* TODO */
-		}
-
-		public void RenderAfterWorld(WorldRenderer wr)
-		{
-			if (self.Owner != self.World.LocalPlayer)
-				return;
-
-			if (minefield != null)
-				wr.DrawLocus(Color.Cyan, minefield);
 		}
 
 		class BeginMinefieldOrderTargeter : IOrderTargeter

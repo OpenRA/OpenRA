@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 				{
 					new ParentActorInit(self),
 					new LocationInit(self.Location),
-					new CenterLocationInit(self.CenterLocation),
+					new CenterPositionInit(self.CenterPosition),
 					new OwnerInit(self.Owner),
 					new SkipMakeAnimsInit()
 				};

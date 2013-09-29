@@ -23,6 +23,7 @@ namespace OpenRA.Widgets
 	{
 		protected readonly World world;
 		readonly WorldRenderer worldRenderer;
+		int2 dragStart, dragEnd;
 
 		[ObjectCreator.UseCtor]
 		public WorldInteractionControllerWidget(World world, WorldRenderer worldRenderer)
@@ -47,11 +48,10 @@ namespace OpenRA.Widgets
 				worldRenderer.DrawRollover(u);
 		}
 
-		PPos dragStart, dragEnd;
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			var xy = Game.viewport.ViewToWorldPx(mi);
+			var xy = Game.viewport.ViewToWorldPx(mi.Location);
 
 			var UseClassicMouseStyle = Game.Settings.Game.UseClassicMouseStyle;
 
@@ -127,7 +127,7 @@ namespace OpenRA.Widgets
 		}
 
 
-		public Pair<PPos, PPos>? SelectionBox
+		public Pair<int2, int2>? SelectionBox
 		{
 			get
 			{
@@ -136,33 +136,38 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public void ApplyOrders(World world, PPos xy, MouseInput mi)
+		void ApplyOrders(World world, int2 xy, MouseInput mi)
 		{
 			if (world.OrderGenerator == null) return;
 
-			var orders = world.OrderGenerator.Order(world, xy.ToCPos(), mi).ToArray();
+			var pos = worldRenderer.Position(xy);
+			var orders = world.OrderGenerator.Order(world, pos.ToCPos(), mi).ToArray();
 			orders.Do(o => world.IssueOrder(o));
 
 			world.PlayVoiceForOrders(orders);
 		}
 
-		public override string GetCursor(int2 pos)
+		public override string GetCursor(int2 screenPos)
 		{
 			return Sync.CheckSyncUnchanged(world, () =>
 			{
+				// Always show an arrow while selecting
 				if (SelectionBox != null)
-					return null;	/* always show an arrow while selecting */
+					return null;
+
+				var xy = Game.viewport.ViewToWorldPx(screenPos);
+				var pos = worldRenderer.Position(xy);
+				var cell = pos.ToCPos();
 
 				var mi = new MouseInput
 				{
-					Location = pos,
+					Location = screenPos,
 					Button = Game.mouseButtonPreference.Action,
 					Modifiers = Game.GetModifierKeys()
 				};
 
-				// TODO: fix this up.
-				return world.OrderGenerator.GetCursor(world, Game.viewport.ViewToWorld(mi), mi);
-			} );
+				return world.OrderGenerator.GetCursor(world, cell, mi);
+			});
 		}
 
 		public override bool HandleKeyPress(KeyInput e)
@@ -183,9 +188,9 @@ namespace OpenRA.Widgets
 		}
 
 		static readonly Actor[] NoActors = {};
-		IEnumerable<Actor> SelectActorsInBox(World world, PPos a, PPos b, Func<Actor, bool> cond)
+		IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b, Func<Actor, bool> cond)
 		{
-			return world.ScreenMap.ActorsInBox(a.ToInt2(), b.ToInt2())
+			return world.ScreenMap.ActorsInBox(a, b)
 				.Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable && !world.FogObscures(x) && cond(x))
 				.GroupBy(x => x.GetSelectionPriority())
 				.OrderByDescending(g => g.Key)

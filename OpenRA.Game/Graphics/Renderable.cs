@@ -93,7 +93,7 @@ namespace OpenRA.Graphics
 		public void BeforeRender(WorldRenderer wr) {}
 		public void Render(WorldRenderer wr)
 		{
-			sprite.DrawAt(ScreenPosition(wr), palette, scale);
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(sprite, ScreenPosition(wr), palette, sprite.size*scale);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
