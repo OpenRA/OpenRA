@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class RAInstallLogic
 	{
 		[ObjectCreator.UseCtor]
-		public RAInstallLogic(Widget widget, Dictionary<string,string> installData, Action continueLoading)
+		public RAInstallLogic(Widget widget, Dictionary<string, string> installData, Action continueLoading)
 		{
 			var panel = widget.Get("INSTALL_PANEL");
 			var args = new WidgetArgs()
@@ -38,9 +38,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			panel.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
 				Ui.OpenWindow("MODS_PANEL", new WidgetArgs()
-				              {
-					{ "onExit", () => {} },
-					// Close this panel
+				{
+					{ "onExit", () => { } },
 					{ "onSwitch", Ui.CloseWindow },
 				});
 			};
