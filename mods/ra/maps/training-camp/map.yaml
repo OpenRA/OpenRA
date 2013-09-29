@@ -981,6 +981,12 @@ Rules:
 			Prerequisites: barr,oilb
 		Valued:
 			Cost: 200
+	SNIPER:
+		Buildable:
+			Owner: soviet
+			Prerequisites: barr,oilb
+		Valued:
+			Cost: 200
 	V2RL:
 		Buildable:
 			Owner: soviet
@@ -1056,36 +1062,12 @@ Rules:
 			Prerequisites: barr,oilb
 		Valued:
 			Cost: 150
-	DEMOT:
-		Inherits: ^Vehicle
+	DTRK:
 		Buildable:
-			Queue: Vehicle
 			BuildPaletteOrder: 10
 			Prerequisites: barr,oilb
-			Owner: soviet
 		Valued:
 			Cost: 150
-		Tooltip:
-			Name: Demo Truck
-			Description: Armed with a nuclear bomb.\n  Unarmed
-			Icon: MNLYICON
-		Health:
-			HP: 110
-		Armor:
-			Type: Light
-		Mobile:
-			Speed: 9
-		RevealsShroud:
-			Range: 3
-		RenderUnit:
-			Image: truk
-		Armament:
-			Weapon: CrateNuke
-			LocalOffset: 0,0,171
-		AttackFrontal:
-		AttackMove:
-			JustMove: yes
-		DemoTruck:
 
 Sequences:
 
