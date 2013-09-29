@@ -150,6 +150,11 @@ SectionGroup /e "Settings"
 	Section "Portable Install" PORTABLE
 		CreateDirectory $INSTDIR\Support
 	SectionEnd
+	Section "Desktop Shortcut" DESKTOPSHORTCUT
+		SetOutPath "$INSTDIR"
+		CreateShortCut "$DESKTOP\OpenRA.lnk" $INSTDIR\OpenRA.Game.exe "" \
+			"$INSTDIR\OpenRA.Game.exe" "" "" "" ""
+	SectionEnd
 SectionGroupEnd
 
 Function .onInit
@@ -241,6 +246,7 @@ Function ${UN}Clean
 	
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
 	RMDir /r "$SMPROGRAMS\$StartMenuFolder"
+	Delete $DESKTOP\OpenRA.lnk
 	DeleteRegKey HKLM "Software\OpenRA"
 FunctionEnd
 !macroend
@@ -261,6 +267,7 @@ LangString DESC_RA ${LANG_ENGLISH} "Base Red Alert mod"
 LangString DESC_CNC ${LANG_ENGLISH} "Base Tiberian Dawn mod"
 LangString DESC_D2K ${LANG_ENGLISH} "Base Dune 2000 mod"
 LangString DESC_PORTABLE ${LANG_ENGLISH} "Store support files in the install directory."
+LangString DESC_DESKTOPSHORTCUT ${LANG_ENGLISH} "Place shortcut on the Desktop."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 	!insertmacro MUI_DESCRIPTION_TEXT ${CLIENT} $(DESC_CLIENT)
@@ -269,6 +276,7 @@ LangString DESC_PORTABLE ${LANG_ENGLISH} "Store support files in the install dir
 	!insertmacro MUI_DESCRIPTION_TEXT ${CNC} $(DESC_CNC)
 	!insertmacro MUI_DESCRIPTION_TEXT ${D2K} $(DESC_D2K)
 	!insertmacro MUI_DESCRIPTION_TEXT ${PORTABLE} $(DESC_PORTABLE)
+	!insertmacro MUI_DESCRIPTION_TEXT ${DESKTOPSHORTCUT} $(DESC_DESKTOPSHORTCUT)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;***************************
