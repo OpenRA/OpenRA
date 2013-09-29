@@ -21,7 +21,7 @@ namespace OpenRA.Mods.TS
 	public class TSLoadScreen : ILoadScreen
 	{
 		Dictionary<string, string> Info;
-		static string[] Comments = new[] { "Updating EVA installation..." };
+		static string[] Comments = new[] { "Updating EVA installation...", "Changing perspective..." };
 
 		Stopwatch lastLoadScreen = new Stopwatch();
 		Rectangle StripeRect;
