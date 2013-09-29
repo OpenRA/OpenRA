@@ -341,11 +341,6 @@
 	ProvidesCustomPrerequisite:
 		Prerequisite: Starport
 
-WALL:
-	Inherits: ^WALL
-	Buildable:
-		Owner:
-
 ^WALL:
 	Buildable:
 		Queue: Building
@@ -391,6 +386,11 @@ WALL:
 	Sellable:
 	Guardable:
 	BodyOrientation:
+
+WALL:
+	Inherits: ^WALL
+	Buildable:
+		Owner:
 
 ^GUNTOWER:
 	Inherits: ^Building
