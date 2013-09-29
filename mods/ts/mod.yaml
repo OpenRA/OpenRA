@@ -136,8 +136,8 @@ Movies:
 LoadScreen: TSLoadScreen
 	LoadScreenImage: mods/ts/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
-	TestFile: tibsun.mix
-	PackageURL: http://open-ra.org/get-dependency.php?file=ts-packages # TODO: upload a stripped down package
+	TestFile: isotemp.mix
+	PackageURL: http://open-ra.org/get-dependency.php?file=ts-packages
 
 ServerTraits:
 	LobbyCommands
