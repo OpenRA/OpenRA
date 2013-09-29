@@ -39,7 +39,6 @@ namespace OpenRA
 
 		public float2 ToFloat2() { return new float2(X, Y); }
 		public int2 ToInt2() { return new int2(X, Y); }
-		public PPos ToPPos() { return new PPos(Game.CellSize * X, Game.CellSize * Y); }
 
 		public WPos CenterPosition { get { return new WPos(1024 * X + 512, 1024 * Y + 512, 0); } }
 		public WPos TopLeft { get { return new WPos(1024 * X, 1024 * Y, 0); } }

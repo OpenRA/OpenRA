@@ -55,21 +55,6 @@ namespace OpenRA.Graphics
 		{
 			return textureCoords[k];
 		}
-
-		public void DrawAt(float2 location, PaletteReference pal)
-		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, pal, size);
-		}
-
-		public void DrawAt(float2 location, PaletteReference pal, float scale)
-		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, pal, size*scale);
-		}
-
-		public void DrawAt(float2 location, PaletteReference pal, float2 size)
-		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, pal, size);
-		}
 	}
 
 	public enum TextureChannel

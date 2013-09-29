@@ -184,24 +184,26 @@ namespace OpenRA.Graphics
 
 					if (starti != i)
 					{
-						s[starti, j].DrawAt(
+						// Stretch a solid black sprite over the rows above
+						// TODO: This doesn't make sense for isometric terrain
+						Game.Renderer.WorldSpriteRenderer.DrawSprite(
+							s[starti, j],
 							Game.CellSize * new float2(starti, j),
 							pal,
 							new float2(Game.CellSize * (i - starti), Game.CellSize));
 						starti = i + 1;
 					}
 
-					s[i, j].DrawAt(
-						Game.CellSize * new float2(i, j),
-						pal);
+					Game.Renderer.WorldSpriteRenderer.DrawSprite(s[i, j], Game.CellSize * new float2(i, j), pal);
 					starti = i + 1;
 					last = s[i, j];
 				}
 
+				// Stretch a solid black sprite over the rows to the left
+				// TODO: This doesn't make sense for isometric terrain
 				if (starti < clip.Right)
-					s[starti, j].DrawAt(
-						Game.CellSize * new float2(starti, j),
-						pal,
+					Game.Renderer.WorldSpriteRenderer.DrawSprite(s[starti, j],
+						Game.CellSize * new float2(starti, j), pal,
 						new float2(Game.CellSize * (clip.Right - starti), Game.CellSize));
 			}
 		}

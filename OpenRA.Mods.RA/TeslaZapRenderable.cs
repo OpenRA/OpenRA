@@ -128,14 +128,15 @@ namespace OpenRA.Mods.RA
 			var c = -float2.Dot(from, q);
 			var rs = new List<IRenderable>();
 			var z = from;
+			var pal = wr.Palette("effect");
 
 			while ((to - z).X > 5 || (to - z).X < -5 || (to - z).Y > 5 || (to - z).Y < -5)
 			{
 				var step = steps.Where(t => (to - (z + new float2(t[0], t[1]))).LengthSquared < (to - z).LengthSquared)
 					.OrderBy(t => Math.Abs(float2.Dot(z + new float2(t[0], t[1]), q) + c)).First();
 
-				var pos = new PPos((int)(z.X + step[2]), (int)(z.Y + step[3])).ToWPos(0);
-				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, wr.Palette("effect"), 1f, true));
+				var pos = wr.Position((z + new float2(step[2], step[3])).ToInt2());
+				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, pal, 1f, true));
 
 				z += new float2(step[0], step[1]);
 				if (rs.Count >= 1000)

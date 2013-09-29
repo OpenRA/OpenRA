@@ -112,7 +112,8 @@ namespace OpenRA.Mods.RA.Orders
 			foreach (var c in cells)
 			{
 				var tile = c.Value ? buildOk : buildBlocked;
-				tile.DrawAt(wr.ScreenPxPosition(c.Key.CenterPosition) - 0.5f * tile.size, pal);
+				new SpriteRenderable(tile, c.Key.CenterPosition,
+					WVec.Zero, -511, pal, 1f, true).Render(wr);
 			}
 		}
 
