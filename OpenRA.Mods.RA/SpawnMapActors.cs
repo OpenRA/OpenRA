@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.RA
 	{
 		public Dictionary<string, Actor> Actors = new Dictionary<string, Actor>();
 
-		public void WorldLoaded(World world)
+		public void WorldLoaded(World world, WorldRenderer wr)
 		{
 			foreach (var actorReference in world.Map.Actors.Value)
 			{

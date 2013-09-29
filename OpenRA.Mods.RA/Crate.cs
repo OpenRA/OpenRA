@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 	}
 
 	// ITeleportable is required for paradrop
-	class Crate : ITick, IPositionable, ICrushable, ISync, INotifyParachuteLanded
+	class Crate : ITick, IPositionable, ICrushable, ISync, INotifyParachuteLanded, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly Actor self;
 		readonly CrateInfo info;
@@ -103,9 +103,7 @@ namespace OpenRA.Mods.RA
 
 		public void SetPosition(Actor self, CPos cell)
 		{
-			if (self.IsInWorld)
-				self.World.ActorMap.Remove(self, this);
-
+			self.World.ActorMap.RemoveInfluence(self, this);
 			Location = cell;
 			CenterPosition = cell.CenterPosition;
 
@@ -115,12 +113,30 @@ namespace OpenRA.Mods.RA
 				rs.anim.PlayRepeating(seq);
 
 			if (self.IsInWorld)
-				self.World.ActorMap.Add(self, this);
+			{
+				self.World.ActorMap.AddInfluence(self, this);
+				self.World.ActorMap.UpdatePosition(self, this);
+				self.World.ScreenMap.Update(self);
+			}
 		}
 
 		public bool CrushableBy(string[] crushClasses, Player owner)
 		{
 			return crushClasses.Contains("crate");
+		}
+
+		public void AddedToWorld(Actor self)
+		{
+			self.World.ActorMap.AddInfluence(self, this);
+			self.World.ActorMap.AddPosition(self, this);
+			self.World.ScreenMap.Add(self);
+		}
+
+		public void RemovedFromWorld(Actor self)
+		{
+			self.World.ActorMap.RemoveInfluence(self, this);
+			self.World.ActorMap.RemovePosition(self, this);
+			self.World.ScreenMap.Remove(self);
 		}
 	}
 }

@@ -20,10 +20,7 @@ namespace OpenRA.Traits
 {
 	public class FrozenActorLayerInfo : ITraitInfo
 	{
-		[Desc("Size of partition bins (screen pixels)")]
-		public readonly int BinSize = 250;
-
-		public object Create(ActorInitializer init) { return new FrozenActorLayer(init.world, this); }
+		public object Create(ActorInitializer init) { return new FrozenActorLayer(init.self); }
 	}
 
 	public class FrozenActor
@@ -98,34 +95,21 @@ namespace OpenRA.Traits
 		[Sync] public int VisibilityHash;
 		[Sync] public int FrozenHash;
 
-		readonly FrozenActorLayerInfo info;
+		readonly World world;
+		readonly Player owner;
 		Dictionary<uint, FrozenActor> frozen;
-		List<FrozenActor>[,] bins;
 
-		public FrozenActorLayer(World world, FrozenActorLayerInfo info)
+		public FrozenActorLayer(Actor self)
 		{
-			this.info = info;
+			world = self.World;
+			owner = self.Owner;
 			frozen = new Dictionary<uint, FrozenActor>();
-			bins = new List<FrozenActor>[
-				world.Map.MapSize.X * Game.CellSize / info.BinSize,
-				world.Map.MapSize.Y * Game.CellSize / info.BinSize];
-
-			for (var j = 0; j <= bins.GetUpperBound(1); j++)
-				for (var i = 0; i <= bins.GetUpperBound(0); i++)
-					bins[i, j] = new List<FrozenActor>();
 		}
 
 		public void Add(FrozenActor fa)
 		{
 			frozen.Add(fa.ID, fa);
-
-			var top = (int)Math.Max(0, fa.Bounds.Top / info.BinSize);
-			var left = (int)Math.Max(0, fa.Bounds.Left / info.BinSize);
-			var bottom = (int)Math.Min(bins.GetUpperBound(1), fa.Bounds.Bottom / info.BinSize);
-			var right = (int)Math.Min(bins.GetUpperBound(0), fa.Bounds.Right / info.BinSize);
-			for (var j = top; j <= bottom; j++)
-				for (var i = left; i <= right; i++)
-					bins[i, j].Add(fa);
+			world.ScreenMap.Add(owner, fa);
 		}
 
 		public void Tick(Actor self)
@@ -148,8 +132,7 @@ namespace OpenRA.Traits
 
 			foreach (var r in remove)
 			{
-				foreach (var bin in bins)
-					bin.Remove(frozen[r]);
+				world.ScreenMap.Remove(owner, frozen[r]);
 				frozen.Remove(r);
 			}
 		}
@@ -159,13 +142,6 @@ namespace OpenRA.Traits
 			return frozen.Values
 				.Where(f => f.Visible)
 				.SelectMany(ff => ff.Render(wr));
-		}
-
-		public IEnumerable<FrozenActor> FrozenActorsAt(int2 pxPos)
-		{
-			var x = (pxPos.X / info.BinSize).Clamp(0, bins.GetUpperBound(0));
-			var y = (pxPos.Y / info.BinSize).Clamp(0, bins.GetUpperBound(1));
-			return bins[x, y].Where(p => p.Bounds.Contains(pxPos) && p.IsValid);
 		}
 
 		public FrozenActor FromID(uint id)

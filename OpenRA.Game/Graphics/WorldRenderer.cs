@@ -73,12 +73,11 @@ namespace OpenRA.Graphics
 
 		List<IRenderable> GenerateRenderables()
 		{
-			var bounds = Game.viewport.WorldBounds(world);
 			var comparer = new RenderableComparer(this);
-
-			var tl = bounds.TopLeftAsCPos();
-			var br = bounds.BottomRightAsCPos();
-			var actors = world.FindActorsInBox(tl, br)
+			var vb = Game.viewport.ViewBounds(world);
+			var tl = Game.viewport.ViewToWorldPx(new int2(vb.Left, vb.Top)).ToInt2();
+			var br = Game.viewport.ViewToWorldPx(new int2(vb.Right, vb.Bottom)).ToInt2();
+			var actors = world.ScreenMap.ActorsInBox(tl, br)
 				.Append(world.WorldActor)
 				.ToList();
 
@@ -151,14 +150,15 @@ namespace OpenRA.Graphics
 			Game.Renderer.Flush();
 		}
 
-		public void DrawSelectionBox(Actor selectedUnit, Color c)
+		public void DrawSelectionBox(Actor a, Color c)
 		{
-			var bounds = selectedUnit.Bounds.Value;
+			var pos = ScreenPxPosition(a.CenterPosition);
+			var bounds = a.Bounds.Value;
 
-			var xy = new float2(bounds.Left, bounds.Top);
-			var Xy = new float2(bounds.Right, bounds.Top);
-			var xY = new float2(bounds.Left, bounds.Bottom);
-			var XY = new float2(bounds.Right, bounds.Bottom);
+			var xy = pos + new float2(bounds.Left, bounds.Top);
+			var Xy = pos + new float2(bounds.Right, bounds.Top);
+			var xY = pos + new float2(bounds.Left, bounds.Bottom);
+			var XY = pos + new float2(bounds.Right, bounds.Bottom);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
 			wlr.DrawLine(xy, xy + new float2(4, 0), c, c);

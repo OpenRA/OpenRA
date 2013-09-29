@@ -57,7 +57,7 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			this.world = w;
 			content = new CellContents[w.Map.MapSize.X, w.Map.MapSize.Y];

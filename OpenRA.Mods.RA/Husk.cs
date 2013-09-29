@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public int GetInitialFacing() { return 128; }
 	}
 
-	class Husk : IPositionable, IFacing, ISync
+	class Husk : IPositionable, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly HuskInfo info;
 		readonly Actor self;
@@ -64,14 +64,34 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void SetPosition(Actor self, CPos cell) { SetPosition(self, cell.CenterPosition); }
-		public void SetVisualPosition(Actor self, WPos pos) { CenterPosition = pos; }
+		public void SetVisualPosition(Actor self, WPos pos)
+		{
+			CenterPosition = pos;
+			self.World.ScreenMap.Update(self);
+		}
 
 		public void SetPosition(Actor self, WPos pos)
 		{
-			self.World.ActorMap.Remove(self, this);
+			self.World.ActorMap.RemoveInfluence(self, this);
 			CenterPosition = pos;
 			TopLeft = pos.ToCPos();
-			self.World.ActorMap.Add(self, this);
+			self.World.ActorMap.AddInfluence(self, this);
+			self.World.ActorMap.UpdatePosition(self, this);
+			self.World.ScreenMap.Update(self);
+		}
+
+		public void AddedToWorld(Actor self)
+		{
+			self.World.ActorMap.AddInfluence(self, this);
+			self.World.ActorMap.AddPosition(self, this);
+			self.World.ScreenMap.Add(self);
+		}
+
+		public void RemovedFromWorld(Actor self)
+		{
+			self.World.ActorMap.RemoveInfluence(self, this);
+			self.World.ActorMap.RemovePosition(self, this);
+			self.World.ScreenMap.Remove(self);
 		}
 	}
 

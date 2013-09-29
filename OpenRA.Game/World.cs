@@ -79,6 +79,7 @@ namespace OpenRA
 		public readonly Map Map;
 		public readonly TileSet TileSet;
 		public readonly ActorMap ActorMap;
+		public readonly ScreenMap ScreenMap;
 
 		public void IssueOrder( Order o ) { orderManager.IssueOrder( o ); }	/* avoid exposing the OM to mod code */
 
@@ -121,8 +122,9 @@ namespace OpenRA
 			TileSet = Rules.TileSets[Map.Tileset];
 			SharedRandom = new XRandom(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
-			WorldActor = CreateActor( "World", new TypeDictionary() );
-			ActorMap = new ActorMap(this);
+			WorldActor = CreateActor("World", new TypeDictionary());
+			ActorMap = WorldActor.Trait<ActorMap>();
+			ScreenMap = WorldActor.Trait<ScreenMap>();
 
 			// Add players
 			foreach (var cmp in WorldActor.TraitsImplementing<ICreatePlayers>())
@@ -135,8 +137,12 @@ namespace OpenRA
 						p.Stances[q] = Stance.Neutral;
 
 			Sound.SoundVolumeModifier = 1.0f;
+		}
+
+		public void LoadComplete(WorldRenderer wr)
+		{
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
-				wlh.WorldLoaded(this);
+				wlh.WorldLoaded(this, wr);
 		}
 
 		public Actor CreateActor( string name, TypeDictionary initDict )

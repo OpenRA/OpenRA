@@ -42,6 +42,8 @@ Player:
 	PlayerStatistics:
 
 World:
+	ScreenMap:
+	ActorMap:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	BuildingInfluence:
@@ -122,8 +124,6 @@ World:
 		BaseActor: mcv
 	MPStartLocations:
 	SpawnMPUnits:
-	SpatialBins:
-		BinSize: 4
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

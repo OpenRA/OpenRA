@@ -19,8 +19,8 @@ namespace OpenRA.Orders
 	{
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
-			var underCursor = world.FindUnitsAtMouse(mi.Location)
-				.Where(a => a.HasTrait<ITargetable>())
+			var underCursor = world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(mi.Location))
+				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
 				.OrderByDescending(a => a.Info.SelectionPriority())
 				.FirstOrDefault();
 
@@ -59,10 +59,9 @@ namespace OpenRA.Orders
 
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
-			bool useSelect = false;
-
-			var underCursor = world.FindUnitsAtMouse(mi.Location)
-				.Where(a => a.HasTrait<ITargetable>())
+			var useSelect = false;
+			var underCursor = world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(mi.Location))
+				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
 				.OrderByDescending(a => a.Info.SelectionPriority())
 				.FirstOrDefault();
 

@@ -90,7 +90,7 @@ namespace OpenRA.Widgets
 				{
 					if (MultiClick)
 					{
-						var unit = SelectActorsInBox(world, xy, xy, _ => true).FirstOrDefault();
+						var unit = world.ScreenMap.ActorsAt(xy).FirstOrDefault();
 
 						var visibleWorld = Game.viewport.ViewBounds(world);
 						var topLeft = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top));
@@ -185,7 +185,7 @@ namespace OpenRA.Widgets
 		static readonly Actor[] NoActors = {};
 		IEnumerable<Actor> SelectActorsInBox(World world, PPos a, PPos b, Func<Actor, bool> cond)
 		{
-			return world.FindActorsInBox(a.ToWPos(0), b.ToWPos(0))
+			return world.ScreenMap.ActorsInBox(a.ToInt2(), b.ToInt2())
 				.Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable && !world.FogObscures(x) && cond(x))
 				.GroupBy(x => x.GetSelectionPriority())
 				.OrderByDescending(g => g.Key)

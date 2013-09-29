@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 			smudgeSprites = Info.Types.Select(x => Game.modData.SpriteLoader.LoadAllSprites(x)).ToArray();
 		}
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
 			tiles = new Dictionary<CPos, TileReference<byte, byte>>();

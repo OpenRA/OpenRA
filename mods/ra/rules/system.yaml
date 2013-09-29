@@ -529,6 +529,8 @@ Player:
 	PlayerStatistics:
 
 World:
+	ScreenMap:
+	ActorMap:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	ScreenShaker:
@@ -680,8 +682,6 @@ World:
 		OuterSupportRadius: 5
 	MPStartLocations:
 	SpawnMPUnits:
-	SpatialBins:
-		BinSize: 4
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
@@ -270,7 +271,7 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					new LocationInit(yakEntryPoint.Location),
 					new OwnerInit(soviets),
-					new FacingInit(Util.GetFacing(yakAttackPoint.Location - yakEntryPoint.Location, 0)),
+					new FacingInit(Traits.Util.GetFacing(yakAttackPoint.Location - yakEntryPoint.Location, 0)),
 					new AltitudeInit(Rules.Info[YakName].Traits.Get<PlaneInfo>().CruiseAltitude)
 				});
 			}
@@ -405,7 +406,7 @@ namespace OpenRA.Mods.RA.Missions
 				unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(townPoint.Location, SovietTownMoveNearEnough)));
 		}
 
-		public void WorldLoaded(World w)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
 

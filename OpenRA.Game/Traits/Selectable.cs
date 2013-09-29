@@ -40,7 +40,9 @@ namespace OpenRA.Traits
 			if (!Info.Selectable)
 				return;
 
+			var pos = wr.ScreenPxPosition(self.CenterPosition);
 			var bounds = self.Bounds.Value;
+			bounds.Offset(pos.X, pos.Y);
 
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);
@@ -56,7 +58,9 @@ namespace OpenRA.Traits
 			if (!Info.Selectable)
 				return;
 
+			var pos = wr.ScreenPxPosition(self.CenterPosition);
 			var bounds = self.Bounds.Value;
+			bounds.Offset(pos.X, pos.Y);
 
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);
