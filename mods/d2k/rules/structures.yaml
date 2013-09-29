@@ -341,11 +341,6 @@
 	ProvidesCustomPrerequisite:
 		Prerequisite: Starport
 
-WALL:
-	Inherits: ^WALL
-	Buildable:
-		Owner:
-
 ^WALL:
 	Buildable:
 		Queue: Building
@@ -361,6 +356,7 @@ WALL:
 	Tooltip:
 		Name: Concrete Wall
 		Description: Stop units and blocks enemy fire.
+		Hotkey: o
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.WAV
@@ -391,6 +387,11 @@ WALL:
 	Sellable:
 	Guardable:
 	BodyOrientation:
+
+WALL:
+	Inherits: ^WALL
+	Buildable:
+		Owner:
 
 ^GUNTOWER:
 	Inherits: ^Building
