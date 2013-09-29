@@ -932,6 +932,8 @@ FACT:
 		Facing: 96
 	ProductionBar:
 	DeadBuildingState:
+	BaseProvider:
+		Range: 16
 
 PROC:
 	Inherits: ^Building
