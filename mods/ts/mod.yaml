@@ -50,8 +50,8 @@ Packages:
 	temperat.mix:CRC32
 # Firestorm
 	~scores01.mix:CRC32
-	expand01.mix:CRC32
-	sounds01.mix:CRC32
+	~expand01.mix:CRC32
+	~sounds01.mix:CRC32
 	~e01sc01.mix:CRC32
 	~e01sc02.mix:CRC32
 	~e01vox01.mix:CRC32
