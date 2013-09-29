@@ -874,9 +874,6 @@ function debuggerCreateStackWindow()
 
   stackCtrl:SetImageList(imglist)
 
-  stackCtrl:Connect(wx.wxEVT_SET_FOCUS,
-    function (event) updateStackAndWatches() end)
-
   stackCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
       local item_id = event:GetItem()
@@ -976,9 +973,6 @@ local function debuggerCreateWatchWindow()
     local row = findSelectedWatchItem()
     if row >= 0 then watchCtrl:DeleteItem(row) end
   end
-
-  watchCtrl:Connect(wx.wxEVT_SET_FOCUS,
-    function (event) updateStackAndWatches() end)
 
   watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event) watchCtrl:PopupMenu(watchMenu) end)
