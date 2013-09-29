@@ -290,6 +290,8 @@ MCV:
 		Prerequisites: fix
 		Owner: allies,soviet
 		Hotkey: b
+	CustomBuildTimeValue:
+		Value: 2000
 	Valued:
 		Cost: 2000
 	Tooltip:
