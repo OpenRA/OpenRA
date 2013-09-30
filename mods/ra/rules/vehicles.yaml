@@ -16,7 +16,7 @@ V2RL:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 7
+		Speed: 6
 	RevealsShroud:
 		Range: 5
 	Armament:
