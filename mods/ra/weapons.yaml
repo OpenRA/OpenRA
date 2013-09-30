@@ -376,7 +376,7 @@ Grenade:
 	Range: 4
 	Report: grenade1.aud
 	Projectile: Bullet
-		Speed: 5
+		Speed: 8
 		High: true
 		Angle: .1
 		Inaccuracy: 13
