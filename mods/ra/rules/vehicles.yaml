@@ -214,7 +214,7 @@ ARTY:
 		Owner: allies
 		Hotkey: r
 	Valued:
-		Cost: 600
+		Cost: 800
 	Tooltip:
 		Name: Artillery
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
