@@ -219,7 +219,7 @@ ARTY:
 		Name: Artillery
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 75
+		HP: 100
 	Armor:
 		Type: Light
 	Mobile:
