@@ -207,7 +207,8 @@ ChainGun:
 		High: true
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
+			None: 120%
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
@@ -215,7 +216,7 @@ ChainGun:
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
-		Damage: 20
+		Damage: 30
 
 ChainGun.Yak:
 	ROF: 3
