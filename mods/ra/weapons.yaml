@@ -1003,8 +1003,8 @@ SCUD:
 		Versus: 
 			None: 90%
 			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			Light: 70%
+			Heavy: 40%
 		Explosion: napalm
 		WaterExplosion: large_splash
 		InfDeath: 3
