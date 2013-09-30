@@ -335,7 +335,7 @@ HellfireAG:
 		WaterExplosion: med_splash
 		InfDeath: 4
 		SmudgeType: Crater
-		Damage: 40
+		Damage: 60
 		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 
