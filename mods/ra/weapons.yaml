@@ -984,7 +984,7 @@ SilencedPPK:
 		Damage: 150
 
 SCUD:
-	ROF: 280
+	ROF: 240
 	Range: 10
 	MinRange: 3
 	Report: MISSILE1.AUD
@@ -1008,7 +1008,7 @@ SCUD:
 		WaterExplosion: large_splash
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 600
+		Damage: 450
 		ImpactSound: firebl3.aud
 		WaterImpactSound: splash9.aud
 
