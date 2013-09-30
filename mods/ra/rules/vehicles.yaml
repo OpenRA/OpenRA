@@ -12,7 +12,7 @@ V2RL:
 		Name: V2 Rocket
 		Description: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 150
+		HP: 200
 	Armor:
 		Type: Light
 	Mobile:
