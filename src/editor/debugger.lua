@@ -134,13 +134,13 @@ local function updateStackSync()
       local text = func ..
         (call[4] == -1 and '' or " at line "..call[4]) ..
         (call[5] ~= "main" and call[5] ~= "Lua" and ''
-         or (call[3] > 0 and " (defined at "..call[2]..":"..call[3]..")"
-                          or " (defined in "..call[2]..")"))
+         or (call[3] > 0 and " (defined at "..call[7]..":"..call[3]..")"
+                          or " (defined in "..call[7]..")"))
 
       -- create the new tree item for this level of the call stack
       local callitem = stackCtrl:AppendItem(root, text, 0)
 
-      -- registed call data to added item
+      -- register call data to provide stack navigation
       callData[callitem:GetValue()] = { call[2], call[4] }
 
       -- add the local variables to the call stack item
