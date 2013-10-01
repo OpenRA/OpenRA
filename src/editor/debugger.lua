@@ -32,11 +32,19 @@ local activate = {CHECKONLY = 1, NOREPORT = 2}
 
 local function serialize(value, options) return mobdebug.line(value, options) end
 
+local stackmaxlength = ide.config.debugger.stackmaxlength or 400
+local stackmaxnum = ide.config.debugger.stackmaxnum or 400
+local stackmaxlevel = ide.config.debugger.stackmaxlevel or 3
+local params = {comment = false, nocode = true, maxlevel = stackmaxlevel, maxnum = stackmaxnum}
+
 function fixUTF8(...)
   local t = {...}
   -- convert to escaped decimal code as these can only appear in strings
   local function fix(s) return '\\'..string.byte(s) end
-  for i = 1, #t do t[i] = FixUTF8(t[i], fix) end
+  for i = 1, #t do
+    local text = t[i]:sub(1, stackmaxlength)..(#t[i] > stackmaxlength and '...' or '')
+    t[i] = FixUTF8(text, fix)
+  end
   return (table.unpack or unpack)(t)
 end
 
@@ -105,7 +113,7 @@ local function updateStackSync()
     end
     stackCtrl:Freeze()
     stackCtrl:DeleteAllItems()
-    local params = {comment = false, nocode = true}
+
     local root = stackCtrl:AddRoot("Stack")
     stackItemValue = {} -- reset cache of items in the stack
     callData = {} -- reset call cache
@@ -883,7 +891,7 @@ function debuggerCreateStackWindow()
       local image = stackCtrl:GetItemImage(item_id)
       local num = 1
       for name,value in pairs(stackItemValue[item_id:GetValue()]) do
-        local strval = fixUTF8(serialize(value, {comment = false, nocode = true}))
+        local strval = fixUTF8(serialize(value, params))
         local text = type(name) == "number"
           and (num == name and strval or ("[%s] = %s"):format(name, strval))
           or ("%s = %s"):format(tostring(name), strval)
@@ -892,6 +900,7 @@ function debuggerCreateStackWindow()
           stackCtrl:SetItemHasChildren(item, true)
         end
         num = num + 1
+        if num > stackmaxnum then break end
       end
       return true
     end)
