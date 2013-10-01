@@ -322,7 +322,7 @@ HellfireAG:
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		RangeLimit: 20
 	Warhead:
 		Spread: 3
@@ -355,7 +355,7 @@ HellfireAA:
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		RangeLimit: 20
 	Warhead:
 		Spread: 3
