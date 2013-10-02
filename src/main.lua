@@ -441,7 +441,13 @@ SettingsRestoreView()
 do
   for _, fileName in ipairs(filenames) do
     if fileName ~= "--" then
-      LoadFile(fileName, nil, true)
+      if wx.wxDirExists(fileName) then
+        local dir = wx.wxFileName.DirName(fileName)
+        dir:Normalize() -- turn into absolute path if needed
+        ProjectUpdateProjectDir(dir:GetFullPath())
+      else
+        LoadFile(fileName, nil, true)
+      end
     end
   end
 
