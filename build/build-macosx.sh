@@ -154,9 +154,11 @@ if [ $BUILD_LUA ]; then
     cp "$INSTALL_DIR"/include/luajit*/* "$INSTALL_DIR/include/"
   else
     sed -i "" 's/PLATS=/& macosx_dylib/' Makefile
+
+    # -O1 fixes this issue with for Lua 5.2 with i386: http://lua-users.org/lists/lua-l/2013-05/msg00070.html
     printf "macosx_dylib:\n" >> src/Makefile
     printf "\t\$(MAKE) LUA_A=\"liblua$LUAS.dylib\" AR=\"\$(CC) -dynamiclib $MACOSX_FLAGS -o\" RANLIB=\"strip -u -r\" \\\\\n" >> src/Makefile
-    printf "\tMYCFLAGS=\"-DLUA_USE_LINUX $MACOSX_FLAGS\" MYLDFLAGS=\"$MACOSX_FLAGS\" MYLIBS=\"-lreadline\" lua\n" >> src/Makefile
+    printf "\tMYCFLAGS=\"-O1 -DLUA_USE_LINUX $MACOSX_FLAGS\" MYLDFLAGS=\"$MACOSX_FLAGS\" MYLIBS=\"-lreadline\" lua\n" >> src/Makefile
     printf "\t\$(MAKE) MYCFLAGS=\"-DLUA_USE_LINUX $MACOSX_FLAGS\" MYLDFLAGS=\"$MACOSX_FLAGS\" luac\n" >> src/Makefile
     make macosx_dylib || { echo "Error: failed to build Lua"; exit 1; }
     make install INSTALL_TOP="$INSTALL_DIR"
