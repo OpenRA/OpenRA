@@ -56,10 +56,10 @@ local function selectInterpreter(id)
 
   if ide.interpreter and ide.interpreter ~= interpreters[id] then
     PackageEventHandle("onInterpreterClose", ide.interpreter) end
+  if interpreters[id] and ide.interpreter ~= interpreters[id] then
+    PackageEventHandle("onInterpreterLoad", interpreters[id]) end
 
   ide.interpreter = interpreters[id]
-
-  PackageEventHandle("onInterpreterLoad", ide.interpreter)
 
   DebuggerShutdown()
 
