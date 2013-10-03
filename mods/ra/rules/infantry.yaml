@@ -261,7 +261,7 @@ MEDI:
 		Prerequisites: tent
 		Hotkey: m
 	Valued:
-		Cost: 300
+		Cost: 200
 	Tooltip:
 		Name: Medic
 		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
@@ -298,7 +298,7 @@ MECH:
 		Prerequisites: fix
 		Hotkey: c
 	Valued:
-		Cost: 800
+		Cost: 500
 	Tooltip:
 		Name: Mechanic
 		Description: Repairs nearby vehicles.\n  Strong vs Nothing\n  Weak vs Everything
