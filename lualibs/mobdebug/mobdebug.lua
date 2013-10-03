@@ -1,12 +1,12 @@
 --
--- MobDebug 0.541
+-- MobDebug 0.542
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.541,
+  _VERSION = 0.542,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -105,7 +105,7 @@ end
 local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local serpent = (function() ---- include Serpent module for serialization
-local n, v = "serpent", 0.24 -- (C) 2012-13 Paul Kulchenko; MIT License
+local n, v = "serpent", 0.25 -- (C) 2012-13 Paul Kulchenko; MIT License
 local c, d = "Paul Kulchenko", "Lua serializer and pretty printer"
 local snum = {[tostring(1/0)]='1/0 --[[math.huge]]',[tostring(-1/0)]='-1/0 --[[-math.huge]]',[tostring(0/0)]='0/0'}
 local badtype = {thread = true, userdata = true, cdata = true}
@@ -118,7 +118,7 @@ for _,g in ipairs({'coroutine', 'debug', 'io', 'math', 'string', 'table', 'os'})
   for k,v in pairs(G[g]) do globals[v] = g..'.'..k end end
 
 local function s(t, opts)
-  local name, indent, fatal = opts.name, opts.indent, opts.fatal
+  local name, indent, fatal, maxnum = opts.name, opts.indent, opts.fatal, opts.maxnum
   local sparse, custom, huge = opts.sparse, opts.custom, not opts.nohuge
   local space, maxl = (opts.compact and '' or ' '), (opts.maxlevel or math.huge)
   local iname, comm = '_'..(name or ''), opts.comment and (tonumber(opts.comment) or math.huge)
@@ -151,7 +151,7 @@ local function s(t, opts)
       ((type(name) == "number") and '' or name..space..'='..space) or
       (name ~= nil and sname..space..'='..space or '')
     if seen[t] then -- already seen this element
-      table.insert(sref, spath..space..'='..space..seen[t])
+      sref[#sref+1] = spath..space..'='..space..seen[t]
       return tag..'nil'..comment('ref', level) end
     if type(mt) == 'table' and (mt.__serialize or mt.__tostring) then -- knows how to serialize itself
       seen[t] = insref or spath
@@ -161,10 +161,14 @@ local function s(t, opts)
       if level >= maxl then return tag..'{}'..comment('max', level) end
       seen[t] = insref or spath
       if next(t) == nil then return tag..'{}'..comment(t, level) end -- table empty
-      local maxn, o, out = #t, {}, {}
-      for key = 1, maxn do table.insert(o, key) end
-      for key in pairs(t) do if not o[key] or key > maxn then table.insert(o, key) end end
-      if opts.sortkeys then alphanumsort(o, t, opts.sortkeys) end
+      local maxn, o, out = math.min(#t, maxnum or #t), {}, {}
+      for key = 1, maxn do o[key] = key end
+      if not maxnum or #o < maxnum then
+        local n = #o -- n = n + 1; o[n] is much faster than o[#o+1] on large tables
+        for key in pairs(t) do if o[key] ~= key then n = n + 1; o[n] = key end end end
+      if maxnum and #o > maxnum then o[maxnum+1] = nil end
+      if opts.sortkeys and #o > maxn then alphanumsort(o, t, opts.sortkeys) end
+      local sparse = sparse and #o > maxn -- disable sparsness if only numeric keys (shorter output)
       for n, key in ipairs(o) do
         local value, ktype, plainindex = t[key], type(key), n <= maxn and not sparse
         if opts.valignore and opts.valignore[value] -- skip ignored values; do nothing
@@ -173,14 +177,14 @@ local function s(t, opts)
         or sparse and value == nil then -- skipping nils; do nothing
         elseif ktype == 'table' or ktype == 'function' or badtype[ktype] then
           if not seen[key] and not globals[key] then
-            table.insert(sref, 'placeholder')
+            sref[#sref+1] = 'placeholder'
             local sname = safename(iname, gensym(key)) -- iname is table for local variables
             sref[#sref] = val2str(key,sname,indent,sname,iname,true) end
-          table.insert(sref, 'placeholder')
+          sref[#sref+1] = 'placeholder'
           local path = seen[t]..'['..(seen[key] or globals[key] or gensym(key))..']'
           sref[#sref] = path..space..'='..space..(seen[value] or val2str(value,nil,indent,path))
         else
-          table.insert(out,val2str(value,key,indent,insref,seen[t],plainindex,level+1))
+          out[#out+1] = val2str(value,key,indent,insref,seen[t],plainindex,level+1)
         end
       end
       local prefix = string.rep(indent or '', level)
