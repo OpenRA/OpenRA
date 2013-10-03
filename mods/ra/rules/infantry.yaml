@@ -525,6 +525,7 @@ Ant:
 		Prerequisites: bio
 	Selectable:
 		Voice: AntVoice
+		Bounds: 30,30,0,-2
 	Health:
 		HP: 750
 	Mobile:
