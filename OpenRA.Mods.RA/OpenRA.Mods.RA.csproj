@@ -400,6 +400,8 @@
     <Compile Include="Widgets\Logic\PerfDebugLogic.cs" />
     <Compile Include="Widgets\Logic\RAInstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\RAInstallLogic.cs" />
+    <Compile Include="Widgets\Logic\RAOptionalInstallFromCDLogic.cs" />
+    <Compile Include="Widgets\Logic\RAOptionalInstallLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
@@ -523,7 +525,5 @@ cd "$(SolutionDir)thirdparty/"
 copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="AI\States\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
