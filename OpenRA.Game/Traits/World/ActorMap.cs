@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -30,10 +30,16 @@ namespace OpenRA.Traits
 	{
 		class InfluenceNode
 		{
-			public InfluenceNode next;
-			public SubCell subCell;
-			public Actor actor;
+			public InfluenceNode Next;
+			public SubCell SubCell;
+			public Actor Actor;
 		}
+
+		static readonly SubCell[] SubCells =
+		{
+			SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
+			SubCell.BottomLeft, SubCell.BottomRight
+		};
 
 		readonly ActorMapInfo info;
 		readonly Map map;
@@ -61,9 +67,9 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(a))
 				yield break;
 
-			for (var i = influence[a.X, a.Y]; i != null; i = i.next)
-				if (!i.actor.Destroyed)
-					yield return i.actor;
+			for (var i = influence[a.X, a.Y]; i != null; i = i.Next)
+				if (!i.Actor.Destroyed)
+					yield return i.Actor;
 		}
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
@@ -71,9 +77,9 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(a))
 				yield break;
 
-			for (var i = influence[a.X, a.Y]; i != null; i = i.next)
-				if (!i.actor.Destroyed && (i.subCell == sub || i.subCell == SubCell.FullCell))
-					yield return i.actor;
+			for (var i = influence[a.X, a.Y]; i != null; i = i.Next)
+				if (!i.Actor.Destroyed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
+					yield return i.Actor;
 		}
 
 		public bool HasFreeSubCell(CPos a)
@@ -81,8 +87,7 @@ namespace OpenRA.Traits
 			if (!AnyUnitsAt(a))
 				return true;
 
-			return new[] { SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
-				SubCell.BottomLeft, SubCell.BottomRight }.Any(b => !AnyUnitsAt(a,b));
+			return SubCells.Any(b => !AnyUnitsAt(a, b));
 		}
 
 		public SubCell? FreeSubCell(CPos a)
@@ -90,10 +95,8 @@ namespace OpenRA.Traits
 			if (!HasFreeSubCell(a))
 				return null;
 
-			return new[] { SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
-				SubCell.BottomLeft, SubCell.BottomRight }.First(b => !AnyUnitsAt(a,b));
+			return SubCells.First(b => !AnyUnitsAt(a, b));
 		}
-
 
 		public bool AnyUnitsAt(CPos a)
 		{
@@ -102,8 +105,8 @@ namespace OpenRA.Traits
 
 		public bool AnyUnitsAt(CPos a, SubCell sub)
 		{
-			for (var i = influence[a.X, a.Y]; i != null; i = i.next)
-				if (i.subCell == sub || i.subCell == SubCell.FullCell)
+			for (var i = influence[a.X, a.Y]; i != null; i = i.Next)
+				if (i.SubCell == sub || i.SubCell == SubCell.FullCell)
 					return true;
 
 			return false;
@@ -112,7 +115,7 @@ namespace OpenRA.Traits
 		public void AddInfluence(Actor self, IOccupySpace ios)
 		{
 			foreach (var c in ios.OccupiedCells())
-				influence[c.First.X, c.First.Y] = new InfluenceNode { next = influence[c.First.X, c.First.Y], subCell = c.Second, actor = self };
+				influence[c.First.X, c.First.Y] = new InfluenceNode { Next = influence[c.First.X, c.First.Y], SubCell = c.Second, Actor = self };
 		}
 
 		public void RemoveInfluence(Actor self, IOccupySpace ios)
@@ -125,11 +128,11 @@ namespace OpenRA.Traits
 		{
 			if (influenceNode == null)
 				return;
-			else if (influenceNode.actor == toRemove)
-				influenceNode = influenceNode.next;
+			else if (influenceNode.Actor == toRemove)
+				influenceNode = influenceNode.Next;
 
 			if (influenceNode != null)
-				RemoveInfluenceInner(ref influenceNode.next, toRemove);
+				RemoveInfluenceInner(ref influenceNode.Next, toRemove);
 		}
 
 		public void AddPosition(Actor a, IOccupySpace ios)
@@ -137,7 +140,7 @@ namespace OpenRA.Traits
 			var pos = ios.CenterPosition;
 			var i = (pos.X / info.BinSize).Clamp(0, cols - 1);
 			var j = (pos.Y / info.BinSize).Clamp(0, rows - 1);
-			actors[j*cols + i].Add(a);
+			actors[j * cols + i].Add(a);
 		}
 
 		public void RemovePosition(Actor a, IOccupySpace ios)
@@ -167,7 +170,7 @@ namespace OpenRA.Traits
 			{
 				for (var i = i1; i <= i2; i++)
 				{
-					foreach (var actor in actors[j*cols + i])
+					foreach (var actor in actors[j * cols + i])
 					{
 						var c = actor.CenterPosition;
 						if (left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom)
