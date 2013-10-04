@@ -83,3 +83,10 @@ Background@MODS_PANEL:
 			Height:25
 			Font:Bold
 			Text:Load Mod
+		Button@BUTTON_INSTALL_OPTIONAL_CONTENT:
+			X:PARENT_LEFT-250
+			Y:PARENT_BOTTOM-45
+			Width:200
+			Height:25
+			Text: Install Optional Content
+			Font:Bold

@@ -449,3 +449,9 @@ Background@SETTINGS_PANEL:
 					Height:20
 					Font:Regular
 					Text:Check Sync around Unsynced Code
+				Checkbox@SHOW_FATAL_ERROR_DIALOG_CHECKBOX:
+					X:0
+					Y:210
+					Width:200
+					Height:20
+					Text:Show Fatal Error dialog
