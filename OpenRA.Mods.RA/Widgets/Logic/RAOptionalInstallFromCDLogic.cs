@@ -125,11 +125,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					File.Exists(new string[] { diskRoot, "install", discFiles[1] }.Aggregate(Path.Combine));
 
 			var path = InstallUtils.GetMountedDisk(ValidDiskFilter);
-			var file = File.OpenRead(path + Path.DirectorySeparatorChar + discFiles[0]);
 
 			if (path != null)
 			{
 				//gui freezes at this point will need to indicate the disc is being verified takes about 30-40seconds.
+				var file = File.OpenRead(path + Path.DirectorySeparatorChar + discFiles[0]);
 				using (var cryptoProvider = new SHA1CryptoServiceProvider())
 				{
 					string hash = BitConverter
