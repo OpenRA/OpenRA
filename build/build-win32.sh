@@ -7,7 +7,7 @@ BIN_DIR="$(dirname "$PWD")/bin"
 INSTALL_DIR="$PWD/deps"
 
 # number of parallel jobs used for building
-MAKEFLAGS="-j4"
+MAKEFLAGS="-j1" # some make may hang on Windows with j4 or j7
 
 # flags for manual building with gcc
 BUILD_FLAGS="-O2 -shared -s -I $INSTALL_DIR/include -L $INSTALL_DIR/lib"
@@ -201,7 +201,9 @@ if [ $BUILD_WXLUA ]; then
   # (temporary) fix for compilation issue in wxlua in Windows using mingw (r184)
   sed -i 's/defined(__MINGW32__) || defined(__GNUWIN32__)/0/' modules/wxbind/src/wxcore_bind.cpp
 
-  cp "$INSTALL_DIR/lib/libwxscintilla-2.9.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-2.9.a"
+  [ -f "$INSTALL_DIR/lib/libwxscintilla-2.9.a" ] && cp "$INSTALL_DIR/lib/libwxscintilla-2.9.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-2.9.a"
+  [ -f "$INSTALL_DIR/lib/libwxscintilla-3.0.a" ] && cp "$INSTALL_DIR/lib/libwxscintilla-3.0.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-3.0.a"
+
   echo "set_target_properties(wxLuaModule PROPERTIES LINK_FLAGS -static)" >> modules/luamodule/CMakeLists.txt
   cmake -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$WXLUABUILD -DBUILD_SHARED_LIBS=FALSE \
     -DwxWidgets_CONFIG_EXECUTABLE="$INSTALL_DIR/bin/wx-config" \
