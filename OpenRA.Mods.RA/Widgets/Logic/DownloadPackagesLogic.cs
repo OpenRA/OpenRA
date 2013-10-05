@@ -22,13 +22,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class DownloadPackagesLogic
 	{
 		Widget panel;
-		Dictionary<string,string> installData;
+		Dictionary<string, string> installData;
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
 		Action afterInstall;
-		
+
 		[ObjectCreator.UseCtor]
-		public DownloadPackagesLogic(Widget widget, Dictionary<string,string> installData, Action afterInstall)
+		public DownloadPackagesLogic(Widget widget, Dictionary<string, string> installData, Action afterInstall)
 		{
 			this.installData = installData;
 			this.afterInstall = afterInstall;
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				Game.RunAfterTick(() =>
 				{
-					statusLabel.GetText = () => "Error: "+s;
+					statusLabel.GetText = () => "Error: " + s;
 					retryButton.IsVisible = () => true;
 				});
 			};

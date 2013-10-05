@@ -21,7 +21,7 @@ namespace OpenRA.FileFormats
 	{
 		static IEnumerable<ZipEntry> GetEntries(this ZipInputStream z)
 		{
-			for (; ; )
+			for (;;)
 			{
 				var e = z.GetNextEntry();
 				if (e != null) yield return e; else break;
@@ -43,9 +43,9 @@ namespace OpenRA.FileFormats
 			if (!Directory.Exists(destPath))
 				Directory.CreateDirectory(destPath);
 
-			if (!Directory.Exists(srcPath)) { onError("Cannot find "+package); return false; }
+			if (!Directory.Exists(srcPath)) { onError("Cannot find " + package); return false; }
 			FileSystem.Mount(srcPath);
-			if (!FileSystem.Exists(package)) { onError("Cannot find "+package); return false; }
+			if (!FileSystem.Exists(package)) { onError("Cannot find " + package); return false; }
 			FileSystem.Mount(package);
 
 			foreach (string s in files)
@@ -54,10 +54,11 @@ namespace OpenRA.FileFormats
 				using (var sourceStream = FileSystem.Open(s))
 				using (var destStream = File.Create(destFile))
 				{
-					onProgress("Extracting "+s);
+					onProgress("Extracting " + s);
 					destStream.Write(sourceStream.ReadAllBytes());
 				}
 			}
+
 			return true;
 		}
 
@@ -68,13 +69,15 @@ namespace OpenRA.FileFormats
 				var fromPath = Path.Combine(srcPath, file);
 				if (!File.Exists(fromPath))
 				{
-					onError("Cannot find "+file);
+					onError("Cannot find " + file);
 					return false;
 				}
+
 				var destFile = Path.GetFileName(file).ToLowerInvariant();
-				onProgress("Extracting "+destFile);
+				onProgress("Extracting " + destFile);
 				File.Copy(fromPath,	Path.Combine(destPath, destFile), true);
 			}
+
 			return true;
 		}
 
@@ -82,7 +85,7 @@ namespace OpenRA.FileFormats
 		{
 			if (!File.Exists(zipFile))
 			{
-				onError("Invalid path: "+zipFile);
+				onError("Invalid path: " + zipFile);
 				return false;
 			}
 
@@ -90,16 +93,17 @@ namespace OpenRA.FileFormats
 			try
 			{
 				var z = new ZipInputStream(File.OpenRead(zipFile));
-				z.ExtractZip(dest, extracted, s => onProgress("Extracting "+s));
+				z.ExtractZip(dest, extracted, s => onProgress("Extracting " + s));
 			}
 			catch (SharpZipBaseException)
 			{
-				foreach(var f in extracted)
+				foreach (var f in extracted)
 					File.Delete(f);
 
 				onError("Invalid archive");
 				return false;
 			}
+
 			return true;
 		}
 
