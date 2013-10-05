@@ -54,7 +54,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TSLoadScreen.cs" />
     <Compile Include="Widgets\Logic\TSInstallFromCDLogic.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -93,10 +93,12 @@ Music:
 
 Movies:
 
-LoadScreen: D2kLoadScreen
+LoadScreen: DefaultLoadScreen
+	Image: mods/d2k/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFile: DATA.R8
 	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-103-packages
+	Text: Filling Crates..., Breeding Sandworms...
 
 ServerTraits:
 	LobbyCommands

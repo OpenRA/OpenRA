@@ -18,30 +18,27 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA
 {
-	public class RALoadScreen : ILoadScreen
+	public class DefaultLoadScreen : ILoadScreen
 	{
 		Dictionary<string, string> Info;
-		static string[] Comments = new[] {	"Filling Crates...", "Charging Capacitors...", "Reticulating Splines...",
-												"Planting Trees...", "Building Bridges...", "Aging Empires...",
-												"Compiling EVA...", "Constructing Pylons...", "Activating Skynet...",
-												"Splitting Atoms..."
-		};
 
 		Stopwatch lastLoadScreen = new Stopwatch();
+
 		Rectangle StripeRect;
 		Sprite Stripe, Logo;
 		float2 LogoPos;
 
 		Renderer r;
+
 		public void Init(Dictionary<string, string> info)
 		{
 			Info = info;
 			// Avoid standard loading mechanisms so we
-			// can display loadscreen as early as possible
+			// can display the loadscreen as early as possible
 			r = Game.Renderer;
 			if (r == null) return;
 
-			var s = new Sheet(Info["LoadScreenImage"]);
+			var s = new Sheet(Info["Image"]);
 			Logo = new Sprite(s, new Rectangle(0,0,256,256), TextureChannel.Alpha);
 			Stripe = new Sprite(s, new Rectangle(256,0,256,256), TextureChannel.Alpha);
 			StripeRect = new Rectangle(0, r.Resolution.Height/2 - 128, r.Resolution.Width, 256);
@@ -61,7 +58,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			lastLoadScreen.Reset();
-			var text = Comments.Random(Game.CosmeticRandom);
+			var text = Info["Text"].Split(',').Random(Game.CosmeticRandom);
 			var textSize = r.Fonts["Bold"].Measure(text);
 
 			r.BeginFrame(float2.Zero, 1f);
