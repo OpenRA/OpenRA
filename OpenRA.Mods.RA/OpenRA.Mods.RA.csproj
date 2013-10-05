@@ -307,7 +307,7 @@
     <Compile Include="ProvidesRadar.cs" />
     <Compile Include="ProximityCaptor.cs" />
     <Compile Include="ProximityCapturable.cs" />
-    <Compile Include="RALoadScreen.cs" />
+    <Compile Include="DefaultLoadScreen.cs" />
     <Compile Include="RadarColorFromTerrain.cs" />
     <Compile Include="RallyPoint.cs" />
     <Compile Include="Reloads.cs" />
