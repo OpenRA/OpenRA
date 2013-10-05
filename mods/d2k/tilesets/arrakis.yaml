@@ -2079,10 +2079,10 @@ Templates:
 		Category: BaseBorder-Cliff
 		PickAny: False
 		Tiles:
-			1: Transition
+			1: Cliff
 			3: Rock
-			2: Transition
-			0: Transition
+			2: Cliff
+			0: Cliff
 	Template@194:
 		Id: 194
 		Image: BLOXBASE
@@ -2155,8 +2155,8 @@ Templates:
 		Category: BaseBorder-Cliff
 		PickAny: False
 		Tiles:
-			0: Sand
-			1: Sand
+			0: Cliff
+			1: Cliff
 	Template@200:
 		Id: 200
 		Image: BLOXBASE
@@ -2191,10 +2191,10 @@ Templates:
 		Category: BaseBorder-Cliff
 		PickAny: False
 		Tiles:
-			0: Transition
-			2: Transition
-			3: Rock
-			1: Transition
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
 	Template@203:
 		Id: 203
 		Image: BLOXBASE
