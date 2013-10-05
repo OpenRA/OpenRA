@@ -25,7 +25,7 @@ Container@INSTALL_BACKGROUND:
 			Background:shellmapborder
 
 Container@INSTALL_PANEL:
-	Logic:CncInstallLogic
+	Logic:InstallLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 150)/2
 	Width:640
