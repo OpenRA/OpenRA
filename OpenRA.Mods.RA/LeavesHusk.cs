@@ -32,6 +32,9 @@ namespace OpenRA.Mods.RA
 
 		public void Killed(Actor self, AttackInfo e)
 		{
+			if (!self.IsInWorld)
+				return;
+
 			self.World.AddFrameEndTask(w =>
 			{
 				var td = new TypeDictionary
