@@ -58,9 +58,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					});
 				};
 
-				Action onRetry = () =>
+				Action<string> onRetry = password =>
 				{
-					ConnectionLogic.Connect(om.Host, om.Port, onConnect, onExit);
+					ConnectionLogic.Connect(om.Host, om.Port, password, onConnect, onExit);
 				};
 
 				Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()

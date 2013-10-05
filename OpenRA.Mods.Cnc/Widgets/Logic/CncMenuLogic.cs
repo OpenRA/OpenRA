@@ -137,6 +137,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			ConnectionLogic.Connect(IPAddress.Loopback.ToString(),
 				Game.CreateLocalServer(map),
+				"",
 				() => OpenLobbyPanel(MenuType.Main, true),
 				() => { Game.CloseServer(); menuType = MenuType.Main; });
 		}

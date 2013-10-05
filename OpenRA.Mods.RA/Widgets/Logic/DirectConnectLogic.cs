@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.Settings.Save();
 
 				Ui.CloseWindow();
-				ConnectionLogic.Connect(ipField.Text, port, openLobby, onExit);
+				ConnectionLogic.Connect(ipField.Text, port, "", openLobby, onExit);
 			};
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };

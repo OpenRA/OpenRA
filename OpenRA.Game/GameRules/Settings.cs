@@ -28,6 +28,7 @@ namespace OpenRA.GameRules
 		public int ListenPort = 1234;
 		public int ExternalPort = 1234;
 		public bool AdvertiseOnline = true;
+		public string Password = "";
 		public string MasterServer = "http://master.open-ra.org/";
 		public bool DiscoverNatDevices = false; // Allow users to disable NAT discovery if problems occur
 		public bool AllowPortForward = true; // let the user disable it even if compatible devices are found
@@ -51,6 +52,7 @@ namespace OpenRA.GameRules
 			ListenPort = other.ListenPort;
 			ExternalPort = other.ExternalPort;
 			AdvertiseOnline = other.AdvertiseOnline;
+			Password = other.Password;
 			MasterServer = other.MasterServer;
 			DiscoverNatDevices = other.DiscoverNatDevices;
 			AllowPortForward = other.AllowPortForward;

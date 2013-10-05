@@ -90,6 +90,7 @@ namespace OpenRA.Mods.RA
 				case "StartGame":
 				case "Disconnected":
 				case "ServerError":
+				case "AuthenticationError":
 				case "SyncInfo":
 					return;
 			}
