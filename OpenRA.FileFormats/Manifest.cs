@@ -18,8 +18,9 @@ namespace OpenRA.FileFormats
 
 	public class Manifest
 	{
+		public readonly Mod Mod;
 		public readonly string[]
-			Mods, Folders, MapFolders, Rules, ServerTraits,
+			Folders, MapFolders, Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Movies, Translations, TileSets,
 			ChromeMetrics, PackageContents;
@@ -30,12 +31,13 @@ namespace OpenRA.FileFormats
 		public readonly Dictionary<string, Pair<string,int>> Fonts;
 		public readonly int TileSize = 24;
 
-		public Manifest(string[] mods)
+		public Manifest(string mod)
 		{
-			Mods = mods;
-			var yaml = new MiniYaml(null, mods
-				.Select(m => MiniYaml.FromFile("mods{0}{1}{0}mod.yaml".F(Path.DirectorySeparatorChar, m)))
-				.Aggregate(MiniYaml.MergeLiberal)).NodesDict;
+			var path = new [] { "mods", mod, "mod.yaml" }.Aggregate(Path.Combine);
+			var yaml =  new MiniYaml(null, MiniYaml.FromFile(path)).NodesDict;
+
+			Mod = FieldLoader.Load<Mod>(yaml["Metadata"]);
+			Mod.Id = mod;
 
 			// TODO: Use fieldloader
 			Folders = YamlList(yaml, "Folders");

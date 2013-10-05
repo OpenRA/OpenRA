@@ -21,49 +21,47 @@ namespace OpenRA.Network
 		public readonly int State = 0;
 		public readonly int Players = 0;
 		public readonly string Map = null;
-		public readonly string[] Mods = { };
+
+		// Retained name compatibility with the master server
+		public readonly string Mods = "";
 		public readonly int TTL = 0;
-
-		public Dictionary<string, string> UsefulMods
-		{
-			get
-			{
-				return Mods
-					.Where(v => v.Contains('@'))
-					.ToDictionary(v => v.Split('@')[0], v => v.Split('@')[1]);
-			}
-		}
-
-		static bool AreVersionsCompatible(string a, string b)
-		{
-			if (Game.Settings.Debug.IgnoreVersionMismatch)
-				return true;
-
-			return a == b;
-		}
 
 		public bool CanJoin()
 		{
-			//"waiting for players"
+			// "waiting for players"
 			if (State != 1)
 				return false;
 
-			// Mods won't match if there are a different number
-			if (Game.CurrentMods.Count != Mods.Count())
+			if (!CompatibleVersion())
 				return false;
 
 			// Don't have the map locally
-			if (!Game.modData.AvailableMaps.ContainsKey(Map))
-				if (!Game.Settings.Game.AllowDownloading)
-					return false;
+			// TODO: We allow joining, then drop on game start if the map isn't available
+			if (!Game.modData.AvailableMaps.ContainsKey(Map) && !Game.Settings.Game.AllowDownloading)
+				return false;
 
-			return CompatibleVersion();
+			return true;
 		}
 
 		public bool CompatibleVersion()
 		{
-			return UsefulMods.All(m => Game.CurrentMods.ContainsKey(m.Key)
-				&& AreVersionsCompatible(m.Value, Game.CurrentMods[m.Key].Version));
+			// Invalid game listing - we require one entry of id@version
+			var modVersion = Mods.Split('@');
+			if (modVersion.Length != 2)
+				return false;
+
+			var mod = Game.modData.Manifest.Mod;
+
+			// Different mod
+			// TODO: Allow mod switch when joining server
+			if (modVersion[0] != mod.Id)
+				return false;
+
+			// Same mod, but different version
+			if (modVersion[1] != mod.Version && !Game.Settings.Debug.IgnoreVersionMismatch)
+				return false;
+
+			return true;
 		}
 	}
 }

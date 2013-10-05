@@ -29,8 +29,8 @@ or build it from the command-line with MSBuild.
 Copy both the native DLLs from .\packaging\windows
 and the CLI images from .\thirdparty to the main folder.
 
-Run the game with `OpenRA.Game.exe Game.Mods=ra` for Red Alert
-or `OpenRA.Game.exe Game.Mods=cnc` for Command & Conquer
+Run the game with `OpenRA.Game.exe Game.Mod=ra` for Red Alert
+or `OpenRA.Game.exe Game.Mod=cnc` for Command & Conquer
 
 Debian/Ubuntu
 -------------

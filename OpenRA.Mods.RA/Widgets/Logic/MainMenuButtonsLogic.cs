@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var versionLabel = Ui.Root.GetOrNull<LabelWidget>("VERSION_LABEL");
 			if (versionLabel != null)
-				versionLabel.GetText = WidgetUtils.ActiveModVersion;
+				versionLabel.Text = Game.modData.Manifest.Mod.Version;
 
 			widget.Get<ButtonWidget>("MAINMENU_BUTTON_JOIN").OnClick = () => OpenGamePanel("JOINSERVER_BG");
 			widget.Get<ButtonWidget>("MAINMENU_BUTTON_CREATE").OnClick = () => OpenGamePanel("CREATESERVER_BG");

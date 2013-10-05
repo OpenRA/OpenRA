@@ -28,7 +28,7 @@ namespace OpenRA.Network
 		{
 			try
 			{
-				var session = new Session(Game.Settings.Game.Mods);
+				var session = new Session();
 
 				var ys = MiniYaml.FromString(data);
 				foreach (var y in ys)
@@ -123,10 +123,9 @@ namespace OpenRA.Network
 		{
 			public string ServerName;
 			public string Map;
-			public string[] Mods = { "ra" };	// mod names
-			public int OrderLatency = 3;		// net tick frames (x 120 = ms)
+			public int OrderLatency = 3; // net tick frames (x 120 = ms)
 			public int RandomSeed = 0;
-			public bool FragileAlliances = false;	// Allow diplomatic stance changes after game start.
+			public bool FragileAlliances = false; // Allow diplomatic stance changes after game start.
 			public bool AllowCheats = false;
 			public bool Dedicated;
 			public string Difficulty;
@@ -138,12 +137,6 @@ namespace OpenRA.Network
 			public string StartingUnitsClass = "none";
 			public bool AllowVersionMismatch;
 			public string GameUid;
-		}
-
-		public Session(string[] mods)
-		{
-			this.GlobalSettings.Mods = mods.ToArray();
-			this.GlobalSettings.GameUid = Guid.NewGuid().ToString();
 		}
 
 		public string Serialize()

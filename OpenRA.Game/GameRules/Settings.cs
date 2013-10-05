@@ -124,7 +124,7 @@ namespace OpenRA.GameRules
 
 	public class GameSettings
 	{
-		public string[] Mods = { "ra" };
+		public string Mod = "ra";
 
 		public bool ShowShellmap = true;
 

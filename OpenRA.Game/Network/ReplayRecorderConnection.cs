@@ -34,7 +34,8 @@ namespace OpenRA.Network
 		void StartSavingReplay(byte[] initialContent)
 		{
 			var filename = chooseFilename();
-			var dir = new[] { Platform.SupportDir, "Replays", WidgetUtils.ActiveModId(), WidgetUtils.ActiveModVersion() }.Aggregate(Path.Combine);
+			var mod = Game.modData.Manifest.Mod;
+			var dir = new[] { Platform.SupportDir, "Replays", mod.Id, mod.Version }.Aggregate(Path.Combine);
 
 			if (!Directory.Exists(dir))
 				Directory.CreateDirectory(dir);

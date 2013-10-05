@@ -76,11 +76,13 @@ NEW:
 		Added modifier support to hotkeys.
 		Fixed a desync related to projectile contrails.
 		Fixed corrupted replays (which would immediately desync).
+		Removed runtime mod merging.
 	Build system and packages:
 		Added GeoIP to Makefile so it is installed properly.
 		Added desktop shortcut creation support to the Makefile and Windows installer.
 		COPYING and CHANGELOG are now shipped on all platforms.
 		Fixed 'make docs' crashing when the game assets are not installed.
+		Renamed Game.Mods launch argument to Game.Mod.
 	Mod / Custom map compatibility:
 		Mods can now include traits from TD and D2K in RA.
 		New sections MapFolders and Translations added to mod.yaml.
@@ -99,6 +101,7 @@ NEW:
 		Removed traits from World: SpatialBins.
 		Added InvalidTargets property to weapons.
 		Added modifier support for build palette hotkeys.
+		The Requires: option for inheriting from a parent mod has been removed. Mods can directly reference the parent mod files instead.
 
 20130915:
 	All mods:

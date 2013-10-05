@@ -20,7 +20,7 @@ namespace OpenRA.Network
 		readonly SyncReport syncReport;
 		readonly FrameData frameData = new FrameData();
 
-		public Session LobbyInfo = new Session(Game.Settings.Game.Mods);
+		public Session LobbyInfo = new Session();
 		public Session.Client LocalClient { get { return LobbyInfo.ClientWithIndex(Connection.LocalClientId); } }
 		public World world;
 

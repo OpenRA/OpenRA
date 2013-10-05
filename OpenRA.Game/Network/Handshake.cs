@@ -16,7 +16,8 @@ namespace OpenRA.Network
 {
 	public class HandshakeRequest
 	{
-		public string[] Mods;
+		public string Mod;
+		public string Version;
 		public string Map;
 
 		public string Serialize()
@@ -36,7 +37,8 @@ namespace OpenRA.Network
 
 	public class HandshakeResponse
 	{
-		public string[] Mods;
+		public string Mod;
+		public string Version;
 		public string Password;
 		[FieldLoader.Ignore] public Session.Client Client;
 
@@ -44,7 +46,7 @@ namespace OpenRA.Network
 		{
 			var data = new List<MiniYamlNode>();
 			data.Add( new MiniYamlNode( "Handshake", null,
-				new string[]{ "Mods", "Password" }.Select( p => FieldSaver.SaveField(this, p) ).ToList() ) );
+				new string[]{ "Mod", "Version", "Password" }.Select( p => FieldSaver.SaveField(this, p) ).ToList() ) );
 			data.Add(new MiniYamlNode("Client", FieldSaver.Save(Client)));
 
 			return data.WriteToString();

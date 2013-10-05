@@ -9,13 +9,14 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA
 {
 	public class NullLoadScreen : ILoadScreen
 	{
-		public void Init(Dictionary<string, string> info) {}
+		public void Init(Manifest m, Dictionary<string, string> info) {}
 
 		public void Display()
 		{

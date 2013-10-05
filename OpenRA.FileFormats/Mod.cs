@@ -21,7 +21,6 @@ namespace OpenRA.FileFormats
 		public string Description;
 		public string Version;
 		public string Author;
-		public string Requires;
 
 		public static readonly Dictionary<string, Mod> AllMods = ValidateMods(Directory.GetDirectories("mods").Select(x => x.Substring(5)).ToArray());
 
@@ -44,13 +43,6 @@ namespace OpenRA.FileFormats
 				ret.Add(m, mod);
 			}
 			return ret;
-		}
-
-		public string[] WithPrerequisites()
-		{
-			return Id.Iterate(m => AllMods[m].Requires)
-				.TakeWhile(m => m != null)
-				.ToArray();
 		}
 	}
 }

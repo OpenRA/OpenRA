@@ -50,8 +50,8 @@ namespace OpenRA.Editor
 				FileSystem.LoadFromManifest(Game.modData.Manifest);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 
-				var mod = Game.modData.Manifest.Mods[0];
-				Text = "{0} Mod Version: {1} - OpenRA Editor".F(Mod.AllMods[mod].Title, Mod.AllMods[mod].Version);			
+				var mod = Game.modData.Manifest.Mod;
+				Text = "{0} Mod Version: {1} - OpenRA Editor".F(mod.Title, mod.Version);
 
 				loadedMapName = null;
 			};

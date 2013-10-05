@@ -95,7 +95,7 @@ namespace OpenRA.Server
 				t.GameEnded(this);
 		}
 
-		public Server(IPEndPoint endpoint, string[] mods, ServerSettings settings, ModData modData)
+		public Server(IPEndPoint endpoint, ServerSettings settings, ModData modData)
 		{
 			Log.AddChannel("server", "server.log");
 
@@ -117,7 +117,7 @@ namespace OpenRA.Server
 			foreach (var trait in modData.Manifest.ServerTraits)
 				serverTraits.Add(modData.ObjectCreator.CreateObject<ServerTrait>(trait));
 
-			LobbyInfo = new Session(mods);
+			LobbyInfo = new Session();
 			LobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			LobbyInfo.GlobalSettings.Map = settings.Map;
 			LobbyInfo.GlobalSettings.ServerName = settings.Name;
@@ -127,10 +127,7 @@ namespace OpenRA.Server
 			foreach (var t in serverTraits.WithInterface<INotifyServerStart>())
 				t.ServerStarted(this);
 
-			Log.Write("server", "Initial mods: ");
-			foreach (var m in LobbyInfo.GlobalSettings.Mods)
-				Log.Write("server", "- {0}", m);
-
+			Log.Write("server", "Initial mod: {0}", ModData.Manifest.Mod.Id);
 			Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
 
 			new Thread(_ =>
@@ -226,9 +223,11 @@ namespace OpenRA.Server
 				// Dispatch a handshake order
 				var request = new HandshakeRequest()
 				{
-					Map = LobbyInfo.GlobalSettings.Map,
-					Mods = LobbyInfo.GlobalSettings.Mods.Select(m => "{0}@{1}".F(m, Mod.AllMods[m].Version)).ToArray()
+					Mod = ModData.Manifest.Mod.Id,
+					Version = ModData.Manifest.Mod.Version,
+					Map = LobbyInfo.GlobalSettings.Map
 				};
+
 				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", request.Serialize()).Serialize());
 			}
 			catch (Exception e)
@@ -282,13 +281,7 @@ namespace OpenRA.Server
 				else
 					client.Color = HSLColor.FromRGB(255, 255, 255);
 
-				// Check that the client has compatible mods
-				var mods = handshake.Mods;
-				var validMod = mods.All(m => m.Contains('@')) && // valid format
-					mods.Count() == Game.CurrentMods.Count() && // same number
-					mods.Select(m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First));
-
-				if (!validMod)
+				if (ModData.Manifest.Mod.Id != handshake.Mod)
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
 						newConn.socket.RemoteEndPoint);
@@ -298,10 +291,7 @@ namespace OpenRA.Server
 					return;
 				}
 
-				var validVersion = mods.Select(m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(
-					kv => kv.Second == Game.CurrentMods[kv.First].Version);
-
-				if (!validVersion && !LobbyInfo.GlobalSettings.AllowVersionMismatch)
+				if (ModData.Manifest.Mod.Version != handshake.Version && !LobbyInfo.GlobalSettings.AllowVersionMismatch)
 				{
 					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
 						newConn.socket.RemoteEndPoint);
@@ -338,13 +328,14 @@ namespace OpenRA.Server
 				// Send initial ping
 				SendOrderTo(newConn, "Ping", Environment.TickCount.ToString());
 
-				if (File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, LobbyInfo.GlobalSettings.Mods[0])))
+				var motdPath = Path.Combine(Platform.SupportDir, "motd_{0}.txt".F(ModData.Manifest.Mod.Id));
+				if (File.Exists(motdPath))
 				{
-					var motd = File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, LobbyInfo.GlobalSettings.Mods[0]));
+					var motd = System.IO.File.ReadAllText(motdPath);
 					SendOrderTo(newConn, "Message", motd);
 				}
 
-				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
+				if (handshake.Mod == "{DEV_VERSION}")
 					SendMessage("{0} is running an unversioned development build, ".F(client.Name) +
 					"and may desynchronize the game state if they have incompatible rules.");
 

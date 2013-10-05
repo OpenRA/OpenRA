@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc
 		Renderer r;
 		NullInputHandler nih = new NullInputHandler();
 
-		public void Init(Dictionary<string, string> info)
+		public void Init(Manifest m, Dictionary<string, string> info)
 		{
 			loadInfo = info;
 
@@ -63,6 +63,8 @@ namespace OpenRA.Mods.Cnc
 
 			brightBlock = new Sprite(s, new Rectangle(320, 0, 16, 35), TextureChannel.Alpha);
 			dimBlock = new Sprite(s, new Rectangle(336, 0, 16, 35), TextureChannel.Alpha);
+
+			versionText = m.Mod.Version;
 		}
 
 		bool setup;
@@ -93,7 +95,6 @@ namespace OpenRA.Mods.Cnc
 				loadingPos = new float2((bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
 
 				versionFont = r.Fonts["Regular"];
-				versionText = WidgetUtils.ActiveModVersion();
 				var versionSize = versionFont.Measure(versionText);
 				versionPos = new float2(bounds.Width - 107 - versionSize.X / 2, 115 - versionSize.Y / 2);
 

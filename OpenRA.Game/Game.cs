@@ -255,18 +255,6 @@ namespace OpenRA
 			}
 		}
 
-		public static Dictionary<String, Mod> CurrentMods
-		{
-			get
-			{
-				// Initialization hasn't completed yet
-				if (Mod.AllMods == null || modData == null)
-					return null;
-
-				return Mod.AllMods.Where(k => modData.Manifest.Mods.Contains(k.Key)).ToDictionary(k => k.Key, k => k.Value);
-			}
-		}
-
 		static Modifiers modifiers;
 		public static Modifiers GetModifierKeys() { return modifiers; }
 		internal static void HandleModifierKeys(Modifiers mods) { modifiers = mods; }
@@ -328,7 +316,8 @@ namespace OpenRA
 			Console.WriteLine("Available mods:");
 			foreach(var mod in Mod.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
-			InitializeWithMods(Settings.Game.Mods);
+
+			InitializeWithMod(Settings.Game.Mod);
 
 			if (Settings.Server.DiscoverNatDevices)
 			{
@@ -338,7 +327,7 @@ namespace OpenRA
 			}
 		}
 
-		public static void InitializeWithMods(string[] mods)
+		public static void InitializeWithMod(string mod)
 		{
 			// Clear static state if we have switched mods
 			LobbyInfoChanged = () => {};
@@ -353,17 +342,18 @@ namespace OpenRA
 			if (orderManager != null)
 				orderManager.Dispose();
 
-			// Discard any invalid mods, set RA as default
-			var mm = mods.Where( m => Mod.AllMods.ContainsKey( m ) ).ToArray();
-			if (mm.Length == 0) mm = new[] { "ra" };
-			Console.WriteLine("Loading mods: {0}", mm.JoinWith(","));
-			Settings.Game.Mods = mm;
+			// Fall back to RA if the mod doesn't exist
+			if (!Mod.AllMods.ContainsKey(mod))
+				mod = "ra";
+
+			Console.WriteLine("Loading mod: {0}", mod);
+			Settings.Game.Mod = mod;
 
 			Sound.StopMusic();
 			Sound.StopVideo();
 			Sound.Initialize();
 
-			modData = new ModData(mm);
+			modData = new ModData(mod);
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.InitializeLoaders();
 
@@ -480,8 +470,7 @@ namespace OpenRA
 
 		public static void CreateServer(ServerSettings settings)
 		{
-			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort),
-			                           Settings.Game.Mods, settings, modData);
+			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, modData);
 		}
 
 		public static int CreateLocalServer(string map)
@@ -494,8 +483,7 @@ namespace OpenRA
 				AllowPortForward =  false
 			};
 
-			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0),
-			                           Settings.Game.Mods, settings, modData);
+			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, modData);
 
 			return server.Port;
 		}
@@ -509,16 +497,19 @@ namespace OpenRA
 		{
 			try
 			{
-				var mod = CurrentMods.First().Value.Id;
-				var dirPath = "{1}maps{0}{2}".F(Path.DirectorySeparatorChar, Platform.SupportDir, mod);
-				if(!Directory.Exists(dirPath))
+				var mod = Game.modData.Manifest.Mod;
+				var dirPath = new [] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
+				if (!Directory.Exists(dirPath))
 					Directory.CreateDirectory(dirPath);
-				var mapPath = "{1}{0}{2}".F(Path.DirectorySeparatorChar, dirPath, mapHash+".oramap");
+
+				var mapPath = Path.Combine(dirPath, mapHash+".oramap");
 				Console.Write("Trying to download map to {0} ... ".F(mapPath));
+
 				WebClient webClient = new WebClient();
 				webClient.DownloadFile(Game.Settings.Game.MapRepository + mapHash, mapPath);
 				Game.modData.AvailableMaps.Add(mapHash, new Map(mapPath));
 				Console.WriteLine("done");
+
 				return true;
 			}
 			catch (WebException e)

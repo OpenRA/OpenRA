@@ -149,17 +149,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return (game == null) ? null : Game.modData.FindMapByUid(game.Map);
 		}
 
-		static string GenerateModLabel(KeyValuePair<string,string> mod)
+		public static string GenerateModLabel(GameServer s)
 		{
-			if (Mod.AllMods.ContainsKey(mod.Key))
-				return "{0} ({1})".F(Mod.AllMods[mod.Key].Title, mod.Value);
+			Mod mod;
+			var modVersion = s.Mods.Split('@');
 
-			return "Unknown Mod: {0}".F(mod.Key);
-		}
+			if (modVersion.Length == 2 && Mod.AllMods.TryGetValue(modVersion[0], out mod))
+				return "{0} ({1})".F(mod.Title, modVersion[1]);
 
-		public static string GenerateModsLabel(GameServer s)
-		{
-			return s.UsefulMods.Select(m => GenerateModLabel(m)).JoinWith("\n");
+			return "Unknown mod: {0}".F(s.Mods);
 		}
 
 		bool Filtered(GameServer game)
@@ -237,7 +235,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				ip.GetText = () => game.Address;
 
 				var version = item.Get<LabelWidget>("VERSION");
-				version.GetText = () => GenerateModsLabel(game);
+				version.GetText = () => GenerateModLabel(game);
 				version.IsVisible = () => !game.CompatibleVersion();
 
 				var location = item.Get<LabelWidget>("LOCATION");
