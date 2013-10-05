@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Air
 			if (self.CenterPosition.Z != 0)
 				return null;	// not on the ground.
 
-			return self.World.FindActorsInBox(self.CenterPosition, self.CenterPosition)
+			return self.World.ActorMap.GetUnitsAt(self.Location)
 				.FirstOrDefault(a => a.HasTrait<Reservable>());
 		}
 
