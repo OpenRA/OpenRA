@@ -228,6 +228,7 @@ SARDAUKAR:
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
+		IdleAnimations: stand,stand2
 	Armament@PRIMARY:
 		Weapon: Vulcan
 	Armament@SECONDARY:

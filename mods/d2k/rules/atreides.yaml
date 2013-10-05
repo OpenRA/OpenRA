@@ -227,6 +227,7 @@ FREMEN:
 		Weapon: Slung
 	AttackFrontal:
 	RenderInfantryProne:
+		IdleAnimations: stand,stand2
 	-RenderInfantry:
 	TakeCover:
 	Cloak:
