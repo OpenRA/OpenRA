@@ -138,7 +138,9 @@ namespace OpenRA
 			{
 				++RenderFrame;
 				viewport.DrawRegions(worldRenderer, new DefaultInputHandler(orderManager.world));
-				Sound.SetListenerPosition(worldRenderer.Position(viewport.CenterLocation.ToInt2()));
+
+				if (worldRenderer != null)
+					Sound.SetListenerPosition(worldRenderer.Position(viewport.CenterLocation.ToInt2()));
 			}
 
 			PerfHistory.items["render"].Tick();
