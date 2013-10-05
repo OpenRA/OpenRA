@@ -134,11 +134,12 @@ Music:
 
 Movies:
 
-LoadScreen: TSLoadScreen
-	LoadScreenImage: mods/ts/uibits/loadscreen.png
+LoadScreen: DefaultLoadScreen
+	Image: mods/ts/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFile: isotemp.mix
 	PackageURL: http://open-ra.org/get-dependency.php?file=ts-packages
+	Text: Updating EVA installation..., Changing perspective...
 
 ServerTraits:
 	LobbyCommands

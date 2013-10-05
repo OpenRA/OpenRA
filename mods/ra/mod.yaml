@@ -111,11 +111,12 @@ Movies:
 	mods/ra/movies1.yaml
 	mods/ra/movies2.yaml
 
-LoadScreen: RALoadScreen
-	LoadScreenImage: mods/ra/uibits/loadscreen.png
+LoadScreen: DefaultLoadScreen
+	Image: mods/ra/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFile: redalert.mix
 	PackageURL: http://open-ra.org/get-dependency.php?file=ra-packages
+	Text: Filling Crates..., Charging Capacitors..., Reticulating Splines..., Planting Trees..., Building Bridges..., Aging Empires..., Compiling EVA..., Constructing Pylons..., Activating Skynet..., Splitting Atoms...
 
 ServerTraits:
 	LobbyCommands
