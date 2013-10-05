@@ -33,7 +33,7 @@ namespace OpenRA.Widgets
 		public Func<bool> OnTabKey = () => false;
 		public Func<bool> OnEscKey = () => false;
 		public Action OnLoseFocus = () => { };
-		public int CursorPosition { get; protected set; }
+		public int CursorPosition { get; set; }
 
 		public Func<bool> IsDisabled = () => false;
 		public Color TextColor = Color.White;

@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats.Primitives;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
@@ -61,15 +62,12 @@ namespace OpenRA.Widgets
 
 		public void ReplaceChild(Widget oldChild, Widget newChild)
 		{
-
 			oldChild.Removed();
 			newChild.Parent = this;
 			Children[Children.IndexOf(oldChild)] = newChild;
 			Layout.AdjustChildren();
 			Scroll(0);
 		}
-
-
 
 		public override void DrawOuter()
 		{
@@ -85,7 +83,7 @@ namespace OpenRA.Widgets
 			if (thumbHeight == ScrollbarHeight)
 				thumbHeight = 0;
 
-			backgroundRect = new Rectangle(rb.X, rb.Y, rb.Width - ScrollbarWidth+1, rb.Height);
+			backgroundRect = new Rectangle(rb.X, rb.Y, rb.Width - ScrollbarWidth + 1, rb.Height);
 			upButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y, ScrollbarWidth, ScrollbarWidth);
 			downButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
 			scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth - 1, ScrollbarWidth, ScrollbarHeight + 2);
@@ -143,6 +141,11 @@ namespace OpenRA.Widgets
 		public void ScrollToTop()
 		{
 			ListOffset = 0;
+		}
+
+		public bool ScrolledToBottom
+		{
+			get { return ListOffset == Math.Min(0, Bounds.Height - ContentHeight); }
 		}
 
 		public void ScrollToItem(string itemKey)
@@ -225,6 +228,117 @@ namespace OpenRA.Widgets
 			}
 
 			return UpPressed || DownPressed || ThumbPressed;
+		}
+
+		IObservableCollection collection;
+		Func<object, Widget> makeWidget;
+		Func<Widget, object, bool> widgetItemEquals;
+		bool autoScroll;
+
+		public void Unbind()
+		{
+			Bind(null, null, null, false);
+		}
+
+		public void Bind(IObservableCollection c, Func<object, Widget> makeWidget, Func<Widget, object, bool> widgetItemEquals, bool autoScroll)
+		{
+			this.autoScroll = autoScroll;
+
+			Game.RunAfterTick(() =>
+			{
+				if (collection != null)
+				{
+					collection.OnAdd -= BindingAdd;
+					collection.OnRemove -= BindingRemove;
+					collection.OnRemoveAt -= BindingRemoveAt;
+					collection.OnSet -= BindingSet;
+					collection.OnRefresh -= BindingRefresh;
+				}
+
+				this.makeWidget = makeWidget;
+				this.widgetItemEquals = widgetItemEquals;
+
+				RemoveChildren();
+				collection = c;
+
+				if (c != null)
+				{
+					foreach (var item in c.ObservedItems)
+						BindingAddImpl(item);
+
+					c.OnAdd += BindingAdd;
+					c.OnRemove += BindingRemove;
+					c.OnRemoveAt += BindingRemoveAt;
+					c.OnSet += BindingSet;
+					c.OnRefresh += BindingRefresh;
+				}
+			});
+		}
+
+		void BindingAdd(object item)
+		{
+			Game.RunAfterTick(() => BindingAddImpl(item));
+		}
+
+		void BindingAddImpl(object item)
+		{
+			var widget = makeWidget(item);
+			var scrollToBottom = autoScroll && ScrolledToBottom;
+
+			AddChild(widget);
+
+			if (scrollToBottom)
+				ScrollToBottom();
+		}
+
+		void BindingRemove(object item)
+		{
+			Game.RunAfterTick(() =>
+			{
+				var widget = Children.FirstOrDefault(w => widgetItemEquals(w, item));
+				if (widget != null)
+					RemoveChild(widget);
+			});
+		}
+
+		void BindingRemoveAt(int index)
+		{
+			Game.RunAfterTick(() =>
+			{
+				if (index < 0 || index >= Children.Count)
+					return;
+				RemoveChild(Children[index]);
+			});
+		}
+
+		void BindingSet(object oldItem, object newItem)
+		{
+			Game.RunAfterTick(() =>
+			{
+				var newWidget = makeWidget(newItem);
+				newWidget.Parent = this;
+
+				var i = Children.FindIndex(w => widgetItemEquals(w, oldItem));
+				if (i >= 0)
+				{
+					var oldWidget = Children[i];
+					oldWidget.Removed();
+					Children[i] = newWidget;
+					Layout.AdjustChildren();
+				}
+				else
+					AddChild(newWidget);
+			});
+		}
+
+		void BindingRefresh()
+		{
+			Game.RunAfterTick(() =>
+			{
+				RemoveChildren();
+				foreach (var item in collection.ObservedItems)
+					BindingAddImpl(item);
+			});
 		}
 	}
 }

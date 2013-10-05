@@ -1,27 +1,31 @@
 Container@SERVERBROWSER_PANEL:
 	Logic:ServerBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 500)/2
-	Width:540
-	Height:535
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:730
+	Height:645
 	Children:
 		Label@TITLE:
 			Text:Find Server
-			Width:540
-			Y:0-25
+			Width:740
+			Y:0-10
 			Font:BigBold
 			Contrast:true
 			Align:Center
 		Background@bg:
-			Width:540
-			Height:500
+			Width:730
+			Height:600
 			Background:panel-black
+			Y:15
 			Children:
+				Container@IRC_ROOT:
+					X:15
+					Y:15
 				ScrollPanel@SERVER_LIST:
 					X:15
-					Y:30
-					Width:510
-					Height:450
+					Y:280
+					Width:700
+					Height:300
 					Children:
 						ScrollItem@SERVER_TEMPLATE:
 							Width:PARENT_RIGHT-27
@@ -76,7 +80,7 @@ Container@SERVERBROWSER_PANEL:
 									Height:25
 				Label@PROGRESS_LABEL:
 					X:(PARENT_RIGHT - WIDTH) / 2
-					Y:PARENT_BOTTOM / 2 - HEIGHT
+					Y:PARENT_BOTTOM / 2 - HEIGHT + (280 / 2)
 					Width:710
 					Height:25
 					Font:Bold
@@ -85,20 +89,20 @@ Container@SERVERBROWSER_PANEL:
 		Button@BACK_BUTTON:
 			Key:escape
 			X:0
-			Y:499
+			Y:614
 			Width:140
 			Height:35
 			Text:Back
 		Button@REFRESH_BUTTON:
-			X:250
-			Y:499
+			X:PARENT_RIGHT - 140 - 10 - 140
+			Y:614
 			Width:140
 			Height:35
 			Text:Refresh
 		Button@JOIN_BUTTON:
 			Key:return
-			X:400
-			Y:499
+			X:PARENT_RIGHT - 140
+			Y:614
 			Width:140
 			Height:35
 			Text:Join
