@@ -50,8 +50,8 @@ Packages:
 	temperat.mix:CRC32
 # Firestorm
 	~scores01.mix:CRC32
-	expand01.mix:CRC32
-	sounds01.mix:CRC32
+	~expand01.mix:CRC32
+	~sounds01.mix:CRC32
 	~e01sc01.mix:CRC32
 	~e01sc02.mix:CRC32
 	~e01vox01.mix:CRC32
@@ -137,8 +137,8 @@ Movies:
 LoadScreen: TSLoadScreen
 	LoadScreenImage: mods/ts/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
-	TestFile: tibsun.mix
-	PackageURL: http://open-ra.org/get-dependency.php?file=ts-packages # TODO: upload a stripped down package
+	TestFile: isotemp.mix
+	PackageURL: http://open-ra.org/get-dependency.php?file=ts-packages
 
 ServerTraits:
 	LobbyCommands
