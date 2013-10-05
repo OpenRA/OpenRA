@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new ActorMap(init.world, this); }
 	}
 
-	public class ActorMap
+	public class ActorMap : ITick
 	{
 		class InfluenceNode
 		{
@@ -48,6 +48,11 @@ namespace OpenRA.Traits
 		List<Actor>[] actors;
 		int rows, cols;
 
+		// Position updates are done in one pass
+		// to ensure consistency during a tick
+		List<Actor> addActorPosition;
+		List<Actor> removeActorPosition;
+
 		public ActorMap(World world, ActorMapInfo info)
 		{
 			this.info = info;
@@ -60,6 +65,9 @@ namespace OpenRA.Traits
 			for (var j = 0; j < rows; j++)
 				for (var i = 0; i < cols; i++)
 					actors[j * cols + i] = new List<Actor>();
+
+			addActorPosition = new List<Actor>();
+			removeActorPosition = new List<Actor>();
 		}
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a)
@@ -135,18 +143,34 @@ namespace OpenRA.Traits
 				RemoveInfluenceInner(ref influenceNode.Next, toRemove);
 		}
 
+		public void Tick(Actor self)
+		{
+			// Position updates are done in one pass
+			// to ensure consistency during a tick
+			foreach (var bin in actors)
+				bin.RemoveAll(removeActorPosition.Contains);
+
+			removeActorPosition.Clear();
+
+			foreach (var a in addActorPosition)
+			{
+				var pos = a.OccupiesSpace.CenterPosition;
+				var i = (pos.X / info.BinSize).Clamp(0, cols - 1);
+				var j = (pos.Y / info.BinSize).Clamp(0, rows - 1);
+				actors[j * cols + i].Add(a);
+			}
+
+			addActorPosition.Clear();
+		}
+
 		public void AddPosition(Actor a, IOccupySpace ios)
 		{
-			var pos = ios.CenterPosition;
-			var i = (pos.X / info.BinSize).Clamp(0, cols - 1);
-			var j = (pos.Y / info.BinSize).Clamp(0, rows - 1);
-			actors[j * cols + i].Add(a);
+			addActorPosition.Add(a);
 		}
 
 		public void RemovePosition(Actor a, IOccupySpace ios)
 		{
-			foreach (var bin in actors)
-				bin.Remove(a);
+			removeActorPosition.Add(a);
 		}
 
 		public void UpdatePosition(Actor a, IOccupySpace ios)
@@ -166,6 +190,7 @@ namespace OpenRA.Traits
 			var j1 = (top / info.BinSize).Clamp(0, rows - 1);
 			var j2 = (bottom / info.BinSize).Clamp(0, rows - 1);
 
+			var actorsInBox = new List<Actor>();
 			for (var j = j1; j <= j2; j++)
 			{
 				for (var i = i1; i <= i2; i++)
@@ -173,11 +198,13 @@ namespace OpenRA.Traits
 					foreach (var actor in actors[j * cols + i])
 					{
 						var c = actor.CenterPosition;
-						if (left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom)
-							yield return actor;
+						if (actor.IsInWorld && left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom)
+							actorsInBox.Add(actor);
 					}
 				}
 			}
+
+			return actorsInBox.Distinct();
 		}
 	}
 }
