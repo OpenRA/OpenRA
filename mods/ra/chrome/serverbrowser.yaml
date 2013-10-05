@@ -2,8 +2,8 @@ Background@JOINSERVER_BG:
 	Logic:ServerBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:540
-	Height:505
+	Width:740
+	Height:700
 	Children:
 		Label@JOINSERVER_LABEL_TITLE:
 			X:0
@@ -47,8 +47,8 @@ Background@JOINSERVER_BG:
 		ScrollPanel@SERVER_LIST:
 			X:20
 			Y:80
-			Width:500
-			Height:355
+			Width:700
+			Height:305
 			Children:
 				ScrollItem@SERVER_TEMPLATE:
 					Width:PARENT_RIGHT-27
@@ -103,34 +103,37 @@ Background@JOINSERVER_BG:
 							Height:25
 		Label@PROGRESS_LABEL:
 			X:(PARENT_RIGHT - WIDTH) / 2
-			Y:PARENT_BOTTOM / 2 - HEIGHT
+			Y:505 / 2 - HEIGHT
 			Width:150
 			Height:30
 			Text:Fetching games...
 			Align:Center
 		Button@REFRESH_BUTTON:
 			X:20
-			Y:PARENT_BOTTOM - 45
+			Y:395
 			Width:100
 			Height:25
 			Text:Refresh
 			Font:Bold
 		Button@JOIN_BUTTON:
-			X:PARENT_RIGHT - 140 - 130
-			Y:PARENT_BOTTOM - 45
+			X:PARENT_RIGHT - 120 - 120
+			Y:395
 			Width:100
 			Height:25
 			Text:Join
 			Font:Bold
 			Key:return
 		Button@BACK_BUTTON:
-			X:PARENT_RIGHT - 140
-			Y:PARENT_BOTTOM - 45
+			X:PARENT_RIGHT - 120
+			Y:395
 			Width:100
 			Height:25
 			Text:Cancel
 			Font:Bold
 			Key:escape
+		Container@IRC_ROOT:
+			X:20
+			Y:430
 Background@DIRECTCONNECT_BG:
 	Logic:DirectConnectLogic
 	X:(WINDOW_RIGHT - WIDTH)/2

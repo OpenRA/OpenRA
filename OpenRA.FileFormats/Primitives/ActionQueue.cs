@@ -36,7 +36,7 @@ namespace OpenRA.FileFormats
 				while (!actions.Empty && actions.Peek().Time <= t)
 				{
 					var da = actions.Pop();
-					a += da.Action;
+					a = da.Action + a;
 				}
 			}
 			a();
