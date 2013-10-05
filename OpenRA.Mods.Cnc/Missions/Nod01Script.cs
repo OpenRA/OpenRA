@@ -193,13 +193,10 @@ namespace OpenRA.Mods.Cnc.Missions
 			nr1 = actors["NODReinforceNthA"];
 			nr2 = actors["NODReinforceNthB"];
 			nr3 = actors["NODReinforceNWstA"];
-			Game.MoveViewport(nr1.Location.ToFloat2());
-			Action afterFMV = () =>
-			{
-				MissionUtils.PlayMissionMusic();
-			};
+
+			wr.Viewport.Center(nr1.Location.CenterPosition);
 			Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(w, "nod1pre.vqa", () =>
-										Media.PlayFMVFullscreen(w, "nod1.vqa", afterFMV)));
+										Media.PlayFMVFullscreen(w, "nod1.vqa", MissionUtils.PlayMissionMusic)));
 		}
 	}
 }

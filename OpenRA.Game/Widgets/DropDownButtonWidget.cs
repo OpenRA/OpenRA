@@ -71,7 +71,7 @@ namespace OpenRA.Widgets
 
 			// Mask to prevent any clicks from being sent to other widgets
 			fullscreenMask = new MaskWidget();
-			fullscreenMask.Bounds = new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
+			fullscreenMask.Bounds = new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height);
 			fullscreenMask.OnMouseDown += mi => RemovePanel();
 			if (onCancel != null)
 				fullscreenMask.OnMouseDown += _ => onCancel();

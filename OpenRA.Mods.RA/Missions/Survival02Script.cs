@@ -80,8 +80,8 @@ namespace OpenRA.Mods.RA.Missions
 		Actor FranceparaEntry2;
 		Actor FranceparaEntry3;
 
-
 		World world;
+		WorldRenderer worldRenderer;
 
 		CountdownTimer survivalTimer;
 		CountdownTimerWidget survivalTimerWidget;
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void FrenchReinforcements()
 		{
-			Game.MoveViewport(sovietrally1.Location.ToFloat2());
+			worldRenderer.Viewport.Center(sovietrally1.CenterPosition);
 			MissionUtils.Parabomb(world, allies, FranceparaEntry1.Location, drum3.Location);
 			MissionUtils.Parabomb(world, allies, FranceparaEntry3.Location, drum2.Location);
 			MissionUtils.Parabomb(world, allies, FranceparaEntry2.Location, drum1.Location);
@@ -355,6 +355,8 @@ namespace OpenRA.Mods.RA.Missions
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
+			worldRenderer = wr;
+
 			allies = w.Players.SingleOrDefault(p => p.InternalName == "Allies");
 			if (allies != null)
 			{
@@ -395,7 +397,8 @@ namespace OpenRA.Mods.RA.Missions
 			FranceparaEntry3 = actors["FranceparaEntry3"];
 			newsovietentrypoints = new[] { sovietparadropEntry, sovietEntry3 }.Select(p => p.Location).ToArray();
 			newsovietrallypoints = new[] { sovietrally3, sovietrally4, sovietrally8 }.Select(p => p.Location).ToArray();
-			Game.MoveViewport(alliesbase.Location.ToFloat2());
+
+			worldRenderer.Viewport.Center(alliesbase.CenterPosition);
 			StartCountDownTimer();
 			SetSovietUnitsToDefensiveStance();
 			world.CreateActor(Camera, new TypeDictionary

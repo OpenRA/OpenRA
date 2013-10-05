@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Missions
 			players = w.Players.ToDictionary(p => p.InternalName);
 			actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			var b = w.Map.Bounds;
-			Game.MoveViewport(new CPos(b.Left + b.Width / 2, b.Top + b.Height / 2).ToFloat2());
+			wr.Viewport.Center(new CPos(b.Left + b.Width / 2, b.Top + b.Height / 2).CenterPosition);
 
 			Action afterFMV = () =>
 			{

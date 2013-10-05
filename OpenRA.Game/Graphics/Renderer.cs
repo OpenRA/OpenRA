@@ -123,7 +123,7 @@ namespace OpenRA.Graphics
 
 		static IGraphicsDevice device;
 
-		public static Size Resolution { get { return device.WindowSize; } }
+		public Size Resolution { get { return device.WindowSize; } }
 
 		// Work around a bug in OSX 10.6.8 / mono 2.10.2 / SDL 1.2.14
 		// which makes the window non-interactive in Windowed/Pseudofullscreen mode.

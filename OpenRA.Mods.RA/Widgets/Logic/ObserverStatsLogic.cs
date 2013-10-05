@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Network;
 using OpenRA.Traits;
@@ -37,11 +38,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		DropDownButtonWidget statsDropDown;
 		IEnumerable<Player> players;
 		World world;
+		WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public ObserverStatsLogic(World world, Widget widget)
+		public ObserverStatsLogic(World world, WorldRenderer worldRenderer, Widget widget)
 		{
 			this.world = world;
+			this.worldRenderer = worldRenderer;
 			players = world.Players.Where(p => !p.NonCombatant);
 
 			basicStatsHeaders = widget.Get<ContainerWidget>("BASIC_STATS_HEADERS");
@@ -272,9 +275,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var playerBase = world.Actors.FirstOrDefault(a => !a.IsDead() && a.HasTrait<BaseBuilding>() && a.Owner == player);
 				if (playerBase != null)
-				{
-					Game.MoveViewport(playerBase.Location.ToFloat2());
-				}
+					worldRenderer.Viewport.Center(playerBase.CenterPosition);
 			});
 		}
 

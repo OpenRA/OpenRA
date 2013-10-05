@@ -34,6 +34,7 @@ namespace OpenRA.Graphics
 	{
 		public readonly World world;
 		public readonly Theater Theater;
+		public Viewport Viewport { get; private set; }
 
 		internal readonly TerrainRenderer terrainRenderer;
 		internal readonly ShroudRenderer shroudRenderer;
@@ -44,6 +45,7 @@ namespace OpenRA.Graphics
 		internal WorldRenderer(World world)
 		{
 			this.world = world;
+			Viewport = new Viewport(this, world.Map);
 			palette = new HardwarePalette();
 
 			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
@@ -74,10 +76,7 @@ namespace OpenRA.Graphics
 		List<IRenderable> GenerateRenderables()
 		{
 			var comparer = new RenderableComparer(this);
-			var vb = Game.viewport.ViewBounds(world);
-			var tl = Game.viewport.ViewToWorldPx(new int2(vb.Left, vb.Top));
-			var br = Game.viewport.ViewToWorldPx(new int2(vb.Right, vb.Bottom));
-			var actors = world.ScreenMap.ActorsInBox(tl, br)
+			var actors = world.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
 				.Append(world.WorldActor)
 				.ToList();
 
@@ -115,10 +114,10 @@ namespace OpenRA.Graphics
 				return;
 
 			var renderables = GenerateRenderables();
-			var bounds = Game.viewport.ViewBounds(world);
+			var bounds = Viewport.ScissorBounds;
 			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
-			terrainRenderer.Draw(this, Game.viewport);
+			terrainRenderer.Draw(this, Viewport);
 			Game.Renderer.Flush();
 
 			for (var i = 0; i < renderables.Count; i++)

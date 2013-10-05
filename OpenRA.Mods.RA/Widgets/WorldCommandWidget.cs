@@ -13,29 +13,32 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Orders;
 using OpenRA.Network;
 using OpenRA.Orders;
 using OpenRA.Widgets;
-using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.RA.Widgets
 {
 	public class WorldCommandWidget : Widget
 	{
-		public World World { get { return OrderManager.world; } }
-
-		public readonly OrderManager OrderManager;
+		readonly World world;
+		readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public WorldCommandWidget(OrderManager orderManager) { OrderManager = orderManager; }
+		public WorldCommandWidget(World world, WorldRenderer worldRenderer)
+		{
+			this.world = world;
+			this.worldRenderer = worldRenderer;
+		}
 
 		public override string GetCursor(int2 pos) { return null; }
 		public override Rectangle GetEventBounds() { return Rectangle.Empty; }
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (World == null) return false;
-			if (World.LocalPlayer == null) return false;
+			if (world == null || world.LocalPlayer == null)
+				return false;
 
 			return ProcessInput(e);
 		}
@@ -53,7 +56,8 @@ namespace OpenRA.Mods.RA.Widgets
 				if (e.KeyName == Game.Settings.Keys.ToSelectionKey)
 					return ToSelection();
 
-				if (!World.Selection.Actors.Any()) // Put all functions, that are no unit-functions, before this line!
+				// Put all functions that aren't unit-specific before this line!
+				if (!world.Selection.Actors.Any()) 
 					return false;
 
 				if (e.KeyName == Game.Settings.Keys.AttackMoveKey)
@@ -79,13 +83,14 @@ namespace OpenRA.Mods.RA.Widgets
 		}
 
 		// TODO: take ALL this garbage and route it through the OrderTargeter stuff.
-
 		bool PerformAttackMove()
 		{
-			var actors = World.Selection.Actors.Where(a => a.Owner == World.LocalPlayer).ToArray();
+			var actors = world.Selection.Actors
+				.Where(a => a.Owner == world.LocalPlayer)
+				.ToArray();
 
 			if (actors.Any())
-				World.OrderGenerator = new GenericSelectTarget(actors,
+				world.OrderGenerator = new GenericSelectTarget(actors,
 					"AttackMove", "attackmove", Game.mouseButtonPreference.Action);
 
 			return true;
@@ -93,10 +98,15 @@ namespace OpenRA.Mods.RA.Widgets
 
 		void PerformKeyboardOrderOnSelection(Func<Actor, Order> f)
 		{
-			var orders = World.Selection.Actors
-				.Where(a => a.Owner == World.LocalPlayer && !a.Destroyed).Select(f).ToArray();
-			foreach (var o in orders) World.IssueOrder(o);
-			World.PlayVoiceForOrders(orders);
+			var orders = world.Selection.Actors
+				.Where(a => a.Owner == world.LocalPlayer && !a.Destroyed)
+				.Select(f)
+				.ToArray();
+
+			foreach (var o in orders)
+				world.IssueOrder(o);
+
+			world.PlayVoiceForOrders(orders);
 		}
 
 		bool PerformStop()
@@ -123,80 +133,89 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool PerformStanceCycle()
 		{
-			var actor = World.Selection.Actors
-				.Where(a => a.Owner == World.LocalPlayer && !a.Destroyed)
-				.Select(a => Pair.New( a, a.TraitOrDefault<AutoTarget>() ))
-				.Where(a => a.Second != null).FirstOrDefault();
+			var actor = world.Selection.Actors
+				.Where(a => a.Owner == world.LocalPlayer && !a.Destroyed)
+				.Select(a => Pair.New(a, a.TraitOrDefault<AutoTarget>()))
+				.Where(a => a.Second != null)
+				.FirstOrDefault();
 
 			if (actor.First == null)
 				return true;
 
 			var stances = Enum<UnitStance>.GetValues();
-
-			var nextStance = stances.Concat(stances).SkipWhile(s => s != actor.Second.predictedStance).Skip(1).First();
+			var nextStance = stances.Concat(stances)
+				.SkipWhile(s => s != actor.Second.predictedStance)
+				.Skip(1)
+				.First();
 
 			PerformKeyboardOrderOnSelection(a =>
 			{
 				var at = a.TraitOrDefault<AutoTarget>();
-				if (at != null) at.predictedStance = nextStance;
-				// NOTE(jsd): Abuse of the type system here with `CPos`
+				if (at != null)
+					at.predictedStance = nextStance;
+
+				// FIXME: Abuse of the type system here with `CPos`
 				return new Order("SetUnitStance", a, false) { TargetLocation = new CPos((int)nextStance, 0) };
 			});
 
-			Game.Debug( "Unit stance set to: {0}".F(nextStance) );
+			Game.Debug("Unit stance set to: {0}".F(nextStance));
 
 			return true;
 		}
 
 		bool PerformGuard()
 		{
-			var actors = World.Selection.Actors.Where(a => !a.Destroyed && a.Owner == World.LocalPlayer && a.HasTrait<Guard>());
+			var actors = world.Selection.Actors
+				.Where(a => !a.Destroyed && a.Owner == world.LocalPlayer && a.HasTrait<Guard>());
 
 			if (actors.Any())
-				World.OrderGenerator = new GuardOrderGenerator(actors);
+				world.OrderGenerator = new GuardOrderGenerator(actors);
 
 			return true;
 		}
 
 		bool CycleBases()
 		{
-			var bases = World.ActorsWithTrait<BaseBuilding>()
-				.Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
-			if (!bases.Any()) return true;
+			var bases = world.ActorsWithTrait<BaseBuilding>()
+				.Where(a => a.Actor.Owner == world.LocalPlayer)
+				.ToArray();
+
+			if (!bases.Any())
+				return true;
 
 			var next = bases
 				.Select(b => b.Actor)
-				.SkipWhile(b => !World.Selection.Actors.Contains(b))
+				.SkipWhile(b => !world.Selection.Actors.Contains(b))
 				.Skip(1)
 				.FirstOrDefault();
 
 			if (next == null)
 				next = bases.Select(b => b.Actor).First();
 
-			World.Selection.Combine(World, new Actor[] { next }, false, true);
+			world.Selection.Combine(world, new Actor[] { next }, false, true);
 
 			return ToSelection();
 		}
 
 		bool ToLastEvent()
 		{
-			if (World.LocalPlayer == null)
+			if (world.LocalPlayer == null)
 				return true;
 
-			var eventNotifier = World.LocalPlayer.PlayerActor.TraitOrDefault<BaseAttackNotifier>();
+			var eventNotifier = world.LocalPlayer.PlayerActor.TraitOrDefault<BaseAttackNotifier>();
 			if (eventNotifier == null)
 				return true;
 
 			if (eventNotifier.lastAttackTime < 0)
 				return true;
 
-			Game.viewport.Center(eventNotifier.lastAttackLocation.ToFloat2());
+			worldRenderer.Viewport.Center(eventNotifier.lastAttackLocation.CenterPosition);
 			return true;
 		}
 
 		bool ToSelection()
 		{
-			Game.viewport.Center(World.Selection.Actors);
+			worldRenderer.Viewport.Center(world.Selection.Actors);
 			return true;
 		}
 	}

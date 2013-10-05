@@ -40,8 +40,8 @@ namespace OpenRA.Mods.TS
 			var s = new Sheet(Info["LoadScreenImage"]);
 			Logo = new Sprite(s, new Rectangle(0,0,256,256), TextureChannel.Alpha);
 			Stripe = new Sprite(s, new Rectangle(256,0,256,256), TextureChannel.Alpha);
-			StripeRect = new Rectangle(0, Renderer.Resolution.Height/2 - 128, Renderer.Resolution.Width, 256);
-			LogoPos =  new float2(Renderer.Resolution.Width/2 - 128, Renderer.Resolution.Height/2 - 128);
+			StripeRect = new Rectangle(0, r.Resolution.Height/2 - 128, r.Resolution.Width, 256);
+			LogoPos =  new float2(r.Resolution.Width/2 - 128, r.Resolution.Height/2 - 128);
 		}
 
 		public void Display()
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.TS
 			r.BeginFrame(float2.Zero, 1f);
 			WidgetUtils.FillRectWithSprite(StripeRect, Stripe);
 			r.RgbaSpriteRenderer.DrawSprite(Logo, LogoPos);
-			r.Fonts["Bold"].DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.White);
+			r.Fonts["Bold"].DrawText(text, new float2(r.Resolution.Width - textSize.X - 20, r.Resolution.Height - textSize.Y - 20), Color.White);
 			r.EndFrame( new NullInputHandler() );
 		}
 

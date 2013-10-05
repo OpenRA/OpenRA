@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA
 
 		static IEnumerable<Actor> FriendlyGuardableUnits(World world, MouseInput mi)
 		{
-			return world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(mi.Location))
+			return world.ScreenMap.ActorsAt(mi)
 				.Where(a => !world.FogObscures(a) && !a.IsDead() &&
 					a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) &&
 					a.HasTrait<Guardable>());

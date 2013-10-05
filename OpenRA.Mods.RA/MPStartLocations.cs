@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 
 			// Set viewport
 			if (world.LocalPlayer != null && Start.ContainsKey(world.LocalPlayer))
-				Game.viewport.Center(Start[world.LocalPlayer].ToFloat2());
+				wr.Viewport.Center(Start[world.LocalPlayer].CenterPosition);
 		}
 
 		static Player FindPlayerInSlot(World world, string pr)

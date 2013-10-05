@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA.Missions
 			airfield3 = actors["Airfield3"];
 			airfields = new[] { airfield1, airfield2, airfield3 };
 
-			Game.MoveViewport(startJeep.Location.ToFloat2());
+			wr.Viewport.Center(startJeep.CenterPosition);
 
 			if (w.LobbyInfo.IsSinglePlayer)
 			{

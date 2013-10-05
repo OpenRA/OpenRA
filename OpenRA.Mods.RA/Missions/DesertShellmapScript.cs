@@ -26,16 +26,17 @@ namespace OpenRA.Mods.RA.Missions
 	class DesertShellmapScript : ITick, IWorldLoaded
 	{
 		World world;
+		WorldRenderer worldRenderer;
 		Player allies;
 		Player soviets;
 		Player neutral;
 
-		List<int2> viewportTargets = new List<int2>();
-		int2 viewportTarget;
+		WPos[] viewportTargets;
+		WPos viewportTarget;
 		int viewportTargetNumber;
-		int2 viewportOrigin;
-		float mul;
-		float div = 400;
+		WPos viewportOrigin;
+		int mul;
+		int div = 400;
 		int waitTicks = 0;
 
 		int nextCivilianMove = 1;
@@ -138,12 +139,12 @@ namespace OpenRA.Mods.RA.Missions
 			if (--waitTicks <= 0)
 			{
 				if (++mul <= div)
-					Game.MoveViewport(float2.Lerp(viewportOrigin, viewportTarget, mul / div));
+					worldRenderer.Viewport.Center(WPos.Lerp(viewportOrigin, viewportTarget, mul, div));
 				else
 				{
 					mul = 0;
 					viewportOrigin = viewportTarget;
-					viewportTarget = viewportTargets[(viewportTargetNumber = (viewportTargetNumber + 1) % viewportTargets.Count)];
+					viewportTarget = viewportTargets[(viewportTargetNumber = (viewportTargetNumber + 1) % viewportTargets.Length)];
 					waitTicks = 100;
 
 					if (viewportTargetNumber == 0)
@@ -238,7 +239,7 @@ namespace OpenRA.Mods.RA.Missions
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
-
+			worldRenderer = wr;
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			neutral = w.Players.Single(p => p.InternalName == "Neutral");
@@ -254,12 +255,12 @@ namespace OpenRA.Mods.RA.Missions
 			paradrop2LZ = actors["Paradrop2LZ"];
 			paradrop2Entry = actors["Paradrop2Entry"];
 
-			var t1 = actors["ViewportTarget1"];
-			var t2 = actors["ViewportTarget2"];
-			var t3 = actors["ViewportTarget3"];
-			var t4 = actors["ViewportTarget4"];
-			var t5 = actors["ViewportTarget5"];
-			viewportTargets = new[] { t1, t2, t3, t4, t5 }.Select(t => t.Location.ToInt2()).ToList();
+			var t1 = actors["ViewportTarget1"].CenterPosition;
+			var t2 = actors["ViewportTarget2"].CenterPosition;
+			var t3 = actors["ViewportTarget3"].CenterPosition;
+			var t4 = actors["ViewportTarget4"].CenterPosition;
+			var t5 = actors["ViewportTarget5"].CenterPosition;
+			viewportTargets = new[] { t1, t2, t3, t4, t5 };
 
 			offmapAttackerSpawn1 = actors["OffmapAttackerSpawn1"];
 			offmapAttackerSpawn2 = actors["OffmapAttackerSpawn2"];
@@ -298,7 +299,8 @@ namespace OpenRA.Mods.RA.Missions
 			viewportOrigin = viewportTargets[0];
 			viewportTargetNumber = 1;
 			viewportTarget = viewportTargets[1];
-			Game.viewport.Center(viewportOrigin);
+
+			wr.Viewport.Center(viewportOrigin);
 			Sound.SoundVolumeModifier = 0.1f;
 		}
 	}

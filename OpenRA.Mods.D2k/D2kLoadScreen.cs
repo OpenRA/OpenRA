@@ -41,8 +41,8 @@ namespace OpenRA.Mods.D2k
 			var s = new Sheet("mods/d2k/uibits/loadscreen.png");
 			Logo = new Sprite(s, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
 			stripe = new Sprite(s, new Rectangle(256, 0, 256, 256), TextureChannel.Alpha);
-			stripeRect = new Rectangle(0, Renderer.Resolution.Height / 2 - 128, Renderer.Resolution.Width, 256);
-			logoPos = new float2(Renderer.Resolution.Width / 2 - 128, Renderer.Resolution.Height / 2 - 128);
+			stripeRect = new Rectangle(0, r.Resolution.Height / 2 - 128, r.Resolution.Width, 256);
+			logoPos = new float2(r.Resolution.Width / 2 - 128, r.Resolution.Height / 2 - 128);
 		}
 
 		public void Display()
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.D2k
 			r.BeginFrame(float2.Zero, 1f);
 			WidgetUtils.FillRectWithSprite(stripeRect, stripe);
 			r.RgbaSpriteRenderer.DrawSprite(Logo, logoPos);
-			r.Fonts["Bold"].DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.White);
+			r.Fonts["Bold"].DrawText(text, new float2(r.Resolution.Width - textSize.X - 20, r.Resolution.Height - textSize.Y - 20), Color.White);
 			r.EndFrame(new NullInputHandler());
 		}
 

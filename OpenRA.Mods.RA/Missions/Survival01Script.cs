@@ -336,7 +336,7 @@ namespace OpenRA.Mods.RA.Missions
 			shroud.Explore(w, sam1.Location, 4);
 			shroud.Explore(w, sam2.Location, 4);
 
-			Game.MoveViewport(alliesbase.Location.ToFloat2());
+			wr.Viewport.Center(alliesbase.CenterPosition);
 			StartCountDownTimer();
 			SendSquad1();
 			SendSquad2();
