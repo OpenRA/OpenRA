@@ -208,6 +208,7 @@
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Clear,Road
+		RequiresBaseProvider: True
 	GivesBuildableArea:
 	Capturable:
 	CapturableBar:

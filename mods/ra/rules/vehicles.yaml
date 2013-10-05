@@ -7,16 +7,16 @@ V2RL:
 		Owner: soviet
 		Hotkey: v
 	Valued:
-		Cost: 700
+		Cost: 900
 	Tooltip:
 		Name: V2 Rocket
 		Description: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 150
+		HP: 200
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 7
+		Speed: 6
 	RevealsShroud:
 		Range: 5
 	Armament:
@@ -214,12 +214,12 @@ ARTY:
 		Owner: allies
 		Hotkey: r
 	Valued:
-		Cost: 600
+		Cost: 800
 	Tooltip:
 		Name: Artillery
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 75
+		HP: 100
 	Armor:
 		Type: Light
 	Mobile:
@@ -290,6 +290,8 @@ MCV:
 		Prerequisites: fix
 		Owner: allies,soviet
 		Hotkey: b
+	CustomBuildTimeValue:
+		Value: 2000
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -494,26 +496,26 @@ MGG:
 		Owner: allies
 		Hotkey: y
 	Valued:
-		Cost: 1500
+		Cost: 1200
 	Tooltip:
 		Name: Mobile Gap Generator
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
 	Health:
-		HP: 200
+		HP: 220
 	Armor:
-		Type: Light
+		Type: Heavy
 	Mobile:
 		Speed: 6
-	RevealsShroud:
-		Range: 6
 	RenderUnit:
 	WithIdleOverlay@SPINNER:
 		Offset: -299,0,171
 		Sequence: spinner
 	AttackMove:
 		JustMove: yes
+	RevealsShroud:
+		Range: 6
 	CreatesShroud:
-		Range: 4
+		Range: 6
 	RenderShroudCircle:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -545,9 +547,9 @@ MRJ:
 		Owner: allies
 		Hotkey: k
 	Health:
-		HP: 200
+		HP: 220
 	Armor:
-		Type: Light
+		Type: Heavy
 	Mobile:
 		Speed: 6
 	RevealsShroud:
