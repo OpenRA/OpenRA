@@ -770,7 +770,7 @@ CRATE:
 		Effect: parabombs
 	GiveMcvCrateAction:
 		SelectionShares: 2
-		NoBaseSelectionShares: 9001
+		NoBaseSelectionShares: 100
 		Unit: mcv
 	GiveUnitCrateAction@jeep:
 		SelectionShares: 7

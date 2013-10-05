@@ -207,7 +207,8 @@ ChainGun:
 		High: true
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
+			None: 120%
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
@@ -215,7 +216,7 @@ ChainGun:
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
-		Damage: 20
+		Damage: 30
 
 ChainGun.Yak:
 	ROF: 3
@@ -310,7 +311,7 @@ HellfireAG:
 	Range: 4
 	Report: MISSILE6.AUD
 	Burst: 2
-	BurstDelay: 1
+	BurstDelay: 10
 	ValidTargets: Ground
 	Projectile: Missile
 		Speed: 30
@@ -321,7 +322,7 @@ HellfireAG:
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		RangeLimit: 20
 	Warhead:
 		Spread: 3
@@ -334,7 +335,7 @@ HellfireAG:
 		WaterExplosion: med_splash
 		InfDeath: 4
 		SmudgeType: Crater
-		Damage: 40
+		Damage: 60
 		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 
@@ -343,7 +344,7 @@ HellfireAA:
 	Range: 4
 	Report: MISSILE6.AUD
 	Burst: 2
-	BurstDelay: 1
+	BurstDelay: 10
 	ValidTargets: Air
 	Projectile: Missile
 		Speed: 45
@@ -354,7 +355,7 @@ HellfireAA:
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		RangeLimit: 20
 	Warhead:
 		Spread: 3
@@ -375,7 +376,7 @@ Grenade:
 	Range: 4
 	Report: grenade1.aud
 	Projectile: Bullet
-		Speed: 5
+		Speed: 8
 		High: true
 		Angle: .1
 		Inaccuracy: 13
@@ -984,7 +985,7 @@ SilencedPPK:
 		Damage: 150
 
 SCUD:
-	ROF: 280
+	ROF: 240
 	Range: 10
 	MinRange: 3
 	Report: MISSILE1.AUD
@@ -1002,13 +1003,13 @@ SCUD:
 		Versus: 
 			None: 90%
 			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			Light: 70%
+			Heavy: 40%
 		Explosion: napalm
 		WaterExplosion: large_splash
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 600
+		Damage: 450
 		ImpactSound: firebl3.aud
 		WaterImpactSound: splash9.aud
 
