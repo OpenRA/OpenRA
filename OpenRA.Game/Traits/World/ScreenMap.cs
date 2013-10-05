@@ -109,8 +109,12 @@ namespace OpenRA.Traits
 			Add(a);
 		}
 
+		public static readonly IEnumerable<FrozenActor> NoFrozenActors = new FrozenActor[0].AsEnumerable();
 		public IEnumerable<FrozenActor> FrozenActorsAt(Player viewer, int2 pxPos)
 		{
+			if (viewer == null)
+				return NoFrozenActors;
+
 			var i = (pxPos.X / info.BinSize).Clamp(0, cols - 1);
 			var j = (pxPos.Y / info.BinSize).Clamp(0, rows - 1);
 			return frozen[viewer][j*cols + i]
@@ -125,6 +129,11 @@ namespace OpenRA.Traits
 			return actors[j * cols + i]
 				.Where(kv => kv.Key.IsInWorld && kv.Value.Contains(pxPos))
 				.Select(kv => kv.Key);
+		}
+
+		public IEnumerable<Actor> ActorsAt(MouseInput mi)
+		{
+			return ActorsAt(worldRenderer.Viewport.ViewToWorldPx(mi.Location));
 		}
 
 		public IEnumerable<Actor> ActorsInBox(int2 a, int2 b)

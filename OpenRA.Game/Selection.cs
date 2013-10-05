@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA
@@ -64,7 +65,7 @@ namespace OpenRA
 
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
 
-		public void DoControlGroup(World world, int group, Modifiers mods, int MultiTapCount)
+		public void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int MultiTapCount)
 		{
 			var addModifier = Platform.CurrentPlatform == PlatformType.OSX ? Modifiers.Meta : Modifiers.Ctrl;
 			if (mods.HasModifier(addModifier))
@@ -84,7 +85,7 @@ namespace OpenRA
 
 			if (mods.HasModifier(Modifiers.Alt) || MultiTapCount >= 2)
 			{
-				Game.viewport.Center(controlGroups[group]);
+				worldRenderer.Viewport.Center(controlGroups[group]);
 				return;
 			}
 

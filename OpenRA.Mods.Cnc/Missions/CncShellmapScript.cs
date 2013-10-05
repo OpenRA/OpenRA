@@ -22,14 +22,16 @@ namespace OpenRA.Mods.RA
 
 	class CncShellmapScript : IWorldLoaded, ITick
 	{
-		static CPos viewportOrigin;
+		WPos viewportOrigin;
 		Dictionary<string, Actor> actors;
+		WorldRenderer worldRenderer;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
+			worldRenderer = wr;
 			var b = w.Map.Bounds;
-			viewportOrigin = new CPos(b.Left + b.Width / 2, b.Top + b.Height / 2);
-			Game.MoveViewport(viewportOrigin.ToFloat2());
+			viewportOrigin = new CPos(b.Left + b.Width / 2, b.Top + b.Height / 2).CenterPosition;
+			worldRenderer.Viewport.Center(viewportOrigin);
 
 			actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 
@@ -39,8 +41,8 @@ namespace OpenRA.Mods.RA
 		void SetViewport()
 		{
 			var t = (ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed;
-			var loc = viewportOrigin.ToFloat2() + (new float2(-15, 4) * float2.FromAngle((float)t));
-			Game.viewport.Center(loc);
+			var offset = new float2(-15360, 4096) * float2.FromAngle((float)t);
+			worldRenderer.Viewport.Center(viewportOrigin + new WVec((int)offset.X, (int)offset.Y, 0));
 		}
 
 		int ticks = 0;

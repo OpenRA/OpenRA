@@ -300,7 +300,7 @@ namespace OpenRA.Mods.RA.Missions
 			attackEntryPoint2 = actors["SovietAttackEntryPoint2"];
 			SetAlliedUnitsToDefensiveStance();
 
-			Game.MoveViewport(insertionLZ.Location.ToFloat2());
+			wr.Viewport.Center(insertionLZ.CenterPosition);
 
 			if (w.LobbyInfo.IsSinglePlayer)
 				Media.PlayFMVFullscreen(w, "ally1.vqa", () =>

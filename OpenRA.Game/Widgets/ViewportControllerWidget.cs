@@ -57,12 +57,14 @@ namespace OpenRA.Widgets
 		ScrollDirection keyboardDirections;
 		ScrollDirection edgeDirections;
 		World world;
+		WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
 		public ViewportControllerWidget(World world, WorldRenderer worldRenderer)
 			: base()
 		{
 			this.world = world;
+			this.worldRenderer = worldRenderer;
 			tooltipContainer = Lazy.New(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
@@ -93,7 +95,7 @@ namespace OpenRA.Widgets
 		public void UpdateMouseover()
 		{
 			TooltipType = WorldTooltipType.None;
-			var cell = Game.viewport.ViewToWorld(Viewport.LastMousePos);
+			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 			if (!world.Map.IsInMap(cell))
 				return;
 
@@ -103,7 +105,7 @@ namespace OpenRA.Widgets
 				return;
 			}
 
-			var underCursor = world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(Viewport.LastMousePos))
+			var underCursor = world.ScreenMap.ActorsAt(worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
 				.Where(a => !world.FogObscures(a) && a.HasTrait<IToolTip>())
 				.OrderByDescending(a => a.Info.SelectionPriority())
 				.FirstOrDefault();
@@ -115,7 +117,7 @@ namespace OpenRA.Widgets
 				return;
 			}
 
-			var frozen = world.FindFrozenActorsAtMouse(Viewport.LastMousePos)
+			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, Viewport.LastMousePos)
 				.Where(a => a.TooltipName != null)
 				.OrderByDescending(a => a.Info.SelectionPriority())
 				.FirstOrDefault();
@@ -127,14 +129,14 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public static string GetScrollCursor(Widget w, ScrollDirection edge, int2 pos)
+		public override string GetCursor(int2 pos)
 		{
-			if (!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != w)
+			if (!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != this)
 				return null;
 
-			var blockedDirections = Game.viewport.GetBlockedDirections();
+			var blockedDirections = worldRenderer.Viewport.GetBlockedDirections();
 			foreach (var dir in ScrollCursors)
-				if (edge.Includes(dir.Key))
+				if (edgeDirections.Includes(dir.Key))
 					return dir.Value + (blockedDirections.Includes(dir.Key) ? "-blocked" : "");
 
 			return null;
@@ -150,14 +152,12 @@ namespace OpenRA.Widgets
 				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
 			{
 				var d = scrolltype == MouseScrollType.Inverted ? -1 : 1;
-				Game.viewport.Scroll((Viewport.LastMousePos - mi.Location) * d);
+				worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
 				return true;
 			}
 
 			return false;
 		}
-
-		public override string GetCursor(int2 pos) { return GetScrollCursor(this, edgeDirections, pos); }
 
 		public override bool YieldKeyboardFocus()
 		{
@@ -195,7 +195,7 @@ namespace OpenRA.Widgets
 				var length = Math.Max(1, scroll.Length);
 				scroll *= (1f / length) * Game.Settings.Game.ViewportEdgeScrollStep;
 
-				Game.viewport.Scroll(scroll);
+				worldRenderer.Viewport.Scroll(scroll, false);
 			}
 		}
 
@@ -206,9 +206,9 @@ namespace OpenRA.Widgets
 				directions |= ScrollDirection.Left;
 			if (Viewport.LastMousePos.Y < EdgeScrollThreshold)
 				directions |= ScrollDirection.Up;
-			if (Viewport.LastMousePos.X >= Game.viewport.Width - EdgeScrollThreshold)
+			if (Viewport.LastMousePos.X >= Game.Renderer.Resolution.Width - EdgeScrollThreshold)
 				directions |= ScrollDirection.Right;
-			if (Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeScrollThreshold)
+			if (Viewport.LastMousePos.Y >= Game.Renderer.Resolution.Height - EdgeScrollThreshold)
 				directions |= ScrollDirection.Down;
 
 			return directions;

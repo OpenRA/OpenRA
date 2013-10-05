@@ -53,8 +53,7 @@ namespace OpenRA.Mods.RA
 			var doDim = refreshTick - world.FrameNumber <= 0;
 			if (doDim) refreshTick = world.FrameNumber + 20;
 
-			var viewBounds = Game.viewport.WorldBounds(world);
-
+			var viewBounds = wr.Viewport.CellBounds;
 			foreach (var pair in layers)
 			{
 				var c = (pair.Key != null) ? pair.Key.Color.RGB : Color.PaleTurquoise;

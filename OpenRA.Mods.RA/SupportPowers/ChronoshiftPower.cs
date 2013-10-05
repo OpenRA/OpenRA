@@ -138,7 +138,7 @@ namespace OpenRA.Mods.RA
 
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
+				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var targetUnits = power.UnitsInRange(xy);
 				foreach (var unit in targetUnits)
 					if (manager.self.Owner.Shroud.IsTargetable(unit) || manager.self.Owner.HasFogVisibility())
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
-				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
+				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var tiles = world.FindTilesInCircle(xy, range);
 				var pal = wr.Palette("terrain");
 				foreach (var t in tiles)
@@ -226,7 +226,7 @@ namespace OpenRA.Mods.RA
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
-				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
+				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var pal = wr.Palette("terrain");
 
 				// Source tiles

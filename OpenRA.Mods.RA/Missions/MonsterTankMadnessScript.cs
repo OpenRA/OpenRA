@@ -335,7 +335,7 @@ namespace OpenRA.Mods.RA.Missions
 			superTankDome.AddTrait(new InfiltrateAction(OnSuperTankDomeInfiltrated));
 			superTankDome.AddTrait(new TransformedAction(self => superTankDome = self));
 
-			Game.MoveViewport(startEntryPoint.Location.ToFloat2());
+			wr.Viewport.Center(startEntryPoint.CenterPosition);
 			MissionUtils.PlayMissionMusic();
 		}
 	}

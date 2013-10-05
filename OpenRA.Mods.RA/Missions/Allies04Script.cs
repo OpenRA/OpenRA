@@ -60,6 +60,7 @@ namespace OpenRA.Mods.RA.Missions
 		Player soviets;
 		Player creeps;
 		World world;
+		WorldRenderer worldRenderer;
 
 		List<Patrol> patrols;
 		CPos[] patrolPoints1;
@@ -110,7 +111,7 @@ namespace OpenRA.Mods.RA.Missions
 				if (world.FrameNumber == frameInfiltrated + 100)
 				{
 					Sound.Play("aarrivs1.aud");
-					Game.MoveViewport(reinforcementsUnloadPoint.Location.ToFloat2());
+					worldRenderer.Viewport.Center(reinforcementsUnloadPoint.CenterPosition);
 					world.AddFrameEndTask(w => SendReinforcements());
 				}
 				if (world.FrameNumber == frameInfiltrated + 200)
@@ -354,6 +355,7 @@ namespace OpenRA.Mods.RA.Missions
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
+			worldRenderer = wr;
 
 			difficulty = w.LobbyInfo.GlobalSettings.Difficulty;
 			Game.Debug("{0} difficulty selected".F(difficulty));
@@ -453,7 +455,7 @@ namespace OpenRA.Mods.RA.Missions
 			OnObjectivesUpdated(false);
 			SetupSubStances();
 
-			Game.MoveViewport(spyReinforcementsEntryPoint.Location.ToFloat2());
+			worldRenderer.Viewport.Center(spyReinforcementsEntryPoint.CenterPosition);
 			MissionUtils.PlayMissionMusic();
 		}
 	}

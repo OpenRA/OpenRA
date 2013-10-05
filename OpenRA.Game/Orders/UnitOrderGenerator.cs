@@ -19,7 +19,7 @@ namespace OpenRA.Orders
 	{
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
-			var underCursor = world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(mi.Location))
+			var underCursor = world.ScreenMap.ActorsAt(mi)
 				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
 				.OrderByDescending(a => a.Info.SelectionPriority())
 				.FirstOrDefault();
@@ -29,7 +29,7 @@ namespace OpenRA.Orders
 				target = Target.FromActor(underCursor);
 			else
 			{
-				var frozen = world.FindFrozenActorsAtMouse(mi.Location)
+				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi.Location)
 					.Where(a => a.Info.Traits.Contains<ITargetableInfo>())
 					.OrderByDescending(a => a.Info.SelectionPriority())
 					.FirstOrDefault();
@@ -60,7 +60,7 @@ namespace OpenRA.Orders
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
 			var useSelect = false;
-			var underCursor = world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(mi.Location))
+			var underCursor = world.ScreenMap.ActorsAt(mi)
 				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
 				.OrderByDescending(a => a.Info.SelectionPriority())
 				.FirstOrDefault();
@@ -77,7 +77,7 @@ namespace OpenRA.Orders
 				target = Target.FromActor(underCursor);
 			else
 			{
-				var frozen = world.FindFrozenActorsAtMouse(mi.Location)
+				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi.Location)
 					.Where(a => a.Info.Traits.Contains<ITargetableInfo>())
 					.OrderByDescending(a => a.Info.SelectionPriority())
 					.FirstOrDefault();

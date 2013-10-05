@@ -188,15 +188,15 @@ namespace OpenRA.Widgets
 		{
 			// Parse the YAML equations to find the widget bounds
 			var parentBounds = (Parent == null)
-				? new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height)
+				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
 				: Parent.Bounds;
 
 			var substitutions = args.ContainsKey("substitutions") ?
 				new Dictionary<string, int>((Dictionary<string, int>)args["substitutions"]) :
 				new Dictionary<string, int>();
 
-			substitutions.Add("WINDOW_RIGHT", Game.viewport.Width);
-			substitutions.Add("WINDOW_BOTTOM", Game.viewport.Height);
+			substitutions.Add("WINDOW_RIGHT", Game.Renderer.Resolution.Width);
+			substitutions.Add("WINDOW_BOTTOM", Game.Renderer.Resolution.Height);
 			substitutions.Add("PARENT_RIGHT", parentBounds.Width);
 			substitutions.Add("PARENT_LEFT", parentBounds.Left);
 			substitutions.Add("PARENT_TOP", parentBounds.Top);

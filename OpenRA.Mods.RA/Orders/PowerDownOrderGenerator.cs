@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Orders
 		{
 			if (mi.Button == MouseButton.Left)
 			{
-				var underCursor = world.ScreenMap.ActorsAt(Game.viewport.ViewToWorldPx(mi.Location))
+				var underCursor = world.ScreenMap.ActorsAt(mi)
 					.Where(a => a.Owner == world.LocalPlayer && a.HasTrait<T>()).FirstOrDefault();
 
 				if (underCursor != null)

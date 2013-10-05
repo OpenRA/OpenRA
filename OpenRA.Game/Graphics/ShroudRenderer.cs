@@ -161,9 +161,8 @@ namespace OpenRA.Graphics
 
 			GenerateSprites(shroud);
 
-			var clipRect = Game.viewport.WorldBounds(wr.world);
-
 			// We draw the shroud when disabled to hide the sharp map edges
+			var clipRect = wr.Viewport.CellBounds;
 			DrawShroud(wr, clipRect, sprites, shroudPalette);
 
 			if (world.LobbyInfo.GlobalSettings.Fog)

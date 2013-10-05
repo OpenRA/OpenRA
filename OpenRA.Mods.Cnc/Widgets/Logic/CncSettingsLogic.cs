@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			pixelDoubleCheckbox.OnClick = () =>
 			{
 				graphicsSettings.PixelDouble ^= true;
-				Game.viewport.Zoom = graphicsSettings.PixelDouble ? 2 : 1;
+				Game.Zoom = graphicsSettings.PixelDouble ? 2 : 1;
 			};
 
 			var showShellmapCheckbox = generalPane.Get<CheckboxWidget>("SHOW_SHELLMAP");

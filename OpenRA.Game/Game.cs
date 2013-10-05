@@ -33,8 +33,12 @@ namespace OpenRA
 
 		public static ModData modData;
 		static WorldRenderer worldRenderer;
+		public static float Zoom
+		{
+			get { return worldRenderer.Viewport.Zoom; }
+			set { worldRenderer.Viewport.Zoom = value; }
+		}
 
-		public static Viewport viewport;
 		public static Settings Settings;
 
 		internal static OrderManager orderManager;
@@ -44,11 +48,6 @@ namespace OpenRA
 
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;
-
-		public static void MoveViewport(float2 loc)
-		{
-			viewport.Center(loc);
-		}
 
 		public static void JoinServer(string host, int port)
 		{
@@ -122,7 +121,8 @@ namespace OpenRA
 		public static void RunAfterTick(Action a) { delayedActions.Add(a); }
 		public static void RunAfterDelay(int delay, Action a) { delayedActions.Add(a, delay); }
 
-		static void Tick(OrderManager orderManager, Viewport viewPort)
+		static float cursorFrame = 0f;
+		static void Tick(OrderManager orderManager)
 		{
 			if (orderManager.Connection.ConnectionState != lastConnectionState)
 			{
@@ -130,17 +130,35 @@ namespace OpenRA
 				ConnectionStateChanged(orderManager);
 			}
 
-			Tick(orderManager);
+			TickInner(orderManager);
 			if (worldRenderer != null && orderManager.world != worldRenderer.world)
-				Tick(worldRenderer.world.orderManager);
+				TickInner(worldRenderer.world.orderManager);
 
 			using (new PerfSample("render"))
 			{
 				++RenderFrame;
-				viewport.DrawRegions(worldRenderer, new DefaultInputHandler(orderManager.world));
 
+				// worldRenderer is null during the initial install/download screen
 				if (worldRenderer != null)
-					Sound.SetListenerPosition(worldRenderer.Position(viewport.CenterLocation.ToInt2()));
+				{
+					Game.Renderer.BeginFrame(worldRenderer.Viewport.TopLeft.ToFloat2(), Zoom);
+					Sound.SetListenerPosition(worldRenderer.Position(worldRenderer.Viewport.CenterLocation));
+					worldRenderer.Draw();
+				}
+				else
+					Game.Renderer.BeginFrame(float2.Zero, 1f);
+
+				using (new PerfSample("render_widgets"))
+				{
+					Ui.Draw();
+					var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
+					CursorProvider.DrawCursor(Game.Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
+				}
+
+				using (new PerfSample("render_flip"))
+				{
+					Game.Renderer.EndFrame(new DefaultInputHandler(orderManager.world));
+				}
 			}
 
 			PerfHistory.items["render"].Tick();
@@ -151,7 +169,7 @@ namespace OpenRA
 			delayedActions.PerformActions();
 		}
 
-		static void Tick(OrderManager orderManager)
+		static void TickInner(OrderManager orderManager)
 		{
 			int t = Environment.TickCount;
 			int dt = t - orderManager.LastTickTime;
@@ -163,6 +181,7 @@ namespace OpenRA
 					var world = orderManager.world;
 					if (orderManager.GameStarted)
 						++Viewport.TicksSinceLastMove;
+
 					Sound.Tick();
 					Sync.CheckSyncUnchanged(world, orderManager.TickImmediate);
 
@@ -194,7 +213,8 @@ namespace OpenRA
 								orderManager.LastTickTime = Environment.TickCount;
 
 						Sync.CheckSyncUnchanged(world, () => world.TickRender(worldRenderer));
-						viewport.Tick();
+
+						cursorFrame += 0.5f;
 					}
 				}
 		}
@@ -212,7 +232,6 @@ namespace OpenRA
 			BeforeGameStart();
 
 			var map = modData.PrepareMap(mapUID);
-			viewport = new Viewport(new int2(Renderer.Resolution), map.Bounds, Renderer);
 			orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
 			worldRenderer = new WorldRenderer(orderManager.world);
 			orderManager.world.LoadComplete(worldRenderer);
@@ -328,7 +347,6 @@ namespace OpenRA
 			PerfHistory.items["render_flip"].hasNormalTick = false;
 
 			JoinLocal();
-			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
 
 			if (Game.Settings.Server.Dedicated)
 			{
@@ -392,7 +410,7 @@ namespace OpenRA
 				var idealFrameTime = 1.0 / Settings.Graphics.MaxFramerate;
 				var sw = new Stopwatch();
 
-				Tick( orderManager, viewport );
+				Tick(orderManager);
 
 				if (Settings.Graphics.CapFramerate)
 				{
