@@ -23,21 +23,24 @@ namespace OpenRA.Mods.RA
 		public readonly int Chance = 100;
 		public readonly int[] InfDeath = null;
 
-		public object Create (ActorInitializer init) { return new Explodes(this); }
+		public object Create(ActorInitializer init) { return new Explodes(this); }
 	}
 
 	class Explodes : INotifyKilled
 	{
-		readonly ExplodesInfo Info;
+		readonly ExplodesInfo explodesInfo;
 
-		public Explodes( ExplodesInfo info ) { Info = info; }
+		public Explodes(ExplodesInfo info) { explodesInfo = info; }
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (self.World.SharedRandom.Next(100) > Info.Chance)
+			if (!self.IsInWorld)
 				return;
 
-			if (Info.InfDeath != null && e.Warhead != null && !Info.InfDeath.Contains(e.Warhead.InfDeath))
+			if (self.World.SharedRandom.Next(100) > explodesInfo.Chance)
+				return;
+
+			if (explodesInfo.InfDeath != null && e.Warhead != null && !explodesInfo.InfDeath.Contains(e.Warhead.InfDeath))
 				return;
 
 			var weapon = ChooseWeaponForExplosion(self);
@@ -48,7 +51,7 @@ namespace OpenRA.Mods.RA
 		string ChooseWeaponForExplosion(Actor self)
 		{
 			var shouldExplode = self.TraitsImplementing<IExplodeModifier>().All(a => a.ShouldExplode(self));
-			return shouldExplode ? Info.Weapon : Info.EmptyWeapon;
+			return shouldExplode ? explodesInfo.Weapon : explodesInfo.EmptyWeapon;
 		}
 	}
 }
