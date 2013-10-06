@@ -37,6 +37,10 @@ Open file(s):
   zbstudio <filename> [<filename>...]
   any non-option will be treated as filename
 
+Set project directory:
+  zbstudio <project directory> [<filename>...]
+  (0.39+) a directory passed as a parameter will be set as the project directory
+
 Overriding default configuration:
   zbstudio -cfg "<luacode overriding config>" [<filename>]
   e.g.: zbstudio -cfg "editor.fontsize=12" somefile.lua
