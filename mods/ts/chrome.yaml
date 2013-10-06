@@ -149,14 +149,14 @@ dialog4: dialog.png
 
 dialog: dialog.png
 	background: 0,0,480,480
-	border-r: 489,0,9,192
-	border-l: 480,0,9,192
-	border-b: 0,489,191,9
-	border-t: 0,480,191,9
-	corner-tl: 191,480,9,9
-	corner-tr: 200,480,9,9
-	corner-bl: 191,489,9,9
-	corner-br: 200,489,9,9
+	border-r: 483,0,9,153
+	border-l: 481,0,9,153
+	border-b: 0,483,153,9
+	border-t: 0,481,153,9
+	corner-tl: 482,437,21,21
+	corner-tr: 504,437,21,21
+	corner-bl: 482,459,21,21
+	corner-br: 504,459,21,21
 
 lobby-bits: spawnpoints.png
 	spawn-unclaimed: 528,128,16,16
@@ -237,9 +237,9 @@ button: dialog.png
 	border-b: 513,127,126,1
 	border-t: 513,0,126,1
 	corner-tl: 512,0,1,1
-	corner-tr: 594,0,1,1
-	corner-bl: 512,82,1,1
-	corner-br: 594,82,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
 
 button-highlighted: dialog.png
 	background: 513,145,126,126
@@ -254,15 +254,16 @@ button-highlighted: dialog.png
 
 # A copy of dialog2
 button-hover: dialog.png
-	background: 513,1,126,126
-	border-r: 639,1,1,126
-	border-l: 512,1,1,126
-	border-b: 513,127,126,1
-	border-t: 513,0,126,1
-	corner-tl: 512,0,1,1
-	corner-tr: 594,0,1,1
-	corner-bl: 512,82,1,1
-	corner-br: 594,82,1,1
+	background: 513,145,126,126
+	border-r: 639,145,1,126
+	border-l: 512,145,1,126
+	border-b: 513,271,126,1
+	border-t: 513,144,126,1
+	corner-tl: 512,144,1,1
+	corner-tr: 639,144,1,1
+	corner-bl: 512,271,1,1
+	corner-br: 639,271,1,1
+	
 
 button-highlighted-hover: dialog.png
 	background: 513,145,126,126
