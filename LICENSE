@@ -136,43 +136,59 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 SOFTWARE. 
 
---[[ LuaFileSystem License ]]----------------------------------------------
-
-LuaFileSystem was designed by Roberto Ierusalimschy, André Carregal and Tomás 
-Guisasola as part of the Kepler Project, which holds its copyright.
-Homepage: http://www.keplerproject.org/luafilesystem/index.html
-License:  http://www.keplerproject.org/luafilesystem/license.html
-
 --[[ LuaSockets License ]]-------------------------------------------------
 
 Copyright: © 2004-2006 Diego Nehab. All rights reserved.
 Homepage: http://www.cs.princeton.edu/~diego/professional/luasocket/
 License:  http://www.lua.org/copyright.html (same as LUA)
 
---[[ ZMQ License ]]--------------------------------------------------------
+--[[ Serpent License ]]----------------------------------------------------
 
-Copyright: © 2007-2011 iMatix Corporation and Contributors
-Homepage: http://www.zeromq.org/
-License:  http://www.zeromq.org/area:licensing
+Copyright (c) 2011-2013 Paul Kulchenko (paul@kulchenko.com)
 
-LuaZMQ
-Copyright: © 2011 by Robert G. Jakabosky
-Homepage: https://github.com/Neopallium/lua-zmq
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
---[[ MojoShader License ]]-------------------------------------------------
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-Copyright: © 2008-2010 Ryan C. Gordon
-Homepage: http://icculus.org/mojoshader/
-License:  http://hg.icculus.org/icculus/mojoshader/raw-file/tip/LICENSE.txt
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
---[[ CLCC License ]]-------------------------------------------------------
+--[[ LuaJIT License ]]-----------------------------------------------------
 
-Copyright: © 2009 Organic Vectory B.V.
-Homepage: http://clcc.sourceforge.net/
-License:  boost
+Copyright © 2005-2013 Mike Pall, released under the MIT open source license.
 
-CLCC was modified by Christoph Kubisch to support multiple platforms and
-output file generation.
+--[[ WinAPI License ]]-----------------------------------------------------
+
+Copyright (C) 2011 Steve Donovan.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 --[[ MobDebug License ]]---------------------------------------------------
 
