@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Sep 25 2013)
+## v0.39 (Oct 06 2013)
 
 ### Highlights
   - Added Lua 5.2 support out of the box.
@@ -13,6 +13,7 @@
 
 ### Special thanks
   - To Chow CheeWen for Chinese translation.
+  - To [Enrique García](https://github.com/kikito) for fixing `fixutf8` function.
   - To [Riidom](https://github.com/Riidom) for German translation.
   - To [ardente](https://github.com/ardente) for user home patch for Windows and separating Lua 5.1 and 5.2 paths in user config.
   - To [Mika Attila](https://github.com/crumblingstatue) for code folding patch.
@@ -23,6 +24,7 @@
   - To [jpoag](https://github.com/jpoag) for improved activation during debugging on Windows.
 
 ### Improvements
+  - Added setting project directory when passed as a parameter.
   - Added activation of windows with SDL_app class name (Moai support).
   - Added support for joining/splitting Watch/Stack with Output/Console tabs.
   - Added package GetSetting method (ref #166).
@@ -83,6 +85,7 @@
   - allow to define separate lua 5.1 and 5.2 paths in user config
   - Changed 'go to definition' to Ctrl/Cmd+Alt+Click (ref #203).
   - Changed `un/comment` to act from the beginning of the line for multi-line selection.
+  - Disabled refreshing Watch/Stack windows when they get focus.
   - Disabled markup styling for specs without comment styles.
   - Disabled showing tooltip when auto-complete suggestions are shown.
   - Disabled error reporting after debugging has been terminated.
@@ -100,6 +103,7 @@
   - Make code folding optional (thanks to [Mika Attila](https://github.com/crumblingstatue))
   - Moved 'Sort' menu to 'Edit'.
   - OpenGL 4.4 and ARB extensions added as well as NV_gpu_shader5 functions
+  - Optimized handling of large tables in stack results.
   - Optimized line count calculation for dynamic words when text is deleted.
   - Optimized dynamic word processing for large files.
   - Reduced CPU usage while idle (ref #204, #206).
@@ -112,6 +116,8 @@
   - Replaced package onEditorActivated event with onEditorFocus* events (ref #166).
   - Set search in subdirectories as default in Find in Files dialog (ref #162).
   - Switched to using POSIX compatible regexp with '()' used for captures.
+  - Updated LICENSE information.
+  - Updated Windows build file for wxwidgets 3.0.
   - Updated support for MOAI coroutine debugging (Mobdebug 0.541).
   - Updated type assignment logic to remove spurious types.
   - Updated Windows build script to enable gdb debugging.
@@ -134,6 +140,11 @@
   - windows: adopt native user home (thanks to [ardente](https://github.com/ardente))
 
 ### Fixes
+  - Fixed Lua 5.2 crash on OSX (added -O1).
+  - Fixed onInterpreterLoad to only be called when interpreter changes.
+  - fix the fixutf8 function (thanks to Enrique García).
+  - Fixed handling of source code fragments in the Stack view.
+  - Fixed Watch/Stack windows to refresh when shown.
   - Fixed incorrect editor tab acted upon in split notebook situations.
   - Fixed auto-complete suggestions for indentifiers matching partial function names.
   - Fixed hiding launched windows when running/debugging (Windows).
