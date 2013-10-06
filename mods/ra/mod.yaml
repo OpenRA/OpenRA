@@ -9,8 +9,10 @@ Folders:
 	./mods/ra
 	./mods/ra/bits
 	./mods/ra/bits/desert
+	./mods/ra/maps
 	./mods/ra/uibits
 	~^/Content/ra
+	~^/maps/ra
 
 Packages:
 	~main.mix

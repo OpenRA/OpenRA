@@ -8,11 +8,13 @@ Folders:
 	.
 	./mods/d2k
 	./mods/d2k/bits
+	./mods/d2k/maps
 	./mods/d2k/uibits
 	./mods/ra/uibits
 	~^/Content/d2k
 	~^/Content/d2k/GAMESFX
 	~^/Content/d2k/Music
+	~^/maps/d2k
 
 Packages:
 	SOUND.RS

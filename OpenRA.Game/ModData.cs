@@ -37,9 +37,10 @@ namespace OpenRA
 			if (!Directory.Exists(dir))
 				return noMaps;
 
-			return Directory.GetDirectories(dir)
-				.Concat(Directory.GetFiles(dir, "*.zip"))
-					.Concat(Directory.GetFiles(dir, "*.oramap"));
+			var dirsWithMaps = Directory.GetDirectories(dir)
+				.Where(d => Directory.GetFiles(d, "map.yaml").Any() && Directory.GetFiles(d, "map.bin").Any());
+
+			return dirsWithMaps.Concat(Directory.GetFiles(dir, "*.oramap"));
 		}
 
 		public ModData(params string[] mods)
@@ -52,7 +53,7 @@ namespace OpenRA
 			LoadScreen.Display();
 			WidgetLoader = new WidgetLoader(this);
 
-			AvailableMaps = FindMaps(Manifest.Mods);
+			AvailableMaps = FindMaps();
 
 			// HACK: Mount only local folders so we have a half-working environment for the asset installer
 			FileSystem.UnmountAll();
@@ -138,10 +139,9 @@ namespace OpenRA
 			return map;
 		}
 
-		Dictionary<string, Map> FindMaps(string[] mods)
+		Dictionary<string, Map> FindMaps()
 		{
-			var paths = mods.SelectMany(p => FindMapsIn("mods{0}{1}{0}maps{0}".F(Path.DirectorySeparatorChar, p)))
-				.Concat(mods.SelectMany(p => FindMapsIn("{1}maps{0}{2}{0}".F(Path.DirectorySeparatorChar, Platform.SupportDir, p))));
+			var paths = Manifest.Folders.SelectMany(f => FindMapsIn(f));
 
 			var ret = new Dictionary<string, Map>();
 
