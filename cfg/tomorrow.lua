@@ -4,6 +4,7 @@
 -- Tomorrow colors from https://github.com/chriskempson/tomorrow-theme
 -- Zenburn colors from https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim (contributed by Srdjan Marković)
 -- Monokai colors from http://www.monokai.nl/blog/2006/07/15/textmate-color-theme/
+-- Molokay colors based on https://github.com/tomasr/molokai/blob/master/colors/molokai.vim
 -- Solarized colors from https://github.com/altercation/vim-colors-solarized
 
 local theme = ...
@@ -135,7 +136,7 @@ local colors = {
     Blue        = H'F92672',
     Purple      = H'A6E22E',
   },
-  Molokai = { -- based on https://github.com/tomasr/molokai/blob/master/colors/molokai.vim
+  Molokai = {
     Background  = H'1B1D1E',
     CurrentLine = H'293739',
     Selection   = H'49483E',
@@ -190,6 +191,20 @@ local colors = {
     Aqua        = H'260099',
     Blue        = H'2123FF',
     Purple      = H'FFFFFF',
+  },
+  SciTeLuaIDE = { -- contributed by Jayanth Acharya
+    Background  = H'1B1D1E',
+    CurrentLine = H'293739',
+    Selection   = H'49483E',
+    Foreground  = H'F8F8F2',    -- super-light-gray (everything else)
+    Comment     = H'00FF00',    -- bright green (comments)
+    Red         = H'F92672',    -- purple (numbers)
+    Orange      = H'AE81FF',    -- lavendar?? (numbers)
+    Yellow      = H'F8F8F2',    -- light-gray
+    Green       = H'FF8000',    -- amber (string literal)
+    Aqua        = H'808080',    -- gray (operators, separators etc.)
+    Blue        = H'0066FF',    -- semi-blue (keywords)
+    Purple      = H'A6E22E',    -- light-grass-green
   },
 }
 
