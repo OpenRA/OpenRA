@@ -230,7 +230,7 @@ treeSetConnectorsAndIcons(projtree)
 -- proj functions
 -- ---------------
 
-local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
+local q = EscapeMagic
 
 local function abbreviateProjList(projdirlist)
   filetree.projdirmap = {}

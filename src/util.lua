@@ -407,3 +407,5 @@ function LoadSafe(data)
   debug.sethook()
   return ok, res
 end
+
+function EscapeMagic(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end

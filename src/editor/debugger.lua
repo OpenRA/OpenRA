@@ -48,7 +48,7 @@ function fixUTF8(...)
   return (table.unpack or unpack)(t)
 end
 
-local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
+local q = EscapeMagic
 
 local function updateWatchesSync(num)
   local watchCtrl = debugger.watchCtrl

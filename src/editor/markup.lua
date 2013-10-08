@@ -38,7 +38,7 @@ function MarkupAddStyles(styles)
   end
 end
 
-local function q(s) return s:gsub('(.)','%%%1') end
+local q = EscapeMagic
 
 local MD_MARK_PTRN = ''  -- combination of all markup marks that can start styling
 for key in pairs(markup) do
