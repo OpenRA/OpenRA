@@ -63,6 +63,7 @@ function ide:GetEditor(index) return GetEditor(index) end
 function ide:GetMenuBar() return self.frame.menuBar end
 function ide:GetMainFrame() return self.frame end
 function ide:GetDocument(ed) return self.openDocuments[ed:GetId()] end
+function ide:GetDocuments() return self.openDocuments end
 function ide:GetInterpreter() return self.interpreter end
 function ide:GetConfig() return self.config end
 function ide:GetOutput() return self.frame.bottomnotebook.errorlog end

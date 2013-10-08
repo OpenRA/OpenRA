@@ -4,7 +4,14 @@ ide.proto.Document = {__index = {
   GetFileName = function(self) return self.fileName end,
   GetFilePath = function(self) return self.filePath end,
   GetModTime = function(self) return self.modTime end,
+  GetEditor = function(self) return self.editor end,
+  GetTabIndex = function(self) return self.index end,
   IsModified = function(self) return self.isModified end,
+  SetModified = function(self, modified) SetDocumentModified(self.editor:GetId(), modified) end,
+  SetTabText = function(self, text)
+    ide.frame.notebook:SetPageText(self.index, text)
+    SetDocumentModified(self.editor:GetId(), self.isModified)
+  end,
 }}
 
 ide.proto.Plugin = {__index = {
