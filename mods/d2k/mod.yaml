@@ -124,7 +124,7 @@ Fonts:
 		Font:FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:Dune2k.ttf
+		Font:mods/d2k/Dune2k.ttf
 		Size:32
 	BigBold:
 		Font:FreeSansBold.ttf

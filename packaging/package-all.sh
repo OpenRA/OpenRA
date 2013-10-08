@@ -30,7 +30,7 @@ markdown DOCUMENTATION.md > DOCUMENTATION.html
 # they are now installed to the game directory instead of placed in the gac
 FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
 'OpenRA.FileFormats.dll' 'OpenRA.Renderer.SdlCommon.dll' 'OpenRA.Renderer.Cg.dll' 'OpenRA.Renderer.Gl.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
-'FreeSans.ttf' 'FreeSansBold.ttf' 'titles.ttf' 'Dune2k.ttf' \
+'FreeSans.ttf' 'FreeSansBold.ttf' \
 'cg' 'glsl' 'mods/ra' 'mods/cnc' 'mods/d2k' \
 'AUTHORS' 'COPYING' 'HACKING' 'INSTALL' 'CHANGELOG' \
 'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' \

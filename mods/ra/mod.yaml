@@ -142,7 +142,7 @@ Fonts:
 		Font:FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:titles.ttf
+		Font:mods/ra/ZoodRangmah.ttf
 		Size:48
 	BigBold:
 		Font:FreeSansBold.ttf
