@@ -203,15 +203,13 @@ end
 
 -- Set if the document is modified and update the notebook page text
 function SetDocumentModified(id, modified)
-  if not openDocuments[id] then return end
-  local pageText = openDocuments[id].fileName or ide.config.default.fullname
+  local modpref, doc = '* ', openDocuments[id]
+  if not doc then return end
+  local pageText = notebook:GetPageText(doc.index):gsub("^"..EscapeMagic(modpref), "")
 
-  if modified then
-    pageText = "* "..pageText
-  end
-
+  if modified then pageText = modpref..pageText end
   openDocuments[id].isModified = modified
-  notebook:SetPageText(openDocuments[id].index, pageText)
+  notebook:SetPageText(doc.index, pageText)
 end
 
 function EditorAutoComplete(editor)
