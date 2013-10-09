@@ -22,7 +22,7 @@ palette-atreides: chrome-atreides.png
 	dock-2: 498,393,14,48
 	bg-3: 297,441,201,48
 	dock-3: 498,441,14,48
-
+ 
 digits-atreides: chrome-atreides.png
 	0: 32,0,13,17
 	1: 45,0,13,17
