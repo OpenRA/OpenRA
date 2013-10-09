@@ -37,6 +37,12 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	EjectOnDeath:
+		PilotActor: E1
+		SuccessRate: 5
+		PilotEjectOnGround: yes
+		PilotEjectInAir: no
+
 
 ^Tank:
 	AppearsOnRadar:
@@ -185,6 +191,8 @@
 	EjectOnDeath:
 		PilotActor: E1
 		SuccessRate: 50
+		PilotEjectOnGround: no
+		PilotEjectInAir: yes
 	GivesBounty:
 	GpsDot:
 		String:Plane
