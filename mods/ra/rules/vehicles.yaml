@@ -358,6 +358,9 @@ JEEP:
 		MaxWeight: 1
 		PipCount: 1
 		UnloadFacing: 220
+	EjectOnDeath:
+		PilotActor: E1
+		SuccessRate: 10
 
 APC:
 	Inherits: ^Tank
@@ -391,6 +394,9 @@ APC:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadFacing: 220
+	EjectOnDeath:
+		PilotActor: E3
+		SuccessRate: 25
 
 MNLY.AP:
 	Inherits: ^Tank
@@ -698,9 +704,8 @@ FTRK:
 	Selectable:
 		Bounds: 28,28,0,0
 	EjectOnDeath:
-		PilotActor: SHOK
-		SuccessRate: 100
-		PilotEjectOnGround: true
+		PilotActor: E1
+		SuccessRate: 25
 
 DTRK:
 	Inherits: ^Vehicle
