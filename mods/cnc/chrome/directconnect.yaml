@@ -3,7 +3,7 @@ Container@DIRECTCONNECT_PANEL:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 90)/2
 	Width:370
-	Height:125
+	Height:130
 	Children:
 		Label@TITLE:
 			Width:PARENT_RIGHT
@@ -14,7 +14,7 @@ Container@DIRECTCONNECT_PANEL:
 			Text:Connect to Server
 		Background@bg:
 			Width:370
-			Height:90
+			Height:95
 			Background:panel-black
 			Children:
 				Label@ADDRESS_LABEL:
@@ -44,14 +44,14 @@ Container@DIRECTCONNECT_PANEL:
 		Button@BACK_BUTTON:
 			Key:escape
 			X:0
-			Y:89
+			Y:94
 			Width:140
 			Height:35
 			Text:Back
 		Button@JOIN_BUTTON:
 			Key:return
 			X:230
-			Y:89
+			Y:94
 			Width:140
 			Height:35
 			Text:Join

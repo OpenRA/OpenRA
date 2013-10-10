@@ -27,8 +27,10 @@ namespace OpenRA.Network
 
 		public readonly string Host;
 		public readonly int Port;
+		public readonly string Password = "";
 
-		public string ServerError = "Server is not responding.";
+		public string ServerError = "Server is not responding";
+		public bool AuthenticationFailed = false;
 
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
@@ -52,10 +54,11 @@ namespace OpenRA.Network
 				Connection.Send(i, new List<byte[]>());
 		}
 
-		public OrderManager(string host, int port, IConnection conn)
+		public OrderManager(string host, int port, string password, IConnection conn)
 		{
-			this.Host = host;
-			this.Port = port;
+			Host = host;
+			Port = port;
+			Password = password;
 			Connection = conn;
 			syncReport = new SyncReport(this);
 		}
