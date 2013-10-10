@@ -52,7 +52,7 @@ lualibs/socket/url.lua
 lualibs/ssl.lua
 lualibs/ssl/https.lua
 lualibs/testwell.lua
-packages/sample.lua
+packages/*.lua
 spec/*.lua
 src/defs.lua
 src/editor/autocomplete.lua
