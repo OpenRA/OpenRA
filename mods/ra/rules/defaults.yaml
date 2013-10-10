@@ -39,10 +39,9 @@
 	BodyOrientation:
 	EjectOnDeath:
 		PilotActor: E1
-		SuccessRate: 0
+		SuccessRate: 5
 		PilotEjectOnGround: yes
 		PilotEjectInAir: no
-
 
 ^Tank:
 	AppearsOnRadar:
