@@ -39,7 +39,7 @@
 	BodyOrientation:
 	EjectOnDeath:
 		PilotActor: E1
-		SuccessRate: 5
+		SuccessRate: 20
 		PilotEjectOnGround: yes
 		PilotEjectInAir: no
 
@@ -82,6 +82,11 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	EjectOnDeath:
+		PilotActor: E1
+		SuccessRate: 20
+		PilotEjectOnGround: yes
+		PilotEjectInAir: no
 
 ^Infantry:
 	AppearsOnRadar:
