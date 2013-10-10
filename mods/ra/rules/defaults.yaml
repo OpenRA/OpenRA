@@ -39,7 +39,7 @@
 	BodyOrientation:
 	EjectOnDeath:
 		PilotActor: E1
-		SuccessRate: 5
+		SuccessRate: 0
 		PilotEjectOnGround: yes
 		PilotEjectInAir: no
 
