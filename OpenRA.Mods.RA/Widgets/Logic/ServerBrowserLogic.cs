@@ -109,13 +109,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void Join(GameServer server)
 		{
 			if (server == null || !server.CanJoin())
-					return;
+				return;
 
 			var host = server.Address.Split(':')[0];
 			var port = int.Parse(server.Address.Split(':')[1]);
 
 			Ui.CloseWindow();
-			ConnectionLogic.Connect(host, port, OpenLobby, OnExit);
+			ConnectionLogic.Connect(host, port, "", OpenLobby, OnExit);
 		}
 
 		string GetPlayersLabel(GameServer game)

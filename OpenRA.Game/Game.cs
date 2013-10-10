@@ -49,9 +49,9 @@ namespace OpenRA
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;
 
-		public static void JoinServer(string host, int port)
+		public static void JoinServer(string host, int port, string password)
 		{
-			JoinInner(new OrderManager(host, port,
+			JoinInner(new OrderManager(host, port, password,
 				new ReplayRecorderConnection(new NetworkConnection(host, port), ChooseReplayFilename)));
 		}
 
@@ -70,12 +70,12 @@ namespace OpenRA
 
 		public static void JoinReplay(string replayFile)
 		{
-			JoinInner(new OrderManager("<no server>", -1, new ReplayConnection(replayFile)));
+			JoinInner(new OrderManager("<no server>", -1, "", new ReplayConnection(replayFile)));
 		}
 
 		static void JoinLocal()
 		{
-			JoinInner(new OrderManager("<no server>", -1, new EchoConnection()));
+			JoinInner(new OrderManager("<no server>", -1, "", new EchoConnection()));
 		}
 
 		public static int RenderFrame = 0;

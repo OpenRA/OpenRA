@@ -32,6 +32,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.onExit = onExit;
 
 			var settings = Game.Settings;
+
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
 
@@ -71,6 +72,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			UPnPCheckbox.IsChecked = () => allowPortForward;
 			UPnPCheckbox.OnClick = () => allowPortForward ^= true;
 			UPnPCheckbox.IsDisabled = () => !Game.Settings.Server.NatDeviceAvailable;
+
+			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
+			if (passwordField != null)
+				passwordField.Text = Game.Settings.Server.Password;
 		}
 
 		void CreateAndJoin()
@@ -83,6 +88,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (!int.TryParse(panel.Get<TextFieldWidget>("EXTERNAL_PORT").Text, out externalPort))
 				externalPort = 1234;
 
+			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
+			var password = passwordField != null ? passwordField.Text : "";
+
 			// Save new settings
 			Game.Settings.Server.Name = name;
 			Game.Settings.Server.ListenPort = listenPort;
@@ -90,6 +98,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
 			Game.Settings.Server.AllowPortForward = allowPortForward;
 			Game.Settings.Server.Map = map.Uid;
+			Game.Settings.Server.Password = password;
 			Game.Settings.Save();
 
 			// Take a copy so that subsequent changes don't affect the server
@@ -98,7 +107,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			// Create and join the server
 			Game.CreateServer(settings);
 			Ui.CloseWindow();
-			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, onCreate, onExit);
+			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, password, onCreate, onExit);
 		}
 	}
 }

@@ -107,6 +107,8 @@ ChromeLayout:
 	mods/ra/chrome/map-chooser.yaml
 	mods/ra/chrome/create-server.yaml
 	mods/ra/chrome/serverbrowser.yaml
+	mods/ra/chrome/connection.yaml
+	mods/ra/chrome/directconnect.yaml
 	mods/ra/chrome/replaybrowser.yaml
 	mods/ra/chrome/dropdowns.yaml
 	mods/ra/chrome/modchooser.yaml
