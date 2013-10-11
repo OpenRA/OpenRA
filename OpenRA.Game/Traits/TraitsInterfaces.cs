@@ -137,6 +137,7 @@ namespace OpenRA.Traits
 	public interface IPositionable : IOccupySpace
 	{
 		bool CanEnterCell(CPos location);
+		bool CanEnterCell(CPos location, Actor ignoreActor, bool checkTransientActors);
 		void SetPosition(Actor self, CPos cell);
 		void SetPosition(Actor self, WPos pos);
 		void SetVisualPosition(Actor self, WPos pos);

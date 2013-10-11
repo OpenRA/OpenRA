@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
@@ -29,15 +28,16 @@ namespace OpenRA.Mods.RA
 	{
 		public void Killed(Actor self, AttackInfo e)
 		{
-			var cp = self.CenterPosition;
-			var info = self.Info.Traits.Get<EjectOnDeathInfo>();
+			if (self.Owner.WinState == WinState.Lost)
+				return;
+
 			var r = self.World.SharedRandom.Next(1, 100);
+			var info = self.Info.Traits.Get<EjectOnDeathInfo>();
 
-			if (r <= 100 - info.SuccessRate || self.Owner.WinState == WinState.Lost)
+			if (r <= 100 - info.SuccessRate)
 				return;
 
-			if ((!info.EjectInAir && cp.Z > 0) || (!info.EjectOnGround && cp.Z == 0))
-				return;
+			var cp = self.CenterPosition;
 
 			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner), new LocationInit(self.Location) });
@@ -45,12 +45,12 @@ namespace OpenRA.Mods.RA
 
 			if (IsSuitableCell(self, pilot, self.Location))
 			{
-				if (cp.Z > 0 && info.EjectInAir)
+				if (cp.Z > 0)
 				{
 					self.World.AddFrameEndTask(w => w.Add(new Parachute(pilot, cp)));
 					Sound.Play(info.ChuteSound, cp);
 				}
-				else if (cp.Z == 0 && info.EjectOnGround)
+				else
 					self.World.AddFrameEndTask(w => w.Add(pilot));
 			}
 			else

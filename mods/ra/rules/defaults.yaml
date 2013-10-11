@@ -195,7 +195,7 @@
 	EjectOnDeath:
 		PilotActor: E1
 		SuccessRate: 50
-		EjectOnDeath: no
+		EjectOnGround: no
 		EjectInAir: yes
 	GivesBounty:
 	GpsDot:

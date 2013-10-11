@@ -140,6 +140,7 @@ namespace OpenRA.Mods.RA.Air
 		}
 
 		public bool CanEnterCell(CPos location) { return true; }
+		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors) { return CanEnterCell(cell, null, true); }
 
 		public int MovementSpeed
 		{
