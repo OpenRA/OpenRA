@@ -12,30 +12,35 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
-	public class CncInstallLogic
+	public class InstallLogic : Widget
 	{
 		[ObjectCreator.UseCtor]
-		public CncInstallLogic(Widget widget, Dictionary<string, string> installData, Action continueLoading)
+		public InstallLogic(Widget widget, Dictionary<string, string> installData, Action continueLoading)
 		{
 			var panel = widget.Get("INSTALL_PANEL");
 			var args = new WidgetArgs()
 			{
 				{ "afterInstall", () => { Ui.CloseWindow(); continueLoading(); } },
-				{ "installData", installData }
+				{ "installData", installData },
+				{ "continueLoading", continueLoading }
 			};
 
 			panel.Get<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
 				Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
 
-			panel.Get<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
-				Ui.OpenWindow("INSTALL_FROMCD_PANEL", new WidgetArgs(args)
+			if (installData.ContainsKey("FilesToCopy") && !string.IsNullOrEmpty(installData["FilesToCopy"]) &&
+				installData.ContainsKey("FilesToExtract") && !string.IsNullOrEmpty(installData["FilesToExtract"]))
+			{
+				args = new WidgetArgs(args)
 				{
-					{ "filesToCopy", new[] { "CONQUER.MIX", "DESERT.MIX", "SCORES.MIX",
-											 "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX" } },
-					{ "filesToExtract", new[] { "speech.mix", "tempicnh.mix", "transit.mix" } },
-				});
+					{ "filesToCopy", installData["FilesToCopy"].Split(',') },
+					{ "filesToExtract", installData["FilesToExtract"].Split(',') },
+				};
+			}
+			panel.Get<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
+				Ui.OpenWindow("INSTALL_FROMCD_PANEL", args);
 
 			panel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 

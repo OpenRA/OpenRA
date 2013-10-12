@@ -400,7 +400,6 @@
     <Compile Include="Widgets\Logic\OrderButtonsChromeLogic.cs" />
     <Compile Include="Widgets\Logic\PerfDebugLogic.cs" />
     <Compile Include="Widgets\Logic\RAInstallFromCDLogic.cs" />
-    <Compile Include="Widgets\Logic\RAInstallLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
@@ -471,6 +470,7 @@
     <Compile Include="AI\States\GroundStates.cs" />
     <Compile Include="AI\States\ProtectionStates.cs" />
     <Compile Include="AI\States\AirStates.cs" />
+    <Compile Include="Widgets\Logic\InstallLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

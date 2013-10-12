@@ -111,6 +111,8 @@ TileSets:
 
 LoadScreen: CncLoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
+	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
+	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
 	InstallerBackgroundWidget: INSTALL_BACKGROUND
 	TestFile: conquer.mix
 	PackageURL: http://open-ra.org/get-dependency.php?file=cnc-packages
