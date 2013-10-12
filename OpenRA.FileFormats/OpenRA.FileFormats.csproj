@@ -90,11 +90,6 @@
     <Compile Include="FileFormats\Format40.cs" />
     <Compile Include="FileFormats\Format80.cs" />
     <Compile Include="FileFormats\IniFile.cs" />
-    <Compile Include="Filesystem\FileSystem.cs" />
-    <Compile Include="Filesystem\Folder.cs" />
-    <Compile Include="Filesystem\InstallShieldPackage.cs" />
-    <Compile Include="Filesystem\MixFile.cs" />
-    <Compile Include="Filesystem\ZipFile.cs" />
     <Compile Include="Graphics\Dune2ShpReader.cs" />
     <Compile Include="Graphics\IGraphicsDevice.cs" />
     <Compile Include="Graphics\IInputHandler.cs" />
@@ -148,11 +143,16 @@
     <Compile Include="Graphics\HvaReader.cs" />
     <Compile Include="StreamExts.cs" />
     <Compile Include="FileFormats\WavLoader.cs" />
-    <Compile Include="Filesystem\D2kSoundResources.cs" />
     <Compile Include="Graphics\R8Reader.cs" />
     <Compile Include="Graphics\TileSetRenderer.cs" />
     <Compile Include="Keycode.cs" />
     <Compile Include="Hotkey.cs" />
+    <Compile Include="FileSystem\FileSystem.cs" />
+    <Compile Include="FileSystem\Folder.cs" />
+    <Compile Include="FileSystem\InstallShieldPackage.cs" />
+    <Compile Include="FileSystem\MixFile.cs" />
+    <Compile Include="FileSystem\ZipFile.cs" />
+    <Compile Include="FileSystem\D2kSoundResources.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
