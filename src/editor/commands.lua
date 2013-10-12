@@ -133,13 +133,13 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   openDocuments[id].fileName = wx.wxFileName(filePath):GetFullName()
   openDocuments[id].modTime = GetFileModTime(filePath)
 
-  PackageEventHandle("onEditorLoad", editor)
-
-  SetDocumentModified(id, false)
+  SetDocumentModified(id, false, openDocuments[id].fileName)
 
   -- activate the editor; this is needed for those cases when the editor is
   -- created from some other element, for example, from a project tree.
   if not skipselection then SetEditorSelection() end
+
+  PackageEventHandle("onEditorLoad", editor)
 
   return editor
 end
@@ -205,7 +205,7 @@ function SaveFile(editor, filePath)
       openDocuments[id].filePath = filePath
       openDocuments[id].fileName = wx.wxFileName(filePath):GetFullName()
       openDocuments[id].modTime = GetFileModTime(filePath)
-      SetDocumentModified(id, false)
+      SetDocumentModified(id, false, openDocuments[id].fileName)
       SetAutoRecoveryMark()
 
       PackageEventHandle("onEditorSave", editor)

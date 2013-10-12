@@ -202,10 +202,10 @@ function GetEditorFileAndCurInfo(nochecksave)
 end
 
 -- Set if the document is modified and update the notebook page text
-function SetDocumentModified(id, modified)
+function SetDocumentModified(id, modified, text)
   local modpref, doc = '* ', openDocuments[id]
   if not doc then return end
-  local pageText = notebook:GetPageText(doc.index):gsub("^"..EscapeMagic(modpref), "")
+  local pageText = text or notebook:GetPageText(doc.index):gsub("^"..EscapeMagic(modpref), "")
 
   if modified then pageText = modpref..pageText end
   openDocuments[id].isModified = modified

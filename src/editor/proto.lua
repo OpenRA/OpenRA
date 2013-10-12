@@ -8,10 +8,7 @@ ide.proto.Document = {__index = {
   GetTabIndex = function(self) return self.index end,
   IsModified = function(self) return self.isModified end,
   SetModified = function(self, modified) SetDocumentModified(self.editor:GetId(), modified) end,
-  SetTabText = function(self, text)
-    ide.frame.notebook:SetPageText(self.index, text)
-    SetDocumentModified(self.editor:GetId(), self.isModified)
-  end,
+  SetTabText = function(self, text) SetDocumentModified(self.editor:GetId(), self.isModified, text) end,
 }}
 
 ide.proto.Plugin = {__index = {
