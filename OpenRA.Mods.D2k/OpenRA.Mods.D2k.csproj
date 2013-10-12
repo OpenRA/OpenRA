@@ -76,9 +76,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Widgets\Logic\D2kInstallLogic.cs" />
     <Compile Include="Widgets\Logic\D2kInstallFromCDLogic.cs" />
-    <Compile Include="Widgets\Logic\D2kDownloadPackagesLogic.cs" />
     <Compile Include="BuildingCaptureNotification.cs" />
     <Compile Include="Render\WithCrumbleOverlay.cs" />
   </ItemGroup>

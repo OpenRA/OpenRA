@@ -93,7 +93,6 @@
     <Compile Include="Widgets\Logic\CncIngameChromeLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\CncInstallFromCDLogic.cs" />
-    <Compile Include="Widgets\Logic\CncInstallLogic.cs" />
     <Compile Include="Widgets\Logic\CncMenuLogic.cs" />
     <Compile Include="Widgets\Logic\CncSettingsLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
