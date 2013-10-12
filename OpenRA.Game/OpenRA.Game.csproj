@@ -155,7 +155,6 @@
     <Compile Include="Support\FatalErrorDialog.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Support\Program.cs" />
-    <Compile Include="Sync.cs" />
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\Activity.cs" />
     <Compile Include="Traits\Armor.cs" />
