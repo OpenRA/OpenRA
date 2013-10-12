@@ -45,15 +45,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
 			watch.IsDisabled = () => currentReplay == null || currentMap == null || currentReplay.Duration == 0;
-			watch.OnClick = () =>
-			{
-				if (currentReplay != null)
-				{
-					Game.JoinReplay(currentReplay.Filename);
-					Ui.CloseWindow();
-					onStart();
-				}
-			};
+			watch.OnClick = () => { WatchReplay(); onStart(); };
 
 			panel.Get("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
@@ -89,11 +81,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
+		void WatchReplay()
+		{
+			if (currentReplay != null)
+			{
+				Game.JoinReplay(currentReplay.Filename);
+				Ui.CloseWindow();
+			}
+		}
+
 		void AddReplay(ScrollPanelWidget list, string filename, ScrollItemWidget template)
 		{
 			var item = ScrollItemWidget.Setup(template,
 				() => currentReplay != null && currentReplay.Filename == filename,
-				() => SelectReplay(filename));
+				() => SelectReplay(filename),
+				() => WatchReplay());
 			var f = Path.GetFileName(filename);
 			item.Get<LabelWidget>("TITLE").GetText = () => f;
 			list.AddChild(item);
