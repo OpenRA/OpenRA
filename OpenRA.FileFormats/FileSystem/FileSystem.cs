@@ -19,8 +19,8 @@ namespace OpenRA.FileFormats
 	public static class FileSystem
 	{
 		public static List<IFolder> MountedFolders = new List<IFolder>();
-		static Cache<uint, List<IFolder>> classicHashIndex = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
-		static Cache<uint, List<IFolder>> crcHashIndex = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
+		static Cache<uint, List<IFolder>> classicHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
+		static Cache<uint, List<IFolder>> crcHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
 
 		public static List<string> FolderPaths = new List<string>();
 
@@ -89,11 +89,12 @@ namespace OpenRA.FileFormats
 		public static void Mount(string name, string annotation)
 		{
 			var optional = name.StartsWith("~");
-			if (optional) name = name.Substring(1);
+			if (optional)
+				name = name.Substring(1);
 
 			// paths starting with ^ are relative to the support dir
 			if (name.StartsWith("^"))
-				name = Platform.SupportDir+name.Substring(1);
+				name = Platform.SupportDir + name.Substring(1);
 
 			FolderPaths.Add(name);
 			Action a = () => FileSystem.MountInner(OpenPackage(name, annotation, order++));
@@ -115,7 +116,7 @@ namespace OpenRA.FileFormats
 
 		public static bool Unmount(IFolder mount)
 		{
-			return (MountedFolders.RemoveAll(f => f == mount) > 0);
+			return MountedFolders.RemoveAll(f => f == mount) > 0;
 		}
 
 		public static void Mount(IFolder mount)
@@ -151,7 +152,7 @@ namespace OpenRA.FileFormats
 
 		public static Stream OpenWithExts(string filename, params string[] exts)
 		{
-			if (filename.IndexOfAny(new char[] { '/', '\\' } ) == -1)
+			if (filename.IndexOfAny(new char[] { '/', '\\' }) == -1)
 			{
 				foreach (var ext in exts)
 				{
