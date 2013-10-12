@@ -126,27 +126,37 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var path = InstallUtils.GetMountedDisk(ValidDiskFilter);
 
-			if (path != null)
-			{
-				//gui freezes at this point will need to indicate the disc is being verified takes about 30-40seconds.
-				var file = File.OpenRead(path + Path.DirectorySeparatorChar + discFiles[0]);
-				using (var cryptoProvider = new SHA1CryptoServiceProvider())
+			new Thread(() =>
 				{
-					string hash = BitConverter
-							.ToString(cryptoProvider.ComputeHash(file));
-					if (discHash == hash)
-						hashok = true;
-				}
-				if (hashok)
-				{
-					Install(path);
-				}
-			}
-			else
-			{
-				insertDiskContainer.IsVisible = () => true;
-				installingContainer.IsVisible = () => false;
-			}
+					if (path != null)
+					{
+						backButton.IsDisabled = () => true;
+						retryButton.IsDisabled = () => true;
+						insertDiskContainer.IsVisible = () => false;
+						installingContainer.IsVisible = () => true;
+
+						statusLabel.GetText = () => "Verifying...";
+						progressBar.SetIndeterminate(true);
+
+						var file = File.OpenRead(path + Path.DirectorySeparatorChar + discFiles[0]);
+						using (var cryptoProvider = new SHA1CryptoServiceProvider())
+						{
+							string hash = BitConverter
+									.ToString(cryptoProvider.ComputeHash(file));
+							if (discHash == hash)
+								hashok = true;
+						}
+						if (hashok)
+						{
+							Install(path);
+						}
+					}
+					else
+					{
+						insertDiskContainer.IsVisible = () => true;
+						installingContainer.IsVisible = () => false;
+					}
+				}) { IsBackground = true }.Start();
 		}
 
 		void ResetContentArrays()
