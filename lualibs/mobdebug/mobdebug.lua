@@ -1,12 +1,12 @@
 --
--- MobDebug 0.542
+-- MobDebug 0.543
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.542,
+  _VERSION = 0.543,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -513,7 +513,9 @@ local function debug_hook(event, line)
     -- no watch that was fired. If there was a watch, handle its result.
     local getin = (status == nil) and
       (step_into
-      or (step_over and stack_level <= step_level)
+      -- when coroutine.running() return `nil` (main thread in Lua 5.1),
+      -- step_over will equal 'main', so need to check for that explicitly.
+      or (step_over and step_over == (coroutine.running() or 'main') and stack_level <= step_level)
       or has_breakpoint(file, line)
       or is_pending(server))
 
@@ -548,6 +550,9 @@ local function debug_hook(event, line)
     end
 
     if vars then restore_vars(vars) end
+
+    -- last command requested Step Over/Out; store the current thread
+    if step_over == true then step_over = coroutine.running() or 'main' end
   end
 end
 
