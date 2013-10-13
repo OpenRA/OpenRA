@@ -94,6 +94,18 @@ local markers = {
   error = {6, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(255, 220, 220)},
 }
 function StylesGetMarker(marker) return unpack(markers[marker] or {}) end
+function StylesRemoveMarker(marker) markers[marker] = nil end
+function StylesAddMarker(marker, ch, fg, bg)
+  local num = (markers[marker] or {})[1]
+  if not num then -- new marker; find the smallest available marker number
+    local nums = {}
+    for _, mark in pairs(markers) do nums[mark[1]] = true end
+    num = #nums + 1
+    if num > 24 then return end -- 24 markers with no pre-defined functions
+  end
+  markers[marker] = {num, ch, wx.wxColour(unpack(fg)), wx.wxColour(unpack(bg))}
+  return num
+end
 
 local function applymarker(editor,marker,clrfg,clrbg,clrsel)
   if (clrfg) then editor:MarkerSetForeground(marker,clrfg) end

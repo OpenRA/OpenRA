@@ -99,3 +99,7 @@ function ide:AddAPI(type, name, api)
   self.apis[type][name] = api
 end
 function ide:RemoveAPI(type, name) self.apis[type][name] = nil end
+
+function ide:AddMarker(...) return StylesAddMarker(...) end
+function ide:GetMarker(marker) return StylesGetMarker(marker) end
+function ide:RemoveMarker(marker) StylesRemoveMarker(marker) end
