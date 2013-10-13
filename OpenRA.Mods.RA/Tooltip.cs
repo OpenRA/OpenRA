@@ -16,8 +16,8 @@ namespace OpenRA.Mods.RA
 	[Desc("Shown in the build palette widget.")]
 	public class TooltipInfo : ITraitInfo
 	{
-		public readonly string Description = "";
-		public readonly string Name = "";
+		[Translate] public readonly string Description = "";
+		[Translate] public readonly string Name = "";
 
 		[Desc("Sequence of the actor that contains the cameo.")]
 		public readonly string Icon = "icon";
