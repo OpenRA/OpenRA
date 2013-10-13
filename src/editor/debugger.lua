@@ -1098,22 +1098,15 @@ function DebuggerToggleBreakpoint(editor, line)
   -- ignore requests to toggle when the debugger is running
   if debugger.server and debugger.running then return end
   local markers = editor:MarkerGet(line)
-  if markers >= CURRENT_LINE_MARKER_VALUE then
-    markers = markers - CURRENT_LINE_MARKER_VALUE
-  end
   local id = editor:GetId()
   local filePath = debugger.editormap and debugger.editormap[editor]
     or DebuggerMakeFileName(editor, ide.openDocuments[id].filePath)
-  if markers >= BREAKPOINT_MARKER_VALUE then
+  if bit.band(markers, BREAKPOINT_MARKER_VALUE) > 0 then
     editor:MarkerDelete(line, BREAKPOINT_MARKER)
-    if debugger.server then
-      debugger.breakpoint(filePath, line+1, false)
-    end
+    if debugger.server then debugger.breakpoint(filePath, line+1, false) end
   else
     editor:MarkerAdd(line, BREAKPOINT_MARKER)
-    if debugger.server then
-      debugger.breakpoint(filePath, line+1, true)
-    end
+    if debugger.server then debugger.breakpoint(filePath, line+1, true) end
   end
 end
 
