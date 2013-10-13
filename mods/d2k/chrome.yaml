@@ -297,7 +297,6 @@ button: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
-# A copy of dialog2
 button-hover: dialog.png
 	background: 513,130,126,126
 	border-r: 639,130,1,126
@@ -344,17 +343,17 @@ scrollthumb: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
-# A copy of dialog2
+# A copy of button-hover
 scrollthumb-hover: dialog.png
-	background: 513,1,126,126
-	border-r: 639,1,1,126
-	border-l: 512,1,1,126
-	border-b: 513,127,126,1
-	border-t: 513,0,126,1
-	corner-tl: 512,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 512,127,1,1
-	corner-br: 639,127,1,1
+	background: 513,130,126,126
+	border-r: 639,130,1,126
+	border-l: 512,130,1,126
+	border-b: 513,256,126,1
+	border-t: 513,129,126,1
+	corner-tl: 512,129,1,1
+	corner-tr: 639,129,1,1
+	corner-bl: 512,256,1,1
+	corner-br: 639,256,1,1
 
 # A copy of dialog2
 scrollthumb-disabled: dialog.png
@@ -368,17 +367,17 @@ scrollthumb-disabled: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
-# A copy of dialog3
+# A copy of button-hover
 scrollthumb-pressed: dialog.png
-	background: 641,1,126,126
-	border-r: 767,1,1,126
-	border-l: 640,1,1,126
-	border-b: 641,127,126,1
-	border-t: 641,0,126,1
-	corner-tl: 640,0,1,1
-	corner-tr: 767,0,1,1
-	corner-bl: 640,127,1,1
-	corner-br: 767,127,1,1
+	background: 513,130,126,126
+	border-r: 639,130,1,126
+	border-l: 512,130,1,126
+	border-b: 513,256,126,1
+	border-t: 513,129,126,1
+	corner-tl: 512,129,1,1
+	corner-tr: 639,129,1,1
+	corner-bl: 512,256,1,1
+	corner-br: 639,256,1,1
 
 # A copy of dialog3
 textfield: dialog.png
