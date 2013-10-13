@@ -89,9 +89,9 @@ stylesoutshell = styles
 
 -- to change markers used in console and output windows
 styles.marker = styles.marker or {}
-styles.marker.message = {ch = wxstc.wxSTC_MARK_ARROWS, {0, 0, 0}, {240, 240, 240}}
-styles.marker.output = {ch = wxstc.wxSTC_MARK_BACKGROUND, {0, 0, 0}, {240, 240, 240}}
-styles.marker.prompt = {ch = wxstc.wxSTC_MARK_CHARACTER+('>'):byte(), {0, 0, 0}, {240, 240, 240}}
+styles.marker.message = {ch = wxstc.wxSTC_MARK_ARROWS, fg = {0, 0, 0}, bg = {240, 240, 240}}
+styles.marker.output = {ch = wxstc.wxSTC_MARK_BACKGROUND, fg = {0, 0, 0}, bg = {240, 240, 240}}
+styles.marker.prompt = {ch = wxstc.wxSTC_MARK_CHARACTER+('>'):byte(), fg = {0, 0, 0}, bg = {240, 240, 240}}
 stylesoutshell = styles
 
 -- to disable indicators (underlining) on function calls
