@@ -26,9 +26,9 @@ namespace OpenRA.Mods.RA.Widgets
 		public int Columns = 3;
 		public int Rows = 5;
 
-		public string ReadyText = "";
-		public string HoldText = "";
-		public string RequiresText = "";
+		[Translate] public string ReadyText = "";
+		[Translate] public string HoldText = "";
+		[Translate] public string RequiresText = "";
 
 		public int IconWidth = 64;
 		public int IconHeight = 48;
@@ -484,7 +484,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var prereqs = buildable.Prerequisites.Select(Description);
 				if (prereqs.Any())
 				{
-					Game.Renderer.Fonts["Regular"].DrawText("{0} {1}".F(RequiresText, prereqs.JoinWith(", ")), p.ToInt2(), Color.White);
+					Game.Renderer.Fonts["Regular"].DrawText(RequiresText.F(prereqs.JoinWith(", ")), p.ToInt2(), Color.White);
 
 					p += new int2(0, 8);
 				}

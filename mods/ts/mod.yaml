@@ -134,6 +134,9 @@ Music:
 
 Movies:
 
+Translations:
+	mods/ts/languages/english.yaml
+
 LoadScreen: DefaultLoadScreen
 	Image: mods/ts/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
