@@ -44,6 +44,7 @@ namespace OpenRA
 
 		public ModData(params string[] mods)
 		{
+			Languages = new string[0];
 			Manifest = new Manifest(mods);
 			ObjectCreator = new ObjectCreator(Manifest);
 			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
@@ -71,12 +72,55 @@ namespace OpenRA
 			CursorProvider.Initialize(Manifest.Cursors);
 		}
 
+		public IEnumerable<string> Languages { get; private set; }
+
+		void LoadTranslations(Map map)
+		{
+			var selectedTranslations = new Dictionary<string, string>();
+			var defaultTranslations = new Dictionary<string, string>();
+
+			if (!Manifest.Translations.Any())
+			{
+				Languages = new string[0];
+				FieldLoader.Translations = new Dictionary<string, string>();
+				return;
+			}
+			
+			var yaml = Manifest.Translations.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
+			Languages = yaml.Select(t => t.Key).ToArray();
+
+			yaml = MiniYaml.MergeLiberal(map.Translations, yaml);
+
+			foreach (var y in yaml)
+			{
+				if (y.Key == Game.Settings.Graphics.Language)
+					selectedTranslations = y.Value.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value ?? "");
+				if (y.Key == Game.Settings.Graphics.DefaultLanguage)
+					defaultTranslations = y.Value.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value ?? "");
+			}
+			
+			var translations = new Dictionary<string, string>();
+			foreach (var tkv in defaultTranslations.Concat(selectedTranslations))
+			{
+				if (translations.ContainsKey(tkv.Key))
+					continue;
+				if (selectedTranslations.ContainsKey(tkv.Key))
+					translations.Add(tkv.Key, selectedTranslations[tkv.Key]);
+				else
+					translations.Add(tkv.Key, tkv.Value);
+			}
+
+			FieldLoader.Translations = translations;
+		}
+
 		public Map PrepareMap(string uid)
 		{
 			LoadScreen.Display();
 			if (!AvailableMaps.ContainsKey(uid))
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 			var map = new Map(AvailableMaps[uid].Path);
+
+			LoadTranslations(map);
 
 			// Reinit all our assets
 			InitializeLoaders();

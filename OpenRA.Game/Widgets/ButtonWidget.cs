@@ -25,7 +25,7 @@ namespace OpenRA.Widgets
 			set { GetKey = _ => value; }
 		}
 
-		public string Text = "";
+		[Translate] public string Text = "";
 		public bool Depressed = false;
 		public int VisualHeight = ChromeMetrics.Get<int>("ButtonDepth");
 		public string Font = ChromeMetrics.Get<string>("ButtonFont");

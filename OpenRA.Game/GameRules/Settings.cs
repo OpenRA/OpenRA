@@ -96,6 +96,9 @@ namespace OpenRA.GameRules
 		public int BatchSize = 8192;
 		public int NumTempBuffers = 8;
 		public int SheetSize = 2048;
+
+		public string Language = "english";
+		public string DefaultLanguage = "english";
 	}
 
 	public class SoundSettings

@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace OpenRA.FileFormats
 {
@@ -38,31 +39,31 @@ namespace OpenRA.FileFormats
 				object val;
 				if (kv.Value != null)
 					val = kv.Value(kv.Key.Name, kv.Key.FieldType, my);
-				else if (!TryGetValueFromYaml(kv.Key.Name, kv.Key.FieldType, my, out val))
+				else if (!TryGetValueFromYaml(kv.Key, my, out val))
 					continue;
 
 				kv.Key.SetValue(self, val);
 			}
 		}
 
-		static bool TryGetValueFromYaml(string fieldName, Type fieldType, MiniYaml yaml, out object ret)
+		static bool TryGetValueFromYaml(FieldInfo field, MiniYaml yaml, out object ret)
 		{
 			ret = null;
-			var n = yaml.Nodes.Where(x => x.Key == fieldName).ToList();
+			var n = yaml.Nodes.Where(x => x.Key == field.Name).ToList();
 			if (n.Count == 0)
 				return false;
 			if (n.Count == 1 && n[0].Value.Nodes.Count == 0)
 			{
-				ret = GetValue(fieldName, fieldType, n[0].Value.Value);
+				ret = GetValue(field.Name, field.FieldType, n[0].Value.Value, field);
 				return true;
 			}
 			else if (n.Count > 1)
 			{
 				throw new InvalidOperationException("The field {0} has multiple definitions:\n{1}"
-					.F(fieldName, n.Select(m => "\t- " + m.Location).JoinWith("\n")));
+					.F(field.Name, n.Select(m => "\t- " + m.Location).JoinWith("\n")));
 			}
 
-			throw new InvalidOperationException("TryGetValueFromYaml: unable to load field {0} (of type {1})".F(fieldName, fieldType));
+			throw new InvalidOperationException("TryGetValueFromYaml: unable to load field {0} (of type {1})".F(field.Name, field.FieldType));
 		}
 
 		public static T Load<T>(MiniYaml y) where T : new()
@@ -80,7 +81,7 @@ namespace OpenRA.FileFormats
 			if (field != null)
 			{
 				if (!field.HasAttribute<FieldFromYamlKeyAttribute>())
-					field.SetValue(self, GetValue(field.Name, field.FieldType, value));
+					field.SetValue(self, GetValue(field.Name, field.FieldType, value, field));
 				return;
 			}
 
@@ -89,7 +90,7 @@ namespace OpenRA.FileFormats
 			if (prop != null)
 			{
 				if (!prop.HasAttribute<FieldFromYamlKeyAttribute>())
-					prop.SetValue(self, GetValue(prop.Name, prop.PropertyType, value), NoIndexes);
+					prop.SetValue(self, GetValue(prop.Name, prop.PropertyType, value, prop), NoIndexes);
 				return;
 			}
 
@@ -98,61 +99,70 @@ namespace OpenRA.FileFormats
 
 		public static T GetValue<T>(string field, string value)
 		{
-			return (T)GetValue(field, typeof(T), value);
+			return (T)GetValue(field, typeof(T), value, null);
 		}
 
-		public static object GetValue(string field, Type fieldType, string x)
+		public static object GetValue(string fieldName, Type fieldType, string value)
 		{
-			if (x != null) x = x.Trim();
+			return GetValue(fieldName, fieldType, value, null);
+		}
+
+		public static object GetValue(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null) value = value.Trim();
 
 			if (fieldType == typeof(int))
 			{
 				int res;
-				if (int.TryParse(x, out res))
+				if (int.TryParse(value, out res))
 					return res;
-				return InvalidValueAction(x, fieldType, field);
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			else if (fieldType == typeof(ushort))
 			{
 				ushort res;
-				if (ushort.TryParse(x, out res))
+				if (ushort.TryParse(value, out res))
 					return res;
-				return InvalidValueAction(x, fieldType, field);
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			else if (fieldType == typeof(float))
 			{
 				float res;
-				if (float.TryParse(x.Replace("%", ""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
-					return res * (x.Contains('%') ? 0.01f : 1f);
-				return InvalidValueAction(x, fieldType, field);
+				if (float.TryParse(value.Replace("%", ""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
+					return res * (value.Contains('%') ? 0.01f : 1f);
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			else if (fieldType == typeof(decimal))
 			{
 				decimal res;
-				if (decimal.TryParse(x.Replace("%", ""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
-					return res * (x.Contains('%') ? 0.01m : 1m);
-				return InvalidValueAction(x, fieldType, field);
+				if (decimal.TryParse(value.Replace("%", ""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
+					return res * (value.Contains('%') ? 0.01m : 1m);
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			else if (fieldType == typeof(string))
-				return x;
+			{
+				if (field != null && field.HasAttribute<TranslateAttribute>())
+					return Regex.Replace(value, "@[^@]+@", m => Translate(m.Value.Substring(1, m.Value.Length - 2)), RegexOptions.Compiled);
+				return value;
+			}
 
 			else if (fieldType == typeof(Color))
 			{
-				var parts = x.Split(',');
+				var parts = value.Split(',');
 				if (parts.Length == 3)
 					return Color.FromArgb(int.Parse(parts[0]).Clamp(0, 255), int.Parse(parts[1]).Clamp(0, 255), int.Parse(parts[2]).Clamp(0, 255));
 				if (parts.Length == 4)
 					return Color.FromArgb(int.Parse(parts[0]).Clamp(0, 255), int.Parse(parts[1]).Clamp(0, 255), int.Parse(parts[2]).Clamp(0, 255), int.Parse(parts[3]).Clamp(0, 255));
-				return InvalidValueAction(x, fieldType, field);
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			else if (fieldType == typeof(HSLColor))
 			{
-				var parts = x.Split(',');
+				var parts = value.Split(',');
 
 				// Allow old ColorRamp format to be parsed as HSLColor
 				if (parts.Length == 3 || parts.Length == 4)
@@ -161,21 +171,21 @@ namespace OpenRA.FileFormats
 						(byte)int.Parse(parts[1]).Clamp(0, 255),
 						(byte)int.Parse(parts[2]).Clamp(0, 255));
 
-				return InvalidValueAction(x, fieldType, field);
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			else if (fieldType == typeof(WRange))
 			{
 				WRange res;
-				if (WRange.TryParse(x, out res))
+				if (WRange.TryParse(value, out res))
 					return res;
 
-				return InvalidValueAction(x, fieldType, field);
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			else if (fieldType == typeof(WVec))
 			{
-				var parts = x.Split(',');
+				var parts = value.Split(',');
 				if (parts.Length == 3)
 				{
 					WRange rx, ry, rz;
@@ -183,12 +193,12 @@ namespace OpenRA.FileFormats
 						return new WVec(rx, ry, rz);
 				}
 
-				return InvalidValueAction(x, fieldType, field);
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			else if (fieldType == typeof(WPos))
 			{
-				var parts = x.Split(',');
+				var parts = value.Split(',');
 				if (parts.Length == 3)
 				{
 					WRange rx, ry, rz;
@@ -196,62 +206,62 @@ namespace OpenRA.FileFormats
 						return new WPos(rx, ry, rz);
 				}
 
-				return InvalidValueAction(x, fieldType, field);
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			else if (fieldType == typeof(WAngle))
 			{
 				int res;
-				if (int.TryParse(x, out res))
+				if (int.TryParse(value, out res))
 					return new WAngle(res);
-				return InvalidValueAction(x, fieldType, field);
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			else if (fieldType == typeof(WRot))
 			{
-				var parts = x.Split(',');
+				var parts = value.Split(',');
 				if (parts.Length == 3)
 				{
 					int rr, rp, ry;
-					if (int.TryParse(x, out rr) && int.TryParse(x, out rp) && int.TryParse(x, out ry))
+					if (int.TryParse(value, out rr) && int.TryParse(value, out rp) && int.TryParse(value, out ry))
 						return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
 				}
 
-				return InvalidValueAction(x, fieldType, field);
+				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
 			else if (fieldType.IsEnum)
 			{
-				if (!Enum.GetNames(fieldType).Select(a => a.ToLower()).Contains(x.ToLower()))
-					return InvalidValueAction(x, fieldType, field);
-				return Enum.Parse(fieldType, x, true);
+				if (!Enum.GetNames(fieldType).Select(a => a.ToLower()).Contains(value.ToLower()))
+					return InvalidValueAction(value, fieldType, fieldName);
+				return Enum.Parse(fieldType, value, true);
 			}
 
 			else if (fieldType == typeof(bool))
-				return ParseYesNo(x, fieldType, field);
+				return ParseYesNo(value, fieldType, fieldName);
 
 			else if (fieldType.IsArray)
 			{
-				if (x == null)
+				if (value == null)
 					return Array.CreateInstance(fieldType.GetElementType(), 0);
 
-				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
 				var ret = Array.CreateInstance(fieldType.GetElementType(), parts.Length);
 				for (int i = 0; i < parts.Length; i++)
-					ret.SetValue(GetValue(field, fieldType.GetElementType(), parts[i].Trim()), i);
+					ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i].Trim(), field), i);
 				return ret;
 			}
 
 			else if (fieldType == typeof(int2))
 			{
-				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				return new int2(int.Parse(parts[0]), int.Parse(parts[1]));
 			}
 
 			else if (fieldType == typeof(float2))
 			{
-				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				float xx = 0;
 				float yy = 0;
 				float res;
@@ -264,13 +274,13 @@ namespace OpenRA.FileFormats
 
 			else if (fieldType == typeof(Rectangle))
 			{
-				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				return new Rectangle(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
 			}
 
 			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Bits<>))
 			{
-				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				var argTypes = new Type[] { typeof(string[]) };
 				var argValues = new object[] { parts };
 				return fieldType.GetConstructor(argTypes).Invoke(argValues);
@@ -279,11 +289,11 @@ namespace OpenRA.FileFormats
 			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Nullable<>))
 			{
 				var innerType = fieldType.GetGenericArguments().First();
-				var innerValue = GetValue("Nullable<T>", innerType, x);
-				return fieldType.GetConstructor(new []{ innerType }).Invoke(new []{ innerValue });
+				var innerValue = GetValue("Nullable<T>", innerType, value, field);
+				return fieldType.GetConstructor(new[] { innerType }).Invoke(new[] { innerValue });
 			}
 
-			UnknownFieldAction("[Type] {0}".F(x), fieldType);
+			UnknownFieldAction("[Type] {0}".F(value), fieldType);
 			return null;
 		}
 
@@ -312,7 +322,7 @@ namespace OpenRA.FileFormats
 				if (loadUsing.Length != 0)
 					ret[field] = (_1, fieldType, yaml) => loadUsing[0].LoaderFunc(field)(yaml);
 				else if (fromYamlKey.Length != 0)
-					ret[field] = (f, ft, yaml) => GetValue(f, ft, yaml.Value);
+					ret[field] = (f, ft, yaml) => GetValue(f, ft, yaml.Value, field);
 				else if (ignore.Length == 0)
 					ret[field] = null;
 			}
@@ -342,7 +352,24 @@ namespace OpenRA.FileFormats
 				return loaderFuncCache;
 			}
 		}
+
+		public static string Translate(string key)
+		{
+			if (Translations == null || string.IsNullOrEmpty(key))
+				return key;
+
+			string value;
+			if (!Translations.TryGetValue(key, out value))
+				return key;
+
+			return value;
+		}
+
+		public static Dictionary<string, string> Translations = new Dictionary<string, string>();
 	}
+
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+	public class TranslateAttribute : Attribute { }
 
 	public class FieldFromYamlKeyAttribute : Attribute { }
 
