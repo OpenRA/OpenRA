@@ -155,9 +155,9 @@ Container@PLAYER_WIDGETS:
 			Y:280
 			Width:238
 			Height:500
-			ReadyText: READY
-			HoldText: ON HOLD
-			RequiresText: Requires
+			ReadyText:@ready@
+			HoldText:@on-hold@
+			RequiresText:@requires@
 			IconWidth: 60
 			IconHeight: 48
 			Columns: 3

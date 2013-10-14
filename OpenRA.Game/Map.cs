@@ -99,6 +99,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] public List<MiniYamlNode> Weapons = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> Voices = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> Notifications = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> Translations = new List<MiniYamlNode>();
 
 		// Binary map data
 		[FieldLoader.Ignore] public byte TileFormat = 1;
@@ -191,6 +192,7 @@ namespace OpenRA
 			Weapons = MiniYaml.NodesOrEmpty(yaml, "Weapons");
 			Voices = MiniYaml.NodesOrEmpty(yaml, "Voices");
 			Notifications = MiniYaml.NodesOrEmpty(yaml, "Notifications");
+			Translations = MiniYaml.NodesOrEmpty(yaml, "Translations");
 
 			CustomTerrain = new string[MapSize.X, MapSize.Y];
 
@@ -247,6 +249,7 @@ namespace OpenRA
 			root.Add(new MiniYamlNode("Weapons", null, Weapons));
 			root.Add(new MiniYamlNode("Voices", null, Voices));
 			root.Add(new MiniYamlNode("Notifications", null, Notifications));
+			root.Add(new MiniYamlNode("Translations", null, Translations));
 
 			var entries = new Dictionary<string, byte[]>();
 			entries.Add("map.bin", SaveBinaryData());

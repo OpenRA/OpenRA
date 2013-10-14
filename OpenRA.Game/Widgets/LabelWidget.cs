@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
@@ -19,7 +20,7 @@ namespace OpenRA.Widgets
 
 	public class LabelWidget : Widget
 	{
-		public string Text = null;
+		[Translate] public string Text = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
 		public string Font = "Regular";

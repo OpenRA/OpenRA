@@ -113,6 +113,9 @@ Movies:
 	mods/ra/movies1.yaml
 	mods/ra/movies2.yaml
 
+Translations:
+	mods/ra/languages/english.yaml
+
 LoadScreen: DefaultLoadScreen
 	Image: mods/ra/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL

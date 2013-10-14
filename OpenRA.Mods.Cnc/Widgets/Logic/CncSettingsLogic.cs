@@ -104,6 +104,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var windowHeight = generalPane.Get<TextFieldWidget>("WINDOW_HEIGHT");
 			windowHeight.Text = graphicsSettings.WindowedSize.Y.ToString();
 
+			var languageDropDownButton = generalPane.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
+			languageDropDownButton.OnMouseDown = _ => SettingsMenuLogic.ShowLanguageDropdown(languageDropDownButton);
+			languageDropDownButton.GetText = () => FieldLoader.Translate(Game.Settings.Graphics.Language);
+
 			// Audio
 			var soundSlider = generalPane.Get<SliderWidget>("SOUND_SLIDER");
 			soundSlider.OnChange += x => { soundSettings.SoundVolume = x; Sound.SoundVolume = x; };
