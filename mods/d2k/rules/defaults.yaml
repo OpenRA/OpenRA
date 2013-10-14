@@ -29,7 +29,7 @@
 	GivesBounty:
 	Repairable:
 		RepairBuildings: repaira,repairo,repairh
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	RenderUnit:
@@ -67,7 +67,7 @@
 	GivesBounty:
 	Repairable:
 		RepairBuildings: repaira,repairo,repairh
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	RenderUnit:
@@ -162,7 +162,7 @@
 	RepairableNear:
 		Buildings: barra, barro
 		CloseEnough: 1
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
@@ -185,7 +185,7 @@
 	ProximityCaptor:
 		Types:Plane
 	GivesBounty:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 
@@ -231,7 +231,7 @@
 		Types:Building
 	Sellable:
 	GivesBounty:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guardable:
 		Range: 3
 	BodyOrientation:

@@ -33,7 +33,7 @@
 		String:Vehicle
 	WithSmoke:
 	UpdatesPlayerStatistics:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
@@ -78,7 +78,7 @@
 		String:Vehicle
 	WithSmoke:
 	UpdatesPlayerStatistics:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
@@ -132,7 +132,7 @@
 	CrushableInfantry:
 		CrushSound: squishy2.aud
 	UpdatesPlayerStatistics:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
@@ -170,7 +170,7 @@
 		String:Ship
 	WithSmoke:
 	UpdatesPlayerStatistics:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
@@ -201,7 +201,7 @@
 	GpsDot:
 		String:Plane
 	UpdatesPlayerStatistics:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	BodyOrientation:
 
 ^Helicopter:
@@ -245,7 +245,7 @@
 	AcceptsSupplies:
 	GivesBounty:
 	UpdatesPlayerStatistics:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guardable:
 		Range: 3
 	BodyOrientation:

@@ -429,7 +429,6 @@
     <Compile Include="Widgets\ColorPreviewManagerWidget.cs" />
     <Compile Include="Infiltrates.cs" />
     <Compile Include="Armament.cs" />
-    <Compile Include="DebugMuzzlePositions.cs" />
     <Compile Include="Buildings\BaseProvider.cs" />
     <Compile Include="Widgets\Logic\ObserverShroudSelectorLogic.cs" />
     <Compile Include="RepairsBridges.cs" />
@@ -471,6 +470,7 @@
     <Compile Include="AI\States\ProtectionStates.cs" />
     <Compile Include="AI\States\AirStates.cs" />
     <Compile Include="Widgets\Logic\InstallLogic.cs" />
+    <Compile Include="CombatDebugOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

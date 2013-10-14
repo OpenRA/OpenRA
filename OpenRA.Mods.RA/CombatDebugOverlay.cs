@@ -20,17 +20,17 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class DebugMuzzlePositionsInfo : ITraitInfo
+	public class CombatDebugOverlayInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new DebugFiringOffsets(init.self); }
+		public object Create(ActorInitializer init) { return new CombatDebugOverlay(init.self); }
 	}
 
-	public class DebugFiringOffsets : IPostRender
+	public class CombatDebugOverlay : IPostRender
 	{
 		Lazy<IEnumerable<Armament>> armaments;
 		DeveloperMode devMode;
 
-		public DebugFiringOffsets(Actor self)
+		public CombatDebugOverlay(Actor self)
 		{
 			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
 
