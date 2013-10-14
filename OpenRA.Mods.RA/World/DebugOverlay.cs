@@ -72,8 +72,9 @@ namespace OpenRA.Mods.RA
 							layer [i, j] = layer [i, j] * 5 / 6;
 
 						// TODO: This doesn't make sense for isometric terrain
-						var tl = wr.ScreenPxPosition(new CPos(i, j).CenterPosition) - new int2(Game.CellSize, Game.CellSize);
-						qr.FillRect(new RectangleF(tl.X, tl.Y, Game.CellSize, Game.CellSize), Color.FromArgb(w, c));
+						var tl = wr.ScreenPxPosition(new CPos(i, j).TopLeft);
+						var br = wr.ScreenPxPosition(new CPos(i, j).BottomRight);
+						qr.FillRect(RectangleF.FromLTRB(tl.X, tl.Y, br.X, br.Y), Color.FromArgb(w, c));
 					}
 				}
 			}
