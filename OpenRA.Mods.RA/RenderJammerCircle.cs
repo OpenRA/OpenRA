@@ -61,8 +61,7 @@ namespace OpenRA.Mods.RA
 				Color.FromArgb(128, color),
 				wr.ScreenPxPosition(pos),
 				range,
-				Color.FromArgb(96, Color.Black),
-				1);
+				Color.FromArgb(96, Color.Black));
 		}
 	}
 }
