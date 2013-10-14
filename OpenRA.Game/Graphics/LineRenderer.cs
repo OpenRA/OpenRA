@@ -15,9 +15,8 @@ namespace OpenRA.Graphics
 {
 	public class LineRenderer : Renderer.IBatchRenderer
 	{
-		public float LineWidth = 1f;
-		static float2 offset = new float2(0.5f,0.5f);
-
+		static float2 offset = new float2(0.5f, 0.5f);
+		float lineWidth = 1f;
 		Renderer renderer;
 		IShader shader;
 
@@ -28,6 +27,19 @@ namespace OpenRA.Graphics
 		{
 			this.renderer = renderer;
 			this.shader = shader;
+		}
+
+
+		public float LineWidth
+		{
+			get { return lineWidth; }
+			set
+			{
+				if (LineWidth != value)
+					Flush();
+
+				lineWidth = value;
+			}
 		}
 
 		public void Flush()
