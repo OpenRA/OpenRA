@@ -122,8 +122,8 @@ local function treeSetConnectorsAndIcons(tree)
     end
   end
 
-  tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
-    function( event )
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
+    function (event)
       local item_id = event:GetItem()
       local dir = tree:GetItemFullName(item_id)
 
@@ -131,8 +131,8 @@ local function treeSetConnectorsAndIcons(tree)
       else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
       return true
     end)
-  tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
-    function( event )
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
+    function (event)
       local item_id = event:GetItem()
       local name = tree:GetItemFullName(item_id)
       -- refresh the folder
@@ -145,8 +145,8 @@ local function treeSetConnectorsAndIcons(tree)
       end
     end)
   -- handle context menu
-  tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_MENU,
-    function( event )
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_MENU,
+    function (event)
       local item_id = event:GetItem()
       tree:SelectItem(item_id)
       local menu = wx.wxMenu()
@@ -159,8 +159,8 @@ local function treeSetConnectorsAndIcons(tree)
       tree:PopupMenu(menu)
     end)
   -- toggle a folder on a single click
-  tree:Connect( wx.wxEVT_LEFT_DOWN,
-    function( event )
+  tree:Connect(wx.wxEVT_LEFT_DOWN,
+    function (event)
       local item_id = tree:HitTest(event:GetPosition())
       -- only toggle if this is a folder and the click is on the label
       if item_id and tree:GetItemImage(item_id) == IMG_DIRECTORY then
@@ -170,6 +170,31 @@ local function treeSetConnectorsAndIcons(tree)
         event:Skip()
       end
       return true
+    end)
+  tree:Connect(wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT,
+    function (event)
+    end)
+
+  local itemsrc
+  tree:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_DRAG,
+    function (event)
+      if event:GetItem() ~= tree:GetRootItem() then
+        itemsrc = event:GetItem()
+        event:Allow()
+      end
+    end)
+  tree:Connect(wx.wxEVT_COMMAND_TREE_END_DRAG,
+    function (event)
+      local itemdst = event:GetItem()
+      -- check if itemdst is a folder
+      local target = tree:GetItemFullName(itemdst)
+      if wx.wxDirExists(target) then
+        local source = tree:GetItemFullName(itemsrc)
+        local fulltarget = wx.wxFileName(target, tree:GetItemText(itemsrc)):GetFullPath()
+        FileRename(source, fulltarget)
+        refreshAncestors(tree:GetItemParent(itemsrc))
+        refreshAncestors(itemdst)
+      end
     end)
 end
 
@@ -188,7 +213,8 @@ local projbutton = wx.wxButton(projpanel, ID_PROJECTDIRCHOOSE,
 
 local projtree = wx.wxTreeCtrl(projpanel, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
-  wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_LINES_AT_ROOT)
+  wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_LINES_AT_ROOT
+  + wx.wxTR_EDIT_LABELS)
 
 -- use the same font in the combobox as is used in the filetree
 projtree:SetFont(ide.font.fNormal)
