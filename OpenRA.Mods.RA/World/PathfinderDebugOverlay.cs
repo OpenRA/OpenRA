@@ -9,11 +9,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class DebugOverlayInfo : Traits.TraitInfo<DebugOverlay>
-	{
-	}
-
-	class DebugOverlay : IRenderOverlay, IWorldLoaded
+	class PathfinderDebugOverlayInfo : Traits.TraitInfo<PathfinderDebugOverlay> { }
+	class PathfinderDebugOverlay : IRenderOverlay, IWorldLoaded
 	{
 		Dictionary<Player, int[,]> layers;
 		int refreshTick;

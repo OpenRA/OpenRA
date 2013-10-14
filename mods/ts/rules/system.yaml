@@ -116,7 +116,7 @@ World:
 		Race: nod
 	ResourceLayer:
 	ResourceClaimLayer:
-	DebugOverlay:
+	PathfinderDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartUnits:
