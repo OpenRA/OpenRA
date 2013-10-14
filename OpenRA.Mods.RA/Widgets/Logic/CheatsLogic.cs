@@ -107,7 +107,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				noexplorationButton.OnClick = () =>
 				world.IssueOrder(new Order("DevResetExploration", world.LocalPlayer.PlayerActor, false));
 
-			var dbgOverlay = world.WorldActor.TraitOrDefault<DebugOverlay>();
+			var dbgOverlay = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
 			var showAstarCostCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_ASTAR");
 			if (showAstarCostCheckbox != null)
 			{

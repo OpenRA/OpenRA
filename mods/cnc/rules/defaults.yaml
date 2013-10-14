@@ -29,7 +29,7 @@
 	ActorLostNotification:
 	AttackMove:
 	WithSmoke:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
@@ -75,7 +75,7 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
@@ -110,7 +110,7 @@
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 
@@ -159,7 +159,7 @@
 		Probability: 2
 	CrushableInfantry:
 		WarnProbability: 60
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
@@ -261,7 +261,7 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	BodyOrientation:
 
 ^Ship:
@@ -281,7 +281,7 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	AttackMove:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
@@ -329,7 +329,7 @@
 	ShakeOnDeath:
 	Sellable:
 	LegacyCapturable:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guardable:
 		Range: 3
 	BodyOrientation:
