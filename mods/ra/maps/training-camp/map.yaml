@@ -832,6 +832,8 @@ Rules:
 			HP: 5000
 		Production:
 			Produces: Building,Infantry
+		BaseProvider:
+			Range: 16
 	WEAP:
 		Buildable:
 			Owner: allies

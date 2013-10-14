@@ -546,6 +546,8 @@ Rules:
 		Production:
 			Produces: Defense,Infantry
 		-Sellable:
+		BaseProvider:
+			Range: 16
 	FTUR:
 		Building:
 			Power: 0
