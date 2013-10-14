@@ -28,11 +28,13 @@ namespace OpenRA.Mods.RA
 	public class CombatDebugOverlay : IPostRender
 	{
 		Lazy<IEnumerable<Armament>> armaments;
+		Lazy<Health> health;
 		DeveloperMode devMode;
 
 		public CombatDebugOverlay(Actor self)
 		{
 			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
+			health = Lazy.New(() => self.TraitOrDefault<Health>());
 
 			var localPlayer = self.World.LocalPlayer;
 			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;
@@ -43,6 +45,9 @@ namespace OpenRA.Mods.RA
 			if (devMode == null || !devMode.ShowMuzzles)
 				return;
 
+			if (health.Value != null)
+				wr.DrawRangeCircle(Color.Red, wr.ScreenPxPosition(self.CenterPosition), health.Value.Info.Radius / Game.CellSize);
+
 			var wlr = Game.Renderer.WorldLineRenderer;
 			var c = Color.White;
 
@@ -50,7 +55,7 @@ namespace OpenRA.Mods.RA
 				foreach (var b in a.Barrels)
 				{
 					var muzzle = self.CenterPosition + a.MuzzleOffset(self, b);
-					var dirOffset = new WVec(0,-224,0).Rotate(a.MuzzleOrientation(self, b));
+					var dirOffset = new WVec(0, -224, 0).Rotate(a.MuzzleOrientation(self, b));
 
 					var sm = wr.ScreenPosition(muzzle);
 					var sd = wr.ScreenPosition(muzzle + dirOffset);
