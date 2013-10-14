@@ -414,7 +414,6 @@
     <Compile Include="Widgets\SupportPowerBinWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="World\ChooseBuildTabOnSelect.cs" />
-    <Compile Include="World\DebugOverlay.cs" />
     <Compile Include="World\ResourceClaim.cs" />
     <Compile Include="World\ResourceClaimLayer.cs" />
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
@@ -429,7 +428,6 @@
     <Compile Include="Widgets\ColorPreviewManagerWidget.cs" />
     <Compile Include="Infiltrates.cs" />
     <Compile Include="Armament.cs" />
-    <Compile Include="DebugMuzzlePositions.cs" />
     <Compile Include="Buildings\BaseProvider.cs" />
     <Compile Include="Widgets\Logic\ObserverShroudSelectorLogic.cs" />
     <Compile Include="RepairsBridges.cs" />
@@ -471,6 +469,8 @@
     <Compile Include="AI\States\ProtectionStates.cs" />
     <Compile Include="AI\States\AirStates.cs" />
     <Compile Include="Widgets\Logic\InstallLogic.cs" />
+    <Compile Include="CombatDebugOverlay.cs" />
+    <Compile Include="World\PathfinderDebugOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

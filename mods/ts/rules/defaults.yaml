@@ -33,7 +33,7 @@
 	AcceptsSupplies:
 	GivesBounty:
 	UpdatesPlayerStatistics:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guardable:
 		Range: 3
 	BodyOrientation:
@@ -77,7 +77,7 @@
 	CrushableInfantry:
 		CrushSound: squish6.aud
 	UpdatesPlayerStatistics:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
@@ -142,7 +142,7 @@
 	GivesBounty:
 #	WithSmoke:
 	UpdatesPlayerStatistics:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	Guard:
 	Guardable:
 	BodyOrientation:
@@ -197,5 +197,5 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-	DebugMuzzlePositions:
+	CombatDebugOverlay:
 	BodyOrientation:

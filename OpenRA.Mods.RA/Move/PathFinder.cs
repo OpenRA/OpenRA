@@ -134,7 +134,7 @@ namespace OpenRA.Mods.RA.Move
 						}
 					}
 
-					var dbg = world.WorldActor.TraitOrDefault<DebugOverlay>();
+					var dbg = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
 					if (dbg != null)
 					{
 						dbg.AddLayer(search.considered.Select(p => new Pair<CPos, int>(p, search.cellInfo[p.X, p.Y].MinCost)), search.maxCost, search.owner);
@@ -199,7 +199,7 @@ namespace OpenRA.Mods.RA.Move
 						}
 					}
 
-					var dbg = world.WorldActor.TraitOrDefault<DebugOverlay>();
+					var dbg = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
 					if (dbg != null)
 					{
 						dbg.AddLayer(fromSrc.considered.Select(p => new Pair<CPos, int>(p, fromSrc.cellInfo[p.X, p.Y].MinCost)), fromSrc.maxCost, fromSrc.owner);
