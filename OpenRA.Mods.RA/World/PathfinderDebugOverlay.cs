@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region Copyright & License Information
+/*
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -19,11 +29,12 @@ namespace OpenRA.Mods.RA
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			this.world = w;
-			this.refreshTick = 0;
-			this.layers = new Dictionary<Player, int[,]>(8);
+			world = w;
+			refreshTick = 0;
+			layers = new Dictionary<Player, int[,]>(8);
+
 			// Enabled via Cheats menu
-			this.Visible = false;
+			Visible = false;
 		}
 
 		public void AddLayer(IEnumerable<Pair<CPos, int>> cellWeights, int maxWeight, Player pl)
@@ -38,7 +49,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			foreach (var p in cellWeights)
-				layer[p.First.X, p.First.Y] = Math.Min(128, (layer[p.First.X, p.First.Y]) + ((maxWeight - p.Second) * 64 / maxWeight));
+				layer[p.First.X, p.First.Y] = Math.Min(128, layer[p.First.X, p.First.Y] + (maxWeight - p.Second) * 64 / maxWeight);
 		}
 
 		public void Render(WorldRenderer wr)
@@ -61,12 +72,12 @@ namespace OpenRA.Mods.RA
 				{
 					for (var i = viewBounds.Left; i <= viewBounds.Right; ++i)
 					{
-						if (layer [i, j] <= 0)
+						if (layer[i, j] <= 0)
 							continue;
 
-						var w = Math.Max(0, Math.Min(layer [i, j], 128));
+						var w = Math.Max(0, Math.Min(layer[i, j], 128));
 						if (doDim)
-							layer [i, j] = layer [i, j] * 5 / 6;
+							layer[i, j] = layer[i, j] * 5 / 6;
 
 						// TODO: This doesn't make sense for isometric terrain
 						var tl = wr.ScreenPxPosition(new CPos(i, j).TopLeft);
