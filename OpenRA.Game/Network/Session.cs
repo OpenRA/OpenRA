@@ -138,11 +138,13 @@ namespace OpenRA.Network
 			public int StartingCash = 5000;
 			public string StartingUnitsClass = "none";
 			public bool AllowVersionMismatch;
+			public string GameUid;
 		}
 
 		public Session(string[] mods)
 		{
 			this.GlobalSettings.Mods = mods.ToArray();
+			this.GlobalSettings.GameUid = System.Guid.NewGuid().ToString();
 		}
 
 		public string Serialize()
