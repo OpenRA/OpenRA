@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
-		public bool CanEnterCell(CPos cell)
+		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
 		{
 			if (!self.World.Map.IsInMap(cell.X, cell.Y))
 				return false;
@@ -60,8 +60,15 @@ namespace OpenRA.Mods.RA
 			if (!info.AllowedTerrain.Contains(self.World.GetTerrainType(cell)))
 				return false;
 
-			return !self.World.ActorMap.AnyUnitsAt(cell);
+			if (!checkTransientActors)
+				return true;
+
+			return !self.World.ActorMap.GetUnitsAt(cell)
+				.Where(x => x != ignoreActor)
+				.Any();
 		}
+
+		public bool CanEnterCell(CPos cell) { return CanEnterCell(cell, null, true); }
 
 		public void SetPosition(Actor self, CPos cell) { SetPosition(self, cell.CenterPosition); }
 		public void SetVisualPosition(Actor self, WPos pos)

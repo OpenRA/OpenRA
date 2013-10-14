@@ -88,18 +88,25 @@ namespace OpenRA.Mods.RA
 		public void SetPosition(Actor self, WPos pos) { SetPosition(self, pos.ToCPos()); }
 		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos.ToCPos()); }
 
-		public bool CanEnterCell(CPos cell)
+		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
 		{
 			if (!self.World.Map.IsInMap(cell.X, cell.Y)) return false;
+
 			var type = self.World.GetTerrainType(cell);
 			if (!info.TerrainTypes.Contains(type))
 				return false;
 
 			if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null) return false;
-			if (self.World.ActorMap.GetUnitsAt(cell).Any()) return false;
 
-			return true;
+			if (!checkTransientActors)
+				return true;
+
+			return !self.World.ActorMap.GetUnitsAt(cell)
+				.Where(x => x != ignoreActor)
+				.Any();
 		}
+
+		public bool CanEnterCell(CPos cell) { return CanEnterCell(cell, null, true); }
 
 		public void SetPosition(Actor self, CPos cell)
 		{
