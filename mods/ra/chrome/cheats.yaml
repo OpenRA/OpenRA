@@ -86,7 +86,7 @@ Background@CHEATS_PANEL:
 			Y:350
 			Height:20
 			Width:200
-			Text:Show Muzzle Positions
+			Text:Show Combat Geometry
 		Checkbox@SHOW_GEOMETRY:
 			X:30
 			Y:380
