@@ -85,25 +85,29 @@ namespace OpenRA.Traits
 
 		void DrawSelectionBar(WorldRenderer wr, Actor self, float2 xy, float2 Xy, float value, Color barColor)
 		{
-			if (!self.IsInWorld) return;
+			if (!self.IsInWorld)
+				return;
 
 			var health = self.TraitOrDefault<Health>();
 			if (health == null || health.IsDead) return;
 
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
+			var p = new float2(0, -4);
+			var q = new float2(0, -3);
+			var r = new float2(0, -2);
 
 			var barColor2 = Color.FromArgb(255, barColor.R / 2, barColor.G / 2, barColor.B / 2);
 
 			var z = float2.Lerp(xy, Xy, value);
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(xy + new float2(0, -4), Xy + new float2(0, -4), c, c);
-			wlr.DrawLine(xy + new float2(0, -3), Xy + new float2(0, -3), c2, c2);
-			wlr.DrawLine(xy + new float2(0, -2), Xy + new float2(0, -2), c, c);
+			wlr.DrawLine(xy + p, Xy + p, c, c);
+			wlr.DrawLine(xy + q, Xy + q, c2, c2);
+			wlr.DrawLine(xy + r, Xy + r, c, c);
 
-			wlr.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), barColor, barColor);
-			wlr.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), barColor2, barColor2);
-			wlr.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), barColor2, barColor2);
+			wlr.DrawLine(xy + p, z + p, barColor2, barColor2);
+			wlr.DrawLine(xy + q, z + q, barColor, barColor);
+			wlr.DrawLine(xy + r, z + r, barColor2, barColor2);
 		}
 
 		void DrawHealthBar(WorldRenderer wr, Actor self, float2 xy, float2 Xy)
@@ -115,6 +119,9 @@ namespace OpenRA.Traits
 
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
+			var p = new float2(0, -4);
+			var q = new float2(0, -3);
+			var r = new float2(0, -2);
 
 			var healthColor = (health.DamageState == DamageState.Critical) ? Color.Red :
 							  (health.DamageState == DamageState.Heavy) ? Color.Yellow : Color.LimeGreen;
@@ -128,13 +135,13 @@ namespace OpenRA.Traits
 			var z = float2.Lerp(xy, Xy, (float)health.HP / health.MaxHP);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(xy + new float2(0, -4), Xy + new float2(0, -4), c, c);
-			wlr.DrawLine(xy + new float2(0, -3), Xy + new float2(0, -3), c2, c2);
-			wlr.DrawLine(xy + new float2(0, -2), Xy + new float2(0, -2), c, c);
+			wlr.DrawLine(xy + p, Xy + p, c, c);
+			wlr.DrawLine(xy + q, Xy + q, c2, c2);
+			wlr.DrawLine(xy + r, Xy + r, c, c);
 
-			wlr.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), healthColor, healthColor);
-			wlr.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), healthColor2, healthColor2);
-			wlr.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), healthColor2, healthColor2);
+			wlr.DrawLine(xy + p, z + p, healthColor2, healthColor2);
+			wlr.DrawLine(xy + q, z + q, healthColor, healthColor);
+			wlr.DrawLine(xy + r, z + r, healthColor2, healthColor2);
 
 			if (health.DisplayHp != health.HP)
 			{
@@ -146,9 +153,9 @@ namespace OpenRA.Traits
 					deltaColor.B / 2);
 				var zz = float2.Lerp(xy, Xy, (float)health.DisplayHp / health.MaxHP);
 
-				wlr.DrawLine(z + new float2(0, -3), zz + new float2(0, -3), deltaColor, deltaColor);
-				wlr.DrawLine(z + new float2(0, -2), zz + new float2(0, -2), deltaColor2, deltaColor2);
-				wlr.DrawLine(z + new float2(0, -4), zz + new float2(0, -4), deltaColor2, deltaColor2);
+				wlr.DrawLine(z + p, zz + p, deltaColor2, deltaColor2);
+				wlr.DrawLine(z + q, zz + q, deltaColor, deltaColor);
+				wlr.DrawLine(z + r, zz + r, deltaColor2, deltaColor2);
 			}
 		}
 
