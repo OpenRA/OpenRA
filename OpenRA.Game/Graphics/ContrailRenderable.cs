@@ -58,8 +58,12 @@ namespace OpenRA.Graphics
 		public void Render(WorldRenderer wr)
 		{
 			// Need at least 4 points to smooth the contrail over
-			if (length - skip < 4 )
+			if (length - skip < 4)
 				return;
+
+			var wlr = Game.Renderer.WorldLineRenderer;
+			var oldWidth = wlr.LineWidth;
+			wlr.LineWidth = wr.Viewport.Zoom;
 
 			// Start of the first line segment is the tail of the list - don't smooth it.
 			var curPos = trail[idx(next - skip - 1)];
@@ -73,12 +77,14 @@ namespace OpenRA.Graphics
 				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, Color.Transparent);
 
 				if (!world.FogObscures(curCell) && !world.FogObscures(nextCell))
-					Game.Renderer.WorldLineRenderer.DrawLine(wr.ScreenPosition(curPos), wr.ScreenPosition(nextPos), curColor, nextColor);
+					wlr.DrawLine(wr.ScreenPosition(curPos), wr.ScreenPosition(nextPos), curColor, nextColor);
 
 				curPos = nextPos;
 				curCell = nextCell;
 				curColor = nextColor;
 			}
+
+			wlr.LineWidth = oldWidth;
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) {}

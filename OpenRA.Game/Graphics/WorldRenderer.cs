@@ -158,8 +158,8 @@ namespace OpenRA.Graphics
 			var br = pos + new float2(bounds.Right, bounds.Bottom);
 			var tr = new float2(br.X, tl.Y);
 			var bl = new float2(tl.X, br.Y);
-			var u = new float2(4f, 0);
-			var v = new float2(0, 4f);
+			var u = new float2(4f / Viewport.Zoom, 0);
+			var v = new float2(0, 4f / Viewport.Zoom);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
 			wlr.DrawLine(tl + u, tl, c, c);
@@ -204,8 +204,8 @@ namespace OpenRA.Graphics
 
 		public void DrawTargetMarker(Color c, float2 location)
 		{
-			var tl = new float2(-1, -1);
-			var br = new float2(1, 1);
+			var tl = new float2(-1 / Viewport.Zoom, -1 / Viewport.Zoom);
+			var br = new float2(1 / Viewport.Zoom, 1 / Viewport.Zoom);
 			var bl = new float2(tl.X, br.Y);
 			var tr = new float2(br.X, tl.Y);
 

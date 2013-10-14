@@ -50,7 +50,7 @@ namespace OpenRA.Graphics
 			var dest = wr.ScreenPosition(pos + length);
 
 			var oldWidth = wlr.LineWidth;
-			wlr.LineWidth = width;
+			wlr.LineWidth = wr.Viewport.Zoom * width;
 			wlr.DrawLine(src, dest, color, color);
 			wlr.LineWidth = oldWidth;
 		}

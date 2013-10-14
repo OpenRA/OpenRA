@@ -76,8 +76,8 @@ namespace OpenRA.Traits
 				var value = extraBar.GetValue();
 				if (value != 0)
 				{
-					xy.Y += 4;
-					Xy.Y += 4;
+					xy.Y += (int)(4 / wr.Viewport.Zoom);
+					Xy.Y += (int)(4 / wr.Viewport.Zoom);
 					DrawSelectionBar(wr, self, xy, Xy, extraBar.GetValue(), extraBar.GetColor());
 				}
 			}
@@ -93,9 +93,9 @@ namespace OpenRA.Traits
 
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
-			var p = new float2(0, -4);
-			var q = new float2(0, -3);
-			var r = new float2(0, -2);
+			var p = new float2(0, -4 / wr.Viewport.Zoom);
+			var q = new float2(0, -3 / wr.Viewport.Zoom);
+			var r = new float2(0, -2 / wr.Viewport.Zoom);
 
 			var barColor2 = Color.FromArgb(255, barColor.R / 2, barColor.G / 2, barColor.B / 2);
 
@@ -119,9 +119,9 @@ namespace OpenRA.Traits
 
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
-			var p = new float2(0, -4);
-			var q = new float2(0, -3);
-			var r = new float2(0, -2);
+			var p = new float2(0, -4 / wr.Viewport.Zoom);
+			var q = new float2(0, -3 / wr.Viewport.Zoom);
+			var r = new float2(0, -2 / wr.Viewport.Zoom);
 
 			var healthColor = (health.DamageState == DamageState.Critical) ? Color.Red :
 							  (health.DamageState == DamageState.Heavy) ? Color.Yellow : Color.LimeGreen;
