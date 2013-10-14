@@ -95,6 +95,9 @@ Music:
 
 Movies:
 
+Translations:
+	mods/d2k/languages/english.yaml
+
 LoadScreen: DefaultLoadScreen
 	Image: mods/d2k/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL

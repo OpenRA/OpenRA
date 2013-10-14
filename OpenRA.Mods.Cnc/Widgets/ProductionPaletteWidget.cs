@@ -37,8 +37,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "PRODUCTION_TOOLTIP";
 
-		public readonly string ReadyText = "";
-		public readonly string HoldText = "";
+		[Translate] public readonly string ReadyText = "";
+		[Translate] public readonly string HoldText = "";
 
 		public string TooltipActor { get; private set; }
 		public readonly World World;

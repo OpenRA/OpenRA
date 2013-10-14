@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
 using OpenRA.Widgets;
@@ -142,6 +143,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var maxFrameRate = display.Get<TextFieldWidget>("MAX_FRAMERATE");
 			maxFrameRate.Text = gs.MaxFramerate.ToString();
 
+			var languageDropDownButton = display.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
+			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton);
+			languageDropDownButton.GetText = () => FieldLoader.Translate(Game.Settings.Graphics.Language);
+
 			// Keys
 			var keys = bg.Get("KEYS_PANE");
 			var keyConfig = Game.Settings.Keys;
@@ -270,6 +275,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
+		public static bool ShowLanguageDropdown(DropDownButtonWidget dropdown)
+		{
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => Game.Settings.Graphics.Language == o,
+					() => Game.Settings.Graphics.Language = o);
+				item.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate(o);
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.modData.Languages, setupItem);
+			return true;
+		}
 		
 		public static bool ShowSoundTickDropdown(DropDownButtonWidget dropdown, SoundSettings audio)
 		{

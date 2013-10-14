@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				nameLabel.GetText = () => tooltip.Name;
 
 				var prereqs = buildable.Prerequisites.Select(a => ActorName(a));
-				var requiresString = prereqs.Any() ? "Requires {0}".F(prereqs.JoinWith(", ")) : "";
+				var requiresString = prereqs.Any() ? requiresLabel.Text.F(prereqs.JoinWith(", ")) : "";
 				requiresLabel.GetText = () => requiresString;
 
 				var power = bi != null ? bi.Power : 0;

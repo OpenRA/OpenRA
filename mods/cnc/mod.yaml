@@ -94,6 +94,9 @@ Movies:
 	mods/cnc/movies-gdi.yaml
 	mods/cnc/movies-nod.yaml
 	
+Translations:
+	mods/cnc/languages/english.yaml
+
 Voices:
 	mods/cnc/voices.yaml
 

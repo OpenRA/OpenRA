@@ -21,7 +21,7 @@ namespace OpenRA.FileFormats
 		public readonly string[]
 			Mods, Folders, Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
-			Weapons, Voices, Notifications, Music, Movies, TileSets,
+			Weapons, Voices, Notifications, Music, Movies, Translations, TileSets,
 			ChromeMetrics, PackageContents;
 
 		public readonly Dictionary<string, string> Packages;
@@ -53,6 +53,7 @@ namespace OpenRA.FileFormats
 			Notifications = YamlList(yaml, "Notifications");
 			Music = YamlList(yaml, "Music");
 			Movies = YamlList(yaml, "Movies");
+			Translations = YamlList(yaml, "Translations");
 			TileSets = YamlList(yaml, "TileSets");
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
 			PackageContents = YamlList(yaml, "PackageContents");

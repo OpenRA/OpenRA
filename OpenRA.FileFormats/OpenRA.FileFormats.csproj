@@ -80,6 +80,7 @@
     <Compile Include="Evaluator.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="FieldLoader.cs" />
+    <Compile Include="FieldSaver.cs" />
     <Compile Include="FileFormats\AudLoader.cs" />
     <Compile Include="FileFormats\Blast.cs" />
     <Compile Include="FileFormats\Blowfish.cs" />
