@@ -178,6 +178,8 @@ namespace OpenRA.Network
 			{
 				if (r.Frame == frame)
 				{
+					Log.Write("sync", "Player: {0}", Game.Settings.Player.Name);
+					Log.Write("sync", "Game ID: {0}", orderManager.LobbyInfo.GlobalSettings.GameUid);
 					Log.Write("sync", "Sync for net frame {0} -------------", r.Frame);
 					Log.Write("sync", "SharedRandom: {0} (#{1})", r.SyncedRandom, r.TotalCount);
 					Log.Write("sync", "Synced Traits:");
