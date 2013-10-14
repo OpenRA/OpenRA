@@ -163,7 +163,7 @@ return {
   ["Regular &expression"] = "&Regulärer Ausdruck", -- src\editor\findreplace.lua
   ["Remote console"] = "Fensteuerungs-Konsole", -- src\editor\shellbox.lua
   ["Rename All Instances"] = "Umbenennen aller Instanzen", -- src\editor\editor.lua
-  ["Replace &All"] = "&Alles ersetzen", -- src\editor\findreplace.lua
+  ["Replace A&ll"] = "A&lles ersetzen", -- src\editor\findreplace.lua
   ["Replace"] = "Ersetzen", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Unbekanntes UTF8-Symbol ersetzt mit %s.", -- src\editor\commands.lua
   ["Replaced"] = "Ersetzt:", -- src\editor\findreplace.lua

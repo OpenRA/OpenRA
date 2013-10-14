@@ -362,7 +362,7 @@ function findReplace:createDialog(replace,infiles)
   local replaceButton = wx.wxButton(findDialog, ID_REPLACE, infiles and replace and TR("&Replace All") or TR("&Replace"))
   local replaceAllButton = nil
   if (replace and not infiles) then
-    replaceAllButton = wx.wxButton(findDialog, ID_REPLACE_ALL, TR("Replace &All"))
+    replaceAllButton = wx.wxButton(findDialog, ID_REPLACE_ALL, TR("Replace A&ll"))
   end
   local cancelButton = wx.wxButton(findDialog, wx.wxID_CANCEL, TR("Cancel"))
 

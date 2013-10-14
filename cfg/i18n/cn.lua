@@ -159,7 +159,7 @@ return {
   ["Refused a request to start a new debugging session as there is one in progress already."] = "因为有另一个除错在进行，拒绝开启新的除错对话", -- src\editor\debugger.lua
   ["Regular &expression"] = "正则表达式", -- src\editor\findreplace.lua
   ["Remote console"] = "远程主控台", -- src\editor\shellbox.lua
-  ["Replace &All"] = "更换全部", -- src\editor\findreplace.lua
+  ["Replace A&ll"] = "更换全部", -- src\editor\findreplace.lua
   ["Replace"] = "更换", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "以%s更换无效的UTF8字元", -- src\editor\commands.lua
   ["Replaced"] = "更换", -- src\editor\findreplace.lua

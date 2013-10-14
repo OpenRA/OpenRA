@@ -160,7 +160,7 @@ return {
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Отказано в запросе на запуск новой отладочной сессии, поскольку одна сессия уже выполняется.", -- src\editor\debugger.lua
   ["Regular &expression"] = "Регулярное выражение", -- src\editor\findreplace.lua
   ["Remote console"] = "Удаленная консоль", -- src\editor\shellbox.lua
-  ["Replace &All"] = "Заменить все", -- src\editor\findreplace.lua
+  ["Replace A&ll"] = "Заменить все", -- src\editor\findreplace.lua
   ["Replace"] = "Заменить", -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Некорректный символ UTF8 заменен на %s.", -- src\editor\commands.lua
   ["Replaced"] = "Заменено", -- src\editor\findreplace.lua
