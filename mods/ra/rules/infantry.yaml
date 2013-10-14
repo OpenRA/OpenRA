@@ -528,8 +528,10 @@ Ant:
 		Bounds: 30,30,0,-2
 	Health:
 		HP: 750
+		Radius: 11
 	Mobile:
 		Speed: 7
+		ROT: 12
 		SharesCell: no
 	AutoTarget:
 		ScanRadius: 5
