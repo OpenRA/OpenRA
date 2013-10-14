@@ -117,7 +117,7 @@
     <Compile Include="Air\Aircraft.cs" />
     <Compile Include="Air\AttackHeli.cs" />
     <Compile Include="Air\AttackPlane.cs" />
-    <Compile Include="Air\EjectOnDeath.cs" />
+    <Compile Include="EjectOnDeath.cs" />
     <Compile Include="Air\FallsToEarth.cs" />
     <Compile Include="Air\Fly.cs" />
     <Compile Include="Air\FlyAttack.cs" />
