@@ -166,7 +166,7 @@ lobby-bits: spawnpoints.png
 	spawn-unclaimed: 16,0,16,16
 	spawn-claimed: 0,0,16,16
 	admin: 37,5,7,5
-	colorpicker: 16,0,16,16
+	colorpicker: 0,0,16,16
 	huepicker: 45,0,7,15
 
 strategic: strategic.png
