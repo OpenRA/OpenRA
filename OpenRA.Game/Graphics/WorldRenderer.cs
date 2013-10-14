@@ -200,6 +200,20 @@ namespace OpenRA.Graphics
 			wlr.LineWidth = oldWidth;
 		}
 
+		public void DrawTargetMarker(Color c, float2 location)
+		{
+			var tl = new float2(-1, -1);
+			var br = new float2(1, 1);
+			var bl = new float2(tl.X, br.Y);
+			var tr = new float2(br.X, tl.Y);
+
+			var wlr = Game.Renderer.WorldLineRenderer;
+			wlr.DrawLine(location + tl, location + tr, c, c);
+			wlr.DrawLine(location + tr, location + br, c, c);
+			wlr.DrawLine(location + br, location + bl, c, c);
+			wlr.DrawLine(location + bl, location + tl, c, c);
+		}
+
 		public void RefreshPalette()
 		{
 			palette.ApplyModifiers(world.WorldActor.TraitsImplementing<IPaletteModifier>());

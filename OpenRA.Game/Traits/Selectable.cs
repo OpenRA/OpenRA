@@ -154,7 +154,8 @@ namespace OpenRA.Traits
 
 		void DrawUnitPath(WorldRenderer wr, Actor self)
 		{
-			if (self.World.LocalPlayer == null ||!self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug) return;
+			if (self.World.LocalPlayer == null || !self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
+				return;
 
 			var activity = self.GetCurrentActivity();
 			if (activity != null)
@@ -163,15 +164,10 @@ namespace OpenRA.Traits
 				var start = wr.ScreenPxPosition(self.CenterPosition);
 
 				var c = Color.Green;
-
-				var wlr = Game.Renderer.WorldLineRenderer;
-				foreach (var stp in targets.Where(t => t.Type != TargetType.Invalid).Select(p => wr.ScreenPxPosition(p.CenterPosition)))
+				foreach (var stp in targets.Where(t => t.Type != TargetType.Invalid).Select(pos => wr.ScreenPxPosition(pos.CenterPosition)))
 				{
-					wlr.DrawLine(stp + new float2(-1, -1), stp + new float2(-1, 1), c, c);
-					wlr.DrawLine(stp + new float2(-1, 1), stp + new float2(1, 1), c, c);
-					wlr.DrawLine(stp + new float2(1, 1), stp + new float2(1, -1), c, c);
-					wlr.DrawLine(stp + new float2(1, -1), stp + new float2(-1, -1), c, c);
-					wlr.DrawLine(start, stp, c, c);
+					Game.Renderer.WorldLineRenderer.DrawLine(start, stp, c, c);
+					wr.DrawTargetMarker(c, stp);
 					start = stp;
 				}
 			}
