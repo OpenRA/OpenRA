@@ -10,6 +10,8 @@ Author: wuschel
 
 Tileset: TEMPERAT
 
+Options: OpenRA.MapOptions
+
 MapSize: 256,320
 
 Bounds: 130,16,110,288
@@ -27,52 +29,45 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
@@ -2594,6 +2589,12 @@ Actors:
 	Actor844: oilb
 		Location: 187,264
 		Owner: Neutral
+	Actor6: mine
+		Location: 130,294
+		Owner: Neutral
+	Actor49: oilb
+		Location: 225,288
+		Owner: Neutral
 
 Smudges:
 
@@ -2616,6 +2617,10 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 
 Voices:
+
+Notifications:
