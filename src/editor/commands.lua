@@ -220,6 +220,13 @@ function SaveFile(editor, filePath)
   return false
 end
 
+function ApproveFileOverwrite()
+  return wx.wxMessageBox(
+    TR("File already exists.").."\n"..TR("Do you want to overwrite it?"),
+    GetIDEString("editormessage"),
+    wx.wxYES_NO + wx.wxCENTRE, ide.frame) == wx.wxYES
+end
+
 function SaveFileAs(editor)
   local id = editor:GetId()
   local saved = false
@@ -247,10 +254,13 @@ function SaveFileAs(editor)
   if fileDialog:ShowModal() == wx.wxID_OK then
     local filePath = fileDialog:GetPath()
 
-    -- check if there is another tab with the same name and close it
+    -- check if there is another tab with the same name and prepare to close it
     local existing = (ide:FindDocument(filePath) or {}).index
+    local cansave = fn:GetFullName() == filePath -- saving into the same file
+       or not wx.wxFileName(filePath):FileExists() -- or a new file
+       or ApproveFileOverwrite()
 
-    if SaveFile(editor, filePath) then
+    if cansave and SaveFile(editor, filePath) then
       SetEditorSelection() -- update title of the editor
       FileTreeMarkSelected(filePath)
       if ext ~= GetFileExt(filePath) then
