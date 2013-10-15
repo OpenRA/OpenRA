@@ -167,7 +167,10 @@ local function treeSetConnectorsAndIcons(tree)
     local editor = (doc or {}).editor
     if editor and SaveModifiedDialog(editor, true) == wx.wxID_CANCEL then return end
 
-    wx.wxFileName(fulltarget):Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL)
+    local fn = wx.wxFileName(fulltarget)
+    if fn:FileExists() and not ApproveFileOverwrite() then return end
+
+    fn:Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL)
     FileRename(source, fulltarget)
 
     refreshAncestors(tree:GetItemParent(itemsrc))
