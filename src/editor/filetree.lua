@@ -163,7 +163,8 @@ local function treeSetConnectorsAndIcons(tree)
   local function renameItem(itemsrc, fulltarget)
     local source = tree:GetItemFullName(itemsrc)
     -- find if source is already opened in the editor
-    local editor = (ide:FindDocument(source) or {}).editor
+    local doc = ide:FindDocument(source)
+    local editor = (doc or {}).editor
     if editor and SaveModifiedDialog(editor, true) == wx.wxID_CANCEL then return end
 
     wx.wxFileName(fulltarget):Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL)
@@ -171,7 +172,10 @@ local function treeSetConnectorsAndIcons(tree)
 
     refreshAncestors(tree:GetItemParent(itemsrc))
     -- load into the same editor (if any); will also refresh the tree
-    if editor then LoadFile(fulltarget, editor)
+    if editor then
+      -- remove file path to avoid "file no longer exists" message
+      doc.filePath = nil
+      LoadFile(fulltarget, editor)
     else -- refresh the tree and select the new item
       local itemdst = findItem(tree, fulltarget)
       if itemdst then
