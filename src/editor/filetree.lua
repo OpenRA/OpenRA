@@ -175,7 +175,12 @@ local function treeSetConnectorsAndIcons(tree)
     if fn:FileExists() and not ApproveFileOverwrite() then return end
 
     fn:Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL)
-    FileRename(source, fulltarget)
+    local ok, err = FileRename(source, fulltarget)
+    if not ok then
+      ReportError(TR("Unable to rename file '%s'."):format(source)
+        .."\nError: "..err)
+      return
+    end
 
     refreshAncestors(tree:GetItemParent(itemsrc))
     -- load file(s) into the same editor (if any); will also refresh the tree

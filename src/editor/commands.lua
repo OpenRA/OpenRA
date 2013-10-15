@@ -158,6 +158,10 @@ local function getExtsString()
   return exts..TR("All files").." (*)|*"
 end
 
+function ReportError(msg)
+  return wx.wxMessageBox(msg, TR("Error"), wx.wxICON_ERROR + wx.wxOK + wx.wxCENTRE, ide.frame)
+end
+
 function OpenFile(event)
   local exts = getExtsString()
   local fileDialog = wx.wxFileDialog(ide.frame, TR("Open file"),
@@ -167,9 +171,7 @@ function OpenFile(event)
     wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST)
   if fileDialog:ShowModal() == wx.wxID_OK then
     if not LoadFile(fileDialog:GetPath(), nil, true) then
-      wx.wxMessageBox(TR("Unable to load file '%s'."):format(fileDialog:GetPath()),
-        TR("Error"),
-        wx.wxOK + wx.wxCENTRE, ide.frame)
+      ReportError(TR("Unable to load file '%s'."):format(fileDialog:GetPath()))
     end
   end
   fileDialog:Destroy()
@@ -185,7 +187,14 @@ function SaveFile(editor, filePath)
       return false
     end
 
-    if (ide.config.savebak) then FileRename(filePath, filePath..".bak") end
+    if ide.config.savebak then
+      local ok, err = FileRename(filePath, filePath..".bak")
+      if not ok then
+        ReportError(TR("Unable to save file '%s'."):format(filePath..".bak")
+        .."\nError: "..err)
+        return
+      end
+    end
 
     local st = editor:GetText()
     if GetConfigIOFilter("output") then
@@ -211,9 +220,7 @@ function SaveFile(editor, filePath)
 
       return true
     else
-      wx.wxMessageBox(TR("Unable to save file '%s': %s"):format(filePath, err),
-        TR("Error"),
-        wx.wxICON_ERROR + wx.wxOK + wx.wxCENTRE, ide.frame)
+      ReportError(TR("Unable to save file '%s': %s"):format(filePath, err))
     end
   end
 
