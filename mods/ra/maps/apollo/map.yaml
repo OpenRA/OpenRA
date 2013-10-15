@@ -10,8 +10,6 @@ Author: wuschel
 
 Tileset: TEMPERAT
 
-Options: OpenRA.MapOptions
-
 MapSize: 256,320
 
 Bounds: 130,16,110,288
