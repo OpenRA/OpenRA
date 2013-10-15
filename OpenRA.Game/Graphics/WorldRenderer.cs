@@ -155,20 +155,22 @@ namespace OpenRA.Graphics
 			var bounds = a.Bounds.Value;
 
 			var tl = pos + new float2(bounds.Left, bounds.Top);
-			var tr = pos + new float2(bounds.Right, bounds.Top);
-			var bl = pos + new float2(bounds.Left, bounds.Bottom);
 			var br = pos + new float2(bounds.Right, bounds.Bottom);
+			var tr = new float2(br.X, tl.Y);
+			var bl = new float2(tl.X, br.Y);
+			var u = new float2(4f / Viewport.Zoom, 0);
+			var v = new float2(0, 4f / Viewport.Zoom);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(tl, tl + new float2(4, 0), c, c);
-			wlr.DrawLine(tl, tl + new float2(0, 4), c, c);
-			wlr.DrawLine(tr, tr + new float2(-4, 0), c, c);
-			wlr.DrawLine(tr, tr + new float2(0, 4), c, c);
+			wlr.DrawLine(tl + u, tl, c, c);
+			wlr.DrawLine(tl, tl + v, c, c);
+			wlr.DrawLine(tr, tr - u, c, c);
+			wlr.DrawLine(tr, tr + v, c, c);
 
-			wlr.DrawLine(bl, bl + new float2(4, 0), c, c);
-			wlr.DrawLine(bl, bl + new float2(0, -4), c, c);
-			wlr.DrawLine(br, br + new float2(-4, 0), c, c);
-			wlr.DrawLine(br, br + new float2(0, -4), c, c);
+			wlr.DrawLine(bl, bl + u, c, c);
+			wlr.DrawLine(bl, bl - v, c, c);
+			wlr.DrawLine(br, br - u, c, c);
+			wlr.DrawLine(br, br - v, c, c);
 		}
 
 		public void DrawRollover(Actor unit)
@@ -189,15 +191,29 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawRangeCircleWithContrast(Color fg, float2 location, float range, Color bg, int offset)
+		public void DrawRangeCircleWithContrast(Color fg, float2 location, float range, Color bg)
 		{
-			if (offset > 0)
-			{
-				DrawRangeCircle(bg, location, range + (float)offset / Game.CellSize);
-				DrawRangeCircle(bg, location, range - (float)offset / Game.CellSize);
-			}
-
+			var wlr = Game.Renderer.WorldLineRenderer;
+			var oldWidth = wlr.LineWidth;
+			wlr.LineWidth = 3;
+			DrawRangeCircle(bg, location, range);
+			wlr.LineWidth = 1;
 			DrawRangeCircle(fg, location, range);
+			wlr.LineWidth = oldWidth;
+		}
+
+		public void DrawTargetMarker(Color c, float2 location)
+		{
+			var tl = new float2(-1 / Viewport.Zoom, -1 / Viewport.Zoom);
+			var br = new float2(1 / Viewport.Zoom, 1 / Viewport.Zoom);
+			var bl = new float2(tl.X, br.Y);
+			var tr = new float2(br.X, tl.Y);
+
+			var wlr = Game.Renderer.WorldLineRenderer;
+			wlr.DrawLine(location + tl, location + tr, c, c);
+			wlr.DrawLine(location + tr, location + br, c, c);
+			wlr.DrawLine(location + br, location + bl, c, c);
+			wlr.DrawLine(location + bl, location + tl, c, c);
 		}
 
 		public void RefreshPalette()

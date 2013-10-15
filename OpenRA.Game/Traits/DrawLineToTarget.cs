@@ -60,26 +60,16 @@ namespace OpenRA.Traits
 				return;
 
 			var from = wr.ScreenPxPosition(self.CenterPosition);
-			var wlr = Game.Renderer.WorldLineRenderer;
-
 			foreach (var target in targets)
 			{
 				if (target.Type == TargetType.Invalid)
 					continue;
 
 				var to = wr.ScreenPxPosition(target.CenterPosition);
-				wlr.DrawLine(from, to, c, c);
-				DrawTargetMarker(wlr, from);
-				DrawTargetMarker(wlr, to);
+				Game.Renderer.WorldLineRenderer.DrawLine(from, to, c, c);
+				wr.DrawTargetMarker(c, from);
+				wr.DrawTargetMarker(c, to);
 			}
-		}
-
-		void DrawTargetMarker(LineRenderer wlr, float2 p)
-		{
-			wlr.DrawLine(p + new float2(-1, -1), p + new float2(-1, 1), c, c);
-			wlr.DrawLine(p + new float2(-1, 1), p + new float2(1, 1), c, c);
-			wlr.DrawLine(p + new float2(1, 1), p + new float2(1, -1), c, c);
-			wlr.DrawLine(p + new float2(1, -1), p + new float2(-1, -1), c, c);
 		}
 	}
 
@@ -89,12 +79,7 @@ namespace OpenRA.Traits
 		{
 			var line = self.TraitOrDefault<DrawLineToTarget>();
 			if (line != null)
-			{
-				self.World.AddFrameEndTask(w =>
-				{
-					line.SetTargets(self, targets, color, false);
-				});
-			}
+				self.World.AddFrameEndTask(w => line.SetTargets(self, targets, color, false));
 		}
 
 		public static void SetTargetLine(this Actor self, Target target, Color color)

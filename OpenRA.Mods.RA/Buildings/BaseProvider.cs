@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA.Buildings
 			wr.DrawRangeCircleWithContrast(
 				Color.FromArgb(128, Ready() ? Color.White : Color.Red),
 				wr.ScreenPxPosition(self.CenterPosition), Info.Range,
-				Color.FromArgb(96, Color.Black), 1);
+				Color.FromArgb(96, Color.Black));
 		}
 
 		// Selection bar
