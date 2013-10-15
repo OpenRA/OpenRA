@@ -20,8 +20,8 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	class SupportPowerBinWidget : Widget
 	{
-		public string ReadyText = "";
-		public string HoldText = "";
+		[Translate] public string ReadyText = "";
+		[Translate] public string HoldText = "";
 
 		Animation icon;
 		Animation clock;
