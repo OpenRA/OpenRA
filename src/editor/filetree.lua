@@ -15,6 +15,7 @@ local filetree = ide.filetree
 
 local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
 local pathsep = GetPathSeparator()
+local q = EscapeMagic
 
 -- generic tree
 -- ------------
@@ -163,9 +164,12 @@ local function treeSetConnectorsAndIcons(tree)
   local function renameItem(itemsrc, fulltarget)
     local source = tree:GetItemFullName(itemsrc)
     -- find if source is already opened in the editor
-    local doc = ide:FindDocument(source)
-    local editor = (doc or {}).editor
-    if editor and SaveModifiedDialog(editor, true) == wx.wxID_CANCEL then return end
+    local docs = tree:GetItemImage(itemsrc) == IMG_DIRECTORY
+      and ide:FindDocumentsByPartialPath(source)
+      or {ide:FindDocument(source)}
+    for _, doc in ipairs(docs) do
+      if SaveModifiedDialog(doc.editor, true) == wx.wxID_CANCEL then return end
+    end
 
     local fn = wx.wxFileName(fulltarget)
     if fn:FileExists() and not ApproveFileOverwrite() then return end
@@ -174,11 +178,15 @@ local function treeSetConnectorsAndIcons(tree)
     FileRename(source, fulltarget)
 
     refreshAncestors(tree:GetItemParent(itemsrc))
-    -- load into the same editor (if any); will also refresh the tree
-    if editor then
-      -- remove file path to avoid "file no longer exists" message
-      doc.filePath = nil
-      LoadFile(fulltarget, editor)
+    -- load file(s) into the same editor (if any); will also refresh the tree
+    if #docs > 0 then
+      for _, doc in ipairs(docs) do
+        local fullpath = doc.filePath
+        doc.filePath = nil -- remove path to avoid "file no longer exists" message
+        -- when moving folders, /foo/bar/file.lua can be replaced with
+        -- /foo/baz/bar/file.lua, so change /foo/bar to /foo/baz/bar
+        LoadFile(fullpath:gsub(q(source), fulltarget), doc.editor)
+      end
     else -- refresh the tree and select the new item
       local itemdst = findItem(tree, fulltarget)
       if itemdst then
@@ -342,8 +350,6 @@ treeSetConnectorsAndIcons(projtree)
 
 -- proj functions
 -- ---------------
-
-local q = EscapeMagic
 
 local function abbreviateProjList(projdirlist)
   filetree.projdirmap = {}
