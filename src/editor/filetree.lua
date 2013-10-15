@@ -94,6 +94,44 @@ local function treeSetRoot(tree,rootdir)
   tree:Expand(root_id) -- this will also populate the tree
 end
 
+local function findItem(tree, match)
+  local node = tree:GetRootItem()
+  local label = tree:GetItemText(node)
+
+  local s, e
+  if iscaseinsensitive then
+    s, e = string.find(match:lower(), label:lower(), 1, true)
+  else
+    s, e = string.find(match, label, 1, true)
+  end
+  if not s or s ~= 1 then return end
+
+  for token in string.gmatch(string.sub(match,e+1), "[^%"..pathsep.."]+") do
+    local data = tree:GetItemData(node)
+    local cache = data and data:GetData()
+    if cache and cache[iscaseinsensitive and token:lower() or token] then
+      node = cache[iscaseinsensitive and token:lower() or token]
+    else
+      -- token is missing; may need to re-scan the folder; maybe new file
+      local dir = tree:GetItemFullName(node)
+      treeAddDir(tree,node,dir)
+
+      local item, cookie = tree:GetFirstChild(node)
+      while true do
+        if not item:IsOk() then return end -- not found
+        if tree:GetItemText(item) == token then
+          node = item
+          break
+        end
+        item, cookie = tree:GetNextChild(node, cookie)
+      end
+    end
+  end
+
+  -- this loop exits only when a match is found
+  return node
+end
+
 local function treeSetConnectorsAndIcons(tree)
   tree:SetImageList(filetree.imglist)
 
@@ -120,6 +158,28 @@ local function treeSetConnectorsAndIcons(tree)
       treeAddDir(tree,node,dir)
       node = tree:GetItemParent(node)
     end
+  end
+
+  local function renameItem(itemsrc, fulltarget)
+    local source = tree:GetItemFullName(itemsrc)
+    -- find if source is already opened in the editor
+    local editor = (ide:FindDocument(source) or {}).editor
+    if editor and SaveModifiedDialog(editor, true) == wx.wxID_CANCEL then return end
+    FileRename(source, fulltarget)
+
+    refreshAncestors(tree:GetItemParent(itemsrc))
+    -- load into the same editor (if any); will also refresh the tree
+    if editor then LoadFile(fulltarget, editor)
+    else -- refresh the tree and select the new item
+      local itemdst = findItem(tree, fulltarget)
+      if itemdst then
+        refreshAncestors(tree:GetItemParent(itemdst))
+        tree:SelectItem(itemdst)
+        tree:EnsureVisible(itemdst)
+        tree:SetScrollPos(wx.wxHORIZONTAL, 0, true)
+      end
+    end
+    return true
   end
 
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
@@ -173,6 +233,25 @@ local function treeSetConnectorsAndIcons(tree)
     end)
   tree:Connect(wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT,
     function (event)
+      local itemsrc = event:GetItem()
+      -- don't edit root
+      if event:IsEditCancelled() or itemsrc == tree:GetRootItem() then return end
+      local label = event:GetLabel()
+      if label ~= tree:GetItemText(itemsrc) then
+        local fulltarget = MergeFullPath(
+          tree:GetItemFullName(tree:GetItemParent(itemsrc)), label)
+        if fulltarget then renameItem(itemsrc, fulltarget) end
+        -- veto the event to keep the original label intact as the tree
+        -- is going to be refreshed with the correct names.
+        event:Veto()
+      end
+    end)
+  tree:Connect(wx.wxEVT_KEY_DOWN,
+    function (event)
+      local item = tree:GetSelection()
+      if event:GetKeyCode() == wx.WXK_F2 and item:IsOk() then
+        return tree:EditLabel(item) end
+      event:Skip()
     end)
 
   local itemsrc
@@ -186,20 +265,13 @@ local function treeSetConnectorsAndIcons(tree)
   tree:Connect(wx.wxEVT_COMMAND_TREE_END_DRAG,
     function (event)
       local itemdst = event:GetItem()
+      if not itemdst:IsOk() then return end
+
       -- check if itemdst is a folder
       local target = tree:GetItemFullName(itemdst)
       if wx.wxDirExists(target) then
-        local source = tree:GetItemFullName(itemsrc)
         local fulltarget = wx.wxFileName(target, tree:GetItemText(itemsrc)):GetFullPath()
-
-        -- find if source is already opened in the editor
-        local editor = (ide:FindDocument(source) or {}).editor
-        if editor and SaveModifiedDialog(editor, true) == wx.wxID_CANCEL then return end
-        FileRename(source, fulltarget)
-        -- load into the same editor (if any); will also refresh the tree
-        if editor then LoadFile(fulltarget, editor)
-        else refreshAncestors(itemdst) end -- refresh the tree
-        refreshAncestors(tree:GetItemParent(itemsrc))
+        renameItem(itemsrc, fulltarget)
       end
     end)
 end
@@ -346,44 +418,6 @@ end
 
 function FileTreeGetProjects()
   return filetree.projdirlist
-end
-
-local function findItem(tree, match)
-  local node = projtree:GetRootItem()
-  local label = tree:GetItemText(node)
-
-  local s, e
-  if iscaseinsensitive then
-    s, e = string.find(match:lower(), label:lower(), 1, true)
-  else
-    s, e = string.find(match, label, 1, true)
-  end
-  if not s or s ~= 1 then return end
-
-  for token in string.gmatch(string.sub(match,e+1), "[^%"..pathsep.."]+") do
-    local data = tree:GetItemData(node)
-    local cache = data and data:GetData()
-    if cache and cache[iscaseinsensitive and token:lower() or token] then
-      node = cache[iscaseinsensitive and token:lower() or token]
-    else
-      -- token is missing; may need to re-scan the folder; maybe new file
-      local dir = tree:GetItemFullName(node)
-      treeAddDir(tree,node,dir)
-
-      local item, cookie = tree:GetFirstChild(node)
-      while true do
-        if not item:IsOk() then return end -- not found
-        if tree:GetItemText(item) == token then
-          node = item
-          break
-        end
-        item, cookie = tree:GetNextChild(node, cookie)
-      end
-    end
-  end
-
-  -- this loop exits only when a match is found
-  return node
 end
 
 local curr_file
