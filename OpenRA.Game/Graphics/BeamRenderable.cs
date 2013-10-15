@@ -49,20 +49,10 @@ namespace OpenRA.Graphics
 			var src = wr.ScreenPosition(pos);
 			var dest = wr.ScreenPosition(pos + length);
 
-			var lineWidth = wlr.LineWidth;
-			if (lineWidth != width)
-			{
-				wlr.Flush();
-				wlr.LineWidth = width;
-			}
-			
+			var oldWidth = wlr.LineWidth;
+			wlr.LineWidth = wr.Viewport.Zoom * width;
 			wlr.DrawLine(src, dest, color, color);
-			
-			if (lineWidth != width)
-			{
-				wlr.Flush();
-				wlr.LineWidth = lineWidth;
-			}
+			wlr.LineWidth = oldWidth;
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) {}

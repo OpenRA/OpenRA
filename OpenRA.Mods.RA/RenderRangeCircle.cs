@@ -30,8 +30,7 @@ namespace OpenRA.Mods.RA
 				Color.FromArgb(128, Color.Yellow), wr.ScreenPxPosition(centerPosition),
 				ai.Traits.WithInterface<ArmamentInfo>()
 					.Select(a => Rules.Weapons[a.Weapon.ToLowerInvariant()].Range).Max(),
-				Color.FromArgb(96, Color.Black), 1
-			);
+				Color.FromArgb(96, Color.Black));
 
 			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
@@ -58,8 +57,7 @@ namespace OpenRA.Mods.RA
 			wr.DrawRangeCircleWithContrast(
 				Color.FromArgb(128, Color.Yellow),
 				wr.ScreenPxPosition(self.CenterPosition), pxRange,
-				Color.FromArgb(96, Color.Black),
-				1);
+				Color.FromArgb(96, Color.Black));
 		}
 	}
 }

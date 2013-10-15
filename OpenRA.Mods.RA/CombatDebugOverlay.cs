@@ -52,6 +52,7 @@ namespace OpenRA.Mods.RA
 			var c = Color.White;
 
 			foreach (var a in armaments.Value)
+			{
 				foreach (var b in a.Barrels)
 				{
 					var muzzle = self.CenterPosition + a.MuzzleOffset(self, b);
@@ -60,11 +61,9 @@ namespace OpenRA.Mods.RA
 					var sm = wr.ScreenPosition(muzzle);
 					var sd = wr.ScreenPosition(muzzle + dirOffset);
 					wlr.DrawLine(sm, sd, c, c);
-					wlr.DrawLine(sm + new float2(-1, -1), sm + new float2(-1, 1), c, c);
-					wlr.DrawLine(sm + new float2(-1, 1), sm + new float2(1, 1), c, c);
-					wlr.DrawLine(sm + new float2(1, 1), sm + new float2(1, -1), c, c);
-					wlr.DrawLine(sm + new float2(1, -1), sm + new float2(-1, -1), c, c);
+					wr.DrawTargetMarker(c, sm);
 				}
+			}
 		}
 	}
 }
