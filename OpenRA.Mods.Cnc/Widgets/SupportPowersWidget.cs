@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class SupportPowersWidget : Widget
 	{
-		public readonly string ReadyText = "";
-		public readonly string HoldText = "";
+		[Translate] public readonly string ReadyText = "";
+		[Translate] public readonly string HoldText = "";
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SUPPORT_POWER_TOOLTIP";
