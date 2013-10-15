@@ -40,20 +40,19 @@ end
 function LoadFile(filePath, editor, file_must_exist, skipselection)
   local filePath = wx.wxFileName(filePath)
   filePath:Normalize() -- make it absolute and remove all .. and . if possible
+  filePath = filePath:GetFullPath()
 
   -- prevent files from being reopened again
   if (not editor) then
-    for id, doc in pairs(openDocuments) do
-      if doc.filePath and filePath:SameAs(wx.wxFileName(doc.filePath)) then
-        if not skipselection and doc.index ~= notebook:GetSelection() then
-          -- selecting the same tab doesn't trigger PAGE_CHANGE event,
-          -- but moves the focus to the tab bar, which needs to be avoided.
-          notebook:SetSelection(doc.index) end
-        return doc.editor
-      end
+    local doc = ide:FindDocument(filePath)
+    if doc then
+      if not skipselection and doc.index ~= notebook:GetSelection() then
+        -- selecting the same tab doesn't trigger PAGE_CHANGE event,
+        -- but moves the focus to the tab bar, which needs to be avoided.
+        notebook:SetSelection(doc.index) end
+      return doc.editor
     end
   end
-  filePath = filePath:GetFullPath()
 
   -- if not opened yet, try open now
   local file_text = FileRead(filePath)
@@ -248,15 +247,8 @@ function SaveFileAs(editor)
   if fileDialog:ShowModal() == wx.wxID_OK then
     local filePath = fileDialog:GetPath()
 
-    -- first check if there is another tab with the same name and close it
-    local existing
-    local fileName = wx.wxFileName(filePath)
-    for _, document in pairs(ide.openDocuments) do
-      if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath)) then
-        existing = document.index
-        break
-      end
-    end
+    -- check if there is another tab with the same name and close it
+    local existing = (ide:FindDocument(filePath) or {}).index
 
     if SaveFile(editor, filePath) then
       SetEditorSelection() -- update title of the editor
