@@ -165,6 +165,8 @@ local function treeSetConnectorsAndIcons(tree)
     -- find if source is already opened in the editor
     local editor = (ide:FindDocument(source) or {}).editor
     if editor and SaveModifiedDialog(editor, true) == wx.wxID_CANCEL then return end
+
+    wx.wxFileName(fulltarget):Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL)
     FileRename(source, fulltarget)
 
     refreshAncestors(tree:GetItemParent(itemsrc))
