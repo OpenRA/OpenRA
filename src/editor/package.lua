@@ -65,6 +65,15 @@ function ide:GetStatusBar() return self.frame.statusBar end
 function ide:GetMainFrame() return self.frame end
 function ide:GetDocument(ed) return self.openDocuments[ed:GetId()] end
 function ide:GetDocuments() return self.openDocuments end
+function ide:FindDocument(path)
+  local fileName = wx.wxFileName(path)
+  for _, doc in pairs(ide.openDocuments) do
+    if doc.filePath and fileName:SameAs(wx.wxFileName(doc.filePath)) then
+      return doc
+    end
+  end
+  return
+end
 function ide:GetInterpreter() return self.interpreter end
 function ide:GetConfig() return self.config end
 function ide:GetOutput() return self.frame.bottomnotebook.errorlog end

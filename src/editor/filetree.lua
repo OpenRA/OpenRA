@@ -191,9 +191,15 @@ local function treeSetConnectorsAndIcons(tree)
       if wx.wxDirExists(target) then
         local source = tree:GetItemFullName(itemsrc)
         local fulltarget = wx.wxFileName(target, tree:GetItemText(itemsrc)):GetFullPath()
+
+        -- find if source is already opened in the editor
+        local editor = (ide:FindDocument(source) or {}).editor
+        if editor and SaveModifiedDialog(editor, true) == wx.wxID_CANCEL then return end
         FileRename(source, fulltarget)
+        -- load into the same editor (if any); will also refresh the tree
+        if editor then LoadFile(fulltarget, editor)
+        else refreshAncestors(itemdst) end -- refresh the tree
         refreshAncestors(tree:GetItemParent(itemsrc))
-        refreshAncestors(itemdst)
       end
     end)
 end
