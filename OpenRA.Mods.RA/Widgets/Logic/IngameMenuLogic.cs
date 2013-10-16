@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using OpenRA.Graphics;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -16,18 +17,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	class IngameMenuLogic
 	{
 		[ObjectCreator.UseCtor]
-		public IngameMenuLogic(Widget widget, World world, Action onExit)
+		public IngameMenuLogic(Widget widget, World world, Action onExit, WorldRenderer worldRenderer)
 		{
 			widget.Get<ButtonWidget>("DISCONNECT").OnClick = () =>
 			{
 				onExit();
 				LeaveGame(world);
 			};
+
 			widget.Get<ButtonWidget>("SETTINGS").OnClick = () =>
 			{
 				widget.Visible = false;
-				Ui.OpenWindow("SETTINGS_MENU", new WidgetArgs { { "onExit", () => { widget.Visible = true; } } });
+				Ui.OpenWindow("SETTINGS_MENU", new WidgetArgs()
+				{
+					{ "onExit", () => widget.Visible = true },
+					{ "worldRenderer", worldRenderer },
+				});
 			};
+
 			widget.Get<ButtonWidget>("MUSIC").OnClick = () =>
 			{
 				widget.Visible = false;
