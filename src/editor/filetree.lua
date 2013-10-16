@@ -161,25 +161,47 @@ local function treeSetConnectorsAndIcons(tree)
     end
   end
 
-  local function renameItem(itemsrc, fulltarget)
+  local empty = ""
+  local function renameItem(itemsrc, target)
+    local isdir = tree:GetItemImage(itemsrc) == IMG_DIRECTORY
+    local isnew = tree:GetItemText(itemsrc) == empty
     local source = tree:GetItemFullName(itemsrc)
-    -- find if source is already opened in the editor
-    local docs = tree:GetItemImage(itemsrc) == IMG_DIRECTORY
-      and ide:FindDocumentsByPartialPath(source)
-      or {ide:FindDocument(source)}
-    for _, doc in ipairs(docs) do
-      if SaveModifiedDialog(doc.editor, true) == wx.wxID_CANCEL then return end
+    local fn = wx.wxFileName(target)
+
+    if wx.wxFileName(source):SameAs(fn) then return false end
+
+    local docs = {}
+    if not isnew then -- find if source is already opened in the editor
+      docs = isdir
+        and ide:FindDocumentsByPartialPath(source)
+        or {ide:FindDocument(source)}
+      for _, doc in ipairs(docs) do
+        if SaveModifiedDialog(doc.editor, true) == wx.wxID_CANCEL then return end
+      end
     end
 
-    local fn = wx.wxFileName(fulltarget)
-    if fn:FileExists() and not ApproveFileOverwrite() then return end
+    -- check if existing file/dir is going to be overwritten
+    if (wx.wxFileExists(target) or wx.wxDirExists(target))
+    and not ApproveFileOverwrite() then return false end
 
-    fn:Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL)
-    local ok, err = FileRename(source, fulltarget)
-    if not ok then
-      ReportError(TR("Unable to rename file '%s'."):format(source)
-        .."\nError: "..err)
-      return
+    if not fn:Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL) then
+      ReportError(TR("Unable to create directory '%s'."):format(target))
+      return false
+    end
+
+    if isnew then -- new directory or file; create manually
+      if (isdir and not wx.wxFileName.DirName(target):Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL))
+      or (not isdir and not FileWrite(target, "")) then
+        ReportError(TR("Unable to create file '%s'."):format(target))
+        return false
+      end
+    else -- existing directory or file; rename/move it
+      local ok, err = FileRename(source, target)
+      if not ok then
+        ReportError(TR("Unable to rename file '%s'."):format(source)
+          .."\nError: "..err)
+        return false
+      end
     end
 
     refreshAncestors(tree:GetItemParent(itemsrc))
@@ -190,10 +212,10 @@ local function treeSetConnectorsAndIcons(tree)
         doc.filePath = nil -- remove path to avoid "file no longer exists" message
         -- when moving folders, /foo/bar/file.lua can be replaced with
         -- /foo/baz/bar/file.lua, so change /foo/bar to /foo/baz/bar
-        LoadFile(fullpath:gsub(q(source), fulltarget), doc.editor)
+        LoadFile(fullpath:gsub(q(source), target), doc.editor)
       end
     else -- refresh the tree and select the new item
-      local itemdst = findItem(tree, fulltarget)
+      local itemdst = findItem(tree, target)
       if itemdst then
         refreshAncestors(tree:GetItemParent(itemdst))
         tree:SelectItem(itemdst)
@@ -208,7 +230,6 @@ local function treeSetConnectorsAndIcons(tree)
     function (event)
       local item_id = event:GetItem()
       local dir = tree:GetItemFullName(item_id)
-
       if wx.wxDirExists(dir) then treeAddDir(tree,item_id,dir) -- refresh folder
       else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
       return true
@@ -231,8 +252,38 @@ local function treeSetConnectorsAndIcons(tree)
     function (event)
       local item_id = event:GetItem()
       tree:SelectItem(item_id)
-      local menu = wx.wxMenu()
-      menu:Append(ID_SHOWLOCATION, TR("Show Location"))
+
+      local menu = wx.wxMenu {
+        { ID_NEWFILE, TR("New &File") },
+        { ID_NEWDIRECTORY, TR("&New Directory") },
+        { },
+        { ID_RENAMEFILE, TR("&Rename")..KSC(ID_RENAMEFILE) },
+        { },
+        { ID_SHOWLOCATION, TR("Show Location") },
+      }
+
+      local function addItem(item_id, name, image)
+        local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
+        local parent = isdir and item_id or tree:GetItemParent(item_id)
+        local item = tree:PrependItem(parent, name, image)
+        tree:SetItemHasChildren(parent, true)
+        -- temporarily disable expand as we don't need this node populated
+        tree:SetEvtHandlerEnabled(false)
+        tree:EnsureVisible(item)
+        tree:SetEvtHandlerEnabled(true)
+        return item
+      end
+
+      tree:Connect(ID_NEWFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function()
+          tree:EditLabel(addItem(item_id, empty, IMG_FILE_OTHER))
+        end)
+      tree:Connect(ID_NEWDIRECTORY, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function()
+          tree:EditLabel(addItem(item_id, empty, IMG_DIRECTORY))
+        end)
+      tree:Connect(ID_RENAMEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function() tree:EditLabel(item_id) end)
       tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
         function() ShowLocation(tree:GetItemFullName(item_id)) end)
 
@@ -259,18 +310,19 @@ local function treeSetConnectorsAndIcons(tree)
     end)
   tree:Connect(wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT,
     function (event)
+      -- veto the event to keep the original label intact as the tree
+      -- is going to be refreshed with the correct names.
+      event:Veto()
+
       local itemsrc = event:GetItem()
-      -- don't edit root
-      if event:IsEditCancelled() or itemsrc == tree:GetRootItem() then return end
-      local label = event:GetLabel()
-      if label ~= tree:GetItemText(itemsrc) then
-        local fulltarget = MergeFullPath(
-          tree:GetItemFullName(tree:GetItemParent(itemsrc)), label)
-        if fulltarget then renameItem(itemsrc, fulltarget) end
-        -- veto the event to keep the original label intact as the tree
-        -- is going to be refreshed with the correct names.
-        event:Veto()
-      end
+      if itemsrc == tree:GetRootItem() then return end -- don't edit root
+
+      local sourcedir = tree:GetItemFullName(tree:GetItemParent(itemsrc))
+      local label = event:GetLabel():gsub("^%s+$","") -- clean all spaces
+      local target = MergeFullPath(sourcedir, label)
+      if event:IsEditCancelled() or label == empty
+      or target and not renameItem(itemsrc, target)
+      then tree:Expand(tree:GetItemParent(itemsrc)) end
     end)
   tree:Connect(wx.wxEVT_KEY_DOWN,
     function (event)
@@ -296,8 +348,10 @@ local function treeSetConnectorsAndIcons(tree)
       -- check if itemdst is a folder
       local target = tree:GetItemFullName(itemdst)
       if wx.wxDirExists(target) then
-        local fulltarget = wx.wxFileName(target, tree:GetItemText(itemsrc)):GetFullPath()
-        renameItem(itemsrc, fulltarget)
+        local source = tree:GetItemFullName(itemsrc)
+        -- check if moving the directory and target is a subfolder of source
+        if (target..pathsep):find("^"..q(source)..pathsep) then return end
+        renameItem(itemsrc, MergeFullPath(target, tree:GetItemText(itemsrc)))
       end
     end)
 end
