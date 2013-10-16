@@ -243,9 +243,13 @@ local function treeSetConnectorsAndIcons(tree)
   -- toggle a folder on a single click
   tree:Connect(wx.wxEVT_LEFT_DOWN,
     function (event)
-      local item_id = tree:HitTest(event:GetPosition())
-      -- only toggle if this is a folder and the click is on the label
-      if item_id and tree:GetItemImage(item_id) == IMG_DIRECTORY then
+      -- only toggle if this is a folder and the click is on the item line
+      -- (exclude the label as it's used for renaming and dragging)
+      local mask = wx.wxTREE_HITTEST_ONITEMINDENT
+        + wx.wxTREE_HITTEST_ONITEMICON + wx.wxTREE_HITTEST_ONITEMRIGHT
+      local item_id, flags = tree:HitTest(event:GetPosition())
+      if item_id and tree:GetItemImage(item_id) == IMG_DIRECTORY
+      and bit.band(flags, mask) > 0 then
         tree:Toggle(item_id)
         tree:SelectItem(item_id)
       else
