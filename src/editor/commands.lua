@@ -440,8 +440,8 @@ function FoldSome()
 
   for ln = 0, editor.LineCount - 1 do
     local foldRaw = editor:GetFoldLevel(ln)
-    local foldLvl = math.mod(foldRaw, 4096)
-    local foldHdr = math.mod(math.floor(foldRaw / 8192), 2) == 1
+    local foldLvl = foldRaw % 4096
+    local foldHdr = (math.floor(foldRaw / 8192) % 2) == 1
 
     -- at least one header is expanded
     foldall = foldall or (foldHdr and editor:GetFoldExpanded(ln))
@@ -460,8 +460,8 @@ function FoldSome()
 
   for ln = 0, editor.LineCount-1 do
     local foldRaw = editor:GetFoldLevel(ln)
-    local foldLvl = math.mod(foldRaw, 4096)
-    local foldHdr = math.mod(math.floor(foldRaw / 8192), 2) == 1
+    local foldLvl = foldRaw % 4096
+    local foldHdr = (math.floor(foldRaw / 8192) % 2) == 1
 
     if foldall then
       if foldHdr and editor:GetFoldExpanded(ln) then
