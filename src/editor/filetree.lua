@@ -225,6 +225,26 @@ local function treeSetConnectorsAndIcons(tree)
     end
     return true
   end
+  local function deleteItem(item_id)
+    local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
+    local source = tree:GetItemFullName(item_id)
+
+    if isdir and FileSysHasContent(source..pathsep) then return false end
+    if wx.wxMessageBox(
+      TR("Do you want to delete '%s'?"):format(source),
+      GetIDEString("editormessage"),
+      wx.wxYES_NO + wx.wxCENTRE, ide.frame) ~= wx.wxYES then return false end
+
+    if isdir then
+      wx.wxRmdir(source)
+    else
+      local doc = ide:FindDocument(source)
+      if doc then ClosePage(doc.index) end
+      wx.wxRemoveFile(source)
+    end
+    tree:Expand(tree:GetItemParent(item_id))
+    return true
+  end
 
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
@@ -258,6 +278,7 @@ local function treeSetConnectorsAndIcons(tree)
         { ID_NEWDIRECTORY, TR("&New Directory") },
         { },
         { ID_RENAMEFILE, TR("&Rename")..KSC(ID_RENAMEFILE) },
+        { ID_DELETEFILE, TR("&Delete")..KSC(ID_DELETEFILE) },
         { },
         { ID_SHOWLOCATION, TR("Show Location") },
       }
@@ -274,6 +295,12 @@ local function treeSetConnectorsAndIcons(tree)
         return item
       end
 
+      -- disable Delete on non-empty directories
+      if tree:GetItemImage(item_id) == IMG_DIRECTORY then
+        local source = tree:GetItemFullName(item_id)
+        menu:Enable(ID_DELETEFILE, not FileSysHasContent(source..pathsep))
+      end
+
       tree:Connect(ID_NEWFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
         function()
           tree:EditLabel(addItem(item_id, empty, IMG_FILE_OTHER))
@@ -284,6 +311,8 @@ local function treeSetConnectorsAndIcons(tree)
         end)
       tree:Connect(ID_RENAMEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
         function() tree:EditLabel(item_id) end)
+      tree:Connect(ID_DELETEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function() deleteItem(item_id) end)
       tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
         function() ShowLocation(tree:GetItemFullName(item_id)) end)
 
@@ -327,8 +356,11 @@ local function treeSetConnectorsAndIcons(tree)
   tree:Connect(wx.wxEVT_KEY_DOWN,
     function (event)
       local item = tree:GetSelection()
-      if event:GetKeyCode() == wx.WXK_F2 and item:IsOk() then
-        return tree:EditLabel(item) end
+      if item:IsOk() then
+        if event:GetKeyCode() == wx.WXK_F2 then return tree:EditLabel(item)
+        elseif event:GetKeyCode() == wx.WXK_DELETE then return deleteItem(item)
+        end
+      end
       event:Skip()
     end)
 
