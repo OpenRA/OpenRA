@@ -1,6 +1,7 @@
 english:
 # Language Settings DropDownButton
 	english: English
+	german: German
 
 # First Game Start
 # TODO: you currently can't change language here

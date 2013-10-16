@@ -121,6 +121,7 @@ Movies:
 
 Translations:
 	mods/ra/languages/english.yaml
+	mods/ra/languages/german.yaml
 
 LoadScreen: DefaultLoadScreen
 	Image: mods/ra/uibits/loadscreen.png
