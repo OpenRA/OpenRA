@@ -100,7 +100,7 @@ Music:
 Movies:
 
 Translations:
-	mods/d2k/languages/english.yaml
+	mods/ra/languages/english.yaml
 	mods/ra/languages/german.yaml
 
 LoadScreen: DefaultLoadScreen

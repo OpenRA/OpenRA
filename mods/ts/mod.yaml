@@ -141,7 +141,7 @@ Music:
 Movies:
 
 Translations:
-	mods/ts/languages/english.yaml
+	mods/ra/languages/english.yaml
 	mods/ra/languages/german.yaml
 
 LoadScreen: DefaultLoadScreen
