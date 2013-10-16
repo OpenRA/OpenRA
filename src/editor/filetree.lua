@@ -280,6 +280,7 @@ local function treeSetConnectorsAndIcons(tree)
         { ID_RENAMEFILE, TR("&Rename")..KSC(ID_RENAMEFILE) },
         { ID_DELETEFILE, TR("&Delete")..KSC(ID_DELETEFILE) },
         { },
+        { ID_COPYFULLPATH, TR("Copy Full Path") },
         { ID_SHOWLOCATION, TR("Show Location") },
       }
 
@@ -313,6 +314,11 @@ local function treeSetConnectorsAndIcons(tree)
         function() tree:EditLabel(item_id) end)
       tree:Connect(ID_DELETEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
         function() deleteItem(item_id) end)
+      tree:Connect(ID_COPYFULLPATH, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function()
+          local tdo = wx.wxTextDataObject(tree:GetItemFullName(item_id))
+          wx.wxClipboard:Get():SetData(tdo)
+        end)
       tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
         function() ShowLocation(tree:GetItemFullName(item_id)) end)
 
