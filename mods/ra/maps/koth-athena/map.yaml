@@ -74,10 +74,10 @@ Actors:
 		Location: 131,230
 		Owner: Neutral
 	Actor14: oilb
-		Location: 232,71
+		Location: 230,72
 		Owner: Neutral
 	Actor13: oilb
-		Location: 232,185
+		Location: 230,186
 		Owner: Neutral
 	Actor8: oilb
 		Location: 29,72
@@ -2110,7 +2110,7 @@ Rules:
 		-Health:
 	Player:
 		StrategicVictoryConditions:
-			TicksToHold: 15000
+			TicksToHold: 4500
 			ResetOnHoldLost: true
 			RatioRequired: 1
 			CriticalRatioRequired: 1
