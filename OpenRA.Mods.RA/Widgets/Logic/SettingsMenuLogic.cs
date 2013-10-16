@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		SoundDevice soundDevice;
 
 		[ObjectCreator.UseCtor]
-		public SettingsMenuLogic(Action onExit)
+		public SettingsMenuLogic(Action onExit, WorldRenderer worldRenderer)
 		{
 			bg = Ui.Root.Get<BackgroundWidget>("SETTINGS_MENU");
 			var tabs = bg.Get<ContainerWidget>("TAB_CONTAINER");
@@ -133,7 +134,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			pixelDoubleCheckbox.OnClick = () =>
 			{
 				gs.PixelDouble ^= true;
-				Game.Zoom = gs.PixelDouble ? 2 : 1;
+				worldRenderer.Viewport.Zoom = gs.PixelDouble ? 2 : 1;
 			};
 
 			var capFrameRateCheckbox = display.Get<CheckboxWidget>("CAPFRAMERATE_CHECKBOX");

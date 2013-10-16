@@ -638,7 +638,7 @@ namespace OpenRA
 		public void SetListenerPosition(WPos position)
 		{
 			// Move the listener out of the plane so that sounds near the middle of the screen aren't too positional
-			Al.alListener3f(Al.AL_POSITION, position.X, position.Y, position.Z + 5*1024);
+			Al.alListener3f(Al.AL_POSITION, position.X, position.Y, position.Z + 2133);
 
 			var orientation = new[] { 0f, 0f, 1f, 0f, -1f, 0f };
 			Al.alListenerfv(Al.AL_ORIENTATION, ref orientation[0]);
@@ -682,9 +682,8 @@ namespace OpenRA
 			Al.alSourcei(source, Al.AL_LOOPING, looping ? Al.AL_TRUE : Al.AL_FALSE);
 			Al.alSourcei(source, Al.AL_SOURCE_RELATIVE, relative ? 1 : 0);
 
-			var width = Game.Renderer.Resolution.Width / (Game.Zoom * Game.CellSize);
-			Al.alSourcef(source, Al.AL_REFERENCE_DISTANCE, width / 8);
-			Al.alSourcef(source, Al.AL_MAX_DISTANCE, 2 * width);
+			Al.alSourcef(source, Al.AL_REFERENCE_DISTANCE, 6826);
+			Al.alSourcef(source, Al.AL_MAX_DISTANCE, 136533);
 			Al.alSourcePlay(source);
 		}
 
