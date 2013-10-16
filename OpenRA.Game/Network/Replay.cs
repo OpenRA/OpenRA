@@ -13,7 +13,7 @@ using OpenRA.Network;
 
 namespace OpenRA.Network
 {
-	/* a maze of twisty little hacks,... */
+	/* HACK: a maze of twisty little hacks... */
 	public class Replay
 	{
 		public readonly string Filename;
@@ -49,7 +49,7 @@ namespace OpenRA.Network
 							lastFrame = Math.Max(lastFrame, frame);
 					});
 
-			Duration = lastFrame;
+			Duration = lastFrame * Game.NetTickScale;
 			LobbyInfo = lobbyInfo;
 		}
 
@@ -66,4 +66,3 @@ namespace OpenRA.Network
 		}
 	}
 }
-
