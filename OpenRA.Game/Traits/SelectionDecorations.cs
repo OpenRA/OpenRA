@@ -38,15 +38,15 @@ namespace OpenRA.Traits
 			var bounds = self.Bounds.Value;
 			bounds.Offset(pos.X, pos.Y);
 
-			var xy = new float2(bounds.Left, bounds.Top);
-			var xY = new float2(bounds.Left, bounds.Bottom);
+			var xy = new int2(bounds.Left, bounds.Top);
+			var xY = new int2(bounds.Left, bounds.Bottom);
 
 			DrawControlGroup(wr, self, xy);
 			DrawPips(wr, self, xY);
-			DrawTags(wr, self, new float2(.5f * (bounds.Left + bounds.Right), bounds.Top));
+			DrawTags(wr, self, new int2((bounds.Left + bounds.Right) / 2, bounds.Top));
 		}
 
-		void DrawControlGroup(WorldRenderer wr, Actor self, float2 basePosition)
+		void DrawControlGroup(WorldRenderer wr, Actor self, int2 basePosition)
 		{
 			var group = self.World.Selection.GetControlGroupForActor(self);
 			if (group == null) return;
@@ -55,11 +55,11 @@ namespace OpenRA.Traits
 			pipImages.PlayFetchIndex("groups", () => (int)group);
 			pipImages.Tick();
 
-			var pos = (basePosition + new float2(-8, 1) + 0.5f * pipImages.Image.size).ToInt2();
-			pipImages.Render(wr.Position(pos), wr.Palette("chrome")).Do(r => r.Render(wr));
+			var pos = wr.Viewport.WorldToViewPx(basePosition) - (0.5f * pipImages.Image.size).ToInt2() + new int2(9, 5);
+			Game.Renderer.SpriteRenderer.DrawSprite(pipImages.Image, pos, wr.Palette("chrome"));
 		}
 
-		void DrawPips(WorldRenderer wr, Actor self, float2 basePosition)
+		void DrawPips(WorldRenderer wr, Actor self, int2 basePosition)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return;
@@ -71,18 +71,17 @@ namespace OpenRA.Traits
 			var pipImages = new Animation("pips");
 			pipImages.PlayRepeating(pipStrings[0]);
 
-			var pipSize = pipImages.Image.size;
-			var pipxyBase = basePosition + new float2(1, -pipSize.Y);
-			var pipxyOffset = new float2(0, 0); // Correct for offset due to multiple columns/rows
+			var pipSize = pipImages.Image.size.ToInt2();
+			var pipxyBase = wr.Viewport.WorldToViewPx(basePosition) + new int2(1 - pipSize.X / 2, - (3 + pipSize.Y / 2));
+			var pipxyOffset = new int2(0, 0);
 			var pal = wr.Palette("chrome");
+			var width = self.Bounds.Value.Width;
 
 			foreach (var pips in pipSources)
 			{
 				var thisRow = pips.GetPips(self);
 				if (thisRow == null)
 					continue;
-
-				var width = self.Bounds.Value.Width;
 
 				foreach (var pip in thisRow)
 				{
@@ -91,11 +90,11 @@ namespace OpenRA.Traits
 						pipxyOffset.X = 0;
 						pipxyOffset.Y -= pipSize.Y;
 					}
-					pipImages.PlayRepeating(pipStrings[(int)pip]);
-					pipxyOffset += new float2(pipSize.X, 0);
 
-					var pos = (pipxyBase + pipxyOffset + 0.5f * pipSize).ToInt2();
-					pipImages.Render(wr.Position(pos), pal).Do(r => r.Render(wr));
+					pipImages.PlayRepeating(pipStrings[(int)pip]);
+					pipxyOffset += new int2(pipSize.X, 0);
+
+					Game.Renderer.SpriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, pal);
 				}
 
 				// Increment row
@@ -104,14 +103,16 @@ namespace OpenRA.Traits
 			}
 		}
 
-		void DrawTags(WorldRenderer wr, Actor self, float2 basePosition)
+		void DrawTags(WorldRenderer wr, Actor self, int2 basePosition)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 			    return;
 
-			// If a mod wants to implement a unit with multiple tags, then they are placed on multiple rows
-			var tagxyOffset = new float2(-16, 2); // Correct in the shp file and multiple rows
+			var tagImages = new Animation("pips");
 			var pal = wr.Palette("chrome");
+			var tagxyOffset = new int2(0, 6);
+			var tagBase = wr.Viewport.WorldToViewPx(basePosition);
+
 			foreach (var tags in self.TraitsImplementing<ITags>())
 			{
 				foreach (var tag in tags.GetTags())
@@ -119,10 +120,9 @@ namespace OpenRA.Traits
 					if (tag == TagType.None)
 						continue;
 
-					var tagImages = new Animation("pips");
 					tagImages.PlayRepeating(tagStrings[(int)tag]);
-					var pos = (basePosition + tagxyOffset + 0.5f * tagImages.Image.size).ToInt2();
-					tagImages.Render(wr.Position(pos), pal).Do(r => r.Render(wr));
+					var pos = tagBase + tagxyOffset - (0.5f * tagImages.Image.size).ToInt2();
+					Game.Renderer.SpriteRenderer.DrawSprite(tagImages.Image, pos, pal);
 
 					// Increment row
 					tagxyOffset.Y += 8;
