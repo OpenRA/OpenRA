@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Widgets;
 using OpenRA.Mods.RA.Widgets.Logic;
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		World world;
 
 		[ObjectCreator.UseCtor]
-		public CncSettingsLogic(Widget widget, World world, Action onExit)
+		public CncSettingsLogic(Widget widget, World world, Action onExit, WorldRenderer worldRenderer)
 		{
 			this.world = world;
 			var panel = widget.Get("SETTINGS_PANEL");
@@ -90,7 +91,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			pixelDoubleCheckbox.OnClick = () =>
 			{
 				graphicsSettings.PixelDouble ^= true;
-				Game.Zoom = graphicsSettings.PixelDouble ? 2 : 1;
+				worldRenderer.Viewport.Zoom = graphicsSettings.PixelDouble ? 2 : 1;
 			};
 
 			var showShellmapCheckbox = generalPane.Get<CheckboxWidget>("SHOW_SHELLMAP");

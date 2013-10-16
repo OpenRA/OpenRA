@@ -32,14 +32,8 @@ namespace OpenRA
 		public static MouseButtonPreference mouseButtonPreference = new MouseButtonPreference();
 
 		public static ModData modData;
-		static WorldRenderer worldRenderer;
-		public static float Zoom
-		{
-			get { return worldRenderer.Viewport.Zoom; }
-			set { worldRenderer.Viewport.Zoom = value; }
-		}
-
 		public static Settings Settings;
+		static WorldRenderer worldRenderer;
 
 		internal static OrderManager orderManager;
 		static Server.Server server;
@@ -141,7 +135,7 @@ namespace OpenRA
 				// worldRenderer is null during the initial install/download screen
 				if (worldRenderer != null)
 				{
-					Game.Renderer.BeginFrame(worldRenderer.Viewport.TopLeft.ToFloat2(), Zoom);
+					Game.Renderer.BeginFrame(worldRenderer.Viewport.TopLeft.ToFloat2(), worldRenderer.Viewport.Zoom);
 					Sound.SetListenerPosition(worldRenderer.Position(worldRenderer.Viewport.CenterLocation));
 					worldRenderer.Draw();
 				}
