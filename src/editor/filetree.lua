@@ -343,15 +343,20 @@ local function treeSetConnectorsAndIcons(tree)
           local ext = '.'..wx.wxFileName(fname):GetExt()
           local ft = wx.wxTheMimeTypesManager:GetFileTypeFromExtension(ext)
           if ft then
-            -- many programs on Windows (for example, PhotoViewer.dll) accept
-            -- files with spaces in names ONLY if they are not in quotes.
-            -- skip quotes on Windows, but add everywhere else
-            local cmd = ide.osname == 'Windows'
-              and ft:GetOpenCommand(""):gsub('""%s*$', '')..fname
-              -- GetOpenCommand wraps commands into ", but doesn't escape
-              -- quotes that may be present in file names; fix it.
-              or ft:GetOpenCommand(fname:gsub('"','\\"'))
-            wx.wxExecute(cmd, wx.wxEXEC_ASYNC) end
+            local cmd = ft:GetOpenCommand(fname:gsub('"','\\"'))
+            local pid = wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
+            if ide.osname == 'Windows' and pid and pid > 0 then
+              -- some programs on Windows (for example, PhotoViewer) accept
+              -- files with spaces in names ONLY if they are not in quotes.
+              -- wait for the process that failed to open file to finish
+              -- and retry without quotes.
+              wx.wxMilliSleep(250) -- 250ms seems enough; picked empirically.
+              if not wx.wxProcess.Exists(pid) then
+                local cmd = ft:GetOpenCommand(""):gsub('""%s*$', '')..fname
+                wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
+              end
+            end
+          end
         end)
       tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
         function() ShowLocation(tree:GetItemFullName(item_id)) end)
