@@ -325,7 +325,10 @@ local function treeSetConnectorsAndIcons(tree)
       tree:Connect(ID_COPYFULLPATH, wx.wxEVT_COMMAND_MENU_SELECTED,
         function()
           local tdo = wx.wxTextDataObject(tree:GetItemFullName(item_id))
-          wx.wxClipboard:Get():SetData(tdo)
+          if wx.wxClipboard:Get():Open() then
+            wx.wxClipboard:Get():SetData(tdo)
+            wx.wxClipboard:Get():Close()
+          end
         end)
       tree:Connect(ID_OPENEXTENSION, wx.wxEVT_COMMAND_MENU_SELECTED,
         function()
