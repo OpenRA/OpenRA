@@ -280,6 +280,7 @@ local function treeSetConnectorsAndIcons(tree)
         { ID_RENAMEFILE, TR("&Rename")..KSC(ID_RENAMEFILE) },
         { ID_DELETEFILE, TR("&Delete")..KSC(ID_DELETEFILE) },
         { },
+        { ID_OPENEXTENSION, TR("Open With Default Program") },
         { ID_COPYFULLPATH, TR("Copy Full Path") },
         { ID_SHOWLOCATION, TR("Show Location") },
       }
@@ -297,9 +298,16 @@ local function treeSetConnectorsAndIcons(tree)
       end
 
       -- disable Delete on non-empty directories
-      if tree:GetItemImage(item_id) == IMG_DIRECTORY then
+      local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
+      if isdir then
         local source = tree:GetItemFullName(item_id)
         menu:Enable(ID_DELETEFILE, not FileSysHasContent(source..pathsep))
+        menu:Enable(ID_OPENEXTENSION, false)
+      else
+        local fname = tree:GetItemText(item_id)
+        local ext = '.'..wx.wxFileName(fname):GetExt()
+        local ft = wx.wxTheMimeTypesManager:GetFileTypeFromExtension(ext)
+        menu:Enable(ID_OPENEXTENSION, ft ~= nil)
       end
 
       tree:Connect(ID_NEWFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -318,6 +326,13 @@ local function treeSetConnectorsAndIcons(tree)
         function()
           local tdo = wx.wxTextDataObject(tree:GetItemFullName(item_id))
           wx.wxClipboard:Get():SetData(tdo)
+        end)
+      tree:Connect(ID_OPENEXTENSION, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function()
+          local fname = tree:GetItemFullName(item_id)
+          local ext = '.'..wx.wxFileName(fname):GetExt()
+          local ft = wx.wxTheMimeTypesManager:GetFileTypeFromExtension(ext)
+          if ft then wx.wxExecute(ft:GetOpenCommand(fname), wx.wxEXEC_ASYNC) end
         end)
       tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
         function() ShowLocation(tree:GetItemFullName(item_id)) end)

@@ -19,6 +19,7 @@ ID_NEWFILE          = NewID()
 ID_NEWDIRECTORY     = NewID()
 ID_RENAMEFILE       = NewID()
 ID_DELETEFILE       = NewID()
+ID_OPENEXTENSION    = NewID()
 ID_COPYFULLPATH     = NewID()
 ID_SHOWLOCATION     = NewID()
 ID_SAVE             = wx.wxID_SAVE
