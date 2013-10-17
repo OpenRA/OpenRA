@@ -84,6 +84,8 @@ if(WIN32)
   install_from_manifest(FILES ${TOPDIR}/zbstudio/MANIFEST ${DATADIR} "^$")
   install_from_manifest(FILES ${TOPDIR}/zbstudio/MANIFEST-bin-win32 ${DATADIR} "^zbstudio.exe$")
 elseif(APPLE)
+  set(OSX_INSTALL_PREFIX "/Applications" CACHE PATH "Default OSX prefix")
+  set(CMAKE_INSTALL_PREFIX "${OSX_INSTALL_PREFIX}" CACHE INTERNAL "Prefix prepended to install directories")
   # setup the data directory
   set(ROOTDIR ZeroBraneStudio.app/Contents)
   set(DATADIR ${ROOTDIR}/ZeroBraneStudio)
