@@ -128,6 +128,9 @@ fi
 if [ $BUILD_WXWIDGETS ]; then
   svn co "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to checkout wxWidgets"; exit 1; }
   cd "$WXWIDGETS_BASENAME"
+  # fix auto-complete crash by reverting an earlier revision
+  # http://trac.wxwidgets.org/ticket/15008#comment:12
+  svn merge -r 74098:74097 .
   ./configure --prefix="$INSTALL_DIR" $WXWIDGETSDEBUG --disable-shared --enable-unicode \
     --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
     --with-zlib=builtin --disable-richtext \
