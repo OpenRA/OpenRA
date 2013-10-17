@@ -314,7 +314,7 @@ local function treeSetConnectorsAndIcons(tree)
         local fname = tree:GetItemText(item_id)
         local ext = '.'..wx.wxFileName(fname):GetExt()
         local ft = wx.wxTheMimeTypesManager:GetFileTypeFromExtension(ext)
-        menu:Enable(ID_OPENEXTENSION, ft ~= nil)
+        menu:Enable(ID_OPENEXTENSION, ft and #ft:GetOpenCommand("") > 0)
       end
 
       tree:Connect(ID_NEWFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
