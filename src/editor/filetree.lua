@@ -154,11 +154,16 @@ local function treeSetConnectorsAndIcons(tree)
   end
 
   local function refreshAncestors(node)
+    -- when this method is called from END_EDIT, it causes infinite loop
+    -- on OSX (wxwidgets 2.9.5) as Delete in treeAddDir calls END_EDIT again.
+    -- disable handlers while the tree is populated and then enable back.
+    tree:SetEvtHandlerEnabled(false)
     while node:IsOk() do
       local dir = tree:GetItemFullName(node)
       treeAddDir(tree,node,dir)
       node = tree:GetItemParent(node)
     end
+    tree:SetEvtHandlerEnabled(true)
   end
 
   local empty = ""
@@ -242,7 +247,7 @@ local function treeSetConnectorsAndIcons(tree)
       if doc then ClosePage(doc.index) end
       wx.wxRemoveFile(source)
     end
-    tree:Expand(tree:GetItemParent(item_id))
+    refreshAncestors(tree:GetItemParent(item_id))
     return true
   end
 
@@ -288,6 +293,8 @@ local function treeSetConnectorsAndIcons(tree)
       local function addItem(item_id, name, image)
         local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
         local parent = isdir and item_id or tree:GetItemParent(item_id)
+        if isdir then tree:Expand(item_id) end -- expand to populate if needed
+
         local item = tree:PrependItem(parent, name, image)
         tree:SetItemHasChildren(parent, true)
         -- temporarily disable expand as we don't need this node populated
@@ -384,7 +391,7 @@ local function treeSetConnectorsAndIcons(tree)
       local target = MergeFullPath(sourcedir, label)
       if event:IsEditCancelled() or label == empty
       or target and not renameItem(itemsrc, target)
-      then tree:Expand(tree:GetItemParent(itemsrc)) end
+      then refreshAncestors(tree:GetItemParent(itemsrc)) end
     end)
   tree:Connect(wx.wxEVT_KEY_DOWN,
     function (event)
