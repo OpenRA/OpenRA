@@ -332,7 +332,16 @@ local function treeSetConnectorsAndIcons(tree)
           local fname = tree:GetItemFullName(item_id)
           local ext = '.'..wx.wxFileName(fname):GetExt()
           local ft = wx.wxTheMimeTypesManager:GetFileTypeFromExtension(ext)
-          if ft then wx.wxExecute(ft:GetOpenCommand(fname), wx.wxEXEC_ASYNC) end
+          if ft then
+            -- many programs on Windows (for example, PhotoViewer.dll) accept
+            -- files with spaces in names ONLY if they are not in quotes.
+            -- skip quotes on Windows, but add everywhere else
+            local cmd = ide.osname == 'Windows'
+              and ft:GetOpenCommand(""):gsub('""%s*$', '')..fname
+              -- GetOpenCommand wraps commands into ", but doesn't escape
+              -- quotes that may be present in file names; fix it.
+              or ft:GetOpenCommand(fname:gsub('"','\\"'))
+            wx.wxExecute(cmd, wx.wxEXEC_ASYNC) end
         end)
       tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
         function() ShowLocation(tree:GetItemFullName(item_id)) end)
