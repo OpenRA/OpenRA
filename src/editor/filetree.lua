@@ -363,9 +363,11 @@ local function treeSetConnectorsAndIcons(tree)
     function (event)
       local item = tree:GetSelection()
       if item:IsOk() then
-        if event:GetKeyCode() == wx.WXK_F2 then return tree:EditLabel(item)
-        elseif event:GetKeyCode() == wx.WXK_DELETE then return deleteItem(item)
-        end
+        local keycode = event:GetKeyCode()
+        if keycode == wx.WXK_F2 then return tree:EditLabel(item)
+        elseif keycode == wx.WXK_DELETE then return deleteItem(item)
+        elseif keycode == wx.WXK_RETURN or keycode == wx.WXK_NUMPAD_ENTER then
+          tree:Toggle(item) end
       end
       event:Skip()
     end)
