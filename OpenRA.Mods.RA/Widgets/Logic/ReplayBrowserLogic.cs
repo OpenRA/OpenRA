@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				currentMap = currentReplay.Map();
 
 				panel.Get<LabelWidget>("DURATION").GetText =
-					() => WidgetUtils.FormatTime(currentReplay.Duration * 3	/* TODO: 3:1 ratio isnt always true. */);
+					() => WidgetUtils.FormatTime(currentReplay.Duration);
 				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
 				panel.Get<LabelWidget>("MAP_TITLE").GetText =
 					() => currentMap != null ? currentMap.Title : "(Unknown Map)";
