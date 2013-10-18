@@ -25,150 +25,348 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class CncSettingsLogic
 	{
-		enum PanelType { General, Input }
+		enum PanelType { Display, Audio, Input, Advanced }
+		Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
+		Dictionary<PanelType, Action> resetPanelActions = new Dictionary<PanelType, Action>();
+		PanelType settingsPanel = PanelType.Display;
+		Widget panelContainer, tabContainer;
 
+		WorldRenderer worldRenderer;
 		SoundDevice soundDevice;
-		PanelType settingsPanel = PanelType.General;
-		ColorPreviewManagerWidget colorPreview;
-		World world;
 
 		[ObjectCreator.UseCtor]
-		public CncSettingsLogic(Widget widget, World world, Action onExit, WorldRenderer worldRenderer)
+		public CncSettingsLogic(Widget widget, Action onExit, WorldRenderer worldRenderer)
 		{
-			this.world = world;
-			var panel = widget.Get("SETTINGS_PANEL");
+			this.worldRenderer = worldRenderer;
 
-			// General pane
-			var generalButton = panel.Get<ButtonWidget>("GENERAL_BUTTON");
-			generalButton.OnClick = () => settingsPanel = PanelType.General;
-			generalButton.IsHighlighted = () => settingsPanel == PanelType.General;
+			panelContainer = widget.Get("SETTINGS_PANEL");
+			tabContainer = panelContainer;
 
-			var generalPane = panel.Get("GENERAL_CONTROLS");
-			generalPane.IsVisible = () => settingsPanel == PanelType.General;
+			RegisterSettingsPanel(PanelType.Display, InitDisplayPanel, ResetDisplayPanel, "DISPLAY_PANEL", "DISPLAY_TAB");
+			RegisterSettingsPanel(PanelType.Audio, InitAudioPanel, ResetAudioPanel, "AUDIO_PANEL", "AUDIO_TAB");
+			RegisterSettingsPanel(PanelType.Input, InitInputPanel, ResetInputPanel, "INPUT_PANEL", "INPUT_TAB");
+			RegisterSettingsPanel(PanelType.Advanced, InitAdvancedPanel, ResetAdvancedPanel, "ADVANCED_PANEL", "ADVANCED_TAB");
 
-			var gameSettings = Game.Settings.Game;
-			var playerSettings = Game.Settings.Player;
-			var debugSettings = Game.Settings.Debug;
-			var graphicsSettings = Game.Settings.Graphics;
-			var soundSettings = Game.Settings.Sound;
-
-			// Player profile
-			var nameTextfield = generalPane.Get<TextFieldWidget>("NAME_TEXTFIELD");
-			nameTextfield.Text = playerSettings.Name;
-
-			colorPreview = panel.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
-			colorPreview.Color = playerSettings.Color;
-
-			var colorDropdown = generalPane.Get<DropDownButtonWidget>("COLOR");
-			colorDropdown.OnMouseDown = _ => ShowColorPicker(colorDropdown, playerSettings);
-			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerSettings.Color.RGB;
-
-			// Debug
-			var perftextCheckbox = generalPane.Get<CheckboxWidget>("PERFTEXT_CHECKBOX");
-			perftextCheckbox.IsChecked = () => debugSettings.PerfText;
-			perftextCheckbox.OnClick = () => debugSettings.PerfText ^= true;
-
-			var perfgraphCheckbox = generalPane.Get<CheckboxWidget>("PERFGRAPH_CHECKBOX");
-			perfgraphCheckbox.IsChecked = () => debugSettings.PerfGraph;
-			perfgraphCheckbox.OnClick = () => debugSettings.PerfGraph ^= true;
-
-			var checkunsyncedCheckbox = generalPane.Get<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX");
-			checkunsyncedCheckbox.IsChecked = () => debugSettings.SanityCheckUnsyncedCode;
-			checkunsyncedCheckbox.OnClick = () => debugSettings.SanityCheckUnsyncedCode ^= true;
-
-			var showFatalErrorDialog = generalPane.Get<CheckboxWidget>("SHOW_FATAL_ERROR_DIALOG_CHECKBOX");
-			showFatalErrorDialog.IsChecked = () => Game.Settings.Debug.ShowFatalErrorDialog;
-			showFatalErrorDialog.OnClick = () => Game.Settings.Debug.ShowFatalErrorDialog ^= true;
-
-			// Video
-			var windowModeDropdown = generalPane.Get<DropDownButtonWidget>("MODE_DROPDOWN");
-			windowModeDropdown.OnMouseDown = _ => SettingsMenuLogic.ShowWindowModeDropdown(windowModeDropdown, graphicsSettings);
-			windowModeDropdown.GetText = () => graphicsSettings.Mode == WindowMode.Windowed ?
-				"Windowed" : graphicsSettings.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
-
-			var pixelDoubleCheckbox = generalPane.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
-			pixelDoubleCheckbox.IsChecked = () => graphicsSettings.PixelDouble;
-			pixelDoubleCheckbox.OnClick = () =>
+			panelContainer.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
-				graphicsSettings.PixelDouble ^= true;
-				worldRenderer.Viewport.Zoom = graphicsSettings.PixelDouble ? 2 : 1;
-			};
-
-			var showShellmapCheckbox = generalPane.Get<CheckboxWidget>("SHOW_SHELLMAP");
-			showShellmapCheckbox.IsChecked = () => gameSettings.ShowShellmap;
-			showShellmapCheckbox.OnClick = () => gameSettings.ShowShellmap ^= true;
-
-			generalPane.Get("WINDOW_RESOLUTION").IsVisible = () => graphicsSettings.Mode == WindowMode.Windowed;
-			var windowWidth = generalPane.Get<TextFieldWidget>("WINDOW_WIDTH");
-			windowWidth.Text = graphicsSettings.WindowedSize.X.ToString();
-
-			var windowHeight = generalPane.Get<TextFieldWidget>("WINDOW_HEIGHT");
-			windowHeight.Text = graphicsSettings.WindowedSize.Y.ToString();
-
-			var languageDropDownButton = generalPane.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
-			languageDropDownButton.OnMouseDown = _ => SettingsMenuLogic.ShowLanguageDropdown(languageDropDownButton);
-			languageDropDownButton.GetText = () => FieldLoader.Translate(Game.Settings.Graphics.Language);
-
-			// Audio
-			var soundSlider = generalPane.Get<SliderWidget>("SOUND_SLIDER");
-			soundSlider.OnChange += x => { soundSettings.SoundVolume = x; Sound.SoundVolume = x; };
-			soundSlider.Value = soundSettings.SoundVolume;
-
-			var musicSlider = generalPane.Get<SliderWidget>("MUSIC_SLIDER");
-			musicSlider.OnChange += x => { soundSettings.MusicVolume = x; Sound.MusicVolume = x; };
-			musicSlider.Value = soundSettings.MusicVolume;
-
-			var shellmapMusicCheckbox = generalPane.Get<CheckboxWidget>("SHELLMAP_MUSIC");
-			shellmapMusicCheckbox.IsChecked = () => soundSettings.MapMusic;
-			shellmapMusicCheckbox.OnClick = () => soundSettings.MapMusic ^= true;
-
-			var devices = Sound.AvailableDevices();
-			soundDevice = devices.FirstOrDefault(d => d.Engine == soundSettings.Engine && d.Device == soundSettings.Device) ?? devices.First();
-
-			var audioDeviceDropdown = generalPane.Get<DropDownButtonWidget>("AUDIO_DEVICE");
-			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, soundSettings, devices);
-			audioDeviceDropdown.GetText = () => soundDevice.Label;
-
-			// Input pane
-			var inputPane = panel.Get("INPUT_CONTROLS");
-			inputPane.IsVisible = () => settingsPanel == PanelType.Input;
-
-			var inputButton = panel.Get<ButtonWidget>("INPUT_BUTTON");
-			inputButton.OnClick = () => settingsPanel = PanelType.Input;
-			inputButton.IsHighlighted = () => settingsPanel == PanelType.Input;
-
-			var classicMouseCheckbox = inputPane.Get<CheckboxWidget>("CLASSICORDERS_CHECKBOX");
-			classicMouseCheckbox.IsChecked = () => gameSettings.UseClassicMouseStyle;
-			classicMouseCheckbox.OnClick = () => gameSettings.UseClassicMouseStyle ^= true;
-
-			var scrollSlider = inputPane.Get<SliderWidget>("SCROLLSPEED_SLIDER");
-			scrollSlider.Value = gameSettings.ViewportEdgeScrollStep;
-			scrollSlider.OnChange += x => gameSettings.ViewportEdgeScrollStep = x;
-
-			var edgescrollCheckbox = inputPane.Get<CheckboxWidget>("EDGESCROLL_CHECKBOX");
-			edgescrollCheckbox.IsChecked = () => gameSettings.ViewportEdgeScroll;
-			edgescrollCheckbox.OnClick = () => gameSettings.ViewportEdgeScroll ^= true;
-
-			var mouseScrollDropdown = inputPane.Get<DropDownButtonWidget>("MOUSE_SCROLL");
-			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gameSettings);
-			mouseScrollDropdown.GetText = () => gameSettings.MouseScroll.ToString();
-
-			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
-			{
-				playerSettings.Name = nameTextfield.Text;
-				int x, y;
-				int.TryParse(windowWidth.Text, out x);
-				int.TryParse(windowHeight.Text, out y);
-				graphicsSettings.WindowedSize = new int2(x, y);
-				soundSettings.Device = soundDevice.Device;
-				soundSettings.Engine = soundDevice.Engine;
+				leavePanelActions[settingsPanel]();
 				Game.Settings.Save();
 				Ui.CloseWindow();
 				onExit();
 			};
+
+			panelContainer.Get<ButtonWidget>("RESET_BUTTON").OnClick = () =>
+			{
+				resetPanelActions[settingsPanel]();
+				Game.Settings.Save();
+			};
 		}
 
-		static bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		static void BindCheckboxPref(Widget parent, string id, object group, string pref)
+		{
+			var field = group.GetType().GetField(pref);
+			if (field == null)
+				throw new InvalidOperationException("{0} does not contain a preference type {1}".F(group.GetType().Name, pref));
+
+			var cb = parent.Get<CheckboxWidget>(id);
+			cb.IsChecked = () => (bool)field.GetValue(group);
+			cb.OnClick = () => field.SetValue(group, cb.IsChecked() ^ true);
+		}
+
+		static void BindSliderPref(Widget parent, string id, object group, string pref)
+		{
+			var field = group.GetType().GetField(pref);
+			if (field == null)
+				throw new InvalidOperationException("{0} does not contain a preference type {1}".F(group.GetType().Name, pref));
+
+			var ss = parent.Get<SliderWidget>(id);
+			ss.Value = (float)field.GetValue(group);
+			ss.OnChange += x => field.SetValue(group, x);
+		}
+
+		static void BindHotkeyPref(KeyValuePair<string, string> kv, KeySettings ks, Widget template, Widget parent)
+		{
+			var key = template.Clone() as Widget;
+			key.Id = kv.Key;
+			key.IsVisible = () => true;
+
+			var field = ks.GetType().GetField(kv.Key);
+			if (field == null)
+				throw new InvalidOperationException("Game.Settings.Keys does not contain {1}".F(kv.Key));
+
+			key.Get<LabelWidget>("FUNCTION").GetText = () => kv.Value + ":";
+
+			var textBox = key.Get<HotkeyEntryWidget>("HOTKEY");
+			textBox.Key = (Hotkey)field.GetValue(ks);
+			textBox.OnLoseFocus = () =>	field.SetValue(ks, textBox.Key);
+			parent.AddChild(key);
+		}
+
+		void RegisterSettingsPanel(PanelType type, Func<Widget, Action> init, Func<Widget, Action> reset, string panelID, string buttonID)
+		{
+			var panel = panelContainer.Get(panelID);
+			var tab = tabContainer.Get<ButtonWidget>(buttonID);
+
+			panel.IsVisible = () => settingsPanel == type;
+			tab.IsHighlighted = () => settingsPanel == type;
+			tab.OnClick = () => { leavePanelActions[settingsPanel](); Game.Settings.Save(); settingsPanel = type; };
+
+			leavePanelActions.Add(type, init(panel));
+			resetPanelActions.Add(type, reset(panel));
+		}
+
+		Action InitDisplayPanel(Widget panel)
+		{
+			var ds = Game.Settings.Graphics;
+			var gs = Game.Settings.Game;
+
+			BindCheckboxPref(panel, "PIXELDOUBLE_CHECKBOX", ds, "PixelDouble");
+			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
+			BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
+
+			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
+			languageDropDownButton.OnMouseDown = _ => SettingsMenuLogic.ShowLanguageDropdown(languageDropDownButton);
+			languageDropDownButton.GetText = () => FieldLoader.Translate(ds.Language);
+
+			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
+			windowModeDropdown.OnMouseDown = _ => SettingsMenuLogic.ShowWindowModeDropdown(windowModeDropdown, ds);
+			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
+				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
+
+			// Update zoom immediately
+			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
+			var oldOnClick = pixelDoubleCheckbox.OnClick;
+			pixelDoubleCheckbox.OnClick = () =>
+			{
+				oldOnClick();
+				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
+			};
+
+			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
+			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
+			windowWidth.Text = ds.WindowedSize.X.ToString();
+
+			var windowHeight = panel.Get<TextFieldWidget>("WINDOW_HEIGHT");
+			windowHeight.Text = ds.WindowedSize.Y.ToString();
+
+			var frameLimitTextfield = panel.Get<TextFieldWidget>("FRAME_LIMIT_TEXTFIELD");
+			frameLimitTextfield.Text = ds.MaxFramerate.ToString();
+			frameLimitTextfield.IsDisabled = () => !ds.CapFramerate;
+
+			return () =>
+			{
+				int x, y;
+				int.TryParse(windowWidth.Text, out x);
+				int.TryParse(windowHeight.Text, out y);
+				ds.WindowedSize = new int2(x, y);
+				int.TryParse(frameLimitTextfield.Text, out ds.MaxFramerate);
+			};
+		}
+
+		Action ResetDisplayPanel(Widget panel)
+		{
+			var ds = Game.Settings.Graphics;
+			var gs = Game.Settings.Game;
+			var dds = new GraphicSettings();
+			var dgs = new GameSettings();
+			return () =>
+			{
+				gs.ShowShellmap = dgs.ShowShellmap;
+
+				ds.CapFramerate = dds.CapFramerate;
+				ds.MaxFramerate = dds.MaxFramerate;
+				ds.Language = dds.Language;
+				ds.Mode = dds.Mode;
+				ds.WindowedSize = dds.WindowedSize;
+
+				ds.PixelDouble = dds.PixelDouble;
+				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
+			};
+		}
+
+		Action InitAudioPanel(Widget panel)
+		{
+			var ss = Game.Settings.Sound;
+
+			BindCheckboxPref(panel, "SHELLMAP_MUSIC", ss, "MapMusic");
+			BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
+
+			BindSliderPref(panel, "SOUND_VOLUME", ss, "SoundVolume");
+			BindSliderPref(panel, "MUSIC_VOLUME", ss, "MusicVolume");
+			BindSliderPref(panel, "VIDEO_VOLUME", ss, "VideoVolume");
+
+			// Update volume immediately
+			panel.Get<SliderWidget>("SOUND_VOLUME").OnChange += x => Sound.SoundVolume = x;
+			panel.Get<SliderWidget>("MUSIC_VOLUME").OnChange += x => Sound.MusicVolume = x;
+			panel.Get<SliderWidget>("VIDEO_VOLUME").OnChange += x => Sound.VideoVolume = x;
+
+			var devices = Sound.AvailableDevices();
+			soundDevice = devices.FirstOrDefault(d => d.Engine == ss.Engine && d.Device == ss.Device) ?? devices.First();
+
+			var audioDeviceDropdown = panel.Get<DropDownButtonWidget>("AUDIO_DEVICE");
+			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, ss, devices);
+			audioDeviceDropdown.GetText = () => soundDevice.Label;
+
+			return () =>
+			{
+				ss.Device = soundDevice.Device;
+				ss.Engine = soundDevice.Engine;
+			};
+		}
+
+		Action ResetAudioPanel(Widget panel)
+		{
+			var ss = Game.Settings.Sound;
+			var dss = new SoundSettings();
+			return () =>
+			{
+				ss.MapMusic = dss.MapMusic;
+				ss.SoundVolume = dss.SoundVolume;
+				ss.MusicVolume = dss.MusicVolume;
+				ss.VideoVolume = dss.VideoVolume;
+				ss.CashTicks = dss.CashTicks;
+				ss.Device = dss.Device;
+				ss.Engine = dss.Engine;
+
+				panel.Get<SliderWidget>("SOUND_VOLUME").Value = ss.SoundVolume;
+				panel.Get<SliderWidget>("MUSIC_VOLUME").Value = ss.MusicVolume;
+				panel.Get<SliderWidget>("VIDEO_VOLUME").Value = ss.VideoVolume;
+				soundDevice = Sound.AvailableDevices().First();
+			};
+		}
+
+		Action InitInputPanel(Widget panel)
+		{
+			// TODO: Extract these to a yaml file
+			var specialHotkeys = new Dictionary<string, string>()
+			{
+				{ "PauseKey", "Pause / Unpause" },
+				{ "CycleBaseKey", "Jump to base" },
+				{ "ToLastEventKey", "Jump to last radar event" },
+				{ "ToSelectionKey", "Jump to selection" },
+				{ "SellKey", "Sell mode" },
+				{ "PowerDownKey", "Power-down mode" },
+				{ "RepairKey", "Repair mode" },
+				{ "CycleTabsKey", "Cycle production tabs" }
+			};
+
+			var unitHotkeys = new Dictionary<string, string>()
+			{
+				{ "AttackMoveKey", "Attack Move" },
+				{ "StopKey", "Stop" },
+				{ "ScatterKey", "Scatter" },
+				{ "StanceCycleKey", "Cycle Stance" },
+				{ "DeployKey", "Deploy" },
+				{ "GuardKey", "Guard" }
+			};
+
+			var gs = Game.Settings.Game;
+			var ks = Game.Settings.Keys;
+
+			BindCheckboxPref(panel, "CLASSICORDERS_CHECKBOX", gs, "UseClassicMouseStyle");
+			BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
+			BindSliderPref(panel, "SCROLLSPEED_SLIDER", gs, "ViewportEdgeScrollStep");
+
+			var mouseScrollDropdown = panel.Get<DropDownButtonWidget>("MOUSE_SCROLL");
+			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gs);
+			mouseScrollDropdown.GetText = () => gs.MouseScroll.ToString();
+
+			var hotkeyList = panel.Get<ScrollPanelWidget>("HOTKEY_LIST");
+			hotkeyList.Layout = new GridLayout(hotkeyList);
+			var hotkeyHeader = hotkeyList.Get<ScrollItemWidget>("HEADER");
+			var globalTemplate = hotkeyList.Get("GLOBAL_TEMPLATE");
+			var unitTemplate = hotkeyList.Get("UNIT_TEMPLATE");
+			hotkeyList.RemoveChildren();
+
+			var globalHeader = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+			globalHeader.Get<LabelWidget>("LABEL").GetText = () => "Global Commands";
+			hotkeyList.AddChild(globalHeader);
+
+			foreach (var kv in specialHotkeys)
+				BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
+
+			var unitHeader = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+			unitHeader.Get<LabelWidget>("LABEL").GetText = () => "Unit Commands";
+			hotkeyList.AddChild(unitHeader);
+
+			foreach (var kv in unitHotkeys)
+				BindHotkeyPref(kv, ks, unitTemplate, hotkeyList);
+
+			return () =>
+			{
+				// Remove focus from the selected hotkey widget
+				// This is a bit of a hack, but works
+				if (Ui.KeyboardFocusWidget != null && panel.GetOrNull(Ui.KeyboardFocusWidget.Id) != null)
+				{
+					Ui.KeyboardFocusWidget.YieldKeyboardFocus();
+					Ui.KeyboardFocusWidget = null;
+				}
+			};
+		}
+
+		Action ResetInputPanel(Widget panel)
+		{
+			var gs = Game.Settings.Game;
+			var ks = Game.Settings.Keys;
+			var dgs = new GameSettings();
+			var dks = new KeySettings();
+
+			return () =>
+			{
+				gs.UseClassicMouseStyle = dgs.UseClassicMouseStyle;
+				gs.MouseScroll = dgs.MouseScroll;
+				gs.ViewportEdgeScroll = dgs.ViewportEdgeScroll;
+				gs.ViewportEdgeScrollStep = dgs.ViewportEdgeScrollStep;
+
+				foreach (var f in ks.GetType().GetFields())
+				{
+					var value = (Hotkey)f.GetValue(dks);
+					f.SetValue(ks, value);
+					panel.Get(f.Name).Get<HotkeyEntryWidget>("HOTKEY").Key = value;
+				}
+
+				panel.Get<SliderWidget>("SCROLLSPEED_SLIDER").Value = gs.ViewportEdgeScrollStep;
+			};
+		}
+
+		Action InitAdvancedPanel(Widget panel)
+		{
+			var ds = Game.Settings.Debug;
+			var ss = Game.Settings.Server;
+
+			BindCheckboxPref(panel, "NAT_DISCOVERY", ss, "DiscoverNatDevices");
+			BindCheckboxPref(panel, "VERBOSE_NAT_CHECKBOX", ss, "VerboseNatDiscovery");
+			BindCheckboxPref(panel, "PERFTEXT_CHECKBOX", ds, "PerfText");
+			BindCheckboxPref(panel, "PERFGRAPH_CHECKBOX", ds, "PerfGraph");
+			BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SanityCheckUnsyncedCode");
+			BindCheckboxPref(panel, "BOTDEBUG_CHECKBOX", ds, "BotDebug");
+			BindCheckboxPref(panel, "DEVELOPER_MENU_CHECKBOX", ds, "DeveloperMenu");
+			BindCheckboxPref(panel, "CRASH_DIALOG_CHECKBOX", ds, "ShowFatalErrorDialog");
+
+			return () => { };
+		}
+
+		Action ResetAdvancedPanel(Widget panel)
+		{
+			var ds = Game.Settings.Debug;
+			var ss = Game.Settings.Server;
+			var dds = new DebugSettings();
+			var dss = new ServerSettings();
+
+			return () =>
+			{
+				ss.DiscoverNatDevices = dss.DiscoverNatDevices;
+				ss.VerboseNatDiscovery = dss.VerboseNatDiscovery;
+				ds.PerfText = dds.PerfText;
+				ds.PerfGraph = dds.PerfGraph;
+				ds.SanityCheckUnsyncedCode = dds.SanityCheckUnsyncedCode;
+				ds.BotDebug = dds.BotDebug;
+				ds.DeveloperMenu = dds.DeveloperMenu;
+				ds.ShowFatalErrorDialog = dds.ShowFatalErrorDialog;
+			};
+		}
+
+		bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
@@ -187,26 +385,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
-			return true;
-		}
-
-		bool ShowColorPicker(DropDownButtonWidget color, PlayerSettings s)
-		{
-			Action<HSLColor> onChange = c => colorPreview.Color = c;
-			Action onExit = () =>
-			{
-				s.Color = colorPreview.Color;
-				color.RemovePanel();
-			};
-
-			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
-			{
-				{ "onExit", onExit },
-				{ "onChange", onChange },
-				{ "initialColor", s.Color }
-			});
-
-			color.AttachPanel(colorChooser, onExit);
 			return true;
 		}
 
