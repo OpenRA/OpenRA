@@ -18,6 +18,8 @@
 -- hs turn hotspot on - true or {r,g,b} 0-255
 -- v visibility for symbols of the current style - boolean
 
+local unpack = table.unpack or unpack
+
 function StylesGetDefault()
   return {
     -- lexer specific (inherit fg/bg from text)

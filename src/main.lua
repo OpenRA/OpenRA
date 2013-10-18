@@ -6,6 +6,7 @@
 local iswindows = os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows')
 local islinux = not iswindows and not os.getenv('DYLD_LIBRARY_PATH') and io.open("/proc")
 local arch = "x86" -- use 32bit by default
+local unpack = table.unpack or unpack
 
 if islinux then
   local file = io.popen("uname -m")

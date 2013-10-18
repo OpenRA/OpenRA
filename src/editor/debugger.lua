@@ -6,6 +6,7 @@
 local copas = require "copas"
 local socket = require "socket"
 local mobdebug = require "mobdebug"
+local unpack = table.unpack or unpack
 
 local ide = ide
 local debugger = ide.debugger
@@ -45,7 +46,7 @@ function fixUTF8(...)
     local text = t[i]:sub(1, stackmaxlength)..(#t[i] > stackmaxlength and '...' or '')
     t[i] = FixUTF8(text, fix)
   end
-  return (table.unpack or unpack)(t)
+  return unpack(t)
 end
 
 local q = EscapeMagic
@@ -416,7 +417,7 @@ debugger.shell = function(expression, isstatement)
           if #values == 0 and (forceexpression or not isstatement) then
             values = {'nil'}
           end
-          DisplayShell(fixUTF8((table.unpack or unpack)(values)))
+          DisplayShell(fixUTF8(unpack(values)))
         end
 
         -- refresh Stack and Watch windows if executed a statement (and no err)
@@ -755,7 +756,7 @@ do
 
     -- if there are any pending activations
     if debugger.activate then
-      local file, line, content = (table.unpack or unpack)(debugger.activate)
+      local file, line, content = unpack(debugger.activate)
       if content then
         local editor = NewFile()
         editor:SetText(content)

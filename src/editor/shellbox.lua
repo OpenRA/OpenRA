@@ -1,6 +1,7 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 local ide = ide
+local unpack = table.unpack or unpack
 --
 -- shellbox - a lua testbed environment within the IDE
 --
@@ -331,7 +332,7 @@ local function executeShellCode(tx)
           res = {'nil'}
         end
       end
-      DisplayShell((table.unpack or unpack)(res))
+      DisplayShell(unpack(res))
     end
   end
 end
