@@ -32,7 +32,7 @@ FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
 'OpenRA.FileFormats.dll' 'OpenRA.Renderer.SdlCommon.dll' 'OpenRA.Renderer.Cg.dll' 'OpenRA.Renderer.Gl.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
 'FreeSans.ttf' 'FreeSansBold.ttf' \
 'cg' 'glsl' 'mods/ra' 'mods/cnc' 'mods/d2k' \
-'AUTHORS' 'COPYING' 'HACKING' 'INSTALL' 'CHANGELOG' \
+'AUTHORS' 'CHANGELOG' 'COPYING' \
 'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' \
 'global mix database.dat' 'GeoIP.dll' 'GeoIP.dat')
 
