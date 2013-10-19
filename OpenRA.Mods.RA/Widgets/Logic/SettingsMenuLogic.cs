@@ -249,6 +249,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			showFatalErrorDialog.IsChecked = () => Game.Settings.Debug.ShowFatalErrorDialog;
 			showFatalErrorDialog.OnClick = () => Game.Settings.Debug.ShowFatalErrorDialog ^= true;
 
+			var ircDebugLogs = debug.Get<CheckboxWidget>("IRC_DEBUG_LOGS_CHECKBOX");
+			ircDebugLogs.IsChecked = () => Game.Settings.Irc.Debug;
+			ircDebugLogs.OnClick = () => Game.Settings.Irc.Debug ^= true;
+
 			bg.Get<ButtonWidget>("BUTTON_CLOSE").OnClick = () =>
 			{
 				int x, y;

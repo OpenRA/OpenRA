@@ -414,3 +414,9 @@ Background@SETTINGS_MENU:
 					Width:200
 					Height:20
 					Text:Show Fatal Error dialog
+				Checkbox@IRC_DEBUG_LOGS_CHECKBOX:
+					X:0
+					Y:240
+					Width:300
+					Height:20
+					Text:Log IRC messages and errors
