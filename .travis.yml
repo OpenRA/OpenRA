@@ -8,13 +8,15 @@ language: c
 before_install:
  - sudo apt-get update
 install:
- - sudo apt-get install mono-gmcs cli-common-dev libsdl1.2debian libgl1-mesa-glx libopenal1 libfreetype6
+ - sudo apt-get install mono-gmcs cli-common-dev libsdl1.2debian libgl1-mesa-glx libopenal1 libfreetype6 dpkg rpm nsis markdown
 
-# Run the build script and call RALint to check for YAML errors
+# Run the build script
+# call RALint to check for YAML errors
+# Test run the packaging scripts for all platforms
 script:
  - make all
-after_script:
  - make test
+ - cd packaging && mkdir temp &&./package-all.sh travis-build temp
 
 # Only watch the development branch.
 branches:
