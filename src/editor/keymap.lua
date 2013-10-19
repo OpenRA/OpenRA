@@ -90,6 +90,9 @@ ide.config.keymap = {
 -- Editor popup menu items
   [ID_QUICKADDWATCH]    = "",
   [ID_QUICKEVAL]        = "",
+-- Filetree popup menu items
+  [ID_RENAMEFILE]       = "F2",
+  [ID_DELETEFILE]       = "Del",
 }
 
 function KSC(id, default)

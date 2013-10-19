@@ -15,6 +15,7 @@ local filetree = ide.filetree
 
 local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
 local pathsep = GetPathSeparator()
+local q = EscapeMagic
 
 -- generic tree
 -- ------------
@@ -94,6 +95,44 @@ local function treeSetRoot(tree,rootdir)
   tree:Expand(root_id) -- this will also populate the tree
 end
 
+local function findItem(tree, match)
+  local node = tree:GetRootItem()
+  local label = tree:GetItemText(node)
+
+  local s, e
+  if iscaseinsensitive then
+    s, e = string.find(match:lower(), label:lower(), 1, true)
+  else
+    s, e = string.find(match, label, 1, true)
+  end
+  if not s or s ~= 1 then return end
+
+  for token in string.gmatch(string.sub(match,e+1), "[^%"..pathsep.."]+") do
+    local data = tree:GetItemData(node)
+    local cache = data and data:GetData()
+    if cache and cache[iscaseinsensitive and token:lower() or token] then
+      node = cache[iscaseinsensitive and token:lower() or token]
+    else
+      -- token is missing; may need to re-scan the folder; maybe new file
+      local dir = tree:GetItemFullName(node)
+      treeAddDir(tree,node,dir)
+
+      local item, cookie = tree:GetFirstChild(node)
+      while true do
+        if not item:IsOk() then return end -- not found
+        if tree:GetItemText(item) == token then
+          node = item
+          break
+        end
+        item, cookie = tree:GetNextChild(node, cookie)
+      end
+    end
+  end
+
+  -- this loop exits only when a match is found
+  return node
+end
+
 local function treeSetConnectorsAndIcons(tree)
   tree:SetImageList(filetree.imglist)
 
@@ -115,24 +154,113 @@ local function treeSetConnectorsAndIcons(tree)
   end
 
   local function refreshAncestors(node)
+    -- when this method is called from END_EDIT, it causes infinite loop
+    -- on OSX (wxwidgets 2.9.5) as Delete in treeAddDir calls END_EDIT again.
+    -- disable handlers while the tree is populated and then enable back.
+    tree:SetEvtHandlerEnabled(false)
     while node:IsOk() do
       local dir = tree:GetItemFullName(node)
       treeAddDir(tree,node,dir)
       node = tree:GetItemParent(node)
     end
+    tree:SetEvtHandlerEnabled(true)
   end
 
-  tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
-    function( event )
+  local empty = ""
+  local function renameItem(itemsrc, target)
+    local isdir = tree:GetItemImage(itemsrc) == IMG_DIRECTORY
+    local isnew = tree:GetItemText(itemsrc) == empty
+    local source = tree:GetItemFullName(itemsrc)
+    local fn = wx.wxFileName(target)
+
+    if wx.wxFileName(source):SameAs(fn) then return false end
+
+    local docs = {}
+    if not isnew then -- find if source is already opened in the editor
+      docs = isdir
+        and ide:FindDocumentsByPartialPath(source)
+        or {ide:FindDocument(source)}
+      for _, doc in ipairs(docs) do
+        if SaveModifiedDialog(doc.editor, true) == wx.wxID_CANCEL then return end
+      end
+    end
+
+    -- check if existing file/dir is going to be overwritten
+    if (wx.wxFileExists(target) or wx.wxDirExists(target))
+    and not ApproveFileOverwrite() then return false end
+
+    if not fn:Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL) then
+      ReportError(TR("Unable to create directory '%s'."):format(target))
+      return false
+    end
+
+    if isnew then -- new directory or file; create manually
+      if (isdir and not wx.wxFileName.DirName(target):Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL))
+      or (not isdir and not FileWrite(target, "")) then
+        ReportError(TR("Unable to create file '%s'."):format(target))
+        return false
+      end
+    else -- existing directory or file; rename/move it
+      local ok, err = FileRename(source, target)
+      if not ok then
+        ReportError(TR("Unable to rename file '%s'."):format(source)
+          .."\nError: "..err)
+        return false
+      end
+    end
+
+    refreshAncestors(tree:GetItemParent(itemsrc))
+    -- load file(s) into the same editor (if any); will also refresh the tree
+    if #docs > 0 then
+      for _, doc in ipairs(docs) do
+        local fullpath = doc.filePath
+        doc.filePath = nil -- remove path to avoid "file no longer exists" message
+        -- when moving folders, /foo/bar/file.lua can be replaced with
+        -- /foo/baz/bar/file.lua, so change /foo/bar to /foo/baz/bar
+        LoadFile(fullpath:gsub(q(source), target), doc.editor)
+      end
+    else -- refresh the tree and select the new item
+      local itemdst = findItem(tree, target)
+      if itemdst then
+        refreshAncestors(tree:GetItemParent(itemdst))
+        tree:SelectItem(itemdst)
+        tree:EnsureVisible(itemdst)
+        tree:SetScrollPos(wx.wxHORIZONTAL, 0, true)
+      end
+    end
+    return true
+  end
+  local function deleteItem(item_id)
+    local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
+    local source = tree:GetItemFullName(item_id)
+
+    if isdir and FileSysHasContent(source..pathsep) then return false end
+    if wx.wxMessageBox(
+      TR("Do you want to delete '%s'?"):format(source),
+      GetIDEString("editormessage"),
+      wx.wxYES_NO + wx.wxCENTRE, ide.frame) ~= wx.wxYES then return false end
+
+    if isdir then
+      wx.wxRmdir(source)
+    else
+      local doc = ide:FindDocument(source)
+      if doc then ClosePage(doc.index) end
+      wx.wxRemoveFile(source)
+    end
+    refreshAncestors(tree:GetItemParent(item_id))
+    return true
+  end
+
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
+    function (event)
       local item_id = event:GetItem()
       local dir = tree:GetItemFullName(item_id)
-
       if wx.wxDirExists(dir) then treeAddDir(tree,item_id,dir) -- refresh folder
       else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
       return true
     end)
-  tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
-    function( event )
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
+    function (event)
       local item_id = event:GetItem()
       local name = tree:GetItemFullName(item_id)
       -- refresh the folder
@@ -145,12 +273,91 @@ local function treeSetConnectorsAndIcons(tree)
       end
     end)
   -- handle context menu
-  tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_MENU,
-    function( event )
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_MENU,
+    function (event)
       local item_id = event:GetItem()
       tree:SelectItem(item_id)
-      local menu = wx.wxMenu()
-      menu:Append(ID_SHOWLOCATION, TR("Show Location"))
+
+      local menu = wx.wxMenu {
+        { ID_NEWFILE, TR("New &File") },
+        { ID_NEWDIRECTORY, TR("&New Directory") },
+        { },
+        { ID_RENAMEFILE, TR("&Rename")..KSC(ID_RENAMEFILE) },
+        { ID_DELETEFILE, TR("&Delete")..KSC(ID_DELETEFILE) },
+        { },
+        { ID_OPENEXTENSION, TR("Open With Default Program") },
+        { ID_COPYFULLPATH, TR("Copy Full Path") },
+        { ID_SHOWLOCATION, TR("Show Location") },
+      }
+
+      local function addItem(item_id, name, image)
+        local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
+        local parent = isdir and item_id or tree:GetItemParent(item_id)
+        if isdir then tree:Expand(item_id) end -- expand to populate if needed
+
+        local item = tree:PrependItem(parent, name, image)
+        tree:SetItemHasChildren(parent, true)
+        -- temporarily disable expand as we don't need this node populated
+        tree:SetEvtHandlerEnabled(false)
+        tree:EnsureVisible(item)
+        tree:SetEvtHandlerEnabled(true)
+        return item
+      end
+
+      -- disable Delete on non-empty directories
+      local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
+      if isdir then
+        local source = tree:GetItemFullName(item_id)
+        menu:Enable(ID_DELETEFILE, not FileSysHasContent(source..pathsep))
+        menu:Enable(ID_OPENEXTENSION, false)
+      else
+        local fname = tree:GetItemText(item_id)
+        local ext = '.'..wx.wxFileName(fname):GetExt()
+        local ft = wx.wxTheMimeTypesManager:GetFileTypeFromExtension(ext)
+        menu:Enable(ID_OPENEXTENSION, ft and #ft:GetOpenCommand("") > 0)
+      end
+
+      tree:Connect(ID_NEWFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function()
+          tree:EditLabel(addItem(item_id, empty, IMG_FILE_OTHER))
+        end)
+      tree:Connect(ID_NEWDIRECTORY, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function()
+          tree:EditLabel(addItem(item_id, empty, IMG_DIRECTORY))
+        end)
+      tree:Connect(ID_RENAMEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function() tree:EditLabel(item_id) end)
+      tree:Connect(ID_DELETEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function() deleteItem(item_id) end)
+      tree:Connect(ID_COPYFULLPATH, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function()
+          local tdo = wx.wxTextDataObject(tree:GetItemFullName(item_id))
+          if wx.wxClipboard:Get():Open() then
+            wx.wxClipboard:Get():SetData(tdo)
+            wx.wxClipboard:Get():Close()
+          end
+        end)
+      tree:Connect(ID_OPENEXTENSION, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function()
+          local fname = tree:GetItemFullName(item_id)
+          local ext = '.'..wx.wxFileName(fname):GetExt()
+          local ft = wx.wxTheMimeTypesManager:GetFileTypeFromExtension(ext)
+          if ft then
+            local cmd = ft:GetOpenCommand(fname:gsub('"','\\"'))
+            local pid = wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
+            if ide.osname == 'Windows' and pid and pid > 0 then
+              -- some programs on Windows (for example, PhotoViewer) accept
+              -- files with spaces in names ONLY if they are not in quotes.
+              -- wait for the process that failed to open file to finish
+              -- and retry without quotes.
+              wx.wxMilliSleep(250) -- 250ms seems enough; picked empirically.
+              if not wx.wxProcess.Exists(pid) then
+                local cmd = ft:GetOpenCommand(""):gsub('""%s*$', '')..fname
+                wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
+              end
+            end
+          end
+        end)
       tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
         function() ShowLocation(tree:GetItemFullName(item_id)) end)
 
@@ -159,17 +366,72 @@ local function treeSetConnectorsAndIcons(tree)
       tree:PopupMenu(menu)
     end)
   -- toggle a folder on a single click
-  tree:Connect( wx.wxEVT_LEFT_DOWN,
-    function( event )
-      local item_id = tree:HitTest(event:GetPosition())
-      -- only toggle if this is a folder and the click is on the label
-      if item_id and tree:GetItemImage(item_id) == IMG_DIRECTORY then
+  tree:Connect(wx.wxEVT_LEFT_DOWN,
+    function (event)
+      -- only toggle if this is a folder and the click is on the item line
+      -- (exclude the label as it's used for renaming and dragging)
+      local mask = wx.wxTREE_HITTEST_ONITEMINDENT
+        + wx.wxTREE_HITTEST_ONITEMICON + wx.wxTREE_HITTEST_ONITEMRIGHT
+      local item_id, flags = tree:HitTest(event:GetPosition())
+      if item_id and tree:GetItemImage(item_id) == IMG_DIRECTORY
+      and bit.band(flags, mask) > 0 then
         tree:Toggle(item_id)
         tree:SelectItem(item_id)
       else
         event:Skip()
       end
       return true
+    end)
+  tree:Connect(wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT,
+    function (event)
+      -- veto the event to keep the original label intact as the tree
+      -- is going to be refreshed with the correct names.
+      event:Veto()
+
+      local itemsrc = event:GetItem()
+      if itemsrc == tree:GetRootItem() then return end -- don't edit root
+
+      local sourcedir = tree:GetItemFullName(tree:GetItemParent(itemsrc))
+      local label = event:GetLabel():gsub("^%s+$","") -- clean all spaces
+      local target = MergeFullPath(sourcedir, label)
+      if event:IsEditCancelled() or label == empty
+      or target and not renameItem(itemsrc, target)
+      then refreshAncestors(tree:GetItemParent(itemsrc)) end
+    end)
+  tree:Connect(wx.wxEVT_KEY_DOWN,
+    function (event)
+      local item = tree:GetSelection()
+      if item:IsOk() then
+        local keycode = event:GetKeyCode()
+        if keycode == wx.WXK_F2 then return tree:EditLabel(item)
+        elseif keycode == wx.WXK_DELETE then return deleteItem(item)
+        elseif keycode == wx.WXK_RETURN or keycode == wx.WXK_NUMPAD_ENTER then
+          tree:Toggle(item) end
+      end
+      event:Skip()
+    end)
+
+  local itemsrc
+  tree:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_DRAG,
+    function (event)
+      if event:GetItem() ~= tree:GetRootItem() then
+        itemsrc = event:GetItem()
+        event:Allow()
+      end
+    end)
+  tree:Connect(wx.wxEVT_COMMAND_TREE_END_DRAG,
+    function (event)
+      local itemdst = event:GetItem()
+      if not itemdst:IsOk() then return end
+
+      -- check if itemdst is a folder
+      local target = tree:GetItemFullName(itemdst)
+      if wx.wxDirExists(target) then
+        local source = tree:GetItemFullName(itemsrc)
+        -- check if moving the directory and target is a subfolder of source
+        if (target..pathsep):find("^"..q(source)..pathsep) then return end
+        renameItem(itemsrc, MergeFullPath(target, tree:GetItemText(itemsrc)))
+      end
     end)
 end
 
@@ -188,7 +450,8 @@ local projbutton = wx.wxButton(projpanel, ID_PROJECTDIRCHOOSE,
 
 local projtree = wx.wxTreeCtrl(projpanel, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
-  wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_LINES_AT_ROOT)
+  wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_LINES_AT_ROOT
+  + wx.wxTR_EDIT_LABELS)
 
 -- use the same font in the combobox as is used in the filetree
 projtree:SetFont(ide.font.fNormal)
@@ -229,8 +492,6 @@ treeSetConnectorsAndIcons(projtree)
 
 -- proj functions
 -- ---------------
-
-local q = EscapeMagic
 
 local function abbreviateProjList(projdirlist)
   filetree.projdirmap = {}
@@ -314,44 +575,6 @@ end
 
 function FileTreeGetProjects()
   return filetree.projdirlist
-end
-
-local function findItem(tree, match)
-  local node = projtree:GetRootItem()
-  local label = tree:GetItemText(node)
-
-  local s, e
-  if iscaseinsensitive then
-    s, e = string.find(match:lower(), label:lower(), 1, true)
-  else
-    s, e = string.find(match, label, 1, true)
-  end
-  if not s or s ~= 1 then return end
-
-  for token in string.gmatch(string.sub(match,e+1), "[^%"..pathsep.."]+") do
-    local data = tree:GetItemData(node)
-    local cache = data and data:GetData()
-    if cache and cache[iscaseinsensitive and token:lower() or token] then
-      node = cache[iscaseinsensitive and token:lower() or token]
-    else
-      -- token is missing; may need to re-scan the folder; maybe new file
-      local dir = tree:GetItemFullName(node)
-      treeAddDir(tree,node,dir)
-
-      local item, cookie = tree:GetFirstChild(node)
-      while true do
-        if not item:IsOk() then return end -- not found
-        if tree:GetItemText(item) == token then
-          node = item
-          break
-        end
-        item, cookie = tree:GetNextChild(node, cookie)
-      end
-    end
-  end
-
-  -- this loop exits only when a match is found
-  return node
 end
 
 local curr_file

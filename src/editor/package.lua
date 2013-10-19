@@ -1,6 +1,8 @@
 -- Copyright 2013 Paul Kulchenko, ZeroBrane LLC
 
 local ide = ide
+local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
+local q = EscapeMagic
 
 function PackageEventHandle(event, ...)
   local success
@@ -65,6 +67,32 @@ function ide:GetStatusBar() return self.frame.statusBar end
 function ide:GetMainFrame() return self.frame end
 function ide:GetDocument(ed) return self.openDocuments[ed:GetId()] end
 function ide:GetDocuments() return self.openDocuments end
+function ide:FindDocument(path)
+  local fileName = wx.wxFileName(path)
+  for _, doc in pairs(ide.openDocuments) do
+    if doc.filePath and fileName:SameAs(wx.wxFileName(doc.filePath)) then
+      return doc
+    end
+  end
+  return
+end
+function ide:FindDocumentsByPartialPath(path)
+  local seps = "[\\/]"
+  -- add trailing path separator to make sure full directory match
+  if not path:find(seps.."$") then path = path .. GetPathSeparator() end
+  local pattern = "^"..q(path):gsub(seps, seps)
+  local lpattern = pattern:lower()
+
+  local docs = {}
+  for _, doc in pairs(ide.openDocuments) do
+    if doc.filePath
+    and (doc.filePath:find(pattern)
+         or iscaseinsensitive and doc.filePath:lower():find(lpattern)) then
+      table.insert(docs, doc)
+    end
+  end
+  return docs
+end
 function ide:GetInterpreter() return self.interpreter end
 function ide:GetConfig() return self.config end
 function ide:GetOutput() return self.frame.bottomnotebook.errorlog end

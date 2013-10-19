@@ -206,12 +206,13 @@ function FileSysGetRecursive(path, recursive, spec, skip)
   return content
 end
 
+local normalflags = wx.wxPATH_NORM_ABSOLUTE + wx.wxPATH_NORM_DOTS + wx.wxPATH_NORM_TILDE
 function GetFullPathIfExists(p, f)
   if not p or not f then return end
   local file = wx.wxFileName(f)
   -- Normalize call is needed to make the case of p = '/abc/def' and
   -- f = 'xyz/main.lua' work correctly. Normalize() returns true if done.
-  return (file:Normalize(wx.wxPATH_NORM_ALL, p)
+  return (file:Normalize(normalflags, p)
     and file:FileExists()
     and file:GetFullPath()
     or nil)
@@ -222,7 +223,7 @@ function MergeFullPath(p, f)
   local file = wx.wxFileName(f)
   -- Normalize call is needed to make the case of p = '/abc/def' and
   -- f = 'xyz/main.lua' work correctly. Normalize() returns true if done.
-  return (file:Normalize(wx.wxPATH_NORM_ALL, p)
+  return (file:Normalize(normalflags, p)
     and file:GetFullPath()
     or nil)
 end
@@ -250,11 +251,14 @@ function FileRead(file)
   return content, wx.wxSysErrorMsg()
 end
 
-function FileRename(file1, file2) return wx.wxRenameFile(file1, file2) end
+function FileRename(file1, file2)
+  local log = wx.wxLogNull() -- disable error reporting; will report as needed
+  return wx.wxRenameFile(file1, file2), wx.wxSysErrorMsg()
+end
 
 function FileCopy(file1, file2)
   local log = wx.wxLogNull() -- disable error reporting; will report as needed
-  return wx.wxCopyFile(file1, file2)
+  return wx.wxCopyFile(file1, file2), wx.wxSysErrorMsg()
 end
 
 TimeGet = pcall(require, "socket") and socket.gettime or os.clock
