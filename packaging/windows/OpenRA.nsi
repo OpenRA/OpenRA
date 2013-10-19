@@ -141,7 +141,7 @@ SectionGroup /e "Mods"
 		File "${SRCDIR}\mods\d2k\*.*"
 		File /r "${SRCDIR}\mods\d2k\chrome"
 		File /r "${SRCDIR}\mods\d2k\bits"
-		File /r "${SRCDIR}\mods\d2k\languages
+		File /r "${SRCDIR}\mods\d2k\languages"
 		File /r "${SRCDIR}\mods\d2k\maps"
 		File /r "${SRCDIR}\mods\d2k\rules"
 		File /r "${SRCDIR}\mods\d2k\sequences"
