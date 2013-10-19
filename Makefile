@@ -324,6 +324,8 @@ install-core: default
 	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
 	@$(INSTALL_DATA) "GeoIP.dat" "$(DATA_INSTALL_DIR)/GeoIP.dat"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
+	@$(INSTALL_DATA) CHANGELOG "$(DATA_INSTALL_DIR)/CHANGELOG"
+	@$(INSTALL_DATA) COPYING "$(DATA_INSTALL_DIR)/COPYING"
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) cg "$(DATA_INSTALL_DIR)"

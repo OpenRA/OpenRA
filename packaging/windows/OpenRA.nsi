@@ -232,9 +232,8 @@ Function ${UN}Clean
 	Delete $INSTDIR\Tao.*.dll
 	Delete $INSTDIR\SharpFont.dll
 	Delete $INSTDIR\AUTHORS
+	Delete $INSTDIR\CHANGELOG
 	Delete $INSTDIR\COPYING
-	Delete $INSTDIR\HACKING
-	Delete $INSTDIR\INSTALL
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\*.ttf
 	Delete "$INSTDIR\global mix database.dat"
