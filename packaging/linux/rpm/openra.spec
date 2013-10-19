@@ -23,9 +23,13 @@ and includes Command & Conquer: Tiberian Dawn as an official mod.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cp -r %{root} $RPM_BUILD_ROOT 
+cp -r %{root} $RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
+/usr/bin/openra
+/usr/bin/openra-editor
+/usr/share/applications/*.desktop
+/usr/share/icons/hicolor/*/apps/*.png
