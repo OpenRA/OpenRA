@@ -384,17 +384,20 @@
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
 	RenderUnit:
 	Health:
-		HP: 140
+		HP: 420
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:
+		Damage: 3
 	ProximityCaptor:
 		Types:Husk
 	BelowUnits:
 	BodyOrientation:
 	Chronoshiftable:
+	TargetableUnit:
+		TargetTypes: Ground
 
 ^HelicopterHusk:
 	Inherits: ^Husk
@@ -404,6 +407,7 @@
 		Spins: True
 		Moves: False
 	-BelowUnits:
+	-TargetableUnit:
 
 ^PlaneHusk:
 	Inherits: ^Husk
@@ -413,6 +417,7 @@
 		Spins: False
 		Moves: True
 	-BelowUnits:
+	-TargetableUnit:
 
 ^Bridge:
 	Tooltip:
