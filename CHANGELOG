@@ -1,3 +1,51 @@
+NEW:
+	All mods:
+		Added global chat to the server browser.
+		Fixed dead units sometimes exploding or leaving husks when they weren't in the world.
+		Added hover and disabled button states [RA / D2K / TS]
+		Added double click start support to the replay browser.
+		Fixed low projectiles not colliding with walls.
+		Improved UI decorations (selection boxes, target lines, etc) in pixel double mode.
+	Red Alert:
+		Fixed a crash in Monster Tank Madness.
+		Fixed medics sometimes healing enemies.
+		Reduced Giant Ant selection box size.
+		Fixed paradrop description.
+		Various balance adjustments:
+			Uparmored Mobile Radar Jammer to heavy.
+			Uparmored Mobile Gap Generator to heavy, increased its shroud generation range from 4 to 6, and reduced its price from $1500 to $1200.
+			Reduced Gap Generator price from $1000 to $800.
+			Made Construction Yard sellable again.
+			Reduced MCV build time from 1 minute to 32 seconds.
+			No-base MCV crate chance reduced from ~100% to ~70%.
+			Introduced a maximum build radius of 16 cells from the nearest friendly Construction Yard.
+			Increased movement speeds of Rocket Soldier, Flamethrower, and Tesla Trooper from 3 to 4.
+			Reduced Tesla Trooper price from $500 to $400.
+			Increased Artillery price from $600 to $800, and increased its health from 75 to 100.
+			Increased V2 Rocket price from $700 to $900, reduced its movement speed from 7 to 6, increased its health from 150 to 200, reduced its warhead damage against primary base structures, and increased its rate of fire.
+			Increased Hind damage from 20 to 30, and introduced a small additional damage bonus against infantry.
+			Increased Longbow health from 120 to 150, increased its missile damage against ground targets from 40 to 60, increased its missile rate of turn from 5 to 10, and introduced a slight delay between missile launches.
+			Increased Grenadier projectile speed.
+			Reduced Medic price from $300 to $200.
+			Reduced Mechanic price from $800 to $500.
+			Added a 20% chance to eject a driver from destroyed vehicles.
+		Athena:
+			Reduced strategic victory timer to 3 minutes.
+			Increased the size of the starting islands.
+	Dune 2000:
+		Added buildable concrete walls.
+		Fixed some cliffs being passable.
+		Fixed infantry sometimes using the wrong animation when standing.
+		Fixed A* debug overlay.
+	Engine:
+		Replays are now saved in per-mod and per-version folders.
+		Added password protection support for servers.
+		Added language translation support.
+		Added game ID and version information to exception and sync reports.
+	Build system and packages:
+		Added GeoIP to Makefile so it is installed properly.
+		Added desktop shortcut creation support to the Makefile and Windows installer.
+
 20130915:
 	All mods:
 		Overhauled Fog of War to freeze the state of resource, smudge, and structures.
