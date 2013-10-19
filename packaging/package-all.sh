@@ -96,7 +96,7 @@ echo "Creating packages..."
 ) &
 
 (
-    curl -L -o "$OUTPUTDIR/$TAG.tar.gz" "https://github.com/OpenRA/OpenRA/archive/$TAG.tar.gz"
+    curl -s -L -o "$OUTPUTDIR/$TAG.tar.gz" "https://github.com/OpenRA/OpenRA/archive/$TAG.tar.gz"
     if [ $? -ne 0 ]; then
         echo "source code package download failed."
     fi
