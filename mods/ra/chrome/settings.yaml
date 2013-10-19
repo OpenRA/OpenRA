@@ -292,6 +292,12 @@ Background@SETTINGS_MENU:
 					Font:Tiny
 					Align:Center
 					Text:Language changes will be applied after the game is restarted.
+				Checkbox@DRAGGABLE_WINDOWS_CHECKBOX:
+					X:0
+					Y:200
+					Width:200
+					Height:20
+					Text:Draggable Windows
 		Container@KEYS_PANE:
 			X:37
 			Y:100

@@ -16,7 +16,6 @@ namespace OpenRA.Widgets
 	{
 		public readonly string Background = "dialog";
 		public readonly bool ClickThrough = false;
-		public readonly bool Draggable = false;
 
 		public override void Draw()
 		{
@@ -33,7 +32,7 @@ namespace OpenRA.Widgets
 			if (ClickThrough || !Bounds.Contains(mi.Location))
 				return false;
 
-			if (!Draggable || moving && (!TakeMouseFocus(mi) || mi.Button != MouseButton.Left))
+			if (!Game.Settings.Graphics.DraggableWindows || moving && (!TakeMouseFocus(mi) || mi.Button != MouseButton.Left))
 				return true;
 
 			if (prevMouseLocation == null)
@@ -64,7 +63,6 @@ namespace OpenRA.Widgets
 		{
 			Background = other.Background;
 			ClickThrough = other.ClickThrough;
-			Draggable = other.Draggable;
 		}
 
 		public override Widget Clone() { return new BackgroundWidget(this); }
