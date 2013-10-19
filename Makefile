@@ -360,7 +360,7 @@ install-tools: tools
 	@$(INSTALL_PROGRAM) -m +rx openra-editor "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra-editor
 
-install-shortcuts: shortcuts
+install-shortcuts:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
 	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
 
