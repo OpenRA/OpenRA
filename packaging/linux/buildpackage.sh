@@ -23,7 +23,7 @@ make install-all prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 cp *.sh "$PWD/packaging/linux/$ROOTDIR/usr/share/openra/" || exit 3
 
 # Icons and .desktop files
-make install-shortcuts
+make install-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
 cd packaging/linux
 
