@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var labelWidth = Game.Renderer.Fonts[label.Font].Measure(button.TooltipText).X;
 			label.Bounds.Width = labelWidth;
 
-			var hotkeyLabel = "({0})".F(button.Key.ToUpperInvariant());
+			var hotkeyLabel = "({0})".F(button.Key.DisplayString());
 			hotkey.GetText = () => hotkeyLabel;
 			hotkey.Bounds.X = labelWidth + 2 * label.Bounds.X;
 

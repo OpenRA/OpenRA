@@ -16,7 +16,6 @@ namespace OpenRA
 {
 	public enum Keycode
 	{
-		UNDEFINED = -1,
 		UNKNOWN = 0,
 		FIRST = 0,
 		BACKSPACE = 8,

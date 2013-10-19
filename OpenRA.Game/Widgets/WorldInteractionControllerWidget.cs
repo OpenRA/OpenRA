@@ -177,7 +177,7 @@ namespace OpenRA.Widgets
 				}
 
 				// Disable pausing for spectators
-				else if (KeycodeExts.DisplayString(e.Key) == Game.Settings.Keys.PauseKey && world.LocalPlayer != null)
+				else if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.PauseKey && world.LocalPlayer != null)
 					world.SetPauseState(!world.Paused);
 			}
 			return false;

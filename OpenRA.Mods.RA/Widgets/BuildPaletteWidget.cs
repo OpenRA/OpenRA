@@ -146,8 +146,10 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (e.Event == KeyInputEvent.Up) return false;
-			if (KeycodeExts.DisplayString(e.Key) == Game.Settings.Keys.CycleTabsKey)
+			if (e.Event == KeyInputEvent.Up)
+				return false;
+
+			if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.CycleTabsKey)
 			{
 				TabChange(e.Modifiers.HasModifier(Modifiers.Shift));
 				return true;
