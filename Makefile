@@ -276,7 +276,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 #
 default: dependencies core
 
-core: game renderers mods utility tsbuild
+core: game renderers mods utility
 
 tools: editor tsbuild ralint
 
