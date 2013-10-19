@@ -75,7 +75,7 @@ echo "Creating packages..."
     if [ $? -eq 0 ]; then
         mv OpenRA.exe "$OUTPUTDIR"/OpenRA-$TAG.exe
     else
-        echo "Windows package build failed, refer to windows/package.log."  
+        echo "Windows package build failed, refer to windows/package.log."
     fi
 ) &
 
@@ -83,7 +83,7 @@ echo "Creating packages..."
     cd osx
     sh buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR" &> package.log
     if [ $? -ne 0 ]; then
-        echo "OSX package build failed, refer to osx/package.log."
+        echo "OS X package build failed, refer to osx/package.log."
     fi
 ) &
 
@@ -91,14 +91,15 @@ echo "Creating packages..."
     cd linux
     sh buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR" &> package.log
     if [ $? -ne 0 ]; then
-        echo "linux package build failed, refer to linux/package.log."
+        echo "Linux package build failed, refer to linux/package.log."
     fi
 ) &
 
 (
+    echo "Downloading source code packages from GitHub."
     curl -s -L -o "$OUTPUTDIR/$TAG.tar.gz" "https://github.com/OpenRA/OpenRA/archive/$TAG.tar.gz"
     if [ $? -ne 0 ]; then
-        echo "source code package download failed."
+        echo "Source code package download failed."
     fi
 ) &
 wait
