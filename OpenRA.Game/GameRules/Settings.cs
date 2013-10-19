@@ -101,6 +101,8 @@ namespace OpenRA.GameRules
 
 		public string Language = "english";
 		public string DefaultLanguage = "english";
+
+		public bool DraggableWindows = false;
 	}
 
 	public class SoundSettings

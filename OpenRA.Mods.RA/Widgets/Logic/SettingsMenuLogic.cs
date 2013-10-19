@@ -148,6 +148,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton);
 			languageDropDownButton.GetText = () => FieldLoader.Translate(Game.Settings.Graphics.Language);
 
+			var draggableWindows = display.Get<CheckboxWidget>("DRAGGABLE_WINDOWS_CHECKBOX");
+			draggableWindows.IsChecked = () => Game.Settings.Graphics.DraggableWindows;
+			draggableWindows.OnClick = () => Game.Settings.Graphics.DraggableWindows ^= true;
+
 			// Keys
 			var keys = bg.Get("KEYS_PANE");
 			var keyConfig = Game.Settings.Keys;
