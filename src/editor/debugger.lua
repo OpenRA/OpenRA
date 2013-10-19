@@ -949,10 +949,11 @@ local function debuggerCreateWatchWindow()
   info:SetWidth(width * 0.56)
   watchCtrl:InsertColumn(1, info)
 
-  local watchMenu = wx.wxMenu{
+  local watchMenu = wx.wxMenu {
     { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
     { ID_EDITWATCH, TR("&Edit Watch")..KSC(ID_EDITWATCH) },
-    { ID_DELETEWATCH, TR("&Delete Watch")..KSC(ID_DELETEWATCH) }}
+    { ID_DELETEWATCH, TR("&Delete Watch")..KSC(ID_DELETEWATCH) },
+  }
 
   local function findSelectedWatchItem()
     local count = watchCtrl:GetSelectedItemCount()

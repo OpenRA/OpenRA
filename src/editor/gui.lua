@@ -173,15 +173,16 @@ local function createNotebook(frame)
       -- save tab index the event is for
       selection = notebook:GetPageIndex(tabctrl:GetPage(idx).window)
 
-      local menu = wx.wxMenu()
-      menu:Append(ID_CLOSE, TR("&Close Page"))
-      menu:Append(ID_CLOSEALL, TR("Close A&ll Pages"))
-      menu:Append(ID_CLOSEOTHER, TR("Close &Other Pages"))
-      menu:AppendSeparator()
-      menu:Append(ID_SAVE, TR("&Save"))
-      menu:Append(ID_SAVEAS, TR("Save &As..."))
-      menu:AppendSeparator()
-      menu:Append(ID_SHOWLOCATION, TR("Show Location"))
+      local menu = wx.wxMenu {
+        { ID_CLOSE, TR("&Close Page") },
+        { ID_CLOSEALL, TR("Close A&ll Pages") },
+        { ID_CLOSEOTHER, TR("Close &Other Pages") },
+        { },
+        { ID_SAVE, TR("&Save") },
+        { ID_SAVEAS, TR("Save &As...") },
+        { },
+        { ID_SHOWLOCATION, TR("Show Location") },
+      }
 
       PackageEventHandle("onMenuEditorTab", menu, notebook, event, selection)
 

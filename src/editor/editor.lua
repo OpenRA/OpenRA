@@ -1112,21 +1112,22 @@ function CreateEditor()
       local line = instances and instances[0] and editor:LineFromPosition(instances[0]-1)+1
       local def =  line and " ("..TR("on line %d"):format(line)..")" or ""
 
-      local menu = wx.wxMenu()
-      menu:Append(ID_UNDO, TR("&Undo"))
-      menu:Append(ID_REDO, TR("&Redo"))
-      menu:AppendSeparator()
-      menu:Append(ID_CUT, TR("Cu&t"))
-      menu:Append(ID_COPY, TR("&Copy"))
-      menu:Append(ID_PASTE, TR("&Paste"))
-      menu:Append(ID_SELECTALL, TR("Select &All"))
-      menu:AppendSeparator()
-      menu:Append(ID_GOTODEFINITION, TR("Go To Definition")..def)
-      menu:Append(ID_RENAMEALLINSTANCES, TR("Rename All Instances")..occurrences)
-      menu:AppendSeparator()
-      menu:Append(ID_QUICKADDWATCH, TR("Add Watch Expression"))
-      menu:Append(ID_QUICKEVAL, TR("Evaluate In Console"))
-      menu:Append(ID_ADDTOSCRATCHPAD, TR("Add To Scratchpad"))
+      local menu = wx.wxMenu {
+        { ID_UNDO, TR("&Undo") },
+        { ID_REDO, TR("&Redo") },
+        { },
+        { ID_CUT, TR("Cu&t") },
+        { ID_COPY, TR("&Copy") },
+        { ID_PASTE, TR("&Paste") },
+        { ID_SELECTALL, TR("Select &All") },
+        { },
+        { ID_GOTODEFINITION, TR("Go To Definition")..def },
+        { ID_RENAMEALLINSTANCES, TR("Rename All Instances")..occurrences },
+        { },
+        { ID_QUICKADDWATCH, TR("Add Watch Expression") },
+        { ID_QUICKEVAL, TR("Evaluate In Console") },
+        { ID_ADDTOSCRATCHPAD, TR("Add To Scratchpad") },
+      }
 
       menu:Enable(ID_GOTODEFINITION, instances and instances[0])
       menu:Enable(ID_RENAMEALLINSTANCES, instances and (instances[0] or #instances > 0))
