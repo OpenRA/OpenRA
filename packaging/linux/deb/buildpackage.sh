@@ -43,7 +43,7 @@ sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" > roo
 pushd root
 
 # Calculate md5sums and clean up the /usr/ part of them
-md5sum `find . -type f | grep -v '^[.]/DEBIAN/'` | sed 's/\.\/usr\//usr\//g' > DEBIAN/md5sums
+md5sum "`find . -type f | grep -v '^[.]/DEBIAN/'` | sed 's/\.\/usr\//usr\//g'" > DEBIAN/md5sums
 chmod 0644 DEBIAN/md5sums
 
 # Replace any dashes in the version string with periods
