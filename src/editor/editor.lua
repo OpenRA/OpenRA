@@ -596,6 +596,13 @@ function CreateEditor()
   editor.assignscache = false
   editor.autocomplete = false
   editor.jumpstack = {}
+  editor.ctrlcache = {}
+  -- populate cache with Ctrl-<letter> combinations for workaround on Linux
+  -- http://wxwidgets.10942.n7.nabble.com/Menu-shortcuts-inconsistentcy-issue-td85065.html
+  for id, shortcut in pairs(ide.config.keymap) do
+    local key = shortcut:match('^Ctrl[-+](%w)$')
+    if key then editor.ctrlcache[key:byte()] = id end
+  end
 
   editor:SetBufferedDraw(not ide.config.hidpi and true or false)
   editor:StyleClearAll()
@@ -1042,12 +1049,12 @@ function CreateEditor()
           editor:SetTargetEnd(pos+1)
         end
         editor:ReplaceTarget("")
-      elseif ide.osname == "Unix" and ide.wxver >= "2.9.5"
-      and keycode == ('T'):byte() and mod == wx.wxMOD_CONTROL then
-        ide.frame:AddPendingEvent(wx.wxCommandEvent(
-          wx.wxEVT_COMMAND_MENU_SELECTED, ID_SHOWTOOLTIP))
       elseif mod == wx.wxMOD_ALT and keycode == wx.WXK_LEFT then
         navigateBack(editor)
+      elseif ide.osname == "Unix" and ide.wxver >= "2.9.5"
+      and mod == wx.wxMOD_CONTROL and editor.ctrlcache[keycode] then
+        ide.frame:AddPendingEvent(wx.wxCommandEvent(
+          wx.wxEVT_COMMAND_MENU_SELECTED, editor.ctrlcache[keycode]))
       else
         if ide.osname == 'Macintosh' and mod == wx.wxMOD_META then
           return -- ignore a key press if Command key is also pressed
