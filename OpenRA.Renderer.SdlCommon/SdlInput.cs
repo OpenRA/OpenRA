@@ -108,11 +108,12 @@ namespace OpenRA.Renderer.SdlCommon
 						var keyEvent = new KeyInput
 						{
 							Event = KeyInputEvent.Down,
+							Key = (Keycode)e.key.keysym.sym,
 							Modifiers = mods,
 							UnicodeChar = (char)e.key.keysym.unicode,
+							MultiTapCount = MultiTapDetection.DetectFromKeyboard(keyName),
 							KeyName = Sdl.SDL_GetKeyName(e.key.keysym.sym),
-							VirtKey = e.key.keysym.sym,
-							MultiTapCount = MultiTapDetection.DetectFromKeyboard(keyName)
+							VirtKey = e.key.keysym.sym
 						};
 
 						// Special case workaround for windows users
@@ -133,11 +134,12 @@ namespace OpenRA.Renderer.SdlCommon
 						var keyEvent = new KeyInput
 						{
 							Event = KeyInputEvent.Up,
+							Key = (Keycode)e.key.keysym.sym,
 							Modifiers = mods,
 							UnicodeChar = (char)e.key.keysym.unicode,
+							MultiTapCount = MultiTapDetection.InfoFromKeyboard(keyName),
 							KeyName = Sdl.SDL_GetKeyName(e.key.keysym.sym),
-							VirtKey = e.key.keysym.sym,
-							MultiTapCount = MultiTapDetection.InfoFromKeyboard(keyName)
+							VirtKey = e.key.keysym.sym
 						};
 
 						inputHandler.OnKeyInput(keyEvent);
