@@ -22,13 +22,13 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 ## Contribute
 
 * Please read [INSTALL](https://github.com/OpenRA/OpenRA/blob/bleed/INSTALL) and [Compiling](https://github.com/OpenRA/OpenRA/wiki/Compiling) on how to set up an OpenRA development environment.
-* Read [HACKING](https://github.com/OpenRA/OpenRA/blob/bleed/HACKING) for an overview of the engine.
+* See [Hacking](https://github.com/OpenRA/OpenRA/wiki/Hacking) for an overview of the engine.
 * To get your patches merged please adhere to the [Contributing](https://github.com/OpenRA/OpenRA/blob/bleed/CONTRIBUTING.md) guidelines.
 
 ## Mapping
 
 * We offer a [Mapping](https://github.com/OpenRA/OpenRA/wiki/Mapping) Tutorial as you can change gameplay drastically with custom maps.
-* If you want to share custom maps, mini-games and units with the community upload them at [http://content.open-ra.org](http://content.open-ra.org)
+* If you want to share your maps, mini-games and units with the community upload them at [http://content.open-ra.org](http://content.open-ra.org)
 
 ## Modding
 
@@ -39,6 +39,6 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 
 ## Support
 
-* Sponsor a mirror server if you have some bandwidth to spare (ask in IRC).
+* Sponsor a [mirror server](https://github.com/OpenRA/OpenRAWeb/tree/master/content/packages) if you have some bandwidth to spare.
 * You can immediately set up a [Dedicated](https://github.com/OpenRA/OpenRA/wiki/Dedicated) Game Server.
 * Fund development by creating [Bounties](https://www.bountysource.com/trackers/36085-openra) on specific tasks.
