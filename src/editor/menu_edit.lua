@@ -57,7 +57,8 @@ function OnUpdateUIEditMenu(event)
   local alwaysOn = { [ID_SELECTALL] = true, [ID_FOLD] = ide.config.editor.fold,
     -- allow Cut and Copy commands as these work on a line if no selection
     [ID_COPY] = true, [ID_CUT] = true,
-    [ID_COMMENT] = true, [ID_AUTOCOMPLETE] = true, [ID_SORT] = true}
+    [ID_COMMENT] = editor.spec and editor.spec.linecomment and true or false,
+    [ID_AUTOCOMPLETE] = true, [ID_SORT] = true}
   local menu_id = event:GetId()
   local enable =
     menu_id == ID_PASTE and editor:CanPaste() or
@@ -156,6 +157,8 @@ frame:Connect(ID_AUTOCOMPLETEENABLE, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     local editor = GetEditor()
+    local lc = editor.spec.linecomment
+    if not lc then return end
 
     -- capture the current position in line to restore later
     local curline = editor:GetCurrentLine()
@@ -168,7 +171,6 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
     local eline = editor:LineFromPosition(esel)
     local sel = ssel ~= esel
     local rect = editor:SelectionIsRectangle()
-    local lc = editor.spec.linecomment
     local qlc = lc:gsub(".", "%%%1")
 
     -- figure out how to toggle comments; if there is at least one non-empty
