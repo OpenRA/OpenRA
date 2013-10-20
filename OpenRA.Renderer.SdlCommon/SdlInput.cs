@@ -102,18 +102,23 @@ namespace OpenRA.Renderer.SdlCommon
 					} 
 
 				case Sdl.SDL_KEYDOWN:
+				case Sdl.SDL_KEYUP:
 					{
-						var keyName = Sdl.SDL_GetKeyName(e.key.keysym.sym);
+						var keyCode = (Keycode)e.key.keysym.sym;
+						var type = e.type == Sdl.SDL_KEYDOWN ?
+							KeyInputEvent.Down : KeyInputEvent.Up;
+
+						var tapCount = e.type == Sdl.SDL_KEYDOWN ?
+							MultiTapDetection.DetectFromKeyboard(keyCode) :
+							MultiTapDetection.InfoFromKeyboard(keyCode);
 
 						var keyEvent = new KeyInput
 						{
-							Event = KeyInputEvent.Down,
-							Key = (Keycode)e.key.keysym.sym,
+							Event = type,
+							Key = keyCode,
 							Modifiers = mods,
 							UnicodeChar = (char)e.key.keysym.unicode,
-							MultiTapCount = MultiTapDetection.DetectFromKeyboard(keyName),
-							KeyName = Sdl.SDL_GetKeyName(e.key.keysym.sym),
-							VirtKey = e.key.keysym.sym
+							MultiTapCount = tapCount
 						};
 
 						// Special case workaround for windows users
@@ -125,24 +130,6 @@ namespace OpenRA.Renderer.SdlCommon
 						else
 							inputHandler.OnKeyInput(keyEvent);
 
-						break;
-					}
-
-				case Sdl.SDL_KEYUP:
-					{
-						var keyName = Sdl.SDL_GetKeyName(e.key.keysym.sym);
-						var keyEvent = new KeyInput
-						{
-							Event = KeyInputEvent.Up,
-							Key = (Keycode)e.key.keysym.sym,
-							Modifiers = mods,
-							UnicodeChar = (char)e.key.keysym.unicode,
-							MultiTapCount = MultiTapDetection.InfoFromKeyboard(keyName),
-							KeyName = Sdl.SDL_GetKeyName(e.key.keysym.sym),
-							VirtKey = e.key.keysym.sym
-						};
-
-						inputHandler.OnKeyInput(keyEvent);
 						break;
 					}
 				}

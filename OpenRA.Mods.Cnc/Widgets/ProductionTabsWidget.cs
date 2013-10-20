@@ -275,7 +275,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.Event != KeyInputEvent.Down) return false;
-			if (e.KeyName == Game.Settings.Keys.CycleTabsKey)
+			if (KeycodeExts.DisplayString(e.Key) == Game.Settings.Keys.CycleTabsKey)
 			{
 				Sound.PlayNotification(null, "Sounds", "ClickSound", null);
 				SelectNextTab(e.Modifiers.HasModifier(Modifiers.Shift));

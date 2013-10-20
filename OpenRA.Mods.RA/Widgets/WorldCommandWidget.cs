@@ -47,35 +47,36 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			if (e.Modifiers == Modifiers.None && e.Event == KeyInputEvent.Down)
 			{
-				if (e.KeyName == Game.Settings.Keys.CycleBaseKey)
+				var ks = Game.Settings.Keys;
+				if (KeycodeExts.DisplayString(e.Key) == ks.CycleBaseKey)
 					return CycleBases();
 
-				if (e.KeyName == Game.Settings.Keys.ToLastEventKey)
+				if (KeycodeExts.DisplayString(e.Key) == ks.ToLastEventKey)
 					return ToLastEvent();
 
-				if (e.KeyName == Game.Settings.Keys.ToSelectionKey)
+				if (KeycodeExts.DisplayString(e.Key) == ks.ToSelectionKey)
 					return ToSelection();
 
 				// Put all functions that aren't unit-specific before this line!
 				if (!world.Selection.Actors.Any()) 
 					return false;
 
-				if (e.KeyName == Game.Settings.Keys.AttackMoveKey)
+				if (KeycodeExts.DisplayString(e.Key) == ks.AttackMoveKey)
 					return PerformAttackMove();
 
-				if (e.KeyName == Game.Settings.Keys.StopKey)
+				if (KeycodeExts.DisplayString(e.Key) == ks.StopKey)
 					return PerformStop();
 
-				if (e.KeyName == Game.Settings.Keys.ScatterKey)
+				if (KeycodeExts.DisplayString(e.Key) == ks.ScatterKey)
 					return PerformScatter();
 
-				if (e.KeyName == Game.Settings.Keys.DeployKey)
+				if (KeycodeExts.DisplayString(e.Key) == ks.DeployKey)
 					return PerformDeploy();
 
-				if (e.KeyName == Game.Settings.Keys.StanceCycleKey)
+				if (KeycodeExts.DisplayString(e.Key) == ks.StanceCycleKey)
 					return PerformStanceCycle();
 
-				if (e.KeyName == Game.Settings.Keys.GuardKey)
+				if (KeycodeExts.DisplayString(e.Key) == ks.GuardKey)
 					return PerformGuard();
 			}
 

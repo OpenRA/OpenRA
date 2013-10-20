@@ -14,8 +14,8 @@ using OpenRA.FileFormats;
 
 public static class MultiTapDetection
 {
-	static Cache<string, TapHistory> keyHistoryCache =
-		new Cache<string, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
+	static Cache<Keycode, TapHistory> keyHistoryCache =
+		new Cache<Keycode, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
 	static Cache<byte, TapHistory> clickHistoryCache =
 		new Cache<byte, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
 
@@ -29,12 +29,12 @@ public static class MultiTapDetection
 		return clickHistoryCache[button].LastTapCount();
 	}
 
-	public static int DetectFromKeyboard(string key)
+	public static int DetectFromKeyboard(Keycode key)
 	{
 		return keyHistoryCache[key].GetTapCount(int2.Zero);
 	}
 
-	public static int InfoFromKeyboard(string key)
+	public static int InfoFromKeyboard(Keycode key)
 	{
 		return keyHistoryCache[key].LastTapCount();
 	}

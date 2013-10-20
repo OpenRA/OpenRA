@@ -91,7 +91,7 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (e.KeyName != Key || e.Event != KeyInputEvent.Down)
+			if (KeycodeExts.DisplayString(e.Key) != Key || e.Event != KeyInputEvent.Down)
 				return false;
 
 			if (!IsDisabled())

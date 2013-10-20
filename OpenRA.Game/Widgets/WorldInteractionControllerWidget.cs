@@ -169,14 +169,15 @@ namespace OpenRA.Widgets
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{
-				if (e.KeyName.Length == 1 && char.IsDigit(e.KeyName[0]))
+				if (e.Key >= Keycode.NUMBER_0 && e.Key <= Keycode.NUMBER_9)
 				{
-					world.Selection.DoControlGroup(world, worldRenderer, e.KeyName[0] - '0', e.Modifiers, e.MultiTapCount);
+					var group = (int)e.Key - (int)Keycode.NUMBER_0;
+					world.Selection.DoControlGroup(world, worldRenderer, group, e.Modifiers, e.MultiTapCount);
 					return true;
 				}
 
 				// Disable pausing for spectators
-				else if (e.KeyName == Game.Settings.Keys.PauseKey && world.LocalPlayer != null)
+				else if (KeycodeExts.DisplayString(e.Key) == Game.Settings.Keys.PauseKey && world.LocalPlayer != null)
 					world.SetPauseState(!world.Paused);
 			}
 			return false;

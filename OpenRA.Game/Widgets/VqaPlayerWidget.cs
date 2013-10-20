@@ -108,7 +108,7 @@ namespace OpenRA.Widgets
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{
-				if (e.KeyName == "escape")
+				if (e.Key == Keycode.ESCAPE)
 				{
 					Stop();
 					return true;

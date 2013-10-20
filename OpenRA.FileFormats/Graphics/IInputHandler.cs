@@ -70,9 +70,5 @@ namespace OpenRA
 		public Modifiers Modifiers;
 		public int MultiTapCount;
 		public char UnicodeChar;
-
-		// Deprecated
-		public string KeyName;
-		public int VirtKey;
 	}
 }

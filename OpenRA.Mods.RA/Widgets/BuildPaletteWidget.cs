@@ -147,12 +147,12 @@ namespace OpenRA.Mods.RA.Widgets
 		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.Event == KeyInputEvent.Up) return false;
-			if (e.KeyName == Game.Settings.Keys.CycleTabsKey)
+			if (KeycodeExts.DisplayString(e.Key) == Game.Settings.Keys.CycleTabsKey)
 			{
 				TabChange(e.Modifiers.HasModifier(Modifiers.Shift));
 				return true;
 			}
-			return DoBuildingHotkey(e.KeyName, world);
+			return DoBuildingHotkey(e, world);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -495,12 +495,12 @@ namespace OpenRA.Mods.RA.Widgets
 				p.ToInt2(), Color.White);
 		}
 
-		bool DoBuildingHotkey(string key, World world)
+		bool DoBuildingHotkey(KeyInput e, World world)
 		{
 			if (!paletteOpen) return false;
 			if (CurrentQueue == null) return false;
 
-			var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == key);
+			var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == KeycodeExts.DisplayString(e.Key));
 
 			if (toBuild != null)
 			{
