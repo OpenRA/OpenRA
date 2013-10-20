@@ -29,4 +29,3 @@ notifications:
     channels:
       - "irc.freenode.net#openra"
     use_notice: true
-    skip_join: true
