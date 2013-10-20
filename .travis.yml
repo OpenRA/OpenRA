@@ -23,4 +23,10 @@ branches:
 
 # Notify developers when build passed/failed.
 notifications:
-  irc: "irc.freenode.net#openra"
+  irc:
+    template:
+      - "%{repository}#%{build_number} %{commit} %{author}: %{message} %{build_url}"
+    channels:
+      - "irc.freenode.net#openra"
+    use_notice: true
+    skip_join: true
