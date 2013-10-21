@@ -29,7 +29,7 @@ namespace OpenRA.Orders
 				target = Target.FromActor(underCursor);
 			else
 			{
-				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi.Location)
+				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
 					.Where(a => a.Info.Traits.Contains<ITargetableInfo>())
 					.OrderByDescending(a => a.Info.SelectionPriority())
 					.FirstOrDefault();
@@ -77,7 +77,7 @@ namespace OpenRA.Orders
 				target = Target.FromActor(underCursor);
 			else
 			{
-				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi.Location)
+				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
 					.Where(a => a.Info.Traits.Contains<ITargetableInfo>())
 					.OrderByDescending(a => a.Info.SelectionPriority())
 					.FirstOrDefault();

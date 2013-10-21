@@ -110,24 +110,29 @@ namespace OpenRA.Traits
 		}
 
 		public static readonly IEnumerable<FrozenActor> NoFrozenActors = new FrozenActor[0].AsEnumerable();
-		public IEnumerable<FrozenActor> FrozenActorsAt(Player viewer, int2 pxPos)
+		public IEnumerable<FrozenActor> FrozenActorsAt(Player viewer, int2 worldPx)
 		{
 			if (viewer == null)
 				return NoFrozenActors;
 
-			var i = (pxPos.X / info.BinSize).Clamp(0, cols - 1);
-			var j = (pxPos.Y / info.BinSize).Clamp(0, rows - 1);
+			var i = (worldPx.X / info.BinSize).Clamp(0, cols - 1);
+			var j = (worldPx.Y / info.BinSize).Clamp(0, rows - 1);
 			return frozen[viewer][j*cols + i]
-				.Where(kv => kv.Key.IsValid && kv.Value.Contains(pxPos))
+				.Where(kv => kv.Key.IsValid && kv.Value.Contains(worldPx))
 				.Select(kv => kv.Key);
 		}
 
-		public IEnumerable<Actor> ActorsAt(int2 pxPos)
+		public IEnumerable<FrozenActor> FrozenActorsAt(Player viewer, MouseInput mi)
 		{
-			var i = (pxPos.X / info.BinSize).Clamp(0, cols - 1);
-			var j = (pxPos.Y / info.BinSize).Clamp(0, rows - 1);
+			return FrozenActorsAt(viewer, worldRenderer.Viewport.ViewToWorldPx(mi.Location));
+		}
+
+		public IEnumerable<Actor> ActorsAt(int2 worldPx)
+		{
+			var i = (worldPx.X / info.BinSize).Clamp(0, cols - 1);
+			var j = (worldPx.Y / info.BinSize).Clamp(0, rows - 1);
 			return actors[j * cols + i]
-				.Where(kv => kv.Key.IsInWorld && kv.Value.Contains(pxPos))
+				.Where(kv => kv.Key.IsInWorld && kv.Value.Contains(worldPx))
 				.Select(kv => kv.Key);
 		}
 

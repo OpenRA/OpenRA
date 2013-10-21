@@ -117,7 +117,7 @@ namespace OpenRA.Widgets
 				return;
 			}
 
-			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, Viewport.LastMousePos)
+			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
 				.Where(a => a.TooltipName != null)
 				.OrderByDescending(a => a.Info.SelectionPriority())
 				.FirstOrDefault();
