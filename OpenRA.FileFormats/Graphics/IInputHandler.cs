@@ -66,10 +66,9 @@ namespace OpenRA
 	public struct KeyInput
 	{
 		public KeyInputEvent Event;
-		public char UnicodeChar;
-		public string KeyName;
+		public Keycode Key;
 		public Modifiers Modifiers;
-		public int VirtKey;
 		public int MultiTapCount;
+		public char UnicodeChar;
 	}
 }

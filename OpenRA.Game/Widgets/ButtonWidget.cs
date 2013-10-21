@@ -18,8 +18,8 @@ namespace OpenRA.Widgets
 {
 	public class ButtonWidget : Widget
 	{
-		public Func<ButtonWidget, string> GetKey = _ => null;
-		public string Key
+		public Func<ButtonWidget, Hotkey> GetKey = _ => Hotkey.Invalid;
+		public Hotkey Key
 		{
 			get { return GetKey(this); }
 			set { GetKey = _ => value; }
@@ -91,7 +91,7 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (e.KeyName != Key || e.Event != KeyInputEvent.Down)
+			if (Hotkey.FromKeyInput(e) != Key || e.Event != KeyInputEvent.Down)
 				return false;
 
 			if (!IsDisabled())

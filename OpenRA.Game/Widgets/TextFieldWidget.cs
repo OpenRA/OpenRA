@@ -110,16 +110,16 @@ namespace OpenRA.Widgets
 			if (!HasKeyboardFocus)
 				return false;
 
-			if ((e.KeyName == "return" || e.KeyName == "enter") && OnEnterKey())
+			if ((e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER) && OnEnterKey())
 				return true;
 
-			if (e.KeyName == "tab" && OnTabKey())
+			if (e.Key == Keycode.TAB && OnTabKey())
 				return true;
 
-			if (e.KeyName == "escape" && OnEscKey())
+			if (e.Key == Keycode.ESCAPE && OnEscKey())
 				return true;
 
-			if (e.KeyName == "left")
+			if (e.Key == Keycode.LEFT)
 			{
 				if (CursorPosition > 0)
 					CursorPosition--;
@@ -127,7 +127,7 @@ namespace OpenRA.Widgets
 				return true;
 			}
 
-			if (e.KeyName == "right")
+			if (e.Key == Keycode.RIGHT)
 			{
 				if (CursorPosition <= Text.Length-1)
 					CursorPosition++;
@@ -135,19 +135,19 @@ namespace OpenRA.Widgets
 				return true;
 			}
 
-			if (e.KeyName == "home")
+			if (e.Key == Keycode.HOME)
 			{
 				CursorPosition = 0;
 				return true;
 			}
 
-			if (e.KeyName == "end")
+			if (e.Key == Keycode.END)
 			{
 				CursorPosition = Text.Length;
 				return true;
 			}
 
-			if (e.KeyName == "delete")
+			if (e.Key == Keycode.DELETE)
 			{
 				if (CursorPosition < Text.Length)
 					Text = Text.Remove(CursorPosition, 1);
@@ -160,7 +160,7 @@ namespace OpenRA.Widgets
 
 		public void TypeChar(KeyInput key)
 		{
-			if (key.KeyName == "backspace" && CursorPosition > 0)
+			if (key.Key == Keycode.BACKSPACE && CursorPosition > 0)
 			{
 				CursorPosition--;
 				Text = Text.Remove(CursorPosition, 1);

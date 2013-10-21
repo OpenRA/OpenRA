@@ -49,7 +49,7 @@ namespace OpenRA.Widgets
 		{
 			if (e.Event == KeyInputEvent.Up) return false;
 
-			if (e.KeyName == "return" || e.KeyName == "enter" )
+			if (e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER)
 			{
 				if (composing)
 				{
@@ -79,14 +79,14 @@ namespace OpenRA.Widgets
 
 			if (composing)
 			{
-				if (e.KeyName == "escape")
+				if (e.Key == Keycode.ESCAPE)
 				{
 					composing = false;
 					content = "";
 					YieldKeyboardFocus();
 					return true;
 				}
-				else if (e.KeyName == "backspace")
+				else if (e.Key == Keycode.BACKSPACE)
 				{
 					if (content.Length > 0)
 						content = content.Remove(content.Length - 1);

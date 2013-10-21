@@ -335,22 +335,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		void SetupKeyBinding(ScrollItemWidget keyWidget, string description, Func<string> getValue, Action<string> setValue)
+		void SetupKeyBinding(ScrollItemWidget keyWidget, string description, Func<Hotkey> getValue, Action<Hotkey> setValue)
 		{
 			keyWidget.Get<LabelWidget>("FUNCTION").GetText = () => description;
 
-			var textBox = keyWidget.Get<TextFieldWidget>("HOTKEY");
-
-			textBox.Text = getValue();
-			textBox.OnLoseFocus = () =>
-			{
-				textBox.Text.Trim();
-				if (textBox.Text.Length == 0)
-					textBox.Text = getValue();
-				else
-					setValue(textBox.Text);
-			};
-			textBox.OnEnterKey = () => { textBox.YieldKeyboardFocus(); return true; };
+			var keyEntry = keyWidget.Get<HotkeyEntryWidget>("HOTKEY");
+			keyEntry.Key = getValue();
+			keyEntry.OnLoseFocus = () => setValue(keyEntry.Key);
 		}
 
 		static bool ShowRendererDropdown(DropDownButtonWidget dropdown, GraphicSettings s)

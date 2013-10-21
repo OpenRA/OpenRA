@@ -70,9 +70,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			chatPanel.OnKeyPress = (e) =>
 			{
 				if (e.Event == KeyInputEvent.Up) return false;
-				if (!IsOpen && (e.KeyName == "enter" || e.KeyName == "return") )
+				if (!IsOpen && (e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER))
 				{
-
 					var shift = e.Modifiers.HasModifier(Modifiers.Shift);
 					var toggle = Game.Settings.Game.TeamChatToggle ;
 					TeamChat = (!toggle && shift) || ( toggle &&  (TeamChat ^ shift) );

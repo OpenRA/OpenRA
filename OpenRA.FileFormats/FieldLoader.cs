@@ -174,6 +174,15 @@ namespace OpenRA.FileFormats
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
+			else if (fieldType == typeof(Hotkey))
+			{
+				Hotkey res;
+				if (Hotkey.TryParse(value, out res))
+					return res;
+
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
+
 			else if (fieldType == typeof(WRange))
 			{
 				WRange res;

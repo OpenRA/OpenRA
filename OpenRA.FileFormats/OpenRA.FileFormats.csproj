@@ -151,6 +151,8 @@
     <Compile Include="Filesystem\D2kSoundResources.cs" />
     <Compile Include="Graphics\R8Reader.cs" />
     <Compile Include="Graphics\TileSetRenderer.cs" />
+    <Compile Include="Keycode.cs" />
+    <Compile Include="Hotkey.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

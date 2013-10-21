@@ -45,37 +45,39 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool ProcessInput(KeyInput e)
 		{
-			if (e.Modifiers == Modifiers.None && e.Event == KeyInputEvent.Down)
+			if (e.Event == KeyInputEvent.Down)
 			{
-				if (e.KeyName == Game.Settings.Keys.CycleBaseKey)
+				var key = Hotkey.FromKeyInput(e);
+				var ks = Game.Settings.Keys;
+				if (key == ks.CycleBaseKey)
 					return CycleBases();
 
-				if (e.KeyName == Game.Settings.Keys.ToLastEventKey)
+				if (key == ks.ToLastEventKey)
 					return ToLastEvent();
 
-				if (e.KeyName == Game.Settings.Keys.ToSelectionKey)
+				if (key == ks.ToSelectionKey)
 					return ToSelection();
 
 				// Put all functions that aren't unit-specific before this line!
 				if (!world.Selection.Actors.Any()) 
 					return false;
 
-				if (e.KeyName == Game.Settings.Keys.AttackMoveKey)
+				if (key == ks.AttackMoveKey)
 					return PerformAttackMove();
 
-				if (e.KeyName == Game.Settings.Keys.StopKey)
+				if (key == ks.StopKey)
 					return PerformStop();
 
-				if (e.KeyName == Game.Settings.Keys.ScatterKey)
+				if (key == ks.ScatterKey)
 					return PerformScatter();
 
-				if (e.KeyName == Game.Settings.Keys.DeployKey)
+				if (key == ks.DeployKey)
 					return PerformDeploy();
 
-				if (e.KeyName == Game.Settings.Keys.StanceCycleKey)
+				if (key == ks.StanceCycleKey)
 					return PerformStanceCycle();
 
-				if (e.KeyName == Game.Settings.Keys.GuardKey)
+				if (key == ks.GuardKey)
 					return PerformGuard();
 			}
 
