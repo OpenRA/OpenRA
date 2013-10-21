@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -110,13 +110,6 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			// Fade the trail out gradually
-			if (ticks > length && info.ContrailLength > 0)
-			{
-				trail.Update(pos);
-				return;
-			}
-
 			if (anim != null)
 				anim.Tick();
 
@@ -166,9 +159,9 @@ namespace OpenRA.Mods.RA.Effects
 		void Explode(World world)
 		{
 			if (info.ContrailLength > 0)
-				world.AddFrameEndTask(w => w.Add(new DelayedAction(info.ContrailLength, () => w.Remove(this))));
-			else
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, trail)));
+
+			world.AddFrameEndTask(w => w.Remove(this));
 
 			Combat.DoImpacts(pos, args.SourceActor, args.Weapon, args.FirepowerModifier);
 		}

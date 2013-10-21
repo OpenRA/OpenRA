@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -63,7 +63,6 @@ namespace OpenRA.Mods.RA.Effects
 		[Sync] WPos targetPosition;
 		[Sync] WVec offset;
 		[Sync] int ticks;
-		[Sync] bool exploded;
 
 		[Sync] public Actor SourceActor { get { return args.SourceActor; } }
 		[Sync] public Target GuidedTarget { get { return args.GuidedTarget; } }
@@ -112,13 +111,6 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			// Fade the trail out gradually
-			if (exploded && info.ContrailLength > 0)
-			{
-				trail.Update(pos);
-				return;
-			}
-
 			ticks++;
 			anim.Tick();
 
@@ -174,12 +166,10 @@ namespace OpenRA.Mods.RA.Effects
 
 		void Explode(World world)
 		{
-			exploded = true;
-
 			if (info.ContrailLength > 0)
-				world.AddFrameEndTask(w => w.Add(new DelayedAction(info.ContrailLength, () => w.Remove(this))));
-			else
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, trail)));
+
+			world.AddFrameEndTask(w => w.Remove(this));
 
 			// Don't blow up in our launcher's face!
 			if (ticks <= info.Arm)
