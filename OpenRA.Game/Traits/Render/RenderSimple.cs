@@ -25,7 +25,7 @@ namespace OpenRA.Traits
 			var anim = new Animation(RenderSimple.GetImage(ai), () => 0);
 			anim.PlayRepeating("idle");
 
-			return anim.Render(WPos.Zero, pr);
+			return anim.Render(WPos.Zero, WVec.Zero, 0, pr, Scale);
 		}
 	}
 
