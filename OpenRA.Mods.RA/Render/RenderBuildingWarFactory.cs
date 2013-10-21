@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 			var anim = new Animation(RenderSprites.GetImage(building), () => 0);
 			anim.PlayRepeating("idle-top");
 
-			return p.Concat(anim.Render(WPos.Zero, pr));
+			return p.Concat(anim.Render(WPos.Zero, WVec.Zero, 0, pr, Scale));
 		}
 	}
 
