@@ -471,6 +471,7 @@
     <Compile Include="Widgets\Logic\InstallLogic.cs" />
     <Compile Include="CombatDebugOverlay.cs" />
     <Compile Include="World\PathfinderDebugOverlay.cs" />
+    <Compile Include="Effects\ContrailFader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
