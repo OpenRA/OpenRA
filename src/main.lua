@@ -404,12 +404,12 @@ PackageEventHandle("onRegister")
 SettingsRestoreEditorSettings()
 SettingsRestoreFramePosition(ide.frame, "MainFrame")
 SettingsRestoreFileHistory(SetFileHistory)
+SettingsRestoreProjectSession(FileTreeSetProjects)
 SettingsRestoreFileSession(function(tabs, params)
   if params and params.recovery
   then return SetOpenTabs(params)
   else return SetOpenFiles(tabs, params) end
 end)
-SettingsRestoreProjectSession(FileTreeSetProjects)
 SettingsRestoreView()
 
 -- ---------------------------------------------------------------------------
