@@ -526,14 +526,14 @@ function filetree:updateProjectDir(newdir)
   if filetree.projdir and #filetree.projdir > 0 then
     PackageEventHandle("onProjectClose", filetree.projdir) end
 
+  PackageEventHandle("onProjectPreLoad", newdir)
+
   if ide.config.projectautoopen and filetree.projdir then
     StoreRestoreProjectTabs(filetree.projdir, newdir)
   end
 
   filetree.projdir = newdir
   filetree.projdirpartmap = {}
-
-  PackageEventHandle("onProjectLoad", filetree.projdir)
 
   PrependStringToArray(
     filetree.projdirlist,
@@ -555,6 +555,8 @@ function filetree:updateProjectDir(newdir)
       FileTreeMarkSelected(ide.openDocuments[id].filePath)
     end
   end
+
+  PackageEventHandle("onProjectLoad", newdir)
 end
 
 projpanel.projbutton = projbutton
