@@ -185,7 +185,6 @@
     <Compile Include="Widgets\BackgroundWidget.cs" />
     <Compile Include="Widgets\ButtonWidget.cs" />
     <Compile Include="Widgets\ChatDisplayWidget.cs" />
-    <Compile Include="Widgets\ChatEntryWidget.cs" />
     <Compile Include="Widgets\CheckboxWidget.cs" />
     <Compile Include="Widgets\ChromeMetrics.cs" />
     <Compile Include="Widgets\ColorBlockWidget.cs" />

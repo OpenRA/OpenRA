@@ -7,21 +7,6 @@ Container@INGAME_ROOT:
 		StrategicProgress@STRATEGIC_PROGRESS:
 			X: WINDOW_RIGHT/2
 			Y: 40
-		ChatDisplay@CHAT_DISPLAY:
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT - 30
-			Width: 760
-			Height: 200
-			DrawBackground: False
-			RemoveTime:250
-			UseContrast: yes
-			Notification: scold1.aud
-		ChatEntry@CHAT_ENTRY:
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT
-			Width: 760
-			Height: 30
-			UseContrast: yes
 		Container@PERFORMANCE_INFO:
 			Logic:PerfDebugLogic
 			Children:

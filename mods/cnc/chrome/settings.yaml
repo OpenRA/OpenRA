@@ -293,20 +293,6 @@ Container@SETTINGS_PANEL:
 					Height:25
 					Font:Regular
 					Text:Enabled
-				Label@KEYBOARD_TITLE:
-					X:375
-					Y:20
-					Width:340
-					Font:Bold
-					Text:Keyboard Input
-					Align:Center
-				Checkbox@TEAMCHAT_CHECKBOX:
-					X:375
-					Y:35
-					Width:240
-					Height:20
-					Font:Regular
-					Text:Shift-Enter Toggles Team Chat
 		Button@GENERAL_BUTTON:
 			Y:319
 			Width:140

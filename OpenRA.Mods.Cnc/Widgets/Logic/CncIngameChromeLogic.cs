@@ -35,26 +35,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				() => world.OrderGenerator is T ? icon + "-active" : icon;
 		}
 
-		void AddChatLine(Color c, string from, string text)
-		{
-			ingameRoot.Get<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
-		}
-
-		void UnregisterEvents()
-		{
-			Game.AddChatLine -= AddChatLine;
-			Game.BeforeGameStart -= UnregisterEvents;
-		}
-
 		[ObjectCreator.UseCtor]
 		public CncIngameChromeLogic(Widget widget, World world)
 		{
 			this.world = world;
 			world.WorldActor.Trait<CncMenuPaletteEffect>()
 				.Fade(CncMenuPaletteEffect.EffectType.None);
-
-			Game.AddChatLine += AddChatLine;
-			Game.BeforeGameStart += UnregisterEvents;
 
 			ingameRoot = widget.Get("INGAME_ROOT");
 			var playerRoot = ingameRoot.Get("PLAYER_ROOT");
@@ -64,6 +50,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				InitObserverWidgets(world, playerRoot);
 			else
 				InitPlayerWidgets(world, playerRoot);
+
+			Game.LoadWidget(world, "CHAT_PANEL", playerRoot, new WidgetArgs());
 		}
 
 		public void OptionsClicked()
