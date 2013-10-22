@@ -59,6 +59,8 @@ namespace OpenRA.Widgets
 			if (!RenderBounds.Contains(mi.Location) || !TakeKeyboardFocus())
 				return false;
 
+			blinkCycle = 15;
+
 			return true;
 		}
 
@@ -83,6 +85,18 @@ namespace OpenRA.Widgets
 			return true;
 		}
 
+		protected int blinkCycle = 15;
+		protected bool showEntry = true;
+
+		public override void Tick()
+		{
+			if (HasKeyboardFocus && --blinkCycle <= 0)
+			{
+				blinkCycle = 15;
+				showEntry ^= true;
+			}
+		}
+
 		public override void Draw()
 		{
 			var apparentText = Key.DisplayString();
@@ -99,6 +113,10 @@ namespace OpenRA.Widgets
 					"textfield";
 
 			WidgetUtils.DrawPanel(state, RenderBounds);
+
+			// Blink the current entry to indicate focus
+			if (HasKeyboardFocus && !showEntry)
+				return;
 
 			// Inset text by the margin and center vertically
 			var textPos = pos + new int2(LeftMargin, (Bounds.Height - textSize.Y) / 2 - VisualHeight);
