@@ -2,59 +2,50 @@ Container@CHAT_PANEL:
 	X:(WINDOW_RIGHT - WIDTH) / 2
 	Y:WINDOW_BOTTOM - HEIGHT - 15
 	Width:550
-	Height:180
+	Height:194
 	Logic:IngameChatLogic
 	Children:
 		Container@CHAT_OVERLAY:
-			X:0
-			Y:0
-			Width:PARENT_RIGHT
-			Height:PARENT_BOTTOM-30
-			Visible: false
+			Width:PARENT_RIGHT-24
+			Height:PARENT_BOTTOM-25
+			Visible:false
 			Children:
 				ChatDisplay@CHAT_DISPLAY:
-					X:0
-					Y:0
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
-					DrawBackground: False
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
 					RemoveTime:250
 					UseContrast: yes
 		Container@CHAT_CHROME:
-			X:0
-			Y:0
 			Width:PARENT_RIGHT
 			Height:PARENT_BOTTOM
 			Children:
 				Button@CHAT_MODE:
-					X:0
 					Y:PARENT_BOTTOM - HEIGHT
-					Width: 50
-					Height: 25
-					Text: Team
-					Font: Bold
+					Width:50
+					Height:25
+					Text:Team
+					Font:Bold
 				TextField@CHAT_TEXTFIELD:
 					X:55
 					Y:PARENT_BOTTOM - HEIGHT
-					Width:465
+					Width:466
 					Height:25
 				Button@CHAT_CLOSE:
-					X:525
+					X:526
 					Y:PARENT_BOTTOM - HEIGHT
-					Width: 25
-					Height: 25
-					Text: X
-					Font: Bold
+					Width:24
+					Height:25
+					Text:X
+					Font:Bold
 				ScrollPanel@CHAT_SCROLLPANEL:
-					X:0
 					Y:PARENT_BOTTOM - HEIGHT - 30
 					Width:550
-					Height:150
-					ItemSpacing:1
+					Height:164
+					ItemSpacing:4
+					Align:Bottom
 					Children:
 						Container@CHAT_TEMPLATE:
 							X:2
-							Y:0
 							Width:PARENT_RIGHT-27
 							Height:16
 							Children:
@@ -64,8 +55,8 @@ Container@CHAT_PANEL:
 									Height:15
 									VAlign:Top
 								Label@TEXT:
-									X:10
-									Width:PARENT_RIGHT - 60
+									X:12
+									Width:PARENT_RIGHT - 17
 									Height:15
 									WordWrap:true
 									VAlign:Top

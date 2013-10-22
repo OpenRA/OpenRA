@@ -104,12 +104,6 @@ Background@SETTINGS_MENU:
 					Width:200
 					Height:20
 					Text: Invert Mouse Drag Scrolling
-				Checkbox@TEAMCHAT_TOGGLE:
-					X:0
-					Y:120
-					Width:200
-					Height:20
-					Text: Shift-Enter Toggles Team Chat
 				Checkbox@SHOW_SHELLMAP:
 					X:0
 					Y:150
