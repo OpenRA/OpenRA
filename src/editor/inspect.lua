@@ -191,7 +191,7 @@ frame:Connect(ID_ANALYZE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
     ActivateOutput()
     local editor = GetEditor()
-    if not analyzeProgram(editor) then CompileProgram(editor) end
+    if not analyzeProgram(editor) then CompileProgram(editor, { reportstats = false }) end
   end)
 frame:Connect(ID_ANALYZE, wx.wxEVT_UPDATE_UI,
   function (event)

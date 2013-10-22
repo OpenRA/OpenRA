@@ -1118,7 +1118,7 @@ function DebuggerRefreshScratchpad()
   if debugger.scratchpad and debugger.scratchpad.updated and not debugger.scratchpad.paused then
 
     local scratchpadEditor = debugger.scratchpad.editor
-    local compiled, code = CompileProgram(scratchpadEditor, true)
+    local compiled, code = CompileProgram(scratchpadEditor, { jumponerror = false, reportstats = false })
     if not compiled then return end
 
     if debugger.scratchpad.running then

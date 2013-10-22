@@ -518,7 +518,9 @@ function ClearAllCurrentLineMarkers()
 end
 
 local compileOk, compileTotal = 0, 0
-function CompileProgram(editor, quiet)
+function CompileProgram(editor, params)
+  local params = { jumponerror = (params or {}).jumponerror ~= false,
+    reportstats = (params or {}).reportstats ~= false }
   -- remove shebang line (#!) as it throws a compilation error as
   -- loadstring() doesn't allow it even though lua/loadfile accepts it.
   -- replace with a new line to keep the number of lines the same.
@@ -537,10 +539,10 @@ function CompileProgram(editor, quiet)
     DisplayOutput(TR("Compilation error")
       .." "..TR("on line %d"):format(line_num)
       ..":\n"..errMsg:gsub("Lua:.-\n", ""))
-    if not quiet then editor:GotoLine(line_num-1) end
+    if params.jumponerror then editor:GotoLine(line_num-1) end
   else
     compileOk = compileOk + 1
-    if not quiet then
+    if params.reportstats then
       DisplayOutputLn(TR("Compilation successful; %.0f%% success rate (%d/%d).")
         :format(compileOk/compileTotal*100, compileOk, compileTotal))
     end

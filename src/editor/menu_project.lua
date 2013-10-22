@@ -176,7 +176,7 @@ local function getNameToRun(skipcheck)
     editor.spec.apitype == "lua" and
     (not skipcheck) and
     (not ide.interpreter.skipcompile) and
-    (not CompileProgram(editor, true)) then
+    (not CompileProgram(editor, { reportstats = false })) then
     return
   end
 
