@@ -47,8 +47,8 @@ namespace OpenRA
 				return ret;
 
 			// Add an additional quadratic variation to height
-			// Uses fp to avoid integer overflow
-			var offset = (int)((float)((float)(b - a).Length*pitch.Tan()*mul*(div - mul)) / (float)(1024*div*div));
+			// Attempts to avoid integer overflow by keeping the intermediate variables reasonably sized
+			var offset = (int)(((((((long)(b - a).Length * mul) / div) * (div - mul)) / div) * pitch.Tan()) / 1024);
 			return new WPos(ret.X, ret.Y, ret.Z + offset);
 		}
 
