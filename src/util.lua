@@ -368,8 +368,9 @@ end
 
 function LoadLuaFileExt(tab, file, proto)
   local cfgfn,err = loadfile(file)
+  local report = DisplayOutputLn or print
   if not cfgfn then
-    print(("Error while loading file: '%s'."):format(err))
+    report(("Error while loading file: '%s'."):format(err))
   else
     local name = file:match("([a-zA-Z_0-9%-]+)%.lua$")
     if not name then return end
@@ -383,7 +384,7 @@ function LoadLuaFileExt(tab, file, proto)
 
     local success, result = pcall(function()return cfgfn(assert(_G or _ENV))end)
     if not success then
-      print(("Error while processing file: '%s'."):format(result))
+      report(("Error while processing file: '%s'."):format(result))
     else
       if (tab[name]) then
         local out = tab[name]
@@ -393,6 +394,34 @@ function LoadLuaFileExt(tab, file, proto)
       else
         tab[name] = proto and result and setmetatable(result, proto) or result
       end
+    end
+  end
+end
+
+function LoadLuaConfig(filename,isstring)
+  if not filename then return end
+  -- skip those files that don't exist
+  if not isstring and not wx.wxFileName(filename):FileExists() then return end
+  -- if it's marked as command, but exists as a file, load it as a file
+  if isstring and wx.wxFileName(filename):FileExists() then isstring = false end
+
+  local cfgfn, err, msg
+  if isstring
+  then msg, cfgfn, err = "string", loadstring(filename)
+  else msg, cfgfn, err = "file", loadfile(filename) end
+
+  local report = DisplayOutputLn or print
+  if not cfgfn then
+    report(("Error while loading configuration %s: '%s'."):format(msg, err))
+  else
+    ide.config.os = os
+    ide.config.wxstc = wxstc
+    ide.config.load = { interpreters = loadInterpreters,
+      specs = loadSpecs, tools = loadTools }
+    setfenv(cfgfn,ide.config)
+    local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
+    if err then
+      report(("Error while processing configuration %s: '%s'."):format(msg, err))
     end
   end
 end
