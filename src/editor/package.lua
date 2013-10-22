@@ -132,3 +132,20 @@ function ide:RemoveAPI(type, name) self.apis[type][name] = nil end
 function ide:AddMarker(...) return StylesAddMarker(...) end
 function ide:GetMarker(marker) return StylesGetMarker(marker) end
 function ide:RemoveMarker(marker) StylesRemoveMarker(marker) end
+
+-- this provides a simple stack for saving/restoring current configuration
+local configcache = {}
+function ide:AddConfig(name, files)
+  if not name or configcache[name] then return end -- don't overwrite existing slots
+  configcache[name] = require('mobdebug').dump(ide.config, {nocode = true})
+  for _, file in pairs(files) do LoadLuaConfig(MergeFullPath(name, file)) end
+end
+function ide:RemoveConfig(name)
+  if not name or not configcache[name] then return end
+  local ok, res = LoadSafe(configcache[name])
+  if ok then ide.config = res
+  else
+    DisplayOutputLn(("Error while restoring configuration: '%s'."):format(res))
+  end
+  configcache[name] = nil -- clear the slot after use
+end
