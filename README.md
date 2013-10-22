@@ -28,14 +28,14 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 ## Mapping
 
 * We offer a [Mapping](https://github.com/OpenRA/OpenRA/wiki/Mapping) Tutorial as you can change gameplay drastically with custom maps.
-* If you want to share your maps, mini-games and units with the community upload them at [http://content.open-ra.org](http://content.open-ra.org)
+* If you want to share your maps, mini-games and units with the community, upload them at [http://content.open-ra.org](http://content.open-ra.org).
 
 ## Modding
 
 * There exists an auto-generated [Trait documentation](https://github.com/OpenRA/OpenRA/wiki/Traits) to get started with yaml files.
 * Check the [Modding Guide](https://github.com/OpenRA/OpenRA/wiki/Modding%20Guide) to create your own classic RTS.
-* Some hints on to create new OpenRA compatible [Pixelart](https://github.com/OpenRA/OpenRA/wiki/Pixelart).
-* Upload total conversions at [our ModDB profile](http://www.moddb.com/games/openra/mods)
+* Some hints on how to create new OpenRA compatible [Pixelart](https://github.com/OpenRA/OpenRA/wiki/Pixelart).
+* Upload total conversions at [our ModDB profile](http://www.moddb.com/games/openra/mods).
 
 ## Support
 
