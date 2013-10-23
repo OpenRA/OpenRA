@@ -3,26 +3,40 @@ Container@MENU_BACKGROUND:
 	Height:WINDOW_BOTTOM
 	Logic:CncMenuLogic
 	Children:
-		Image@RETICLE:
-			X:(WINDOW_RIGHT-WIDTH)/2
-			Y:(WINDOW_BOTTOM-HEIGHT)/2
-			Width:512
-			Height:512
-			ImageCollection:shellmap
-			ImageName:reticle
-		Label@REC:
-			X:(WINDOW_RIGHT-512)/2+10
-			Y:(WINDOW_BOTTOM+512)/2-28
-			Height:18
-			Font:Bold
-			Text:REC
-		Image@RECBLOCK:
-			X:(WINDOW_RIGHT-512)/2+40
-			Y:(WINDOW_BOTTOM+512)/2-25
-			Width:16
-			Height:16
-			ImageCollection:shellmapbits
-			ImageName:record
+		Container@SHELLMAP_DECORATIONS:
+			Children:
+				Image@RETICLE:
+					X:(WINDOW_RIGHT-WIDTH)/2
+					Y:(WINDOW_BOTTOM-HEIGHT)/2
+					Width:512
+					Height:512
+					ImageCollection:shellmap
+					ImageName:reticle
+				Label@REC:
+					X:(WINDOW_RIGHT-512)/2+10
+					Y:(WINDOW_BOTTOM+512)/2-28
+					Height:18
+					Font:Bold
+					Text:REC
+				Image@RECBLOCK:
+					X:(WINDOW_RIGHT-512)/2+40
+					Y:(WINDOW_BOTTOM+512)/2-25
+					Width:16
+					Height:16
+					ImageCollection:shellmapbits
+					ImageName:record
+		Container@SHELLMAP_DISABLED_DECORATIONS:
+			Children:
+				Image@NOD:
+					X:WINDOW_RIGHT/2-384
+					Y:(WINDOW_BOTTOM-256)/2
+					ImageCollection:logos
+					ImageName:nod-load
+				Image@GDI:
+					X:WINDOW_RIGHT/2+128
+					Y:(WINDOW_BOTTOM-256)/2
+					ImageCollection:logos
+					ImageName:gdi-load
 		Image@EVA:
 			X:WINDOW_RIGHT-128-43
 			Y:43
