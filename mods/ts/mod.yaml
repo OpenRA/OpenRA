@@ -83,7 +83,7 @@ Cursors:
 
 Chrome:
 	mods/ts/chrome.yaml
-	
+
 Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
 	mods/ts/OpenRA.Mods.TS.dll
