@@ -82,8 +82,8 @@ namespace OpenRA.Widgets
 			return ThumbRect.Contains(mi.Location);
 		}
 
-		float ValueFromPx(int x) { return MinimumValue + (MaximumValue - MinimumValue) * (1f * x / RenderBounds.Width); }
-		protected int PxFromValue(float x) { return (int)(RenderBounds.Width * (x - MinimumValue) / (MaximumValue - MinimumValue)); }
+		float ValueFromPx(int x) { return MinimumValue + (MaximumValue - MinimumValue) * (x - 0.5f * RenderBounds.Height) / (RenderBounds.Width - RenderBounds.Height); }
+		protected int PxFromValue(float x) { return (int)(0.5f * RenderBounds.Height + (RenderBounds.Width - RenderBounds.Height) * (x - MinimumValue) / (MaximumValue - MinimumValue)); }
 
 		public override Widget Clone() { return new SliderWidget(this); }
 
@@ -109,16 +109,19 @@ namespace OpenRA.Widgets
 
 			var tr = ThumbRect;
 			var rb = RenderBounds;
-			var trackWidth = rb.Width;
-			var trackOrigin = rb.X;
+			var trackWidth = rb.Width - rb.Height;
+			var trackOrigin = rb.X + rb.Height / 2;
 			var trackRect = new Rectangle(trackOrigin - 1, rb.Y + (rb.Height - TrackHeight) / 2, trackWidth + 2, TrackHeight);
 
-			// Tickmarks (hacked until we have real art)
+			// Tickmarks
+			var tick = ChromeProvider.GetImage("slider", "tick");
 			for (int i = 0; i < Ticks; i++)
 			{
-				var tickRect = new Rectangle(trackOrigin - 1 + (int)(i * trackWidth * 1f / (Ticks - 1)),
-						  rb.Y + rb.Height / 2, 2, rb.Height / 2);
-				WidgetUtils.DrawPanel("slider-tick", tickRect);
+				var tickPos = new float2(
+					trackOrigin + (i * (trackRect.Width - (int)tick.size.X) / (Ticks - 1)) - tick.size.X / 2,
+					trackRect.Bottom);
+
+				WidgetUtils.DrawRGBA(tick, tickPos);
 			}
 
 			// Track
