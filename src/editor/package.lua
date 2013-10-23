@@ -129,6 +129,9 @@ function ide:AddAPI(type, name, api)
 end
 function ide:RemoveAPI(type, name) self.apis[type][name] = nil end
 
+function ide:AddConsoleAlias(alias, table) return ShellSetAlias(alias, table) end
+function ide:RemoveConsoleAlias(alias) return ShellSetAlias(alias, nil) end
+
 function ide:AddMarker(...) return StylesAddMarker(...) end
 function ide:GetMarker(marker) return StylesGetMarker(marker) end
 function ide:RemoveMarker(marker) StylesRemoveMarker(marker) end
