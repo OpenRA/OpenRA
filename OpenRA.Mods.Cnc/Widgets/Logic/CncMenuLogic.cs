@@ -102,7 +102,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			settingsMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Main;
 
-			rootMenu.Get<ImageWidget>("RECBLOCK").IsVisible = () => world.FrameNumber / 25 % 2 == 0;
+			var shellmapDecorations = widget.Get("SHELLMAP_DECORATIONS");
+			shellmapDecorations.IsVisible = () => menuType != MenuType.None && Game.Settings.Game.ShowShellmap;
+			shellmapDecorations.Get<ImageWidget>("RECBLOCK").IsVisible = () => world.FrameNumber / 25 % 2 == 0;
+
+			var shellmapDisabledDecorations = widget.Get("SHELLMAP_DISABLED_DECORATIONS");
+			shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
 		}
 		
 		void OpenGamePanel(string id)

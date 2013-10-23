@@ -7,7 +7,7 @@ Container@INSTALL_BACKGROUND:
 			Y:(WINDOW_BOTTOM-256)/2
 			ImageCollection:logos
 			ImageName:nod-load
-		Image@NOD:
+		Image@GDI:
 			X:WINDOW_RIGHT/2+128
 			Y:(WINDOW_BOTTOM-256)/2
 			ImageCollection:logos
