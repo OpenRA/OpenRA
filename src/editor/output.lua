@@ -228,11 +228,11 @@ local function getStreams()
           DisplayShell(str)
         else
           DisplayOutputNoMarker(str)
-        end
-        if str and ide.config.allowinteractivescript and
-          (getInputLine() > -1 or errorlog:GetReadOnly()) then
-          ActivateOutput()
-          updateInputMarker()
+          if str and ide.config.allowinteractivescript and
+            (getInputLine() > -1 or errorlog:GetReadOnly()) then
+            ActivateOutput()
+            updateInputMarker()
+          end
         end
         pfn = pfn and pfn()
       end
