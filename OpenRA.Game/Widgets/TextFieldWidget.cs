@@ -216,8 +216,8 @@ namespace OpenRA.Widgets
 				if (HasKeyboardFocus)
 					textPos += new int2(Bounds.Width - LeftMargin - RightMargin - textSize.X, 0);
 
-				Game.Renderer.EnableScissor(pos.X + LeftMargin, pos.Y,
-					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom);
+				Game.Renderer.EnableScissor(new Rectangle(pos.X + LeftMargin, pos.Y,
+					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));
 			}
 
 			var color = disabled ? DisabledColor : TextColor;

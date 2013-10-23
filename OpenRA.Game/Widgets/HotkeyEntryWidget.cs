@@ -124,8 +124,8 @@ namespace OpenRA.Widgets
 			// Scissor when the text overflows
 			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
 			{
-				Game.Renderer.EnableScissor(pos.X + LeftMargin, pos.Y,
-					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom);
+				Game.Renderer.EnableScissor(new Rectangle(pos.X + LeftMargin, pos.Y,
+					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));
 			}
 
 			var color = disabled ? DisabledColor : TextColor;
