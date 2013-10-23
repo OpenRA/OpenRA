@@ -34,8 +34,8 @@ Sounds:
 	Notifications:
 		RadarUp: comcntr1
 		RadarDown: powrdn1
-		CashTickUp:
-		CashTickDown:
+		CashTickUp:tone15
+		CashTickDown:tone16
 		LevelUp: text2
 		DisablePower: bleep11
 		EnablePower: bleep12

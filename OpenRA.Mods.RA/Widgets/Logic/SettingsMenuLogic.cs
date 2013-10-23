@@ -97,10 +97,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			videoslider.OnChange += x => Sound.VideoVolume = x;
 			videoslider.Value = Sound.VideoVolume;
 
-			var cashticksdropdown = audio.Get<DropDownButtonWidget>("CASH_TICK_TYPE");
-			cashticksdropdown.OnMouseDown = _ => ShowSoundTickDropdown(cashticksdropdown, soundSettings);
-			cashticksdropdown.GetText = () => soundSettings.SoundCashTickType == SoundCashTicks.Extreme ?
-				"Extreme" : soundSettings.SoundCashTickType == SoundCashTicks.Normal ? "Normal" : "Disabled";
+			var cashTicksCheckbox = audio.Get<CheckboxWidget>("CASHTICK_CHECKBOX");
+			cashTicksCheckbox.IsChecked = () => Game.Settings.Sound.CashTicks;
+			cashTicksCheckbox.OnClick = () => Game.Settings.Sound.CashTicks ^= true;
 
 			var mapMusicCheckbox = audio.Get<CheckboxWidget>("MAP_MUSIC_CHECKBOX");
 			mapMusicCheckbox.IsChecked = () => Game.Settings.Sound.MapMusic;
@@ -290,29 +289,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.modData.Languages, setupItem);
 			return true;
 		}
-		
-		public static bool ShowSoundTickDropdown(DropDownButtonWidget dropdown, SoundSettings audio)
-		{
-			var options = new Dictionary<string, SoundCashTicks>()
-			{
-				{ "Extreme", SoundCashTicks.Extreme },
-				{ "Normal", SoundCashTicks.Normal },
-				{ "Disabled", SoundCashTicks.Disabled },
-			};
 
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
-			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => audio.SoundCashTickType == options[o],
-					() => audio.SoundCashTickType = options[o]);
-				item.Get<LabelWidget>("LABEL").GetText = () => o;
-				return item;
-			};
-
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
-			return true;
-		}
-		
 		public static bool ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
 		{
 			var options = new Dictionary<string, WindowMode>()
