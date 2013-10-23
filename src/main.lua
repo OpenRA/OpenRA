@@ -326,35 +326,6 @@ local resumePrint do
   end
 end
 
------------------------
--- load config
-local function addConfig(filename,isstring)
-  if not filename then return end
-  -- skip those files that don't exist
-  if not isstring and not wx.wxFileName(filename):FileExists() then return end
-  -- if it's marked as command, but exists as a file, load it as a file
-  if isstring and wx.wxFileName(filename):FileExists() then isstring = false end
-
-  local cfgfn, err, msg
-  if isstring
-  then msg, cfgfn, err = "string", loadstring(filename)
-  else msg, cfgfn, err = "file", loadfile(filename) end
-
-  if not cfgfn then
-    print(("Error while loading configuration %s: '%s'."):format(msg, err))
-  else
-    ide.config.os = os
-    ide.config.wxstc = wxstc
-    ide.config.load = { interpreters = loadInterpreters,
-      specs = loadSpecs, tools = loadTools }
-    setfenv(cfgfn,ide.config)
-    local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
-    if err then
-      print(("Error while processing configuration %s: '%s'."):format(msg, err))
-    end
-  end
-end
-
 function GetIDEString(keyword, default)
   return app.stringtable[keyword] or default or keyword
 end
@@ -362,7 +333,7 @@ end
 ----------------------
 -- process config
 
-addConfig(ide.config.path.app.."/config.lua")
+LoadLuaConfig(ide.config.path.app.."/config.lua")
 
 ide.editorApp:SetAppName(GetIDEString("settingsapp"))
 
@@ -396,11 +367,11 @@ do
   }
 
   -- process configs
-  addConfig(ide.configs.system)
-  addConfig(ide.configs.user)
+  LoadLuaConfig(ide.configs.system)
+  LoadLuaConfig(ide.configs.user)
 
   -- process all other configs (if any)
-  for _, v in ipairs(configs) do addConfig(v, true) end
+  for _, v in ipairs(configs) do LoadLuaConfig(v, true) end
 
   configs = nil
   local sep = GetPathSeparator()
@@ -433,12 +404,12 @@ PackageEventHandle("onRegister")
 SettingsRestoreEditorSettings()
 SettingsRestoreFramePosition(ide.frame, "MainFrame")
 SettingsRestoreFileHistory(SetFileHistory)
+SettingsRestoreProjectSession(FileTreeSetProjects)
 SettingsRestoreFileSession(function(tabs, params)
   if params and params.recovery
   then return SetOpenTabs(params)
   else return SetOpenFiles(tabs, params) end
 end)
-SettingsRestoreProjectSession(FileTreeSetProjects)
 SettingsRestoreView()
 
 -- ---------------------------------------------------------------------------
