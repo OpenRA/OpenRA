@@ -20,7 +20,6 @@ using OpenRA.Server;
 namespace OpenRA.GameRules
 {
 	public enum MouseScrollType { Disabled, Standard, Inverted }
-	public enum SoundCashTicks { Disabled, Normal, Extreme }
 
 	public class ServerSettings
 	{
@@ -116,7 +115,7 @@ namespace OpenRA.GameRules
 		public string Engine = "AL";
 		public string Device = null;
 
-		public SoundCashTicks SoundCashTickType = SoundCashTicks.Extreme;
+		public bool CashTicks = true;
 	}
 
 	public class PlayerSettings

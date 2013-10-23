@@ -27,8 +27,6 @@ namespace OpenRA.Traits
 	{
 		readonly Player Owner;
 		int AdviceInterval;
-		
-		int cashtickallowed = 0;
 
 		public PlayerResources(Actor self, PlayerResourcesInfo info)
 		{
@@ -103,13 +101,13 @@ namespace OpenRA.Traits
 		const float displayCashFracPerFrame = .07f;
 		const int displayCashDeltaPerFrame = 37;
 		int nextSiloAdviceTime = 0;
+		int nextCashTickTime = 0;
 
 		public void Tick(Actor self)
 		{
-			if(cashtickallowed > 0) {
-				cashtickallowed = cashtickallowed - 1;
-			}
-			
+			if (nextCashTickTime > 0)
+				nextCashTickTime--;
+
 			OreCapacity = self.World.ActorsWithTrait<IStoreOre>()
 				.Where(a => a.Actor.Owner == Owner)
 				.Sum(a => a.Trait.Capacity);
@@ -165,22 +163,17 @@ namespace OpenRA.Traits
 		
 		public void playCashTickUp(Actor self)
 		{
-			if (Game.Settings.Sound.SoundCashTickType != SoundCashTicks.Disabled)
-			{
+			if (Game.Settings.Sound.CashTicks)
 				Sound.PlayNotification(self.Owner, "Sounds", "CashTickUp", self.Owner.Country.Race);
-			}
 		}
 		
 		public void playCashTickDown(Actor self)
 		{
-			if (
-				Game.Settings.Sound.SoundCashTickType == SoundCashTicks.Extreme ||
-				(Game.Settings.Sound.SoundCashTickType == SoundCashTicks.Normal && cashtickallowed == 0)
-			) {
+			if (Game.Settings.Sound.CashTicks && nextCashTickTime == 0)
+			{
 				Sound.PlayNotification(self.Owner, "Sounds", "CashTickDown", self.Owner.Country.Race);
-				cashtickallowed = 3;
+				nextCashTickTime = 2;
 			}
-			
 		}
 	}
 }

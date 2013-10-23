@@ -165,17 +165,12 @@ Background@SETTINGS_MENU:
 					Width:250
 					Height:20
 					Ticks:5
-				Label@SOUND_TICK_TYPE_LABEL:
+				Checkbox@CASHTICK_CHECKBOX:
 					X:0
-					Y:100
-					Text: Cash ticks
-				DropDownButton@CASH_TICK_TYPE:
-					X:100
 					Y:90
-					Width:250
-					Height:25
-					Font:Regular
-					Text:Extreme
+					Width:200
+					Height:20
+					Text:Cash Ticks
 				Checkbox@MAP_MUSIC_CHECKBOX:
 					X:0
 					Y:120
