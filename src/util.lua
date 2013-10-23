@@ -162,7 +162,7 @@ end
 function FileSysGetRecursive(path, recursive, spec, skip)
   spec = spec or "*"
   local content = {}
-  local sep = string.char(wx.wxFileName.GetPathSeparator())
+  local sep = GetPathSeparator()
 
   -- recursion is done in all folders but only those folders that match
   -- the spec are returned. This is the pattern that matches the spec.
@@ -172,12 +172,16 @@ function FileSysGetRecursive(path, recursive, spec, skip)
     local dir = wx.wxDir(path)
     if not dir:IsOpened() then return end
 
-    local found, file = dir:GetFirst("*", wx.wxDIR_DIRS + wx.wxDIR_NO_FOLLOW)
+    local found, file = dir:GetFirst("*", wx.wxDIR_DIRS)
     while found do
       if not skip or not file:find(skip) then
         local fname = wx.wxFileName(path, file):GetFullPath()
         if fname:find(specmask) then table.insert(content, fname..sep) end
-        if recursive then getDir(fname, spec) end
+        -- check if this name already appears in the path earlier;
+        -- Skip the processing if it does as it could lead to infinite
+        -- recursion with circular references created by symlinks.
+        if recursive and select(2, fname:gsub(file..sep,'')) <= 2 then
+          getDir(fname, spec) end
       end
       found, file = dir:GetNext()
     end
