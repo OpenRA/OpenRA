@@ -18,12 +18,11 @@ using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Widgets;
-using OpenRA.Mods.RA.Widgets.Logic;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic
+namespace OpenRA.Mods.Ra.Widgets.Logic
 {
-	public class CncSettingsLogic
+	public class SettingsLogic
 	{
 		enum PanelType { Display, Audio, Input, Advanced }
 		Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
@@ -35,12 +34,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		SoundDevice soundDevice;
 
 		[ObjectCreator.UseCtor]
-		public CncSettingsLogic(Widget widget, Action onExit, WorldRenderer worldRenderer)
+		public SettingsLogic(Widget widget, Action onExit, WorldRenderer worldRenderer)
 		{
 			this.worldRenderer = worldRenderer;
 
 			panelContainer = widget.Get("SETTINGS_PANEL");
-			tabContainer = panelContainer;
+			tabContainer = widget.Get("TAB_CONTAINER");
 
 			RegisterSettingsPanel(PanelType.Display, InitDisplayPanel, ResetDisplayPanel, "DISPLAY_PANEL", "DISPLAY_TAB");
 			RegisterSettingsPanel(PanelType.Audio, InitAudioPanel, ResetAudioPanel, "AUDIO_PANEL", "AUDIO_TAB");
@@ -125,11 +124,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
 
 			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
-			languageDropDownButton.OnMouseDown = _ => SettingsMenuLogic.ShowLanguageDropdown(languageDropDownButton);
+			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton);
 			languageDropDownButton.GetText = () => FieldLoader.Translate(ds.Language);
 
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
-			windowModeDropdown.OnMouseDown = _ => SettingsMenuLogic.ShowWindowModeDropdown(windowModeDropdown, ds);
+			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
 				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
 
@@ -404,6 +403,45 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		bool ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		{
+			var options = new Dictionary<string, WindowMode>()
+			{
+				{ "Pseudo-Fullscreen", WindowMode.PseudoFullscreen },
+				{ "Fullscreen", WindowMode.Fullscreen },
+				{ "Windowed", WindowMode.Windowed },
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.Mode == options[o],
+					() => s.Mode = options[o]);
+
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		bool ShowLanguageDropdown(DropDownButtonWidget dropdown)
+		{
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => Game.Settings.Graphics.Language == o,
+					() => Game.Settings.Graphics.Language = o);
+
+				item.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate(o);
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.modData.Languages, setupItem);
 			return true;
 		}
 	}

@@ -1,5 +1,5 @@
 Container@SETTINGS_PANEL:
-	Logic:CncSettingsLogic
+	Logic:SettingsLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:590
@@ -12,25 +12,27 @@ Container@SETTINGS_PANEL:
 			Contrast:true
 			Align:Center
 			Text:Settings
-		Button@DISPLAY_TAB:
-			Width:140
-			Height:35
-			Text:Display
-		Button@AUDIO_TAB:
-			X:150
-			Width:140
-			Height:35
-			Text:Audio
-		Button@INPUT_TAB:
-			X:300
-			Width:140
-			Height:35
-			Text:Input
-		Button@ADVANCED_TAB:
-			X:450
-			Width:140
-			Height:35
-			Text:Advanced
+		Container@TAB_CONTAINER:
+			Children:
+				Button@DISPLAY_TAB:
+					Width:140
+					Height:35
+					Text:Display
+				Button@AUDIO_TAB:
+					X:150
+					Width:140
+					Height:35
+					Text:Audio
+				Button@INPUT_TAB:
+					X:300
+					Width:140
+					Height:35
+					Text:Input
+				Button@ADVANCED_TAB:
+					X:450
+					Width:140
+					Height:35
+					Text:Advanced
 		Button@RESET_BUTTON:
 			Y:293
 			Width:140

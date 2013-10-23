@@ -1,217 +1,83 @@
-Background@SETTINGS_MENU:
-	Logic:SettingsMenuLogic
+Background@SETTINGS_PANEL:
+	Logic:SettingsLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM- HEIGHT)/2
-	Width: 540
-	Height: 400
+	Width:600
+	Height:351
 	Children:
 		Label@SETTINGS_LABEL_TITLE:
-			X:0
 			Y:20
-			Width:540
+			Width:PARENT_RIGHT
 			Height:25
 			Text:Settings
 			Align:Center
 			Font:Bold
-		Button@BUTTON_CLOSE:
+		Button@RESET_BUTTON:
+			X:20
+			Y:PARENT_BOTTOM - 45
+			Width:160
+			Height:25
+			Text:Reset
+		Button@BACK_BUTTON:
+			Key:escape
 			X:PARENT_RIGHT - 180
 			Y:PARENT_BOTTOM - 45
 			Width:160
 			Height:25
-			Text:Close
+			Text:Back
 			Font:Bold
-			Key:escape
 		Container@TAB_CONTAINER:
-			X:0
 			Y:50
 			Width:PARENT_RIGHT
 			Height:25
 			Children:
-				Button@GENERAL:
-					X:45
-					Y:0
-					Width:90
-					Height:25
-					Text:General
-					Font:Bold
-				Button@AUDIO:
-					X:135
-					Y:0
-					Width:90
-					Height:25
-					Text:Audio
-					Font:Bold
-				Button@DISPLAY:
-					X:225
-					Y:0
+				Button@DISPLAY_TAB:
+					X:115
 					Width:90
 					Height:25
 					Text:Display
 					Font:Bold
-				Button@KEYS:
-					X:315
-					Y:0
+				Button@AUDIO_TAB:
+					X:205
 					Width:90
 					Height:25
-					Text:Keys
+					Text:Audio
 					Font:Bold
-				Button@DEBUG:
-					X:405
-					Y:0
+				Button@INPUT_TAB:
+					X:295
 					Width:90
 					Height:25
-					Text:Debug
+					Text:Input
 					Font:Bold
-		Container@GENERAL_PANE:
-			X:37
-			Y:100
-			Width:PARENT_RIGHT - 37
-			Height:PARENT_BOTTOM - 100
-			Visible: true
-			Children:
-				Label@SETTINGS_PLAYER_NAME:
-					X:0
-					Y:10
-					Text: Player Name:
-				TextField@NAME:
-					Text:Name
-					Width:139
+				Button@ADVANCED_TAB:
+					X:385
+					Width:90
 					Height:25
-					X:90
-					Y:0
-					MaxLength:16
-				Checkbox@EDGE_SCROLL:
-					X:0
-					Y:30
-					Width:200
-					Height:20
-					Text: Enable Edge Scrolling
-				Label@EDGE_SCROLL_AMOUNT_LABEL:
-					X:0
-					Y:70
-					Text: Scroll Speed
-				Slider@EDGE_SCROLL_AMOUNT:
-					X:130
-					Y:60
-					Width:250
-					Height:20
-					Ticks:5
-					MinimumValue: 10
-					MaximumValue: 50
-				Checkbox@INVERSE_SCROLL:
-					X:0
-					Y:90
-					Width:200
-					Height:20
-					Text: Invert Mouse Drag Scrolling
-				Checkbox@SHOW_SHELLMAP:
-					X:0
-					Y:150
-					Width:200
-					Height:20
-					Text: Show Shellmap
-				Checkbox@USE_CLASSIC_MOUSE_STYLE_CHECKBOX:
-					X:0
-					Y:180
-					Width:200
-					Height:20
-					Text: Left-Click Orders
-				Checkbox@ALLOW_NAT_DISCOVERY_CHECKBOX:
-					X:0
-					Y:210
-					Width:200
-					Height:20
-					Text: Enable Network Discovery (UPnP)
-		Container@AUDIO_PANE:
-			X:37
-			Y:100
-			Width:PARENT_RIGHT - 37
-			Height:PARENT_BOTTOM - 100
-			Visible: false
-			Children:
-				Label@SOUND_VOLUME_LABEL:
-					X:0
-					Y:10
-					Text: Sound Volume
-				Slider@SOUND_VOLUME:
-					X:100
-					Y:0
-					Width:250
-					Height:20
-					Ticks:5
-				Label@MUSIC_VOLUME_LABEL:
-					X:0
-					Y:40
-					Text: Music Volume
-				Slider@MUSIC_VOLUME:
-					X:100
-					Y:30
-					Width:250
-					Height:20
-					Ticks:5
-				Label@VIDEO_VOLUME_LABEL:
-					X:0
-					Y:70
-					Text: Video Volume
-				Slider@VIDEO_VOLUME:
-					X:100
-					Y:60
-					Width:250
-					Height:20
-					Ticks:5
-				Checkbox@CASHTICK_CHECKBOX:
-					X:0
-					Y:90
-					Width:200
-					Height:20
-					Text:Cash Ticks
-				Checkbox@MAP_MUSIC_CHECKBOX:
-					X:0
-					Y:120
-					Width:200
-					Height:20
-					Text: Autoplay Music After Map Load
-				Label@AUDIO_DEVICE_LABEL:
-					X:0
-					Y:150
-					Width:75
-					Height:25
-					Text:Audio Device:
-				DropDownButton@AUDIO_DEVICE:
-					X:100
-					Y:150
-					Width:250
-					Height:25
-					Font:Regular
-				Label@AUDIO_DESC:
-					Y:175
-					Width:200
-					Height:25
-					Font:Tiny
-					Text:Device changes will be applied after the game is restarted.
-		Container@DISPLAY_PANE:
-			X:37
-			Y:100
-			Width:PARENT_RIGHT - 37
-			Height:PARENT_BOTTOM - 100
-			Visible: false
+					Text:Advanced
+					Font:Bold
+		Container@DISPLAY_PANEL:
+			X:5
+			Y:50
+			Width:PARENT_RIGHT - 10
+			Height:PARENT_BOTTOM
 			Children:
 				Label@MODE_LABEL:
-					X:0
-					Y:0
+					X:120
+					Y:39
 					Width:45
 					Height:25
+					Align:Right
 					Text:Mode:
 				DropDownButton@MODE_DROPDOWN:
-					X:50
-					Y:0
+					X:170
+					Y:40
 					Width:170
 					Height:25
 					Font:Regular
 					Text:Windowed
 				Container@WINDOW_RESOLUTION:
-					X:225
-					Y:0
+					X:340
+					Y:40
 					Children:
 						Label@At:
 							Text:@
@@ -239,165 +105,328 @@ Background@SETTINGS_MENU:
 							Height:25
 							MaxLength:5
 				Label@VIDEO_DESC:
-					Y:30
+					Y:60
 					Width:PARENT_RIGHT
 					Height:25
 					Font:Tiny
 					Align:Center
-					Text:Mode/Resolution changes will be applied after the game is restarted.
+					Text:Mode/Resolution changes will be applied after the game is restarted
+				Checkbox@FRAME_LIMIT_CHECKBOX:
+					X:15
+					Y:100
+					Width:200
+					Height:20
+					Font:Regular
+					Text:Enable Frame Limiter
 				Checkbox@PIXELDOUBLE_CHECKBOX:
-					Y:60
+					X:310
+					Y:105
 					Width:200
 					Height:20
 					Font:Regular
 					Text:Enable Pixel Doubling
-				Checkbox@CAPFRAMERATE_CHECKBOX:
-					Y:90
-					Width:200
-					Height:20
-					Font:Regular
-					Text:Cap Framerate @ 
-				TextField@MAX_FRAMERATE:
-					X:150
-					Y:90
+				Label@FRAME_LIMIT_DESC_A:
+					X:45
+					Y:132
+					Width:50
+					Height:25
+					Text:Limit to 
+					Align:Right
+				TextField@FRAME_LIMIT_TEXTFIELD:
+					X:100
+					Y:133
 					Width:45
 					Height:25
 					MaxLength:3
+				Label@FRAME_LIMIT_DESC_B:
+					X:150
+					Y:132
+					Height:25
+					Text: FPS
+				Checkbox@SHOW_SHELLMAP:
+					X:310
+					Y:135
+					Width:200
+					Height:20
+					Font:Regular
+					Text:Show Shellmap
+				Label@VIDEO_TITLE:
+					Y:175
+					Width:PARENT_RIGHT
+					Font:Bold
+					Text:Localization
+					Align:Center
 				Label@LANGUAGE_LABEL:
-					X:0
-					Y:130
+					X:230 - WIDTH - 5
+					Y:194
 					Width:75
 					Height:25
+					Align:Right
 					Text:Language:
 				DropDownButton@LANGUAGE_DROPDOWNBUTTON:
-					X:80
-					Y:130
-					Width:140
+					X:230
+					Y:195
+					Width:200
 					Height:25
-				Label@LANGUAGE_DESC:
-					Y:160
+				Label@VIDEO_DESC_A:
+					Y:215
 					Width:PARENT_RIGHT
 					Height:25
 					Font:Tiny
 					Align:Center
-					Text:Language changes will be applied after the game is restarted.
-		Container@KEYS_PANE:
-			X:37
-			Y:100
-			Width:PARENT_RIGHT - 37
-			Height:PARENT_BOTTOM - 100
-			Visible: false
+					Text:Language changes will be applied after the game is restarted
+				Label@VIDEO_DESC_B:
+					Y:230
+					Width:PARENT_RIGHT
+					Height:25
+					Font:Tiny
+					Align:Center
+					Text:Translations apply to text strings only; Speech and build icons will remain in English
+		Container@AUDIO_PANEL:
+			X:5
+			Y:50
+			Width:PARENT_RIGHT - 10
+			Height:PARENT_BOTTOM
 			Children:
-				Label@KEYS_SPECIALHOTKEYSHEADLINE:
-					X:0
-					Y:0
-					Text: Special Hotkeys:
-					Font:Bold
-				ScrollPanel@SPECIALHOTKEY_LIST:
-					X:0
-					Y:20
-					Width:449
-					Height:85
-					Children:
-						ScrollItem@SPECIALHOTKEY_TEMPLATE:
-							Width:PARENT_RIGHT-27
-							Height:25
-							X:2
-							Y:0
-							Visible:false
-							Children:
-								Label@FUNCTION:
-									X:10
-									Width:200
-									Height:25
-								HotkeyEntry@HOTKEY:
-									X:250
-									Width:139
-									Height:25
-				Label@KEYS_UNITCOMMANDSHEADLINE:
-					X:0
-					Y:130
-					Text: Hotkeys for Unit Commands:
-					Font:Bold
-				ScrollPanel@UNITCOMMANDHOTKEY_LIST:
-					X:0
-					Y:150
-					Width:449
-					Height:85
-					Children:
-						ScrollItem@UNITCOMMANDHOTKEY_TEMPLATE:
-							Width:PARENT_RIGHT-27
-							Height:25
-							X:2
-							Y:0
-							Visible:false
-							Children:
-								Label@FUNCTION:
-									X:10
-									Width:200
-									Height:25
-								HotkeyEntry@HOTKEY:
-									X:250
-									Width:139
-									Height:25
-		Container@DEBUG_PANE:
-			X:37
-			Y:100
-			Width:PARENT_RIGHT - 37
-			Height:PARENT_BOTTOM - 100
-			Visible: false
-			Children:
-				Checkbox@PERFGRAPH_CHECKBOX:
-					X:0
-					Y:0
-					Width:300
+				Checkbox@SHELLMAP_MUSIC:
+					X:15
+					Y:40
+					Width:200
 					Height:20
-					Text:Show Performance Graph
-				Checkbox@PERFTEXT_CHECKBOX:
-					X:0
-					Y:30
-					Width:300
-					Height:20
-					Text:Show Performance Text
-				Label@PERFTEXT_SAMPLE_LABEL:
-					X:30
-					Y:70
-					Text:Update Rate
-				Slider@PERFTEXT_SAMPLE_AMOUNT:
-					X:130
-					Y:60
+					Font:Regular
+					Text:Shellmap / Mission Music
+				Label@SOUND_LABEL:
+					X:PARENT_RIGHT - WIDTH - 270
+					Y:37
+					Width:95
+					Height:25
+					Align:Right
+					Text:Sound Volume:
+				Slider@SOUND_VOLUME:
+					X:PARENT_RIGHT - WIDTH - 15
+					Y:43
 					Width:250
 					Height:20
 					Ticks:5
-					MinimumValue: 1
-					MaximumValue: 50
-				Checkbox@CHECKUNSYNCED_CHECKBOX:
-					X:0
-					Y:90
-					Width:300
-					Height:20
-					Text:Check Sync around Unsynced Code
-				Checkbox@BOTDEBUG_CHECKBOX:
-					X:0
-					Y:120
-					Width:300
-					Height:20
-					Text:Show Bot Debug Messages
-				Checkbox@VERBOSE_NAT_DISCOVERY_CHECKBOX:
-					X:0
-					Y:150
-					Width:300
-					Height:20
-					Text:Detailed NAT logging
-				Checkbox@DEVELOPER_MENU_CHECKBOX:
-					X:0
-					Y:180
-					Width:300
-					Height:20
-					Text:Enable Asset Browser (requires restart)
-				Checkbox@SHOW_FATAL_ERROR_DIALOG_CHECKBOX:
-					X:0
-					Y:210
+				Checkbox@CASH_TICKS:
+					X:15
+					Y:70
 					Width:200
 					Height:20
+					Font:Regular
+					Text:Cash Ticks
+				Label@MUSIC_LABEL:
+					X:PARENT_RIGHT - WIDTH - 270
+					Y:67
+					Width:95
+					Height:25
+					Align:Right
+					Text:Music Volume:
+				Slider@VIDEO_VOLUME:
+					X:PARENT_RIGHT - WIDTH - 15
+					Y:73
+					Width:250
+					Height:20
+					Ticks:5
+				Label@VIDEO_LABEL:
+					X:PARENT_RIGHT - WIDTH - 270
+					Y:97
+					Width:95
+					Height:25
+					Align:Right
+					Text:Video Volume:
+				Slider@MUSIC_VOLUME:
+					X:PARENT_RIGHT - WIDTH - 15
+					Y:103
+					Width:250
+					Height:20
+					Ticks:5
+				Label@AUDIO_DEVICE_LABEL:
+					X:190 - WIDTH - 5
+					Y:194
+					Width:75
+					Height:25
+					Align:Right
+					Text:Audio Device:
+				DropDownButton@AUDIO_DEVICE:
+					X:190
+					Y:195
+					Width:300
+					Height:25
+				Label@AUDIO_DEVICE_DESC:
+					Y:215
+					Width:PARENT_RIGHT
+					Height:25
+					Font:Tiny
+					Align:Center
+					Text:Device changes will be applied after the game is restarted
+		Container@INPUT_PANEL:
+			X:5
+			Y:50
+			Width:PARENT_RIGHT - 10
+			Height:PARENT_BOTTOM
+			Children:
+				Checkbox@CLASSICORDERS_CHECKBOX:
+					X:15
+					Y:40
+					Width:250
+					Height:20
+					Font:Regular
+					Text:Left-Click Orders
+				Label@MOUSE_SCROLL_LABEL:
+					X:PARENT_RIGHT - WIDTH - 120
+					Y:39
+					Width:160
+					Height:20
+					Font:Regular
+					Text:Middle-Mouse Scrolling:
+					Align:Right
+				DropDownButton@MOUSE_SCROLL:
+					X:PARENT_RIGHT - WIDTH - 15
+					Y:38
+					Width:100
+					Height:25
+					Font:Regular
+					Text:Enabled
+				Checkbox@EDGESCROLL_CHECKBOX:
+					X:15
+					Y:70
+					Width:130
+					Height:20
+					Font:Regular
+					Text:Edge Scrolling
+				Label@SCROLL_SPEED_LABEL:
+					X:PARENT_RIGHT - WIDTH - 270
+					Y:67
+					Width:95
+					Height:25
+					Text:Scroll Speed:
+					Align:Right
+				Slider@SCROLLSPEED_SLIDER:
+					X:PARENT_RIGHT - WIDTH - 15
+					Y:73
+					Width:250
+					Height:20
+					Ticks:5
+					MinimumValue: 10
+					MaximumValue: 50
+				Label@HOTKEY_TITLE:
+					Y:115
+					Width:PARENT_RIGHT
+					Font:Bold
+					Text:Hotkeys
+					Align:Center
+				ScrollPanel@HOTKEY_LIST:
+					X:15
+					Y:135
+					Width:560
+					ItemSpacing:4
+					Height:110
+					Children:
+						ScrollItem@HEADER:
+							BaseName:scrollheader
+							Width:528
+							Height:13
+							Visible:false
+							Children:
+								Label@LABEL:
+									Font:TinyBold
+									Width:PARENT_RIGHT
+									Height:10
+									Align:Center
+						Container@GLOBAL_TEMPLATE:
+							Width:262
+							Height:25
+							Visible:false
+							Children:
+								Label@FUNCTION:
+									Y:0-1
+									Width:PARENT_RIGHT - 85
+									Height:25
+									Align:Right
+								HotkeyEntry@HOTKEY:
+									X:PARENT_RIGHT-WIDTH
+									Width:80
+									Height:25
+						Container@UNIT_TEMPLATE:
+							Width:173
+							Height:25
+							Visible:false
+							Children:
+								Label@FUNCTION:
+									Y:0-1
+									Width:PARENT_RIGHT - 84
+									Height:25
+									Align:Right
+								HotkeyEntry@HOTKEY:
+									X:PARENT_RIGHT-WIDTH+1
+									Width:80
+									Height:25
+		Container@ADVANCED_PANEL:
+			X:5
+			Y:50
+			Width:PARENT_RIGHT - 10
+			Height:PARENT_BOTTOM
+			Children:
+				Checkbox@NAT_DISCOVERY:
+					X:15
+					Y:40
+					Width:200
+					Height:20
+					Font:Regular
+					Text: Enable Network Discovery (UPnP)
+				Checkbox@CRASH_DIALOG_CHECKBOX:
+					X:310
+					Y:40
+					Width:300
+					Height:20
+					Font:Regular
 					Text:Show Fatal Error dialog
+				Checkbox@PERFTEXT_CHECKBOX:
+					X:15
+					Y:70
+					Width:300
+					Height:20
+					Font:Regular
+					Text:Show Performance Text
+				Checkbox@PERFGRAPH_CHECKBOX:
+					X:310
+					Y:70
+					Width:300
+					Height:20
+					Font:Regular
+					Text:Show Performance Graph
+				Checkbox@DEVELOPER_MENU_CHECKBOX:
+					X:15
+					Y:100
+					Width:300
+					Height:20
+					Font:Regular
+					Text:Enable Asset Browser (requires restart)
+				Label@HOTKEY_TITLE:
+					Y:140
+					Width:PARENT_RIGHT
+					Font:Bold
+					Text:Debug
+					Align:Center
+				Checkbox@BOTDEBUG_CHECKBOX:
+					X:15
+					Y:160
+					Width:300
+					Height:20
+					Font:Regular
+					Text:Show Bot Debug Messages
+				Checkbox@VERBOSE_NAT_CHECKBOX:
+					X:310
+					Y:160
+					Width:300
+					Height:20
+					Font:Regular
+					Text:Detailed NAT logging
+				Checkbox@CHECKUNSYNCED_CHECKBOX:
+					X:15
+					Y:190
+					Width:300
+					Height:20
+					Font:Regular
+					Text:Check Sync around Unsynced Code
