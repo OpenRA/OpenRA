@@ -18,6 +18,8 @@ namespace OpenRA.Widgets
 {
 	public interface ILayout { void AdjustChild(Widget w); void AdjustChildren(); }
 
+	public enum ScrollPanelAlign { Bottom, Top }
+
 	public class ScrollPanelWidget : Widget
 	{
 		public int ScrollbarWidth = 24;
@@ -28,6 +30,7 @@ namespace OpenRA.Widgets
 		public int ContentHeight = 0;
 		public ILayout Layout;
 		public int MinimumThumbSize = 10;
+		public ScrollPanelAlign Align = ScrollPanelAlign.Top;
 		protected float ListOffset = 0;
 		protected bool UpPressed = false;
 		protected bool DownPressed = false;
@@ -135,12 +138,15 @@ namespace OpenRA.Widgets
 
 		public void ScrollToBottom()
 		{
-			ListOffset = Math.Min(0,Bounds.Height - ContentHeight);
+			ListOffset = Align == ScrollPanelAlign.Top ?
+				Math.Min(0, Bounds.Height - ContentHeight) :
+				Bounds.Height - ContentHeight;
 		}
 
 		public void ScrollToTop()
 		{
-			ListOffset = 0;
+			ListOffset = Align == ScrollPanelAlign.Top ? 0 :
+				Math.Max(0, Bounds.Height - ContentHeight);
 		}
 
 		public bool ScrolledToBottom

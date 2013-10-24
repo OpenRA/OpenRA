@@ -153,10 +153,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gameSettings);
 			mouseScrollDropdown.GetText = () => gameSettings.MouseScroll.ToString();
 
-			var teamchatCheckbox = inputPane.Get<CheckboxWidget>("TEAMCHAT_CHECKBOX");
-			teamchatCheckbox.IsChecked = () => gameSettings.TeamChatToggle;
-			teamchatCheckbox.OnClick = () => gameSettings.TeamChatToggle ^= true;
-
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
 				playerSettings.Name = nameTextfield.Text;

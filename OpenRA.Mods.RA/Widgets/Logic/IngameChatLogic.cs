@@ -10,71 +10,65 @@
 
 using System;
 using System.Drawing;
-using OpenRA.Widgets;
 using OpenRA.Network;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class IngameChatLogic
 	{
-		internal World World;
-		internal readonly ContainerWidget ChatOverlay;
-		internal readonly ChatDisplayWidget ChatOverlayDisplay;
+		readonly ContainerWidget chatOverlay;
+		readonly ChatDisplayWidget chatOverlayDisplay;
 
+		readonly ContainerWidget chatChrome;
+		readonly ScrollPanelWidget chatScrollPanel;
+		readonly ContainerWidget chatTemplate;
+		readonly TextFieldWidget chatText;
 
-		internal readonly ContainerWidget ChatChrome;
-		internal readonly ScrollPanelWidget ChatScrollPanel;
-		internal readonly ContainerWidget ChatTemplate;
-		internal readonly TextFieldWidget ChatText;
-
-		private bool teamChat = false;
-		internal bool TeamChat
-		{
-			get { return World.LocalPlayer == null ? false : teamChat; }
-			set { teamChat = value; }
-		}
+		bool teamChat;
 
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world)
 		{
-			World = world;
-			var chatPanel = (ContainerWidget) widget;
+			teamChat = world.LocalPlayer != null;
 
+			var chatPanel = (ContainerWidget)widget;
+			chatOverlay = chatPanel.Get<ContainerWidget>("CHAT_OVERLAY");
+			chatOverlayDisplay = chatOverlay.Get<ChatDisplayWidget>("CHAT_DISPLAY");
+			chatOverlay.Visible = false;
 
-			ChatOverlay = chatPanel.Get<ContainerWidget>("CHAT_OVERLAY");
-			ChatOverlayDisplay = ChatOverlay.Get<ChatDisplayWidget>("CHAT_DISPLAY");
-			ChatOverlay.Visible = false;
+			chatChrome = chatPanel.Get<ContainerWidget>("CHAT_CHROME");
+			chatChrome.Visible = true;
 
-			ChatChrome = chatPanel.Get<ContainerWidget>("CHAT_CHROME");
-			ChatChrome.Visible = true;
+			var chatMode = chatChrome.Get<ButtonWidget>("CHAT_MODE");
+			chatMode.GetText = () => teamChat ? "Team" : "All";
+			chatMode.OnClick = () => teamChat ^= true;
+			chatMode.IsDisabled = () => world.LocalPlayer == null;
 
-			var chatMode = ChatChrome.Get<ButtonWidget>("CHAT_MODE");
-			chatMode.GetText = () => TeamChat ? "Team" : "All";
-			chatMode.OnClick = () => TeamChat = !TeamChat;
-
-			ChatText = ChatChrome.Get<TextFieldWidget>("CHAT_TEXTFIELD");
-			ChatText.OnTabKey = () => { TeamChat = !TeamChat; return true; };
-			ChatText.OnEnterKey = () =>
+			chatText = chatChrome.Get<TextFieldWidget>("CHAT_TEXTFIELD");
+			chatText.OnTabKey = () => { teamChat ^= true; return true; };
+			chatText.OnEnterKey = () =>
 			{
-				ChatText.Text = ChatText.Text.Trim();
-				if (ChatText.Text != "")
-					orderManager.IssueOrder(Order.Chat(TeamChat, ChatText.Text));
+				var team = teamChat && world.LocalPlayer != null;
+				if (chatText.Text != "")
+					orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
+
 				CloseChat();
 				return true;
 			};
-			ChatText.OnEscKey = () => {CloseChat(); return true; };
 
-			var chatClose = ChatChrome.Get<ButtonWidget>("CHAT_CLOSE");
+			chatText.OnEscKey = () => { CloseChat(); return true; };
+
+			var chatClose = chatChrome.Get<ButtonWidget>("CHAT_CLOSE");
 			chatClose.OnClick += () => CloseChat();
 
 			chatPanel.OnKeyPress = (e) =>
 			{
-				if (e.Event == KeyInputEvent.Up) return false;
-				if (!IsOpen && (e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER))
+				if (e.Event == KeyInputEvent.Up)
+					return false;
+
+				if (!chatChrome.IsVisible() && (e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER))
 				{
-					var shift = e.Modifiers.HasModifier(Modifiers.Shift);
-					var toggle = Game.Settings.Game.TeamChatToggle ;
-					TeamChat = (!toggle && shift) || ( toggle &&  (TeamChat ^ shift) );
 					OpenChat();
 					return true;
 				}
@@ -82,14 +76,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return false;
 			};
 
-			ChatScrollPanel = ChatChrome.Get<ScrollPanelWidget>("CHAT_SCROLLPANEL");
-			ChatTemplate = ChatScrollPanel.Get<ContainerWidget>("CHAT_TEMPLATE");
+			chatScrollPanel = chatChrome.Get<ScrollPanelWidget>("CHAT_SCROLLPANEL");
+			chatTemplate = chatScrollPanel.Get<ContainerWidget>("CHAT_TEMPLATE");
+			chatScrollPanel.RemoveChildren();
 
 			Game.AddChatLine += AddChatLine;
 			Game.BeforeGameStart += UnregisterEvents;
 
 			CloseChat();
-			ChatOverlayDisplay.AddLine(Color.White, null, "Use RETURN key to open chat window...");
 		}
 
 		void UnregisterEvents()
@@ -100,33 +94,32 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public void OpenChat()
 		{
-			ChatText.Text = "";
-			ChatOverlay.Visible = false;
-			ChatChrome.Visible = true;
-			ChatText.TakeKeyboardFocus();
+			chatText.Text = "";
+			chatOverlay.Visible = false;
+			chatChrome.Visible = true;
+			chatScrollPanel.ScrollToBottom();
+			chatText.TakeKeyboardFocus();
 		}
 
 		public void CloseChat()
 		{
-			ChatOverlay.Visible = true;
-			ChatChrome.Visible = false;
-			ChatText.YieldKeyboardFocus();
+			chatOverlay.Visible = true;
+			chatChrome.Visible = false;
+			chatText.YieldKeyboardFocus();
 		}
-
-		public bool IsOpen { get { return ChatChrome.IsVisible(); } }
 
 		public void AddChatLine(Color c, string from, string text)
 		{
+			chatOverlayDisplay.AddLine(c, from, text);
 
-			ChatOverlayDisplay.AddLine(c, from, text);
-
-			var template = ChatTemplate.Clone();
+			var template = chatTemplate.Clone();
 			var nameLabel = template.Get<LabelWidget>("NAME");
 			var textLabel = template.Get<LabelWidget>("TEXT");
 
 			var name = "";
 			if (!string.IsNullOrEmpty(from))
 				name = from + ":";
+
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var nameSize = font.Measure(from);
 
@@ -146,10 +139,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				template.Bounds.Height += dh;
 			}
 
-			ChatScrollPanel.AddChild(template);
-			ChatScrollPanel.ScrollToBottom();
+			chatScrollPanel.AddChild(template);
+			chatScrollPanel.ScrollToBottom();
 			Sound.PlayNotification(null, "Sounds", "ChatLine", null);
 		}
 	}
 }
-

@@ -65,10 +65,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			inversescroll.IsChecked = () => Game.Settings.Game.MouseScroll == MouseScrollType.Inverted;
 			inversescroll.OnClick = () => Game.Settings.Game.MouseScroll = (Game.Settings.Game.MouseScroll == MouseScrollType.Inverted) ? MouseScrollType.Standard : MouseScrollType.Inverted;
 
-			var teamchatCheckbox = general.Get<CheckboxWidget>("TEAMCHAT_TOGGLE");
-			teamchatCheckbox.IsChecked = () => Game.Settings.Game.TeamChatToggle;
-			teamchatCheckbox.OnClick = () => Game.Settings.Game.TeamChatToggle ^= true;
-
 			var showShellmapCheckbox = general.Get<CheckboxWidget>("SHOW_SHELLMAP");
 			showShellmapCheckbox.IsChecked = () => Game.Settings.Game.ShowShellmap;
 			showShellmapCheckbox.OnClick = () => Game.Settings.Game.ShowShellmap ^= true;

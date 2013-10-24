@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -18,10 +19,9 @@ namespace OpenRA.Widgets
 	{
 		public readonly int RemoveTime = 0;
 		public readonly bool UseContrast = false;
+		public string Notification = "";
 
 		const int logLength = 9;
-		public string Notification = "";
-		public bool DrawBackground = true;
 		int ticksUntilRemove = 0;
 
 		internal List<ChatLine> recentLines = new List<ChatLine>();
@@ -35,13 +35,9 @@ namespace OpenRA.Widgets
 		{
 			var pos = RenderOrigin;
 			var chatLogArea = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
-			var chatpos = new int2(chatLogArea.X + 10, chatLogArea.Bottom - 6);
-
-			if (DrawBackground)
-				WidgetUtils.DrawPanel("dialog3", chatLogArea);
+			var chatpos = new int2(chatLogArea.X + 5, chatLogArea.Bottom - 5);
 
 			var font = Game.Renderer.Fonts["Regular"];
-
 			Game.Renderer.EnableScissor(chatLogArea.Left, chatLogArea.Top, chatLogArea.Width, chatLogArea.Height);
 
 			foreach (var line in recentLines.AsEnumerable().Reverse())
@@ -52,12 +48,14 @@ namespace OpenRA.Widgets
 				if (!string.IsNullOrEmpty(line.Owner))
 				{
 					owner = line.Owner + ":";
-					inset = font.Measure(owner).X + 10;
+					inset = font.Measure(owner).X + 5;
 				}
 
-				var text = WidgetUtils.WrapText(line.Text, chatLogArea.Width - inset, font);
-				var textLines = text.Split(new[] { '\n' }).Count();
-				chatpos.Y -= 20 * textLines;
+				var text = WidgetUtils.WrapText(line.Text, chatLogArea.Width - inset - 6, font);
+				chatpos.Y -= Math.Max(15, font.Measure(text).Y) + 5;
+
+				if (chatpos.Y < pos.Y)
+					break;
 
 				if (owner != null)
 				{
@@ -80,12 +78,14 @@ namespace OpenRA.Widgets
 			if (Notification != null)
 				Sound.Play(Notification);
 
-			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
+			while (recentLines.Count > logLength)
+				recentLines.RemoveAt(0);
 		}
 
 		public void RemoveLine()
 		{
-			if (recentLines.Count > 0) recentLines.RemoveAt(0);
+			if (recentLines.Count > 0)
+				recentLines.RemoveAt(0);
 		}
 
 		public void ClearChat()
@@ -95,8 +95,12 @@ namespace OpenRA.Widgets
 
 		public override void Tick()
 		{
-			if (RemoveTime == 0) return;
-			if (--ticksUntilRemove > 0) return;
+			if (RemoveTime == 0)
+				return;
+
+			if (--ticksUntilRemove > 0)
+				return;
+
 			ticksUntilRemove = RemoveTime;
 			RemoveLine();
 		}
