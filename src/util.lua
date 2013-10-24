@@ -234,6 +234,12 @@ end
 
 function FileWrite(file, content)
   local log = wx.wxLogNull() -- disable error reporting; will report as needed
+
+  if not wx.wxFileExists(file)
+  and not wx.wxFileName(file):Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL) then
+    return nil, wx.wxSysErrorMsg()
+  end
+
   local file = wx.wxFile(file, wx.wxFile.write)
   if not file:IsOpened() then return nil, wx.wxSysErrorMsg() end
 
