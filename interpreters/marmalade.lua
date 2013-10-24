@@ -18,7 +18,8 @@ return {
            win and ([[C:\Marmalade]]..sep..[[D:\Marmalade]]..sep..
                     [[C:\Program Files\Marmalade]]..sep..[[D:\Program Files\Marmalade]]..sep..
                     [[C:\Program Files (x86)\Marmalade]]..sep..[[D:\Program Files (x86)\Marmalade]]..sep)
-        or mac and ([[/Developer/Marmalade]]..sep)
+        or mac and ([[/Applications/Marmalade.app/Contents]]..sep..
+                    [[/Developer/Marmalade]]..sep)
         or ''
       -- Marmalade can be installed in a folder with version number or without
       -- so it may be c:\Marmalade\s3e\... or c:\Marmalade\6.2\s3e\...
@@ -29,6 +30,8 @@ return {
           if GetFullPathIfExists(candidate, exe) then table.insert(candidates, candidate) end
           if GetFullPathIfExists(candidate.."/s3e", exe) then table.insert(candidates, candidate.."/s3e") end
         end
+        -- stop on Mac if found something in /Applications (7.0+)
+        if mac and #candidates > 0 then break end
       end
       -- multiple candidates may be present, so sort and use the latest.
       -- only happens if multiple versions are installed and S3E_DIR is not set.
@@ -42,6 +45,8 @@ return {
         return
       end
     end
+
+    if not s3e then s3e = quick:gsub(exe, '') end
 
     local projdir = self:fworkdir(wfilename)
     local file = GetFullPathIfExists(projdir, 'main.lua')
