@@ -54,11 +54,12 @@ function OnUpdateUIEditMenu(event)
   local editor = getControlWithFocus()
   if editor == nil then event:Enable(false); return end
 
+  local cancomment = pcall(function() return editor.spec end) and editor.spec
+    and editor.spec.linecomment and true or false
   local alwaysOn = { [ID_SELECTALL] = true, [ID_FOLD] = ide.config.editor.fold,
     -- allow Cut and Copy commands as these work on a line if no selection
     [ID_COPY] = true, [ID_CUT] = true,
-    [ID_COMMENT] = editor.spec and editor.spec.linecomment and true or false,
-    [ID_AUTOCOMPLETE] = true, [ID_SORT] = true}
+    [ID_COMMENT] = cancomment, [ID_AUTOCOMPLETE] = true, [ID_SORT] = true}
   local menu_id = event:GetId()
   local enable =
     menu_id == ID_PASTE and editor:CanPaste() or
