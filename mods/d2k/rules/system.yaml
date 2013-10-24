@@ -417,6 +417,11 @@ World:
 		G: 0
 		B: 0
 		A: 128
+	PaletteFromR8@moveflash:
+		Name: moveflash
+		Filename: DATA.R8
+		Offset: 2572352
+		A: 64
 	PaletteFromRGBA@disabled:
 		Name: disabled
 		R: 0

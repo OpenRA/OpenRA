@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Orders
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public void RenderAfterWorld(WorldRenderer wr, World world)
 		{
-			var position = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
+			var position = wr.Viewport.ViewToWorldCellPosition(Viewport.LastMousePos);
 			var topLeft = position - FootprintUtils.AdjustForBuildingSize(BuildingInfo);
 
 			var actorInfo = Rules.Info[Building];

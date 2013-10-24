@@ -305,3 +305,9 @@ icon:
 		Start: 0
 	abomb: atomicnh
 		Start: 0
+
+moveflsh:
+	idle:
+		Start: 0
+		Length: *
+		Tick: 80

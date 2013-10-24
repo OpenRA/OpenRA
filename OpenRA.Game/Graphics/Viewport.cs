@@ -94,7 +94,12 @@ namespace OpenRA.Graphics
 			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 		}
 
-		public CPos ViewToWorld(int2 view)
+		public WPos ViewToWorldPosition(int2 view)
+		{
+			return worldRenderer.Position(ViewToWorldPx(view));
+		}
+
+		public CPos ViewToWorldCellPosition(int2 view)
 		{
 			return worldRenderer.Position(ViewToWorldPx(view)).ToCPos();
 		}

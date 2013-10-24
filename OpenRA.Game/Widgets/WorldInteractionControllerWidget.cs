@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Orders;
@@ -140,6 +141,8 @@ namespace OpenRA.Widgets
 			orders.Do(o => world.IssueOrder(o));
 
 			world.PlayVoiceForOrders(orders);
+			if (orders.Where(o => o.OrderString != null && o.OrderString.EndsWith("Move")).Any())
+				world.Add(new MoveFlash(worldRenderer.Viewport.ViewToWorldPosition(mi.Location), world));
 		}
 
 		public override string GetCursor(int2 screenPos)
