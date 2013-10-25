@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA.Render
 		public readonly int MinIdleWaitTicks = 30;
 		public readonly int MaxIdleWaitTicks = 110;
 		public readonly string[] IdleAnimations = { };
+		public readonly string[] StandAnimations = { "stand" };
 
 		public override object Create(ActorInitializer init) { return new RenderInfantry(init.self, this); }
 	}
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.RA.Render
 			: base(self, MakeFacingFunc(self))
 		{
 			this.info = info;
-			anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
+			anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 			State = AnimationState.Waiting;
 			mobile = self.Trait<Mobile>();
 
@@ -86,7 +87,7 @@ namespace OpenRA.Mods.RA.Render
 			if ((State == AnimationState.Moving || dirty) && !mobile.IsMoving)
 			{
 				State = AnimationState.Waiting;
-				anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
+				anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 			}
 			else if ((State != AnimationState.Moving || dirty) && mobile.IsMoving)
 			{
@@ -101,7 +102,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			if (State != AnimationState.Idle && State != AnimationState.IdleAnimating)
 			{
-				anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
+				anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 				State = AnimationState.Idle;
 
 				if (info.IdleAnimations.Length > 0)
@@ -117,7 +118,7 @@ namespace OpenRA.Mods.RA.Render
 					State = AnimationState.IdleAnimating;
 					anim.PlayThen(idleSequence,	() =>
 					{
-						anim.PlayRepeating(NormalizeInfantrySequence(self, "stand"));
+						anim.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
 						State = AnimationState.Waiting;
 					});
 				}
