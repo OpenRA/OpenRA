@@ -4,7 +4,7 @@ e1:
 		Facings: 8
 	stand2:
 		Start: 8
-		Length: 8
+		Facings: 8
 	stand3:
 		Start: 128
 		Length: 16
@@ -141,7 +141,7 @@ e3:
 		Facings: 8
 	stand2:
 		Start: 8
-		Length: 8
+		Facings: 8
 	run:
 		Start: 16
 		Length: 6
@@ -203,7 +203,7 @@ e6:
 		Facings: 8
 	stand2:
 		Start: 8
-		Length: 8
+		Facings: 8
 	run:
 		Start: 16
 		Length: 6
@@ -373,7 +373,7 @@ e2:
 		Facings: 8
 	stand2:
 		Start: 8
-		Length: 8
+		Facings: 8
 	run:
 		Start: 16
 		Length: 6
@@ -481,7 +481,7 @@ spy:
 		Facings: 8
 	stand2:
 		Start: 8
-		Length: 8
+		Facings: 8
 	run:
 		Start: 16
 		Length: 6
@@ -636,7 +636,7 @@ e4:
 		Facings: 8
 	stand2:
 		Start: 8
-		Length: 8
+		Facings: 8
 	run:
 		Start: 16
 		Length: 6
