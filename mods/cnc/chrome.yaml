@@ -251,17 +251,8 @@ scrollitem-selected: chrome.png
 	corner-bl: 64,254,2,2
 	corner-br: 126,254,2,2
 
-# A copy of panel-gray
-slider-tick: chrome.png
-	background: 66,66,60,60
-	border-r: 126,66,2,60
-	border-l: 64,66,2,60
-	border-b: 66,126,60,2
-	border-t: 66,64,60,2
-	corner-tl: 64,64,2,2
-	corner-tr: 126,64,2,2
-	corner-bl: 64,126,2,2
-	corner-br: 126,126,2,2
+slider: chrome.png
+	tick: 64,64,1,4
 
 # A copy of panel-gray
 slider-track: chrome.png

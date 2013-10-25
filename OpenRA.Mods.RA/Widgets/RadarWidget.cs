@@ -156,7 +156,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var tl = CellToMinimapPixel(worldRenderer.Position(worldRenderer.Viewport.TopLeft).ToCPos());
 				var br = CellToMinimapPixel(worldRenderer.Position(worldRenderer.Viewport.BottomRight).ToCPos());
 
-				Game.Renderer.EnableScissor(mapRect.Left, mapRect.Top, mapRect.Width, mapRect.Height);
+				Game.Renderer.EnableScissor(mapRect);
 				Game.Renderer.LineRenderer.DrawRect(tl, br, Color.White);
 				Game.Renderer.DisableScissor();
 			}

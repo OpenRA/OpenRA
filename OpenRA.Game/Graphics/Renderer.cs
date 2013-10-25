@@ -39,12 +39,14 @@ namespace OpenRA.Graphics
 		Queue<IVertexBuffer<Vertex>> tempBuffers = new Queue<IVertexBuffer<Vertex>>();
 
 		public Dictionary<string, SpriteFont> Fonts;
+		Stack<Rectangle> scissorState;
 
 		public Renderer()
 		{
 			TempBufferSize = Game.Settings.Graphics.BatchSize;
 			TempBufferCount = Game.Settings.Graphics.NumTempBuffers;
 			SheetSize = Game.Settings.Graphics.SheetSize;
+			scissorState = new Stack<Rectangle>();
 
 			WorldSpriteRenderer = new SpriteRenderer(this, device.CreateShader("shp"));
 			WorldRgbaSpriteRenderer = new SpriteRenderer(this, device.CreateShader("rgba"));
@@ -183,16 +185,30 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void EnableScissor(int left, int top, int width, int height)
+		public void EnableScissor(Rectangle rect)
 		{
+			// Must remain inside the current scissor rect
+			if (scissorState.Any())
+				rect.Intersect(scissorState.Peek());
+
 			Flush();
-			Device.EnableScissor(left, top, width, height);
+			Device.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
+			scissorState.Push(rect);
 		}
 
 		public void DisableScissor()
 		{
+			scissorState.Pop();
 			Flush();
-			Device.DisableScissor();
+
+			// Restore previous scissor rect
+			if (scissorState.Any())
+			{
+				var rect = scissorState.Peek();
+				Device.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
+			}
+			else
+				Device.DisableScissor();
 		}
 
 		public void EnableDepthBuffer()

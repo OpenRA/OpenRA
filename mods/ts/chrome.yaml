@@ -436,18 +436,8 @@ scrollpanel-bg: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
-
-# A copy of dialog2 (normal button)
-slider-tick: dialog.png
-	background: 513,1,126,126
-	border-r: 639,1,1,126
-	border-l: 512,1,1,126
-	border-b: 513,127,126,1
-	border-t: 513,0,126,1
-	corner-tl: 512,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 512,127,1,1
-	corner-br: 639,127,1,1
+slider: dialog.png
+	tick: 512,1,1,4
 
 # A copy of dialog3 (pressed button)
 slider-track: dialog.png

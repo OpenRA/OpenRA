@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			widget.Get<ButtonWidget>("MAINMENU_BUTTON_SETTINGS").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Game.OpenWindow("SETTINGS_MENU", new WidgetArgs()
+				Game.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
 				{
 					{ "onExit", () => Menu = MenuType.Main }
 				});

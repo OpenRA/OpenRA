@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			widget.Get<ButtonWidget>("SETTINGS").OnClick = () =>
 			{
 				widget.Visible = false;
-				Ui.OpenWindow("SETTINGS_MENU", new WidgetArgs()
+				Ui.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
 				{
 					{ "onExit", () => widget.Visible = true },
 					{ "worldRenderer", worldRenderer },

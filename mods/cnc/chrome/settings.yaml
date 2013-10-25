@@ -1,313 +1,443 @@
 Container@SETTINGS_PANEL:
-	Logic:CncSettingsLogic
+	Logic:SettingsLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 250)/2
-	Width:740
-	Height:565
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:590
+	Height:260+68
 	Children:
-		ColorPreviewManager@COLOR_MANAGER:
 		Label@TITLE:
-			Width:740
+			Width:590
 			Y:0-25
 			Font:BigBold
 			Contrast:true
 			Align:Center
 			Text:Settings
-		Background@GENERAL_CONTROLS:
-			Width:740
-			Height:320
-			Background:panel-black
+		Container@TAB_CONTAINER:
 			Children:
-				Label@TITLE:
-					X:15
-					Y:20
-					Font:Bold
-					Text:Player Profile
-					Align:Center
-					Width:340
-				Label@NAME_LABEL:
-					X:15
-					Y:39
-					Width:45
-					Height:25
-					Align:Right
-					Text:Name:
-				TextField@NAME_TEXTFIELD:
-					X:65
-					Y:40
-					Width:205
-					Height:25
-					MaxLength:16
-				DropDownButton@COLOR:
-					X:275
-					Y:40
-					Width:80
-					Height:25
-					IgnoreChildMouseOver: true
-					Children:
-						ColorBlock@COLORBLOCK:
-							X:5
-							Y:6
-							Width:PARENT_RIGHT-35
-							Height:PARENT_BOTTOM-12
-				Checkbox@SHOW_SHELLMAP:
-					X:15
-					Y:80
-					Width:200
-					Height:20
-					Font:Regular
-					Text:Show Shellmap
-				Checkbox@SHELLMAP_MUSIC:
-					X:15
-					Y:110
-					Width:200
-					Height:20
-					Font:Regular
-					Text:Shellmap Music
-				Label@DEBUG_TITLE:
-					X:15
-					Y:180
-					Width:340
-					Font:Bold
-					Text:Debug
-					Align:Center
-				Checkbox@PERFTEXT_CHECKBOX:
-					X:15
-					Y:200
-					Width:300
-					Height:20
-					Font:Regular
-					Text:Show Performance Text
-				Checkbox@PERFGRAPH_CHECKBOX:
-					X:15
-					Y:230
-					Width:300
-					Height:20
-					Font:Regular
-					Text:Show Performance Graph
-				Checkbox@CHECKUNSYNCED_CHECKBOX:
-					X:15
-					Y:260
-					Width:300
-					Height:20
-					Font:Regular
-					Text:Check Sync around Unsynced Code
-				Checkbox@SHOW_FATAL_ERROR_DIALOG_CHECKBOX:
-					X:15
-					Y:290
-					Width:300
-					Height:20
-					Font:Regular
-					Text:Show Fatal Error dialog
-				Label@VIDEO_TITLE:
-					Y:20
-					X:375
-					Font:Bold
-					Text:Graphics
-					Align:Center
-					Width:340
-				Label@MODE_LABEL:
-					X:375
-					Y:39
-					Width:45
-					Height:25
-					Align:Right
-					Text:Mode:
-				DropDownButton@MODE_DROPDOWN:
-					X:425
-					Y:40
-					Width:170
-					Height:25
-					Font:Regular
-					Text:Windowed
-				Container@WINDOW_RESOLUTION:
-					X:595
-					Y:40
-					Children:
-						Label@At:
-							Text:@
-							Font:Bold
-							Y:0-1
-							Height:25
-							Width:25
-							Align:Center
-						TextField@WINDOW_WIDTH:
-							X:25
-							Width:45
-							Height:25
-							MaxLength:5
-						Label@X:
-							Text:x
-							Font:Bold
-							X:70
-							Y:0-1
-							Height:25
-							Width:15
-							Align:Center
-						TextField@WINDOW_HEIGHT:
-							X:85
-							Width:45
-							Height:25
-							MaxLength:5
-				Label@LANGUAGE_LABEL:
-					X:375
-					Y:70
-					Width:75
-					Height:25
-					Align:Right
-					Text:Language:
-				DropDownButton@LANGUAGE_DROPDOWNBUTTON:
-					X:455
-					Y:70
+				Button@DISPLAY_TAB:
 					Width:140
-					Height:25
-				Label@VIDEO_DESC:
-					X:375
-					Y:100
-					Width:340
-					Height:25
-					Font:Tiny
-					Align:Center
-					Text:Mode/Resolution/Language changes will be applied after the game is restarted
-				Checkbox@PIXELDOUBLE_CHECKBOX:
-					X:375
-					Y:140
-					Width:200
-					Height:20
-					Font:Regular
-					Text:Enable Pixel Doubling
-				Label@AUDIO_TITLE:
-					X:375
-					Y:180
-					Width:340
-					Font:Bold
-					Text:Sound
-					Align:Center
-				Label@SOUND_LABEL:
-					X:375
-					Y:194
-					Width:95
-					Height:25
-					Align:Right
-					Text:Sound Volume:
-				Slider@SOUND_SLIDER:
-					X:475
-					Y:200
-					Width:240
-					Height:20
-					Ticks:5
-				Label@MUSIC_LABEL:
-					X:375
-					Y:224
-					Width:95
-					Height:25
-					Align:Right
-					Text:Music Volume:
-				Slider@MUSIC_SLIDER:
-					X:475
-					Y:230
-					Width:240
-					Height:20
-					Ticks:5
-				Label@AUDIO_DEVICE_LABEL:
-					X:375
-					Y:259
-					Width:75
-					Height:20
-					Text:Audio Device:
-				DropDownButton@AUDIO_DEVICE:
-					X:475
-					Y:260
-					Width:240
-					Height:25
-					Font:Regular
-					Text:Default Device
-				Label@AUDIO_DESC:
-					X:375
-					Y:288
-					Width:340
-					Height:25
-					Font:Tiny
-					Align:Center
-					Text:Device changes will be applied after the game is restarted
-		Background@INPUT_CONTROLS:
-			Width:740
-			Height:290
-			Background:panel-black
-			Visible:false
-			Children:
-				Label@MOUSE_TITLE:
-					Font:Bold
-					Text:Mouse Input
-					Align:Center
-					X:15
-					Y:20
-					Width:340
-				Checkbox@CLASSICORDERS_CHECKBOX:
-					X:15
-					Y:35
-					Width:250
-					Height:20
-					Font:Regular
-					Text:Left-Click Orders
-				Label@SCROLL_TITLE:
-					Font:Bold
-					Text:Scroll Behavior
-					Align:Center
-					X:20
-					Y:100
-					Width:335
-				Label@SCROLL_SPEED_LABEL:
-					X:10
-					Y:115
-					Width:95
-					Height:25
-					Text:Scroll Speed:
-				Slider@SCROLLSPEED_SLIDER:
-					X:100
-					Y:120
-					Width:240
-					Height:20
-					Ticks:5
-					MinimumValue: 10
-					MaximumValue: 50
-				Checkbox@EDGESCROLL_CHECKBOX:
-					X:15
-					Y:150
-					Width:130
-					Height:20
-					Font:Regular
-					Text:Edge Scrolling
-				Label@MOUSE_SCROLL_LABEL:
-					X:15
-					Y:180
-					Width:160
-					Height:20
-					Font:Regular
-					Text:Middle-Mouse Scrolling:
-					Align:Right
-				DropDownButton@MOUSE_SCROLL:
-					X:180
-					Y:180
-					Width:100
-					Height:25
-					Font:Regular
-					Text:Enabled
-		Button@GENERAL_BUTTON:
-			Y:319
+					Height:35
+					Text:Display
+				Button@AUDIO_TAB:
+					X:150
+					Width:140
+					Height:35
+					Text:Audio
+				Button@INPUT_TAB:
+					X:300
+					Width:140
+					Height:35
+					Text:Input
+				Button@ADVANCED_TAB:
+					X:450
+					Width:140
+					Height:35
+					Text:Advanced
+		Button@RESET_BUTTON:
+			Y:293
 			Width:140
 			Height:35
-			Text:General
-		Button@INPUT_BUTTON:
-			X:150
-			Y:319
-			Width:140
-			Height:35
-			Text:Input
+			Text:Reset
 		Button@BACK_BUTTON:
 			Key:escape
-			X:600
-			Y:319
+			X:PARENT_RIGHT-WIDTH
+			Y:293
 			Width:140
 			Height:35
 			Text:Back
+		Background@bg:
+			Y:34
+			Width:590
+			Height:260
+			Background:panel-black
+			Children:
+				Container@DISPLAY_PANEL:
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Children:
+						Label@VIDEO_TITLE:
+							Y:20
+							Width:PARENT_RIGHT
+							Font:Bold
+							Text:Graphics
+							Align:Center
+						Label@MODE_LABEL:
+							X:120
+							Y:39
+							Width:45
+							Height:25
+							Align:Right
+							Text:Mode:
+						DropDownButton@MODE_DROPDOWN:
+							X:170
+							Y:40
+							Width:170
+							Height:25
+							Font:Regular
+							Text:Windowed
+						Container@WINDOW_RESOLUTION:
+							X:340
+							Y:40
+							Children:
+								Label@At:
+									Text:@
+									Font:Bold
+									Y:0-1
+									Height:25
+									Width:25
+									Align:Center
+								TextField@WINDOW_WIDTH:
+									X:25
+									Width:45
+									Height:25
+									MaxLength:5
+								Label@X:
+									Text:x
+									Font:Bold
+									X:70
+									Y:0-1
+									Height:25
+									Width:15
+									Align:Center
+								TextField@WINDOW_HEIGHT:
+									X:85
+									Width:45
+									Height:25
+									MaxLength:5
+						Label@VIDEO_DESC:
+							Y:60
+							Width:PARENT_RIGHT
+							Height:25
+							Font:Tiny
+							Align:Center
+							Text:Mode/Resolution changes will be applied after the game is restarted
+						Checkbox@FRAME_LIMIT_CHECKBOX:
+							X:15
+							Y:100
+							Width:200
+							Height:20
+							Font:Regular
+							Text:Enable Frame Limiter
+						Checkbox@PIXELDOUBLE_CHECKBOX:
+							X:310
+							Y:105
+							Width:200
+							Height:20
+							Font:Regular
+							Text:Enable Pixel Doubling
+						Label@FRAME_LIMIT_DESC_A:
+							X:45
+							Y:132
+							Width:50
+							Height:25
+							Text:Limit to 
+							Align:Right
+						TextField@FRAME_LIMIT_TEXTFIELD:
+							X:100
+							Y:133
+							Width:45
+							Height:25
+							MaxLength:3
+						Label@FRAME_LIMIT_DESC_B:
+							X:150
+							Y:132
+							Height:25
+							Text: FPS
+						Checkbox@SHOW_SHELLMAP:
+							X:310
+							Y:135
+							Width:200
+							Height:20
+							Font:Regular
+							Text:Show Shellmap
+						Label@VIDEO_TITLE:
+							Y:175
+							Width:PARENT_RIGHT
+							Font:Bold
+							Text:Localization
+							Align:Center
+						Label@LANGUAGE_LABEL:
+							X:230 - WIDTH - 5
+							Y:194
+							Width:75
+							Height:25
+							Align:Right
+							Text:Language:
+						DropDownButton@LANGUAGE_DROPDOWNBUTTON:
+							X:230
+							Y:195
+							Width:200
+							Height:25
+						Label@VIDEO_DESC_A:
+							Y:215
+							Width:PARENT_RIGHT
+							Height:25
+							Font:Tiny
+							Align:Center
+							Text:Language changes will be applied after the game is restarted
+						Label@VIDEO_DESC_B:
+							Y:230
+							Width:PARENT_RIGHT
+							Height:25
+							Font:Tiny
+							Align:Center
+							Text:Translations apply to text strings only; Speech and build icons will remain in English
+				Container@AUDIO_PANEL:
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Children:
+						Label@AUDIO_TITLE:
+							Y:20
+							Width:PARENT_RIGHT
+							Font:Bold
+							Text:Audio
+							Align:Center
+						Checkbox@SHELLMAP_MUSIC:
+							X:15
+							Y:40
+							Width:200
+							Height:20
+							Font:Regular
+							Text:Shellmap / Mission Music
+						Label@SOUND_LABEL:
+							X:PARENT_RIGHT - WIDTH - 270
+							Y:37
+							Width:95
+							Height:25
+							Align:Right
+							Text:Sound Volume:
+						Slider@SOUND_VOLUME:
+							X:PARENT_RIGHT - WIDTH - 15
+							Y:43
+							Width:250
+							Height:20
+							Ticks:5
+						Checkbox@CASH_TICKS:
+							X:15
+							Y:70
+							Width:200
+							Height:20
+							Font:Regular
+							Text:Cash Ticks
+						Label@MUSIC_LABEL:
+							X:PARENT_RIGHT - WIDTH - 270
+							Y:67
+							Width:95
+							Height:25
+							Align:Right
+							Text:Music Volume:
+						Slider@VIDEO_VOLUME:
+							X:PARENT_RIGHT - WIDTH - 15
+							Y:73
+							Width:250
+							Height:20
+							Ticks:5
+						Label@VIDEO_LABEL:
+							X:PARENT_RIGHT - WIDTH - 270
+							Y:97
+							Width:95
+							Height:25
+							Align:Right
+							Text:Video Volume:
+						Slider@MUSIC_VOLUME:
+							X:PARENT_RIGHT - WIDTH - 15
+							Y:103
+							Width:250
+							Height:20
+							Ticks:5
+						Label@AUDIO_DEVICE_LABEL:
+							X:190 - WIDTH - 5
+							Y:194
+							Width:75
+							Height:25
+							Align:Right
+							Text:Audio Device:
+						DropDownButton@AUDIO_DEVICE:
+							X:190
+							Y:195
+							Width:300
+							Height:25
+						Label@AUDIO_DEVICE_DESC:
+							Y:215
+							Width:PARENT_RIGHT
+							Height:25
+							Font:Tiny
+							Align:Center
+							Text:Device changes will be applied after the game is restarted
+				Container@INPUT_PANEL:
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Children:
+						Label@INPUT_TITLE:
+							Y:20
+							Width:PARENT_RIGHT
+							Font:Bold
+							Text:Input
+							Align:Center
+						Checkbox@CLASSICORDERS_CHECKBOX:
+							X:15
+							Y:40
+							Width:250
+							Height:20
+							Font:Regular
+							Text:Left-Click Orders
+						Label@MOUSE_SCROLL_LABEL:
+							X:PARENT_RIGHT - WIDTH - 120
+							Y:39
+							Width:160
+							Height:20
+							Font:Regular
+							Text:Middle-Mouse Scrolling:
+							Align:Right
+						DropDownButton@MOUSE_SCROLL:
+							X:PARENT_RIGHT - WIDTH - 15
+							Y:38
+							Width:100
+							Height:25
+							Font:Regular
+							Text:Enabled
+						Checkbox@EDGESCROLL_CHECKBOX:
+							X:15
+							Y:70
+							Width:130
+							Height:20
+							Font:Regular
+							Text:Edge Scrolling
+						Label@SCROLL_SPEED_LABEL:
+							X:PARENT_RIGHT - WIDTH - 270
+							Y:67
+							Width:95
+							Height:25
+							Text:Scroll Speed:
+							Align:Right
+						Slider@SCROLLSPEED_SLIDER:
+							X:PARENT_RIGHT - WIDTH - 15
+							Y:73
+							Width:250
+							Height:20
+							Ticks:5
+							MinimumValue: 10
+							MaximumValue: 50
+						Label@HOTKEY_TITLE:
+							Y:115
+							Width:PARENT_RIGHT
+							Font:Bold
+							Text:Hotkeys
+							Align:Center
+						ScrollPanel@HOTKEY_LIST:
+							X:15
+							Y:135
+							Width:560
+							ItemSpacing:4
+							Height:110
+							Children:
+								ScrollItem@HEADER:
+									Width:528
+									Height:13
+									Visible:false
+									Children:
+										Label@LABEL:
+											Font:TinyBold
+											Width:PARENT_RIGHT
+											Height:10
+											Align:Center
+								Container@GLOBAL_TEMPLATE:
+									Width:262
+									Height:25
+									Visible:false
+									Children:
+										Label@FUNCTION:
+											Y:0-1
+											Width:PARENT_RIGHT - 85
+											Height:25
+											Align:Right
+										HotkeyEntry@HOTKEY:
+											X:PARENT_RIGHT-WIDTH
+											Width:80
+											Height:25
+								Container@UNIT_TEMPLATE:
+									Width:173
+									Height:25
+									Visible:false
+									Children:
+										Label@FUNCTION:
+											Y:0-1
+											Width:PARENT_RIGHT - 84
+											Height:25
+											Align:Right
+										HotkeyEntry@HOTKEY:
+											X:PARENT_RIGHT-WIDTH+1
+											Width:80
+											Height:25
+				Container@ADVANCED_PANEL:
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Children:
+						Label@HOTKEY_TITLE:
+							Y:20
+							Width:PARENT_RIGHT
+							Font:Bold
+							Text:Advanced
+							Align:Center
+						Checkbox@NAT_DISCOVERY:
+							X:15
+							Y:40
+							Width:200
+							Height:20
+							Font:Regular
+							Text: Enable Network Discovery (UPnP)
+						Checkbox@CRASH_DIALOG_CHECKBOX:
+							X:310
+							Y:40
+							Width:300
+							Height:20
+							Font:Regular
+							Text:Show Fatal Error dialog
+						Checkbox@PERFTEXT_CHECKBOX:
+							X:15
+							Y:70
+							Width:300
+							Height:20
+							Font:Regular
+							Text:Show Performance Text
+						Checkbox@PERFGRAPH_CHECKBOX:
+							X:310
+							Y:70
+							Width:300
+							Height:20
+							Font:Regular
+							Text:Show Performance Graph
+						Checkbox@DEVELOPER_MENU_CHECKBOX:
+							X:15
+							Y:100
+							Width:300
+							Height:20
+							Font:Regular
+							Text:Enable Asset Browser (requires restart)
+						Label@HOTKEY_TITLE:
+							Y:140
+							Width:PARENT_RIGHT
+							Font:Bold
+							Text:Debug
+							Align:Center
+						Checkbox@BOTDEBUG_CHECKBOX:
+							X:15
+							Y:160
+							Width:300
+							Height:20
+							Font:Regular
+							Text:Show Bot Debug Messages
+						Checkbox@VERBOSE_NAT_CHECKBOX:
+							X:310
+							Y:160
+							Width:300
+							Height:20
+							Font:Regular
+							Text:Detailed NAT logging
+						Checkbox@CHECKUNSYNCED_CHECKBOX:
+							X:15
+							Y:190
+							Width:300
+							Height:20
+							Font:Regular
+							Text:Check Sync around Unsynced Code

@@ -115,7 +115,7 @@ namespace OpenRA.Graphics
 
 			var renderables = GenerateRenderables();
 			var bounds = Viewport.ScissorBounds;
-			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
+			Game.Renderer.EnableScissor(bounds);
 
 			terrainRenderer.Draw(this, Viewport);
 			Game.Renderer.Flush();
