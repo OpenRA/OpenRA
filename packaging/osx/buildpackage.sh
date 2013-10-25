@@ -21,6 +21,11 @@ cp -rv $2/* "OpenRA.app/Contents/Resources/" || exit 3
 rm OpenRA.app/Contents/Resources/OpenRA.ico
 rm OpenRA.app/Contents/Resources/OpenRA.Editor.exe
 
+# Change the .config to use the packaged SDL
+sed "s/\/Library\/Frameworks\/SDL.framework/./" OpenRA.app/Contents/Resources/Tao.Sdl.dll.config > temp
+mv temp OpenRA.app/Contents/Resources/Tao.Sdl.dll.config
+rm temp
+
 # Package app bundle into a zip and clean up
 zip OpenRA-$1 -r -9 OpenRA.app
 mv OpenRA-$1.zip $3
