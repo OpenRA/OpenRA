@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,10 +8,10 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Effects;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Move;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Render
 	{
 		public readonly int MinIdleWaitTicks = 30;
 		public readonly int MaxIdleWaitTicks = 110;
-		public readonly string[] IdleAnimations = {};
+		public readonly string[] IdleAnimations = { };
 
 		public override object Create(ActorInitializer init) { return new RenderInfantry(init.self, this); }
 	}
@@ -33,11 +33,11 @@ namespace OpenRA.Mods.RA.Render
 			Moving,
 			Waiting,
 			IdleAnimating
-		};
+		}
 
 		protected bool dirty = false;
 
-		RenderInfantryInfo Info;
+		RenderInfantryInfo info;
 		string idleSequence;
 		int idleDelay;
 		Mobile mobile;
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Render
 
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
-			return Info.IdleAnimations.Length > 0;
+			return info.IdleAnimations.Length > 0;
 		}
 
 		public AnimationState State { get; private set; }
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Render
 		public RenderInfantry(Actor self, RenderInfantryInfo info)
 			: base(self, MakeFacingFunc(self))
 		{
-			Info = info;
+			this.info = info;
 			anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
 			State = AnimationState.Waiting;
 			mobile = self.Trait<Mobile>();
@@ -93,6 +93,7 @@ namespace OpenRA.Mods.RA.Render
 				State = AnimationState.Moving;
 				anim.PlayRepeating(NormalizeInfantrySequence(self, "run"));
 			}
+
 			dirty = false;
 		}
 
@@ -103,10 +104,10 @@ namespace OpenRA.Mods.RA.Render
 				anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
 				State = AnimationState.Idle;
 
-				if (Info.IdleAnimations.Length > 0)
+				if (info.IdleAnimations.Length > 0)
 				{
-					idleSequence = Info.IdleAnimations.Random(self.World.SharedRandom);
-					idleDelay = self.World.SharedRandom.Next(Info.MinIdleWaitTicks, Info.MaxIdleWaitTicks);
+					idleSequence = info.IdleAnimations.Random(self.World.SharedRandom);
+					idleDelay = self.World.SharedRandom.Next(info.MinIdleWaitTicks, info.MaxIdleWaitTicks);
 				}
 			}
 			else if (AllowIdleAnimation(self) && idleDelay > 0 && --idleDelay == 0)
@@ -114,12 +115,11 @@ namespace OpenRA.Mods.RA.Render
 				if (anim.HasSequence(idleSequence))
 				{
 					State = AnimationState.IdleAnimating;
-					anim.PlayThen(idleSequence,
-						() =>
-						{
-							anim.PlayRepeating(NormalizeInfantrySequence(self, "stand"));
-							State = AnimationState.Waiting;
-						});
+					anim.PlayThen(idleSequence,	() =>
+					{
+						anim.PlayRepeating(NormalizeInfantrySequence(self, "stand"));
+						State = AnimationState.Waiting;
+					});
 				}
 			}
 		}
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA.Render
 			{
 				if (!self.Destroyed)
 					w.Add(new Corpse(w, self.CenterPosition, GetImage(self),
-					                 sequence, Info.PlayerPalette+self.Owner.InternalName));
+						sequence, info.PlayerPalette + self.Owner.InternalName));
 			});
 		}
 	}
