@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			else
 				InitPlayerWidgets(world, playerRoot);
 
-			Game.LoadWidget(world, "CHAT_PANEL", playerRoot, new WidgetArgs());
+			Game.LoadWidget(world, "CHAT_PANEL", ingameRoot, new WidgetArgs());
 		}
 
 		public void OptionsClicked()
