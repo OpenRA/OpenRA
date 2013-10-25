@@ -33,3 +33,4 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/openra-editor
 /usr/share/applications/*.desktop
 /usr/share/icons/hicolor/*/apps/*.png
+/usr/share/icons/hicolor/*/apps/*.svg
