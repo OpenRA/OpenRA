@@ -727,7 +727,9 @@ function apply_settings(variable, value)
 end
 
 -- Parse command line input and run the required command.
-if not commands[arg[1]] and commands[arg[2]] then
+if pcall(debug.getlocal, 4, 1) then
+    return commands -- return commands when used as module
+elseif not commands[arg[1]] and commands[arg[2]] then
     -- deploy_dir specified
     return run_command(arg[1], arg[2], 3)
 elseif commands[arg[1]] then
