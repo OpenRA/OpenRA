@@ -300,6 +300,12 @@ fi
 # To build lua5.1.dll proxy:
 # (1) get mkforwardlib-gcc.lua from http://lua-users.org/wiki/LuaProxyDllThree
 # (2) run it as "lua mkforwardlib-gcc.lua lua51 lua5.1 X86"
+# To build lua5.2.dll proxy:
+# (1) get mkforwardlib-gcc.lua from http://lua-users.org/wiki/LuaProxyDllThree
+# (2) remove lua_getfenv, lua_setfenv, luaL_typerror,
+# add lua_callk, lua_pcallk, lua_setglobal, lua_tointegerx, lua_tonumberx, and
+# replace lua_objlen with lua_rawlen (http://www.lua.org/manual/5.2/manual.html#8.3).
+# (3) run it as "lua mkforwardlib-gcc.lua lua52 lua5.2 X86"
 
 echo "*** Build has been successfully completed ***"
 exit 0
