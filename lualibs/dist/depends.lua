@@ -327,7 +327,7 @@ local function get_packages_to_install(pkg, installed, manifest, dependency_mani
             end
         end
 
-        if was_scm_version then pkg.was_scm_version = true end
+        if pkg and was_scm_version then pkg.was_scm_version = true end
 
         -- check arch & type
         if not err then
