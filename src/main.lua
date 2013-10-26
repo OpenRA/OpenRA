@@ -208,6 +208,7 @@ local function setLuaPaths(mainpath, osname)
     nil
   if clibs then wx.wxSetEnv("LUA_CPATH",
     package.cpath .. ';' .. clibs .. ';' .. luadev_cpath) end
+  ide.osclibs = clibs -- keep the list to use for other Lua versions
 end
 
 ---------------
