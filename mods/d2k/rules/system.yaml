@@ -411,12 +411,6 @@ World:
 		G: 255
 		B: 255
 		A: 128
-	PaletteFromRGBA@invuln:
-		Name: invuln
-		R: 128
-		G: 0
-		B: 0
-		A: 128
 	PaletteFromR8@moveflash:
 		Name: moveflash
 		Filename: DATA.R8
