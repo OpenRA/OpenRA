@@ -46,9 +46,9 @@ namespace OpenRA.Mods.RA.Render
 			{
 				disguisedAsSprite = spy.disguisedAsSprite;
 				if (disguisedAsSprite != null)
-					anim.ChangeImage(disguisedAsSprite, "stand");
+					anim.ChangeImage(disguisedAsSprite, info.StandAnimations.Random(Game.CosmeticRandom));
 				else
-					anim.ChangeImage(GetImage(self), "stand");
+					anim.ChangeImage(GetImage(self), info.StandAnimations.Random(Game.CosmeticRandom));
 				UpdatePalette();
 			}
 			base.Tick(self);

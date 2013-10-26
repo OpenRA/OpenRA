@@ -53,6 +53,7 @@ E1:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		StandAnimations: stand,stand2
 
 E2:
 	Inherits: ^Infantry
@@ -82,6 +83,7 @@ E2:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		StandAnimations: stand,stand2
 	Explodes:
 		Weapon: UnitExplodeSmall
 		Chance: 50
@@ -115,6 +117,7 @@ E3:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		StandAnimations: stand,stand2
 
 E4:
 	Inherits: ^Infantry
@@ -144,6 +147,7 @@ E4:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		StandAnimations: stand,stand2
 
 E6:
 	Inherits: ^Infantry
@@ -176,6 +180,7 @@ E6:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		StandAnimations: stand,stand2
 
 SPY:
 	Inherits: ^Infantry
@@ -211,6 +216,7 @@ SPY:
 	-RenderInfantry:
 	RenderSpy:
 		IdleAnimations: idle1,idle2
+		StandAnimations: stand,stand2
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
@@ -441,6 +447,7 @@ SHOK:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		StandAnimations: stand,stand2
 	-CrushableInfantry:
 
 SNIPER:
@@ -475,6 +482,7 @@ SNIPER:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		StandAnimations: stand,stand2
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 120
