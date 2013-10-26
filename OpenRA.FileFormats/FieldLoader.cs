@@ -127,6 +127,14 @@ namespace OpenRA.FileFormats
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
+			if (fieldType == typeof(long))
+			{
+				long res;
+				if (long.TryParse(value, out res))
+					return res;
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
+
 			else if (fieldType == typeof(float))
 			{
 				float res;
