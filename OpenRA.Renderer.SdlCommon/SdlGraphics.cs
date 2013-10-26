@@ -154,6 +154,9 @@ namespace OpenRA.Renderer.SdlCommon
 
 		public void SetBlendMode(BlendMode mode)
 		{
+			Gl.glBlendEquation(Gl.GL_FUNC_ADD);
+			ErrorHandler.CheckGlError();
+
 			switch (mode)
 			{
 				case BlendMode.None:
@@ -168,6 +171,13 @@ namespace OpenRA.Renderer.SdlCommon
 					Gl.glEnable(Gl.GL_BLEND);
 					ErrorHandler.CheckGlError();
 					Gl.glBlendFunc(Gl.GL_ONE, Gl.GL_ONE);
+					break;
+				case BlendMode.Subtractive:
+					Gl.glEnable(Gl.GL_BLEND);
+					ErrorHandler.CheckGlError();
+					Gl.glBlendFunc(Gl.GL_ONE, Gl.GL_ONE);
+					ErrorHandler.CheckGlError();
+					Gl.glBlendEquation(Gl.GL_FUNC_REVERSE_SUBTRACT);
 					break;
 			}
 			ErrorHandler.CheckGlError();

@@ -32,7 +32,7 @@ namespace OpenRA.FileFormats.Graphics
 		IGraphicsDevice Create( Size size, WindowMode windowMode );
 	}
 
-	public enum BlendMode { None, Alpha, Additive }
+	public enum BlendMode { None, Alpha, Additive, Subtractive }
 
 	public interface IGraphicsDevice
 	{

@@ -53,15 +53,11 @@ namespace OpenRA.FileFormats
 			// Skip alignment byte
 			s.ReadUInt8();
 
-			// Ignore palette header
-			if (type == 1 && paletteOffset != 0)
-				s.Seek(8, SeekOrigin.Current);
-
 			Image = s.ReadBytes(width*height);
 
-			// Ignore palette data
+			// Ignore palette
 			if (type == 1 && paletteOffset != 0)
-				s.Seek(512, SeekOrigin.Current);
+				s.Seek(520, SeekOrigin.Current);
 		}
 	}
 
