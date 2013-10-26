@@ -21,9 +21,6 @@ cp -R $rootdir/usr root
 
 # Binaries go in /usr/games
 mv root/usr/bin/ root/usr/games/
-sed "s/\/usr\/bin\//\/usr\/games\//" root/usr/share/applications/openra.desktop > temp
-mv temp root/usr/share/applications/openra.desktop
-rm temp
 
 # Put the copyright and changelog in /usr/share/doc/openra/
 mkdir -p root/usr/share/doc/openra/
