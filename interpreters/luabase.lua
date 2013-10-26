@@ -3,6 +3,7 @@ function MakeLuaInterpreter(version, name)
 local exe
 
 local function exePath(self, version)
+  local version = tostring(version):gsub('%.','')
   local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
   local macExe = mainpath..([[bin/lua.app/Contents/MacOS/lua%s]]):format(version)
   return ide.config.path['lua'..version]
@@ -15,6 +16,7 @@ return {
   name = ("Lua%s"):format(name or version or ""),
   description = ("Lua%s interpreter with debugger"):format(name or version or ""),
   api = {"wxwidgets","baselib"},
+  luaversion = version or '5.1',
   fexepath = exePath,
   frun = function(self,wfilename,rundebug)
     exe = exe or self:fexepath(version or "")
@@ -38,16 +40,16 @@ return {
     local cmd = '"'..exe..'" '..code
 
     -- modify CPATH to work with other Lua versions
+    local clibs = ('/clibs%s/'):format(version and tostring(version):gsub('%.','') or '')
     local _, cpath = wx.wxGetEnv("LUA_CPATH")
-    if version and cpath and not cpath:find('clibs'..version, 1, true) then
-      wx.wxSetEnv("LUA_CPATH", cpath:gsub('clibs', 'clibs'..version))
-    end
+    if version and cpath and not cpath:find(clibs, 1, true) then
+      wx.wxSetEnv("LUA_CPATH", cpath:gsub('/clibs/', clibs)) end
 
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     local pid = CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil end)
 
-    if version then wx.wxSetEnv("LUA_CPATH", cpath) end
+    if version and cpath then wx.wxSetEnv("LUA_CPATH", cpath) end
     return pid
   end,
   fprojdir = function(self,wfilename)
