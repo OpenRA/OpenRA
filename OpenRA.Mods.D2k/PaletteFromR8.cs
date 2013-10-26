@@ -42,8 +42,10 @@ namespace OpenRA.Mods.RA
 
 				for (var i = 0; i < 256; i++)
 				{
+					// The custom palette is scaled into the range 0-128.
+					// This makes the move-flash match the original game, but may not be correct in other cases.
 					var packed = s.ReadUInt16();
-					colors[i] = (uint)((255 << 24) | ((packed & 0xF800) << 8) | ((packed & 0x7E0) << 5) | ((packed & 0x1f) << 3));
+					colors[i] = (uint)((255 << 24) | ((packed & 0xF800) << 7) | ((packed & 0x7E0) << 4) | ((packed & 0x1f) << 2));
 				}
 			}
 
