@@ -130,9 +130,9 @@ dialog: dialog.png
 	corner-tl: 191,480,9,9
 	corner-tr: 200,480,9,9
 	corner-bl: 191,489,9,9
-	corner-br: 200,489,9,9	
+	corner-br: 200,489,9,9
 
-# Same as a normal button 	
+# Same as normal button
 dialog2: dialog.png
 	background: 513,1,126,126
 	border-r: 639,1,1,126
@@ -144,7 +144,7 @@ dialog2: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
-# Same as a pressed button 	
+# Same as pressed button
 dialog3: dialog.png
 	background: 641,1,126,126
 	border-r: 767,1,1,126
@@ -394,7 +394,7 @@ textfield: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
-# A copy of checkbox-hover 
+# A copy of checkbox-hover
 textfield-hover: dialog.png
 	background: 641,129,126,126
 	border-r: 767,129,1,126
@@ -406,17 +406,17 @@ textfield-hover: dialog.png
 	corner-bl: 640,255,1,1
 	corner-br: 767,255,1,1
 
-# A copy of dialog3 (pressed button)
+# Same as button-disabled-pressed
 textfield-disabled: dialog.png
-	background: 641,1,126,126
-	border-r: 767,1,1,126
-	border-l: 640,1,1,126
-	border-b: 641,127,126,1
-	border-t: 641,0,126,1
-	corner-tl: 640,0,1,1
-	corner-tr: 767,0,1,1
-	corner-bl: 640,127,1,1
-	corner-br: 767,127,1,1
+	background: 641,257,126,126
+	border-r: 767,257,1,126
+	border-l: 640,257,1,126
+	border-b: 641,383,126,1
+	border-t: 641,256,126,1
+	corner-tl: 640,256,1,1
+	corner-tr: 767,256,1,1
+	corner-bl: 640,383,1,1
+	corner-br: 767,383,1,1
 
 # A copy of dialog3 (pressed button)
 textfield-focused: dialog.png
@@ -483,7 +483,7 @@ checkbox-hover: dialog.png
 	corner-bl: 640,255,1,1
 	corner-br: 767,255,1,1
 
-# Same as a button-disabled-pressed
+# Same as button-disabled-pressed
 checkbox-disabled: dialog.png
 	background: 641,257,126,126
 	border-r: 767,257,1,126
