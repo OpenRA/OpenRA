@@ -149,7 +149,7 @@ namespace OpenRA
 
 		Dictionary<string, Map> FindMaps()
 		{
-			var paths = Manifest.Folders.SelectMany(f => FindMapsIn(f));
+			var paths = Manifest.MapFolders.SelectMany(f => FindMapsIn(f));
 
 			var ret = new Dictionary<string, Map>();
 

@@ -8,9 +8,11 @@ Folders:
 	.
 	./mods/cnc
 	./mods/cnc/bits
-	./mods/cnc/maps
 	./mods/cnc/uibits
 	~^/Content/cnc
+
+MapFolders:
+	./mods/cnc/maps
 	~^/maps/cnc
 
 Packages:
