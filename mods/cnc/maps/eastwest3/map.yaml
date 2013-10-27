@@ -90,7 +90,7 @@ Actors:
 		Owner: Neutral
 	Actor0: bio
 		Location: 45,34
-		Owner: Creeps
+		Owner: Neutral
 	Actor1: split3
 		Location: 15,12
 		Owner: Neutral
