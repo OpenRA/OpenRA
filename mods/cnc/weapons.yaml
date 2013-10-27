@@ -402,6 +402,7 @@ Chemspray:
 Grenade:
 	ROF: 50
 	Range: 5
+	Report: toss1.aud
 	Projectile: Bullet
 		Speed: 12
 		High: yes
