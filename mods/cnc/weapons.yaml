@@ -584,7 +584,7 @@ MammothMissiles:
 			Heavy: 50%
 		InfDeath: 4
 		Explosion: med_frag
-		ImpactSound: xplobig4.aud
+		ImpactSound: xplos.aud
 		SmudgeType: Crater
 		Damage: 25
 
