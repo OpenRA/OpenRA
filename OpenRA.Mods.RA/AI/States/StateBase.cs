@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.AI
 
 			var arms = a.TraitsImplementing<Armament>();
 			foreach (var arm in arms)
-				if (arm.Weapon.ValidTargets.Intersect(targetable.TargetTypes) != null)
+				if (arm.Weapon.ValidTargets.Intersect(targetable.TargetTypes).Any())
 					return true;
 
 			return false;
