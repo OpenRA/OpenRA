@@ -446,9 +446,12 @@ MSAM:
 	Turreted:
 		ROT: 255
 		Offset: -256,0,128
-	Armament:
+	Armament@PRIMARY:
 		Weapon: 227mm
 		LocalOffset: 213,128,0, 213,-128,0
+	Armament@SECONDARY:
+		Weapon: 227mm
+		LocalOffset: 213,-128,0, 213,128,0
 	AttackFrontal:
 	RenderUnit:
 	WithTurret:

@@ -402,6 +402,7 @@ Chemspray:
 Grenade:
 	ROF: 50
 	Range: 5
+	Report: toss1.aud
 	Projectile: Bullet
 		Speed: 12
 		High: yes
@@ -560,8 +561,8 @@ MammothMissiles:
 	ROF: 140
 	Range: 12
 	MinRange: 3
-	Burst: 2
-	BurstDelay: 20
+	Burst: 4
+	BurstDelay: 4
 	Report: ROCKET1.AUD
 	ValidTargets: Ground
 	Projectile: Bullet
@@ -584,9 +585,9 @@ MammothMissiles:
 			Heavy: 50%
 		InfDeath: 4
 		Explosion: med_frag
-		ImpactSound: xplobig4.aud
+		ImpactSound: xplos.aud
 		SmudgeType: Crater
-		Damage: 100
+		Damage: 25
 
 227mm.stnk:
 	ROF: 70
