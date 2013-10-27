@@ -489,7 +489,7 @@ SNIPER:
 		CloakSound:
 		UncloakSound:
 		UncloakOnMove: yes
-	LegacyCaptures:
+	Captures:
 		CaptureTypes: CivilianBuilding
 		Sabotage: no
 		SabotageHPRemoval: 0

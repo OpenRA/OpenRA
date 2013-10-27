@@ -163,7 +163,7 @@ ENGINEER:
 		PipType: Yellow
 	EngineerRepair:
 	RepairsBridges:
-	LegacyCaptures:
+	Captures:
 		CaptureTypes: building
 	-AutoTarget:
 	AttackMove:

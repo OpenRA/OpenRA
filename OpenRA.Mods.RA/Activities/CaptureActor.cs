@@ -15,11 +15,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class LegacyCaptureActor : Activity
+	class CaptureActor : Activity
 	{
 		Target target;
 
-		public LegacyCaptureActor(Target target) { this.target = target; }
+		public CaptureActor(Target target) { this.target = target; }
 
 		public override Activity Tick(Actor self)
 		{
@@ -34,8 +34,8 @@ namespace OpenRA.Mods.RA.Activities
 			if (b != null && b.Locked)
 				return NextActivity;
 
-			var capturesInfo = self.Info.Traits.Get<LegacyCapturesInfo>();
-			var capturableInfo = actor.Info.Traits.Get<LegacyCapturableInfo>();
+			var capturesInfo = self.Info.Traits.Get<CapturesInfo>();
+			var capturableInfo = actor.Info.Traits.Get<CapturableInfo>();
 
 			var health = actor.Trait<Health>();
 

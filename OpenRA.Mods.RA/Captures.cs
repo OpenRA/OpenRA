@@ -20,24 +20,24 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("This actor can capture other actors which have the LegacyCapturable: trait.")]
-	class LegacyCapturesInfo : ITraitInfo
+	[Desc("This actor can capture other actors which have the Capturable: trait.")]
+	class CapturesInfo : ITraitInfo
 	{
-		[Desc("Types of actors that it can capture, as long as the type also exists in the LegacyCapturable Type: trait.")]
+		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
 		public readonly string[] CaptureTypes = { "building" };
 		[Desc("Unit will do damage to the actor instead of capturing it. Unit is destroyed when sabotaging.")]
 		public readonly bool Sabotage = true;
 		[Desc("Only used if Sabotage=true. Sabotage damage expressed as a percentage of enemy health removed.")]
 		public readonly float SabotageHPRemoval = 0.5f;
 
-		public object Create(ActorInitializer init) { return new LegacyCaptures(init.self, this); }
+		public object Create(ActorInitializer init) { return new Captures(init.self, this); }
 	}
 
-	class LegacyCaptures : IIssueOrder, IResolveOrder, IOrderVoice
+	class Captures : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		public readonly LegacyCapturesInfo Info;
+		public readonly CapturesInfo Info;
 
-		public LegacyCaptures(Actor self, LegacyCapturesInfo info)
+		public Captures(Actor self, CapturesInfo info)
 		{
 			Info = info;
 		}
@@ -46,13 +46,13 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new LegacyCaptureOrderTargeter(Info.Sabotage);
+				yield return new CaptureOrderTargeter(Info.Sabotage);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID != "LegacyCaptureActor")
+			if (order.OrderID != "CaptureActor")
 				return null;
 
 			if (target.Type == TargetType.FrozenActor)
@@ -63,12 +63,12 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "LegacyCaptureActor" ? "Attack" : null;
+			return order.OrderString == "CaptureActor" ? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "LegacyCaptureActor")
+			if (order.OrderString != "CaptureActor")
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
@@ -79,22 +79,22 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new Enter(target.Actor, new LegacyCaptureActor(target)));
+			self.QueueActivity(new Enter(target.Actor, new CaptureActor(target)));
 		}
 
-		class LegacyCaptureOrderTargeter : UnitOrderTargeter
+		class CaptureOrderTargeter : UnitOrderTargeter
 		{
 			readonly bool sabotage;
 
-			public LegacyCaptureOrderTargeter(bool sabotage)
-				: base("LegacyCaptureActor", 6, "enter", true, true)
+			public CaptureOrderTargeter(bool sabotage)
+				: base("CaptureActor", 6, "enter", true, true)
 			{
 				this.sabotage = sabotage;
 			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var c = target.Info.Traits.GetOrDefault<LegacyCapturableInfo>();
+				var c = target.Info.Traits.GetOrDefault<CapturableInfo>();
 				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{
 					cursor = "enter-blocked";
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var c = target.Info.Traits.GetOrDefault<LegacyCapturableInfo>();
+				var c = target.Info.Traits.GetOrDefault<CapturableInfo>();
 				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{
 					cursor = "enter-blocked";

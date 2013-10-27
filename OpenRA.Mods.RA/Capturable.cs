@@ -14,10 +14,10 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("This actor can be captured by a unit with LegacyCaptures: trait.")]
-	class LegacyCapturableInfo : TraitInfo<LegacyCapturable>
+	[Desc("This actor can be captured by a unit with Captures: trait.")]
+	class CapturableInfo : TraitInfo<Capturable>
 	{
-		[Desc("Type of actor (the LegacyCaptures: trait defines what Types it can capture).")]
+		[Desc("Type of actor (the Captures: trait defines what Types it can capture).")]
 		public readonly string Type = "building";
 		public readonly bool AllowAllies = false;
 		public readonly bool AllowNeutral = true;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 
 		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
-			var c = captor.TraitOrDefault<LegacyCaptures>();
+			var c = captor.TraitOrDefault<Captures>();
 			if (c == null)
 				return false;
 
@@ -48,5 +48,5 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	class LegacyCapturable { }
+	class Capturable { }
 }
