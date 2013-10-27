@@ -335,12 +335,14 @@
 	BodyOrientation:
 	FrozenUnderFog:
 	UpdatesPlayerStatistics:
+	EngineerRepairable:
 
 ^CivBuilding:
 	Inherits: ^Building
 	-DeadBuildingState:
 	-Buildable:
 	-GivesBuildableArea:
+	-EngineerRepairable:
 	Health:
 		HP: 400
 	Armor: 
@@ -374,6 +376,7 @@
 	Inherits: ^CivBuilding
 	LegacyCapturable:
 	RepairableBuilding:
+	EngineerRepairable:
 	RevealsShroud:
 		Range: 3
 
