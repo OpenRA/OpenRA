@@ -529,8 +529,8 @@ Rules:
 		Bib:
 		RevealsShroud:
 			Range: 3
-		Capturable:
-		CapturableBar:
+		ExternalCapturable:
+		ExternalCapturableBar:
 		EngineerRepairable:
 		-MustBeDestroyed:
 		CashTrickler:

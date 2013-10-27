@@ -2940,7 +2940,7 @@ Rules:
 			HP: 1500
 		Armor:
 			Heavy:
-		Capturable:
+		ExternalCapturable:
 		CashTrickler:
 			Period: 250
 			Amount: 50

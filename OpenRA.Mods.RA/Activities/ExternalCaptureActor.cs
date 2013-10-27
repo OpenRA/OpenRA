@@ -16,18 +16,18 @@ using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class CaptureActor : Activity
+	class ExternalCaptureActor : Activity
 	{
 		Target target;
 
-		public CaptureActor(Target target) { this.target = target; }
+		public ExternalCaptureActor(Target target) { this.target = target; }
 
 		public override Activity Tick(Actor self)
 		{
 			if (target.Type != TargetType.Actor)
 				return NextActivity;
 
-			var capturable = target.Actor.Trait<Capturable>();
+			var capturable = target.Actor.Trait<ExternalCapturable>();
 
 			if (IsCanceled || !self.IsInWorld || self.IsDead() || !target.IsValidFor(self))
 			{
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Activities
 
 				if (capturable.CaptureProgressTime == capturable.Info.CaptureCompleteTime * 25)
 				{
-					var capturesInfo = self.Info.Traits.Get<CapturesInfo>();
+					var capturesInfo = self.Info.Traits.Get<ExternalCapturesInfo>();
 
 					self.World.AddFrameEndTask(w =>
 					{

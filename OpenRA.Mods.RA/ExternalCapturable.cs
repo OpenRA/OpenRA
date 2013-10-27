@@ -17,20 +17,20 @@ using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("This actor can be captured by a unit with Captures: trait.")]
-	public class CapturableInfo : ITraitInfo
+	[Desc("This actor can be captured by a unit with ExternalCaptures: trait.")]
+	public class ExternalCapturableInfo : ITraitInfo
 	{
-		[Desc("Type of actor (the Captures: trait defines what Types it can capture).")]
+		[Desc("Type of actor (the ExternalCaptures: trait defines what Types it can capture).")]
 		public readonly string Type = "building";
 		public readonly bool AllowAllies = false;
 		public readonly bool AllowNeutral = true;
 		public readonly bool AllowEnemies = true;
-		[Desc("Seconds it takes to change the owner.", "You might want to add a CapturableBar: trait, too.")]
+		[Desc("Seconds it takes to change the owner.", "You might want to add a ExternalCapturableBar: trait, too.")]
 		public readonly int CaptureCompleteTime = 15;
 
 		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
-			var c = captor.TraitOrDefault<Captures>();
+			var c = captor.TraitOrDefault<ExternalCaptures>();
 			if (c == null)
 				return false;
 
@@ -50,18 +50,18 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		public object Create(ActorInitializer init) { return new Capturable(init.self, this); }
+		public object Create(ActorInitializer init) { return new ExternalCapturable(init.self, this); }
 	}
 
-	public class Capturable : ITick
+	public class ExternalCapturable : ITick
 	{
 		[Sync] public int CaptureProgressTime = 0;
 		[Sync] public Actor Captor;
 		private Actor self;
-		public CapturableInfo Info;
+		public ExternalCapturableInfo Info;
 		public bool CaptureInProgress { get { return Captor != null; } }
 
-		public Capturable(Actor self, CapturableInfo info)
+		public ExternalCapturable(Actor self, ExternalCapturableInfo info)
 		{
 			this.self = self;
 			Info = info;

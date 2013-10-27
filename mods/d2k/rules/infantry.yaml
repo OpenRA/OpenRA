@@ -47,7 +47,7 @@ ENGINEER:
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
-	Captures:
+	ExternalCaptures:
 	-AutoTarget:
 	AttackMove:
 		JustMove: true

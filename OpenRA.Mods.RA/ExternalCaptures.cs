@@ -20,22 +20,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("This actor can capture other actors which have the Capturable: trait.")]
-	class CapturesInfo : ITraitInfo
+	[Desc("This actor can capture other actors which have the ExternalCapturable: trait.")]
+	class ExternalCapturesInfo : ITraitInfo
 	{
-		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
+		[Desc("Types of actors that it can capture, as long as the type also exists in the ExternalCapturable Type: trait.")]
 		public readonly string[] CaptureTypes = { "building" };
 		[Desc("Destroy the unit after capturing.")]
 		public readonly bool ConsumeActor = false;
 
-		public object Create(ActorInitializer init) { return new Captures(init.self, this); }
+		public object Create(ActorInitializer init) { return new ExternalCaptures(init.self, this); }
 	}
 
-	class Captures : IIssueOrder, IResolveOrder, IOrderVoice
+	class ExternalCaptures : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		public readonly CapturesInfo Info;
+		public readonly ExternalCapturesInfo Info;
 
-		public Captures(Actor self, CapturesInfo info)
+		public ExternalCaptures(Actor self, ExternalCapturesInfo info)
 		{
 			Info = info;
 		}
@@ -44,13 +44,13 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new CaptureOrderTargeter();
+				yield return new ExternalCaptureOrderTargeter();
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID != "CaptureActor")
+			if (order.OrderID != "ExternalCaptureActor")
 				return null;
 
 			if (target.Type == TargetType.FrozenActor)
@@ -76,23 +76,23 @@ namespace OpenRA.Mods.RA
 				if (frozen == null)
 					return false;
 
-				var ci = frozen.Info.Traits.GetOrDefault<CapturableInfo>();
+				var ci = frozen.Info.Traits.GetOrDefault<ExternalCapturableInfo>();
 				return ci != null && ci.CanBeTargetedBy(self, frozen.Owner);
 			}
 
-			var c = order.TargetActor.TraitOrDefault<Capturable>();
+			var c = order.TargetActor.TraitOrDefault<ExternalCapturable>();
 			return c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, order.TargetActor.Owner);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "CaptureActor" && IsValidOrder(self, order)
+			return order.OrderString == "ExternalCaptureActor" && IsValidOrder(self, order)
 				? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "CaptureActor" || !IsValidOrder(self, order))
+			if (order.OrderString != "ExternalCaptureActor" || !IsValidOrder(self, order))
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
@@ -103,17 +103,17 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new CaptureActor(target));
+			self.QueueActivity(new ExternalCaptureActor(target));
 		}
 	}
 
-	class CaptureOrderTargeter : UnitOrderTargeter
+	class ExternalCaptureOrderTargeter : UnitOrderTargeter
 	{
-		public CaptureOrderTargeter() : base("CaptureActor", 6, "enter", true, true) { }
+		public ExternalCaptureOrderTargeter() : base("ExternalCaptureActor", 6, "enter", true, true) { }
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			var c = target.TraitOrDefault<Capturable>();
+			var c = target.TraitOrDefault<ExternalCapturable>();
 
 			var canTargetActor = c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, target.Owner);
 			cursor = canTargetActor ? "ability" : "move-blocked";
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.RA
 
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 		{
-			var c = target.Info.Traits.GetOrDefault<CapturableInfo>();
+			var c = target.Info.Traits.GetOrDefault<ExternalCapturableInfo>();
 
 			var canTargetActor = c != null && c.CanBeTargetedBy(self, target.Owner);
 			cursor = canTargetActor ? "ability" : "move-blocked";

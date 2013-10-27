@@ -222,8 +222,8 @@
 		TerrainTypes: Clear,Road
 		RequiresBaseProvider: True
 	GivesBuildableArea:
-	Capturable:
-	CapturableBar:
+	ExternalCapturable:
+	ExternalCapturableBar:
 	SoundOnDamageTransition:
 		DamagedSound: kaboom1.aud
 		DestroyedSound: kaboom22.aud
@@ -303,8 +303,8 @@
 	-AcceptsSupplies:
 	-GivesBuildableArea:
 	-Sellable:
-	-Capturable:
-	-CapturableBar:
+	-ExternalCapturable:
+	-ExternalCapturableBar:
 	FrozenUnderFog:
 		StartsRevealed: true
 	-GpsDot:

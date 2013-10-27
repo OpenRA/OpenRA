@@ -15,19 +15,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("Visualize the remaining CaptureCompleteTime from Capturable: trait.")]
-	class CapturableBarInfo : ITraitInfo, Requires<CapturableInfo>
+	[Desc("Visualize the remaining CaptureCompleteTime from ExternalCapturable: trait.")]
+	class ExternalCapturableBarInfo : ITraitInfo, Requires<ExternalCapturableInfo>
 	{
-		public object Create(ActorInitializer init) { return new CapturableBar(init.self); }
+		public object Create(ActorInitializer init) { return new ExternalCapturableBar(init.self); }
 	}
 
-	class CapturableBar : ISelectionBar
+	class ExternalCapturableBar : ISelectionBar
 	{
-		Capturable cap;
+		ExternalCapturable cap;
 
-		public CapturableBar(Actor self)
+		public ExternalCapturableBar(Actor self)
 		{
-			this.cap = self.Trait<Capturable>();
+			this.cap = self.Trait<ExternalCapturable>();
 		}
 
 		public float GetValue()
