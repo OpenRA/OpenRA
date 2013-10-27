@@ -3586,8 +3586,8 @@ Templates:
 			0: Rough
 			1: Rough
 		Category: Bridge
-	Template@592:
-		Id: 592
+	Template@400:
+		Id: 400
 		Image: hill01
 		Size: 4,3
 		Tiles:
