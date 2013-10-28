@@ -14,6 +14,10 @@ Folders:
 	~^/Content/d2k/GAMESFX
 	~^/Content/d2k/Music
 
+MapFolders:
+	./mods/d2k/maps
+	~^/maps/d2k
+
 Packages:
 	SOUND.RS
 

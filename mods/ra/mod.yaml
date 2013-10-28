@@ -12,6 +12,10 @@ Folders:
 	./mods/ra/uibits
 	~^/Content/ra
 
+MapFolders:
+	./mods/ra/maps
+	~^/maps/ra
+
 Packages:
 	~main.mix
 	redalert.mix

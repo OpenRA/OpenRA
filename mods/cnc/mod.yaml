@@ -11,6 +11,10 @@ Folders:
 	./mods/cnc/uibits
 	~^/Content/cnc
 
+MapFolders:
+	./mods/cnc/maps
+	~^/maps/cnc
+
 Packages:
 	overrides.mix
 	bluetib.mix
