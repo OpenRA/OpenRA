@@ -172,7 +172,7 @@ E6:
 		PipType: Yellow
 	EngineerRepair:
 	RepairsBridges:
-	Captures:
+	ExternalCaptures:
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
@@ -489,7 +489,7 @@ SNIPER:
 		CloakSound:
 		UncloakSound:
 		UncloakOnMove: yes
-	LegacyCaptures:
+	Captures:
 		CaptureTypes: CivilianBuilding
 		Sabotage: no
 		SabotageHPRemoval: 0

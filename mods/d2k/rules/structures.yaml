@@ -640,8 +640,8 @@ SIETCH:
 		Range: 10
 	-GivesBuildableArea:
 	-Sellable:
-	-Capturable:
-	-CapturableBar:
+	-ExternalCapturable:
+	-ExternalCapturableBar:
 
 STARPORTC:
 	Inherits: ^STARPORT

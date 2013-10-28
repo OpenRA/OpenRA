@@ -208,8 +208,8 @@
 		SellSounds: BUILD1.WAV
 		Adjacent: 3
 	GivesBuildableArea:
-	Capturable:
-	CapturableBar:
+	ExternalCapturable:
+	ExternalCapturableBar:
 	SoundOnDamageTransition:
 		DamagedSound: EXPLSML1.WAV
 		DestroyedSound: EXPLHG1.WAV

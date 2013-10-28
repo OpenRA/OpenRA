@@ -1,6 +1,6 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -25,8 +25,10 @@ namespace OpenRA.Mods.RA
 	{
 		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
 		public readonly string[] CaptureTypes = { "building" };
-		[Desc("Destroy the unit after capturing.")]
-		public readonly bool ConsumeActor = false;
+		[Desc("Unit will do damage to the actor instead of capturing it. Unit is destroyed when sabotaging.")]
+		public readonly bool Sabotage = true;
+		[Desc("Only used if Sabotage=true. Sabotage damage expressed as a percentage of enemy health removed.")]
+		public readonly float SabotageHPRemoval = 0.5f;
 
 		public object Create(ActorInitializer init) { return new Captures(init.self, this); }
 	}
@@ -44,7 +46,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new CaptureOrderTargeter();
+				yield return new CaptureOrderTargeter(Info.Sabotage);
 			}
 		}
 
@@ -59,40 +61,14 @@ namespace OpenRA.Mods.RA
 			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 		}
 
-		bool IsValidOrder(Actor self, Order order)
-		{
-			// Not targeting an actor
-			if (order.ExtraData == 0 && order.TargetActor == null)
-				return false;
-
-			if (order.ExtraData != 0)
-			{
-				// Targeted an actor under the fog
-				var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
-				if (frozenLayer == null)
-					return false;
-
-				var frozen = frozenLayer.FromID(order.ExtraData);
-				if (frozen == null)
-					return false;
-
-				var ci = frozen.Info.Traits.GetOrDefault<CapturableInfo>();
-				return ci != null && ci.CanBeTargetedBy(self, frozen.Owner);
-			}
-
-			var c = order.TargetActor.TraitOrDefault<Capturable>();
-			return c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, order.TargetActor.Owner);
-		}
-
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "CaptureActor" && IsValidOrder(self, order)
-				? "Attack" : null;
+			return order.OrderString == "CaptureActor" ? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "CaptureActor" || !IsValidOrder(self, order))
+			if (order.OrderString != "CaptureActor")
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
@@ -103,30 +79,53 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new CaptureActor(target));
-		}
-	}
-
-	class CaptureOrderTargeter : UnitOrderTargeter
-	{
-		public CaptureOrderTargeter() : base("CaptureActor", 6, "enter", true, true) { }
-
-		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
-		{
-			var c = target.TraitOrDefault<Capturable>();
-
-			var canTargetActor = c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, target.Owner);
-			cursor = canTargetActor ? "ability" : "move-blocked";
-			return canTargetActor;
+			self.QueueActivity(new Enter(target.Actor, new CaptureActor(target)));
 		}
 
-		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+		class CaptureOrderTargeter : UnitOrderTargeter
 		{
-			var c = target.Info.Traits.GetOrDefault<CapturableInfo>();
+			readonly bool sabotage;
 
-			var canTargetActor = c != null && c.CanBeTargetedBy(self, target.Owner);
-			cursor = canTargetActor ? "ability" : "move-blocked";
-			return canTargetActor;
+			public CaptureOrderTargeter(bool sabotage)
+				: base("CaptureActor", 6, "enter", true, true)
+			{
+				this.sabotage = sabotage;
+			}
+
+			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+			{
+				var c = target.Info.Traits.GetOrDefault<CapturableInfo>();
+				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
+				{
+					cursor = "enter-blocked";
+					return false;
+				}
+
+				var health = target.Trait<Health>();
+				var lowEnoughHealth = health.HP <= c.CaptureThreshold * health.MaxHP;
+
+				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
+					? "capture" : "enter";
+				return true;
+			}
+
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+			{
+				var c = target.Info.Traits.GetOrDefault<CapturableInfo>();
+				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
+				{
+					cursor = "enter-blocked";
+					return false;
+				}
+
+				var health = target.Info.Traits.GetOrDefault<HealthInfo>();
+				var lowEnoughHealth = target.HP <= c.CaptureThreshold * health.HP;
+
+				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
+					? "capture" : "enter";
+
+				return true;
+			}
 		}
 	}
 }
