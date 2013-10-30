@@ -4,10 +4,13 @@ module ("dist.config", package.seeall)
 
 local sys = require "dist.sys"
 local utils = require "dist.utils"
+local win = (os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows'))
+  and not (os.getenv('OSTYPE') or ''):match('cygwin') -- exclude cygwin
 
 -- System information ------------------------------------------------
 version       = "0.2.7"   -- Current LuaDist version
-arch          = "Windows"      -- Host architecture
+-- set initial architecture as it's important for path separators
+arch          = win and "Windows" or "Linux" -- Host architecture
 type          = "x86"      -- Host type
 
 -- Directories -------------------------------------------------------
@@ -69,7 +72,7 @@ variables = {
   DIST_TYPE                          = type,
 
   -- CMake specific setup
-  CMAKE_GENERATOR                    = "MinGW Makefiles",
+  CMAKE_GENERATOR                    = win and "MinGW Makefiles" or "Unix Makefiles",
   CMAKE_BUILD_TYPE                   = "MinSizeRel",
 
   -- RPath functionality
