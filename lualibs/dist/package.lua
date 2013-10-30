@@ -223,7 +223,7 @@ function build_pkg(src_dir, deploy_dir, variables)
 
     -- set the cmake cache
     local ok = sys.exec("cd " .. sys.quote(cmake_build_dir) .. " && " .. cache_command .. " " .. sys.quote(src_dir))
-    if not ok then return nil, "Error preloading the CMake cache script '" .. sys.make_path(cmake_build_dir, "cmake.cache") .. "'" end
+    if not ok then return nil, "Error preloading the CMake cache script '" .. sys.make_path(cmake_build_dir, "cache.cmake") .. "'" end
 
     -- build with cmake
     ok = sys.exec("cd " .. sys.quote(cmake_build_dir) .. " && " .. build_command)
