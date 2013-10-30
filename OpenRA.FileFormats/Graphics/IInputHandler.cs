@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,11 +16,12 @@ namespace OpenRA
 {
 	public interface IInputHandler
 	{
-		void ModifierKeys( Modifiers mods );
-		void OnKeyInput( KeyInput input );
-		void OnMouseInput( MouseInput input );
+		void ModifierKeys(Modifiers mods);
+		void OnKeyInput(KeyInput input);
+		void OnMouseInput(MouseInput input);
 	}
 
+	public enum MouseInputEvent { Down, Move, Up }
 	public struct MouseInput
 	{
 		public MouseInputEvent Event;
@@ -29,17 +30,15 @@ namespace OpenRA
 		public Modifiers Modifiers;
 		public int MultiTapCount;
 
-		public MouseInput( MouseInputEvent ev, MouseButton button, int2 location, Modifiers mods, int multiTapCount )
+		public MouseInput(MouseInputEvent ev, MouseButton button, int2 location, Modifiers mods, int multiTapCount)
 		{
-			this.Event = ev;
-			this.Button = button;
-			this.Location = location;
-			this.Modifiers = mods;
-			this.MultiTapCount = multiTapCount;
+			Event = ev;
+			Button = button;
+			Location = location;
+			Modifiers = mods;
+			MultiTapCount = multiTapCount;
 		}
 	}
-
-	public enum MouseInputEvent { Down, Move, Up };
 
 	[Flags]
 	public enum MouseButton
@@ -62,7 +61,7 @@ namespace OpenRA
 		Meta = 8,
 	}
 
-	public enum KeyInputEvent { Down, Up };
+	public enum KeyInputEvent { Down, Up }
 	public struct KeyInput
 	{
 		public KeyInputEvent Event;
