@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoIP", "GeoIP\GeoIP.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Irc", "OpenRA.Irc\OpenRA.Irc.csproj", "{85B48234-8B31-4BE6-AF9C-665CC6866841}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Renderer.Sdl2", "OpenRA.Renderer.Sdl2\OpenRA.Renderer.Sdl2.csproj", "{33D03738-C154-4028-8EA8-63A3C488A651}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -134,6 +136,14 @@ Global
 		{E9C01A96-C3E2-4772-825B-A740AC513D31}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9C01A96-C3E2-4772-825B-A740AC513D31}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E9C01A96-C3E2-4772-825B-A740AC513D31}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{52FD9F0B-B209-4ED7-8A32-AC8033363263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{52FD9F0B-B209-4ED7-8A32-AC8033363263}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52FD9F0B-B209-4ED7-8A32-AC8033363263}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

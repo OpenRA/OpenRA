@@ -125,13 +125,19 @@ rgl_KIND			= library
 rgl_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
 rgl_LIBS			= $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll $(rgl_DEPS)
 
+rsdl2_SRCS			:= $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
+rsdl2_TARGET		= OpenRA.Renderer.Sdl2.dll
+rsdl2_KIND			= library
+rsdl2_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET) $(rgl_TARGET)
+rsdl2_LIBS			= $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/SDL2\#.dll $(rsdl2_DEPS)
+
 rnull_SRCS			:= $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
 rnull_TARGET		= OpenRA.Renderer.Null.dll
 rnull_KIND			= library
 rnull_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 rnull_LIBS			= $(COMMON_LIBS) $(rnull_DEPS)
-PROGRAMS 			+= rcg rgl rnull rsdl
-renderers: $(rcg_TARGET) $(rgl_TARGET) $(rnull_TARGET) $(rsdl_TARGET)
+PROGRAMS 			+= rcg rgl rsdl2 rnull rsdl
+renderers: $(rcg_TARGET) $(rgl_TARGET) $(rsdl2_TARGET) $(rnull_TARGET) $(rsdl_TARGET)
 
 
 ##### Official Mods #####

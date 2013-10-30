@@ -25,7 +25,7 @@ namespace OpenRA.Renderer.Glsl
 		readonly Dictionary<int, ITexture> textures = new Dictionary<int, ITexture>();
 		int program;
 
-		public Shader(GraphicsDevice dev, string name)
+		public Shader(string name)
 		{
 			// Vertex shader
 			string vertexCode;

@@ -39,6 +39,6 @@ namespace OpenRA.Renderer.Glsl
 		public GraphicsDevice(Size size, WindowMode window)
 			: base(size, window, requiredExtensions) { }
 
-		public override IShader CreateShader(string name) { return new Shader(this, name); }
+		public override IShader CreateShader(string name) { return new Shader(name); }
 	}
 }
