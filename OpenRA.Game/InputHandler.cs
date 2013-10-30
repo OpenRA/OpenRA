@@ -17,6 +17,7 @@ namespace OpenRA
 		// ignore all input
 		public void ModifierKeys(Modifiers mods) { }
 		public void OnKeyInput(KeyInput input) { }
+		public void OnTextInput(string text) { }
 		public void OnMouseInput(MouseInput input) { }
 	}
 
@@ -36,6 +37,11 @@ namespace OpenRA
 		public void OnKeyInput(KeyInput input)
 		{
 			Sync.CheckSyncUnchanged(world, () => Ui.HandleKeyPress(input));
+		}
+
+		public void OnTextInput(string text)
+		{
+			Sync.CheckSyncUnchanged(world, () => Ui.HandleTextInput(text));
 		}
 
 		public void OnMouseInput(MouseInput input)

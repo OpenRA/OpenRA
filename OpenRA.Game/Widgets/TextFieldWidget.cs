@@ -154,27 +154,24 @@ namespace OpenRA.Widgets
 				return true;
 			}
 
-			TypeChar(e);
-			return true;
-		}
-
-		public void TypeChar(KeyInput key)
-		{
-			if (key.Key == Keycode.BACKSPACE && CursorPosition > 0)
+			if (e.Key == Keycode.BACKSPACE && CursorPosition > 0)
 			{
 				CursorPosition--;
 				Text = Text.Remove(CursorPosition, 1);
 			}
 
-			else if (key.IsValidInput())
-			{
-				if (MaxLength > 0 && Text.Length >= MaxLength)
-					return;
+			return true;
+		}
 
-				Text = Text.Insert(CursorPosition, key.UnicodeChar.ToString());
+		public override bool HandleTextInput(string text)
+		{
+			if (MaxLength > 0 && Text.Length >= MaxLength)
+				return true;
 
-				CursorPosition++;
-			}
+			Text = Text.Insert(CursorPosition, text);
+			CursorPosition++;
+
+			return true;
 		}
 
 		protected int blinkCycle = 10;

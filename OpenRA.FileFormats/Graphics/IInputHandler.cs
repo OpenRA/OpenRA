@@ -19,6 +19,7 @@ namespace OpenRA
 		void ModifierKeys(Modifiers mods);
 		void OnKeyInput(KeyInput input);
 		void OnMouseInput(MouseInput input);
+		void OnTextInput(string text);
 	}
 
 	public enum MouseInputEvent { Down, Move, Up }
