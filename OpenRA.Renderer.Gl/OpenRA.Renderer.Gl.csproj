@@ -62,13 +62,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\Tao\Tao.Sdl.dll</HintPath>
     </Reference>
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="Tao.Cg, Version=2.0.0.0, Culture=neutral, PublicKeyToken=52fa5aba625fe731">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\Tao\Tao.Cg.dll</HintPath>
