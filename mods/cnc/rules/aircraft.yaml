@@ -166,6 +166,18 @@ C17:
 	-GainsExperience:
 	FlyAwayOnIdle:
 	RejectsOrders:
+	Contrail@1:
+		Offset: -261,-650,0
+		TrailLength: 15
+	Contrail@2:
+		Offset: -85,-384,0
+		TrailLength: 16
+	Contrail@3:
+		Offset: -85,384,0
+		TrailLength: 16
+	Contrail@4:
+		Offset: -261,650,0
+		TrailLength: 15
 
 A10:
 	Inherits: ^Plane
