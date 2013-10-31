@@ -137,10 +137,10 @@ namespace OpenRA.Graphics
 				FixOSX();
 
 			var resolution = GetResolution(windowMode);
-			
-			string renderer = Game.Settings.Server.Dedicated ? "Null" : Game.Settings.Graphics.Renderer;
+
+			var renderer = Game.Settings.Server.Dedicated ? "Null" : Game.Settings.Graphics.Renderer;
 			var rendererPath = Path.GetFullPath("OpenRA.Renderer.{0}.dll".F(renderer));
-			
+
 			device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, windowMode);
 		}
 

@@ -48,7 +48,6 @@ namespace OpenRA.Renderer.SdlCommon
 
 		public static void WriteGraphicsLog(string message)
 		{
-			Log.AddChannel("graphics", "graphics.log");
 			Log.Write("graphics", message);
 			Log.Write("graphics", "");
 			Log.Write("graphics", "OpenGL Information:");

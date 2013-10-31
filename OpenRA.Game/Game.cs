@@ -285,6 +285,7 @@ namespace OpenRA
 			Log.AddChannel("sync", "syncreport.log");
 			Log.AddChannel("server", "server.log");
 			Log.AddChannel("sound", "sound.log");
+			Log.AddChannel("graphics", "graphics.log");
 
 			if (Settings.Server.DiscoverNatDevices)
 				UPnP.TryNatDiscovery();
@@ -295,14 +296,34 @@ namespace OpenRA
 			}
 
 			FileSystem.Mount("."); // Needed to access shaders
-			Renderer.Initialize( Game.Settings.Graphics.Mode );
+			try
+			{
+				Renderer.Initialize(Game.Settings.Graphics.Mode);
+			}
+			catch (Exception e)
+			{
+				Log.Write("graphics", "{0}", e);
+				Console.WriteLine("Renderer initialization failed. Fallback in place. Check graphics.log for details.");
+				Settings.Graphics.Renderer = new GraphicSettings().Renderer;
+				Renderer.Initialize(Settings.Graphics.Mode);
+			}
 			Renderer = new Renderer();
+
+			try
+			{
+				Sound.Create(Settings.Sound.Engine);
+			}
+			catch (Exception e)
+			{
+				Log.Write("sound", "{0}", e);
+				Console.WriteLine("Creating the sound engine failed. Fallback in place. Check sound.log for details.");
+				Settings.Sound.Engine = "Null";
+				Sound.Create(Settings.Sound.Engine);
+			}
 
 			Console.WriteLine("Available mods:");
 			foreach(var mod in Mod.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
-
-			Sound.Create(Settings.Sound.Engine);
 			InitializeWithMods(Settings.Game.Mods);
 
 			if (Settings.Server.DiscoverNatDevices)
