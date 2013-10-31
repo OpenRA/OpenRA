@@ -482,6 +482,7 @@ ParaBomb:
 
 Napalm:
 	ROF: 2
+	Range: 3
 	Projectile: GravityBomb
 		Image: BOMBS
 	Warhead:

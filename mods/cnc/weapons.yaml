@@ -727,6 +727,7 @@ TowerMissle:
 
 Napalm:
 	ROF: 2
+	Range: 3
 	Projectile: GravityBomb
 		Image: BOMBLET
 	Warhead:

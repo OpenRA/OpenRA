@@ -898,7 +898,7 @@ DepthCharge:
 
 ParaBomb:
 	ROF: 10
-	Range: 4.5
+	Range: 3
 	Report: CHUTE1.AUD
 	Projectile: GravityBomb
 		Image: PARABOMB

@@ -187,9 +187,9 @@ A10:
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 10
-	CarpetBomb:
+	AttackBomber:
+	Armament:
 		Weapon: Napalm
-		Range: 3
 	-Selectable:
 	-GainsExperience:
 	FlyAwayOnIdle:

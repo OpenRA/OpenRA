@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA
 						new FacingInit(attackFacing),
 					});
 
-					a.Trait<CarpetBomb>().SetTarget(target + targetOffset);
+					a.Trait<AttackBomber>().SetTarget(target + targetOffset);
 
 					if (flare != null)
 						a.QueueActivity(new CallFunc(() => flare.Destroy()));

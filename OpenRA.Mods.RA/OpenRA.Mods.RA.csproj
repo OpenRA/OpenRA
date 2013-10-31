@@ -179,7 +179,6 @@
     <Compile Include="Capturable.cs" />
     <Compile Include="ExternalCaptures.cs" />
     <Compile Include="Cargo.cs" />
-    <Compile Include="CarpetBomb.cs" />
     <Compile Include="CashTrickler.cs" />
     <Compile Include="ChronoshiftDeploy.cs" />
     <Compile Include="ChronoshiftPaletteEffect.cs" />
@@ -472,6 +471,7 @@
     <Compile Include="World\PathfinderDebugOverlay.cs" />
     <Compile Include="Effects\ContrailFader.cs" />
     <Compile Include="Widgets\Logic\SettingsLogic.cs" />
+    <Compile Include="AttackBomber.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -94,8 +94,8 @@ ORNI:
 		HuskActor: ORNI.Husk
 
 ORNI.bomber:
-	CarpetBomb:
-		Range: 3
+	AttackBomber:
+	Armament:
 		Weapon: Napalm
 	Inherits: ^Plane
 	Health:

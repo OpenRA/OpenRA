@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA.Missions
 				new FacingInit(Util.GetFacing(location - entry, 0)),
 				new AltitudeInit(Rules.Info["badr.bomber"].Traits.Get<PlaneInfo>().CruiseAltitude),
 			});
-			badger.Trait<CarpetBomb>().SetTarget(location);
+			badger.Trait<AttackBomber>().SetTarget(location.CenterPosition);
 			badger.QueueActivity(Fly.ToCell(location));
 			badger.QueueActivity(new FlyOffMap());
 			badger.QueueActivity(new RemoveSelf());
