@@ -726,8 +726,11 @@ TowerMissle:
 		Damage: 45
 
 Napalm:
-	ROF: 2
+	ValidTargets: Ground, Water
+	ROF: 4
 	Range: 3
+	Burst: 2
+	BurstDelay: 3
 	Projectile: GravityBomb
 		Image: BOMBLET
 	Warhead:
@@ -739,9 +742,10 @@ Napalm:
 			Heavy: 55%
 		InfDeath: 5
 		Explosion: med_napalm
+		WaterExplosion: med_napalm
 		ImpactSound: flamer2.aud
 		SmudgeType: Scorch
-		Damage: 130
+		Damage: 45
 
 Napalm.Crate:
 	Warhead:

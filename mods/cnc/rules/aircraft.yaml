@@ -190,10 +190,17 @@ A10:
 	AttackBomber:
 	Armament:
 		Weapon: Napalm
+		LocalOffset: 0,-256,-43, 0,256,-43
 	-Selectable:
 	-GainsExperience:
 	FlyAwayOnIdle:
 	RejectsOrders:
+	Contrail@1:
+		Offset: -640,171,0
+		TrailLength: 15
+	Contrail@2:
+		Offset: -640,-171,0
+		TrailLength: 15
 
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
