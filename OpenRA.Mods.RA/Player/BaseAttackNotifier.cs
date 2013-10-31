@@ -37,8 +37,13 @@ namespace OpenRA.Mods.RA
 			if (!self.HasTrait<Building>())
 				return;
 
-			// don't track self-damage
-			if (e.Attacker != null && e.Attacker.Owner == self.Owner)
+			if (e.Attacker == null)
+				return;
+
+			if (e.Attacker.Owner == self.Owner)
+				return;
+
+			if (e.Attacker.Owner.IsAlliedWith(self.Owner) && e.Damage <= 0)
 				return;
 
 			if (self.World.FrameNumber - lastAttackTime > info.NotifyInterval * 25)
