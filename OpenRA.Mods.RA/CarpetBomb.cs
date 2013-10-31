@@ -41,6 +41,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void SetTarget(CPos targetCell) { target = Target.FromCell(targetCell); }
+		public void SetTarget(WPos pos) { target = Target.FromPos(pos); }
 
 		public void Tick(Actor self)
 		{
