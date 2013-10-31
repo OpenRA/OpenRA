@@ -1,0 +1,200 @@
+#region Copyright & License Information
+/*
+* Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+* This file is part of OpenRA, which is free software. It is made
+* available to you under the terms of the GNU General Public License
+* as published by the Free Software Foundation. For more information,
+* see COPYING.
+*/
+#endregion
+
+using System;
+using System.IO;
+using System.Text;
+using OpenRA.Renderer.SdlCommon;
+using SDL2;
+
+namespace OpenRA.Renderer.Sdl2
+{
+	public class Sdl2Input
+	{
+		MouseButton lastButtonBits = (MouseButton)0;
+
+		MouseButton MakeButton(byte b)
+		{
+			return b == SDL.SDL_BUTTON_LEFT ? MouseButton.Left
+				: b == SDL.SDL_BUTTON_RIGHT ? MouseButton.Right
+				: b == SDL.SDL_BUTTON_MIDDLE ? MouseButton.Middle
+				: 0;
+		}
+
+		Modifiers MakeModifiers(int raw)
+		{
+			return ((raw & (int)SDL.SDL_Keymod.KMOD_ALT) != 0 ? Modifiers.Alt : 0)
+				 | ((raw & (int)SDL.SDL_Keymod.KMOD_CTRL) != 0 ? Modifiers.Ctrl : 0)
+				 | ((raw & (int)SDL.SDL_Keymod.KMOD_LGUI) != 0 ? Modifiers.Meta : 0)
+				 | ((raw & (int)SDL.SDL_Keymod.KMOD_RGUI) != 0 ? Modifiers.Meta : 0)
+				 | ((raw & (int)SDL.SDL_Keymod.KMOD_SHIFT) != 0 ? Modifiers.Shift : 0);
+		}
+
+		public void PumpInput(IInputHandler inputHandler)
+		{
+			var mods = MakeModifiers((int)SDL.SDL_GetModState());
+			inputHandler.ModifierKeys(mods);
+			MouseInput? pendingMotion = null;
+
+			SDL.SDL_Event e;
+			while (SDL.SDL_PollEvent(out e) != 0)
+			{
+				switch (e.type)
+				{
+					case SDL.SDL_EventType.SDL_QUIT:
+						OpenRA.Game.Exit();
+						break;
+
+					case SDL.SDL_EventType.SDL_WINDOWEVENT:
+					{
+						switch (e.window.windowEvent)
+						{
+							case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
+								Game.HasInputFocus = false;
+								break;
+
+							case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
+								Game.HasInputFocus = true;
+								break;
+						}
+
+						break;
+					}
+
+					case SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN:
+					{
+						if (pendingMotion != null)
+						{
+							inputHandler.OnMouseInput(pendingMotion.Value);
+							pendingMotion = null;
+						}
+
+						var button = MakeButton(e.button.button);
+						lastButtonBits |= button;
+
+						var pos = new int2(e.button.x, e.button.y);
+
+						inputHandler.OnMouseInput(new MouseInput(
+							MouseInputEvent.Down, button, pos, mods,
+							MultiTapDetection.DetectFromMouse(e.button.button, pos)));
+
+						break;
+					}
+
+					case SDL.SDL_EventType.SDL_MOUSEBUTTONUP:
+					{
+						if (pendingMotion != null)
+						{
+							inputHandler.OnMouseInput(pendingMotion.Value);
+							pendingMotion = null;
+						}
+
+						var button = MakeButton(e.button.button);
+						lastButtonBits &= ~button;
+
+						var pos = new int2(e.button.x, e.button.y);
+						inputHandler.OnMouseInput(new MouseInput(
+							MouseInputEvent.Up, button, pos, mods,
+							MultiTapDetection.InfoFromMouse(e.button.button)));
+
+						break;
+					}
+
+					case SDL.SDL_EventType.SDL_MOUSEMOTION:
+					{
+						pendingMotion = new MouseInput(
+							MouseInputEvent.Move, lastButtonBits,
+							new int2(e.motion.x, e.motion.y), mods, 0);
+
+						break;
+					}
+
+					case SDL.SDL_EventType.SDL_MOUSEWHEEL:
+					{
+						// Retain compatibility with existing bogus behavior
+						// TODO: Implement real scroll behavior after we drop SDL 1.2 support
+						if (e.wheel.y == 0)
+							break;
+
+						int x, y;
+						SDL.SDL_GetMouseState(out x, out y);
+						var button = e.wheel.y < 0 ? MouseButton.WheelDown : MouseButton.WheelUp;
+						inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Down, button, new int2(x, y), Modifiers.None, 0));
+
+						break;
+					}
+
+					case SDL.SDL_EventType.SDL_TEXTINPUT:
+					{
+						string input;
+						unsafe
+						{
+							var data = new byte[SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE];
+							var i = 0;
+							for (; i < SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE; i++)
+							{
+								var b = e.text.text[i];
+								if (b == '\0')
+									break;
+
+								data[i] = b;
+							}
+
+							input = Encoding.UTF8.GetString(data, 0, i);
+						}
+
+						inputHandler.OnTextInput(input);
+						break;
+					}
+
+					case SDL.SDL_EventType.SDL_KEYDOWN:
+					case SDL.SDL_EventType.SDL_KEYUP:
+					{
+						var keyCode = (Keycode)e.key.keysym.sym;
+						var type = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
+							KeyInputEvent.Down : KeyInputEvent.Up;
+
+						var tapCount = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
+							MultiTapDetection.DetectFromKeyboard(keyCode) :
+							MultiTapDetection.InfoFromKeyboard(keyCode);
+
+						var keyEvent = new KeyInput
+						{
+							Event = type,
+							Key = keyCode,
+							Modifiers = mods,
+							UnicodeChar = (char)e.key.keysym.sym,
+							MultiTapCount = tapCount
+						};
+
+						// Special case workaround for windows users
+						if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
+						    Platform.CurrentPlatform == PlatformType.Windows)
+						{
+							OpenRA.Game.Exit();
+						}
+						else
+							inputHandler.OnKeyInput(keyEvent);
+
+						break;
+					}
+				}
+			}
+
+			if (pendingMotion != null)
+			{
+				inputHandler.OnMouseInput(pendingMotion.Value);
+				pendingMotion = null;
+			}
+
+			ErrorHandler.CheckGlError();
+		}
+	}
+}

@@ -130,6 +130,9 @@ namespace OpenRA.Renderer.SdlCommon
 						else
 							inputHandler.OnKeyInput(keyEvent);
 
+						if (keyEvent.IsValidInput())
+							inputHandler.OnTextInput(keyEvent.UnicodeChar.ToString());
+
 						break;
 					}
 				}
