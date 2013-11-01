@@ -97,9 +97,6 @@ namespace OpenRA.Traits
 				if (self.Destroyed)
 					return;
 
-				if (target.Type == TargetType.Actor && display)
-					w.Add(new FlashTarget(target.Actor));
-
 				var line = self.TraitOrDefault<DrawLineToTarget>();
 				if (line != null)
 					line.SetTarget(self, target, color, display);

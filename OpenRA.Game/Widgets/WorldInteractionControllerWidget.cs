@@ -141,8 +141,14 @@ namespace OpenRA.Widgets
 			orders.Do(o => world.IssueOrder(o));
 
 			world.PlayVoiceForOrders(orders);
-			if (orders.Where(o => o.OrderString != null && o.OrderString.EndsWith("Move")).Any())
-				world.Add(new MoveFlash(worldRenderer.Viewport.ViewToWorldPosition(mi.Location), world));
+
+			foreach (var o in orders)
+			{
+				if (o.TargetActor != null)
+					world.Add(new FlashTarget(o.TargetActor));
+				else if (o.TargetLocation != CPos.Zero)
+					world.Add(new MoveFlash(worldRenderer.Viewport.ViewToWorldPosition(mi.Location), world));
+			}
 		}
 
 		public override string GetCursor(int2 screenPos)
