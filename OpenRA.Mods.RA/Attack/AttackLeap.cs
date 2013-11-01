@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			// TODO: Define weapon ranges as WRange
-			var range = new WRange((int)(1024*a.Weapon.Range));
+			var range = new WRange((int)(1024 * a.Weapon.Range));
 			if (!target.IsInRange(self.CenterPosition, range))
 				return;
 

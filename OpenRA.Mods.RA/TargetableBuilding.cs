@@ -35,9 +35,9 @@ namespace OpenRA.Mods.RA
 		}
 
 		public string[] TargetTypes { get { return info.TargetTypes; } }
-		public bool TargetableBy(Actor self, Actor byActor)
+		public bool TargetableBy(Actor self, Actor attacker)
 		{
-			return !byActor.HasTrait<AttackLeap>();
+			return !attacker.HasTrait<AttackLeap>();
 		}
 
 		public IEnumerable<WPos> TargetablePositions(Actor self)

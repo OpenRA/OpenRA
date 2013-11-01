@@ -20,7 +20,7 @@ using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Widgets;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Ra.Widgets.Logic
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class SettingsLogic
 	{
