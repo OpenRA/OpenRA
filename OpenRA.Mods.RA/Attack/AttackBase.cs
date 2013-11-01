@@ -19,7 +19,6 @@ namespace OpenRA.Mods.RA
 {
 	public abstract class AttackBaseInfo : ITraitInfo
 	{
-		public readonly bool CanAttackGround = true;
 		public readonly string Cursor = "attack";
 
 		public abstract object Create(ActorInitializer init);
@@ -220,8 +219,7 @@ namespace OpenRA.Mods.RA
 					return false;
 
 				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
-					if (self.Info.Traits.Get<AttackBaseInfo>().CanAttackGround)
-						return true;
+					return true;
 
 				return false;
 			}
