@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -33,6 +34,11 @@ namespace OpenRA.Mods.RA
 			: base(self, info)
 		{
 			this.info = info;
+		}
+
+		protected override bool CanAttack(Actor self, Target target)
+		{
+			return base.CanAttack(self, target) && target.Actor.HasTrait<Mobile>();
 		}
 
 		public override void DoAttack(Actor self, Target target)
