@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -35,6 +36,14 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
+		protected override bool CanAttack(Actor self, Target target)
+		{
+			if (target.Type != TargetType.Actor || !target.Actor.HasTrait<Mobile>())
+				return false;
+
+			return base.CanAttack(self, target);
+		}
+
 		public override void DoAttack(Actor self, Target target)
 		{
 			if (target.Type != TargetType.Actor || !CanAttack(self, target))
@@ -45,7 +54,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			// TODO: Define weapon ranges as WRange
-			var range = new WRange((int)(1024*a.Weapon.Range));
+			var range = new WRange((int)(1024 * a.Weapon.Range));
 			if (!target.IsInRange(self.CenterPosition, range))
 				return;
 
