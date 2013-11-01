@@ -197,10 +197,17 @@ A10:
 		Range: 12
 	RenderUnit:
 	WithShadow:
-	LimitedAmmo:
-		Ammo: 10
 	AttackBomber:
-	Armament:
+		Guns: gun
+		Bombs: bombs
+	Armament@GUNS:
+		Name: gun
+		Weapon: Vulcan
+		LocalOffset: 1024,0,-85
+	WithMuzzleFlash@SECONDARY:
+		Armament: gun
+	Armament@BOMBS:
+		Name: bombs
 		Weapon: Napalm
 		LocalOffset: 0,-256,-43, 0,256,-43
 	-Selectable:

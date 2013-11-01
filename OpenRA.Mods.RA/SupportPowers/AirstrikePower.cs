@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		[ActorReference]
 		public readonly string UnitType = "badr.bomber";
 		public readonly int SquadSize = 1;
-		public readonly WVec SquadOffset = new WVec(-1536, 2048, 0);
+		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
 
 		public readonly int QuantizedFacings = 32;
 		public readonly WRange Cordon = new WRange(5120);
