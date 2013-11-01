@@ -38,7 +38,10 @@ namespace OpenRA.Mods.RA
 
 		protected override bool CanAttack(Actor self, Target target)
 		{
-			return base.CanAttack(self, target) && target.Actor.HasTrait<Mobile>();
+			if (target.Type != TargetType.Actor || !target.Actor.HasTrait<Mobile>())
+				return false;
+
+			return base.CanAttack(self, target);
 		}
 
 		public override void DoAttack(Actor self, Target target)
