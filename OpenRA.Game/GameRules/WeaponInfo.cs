@@ -172,6 +172,9 @@ namespace OpenRA.GameRules
 			if (target.Type == TargetType.Terrain)
 			{
 				var cell = target.CenterPosition.ToCPos();
+				if (!world.Map.IsInMap(cell))
+					return false;
+
 				if (ValidTargets.Contains("Ground") && world.GetTerrainType(cell) != "Water")
 					return true;
 

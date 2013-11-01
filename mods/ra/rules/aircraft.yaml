@@ -36,8 +36,8 @@ BADR:
 	RejectsOrders:
 
 BADR.Bomber:
-	CarpetBomb:
-		Range: 3
+	AttackBomber:
+	Armament:
 		Weapon: ParaBomb
 	Inherits: ^Plane
 	Health:

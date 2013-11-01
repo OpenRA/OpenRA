@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
@@ -19,59 +20,81 @@ namespace OpenRA.Mods.RA
 	{
 		[ActorReference]
 		public readonly string UnitType = "badr.bomber";
+		public readonly int SquadSize = 1;
+		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
+
+		public readonly int QuantizedFacings = 32;
+		public readonly WRange Cordon = new WRange(5120);
+
 		[ActorReference]
 		public readonly string FlareType = null;
-
-		public readonly int FlareTime = 25 * 60 * 2;	// 2 minutes
+		public readonly int FlareTime = 3000; // 2 minutes
 
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.self, this); }
 	}
 
 	class AirstrikePower : SupportPower
 	{
-		public AirstrikePower(Actor self, AirstrikePowerInfo info) : base(self, info) { }
+		public AirstrikePower(Actor self, AirstrikePowerInfo info)
+			: base(self, info) { }
 
 		public override void Activate(Actor self, Order order)
 		{
-			var startPos = self.World.ChooseRandomEdgeCell();
+			var info = Info as AirstrikePowerInfo;
+
+			var attackFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
+			var attackRotation = WRot.FromFacing(attackFacing);
+			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
+
+			var altitude = Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude * 1024 / Game.CellSize;
+			var target = order.TargetLocation.CenterPosition + new WVec(0, 0, altitude);
+			var startEdge = target - (self.World.DistanceToMapEdge(target, -delta) + info.Cordon).Range * delta / 1024;
+			var finishEdge = target + (self.World.DistanceToMapEdge(target, delta) + info.Cordon).Range * delta / 1024;
+
 			self.World.AddFrameEndTask(w =>
 			{
-				var info = (Info as AirstrikePowerInfo);
+				var notification = self.Owner.IsAlliedWith(self.World.RenderPlayer) ? Info.LaunchSound : Info.IncomingSound;
+				Sound.Play(notification);
 
-				if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-					Sound.Play(Info.LaunchSound);
-				else
-					Sound.Play(Info.IncomingSound);
-
-				var flare = info.FlareType != null ? w.CreateActor(info.FlareType, new TypeDictionary
+				Actor flare = null;
+				if (info.FlareType != null)
 				{
-					new LocationInit( order.TargetLocation ),
-					new OwnerInit( self.Owner ),
-				}) : null;
+					flare = w.CreateActor(info.FlareType, new TypeDictionary
+					{
+						new LocationInit(order.TargetLocation),
+						new OwnerInit(self.Owner),
+					});
 
-				if (flare != null)
-				{
 					flare.QueueActivity(new Wait(info.FlareTime));
 					flare.QueueActivity(new RemoveSelf());
 				}
 
-				var a = w.CreateActor(info.UnitType, new TypeDictionary
+				for (var i = -info.SquadSize / 2; i <= info.SquadSize / 2; i++)
 				{
-					new LocationInit( startPos ),
-					new OwnerInit( self.Owner ),
-					new FacingInit( Util.GetFacing(order.TargetLocation - startPos, 0) ),
-					new AltitudeInit( Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude ),
-				});
-				a.Trait<CarpetBomb>().SetTarget(order.TargetLocation);
+					// Even-sized squads skip the lead plane
+					if (i == 0 && (info.SquadSize & 1) == 0)
+						continue;
 
-				a.CancelActivity();
-				a.QueueActivity(Fly.ToCell(order.TargetLocation));
+					// Includes the 90 degree rotation between body and world coordinates
+					var so = info.SquadOffset;
+					var spawnOffset = new WVec(i*so.Y, -Math.Abs(i)*so.X, 0).Rotate(attackRotation);
+					var targetOffset = new WVec(i*so.Y, 0, 0).Rotate(attackRotation);
 
-				if (flare != null)
-					a.QueueActivity(new CallFunc(() => flare.Destroy()));
+					var a = w.CreateActor(info.UnitType, new TypeDictionary
+					{
+						new CenterPositionInit(startEdge + spawnOffset),
+						new OwnerInit(self.Owner),
+						new FacingInit(attackFacing),
+					});
 
-				a.QueueActivity(new FlyOffMap());
-				a.QueueActivity(new RemoveSelf());
+					a.Trait<AttackBomber>().SetTarget(target + targetOffset);
+
+					if (flare != null)
+						a.QueueActivity(new CallFunc(() => flare.Destroy()));
+
+					a.QueueActivity(Fly.ToPos(finishEdge + spawnOffset));
+					a.QueueActivity(new RemoveSelf());
+				}
 			});
 		}
 	}

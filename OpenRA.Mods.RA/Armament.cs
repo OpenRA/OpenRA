@@ -101,7 +101,8 @@ namespace OpenRA.Mods.RA
 		// The world coordinate model uses Actor.Orientation
 		public void CheckFire(Actor self, AttackBase attack, IFacing facing, Target target)
 		{
-			if (FireDelay > 0) return;
+			if (FireDelay > 0)
+				return;
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
@@ -113,7 +114,7 @@ namespace OpenRA.Mods.RA
 			if (!target.IsInRange(self.CenterPosition, range))
 				return;
 
-			if (target.IsInRange(self.CenterPosition, minRange))
+			if (minRange != WRange.Zero && target.IsInRange(self.CenterPosition, minRange))
 				return;
 
 			if (!Weapon.IsValidAgainst(target, self.World))

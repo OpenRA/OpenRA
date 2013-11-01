@@ -166,6 +166,18 @@ C17:
 	-GainsExperience:
 	FlyAwayOnIdle:
 	RejectsOrders:
+	Contrail@1:
+		Offset: -261,-650,0
+		TrailLength: 15
+	Contrail@2:
+		Offset: -85,-384,0
+		TrailLength: 16
+	Contrail@3:
+		Offset: -85,384,0
+		TrailLength: 16
+	Contrail@4:
+		Offset: -261,650,0
+		TrailLength: 15
 
 A10:
 	Inherits: ^Plane
@@ -185,15 +197,29 @@ A10:
 		Range: 12
 	RenderUnit:
 	WithShadow:
-	LimitedAmmo:
-		Ammo: 10
-	CarpetBomb:
+	AttackBomber:
+		Guns: gun
+		Bombs: bombs
+	Armament@GUNS:
+		Name: gun
+		Weapon: Vulcan
+		LocalOffset: 1024,0,-85
+	WithMuzzleFlash@SECONDARY:
+		Armament: gun
+	Armament@BOMBS:
+		Name: bombs
 		Weapon: Napalm
-		Range: 3
+		LocalOffset: 0,-256,-43, 0,256,-43
 	-Selectable:
 	-GainsExperience:
 	FlyAwayOnIdle:
 	RejectsOrders:
+	Contrail@1:
+		Offset: -640,171,0
+		TrailLength: 15
+	Contrail@2:
+		Offset: -640,-171,0
+		TrailLength: 15
 
 TRAN.Husk:
 	Inherits: ^HelicopterHusk

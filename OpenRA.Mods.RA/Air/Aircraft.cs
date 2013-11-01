@@ -57,13 +57,17 @@ namespace OpenRA.Mods.RA.Air
 			if (init.Contains<LocationInit>())
 				SetPosition(self, init.Get<LocationInit, CPos>());
 
-			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
 
 			if (init.Contains<AltitudeInit>())
 			{
 				var z = init.Get<AltitudeInit, int>() * 1024 / Game.CellSize;
 				SetPosition(self, CenterPosition + new WVec(0, 0, z - CenterPosition.Z));
 			}
+
+			if (init.Contains<CenterPositionInit>())
+				SetPosition(self, init.Get<CenterPositionInit, WPos>());
+
+			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
 		}
 
 		public Actor GetActorBelow()
