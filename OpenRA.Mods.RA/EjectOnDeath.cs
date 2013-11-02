@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Eject a ground soldier or a paratrooper while in the air.")]
 	public class EjectOnDeathInfo : TraitInfo<EjectOnDeath>
 	{
 		[ActorReference]
