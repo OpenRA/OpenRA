@@ -236,6 +236,7 @@
     <Compile Include="Traits\World\ScreenMap.cs" />
     <Compile Include="Traits\World\ActorMap.cs" />
     <Compile Include="Widgets\HotkeyEntryWidget.cs" />
+    <Compile Include="Effects\MoveFlash.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

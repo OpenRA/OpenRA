@@ -81,7 +81,7 @@ namespace OpenRA
 		public readonly ActorMap ActorMap;
 		public readonly ScreenMap ScreenMap;
 
-		public void IssueOrder( Order o ) { orderManager.IssueOrder( o ); }	/* avoid exposing the OM to mod code */
+		public void IssueOrder(Order o) { orderManager.IssueOrder(o); } /* avoid exposing the OM to mod code */
 
 		IOrderGenerator orderGenerator_;
 		public IOrderGenerator OrderGenerator

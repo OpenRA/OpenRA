@@ -11,6 +11,7 @@ NEW:
 		Fixed base attack notification playing when allied engineers repaired your buildings.
 		Improved the ingame chat interface and input, with it defaulting to Team Chat.
 		Redesigned the settings panel.
+		Re-added move flashes.
 	Red Alert:
 		Added MAD Tank.
 		Fixed a crash in Monster Tank Madness.

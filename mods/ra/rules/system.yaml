@@ -587,6 +587,12 @@ World:
 		G: 255
 		B: 255
 		A: 128
+	PaletteFromRGBA@moveflash:
+		Name: moveflash
+		R: 255
+		G: 255
+		B: 255
+		A: 64
 	PaletteFromRGBA@invuln:
 		Name: invuln
 		R: 128

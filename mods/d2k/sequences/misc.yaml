@@ -298,3 +298,10 @@ spicebloom:
 		Start: 109
 		ZOffset: -511
 		Offset: -16,-16
+
+moveflsh:
+	idle: DATA.R8
+		Start: 3621
+		Length: 5
+		Tick: 80
+		BlendMode: Subtractive

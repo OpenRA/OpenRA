@@ -162,6 +162,7 @@ moveflsh:
 	idle:
 		Start: 0
 		Length: *
+		Tick: 80
 
 select:
 	repair:
