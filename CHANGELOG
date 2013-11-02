@@ -6,7 +6,13 @@ NEW:
 		Added double click start support to the replay browser.
 		Fixed low projectiles not colliding with walls.
 		Improved UI decorations (selection boxes, target lines, etc) in pixel double mode.
+		Added additional stand animations to infantry [RA / TD]
+		Added the ability to double click select maps and music.
+		Fixed base attack notification playing when allied engineers repaired your buildings.
+		Improved the ingame chat interface and input, with it defaulting to Team Chat.
+		Redesigned the settings panel.
 	Red Alert:
+		Added MAD Tank.
 		Fixed a crash in Monster Tank Madness.
 		Fixed medics sometimes healing enemies.
 		Reduced Giant Ant selection box size.
@@ -32,19 +38,45 @@ NEW:
 		Athena:
 			Reduced strategic victory timer to 3 minutes.
 			Increased the size of the starting islands.
+		Adjusted button highlight color to dark wine red.
+		Fixed ant hills using the wrong tile ID.
+		Adjusted Zombie build palette position.
+		Fixed attack dogs causing crashes by attacking non-infantry.
+	Tiberian Dawn:
+		C&C mod renamed to Tiberian Dawn to resolve naming ambiguities.
+		Fixed Bio Lab wrongly belonging to a hostile faction in East vs West 3.
+		Added building repair ability to the engineer.
+		Adjusted MLRS to fire a barrage of 8 rockets instead for improved visuals, and adjusted its rocket explosion sound.
+		Added a grenade toss sound.
+		Added Haos Ridges, converted from RA.
+		Fixed player spawns in Deterring Democracy.
+		Added 2 additional A-10s and cannon strafing to the Airstrike support power.
+		Added contrails to the C-17 Globemaster.
+		Added cash tick sounds.
+		Disabled the main menu target reticle showing when a window is open.
+		Added a display of the faction logos when the shellmap is disabled.
 	Dune 2000:
 		Added buildable concrete walls.
 		Fixed some cliffs being passable.
 		Fixed infantry sometimes using the wrong animation when standing.
 		Fixed A* debug overlay.
+		Fixed R8 offsets for sprites with embedded palettes.
 	Engine:
 		Replays are now saved in per-mod and per-version folders.
 		Added password protection support for servers.
 		Added language translation support.
 		Added game ID and version information to exception and sync reports.
+		Map folders are now explicitly specified in mod.yaml.
+		Replaced the OS X binary launcher with a script to use a new SDL2 renderer.
+		Renamed the Capture trait to ExternalCapture and renamed the LegacyCapture trait to Capture.
+		Improved cash tick sound playback.
+		Added modifier support to hotkeys.
+		Fixed a desync related to projectile contrails.
 	Build system and packages:
 		Added GeoIP to Makefile so it is installed properly.
 		Added desktop shortcut creation support to the Makefile and Windows installer.
+		COPYING and CHANGELOG are now shipped on all platforms.
+		Fixed 'make docs' crashing when the game assets are not installed.
 
 20130915:
 	All mods:
