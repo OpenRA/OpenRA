@@ -61,6 +61,12 @@ fi
 
 ./package-all.sh $TAG ~/openra-package/packages/
 
+echo "Downloading source code packages from GitHub..."
+curl -s -L -o "$OUTPUTDIR/$TAG.tar.gz" "https://github.com/OpenRA/OpenRA/archive/$TAG.tar.gz"
+if [ $? -ne 0 ]; then
+    echo "Source code package download failed."
+fi
+
 ./upload-all.sh $TAG ~/openra-package/packages
 
 ./update-wiki.sh
