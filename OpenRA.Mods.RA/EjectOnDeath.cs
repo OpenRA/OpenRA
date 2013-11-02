@@ -10,6 +10,7 @@
 
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -53,7 +54,12 @@ namespace OpenRA.Mods.RA
 					Sound.Play(info.ChuteSound, cp);
 				}
 				else
+				{
 					self.World.AddFrameEndTask(w => w.Add(pilot));
+					var pilotMobile = pilot.TraitOrDefault<Mobile>();
+					if (pilotMobile != null)
+						pilotMobile.Nudge(pilot, pilot, true);
+				}
 			}
 			else
 				pilot.Destroy();
