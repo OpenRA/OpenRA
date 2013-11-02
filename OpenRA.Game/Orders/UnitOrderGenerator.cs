@@ -41,7 +41,7 @@ namespace OpenRA.Orders
 				.Where(o => o != null)
 				.ToArray();
 
-			var actorsInvolved = orders.Select(o => o.Self).Distinct();
+			var actorsInvolved = orders.Select(o => o.Actor).Distinct();
 			if (actorsInvolved.Any())
 				yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false)
 				{
@@ -49,7 +49,7 @@ namespace OpenRA.Orders
 				};
 
 			foreach (var o in orders)
-				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Self, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
+				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
 		}
 
 		public void Tick(World world) { }
@@ -137,15 +137,15 @@ namespace OpenRA.Orders
 
 		class UnitOrderResult
 		{
-			public readonly Actor Self;
+			public readonly Actor Actor;
 			public readonly IOrderTargeter Order;
 			public readonly IIssueOrder Trait;
 			public readonly string Cursor;
 			public readonly Target Target;
 
-			public UnitOrderResult(Actor self, IOrderTargeter order, IIssueOrder trait, string cursor, Target target)
+			public UnitOrderResult(Actor actor, IOrderTargeter order, IIssueOrder trait, string cursor, Target target)
 			{
-				this.Self = self;
+				this.Actor = actor;
 				this.Order = order;
 				this.Trait = trait;
 				this.Cursor = cursor;
