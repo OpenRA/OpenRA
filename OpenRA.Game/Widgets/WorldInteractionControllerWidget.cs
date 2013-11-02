@@ -145,9 +145,15 @@ namespace OpenRA.Widgets
 			foreach (var o in orders)
 			{
 				if (o.TargetActor != null)
+				{
 					world.Add(new FlashTarget(o.TargetActor));
-				else if (o.TargetLocation != CPos.Zero)
+					break;
+				}
+				else if (o.Subject != world.LocalPlayer.PlayerActor && o.TargetLocation != CPos.Zero)
+				{
 					world.Add(new MoveFlash(worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(mi.Location)), world));
+					break;
+				}
 			}
 		}
 

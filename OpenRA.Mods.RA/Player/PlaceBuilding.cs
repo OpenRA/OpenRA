@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 					// Find the queue with the target actor
 					var queue = w.ActorsWithTrait<ProductionQueue>()
 						.Where(p => p.Actor.Owner == self.Owner &&
-							   		 p.Trait.CurrentItem() != null &&
+									 p.Trait.CurrentItem() != null &&
 									 p.Trait.CurrentItem().Item == order.TargetString &&
 									 p.Trait.CurrentItem().RemainingTime == 0)
 						.Select(p => p.Trait)
