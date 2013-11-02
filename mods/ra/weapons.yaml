@@ -920,6 +920,7 @@ ParaBomb:
 		WaterImpactSound: splash9.aud
 
 DogJaw:
+	ValidTargets: Infantry
 	ROF: 10
 	Range: 3
 	Report: DOGG5P.AUD

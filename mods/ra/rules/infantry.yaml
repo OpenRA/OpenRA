@@ -23,7 +23,6 @@ DOG:
 	Armament:
 		Weapon: DogJaw
 	AttackLeap:
-		CanAttackGround: no
 	RenderInfantry:
 		IdleAnimations: idle1,idle2
 	IgnoresDisguise:

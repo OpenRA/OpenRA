@@ -110,7 +110,7 @@
 	Selectable:
 		Voice: GenericVoice
 	TargetableUnit:
-		TargetTypes: Ground, Disguise
+		TargetTypes: Ground, Infantry, Disguise
 	RenderInfantry:
 	AutoTarget:
 	AttackMove:
