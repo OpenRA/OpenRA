@@ -41,16 +41,15 @@ namespace OpenRA.Orders
 				.Where(o => o != null)
 				.ToArray();
 
-			var actorsInvolved = orders.Select(o => o.self).Distinct();
+			var actorsInvolved = orders.Select(o => o.Self).Distinct();
 			if (actorsInvolved.Any())
 				yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false)
 				{
 					TargetString = actorsInvolved.Select(a => a.ActorID).JoinWith(",")
 				};
 
-
 			foreach (var o in orders)
-				yield return CheckSameOrder(o.iot, o.trait.IssueOrder(o.self, o.iot, o.target, mi.Modifiers.HasModifier(Modifiers.Shift)));
+				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Self, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
 		}
 
 		public void Tick(World world) { }
@@ -89,7 +88,7 @@ namespace OpenRA.Orders
 				.Where(o => o != null)
 				.ToArray();
 
-			var cursorName = orders.Select(o => o.cursor).FirstOrDefault();
+			var cursorName = orders.Select(o => o.Cursor).FirstOrDefault();
 			return cursorName ?? (useSelect ? "select" : "default");
 		}
 
@@ -103,9 +102,9 @@ namespace OpenRA.Orders
 
 			if (mi.Button == Game.mouseButtonPreference.Action)
 			{
-				foreach( var o in self.TraitsImplementing<IIssueOrder>()
+				foreach (var o in self.TraitsImplementing<IIssueOrder>()
 					.SelectMany(trait => trait.Orders
-						.Select(x => new { Trait = trait, Order = x } ))
+						.Select(x => new { Trait = trait, Order = x }))
 					.OrderByDescending(x => x.Order.OrderPriority))
 				{
 					var actorsAt = self.World.ActorMap.GetUnitsAt(target.CenterPosition.ToCPos()).ToList();
@@ -138,19 +137,19 @@ namespace OpenRA.Orders
 
 		class UnitOrderResult
 		{
-			public readonly Actor self;
-			public readonly IOrderTargeter iot;
-			public readonly IIssueOrder trait;
-			public readonly string cursor;
-			public readonly Target target;
+			public readonly Actor Self;
+			public readonly IOrderTargeter Order;
+			public readonly IIssueOrder Trait;
+			public readonly string Cursor;
+			public readonly Target Target;
 
-			public UnitOrderResult(Actor self, IOrderTargeter iot, IIssueOrder trait, string cursor, Target target)
+			public UnitOrderResult(Actor self, IOrderTargeter order, IIssueOrder trait, string cursor, Target target)
 			{
-				this.self = self;
-				this.iot = iot;
-				this.trait = trait;
-				this.cursor = cursor;
-				this.target = target;
+				this.Self = self;
+				this.Order = order;
+				this.Trait = trait;
+				this.Cursor = cursor;
+				this.Target = target;
 			}
 		}
 	}
