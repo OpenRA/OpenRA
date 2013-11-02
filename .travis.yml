@@ -5,8 +5,6 @@
 language: c
 
 # Make sure build dependencies are installed.
-before_install:
- - sudo apt-get update
 install:
  - sudo apt-get install mono-gmcs cli-common-dev libsdl1.2debian libgl1-mesa-glx libopenal1 libfreetype6 dpkg rpm nsis markdown
 
