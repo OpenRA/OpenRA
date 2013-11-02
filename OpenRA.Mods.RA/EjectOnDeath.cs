@@ -38,6 +38,8 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var cp = self.CenterPosition;
+			if ((cp.Z > 0 && !info.EjectInAir) || (cp.Z == 0 && !info.EjectOnGround))
+				return;
 
 			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner), new LocationInit(self.Location) });
