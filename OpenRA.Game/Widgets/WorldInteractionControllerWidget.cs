@@ -138,22 +138,27 @@ namespace OpenRA.Widgets
 
 			var pos = worldRenderer.Position(xy);
 			var orders = world.OrderGenerator.Order(world, pos.ToCPos(), mi).ToArray();
-			orders.Do(o => world.IssueOrder(o));
 
 			world.PlayVoiceForOrders(orders);
 
+			var flashed = false;
 			foreach (var o in orders)
 			{
-				if (o.TargetActor != null)
+				if (!flashed)
 				{
-					world.Add(new FlashTarget(o.TargetActor));
-					break;
+					if (o.TargetActor != null)
+					{
+						world.AddFrameEndTask(w => w.Add(new FlashTarget(o.TargetActor)));
+						flashed = true;
+					}
+					else if (o.Subject != world.LocalPlayer.PlayerActor && o.TargetLocation != CPos.Zero) // TODO: this filters building placement, but also suppport powers :(
+					{
+						world.AddFrameEndTask(w => w.Add(new MoveFlash(worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(mi.Location)), world)));
+						flashed = true;
+					}
 				}
-				else if (o.Subject != world.LocalPlayer.PlayerActor && o.TargetLocation != CPos.Zero)
-				{
-					world.Add(new MoveFlash(worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(mi.Location)), world));
-					break;
-				}
+
+				world.IssueOrder(o);
 			}
 		}
 
