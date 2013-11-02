@@ -29,7 +29,7 @@ markdown DOCUMENTATION.md > DOCUMENTATION.html
 # Note that the Tao dlls are shipped on all platforms except osx and that
 # they are now installed to the game directory instead of placed in the gac
 FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
-'OpenRA.FileFormats.dll' 'OpenRA.Renderer.SdlCommon.dll' 'OpenRA.Renderer.Cg.dll' 'OpenRA.Renderer.Gl.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
+'OpenRA.FileFormats.dll' 'OpenRA.Renderer.SdlCommon.dll' 'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Cg.dll' 'OpenRA.Renderer.Gl.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
 'FreeSans.ttf' 'FreeSansBold.ttf' \
 'cg' 'glsl' 'mods/ra' 'mods/cnc' 'mods/d2k' \
 'AUTHORS' 'CHANGELOG' 'COPYING' \
@@ -52,6 +52,9 @@ cp thirdparty/FuzzyLogicLibrary.dll packaging/built
 
 # SharpFont for FreeType support
 cp thirdparty/SharpFont* packaging/built
+
+# SDL2#
+cp thirdparty/SDL2\#* packaging/built
 
 # Mono.NAT for UPnP support
 cp thirdparty/Mono.Nat.dll packaging/built

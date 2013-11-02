@@ -14,16 +14,22 @@ fi
 
 # Copy the template to build the game package
 # Assumes it is layed out with the correct directory structure
-cp -rv ../../OpenRA.Launcher.Mac/build/Release/OpenRA.app OpenRA.app
+cp -rv template.app OpenRA.app
 cp -rv $2/* "OpenRA.app/Contents/Resources/" || exit 3
 
 # Icon isn't used, and editor doesn't work.
 rm OpenRA.app/Contents/Resources/OpenRA.ico
 rm OpenRA.app/Contents/Resources/OpenRA.Editor.exe
 
+# SDL2 is the only supported renderer
+rm -rf OpenRA.app/Contents/Resources/cg
+rm OpenRA.app/Contents/Resources/OpenRA.Renderer.Cg.dll
+rm OpenRA.app/Contents/Resources/Tao.Sdl.*
+rm OpenRA.app/Contents/Resources/Tao.Cg.*
+
 # Change the .config to use the packaged SDL
-sed "s/\/Library\/Frameworks\/SDL.framework/./" OpenRA.app/Contents/Resources/Tao.Sdl.dll.config > temp
-mv temp OpenRA.app/Contents/Resources/Tao.Sdl.dll.config
+sed "s/\/Library\/Frameworks\/SDL2.framework/./" OpenRA.app/Contents/Resources/SDL2\#.dll.config > temp
+mv temp OpenRA.app/Contents/Resources/SDL2\#.dll.config
 rm temp
 
 # Package app bundle into a zip and clean up
