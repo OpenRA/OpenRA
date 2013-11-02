@@ -251,6 +251,7 @@
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
+    <Compile Include="MadTank.cs" />
     <Compile Include="Missions\DesertShellmapScript.cs" />
     <Compile Include="Missions\FortLonestarScript.cs" />
     <Compile Include="Missions\Survival02Script.cs" />

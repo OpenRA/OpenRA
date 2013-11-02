@@ -47,6 +47,8 @@ namespace OpenRA.GameRules
 		public readonly DamageModel DamageModel = DamageModel.Normal;
 		[Desc("Whether we should prevent prone response for infantry.")]
 		public readonly bool PreventProne = false;
+		[Desc("Whether to use the provided Damage value as a maximum health percentage.")]
+		public readonly bool ScaleDamageByTargetHealth = false;
 
 		public float EffectivenessAgainst(ActorInfo ai)
 		{
@@ -106,6 +108,7 @@ namespace OpenRA.GameRules
 		public readonly bool Charges = false;
 		public readonly bool Underwater = false;
 		public readonly string[] ValidTargets = { "Ground", "Water" };
+		public readonly string[] InvalidTargets = { };
 		public readonly int BurstDelay = 5;
 		public readonly float MinRange = 0;
 
@@ -140,7 +143,8 @@ namespace OpenRA.GameRules
 		public bool IsValidAgainst(Actor a)
 		{
 			var targetable = a.TraitOrDefault<ITargetable>();
-			if (targetable == null || !ValidTargets.Intersect(targetable.TargetTypes).Any())
+			if (targetable == null || !ValidTargets.Intersect(targetable.TargetTypes).Any()
+				|| InvalidTargets.Intersect(targetable.TargetTypes).Any())
 				return false;
 
 			if (Warheads.All(w => w.EffectivenessAgainst(a.Info) <= 0))
@@ -152,7 +156,8 @@ namespace OpenRA.GameRules
 		public bool IsValidAgainst(FrozenActor a)
 		{
 			var targetable = a.Info.Traits.GetOrDefault<ITargetableInfo>();
-			if (targetable == null || !ValidTargets.Intersect(targetable.GetTargetTypes()).Any())
+			if (targetable == null || !ValidTargets.Intersect(targetable.GetTargetTypes()).Any()
+				|| InvalidTargets.Intersect(targetable.GetTargetTypes()).Any())
 				return false;
 
 			if (Warheads.All(w => w.EffectivenessAgainst(a.Info) <= 0))

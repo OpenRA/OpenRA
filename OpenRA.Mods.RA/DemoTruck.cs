@@ -33,14 +33,14 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter("DemoTruck", "DemoAttack", 5, "attack", true, false) { ForceAttack = false };
-				yield return new DeployOrderTargeter("DemoDeploy", 5);
+				yield return new TargetTypeOrderTargeter("DetonateAttack", "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
+				yield return new DeployOrderTargeter("Detonate", 5);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID != "DemoAttack" && order.OrderID != "DemoDeploy")
+			if (order.OrderID != "DetonateAttack" && order.OrderID != "Detonate")
 				return null;
 
 			if (target.Type == TargetType.FrozenActor)
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DemoAttack")
+			if (order.OrderString == "DetonateAttack")
 			{
 				var target = self.ResolveFrozenActorOrder(order, Color.Red);
 				if (target.Type != TargetType.Actor)
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new CallFunc(() => Explode(self)));
 			}
 
-			if (order.OrderString == "DemoDeploy")
+			else if (order.OrderString == "Detonate")
 				Explode(self);
 		}
 	}

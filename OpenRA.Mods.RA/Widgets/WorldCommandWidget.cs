@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA.Widgets
 			PerformKeyboardOrderOnSelection(a => new Order("ReturnToBase", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("DeployTransform", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
-			PerformKeyboardOrderOnSelection(a => new Order("DemoDeploy", a, false));
+			PerformKeyboardOrderOnSelection(a => new Order("Detonate", a, false));
 			return true;
 		}
 

@@ -38,14 +38,24 @@ namespace OpenRA.Traits
 
 		public void AddEffect(int time, WPos position, int intensity)
 		{
-			shakeEffects.Add(new ShakeEffect { ExpiryTime = ticks + time, Position = position, Intensity = intensity });
+			AddEffect(time, position, intensity, new float2(1, 1));
+		}
+
+		public void AddEffect(int time, WPos position, int intensity, float2 multiplier)
+		{
+			shakeEffects.Add(new ShakeEffect { ExpiryTime = ticks + time, Position = position, Intensity = intensity, Multiplier = multiplier });
 		}
 
 		float2 GetScrollOffset()
 		{
-			return GetIntensity() * new float2(
+			return GetMultiplier() * GetIntensity() * new float2(
 				(float)Math.Sin((ticks * 2 * Math.PI) / 4),
 				(float)Math.Cos((ticks * 2 * Math.PI) / 5));
+		}
+
+		float2 GetMultiplier()
+		{
+			return shakeEffects.Aggregate(float2.Zero, (sum, next) => sum + next.Multiplier);
 		}
 
 		float GetIntensity()
@@ -63,5 +73,6 @@ namespace OpenRA.Traits
 		public int ExpiryTime;
 		public WPos Position;
 		public int Intensity;
+		public float2 Multiplier;
 	}
 }

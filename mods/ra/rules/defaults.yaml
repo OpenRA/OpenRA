@@ -215,7 +215,7 @@
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
-		TargetTypes: Ground, C4, DemoTruck
+		TargetTypes: Ground, C4, DetonateAttack
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -272,7 +272,7 @@
 	Selectable:
 		Priority: 1
 	TargetableBuilding:
-		TargetTypes: Ground, C4, DemoTruck
+		TargetTypes: Ground, C4, DetonateAttack
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: terrain
@@ -323,7 +323,7 @@
 	Armor:
 		Type: Light
 	TargetableBuilding:
-		TargetTypes: Ground, DemoTruck
+		TargetTypes: Ground, DetonateAttack
 
 ^CivInfantry:
 	Inherits: ^Infantry
