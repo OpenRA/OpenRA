@@ -10,10 +10,12 @@
 
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Eject a ground soldier or a paratrooper while in the air.")]
 	public class EjectOnDeathInfo : TraitInfo<EjectOnDeath>
 	{
 		[ActorReference]
@@ -38,6 +40,8 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var cp = self.CenterPosition;
+			if ((cp.Z > 0 && !info.EjectInAir) || (cp.Z == 0 && !info.EjectOnGround))
+				return;
 
 			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner), new LocationInit(self.Location) });
@@ -51,7 +55,12 @@ namespace OpenRA.Mods.RA
 					Sound.Play(info.ChuteSound, cp);
 				}
 				else
+				{
 					self.World.AddFrameEndTask(w => w.Add(pilot));
+					var pilotMobile = pilot.TraitOrDefault<Mobile>();
+					if (pilotMobile != null)
+						pilotMobile.Nudge(pilot, pilot, true);
+				}
 			}
 			else
 				pilot.Destroy();
