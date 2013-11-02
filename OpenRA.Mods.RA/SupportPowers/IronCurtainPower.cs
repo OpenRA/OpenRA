@@ -90,14 +90,14 @@ namespace OpenRA.Mods.RA
 
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				var xy = wr.Viewport.ViewToWorldCellPosition(Viewport.LastMousePos);
+				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
 				foreach (var unit in power.UnitsInRange(xy))
 					wr.DrawSelectionBox(unit, Color.Red);
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
-				var xy = wr.Viewport.ViewToWorldCellPosition(Viewport.LastMousePos);
+				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
 				var pal = wr.Palette("terrain");
 				foreach (var t in world.FindTilesInCircle(xy, range))
 					yield return new SpriteRenderable(tile, t.CenterPosition, WVec.Zero, -511, pal, 1f, true);

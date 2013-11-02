@@ -95,7 +95,7 @@ namespace OpenRA.Widgets
 		public void UpdateMouseover()
 		{
 			TooltipType = WorldTooltipType.None;
-			var cell = worldRenderer.Viewport.ViewToWorldCellPosition(Viewport.LastMousePos);
+			var cell = worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
 			if (!world.Map.IsInMap(cell))
 				return;
 
