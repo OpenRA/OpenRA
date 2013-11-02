@@ -1327,3 +1327,26 @@ Mandible:
 			Concrete: 10%
 		InfDeath: 1
 		Damage: 60
+
+MADTankThump:
+	InvalidTargets: MADTank
+	Warhead:
+		DamageModel: PerCell
+		Damage: 1
+		ScaleDamageByTargetHealth: True
+		Versus:
+			None: 0%
+		Size: 7,6
+
+MADTankDetonate:
+	InvalidTargets: MADTank
+	Warhead:
+		DamageModel: PerCell
+		Damage: 19
+		ScaleDamageByTargetHealth: True
+		Versus:
+			None: 0%
+		Size: 7,6
+		Explosion: med_explosion
+		ImpactSound: mineblo1.aud
+		SmudgeType: Crater

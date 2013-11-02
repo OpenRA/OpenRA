@@ -108,7 +108,7 @@ namespace OpenRA.Mods.RA
 
 						foreach (var victim in hitActors)
 						{
-							var damage = (int)GetDamageToInflict(pos, victim, warhead, weapon, firepowerModifier);
+							var damage = (int)GetDamageToInflict(pos, victim, warhead, weapon, firepowerModifier, true);
 							victim.InflictDamage(firedBy, damage, warhead);
 						}
 					} break;
@@ -117,8 +117,10 @@ namespace OpenRA.Mods.RA
 					{
 						foreach (var t in world.FindTilesInCircle(targetTile, warhead.Size[0]))
 							foreach (var unit in world.FindActorsInBox(t, t))
-								unit.InflictDamage(firedBy,
-									(int)(warhead.Damage * warhead.EffectivenessAgainst(unit.Info)), warhead);
+							{
+								var damage = (int)GetDamageToInflict(pos, unit, warhead, weapon, firepowerModifier, false);
+								unit.InflictDamage(firedBy, damage, warhead);
+							}
 					} break;
 			}
 		}
@@ -161,21 +163,26 @@ namespace OpenRA.Mods.RA
 			return (falloff[u] * (1 - t)) + (falloff[u + 1] * t);
 		}
 
-		static float GetDamageToInflict(WPos pos, Actor target, WarheadInfo warhead, WeaponInfo weapon, float modifier)
+		static float GetDamageToInflict(WPos pos, Actor target, WarheadInfo warhead, WeaponInfo weapon, float modifier, bool withFalloff)
 		{
 			// don't hit air units with splash from ground explosions, etc
 			if (!weapon.IsValidAgainst(target))
-				return 0f;
+				return 0;
 
-			var health = target.Info.Traits.GetOrDefault<HealthInfo>();
-			if( health == null ) return 0f;
+			var healthInfo = target.Info.Traits.GetOrDefault<HealthInfo>();
+			if (healthInfo == null)
+				return 0;
 
-			var distance = (int)Math.Max(0, (target.CenterPosition - pos).Length * Game.CellSize / 1024 - health.Radius);
-			var falloff = (float)GetDamageFalloff(distance / warhead.Spread);
-			var rawDamage = (float)(warhead.Damage * modifier * falloff);
-			var multiplier = (float)warhead.EffectivenessAgainst(target.Info);
-
-			return (float)(rawDamage * multiplier);
+			var rawDamage = (float)warhead.Damage;
+			if (warhead.ScaleDamageByTargetHealth)
+				rawDamage = (float)(rawDamage / 100 * healthInfo.HP);
+			if (withFalloff)
+			{
+				var distance = (int)Math.Max(0, (target.CenterPosition - pos).Length * Game.CellSize / 1024 - healthInfo.Radius);
+				var falloff = (float)GetDamageFalloff(distance / warhead.Spread);
+				rawDamage = (float)(falloff * rawDamage);
+			}
+			return (float)(rawDamage * modifier * (float)warhead.EffectivenessAgainst(target.Info));
 		}
 	}
 }

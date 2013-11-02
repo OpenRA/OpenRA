@@ -254,3 +254,14 @@ ctnk:
 		Length: 5
 	icon: ctnkicon
 		Start: 0
+
+qtnk:
+	idle:
+		Start: 0
+		Facings: 32
+	piston:
+		Start: 32
+		Facings: 8
+		Length: 8
+	icon: qtnkicon
+		Start: 0

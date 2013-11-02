@@ -766,3 +766,37 @@ CTNK:
 		LocalYaw: -100
 	AttackFrontal:
 	ChronoshiftDeploy:
+
+QTNK:
+	Inherits: ^Tank
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 150
+		Prerequisites: fix,stek
+		Owner: soviet
+		Hotkey: q
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: MAD Tank
+		Description: Deals seismic damage to nearby vehicles\nand structures.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry
+	Health:
+		HP: 900
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 4
+		Crushes: wall, atmine, crate, infantry
+	RevealsShroud:
+		Range: 6
+	Selectable:
+		Bounds: 44,38,0,-4
+	RenderUnit:
+	AttackMove:
+		JustMove: True
+	Explodes:
+		Weapon: UnitExplodeSmall
+	MadTank:
+	-EjectOnDeath:
+	TargetableUnit:
+		TargetTypes: Ground, MADTank
