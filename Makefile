@@ -340,7 +340,7 @@ install-core: default
 	@echo "#!/bin/sh" 				>  openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra
 	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' 	>> openra
-	@echo 'DATADIR="$${ROOTDIR}/'"$(datadir)"'"'	>> openra
+	@echo 'DATADIR="$${ROOTDIR}'"$(datadir)"'"'	>> openra
 	@echo 'cd "$${DATADIR}/openra"' 		>> openra
 	@echo 'exec mono OpenRA.Game.exe "$$@"' 	>> openra
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
