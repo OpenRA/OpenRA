@@ -472,6 +472,7 @@
     <Compile Include="Effects\ContrailFader.cs" />
     <Compile Include="Widgets\Logic\SettingsLogic.cs" />
     <Compile Include="AttackBomber.cs" />
+    <Compile Include="Effects\Rank.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 {
 	public static class ActorExts
 	{
-		static bool IsDisguisedSpy( this Actor a )
+		static bool IsDisguisedSpy(this Actor a)
 		{
 			var spy = a.TraitOrDefault<Spy>();
 			return spy != null && spy.Disguised;
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 
 		public static bool AppearsFriendlyTo(this Actor self, Actor toActor)
 		{
-			var stance = toActor.Owner.Stances[ self.Owner ];
+			var stance = toActor.Owner.Stances[self.Owner];
 			if (stance == Stance.Ally)
 				return true;
 
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 
 		public static bool AppearsHostileTo(this Actor self, Actor toActor)
 		{
-			var stance = toActor.Owner.Stances[ self.Owner ];
+			var stance = toActor.Owner.Stances[self.Owner];
 			if (stance == Stance.Ally)
 				return false;		/* otherwise, we'll hate friendly disguised spies */
 
@@ -85,4 +85,3 @@ namespace OpenRA.Mods.RA
 		}
 	}
 }
-
