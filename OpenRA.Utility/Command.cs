@@ -338,7 +338,11 @@ namespace OpenRA.Utility
 		public static void ExtractTraitDocs(string[] args)
 		{
 			Game.modData = new ModData(args[1]);
-			FileSystem.LoadFromManifest(Game.modData.Manifest);
+
+			FileSystem.UnmountAll();
+			foreach (var dir in Game.modData.Manifest.Folders)
+				FileSystem.Mount(dir);
+
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 
 			Console.WriteLine("## Documentation");
