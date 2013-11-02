@@ -1,5 +1,0 @@
-** Make sure you set your XCode build configuration to 32-bit.  
-
-32-bit mono will not work consistently when exec'd from a 64-bit program.
-
-

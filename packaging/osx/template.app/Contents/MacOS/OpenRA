@@ -1,0 +1,33 @@
+#!/bin/bash
+# OpenRA OSX launcher script
+# Checks for a sufficiently recent mono version, then launches the game from the resources directory.
+# Based on code from the monodevelop project
+
+REQUIRED_MAJOR=2
+REQUIRED_MINOR=10
+
+TITLE="Cannot launch OpenRA"
+MESSAGE="OpenRA requires the Mono Framework version $REQUIRED_MAJOR.$REQUIRED_MINOR or later."
+MONO_URL="http://www.go-mono.com/mono-downloads/download.html"
+
+DIR=$(cd "$(dirname "$0")"; pwd)
+RESOURCES="$DIR/../Resources"
+
+MONO_VERSION="$(mono --version | grep 'Mono JIT compiler version ' |  cut -f5 -d\ )"
+MONO_VERSION_MAJOR="$(echo $MONO_VERSION | cut -f1 -d.)"
+MONO_VERSION_MINOR="$(echo $MONO_VERSION | cut -f2 -d.)"
+
+if [ -z "$MONO_VERSION" ] \
+	|| [ $MONO_VERSION_MAJOR -lt $REQUIRED_MAJOR ] \
+	|| [ $MONO_VERSION_MAJOR -eq $REQUIRED_MAJOR -a $MONO_VERSION_MINOR -lt $REQUIRED_MINOR ]
+then
+	osascript \
+	-e "tell application \"Finder\"" \
+	-e "	set question to display dialog \"$MESSAGE\" with title \"$TITLE\" with icon alias (POSIX file \"$RESOURCES/OpenRA.icns\") buttons {\"Cancel\", \"Download...\"} default button 2" \
+	-e "	if button returned of question is equal to \"Download...\" then open location \"$MONO_URL\"" \
+	-e "	activate" \
+	-e "end tell"
+	exit 1
+fi
+
+cd "$RESOURCES" && mono --debug OpenRA.Game.exe Graphics.Renderer=Sdl2
