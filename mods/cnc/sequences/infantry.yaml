@@ -382,7 +382,7 @@ e4:
 		Start: 16
 		Length: 4
 		Tick: 1600
-	muzzle: flame
+	muzzle: flame2
 		Start: 0
 		Length: 13
 		Facings: 8
