@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA
 
 				Sound.PlayNotification(self.Owner, "Sounds", "LevelUp", self.Owner.Country.Race);
 				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup")));
-				if (Level == 1)
+				if (Level == 1 && !self.Destroyed)
 					self.World.AddFrameEndTask(w => w.Add(new Rank(self)));
 			}
 		}
