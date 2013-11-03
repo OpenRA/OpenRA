@@ -38,9 +38,9 @@ namespace OpenRA.FileFormats
 			var y = s.ReadInt32();
 
 			Size = new Size(width, height);
-			Offset = new int2(width/2 - x, height/2 - y);
+			Offset = new int2(width / 2 - x, height / 2 - y);
 
-			/*var imageOffset = */s.ReadInt32();
+			var imageOffset = s.ReadInt32();
 			var paletteOffset = s.ReadInt32();
 			var bpp = s.ReadUInt8();
 			if (bpp != 8)
@@ -50,14 +50,17 @@ namespace OpenRA.FileFormats
 			var frameWidth = s.ReadUInt8();
 			FrameSize = new Size(frameWidth, frameHeight);
 
-			// Skip alignment byte
-			s.ReadUInt8();
+			s.ReadUInt8(); // Skip alignment byte
 
-			Image = s.ReadBytes(width*height);
+			if (imageOffset != 0)
+				Image = s.ReadBytes(width * height);
 
-			// Ignore palette
-			if (type == 1 && paletteOffset != 0)
+			if (type == 1 && paletteOffset != 0) // Ignore embedded palette
 				s.Seek(520, SeekOrigin.Current);
+			else if (type == 2 && paletteOffset != 0) // Ignore referenced palette
+				{ }
+			else // Main external palette
+				{ };
 		}
 	}
 
