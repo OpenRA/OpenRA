@@ -78,7 +78,7 @@ namespace OpenRA
 
 		public string DisplayString()
 		{
-			var ret = KeycodeExts.DisplayString(Key).ToUpper();
+			var ret = KeycodeExts.DisplayString(Key);
 
 			if (Modifiers.HasModifier(Modifiers.Shift))
 				ret = "Shift + " + ret;
