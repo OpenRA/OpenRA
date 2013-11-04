@@ -180,14 +180,20 @@ ide.config.stylesoutshell = StylesGetDefault()
 local function setLuaPaths(mainpath, osname)
   -- use LUA_DEV to setup paths for Lua for Windows modules if installed
   local luadev = osname == "Windows" and os.getenv('LUA_DEV')
-  local luadev_path = (luadev and wx.wxDirExists(luadev)
+  if not wx.wxDirExists(luadev) then luadev = nil end
+  local luadev_path = (luadev
     and ('LUA_DEV/?.lua;LUA_DEV/?/init.lua;LUA_DEV/lua/?.lua;LUA_DEV/lua/?/init.lua')
       :gsub('LUA_DEV', (luadev:gsub('[\\/]$','')))
     or "")
-  local luadev_cpath = (luadev and wx.wxDirExists(luadev)
+  local luadev_cpath = (luadev
     and ('LUA_DEV/?.dll;LUA_DEV/?51.dll;LUA_DEV/clibs/?.dll;LUA_DEV/clibs/?51.dll')
       :gsub('LUA_DEV', (luadev:gsub('[\\/]$','')))
     or "")
+
+  if luadev then
+    local path, clibs = os.getenv('PATH'), luadev:gsub('[\\/]$','')..'\\clibs'
+    if not path:find(clibs, 1, true) then wx.wxSetEnv('PATH', path..';'..clibs) end
+  end
 
   -- (luaconf.h) in Windows, any exclamation mark ('!') in the path is replaced
   -- by the path of the directory of the executable file of the current process.
