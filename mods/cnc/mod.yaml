@@ -16,7 +16,6 @@ MapFolders:
 	~^/maps/cnc
 
 Packages:
-	overrides.mix
 	bluetib.mix
 	speech.mix
 	conquer.mix
