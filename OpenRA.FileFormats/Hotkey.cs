@@ -25,43 +25,22 @@ namespace OpenRA
 		public static bool TryParse(string s, out Hotkey result)
 		{
 			result = Invalid;
-
 			var parts = s.Split(' ');
+
+			Keycode key;
+			if (!Enum<Keycode>.TryParse(parts[0], true, out key))
+				return false;
+
+			var mods = Modifiers.None;
 			if (parts.Length >= 2)
 			{
-				if (!Enum.GetNames(typeof(Keycode)).Contains(parts[0]))
-					return false;
-
 				var modString = s.Substring(s.IndexOf(' '));
-				var modParts = modString.Split(',').Select(x => x.Trim());
-				if (modParts.Any(p => !Enum.GetNames(typeof(Modifiers)).Contains(p)))
+				if (!Enum<Modifiers>.TryParse(modString, true, out mods))
 					return false;
-
-				var key = (Keycode)Enum.Parse(typeof(Keycode), parts[0]);
-				var mods = (Modifiers)Enum.Parse(typeof(Modifiers), modString);
-
-				result = new Hotkey(key, mods);
-				return true;
 			}
 
-			if (parts.Length == 1)
-			{
-				// HACK: Try parsing as a legacy key name
-				// This is a stop-gap solution to keep backwards
-				// compatibility while outside code is converted
-				var i = 0;
-				for (; i < (int)Keycode.LAST; i++)
-					if (KeycodeExts.DisplayString((Keycode)i) == parts[0])
-						break;
-
-				if (i < (int)Keycode.LAST)
-				{
-					result = new Hotkey((Keycode)i, Modifiers.None);
-					return true;
-				}
-			}
-
-			return false;
+			result = new Hotkey(key, mods);
+			return true;
 		}
 
 		public static Hotkey FromKeyInput(KeyInput ki)
@@ -99,7 +78,7 @@ namespace OpenRA
 
 		public string DisplayString()
 		{
-			var ret = KeycodeExts.DisplayString(Key).ToUpper();
+			var ret = KeycodeExts.DisplayString(Key);
 
 			if (Modifiers.HasModifier(Modifiers.Shift))
 				ret = "Shift + " + ret;

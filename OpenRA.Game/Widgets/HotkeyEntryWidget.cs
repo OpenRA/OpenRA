@@ -69,7 +69,7 @@ namespace OpenRA.Widgets
 			Keycode.RSHIFT, Keycode.LSHIFT,
 			Keycode.RCTRL, Keycode.LCTRL,
 			Keycode.RALT, Keycode.LALT,
-			Keycode.RMETA, Keycode.LMETA
+			Keycode.RGUI, Keycode.LGUI
 		};
 
 		public override bool HandleKeyPress(KeyInput e)
