@@ -101,10 +101,38 @@ ftnk:
 	idle:
 		Start: 0
 		Facings: 32
-	muzzle: flame2
+	muzzle0: flame-n
 		Start: 0
-		Length: 13
-		Facings: 8
+		Length: *
+		Offset: 3,8
+	muzzle1: flame-nw
+		Start: 0
+		Length: *
+		Offset: 4,6
+	muzzle2: flame-w
+		Start: 0
+		Length: *
+		Offset: 7,2
+	muzzle3: flame-sw
+		Start: 0
+		Length: *
+		Offset: 3,-2
+	muzzle4: flame-s
+		Start: 0
+		Length: *
+		Offset: 1,-2
+	muzzle5: flame-se
+		Start: 0
+		Length: *
+		Offset: -3,-1
+	muzzle6: flame-e
+		Start: 0
+		Length: *
+		Offset: -6,2
+	muzzle7: flame-ne
+		Start: 0
+		Length: *
+		Offset: -5,6
 	icon: ftnkicnh
 		Start: 0
 
