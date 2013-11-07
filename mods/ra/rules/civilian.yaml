@@ -258,6 +258,8 @@ BARL:
 		Type: None
 	TargetableBuilding:
 		TargetTypes: Ground, DemoTruck
+	-ShakeOnDeath:
+	-SoundOnDamageTransition:
 
 BRL3:
 	Inherits: ^TechBuilding
@@ -274,6 +276,8 @@ BRL3:
 		Type: None
 	TargetableBuilding:
 		TargetTypes: Ground, DemoTruck
+	-ShakeOnDeath:
+	-SoundOnDamageTransition:
 
 AMMOBOX1:
 	Inherits: ^AmmoBox
