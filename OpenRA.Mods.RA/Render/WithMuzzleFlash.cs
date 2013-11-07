@@ -26,6 +26,12 @@ namespace OpenRA.Mods.RA.Render
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
 
+		[Desc("Are the muzzle facings split into multiple shps?")]
+		public readonly bool SplitFacings = false;
+
+		[Desc("Number of separate facing images that are defined in the sequences.")]
+		public readonly int FacingCount = 8;
+
 		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self, this); }
 	}
 
@@ -34,6 +40,7 @@ namespace OpenRA.Mods.RA.Render
 		readonly WithMuzzleFlashInfo info;
 		Dictionary<Barrel, bool> visible = new Dictionary<Barrel, bool>();
 		Dictionary<Barrel, AnimationWithOffset> anims = new Dictionary<Barrel, AnimationWithOffset>();
+		Func<int> getFacing;
 
 		public WithMuzzleFlash(Actor self, WithMuzzleFlashInfo info)
 		{
@@ -50,7 +57,7 @@ namespace OpenRA.Mods.RA.Render
 				var turreted = self.TraitsImplementing<Turreted>()
 					.FirstOrDefault(t => t.Name ==  arm.Info.Turret);
 
-				var getFacing = turreted != null ? () => turreted.turretFacing :
+				getFacing = turreted != null ? () => turreted.turretFacing :
 					facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
 
 				var muzzleFlash = new Animation(render.GetImage(self), getFacing);
@@ -69,7 +76,12 @@ namespace OpenRA.Mods.RA.Render
 				return;
 
 			visible[barrel] = true;
-			anims[barrel].Animation.PlayThen(info.Sequence, () => visible[barrel] = false);
+			var sequence = info.Sequence;
+
+			if (info.SplitFacings)
+				sequence += Traits.Util.QuantizeFacing(getFacing(), info.FacingCount).ToString();
+
+			anims[barrel].Animation.PlayThen(sequence, () => visible[barrel] = false);
 		}
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)

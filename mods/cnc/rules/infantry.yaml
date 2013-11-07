@@ -101,10 +101,11 @@ E4:
 		HP: 90
 	Armament:
 		Weapon: Flamethrower
-		LocalOffset: 85,0,171
+		LocalOffset: 341,0,256
 		FireDelay: 3
 	AttackFrontal:
 	WithMuzzleFlash:
+		SplitFacings: true
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand, stand2
@@ -135,10 +136,11 @@ E5:
 		HP: 90
 	Armament:
 		Weapon: Chemspray
-		LocalOffset: 85,0,384
+		LocalOffset: 341,0,256
 		FireDelay: 3
 	AttackFrontal:
 	WithMuzzleFlash:
+		SplitFacings: true
 	-PoisonedByTiberium:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2

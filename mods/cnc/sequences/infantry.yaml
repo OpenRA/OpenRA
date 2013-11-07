@@ -382,10 +382,38 @@ e4:
 		Start: 16
 		Length: 4
 		Tick: 1600
-	muzzle: flame2
+	muzzle0: flame-n
 		Start: 0
-		Length: 13
-		Facings: 8
+		Length: *
+		Offset: 1,6
+	muzzle1: flame-nw
+		Start: 0
+		Length: *
+		Offset: 8,7
+	muzzle2: flame-w
+		Start: 0
+		Length: *
+		Offset: 8,2
+	muzzle3: flame-sw
+		Start: 0
+		Length: *
+		Offset: 7,-2
+	muzzle4: flame-s
+		Start: 0
+		Length: *
+		Offset: 1,-2
+	muzzle5: flame-se
+		Start: 0
+		Length: *
+		Offset: -5,-2
+	muzzle6: flame-e
+		Start: 0
+		Length: *
+		Offset: -7,2
+	muzzle7: flame-ne
+		Start: 0
+		Length: *
+		Offset: -7,8
 	icon: e4icnh
 		Start: 0
 
@@ -475,10 +503,38 @@ e5:
 		Start: 16
 		Length: 4
 		Tick: 1600
-	muzzle: chem
+	muzzle0: chem-n
 		Start: 0
-		Length: 13
-		Facings: 8
+		Length: *
+		Offset: 1,2
+	muzzle1: chem-nw
+		Start: 0
+		Length: *
+		Offset: 8,2
+	muzzle2: chem-w
+		Start: 0
+		Length: *
+		Offset: 8,-3
+	muzzle3: chem-sw
+		Start: 0
+		Length: *
+		Offset: 7,-6
+	muzzle4: chem-s
+		Start: 0
+		Length: *
+		Offset: 1,-6
+	muzzle5: chem-se
+		Start: 0
+		Length: *
+		Offset: -5,-6
+	muzzle6: chem-e
+		Start: 0
+		Length: *
+		Offset: -7,-3
+	muzzle7: chem-ne
+		Start: 0
+		Length: *
+		Offset: -3,2
 	icon: e5icnh
 		Start: 0
 

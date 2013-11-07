@@ -184,6 +184,7 @@ FTNK:
 	RenderUnit:
 	AutoTarget:
 	WithMuzzleFlash:
+		SplitFacings: true
 	Explodes:
 		Weapon: FlametankExplode
 		EmptyWeapon: FlametankExplode
