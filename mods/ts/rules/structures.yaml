@@ -111,6 +111,41 @@ GAPILE:
 	WithIdleOverlay@FLAG:
 		Sequence: idle-flag
 
+PROC:
+	Inherits: ^Building
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Tiberium Refinery
+		Description: Processes raw Tiberium\ninto useable resources
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 20
+		Prerequisites: anypower
+		Owner: gdi,nod
+	Building:
+		Power: -30
+		Footprint: xxx xxx x==
+		Dimensions: 3,3
+	Health:
+		HP: 900
+	RevealsShroud:
+		Range: 6
+#	Bib:
+	TiberiumRefinery:
+	StoresOre:
+		PipColor: Green
+		PipCount: 15
+		Capacity: 1500
+	CustomSellValue:
+		Value: 600
+	FreeActor:
+		Actor: HARV
+		SpawnOffset: 1,2
+		Facing: 64
+	WithIdleOverlay@REDLIGHTS:
+		Sequence: idle-redlights
+
 GAWEAP:
 	Inherits: ^Building
 	Valued:
