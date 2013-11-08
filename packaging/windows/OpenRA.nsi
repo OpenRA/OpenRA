@@ -55,8 +55,10 @@ Section "-Reg" Reg
 	WriteRegStr HKLM "Software\OpenRA" "InstallDir" $INSTDIR
 SectionEnd
 
-Section "Client" CLIENT
+Section "Game" GAME
 	SetOutPath "$INSTDIR"
+	RMDir /r "$INSTDIR\mods"
+	File /r "${SRCDIR}\mods"
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
 	File "${SRCDIR}\OpenRA.FileFormats.dll"
@@ -106,48 +108,6 @@ Section "Editor" EDITOR
 			"$OUTDIR\OpenRA.Editor.exe" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
-
-SectionGroup /e "Mods"
-	Section "Red Alert" RA
-		RMDir /r "$INSTDIR\mods\ra"
-		SetOutPath "$INSTDIR\mods\ra"
-		File "${SRCDIR}\mods\ra\*.*"
-		File /r "${SRCDIR}\mods\ra\bits"
-		File /r "${SRCDIR}\mods\ra\chrome"
-		File /r "${SRCDIR}\mods\ra\languages"
-		File /r "${SRCDIR}\mods\ra\maps"
-		File /r "${SRCDIR}\mods\ra\rules"
-		File /r "${SRCDIR}\mods\ra\sequences"
-		File /r "${SRCDIR}\mods\ra\tilesets"
-		File /r "${SRCDIR}\mods\ra\uibits"
-	SectionEnd
-	Section "C&C" CNC
-		RMDir /r "$INSTDIR\mods\cnc"
-		SetOutPath "$INSTDIR\mods\cnc"
-		File "${SRCDIR}\mods\cnc\*.*"
-		File /r "${SRCDIR}\mods\cnc\bits"
-		File /r "${SRCDIR}\mods\cnc\chrome"
-		File /r "${SRCDIR}\mods\cnc\languages"
-		File /r "${SRCDIR}\mods\cnc\maps"
-		File /r "${SRCDIR}\mods\cnc\rules"
-		File /r "${SRCDIR}\mods\cnc\sequences"
-		File /r "${SRCDIR}\mods\cnc\tilesets"
-		File /r "${SRCDIR}\mods\cnc\uibits"
-	SectionEnd
-	Section "Dune 2000" D2K
-		RMDir /r "$INSTDIR\mods\d2k"
-		SetOutPath "$INSTDIR\mods\d2k"
-		File "${SRCDIR}\mods\d2k\*.*"
-		File /r "${SRCDIR}\mods\d2k\chrome"
-		File /r "${SRCDIR}\mods\d2k\bits"
-		File /r "${SRCDIR}\mods\d2k\languages"
-		File /r "${SRCDIR}\mods\d2k\maps"
-		File /r "${SRCDIR}\mods\d2k\rules"
-		File /r "${SRCDIR}\mods\d2k\sequences"
-		File /r "${SRCDIR}\mods\d2k\tilesets"
-		File /r "${SRCDIR}\mods\d2k\uibits"
-	SectionEnd
-SectionGroupEnd
 
 SectionGroup /e "Settings"
 	Section "Portable Install" PORTABLE
@@ -264,20 +224,14 @@ SectionEnd
 ;***************************
 ;Section Descriptions
 ;***************************
-LangString DESC_CLIENT ${LANG_ENGLISH} "OpenRA game and dependencies"
+LangString DESC_GAME ${LANG_ENGLISH} "OpenRA engine, official mods and dependencies"
 LangString DESC_EDITOR ${LANG_ENGLISH} "OpenRA map editor"
-LangString DESC_RA ${LANG_ENGLISH} "Base Red Alert mod"
-LangString DESC_CNC ${LANG_ENGLISH} "Base Tiberian Dawn mod"
-LangString DESC_D2K ${LANG_ENGLISH} "Base Dune 2000 mod"
 LangString DESC_PORTABLE ${LANG_ENGLISH} "Store support files in the install directory."
 LangString DESC_DESKTOPSHORTCUT ${LANG_ENGLISH} "Place shortcut on the Desktop."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-	!insertmacro MUI_DESCRIPTION_TEXT ${CLIENT} $(DESC_CLIENT)
+	!insertmacro MUI_DESCRIPTION_TEXT ${GAME} $(DESC_GAME)
 	!insertmacro MUI_DESCRIPTION_TEXT ${EDITOR} $(DESC_EDITOR)
-	!insertmacro MUI_DESCRIPTION_TEXT ${RA} $(DESC_RA)
-	!insertmacro MUI_DESCRIPTION_TEXT ${CNC} $(DESC_CNC)
-	!insertmacro MUI_DESCRIPTION_TEXT ${D2K} $(DESC_D2K)
 	!insertmacro MUI_DESCRIPTION_TEXT ${PORTABLE} $(DESC_PORTABLE)
 	!insertmacro MUI_DESCRIPTION_TEXT ${DESKTOPSHORTCUT} $(DESC_DESKTOPSHORTCUT)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
