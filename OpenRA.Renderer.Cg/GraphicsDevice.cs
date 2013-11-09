@@ -22,7 +22,7 @@ namespace OpenRA.Renderer.Cg
 	{
 		public IGraphicsDevice Create(Size size, WindowMode windowMode)
 		{
-			Console.WriteLine("Using Cg renderer");
+			Console.WriteLine("Using SDL 1.2 with Cg renderer");
 			return new GraphicsDevice(size, windowMode);
 		}
 	}
@@ -43,9 +43,9 @@ namespace OpenRA.Renderer.Cg
 		static Tao.Cg.Cg.CGerrorCallbackFuncDelegate errorCallback = () =>
 		{
 			var err = Tao.Cg.Cg.cgGetError();
-			var msg = "CG Error: {0}: {1}".F(err, Tao.Cg.Cg.cgGetErrorString(err));
+			var msg = "Cg Error: {0}: {1}".F(err, Tao.Cg.Cg.cgGetErrorString(err));
 			ErrorHandler.WriteGraphicsLog(msg);
-			throw new InvalidOperationException("CG Error. See graphics.log for details");
+			throw new InvalidOperationException("Cg Error. See graphics.log for details");
 		};
 
 		public GraphicsDevice(Size size, WindowMode window)
