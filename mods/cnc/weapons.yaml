@@ -293,7 +293,7 @@ OrcaAGMissiles:
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 10
-		Trail: fb4
+		Trail: smokey
 		Speed: 25
 		RangeLimit: 30
 	Warhead:
@@ -324,7 +324,7 @@ OrcaAAMissiles:
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 10
-		Trail: fb4
+		Trail: smokey
 		Speed: 25
 		RangeLimit: 30
 	Warhead:
