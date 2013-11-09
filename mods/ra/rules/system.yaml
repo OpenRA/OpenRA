@@ -6,32 +6,39 @@ Player:
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
+		SpeedUp: True
 	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
+		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		SpeedUp: True
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		SpeedUp: True
 	ClassicProductionQueue@Ship:
 		Type: Ship
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		SpeedUp: True
 	ClassicProductionQueue@Plane:
 		Type: Plane
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		SpeedUp: True
 	ClassicProductionQueue@Helicopter:
 		Type: Helicopter
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		SpeedUp: True
 	PlaceBuilding:
 	SupportPowerManager:
 	ConquestVictoryConditions:
