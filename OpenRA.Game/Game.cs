@@ -296,16 +296,20 @@ namespace OpenRA
 			}
 
 			FileSystem.Mount("."); // Needed to access shaders
-			try
+			var renderers = new [] { Settings.Graphics.Renderer, "Sdl2", "Gl", "Cg" };
+			foreach (var r in renderers)
 			{
-				Renderer.Initialize(Game.Settings.Graphics.Mode);
-			}
-			catch (Exception e)
-			{
-				Log.Write("graphics", "{0}", e);
-				Console.WriteLine("Renderer initialization failed. Fallback in place. Check graphics.log for details.");
-				Settings.Graphics.Renderer = new GraphicSettings().Renderer;
-				Renderer.Initialize(Settings.Graphics.Mode);
+				Settings.Graphics.Renderer = r;
+				try
+				{
+					Renderer.Initialize(Settings.Graphics.Mode);
+					break;
+				}
+				catch (Exception e)
+				{
+					Log.Write("graphics", "{0}", e);
+					Console.WriteLine("Renderer initialization failed. Fallback in place. Check graphics.log for details.");
+				}
 			}
 			Renderer = new Renderer();
 
