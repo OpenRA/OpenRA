@@ -113,7 +113,7 @@ Background@LOBBY_OPTIONS_BIN:
 					Y:87
 					Width:130
 					Height:25
-					Font:Bold
+					Font:Regular
 					Text:$5000
 				Label@STARTINGUNITS_DESC:
 					X:PARENT_RIGHT - WIDTH - 145
@@ -127,7 +127,7 @@ Background@LOBBY_OPTIONS_BIN:
 					Y:87
 					Width:140
 					Height:25
-					Font:Bold
+					Font:Regular
 				Label@DIFFICULTY_DESC:
 					X:PARENT_RIGHT - WIDTH - 145
 					Y:122
@@ -140,4 +140,4 @@ Background@LOBBY_OPTIONS_BIN:
 					Y:122
 					Width:140
 					Height:25
-					Font:Bold
+					Font:Regular
