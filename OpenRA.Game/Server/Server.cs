@@ -558,7 +558,7 @@ namespace OpenRA.Server
 
 		public void SyncLobbyInfo()
 		{
-			if (State != ServerState.GameStarted)	/* don't do this while the game is running, it breaks things. */
+			if (State == ServerState.WaitingPlayers) // Don't do this while the game is running, it breaks things!
 				DispatchOrders(null, 0,
 					new ServerOrder("SyncInfo", lobbyInfo.Serialize()).Serialize());
 
