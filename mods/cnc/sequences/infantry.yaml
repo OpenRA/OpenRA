@@ -2,10 +2,38 @@ vice:
 	idle:
 		Start: 0
 		Length: *
-	muzzle: chem
+	muzzle0: chem-n
 		Start: 0
-		Length: 13
-		Facings: 8
+		Length: *
+		Offset: 3,4
+	muzzle1: chem-nw
+		Start: 0
+		Length: *
+		Offset: 4,1
+	muzzle2: chem-w
+		Start: 0
+		Length: *
+		Offset: 7,-3
+	muzzle3: chem-sw
+		Start: 0
+		Length: *
+		Offset: 3,-6
+	muzzle4: chem-s
+		Start: 0
+		Length: *
+		Offset: 1,-6
+	muzzle5: chem-se
+		Start: 0
+		Length: *
+		Offset: -3,-5
+	muzzle6: chem-e
+		Start: 0
+		Length: *
+		Offset: -6,-3
+	muzzle7: chem-ne
+		Start: 0
+		Length: *
+		Offset: -1,0
 	icon: viceicnh
 		Start: 0
 
@@ -13,10 +41,38 @@ pvice:
 	idle:
 		Start: 0
 		Length: *
-	muzzle: chem
+	muzzle0: chem-n
 		Start: 0
-		Length: 13
-		Facings: 8
+		Length: *
+		Offset: 3,4
+	muzzle1: chem-nw
+		Start: 0
+		Length: *
+		Offset: 4,1
+	muzzle2: chem-w
+		Start: 0
+		Length: *
+		Offset: 7,-3
+	muzzle3: chem-sw
+		Start: 0
+		Length: *
+		Offset: 3,-6
+	muzzle4: chem-s
+		Start: 0
+		Length: *
+		Offset: 1,-6
+	muzzle5: chem-se
+		Start: 0
+		Length: *
+		Offset: -3,-5
+	muzzle6: chem-e
+		Start: 0
+		Length: *
+		Offset: -6,-3
+	muzzle7: chem-ne
+		Start: 0
+		Length: *
+		Offset: -1,0
 	icon: viceicnh
 		Start: 0
 
