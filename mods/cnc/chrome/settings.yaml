@@ -168,6 +168,7 @@ Container@SETTINGS_PANEL:
 							Y:195
 							Width:200
 							Height:25
+							Font:Regular
 						Label@VIDEO_DESC_A:
 							Y:215
 							Width:PARENT_RIGHT

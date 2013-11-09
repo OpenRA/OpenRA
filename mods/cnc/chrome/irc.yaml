@@ -58,6 +58,7 @@ Container@SERVERBROWSER_IRC:
 					Y:PARENT_BOTTOM / 4 + 75
 					Height:20
 					Width:180
+					Font:Regular
 					Text:Connect Automatically
 				Button@CONNECT_BUTTON:
 					X:430
