@@ -98,6 +98,7 @@ NEW:
 		Added new traits to world: ScreenMap, ActorMap.
 		Removed traits from World: SpatialBins.
 		Added InvalidTargets property to weapons.
+		Added modifier support for build palette hotkeys.
 
 20130915:
 	All mods:
