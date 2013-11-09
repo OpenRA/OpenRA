@@ -14,26 +14,26 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class EnterTransport : Activity
 	{
-		public Actor transport;
+		public Actor Transport;
 
 		public EnterTransport(Actor self, Actor transport)
 		{
-			this.transport = transport;
+			Transport = transport;
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
-			if (transport == null || !transport.IsInWorld) return NextActivity;
+			if (Transport == null || !Transport.IsInWorld) return NextActivity;
 
-			var cargo = transport.Trait<Cargo>();
-			if (!cargo.CanLoad(transport, self))
+			var cargo = Transport.Trait<Cargo>();
+			if (!cargo.CanLoad(Transport, self))
 				return NextActivity;
 
-			if ((transport.Location - self.Location).LengthSquared > 2)
+			if ((Transport.Location - self.Location).LengthSquared > 2)
 				return NextActivity;
 
-			cargo.Load(transport, self);
+			cargo.Load(Transport, self);
 			self.World.AddFrameEndTask(w => w.Remove(self));
 
 			return this;
