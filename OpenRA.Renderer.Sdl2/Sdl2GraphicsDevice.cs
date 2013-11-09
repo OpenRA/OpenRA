@@ -25,7 +25,7 @@ namespace OpenRA.Renderer.Sdl2
 	{
 		public IGraphicsDevice Create(Size size, WindowMode windowMode)
 		{
-			Console.WriteLine("Using SDL2 renderer");
+			Console.WriteLine("Using SDL 2 with OpenGL renderer");
 			return new Sdl2GraphicsDevice(size, windowMode);
 		}
 	}
