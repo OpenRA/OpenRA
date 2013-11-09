@@ -28,9 +28,9 @@ namespace OpenRA.Server
 {
 	public enum ServerState : int
 	{
-	       WaitingPlayers = 1,
-	       GameStarted = 2,
-	       ShuttingDown = 3
+		WaitingPlayers = 1,
+		GameStarted = 2,
+		ShuttingDown = 3
 	}
 
 	public class Server
