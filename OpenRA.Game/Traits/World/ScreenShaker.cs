@@ -15,13 +15,25 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	public class ScreenShakerInfo : TraitInfo<ScreenShaker> { }
+	public class ScreenShakerInfo : ITraitInfo
+	{
+		public readonly float2 MinMultiplier = new float2(-3, -3);
+		public readonly float2 MaxMultiplier = new float2(3, 3);
+
+		public object Create(ActorInitializer init) { return new ScreenShaker(this); }
+	}
 
 	public class ScreenShaker : ITick, IWorldLoaded
 	{
+		readonly ScreenShakerInfo info;
 		WorldRenderer worldRenderer;
 		List<ShakeEffect> shakeEffects = new List<ShakeEffect>();
 		int ticks = 0;
+
+		public ScreenShaker(ScreenShakerInfo info)
+		{
+			this.info = info;
+		}
 
 		public void WorldLoaded(World w, WorldRenderer wr) { worldRenderer = wr; }
 
@@ -55,7 +67,8 @@ namespace OpenRA.Traits
 
 		float2 GetMultiplier()
 		{
-			return shakeEffects.Aggregate(float2.Zero, (sum, next) => sum + next.Multiplier);
+			return shakeEffects.Aggregate(float2.Zero, (sum, next) => sum + next.Multiplier)
+				.Constrain(info.MinMultiplier, info.MaxMultiplier);
 		}
 
 		float GetIntensity()
