@@ -77,7 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Widgets\Logic\D2kInstallFromCDLogic.cs" />
-    <Compile Include="BuildingCaptureNotification.cs" />
     <Compile Include="Render\WithCrumbleOverlay.cs" />
     <Compile Include="PaletteFromR8.cs" />
   </ItemGroup>

@@ -322,6 +322,7 @@
 	GivesExperience:
 	CaptureNotification:
 		Notification: BuildingCaptured
+		NewOwnerVoice: no
 	ActorLostNotification:
 		Notification: BuildingLost
 	EditorAppearance:
