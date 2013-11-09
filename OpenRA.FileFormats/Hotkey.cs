@@ -18,6 +18,10 @@ namespace OpenRA
 	public struct Hotkey
 	{
 		public static Hotkey Invalid = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
+		public bool IsValid()
+		{
+			return Key != Keycode.UNKNOWN;
+		}
 
 		public readonly Keycode Key;
 		public readonly Modifiers Modifiers;

@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public OrderButtonWidget()
 		{
 			GetImage = () => Enabled() ? Pressed() ? "pressed" : "normal" : "disabled";
-			GetDescription = () => Key != Hotkey.Invalid ? "{0} ({1})".F(Description, Key.DisplayString()) : Description;
+			GetDescription = () => Key.IsValid() ? "{0} ({1})".F(Description, Key.DisplayString()) : Description;
 			GetLongDesc = () => LongDesc;
 		}
 

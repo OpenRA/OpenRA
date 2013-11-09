@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 
 		// TODO: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;
-		public readonly string Hotkey = null;
+		public readonly Hotkey Hotkey = Hotkey.Invalid;
 	}
 
 	public class Buildable { }
