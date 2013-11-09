@@ -230,6 +230,7 @@ Rockets:
 		Image: DRAGON
 		ROT: 15
 		Trail: smokey
+		ContrailLength: 8
 		Speed: 35
 		RangeLimit: 30
 	Warhead:
@@ -262,6 +263,7 @@ BikeRockets:
 		Image: DRAGON
 		ROT: 10
 		Trail: smokey
+		ContrailLength: 8
 		Speed: 35
 		RangeLimit: 40
 	Warhead:
@@ -294,6 +296,7 @@ OrcaAGMissiles:
 		Image: DRAGON
 		ROT: 10
 		Trail: smokey
+		ContrailLength: 8
 		Speed: 25
 		RangeLimit: 30
 	Warhead:
@@ -325,6 +328,7 @@ OrcaAAMissiles:
 		Image: DRAGON
 		ROT: 10
 		Trail: smokey
+		ContrailLength: 8
 		Speed: 25
 		RangeLimit: 30
 	Warhead:
@@ -542,6 +546,7 @@ MammothMissiles:
 		Image: DRAGON
 		ROT: 10
 		Trail: smokey
+		ContrailLength: 8
 		Speed: 25
 		RangeLimit: 35
 	Warhead:
@@ -605,6 +610,7 @@ MammothMissiles:
 		Image: DRAGON
 		ROT: 10
 		Trail: smokey
+		ContrailLength: 8
 		Speed: 25
 		RangeLimit: 55
 	Warhead:
@@ -679,6 +685,7 @@ BoatMissile:
 		Image: DRAGON
 		ROT: 10
 		Trail: smokey
+		ContrailLength: 8
 		Speed: 20
 		RangeLimit: 60
 	Warhead:
@@ -710,6 +717,7 @@ TowerMissle:
 		Image: DRAGON
 		ROT: 20
 		Trail: smokey
+		ContrailLength: 8
 		Speed: 35
 		RangeLimit: 40
 	Warhead:
@@ -810,6 +818,7 @@ SAMMissile:
 		Speed: 50
 		RangeLimit: 35
 		Trail: smokey
+		ContrailLength: 8
 	Warhead: AP
 		Spread: 16
 		Versus:
@@ -904,6 +913,7 @@ Patriot:
 		Shadow: no
 		Image: patriot
 		Trail: smokey
+		ContrailLength: 8
 		ROT: 20
 		Speed: 50
 		RangeLimit: 30
