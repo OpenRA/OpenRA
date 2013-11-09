@@ -58,7 +58,9 @@ SectionEnd
 Section "Game" GAME
 	SetOutPath "$INSTDIR"
 	RMDir /r "$INSTDIR\mods"
-	File /r "${SRCDIR}\mods"
+	File /r "${SRCDIR}\mods\cnc"
+	File /r "${SRCDIR}\mods\d2k"
+	File /r "${SRCDIR}\mods\ra"
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
 	File "${SRCDIR}\OpenRA.FileFormats.dll"
