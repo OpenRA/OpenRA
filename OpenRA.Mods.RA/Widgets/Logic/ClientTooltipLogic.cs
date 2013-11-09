@@ -11,8 +11,8 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Widgets;
 using OpenRA.Network;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
@@ -31,13 +31,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var latencyPrefixFont = Game.Renderer.Fonts[latencyPrefix.Font];
 
 			var ip = widget.Get<LabelWidget>("IP");
-			var ipFont = Game.Renderer.Fonts[ip.Font];
+			var addressFont = Game.Renderer.Fonts[ip.Font];
 
 			var location = widget.Get<LabelWidget>("LOCATION");
 			var locationFont = Game.Renderer.Fonts[location.Font];
 
 			var locationOffset = location.Bounds.Y;
-			var ipOffset = ip.Bounds.Y;
+			var addressOffset = ip.Bounds.Y;
 			var latencyOffset = latency.Bounds.Y;
 			var tooltipHeight = widget.Bounds.Height;
 
@@ -46,16 +46,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			tooltipContainer.IsVisible = () => (orderManager.LobbyInfo.ClientWithIndex(clientIndex) != null);
 			tooltipContainer.BeforeRender = () =>
 			{
-				var latencyPrefixSize = latencyPrefix.Bounds.X + latencyPrefixFont.Measure(latencyPrefix.GetText()+" ").X;
-				var width = Math.Max(locationFont.Measure(location.GetText()).X, (Math.Max(adminFont.Measure(admin.GetText()).X,
-					Math.Max(ipFont.Measure(ip.GetText()).X, latencyPrefixSize + latencyFont.Measure(latency.GetText()).X))));
+				var latencyPrefixSize = latencyPrefix.Bounds.X + latencyPrefixFont.Measure(latencyPrefix.GetText() + " ").X;
+				var width = Math.Max(locationFont.Measure(location.GetText()).X, Math.Max(adminFont.Measure(admin.GetText()).X,
+					Math.Max(addressFont.Measure(ip.GetText()).X, latencyPrefixSize + latencyFont.Measure(latency.GetText()).X)));
 				widget.Bounds.Width = width + 2 * margin;
 				latency.Bounds.Width = widget.Bounds.Width;
 				ip.Bounds.Width = widget.Bounds.Width;
 				admin.Bounds.Width = widget.Bounds.Width;
 				location.Bounds.Width = widget.Bounds.Width;
 
-				ip.Bounds.Y = ipOffset;
+				ip.Bounds.Y = addressOffset;
 				latency.Bounds.Y = latencyOffset;
 				location.Bounds.Y = locationOffset;
 				widget.Bounds.Height = tooltipHeight;
@@ -75,14 +75,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			admin.IsVisible = () => orderManager.LobbyInfo.ClientWithIndex(clientIndex).IsAdmin;
 			latency.GetText = () => LobbyUtils.LatencyDescription(orderManager.LobbyInfo.ClientWithIndex(clientIndex).Latency);
 			latency.GetColor = () => LobbyUtils.LatencyColor(orderManager.LobbyInfo.ClientWithIndex(clientIndex).Latency);
-			var ipAddress = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
-			if ((ipAddress == null || ipAddress == "127.0.0.1") && UPnP.NatDevice != null)
-				ipAddress = UPnP.NatDevice.GetExternalIP().ToString();
-			var cachedDescriptiveIP = LobbyUtils.DescriptiveIpAddress(ipAddress);
+			var address = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
+			if (address == "127.0.0.1" && UPnP.NatDevice != null)
+				address = UPnP.NatDevice.GetExternalIP().ToString();
+			var cachedDescriptiveIP = LobbyUtils.DescriptiveIpAddress(address);
 			ip.GetText = () => cachedDescriptiveIP;
-			var cachedCountryLookup = LobbyUtils.LookupCountry(ipAddress);
+			var cachedCountryLookup = LobbyUtils.LookupCountry(address);
 			location.GetText = () => cachedCountryLookup;
 		}
 	}
 }
-
