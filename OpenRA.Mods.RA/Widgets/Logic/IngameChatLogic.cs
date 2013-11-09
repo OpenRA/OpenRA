@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -30,7 +31,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world)
 		{
-			teamChat = world.LocalPlayer != null;
+			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
+			var disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));
+			teamChat = !disableTeamChat;
 
 			var chatPanel = (ContainerWidget)widget;
 			chatOverlay = chatPanel.Get<ContainerWidget>("CHAT_OVERLAY");
@@ -43,13 +46,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var chatMode = chatChrome.Get<ButtonWidget>("CHAT_MODE");
 			chatMode.GetText = () => teamChat ? "Team" : "All";
 			chatMode.OnClick = () => teamChat ^= true;
-			chatMode.IsDisabled = () => world.LocalPlayer == null;
+			chatMode.IsDisabled = () => disableTeamChat;
 
 			chatText = chatChrome.Get<TextFieldWidget>("CHAT_TEXTFIELD");
-			chatText.OnTabKey = () => { teamChat ^= true; return true; };
+			chatText.OnTabKey = () =>
+			{
+				if (!disableTeamChat)
+					teamChat ^= true;
+				return true;
+			};
 			chatText.OnEnterKey = () =>
 			{
-				var team = teamChat && world.LocalPlayer != null;
+				var team = teamChat && !disableTeamChat;
 				if (chatText.Text != "")
 					orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
 

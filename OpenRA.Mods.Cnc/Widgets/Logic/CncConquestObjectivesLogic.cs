@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			foreach (var p in world.Players.Where(a => !a.NonCombatant))
 			{
-				Player pp = p;
+				var pp = p;
 				var item = itemTemplate.Clone();
 				var nameLabel = item.Get<LabelWidget>("NAME");
 				nameLabel.GetText = () => pp.WinState == WinState.Lost ? pp.PlayerName + " (Dead)" : pp.PlayerName;
