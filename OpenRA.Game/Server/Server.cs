@@ -509,8 +509,12 @@ namespace OpenRA.Server
 				if (dropClient == null)
 					return;
 
+				var suffix = "";
+				if (State == ServerState.GameStarted)
+					suffix = dropClient.IsObserver ? " (Spectator)" : dropClient.Team != 0 ? " (Team {0})".F(dropClient.Team) : "";
+				SendMessage("{0}{1} has disconnected.".F(dropClient.Name, suffix));
+
 				// Send disconnected order, even if still in the lobby
-				SendMessage("{0} has disconnected.".F(dropClient.Name));
 				DispatchOrdersToClients(toDrop, 0, new ServerOrder("Disconnected", "").Serialize());
 
 				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
