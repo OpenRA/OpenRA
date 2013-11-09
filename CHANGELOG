@@ -5,6 +5,7 @@ NEW:
 		Added hover and disabled button states [RA / D2K / TS]
 		Added double click start support to the replay browser.
 		Fixed low projectiles not colliding with walls.
+		Fixed double-click selection priority glitches.
 		Improved UI decorations (selection boxes, target lines, etc) in pixel double mode.
 		Added additional stand animations to infantry [RA / TD]
 		Added the ability to double click select maps and music.
@@ -50,6 +51,7 @@ NEW:
 		Added building repair ability to the engineer.
 		Adjusted MLRS to fire a barrage of 8 rockets instead for improved visuals, and adjusted its rocket explosion sound.
 		Added a grenade toss sound.
+		Added missile contrails.
 		Added Haos Ridges, converted from RA.
 		Fixed player spawns in Deterring Democracy.
 		Added 2 additional A-10s and cannon strafing to the Airstrike support power.
@@ -70,15 +72,32 @@ NEW:
 		Added game ID and version information to exception and sync reports.
 		Map folders are now explicitly specified in mod.yaml.
 		Replaced the OS X binary launcher with a script to use a new SDL2 renderer.
-		Renamed the Capture trait to ExternalCapture and renamed the LegacyCapture trait to Capture.
 		Improved cash tick sound playback.
 		Added modifier support to hotkeys.
 		Fixed a desync related to projectile contrails.
+		Fixed corrupted replays (which would immediately desync).
 	Build system and packages:
 		Added GeoIP to Makefile so it is installed properly.
 		Added desktop shortcut creation support to the Makefile and Windows installer.
 		COPYING and CHANGELOG are now shipped on all platforms.
 		Fixed 'make docs' crashing when the game assets are not installed.
+	Mod / Custom map compatibility:
+		Mods can now include traits from TD and D2K in RA.
+		New sections MapFolders and Translations added to mod.yaml.
+		Renamed CarpetBomb trait to AttackBomber, and additional functionality added. An Armament trait is now required to specify the weapons.
+		Renamed Capture trait to ExternalCapture.
+		Renamed CapturableBar trait to ExternalCapturableBar.
+		Renamed LegacyCapture trait to Capture.
+		Renamed DebugMuzzlePositions trait to CombatDebugOverlay.
+		Renamed DebugOverlay trait to PathfinderDebugOverlay.
+		Added Sequence and GroundSequence properties to WithRotor.
+		Added StandAnimations property to RenderInfantry and RenderInfantryProne.
+		Added SplitFacings property to WithMuzzleFlash trait.
+		Added SquadSize and QuantizedFacings properties to AirstrikePower trait.
+		Added EjectInAir and EjectOnGround properties to EjectOnDeath trait.
+		Added new traits to world: ScreenMap, ActorMap.
+		Removed traits from World: SpatialBins.
+		Added InvalidTargets property to weapons.
 
 20130915:
 	All mods:
