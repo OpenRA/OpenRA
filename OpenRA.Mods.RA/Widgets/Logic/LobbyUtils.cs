@@ -142,8 +142,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public static void SelectSpawnPoint(OrderManager orderManager, MapPreviewWidget mapPreview, Map map, MouseInput mi)
 		{
-			if (map == null || mi.Button != MouseButton.Left
-				|| orderManager.LocalClient.State == Session.ClientState.Ready)
+			if (map == null)
+				return;
+			if (mi.Button != MouseButton.Left)
+				return; 
+			if (!orderManager.LocalClient.IsObserver && orderManager.LocalClient.State == Session.ClientState.Ready)
 				return;
 
 			var selectedSpawn = map.GetSpawnPoints()
@@ -156,7 +159,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (selectedSpawn == 0 || !owned)
 			{
 				var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
-				var playerToMove = locals.FirstOrDefault(c => (selectedSpawn == 0) ^ (c.SpawnPoint == 0));
+				var playerToMove = locals.FirstOrDefault(c => ((selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver));
 				orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawn)));
 			}
 		}
