@@ -227,11 +227,28 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var teamCount = (orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) + 1) / 2;
 					if (teamCount >= 1)
 					{
-						var teamOptions = Enumerable.Range(0, teamCount + 1).Reverse().Select(d => new DropDownOption
+						var teamOptions = Enumerable.Range(2, teamCount + 1).Reverse().Select(d => new DropDownOption
 						{
-							Title = (d > 1 ? "{0} Teams".F(d) : d == 1 ? "Humans vs Bots" : "Free for all"),
+							Title = "{0} Teams".F(d),
 							IsSelected = () => false,
 							OnClick = () => orderManager.IssueOrder(Order.Command("assignteams {0}".F(d.ToString())))
+						}).ToList();
+
+						if (orderManager.LobbyInfo.Slots.Any(s => s.Value.AllowBots))
+						{
+							teamOptions.Add(new DropDownOption
+							{
+								Title = "Humans vs Bots",
+								IsSelected = () => false,
+								OnClick = () => orderManager.IssueOrder(Order.Command("assignteams 1"))
+							});
+						}
+
+						teamOptions.Add(new DropDownOption
+						{
+							Title = "Free for all",
+							IsSelected = () => false,
+							OnClick = () => orderManager.IssueOrder(Order.Command("assignteams 0"))
 						});
 
 						options.Add("Configure Teams", teamOptions);
