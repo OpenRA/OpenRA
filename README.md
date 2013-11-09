@@ -23,7 +23,7 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 
 * Please read [INSTALL](https://github.com/OpenRA/OpenRA/blob/bleed/INSTALL) and [Compiling](https://github.com/OpenRA/OpenRA/wiki/Compiling) on how to set up an OpenRA development environment.
 * See [Hacking](https://github.com/OpenRA/OpenRA/wiki/Hacking) for an overview of the engine.
-* To get your patches merged please adhere to the [Contributing](https://github.com/OpenRA/OpenRA/blob/bleed/CONTRIBUTING.md) guidelines.
+* To get your patches merged, please adhere to the [Contributing](https://github.com/OpenRA/OpenRA/blob/bleed/CONTRIBUTING.md) guidelines.
 
 ## Mapping
 
