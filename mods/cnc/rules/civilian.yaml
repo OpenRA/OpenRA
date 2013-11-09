@@ -441,8 +441,15 @@ VICE:
 		Name: Viceroid
 	Armament:
 		Weapon: Chemspray
+		LocalOffset: 384,0,0
 	AttackFrontal:
 	AttackWander:
 	RenderUnit:
 	WithMuzzleFlash:
+		SplitFacings: true
+	CombatDebugOverlay:
+	Guard:
+	Guardable:
+	UpdatesPlayerStatistics:
 	BodyOrientation:
+		QuantizedFacings: 8
