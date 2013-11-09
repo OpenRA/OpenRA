@@ -103,12 +103,14 @@ Container@CREATESERVER_PANEL:
 					Y:135
 					Width:150
 					Height:20
+					Font:Regular
 					Text:Advertise Online
 				Checkbox@UPNP_CHECKBOX:
 					X:110
 					Y:165
 					Width:300
 					Height:20
+					Font:Regular
 					Text:Automatic port forwarding
 		Button@BACK_BUTTON:
 			Key:escape

@@ -181,6 +181,7 @@ Background@KICK_CLIENT_DIALOG:
 			Y:120
 			Width:150
 			Height:20
+			Font:Regular
 			Text:Temporarily Ban
 		Button@OK_BUTTON:
 			X:(PARENT_RIGHT - WIDTH)/2 + 75
@@ -221,33 +222,39 @@ Background@LOBBY_OPTIONS_BIN:
 				Checkbox@SHROUD_CHECKBOX:
 					Width:230
 					Height:20
+					Font:Regular
 					Text:Shroud
 				Checkbox@FOG_CHECKBOX:
 					Y:35
 					Width:230
 					Height:20
+					Font:Regular
 					Text:Fog of War
 				Checkbox@CRATES_CHECKBOX:
 					X:160
 					Width:230
 					Height:20
+					Font:Regular
 					Text:Crates Appear
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
 					X:160
 					Y:35
 					Width:230
 					Height:20
+					Font:Regular
 					Text:Build off Ally ConYards
 				Checkbox@ALLOWCHEATS_CHECKBOX:
 					X:325
 					Width:230
 					Height:20
+					Font:Regular
 					Text:Debug Menu
 				Label@STARTINGCASH_DESC:
 					X:10
 					Y:72
 					Width:70
 					Height:25
+					Font:Regular
 					Text:Starting Cash:
 					Align:Right
 				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:

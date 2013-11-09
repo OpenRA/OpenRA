@@ -26,36 +26,42 @@ Container@CHEATS_PANEL:
 					Y:45
 					Width:200
 					Height:20
+					Font:Regular
 					Text:Instant Build Speed
 				Checkbox@ENABLE_TECH:
 					X:45
 					Y:75
 					Width:200
 					Height:20
+					Font:Regular
 					Text:Build Everything
 				Checkbox@BUILD_ANYWHERE:
 					X:45
 					Y:105
 					Width:200
 					Height:20
+					Font:Regular
 					Text:Build Anywhere
 				Checkbox@UNLIMITED_POWER:
 					X:290
 					Y:45
 					Width:200
 					Height:20
+					Font:Regular
 					Text:Unlimited Power
 				Checkbox@INSTANT_CHARGE:
 					X:290
 					Y:75
 					Width:200
 					Height:20
+					Font:Regular
 					Text:Instant Charge Time
 				Checkbox@DISABLE_SHROUD:
 					X:290
 					Y:105
 					Height:20
 					Width:200
+					Font:Regular
 					Text:Disable Shroud & Fog
 				Button@GIVE_CASH:
 					X:20
@@ -86,22 +92,26 @@ Container@CHEATS_PANEL:
 					Y:235
 					Width:200
 					Height:20
+					Font:Regular
 					Text:Show Unit Paths
 				Checkbox@SHOW_ASTAR:
 					X:45
 					Y:265
 					Height:20
 					Width:200
+					Font:Regular
 					Text:Show A* Cost
 				Checkbox@SHOW_MUZZLES:
 					X:290
 					Y:235
 					Height:20
 					Width:200
+					Font:Regular
 					Text:Show Combat Geometry
 				Checkbox@SHOW_GEOMETRY:
 					X:290
 					Y:265
 					Height:20
 					Width:200
+					Font:Regular
 					Text:Show Render Geometry

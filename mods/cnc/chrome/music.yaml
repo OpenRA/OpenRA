@@ -134,18 +134,19 @@ Container@MUSIC_PANEL:
 					Width:140
 					Height:25
 					Align:Center
-					Font:Bold
 				Checkbox@SHUFFLE:
 					X:15
 					Y:320
 					Width:85
 					Height:20
+					Font:Regular
 					Text:Shuffle
 				Checkbox@REPEAT:
 					X:PARENT_RIGHT-15-WIDTH
 					Y:320
 					Width:70
 					Height:20
+					Font:Regular
 					Text:Loop
 				Label@NO_MUSIC_LABEL:
 					X:15
