@@ -180,7 +180,7 @@ ide.config.stylesoutshell = StylesGetDefault()
 local function setLuaPaths(mainpath, osname)
   -- use LUA_DEV to setup paths for Lua for Windows modules if installed
   local luadev = osname == "Windows" and os.getenv('LUA_DEV')
-  if not wx.wxDirExists(luadev) then luadev = nil end
+  if luadev and not wx.wxDirExists(luadev) then luadev = nil end
   local luadev_path = (luadev
     and ('LUA_DEV/?.lua;LUA_DEV/?/init.lua;LUA_DEV/lua/?.lua;LUA_DEV/lua/?/init.lua')
       :gsub('LUA_DEV', (luadev:gsub('[\\/]$','')))
