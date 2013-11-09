@@ -257,7 +257,14 @@ namespace OpenRA
 
 		public static Dictionary<String, Mod> CurrentMods
 		{
-			get { return Mod.AllMods.Where(k => modData.Manifest.Mods.Contains(k.Key)).ToDictionary(k => k.Key, k => k.Value); }
+			get
+			{
+				// Initialization hasn't completed yet
+				if (Mod.AllMods == null || modData == null)
+					return null;
+
+				return Mod.AllMods.Where(k => modData.Manifest.Mods.Contains(k.Key)).ToDictionary(k => k.Key, k => k.Value);
+			}
 		}
 
 		static Modifiers modifiers;

@@ -46,8 +46,13 @@ namespace OpenRA
 		static void FatalError(Exception e)
 		{
 			Log.AddChannel("exception", "exception.log");
-			var mod = Game.CurrentMods.First().Value;
-			Log.Write("exception", "{0} Mod at Version {1}", mod.Title, mod.Version);
+
+			if (Game.CurrentMods != null)
+			{
+				var mod = Game.CurrentMods.First().Value;
+				Log.Write("exception", "{0} Mod at Version {1}", mod.Title, mod.Version);
+			}
+
 			Log.Write("exception", "Operating System: {0} ({1})", Platform.CurrentPlatform, Environment.OSVersion);
 			Log.Write("exception", "Runtime Version: {0}", Platform.RuntimeVersion);
 			var rpt = BuildExceptionReport(e).ToString();
