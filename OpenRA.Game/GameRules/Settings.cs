@@ -133,6 +133,8 @@ namespace OpenRA.GameRules
 		public float ViewportEdgeScrollStep = 10f;
 
 		public bool UseClassicMouseStyle = false;
+		public bool AlwaysShowStatusBars = false;
+		public bool TeamHealthColors = false;
 
 		// Internal game settings
 		public int Timestep = 40;
@@ -146,6 +148,7 @@ namespace OpenRA.GameRules
 		public Hotkey CycleBaseKey = new Hotkey(Keycode.BACKSPACE, Modifiers.None);
 		public Hotkey ToLastEventKey = new Hotkey(Keycode.SPACE, Modifiers.None);
 		public Hotkey ToSelectionKey = new Hotkey(Keycode.HOME, Modifiers.None);
+		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.INSERT, Modifiers.None);
 
 		public Hotkey PauseKey = new Hotkey(Keycode.F9, Modifiers.None);
 		public Hotkey SellKey = new Hotkey(Keycode.F10, Modifiers.None);

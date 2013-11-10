@@ -13,6 +13,8 @@ NEW:
 		Improved the ingame chat interface and input, with it defaulting to Team Chat.
 		Redesigned the settings panel.
 		Re-added move flashes.
+		Added a setting to always display unit status bars (can also be toggled by hotkey).
+		Added a setting for team health bar colors.
 	Asset Browser:
 		Fixed crashes when trying to load invalid filenames or sprites with just 1 frame.
 		Added support for browsing the folders for R8 files.

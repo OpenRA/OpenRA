@@ -56,6 +56,9 @@ namespace OpenRA.Mods.RA.Widgets
 				if (key == ks.ToSelectionKey)
 					return ToSelection();
 
+				if (key == ks.ToggleStatusBarsKey)
+					return ToggleStatusBars();
+
 				// Put all functions that aren't unit-specific before this line!
 				if (!world.Selection.Actors.Any()) 
 					return false;
@@ -215,6 +218,12 @@ namespace OpenRA.Mods.RA.Widgets
 		bool ToSelection()
 		{
 			worldRenderer.Viewport.Center(world.Selection.Actors);
+			return true;
+		}
+
+		bool ToggleStatusBars()
+		{
+			Game.Settings.Game.AlwaysShowStatusBars ^= true;
 			return true;
 		}
 	}
