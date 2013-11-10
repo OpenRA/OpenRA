@@ -122,6 +122,23 @@ namespace OpenRA.Mods.RA
 								unit.InflictDamage(firedBy, damage, warhead);
 							}
 					} break;
+
+				case DamageModel.HealthPercentage:
+					{
+						var range = new WRange(warhead.Size[0] * 1024);
+						var hitActors = world.FindActorsInCircle(pos, range);
+
+						foreach (var victim in hitActors)
+						{
+							var damage = GetDamageToInflict(pos, victim, warhead, weapon, firepowerModifier, false);
+							if (damage != 0) // will be 0 if the target doesn't have HealthInfo
+							{
+								var healthInfo = victim.Info.Traits.Get<HealthInfo>();
+								damage = (float)(damage / 100 * healthInfo.HP);
+							}
+							victim.InflictDamage(firedBy, (int)damage, warhead);
+						}
+					} break;
 			}
 		}
 
@@ -174,8 +191,6 @@ namespace OpenRA.Mods.RA
 				return 0;
 
 			var rawDamage = (float)warhead.Damage;
-			if (warhead.ScaleDamageByTargetHealth)
-				rawDamage = (float)(rawDamage / 100 * healthInfo.HP);
 			if (withFalloff)
 			{
 				var distance = (int)Math.Max(0, (target.CenterPosition - pos).Length * Game.CellSize / 1024 - healthInfo.Radius);

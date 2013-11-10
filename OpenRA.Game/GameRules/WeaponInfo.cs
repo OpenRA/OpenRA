@@ -47,8 +47,6 @@ namespace OpenRA.GameRules
 		public readonly DamageModel DamageModel = DamageModel.Normal;
 		[Desc("Whether we should prevent prone response for infantry.")]
 		public readonly bool PreventProne = false;
-		[Desc("Whether to use the provided Damage value as a maximum health percentage.")]
-		public readonly bool ScaleDamageByTargetHealth = false;
 
 		public float EffectivenessAgainst(ActorInfo ai)
 		{
@@ -83,6 +81,7 @@ namespace OpenRA.GameRules
 	{
 		Normal,								// classic RA damage model: point actors, distance-based falloff
 		PerCell,							// like RA's "nuke damage"
+		HealthPercentage					// for MAD Tank
 	}
 
 	public class ProjectileArgs

@@ -1332,9 +1332,8 @@ Mandible:
 MADTankThump:
 	InvalidTargets: MADTank
 	Warhead:
-		DamageModel: PerCell
+		DamageModel: HealthPercentage
 		Damage: 1
-		ScaleDamageByTargetHealth: True
 		Versus:
 			None: 0%
 		Size: 7,6
@@ -1342,9 +1341,8 @@ MADTankThump:
 MADTankDetonate:
 	InvalidTargets: MADTank
 	Warhead:
-		DamageModel: PerCell
+		DamageModel: HealthPercentage
 		Damage: 19
-		ScaleDamageByTargetHealth: True
 		Versus:
 			None: 0%
 		Size: 7,6
