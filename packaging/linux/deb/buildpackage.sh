@@ -21,10 +21,12 @@ cp -R $rootdir/usr root
 
 # Binaries go in /usr/games
 mv root/usr/bin/ root/usr/games/
-sed "s/\/usr\/bin\//\/usr\/games\//" root/usr/games/openra > temp
+sed "s|/usr/bin|/usr/games|g" root/usr/games/openra > temp
 mv temp root/usr/games/openra
-sed "s/\/usr\/bin\//\/usr\/games\//" root/usr/games/openra-editor > temp
+chmod +x root/usr/games/openra
+sed "s|/usr/bin|/usr/games|g" root/usr/games/openra-editor > temp
 mv temp root/usr/games/openra-editor
+chmod +x root/usr/games/openra-editor
 
 # Put the copyright and changelog in /usr/share/doc/openra/
 mkdir -p root/usr/share/doc/openra/
@@ -43,8 +45,8 @@ sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" > roo
 # Build it in the temp directory, but place the finished deb in our starting directory
 pushd root
 
-# Calculate md5sums and clean up the /usr/ part of them
-md5sum "`find . -type f | grep -v '^[.]/DEBIAN/'` | sed 's/\.\/usr\//usr\//g'" > DEBIAN/md5sums
+# Calculate md5sums and clean up the ./usr/ part of them
+find . -type f -not -path "./DEBIAN/*" -print0 | xargs -0 -n1 md5sum | sed 's|\./usr/|/usr/|' > DEBIAN/md5sums
 chmod 0644 DEBIAN/md5sums
 
 # Replace any dashes in the version string with periods
