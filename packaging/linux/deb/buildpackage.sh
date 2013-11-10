@@ -21,9 +21,9 @@ cp -R $rootdir/usr root
 
 # Binaries go in /usr/games
 mv root/usr/bin/ root/usr/games/
-sed "s/\/usr\/bin\//\/usr\/games\//" root/usr/games/openra > temp
+sed "s|/usr/bin|/usr/games|g" root/usr/games/openra > temp
 mv temp root/usr/games/openra
-sed "s/\/usr\/bin\//\/usr\/games\//" root/usr/games/openra-editor > temp
+sed "s|/usr/bin|/usr/games|g" root/usr/games/openra-editor > temp
 mv temp root/usr/games/openra-editor
 
 # Put the copyright and changelog in /usr/share/doc/openra/
