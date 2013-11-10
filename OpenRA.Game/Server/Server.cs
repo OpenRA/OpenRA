@@ -14,8 +14,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Threading;
 
 using OpenRA.FileFormats;
@@ -35,35 +35,51 @@ namespace OpenRA.Server
 
 	public class Server
 	{
-		// Valid player connections
-		public List<Connection> conns = new List<Connection>();
-
-		// Pre-verified player connections
-		public List<Connection> preConns = new List<Connection>();
-
-		TcpListener listener = null;
-		Dictionary<int, List<Connection>> inFlightFrames
-			= new Dictionary<int, List<Connection>>();
-
-		TypeDictionary ServerTraits = new TypeDictionary();
-		public Session lobbyInfo;
-
 		public readonly IPAddress Ip;
 		public readonly int Port;
 
 		int randomSeed;
 		public readonly Thirdparty.Random Random = new Thirdparty.Random();
 
+		// Valid player connections
+		public List<Connection> Conns = new List<Connection>();
+
+		// Pre-verified player connections
+		public List<Connection> PreConns = new List<Connection>();
+
+		TcpListener listener = null;
+		Dictionary<int, List<Connection>> inFlightFrames
+			= new Dictionary<int, List<Connection>>();
+
+		TypeDictionary serverTraits = new TypeDictionary();
+		public Session LobbyInfo;
+
 		public ServerSettings Settings;
 		public ModData ModData;
 		public Map Map;
 		XTimer gameTimeout;
 
-		protected volatile ServerState pState = new ServerState();
+		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
+		{
+			if (pr == null)
+				return;
+			if (pr.LockColor)
+				c.Color = pr.Color;
+			else
+				c.Color = c.PreferredColor;
+			if (pr.LockRace)
+				c.Country = pr.Race;
+			if (pr.LockSpawn)
+				c.SpawnPoint = pr.Spawn;
+			if (pr.LockTeam)
+				c.Team = pr.Team;
+		}
+
+		protected volatile ServerState internalState = new ServerState();
 		public ServerState State
 		{
-			get { return pState; }
-			protected set { pState = value; }
+			get { return internalState; }
+			protected set { internalState = value; }
 		}
 
 		public List<string> TempBans = new List<string>();
@@ -75,7 +91,7 @@ namespace OpenRA.Server
 
 		public void EndGame()
 		{
-			foreach (var t in ServerTraits.WithInterface<IEndGame>())
+			foreach (var t in serverTraits.WithInterface<IEndGame>())
 				t.GameEnded(this);
 		}
 
@@ -83,7 +99,7 @@ namespace OpenRA.Server
 		{
 			Log.AddChannel("server", "server.log");
 
-			pState = ServerState.WaitingPlayers;
+			internalState = ServerState.WaitingPlayers;
 			listener = new TcpListener(endpoint);
 			listener.Start();
 			var localEndpoint = (IPEndPoint)listener.LocalEndpoint;
@@ -99,33 +115,33 @@ namespace OpenRA.Server
 				UPnP.ForwardPort();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
-				ServerTraits.Add(modData.ObjectCreator.CreateObject<ServerTrait>(trait));
+				serverTraits.Add(modData.ObjectCreator.CreateObject<ServerTrait>(trait));
 
-			lobbyInfo = new Session(mods);
-			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
-			lobbyInfo.GlobalSettings.Map = settings.Map;
-			lobbyInfo.GlobalSettings.ServerName = settings.Name;
-			lobbyInfo.GlobalSettings.Dedicated = settings.Dedicated;
-			FieldLoader.Load(lobbyInfo.GlobalSettings, modData.Manifest.LobbyDefaults);
+			LobbyInfo = new Session(mods);
+			LobbyInfo.GlobalSettings.RandomSeed = randomSeed;
+			LobbyInfo.GlobalSettings.Map = settings.Map;
+			LobbyInfo.GlobalSettings.ServerName = settings.Name;
+			LobbyInfo.GlobalSettings.Dedicated = settings.Dedicated;
+			FieldLoader.Load(LobbyInfo.GlobalSettings, modData.Manifest.LobbyDefaults);
 
-			foreach (var t in ServerTraits.WithInterface<INotifyServerStart>())
+			foreach (var t in serverTraits.WithInterface<INotifyServerStart>())
 				t.ServerStarted(this);
 
 			Log.Write("server", "Initial mods: ");
-			foreach (var m in lobbyInfo.GlobalSettings.Mods)
-				Log.Write("server","- {0}", m);
+			foreach (var m in LobbyInfo.GlobalSettings.Mods)
+				Log.Write("server", "- {0}", m);
 
-			Log.Write("server", "Initial map: {0}",lobbyInfo.GlobalSettings.Map);
+			Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
 
-			new Thread( _ =>
+			new Thread(_ =>
 			{
-				var timeout = ServerTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
+				var timeout = serverTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
 				for (;;)
 				{
 					var checkRead = new List<Socket>();
 					checkRead.Add(listener.Server);
-					foreach (var c in conns) checkRead.Add(c.socket);
-					foreach (var c in preConns) checkRead.Add(c.socket);
+					foreach (var c in Conns) checkRead.Add(c.socket);
+					foreach (var c in PreConns) checkRead.Add(c.socket);
 
 					Socket.Select(checkRead, null, null, timeout);
 					if (State == ServerState.ShuttingDown)
@@ -136,18 +152,18 @@ namespace OpenRA.Server
 
 					foreach (var s in checkRead)
 						if (s == listener.Server) AcceptConnection();
-						else if (preConns.Count > 0)
+						else if (PreConns.Count > 0)
 						{
-							var p = preConns.SingleOrDefault(c => c.socket == s);
+							var p = PreConns.SingleOrDefault(c => c.socket == s);
 							if (p != null) p.ReadData(this);
 						}
-						else if (conns.Count > 0)
+						else if (Conns.Count > 0)
 						{
-							var conn = conns.SingleOrDefault(c => c.socket == s);
+							var conn = Conns.SingleOrDefault(c => c.socket == s);
 							if (conn != null) conn.ReadData(this);
 						}
 
-					foreach (var t in ServerTraits.WithInterface<ITick>())
+					foreach (var t in serverTraits.WithInterface<ITick>())
 						t.Tick(this);
 
 					if (State == ServerState.ShuttingDown)
@@ -158,15 +174,14 @@ namespace OpenRA.Server
 					}
 				}
 
-				foreach (var t in ServerTraits.WithInterface<INotifyServerShutdown>())
+				foreach (var t in serverTraits.WithInterface<INotifyServerShutdown>())
 					t.ServerShutdown(this);
 
-				preConns.Clear();
-				conns.Clear();
+				PreConns.Clear();
+				Conns.Clear();
 				try { listener.Stop(); }
 				catch { }
-			} ) { IsBackground = true }.Start();
-
+			}) { IsBackground = true }.Start();
 		}
 
 		/* lobby rework TODO:
@@ -206,13 +221,13 @@ namespace OpenRA.Server
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
 				SendData(newConn.socket, BitConverter.GetBytes(ProtocolVersion.Version));
 				SendData(newConn.socket, BitConverter.GetBytes(newConn.PlayerIndex));
-				preConns.Add(newConn);
+				PreConns.Add(newConn);
 
 				// Dispatch a handshake order
 				var request = new HandshakeRequest()
 				{
-					Map = lobbyInfo.GlobalSettings.Map,
-					Mods = lobbyInfo.GlobalSettings.Mods.Select(m => "{0}@{1}".F(m, Mod.AllMods[m].Version)).ToArray()
+					Map = LobbyInfo.GlobalSettings.Map,
+					Mods = LobbyInfo.GlobalSettings.Mods.Select(m => "{0}@{1}".F(m, Mod.AllMods[m].Version)).ToArray()
 				};
 				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", request.Serialize()).Serialize());
 			}
@@ -252,14 +267,14 @@ namespace OpenRA.Server
 					Name = handshake.Client.Name,
 					IpAddress = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString(),
 					Index = newConn.PlayerIndex,
-					Slot = lobbyInfo.FirstEmptySlot(),
+					Slot = LobbyInfo.FirstEmptySlot(),
 					PreferredColor = handshake.Client.Color,
 					Color = handshake.Client.Color,
 					Country = "random",
 					SpawnPoint = 0,
 					Team = 0,
 					State = Session.ClientState.NotReady,
-					IsAdmin = !lobbyInfo.Clients.Any(c1 => c1.IsAdmin)
+					IsAdmin = !LobbyInfo.Clients.Any(c1 => c1.IsAdmin)
 				};
 
 				if (client.Slot != null)
@@ -269,8 +284,8 @@ namespace OpenRA.Server
 
 				// Check that the client has compatible mods
 				var mods = handshake.Mods;
-				var validMod = mods.All(m => m.Contains('@')) && //valid format
-					mods.Count() == Game.CurrentMods.Count() && //same number
+				var validMod = mods.All(m => m.Contains('@')) && // valid format
+					mods.Count() == Game.CurrentMods.Count() && // same number
 					mods.Select(m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First));
 
 				if (!validMod)
@@ -286,7 +301,7 @@ namespace OpenRA.Server
 				var validVersion = mods.Select(m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(
 					kv => kv.Second == Game.CurrentMods[kv.First].Version);
 
-				if (!validVersion && !lobbyInfo.GlobalSettings.AllowVersionMismatch)
+				if (!validVersion && !LobbyInfo.GlobalSettings.AllowVersionMismatch)
 				{
 					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
 						newConn.socket.RemoteEndPoint);
@@ -307,14 +322,14 @@ namespace OpenRA.Server
 				}
 
 				// Promote connection to a valid client
-				preConns.Remove(newConn);
-				conns.Add(newConn);
-				lobbyInfo.Clients.Add(client);
+				PreConns.Remove(newConn);
+				Conns.Add(newConn);
+				LobbyInfo.Clients.Add(client);
 
 				Log.Write("server", "Client {0}: Accepted connection from {1}.",
 				          newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
 
-				foreach (var t in ServerTraits.WithInterface<IClientJoined>())
+				foreach (var t in serverTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
 
 				SyncLobbyInfo();
@@ -323,9 +338,9 @@ namespace OpenRA.Server
 				// Send initial ping
 				SendOrderTo(newConn, "Ping", Environment.TickCount.ToString());
 
-				if (File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0])))
+				if (File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, LobbyInfo.GlobalSettings.Mods[0])))
 				{
-					var motd = System.IO.File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0]));
+					var motd = System.IO.File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, LobbyInfo.GlobalSettings.Mods[0]));
 					SendOrderTo(newConn, "Message", motd);
 				}
 
@@ -340,28 +355,12 @@ namespace OpenRA.Server
 
 		void SetOrderLag()
 		{
-			if (lobbyInfo.IsSinglePlayer)
-				lobbyInfo.GlobalSettings.OrderLatency = 1;
+			if (LobbyInfo.IsSinglePlayer)
+				LobbyInfo.GlobalSettings.OrderLatency = 1;
 			else
-				lobbyInfo.GlobalSettings.OrderLatency = 3;
+				LobbyInfo.GlobalSettings.OrderLatency = 3;
 
 			SyncLobbyInfo();
-		}
-
-		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
-		{
-			if (pr == null)
-				return;
-			if (pr.LockColor)
-				c.Color = pr.Color;
-			else
-				c.Color = c.PreferredColor;
-			if (pr.LockRace)
-				c.Country = pr.Race;
-			if (pr.LockSpawn)
-				c.SpawnPoint = pr.Spawn;
-			if (pr.LockTeam)
-				c.Team = pr.Team;
 		}
 
 		public void UpdateInFlightFrames(Connection conn)
@@ -374,7 +373,7 @@ namespace OpenRA.Server
 			else
 				inFlightFrames[conn.Frame].Add(conn);
 
-			if (conns.All(c => inFlightFrames[conn.Frame].Contains(c)))
+			if (Conns.All(c => inFlightFrames[conn.Frame].Contains(c)))
 				inFlightFrames.Remove(conn.Frame);
 		}
 
@@ -397,7 +396,7 @@ namespace OpenRA.Server
 		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
 		{
 			var from = conn != null ? conn.PlayerIndex : 0;
-			foreach (var c in conns.Except(conn).ToArray())
+			foreach (var c in Conns.Except(conn).ToArray())
 				DispatchOrdersToClient(c, from, frame, data);
 		}
 
@@ -416,7 +415,7 @@ namespace OpenRA.Server
 
 			try
 			{
-				for (; ; )
+				for (;;)
 				{
 					var so = ServerOrder.Deserialize(br);
 					if (so == null) return;
@@ -443,8 +442,8 @@ namespace OpenRA.Server
 			{
 				case "Command":
 					bool handled = false;
-					foreach (var t in ServerTraits.WithInterface<IInterpretCommand>())
-						if ((handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data)))
+					foreach (var t in serverTraits.WithInterface<IInterpretCommand>())
+						if (handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data))
 							break;
 
 					if (!handled)
@@ -481,7 +480,7 @@ namespace OpenRA.Server
 						history.RemoveRange(0, history.Count - 5);
 
 					fromClient.Latency = history.Sum() / history.Count;
-					fromClient.LatencyJitter = (history.Max() - history.Min())/2;
+					fromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
 					fromClient.LatencyHistory = history.ToArray();
 
 					if (State == ServerState.WaitingPlayers)
@@ -494,18 +493,18 @@ namespace OpenRA.Server
 
 		public Session.Client GetClient(Connection conn)
 		{
-			return lobbyInfo.ClientWithIndex(conn.PlayerIndex);
+			return LobbyInfo.ClientWithIndex(conn.PlayerIndex);
 		}
 
 		public void DropClient(Connection toDrop)
 		{
-			if (preConns.Contains(toDrop))
-				preConns.Remove(toDrop);
+			if (PreConns.Contains(toDrop))
+				PreConns.Remove(toDrop);
 			else
 			{
-				conns.Remove(toDrop);
+				Conns.Remove(toDrop);
 
-				var dropClient = lobbyInfo.Clients.FirstOrDefault(c1 => c1.Index == toDrop.PlayerIndex);
+				var dropClient = LobbyInfo.Clients.FirstOrDefault(c1 => c1.Index == toDrop.PlayerIndex);
 				if (dropClient == null)
 					return;
 
@@ -517,16 +516,16 @@ namespace OpenRA.Server
 				// Send disconnected order, even if still in the lobby
 				DispatchOrdersToClients(toDrop, 0, new ServerOrder("Disconnected", "").Serialize());
 
-				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
+				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
 				// Client was the server admin
 				// TODO: Reassign admin for game in progress via an order
-				if (lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
+				if (LobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
 				{
 					// Remove any bots controlled by the admin
-					lobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
+					LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
 
-					var nextAdmin = lobbyInfo.Clients.Where(c1 => c1.Bot == null)
+					var nextAdmin = LobbyInfo.Clients.Where(c1 => c1.Bot == null)
 						.OrderBy(c => c.Index).FirstOrDefault();
 
 					if (nextAdmin != null)
@@ -536,18 +535,18 @@ namespace OpenRA.Server
 					}
 				}
 
-				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] {0xbf});
+				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf });
 
-				if (!conns.Any())
+				if (!Conns.Any())
 				{
-					FieldLoader.Load(lobbyInfo.GlobalSettings, ModData.Manifest.LobbyDefaults);
+					FieldLoader.Load(LobbyInfo.GlobalSettings, ModData.Manifest.LobbyDefaults);
 					TempBans.Clear();
 				}
 
-				if (conns.Any() || lobbyInfo.GlobalSettings.Dedicated)
+				if (Conns.Any() || LobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyInfo();
 
-				if (!lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
+				if (!LobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
 					Shutdown();
 			}
 
@@ -564,9 +563,9 @@ namespace OpenRA.Server
 		{
 			if (State == ServerState.WaitingPlayers) // Don't do this while the game is running, it breaks things!
 				DispatchOrders(null, 0,
-					new ServerOrder("SyncInfo", lobbyInfo.Serialize()).Serialize());
+					new ServerOrder("SyncInfo", LobbyInfo.Serialize()).Serialize());
 
-			foreach (var t in ServerTraits.WithInterface<INotifySyncLobbyInfo>())
+			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
 		}
 
@@ -577,29 +576,29 @@ namespace OpenRA.Server
 
 			Console.WriteLine("Game started");
 
-			foreach (var c in conns)
-				foreach (var d in conns)
+			foreach (var c in Conns)
+				foreach (var d in Conns)
 					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });
 
 			// Drop any unvalidated clients
-			foreach (var c in preConns.ToArray())
+			foreach (var c in PreConns.ToArray())
 				DropClient(c);
 
 			DispatchOrders(null, 0,
 				new ServerOrder("StartGame", "").Serialize());
 
-			foreach (var t in ServerTraits.WithInterface<IStartGame>())
+			foreach (var t in serverTraits.WithInterface<IStartGame>())
 				t.GameStarted(this);
 			
 			// Check TimeOut
 			if (Settings.TimeOut > 10000)
 			{
 				gameTimeout = new XTimer(Settings.TimeOut);
-				gameTimeout.Elapsed += (_,e) =>
-                                {
-                                    Console.WriteLine("Timeout at {0}!!!", e.SignalTime);
-                                    Environment.Exit(0);
-                                };
+				gameTimeout.Elapsed += (_, e) =>
+				{
+					Console.WriteLine("Timeout at {0}!!!", e.SignalTime);
+					Environment.Exit(0);
+				};
 				gameTimeout.Enabled = true;
 			}
 		}

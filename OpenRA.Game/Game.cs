@@ -386,7 +386,7 @@ namespace OpenRA
 						System.Threading.Thread.Sleep(100);
 
 						if ((server.State == Server.ServerState.GameStarted)
-						    && (server.conns.Count<=1))
+						    && (server.Conns.Count<=1))
 						{
 							Console.WriteLine("No one is playing, shutting down...");
 							server.Shutdown();

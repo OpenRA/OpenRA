@@ -65,10 +65,10 @@ namespace OpenRA.Mods.RA.Server
 								server.Settings.MasterServer + url.F(
 								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
 								(int)server.State,
-								server.lobbyInfo.Clients.Where(c1 => c1.Bot == null).Count(),
-								server.lobbyInfo.Clients.Where(c1 => c1.Bot != null).Count(),
+								server.LobbyInfo.Clients.Where(c1 => c1.Bot == null).Count(),
+								server.LobbyInfo.Clients.Where(c1 => c1.Bot != null).Count(),
 								Game.CurrentMods.Select(f => "{0}@{1}".F(f.Key, f.Value.Version)).JoinWith(","),
-								server.lobbyInfo.GlobalSettings.Map,
+								server.LobbyInfo.GlobalSettings.Map,
 								server.Map.PlayerCount));
 
 							if (isInitialPing)
