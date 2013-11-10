@@ -23,8 +23,10 @@ cp -R $rootdir/usr root
 mv root/usr/bin/ root/usr/games/
 sed "s|/usr/bin|/usr/games|g" root/usr/games/openra > temp
 mv temp root/usr/games/openra
+chmod +x root/usr/games/openra
 sed "s|/usr/bin|/usr/games|g" root/usr/games/openra-editor > temp
 mv temp root/usr/games/openra-editor
+chmod +x root/usr/games/openra-editor
 
 # Put the copyright and changelog in /usr/share/doc/openra/
 mkdir -p root/usr/share/doc/openra/
