@@ -227,7 +227,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var teamCount = (orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) + 1) / 2;
 					if (teamCount >= 1)
 					{
-						var teamOptions = Enumerable.Range(2, teamCount + 1).Reverse().Select(d => new DropDownOption
+						var teamOptions = Enumerable.Range(2, teamCount - 1).Reverse().Select(d => new DropDownOption
 						{
 							Title = "{0} Teams".F(d),
 							IsSelected = () => false,
