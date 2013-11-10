@@ -45,8 +45,8 @@ sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" > roo
 # Build it in the temp directory, but place the finished deb in our starting directory
 pushd root
 
-# Calculate md5sums and clean up the /usr/ part of them
-md5sum "`find . -type f | grep -v '^[.]/DEBIAN/'` | sed 's/\.\/usr\//usr\//g'" > DEBIAN/md5sums
+# Calculate md5sums and clean up the ./usr/ part of them
+`find . -type f ! -path "./DEBIAN/*" -print0 | xargs -0 -n1 md5sum | sed 's|./usr/|/usr/|g'` > DEBIAN/md5sums
 chmod 0644 DEBIAN/md5sums
 
 # Replace any dashes in the version string with periods
