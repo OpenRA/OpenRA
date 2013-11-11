@@ -146,8 +146,9 @@ namespace OpenRA.Widgets
 			world.PlayVoiceForOrders(orders);
 
 			var flashed = false;
-			foreach (var o in orders)
+			foreach (var order in orders)
 			{
+				var o = order;
 				if (!flashed)
 				{
 					if (o.TargetActor != null)
