@@ -32,7 +32,7 @@ cd packaging/linux
     cd deb
     ./buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
-        echo "Debian package build failed, refer to $PWD/package.log."
+        echo "Debian package build failed, refer to deb/package.log."
     fi
 ) &
 
@@ -41,7 +41,7 @@ cd packaging/linux
     cd pkgbuild
     sh buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
-        echo "Arch-Linux package build failed, refer to $PWD/package.log."
+        echo "Arch-Linux package build failed, refer to pkgbuild/package.log."
     fi
 ) &
 
@@ -50,7 +50,7 @@ cd packaging/linux
     cd rpm
     sh buildpackage.sh "$TAG" ../$ROOTDIR ~/rpmbuild "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
-        echo "RPM package build failed, refer to $PWD/package.log."
+        echo "RPM package build failed, refer to rpm/package.log."
     fi
 ) &
 
