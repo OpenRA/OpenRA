@@ -491,7 +491,7 @@ namespace OpenRA.Mods.RA.AI
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
 		Squad GetSquadOfType(SquadType type)
 		{
-			return squads.Where(s => s.type == type).FirstOrDefault();
+			return squads.FirstOrDefault(s => s.type == type);
 		}
 
 		Squad RegisterNewSquad(SquadType type, Actor target)

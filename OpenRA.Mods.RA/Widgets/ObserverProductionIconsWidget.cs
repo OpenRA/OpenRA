@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA.Widgets
 				if (current == null)
 					continue;
 
-				var actor = queue.Trait.AllItems().Where(a => a.Name == current.Item).FirstOrDefault();
+				var actor = queue.Trait.AllItems().FirstOrDefault(a => a.Name == current.Item);
 				if (actor == null)
 					continue;
 
