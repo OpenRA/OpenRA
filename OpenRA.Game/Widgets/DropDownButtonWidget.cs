@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -19,10 +19,21 @@ namespace OpenRA.Widgets
 	{
 		Widget panel;
 		MaskWidget fullscreenMask;
+		public Color SeparatorColor = Color.White;
+		Func<Color> GetColor;
 
-		public DropDownButtonWidget() : base() { }
+		public DropDownButtonWidget()
+			: base() 
+		{
+			GetColor = () => SeparatorColor;
+		}
 
-		protected DropDownButtonWidget(DropDownButtonWidget widget)	: base(widget) { }
+		protected DropDownButtonWidget(DropDownButtonWidget widget)
+			: base(widget) 
+		{
+			SeparatorColor = widget.SeparatorColor;
+			GetColor = widget.GetColor;
+		}
 
 		public override void Draw()
 		{
@@ -31,6 +42,7 @@ namespace OpenRA.Widgets
 
 			var image = ChromeProvider.GetImage("scrollbar", IsDisabled() ? "down_pressed" : "down_arrow");
 			var rb = RenderBounds;
+			var color = GetColor();
 
 			WidgetUtils.DrawRGBA( image,
 				stateOffset + new float2( rb.Right - rb.Height + 4,
@@ -38,7 +50,7 @@ namespace OpenRA.Widgets
 
 			WidgetUtils.FillRectWithColor(new Rectangle(stateOffset.X + rb.Right - rb.Height,
 				stateOffset.Y + rb.Top + 3, 1, rb.Height - 6),
-				Color.White);
+				color);
 		}
 
 		public override Widget Clone() { return new DropDownButtonWidget(this); }

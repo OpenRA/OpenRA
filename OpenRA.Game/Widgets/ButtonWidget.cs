@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -31,9 +31,16 @@ namespace OpenRA.Widgets
 		public string Font = ChromeMetrics.Get<string>("ButtonFont");
 		public bool Disabled = false;
 		public bool Highlighted = false;
+		public Color TextColor = Color.White;
+		public Color ColorDisabled = Color.Gray;
+		public bool Contrast = false;
+		public Color ContrastColor = Color.Black;
 		public Func<string> GetText;
 		public Func<bool> IsDisabled;
 		public Func<bool> IsHighlighted;
+		public Func<Color> GetColor;
+		public Func<Color> GetColorDisabled;
+		public Func<Color> GetContrastColor;
 		public Action<MouseInput> OnMouseDown = _ => {};
 		public Action<MouseInput> OnMouseUp = _ => {};
 
@@ -55,6 +62,9 @@ namespace OpenRA.Widgets
 			OnKeyPress = _ => OnClick();
 			IsDisabled = () => Disabled;
 			IsHighlighted = () => Highlighted;
+			GetColor = () => TextColor;
+			GetColorDisabled = () => ColorDisabled;
+			GetContrastColor = () => ContrastColor;
 			tooltipContainer = Lazy.New(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
@@ -64,9 +74,16 @@ namespace OpenRA.Widgets
 		{
 			Text = other.Text;
 			Font = other.Font;
+			TextColor = other.TextColor;
+			ColorDisabled = other.ColorDisabled;
+			Contrast = other.Contrast;
+			ContrastColor = other.ContrastColor;
 			Depressed = other.Depressed;
 			VisualHeight = other.VisualHeight;
 			GetText = other.GetText;
+			GetColor = other.GetColor;
+			GetColorDisabled = other.GetColorDisabled;
+			GetContrastColor = other.GetContrastColor;
 			OnMouseDown = other.OnMouseDown;
 			Disabled = other.Disabled;
 			IsDisabled = other.IsDisabled;
@@ -175,12 +192,19 @@ namespace OpenRA.Widgets
 
 			var font = Game.Renderer.Fonts[Font];
 			var text = GetText();
+			var color = GetColor();
+			var colordisabled = GetColorDisabled();
+			var contrast = GetContrastColor();
 			var s = font.Measure(text);
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 
 			DrawBackground(rb, disabled, Depressed, Ui.MouseOverWidget == this, highlighted);
-			font.DrawText(text, new int2(rb.X + (UsableWidth - s.X)/ 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
-						  disabled ? Color.Gray : Color.White);
+			if (Contrast)
+				font.DrawTextWithContrast(text, new int2(rb.X + (UsableWidth - s.X) / 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
+						  disabled ? colordisabled : color, contrast, 2);
+			else
+				font.DrawText(text, new int2(rb.X + (UsableWidth - s.X)/ 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
+						  disabled ? colordisabled : color);
 		}
 
 		public override Widget Clone() { return new ButtonWidget(this); }

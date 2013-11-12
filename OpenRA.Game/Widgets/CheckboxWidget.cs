@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,6 +18,10 @@ namespace OpenRA.Widgets
 	public class CheckboxWidget : ButtonWidget
 	{
 		public string CheckType = "checked";
+		public Color TextColor = Color.White;
+		public Color ColorDisabled = Color.Gray;
+		public Func<Color> GetColor;
+		public Func<Color> GetColorDisabled;
 		public Func<string> GetCheckType;
 		public Func<bool> IsChecked = () => false;
 		public int BaseLine = 1;
@@ -28,11 +32,17 @@ namespace OpenRA.Widgets
 			: base()
 		{
 			GetCheckType = () => CheckType;
+			GetColor = () => TextColor;
+			GetColorDisabled = () => ColorDisabled;
 		}
 
 		protected CheckboxWidget(CheckboxWidget other)
 			: base(other)
 		{
+			GetColor = other.GetColor;
+			GetColorDisabled = other.GetColorDisabled;
+			TextColor = other.TextColor;
+			ColorDisabled = other.ColorDisabled;
 			CheckType = other.CheckType;
 			GetCheckType = other.GetCheckType;
 			IsChecked = other.IsChecked;
@@ -45,6 +55,8 @@ namespace OpenRA.Widgets
 		{
 			var disabled = IsDisabled();
 			var font = Game.Renderer.Fonts[Font];
+			var color = GetColor();
+			var colordisabled = GetColorDisabled();
 			var rect = RenderBounds;
 			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));
 			var state = disabled ? "checkbox-disabled" :
@@ -57,7 +69,7 @@ namespace OpenRA.Widgets
 			var textSize = font.Measure(Text);
 			font.DrawText(Text,
 				new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - BaseLine + (Bounds.Height - textSize.Y)/2),
-				disabled ? Color.Gray : Color.White);
+				disabled ? colordisabled : color);
 
 			if (IsChecked() || (Depressed && HasPressedState && !disabled))
 			{
