@@ -10,7 +10,6 @@
 
 using System;
 using System.Linq;
-using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {

@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using OpenRA.Network;
 
 namespace OpenRA.Network
 {

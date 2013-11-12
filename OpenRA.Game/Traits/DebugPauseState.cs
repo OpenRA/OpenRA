@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using OpenRA.Network;
-
 namespace OpenRA.Traits
 {
 	public class DebugPauseStateInfo : ITraitInfo

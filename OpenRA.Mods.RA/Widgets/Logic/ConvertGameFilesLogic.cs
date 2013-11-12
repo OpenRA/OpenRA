@@ -12,11 +12,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Diagnostics;
-using OpenRA.FileFormats;
-using OpenRA.FileFormats.Graphics;
 using OpenRA.Widgets;
-using OpenRA.Utility;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {

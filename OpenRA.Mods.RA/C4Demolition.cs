@@ -10,9 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 

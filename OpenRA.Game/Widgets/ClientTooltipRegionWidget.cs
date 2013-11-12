@@ -8,13 +8,7 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading;
 using OpenRA.FileFormats;
-using OpenRA.Graphics;
 using OpenRA.Network;
 
 namespace OpenRA.Widgets

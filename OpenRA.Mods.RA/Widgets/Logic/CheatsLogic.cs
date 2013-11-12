@@ -9,11 +9,6 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Reflection;
-using System.Linq;
-using OpenRA;
-using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 using XRandom = OpenRA.Thirdparty.Random;

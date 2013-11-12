@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Drawing;
-
 namespace OpenRA.FileFormats
 {
 	public class PlayerReference

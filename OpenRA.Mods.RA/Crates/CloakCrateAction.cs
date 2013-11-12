@@ -8,10 +8,6 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
-using OpenRA.Mods.RA;
-using OpenRA.Traits;
-
 namespace OpenRA.Mods.RA.Crates
 {
 	public class CloakCrateActionInfo : CrateActionInfo

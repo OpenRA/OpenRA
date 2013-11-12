@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Drawing;
-using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets

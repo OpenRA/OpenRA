@@ -10,9 +10,6 @@
 
 using System;
 using System.Drawing;
-using System.Linq;
-using OpenRA.Graphics;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets
@@ -29,7 +26,6 @@ namespace OpenRA.Mods.RA.Widgets
 		int2 offset;
 		int frame;
 
-		public SlidingContainerWidget() { }
 		public override void Initialize(WidgetArgs args)
 		{
 			base.Initialize(args);

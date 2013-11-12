@@ -11,8 +11,6 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Traits;
-using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {

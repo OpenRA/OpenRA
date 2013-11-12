@@ -9,7 +9,6 @@
 #endregion
 
 using System.Drawing;
-using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Editor

@@ -10,7 +10,6 @@
 
 using System.Drawing;
 using OpenRA.Graphics;
-using OpenRA.Effects;
 using System.Collections.Generic;
 
 namespace OpenRA.Traits

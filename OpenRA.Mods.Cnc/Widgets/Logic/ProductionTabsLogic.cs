@@ -9,10 +9,6 @@
 #endregion
 
 using System;
-using System.Drawing;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Orders;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic

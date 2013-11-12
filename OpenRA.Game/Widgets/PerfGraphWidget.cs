@@ -16,8 +16,6 @@ namespace OpenRA.Widgets
 {
 	public class PerfGraphWidget : Widget
 	{
-		public PerfGraphWidget() { }
-
 		public override void Draw()
 		{
 			var rect = RenderBounds;

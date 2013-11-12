@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air

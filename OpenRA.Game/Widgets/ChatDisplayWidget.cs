@@ -26,9 +26,6 @@ namespace OpenRA.Widgets
 
 		internal List<ChatLine> recentLines = new List<ChatLine>();
 
-		public ChatDisplayWidget()
-		{ }
-
 		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
 
 		public override void Draw()

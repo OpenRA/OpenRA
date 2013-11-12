@@ -19,7 +19,6 @@
 #endregion
 
 using System;
-using System.IO;
 
 public class Region
 {

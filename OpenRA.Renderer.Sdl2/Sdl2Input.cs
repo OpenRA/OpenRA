@@ -8,8 +8,6 @@
 */
 #endregion
 
-using System;
-using System.IO;
 using System.Text;
 using OpenRA.Renderer.SdlCommon;
 using SDL2;

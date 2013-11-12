@@ -8,7 +8,6 @@
  */
 #endregion
 
-using OpenRA;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Widgets;
 
