@@ -92,7 +92,7 @@ namespace OpenRA.FileFormats
 		/// A fast (native) CRC32 implementation that can be used on a regular byte arrays.
 		/// </summary>
 		/// <param name="data">The data from which to calculate the checksum.</param>
-		/// <param name="polynomial">The polynomal.</param>
+		/// <param name="polynomial">The polynomial.</param>
 		/// <returns>
 		/// The calculated checksum.
 		/// </returns>

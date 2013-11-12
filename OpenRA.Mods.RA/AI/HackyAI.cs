@@ -621,12 +621,12 @@ namespace OpenRA.Mods.RA.AI
 
 			foreach (var b in allEnemyBaseBuilder)
 			{
-				var enemys = world.FindActorsInCircle(b.CenterPosition, WRange.FromCells(15))
+				var enemies = world.FindActorsInCircle(b.CenterPosition, WRange.FromCells(15))
 					.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
 				
-				if (rushFuzzy.CanAttack(ownUnits, enemys))
+				if (rushFuzzy.CanAttack(ownUnits, enemies))
 				{
-					var target = enemys.Any() ? enemys.Random(random) : b;
+					var target = enemies.Any() ? enemies.Random(random) : b;
 					var rush = GetSquadOfType(SquadType.Rush);
 					if (rush == null)
 						rush = RegisterNewSquad(SquadType.Rush, target);
@@ -781,16 +781,16 @@ namespace OpenRA.Mods.RA.AI
 				{
 					var pos = new CPos(i, j);
 					var targets = world.FindActorsInCircle(pos.CenterPosition, WRange.FromCells(radiusOfPower)).ToList();
-					var enemys = targets.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
+					var enemies = targets.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
 					var ally = targets.Where(unit => p.Stances[unit.Owner] == Stance.Ally || unit.Owner == p).ToList();
 
-					if (enemys.Count < ally.Count || !enemys.Any())
+					if (enemies.Count < ally.Count || !enemies.Any())
 						continue;
 
-					if (enemys.Count > countUnits)
+					if (enemies.Count > countUnits)
 					{
-						countUnits = enemys.Count;
-						resLoc = enemys.Random(random).Location;
+						countUnits = enemies.Count;
+						resLoc = enemies.Random(random).Location;
 					}
 				}
 			}

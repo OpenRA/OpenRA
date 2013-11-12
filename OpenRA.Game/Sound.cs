@@ -272,7 +272,7 @@ namespace OpenRA
 		}
 
 		// Returns true if played successfully
-		public static bool PlayPredefined(Player p, Actor voicedUnit, string type, string definition, string variant, bool attentuateVolume)
+		public static bool PlayPredefined(Player p, Actor voicedUnit, string type, string definition, string variant, bool attenuateVolume)
 		{
 			if (definition == null) return false;
 
@@ -323,7 +323,7 @@ namespace OpenRA
 			if (!String.IsNullOrEmpty(name)	&& (p == null || p == p.World.LocalPlayer))
 				soundEngine.Play2D(sounds[name],
 					false, true, WPos.Zero,
-					InternalSoundVolume, attentuateVolume);
+					InternalSoundVolume, attenuateVolume);
 
 			return true;
 		}
