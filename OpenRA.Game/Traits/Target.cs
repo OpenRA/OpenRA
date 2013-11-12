@@ -32,14 +32,14 @@ namespace OpenRA.Traits
 		public static Target FromOrder(Order o)
 		{
 			return o.TargetActor != null
-				? Target.FromActor(o.TargetActor)
-				: Target.FromCell(o.TargetLocation);
+				? FromActor(o.TargetActor)
+				: FromCell(o.TargetLocation);
 		}
 
 		public static Target FromActor(Actor a)
 		{
 			if (a == null)
-				return Target.Invalid;
+				return Invalid;
 
 			return new Target
 			{

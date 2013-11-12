@@ -9,10 +9,8 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Widgets;
-using OpenRA.Network;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {

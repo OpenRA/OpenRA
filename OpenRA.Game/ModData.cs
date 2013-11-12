@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA
@@ -163,7 +162,7 @@ namespace OpenRA
 				catch (Exception e)
 				{
 					Console.WriteLine("Failed to load map: {0}", path);
-					Console.WriteLine("Details: {0}", e.ToString());
+					Console.WriteLine("Details: {0}", e);
 				}
 			}
 

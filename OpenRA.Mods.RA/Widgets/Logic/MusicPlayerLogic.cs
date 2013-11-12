@@ -9,9 +9,7 @@
 #endregion
 
 using System;
-using System.IO;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 using OpenRA.Widgets;

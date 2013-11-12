@@ -700,7 +700,7 @@ namespace OpenRA.Editor
 		{
 			int imageLength = 0;
 			int type = surface1.Map.MapResources.Value[x, y].Type;
-			var template = surface1.ResourceTemplates.Where(a => a.Value.Info.ResourceType == type).FirstOrDefault().Value;
+			var template = surface1.ResourceTemplates.FirstOrDefault(a => a.Value.Info.ResourceType == type).Value;
 			if (type == 1)
 				imageLength = 12;
 			else if (type == 2)

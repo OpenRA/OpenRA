@@ -340,7 +340,7 @@ namespace OpenRA.Server
 
 				if (File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, LobbyInfo.GlobalSettings.Mods[0])))
 				{
-					var motd = System.IO.File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, LobbyInfo.GlobalSettings.Mods[0]));
+					var motd = File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, LobbyInfo.GlobalSettings.Mods[0]));
 					SendOrderTo(newConn, "Message", motd);
 				}
 

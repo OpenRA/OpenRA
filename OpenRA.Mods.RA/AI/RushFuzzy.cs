@@ -12,8 +12,6 @@ namespace OpenRA.Mods.RA.AI
 {
 	class RushFuzzy : AttackOrFleeFuzzy
 	{
-		public RushFuzzy() : base() { }
-
 		protected override void AddingRulesForNormalOwnHealth()
 		{
 			AddFuzzyRule("if ((OwnHealth is Normal) " +

@@ -14,7 +14,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml;
 using OpenRA.FileFormats;
@@ -430,7 +429,7 @@ namespace OpenRA.TilesetBuilder
 					Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", 
 		                  cur, 
 		                  idx,
-		                  ((t.Key.Y * surface1.TilesPerRow) + t.Key.X).ToString(),
+		                  ((t.Key.Y * surface1.TilesPerRow) + t.Key.X),
 		                  tp.Width, 
 					      tp.Height,
 					      t.Key.X,

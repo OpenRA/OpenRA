@@ -314,7 +314,7 @@ namespace OpenRA.FileFormats
 			return null;
 		}
 
-		static object ParseYesNo(string p, System.Type fieldType, string field)
+		static object ParseYesNo(string p, Type fieldType, string field)
 		{
 			p = p.ToLowerInvariant();
 			if (p == "yes") return true;

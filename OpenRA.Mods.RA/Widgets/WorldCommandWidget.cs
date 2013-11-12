@@ -13,8 +13,6 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Orders;
-using OpenRA.Network;
 using OpenRA.Orders;
 using OpenRA.Widgets;
 
@@ -138,8 +136,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var actor = world.Selection.Actors
 				.Where(a => a.Owner == world.LocalPlayer && !a.Destroyed)
 				.Select(a => Pair.New(a, a.TraitOrDefault<AutoTarget>()))
-				.Where(a => a.Second != null)
-				.FirstOrDefault();
+				.FirstOrDefault(a => a.Second != null);
 
 			if (actor.First == null)
 				return true;

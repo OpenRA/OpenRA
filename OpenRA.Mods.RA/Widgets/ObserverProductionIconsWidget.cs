@@ -27,7 +27,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 		[ObjectCreator.UseCtor]
 		public ObserverProductionIconsWidget(World world, WorldRenderer worldRenderer)
-			: base()
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
@@ -66,7 +65,7 @@ namespace OpenRA.Mods.RA.Widgets
 				if (current == null)
 					continue;
 
-				var actor = queue.Trait.AllItems().Where(a => a.Name == current.Item).FirstOrDefault();
+				var actor = queue.Trait.AllItems().FirstOrDefault(a => a.Name == current.Item);
 				if (actor == null)
 					continue;
 

@@ -8,13 +8,7 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading;
 using OpenRA.FileFormats;
-using OpenRA.Graphics;
 using OpenRA.Network;
 
 namespace OpenRA.Widgets
@@ -27,7 +21,7 @@ namespace OpenRA.Widgets
 		OrderManager orderManager;
 		int clientIndex;
 
-		public ClientTooltipRegionWidget() : base()
+		public ClientTooltipRegionWidget()
 		{
 			tooltipContainer = Lazy.New(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}

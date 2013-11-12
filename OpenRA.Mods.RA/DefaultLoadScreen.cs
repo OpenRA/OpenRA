@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Widgets;
 

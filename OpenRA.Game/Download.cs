@@ -21,7 +21,7 @@ namespace OpenRA
 
 		public static string FormatErrorMessage(Exception e)
 		{
-			var ex = e as System.Net.WebException;
+			var ex = e as WebException;
 			if (ex == null)
 				return e.Message;
 
@@ -46,15 +46,15 @@ namespace OpenRA
 			wc.DownloadProgressChanged += (_, a) => onProgress(a);
 			wc.DownloadFileCompleted += (_, a) => onComplete(a, cancelled);
 
-			Game.OnQuit += () => Cancel();
-			wc.DownloadFileCompleted += (_, a) => { Game.OnQuit -= () => Cancel(); };
+			Game.OnQuit += Cancel;
+			wc.DownloadFileCompleted += (_, a) => { Game.OnQuit -= Cancel; };
 
 			wc.DownloadFileAsync(new Uri(url), path);
 		}
 
 		public void Cancel()
 		{
-			Game.OnQuit -= () => Cancel();
+			Game.OnQuit -= Cancel;
 			wc.CancelAsync();
 			cancelled = true;
 		}

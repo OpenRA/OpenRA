@@ -20,7 +20,7 @@ namespace OpenRA.Widgets
 		Widget panel;
 		MaskWidget fullscreenMask;
 
-		public DropDownButtonWidget() : base() { }
+		public DropDownButtonWidget() { }
 
 		protected DropDownButtonWidget(DropDownButtonWidget widget)	: base(widget) { }
 
@@ -145,7 +145,7 @@ namespace OpenRA.Widgets
 	public class MaskWidget : Widget
 	{
 		public event Action<MouseInput> OnMouseDown = _ => {};
-		public MaskWidget() : base() { }
+		public MaskWidget() { }
 		public MaskWidget(MaskWidget other)
 			: base(other)
 		{

@@ -9,9 +9,7 @@
 #endregion
 
 using System;
-using System.Linq;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA

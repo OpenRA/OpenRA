@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
 {
@@ -40,7 +39,7 @@ namespace OpenRA.Mods.RA.Orders
 			if (mi.Button == MouseButton.Left)
 			{
 				var underCursor = world.ScreenMap.ActorsAt(mi)
-					.Where(a => a.Owner == world.LocalPlayer && a.HasTrait<T>()).FirstOrDefault();
+					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.HasTrait<T>());
 
 				if (underCursor != null)
 					yield return new Order(order, underCursor, false);

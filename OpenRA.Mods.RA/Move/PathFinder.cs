@@ -103,7 +103,7 @@ namespace OpenRA.Mods.RA.Move
 				{
 					var passable = mi.GetMovementClass(world.TileSet);
 					tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(src, t, (uint)passable)));
-					if (tilesInRange.Count() == 0)
+					if (!tilesInRange.Any())
 						return emptyPath;
 				}
 

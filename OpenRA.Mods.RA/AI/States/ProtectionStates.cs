@@ -8,10 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Traits;
-
 namespace OpenRA.Mods.RA.AI
 {
 	class UnitsForProtectionIdleState : GroundStateBase, IState

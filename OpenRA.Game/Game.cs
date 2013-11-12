@@ -103,7 +103,7 @@ namespace OpenRA
 		// Load a widget with world, orderManager, worldRenderer args, without adding it to the widget tree
 		public static Widget LoadWidget(World world, string id, Widget parent, WidgetArgs args)
 		{
-			return Game.modData.WidgetLoader.LoadWidget(new WidgetArgs(args)
+			return modData.WidgetLoader.LoadWidget(new WidgetArgs(args)
 			{
 				{ "world", world },
 				{ "orderManager", orderManager },
@@ -135,23 +135,23 @@ namespace OpenRA
 				// worldRenderer is null during the initial install/download screen
 				if (worldRenderer != null)
 				{
-					Game.Renderer.BeginFrame(worldRenderer.Viewport.TopLeft.ToFloat2(), worldRenderer.Viewport.Zoom);
+					Renderer.BeginFrame(worldRenderer.Viewport.TopLeft.ToFloat2(), worldRenderer.Viewport.Zoom);
 					Sound.SetListenerPosition(worldRenderer.Position(worldRenderer.Viewport.CenterLocation));
 					worldRenderer.Draw();
 				}
 				else
-					Game.Renderer.BeginFrame(float2.Zero, 1f);
+					Renderer.BeginFrame(float2.Zero, 1f);
 
 				using (new PerfSample("render_widgets"))
 				{
 					Ui.Draw();
 					var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-					CursorProvider.DrawCursor(Game.Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
+					CursorProvider.DrawCursor(Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
 				}
 
 				using (new PerfSample("render_flip"))
 				{
-					Game.Renderer.EndFrame(new DefaultInputHandler(orderManager.world));
+					Renderer.EndFrame(new DefaultInputHandler(orderManager.world));
 				}
 			}
 
@@ -374,13 +374,13 @@ namespace OpenRA
 
 			JoinLocal();
 
-			if (Game.Settings.Server.Dedicated)
+			if (Settings.Server.Dedicated)
 			{
 				while (true)
 				{
-					Game.Settings.Server.Map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
-					Game.Settings.Save();
-					Game.CreateServer(new ServerSettings(Game.Settings.Server));
+					Settings.Server.Map = WidgetUtils.ChooseInitialMap(Settings.Server.Map);
+					Settings.Save();
+					CreateServer(new ServerSettings(Settings.Server));
 					while (true)
 					{
 						System.Threading.Thread.Sleep(100);
@@ -393,15 +393,14 @@ namespace OpenRA
 							break;
 						}
 					}
-					if (Game.Settings.Server.DedicatedLoop)
+					if (Settings.Server.DedicatedLoop)
 					{
 						Console.WriteLine("Starting a new server instance...");
 						continue;
 					}
-					else
-						break;
+					break;
 				}
-				System.Environment.Exit(0);
+				Environment.Exit(0);
 			}
 			else
 			{
@@ -420,7 +419,7 @@ namespace OpenRA
 			var shellmaps =  modData.AvailableMaps
 				.Where(m => m.Value.UseAsShellmap);
 
-			if (shellmaps.Count() == 0)
+			if (!shellmaps.Any())
 				throw new InvalidDataException("No valid shellmaps available");
 
 			return shellmaps.Random(CosmeticRandom).Key;
@@ -482,7 +481,7 @@ namespace OpenRA
 		public static void CreateServer(ServerSettings settings)
 		{
 			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort),
-			                           Game.Settings.Game.Mods, settings, modData);
+			                           Settings.Game.Mods, settings, modData);
 		}
 
 		public static int CreateLocalServer(string map)
@@ -496,7 +495,7 @@ namespace OpenRA
 			};
 
 			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0),
-			                           Game.Settings.Game.Mods, settings, modData);
+			                           Settings.Game.Mods, settings, modData);
 
 			return server.Port;
 		}
@@ -510,7 +509,7 @@ namespace OpenRA
 		{
 			try
 			{
-				var mod = Game.CurrentMods.FirstOrDefault().Value.Id;
+				var mod = CurrentMods.First().Value.Id;
 				var dirPath = "{1}maps{0}{2}".F(Path.DirectorySeparatorChar, Platform.SupportDir, mod);
 				if(!Directory.Exists(dirPath))
 					Directory.CreateDirectory(dirPath);

@@ -8,10 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Mods.RA.Render;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
@@ -101,7 +97,7 @@ namespace OpenRA.Mods.RA
 
 			// Quantize orientation to match a rendered sprite
 			// Implies no pitch or yaw
-			var facing = Traits.Util.QuantizeFacing(local.Yaw.Angle / 4, QuantizedFacings) * (256 / QuantizedFacings);
+			var facing = Util.QuantizeFacing(local.Yaw.Angle / 4, QuantizedFacings) * (256 / QuantizedFacings);
 			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
 		}
 	}

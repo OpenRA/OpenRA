@@ -8,8 +8,6 @@
 */
 #endregion
 
-using System;
-using System.IO;
 using System.Text;
 using OpenRA.Renderer.SdlCommon;
 using SDL2;
@@ -49,7 +47,7 @@ namespace OpenRA.Renderer.Sdl2
 				switch (e.type)
 				{
 					case SDL.SDL_EventType.SDL_QUIT:
-						OpenRA.Game.Exit();
+						Game.Exit();
 						break;
 
 					case SDL.SDL_EventType.SDL_WINDOWEVENT:
@@ -178,7 +176,7 @@ namespace OpenRA.Renderer.Sdl2
 						if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
 						    Platform.CurrentPlatform == PlatformType.Windows)
 						{
-							OpenRA.Game.Exit();
+							Game.Exit();
 						}
 						else
 							inputHandler.OnKeyInput(keyEvent);

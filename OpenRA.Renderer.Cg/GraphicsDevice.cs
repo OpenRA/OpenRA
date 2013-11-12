@@ -55,8 +55,8 @@ namespace OpenRA.Renderer.Cg
 
 			Tao.Cg.Cg.cgSetErrorCallback(errorCallback);
 
-			Tao.Cg.CgGl.cgGLRegisterStates(Context);
-			Tao.Cg.CgGl.cgGLSetManageTextureParameters(Context, true);
+			CgGl.cgGLRegisterStates(Context);
+			CgGl.cgGLSetManageTextureParameters(Context, true);
 			VertexProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_VERTEX);
 			FragmentProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_FRAGMENT);
 		}

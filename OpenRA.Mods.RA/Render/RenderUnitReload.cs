@@ -8,8 +8,6 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Activities;
-
 namespace OpenRA.Mods.RA.Render
 {
 	class RenderUnitReloadInfo : RenderUnitInfo

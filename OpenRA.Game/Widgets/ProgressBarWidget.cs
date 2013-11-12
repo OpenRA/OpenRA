@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Drawing;
 
 namespace OpenRA.Widgets
@@ -22,7 +21,7 @@ namespace OpenRA.Widgets
 		float offset = 0f;
 		float tickStep = 0.04f;
 
-		public ProgressBarWidget() : base() {}
+		public ProgressBarWidget() {}
 		protected ProgressBarWidget(ProgressBarWidget widget)
 			: base(widget)
 		{

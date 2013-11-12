@@ -290,7 +290,7 @@ namespace OpenRA.Mods.RA.Widgets
 				new float2(Game.Renderer.Resolution.Width - 14, origin.Y - 23));
 
 			for (int i = 0; i < numActualRows; i++)
-				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-" + (i % 4).ToString()),
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-" + (i % 4)),
 					new float2(Game.Renderer.Resolution.Width - 14, origin.Y + IconHeight * i));
 
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-bottom"),

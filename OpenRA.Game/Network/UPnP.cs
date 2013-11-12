@@ -11,8 +11,6 @@
 using System;
 
 using Mono.Nat;
-using Mono.Nat.Pmp;
-using Mono.Nat.Upnp;
 
 namespace OpenRA.Network
 {

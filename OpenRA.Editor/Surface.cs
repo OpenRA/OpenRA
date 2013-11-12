@@ -107,7 +107,6 @@ namespace OpenRA.Editor
 		public Dictionary<int2, Bitmap> Chunks = new Dictionary<int2, Bitmap>();
 
 		public Surface()
-			: base()
 		{
 			BackColor = Color.Black;
 

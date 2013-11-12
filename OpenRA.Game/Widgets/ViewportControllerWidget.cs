@@ -61,7 +61,6 @@ namespace OpenRA.Widgets
 
 		[ObjectCreator.UseCtor]
 		public ViewportControllerWidget(World world, WorldRenderer worldRenderer)
-			: base()
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;

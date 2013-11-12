@@ -29,7 +29,6 @@ namespace OpenRA.Widgets
 		protected bool isMoving = false;
 
 		public SliderWidget()
-			: base()
 		{
 			GetValue = () => Value;
 		}

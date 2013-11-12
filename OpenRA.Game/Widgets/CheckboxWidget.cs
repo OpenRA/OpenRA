@@ -11,7 +11,6 @@
 using System;
 using System.Drawing;
 using OpenRA.Graphics;
-using System.Reflection;
 
 namespace OpenRA.Widgets
 {
@@ -25,7 +24,6 @@ namespace OpenRA.Widgets
 		public bool HasPressedState = ChromeMetrics.Get<bool>("CheckboxPressedState");
 
 		public CheckboxWidget()
-			: base()
 		{
 			GetCheckType = () => CheckType;
 		}

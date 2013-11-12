@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA.Widgets
 					if (sp.TotalTime > 0)
 					{
 						pos += new int2(0,20);
-						Game.Renderer.Fonts["Bold"].DrawText(WidgetUtils.FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
+						Game.Renderer.Fonts["Bold"].DrawText(WidgetUtils.FormatTime(sp.RemainingTime), pos, Color.White);
 						Game.Renderer.Fonts["Bold"].DrawText("/ {0}".F(WidgetUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);
 					}
 

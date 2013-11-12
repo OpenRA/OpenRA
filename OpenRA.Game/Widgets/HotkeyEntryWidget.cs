@@ -11,8 +11,6 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Traits;
-using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -31,7 +29,7 @@ namespace OpenRA.Widgets
 		public Color DisabledColor = Color.Gray;
 		public string Font = "Regular";
 
-		public HotkeyEntryWidget() : base() {}
+		public HotkeyEntryWidget() {}
 		protected HotkeyEntryWidget(HotkeyEntryWidget widget)
 			: base(widget)
 		{

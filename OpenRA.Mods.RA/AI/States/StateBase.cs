@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
@@ -44,7 +45,7 @@ namespace OpenRA.Mods.RA.AI
 				return false;
 
 			var type = a.GetCurrentActivity().GetType();
-			if (type == typeof(OpenRA.Mods.RA.Activities.Attack) || type == typeof(FlyAttack))
+			if (type == typeof(Attack) || type == typeof(FlyAttack))
 				return true;
 
 			var next = a.GetCurrentActivity().NextActivity;
@@ -52,7 +53,7 @@ namespace OpenRA.Mods.RA.AI
 				return false;
 
 			var nextType = a.GetCurrentActivity().NextActivity.GetType();
-			if (nextType == typeof(OpenRA.Mods.RA.Activities.Attack) || nextType == typeof(FlyAttack))
+			if (nextType == typeof(Attack) || nextType == typeof(FlyAttack))
 				return true;
 
 			return false;

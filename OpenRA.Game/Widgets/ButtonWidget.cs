@@ -9,10 +9,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.FileFormats;
-using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -48,7 +46,6 @@ namespace OpenRA.Widgets
 		public Action<KeyInput> OnKeyPress = _ => {};
 
 		public ButtonWidget()
-			: base()
 		{
 			GetText = () => { return Text; };
 			OnMouseUp = _ => OnClick();
@@ -188,7 +185,7 @@ namespace OpenRA.Widgets
 
 		public virtual void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
 		{
-			ButtonWidget.DrawBackground("button", rect, disabled, pressed, hover, highlighted);
+			DrawBackground("button", rect, disabled, pressed, hover, highlighted);
 		}
 
 		public static void DrawBackground(string baseName, Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)

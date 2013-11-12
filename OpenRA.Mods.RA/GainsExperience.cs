@@ -8,11 +8,9 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
-using OpenRA.Graphics;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 

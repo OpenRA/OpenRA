@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -94,9 +93,9 @@ namespace OpenRA.Mods.RA.AI
 			}
 			else
 			{
-				var enemys = owner.world.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(12))
+				var enemies = owner.world.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(12))
 					.Where(a1 => !a1.Destroyed && !a1.IsDead()).ToList();
-				var enemynearby = enemys.Where(a1 => a1.HasTrait<ITargetable>() && leader.Owner.Stances[a1.Owner] == Stance.Enemy).ToList();
+				var enemynearby = enemies.Where(a1 => a1.HasTrait<ITargetable>() && leader.Owner.Stances[a1.Owner] == Stance.Enemy).ToList();
 				if (enemynearby.Any())
 				{
 					owner.Target = enemynearby.ClosestTo(leader.CenterPosition);

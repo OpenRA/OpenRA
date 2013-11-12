@@ -11,15 +11,13 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class PathfinderDebugOverlayInfo : Traits.TraitInfo<PathfinderDebugOverlay> { }
+	class PathfinderDebugOverlayInfo : TraitInfo<PathfinderDebugOverlay> { }
 	class PathfinderDebugOverlay : IRenderOverlay, IWorldLoaded
 	{
 		Dictionary<Player, int[,]> layers;

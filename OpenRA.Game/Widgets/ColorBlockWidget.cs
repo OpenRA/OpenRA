@@ -18,7 +18,6 @@ namespace OpenRA.Widgets
 		public Func<Color> GetColor;
 
 		public ColorBlockWidget()
-			: base()
 		{
 			GetColor = () => Color.White;
 		}

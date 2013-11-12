@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using OpenRA.FileFormats;
@@ -22,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets
 		Bitmap hueBitmap;
 		Sprite hueSprite;
 
-		public HueSliderWidget() : base() {}
+		public HueSliderWidget() {}
 		public HueSliderWidget(HueSliderWidget other) : base(other) {}
 
 		public override void Initialize(WidgetArgs args)

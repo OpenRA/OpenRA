@@ -97,7 +97,7 @@ namespace OpenRA.FileFormats
 				name = Platform.SupportDir + name.Substring(1);
 
 			FolderPaths.Add(name);
-			Action a = () => FileSystem.MountInner(OpenPackage(name, annotation, order++));
+			Action a = () => MountInner(OpenPackage(name, annotation, order++));
 
 			if (optional)
 				try { a(); }
@@ -197,8 +197,8 @@ namespace OpenRA.FileFormats
 			if (assemblyCache.TryGetValue(filename, out a))
 				return a;
 
-			if (FileSystem.Exists(filename))
-				using (var s = FileSystem.Open(filename))
+			if (Exists(filename))
+				using (var s = Open(filename))
 				{
 					var buf = new byte[s.Length];
 					s.Read(buf, 0, buf.Length);

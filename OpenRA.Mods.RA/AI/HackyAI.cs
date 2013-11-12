@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
@@ -51,13 +52,13 @@ namespace OpenRA.Mods.RA.AI
 		[FieldLoader.LoadUsing("LoadBuildingLimits")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
 
-		static object LoadList<ValueType>(MiniYaml y, string field)
+		static object LoadList<T>(MiniYaml y, string field)
 		{
 			return y.NodesDict.ContainsKey(field)
 				? y.NodesDict[field].NodesDict.ToDictionary(
 					a => a.Key,
-					a => FieldLoader.GetValue<ValueType>(field, a.Value.Value))
-				: new Dictionary<string, ValueType>();
+					a => FieldLoader.GetValue<T>(field, a.Value.Value))
+				: new Dictionary<string, T>();
 		}
 
 		static object LoadUnits(MiniYaml y) { return LoadList<float>(y, "UnitsToBuild"); }
@@ -77,8 +78,6 @@ namespace OpenRA.Mods.RA.AI
 
 	public class HackyAI : ITick, IBot, INotifyDamage
 	{
-		static readonly List<Actor> NoActors = new List<Actor>();
-
 		bool enabled;
 		public int ticks;
 		public Player p;
@@ -181,15 +180,13 @@ namespace OpenRA.Mods.RA.AI
 		int CountBuilding(string frac, Player owner)
 		{
 			return world.ActorsWithTrait<Building>()
-				.Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == frac)
-				.Count();
+				.Count(a => a.Actor.Owner == owner && a.Actor.Info.Name == frac);
 		}
 
 		int CountUnits(string unit, Player owner)
 		{
 			return world.ActorsWithTrait<IPositionable>()
-				.Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit)
-				.Count();
+				.Count(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit);
 		}
 
 		int? CountBuildingByCommonName(string commonName, Player owner)
@@ -198,8 +195,7 @@ namespace OpenRA.Mods.RA.AI
 				return null;
 
 			return world.ActorsWithTrait<Building>()
-				.Where(a => a.Actor.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Actor.Info.Name))
-				.Count();
+				.Count(a => a.Actor.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Actor.Info.Name));
 		}
 
 		ActorInfo GetBuildingInfoByCommonName(string commonName, Player owner)
@@ -467,10 +463,8 @@ namespace OpenRA.Mods.RA.AI
 
 		List<Actor> FindEnemyConstructionYards()
 		{
-			var bases = world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && !a.Destroyed
+			return world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && !a.IsDead()
 				&& a.HasTrait<BaseBuilding>() && !a.HasTrait<Mobile>()).ToList();
-
-			return bases ?? NoActors;
 		}
 
 		Actor FindEnemyBuildingClosestToPos(WPos pos)
@@ -491,7 +485,7 @@ namespace OpenRA.Mods.RA.AI
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
 		Squad GetSquadOfType(SquadType type)
 		{
-			return squads.Where(s => s.type == type).FirstOrDefault();
+			return squads.FirstOrDefault(s => s.type == type);
 		}
 
 		Squad RegisterNewSquad(SquadType type, Actor target)
@@ -553,8 +547,8 @@ namespace OpenRA.Mods.RA.AI
 					var act = a.GetCurrentActivity();
 
 					// A Wait activity is technically idle:
-					if ((act.GetType() != typeof(OpenRA.Mods.RA.Activities.Wait)) &&
-						(act.NextActivity == null || act.NextActivity.GetType() != typeof(OpenRA.Mods.RA.Activities.FindResources)))
+					if ((act.GetType() != typeof(Wait)) &&
+						(act.NextActivity == null || act.NextActivity.GetType() != typeof(FindResources)))
 						continue;
 				}
 
@@ -623,12 +617,12 @@ namespace OpenRA.Mods.RA.AI
 
 			foreach (var b in allEnemyBaseBuilder)
 			{
-				var enemys = world.FindActorsInCircle(b.CenterPosition, WRange.FromCells(15))
+				var enemies = world.FindActorsInCircle(b.CenterPosition, WRange.FromCells(15))
 					.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
 				
-				if (rushFuzzy.CanAttack(ownUnits, enemys))
+				if (rushFuzzy.CanAttack(ownUnits, enemies))
 				{
-					var target = enemys.Any() ? enemys.Random(random) : b;
+					var target = enemies.Any() ? enemies.Random(random) : b;
 					var rush = GetSquadOfType(SquadType.Rush);
 					if (rush == null)
 						rush = RegisterNewSquad(SquadType.Rush, target);
@@ -783,16 +777,16 @@ namespace OpenRA.Mods.RA.AI
 				{
 					var pos = new CPos(i, j);
 					var targets = world.FindActorsInCircle(pos.CenterPosition, WRange.FromCells(radiusOfPower)).ToList();
-					var enemys = targets.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
+					var enemies = targets.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
 					var ally = targets.Where(unit => p.Stances[unit.Owner] == Stance.Ally || unit.Owner == p).ToList();
 
-					if (enemys.Count < ally.Count || !enemys.Any())
+					if (enemies.Count < ally.Count || !enemies.Any())
 						continue;
 
-					if (enemys.Count > countUnits)
+					if (enemies.Count > countUnits)
 					{
-						countUnits = enemys.Count;
-						resLoc = enemys.Random(random).Location;
+						countUnits = enemies.Count;
+						resLoc = enemies.Random(random).Location;
 					}
 				}
 			}
@@ -814,7 +808,7 @@ namespace OpenRA.Mods.RA.AI
 				return;
 
 			// No construction yards - Build a new MCV
-			if (!HasAdequateFact() && !self.World.Actors.Where(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>()).Any())
+			if (!HasAdequateFact() && !self.World.Actors.Any(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>()))
 				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", p).Name);
 
 			foreach (var q in Info.UnitQueues)

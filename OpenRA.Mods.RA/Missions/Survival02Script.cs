@@ -19,8 +19,6 @@ using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Air;
-using OpenRA.Scripting;
 
 namespace OpenRA.Mods.RA.Missions
 {

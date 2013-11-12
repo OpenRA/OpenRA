@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				if (Armaments.Count() == 0)
+				if (!Armaments.Any())
 					yield break;
 
 				var negativeDamage = Armaments.First().Weapon.Warheads[0].Damage < 0;

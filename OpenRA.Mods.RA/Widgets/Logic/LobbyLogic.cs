@@ -184,7 +184,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
 
-					var botController = orderManager.LobbyInfo.Clients.Where(c => c.IsAdmin).FirstOrDefault();
+					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
 					if (orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots))
 					{
 						var botOptions = new List<DropDownOption>(){ new DropDownOption()
@@ -319,7 +319,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				fragileAlliance.IsDisabled = () => Map.Options.FragileAlliances.HasValue || configurationDisabled();
 				fragileAlliance.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"fragilealliance {0}".F(!orderManager.LobbyInfo.GlobalSettings.FragileAlliances)));
-			};
+			}
 
 			var difficulty = optionsBin.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			if (difficulty != null)
@@ -417,7 +417,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				enableShroud.IsDisabled = () => Map.Options.Shroud.HasValue || configurationDisabled();
 				enableShroud.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"shroud {0}".F(!orderManager.LobbyInfo.GlobalSettings.Shroud)));
-			};
+			}
 
 			var enableFog = optionsBin.GetOrNull<CheckboxWidget>("FOG_CHECKBOX");
 			if (enableFog != null)
@@ -426,7 +426,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				enableFog.IsDisabled = () => Map.Options.Fog.HasValue || configurationDisabled();
 				enableFog.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"fog {0}".F(!orderManager.LobbyInfo.GlobalSettings.Fog)));
-			};
+			}
 
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
@@ -467,7 +467,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var slot = orderManager.LobbyInfo.FirstEmptySlot();
 					var bot = Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name).FirstOrDefault();
-					var botController = orderManager.LobbyInfo.Clients.Where(c => c.IsAdmin).FirstOrDefault();
+					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
 					if (slot != null && bot != null)
 						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
 				});

@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System;
-using OpenRA.Traits;
-
 namespace OpenRA.Mods.RA
 {
 	public static class PlayerExts

@@ -9,7 +9,6 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Network;
 
 namespace OpenRA.Traits
 {

@@ -10,8 +10,6 @@
 
 using System;
 using System.Drawing;
-using OpenRA.Traits;
-using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -40,7 +38,7 @@ namespace OpenRA.Widgets
 		public Color DisabledColor = Color.Gray;
 		public string Font = "Regular";
 
-		public TextFieldWidget() : base() {}
+		public TextFieldWidget() {}
 		protected TextFieldWidget(TextFieldWidget widget)
 			: base(widget)
 		{

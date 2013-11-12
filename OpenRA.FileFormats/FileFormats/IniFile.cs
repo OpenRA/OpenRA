@@ -56,7 +56,7 @@ namespace OpenRA.FileFormats
 		IniSection ProcessSection(string line)
 		{
 			Match m = sectionPattern.Match(line);
-			if (m == null || !m.Success)
+			if (!m.Success)
 				return null;
 			string sectionName = m.Groups[1].Value.ToLowerInvariant();
 

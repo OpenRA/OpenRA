@@ -32,7 +32,7 @@ namespace OpenRA.Widgets
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		public int TooltipSpawnIndex = -1;
 
-		public MapPreviewWidget() : base()
+		public MapPreviewWidget()
 		{
 			tooltipContainer = Lazy.New(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}

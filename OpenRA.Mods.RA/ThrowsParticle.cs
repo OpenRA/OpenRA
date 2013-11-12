@@ -10,7 +10,6 @@
 
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

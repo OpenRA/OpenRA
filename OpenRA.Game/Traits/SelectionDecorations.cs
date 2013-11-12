@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 
@@ -65,7 +64,7 @@ namespace OpenRA.Traits
 				return;
 
 			var pipSources = self.TraitsImplementing<IPips>();
-			if (pipSources.Count() == 0)
+			if (!pipSources.Any())
 				return;
 
 			var pipImages = new Animation("pips");

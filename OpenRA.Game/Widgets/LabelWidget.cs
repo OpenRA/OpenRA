@@ -33,7 +33,6 @@ namespace OpenRA.Widgets
 		public Func<Color> GetContrastColor;
 
 		public LabelWidget()
-			: base()
 		{
 			GetText = () => Text;
 			GetColor = () => Color;

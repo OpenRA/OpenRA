@@ -10,7 +10,6 @@
 
 using System.Drawing;
 using System.Linq;
-using OpenRA.Network;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 using OpenRA.Widgets;

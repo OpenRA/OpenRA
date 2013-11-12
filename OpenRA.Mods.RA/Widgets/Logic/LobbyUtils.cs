@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				foreach (var b in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
 				{
 					var bot = b;
-					var botController = orderManager.LobbyInfo.Clients.Where(c => c.IsAdmin).FirstOrDefault();
+					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
 					bots.Add(new SlotDropDownOption(bot,
 						"slot_bot {0} {1} {2}".F(slot.PlayerReference, botController.Index, bot),
 						() => client != null && client.Bot == bot));
@@ -254,7 +254,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			slot.IsVisible = () => true;
 			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
 			slot.GetText = () => c != null ? c.Name : s.Closed ? "Closed" : "Open";
-			slot.OnMouseDown = _ => LobbyUtils.ShowSlotDropDown(slot, s, c, orderManager);
+			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager);
 
 			// Ensure Name selector (if present) is hidden
 			var name = parent.GetOrNull("NAME");
@@ -297,7 +297,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var color = parent.Get<DropDownButtonWidget>("COLOR");
 			color.IsDisabled = () => (s != null && s.LockColor) || orderManager.LocalClient.IsReady;
-			color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, c, orderManager, colorPreview);
+			color.OnMouseDown = _ => ShowColorDropDown(color, c, orderManager, colorPreview);
 
 			SetupColorWidget(color, s, c);
 		}
@@ -312,7 +312,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("FACTION");
 			dropdown.IsDisabled = () => s.LockRace || orderManager.LocalClient.IsReady;
-			dropdown.OnMouseDown = _ => LobbyUtils.ShowRaceDropDown(dropdown, c, orderManager, countryNames);
+			dropdown.OnMouseDown = _ => ShowRaceDropDown(dropdown, c, orderManager, countryNames);
 			SetupFactionWidget(dropdown, s, c, countryNames);
 		}
 
@@ -329,7 +329,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("TEAM");
 			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady;
-			dropdown.OnMouseDown = _ => LobbyUtils.ShowTeamDropDown(dropdown, c, orderManager, teamCount);
+			dropdown.OnMouseDown = _ => ShowTeamDropDown(dropdown, c, orderManager, teamCount);
 			dropdown.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 		}
 

@@ -23,7 +23,7 @@ namespace OpenRA.Widgets
 			WidgetUtils.DrawPanel(Background, RenderBounds);
 		}
 
-		public BackgroundWidget() : base() { }
+		public BackgroundWidget() { }
 
 		bool moving;
 		int2? prevMouseLocation;

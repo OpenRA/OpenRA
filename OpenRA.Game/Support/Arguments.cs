@@ -21,11 +21,11 @@ namespace OpenRA
 
 		public Arguments(params string[] src)
 		{
-			Regex regex = new Regex("([^=]+)=(.*)");
-			foreach (string s in src)
+			var regex = new Regex("([^=]+)=(.*)");
+			foreach (var s in src)
 			{
 				Match m = regex.Match(s);
-				if (m == null || !m.Success)
+				if (!m.Success)
 					continue;
 
 				args[m.Groups[1].Value] = m.Groups[2].Value;

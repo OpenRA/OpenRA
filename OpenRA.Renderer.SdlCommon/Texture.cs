@@ -12,7 +12,6 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using Tao.OpenGl;
 

@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Move;
@@ -21,8 +20,6 @@ namespace OpenRA.Mods.RA.Activities
 		int chosenTicks;
 
 		const int NextChooseTime = 100;
-
-		public DeliverResources() { }
 
 		public override Activity Tick(Actor self)
 		{

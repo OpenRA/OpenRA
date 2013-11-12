@@ -44,9 +44,9 @@ namespace OpenRA.Mods.RA
 			var others = self.World.Players.Where( p => !p.NonCombatant
 				&& p != self.Owner && p.Stances[self.Owner] != Stance.Ally );
 
-			if (others.Count() == 0) return;
+			if (!others.Any()) return;
 
-			if(others.All(p => p.WinState == WinState.Lost))
+			if (others.All(p => p.WinState == WinState.Lost))
 				Win(self);
 		}
 

@@ -8,12 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Graphics;
-using OpenRA.Traits;
-using OpenRA.Mods.RA.Orders;
-
 namespace OpenRA.Mods.RA.Render
 {
 	class RenderSpyInfo : RenderInfantryProneInfo
@@ -36,7 +30,7 @@ namespace OpenRA.Mods.RA.Render
 
 		protected override string PaletteName(Actor self)
 		{
-			var player = spy.disguisedAsPlayer != null ? spy.disguisedAsPlayer : self.Owner;
+			var player = spy.disguisedAsPlayer ?? self.Owner;
 			return info.Palette ?? info.PlayerPalette + player.InternalName;
 		}
 
@@ -45,10 +39,7 @@ namespace OpenRA.Mods.RA.Render
 			if (spy.disguisedAsSprite != disguisedAsSprite)
 			{
 				disguisedAsSprite = spy.disguisedAsSprite;
-				if (disguisedAsSprite != null)
-					anim.ChangeImage(disguisedAsSprite, info.StandAnimations.Random(Game.CosmeticRandom));
-				else
-					anim.ChangeImage(GetImage(self), info.StandAnimations.Random(Game.CosmeticRandom));
+				anim.ChangeImage(disguisedAsSprite ?? GetImage(self), info.StandAnimations.Random(Game.CosmeticRandom));
 				UpdatePalette();
 			}
 			base.Tick(self);

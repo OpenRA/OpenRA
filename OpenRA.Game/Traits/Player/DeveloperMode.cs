@@ -8,8 +8,6 @@
  */
 #endregion
 
-using System;
-
 namespace OpenRA.Traits
 {
 	public class DeveloperModeInfo : ITraitInfo
