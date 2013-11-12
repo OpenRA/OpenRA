@@ -51,13 +51,13 @@ namespace OpenRA.Mods.RA.AI
 		[FieldLoader.LoadUsing("LoadBuildingLimits")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
 
-		static object LoadList<ValueType>(MiniYaml y, string field)
+		static object LoadList<T>(MiniYaml y, string field)
 		{
 			return y.NodesDict.ContainsKey(field)
 				? y.NodesDict[field].NodesDict.ToDictionary(
 					a => a.Key,
-					a => FieldLoader.GetValue<ValueType>(field, a.Value.Value))
-				: new Dictionary<string, ValueType>();
+					a => FieldLoader.GetValue<T>(field, a.Value.Value))
+				: new Dictionary<string, T>();
 		}
 
 		static object LoadUnits(MiniYaml y) { return LoadList<float>(y, "UnitsToBuild"); }
