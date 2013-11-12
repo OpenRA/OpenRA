@@ -41,7 +41,6 @@ namespace OpenRA.Widgets
 		public string AxisFont;
 
 		public LineGraphWidget()
-			: base()
 		{
 			GetValueFormat = () => ValueFormat;
 			GetXAxisValueFormat = () => XAxisValueFormat;

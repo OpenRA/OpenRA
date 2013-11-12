@@ -27,7 +27,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 		[ObjectCreator.UseCtor]
 		public ObserverSupportPowerIconsWidget(World world, WorldRenderer worldRenderer)
-			: base()
 		{
 
 			this.world = world;

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Widgets
 		int2 offset;
 		int frame;
 
-		public SlidingContainerWidget() : base() { }
+		public SlidingContainerWidget() { }
 		public override void Initialize(WidgetArgs args)
 		{
 			base.Initialize(args);

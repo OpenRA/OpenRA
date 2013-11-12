@@ -31,7 +31,7 @@ namespace OpenRA.Widgets
 		public Color DisabledColor = Color.Gray;
 		public string Font = "Regular";
 
-		public HotkeyEntryWidget() : base() {}
+		public HotkeyEntryWidget() {}
 		protected HotkeyEntryWidget(HotkeyEntryWidget widget)
 			: base(widget)
 		{

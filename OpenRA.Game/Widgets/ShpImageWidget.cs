@@ -28,7 +28,6 @@ namespace OpenRA.Widgets
 
 		[ObjectCreator.UseCtor]
 		public ShpImageWidget(WorldRenderer worldRenderer)
-			: base()
 		{
 			GetImage = () => { return Image; };
 			GetFrame = () => { return Frame; };

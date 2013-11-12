@@ -446,7 +446,7 @@ namespace OpenRA.Widgets
 
 	public class ContainerWidget : Widget
 	{
-		public ContainerWidget() : base() { IgnoreMouseOver = true; }
+		public ContainerWidget() { IgnoreMouseOver = true; }
 		public ContainerWidget(ContainerWidget other)
 			: base(other) { IgnoreMouseOver = true; }
 
@@ -458,7 +458,7 @@ namespace OpenRA.Widgets
 
 	public class WidgetArgs : Dictionary<string, object>
 	{
-		public WidgetArgs() : base() { }
+		public WidgetArgs() { }
 		public WidgetArgs(Dictionary<string, object> args) : base(args) { }
 		public void Add(string key, Action val) { base.Add(key, val); }
 	}

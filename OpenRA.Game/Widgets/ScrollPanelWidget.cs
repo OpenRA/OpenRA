@@ -41,7 +41,7 @@ namespace OpenRA.Widgets
 		protected Rectangle scrollbarRect;
 		protected Rectangle thumbRect;
 
-		public ScrollPanelWidget() : base() { Layout = new ListLayout(this); }
+		public ScrollPanelWidget() { Layout = new ListLayout(this); }
 
 		public override void RemoveChildren()
 		{

@@ -31,7 +31,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 		[ObjectCreator.UseCtor]
 		public ColorPreviewManagerWidget(WorldRenderer worldRenderer)
-			: base()
 		{
 			this.worldRenderer = worldRenderer;
 		}

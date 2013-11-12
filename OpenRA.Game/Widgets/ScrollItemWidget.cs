@@ -18,7 +18,6 @@ namespace OpenRA.Widgets
 		public string BaseName = "scrollitem";
 
 		public ScrollItemWidget()
-			: base()
 		{
 			IsVisible = () => false;
 			VisualHeight = 0;

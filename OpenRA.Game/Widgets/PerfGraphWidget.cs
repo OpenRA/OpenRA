@@ -16,7 +16,7 @@ namespace OpenRA.Widgets
 {
 	public class PerfGraphWidget : Widget
 	{
-		public PerfGraphWidget() : base() { }
+		public PerfGraphWidget() { }
 
 		public override void Draw()
 		{

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Widgets
 		Bitmap hueBitmap;
 		Sprite hueSprite;
 
-		public HueSliderWidget() : base() {}
+		public HueSliderWidget() {}
 		public HueSliderWidget(HueSliderWidget other) : base(other) {}
 
 		public override void Initialize(WidgetArgs args)

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Widgets
 		Thread workerThread;
 		bool workerAlive;
 
-		public ColorMixerWidget() : base() {}
+		public ColorMixerWidget() {}
 		public ColorMixerWidget(ColorMixerWidget other)
 			: base(other)
 		{

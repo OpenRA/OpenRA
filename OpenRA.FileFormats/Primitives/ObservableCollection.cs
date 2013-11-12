@@ -23,7 +23,7 @@ namespace OpenRA.FileFormats.Primitives
 		public event Action<object, object> OnSet = (o, n) => { };
 		public event Action OnRefresh = () => { };
 
-		public ObservableCollection() : base() { }
+		public ObservableCollection() { }
 		public ObservableCollection(IList<T> list) : base(list) { }
 
 		protected override void SetItem(int index, T item)

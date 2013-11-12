@@ -48,7 +48,6 @@ namespace OpenRA.Widgets
 		public Action<KeyInput> OnKeyPress = _ => {};
 
 		public ButtonWidget()
-			: base()
 		{
 			GetText = () => { return Text; };
 			OnMouseUp = _ => OnClick();

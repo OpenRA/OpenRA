@@ -12,7 +12,7 @@ namespace OpenRA.Widgets
 {
 	public class PasswordFieldWidget : TextFieldWidget
 	{
-		public PasswordFieldWidget() : base() { }
+		public PasswordFieldWidget() { }
 		protected PasswordFieldWidget(PasswordFieldWidget widget) : base(widget) { }
 
 		protected override string GetApparentText() { return new string('*', Text.Length); }

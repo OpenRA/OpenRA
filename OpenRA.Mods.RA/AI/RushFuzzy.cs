@@ -12,7 +12,7 @@ namespace OpenRA.Mods.RA.AI
 {
 	class RushFuzzy : AttackOrFleeFuzzy
 	{
-		public RushFuzzy() : base() { }
+		public RushFuzzy() { }
 
 		protected override void AddingRulesForNormalOwnHealth()
 		{

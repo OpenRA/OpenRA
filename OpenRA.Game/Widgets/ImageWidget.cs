@@ -21,7 +21,6 @@ namespace OpenRA.Widgets
 		public Func<string> GetImageCollection;
 
 		public ImageWidget()
-			: base()
 		{
 			GetImageName = () => ImageName;
 			GetImageCollection = () => ImageCollection;

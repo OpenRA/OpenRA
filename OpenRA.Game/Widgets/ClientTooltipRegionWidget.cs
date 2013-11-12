@@ -27,7 +27,7 @@ namespace OpenRA.Widgets
 		OrderManager orderManager;
 		int clientIndex;
 
-		public ClientTooltipRegionWidget() : base()
+		public ClientTooltipRegionWidget()
 		{
 			tooltipContainer = Lazy.New(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
