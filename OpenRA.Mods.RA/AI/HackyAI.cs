@@ -78,8 +78,6 @@ namespace OpenRA.Mods.RA.AI
 
 	public class HackyAI : ITick, IBot, INotifyDamage
 	{
-		static readonly List<Actor> NoActors = new List<Actor>();
-
 		bool enabled;
 		public int ticks;
 		public Player p;
@@ -465,10 +463,8 @@ namespace OpenRA.Mods.RA.AI
 
 		List<Actor> FindEnemyConstructionYards()
 		{
-			var bases = world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && !a.Destroyed
+			return world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && !a.IsDead()
 				&& a.HasTrait<BaseBuilding>() && !a.HasTrait<Mobile>()).ToList();
-
-			return bases ?? NoActors;
 		}
 
 		Actor FindEnemyBuildingClosestToPos(WPos pos)
