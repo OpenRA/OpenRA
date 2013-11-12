@@ -185,7 +185,7 @@ namespace OpenRA.Widgets
 
 		public virtual void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
 		{
-			ButtonWidget.DrawBackground("button", rect, disabled, pressed, hover, highlighted);
+			DrawBackground("button", rect, disabled, pressed, hover, highlighted);
 		}
 
 		public static void DrawBackground(string baseName, Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)

@@ -185,7 +185,7 @@ namespace OpenRA.Renderer.SdlCommon
 				switch (e.type)
 				{
 				case Sdl.SDL_QUIT:
-					OpenRA.Game.Exit();
+					Game.Exit();
 					break;
 
 				case Sdl.SDL_MOUSEBUTTONDOWN:
@@ -264,7 +264,7 @@ namespace OpenRA.Renderer.SdlCommon
 						if (e.key.keysym.sym == Sdl.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
 						    Platform.CurrentPlatform == PlatformType.Windows)
 						{
-							OpenRA.Game.Exit();
+							Game.Exit();
 						}
 						else
 							inputHandler.OnKeyInput(keyEvent);

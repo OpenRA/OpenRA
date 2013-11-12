@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -36,10 +37,10 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public void InitPalette (OpenRA.Graphics.WorldRenderer wr)
+		public void InitPalette(WorldRenderer wr)
 		{
-			string Filename = world.TileSet.PlayerPalette == null ? world.TileSet.Palette : world.TileSet.PlayerPalette;
-			wr.AddPalette(info.Name, new Palette(FileSystem.Open(Filename), info.ShadowIndex), info.AllowModifiers);
+			var filename = world.TileSet.PlayerPalette ?? world.TileSet.Palette;
+			wr.AddPalette(info.Name, new Palette(FileSystem.Open(filename), info.ShadowIndex), info.AllowModifiers);
 		}
 	}
 }

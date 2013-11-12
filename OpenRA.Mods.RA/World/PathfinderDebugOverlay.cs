@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class PathfinderDebugOverlayInfo : Traits.TraitInfo<PathfinderDebugOverlay> { }
+	class PathfinderDebugOverlayInfo : TraitInfo<PathfinderDebugOverlay> { }
 	class PathfinderDebugOverlay : IRenderOverlay, IWorldLoaded
 	{
 		Dictionary<Player, int[,]> layers;

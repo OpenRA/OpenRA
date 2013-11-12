@@ -53,7 +53,7 @@ namespace OpenRA.FileFormats.Primitives
 
 		public IEnumerable ObservedItems
 		{
-			get { return base.Items; }
+			get { return Items; }
 		}
 	}
 }

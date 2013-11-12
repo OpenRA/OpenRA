@@ -57,8 +57,8 @@ namespace OpenRA.Widgets
 
 			var useClassicMouseStyle = Game.Settings.Game.UseClassicMouseStyle;
 
-			var hasBox = (SelectionBox != null) ? true : false;
-			var multiClick = (mi.MultiTapCount >= 2) ? true : false;
+			var hasBox = SelectionBox != null;
+			var multiClick = mi.MultiTapCount >= 2;
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
@@ -68,7 +68,7 @@ namespace OpenRA.Widgets
 				dragStart = dragEnd = xy;
 
 				// place buildings
-				if (!useClassicMouseStyle || (useClassicMouseStyle && !World.Selection.Actors.Any()))
+				if (!useClassicMouseStyle || !World.Selection.Actors.Any())
 					ApplyOrders(World, xy, mi);
 			}
 

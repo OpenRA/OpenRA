@@ -147,8 +147,7 @@ namespace OpenRA.Mods.RA
 			var toProcess = new Stack<int>();
 			toProcess.Push(d1);
 
-			var i = 0;
-			while (toProcess.Count() > 0)
+			while (toProcess.Any())
 			{
 				var current = toProcess.Pop();
 				if (!transientConnections.ContainsKey(current))
@@ -163,7 +162,6 @@ namespace OpenRA.Mods.RA
 				}
 
 				visited.Add(current);
-				i += 1;
 			}
 
 			return false;

@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Traits;
 
@@ -125,7 +126,7 @@ namespace OpenRA.Mods.RA.AI
 				return false;
 
 			var type = activity.GetType();
-			if (type == typeof(OpenRA.Mods.RA.Activities.Rearm) || type == typeof(ResupplyAircraft))
+			if (type == typeof(Rearm) || type == typeof(ResupplyAircraft))
 				return true;
 
 			var next = activity.NextActivity;
@@ -133,7 +134,7 @@ namespace OpenRA.Mods.RA.AI
 				return false;
 
 			var nextType = next.GetType();
-			if (nextType == typeof(OpenRA.Mods.RA.Activities.Rearm) || nextType == typeof(ResupplyAircraft))
+			if (nextType == typeof(Rearm) || nextType == typeof(ResupplyAircraft))
 				return true;
 
 			return false;

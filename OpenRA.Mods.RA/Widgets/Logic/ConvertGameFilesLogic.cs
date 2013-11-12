@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using OpenRA.Utility;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -69,21 +70,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						progressBar.Percentage = i*100/ExtractGameFiles.Count();
 						statusLabel.GetText = () => "Extracting...";
-						Utility.Command.ExtractFiles(ExtractGameFiles[i]);
+						Command.ExtractFiles(ExtractGameFiles[i]);
 					}
 
 					for (int i = 0; i < ExportToPng.Length; i++)
 					{
 						progressBar.Percentage = i*100/ExportToPng.Count();
 						statusLabel.GetText = () => "Exporting SHP to PNG...";
-						Utility.Command.ConvertShpToPng(ExportToPng[i]);
+						Command.ConvertShpToPng(ExportToPng[i]);
 					}
 
 					for (int i = 0; i < ImportFromPng.Length; i++)
 					{
 						progressBar.Percentage = i*100/ImportFromPng.Count();
 						statusLabel.GetText = () => "Converting PNG to SHP...";
-						Utility.Command.ConvertPngToShp(ImportFromPng[i]);
+						Command.ConvertPngToShp(ImportFromPng[i]);
 					}
 
 					Game.RunAfterTick(() =>

@@ -9,10 +9,12 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 
@@ -338,7 +340,7 @@ namespace OpenRA.Server
 
 				if (File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, LobbyInfo.GlobalSettings.Mods[0])))
 				{
-					var motd = System.IO.File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, LobbyInfo.GlobalSettings.Mods[0]));
+					var motd = File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, LobbyInfo.GlobalSettings.Mods[0]));
 					SendOrderTo(newConn, "Message", motd);
 				}
 

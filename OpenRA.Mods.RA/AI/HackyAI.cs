@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
@@ -181,15 +182,13 @@ namespace OpenRA.Mods.RA.AI
 		int CountBuilding(string frac, Player owner)
 		{
 			return world.ActorsWithTrait<Building>()
-				.Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == frac)
-				.Count();
+				.Count(a => a.Actor.Owner == owner && a.Actor.Info.Name == frac);
 		}
 
 		int CountUnits(string unit, Player owner)
 		{
 			return world.ActorsWithTrait<IPositionable>()
-				.Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit)
-				.Count();
+				.Count(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit);
 		}
 
 		int? CountBuildingByCommonName(string commonName, Player owner)
@@ -198,8 +197,7 @@ namespace OpenRA.Mods.RA.AI
 				return null;
 
 			return world.ActorsWithTrait<Building>()
-				.Where(a => a.Actor.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Actor.Info.Name))
-				.Count();
+				.Count(a => a.Actor.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Actor.Info.Name));
 		}
 
 		ActorInfo GetBuildingInfoByCommonName(string commonName, Player owner)
@@ -553,8 +551,8 @@ namespace OpenRA.Mods.RA.AI
 					var act = a.GetCurrentActivity();
 
 					// A Wait activity is technically idle:
-					if ((act.GetType() != typeof(OpenRA.Mods.RA.Activities.Wait)) &&
-						(act.NextActivity == null || act.NextActivity.GetType() != typeof(OpenRA.Mods.RA.Activities.FindResources)))
+					if ((act.GetType() != typeof(Wait)) &&
+						(act.NextActivity == null || act.NextActivity.GetType() != typeof(FindResources)))
 						continue;
 				}
 
@@ -814,7 +812,7 @@ namespace OpenRA.Mods.RA.AI
 				return;
 
 			// No construction yards - Build a new MCV
-			if (!HasAdequateFact() && !self.World.Actors.Where(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>()).Any())
+			if (!HasAdequateFact() && !self.World.Actors.Any(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>()))
 				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", p).Name);
 
 			foreach (var q in Info.UnitQueues)

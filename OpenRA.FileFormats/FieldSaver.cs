@@ -48,7 +48,7 @@ namespace OpenRA.FileFormats
 
 		public static MiniYamlNode SaveField(object o, string field)
 		{
-			return new MiniYamlNode(field, FieldSaver.FormatValue(o, o.GetType().GetField(field)));
+			return new MiniYamlNode(field, FormatValue(o, o.GetType().GetField(field)));
 		}
 
 		public static string FormatValue(object v, Type t)

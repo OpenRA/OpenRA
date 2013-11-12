@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Air
 			var helicopter = self.Trait<Helicopter>();
 
 			var cruiseAltitude = new WRange(helicopter.Info.CruiseAltitude * 1024 / Game.CellSize);
-			if (HeliFly.AdjustAltitude(self, helicopter, cruiseAltitude))
+			if (AdjustAltitude(self, helicopter, cruiseAltitude))
 				return this;
 
 			// Rotate towards the target

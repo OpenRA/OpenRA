@@ -194,7 +194,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return;
 			}
 
-			if (games.Count() == 0)
+			if (!games.Any())
 			{
 				searchStatus = SearchStatus.NoGames;
 				return;

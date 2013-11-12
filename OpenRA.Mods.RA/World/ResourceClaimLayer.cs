@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public void WorldLoaded(OpenRA.World w, WorldRenderer wr)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			// NOTE(jsd): 32 seems a sane default initial capacity for the total # of harvesters in a game. Purely a guesstimate.
 			claimByCell = new Dictionary<CPos, ResourceClaim>(32);

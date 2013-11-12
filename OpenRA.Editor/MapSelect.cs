@@ -79,7 +79,7 @@ namespace OpenRA.Editor
 				}
 				catch (Exception ed)
 				{
-					Console.WriteLine("No map preview image found: {0}", ed.ToString());
+					Console.WriteLine("No map preview image found: {0}", ed);
 				}
 			}
 		}

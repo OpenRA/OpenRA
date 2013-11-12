@@ -42,11 +42,11 @@ namespace OpenRA.Network
 							break;
 
 							case "Client":
-							session.Clients.Add(FieldLoader.Load<Session.Client>(y.Value));
+							session.Clients.Add(FieldLoader.Load<Client>(y.Value));
 							break;
 
 							case "Slot":
-							var s = FieldLoader.Load<Session.Slot>(y.Value);
+							var s = FieldLoader.Load<Slot>(y.Value);
 							session.Slots.Add(s.PlayerReference, s);
 							break;
 					}
@@ -143,7 +143,7 @@ namespace OpenRA.Network
 		public Session(string[] mods)
 		{
 			this.GlobalSettings.Mods = mods.ToArray();
-			this.GlobalSettings.GameUid = System.Guid.NewGuid().ToString();
+			this.GlobalSettings.GameUid = Guid.NewGuid().ToString();
 		}
 
 		public string Serialize()

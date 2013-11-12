@@ -134,7 +134,7 @@ namespace OpenRA.Traits
 		public static IEnumerable<CPos> AdjacentCells(Target target)
 		{
 			var cells = target.Positions.Select(p => p.ToCPos()).Distinct();
-			return Util.ExpandFootprint(cells, true);
+			return ExpandFootprint(cells, true);
 		}
 	}
 }

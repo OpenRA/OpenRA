@@ -162,7 +162,7 @@ namespace OpenRA
 				catch (Exception e)
 				{
 					Console.WriteLine("Failed to load map: {0}", path);
-					Console.WriteLine("Details: {0}", e.ToString());
+					Console.WriteLine("Details: {0}", e);
 				}
 			}
 

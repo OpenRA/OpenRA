@@ -258,7 +258,7 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < 8; i++)
 			{
 				var vec = new float[] {bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1};
-				var tvec = Util.MatrixVectorMultiply(mtx, vec);
+				var tvec = MatrixVectorMultiply(mtx, vec);
 
 				ret[0] = Math.Min(ret[0], tvec[0]/tvec[3]);
 				ret[1] = Math.Min(ret[1], tvec[1]/tvec[3]);

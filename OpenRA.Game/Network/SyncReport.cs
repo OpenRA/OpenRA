@@ -32,7 +32,7 @@ namespace OpenRA.Network
 		{
 			this.orderManager = orderManager;
 			for (var i = 0; i < NumSyncReports; i++)
-				syncReports[i] = new SyncReport.Report();
+				syncReports[i] = new Report();
 		}
 
 		internal void UpdateSyncReport()

@@ -604,8 +604,8 @@ namespace OpenRA
 				int state;
 				Al.alGetSourcei(b, Al.AL_SOURCE_STATE, out state);
 				return ((state == Al.AL_PLAYING || state == Al.AL_PAUSED) &&
-					   ((music != null) ? b != ((OpenAlSound)music).source : true) &&
-					   ((video != null) ? b != ((OpenAlSound)video).source : true));
+					   ((music == null) || b != ((OpenAlSound)music).source) &&
+					   ((video == null) || b != ((OpenAlSound)video).source));
 			}).ToList();
 			foreach (var s in sounds)
 			{
