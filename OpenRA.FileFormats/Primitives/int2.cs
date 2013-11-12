@@ -43,11 +43,8 @@ namespace OpenRA
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-
-			int2 o = (int2)obj;
-			return o == this;
+			var o = obj as int2?;
+			return o != null && o == this;
 		}
 
 		public static readonly int2 Zero = new int2(0, 0);

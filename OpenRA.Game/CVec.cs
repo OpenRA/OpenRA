@@ -65,11 +65,8 @@ namespace OpenRA
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-
-			CVec o = (CVec)obj;
-			return o == this;
+			var o = obj as CVec?;
+			return o != null && o == this;
 		}
 
 		public override string ToString() { return "{0},{1}".F(X, Y); }

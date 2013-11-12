@@ -95,11 +95,8 @@ namespace OpenRA.FileFormats
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-
-			HSLColor o = (HSLColor)obj;
-			return o == this;
+			var o = obj as HSLColor?;
+			return o != null && o == this;
 		}
 	}
 }

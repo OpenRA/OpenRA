@@ -73,11 +73,8 @@ namespace OpenRA
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-
-			float2 o = (float2)obj;
-			return o == this;
+			var o = obj as float2?;
+			return o != null && o == this;
 		}
 
 		public static readonly float2 Zero = new float2(0, 0);
