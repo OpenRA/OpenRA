@@ -40,11 +40,8 @@ namespace OpenRA
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-
-			WAngle o = (WAngle)obj;
-			return o == this;
+			var o = obj as WAngle?;
+			return o != null && o == this;
 		}
 
 		public int Sin() { return new WAngle(Angle - 256).Cos(); }

@@ -54,11 +54,8 @@ namespace OpenRA
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-
-			CPos o = (CPos)obj;
-			return o == this;
+			var o = obj as CPos?;
+			return o != null && o == this;
 		}
 
 		public override string ToString() { return "{0},{1}".F(X, Y); }

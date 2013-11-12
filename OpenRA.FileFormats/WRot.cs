@@ -97,11 +97,8 @@ namespace OpenRA
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-
-			WRot o = (WRot)obj;
-			return o == this;
+			var o = obj as WRot?;
+			return o != null && o == this;
 		}
 
 		public override string ToString() { return "{0},{1},{2}".F(Roll, Pitch, Yaw); }
