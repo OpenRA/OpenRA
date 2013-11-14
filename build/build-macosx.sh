@@ -15,7 +15,11 @@ MACOSX_SDK_PATH="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.pla
 MAKEFLAGS="-j4"
 
 # flags for manual building with gcc; build universal binaries for luasocket
-MACOSX_FLAGS="-arch $MACOSX_ARCH -mmacosx-version-min=$MACOSX_VERSION -isysroot $MACOSX_SDK_PATH"
+MACOSX_FLAGS="-arch $MACOSX_ARCH -mmacosx-version-min=$MACOSX_VERSION"
+if [ -d "$MACOSX_SDK_PATH" ]; then
+  echo "Building with $MACOSX_SDK_PATH"
+  MACOSX_FLAGS="$MACOSX_FLAGS -isysroot $MACOSX_SDK_PATH"
+fi
 BUILD_FLAGS="-O2 -arch x86_64 -dynamiclib -undefined dynamic_lookup $MACOSX_FLAGS -I $INSTALL_DIR/include -L $INSTALL_DIR/lib"
 
 # paths configuration
@@ -128,13 +132,17 @@ fi
 if [ $BUILD_WXWIDGETS ]; then
   svn co "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to checkout wxWidgets"; exit 1; }
   cd "$WXWIDGETS_BASENAME"
+  MINSDK=""
+  if [ -d $MACOSX_SDK_PATH ]; then
+    MINSDK="--with-macosx-sdk=$MACOSX_SDK_PATH"
+  fi
   # fix auto-complete crash by reverting an earlier revision
   # http://trac.wxwidgets.org/ticket/15008#comment:12
   svn merge -r 74098:74097 .
   ./configure --prefix="$INSTALL_DIR" $WXWIDGETSDEBUG --disable-shared --enable-unicode \
     --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
     --with-zlib=builtin --disable-richtext \
-    --enable-macosx_arch=$MACOSX_ARCH --with-macosx-version-min=$MACOSX_VERSION --with-macosx-sdk="$MACOSX_SDK_PATH" \
+    --enable-macosx_arch=$MACOSX_ARCH --with-macosx-version-min=$MACOSX_VERSION $MINSDK \
     --with-osx_cocoa CFLAGS="-Os" CXXFLAGS="-Os"
   make $MAKEFLAGS || { echo "Error: failed to build wxWidgets"; exit 1; }
   make install
@@ -178,11 +186,15 @@ fi
 if [ $BUILD_WXLUA ]; then
   svn co "$WXLUA_URL" "$WXLUA_BASENAME" || { echo "Error: failed to checkout wxLua"; exit 1; }
   cd "$WXLUA_BASENAME/wxLua"
+  MINSDK=""
+  if [ -d $MACOSX_SDK_PATH ]; then
+    MINSDK="CMAKE_OSX_SYSROOT=$MACOSX_SDK_PATH"
+  fi
   # the following patches wxlua source to fix live coding support in wxlua apps
   # http://www.mail-archive.com/wxlua-users@lists.sourceforge.net/msg03225.html
   sed -i "" 's/\(m_wxlState = wxLuaState(wxlState.GetLuaState(), wxLUASTATE_GETSTATE|wxLUASTATE_ROOTSTATE);\)/\/\/ removed by ZBS build process \/\/ \1/' modules/wxlua/wxlcallb.cpp
   cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$WXLUABUILD -DBUILD_SHARED_LIBS=FALSE \
-    -DCMAKE_OSX_ARCHITECTURES=$MACOSX_ARCH -DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_VERSION CMAKE_OSX_SYSROOT="$MACOSX_SDK_PATH" \
+    -DCMAKE_OSX_ARCHITECTURES=$MACOSX_ARCH -DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_VERSION $MINSDK \
     -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DwxWidgets_CONFIG_EXECUTABLE="$INSTALL_DIR/bin/wx-config" \
     -DwxWidgets_COMPONENTS="stc;html;aui;adv;core;net;base" \
     -DwxLuaBind_COMPONENTS="stc;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
