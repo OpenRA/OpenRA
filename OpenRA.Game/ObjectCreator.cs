@@ -19,13 +19,15 @@ namespace OpenRA
 {
 	public class ObjectCreator
 	{
-		Pair<Assembly, string>[] modAssemblies;
+		Pair<Assembly, string>[] assemblies;
 
 		public ObjectCreator(Manifest manifest)
 		{
 			// All the core namespaces
-			var asms = typeof(Game).Assembly.GetNamespaces()
+			var asms = typeof(Game).Assembly.GetNamespaces() // Game
 				.Select(c => Pair.New(typeof(Game).Assembly, c))
+				.Concat(typeof(Mod).Assembly.GetNamespaces() // FileFormats
+				.Select(c => Pair.New(typeof(Mod).Assembly, c)))
 				.ToList();
 
 			// Namespaces from each mod assembly
@@ -35,7 +37,7 @@ namespace OpenRA
 				asms.AddRange(asm.GetNamespaces().Select(ns => Pair.New(asm, ns)));
 			}
 
-			modAssemblies = asms.ToArray();
+			assemblies = asms.ToArray();
 		}
 
 		public static Action<string> MissingTypeAction =
@@ -48,24 +50,30 @@ namespace OpenRA
 
 		public T CreateObject<T>(string className, Dictionary<string, object> args)
 		{
-			foreach (var mod in modAssemblies)
+			var type = FindType(className);
+			if (type == null)
 			{
-				var type = mod.First.GetType(mod.Second + "." + className, false);
-				if (type == null) continue;
-				var flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-				var ctors = type.GetConstructors(flags)
-					.Where(x => x.HasAttribute<UseCtorAttribute>()).ToList();
-
-				if (ctors.Count == 0)
-					return (T)CreateBasic(type);
-				else if (ctors.Count == 1)
-					return (T)CreateUsingArgs(ctors[0], args);
-				else
-					throw new InvalidOperationException("ObjectCreator: UseCtor on multiple constructors; invalid.");
+				MissingTypeAction(className);
+				return default(T);
 			}
 
-			MissingTypeAction(className);
-			return default(T);
+			var flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+			var ctors = type.GetConstructors(flags)
+				.Where(x => x.HasAttribute<UseCtorAttribute>()).ToList();
+
+			if (ctors.Count == 0)
+				return (T)CreateBasic(type);
+			else if (ctors.Count == 1)
+				return (T)CreateUsingArgs(ctors[0], args);
+			else
+				throw new InvalidOperationException("ObjectCreator: UseCtor on multiple constructors; invalid.");
+		}
+
+		public Type FindType(string className)
+		{
+			return assemblies
+				.Select(pair => pair.First.GetType(pair.Second + "." + className, false))
+				.FirstOrDefault(t => t != null);
 		}
 
 		public object CreateBasic(Type type)
@@ -90,7 +98,7 @@ namespace OpenRA
 		public IEnumerable<Type> GetTypesImplementing<T>()
 		{
 			var it = typeof(T);
-			return modAssemblies.Select(ma => ma.First).Distinct()
+			return assemblies.Select(ma => ma.First).Distinct()
 				.SelectMany(ma => ma.GetTypes()
 				.Where(t => t != it && it.IsAssignableFrom(t)));
 		}
