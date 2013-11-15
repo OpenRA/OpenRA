@@ -10,9 +10,8 @@
 
 using System.Collections.Generic;
 using OpenRA.FileFormats;
-using OpenRA.Mods.RA;
 
-namespace OpenRA.Scripting
+namespace OpenRA.Mods.RA.Scripting
 {
 	public class RASpecialPowers
 	{
