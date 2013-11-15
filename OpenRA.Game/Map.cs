@@ -54,7 +54,7 @@ namespace OpenRA
 
 	public class Map
 	{
-		[FieldLoader.Ignore] IFolder container;
+		[FieldLoader.Ignore] public IFolder Container;
 		public string Path { get; private set; }
 
 		// Yaml map data
@@ -132,7 +132,7 @@ namespace OpenRA
 
 		void AssertExists(string filename)
 		{
-			using (var s = container.GetContent(filename))
+			using (var s = Container.GetContent(filename))
 				if (s == null)
 					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
 		}
@@ -142,12 +142,12 @@ namespace OpenRA
 		public Map(string path)
 		{
 			Path = path;
-			container = FileSystem.OpenPackage(path, null, int.MaxValue);
+			Container = FileSystem.OpenPackage(path, null, int.MaxValue);
 
 			AssertExists("map.yaml");
 			AssertExists("map.bin");
 
-			var yaml = new MiniYaml(null, MiniYaml.FromStream(container.GetContent("map.yaml")));
+			var yaml = new MiniYaml(null, MiniYaml.FromStream(Container.GetContent("map.yaml")));
 			FieldLoader.Load(this, yaml);
 			Uid = ComputeHash();
 
@@ -263,17 +263,17 @@ namespace OpenRA
 
 				// Create a new map package
 				// TODO: Add other files (custom assets) to the entries list
-				container = FileSystem.CreatePackage(Path, int.MaxValue, entries);
+				Container = FileSystem.CreatePackage(Path, int.MaxValue, entries);
 			}
 
 			// Update existing package
-			container.Write(entries);
+			Container.Write(entries);
 		}
 
 		public TileReference<ushort, byte>[,] LoadMapTiles()
 		{
 			var tiles = new TileReference<ushort, byte>[MapSize.X, MapSize.Y];
-			using (var dataStream = container.GetContent("map.bin"))
+			using (var dataStream = Container.GetContent("map.bin"))
 			{
 				if (dataStream.ReadUInt8() != 1)
 					throw new InvalidDataException("Unknown binary map format");
@@ -305,7 +305,7 @@ namespace OpenRA
 		{
 			var resources = new TileReference<byte, byte>[MapSize.X, MapSize.Y];
 
-			using (var dataStream = container.GetContent("map.bin"))
+			using (var dataStream = Container.GetContent("map.bin"))
 			{
 				if (dataStream.ReadUInt8() != 1)
 					throw new InvalidDataException("Unknown binary map format");
@@ -391,8 +391,8 @@ namespace OpenRA
 		{
 			// UID is calculated by taking an SHA1 of the yaml and binary data
 			// Read the relevant data into a buffer
-			var data = container.GetContent("map.yaml").ReadAllBytes()
-				.Concat(container.GetContent("map.bin").ReadAllBytes()).ToArray();
+			var data = Container.GetContent("map.yaml").ReadAllBytes()
+				.Concat(Container.GetContent("map.bin").ReadAllBytes()).ToArray();
 
 			// Take the SHA1
 			using (var csp = SHA1.Create())
