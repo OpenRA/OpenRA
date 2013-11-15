@@ -1086,7 +1086,6 @@ Weapons:
 			Arm: 2
 			High: true
 			Shadow: false
-			Proximity: true
 			Trail: smokey
 			ContrailLength: 150
 			Inaccuracy: 20
@@ -1208,7 +1207,6 @@ Weapons:
 			Arm: 10
 			High: true
 			Shadow: false
-			Proximity: true
 			Trail: smokey
 			Inaccuracy: 10
 			Image: V2

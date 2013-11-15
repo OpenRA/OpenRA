@@ -28,7 +28,6 @@ Bazooka:
 		Speed: 25
 		Arm: 2
 		Shadow: yes
-		Proximity: true
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: RPG
@@ -102,7 +101,6 @@ Slung:
 		High: true
 		Shadow: yes
 		Angle: .15
-		Proximity: true
 		Inaccuracy: 12
 		Image: MISSILE
 	Warhead:
@@ -174,7 +172,6 @@ QuadRockets:
 	Projectile: Missile
 		Arm: 0
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 3
 		Image: RPG
 		ROT: 10
@@ -229,7 +226,6 @@ TowerMissile:
 		Arm: 0
 		High: yes
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 12
 		Image: MISSILE2
 		ROT: 10
