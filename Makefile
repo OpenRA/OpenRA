@@ -48,8 +48,10 @@ prefix ?= /usr/local
 datarootdir ?= $(prefix)/share
 datadir ?= $(datarootdir)
 bindir ?= $(prefix)/bin
+libexecdir ?= $(prefix)/lib
 BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
-DATA_INSTALL_DIR = $(DESTDIR)$(datadir)/openra
+# TODO: separate data and binaries properly
+DATA_INSTALL_DIR = $(DESTDIR)$(libexecdir)/openra
 
 # install tools
 RM = rm

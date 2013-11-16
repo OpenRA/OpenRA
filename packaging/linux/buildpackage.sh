@@ -20,7 +20,7 @@ cd ../..
 make install-all prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
 # Launch scripts (executed by Desura)
-cp *.sh "$PWD/packaging/linux/$ROOTDIR/usr/share/openra/" || exit 3
+cp *.sh "$PWD/packaging/linux/$ROOTDIR/usr/lib/openra/" || exit 3
 
 # Icons and .desktop files
 make install-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
