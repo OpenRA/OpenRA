@@ -47,10 +47,6 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.perspectivev3
 OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 *.resources
 
-# KDE
-*.kate-swp
-*.directory
-
 # auto-generated documentation
 DOCUMENTATION.md
 *.html
