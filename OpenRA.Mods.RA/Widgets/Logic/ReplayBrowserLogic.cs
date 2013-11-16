@@ -28,10 +28,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			var rl = panel.Get<ScrollPanelWidget>("REPLAY_LIST");
-
-			var dir = new[] { Platform.SupportDir, "Replays", WidgetUtils.ActiveModId(), WidgetUtils.ActiveModVersion() }.Aggregate(Path.Combine);
-
 			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
+
+			var mod = Game.modData.Manifest.Mod;
+			var dir = new[] { Platform.SupportDir, "Replays", mod.Id, mod.Version }.Aggregate(Path.Combine);
 
 			rl.RemoveChildren();
 			if (Directory.Exists(dir))

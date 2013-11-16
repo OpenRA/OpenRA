@@ -176,12 +176,12 @@ namespace OpenRA.Utility
 
 		public static void ConvertTmpToPng(string[] args)
 		{
-			var mods = args[1].Split(',');
+			var mod = args[1];
 			var theater = args[2];
 			var templateNames = args.Skip(3);
 			var shadowIndex = new int[] { 3, 4 };
 
-			var manifest = new Manifest(mods);
+			var manifest = new Manifest(mod);
 			FileSystem.LoadFromManifest(manifest);
 
 			var tileset = manifest.TileSets.Select(a => new TileSet(a))
@@ -225,10 +225,10 @@ namespace OpenRA.Utility
 
 		public static void ExtractFiles(string[] args)
 		{
-			var mods = args[1].Split(',');
+			var mod = args[1];
 			var files = args.Skip(2);
 
-			var manifest = new Manifest(mods);
+			var manifest = new Manifest(mod);
 			FileSystem.LoadFromManifest(manifest);
 
 			foreach (var f in files)

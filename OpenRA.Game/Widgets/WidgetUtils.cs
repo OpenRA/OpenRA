@@ -225,24 +225,6 @@ namespace OpenRA.Widgets
 
 		public static Action Once( Action a ) { return () => { if (a != null) { a(); a = null; } }; }
 
-		public static string ActiveModVersion()
-		{
-			var mod = Game.modData.Manifest.Mods[0];
-			return Mod.AllMods[mod].Version;
-		}
-
-		public static string ActiveModTitle()
-		{
-			var mod = Game.modData.Manifest.Mods[0];
-			return Mod.AllMods[mod].Title;
-		}
-
-		public static string ActiveModId()
-		{
-			var mod = Game.modData.Manifest.Mods[0];
-			return Mod.AllMods[mod].Id;
-		}
-
 		public static string ChooseInitialMap(string map)
 		{
 			var availableMaps = Game.modData.AvailableMaps;

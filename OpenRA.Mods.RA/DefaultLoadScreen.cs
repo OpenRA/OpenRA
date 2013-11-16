@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		Sprite stripe, logo;
 		string[] messages;
 
-		public void Init(Dictionary<string, string> info)
+		public void Init(Manifest m, Dictionary<string, string> info)
 		{
 			this.info = info;
 

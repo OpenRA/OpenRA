@@ -99,14 +99,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
 			PopulateAssetList();
 
-			var palette = (WidgetUtils.ActiveModId() == "d2k") ? "d2k.pal" : "egopal.pal";
+			// TODO: Horrible hack
+			var modID = Game.modData.Manifest.Mod.Id;
+			var palette = (modID == "d2k") ? "d2k.pal" : "egopal.pal";
 
 			panel.Get<ButtonWidget>("EXPORT_BUTTON").OnClick = () =>
 			{
 				var ExtractGameFiles = new string[][]
 				{
-					new string[] {"--extract", WidgetUtils.ActiveModId(), palette, "--userdir"},
-					new string[] {"--extract", WidgetUtils.ActiveModId(), "{0}.shp".F(spriteImage.Image), "--userdir"},
+					new string[] {"--extract", modID, palette, "--userdir"},
+					new string[] {"--extract", modID, "{0}.shp".F(spriteImage.Image), "--userdir"},
 				};
 				
 				var ExportToPng = new string[][]
@@ -131,11 +133,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var ExtractGameFilesList = new List<string[]>();
 				var ExportToPngList = new List<string[]>();
 
-				ExtractGameFilesList.Add(new string[] { "--extract", WidgetUtils.ActiveModId(), palette, "--userdir"} );
+				ExtractGameFilesList.Add(new string[] { "--extract", modID, palette, "--userdir"} );
 
 				foreach (var shp in AvailableShps)
 				{
-					ExtractGameFilesList.Add(new string[] { "--extract", WidgetUtils.ActiveModId(), shp, "--userdir" } );
+					ExtractGameFilesList.Add(new string[] { "--extract", modID, shp, "--userdir" } );
 					ExportToPngList.Add(new string[] { "--png", Platform.SupportDir+shp, Platform.SupportDir+palette } );
 					Console.WriteLine(Platform.SupportDir+shp);
 				}
@@ -148,7 +150,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					{ "ExtractGameFiles", ExtractGameFiles },
 					{ "ExportToPng", ExportToPng },
-					{ "ImportFromPng", ImportFromPng}
+					{ "ImportFromPng", ImportFromPng }
 				};
 				
 				Ui.OpenWindow("CONVERT_ASSETS_PANEL", args);

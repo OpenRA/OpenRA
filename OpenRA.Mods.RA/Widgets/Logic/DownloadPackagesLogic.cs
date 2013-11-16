@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			// Save the package to a temp file
 			var file = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-			var dest = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mods[0] }.Aggregate(Path.Combine);
+			var dest = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
 
 			Action<DownloadProgressChangedEventArgs> onDownloadProgress = i =>
 			{

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				{
 					try
 					{
-						var path = new string[] { Platform.SupportDir, "Content", WidgetUtils.ActiveModId() }.Aggregate(Path.Combine);
+						var path = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
 						FileSystem.Mount(Path.Combine(path, "scores.mix"));
 						FileSystem.Mount(Path.Combine(path, "transit.mix"));
 

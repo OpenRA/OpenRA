@@ -47,9 +47,9 @@ namespace OpenRA
 		{
 			Log.AddChannel("exception", "exception.log");
 
-			if (Game.CurrentMods != null)
+			if (Game.modData != null)
 			{
-				var mod = Game.CurrentMods.First().Value;
+				var mod = Game.modData.Manifest.Mod;
 				Log.Write("exception", "{0} Mod at Version {1}", mod.Title, mod.Version);
 			}
 

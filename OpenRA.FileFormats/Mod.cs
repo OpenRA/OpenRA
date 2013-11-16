@@ -16,21 +16,20 @@ namespace OpenRA.FileFormats
 {
 	public class Mod
 	{
+		public static readonly Dictionary<string, Mod> AllMods = ValidateMods(Directory.GetDirectories("mods").Select(x => x.Substring(5)).ToArray());
+
 		public string Id;
 		public string Title;
 		public string Description;
 		public string Version;
 		public string Author;
-		public string Requires;
-
-		public static readonly Dictionary<string, Mod> AllMods = ValidateMods(Directory.GetDirectories("mods").Select(x => x.Substring(5)).ToArray());
 
 		public static Dictionary<string, Mod> ValidateMods(string[] mods)
 		{
 			var ret = new Dictionary<string, Mod>();
 			foreach (var m in mods)
 			{
-				var yamlPath = new[] { "mods", m, "mod.yaml" }.Aggregate( Path.Combine );
+				var yamlPath = new[] { "mods", m, "mod.yaml" }.Aggregate(Path.Combine);
 				if (!File.Exists(yamlPath))
 					continue;
 
@@ -43,14 +42,8 @@ namespace OpenRA.FileFormats
 
 				ret.Add(m, mod);
 			}
-			return ret;
-		}
 
-		public string[] WithPrerequisites()
-		{
-			return Id.Iterate(m => AllMods[m].Requires)
-				.TakeWhile(m => m != null)
-				.ToArray();
+			return ret;
 		}
 	}
 }

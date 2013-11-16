@@ -50,13 +50,13 @@ namespace OpenRA
 			return dirsWithMaps.Concat(Directory.GetFiles(dir, "*.oramap"));
 		}
 
-		public ModData(params string[] mods)
+		public ModData(string mod)
 		{
 			Languages = new string[0];
-			Manifest = new Manifest(mods);
+			Manifest = new Manifest(mod);
 			ObjectCreator = new ObjectCreator(Manifest);
 			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
-			LoadScreen.Init(Manifest.LoadScreen.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value));
+			LoadScreen.Init(Manifest, Manifest.LoadScreen.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value));
 			LoadScreen.Display();
 			WidgetLoader = new WidgetLoader(this);
 
@@ -149,9 +149,7 @@ namespace OpenRA
 		Dictionary<string, Map> FindMaps()
 		{
 			var paths = Manifest.MapFolders.SelectMany(f => FindMapsIn(f));
-
 			var ret = new Dictionary<string, Map>();
-
 			foreach (var path in paths)
 			{
 				try
@@ -177,7 +175,7 @@ namespace OpenRA
 
 	public interface ILoadScreen
 	{
-		void Init(Dictionary<string, string> info);
+		void Init(Manifest m, Dictionary<string, string> info);
 		void Display();
 		void StartGame();
 	}

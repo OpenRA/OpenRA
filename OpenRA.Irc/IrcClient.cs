@@ -70,9 +70,7 @@ namespace OpenRA.Irc
 				var command = split[0];
 				if (command.EqualsIC("VERSION"))
 				{
-					var mod = Game.CurrentMods.Values.FirstOrDefault();
-					if (mod == null)
-						return;
+					var mod = Game.modData.Manifest.Mod;
 					Instance.CtcpRespond(l.Prefix.Nickname, command, "{0}: {1}".F(mod.Title, mod.Version));
 				}
 			};

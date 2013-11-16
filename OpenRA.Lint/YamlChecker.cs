@@ -35,7 +35,7 @@ namespace OpenRA.Lint
 			try
 			{
 				var options = args.Where(a => a.StartsWith("-"));
-				var mods = args.Where(a => !options.Contains(a)).ToArray();
+				var mod = args.Where(a => !options.Contains(a)).First();
 
 				var verbose = options.Contains("-v") || options.Contains("--verbose");
 
@@ -44,7 +44,7 @@ namespace OpenRA.Lint
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 
 				AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-				Game.modData = new ModData(mods);
+				Game.modData = new ModData(mod);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 
 				foreach (var customPassType in Game.modData.ObjectCreator

@@ -50,6 +50,7 @@ namespace OpenRA.Mods.RA.Server
 			lastPing = Environment.TickCount;
 			isBusy = true;
 
+			var mod = server.ModData.Manifest.Mod;
 			Action a = () =>
 				{
 					try
@@ -60,14 +61,13 @@ namespace OpenRA.Mods.RA.Server
 						using (var wc = new WebClient())
 						{
 							wc.Proxy = null;
-
-							 wc.DownloadData(
+							wc.DownloadData(
 								server.Settings.MasterServer + url.F(
 								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
 								(int)server.State,
 								server.LobbyInfo.Clients.Where(c1 => c1.Bot == null).Count(),
 								server.LobbyInfo.Clients.Where(c1 => c1.Bot != null).Count(),
-								Game.CurrentMods.Select(f => "{0}@{1}".F(f.Key, f.Value.Version)).JoinWith(","),
+								"{0}@{1}".F(mod.Id, mod.Version),
 								server.LobbyInfo.GlobalSettings.Map,
 								server.Map.PlayerCount));
 
