@@ -19,6 +19,8 @@ mods/*/*.dll
 *.pdb
 *.mdb
 *.exe
+/*.so
+/*.dylib
 
 # backup files by various editors
 *~
