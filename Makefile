@@ -77,7 +77,7 @@ fileformats_SRCS	:= $(shell find OpenRA.FileFormats/ -iname '*.cs')
 fileformats_TARGET	= OpenRA.FileFormats.dll
 fileformats_KIND	= library
 fileformats_LIBS	= $(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll
-PROGRAMS 			= fileformats
+PROGRAMS 		= fileformats
 fileformats: $(fileformats_TARGET)
 
 geoip_SRCS		:= $(shell find GeoIP/ -iname '*.cs')
@@ -134,13 +134,13 @@ rgl_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
 rgl_LIBS			= $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll $(rgl_DEPS)
 
 rsdl2_SRCS			:= $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
-rsdl2_TARGET		= OpenRA.Renderer.Sdl2.dll
+rsdl2_TARGET			= OpenRA.Renderer.Sdl2.dll
 rsdl2_KIND			= library
 rsdl2_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET) $(rgl_TARGET)
 rsdl2_LIBS			= $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/SDL2\#.dll $(rsdl2_DEPS)
 
 rnull_SRCS			:= $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
-rnull_TARGET		= OpenRA.Renderer.Null.dll
+rnull_TARGET			= OpenRA.Renderer.Null.dll
 rnull_KIND			= library
 rnull_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 rnull_LIBS			= $(COMMON_LIBS) $(rnull_DEPS)
@@ -197,7 +197,7 @@ editor_TARGET			= OpenRA.Editor.exe
 editor_KIND			= winexe
 editor_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 editor_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll System.Data.dll $(editor_DEPS)
-editor_EXTRA		= -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
+editor_EXTRA			= -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
 editor_FLAGS		= -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
 
 PROGRAMS 			+= editor
@@ -233,7 +233,7 @@ tsbuild_KIND		= winexe
 tsbuild_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 tsbuild_LIBS		= $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
 tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.FormBuilder.resources -resource:OpenRA.TilesetBuilder.FormNew.resources -resource:OpenRA.TilesetBuilder.Surface.resources
-PROGRAMS 			+= tsbuild
+PROGRAMS 		+= tsbuild
 OpenRA.TilesetBuilder.FormBuilder.resources:
 	resgen2 OpenRA.TilesetBuilder/FormBuilder.resx OpenRA.TilesetBuilder.FormBuilder.resources 1> /dev/null
 OpenRA.TilesetBuilder.FormNew.resources:
@@ -251,7 +251,7 @@ utility_TARGET		= OpenRA.Utility.exe
 utility_KIND		= exe
 utility_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 utility_LIBS		= $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
-PROGRAMS 			+= utility
+PROGRAMS		+= utility
 utility: $(utility_TARGET)
 
 
