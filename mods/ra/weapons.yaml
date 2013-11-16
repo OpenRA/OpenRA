@@ -126,7 +126,6 @@ Maverick:
 		Arm: 2
 		High: true
 		Shadow: false
-		Proximity: true
 		ContrailLength: 10
 		Inaccuracy: 12
 		Image: DRAGON
@@ -284,7 +283,6 @@ Dragon:
 		Arm: 2
 		High: true
 		Shadow: false
-		Proximity: true
 		Trail: smokey
 		ContrailLength: 10
 		Inaccuracy: 3
@@ -318,7 +316,6 @@ HellfireAG:
 		Arm: 2
 		High: true
 		Shadow: false
-		Proximity: true
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
@@ -351,7 +348,6 @@ HellfireAA:
 		Arm: 2
 		High: true
 		Shadow: false
-		Proximity: true
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
@@ -518,7 +514,6 @@ MammothTusk:
 		Arm: 2
 		High: true
 		Shadow: false
-		Proximity: true
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
@@ -688,7 +683,6 @@ Nike:
 		Arm: 3
 		High: true
 		Shadow: false
-		Proximity: true
 		ContrailLength: 10
 		Image: MISSILE
 		ROT: 25
@@ -717,7 +711,6 @@ RedEye:
 		Arm: 3
 		High: true
 		Shadow: false
-		Proximity: true
 		ContrailLength: 10
 		Image: MISSILE
 		ROT: 20
@@ -801,7 +794,6 @@ Stinger:
 		Arm: 3
 		High: true
 		Shadow: false
-		Proximity: true
 		ContrailLength: 10
 		Image: DRAGON
 		ROT: 20
@@ -1277,7 +1269,6 @@ ChronoTusk:
 		Arm: 2
 		High: true
 		Shadow: false
-		Proximity: true
 		Trail: smokey
 		ContrailLength: 10
 		Inaccuracy: 3

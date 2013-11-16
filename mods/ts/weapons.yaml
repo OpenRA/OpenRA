@@ -47,7 +47,6 @@ Bazooka:
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 8
@@ -74,7 +73,6 @@ MultiCluster:
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 8
@@ -256,7 +254,6 @@ HoverMissile:
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 8
@@ -307,7 +304,6 @@ MammothTusk:
 		Arm: 0
 		High: yes
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 10
@@ -436,7 +432,6 @@ BikeMissile:
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 8
@@ -517,7 +512,6 @@ Dragon:
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 8
@@ -590,7 +584,6 @@ Hellfire:
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 8
@@ -639,7 +632,6 @@ Proton:
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 3
 		Image: TORPEDO
 		ROT: 1

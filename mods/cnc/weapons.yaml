@@ -225,7 +225,6 @@ Rockets:
 		Arm: 0
 		High: yes
 		Shadow: no
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 15
@@ -258,7 +257,6 @@ BikeRockets:
 		Arm: 0
 		High: yes
 		Shadow: no
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 10
@@ -291,7 +289,6 @@ OrcaAGMissiles:
 		Arm: 0
 		High: yes
 		Shadow: no
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 10
@@ -323,7 +320,6 @@ OrcaAAMissiles:
 		Arm: 0
 		High: yes
 		Shadow: no
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 10
@@ -541,7 +537,6 @@ MammothMissiles:
 		Arm: 0
 		High: yes
 		Shadow: no
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 10
@@ -605,7 +600,6 @@ MammothMissiles:
 		Arm: 0
 		High: yes
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 5
 		Image: DRAGON
 		ROT: 10
@@ -680,7 +674,6 @@ BoatMissile:
 		Arm: 0
 		High: yes
 		Shadow: no
-		Proximity: yes
 		Inaccuracy: 5
 		Image: DRAGON
 		ROT: 10
@@ -712,7 +705,6 @@ TowerMissle:
 		Arm: 0
 		High: yes
 		Shadow: no
-		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 20
@@ -812,7 +804,6 @@ SAMMissile:
 		Arm: 0
 		High: yes
 		Shadow: no
-		Proximity: yes
 		Image: MISSILE
 		ROT: 20
 		Speed: 50
@@ -840,7 +831,6 @@ HonestJohn:
 		Arm: 10
 		High: yes
 		Shadow: yes
-		Proximity: yes
 		Inaccuracy: 5
 		Image: patriot
 		Trail: smokey
