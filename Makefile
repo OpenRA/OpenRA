@@ -371,7 +371,7 @@ install-tools: tools
 	@echo "#!/bin/sh" 				>  openra-editor
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra-editor
 	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' 	>> openra-editor
-	@echo 'DATADIR="$${ROOTDIR}/'"$(datadir)"'"'	>> openra-editor
+	@echo 'DATADIR="$${ROOTDIR}'"$(datadir)"'"'	>> openra-editor
 	@echo 'cd "$${DATADIR}/openra"'			>> openra-editor
 	@echo 'exec mono OpenRA.Editor.exe "$$@"'	>> openra-editor
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
