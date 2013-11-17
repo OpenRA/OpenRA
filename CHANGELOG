@@ -102,6 +102,7 @@ NEW:
 		Added InvalidTargets property to weapons.
 		Added modifier support for build palette hotkeys.
 		The Requires: option for inheriting from a parent mod has been removed. Mods can directly reference the parent mod files instead.
+		Icons are now defined in Sequences not Rules.
 
 20130915:
 	All mods:
