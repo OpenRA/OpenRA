@@ -28,8 +28,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollPanelWidget assetList;
 		ScrollItemWidget template;
 
-		IFolder AssetSource = null;
-		List<string> AvailableShps = new List<string>();
+		IFolder assetSource = null;
+		List<string> availableShps = new List<string>();
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
@@ -40,24 +40,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			sourceDropdown.OnMouseDown = _ => ShowSourceDropdown(sourceDropdown);
 			sourceDropdown.GetText = () =>
 			{
-				var name = AssetSource != null ? AssetSource.Name : "All Packages";
+				var name = assetSource != null ? assetSource.Name : "All Packages";
 				if (name.Length > 15)
-					name = "..."+name.Substring(name.Length - 15);
+					name = "..." + name.Substring(name.Length - 15);
 
 				return name;
 			};
 
-			AssetSource = FileSystem.MountedFolders.First();
+			assetSource = FileSystem.MountedFolders.First();
 
 			spriteImage = panel.Get<ShpImageWidget>("SPRITE");
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
-			filenameInput.Text = spriteImage.Image+".shp";
+			filenameInput.Text = spriteImage.Image + ".shp";
 			filenameInput.OnEnterKey = () => LoadAsset(filenameInput.Text);
 
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
 			frameSlider.MaximumValue = (float)spriteImage.FrameCount;
-			frameSlider.Ticks = spriteImage.FrameCount+1;
+			frameSlider.Ticks = spriteImage.FrameCount + 1;
 			frameSlider.IsVisible = () => spriteImage.FrameCount > 0;
 			frameSlider.OnChange += x => { spriteImage.Frame = (int)Math.Round(x); };
 			frameSlider.GetValue = () => spriteImage.Frame;
@@ -108,13 +108,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var ExtractGameFiles = new string[][]
 				{
-					new string[] {"--extract", modID, palette, "--userdir"},
-					new string[] {"--extract", modID, "{0}.shp".F(spriteImage.Image), "--userdir"},
+					new string[] { "--extract", modID, palette, "--userdir" },
+					new string[] { "--extract", modID, "{0}.shp".F(spriteImage.Image), "--userdir" },
 				};
-				
+
 				var ExportToPng = new string[][]
 				{
-					new string[] {"--png", Platform.SupportDir+"{0}.shp".F(spriteImage.Image), Platform.SupportDir+palette},
+					new string[] { "--png", Platform.SupportDir + "{0}.shp".F(spriteImage.Image), Platform.SupportDir + palette },
 				};
 
 				var ImportFromPng = new string[][] { };
@@ -123,9 +123,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					{ "ExtractGameFiles", ExtractGameFiles },
 					{ "ExportToPng", ExportToPng },
-					{ "ImportFromPng", ImportFromPng}
+					{ "ImportFromPng", ImportFromPng }
 				};
-				
+
 				Ui.OpenWindow("CONVERT_ASSETS_PANEL", args);
 			};
 
@@ -134,13 +134,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var ExtractGameFilesList = new List<string[]>();
 				var ExportToPngList = new List<string[]>();
 
-				ExtractGameFilesList.Add(new string[] { "--extract", modID, palette, "--userdir"} );
+				ExtractGameFilesList.Add(new string[] { "--extract", modID, palette, "--userdir" });
 
-				foreach (var shp in AvailableShps)
+				foreach (var shp in availableShps)
 				{
-					ExtractGameFilesList.Add(new string[] { "--extract", modID, shp, "--userdir" } );
-					ExportToPngList.Add(new string[] { "--png", Platform.SupportDir+shp, Platform.SupportDir+palette } );
-					Console.WriteLine(Platform.SupportDir+shp);
+					ExtractGameFilesList.Add(new string[] { "--extract", modID, shp, "--userdir" });
+					ExportToPngList.Add(new string[] { "--png", Platform.SupportDir + shp, Platform.SupportDir + palette });
+					Console.WriteLine(Platform.SupportDir + shp);
 				}
 
 				var ExtractGameFiles = ExtractGameFilesList.ToArray();
@@ -153,10 +153,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{ "ExportToPng", ExportToPng },
 					{ "ImportFromPng", ImportFromPng }
 				};
-				
+
 				Ui.OpenWindow("CONVERT_ASSETS_PANEL", args);
 			};
-
 
 			panel.Get<ButtonWidget>("IMPORT_BUTTON").OnClick = () =>
 			{
@@ -167,16 +166,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var ExportToPng = new string[][] { };
 				var ImportFromPng = new string[][]
 				{
-					new string[] {"--shp", Platform.SupportDir+imageFilename.Text, imageSizeInput.Text},
+					new string[] { "--shp", Platform.SupportDir + imageFilename.Text, imageSizeInput.Text },
 				};
 
 				var args = new WidgetArgs()
 				{
 					{ "ExtractGameFiles", ExtractGameFiles },
 					{ "ExportToPng", ExportToPng },
-					{ "ImportFromPng", ImportFromPng}
+					{ "ImportFromPng", ImportFromPng }
 				};
-				
+
 				Ui.OpenWindow("CONVERT_ASSETS_PANEL", args);
 			};
 
@@ -202,7 +201,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			spriteImage.Frame = 0;
 			spriteImage.Image = sprite;
 			frameSlider.MaximumValue = (float)spriteImage.FrameCount;
-			frameSlider.Ticks = spriteImage.FrameCount+1;
+			frameSlider.Ticks = spriteImage.FrameCount + 1;
 			return true;
 		}
 
@@ -211,14 +210,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Func<IFolder, ScrollItemWidget, ScrollItemWidget> setupItem = (source, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => AssetSource == source,
-				                                  () => { AssetSource = source;	PopulateAssetList(); });
+				                                  () => assetSource == source,
+				                                  () => { assetSource = source;	PopulateAssetList(); });
 				item.Get<LabelWidget>("LABEL").GetText = () => source != null ? source.Name : "All Packages";
 				return item;
 			};
 
 			// TODO: Re-enable "All Packages" once list generation is done in a background thread
-			//var sources = new[] { (IFolder)null }.Concat(FileSystem.MountedFolders);
+			///var sources = new[] { (IFolder)null }.Concat(FileSystem.MountedFolders);
 
 			var sources = FileSystem.MountedFolders;
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 250, sources, setupItem);
@@ -228,22 +227,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void PopulateAssetList()
 		{
 			assetList.RemoveChildren();
-			AvailableShps.Clear();
+			availableShps.Clear();
 
 			// TODO: This is too slow to run in the main thread
-			//var files = AssetSource != null ? AssetSource.AllFileNames() :
-			//	FileSystem.MountedFolders.SelectMany(f => f.AllFileNames());
+			///var files = AssetSource != null ? AssetSource.AllFileNames() :
+			///	FileSystem.MountedFolders.SelectMany(f => f.AllFileNames());
 
-			if (AssetSource == null)
+			if (assetSource == null)
 				return;
 
-			var files = AssetSource.AllFileNames();
+			var files = assetSource.AllFileNames();
 			foreach (var file in files)
 			{
 				if (file.EndsWith(".shp"))
 				{
 					AddAsset(assetList, file, template);
-					AvailableShps.Add(file);
+					availableShps.Add(file);
 				}
 			}
 		}
