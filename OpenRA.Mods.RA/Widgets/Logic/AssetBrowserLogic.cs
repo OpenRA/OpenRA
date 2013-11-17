@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -52,7 +53,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			spriteImage = panel.Get<ShpImageWidget>("SPRITE");
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
-			filenameInput.Text = spriteImage.Image + ".shp";
 			filenameInput.OnEnterKey = () => LoadAsset(filenameInput.Text);
 
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
@@ -184,19 +184,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void AddAsset(ScrollPanelWidget list, string filepath, ScrollItemWidget template)
 		{
-			var sprite = Path.GetFileNameWithoutExtension(filepath);
+			var r8 = filepath.EndsWith(".r8", true, CultureInfo.InvariantCulture);
+			var filename =  Path.GetFileName(filepath);
+			var sprite = r8 ? filename : Path.GetFileNameWithoutExtension(filepath);
 			var item = ScrollItemWidget.Setup(template,
 			                                  () => spriteImage.Image == sprite,
-			                                  () => LoadAsset(sprite));
+			                                  () => {filenameInput.Text = filename; LoadAsset(filename); });
 			item.Get<LabelWidget>("TITLE").GetText = () => filepath;
 
 			list.AddChild(item);
 		}
 
-		bool LoadAsset(string sprite)
+		bool LoadAsset(string filename)
 		{
-			if (sprite == null)
+			if (string.IsNullOrEmpty(filename))
 				return false;
+
+			if (!FileSystem.Exists(filename))
+				return false;
+
+			var r8 = filename.EndsWith(".r8", true, CultureInfo.InvariantCulture);
+			var sprite = r8 ? filename : Path.GetFileNameWithoutExtension(filename);
 
 			spriteImage.Frame = 0;
 			spriteImage.Image = sprite;
@@ -220,7 +228,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			///var sources = new[] { (IFolder)null }.Concat(FileSystem.MountedFolders);
 
 			var sources = FileSystem.MountedFolders;
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 250, sources, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, sources, setupItem);
 			return true;
 		}
 
@@ -239,7 +247,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var files = assetSource.AllFileNames();
 			foreach (var file in files)
 			{
-				if (file.EndsWith(".shp"))
+				if (file.EndsWith(".shp", true, CultureInfo.InvariantCulture) || file.EndsWith(".r8", true, CultureInfo.InvariantCulture))
 				{
 					AddAsset(assetList, file, template);
 					availableShps.Add(file);

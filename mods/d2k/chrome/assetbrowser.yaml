@@ -42,6 +42,7 @@ Background@ASSETBROWSER_BG:
 			Y:280
 			Width:140
 			Height:25
+			Text:mouse.r8
 		Button@LOAD_BUTTON:
 			X:40
 			Y:310
@@ -69,7 +70,7 @@ Background@ASSETBROWSER_BG:
 					Y:4
 					Width:246
 					Height:246
-					Image:DATA.R8
+					Image:mouse.r8
 					Palette:colorpicker
 		Label@ACTIONS_TITLE:
 			X:PARENT_RIGHT - 150

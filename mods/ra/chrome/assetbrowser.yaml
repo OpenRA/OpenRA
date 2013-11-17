@@ -42,6 +42,7 @@ Background@ASSETBROWSER_BG:
 			Y:280
 			Width:140
 			Height:25
+			Text: mouse.shp
 		Button@LOAD_BUTTON:
 			X:40
 			Y:310
