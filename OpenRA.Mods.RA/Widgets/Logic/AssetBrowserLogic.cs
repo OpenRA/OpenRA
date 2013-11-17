@@ -58,6 +58,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
 			frameSlider.MaximumValue = (float)spriteImage.FrameCount;
 			frameSlider.Ticks = spriteImage.FrameCount+1;
+			frameSlider.IsVisible = () => spriteImage.FrameCount > 0;
 			frameSlider.OnChange += x => { spriteImage.Frame = (int)Math.Round(x); };
 			frameSlider.GetValue = () => spriteImage.Frame;
 
