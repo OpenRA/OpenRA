@@ -14,6 +14,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		Widget panel;
 
-		ShpImageWidget spriteImage;
+		ShpImageWidget spriteWidget;
 		TextFieldWidget filenameInput;
 		SliderWidget frameSlider;
 		ButtonWidget playButton, pauseButton;
@@ -31,6 +32,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		IFolder assetSource = null;
 		List<string> availableShps = new List<string>();
+
+		PaletteFromFile currentPalette;
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
@@ -51,46 +54,60 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			assetSource = FileSystem.MountedFolders.First();
 
-			spriteImage = panel.Get<ShpImageWidget>("SPRITE");
+			spriteWidget = panel.Get<ShpImageWidget>("SPRITE");
+
+			currentPalette = world.WorldActor.TraitsImplementing<PaletteFromFile>().First(p => p.Name == spriteWidget.Palette);
+
+			var paletteDropDown = panel.Get<DropDownButtonWidget>("PALETTE_SELECTOR");
+			paletteDropDown.OnMouseDown = _ => ShowPaletteDropdown(paletteDropDown, world);
+
+			var colorPreview = panel.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
+			colorPreview.Color = Game.Settings.Player.Color;
+
+			var color = panel.Get<DropDownButtonWidget>("COLOR");
+			color.IsDisabled = () => currentPalette.Name != colorPreview.Palette;
+			color.OnMouseDown = _ => ShowColorDropDown(color, colorPreview, world);
+			var block = panel.Get<ColorBlockWidget>("COLORBLOCK");
+			block.GetColor = () => Game.Settings.Player.Color.RGB;
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
 			filenameInput.OnEnterKey = () => LoadAsset(filenameInput.Text);
 
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
-			frameSlider.MaximumValue = (float)spriteImage.FrameCount;
-			frameSlider.Ticks = spriteImage.FrameCount + 1;
-			frameSlider.IsVisible = () => spriteImage.FrameCount > 0;
-			frameSlider.OnChange += x => { spriteImage.Frame = (int)Math.Round(x); };
-			frameSlider.GetValue = () => spriteImage.Frame;
+			frameSlider.MaximumValue = (float)spriteWidget.FrameCount;
+			frameSlider.Ticks = spriteWidget.FrameCount + 1;
+			frameSlider.IsVisible = () => spriteWidget.FrameCount > 0;
+			frameSlider.OnChange += x => { spriteWidget.Frame = (int)Math.Round(x); };
+			frameSlider.GetValue = () => spriteWidget.Frame;
 
-			panel.Get<LabelWidget>("FRAME_COUNT").GetText = () => "{0}/{1}".F(spriteImage.Frame, spriteImage.FrameCount);
+			panel.Get<LabelWidget>("FRAME_COUNT").GetText = () => "{0}/{1}".F(spriteWidget.Frame, spriteWidget.FrameCount);
 
 			playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = () =>
 			{
-				spriteImage.LoopAnimation = true;
+				spriteWidget.LoopAnimation = true;
 				playButton.Visible = false;
 				pauseButton.Visible = true;
 			};
 			pauseButton = panel.Get<ButtonWidget>("BUTTON_PAUSE");
 			pauseButton.OnClick = () =>
 			{
-				spriteImage.LoopAnimation = false;
+				spriteWidget.LoopAnimation = false;
 				playButton.Visible = true;
 				pauseButton.Visible = false;
 			};
 
 			panel.Get<ButtonWidget>("BUTTON_STOP").OnClick = () =>
 			{
-				spriteImage.LoopAnimation = false;
+				spriteWidget.LoopAnimation = false;
 				frameSlider.Value = 0;
-				spriteImage.Frame = 0;
+				spriteWidget.Frame = 0;
 				playButton.Visible = true;
 				pauseButton.Visible = false;
 			};
 
-			panel.Get<ButtonWidget>("BUTTON_NEXT").OnClick = () => { spriteImage.RenderNextFrame(); };
-			panel.Get<ButtonWidget>("BUTTON_PREV").OnClick = () => { spriteImage.RenderPreviousFrame(); };
+			panel.Get<ButtonWidget>("BUTTON_NEXT").OnClick = () => { spriteWidget.RenderNextFrame(); };
+			panel.Get<ButtonWidget>("BUTTON_PREV").OnClick = () => { spriteWidget.RenderPreviousFrame(); };
 
 			panel.Get<ButtonWidget>("LOAD_BUTTON").OnClick = () =>
 			{
@@ -101,21 +118,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
 			PopulateAssetList();
 
-			// TODO: Horrible hack
 			var modID = Game.modData.Manifest.Mod.Id;
-			var palette = (modID == "d2k") ? "d2k.pal" : "egopal.pal";
 
+			/* TODO: 
+			 * This should not invoke the OpenRA.Utility.exe, but use it's functions directly.
+			 * Does not work with SHP(TS) yet?!
+			 */
 			panel.Get<ButtonWidget>("EXPORT_BUTTON").OnClick = () =>
 			{
 				var ExtractGameFiles = new string[][]
 				{
-					new string[] { "--extract", modID, palette, "--userdir" },
-					new string[] { "--extract", modID, "{0}.shp".F(spriteImage.Image), "--userdir" },
+					new string[] { "--extract", modID, currentPalette.Filename, "--userdir" },
+					new string[] { "--extract", modID, "{0}.shp".F(spriteWidget.Image), "--userdir" },
 				};
 
 				var ExportToPng = new string[][]
 				{
-					new string[] { "--png", Platform.SupportDir + "{0}.shp".F(spriteImage.Image), Platform.SupportDir + palette },
+					new string[] { "--png", Platform.SupportDir + "{0}.shp".F(spriteWidget.Image), Platform.SupportDir + currentPalette.Filename },
 				};
 
 				var ImportFromPng = new string[][] { };
@@ -135,12 +154,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var ExtractGameFilesList = new List<string[]>();
 				var ExportToPngList = new List<string[]>();
 
-				ExtractGameFilesList.Add(new string[] { "--extract", modID, palette, "--userdir" });
+				ExtractGameFilesList.Add(new string[] { "--extract", modID, currentPalette.Filename, "--userdir" });
 
 				foreach (var shp in availableShps)
 				{
 					ExtractGameFilesList.Add(new string[] { "--extract", modID, shp, "--userdir" });
-					ExportToPngList.Add(new string[] { "--png", Platform.SupportDir + shp, Platform.SupportDir + palette });
+					ExportToPngList.Add(new string[] { "--png", Platform.SupportDir + shp, Platform.SupportDir + currentPalette.Filename });
 					Console.WriteLine(Platform.SupportDir + shp);
 				}
 
@@ -189,7 +208,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var filename =  Path.GetFileName(filepath);
 			var sprite = r8 ? filename : Path.GetFileNameWithoutExtension(filepath);
 			var item = ScrollItemWidget.Setup(template,
-			                                  () => spriteImage.Image == sprite,
+			                                  () => spriteWidget.Image == sprite,
 			                                  () => {filenameInput.Text = filename; LoadAsset(filename); });
 			item.Get<LabelWidget>("TITLE").GetText = () => filepath;
 
@@ -207,10 +226,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var r8 = filename.EndsWith(".r8", true, CultureInfo.InvariantCulture);
 			var sprite = r8 ? filename : Path.GetFileNameWithoutExtension(filename);
 
-			spriteImage.Frame = 0;
-			spriteImage.Image = sprite;
-			frameSlider.MaximumValue = (float)spriteImage.FrameCount;
-			frameSlider.Ticks = spriteImage.FrameCount + 1;
+			spriteWidget.Frame = 0;
+			spriteWidget.Image = sprite;
+			frameSlider.MaximumValue = (float)spriteWidget.FrameCount;
+			frameSlider.Ticks = spriteWidget.FrameCount + 1;
 			return true;
 		}
 
@@ -254,6 +273,43 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					availableShps.Add(file);
 				}
 			}
+		}
+		
+		bool ShowPaletteDropdown(DropDownButtonWidget dropdown, World world)
+		{
+			Func<PaletteFromFile, ScrollItemWidget, ScrollItemWidget> setupItem = (palette, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+				                                  () => currentPalette.Name == palette.Name,
+				                                  () => { currentPalette = palette; spriteWidget.Palette = currentPalette.Name; });
+				item.Get<LabelWidget>("LABEL").GetText = () => palette.Name;
+				return item;
+			};
+
+			var palettes = world.WorldActor.TraitsImplementing<PaletteFromFile>();
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, palettes, setupItem);
+			return true;
+		}
+
+		void ShowColorDropDown(DropDownButtonWidget color, ColorPreviewManagerWidget preview, World world)
+		{
+			Action onExit = () =>
+			{
+				Game.Settings.Player.Color = preview.Color;
+				Game.Settings.Save();
+			};
+
+			color.RemovePanel();
+
+			Action<HSLColor> onChange = c => preview.Color = c;
+
+			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
+			{
+				{ "onChange", onChange },
+				{ "initialColor", Game.Settings.Player.Color }
+			});
+
+			color.AttachPanel(colorChooser, onExit);
 		}
 	}
 }

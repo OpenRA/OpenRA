@@ -5,9 +5,10 @@ Background@ASSETBROWSER_BG:
 	Width:700
 	Height:410
 	Children:
+		ColorPreviewManager@COLOR_MANAGER:
 		Label@ASSETBROWSER_TITLE:
 			X:0
-			Y:20
+			Y:10
 			Width:PARENT_RIGHT
 			Height:25
 			Text:Game Asset Viewer & Converter
@@ -51,13 +52,24 @@ Background@ASSETBROWSER_BG:
 			Text:Load
 			Font:Bold
 			Key:return
-		Label@PREVIEW_TITLE:
-			X:320
+		DropDownButton@PALETTE_SELECTOR:
+			X:230
 			Y:45
-			Width:PARENT_RIGHT
+			Width:150
 			Height:25
-			Text:Preview
 			Font:Bold
+			Text:Palette
+		DropDownButton@COLOR:
+			X:380
+			Y:45
+			Width:80
+			Height:25
+			Children:
+				ColorBlock@COLORBLOCK:
+					X:5
+					Y:6
+					Width:PARENT_RIGHT-35
+					Height:PARENT_BOTTOM-12
 		Background@SPRITE_BG:
 			X:220
 			Y:80
@@ -71,7 +83,6 @@ Background@ASSETBROWSER_BG:
 					Width:246
 					Height:246
 					Image:mouse.r8
-					Palette:colorpicker
 		Label@ACTIONS_TITLE:
 			X:PARENT_RIGHT - 150
 			Y:45
