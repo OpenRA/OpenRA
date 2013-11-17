@@ -120,10 +120,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var modID = Game.modData.Manifest.Mod.Id;
 
-			/* TODO: 
-			 * This should not invoke the OpenRA.Utility.exe, but use it's functions directly.
-			 * Does not work with SHP(TS) yet?!
-			 */
+			// TODO: This should not invoke the OpenRA.Utility.exe, but use it's functions directly.
+			// TODO: Does not work with SHP(TS) yet?!
 			panel.Get<ButtonWidget>("EXPORT_BUTTON").OnClick = () =>
 			{
 				var ExtractGameFiles = new string[][]
@@ -245,7 +243,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 
 			// TODO: Re-enable "All Packages" once list generation is done in a background thread
-			///var sources = new[] { (IFolder)null }.Concat(FileSystem.MountedFolders);
+			// var sources = new[] { (IFolder)null }.Concat(FileSystem.MountedFolders);
 
 			var sources = FileSystem.MountedFolders;
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, sources, setupItem);
@@ -258,8 +256,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			availableShps.Clear();
 
 			// TODO: This is too slow to run in the main thread
-			///var files = AssetSource != null ? AssetSource.AllFileNames() :
-			///	FileSystem.MountedFolders.SelectMany(f => f.AllFileNames());
+			// var files = AssetSource != null ? AssetSource.AllFileNames() :
+			// FileSystem.MountedFolders.SelectMany(f => f.AllFileNames());
 
 			if (assetSource == null)
 				return;
