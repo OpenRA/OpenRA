@@ -10,7 +10,7 @@ Background@REPLAYBROWSER_BG:
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Choose Replay
+			Text:@choose-replay@
 			Align:Center
 			Font:Bold
 		ScrollPanel@REPLAY_LIST:
@@ -48,7 +48,7 @@ Background@REPLAYBROWSER_BG:
 					Align:Right
 					Width:70
 					Height:20
-					Text:Map:
+					Text:@map@:
 					Font:Bold
 				Label@MAP_TITLE:
 					X:PARENT_RIGHT - 195
@@ -62,7 +62,7 @@ Background@REPLAYBROWSER_BG:
 					Align:Right
 					Width:70
 					Height:20
-					Text:Duration:
+					Text:@duration@:
 					Font:Bold
 				Label@DURATION:
 					X:PARENT_RIGHT - 195
@@ -76,7 +76,7 @@ Background@REPLAYBROWSER_BG:
 					Align:Right
 					Width:70
 					Height:20
-					Text:Players:
+					Text:@players@:
 					Font:Bold
 				Label@PLAYERS:
 					X:PARENT_RIGHT - 195
@@ -89,7 +89,7 @@ Background@REPLAYBROWSER_BG:
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Text:Watch
+			Text:@watch@
 			Font:Bold
 			Key:return
 		Button@CANCEL_BUTTON:
@@ -97,6 +97,6 @@ Background@REPLAYBROWSER_BG:
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Text:Cancel
+			Text:@cancel@
 			Font:Bold
 			Key:escape

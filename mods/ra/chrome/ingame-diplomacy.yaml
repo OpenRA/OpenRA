@@ -11,7 +11,7 @@ Background@DIPLOMACY:
 			Y:17
 			Width:250
 			Height:20
-			Text:Diplomacy
+			Text:@diplomacy@
 			Align:Center
 			Font:Bold
 		Container@DIPLOMACY_HEADERS:
@@ -25,20 +25,20 @@ Background@DIPLOMACY:
 					Width:160
 					Height:25
 					Font:Bold
-					Text:Player
+					Text:@player@
 				Label@THEIR_STANCE_HEADER:
 					X:210
 					Width:80
 					Height:25
 					Font:Bold
-					Text:Their Stance
+					Text:@their-stance@
 					Align:Center
 				Label@MY_STANCE_HEADER:
 					X:307
 					Width:100
 					Height:25
 					Font:Bold
-					Text:My Stance
+					Text:@my-stance@
 					Align:Center
 		ScrollPanel@DIPLOMACY_PANEL:
 			X:20

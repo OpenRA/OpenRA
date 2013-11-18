@@ -1,0 +1,244 @@
+german:
+# Language Settings DropDownButton
+	english: Englisch
+	german: Deutsch
+	french: Französisch
+
+# First Game Start
+	assets-missing: Installation
+	requires-ra-mix: OpenRA benötigt die Spieledateien des Originals C&C: Alarmstufe Rot.
+	download-or-cd: Die Inhalte können heruntergeladen oder von der US-Installations-CD kopiert werden.
+	download: Runterladen
+	cd: CD-Rip
+	change-mod: Mod wechseln
+	downloading-ra: Lade Alarmstufe Rot Inhalte herunter
+	retry: Erneut
+	from-cd: Installiere von CD
+	no-disk: CD nicht gefunden
+	insert-ra-cd: Bitte eine Red Alert (US) Installations-CD einlegen und erneut klicken.
+
+# Main Menu
+	join-game: Spiel beitreten
+	create-game: Spiel erstellen
+	direct-connect: Direkte Verbindung
+	settings: Einstellungen
+	mods: Mods
+	music: Musik
+	replay-viewer: Wiederholungen
+	credits: Autoren
+	asset-browser: Dateien erkunden
+
+# common buttons:
+	cancel: Abbrechen
+	close: Schließen
+	ok: OK
+	quit: Beenden
+	join: Beitreten
+
+# Direct Connect
+	server-ip: Server-Adresse
+
+# Create Game
+	create-server: Server erstellen
+	game-title: Spielname
+	default-server-name: OpenRA Spiel
+	password: Passwort
+	optional: optional
+	external-port: Externer Port
+	listen-port: Eingehend
+	auto-portforward: UPnP Portweiterleitung
+	advertise: Spiel bekannt machen
+	create: Erstellen
+
+# Connection
+	connection-failed: Verbindung fehlgeschlagen
+	could-not-connect: Konnte zu AAA.BBB.CCC.DDD:EEEE nicht verbinden.
+	connecting: Verbinde
+	connecting-to: Verbinde zu AAA.BBB.CCC.DDD:EEEE...
+	abort: Abbrechen
+
+# Settings
+	general: Allgemein
+	audio: Audio
+	display: Anzeige
+	keys: Tasten
+	debug: Debug
+	player-name: Spielername
+	edge-scroll: Kantenrollen aktivieren
+	scroll-speed: Rollgeschwindigkeit
+	inverse-scroll: Mausklickziehen invertieren
+	teamchat-toggle: Umschalt-Eingabe aktiviert Team-Chat
+	left-click-orders: Links-Klick Befehle
+	show-shellmap: Menükarte anzeigen
+	allow-nat-discovery: Aktiviere UPnP-Autodiscovery
+	sound-volume: Geräusche
+	music-volume: Musik
+	video-volume: Video
+	cash-ticks: Kassenticker
+	extreme: Extrem # TODO: hard-coded
+	map-music: Musik automatisch abspielen
+	audio-device: Audiogerät
+	devices-changes-require-restart: Audioeinstellung wird erst nach einem Neustart angewandt.
+	mode: Modus
+	windowed: Fenster # TODO: hard-coded
+	video-changes-require-restart: Grafikeinstellungen werden erst nach einem Neustart angewandt.
+	pixel-doubling: Pixelverdopplung aktivieren
+	cap-framerate: Feste FPS @ 
+	language: Sprache
+	language-changes-require-restart: Sprachänderungen werden erst nach einem Neustart angewandt.
+	special-hotkeys: Spezielle Tastenkürzel
+	unit-command-hotkeys: Tastenkürzel für Befehle
+	show-perfgraph: Performance Graphen anzeigen
+	show-perftext: Performance Text anzeigen
+	check-unsynced: Sync um nicht-synchronen Code anzeigen
+	bot-debug: Bot-Debug anzeigen
+	verbose-nat: Detailierte UPnP Logs
+	dev-menu: Spielegrafikbrowser anzeigen (benötigt Neustart)
+	fatal-error-dialog: Absturzdialog anzeigen
+
+# Serverbrowser
+	join-server: Server betreten
+	show: Zeige
+	waiting: Warte auf Spieler
+	empty: Leer
+	already-started: Spiel gestartet
+	incompatible-version: Inkompatible Version
+	fetching-games: Spiele abrufen...
+	refresh: Aktualisieren
+
+# IRC
+	global-chat: Globaler Chat
+	nickname: Nickname
+	auto-connect: Automatisch verbinden
+	connect: Verbinden
+
+# Replay Viewer
+	choose-replay: Wiederholung wählen
+	map: Karte
+	duration: Dauer
+	players: Spieler
+	watch: Abspielen
+
+# Music Player
+	track: Track
+	shuffle: Shuffle
+	loop: Loop
+	no-music: Keine Musik installiert
+
+# Mod Switcher
+	select-mod: Mod auswählen
+	title: Titel
+	author: Autor
+	version: Version
+	load-mod: Mod laden
+
+# Map Chooser
+	choose-map: Karte wählen
+	random-map: Zufallskarte
+
+# Lobby
+	admin: Administrator
+	latency: Latenz
+	color: Farbe
+	random: Zufall
+	faction: Fraktion
+	player: Spieler
+	lobby-status: bereit
+	team: Team
+	slot-admin: Slotverwaltung
+	game-options: Spieloptionen
+	change-map: Karte ändern
+	start-game: Spiel starten
+	chat: Chat
+	disconnect: Trennen
+	play-in-this-slot: Diesen Slot auswählen.
+	spectator: Zuschauer
+	spectate: Zuschauen
+	kick-client-text-first-line: Ein temporärer Bann ist möglich, welcher
+	kick-client-text-second-line: den Wiedereintritt ins Spiel verhindert.
+	temp-ban: Temporärer Bann
+	kick: Kick
+	map-options: Kartenoptionen
+	shroud: Schatten
+	fog: Nebel
+	crates: Kisten
+	ally-build-radius: gemeinsamer Bauradius
+	allow-cheats: Entwicklermodus
+	allow-diplomacy: Allianzen
+	starting-cash: Startgeld
+	starting-units: Starteinheiten
+	difficulty: Schwierigkeitsgrad
+
+# Asset Browser
+	asset-viewer-converter: Spielegrafikbetrachter & -konverter
+	folders: Ordner
+	load: Laden
+	preview: Vorschau
+	actions: Aktionen
+	selected-to-png: Ausgewählter zu PNG
+	all-to-png: Alles zu PNG
+	import-from-png: Von PNG importieren
+	extracting-and-converting: Extrahiere und konvertiere Spieledateien
+
+# Ingame
+	options: Optionen
+	resume: Fortfahren
+	surrender: Aufgeben
+	abort-mission: Mission Abbrechen
+	diplomacy: Diplomatie
+	their-stance: Gesinnung
+	my-stance: Angebot
+	cheats: Schummeln
+	objectives: Missionsziele
+	primary-objectives: Primärziel
+	status: Status
+	secondary-objectives: Sekundärziel
+	sell: Verkaufen
+	sell-description: Verkauft Gebäude, wobei Baukosten\n anteilig rückerstattet werden.
+	powerdown: Abschalten
+	powerdown-description: Deaktiviert nicht benötigte Gebäude um\n die Energie anderweitig einzusetzten.
+	repair: Reparieren
+	repair-description: Repariert beschädigte Gebäude
+
+# Build (and SupportPower) Palette
+	ready: BEREIT
+	on-hold: GESTOPPT
+	requires: Benötigt {0}
+
+# Observer Stats
+	statistics: Statistiken
+	cash: Bargeld
+	earned/min: Einkommen/Min.
+	power: Energie
+	kills: Abschüsse
+	deaths: Gefallene
+	apm: Aktionen/Min.
+	earned-this-min: Einkommen diese Min.
+	assets: Anlagen
+	earned: Einkommen
+	spent: Ausgaben
+	harvesters: Sammler
+	production: Produktion
+	support-powers: Spezialfähigkeiten
+	control: Kontrolle
+	units-killed: Einheiten zerstört
+	units-lost: Einheiten verloren
+	buildings-killed: Geb. zerstört
+	buildings-lost: Geb. verloren
+	earnings/min: Einkommen pro Minute
+
+# Cheats
+	developer-mode: Entwicklermodus
+	disable-shroud: Schatten entfernen
+	give-exploration: Karte erkunden
+	reset-exploration: Karte verdecken
+	show-unit-paths: Einheitenpfad anzeigen
+	give-cash: + 20.000 $
+	instant-build: Keine Bauzeit
+	instant-charge: Keine Supperwaffenladenzeit
+	build-everything: Alles bauen
+	unlimited-power: Unlimitierte Energie
+	build-anywhere: Überall bauen
+	a-star-cost: A* Wegfindungskosten
+	combat-geometry: Kampfgeometrien anzeigen
+	render-geometry: Renderergeometrien anzeigen

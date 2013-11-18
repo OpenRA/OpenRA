@@ -11,7 +11,7 @@ Background@INGAME_OPTIONS_BG:
 			Y:20
 			Width:250
 			Height:25
-			Text:Options
+			Text:@options@
 			Align:Center
 			Font:Bold
 		Button@RESUME:
@@ -19,7 +19,7 @@ Background@INGAME_OPTIONS_BG:
 			Y:60
 			Width:160
 			Height:25
-			Text:Resume
+			Text:@resume@
 			Font:Bold
 			Key:escape
 		Button@SETTINGS:
@@ -27,26 +27,26 @@ Background@INGAME_OPTIONS_BG:
 			Y:100
 			Width:160
 			Height:25
-			Text:Settings
+			Text:@settings@
 			Font:Bold
 		Button@MUSIC:
 			X:(PARENT_RIGHT - WIDTH)/2
 			Y:140
 			Width:160
 			Height:25
-			Text:Music
+			Text:@music@
 			Font:Bold
 		Button@SURRENDER:
 			X:(PARENT_RIGHT - WIDTH)/2
 			Y:180
 			Width:160
 			Height:25
-			Text:Surrender
+			Text:@surrender@
 			Font:Bold
 		Button@DISCONNECT:
 			X:(PARENT_RIGHT - WIDTH)/2
 			Y:220
 			Width:160
 			Height:25
-			Text:Abort Mission
+			Text:@abort-mission@
 			Font:Bold

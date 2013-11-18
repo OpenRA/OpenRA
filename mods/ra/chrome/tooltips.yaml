@@ -67,7 +67,7 @@ Background@CLIENT_TOOLTIP:
 			Y:4
 			Height:18
 			Font:Bold
-			Text:Game Admin
+			Text:@admin@
 			Align:Center
 		Label@IP:
 			Y:7
@@ -85,7 +85,7 @@ Background@CLIENT_TOOLTIP:
 			Y:31
 			Height:10
 			Font:TinyBold
-			Text:Latency:
+			Text:@latency@:
 		Label@LATENCY:
 			Y:31
 			Height:10

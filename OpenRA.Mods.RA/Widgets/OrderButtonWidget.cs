@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
@@ -20,7 +21,8 @@ namespace OpenRA.Mods.RA.Widgets
 		public Func<bool> Enabled = () => true;
 		public Func<bool> Pressed = () => false;
 
-		public string Image, Description, LongDesc = "";
+		public string Image;
+		[Translate] public string Description, LongDesc = "";
 
 		public Func<string> GetImage, GetDescription, GetLongDesc;
 

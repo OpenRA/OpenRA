@@ -31,7 +31,7 @@ Container@SERVERBROWSER_IRC:
 					Y:PARENT_BOTTOM - 25
 					Width:130
 					Height:25
-					Text:Disconnect
+					Text:@disconnect@
 					Font:Bold
 		Background@IRC_CONNECT_BG:
 			Width:PARENT_RIGHT
@@ -42,12 +42,12 @@ Container@SERVERBROWSER_IRC:
 					Y:PARENT_BOTTOM / 4
 					Width:PARENT_RIGHT
 					Align:Center
-					Text:Global Chat
+					Text:@global-chat@
 					Font:Bold
 				Label@NICKNAME_LABEL:
 					X:200
 					Y:PARENT_BOTTOM / 4 + 35
-					Text:Nickname:
+					Text:@nickname@:
 				TextField@NICKNAME_BOX:
 					X:270
 					Y:PARENT_BOTTOM / 4 + 25
@@ -58,11 +58,11 @@ Container@SERVERBROWSER_IRC:
 					Y:PARENT_BOTTOM / 4 + 75
 					Height:20
 					Width:180
-					Text:Connect Automatically
+					Text:@auto-connect@
 				Button@CONNECT_BUTTON:
 					X:430
 					Y:PARENT_BOTTOM / 4 + 25
 					Width:100
 					Height:25
-					Text:Connect
+					Text:@connect@
 					Font:Bold

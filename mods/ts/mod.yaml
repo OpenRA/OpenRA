@@ -141,7 +141,9 @@ Music:
 Movies:
 
 Translations:
-	mods/ts/languages/english.yaml
+	mods/ra/languages/english.yaml
+	mods/ra/languages/german.yaml
+	mods/ra/languages/french.yaml
 
 LoadScreen: DefaultLoadScreen
 	Image: mods/ts/uibits/loadscreen.png

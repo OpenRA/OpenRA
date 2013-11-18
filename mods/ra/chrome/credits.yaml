@@ -11,7 +11,7 @@ Background@CREDITS_PANEL:
 			Height:25
 			Font:Bold
 			Align:Center
-			Text:Credits
+			Text:@credits@
 		ScrollPanel@CREDITS_DISPLAY:
 			X:15
 			Y:50
@@ -27,7 +27,7 @@ Background@CREDITS_PANEL:
 			Y:PARENT_BOTTOM - 45
 			Width:160
 			Height:25
-			Text:Close
+			Text:@close@
 			Font:Bold
 			Key:escape
 

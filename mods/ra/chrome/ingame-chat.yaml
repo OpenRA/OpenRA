@@ -23,7 +23,7 @@ Container@CHAT_PANEL:
 					Y:PARENT_BOTTOM - HEIGHT
 					Width:50
 					Height:25
-					Text:Team
+					Text:@team@
 					Font:Bold
 				TextField@CHAT_TEXTFIELD:
 					X:55
