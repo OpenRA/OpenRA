@@ -10,7 +10,7 @@ Background@DIRECTCONNECT_BG:
 			Y:20
 			Width:400
 			Height:25
-			Text:Direct Connect
+			Text:@direct-connect@
 			Align:Center
 			Font:Bold
 		Label@ADDRESS_LABEL:
@@ -19,7 +19,7 @@ Background@DIRECTCONNECT_BG:
 			Width:95
 			Height:25
 			Align:Right
-			Text:Server Address:
+			Text:@server-ip@:
 		TextField@IP:
 			X:150
 			Y:60
@@ -37,7 +37,7 @@ Background@DIRECTCONNECT_BG:
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Text:Join
+			Text:@join@
 			Font:Bold
 			Key:return
 		Button@BACK_BUTTON:
@@ -45,6 +45,6 @@ Background@DIRECTCONNECT_BG:
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Text:Cancel
+			Text:@cancel@
 			Font:Bold
-			Key:escape 
+			Key:escape

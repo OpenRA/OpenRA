@@ -14,14 +14,14 @@ Background@MISSION_OBJECTIVES:
 			Height:25
 			Font:Bold
 			Align:Center
-			Text:Objectives
+			Text:@objectives@
 		Label@PRIMARY_OBJECTIVE_HEADER:
 			X:40
 			Y:40
 			Width:300
 			Height:25
 			Font:Bold
-			Text:Primary Objectives
+			Text:@primary-objectives@
 		Label@PRIMARY_STATUS_HEADER:
 			X:350
 			Y:40
@@ -61,14 +61,14 @@ Background@MISSION_OBJECTIVES:
 			Width:300
 			Height:25
 			Font:Bold
-			Text:Secondary Objectives
+			Text:@secondary-objectives@
 		Label@SECONDARY_STATUS_HEADER:
 			X:350
 			Y:275
 			Width:122
 			Height:25
 			Font:Bold
-			Text:Status
+			Text:@status@
 		ScrollPanel@SECONDARY_OBJECTIVES:
 			X:25
 			Y:305

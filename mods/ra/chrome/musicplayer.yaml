@@ -35,7 +35,7 @@ Background@MUSIC_PANEL:
 				Label@TITLE:
 					Width:100
 					Height:25
-					Text:Track
+					Text:@track@
 					Align:Center
 					Font:Bold
 				Label@TYPE:
@@ -128,13 +128,13 @@ Background@MUSIC_PANEL:
 			Y:335
 			Width:85
 			Height:20
-			Text:Shuffle
+			Text:@shuffle@
 		Checkbox@REPEAT:
 			X:PARENT_RIGHT-15-WIDTH
 			Y:335
 			Width:70
 			Height:20
-			Text:Loop
+			Text:@loop@
 		Label@NO_MUSIC_LABEL:
 			X:15
 			Y:147
@@ -143,12 +143,12 @@ Background@MUSIC_PANEL:
 			Font:Bold
 			Align:Center
 			Visible:false
-			Text:No Music Installed
+			Text:@no-music@
 		Button@BACK_BUTTON:
 			X:PARENT_RIGHT - 180
 			Y:PARENT_BOTTOM - 45
 			Width:160
 			Height:25
-			Text:Close
+			Text:@close@
 			Font:Bold
 			Key:escape

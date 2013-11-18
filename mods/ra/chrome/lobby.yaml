@@ -62,28 +62,28 @@ Background@SERVER_LOBBY:
 					X:190
 					Width:80
 					Height:25
-					Text:Color
+					Text:@color@
 					Align:Center
 					Font:Bold
 				Label@LABEL_LOBBY_FACTION:
 					X:280
 					Width:130
 					Height:25
-					Text:Faction
+					Text:@faction@
 					Align:Center
 					Font:Bold
 				Label@LABEL_LOBBY_TEAM:
 					X:420
 					Width:48
 					Height:25
-					Text:Team
+					Text:@team@
 					Align:Center
 					Font:Bold
 				Label@LABEL_LOBBY_STATUS:
 					X:477
 					Width:20
 					Height:25
-					Text:Ready
+					Text:@lobby-status@
 					Align:Left
 					Font:Bold
 		Container@PLAYER_BIN_ROOT:
@@ -93,27 +93,27 @@ Background@SERVER_LOBBY:
 			Width:151
 			Height:25
 			Font:Bold
-			Text:Slot Admin
+			Text:@slot-admin@
 		Button@OPTIONS_BUTTON:
 			X:178
 			Y:PARENT_BOTTOM - 291
 			Width:121
 			Height:25
 			Font:Bold
-			Text:Game Options
+			Text:@game-options@
 		Button@CHANGEMAP_BUTTON:
 			X:306
 			Y:PARENT_BOTTOM - 291
 			Width:121
 			Height:25
-			Text:Change Map
+			Text:@change-map@
 			Font:Bold
 		Button@START_GAME_BUTTON:
 			X:434
 			Y:PARENT_BOTTOM - 291
 			Width:121
 			Height:25
-			Text:Start Game
+			Text:@start-game@
 			Font:Bold
 		ScrollPanel@CHAT_DISPLAY:
 			X:20
@@ -156,12 +156,12 @@ Background@SERVER_LOBBY:
 					Width:45
 					Height:25
 					Align:Right
-					Text:Chat:
+					Text:@chat@:
 		Button@DISCONNECT_BUTTON:
 			X:PARENT_RIGHT - WIDTH - 20
 			Y:PARENT_BOTTOM - HEIGHT - 20
 			Width:120
 			Height:25
-			Text:Disconnect
+			Text:@disconnect@
 			Font:Bold
 		TooltipContainer@TOOLTIP_CONTAINER:

@@ -20,7 +20,7 @@ Background@KICK_CLIENT_DIALOG:
 			Height:25
 			Font:Regular
 			Align:Center
-			Text:You may also apply a temporary ban, preventing
+			Text:@kick-client-text-first-line@
 		Label@TEXTB:
 			X:0
 			Y:85
@@ -28,26 +28,26 @@ Background@KICK_CLIENT_DIALOG:
 			Height:25
 			Font:Regular
 			Align:Center
-			Text:them from joining for the remainder of this game.
+			Text:@kick-client-text-second-line@
 		Checkbox@PREVENT_REJOINING_CHECKBOX:
 			X:(PARENT_RIGHT - WIDTH)/2
 			Y:120
 			Width:150
 			Height:20
-			Text:Temporarily Ban
+			Text:@temp-ban@
 		Button@OK_BUTTON:
 			X:(PARENT_RIGHT - WIDTH)/2 + 75
 			Y:155
 			Width:120
 			Height:25
-			Text:Kick
+			Text:@kick@
 			Font:Bold
 		Button@CANCEL_BUTTON:
 			X:(PARENT_RIGHT - WIDTH)/2 - 75
 			Y:155
 			Width:120
 			Height:25
-			Text:Cancel
+			Text:@cancel@
 			Font:Bold
 
 Background@LOBBY_OPTIONS_BIN:
@@ -64,7 +64,7 @@ Background@LOBBY_OPTIONS_BIN:
 			Height:25
 			Font:Bold
 			Align:Center
-			Text: Map Options
+			Text:@map-options@
 		Container:
 			X:30
 			Y:70
@@ -74,39 +74,39 @@ Background@LOBBY_OPTIONS_BIN:
 				Checkbox@SHROUD_CHECKBOX:
 					Width:230
 					Height:20
-					Text:Shroud
+					Text:@shroud@
 				Checkbox@FOG_CHECKBOX:
 					Y:40
 					Width:230
 					Height:20
-					Text:Fog of War
+					Text:@fog@
 				Checkbox@CRATES_CHECKBOX:
 					X:125
 					Width:230
 					Height:20
-					Text:Crates Appear
+					Text:@crates@
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
 					X:125
 					Y:40
 					Width:230
 					Height:20
-					Text:Build off Ally ConYards
+					Text:@ally-build-radius@
 				Checkbox@ALLOWCHEATS_CHECKBOX:
 					X:320
 					Width:230
 					Height:20
-					Text:Debug Menu
+					Text:@allow-cheats@
 				Checkbox@FRAGILEALLIANCES_CHECKBOX:
 					X:320
 					Y:40
 					Width:220
 					Height:20
-					Text:Diplomacy Changes
+					Text:@allow-diplomacy@
 				Label@STARTINGCASH_DESC:
 					Y:87
 					Width:80
 					Height:25
-					Text:Starting Cash:
+					Text:@starting-cash@:
 					Align:Right
 				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:
 					X:85
@@ -120,7 +120,7 @@ Background@LOBBY_OPTIONS_BIN:
 					Y:87
 					Width:120
 					Height:25
-					Text:Starting Units:
+					Text:@starting-units@:
 					Align:Right
 				DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
 					X:PARENT_RIGHT - WIDTH
@@ -133,7 +133,7 @@ Background@LOBBY_OPTIONS_BIN:
 					Y:122
 					Width:120
 					Height:25
-					Text:Mission Difficulty:
+					Text:@difficulty@:
 					Align:Right
 				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
 					X:PARENT_RIGHT - WIDTH

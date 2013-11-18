@@ -18,7 +18,7 @@ Container@OBSERVER_STATS:
 					Height:25
 					Font:Bold
 					Align:Center
-					Text:Statistics
+					Text:@statistics@
 				DropDownButton@STATS_DROPDOWN:
 					X:PARENT_RIGHT-200
 					Y:15
@@ -37,35 +37,35 @@ Container@OBSERVER_STATS:
 							Width:160
 							Height:25
 							Font:Bold
-							Text:Player
+							Text:@player@
 						Label@CASH_HEADER:
 							X:245
 							Y:40
 							Width:80
 							Height:25
 							Font:Bold
-							Text:Cash
+							Text:@cash@
 						Label@EARNED_MIN_HEADER:
 							X:325
 							Y:40
 							Width:60
 							Height:25
 							Font:Bold
-							Text:Earned/min
+							Text:@earned/min@
 						Label@POWER_HEADER:
 							X:425
 							Y:40
 							Width:80
 							Height:25
 							Font:Bold
-							Text:Power
+							Text:@power@
 						Label@KILLS_HEADER:
 							X:505
 							Y:40
 							Width:40
 							Height:25
 							Font:Bold
-							Text:Kills
+							Text:@kills@
 							Align:Right
 						Label@DEATHS_HEADER:
 							X:565
@@ -73,7 +73,7 @@ Container@OBSERVER_STATS:
 							Width:40
 							Height:25
 							Font:Bold
-							Text:Deaths
+							Text:@deaths@
 							Align:Right
 						Label@ACTIONS_MIN_HEADER:
 							X:665
@@ -81,7 +81,7 @@ Container@OBSERVER_STATS:
 							Width:40
 							Height:25
 							Font:Bold
-							Text:Actions/min
+							Text:@apm@
 							Align:Right
 				Container@ECONOMY_STATS_HEADERS:
 					X:0
@@ -95,56 +95,56 @@ Container@OBSERVER_STATS:
 							Width:160
 							Height:25
 							Font:Bold
-							Text:Player
+							Text:@player@
 						Label@CASH_HEADER:
 							X:245
 							Y:40
 							Width:80
 							Height:25
 							Font:Bold
-							Text:Cash
+							Text:@cash@
 						Label@EARNED_MIN_HEADER:
 							X:325
 							Y:40
 							Width:60
 							Height:25
 							Font:Bold
-							Text:Earned/min
+							Text:@earned/min@
 						Label@EARNED_THIS_MIN_HEADER:
 							X:425
 							Y:40
 							Width:60
 							Height:25
 							Font:Bold
-							Text:Earned this min
+							Text:@earned-this-min@
 						Label@ASSETS_HEADER:
 							X:565
 							Y:40
 							Width:60
 							Height:25
 							Font:Bold
-							Text:Assets
+							Text:@assets@
 						Label@EARNED_HEADER:
 							X:645
 							Y:40
 							Width:60
 							Height:25
 							Font:Bold
-							Text:Earned
+							Text:@earned@
 						Label@SPENT_HEADER:
 							X:725
 							Y:40
 							Width:60
 							Height:25
 							Font:Bold
-							Text:Spent
+							Text:@spent@
 						Label@HARVESTERS_HEADER:
 							X:805
 							Y:40
 							Width:60
 							Height:25
 							Font:Bold
-							Text:Harvesters
+							Text:@harvesters@
 							Align:Right
 				Container@PRODUCTION_STATS_HEADERS:
 					X:0
@@ -158,21 +158,21 @@ Container@OBSERVER_STATS:
 							Width:160
 							Height:25
 							Font:Bold
-							Text:Player
+							Text:@player@
 						Label@PRODUCTION_HEADER:
 							X:245
 							Y:40
 							Width:320
 							Height:25
 							Font:Bold
-							Text:Production
+							Text:@production@
 						Label@SUPPORT_POWERS_HEADER:
 							X:565
 							Y:40
 							Width:320
 							Height:25
 							Font:Bold
-							Text:Support Powers
+							Text:@support-powers@
 				Container@COMBAT_STATS_HEADERS:
 					X:0
 					Y:0
@@ -185,35 +185,35 @@ Container@OBSERVER_STATS:
 							Width:160
 							Height:25
 							Font:Bold
-							Text:Player
+							Text:@player@
 						Label@CONTROL_HEADER:
 							X:245
 							Y:40
 							Width:60
 							Height:25
 							Font:Bold
-							Text:Control
+							Text:@control@
 						Label@KILLS_COST_HEADER:
 							X:325
 							Y:40
 							Width:60
 							Height:25
 							Font:Bold
-							Text:Kills
+							Text:@kills@
 						Label@DEATHS_COST_HEADER:
 							X:405
 							Y:40
 							Width:60
 							Height:25
 							Font:Bold
-							Text:Deaths
+							Text:@deaths@
 						Label@UNITS_KILLED_HEADER:
 							X:505
 							Y:40
 							Width:40
 							Height:25
 							Font:Bold
-							Text:Units Killed
+							Text:@units-killed@
 							Align:Right
 						Label@UNITS_DEAD_HEADER:
 							X:605
@@ -221,7 +221,7 @@ Container@OBSERVER_STATS:
 							Width:40
 							Height:25
 							Font:Bold
-							Text:Units Lost
+							Text:@units-lost@
 							Align:Right
 						Label@BUILDINGS_KILLED_HEADER:
 							X:725
@@ -229,7 +229,7 @@ Container@OBSERVER_STATS:
 							Width:40
 							Height:25
 							Font:Bold
-							Text:Bldg Killed
+							Text:@buildings-killed@
 							Align:Right
 						Label@BUILDINGS_DEAD_HEADER:
 							X:825
@@ -237,7 +237,7 @@ Container@OBSERVER_STATS:
 							Width:40
 							Height:25
 							Font:Bold
-							Text:Bldg Lost
+							Text:@buildings-lost@
 							Align:Right
 				Container@EARNED_THIS_MIN_GRAPH_HEADERS:
 					X:0
@@ -251,7 +251,7 @@ Container@OBSERVER_STATS:
 							Width:PARENT_RIGHT
 							Height:25
 							Font:Bold
-							Text:Earnings received each minute
+							Text:@earnings/min@
 							Align:Center
 				ScrollPanel@PLAYER_STATS_PANEL:
 					X:25

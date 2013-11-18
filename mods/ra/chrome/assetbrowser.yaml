@@ -10,7 +10,7 @@ Background@ASSETBROWSER_BG:
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Game Asset Viewer & Converter
+			Text:@asset-viewer-converter@
 			Align:Center
 			Font:Bold
 		DropDownButton@SOURCE_SELECTOR:
@@ -19,7 +19,7 @@ Background@ASSETBROWSER_BG:
 			Width:160
 			Height:25
 			Font:Bold
-			Text:Folders
+			Text:@folders@
 		ScrollPanel@ASSET_LIST:
 			X:40
 			Y:80
@@ -47,7 +47,7 @@ Background@ASSETBROWSER_BG:
 			Y:310
 			Width:140
 			Height:25
-			Text:Load
+			Text:@load@
 			Font:Bold
 			Key:return
 		Label@PREVIEW_TITLE:
@@ -55,7 +55,7 @@ Background@ASSETBROWSER_BG:
 			Y:45
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Preview
+			Text:@preview@
 			Font:Bold
 		Background@SPRITE_BG:
 			X:220
@@ -76,21 +76,21 @@ Background@ASSETBROWSER_BG:
 			Y:45
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Actions
+			Text:@actions@
 			Font:Bold
 		Button@EXPORT_BUTTON:
 			X:PARENT_RIGHT - 200
 			Y:80
 			Width:160
 			Height:25
-			Text:Selected to PNG
+			Text:@selected-to-png@
 			Font:Bold
 		Button@EXTRACT_BUTTON:
 			X:PARENT_RIGHT - 200
 			Y:115
 			Width:160
 			Height:25
-			Text:Extract all to PNG
+			Text:@all-to-png@
 			Font:Bold
 		TextField@IMAGE_FILENAME_INPUT:
 			X:PARENT_RIGHT - 200
@@ -109,14 +109,14 @@ Background@ASSETBROWSER_BG:
 			Y:PARENT_BOTTOM - 200
 			Width:160
 			Height:25
-			Text:Import from PNG
+			Text:@import-from-png@
 			Font:Bold
 		Button@CLOSE_BUTTON:
 			X:PARENT_RIGHT - 200
 			Y:PARENT_BOTTOM - 115
 			Width:160
 			Height:25
-			Text:Close
+			Text:@close@
 			Font:Bold
 			Key:escape
 		Container@FRAME_SELECTOR:
