@@ -2,6 +2,7 @@ german:
 # Language Settings DropDownButton
 	english: Englisch
 	german: Deutsch
+	french: Französisch
 
 # First Game Start
 	assets-missing: Installation

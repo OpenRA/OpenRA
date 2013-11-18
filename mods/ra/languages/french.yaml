@@ -1,0 +1,245 @@
+french:
+# Language Settings DropDownButton
+	german: Allemand
+	english: Anglais
+	french: Français
+	
+# First Game Start
+# TODO: you currently can't change language here
+	assets-missing: Fichiers du jeu manquants
+	requires-ra-mix: OpenRA requiert le contenu du jeu original d'Alerte Rouge.
+	download-or-cd: Le contenu peut être téléchargé, ou copié depuis le CD d'installation
+	download: Télécharger
+	cd: Utiliser le CD
+	change-mod: Changer de mod
+	downloading-ra: Téléchargement du contenu pour Red Alert
+	retry: Réessayer
+	from-cd: Installer à partir du CD
+	no-disk: Disque non trouvé.
+	insert-ra-cd: Insérez un des CDs d'Alerte Rouge et cliquez sur Réessayer.
+
+# Main Menu
+	join-game: Rejoindre une partie
+	create-game: Créer une partie
+	direct-connect: Connexion directe
+	settings: Paramètres
+	mods: Mods
+	music: Musique
+	replay-viewer: Rediffusions
+	credits: Auteurs
+	asset-browser: Editeur de contenu
+
+# common buttons:
+	cancel: Annuler
+	close: Fermer
+	ok: Ok
+	quit: Quitter
+	join: Rejoindre
+
+# Direct Connect
+	server-ip: Adresse du serveur
+
+# Create Game
+	create-server: Créer un serveur
+	game-title: Nom
+	default-server-name: Partie OpenRA
+	password: Mot de passe
+	optional: facultatif
+	external-port: Port sortant
+	listen-port: Ecouter le port
+	auto-portforward: Redirection de port automatique
+	advertise: Promouvoir la partie
+	create: Créer
+
+# Connection
+	connection-failed: La connexion a échouée
+	could-not-connect: N'a pas pu se connecter à AAA.BBB.CCC.DDD:EEEE
+	connecting: Connection
+	connecting-to: Connexion à AAA.BBB.CCC.DDD:EEEE...
+	abort: Interrompre
+
+# Settings
+	general: Général
+	audio: Audio
+	display: Affichage
+	keys: Touches
+	debug: Débug
+	player-name: Pseudo
+	edge-scroll: Activer le défilement sur les bords
+	scroll-speed: Vitesse de défilement
+	inverse-scroll: Inverser le défilement de la souris
+	teamchat-toggle: Shift+Entrée affiche le tchat d'équipe
+	left-click-orders: Ordres avec clic gauche
+	show-shellmap: Montrer la carte
+	allow-nat-discovery: Activer la découverte de réseau (UPnP)
+	sound-volume: Effets
+	music-volume: Musique
+	video-volume: Vidéo
+	cash-ticks: Son cagnotte
+	extreme: Extrême # TODO: hard-coded
+	map-music: Jouer la musique après le chargement de la carte
+	audio-device: Périphérique
+	devices-changes-require-restart: Les changements de périphériques seront appliqués au prochain lancement.
+	mode: Mode
+	windowed: Fenêtré # TODO: hard-coded
+	video-changes-require-restart: Les changements de résolution seront appliqués au prochain lancement.
+	pixel-doubling: Activer le doublement des pixels (zoom)
+	cap-framerate: Limiter les FPS à
+	language: Langue
+	language-changes-require-restart: Les changements de langue seront appliqués au prochain lancement.
+	special-hotkeys: Raccourcis-clavier spéciaux
+	unit-command-hotkeys: Raccourcis-clavier pour les actions des unités
+	show-perfgraph: Afficher le diagramme des performances
+	show-perftext: Affichage basique des performances (texte)
+	check-unsynced: Vérifier la synchronisation du code
+	bot-debug: Afficher les messages des bots
+	verbose-nat: Logs détaillés du NAT
+	dev-menu: Activer l'éditeur de contenu (requiert un redémarrage)
+	fatal-error-dialog: Afficher la fenêtre de crashs/erreurs
+
+# Serverbrowser
+	join-server: Liste des serveurs
+	show: Voir
+	waiting: Joueurs requis
+	empty: Vide
+	already-started: Déjà commencé
+	incompatible-version: Versions incompatibles
+	fetching-games: Récupération des parties...
+	refresh: Rafraîchir
+
+# IRC
+	global-chat: Tchat global
+	nickname: Pseudo
+	auto-connect: Connexion automatique
+	connect: Connexion
+
+# Replay Viewer
+	choose-replay: Choisir la rediffusion
+	map: Carte
+	duration: Durée
+	players: Joueurs
+	watch: Visionner
+
+# Music Player
+	track: Piste
+	shuffle: Mélanger
+	loop: Boucle
+	no-music: Aucune musique installée
+
+# Mod Switcher
+	select-mod: Sélectionner un mod
+	title: Titre
+	author: Auteur
+	version: Version
+	load-mod: Charger le mod
+
+# Map Chooser
+	choose-map: Choisir une carte
+	random-map: Carte aléatoire
+	
+# Lobby
+	admin: Admin de la partie
+	latency: Latence
+	color: Couleur
+	random: Aléatoire
+	faction: Faction
+	player: Joueur
+	lobby-status: Prêt
+	team: Equipe
+	slot-admin: Admin 
+	game-options: Options du jeu
+	change-map: Carte
+	start-game: Démarrer
+	chat: Tchat
+	disconnect: Déconnecter
+	play-in-this-slot: Utiliser cet emplacement
+	spectator: Spectateur
+	spectate: Regarder
+	kick-client-text-first-line: Vous pouvez aussi utiliser un ban temporaire, ce qui
+	kick-client-text-second-line: les empêchera de revenir pendant cette partie.
+	temp-ban: Ban temporaire
+	kick: Ejecter
+	map-options: Options de carte
+	shroud: Voile
+	fog: Brouillard de guerre
+	crates: Afficher les caisses
+	ally-build-radius: Construire au loin des chantiers de construction Alliés
+	allow-cheats: Menu Débug
+	allow-diplomacy: Changements de diplomatie
+	starting-cash: Argent au départ
+	starting-units: Unités au départ
+	difficulty: Difficulté des missions
+
+# Asset Browser
+	asset-viewer-converter: Editeur & Convertisseur de contenu du jeu
+	folders: Dossiers
+	load: Charger
+	preview: Preview
+	actions: Actions
+	selected-to-png: Sélection vers PNG
+	all-to-png: Tout extraire vers PNG
+	import-from-png: Importer depuis PNG
+	extracting-and-converting: Extraction et Conversion des fichiers du jeu
+	
+# Ingame
+	options: Options
+	resume: Continuer
+	surrender: Abandonner
+	abort-mission: Arrêter la mission
+	diplomacy: Diplomatie
+	their-stance: Leur position
+	my-stance: Ma position
+	cheats: Astuces
+	objectives: Objectifs
+	primary-objectives: Objectifs principaux
+	status: Statut
+	secondary-objectives: Objectifs secondaires
+	sell: Vendre
+	sell-description: Vend des batîments, en récupérant une partie du coût de construction
+	powerdown: Couper
+	powerdown-description: Désactive des structures inutiles pour économiser de l'énergie
+	repair: Réparer
+	repair-description: Répare des bâtiments endommagés
+
+# Build (and SupportPower) Palette
+	ready: PRET
+	on-hold: ATTENTE
+	requires: Requiert {0}
+
+# Observer Stats
+	statistics: Statistiques
+	cash: Argent
+	earned/min: Gagné/min
+	power: Puissance
+	kills: ennemis tués
+	deaths: pertes
+	apm: Actions/min
+	earned-this-min: Gagné cette minute
+	assets: Contenu
+	earned: Gagné
+	spent: Dépensé
+	harvesters: Collecteurs
+	production: Production
+	support-powers: Support Powers
+	control: Contrôle
+	units-killed: Unités détruites
+	units-lost: Unités perdues
+	buildings-killed: Bât. détruits
+	buildings-lost: Bât. perdus
+	earnings/min: Argent gagné par minute
+
+# Cheats
+	developer-mode: Mode dévelopeur
+	disable-shroud: Désactiver le voile
+	give-exploration: Afficher le terrain
+	reset-exploration: Réinitialiser le terrain
+	show-unit-paths: Montrer le chemin des unités
+	give-cash: Donner $20000
+	instant-build: Construction instantanée
+	instant-charge: Les Support Powers Charge Instantly
+	build-everything: Tout construire
+	unlimited-power: Puissance illimitée
+	build-anywhere: Construire partout
+	a-star-cost: Afficher le pathfinding A*
+	combat-geometry: Afficher la géométrie de combat
+	render-geometry: Afficher la géométrie de rendu
