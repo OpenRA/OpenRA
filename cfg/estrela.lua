@@ -3,9 +3,9 @@
 
 -- load all tools, specs, and interpreters
 local all = function() return true end
-loadfilters.tools = all
-loadfilters.specs = all
-loadfilters.interpreters = all
+load.tools(all)
+load.specs(all)
+load.interpreters(all)
 
 -- this flag means that toggling between projects, will not affect the 
 -- list of opened files (old estrela default).

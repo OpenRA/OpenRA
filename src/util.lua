@@ -424,10 +424,6 @@ function LoadLuaConfig(filename,isstring)
   if not cfgfn then
     report(("Error while loading configuration %s: '%s'."):format(msg, err))
   else
-    ide.config.os = os
-    ide.config.wxstc = wxstc
-    ide.config.load = { interpreters = loadInterpreters,
-      specs = loadSpecs, tools = loadTools }
     setfenv(cfgfn,ide.config)
     local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
     if err then

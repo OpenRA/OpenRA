@@ -34,7 +34,6 @@ dofile "src/util.lua"
 --
 ide = {
   config = {
-    loadfilters = {},
     path = {
       projectdir = "",
       app = nil,
@@ -341,6 +340,12 @@ end
 ----------------------
 -- process config
 
+-- set ide.config environment
+ide.config.os = os
+ide.config.wxstc = wxstc
+ide.config.load = { interpreters = loadInterpreters, specs = loadSpecs,
+  tools = loadTools }
+
 LoadLuaConfig(ide.config.path.app.."/config.lua")
 
 ide.editorApp:SetAppName(GetIDEString("settingsapp"))
@@ -364,7 +369,9 @@ end
 
 if app.preinit then app.preinit() end
 
-
+loadInterpreters()
+loadSpecs()
+loadTools()
 
 do
   ide.configs = {
@@ -385,10 +392,6 @@ do
     LoadLuaFileExt(ide.config.messages, "cfg"..sep.."i18n"..sep..ide.config.language..".lua")
   end
 end
-
-loadInterpreters(ide.config.loadfilters.interpreters)
-loadSpecs(ide.config.loadfilters.specs)
-loadTools(ide.config.loadfilters.tools)
 
 loadPackages()
 
