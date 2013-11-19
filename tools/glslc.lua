@@ -9,7 +9,7 @@ return binpath and {
 
     local myMenu = wx.wxMenu{
       { ID "glslc.compile.input", "&Custom Args\tCtrl-L", "when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
-      { ID "glslc.compile.notseparable", "Not separable", "when set separable programs are not used", wx.wxITEM_CHECK },
+      { ID "glslc.compile.separable", "Separable", "when set separable programs are not used", wx.wxITEM_CHECK },
       { },
       { ID "glslc.compile.vertex", "Compile &Vertex\tCtrl-1", "Compile Vertex program" },
       { ID "glslc.compile.fragment", "Compile &Fragment\tCtrl-2", "Compile Fragment program" },
@@ -21,12 +21,10 @@ return binpath and {
       { ID "glslc.format.asm", "Annotate ASM", "indent and add comments to ASM output" },
     }
     menuBar:Append(myMenu, "&GLSL")
-    
-    menuBar:Check(ID "glslc.compile.notseparable", true)
 
     local data = {}
     data.customarg = false
-    data.notseparable = true
+    data.separable = false
     data.custom = ""
     data.domains = {
       [ID "glslc.compile.vertex"]   = 1,
@@ -283,9 +281,9 @@ return binpath and {
         data.customarg = event:IsChecked()
       end)
     
-    frame:Connect(ID "glslc.compile.notseparable",wx.wxEVT_COMMAND_MENU_SELECTED,
+    frame:Connect(ID "glslc.compile.separable",wx.wxEVT_COMMAND_MENU_SELECTED,
       function(event)
-        data.notseparable = event:IsChecked()
+        data.separable = event:IsChecked()
       end)
     
 
@@ -316,7 +314,7 @@ return binpath and {
 
       local cmdline = "-profile "..profile.." "
       cmdline = args and cmdline..args.." " or cmdline
-      cmdline = cmdline..(data.notseparable and "-notseparable " or "")
+      cmdline = cmdline..(data.separable and "-separable " or "")
       cmdline = cmdline..data.domaindefs[domain].." "
       cmdline = cmdline.."-o "..outname.." "
       cmdline = cmdline..'"'..fullname..'"'
