@@ -25,9 +25,9 @@ namespace OpenRA.Widgets
 		public Action OnLoseFocus = () => { };
 
 		public Func<bool> IsDisabled = () => false;
-		public Color TextColor = Color.White;
-		public Color DisabledColor = Color.Gray;
-		public string Font = "Regular";
+		public string Font = ChromeMetrics.Get<string>("HotkeyFont");
+		public Color TextColor = ChromeMetrics.Get<Color>("HotkeyColor");
+		public Color TextColorDisabled = ChromeMetrics.Get<Color>("HotkeyColorDisabled");
 
 		public HotkeyEntryWidget() {}
 		protected HotkeyEntryWidget(HotkeyEntryWidget widget)
@@ -35,7 +35,7 @@ namespace OpenRA.Widgets
 		{
 			Font = widget.Font;
 			TextColor = widget.TextColor;
-			DisabledColor = widget.DisabledColor;
+			TextColorDisabled = widget.TextColorDisabled;
 			VisualHeight = widget.VisualHeight;
 		}
 
@@ -126,7 +126,7 @@ namespace OpenRA.Widgets
 					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));
 			}
 
-			var color = disabled ? DisabledColor : TextColor;
+			var color = disabled ? TextColorDisabled : TextColor;
 			font.DrawText(apparentText, textPos, color);
 
 			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)

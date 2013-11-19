@@ -8,6 +8,9 @@ Metrics:
 	ButtonTextContrast: false
 	ButtonTextContrastColor: 0,0,0
 	CheckboxPressedState: false
+	HotkeyFont: Regular
+	HotkeyColor: 255,255,255
+	HotkeyColorDisabled: 128,128,128
 	TextFont: Regular
 	TextColor: 255,255,255
 	TextContrast: false
