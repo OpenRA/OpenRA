@@ -234,6 +234,7 @@ local keyw =
     gl_NumWorkGroups gl_WorkGroupSize gl_WorkGroupID gl_LocalInvocationID gl_GlobalInvocationID gl_LocalInvocationIndex
     local_size_x local_size_y local_size_z
     gl_BaseVertexARB gl_BaseInstanceARB gl_DrawIDARB
+    bindless_sampler bound_sampler bindless_image bound_image
 
     coherent volatile restrict readonly writeonly
     image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray
