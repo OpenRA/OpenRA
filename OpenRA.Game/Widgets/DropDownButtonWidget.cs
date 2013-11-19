@@ -31,6 +31,8 @@ namespace OpenRA.Widgets
 
 			var image = ChromeProvider.GetImage("scrollbar", IsDisabled() ? "down_pressed" : "down_arrow");
 			var rb = RenderBounds;
+			var color = GetColor();
+			var colordisabled = GetColorDisabled();
 
 			WidgetUtils.DrawRGBA( image,
 				stateOffset + new float2( rb.Right - rb.Height + 4,
@@ -38,7 +40,7 @@ namespace OpenRA.Widgets
 
 			WidgetUtils.FillRectWithColor(new Rectangle(stateOffset.X + rb.Right - rb.Height,
 				stateOffset.Y + rb.Top + 3, 1, rb.Height - 6),
-				Color.White);
+				IsDisabled() ? colordisabled : color);
 		}
 
 		public override Widget Clone() { return new DropDownButtonWidget(this); }

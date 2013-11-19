@@ -3,6 +3,10 @@
 Metrics:
 	ButtonDepth: 0
 	ButtonFont: Bold
+	ButtonTextColor: 255,255,255
+	ButtonTextColorDisabled: 128,128,128
+	ButtonTextContrast: false
+	ButtonTextContrastColor: 0,0,0
 	CheckboxPressedState: true
 	TextFont: Regular
 	TextColor: 255,255,255
