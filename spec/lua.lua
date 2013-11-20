@@ -129,8 +129,8 @@ return {
         local tx = editor:GetLine(line) --= string
 
         -- check for assignments
-        local varname = "([%w_%.]+)"
-        local identifier = "([%w_%.:%s]+)"
+        local varname = "([%w_][%w_%.]*)"
+        local identifier = "([%w_][%w_%.:%s]*)"
 
         -- special hint
         local typ,var = tx:match("%s*%-%-=%s*"..varname.."%s+"..identifier)

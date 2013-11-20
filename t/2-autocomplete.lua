@@ -43,6 +43,15 @@ editor:AddText([[
 ok(limit(10000, function() EditorAutoComplete(editor) end),
   "Auto-complete doesn't loop for table index reference 2/2.")
 
+editor:SetText('')
+editor:AddText([[
+  local a = ...
+  local b = a.b
+  local c = b.]])
+
+ok(limit(10000, function() EditorAutoComplete(editor) end),
+  "Auto-complete doesn't loop for classes that reference '...'.")
+
 local interpreter = ide:GetInterpreter():GetFileName()
 ProjectSetInterpreter("gideros")
 
