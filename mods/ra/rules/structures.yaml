@@ -561,8 +561,6 @@ HBOX:
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 60
-		CloakSound: appear1.aud
-		UncloakSound: appear1.aud
 	IronCurtainable:
 	-AcceptsSupplies:
 	Turreted:
