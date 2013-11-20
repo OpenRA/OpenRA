@@ -48,8 +48,10 @@ prefix ?= /usr/local
 datarootdir ?= $(prefix)/share
 datadir ?= $(datarootdir)
 bindir ?= $(prefix)/bin
+libexecdir ?= $(prefix)/lib
 BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
-DATA_INSTALL_DIR = $(DESTDIR)$(datadir)/openra
+# TODO: separate data and binaries properly
+DATA_INSTALL_DIR = $(DESTDIR)$(libexecdir)/openra
 
 # install tools
 RM = rm
@@ -63,7 +65,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = fileformats rcg rgl rsdl rnull game utility geoip irc
+CORE = fileformats rcg rgl rsdl rnull game utility geoip irc lua
 TOOLS = editor tsbuild ralint
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
@@ -77,7 +79,7 @@ fileformats_SRCS	:= $(shell find OpenRA.FileFormats/ -iname '*.cs')
 fileformats_TARGET	= OpenRA.FileFormats.dll
 fileformats_KIND	= library
 fileformats_LIBS	= $(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll
-PROGRAMS 			= fileformats
+PROGRAMS 		= fileformats
 fileformats: $(fileformats_TARGET)
 
 geoip_SRCS		:= $(shell find GeoIP/ -iname '*.cs')
@@ -105,6 +107,14 @@ irc_LIBS			= $(COMMON_LIBS) $(irc_DEPS)
 PROGRAMS			+= irc
 irc: $(irc_TARGET)
 
+lua_SRCS			:= $(shell find LuaInterface/ -name '*.cs')
+lua_TARGET			= LuaInterface.dll
+lua_KIND			= library
+lua_DEPS			= $(fileformats_TARGET)
+lua_LIBS			= $(COMMON_LIBS) $(lua_DEPS)
+PROGRAMS			+= lua
+lua: $(lua_TARGET)
+
 # Renderer dlls
 rsdl_SRCS			:= $(shell find OpenRA.Renderer.SdlCommon/ -iname '*.cs')
 rsdl_TARGET			= OpenRA.Renderer.SdlCommon.dll
@@ -126,13 +136,13 @@ rgl_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
 rgl_LIBS			= $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll $(rgl_DEPS)
 
 rsdl2_SRCS			:= $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
-rsdl2_TARGET		= OpenRA.Renderer.Sdl2.dll
+rsdl2_TARGET			= OpenRA.Renderer.Sdl2.dll
 rsdl2_KIND			= library
 rsdl2_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET) $(rgl_TARGET)
 rsdl2_LIBS			= $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/SDL2\#.dll $(rsdl2_DEPS)
 
 rnull_SRCS			:= $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
-rnull_TARGET		= OpenRA.Renderer.Null.dll
+rnull_TARGET			= OpenRA.Renderer.Null.dll
 rnull_KIND			= library
 rnull_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 rnull_LIBS			= $(COMMON_LIBS) $(rnull_DEPS)
@@ -149,8 +159,8 @@ STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 mod_ra_SRCS			:= $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET			= mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND			= library
-mod_ra_DEPS			= $(STD_MOD_DEPS) $(utility_TARGET) $(geoip_TARGET) $(irc_TARGET)
-mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(utility_TARGET) $(geoip_TARGET) $(irc_TARGET)
+mod_ra_DEPS			= $(STD_MOD_DEPS) $(utility_TARGET) $(geoip_TARGET) $(irc_TARGET) $(lua_TARGET)
+mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(utility_TARGET) $(geoip_TARGET) $(irc_TARGET) $(lua_TARGET)
 PROGRAMS 			+= mod_ra
 mod_ra: $(mod_ra_TARGET)
 
@@ -189,7 +199,7 @@ editor_TARGET			= OpenRA.Editor.exe
 editor_KIND			= winexe
 editor_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 editor_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll System.Data.dll $(editor_DEPS)
-editor_EXTRA		= -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
+editor_EXTRA			= -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
 editor_FLAGS		= -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
 
 PROGRAMS 			+= editor
@@ -225,7 +235,7 @@ tsbuild_KIND		= winexe
 tsbuild_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 tsbuild_LIBS		= $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
 tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.FormBuilder.resources -resource:OpenRA.TilesetBuilder.FormNew.resources -resource:OpenRA.TilesetBuilder.Surface.resources
-PROGRAMS 			+= tsbuild
+PROGRAMS 		+= tsbuild
 OpenRA.TilesetBuilder.FormBuilder.resources:
 	resgen2 OpenRA.TilesetBuilder/FormBuilder.resx OpenRA.TilesetBuilder.FormBuilder.resources 1> /dev/null
 OpenRA.TilesetBuilder.FormNew.resources:
@@ -243,7 +253,7 @@ utility_TARGET		= OpenRA.Utility.exe
 utility_KIND		= exe
 utility_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 utility_LIBS		= $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
-PROGRAMS 			+= utility
+PROGRAMS		+= utility
 utility: $(utility_TARGET)
 
 
@@ -293,6 +303,8 @@ distclean: clean
 
 dependencies:
 	@ $(CP_R) thirdparty/*.dl* .
+	@ $(CP_R) thirdparty/*.dylib .
+	@ $(CP_R) thirdparty/*.so .
 	@ $(CP_R) thirdparty/Tao/* .
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml
@@ -336,12 +348,16 @@ install-core: default
 	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/SharpFont.dll.config "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll "$(DATA_INSTALL_DIR)"
+	@$(CP) thirdparty/LuaInterface.dll.config "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/liblua-linux32.so "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/liblua-linux64.so "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/liblua-osx.dylib "$(DATA_INSTALL_DIR)"
 
 	@echo "#!/bin/sh" 				>  openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra
 	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' 	>> openra
-	@echo 'DATADIR="$${ROOTDIR}'"$(datadir)"'"'	>> openra
-	@echo 'cd "$${DATADIR}/openra"' 		>> openra
+	@echo 'EXECDIR="$${ROOTDIR}'"$(libexecdir)"'"'	>> openra
+	@echo 'cd "$${EXECDIR}/openra"' 		>> openra
 	@echo 'exec mono OpenRA.Game.exe "$$@"' 	>> openra
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
@@ -355,8 +371,8 @@ install-tools: tools
 	@echo "#!/bin/sh" 				>  openra-editor
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra-editor
 	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' 	>> openra-editor
-	@echo 'DATADIR="$${ROOTDIR}/'"$(datadir)"'"'	>> openra-editor
-	@echo 'cd "$${DATADIR}/openra"'			>> openra-editor
+	@echo 'EXECDIR="$${ROOTDIR}'"$(libexecdir)"'"'	>> openra-editor
+	@echo 'cd "$${EXECDIR}/openra"'			>> openra-editor
 	@echo 'exec mono OpenRA.Editor.exe "$$@"'	>> openra-editor
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra-editor "$(BIN_INSTALL_DIR)"

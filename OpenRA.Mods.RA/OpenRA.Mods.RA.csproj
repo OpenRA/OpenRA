@@ -338,8 +338,10 @@
     <Compile Include="RepairsUnits.cs" />
     <Compile Include="Reservable.cs" />
     <Compile Include="ScaredyCat.cs" />
+    <Compile Include="Scripting\LuaScriptInterface.cs" />
     <Compile Include="Scripting\Media.cs" />
     <Compile Include="Scripting\RASpecialPowers.cs" />
+    <Compile Include="Scripting\LuaScriptContext.cs" />
     <Compile Include="SeedsResource.cs" />
     <Compile Include="SelfHealing.cs" />
     <Compile Include="Sellable.cs" />
@@ -476,6 +478,10 @@
     <Compile Include="Effects\Rank.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LuaInterface\LuaInterface.csproj">
+      <Project>{e915a0a4-2641-4f7e-8a88-8f123fa88bf1}</Project>
+      <Name>LuaInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
       <Name>OpenRA.FileFormats</Name>

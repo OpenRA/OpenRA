@@ -14,11 +14,14 @@ _ReSharper.*/
 
 # binaries
 mods/*/*.dll
+mods/*/*.mdb
 /*.dll
 /*.dll.config
-*.pdb
-*.mdb
-*.exe
+/*.so
+/*.dylib
+/*.pdb
+/*.mdb
+/*.exe
 
 # backup files by various editors
 *~
@@ -46,10 +49,6 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.pbxuser
 OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.perspectivev3
 OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 *.resources
-
-# KDE
-*.kate-swp
-*.directory
 
 # auto-generated documentation
 DOCUMENTATION.md

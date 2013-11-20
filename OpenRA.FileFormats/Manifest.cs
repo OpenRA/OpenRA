@@ -22,7 +22,7 @@ namespace OpenRA.FileFormats
 			Folders, MapFolders, Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Movies, Translations, TileSets,
-			ChromeMetrics, PackageContents;
+			ChromeMetrics, PackageContents, LuaScripts;
 
 		public readonly Dictionary<string, string> Packages;
 		public readonly MiniYaml LoadScreen;
@@ -59,6 +59,7 @@ namespace OpenRA.FileFormats
 			TileSets = YamlList(yaml, "TileSets");
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
 			PackageContents = YamlList(yaml, "PackageContents");
+			LuaScripts = YamlList(yaml, "LuaScripts");
 
 			LoadScreen = yaml["LoadScreen"];
 			LobbyDefaults = yaml["LobbyDefaults"];

@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
-using OpenRA.Scripting;
+using OpenRA.Mods.RA.Scripting;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Missions
