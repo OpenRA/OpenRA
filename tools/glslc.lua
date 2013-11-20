@@ -8,7 +8,7 @@ return binpath and {
     binpath = ide.config.path.glslcbin or os.getenv("GLSLC_BIN_PATH")
 
     local myMenu = wx.wxMenu{
-      { ID "glslc.compile.input", "&Custom Args\tCtrl-L", "when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
+      { ID "glslc.compile.input", "&Custom Args", "when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
       { ID "glslc.compile.separable", "Separable", "when set separable programs are not used", wx.wxITEM_CHECK },
       { },
       { ID "glslc.compile.vertex", "Compile &Vertex\tCtrl-1", "Compile Vertex program" },
