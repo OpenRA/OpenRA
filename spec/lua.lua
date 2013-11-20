@@ -160,9 +160,9 @@ return {
           end)
 
           -- filter out everything that is not needed
-          if typ
+          if typ and typ ~= 'string' -- special value for all strings
           and (not typ:match('^'..identifier..'$') -- not an identifier
-               or typ:match('^%d') -- not an identifier
+               or typ:match('^%d') -- or a number
                or editor.api.tip.keys[typ] -- or a keyword
                or editor.api.tip.staticnames[typ] -- or a static name
               ) then
