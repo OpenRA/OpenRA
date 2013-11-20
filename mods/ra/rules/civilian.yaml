@@ -524,6 +524,38 @@ V25:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Church
+	RevealsShroud:
+		Range: 10
+	TransformOnCapture:
+		IntoActor: v25.sniper
+		SkipMakeAnims: true
+	Capturable:
+		Type: CivilianBuilding
+		CaptureThreshold: 1
+
+V25.SNIPER:
+	Inherits: V25
+	RenderBuilding:
+		Image: V25
+	RenderRangeCircle:
+	AutoTarget:
+	Turreted:
+		ROT: 255
+	Armament:
+		Weapon: Sniper
+		LocalOffset: 469,0,0
+	AttackTurreted:
+	Cargo:
+		InitialUnits: sniper
+		Types: Infantry
+		MaxWeight: 1
+		PipCount: 1
+	TransformOnPassenger@Sniper:
+		PassengerTypes: sniper
+		OnExit: v25
+		SkipMakeAnims: true
+		BecomeNeutral: true
+	-Capturable:
 
 V26:
 	Inherits: ^DesertCivBuilding
