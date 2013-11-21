@@ -44,5 +44,15 @@ namespace OpenRA.Mods.RA
 			if (info.Tileset == null || info.Tileset.ToLowerInvariant() == world.Map.Tileset.ToLowerInvariant())
 				wr.AddPalette(info.Name, new Palette(FileSystem.Open(info.Filename), info.ShadowIndex), info.AllowModifiers);
 		}
+
+		public string Filename
+		{
+			get { return info.Filename; }
+		}
+
+		public string Name
+		{
+			get { return info.Name; }
+		}
 	}
 }

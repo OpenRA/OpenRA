@@ -13,6 +13,10 @@ NEW:
 		Improved the ingame chat interface and input, with it defaulting to Team Chat.
 		Redesigned the settings panel.
 		Re-added move flashes.
+	Asset Browser:
+		Fixed crashes when trying to load invalid filenames or sprites with just 1 frame.
+		Added support for browsing the folders for R8 files.
+		Added palette chooser and colorpicker dropdown boxes.
 	Red Alert:
 		Added MAD Tank.
 		Fixed a crash in Monster Tank Madness.
