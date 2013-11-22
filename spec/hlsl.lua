@@ -2,7 +2,7 @@
 ---------------------------------------------------------
 
 return {
-  exts = {"hlsl",},
+  exts = {"hlsl","fx","fxh",},
   lexer = wxstc.wxSTC_LEX_CPP,
   apitype = "hlsl",
   sep = "%.",

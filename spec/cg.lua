@@ -2,7 +2,7 @@
 ---------------------------------------------------------
 
 return {
-  exts = {"cg","cgh","fx","fxh","cgfx","cgfxh",},
+  exts = {"cg","cgh","cgfx","cgfxh",},
   lexer = wxstc.wxSTC_LEX_CPP,
   apitype = "cg",
   sep = "%.",
