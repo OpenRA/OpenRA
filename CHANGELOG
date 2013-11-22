@@ -49,6 +49,7 @@ NEW:
 		Fixed ant hills using the wrong tile ID.
 		Adjusted Zombie build palette position.
 		Fixed attack dogs causing crashes by attacking non-infantry.
+		Disabled cloak/uncloak sound for camouflaged Pillbox.
 	Tiberian Dawn:
 		C&C mod renamed to Tiberian Dawn to resolve naming ambiguities.
 		Fixed Bio Lab wrongly belonging to a hostile faction in East vs West 3.

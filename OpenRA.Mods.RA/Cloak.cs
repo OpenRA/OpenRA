@@ -24,8 +24,8 @@ namespace OpenRA.Mods.RA
 		public readonly bool UncloakOnMove = false;
 		public readonly bool RequiresCrate = false;
 
-		public readonly string CloakSound = "subshow1.aud";
-		public readonly string UncloakSound = "subshow1.aud";
+		public readonly string CloakSound = null;
+		public readonly string UncloakSound = null;
 		public readonly string Palette = "cloak";
 
 		public object Create(ActorInitializer init) { return new Cloak(init.self, this); }
