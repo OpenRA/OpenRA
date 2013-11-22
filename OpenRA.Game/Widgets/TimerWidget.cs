@@ -19,7 +19,7 @@ namespace OpenRA.Widgets
 	{
 		public override void Draw()
 		{
-			SpriteFont font = Game.Renderer.Fonts[Font];
+			var font = Game.Renderer.Fonts[Font];
 			var rb = RenderBounds;
 			var color = GetColor();
 			var contrast = GetContrastColor();
