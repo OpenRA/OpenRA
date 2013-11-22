@@ -181,7 +181,7 @@ namespace OpenRA
 		public void Add(IEffect b) { effects.Add(b); }
 		public void Remove(IEffect b) { effects.Remove(b); }
 
-		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Enqueue( a ); }
+		public void AddFrameEndTask(Action<World> a) { frameEndActions.Enqueue(a); }
 
 		public event Action<Actor> ActorAdded = _ => { };
 		public event Action<Actor> ActorRemoved = _ => { };

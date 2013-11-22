@@ -170,7 +170,8 @@ namespace OpenRA.Traits
 	{
 		public static bool IsDead(this Actor self)
 		{
-			if (self.Destroyed)	return true;
+			if (self.Destroyed)
+				return true;
 
 			var health = self.TraitOrDefault<Health>();
 			return (health == null) ? false : health.IsDead;
@@ -178,7 +179,8 @@ namespace OpenRA.Traits
 
 		public static DamageState GetDamageState(this Actor self)
 		{
-			if (self.Destroyed) return DamageState.Dead;
+			if (self.Destroyed)
+				return DamageState.Dead;
 
 			var health = self.TraitOrDefault<Health>();
 			return (health == null) ? DamageState.Undamaged : health.DamageState;

@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
@@ -18,20 +19,19 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		Actor self;
 		Animation anim = new Animation("rank");
-		GainsExperience xp;
 
 		public Rank(Actor self)
 		{
 			this.self = self;
-			xp = self.Trait<GainsExperience>();
+			var xp = self.Trait<GainsExperience>();
 
 			anim.PlayRepeating("rank");
-			anim.PlayFetchIndex("rank", () => xp.Level - 1);
+			anim.PlayFetchIndex("rank", () => xp.Level == 0 ? 0 : xp.Level - 1);
 		}
 
 		public void Tick(World world)
 		{
-			if (self.Destroyed)
+			if (self.IsDead())
 				world.AddFrameEndTask(w => w.Remove(this));
 			else
 				anim.Tick();
@@ -42,10 +42,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (!self.IsInWorld)
 				yield break;
 
-			if (self.Destroyed)
-				yield break;
-
-			if (xp.Level < 1)
+			if (self.IsDead())
 				yield break;
 
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
