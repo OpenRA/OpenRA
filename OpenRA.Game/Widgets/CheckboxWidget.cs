@@ -47,6 +47,7 @@ namespace OpenRA.Widgets
 			var colordisabled = GetColorDisabled();
 			var contrast = GetContrastColor();
 			var rect = RenderBounds;
+			var textSize = font.Measure(Text);
 			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));
 			var state = disabled ? "checkbox-disabled" :
 						Depressed && HasPressedState ? "checkbox-pressed" :
@@ -54,16 +55,13 @@ namespace OpenRA.Widgets
 						"checkbox";
 
 			WidgetUtils.DrawPanel(state, check);
-
-			var textSize = font.Measure(Text);
+			var position = new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - BaseLine + (Bounds.Height - textSize.Y)/2);
 
 			if (Contrast)
-				font.DrawTextWithContrast(Text,
-					new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - BaseLine + (Bounds.Height - textSize.Y)/2),
+				font.DrawTextWithContrast(Text, position,
 					disabled ? colordisabled : color, contrast, 2);
 			else
-				font.DrawText(Text,
-					new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - BaseLine + (Bounds.Height - textSize.Y)/2),
+				font.DrawText(Text, position,
 					disabled ? colordisabled : color);
 
 			if (IsChecked() || (Depressed && HasPressedState && !disabled))
