@@ -25,6 +25,7 @@ return dxpath and {
       { ID "dx.compile.domain", "Compile &Domain", "Compile Domain shader (select entry word)" },
       { ID "dx.compile.hull", "Compile &Hull", "Compile Hull shader (select entry word)" },
       { ID "dx.compile.compute", "Compile &Compute", "Compile Compute shader (select entry word)" },
+      { ID "dx.compile.effects", "Compile &Effects", "Compile all effects in shader" },
     }
     menuBar:Append(myMenu, "&Dx")
 
@@ -42,12 +43,13 @@ return dxpath and {
       [ID "dx.compile.domain"] = 4,
       [ID "dx.compile.hull"] = 5,
       [ID "dx.compile.compute"] = 6,
+      [ID "dx.compile.effects"] = 7,
     }
     data.profiles = {
-      [ID "dx.profile.dx_2x"] = {"vs_2_0","ps_2_x",false,false,false,false,ext=".fxc."},
-      [ID "dx.profile.dx_3"] = {"vs_3_0","ps_3_0",false,false,false,false,ext=".fxc."},
-      [ID "dx.profile.dx_4"] = {"vs_4_0","ps_4_0","gs_4_0",false,false,false,ext=".fxc."},
-      [ID "dx.profile.dx_5"] = {"vs_5_0","ps_5_0","gs_5_0","ds_5_0","hs_5_0","cs_5_0",ext=".fxc."},
+      [ID "dx.profile.dx_2x"] = {"vs_2_0","ps_2_x",false,false,false,false,"fx_2_x",ext=".fxc."},
+      [ID "dx.profile.dx_3"] = {"vs_3_0","ps_3_0",false,false,false,false,"fx_3_0",ext=".fxc."},
+      [ID "dx.profile.dx_4"] = {"vs_4_0","ps_4_0","gs_4_0",false,false,false,"fx_4_0",ext=".fxc."},
+      [ID "dx.profile.dx_5"] = {"vs_5_0","ps_5_0","gs_5_0","ds_5_0","hs_5_0","cs_5_0","fx_5_0",ext=".fxc."},
     }
     data.domaindefs = {
       " /D _VERTEX_=1 /D _DX_=1 ",
@@ -56,6 +58,7 @@ return dxpath and {
       " /D _TESS_CONTROL_=1 /D _DX_=1 ",
       " /D _TESS_EVAL_=1 /D _DX_=1 ",
       " /D _COMPUTE_=1 /D _DX_=1 ",
+      " /D _EFFECTS_=1 /D _DX_=1 ",
     }
     -- Profile related
     menuBar:Check(data.profid, true)
@@ -98,13 +101,14 @@ return dxpath and {
     local function evCompile(event)
       local filename,info = GetEditorFileAndCurInfo()
       local editor = GetEditor()
+      local domain = data.domains[event:GetId()]
 
-      if (not (filename and info.selword and dxpath)) then
-        DisplayOutput("Error: Dx Compile: Insufficient parameters (nofile / not selected entry function!\n")
+      if (not (filename and dxpath) or  not (domain == 7 or info.selword )) then
+        DisplayOutput("Error: Dx Compile: Insufficient parameters (nofile / no selected entry function!\n")
         return
       end
 
-      local domain = data.domains[event:GetId()]
+      
       local profile = data.profiles[data.profid]
       if (not profile[domain]) then return end
 
@@ -114,9 +118,9 @@ return dxpath and {
 
       local fullname = filename:GetFullPath()
 
-      local outname = fullname.."."..info.selword.."^"
+      local outname = fullname.."."..(info.selword or "").."^"
       outname = args and outname..args:gsub("%s*[%-%/]",";-")..";^" or outname
-      outname = outname..profile[domain]..profile.ext..(data.binary and "bin" or "txt")
+      outname = outname..profile[domain]..profile.ext..(data.binary and "fxo" or "txt")
       outname = '"'..outname..'"'
 
       local cmdline = " /T "..profile[domain].." "
@@ -125,7 +129,9 @@ return dxpath and {
       cmdline = cmdline..(data.backwards and "/Gec " or "")
       cmdline = cmdline..(data.domaindefs[domain])
       cmdline = cmdline..(data.binary and "/Fo " or "/Fc ")..outname.." "
+      if (info.selword) then
       cmdline = cmdline.."/E "..info.selword.." "
+      end
       cmdline = cmdline.."/nologo "
       cmdline = cmdline..' "'..fullname..'"'
 
@@ -141,5 +147,6 @@ return dxpath and {
     frame:Connect(ID "dx.compile.domain",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
     frame:Connect(ID "dx.compile.hull",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
     frame:Connect(ID "dx.compile.compute",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
+    frame:Connect(ID "dx.compile.effects",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
   end,
 }
