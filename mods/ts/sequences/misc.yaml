@@ -245,7 +245,7 @@ torpedo:
 		Length: *
 
 moveflsh:
-	idle:
+	idle: ring
 		Start: 0
 		Length: *
-		Tick: 80
+		Tick: 30
