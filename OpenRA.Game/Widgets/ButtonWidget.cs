@@ -194,13 +194,14 @@ namespace OpenRA.Widgets
 			var contrast = GetContrastColor();
 			var s = font.Measure(text);
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
+			var position = new int2(rb.X + (UsableWidth - s.X) / 2, rb.Y + (Bounds.Height - s.Y) / 2);
 
 			DrawBackground(rb, disabled, Depressed, Ui.MouseOverWidget == this, highlighted);
 			if (Contrast)
-				font.DrawTextWithContrast(text, new int2(rb.X + (UsableWidth - s.X) / 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
+				font.DrawTextWithContrast(text, position + stateOffset,
 						  disabled ? colordisabled : color, contrast, 2);
 			else
-				font.DrawText(text, new int2(rb.X + (UsableWidth - s.X)/ 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
+				font.DrawText(text, position + stateOffset,
 						  disabled ? colordisabled : color);
 		}
 
