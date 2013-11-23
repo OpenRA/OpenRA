@@ -11,7 +11,7 @@ Background@MAPCHOOSER_PANEL:
 			Align:Center
 			Width:800
 			Height:20
-			Text:Choose Map
+			Text:@choose-map@
 			Font:Bold
 		ScrollPanel@MAP_LIST:
 			X:20
@@ -71,14 +71,14 @@ Background@MAPCHOOSER_PANEL:
 			Y:PARENT_BOTTOM - 49
 			Width:120
 			Height:25
-			Text:Random Map
+			Text:@random-map@
 			Font:Bold
 		Button@BUTTON_OK:
 			X:PARENT_RIGHT - 295
 			Y:PARENT_BOTTOM - 49
 			Width:120
 			Height:25
-			Text:Ok
+			Text:@ok@
 			Font:Bold
 			Key:return
 		Button@BUTTON_CANCEL:
@@ -86,6 +86,6 @@ Background@MAPCHOOSER_PANEL:
 			Y:PARENT_BOTTOM-49
 			Width:120
 			Height:25
-			Text:Cancel
+			Text:@cancel@
 			Font:Bold
 			Key:escape

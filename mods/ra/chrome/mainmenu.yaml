@@ -39,70 +39,70 @@ Container@MAINMENU:
 					Y:80
 					Width:160
 					Height:35
-					Text:Join Game
+					Text:@join-game@
 					Font:Bold
 				Button@MAINMENU_BUTTON_CREATE:
 					X:45
 					Y:130
 					Width:160
 					Height:35
-					Text:Create Game
+					Text:@create-game@
 					Font:Bold
 				Button@MAINMENU_BUTTON_DIRECTCONNECT:
 					X:45
 					Y:180
 					Width:160
 					Height:35
-					Text:Direct Connect
+					Text:@direct-connect@
 					Font:Bold
 				Button@MAINMENU_BUTTON_SETTINGS:
 					X:45
 					Y:230
 					Width:160
 					Height:35
-					Text:Settings
+					Text:@settings@
 					Font:Bold
 				Button@MAINMENU_BUTTON_MODS:
 					X:45
 					Y:280
 					Width:160
 					Height:35
-					Text:Mods
+					Text:@mods@
 					Font:Bold
 				Button@MAINMENU_BUTTON_MUSIC:
 					X:45
 					Y:330
 					Width:160
 					Height:35
-					Text:Music
+					Text:@music@
 					Font:Bold
 				Button@MAINMENU_BUTTON_REPLAY_VIEWER:
 					X:45
 					Y:380
 					Width:160
 					Height:35
-					Text:Replay Viewer
+					Text:@replay-viewer@
 					Font:Bold
 				Button@MAINMENU_BUTTON_CREDITS:
 					X:45
 					Y:430
 					Width:160
 					Height:35
-					Text:Credits
+					Text:@credits@
 					Font:Bold
 				Button@MAINMENU_BUTTON_ASSET_BROWSER:
 					X:45
 					Y:480
 					Width:160
 					Height:35
-					Text:Asset Browser
+					Text:@asset-browser@
 					Font:Bold
 				Button@MAINMENU_BUTTON_QUIT:
 					X:45
 					Y:530
 					Width:160
 					Height:35
-					Text:Quit
+					Text:@quit@
 					Font:Bold
 		Container@PERFORMANCE_INFO:
 			Logic:PerfDebugLogic

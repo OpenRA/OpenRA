@@ -10,7 +10,7 @@ Background@JOINSERVER_BG:
 			Y:15
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Join Server
+			Text:@join-server@
 			Align:Center
 			Font:Bold
 		Label@SHOW_LABEL_TITLE:
@@ -18,32 +18,32 @@ Background@JOINSERVER_BG:
 			Y:45
 			Width:20
 			Height:25
-			Text:Show:
+			Text:@show@:
 			Font:Bold
 		Checkbox@WAITING_FOR_PLAYERS:
 			X:80
 			Y:50
 			Width:100
 			Height:20
-			Text:Waiting
+			Text:@waiting@
 		Checkbox@EMPTY:
-			X:180
+			X:250
 			Y:50
 			Width:100
 			Height:20
-			Text:Empty
+			Text:@empty@
 		Checkbox@ALREADY_STARTED:
-			X:280
+			X:350
 			Y:50
 			Width:100
 			Height:20
-			Text:Started
+			Text:@already-started@
 		Checkbox@INCOMPATIBLE_VERSION:
-			X:380
+			X:500
 			Y:50
 			Width:100
 			Height:20
-			Text:Incompatible
+			Text:@incompatible-version@
 		ScrollPanel@SERVER_LIST:
 			X:20
 			Y:80
@@ -106,21 +106,21 @@ Background@JOINSERVER_BG:
 			Y:505 / 2 - HEIGHT
 			Width:150
 			Height:30
-			Text:Fetching games...
+			Text:@fetching-games@
 			Align:Center
 		Button@REFRESH_BUTTON:
 			X:20
 			Y:395
 			Width:100
 			Height:25
-			Text:Refresh
+			Text:@refresh@
 			Font:Bold
 		Button@JOIN_BUTTON:
 			X:PARENT_RIGHT - 120 - 120
 			Y:395
 			Width:100
 			Height:25
-			Text:Join
+			Text:@join@
 			Font:Bold
 			Key:return
 		Button@BACK_BUTTON:
@@ -128,7 +128,7 @@ Background@JOINSERVER_BG:
 			Y:395
 			Width:100
 			Height:25
-			Text:Cancel
+			Text:@cancel@
 			Font:Bold
 			Key:escape
 		Container@IRC_ROOT:

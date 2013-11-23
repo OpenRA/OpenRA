@@ -33,7 +33,7 @@ Container@INGAME_ROOT:
 			Y:0
 			Width:160
 			Height:25
-			Text:Options (ESC)
+			Text:@options@ (ESC)
 			Font:Bold
 			Key: escape
 		Container@PERFORMANCE_INFO:
@@ -68,7 +68,7 @@ Container@PLAYER_WIDGETS:
 			Y:0
 			Width:160
 			Height:25
-			Text:Diplomacy (F1)
+			Text:@diplomacy@
 			Font:Bold
 			Key: f1
 		Button@CHEATS_BUTTON:
@@ -76,7 +76,7 @@ Container@PLAYER_WIDGETS:
 			Y:0
 			Width:160
 			Height:25
-			Text:Cheats (F2)
+			Text:@cheats@ (F2)
 			Visible:false
 			Font:Bold
 			Key: f2
@@ -85,7 +85,7 @@ Container@PLAYER_WIDGETS:
 			Y:0
 			Width:160
 			Height:25
-			Text:Objectives (F3)
+			Text:@objectives@ (F3)
 			Visible:false
 			Font:Bold
 			Key: f3
@@ -125,8 +125,8 @@ Container@PLAYER_WIDGETS:
 					Width:30
 					Height:30
 					Image:sell
-					Description:Sell
-					LongDesc:Sell buildings, reclaiming a \nproportion of their build cost
+					Description:@sell@
+					LongDesc:@sell-description@
 				OrderButton@POWER_DOWN:
 					Logic:OrderButtonsChromeLogic
 					X:39
@@ -134,8 +134,8 @@ Container@PLAYER_WIDGETS:
 					Width:30
 					Height:30
 					Image:power
-					Description:Powerdown
-					LongDesc:Disable unneeded structures so their \npower can be used elsewhere
+					Description:@powerdown@
+					LongDesc:@powerdown-description@
 				OrderButton@REPAIR:
 					Logic:OrderButtonsChromeLogic
 					X:75
@@ -143,8 +143,8 @@ Container@PLAYER_WIDGETS:
 					Width:30
 					Height:30
 					Image:repair
-					Description:Repair
-					LongDesc:Repair damaged buildings
+					Description:@repair@
+					LongDesc:@repair-description@
 		SupportPowerBin@INGAME_POWERS_BIN:
 			X:0
 			Y:25
@@ -166,7 +166,7 @@ Container@OBSERVER_WIDGETS:
 			Y:0
 			Width:160
 			Height:25
-			Text:Statistics (F1)
+			Text:@statistics@ (F1)
 			Font:Bold
 			Key:f1
 		Background@RADAR_BG:

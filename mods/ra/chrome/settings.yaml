@@ -9,7 +9,7 @@ Background@SETTINGS_PANEL:
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Settings
+			Text:@settings@
 			Align:Center
 			Font:Bold
 		Button@RESET_BUTTON:
@@ -24,7 +24,7 @@ Background@SETTINGS_PANEL:
 			Y:PARENT_BOTTOM - 45
 			Width:160
 			Height:25
-			Text:Back
+			Text:@back@
 			Font:Bold
 		Container@TAB_CONTAINER:
 			Y:50
@@ -35,25 +35,25 @@ Background@SETTINGS_PANEL:
 					X:115
 					Width:90
 					Height:25
-					Text:Display
+					Text:@display@
 					Font:Bold
 				Button@AUDIO_TAB:
 					X:205
 					Width:90
 					Height:25
-					Text:Audio
+					Text:@audio@
 					Font:Bold
 				Button@INPUT_TAB:
 					X:295
 					Width:90
 					Height:25
-					Text:Input
+					Text:@input@
 					Font:Bold
 				Button@ADVANCED_TAB:
 					X:385
 					Width:90
 					Height:25
-					Text:Advanced
+					Text:@advanced@
 					Font:Bold
 		Container@DISPLAY_PANEL:
 			X:5
@@ -67,14 +67,14 @@ Background@SETTINGS_PANEL:
 					Width:45
 					Height:25
 					Align:Right
-					Text:Mode:
+					Text:@mode@:
 				DropDownButton@MODE_DROPDOWN:
 					X:170
 					Y:40
 					Width:170
 					Height:25
 					Font:Regular
-					Text:Windowed
+					Text:@windowed@
 				Container@WINDOW_RESOLUTION:
 					X:340
 					Y:40
@@ -110,27 +110,27 @@ Background@SETTINGS_PANEL:
 					Height:25
 					Font:Tiny
 					Align:Center
-					Text:Mode/Resolution changes will be applied after the game is restarted
+					Text:@video-changes-require-restart@
 				Checkbox@FRAME_LIMIT_CHECKBOX:
 					X:15
 					Y:100
 					Width:200
 					Height:20
 					Font:Regular
-					Text:Enable Frame Limiter
+					Text:@frame-limit@
 				Checkbox@PIXELDOUBLE_CHECKBOX:
 					X:310
 					Y:105
 					Width:200
 					Height:20
 					Font:Regular
-					Text:Enable Pixel Doubling
+					Text:@pixel-double@
 				Label@FRAME_LIMIT_DESC_A:
 					X:45
 					Y:132
 					Width:50
 					Height:25
-					Text:Limit to 
+					Text:@limit-to@
 					Align:Right
 				TextField@FRAME_LIMIT_TEXTFIELD:
 					X:100
@@ -142,14 +142,14 @@ Background@SETTINGS_PANEL:
 					X:150
 					Y:132
 					Height:25
-					Text: FPS
+					Text:@fps@
 				Checkbox@SHOW_SHELLMAP:
 					X:310
 					Y:135
 					Width:200
 					Height:20
 					Font:Regular
-					Text:Show Shellmap
+					Text:@show-shellmap@
 				Label@VIDEO_TITLE:
 					Y:175
 					Width:PARENT_RIGHT
@@ -162,7 +162,7 @@ Background@SETTINGS_PANEL:
 					Width:75
 					Height:25
 					Align:Right
-					Text:Language:
+					Text:@language@:
 				DropDownButton@LANGUAGE_DROPDOWNBUTTON:
 					X:230
 					Y:195
@@ -181,7 +181,7 @@ Background@SETTINGS_PANEL:
 					Height:25
 					Font:Tiny
 					Align:Center
-					Text:Translations apply to text strings only; Speech and build icons will remain in English
+					Text:@language-changes-require-restart@
 		Container@AUDIO_PANEL:
 			X:5
 			Y:50
@@ -194,14 +194,14 @@ Background@SETTINGS_PANEL:
 					Width:200
 					Height:20
 					Font:Regular
-					Text:Shellmap / Mission Music
+					Text:@map-music@
 				Label@SOUND_LABEL:
 					X:PARENT_RIGHT - WIDTH - 270
 					Y:37
 					Width:95
 					Height:25
 					Align:Right
-					Text:Sound Volume:
+					Text:@sound-volume@:
 				Slider@SOUND_VOLUME:
 					X:PARENT_RIGHT - WIDTH - 15
 					Y:43
@@ -214,14 +214,14 @@ Background@SETTINGS_PANEL:
 					Width:200
 					Height:20
 					Font:Regular
-					Text:Cash Ticks
+					Text:@cash-ticks@:
 				Label@MUSIC_LABEL:
 					X:PARENT_RIGHT - WIDTH - 270
 					Y:67
 					Width:95
 					Height:25
 					Align:Right
-					Text:Music Volume:
+					Text:@music-volume@:
 				Slider@VIDEO_VOLUME:
 					X:PARENT_RIGHT - WIDTH - 15
 					Y:73
@@ -234,7 +234,7 @@ Background@SETTINGS_PANEL:
 					Width:95
 					Height:25
 					Align:Right
-					Text:Video Volume:
+					Text:@video-volume@:
 				Slider@MUSIC_VOLUME:
 					X:PARENT_RIGHT - WIDTH - 15
 					Y:103
@@ -247,7 +247,7 @@ Background@SETTINGS_PANEL:
 					Width:75
 					Height:25
 					Align:Right
-					Text:Audio Device:
+					Text:@audio-device@:
 				DropDownButton@AUDIO_DEVICE:
 					X:190
 					Y:195
@@ -259,7 +259,7 @@ Background@SETTINGS_PANEL:
 					Height:25
 					Font:Tiny
 					Align:Center
-					Text:Device changes will be applied after the game is restarted
+					Text:@devices-changes-require-restart@
 		Container@INPUT_PANEL:
 			X:5
 			Y:50
@@ -272,14 +272,14 @@ Background@SETTINGS_PANEL:
 					Width:250
 					Height:20
 					Font:Regular
-					Text:Left-Click Orders
+					Text:@classic-orders@
 				Label@MOUSE_SCROLL_LABEL:
 					X:PARENT_RIGHT - WIDTH - 120
 					Y:39
 					Width:160
 					Height:20
 					Font:Regular
-					Text:Middle-Mouse Scrolling:
+					Text:@mouse-scroll@:
 					Align:Right
 				DropDownButton@MOUSE_SCROLL:
 					X:PARENT_RIGHT - WIDTH - 15
@@ -287,20 +287,20 @@ Background@SETTINGS_PANEL:
 					Width:100
 					Height:25
 					Font:Regular
-					Text:Enabled
+					Text:Enabled # TODO: hard-coded
 				Checkbox@EDGESCROLL_CHECKBOX:
 					X:15
 					Y:70
 					Width:130
 					Height:20
 					Font:Regular
-					Text:Edge Scrolling
+					Text:@edge-scroll@
 				Label@SCROLL_SPEED_LABEL:
 					X:PARENT_RIGHT - WIDTH - 270
 					Y:67
 					Width:95
 					Height:25
-					Text:Scroll Speed:
+					Text:@scroll-speed@:
 					Align:Right
 				Slider@SCROLLSPEED_SLIDER:
 					X:PARENT_RIGHT - WIDTH - 15
@@ -314,7 +314,7 @@ Background@SETTINGS_PANEL:
 					Y:115
 					Width:PARENT_RIGHT
 					Font:Bold
-					Text:Hotkeys
+					Text:@hotkeys@
 					Align:Center
 				ScrollPanel@HOTKEY_LIST:
 					X:15
@@ -374,36 +374,36 @@ Background@SETTINGS_PANEL:
 					Width:200
 					Height:20
 					Font:Regular
-					Text: Enable Network Discovery (UPnP)
+					Text:@nat-discovery@
 				Checkbox@CRASH_DIALOG_CHECKBOX:
 					X:310
 					Y:40
 					Width:300
 					Height:20
 					Font:Regular
-					Text:Show Fatal Error dialog
+					Text:@crash-dialog@
 				Checkbox@PERFTEXT_CHECKBOX:
 					X:15
 					Y:70
 					Width:300
 					Height:20
 					Font:Regular
-					Text:Show Performance Text
+					Text:@perftext@
 				Checkbox@PERFGRAPH_CHECKBOX:
 					X:310
 					Y:70
 					Width:300
 					Height:20
 					Font:Regular
-					Text:Show Performance Graph
+					Text:@perfgraph@
 				Checkbox@DEVELOPER_MENU_CHECKBOX:
 					X:15
 					Y:100
 					Width:300
 					Height:20
 					Font:Regular
-					Text:Enable Asset Browser (requires restart)
-				Label@HOTKEY_TITLE:
+					Text:@developer-menu@
+				Label@DEBUG_TITLE:
 					Y:140
 					Width:PARENT_RIGHT
 					Font:Bold
@@ -415,18 +415,18 @@ Background@SETTINGS_PANEL:
 					Width:300
 					Height:20
 					Font:Regular
-					Text:Show Bot Debug Messages
+					Text:@bot-debug@
 				Checkbox@VERBOSE_NAT_CHECKBOX:
 					X:310
 					Y:160
 					Width:300
 					Height:20
 					Font:Regular
-					Text:Detailed NAT logging
+					Text:@verbose-nat@
 				Checkbox@CHECKUNSYNCED_CHECKBOX:
 					X:15
 					Y:190
 					Width:300
 					Height:20
 					Font:Regular
-					Text:Check Sync around Unsynced Code
+					Text:@check-unsynced@

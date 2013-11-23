@@ -1,6 +1,246 @@
 english:
+# Language Settings DropDownButton
 	english: English
 
+# First Game Start
+# TODO: you currently can't change language here
+	assets-missing: Content files missing
+	requires-ra-mix: OpenRA requires the original Red Alert game content.
+	download-or-cd: Content can be downloaded, or copied from the install CD.
+	download: Download
+	cd: Use CD
+	change-mod: Change Mod
+	downloading-ra: Downloading Red Alert Content
+	retry: Retry
+	from-cd: Installing from CD
+	no-disk: Disk not found.
+	insert-ra-cd: Please insert one of the Red Alert install CDs then click Retry.
+
+# Main Menu
+	join-game: Join Game
+	create-game: Create Game
+	direct-connect: Direct Connect
+	settings: Settings
+	mods: Mods
+	music: Music
+	replay-viewer: Replay Viewer
+	credits: Credits
+	asset-browser: Asset Browser
+
+# common buttons:
+	cancel: Cancel
+	close: Close
+	ok: Ok
+	quit: Quit
+	join: Join
+
+# Direct Connect
+	server-ip: Server Address
+
+# Create Game
+	create-server: Create Server
+	game-title: Game Title
+	default-server-name: OpenRA Game
+	password: Password
+	optional: optional
+	external-port: External Port
+	listen-port: Listen Port
+	auto-portforward: Automatic port forwarding
+	advertise: Advertise game Online
+	create: Create
+
+# Connection
+	connection-failed: Connection Failed
+	could-not-connect: Could not connect to AAA.BBB.CCC.DDD:EEEE # TODO: hardcoded
+	connecting: Connecting
+	connecting-to: Connecting to AAA.BBB.CCC.DDD:EEEE... # TODO: hardcoded
+	abort: Abort
+
+# Settings
+	general: General
+	audio: Audio
+	display: Display
+	input: Keys
+	advanced: Advanced
+	player-name: Player Name
+	edge-scroll: Edge Scrolling
+	scroll-speed: Scroll Speed
+	inverse-scroll: Invert Mouse Drag Scrolling
+	mouse-scroll: Middle-Mouse Scrolling
+	classic-orders: Left-Click Orders
+	show-shellmap: Show Shellmap
+	nat-discovery: Enable Network Discovery (UPnP)
+	sound-volume: Sound Volume
+	music-volume: Music Volume
+	video-volume: Video Volume
+	cash-ticks: Cash Ticks
+	map-music: Shellmap / Mission Music
+	audio-device: Audio Device
+	devices-changes-require-restart: Device changes will be applied after the game is restarted.
+	mode: Mode
+	windowed: Windowed # TODO: hard-coded
+	video-changes-require-restart: Mode/Resolution changes will be applied after the game is restarted.
+	pixel-double: Enable Pixel Doubling
+	frame-limit: Cap Framerate @ 
+	limit-to: Limit to 
+	fps: FPS
+	language: Language
+	language-changes-require-restart: Language changes will be applied after the game is restarted.
+	hotkeys: Hotkeys
+	special-hotkeys: Special Hotkeys
+	unit-command-hotkeys: Hotkeys for Unit Commands
+	perfgraph: Show Performance Graph
+	perftext: Show Performance Text
+	check-unsynced: Check Sync around Unsynced Code
+	bot-debug: Show Bot Debug Messages
+	verbose-nat: Detailed NAT logging
+	developer-menu: Enable Asset Browser (requires restart)
+	crash-dialog: Show Fatal Error dialog
+
+# Serverbrowser
+	join-server: Join Server
+	show: Show
+	waiting: Waiting for Players
+	empty: Empty
+	already-started: Already Started
+	incompatible-version: Incompatible Version
+	fetching-games: Fetching games...
+	refresh: Refresh
+
+# IRC
+	global-chat: Global Chat
+	nickname: Nickname
+	auto-connect: Connect Automatically
+	connect: Connect
+
+# Replay Viewer
+	choose-replay: Choose Replay
+	map: Map
+	duration: Duration
+	players: Players
+	watch: Watch
+
+# Music Player
+	track: Track
+	shuffle: Shuffle
+	loop: Loop
+	no-music: No Music Installed
+
+# Mod Switcher
+	select-mod: Select Mod
+	title: Title
+	author: Author
+	version: Version
+	load-mod: Load Mod
+
+# Map Chooser
+	choose-map: Choose Map
+	random-map: Random Map
+
+# Lobby
+	admin: Game Admin
+	latency: Latency
+	color: Color
+	random: Random
+	faction: Faction
+	player: Player
+	lobby-status: ready
+	team: Team
+	slot-admin: Slot Admin
+	game-options: Game Options
+	change-map: Change Map
+	start-game: Start Game
+	chat: Chat
+	disconnect: Disconnect
+	play-in-this-slot: Play in this slot
+	spectator: Spectator
+	spectate: Spectate
+	kick-client-text-first-line: You may also apply a temporary ban, preventing
+	kick-client-text-second-line: them from joining for the remainder of this game.
+	temp-ban: Temporarily Ban
+	kick: Kick
+	map-options: Map Options
+	shroud: Shroud
+	fog: Fog of War
+	crates: Crates Appear
+	ally-build-radius: Build off Ally ConYards
+	allow-cheats: Debug Menu
+	allow-diplomacy: Diplomacy Changes
+	starting-cash: Starting Cash
+	starting-units: Starting Units
+	difficulty: Mission Difficulty
+
+# Asset Browser
+	asset-viewer-converter: Game Asset Viewer & Converter
+	folders: Folders
+	load: Load
+	preview: Preview
+	actions: Actions
+	selected-to-png: Selected to PNG
+	all-to-png: Extract all to PNG
+	import-from-png: Import from PNG
+	extracting-and-converting: Extracting and Converting Gamefiles
+	palette-selector: Palette
+
+# Ingame
+	options: Options
+	resume: Resume
+	surrender: Surrender
+	abort-mission: Abort Mission
+	diplomacy: Diplomacy
+	their-stance: Their Stance
+	my-stance: My Stance
+	cheats: Cheats
+	objectives: Objectives
+	primary-objectives: Primary Objectives
+	status: Status
+	secondary-objectives: Secondary Objectives
+	sell: Sell
+	sell-description: Sell buildings, reclaiming a \nproportion of their build cost
+	powerdown: Powerdown
+	powerdown-description: Disable unneeded structures so their \npower can be used elsewhere
+	repair: Repair
+	repair-description: Repair damaged buildings
+
+# Build (and SupportPower) Palette
 	ready: READY
 	on-hold: ON HOLD
 	requires: Requires {0}
+
+# Observer Stats
+	statistics: Statistics
+	cash: Cash
+	earned/min: Earned/min
+	power: Power
+	kills: Kills
+	deaths: Deaths
+	apm: Actions/min
+	earned-this-min: Earned this min
+	assets: Assets
+	earned: Earned
+	spent: Spent
+	harvesters: Harvesters
+	production: Production
+	support-powers: Support Powers
+	control: Control
+	units-killed: Units Killed
+	units-lost: Units Lost
+	buildings-killed: Bldg Killed
+	buildings-lost: Bldg Lost
+	earnings/min: Earnings received each minute
+
+# Cheats
+	developer-mode: Developer Mode
+	disable-shroud: Disable Shroud
+	give-exploration: Give Exploration
+	reset-exploration: Reset Exploration
+	show-unit-paths: Show Unit Paths
+	give-cash: Give $20000 Cash
+	instant-build: Instant Build Speed
+	instant-charge: Support Powers Charge Instantly
+	build-everything: Build Everything
+	unlimited-power: Unlimited Power
+	build-anywhere: Build Anywhere
+	a-star-cost: Show A* Cost
+	combat-geometry: Show Combat Geometry
+	render-geometry: Show Render Geometry
