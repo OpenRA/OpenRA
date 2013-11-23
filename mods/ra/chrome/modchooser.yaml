@@ -6,7 +6,7 @@ Background@MODS_PANEL:
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Children:
 		Label@TITLE:
-			Text:Select Mod
+			Text:@select-mod@
 			Width:PARENT_RIGHT
 			Y:20
 			Font:Bold
@@ -49,7 +49,7 @@ Background@MODS_PANEL:
 					Height:25
 					X:0
 					Y:0
-					Text:Title
+					Text:@title@
 					Align:Center
 					Font:Bold
 				Label@AUTHOR:
@@ -57,14 +57,14 @@ Background@MODS_PANEL:
 					Align:Center
 					Width:50
 					Height:25
-					Text:Author
+					Text:@author@
 					Font:Bold
 				Label@VERSION:
 					Width:140
 					X:PARENT_RIGHT-150
 					Align:Center
 					Height:25
-					Text:Version
+					Text:@version@
 					Font:Bold
 		Button@BACK_BUTTON:
 			Key:escape
@@ -73,7 +73,7 @@ Background@MODS_PANEL:
 			Width:160
 			Height:25
 			Font:Bold
-			Text:Cancel
+			Text:@cancel@
 		Button@LOAD_BUTTON:
 			Key:return
 			X:PARENT_RIGHT-360
@@ -81,4 +81,4 @@ Background@MODS_PANEL:
 			Width:160
 			Height:25
 			Font:Bold
-			Text:Load Mod
+			Text:@load-mod@

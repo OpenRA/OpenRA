@@ -11,7 +11,7 @@ Background@CHEATS_PANEL:
 			Y:20
 			Width:250
 			Height:25
-			Text:Developer Mode
+			Text:@developer-mode@
 			Align:Center
 			Font:Bold
 		Checkbox@DISABLE_SHROUD:
@@ -19,84 +19,84 @@ Background@CHEATS_PANEL:
 			Y:50
 			Height:20
 			Width:PARENT_RIGHT - 30
-			Text:Disable Shroud
+			Text:@disable-shroud@
 		Button@GIVE_EXPLORATION:
 			X:30
 			Y:80
 			Width:120
 			Height:25
-			Text:Give Exploration
+			Text:@give-exploration@
 		Button@RESET_EXPLORATION:
 			X:200
 			Y:80
 			Width:120
 			Height:25
-			Text:Reset Exploration
+			Text:@reset-exploration@
 		Checkbox@SHOW_UNIT_PATHS:
 			X:30
 			Y:110
 			Width:PARENT_RIGHT - 30
 			Height:20
-			Text:Show Unit Paths
+			Text:@show-unit-paths@
 		Button@GIVE_CASH:
 			X:30
 			Y:140
 			Width:150
 			Height:20
-			Text: Give $20000 Cash
+			Text:@give-cash@
 			Height:25
 		Checkbox@INSTANT_BUILD:
 			X:30
 			Y:170
 			Width:PARENT_RIGHT - 30
 			Height:20
-			Text:Instant Build Speed
+			Text:@instant-build@
 		Checkbox@INSTANT_CHARGE:
 			X:30
 			Y:200
 			Width:PARENT_RIGHT - 30
 			Height:20
-			Text:Support Powers Charge Instantly
+			Text:@instant-charge@
 		Checkbox@ENABLE_TECH:
 			X:30
 			Y:230
 			Width:PARENT_RIGHT - 30
 			Height:20
-			Text:Build Everything
+			Text:@build-everything@
 		Checkbox@UNLIMITED_POWER:
 			X:30
 			Y:260
 			Width:PARENT_RIGHT - 30
 			Height:20
-			Text:Unlimited Power
+			Text:@unlimited-power@
 		Checkbox@BUILD_ANYWHERE:
 			X:30
 			Y:290
 			Width:PARENT_RIGHT - 30
 			Height:20
-			Text:Build Anywhere
+			Text:@build-anywhere@
 		Checkbox@SHOW_ASTAR:
 			X:30
 			Y:320
 			Width:PARENT_RIGHT - 30
 			Height:20
-			Text:Show A* Cost
+			Text:@a-star-cost@
 		Checkbox@SHOW_MUZZLES:
 			X:30
 			Y:350
 			Height:20
 			Width:200
-			Text:Show Combat Geometry
+			Text:@combat-geometry@
 		Checkbox@SHOW_GEOMETRY:
 			X:30
 			Y:380
 			Height:20
 			Width:200
-			Text:Show Render Geometry
+			Text:@render-geometry@
 		Button@CLOSE:
 			X:30
 			Y:420
 			Width:PARENT_RIGHT - 60
 			Height:25
-			Text:Close
+			Text:@close@
 			Key:escape
