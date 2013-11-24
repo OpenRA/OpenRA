@@ -48,12 +48,12 @@ namespace OpenRA.Traits
 			var Xy = new float2(bounds.Right, bounds.Top);
 
 			wr.DrawSelectionBox(self, Color.White);
-			DrawHealthBar(wr, self, xy, Xy);
-			DrawExtraBars(wr, self, xy, Xy);
-			DrawUnitPath(wr, self);
+			DrawHealthBar(wr, xy, Xy);
+			DrawExtraBars(wr, xy, Xy);
+			DrawUnitPath(wr);
 		}
 
-		public void DrawRollover(WorldRenderer wr, Actor self)
+		public void DrawRollover(WorldRenderer wr)
 		{
 			if (!Info.Selectable)
 				return;
@@ -65,11 +65,11 @@ namespace OpenRA.Traits
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);
 
-			DrawHealthBar(wr, self, xy, Xy);
-			DrawExtraBars(wr, self, xy, Xy);
+			DrawHealthBar(wr, xy, Xy);
+			DrawExtraBars(wr, xy, Xy);
 		}
 
-		void DrawExtraBars(WorldRenderer wr, Actor self, float2 xy, float2 Xy)
+		void DrawExtraBars(WorldRenderer wr, float2 xy, float2 Xy)
 		{
 			foreach (var extraBar in self.TraitsImplementing<ISelectionBar>())
 			{
@@ -78,12 +78,12 @@ namespace OpenRA.Traits
 				{
 					xy.Y += (int)(4 / wr.Viewport.Zoom);
 					Xy.Y += (int)(4 / wr.Viewport.Zoom);
-					DrawSelectionBar(wr, self, xy, Xy, extraBar.GetValue(), extraBar.GetColor());
+					DrawSelectionBar(wr, xy, Xy, extraBar.GetValue(), extraBar.GetColor());
 				}
 			}
 		}
 
-		void DrawSelectionBar(WorldRenderer wr, Actor self, float2 xy, float2 Xy, float value, Color barColor)
+		void DrawSelectionBar(WorldRenderer wr, float2 xy, float2 Xy, float value, Color barColor)
 		{
 			if (!self.IsInWorld)
 				return;
@@ -110,7 +110,7 @@ namespace OpenRA.Traits
 			wlr.DrawLine(xy + r, z + r, barColor2, barColor2);
 		}
 
-		void DrawHealthBar(WorldRenderer wr, Actor self, float2 xy, float2 Xy)
+		void DrawHealthBar(WorldRenderer wr, float2 xy, float2 Xy)
 		{
 			if (!self.IsInWorld) return;
 
@@ -123,9 +123,7 @@ namespace OpenRA.Traits
 			var q = new float2(0, -3 / wr.Viewport.Zoom);
 			var r = new float2(0, -2 / wr.Viewport.Zoom);
 
-			var healthColor = (health.DamageState == DamageState.Critical) ? Color.Red :
-							  (health.DamageState == DamageState.Heavy) ? Color.Yellow : Color.LimeGreen;
-
+			var healthColor = GetHealthColor(health);
 			var healthColor2 = Color.FromArgb(
 				255,
 				healthColor.R / 2,
@@ -159,7 +157,7 @@ namespace OpenRA.Traits
 			}
 		}
 
-		void DrawUnitPath(WorldRenderer wr, Actor self)
+		void DrawUnitPath(WorldRenderer wr)
 		{
 			if (self.World.LocalPlayer == null || !self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
 				return;
@@ -180,5 +178,14 @@ namespace OpenRA.Traits
 			}
 		}
 
+		Color GetHealthColor(Health health)
+		{
+			if (Game.Settings.Game.TeamHealthColors)
+				return self.Owner.IsAlliedWith(self.World.LocalPlayer) ? Color.LimeGreen :
+						self.Owner.NonCombatant ? Color.Tan : Color.Red;
+			else
+				return health.DamageState == DamageState.Critical ? Color.Red :
+						health.DamageState == DamageState.Heavy ? Color.Yellow : Color.LimeGreen;
+		}
 	}
 }

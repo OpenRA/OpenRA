@@ -146,6 +146,16 @@ namespace OpenRA.Graphics
 				foreach (var t in g)
 					t.RenderAfterWorld(this);
 
+			if (!world.IsShellmap && Game.Settings.Game.AlwaysShowStatusBars)
+			{
+				foreach (var g in world.Actors.Where(a => !a.Destroyed
+					&& a.HasTrait<Selectable>()
+					&& !world.FogObscures(a)
+					&& !world.Selection.Actors.Contains(a)))
+
+					DrawRollover(g);
+			}
+
 			Game.Renderer.Flush();
 		}
 
@@ -177,7 +187,7 @@ namespace OpenRA.Graphics
 		{
 			var selectable = unit.TraitOrDefault<Selectable>();
 			if (selectable != null)
-				selectable.DrawRollover(this, unit);
+				selectable.DrawRollover(this);
 		}
 
 		public void DrawRangeCircle(Color c, float2 location, float range)

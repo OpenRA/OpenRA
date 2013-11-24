@@ -18,7 +18,7 @@ using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Ra.Widgets.Logic
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class SettingsLogic
 	{
@@ -120,6 +120,8 @@ namespace OpenRA.Mods.Ra.Widgets.Logic
 			BindCheckboxPref(panel, "PIXELDOUBLE_CHECKBOX", ds, "PixelDouble");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
 			BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
+			BindCheckboxPref(panel, "ALWAYS_SHOW_STATUS_BARS_CHECKBOX", gs, "AlwaysShowStatusBars");
+			BindCheckboxPref(panel, "TEAM_HEALTH_COLORS_CHECKBOX", gs, "TeamHealthColors");
 
 			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
 			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton);
@@ -244,7 +246,8 @@ namespace OpenRA.Mods.Ra.Widgets.Logic
 				{ "SellKey", "Sell mode" },
 				{ "PowerDownKey", "Power-down mode" },
 				{ "RepairKey", "Repair mode" },
-				{ "CycleTabsKey", "Cycle production tabs" }
+				{ "CycleTabsKey", "Cycle production tabs" },
+				{ "ToggleStatusBarsKey", "Toggle status bars" }
 			};
 
 			var unitHotkeys = new Dictionary<string, string>()
