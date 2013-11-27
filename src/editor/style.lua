@@ -164,6 +164,7 @@ local specialmapping = {
   fold = function(editor,style)
     local clrfg = style.fg and wx.wxColour(unpack(style.fg))
     local clrbg = style.bg and wx.wxColour(unpack(style.bg))
+    local clrhi = style.bg and wx.wxColour(unpack(style.hi))
     local clrsel = style.sel and wx.wxColour(unpack(style.sel))
 
     -- if selected background is set then enable support for it
@@ -191,6 +192,17 @@ local specialmapping = {
       -- http://www.scintilla.org/ScintillaDoc.html#SCI_SETFOLDMARGINCOLOUR
       editor:SetFoldMarginColour(true, clrbg)
       editor:SetFoldMarginHiColour(true, clrbg)
+    end
+    if clrhi then
+      editor:SetFoldMarginHiColour(true, clrhi)
+    end
+  end,
+
+  edge = function(editor,style)
+    editor:SetEdgeMode(style.mode or wxstc.wxSTC_EDGE_LINE)
+    editor:SetEdgeColumn(style.col or 80)
+    if style.fg then
+      editor:SetEdgeColour(wx.wxColour(unpack(style.fg)))
     end
   end,
 
