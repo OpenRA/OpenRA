@@ -198,14 +198,6 @@ local specialmapping = {
     end
   end,
 
-  edge = function(editor,style)
-    editor:SetEdgeMode(style.mode or wxstc.wxSTC_EDGE_LINE)
-    editor:SetEdgeColumn(style.col or 80)
-    if style.fg then
-      editor:SetEdgeColour(wx.wxColour(unpack(style.fg)))
-    end
-  end,
-
   marker = function(editor,markers)
     for m, style in pairs(markers) do
       local id, ch, fg, bg = StylesGetMarker(m)
