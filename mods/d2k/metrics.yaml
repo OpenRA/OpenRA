@@ -3,5 +3,19 @@
 Metrics:
 	ButtonDepth: 1
 	ButtonFont: Regular
+	ButtonTextColor: 255,255,255
+	ButtonTextColorDisabled: 128,128,128
+	ButtonTextContrast: false
+	ButtonTextContrastColor: 0,0,0
 	CheckboxPressedState: false
+	HotkeyFont: Regular
+	HotkeyColor: 255,255,255
+	HotkeyColorDisabled: 128,128,128
+	TextfieldFont: Regular
+	TextfieldColor: 255,255,255
+	TextfieldColorDisabled: 128,128,128
+	TextFont: Regular
+	TextColor: 255,255,255
+	TextContrast: false
+	TextContrastColor: 0,0,0
 	ColorPickerRemapIndices: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240

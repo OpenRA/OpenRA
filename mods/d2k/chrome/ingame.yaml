@@ -20,6 +20,8 @@ Container@INGAME_ROOT:
 		Timer@GAME_TIMER:
 			X: WINDOW_RIGHT/2
 			Y: 0
+			Font: Title
+			Contrast: true
 		StrategicProgress@STRATEGIC_PROGRESS:
 			X: WINDOW_RIGHT/2
 			Y: 40

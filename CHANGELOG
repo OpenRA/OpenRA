@@ -78,6 +78,7 @@ NEW:
 		Added language translation support.
 		Added game ID and version information to exception and sync reports.
 		Map folders are now explicitly specified in mod.yaml.
+		Most UI widgets are now customizable in terms of font type, color, contrast and had their global defaults moved from code to metrics.yaml.
 		Replaced the OS X binary launcher with a script to use a new SDL2 renderer.
 		Improved cash tick sound playback.
 		Added modifier support to hotkeys.
@@ -94,6 +95,7 @@ NEW:
 		Linux packages now install to /usr/lib/openra for consistency with other Mono applications.
 	Mod / Custom map compatibility:
 		Mods can now include traits from TD and D2K in RA.
+		Mods can now customize UI text settings like font type/color/contrast for most widgets and set global defaults in metrics.yaml.
 		New sections MapFolders and Translations added to mod.yaml.
 		Renamed CarpetBomb trait to AttackBomber, and additional functionality added. An Armament trait is now required to specify the weapons.
 		Renamed Capture trait to ExternalCapture.
