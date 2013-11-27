@@ -164,7 +164,7 @@ local specialmapping = {
   fold = function(editor,style)
     local clrfg = style.fg and wx.wxColour(unpack(style.fg))
     local clrbg = style.bg and wx.wxColour(unpack(style.bg))
-    local clrhi = style.bg and wx.wxColour(unpack(style.hi))
+    local clrhi = style.hi and wx.wxColour(unpack(style.hi))
     local clrsel = style.sel and wx.wxColour(unpack(style.sel))
 
     -- if selected background is set then enable support for it
