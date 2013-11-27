@@ -56,6 +56,7 @@ function StylesGetDefault()
     caretlinebg = {bg = {240, 240, 230}},
     fold = {fg = {90, 90, 80}, bg = {250, 250, 250}, sel = {90+96, 90, 80}},
     whitespace = nil,
+    edge = {},
 
     -- deprecated; allowed for backward compatibility in case someone does
     -- fncall.fg = {...}
@@ -199,10 +200,10 @@ local specialmapping = {
   end,
 
   edge = function(editor,style)
-    editor:SetEdgeMode(style.mode or wxstc.wxSTC_EDGE_LINE)
-    editor:SetEdgeColumn(style.col or 80)
-    if style.fg then
-      editor:SetEdgeColour(wx.wxColour(unpack(style.fg)))
+    if style.fg or style.col or style.mode then
+      editor:SetEdgeColour(wx.wxColour(unpack(style.fg or {220, 220, 220})))
+      editor:SetEdgeMode(style.mode or wxstc.wxSTC_EDGE_LINE)
+      editor:SetEdgeColumn(style.col or 80)
     end
   end,
 
