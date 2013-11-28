@@ -116,6 +116,7 @@
 	TargetableUnit:
 		TargetTypes: Ground, Infantry, Disguise
 	RenderInfantry:
+		CorpseInfDeathExceptions: 5, 6 # fire, electricity
 	AutoTarget:
 	AttackMove:
 	Passenger:

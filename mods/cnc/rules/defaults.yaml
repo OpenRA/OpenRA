@@ -152,6 +152,7 @@
 	TakeCover:
 		ProneSpeed: 0.6
 	RenderInfantryProne:
+		CorpseInfDeathExceptions: 5 # fire
 	AttackMove:
 	Passenger:
 		CargoType: Infantry

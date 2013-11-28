@@ -9,16 +9,15 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	class CrushableInfantryInfo : ITraitInfo, Requires<MobileInfo>, Requires<RenderInfantryInfo>
 	{
 		public readonly string CrushSound = "squish2.aud";
-		public readonly string CorpseSequence = "die-crushed";
 		public readonly string[] CrushClasses = { "infantry" };
 		public readonly int WarnProbability = 75;
 		public object Create(ActorInitializer init) { return new CrushableInfantry(init.self, this); }
@@ -46,7 +45,7 @@ namespace OpenRA.Mods.RA
 		public void OnCrush(Actor crusher)
 		{
 			Sound.Play(Info.CrushSound, crusher.CenterPosition);
-			ri.SpawnCorpse(self, Info.CorpseSequence);
+			ri.SpawnCorpse(self, ri.Info.CorpseSequence, null);
 			self.Kill(crusher);
 		}
 

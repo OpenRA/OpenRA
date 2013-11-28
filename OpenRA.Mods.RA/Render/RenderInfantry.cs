@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System;
+using System.Linq;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
@@ -20,6 +22,8 @@ namespace OpenRA.Mods.RA.Render
 		public readonly int MaxIdleWaitTicks = 110;
 		public readonly string[] IdleAnimations = { };
 		public readonly string[] StandAnimations = { "stand" };
+		public readonly string CorpseSequence = "corpse";
+		public readonly int[] CorpseInfDeathExceptions = { };
 
 		public override object Create(ActorInitializer init) { return new RenderInfantry(init.self, this); }
 	}
@@ -37,7 +41,7 @@ namespace OpenRA.Mods.RA.Render
 
 		protected bool dirty = false;
 
-		RenderInfantryInfo info;
+		public readonly RenderInfantryInfo Info;
 		string idleSequence;
 		int idleDelay;
 		Mobile mobile;
@@ -49,7 +53,7 @@ namespace OpenRA.Mods.RA.Render
 
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
-			return info.IdleAnimations.Length > 0;
+			return Info.IdleAnimations.Length > 0;
 		}
 
 		public AnimationState State { get; private set; }
@@ -57,7 +61,7 @@ namespace OpenRA.Mods.RA.Render
 		public RenderInfantry(Actor self, RenderInfantryInfo info)
 			: base(self, MakeFacingFunc(self))
 		{
-			this.info = info;
+			Info = info;
 			anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 			State = AnimationState.Waiting;
 			mobile = self.Trait<Mobile>();
@@ -86,7 +90,7 @@ namespace OpenRA.Mods.RA.Render
 			if ((State == AnimationState.Moving || dirty) && !mobile.IsMoving)
 			{
 				State = AnimationState.Waiting;
-				anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
+				anim.PlayFetchIndex(NormalizeInfantrySequence(self, Info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 			}
 			else if ((State != AnimationState.Moving || dirty) && mobile.IsMoving)
 			{
@@ -101,13 +105,13 @@ namespace OpenRA.Mods.RA.Render
 		{
 			if (State != AnimationState.Idle && State != AnimationState.IdleAnimating)
 			{
-				anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
+				anim.PlayFetchIndex(NormalizeInfantrySequence(self, Info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 				State = AnimationState.Idle;
 
-				if (info.IdleAnimations.Length > 0)
+				if (Info.IdleAnimations.Length > 0)
 				{
-					idleSequence = info.IdleAnimations.Random(self.World.SharedRandom);
-					idleDelay = self.World.SharedRandom.Next(info.MinIdleWaitTicks, info.MaxIdleWaitTicks);
+					idleSequence = Info.IdleAnimations.Random(self.World.SharedRandom);
+					idleDelay = self.World.SharedRandom.Next(Info.MinIdleWaitTicks, Info.MaxIdleWaitTicks);
 				}
 			}
 			else if (AllowIdleAnimation(self) && idleDelay > 0 && --idleDelay == 0)
@@ -117,7 +121,7 @@ namespace OpenRA.Mods.RA.Render
 					State = AnimationState.IdleAnimating;
 					anim.PlayThen(idleSequence,	() =>
 					{
-						anim.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
+						anim.PlayRepeating(NormalizeInfantrySequence(self, Info.StandAnimations.Random(Game.CosmeticRandom)));
 						State = AnimationState.Waiting;
 					});
 				}
@@ -126,21 +130,29 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			// Killed by some non-standard means
+			// Killed by some non-standard means. This includes dying inside a transport
+			// and being crushed by a vehicle (CrushableInfantry will spawn a corpse instead).
 			if (e.Warhead == null)
 				return;
 
 			Sound.PlayVoice("Die", self, self.Owner.Country.Race);
-			SpawnCorpse(self, "die{0}".F(e.Warhead.InfDeath));
+			SpawnCorpse(self, "die{0}".F(e.Warhead.InfDeath), () =>
+			{
+				if (!Info.CorpseInfDeathExceptions.Contains(e.Warhead.InfDeath))
+					SpawnCorpse(self, Info.CorpseSequence, null);
+			});
 		}
 
-		public void SpawnCorpse(Actor self, string sequence)
+		public void SpawnCorpse(Actor self, string sequence, Action onComplete)
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				if (!self.Destroyed)
+				// A Destroyed check isn't required here because nothing we use here
+				// will blow up if the actor is Destroyed, and it would prevent
+				// the corpse animation from appearing after the death animation is finished anyway.
+				if (anim.HasSequence(sequence))
 					w.Add(new Corpse(w, self.CenterPosition, GetImage(self),
-						sequence, info.PlayerPalette + self.Owner.InternalName));
+						sequence, Info.PlayerPalette + self.Owner.InternalName, onComplete));
 			});
 		}
 	}

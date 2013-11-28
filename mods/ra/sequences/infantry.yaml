@@ -60,10 +60,10 @@ e1:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	icon: e1icon
 		Start: 0
 
@@ -128,10 +128,10 @@ sniper:
 		Length: 18
 	die6: electro
 		Start: 0
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	icon: snipericon
 		Start: 0
 
@@ -177,10 +177,10 @@ e3:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	prone-stand:
 		Start: 144
 		Length: 4
@@ -235,10 +235,10 @@ e6:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	prone-stand:
 		Start: 82
 		Length: 4
@@ -293,10 +293,10 @@ medi:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	prone-stand:
 		Start: 130
 		Length: 4
@@ -351,10 +351,10 @@ mech:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	prone-stand:
 		Start: 130
 		Length: 4
@@ -409,10 +409,10 @@ e2:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	prone-stand:
 		Start: 240
 		Length: 4
@@ -464,10 +464,6 @@ dog:
 	die6: electdog
 		Start: 0
 		Length: *
-	die-crushed: corpse1
-		Start: 0
-		Length: 6
-		Tick: 1600
 	shoot: dogbullt
 		Start: 0
 		Length: 4
@@ -517,10 +513,10 @@ spy:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	prone-stand:
 		Start: 144
 		Length: 4
@@ -610,10 +606,10 @@ e7:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	prone-stand:
 		Start: 128
 		Length: 4
@@ -672,10 +668,10 @@ e4:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	prone-stand:
 		Start: 208
 		Length: 4
@@ -743,10 +739,10 @@ gnrl:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 
 shok:
 	stand:
@@ -847,10 +843,10 @@ c1:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	run:
 		Start: 56
 		Length: 6
@@ -891,10 +887,10 @@ c2:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	run:
 		Start: 56
 		Length: 6
@@ -935,10 +931,10 @@ c3:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	run:
 		Start: 56
 		Length: 6
@@ -980,10 +976,10 @@ einstein:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 		
 delphi:
 	stand:
@@ -1020,10 +1016,10 @@ delphi:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 
 chan:
 	stand:
@@ -1060,10 +1056,10 @@ chan:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 
 zombie:
 	stand:
@@ -1102,10 +1098,10 @@ zombie:
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: corpse1
+	corpse: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600
+		Tick: 3200
 	icon: zombicon
 		Start: 0
 
@@ -1148,9 +1144,9 @@ ant:
 		Start: 104
 		Length: 8
 		Tick: 300
-	die-crushed:
+	corpse:
 		Start: 104
 		Length: 8
-		Tick: 300
+		Tick: 3200
 	icon: anticon
 		Start: 0
