@@ -17,11 +17,42 @@ Container@SERVERBROWSER_PANEL:
 			Height:500
 			Background:panel-black
 			Children:
+				Label@SHOW_LABEL_TITLE:
+					X:20
+					Y:10
+					Width:20
+					Height:25
+					Text:Show:
+					Font:Bold
+				Checkbox@WAITING_FOR_PLAYERS:
+					X:80
+					Y:13
+					Width:100
+					Height:20
+					Text:Waiting
+				Checkbox@EMPTY:
+					X:180
+					Y:13
+					Width:100
+					Height:20
+					Text:Empty
+				Checkbox@ALREADY_STARTED:
+					X:280
+					Y:13
+					Width:100
+					Height:20
+					Text:Started
+				Checkbox@INCOMPATIBLE_VERSION:
+					X:380
+					Y:13
+					Width:100
+					Height:20
+					Text:Incompatible
 				ScrollPanel@SERVER_LIST:
 					X:15
-					Y:15
+					Y:45
 					Width:700
-					Height:470
+					Height:440
 					Children:
 						ScrollItem@SERVER_TEMPLATE:
 							Width:PARENT_RIGHT-27
