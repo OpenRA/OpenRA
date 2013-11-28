@@ -170,6 +170,7 @@ Background@SETTINGS_PANEL:
 					Font:Bold
 					Text:Localization
 					Align:Center
+					Visible:false
 				Label@LANGUAGE_LABEL:
 					X:230 - WIDTH - 5
 					Y:244
@@ -177,11 +178,13 @@ Background@SETTINGS_PANEL:
 					Height:25
 					Align:Right
 					Text:Language:
+					Visible:false
 				DropDownButton@LANGUAGE_DROPDOWNBUTTON:
 					X:230
 					Y:245
 					Width:200
 					Height:25
+					Visible:false
 				Label@VIDEO_DESC_A:
 					Y:265
 					Width:PARENT_RIGHT
@@ -189,6 +192,7 @@ Background@SETTINGS_PANEL:
 					Font:Tiny
 					Align:Center
 					Text:Language changes will be applied after the game is restarted
+					Visible:false
 				Label@VIDEO_DESC_B:
 					Y:280
 					Width:PARENT_RIGHT
@@ -196,6 +200,7 @@ Background@SETTINGS_PANEL:
 					Font:Tiny
 					Align:Center
 					Text:Translations apply to text strings only; Speech and build icons will remain in English
+					Visible:false
 		Container@AUDIO_PANEL:
 			X:5
 			Y:50
