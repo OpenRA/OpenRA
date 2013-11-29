@@ -51,7 +51,7 @@ namespace OpenRA.Utility
 				throw new InvalidOperationException("All frames must be the same size");
 
 			using (var destStream = File.Create(dest))
-				ShpReader.Write(destStream, size.Width, size.Height, frames.Select(f => f.ToBytes()));
+				ShpReader.Write(destStream, size, frames.Select(f => f.ToBytes()));
 
 			Console.WriteLine(dest + " saved.");
 		}
@@ -213,7 +213,7 @@ namespace OpenRA.Utility
 			var srcImage = ShpReader.Load(args[3]);
 
 			using (var destStream = File.Create(args[4]))
-				ShpReader.Write(destStream, srcImage.Width, srcImage.Height,
+				ShpReader.Write(destStream, srcImage.Size,
 					srcImage.Frames.Select(im => im.Data.Select(px => (byte)remap[px]).ToArray()));
 		}
 
@@ -236,8 +236,7 @@ namespace OpenRA.Utility
 			}
 
 			using (var destStream = File.Create(args[2]))
-				ShpReader.Write(destStream, srcImage.Width, srcImage.Height,
-					destFrames.Select(f => f.Data));
+				ShpReader.Write(destStream, srcImage.Size, destFrames.Select(f => f.Data));
 		}
 
 		static string FriendlyTypeName(Type t)
