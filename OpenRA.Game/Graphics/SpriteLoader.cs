@@ -19,7 +19,9 @@ namespace OpenRA.Graphics
 		public SpriteLoader(string[] exts, SheetBuilder sheetBuilder)
 		{
 			SheetBuilder = sheetBuilder;
-			this.exts = exts;
+
+			// Include extension-less version
+			this.exts = exts.Append("").ToArray();
 			sprites = new Cache<string, Sprite[]>(LoadSprites);
 		}
 

@@ -2,7 +2,7 @@
 	cursor: mousepal.pal
 
 Cursors:
-	mouse: cursor
+	mouse.shp: cursor
 		scroll-t: #TODO
 			start: 2
 		scroll-tr: #TODO
