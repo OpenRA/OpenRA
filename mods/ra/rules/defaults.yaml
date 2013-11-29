@@ -308,6 +308,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	-GpsDot:
+	-MustBeDestroyed:
 
 ^AmmoBox:
 	Inherits: ^TechBuilding
