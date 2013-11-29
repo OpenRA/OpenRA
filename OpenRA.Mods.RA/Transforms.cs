@@ -68,29 +68,31 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
+		public void DeployTransform()
+		{
+			var b = self.TraitOrDefault<Building>();
+
+			if (!CanDeploy() || (b != null && !b.Lock()))
+			{
+				foreach (var s in Info.NoTransformSounds)
+					Sound.PlayToPlayer(self.Owner, s);
+				return;
+			}
+
+			if (self.HasTrait<IFacing>())
+				self.QueueActivity(new Turn(Info.Facing));
+
+			var rb = self.TraitOrDefault<RenderBuilding>();
+			if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
+				self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
+
+			self.QueueActivity(new Transform(self, Info.IntoActor) { Offset = (CVec)Info.Offset, Facing = Info.Facing, Sounds = Info.TransformSounds });
+		}
+
 		public void ResolveOrder( Actor self, Order order )
 		{
 			if (order.OrderString == "DeployTransform")
-			{
-				var b = self.TraitOrDefault<Building>();
-
-				if (!CanDeploy() || (b != null && !b.Lock()))
-				{
-					foreach (var s in Info.NoTransformSounds)
-						Sound.PlayToPlayer(self.Owner, s);
-					return;
-				}
-				self.CancelActivity();
-
-				if (self.HasTrait<IFacing>())
-					self.QueueActivity(new Turn(Info.Facing));
-
-				var rb = self.TraitOrDefault<RenderBuilding>();
-				if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
-					self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
-
-				self.QueueActivity(new Transform(self, Info.IntoActor) { Offset = (CVec)Info.Offset, Facing = Info.Facing, Sounds = Info.TransformSounds });
-			}
+				DeployTransform();
 		}
 	}
 }
