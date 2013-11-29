@@ -242,6 +242,19 @@ V19:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Oil Pump
+	LeavesHusk: 
+		HuskActor: V19.Husk
+	AutoTargetIgnore:
+
+V19.Husk:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Husk (Oil Pump)
+	WithFire:
+	-Health:
+	-Selectable:
 
 BARL:
 	Inherits: ^TechBuilding
@@ -327,7 +340,6 @@ OILB:
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EngineerRepairable:
-	-MustBeDestroyed:
 	CashTrickler:
 		Period: 250
 		Amount: 100
