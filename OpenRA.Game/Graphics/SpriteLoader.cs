@@ -44,7 +44,7 @@ namespace OpenRA.Graphics
 			if (ImageCount == 0)
 			{
 				var shp = new ShpTSReader(FileSystem.OpenWithExts(filename, exts));
-				return shp.Select(a => SheetBuilder.Add(a.Image, shp.Size)).ToArray();
+				return shp.Frames.Select(a => SheetBuilder.Add(a.Image, a.Size, a.Offset)).ToArray();
 			}
 			else
 			{
