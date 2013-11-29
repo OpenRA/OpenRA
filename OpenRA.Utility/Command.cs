@@ -19,6 +19,7 @@ using System.Runtime.InteropServices;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Utility
@@ -79,9 +80,6 @@ namespace OpenRA.Utility
 		public static void ConvertShpToPng(string[] args)
 		{
 			var src = args[1];
-			var dest = Path.ChangeExtension(src, ".png");
-
-			var srcImage = ShpReader.Load(src);
 			var shadowIndex = new int[] { };
 			if (args.Contains("--noshadow"))
 			{
@@ -93,114 +91,55 @@ namespace OpenRA.Utility
 
 			var palette = Palette.Load(args[2], shadowIndex);
 
-			using (var bitmap = new Bitmap(srcImage.ImageCount * srcImage.Width, srcImage.Height, PixelFormat.Format8bppIndexed))
+			ISpriteSource source;
+			using (var stream = File.OpenRead(src))
+				source = SpriteSource.LoadSpriteSource(stream, src);
+
+			// The r8 padding requires external information that we can't access here.
+			var usePadding = !(args.Contains("--nopadding") || source is R8Reader);
+			var count = 0;
+			var prefix = Path.GetFileNameWithoutExtension(src);
+
+			foreach (var frame in source.Frames)
 			{
-				var x = 0;
-				bitmap.Palette = palette.AsSystemPalette();
+				var frameSize = usePadding ? frame.FrameSize : frame.Size;
+				var offset = usePadding ? (frame.Offset - 0.5f * new float2(frame.Size - frame.FrameSize)).ToInt2() : int2.Zero;
 
-				foreach (var frame in srcImage.Frames)
+				// shp(ts) may define empty frames
+				if (frameSize.Width == 0 && frameSize.Height == 0)
 				{
-					var data = bitmap.LockBits(new Rectangle(x, 0, srcImage.Width, srcImage.Height), ImageLockMode.WriteOnly,
-						PixelFormat.Format8bppIndexed);
+					count++;
+					continue;
+				}
 
-					for (var i = 0; i < bitmap.Height; i++)
-						Marshal.Copy(frame.Data, i * srcImage.Width,
-							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), srcImage.Width);
+				using (var bitmap = new Bitmap(frameSize.Width, frameSize.Height, PixelFormat.Format8bppIndexed))
+				{
+					bitmap.Palette = palette.AsSystemPalette();
+					var data = bitmap.LockBits(new Rectangle(0, 0, frameSize.Width, frameSize.Height),
+						ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
-					x += srcImage.Width;
+					// Clear the frame
+					if (usePadding)
+					{
+						var clearRow = new byte[data.Stride];
+						for (var i = 0; i < frameSize.Height; i++)
+							Marshal.Copy(clearRow, 0, new IntPtr(data.Scan0.ToInt64() + i * data.Stride), data.Stride);
+					}
+
+					for (var i = 0; i < frame.Size.Height; i++)
+					{
+						var destIndex = new IntPtr(data.Scan0.ToInt64() + (i + offset.Y) * data.Stride + offset.X);
+						Marshal.Copy(frame.Data, i * frame.Size.Width, destIndex, frame.Size.Width);
+					}
 
 					bitmap.UnlockBits(data);
+
+					var filename = "{0}-{1:D4}.png".F(prefix, count++);
+					bitmap.Save(filename);
 				}
-
-				bitmap.Save(dest);
-				Console.WriteLine(dest + " saved");
-			}
-		}
-
-		public static void ConvertR8ToPng(string[] args)
-		{
-			var srcImage = new R8Reader(File.OpenRead(args[1]));
-			var shadowIndex = new int[] { };
-			if (args.Contains("--noshadow"))
-			{
-				Array.Resize(ref shadowIndex, shadowIndex.Length + 1);
-				shadowIndex[shadowIndex.Length - 1] = 3;
 			}
 
-			var palette = Palette.Load(args[2], shadowIndex);
-			var startFrame = int.Parse(args[3]);
-			var endFrame = int.Parse(args[4]) + 1;
-			var filename = args[5];
-			var frameCount = endFrame - startFrame;
-
-			// TODO: this has always been a hack
-			var frame = srcImage.Frames.ToArray()[startFrame];
-			var bitmap = new Bitmap(frame.FrameSize.Width * frameCount, frame.FrameSize.Height, PixelFormat.Format8bppIndexed);
-			bitmap.Palette = palette.AsSystemPalette();
-
-			if (args.Contains("--tileset"))
-			{
-				int f = 0;
-				var tileset = new Bitmap(frame.FrameSize.Width * 20, frame.FrameSize.Height * 40, PixelFormat.Format8bppIndexed);
-				tileset.Palette = palette.AsSystemPalette();
-
-				for (int h = 0; h < 40; h++)
-				{
-					for (int w = 0; w < 20; w++)
-					{
-						if (h * 20 + w < frameCount)
-						{
-							Console.WriteLine(f);
-							frame = srcImage.Frames.ToArray()[startFrame];
-
-							var data = tileset.LockBits(new Rectangle(w * frame.Size.Width, h * frame.Size.Height, frame.Size.Width, frame.Size.Height),
-								ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
-
-							for (var i = 0; i < frame.Size.Height; i++)
-								Marshal.Copy(frame.Data, i * frame.Size.Width,
-									new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
-
-							tileset.UnlockBits(data);
-							f++;
-						}
-					}
-				}
-
-				bitmap = tileset;
-			}
-
-			bitmap.Save(filename + ".png");
-			Console.WriteLine(filename + ".png saved");
-		}
-
-		public static void ConvertTmpToPng(string[] args)
-		{
-			var mod = args[1];
-			var theater = args[2];
-			var templateNames = args.Skip(3);
-			var shadowIndex = new int[] { 3, 4 };
-
-			var manifest = new Manifest(mod);
-			FileSystem.LoadFromManifest(manifest);
-
-			var tileset = manifest.TileSets.Select(a => new TileSet(a))
-				.FirstOrDefault(ts => ts.Name == theater);
-
-			if (tileset == null)
-				throw new InvalidOperationException("No theater named '{0}'".F(theater));
-
-			var renderer = new TileSetRenderer(tileset, new Size(manifest.TileSize, manifest.TileSize));
-			var palette = new Palette(FileSystem.Open(tileset.Palette), shadowIndex);
-
-			foreach (var templateName in templateNames)
-			{
-				var template = tileset.Templates.FirstOrDefault(tt => tt.Value.Image == templateName);
-				if (template.Value == null)
-					throw new InvalidOperationException("No such template '{0}'".F(templateName));
-
-				using (var image = renderer.RenderTemplate(template.Value.Id, palette))
-					image.Save(Path.ChangeExtension(templateName, ".png"));
-			}
+			Console.WriteLine("Saved {0}-[0..{1}].png", prefix, count - 1);
 		}
 
 		public static void ConvertFormat2ToFormat80(string[] args)
