@@ -46,7 +46,7 @@ namespace OpenRA
 		public bool ObserveAfterWinOrLose;
 		public Player RenderPlayer
 		{
-			get { return renderPlayer == null || (ObserveAfterWinOrLose && renderPlayer.WinState != WinState.Undefined)? null : renderPlayer; }
+			get { return renderPlayer == null || (ObserveAfterWinOrLose && renderPlayer.WinState != WinState.Undefined) ? null : renderPlayer; }
 			set { renderPlayer = value; }
 		}
 
@@ -71,7 +71,7 @@ namespace OpenRA
 			if (orderManager.Connection is ReplayConnection)
 				return;
 
-	 		LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
+			LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
 			RenderPlayer = LocalPlayer;
 		}
 
@@ -89,7 +89,7 @@ namespace OpenRA
 			get { return orderGenerator_; }
 			set
 			{
-				Sync.AssertUnsynced( "The current order generator may not be changed from synced code" );
+				Sync.AssertUnsynced("The current order generator may not be changed from synced code");
 				orderGenerator_ = value;
 			}
 		}
@@ -145,16 +145,16 @@ namespace OpenRA
 				wlh.WorldLoaded(this, wr);
 		}
 
-		public Actor CreateActor( string name, TypeDictionary initDict )
+		public Actor CreateActor(string name, TypeDictionary initDict)
 		{
-			return CreateActor( true, name, initDict );
+			return CreateActor(true, name, initDict);
 		}
 
-		public Actor CreateActor( bool addToWorld, string name, TypeDictionary initDict )
+		public Actor CreateActor(bool addToWorld, string name, TypeDictionary initDict)
 		{
-			var a = new Actor( this, name, initDict );
-			if( addToWorld )
-				Add( a );
+			var a = new Actor(this, name, initDict);
+			if (addToWorld)
+				Add(a);
 			return a;
 		}
 
@@ -188,12 +188,21 @@ namespace OpenRA
 
 		public bool Paused { get; internal set; }
 		public bool PredictedPaused { get; internal set; }
+		public bool PauseStateLocked { get; set; }
 		public bool IsShellmap = false;
 
 		public void SetPauseState(bool paused)
 		{
+			if (PauseStateLocked)
+				return;
+
 			IssueOrder(Order.PauseGame(paused));
 			PredictedPaused = paused;
+		}
+
+		public void SetLocalPauseState(bool paused)
+		{
+			Paused = PredictedPaused = paused;
 		}
 
 		public void Tick()
@@ -206,12 +215,12 @@ namespace OpenRA
 							ni.Trait.TickIdle(ni.Actor);
 
 				using (new PerfSample("tick_activities"))
-					foreach(var a in actors)
+					foreach (var a in actors)
 						a.Tick();
 
 				ActorsWithTrait<ITick>().DoTimed(x => x.Trait.Tick(x.Actor),
 					"[{2}] Trait: {0} ({1:0.000} ms)",
-				    Game.Settings.Debug.LongTickThreshold);
+					Game.Settings.Debug.LongTickThreshold);
 
 				effects.DoTimed(e => e.Tick(this),
 					"[{2}] Effect: {0} ({1:0.000} ms)",
@@ -246,11 +255,11 @@ namespace OpenRA
 
 				// hash all the actors
 				foreach (var a in Actors)
-					ret += n++ * (int)(1+a.ActorID) * Sync.CalculateSyncHash(a);
+					ret += n++ * (int)(1 + a.ActorID) * Sync.CalculateSyncHash(a);
 
 				// hash all the traits that tick
 				foreach (var x in traitDict.ActorsWithTraitMultiple<ISync>(this))
-					ret += n++ * (int)(1+x.Actor.ActorID) * Sync.CalculateSyncHash(x.Trait);
+					ret += n++ * (int)(1 + x.Actor.ActorID) * Sync.CalculateSyncHash(x.Trait);
 
 				// TODO: don't go over all effects
 				foreach (var e in Effects)
@@ -280,7 +289,7 @@ namespace OpenRA
 
 		public override string ToString()
 		{
-			return "{0}->{1}".F( Actor.Info.Name, Trait.GetType().Name );
+			return "{0}->{1}".F(Actor.Info.Name, Trait.GetType().Name);
 		}
 	}
 }
