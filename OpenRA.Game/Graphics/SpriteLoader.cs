@@ -16,41 +16,25 @@ namespace OpenRA.Graphics
 {
 	public class SpriteLoader
 	{
+		readonly SheetBuilder SheetBuilder;
+		readonly Cache<string, Sprite[]> sprites;
+		readonly string[] exts;
+
 		public SpriteLoader(string[] exts, SheetBuilder sheetBuilder)
 		{
 			SheetBuilder = sheetBuilder;
 
 			// Include extension-less version
 			this.exts = exts.Append("").ToArray();
-			sprites = new Cache<string, Sprite[]>(LoadSprites);
+			sprites = new Cache<string, Sprite[]>(CacheSpriteFrames);
 		}
 
-		readonly SheetBuilder SheetBuilder;
-		readonly Cache<string, Sprite[]> sprites;
-		readonly string[] exts;
-
-		Sprite[] LoadSprites(string filename)
+		Sprite[] CacheSpriteFrames(string filename)
 		{
-			// TODO: Cleanly abstract file type detection
-			if (filename.ToLower().EndsWith("r8"))
-			{
-				var r8 = new R8Reader(FileSystem.OpenWithExts(filename, exts));
-				return r8.Select(a => SheetBuilder.Add(a.Image, a.Size, a.Offset)).ToArray();
-			}
-
-			BinaryReader reader = new BinaryReader(FileSystem.OpenWithExts(filename, exts));
-
-			var ImageCount = reader.ReadUInt16();
-			if (ImageCount == 0)
-			{
-				var shp = new ShpTSReader(FileSystem.OpenWithExts(filename, exts));
-				return shp.Frames.Select(a => SheetBuilder.Add(a.Image, a.Size, a.Offset)).ToArray();
-			}
-			else
-			{
-				var shp = new ShpReader(FileSystem.OpenWithExts(filename, exts));
-				return shp.Frames.Select(a => SheetBuilder.Add(a.Image, shp.Size)).ToArray();
-			}
+			var stream = FileSystem.OpenWithExts(filename, exts);
+			return SpriteSource.LoadSpriteSource(stream, filename).Frames
+				.Select(a => SheetBuilder.Add(a))
+				.ToArray();
 		}
 
 		public Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }

@@ -52,7 +52,7 @@ namespace OpenRA.Utility
 				throw new InvalidOperationException("Bogus width; not a whole number of frames");
 
 			using (var destStream = File.Create(dest))
-				ShpWriter.Write(destStream, width, srcImage.Height,
+				ShpReader.Write(destStream, width, srcImage.Height,
 					srcImage.ToFrames(width));
 
 			Console.WriteLine(dest + " saved.");
@@ -104,7 +104,7 @@ namespace OpenRA.Utility
 						PixelFormat.Format8bppIndexed);
 
 					for (var i = 0; i < bitmap.Height; i++)
-						Marshal.Copy(frame.Image, i * srcImage.Width,
+						Marshal.Copy(frame.Data, i * srcImage.Width,
 							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), srcImage.Width);
 
 					x += srcImage.Width;
@@ -133,11 +133,10 @@ namespace OpenRA.Utility
 			var filename = args[5];
 			var frameCount = endFrame - startFrame;
 
-			var frame = srcImage[startFrame];
+			// TODO: this has always been a hack
+			var frame = srcImage.Frames.ToArray()[startFrame];
 			var bitmap = new Bitmap(frame.FrameSize.Width * frameCount, frame.FrameSize.Height, PixelFormat.Format8bppIndexed);
 			bitmap.Palette = palette.AsSystemPalette();
-
-			frame = srcImage[startFrame];
 
 			if (args.Contains("--tileset"))
 			{
@@ -152,13 +151,13 @@ namespace OpenRA.Utility
 						if (h * 20 + w < frameCount)
 						{
 							Console.WriteLine(f);
-							frame = srcImage[f];
+							frame = srcImage.Frames.ToArray()[startFrame];
 
 							var data = tileset.LockBits(new Rectangle(w * frame.Size.Width, h * frame.Size.Height, frame.Size.Width, frame.Size.Height),
 								ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
 							for (var i = 0; i < frame.Size.Height; i++)
-								Marshal.Copy(frame.Image, i * frame.Size.Width,
+								Marshal.Copy(frame.Data, i * frame.Size.Width,
 									new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
 
 							tileset.UnlockBits(data);
@@ -219,7 +218,7 @@ namespace OpenRA.Utility
 				throw new InvalidOperationException("All the frames must be the same size to convert from Dune2 to RA");
 
 			using (var destStream = File.Create(dest))
-				ShpWriter.Write(destStream, size.Width, size.Height,
+				ShpReader.Write(destStream, size.Width, size.Height,
 					srcImage.Select(im => im.Image));
 		}
 
@@ -300,8 +299,8 @@ namespace OpenRA.Utility
 			var srcImage = ShpReader.Load(args[3]);
 
 			using (var destStream = File.Create(args[4]))
-				ShpWriter.Write(destStream, srcImage.Width, srcImage.Height,
-					srcImage.Frames.Select(im => im.Image.Select(px => (byte)remap[px]).ToArray()));
+				ShpReader.Write(destStream, srcImage.Width, srcImage.Height,
+					srcImage.Frames.Select(im => im.Data.Select(px => (byte)remap[px]).ToArray()));
 		}
 
 		public static void TransposeShp(string[] args)
@@ -323,8 +322,8 @@ namespace OpenRA.Utility
 			}
 
 			using (var destStream = File.Create(args[2]))
-				ShpWriter.Write(destStream, srcImage.Width, srcImage.Height,
-					destFrames.Select(f => f.Image));
+				ShpReader.Write(destStream, srcImage.Width, srcImage.Height,
+					destFrames.Select(f => f.Data));
 		}
 
 		static string FriendlyTypeName(Type t)

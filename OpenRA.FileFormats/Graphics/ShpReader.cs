@@ -15,23 +15,28 @@ using System.Linq;
 
 namespace OpenRA.FileFormats
 {
-	public class ImageHeader
+	class ImageHeader : ISpriteFrame
 	{
-		public uint Offset;
+		public Size Size { get; private set; }
+		public Size FrameSize { get { return Size; } }
+		public float2 Offset { get { return float2.Zero; } }
+		public byte[] Data { get; set; }
+
+		public uint FileOffset;
 		public Format Format;
 
 		public uint RefOffset;
 		public Format RefFormat;
 		public ImageHeader RefImage;
 
-		public byte[] Image;
-
+		// Used by ShpWriter
 		public ImageHeader() { }
 
-		public ImageHeader( BinaryReader reader )
+		public ImageHeader(BinaryReader reader, Size size)
 		{
 			var data = reader.ReadUInt32();
-			Offset = data & 0xffffff;
+			Size = size;
+			FileOffset = data & 0xffffff;
 			Format = (Format)(data >> 24);
 
 			RefOffset = reader.ReadUInt16();
@@ -42,7 +47,7 @@ namespace OpenRA.FileFormats
 
 		public void WriteTo(BinaryWriter writer)
 		{
-			writer.Write(Offset | ((uint)Format << 24));
+			writer.Write(FileOffset | ((uint)Format << 24));
 			writer.Write((ushort)RefOffset);
 			writer.Write((ushort)RefFormat);
 		}
@@ -50,7 +55,7 @@ namespace OpenRA.FileFormats
 
 	public enum Format { Format20 = 0x20, Format40 = 0x40, Format80 = 0x80 }
 
-	public class ShpReader
+	public class ShpReader : ISpriteSource
 	{
 		public readonly int ImageCount;
 		public readonly ushort Width;
@@ -59,6 +64,7 @@ namespace OpenRA.FileFormats
 		public Size Size { get { return new Size(Width, Height); } }
 
 		readonly List<ImageHeader> headers = new List<ImageHeader>();
+		public IEnumerable<ISpriteFrame> Frames { get { return headers.Cast<ISpriteFrame>(); } }
 
 		int recurseDepth = 0;
 
@@ -73,13 +79,14 @@ namespace OpenRA.FileFormats
 				Height = reader.ReadUInt16();
 				reader.ReadUInt32();
 
+				var size = new Size(Width, Height);
 				for (int i = 0 ; i < ImageCount ; i++)
-					headers.Add(new ImageHeader(reader));
+					headers.Add(new ImageHeader(reader, size));
 
-				new ImageHeader(reader); // end-of-file header
-				new ImageHeader(reader); // all-zeroes header
+				new ImageHeader(reader, size); // end-of-file header
+				new ImageHeader(reader, size); // all-zeroes header
 
-				var offsets = headers.ToDictionary(h => h.Offset, h =>h);
+				var offsets = headers.ToDictionary(h => h.FileOffset, h =>h);
 
 				for (int i = 0 ; i < ImageCount ; i++)
 				{
@@ -89,17 +96,12 @@ namespace OpenRA.FileFormats
 
 					else if (h.Format == Format.Format40)
 						if (!offsets.TryGetValue(h.RefOffset, out h.RefImage))
-							throw new InvalidDataException("Reference doesnt point to image data {0}->{1}".F(h.Offset, h.RefOffset));
+							throw new InvalidDataException("Reference doesnt point to image data {0}->{1}".F(h.FileOffset, h.RefOffset));
 				}
 
 				foreach (ImageHeader h in headers)
 					Decompress(stream, h);
 			}
-		}
-
-		public ImageHeader this[int index]
-		{
-			get { return headers[index]; }
 		}
 
 		void Decompress(Stream stream, ImageHeader h)
@@ -112,22 +114,22 @@ namespace OpenRA.FileFormats
 				case Format.Format20:
 				case Format.Format40:
 					{
-						if (h.RefImage.Image == null)
+						if (h.RefImage.Data == null)
 						{
 							++recurseDepth;
 							Decompress(stream, h.RefImage);
 							--recurseDepth;
 						}
 
-						h.Image = CopyImageData(h.RefImage.Image);
-						Format40.DecodeInto(ReadCompressedData(stream, h), h.Image);
+						h.Data = CopyImageData(h.RefImage.Data);
+						Format40.DecodeInto(ReadCompressedData(stream, h), h.Data);
 						break;
 					}
 				case Format.Format80:
 					{
 						var imageBytes = new byte[Width * Height];
 						Format80.DecodeInto(ReadCompressedData(stream, h), imageBytes);
-						h.Image = imageBytes;
+						h.Data = imageBytes;
 						break;
 					}
 				default:
@@ -137,7 +139,7 @@ namespace OpenRA.FileFormats
 
 		static byte[] ReadCompressedData(Stream stream, ImageHeader h)
 		{
-			stream.Position = h.Offset;
+			stream.Position = h.FileOffset;
 			// TODO: Actually, far too big. There's no length field with the correct length though :(
 			var compressedLength = (int)(stream.Length - stream.Position);
 
@@ -156,12 +158,45 @@ namespace OpenRA.FileFormats
 			return imageData;
 		}
 
-		public IEnumerable<ImageHeader> Frames { get { return headers; } }
-
 		public static ShpReader Load(string filename)
 		{
 			using (var s = File.OpenRead(filename))
 				return new ShpReader(s);
+		}
+
+		public static void Write(Stream s, int width, int height, IEnumerable<byte[]> frames)
+		{
+			var compressedFrames = frames.Select(f => Format80.Encode(f)).ToArray();
+
+			// note: end-of-file and all-zeroes headers
+			var dataOffset = 14 + (compressedFrames.Length + 2) * ImageHeader.SizeOnDisk;
+
+			using (var bw = new BinaryWriter(s))
+			{
+				bw.Write((ushort)compressedFrames.Length);
+				bw.Write((ushort)0);	// unused
+				bw.Write((ushort)0);	// unused
+				bw.Write((ushort)width);
+				bw.Write((ushort)height);
+				bw.Write((uint)0);		// unused
+
+				foreach (var f in compressedFrames)
+				{
+					var ih = new ImageHeader { Format = Format.Format80, FileOffset = (uint)dataOffset };
+					dataOffset += f.Length;
+
+					ih.WriteTo(bw);
+				}
+
+				var eof = new ImageHeader { FileOffset = (uint)dataOffset };
+				eof.WriteTo(bw);
+
+				var allZeroes = new ImageHeader { };
+				allZeroes.WriteTo(bw);
+
+				foreach (var f in compressedFrames)
+					bw.Write(f);
+			}
 		}
 	}
 }

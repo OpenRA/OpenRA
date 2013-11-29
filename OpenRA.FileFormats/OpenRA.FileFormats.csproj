@@ -95,7 +95,6 @@
     <Compile Include="Graphics\IInputHandler.cs" />
     <Compile Include="Graphics\PngLoader.cs" />
     <Compile Include="Graphics\ShpReader.cs" />
-    <Compile Include="Graphics\ShpWriter.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="Graphics\VqaReader.cs" />
     <Compile Include="InstallUtils.cs" />
@@ -153,6 +152,7 @@
     <Compile Include="FileSystem\MixFile.cs" />
     <Compile Include="FileSystem\ZipFile.cs" />
     <Compile Include="FileSystem\D2kSoundResources.cs" />
+    <Compile Include="Graphics\SpriteSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

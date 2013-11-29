@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
@@ -52,6 +53,7 @@ namespace OpenRA.Graphics
 			this.allocateSheet = allocateSheet;
 		}
 
+		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Size, frame.Offset); }
 		public Sprite Add(byte[] src, Size size) { return Add(src, size, float2.Zero); }
 		public Sprite Add(byte[] src, Size size, float2 spriteOffset)
 		{
