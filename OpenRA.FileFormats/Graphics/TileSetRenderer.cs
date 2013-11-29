@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 
 namespace OpenRA.FileFormats
@@ -33,7 +34,22 @@ namespace OpenRA.FileFormats
 			}
 
 			using (var s = FileSystem.OpenWithExts(filename, exts))
-				return new Terrain(s).TileBitmapBytes;
+			{
+				var type = SpriteSource.DetectSpriteType(s);
+				ISpriteSource source;
+				switch (type)
+				{
+					case SpriteType.TmpTD:
+						source = new TmpTDReader(s);
+						break;
+					case SpriteType.TmpRA:
+						source = new TmpRAReader(s);
+						break;
+					default:
+						throw new InvalidDataException(filename + " is not a valid terrain tile");
+				}
+				return source.Frames.Select(f => f.Data).ToList();
+			}
 		}
 
 		public TileSetRenderer(TileSet tileset, Size tileSize)

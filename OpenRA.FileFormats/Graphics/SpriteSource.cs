@@ -179,6 +179,10 @@ namespace OpenRA.FileFormats
 					return new ShpTSReader(s);
 				case SpriteType.R8:
 					return new R8Reader(s);
+				case SpriteType.TmpRA:
+					return new TmpRAReader(s);
+				case SpriteType.TmpTD:
+					return new TmpTDReader(s);
 				case SpriteType.Unknown:
 				default:
 					throw new InvalidDataException(filename + " is not a valid sprite file");

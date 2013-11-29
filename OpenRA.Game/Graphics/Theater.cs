@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 
@@ -38,10 +39,21 @@ namespace OpenRA.Graphics
 
 			using (var s = FileSystem.OpenWithExts(filename, exts))
 			{
-				var t = new Terrain(s);
-				return t.TileBitmapBytes
-					.Select(b => b != null ? sheetBuilder.Add(b, new Size(t.Width, t.Height)) : null)
-					.ToArray();
+				var type = SpriteSource.DetectSpriteType(s);
+				ISpriteSource source;
+				switch (type)
+				{
+					case SpriteType.TmpTD:
+						source = new TmpTDReader(s);
+						break;
+					case SpriteType.TmpRA:
+						source = new TmpRAReader(s);
+						break;
+					default:
+						throw new InvalidDataException(filename + " is not a valid terrain tile");
+				}
+
+				return source.Frames.Select(f => sheetBuilder.Add(f)).ToArray();
 			}
 		}
 
@@ -70,11 +82,13 @@ namespace OpenRA.Graphics
 		public Sprite TileSprite(TileReference<ushort, byte> r)
 		{
 			Sprite[] template;
-			if (templates.TryGetValue(r.Type, out template))
-				if (template.Length > r.Index && template[r.Index] != null)
-					return template[r.Index];
+			if (!templates.TryGetValue(r.Type, out template))
+				return missingTile;
 
-			return missingTile;
+			if (r.Index >= template.Length)
+				return missingTile;
+
+			return template[r.Index];
 		}
 
 		public Sheet Sheet { get { return sheetBuilder.Current; } }

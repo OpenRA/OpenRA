@@ -101,7 +101,6 @@
     <Compile Include="Manifest.cs" />
     <Compile Include="Map\PlayerReference.cs" />
     <Compile Include="Map\SmudgeReference.cs" />
-    <Compile Include="Map\Terrain.cs" />
     <Compile Include="Map\TileReference.cs" />
     <Compile Include="Map\TileSet.cs" />
     <Compile Include="MiniYaml.cs" />
@@ -153,6 +152,8 @@
     <Compile Include="FileSystem\ZipFile.cs" />
     <Compile Include="FileSystem\D2kSoundResources.cs" />
     <Compile Include="Graphics\SpriteSource.cs" />
+    <Compile Include="Graphics\TmpRAReader.cs" />
+    <Compile Include="Graphics\TmpTDReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
