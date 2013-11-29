@@ -44,9 +44,6 @@ namespace OpenRA.FileFormats
 
 	public class ShpTSReader : ISpriteSource
 	{
-		public readonly int ImageCount;
-		public readonly Size Size;
-
 		readonly List<FrameHeader> frames = new List<FrameHeader>();
 		public IEnumerable<ISpriteFrame> Frames { get { return frames.Cast<ISpriteFrame>(); } }
 
@@ -55,13 +52,13 @@ namespace OpenRA.FileFormats
 			stream.ReadUInt16();
 			var width = stream.ReadUInt16();
 			var height = stream.ReadUInt16();
-			Size = new Size(width, height);
-			ImageCount = stream.ReadUInt16();
+			var size = new Size(width, height);
+			var frameCount = stream.ReadUInt16();
 
-			for (var i = 0; i < ImageCount; i++)
-				frames.Add(new FrameHeader(stream, Size));
+			for (var i = 0; i < frameCount; i++)
+				frames.Add(new FrameHeader(stream, size));
 
-			for (var i = 0; i < ImageCount; i++)
+			for (var i = 0; i < frameCount; i++)
 			{
 				var f = frames[i];
 				if (f.FileOffset == 0)
