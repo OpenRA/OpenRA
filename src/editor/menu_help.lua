@@ -8,7 +8,8 @@ local frame = ide.frame
 local menuBar = frame.menuBar
 local mobdebug = require "mobdebug"
 
-local url = "http://download.zerobrane.com/zerobranestudio-"
+local product = GetIDEString("help", "zerobranestudio")
+local url = "http://zerobrane.com/r/"..product.."-"
 local urls = {
   [ID_HELPPROJECT] = "main",
   [ID_HELPDOCUMENTATION] =  "documentation",
