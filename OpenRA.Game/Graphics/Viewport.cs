@@ -40,6 +40,9 @@ namespace OpenRA.Graphics
 
 		// Viewport geometry (world-px)
 		public int2 CenterLocation { get; private set; }
+
+		public WPos CenterPosition { get { return worldRenderer.Position(CenterLocation); } }
+
 		public int2 TopLeft { get { return CenterLocation - viewportSize / 2; } }
 		public int2 BottomRight { get { return CenterLocation + viewportSize / 2; } }
 		int2 viewportSize;

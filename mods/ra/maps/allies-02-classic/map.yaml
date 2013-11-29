@@ -1,0 +1,954 @@
+Selectable: True
+
+MapFormat: 6
+
+Title: Allies 02: Five to one
+
+Description: Five to one
+
+Author: Westwood Studios
+
+Tileset: SNOW
+
+Options:
+	Crates: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
+	StartingCash: 5700
+	ConfigurableStartingUnits: False
+	Difficulties:
+
+MapSize: 128,128
+
+RequiresMod: ra
+
+Bounds: 43,44,50,42
+
+UseAsShellmap: False
+
+Type: Campaign
+
+Players:
+	PlayerReference@USSR:
+		Name: USSR
+		Race: soviet
+		ColorRamp: 3,255,127
+		Allies: BadGuy
+		Enemies: England,Greece
+	PlayerReference@France:
+		Name: France
+		Race: allies
+		ColorRamp: 115,115,143
+		Allies: England,Greece
+		Enemies: USSR,BadGuy
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: allies
+		Enemies: England,Greece
+	PlayerReference@BadGuy:
+		Name: BadGuy
+		Race: soviet
+		ColorRamp: 3,255,127
+		Allies: USSR
+		Enemies: England,Greece
+	PlayerReference@Greece:
+		Name: Greece
+		Playable: True
+		AllowBots: False
+		Required: True
+		LockRace: True
+		Race: allies
+		LockColor: True
+		ColorRamp: 161,134,200
+		LockSpawn: True
+		LockTeam: True
+		Allies: France,England
+		Enemies: USSR,BadGuy
+
+Actors:
+	EntryPoint: t06
+		Location: 75,80
+		Owner: Neutral
+	Actor1: t03
+		Location: 75,72
+		Owner: Neutral
+	Actor2: t08
+		Location: 92,60
+		Owner: Neutral
+	Actor3: t12
+		Location: 92,63
+		Owner: Neutral
+	Actor4: t01
+		Location: 89,62
+		Owner: Neutral
+	Actor5: t16
+		Location: 61,44
+		Owner: Neutral
+	Actor6: t14
+		Location: 58,49
+		Owner: Neutral
+	Actor7: t10
+		Location: 55,46
+		Owner: Neutral
+	Actor8: t10
+		Location: 43,56
+		Owner: Neutral
+	Actor9: t01
+		Location: 45,56
+		Owner: Neutral
+	Actor10: t17
+		Location: 53,66
+		Owner: Neutral
+	Actor11: tc01
+		Location: 59,60
+		Owner: Neutral
+	Actor12: tc01
+		Location: 63,74
+		Owner: Neutral
+	Actor13: t07
+		Location: 44,77
+		Owner: Neutral
+	Actor14: t08
+		Location: 50,78
+		Owner: Neutral
+	Actor15: t11
+		Location: 51,71
+		Owner: Neutral
+	Actor16: t10
+		Location: 68,77
+		Owner: Neutral
+	Actor17: tc02
+		Location: 69,72
+		Owner: Neutral
+	Actor18: tc03
+		Location: 71,52
+		Owner: Neutral
+	Actor19: tc04
+		Location: 67,76
+		Owner: Neutral
+	Actor20: t17
+		Location: 70,55
+		Owner: Neutral
+	Actor21: tc01
+		Location: 70,54
+		Owner: Neutral
+	Actor22: t06
+		Location: 67,54
+		Owner: Neutral
+	Actor23: t01
+		Location: 67,44
+		Owner: Neutral
+	Actor24: tc02
+		Location: 67,51
+		Owner: Neutral
+	Actor25: tc04
+		Location: 67,49
+		Owner: Neutral
+	Actor26: t17
+		Location: 69,50
+		Owner: Neutral
+	Actor27: t08
+		Location: 64,55
+		Owner: Neutral
+	Actor28: t16
+		Location: 72,62
+		Owner: Neutral
+	Actor29: t15
+		Location: 71,63
+		Owner: Neutral
+	Actor30: tc04
+		Location: 67,66
+		Owner: Neutral
+	Actor31: tc05
+		Location: 68,67
+		Owner: Neutral
+	Actor32: t17
+		Location: 67,62
+		Owner: Neutral
+	Actor33: tc02
+		Location: 44,68
+		Owner: Neutral
+	Actor34: t12
+		Location: 93,81
+		Owner: Neutral
+	Actor35: t03
+		Location: 93,55
+		Owner: Neutral
+	Actor36: t02
+		Location: 93,57
+		Owner: Neutral
+	Actor37: t02
+		Location: 79,47
+		Owner: Neutral
+	Actor38: t11
+		Location: 77,56
+		Owner: Neutral
+	Actor39: t01
+		Location: 92,45
+		Owner: Neutral
+	Actor40: t05
+		Location: 93,54
+		Owner: Neutral
+	Actor41: t06
+		Location: 93,82
+		Owner: Neutral
+	Actor42: t07
+		Location: 87,44
+		Owner: Neutral
+	Actor43: t14
+		Location: 46,84
+		Owner: Neutral
+	Actor44: t08
+		Location: 48,85
+		Owner: Neutral
+	Actor45: t07
+		Location: 51,84
+		Owner: Neutral
+	Actor46: tc01
+		Location: 62,84
+		Owner: Neutral
+	Actor47: t11
+		Location: 59,71
+		Owner: Neutral
+	Actor48: t01
+		Location: 45,44
+		Owner: Neutral
+	Actor49: tc04
+		Location: 45,53
+		Owner: Neutral
+	Actor50: t11
+		Location: 54,55
+		Owner: Neutral
+	Actor51: t10
+		Location: 84,71
+		Owner: Neutral
+	Actor52: tc05
+		Location: 90,83
+		Owner: Neutral
+	Actor53: tc01
+		Location: 89,84
+		Owner: Neutral
+	Actor54: tc04
+		Location: 85,81
+		Owner: Neutral
+	Actor55: tc05
+		Location: 43,71
+		Owner: Neutral
+	Actor56: tc03
+		Location: 43,70
+		Owner: Neutral
+	Actor57: weap
+		Location: 60,66
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor58: fact
+		Location: 62,61
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor59: proc
+		Location: 53,62
+		Owner: USSR
+		Health: 1
+		Facing: 0
+		FreeActor: False
+	Actor60: powr
+		Location: 57,62
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor61: barr
+		Location: 56,66
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor62: powr
+		Location: 59,62
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor63: kenn
+		Location: 58,68
+		Owner: USSR
+		Health: 0.9921875
+		Facing: 0
+	Actor64: brl3
+		Location: 65,59
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor65: barl
+		Location: 66,60
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor66: barl
+		Location: 65,60
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor67: brl3
+		Location: 64,60
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor68: barl
+		Location: 65,61
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor69: v19
+		Location: 67,60
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor70: v19
+		Location: 67,59
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor71: barl
+		Location: 65,62
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor72: silo
+		Location: 54,68
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor73: brl3
+		Location: 55,70
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor74: brl3
+		Location: 54,70
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor75: barl
+		Location: 53,69
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor76: barl
+		Location: 54,69
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor77: barl
+		Location: 55,71
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor78: brl3
+		Location: 56,71
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor79: brl3
+		Location: 53,68
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor80: v19
+		Location: 56,70
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor81: barl
+		Location: 55,69
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor82: brl3
+		Location: 72,51
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor83: barl
+		Location: 72,50
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor84: barl
+		Location: 74,48
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor85: barl
+		Location: 72,49
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor86: barl
+		Location: 73,48
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor87: v19
+		Location: 75,48
+		Owner: USSR
+		Health: 0.5195313
+		Facing: 0
+	Actor88: v19
+		Location: 62,57
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor89: v19
+		Location: 60,58
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor90: brl3
+		Location: 62,56
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor91: brl3
+		Location: 61,58
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor92: barl
+		Location: 61,57
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor93: brl3
+		Location: 59,58
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Actor94: barl
+		Location: 58,58
+		Owner: USSR
+		Health: 1
+		Facing: 0
+	Harvester: harv
+		Location: 55,65
+		Owner: USSR
+		Health: 0.5
+		Facing: 160
+	Actor96: dog
+		Location: 53,58
+		Owner: USSR
+		Health: 1
+		Facing: 0
+		SubCell: 1
+	Actor97: dog
+		Location: 65,68
+		Owner: USSR
+		Health: 1
+		Facing: 64
+		SubCell: 3
+	Actor98: dog
+		Location: 65,66
+		Owner: USSR
+		Health: 1
+		Facing: 32
+		SubCell: 2
+	Actor99: dog
+		Location: 59,70
+		Owner: USSR
+		Health: 1
+		Facing: 160
+		SubCell: 2
+	Actor100: e2
+		Location: 61,56
+		Owner: USSR
+		Health: 1
+		Facing: 32
+		SubCell: 3
+	Actor101: e2
+		Location: 59,57
+		Owner: USSR
+		Health: 1
+		Facing: 224
+		SubCell: 4
+	Actor102: e2
+		Location: 64,67
+		Owner: USSR
+		Health: 1
+		Facing: 96
+		SubCell: 0
+	Actor103: e1
+		Location: 77,74
+		Owner: BadGuy
+		Health: 1
+		Facing: 128
+		SubCell: 2
+	Actor104: e1
+		Location: 80,74
+		Owner: USSR
+		Health: 1
+		Facing: 160
+		SubCell: 0
+	Actor105: e1
+		Location: 56,68
+		Owner: USSR
+		Health: 1
+		Facing: 160
+		SubCell: 3
+	Actor106: e1
+		Location: 50,72
+		Owner: USSR
+		Health: 1
+		Facing: 160
+		SubCell: 4
+	Actor107: e1
+		Location: 73,60
+		Owner: USSR
+		Health: 1
+		Facing: 32
+		SubCell: 2
+	Actor108: e1
+		Location: 74,61
+		Owner: USSR
+		Health: 1
+		Facing: 224
+		SubCell: 1
+	Actor109: e1
+		Location: 72,60
+		Owner: USSR
+		Health: 1
+		Facing: 64
+		SubCell: 0
+	Actor110: e1
+		Location: 49,58
+		Owner: USSR
+		Health: 1
+		Facing: 192
+		SubCell: 0
+	Actor111: e1
+		Location: 51,58
+		Owner: USSR
+		Health: 1
+		Facing: 32
+		SubCell: 1
+	Actor112: e1
+		Location: 60,78
+		Owner: USSR
+		Health: 1
+		Facing: 192
+		SubCell: 4
+	Actor113: e2
+		Location: 62,79
+		Owner: USSR
+		Health: 1
+		Facing: 160
+		SubCell: 4
+	Actor114: e1
+		Location: 57,82
+		Owner: USSR
+		Health: 1
+		Facing: 160
+		SubCell: 1
+	Actor115: e1
+		Location: 60,64
+		Owner: USSR
+		Health: 1
+		Facing: 224
+		SubCell: 3
+	Actor116: e2
+		Location: 68,45
+		Owner: USSR
+		Health: 1
+		Facing: 96
+		SubCell: 0
+	Actor117: e1
+		Location: 48,72
+		Owner: USSR
+		Health: 1
+		Facing: 96
+		SubCell: 0
+	Actor118: e1
+		Location: 57,69
+		Owner: USSR
+		Health: 1
+		Facing: 96
+		SubCell: 1
+	Actor119: e2
+		Location: 60,70
+		Owner: USSR
+		Health: 1
+		Facing: 32
+		SubCell: 0
+	Actor120: e1
+		Location: 89,48
+		Owner: Greece
+		Health: 1
+		Facing: 160
+		SubCell: 1
+	Actor121: e1
+		Location: 87,48
+		Owner: Greece
+		Health: 1
+		Facing: 192
+		SubCell: 4
+	Actor122: e1
+		Location: 87,48
+		Owner: Greece
+		Health: 1
+		Facing: 192
+		SubCell: 1
+	Actor123: e1
+		Location: 88,48
+		Owner: Greece
+		Health: 1
+		Facing: 128
+		SubCell: 4
+	Actor124: e1
+		Location: 88,49
+		Owner: Greece
+		Health: 1
+		Facing: 128
+		SubCell: 1
+	Actor125: dog
+		Location: 78,75
+		Owner: BadGuy
+		Health: 1
+		Facing: 160
+		SubCell: 1
+	Actor126: e1
+		Location: 71,61
+		Owner: BadGuy
+		Health: 1
+		Facing: 160
+		SubCell: 0
+	Actor127: dog
+		Location: 70,61
+		Owner: BadGuy
+		Health: 1
+		Facing: 96
+		SubCell: 4
+	Actor128: e1
+		Location: 50,46
+		Owner: BadGuy
+		Health: 1
+		Facing: 32
+		SubCell: 1
+	Actor129: e1
+		Location: 49,47
+		Owner: BadGuy
+		Health: 1
+		Facing: 64
+		SubCell: 0
+	Actor130: e2
+		Location: 49,49
+		Owner: BadGuy
+		Health: 1
+		Facing: 160
+		SubCell: 1
+	Actor131: e2
+		Location: 47,46
+		Owner: BadGuy
+		Health: 1
+		Facing: 96
+		SubCell: 3
+	Actor132: e2
+		Location: 48,63
+		Owner: BadGuy
+		Health: 1
+		Facing: 0
+		SubCell: 1
+	Actor133: e1
+		Location: 49,63
+		Owner: BadGuy
+		Health: 1
+		Facing: 96
+		SubCell: 2
+	Actor134: e1
+		Location: 74,81
+		Owner: BadGuy
+		Health: 1
+		Facing: 64
+		SubCell: 3
+	Actor135: e2
+		Location: 75,83
+		Owner: BadGuy
+		Health: 1
+		Facing: 96
+		SubCell: 0
+	Actor136: e2
+		Location: 69,66
+		Owner: USSR
+		Health: 1
+		Facing: 0
+		SubCell: 3
+	Actor137: e2
+		Location: 73,51
+		Owner: USSR
+		Health: 0.5585938
+		Facing: 224
+		SubCell: 4
+	Actor138: medi
+		Location: 88,48
+		Owner: Greece
+		Health: 1
+		Facing: 160
+		SubCell: 1
+	TruckEntryPoint: waypoint
+		Location: 49,44
+		Owner: Neutral
+	waypoint1: waypoint
+		Location: 49,50
+		Owner: Neutral
+	TruckRallyPoint: waypoint
+		Location: 49,76
+		Owner: Neutral
+	waypoint3: waypoint
+		Location: 65,82
+		Owner: Neutral
+	waypoint4: waypoint
+		Location: 74,82
+		Owner: Neutral
+	waypoint6: waypoint
+		Location: 65,82
+		Owner: Neutral
+	waypoint7: waypoint
+		Location: 74,82
+		Owner: Neutral
+	waypoint8: waypoint
+		Location: 78,74
+		Owner: Neutral
+	waypoint9: waypoint
+		Location: 82,65
+		Owner: Neutral
+	ReinforcementsRallyPoint: waypoint
+		Location: 88,49
+		Owner: Neutral
+	waypoint11: waypoint
+		Location: 51,65
+		Owner: Neutral
+	waypoint12: waypoint
+		Location: 63,64
+		Owner: Neutral
+	waypoint13: waypoint
+		Location: 72,61
+		Owner: Neutral
+	waypoint14: waypoint
+		Location: 69,47
+		Owner: Neutral
+	waypoint15: waypoint
+		Location: 78,51
+		Owner: Neutral
+	waypoint16: waypoint
+		Location: 80,45
+		Owner: Neutral
+	waypoint25: waypoint
+		Location: 80,89
+		Owner: Neutral
+	waypoint26: waypoint
+		Location: 43,63
+		Owner: Neutral
+	waypoint94: waypoint
+		Location: 90,46
+		Owner: Neutral
+	McvDeployPoint: waypoint
+		Location: 89,51
+		Owner: Neutral
+	waypoint96: waypoint
+		Location: 90,68
+		Owner: Neutral
+	waypoint98: waypoint
+		Location: 88,49
+		Owner: Neutral
+	Actor139: fenc
+		Location: 57,75
+		Owner: USSR
+	Actor140: fenc
+		Location: 57,76
+		Owner: USSR
+	Actor141: fenc
+		Location: 57,77
+		Owner: USSR
+	Actor142: fenc
+		Location: 58,77
+		Owner: USSR
+	Actor143: fenc
+		Location: 58,78
+		Owner: USSR
+	Actor144: fenc
+		Location: 57,78
+		Owner: USSR
+	Actor145: fenc
+		Location: 58,75
+		Owner: USSR
+	Actor146: fenc
+		Location: 58,74
+		Owner: USSR
+	Actor147: fenc
+		Location: 57,74
+		Owner: USSR
+	Actor148: fenc
+		Location: 66,67
+		Owner: USSR
+	Actor149: fenc
+		Location: 66,68
+		Owner: USSR
+	Actor150: fenc
+		Location: 66,69
+		Owner: USSR
+	Actor151: fenc
+		Location: 66,70
+		Owner: USSR
+	Actor152: fenc
+		Location: 65,70
+		Owner: USSR
+	Actor153: fenc
+		Location: 64,70
+		Owner: USSR
+	Actor154: fenc
+		Location: 63,70
+		Owner: USSR
+	Actor155: fenc
+		Location: 51,68
+		Owner: USSR
+	Actor156: fenc
+		Location: 52,68
+		Owner: USSR
+	Actor157: fenc
+		Location: 52,67
+		Owner: USSR
+	Actor158: fenc
+		Location: 52,66
+		Owner: USSR
+	Actor159: fenc
+		Location: 51,66
+		Owner: USSR
+	Actor160: fenc
+		Location: 51,62
+		Owner: USSR
+	Actor161: fenc
+		Location: 51,63
+		Owner: USSR
+	Actor162: fenc
+		Location: 67,58
+		Owner: USSR
+	Actor163: fenc
+		Location: 66,58
+		Owner: USSR
+	Actor164: fenc
+		Location: 66,59
+		Owner: USSR
+	Actor165: fenc
+		Location: 47,51
+		Owner: USSR
+	Actor166: fenc
+		Location: 47,50
+		Owner: USSR
+	Actor167: fenc
+		Location: 46,50
+		Owner: USSR
+	Actor168: fenc
+		Location: 51,50
+		Owner: USSR
+	Actor169: fenc
+		Location: 50,50
+		Owner: USSR
+	Actor170: fenc
+		Location: 50,51
+		Owner: USSR
+	ReinforcementsEntryPoint: waypoint
+		Location: 90,44
+		Owner: Neutral
+	TruckExitPoint: waypoint
+		Location: 80,85
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+	World:
+		-CrateDrop:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		LuaScriptInterface:
+			LuaScripts: mission.lua
+	^Infantry:
+		MustBeDestroyed:
+	^Tank:
+		MustBeDestroyed:
+	^Vehicle:
+		MustBeDestroyed:
+	APWR:
+		Buildable:
+			Owner: None
+	FIX:
+		Buildable:
+			Owner: None
+	SYRD:
+		Buildable:
+			Owner: None
+	WEAP:
+		Buildable:
+			Owner: None
+	DOME:
+		Buildable:
+			Owner: None
+	HPAD:
+		Buildable:
+			Owner: None
+	ATEK:
+		Buildable:
+			Owner: None
+	BRIK:
+		Buildable:
+			Owner: None
+	HBOX.E1:
+		Buildable:
+			Owner: None
+	GUN:
+		Buildable:
+			Owner: None
+	AGUN:
+		Buildable:
+			Owner: None
+	GAP:
+		Buildable:
+			Owner: None
+	PDOX:
+		Buildable:
+			Owner: None
+	MSLO:
+		Buildable:
+			Owner: None
+	E6:
+		Buildable:
+			Owner: None
+	SPY:
+		Buildable:
+			Owner: None
+	MECH:
+		Buildable:
+			Owner: None
+	E7:
+		Buildable:
+			Owner: None
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+	M60mg:
+		Range: 5
+		ROF: 20
+		Burst: 1
+		Warhead:
+			Damage: 20
+Voices:
+
+Notifications:
+
+Translations:

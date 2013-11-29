@@ -52,6 +52,7 @@ NEW:
 		Adjusted Zombie build palette position.
 		Fixed attack dogs causing crashes by attacking non-infantry.
 		Disabled cloak/uncloak sound for camouflaged Pillbox.
+		Added two Lua-powered single player missions, ported from Red Alert's single player campaign.
 	Tiberian Dawn:
 		C&C mod renamed to Tiberian Dawn to resolve naming ambiguities.
 		Fixed Bio Lab wrongly belonging to a hostile faction in East vs West 3.

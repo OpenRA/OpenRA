@@ -35,6 +35,8 @@
 	RenderUnit:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
+	Huntable:
+	LuaScriptEvents:
 
 ^Tank:
 	AppearsOnRadar:
@@ -73,6 +75,8 @@
 	RenderUnit:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
+	Huntable:
+	LuaScriptEvents:
 
 ^Husk:
 	Health:
@@ -90,6 +94,7 @@
 	Tooltip:
 		Name: Destroyed Tank
 	BodyOrientation:
+	LuaScriptEvents:
 
 ^TowerHusk:
 	Health:
@@ -108,6 +113,7 @@
 	ProximityCaptor:
 		Types:Husk
 	BodyOrientation:
+	LuaScriptEvents:
 
 ^AircraftHusk:
 	Inherits: ^Husk
@@ -167,6 +173,8 @@
 	Guardable:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
+	Huntable:
+	LuaScriptEvents:
 
 ^Plane:
 	AppearsOnRadar:
@@ -188,6 +196,8 @@
 	CombatDebugOverlay:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
+	Huntable:
+	LuaScriptEvents:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -237,3 +247,5 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	WithCrumbleOverlay:
+	Huntable:
+	LuaScriptEvents:

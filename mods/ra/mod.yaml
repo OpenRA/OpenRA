@@ -164,3 +164,12 @@ Fonts:
 	TinyBold:
 		Font:FreeSansBold.ttf
 		Size:10
+
+LuaScripts:
+	mods/ra/lua/utils.lua
+	mods/ra/lua/openra.lua
+	mods/ra/lua/map.lua
+	mods/ra/lua/actor.lua
+	mods/ra/lua/team.lua
+	mods/ra/lua/media.lua
+	mods/ra/lua/mission.lua

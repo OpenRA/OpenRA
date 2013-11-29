@@ -357,9 +357,18 @@ v19:
 	idle:
 		Start: 0
 		Length: 14
-	damaged-idle:
-		Start: 14
-		Length: 15
+
+v19.husk:
+	idle: v19
+		Start: 28
+	fire-start: flmspt
+		Start: 0
+		Length: *
+		Offset: 7,-15
+	fire-loop: flmspt
+		Start: 50
+		Length: *
+		Offset: 7,-15
 
 utilpol1:
 	idle:

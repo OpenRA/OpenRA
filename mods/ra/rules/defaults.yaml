@@ -42,6 +42,8 @@
 		SuccessRate: 20
 		EjectOnGround: yes
 		EjectInAir: no
+	Huntable:
+	LuaScriptEvents:
 
 ^Tank:
 	AppearsOnRadar:
@@ -87,6 +89,8 @@
 		SuccessRate: 20
 		EjectOnGround: yes
 		EjectInAir: no
+	Huntable:
+	LuaScriptEvents:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -142,6 +146,8 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresTech: InfantryHealing
+	Huntable:
+	LuaScriptEvents:
 
 ^Ship:
 	AppearsOnRadar:
@@ -174,6 +180,8 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Huntable:
+	LuaScriptEvents:
 
 ^Plane:
 	AppearsOnRadar:
@@ -203,6 +211,8 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	BodyOrientation:
+	Huntable:
+	LuaScriptEvents:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -252,6 +262,8 @@
 	FrozenUnderFog:
 	GpsDot:
 		String:Structure
+	Huntable:
+	LuaScriptEvents:
 
 ^Wall:
 	AppearsOnRadar:
@@ -287,6 +299,7 @@
 	Guardable:
 	BodyOrientation:
 	FrozenUnderFog:
+	LuaScriptEvents:
 
 ^TechBuilding:
 	Inherits: ^Building
@@ -308,6 +321,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	-GpsDot:
+	-MustBeDestroyed:
 
 ^AmmoBox:
 	Inherits: ^TechBuilding
@@ -390,6 +404,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
+	LuaScriptEvents:
 
 ^Husk:
 	Husk:
@@ -407,6 +422,7 @@
 	BelowUnits:
 	BodyOrientation:
 	Chronoshiftable:
+	LuaScriptEvents:
 
 ^HelicopterHusk:
 	Inherits: ^Husk
@@ -441,6 +457,7 @@
 		Types:Bridge
 	AutoTargetIgnore:
 	BodyOrientation:
+	LuaScriptEvents:
 
 #Temperate Terrain Expansion
 ^SVBridge:
@@ -458,6 +475,7 @@
 		Types:Bridge
 	AutoTargetIgnore:
 	BodyOrientation:
+	LuaScriptEvents:
 
 ^SHBridge:
 	Tooltip:
@@ -474,6 +492,7 @@
 		Types:Bridge
 	AutoTargetIgnore:
 	BodyOrientation:
+	LuaScriptEvents:
 
 ^STDBridge:
 	Tooltip:
@@ -490,6 +509,7 @@
 		Types:Bridge
 	AutoTargetIgnore:
 	BodyOrientation:
+	LuaScriptEvents:
 
 #Desert Terrain Expansion:
 ^Rock:
@@ -511,6 +531,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
+	LuaScriptEvents:
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
