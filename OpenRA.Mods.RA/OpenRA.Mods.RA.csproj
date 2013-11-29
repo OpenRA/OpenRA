@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\CaptureActor.cs" />
+    <Compile Include="Activities\Hunt.cs" />
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
@@ -338,6 +339,7 @@
     <Compile Include="RepairsUnits.cs" />
     <Compile Include="Reservable.cs" />
     <Compile Include="ScaredyCat.cs" />
+    <Compile Include="Scripting\LuaScriptEvents.cs" />
     <Compile Include="Scripting\LuaScriptInterface.cs" />
     <Compile Include="Scripting\Media.cs" />
     <Compile Include="Scripting\RASpecialPowers.cs" />

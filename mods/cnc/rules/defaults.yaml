@@ -40,6 +40,8 @@
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
+	Huntable:
+	LuaScriptEvents:
 
 ^Tank:
 	AppearsOnRadar:
@@ -86,6 +88,8 @@
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
+	Huntable:
+	LuaScriptEvents:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -113,6 +117,8 @@
 	CombatDebugOverlay:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
+	Huntable:
+	LuaScriptEvents:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -170,6 +176,8 @@
 		DamageCooldown: 125
 		RequiresTech: InfantryHealing
 	UpdatesPlayerStatistics:
+	Huntable:
+	LuaScriptEvents:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -247,6 +255,8 @@
 	AttackMove:
 	AttackFrontal:
 	UpdatesPlayerStatistics:
+	Huntable:
+	LuaScriptEvents:
 
 ^Plane:
 	AppearsOnRadar:
@@ -263,6 +273,8 @@
 	ActorLostNotification:
 	CombatDebugOverlay:
 	BodyOrientation:
+	Huntable:
+	LuaScriptEvents:
 
 ^Ship:
 	AppearsOnRadar:
@@ -286,6 +298,8 @@
 	Guardable:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
+	Huntable:
+	LuaScriptEvents:
 
 ^Building:
 	AppearsOnRadar:
@@ -337,6 +351,8 @@
 	FrozenUnderFog:
 	UpdatesPlayerStatistics:
 	EngineerRepairable:
+	Huntable:
+	LuaScriptEvents:
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -372,6 +388,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
+	LuaScriptEvents:
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
@@ -407,6 +424,7 @@
 		Palette: terrain
 	FrozenUnderFog:
 		StartsRevealed: true
+	LuaScriptEvents:
 
 ^Wall:
 	AppearsOnRadar:
@@ -437,6 +455,7 @@
 	Guardable:
 	BodyOrientation:
 	FrozenUnderFog:
+	LuaScriptEvents:
 
 ^Tree:
 	Tooltip:
@@ -460,6 +479,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
+	LuaScriptEvents:
 
 ^Rock:
 	Tooltip:
@@ -477,6 +497,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
+	LuaScriptEvents:
 
 ^Husk:
 	Health:
@@ -499,6 +520,7 @@
 #		AllowAllies: true
 #		AllowNeutral: true
 #		AllowEnemies: true
+	LuaScriptEvents:
 
 ^HelicopterHusk:
 	Inherits: ^Husk
@@ -524,3 +546,4 @@
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 	BodyOrientation:
+	LuaScriptEvents:

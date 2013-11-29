@@ -8,12 +8,16 @@
  */
 #endregion
 
-using System;
-using System.Linq;
 using LuaInterface;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Missions;
+using OpenRA.Scripting;
 using OpenRA.Traits;
+using System;
+using System.Linq;
 using WorldRenderer = OpenRA.Graphics.WorldRenderer;
 
 namespace OpenRA.Mods.RA.Scripting
@@ -42,7 +46,7 @@ namespace OpenRA.Mods.RA.Scripting
 			AddMapActorGlobals();
 			context.Lua["World"] = w;
 			context.Lua["WorldRenderer"] = wr;
-			context.RegisterObject(this, "_OpenRA", false);
+			context.RegisterObject(this, "Internal", false);
 			context.RegisterType(typeof(WVec), "WVec", true);
 			context.RegisterType(typeof(WPos), "WPos", true);
 			context.RegisterType(typeof(CPos), "CPos", true);
@@ -160,6 +164,102 @@ namespace OpenRA.Mods.RA.Scripting
 		public void RunAfterDelay(double delay, Action func)
 		{
 			world.AddFrameEndTask(w => w.Add(new DelayedAction((int)delay, func)));
+		}
+
+		[LuaGlobal]
+		public void PlaySpeechNotification(Player player, string notification)
+		{
+			Sound.PlayNotification(player, "Speech", notification, player != null ? player.Country.Race : null);
+		}
+
+		[LuaGlobal]
+		public void PlaySoundNotification(Player player, string notification)
+		{
+			Sound.PlayNotification(player, "Sounds", notification, player != null ? player.Country.Race : null);
+		}
+
+		[LuaGlobal]
+		public void WaitFor(Actor actor, Func<bool> func)
+		{
+			actor.QueueActivity(new WaitFor(func));
+		}
+
+		[LuaGlobal]
+		public void CallFunc(Actor actor, Action func)
+		{
+			actor.QueueActivity(new CallFunc(func));
+		}
+
+		[LuaGlobal]
+		public int GetFacing(object vec, double currentFacing)
+		{
+			if (vec is CVec)
+				return Util.GetFacing((CVec)vec, (int)currentFacing);
+			if (vec is WVec)
+				return Util.GetFacing((WVec)vec, (int)currentFacing);
+			throw new ArgumentException("Unsupported vector type: {0}".F(vec.GetType()));
+		}
+
+		[LuaGlobal]
+		public WRange GetWRangeFromCells(double cells)
+		{
+			return WRange.FromCells((int)cells);
+		}
+
+		[LuaGlobal]
+		public void SetWinState(Player player, string winState)
+		{
+			player.WinState = Enum<WinState>.Parse(winState);
+		}
+
+		[LuaGlobal]
+		public void PlayRandomMusic()
+		{
+			MissionUtils.PlayMissionMusic();
+		}
+
+		[LuaGlobal]
+		public bool IsDead(Actor actor)
+		{
+			return actor.IsDead();
+		}
+
+		[LuaGlobal]
+		public void PlayMovieFullscreen(string movie, Action onComplete)
+		{
+			Media.PlayFMVFullscreen(world, movie, onComplete);
+		}
+
+		[LuaGlobal]
+		public void FlyToPos(Actor actor, WPos pos)
+		{
+			actor.QueueActivity(Fly.ToPos(pos));
+		}
+
+		[LuaGlobal]
+		public void FlyAttackActor(Actor actor, Actor targetActor)
+		{
+			actor.QueueActivity(new FlyAttack(Target.FromActor(targetActor)));
+		}
+
+		[LuaGlobal]
+		public void FlyAttackCell(Actor actor, CPos location)
+		{
+			actor.QueueActivity(new FlyAttack(Target.FromCell(location)));
+		}
+
+		[LuaGlobal]
+		public void SetUnitStance(Actor actor, string stance)
+		{
+			var at = actor.TraitOrDefault<AutoTarget>();
+			if (at != null)
+				at.stance = Enum<UnitStance>.Parse(stance);
+		}
+
+		[LuaGlobal]
+		public bool RequiredUnitsAreDestroyed(Player player)
+		{
+			return world.ActorsWithTrait<MustBeDestroyed>().All(p => p.Actor.Owner != player);
 		}
 	}
 }

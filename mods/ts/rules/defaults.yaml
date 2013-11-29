@@ -36,6 +36,8 @@
 	Guardable:
 		Range: 3
 	BodyOrientation:
+	Huntable:
+	LuaScriptEvents:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -80,6 +82,8 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Huntable:
+	LuaScriptEvents:
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
@@ -145,6 +149,8 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Huntable:
+	LuaScriptEvents:
 
 ^Wall:
 	AppearsOnRadar:
@@ -175,6 +181,7 @@
 	Sellable:
 	UpdatesPlayerStatistics:
 	BodyOrientation:
+	LuaScriptEvents:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -198,3 +205,5 @@
 	ActorLostNotification:
 	CombatDebugOverlay:
 	BodyOrientation:
+	Huntable:
+	LuaScriptEvents:
