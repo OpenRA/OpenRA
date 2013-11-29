@@ -738,8 +738,8 @@ namespace OpenRA.Mods.RA.AI
 				if (desiredLocation == null)
 					continue;
 
-				world.IssueOrder(new Order("Move", mcv, false) { TargetLocation = desiredLocation.Value });
-				world.IssueOrder(new Order("DeployTransform", mcv, false));
+				world.IssueOrder(new Order("Move", mcv, true) { TargetLocation = desiredLocation.Value });
+				world.IssueOrder(new Order("DeployTransform", mcv, true));
 			}
 		}
 
