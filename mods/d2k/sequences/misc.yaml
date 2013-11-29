@@ -1,87 +1,87 @@
 explosion:
-	piff: DATA.R8
+	piff: DATA
 		Start: 3626
 		Length: 5
-	piffs: DATA.R8
+	piffs: DATA
 		Start: 3429
 		Length: 4
 		Tick: 80
 		BlendMode: Additive
-	small_explosion: DATA.R8
+	small_explosion: DATA
 		Start: 3403
 		Length: 15
 		BlendMode: Additive
-	med_explosion: DATA.R8
+	med_explosion: DATA
 		Start: 3390
 		Length: 12
 		BlendMode: Additive
-	tiny_explosion: DATA.R8
+	tiny_explosion: DATA
 		Start: 3386
 		Length: 4
 		Tick: 80
 		BlendMode: Additive
-	nuke: DATA.R8
+	nuke: DATA
 		Start: 3965
 		Length: 14
 		Tick: 60
 		BlendMode: Additive
-	mini_explosion: DATA.R8
+	mini_explosion: DATA
 		Start: 3403
 		Length: 15
 		Tick: 60
 		BlendMode: Additive
-	self_destruct: DATA.R8
+	self_destruct: DATA
 		Start: 3433
 		Length: 15
 		BlendMode: Additive
-	building: DATA.R8
+	building: DATA
 		Start: 3448
 		Length: 22
 		BlendMode: Additive
-	large_explosion: DATA.R8
+	large_explosion: DATA
 		Start: 3988
 		Length: 22
 		BlendMode: Additive
-	artillery: DATA.R8
+	artillery: DATA
 		Start: 3988
 		Length: 22
 		BlendMode: Additive
-	small_artillery: DATA.R8
+	small_artillery: DATA
 		Start: 3390
 		Length: 12
 		Tick: 60
 		BlendMode: Additive
-	small_napalm: DATA.R8
+	small_napalm: DATA
 		Start: 3421
 		Length: 8
 		BlendMode: Additive
-	shockwave: DATA.R8
+	shockwave: DATA
 		Start: 3687
 		Length: 6
 		BlendMode: Additive
 		Tick: 120
-	deviator: DATA.R8
+	deviator: DATA
 		Start: 3512
 		Length: 23
 		BlendMode: Additive
 		Tick: 60
 
 laserfire:
-	idle: DATA.R8
+	idle: DATA
 		Start: 3386
 		Length: 4
 		Tick: 80
 		BlendMode: Additive
 
 pips:
-	groups: DATA.R8
+	groups: DATA
 		Start: 17
 		Length: 10
-	tag-primary: DATA.R8
+	tag-primary: DATA
 		Start: 110
-	pip-empty: DATA.R8
+	pip-empty: DATA
 		Start: 15
-	pip-green: DATA.R8
+	pip-green: DATA
 		Start: 16
 
 clock:
@@ -105,19 +105,19 @@ rank:
 		Length: *
 
 overlay:
-	build-valid-arrakis: DATA.R8
+	build-valid-arrakis: DATA
 		Start: 0
 		Offset: -16,-16
-	build-invalid: DATA.R8
+	build-invalid: DATA
 		Start: 1
 		Offset: -16,-16
-	target-select: DATA.R8
+	target-select: DATA
 		Start: 2
 		Offset: -16,-16
-	target-valid-arrakis: DATA.R8
+	target-valid-arrakis: DATA
 		Start: 0
 		Offset: -16,-16
-	target-invalid: DATA.R8
+	target-invalid: DATA
 		Start: 1
 		Offset: -16,-16
 
@@ -131,29 +131,29 @@ rallypoint:
 		Length: *
 
 rpg:
-	idle: DATA.R8
+	idle: DATA
 		Start: 3015
 		Facings: -32
 
 120mm:
-	idle: DATA.R8
+	idle: DATA
 		Start: 3014
 		Length: 1
 		BlendMode: Additive
 
 155mm:
-	idle: DATA.R8
+	idle: DATA
 		Start: 3081
 		Length: 1
 
 crate-effects:
-	dollar: DATA.R8
+	dollar: DATA
 		Start: 3679
 		Length: 8
-	reveal-map: DATA.R8
+	reveal-map: DATA
 		Start: 3947
 		Length: 18
-	hide-map: DATA.R8
+	hide-map: DATA
 		Start: 3911
 		Length: 36
 	levelup: levelup
@@ -162,70 +162,70 @@ crate-effects:
 		Tick: 200
 
 allyrepair:
-	repair: DATA.R8
+	repair: DATA
 		Frames: 3, 39
 		Length: 2
 		Tick: 300
 
 missile:
-	idle: DATA.R8
+	idle: DATA
 		Start: 3088
 		Facings: -32
 
 missile2:
-	idle: DATA.R8
+	idle: DATA
 		Start: 3306
 		Facings: -32
 
 atomic:
-	up: DATA.R8
+	up: DATA
 		Start: 2147
 		Length: 1
-	down: DATA.R8
+	down: DATA
 		Start: 2148
 		Length: 1
 
 fire:
-	1: DATA.R8
+	1: DATA
 		Start: 3712
 		Length: 10
 		Offset: 0,-3
 		BlendMode: Additive
-	2: DATA.R8
+	2: DATA
 		Start: 3723
 		Length: 11
 		Offset: 0,-3
 		BlendMode: Additive
-	3: DATA.R8
+	3: DATA
 		Start: 3885
 		Length: 13
 		Offset: 0,-3
 		BlendMode: Additive
-	4: DATA.R8
+	4: DATA
 		Start: 3712
 		Length: 10
 		Offset: 0,-3
 		BlendMode: Additive
 
 smoke_m:
-	idle: DATA.R8
+	idle: DATA
 		Start: 3418
 		Length: 2
 		BlendMode: Additive
-	loop: DATA.R8
+	loop: DATA
 		Start: 3418
 		Length: 2
 		BlendMode: Additive
-	end: DATA.R8
+	end: DATA
 		Start: 3418
 		Length: 3
 		BlendMode: Additive
 
 bombs:
-	open: DATA.R8
+	open: DATA
 		Start: 3280
 		Length: 4
-	idle: DATA.R8
+	idle: DATA
 		Start: 3280
 		Length: 4
 
@@ -248,59 +248,59 @@ waypoint:
 		Length: *
 
 sietch:
-	idle: DATA.R8
+	idle: DATA
 		Start: 2998
 
 doubleblast:
-	idle: DATA.R8
+	idle: DATA
 		Start: 3279
 		Facings: -16
 		BlendMode: Additive
 
 doubleblastbullet:
-	idle: DATA.R8
+	idle: DATA
 		Start: 3248
 		Facings: -16
 		BlendMode: Additive
 
 icon:
-	paratroopers: DATA.R8
+	paratroopers: DATA
 		Start: 4029
 		Offset: -30,-24
-	ornistrike: DATA.R8
+	ornistrike: DATA
 		Start: 4031
 		Offset: -30,-24
-	deathhand: DATA.R8
+	deathhand: DATA
 		Start: 4035
 		Offset: -30,-24
 
 crate:
-	idle: DATA.R8
+	idle: DATA
 		Start: 102
 		ZOffset: -511
 		Offset: -16,-16
-	land: DATA.R8
+	land: DATA
 		Start: 102
 		ZOffset: -511
 		Offset: -16,-16
 
 spicebloom:
-	make: DATA.R8
+	make: DATA
 		Start: 107
 		Length: 3
 		Offset: -16,-16
-	active: DATA.R8
+	active: DATA
 		Start: 109
 		Length: 1
 		ZOffset: -511
 		Offset: -16,-16
-	idle: DATA.R8
+	idle: DATA
 		Start: 109
 		ZOffset: -511
 		Offset: -16,-16
 
 moveflsh:
-	idle: DATA.R8
+	idle: DATA
 		Start: 3621
 		Length: 5
 		Tick: 80

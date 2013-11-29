@@ -34,7 +34,7 @@ namespace OpenRA.Graphics
 			// TODO: Cleanly abstract file type detection
 			if (filename.ToLower().EndsWith("r8"))
 			{
-				var r8 = new R8Reader(FileSystem.Open(filename));
+				var r8 = new R8Reader(FileSystem.OpenWithExts(filename, exts));
 				return r8.Select(a => SheetBuilder.Add(a.Image, a.Size, a.Offset)).ToArray();
 			}
 
