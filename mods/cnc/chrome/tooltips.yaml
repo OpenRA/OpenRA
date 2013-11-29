@@ -18,7 +18,7 @@ Background@BUTTON_TOOLTIP:
 			Height:23
 			Font:Bold
 		Label@HOTKEY:
-			Color:255,255,0
+			TextColor:255,255,0
 			Height:23
 			Font:Bold
 
