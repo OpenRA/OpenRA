@@ -1,6 +1,5 @@
 NEW:
 	All mods:
-		Added global chat to the server browser.
 		Fixed dead units sometimes exploding or leaving husks when they weren't in the world.
 		Added hover and disabled button states [RA / D2K / TS]
 		Added double click start support to the replay browser.
