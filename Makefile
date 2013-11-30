@@ -159,8 +159,8 @@ STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 mod_ra_SRCS			:= $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET			= mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND			= library
-mod_ra_DEPS			= $(STD_MOD_DEPS) $(utility_TARGET) $(geoip_TARGET) $(irc_TARGET) $(lua_TARGET)
-mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(utility_TARGET) $(geoip_TARGET) $(irc_TARGET) $(lua_TARGET)
+mod_ra_DEPS			= $(STD_MOD_DEPS) $(geoip_TARGET) $(irc_TARGET) $(lua_TARGET)
+mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(geoip_TARGET) $(irc_TARGET) $(lua_TARGET)
 PROGRAMS 			+= mod_ra
 mod_ra: $(mod_ra_TARGET)
 
