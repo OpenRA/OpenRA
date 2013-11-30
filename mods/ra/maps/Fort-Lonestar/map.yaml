@@ -532,7 +532,6 @@ Rules:
 		ExternalCapturable:
 		ExternalCapturableBar:
 		EngineerRepairable:
-		-MustBeDestroyed:
 		CashTrickler:
 			Period: 250
 			Amount: 50
