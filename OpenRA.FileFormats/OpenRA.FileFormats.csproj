@@ -141,7 +141,6 @@
     <Compile Include="StreamExts.cs" />
     <Compile Include="FileFormats\WavLoader.cs" />
     <Compile Include="Graphics\R8Reader.cs" />
-    <Compile Include="Graphics\TileSetRenderer.cs" />
     <Compile Include="Keycode.cs" />
     <Compile Include="Hotkey.cs" />
     <Compile Include="FileSystem\FileSystem.cs" />

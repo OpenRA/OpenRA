@@ -38,6 +38,7 @@ namespace OpenRA.FileFormats
 	{
 		readonly List<TmpTile> tiles = new List<TmpTile>();
 		public IEnumerable<ISpriteFrame> Frames { get { return tiles.Cast<ISpriteFrame>(); } }
+		public bool CacheWhenLoadingTileset { get { return false; } }
 
 		public TmpTDReader(Stream s)
 		{

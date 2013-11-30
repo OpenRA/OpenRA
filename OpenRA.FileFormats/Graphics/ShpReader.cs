@@ -58,6 +58,7 @@ namespace OpenRA.FileFormats
 	{
 		readonly List<ImageHeader> headers = new List<ImageHeader>();
 		public IEnumerable<ISpriteFrame> Frames { get { return headers.Cast<ISpriteFrame>(); } }
+		public bool CacheWhenLoadingTileset { get { return false; } }
 		public readonly Size Size;
 
 		int recurseDepth = 0;

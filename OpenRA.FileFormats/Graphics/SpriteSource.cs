@@ -26,6 +26,7 @@ namespace OpenRA.FileFormats
 	public interface ISpriteSource
 	{
 		IEnumerable<ISpriteFrame> Frames { get; }
+		bool CacheWhenLoadingTileset { get; }
 	}
 
 	public enum SpriteType { Unknown, ShpTD, ShpTS, ShpD2, TmpTD, TmpRA, R8 }

@@ -13,8 +13,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using OpenRA.FileFormats;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Editor
 {
 	public class TileSetRenderer
 	{
@@ -22,34 +23,31 @@ namespace OpenRA.FileFormats
 		Dictionary<ushort, List<byte[]>> templates;
 		public Size TileSize;
 
-		List<byte[]> LoadTemplate(string filename, string[] exts, Cache<string, ISpriteFrame[]> r8cache, int[] frames)
+		List<byte[]> LoadTemplate(string filename, string[] exts, Dictionary<string, ISpriteSource> sourceCache, int[] frames)
 		{
-			if (exts.Contains(".R8") && FileSystem.Exists(filename + ".R8"))
+			ISpriteSource source;
+			if (!sourceCache.ContainsKey(filename))
 			{
-				var data = new List<byte[]>();
-				foreach (var f in frames)
-					data.Add(f >= 0 ? r8cache[filename][f].Data : null);
+				using (var s = FileSystem.OpenWithExts(filename, exts))
+					source = SpriteSource.LoadSpriteSource(s, filename);
 
-				return data;
+				if (source.CacheWhenLoadingTileset)
+					sourceCache.Add(filename, source);
+			}
+			else
+				source = sourceCache[filename];
+
+			if (frames != null)
+			{
+				var ret = new List<byte[]>();
+				var srcFrames = source.Frames.ToArray();
+				foreach (var i in frames)
+					ret.Add(srcFrames[i].Data);
+
+				return ret;
 			}
 
-			using (var s = FileSystem.OpenWithExts(filename, exts))
-			{
-				var type = SpriteSource.DetectSpriteType(s);
-				ISpriteSource source;
-				switch (type)
-				{
-					case SpriteType.TmpTD:
-						source = new TmpTDReader(s);
-						break;
-					case SpriteType.TmpRA:
-						source = new TmpRAReader(s);
-						break;
-					default:
-						throw new InvalidDataException(filename + " is not a valid terrain tile");
-				}
-				return source.Frames.Select(f => f.Data).ToList();
-			}
+			return source.Frames.Select(f => f.Data).ToList();
 		}
 
 		public TileSetRenderer(TileSet tileset, Size tileSize)
@@ -58,9 +56,9 @@ namespace OpenRA.FileFormats
 			this.TileSize = tileSize;
 
 			templates = new Dictionary<ushort, List<byte[]>>();
-			var r8cache = new Cache<string, ISpriteFrame[]>(s => new R8Reader(FileSystem.OpenWithExts(s, ".R8")).Frames.ToArray());
+			var sourceCache = new Dictionary<string, ISpriteSource>();
 			foreach (var t in TileSet.Templates)
-				templates.Add(t.Key, LoadTemplate(t.Value.Image, tileset.Extensions, r8cache, t.Value.Frames));
+				templates.Add(t.Key, LoadTemplate(t.Value.Image, tileset.Extensions, sourceCache, t.Value.Frames));
 		}
 
 		public Bitmap RenderTemplate(ushort id, Palette p)

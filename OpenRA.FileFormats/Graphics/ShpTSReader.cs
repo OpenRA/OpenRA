@@ -46,6 +46,7 @@ namespace OpenRA.FileFormats
 	{
 		readonly List<FrameHeader> frames = new List<FrameHeader>();
 		public IEnumerable<ISpriteFrame> Frames { get { return frames.Cast<ISpriteFrame>(); } }
+		public bool CacheWhenLoadingTileset { get { return false; } }
 
 		public ShpTSReader(Stream stream)
 		{

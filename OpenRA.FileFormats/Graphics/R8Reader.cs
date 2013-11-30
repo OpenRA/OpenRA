@@ -63,6 +63,7 @@ namespace OpenRA.FileFormats
 	{
 		readonly List<R8Image> frames = new List<R8Image>();
 		public IEnumerable<ISpriteFrame> Frames { get { return frames.Cast<ISpriteFrame>(); } }
+		public bool CacheWhenLoadingTileset { get { return true; } }
 
 		public readonly int ImageCount;
 		public R8Reader(Stream stream)

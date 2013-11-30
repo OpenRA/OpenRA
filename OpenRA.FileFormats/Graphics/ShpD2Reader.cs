@@ -88,6 +88,7 @@ namespace OpenRA.FileFormats
 	{
 		List<Frame> headers = new List<Frame>();
 		public IEnumerable<ISpriteFrame> Frames { get { return headers.Cast<ISpriteFrame>(); } }
+		public bool CacheWhenLoadingTileset { get { return false; } }
 
 		public ShpD2Reader(Stream s)
 		{

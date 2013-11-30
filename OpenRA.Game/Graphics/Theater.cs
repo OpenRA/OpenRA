@@ -23,38 +23,31 @@ namespace OpenRA.Graphics
 		Dictionary<ushort, Sprite[]> templates;
 		Sprite missingTile;
 
-		Sprite[] LoadTemplate(string filename, string[] exts, Cache<string, ISpriteFrame[]> r8Cache, int[] frames)
+		Sprite[] LoadTemplate(string filename, string[] exts, Dictionary<string, ISpriteSource> sourceCache, int[] frames)
 		{
-			if (exts.Contains(".R8") && FileSystem.Exists(filename+".R8"))
+			ISpriteSource source;
+			if (!sourceCache.ContainsKey(filename))
 			{
-				return frames.Select(f =>
-				{
-					if (f < 0)
-						return null;
+				using (var s = FileSystem.OpenWithExts(filename, exts))
+					source = SpriteSource.LoadSpriteSource(s, filename);
 
-					var image = r8Cache[filename][f];
-					return sheetBuilder.Add(image.Data, new Size(image.Size.Width, image.Size.Height));
-				}).ToArray();
+				if (source.CacheWhenLoadingTileset)
+					sourceCache.Add(filename, source);
+			}
+			else
+				source = sourceCache[filename];
+
+			if (frames != null)
+			{
+				var ret = new List<Sprite>();
+				var srcFrames = source.Frames.ToArray();
+				foreach (var i in frames)
+					ret.Add(sheetBuilder.Add(srcFrames[i]));
+
+				return ret.ToArray();
 			}
 
-			using (var s = FileSystem.OpenWithExts(filename, exts))
-			{
-				var type = SpriteSource.DetectSpriteType(s);
-				ISpriteSource source;
-				switch (type)
-				{
-					case SpriteType.TmpTD:
-						source = new TmpTDReader(s);
-						break;
-					case SpriteType.TmpRA:
-						source = new TmpRAReader(s);
-						break;
-					default:
-						throw new InvalidDataException(filename + " is not a valid terrain tile");
-				}
-
-				return source.Frames.Select(f => sheetBuilder.Add(f)).ToArray();
-			}
+			return source.Frames.Select(f => sheetBuilder.Add(f)).ToArray();
 		}
 
 		public Theater(TileSet tileset)
@@ -69,11 +62,11 @@ namespace OpenRA.Graphics
 				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize));
 			};
 
-			var r8Cache = new Cache<string, ISpriteFrame[]>(s => new R8Reader(FileSystem.OpenWithExts(s, ".R8")).Frames.ToArray());
+			var sourceCache = new Dictionary<string, ISpriteSource>();
 			templates = new Dictionary<ushort, Sprite[]>();
 			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
 			foreach (var t in tileset.Templates)
-				templates.Add(t.Value.Id, LoadTemplate(t.Value.Image, tileset.Extensions, r8Cache, t.Value.Frames));
+				templates.Add(t.Value.Id, LoadTemplate(t.Value.Image, tileset.Extensions, sourceCache, t.Value.Frames));
 
 			// 1x1px transparent tile
 			missingTile = sheetBuilder.Add(new byte[1], new Size(1, 1));
