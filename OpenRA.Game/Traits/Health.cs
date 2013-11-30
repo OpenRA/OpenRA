@@ -168,15 +168,6 @@ namespace OpenRA.Traits
 
 	public static class HealthExts
 	{
-		public static bool IsDead(this Actor self)
-		{
-			if (self.Destroyed)
-				return true;
-
-			var health = self.TraitOrDefault<Health>();
-			return (health == null) ? false : health.IsDead;
-		}
-
 		public static DamageState GetDamageState(this Actor self)
 		{
 			if (self.Destroyed)
@@ -192,13 +183,6 @@ namespace OpenRA.Traits
 			var health = self.TraitOrDefault<Health>();
 			if (health == null) return;
 			health.InflictDamage(self, attacker, damage, warhead, false);
-		}
-
-		public static void Kill(this Actor self, Actor attacker)
-		{
-			var health = self.TraitOrDefault<Health>();
-			if (health == null) return;
-			health.InflictDamage(self, attacker, health.MaxHP, null, true);
 		}
 	}
 }
