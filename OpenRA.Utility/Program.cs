@@ -57,7 +57,7 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --settings-value KEY     Get value of KEY from settings.yaml");
 			Console.WriteLine("  --shp PNGFILE [PNGFILE ...]     Combine a list of PNG images into a SHP");
 			Console.WriteLine("  --png SPRITEFILE PALETTE [--noshadow] [--nopadding]     Convert a shp/tmp/R8 to a series of PNGs, optionally removing shadow");
-			Console.WriteLine("  --extract MOD[,MOD]* FILES [--userdir]     Extract files from mod packages to the current (or user) directory");
+			Console.WriteLine("  --extract MOD[,MOD]* FILES     Extract files from mod packages to the current directory");
 			Console.WriteLine("  --remap SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP     Remap SHPs to another palette");
 			Console.WriteLine("  --transpose SRCSHP DESTSHP START N M [START N M ...]     Transpose the N*M block of frames starting at START.");
 			Console.WriteLine("  --docs MOD     Generate trait documentation in MarkDown format.");

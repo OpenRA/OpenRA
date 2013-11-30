@@ -146,16 +146,12 @@ namespace OpenRA.Utility
 
 			foreach (var f in files)
 			{
-				if (f == "--userdir")
-					break;
-
 				var src = FileSystem.Open(f);
 				if (src == null)
 					throw new InvalidOperationException("File not found: {0}".F(f));
 				var data = src.ReadAllBytes();
-				var output = args.Contains("--userdir") ? Platform.SupportDir + f : f;
-				File.WriteAllBytes(output, data);
-				Console.WriteLine(output + " saved.");
+				File.WriteAllBytes(f, data);
+				Console.WriteLine(f + " saved.");
 			}
 		}
 
