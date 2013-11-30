@@ -25,6 +25,10 @@ namespace OpenRA.Mods.RA.Widgets
 		WorldRenderer worldRenderer;
 		Dictionary<ProductionQueue, Animation> clocks;
 
+		public int IconWidth = 32;
+		public int IconHeight = 24;
+		public int IconSpacing = 8;
+
 		[ObjectCreator.UseCtor]
 		public ObserverProductionIconsWidget(World world, WorldRenderer worldRenderer)
 		{
@@ -59,6 +63,8 @@ namespace OpenRA.Mods.RA.Widgets
 					clocks.Add(queue.Trait, new Animation("clock"));
 				}
 			}
+
+			var iconSize = new float2(IconWidth, IconHeight);
 			foreach (var queue in queues)
 			{
 				var current = queue.Trait.CurrentItem();
@@ -71,16 +77,15 @@ namespace OpenRA.Mods.RA.Widgets
 
 				var icon = new Animation(RenderSimple.GetImage(actor));
 				icon.Play(actor.Traits.Get<TooltipInfo>().Icon);
-				var size = icon.Image.size / new float2(2, 2);
-				var location = new float2(RenderBounds.Location) + new float2(queue.i * (int)size.Length, 0);
-				WidgetUtils.DrawSHP(icon.Image, location, worldRenderer, size);
+				var location = new float2(RenderBounds.Location) + new float2(queue.i * (IconWidth + IconSpacing), 0);
+				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);
 
 				var clock = clocks[queue.Trait];
 				clock.PlayFetchIndex("idle",
 					() => current.TotalTime == 0 ? 0 : ((current.TotalTime - current.RemainingTime)
 					* (clock.CurrentSequence.Length - 1) / current.TotalTime));
 				clock.Tick();
-				WidgetUtils.DrawSHP(clock.Image, location, worldRenderer, size);
+				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);
 
 				var tiny = Game.Renderer.Fonts["Tiny"];
 				var text = GetOverlayForItem(current);

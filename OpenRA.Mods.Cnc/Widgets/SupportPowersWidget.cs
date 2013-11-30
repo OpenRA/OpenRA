@@ -89,10 +89,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void Draw()
 		{
+			var iconSize = new float2(64, 48);
+			var iconOffset = 0.5f * iconSize;
+
 			overlayFont = Game.Renderer.Fonts["TinyBold"];
-			holdOffset = new float2(32, 24) - overlayFont.Measure(HoldText) / 2;
-			readyOffset = new float2(32, 24) - overlayFont.Measure(ReadyText) / 2;
-			timeOffset = new float2(32, 24) - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
+			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
+			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
+			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
 
 			// Background
 			foreach (var rect in icons.Keys)
@@ -101,14 +104,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 			// Icons
 			foreach (var p in icons.Values)
 			{
-				WidgetUtils.DrawSHP(p.Sprite, p.Pos, worldRenderer);
+				WidgetUtils.DrawSHPCentered(p.Sprite, p.Pos + iconOffset, worldRenderer);
 
 				// Charge progress
 				clock.PlayFetchIndex("idle",
 					() => (p.Power.TotalTime - p.Power.RemainingTime)
 						* (clock.CurrentSequence.Length - 1) / p.Power.TotalTime);
 				clock.Tick();
-				WidgetUtils.DrawSHP(clock.Image, p.Pos, worldRenderer);
+				WidgetUtils.DrawSHPCentered(clock.Image, p.Pos + iconOffset, worldRenderer);
 			}
 
 			// Overlay

@@ -197,11 +197,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void Draw()
 		{
+			var iconSize = new float2(64, 48);
+			var iconOffset = 0.5f * iconSize;
+
 			overlayFont = Game.Renderer.Fonts["TinyBold"];
-			timeOffset = new float2(32, 24) - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
+			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
 			queuedOffset = new float2(4, 2);
-			holdOffset = new float2(32, 24) - overlayFont.Measure(HoldText) / 2;
-			readyOffset = new float2(32, 24) - overlayFont.Measure(ReadyText) / 2;
+			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
+			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
 
 			if (CurrentQueue == null)
 				return;
@@ -215,7 +218,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			// Icons
 			foreach (var icon in icons.Values)
 			{
-				WidgetUtils.DrawSHP(icon.Sprite, icon.Pos, worldRenderer);
+				WidgetUtils.DrawSHPCentered(icon.Sprite, icon.Pos + iconOffset, worldRenderer);
 
 				// Build progress
 				if (icon.Queued.Count > 0)
@@ -225,10 +228,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 						() => (first.TotalTime - first.RemainingTime)
 							* (clock.CurrentSequence.Length - 1) / first.TotalTime);
 					clock.Tick();
-					WidgetUtils.DrawSHP(clock.Image, icon.Pos, worldRenderer);
+					WidgetUtils.DrawSHPCentered(clock.Image, icon.Pos + iconOffset, worldRenderer);
 				}
 				else if (!buildableItems.Any(a => a.Name == icon.Name))
-					WidgetUtils.DrawSHP(cantBuild.Image, icon.Pos, worldRenderer);
+					WidgetUtils.DrawSHPCentered(cantBuild.Image, icon.Pos + iconOffset, worldRenderer);
 			}
 
 			// Overlays

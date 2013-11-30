@@ -203,6 +203,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			string paletteCollection = "palette-" + world.LocalPlayer.Country.Race;
 			float2 origin = new float2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
+			var iconOffset = 0.5f * new float2(IconWidth, IconHeight);
 			var x = 0;
 			var y = 0;
 
@@ -233,7 +234,7 @@ namespace OpenRA.Mods.RA.Widgets
 					var drawPos = new float2(rect.Location);
 					var icon = new Animation(RenderSimple.GetImage(item));
 					icon.Play(item.Traits.Get<TooltipInfo>().Icon);
-					WidgetUtils.DrawSHP(icon.Image, drawPos, worldRenderer);
+					WidgetUtils.DrawSHPCentered(icon.Image, drawPos + iconOffset, worldRenderer);
 
 					var firstOfThis = queue.AllQueued().FirstOrDefault(a => a.Item == item.Name);
 
@@ -248,7 +249,7 @@ namespace OpenRA.Mods.RA.Widgets
 							() => (firstOfThis.TotalTime - firstOfThis.RemainingTime)
 								* (clock.CurrentSequence.Length - 1) / firstOfThis.TotalTime);
 						clock.Tick();
-						WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
+						WidgetUtils.DrawSHPCentered(clock.Image, drawPos + iconOffset, worldRenderer);
 
 						if (queue.CurrentItem() == firstOfThis)
 							textBits.Add(Pair.New(overlayPos, GetOverlayForItem(firstOfThis)));
@@ -269,7 +270,7 @@ namespace OpenRA.Mods.RA.Widgets
 				if (x != 0) y++;
 
 				foreach (var ob in overlayBits)
-					WidgetUtils.DrawSHP(ob.First, ob.Second, worldRenderer);
+					WidgetUtils.DrawSHPCentered(ob.First, ob.Second + iconOffset, worldRenderer);
 
 				var font = Game.Renderer.Fonts["TinyBold"];
 				foreach (var tb in textBits)
