@@ -12,17 +12,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace OpenRA.FileFormats
 {
-	public class R8Image
+	class R8Image : ISpriteFrame
 	{
-		public readonly Size Size;
-		public readonly int2 Offset;
-		public readonly byte[] Image;
-
-		// Legacy variable. Can be removed when the utility command is made sensible.
-		public readonly Size FrameSize;
+		public Size Size { get; private set; }
+		public Size FrameSize { get; private set; }
+		public float2 Offset { get; private set; }
+		public byte[] Data { get; set; }
 
 		public R8Image(Stream s)
 		{
@@ -52,7 +51,7 @@ namespace OpenRA.FileFormats
 			// Skip alignment byte
 			s.ReadUInt8();
 
-			Image = s.ReadBytes(width*height);
+			Data = s.ReadBytes(width*height);
 
 			// Ignore palette
 			if (type == 1 && paletteOffset != 0)
@@ -60,33 +59,20 @@ namespace OpenRA.FileFormats
 		}
 	}
 
-	public class R8Reader : IEnumerable<R8Image>
+	public class R8Reader : ISpriteSource
 	{
-		readonly List<R8Image> headers = new List<R8Image>();
+		readonly List<R8Image> frames = new List<R8Image>();
+		public IEnumerable<ISpriteFrame> Frames { get { return frames.Cast<ISpriteFrame>(); } }
+		public bool CacheWhenLoadingTileset { get { return true; } }
 
-		public readonly int Frames;
+		public readonly int ImageCount;
 		public R8Reader(Stream stream)
 		{
 			while (stream.Position < stream.Length)
 			{
-				headers.Add(new R8Image(stream));
-				Frames++;
+				frames.Add(new R8Image(stream));
+				ImageCount++;
 			}
-		}
-
-		public R8Image this[int index]
-		{
-			get { return headers[index]; }
-		}
-
-		public IEnumerator<R8Image> GetEnumerator()
-		{
-			return headers.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
 		}
 	}
 }

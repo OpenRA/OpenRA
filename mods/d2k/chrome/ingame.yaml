@@ -150,6 +150,8 @@ Container@PLAYER_WIDGETS:
 		SupportPowerBin@INGAME_POWERS_BIN:
 			X:0
 			Y:25
+			IconWidth: 60
+			IconHeight: 48
 			ReadyText: READY
 			HoldText: ON HOLD
 		BuildPalette@INGAME_BUILD_PALETTE:

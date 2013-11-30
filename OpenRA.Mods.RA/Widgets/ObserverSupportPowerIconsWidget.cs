@@ -25,6 +25,10 @@ namespace OpenRA.Mods.RA.Widgets
 		WorldRenderer worldRenderer;
 		Dictionary<string, Animation> clocks;
 
+		public int IconWidth = 32;
+		public int IconHeight = 24;
+		public int IconSpacing = 8;
+
 		[ObjectCreator.UseCtor]
 		public ObserverSupportPowerIconsWidget(World world, WorldRenderer worldRenderer)
 		{
@@ -61,22 +65,24 @@ namespace OpenRA.Mods.RA.Widgets
 					clocks.Add(power.a.Key, new Animation("clock"));
 				}
 			}
+
+			var iconSize = new float2(IconWidth, IconHeight);
 			foreach (var power in powers)
 			{
 				var item = power.a.Value;
 				if (item == null || item.Info == null || item.Info.Icon == null)
 					continue;
+
 				icon.Play(item.Info.Icon);
-				var size = icon.Image.size / new float2(2, 2);
-				var location = new float2(RenderBounds.Location) + new float2(power.i * (int)size.Length, 0);
-				WidgetUtils.DrawSHP(icon.Image, location, worldRenderer, size);
+				var location = new float2(RenderBounds.Location) + new float2(power.i * (IconWidth + IconSpacing), 0);
+				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);
 
 				var clock = clocks[power.a.Key];
 				clock.PlayFetchIndex("idle",
 					() => item.TotalTime == 0 ? 0 : ((item.TotalTime - item.RemainingTime)
 						* (clock.CurrentSequence.Length - 1) / item.TotalTime));
 				clock.Tick();
-				WidgetUtils.DrawSHP(clock.Image, location, worldRenderer, size);
+				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);
 
 				var tiny = Game.Renderer.Fonts["Tiny"];
 				var text = GetOverlayForItem(item);

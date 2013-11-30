@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 
@@ -22,27 +23,31 @@ namespace OpenRA.Graphics
 		Dictionary<ushort, Sprite[]> templates;
 		Sprite missingTile;
 
-		Sprite[] LoadTemplate(string filename, string[] exts, Cache<string, R8Reader> r8Cache, int[] frames)
+		Sprite[] LoadTemplate(string filename, string[] exts, Dictionary<string, ISpriteSource> sourceCache, int[] frames)
 		{
-			if (exts.Contains(".R8") && FileSystem.Exists(filename+".R8"))
+			ISpriteSource source;
+			if (!sourceCache.ContainsKey(filename))
 			{
-				return frames.Select(f =>
-				{
-					if (f < 0)
-						return null;
+				using (var s = FileSystem.OpenWithExts(filename, exts))
+					source = SpriteSource.LoadSpriteSource(s, filename);
 
-					var image = r8Cache[filename][f];
-					return sheetBuilder.Add(image.Image, new Size(image.Size.Width, image.Size.Height));
-				}).ToArray();
+				if (source.CacheWhenLoadingTileset)
+					sourceCache.Add(filename, source);
+			}
+			else
+				source = sourceCache[filename];
+
+			if (frames != null)
+			{
+				var ret = new List<Sprite>();
+				var srcFrames = source.Frames.ToArray();
+				foreach (var i in frames)
+					ret.Add(sheetBuilder.Add(srcFrames[i]));
+
+				return ret.ToArray();
 			}
 
-			using (var s = FileSystem.OpenWithExts(filename, exts))
-			{
-				var t = new Terrain(s);
-				return t.TileBitmapBytes
-					.Select(b => b != null ? sheetBuilder.Add(b, new Size(t.Width, t.Height)) : null)
-					.ToArray();
-			}
+			return source.Frames.Select(f => sheetBuilder.Add(f)).ToArray();
 		}
 
 		public Theater(TileSet tileset)
@@ -57,11 +62,11 @@ namespace OpenRA.Graphics
 				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize));
 			};
 
-			var r8Cache = new Cache<string, R8Reader>(s => new R8Reader(FileSystem.OpenWithExts(s, ".R8")));
+			var sourceCache = new Dictionary<string, ISpriteSource>();
 			templates = new Dictionary<ushort, Sprite[]>();
 			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
 			foreach (var t in tileset.Templates)
-				templates.Add(t.Value.Id, LoadTemplate(t.Value.Image, tileset.Extensions, r8Cache, t.Value.Frames));
+				templates.Add(t.Value.Id, LoadTemplate(t.Value.Image, tileset.Extensions, sourceCache, t.Value.Frames));
 
 			// 1x1px transparent tile
 			missingTile = sheetBuilder.Add(new byte[1], new Size(1, 1));
@@ -70,11 +75,13 @@ namespace OpenRA.Graphics
 		public Sprite TileSprite(TileReference<ushort, byte> r)
 		{
 			Sprite[] template;
-			if (templates.TryGetValue(r.Type, out template))
-				if (template.Length > r.Index && template[r.Index] != null)
-					return template[r.Index];
+			if (!templates.TryGetValue(r.Type, out template))
+				return missingTile;
 
-			return missingTile;
+			if (r.Index >= template.Length)
+				return missingTile;
+
+			return template[r.Index];
 		}
 
 		public Sheet Sheet { get { return sheetBuilder.Current; } }

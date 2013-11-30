@@ -16,8 +16,9 @@ NEW:
 		Added a setting for team health bar colors.
 	Asset Browser:
 		Fixed crashes when trying to load invalid filenames or sprites with just 1 frame.
-		Added support for browsing the folders for R8 files.
+		Added support for all sprite types.
 		Added palette chooser and colorpicker dropdown boxes.
+		Overhauled layout.
 	Red Alert:
 		Added MAD Tank.
 		Fixed a crash in Monster Tank Madness.
@@ -86,6 +87,10 @@ NEW:
 		Fixed corrupted replays (which would immediately desync).
 		Removed runtime mod merging.
 		Added support for map scripting with Lua.
+		Overhauled sprite loading code.
+		Improved error message when loading corrupted sprites.
+		Rewritten shp(ts) parser makes more efficient use of texture space.
+		Added support for the dune 2 shp format.
 	Build system and packages:
 		Added GeoIP to Makefile so it is installed properly.
 		Added desktop shortcut creation support to the Makefile and Windows installer.
@@ -113,7 +118,13 @@ NEW:
 		Added InvalidTargets property to weapons.
 		Added modifier support for build palette hotkeys.
 		The Requires: option for inheriting from a parent mod has been removed. Mods can directly reference the parent mod files instead.
-		Icons are now defined in Sequences not Rules.
+		Icons definitions have moved from the unit's rules to its sequence.
+		Mouse cursors (cursors.yaml) must now specify their file extension.
+		OpenRA.Utility --png will now generate a set of frames for any sprite type [shp(td)/shp(ts)/shp(d2)/r8/tmp(td)/tmp(ra)].
+		OpenRA.Utility --shp now requires a list of frames to be combined into a shp.
+		Removed Utility --tmp-png, --r8, --fromd2 commands (use --png instead).
+		Removed Asset Browser file extraction / conversion (use the Utility instead).
+		Unified sprite loading allows any sprite type to be used anywhere: shp can now be used for terrain, and tmp for units.
 
 20130915:
 	All mods:

@@ -2,10 +2,10 @@ ShadowIndex: 1
 
 Palettes:
 	cursor: cursor.pal
-	mouse.r8: d2k.pal
+	mouse: d2k.pal
 
 Cursors:
-	mouse.r8: mouse.r8
+	mouse.r8: mouse
 		scroll-t:
 			start:112
 			x: 24
@@ -252,7 +252,7 @@ Cursors:
 			x: 24
 			y: 24
 
-	nopower: cursor
+	nopower.shp: cursor
 		powerdown-blocked:
 			start:0
 			length: 1

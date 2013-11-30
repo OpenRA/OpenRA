@@ -30,8 +30,10 @@ Background@COLOR_CHOOSER:
 					Width:144
 					Height:72
 		ShpImage@FACT:
-			X:160
-			Y:8
+			X:153
+			Y:1
+			Width:80
+			Height:73
 			Image:DATA.R8
 			Frame:1936
 			Palette:colorpicker

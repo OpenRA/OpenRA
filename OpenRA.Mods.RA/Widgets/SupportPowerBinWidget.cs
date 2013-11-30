@@ -23,6 +23,9 @@ namespace OpenRA.Mods.RA.Widgets
 		[Translate] public string ReadyText = "";
 		[Translate] public string HoldText = "";
 
+		public int IconWidth = 64;
+		public int IconHeight = 48;
+
 		Animation icon;
 		Animation clock;
 		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
@@ -84,10 +87,11 @@ namespace OpenRA.Mods.RA.Widgets
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-bottom"), new float2(rectBounds.X, rectBounds.Y + numPowers * 51));
 
 			// HACK: Hack Hack Hack
-			rectBounds.Width = 69;
-			rectBounds.Height = 10 + numPowers * 51 + 21;
+			rectBounds.Width = IconWidth + 5;
+			rectBounds.Height = 31 + numPowers * (IconHeight + 3);
 
 			var y = rectBounds.Y + 10;
+			var iconSize = new float2(IconWidth, IconHeight);
 			foreach (var kv in powers)
 			{
 				var sp = kv.Value;
@@ -137,14 +141,14 @@ namespace OpenRA.Mods.RA.Widgets
 					}
 				}
 
-				WidgetUtils.DrawSHP(icon.Image, drawPos, worldRenderer);
+				WidgetUtils.DrawSHPCentered(icon.Image, drawPos + 0.5f * iconSize, worldRenderer);
 
 				clock.PlayFetchIndex("idle",
 					() => sp.TotalTime == 0 ? clock.CurrentSequence.Length - 1 : (sp.TotalTime - sp.RemainingTime)
 						* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
 				clock.Tick();
 
-				WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
+				WidgetUtils.DrawSHPCentered(clock.Image, drawPos + 0.5f * iconSize, worldRenderer);
 
 				var overlay = sp.Ready ? ReadyText : sp.Active ? null : HoldText;
 				var font = Game.Renderer.Fonts["TinyBold"];

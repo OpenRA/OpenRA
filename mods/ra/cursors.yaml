@@ -2,7 +2,7 @@
 	cursor: cursor.pal
 
 Cursors:
-	mouse: cursor
+	mouse.shp: cursor
 		scroll-t:
 			start:1
 		scroll-tr:
@@ -163,7 +163,7 @@ Cursors:
 			start:148
 			length: 12
 
-	nopower: cursor
+	nopower.shp: cursor
 		powerdown-blocked:
 			start:0
 			length: 1

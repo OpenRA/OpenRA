@@ -75,7 +75,7 @@ namespace OpenRA
 			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
 			ChromeProvider.Initialize(Manifest.Chrome);
 			SheetBuilder = new SheetBuilder(SheetType.Indexed);
-			SpriteLoader = new SpriteLoader(new string[] { ".shp" }, SheetBuilder);
+			SpriteLoader = new SpriteLoader(new string[0], SheetBuilder);
 			VoxelLoader = new VoxelLoader();
 			CursorProvider.Initialize(Manifest.Cursors);
 		}

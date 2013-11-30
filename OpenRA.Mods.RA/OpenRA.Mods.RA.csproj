@@ -33,9 +33,9 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -47,17 +47,17 @@
       </CustomCommands>
     </CustomCommands>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>True</Optimize>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <OutputPath>bin\Release\</OutputPath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FuzzyLogicLibrary">
@@ -70,13 +70,12 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Nat">
       <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -444,7 +443,6 @@
     <Compile Include="Widgets\HueSliderWidget.cs" />
     <Compile Include="Render\WithTurret.cs" />
     <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
-    <Compile Include="Widgets\Logic\ConvertGameFilesLogic.cs" />
     <Compile Include="VoxelNormalsPalette.cs" />
     <Compile Include="Render\RenderVoxels.cs" />
     <Compile Include="Render\WithVoxelTurret.cs" />
@@ -481,7 +479,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LuaInterface\LuaInterface.csproj">
-      <Project>{e915a0a4-2641-4f7e-8a88-8f123fa88bf1}</Project>
+      <Project>{E915A0A4-2641-4F7E-8A88-8F123FA88BF1}</Project>
       <Name>LuaInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -495,12 +493,8 @@
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\OpenRA.Irc\OpenRA.Irc.csproj">
-      <Project>{85b48234-8b31-4be6-af9c-665cc6866841}</Project>
+      <Project>{85B48234-8B31-4BE6-AF9C-665CC6866841}</Project>
       <Name>OpenRA.Irc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenRA.Utility\OpenRA.Utility.csproj">
-      <Project>{F33337BE-CB69-4B24-850F-07D23E408DDF}</Project>
-      <Name>OpenRA.Utility</Name>
     </ProjectReference>
     <ProjectReference Include="..\GeoIP\GeoIP.csproj">
       <Project>{021DDD6A-A608-424C-9A9A-252D8A9989E0}</Project>

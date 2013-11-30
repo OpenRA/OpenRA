@@ -56,6 +56,7 @@ namespace OpenRA.Widgets
 		Sprite sprite = null;
 		string cachedImage = null;
 		int cachedFrame = -1;
+		float2 cachedOffset = float2.Zero;
 
 		public override void Draw()
 		{
@@ -68,9 +69,10 @@ namespace OpenRA.Widgets
 				sprite = Game.modData.SpriteLoader.LoadAllSprites(image)[frame];
 				cachedImage = image;
 				cachedFrame = frame;
+				cachedOffset = 0.5f * (new float2(RenderBounds.Size) - sprite.size);
 			}
 
-			Game.Renderer.SpriteRenderer.DrawSprite(sprite, RenderOrigin, worldRenderer.Palette(palette));
+			Game.Renderer.SpriteRenderer.DrawSprite(sprite, RenderOrigin + cachedOffset, worldRenderer.Palette(palette));
 		}
 
 		public int FrameCount

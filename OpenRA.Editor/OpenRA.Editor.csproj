@@ -165,6 +165,7 @@
     <Compile Include="Surface.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TileSetRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

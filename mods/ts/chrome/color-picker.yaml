@@ -30,8 +30,10 @@ Background@COLOR_CHOOSER:
 					Width:144
 					Height:72
 		ShpImage@GTCNST:
-			X:121
-			Y:0-68
+			X:153
+			Y:1-40
+			Width:80
+			Height:73
 			Image:gtcnstmk
 			Palette:colorpicker
 		Button@RANDOM_BUTTON:

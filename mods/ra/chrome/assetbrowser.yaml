@@ -3,29 +3,36 @@ Background@ASSETBROWSER_BG:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:700
-	Height:410
+	Height:500
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@ASSETBROWSER_TITLE:
-			X:0
-			Y:10
+			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Game Asset Viewer & Converter
-			Align:Center
 			Font:Bold
+			Align:Center
+			Text:Asset Browser
+		Label@SOURCE_SELECTOR_DESC:
+			X:20
+			Y:35
+			Width:160
+			Height:25
+			Font:TinyBold
+			Align:Center
+			Text:Select asset source
 		DropDownButton@SOURCE_SELECTOR:
-			X:40
-			Y:45
+			X:20
+			Y:60
 			Width:160
 			Height:25
 			Font:Bold
 			Text:Folders
 		ScrollPanel@ASSET_LIST:
-			X:40
-			Y:80
+			X:20
+			Y:90
 			Width:160
-			Height:190
+			Height:275
 			Children:
 				ScrollItem@ASSET_TEMPLATE:
 					Width:PARENT_RIGHT-27
@@ -38,30 +45,45 @@ Background@ASSETBROWSER_BG:
 							X:10
 							Width:PARENT_RIGHT-20
 							Height:25
+		Label@FILENAME_DESC:
+			X:20
+			Y:370
+			Width:160
+			Height:25
+			Font:TinyBold
+			Align:Center
+			Text:Search for file
 		TextField@FILENAME_INPUT:
-			X:40
-			Y:280
-			Width:140
+			X:20
+			Y:395
+			Width:160
 			Height:25
 			Text:mouse.shp
 		Button@LOAD_BUTTON:
-			X:40
-			Y:310
-			Width:140
+			X:20
+			Y:425
+			Width:160
 			Height:25
 			Text:Load
 			Font:Bold
 			Key:return
-		DropDownButton@PALETTE_SELECTOR:
-			X:230
-			Y:45
+		Label@PALETTE_DESC:
+			X:PARENT_RIGHT-WIDTH-270
+			Y:60
 			Width:150
 			Height:25
 			Font:Bold
-			Text:Palette
+			Align:Right
+			Text:Palette:
+		DropDownButton@PALETTE_SELECTOR:
+			X:PARENT_RIGHT-WIDTH-110
+			Y:60
+			Width:150
+			Height:25
+			Font:Bold
 		DropDownButton@COLOR:
-			X:380
-			Y:45
+			X:PARENT_RIGHT-WIDTH-20
+			Y:60
 			Width:80
 			Height:25
 			Children:
@@ -71,69 +93,19 @@ Background@ASSETBROWSER_BG:
 					Width:PARENT_RIGHT-35
 					Height:PARENT_BOTTOM-12
 		Background@SPRITE_BG:
-			X:220
-			Y:80
-			Width:250
-			Height:250
-			Background:dialog4
+			X:190
+			Y:90
+			Width:490
+			Height:330
+			Background:dialog3
 			Children:
 				ShpImage@SPRITE:
-					X:4
-					Y:4
-					Width:246
-					Height:246
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
 					Image:mouse
-		Label@ACTIONS_TITLE:
-			X:PARENT_RIGHT - 150
-			Y:45
-			Width:PARENT_RIGHT
-			Height:25
-			Text:Actions
-			Font:Bold
-		Button@EXPORT_BUTTON:
-			X:PARENT_RIGHT - 200
-			Y:80
-			Width:160
-			Height:25
-			Text:Selected to PNG
-			Font:Bold
-		Button@EXTRACT_BUTTON:
-			X:PARENT_RIGHT - 200
-			Y:115
-			Width:160
-			Height:25
-			Text:Extract all to PNG
-			Font:Bold
-		TextField@IMAGE_FILENAME_INPUT:
-			X:PARENT_RIGHT - 200
-			Y:PARENT_BOTTOM - 235
-			Width:100
-			Height:25
-			Text:pixelart.png
-		TextField@IMAGE_SIZE_INPUT:
-			X:PARENT_RIGHT - 90
-			Y:PARENT_BOTTOM - 235
-			Width:50
-			Height:25
-			Text:width
-		Button@IMPORT_BUTTON:
-			X:PARENT_RIGHT - 200
-			Y:PARENT_BOTTOM - 200
-			Width:160
-			Height:25
-			Text:Import from PNG
-			Font:Bold
-		Button@CLOSE_BUTTON:
-			X:PARENT_RIGHT - 200
-			Y:PARENT_BOTTOM - 115
-			Width:160
-			Height:25
-			Text:Close
-			Font:Bold
-			Key:escape
 		Container@FRAME_SELECTOR:
-			X:45
-			Y:360
+			X:190
+			Y:425
 			Children:
 				Button@BUTTON_PREV:
 					X:0
@@ -202,14 +174,22 @@ Background@ASSETBROWSER_BG:
 							ImageCollection:music
 							ImageName:next
 				Slider@FRAME_SLIDER:
-					X:160
-					Y:0
-					Width:410
+					X:140
+					Y:3
+					Width:300
 					Height:20
 					MinimumValue: 0
 				Label@FRAME_COUNT:
-					X:585
-					Y:0
-					Width:25
+					X:445
+					Width:40
 					Height:25
-					Font:Bold
+					Font:TinyBold
+					Align:Left
+		Button@CLOSE_BUTTON:
+			Key:escape
+			X:PARENT_RIGHT-180
+			Y:PARENT_BOTTOM-45
+			Width:160
+			Height:25
+			Font:Bold
+			Text:Close

@@ -23,11 +23,8 @@ namespace OpenRA.Utility
 				{ "--settings-value", Command.Settings },
 				{ "--shp", Command.ConvertPngToShp },
 				{ "--png", Command.ConvertShpToPng },
-				{ "--fromd2", Command.ConvertFormat2ToFormat80 },
 				{ "--extract", Command.ExtractFiles },
-				{ "--tmp-png", Command.ConvertTmpToPng },
 				{ "--remap", Command.RemapShp },
-				{ "--r8", Command.ConvertR8ToPng },
 				{ "--transpose", Command.TransposeShp },
 				{ "--docs", Command.ExtractTraitDocs },
 				{ "--map-hash", Command.GetMapHash },
@@ -58,13 +55,10 @@ namespace OpenRA.Utility
 			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION] [ARGS]");
 			Console.WriteLine();
 			Console.WriteLine("  --settings-value KEY     Get value of KEY from settings.yaml");
-			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH     Convert a single PNG with multiple frames appended after another to a SHP");
-			Console.WriteLine("  --png SHPFILE PALETTE [--noshadow]     Convert a SHP to a PNG containing all of its frames, optionally removing the shadow");
-			Console.WriteLine("  --fromd2 DUNE2SHP C&CSHP     Convert a Dune II SHP (C&C mouse cursor) to C&C SHP format.");
-			Console.WriteLine("  --extract MOD[,MOD]* FILES [--userdir]     Extract files from mod packages to the current (or user) directory");
-			Console.WriteLine("  --tmp-png MOD[,MOD]* THEATER FILES      Extract terrain tiles to PNG");
+			Console.WriteLine("  --shp PNGFILE [PNGFILE ...]     Combine a list of PNG images into a SHP");
+			Console.WriteLine("  --png SPRITEFILE PALETTE [--noshadow] [--nopadding]     Convert a shp/tmp/R8 to a series of PNGs, optionally removing shadow");
+			Console.WriteLine("  --extract MOD[,MOD]* FILES     Extract files from mod packages to the current directory");
 			Console.WriteLine("  --remap SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP     Remap SHPs to another palette");
-			Console.WriteLine("  --r8 R8FILE PALETTE START END FILENAME [--noshadow] [--tileset]     Convert Dune 2000 DATA.R8 to PNGs choosing start- and endframe as well as type to append multiple frames to one PNG named by filename optionally removing the shadow.");
 			Console.WriteLine("  --transpose SRCSHP DESTSHP START N M [START N M ...]     Transpose the N*M block of frames starting at START.");
 			Console.WriteLine("  --docs MOD     Generate trait documentation in MarkDown format.");
 			Console.WriteLine("  --map-hash MAPFILE     Generate hash of specified oramap file.");

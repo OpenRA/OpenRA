@@ -30,8 +30,10 @@ Background@COLOR_CHOOSER:
 					Width:144
 					Height:72
 		ShpImage@FACT:
-			X:156
+			X:153
 			Y:1
+			Width:80
+			Height:73
 			Image:fact
 			Palette:colorpicker
 		Button@RANDOM_BUTTON:

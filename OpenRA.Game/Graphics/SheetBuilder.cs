@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
@@ -52,9 +53,14 @@ namespace OpenRA.Graphics
 			this.allocateSheet = allocateSheet;
 		}
 
+		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Size, frame.Offset); }
 		public Sprite Add(byte[] src, Size size) { return Add(src, size, float2.Zero); }
 		public Sprite Add(byte[] src, Size size, float2 spriteOffset)
 		{
+			// Don't bother allocating empty sprites
+			if (size.Width == 0 || size.Height == 0)
+				return new Sprite(current, Rectangle.Empty, spriteOffset, channel, BlendMode.Alpha);
+
 			var rect = Allocate(size, spriteOffset);
 			Util.FastCopyIntoChannel(rect, src);
 			current.CommitData();
