@@ -76,8 +76,7 @@ ChromeLayout:
 	mods/ra/chrome/cheats.yaml
 	mods/ra/chrome/musicplayer.yaml
 	mods/d2k/chrome/tooltips.yaml
-	mods/d2k/chrome/assetbrowser.yaml
-	mods/ra/chrome/convertassets.yaml
+	mods/ra/chrome/assetbrowser.yaml
 	mods/ra/chrome/irc.yaml
 
 Weapons:

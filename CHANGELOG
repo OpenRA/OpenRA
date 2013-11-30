@@ -16,8 +16,9 @@ NEW:
 		Added a setting for team health bar colors.
 	Asset Browser:
 		Fixed crashes when trying to load invalid filenames or sprites with just 1 frame.
-		Added support for browsing the folders for R8 files.
+		Added support for all sprite types.
 		Added palette chooser and colorpicker dropdown boxes.
+		Overhauled layout.
 	Red Alert:
 		Added MAD Tank.
 		Fixed a crash in Monster Tank Madness.
@@ -122,6 +123,7 @@ NEW:
 		OpenRA.Utility --png will now generate a set of frames for any sprite type [shp(td)/shp(ts)/shp(d2)/r8/tmp(td)/tmp(ra)].
 		OpenRA.Utility --shp now requires a list of frames to be combined into a shp.
 		Removed Utility --tmp-png, --r8, --fromd2 commands (use --png instead).
+		Removed Asset Browser file extraction / conversion (use the Utility instead).
 		Unified sprite loading allows any sprite type to be used anywhere: shp can now be used for terrain, and tmp for units.
 
 20130915:

@@ -35,6 +35,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		PaletteFromFile currentPalette;
 
+		static readonly string[] AllowedExtensions = { ".shp", ".r8", ".tem", ".des", ".sno", ".int" };
+
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
 		{
@@ -60,6 +62,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var paletteDropDown = panel.Get<DropDownButtonWidget>("PALETTE_SELECTOR");
 			paletteDropDown.OnMouseDown = _ => ShowPaletteDropdown(paletteDropDown, world);
+			paletteDropDown.GetText = () => currentPalette.Name;
 
 			var colorPreview = panel.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = Game.Settings.Player.Color;
@@ -80,7 +83,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			frameSlider.OnChange += x => { spriteWidget.Frame = (int)Math.Round(x); };
 			frameSlider.GetValue = () => spriteWidget.Frame;
 
-			panel.Get<LabelWidget>("FRAME_COUNT").GetText = () => "{0}/{1}".F(spriteWidget.Frame, spriteWidget.FrameCount);
+			panel.Get<LabelWidget>("FRAME_COUNT").GetText = () => "{0} / {1}".F(spriteWidget.Frame + 1, spriteWidget.FrameCount + 1);
 
 			playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = () =>
@@ -118,96 +121,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
 			PopulateAssetList();
 
-			var modID = Game.modData.Manifest.Mod.Id;
-
-			// TODO: This should not invoke the OpenRA.Utility.exe, but use it's functions directly.
-			// TODO: Does not work with SHP(TS) yet?!
-			panel.Get<ButtonWidget>("EXPORT_BUTTON").OnClick = () =>
-			{
-				var ExtractGameFiles = new string[][]
-				{
-					new string[] { "--extract", modID, currentPalette.Filename, "--userdir" },
-					new string[] { "--extract", modID, "{0}.shp".F(spriteWidget.Image), "--userdir" },
-				};
-
-				var ExportToPng = new string[][]
-				{
-					new string[] { "--png", Platform.SupportDir + "{0}.shp".F(spriteWidget.Image), Platform.SupportDir + currentPalette.Filename },
-				};
-
-				var ImportFromPng = new string[][] { };
-
-				var args = new WidgetArgs()
-				{
-					{ "ExtractGameFiles", ExtractGameFiles },
-					{ "ExportToPng", ExportToPng },
-					{ "ImportFromPng", ImportFromPng }
-				};
-
-				Ui.OpenWindow("CONVERT_ASSETS_PANEL", args);
-			};
-
-			panel.Get<ButtonWidget>("EXTRACT_BUTTON").OnClick = () =>
-			{
-				var ExtractGameFilesList = new List<string[]>();
-				var ExportToPngList = new List<string[]>();
-
-				ExtractGameFilesList.Add(new string[] { "--extract", modID, currentPalette.Filename, "--userdir" });
-
-				foreach (var shp in availableShps)
-				{
-					ExtractGameFilesList.Add(new string[] { "--extract", modID, shp, "--userdir" });
-					ExportToPngList.Add(new string[] { "--png", Platform.SupportDir + shp, Platform.SupportDir + currentPalette.Filename });
-					Console.WriteLine(Platform.SupportDir + shp);
-				}
-
-				var ExtractGameFiles = ExtractGameFilesList.ToArray();
-				var ExportToPng = ExportToPngList.ToArray();
-				var ImportFromPng = new string[][] { };
-
-				var args = new WidgetArgs()
-				{
-					{ "ExtractGameFiles", ExtractGameFiles },
-					{ "ExportToPng", ExportToPng },
-					{ "ImportFromPng", ImportFromPng }
-				};
-
-				Ui.OpenWindow("CONVERT_ASSETS_PANEL", args);
-			};
-
-			panel.Get<ButtonWidget>("IMPORT_BUTTON").OnClick = () =>
-			{
-				var imageSizeInput = panel.Get<TextFieldWidget>("IMAGE_SIZE_INPUT");
-				var imageFilename = panel.Get<TextFieldWidget>("IMAGE_FILENAME_INPUT");
-				
-				var ExtractGameFiles = new string[][] { };
-				var ExportToPng = new string[][] { };
-				var ImportFromPng = new string[][]
-				{
-					new string[] { "--shp", Platform.SupportDir + imageFilename.Text, imageSizeInput.Text },
-				};
-
-				var args = new WidgetArgs()
-				{
-					{ "ExtractGameFiles", ExtractGameFiles },
-					{ "ExportToPng", ExportToPng },
-					{ "ImportFromPng", ImportFromPng }
-				};
-
-				Ui.OpenWindow("CONVERT_ASSETS_PANEL", args);
-			};
-
 			panel.Get<ButtonWidget>("CLOSE_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 		}
 
 		void AddAsset(ScrollPanelWidget list, string filepath, ScrollItemWidget template)
 		{
-			var r8 = filepath.EndsWith(".r8", true, CultureInfo.InvariantCulture);
-			var filename =  Path.GetFileName(filepath);
-			var sprite = r8 ? filename : Path.GetFileNameWithoutExtension(filepath);
+			var filename = Path.GetFileName(filepath);
 			var item = ScrollItemWidget.Setup(template,
-			                                  () => spriteWidget.Image == sprite,
-			                                  () => {filenameInput.Text = filename; LoadAsset(filename); });
+				() => spriteWidget.Image == filename,
+				() => { filenameInput.Text = filename; LoadAsset(filename); });
 			item.Get<LabelWidget>("TITLE").GetText = () => filepath;
 
 			list.AddChild(item);
@@ -221,11 +143,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (!FileSystem.Exists(filename))
 				return false;
 
-			var r8 = filename.EndsWith(".r8", true, CultureInfo.InvariantCulture);
-			var sprite = r8 ? filename : Path.GetFileNameWithoutExtension(filename);
-
 			spriteWidget.Frame = 0;
-			spriteWidget.Image = sprite;
+			spriteWidget.Image = filename;
 			frameSlider.MaximumValue = (float)spriteWidget.FrameCount;
 			frameSlider.Ticks = spriteWidget.FrameCount + 1;
 			return true;
@@ -265,7 +184,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var files = assetSource.AllFileNames();
 			foreach (var file in files)
 			{
-				if (file.EndsWith(".shp", true, CultureInfo.InvariantCulture) || file.EndsWith(".r8", true, CultureInfo.InvariantCulture))
+				if (AllowedExtensions.Any(ext => file.EndsWith(ext, true, CultureInfo.InvariantCulture)))
 				{
 					AddAsset(assetList, file, template);
 					availableShps.Add(file);
@@ -278,8 +197,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Func<PaletteFromFile, ScrollItemWidget, ScrollItemWidget> setupItem = (palette, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => currentPalette.Name == palette.Name,
-				                                  () => { currentPalette = palette; spriteWidget.Palette = currentPalette.Name; });
+					() => currentPalette.Name == palette.Name,
+					() => { currentPalette = palette; spriteWidget.Palette = currentPalette.Name; });
 				item.Get<LabelWidget>("LABEL").GetText = () => palette.Name;
 				return item;
 			};

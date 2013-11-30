@@ -120,7 +120,6 @@ ChromeLayout:
 	mods/ra/chrome/musicplayer.yaml
 	mods/ra/chrome/tooltips.yaml
 	mods/ra/chrome/assetbrowser.yaml
-	mods/ra/chrome/convertassets.yaml
 	mods/ra/chrome/irc.yaml
 
 Weapons:
