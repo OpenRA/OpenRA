@@ -90,7 +90,6 @@
     <Compile Include="FileFormats\Format40.cs" />
     <Compile Include="FileFormats\Format80.cs" />
     <Compile Include="FileFormats\IniFile.cs" />
-    <Compile Include="Graphics\Dune2ShpReader.cs" />
     <Compile Include="Graphics\IGraphicsDevice.cs" />
     <Compile Include="Graphics\IInputHandler.cs" />
     <Compile Include="Graphics\PngLoader.cs" />
@@ -154,6 +153,7 @@
     <Compile Include="Graphics\SpriteSource.cs" />
     <Compile Include="Graphics\TmpRAReader.cs" />
     <Compile Include="Graphics\TmpTDReader.cs" />
+    <Compile Include="Graphics\ShpD2Reader.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

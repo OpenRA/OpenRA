@@ -136,25 +136,6 @@ namespace OpenRA.Utility
 			Console.WriteLine("Saved {0}-[0..{1}].png", prefix, count - 1);
 		}
 
-		public static void ConvertFormat2ToFormat80(string[] args)
-		{
-			var src = args[1];
-			var dest = args[2];
-
-			Dune2ShpReader srcImage = null;
-			using (var s = File.OpenRead(src))
-				srcImage = new Dune2ShpReader(s);
-
-			var size = srcImage.First().Size;
-
-			if (!srcImage.All(im => im.Size == size))
-				throw new InvalidOperationException("All the frames must be the same size to convert from Dune2 to RA");
-
-			using (var destStream = File.Create(dest))
-				ShpReader.Write(destStream, size.Width, size.Height,
-					srcImage.Select(im => im.Image));
-		}
-
 		public static void ExtractFiles(string[] args)
 		{
 			var mod = args[1];
