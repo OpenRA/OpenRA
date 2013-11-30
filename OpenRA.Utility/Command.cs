@@ -43,38 +43,32 @@ namespace OpenRA.Utility
 
 		public static void ConvertPngToShp(string[] args)
 		{
-			var src = args[1];
-			var dest = Path.ChangeExtension(src, ".shp");
-			var width = int.Parse(args[2]);
+			var dest = args[1].Split('-').First() + ".shp";
+			var frames = args.Skip(1).Select(a => PngLoader.Load(a));
 
-			var srcImage = PngLoader.Load(src);
-
-			if (srcImage.Width % width != 0)
-				throw new InvalidOperationException("Bogus width; not a whole number of frames");
+			var size = frames.First().Size;
+			if (frames.Any(f => f.Size != size))
+				throw new InvalidOperationException("All frames must be the same size");
 
 			using (var destStream = File.Create(dest))
-				ShpReader.Write(destStream, width, srcImage.Height,
-					srcImage.ToFrames(width));
+				ShpReader.Write(destStream, size.Width, size.Height, frames.Select(f => f.ToBytes()));
 
 			Console.WriteLine(dest + " saved.");
 		}
 
-		static IEnumerable<byte[]> ToFrames(this Bitmap bitmap, int width)
+		static byte[] ToBytes(this Bitmap bitmap)
 		{
-			for (var x = 0; x < bitmap.Width; x += width)
-			{
-				var data = bitmap.LockBits(new Rectangle(x, 0, width, bitmap.Height), ImageLockMode.ReadOnly,
-					PixelFormat.Format8bppIndexed);
+			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly,
+				PixelFormat.Format8bppIndexed);
 
-				var bytes = new byte[width * bitmap.Height];
-				for (var i = 0; i < bitmap.Height; i++)
-					Marshal.Copy(new IntPtr(data.Scan0.ToInt64() + i * data.Stride),
-						bytes, i * width, width);
+			var bytes = new byte[bitmap.Width * bitmap.Height];
+			for (var i = 0; i < bitmap.Height; i++)
+				Marshal.Copy(new IntPtr(data.Scan0.ToInt64() + i * data.Stride),
+					bytes, i * bitmap.Width, bitmap.Width);
 
-				bitmap.UnlockBits(data);
+			bitmap.UnlockBits(data);
 
-				yield return bytes;
-			}
+			return bytes;
 		}
 
 		public static void ConvertShpToPng(string[] args)

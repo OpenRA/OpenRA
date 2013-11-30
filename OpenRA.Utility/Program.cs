@@ -56,7 +56,7 @@ namespace OpenRA.Utility
 			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION] [ARGS]");
 			Console.WriteLine();
 			Console.WriteLine("  --settings-value KEY     Get value of KEY from settings.yaml");
-			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH     Convert a single PNG with multiple frames appended after another to a SHP");
+			Console.WriteLine("  --shp PNGFILE [PNGFILE ...]     Combine a list of PNG images into a SHP");
 			Console.WriteLine("  --png SPRITEFILE PALETTE [--noshadow] [--nopadding]     Convert a shp/tmp/R8 to a series of PNGs, optionally removing shadow");
 			Console.WriteLine("  --fromd2 DUNE2SHP C&CSHP     Convert a Dune II SHP (C&C mouse cursor) to C&C SHP format.");
 			Console.WriteLine("  --extract MOD[,MOD]* FILES [--userdir]     Extract files from mod packages to the current (or user) directory");
