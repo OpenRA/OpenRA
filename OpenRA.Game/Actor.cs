@@ -28,6 +28,7 @@ namespace OpenRA
 
 		Lazy<IOccupySpace> occupySpace;
 		Lazy<IFacing> facing;
+		Lazy<Health> health;
 
 		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
 
@@ -72,6 +73,7 @@ namespace OpenRA
 			}
 
 			facing = Lazy.New(() => TraitOrDefault<IFacing>());
+			health = Lazy.New(() => TraitOrDefault<Health>());
 
 			applyIRender = (x, wr) => x.Render(this, wr);
 			applyRenderModifier = (m, p, wr) => p.ModifyRender(this, wr, m);
@@ -209,6 +211,22 @@ namespace OpenRA
 				foreach (var t in this.TraitsImplementing<INotifyOwnerChanged>())
 					t.OnOwnerChanged(this, oldOwner, newOwner);
 			});
+		}
+
+		public bool IsDead()
+		{
+			if (Destroyed)
+				return true;
+
+			return (health.Value == null) ? false : health.Value.IsDead;
+		}
+
+		public void Kill(Actor attacker)
+		{
+			if (health.Value == null)
+				return;
+
+			health.Value.InflictDamage(this, attacker, health.Value.MaxHP, null, true);
 		}
 	}
 }
