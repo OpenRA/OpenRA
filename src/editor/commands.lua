@@ -180,14 +180,16 @@ end
 
 -- save the file to filePath or if filePath is nil then call SaveFileAs
 function SaveFile(editor, filePath)
+  -- this event can be aborted
+  -- as SaveFileAs calls SaveFile, this event may be called two times:
+  -- first without filePath and then with filePath
+  if PackageEventHandle("onEditorPreSave", editor, filePath) == false then
+    return false
+  end
+
   if not filePath then
     return SaveFileAs(editor)
   else
-    -- this event can be aborted
-    if PackageEventHandle("onEditorPreSave", editor, filePath) == false then
-      return false
-    end
-
     if ide.config.savebak then
       local ok, err = FileRename(filePath, filePath..".bak")
       if not ok then
