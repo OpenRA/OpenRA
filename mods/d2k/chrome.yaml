@@ -169,13 +169,6 @@ tabs-normal: tabs.png
 	ordos-Aircraft: 214,160,27,41
 	ordos-Starport: 214,200,27,41
 
-flags: buttons.png
-	atreides: 0,86,22,21
-	harkonnen: 22,86,23,21
-	ordos: 45,86,22,21
-	random: 67,86,23,21
-	spectator: 67,86,23,21
-
 # Used for the menu	
 dialog: dialog.png
 	background: 0,0,480,480
@@ -252,6 +245,13 @@ power-button: buttons.png
 	pressed: 34,56,34,28
 	disabled: 68,56,34,28
 
+flags: buttons.png
+	atreides: 0,86,22,21
+	harkonnen: 22,86,23,21
+	ordos: 45,86,22,21
+	random: 67,86,23,21
+	spectator: 67,86,23,21	
+	
 music: musicplayer.png
 	pause: 0,0,25,25
 	stop: 28,0,25,25

@@ -6,9 +6,9 @@ Metadata:
 
 Folders:
 	.
-	./mods/d2k
-	./mods/d2k/bits
-	./mods/d2k/uibits
+	./mods/d2
+	./mods/d2/bits
+	./mods/d2/uibits
 	./mods/ra/uibits
 	~^/Content/d2k
 	~^/Content/d2k/GAMESFX
@@ -22,49 +22,49 @@ Packages:
 	SOUND.RS
 
 Rules:
-	mods/d2k/rules/system.yaml
-	mods/d2k/rules/defaults.yaml
-	mods/d2k/rules/vehicles.yaml
-	mods/d2k/rules/structures.yaml
-	mods/d2k/rules/aircraft.yaml
-	mods/d2k/rules/infantry.yaml
-	mods/d2k/rules/atreides.yaml
-	mods/d2k/rules/harkonnen.yaml
-	mods/d2k/rules/ordos.yaml
+	mods/d2/rules/system.yaml
+	mods/d2/rules/defaults.yaml
+	mods/d2/rules/vehicles.yaml
+	mods/d2/rules/structures.yaml
+	mods/d2/rules/aircraft.yaml
+	mods/d2/rules/infantry.yaml
+	mods/d2/rules/atreides.yaml
+	mods/d2/rules/harkonnen.yaml
+	mods/d2/rules/ordos.yaml
 
 Sequences:
-	mods/d2k/sequences/aircraft.yaml
-	mods/d2k/sequences/vehicles.yaml
-	mods/d2k/sequences/infantry.yaml
-	mods/d2k/sequences/structures.yaml
-	mods/d2k/sequences/misc.yaml
+	mods/d2/sequences/aircraft.yaml
+	mods/d2/sequences/vehicles.yaml
+	mods/d2/sequences/infantry.yaml
+	mods/d2/sequences/structures.yaml
+	mods/d2/sequences/misc.yaml
 
 Cursors:
-	mods/d2k/cursors.yaml
+	mods/d2/cursors.yaml
 
 Chrome:
-	mods/d2k/chrome.yaml
+	mods/d2/chrome.yaml
 
 Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
 	mods/cnc/OpenRA.Mods.Cnc.dll
-	mods/d2k/OpenRA.Mods.D2k.dll
+	mods/d2/OpenRA.Mods.D2k.dll
 
 ChromeLayout:
-	mods/d2k/chrome/gameinit.yaml
-	mods/d2k/chrome/ingame.yaml
+	mods/d2/chrome/gameinit.yaml
+	mods/d2/chrome/ingame.yaml
 	mods/ra/chrome/ingame-chat.yaml
 	mods/ra/chrome/ingame-diplomacy.yaml
 	mods/ra/chrome/ingame-fmvplayer.yaml
 	mods/ra/chrome/ingame-menu.yaml
 	mods/ra/chrome/ingame-observerstats.yaml
-	mods/d2k/chrome/mainmenu.yaml
+	mods/d2/chrome/mainmenu.yaml
 	mods/ra/chrome/settings.yaml
 	mods/ra/chrome/credits.yaml
 	mods/ra/chrome/lobby.yaml
-	mods/d2k/chrome/lobby-playerbin.yaml
+	mods/d2/chrome/lobby-playerbin.yaml
 	mods/ra/chrome/lobby-dialogs.yaml
-	mods/d2k/chrome/color-picker.yaml
+	mods/d2/chrome/color-picker.yaml
 	mods/ra/chrome/map-chooser.yaml
 	mods/ra/chrome/create-server.yaml
 	mods/ra/chrome/serverbrowser.yaml
@@ -75,34 +75,34 @@ ChromeLayout:
 	mods/ra/chrome/modchooser.yaml
 	mods/ra/chrome/cheats.yaml
 	mods/ra/chrome/musicplayer.yaml
-	mods/d2k/chrome/tooltips.yaml
+	mods/d2/chrome/tooltips.yaml
 	mods/ra/chrome/assetbrowser.yaml
 	mods/ra/chrome/irc.yaml
 
 Weapons:
-	mods/d2k/weapons.yaml
+	mods/d2/weapons.yaml
 
 Voices:
-	mods/d2k/voices.yaml
+	mods/d2/voices.yaml
 
 Notifications:
-	mods/d2k/notifications.yaml
+	mods/d2/notifications.yaml
 
 TileSets:
-	mods/d2k/tilesets/arrakis.yaml
+	mods/d2/tilesets/arrakis.yaml
 
 TileSize: 32
 
 Music:
-	mods/d2k/music.yaml
+	mods/d2/music.yaml
 
 Movies:
 
 Translations:
-	mods/d2k/languages/english.yaml
+	mods/d2/languages/english.yaml
 
 LoadScreen: DefaultLoadScreen
-	Image: mods/d2k/uibits/loadscreen.png
+	Image: mods/d2/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFile: DATA.R8
 	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-103-packages
@@ -122,7 +122,7 @@ LobbyDefaults:
 	Fog: true
 
 ChromeMetrics:
-	mods/d2k/metrics.yaml
+	mods/d2/metrics.yaml
 
 Fonts:
 	Regular:
@@ -132,7 +132,7 @@ Fonts:
 		Font:FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:mods/d2k/Dune2k.ttf
+		Font:mods/d2/Dune2k.ttf
 		Size:32
 	BigBold:
 		Font:FreeSansBold.ttf
