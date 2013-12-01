@@ -90,7 +90,7 @@ NEW:
 		Overhauled sprite loading code.
 		Improved error message when loading corrupted sprites.
 		Rewritten shp(ts) parser makes more efficient use of texture space.
-		Added support for the dune 2 shp format.
+		Added support for the dune 2 shp and pak formats.
 	Build system and packages:
 		Added GeoIP to Makefile so it is installed properly.
 		Added desktop shortcut creation support to the Makefile and Windows installer.

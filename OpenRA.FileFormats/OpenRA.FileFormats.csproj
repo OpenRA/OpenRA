@@ -153,6 +153,7 @@
     <Compile Include="Graphics\TmpRAReader.cs" />
     <Compile Include="Graphics\TmpTDReader.cs" />
     <Compile Include="Graphics\ShpD2Reader.cs" />
+    <Compile Include="FileSystem\Pak.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

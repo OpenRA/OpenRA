@@ -57,6 +57,8 @@ namespace OpenRA.FileFormats
 				throw new NotImplementedException("Creating .RS archives is unsupported");
 			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
 				throw new NotImplementedException("Creating .Z archives is unsupported");
+			else if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
+				throw new NotImplementedException("Creating .PAK archives is unsupported");
 			else
 				return new Folder(filename, order, content);
 		}
@@ -77,6 +79,8 @@ namespace OpenRA.FileFormats
 				return new D2kSoundResources(filename, order);
 			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
 				return new InstallShieldPackage(filename, order);
+			else if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
+				return new PakFile(filename, order);
 			else
 				return new Folder(filename, order);
 		}
