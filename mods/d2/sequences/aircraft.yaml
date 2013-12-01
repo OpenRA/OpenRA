@@ -1,0 +1,27 @@
+carryall:
+	idle: DATA
+		Start: 1923
+		Facings: -32
+	unload: DATA
+		Start: 1923
+		Facings: -32
+	icon: DATA
+		Start: 4029
+		Offset: -30,-24
+
+
+orni:
+	idle: DATA
+		Start: 1955
+		Facings: -32
+		Length: 3
+		Tick: 120
+		Transpose: true
+	icon: DATA
+		Start: 4031
+		Offset: -30,-24
+
+frigate:
+	idle: DATA
+		Start: 2517
+		Facings: 1
