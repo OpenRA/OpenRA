@@ -19,8 +19,6 @@ MapFolders:
 	~^/maps/ts
 
 Packages:
-# Red Alert
-	interior.mix
 # Tiberian Sun
 	~scores.mix:CRC32
 	~sidenc01.mix:CRC32
@@ -132,7 +130,7 @@ Notifications:
 	mods/ts/notifications.yaml
 
 TileSets:
-	mods/ra/tilesets/interior.yaml
+	mods/ts/tilesets/interior.yaml
 
 Music:
 	mods/ts/music.yaml
