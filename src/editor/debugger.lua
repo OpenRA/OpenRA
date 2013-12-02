@@ -1123,9 +1123,11 @@ function DebuggerRefreshScratchpad()
   if debugger.scratchpad and debugger.scratchpad.updated and not debugger.scratchpad.paused then
 
     local scratchpadEditor = debugger.scratchpad.editor
-    local compiled, code = CompileProgram(scratchpadEditor, { jumponerror = false, reportstats = false })
-    if not compiled then return end
+    if not ide.interpreter.skipcompile
+    and not CompileProgram(scratchpadEditor, { jumponerror = false, reportstats = false })
+    then return end
 
+    local code = StripShebang(scratchpadEditor:GetText())
     if debugger.scratchpad.running then
       -- break the current execution first
       -- don't try too frequently to avoid overwhelming the debugger
