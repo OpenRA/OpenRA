@@ -128,7 +128,8 @@ namespace OpenRA.Mods.RA.Scripting
 
 		~LuaScriptContext()
 		{
-			Dispose();
+			if (Lua != null)
+				Game.RunAfterTick(Dispose);
 		}
 	}
 }
