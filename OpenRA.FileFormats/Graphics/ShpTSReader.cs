@@ -89,21 +89,8 @@ namespace OpenRA.FileFormats
 
 					for (var j = 0; j < f.Size.Height; j++)
 					{
-						var k = j * f.Size.Width;
 						var length = stream.ReadUInt16() - 2;
-						while (length > 0)
-						{
-							var b = stream.ReadUInt8();
-							length--;
-
-							if (b == 0)
-							{
-								k += stream.ReadUInt8();
-								length--;
-							}
-							else
-								f.Data[k++] = b;
-						}
+						Format2.DecodeInto(stream.ReadBytes(length), f.Data, j * f.Size.Width);
 					}
 				}
 			}

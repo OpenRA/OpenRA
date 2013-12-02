@@ -73,10 +73,10 @@ namespace OpenRA.FileFormats
 			{
 				var tempData = new byte[dataSize];
 				Format80.DecodeInto(imgData, tempData);
-				Format2.DecodeInto(tempData, Data);
+				Format2.DecodeInto(tempData, Data, 0);
 			}
 			else
-				Format2.DecodeInto(imgData, Data);
+				Format2.DecodeInto(imgData, Data, 0);
 
 			// Lookup values in lookup table
 			for (var j = 0; j < Data.Length; j++)
