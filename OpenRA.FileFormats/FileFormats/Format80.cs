@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -27,7 +27,7 @@ namespace OpenRA.FileFormats
 		public byte ReadByte() { return src[offset++]; }
 		public int ReadWord()
 		{
-			int x = ReadByte();
+			var x = ReadByte();
 			return x | (ReadByte() << 8);
 		}
 
@@ -42,84 +42,84 @@ namespace OpenRA.FileFormats
 
 	public static class Format80
 	{
-		static void ReplicatePrevious( byte[] dest, int destIndex, int srcIndex, int count )
+		static void ReplicatePrevious(byte[] dest, int destIndex, int srcIndex, int count)
 		{
-			if( srcIndex > destIndex )
+			if (srcIndex > destIndex)
 				throw new NotImplementedException("srcIndex > destIndex {0} {1}".F(srcIndex, destIndex));
 
-			if( destIndex - srcIndex == 1 )
+			if (destIndex - srcIndex == 1)
 			{
-				for( int i = 0 ; i < count ; i++ )
-					dest[ destIndex + i ] = dest[ destIndex - 1 ];
+				for (var i = 0; i < count; i++)
+					dest[destIndex + i] = dest[destIndex - 1];
 			}
 			else
 			{
-				for( int i = 0 ; i < count ; i++ )
-					dest[ destIndex + i ] = dest[ srcIndex + i ];
+				for (var i = 0; i < count; i++)
+					dest[destIndex + i] = dest[srcIndex + i];
 			}
 		}
 
-		public static int DecodeInto( byte[] src, byte[] dest )
+		public static int DecodeInto(byte[] src, byte[] dest)
 		{
 			var ctx = new FastByteReader(src);
-			int destIndex = 0;
+			var destIndex = 0;
 
-			while( true )
+			while (true)
 			{
-				byte i = ctx.ReadByte();
-				if( ( i & 0x80 ) == 0 )
+				var i = ctx.ReadByte();
+				if ((i & 0x80) == 0)
 				{
 					// case 2
-					byte secondByte = ctx.ReadByte();
-					int count = ( ( i & 0x70 ) >> 4 ) + 3;
-					int rpos = ( ( i & 0xf ) << 8 ) + secondByte;
+					var secondByte = ctx.ReadByte();
+					var count = ((i & 0x70) >> 4) + 3;
+					var rpos = ((i & 0xf) << 8) + secondByte;
 
-					ReplicatePrevious( dest, destIndex, destIndex - rpos, count );
+					ReplicatePrevious(dest, destIndex, destIndex - rpos, count);
 					destIndex += count;
 				}
-				else if( ( i & 0x40 ) == 0 )
+				else if ((i & 0x40) == 0)
 				{
 					// case 1
-					int count = i & 0x3F;
-					if( count == 0 )
+					var count = i & 0x3F;
+					if (count == 0)
 						return destIndex;
 
-					ctx.CopyTo( dest, destIndex, count );
+					ctx.CopyTo(dest, destIndex, count);
 					destIndex += count;
 				}
 				else
 				{
-					int count3 = i & 0x3F;
-					if( count3 == 0x3E )
+					var count3 = i & 0x3F;
+					if (count3 == 0x3E)
 					{
 						// case 4
-						int count = ctx.ReadWord();
-						byte color = ctx.ReadByte();
+						var count = ctx.ReadWord();
+						var color = ctx.ReadByte();
 
-						for( int end = destIndex + count ; destIndex < end ; destIndex++ )
-							dest[ destIndex ] = color;
+						for (var end = destIndex + count; destIndex < end; destIndex++)
+							dest[destIndex] = color;
 					}
-					else if( count3 == 0x3F )
+					else if (count3 == 0x3F)
 					{
 						// case 5
-						int count = ctx.ReadWord();
-						int srcIndex = ctx.ReadWord();
-						if( srcIndex >= destIndex )
+						var count = ctx.ReadWord();
+						var srcIndex = ctx.ReadWord();
+						if (srcIndex >= destIndex)
 							throw new NotImplementedException("srcIndex >= destIndex {0} {1}".F(srcIndex, destIndex));
 
-						for( int end = destIndex + count ; destIndex < end ; destIndex++ )
-							dest[ destIndex ] = dest[ srcIndex++ ];
+						for (var end = destIndex + count; destIndex < end; destIndex++)
+							dest[destIndex] = dest[srcIndex++];
 					}
 					else
 					{
 						// case 3
-						int count = count3 + 3;
-						int srcIndex = ctx.ReadWord();
-						if( srcIndex >= destIndex )
+						var count = count3 + 3;
+						var srcIndex = ctx.ReadWord();
+						if (srcIndex >= destIndex)
 							throw new NotImplementedException("srcIndex >= destIndex {0} {1}".F(srcIndex, destIndex));
 
-						for( int end = destIndex + count ; destIndex < end ; destIndex++ )
-							dest[ destIndex ] = dest[ srcIndex++ ];
+						for (var end = destIndex + count; destIndex < end; destIndex++)
+							dest[destIndex] = dest[srcIndex++];
 					}
 				}
 			}

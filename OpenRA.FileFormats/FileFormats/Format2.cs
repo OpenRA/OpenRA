@@ -12,25 +12,22 @@ namespace OpenRA.FileFormats
 {
 	public static class Format2
 	{
-		public static int DecodeInto(byte[] src, byte[] dest)
+		public static void DecodeInto(byte[] src, byte[] dest, int destIndex)
 		{
-			FastByteReader r = new FastByteReader(src);
+			var r = new FastByteReader(src);
 
-			int i = 0;
 			while (!r.Done())
 			{
-				byte cmd = r.ReadByte();
+				var cmd = r.ReadByte();
 				if (cmd == 0)
 				{
-					byte count = r.ReadByte();
+					var count = r.ReadByte();
 					while (count-- > 0)
-						dest[i++] = 0;
+						dest[destIndex++] = 0;
 				}
 				else
-					dest[i++] = cmd;
+					dest[destIndex++] = cmd;
 			}
-
-			return i;
 		}
 	}
 }

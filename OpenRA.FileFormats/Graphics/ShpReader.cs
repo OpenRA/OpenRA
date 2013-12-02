@@ -108,6 +108,10 @@ namespace OpenRA.FileFormats
 
 		void Decompress(Stream stream, ImageHeader h)
 		{
+			// No extra work is required for empty frames
+			if (h.Size.Width == 0 || h.Size.Height == 0)
+				return;
+
 			if (recurseDepth > imageCount)
 				throw new InvalidDataException("Format20/40 headers contain infinite loop");
 

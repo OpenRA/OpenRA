@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,13 +17,11 @@ using System.Linq;
 
 namespace OpenRA.FileFormats
 {
-	enum Dune2ImageFlags : int
+	[Flags] enum FormatFlags : int
 	{
-		F80_F2 = 0,
-		F2 = 2,
-		L16_F80_F2_1 = 1,
-		L16_F80_F2_2 = 3,
-		Ln_F80_F2 = 5
+		PaletteTable = 1,
+		SkipFormat80 = 2,
+		VariableLengthTable = 4
 	}
 
 	class Frame : ISpriteFrame
@@ -34,24 +33,25 @@ namespace OpenRA.FileFormats
 
 		public Frame(Stream s)
 		{
-			var flags = (Dune2ImageFlags)s.ReadUInt16();
+			var flags = (FormatFlags)s.ReadUInt16();
 			s.Position += 1;
 			var width = s.ReadUInt16();
 			var height = s.ReadUInt8();
 			Size = new Size(width, height);
 
-			var frameSize = s.ReadUInt16();
+			// Subtract header size
+			var dataLeft = s.ReadUInt16() - 10;
 			var dataSize = s.ReadUInt16();
 
 			byte[] table;
-			if (flags == Dune2ImageFlags.L16_F80_F2_1 ||
-				flags == Dune2ImageFlags.L16_F80_F2_2 ||
-				flags == Dune2ImageFlags.Ln_F80_F2)
+			if ((flags & FormatFlags.PaletteTable) != 0)
 			{
-				var n = flags == Dune2ImageFlags.Ln_F80_F2 ? s.ReadUInt8() : (byte)16;
+				var n = (flags & FormatFlags.VariableLengthTable) != 0 ? s.ReadUInt8() : (byte)16;
 				table = new byte[n];
 				for (var i = 0; i < n; i++)
 					table[i] = s.ReadUInt8();
+
+				dataLeft -= n;
 			}
 			else
 			{
@@ -64,19 +64,18 @@ namespace OpenRA.FileFormats
 				table[4] = 0x7c;
 			}
 
-			// Subtract header size
-			var imgData = s.ReadBytes(frameSize - 10);
 			Data = new byte[width * height];
 
 			// Decode image data
-			if (flags != Dune2ImageFlags.F2)
+			var compressed = s.ReadBytes(dataLeft);
+			if ((flags & FormatFlags.SkipFormat80) == 0)
 			{
-				var tempData = new byte[dataSize];
-				Format80.DecodeInto(imgData, tempData);
-				Format2.DecodeInto(tempData, Data);
+				var temp = new byte[dataSize];
+				Format80.DecodeInto(compressed, temp);
+				compressed = temp;
 			}
-			else
-				Format2.DecodeInto(imgData, Data);
+
+			Format2.DecodeInto(compressed, Data, 0);
 
 			// Lookup values in lookup table
 			for (var j = 0; j < Data.Length; j++)
