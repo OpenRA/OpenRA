@@ -865,6 +865,7 @@ Actors:
 		Owner: Neutral
 
 Smudges:
+	cr1 60,79 0:
 
 Rules:
 	Player:
