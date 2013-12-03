@@ -27,6 +27,14 @@ Actor.MoveNear = function(actor, location, nearEnough)
 	actor:QueueActivity(OpenRA.New("Move", { location, Map.GetWRangeFromCells(nearEnough) }))
 end
 
+Actor.ScriptedMove = function(actor, location)
+	actor:QueueActivity(OpenRA.New("Move", { location }))
+end
+
+Actor.Teleport = function(actor, location)
+	actor:QueueActivity(OpenRA.New("SimpleTeleport", { location }))
+end
+
 Actor.HeliFly = function(actor, position)
 	actor:QueueActivity(OpenRA.New("HeliFly", { position }))
 end
