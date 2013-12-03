@@ -19,22 +19,24 @@ namespace OpenRA.Mods.RA.Render
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "crumble-overlay";
 
-		public object Create(ActorInitializer init) { return new WithCrumbleOverlay(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithCrumbleOverlay(init, this); }
 	}
 
 	public class WithCrumbleOverlay : INotifyBuildComplete
 	{
-		Animation overlay;
 		bool buildComplete = false;
 
-		public WithCrumbleOverlay(Actor self, WithCrumbleOverlayInfo info)
+		public WithCrumbleOverlay(ActorInitializer init, WithCrumbleOverlayInfo info)
 		{
-			var rs = self.Trait<RenderSprites>();
+			var rs = init.self.Trait<RenderSprites>();
 
-			overlay = new Animation(rs.GetImage(self));
-			overlay.PlayThen(info.Sequence, () => buildComplete = false);
-			rs.anims.Add("make_overlay_{0}".F(info.Sequence),
-				new AnimationWithOffset(overlay, null, () => !buildComplete, null));
+			if (!init.Contains<SkipMakeAnimsInit>())
+			{
+				var overlay = new Animation(rs.GetImage(init.self));
+				overlay.PlayThen(info.Sequence, () => buildComplete = false);
+				rs.anims.Add("make_overlay_{0}".F(info.Sequence),
+					new AnimationWithOffset(overlay, null, () => !buildComplete, null));
+			}
 		}
 
 		public void BuildingComplete(Actor self)
