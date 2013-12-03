@@ -5,6 +5,14 @@ Container@MAINMENU:
 			Y:40
 			ImageCollection:logos
 			ImageName:logo
+		Label@VERSION_LABEL:
+			X:WINDOW_RIGHT - 296
+			Y:0 
+			Width:296 
+			Height:25
+			Align:Center
+			Font:Regular
+			Contrast:True
 		Background@MAINMENU:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -18,9 +26,10 @@ Container@MAINMENU:
 					Y:20
 					Width:250
 					Height:25
-					Text:OpenD2k Main Menu
+					Text:Dune 2 Main Menu
 					Align:Center
 					Font:Bold
+					Contrast:True
 				Button@MAINMENU_BUTTON_JOIN:
 					X:45
 					Y:70
@@ -28,6 +37,7 @@ Container@MAINMENU:
 					Height:25
 					Text:Join Game
 					Font:Bold
+					Contrast:True
 				Button@MAINMENU_BUTTON_CREATE:
 					X:45
 					Y:110
@@ -35,6 +45,7 @@ Container@MAINMENU:
 					Height:25
 					Text:Create Game
 					Font:Bold
+					Contrast:True
 				Button@MAINMENU_BUTTON_DIRECTCONNECT:
 					X:45
 					Y:150
@@ -42,6 +53,7 @@ Container@MAINMENU:
 					Height:25
 					Text:Direct Connect
 					Font:Bold
+					Contrast:True
 				Button@MAINMENU_BUTTON_SETTINGS:
 					X:45
 					Y:190
@@ -49,6 +61,7 @@ Container@MAINMENU:
 					Height:25
 					Text:Settings
 					Font:Bold
+					Contrast:True
 				Button@MAINMENU_BUTTON_MODS:
 					X:45
 					Y:230
@@ -56,6 +69,7 @@ Container@MAINMENU:
 					Height:25
 					Text:Mods
 					Font:Bold
+					Contrast:True					
 				Button@MAINMENU_BUTTON_MUSIC:
 					X:45
 					Y:270
@@ -63,6 +77,7 @@ Container@MAINMENU:
 					Height:25
 					Text:Music
 					Font:Bold
+					Contrast:True
 				Button@MAINMENU_BUTTON_REPLAY_VIEWER:
 					X:45
 					Y:310
@@ -70,6 +85,7 @@ Container@MAINMENU:
 					Height:25
 					Text:Replay Viewer
 					Font:Bold
+					Contrast:True
 				Button@MAINMENU_BUTTON_CREDITS:
 					X:45
 					Y:350
@@ -77,6 +93,7 @@ Container@MAINMENU:
 					Height:25
 					Text:Credits
 					Font:Bold
+					Contrast:True
 				Button@MAINMENU_BUTTON_ASSET_BROWSER:
 					X:45
 					Y:390
@@ -84,6 +101,7 @@ Container@MAINMENU:
 					Height:25
 					Text:Asset Browser
 					Font:Bold
+					Contrast:True
 				Button@MAINMENU_BUTTON_QUIT:
 					X:45
 					Y:430
@@ -91,6 +109,7 @@ Container@MAINMENU:
 					Height:25
 					Text:Quit
 					Font:Bold
+					Contrast:True
 		Background@PERF_BG:
 			ClickThrough:true
 			Background:dialog4
