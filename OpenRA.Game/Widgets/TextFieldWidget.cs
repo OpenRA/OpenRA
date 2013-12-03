@@ -163,6 +163,9 @@ namespace OpenRA.Widgets
 
 		public override bool HandleTextInput(string text)
 		{
+			if (!HasKeyboardFocus || IsDisabled())
+				return false;
+
 			if (MaxLength > 0 && Text.Length >= MaxLength)
 				return true;
 
@@ -175,8 +178,18 @@ namespace OpenRA.Widgets
 		protected int blinkCycle = 10;
 		protected bool showCursor = true;
 
+		bool wasDisabled;
 		public override void Tick()
 		{
+			// Remove the blicking cursor when disabled
+			var isDisabled = IsDisabled();
+			if (isDisabled != wasDisabled)
+			{
+				wasDisabled = isDisabled;
+				if (isDisabled && Ui.KeyboardFocusWidget == this)
+					YieldKeyboardFocus();
+			}
+
 			if (--blinkCycle <= 0)
 			{
 				blinkCycle = 20;
