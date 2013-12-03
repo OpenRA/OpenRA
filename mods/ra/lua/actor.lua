@@ -82,7 +82,8 @@ end
 
 Actor.DeployTransform = function(actor)
 	Actor.CallFunc(actor, function()
-		Actor.Trait(actor, "Transforms"):DeployTransform()
+		-- Queue the transform order
+		Actor.Trait(actor, "Transforms"):DeployTransform(true)
 	end)
 end
 
