@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
-		public void DeployTransform()
+		public void DeployTransform(bool queued)
 		{
 			var b = self.TraitOrDefault<Building>();
 
@@ -78,6 +78,9 @@ namespace OpenRA.Mods.RA
 					Sound.PlayToPlayer(self.Owner, s);
 				return;
 			}
+
+			if (!queued)
+				self.CancelActivity();
 
 			if (self.HasTrait<IFacing>())
 				self.QueueActivity(new Turn(Info.Facing));
@@ -92,7 +95,7 @@ namespace OpenRA.Mods.RA
 		public void ResolveOrder( Actor self, Order order )
 		{
 			if (order.OrderString == "DeployTransform")
-				DeployTransform();
+				DeployTransform(order.Queued);
 		}
 	}
 }
