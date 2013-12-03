@@ -341,7 +341,7 @@ OILB:
 	ExternalCapturableBar:
 	EngineerRepairable:
 	CashTrickler:
-		Period: 250
+		Period: 375
 		Amount: 100
 		CaptureAmount: 100
 	Tooltip:
