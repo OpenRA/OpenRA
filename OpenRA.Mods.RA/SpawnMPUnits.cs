@@ -45,6 +45,7 @@ namespace OpenRA.Mods.RA
 				{
 					new LocationInit(sp),
 					new OwnerInit(p),
+					new SkipMakeAnimsInit(),
 				});
 			}
 
