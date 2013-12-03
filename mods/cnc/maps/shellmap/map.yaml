@@ -986,24 +986,6 @@ Actors:
 		Location: 65,20
 		Owner: Nod
 		Facing: 192
-	tl1: mpspawn
-		Location: 8,33
-		Owner: Neutral
-	tr1: mpspawn
-		Location: 87,33
-		Owner: Neutral
-	tl2: mpspawn
-		Location: 8,35
-		Owner: Neutral
-	tr2: mpspawn
-		Location: 87,35
-		Owner: Neutral
-	tl3: mpspawn
-		Location: 8,37
-		Owner: Neutral
-	tr3: mpspawn
-		Location: 87,37
-		Owner: Neutral
 
 Smudges:
 
@@ -1015,7 +997,8 @@ Rules:
 		PlayMusicOnMapLoad:
 			Music: map1
 			Loop: true
-		CncShellmapScript:
+		LuaScriptInterface:
+			LuaScripts: shellmap.lua
 		LoadWidgetAtGameStart:
 			Widget: MENU_BACKGROUND
 	LST:
