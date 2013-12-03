@@ -1,12 +1,12 @@
 --
--- MobDebug 0.545
+-- MobDebug 0.5451
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.545,
+  _VERSION = 0.5451,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -809,19 +809,22 @@ local function debugger_loop(sev, svars, sfile, sline)
       local _, _, stream, mode = string.find(line, "^[A-Z]+%s+(%w+)%s+([dcr])%s*$")
       if stream and mode and stream == "stdout" then
         -- assign "print" in the global environment
-        genv.print = mode == 'd' and iobase.print or coroutine.wrap(function(...)
+        local default = mode == 'd'
+        genv.print = default and iobase.print or coroutine.wrap(function()
           -- wrapping into coroutine.wrap protects this function from
-          -- being stepped through in the debugger
-          local tbl = {...}
+          -- being stepped through in the debugger.
+          -- don't use vararg (...) as it adds a reference for its values,
+          -- which may affect how they are garbage collected
           while true do
+            local tbl = {coroutine.yield()}
             if mode == 'c' then iobase.print(unpack(tbl)) end
             for n = 1, #tbl do
               tbl[n] = select(2, pcall(mobdebug.line, tbl[n], {nocode = true, comment = false})) end
             local file = table.concat(tbl, "\t").."\n"
             server:send("204 Output " .. stream .. " " .. #file .. "\n" .. file)
-            tbl = {coroutine.yield()}
           end
         end)
+        if not default then genv.print() end -- "fake" print to start printing loop
         server:send("200 OK\n")
       else
         server:send("400 Bad Request\n")
