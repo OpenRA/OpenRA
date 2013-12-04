@@ -94,6 +94,7 @@ function ide:FindDocumentsByPartialPath(path)
   return docs
 end
 function ide:GetInterpreter() return self.interpreter end
+function ide:GetInterpreters() return ide.interpreters end
 function ide:GetConfig() return self.config end
 function ide:GetOutput() return self.frame.bottomnotebook.errorlog end
 function ide:GetEditorNotebook() return self.frame.notebook end
@@ -128,6 +129,9 @@ function ide:AddAPI(type, name, api)
   self.apis[type][name] = api
 end
 function ide:RemoveAPI(type, name) self.apis[type][name] = nil end
+
+function ide:AddConsoleAlias(alias, table) return ShellSetAlias(alias, table) end
+function ide:RemoveConsoleAlias(alias) return ShellSetAlias(alias, nil) end
 
 function ide:AddMarker(...) return StylesAddMarker(...) end
 function ide:GetMarker(marker) return StylesGetMarker(marker) end
