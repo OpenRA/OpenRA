@@ -246,11 +246,11 @@ namespace OpenRA.Traits
 		public bool IsExplored(CPos xy) { return IsExplored(xy.X, xy.Y); }
 		public bool IsExplored(int x, int y)
 		{
-			if (!map.IsInMap(x, y))
-				return false;
-
 			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Shroud)
 				return true;
+
+			if (!map.IsInMap(x, y))
+				return false;
 
 			return explored[x, y] && (generatedShroudCount[x, y] == 0 || visibleCount[x, y] > 0);
 		}
