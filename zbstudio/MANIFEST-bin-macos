@@ -1,3 +1,5 @@
+bin/clibs/git/core.dylib
+bin/clibs/lfs.dylib
 bin/clibs/mime/core.dylib
 bin/clibs/socket/core.dylib
 bin/clibs52/mime/core.dylib
