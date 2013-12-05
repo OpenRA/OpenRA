@@ -8,7 +8,9 @@
  */
 #endregion
 
-using LuaInterface;
+using System;
+using System.Linq;
+using NLua;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
@@ -16,8 +18,6 @@ using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Missions;
 using OpenRA.Scripting;
 using OpenRA.Traits;
-using System;
-using System.Linq;
 using WorldRenderer = OpenRA.Graphics.WorldRenderer;
 
 namespace OpenRA.Mods.RA.Scripting
