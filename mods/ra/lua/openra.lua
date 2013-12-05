@@ -1,6 +1,9 @@
 OpenRA = { }
 
 OpenRA.New = function(className, args)
+	if args == nil then
+		args = { }
+	end
 	return Internal.New(className, args)
 end
 
