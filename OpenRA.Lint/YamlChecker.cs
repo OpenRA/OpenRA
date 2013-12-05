@@ -32,6 +32,12 @@ namespace OpenRA.Lint
 
 		static int Main(string[] args)
 		{
+			if (args.Length == 0)
+			{
+				Console.WriteLine("Usage: OpenRA.Lint.exe MOD [MAP] [--verbose]");
+				return 0;
+			}
+
 			try
 			{
 				var options = args.Where(a => a.StartsWith("-"));
