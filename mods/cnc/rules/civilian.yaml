@@ -453,3 +453,5 @@ VICE:
 	UpdatesPlayerStatistics:
 	BodyOrientation:
 		QuantizedFacings: 8
+	PoisonedByTiberium:
+		Weapon: Heal
