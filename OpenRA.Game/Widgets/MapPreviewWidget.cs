@@ -183,11 +183,15 @@ namespace OpenRA.Widgets
 			}
 		}
 
+		bool compatibleTileset;
+
 		void GeneratePreview()
 		{
 			var m = Map();
 			if (m == null)
 				return;
+
+			compatibleTileset = Rules.TileSets.Values.Any(t => t.Id == m.Tileset);
 
 			var status = Status(m);
 			if (status == PreviewStatus.Uncached)
@@ -201,7 +205,7 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		static PreviewStatus Status(Map m)
+		PreviewStatus Status(Map m)
 		{
 			if (m == null)
 				return PreviewStatus.Invalid;
@@ -213,6 +217,9 @@ namespace OpenRA.Widgets
 
 				if (cacheUids.Contains(m.Uid))
 					return PreviewStatus.Generating;
+
+				if (!compatibleTileset)
+					return PreviewStatus.Invalid;
 			}
 			return PreviewStatus.Uncached;
 		}
