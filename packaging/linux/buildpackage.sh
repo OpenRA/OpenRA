@@ -25,9 +25,6 @@ cp *.sh "$PWD/packaging/linux/$ROOTDIR/usr/lib/openra/" || exit 3
 # Icons and .desktop files
 make install-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
-# Remove Mac OS X libaries
-rm -rf "$PWD/packaging/linux/$ROOTDIR/usr/lib/openra/liblua-osx.dylib" || exit 3
-
 cd packaging/linux
 
 (

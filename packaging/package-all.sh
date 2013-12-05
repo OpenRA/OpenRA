@@ -32,7 +32,7 @@ FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
 'cg' 'glsl' 'mods/ra' 'mods/cnc' 'mods/d2k' \
 'AUTHORS' 'CHANGELOG' 'COPYING' \
 'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' \
-'global mix database.dat' 'GeoIP.dll' 'GeoIP.dat' 'LuaInterface.dll')
+'global mix database.dat' 'GeoIP.dll' 'GeoIP.dat')
 
 echo "Copying files..."
 for i in "${FILES[@]}"; do
