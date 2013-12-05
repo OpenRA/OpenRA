@@ -13,17 +13,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NLua;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Scripting
 {
 	public class LuaScriptContext : IDisposable
 	{
 		public Lua Lua { get; private set; }
+		readonly Cache<string, LuaFunction> functionCache;
 
 		public LuaScriptContext()
 		{
 			Log.Write("debug", "Creating Lua script context");
 			Lua = new Lua();
+			functionCache = new Cache<string, LuaFunction>(Lua.GetFunction);
 		}
 
 		public void RegisterObject(object target, string tableName, bool exposeAllMethods)
@@ -104,7 +107,7 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			try
 			{
-				var function = Lua.GetFunction(name);
+				var function = functionCache[name];
 				if (function == null)
 					return null;
 				return function.Call(args);
