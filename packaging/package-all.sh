@@ -57,6 +57,10 @@ cp thirdparty/SDL2\#* packaging/built
 # Mono.NAT for UPnP support
 cp thirdparty/Mono.Nat.dll packaging/built
 
+# Lua
+cp thirdparty/KopiLua.dll packaging/built
+cp thirdparty/NLua.dll packaging/built
+
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built
 

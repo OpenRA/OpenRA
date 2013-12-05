@@ -144,7 +144,7 @@ renderers: $(rcg_TARGET) $(rgl_TARGET) $(rsdl2_TARGET) $(rnull_TARGET) $(rsdl_TA
 
 ##### Official Mods #####
 
-STD_MOD_LIBS	= $(fileformats_TARGET) $(game_TARGET)
+STD_MOD_LIBS	= $(fileformats_TARGET) $(game_TARGET) thirdparty/KopiLua.dll thirdparty/NLua.dll
 STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 
 # Red Alert
@@ -338,6 +338,8 @@ install-core: default
 	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/SharpFont.dll.config "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/KopiLua.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/NLua.dll "$(DATA_INSTALL_DIR)"
 
 	@echo "#!/bin/sh" 				>  openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra

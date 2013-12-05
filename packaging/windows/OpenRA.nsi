@@ -83,6 +83,8 @@ Section "Game" GAME
 	File "${SRCDIR}\global mix database.dat"
 	File "${SRCDIR}\GeoIP.dll"
 	File "${SRCDIR}\GeoIP.dat"
+	File "${SRCDIR}\KopiLua.dll"
+	File "${SRCDIR}\NLua.dll"
 	File OpenAL32.dll
 	File SDL.dll
 	File freetype6.dll
@@ -201,6 +203,8 @@ Function ${UN}Clean
 	Delete "$INSTDIR\global mix database.dat"
 	Delete $INSTDIR\GeoIP.dat
 	Delete $INSTDIR\GeoIP.dll
+	Delete $INSTDIR\KopiLua.dll
+	Delete $INSTDIR\NLua.dll
 	Delete $INSTDIR\OpenAL32.dll
 	Delete $INSTDIR\SDL.dll
 	Delete $INSTDIR\freetype6.dll
