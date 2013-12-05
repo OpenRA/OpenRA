@@ -318,13 +318,13 @@ namespace OpenRA
 			foreach (var mod in Mod.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
-			InitializeWithMod(Settings.Game.Mod);
+			InitializeWithMod(Settings.Game.Mod, args.GetValue("Launch.Replay", null));
 
 			if (Settings.Server.DiscoverNatDevices)
 				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, UPnP.TryStoppingNatDiscovery);
 		}
 
-		public static void InitializeWithMod(string mod)
+		public static void InitializeWithMod(string mod, string replay)
 		{
 			// Clear static state if we have switched mods
 			LobbyInfoChanged = () => { };
@@ -396,6 +396,8 @@ namespace OpenRA
 			{
 				modData.LoadScreen.StartGame();
 				Settings.Save();
+				if (!string.IsNullOrEmpty(replay))
+					Game.JoinReplay(replay);
 			}
 		}
 
