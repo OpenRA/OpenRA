@@ -63,7 +63,7 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --transpose SRCSHP DESTSHP START N M [START N M ...]     Transpose the N*M block of frames starting at START.");
 			Console.WriteLine("  --docs MOD     Generate trait documentation in MarkDown format.");
 			Console.WriteLine("  --map-hash MAPFILE     Generate hash of specified oramap file.");
-			Console.WriteLine("  --minimap MAPFILE     Render PNG minimap of specified oramap file.");
+			Console.WriteLine("  --minimap MAPFILE [MOD]     Render PNG minimap of specified oramap file.");
 		}
 
 		static string GetNamedArg(string[] args, string arg)
