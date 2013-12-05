@@ -293,5 +293,24 @@ namespace OpenRA.Utility
 			var result = new Map(args[1]).Uid;
 			Console.WriteLine(result);
 		}
+
+		public static void GenerateMinimap(string[] args)
+		{
+			var map = new Map(args[1]);
+
+			Game.modData = new ModData(map.RequiresMod);
+
+			FileSystem.UnmountAll();
+			foreach (var dir in Game.modData.Manifest.Folders)
+				FileSystem.Mount(dir);
+
+			Rules.LoadRules(Game.modData.Manifest, map);
+
+			var minimap = Minimap.RenderMapPreview(map);
+
+			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".png";
+			minimap.Save(dest);
+			Console.WriteLine(dest + " saved.");
+		}
 	}
 }
