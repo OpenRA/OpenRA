@@ -170,7 +170,7 @@ namespace OpenRA.Widgets
 					uid = cacheUids.Peek();
 				}
 
-				var bitmap = Minimap.RenderMapPreview(Game.modData.AvailableMaps[uid]);
+				var bitmap = Minimap.RenderMapPreview(Game.modData.AvailableMaps[uid], false);
 				lock (syncRoot)
 				{
 					// TODO: We should add previews to a sheet here (with multiple previews per sheet)

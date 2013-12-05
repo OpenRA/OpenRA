@@ -185,9 +185,9 @@ namespace OpenRA.Graphics
 			return bitmap;
 		}
 
-		public static Bitmap RenderMapPreview(Map map)
+		public static Bitmap RenderMapPreview(Map map, bool actualSize)
 		{
-			Bitmap terrain = TerrainBitmap(map, true);
+			Bitmap terrain = TerrainBitmap(map, actualSize);
 			return AddStaticResources(map, terrain);
 		}
 	}

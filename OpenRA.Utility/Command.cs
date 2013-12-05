@@ -306,7 +306,7 @@ namespace OpenRA.Utility
 
 			Rules.LoadRules(Game.modData.Manifest, map);
 
-			var minimap = Minimap.RenderMapPreview(map);
+			var minimap = Minimap.RenderMapPreview(map, true);
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".png";
 			minimap.Save(dest);
