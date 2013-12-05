@@ -85,7 +85,7 @@ namespace OpenRA.GameRules
 	{
 		public string Renderer = "Gl";
 		public WindowMode Mode = WindowMode.PseudoFullscreen;
-		public int2 FullscreenSize = new int2(0,0);
+		public int2 FullscreenSize = new int2(0, 0);
 		public int2 WindowedSize = new int2(1024, 768);
 		public bool PixelDouble = false;
 		public bool CapFramerate = true;
@@ -187,7 +187,7 @@ namespace OpenRA.GameRules
 
 	public class Settings
 	{
-		string SettingsFile;
+		string settingsFile;
 
 		public PlayerSettings Player = new PlayerSettings();
 		public GameSettings Game = new GameSettings();
@@ -202,31 +202,31 @@ namespace OpenRA.GameRules
 
 		public Settings(string file, Arguments args)
 		{
-			SettingsFile = file;
+			settingsFile = file;
 			Sections = new Dictionary<string, object>()
 			{
-				{"Player", Player},
-				{"Game", Game},
-				{"Sound", Sound},
-				{"Graphics", Graphics},
-				{"Server", Server},
-				{"Debug", Debug},
-				{"Keys", Keys},
-				{"Irc", Irc}
+				{ "Player", Player },
+				{ "Game", Game },
+				{ "Sound", Sound },
+				{ "Graphics", Graphics },
+				{ "Server", Server },
+				{ "Debug", Debug },
+				{ "Keys", Keys },
+				{ "Irc", Irc }
 			};
 
 			// Override fieldloader to ignore invalid entries
 			var err1 = FieldLoader.UnknownFieldAction;
 			var err2 = FieldLoader.InvalidValueAction;
 
-			FieldLoader.UnknownFieldAction = (s,f) =>
+			FieldLoader.UnknownFieldAction = (s, f) =>
 			{
-				Console.WriteLine( "Ignoring unknown field `{0}` on `{1}`".F( s, f.Name ) );
+				Console.WriteLine("Ignoring unknown field `{0}` on `{1}`".F(s, f.Name));
 			};
 
-			if (File.Exists(SettingsFile))
+			if (File.Exists(settingsFile))
 			{
-				var yaml = MiniYaml.DictFromFile(SettingsFile);
+				var yaml = MiniYaml.DictFromFile(settingsFile);
 
 				foreach (var kv in Sections)
 					if (yaml.ContainsKey(kv.Key))
@@ -236,8 +236,8 @@ namespace OpenRA.GameRules
 			// Override with commandline args
 			foreach (var kv in Sections)
 				foreach (var f in kv.Value.GetType().GetFields())
-					if (args.Contains(kv.Key+"."+f.Name))
-						FieldLoader.LoadField( kv.Value, f.Name, args.GetValue(kv.Key+"."+f.Name, "") );
+					if (args.Contains(kv.Key + "." + f.Name))
+						FieldLoader.LoadField(kv.Value, f.Name, args.GetValue(kv.Key + "." + f.Name, ""));
 
 			FieldLoader.UnknownFieldAction = err1;
 			FieldLoader.InvalidValueAction = err2;
@@ -246,19 +246,19 @@ namespace OpenRA.GameRules
 		public void Save()
 		{
 			var root = new List<MiniYamlNode>();
-			foreach( var kv in Sections )
-				root.Add( new MiniYamlNode( kv.Key, FieldSaver.SaveDifferences(kv.Value, Activator.CreateInstance(kv.Value.GetType())) ) );
+			foreach (var kv in Sections)
+				root.Add(new MiniYamlNode(kv.Key, FieldSaver.SaveDifferences(kv.Value, Activator.CreateInstance(kv.Value.GetType()))));
 
-			root.WriteToFile(SettingsFile);
+			root.WriteToFile(settingsFile);
 		}
 
 		void LoadSectionYaml(MiniYaml yaml, object section)
 		{
 			var defaults = Activator.CreateInstance(section.GetType());
-			FieldLoader.InvalidValueAction = (s,t,f) =>
+			FieldLoader.InvalidValueAction = (s, t, f) =>
 			{
 				var ret = defaults.GetType().GetField(f).GetValue(defaults);
-				Console.WriteLine("FieldLoader: Cannot parse `{0}` into `{2}:{1}`; substituting default `{3}`".F(s,t.Name,f,ret) );
+				Console.WriteLine("FieldLoader: Cannot parse `{0}` into `{2}:{1}`; substituting default `{3}`".F(s, t.Name, f, ret));
 				return ret;
 			};
 
