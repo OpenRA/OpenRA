@@ -150,6 +150,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var frameLimitTextfield = panel.Get<TextFieldWidget>("FRAME_LIMIT_TEXTFIELD");
 			frameLimitTextfield.Text = ds.MaxFramerate.ToString();
+			frameLimitTextfield.OnLoseFocus = () =>
+			{
+				int fps;
+				int.TryParse(frameLimitTextfield.Text, out fps);
+				ds.MaxFramerate = fps.Clamp(20, 200);
+				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
+			};
+			frameLimitTextfield.OnEnterKey = () => { frameLimitTextfield.YieldKeyboardFocus(); return true; };
 			frameLimitTextfield.IsDisabled = () => !ds.CapFramerate;
 
 			return () =>
@@ -158,7 +166,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				int.TryParse(windowWidth.Text, out x);
 				int.TryParse(windowHeight.Text, out y);
 				ds.WindowedSize = new int2(x, y);
-				int.TryParse(frameLimitTextfield.Text, out ds.MaxFramerate);
+				frameLimitTextfield.YieldKeyboardFocus();
 			};
 		}
 

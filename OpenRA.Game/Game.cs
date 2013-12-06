@@ -420,6 +420,12 @@ namespace OpenRA
 
 		internal static void Run()
 		{
+			if (Settings.Graphics.MaxFramerate < 1)
+			{
+				Settings.Graphics.MaxFramerate = new GraphicSettings().MaxFramerate;
+				Settings.Graphics.CapFramerate = false;
+			}
+
 			while (!quit)
 			{
 				var idealFrameTime = 1.0 / Settings.Graphics.MaxFramerate;
@@ -431,7 +437,7 @@ namespace OpenRA
 				{
 					var waitTime = idealFrameTime - sw.ElapsedTime();
 					if (waitTime > 0)
-						System.Threading.Thread.Sleep( TimeSpan.FromSeconds(waitTime) );
+						System.Threading.Thread.Sleep(TimeSpan.FromSeconds(waitTime));
 				}
 			}
 
