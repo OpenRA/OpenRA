@@ -1,7 +1,6 @@
 %define name openra
 %define version {VERSION_FIELD}
 %define root {ROOT_DIR}
-%define _binaries_in_noarch_packages_terminate_build 0
 %define _use_internal_dependency_generator 0
 %define __find_provides ""
 %define __find_requires ""
