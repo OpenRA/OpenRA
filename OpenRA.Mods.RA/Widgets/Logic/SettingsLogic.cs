@@ -239,15 +239,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			// TODO: Extract these to a yaml file
 			var specialHotkeys = new Dictionary<string, string>()
 			{
-				{ "PauseKey", "Pause / Unpause" },
 				{ "CycleBaseKey", "Jump to base" },
 				{ "ToLastEventKey", "Jump to last radar event" },
 				{ "ToSelectionKey", "Jump to selection" },
 				{ "SelectAllUnitsKey", "Select all units on screen" },
+
+				{ "PauseKey", "Pause / Unpause" },
 				{ "SellKey", "Sell mode" },
 				{ "PowerDownKey", "Power-down mode" },
 				{ "RepairKey", "Repair mode" },
+
 				{ "CycleTabsKey", "Cycle production tabs" },
+
 				{ "ToggleStatusBarsKey", "Toggle status bars" }
 			};
 

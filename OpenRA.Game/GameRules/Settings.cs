@@ -148,7 +148,6 @@ namespace OpenRA.GameRules
 		public Hotkey CycleBaseKey = new Hotkey(Keycode.BACKSPACE, Modifiers.None);
 		public Hotkey ToLastEventKey = new Hotkey(Keycode.SPACE, Modifiers.None);
 		public Hotkey ToSelectionKey = new Hotkey(Keycode.HOME, Modifiers.None);
-		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.INSERT, Modifiers.None);
 		public Hotkey SelectAllUnitsKey = new Hotkey(Keycode.A, Modifiers.Ctrl);
 
 		public Hotkey PauseKey = new Hotkey(Keycode.F9, Modifiers.None);
@@ -156,14 +155,16 @@ namespace OpenRA.GameRules
 		public Hotkey PowerDownKey = new Hotkey(Keycode.F11, Modifiers.None);
 		public Hotkey RepairKey = new Hotkey(Keycode.F12, Modifiers.None);
 
+		public Hotkey CycleTabsKey = new Hotkey(Keycode.TAB, Modifiers.None);
+
+		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.INSERT, Modifiers.None);
+
 		public Hotkey AttackMoveKey = new Hotkey(Keycode.A, Modifiers.None);
 		public Hotkey StopKey = new Hotkey(Keycode.S, Modifiers.None);
 		public Hotkey ScatterKey = new Hotkey(Keycode.X, Modifiers.None);
 		public Hotkey DeployKey = new Hotkey(Keycode.F, Modifiers.None);
 		public Hotkey StanceCycleKey = new Hotkey(Keycode.Z, Modifiers.None);
 		public Hotkey GuardKey = new Hotkey(Keycode.D, Modifiers.None);
-
-		public Hotkey CycleTabsKey = new Hotkey(Keycode.TAB, Modifiers.None);
 	}
 
 	public class IrcSettings
