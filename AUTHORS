@@ -66,6 +66,15 @@ Also thanks to:
     * Vladimir Komarov (VrKomarov)
     * Wuschel
 
+Using Simple DirectMedia Layer distributed
+under the terms of the zlib license.
+
+Using FreeType distributed under the terms
+of the FreeType License.
+
+Using OpenAL Soft distributed under the GNU
+LGPL license.
+
 Using GeoLite data created by MaxMind and
 distributed under the CC BY-SA 3.0 license.
 
@@ -75,6 +84,25 @@ and distributed under the MIT license.
 
 Using NLua created by Vinicius Jarina
 and distributed under the MIT license.
+
+Using SharpFont created by Robert Rouhani
+distributed under the MIT license.
+
+Using the Tao framework distributed under
+the MIT license.
+
+Using SDL2# created by Ethan Lee released
+under the zlib license.
+
+Using FuzzyLogicLibrary (fuzzynet) by
+Dmitry Kaluzhny.
+
+Using Mono.Nat by Alan McGovern and Ben
+Motmans distributed under the MIT license.
+
+Using ICSharpCode.SharpZipLib intially by Mike
+Krueger distributed under the GNU GPL license.
+
 
 Finally, special thanks goes to the original teams
 at Westwood Studios and EA for creating the classic
