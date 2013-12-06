@@ -18,6 +18,8 @@ UseAsShellmap: False
 
 Type: Minigame
 
+RequiresMod: ra
+
 Options:
 	Crates: false
 	Fog: true

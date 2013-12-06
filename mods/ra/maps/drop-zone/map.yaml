@@ -18,6 +18,8 @@ UseAsShellmap: False
 
 Type: Drop Zone
 
+RequiresMod: ra
+
 Options:
 	Crates: true
 	Fog: false

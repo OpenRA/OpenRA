@@ -18,6 +18,8 @@ UseAsShellmap: False
 
 Type: Minigame
 
+RequiresMod: ra
+
 Options:
 	Fog: true
 	Shroud: true

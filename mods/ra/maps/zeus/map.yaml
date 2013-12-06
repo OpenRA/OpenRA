@@ -18,6 +18,8 @@ UseAsShellmap: False
 
 Type: Conquest
 
+RequiresMod: ra
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral

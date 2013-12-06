@@ -18,6 +18,8 @@ UseAsShellmap: False
 
 Type: KotH
 
+RequiresMod: ra
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral

@@ -18,6 +18,8 @@ UseAsShellmap: True
 
 Type: Conquest
 
+RequiresMod: d2k
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
