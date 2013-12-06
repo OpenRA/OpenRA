@@ -339,9 +339,9 @@ namespace OpenRA
 			if (orderManager != null)
 				orderManager.Dispose();
 
-			// Fall back to RA if the mod doesn't exist
+			// Fall back to default if the mod doesn't exist
 			if (!Mod.AllMods.ContainsKey(mod))
-				mod = "ra";
+				mod = new GameSettings().Mod;
 
 			Console.WriteLine("Loading mod: {0}", mod);
 			Settings.Game.Mod = mod;
