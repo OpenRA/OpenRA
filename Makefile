@@ -75,70 +75,68 @@ VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev
 ######################## PROGRAM TARGET RULES ##########################
 #
 # Core binaries
-fileformats_SRCS	:= $(shell find OpenRA.FileFormats/ -iname '*.cs')
-fileformats_TARGET	= OpenRA.FileFormats.dll
-fileformats_KIND	= library
-fileformats_LIBS	= $(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll
-PROGRAMS 		= fileformats
+fileformats_SRCS := $(shell find OpenRA.FileFormats/ -iname '*.cs')
+fileformats_TARGET = OpenRA.FileFormats.dll
+fileformats_KIND = library
+fileformats_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll
+PROGRAMS = fileformats
 fileformats: $(fileformats_TARGET)
 
-geoip_SRCS		:= $(shell find GeoIP/ -iname '*.cs')
-geoip_TARGET		= GeoIP.dll
-geoip_KIND		= library
-geoip_LIBS		= $(COMMON_LIBS)
-PROGRAMS 		+= geoip
+geoip_SRCS := $(shell find GeoIP/ -iname '*.cs')
+geoip_TARGET = GeoIP.dll
+geoip_KIND = library
+geoip_LIBS = $(COMMON_LIBS)
+PROGRAMS += geoip
 geoip: $(geoip_TARGET)
 
-game_SRCS			:= $(shell find OpenRA.Game/ -iname '*.cs')
-game_TARGET			= OpenRA.Game.exe
-game_KIND			= winexe
-game_DEPS			= $(fileformats_TARGET)
-game_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) \
-					thirdparty/Tao/Tao.OpenAl.dll thirdparty/SharpFont.dll
-game_FLAGS			= -win32icon:OpenRA.Game/OpenRA.ico
-PROGRAMS 			+= game
+game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
+game_TARGET = OpenRA.Game.exe
+game_KIND = winexe
+game_DEPS = $(fileformats_TARGET)
+game_LIBS = $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) thirdparty/Tao/Tao.OpenAl.dll thirdparty/SharpFont.dll
+game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
+PROGRAMS += game
 game: $(game_TARGET)
 
-irc_SRCS			:= $(shell find OpenRA.Irc/ -iname '*.cs')
-irc_TARGET			= OpenRA.Irc.dll
-irc_KIND			= library
-irc_DEPS			= $(fileformats_TARGET) $(game_TARGET)
-irc_LIBS			= $(COMMON_LIBS) $(irc_DEPS)
-PROGRAMS			+= irc
+irc_SRCS := $(shell find OpenRA.Irc/ -iname '*.cs')
+irc_TARGET = OpenRA.Irc.dll
+irc_KIND = library
+irc_DEPS = $(fileformats_TARGET) $(game_TARGET)
+irc_LIBS = $(COMMON_LIBS) $(irc_DEPS)
+PROGRAMS += irc
 irc: $(irc_TARGET)
 
 # Renderer dlls
-rsdl_SRCS			:= $(shell find OpenRA.Renderer.SdlCommon/ -iname '*.cs')
-rsdl_TARGET			= OpenRA.Renderer.SdlCommon.dll
-rsdl_KIND			= library
-rsdl_DEPS			= $(fileformats_TARGET) $(game_TARGET)
-rsdl_LIBS			= $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll \
-					$(rsdl_DEPS)
+rsdl_SRCS := $(shell find OpenRA.Renderer.SdlCommon/ -iname '*.cs')
+rsdl_TARGET = OpenRA.Renderer.SdlCommon.dll
+rsdl_KIND = library
+rsdl_DEPS = $(fileformats_TARGET) $(game_TARGET)
+rsdl_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll $(rsdl_DEPS)
 
-rcg_SRCS			:= $(shell find OpenRA.Renderer.Cg/ -iname '*.cs')
-rcg_TARGET			= OpenRA.Renderer.Cg.dll
-rcg_KIND			= library
-rcg_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
-rcg_LIBS			= $(COMMON_LIBS) thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll $(rcg_DEPS)
+rcg_SRCS := $(shell find OpenRA.Renderer.Cg/ -iname '*.cs')
+rcg_TARGET = OpenRA.Renderer.Cg.dll
+rcg_KIND = library
+rcg_DEPS = $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
+rcg_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll $(rcg_DEPS)
 
-rgl_SRCS			:= $(shell find OpenRA.Renderer.Gl/ -iname '*.cs')
-rgl_TARGET			= OpenRA.Renderer.Gl.dll
-rgl_KIND			= library
-rgl_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
-rgl_LIBS			= $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll $(rgl_DEPS)
+rgl_SRCS := $(shell find OpenRA.Renderer.Gl/ -iname '*.cs')
+rgl_TARGET = OpenRA.Renderer.Gl.dll
+rgl_KIND = library
+rgl_DEPS = $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
+rgl_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll $(rgl_DEPS)
 
-rsdl2_SRCS			:= $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
-rsdl2_TARGET			= OpenRA.Renderer.Sdl2.dll
-rsdl2_KIND			= library
-rsdl2_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET) $(rgl_TARGET)
-rsdl2_LIBS			= $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/SDL2\#.dll $(rsdl2_DEPS)
+rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
+rsdl2_TARGET = OpenRA.Renderer.Sdl2.dll
+rsdl2_KIND = library
+rsdl2_DEPS = $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET) $(rgl_TARGET)
+rsdl2_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/SDL2\#.dll $(rsdl2_DEPS)
 
-rnull_SRCS			:= $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
-rnull_TARGET			= OpenRA.Renderer.Null.dll
-rnull_KIND			= library
-rnull_DEPS			= $(fileformats_TARGET) $(game_TARGET)
-rnull_LIBS			= $(COMMON_LIBS) $(rnull_DEPS)
-PROGRAMS 			+= rcg rgl rsdl2 rnull rsdl
+rnull_SRCS := $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
+rnull_TARGET = OpenRA.Renderer.Null.dll
+rnull_KIND = library
+rnull_DEPS = $(fileformats_TARGET) $(game_TARGET)
+rnull_LIBS = $(COMMON_LIBS) $(rnull_DEPS)
+PROGRAMS += rcg rgl rsdl2 rnull rsdl
 renderers: $(rcg_TARGET) $(rgl_TARGET) $(rsdl2_TARGET) $(rnull_TARGET) $(rsdl_TARGET)
 
 
@@ -148,53 +146,53 @@ STD_MOD_LIBS	= $(fileformats_TARGET) $(game_TARGET) thirdparty/KopiLua.dll third
 STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 
 # Red Alert
-mod_ra_SRCS			:= $(shell find OpenRA.Mods.RA/ -iname '*.cs')
-mod_ra_TARGET			= mods/ra/OpenRA.Mods.RA.dll
-mod_ra_KIND			= library
-mod_ra_DEPS			= $(STD_MOD_DEPS) $(geoip_TARGET) $(irc_TARGET)
-mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(geoip_TARGET) $(irc_TARGET)
-PROGRAMS 			+= mod_ra
+mod_ra_SRCS := $(shell find OpenRA.Mods.RA/ -iname '*.cs')
+mod_ra_TARGET = mods/ra/OpenRA.Mods.RA.dll
+mod_ra_KIND = library
+mod_ra_DEPS = $(STD_MOD_DEPS) $(geoip_TARGET) $(irc_TARGET)
+mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(geoip_TARGET) $(irc_TARGET)
+PROGRAMS += mod_ra
 mod_ra: $(mod_ra_TARGET)
 
 # Command and Conquer
-mod_cnc_SRCS		:= $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
-mod_cnc_TARGET		= mods/cnc/OpenRA.Mods.Cnc.dll
-mod_cnc_KIND		= library
-mod_cnc_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET)
-mod_cnc_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
-PROGRAMS 		+= mod_cnc
+mod_cnc_SRCS := $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
+mod_cnc_TARGET = mods/cnc/OpenRA.Mods.Cnc.dll
+mod_cnc_KIND = library
+mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
+mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+PROGRAMS += mod_cnc
 mod_cnc: $(mod_cnc_TARGET)
 
 # Dune 2000
-mod_d2k_SRCS		:= $(shell find OpenRA.Mods.D2k/ -iname '*.cs')
-mod_d2k_TARGET		= mods/d2k/OpenRA.Mods.D2k.dll
-mod_d2k_KIND		= library
-mod_d2k_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET) $(mod_cnc_TARGET)
-mod_d2k_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
-PROGRAMS 		+= mod_d2k
+mod_d2k_SRCS := $(shell find OpenRA.Mods.D2k/ -iname '*.cs')
+mod_d2k_TARGET = mods/d2k/OpenRA.Mods.D2k.dll
+mod_d2k_KIND = library
+mod_d2k_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET) $(mod_cnc_TARGET)
+mod_d2k_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+PROGRAMS += mod_d2k
 mod_d2k: $(mod_d2k_TARGET)
 
 # Tiberian Sun
-mod_ts_SRCS		:= $(shell find OpenRA.Mods.TS/ -iname '*.cs')
-mod_ts_TARGET		= mods/ts/OpenRA.Mods.TS.dll
-mod_ts_KIND		= library
-mod_ts_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET)
-mod_ts_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
-PROGRAMS 		+= mod_ts
+mod_ts_SRCS := $(shell find OpenRA.Mods.TS/ -iname '*.cs')
+mod_ts_TARGET = mods/ts/OpenRA.Mods.TS.dll
+mod_ts_KIND = library
+mod_ts_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
+mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+PROGRAMS += mod_ts
 mod_ts: $(mod_ts_TARGET)
 
 ##### Tools #####
 
 # Map Editor
-editor_SRCS			:= $(shell find OpenRA.Editor/ -iname '*.cs')
-editor_TARGET			= OpenRA.Editor.exe
-editor_KIND			= winexe
-editor_DEPS			= $(fileformats_TARGET) $(game_TARGET)
-editor_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll System.Data.dll $(editor_DEPS)
-editor_EXTRA			= -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
-editor_FLAGS		= -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
+editor_SRCS := $(shell find OpenRA.Editor/ -iname '*.cs')
+editor_TARGET = OpenRA.Editor.exe
+editor_KIND = winexe
+editor_DEPS = $(fileformats_TARGET) $(game_TARGET)
+editor_LIBS = $(COMMON_LIBS) System.Windows.Forms.dll System.Data.dll $(editor_DEPS)
+editor_EXTRA = -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
+editor_FLAGS = -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
 
-PROGRAMS 			+= editor
+PROGRAMS += editor
 OpenRA.Editor.MapSelect.resources:
 	resgen2 OpenRA.Editor/MapSelect.resx OpenRA.Editor.MapSelect.resources 1> /dev/null
 OpenRA.Editor.Form1.resources:
@@ -202,12 +200,12 @@ OpenRA.Editor.Form1.resources:
 editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
 
 # Analyses mod yaml for easy to detect errors
-ralint_SRCS			:= $(shell find OpenRA.Lint/ -iname '*.cs')
-ralint_TARGET			= OpenRA.Lint.exe
-ralint_KIND			= exe
-ralint_DEPS			= $(fileformats_TARGET) $(game_TARGET)
-ralint_LIBS			= $(COMMON_LIBS) $(ralint_DEPS)
-PROGRAMS 			+= ralint
+ralint_SRCS := $(shell find OpenRA.Lint/ -iname '*.cs')
+ralint_TARGET = OpenRA.Lint.exe
+ralint_KIND = exe
+ralint_DEPS = $(fileformats_TARGET) $(game_TARGET)
+ralint_LIBS = $(COMMON_LIBS) $(ralint_DEPS)
+PROGRAMS += ralint
 ralint: $(ralint_TARGET)
 
 test:
@@ -221,13 +219,13 @@ test:
 	@mono --debug OpenRA.Lint.exe --verbose ts
 
 # Builds and exports tilesets from a bitmap
-tsbuild_SRCS		:= $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
-tsbuild_TARGET		= OpenRA.TilesetBuilder.exe
-tsbuild_KIND		= winexe
-tsbuild_DEPS		= $(fileformats_TARGET) $(game_TARGET)
-tsbuild_LIBS		= $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
-tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.FormBuilder.resources -resource:OpenRA.TilesetBuilder.FormNew.resources -resource:OpenRA.TilesetBuilder.Surface.resources
-PROGRAMS 		+= tsbuild
+tsbuild_SRCS := $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
+tsbuild_TARGET = OpenRA.TilesetBuilder.exe
+tsbuild_KIND = winexe
+tsbuild_DEPS = $(fileformats_TARGET) $(game_TARGET)
+tsbuild_LIBS = $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
+tsbuild_EXTRA = -resource:OpenRA.TilesetBuilder.FormBuilder.resources -resource:OpenRA.TilesetBuilder.FormNew.resources -resource:OpenRA.TilesetBuilder.Surface.resources
+PROGRAMS += tsbuild
 OpenRA.TilesetBuilder.FormBuilder.resources:
 	resgen2 OpenRA.TilesetBuilder/FormBuilder.resx OpenRA.TilesetBuilder.FormBuilder.resources 1> /dev/null
 OpenRA.TilesetBuilder.FormNew.resources:
@@ -240,12 +238,12 @@ tsbuild: OpenRA.TilesetBuilder.FormBuilder.resources OpenRA.TilesetBuilder.FormN
 ##### Launchers / Utilities #####
 
 # Backend for the launcher apps - queries game/mod info and applies actions to an install
-utility_SRCS		:= $(shell find OpenRA.Utility/ -iname '*.cs')
-utility_TARGET		= OpenRA.Utility.exe
-utility_KIND		= exe
-utility_DEPS		= $(fileformats_TARGET) $(game_TARGET)
-utility_LIBS		= $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
-PROGRAMS		+= utility
+utility_SRCS := $(shell find OpenRA.Utility/ -iname '*.cs')
+utility_TARGET = OpenRA.Utility.exe
+utility_KIND = exe
+utility_DEPS = $(fileformats_TARGET) $(game_TARGET)
+utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
+PROGRAMS += utility
 utility: $(utility_TARGET)
 
 
@@ -341,12 +339,12 @@ install-core: default
 	@$(INSTALL_PROGRAM) thirdparty/KopiLua.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/NLua.dll "$(DATA_INSTALL_DIR)"
 
-	@echo "#!/bin/sh" 				>  openra
-	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra
-	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' 	>> openra
-	@echo 'EXECDIR="$${ROOTDIR}'"$(libexecdir)"'"'	>> openra
-	@echo 'cd "$${EXECDIR}/openra"' 		>> openra
-	@echo 'exec mono OpenRA.Game.exe "$$@"' 	>> openra
+	@echo "#!/bin/sh" > openra
+	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra
+	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' >> openra
+	@echo 'EXECDIR="$${ROOTDIR}'"$(libexecdir)"'"' >> openra
+	@echo 'cd "$${EXECDIR}/openra"' >> openra
+	@echo 'exec mono OpenRA.Game.exe "$$@"' >> openra
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra
@@ -356,12 +354,12 @@ install-tools: tools
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) $(foreach prog,$(TOOLS),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
 
-	@echo "#!/bin/sh" 				>  openra-editor
-	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra-editor
-	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' 	>> openra-editor
-	@echo 'EXECDIR="$${ROOTDIR}'"$(libexecdir)"'"'	>> openra-editor
-	@echo 'cd "$${EXECDIR}/openra"'			>> openra-editor
-	@echo 'exec mono OpenRA.Editor.exe "$$@"'	>> openra-editor
+	@echo "#!/bin/sh" >  openra-editor
+	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra-editor
+	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' >> openra-editor
+	@echo 'EXECDIR="$${ROOTDIR}'"$(libexecdir)"'"' >> openra-editor
+	@echo 'cd "$${EXECDIR}/openra"' >> openra-editor
+	@echo 'exec mono OpenRA.Editor.exe "$$@"' >> openra-editor
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra-editor "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra-editor
