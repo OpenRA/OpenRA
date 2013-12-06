@@ -68,6 +68,7 @@ NEW:
 		Added cash tick sounds.
 		Disabled the main menu target reticle showing when a window is open.
 		Added a display of the faction logos when the shellmap is disabled.
+		Visceriods now heal on Tiberium and move faster there.
 	Dune 2000:
 		Added buildable concrete walls.
 		Fixed some cliffs being passable.

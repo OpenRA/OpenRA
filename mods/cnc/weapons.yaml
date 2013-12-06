@@ -858,6 +858,13 @@ Tiberium:
 		Damage: 1
 		PreventProne: yes
 
+Heal:
+	ROF: 4
+	Warhead:
+		Spread: 1
+		Damage: -1
+		PreventProne: yes
+
 APCGun:
 	ROF: 12
 	Range: 5
