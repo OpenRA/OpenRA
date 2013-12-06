@@ -65,7 +65,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = fileformats rcg rgl rsdl rnull game utility geoip irc
+CORE = fileformats rcg rgl rsdl rsdl2 rnull game utility geoip irc
 TOOLS = editor tsbuild ralint
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
@@ -331,6 +331,7 @@ install-core: default
 	@$(CP_R) cg "$(DATA_INSTALL_DIR)"
 	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/Tao/* "$(DATA_INSTALL_DIR)"
+	@$(CP) thirdparty/SDL2\#* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll "$(DATA_INSTALL_DIR)"
