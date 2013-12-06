@@ -305,3 +305,7 @@ moveflsh:
 		Length: 5
 		Tick: 80
 		BlendMode: Subtractive
+
+resources:
+	spice: spice1
+		Length: *

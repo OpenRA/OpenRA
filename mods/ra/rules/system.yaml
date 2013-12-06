@@ -632,7 +632,9 @@ World:
 	ResourceType@ore:
 		ResourceType: 1
 		Palette: player
-		SpriteNames: gold01,gold02,gold03,gold04
+		EditorSprite: gold01
+		Variants: gold01,gold02,gold03,gold04
+		MaxDensity: 12
 		ValuePerUnit: 25
 		Name: Ore
 		PipColor: Yellow
@@ -642,7 +644,9 @@ World:
 	ResourceType@gem:
 		ResourceType: 2
 		Palette: player
-		SpriteNames: gem01,gem02,gem03,gem04
+		EditorSprite: gem01
+		Variants: gem01,gem02,gem03,gem04
+		MaxDensity: 3
 		ValuePerUnit: 50
 		Name: Gems
 		PipColor: Red

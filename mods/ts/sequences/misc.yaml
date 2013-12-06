@@ -249,3 +249,8 @@ moveflsh:
 		Start: 0
 		Length: *
 		Tick: 30
+
+# TODO: placeholder
+resources:
+	fake: shadow
+		Length: *

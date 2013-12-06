@@ -469,3 +469,21 @@ overlay:
 		Start: 0
 	target-invalid:
 		Start: 1
+
+resources:
+	gold01: gold01
+		Length: *
+	gold02: gold02
+		Length: *
+	gold03: gold03
+		Length: *
+	gold04: gold04
+		Length: *
+	gem01: gem01
+		Length: *
+	gem02: gem02
+		Length: *
+	gem03: gem03
+		Length: *
+	gem04: gem04
+		Length: *

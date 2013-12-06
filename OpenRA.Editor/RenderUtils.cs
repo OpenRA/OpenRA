@@ -77,7 +77,7 @@ namespace OpenRA.Editor
 
 		public static ResourceTemplate RenderResourceType(ResourceTypeInfo info, string[] exts, Palette p)
 		{
-			var image = info.SpriteNames[0];
+			var image = info.EditorSprite;
 			using (var s = FileSystem.OpenWithExts(image, exts))
 			{
 				// TODO: Do this properly

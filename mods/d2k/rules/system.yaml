@@ -447,7 +447,9 @@ World:
 		ResourceType: 1
 		Palette: d2k
 		TerrainType: Spice
-		SpriteNames: spice1
+		EditorSprite: spice1
+		Variants: spice
+		MaxDensity: 20
 		ValuePerUnit: 25
 		Name: Spice
 		PipColor: green
