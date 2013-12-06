@@ -441,7 +441,7 @@ World:
 		Race: ordos
 	DomainIndex:
 	PathfinderDebugOverlay:
-	ResourceLayer:
+	D2kResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@Spice:
 		ResourceType: 1
