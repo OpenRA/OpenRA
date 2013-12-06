@@ -73,6 +73,7 @@ NEW:
 		Fixed infantry sometimes using the wrong animation when standing.
 		Fixed A* debug overlay.
 		Fixed R8 offsets for sprites with embedded palettes.
+		Implemented proper spice rendering.
 	Engine:
 		Replays are now saved in per-mod and per-version folders.
 		Added password protection support for servers.
@@ -125,6 +126,7 @@ NEW:
 		Removed Utility --tmp-png, --r8, --fromd2 commands (use --png instead).
 		Removed Asset Browser file extraction / conversion (use the Utility instead).
 		Unified sprite loading allows any sprite type to be used anywhere: shp can now be used for terrain, and tmp for units.
+		Harvestable resource definitions (ResourceTypes) have changed, and now specify their artwork using via sequences.
 
 20130915:
 	All mods:
