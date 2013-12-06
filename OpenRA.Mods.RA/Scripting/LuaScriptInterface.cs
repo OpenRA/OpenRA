@@ -17,6 +17,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Missions;
 using OpenRA.Scripting;
+using OpenRA.Support;
 using OpenRA.Traits;
 using WorldRenderer = OpenRA.Graphics.WorldRenderer;
 
@@ -80,7 +81,8 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public void Tick(Actor self)
 		{
-			context.InvokeLuaFunction("Tick");
+			using (new PerfSample("tick_lua"))
+				context.InvokeLuaFunction("Tick");
 		}
 
 		[LuaGlobal]
