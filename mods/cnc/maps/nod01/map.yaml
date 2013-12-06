@@ -55,7 +55,7 @@ Players:
 		ColorRamp: 3,255,127,28
 		LockSpawn: True
 		LockTeam: True
-		Enemies: GDI,Neutral
+		Enemies: GDI,Creeps
 		Required: True
 
 Actors:
@@ -136,67 +136,67 @@ Actors:
 		Owner: Neutral
 	Vil01: v21
 		Location: 29,23
-		Owner: Neutral
+		Owner: Creeps
 	Vil02: v24
 		Location: 22,24
-		Owner: Neutral
+		Owner: Creeps
 	Vil03: v24
 		Location: 21,16
-		Owner: Neutral
+		Owner: Creeps
 	Vil04: v32
 		Location: 21,20
-		Owner: Neutral
+		Owner: Creeps
 	Vil05: v27
 		Location: 22,21
-		Owner: Neutral
+		Owner: Creeps
 	Vil06: v20
 		Location: 21,21
-		Owner: Neutral
+		Owner: Creeps
 	Vil07: v26
 		Location: 22,23
-		Owner: Neutral
+		Owner: Creeps
 	Vil08: v20
 		Location: 27,23
-		Owner: Neutral
+		Owner: Creeps
 	Vil09: v22
 		Location: 26,23
-		Owner: Neutral
+		Owner: Creeps
 	Vil10: v23
 		Location: 26,22
-		Owner: Neutral
+		Owner: Creeps
 	Vil11: v26
 		Location: 26,21
-		Owner: Neutral
+		Owner: Creeps
 	Vil12: v25
 		Location: 29,21
-		Owner: Neutral
+		Owner: Creeps
 	Vil13: v30
 		Location: 32,18
-		Owner: Neutral
+		Owner: Creeps
 	Civ01: c9
 		Location: 28,20
-		Owner: Neutral
+		Owner: Creeps
 	Civ02: c6
 		Location: 28,19
-		Owner: Neutral
+		Owner: Creeps
 	Civ03: c8
 		Location: 27,19
-		Owner: Neutral
+		Owner: Creeps
 	Civ04: c7
 		Location: 29,20
-		Owner: Neutral
+		Owner: Creeps
 	Civ05: c4
 		Location: 31,19
-		Owner: Neutral
+		Owner: Creeps
 	Civ06: c2
 		Location: 30,19
-		Owner: Neutral
+		Owner: Creeps
 	Civ07: c5
 		Location: 29,19
-		Owner: Neutral
+		Owner: Creeps
 	Nikoomba: c10
 		Location: 29,16
-		Owner: Neutral
+		Owner: Creeps
 	Actor46: e1
 		Location: 28,28
 		Owner: GDI
@@ -301,6 +301,8 @@ Rules:
 	C10:
 		Tooltip:
 			Name: Nikoomba
+	^Bridge:
+		Invulnerable:
 
 Sequences:
 
