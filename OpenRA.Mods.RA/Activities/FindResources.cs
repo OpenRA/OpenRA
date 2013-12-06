@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Activities
 
 						if (resType == null) return 1;
 						// Can the harvester collect this kind of resource?
-						if (!harvInfo.Resources.Contains(resType.info.Name)) return 1;
+						if (!harvInfo.Resources.Contains(resType.Info.Name)) return 1;
 
 						if (territory != null)
 						{

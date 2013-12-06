@@ -311,3 +311,53 @@ moveflsh:
 		Start: 0
 		Length: *
 		Tick: 80
+
+resources:
+	ti1: ti1
+		Length: *
+	ti2: ti2
+		Length: *
+	ti3: ti3
+		Length: *
+	ti4: ti4
+		Length: *
+	ti5: ti5
+		Length: *
+	ti6: ti6
+		Length: *
+	ti7: ti7
+		Length: *
+	ti8: ti8
+		Length: *
+	ti9: ti9
+		Length: *
+	ti10: ti10
+		Length: *
+	ti11: ti11
+		Length: *
+	ti12: ti12
+		Length: *
+	bti1: bti1
+		Length: *
+	bti2: bti2
+		Length: *
+	bti3: bti3
+		Length: *
+	bti4: bti4
+		Length: *
+	bti5: bti5
+		Length: *
+	bti6: bti6
+		Length: *
+	bti7: bti7
+		Length: *
+	bti8: bti8
+		Length: *
+	bti9: bti9
+		Length: *
+	bti10: bti10
+		Length: *
+	bti11: bti11
+		Length: *
+	bti12: bti12
+		Length: *

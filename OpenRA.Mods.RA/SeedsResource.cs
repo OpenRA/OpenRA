@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 				var info = self.Info.Traits.Get<SeedsResourceInfo>();
 				var resourceType = self.World.WorldActor
 					.TraitsImplementing<ResourceType>()
-					.FirstOrDefault(t => t.info.Name == info.ResourceType);
+					.FirstOrDefault(t => t.Info.Name == info.ResourceType);
 
 				if (resourceType == null)
 					throw new InvalidOperationException("No such resource type `{0}`".F(info.ResourceType));
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 				if (cell != null && self.World.Map.IsInMap(cell.Value) &&
 					(resLayer.GetResource(cell.Value) == resourceType
 					|| (resLayer.GetResource(cell.Value) == null && resLayer.AllowResourceAt(resourceType, cell.Value))))
-					resLayer.AddResource(resourceType, cell.Value.X, cell.Value.Y, 1);
+					resLayer.AddResource(resourceType, cell.Value, 1);
 
 				ticks = info.Interval;
 			}

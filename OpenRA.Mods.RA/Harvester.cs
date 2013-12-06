@@ -143,8 +143,8 @@ namespace OpenRA.Mods.RA
 
 		public void AcceptResource(ResourceType type)
 		{
-			if (!contents.ContainsKey(type.info)) contents[type.info] = 1;
-			else contents[type.info]++;
+			if (!contents.ContainsKey(type.Info)) contents[type.Info] = 1;
+			else contents[type.Info]++;
 		}
 
 		public void UnblockRefinery(Actor self)
@@ -357,7 +357,7 @@ namespace OpenRA.Mods.RA
 
 						if (resType == null) return 1;
 						// Can the harvester collect this kind of resource?
-						if (!harvInfo.Resources.Contains(resType.info.Name)) return 1;
+						if (!harvInfo.Resources.Contains(resType.Info.Name)) return 1;
 
 						// Another harvester has claimed this resource:
 						if (territory != null)
@@ -436,7 +436,7 @@ namespace OpenRA.Mods.RA
 				var res = self.World.WorldActor.Trait<ResourceLayer>().GetRenderedResource(location);
 				var info = self.Info.Traits.Get<HarvesterInfo>();
 
-				if (res == null || !info.Resources.Contains(res.info.Name))
+				if (res == null || !info.Resources.Contains(res.Info.Name))
 					return false;
 
 				cursor = "harvest";

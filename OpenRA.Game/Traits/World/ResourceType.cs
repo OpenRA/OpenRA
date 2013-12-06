@@ -8,37 +8,54 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
 	public class ResourceTypeInfo : ITraitInfo
 	{
-		public readonly string[] SpriteNames = { };
+		// Hack: The editor is getting really unmaintanable...
+		public readonly string EditorSprite;
+		public readonly string[] Variants = { };
 		public readonly string Palette = "terrain";
 		public readonly int ResourceType = 1;
 
 		public readonly int ValuePerUnit = 0;
+		public readonly int MaxDensity = 10;
 		public readonly string Name = null;
 		public readonly string TerrainType = "Ore";
 
 		public readonly string[] AllowedTerrainTypes = { };
 		public readonly bool AllowUnderActors = false;
 
-		public Sprite[][] Sprites;
-		public PaletteReference PaletteRef;
-
 		public PipType PipColor = PipType.Yellow;
 
 		public object Create(ActorInitializer init) { return new ResourceType(this); }
 	}
 
-	public class ResourceType
+	public class ResourceType : IWorldLoaded
 	{
-		public ResourceTypeInfo info;
+		public readonly ResourceTypeInfo Info;
+		public PaletteReference Palette { get; private set; }
+		public readonly Dictionary<string, Sprite[]> Variants;
+
 		public ResourceType(ResourceTypeInfo info)
 		{
-			this.info = info;
+			this.Info = info;
+			Variants = new Dictionary<string, Sprite[]>();
+			foreach (var v in info.Variants)
+			{
+				var seq = SequenceProvider.GetSequence("resources", v);
+				var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
+				Variants.Add(v, sprites);
+			}
+		}
+
+		public void WorldLoaded(World w, WorldRenderer wr)
+		{
+			Palette = wr.Palette(Info.Palette);
 		}
 	}
 }

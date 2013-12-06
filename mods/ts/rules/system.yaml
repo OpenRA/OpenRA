@@ -116,6 +116,17 @@ World:
 		Race: nod
 	ResourceLayer:
 	ResourceClaimLayer:
+	ResourceType@gem:
+		ResourceType: 2
+		Palette: player
+		EditorSprite: shadow
+		Variants: fake
+		ValuePerUnit: 50
+		Name: Gems
+		PipColor: Red
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
+		TerrainType: Gems
 	PathfinderDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
