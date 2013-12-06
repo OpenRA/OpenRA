@@ -13,7 +13,7 @@ License: GPL-3.0
 URL: http://open-ra.org
 Group: Amusements/Games
 Packager: Matthew Bowra-Dean <matthew@ijw.co.nz>
-Requires: mono-core mono-devel SDL openal
+Requires: mono-core mono-devel SDL openal freetype2
 Prefix: /usr
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /tmp/openra
