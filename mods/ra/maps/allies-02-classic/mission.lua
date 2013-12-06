@@ -1,5 +1,5 @@
-Reinforcements = { "e1", "e1", "e1", "jeep" }
-ReinforcementsInterval = 15
+JeepReinforcements = { "e1", "e1", "e1", "jeep" }
+JeepReinforcementsInterval = 15
 TruckNames = { "truk", "truk", "truk" }
 TruckInterval = 25
 TruckDelay = 75
@@ -15,7 +15,7 @@ end
 
 SendJeepReinforcements = function()
 	Media.PlaySpeechNotification("ReinforcementsArrived")
-	Mission.Reinforce(player, Reinforcements, ReinforcementsEntryPoint.Location, ReinforcementsRallyPoint.Location, ReinforcementsInterval)
+	Reinforcements.Reinforce(player, JeepReinforcements, ReinforcementsEntryPoint.Location, ReinforcementsRallyPoint.Location, JeepReinforcementsInterval)
 end
 
 RunInitialActivities = function()
@@ -49,7 +49,7 @@ end
 SendTrucks = function()
 	Media.PlaySpeechNotification("ConvoyApproaching")
 	OpenRA.RunAfterDelay(TruckDelay, function()
-		local trucks = Mission.Reinforce(france, TruckNames, TruckEntryPoint.Location, TruckRallyPoint.Location, TruckInterval,
+		local trucks = Reinforcements.Reinforce(france, TruckNames, TruckEntryPoint.Location, TruckRallyPoint.Location, TruckInterval,
 			function(truck)
 				Actor.Move(truck, TruckExitPoint.Location)
 				Actor.RemoveSelf(truck)
