@@ -13,6 +13,7 @@ URL: http://open-ra.org
 Group: Amusements/Games
 Packager: Matthew Bowra-Dean <matthew@ijw.co.nz>
 Requires: mono-core mono-devel SDL openal freetype2
+#Recommends: SDL2 cg # Fedora does not support soft dependencies :(
 Prefix: /usr
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /tmp/openra
