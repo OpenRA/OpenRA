@@ -202,6 +202,12 @@ namespace OpenRA.Widgets
 				}
 				else if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.PauseKey && World.LocalPlayer != null) // Disable pausing for spectators
 					World.SetPauseState(!World.Paused);
+				else if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.SelectAllUnitsKey)
+				{
+					var ownUnitsOnScreen = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight, 
+						a => a.Owner == World.RenderPlayer);
+					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
+				}
 			}
 
 			return false;
