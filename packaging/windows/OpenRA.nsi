@@ -65,6 +65,7 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
 	File "${SRCDIR}\OpenRA.FileFormats.dll"
+	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
 	File "${SRCDIR}\OpenRA.Renderer.SdlCommon.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Gl.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Cg.dll"
@@ -87,6 +88,7 @@ Section "Game" GAME
 	File "${SRCDIR}\NLua.dll"
 	File OpenAL32.dll
 	File SDL.dll
+	File SDL2.dll
 	File freetype6.dll
 	File zlib1.dll
 
