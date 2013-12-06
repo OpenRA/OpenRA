@@ -219,14 +219,14 @@ PROGRAMS 			+= ralint
 ralint: $(ralint_TARGET)
 
 test:
-	@mono --debug OpenRA.Lint.exe ra
-	@echo "OpenRA.Lint: ra mod yaml checks passed."
-	@mono --debug OpenRA.Lint.exe cnc
-	@echo "OpenRA.Lint: cnc mod yaml checks passed."
-	@mono --debug OpenRA.Lint.exe d2k
-	@echo "OpenRA.Lint: d2k mod yaml checks passed."
-	@mono --debug OpenRA.Lint.exe ts
-	@echo "OpenRA.Lint: ts mod yaml checks passed."
+	@echo "OpenRA.Lint: checking Red Alert mod MiniYAML..."
+	@mono --debug OpenRA.Lint.exe --verbose ra
+	@echo "OpenRA.Lint: checking Tiberian Dawn mod MiniYAML..."
+	@mono --debug OpenRA.Lint.exe --verbose cnc
+	@echo "OpenRA.Lint: checking Dune 2000 mod MiniYAML..."
+	@mono --debug OpenRA.Lint.exe --verbose d2k
+	@echo "OpenRA.Lint: checking Tiberian Sun mod MiniYAML..."
+	@mono --debug OpenRA.Lint.exe --verbose ts
 
 # Builds and exports tilesets from a bitmap
 tsbuild_SRCS		:= $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')

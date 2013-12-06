@@ -32,11 +32,17 @@ namespace OpenRA.Lint
 
 		static int Main(string[] args)
 		{
+			if (args.Length == 0)
+			{
+				Console.WriteLine("Usage: OpenRA.Lint.exe MOD [MAP] [--verbose]");
+				return 0;
+			}
+
 			try
 			{
 				var options = args.Where(a => a.StartsWith("-"));
 				var mod = args.Where(a => !options.Contains(a)).First();
-
+				var map = args.Where(a => !options.Contains(a)).Skip(1).FirstOrDefault();
 				var verbose = options.Contains("-v") || options.Contains("--verbose");
 
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
@@ -45,7 +51,11 @@ namespace OpenRA.Lint
 
 				AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 				Game.modData = new ModData(mod);
-				Rules.LoadRules(Game.modData.Manifest, new Map());
+
+				var testMap = string.IsNullOrEmpty(map) ? new Map() : new Map(map);
+				if (verbose && !string.IsNullOrEmpty(map))
+					Console.WriteLine("Map: {0}".F(testMap.Title));
+				Rules.LoadRules(Game.modData.Manifest, testMap);
 
 				foreach (var customPassType in Game.modData.ObjectCreator
 					.GetTypesImplementing<ILintPass>())
