@@ -65,7 +65,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = fileformats rcg rgl rsdl rnull game utility geoip irc lua
+CORE = fileformats rcg rgl rsdl rnull game utility geoip irc
 TOOLS = editor tsbuild ralint
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
@@ -107,14 +107,6 @@ irc_LIBS			= $(COMMON_LIBS) $(irc_DEPS)
 PROGRAMS			+= irc
 irc: $(irc_TARGET)
 
-lua_SRCS			:= $(shell find LuaInterface/ -name '*.cs')
-lua_TARGET			= LuaInterface.dll
-lua_KIND			= library
-lua_DEPS			= $(fileformats_TARGET)
-lua_LIBS			= $(COMMON_LIBS) $(lua_DEPS)
-PROGRAMS			+= lua
-lua: $(lua_TARGET)
-
 # Renderer dlls
 rsdl_SRCS			:= $(shell find OpenRA.Renderer.SdlCommon/ -iname '*.cs')
 rsdl_TARGET			= OpenRA.Renderer.SdlCommon.dll
@@ -152,15 +144,15 @@ renderers: $(rcg_TARGET) $(rgl_TARGET) $(rsdl2_TARGET) $(rnull_TARGET) $(rsdl_TA
 
 ##### Official Mods #####
 
-STD_MOD_LIBS	= $(fileformats_TARGET) $(game_TARGET)
+STD_MOD_LIBS	= $(fileformats_TARGET) $(game_TARGET) thirdparty/KopiLua.dll thirdparty/NLua.dll
 STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 
 # Red Alert
 mod_ra_SRCS			:= $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET			= mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND			= library
-mod_ra_DEPS			= $(STD_MOD_DEPS) $(geoip_TARGET) $(irc_TARGET) $(lua_TARGET)
-mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(geoip_TARGET) $(irc_TARGET) $(lua_TARGET)
+mod_ra_DEPS			= $(STD_MOD_DEPS) $(geoip_TARGET) $(irc_TARGET)
+mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(geoip_TARGET) $(irc_TARGET)
 PROGRAMS 			+= mod_ra
 mod_ra: $(mod_ra_TARGET)
 
@@ -303,8 +295,6 @@ distclean: clean
 
 dependencies:
 	@ $(CP_R) thirdparty/*.dl* .
-	@ $(CP_R) thirdparty/*.dylib .
-	@ $(CP_R) thirdparty/*.so .
 	@ $(CP_R) thirdparty/Tao/* .
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml
@@ -348,10 +338,8 @@ install-core: default
 	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/SharpFont.dll.config "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/LuaInterface.dll.config "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/liblua-linux32.so "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/liblua-linux64.so "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/liblua-osx.dylib "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/KopiLua.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/NLua.dll "$(DATA_INSTALL_DIR)"
 
 	@echo "#!/bin/sh" 				>  openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra

@@ -21,10 +21,6 @@ cp -rv $2/* "OpenRA.app/Contents/Resources/" || exit 3
 rm OpenRA.app/Contents/Resources/OpenRA.ico
 rm OpenRA.app/Contents/Resources/OpenRA.Editor.exe
 
-# Install the stripped down Lua library
-cp ../../liblua-osx.dylib OpenRA.app/Contents/Resources/
-cp ../../LuaInterface.dll.config OpenRA.app/Contents/Resources/
-
 # SDL2 is the only supported renderer
 rm -rf OpenRA.app/Contents/Resources/cg
 rm OpenRA.app/Contents/Resources/OpenRA.Renderer.Cg.dll

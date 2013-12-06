@@ -63,6 +63,12 @@
     <Reference Include="FuzzyLogicLibrary">
       <HintPath>..\thirdparty\FuzzyLogicLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="KopiLua">
+      <HintPath>..\thirdparty\KopiLua.dll</HintPath>
+    </Reference>
+    <Reference Include="NLua">
+      <HintPath>..\thirdparty\NLua.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -478,10 +484,6 @@
     <Compile Include="Effects\Rank.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LuaInterface\LuaInterface.csproj">
-      <Project>{E915A0A4-2641-4F7E-8A88-8F123FA88BF1}</Project>
-      <Name>LuaInterface</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
       <Name>OpenRA.FileFormats</Name>

@@ -8,16 +8,17 @@
  */
 #endregion
 
-using LuaInterface;
+using System;
+using System.Linq;
+using NLua;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Missions;
 using OpenRA.Scripting;
+using OpenRA.Support;
 using OpenRA.Traits;
-using System;
-using System.Linq;
 using WorldRenderer = OpenRA.Graphics.WorldRenderer;
 
 namespace OpenRA.Mods.RA.Scripting
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
-			AddMapActorGlobals();
+
 			context.Lua["World"] = w;
 			context.Lua["WorldRenderer"] = wr;
 			context.RegisterObject(this, "Internal", false);
@@ -55,22 +56,33 @@ namespace OpenRA.Mods.RA.Scripting
 			context.RegisterType(typeof(WRange), "WRange", true);
 			context.RegisterType(typeof(int2), "int2", true);
 			context.RegisterType(typeof(float2), "float2", true);
+
 			var sharedScripts = Game.modData.Manifest.LuaScripts ?? new string[0];
 			if (sharedScripts.Any())
 				context.LoadLuaScripts(f => FileSystem.Open(f).ReadAllText(), sharedScripts);
+
+			AddMapActorGlobals();
+
 			context.LoadLuaScripts(f => w.Map.Container.GetContent(f).ReadAllText(), info.LuaScripts);
+
 			context.InvokeLuaFunction("WorldLoaded");
 		}
 
 		void AddMapActorGlobals()
 		{
 			foreach (var kv in world.WorldActor.Trait<SpawnMapActors>().Actors)
-				context.Lua[kv.Key] = kv.Value;
+			{
+				if (context.Lua[kv.Key] != null)
+					context.ShowErrorMessage("{0}: The global name '{1}' is reserved and may not be used by map actor {2}".F(GetType().Name, kv.Key, kv.Value), null);
+				else
+					context.Lua[kv.Key] = kv.Value;
+			}
 		}
 
 		public void Tick(Actor self)
 		{
-			context.InvokeLuaFunction("Tick");
+			using (new PerfSample("tick_lua"))
+				context.InvokeLuaFunction("Tick");
 		}
 
 		[LuaGlobal]

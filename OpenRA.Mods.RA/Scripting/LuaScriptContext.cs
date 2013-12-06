@@ -12,18 +12,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using LuaInterface;
+using NLua;
+using NLua.Event;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Scripting
 {
 	public class LuaScriptContext : IDisposable
 	{
 		public Lua Lua { get; private set; }
+		readonly Cache<string, LuaFunction> functionCache;
 
 		public LuaScriptContext()
 		{
 			Log.Write("debug", "Creating Lua script context");
 			Lua = new Lua();
+			Lua.HookException += OnLuaException;
+			functionCache = new Cache<string, LuaFunction>(Lua.GetFunction);
 		}
 
 		public void RegisterObject(object target, string tableName, bool exposeAllMethods)
@@ -76,11 +81,21 @@ namespace OpenRA.Mods.RA.Scripting
 			}
 		}
 
-		void LogException(Exception e)
+		void OnLuaException(object sender, HookExceptionEventArgs e)
 		{
-			Game.Debug("{0}", e.Message);
+			ShowException(e.Exception);
+		}
+
+		void ShowException(Exception e)
+		{
+			ShowErrorMessage(e.Message, e.ToString());
+		}
+
+		public void ShowErrorMessage(string shortMessage, string longMessage)
+		{
+			Game.Debug("{0}", shortMessage);
 			Game.Debug("See debug.log for details");
-			Log.Write("debug", "{0}", e);
+			Log.Write("debug", "{0}", longMessage ?? shortMessage);
 		}
 
 		public void LoadLuaScripts(Func<string, string> getFileContents, params string[] files)
@@ -95,7 +110,7 @@ namespace OpenRA.Mods.RA.Scripting
 				}
 				catch (Exception e)
 				{
-					LogException(e);
+					ShowException(e);
 				}
 			}
 		}
@@ -104,14 +119,14 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			try
 			{
-				var function = Lua.GetFunction(name);
+				var function = functionCache[name];
 				if (function == null)
 					return null;
 				return function.Call(args);
 			}
 			catch (Exception e)
 			{
-				LogException(e);
+				ShowException(e);
 				return null;
 			}
 		}

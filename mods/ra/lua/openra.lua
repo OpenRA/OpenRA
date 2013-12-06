@@ -1,15 +1,16 @@
+print = Internal.Debug
+
 OpenRA = { }
 
 OpenRA.New = function(className, args)
+	if args == nil then
+		args = { }
+	end
 	return Internal.New(className, args)
 end
 
 OpenRA.RunAfterDelay = function(delay, func)
 	Internal.RunAfterDelay(delay, func)
-end
-
-OpenRA.Debug = function(obj)
-	Internal.Debug(obj)
 end
 
 OpenRA.SetViewportCenterPosition = function(position)

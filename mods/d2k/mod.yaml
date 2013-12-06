@@ -152,3 +152,5 @@ LuaScripts:
 	mods/ra/lua/team.lua
 	mods/ra/lua/media.lua
 	mods/ra/lua/mission.lua
+	mods/ra/lua/reinforcements.lua
+	mods/ra/lua/supportpowers.lua
