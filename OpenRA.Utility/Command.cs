@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -292,6 +292,25 @@ namespace OpenRA.Utility
 		{
 			var result = new Map(args[1]).Uid;
 			Console.WriteLine(result);
+		}
+
+		public static void GenerateMinimap(string[] args)
+		{
+			var map = new Map(args[1]);
+			var mod = args.Length > 1 ? args[2] : map.RequiresMod;
+			Game.modData = new ModData(mod);
+
+			FileSystem.UnmountAll();
+			foreach (var dir in Game.modData.Manifest.Folders)
+				FileSystem.Mount(dir);
+
+			Rules.LoadRules(Game.modData.Manifest, map);
+
+			var minimap = Minimap.RenderMapPreview(map, true);
+
+			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".png";
+			minimap.Save(dest);
+			Console.WriteLine(dest + " saved.");
 		}
 	}
 }

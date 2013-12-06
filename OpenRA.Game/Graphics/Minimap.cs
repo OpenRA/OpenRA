@@ -113,7 +113,7 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + map.Bounds.Left;
 						var mapY = y + map.Bounds.Top;
-						var custom = map.CustomTerrain[mapX,mapY];
+						var custom = map.CustomTerrain[mapX, mapY];
 						if (custom == null)
 							continue;
 						*(c + (y * bitmapData.Stride >> 2) + x) = world.TileSet.Terrain[custom].Color.ToArgb();
@@ -185,9 +185,9 @@ namespace OpenRA.Graphics
 			return bitmap;
 		}
 
-		public static Bitmap RenderMapPreview(Map map)
+		public static Bitmap RenderMapPreview(Map map, bool actualSize)
 		{
-			Bitmap terrain = TerrainBitmap(map);
+			Bitmap terrain = TerrainBitmap(map, actualSize);
 			return AddStaticResources(map, terrain);
 		}
 	}
