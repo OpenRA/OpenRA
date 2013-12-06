@@ -343,6 +343,7 @@ namespace OpenRA.Editor
 				SaveAsClicked(sender, e);
 			else
 			{
+				surface1.Map.RequiresMod = currentMod;
 				surface1.Map.Save(loadedMapName);
 				dirty = false;
 			}
