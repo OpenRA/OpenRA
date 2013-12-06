@@ -14,6 +14,7 @@ NEW:
 		Re-added move flashes.
 		Added a setting to always display unit status bars (can also be toggled by hotkey).
 		Added a setting for team health bar colors.
+		Added a new hotkey to select all units on screen (default: CTRL + A).
 	Asset Browser:
 		Fixed crashes when trying to load invalid filenames or sprites with just 1 frame.
 		Added support for all sprite types.

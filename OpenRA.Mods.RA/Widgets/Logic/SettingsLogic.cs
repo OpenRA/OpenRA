@@ -243,6 +243,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{ "CycleBaseKey", "Jump to base" },
 				{ "ToLastEventKey", "Jump to last radar event" },
 				{ "ToSelectionKey", "Jump to selection" },
+				{ "SelectAllUnitsKey", "Select all units on screen" },
 				{ "SellKey", "Sell mode" },
 				{ "PowerDownKey", "Power-down mode" },
 				{ "RepairKey", "Repair mode" },

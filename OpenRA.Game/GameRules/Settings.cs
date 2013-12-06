@@ -149,6 +149,7 @@ namespace OpenRA.GameRules
 		public Hotkey ToLastEventKey = new Hotkey(Keycode.SPACE, Modifiers.None);
 		public Hotkey ToSelectionKey = new Hotkey(Keycode.HOME, Modifiers.None);
 		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.INSERT, Modifiers.None);
+		public Hotkey SelectAllUnitsKey = new Hotkey(Keycode.A, Modifiers.Ctrl);
 
 		public Hotkey PauseKey = new Hotkey(Keycode.F9, Modifiers.None);
 		public Hotkey SellKey = new Hotkey(Keycode.F10, Modifiers.None);
