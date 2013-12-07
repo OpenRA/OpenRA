@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
@@ -22,14 +23,22 @@ namespace OpenRA.Mods.RA.Effects
 		readonly string paletteName;
 		readonly Animation anim;
 
-		public Corpse(World world, WPos pos, string image, string sequence, string paletteName)
+		public Corpse(World world, WPos pos, string image, string sequence, string paletteName, Action onComplete)
 		{
 			this.world = world;
 			this.pos = pos;
 			this.cell = pos.ToCPos();
 			this.paletteName = paletteName;
 			anim = new Animation(image);
-			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
+			anim.PlayThen(sequence, () =>
+			{
+				world.AddFrameEndTask(w =>
+				{
+					w.Remove(this);
+					if (onComplete != null)
+						onComplete();
+				});
+			});
 		}
 
 		public void Tick(World world) { anim.Tick(); }

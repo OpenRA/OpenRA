@@ -15,6 +15,7 @@ NEW:
 		Added a setting to always display unit status bars (can also be toggled by hotkey).
 		Added a setting for team health bar colors.
 		Added a new hotkey to select all units on screen (default: CTRL + A).
+		Corpses now always appear when infantry are killed [RA / TD]
 	Asset Browser:
 		Fixed crashes when trying to load invalid filenames or sprites with just 1 frame.
 		Added support for all sprite types.

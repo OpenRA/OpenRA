@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -223,10 +224,15 @@ namespace OpenRA
 
 		public void Kill(Actor attacker)
 		{
+			Kill(attacker, null);
+		}
+
+		public void Kill(Actor attacker, WarheadInfo warhead)
+		{
 			if (health.Value == null)
 				return;
 
-			health.Value.InflictDamage(this, attacker, health.Value.MaxHP, null, true);
+			health.Value.InflictDamage(this, attacker, health.Value.MaxHP, warhead, true);
 		}
 	}
 }

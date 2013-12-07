@@ -167,10 +167,10 @@ e1:
 		Start: 366
 		Length: 11
 		Tick: 80
-	die-crushed: e1rot
+	corpse: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 3200
 	icon: e1icnh
 		Start: 0
 
@@ -256,10 +256,10 @@ e2:
 		Start: 494
 		Length: 11
 		Tick: 80
-	die-crushed: e2rot
+	corpse: e2rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 3200
 	icon: e2icnh
 		Start: 0
 
@@ -345,10 +345,10 @@ e3:
 		Start: 382
 		Length: 11
 		Tick: 80
-	die-crushed: e3rot
+	corpse: e3rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 3200
 	icon: e3icnh
 		Start: 0
 
@@ -434,10 +434,10 @@ e4:
 		Start: 494
 		Length: 10
 		Tick: 80
-	die-crushed: e4rot
+	corpse: e4rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 3200
 	muzzle0: flame-n
 		Start: 0
 		Length: *
@@ -555,10 +555,10 @@ e5:
 		Start: 494
 		Length: 10
 		Tick: 80
-	die-crushed: e4rot
+	corpse: e4rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 3200
 	muzzle0: chem-n
 		Start: 0
 		Length: *
@@ -668,10 +668,10 @@ e6:
 		Start: 130
 		Length: 4
 		Tick: 80
-	die-crushed: e1rot
+	corpse: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 3200
 	icon: e6icnh
 		Start: 0
 
@@ -761,9 +761,9 @@ rmbo:
 		Start: 308
 		Length: 4
 		Tick: 80
-	die-crushed: e1rot
+	corpse: e1rot
 		Start: 16
 		Length: 4
-		Tick: 1600
+		Tick: 3200
 	icon: rmboicnh
 		Start: 0
