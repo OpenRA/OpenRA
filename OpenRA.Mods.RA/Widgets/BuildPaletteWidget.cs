@@ -515,6 +515,7 @@ namespace OpenRA.Mods.RA.Widgets
 		// NOTE: Always return true here to prevent mouse events from passing through the sidebar and interacting with the world behind it.
 		bool ChangeTab(bool reverse)
 		{
+			Sound.PlayNotification(null, "Sounds", "TabClick", null);
 			var queues = VisibleQueues.Concat(VisibleQueues);
 			if (reverse)
 				queues = queues.Reverse();
