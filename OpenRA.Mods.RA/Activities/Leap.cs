@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Activities
 
 				self.World.ActorMap.GetUnitsAt(mobile.toCell, mobile.toSubCell)
 					.Except(new []{self}).Where(t => weapon.IsValidAgainst(t))
-					.Do(t => t.Kill(self));
+					.Do(t => t.Kill(self, weapon.Warheads[0]));
 
 				return NextActivity;
 			}
