@@ -249,7 +249,6 @@ namespace OpenRA
 				"Description",
 				"Author",
 				"Tileset",
-				"Options",
 				"MapSize",
 				"Bounds",
 				"UseAsShellmap",
@@ -262,6 +261,8 @@ namespace OpenRA
 				if (f.GetValue(this) == null) continue;
 				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
 			}
+
+			root.Add(new MiniYamlNode("Options", FieldSaver.SaveDifferences(Options, new MapOptions())));
 
 			root.Add(new MiniYamlNode("Players", null,
 				Players.Select(p => new MiniYamlNode("PlayerReference@{0}".F(p.Key), FieldSaver.SaveDifferences(p.Value, new PlayerReference()))).ToList()));
