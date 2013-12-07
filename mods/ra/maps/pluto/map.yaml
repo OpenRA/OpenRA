@@ -1,6 +1,8 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: ra
 
 Title: Pluto
 
@@ -18,7 +20,7 @@ UseAsShellmap: False
 
 Type: Conquest
 
-RequiresMod: ra
+Options:
 
 Players:
 	PlayerReference@Neutral:
@@ -979,3 +981,5 @@ Weapons:
 Voices:
 
 Notifications:
+
+Translations:

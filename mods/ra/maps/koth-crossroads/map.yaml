@@ -1,6 +1,6 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
 
 RequiresMod: ra
 
@@ -20,6 +20,8 @@ UseAsShellmap: False
 
 Type: KotH
 
+Options:
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
@@ -29,25 +31,21 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Creeps:
@@ -272,6 +270,12 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 
 Voices:
+
+Notifications:
+
+Translations:

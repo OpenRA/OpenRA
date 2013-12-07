@@ -1,6 +1,8 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: cnc
 
 Title: The Hot Box
 
@@ -18,16 +20,14 @@ UseAsShellmap: False
 
 Type: Drop Zone
 
-RequiresMod: cnc
-
 Options:
-	Fog: false
-	Shroud: false
-	Crates: true
-	AllyBuildRadius: false
-	FragileAlliances: false
+	Crates: True
+	Fog: False
+	Shroud: False
+	AllyBuildRadius: False
+	FragileAlliances: False
 	StartingCash: 5000
-	ConfigurableStartingUnits: false
+	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
@@ -242,8 +242,12 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 
 Voices:
 
 Notifications:
+
+Translations:

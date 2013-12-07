@@ -1,6 +1,8 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: ra
 
 Title: Zeus
 
@@ -18,7 +20,7 @@ UseAsShellmap: False
 
 Type: Conquest
 
-RequiresMod: ra
+Options:
 
 Players:
 	PlayerReference@Neutral:
@@ -29,115 +31,99 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi8:
 		Name: Multi8
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi9:
 		Name: Multi9
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi10:
 		Name: Multi10
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi11:
 		Name: Multi11
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi12:
 		Name: Multi12
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi13:
 		Name: Multi13
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi14:
 		Name: Multi14
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi15:
 		Name: Multi15
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
@@ -2600,8 +2586,12 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 
 Voices:
 
 Notifications:
+
+Translations:

@@ -1,6 +1,6 @@
 Selectable: False
 
-MapFormat: 5
+MapFormat: 6
 
 RequiresMod: ra
 
@@ -18,6 +18,8 @@ UseAsShellmap: True
 
 Type: Conquest
 
+Options:
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
@@ -27,59 +29,51 @@ Players:
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
 		Race: allies
-		ColorRamp: 161,134,200,30
+		ColorRamp: 161,134,200
 		Enemies: Greece,Creeps
 	PlayerReference@Greece:
 		Name: Greece
 		Race: soviet
-		ColorRamp: 3,255,127,28
+		ColorRamp: 3,255,127
 		Enemies: GoodGuy,Creeps
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Creeps:
@@ -1302,8 +1296,14 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 	8Inch:
 		Report: tank6.aud
 
 Voices:
+
+Notifications:
+
+Translations:

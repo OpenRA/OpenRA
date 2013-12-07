@@ -1,6 +1,8 @@
 Selectable: False
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: ts
 
 Title: Blank
 
@@ -18,7 +20,7 @@ UseAsShellmap: True
 
 Type: Conquest
 
-RequiresMod: ts
+Options:
 
 Players:
 	PlayerReference@Neutral:
@@ -42,8 +44,12 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 
 Voices:
 
 Notifications:
+
+Translations:

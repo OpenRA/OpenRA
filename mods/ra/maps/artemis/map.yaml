@@ -1,6 +1,8 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: ra
 
 Title: Artemis
 
@@ -18,7 +20,7 @@ UseAsShellmap: False
 
 Type: Conquest
 
-RequiresMod: ra
+Options:
 
 Players:
 	PlayerReference@Neutral:
@@ -2956,3 +2958,5 @@ Weapons:
 Voices:
 
 Notifications:
+
+Translations:

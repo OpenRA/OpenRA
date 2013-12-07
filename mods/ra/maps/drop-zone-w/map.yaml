@@ -1,6 +1,8 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: ra
 
 Title: Drop Zone W
 
@@ -18,16 +20,14 @@ UseAsShellmap: False
 
 Type: Drop Zone
 
-RequiresMod: ra
-
 Options:
-	Crates: true
-	Fog: false
-	Shroud: false
-	AllyBuildRadius: false
-	FragileAlliances: false
+	Crates: True
+	Fog: False
+	Shroud: False
+	AllyBuildRadius: False
+	FragileAlliances: False
 	StartingCash: 5000
-	ConfigurableStartingUnits: false
+	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
@@ -43,67 +43,67 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockSpawn: True
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockSpawn: True
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockSpawn: True
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockSpawn: True
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockSpawn: True
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockSpawn: True
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockSpawn: True
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockSpawn: True
 		Enemies: Creeps
-		AllowBots: False
 
 Actors:
 	Actor2: mpspawn
@@ -257,10 +257,10 @@ Rules:
 		RevealsShroud:
 			Range: 50
 		Armament@PRIMARY:
-			Weapon:M60mg
+			Weapon: M60mg
 		Armament@SECONDARY:
 			Name: secondary
-			Weapon:M60mg
+			Weapon: M60mg
 		AttackFrontal:
 		WithMuzzleFlash@PRIMARY:
 		WithMuzzleFlash@SECONDARY:
@@ -297,6 +297,8 @@ Sequences:
 		turret: mgun
 			Start: 0
 			Facings: 32
+
+VoxelSequences:
 
 Weapons:
 	8Inch:
@@ -353,3 +355,7 @@ Weapons:
 			WaterImpactSound: splash9
 
 Voices:
+
+Notifications:
+
+Translations:
