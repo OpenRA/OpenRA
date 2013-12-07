@@ -405,6 +405,8 @@
 	Tooltip:
 		Name: Field
 	-WithBuildingExplosion:
+	-TargetableBuilding:
+	-Demolishable:
 	RenderBuilding:
 		Palette: terrain
 	EditorAppearance:
