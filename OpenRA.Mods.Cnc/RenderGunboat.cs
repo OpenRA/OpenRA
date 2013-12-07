@@ -37,19 +37,19 @@ namespace OpenRA.Mods.RA.Render
 
 			left = new Animation(name, () => turret.turretFacing);
 			left.Play("left");
-			anims.Add("left", new AnimationWithOffset(left, null, () => facing.Facing > 128, 0));
+			Anims.Add("left", new AnimationWithOffset(left, null, () => facing.Facing > 128, 0));
 
 			right = new Animation(name, () => turret.turretFacing);
 			right.Play("right");
-			anims.Add("right", new AnimationWithOffset(right, null, () => facing.Facing <= 128, 0));
+			Anims.Add("right", new AnimationWithOffset(right, null, () => facing.Facing <= 128, 0));
 
 			var leftWake = new Animation(name);
 			leftWake.Play("wake-left");
-			anims.Add("wake-left", new AnimationWithOffset(leftWake, null, () => facing.Facing > 128, -87));
+			Anims.Add("wake-left", new AnimationWithOffset(leftWake, null, () => facing.Facing > 128, -87));
 
 			var rightWake = new Animation(name);
 			rightWake.Play("wake-right");
-			anims.Add("wake-right", new AnimationWithOffset(rightWake, null, () => facing.Facing <= 128, -87));
+			Anims.Add("wake-right", new AnimationWithOffset(rightWake, null, () => facing.Facing <= 128, -87));
 
 			self.Trait<IBodyOrientation>().SetAutodetectedFacings(2);
 		}

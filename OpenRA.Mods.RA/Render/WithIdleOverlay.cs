@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Render
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 			overlay = new Animation(rs.GetImage(self));
 			overlay.PlayRepeating(info.Sequence);
-			rs.anims.Add("idle_overlay_{0}".F(info.Sequence), 
+			rs.Anims.Add("idle_overlay_{0}".F(info.Sequence), 
 				new AnimationWithOffset(overlay,
 					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 					() => !buildComplete, p => WithTurret.ZOffsetFromCenter(self, p, 1)));

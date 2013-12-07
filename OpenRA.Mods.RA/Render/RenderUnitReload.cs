@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Render
 			var attack = self.TraitOrDefault<AttackBase>();
 
 			if (attack != null)
-				anim.ReplaceAnim((attack.IsReloading() ? "empty-" : "")
+				Anim.ReplaceAnim((attack.IsReloading() ? "empty-" : "")
 					+ (attack.IsAttacking ? "aim" : "idle"));
 			base.Tick(self);
 		}

@@ -116,8 +116,8 @@ namespace OpenRA.Mods.RA
 
 			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "land";
 			var rs = self.Trait<RenderSprites>();
-			if (seq != rs.anim.CurrentSequence.Name)
-				rs.anim.PlayRepeating(seq);
+			if (seq != rs.Anim.CurrentSequence.Name)
+				rs.Anim.PlayRepeating(seq);
 
 			if (self.IsInWorld)
 			{

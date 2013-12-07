@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc
 			var rs = self.Trait<RenderSprites>();
 			var roof = new Animation(rs.GetImage(self));
 			roof.PlayThen("fire-start", () => roof.PlayRepeating("fire-loop"));
-			rs.anims.Add("fire", new AnimationWithOffset(roof, null, null, 1024));
+			rs.Anims.Add("fire", new AnimationWithOffset(roof, null, null, 1024));
 		}
 	}
 }

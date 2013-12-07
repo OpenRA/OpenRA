@@ -44,8 +44,8 @@ namespace OpenRA.Mods.RA.Render
 			var self = init.self;
 
 			// Work around a bogus crash
-			anim.PlayRepeating(NormalizeSequence(self, "idle"));
-			self.Trait<IBodyOrientation>().SetAutodetectedFacings(anim.CurrentSequence.Facings);
+			Anim.PlayRepeating(NormalizeSequence(self, "idle"));
+			self.Trait<IBodyOrientation>().SetAutodetectedFacings(Anim.CurrentSequence.Facings);
 
 			// Can't call Complete() directly from ctor because other traits haven't been inited yet
 			if (self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation && !init.Contains<SkipMakeAnimsInit>())
@@ -69,38 +69,38 @@ namespace OpenRA.Mods.RA.Render
 
 		void Complete(Actor self)
 		{
-			anim.PlayRepeating(NormalizeSequence(self, "idle"));
+			Anim.PlayRepeating(NormalizeSequence(self, "idle"));
 			foreach (var x in self.TraitsImplementing<INotifyBuildComplete>())
 				x.BuildingComplete(self);
 		}
 
 		public void PlayCustomAnimThen(Actor self, string name, Action a)
 		{
-			anim.PlayThen(NormalizeSequence(self, name),
-				() => { anim.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
+			Anim.PlayThen(NormalizeSequence(self, name),
+				() => { Anim.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
 		}
 
 		public void PlayCustomAnimRepeating(Actor self, string name)
 		{
-			anim.PlayThen(NormalizeSequence(self, name),
+			Anim.PlayThen(NormalizeSequence(self, name),
 				() => PlayCustomAnimRepeating(self, name));
 		}
 
 		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
 		{
-			anim.PlayBackwardsThen(NormalizeSequence(self, name),
-				() => { anim.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
+			Anim.PlayBackwardsThen(NormalizeSequence(self, name),
+				() => { Anim.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
 		}
 
 		public void CancelCustomAnim(Actor self)
 		{
-			anim.PlayRepeating(NormalizeSequence(self, "idle"));
+			Anim.PlayRepeating(NormalizeSequence(self, "idle"));
 		}
 
 		public virtual void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (anim.CurrentSequence != null)
-				anim.ReplaceAnim(NormalizeSequence(self, "idle"));
+			if (Anim.CurrentSequence != null)
+				Anim.ReplaceAnim(NormalizeSequence(self, "idle"));
 		}
 	}
 }

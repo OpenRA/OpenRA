@@ -18,13 +18,13 @@ namespace OpenRA.Mods.RA
 {
 	class SpyToolTipInfo : TooltipInfo, Requires<SpyInfo>
 	{
-		public override object Create (ActorInitializer init) { return new SpyToolTip(init.self, this); }
+		public override object Create(ActorInitializer init) { return new SpyToolTip(init.self, this); }
 	}
 
 	class SpyToolTip : IToolTip
 	{
 		Actor self;
-		TooltipInfo Info;
+		TooltipInfo info;
 		Spy spy;
 
 		public string Name()
@@ -32,10 +32,11 @@ namespace OpenRA.Mods.RA
 			if (spy.Disguised)
 			{
 				if (self.Owner == self.World.LocalPlayer)
-					return "{0} ({1})".F(Info.Name, spy.disguisedAsName);
-				return spy.disguisedAsName;
+					return "{0} ({1})".F(info.Name, spy.DisguisedAsName);
+				return spy.DisguisedAsName;
 			}
-			return Info.Name;
+
+			return info.Name;
 		}
 
 		public Player Owner()
@@ -44,15 +45,16 @@ namespace OpenRA.Mods.RA
 			{
 				if (self.Owner == self.World.LocalPlayer)
 					return self.Owner;
-				return spy.disguisedAsPlayer;
+				return spy.DisguisedAsPlayer;
 			}
+
 			return self.Owner;
 		}
 
-		public SpyToolTip( Actor self, TooltipInfo info )
+		public SpyToolTip(Actor self, TooltipInfo info)
 		{
 			this.self = self;
-			Info = info;
+			this.info = info;
 			spy = self.Trait<Spy>();
 		}
 	}
@@ -62,22 +64,22 @@ namespace OpenRA.Mods.RA
 
 	class Spy : IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
 	{
-		public Player disguisedAsPlayer;
-		public string disguisedAsSprite, disguisedAsName;
+		public Player DisguisedAsPlayer;
+		public string DisguisedAsSprite, DisguisedAsName;
 
-		public bool Disguised {  get { return disguisedAsPlayer != null; }	}
+		public bool Disguised { get { return DisguisedAsPlayer != null; } }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter("Disguise", "Disguise", 7, "ability", true, true) { ForceAttack=false };
+				yield return new TargetTypeOrderTargeter("Disguise", "Disguise", 7, "ability", true, true) { ForceAttack = false };
 			}
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if( order.OrderID == "Disguise" )
+			if (order.OrderID == "Disguise")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 			return null;
 		}
@@ -105,28 +107,28 @@ namespace OpenRA.Mods.RA
 			if (!Disguised || self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return self.Owner.Color.RGB;
 
-			return disguisedAsPlayer.Color.RGB;
+			return DisguisedAsPlayer.Color.RGB;
 		}
 
 		void DisguiseAs(Actor target)
 		{
 			var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
-			disguisedAsName = tooltip.Name();
-			disguisedAsPlayer = tooltip.Owner();
-			disguisedAsSprite = target.Trait<RenderSprites>().GetImage(target);
+			DisguisedAsName = tooltip.Name();
+			DisguisedAsPlayer = tooltip.Owner();
+			DisguisedAsSprite = target.Trait<RenderSprites>().GetImage(target);
 		}
 
 		void DropDisguise()
 		{
-			disguisedAsName = null;
-			disguisedAsPlayer = null;
-			disguisedAsSprite = null;
+			DisguisedAsName = null;
+			DisguisedAsPlayer = null;
+			DisguisedAsSprite = null;
 		}
 
 		/* lose our disguise if we attack anything */
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { DropDisguise(); }
 	}
 
-	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> {}
-	class IgnoresDisguise {}
+	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> { }
+	class IgnoresDisguise { }
 }

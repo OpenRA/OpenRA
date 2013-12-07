@@ -35,20 +35,20 @@ namespace OpenRA.Traits
 		public RenderSimple(Actor self, Func<int> baseFacing)
 			: base(self)
 		{
-			anims.Add("", new Animation(GetImage(self), baseFacing));
+			Anims.Add("", new Animation(GetImage(self), baseFacing));
 			Info = self.Info.Traits.Get<RenderSimpleInfo>();
 		}
 
 		public RenderSimple(Actor self)
 			: this(self, MakeFacingFunc(self))
 		{
-			anim.PlayRepeating("idle");
-			self.Trait<IBodyOrientation>().SetAutodetectedFacings(anim.CurrentSequence.Facings);
+			Anim.PlayRepeating("idle");
+			self.Trait<IBodyOrientation>().SetAutodetectedFacings(Anim.CurrentSequence.Facings);
 		}
 
 		public int2 SelectionSize(Actor self)
 		{
-			return anims.Values.Where(b => (b.DisableFunc == null || !b.DisableFunc())
+			return Anims.Values.Where(b => (b.DisableFunc == null || !b.DisableFunc())
 			                                && b.Animation.CurrentSequence != null)
 				.Select(a => (a.Animation.Image.size*Info.Scale).ToInt2())
 				.FirstOrDefault();
@@ -56,14 +56,14 @@ namespace OpenRA.Traits
 
 		public string NormalizeSequence(Actor self, string baseSequence)
 		{
-			return NormalizeSequence(anim, self.GetDamageState(), baseSequence);
+			return NormalizeSequence(Anim, self.GetDamageState(), baseSequence);
 		}
 
 		public void PlayCustomAnim(Actor self, string name)
 		{
-			if (anim.HasSequence(name))
-				anim.PlayThen(NormalizeSequence(self, name),
-					() => anim.PlayRepeating(NormalizeSequence(self, "idle")));
+			if (Anim.HasSequence(name))
+				Anim.PlayThen(NormalizeSequence(self, name),
+					() => Anim.PlayRepeating(NormalizeSequence(self, "idle")));
 		}
 	}
 }

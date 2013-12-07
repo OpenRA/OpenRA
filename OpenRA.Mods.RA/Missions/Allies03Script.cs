@@ -212,7 +212,7 @@ namespace OpenRA.Mods.RA.Missions
 			var enemies = world.Actors
 				.Where(u => (u.Owner == allies1 || u.Owner == allies2)
 				&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead()
-				&& (!u.HasTrait<Spy>() || !u.Trait<Spy>().Disguised || (u.Trait<Spy>().Disguised && u.Trait<Spy>().disguisedAsPlayer != soviets)));
+				&& (!u.HasTrait<Spy>() || !u.Trait<Spy>().Disguised || (u.Trait<Spy>().Disguised && u.Trait<Spy>().DisguisedAsPlayer != soviets)));
 
 			foreach (var aircraft in SovietAircraft())
 			{

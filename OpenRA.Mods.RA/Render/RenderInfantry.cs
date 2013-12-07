@@ -58,20 +58,20 @@ namespace OpenRA.Mods.RA.Render
 			: base(self, MakeFacingFunc(self))
 		{
 			this.info = info;
-			anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
+			Anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 			State = AnimationState.Waiting;
 			mobile = self.Trait<Mobile>();
 
-			self.Trait<IBodyOrientation>().SetAutodetectedFacings(anim.CurrentSequence.Facings);
+			self.Trait<IBodyOrientation>().SetAutodetectedFacings(Anim.CurrentSequence.Facings);
 		}
 
 		public void Attacking(Actor self, Target target)
 		{
 			State = AnimationState.Attacking;
-			if (anim.HasSequence(NormalizeInfantrySequence(self, "shoot")))
-				anim.PlayThen(NormalizeInfantrySequence(self, "shoot"), () => State = AnimationState.Idle);
-			else if (anim.HasSequence(NormalizeInfantrySequence(self, "heal")))
-				anim.PlayThen(NormalizeInfantrySequence(self, "heal"), () => State = AnimationState.Idle);
+			if (Anim.HasSequence(NormalizeInfantrySequence(self, "shoot")))
+				Anim.PlayThen(NormalizeInfantrySequence(self, "shoot"), () => State = AnimationState.Idle);
+			else if (Anim.HasSequence(NormalizeInfantrySequence(self, "heal")))
+				Anim.PlayThen(NormalizeInfantrySequence(self, "heal"), () => State = AnimationState.Idle);
 		}
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
@@ -86,12 +86,12 @@ namespace OpenRA.Mods.RA.Render
 			if ((State == AnimationState.Moving || dirty) && !mobile.IsMoving)
 			{
 				State = AnimationState.Waiting;
-				anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
+				Anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 			}
 			else if ((State != AnimationState.Moving || dirty) && mobile.IsMoving)
 			{
 				State = AnimationState.Moving;
-				anim.PlayRepeating(NormalizeInfantrySequence(self, "run"));
+				Anim.PlayRepeating(NormalizeInfantrySequence(self, "run"));
 			}
 
 			dirty = false;
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			if (State != AnimationState.Idle && State != AnimationState.IdleAnimating)
 			{
-				anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
+				Anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 				State = AnimationState.Idle;
 
 				if (info.IdleAnimations.Length > 0)
@@ -112,12 +112,12 @@ namespace OpenRA.Mods.RA.Render
 			}
 			else if (AllowIdleAnimation(self) && idleDelay > 0 && --idleDelay == 0)
 			{
-				if (anim.HasSequence(idleSequence))
+				if (Anim.HasSequence(idleSequence))
 				{
 					State = AnimationState.IdleAnimating;
-					anim.PlayThen(idleSequence,	() =>
+					Anim.PlayThen(idleSequence,	() =>
 					{
-						anim.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
+						Anim.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
 						State = AnimationState.Waiting;
 					});
 				}

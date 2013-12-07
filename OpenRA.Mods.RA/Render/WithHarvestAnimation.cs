@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Render
 
 			anim = new Animation(rs.GetImage(self), RenderSimple.MakeFacingFunc(self));
 			anim.Play(info.Sequence);
-			rs.anims.Add("harvest_{0}".F(info.Sequence), new AnimationWithOffset(anim,
+			rs.Anims.Add("harvest_{0}".F(info.Sequence), new AnimationWithOffset(anim,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => !visible,
 			    p => WithTurret.ZOffsetFromCenter(self, p, 0)));
