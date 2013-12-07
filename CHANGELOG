@@ -95,6 +95,7 @@ NEW:
 		Improved error message when loading corrupted sprites.
 		Rewritten shp(ts) parser makes more efficient use of texture space.
 		Added support for the dune 2 shp and pak formats.
+		Map format 6 requires the RequiresMod to be defined.
 	Build system and packages:
 		Added GeoIP to Makefile so it is installed properly.
 		Added desktop shortcut creation support to the Makefile and Windows installer.
@@ -129,6 +130,9 @@ NEW:
 		OpenRA.Utility --shp now requires a list of frames to be combined into a shp.
 		Removed Utility --tmp-png, --r8, --fromd2 commands (use --png instead).
 		Removed Asset Browser file extraction / conversion (use the Utility instead).
+		Added OpenRA.Utility --map-preview for generating minimap previews.
+		Added OpenRA.Utility --map-upgrade for updating maps from format 5 to format 6.
+		The map format has been changed. All user-installed maps will be upgraded on the first mod launch, or using OpenRA.Utility --map-upgrade.
 		Unified sprite loading allows any sprite type to be used anywhere: shp can now be used for terrain, and tmp for units.
 		Harvestable resource definitions (ResourceTypes) have changed, and now specify their artwork using via sequences.
 
