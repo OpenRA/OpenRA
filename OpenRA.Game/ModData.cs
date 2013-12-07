@@ -60,8 +60,6 @@ namespace OpenRA
 			LoadScreen.Display();
 			WidgetLoader = new WidgetLoader(this);
 
-			AvailableMaps = FindMaps();
-
 			// HACK: Mount only local folders so we have a half-working environment for the asset installer
 			FileSystem.UnmountAll();
 			foreach (var dir in Manifest.Folders)
@@ -78,6 +76,8 @@ namespace OpenRA
 			SpriteLoader = new SpriteLoader(new string[0], SheetBuilder);
 			VoxelLoader = new VoxelLoader();
 			CursorProvider.Initialize(Manifest.Cursors);
+
+			AvailableMaps = FindMaps();
 		}
 
 		public IEnumerable<string> Languages { get; private set; }

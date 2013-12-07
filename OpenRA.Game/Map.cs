@@ -109,9 +109,9 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Lazy<TileReference<byte, byte>[,]> MapResources;
 		[FieldLoader.Ignore] public string[,] CustomTerrain;
 
-		public static Map FromTileset(string tileset)
+		public static Map FromTileset(TileSet tileset)
 		{
-			var tile = OpenRA.Rules.TileSets[tileset].Templates.First();
+			var tile = tileset.Templates.First();
 			var tileRef = new TileReference<ushort, byte> { Type = tile.Key, Index = (byte)0 };
 
 			Map map = new Map()
@@ -120,7 +120,7 @@ namespace OpenRA
 				Description = "Describe your map here",
 				Author = "Your name here",
 				MapSize = new int2(1, 1),
-				Tileset = tileset,
+				Tileset = tileset.Id,
 				MapResources = Lazy.New(() => new TileReference<byte, byte>[1, 1]),
 				MapTiles = Lazy.New(() => new TileReference<ushort, byte>[1, 1] { { tileRef } }),
 				Actors = Lazy.New(() => new Dictionary<string, ActorReference>()),
@@ -149,7 +149,6 @@ namespace OpenRA
 
 			var yaml = new MiniYaml(null, MiniYaml.FromStream(Container.GetContent("map.yaml")));
 			FieldLoader.Load(this, yaml);
-			Uid = ComputeHash();
 
 			// Support for formats 1-3 dropped 2011-02-11.
 			// Use release-20110207 to convert older maps to format 4
@@ -198,6 +197,8 @@ namespace OpenRA
 
 			MapTiles = Lazy.New(() => LoadMapTiles());
 			MapResources = Lazy.New(() => LoadResourceTiles());
+
+			Uid = ComputeHash();
 		}
 
 		public int2[] GetSpawnPoints()
@@ -343,18 +344,12 @@ namespace OpenRA
 				writer.Write((ushort)MapSize.X);
 				writer.Write((ushort)MapSize.Y);
 
-				if (!OpenRA.Rules.TileSets.ContainsKey(Tileset))
-					throw new InvalidOperationException(
-						"Tileset used by the map ({0}) does not exist in this mod. Valid tilesets are: {1}"
-						.F(Tileset, OpenRA.Rules.TileSets.Keys.JoinWith(",")));
-
 				// Tile data
 				for (var i = 0; i < MapSize.X; i++)
 					for (var j = 0; j < MapSize.Y; j++)
 					{
 						writer.Write(MapTiles.Value[i, j].Type);
-						var pickAny = OpenRA.Rules.TileSets[Tileset].Templates[MapTiles.Value[i, j].Type].PickAny;
-						writer.Write(pickAny ? (byte)(i % 4 + (j % 4) * 4) : MapTiles.Value[i, j].Index);
+						writer.Write(MapTiles.Value[i, j].Index);
 					}
 
 				// Resource data
