@@ -137,9 +137,16 @@ namespace OpenRA
 					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
 		}
 
-		public Map() { }	/* doesn't really produce a valid map, but enough for loading a mod */
+		// Stub constructor that doesn't produce a valid map, but is
+		// sufficient for loading a mod to the content-install panel
+		public Map() { }
 
-		public Map(string path)
+		// The standard constructor for most purposes
+		public Map(string path) : this(path, null) { }
+
+		// Support upgrading format 5 maps to a more
+		// recent version by defining upgradeForMod.
+		public Map(string path, string upgradeForMod)
 		{
 			Path = path;
 			Container = FileSystem.OpenPackage(path, null, int.MaxValue);
@@ -155,6 +162,19 @@ namespace OpenRA
 			// Use release-20110511 to convert older maps to format 5
 			if (MapFormat < 5)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
+
+			// Format 5 -> 6 enforces the use of RequiresMod
+			if (MapFormat == 5)
+			{
+				if (upgradeForMod == null)
+					throw new InvalidDataException("Map format {0} is not supported, but can be upgraded.\n File: {1}".F(MapFormat, path));
+
+				Console.WriteLine("Upgrading {0} from Format 5 to Format 6", path);
+
+				// TODO: This isn't very nice, but there is no other consistent way
+				// of finding the mod early during the engine initialization.
+				RequiresMod = upgradeForMod;
+			}
 
 			// Load players
 			foreach (var kv in yaml.NodesDict["Players"].NodesDict)
@@ -198,6 +218,12 @@ namespace OpenRA
 			MapTiles = Lazy.New(() => LoadMapTiles());
 			MapResources = Lazy.New(() => LoadResourceTiles());
 
+			// The Uid is calculated from the data on-disk, so
+			// format changes must be flushed to disk.
+			// TODO: this isn't very nice
+			if (MapFormat < 6)
+				Save(path);
+
 			Uid = ComputeHash();
 		}
 
@@ -211,7 +237,7 @@ namespace OpenRA
 
 		public void Save(string toPath)
 		{
-			MapFormat = 5;
+			MapFormat = 6;
 
 			var root = new List<MiniYamlNode>();
 			var fields = new[]
