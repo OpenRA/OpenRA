@@ -259,6 +259,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				{ "NextProductionTabKey", "Next production tab" },
 				{ "PreviousProductionTabKey", "Previous production tab" },
+				{ "CycleProductionBuildingsKey", "Cycle production facilities" },
 
 				{ "ToggleStatusBarsKey", "Toggle status bars" },
 			};

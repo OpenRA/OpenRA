@@ -47,8 +47,12 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				var key = Hotkey.FromKeyInput(e);
 				var ks = Game.Settings.Keys;
+
 				if (key == ks.CycleBaseKey)
 					return CycleBases();
+
+				if (key == ks.CycleProductionBuildingsKey)
+					return CycleProductionBuildings();
 
 				if (key == ks.ToLastEventKey)
 					return ToLastEvent();
@@ -193,6 +197,29 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if (next == null)
 				next = bases.Select(b => b.Actor).First();
+
+			world.Selection.Combine(world, new Actor[] { next }, false, true);
+
+			return ToSelection();
+		}
+
+		bool CycleProductionBuildings()
+		{
+			var facilities = world.ActorsWithTrait<Production>()
+				.Where(a => a.Actor.Owner == world.LocalPlayer && !a.Actor.HasTrait<BaseBuilding>())
+				.ToArray();
+
+			if (!facilities.Any())
+				return true;
+
+			var next = facilities
+				.Select(b => b.Actor)
+				.SkipWhile(b => !world.Selection.Actors.Contains(b))
+				.Skip(1)
+				.FirstOrDefault();
+
+			if (next == null)
+				next = facilities.Select(b => b.Actor).First();
 
 			world.Selection.Combine(world, new Actor[] { next }, false, true);
 
