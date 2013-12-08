@@ -149,11 +149,13 @@ namespace OpenRA.Mods.RA.Widgets
 			if (e.Event == KeyInputEvent.Up)
 				return false;
 
-			if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.CycleTabsKey)
-			{
-				TabChange(e.Modifiers.HasModifier(Modifiers.Shift));
-				return true;
-			}
+			var hotkey = Hotkey.FromKeyInput(e);
+
+			if (hotkey == Game.Settings.Keys.NextProductionTabKey)
+				return ChangeTab(false);
+			else if (hotkey == Game.Settings.Keys.PreviousProductionTabKey)
+				return ChangeTab(true);
+
 			return DoBuildingHotkey(e, world);
 		}
 
@@ -164,15 +166,10 @@ namespace OpenRA.Mods.RA.Widgets
 				return true;
 
 			if (mi.Button == MouseButton.WheelDown)
-			{
-				TabChange(false);
-				return true;
-			}
+				return ChangeTab(false);
+
 			if (mi.Button == MouseButton.WheelUp)
-			{
-				TabChange(true);
-				return true;
-			}
+				return ChangeTab(true);
 
 			var action = tabs.Where(a => a.First.Contains(mi.Location))
 				.Select(a => a.Second).FirstOrDefault();
@@ -515,14 +512,21 @@ namespace OpenRA.Mods.RA.Widgets
 			return false;
 		}
 
-		void TabChange(bool shift)
+		// NOTE: Always return true here to prevent mouse events from passing through the sidebar and interacting with the world behind it.
+		bool ChangeTab(bool reverse)
 		{
+			Sound.PlayNotification(null, "Sounds", "TabClick", null);
 			var queues = VisibleQueues.Concat(VisibleQueues);
-			if (shift) queues = queues.Reverse();
+			if (reverse)
+				queues = queues.Reverse();
 			var nextQueue = queues.SkipWhile(q => q != CurrentQueue)
 				.ElementAtOrDefault(1);
 			if (nextQueue != null)
+			{
 				SetCurrentTab(nextQueue);
+				return true;
+			}
+			return true;
 		}
 	}
 }

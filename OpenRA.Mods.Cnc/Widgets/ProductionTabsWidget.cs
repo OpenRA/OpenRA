@@ -89,10 +89,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			paletteWidget = Lazy.New(() => Ui.Root.Get<ProductionPaletteWidget>(PaletteWidget));
 		}
 
-		public void SelectNextTab(bool reverse)
+		public bool SelectNextTab(bool reverse)
 		{
 			if (queueGroup == null)
-				return;
+				return true;
+
+			Sound.PlayNotification(null, "Sounds", "ClickSound", null);
 
 			// Prioritize alerted queues
 			var queues = Groups[queueGroup].Tabs.Select(t => t.Queue)
@@ -103,6 +105,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			CurrentQueue = queues.SkipWhile(q => q != CurrentQueue)
 				.Skip(1).FirstOrDefault() ?? queues.FirstOrDefault();
+
+			return true;
 		}
 
 		public string QueueGroup
@@ -277,12 +281,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (e.Event != KeyInputEvent.Down)
 				return false;
 
-			if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.CycleTabsKey)
-			{
-				Sound.PlayNotification(null, "Sounds", "ClickSound", null);
-				SelectNextTab(e.Modifiers.HasModifier(Modifiers.Shift));
-				return true;
-			}
+			var hotkey = Hotkey.FromKeyInput(e);
+
+			if (hotkey == Game.Settings.Keys.NextProductionTabKey)
+				return SelectNextTab(false);
+			else  if (hotkey == Game.Settings.Keys.PreviousProductionTabKey)
+				return SelectNextTab(true);
 
 			return false;
 		}
