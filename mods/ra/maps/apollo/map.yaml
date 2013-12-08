@@ -1,6 +1,8 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: ra
 
 Title: Apollo
 
@@ -18,7 +20,7 @@ UseAsShellmap: False
 
 Type: Conquest
 
-RequiresMod: ra
+Options:
 
 Players:
 	PlayerReference@Neutral:
@@ -2624,3 +2626,5 @@ Weapons:
 Voices:
 
 Notifications:
+
+Translations:

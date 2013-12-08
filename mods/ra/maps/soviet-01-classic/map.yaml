@@ -1,6 +1,6 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
 
 RequiresMod: ra
 
@@ -21,49 +21,49 @@ UseAsShellmap: False
 Type: Campaign
 
 Options:
-	Crates: false
-	Fog: true
-	Shroud: true
-	AllyBuildRadius: false
-	FragileAlliances: false
+	Crates: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
 	StartingCash: 0
-	ConfigurableStartingUnits: false
+	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
 		Race: allies
-		ColorRamp: 161,134,200,30
+		ColorRamp: 161,134,200
 		Allies: France,Germany,Turkey
 		Enemies: USSR
 	PlayerReference@France:
 		Name: France
 		Race: allies
-		ColorRamp: 115,115,143,16
+		ColorRamp: 115,115,143
 		Allies: GoodGuy,Germany,Turkey
 		Enemies: USSR
 	PlayerReference@Germany:
 		Name: Germany
 		Race: allies
-		ColorRamp: 0,0,80,5
+		ColorRamp: 0,0,80
 		Allies: GoodGuy,France,Turkey
 		Enemies: USSR
 	PlayerReference@USSR:
 		Name: USSR
 		Playable: True
 		AllowBots: False
+		Required: True
 		LockRace: True
 		Race: soviet
 		LockColor: True
-		ColorRamp: 3,255,127,28
+		ColorRamp: 3,255,127
 		LockSpawn: True
 		LockTeam: True
 		Enemies: GoodGuy,France,Germany,Turkey
-		Required: True
 	PlayerReference@Turkey:
 		Name: Turkey
 		Race: allies
-		ColorRamp: 14,123,167,28
+		ColorRamp: 14,123,167
 		Allies: GoodGuy,France,Germany
 		Enemies: USSR
 	PlayerReference@Neutral:
@@ -942,8 +942,12 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 
 Voices:
 
 Notifications:
+
+Translations:

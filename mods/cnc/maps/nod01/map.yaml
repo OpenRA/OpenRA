@@ -1,6 +1,6 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
 
 RequiresMod: cnc
 
@@ -21,13 +21,13 @@ UseAsShellmap: False
 Type: Campaign
 
 Options:
-	Crates: false
-	Fog: false
-	Shroud: true
-	AllyBuildRadius: false
-	FragileAlliances: false
+	Crates: False
+	Fog: False
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
 	StartingCash: 0
-	ConfigurableStartingUnits: false
+	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
@@ -42,21 +42,21 @@ Players:
 	PlayerReference@GDI:
 		Name: GDI
 		Race: gdi
-		ColorRamp: 31,222,183,24
+		ColorRamp: 31,222,183
 		Allies: Creeps
 		Enemies: NOD
 	PlayerReference@NOD:
 		Name: NOD
 		Playable: True
 		AllowBots: False
+		Required: True
 		LockRace: True
 		Race: nod
 		LockColor: True
-		ColorRamp: 3,255,127,28
+		ColorRamp: 3,255,127
 		LockSpawn: True
 		LockTeam: True
 		Enemies: GDI,Creeps
-		Required: True
 
 Actors:
 	Actor0: rock2
@@ -306,8 +306,12 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 
 Voices:
 
 Notifications:
+
+Translations:

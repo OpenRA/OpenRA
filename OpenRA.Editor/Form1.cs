@@ -393,7 +393,8 @@ namespace OpenRA.Editor
 
 				if (DialogResult.OK == nmd.ShowDialog())
 				{
-					var map = Map.FromTileset(nmd.TheaterBox.SelectedItem as string);
+					var tileset = OpenRA.Rules.TileSets[nmd.TheaterBox.SelectedItem as string];
+					var map = Map.FromTileset(tileset);
 
 					map.Resize((int)nmd.MapWidth.Value, (int)nmd.MapHeight.Value);
 					map.ResizeCordon((int)nmd.CordonLeft.Value, (int)nmd.CordonTop.Value,

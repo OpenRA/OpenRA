@@ -109,9 +109,9 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Lazy<TileReference<byte, byte>[,]> MapResources;
 		[FieldLoader.Ignore] public string[,] CustomTerrain;
 
-		public static Map FromTileset(string tileset)
+		public static Map FromTileset(TileSet tileset)
 		{
-			var tile = OpenRA.Rules.TileSets[tileset].Templates.First();
+			var tile = tileset.Templates.First();
 			var tileRef = new TileReference<ushort, byte> { Type = tile.Key, Index = (byte)0 };
 
 			Map map = new Map()
@@ -120,7 +120,7 @@ namespace OpenRA
 				Description = "Describe your map here",
 				Author = "Your name here",
 				MapSize = new int2(1, 1),
-				Tileset = tileset,
+				Tileset = tileset.Id,
 				MapResources = Lazy.New(() => new TileReference<byte, byte>[1, 1]),
 				MapTiles = Lazy.New(() => new TileReference<ushort, byte>[1, 1] { { tileRef } }),
 				Actors = Lazy.New(() => new Dictionary<string, ActorReference>()),
@@ -137,9 +137,16 @@ namespace OpenRA
 					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
 		}
 
-		public Map() { }	/* doesn't really produce a valid map, but enough for loading a mod */
+		// Stub constructor that doesn't produce a valid map, but is
+		// sufficient for loading a mod to the content-install panel
+		public Map() { }
 
-		public Map(string path)
+		// The standard constructor for most purposes
+		public Map(string path) : this(path, null) { }
+
+		// Support upgrading format 5 maps to a more
+		// recent version by defining upgradeForMod.
+		public Map(string path, string upgradeForMod)
 		{
 			Path = path;
 			Container = FileSystem.OpenPackage(path, null, int.MaxValue);
@@ -149,13 +156,25 @@ namespace OpenRA
 
 			var yaml = new MiniYaml(null, MiniYaml.FromStream(Container.GetContent("map.yaml")));
 			FieldLoader.Load(this, yaml);
-			Uid = ComputeHash();
 
 			// Support for formats 1-3 dropped 2011-02-11.
 			// Use release-20110207 to convert older maps to format 4
 			// Use release-20110511 to convert older maps to format 5
 			if (MapFormat < 5)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
+
+			// Format 5 -> 6 enforces the use of RequiresMod
+			if (MapFormat == 5)
+			{
+				if (upgradeForMod == null)
+					throw new InvalidDataException("Map format {0} is not supported, but can be upgraded.\n File: {1}".F(MapFormat, path));
+
+				Console.WriteLine("Upgrading {0} from Format 5 to Format 6", path);
+
+				// TODO: This isn't very nice, but there is no other consistent way
+				// of finding the mod early during the engine initialization.
+				RequiresMod = upgradeForMod;
+			}
 
 			// Load players
 			foreach (var kv in yaml.NodesDict["Players"].NodesDict)
@@ -198,6 +217,14 @@ namespace OpenRA
 
 			MapTiles = Lazy.New(() => LoadMapTiles());
 			MapResources = Lazy.New(() => LoadResourceTiles());
+
+			// The Uid is calculated from the data on-disk, so
+			// format changes must be flushed to disk.
+			// TODO: this isn't very nice
+			if (MapFormat < 6)
+				Save(path);
+
+			Uid = ComputeHash();
 		}
 
 		public int2[] GetSpawnPoints()
@@ -210,7 +237,7 @@ namespace OpenRA
 
 		public void Save(string toPath)
 		{
-			MapFormat = 5;
+			MapFormat = 6;
 
 			var root = new List<MiniYamlNode>();
 			var fields = new[]
@@ -222,7 +249,6 @@ namespace OpenRA
 				"Description",
 				"Author",
 				"Tileset",
-				"Options",
 				"MapSize",
 				"Bounds",
 				"UseAsShellmap",
@@ -235,6 +261,8 @@ namespace OpenRA
 				if (f.GetValue(this) == null) continue;
 				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
 			}
+
+			root.Add(new MiniYamlNode("Options", FieldSaver.SaveDifferences(Options, new MapOptions())));
 
 			root.Add(new MiniYamlNode("Players", null,
 				Players.Select(p => new MiniYamlNode("PlayerReference@{0}".F(p.Key), FieldSaver.SaveDifferences(p.Value, new PlayerReference()))).ToList()));
@@ -343,18 +371,12 @@ namespace OpenRA
 				writer.Write((ushort)MapSize.X);
 				writer.Write((ushort)MapSize.Y);
 
-				if (!OpenRA.Rules.TileSets.ContainsKey(Tileset))
-					throw new InvalidOperationException(
-						"Tileset used by the map ({0}) does not exist in this mod. Valid tilesets are: {1}"
-						.F(Tileset, OpenRA.Rules.TileSets.Keys.JoinWith(",")));
-
 				// Tile data
 				for (var i = 0; i < MapSize.X; i++)
 					for (var j = 0; j < MapSize.Y; j++)
 					{
 						writer.Write(MapTiles.Value[i, j].Type);
-						var pickAny = OpenRA.Rules.TileSets[Tileset].Templates[MapTiles.Value[i, j].Type].PickAny;
-						writer.Write(pickAny ? (byte)(i % 4 + (j % 4) * 4) : MapTiles.Value[i, j].Index);
+						writer.Write(MapTiles.Value[i, j].Index);
 					}
 
 				// Resource data

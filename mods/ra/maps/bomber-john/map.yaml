@@ -1,6 +1,8 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: ra
 
 Title: Bomber John
 
@@ -18,16 +20,14 @@ UseAsShellmap: False
 
 Type: Minigame
 
-RequiresMod: ra
-
 Options:
-	Crates: false
-	Fog: true
-	Shroud: true
-	AllyBuildRadius: false
-	FragileAlliances: false
+	Crates: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
 	StartingCash: 60
-	ConfigurableStartingUnits: false
+	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
@@ -43,59 +43,59 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi1,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi1,Multi17
-		AllowBots: False
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi11
-		AllowBots: False
 
 Actors:
 	Actor69: ftur
@@ -771,7 +771,6 @@ Rules:
 	World:
 		-CrateDrop:
 		-SpawnMPUnits:
-
 	APWR:
 		Buildable:
 			Owner: a
@@ -805,11 +804,9 @@ Rules:
 	SILO:
 		Buildable:
 			Owner: a
-
 	Player:
 		ClassicProductionQueue@Building:
 			BuildSpeed: 0.4
-
 	MNLYR:
 		Inherits: ^Tank
 		Buildable:
@@ -840,7 +837,7 @@ Rules:
 		MustBeDestroyed:
 		Transforms:
 			IntoActor: ftur
-			Offset:0,0
+			Offset: 0,0
 			Facing: 96
 		CashTrickler:
 			Period: 150
@@ -850,7 +847,7 @@ Rules:
 			HP: 1000
 		Transforms:
 			IntoActor: mnlyr
-			Offset:0,0
+			Offset: 0,0
 			Facing: 96
 		MustBeDestroyed:
 		Building:
@@ -879,8 +876,6 @@ Rules:
 			BeginChargeSound: ironchg1.aud
 			EndChargeSound: ironrdy1.aud
 			Range: 1
-
-
 	MINVV:
 		Building:
 			Adjacent: 99
@@ -917,7 +912,6 @@ Rules:
 		Explodes:
 		DemoTruck:
 		BodyOrientation:
-
 	T17:
 		Health:
 			HP: 999999999
@@ -927,8 +921,6 @@ Rules:
 		Production:
 			Produces: Building
 		BaseBuilding:
-		#RenderBuilding:
-		#	Image: brick
 		Tooltip:
 			Name: Tree
 		ChronoshiftPower:
@@ -966,14 +958,19 @@ Sequences:
 			Length: *
 		icon: jmin
 			Start: 0
-
 	mnlyr:
 		icon: mnlyicon
-
 	brick:
 		idle:
 			Start: 0
 			Length: *
+
+VoxelSequences:
+
 Weapons:
 
 Voices:
+
+Notifications:
+
+Translations:

@@ -1,6 +1,8 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: ra
 
 Title: Fort Lonestar
 
@@ -18,15 +20,13 @@ UseAsShellmap: False
 
 Type: Minigame
 
-RequiresMod: ra
-
 Options:
-	Fog: true
-	Shroud: true
-	AllyBuildRadius: false
-	FragileAlliances: false
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
 	StartingCash: 50
-	ConfigurableStartingUnits: false
+	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
@@ -1052,6 +1052,8 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 	120mm:
 		ROF: 150
@@ -1246,3 +1248,5 @@ Weapons:
 Voices:
 
 Notifications:
+
+Translations:

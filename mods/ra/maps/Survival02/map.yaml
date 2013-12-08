@@ -1,6 +1,8 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: ra
 
 Title: Survival02
 
@@ -18,16 +20,14 @@ UseAsShellmap: False
 
 Type: Minigame
 
-RequiresMod: ra
-
 Options:
-	Crates: false
-	Fog: true
-	Shroud: true
-	AllyBuildRadius: false
-	FragileAlliances: false
+	Crates: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
 	StartingCash: 5000
-	ConfigurableStartingUnits: false
+	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
@@ -42,7 +42,7 @@ Players:
 		LockRace: True
 		Race: allies
 		LockColor: True
-		ColorRamp: 115,240,130,10
+		ColorRamp: 115,240,130
 		LockSpawn: True
 		LockTeam: True
 		Allies: Greece
@@ -50,7 +50,7 @@ Players:
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet
-		ColorRamp: 0,255,128,10
+		ColorRamp: 0,255,128
 		Enemies: Allies,Greece
 	PlayerReference@Creeps:
 		Name: Creeps
@@ -1119,6 +1119,8 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 	ParaBomb:
 		ROF: 5
@@ -1143,3 +1145,5 @@ Weapons:
 Voices:
 
 Notifications:
+
+Translations:

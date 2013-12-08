@@ -1,6 +1,8 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: ra
 
 Title: Training camp
 
@@ -18,16 +20,14 @@ UseAsShellmap: False
 
 Type: Minigame
 
-RequiresMod: ra
-
 Options:
-	Crates: false
-	Fog: true
-	Shroud: true
-	AllyBuildRadius: false
-	FragileAlliances: false
+	Crates: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
 	StartingCash: 100
-	ConfigurableStartingUnits: false
+	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
@@ -42,59 +42,59 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi1,Multi6,Multi17
-		AllowBots: False
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi1,Multi17
-		AllowBots: False
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi11
-		AllowBots: False
 
 Actors:
 	Actor93: barr
@@ -1075,6 +1075,8 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 	CrateNuke:
 		Warhead@areanuke2:
@@ -1083,7 +1085,7 @@ Weapons:
 			SmudgeType: Scorch
 			Size: 4,3
 			Ore: true
-			Versus: 
+			Versus:
 				None: 90%
 				Light: 60%
 				Heavy: 25%
@@ -1097,7 +1099,7 @@ Weapons:
 			SmudgeType: Scorch
 			Size: 3,2
 			Ore: true
-			Versus: 
+			Versus:
 				None: 90%
 				Light: 60%
 				Heavy: 25%
@@ -1111,7 +1113,7 @@ Weapons:
 			SmudgeType: Scorch
 			Size: 2,1
 			Ore: true
-			Versus: 
+			Versus:
 				None: 90%
 				Light: 60%
 				Heavy: 25%
@@ -1119,4 +1121,9 @@ Weapons:
 			Delay: 36
 			InfDeath: 4
 			ImpactSound: kaboom22
+
 Voices:
+
+Notifications:
+
+Translations:

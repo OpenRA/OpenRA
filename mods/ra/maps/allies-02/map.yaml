@@ -1,6 +1,6 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
 
 RequiresMod: ra
 
@@ -21,13 +21,13 @@ UseAsShellmap: False
 Type: Campaign
 
 Options:
-	Crates: false
-	Fog: true
-	Shroud: true
-	AllyBuildRadius: false
-	FragileAlliances: false
+	Crates: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
 	StartingCash: 5000
-	ConfigurableStartingUnits: false
+	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
@@ -43,7 +43,7 @@ Players:
 		LockRace: True
 		Race: allies
 		LockColor: True
-		ColorRamp: 161,134,200,30
+		ColorRamp: 161,134,200
 		LockSpawn: True
 		LockTeam: True
 		Allies: Allies2,Allies
@@ -55,7 +55,7 @@ Players:
 		LockRace: True
 		Race: allies
 		LockColor: True
-		ColorRamp: 76,196,190,20
+		ColorRamp: 76,196,190
 		LockSpawn: True
 		LockTeam: True
 		Allies: Allies1,Allies
@@ -63,13 +63,13 @@ Players:
 	PlayerReference@Allies:
 		Name: Allies
 		Race: allies
-		ColorRamp: 115,115,143,16
+		ColorRamp: 115,115,143
 		Allies: Allies1,Allies2
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet
-		ColorRamp: 3,255,127,28
+		ColorRamp: 3,255,127
 		Enemies: Allies1,Allies2,Allies
 
 Actors:
@@ -1936,8 +1936,12 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 
 Voices:
 
 Notifications:
+
+Translations:

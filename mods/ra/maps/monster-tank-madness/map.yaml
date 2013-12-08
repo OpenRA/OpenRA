@@ -1,6 +1,6 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
 
 RequiresMod: ra
 
@@ -21,37 +21,37 @@ UseAsShellmap: False
 Type: Campaign
 
 Options:
-	Crates: false
-	Fog: true
-	Shroud: true
-	AllyBuildRadius: false
-	FragileAlliances: false
+	Crates: False
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
 	StartingCash: 5000
-	ConfigurableStartingUnits: false
+	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
 		AllowBots: False
+		Required: True
 		LockRace: True
 		Race: allies
 		LockColor: True
-		ColorRamp: 161,134,200,30
+		ColorRamp: 161,134,200
 		LockSpawn: True
 		LockTeam: True
 		Enemies: BadGuy,USSR,Ukraine,Turkey
-		Required: True
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Race: soviet
-		ColorRamp: 3,255,127,28
+		ColorRamp: 3,255,127
 		Allies: USSR
 		Enemies: Greece,Ukraine,Turkey
 	PlayerReference@USSR:
 		Name: USSR
 		Race: soviet
-		ColorRamp: 3,255,127,28
+		ColorRamp: 3,255,127
 		Allies: BadGuy,Ukraine
 		Enemies: Greece,Turkey
 	PlayerReference@Neutral:
@@ -63,13 +63,13 @@ Players:
 	PlayerReference@Ukraine:
 		Name: Ukraine
 		Race: soviet
-		ColorRamp: 32,255,202,28
+		ColorRamp: 32,255,202
 		Allies: BadGuy,USSR
 		Enemies: Greece,Turkey
 	PlayerReference@Turkey:
 		Name: Turkey
 		Race: allies
-		ColorRamp: 14,123,167,28
+		ColorRamp: 14,123,167
 		Enemies: Greece,BadGuy,USSR,Ukraine,Neutral
 	PlayerReference@Creeps:
 		Name: Creeps
@@ -2739,6 +2739,8 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 	FireballLauncher:
 		Projectile:
@@ -2771,3 +2773,5 @@ Weapons:
 Voices:
 
 Notifications:
+
+Translations:

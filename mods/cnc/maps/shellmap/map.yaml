@@ -1,6 +1,6 @@
 Selectable: False
 
-MapFormat: 5
+MapFormat: 6
 
 RequiresMod: cnc
 
@@ -20,17 +20,19 @@ UseAsShellmap: True
 
 Type: Conquest
 
+Options:
+
 Players:
 	PlayerReference@Nod:
 		Name: Nod
 		Race: nod
-		ColorRamp: 3,255,127,28
+		ColorRamp: 3,255,127
 		Allies: Nod
 		Enemies: GDI,Creeps
 	PlayerReference@GDI:
 		Name: GDI
 		Race: gdi
-		ColorRamp: 31,222,183,24
+		ColorRamp: 31,222,183
 		Allies: GDI
 		Enemies: Nod,Creeps
 	PlayerReference@Neutral:
@@ -41,37 +43,31 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Creeps:
@@ -1010,6 +1006,12 @@ Rules:
 
 Sequences:
 
+VoxelSequences:
+
 Weapons:
 
 Voices:
+
+Notifications:
+
+Translations:

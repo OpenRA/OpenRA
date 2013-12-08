@@ -312,5 +312,13 @@ namespace OpenRA.Utility
 			minimap.Save(dest);
 			Console.WriteLine(dest + " saved.");
 		}
+
+		public static void UpgradeMap(string[] args)
+		{
+			var map = args[1];
+			var mod = args[2];
+			Game.modData = new ModData(mod);
+			new Map(map, mod);
+		}
 	}
 }

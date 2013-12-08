@@ -1,6 +1,8 @@
 Selectable: True
 
-MapFormat: 5
+MapFormat: 6
+
+RequiresMod: ra
 
 Title: Athena
 
@@ -18,7 +20,7 @@ UseAsShellmap: False
 
 Type: KotH
 
-RequiresMod: ra
+Options:
 
 Players:
 	PlayerReference@Neutral:
@@ -2126,3 +2128,5 @@ Weapons:
 Voices:
 
 Notifications:
+
+Translations:

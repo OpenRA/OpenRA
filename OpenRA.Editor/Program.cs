@@ -22,38 +22,11 @@ namespace OpenRA.Editor
 		[STAThread]
 		static void Main(string[] args)
 		{
-			if (args.Length >= 2 && args[0] == "--convert")
-			{
-				Game.modData = new ModData(args[1]);
-				FileSystem.LoadFromManifest(Game.modData.Manifest);
-				Rules.LoadRules(Game.modData.Manifest, new Map());
-				UpgradeMaps(args[1]);
-				return;
-			}
-
 			Application.CurrentCulture = CultureInfo.InvariantCulture;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			Application.Run(new Form1(args));
-		}
-
-		static void UpgradeMaps(string mod)
-		{
-			var mapFolderPath = new string[] { Environment.CurrentDirectory, "mods", mod, "maps" }
-				.Aggregate(Path.Combine);
-
-			foreach (var path in ModData.FindMapsIn(mapFolderPath))
-			{
-				var map = new Map(path);
-
-				// Touch the lazy bits to initialize them
-				map.Actors.Force();
-				map.Smudges.Force();
-				map.MapTiles.Force();
-				map.MapResources.Force();
-				map.Save(path);
-			}
 		}
 	}
 }
