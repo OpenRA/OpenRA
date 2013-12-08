@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Effects
 			var bounds = self.Bounds.Value;
 			bounds.Offset(pos.X, pos.Y);
 
-			var offset = (int)(6 / wr.Viewport.Zoom);
+			var offset = (int)(4 / wr.Viewport.Zoom);
 			var effectPos = wr.Position(new int2(bounds.Right - offset, bounds.Bottom - offset));
 			yield return new SpriteRenderable(anim.Image, effectPos, WVec.Zero, 0, wr.Palette("effect"), 1f / wr.Viewport.Zoom, true);
 		}

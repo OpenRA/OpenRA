@@ -40,12 +40,7 @@ namespace OpenRA.Mods.RA
 			levels = info.CostThreshold.Select(t => (int)(t * cost)).ToArray();
 
 			if (init.Contains<ExperienceInit>())
-			{
-				experience = init.Get<ExperienceInit, int>();
-
-				while (Level < levels.Length && experience >= levels[Level])
-					Level++;
-			}
+				GiveExperience(init.Get<ExperienceInit, int>());
 		}
 
 		[Sync] int experience = 0;
