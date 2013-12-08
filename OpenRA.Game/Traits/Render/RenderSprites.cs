@@ -10,8 +10,8 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.Graphics;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
@@ -32,76 +32,13 @@ namespace OpenRA.Traits
 
 	public class RenderSprites : IRender, ITick, INotifyOwnerChanged
 	{
-		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
+		public Dictionary<string, AnimationWithOffset> Anims = new Dictionary<string, AnimationWithOffset>();
 
 		public static Func<int> MakeFacingFunc(Actor self)
 		{
 			var facing = self.TraitOrDefault<IFacing>();
 			if (facing == null) return () => 0;
 			return () => facing.Facing;
-		}
-
-		public Animation anim
-		{
-			get { return anims[""].Animation; }
-			protected set { anims[""] = new AnimationWithOffset(value,
-				anims[""].OffsetFunc, anims[""].DisableFunc, anims[""].ZOffset); }
-		}
-
-		RenderSpritesInfo Info;
-		string cachedImage = null;
-		bool initializePalette = true;
-		protected PaletteReference palette;
-
-		public RenderSprites(Actor self)
-		{
-			Info = self.Info.Traits.Get<RenderSpritesInfo>();
-		}
-
-		public static string GetImage(ActorInfo actor)
-		{
-			var Info = actor.Traits.Get<RenderSpritesInfo>();
-			return Info.Image ?? actor.Name;
-		}
-
-		public string GetImage(Actor self)
-		{
-			if (cachedImage != null)
-				return cachedImage;
-
-			return cachedImage = GetImage(self.Info);
-		}
-
-		protected virtual string PaletteName(Actor self)
-		{
-			return Info.Palette ?? Info.PlayerPalette + self.Owner.InternalName;
-		}
-
-		protected void UpdatePalette() { initializePalette = true; }
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
-
-		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
-		{
-			if (initializePalette)
-			{
-				palette = wr.Palette(PaletteName(self));
-				initializePalette = false;
-			}
-
-			foreach (var a in anims.Values)
-			{
-				if (a.DisableFunc != null && a.DisableFunc())
-					continue;
-
-				foreach (var r in a.Render(self, wr, palette, Info.Scale))
-					yield return r;
-			}
-		}
-
-		public virtual void Tick(Actor self)
-		{
-			foreach (var a in anims.Values)
-				a.Animation.Tick();
 		}
 
 		public static string NormalizeSequence(Animation anim, DamageState state, string baseSequence)
@@ -115,10 +52,80 @@ namespace OpenRA.Traits
 			};
 
 			foreach (var s in states)
-				if (state >= s.First && anim.HasSequence(s.Second+baseSequence))
-				    return s.Second+baseSequence;
+				if (state >= s.First && anim.HasSequence(s.Second + baseSequence))
+					return s.Second + baseSequence;
 
 			return baseSequence;
+		}
+
+		public Animation Anim
+		{
+			get
+			{
+				return Anims[""].Animation;
+			}
+
+			protected set
+			{
+				Anims[""] = new AnimationWithOffset(value,
+					Anims[""].OffsetFunc, Anims[""].DisableFunc, Anims[""].ZOffset);
+			}
+		}
+
+		RenderSpritesInfo info;
+		string cachedImage = null;
+		bool initializePalette = true;
+		protected PaletteReference palette;
+
+		public RenderSprites(Actor self)
+		{
+			info = self.Info.Traits.Get<RenderSpritesInfo>();
+		}
+
+		public static string GetImage(ActorInfo actor)
+		{
+			var info = actor.Traits.Get<RenderSpritesInfo>();
+			return info.Image ?? actor.Name;
+		}
+
+		public string GetImage(Actor self)
+		{
+			if (cachedImage != null)
+				return cachedImage;
+
+			return cachedImage = GetImage(self.Info);
+		}
+
+		protected virtual string PaletteName(Actor self)
+		{
+			return info.Palette ?? info.PlayerPalette + self.Owner.InternalName;
+		}
+
+		protected void UpdatePalette() { initializePalette = true; }
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
+
+		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
+		{
+			if (initializePalette)
+			{
+				palette = wr.Palette(PaletteName(self));
+				initializePalette = false;
+			}
+
+			foreach (var a in Anims.Values)
+			{
+				if (a.DisableFunc != null && a.DisableFunc())
+					continue;
+
+				foreach (var r in a.Render(self, wr, palette, info.Scale))
+					yield return r;
+			}
+		}
+
+		public virtual void Tick(Actor self)
+		{
+			foreach (var a in Anims.Values)
+				a.Animation.Tick();
 		}
 	}
 }

@@ -40,15 +40,15 @@ namespace OpenRA.Mods.RA.Render
 			var desiredState = harv.Fullness * (info.ImagesByFullness.Length - 1) / 100;
 			var desiredImage = info.ImagesByFullness[desiredState];
 
-			if (anim.Name != desiredImage)
-				anim.ChangeImage(desiredImage, "idle");
+			if (Anim.Name != desiredImage)
+				Anim.ChangeImage(desiredImage, "idle");
 
 			base.Tick(self);
 		}
 
 		public void Harvested(Actor self, ResourceType resource)
 		{
-			if (anim.CurrentSequence.Name != "harvest")
+			if (Anim.CurrentSequence.Name != "harvest")
 				PlayCustomAnim(self, "harvest");
 		}
 	}

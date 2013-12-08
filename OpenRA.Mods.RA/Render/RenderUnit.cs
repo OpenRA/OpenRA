@@ -25,19 +25,19 @@ namespace OpenRA.Mods.RA.Render
 
 		public void PlayCustomAnimation(Actor self, string newAnim, Action after)
 		{
-			anim.PlayThen(newAnim, () => { anim.Play("idle"); if (after != null) after(); });
+			Anim.PlayThen(newAnim, () => { Anim.Play("idle"); if (after != null) after(); });
 		}
 
 		public void PlayCustomAnimRepeating(Actor self, string name)
 		{
-			anim.PlayThen(name,
+			Anim.PlayThen(name,
 				() => { PlayCustomAnimRepeating(self, name); });
 		}
 
 		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
 		{
-			anim.PlayBackwardsThen(name,
-				() => { anim.PlayRepeating("idle"); a(); });
+			Anim.PlayBackwardsThen(name,
+				() => { Anim.PlayRepeating("idle"); a(); });
 		}
 	}
 }

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 
 			var anim = new Animation("fire", () => 0);
 			anim.PlayRepeating(Info.Anim);
-			self.Trait<RenderSprites>().anims.Add("fire", anim);
+			self.Trait<RenderSprites>().Anims.Add("fire", anim);
 		}
 
 		public void Tick(Actor self)

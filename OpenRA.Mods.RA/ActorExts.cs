@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 				return true;
 
 			if (self.IsDisguisedSpy() && !toActor.HasTrait<IgnoresDisguise>())
-				return toActor.Owner.Stances[self.Trait<Spy>().disguisedAsPlayer] == Stance.Ally;
+				return toActor.Owner.Stances[self.Trait<Spy>().DisguisedAsPlayer] == Stance.Ally;
 
 			return stance == Stance.Ally;
 		}
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 				return false;		/* otherwise, we'll hate friendly disguised spies */
 
 			if (self.IsDisguisedSpy() && !toActor.HasTrait<IgnoresDisguise>())
-				return toActor.Owner.Stances[self.Trait<Spy>().disguisedAsPlayer] == Stance.Enemy;
+				return toActor.Owner.Stances[self.Trait<Spy>().DisguisedAsPlayer] == Stance.Enemy;
 
 			return stance == Stance.Enemy;
 		}

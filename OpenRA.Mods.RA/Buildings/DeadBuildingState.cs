@@ -29,18 +29,18 @@ namespace OpenRA.Mods.Cnc
 		{
 			this.info = info;
 			rs = self.Trait<RenderSprites>();
-			self.Trait<Health>().RemoveOnDeath = !rs.anim.HasSequence("dead");
+			self.Trait<Health>().RemoveOnDeath = !rs.Anim.HasSequence("dead");
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (!rs.anim.HasSequence("dead")) return;
-			
-			if (rs.anim.GetSequence("dead").Length > 1)
-				rs.anim.Play("dead");
+			if (!rs.Anim.HasSequence("dead")) return;
+
+			if (rs.Anim.GetSequence("dead").Length > 1)
+				rs.Anim.Play("dead");
 			else
-				rs.anim.PlayRepeating("dead");
-			
+				rs.Anim.PlayRepeating("dead");
+
 			self.World.AddFrameEndTask(
 				w => w.Add(
 					new DelayedAction(info.LingerTime,

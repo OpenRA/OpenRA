@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+﻿﻿﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -25,23 +25,26 @@ namespace OpenRA.Mods.RA.Render
 		{
 			this.info = info;
 			spy = self.Trait<Spy>();
-			disguisedAsSprite = spy.disguisedAsSprite;
+			disguisedAsSprite = spy.DisguisedAsSprite;
+			disguisedAsSprite = spy.DisguisedAsSprite;
 		}
 
 		protected override string PaletteName(Actor self)
 		{
-			var player = spy.disguisedAsPlayer ?? self.Owner;
+			var player = spy.DisguisedAsPlayer ?? self.Owner;
 			return info.Palette ?? info.PlayerPalette + player.InternalName;
 		}
 
 		public override void Tick(Actor self)
 		{
-			if (spy.disguisedAsSprite != disguisedAsSprite)
+			if (spy.DisguisedAsSprite != disguisedAsSprite)
 			{
-				disguisedAsSprite = spy.disguisedAsSprite;
-				anim.ChangeImage(disguisedAsSprite ?? GetImage(self), info.StandAnimations.Random(Game.CosmeticRandom));
+				disguisedAsSprite = spy.DisguisedAsSprite;
+				disguisedAsSprite = spy.DisguisedAsSprite;
+				Anim.ChangeImage(disguisedAsSprite ?? GetImage(self), spy.DisguisedStandAnimations.Random(Game.CosmeticRandom));
 				UpdatePalette();
 			}
+
 			base.Tick(self);
 		}
 	}
