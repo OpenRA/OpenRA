@@ -63,10 +63,20 @@ namespace OpenRA.Mods.RA
 				return ret;
 
 			// Add buildables that provide prerequisites
-			foreach (var b in player.World.ActorsWithTrait<ITechTreePrerequisite>()
-					.Where(a => a.Actor.IsInWorld && !a.Actor.IsDead() && a.Actor.Owner == player))
+			var prereqs = player.World.ActorsWithTrait<ITechTreePrerequisite>()
+				.Where(a => a.Actor.Owner == player && !a.Actor.IsDead() && a.Actor.IsInWorld);
+
+			foreach (var b in prereqs)
+			{
 				foreach (var p in b.Trait.ProvidesPrerequisites)
-					ret[ p ].Add( b.Actor );
+				{
+					// Ignore bogus prerequisites
+					if (p == null)
+						continue;
+
+					ret[p].Add(b.Actor);
+				}
+			}
 
 			// Add buildables that have a build limit set and are not already in the list
 			player.World.ActorsWithTrait<Buildable>()
