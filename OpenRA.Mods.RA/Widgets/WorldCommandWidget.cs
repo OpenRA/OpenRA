@@ -207,6 +207,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			var facilities = world.ActorsWithTrait<Production>()
 				.Where(a => a.Actor.Owner == world.LocalPlayer && !a.Actor.HasTrait<BaseBuilding>())
+				.OrderBy(f => f.Actor.Info.Traits.Get<ProductionInfo>().Produces.First())
 				.ToArray();
 
 			if (!facilities.Any())
