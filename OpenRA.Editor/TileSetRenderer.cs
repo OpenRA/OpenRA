@@ -80,10 +80,12 @@ namespace OpenRA.Editor
 				var stride = data.Stride;
 
 				for (var u = 0; u < template.Size.X; u++)
+				{
 					for (var v = 0; v < template.Size.Y; v++)
-						if (templateData[u + v * template.Size.X] != null)
+					{
+						var rawImage = templateData[u + v * template.Size.X];
+						if (rawImage != null && rawImage.Length > 0)
 						{
-							var rawImage = templateData[u + v * template.Size.X];
 							for (var i = 0; i < TileSize.Width; i++)
 								for (var j = 0; j < TileSize.Height; j++)
 									q[(v * TileSize.Width + j) * stride + u * TileSize.Width + i] = rawImage[i + TileSize.Width * j];
@@ -94,6 +96,8 @@ namespace OpenRA.Editor
 								for (var j = 0; j < TileSize.Height; j++)
 									q[(v * TileSize.Width + j) * stride + u * TileSize.Width + i] = 0;
 						}
+					}
+				}
 			}
 
 			bitmap.UnlockBits(data);
