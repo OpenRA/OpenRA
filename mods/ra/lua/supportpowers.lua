@@ -8,6 +8,7 @@ SupportPowers.Parabomb = function(owner, planeName, enterLocation, bombLocation)
 	Actor.Fly(plane, bombLocation.CenterPosition)
 	Actor.FlyOffMap(plane)
 	Actor.RemoveSelf(plane)
+	return plane
 end
 
 SupportPowers.Paradrop = function(owner, planeName, passengerNames, enterLocation, dropLocation)
@@ -17,7 +18,11 @@ SupportPowers.Paradrop = function(owner, planeName, passengerNames, enterLocatio
 	Actor.FlyAttackCell(plane, dropLocation)
 	Actor.Trait(plane, "ParaDrop"):SetLZ(dropLocation)
 	local cargo = Actor.Trait(plane, "Cargo")
+	local passengers = { }
 	for i, passengerName in ipairs(passengerNames) do
-		cargo:Load(plane, Actor.Create(passengerName, { AddToWorld = false, Owner = owner }))
+		local passenger = Actor.Create(passengerName, { AddToWorld = false, Owner = owner })
+		passengers[i] = passenger
+		cargo:Load(plane, passenger)
 	end
+	return plane, passengers
 end
