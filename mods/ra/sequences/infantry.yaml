@@ -255,6 +255,9 @@ medi:
 	stand:
 		Start: 0
 		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
 	run:
 		Start: 8
 		Length: 6
@@ -311,6 +314,9 @@ medi:
 		
 mech:
 	stand:
+		Start: 0
+		Facings: 8
+	stand2:
 		Start: 0
 		Facings: 8
 	run:
@@ -433,6 +439,9 @@ dog:
 	stand:
 		Start: 0
 		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
 	run:
 		Start: 8
 		Length: 6
@@ -541,6 +550,9 @@ thf:
 	stand:
 		Start: 0
 		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
 	run:
 		Start: 8
 		Length: 6
@@ -573,6 +585,9 @@ thf:
 
 e7:
 	stand:
+		Start: 0
+		Facings: 8
+	stand2:
 		Start: 0
 		Facings: 8
 	run:
@@ -696,6 +711,9 @@ gnrl:
 	stand:
 		Start: 0
 		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
 	run:
 		Start: 8
 		Length: 5
@@ -817,6 +835,9 @@ c1:
 	stand:
 		Start: 0
 		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
 	panic-stand:
 		Start: 8
 		Length: 6
@@ -861,6 +882,9 @@ c2:
 	stand:
 		Start: 0
 		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
 	panic-stand:
 		Start: 8
 		Length: 6
@@ -900,9 +924,12 @@ c2:
 		Length: 6
 		Facings: 8
 		Tick: 80
-		
+
 c3:
 	stand:
+		Start: 0
+		Facings: 8
+	stand2:
 		Start: 0
 		Facings: 8
 	panic-stand:
@@ -949,6 +976,9 @@ einstein:
 	stand:
 		Start: 0
 		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
@@ -984,9 +1014,12 @@ einstein:
 		Start: 0
 		Length: 6
 		Tick: 1600
-		
+
 delphi:
 	stand:
+		Start: 0
+		Facings: 8
+	stand2:
 		Start: 0
 		Facings: 8
 	panic-run:
@@ -1027,6 +1060,9 @@ delphi:
 
 chan:
 	stand:
+		Start: 0
+		Facings: 8
+	stand2:
 		Start: 0
 		Facings: 8
 	panic-run:
