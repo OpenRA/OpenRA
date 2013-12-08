@@ -11,11 +11,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Fakes the tooltip so the enemy player is fooled by the disguise.")]
 	class SpyToolTipInfo : TooltipInfo, Requires<SpyInfo>
 	{
 		public override object Create(ActorInitializer init) { return new SpyToolTip(init.self, this); }
@@ -59,13 +62,14 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-
+	[Desc("A spy that can disguise itself as any enemy infantry.")]
 	class SpyInfo : TraitInfo<Spy> { }
 
 	class Spy : IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
 	{
 		public Player DisguisedAsPlayer;
 		public string DisguisedAsSprite, DisguisedAsName;
+		public string[] DisguisedStandAnimations;
 
 		public bool Disguised { get { return DisguisedAsPlayer != null; } }
 
@@ -116,6 +120,7 @@ namespace OpenRA.Mods.RA
 			DisguisedAsName = tooltip.Name();
 			DisguisedAsPlayer = tooltip.Owner();
 			DisguisedAsSprite = target.Trait<RenderSprites>().GetImage(target);
+			DisguisedStandAnimations = target.Trait<RenderInfantry>().Info.StandAnimations;
 		}
 
 		void DropDisguise()
@@ -123,6 +128,7 @@ namespace OpenRA.Mods.RA
 			DisguisedAsName = null;
 			DisguisedAsPlayer = null;
 			DisguisedAsSprite = null;
+			DisguisedStandAnimations = null;
 		}
 
 		/* lose our disguise if we attack anything */

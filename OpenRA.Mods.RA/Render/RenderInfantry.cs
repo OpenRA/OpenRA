@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Render
 
 		protected bool dirty = false;
 
-		RenderInfantryInfo info;
+		public RenderInfantryInfo Info;
 		string idleSequence;
 		int idleDelay;
 		Mobile mobile;
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Render
 
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
-			return info.IdleAnimations.Length > 0;
+			return Info.IdleAnimations.Length > 0;
 		}
 
 		public AnimationState State { get; private set; }
@@ -57,8 +57,8 @@ namespace OpenRA.Mods.RA.Render
 		public RenderInfantry(Actor self, RenderInfantryInfo info)
 			: base(self, MakeFacingFunc(self))
 		{
-			this.info = info;
-			Anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
+			this.Info = info;
+			Anim.PlayFetchIndex(NormalizeInfantrySequence(self, Info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 			State = AnimationState.Waiting;
 			mobile = self.Trait<Mobile>();
 
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA.Render
 			if ((State == AnimationState.Moving || dirty) && !mobile.IsMoving)
 			{
 				State = AnimationState.Waiting;
-				Anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
+				Anim.PlayFetchIndex(NormalizeInfantrySequence(self, Info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 			}
 			else if ((State != AnimationState.Moving || dirty) && mobile.IsMoving)
 			{
@@ -101,13 +101,13 @@ namespace OpenRA.Mods.RA.Render
 		{
 			if (State != AnimationState.Idle && State != AnimationState.IdleAnimating)
 			{
-				Anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
+				Anim.PlayFetchIndex(NormalizeInfantrySequence(self, Info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 				State = AnimationState.Idle;
 
-				if (info.IdleAnimations.Length > 0)
+				if (Info.IdleAnimations.Length > 0)
 				{
-					idleSequence = info.IdleAnimations.Random(self.World.SharedRandom);
-					idleDelay = self.World.SharedRandom.Next(info.MinIdleWaitTicks, info.MaxIdleWaitTicks);
+					idleSequence = Info.IdleAnimations.Random(self.World.SharedRandom);
+					idleDelay = self.World.SharedRandom.Next(Info.MinIdleWaitTicks, Info.MaxIdleWaitTicks);
 				}
 			}
 			else if (AllowIdleAnimation(self) && idleDelay > 0 && --idleDelay == 0)
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA.Render
 					State = AnimationState.IdleAnimating;
 					Anim.PlayThen(idleSequence,	() =>
 					{
-						Anim.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
+						Anim.PlayRepeating(NormalizeInfantrySequence(self, Info.StandAnimations.Random(Game.CosmeticRandom)));
 						State = AnimationState.Waiting;
 					});
 				}
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA.Render
 			{
 				if (!self.Destroyed)
 					w.Add(new Corpse(w, self.CenterPosition, GetImage(self),
-						sequence, info.PlayerPalette + self.Owner.InternalName));
+						sequence, Info.PlayerPalette + self.Owner.InternalName));
 			});
 		}
 	}
