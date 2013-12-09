@@ -333,3 +333,15 @@ shroud:
 		Length: 14
 		Offset: -16,-16
 		BlendMode: Multiply
+
+rockcraters:
+	rockcrater1: rockcrater1
+		Length: *
+	rockcrater2: rockcrater2
+		Length: *
+
+sandcraters:
+	sandcrater1: sandcrater1
+		Length: *
+	sandcrater2: sandcrater2
+		Length: *

@@ -21,36 +21,61 @@ namespace OpenRA.Mods.RA
 	public class SmudgeLayerInfo : ITraitInfo
 	{
 		public readonly string Type = "Scorch";
-		public readonly string[] Types = { "sc1", "sc2", "sc3", "sc4", "sc5", "sc6" };
-		public readonly int[] Depths = { 1, 1, 1, 1, 1, 1 };
+		public readonly string Sequence = "scorch";
+
 		public readonly int SmokePercentage = 25;
 		public readonly string SmokeType = "smoke_m";
+
 		public object Create(ActorInitializer init) { return new SmudgeLayer(this); }
 	}
 
 	public class SmudgeLayer : IRenderOverlay, IWorldLoaded, ITickRender
 	{
+		struct Smudge
+		{
+			public string Type;
+			public int Depth;
+			public Sprite Sprite;
+		}
+
 		public SmudgeLayerInfo Info;
-		Dictionary<CPos, TileReference<byte, byte>> tiles;
-		Dictionary<CPos, TileReference<byte, byte>> dirty;
-		Sprite[][] smudgeSprites;
+		Dictionary<CPos, Smudge> tiles;
+		Dictionary<CPos, Smudge> dirty;
+		Dictionary<string, Sprite[]> smudges;
 		World world;
 
 		public SmudgeLayer(SmudgeLayerInfo info)
 		{
 			this.Info = info;
-			smudgeSprites = Info.Types.Select(x => Game.modData.SpriteLoader.LoadAllSprites(x)).ToArray();
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
-			tiles = new Dictionary<CPos, TileReference<byte, byte>>();
-			dirty = new Dictionary<CPos, TileReference<byte, byte>>();
+			tiles = new Dictionary<CPos, Smudge>();
+			dirty = new Dictionary<CPos, Smudge>();
+			smudges = new Dictionary<string, Sprite[]>();
+
+			var types = SequenceProvider.Sequences(Info.Sequence);
+			foreach (var t in types)
+			{
+				var seq = SequenceProvider.GetSequence(Info.Sequence, t);
+				var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
+				smudges.Add(t, sprites);
+			}
 
 			// Add map smudges
-			foreach (var s in w.Map.Smudges.Value.Where(s => Info.Types.Contains(s.Type)))
-				tiles.Add((CPos)s.Location, new TileReference<byte, byte>((byte)(Array.IndexOf(Info.Types, s.Type) + 1), (byte)s.Depth));
+			foreach (var s in w.Map.Smudges.Value.Where(s => smudges.Keys.Contains(s.Type)))
+			{
+				var smudge = new Smudge
+				{
+					Type = s.Type,
+					Depth = s.Depth,
+					Sprite = smudges[s.Type][s.Depth]
+				};
+
+				tiles.Add((CPos)s.Location, smudge);
+			}
 		}
 
 		public void AddSmudge(CPos loc)
@@ -61,16 +86,19 @@ namespace OpenRA.Mods.RA
 			if (!dirty.ContainsKey(loc) && !tiles.ContainsKey(loc))
 			{
 				// No smudge; create a new one
-				var st = (byte)(1 + world.SharedRandom.Next(Info.Types.Length - 1));
-				dirty[loc] = new TileReference<byte, byte>(st, (byte)0);
+				var st = smudges.Keys.Random(world.SharedRandom);
+				dirty[loc] = new Smudge { Type = st, Depth = 0, Sprite = smudges[st][0] };
 			}
 			else
 			{
 				// Existing smudge; make it deeper
 				var tile = dirty.ContainsKey(loc) ? dirty[loc] : tiles[loc];
-				var depth = Info.Depths[tile.Type - 1];
-				if (tile.Index < depth - 1)
-					tile.Index++;
+				var maxDepth = smudges[tile.Type].Length;
+				if (tile.Depth < maxDepth - 1)
+				{
+					tile.Depth++;
+					tile.Sprite = smudges[tile.Type][tile.Depth];
+				}
 
 				dirty[loc] = tile;
 			}
@@ -105,8 +133,7 @@ namespace OpenRA.Mods.RA
 				if (world.ShroudObscures(kv.Key))
 					continue;
 
-				var tile = smudgeSprites[kv.Value.Type - 1][kv.Value.Index];
-				new SpriteRenderable(tile, kv.Key.CenterPosition,
+				new SpriteRenderable(kv.Value.Sprite, kv.Key.CenterPosition,
 					WVec.Zero, -511, pal, 1f, true).Render(wr);
 			}
 		}
