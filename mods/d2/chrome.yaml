@@ -171,15 +171,15 @@ tabs-normal: tabs.png
 
 # Used for the menu	
 dialog: dialog.png
-	background: 4,484,10,10
-	border-r: 14,484,4,10
-	border-l: 0,484,4,10
-	border-b: 4,494,10,4
-	border-t: 4,480,10,4
-	corner-tl: 0,480,4,4
-	corner-tr: 14,480,4,4
-	corner-bl: 0,494,4,4
-	corner-br: 14,494,4,4
+	background: 0,0,480,480
+	border-r: 480,39,17,39
+	border-l: 480,0,17,39
+	border-b: 39,480,39,17
+	border-t: 0,480,39,17
+	corner-tl: 138,480,20,20
+	corner-tr: 118,480,20,20
+	corner-bl: 78,480,20,20
+	corner-br: 98,480,20,20
 
 # Same as a normal button 	
 dialog2: dialog.png
@@ -581,5 +581,5 @@ scrollheader-selected: dialog.png
 	corner-bl: 512,126,2,2
 	corner-br: 638,126,2,2
 
-logos: mainmenubg.png
-	logo: 0,0,512,256
+logos: loadscreen.png
+	logo: 0,0,254,256
