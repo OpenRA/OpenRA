@@ -143,6 +143,7 @@ NEW:
 		Unified sprite loading allows any sprite type to be used anywhere: shp can now be used for terrain, and tmp for units.
 		Harvestable resource definitions (ResourceTypes) have changed, and now specify their artwork using sequences.
 		Shroud definitions (ShroudRenderer / ShroudPalette) have changed, and now specifies its artwork using sequences.
+		Crater and smudge definitions (SmudgeLayer) have changed, and now specify their artwork using sequences.
 
 20130915:
 	All mods:
