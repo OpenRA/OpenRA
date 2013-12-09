@@ -335,13 +335,21 @@ shroud:
 		BlendMode: Multiply
 
 rockcraters:
-	rockcrater1: rockcrater1
-		Length: *
-	rockcrater2: rockcrater2
-		Length: *
+	rockcrater1: DATA
+		Start: 114
+		Length: 16
+		Offset: -16,-16
+	rockcrater2: DATA
+		Start: 130
+		Length: 16
+		Offset: -16,-16
 
 sandcraters:
-	sandcrater1: sandcrater1
-		Length: *
-	sandcrater2: sandcrater2
-		Length: *
+	sandcrater1: DATA
+		Start: 146
+		Length: 16
+		Offset: -16,-16
+	sandcrater2: DATA
+		Start: 162
+		Length: 16
+		Offset: -16,-16
