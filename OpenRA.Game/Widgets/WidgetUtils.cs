@@ -229,7 +229,31 @@ namespace OpenRA.Widgets
 		{
 			var availableMaps = Game.modData.AvailableMaps;
 			if (string.IsNullOrEmpty(map) || !availableMaps.ContainsKey(map))
-				return availableMaps.First(m => m.Value.Selectable).Key;
+			{
+				Func<Map, bool> isIdealMap = m =>
+				{
+					if (!m.Selectable)
+						return false;
+
+					// Other map types may have confusing settings or gameplay
+					if (m.Type != "Conquest")
+						return false;
+
+					// Maps with bots disabled confuse new players
+					if (m.Players.Any(s => !s.Value.AllowBots))
+						return false;
+
+					// Large maps expose unfortunate performance problems
+					if (m.MapSize.X > 128 || m.MapSize.Y > 128)
+						return false;
+
+					return true;
+				};
+
+				var selected = availableMaps.Values.Where(m => isIdealMap(m)).RandomOrDefault(Game.CosmeticRandom) ??
+				               availableMaps.Values.First(m => m.Selectable);
+				return selected.Uid;
+			}
 
 			return map;
 		}

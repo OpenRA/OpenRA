@@ -139,6 +139,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		void StartSkirmishGame()
 		{
 			var map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
+			Game.Settings.Server.Map = map;
+			Game.Settings.Save();
 
 			ConnectionLogic.Connect(IPAddress.Loopback.ToString(),
 				Game.CreateLocalServer(map),
