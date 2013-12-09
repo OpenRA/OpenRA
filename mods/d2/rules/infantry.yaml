@@ -1,0 +1,112 @@
+RIFLE:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: atreides,harkonnen,ordos
+		Hotkey: r
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Rifleman
+		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
+	Selectable:
+		Bounds: 12,17,0,0
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 5
+	Armament:
+		Weapon: LMG
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: stand,stand2
+
+ENGINEER:
+	Inherits: ^Infantry
+	Buildable:
+		Prerequisites: Outpost
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Owner: atreides,harkonnen,ordos
+		Hotkey: e
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Engineer
+		Description: Infiltrates and captures enemy structures\n  Strong vs Nothing\n  Weak vs Everything
+	Selectable:
+		Bounds: 12,17,0,0
+		Voice: EngineerVoice
+	Health:
+		HP: 25
+	Mobile:
+		Speed: 5
+	Passenger:
+		PipType: Yellow
+	EngineerRepair:
+	ExternalCaptures:
+	-AutoTarget:
+	AttackMove:
+		JustMove: true
+
+BAZOOKA:
+	Inherits: ^Infantry
+	Buildable:
+		Prerequisites: Outpost
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Owner: atreides,harkonnen,ordos
+		Hotkey: t
+	Valued:
+		Cost: 250
+	Tooltip:
+		Name: Trooper
+		Description: Anti-tank/Anti-aircraft infantry\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry, Artillery
+	Selectable:
+		Bounds: 12,17,0,0
+	Health:
+		HP: 45
+	Mobile:
+		Speed: 4
+	Armament:
+		Weapon: Bazooka
+		LocalOffset: 0,0,555
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: stand,stand2
+
+MEDIC:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 60
+		Owner: atreides, ordos
+		Prerequisites: Research
+		Hotkey: m
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Medic
+		Description: Heals nearby infantry\n  Strong vs Nothing\n  Weak vs Everything
+	Selectable:
+		Bounds: 12,17,0,0
+		Voice: EngineerVoice
+	Health:
+		HP: 60
+	Mobile:
+		Speed: 4
+	AutoHeal:
+	Armament:
+		Weapon: Heal
+	AttackMedic:
+		Cursor: ability
+	Passenger:
+		PipType: Blue
+	-AutoTarget:
+	AttackMove:
+		JustMove: true

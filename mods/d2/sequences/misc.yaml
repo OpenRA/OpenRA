@@ -1,0 +1,307 @@
+explosion:
+	piff: DATA
+		Start: 3626
+		Length: 5
+	piffs: DATA
+		Start: 3429
+		Length: 4
+		Tick: 80
+		BlendMode: Additive
+	small_explosion: DATA
+		Start: 3403
+		Length: 15
+		BlendMode: Additive
+	med_explosion: DATA
+		Start: 3390
+		Length: 12
+		BlendMode: Additive
+	tiny_explosion: DATA
+		Start: 3386
+		Length: 4
+		Tick: 80
+		BlendMode: Additive
+	nuke: DATA
+		Start: 3965
+		Length: 14
+		Tick: 60
+		BlendMode: Additive
+	mini_explosion: DATA
+		Start: 3403
+		Length: 15
+		Tick: 60
+		BlendMode: Additive
+	self_destruct: DATA
+		Start: 3433
+		Length: 15
+		BlendMode: Additive
+	building: DATA
+		Start: 3448
+		Length: 22
+		BlendMode: Additive
+	large_explosion: DATA
+		Start: 3988
+		Length: 22
+		BlendMode: Additive
+	artillery: DATA
+		Start: 3988
+		Length: 22
+		BlendMode: Additive
+	small_artillery: DATA
+		Start: 3390
+		Length: 12
+		Tick: 60
+		BlendMode: Additive
+	small_napalm: DATA
+		Start: 3421
+		Length: 8
+		BlendMode: Additive
+	shockwave: DATA
+		Start: 3687
+		Length: 6
+		BlendMode: Additive
+		Tick: 120
+	deviator: DATA
+		Start: 3512
+		Length: 23
+		BlendMode: Additive
+		Tick: 60
+
+laserfire:
+	idle: DATA
+		Start: 3386
+		Length: 4
+		Tick: 80
+		BlendMode: Additive
+
+pips:
+	groups: DATA
+		Start: 17
+		Length: 10
+	tag-primary: DATA
+		Start: 110
+	pip-empty: DATA
+		Start: 15
+	pip-green: DATA
+		Start: 16
+
+clock:
+	idle:
+		Start: 0
+		Length: *
+
+powerdown:
+	disabled: speed
+		Start: 3
+
+poweroff:
+	offline:
+		Start: 0
+		Length: *
+		Tick: 160
+
+rank:
+	rank:
+		Start: 0
+		Length: *
+
+overlay:
+	build-valid-arrakis: DATA
+		Start: 0
+		Offset: -16,-16
+	build-invalid: DATA
+		Start: 1
+		Offset: -16,-16
+	target-select: DATA
+		Start: 2
+		Offset: -16,-16
+	target-valid-arrakis: DATA
+		Start: 0
+		Offset: -16,-16
+	target-invalid: DATA
+		Start: 1
+		Offset: -16,-16
+
+rallypoint:
+	flag:flagfly
+		Start: 0
+		Length: *
+		Offset: 11,-5
+	circles:fpls
+		Start: 0
+		Length: *
+
+rpg:
+	idle: DATA
+		Start: 3015
+		Facings: -32
+
+120mm:
+	idle: DATA
+		Start: 3014
+		Length: 1
+		BlendMode: Additive
+
+155mm:
+	idle: DATA
+		Start: 3081
+		Length: 1
+
+crate-effects:
+	dollar: DATA
+		Start: 3679
+		Length: 8
+	reveal-map: DATA
+		Start: 3947
+		Length: 18
+	hide-map: DATA
+		Start: 3911
+		Length: 36
+	levelup: levelup
+		Start: 0
+		Length: *
+		Tick: 200
+
+allyrepair:
+	repair: DATA
+		Frames: 3, 39
+		Length: 2
+		Tick: 300
+
+missile:
+	idle: DATA
+		Start: 3088
+		Facings: -32
+
+missile2:
+	idle: DATA
+		Start: 3306
+		Facings: -32
+
+atomic:
+	up: DATA
+		Start: 2147
+		Length: 1
+	down: DATA
+		Start: 2148
+		Length: 1
+
+fire:
+	1: DATA
+		Start: 3712
+		Length: 10
+		Offset: 0,-3
+		BlendMode: Additive
+	2: DATA
+		Start: 3723
+		Length: 11
+		Offset: 0,-3
+		BlendMode: Additive
+	3: DATA
+		Start: 3885
+		Length: 13
+		Offset: 0,-3
+		BlendMode: Additive
+	4: DATA
+		Start: 3712
+		Length: 10
+		Offset: 0,-3
+		BlendMode: Additive
+
+smoke_m:
+	idle: DATA
+		Start: 3418
+		Length: 2
+		BlendMode: Additive
+	loop: DATA
+		Start: 3418
+		Length: 2
+		BlendMode: Additive
+	end: DATA
+		Start: 3418
+		Length: 3
+		BlendMode: Additive
+
+bombs:
+	open: DATA
+		Start: 3280
+		Length: 4
+	idle: DATA
+		Start: 3280
+		Length: 4
+
+parach:
+	open:
+		Start: 0
+		Length: 5
+	idle:
+		Start: 5
+		Length: 11
+
+mpspawn:
+	idle:
+		Start: 0
+		Length: *
+
+waypoint:
+	idle:
+		Start: 0
+		Length: *
+
+sietch:
+	idle: DATA
+		Start: 2998
+
+doubleblast:
+	idle: DATA
+		Start: 3279
+		Facings: -16
+		BlendMode: Additive
+
+doubleblastbullet:
+	idle: DATA
+		Start: 3248
+		Facings: -16
+		BlendMode: Additive
+
+icon:
+	paratroopers: DATA
+		Start: 4029
+		Offset: -30,-24
+	ornistrike: DATA
+		Start: 4031
+		Offset: -30,-24
+	deathhand: DATA
+		Start: 4035
+		Offset: -30,-24
+
+crate:
+	idle: DATA
+		Start: 102
+		ZOffset: -511
+		Offset: -16,-16
+	land: DATA
+		Start: 102
+		ZOffset: -511
+		Offset: -16,-16
+
+spicebloom:
+	make: DATA
+		Start: 107
+		Length: 3
+		Offset: -16,-16
+	active: DATA
+		Start: 109
+		Length: 1
+		ZOffset: -511
+		Offset: -16,-16
+	idle: DATA
+		Start: 109
+		ZOffset: -511
+		Offset: -16,-16
+
+moveflsh:
+	idle: DATA
+		Start: 3621
+		Length: 5
+		Tick: 80
+		BlendMode: Subtractive
