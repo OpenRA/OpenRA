@@ -1,0 +1,1618 @@
+walla:
+	idle: DATA
+		Frames: 2527, 2530, 2528, 2538, 2531, 2532, 2542, 2535, 2529, 2539, 2533, 2534, 2540, 2536, 2537, 2541
+		Length: 16
+		Offset: -16,16
+	scratched-idle: DATA
+		Frames: 2527, 2530, 2528, 2538, 2531, 2532, 2542, 2535, 2529, 2539, 2533, 2534, 2540, 2536, 2537, 2541
+		Length: 16
+		Offset: -16,16
+	damaged-idle: DATA
+		Frames: 2543, 2546, 2544, 2554, 2547, 2548, 2558, 2551, 2545, 2555, 2549, 2550, 2556, 2552, 2553, 2557
+		Length: 16
+		Offset: -16,16
+	critical-idle: DATA
+		Frames: 2543, 2546, 2544, 2554, 2547, 2548, 2558, 2551, 2545, 2555, 2549, 2550, 2556, 2552, 2553, 2557
+		Length: 16
+		Offset: -16,16
+	icon: DATA
+		Start: 4063
+		Offset: -30,-24
+
+wallh:
+	idle: DATA
+		Frames: 2687, 2690, 2688, 2698, 2691, 2692, 2702, 2695, 2689, 2699, 2693, 2694, 2700, 2696, 2697, 2701
+		Length: 16
+		Offset: -16,16
+	scratched-idle: DATA
+		Frames: 2687, 2690, 2688, 2698, 2691, 2692, 2702, 2695, 2689, 2699, 2693, 2694, 2700, 2696, 2697, 2701
+		Length: 16
+		Offset: -16,16
+	damaged-idle: DATA
+		Frames: 2703, 2706, 2704, 2714, 2707, 2708, 2718, 2711, 2705, 2715, 2709, 2710, 2716, 2712, 2713, 2717
+		Length: 16
+		Offset: -16,16
+	critical-idle: DATA
+		Frames: 2703, 2706, 2704, 2714, 2707, 2708, 2718, 2711, 2705, 2715, 2709, 2710, 2716, 2712, 2713, 2717
+		Length: 16
+		Offset: -16,16
+	icon: DATA
+		Start: 4064
+		Offset: -30,-24
+
+wallo:
+	idle: DATA
+		Frames: 2847, 2850, 2848, 2858, 2851, 2852, 2862, 2855, 2849, 2859, 2853, 2854, 2860, 2856, 2857, 2861
+		Length: 16
+		Offset: -16,16
+	scratched-idle: DATA
+		Frames: 2847, 2850, 2848, 2858, 2851, 2852, 2862, 2855, 2849, 2859, 2853, 2854, 2860, 2856, 2857, 2861
+		Length: 16
+		Offset: -16,16
+	damaged-idle: DATA
+		Frames: 2863, 2866, 2864, 2874, 2867, 2868, 2878, 2871, 2865, 2875, 2869, 2870, 2876, 2872, 2873, 2877
+		Length: 16
+		Offset: -16,16
+	critical-idle: DATA
+		Frames: 2863, 2866, 2864, 2874, 2867, 2868, 2878, 2871, 2865, 2875, 2869, 2870, 2876, 2872, 2873, 2877
+		Length: 16
+		Offset: -16,16
+	icon: DATA
+		Start: 4065
+		Offset: -30,-24
+
+guntowera:
+	idle: DATA
+		Start: 2573
+		Facings: 1
+		Offset: -24,24
+	recoil: DATA
+		Start: 2573
+		Facings: 1
+		Offset: -24,24
+	damaged-idle: DATA
+		Start: 2573
+		Facings: 1
+		Offset: -24,24
+	damaged-recoil: DATA
+		Start: 2573
+		Facings: 1
+		Offset: -24,24
+	turret: DATA
+		Start: 2589
+		Facings: -32
+		Offset: -24,24
+	muzzle: DATA
+		Frames: 3775, 3775, 3776, 3776, 3777, 3777, 3778, 3778, 3779, 3779, 3780, 3780, 3781, 3781, 3782, 3782, 3783, 3783, 3784, 3784, 3785, 3785, 3786, 3786, 3787, 3787, 3788, 3788, 3789, 3789, 3790, 3790, 3791, 3791, 3792, 3792, 3793, 3793, 3794, 3794, 3795, 3795, 3796, 3796, 3797, 3797, 3798, 3798, 3799, 3799, 3800, 3800, 3801, 3801, 3802, 3802, 3803, 3803, 3804, 3804, 3805, 3805, 3806, 3806
+		Facings: -32
+		Length: 2
+		BlendMode: Additive
+	icon: DATA
+		Start: 4069
+		Offset: -30,-24
+
+guntowerh:
+	idle: DATA
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	recoil: DATA
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	damaged-idle: DATA
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	damaged-recoil: DATA
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	turret: DATA
+		Start: 2749
+		Facings: -32
+		Offset: -24,24
+	muzzle: DATA
+		Frames: 3775, 3775, 3776, 3776, 3777, 3777, 3778, 3778, 3779, 3779, 3780, 3780, 3781, 3781, 3782, 3782, 3783, 3783, 3784, 3784, 3785, 3785, 3786, 3786, 3787, 3787, 3788, 3788, 3789, 3789, 3790, 3790, 3791, 3791, 3792, 3792, 3793, 3793, 3794, 3794, 3795, 3795, 3796, 3796, 3797, 3797, 3798, 3798, 3799, 3799, 3800, 3800, 3801, 3801, 3802, 3802, 3803, 3803, 3804, 3804, 3805, 3805, 3806, 3806
+		Facings: -32
+		Length: 2
+		BlendMode: Additive
+	icon: DATA
+		Frames: 4070
+		Offset: -30,-24
+
+guntowero:
+	idle: DATA
+		Start: 2893
+		Facings: 1
+		Offset: -24,24
+	recoil: DATA
+		Start: 2893
+		Facings: 1
+		Offset: -24,24
+	damaged-idle: DATA
+		Start: 2893
+		Facings: 1
+		Offset: -24,24
+	damaged-recoil: DATA
+		Start: 2893
+		Facings: 1
+		Offset: -24,24
+	turret: DATA
+		Start: 2909
+		Facings: -32
+		Offset: -24,24
+	muzzle: DATA
+		Frames: 3775, 3775, 3776, 3776, 3777, 3777, 3778, 3778, 3779, 3779, 3780, 3780, 3781, 3781, 3782, 3782, 3783, 3783, 3784, 3784, 3785, 3785, 3786, 3786, 3787, 3787, 3788, 3788, 3789, 3789, 3790, 3790, 3791, 3791, 3792, 3792, 3793, 3793, 3794, 3794, 3795, 3795, 3796, 3796, 3797, 3797, 3798, 3798, 3799, 3799, 3800, 3800, 3801, 3801, 3802, 3802, 3803, 3803, 3804, 3804, 3805, 3805, 3806, 3806
+		Facings: -32
+		Length: 2
+		BlendMode: Additive
+	icon: DATA
+		Start: 4071
+		Offset: -30,-24
+
+rockettowera:
+	idle: DATA
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	recoil: DATA
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	damaged-idle: DATA
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	damaged-recoil: DATA
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	turret: DATA
+		Start: 2637
+		Facings: -32
+		Offset: -24,24
+	icon: DATA
+		Start: 4075
+		Offset: -30,-24
+
+rockettowerh:
+	idle: DATA
+		Start: 2781
+		Facings: 1
+		Offset: -24,24
+	recoil: DATA
+		Start: 2781
+		Facings: 1
+		Offset: -24,24
+	damaged-idle: DATA
+		Start: 2781
+		Facings: 1
+		Offset: -24,24
+	damaged-recoil: DATA
+		Start: 2781
+		Facings: 1
+		Offset: -24,24
+	turret: DATA
+		Start: 2797
+		Facings: -32
+		Offset: -24,24
+	icon: DATA
+		Start: 4076
+		Offset: -30,-24
+
+rockettowero:
+	idle: DATA
+		Start: 2941
+		Facings: 1
+		Offset: -24,24
+	recoil: DATA
+		Start: 2941
+		Facings: 1
+		Offset: -24,24
+	damaged-idle: DATA
+		Start: 2941
+		Facings: 1
+		Offset: -24,24
+	damaged-recoil: DATA
+		Start: 2941
+		Facings: 1
+		Offset: -24,24
+	turret: DATA
+		Start: 2957
+		Facings: -32
+		Offset: -24,24
+	icon: DATA
+		Start: 4077
+		Offset: -30,-24
+
+conyarda:
+	idle: DATA
+		Start: 2559
+		Offset: -48,64
+	make: DATA
+		Start: 4109
+		Length: 30
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4139
+		Length: 12
+		Offset: -48,64
+		Tick: 170
+	damaged-idle: DATA
+		Start: 2560
+		Offset: -48,64
+#	build: DATA # TODO: overlay
+#		Start: 4436
+#		Length: 14
+#		Offset: -48,64
+#	damaged-build: DATA  # TODO: overlay
+#		Start: 4436
+#		Length: 14
+#		Offset: -48,64
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4046
+		Offset: -30,-24
+
+repaira:
+	make: DATA
+		Start: 4370
+		Length: 10
+		Offset: -48,48
+	crumble-overlay: DATA
+		Start: 4380
+		Length: 10
+		Offset: -48,48
+		Tick: 100
+	idle: DATA
+		Start: 2571
+		Offset: -48,48
+		ZOffset: -1c511
+#	active: DATA # TODO: overlay
+#		Start: 4746
+#		Length: 14
+#		Offset: -48,48
+#		ZOffset: -1c511
+#	damaged-active: DATA # TODO: overlay
+#		Start: 4746
+#		Length: 14
+#		Tick: 60
+#		Offset: -48,48
+#		ZOffset: -1c511
+	damaged-idle: DATA
+		Start: 2572
+		Offset: -48,48
+		ZOffset: -1c511
+	icon: DATA
+		Start: 4096
+		Offset: -30,-24
+
+repairh:
+	make: DATA
+		Start: 4370
+		Length: 10
+		Offset: -48,48
+	crumble-overlay: DATA
+		Start: 4380
+		Length: 10
+		Offset: -48,48
+		Tick: 100
+	idle: DATA
+		Start: 2731
+		Offset: -48,48
+		ZOffset: -1c511
+#	active: DATA # TODO: overlay
+#		Start: 4746
+#		Length: 14
+#		Offset: -48,48
+#		ZOffset: -1c511
+#	damaged-active: DATA # TODO: overlay
+#		Start: 4746
+#		Length: 14
+#		Tick: 60
+#		Offset: -48,48
+#		ZOffset: -1c511
+	damaged-idle: DATA
+		Start: 2732
+		Offset: -48,48
+		ZOffset: -1c511
+	icon: DATA
+		Start: 4097
+		Offset: -30,-24
+
+repairo:
+	make: DATA
+		Start: 4370
+		Length: 10
+		Offset: -48,48
+	crumble-overlay: DATA
+		Start: 4380
+		Length: 10
+		Offset: -48,48
+		Tick: 100
+	idle: DATA
+		Start: 2891
+		Offset: -48,48
+		ZOffset: -1c511
+#	active: DATA # TODO: overlay
+#		Start: 4746
+#		Length: 14
+#		Offset: -48,48
+#		ZOffset: -1c511
+#	damaged-active: DATA # TODO: overlay
+#		Start: 4746
+#		Length: 14
+#		Tick: 60
+#		Offset: -48,48
+#		ZOffset: -1c511
+	damaged-idle: DATA
+		Start: 2892
+		Offset: -48,48
+		ZOffset: -1c511
+	icon: DATA
+		Start: 4098
+		Offset: -30,-24
+
+starporta:
+	idle: DATA
+		Start: 2671
+		ZOffset: -1c511
+		Offset: -48,64
+	active: DATA
+		Start: 2671
+		Length: 1
+		ZOffset: -1c511
+		Offset: -48,64
+	damaged-idle: DATA
+		Start: 2672
+		ZOffset: -1c511
+		Offset: -48,64
+	damaged-active: DATA
+		Start: 2672
+		ZOffset: -1c511
+		Offset: -48,64
+	make: DATA
+		Start: 4347
+		Length: 11
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4358
+		Length: 11
+		Offset: -48,64
+		Tick: 100
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4092
+		Offset: -30,-24
+
+pwra:
+	idle: DATA
+		Start: 2523
+		Offset: -32,64
+	make: DATA
+		Start: 4151
+		Length: 12
+		Offset: -32,64
+	crumble-overlay: DATA
+		Start: 4163
+		Length: 12
+		Offset: -32,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2524
+		Offset: -32,64
+	idle-zaps: DATA
+		Start: 4492
+		Length: 10
+		Offset: -32,64
+		Tick: 200
+	damaged-idle-zaps: DATA
+		Start: 4497
+		Length: 5
+		Offset: -32,64
+		Tick: 200
+	bib: BLOXBASE
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
+	icon: DATA
+		Start: 4056
+		Offset: -30,-24
+
+barra:
+	idle: DATA
+		Start: 2525
+		Offset: -32,64
+	make: DATA
+		Start: 4213
+		Length: 8
+		Offset: -32,64
+	crumble-overlay: DATA
+		Start: 4221
+		Length: 9
+		Offset: -32,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2526
+		Offset: -32,64
+	bib: BLOXBASE
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
+	icon: DATA
+		Start: 4059
+		Offset: -30,-24
+
+radara:
+	idle: DATA
+		Start: 2521
+		Offset: -48,80
+	make: DATA
+		Start: 4254
+		Length: 9
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4263
+		Length: 10
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2522
+		Offset: -48,80
+	idle-dish: DATA
+		Start: 4522
+		Length: 30
+		Offset: -48,80
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4072
+		Offset: -30,-24
+
+refa:
+	idle: DATA
+		Start: 2561
+		Length: 1
+		Offset: -48,64
+	make: DATA
+		Start: 4231
+		Length: 11
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4241
+		Length: 12
+		Offset: -48,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2561
+		Offset: -48,64
+	idle-top: DATA
+		Start: 2562
+		Offset: -48,64
+	damaged-idle-top: DATA
+		Start: 2563
+		Offset: -48,64
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4066
+		Offset: -30,-24
+
+siloa:
+	idle: DATA
+		Start: 2566
+		Length: 4
+		Offset: -16,16
+	damaged-idle: DATA
+		Start: 2569
+		Length: 1
+		Offset: -16,16
+	make: DATA
+		Start: 4313
+		Length: 7
+		Offset: -16,16
+	crumble-overlay: DATA
+		Start: 4320
+		Length: 7
+		Offset: -16,16
+		Tick: 200
+	icon: DATA
+		Start: 4084
+		Offset: -30,-24
+
+hightecha:
+	idle: DATA
+		Start: 2564
+		Offset: -48,80
+	make: DATA
+		Start: 4274
+		Length: 10
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4284
+		Length: 10
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2565
+		Offset: -48,80
+	idle-welding: DATA
+		Start: 4614
+		Length: 30
+		Offset: -48,80
+		Tick: 500
+		BlendMode: Additive
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4078
+		Offset: -30,-24
+
+researcha:
+	idle: DATA
+		Start: 2669
+		Offset: -48,80
+	make: DATA
+		Start: 4391
+		Length: 10
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4401
+		Length: 11
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2670
+		Offset: -48,80
+	idle-lights: DATA
+		Start: 4760
+		Length: 60
+		Tick: 80
+		Offset: -48,80
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4099
+		Offset: -30,-24
+
+researchh:
+	idle: DATA
+		Start: 2829
+		Offset: -48,80
+	make: DATA
+		Start: 4391
+		Length: 10
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4401
+		Length: 11
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2830
+		Offset: -48,80
+	idle-lights: DATA
+		Start: 4760
+		Length: 60
+		Tick: 80
+		Offset: -48,80
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4100
+		Offset: -30,-24
+
+researcho:
+	idle: DATA
+		Start: 2989
+		Offset: -48,80
+	make: DATA
+		Start: 4391
+		Length: 10
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4401
+		Length: 11
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2990
+		Offset: -48,80
+	idle-lights: DATA
+		Start: 4760
+		Length: 60
+		Tick: 80
+		Offset: -48,80
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4101
+		Offset: -30,-24
+
+palacea:
+	idle: DATA
+		Start: 2676
+		Offset: -48,48
+	make: DATA
+		Start: 4413
+		Length: 11
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4424
+		Length: 11
+		Offset: -48,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2677
+		Offset: -48,48
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4102
+		Offset: -30,-24
+
+lighta:
+	idle: DATA
+		Start: 2673
+		Length: 1
+		Offset: -48,64
+	make: DATA
+		Start: 4295
+		Length: 8
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4303
+		Length: 9
+		Offset: -48,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2673
+		Offset: -48,64
+	build-top: DATA
+		Start: 2674
+		Length: 1
+		Offset: -48,64
+	damaged-build-top: DATA
+		Start: 2675
+		Length: 1
+		Offset: -48,64
+	idle-top: DATA
+		Start: 2674
+		Offset: -48,64
+	damaged-idle-top: DATA
+		Start: 2675
+		Offset: -48,64
+	idle-welding: DATA
+		Start: 4644
+		Length: 30
+		Offset: -48,64
+		Tick: 200
+		BlendMode: Additive
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4081
+		Offset: -30,-24
+
+heavya:
+	idle: DATA
+		Start: 2518
+		Length: 1
+		Offset: -48,80
+	make: DATA
+		Start: 4328
+		Length: 9
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4337
+		Length: 9
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2518
+		Offset: -48,80
+	build-top: DATA
+		Start: 2519
+		Length: 1
+		Offset: -48,80
+	damaged-build-top: DATA
+		Start: 2520
+		Length: 1
+		Offset: -48,80
+	idle-top: DATA
+		Start: 2519
+		Offset: -48,80
+	damaged-idle-top: DATA
+		Start: 2520
+		Offset: -48,80
+	idle-welding: DATA
+		Start: 4674
+		Length: 47
+		Offset: -48,80
+		Tick: 200
+		BlendMode: Additive
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4087
+		Offset: -30,-24
+
+conyardh:
+	idle: DATA
+		Start: 2719
+		Offset: -48,64
+	make: DATA
+		Start: 4109
+		Length: 30
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4139
+		Length: 12
+		Offset: -48,64
+		Tick: 170
+	damaged-idle: DATA
+		Start: 2720
+		Offset: -48,64
+#	build: DATA  # TODO: overlay
+#		Start: 4450
+#		Length: 14
+#		Offset: -48,64
+#	damaged-build: DATA  # TODO: overlay
+#		Start: 4450
+#		Length: 14
+#		Offset: -48,64
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4047
+		Offset: -30,-24
+
+starporth:
+	idle: DATA
+		Start: 2831
+		ZOffset: -1c511
+		Offset: -48,64
+	active: DATA
+		Start: 2831
+		Length: 1
+		Offset: -48,64
+		ZOffset: -1c511
+	damaged-idle: DATA
+		Start: 2832
+		Offset: -48,64
+		ZOffset: -1c511
+	damaged-active: DATA
+		Start: 2832
+		Offset: -48,64
+		ZOffset: -1c511
+	make: DATA
+		Start: 4347
+		Length: 11
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4358
+		Length: 11
+		Offset: -48,64
+		Tick: 100
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4093
+		Offset: -30,-24
+
+pwrh:
+	idle: DATA
+		Start: 2683
+		Offset: -32,64
+	make: DATA
+		Start: 4151
+		Length: 12
+		Offset: -32,64
+	crumble-overlay: DATA
+		Start: 4163
+		Length: 12
+		Offset: -32,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2684
+		Offset: -32,64
+	idle-zaps: DATA
+		Start: 4502
+		Length: 10
+		Offset: -32,64
+		Tick: 200
+	damaged-idle-zaps: DATA
+		Start: 4507
+		Length: 5
+		Offset: -32,64
+		Tick: 200
+	bib: BLOXBASE
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
+	icon: DATA
+		Start: 4057
+		Offset: -30,-24
+
+barrh:
+	idle: DATA
+		Start: 2685
+		Offset: -32,64
+	make: DATA
+		Start: 4213
+		Length: 8
+		Offset: -32,64
+	crumble-overlay: DATA
+		Start: 4221
+		Length: 9
+		Offset: -32,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2686
+		Offset: -32,64
+	bib: BLOXBASE
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
+	icon: DATA
+		Start: 4060
+		Offset: -30,-24
+
+radarh:
+	idle: DATA
+		Start: 2681
+		Offset: -48,80
+	make: DATA
+		Start: 4254
+		Length: 9
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4263
+		Length: 10
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2682
+		Offset: -48,80
+	idle-dish: DATA
+		Start: 4553
+		Length: 30
+		Offset: -48,80
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4073
+		Offset: -30,-24
+
+refh:
+	idle: DATA
+		Start: 2721
+		Length: 1
+		Offset: -48,64
+	make: DATA
+		Start: 4231
+		Length: 11
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4241
+		Length: 12
+		Offset: -48,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2721
+		Offset: -48,64
+	idle-top: DATA
+		Start: 2722
+		Offset: -48,64
+	damaged-idle-top: DATA
+		Start: 2723
+		Offset: -48,64
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4067
+		Offset: -30,-24
+
+siloh:
+	idle: DATA
+		Start: 2726
+		Length: 4
+		Offset: -16,16
+	damaged-idle: DATA
+		Start: 2730
+		Length: 1
+		Offset: -16,16
+	make: DATA
+		Start: 4313
+		Length: 7
+		Offset: -16,16
+	crumble-overlay: DATA
+		Start: 4320
+		Length: 7
+		Offset: -16,16
+		Tick: 200
+	icon: DATA
+		Start: 4085
+		Offset: -30,-24
+
+hightechh:
+	idle: DATA
+		Start: 2724
+		Offset: -48,80
+	make: DATA
+		Start: 4274
+		Length: 10
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4284
+		Length: 10
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2725
+		Offset: -48,80
+	idle-welding: DATA
+		Start: 4614
+		Length: 30
+		Offset: -48,80
+		Tick: 500
+		BlendMode: Additive
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4079
+		Offset: -30,-24
+
+palaceh:
+	idle: DATA
+		Start: 2836
+		Offset: -48,64
+	make: DATA
+		Start: 4413
+		Length: 11
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4424
+		Length: 11
+		Offset: -48,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2837
+		Offset: -48,64
+#	active: DATA # TODO: overlay
+#		Start: 4820
+#		Length: 20
+#		Offset: -48,64
+	damaged-active: DATA
+		Start: 4820
+		Length: 20
+		Offset: -48,64
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4103
+		Offset: -30,-24
+
+lighth:
+	idle: DATA
+		Start: 2833
+		Length: 1
+		Offset: -48,64
+	make: DATA
+		Start: 4295
+		Length: 8
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4303
+		Length: 9
+		Offset: -48,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2833
+		Offset: -48,64
+	build-top: DATA
+		Start: 2834
+		Length: 1
+		Offset: -48,64
+	damaged-build-top: DATA
+		Start: 2835
+		Length: 1
+		Offset: -48,64
+	idle-top: DATA
+		Start: 2834
+		Offset: -48,64
+	damaged-idle-top: DATA
+		Start: 2835
+		Offset: -48,64
+	idle-welding: DATA
+		Start: 4644
+		Length: 30
+		Offset: -48,64
+		Tick: 200
+		BlendMode: Additive
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4082
+		Offset: -30,-24
+
+heavyh:
+	idle: DATA
+		Start: 2678
+		Length: 1
+		Offset: -48,80
+	make: DATA
+		Start: 4328
+		Length: 9
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4337
+		Length: 9
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2678
+		Offset: -48,80
+	build-top: DATA
+		Start: 2679
+		Length: 1
+		Offset: -48,80
+	damaged-build-top: DATA
+		Start: 2680
+		Length: 1
+		Offset: -48,80
+	idle-top: DATA
+		Start: 2679
+		Offset: -48,80
+	damaged-idle-top: DATA
+		Start: 2680
+		Offset: -48,80
+	idle-welding: DATA
+		Start: 4674
+		Length: 47
+		Offset: -48,80
+		Tick: 200
+		BlendMode: Additive
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4088
+		Offset: -30,-24
+
+conyardo:
+	idle: DATA
+		Start: 2879
+		Offset: -48,64
+	make: DATA
+		Start: 4109
+		Length: 30
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4139
+		Length: 12
+		Offset: -48,64
+		Tick: 170
+	damaged-idle: DATA
+		Start: 2880
+		Offset: -48,64
+#	build: DATA # TODO: overlay
+#		Start: 4464
+#		Length: 14
+#		Offset: -48,64
+#	damaged-build: DATA # TODO: overlay
+#		Start: 4464
+#		Length: 14
+#		Offset: -48,64
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4048
+		Offset: -30,-24
+
+starporto:
+	idle: DATA
+		Start: 2991
+		Offset: -48,64
+		ZOffset: -1c511
+	active: DATA
+		Start: 2991
+		Length: 1
+		Offset: -48,64
+		ZOffset: -1c511
+	damaged-idle: DATA
+		Start: 2992
+		Offset: -48,64
+		ZOffset: -1c511
+	damaged-active: DATA
+		Start: 2992
+		Offset: -48,64
+		ZOffset: -1c511
+	make: DATA
+		Start: 4347
+		Length: 11
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4358
+		Length: 11
+		Offset: -48,64
+		Tick: 100
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4094
+		Offset: -30,-24
+
+pwro:
+	idle: DATA
+		Start: 2843
+		Length: 1
+		Offset: -32,64
+	make: DATA
+		Start: 4151
+		Length: 12
+		Offset: -32,64
+	crumble-overlay: DATA
+		Start: 4163
+		Length: 12
+		Offset: -32,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2844
+		Offset: -32,64
+	idle-zaps: DATA
+		Start: 4512
+		Length: 10
+		Offset: -32,64
+		Tick: 200
+	damaged-idle-zaps: DATA
+		Start: 4517
+		Length: 5
+		Offset: -32,64
+		Tick: 200
+	bib: BLOXBASE
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
+	icon: DATA
+		Start: 4058
+		Offset: -30,-24
+
+barro:
+	idle: DATA
+		Start: 2845
+		Offset: -32,64
+	make: DATA
+		Start: 4213
+		Length: 8
+		Offset: -32,64
+	crumble-overlay: DATA
+		Start: 4221
+		Length: 9
+		Offset: -32,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2846
+		Offset: -32,64
+	bib: BLOXBASE
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
+	icon: DATA
+		Start: 4061
+		Offset: -30,-24
+
+radaro:
+	idle: DATA
+		Start: 2841
+		Offset: -48,80
+	make: DATA
+		Start: 4254
+		Length: 9
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4263
+		Length: 10
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2842
+		Offset: -48,80
+	idle-dish: DATA
+		Start: 4583
+		Length: 30
+		Offset: -48,80
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4074
+		Offset: -30,-24
+
+refo:
+	idle: DATA
+		Start: 2881
+		Length: 1
+		Offset: -48,64
+	make: DATA
+		Start: 4231
+		Length: 11
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4241
+		Length: 12
+		Offset: -48,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2881
+		Offset: -48,64
+	idle-top: DATA
+		Start: 2882
+		Offset: -48,64
+	damaged-idle-top: DATA
+		Start: 2883
+		Offset: -48,64
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4068
+		Offset: -30,-24
+
+siloo:
+	idle: DATA
+		Start: 2886
+		Length: 4
+		Offset: -16,16
+	damaged-idle: DATA
+		Start: 2890
+		Length: 1
+		Offset: -16,16
+	make: DATA
+		Start: 4313
+		Length: 7
+		Offset: -16,16
+	crumble-overlay: DATA
+		Start: 4320
+		Length: 7
+		Offset: -16,16
+		Tick: 200
+	icon: DATA
+		Start: 4086
+		Offset: -30,-24
+
+hightecho:
+	idle: DATA
+		Start: 2884
+		Offset: -48,80
+	make: DATA
+		Start: 4274
+		Length: 10
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4284
+		Length: 10
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2885
+		Offset: -48,80
+	idle-welding: DATA
+		Start: 4614
+		Length: 30
+		Offset: -48,80
+		Tick: 500
+		BlendMode: Additive
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4080
+		Offset: -30,-24
+
+palaceo:
+	idle: DATA
+		Start: 2996
+		Offset: -48,64
+	make: DATA
+		Start: 4413
+		Length: 11
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4424
+		Length: 11
+		Offset: -48,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2997
+		Offset: -48,64
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4104
+		Offset: -30,-24
+
+lighto:
+	idle: DATA
+		Start: 2993
+		Length: 1
+		Offset: -48,64
+	make: DATA
+		Start: 4295
+		Length: 8
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4303
+		Length: 9
+		Offset: -48,64
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2993
+		Offset: -48,64
+	build-top: DATA
+		Start: 2994
+		Length: 1
+		Offset: -48,64
+	damaged-build-top: DATA
+		Start: 2995
+		Length: 1
+		Offset: -48,64
+	idle-top: DATA
+		Start: 2994
+		Offset: -48,64
+	damaged-idle-top: DATA
+		Start: 2995
+		Offset: -48,64
+	idle-welding: DATA
+		Start: 4644
+		Length: 30
+		Offset: -48,64
+		Tick: 200
+		BlendMode: Additive
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4083
+		Offset: -30,-24
+
+heavyo:
+	idle: DATA
+		Start: 2838
+		Length: 1
+		Offset: -48,80
+	make: DATA
+		Start: 4328
+		Length: 9
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4337
+		Length: 9
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 2838
+		Offset: -48,80
+	build-top: DATA
+		Start: 2839
+		Length: 1
+		Offset: -48,80
+	damaged-build-top: DATA
+		Start: 2840
+		Length: 1
+		Offset: -48,80
+	idle-top: DATA
+		Start: 2839
+		Offset: -48,80
+	damaged-idle-top: DATA
+		Start: 2840
+		Offset: -48,80
+	idle-welding: DATA
+		Start: 4674
+		Length: 47
+		Offset: -48,80
+		Tick: 200
+		BlendMode: Additive
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4089
+		Offset: -30,-24
+
+palacec: # TODO: unused
+	idle: DATA
+		Start: 3004
+		Offset: -48,64
+	damaged-idle: DATA
+		Start: 3005
+		Offset: -48,64
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: palacecicon
+		Start: 0
+	make: DATA
+		Start: 4413
+		Length: 11
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4424
+		Length: 11
+		Offset: -48,64
+		Tick: 100
+
+starportc: # TODO: unused
+	idle: DATA
+		Start: 2999
+		Offset: -48,64
+		ZOffset: -1c511
+	active: DATA
+		Start: 2999
+		Length: 1
+		Offset: -48,64
+		ZOffset: -1c511
+	damaged-idle: DATA
+		Start: 3000
+		Offset: -48,64
+		ZOffset: -1c511
+	damaged-active: DATA
+		Start: 3000
+		Offset: -48,64
+		ZOffset: -1c511
+	make: DATA
+		Start: 4347
+		Length: 11
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4358
+		Length: 11
+		Offset: -48,64
+		Tick: 100
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA # TODO: blank
+		Start: 4020
+		Offset: -30,-24
+
+heavyc: # TODO: unused
+	idle: DATA
+		Start: 3001
+		Length: 1
+		Offset: -48,64
+	make: DATA
+		Start: 4328
+		Length: 9
+		Offset: -48,80
+	crumble-overlay: DATA
+		Start: 4337
+		Length: 9
+		Offset: -48,80
+		Tick: 100
+	damaged-idle: DATA
+		Start: 3001
+		Offset: -48,64
+	build-top: DATA
+		Start: 3002
+		Length: 1
+		Offset: -48,64
+	damaged-build-top: DATA
+		Start: 3003
+		Length: 1
+		Offset: -48,64
+	idle-top: DATA
+		Start: 3002
+		Offset: -48,64
+	damaged-idle-top: DATA
+		Start: 3003
+		Offset: -48,64
+	idle-welding: DATA
+		Start: 4674
+		Length: 47
+		Offset: -48,80
+		Tick: 200
+		BlendMode: Additive
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA # TODO: blank
+		Start: 4020
+		Offset: -30,-24
+
+conyardc: # TODO: unused
+	idle: DATA
+		Start: 3006
+		Offset: -48,64
+	make: DATA
+		Start: 4109
+		Length: 30
+		Offset: -48,64
+	crumble-overlay: DATA
+		Start: 4139
+		Length: 12
+		Offset: -48,64
+		Tick: 200
+	damaged-idle: DATA
+		Start: 3007
+		Offset: -48,64
+#	build: DATA  # TODO: overlay
+#		Start: 4478
+#		Length: 14
+#		Offset: -48,64
+#	damaged-build: DATA  # TODO: overlay
+#		Start: 4478
+#		Length: 14
+#		Offset: -48,64
+	bib: BLOXBASE
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	icon: DATA
+		Start: 4049
+		Offset: -30,-24
+
+plates: # TODO: unused
+	idle: DATA
+		Start: 3008
+		Length: 6
+	4-plates-icon: DATA
+		Start: 4050
+		Offset: -30,-24
+	6-plates-icon: DATA
+		Start: 4053
+		Offset: -30,-24
