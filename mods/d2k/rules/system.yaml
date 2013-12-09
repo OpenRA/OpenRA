@@ -373,7 +373,6 @@ World:
 		ValidGround: Sand, Dune, Rock
 	PaletteFromCurrentTileset:
 		Name: terrain
-		ShadowIndex: 1
 	PaletteFromFile@d2k:
 		Name: d2k
 		Filename: d2k.pal
