@@ -177,6 +177,12 @@ namespace OpenRA.Renderer.Sdl2
 					ErrorHandler.CheckGlError();
 					Gl.glBlendEquation(Gl.GL_FUNC_REVERSE_SUBTRACT);
 					break;
+				case BlendMode.Multiply:
+					Gl.glEnable(Gl.GL_BLEND);
+					ErrorHandler.CheckGlError();
+					Gl.glBlendFuncSeparate(Gl.GL_DST_COLOR, Gl.GL_ZERO, Gl.GL_ONE, Gl.GL_ONE_MINUS_SRC_ALPHA);
+					ErrorHandler.CheckGlError();
+					break;
 			}
 
 			ErrorHandler.CheckGlError();

@@ -414,7 +414,7 @@ World:
 		Name: moveflash
 		Filename: DATA.R8
 		Offset: 2572352
-		A: 64
+		InvertColor: true
 	PaletteFromRGBA@disabled:
 		Name: disabled
 		R: 0
