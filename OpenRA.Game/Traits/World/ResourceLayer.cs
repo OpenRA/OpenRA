@@ -193,7 +193,10 @@ namespace OpenRA.Traits
 				return null;
 
 			if (--content[p.X, p.Y].Density < 0)
+			{
 				content[p.X, p.Y] = EmptyCell;
+				world.Map.CustomTerrain[p.X, p.Y] = null;
+			}
 
 			if (!dirty.Contains(p))
 				dirty.Add(p);
@@ -209,6 +212,7 @@ namespace OpenRA.Traits
 
 			// Clear cell
 			content[p.X, p.Y] = EmptyCell;
+			world.Map.CustomTerrain[p.X, p.Y] = null;
 
 			if (!dirty.Contains(p))
 				dirty.Add(p);
