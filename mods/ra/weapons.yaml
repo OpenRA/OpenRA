@@ -1007,120 +1007,101 @@ SCUD:
 		WaterImpactSound: splash9.aud
 
 Atomic:
+	ValidTargets: Ground, Water, Air
 	Warhead@impact:
-		Damage: 1000
-		Spread: 6
+		Damage: 1500
+		Spread: 24
+		SmudgeType: Scorch
+		Size: 1
 		Ore: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			Concrete: 25%
 		Explosion: nuke
 		WaterExplosion: nuke
 		InfDeath: 5
 		ImpactSound: kaboom1.aud
 	Warhead@areanuke1:
-		DamageModel: PerCell
-		Damage: 180
-		Size: 2,1
+		Damage: 600
+		Spread: 48
+		SmudgeType: Scorch
+		Size: 2
 		Ore: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			Concrete: 25%
 		Delay: 5
 		InfDeath: 5
 		ImpactSound: kaboom22.aud
 	Warhead@areanuke2:
-		DamageModel: PerCell
-		Damage: 180
-		Size: 3,2
+		Damage: 600
+		Spread: 72
+		SmudgeType: Scorch
+		Size: 3
 		Ore: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			Concrete: 25%
 		Delay: 10
 		InfDeath: 5
 	Warhead@areanuke3:
-		DamageModel: PerCell
-		Damage: 180
-		Size: 4,3
+		Damage: 600
+		Spread: 96
+		SmudgeType: Scorch
+		Size: 4
 		Ore: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			Concrete: 25%
 		Delay: 15
 		InfDeath: 5
 	Warhead@areanuke4:
-		DamageModel: PerCell
-		Damage: 180
+		Damage: 600
+		Spread: 120
 		SmudgeType: Scorch
-		Size: 5,4
+		Size: 5
 		Ore: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			Concrete: 25%
 		Delay: 20
 		InfDeath: 5
 
 MiniNuke:
+	ValidTargets: Ground, Water, Air
 	Warhead@impact:
-		Damage: 800
-		Spread: 6
+		Damage: 1500
+		Spread: 24
+		Size: 1
 		Ore: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			Concrete: 25%
 		Explosion: nuke
 		WaterExplosion: nuke
 		InfDeath: 5
 		ImpactSound: kaboom1.aud
 	Warhead@areanuke1:
-		DamageModel: PerCell
-		Damage: 180
-		Size: 2,1
+		Damage: 600
+		Spread: 48
+		Size: 2
 		Ore: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			Concrete: 25%
 		Delay: 5
 		InfDeath: 5
 		ImpactSound: kaboom22
 	Warhead@areanuke2:
-		DamageModel: PerCell
-		Damage: 180
-		Size: 3,2
+		Damage: 600
+		Spread: 72
+		Size: 3
 		Ore: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			Concrete: 25%
 		Delay: 10
 		InfDeath: 5
 	Warhead@areanuke3:
-		DamageModel: PerCell
-		Damage: 180
-		Size: 4,3
+		Damage: 600
+		Spread: 96
+		Size: 4
 		SmudgeType: Scorch
 		Ore: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			Concrete: 25%
 		Delay: 15
 		InfDeath: 5
 
