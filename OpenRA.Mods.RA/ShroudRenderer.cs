@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,110 +8,204 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Drawing;
-using OpenRA.Traits;
+using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.FileFormats.Graphics;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	public class ShroudRendererInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new ShroudRenderer(init.world); }
+		public string Sequence = "shroud";
+		public string[] Variants = new[] { "shroud" };
+
+		[Desc("Bitfield of shroud directions for each frame. Lower four bits are",
+		      "corners clockwise from TL; upper four are edges clockwise from top")]
+		public int[] Index = new[] { 12, 9, 8, 3, 1, 6, 4, 2, 13, 11, 7, 14 };
+
+		[Desc("Use the upper four bits when calculating frame")]
+		public bool UseExtendedIndex = false;
+
+		[Desc("Palette index for synthesized unexplored tile")]
+		public int ShroudColor = 12;
+		public BlendMode ShroudBlend = BlendMode.Alpha;
+		public object Create(ActorInitializer init) { return new ShroudRenderer(init.world, this); }
 	}
 
-	public class ShroudRenderer : IRenderShroud
+	public class ShroudRenderer : IRenderShroud, IWorldLoaded
 	{
-		World world;
-		Map map;
-		Sprite[] shadowBits = Game.modData.SpriteLoader.LoadAllSprites("shadow");
-		Sprite[,] sprites, fogSprites;
+		struct ShroudTile
+		{
+			public CPos Position;
+			public float2 ScreenPosition;
+			public int Variant;
+
+			public Sprite Fog;
+			public Sprite Shroud;
+		}
+
+		Sprite[] sprites;
+		Sprite unexploredTile;
+		int[] spriteMap;
+
+		ShroudTile[] tiles;
+		int tileStride, variantStride;
+
 		int shroudHash;
-
-		bool initializePalettes = true;
 		PaletteReference fogPalette, shroudPalette;
+		Rectangle bounds;
+		bool useExtendedIndex;
 
-		static readonly byte[][] SpecialShroudTiles =
+		public ShroudRenderer(World world, ShroudRendererInfo info)
 		{
-			new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
-			new byte[] { 32, 32, 25, 25, 19, 19, 20, 20 },
-			new byte[] { 33, 33, 33, 33, 26, 26, 26, 26, 21, 21, 21, 21, 23, 23, 23, 23 },
-			new byte[] { 36, 36, 36, 36, 30, 30, 30, 30 },
-			new byte[] { 34, 16, 34, 16, 34, 16, 34, 16, 27, 22, 27, 22, 27, 22, 27, 22 },
-			new byte[] { 44 },
-			new byte[] { 37, 37, 37, 37, 37, 37, 37, 37, 31, 31, 31, 31, 31, 31, 31, 31 },
-			new byte[] { 40 },
-			new byte[] { 35, 24, 17, 18 },
-			new byte[] { 39, 39, 29, 29 },
-			new byte[] { 45 },
-			new byte[] { 43 },
-			new byte[] { 38, 28 },
-			new byte[] { 42 },
-			new byte[] { 41 },
-			new byte[] { 46 },
-		};
+			var map = world.Map;
+			bounds = map.Bounds;
+			useExtendedIndex = info.UseExtendedIndex;
 
-		public ShroudRenderer(World world)
-		{
-			this.world = world;
-			this.map = world.Map;
-
-			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];
-			fogSprites = new Sprite[map.MapSize.X, map.MapSize.Y];
+			tiles = new ShroudTile[map.MapSize.X * map.MapSize.Y];
+			tileStride = map.MapSize.X;
 
 			// Force update on first render
 			shroudHash = -1;
+
+			// Load sprite variants
+			sprites = new Sprite[info.Variants.Length * info.Index.Length];
+			variantStride = info.Index.Length;
+			for (var j = 0; j < info.Variants.Length; j++)
+			{
+				var seq = SequenceProvider.GetSequence(info.Sequence, info.Variants[j]);
+				for (var i = 0; i < info.Index.Length; i++)
+					sprites[j * variantStride + i] = seq.GetSprite(i);
+			}
+
+			// Mapping of shrouded directions -> sprite index
+			spriteMap = new int[useExtendedIndex ? 256 : 16];
+			for (var i = 0; i < info.Index.Length; i++)
+				spriteMap[info.Index[i]] = i;
+
+			// Set individual tile variants to reduce tiling
+			for (var i = 0; i < tiles.Length; i++)
+				tiles[i].Variant = Game.CosmeticRandom.Next(info.Variants.Length);
+
+			// Synthesize unexplored tile if it isn't defined
+			if (!info.Index.Contains(0))
+			{
+				var size = new Size(Game.modData.Manifest.TileSize, Game.modData.Manifest.TileSize);
+				var data = Exts.MakeArray<byte>(size.Width * size.Height, _ => (byte)info.ShroudColor);
+				var s = Game.modData.SheetBuilder.Add(data, size);
+				unexploredTile = new Sprite(s.sheet, s.bounds, s.offset, s.channel, info.ShroudBlend);
+			}
+			else
+				unexploredTile = sprites[spriteMap[0]];
 		}
 
-		Sprite ChooseShroud(Shroud s, int i, int j)
+		static int FoggedEdges(Shroud s, CPos p, bool useExtendedIndex)
 		{
-			if (!s.IsExplored(i, j))
-				return shadowBits[0xf];
+			if (!s.IsVisible(p.X, p.Y))
+				return 15;
 
-			// bits are for unexploredness: up, right, down, left
-			var v = 0;
-			// bits are for unexploredness: TL, TR, BR, BL
+			// If a side is shrouded then we also count the corners
 			var u = 0;
+			if (!s.IsVisible(p.X, p.Y - 1)) u |= 0x13;
+			if (!s.IsVisible(p.X + 1, p.Y)) u |= 0x26;
+			if (!s.IsVisible(p.X, p.Y + 1)) u |= 0x4C;
+			if (!s.IsVisible(p.X - 1, p.Y)) u |= 0x89;
 
-			if (!s.IsExplored(i, j - 1)) { v |= 1; u |= 3; }
-			if (!s.IsExplored(i + 1, j)) { v |= 2; u |= 6; }
-			if (!s.IsExplored(i, j + 1)) { v |= 4; u |= 12; }
-			if (!s.IsExplored(i - 1, j)) { v |= 8; u |= 9; }
+			var uside = u & 0x0F;
+			if (!s.IsVisible(p.X - 1, p.Y - 1)) u |= 0x01;
+			if (!s.IsVisible(p.X + 1, p.Y - 1)) u |= 0x02;
+			if (!s.IsVisible(p.X + 1, p.Y + 1)) u |= 0x04;
+			if (!s.IsVisible(p.X - 1, p.Y + 1)) u |= 0x08;
 
-			var uSides = u;
-			if (!s.IsExplored(i - 1, j - 1)) u |= 1;
-			if (!s.IsExplored(i + 1, j - 1)) u |= 2;
-			if (!s.IsExplored(i + 1, j + 1)) u |= 4;
-			if (!s.IsExplored(i - 1, j + 1)) u |= 8;
-
-			return shadowBits[SpecialShroudTiles[u ^ uSides][v]];
+			// RA provides a set of frames for tiles with shrouded
+			// corners but unshrouded edges. We want to detect this
+			// situation without breaking the edge -> corner enabling
+			// in other combinations. The XOR turns off the corner
+			// bits that are enabled twice, which gives the behavior
+			// we want here.
+			return useExtendedIndex ? u ^ uside : u & 0x0F;
 		}
 
-		Sprite ChooseFog(Shroud s, int i, int j)
+		static int ShroudedEdges(Shroud s, CPos p, bool useExtendedIndex)
 		{
-			if (!s.IsVisible(i, j)) return shadowBits[0xf];
-			if (!s.IsExplored(i, j)) return shadowBits[0xf];
+			if (!s.IsExplored(p.X, p.Y))
+				return 15;
 
-			// bits are for unexploredness: up, right, down, left
-			var v = 0;
-			// bits are for unexploredness: TL, TR, BR, BL
+			// If a side is shrouded then we also count the corners
 			var u = 0;
+			if (!s.IsExplored(p.X, p.Y - 1)) u |= 0x13;
+			if (!s.IsExplored(p.X + 1, p.Y)) u |= 0x26;
+			if (!s.IsExplored(p.X, p.Y + 1)) u |= 0x4C;
+			if (!s.IsExplored(p.X - 1, p.Y)) u |= 0x89;
 
-			if (!s.IsVisible(i, j - 1)) { v |= 1; u |= 3; }
-			if (!s.IsVisible(i + 1, j)) { v |= 2; u |= 6; }
-			if (!s.IsVisible(i, j + 1)) { v |= 4; u |= 12; }
-			if (!s.IsVisible(i - 1, j)) { v |= 8; u |= 9; }
+			var uside = u & 0x0F;
+			if (!s.IsExplored(p.X - 1, p.Y - 1)) u |= 0x01;
+			if (!s.IsExplored(p.X + 1, p.Y - 1)) u |= 0x02;
+			if (!s.IsExplored(p.X + 1, p.Y + 1)) u |= 0x04;
+			if (!s.IsExplored(p.X - 1, p.Y + 1)) u |= 0x08;
 
-			var uSides = u;
-
-			if (!s.IsVisible(i - 1, j - 1)) u |= 1;
-			if (!s.IsVisible(i + 1, j - 1)) u |= 2;
-			if (!s.IsVisible(i + 1, j + 1)) u |= 4;
-			if (!s.IsVisible(i - 1, j + 1)) u |= 8;
-
-			return shadowBits[SpecialShroudTiles[u ^ uSides][v]];
+			// RA provides a set of frames for tiles with shrouded
+			// corners but unshrouded edges. We want to detect this
+			// situation without breaking the edge -> corner enabling
+			// in other combinations. The XOR turns off the corner
+			// bits that are enabled twice, which gives the behavior
+			// we want here.
+			return useExtendedIndex ? u ^ uside : u & 0x0F;
 		}
 
-		void GenerateSprites(Shroud shroud)
+		static int ObserverShroudedEdges(CPos p, Rectangle bounds, bool useExtendedIndex)
+		{
+			var u = 0;
+			if (p.Y == bounds.Top) u |= 0x13;
+			if (p.X == bounds.Right - 1) u |= 0x26;
+			if (p.Y == bounds.Bottom - 1) u |= 0x4C;
+			if (p.X == bounds.Left)	u |= 0x89;
+
+			var uside = u & 0x0F;
+			if (p.X == bounds.Left && p.Y == bounds.Top) u |= 0x01;
+			if (p.X == bounds.Right - 1 && p.Y == bounds.Top) u |= 0x02;
+			if (p.X == bounds.Right - 1 && p.Y == bounds.Bottom - 1) u |= 0x04;
+			if (p.X == bounds.Left && p.Y == bounds.Bottom - 1) u |= 0x08;
+
+			return useExtendedIndex ? u ^ uside : u & 0x0F;
+		}
+
+		public void WorldLoaded(World w, WorldRenderer wr)
+		{
+			// Cache the tile positions to avoid unnecessary calculations
+			for (var i = bounds.Left; i < bounds.Right; i++)
+			{
+				for (var j = bounds.Top; j < bounds.Bottom; j++)
+				{
+					var k = j * tileStride + i;
+					tiles[k].Position = new CPos(i, j);
+					tiles[k].ScreenPosition = wr.ScreenPosition(tiles[k].Position.CenterPosition);
+				}
+			}
+
+			if (w.LobbyInfo.GlobalSettings.Fog)
+				fogPalette = wr.Palette("fog");
+
+			shroudPalette = wr.Palette("shroud");
+		}
+
+		Sprite GetTile(int flags, int variant)
+		{
+			if (flags == 0)
+				return null;
+
+			if (flags == 15)
+				return unexploredTile;
+
+			return sprites[variant * variantStride + spriteMap[flags]];
+		}
+
+		void Update(Shroud shroud)
 		{
 			var hash = shroud != null ? shroud.Hash : 0;
 			if (shroudHash == hash)
@@ -121,95 +215,52 @@ namespace OpenRA.Mods.RA
 			if (shroud == null)
 			{
 				// Players with no shroud see the whole map so we only need to set the edges
-				var b = map.Bounds;
-				for (int i = b.Left; i < b.Right; i++)
-					for (int j = b.Top; j < b.Bottom; j++)
+				for (var k = 0; k < tiles.Length; k++)
 				{
-					var v = 0;
-					var u = 0;
-
-					if (j == b.Top) { v |= 1; u |= 3; }
-					if (i == b.Right - 1) { v |= 2; u |= 6; }
-					if (j == b.Bottom - 1) { v |= 4; u |= 12; }
-					if (i == b.Left) { v |= 8; u |= 9; }
-
-					var uSides = u;
-					if (i == b.Left && j == b.Top) u |= 1;
-					if (i == b.Right - 1 && j == b.Top) u |= 2;
-					if (i == b.Right - 1 && j == b.Bottom - 1) u |= 4;
-					if (i == b.Left && j == b.Bottom - 1) u |= 8;
-
-					sprites[i, j] = fogSprites[i, j] = shadowBits[SpecialShroudTiles[u ^ uSides][v]];
+					var shrouded = ObserverShroudedEdges(tiles[k].Position, bounds, useExtendedIndex);
+					tiles[k].Shroud = GetTile(shrouded, tiles[k].Variant);
+					tiles[k].Fog = GetTile(shrouded, tiles[k].Variant);
 				}
 			}
 			else
 			{
-				for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
-					for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-						sprites[i, j] = ChooseShroud(shroud, i, j);
+				for (var k = 0; k < tiles.Length; k++)
+				{
+					var shrouded = ShroudedEdges(shroud, tiles[k].Position, useExtendedIndex);
+					var fogged = FoggedEdges(shroud, tiles[k].Position, useExtendedIndex);
 
-				for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
-					for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-						fogSprites[i, j] = ChooseFog(shroud, i, j);
+					tiles[k].Shroud = GetTile(shrouded, tiles[k].Variant);
+					tiles[k].Fog = GetTile(fogged, tiles[k].Variant);
+				}
 			}
 		}
 
 		public void RenderShroud(WorldRenderer wr, Shroud shroud)
 		{
-			if (initializePalettes)
-			{
-				if (world.LobbyInfo.GlobalSettings.Fog)
-					fogPalette = wr.Palette("fog");
+			Update(shroud);
 
-				shroudPalette = world.LobbyInfo.GlobalSettings.Fog ? wr.Palette("shroud") : wr.Palette("shroudfog");
-				initializePalettes = false;
-			}
-
-			GenerateSprites(shroud);
-
-			// We draw the shroud when disabled to hide the sharp map edges
-			var clipRect = wr.Viewport.CellBounds;
-			DrawShroud(wr, clipRect, sprites, shroudPalette);
-
-			if (world.LobbyInfo.GlobalSettings.Fog)
-				DrawShroud(wr, clipRect, fogSprites, fogPalette);
-		}
-
-		void DrawShroud(WorldRenderer wr, Rectangle clip, Sprite[,] s, PaletteReference pal)
-		{
+			var clip = wr.Viewport.CellBounds;
+			var width = clip.Width;
 			for (var j = clip.Top; j < clip.Bottom; j++)
 			{
-				var starti = clip.Left;
-				var last = shadowBits[0x0f];
-				for (var i = clip.Left; i < clip.Right; i++)
+				var start = j * tileStride + clip.Left;
+				for (var k = 0; k < width; k++)
 				{
-					if ((s[i, j] == shadowBits[0x0f] && last == shadowBits[0x0f])
-						|| (s[i, j] == shadowBits[0] && last == shadowBits[0]))
-						continue;
+					var s = tiles[start + k].Shroud;
+					var f = tiles[start + k].Fog;
 
-					if (starti != i)
+					if (s != null)
 					{
-						// Stretch a solid black sprite over the rows above
-						// TODO: This doesn't make sense for isometric terrain
-						Game.Renderer.WorldSpriteRenderer.DrawSprite(
-							s[starti, j],
-							Game.CellSize * new float2(starti, j),
-							pal,
-							new float2(Game.CellSize * (i - starti), Game.CellSize));
-						starti = i + 1;
+						var pos = tiles[start + k].ScreenPosition - 0.5f * s.size;
+						Game.Renderer.WorldSpriteRenderer.DrawSprite(s, pos, shroudPalette);
 					}
 
-					Game.Renderer.WorldSpriteRenderer.DrawSprite(s[i, j], Game.CellSize * new float2(i, j), pal);
-					starti = i + 1;
-					last = s[i, j];
+					if (f != null)
+					{
+						var pos = tiles[start + k].ScreenPosition - 0.5f * f.size;
+						Game.Renderer.WorldSpriteRenderer.DrawSprite(f, pos, fogPalette);
+					}
 				}
-
-				// Stretch a solid black sprite over the rows to the left
-				// TODO: This doesn't make sense for isometric terrain
-				if (starti < clip.Right)
-					Game.Renderer.WorldSpriteRenderer.DrawSprite(s[starti, j],
-						Game.CellSize * new float2(starti, j), pal,
-						new float2(Game.CellSize * (clip.Right - starti), Game.CellSize));
 			}
 		}
 	}

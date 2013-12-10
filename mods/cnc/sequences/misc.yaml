@@ -361,3 +361,17 @@ resources:
 		Length: *
 	bti12: bti12
 		Length: *
+
+shroud:
+	typea: shadow
+		Start: 0
+		Length: 12
+	typeb: shadow
+		Start: 12
+		Length: 12
+	typec: shadow
+		Start: 24
+		Length: 12
+	typed: shadow
+		Start: 36
+		Length: 12

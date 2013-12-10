@@ -254,3 +254,7 @@ moveflsh:
 resources:
 	fake: shadow
 		Length: *
+
+shroud:
+	shroud: shadow
+		Length: *
