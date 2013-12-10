@@ -37,7 +37,6 @@ namespace OpenRA.Graphics
 		public Viewport Viewport { get; private set; }
 
 		internal readonly TerrainRenderer terrainRenderer;
-		internal readonly ShroudRenderer shroudRenderer;
 		internal readonly HardwarePalette palette;
 		internal Cache<string, PaletteReference> palettes;
 		Lazy<DeveloperMode> devTrait;
@@ -56,7 +55,6 @@ namespace OpenRA.Graphics
 
 			Theater = new Theater(world.TileSet);
 			terrainRenderer = new TerrainRenderer(world, this);
-			shroudRenderer = new ShroudRenderer(world);
 
 			devTrait = Lazy.New(() => world.LocalPlayer != null ? world.LocalPlayer.PlayerActor.Trait<DeveloperMode>() : null);
 		}
@@ -132,7 +130,9 @@ namespace OpenRA.Graphics
 				world.OrderGenerator.RenderAfterWorld(this, world);
 
 			var renderShroud = world.RenderPlayer != null ? world.RenderPlayer.Shroud : null;
-			shroudRenderer.Draw(this, renderShroud);
+
+			foreach (var a in world.ActorsWithTrait<IRenderShroud>())
+				a.Trait.RenderShroud(this, renderShroud);
 
 			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
 				for (var i = 0; i < renderables.Count; i++)

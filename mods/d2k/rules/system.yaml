@@ -429,6 +429,7 @@ World:
 	ShroudPalette@combined:
 		Name: shroudfog
 		Type: Combined
+	ShroudRenderer:
 	Country@Atreides:
 		Name: Atreides
 		Race: atreides

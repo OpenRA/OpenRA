@@ -10,10 +10,16 @@
 
 using System.Drawing;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.RA
 {
-	public class ShroudRenderer
+	public class ShroudRendererInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new ShroudRenderer(init.world); }
+	}
+
+	public class ShroudRenderer : IRenderShroud
 	{
 		World world;
 		Map map;
@@ -148,7 +154,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		internal void Draw(WorldRenderer wr, Shroud shroud)
+		public void RenderShroud(WorldRenderer wr, Shroud shroud)
 		{
 			if (initializePalettes)
 			{

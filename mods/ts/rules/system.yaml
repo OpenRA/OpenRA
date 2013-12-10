@@ -105,6 +105,7 @@ World:
 	ShroudPalette@combined:
 		Name: shroudfog
 		Type: Combined
+	ShroudRenderer:
 	VoxelNormalsPalette@normals:
 		Name: normals
 		Type: TiberianSun
