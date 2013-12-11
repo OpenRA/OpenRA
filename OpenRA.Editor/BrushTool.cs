@@ -42,7 +42,7 @@ namespace OpenRA.Editor
 					if (surface.Map.IsInMap(new CVec(u, v) + pos))
 					{
 						var z = u + v * template.Size.X;
-						if (tile[z] != null)
+						if (tile[z].Length > 0)
 							surface.Map.MapTiles.Value[u + pos.X, v + pos.Y] =
 								new TileReference<ushort, byte>
 								{
