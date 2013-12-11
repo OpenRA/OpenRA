@@ -82,12 +82,6 @@ namespace OpenRA
 			return (k & mod) == mod;
 		}
 
-		public static bool IsValidInput(this KeyInput key)
-		{
-			return char.IsLetter(key.UnicodeChar) || char.IsDigit(key.UnicodeChar) ||
-					char.IsSymbol(key.UnicodeChar) || char.IsSeparator(key.UnicodeChar) ||
-					char.IsPunctuation(key.UnicodeChar);
-		}
 
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)
 			where V : new()

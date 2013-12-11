@@ -151,7 +151,15 @@ namespace OpenRA.Renderer.SdlCommon
 			{ Sdl.SDLK_UNDO, Keycode.UNDO },
 		};
 
+
 		MouseButton lastButtonBits = (MouseButton)0;
+
+		static bool IsValidInput(char c)
+		{
+			return char.IsLetter(c) || char.IsDigit(c) ||
+				char.IsSymbol(c) || char.IsSeparator(c) ||
+					char.IsPunctuation(c);
+		}
 
 		MouseButton MakeButton(byte b)
 		{
@@ -242,7 +250,14 @@ namespace OpenRA.Renderer.SdlCommon
 						// Drop unknown keys
 						Keycode keyCode;
 						if (!KeyRemap.TryGetValue(e.key.keysym.sym, out keyCode))
+						{
+							// Try parsing it as text
+							var c = (char)e.key.keysym.unicode;
+							if (IsValidInput(c))
+								inputHandler.OnTextInput(c.ToString());
+
 							break;
+						}
 
 						var type = e.type == Sdl.SDL_KEYDOWN ?
 							KeyInputEvent.Down : KeyInputEvent.Up;
@@ -269,7 +284,7 @@ namespace OpenRA.Renderer.SdlCommon
 						else
 							inputHandler.OnKeyInput(keyEvent);
 
-						if (keyEvent.IsValidInput())
+						if (IsValidInput(keyEvent.UnicodeChar))
 							inputHandler.OnTextInput(keyEvent.UnicodeChar.ToString());
 
 						break;
