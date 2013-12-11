@@ -122,6 +122,7 @@ ChromeLayout:
 	mods/ra/chrome/tooltips.yaml
 	mods/ra/chrome/assetbrowser.yaml
 	mods/ra/chrome/irc.yaml
+	mods/ts/chrome/installoptional.yaml
 
 Weapons:
 	mods/ts/weapons.yaml

@@ -94,11 +94,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					break;
 
 				case 2:
-					//scores.mix conflicts
+					//aftermath scores.mix conflicts
 					break;
 
 				case 3:
-					//scores.mix conflicts
+					//counterstrike scores.mix conflicts
 					break;
 
 				default:

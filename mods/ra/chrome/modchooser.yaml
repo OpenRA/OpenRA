@@ -84,7 +84,7 @@ Background@MODS_PANEL:
 			Font:Bold
 			Text:Load Mod
 		Button@BUTTON_INSTALL_OPTIONAL_CONTENT:
-			X:PARENT_LEFT-250
+			X:PARENT_LEFT-570
 			Y:PARENT_BOTTOM-45
 			Width:200
 			Height:25
