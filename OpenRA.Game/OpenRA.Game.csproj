@@ -110,7 +110,6 @@
     <Compile Include="Graphics\SequenceProvider.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="Graphics\SheetBuilder.cs" />
-    <Compile Include="Graphics\ShroudRenderer.cs" />
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Graphics\SpriteFont.cs" />
     <Compile Include="Graphics\SpriteLoader.cs" />

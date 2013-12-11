@@ -263,9 +263,7 @@ namespace OpenRA.Traits
 		public bool IsVisible(CPos xy) { return IsVisible(xy.X, xy.Y); }
 		public bool IsVisible(int x, int y)
 		{
-			// Visibility is allowed to extend beyond the map cordon so that
-			// the fog tiles are not visible at the edge of the world
-			if (x < 0 || x >= map.MapSize.X || y < 0 || y >= map.MapSize.Y)
+			if (!map.IsInMap(x, y))
 				return false;
 
 			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Fog)

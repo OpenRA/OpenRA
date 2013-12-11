@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class PaletteFromR8Info : ITraitInfo
+	class FogPaletteFromR8Info : ITraitInfo
 	{
 		[Desc("Internal palette name")]
 		public readonly string Name = null;
@@ -25,14 +25,14 @@ namespace OpenRA.Mods.RA
 		public readonly long Offset = 0;
 		public readonly bool AllowModifiers = true;
 		public readonly bool InvertColor = false;
-		
-		public object Create(ActorInitializer init) { return new PaletteFromR8(this); }
+
+		public object Create(ActorInitializer init) { return new FogPaletteFromR8(this); }
 	}
 
-	class PaletteFromR8 : IPalette
+	class FogPaletteFromR8 : IPalette
 	{
-		readonly PaletteFromR8Info info;
-		public PaletteFromR8(PaletteFromR8Info info) { this.info = info; }
+		readonly FogPaletteFromR8Info info;
+		public FogPaletteFromR8(FogPaletteFromR8Info info) { this.info = info; }
 
 		public void InitPalette(WorldRenderer wr)
 		{
@@ -44,7 +44,9 @@ namespace OpenRA.Mods.RA
 				for (var i = 0; i < 256; i++)
 				{
 					var packed = s.ReadUInt16();
-					colors[i] = (uint)((255 << 24) | ((packed & 0xF800) << 8) | ((packed & 0x7E0) << 5) | ((packed & 0x1f) << 3));
+
+					// Fog is rendered with half opacity
+					colors[i] = (uint)((255 << 24) | ((packed & 0xF800) << 7) | ((packed & 0x7E0) << 4) | ((packed & 0x1f) << 2));
 
 					if (info.InvertColor)
 						colors[i] ^= 0x00FFFFFF;

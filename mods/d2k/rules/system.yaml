@@ -414,21 +414,28 @@ World:
 		Name: moveflash
 		Filename: DATA.R8
 		Offset: 2572352
-		A: 64
+		InvertColor: true
 	PaletteFromRGBA@disabled:
 		Name: disabled
 		R: 0
 		G: 0
 		B: 0
 		A: 180
-	ShroudPalette@shroud:
-		Type: Shroud
-	ShroudPalette@fog:
+	PaletteFromR8@shroud:
+		Name: shroud
+		Filename: DATA.R8
+		Offset: 12007
+		InvertColor: true
+	FogPaletteFromR8@fog:
 		Name: fog
-		Type: Fog
-	ShroudPalette@combined:
-		Name: shroudfog
-		Type: Combined
+		Filename: DATA.R8
+		Offset: 12007
+		InvertColor: true
+	ShroudRenderer:
+		Variants: typea, typeb, typec, typed
+		Index: 11, 3, 7, 9, 6, 13, 12, 14, 4, 8, 2, 1, 5, 10
+		ShroudColor: 31
+		ShroudBlend: Multiply
 	Country@Atreides:
 		Name: Atreides
 		Race: atreides

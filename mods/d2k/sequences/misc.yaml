@@ -304,10 +304,32 @@ moveflsh:
 		Start: 3621
 		Length: 5
 		Tick: 80
-		BlendMode: Subtractive
+		BlendMode: Multiply
 
 resources:
 	spice: BLOXBASE
 		Frames: 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 300, 301, 320, 321
 		Length: 54
 		Offset: -16,-16
+
+shroud:
+	typea: DATA
+		Start: 40
+		Length: 14
+		Offset: -16,-16
+		BlendMode: Multiply
+	typeb: DATA
+		Start: 56
+		Length: 14
+		Offset: -16,-16
+		BlendMode: Multiply
+	typec: DATA
+		Start: 72
+		Length: 14
+		Offset: -16,-16
+		BlendMode: Multiply
+	typed: DATA
+		Start: 88
+		Length: 14
+		Offset: -16,-16
+		BlendMode: Multiply

@@ -487,3 +487,7 @@ resources:
 		Length: *
 	gem04: gem04
 		Length: *
+
+shroud:
+	shroud: shadow
+		Length: *

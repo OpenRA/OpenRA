@@ -17,6 +17,7 @@ NEW:
 		Added a new hotkey to select all units on screen (default: CTRL + A).
 		Added a new hotkey to jump to production buildings (default: TAB).
 		Changed default hotkey (PageUp/Down) for build palette cycling and made reverse user configurable.
+		Improved shroud/fog rendering.
 	Asset Browser:
 		Fixed crashes when trying to load invalid filenames or sprites with just 1 frame.
 		Added support for all sprite types.
@@ -73,6 +74,7 @@ NEW:
 		Disabled the main menu target reticle showing when a window is open.
 		Added a display of the faction logos when the shellmap is disabled.
 		Visceriods now heal on Tiberium and move faster there.
+		Implemented the original shroud artwork.
 	Dune 2000:
 		Added buildable concrete walls.
 		Fixed some cliffs being passable.
@@ -80,6 +82,7 @@ NEW:
 		Fixed A* debug overlay.
 		Fixed R8 offsets for sprites with embedded palettes.
 		Implemented proper spice rendering.
+		Implemented the original shroud artwork.
 	Engine:
 		Replays are now saved in per-mod and per-version folders.
 		Added password protection support for servers.
@@ -99,6 +102,7 @@ NEW:
 		Rewritten shp(ts) parser makes more efficient use of texture space.
 		Added support for the dune 2 shp and pak formats.
 		Map format 6 requires the RequiresMod to be defined.
+		Added a multiplicitive blend mode.
 	Build system and packages:
 		Added GeoIP to Makefile so it is installed properly.
 		Added desktop shortcut creation support to the Makefile and Windows installer.
@@ -137,7 +141,8 @@ NEW:
 		Added OpenRA.Utility --map-upgrade for updating maps from format 5 to format 6.
 		The map format has been changed. All user-installed maps will be upgraded on the first mod launch, or using OpenRA.Utility --map-upgrade.
 		Unified sprite loading allows any sprite type to be used anywhere: shp can now be used for terrain, and tmp for units.
-		Harvestable resource definitions (ResourceTypes) have changed, and now specify their artwork using via sequences.
+		Harvestable resource definitions (ResourceTypes) have changed, and now specify their artwork using sequences.
+		Shroud definitions (ShroudRenderer / ShroudPalette) have changed, and now specifies its artwork using sequences.
 
 20130915:
 	All mods:

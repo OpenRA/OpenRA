@@ -273,10 +273,9 @@ World:
 		Type: Shroud
 	ShroudPalette@fog:
 		Name: fog
-		Type: Fog
-	ShroudPalette@combined:
-		Name: shroudfog
-		Type: Combined
+		Fog: true
+	ShroudRenderer:
+		Variants: typea, typeb, typec, typed
 	Country@gdi:
 		Name: GDI
 		Race: gdi

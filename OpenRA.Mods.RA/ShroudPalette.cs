@@ -15,8 +15,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public enum ShroudPaletteType { Shroud, Fog, Combined };
-
 	[Desc("Adds the hard-coded shroud palette to the game")]
 	class ShroudPaletteInfo : ITraitInfo
 	{
@@ -24,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public readonly string Name = "shroud";
 
 		[Desc("Palette type")]
-		public readonly ShroudPaletteType Type = ShroudPaletteType.Combined;
+		public readonly bool Fog = false;
 
 		public object Create(ActorInitializer init) { return new ShroudPalette(this); }
 	}
@@ -37,35 +35,24 @@ namespace OpenRA.Mods.RA
 
 		public void InitPalette(WorldRenderer wr)
 		{
-			var c = info.Type == ShroudPaletteType.Shroud ? Shroud :
-					info.Type == ShroudPaletteType.Fog ? Fog : Combined;
-
+			var c = info.Fog ? Fog : Shroud;
 			wr.AddPalette(info.Name, new Palette(Exts.MakeArray(256, i => (uint)c[i % 8].ToArgb())), false);
 		}
-
-		static Color[] Shroud = new[] {
-			Color.Transparent, Color.Green,
-			Color.Blue, Color.Yellow,
-			Color.Black,
-			Color.FromArgb(128,0,0,0),
-			Color.Transparent,
-			Color.Transparent
-		};
 
 		static Color[] Fog = new[] {
 			Color.Transparent, Color.Green,
 			Color.Blue, Color.Yellow,
 			Color.FromArgb(128,0,0,0),
-			Color.FromArgb(128,0,0,0),
-			Color.FromArgb(128,0,0,0),
-			Color.FromArgb(64,0,0,0)
+			Color.FromArgb(96,0,0,0),
+			Color.FromArgb(64,0,0,0),
+			Color.FromArgb(32,0,0,0)
 		};
 
-		static Color[] Combined = new[] {
+		static Color[] Shroud = new[] {
 			Color.Transparent, Color.Green,
 			Color.Blue, Color.Yellow,
 			Color.Black,
-			Color.FromArgb(192,0,0,0),
+			Color.FromArgb(160,0,0,0),
 			Color.FromArgb(128,0,0,0),
 			Color.FromArgb(64,0,0,0)
 		};
