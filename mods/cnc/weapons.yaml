@@ -60,6 +60,7 @@ GrenadierExplode:
 		ImpactSound: xplosml2.aud
 
 Atomic:
+	ValidTargets: Ground, Air
 	Report: nukemisl.aud
 	Warhead@impact:
 		Damage: 1000
