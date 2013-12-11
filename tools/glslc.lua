@@ -314,6 +314,7 @@ return binpath and {
 
       local cmdline = "-profile "..profile.." "
       cmdline = args and cmdline..args.." " or cmdline
+      cmdline = cmdline.."-I*.glsl -I*.h "
       cmdline = cmdline..(data.separable and "-separable " or "")
       cmdline = cmdline..data.domaindefs[domain].." "
       cmdline = cmdline.."-o "..outname.." "
@@ -336,9 +337,11 @@ return binpath and {
 
         return str,postfunc
       end
+      
+      local wdir = filename:GetPath()
 
       -- run compiler process
-      CommandLineRun(cmdline,nil,true,nil,compilecallback)
+      CommandLineRun(cmdline,wdir,true,nil,compilecallback)
 
     end
 
