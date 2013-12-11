@@ -161,7 +161,6 @@ namespace OpenRA.Traits
 			{
 				Type = t,
 				Variant = ChooseRandomVariant(t),
-				Density = t.Info.MaxDensity,
 			};
 		}
 
