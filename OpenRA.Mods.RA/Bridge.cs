@@ -289,12 +289,34 @@ namespace OpenRA.Mods.RA
 			return damage;
 		}
 
-		public void Demolish(Actor saboteur)
+		public void Demolish(Actor saboteur, bool continueNorth, bool continueSouth)
 		{
-			// TODO: completely destroy long bridges in a chain reaction
-			Combat.DoExplosion(saboteur, "Demolish", self.CenterPosition);
-			self.World.WorldActor.Trait<ScreenShaker>().AddEffect(15, self.CenterPosition, 6);
-			self.Kill(saboteur);
+			var initialDamage = Health.DamageState;
+			self.World.AddFrameEndTask(w =>
+			{
+				Combat.DoExplosion(saboteur, "Demolish", self.CenterPosition);
+				self.World.WorldActor.Trait<ScreenShaker>().AddEffect(15, self.CenterPosition, 6);
+				self.Kill(saboteur);
+			});
+
+			// Destroy adjacent spans (long bridges)
+			if (continueNorth && northNeighbour != null)
+			{
+				var delay = initialDamage == DamageState.Dead || NeighbourIsDeadShore(northNeighbour) ?
+					0 : Info.RepairPropagationDelay;
+
+				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
+					northNeighbour.Demolish(saboteur, true, false))));
+			}
+
+			if (continueSouth && southNeighbour != null)
+			{
+				var delay = initialDamage == DamageState.Dead || NeighbourIsDeadShore(southNeighbour) ?
+					0 : Info.RepairPropagationDelay;
+
+				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
+					southNeighbour.Demolish(saboteur, false, true))));
+			}
 		}
 	}
 }

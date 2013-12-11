@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 
 		public void Demolish(Actor self, Actor saboteur)
 		{
-			bridge.Demolish(saboteur);
+			bridge.Demolish(saboteur, true, true);
 		}
 
 		public bool IsValidTarget(Actor self, Actor saboteur)
