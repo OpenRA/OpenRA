@@ -262,7 +262,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
 			if (stats == null) return template;
 			template.Get<LabelWidget>("KILLS").GetText = () => (stats.UnitsKilled + stats.BuildingsKilled).ToString();
-			template.Get<LabelWidget>("DEATHS").GetText = () => (stats.UnitsDead + stats.UnitsDead).ToString();
+			template.Get<LabelWidget>("DEATHS").GetText = () => (stats.UnitsDead + stats.BuildingsDead).ToString();
 			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () => AverageOrdersPerMinute(stats.OrderCount);
 
 			return template;
