@@ -375,3 +375,33 @@ shroud:
 	typed: shadow
 		Start: 36
 		Length: 12
+
+# Note: The order of smudges and craters determines
+# the index that is mapped to them in maps
+scorches:
+	sc1: sc1
+		Length: *
+	sc2: sc2
+		Length: *
+	sc3: sc3
+		Length: *
+	sc4: sc4
+		Length: *
+	sc5: sc5
+		Length: *
+	sc6: sc6
+		Length: *
+
+craters:
+	cr1: cr1
+		Length: *
+	cr2: cr2
+		Length: *
+	cr3: cr3
+		Length: *
+	cr4: cr4
+		Length: *
+	cr5: cr5
+		Length: *
+	cr6: cr6
+		Length: *

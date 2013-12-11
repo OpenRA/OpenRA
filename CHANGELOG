@@ -73,7 +73,7 @@ NEW:
 		Added cash tick sounds.
 		Disabled the main menu target reticle showing when a window is open.
 		Added a display of the faction logos when the shellmap is disabled.
-		Visceriods now heal on Tiberium and move faster there.
+		Viceroids now heal on and move faster on Tiberium.
 		Implemented the original shroud artwork.
 	Dune 2000:
 		Added buildable concrete walls.
@@ -143,6 +143,7 @@ NEW:
 		Unified sprite loading allows any sprite type to be used anywhere: shp can now be used for terrain, and tmp for units.
 		Harvestable resource definitions (ResourceTypes) have changed, and now specify their artwork using sequences.
 		Shroud definitions (ShroudRenderer / ShroudPalette) have changed, and now specifies its artwork using sequences.
+		Crater and smudge definitions (SmudgeLayer) have changed, and now specify their artwork using sequences.
 
 20130915:
 	All mods:

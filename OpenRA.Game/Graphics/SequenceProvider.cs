@@ -68,5 +68,14 @@ namespace OpenRA.Graphics
 
 			return units[unit].ContainsKey(seq);
 		}
+
+		public static IEnumerable<string> Sequences(string unit)
+		{
+			if (!units.ContainsKey(unit))
+				throw new InvalidOperationException(
+					"Unit `{0}` does not have all sequences defined.".F(unit));
+
+			return units[unit].Keys;
+		}
 	}
 }
