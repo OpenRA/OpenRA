@@ -10,35 +10,37 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Utility
 {
 	class Program
 	{
+		static Dictionary<string, Action<string[]>> Actions = new Dictionary<string, Action<string[]>>()
+		{
+			{ "--settings-value", Command.Settings },
+			{ "--shp", Command.ConvertPngToShp },
+			{ "--png", Command.ConvertShpToPng },
+			{ "--extract", Command.ExtractFiles },
+			{ "--remap", Command.RemapShp },
+			{ "--transpose", Command.TransposeShp },
+			{ "--docs", Command.ExtractTraitDocs },
+			{ "--map-hash", Command.GetMapHash },
+			{ "--map-preview", Command.GenerateMinimap },
+			{ "--map-upgrade", Command.UpgradeMap },
+		};
+
 		static void Main(string[] args)
 		{
-			var actions = new Dictionary<string, Action<string[]>>()
-			{
-				{ "--settings-value", Command.Settings },
-				{ "--shp", Command.ConvertPngToShp },
-				{ "--png", Command.ConvertShpToPng },
-				{ "--extract", Command.ExtractFiles },
-				{ "--remap", Command.RemapShp },
-				{ "--transpose", Command.TransposeShp },
-				{ "--docs", Command.ExtractTraitDocs },
-				{ "--map-hash", Command.GetMapHash },
-				{ "--map-preview", Command.GenerateMinimap },
-				{ "--map-upgrade", Command.UpgradeMap },
-			};
-
 			if (args.Length == 0) { PrintUsage(); return; }
 
 			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
 
 			try
 			{
-				var action = Exts.WithDefault(_ => PrintUsage(), () => actions[args[0]]);
+				var action = Exts.WithDefault(_ => PrintUsage(), () => Actions[args[0]]);
 				action(args);
 			}
 			catch (Exception e)
@@ -56,15 +58,19 @@ namespace OpenRA.Utility
 		{
 			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION] [ARGS]");
 			Console.WriteLine();
-			Console.WriteLine("  --settings-value KEY     Get value of KEY from settings.yaml");
-			Console.WriteLine("  --shp PNGFILE [PNGFILE ...]     Combine a list of PNG images into a SHP");
-			Console.WriteLine("  --png SPRITEFILE PALETTE [--noshadow] [--nopadding]     Convert a shp/tmp/R8 to a series of PNGs, optionally removing shadow");
-			Console.WriteLine("  --extract MOD[,MOD]* FILES     Extract files from mod packages to the current directory");
-			Console.WriteLine("  --remap SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP     Remap SHPs to another palette");
-			Console.WriteLine("  --transpose SRCSHP DESTSHP START N M [START N M ...]     Transpose the N*M block of frames starting at START.");
-			Console.WriteLine("  --docs MOD     Generate trait documentation in MarkDown format.");
-			Console.WriteLine("  --map-hash MAPFILE     Generate hash of specified oramap file.");
-			Console.WriteLine("  --minimap MAPFILE [MOD]     Render PNG minimap of specified oramap file.");
+			foreach (var a in Actions)
+			{
+				var descParts = a.Value.Method.GetCustomAttributes<DescAttribute>(true)
+					.SelectMany(d => d.Lines);
+
+				if (!descParts.Any())
+					continue;
+
+				var args = descParts.Take(descParts.Count() - 1).JoinWith(" ");
+				var desc = descParts.Last();
+
+				Console.WriteLine("  {0} {1}    ({2})", a.Key, args, desc);
+			}
 		}
 
 		static string GetNamedArg(string[] args, string arg)

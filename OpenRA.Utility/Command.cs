@@ -26,6 +26,7 @@ namespace OpenRA.Utility
 {
 	public static class Command
 	{
+		[Desc("KEY", "Get value of KEY from settings.yaml")]
 		public static void Settings(string[] args)
 		{
 			if (args.Length < 2)
@@ -41,6 +42,7 @@ namespace OpenRA.Utility
 			Console.WriteLine(result);
 		}
 
+		[Desc("PNGFILE [PNGFILE ...]", "Combine a list of PNG images into a SHP")]
 		public static void ConvertPngToShp(string[] args)
 		{
 			var dest = args[1].Split('-').First() + ".shp";
@@ -71,6 +73,8 @@ namespace OpenRA.Utility
 			return bytes;
 		}
 
+		[Desc("SPRITEFILE PALETTE [--noshadow] [--nopadding]",
+		      "Convert a shp/tmp/R8 to a series of PNGs, optionally removing shadow")]
 		public static void ConvertShpToPng(string[] args)
 		{
 			var src = args[1];
@@ -136,6 +140,7 @@ namespace OpenRA.Utility
 			Console.WriteLine("Saved {0}-[0..{1}].png", prefix, count - 1);
 		}
 
+		[Desc("MOD FILES", "Extract files from mod packages to the current directory")]
 		public static void ExtractFiles(string[] args)
 		{
 			var mod = args[1];
@@ -165,6 +170,7 @@ namespace OpenRA.Utility
 				Math.Abs((int)ca.B - (int)cb.B);
 		}
 
+		[Desc("SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP", "Remap SHPs to another palette")]
 		public static void RemapShp(string[] args)
 		{
 			var remap = new Dictionary<int, int>();
@@ -213,6 +219,8 @@ namespace OpenRA.Utility
 					srcImage.Frames.Select(im => im.Data.Select(px => (byte)remap[px]).ToArray()));
 		}
 
+		[Desc("SRCSHP DESTSHP START N M [START N M ...]",
+		      "Transpose the N*M block of frames starting at START.")]
 		public static void TransposeShp(string[] args)
 		{
 			var srcImage = ShpReader.Load(args[1]);
@@ -243,6 +251,7 @@ namespace OpenRA.Utility
 			return t.Name;
 		}
 
+		[Desc("MOD", "Generate trait documentation in MarkDown format.")]
 		public static void ExtractTraitDocs(string[] args)
 		{
 			Game.modData = new ModData(args[1]);
@@ -288,12 +297,14 @@ namespace OpenRA.Utility
 			Console.WriteLine("```");
 		}
 
+		[Desc("MAPFILE", "Generate hash of specified oramap file.")]
 		public static void GetMapHash(string[] args)
 		{
 			var result = new Map(args[1]).Uid;
 			Console.WriteLine(result);
 		}
 
+		[Desc("MAPFILE", "Render PNG minimap of specified oramap file.")]
 		public static void GenerateMinimap(string[] args)
 		{
 			var map = new Map(args[1]);
@@ -312,6 +323,7 @@ namespace OpenRA.Utility
 			Console.WriteLine(dest + " saved.");
 		}
 
+		[Desc("MAPFILE", "MOD", "Upgrade a version 5 map to version 6.")]
 		public static void UpgradeMap(string[] args)
 		{
 			var map = args[1];
