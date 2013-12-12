@@ -297,8 +297,7 @@ namespace OpenRA.Utility
 		public static void GenerateMinimap(string[] args)
 		{
 			var map = new Map(args[1]);
-			var mod = args.Length > 1 ? args[2] : map.RequiresMod;
-			Game.modData = new ModData(mod);
+			Game.modData = new ModData(map.RequiresMod);
 
 			FileSystem.UnmountAll();
 			foreach (var dir in Game.modData.Manifest.Folders)
