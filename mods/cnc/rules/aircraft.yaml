@@ -228,6 +228,8 @@ TRAN.Husk:
 	Helicopter:
 		ROT: 5
 		Speed: 15
+	RevealsShroud:
+		Range: 8
 	WithRotor@PRIMARY:
 		Offset: -597,0,171
 	WithRotor@SECONDARY:
@@ -244,6 +246,8 @@ HELI.Husk:
 	Helicopter:
 		ROT: 4
 		Speed: 20
+	RevealsShroud:
+		Range: 10
 	WithRotor:
 		Offset: 0,0,85
 	RenderUnit:
@@ -257,6 +261,8 @@ ORCA.Husk:
 	Helicopter:
 		ROT: 4
 		Speed: 20
+	RevealsShroud:
+		Range: 10
 	RenderUnit:
 		Image: orca
 	WithShadow:
