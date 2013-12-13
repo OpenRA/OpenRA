@@ -188,9 +188,7 @@ namespace OpenRA.Mods.RA
 				}
 			}
 
-			if (w.LobbyInfo.GlobalSettings.Fog)
-				fogPalette = wr.Palette("fog");
-
+			fogPalette = wr.Palette("fog");
 			shroudPalette = wr.Palette("shroud");
 		}
 
