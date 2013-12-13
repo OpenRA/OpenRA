@@ -15,6 +15,8 @@ namespace OpenRA.Graphics
 {
 	public struct ContrailRenderable : IRenderable
 	{
+		public int Length { get { return trail.Length; } }
+
 		readonly World world;
 
 		// Store trail positions in a circular buffer

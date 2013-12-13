@@ -18,6 +18,7 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		WPos pos;
 		ContrailRenderable trail;
+		int ticks;
 
 		public ContrailFader(WPos pos, ContrailRenderable trail)
 		{
@@ -27,6 +28,9 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
+			if (ticks++ == trail.Length)
+				world.AddFrameEndTask(w => w.Remove(this));
+
 			trail.Update(pos);
 		}
 

@@ -136,7 +136,7 @@ namespace OpenRA.Traits
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			return frozen.Values
+			return world.ScreenMap.FrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
 				.Where(f => f.Visible)
 				.SelectMany(ff => ff.Render(wr));
 		}
