@@ -161,5 +161,27 @@ namespace OpenRA.Traits
 
 			return actorsInBox.Distinct();
 		}
+
+		public IEnumerable<FrozenActor> FrozenActorsInBox(Player p, int2 a, int2 b)
+		{
+			return FrozenActorsInBox(p, Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)));
+		}
+
+		public IEnumerable<FrozenActor> FrozenActorsInBox(Player p, Rectangle r)
+		{
+			var left = (r.Left / info.BinSize).Clamp(0, cols - 1);
+			var right = (r.Right / info.BinSize).Clamp(0, cols - 1);
+			var top = (r.Top / info.BinSize).Clamp(0, rows - 1);
+			var bottom = (r.Bottom / info.BinSize).Clamp(0, rows - 1);
+
+			var frozenInBox = new List<FrozenActor>();
+			for (var j = top; j <= bottom; j++)
+				for (var i = left; i <= right; i++)
+					frozenInBox.AddRange(frozen[p][j * cols + i]
+					                     .Where(kv => kv.Key.IsValid && kv.Value.IntersectsWith(r))
+					                     .Select(kv => kv.Key));
+
+			return frozenInBox.Distinct();
+		}
 	}
 }
