@@ -59,6 +59,7 @@ NEW:
 		Fixed attack dogs causing crashes by attacking non-infantry.
 		Disabled cloak/uncloak sound for camouflaged Pillbox.
 		Added two Lua-powered single player missions, ported from Red Alert's single player campaign.
+		Fixed aircraft falling down not revealing shroud.
 	Tiberian Dawn:
 		C&C mod renamed to Tiberian Dawn to resolve naming ambiguities.
 		Fixed Bio Lab wrongly belonging to a hostile faction in East vs West 3.
@@ -75,6 +76,7 @@ NEW:
 		Added a display of the faction logos when the shellmap is disabled.
 		Viceroids now heal on and move faster on Tiberium.
 		Implemented the original shroud artwork.
+		Fixed helicopters falling down not revealing shroud.
 	Dune 2000:
 		Added buildable concrete walls.
 		Fixed some cliffs being passable.
