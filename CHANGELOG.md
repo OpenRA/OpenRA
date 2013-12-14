@@ -1,16 +1,18 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Dec 05 2013)
+## v0.40 (Dec 14 2013)
 
 ### Highlights
   - Added LuaDist integration.
   - Added live coding support for GSL-shell.
   - Added support for project settings.
   - Added filetree operations.
+  - Added Busted interpreter.
 
 ### Special thanks
   - To Jayanth Acharya for SciTeLuaIDE color scheme.
   - To Mike Richards for adding edge handling and styles.
+  - To [adamdmoss](https://github.com/adamdmoss) for Mobdebug API update.
 
 ### Improvements
   - Added live coding support for GSL-shell (closes #239).
@@ -68,6 +70,8 @@
   - Removed some of the snippets as they are available as plugins.
   - Store os specific clibs path to make it available to plugins.
   - Tidy up estrela tools a bit (remove key strokes from cgc, remove luxinia res viewer, rename perforce files to get loaded again)
+  - Updated README.
+  - Updated samples with missing indicator constants (closes #243).
   - Updated OSX executables and added 'fake' proxy for lua-dist support (ref #225).
   - Updated handling of case-insensitive names during debugging on OSX (Mobdebug v0.545).
   - Updated package onEditorPreSave to be called on SaveAs events (ref #166).
