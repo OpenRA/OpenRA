@@ -561,7 +561,8 @@ CRATE:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
 		Unit: mcvo
-	RenderSimple:
+	RenderSprites:
+	WithCrateBody:
 	ProximityCaptor:
 		Types:Crate
 	Passenger:

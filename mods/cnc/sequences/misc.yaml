@@ -170,6 +170,38 @@ crate:
 		Start: 0
 		ZOffset: -511
 
+xcratea:
+	idle: xcrate
+		Start: 0
+		ZOffset: -511
+	land: xcrate
+		Start: 0
+		ZOffset: -511
+
+xcrateb:
+	idle: xcrate
+		Start: 1
+		ZOffset: -511
+	land: xcrate
+		Start: 1
+		ZOffset: -511
+
+xcratec:
+	idle: xcrate
+		Start: 2
+		ZOffset: -511
+	land: xcrate
+		Start: 2
+		ZOffset: -511
+
+xcrated:
+	idle: xcrate
+		Start: 3
+		ZOffset: -511
+	land: xcrate
+		Start: 3
+		ZOffset: -511
+
 crate-effects:
 	airstrike: deviator
 		Start: 0
