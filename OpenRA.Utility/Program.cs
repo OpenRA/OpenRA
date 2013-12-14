@@ -22,7 +22,7 @@ namespace OpenRA.Utility
 		{
 			{ "--settings-value", Command.Settings },
 			{ "--shp", Command.ConvertPngToShp },
-			{ "--png", Command.ConvertShpToPng },
+			{ "--png", Command.ConvertSpriteToPng },
 			{ "--extract", Command.ExtractFiles },
 			{ "--remap", Command.RemapShp },
 			{ "--transpose", Command.TransposeShp },

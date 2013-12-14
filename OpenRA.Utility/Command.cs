@@ -75,7 +75,7 @@ namespace OpenRA.Utility
 
 		[Desc("SPRITEFILE PALETTE [--noshadow] [--nopadding]",
 		      "Convert a shp/tmp/R8 to a series of PNGs, optionally removing shadow")]
-		public static void ConvertShpToPng(string[] args)
+		public static void ConvertSpriteToPng(string[] args)
 		{
 			var src = args[1];
 			var shadowIndex = new int[] { };
