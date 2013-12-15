@@ -483,6 +483,7 @@
     <Compile Include="AttackBomber.cs" />
     <Compile Include="Effects\Rank.cs" />
     <Compile Include="ShroudRenderer.cs" />
+    <Compile Include="Render\WithCrateBody.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -232,6 +232,58 @@ crate:
 		Start: 0
 		ZOffset: -511
 
+xcratea:
+	idle:
+		Start: 0
+		ZOffset: -511
+	land:
+		Start: 1
+		ZOffset: -511
+	water:
+		Start: 2
+		Length: 4
+		Tick: 500
+		ZOffset: -511
+
+xcrateb:
+	idle:
+		Start: 0
+		ZOffset: -511
+	land:
+		Start: 1
+		ZOffset: -511
+	water:
+		Start: 2
+		Length: 4
+		Tick: 500
+		ZOffset: -511
+
+xcratec:
+	idle:
+		Start: 0
+		ZOffset: -511
+	land:
+		Start: 1
+		ZOffset: -511
+	water:
+		Start: 2
+		Length: 4
+		Tick: 500
+		ZOffset: -511
+
+xcrated:
+	idle:
+		Start: 0
+		ZOffset: -511
+	land:
+		Start: 1
+		ZOffset: -511
+	water:
+		Start: 2
+		Length: 4
+		Tick: 500
+		ZOffset: -511
+
 crate-effects:
 	speed: speed
 		Start: 0

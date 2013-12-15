@@ -114,11 +114,6 @@ namespace OpenRA.Mods.RA
 			Location = cell;
 			CenterPosition = cell.CenterPosition;
 
-			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "land";
-			var rs = self.Trait<RenderSprites>();
-			if (seq != rs.anim.CurrentSequence.Name)
-				rs.anim.PlayRepeating(seq);
-
 			if (self.IsInWorld)
 			{
 				self.World.ActorMap.AddInfluence(self, this);

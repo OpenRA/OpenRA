@@ -808,7 +808,9 @@ CRATE:
 	GiveUnitCrateAction@4tnk:
 		SelectionShares: 3
 		Unit: 4tnk
-	RenderSimple:
+	RenderSprites:
+	WithCrateBody:
+		XmasImages: xcratea, xcrateb, xcratec, xcrated
 	ProximityCaptor:
 		Types:Crate
 	Passenger:

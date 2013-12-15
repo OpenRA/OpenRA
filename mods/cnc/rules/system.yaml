@@ -406,7 +406,9 @@ CRATE:
 		SelectionShares: 0
 		NoBaseSelectionShares: 120
 		Unit: mcv
-	RenderSimple:
+	RenderSprites:
+	WithCrateBody:
+		XmasImages: xcratea, xcrateb, xcratec, xcrated
 	BodyOrientation:
 
 mpspawn:
