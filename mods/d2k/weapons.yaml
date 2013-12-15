@@ -597,3 +597,26 @@ UnitExplodeScale:
 		Explosion: building
 		InfDeath: 4
 		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
+
+Grenade:
+	ROF: 60
+	Range: 4
+	Report: # TODO
+	Projectile: Bullet
+		Speed: 16
+		High: true
+		Angle: .1
+		Inaccuracy: 13
+		Image: BOMBS # TODO
+	Warhead:
+		Spread: 6
+		Versus:
+			None: 50%
+			Wood: 100%
+			Light: 25%
+			Heavy: 5%
+		Explosion: med_explosion
+		InfDeath: 3
+		SmudgeType: SandCrater
+		Damage: 60
+		ImpactSound: EXPLLG5.WAV
