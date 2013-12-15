@@ -28,9 +28,11 @@ end
 
 CreateUnitsInTransport = function(transport, passengerNames)
 	local cargo = Actor.Trait(transport, "Cargo")
-	local owner = transport.owner
+	local owner = Actor.Owner(transport)
+	local facing = Actor.Facing(transport)
+
 	for i, passengerName in ipairs(passengerNames) do
-		cargo:Load(transport, Actor.Create(passengerName, { AddToWorld = false, Owner = owner }))
+		cargo:Load(transport, Actor.Create(passengerName, { AddToWorld = false, Owner = owner, Facing = { facing, "Int32" } }))
 	end
 end
 

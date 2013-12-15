@@ -115,6 +115,10 @@ Actor.Owner = function(actor)
 	return actor.Owner
 end
 
+Actor.Facing = function(actor)
+	return Actor.Trait(actor, "IFacing"):get_Facing()
+end
+
 Actor.SetStance = function(actor, stance)
 	Internal.SetUnitStance(actor, stance)
 end
