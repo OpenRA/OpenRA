@@ -56,10 +56,20 @@ Utils.Any = function(array, func)
 	return false
 end
 
-Utils.ForEach = function(array, func)
+Utils.Do = function(array, func)
 	for i, item in ipairs(array) do
 		func(item)
 	end
+end
+
+Utils.Skip = function(array, n)
+	local ret = { }
+	for i, item in ipairs(array) do
+		if i > n then
+			table.insert(ret, item)
+		end
+	end
+	return ret
 end
 
 Utils.TableToArray = function(luaTable)

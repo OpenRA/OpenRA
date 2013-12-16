@@ -57,5 +57,5 @@ Team.Contains = function(team, actor)
 end
 
 Team.Do = function(team, func)
-	Utils.ForEach(team.Actors, func)
+	Utils.Do(team.Actors, func)
 end

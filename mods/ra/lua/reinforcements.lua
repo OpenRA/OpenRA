@@ -38,6 +38,27 @@ Reinforcements.PerformHelicopterExtraction = function(owner, helicopterName, pas
 	return heli
 end
 
+Reinforcements.PerformInsertion = function(owner, vehicleName, passengerNames, enterPath, exitPath)
+	local facing = { 0, "Int32" }
+	if #enterPath > 1 then
+		facing = { Map.GetFacing(CPos.op_Subtraction(enterPath[2], enterPath[1]), 0), "Int32" }
+	end
+	local vehicle = Actor.Create(vehicleName, { Owner = owner, Location = enterPath[1], Facing = facing })
+	local cargo = Actor.Trait(vehicle, "Cargo")
+	local passengers = { }
+	for i, passengerName in ipairs(passengerNames) do
+		local passenger = Actor.Create(passengerName, { AddToWorld = false, Owner = owner })
+		passengers[i] = passenger
+		cargo:Load(vehicle, passenger)
+	end
+	Utils.Do(Utils.Skip(enterPath, 1), function(l) Actor.ScriptedMove(vehicle, l) end)
+	Actor.UnloadCargo(vehicle, true)
+	Actor.Wait(vehicle, 25)
+	Utils.Do(exitPath, function(l) Actor.ScriptedMove(vehicle, l) end)
+	Actor.RemoveSelf(vehicle)
+	return vehicle, passengers
+end
+
 Reinforcements.Reinforce = function(owner, reinforcementNames, enterLocation, rallyPointLocation, interval, onCreateFunc)
 	local facing = { Map.GetFacing(CPos.op_Subtraction(rallyPointLocation, enterLocation), 0), "Int32" }
 	local reinforcements = { }
