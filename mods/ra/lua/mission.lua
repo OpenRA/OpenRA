@@ -23,8 +23,8 @@ Mission.MissionOver = function(winners, losers, setWinStates)
 end
 
 Mission.GetGroundAttackersOf = function(player)
-	return Utils.EnumerableWhere(World.Actors, function(actor)
-		return not Actor.IsDead(actor) and Actor.IsInWorld(actor) and Actor.Owner(actor) == player and Actor.HasTrait(actor, "AttackBase") and Actor.HasTrait(actor, "Mobile")
+	return Utils.Where(Actor.ActorsWithTrait("AttackBase"), function(actor)
+		return not Actor.IsDead(actor) and Actor.IsInWorld(actor) and Actor.Owner(actor) == player and Actor.HasTrait(actor, "Mobile")
 	end)
 end
 

@@ -5,7 +5,7 @@ speed = 5
 Tick = function()
 	ticks = ticks + 1
 	local t = (ticks + 45) % (360 * speed) * (math.pi / 180) / speed;
-	OpenRA.SetViewportCenterPosition(WPos.op_Addition(viewportOrigin, MakeVec(-15360 * math.sin(t), 4096 * math.cos(t))))
+	OpenRA.SetViewportCenterPosition(WPos.op_Addition(viewportOrigin, WVec.New(-15360 * math.sin(t), 4096 * math.cos(t))))
 end
 
 WorldLoaded = function()
@@ -16,7 +16,7 @@ WorldLoaded = function()
 
 	local units = { boat1, boat2, boat3, boat4, lst1, lst2, lst3}
 	for i, unit in ipairs(units) do
-		LoopTrack(unit, MakePos(8, unit.Location.Y), MakePos(87, unit.Location.Y))
+		LoopTrack(unit, CPos.New(8, unit.Location.Y), CPos.New(87, unit.Location.Y))
 	end
 end
 
@@ -34,13 +34,4 @@ CreateUnitsInTransport = function(transport, passengerNames)
 	for i, passengerName in ipairs(passengerNames) do
 		cargo:Load(transport, Actor.Create(passengerName, { AddToWorld = false, Owner = owner, Facing = { facing, "Int32" } }))
 	end
-end
-
--- TODO: The standard library should expose CPos.New() etc
-MakePos = function(x, y)
-	return OpenRA.New("CPos", { {x, "Int32"}, {y, "Int32"} })
-end
-
-MakeVec = function(x, y)
-	return OpenRA.New("WVec", { {x, "Int32"}, {y, "Int32"}, {0, "Int32"} })
 end

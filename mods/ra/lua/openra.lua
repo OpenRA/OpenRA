@@ -33,8 +33,16 @@ OpenRA.GetPlayer = function(internalName)
 	return Utils.EnumerableFirstOrNil(World.Players, function(p) return p.InternalName == internalName end)
 end
 
+OpenRA.GetPlayers = function(func)
+	return Utils.EnumerableWhere(World.Players, func)
+end
+
 OpenRA.SetWinState = function(player, winState)
 	Internal.SetWinState(player, winState)
+end
+
+OpenRA.GetRandomInteger = function(low, high)
+	return Internal.GetRandomInteger(low, high)
 end
 
 OpenRA.TakeOre = function(player, amount)

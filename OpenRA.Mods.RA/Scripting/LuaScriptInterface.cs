@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Linq;
 using NLua;
 using OpenRA.Effects;
@@ -49,6 +50,7 @@ namespace OpenRA.Mods.RA.Scripting
 			context.Lua["WorldRenderer"] = wr;
 			context.RegisterObject(this, "Internal", false);
 			context.RegisterType(typeof(WVec), "WVec", true);
+			context.RegisterType(typeof(CVec), "CVec", true);
 			context.RegisterType(typeof(WPos), "WPos", true);
 			context.RegisterType(typeof(CPos), "CPos", true);
 			context.RegisterType(typeof(WRot), "WRot", true);
@@ -144,6 +146,19 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			var ret = TraitOrDefault(actor, className);
 			return ret != null;
+		}
+
+		[LuaGlobal]
+		public object[] ActorsWithTrait(string className)
+		{
+			var type = Game.modData.ObjectCreator.FindType(className);
+			if (type == null)
+				throw new InvalidOperationException("Cannot locate type: {0}".F(className));
+
+			var method = typeof(World).GetMethod("ActorsWithTrait");
+			var genericMethod = method.MakeGenericMethod(type);
+			var result = ((IEnumerable)genericMethod.Invoke(world, null)).Cast<object>().ToArray();
+			return result;
 		}
 
 		[LuaGlobal]
@@ -272,6 +287,33 @@ namespace OpenRA.Mods.RA.Scripting
 		public bool RequiredUnitsAreDestroyed(Player player)
 		{
 			return world.ActorsWithTrait<MustBeDestroyed>().All(p => p.Actor.Owner != player);
+		}
+
+		[LuaGlobal]
+		public void AttackMove(Actor actor, CPos location)
+		{
+			if (actor.HasTrait<AttackMove>())
+				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(location, 0)));
+			else
+				actor.QueueActivity(new Move.Move(location, 0));
+		}
+
+		[LuaGlobal]
+		public int GetRandomInteger(double low, double high)
+		{
+			return world.SharedRandom.Next((int)low, (int)high);
+		}
+
+		[LuaGlobal]
+		public CPos GetRandomCell()
+		{
+			return world.ChooseRandomCell(world.SharedRandom);
+		}
+
+		[LuaGlobal]
+		public CPos GetRandomEdgeCell()
+		{
+			return world.ChooseRandomEdgeCell();
 		}
 	}
 }

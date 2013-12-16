@@ -134,10 +134,10 @@ WorldLoaded = function()
 	Actor.OnKilled(Lab, LabDestroyed)
 	Actor.OnKilled(OilPump, OilPumpDestroyed)
 	
-	labGuardsTeam = Team.Create({ LabGuard1, LabGuard2, LabGuard3 })
+	labGuardsTeam = Team.New({ LabGuard1, LabGuard2, LabGuard3 })
 	Team.AddEventHandler(labGuardsTeam.OnAllKilled, LabGuardsKilled)
 	
-	civiliansTeam = Team.Create({ Civilian1, Civilian2 })
+	civiliansTeam = Team.New({ Civilian1, Civilian2 })
 	
 	RunInitialActivities()
 	

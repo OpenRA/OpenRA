@@ -1,6 +1,6 @@
 Team = { }
 
-Team.Create = function(actors)
+Team.New = function(actors)
 	local team = { }
 	team.Actors = actors
 	team.OnAllKilled = { }

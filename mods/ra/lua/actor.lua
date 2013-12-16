@@ -24,7 +24,7 @@ Actor.Move = function(actor, location)
 end
 
 Actor.MoveNear = function(actor, location, nearEnough)
-	actor:QueueActivity(OpenRA.New("Move", { location, Map.GetWRangeFromCells(nearEnough) }))
+	actor:QueueActivity(OpenRA.New("Move", { location, WRange.FromCells(nearEnough) }))
 end
 
 Actor.ScriptedMove = function(actor, location)
@@ -33,6 +33,10 @@ end
 
 Actor.Teleport = function(actor, location)
 	actor:QueueActivity(OpenRA.New("SimpleTeleport", { location }))
+end
+
+Actor.AttackMove = function(actor, location)
+	Internal.AttackMove(actor, location)
 end
 
 Actor.HeliFly = function(actor, position)
@@ -119,6 +123,10 @@ Actor.Facing = function(actor)
 	return Actor.Trait(actor, "IFacing"):get_Facing()
 end
 
+Actor.IsIdle = function(actor)
+	return actor.IsIdle
+end
+
 Actor.SetStance = function(actor, stance)
 	Internal.SetUnitStance(actor, stance)
 end
@@ -133,6 +141,14 @@ end
 
 Actor.OnRemovedFromWorld = function(actor, eh)
 	Actor.Trait(actor, "LuaScriptEvents").OnRemovedFromWorld:Add(eh)
+end
+
+Actor.ActorsWithTrait = function(className)
+	local ret = { }
+	for item in Utils.Enumerate(Internal.ActorsWithTrait(className)) do
+		table.insert(ret, item.Actor)
+	end
+	return ret
 end
 
 Actor.HasTrait = function(actor, className)
