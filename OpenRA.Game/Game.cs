@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -81,11 +81,10 @@ namespace OpenRA
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
 
-
 		// Hacky workaround for orderManager visibility
 		public static Widget OpenWindow(World world, string widget)
 		{
-			return Ui.OpenWindow(widget, new WidgetArgs() {{ "world", world }, { "orderManager", orderManager }, { "worldRenderer", worldRenderer }});
+			return Ui.OpenWindow(widget, new WidgetArgs() { { "world", world }, { "orderManager", orderManager }, { "worldRenderer", worldRenderer } });
 		}
 
 		// Who came up with the great idea of making these things
@@ -220,7 +219,7 @@ namespace OpenRA
 			LobbyInfoChanged();
 		}
 
-		public static event Action BeforeGameStart = () => {};
+		public static event Action BeforeGameStart = () => { };
 		internal static void StartGame(string mapUID, bool isShellmap)
 		{
 			BeforeGameStart();
@@ -249,9 +248,9 @@ namespace OpenRA
 		{
 			get
 			{
-				var client= orderManager.LobbyInfo.ClientWithIndex(
-					orderManager.Connection.LocalClientId);
-				return ((client!=null) && client.IsAdmin);
+				var id = orderManager.Connection.LocalClientId;
+				var client = orderManager.LobbyInfo.ClientWithIndex(id);
+				return client != null && client.IsAdmin;
 			}
 		}
 
@@ -284,7 +283,7 @@ namespace OpenRA
 			}
 
 			FileSystem.Mount("."); // Needed to access shaders
-			var renderers = new [] { Settings.Graphics.Renderer, "Sdl2", "Gl", "Cg", null };
+			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", "Gl", "Cg", null };
 			foreach (var r in renderers)
 			{
 				if (r == null)
@@ -302,6 +301,7 @@ namespace OpenRA
 					Console.WriteLine("Renderer initialization failed. Fallback in place. Check graphics.log for details.");
 				}
 			}
+
 			Renderer = new Renderer();
 
 			try
@@ -317,26 +317,22 @@ namespace OpenRA
 			}
 
 			Console.WriteLine("Available mods:");
-			foreach(var mod in Mod.AllMods)
+			foreach (var mod in Mod.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
 			InitializeWithMod(Settings.Game.Mod);
 
 			if (Settings.Server.DiscoverNatDevices)
-			{
-				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, () =>
-				              UPnP.TryStoppingNatDiscovery()
-				              );
-			}
+				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, UPnP.TryStoppingNatDiscovery);
 		}
 
 		public static void InitializeWithMod(string mod)
 		{
 			// Clear static state if we have switched mods
-			LobbyInfoChanged = () => {};
-			AddChatLine = (a,b,c) => {};
-			ConnectionStateChanged = om => {};
-			BeforeGameStart = () => {};
+			LobbyInfoChanged = () => { };
+			AddChatLine = (a, b, c) => { };
+			ConnectionStateChanged = om => { };
+			BeforeGameStart = () => { };
 			Ui.ResetAll();
 
 			worldRenderer = null;
@@ -378,21 +374,23 @@ namespace OpenRA
 					{
 						System.Threading.Thread.Sleep(100);
 
-						if ((server.State == Server.ServerState.GameStarted)
-						    && (server.Conns.Count<=1))
+						if (server.State == Server.ServerState.GameStarted && server.Conns.Count <= 1)
 						{
 							Console.WriteLine("No one is playing, shutting down...");
 							server.Shutdown();
 							break;
 						}
 					}
+
 					if (Settings.Server.DedicatedLoop)
 					{
 						Console.WriteLine("Starting a new server instance...");
 						continue;
 					}
+
 					break;
 				}
+
 				Environment.Exit(0);
 			}
 			else
@@ -409,7 +407,7 @@ namespace OpenRA
 
 		static string ChooseShellmap()
 		{
-			var shellmaps =  modData.AvailableMaps
+			var shellmaps = modData.AvailableMaps
 				.Where(m => m.Value.UseAsShellmap);
 
 			if (!shellmaps.Any())
@@ -419,7 +417,7 @@ namespace OpenRA
 		}
 
 		static bool quit;
-		public static event Action OnQuit = () => {};
+		public static event Action OnQuit = () => { };
 
 		internal static void Run()
 		{
@@ -449,11 +447,11 @@ namespace OpenRA
 
 		public static void Exit() { quit = true; }
 
-		public static Action<Color,string,string> AddChatLine = (c,n,s) => {};
+		public static Action<Color, string, string> AddChatLine = (c, n, s) => { };
 
 		public static void Debug(string s, params object[] args)
 		{
-			AddChatLine(Color.White, "Debug", String.Format(s,args));
+			AddChatLine(Color.White, "Debug", string.Format(s, args));
 		}
 
 		public static void Disconnect()
@@ -472,7 +470,7 @@ namespace OpenRA
 				server.Shutdown();
 		}
 
-		public static T CreateObject<T>( string name )
+		public static T CreateObject<T>(string name)
 		{
 			return modData.ObjectCreator.CreateObject<T>(name);
 		}
@@ -489,7 +487,7 @@ namespace OpenRA
 				Name = "Skirmish Game",
 				Map = map,
 				AdvertiseOnline = false,
-				AllowPortForward =  false
+				AllowPortForward = false
 			};
 
 			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, modData);
@@ -507,11 +505,11 @@ namespace OpenRA
 			try
 			{
 				var mod = Game.modData.Manifest.Mod;
-				var dirPath = new [] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
+				var dirPath = new[] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
 				if (!Directory.Exists(dirPath))
 					Directory.CreateDirectory(dirPath);
 
-				var mapPath = Path.Combine(dirPath, mapHash+".oramap");
+				var mapPath = Path.Combine(dirPath, mapHash + ".oramap");
 				Console.Write("Trying to download map to {0} ... ".F(mapPath));
 
 				WebClient webClient = new WebClient();
