@@ -163,10 +163,10 @@ allyrepair:
 		Tick: 160
 
 crate:
-	idle: wcrate
+	idle:
 		Start: 0
 		ZOffset: -511
-	land: wcrate
+	land:
 		Start: 0
 		ZOffset: -511
 
