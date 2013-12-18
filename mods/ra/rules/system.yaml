@@ -811,6 +811,7 @@ CRATE:
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:
+		Images: scrate
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
 	ProximityCaptor:
 		Types:Crate
