@@ -113,6 +113,8 @@ NEW:
 		Renamed Game.Mods launch argument to Game.Mod.
 		Linux packages now install to /usr/lib/openra for consistency with other Mono applications.
 		Added an optional map.yaml check to the OpenRA.Lint.exe command line tool.
+	Map Editor:
+		Fixed custom assets being removed when saving an oramap.
 	Mod / Custom map compatibility:
 		Mods can now include traits from TD and D2K in RA.
 		Mods can now customize UI text settings like font type/color/contrast for most widgets and set global defaults in metrics.yaml.
