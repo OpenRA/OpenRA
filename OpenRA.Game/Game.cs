@@ -284,9 +284,12 @@ namespace OpenRA
 			}
 
 			FileSystem.Mount("."); // Needed to access shaders
-			var renderers = new [] { Settings.Graphics.Renderer, "Sdl2", "Gl", "Cg" };
+			var renderers = new [] { Settings.Graphics.Renderer, "Sdl2", "Gl", "Cg", null };
 			foreach (var r in renderers)
 			{
+				if (r == null)
+					throw new InvalidOperationException("No suitable renderers were found. Check graphics.log for details.");
+
 				Settings.Graphics.Renderer = r;
 				try
 				{
