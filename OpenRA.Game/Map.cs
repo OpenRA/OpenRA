@@ -284,6 +284,15 @@ namespace OpenRA
 			var s = root.WriteToString();
 			entries.Add("map.yaml", Encoding.UTF8.GetBytes(s));
 
+			// Add any custom assets
+			foreach (var file in Container.AllFileNames())
+			{
+				if (file == "map.bin" || file == "map.yaml")
+					continue;
+
+				entries.Add(file, Container.GetContent(file).ReadAllBytes());
+			}
+
 			// Saving the map to a new location
 			if (toPath != Path)
 			{
