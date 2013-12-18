@@ -1,6 +1,6 @@
 SupportPowers = { }
 
-SupportPowers.Parabomb = function(owner, planeName, enterLocation, bombLocation)
+SupportPowers.Airstrike = function(owner, planeName, enterLocation, bombLocation)
 	local facing = { Map.GetFacing(CPos.op_Subtraction(bombLocation, enterLocation), 0), "Int32" }
 	local altitude = { Actor.TraitInfo(planeName, "AircraftInfo").CruiseAltitude, "Int32" }
 	local plane = Actor.Create(planeName, { Location = enterLocation, Owner = owner, Facing = facing, Altitude = altitude })
