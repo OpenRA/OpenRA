@@ -219,17 +219,17 @@ fb4:
 		Start: 0
 		Length: *
 
-crate:
-	idle: scrate
+scrate:
+	idle:
 		Start: 0
 		ZOffset: -511
-	water: wwcrate
-		Start: 0
-		Length: *
+	land:
+		Start: 1
+		ZOffset: -511
+	water:
+		Start: 2
+		Length: 4
 		Tick: 500
-		ZOffset: -511
-	land: sh-crate
-		Start: 0
 		ZOffset: -511
 
 xcratea:

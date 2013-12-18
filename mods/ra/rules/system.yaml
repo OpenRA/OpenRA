@@ -542,11 +542,11 @@ World:
 		Widget: INGAME_ROOT
 	ScreenShaker:
 	WaterPaletteRotation:
-		ExcludePalettes: player
+		ExcludePalettes: player, effect
 	ChronoshiftPaletteEffect:
 	NukePaletteEffect:
 	LightPaletteRotator:
-		ExcludePalettes: terrain
+		ExcludePalettes: terrain, effect
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
 	BridgeLayer:
@@ -809,7 +809,9 @@ CRATE:
 		SelectionShares: 3
 		Unit: 4tnk
 	RenderSprites:
+		Palette: effect
 	WithCrateBody:
+		Images: scrate
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
 	ProximityCaptor:
 		Types:Crate

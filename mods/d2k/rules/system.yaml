@@ -562,6 +562,7 @@ CRATE:
 		NoBaseSelectionShares: 9001
 		Unit: mcvo
 	RenderSprites:
+		Palette: effect
 	WithCrateBody:
 	ProximityCaptor:
 		Types:Crate
