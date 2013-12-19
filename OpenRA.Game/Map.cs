@@ -121,6 +121,7 @@ namespace OpenRA
 				Author = "Your name here",
 				MapSize = new int2(1, 1),
 				Tileset = tileset.Id,
+				Options = new MapOptions(),
 				MapResources = Lazy.New(() => new TileReference<byte, byte>[1, 1]),
 				MapTiles = Lazy.New(() => new TileReference<ushort, byte>[1, 1] { { tileRef } }),
 				Actors = Lazy.New(() => new Dictionary<string, ActorReference>()),
@@ -258,17 +259,20 @@ namespace OpenRA
 			foreach (var field in fields)
 			{
 				var f = this.GetType().GetField(field);
-				if (f.GetValue(this) == null) continue;
+				if (f.GetValue(this) == null)
+					continue;
 				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
 			}
 
 			root.Add(new MiniYamlNode("Options", FieldSaver.SaveDifferences(Options, new MapOptions())));
 
 			root.Add(new MiniYamlNode("Players", null,
-				Players.Select(p => new MiniYamlNode("PlayerReference@{0}".F(p.Key), FieldSaver.SaveDifferences(p.Value, new PlayerReference()))).ToList()));
+				Players.Select(p => new MiniYamlNode("PlayerReference@{0}".F(p.Key), FieldSaver.SaveDifferences(p.Value, new PlayerReference()))).ToList())
+			);
 
 			root.Add(new MiniYamlNode("Actors", null,
-				Actors.Value.Select(x => new MiniYamlNode(x.Key, x.Value.Save())).ToList()));
+				Actors.Value.Select(x => new MiniYamlNode(x.Key, x.Value.Save())).ToList())
+			);
 
 			root.Add(new MiniYamlNode("Smudges", MiniYaml.FromList<SmudgeReference>(Smudges.Value)));
 			root.Add(new MiniYamlNode("Rules", null, Rules));
@@ -285,12 +289,15 @@ namespace OpenRA
 			entries.Add("map.yaml", Encoding.UTF8.GetBytes(s));
 
 			// Add any custom assets
-			foreach (var file in Container.AllFileNames())
+			if (Container != null)
 			{
-				if (file == "map.bin" || file == "map.yaml")
-					continue;
+				foreach (var file in Container.AllFileNames())
+				{
+					if (file == "map.bin" || file == "map.yaml")
+						continue;
 
-				entries.Add(file, Container.GetContent(file).ReadAllBytes());
+					entries.Add(file, Container.GetContent(file).ReadAllBytes());
+				}
 			}
 
 			// Saving the map to a new location
@@ -299,7 +306,6 @@ namespace OpenRA
 				Path = toPath;
 
 				// Create a new map package
-				// TODO: Add other files (custom assets) to the entries list
 				Container = FileSystem.CreatePackage(Path, int.MaxValue, entries);
 			}
 
