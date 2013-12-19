@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 {
 	public class HarvesterInfo : ITraitInfo
 	{
+		public readonly string[] DeliveryBuildings = { };
 		public readonly int Capacity = 28;
 		public readonly int LoadTicksPerBale = 4;
 		public readonly int UnloadTicksPerBale = 4;
@@ -101,12 +102,18 @@ namespace OpenRA.Mods.RA
 			self.QueueActivity(new FindResources());
 		}
 
+		bool IsAcceptableProcType(Actor proc)
+		{
+			return Info.DeliveryBuildings.Length == 0 ||
+				Info.DeliveryBuildings.Contains(proc.Info.Name);
+		}
+
 		Actor ClosestProc(Actor self, Actor ignore)
 		{
 			// Find all refineries and their occupancy count:
 			var refs = (
 				from r in self.World.ActorsWithTrait<IAcceptOre>()
-				where r.Actor != ignore && r.Actor.Owner == self.Owner
+				where r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor)
 				let linkedHarvs = self.World.ActorsWithTrait<Harvester>().Where(a => a.Trait.LinkedProc == r.Actor).Count()
 				select new { Location = r.Actor.Location + r.Trait.DeliverOffset, Actor = r.Actor, Occupancy = linkedHarvs }
 			).ToDictionary(r => r.Location);
@@ -239,7 +246,8 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IAcceptOre>("Deliver", 5, _ => true,
+				yield return new EnterAlliedActorTargeter<IAcceptOre>("Deliver", 5,
+					proc => IsAcceptableProcType(proc),
 					proc => !IsEmpty && proc.Trait<IAcceptOre>().AllowDocking);
 				yield return new HarvestOrderTargeter();
 			}
@@ -316,7 +324,7 @@ namespace OpenRA.Mods.RA
 			{
 				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
 				var iao = order.TargetActor.TraitOrDefault<IAcceptOre>();
-				if (iao == null || !iao.AllowDocking)
+				if (iao == null || !iao.AllowDocking || !IsAcceptableProcType(order.TargetActor))
 					return;
 
 				if (order.TargetActor != OwnerLinkedProc)
