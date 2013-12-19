@@ -22,7 +22,7 @@ namespace OpenRA.FileFormats
 			Folders, MapFolders, Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Movies, Translations, TileSets,
-			ChromeMetrics, PackageContents, LuaScripts;
+			ChromeMetrics, PackageContents, LuaScripts, MapCompatibility;
 
 		public readonly Dictionary<string, string> Packages;
 		public readonly MiniYaml LoadScreen;
@@ -69,6 +69,16 @@ namespace OpenRA.FileFormats
 
 			if (yaml.ContainsKey("TileSize"))
 				TileSize = int.Parse(yaml["TileSize"].Value);
+
+			// Allow inherited mods to import parent maps.
+			var compat = new List<string>();
+			compat.Add(mod);
+
+			if (yaml.ContainsKey("SupportsMapsFrom"))
+				foreach (var c in yaml["SupportsMapsFrom"].Value.Split(','))
+					compat.Add(c.Trim());
+
+			MapCompatibility = compat.ToArray();
 		}
 
 		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key)

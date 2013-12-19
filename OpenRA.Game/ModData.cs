@@ -155,7 +155,7 @@ namespace OpenRA
 				try
 				{
 					var map = new Map(path, Manifest.Mod.Id);
-					if (map.RequiresMod == Manifest.Mod.Id)
+					if (Manifest.MapCompatibility.Contains(map.RequiresMod))
 						ret.Add(map.Uid, map);
 				}
 				catch (Exception e)
