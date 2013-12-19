@@ -122,6 +122,7 @@ NEW:
 		Mods can now include traits from TD and D2K in RA.
 		Mods can now customize UI text settings like font type/color/contrast for most widgets and set global defaults in metrics.yaml.
 		New sections MapFolders and Translations added to mod.yaml.
+		Mods must now explicitly specify the mods that they can inherit maps from by defining `SupportsMapsFrom: parent_mod' in mod.yaml.
 		Renamed CarpetBomb trait to AttackBomber, and additional functionality added. An Armament trait is now required to specify the weapons.
 		Renamed Capture trait to ExternalCapture.
 		Renamed CapturableBar trait to ExternalCapturableBar.
