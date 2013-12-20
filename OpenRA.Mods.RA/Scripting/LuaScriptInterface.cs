@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using NLua;
 using OpenRA.Effects;
@@ -34,6 +35,7 @@ namespace OpenRA.Mods.RA.Scripting
 	public class LuaScriptInterface : IWorldLoaded, ITick
 	{
 		World world;
+		Dictionary<string, Actor> mapActors;
 		readonly LuaScriptContext context = new LuaScriptContext();
 		readonly LuaScriptInterfaceInfo info;
 
@@ -45,6 +47,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
+			mapActors = world.WorldActor.Trait<SpawnMapActors>().Actors;
 
 			context.Lua["World"] = w;
 			context.Lua["WorldRenderer"] = wr;
@@ -72,7 +75,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		void AddMapActorGlobals()
 		{
-			foreach (var kv in world.WorldActor.Trait<SpawnMapActors>().Actors)
+			foreach (var kv in mapActors)
 			{
 				if (context.Lua[kv.Key] != null)
 					context.ShowErrorMessage("{0}: The global name '{1}' is reserved and may not be used by map actor {2}".F(GetType().Name, kv.Key, kv.Value), null);
@@ -314,6 +317,12 @@ namespace OpenRA.Mods.RA.Scripting
 		public CPos GetRandomEdgeCell()
 		{
 			return world.ChooseRandomEdgeCell();
+		}
+
+		[LuaGlobal]
+		public Actor GetNamedActor(string actorName)
+		{
+			return mapActors[actorName];
 		}
 	}
 }

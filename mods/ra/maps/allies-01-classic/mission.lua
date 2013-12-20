@@ -72,7 +72,7 @@ end
 SendCruisers = function()
 	for i, cruiser in ipairs(Cruisers) do
 		local ca = Actor.Create(cruiser, { Owner = england, Location = SouthReinforcementsPoint.Location })
-		Actor.Move(ca, _G["CruiserPoint" .. i].Location)
+		Actor.Move(ca, Map.GetNamedActor("CruiserPoint" .. i).Location)
 	end
 end
 

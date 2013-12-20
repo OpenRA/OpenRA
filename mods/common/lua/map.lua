@@ -12,6 +12,10 @@ Map.GetRandomEdgeCell = function()
 	return Internal.GetRandomEdgeCell()
 end
 
+Map.GetNamedActor = function(actorName)
+	return Internal.GetNamedActor(actorName)
+end
+
 CPos.New = function(x, y)
 	return OpenRA.New("CPos", { { x, "Int32" }, { y, "Int32" } })
 end
