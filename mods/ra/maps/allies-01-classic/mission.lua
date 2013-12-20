@@ -13,8 +13,8 @@ CivilianWait = 150
 BaseAlertDelay = 300
 
 SendInsertionHelicopter = function()
-	local heli, passengers = Reinforcements.PerformHelicopterInsertion(player, InsertionHelicopterType, { TanyaType },
-		InsertionEntry.CenterPosition, InsertionLZ.CenterPosition, InsertionEntry.CenterPosition)
+	local heli, passengers = Reinforcements.Insert(player, InsertionHelicopterType, { TanyaType },
+		{ InsertionEntry.Location, InsertionLZ.Location }, { InsertionEntry.Location })
 	tanya = passengers[1]
 	Actor.OnKilled(tanya, TanyaKilled)
 end
@@ -59,8 +59,8 @@ LabGuardsKilled = function()
 end
 
 SendExtractionHelicopter = function()
-	local heli = Reinforcements.PerformHelicopterExtraction(player, ExtractionHelicopterType, { einstein },
-		SouthReinforcementsPoint.CenterPosition, ExtractionLZ.CenterPosition, ExtractionExitPoint.CenterPosition)
+	local heli = Reinforcements.Extract(player, ExtractionHelicopterType, { einstein },
+		{ SouthReinforcementsPoint.Location, ExtractionLZ.Location }, { ExtractionExitPoint.Location })
 	Actor.OnKilled(heli, HelicopterDestroyed)
 	Actor.OnRemovedFromWorld(heli, HelicopterExtractionCompleted)
 end

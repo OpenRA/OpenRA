@@ -1,62 +1,43 @@
 Reinforcements = { }
 
-Reinforcements.PerformHelicopterInsertion = function(owner, helicopterName, passengerNames, enterPosition, unloadPosition, exitPosition)
-	local facing = { Map.GetFacing(WPos.op_Subtraction(unloadPosition, enterPosition), 0), "Int32" }
-	local altitude = { Actor.TraitInfo(helicopterName, "AircraftInfo").CruiseAltitude, "Int32" }
-	local heli = Actor.Create(helicopterName, { Owner = owner, CenterPosition = enterPosition, Facing = facing, Altitude = altitude })
-	local cargo = Actor.Trait(heli, "Cargo")
+Reinforcements.Insert = function(owner, transportName, passengerNames, enterPath, exitPath)
+	local facing = { Map.GetFacing(CPos.op_Subtraction(enterPath[2], enterPath[1]), 0), "Int32" }
+	local altitude = Actor.InitialAltitude(transportName)
+	local transport = Actor.Create(transportName, { Owner = owner, Location = enterPath[1], Facing = facing, Altitude = { altitude, "Int32" } })
+	local cargo = Actor.Trait(transport, "Cargo")
 	local passengers = { }
+
 	for i, passengerName in ipairs(passengerNames) do
 		local passenger = Actor.Create(passengerName, { AddToWorld = false, Owner = owner })
-		cargo:Load(heli, passenger)
 		passengers[i] = passenger
+		cargo:Load(transport, passenger)
 	end
-	Actor.HeliFly(heli, unloadPosition)
-	Actor.Turn(heli, 0)
-	Actor.HeliLand(heli, true)
-	Actor.UnloadCargo(heli, true)
-	Actor.Wait(heli, 125)
-	Actor.HeliFly(heli, exitPosition)
-	Actor.RemoveSelf(heli)
-	return heli, passengers
+
+	Utils.Do(Utils.Skip(enterPath, 1), function(l) Actor.ScriptedMove(transport, l) end)
+	Actor.AfterMove(transport)
+	Actor.UnloadCargo(transport, true)
+	Actor.Wait(transport, 25)
+	Utils.Do(exitPath, function(l) Actor.ScriptedMove(transport, l) end)
+	Actor.RemoveSelf(transport)
+	return transport, passengers
 end
 
-Reinforcements.PerformHelicopterExtraction = function(owner, helicopterName, passengers, enterPosition, loadPosition, exitPosition)
-	local facing = { Map.GetFacing(WPos.op_Subtraction(loadPosition, enterPosition), 0), "Int32" }
-	local altitude = { Actor.TraitInfo(helicopterName, "AircraftInfo").CruiseAltitude, "Int32" }
-	local heli = Actor.Create(helicopterName, { Owner = owner, CenterPosition = enterPosition, Facing = facing, Altitude = altitude })
-	local cargo = Actor.Trait(heli, "Cargo")
-	Actor.HeliFly(heli, loadPosition)
-	Actor.Turn(heli, 0)
-	Actor.HeliLand(heli, true)
-	Actor.WaitFor(heli, function()
-		return Utils.All(passengers, function(passenger) return cargo.Passengers:Contains(passenger) end)
+Reinforcements.Extract = function(owner, transportName, passengerNames, enterPath, exitPath)
+	local facing = { Map.GetFacing(CPos.op_Subtraction(enterPath[2], enterPath[1]), 0), "Int32" }
+	local altitude = Actor.InitialAltitude(transportName)
+	local transport = Actor.Create(transportName, { Owner = owner, Location = enterPath[1], Facing = facing, Altitude = { altitude, "Int32" } })
+	local cargo = Actor.Trait(transport, "Cargo")
+
+	Utils.Do(Utils.Skip(enterPath, 1), function(l) Actor.ScriptedMove(transport, l) end)
+	Actor.AfterMove(transport)
+	Actor.WaitFor(transport, function()
+		return Utils.All(passengerNames, function(passenger) return cargo.Passengers:Contains(passenger) end)
 	end)
-	Actor.Wait(heli, 125)
-	Actor.HeliFly(heli, exitPosition)
-	Actor.RemoveSelf(heli)
-	return heli
-end
 
-Reinforcements.PerformInsertion = function(owner, vehicleName, passengerNames, enterPath, exitPath)
-	local facing = { 0, "Int32" }
-	if #enterPath > 1 then
-		facing = { Map.GetFacing(CPos.op_Subtraction(enterPath[2], enterPath[1]), 0), "Int32" }
-	end
-	local vehicle = Actor.Create(vehicleName, { Owner = owner, Location = enterPath[1], Facing = facing })
-	local cargo = Actor.Trait(vehicle, "Cargo")
-	local passengers = { }
-	for i, passengerName in ipairs(passengerNames) do
-		local passenger = Actor.Create(passengerName, { AddToWorld = false, Owner = owner })
-		passengers[i] = passenger
-		cargo:Load(vehicle, passenger)
-	end
-	Utils.Do(Utils.Skip(enterPath, 1), function(l) Actor.ScriptedMove(vehicle, l) end)
-	Actor.UnloadCargo(vehicle, true)
-	Actor.Wait(vehicle, 25)
-	Utils.Do(exitPath, function(l) Actor.ScriptedMove(vehicle, l) end)
-	Actor.RemoveSelf(vehicle)
-	return vehicle, passengers
+	Actor.Wait(transport, 125)
+	Utils.Do(exitPath, function(l) Actor.ScriptedMove(transport, l) end)
+	Actor.RemoveSelf(transport)
+	return transport
 end
 
 Reinforcements.Reinforce = function(owner, reinforcementNames, enterLocation, rallyPointLocation, interval, onCreateFunc)

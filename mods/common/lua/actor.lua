@@ -28,7 +28,19 @@ Actor.MoveNear = function(actor, location, nearEnough)
 end
 
 Actor.ScriptedMove = function(actor, location)
-	actor:QueueActivity(OpenRA.New("Move", { location }))
+	if Actor.HasTrait(actor, "Helicopter") then
+		actor:QueueActivity(OpenRA.New("HeliFly", { location.CenterPosition }))
+	else
+		actor:QueueActivity(OpenRA.New("Move", { location }))
+	end
+end
+
+Actor.AfterMove = function(actor)
+	local heli = Actor.TraitOrDefault(actor, "Helicopter")
+	if heli ~= nil then
+		Actor.Turn(actor, heli.Info.InitialFacing)
+		Actor.HeliLand(actor, true)
+	end
 end
 
 Actor.Teleport = function(actor, location)
@@ -173,4 +185,12 @@ end
 
 Actor.TraitInfo = function(actorType, className)
 	return Internal.TraitInfo(actorType, className)
+end
+
+Actor.InitialAltitude = function(actorName)
+	if Actor.HasTraitInfo("AircraftInfo") then
+		return Actor.TraitInfo(actorName, "AircraftInfo").CruiseAltitude
+	end
+
+	return 0
 end
