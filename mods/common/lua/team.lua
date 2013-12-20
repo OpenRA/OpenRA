@@ -1,6 +1,6 @@
 Team = { }
 
-Team.Create = function(actors)
+Team.New = function(actors)
 	local team = { }
 	team.Actors = actors
 	team.OnAllKilled = { }
@@ -57,5 +57,5 @@ Team.Contains = function(team, actor)
 end
 
 Team.Do = function(team, func)
-	Utils.ForEach(team.Actors, func)
+	Utils.Do(team.Actors, func)
 end

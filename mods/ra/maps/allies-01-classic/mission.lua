@@ -13,8 +13,8 @@ CivilianWait = 150
 BaseAlertDelay = 300
 
 SendInsertionHelicopter = function()
-	local heli, passengers = Reinforcements.PerformHelicopterInsertion(player, InsertionHelicopterType, { TanyaType },
-		InsertionEntry.CenterPosition, InsertionLZ.CenterPosition, InsertionEntry.CenterPosition)
+	local heli, passengers = Reinforcements.Insert(player, InsertionHelicopterType, { TanyaType },
+		{ InsertionEntry.Location, InsertionLZ.Location }, { InsertionEntry.Location })
 	tanya = passengers[1]
 	Actor.OnKilled(tanya, TanyaKilled)
 end
@@ -59,8 +59,8 @@ LabGuardsKilled = function()
 end
 
 SendExtractionHelicopter = function()
-	local heli = Reinforcements.PerformHelicopterExtraction(player, ExtractionHelicopterType, { einstein },
-		SouthReinforcementsPoint.CenterPosition, ExtractionLZ.CenterPosition, ExtractionExitPoint.CenterPosition)
+	local heli = Reinforcements.Extract(player, ExtractionHelicopterType, { einstein },
+		{ SouthReinforcementsPoint.Location, ExtractionLZ.Location }, { ExtractionExitPoint.Location })
 	Actor.OnKilled(heli, HelicopterDestroyed)
 	Actor.OnRemovedFromWorld(heli, HelicopterExtractionCompleted)
 end
@@ -72,7 +72,7 @@ end
 SendCruisers = function()
 	for i, cruiser in ipairs(Cruisers) do
 		local ca = Actor.Create(cruiser, { Owner = england, Location = SouthReinforcementsPoint.Location })
-		Actor.Move(ca, _G["CruiserPoint" .. i].Location)
+		Actor.Move(ca, Map.GetNamedActor("CruiserPoint" .. i).Location)
 	end
 end
 
@@ -134,10 +134,10 @@ WorldLoaded = function()
 	Actor.OnKilled(Lab, LabDestroyed)
 	Actor.OnKilled(OilPump, OilPumpDestroyed)
 	
-	labGuardsTeam = Team.Create({ LabGuard1, LabGuard2, LabGuard3 })
+	labGuardsTeam = Team.New({ LabGuard1, LabGuard2, LabGuard3 })
 	Team.AddEventHandler(labGuardsTeam.OnAllKilled, LabGuardsKilled)
 	
-	civiliansTeam = Team.Create({ Civilian1, Civilian2 })
+	civiliansTeam = Team.New({ Civilian1, Civilian2 })
 	
 	RunInitialActivities()
 	

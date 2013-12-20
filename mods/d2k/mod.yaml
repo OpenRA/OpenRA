@@ -145,12 +145,13 @@ Fonts:
 		Size:10
 
 LuaScripts:
-	mods/ra/lua/utils.lua
-	mods/ra/lua/openra.lua
-	mods/ra/lua/map.lua
-	mods/ra/lua/actor.lua
-	mods/ra/lua/team.lua
-	mods/ra/lua/media.lua
-	mods/ra/lua/mission.lua
-	mods/ra/lua/reinforcements.lua
-	mods/ra/lua/supportpowers.lua
+	mods/common/lua/utils.lua
+	mods/common/lua/openra.lua
+	mods/common/lua/map.lua
+	mods/common/lua/actor.lua
+	mods/common/lua/team.lua
+	mods/common/lua/media.lua
+	mods/common/lua/mission.lua
+	mods/common/lua/reinforcements.lua
+	mods/common/lua/supportpowers.lua
+	mods/common/lua/rules.lua

@@ -58,6 +58,7 @@ SectionEnd
 Section "Game" GAME
 	RMDir /r "$INSTDIR\mods"
 	SetOutPath "$INSTDIR\mods"
+	File /r "${SRCDIR}\mods\common"
 	File /r "${SRCDIR}\mods\cnc"
 	File /r "${SRCDIR}\mods\d2k"
 	File /r "${SRCDIR}\mods\ra"
