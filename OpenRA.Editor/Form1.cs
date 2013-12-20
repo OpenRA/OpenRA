@@ -599,7 +599,7 @@ namespace OpenRA.Editor
 
 		void DeveloperBountiesToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start("https://www.bountysource.com/#repos/OpenRA/OpenRA");
+			System.Diagnostics.Process.Start("https://www.bountysource.com/trackers/36085-openra");
 		}
 
 		void SourceCodeToolStripMenuItemClick(object sender, EventArgs e)
