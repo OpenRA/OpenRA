@@ -146,7 +146,7 @@ LoadScreen: DefaultLoadScreen
 	Image: mods/ts/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFile: isotemp.mix
-	PackageURL: http://open-ra.org/get-dependency.php?file=ts-packages
+	PackageURL: http://open-ra.org/download/content/ts-packages
 	Text: Updating EVA installation..., Changing perspective...
 
 ServerTraits:
