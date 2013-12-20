@@ -174,23 +174,3 @@ end
 Actor.Trait = function(actor, className)
 	return Internal.Trait(actor, className)
 end
-
-Actor.HasTraitInfo = function(actorType, className)
-	return Internal.HasTraitInfo(actorType, className)
-end
-
-Actor.TraitInfoOrDefault = function(actorType, className)
-	return Internal.TraitInfoOrDefault(actorType, className)
-end
-
-Actor.TraitInfo = function(actorType, className)
-	return Internal.TraitInfo(actorType, className)
-end
-
-Actor.InitialAltitude = function(actorName)
-	if Actor.HasTraitInfo("AircraftInfo") then
-		return Actor.TraitInfo(actorName, "AircraftInfo").CruiseAltitude
-	end
-
-	return 0
-end

@@ -195,3 +195,4 @@ LuaScripts:
 	mods/common/lua/mission.lua
 	mods/common/lua/reinforcements.lua
 	mods/common/lua/supportpowers.lua
+	mods/common/lua/rules.lua
