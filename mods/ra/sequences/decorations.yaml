@@ -655,3 +655,13 @@ v37:
 		Start: 0
 	damaged-idle:
 		Start: 1
+
+snowhut:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 360
+	damaged-idle:
+		Start: 3
+		Length: 1
+		Tick: 120
