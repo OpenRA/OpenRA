@@ -640,13 +640,3 @@ ASIANHUT:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
-
-SNOWHUT:
-	Inherits: ^CivBuilding
-	EditorTilesetFilter:
-		RequiresTilesets: SNOW
-	Building:
-		Footprint: x x
-		Dimensions: 1,2
-	RenderBuilding: 
-		Scale: 0.7
