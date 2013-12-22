@@ -1,5 +1,10 @@
+bin/clibs/git/core.dll
+bin/clibs/lfs.dll
+bin/clibs/liblua.dll
+bin/clibs/libzlib.dll
 bin/clibs/mime/core.dll
 bin/clibs/socket/core.dll
+bin/clibs52/liblua.dll
 bin/clibs52/mime/core.dll
 bin/clibs52/socket/core.dll
 bin/lua.exe

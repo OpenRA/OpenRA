@@ -55,7 +55,11 @@ return {
       DebuggerAttachDefault({runstart = ide.config.debugger.runonstart == true})
     end
 
-    local cmd = ('"%s" "%s"'):format(gslshell, wfilename:GetFullPath())
+    local code = rundebug
+      and ([[-e "io.stdout:setvbuf('no'); %s"]]):format(rundebug)
+       or ([[-e "io.stdout:setvbuf('no')" "%s"]]):format(wfilename:GetFullPath())
+    local cmd = '"'..gslshell..'" '..code
+
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil end)
@@ -70,4 +74,5 @@ return {
   fattachdebug = function(self) DebuggerAttachDefault() end,
   skipcompile = true,
   unhideanywindow = true,
+  scratchextloop = false,
 }

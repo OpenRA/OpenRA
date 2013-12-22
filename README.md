@@ -11,20 +11,29 @@ MobileLua, GSL-shell, and others). It originated from the [Estrela Editor](http:
 * Small, portable, and cross-platform (Windows, Mac OSX, and Linux).
 * Auto-completion for functions, keywords, and custom APIs.
 * Interactive console to directly test code snippets with local and remote execution.
-* Integrated debugger (with support for local and remote debugging).
-* Live coding with Lua ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victor-style)), Löve 2D ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-with-love)), Gideros ([demo](http://notebook.kulchenko.com/zerobrane/gideros-live-coding-with-zerobrane-studio-ide)), Moai ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-with-moai-and-zerobrane-studio)), and Corona SDK ([demo](http://notebook.kulchenko.com/zerobrane/debugging-and-live-coding-with-corona-sdk-applications-and-zerobrane-studio)).
+* Integrated debugger with local and [remote debugging](http://studio.zerobrane.com/doc-remote-debugging.html) for Lua 5.1,
+[Lua 5.2](http://studio.zerobrane.com/doc-lua52-debugging.html),
+[LuaJIT](http://studio.zerobrane.com/doc-luajit-debugging.html),
+and [other Lua engines](http://studio.zerobrane.com/documentation.html#debugging).
+* Live coding with Lua ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victor-style)),
+Löve 2D ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-with-love)),
+Gideros ([demo](http://notebook.kulchenko.com/zerobrane/gideros-live-coding-with-zerobrane-studio-ide)),
+Moai ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-with-moai-and-zerobrane-studio)),
+and Corona SDK ([demo](http://notebook.kulchenko.com/zerobrane/debugging-and-live-coding-with-corona-sdk-applications-and-zerobrane-studio)).
 * Support for plugin-like components:
-  - specs (spec/): file syntax, lexer, keywords (e.g. glsl);
-  - apis (api/): for code-completion and tool-tips;
-  - interpreters (interpreters/): how a project is run;
-  - config (cfg/): contains style and basic editor settings;
-  - tools (tools/): additional tools (e.g. DirectX/Cg shader compiler...).
+  - specs (`spec/`): file syntax, lexer, and keywords;
+  - apis (`api/`): for code completion and tooltips;
+  - interpreters (`interpreters/`): components for setting debugging and run-time project environment;
+  - config (`cfg/`): contains style, color themes, and other settings;
+  - packages (`packages/`): plugins that provide additional functionality;
+  - tools (`tools/`): additional tools.
 
 ## Documentation
 
 * A [short and simple overview](http://studio.zerobrane.com/doc-getting-started.html) for those who are new to this development environment.
 * A list of [frequently asked questions](http://studio.zerobrane.com/doc-faq.html) about the IDE.
 * [Tutorials and demos](http://studio.zerobrane.com/tutorials.html) that cover debugging and live coding for different environments.
+* [Tips and tricks](http://studio.zerobrane.com/doc-tips-and-tricks.html).
 
 ## Screenshot
 

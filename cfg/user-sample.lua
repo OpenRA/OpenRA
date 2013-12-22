@@ -103,13 +103,13 @@ styles.indicator.fncall.fg = {240,0,0}
 -- to change the type of the indicator used for function calls
 styles.indicator.fncall.st = wxstc.wxSTC_INDIC_PLAIN
   --[[ other possible values are:
-    wxSTC_INDIC_PLAIN	 Single-line underline
-    wxSTC_INDIC_SQUIGGLE Squiggly underline
-    wxSTC_INDIC_TT	 Line of small T-shapes
-    wxSTC_INDIC_DIAGONAL Diagonal hatching
-    wxSTC_INDIC_STRIKE	 Strike-out
-    wxSTC_INDIC_BOX      Box
-    wxSTC_INDIC_ROUNDBOX Rounded Box
+  wxSTC_INDIC_DOTS   Dotted underline; wxSTC_INDIC_PLAIN       Single-line underline
+  wxSTC_INDIC_TT     Line of Tshapes;  wxSTC_INDIC_SQUIGGLE    Squiggly underline
+  wxSTC_INDIC_STRIKE Strike-out;       wxSTC_INDIC_SQUIGGLELOW Squiggly underline (2 pixels)
+  wxSTC_INDIC_BOX    Box;              wxSTC_INDIC_ROUNDBOX    Rounded Box
+  wxSTC_INDIC_DASH   Dashed underline; wxSTC_INDIC_STRAIGHTBOX Box with trasparency
+  wxSTC_INDIC_DOTBOX Dotted rectangle; wxSTC_INDIC_DIAGONAL    Diagonal hatching
+  wxSTC_INDIC_HIDDEN No visual effect;
   --]]
 
 -- to enable additional spec files (like spec/cpp.lua)

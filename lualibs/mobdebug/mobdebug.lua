@@ -1,12 +1,12 @@
 --
--- MobDebug 0.543
+-- MobDebug 0.55
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.543,
+  _VERSION = 0.55,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -61,11 +61,12 @@ end
 -- check for OS and convert file names to lower case on windows
 -- (its file system is case insensitive, but case preserving), as setting a
 -- breakpoint on x:\Foo.lua will not work if the file was loaded as X:\foo.lua.
--- OSX and Windows behave the same way (case insensitive, but case preserving)
-local iscasepreserving = os and os.getenv and (os.getenv('WINDIR')
-  or (os.getenv('OS') or ''):match('[Ww]indows')
-  or os.getenv('DYLD_LIBRARY_PATH'))
-  or not io.open("/proc")
+-- OSX and Windows behave the same way (case insensitive, but case preserving).
+-- OSX can be configured to be case-sensitive, so check for that. This doesn't
+-- handle the case of different partitions having different case-sensitivity.
+local win = os and os.getenv and (os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows')) and true or false
+local mac = not win and (os and os.getenv and os.getenv('DYLD_LIBRARY_PATH') or not io.open("/proc")) and true or false
+local iscasepreserving = win or (mac and io.open('/library') ~= nil)
 
 -- turn jit off based on Mike Pall's comment in this discussion:
 -- http://www.freelists.org/post/luajit/Debug-hooks-and-JIT,2
@@ -216,6 +217,9 @@ return { _NAME = n, _COPYRIGHT = c, _DESCRIPTION = d, _VERSION = v, serialize = 
   line = function(a, opts) return s(a, merge({sortkeys = true, comment = true}, opts)) end,
   block = function(a, opts) return s(a, merge({indent = '  ', sortkeys = true, comment = true}, opts)) end }
 end)() ---- end of Serpent module
+
+mobdebug.line = serpent.line
+mobdebug.dump = serpent.dump
 
 local function removebasedir(path, basedir)
   if iscasepreserving then
@@ -487,7 +491,7 @@ local function debug_hook(event, line)
         -- this is either a file name coming from loadstring("chunk", "file"),
         -- or the actual source code that needs to be serialized (as it may
         -- include newlines); assume it's a file name if it's all on one line.
-        file = file:find("[\r\n]") and serpent.line(file) or file
+        file = file:find("[\r\n]") and mobdebug.line(file) or file
       end
 
       -- set to true if we got here; this only needs to be done once per
@@ -561,13 +565,13 @@ local function stringify_results(status, ...)
 
   local t = {...}
   for i,v in pairs(t) do -- stringify each of the returned values
-    local ok, res = pcall(serpent.line, v, {nocode = true, comment = 1})
+    local ok, res = pcall(mobdebug.line, v, {nocode = true, comment = 1})
     t[i] = ok and res or ("%q"):format(res):gsub("\010","n"):gsub("\026","\\026")
   end
   -- stringify table with all returned values
   -- this is done to allow each returned value to be used (serialized or not)
   -- intependently and to preserve "original" comments
-  return pcall(serpent.dump, t, {sparse = false})
+  return pcall(mobdebug.dump, t, {sparse = false})
 end
 
 local function debugger_loop(sev, svars, sfile, sline)
@@ -793,7 +797,7 @@ local function debugger_loop(sev, svars, sfile, sline)
         server:send("401 Error in Execution " .. #vars .. "\n")
         server:send(vars)
       else
-        local ok, res = pcall(serpent.dump, vars, {nocode = true, sparse = false})
+        local ok, res = pcall(mobdebug.dump, vars, {nocode = true, sparse = false})
         if ok then
           server:send("200 OK " .. res .. "\n")
         else
@@ -805,19 +809,22 @@ local function debugger_loop(sev, svars, sfile, sline)
       local _, _, stream, mode = string.find(line, "^[A-Z]+%s+(%w+)%s+([dcr])%s*$")
       if stream and mode and stream == "stdout" then
         -- assign "print" in the global environment
-        genv.print = mode == 'd' and iobase.print or coroutine.wrap(function(...)
+        local default = mode == 'd'
+        genv.print = default and iobase.print or coroutine.wrap(function()
           -- wrapping into coroutine.wrap protects this function from
-          -- being stepped through in the debugger
-          local tbl = {...}
+          -- being stepped through in the debugger.
+          -- don't use vararg (...) as it adds a reference for its values,
+          -- which may affect how they are garbage collected
           while true do
+            local tbl = {coroutine.yield()}
             if mode == 'c' then iobase.print(unpack(tbl)) end
             for n = 1, #tbl do
-              tbl[n] = select(2, pcall(serpent.line, tbl[n], {nocode = true, comment = false})) end
+              tbl[n] = select(2, pcall(mobdebug.line, tbl[n], {nocode = true, comment = false})) end
             local file = table.concat(tbl, "\t").."\n"
             server:send("204 Output " .. stream .. " " .. #file .. "\n" .. file)
-            tbl = {coroutine.yield()}
           end
         end)
+        if not default then genv.print() end -- "fake" print to start printing loop
         server:send("200 OK\n")
       else
         server:send("400 Bad Request\n")
@@ -1180,9 +1187,10 @@ local function handle(params, client, options)
           -- if file is not open and winapi is there, try with a short path;
           -- this may be needed for unicode paths on windows
           winapi.set_encoding(winapi.CP_UTF8)
-          file = io.open(winapi.short_path(exp), "r")
+          local shortp = winapi.short_path(exp)
+          file = shortp and io.open(shortp, "r")
         end
-        if not file then error("Cannot open file " .. exp) end
+        if not file then return nil, nil, "Cannot open file " .. exp end
         -- read the file and remove the shebang line as it causes a compilation error
         local lines = file:read("*all"):gsub("^#!.-\n", "\n")
         file:close()
@@ -1276,7 +1284,7 @@ local function handle(params, client, options)
         return nil, nil, stack
       end
       for _,frame in ipairs(stack) do
-        print(serpent.line(frame[1], {comment = false}))
+        print(mobdebug.line(frame[1], {comment = false}))
       end
       return stack
     elseif status == "401" then
@@ -1448,6 +1456,8 @@ local function done()
 end
 
 -- make public functions available
+mobdebug.setbreakpoint = set_breakpoint
+mobdebug.removebreakpoint = remove_breakpoint
 mobdebug.listen = listen
 mobdebug.loop = loop
 mobdebug.scratchpad = scratchpad
@@ -1459,8 +1469,6 @@ mobdebug.off = off
 mobdebug.moai = moai
 mobdebug.coro = coro
 mobdebug.done = done
-mobdebug.line = serpent.line
-mobdebug.dump = serpent.dump
 mobdebug.yield = nil -- callback
 
 -- this is needed to make "require 'modebug'" to work when mobdebug

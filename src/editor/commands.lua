@@ -180,14 +180,16 @@ end
 
 -- save the file to filePath or if filePath is nil then call SaveFileAs
 function SaveFile(editor, filePath)
+  -- this event can be aborted
+  -- as SaveFileAs calls SaveFile, this event may be called two times:
+  -- first without filePath and then with filePath
+  if PackageEventHandle("onEditorPreSave", editor, filePath) == false then
+    return false
+  end
+
   if not filePath then
     return SaveFileAs(editor)
   else
-    -- this event can be aborted
-    if PackageEventHandle("onEditorPreSave", editor, filePath) == false then
-      return false
-    end
-
     if ide.config.savebak then
       local ok, err = FileRename(filePath, filePath..".bak")
       if not ok then
@@ -512,17 +514,18 @@ function ClearAllCurrentLineMarkers()
   end
 end
 
+-- remove shebang line (#!) as it throws a compilation error as
+-- loadstring() doesn't allow it even though lua/loadfile accepts it.
+-- replace with a new line to keep the number of lines the same.
+function StripShebang(code) return (code:gsub("^#!.-\n", "\n")) end
+
 local compileOk, compileTotal = 0, 0
 function CompileProgram(editor, params)
   local params = { jumponerror = (params or {}).jumponerror ~= false,
     reportstats = (params or {}).reportstats ~= false }
-  -- remove shebang line (#!) as it throws a compilation error as
-  -- loadstring() doesn't allow it even though lua/loadfile accepts it.
-  -- replace with a new line to keep the number of lines the same.
-  local editorText = editor:GetText():gsub("^#!.-\n", "\n")
   local id = editor:GetId()
   local filePath = DebuggerMakeFileName(editor, openDocuments[id].filePath)
-  local func, err = loadstring(editorText, '@'..filePath)
+  local func, err = loadstring(StripShebang(editor:GetText()), '@'..filePath)
   local line = not func and tonumber(err:match(":(%d+)%s*:")) or nil
 
   if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
@@ -540,7 +543,7 @@ function CompileProgram(editor, params)
     if line and params.jumponerror then editor:GotoLine(line-1) end
   end
 
-  return func ~= nil, editorText -- return true if it compiled ok
+  return func ~= nil -- return true if it compiled ok
 end
 
 ------------------
