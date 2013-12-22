@@ -1,7 +1,7 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
-local dxpath = os.getenv("DXSDK_DIR")
+local fxcpath = ide.config.path.fxcbin or (os.getenv("DXSDK_DIR") and os.getenv("DXSDK_DIR").."/Utilities/bin/x86/")
 local dxprofile
 
 return dxpath and {
@@ -135,7 +135,7 @@ return dxpath and {
       cmdline = cmdline.."/nologo "
       cmdline = cmdline..' "'..fullname..'"'
 
-      cmdline = dxpath.."/Utilities/bin/x86/fxc.exe"..cmdline
+      cmdline = fxcpath.."/fxc.exe"..cmdline
 
       -- run compiler process
       CommandLineRun(cmdline,nil,true,nil,nil)

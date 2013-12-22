@@ -1,7 +1,7 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
-local clccbinpath = os.getenv("CLCC_BIN_PATH")
+local clccbinpath = ide.config.path.clccbin or os.getenv("CLCC_BIN_PATH")
 
 return clccbinpath and {
   fninit = function(frame,menuBar)
