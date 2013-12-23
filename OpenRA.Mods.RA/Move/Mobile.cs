@@ -206,11 +206,10 @@ namespace OpenRA.Mods.RA.Move
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
 
-			if (init.Contains<AltitudeInit>())
-			{
-				var z = init.Get<AltitudeInit, int>() * 1024 / Game.CellSize;
-				SetVisualPosition(self, CenterPosition + new WVec(0, 0, z - CenterPosition.Z));
-			}
+			// Sets the visual position to WPos accuracy
+			// Use LocationInit if you want to insert the actor into the ActorMap!
+			if (init.Contains<CenterPositionInit>())
+				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
 		}
 
 		public void SetPosition(Actor self, CPos cell)

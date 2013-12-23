@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Effects
 
 	class Missile : IEffect, ISync
 	{
-		static readonly WRange MissileCloseEnough = new WRange(7 * 1024 / Game.CellSize);
+		static readonly WRange MissileCloseEnough = new WRange(298);
 
 		readonly MissileInfo info;
 		readonly ProjectileArgs args;

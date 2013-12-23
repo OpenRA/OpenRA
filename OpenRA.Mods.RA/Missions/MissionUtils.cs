@@ -73,13 +73,14 @@ namespace OpenRA.Mods.RA.Missions
 
 		public static void Paradrop(World world, Player owner, IEnumerable<string> units, CPos entry, CPos location)
 		{
+			var altitude = Rules.Info["badr"].Traits.Get<PlaneInfo>().CruiseAltitude;
 			var badger = world.CreateActor("badr", new TypeDictionary
 			{
-				new LocationInit(entry),
+				new CenterPositionInit(entry.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
 				new OwnerInit(owner),
-				new FacingInit(Util.GetFacing(location - entry, 0)),
-				new AltitudeInit(Rules.Info["badr"].Traits.Get<PlaneInfo>().CruiseAltitude),
+				new FacingInit(Util.GetFacing(location - entry, 0))
 			});
+
 			badger.QueueActivity(new FlyAttack(Target.FromCell(location)));
 			badger.Trait<ParaDrop>().SetLZ(location);
 			var cargo = badger.Trait<Cargo>();
@@ -91,13 +92,14 @@ namespace OpenRA.Mods.RA.Missions
 
 		public static void Parabomb(World world, Player owner, CPos entry, CPos location)
 		{
+			var altitude = Rules.Info["badr.bomber"].Traits.Get<PlaneInfo>().CruiseAltitude;
 			var badger = world.CreateActor("badr.bomber", new TypeDictionary
 			{
-				new LocationInit(entry),
+				new CenterPositionInit(entry.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
 				new OwnerInit(owner),
-				new FacingInit(Util.GetFacing(location - entry, 0)),
-				new AltitudeInit(Rules.Info["badr.bomber"].Traits.Get<PlaneInfo>().CruiseAltitude),
+				new FacingInit(Util.GetFacing(location - entry, 0))
 			});
+
 			badger.Trait<AttackBomber>().SetTarget(location.CenterPosition);
 			badger.QueueActivity(Fly.ToCell(location));
 			badger.QueueActivity(new FlyOffMap());

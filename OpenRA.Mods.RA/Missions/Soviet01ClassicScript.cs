@@ -104,12 +104,12 @@ namespace OpenRA.Mods.RA.Missions
 			foreach (var airfield in airfields)
 			{
 				var entry = airfield.Location - new CVec(10, 0);
+				var altitude = Rules.Info["yak"].Traits.Get<PlaneInfo>().CruiseAltitude;
 				var yak = world.CreateActor("yak", new TypeDictionary 
 				{
+					new CenterPositionInit(entry.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
 					new OwnerInit(ussr),
-					new LocationInit(entry),
-					new FacingInit(Traits.Util.GetFacing(airfield.Location - entry, 0)),
-					new AltitudeInit(Rules.Info["yak"].Traits.Get<PlaneInfo>().CruiseAltitude)
+					new FacingInit(Traits.Util.GetFacing(airfield.Location - entry, 0))
 				});
 
 				while (yak.Trait<LimitedAmmo>().TakeAmmo()) { }

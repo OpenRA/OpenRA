@@ -267,12 +267,12 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			if (yak == null)
 			{
+				var altitude = Rules.Info[YakName].Traits.Get<PlaneInfo>().CruiseAltitude;
 				yak = world.CreateActor(YakName, new TypeDictionary
 				{
-					new LocationInit(yakEntryPoint.Location),
+					new CenterPositionInit(yakEntryPoint.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
 					new OwnerInit(soviets),
-					new FacingInit(Traits.Util.GetFacing(yakAttackPoint.Location - yakEntryPoint.Location, 0)),
-					new AltitudeInit(Rules.Info[YakName].Traits.Get<PlaneInfo>().CruiseAltitude)
+					new FacingInit(Traits.Util.GetFacing(yakAttackPoint.Location - yakEntryPoint.Location, 0))
 				});
 			}
 

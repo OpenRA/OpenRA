@@ -52,12 +52,12 @@ namespace OpenRA.Mods.Cnc
 
 			owner.World.AddFrameEndTask(w =>
 			{
+				var altitude = Rules.Info[actorType].Traits.Get<PlaneInfo>().CruiseAltitude;
 				var a = w.CreateActor(actorType, new TypeDictionary
 				{
-					new LocationInit(startPos),
+					new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
 					new OwnerInit(owner),
-					new FacingInit(64),
-					new AltitudeInit(Rules.Info[actorType].Traits.Get<PlaneInfo>().CruiseAltitude),
+					new FacingInit(64)
 				});
 
 				a.QueueActivity(Fly.ToCell(self.Location + new CVec(9, 0)));

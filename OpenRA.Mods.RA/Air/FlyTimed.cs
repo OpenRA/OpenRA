@@ -24,8 +24,7 @@ namespace OpenRA.Mods.RA.Air
 				return NextActivity;
 
 			var plane = self.Trait<Plane>();
-			var cruiseAltitude = new WRange(plane.Info.CruiseAltitude * 1024 / Game.CellSize);
-			Fly.FlyToward(self, plane, plane.Facing, cruiseAltitude);
+			Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);
 
 			return this;
 		}
@@ -39,8 +38,7 @@ namespace OpenRA.Mods.RA.Air
 				return NextActivity;
 
 			var plane = self.Trait<Plane>();
-			var cruiseAltitude = new WRange(plane.Info.CruiseAltitude * 1024 / Game.CellSize);
-			Fly.FlyToward(self, plane, plane.Facing, cruiseAltitude);
+			Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);
 			return this;
 		}
 

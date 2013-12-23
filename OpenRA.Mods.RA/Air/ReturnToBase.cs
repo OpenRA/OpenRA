@@ -49,10 +49,10 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			var landPos = dest.CenterPosition;
+			var altitude = planeInfo.CruiseAltitude.Range;
 
 			// Distance required for descent.
-			var landDistance = planeInfo.CruiseAltitude * 1024 * 1024 / (Game.CellSize * plane.Info.MaximumPitch.Tan());
-			var altitude = planeInfo.CruiseAltitude * 1024 / Game.CellSize;
+			var landDistance = altitude * 1024 / plane.Info.MaximumPitch.Tan();
 
 			// Land towards the east
 			var approachStart = landPos + new WVec(-landDistance, 0, altitude);

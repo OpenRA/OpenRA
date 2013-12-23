@@ -114,8 +114,7 @@ namespace OpenRA.Mods.RA.Air
 
 			// Repulsion only applies when we're flying!
 			var altitude = CenterPosition.Z;
-			var cruiseAltitude = Info.CruiseAltitude * 1024 / Game.CellSize;
-			if (altitude != cruiseAltitude)
+			if (altitude != Info.CruiseAltitude.Range)
 				return;
 
 			var otherHelis = self.World.FindActorsInCircle(self.CenterPosition, Info.IdealSeparation)

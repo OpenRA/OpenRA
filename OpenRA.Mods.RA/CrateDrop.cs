@@ -92,26 +92,26 @@ namespace OpenRA.Mods.RA
 			var pp = ChooseDropCell(self, inWater, 100);
 			if (pp == null)	return;
 
-			var p = pp.Value;	//
+			var p = pp.Value;
 			self.World.AddFrameEndTask(w =>
+			{
+				var crate = w.CreateActor(false, Info.CrateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
+				crates.Add(crate);
+
+				var startPos = w.ChooseRandomEdgeCell();
+				var altitude = Rules.Info[Info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
+				var plane = w.CreateActor(Info.DeliveryAircraft, new TypeDictionary
 				{
-					var crate = w.CreateActor(false, Info.CrateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
-					crates.Add(crate);
-
-					var startPos = w.ChooseRandomEdgeCell();
-					var plane = w.CreateActor(Info.DeliveryAircraft, new TypeDictionary
-					{
-						new LocationInit( startPos ),
-						new OwnerInit( w.WorldActor.Owner),
-						new FacingInit( Util.GetFacing(p - startPos, 0) ),
-						new AltitudeInit( Rules.Info[Info.DeliveryAircraft].Traits.Get<AircraftInfo>().CruiseAltitude ),
-					});
-
-					plane.CancelActivity();
-					plane.QueueActivity(new FlyAttack(Target.FromCell(p)));
-					plane.Trait<ParaDrop>().SetLZ(p);
-					plane.Trait<Cargo>().Load(plane, crate);
+					new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+					new OwnerInit(w.WorldActor.Owner),
+					new FacingInit(Util.GetFacing(p - startPos, 0))
 				});
+
+				plane.CancelActivity();
+				plane.QueueActivity(new FlyAttack(Target.FromCell(p)));
+				plane.Trait<ParaDrop>().SetLZ(p);
+				plane.Trait<Cargo>().Load(plane, crate);
+			});
 		}
 	}
 }
