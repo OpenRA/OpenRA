@@ -195,7 +195,6 @@
     <Compile Include="ContainsCrate.cs" />
     <Compile Include="Crate.cs" />
     <Compile Include="CrateAction.cs" />
-    <Compile Include="CrateDrop.cs" />
     <Compile Include="CrateSpawner.cs" />
     <Compile Include="Crates\CloakCrateAction.cs" />
     <Compile Include="Crates\ExplodeCrateAction.cs" />

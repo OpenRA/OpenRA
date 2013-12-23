@@ -551,7 +551,8 @@ World:
 	ChooseBuildTabOnSelect:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, br1, br2, br3, sbridge1, sbridge2, sbridge3, sbridge4
-	CrateDrop:
+	CrateSpawner:
+		DeliverByAircraft: yes
 		Minimum: 1
 		Maximum: 3
 		SpawnInterval: 120
