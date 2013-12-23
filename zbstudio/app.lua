@@ -59,6 +59,7 @@ local app = {
     settingsapp = "ZeroBraneStudio",
     settingsvendor = "ZeroBraneLLC",
     logo = "res/zerobrane.png",
+    help = "zerobranestudio",
   },
 }
 

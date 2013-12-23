@@ -1,5 +1,118 @@
 # ZeroBrane Studio Changelog
 
+## v0.40 (Dec 14 2013)
+
+### Highlights
+  - Added LuaDist integration.
+  - Added live coding support for GSL-shell.
+  - Added support for project settings.
+  - Added filetree operations.
+  - Added Busted interpreter.
+
+### Special thanks
+  - To Jayanth Acharya for SciTeLuaIDE color scheme.
+  - To Mike Richards for adding edge handling and styles.
+  - To [adamdmoss](https://github.com/adamdmoss) for Mobdebug API update.
+
+### Improvements
+  - Added live coding support for GSL-shell (closes #239).
+  - Added support for product-specific links in the Help menu.
+  - Added 'edge' style to the color schemes (ref #237).
+  - Added ability to set 'edge' style properties individually (ref #237).
+  - Add edge to styles
+  - Add fold margin checker color to styles
+  - Add edge line and fold margin checker color
+  - Added changing directory when launching on Linux (closes #157).
+  - Added setting PATH for LfW to allow loading of DLL dependencies.
+  - Added logic to set architecture dynamically for luadist (ref #225).
+  - Added luadist bootstrap dependencies for Linux (ref #225).
+  - Added option to load luadist as a module (ref #225).
+  - Added luadist bootstrap dependencies for OSX (ref #225).
+  - Added proxy dll for Lua 5.2 (ref #225).
+  - Added luadist bootstrap dependencies for Windows (ref #225).
+  - Added package GetInterpreters method (ref #166, #225).
+  - Added package AddConsoleAlias/RemoveConsoleAlias methods (ref #166, #225).
+  - Added version property to the Lua interpreters.
+  - Added new location for Marmalade Quick v7+ and s3e path logic (fixes #226).
+  - Added directory creation (if needed) to file saving.
+  - Added support for symlinks in the filetree (with recursion protection).
+  - Added package AddConfig/RemoveConfig methods (ref #166).
+  - Added package GetProject method (ref #166).
+  - Added package onProjectPreLoad method (ref #166).
+  - Added workaround for conflict with Scintilla shortcuts on Linux.
+  - Added 'Open with Default Program' to file tree operations (ref #123).
+  - Added toggling directory on Enter (ref #123).
+  - Added 'Copy Full Path' to file tree operations (ref #123).
+  - Added deleting file/directory to file tree operations (ref #123).
+  - Added processing of packages from `$HOME/.zbstudio/packages` folder (#166).
+  - Added 'New File' and 'New Directory' to file operations (ref #123).
+  - Added error reporting for failed rename operations (ref #123).
+  - Added re-opening editor tabs affected by directory move/rename (ref #123).
+  - Added package FindDocumentsByPartialPath method (ref #166).
+  - Added existing file overwrite confirmation when renaming (ref #123).
+  - Added existing file overwrite confirmation when saving.
+  - Added creating intermediate directories during file rename (ref #123).
+  - Added in-place editing of file and folder names (ref #123).
+  - Added refreshing editor tab after drag-n-drop operation (ref #123).
+  - Added drag-n-drop operation to move files in the project tree (ref #123).
+  - Added package AddMarker/RemoveMarker methods (ref #166).
+  - Added package GetStatusBar method (ref #166).
+  - Added package GetDocuments and document methods (ref #166).
+  - Added `EscapeMagic` function to escape magic characters.
+  - Added SciTeLuaIDE color scheme (thanks to Jayanth Acharya).
+  - Changed glslc option to reflect new version
+  - Disabled compilation check for scratchpad when `skipcompile` is set (ref #239).
+  - Disabled output activation for messages redirected to Console (ref #225).
+  - Disabled commenting for file types that don't specify line comments.
+  - Moved restoring project before loading files (ref #107).
+  - Reorganized loading configuration files (ref #107).
+  - Removed 'file no longer exists' message after moving opened files (ref #123).
+  - Removed some of the snippets as they are available as plugins.
+  - Store os specific clibs path to make it available to plugins.
+  - Tidy up estrela tools a bit (remove key strokes from cgc, remove luxinia res viewer, rename perforce files to get loaded again)
+  - Updated README.
+  - Updated samples with missing indicator constants (closes #243).
+  - Updated OSX executables and added 'fake' proxy for lua-dist support (ref #225).
+  - Updated handling of case-insensitive names during debugging on OSX (Mobdebug v0.545).
+  - Updated package onEditorPreSave to be called on SaveAs events (ref #166).
+  - Updated icon bundle to eliminate large icons.
+  - Updated application icon to a bit brighter one on OSX (closes #196).
+  - Updated build script on OSX to not require 10.6 SDK (closes #231).
+  - Updated menu definitions for consistency.
+  - Updated use of `unpack` for consistency and Lua 5.2 compatibility.
+  - Updated 'Open with Default Program' on Windows to work with spaces in names (#123).
+  - Updated cmake installation script to install to '/Applications' on OSX.
+  - Updated OSX build script to revert wxwidgets commit to fix auto-complete crash.
+  - Updated `Start debugging` hint to clarify.
+  - Updated single-click toggle to allow rename/move directories (ref #123).
+  - Updated normalization flags as some path parts were changed to dots.
+  - Updated editor tab processing using FindDocument method.
+  - Updated shortcut for Replace All to avoid conflict on OSX (fixes #220).
+  - Updated `SetDocumentModified` to use current tab text.
+
+### Fixes
+  - Fixed values 'captured' by redirected 'print' and not collected (fixes #240).
+  - Fixed typo in fold style definition (ref #237).
+  - Fixed console output being limited in addition to stack result limit.
+  - Fixed hang in auto-complete on expressions involving '...' (fixes #235).
+  - Fixed auto-complete for string values (broken by 933aacc2).
+  - Fixed crash when LUA_DEV environmental variable is not set (fixes #228).
+  - Fixed cmake cache filename (ref #225).
+  - Fixed incorrect UTF-8 sequence in UTF-8 validity check.
+  - Fixed Un/Comment menu for Output/Console windows.
+  - Fixed format of the file name reported after compilation errors.
+  - Fixed jumping to compilation error (if any) after Run/Debug.
+  - Fixed disabling 'Open with Default Program' on OSX (ref #123).
+  - Fixed file tree update after changes on OSX (ref #123).
+  - Fixed copying full path on OSX (ref #123).
+  - Fixed 'Open with Default Program' for paths with spaces on Windows (ref #123).
+  - Fixed folding issue (caused by `math.mod` not available in LuaJIT).
+  - Fixed debugger marker calculations to avoid marker conflicts.
+  - Fixed color references in marker config examples.
+  - Fixed Step Over/Out to stay in the same coroutine; Mobdebug 0.543 (closes #217).
+  - Fixed case sensitivity in matching of file name in error messages (fixes #216).
+  - Fixed tab text after SaveAs and loading files into the same tab.
+
 ## v0.39 (Oct 06 2013)
 
 ### Highlights

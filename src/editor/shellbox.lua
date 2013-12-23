@@ -270,6 +270,12 @@ end
 
 local env = createenv()
 
+function ShellSetAlias(alias, table)
+  local value = env[alias]
+  env[alias] = table
+  return value
+end
+
 local function packResults(status, ...) return status, {...} end
 
 local function executeShellCode(tx)

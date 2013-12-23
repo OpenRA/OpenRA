@@ -266,6 +266,7 @@ return {
   caretlinebg = {bg = C.CurrentLine},
   fold = {fg = C.Comment, bg = C.Background, sel = mixer(C.Comment, 1, 96)},
   whitespace = {fg = C.Comment, bg = C.Background},
+  edge = {},
 
   indicator = {
     fncall = {fg = C.Purple, st = wxstc.wxSTC_INDIC_ROUNDBOX},
