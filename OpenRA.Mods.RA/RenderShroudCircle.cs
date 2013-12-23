@@ -19,10 +19,11 @@ namespace OpenRA.Mods.RA
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			wr.DrawRangeCircleWithContrast(
+				centerPosition,
+				WRange.FromCells(ai.Traits.Get<CreatesShroudInfo>().Range),
 				Color.FromArgb(128, Color.Cyan),
-				wr.ScreenPxPosition(centerPosition),
-				ai.Traits.Get<CreatesShroudInfo>().Range,
-				Color.FromArgb(96, Color.Black));
+				Color.FromArgb(96, Color.Black)
+			);
 
 			foreach (var a in w.ActorsWithTrait<RenderShroudCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
@@ -44,9 +45,11 @@ namespace OpenRA.Mods.RA
 				return;
 
 			wr.DrawRangeCircleWithContrast(
+				self.CenterPosition,
+				WRange.FromCells(self.Info.Traits.Get<CreatesShroudInfo>().Range),
 				Color.FromArgb(128, Color.Cyan),
-				wr.ScreenPxPosition(self.CenterPosition), self.Info.Traits.Get<CreatesShroudInfo>().Range,
-				Color.FromArgb(96, Color.Black));
+				Color.FromArgb(96, Color.Black)
+			);
 		}
 	}
 }

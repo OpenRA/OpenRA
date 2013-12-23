@@ -26,11 +26,15 @@ namespace OpenRA.Mods.RA
 
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
+			var range = ai.Traits.WithInterface<ArmamentInfo>()
+				.Select(a => Rules.Weapons[a.Weapon.ToLowerInvariant()].Range).Max();
+
 			wr.DrawRangeCircleWithContrast(
-				Color.FromArgb(128, Color.Yellow), wr.ScreenPxPosition(centerPosition),
-				ai.Traits.WithInterface<ArmamentInfo>()
-					.Select(a => Rules.Weapons[a.Weapon.ToLowerInvariant()].Range).Max(),
-				Color.FromArgb(96, Color.Black));
+				centerPosition,
+				new WRange((int)(1024 * range)),
+				Color.FromArgb(128, Color.Yellow),
+				Color.FromArgb(96, Color.Black)
+			);
 
 			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
@@ -52,12 +56,12 @@ namespace OpenRA.Mods.RA
 			if (self.Owner != self.World.LocalPlayer)
 				return;
 
-			// Hack: Convert world coords to cells
-			var pxRange = self.Trait<AttackBase>().GetMaximumRange().Range / 1024f;
 			wr.DrawRangeCircleWithContrast(
+				self.CenterPosition,
+				self.Trait<AttackBase>().GetMaximumRange(),
 				Color.FromArgb(128, Color.Yellow),
-				wr.ScreenPxPosition(self.CenterPosition), pxRange,
-				Color.FromArgb(96, Color.Black));
+				Color.FromArgb(96, Color.Black)
+			);
 		}
 	}
 }

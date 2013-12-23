@@ -42,7 +42,10 @@ namespace OpenRA.Mods.RA
 				return;
 
 			if (health.Value != null)
-				wr.DrawRangeCircle(Color.Red, wr.ScreenPxPosition(self.CenterPosition), health.Value.Info.Radius / Game.CellSize);
+			{
+				var range = new WRange((int)(health.Value.Info.Radius * 1024 / Game.CellSize));
+				wr.DrawRangeCircle(self.CenterPosition, range, Color.Red);
+			}
 
 			var wlr = Game.Renderer.WorldLineRenderer;
 			var c = Color.White;
