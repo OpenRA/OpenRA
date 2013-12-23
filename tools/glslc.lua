@@ -1,11 +1,10 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
-local binpath = os.getenv("GLSLC_BIN_PATH")
+local binpath = ide.config.path.glslcbin or os.getenv("GLSLC_BIN_PATH")
 
 return binpath and {
   fninit = function(frame,menuBar)
-    binpath = ide.config.path.glslcbin or os.getenv("GLSLC_BIN_PATH")
 
     local myMenu = wx.wxMenu{
       { ID "glslc.compile.input", "&Custom Args", "when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },

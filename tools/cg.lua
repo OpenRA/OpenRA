@@ -1,7 +1,7 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
-local cgbinpath = os.getenv("CG_BIN_PATH")
+local cgbinpath = ide.config.path.cgbin or os.getenv("CG_BIN_PATH")
 local cgprofile 
 local cgglsles 
 
@@ -9,7 +9,6 @@ return cgbinpath and {
   fninit = function(frame,menuBar)
     cgprofile = ide.config.cgprofile or "gp5"
     cgglsles = ide.config.cgglsles
-    cgbinpath = ide.config.path.cgbin or os.getenv("CG_BIN_PATH")
 
     local myMenu = wx.wxMenu{
       { ID "cg.profile.arb", "&ARB VP/FP", "ARB program profile", wx.wxITEM_CHECK },
