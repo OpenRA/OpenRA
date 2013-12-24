@@ -1192,7 +1192,7 @@ Smudges:
 
 Rules:
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		Survival01Script:

@@ -870,7 +870,7 @@ Rules:
 	Player:
 		-ConquestVictoryConditions:
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScriptInterface:

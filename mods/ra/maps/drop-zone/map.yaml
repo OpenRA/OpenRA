@@ -186,7 +186,7 @@ Smudges:
 
 Rules:
 	World:
-		CrateDrop:
+		CrateSpawner:
 			Maximum: 3
 			SpawnInterval: 5
 		-SpawnMPUnits:

@@ -851,7 +851,7 @@ Rules:
 	Player:
 		-ConquestVictoryConditions:
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		Soviet01ClassicScript:
