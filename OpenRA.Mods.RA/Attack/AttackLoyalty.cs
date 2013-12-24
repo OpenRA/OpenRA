@@ -31,9 +31,7 @@ namespace OpenRA.Mods.RA
 			if (arm == null)
 				return;
 
-			// TODO: Define weapon ranges as WRange
-			var range = new WRange((int)(1024*arm.Weapon.Range));
-			if (!target.IsInRange(self.CenterPosition, range))
+			if (!target.IsInRange(self.CenterPosition, arm.Weapon.Range))
 				return;
 
 			var facing = self.TraitOrDefault<IFacing>();

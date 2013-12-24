@@ -21,13 +21,15 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class MissileInfo : IProjectileInfo
 	{
-		public readonly int Speed = 1;
+		[Desc("Projectile speed in WRange / tick")]
+		public readonly WRange Speed = new WRange(8);
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(30);
 		public readonly int Arm = 0;
 		[Desc("Check for whether an actor with Wall: trait blocks fire")]
 		public readonly bool High = false;
 		public readonly string Trail = null;
-		public readonly float Inaccuracy = 0;
+		[Desc("Maximum offset at the maximum range")]
+		public readonly WRange Inaccuracy = WRange.Zero;
 		public readonly string Image = null;
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 5;
@@ -46,12 +48,15 @@ namespace OpenRA.Mods.RA.Effects
 
 	class Missile : IEffect, ISync
 	{
+		// HACK: the missile movement code isn't smart enough to explode
+		// when the projectile passes the actor.  This defines an arbitrary
+		// proximity radius that they will explode within, which makes
+		// missiles difficult to consistently balance.
 		static readonly WRange MissileCloseEnough = new WRange(298);
 
 		readonly MissileInfo info;
 		readonly ProjectileArgs args;
 		readonly Animation anim;
-		readonly int speed;
 
 		int ticksToNextSmoke;
 		ContrailRenderable trail;
@@ -76,13 +81,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			targetPosition = args.PassiveTarget;
 
-			// Convert ProjectileArg definitions to world coordinates
-			// TODO: Change the yaml definitions so we don't need this
-			var inaccuracy = (int)(info.Inaccuracy * 1024 / Game.CellSize);
-			speed = info.Speed * 1024 / (5 * Game.CellSize);
-
-			if (info.Inaccuracy > 0)
-				offset = WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * inaccuracy / 1024;
+			if (info.Inaccuracy.Range > 0)
+				offset = WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * info.Inaccuracy.Range / 1024;
 
 			if (info.Image != null)
 			{
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.RA.Effects
 				desiredFacing = facing;
 
 			facing = Traits.Util.TickFacing(facing, desiredFacing, info.ROT);
-			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * speed / 1024;
+			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * info.Speed.Range / 1024;
 			if (targetPosition.Z > 0 && info.TurboBoost)
 				move = (move * 3) / 2;
 

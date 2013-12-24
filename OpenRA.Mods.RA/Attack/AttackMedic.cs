@@ -33,9 +33,7 @@ namespace OpenRA.Mods.RA
 			if (a == null)
 				return null;
 
-			// TODO: Define weapon ranges as WRange
-			var range = new WRange(Math.Max(0, (int)(1024 * a.Weapon.Range)));
-			return new Activities.Heal(newTarget, range, allowMove);
+			return new Activities.Heal(newTarget, a.Weapon.Range, allowMove);
 		}
 	}
 }

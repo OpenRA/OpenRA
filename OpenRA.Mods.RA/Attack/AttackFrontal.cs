@@ -52,9 +52,7 @@ namespace OpenRA.Mods.RA
 			if (a == null)
 				return null;
 
-			// TODO: Define weapon ranges as WRange
-			var range = new WRange(Math.Max(0,(int)(1024*a.Weapon.Range)));
-			return new Activities.Attack(newTarget, range, allowMove);
+			return new Activities.Attack(newTarget, a.Weapon.Range, allowMove);
 		}
 	}
 }

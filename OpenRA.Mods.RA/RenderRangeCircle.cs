@@ -27,11 +27,12 @@ namespace OpenRA.Mods.RA
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			var range = ai.Traits.WithInterface<ArmamentInfo>()
-				.Select(a => Rules.Weapons[a.Weapon.ToLowerInvariant()].Range).Max();
+				.Select(a => Rules.Weapons[a.Weapon.ToLowerInvariant()].Range)
+				.Max();
 
 			wr.DrawRangeCircleWithContrast(
 				centerPosition,
-				new WRange((int)(1024 * range)),
+				range,
 				Color.FromArgb(128, Color.Yellow),
 				Color.FromArgb(96, Color.Black)
 			);

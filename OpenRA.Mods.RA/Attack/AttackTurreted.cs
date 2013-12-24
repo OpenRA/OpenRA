@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA
 
 				if (weapon != null)
 				{
-					var range = WRange.FromCells(Math.Max(0, (int)weapon.Weapon.Range - RangeTolerance));
+					var range = WRange.FromCells(Math.Max(0, weapon.Weapon.Range.Range / 1024 - RangeTolerance));
 
 					attack.Target = target;
 					if (allowMove && self.HasTrait<Mobile>() && !self.Info.Traits.Get<MobileInfo>().OnRails)

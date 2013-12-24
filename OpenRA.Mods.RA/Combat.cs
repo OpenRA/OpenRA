@@ -101,9 +101,8 @@ namespace OpenRA.Mods.RA
 			{
 				case DamageModel.Normal:
 					{
-						var maxSpread = warhead.Spread * (float)Math.Log(Math.Abs(warhead.Damage), 2);
-						var range = new WRange((int)maxSpread * 1024 / Game.CellSize);
-						var hitActors = world.FindActorsInCircle(pos, range);
+						var maxSpread = new WRange((int)(warhead.Spread.Range * (float)Math.Log(Math.Abs(warhead.Damage), 2)));
+						var hitActors = world.FindActorsInCircle(pos, maxSpread);
 
 						foreach (var victim in hitActors)
 						{
@@ -192,8 +191,8 @@ namespace OpenRA.Mods.RA
 			var rawDamage = (float)warhead.Damage;
 			if (withFalloff)
 			{
-				var distance = Math.Max(0, (target.CenterPosition - pos).Length - healthInfo.Radius.Range) * Game.CellSize / 1024;
-				var falloff = (float)GetDamageFalloff(distance / warhead.Spread);
+				var distance = Math.Max(0, (target.CenterPosition - pos).Length - healthInfo.Radius.Range);
+				var falloff = (float)GetDamageFalloff(distance * 1f / warhead.Spread.Range);
 				rawDamage = (float)(falloff * rawDamage);
 			}
 			return (float)(rawDamage * modifier * (float)warhead.EffectivenessAgainst(target.Info));
