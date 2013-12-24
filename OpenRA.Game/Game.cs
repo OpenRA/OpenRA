@@ -385,6 +385,7 @@ namespace OpenRA
 					if (Settings.Server.DedicatedLoop)
 					{
 						Console.WriteLine("Starting a new server instance...");
+						modData.InitializeLoaders();
 						continue;
 					}
 
