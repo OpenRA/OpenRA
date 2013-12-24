@@ -32,14 +32,16 @@ namespace OpenRA.Mods.RA
 		public readonly string[] ValidWater = { "Water" };
 		[Desc("Chance of generating a water crate instead of a land crate")]
 		public readonly float WaterChance = .2f;
-		[Desc("Drop crates via DeliveryAircraft: or instantly spawn them on the ground")]
+		[Desc("Airdrop crates via DeliveryAircraft: or instantly spawn them on the ground")]
 		public readonly bool DeliverByAircraft = false;
 		[Desc("If DeliverByAircraft: yes, this actor will deliver crates"), ActorReference]
 		public readonly string DeliveryAircraft = "badr";
-		[Desc("Crate actor to drop"), ActorReference]
-		public readonly string CrateActor = "crate";
+		[Desc("Crate actors to drop"), ActorReference]
+		public readonly string[] CrateActors = { "crate" };
+		[Desc("Chance of each crate actor spawning")]
+		public readonly int[] CrateActorShares = { 10 };
 
-		public object Create(ActorInitializer init) { return new CrateSpawner(this); }
+		public object Create(ActorInitializer init) { return new CrateSpawner(this, init.self); }
 	}
 
 	public class CrateSpawner : ITick
@@ -47,8 +49,13 @@ namespace OpenRA.Mods.RA
 		List<Actor> crates = new List<Actor>();
 		int ticks = 0;
 		CrateSpawnerInfo Info;
+		Actor self;
 
-		public CrateSpawner(CrateSpawnerInfo info) { Info = info; }
+		public CrateSpawner(CrateSpawnerInfo info, Actor self)
+		{
+			Info = info;
+			this.self = self;
+		}
 
 		public void Tick(Actor self)
 		{
@@ -79,12 +86,13 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var p = pp.Value;
+			var crateActor = ChooseCrateActor();
 
 			self.World.AddFrameEndTask(w =>
 			{
 				if (Info.DeliverByAircraft)
 				{
-					var crate = w.CreateActor(false, Info.CrateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
+					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
 					crates.Add(crate);
 
 					var startPos = w.ChooseRandomEdgeCell();
@@ -103,7 +111,7 @@ namespace OpenRA.Mods.RA
 				}
 				else
 				{
-					crates.Add(w.CreateActor(Info.CrateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner), new LocationInit(p) }));
+					crates.Add(w.CreateActor(crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner), new LocationInit(p) }));
 				}
 			});
 		}
@@ -125,6 +133,22 @@ namespace OpenRA.Mods.RA
 					continue;
 
 				return p;
+			}
+
+			return null;
+		}
+
+		string ChooseCrateActor()
+		{
+			var crateShares = Info.CrateActorShares;
+			var n = self.World.SharedRandom.Next(crateShares.Sum());
+
+			var cumulativeShares = 0;
+			for (var i = 0; i < crateShares.Length; i++)
+			{
+				cumulativeShares += crateShares[i];
+				if (n <= cumulativeShares)
+					return Info.CrateActors[i];
 			}
 
 			return null;
