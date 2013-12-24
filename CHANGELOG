@@ -1,3 +1,15 @@
+NEW:
+	Engine:
+		Converted Aircraft CruiseAltitude to world coordinates.
+		Converted Health Radius to world coordinates.
+		Converted production exits to world coordinates.
+		Converted weapon projectiles to world coordinates.
+		Converted actor speed to world coordinates.
+	Mod / Custom map compatibility:
+		Altitude is no longer parsed from actor templates in maps. Specify CenterPosition instead.
+		Run `OpenRA.Utility.exe --upgrade-mod <mod> 20131223` to automatically upgrade mod rules.
+		Run `OpenRA.Utility.exe --upgrade-map <map path> 20131223` to automatically upgrade custom map rules.
+
 20131223:
 	All mods:
 		Fixed dead units sometimes exploding or leaving husks when they weren't in the world.
