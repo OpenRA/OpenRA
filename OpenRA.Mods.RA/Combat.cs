@@ -192,7 +192,7 @@ namespace OpenRA.Mods.RA
 			var rawDamage = (float)warhead.Damage;
 			if (withFalloff)
 			{
-				var distance = (int)Math.Max(0, (target.CenterPosition - pos).Length * Game.CellSize / 1024 - healthInfo.Radius);
+				var distance = Math.Max(0, (target.CenterPosition - pos).Length - healthInfo.Radius.Range) * Game.CellSize / 1024;
 				var falloff = (float)GetDamageFalloff(distance / warhead.Spread);
 				rawDamage = (float)(falloff * rawDamage);
 			}
