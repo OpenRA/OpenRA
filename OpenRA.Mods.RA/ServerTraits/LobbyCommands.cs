@@ -263,7 +263,7 @@ namespace OpenRA.Mods.RA.Server
 
 						if (!server.ModData.AvailableMaps.ContainsKey(s))
 						{
-							server.SendOrderTo(conn, "Message", "Map not found");
+							server.SendOrderTo(conn, "Message", "Map was not found on server");
 							return true;
 						}
 						server.LobbyInfo.GlobalSettings.Map = s;
