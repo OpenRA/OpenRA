@@ -32,10 +32,8 @@ namespace OpenRA.Mods.RA
 		public readonly string[] ValidWater = { "Water" };
 		[Desc("Chance of generating a water crate instead of a land crate")]
 		public readonly float WaterChance = .2f;
-		[Desc("Airdrop crates via DeliveryAircraft: or instantly spawn them on the ground")]
-		public readonly bool DeliverByAircraft = false;
-		[Desc("If DeliverByAircraft: yes, this actor will deliver crates"), ActorReference]
-		public readonly string DeliveryAircraft = "badr";
+		[Desc("If a DeliveryAircraft: is specified, then this actor will deliver crates"), ActorReference]
+		public readonly string DeliveryAircraft = null;
 		[Desc("Crate actors to drop"), ActorReference]
 		public readonly string[] CrateActors = { "crate" };
 		[Desc("Chance of each crate actor spawning")]
@@ -90,7 +88,7 @@ namespace OpenRA.Mods.RA
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (Info.DeliverByAircraft)
+				if (Info.DeliveryAircraft != null)
 				{
 					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
 					crates.Add(crate);
