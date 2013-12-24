@@ -146,6 +146,8 @@ namespace OpenRA.Editor
 			map.MapResources = Lazy.New(() => new TileReference<byte, byte>[mapSize, mapSize]);
 			map.MapTiles = Lazy.New(() => new TileReference<ushort, byte>[mapSize, mapSize]);
 
+			map.Options = new MapOptions();
+
 			if (legacyMapFormat == IniMapFormat.RedAlert)
 			{
 				UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
