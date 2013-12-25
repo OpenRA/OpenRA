@@ -154,6 +154,8 @@
     <Compile Include="Graphics\TmpTDReader.cs" />
     <Compile Include="Graphics\ShpD2Reader.cs" />
     <Compile Include="FileSystem\Pak.cs" />
+    <Compile Include="CPos.cs" />
+    <Compile Include="CVec.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
