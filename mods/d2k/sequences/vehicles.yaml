@@ -174,7 +174,7 @@ stealthraider:
 		Length: 2
 		BlendMode: Additive
 	icon: raidersicon
-		Start: 0
+		Start: 0 # 4282 in 1.06 DATA.R8
 
 deviatortank:
 	idle: DATA

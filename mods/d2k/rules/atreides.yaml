@@ -235,3 +235,34 @@ FREMEN:
 		CloakDelay: 250
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
+
+GRENADIER:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: atreides
+		Hotkey: g
+	Valued:
+		Cost: 160
+	Tooltip:
+		Name: Grenadier
+		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+	Selectable:
+		Bounds: 12,17,0,0
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 5
+	Armament:
+		Weapon: Grenade
+		LocalOffset: 0,0,555
+		FireDelay: 15
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: stand,stand2
+	Explodes:
+		Weapon: UnitExplodeSmall
+		Chance: 100
