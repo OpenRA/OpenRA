@@ -444,7 +444,7 @@ namespace OpenRA.Mods.RA.Move
 			decimal speed = Info.Speed * Info.TerrainSpeeds[type].Speed;
 			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
 				speed *= t.GetSpeedModifier();
-			return (int)(speed / 100) * 1024 / (3 * Game.CellSize);
+			return (int)(speed / 100);
 		}
 
 		public void AddInfluence()

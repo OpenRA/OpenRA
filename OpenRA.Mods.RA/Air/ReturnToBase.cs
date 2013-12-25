@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Air
 			var approachStart = landPos + new WVec(-landDistance, 0, altitude);
 
 			// Add 10% to the turning radius to ensure we have enough room
-			var speed = plane.MovementSpeed * 1024 / (Game.CellSize * 5);
+			var speed = plane.MovementSpeed * 32 / 35;
 			var turnRadius = (int)(141 * speed / planeInfo.ROT / (float)Math.PI);
 
 			// Find the center of the turning circles for clockwise and counterclockwise turns

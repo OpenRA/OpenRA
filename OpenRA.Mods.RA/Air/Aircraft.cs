@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public WVec FlyStep(int facing)
 		{
-			var speed = MovementSpeed * 7 * 1024 / (Game.CellSize * 32);
+			var speed = MovementSpeed;
 			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing));
 			return speed * dir / 1024;
 		}
