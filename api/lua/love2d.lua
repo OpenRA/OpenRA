@@ -1,10 +1,8 @@
 -- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
 
--- converted from love_api.lua (https://love2d.org/forums/viewtopic.php?f=3&t=1796&start=30)
--- (as of Nov 1, 2012)
+-- converted from love_api.lua (http://love2d.org/forums/viewtopic.php?f=3&t=1796&start=50#p158650)
+-- (API for love 0.9.0; as of Dec 24, 2013)
 -- the conversion script is at the bottom of this file
--- manually removed "linear clamped", "exponent clamped", and "inverse clamped"
--- values as those can't be entered through auto-complete.
 
 local love = {
  childs = {
@@ -16,12 +14,24 @@ local love = {
        description = "Exponential attenuation.",
        type = "value"
       },
+      ["exponent clamped"] = {
+       description = "Exponential attenuation. Gain is clamped.",
+       type = "value"
+      },
       inverse = {
        description = "Inverse distance attenuation.",
        type = "value"
       },
+      ["inverse clamped"] = {
+       description = "Inverse distance attenuation. Gain is clamped.",
+       type = "value"
+      },
       linear = {
        description = "Linear attenuation.",
+       type = "value"
+      },
+      ["linear clamped"] = {
+       description = "Linear attenuation. Gain is clamped.",
        type = "value"
       },
       none = {
@@ -34,16 +44,22 @@ local love = {
     },
     Source = {
      childs = {
+      getChannels = {
+       args = "()",
+       description = "Gets the number of channels in the Source. Only 1-channel (mono) Sources can use directional and positional effects.",
+       returns = "(channels: number)",
+       type = "function"
+      },
+      getCone = {
+       args = "()",
+       description = "Gets the Source's directional volume cones. Together with Source:setDirection, the cone angles allow for the Source's volume to vary depending on its direction.",
+       returns = "(innerAngle: number, outerAngle: number, outerVolume: number)",
+       type = "function"
+      },
       getDirection = {
        args = "()",
        description = "Gets the direction of the Source.",
        returns = "(x: number, y: number, z: number)",
-       type = "function"
-      },
-      getDistance = {
-       args = "()",
-       description = "Returns the reference and maximum distance of the source.",
-       returns = "(ref: number, max: number)",
        type = "function"
       },
       getPitch = {
@@ -94,6 +110,12 @@ local love = {
        returns = "(paused: boolean)",
        type = "function"
       },
+      isPlaying = {
+       args = "()",
+       description = "Returns whether the Source is playing.",
+       returns = "(playing: boolean)",
+       type = "function"
+      },
       isStatic = {
        args = "()",
        description = "Returns whether the Source is static.\n\nSee SourceType.static definition to have more informations.",
@@ -131,20 +153,26 @@ local love = {
        type = "function"
       },
       seek = {
-       args = "(offset: number, unit: TimeUnit)",
-       description = "Sets the currently playing position of the Source.",
+       args = "(position: number, unit: TimeUnit)",
+       description = "Sets the playing position of the Source.",
+       returns = "()",
+       type = "function"
+      },
+      setAttenuationDistances = {
+       args = "(ref: number, max: number)",
+       description = "Sets the reference and maximum distance of the source.",
+       returns = "()",
+       type = "function"
+      },
+      setCone = {
+       args = "(innerAngle: number, outerAngle: number, outerVolume: number)",
+       description = "Sets the Source's directional volume cones. Together with Source:setDirection, the cone angles allow for the Source's volume to vary depending on its direction.",
        returns = "()",
        type = "function"
       },
       setDirection = {
        args = "(x: number, y: number, z: number)",
        description = "Sets the direction vector of the Source. A zero vector makes the source non-directional.",
-       returns = "()",
-       type = "function"
-      },
-      setDistance = {
-       args = "(ref: number, max: number)",
-       description = "Sets the reference and maximum distance of the source.",
        returns = "()",
        type = "function"
       },
@@ -174,7 +202,7 @@ local love = {
       },
       setVelocity = {
        args = "(x: number, y: number, z: number)",
-       description = "Sets the velocity of the Source.\n\nThis does not change the position of the Source, but lets the application know how it has to calculate the doppler effect.",
+       description = "Sets the velocity of the Source.\n\nThis does not change the position of the Source, but is used to calculate the doppler effect.",
        returns = "()",
        type = "function"
       },
@@ -234,18 +262,6 @@ local love = {
      description = "class constants",
      type = "class"
     },
-    getDistanceModel = {
-     args = "()",
-     description = "Returns the distance attenuation model.",
-     returns = "(model: DistanceModel)",
-     type = "function"
-    },
-    getNumSources = {
-     args = "()",
-     description = "Gets the current number of simulatenous playing sources.",
-     returns = "(numSources: number)",
-     type = "function"
-    },
     getOrientation = {
      args = "()",
      description = "Returns the orientation of the listener.",
@@ -256,6 +272,12 @@ local love = {
      args = "()",
      description = "Returns the position of the listener.",
      returns = "(x: number, y: number, z: number)",
+     type = "function"
+    },
+    getSourceCount = {
+     args = "()",
+     description = "Returns the number of sources which are currently playing or paused.",
+     returns = "(numSources: number)",
      type = "function"
     },
     getVelocity = {
@@ -271,7 +293,7 @@ local love = {
      type = "function"
     },
     newSource = {
-     args = "(filename: string, type: SourceType)",
+     args = "(file: File, type: SourceType)",
      description = "Creates a new Source from a file, SoundData, or Decoder. Sources created from SoundData are always static.",
      returns = "(source: Source)",
      type = "function"
@@ -346,6 +368,12 @@ local love = {
    returns = "()",
    type = "function"
   },
+  errhand = {
+   args = "(msg: string)",
+   description = "The error handler, used to display error messages.",
+   returns = "()",
+   type = "function"
+  },
   event = {
    childs = {
     Event = {
@@ -386,12 +414,6 @@ local love = {
      description = "class constants",
      type = "class"
     },
-    clear = {
-     args = "()",
-     description = "Clears the event queue.",
-     returns = "()",
-     type = "function"
-    },
     poll = {
      args = "()",
      description = "Returns an iterator for messages in the event queue.",
@@ -400,7 +422,7 @@ local love = {
     },
     pump = {
      args = "()",
-     description = "Pump events into the event queue. This is a low-level function, and is usually not called explicitly, but implicitly by love.event.poll() or love.event.wait().",
+     description = "Pump events into the event queue. This is a low-level function, and is usually not called by the user, but by love.run. Note that this does need to be called for any OS to think you're still running, and if you want to handle OS-generated events at all (think callbacks). love.event.pump can only be called from the main thread, but afterwards, the rest of love.event can be used from any other thread.",
      returns = "()",
      type = "function"
     },
@@ -412,13 +434,13 @@ local love = {
     },
     quit = {
      args = "()",
-     description = "Adds the quit event to the queue.\n\nThe quit event is a signal for the event handler to close L�VE. It's possible to abort the exit process with the love.quit callback.",
+     description = "Adds the quit event to the queue.\n\nThe quit event is a signal for the event handler to close LÖVE. It's possible to abort the exit process with the love.quit callback.",
      returns = "()",
      type = "function"
     },
     wait = {
      args = "()",
-     description = "Like love.event.poll(), but blocks until there is an event in the queue.",
+     description = "Like love.event.poll but blocks until there is an event in the queue.",
      returns = "(e: Event, a: mixed, b: mixed, c: mixed, d: mixed)",
      type = "function"
     }
@@ -428,24 +450,60 @@ local love = {
   },
   filesystem = {
    childs = {
+    BufferMode = {
+     childs = {
+      full = {
+       description = "Full buffering. Write and append operations are always buffered until the buffer size limit is reached.",
+       type = "value"
+      },
+      line = {
+       description = "Line buffering. Write and append operations are buffered until a newline is output or the buffer size limit is reached.",
+       type = "value"
+      },
+      none = {
+       description = "No buffering. The result of write and append operations appears immediately.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
     File = {
      childs = {
-      close = {
-       args = "()",
-       description = "Closes a file.",
-       returns = "(success: boolean)",
-       type = "function"
-      },
       eof = {
        args = "()",
        description = "If the end-of-file has been reached",
        returns = "(eof: boolean)",
        type = "function"
       },
+      flush = {
+       args = "()",
+       description = "Flushes any buffered written data in the file to the disk.",
+       returns = "(success: boolean, err: string)",
+       type = "function"
+      },
+      getBuffer = {
+       args = "()",
+       description = "Gets the buffer mode of a file.",
+       returns = "(mode: BufferMode, size: number)",
+       type = "function"
+      },
+      getMode = {
+       args = "()",
+       description = "Gets the FileMode the file has been opened with.",
+       returns = "(mode: FileMode)",
+       type = "function"
+      },
       getSize = {
        args = "()",
        description = "Returns the file size.",
        returns = "(size: number)",
+       type = "function"
+      },
+      isOpen = {
+       args = "()",
+       description = "Gets whether the file is open.",
+       returns = "(open: boolean)",
        type = "function"
       },
       lines = {
@@ -463,7 +521,7 @@ local love = {
       read = {
        args = "(bytes: number)",
        description = "Read a number of bytes from a file.",
-       returns = "(contents: string)",
+       returns = "(contents: string, size: number)",
        type = "function"
       },
       seek = {
@@ -472,8 +530,14 @@ local love = {
        returns = "(success: boolean)",
        type = "function"
       },
+      setBuffer = {
+       args = "(mode: BufferMode, size: number)",
+       description = "Sets the buffer mode for a file opened for writing or appending. Files with buffering enabled will not write data to the disk until the buffer size limit is reached, depending on the buffer mode.",
+       returns = "(success: boolean, errorstr: string)",
+       type = "function"
+      },
       write = {
-       args = "(data: string)",
+       args = "(data: string, size: number)",
        description = "Write data to a file.",
        returns = "(success: boolean)",
        type = "function"
@@ -483,22 +547,10 @@ local love = {
      type = "lib"
     },
     FileData = {
-     childs = {
-      getExtension = {
-       args = "()",
-       description = "Gets the extension of the FileData.",
-       returns = "(ext: string)",
-       type = "function"
-      },
-      getFilename = {
-       args = "()",
-       description = "Gets the filename of the FileData.",
-       returns = "(name: string)",
-       type = "function"
-      }
-     },
-     description = "Represents a file on the filesystem.",
-     type = "lib"
+     args = "()",
+     description = "Data representing the contents of a file.",
+     returns = "()",
+     type = "function"
     },
     FileDecoder = {
      childs = {
@@ -520,6 +572,10 @@ local love = {
        description = "Open a file for append.",
        type = "value"
       },
+      c = {
+       description = "Do not open a file (represents a closed file.)",
+       type = "value"
+      },
       r = {
        description = "Open a file for read.",
        type = "value"
@@ -532,10 +588,10 @@ local love = {
      description = "class constants",
      type = "class"
     },
-    enumerate = {
-     args = "(dir: string)",
-     description = "Returns a table with the names of files and subdirectories in the directory in an undefined order.\n\nNote that this directory is relative to the love folder/archive being run. Absolute paths will not work.",
-     returns = "(files: table)",
+    createDirectory = {
+     args = "(name: string)",
+     description = "Creates a directory.",
+     returns = "(ok: boolean)",
      type = "function"
     },
     exists = {
@@ -550,6 +606,18 @@ local love = {
      returns = "(path: string)",
      type = "function"
     },
+    getDirectoryItems = {
+     args = "(dir: string)",
+     description = "Returns a table with the names of files and subdirectories in the directory in an undefined order.",
+     returns = "(items: table)",
+     type = "function"
+    },
+    getIdentity = {
+     args = "(name: string)",
+     description = "Gets the write directory name for your game. Note that this only returns the name of the folder to store your files in, not the full location.",
+     returns = "()",
+     type = "function"
+    },
     getLastModified = {
      args = "(filename: string)",
      description = "Gets the last modification time of a file.",
@@ -559,7 +627,13 @@ local love = {
     getSaveDirectory = {
      args = "()",
      description = "Gets the full path to the designated save directory. This can be useful if you want to use the standard io library (or something else) to read or write in the save directory.",
-     returns = "(dir: string)",
+     returns = "(path: string)",
+     type = "function"
+    },
+    getSize = {
+     args = "(filename: string)",
+     description = "Gets the size in bytes of a file.",
+     returns = "(size: number, errormsg: string)",
      type = "function"
     },
     getUserDirectory = {
@@ -571,25 +645,25 @@ local love = {
     getWorkingDirectory = {
      args = "()",
      description = "Gets the current working directory.",
-     returns = "(cwd: string)",
-     type = "function"
-    },
-    init = {
-     args = "()",
-     description = "Initializes love.filesystem, will be called internally, so should not be used explicitly.",
-     returns = "()",
+     returns = "(path: string)",
      type = "function"
     },
     isDirectory = {
-     args = "(filename: string)",
+     args = "(path: string)",
      description = "Check whether something is a directory.",
      returns = "(is_dir: boolean)",
      type = "function"
     },
     isFile = {
-     args = "(filename: string)",
+     args = "(path: string)",
      description = "Check whether something is a file.",
      returns = "(is_file: boolean)",
+     type = "function"
+    },
+    isFused = {
+     args = "()",
+     description = "Gets whether the game is in fused mode or not.\n\nIf a game is in fused mode, its save directory will be directly in the Appdata directory instead of Appdata/LOVE/. The game will also be able to load C Lua dynamic libraries which are located in the save directory.\n\nA game is in fused mode if the source .love has been fused to the executable (see Game Distribution), or if \"--fused\" has been given as a command-line argument when starting the game.",
+     returns = "(fused: boolean)",
      type = "function"
     },
     lines = {
@@ -604,16 +678,10 @@ local love = {
      returns = "(chunk: function)",
      type = "function"
     },
-    mkdir = {
-     args = "(name: string)",
-     description = "Creates a directory.",
-     returns = "(ok: boolean)",
-     type = "function"
-    },
     newFile = {
-     args = "(filename: string)",
+     args = "(filename: string, mode: FileMode)",
      description = "Creates a new File object. It needs to be opened before it can be accessed.",
-     returns = "(file: File)",
+     returns = "(file: File, errorstr: string)",
      type = "function"
     },
     newFileData = {
@@ -623,7 +691,7 @@ local love = {
      type = "function"
     },
     read = {
-     args = "(name: string, size: number)",
+     args = "(name: string, bytes: number)",
      description = "Read the contents of a file.",
      returns = "(contents: string, size: number)",
      type = "function"
@@ -635,14 +703,8 @@ local love = {
      type = "function"
     },
     setIdentity = {
-     args = "(name: string)",
+     args = "(name: string, searchorder: SearchOrder)",
      description = "Sets the write directory for your game. Note that you can only set the name of the folder to store your files in, not the location.",
-     returns = "()",
-     type = "function"
-    },
-    setSource = {
-     args = "()",
-     description = "Sets the source of the game, where the code is present, can only be called once, done automatically.",
      returns = "()",
      type = "function"
     },
@@ -676,12 +738,6 @@ local love = {
      description = "A Rasterizer handles font rendering, containing the font data (image or TrueType font font) and drawable glyphs.",
      type = "value"
     },
-    newFontData = {
-     args = "(rasterizer: Rasterizer)",
-     description = "Creates a new FontData.",
-     returns = "(fontData: FontData)",
-     type = "function"
-    },
     newGlyphData = {
      args = "(rasterizer: Rasterizer, glyph: number)",
      description = "Creates a new GlyphData.",
@@ -697,6 +753,24 @@ local love = {
    },
    description = "Allows you to work with fonts.",
    type = "class"
+  },
+  gamepadaxis = {
+   args = "(joystick: Joystick, axis: GamepadAxis)",
+   description = "Called when a Joystick's virtual gamepad axis is moved.",
+   returns = "()",
+   type = "function"
+  },
+  gamepadpressed = {
+   args = "(joystick: Joystick, button: GamepadButton)",
+   description = "Called when a Joystick's virtual gamepad button is pressed.",
+   returns = "()",
+   type = "function"
+  },
+  gamepadreleased = {
+   args = "(joystick: Joystick, button: GamepadButton)",
+   description = "Called when a Joystick's virtual gamepad button is released.",
+   returns = "()",
+   type = "function"
   },
   graphics = {
    childs = {
@@ -736,6 +810,10 @@ local love = {
        description = "Premultiplied blend mode.",
        type = "value"
       },
+      replace = {
+       description = "Replace blend mode.",
+       type = "value"
+      },
       subtractive = {
        description = "Subtractive blend mode.",
        type = "value"
@@ -746,10 +824,10 @@ local love = {
     },
     Canvas = {
      childs = {
-      clear = {
-       args = "(red: number, green: number, blue: number, alpha: number)",
-       description = "Clears content of a Canvas.\n\nWhen called without arguments, the Canvas will be cleared with color rgba = {0,0,0,0}, i.e. it will be fully transparent. If called with color parameters (be it numbers or a color table), the alpha component may be omitted in which case it defaults to 255 (fully opaque).",
-       returns = "()",
+      getDimensions = {
+       args = "()",
+       description = "Gets the width and height of the Canvas.",
+       returns = "(width: number, height: number)",
        type = "function"
       },
       getFilter = {
@@ -758,16 +836,34 @@ local love = {
        returns = "(min: FilterMode, mag: FilterMode)",
        type = "function"
       },
+      getHeight = {
+       args = "()",
+       description = "Gets the height of the Canvas.",
+       returns = "(height: number)",
+       type = "function"
+      },
       getImageData = {
        args = "()",
        description = "Returns the image data stored in the Canvas. Think of it as taking a screenshot of the hidden screen that is the Canvas.",
        returns = "(data: ImageData)",
        type = "function"
       },
+      getPixel = {
+       args = "(x: number, y: number)",
+       description = "Gets the pixel at the specified position from a Canvas.\n\nValid x and y values start at 0 and go up to canvas width and height minus 1.",
+       returns = "(r: number, g: number, b: number, a: number)",
+       type = "function"
+      },
+      getWidth = {
+       args = "()",
+       description = "Gets the width of the Canvas.",
+       returns = "(width: number)",
+       type = "function"
+      },
       getWrap = {
        args = "()",
        description = "Gets the wrapping properties of a Canvas.\n\nThis functions returns the currently set horizontal and vertical wrapping modes for the Canvas.",
-       returns = "(horiz: WrapMode, vert: WrapMode)",
+       returns = "(horizontal: WrapMode, vertical: WrapMode)",
        type = "function"
       },
       renderTo = {
@@ -783,28 +879,14 @@ local love = {
        type = "function"
       },
       setWrap = {
-       args = "(horiz: WrapMode, vert: WrapMode)",
-       description = "Sets the wrapping properties of a Canvas.\n\n This function sets the way the edges of a Canvas are treated if it is scaled or rotated. If the WrapMode is set to \"clamp\", the edge will not be interpolated. If set to \"repeat\", the edge will be interpolated with the pixels on the opposing side of the framebuffer.",
+       args = "(horizontal: WrapMode, vertical: WrapMode)",
+       description = "Sets the wrapping properties of a Canvas.\n\nThis function sets the way the edges of a Canvas are treated if it is scaled or rotated. If the WrapMode is set to \"clamp\", the edge will not be interpolated. If set to \"repeat\", the edge will be interpolated with the pixels on the opposing side of the framebuffer.",
        returns = "()",
        type = "function"
       }
      },
      description = "A Canvas is used for off-screen rendering. Think of it as an invisible screen that you can draw to, but that will not be visible until you draw it to the actual visible screen. It is also known as \"render to texture\".\n\nBy drawing things that do not change position often (such as background items) to the Canvas, and then drawing the entire Canvas instead of each item, you can reduce the number of draw operations performed each frame.",
      type = "lib"
-    },
-    ColorMode = {
-     childs = {
-      modulate = {
-       description = "Images (etc) will be affected by the current color.",
-       type = "value"
-      },
-      replace = {
-       description = "Replace color mode. Images (etc) will not be affected by current color.",
-       type = "value"
-      }
-     },
-     description = "class constants",
-     type = "class"
     },
     DrawMode = {
      childs = {
@@ -836,6 +918,24 @@ local love = {
     },
     Font = {
      childs = {
+      getBaseline = {
+       args = "()",
+       description = "Gets the baseline of the Font. Most scripts share the notion of a baseline: an imaginary horizontal line on which characters rest. In some scripts, parts of glyphs lie below the baseline.",
+       returns = "(baseline: number)",
+       type = "function"
+      },
+      getDescent = {
+       args = "()",
+       description = "Gets the descent of the Font. The descent spans the distance between the baseline and the lowest descending glyph in a typeface.",
+       returns = "(descent: number)",
+       type = "function"
+      },
+      getFilter = {
+       args = "()",
+       description = "Gets the filter mode for a font.",
+       returns = "(min: FilterMode, mag: FilterMode, anisotropy: number)",
+       type = "function"
+      },
       getHeight = {
        args = "()",
        description = "Gets the height of the Font. The height of the font is the size including any spacing; the height which it will need.",
@@ -860,6 +960,18 @@ local love = {
        returns = "(width: number, lines: number)",
        type = "function"
       },
+      hasGlyph = {
+       args = "(codepoint: number)",
+       description = "Gets whether the font can render a particular character.",
+       returns = "(hasglyph: boolean)",
+       type = "function"
+      },
+      setFilter = {
+       args = "(min: FilterMode, mag: FilterMode, anisotropy: number)",
+       description = "Sets the filter mode for a font.",
+       returns = "()",
+       type = "function"
+      },
       setLineHeight = {
        args = "(height: number)",
        description = "Sets the line height. When rendering the font in lines the actual height will be determined by the line height multiplied by the height of the font. The default is 1.0.",
@@ -872,16 +984,36 @@ local love = {
     },
     GraphicsFeature = {
      childs = {
+      bc5 = {
+       description = "Support for BC4 and BC5 compressed images.",
+       type = "value"
+      },
       canvas = {
        description = "Support for Canvas.",
+       type = "value"
+      },
+      dxt = {
+       description = "Support for DXT compressed images (see CompressedFormat.)",
+       type = "value"
+      },
+      hdrcanvas = {
+       description = "Support for HDR Canvas.",
+       type = "value"
+      },
+      mipmap = {
+       description = "Support for Mipmaps.",
+       type = "value"
+      },
+      multicanvas = {
+       description = "Support for simultaneous rendering to at least 4 canvases at once, with love.graphics.setCanvas.",
        type = "value"
       },
       npot = {
        description = "Support for textures with non-power-of-two textures.",
        type = "value"
       },
-      pixeleffect = {
-       description = "Support for PixelEffect.",
+      shader = {
+       description = "Support for Shader.",
        type = "value"
       },
       subtractive = {
@@ -894,6 +1026,12 @@ local love = {
     },
     Image = {
      childs = {
+      getDimensions = {
+       args = "()",
+       description = "Gets the width and height of the Image.",
+       returns = "(width: number, height: number)",
+       type = "function"
+      },
       getFilter = {
        args = "()",
        description = "Gets the filter mode for an image.",
@@ -902,20 +1040,32 @@ local love = {
       },
       getHeight = {
        args = "()",
-       description = "Returns the height of the Image.",
-       returns = "(h: number)",
+       description = "Gets the height of the Image.",
+       returns = "(height: number)",
+       type = "function"
+      },
+      getMipmapFilter = {
+       args = "()",
+       description = "Gets the mipmap filter mode for an Image.",
+       returns = "(mode: FilterMode, sharpness: number)",
        type = "function"
       },
       getWidth = {
        args = "()",
-       description = "Returns the width of the Image.",
-       returns = "(w: number)",
+       description = "Gets the width of the Image.",
+       returns = "(width: number)",
        type = "function"
       },
       getWrap = {
        args = "()",
        description = "Gets the wrapping properties of an Image.\n\nThis functions returns the currently set horizontal and vertical wrapping modes for the image.",
-       returns = "(horiz: WrapMode, vert: WrapMode)",
+       returns = "(horizontal: WrapMode, vertical: WrapMode)",
+       type = "function"
+      },
+      refresh = {
+       args = "()",
+       description = "Reloads the Image's contents from the ImageData or CompressedData used to create the image.",
+       returns = "()",
        type = "function"
       },
       setFilter = {
@@ -924,9 +1074,15 @@ local love = {
        returns = "()",
        type = "function"
       },
+      setMipmapFilter = {
+       args = "(filtermode: FilterMode, sharpness: number)",
+       description = "Sets the mipmap filter mode for an Image.\n\nMipmapping is useful when drawing an image at a reduced scale. It can improve performance and reduce aliasing issues.\n\nAutomatically creates mipmaps for the Image if none exist yet. If the image is compressed and its CompressedData has mipmap data included, it will use that.\n\nDisables mipmap filtering when called without arguments.",
+       returns = "()",
+       type = "function"
+      },
       setWrap = {
-       args = "(horiz: WrapMode, vert: WrapMode)",
-       description = "Sets the wrapping properties of an Image.\n\nThis function sets the way an Image is repeated when it is drawn with a Quad that is larger than the image's extent. An image may be clamped or set to repeat in both horizontal and vertical directions. Clamped images appear only once, but repeated ones repeat as many times as there is room in the Quad.\n\nN.B. If you use a Quad that is larger than the image extent and do not use repeated tiling, there may be an unwanted visual effect of the image stretching all the way to fill the Quad. If this is the case, setting Image:getWrap(\"repeat\", \"repeat\") for all the images to be repeated, and using Quads of appropriate size will result in the best visual appearance.",
+       args = "(horizontal: WrapMode, vertical: WrapMode)",
+       description = "Sets the wrapping properties of an Image.\n\nThis function sets the way an Image is repeated when it is drawn with a Quad that is larger than the image's extent. An image may be clamped or set to repeat in both horizontal and vertical directions. Clamped images appear only once, but repeated ones repeat as many times as there is room in the Quad.\n\nIf you use a Quad that is larger than the image extent and do not use repeated tiling, there may be an unwanted visual effect of the image stretching all the way to fill the Quad. If this is the case, setting Image:getWrap(\"repeat\", \"repeat\") for all the images to be repeated, and using Quad of appropriate size will result in the best visual appearance.",
        returns = "()",
        type = "function"
       }
@@ -948,9 +1104,109 @@ local love = {
      description = "class constants",
      type = "class"
     },
+    Mesh = {
+     childs = {
+      getVertex = {
+       args = "(i: number)",
+       description = "Returns vertex information from the Mesh.",
+       returns = "(x: number, y: number, u: number, v: number, r: number, g: number, b: number, a: number)",
+       type = "function"
+      },
+      getVertexCount = {
+       args = "()",
+       description = "Returns the total number of vertices in the Mesh.",
+       returns = "(num: number)",
+       type = "function"
+      },
+      getVertexMap = {
+       args = "()",
+       description = "Gets the Mesh's vertex map.\n\n If no vertex map has been set previously (either in love.graphics.newMesh or with Mesh:setVertexMap), then this function will return the default vertex map: {1, 2, 3, ..., Mesh:getVertexCount()}.",
+       returns = "(vertex_map: table)",
+       type = "function"
+      },
+      hasVertexColors = {
+       args = "(on: boolean)",
+       description = "Retrieves if the per-vertex colors are used when rendering instead of the constant color (constant color being love.graphics.setColor or SpriteBatch:setColor)\n\nThe per-vertex colors are automatically enabled by default when making a new Mesh or when doing Mesh:setVertex, but only if at least one vertex color is not the default (255,255,255,255).",
+       returns = "()",
+       type = "function"
+      },
+      setVertex = {
+       args = "(i: number, x: number, y: number, u: number, v: number, r: number, g: number, b: number, a: number)",
+       description = "Sets the vertex information for a Mesh.",
+       returns = "()",
+       type = "function"
+      },
+      setVertexColors = {
+       args = "(on: boolean)",
+       description = "Sets if the per-vertex colors are used when rendering instead of the constant color (constant color being love.graphics.setColor or SpriteBatch:setColor)\n\nThe per-vertex colors are automatically enabled by default when making a new Mesh or when doing Mesh:setVertex, but only if at least one vertex color is not the default (255,255,255,255).",
+       returns = "()",
+       type = "function"
+      },
+      setVertexMap = {
+       args = "(vi1: number, vi2: number, vi3: number)",
+       description = "Sets the vertex map for a Mesh. The vertex map describes the order in which the vertices are used when the Mesh is drawn.\n\nThe vertex map allows you to re-order or reuse vertices when drawing without changing the actual vertex parameters or duplicating vertices. It is especially useful when combined with different Mesh draw modes.",
+       returns = "()",
+       type = "function"
+      }
+     },
+     description = "",
+     type = "lib"
+    },
+    MeshDrawMode = {
+     childs = {
+      fan = {
+       description = "The vertices create a \"fan\" shape with the first vertex acting as the hub point. Can be easily used to draw simple convex polygons.",
+       type = "value"
+      },
+      points = {
+       description = "The vertices are drawn as unconnected points (see love.graphics.setPointSize.)",
+       type = "value"
+      },
+      strip = {
+       description = "The vertices create a series of connected triangles using vertices v1, v2, v3, then v3, v2, v4 (note the order), then v3, v4, v5 and so on.",
+       type = "value"
+      },
+      triangles = {
+       description = "The vertices create unconnected triangles.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
+    ParticleInsertMode = {
+     childs = {
+      bottom = {
+       description = "Particles are inserted at the bottom of the ParticleSystem's list of particles.",
+       type = "value"
+      },
+      random = {
+       description = "Particles are inserted at random positions in the ParticleSystem's list of particles.",
+       type = "value"
+      },
+      top = {
+       description = "Particles are inserted at the top of the ParticleSystem's list of particles.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
     ParticleSystem = {
      childs = {
-      count = {
+      getBufferSize = {
+       args = "()",
+       description = "Gets the size of the buffer (the max allowed amount of particles in the system).",
+       returns = "(buffer: number)",
+       type = "function"
+      },
+      getColors = {
+       args = "()",
+       description = "Gets a series of colors to apply to the particle sprite. The particle system will interpolate between each color evenly over the particle's lifetime. Color modulation needs to be activated for this function to have any effect.\n\nArguments are passed in groups of four, representing the components of the desired RGBA value. At least one color must be specified. A maximum of eight may be used.",
+       returns = "(r1: number, g1: number, b1: number, a1: number, r2: number, g2: number, b2: number, a2: number, ...: number)",
+       type = "function"
+      },
+      getCount = {
        args = "()",
        description = "Gets the amount of particles that are currently in the system.",
        returns = "(count: number)",
@@ -958,56 +1214,116 @@ local love = {
       },
       getDirection = {
        args = "()",
-       description = "Gets the direction of the particle emitter (in radians).",
+       description = "Gets the direction the particles will be emitted in.",
        returns = "(direction: number)",
        type = "function"
       },
-      getOffsetX = {
+      getEmissionRate = {
        args = "()",
-       description = "Get the x coordinate of the particle rotation offset.",
-       returns = "(xOffset: number)",
+       description = "Gets the amount of particles emitted per second.",
+       returns = "(rate: number)",
        type = "function"
       },
-      getOffsetY = {
+      getEmitterLifetime = {
        args = "()",
-       description = "Get the y coordinate of the particle rotation offset.",
-       returns = "(yOffset: number)",
+       description = "Gets how long the particle system should emit particles (if -1 then it emits particles forever).",
+       returns = "(life: number)",
+       type = "function"
+      },
+      getImage = {
+       args = "()",
+       description = "Gets the image which is to be emitted.",
+       returns = "(image: Image)",
+       type = "function"
+      },
+      getInsertMode = {
+       args = "()",
+       description = "Gets the mode to use when the ParticleSystem adds new particles.",
+       returns = "(mode: ParticleInsertMode)",
+       type = "function"
+      },
+      getLinearAcceleration = {
+       args = "()",
+       description = "Gets the linear acceleration (acceleration along the x and y axes) for particles.\n\nEvery particle created will accelerate along the x and y axes between xmin,ymin and xmax,ymax.",
+       returns = "(xmin: number, ymin: number, xmax: number, max: number)",
+       type = "function"
+      },
+      getOffset = {
+       args = "()",
+       description = "Get the offget position which the particle sprite is rotated around. If this function is not used, the particles rotate around their center.",
+       returns = "(x: number, y: number)",
+       type = "function"
+      },
+      getParticleLifetime = {
+       args = "()",
+       description = "Gets the life of the particles.",
+       returns = "(min: number, max: number)",
+       type = "function"
+      },
+      getPosition = {
+       args = "()",
+       description = "Gets the position of the emitter.",
+       returns = "(x: number, y: number)",
+       type = "function"
+      },
+      getRadialAcceleration = {
+       args = "()",
+       description = "Get the radial acceleration (away from the emitter).",
+       returns = "(min: number, max: number)",
+       type = "function"
+      },
+      getRotation = {
+       args = "()",
+       description = "Gets the rotation of the image upon particle creation (in radians).",
+       returns = "(min: number, max: number)",
+       type = "function"
+      },
+      getSizeVariation = {
+       args = "()",
+       description = "Gets the degree of variation (0 meaning no variation and 1 meaning full variation between start and end).",
+       returns = "(variation: number)",
+       type = "function"
+      },
+      getSizes = {
+       args = "()",
+       description = "Gets a series of sizes by which to scale a particle sprite. 1.0 is normal size. The particle system will interpolate between each size evenly over the particle's lifetime.\n\nAt least one size must be specified. A maximum of eight may be used.",
+       returns = "(size1: number, size2: number, ...: number)",
+       type = "function"
+      },
+      getSpeed = {
+       args = "()",
+       description = "Gets the speed of the particles.",
+       returns = "(min: number, max: number)",
+       type = "function"
+      },
+      getSpin = {
+       args = "()",
+       description = "Gets the spin of the sprite.",
+       returns = "(min: number, max: number)",
+       type = "function"
+      },
+      getSpinVariation = {
+       args = "()",
+       description = "Gets the degree of variation (0 meaning no variation and 1 meaning full variation between start and end).",
+       returns = "(variation: number)",
        type = "function"
       },
       getSpread = {
        args = "()",
-       description = "Gets the amount of directional spread of the particle emitter (in radians).",
+       description = "Gets the amount of spread for the system.",
        returns = "(spread: number)",
        type = "function"
       },
-      getX = {
+      getTangentialAcceleration = {
        args = "()",
-       description = "Gets the x-coordinate of the particle emitter's position.",
-       returns = "(x: number)",
-       type = "function"
-      },
-      getY = {
-       args = "()",
-       description = "Gets the y-coordinate of the particle emitter's position.",
-       returns = "(y: number)",
+       description = "Gets the tangential acceleration (acceleration perpendicular to the particle's direction).",
+       returns = "(min: number, max: number)",
        type = "function"
       },
       isActive = {
        args = "()",
        description = "Checks whether the particle system is actively emitting particles.",
        returns = "(active: boolean)",
-       type = "function"
-      },
-      isEmpty = {
-       args = "()",
-       description = "Checks whether the particle system is empty of particles.",
-       returns = "(empty: boolean)",
-       type = "function"
-      },
-      isFull = {
-       args = "()",
-       description = "Checks whether the particle system is full of particles.",
-       returns = "(full: boolean)",
        type = "function"
       },
       pause = {
@@ -1046,15 +1362,27 @@ local love = {
        returns = "()",
        type = "function"
       },
-      setGravity = {
-       args = "(min: number, max: number)",
-       description = "Sets the gravity affecting the particles (acceleration along the y-axis). Every particle created will have a gravity between min and max.",
+      setEmitterLifetime = {
+       args = "(life: number)",
+       description = "Sets how long the particle system should emit particles (if -1 then it emits particles forever).",
        returns = "()",
        type = "function"
       },
-      setLifetime = {
-       args = "(life: number)",
-       description = "Sets how long the particle system should emit particles (if -1 then it emits particles forever).",
+      setImage = {
+       args = "(image: Image)",
+       description = "Sets the image which is to be emitted.",
+       returns = "()",
+       type = "function"
+      },
+      setInsertMode = {
+       args = "(mode: ParticleInsertMode)",
+       description = "Sets the mode to use when the ParticleSystem adds new particles.",
+       returns = "()",
+       type = "function"
+      },
+      setLinearAcceleration = {
+       args = "(xmin: number, ymin: number, xmax: number, max: number)",
+       description = "Sets the linear acceleration (acceleration along the x and y axes) for particles.\n\nEvery particle created will accelerate along the x and y axes between xmin,ymin and xmax,ymax.",
        returns = "()",
        type = "function"
       },
@@ -1064,7 +1392,7 @@ local love = {
        returns = "()",
        type = "function"
       },
-      setParticleLife = {
+      setParticleLifetime = {
        args = "(min: number, max: number)",
        description = "Sets the life of the particles.",
        returns = "()",
@@ -1107,7 +1435,7 @@ local love = {
        type = "function"
       },
       setSpin = {
-       args = "(min: number, max: number, variation: number)",
+       args = "(min: number, max: number)",
        description = "Sets the spin of the sprite.",
        returns = "()",
        type = "function"
@@ -1121,12 +1449,6 @@ local love = {
       setSpread = {
        args = "(spread: number)",
        description = "Sets the amount of spread for the system.",
-       returns = "()",
-       type = "function"
-      },
-      setSprite = {
-       args = "(sprite: Image)",
-       description = "Sets the image which is to be emitted.",
        returns = "()",
        type = "function"
       },
@@ -1158,24 +1480,6 @@ local love = {
      description = "Used to create cool effects, like fire. The particle systems are created and drawn on the screen using functions in love.graphics. They also need to be updated in the update(dt) callback for you to see any changes in the particles emitted.",
      type = "lib"
     },
-    PixelEffect = {
-     childs = {
-      getWarnings = {
-       args = "()",
-       description = "Returns any warning messages from compiling the pixel effect code. This can be used for debugging your pixel effects if there's anything the graphics hardware doesn't like.",
-       returns = "(warnings: string)",
-       type = "function"
-      },
-      send = {
-       args = "(name: string, number: number)",
-       description = "Sends one or more values to a pixel effect using the specified name.\n\nThis function allows certain aspects of a pixel effect to be controlled by Lua code.",
-       returns = "()",
-       type = "function"
-      }
-     },
-     description = "A PixelEffect is used for advanced hardware-accelerated pixel manipulation. These effects are written in a language based on GLSL (OpenGL Shading Language) with a few things simplified for easier coding.\n\nPotential uses for pixel effects include HDR/bloom, motion blur, grayscale/invert/sepia/any kind of color effect, reflection/refraction, distortions, and much more!",
-     type = "lib"
-    },
     PointStyle = {
      childs = {
       rough = {
@@ -1191,43 +1495,19 @@ local love = {
      type = "class"
     },
     Quad = {
-     childs = {
-      flip = {
-       args = "(x: boolean, y: boolean)",
-       description = "Flips this quad horizontally, vertically, or both.",
-       returns = "()",
-       type = "function"
-      },
-      getViewport = {
-       args = "()",
-       description = "Gets the current viewport of this Quad.",
-       returns = "(x: number, y: number, w: number, h: number)",
-       type = "function"
-      },
-      setViewport = {
-       args = "(x: number, y: number, w: number, h: number)",
-       description = "Sets the texture coordinates according to a viewport.",
-       returns = "()",
-       type = "function"
-      }
-     },
-     description = "A quadrilateral with texture coordinate information.\n\nQuads can be used to select part of a texture to draw. In this way, one large texture atlas can be loaded, and then split up into sub-images.",
-     type = "lib"
+     args = "()",
+     description = "A quadrilateral (a polygon with four sides and four corners) with texture coordinate information.\n\nQuads can be used to select part of a texture to draw. In this way, one large texture atlas can be loaded, and then split up into sub-images.",
+     returns = "()",
+     type = "function"
+    },
+    Shader = {
+     args = "()",
+     description = "A Shader is used for advanced hardware-accelerated pixel or vertex manipulation. These effects are written in a language based on GLSL (OpenGL Shading Language) with a few things simplified for easier coding.\n\nPotential uses for pixel effects include HDR/bloom, motion blur, grayscale/invert/sepia/any kind of color effect, reflection/refraction, distortions, and much more!",
+     returns = "()",
+     type = "function"
     },
     SpriteBatch = {
      childs = {
-      add = {
-       args = "(x: number, y: number, r: number, sx: number, sy: number, ox: number, oy: number, kx: number, ky: number)",
-       description = "Add a sprite to the batch.",
-       returns = "(id: number)",
-       type = "function"
-      },
-      addq = {
-       args = "()",
-       description = "Add a Quad to the batch.",
-       returns = "(id: number)",
-       type = "function"
-      },
       bind = {
        args = "()",
        description = "Binds the SpriteBatch to the memory.\n\nBinding a SpriteBatch before updating its content can improve the performance as it doesn't push each update to the graphics card separately. Don't forget to unbind the SpriteBatch or the updates won't show up.",
@@ -1240,6 +1520,24 @@ local love = {
        returns = "()",
        type = "function"
       },
+      getBufferSize = {
+       args = "()",
+       description = "Gets the maximum number of sprites the SpriteBatch can hold.",
+       returns = "(size: number)",
+       type = "function"
+      },
+      getColor = {
+       args = "(r: number, g: number, b: number, a: number)",
+       description = "Gets the color that will be used for the next add and set operations.\n\nIf no color has been set with SpriteBatch:setColor or the current SpriteBatch color has been cleared, this method will return nil.",
+       returns = "()",
+       type = "function"
+      },
+      getCount = {
+       args = "()",
+       description = "Gets the amount of sprites currently in the SpriteBatch.",
+       returns = "(count: number)",
+       type = "function"
+      },
       getImage = {
        args = "()",
        description = "Returns the image used by the SpriteBatch.",
@@ -1247,9 +1545,9 @@ local love = {
        type = "function"
       },
       set = {
-       args = "()",
+       args = "(id: number, quad: Quad, x: number, y: number, r: number, sx: number, sy: number, ox: number, oy: number, kx: number, ky: number)",
        description = "Changes a sprite in the batch. This requires the identifier returned by add and addq.",
-       returns = "(id: number, x: number, y: number, r: number, sx: number, sy: number, ox: number, oy: number, kx: number, ky: number)",
+       returns = "()",
        type = "function"
       },
       setColor = {
@@ -1264,12 +1562,6 @@ local love = {
        returns = "()",
        type = "function"
       },
-      setq = {
-       args = "()",
-       description = "Changes a sprite with a quad in the batch. This requires the identifier returned by add and addq.",
-       returns = "(id: number)",
-       type = "function"
-      },
       unbind = {
        args = "()",
        description = "Unbinds the SpriteBatch.",
@@ -1277,8 +1569,40 @@ local love = {
        type = "function"
       }
      },
-     description = "Using a single image, draw any number of identical copies of the image using a single call to love.graphics.draw(). This can be used, for example, to draw repeating copies of a single background image.\n\nA SpriteBatch can be even more useful when the underlying image is a Texture Atlas (a single image file containing many independent images); by adding Quads to the batch, different sub-images from within the atlas can be drawn.",
+     description = "Using a single image, draw any number of identical copies of the image using a single call to love.graphics.draw. This can be used, for example, to draw repeating copies of a single background image.\n\nA SpriteBatch can be even more useful when the underlying image is a Texture Atlas (a single image file containing many independent images); by adding Quad to the batch, different sub-images from within the atlas can be drawn.",
      type = "lib"
+    },
+    SpriteBatchUsage = {
+     childs = {
+      dynamic = {
+       description = "The SpriteBatch data will change repeatedly during its lifetime.",
+       type = "value"
+      },
+      static = {
+       description = "The SpriteBatch will not be modified after initial sprites are added.",
+       type = "value"
+      },
+      stream = {
+       description = "The SpriteBatch data will always change between draws.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
+    TextureMode = {
+     childs = {
+      hdr = {
+       description = "The HDR texture format: floating point 16 bits per channel (64 bpp) RGBA.",
+       type = "value"
+      },
+      normal = {
+       description = "The default texture format: 8 bits per channel (32 bpp) RGBA.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
     },
     WrapMode = {
      childs = {
@@ -1294,18 +1618,6 @@ local love = {
      description = "class constants",
      type = "class"
     },
-    arc = {
-     args = "(mode: DrawMode, x: number, y: number, radius: number, angle1: number, angle2: number, segments: number)",
-     description = "Draws an arc.",
-     returns = "()",
-     type = "function"
-    },
-    checkMode = {
-     args = "(width: number, height: number, fullscreen: boolean)",
-     description = "Checks if a display mode is supported.",
-     returns = "(supported: boolean)",
-     type = "function"
-    },
     circle = {
      args = "(mode: DrawMode, x: number, y: number, radius: number, segments: number)",
      description = "Draws a circle.",
@@ -1314,19 +1626,13 @@ local love = {
     },
     clear = {
      args = "()",
-     description = "Clears the screen to background color.\n\nThis function is called automatically before love.draw in the default love.run function. See the example in love.run for a typical use of this function.\n\nNote that the scissor area bounds the cleared region.",
+     description = "Clears the screen to background color and restores the default coordinate system.\n\nThis function is called automatically before love.draw in the default love.run function. See the example in love.run for a typical use of this function.\n\nNote that the scissor area bounds the cleared region.",
      returns = "()",
      type = "function"
     },
     draw = {
-     args = "(drawable: Drawable, x: number, y: number, r: number, sx: number, sy: number, ox: number, oy: number, kx: number, ky: number)",
-     description = "Draws objects on screen. Drawable objects are loaded images, but may be other kinds of Drawable objects, such as a ParticleSystem.\n\nIn addition to simple drawing, the draw() function can rotate and scale the object at the same time, as well as offset the image (for example, to center the image at the chosen coordinates).\n\nlove.graphics.draw() anchors from the top left corner by default.\n\nYou can specify a negative value for sx or sy to flip the drawable horizontally or vertically.\n\nThe pivotal point is (x, y) on the screen and (ox, oy) in the internal coordinate system of the drawable object, before rotation and scaling. The object is scaled by (sx, sy), then rotated by r around the pivotal point.\n\nThe default ColorMode blends the current drawing color into the image, so you will often want to invoke love.graphics.setColorMode(\"replace\") before drawing images, to ensure that the drawn image matches the source image file.\n\nThe origin offset values are most often used to shift the images up and left by half of its height and width, so that (effectively) the specified x and y coordinates are where the center of the image will end up.",
-     returns = "()",
-     type = "function"
-    },
-    drawq = {
      args = "(image: Image, quad: Quad, x: number, y: number, r: number, sx: number, sy: number, ox: number, oy: number, kx: number, ky: number)",
-     description = "Draw a Quad with the specified Image on screen.",
+     description = "Draws objects on screen. Drawable objects are loaded images, but may be other kinds of Drawable objects, such as a ParticleSystem.\n\nIn addition to simple drawing, this function can rotate and scale the object at the same time, as well as offset the image (for example, to center the image at the chosen coordinates).\n\nlove.graphics.draw anchors from the top left corner by default.\n\nYou can specify a negative value for sx or sy to flip the drawable horizontally or vertically.\n\nThe pivotal point is (x, y) on the screen and (ox, oy) in the internal coordinate system of the drawable object, before rotation and scaling. The object is scaled by (sx, sy), then rotated by r around the pivotal point.\n\nThe origin offset values are most often used to shift the images up and left by half of its height and width, so that (effectively) the specified x and y coordinates are where the center of the image will end up.",
      returns = "()",
      type = "function"
     },
@@ -1348,34 +1654,34 @@ local love = {
      returns = "(canvas: Canvas)",
      type = "function"
     },
-    getCaption = {
-     args = "()",
-     description = "Gets the window caption.",
-     returns = "(caption: string)",
-     type = "function"
-    },
     getColor = {
      args = "()",
      description = "Gets the current color.",
      returns = "(r: number, g: number, b: number, a: number)",
      type = "function"
     },
-    getColorMode = {
+    getColorMask = {
      args = "()",
-     description = "Gets the color mode (which controls how images are affected by the current color).",
-     returns = "(mode: ColorMode)",
+     description = "Gets the active color components used when drawing. Normally all 4 components are active unless love.graphics.setColorMask has been used.\n\nThe color mask determines whether individual components of the colors of drawn objects will affect the color of the screen. They affect love.graphics.clear and Canvas:clear as well.",
+     returns = "(r: boolean, g: boolean, b: boolean, a: boolean)",
      type = "function"
     },
-    getDefaultImageFilter = {
+    getDefaultFilter = {
      args = "()",
-     description = "Returns the default scaling filters.",
-     returns = "(min: FilterMode, mag: FilterMode)",
+     description = "Returns the default scaling filters used with Images, Canvases, and Fonts.",
+     returns = "(min: FilterMode, mag: FilterMode, anisotropy: number)",
      type = "function"
     },
     getFont = {
      args = "()",
      description = "Gets the current Font object.",
      returns = "(font: Font)",
+     type = "function"
+    },
+    getFullscreenModes = {
+     args = "()",
+     description = "Gets a list of supported fullscreen modes.",
+     returns = "(modes: table)",
      type = "function"
     },
     getHeight = {
@@ -1396,6 +1702,12 @@ local love = {
      returns = "(width: number)",
      type = "function"
     },
+    getMaxImageSize = {
+     args = "()",
+     description = "Gets the max supported width or height of Images and Canvases.\n\nAttempting to create an Image with a width *or* height greater than this number will create a checkerboard-patterned image instead. Doing the same for a canvas will result in an error.\n\nThe returned number depends on the system running the code. It is safe to assume it will never be less than 1024 and will almost always be 2048 or greater.",
+     returns = "(size: number)",
+     type = "function"
+    },
     getMaxPointSize = {
      args = "()",
      description = "Gets the max supported point size.",
@@ -1406,18 +1718,6 @@ local love = {
      args = "()",
      description = "Returns the current display mode.",
      returns = "(width: number, height: number, fullscreen: boolean, vsync: boolean, fsaa: number)",
-     type = "function"
-    },
-    getModes = {
-     args = "()",
-     description = "Gets a list of supported fullscreen modes.",
-     returns = "(modes: table)",
-     type = "function"
-    },
-    getPixelEffect = {
-     args = "()",
-     description = "Returns the current PixelEffect. Returns nil if none is set.",
-     returns = "(pixeleffect: PixelEffect)",
      type = "function"
     },
     getPointSize = {
@@ -1432,22 +1732,28 @@ local love = {
      returns = "(style: PointStyle)",
      type = "function"
     },
+    getRendererInfo = {
+     args = "()",
+     description = "Gets information about the system's video card and drivers.",
+     returns = "(name: string, version: string, vendor: string, device: string)",
+     type = "function"
+    },
     getScissor = {
      args = "()",
      description = "Gets the current scissor box.",
      returns = "(x: number, y: number, width: number, height: number)",
      type = "function"
     },
+    getShader = {
+     args = "()",
+     description = "Returns the current Shader. Returns nil if none is set.",
+     returns = "(shader: Shader)",
+     type = "function"
+    },
     getWidth = {
      args = "()",
      description = "Gets the width of the window.",
      returns = "(width: number)",
-     type = "function"
-    },
-    hasFocus = {
-     args = "()",
-     description = "Checks if the game window has keyboard focus.",
-     returns = "(focus: boolean)",
      type = "function"
     },
     isCreated = {
@@ -1463,45 +1769,45 @@ local love = {
      type = "function"
     },
     line = {
-     args = "(x1: number, y1: number, x2: number, y2: number, ...: number)",
+     args = "(points: table)",
      description = "Draws lines between points.",
      returns = "()",
      type = "function"
     },
     newCanvas = {
-     args = "()",
+     args = "(width: number, height: number, texture_type: TextureMode)",
      description = "Creates a new Canvas object for offscreen rendering.",
      returns = "(canvas: Canvas)",
      type = "function"
     },
     newFont = {
-     args = "(filename: string, size: number)",
+     args = "(file: File, size: number)",
      description = "Creates a new Font.",
      returns = "(font: Font)",
      type = "function"
     },
     newImage = {
-     args = "(filename: string)",
+     args = "(file: File)",
      description = "Creates a new Image from a filepath or an opened File or an ImageData.",
      returns = "(image: Image)",
      type = "function"
     },
     newImageFont = {
-     args = "(image: Image, glyphs: string)",
+     args = "(file: File, glyphs: string)",
      description = "Creates a new font by loading a specifically formatted image. There can be up to 256 glyphs.\n\nExpects ISO 8859-1 encoding for the glyphs string.",
      returns = "(font: Font)",
+     type = "function"
+    },
+    newMesh = {
+     args = "(vertices: table, image: Image, mode: MeshDrawMode)",
+     description = "Creates a new Mesh.",
+     returns = "(mesh: Mesh)",
      type = "function"
     },
     newParticleSystem = {
      args = "(image: Image, buffer: number)",
      description = "Creates a new ParticleSystem.",
      returns = "(system: ParticleSystem)",
-     type = "function"
-    },
-    newPixelEffect = {
-     args = "(code: string)",
-     description = "Creates a new PixelEffect object for hardware-accelerated pixel level effects.\n\nA PixelEffect contains at least one function, named effect, which is the effect itself, but it can contain additional functions.\n\nvec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 pixel_coords )",
-     returns = "(pixeleffect: PixelEffect)",
      type = "function"
     },
     newQuad = {
@@ -1516,16 +1822,22 @@ local love = {
      returns = "(screenshot: ImageData)",
      type = "function"
     },
+    newShader = {
+     args = "(pixelcode: string, vertexcode: string)",
+     description = "Creates a new Shader object for hardware-accelerated vertex and pixel effects. A Shader contains either vertex shader code, pixel shader code, or both.\n\nVertex shader code must contain at least one function, named position, which is the function that will produce transformed vertex positions of drawn objects in screen-space.\n\nPixel shader code must contain at least one function, named effect, which is the function that will produce the color which is blended onto the screen for each pixel a drawn object touches.",
+     returns = "(shader: Shader)",
+     type = "function"
+    },
     newSpriteBatch = {
-     args = "(image: Image, size: number)",
+     args = "(image: Image, size: number, usage: SpriteBatchUsage)",
      description = "Creates a new SpriteBatch object.",
      returns = "(spriteBatch: SpriteBatch)",
      type = "function"
     },
-    newStencil = {
-     args = "(stencilFunction: function)",
-     description = "Creates a new stencil.",
-     returns = "(myStencil: function)",
+    origin = {
+     args = "()",
+     description = "Resets the current coordinate transformation.\n\nThis function is always used to reverse any previous calls to love.graphics.rotate, love.graphics.scale, love.graphics.shear or love.graphics.translate. It returns the current transformation state to its defaults.",
+     returns = "()",
      type = "function"
     },
     point = {
@@ -1535,7 +1847,7 @@ local love = {
      type = "function"
     },
     polygon = {
-     args = "(mode: DrawMode, ...: number)",
+     args = "(mode: DrawMode, vertices: table)",
      description = "Draw a polygon.\n\nFollowing the mode argument, this function can accept multiple numeric arguments or a single table of numeric arguments. In either case the arguments are interpreted as alternating x and y coordinates of the polygon's vertices.\n\nWhen in fill mode, the polygon must be convex and simple or rendering artifacts may occur.",
      returns = "()",
      type = "function"
@@ -1554,12 +1866,12 @@ local love = {
     },
     print = {
      args = "(text: string, x: number, y: number, r: number, sx: number, sy: number, ox: number, oy: number, kx: number, ky: number)",
-     description = "Draws text on screen. If no Font is set, one will be created and set (once) if needed.\n\nWhen using translation and scaling functions while drawing text, this function assumes the scale occurs first. If you don't script with this in mind, the text won't be in the right position, or possibly even on screen.\n\nDrawing uses the current color, but only if the ColorMode is \"modulate\" (which is the default). If your text is displayed as white, it is probably because the color mode is \"replace\" (which is useful when drawing sprites). Change the color model to \"modulate\" before drawing.\n\nlove.graphics.print stops at the first '\000' (null) character. This can bite you if you are appending keystrokes to form your string, as some of those are multi-byte unicode characters which will likely contain null bytes.",
+     description = "Draws text on screen. If no Font is set, one will be created and set (once) if needed.\n\nWhen using translation and scaling functions while drawing text, this function assumes the scale occurs first. If you don't script with this in mind, the text won't be in the right position, or possibly even on screen.\n\nlove.graphics.print stops at the first '\0' (null) character. This can bite you if you are appending keystrokes to form your string, as some of those are multi-byte unicode characters which will likely contain null bytes.",
      returns = "()",
      type = "function"
     },
     printf = {
-     args = "(text: string, x: number, y: number, limit: number, align: AlignMode)",
+     args = "(text: string, x: number, y: number, limit: number, align: AlignMode, r: number, sx: number, sy: number, ox: number, oy: number, kx: number, ky: number)",
      description = "Draws formatted text, with word wrap and alignment.\n\nSee additional notes in love.graphics.print.",
      returns = "()",
      type = "function"
@@ -1567,12 +1879,6 @@ local love = {
     push = {
      args = "()",
      description = "Copies and pushes the current coordinate transformation to the transformation stack.\n\nThis function is always used to prepare for a corresponding pop operation later. It stores the current coordinate transformation state into the transformation stack and keeps it active. Later changes to the transformation can be undone by using the pop operation, which returns the coordinate transform to the state it was in before calling push.",
-     returns = "()",
-     type = "function"
-    },
-    quad = {
-     args = "(mode: DrawMode, x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, x4: number, y4: number)",
-     description = "Draws a quadrilateral shape.",
      returns = "()",
      type = "function"
     },
@@ -1584,7 +1890,7 @@ local love = {
     },
     reset = {
      args = "()",
-     description = "Resets the current graphics settings.\n\nCalling reset makes the current drawing color white, the current background color black, the window title empty and removes any scissor settings. It sets the BlendMode to alpha and ColorMode to modulate. It also sets both the point and line drawing modes to smooth and their sizes to 1.0.",
+     description = "Resets the current graphics settings.\n\nCalling reset makes the current drawing color white, the current background color black, resets any active Canvas or Shader, and removes any scissor settings. It sets the BlendMode to alpha. It also sets both the point and line drawing modes to smooth and their sizes to 1.0.",
      returns = "()",
      type = "function"
     },
@@ -1596,12 +1902,12 @@ local love = {
     },
     scale = {
      args = "(sx: number, sy: number)",
-     description = "Scales the coordinate system in two dimensions.\n\nBy default the coordinate system in L�VE corresponds to the display pixels in horizontal and vertical directions one-to-one, and the x-axis increases towards the right while the y-axis increases downwards. Scaling the coordinate system changes this relation.\n\nAfter scaling by sx and sy, all coordinates are treated as if they were multiplied by sx and sy. Every result of a drawing operation is also correspondingly scaled, so scaling by (2, 2) for example would mean making everything twice as large in both x- and y-directions. Scaling by a negative value flips the coordinate system in the corresponding direction, which also means everything will be drawn flipped or upside down, or both. Scaling by zero is not a useful operation.\n\nScale and translate are not commutative operations, therefore, calling them in different orders will change the outcome.\n\nScaling lasts until love.draw exits.",
+     description = "Scales the coordinate system in two dimensions.\n\nBy default the coordinate system in LÖVE corresponds to the display pixels in horizontal and vertical directions one-to-one, and the x-axis increases towards the right while the y-axis increases downwards. Scaling the coordinate system changes this relation.\n\nAfter scaling by sx and sy, all coordinates are treated as if they were multiplied by sx and sy. Every result of a drawing operation is also correspondingly scaled, so scaling by (2, 2) for example would mean making everything twice as large in both x- and y-directions. Scaling by a negative value flips the coordinate system in the corresponding direction, which also means everything will be drawn flipped or upside down, or both. Scaling by zero is not a useful operation.\n\nScale and translate are not commutative operations, therefore, calling them in different orders will change the outcome.\n\nScaling lasts until love.draw exits.",
      returns = "()",
      type = "function"
     },
     setBackgroundColor = {
-     args = "(r: number, g: number, b: number, a: number)",
+     args = "(rgba: table)",
      description = "Sets the background color.",
      returns = "()",
      type = "function"
@@ -1613,32 +1919,26 @@ local love = {
      type = "function"
     },
     setCanvas = {
-     args = "(canvas: Canvas)",
-     description = "Captures drawing operations to a Canvas",
-     returns = "()",
-     type = "function"
-    },
-    setCaption = {
-     args = "(caption: string)",
-     description = "Sets the window caption.",
+     args = "(canvas: Canvas, ...: Canvas)",
+     description = "Sets the render target to one or more Canvases. All drawing operations until the next love.graphics.setCanvas call will be redirected to the specified canvases and not shown on the screen.\n\nAll canvas arguments must have the same widths and heights and the same texture type. Normally the same thing will be drawn on each canvas, but that can be changed if a pixel shader is used with the \"effects\" function instead of the regular effect.\n\nNot all computers support Canvases, and not all computers which support Canvases will support multiple render targets. Use love.graphics.isSupported to check.\n\nnWhen called without arguments, the render target is reset to the screen.",
      returns = "()",
      type = "function"
     },
     setColor = {
-     args = "(red: number, green: number, blue: number, alpha: number)",
+     args = "(rgba: table)",
      description = "Sets the color used for drawing.",
      returns = "()",
      type = "function"
     },
-    setColorMode = {
-     args = "(mode: ColorMode)",
-     description = "Sets the color mode (which controls how images are affected by the current color).",
+    setColorMask = {
+     args = "(red: boolean, green: boolean, blue: boolean, alpha: boolean)",
+     description = "Sets the color mask. Enables or disables specific color components when rendering and clearing the screen. For example, if red is set to false, no further changes will be made to the red component of any pixels.\n\nEnables all color components when called without arguments.",
      returns = "()",
      type = "function"
     },
-    setDefaultImageFilter = {
-     args = "(min: FilterMode, mag: FilterMode)",
-     description = "Sets the default scaling filters.",
+    setDefaultFilter = {
+     args = "(min: FilterMode, mag: FilterMode, anisotropy: number)",
+     description = "Sets the default scaling filters used with Images, Canvases, and Fonts.\n\nThis function does not apply retroactively to loaded images.",
      returns = "()",
      type = "function"
     },
@@ -1648,21 +1948,9 @@ local love = {
      returns = "()",
      type = "function"
     },
-    setIcon = {
-     args = "(drawable: Drawable)",
-     description = "Set window icon. This feature is not completely supported on Windows (apparently an SDL bug, not a L�VE bug).\n\nThe icon should be a 32x32px png image.",
-     returns = "()",
-     type = "function"
-    },
     setInvertedStencil = {
      args = "(stencilFunction: function)",
      description = "Defines an inverted stencil for the drawing operations or releases the active one.\n\nIt's the same as love.graphics.setStencil with the mask inverted.\n\nCalling the function without arguments releases the active stencil.",
-     returns = "()",
-     type = "function"
-    },
-    setLine = {
-     args = "(width: number, style: LineStyle)",
-     description = "Sets the line width and style.",
      returns = "()",
      type = "function"
     },
@@ -1678,28 +1966,10 @@ local love = {
      returns = "()",
      type = "function"
     },
-    setMode = {
-     args = "(width: number, height: number, fullscreen: boolean, vsync: boolean, fsaa: number)",
-     description = "Changes the display mode.\n\nIf width and height are both 0, setMode will use the resolution of the desktop.\n\nUnsets certain settings on images, like WrapMode.",
-     returns = "(success: boolean)",
-     type = "function"
-    },
     setNewFont = {
-     args = "(size: number)",
+     args = "(filename: string, size: number)",
      description = "Creates and sets a new font.",
      returns = "(font: Font)",
-     type = "function"
-    },
-    setPixelEffect = {
-     args = "(pixeleffect: PixelEffect)",
-     description = "Sets or resets a PixelEffect as the current pixel effect. All drawing operations until the next love.graphics.setPixelEffect will be drawn using the PixelEffect object specified.",
-     returns = "()",
-     type = "function"
-    },
-    setPoint = {
-     args = "(size: number, style: PointStyle)",
-     description = "Sets the point size and style.",
-     returns = "()",
      type = "function"
     },
     setPointSize = {
@@ -1720,9 +1990,15 @@ local love = {
      returns = "()",
      type = "function"
     },
+    setShader = {
+     args = "(shader: Shader)",
+     description = "Sets or resets a Shader as the current pixel effect or vertex shaders. All drawing operations until the next love.graphics.setShader will be drawn using the Shader object specified.\n\nDisables the shaders when called without arguments.",
+     returns = "()",
+     type = "function"
+    },
     setStencil = {
      args = "(stencilFunction: function)",
-     description = "Defines or releases a stencil for the drawing operations.\n\nThe passed function draws to the stencil instead of the screen, creating an image with transparent and opaque pixels. While active, it is used to test where pixels will be drawn or discarded.\n\nCalling the function without arguments releases the active stencil.",
+     description = "Defines or releases a stencil for the drawing operations.\n\nThe passed function draws to the stencil instead of the screen, creating an image with transparent and opaque pixels. While active, it is used to test where pixels will be drawn or discarded.\n\nCalling the function without arguments releases the active stencil.\n\nWhen called without arguments, the active stencil is released.",
      returns = "()",
      type = "function"
     },
@@ -1732,36 +2008,48 @@ local love = {
      returns = "()",
      type = "function"
     },
-    toggleFullscreen = {
-     args = "()",
-     description = "Toggles fullscreen.",
-     returns = "(success: boolean)",
-     type = "function"
-    },
     translate = {
      args = "(dx: number, dy: number)",
-     description = "Translates the coordinate system in two dimensions.\n\nWhen this function is called with two numbers, dx, and dy, all the following drawing operations take effect as if their x and y coordinates were x+dx and y+dy.\n\nScale and translate are not commutative operations, therefore, calling them in different orders will change the outcome.\n\nThis change lasts until love.draw exits or else a love.graphics.pop reverts to a previous love.graphics.push.\n\nTranslating using whole numbers will prevent tearing/blurring of images and fonts draw after translating.",
-     returns = "()",
-     type = "function"
-    },
-    triangle = {
-     args = "(mode: DrawMode, x1: number, y1: number, x2: number, y2: number, x3: number, y3: number)",
-     description = "Draws a triangle.",
+     description = "Translates the coordinate system in two dimensions.\n\nWhen this function is called with two numbers, dx, and dy, all the following drawing operations take effect as if their x and y coordinates were x+dx and y+dy.\n\nScale and translate are not commutative operations, therefore, calling them in different orders will change the outcome.\n\nThis change lasts until love.graphics.clear is called (which is called automatically before love.draw in the default love.run function), or a love.graphics.pop reverts to a previous coordinate system state.\n\nTranslating using whole numbers will prevent tearing/blurring of images and fonts draw after translating.",
      returns = "()",
      type = "function"
     }
    },
-   description = "The primary responsibility for the love.graphics module is the drawing of lines, shapes, text, Images and other Drawable objects onto the screen. Its secondary responsibilities include loading external files (including Images and Fonts) into memory, creating specialized objects (such as ParticleSystems or Framebuffers) and managing screen geometry.\n\nL�VE's coordinate system is rooted in the upper-left corner of the screen, which is at location (0, 0). The x-axis is horizontal: larger values are further to the right. The y-axis is vertical: larger values are further towards the bottom.\n\nIn many cases, you draw images or shapes in terms of their upper-left corner (See the picture above).\n\nMany of the functions are used to manipulate the graphics coordinate system, which is essentially the the way coordinates are mapped to the display. You can change the position, scale, and even rotation in this way.",
+   description = "The primary responsibility for the love.graphics module is the drawing of lines, shapes, text, Images and other Drawable objects onto the screen. Its secondary responsibilities include loading external files (including Images and Fonts) into memory, creating specialized objects (such as ParticleSystems or Framebuffers) and managing screen geometry.\n\nLÖVE's coordinate system is rooted in the upper-left corner of the screen, which is at location (0, 0). The x-axis is horizontal: larger values are further to the right. The y-axis is vertical: larger values are further towards the bottom.\n\nIn many cases, you draw images or shapes in terms of their upper-left corner (See the picture above).\n\nMany of the functions are used to manipulate the graphics coordinate system, which is essentially the way coordinates are mapped to the display. You can change the position, scale, and even rotation in this way.",
    type = "class"
   },
   image = {
    childs = {
+    CompressedData = {
+     childs = {
+      getHeight = {
+       args = "(level: number)",
+       description = "Gets the height of the CompressedData.",
+       returns = "(height: number)",
+       type = "function"
+      },
+      getMipmapCount = {
+       args = "(mipmaps: number)",
+       description = "Gets the number of mipmap levels in the CompressedData. The base mipmap level (original image) is included in the count.\n\nMipmap filtering cannot be activated for an Image created from a CompressedData which does not have enough mipmap levels to go down to 1x1. For example, a 256x256 image created from a CompressedData should have 8 mipmap levels or Image:setMipmapFilter will error. Most tools which can create compressed textures are able to automatically generate mipmaps for them in the same file.",
+       returns = "()",
+       type = "function"
+      },
+      getWidth = {
+       args = "(level: number)",
+       description = "Gets the width of the CompressedData.",
+       returns = "(width: number)",
+       type = "function"
+      }
+     },
+     description = "Represents compressed image data designed to stay compressed in RAM. CompressedData encompasses standard compressed formats such as DXT1, DXT5, and BC5 / 3Dc.\n\nYou can't draw CompressedData directly to the screen. See Image for that.",
+     type = "lib"
+    },
     ImageData = {
      childs = {
-      encode = {
-       args = "(outFile: string)",
-       description = "Encodes the ImageData and writes it to the save directory.",
-       returns = "()",
+      getDimensions = {
+       args = "()",
+       description = "Gets the width and height of the ImageData.",
+       returns = "(width: number, height: number)",
        type = "function"
       },
       getHeight = {
@@ -1774,12 +2062,6 @@ local love = {
        args = "(x: number, y: number)",
        description = "Gets the pixel at the specified position.\n\nValid x and y values start at 0 and go up to image width and height minus 1.",
        returns = "(r: number, g: number, b: number, a: number)",
-       type = "function"
-      },
-      getString = {
-       args = "()",
-       description = "Gets the full ImageData as a string.",
-       returns = "(pixels: string)",
        type = "function"
       },
       getWidth = {
@@ -1816,10 +2098,6 @@ local love = {
        description = "BMP image format.",
        type = "value"
       },
-      gif = {
-       description = "GIF image format.",
-       type = "value"
-      },
       jpg = {
        description = "JPG image format.",
        type = "value"
@@ -1836,8 +2114,14 @@ local love = {
      description = "class constants",
      type = "class"
     },
+    newCompressedData = {
+     args = "(fileData: FileData)",
+     description = "Create a new CompressedData object from a compressed image file. LÖVE currently supports DDS files compressed with the DXT1, DXT5, and BC5 / 3Dc formats.",
+     returns = "(compressedData: CompressedData)",
+     type = "function"
+    },
     newImageData = {
-     args = "(width: number, height: number)",
+     args = "(filename: string)",
      description = "Create a new ImageData object.",
      returns = "(imageData: ImageData)",
      type = "function"
@@ -1848,7 +2132,193 @@ local love = {
   },
   joystick = {
    childs = {
-    JoystickConstant = {
+    GamepadAxis = {
+     childs = {
+      leftx = {
+       description = "The x-axis of the left thumbstick.",
+       type = "value"
+      },
+      lefty = {
+       description = "The y-axis of the left thumbstick.",
+       type = "value"
+      },
+      rightx = {
+       description = "The x-axis of the right thumbstick.",
+       type = "value"
+      },
+      righty = {
+       description = "The y-axis of the right thumbstick.",
+       type = "value"
+      },
+      triggerleft = {
+       description = "Left analog trigger.",
+       type = "value"
+      },
+      triggerright = {
+       description = "Right analog trigger.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
+    GamepadButton = {
+     childs = {
+      a = {
+       description = "Bottom face button (A).",
+       type = "value"
+      },
+      b = {
+       description = "Right face button (B).",
+       type = "value"
+      },
+      back = {
+       description = "Back button.",
+       type = "value"
+      },
+      dpdown = {
+       description = "D-pad down.",
+       type = "value"
+      },
+      dpleft = {
+       description = "D-pad left.",
+       type = "value"
+      },
+      dpright = {
+       description = "D-pad right.",
+       type = "value"
+      },
+      dpup = {
+       description = "D-pad up.",
+       type = "value"
+      },
+      guide = {
+       description = "Guide button.",
+       type = "value"
+      },
+      leftshoulder = {
+       description = "Left bumper.",
+       type = "value"
+      },
+      leftstick = {
+       description = "Left stick click button.",
+       type = "value"
+      },
+      rightshoulder = {
+       description = "Right bumper.",
+       type = "value"
+      },
+      rightstick = {
+       description = "Right stick click button.",
+       type = "value"
+      },
+      start = {
+       description = "Start button.",
+       type = "value"
+      },
+      x = {
+       description = "Left face button (X).",
+       type = "value"
+      },
+      y = {
+       description = "Top face button (Y).",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
+    Joystick = {
+     childs = {
+      getAxis = {
+       args = "(axis: number)",
+       description = "Gets the direction of an axis.",
+       returns = "(direction: number)",
+       type = "function"
+      },
+      getAxisCount = {
+       args = "()",
+       description = "Gets the number of axes on the joystick.",
+       returns = "(axes: number)",
+       type = "function"
+      },
+      getButtonCount = {
+       args = "()",
+       description = "Gets the number of buttons on the joystick.",
+       returns = "(buttons: number)",
+       type = "function"
+      },
+      getGUID = {
+       args = "()",
+       description = "Gets a stable GUID unique to the type of the physical joystick which does not change over time. For example, all Sony Dualshock 3 controllers in OS X have the same GUID. The value is platform-dependent.",
+       returns = "(guid: string)",
+       type = "function"
+      },
+      getGamepadAxis = {
+       args = "(axis: GamepadAxis)",
+       description = "Gets the direction of a virtual gamepad axis. If the Joystick isn't recognized as a gamepad or isn't connected, this function will always return 0.",
+       returns = "(direction: number)",
+       type = "function"
+      },
+      getGamepadMapping = {
+       args = "(button: GamepadAxis)",
+       description = "Gets the button, axis or hat that a virtual gamepad input is bound to.",
+       returns = "(inputtype: JoystickInputType, inputindex: number, hatdirection: JoystickHat)",
+       type = "function"
+      },
+      getHat = {
+       args = "(hat: number)",
+       description = "Gets the direction of a hat.",
+       returns = "(direction: JoystickHat)",
+       type = "function"
+      },
+      getHatCount = {
+       args = "()",
+       description = "Gets the number of hats on the joystick.",
+       returns = "(hats: number)",
+       type = "function"
+      },
+      getID = {
+       args = "()",
+       description = "Gets the joystick's unique identifier. The identifier will remain the same for the life of the game, even when the Joystick is disconnected and reconnected, but it will change when the game is re-launched.",
+       returns = "(id: number, instanceid: number)",
+       type = "function"
+      },
+      getName = {
+       args = "()",
+       description = "Gets the name of the joystick.",
+       returns = "(name: string)",
+       type = "function"
+      },
+      isConnected = {
+       args = "()",
+       description = "Gets whether the Joystick is connected.",
+       returns = "(connected: boolean)",
+       type = "function"
+      },
+      isDown = {
+       args = "(...: number)",
+       description = "Checks if a button on the Joystick is pressed.",
+       returns = "(anyDown: boolean)",
+       type = "function"
+      },
+      isGamepad = {
+       args = "()",
+       description = "Gets whether the Joystick is recognized as a gamepad. If this is the case, the Joystick's buttons and axes can be used in a standardized manner across different operating systems and joystick models via Joystick:getGamepadAxis and related functions.\n\nLÖVE automatically recognizes most popular controllers with a similar layout to the Xbox 360 controller as gamepads, but you can add more with love.joystick.setGamepadMapping.",
+       returns = "(isgamepad: boolean)",
+       type = "function"
+      },
+      isGamepadDown = {
+       args = "(...: GamepadButton)",
+       description = "Checks if a virtual gamepad button on the Joystick is pressed. If the Joystick is not recognized as a Gamepad or isn't connected, then this function will always return false.",
+       returns = "(anyDown: boolean)",
+       type = "function"
+      }
+     },
+     description = "Represents a physical joystick.",
+     type = "lib"
+    },
+    JoystickHat = {
      childs = {
       c = {
        description = "Centered",
@@ -1890,93 +2360,57 @@ local love = {
      description = "class constants",
      type = "class"
     },
-    close = {
-     args = "(joystick: number)",
-     description = "Closes a joystick, i.e. stop using it for generating events and in query functions.",
-     returns = "()",
-     type = "function"
+    JoystickInputType = {
+     childs = {
+      axis = {
+       description = "Analog axis.",
+       type = "value"
+      },
+      button = {
+       description = "Button.",
+       type = "value"
+      },
+      hat = {
+       description = "8-direction hat value.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
     },
-    getAxes = {
-     args = "(joystick: number)",
-     description = "Returns the position of each axis.",
-     returns = "(axisDir1: number, axisDir2: number, axisDirN: number)",
-     type = "function"
-    },
-    getAxis = {
-     args = "(joystick: number, axis: number)",
-     description = "Returns the direction of the axis.",
-     returns = "(direction: number)",
-     type = "function"
-    },
-    getBall = {
-     args = "(joystick: number, ball: number)",
-     description = "Returns the change in ball position.",
-     returns = "(dx: number, dy: number)",
-     type = "function"
-    },
-    getHat = {
-     args = "(joystick: number, hat: number)",
-     description = "Returns the direction of a hat.",
-     returns = "(direction: JoystickConstant)",
-     type = "function"
-    },
-    getName = {
-     args = "(joystick: number)",
-     description = "Returns the name of a joystick.",
-     returns = "(name: string)",
-     type = "function"
-    },
-    getNumAxes = {
-     args = "(joystick: number)",
-     description = "Returns the number of axes on the joystick.",
-     returns = "(axes: number)",
-     type = "function"
-    },
-    getNumBalls = {
-     args = "(joystick: number)",
-     description = "Returns the number of balls on the joystick.",
-     returns = "(balls: number)",
-     type = "function"
-    },
-    getNumButtons = {
-     args = "(joystick: number)",
-     description = "Returns the number of buttons on the joystick.",
-     returns = "(buttons: number)",
-     type = "function"
-    },
-    getNumHats = {
-     args = "(joystick: number)",
-     description = "Returns the number of hats on the joystick.",
-     returns = "(hats: number)",
-     type = "function"
-    },
-    getNumJoysticks = {
+    getJoystickCount = {
      args = "()",
-     description = "Returns how many joysticks are available.",
-     returns = "(joysticks: number)",
+     description = "Gets the number of connected joysticks.",
+     returns = "(joystickcount: number)",
      type = "function"
     },
-    isDown = {
-     args = "(joystick: number, button: number)",
-     description = "Checks if a button on a joystick is pressed.",
-     returns = "(down: boolean)",
-     type = "function"
-    },
-    isOpen = {
-     args = "(joystick: number)",
-     description = "Checks if the joystick is open.",
-     returns = "(open: boolean)",
-     type = "function"
-    },
-    open = {
-     args = "(joystick: number)",
-     description = "Opens up a joystick to be used, i.e. makes it ready to use. By default joysticks that are available at the start of your game will be opened.",
-     returns = "(open: boolean)",
+    getJoysticks = {
+     args = "()",
+     description = "Gets a list of connected Joysticks.",
+     returns = "(joysticks: table)",
      type = "function"
     }
    },
    description = "Provides an interface to the user's joystick.",
-   type = "lib"
+   type = "class"
+  },
+  joystickadded = {
+   args = "(joystick: Joystick)",
+   description = "Called when a Joystick is connected.\n\nThis callback is also triggered after love.load for every Joystick which was already connected when the game started up.",
+   returns = "()",
+   type = "function"
+  },
+  joystickaxis = {
+   args = "(joystick: Joystick, axis: number, value: number)",
+   description = "Called when a joystick axis moves.",
+   returns = "()",
+   type = "function"
+  },
+  joystickhat = {
+   args = "(joystick: Joystick, hat: number, direction: JoystickHat)",
+   description = "Called when a joystick hat direction changes.",
+   returns = "()",
+   type = "function"
   },
   joystickpressed = {
    args = "(joystick: number, button: number)",
@@ -1987,6 +2421,12 @@ local love = {
   joystickreleased = {
    args = "(joystick: number, button: number)",
    description = "Called when a joystick button is released.",
+   returns = "()",
+   type = "function"
+  },
+  joystickremoved = {
+   args = "(joystick: Joystick)",
+   description = "Called when a Joystick is disconnected.",
    returns = "()",
    type = "function"
   },
@@ -2542,21 +2982,27 @@ local love = {
      description = "class constants",
      type = "class"
     },
-    getKeyRepeat = {
+    hasTextInput = {
      args = "()",
-     description = "Returns the delay and interval of key repeating.",
-     returns = "(delay: number, interval: number)",
+     description = "Gets whether text input events are enabled.",
+     returns = "(enabled: boolean)",
      type = "function"
     },
     isDown = {
-     args = "(key: KeyConstant)",
+     args = "(...: KeyConstant)",
      description = "Checks whether a certain key is down. Not to be confused with love.keypressed or love.keyreleased.",
-     returns = "(down: boolean)",
+     returns = "(anyDown: boolean)",
      type = "function"
     },
     setKeyRepeat = {
-     args = "(delay: number, interval: number)",
-     description = "Enables key repeating and sets the delay and interval.",
+     args = "(enable: boolean)",
+     description = "Enables or disables key repeat. It is disabled by default.\n\nThe interval between repeats depends on the user's system settings.",
+     returns = "()",
+     type = "function"
+    },
+    setTextInput = {
+     args = "(enable: boolean)",
+     description = "Enables or disables text input events. It is enabled by default.",
      returns = "()",
      type = "function"
     }
@@ -2565,8 +3011,8 @@ local love = {
    type = "lib"
   },
   keypressed = {
-   args = "(key: KeyConstant, unicode: number)",
-   description = "Callback function triggered when a key is pressed.",
+   args = "(key: KeyConstant, isrepeat: boolean)",
+   description = "Callback function triggered when a key is pressed.\n\nKey repeat needs to be enabled with love.keyboard.setKeyRepeat for repeat keypress events to be received.",
    returns = "()",
    type = "function"
   },
@@ -2582,8 +3028,210 @@ local love = {
    returns = "()",
    type = "function"
   },
+  math = {
+   childs = {
+    BezierCurve = {
+     childs = {
+      getControlPoint = {
+       args = "(i: number)",
+       description = "Get coordinates of the i-th control point. Indices start with 1.",
+       returns = "(x: number, y: number)",
+       type = "function"
+      },
+      getDegree = {
+       args = "()",
+       description = "Get degree of the Bézier curve. The degree is equal to number-of-control-points - 1.",
+       returns = "(degree: number)",
+       type = "function"
+      },
+      getDerivative = {
+       args = "()",
+       description = "Get the derivative of the Bézier curve.\n\nThis function can be used to rotate sprites moving along a curve in the direction of the movement and compute the direction perpendicular to the curve at some parameter t.",
+       returns = "(derivative: BezierCurve)",
+       type = "function"
+      },
+      insertControlPoint = {
+       args = "(x: number, y: number, i: number)",
+       description = "Insert control point after the i-th control point. Indices start with 1. Negative indices wrap around: -1 is the last control point, -2 the one before the last, etc.",
+       returns = "()",
+       type = "function"
+      },
+      render = {
+       args = "(depth: number)",
+       description = "Get a list of coordinates to be used with love.graphics.line.\n\nThis function samples the Bézier curve using recursive subdivision. You can control the recursion depth using the depth parameter.\n\nIf you are just interested to know the position on the curve given a parameter, use BezierCurve:evalulate.",
+       returns = "(coordinates: table)",
+       type = "function"
+      },
+      rotate = {
+       args = "(angle: number, ox: number, oy: number)",
+       description = "Rotate the Bézier curve by an angle.",
+       returns = "()",
+       type = "function"
+      },
+      scale = {
+       args = "(s: number, ox: number, oy: number)",
+       description = "Scale the Bézier curve by a factor.",
+       returns = "()",
+       type = "function"
+      },
+      setControlPoint = {
+       args = "(i: number, ox: number, oy: number)",
+       description = "Set coordinates of the i-th control point. Indices start with 1.",
+       returns = "()",
+       type = "function"
+      },
+      translate = {
+       args = "(dx: number, dy: number)",
+       description = "Move the Bézier curve by an offset.",
+       returns = "()",
+       type = "function"
+      }
+     },
+     description = "A Bézier curve object that can evaluate and render Bézier curves of arbitrary degree.",
+     type = "lib"
+    },
+    RandomGenerator = {
+     childs = {
+      random = {
+       args = "(max: number)",
+       description = "Generates a pseudo random number in a platform independent way.",
+       returns = "(number: number)",
+       type = "function"
+      },
+      randomNormal = {
+       args = "(stddev: number)",
+       description = "Get a normally distributed pseudo random number.",
+       returns = "(number: number)",
+       type = "function"
+      },
+      setSeed = {
+       args = "(low: number, high: number)",
+       description = "Sets the seed of the random number generator using the specified integer number.",
+       returns = "()",
+       type = "function"
+      }
+     },
+     description = "A random number generation object which has its own random state.",
+     type = "lib"
+    },
+    isConvex = {
+     args = "(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, ...: number)",
+     description = "Checks whether a polygon is convex.\n\nPolygonShapes in love.physics, some forms of Mesh, and polygons drawn with love.graphics.polygon must be simple convex polygons.",
+     returns = "(convex: boolean)",
+     type = "function"
+    },
+    newBezierCurve = {
+     args = "(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, ...: number)",
+     description = "Creates a new BezierCurve object.\n\nThe number of vertices in the control polygon determines the degree of the curve, e.g. three vertices define a quadratic (degree 2) Bézier curve, four vertices define a cubic (degree 3) Bézier curve, etc.",
+     returns = "(curve: BezierCurve)",
+     type = "function"
+    },
+    newRandomGenerator = {
+     args = "(seed: number)",
+     description = "Creates a new RandomGenerator object which is completely independent of other RandomGenerator objects and random functions.",
+     returns = "(rng: RandomGenerator)",
+     type = "function"
+    },
+    noise = {
+     args = "(x: number, y: number)",
+     description = "Generates a Simplex noise value in 1-4 dimensions.\n\nSimplex noise is closely related to Perlin noise. It is widely used for procedural content generation.",
+     returns = "(value: number)",
+     type = "function"
+    },
+    random = {
+     args = "(max: number)",
+     description = "Generates a pseudo random number in a platform independent way.",
+     returns = "(number: number)",
+     type = "function"
+    },
+    randomNormal = {
+     args = "(stddev: number)",
+     description = "Get a normally distributed pseudo random number.",
+     returns = "(number: number)",
+     type = "function"
+    },
+    setRandomSeed = {
+     args = "(low: number, high: number)",
+     description = "Sets the seed of the random number generator using the specified integer number.",
+     returns = "()",
+     type = "function"
+    },
+    triangulate = {
+     args = "(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, ...: number)",
+     description = "Triangulate a simple polygon.",
+     returns = "(triangles: table)",
+     type = "function"
+    }
+   },
+   description = "Provides system-independent mathematical functions.",
+   type = "class"
+  },
   mouse = {
    childs = {
+    Cursor = {
+     args = "()",
+     description = "Represents a hardware cursor.",
+     returns = "()",
+     type = "function"
+    },
+    CursorType = {
+     childs = {
+      arrow = {
+       description = "An arrow pointer.",
+       type = "value"
+      },
+      crosshair = {
+       description = "Crosshair symbol.",
+       type = "value"
+      },
+      hand = {
+       description = "Hand symbol.",
+       type = "value"
+      },
+      ibeam = {
+       description = "An I-beam, normally used when mousing over editable or selectable text.",
+       type = "value"
+      },
+      image = {
+       description = "The cursor is using a custom image.",
+       type = "value"
+      },
+      no = {
+       description = "Slashed circle or crossbones.",
+       type = "value"
+      },
+      sizeall = {
+       description = "Four-pointed arrow pointing up, down, left, and right.",
+       type = "value"
+      },
+      sizenesw = {
+       description = "Double arrow pointing to the top-right and bottom-left.",
+       type = "value"
+      },
+      sizens = {
+       description = "Double arrow pointing up and down.",
+       type = "value"
+      },
+      sizenwse = {
+       description = "Double arrow pointing to the top-left and bottom-right.",
+       type = "value"
+      },
+      sizewe = {
+       description = "Double arrow pointing left and right.",
+       type = "value"
+      },
+      wait = {
+       description = "Wait graphic.",
+       type = "value"
+      },
+      waitarrow = {
+       description = "Small wait cursor with an arrow pointer.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
     MouseConstant = {
      childs = {
       l = {
@@ -2618,12 +3266,6 @@ local love = {
      description = "class constants",
      type = "class"
     },
-    getPosition = {
-     args = "()",
-     description = "Returns the current position of the mouse.",
-     returns = "(x: number, y: number)",
-     type = "function"
-    },
     getX = {
      args = "()",
      description = "Returns the current x position of the mouse.",
@@ -2637,9 +3279,9 @@ local love = {
      type = "function"
     },
     isDown = {
-     args = "(button: MouseConstant)",
+     args = "(...: MouseConstant)",
      description = "Checks whether a certain mouse button is down. This function does not detect mousewheel scrolling; you must use the love.mousepressed callback for that.",
-     returns = "(down: boolean)",
+     returns = "(anyDown: boolean)",
      type = "function"
     },
     isGrabbed = {
@@ -2654,7 +3296,19 @@ local love = {
      returns = "(visible: boolean)",
      type = "function"
     },
-    setGrab = {
+    newCursor = {
+     args = "(cursortype: CursorType)",
+     description = "Creates a new hardware Cursor object.\n\nHardware cursors are framerate-independent and work the same way as normal operating system cursors. Unlike drawing an image at the mouse's current coordinates, hardware cursors never have visible lag between when the mouse is moved and when the cursor position updates, even at low framerates.\n\nThe hot spot is the point the operating system uses to determine what was clicked and at what position the mouse cursor is. For example, the normal arrow pointer normally has its hot spot at the top left of the image, but a crosshair cursor might have it in the middle.",
+     returns = "(cursor: Cursor)",
+     type = "function"
+    },
+    setCursor = {
+     args = "(cursor: Cursor)",
+     description = "Sets the current mouse cursor.\n\nResets the current mouse cursor to the default when called without arguments.",
+     returns = "()",
+     type = "function"
+    },
+    setGrabbed = {
      args = "(grab: boolean)",
      description = "Grabs the mouse and confines it to the window.",
      returns = "()",
@@ -2662,19 +3316,37 @@ local love = {
     },
     setPosition = {
      args = "(x: number, y: number)",
-     description = "Sets the current position of the mouse.",
+     description = "Sets the position of the mouse.",
      returns = "()",
      type = "function"
     },
     setVisible = {
      args = "(visible: boolean)",
-     description = "Sets the current visibility of the cursor.",
+     description = "Sets the visibility of the cursor.",
+     returns = "()",
+     type = "function"
+    },
+    setX = {
+     args = "(x: number)",
+     description = "Sets the current X position of the mouse.",
+     returns = "()",
+     type = "function"
+    },
+    setY = {
+     args = "(y: number)",
+     description = "Sets the current Y position of the mouse.",
      returns = "()",
      type = "function"
     }
    },
    description = "Provides an interface to the user's mouse.",
-   type = "lib"
+   type = "class"
+  },
+  mousefocus = {
+   args = "(f: boolean)",
+   description = "Callback function triggered when window receives or loses mouse focus.",
+   returns = "()",
+   type = "function"
   },
   mousepressed = {
    args = "(x: number, y: number, button: MouseConstant)",
@@ -2692,20 +3364,14 @@ local love = {
    childs = {
     Body = {
      childs = {
-      applyAngularImpulse = {
-       args = "(impulse: number)",
-       description = "Applies an angular impulse to a body. This makes a single, instantaneous addition to the body momentum.\n\nA body with with a larger mass will react less. The reaction does not depend on the timestep, and is equivalent to applying a force continuously for 1 second. Impulses are best used to give a single push to a body. For a continuous push to a body it is better to use Body:applyForce.",
-       returns = "()",
-       type = "function"
-      },
       applyForce = {
-       args = "(fx: number, fy: number)",
+       args = "(fx: number, fy: number, x: number, y: number)",
        description = "Apply force to a Body.\n\nA force pushes a body in a direction. A body with with a larger mass will react less. The reaction also depends on how long a force is applied: since the force acts continuously over the entire timestep, a short timestep will only push the body for a short time. Thus forces are best used for many timesteps to give a continuous push to a body (like gravity). For a single push that is independent of timestep, it is better to use Body:applyImpulse.\n\nIf the position to apply the force is not given, it will act on the center of mass of the body. The part of the force not directed towards the center of mass will cause the body to spin (and depends on the rotational inertia).\n\nNote that the force components and position must be given in world coordinates.",
        returns = "()",
        type = "function"
       },
       applyLinearImpulse = {
-       args = "(ix: number, iy: number)",
+       args = "(ix: number, iy: number, x: number, y: number)",
        description = "Applies an impulse to a body. This makes a single, instantaneous addition to the body momentum.\n\nAn impulse pushes a body in a direction. A body with with a larger mass will react less. The reaction does not depend on the timestep, and is equivalent to applying a force continuously for 1 second. Impulses are best used to give a single push to a body. For a continuous push to a body it is better to use Body:applyForce.\n\nIf the position to apply the impulse is not given, it will act on the center of mass of the body. The part of the impulse not directed towards the center of mass will cause the body to spin (and depends on the rotational inertia).\n\nNote that the impulse components and position must be given in world coordinates.",
        returns = "()",
        type = "function"
@@ -2722,12 +3388,6 @@ local love = {
        returns = "()",
        type = "function"
       },
-      getAllowSleeping = {
-       args = "()",
-       description = "Return whether a body is allowed to sleep.\n\nA sleeping body is much more efficient to simulate than when awake.",
-       returns = "(status: boolean)",
-       type = "function"
-      },
       getAngle = {
        args = "()",
        description = "Get the angle of the body.\n\nThe angle is measured in radians. If you need to transform it to degrees, use math.deg.\n\nA value of 0 radians will mean \"looking to the right\". Although radians increase counter-clockwise, the y-axis points down so it becomes clockwise from our point of view.",
@@ -2736,7 +3396,7 @@ local love = {
       },
       getAngularDamping = {
        args = "()",
-       description = "Gets the Angular damping of the Body\n\nThe angular damping is the rate of decrease of the angular velocity over time: A spinning body with no damping and no external forces will continue spinning indefinitely. A spinning body with damping will gradually stop spinning.\n\nDamping is not the same as friction - they can be modelled together. However, only damping is provided by Box2D (and L�VE).\n\nDamping parameters should be between 0 and infinity, with 0 meaning no damping, and infinity meaning full damping. Normally you will use a damping value between 0 and 0.1.",
+       description = "Gets the Angular damping of the Body\n\nThe angular damping is the rate of decrease of the angular velocity over time: A spinning body with no damping and no external forces will continue spinning indefinitely. A spinning body with damping will gradually stop spinning.\n\nDamping is not the same as friction - they can be modelled together. However, only damping is provided by Box2D (and LÖVE).\n\nDamping parameters should be between 0 and infinity, with 0 meaning no damping, and infinity meaning full damping. Normally you will use a damping value between 0 and 0.1.",
        returns = "(damping: number)",
        type = "function"
       },
@@ -2766,7 +3426,7 @@ local love = {
       },
       getLinearDamping = {
        args = "()",
-       description = "Gets the linear damping of the Body.\n\nThe linear damping is the rate of decrease of the linear velocity over time. A moving body with no damping and no external forces will continue moving indefinitely, as is the case in space. A moving body with damping will gradually stop moving.\n\nDamping is not the same as friction - they can be modelled together. However, only damping is provided by Box2D (and L�VE).",
+       description = "Gets the linear damping of the Body.\n\nThe linear damping is the rate of decrease of the linear velocity over time. A moving body with no damping and no external forces will continue moving indefinitely, as is the case in space. A moving body with damping will gradually stop moving.\n\nDamping is not the same as friction - they can be modelled together. However, only damping is provided by Box2D (and LÖVE).",
        returns = "(damping: number)",
        type = "function"
       },
@@ -2902,12 +3562,6 @@ local love = {
        returns = "(status: boolean)",
        type = "function"
       },
-      isSleeping = {
-       args = "()",
-       description = "Get the sleeping status of a body.\n\nA sleeping body is much more efficient to simulate than when awake.\n\nIf sleeping is allowed, a body that has come to rest will sleep.",
-       returns = "(status: boolean)",
-       type = "function"
-      },
       isSleepingAllowed = {
        args = "()",
        description = "Returns the sleeping behaviour of the body.",
@@ -2920,12 +3574,6 @@ local love = {
        returns = "(status: boolean)",
        type = "function"
       },
-      putToSleep = {
-       args = "()",
-       description = "Put the body to sleep.\n\nA sleeping body is much more efficient to simulate than when awake.\n\nThe body will wake up if another body collides with it, if a joint or contact attached to it is destroyed, or if Body:wakeUp is called.",
-       returns = "()",
-       type = "function"
-      },
       resetMassData = {
        args = "()",
        description = "Resets the mass of the body by recalculating it from the mass properties of the fixtures.",
@@ -2935,12 +3583,6 @@ local love = {
       setActive = {
        args = "(active: boolean)",
        description = "Sets whether the body is active in the world.\n\nAn inactive body does not take part in the simulation. It will not move or cause any collisions.",
-       returns = "()",
-       type = "function"
-      },
-      setAllowSleeping = {
-       args = "(permission: boolean)",
-       description = "Set the sleep behaviour of a body.\n\nA sleeping body is much more efficient to simulate than when awake.\n\nIf sleeping is allowed, a body that has come to rest will sleep.",
        returns = "()",
        type = "function"
       },
@@ -2975,7 +3617,7 @@ local love = {
        type = "function"
       },
       setFixedRotation = {
-       args = "(isFixed: boolean)",
+       args = "(fixed: boolean)",
        description = "Set whether a body has fixed rotation.\n\nBodies with fixed rotation don't vary the speed at which they rotate.",
        returns = "()",
        type = "function"
@@ -3012,7 +3654,7 @@ local love = {
       },
       setMassData = {
        args = "(x: number, y: number, mass: number, inertia: number)",
-       description = "Sets the mass properties directly.\n\nIf you're not sure what all this stuff means, you can use Body:setMassFromShapes after adding shapes instead.\n\nThe first two parameters will be the local coordinates of the Body's center of mass.\n\nThe third parameter is the mass, in kilograms.\n\nThe last parameter is the rotational inertia.",
+       description = "Overrides the calculated mass data.",
        returns = "()",
        type = "function"
       },
@@ -3051,12 +3693,6 @@ local love = {
        description = "Set the y position of the body.",
        returns = "()",
        type = "function"
-      },
-      wakeUp = {
-       args = "()",
-       description = "Wake a sleeping body up.\n\nA sleeping body is much more efficient to simulate than when awake\n\nA sleeping body will also wake up if another body collides with it or if a joint or contact attached to it is destroyed.",
-       returns = "()",
-       type = "function"
       }
      },
      description = "Bodies are objects with velocity and position.",
@@ -3082,12 +3718,6 @@ local love = {
     },
     ChainShape = {
      childs = {
-      getChildEdge = {
-       args = "(index: number)",
-       description = "Returns a child of the shape as an EdgeShape.",
-       returns = "(EdgeShape: number)",
-       type = "function"
-      },
       getPoint = {
        args = "(index: number)",
        description = "Returns a point of the shape.",
@@ -3112,24 +3742,18 @@ local love = {
        returns = "()",
        type = "function"
       },
-      setPrevVertex = {
+      setPreviousVertex = {
        args = "(x: number, y: number)",
        description = "Sets a vertex that establishes a connection to the previous shape.\n\nThis can help prevent unwanted collisions when a flat shape slides along the edge and moves over to the new shape.",
        returns = "()",
        type = "function"
       }
      },
-     description = "A ChainShape consists of multiple line segments. It can be used to create the boundaries of your terrain. The shape does not have volume and can only collide with PolygonShape and CircleShape.\n\nUnlike the PolygonShape, the ChainShape does not have a vertices limit or has to form a convex shape, but self intersections are not supported. ",
+     description = "A ChainShape consists of multiple line segments. It can be used to create the boundaries of your terrain. The shape does not have volume and can only collide with PolygonShape and CircleShape.\n\nUnlike the PolygonShape, the ChainShape does not have a vertices limit or has to form a convex shape, but self intersections are not supported.",
      type = "lib"
     },
     CircleShape = {
      childs = {
-      getLocalCenter = {
-       args = "()",
-       description = "Get the center of the circle in local coordinates.",
-       returns = "(lx: number, ly: number)",
-       type = "function"
-      },
       getRadius = {
        args = "()",
        description = "Gets the radius of the circle shape.",
@@ -3154,12 +3778,6 @@ local love = {
     },
     Contact = {
      childs = {
-      getFriction = {
-       args = "()",
-       description = "Get the friction between two shapes that are in contact.",
-       returns = "(friction: number)",
-       type = "function"
-      },
       getNormal = {
        args = "()",
        description = "Get the normal vector between two shapes that are in contact.\n\nThis function returns the coordinates of a unit vector that points from the first shape to the second.",
@@ -3176,12 +3794,6 @@ local love = {
        args = "()",
        description = "Get the restitution between two shapes that are in contact.",
        returns = "(restitution: number)",
-       type = "function"
-      },
-      getSeparation = {
-       args = "()",
-       description = "Get the separation between two shapes that are in contact.\n\nThe return value of this function is always zero or negative, with a negative value indicating overlap between the two shapes.",
-       returns = "(distance: number)",
        type = "function"
       },
       isEnabled = {
@@ -3232,12 +3844,6 @@ local love = {
     },
     DistanceJoint = {
      childs = {
-      getDamping = {
-       args = "()",
-       description = "Gets the damping ratio.",
-       returns = "(ratio: number)",
-       type = "function"
-      },
       getFrequency = {
        args = "()",
        description = "Gets the response speed.",
@@ -3280,12 +3886,6 @@ local love = {
     },
     Fixture = {
      childs = {
-      destroy = {
-       args = "()",
-       description = "Destroys the fixture",
-       returns = "()",
-       type = "function"
-      },
       getBody = {
        args = "()",
        description = "Returns the body to which the fixture is attached.",
@@ -3366,7 +3966,7 @@ local love = {
       },
       rayCast = {
        args = "(x1: number, y1: number, x2: number, y1: number, maxFraction: number, childIndex: number)",
-       description = "Casts a ray against the shape of the fixture and returns the surface normal vector and the line position where the ray hit. If the ray missed the shape, nil will be returned.\n\nThe ray starts on the first point of the input line and goes towards the second point of the line. The fourth argument is the maximum distance the ray is going to travel as a scale factor of the input line length.\n\nThe world position of the impact can be calculated by multiplying the line vector with the third return value and adding it to the line starting point.\n\nThere is a bug in 0.8.0 where the normal vector returned by this function gets scaled by love.physics.getMeter.",
+       description = "Casts a ray against the shape of the fixture and returns the surface normal vector and the line position where the ray hit. If the ray missed the shape, nil will be returned.\n\nThe ray starts on the first point of the input line and goes towards the second point of the line. The fourth argument is the maximum distance the ray is going to travel as a scale factor of the input line length.\n\nThe childIndex parameter is used to specify which child of a parent shape, such as a ChainShape, will be ray casted. For ChainShapes, the index of 1 is the first edge on the chain. Ray casting a parent shape will only test the child specified so if you want to test every shape of the parent, you must loop through all of its children.\n\nThe world position of the impact can be calculated by multiplying the line vector with the third return value and adding it to the line starting point.\n\nhitx, hity = x1 + (x2 - x1) * fraction, y1 + (y2 - y1) * fraction",
        returns = "(x: number, y: number, fraction: number)",
        type = "function"
       },
@@ -3436,12 +4036,6 @@ local love = {
     },
     FrictionJoint = {
      childs = {
-      getMaxForce = {
-       args = "()",
-       description = "Gets the maximum friction force in Newtons.",
-       returns = "(force: number)",
-       type = "function"
-      },
       getMaxTorque = {
        args = "()",
        description = "Gets the maximum friction torque in Newton-meters.",
@@ -3465,31 +4059,13 @@ local love = {
      type = "lib"
     },
     GearJoint = {
-     childs = {
-      getRatio = {
-       args = "()",
-       description = "Get the ratio of a gear joint.",
-       returns = "(ratio: number)",
-       type = "function"
-      },
-      setRatio = {
-       args = "(ratio: number)",
-       description = "Set the ratio of a gear joint.",
-       returns = "()",
-       type = "function"
-      }
-     },
+     args = "()",
      description = "Keeps bodies together in such a way that they act like gears.",
-     type = "lib"
+     returns = "()",
+     type = "function"
     },
     Joint = {
      childs = {
-      destroy = {
-       args = "()",
-       description = "Explicitly destroys the Joint. When you don't have time to wait for garbage collection, this function may be used to free the object immediately, but note that an error will occur if you attempt to use the object after calling this function.",
-       returns = "()",
-       type = "function"
-      },
       getAnchors = {
        args = "()",
        description = "Get the anchor points of the joint.",
@@ -3562,12 +4138,6 @@ local love = {
     },
     MouseJoint = {
      childs = {
-      getDampingRatio = {
-       args = "()",
-       description = "Returns the damping ratio.",
-       returns = "(ratio: number)",
-       type = "function"
-      },
       getFrequency = {
        args = "()",
        description = "Returns the frequency.",
@@ -3622,18 +4192,6 @@ local love = {
     },
     PrismaticJoint = {
      childs = {
-      enableLimit = {
-       args = "(enable: boolean)",
-       description = "Enables or disables the limits of the joint.",
-       returns = "()",
-       type = "function"
-      },
-      enableMotor = {
-       args = "(enable: boolean)",
-       description = "Starts or stops the joint motor.",
-       returns = "()",
-       type = "function"
-      },
       getJointSpeed = {
        args = "()",
        description = "Get the current joint angle speed.",
@@ -3682,7 +4240,7 @@ local love = {
        returns = "(upper: number)",
        type = "function"
       },
-      isLimitEnabled = {
+      hasLimitsEnabled = {
        args = "()",
        description = "Checks whether the limits are enabled.",
        returns = "(enabled: boolean)",
@@ -3712,6 +4270,12 @@ local love = {
        returns = "()",
        type = "function"
       },
+      setMotorEnabled = {
+       args = "(enable: boolean)",
+       description = "Starts or stops the joint motor.",
+       returns = "()",
+       type = "function"
+      },
       setMotorSpeed = {
        args = "(s: number)",
        description = "Sets the motor speed.",
@@ -3730,12 +4294,6 @@ local love = {
     },
     PulleyJoint = {
      childs = {
-      getConstant = {
-       args = "()",
-       description = "Get the total length of the rope.",
-       returns = "(length: number)",
-       type = "function"
-      },
       getGroundAnchors = {
        args = "()",
        description = "Get the ground anchor positions in world coordinates.",
@@ -3790,18 +4348,6 @@ local love = {
     },
     RevoluteJoint = {
      childs = {
-      enableLimits = {
-       args = "(enable: boolean)",
-       description = "Enables or disables the joint limits.",
-       returns = "()",
-       type = "function"
-      },
-      enableMotor = {
-       args = "(enable: boolean)",
-       description = "Starts or stops the joint motor.",
-       returns = "()",
-       type = "function"
-      },
       getJointAngle = {
        args = "()",
        description = "Get the current joint angle.",
@@ -3850,7 +4396,7 @@ local love = {
        returns = "(upper: number)",
        type = "function"
       },
-      isLimitsEnabled = {
+      hasLimitsEnabled = {
        args = "()",
        description = "Checks whether limits are enabled.",
        returns = "(enabled: boolean)",
@@ -3868,12 +4414,6 @@ local love = {
        returns = "()",
        type = "function"
       },
-      setLimitsEnabled = {
-       args = "(enable: boolean)",
-       description = "Enables/disables the joint limit.",
-       returns = "()",
-       type = "function"
-      },
       setLowerLimit = {
        args = "(lower: number)",
        description = "Sets the lower limit.",
@@ -3886,9 +4426,21 @@ local love = {
        returns = "()",
        type = "function"
       },
+      setMotorEnabled = {
+       args = "(enable: boolean)",
+       description = "Starts or stops the joint motor.",
+       returns = "()",
+       type = "function"
+      },
       setMotorSpeed = {
        args = "(s: number)",
        description = "Sets the motor speed.",
+       returns = "()",
+       type = "function"
+      },
+      setUpperLimit = {
+       args = "(upper: number)",
+       description = "Sets the upper limit.",
        returns = "()",
        type = "function"
       }
@@ -3904,12 +4456,6 @@ local love = {
     },
     Shape = {
      childs = {
-      computeAABB = {
-       args = "(tx: number, ty: number, tr: number, childIndex: number)",
-       description = "Returns the points of the bounding box for the transformed shape.",
-       returns = "(topLeftX: number, topLeftY: number, bottomRightX: number, bottomRightY: number)",
-       type = "function"
-      },
       computeMass = {
        args = "(density: number)",
        description = "Computes the mass properties for the shape with the specified density.",
@@ -3964,12 +4510,6 @@ local love = {
        returns = "(friction: number)",
        type = "function"
       },
-      getRestitution = {
-       args = "()",
-       description = "Gets the restitution of this shape.",
-       returns = "(restitution: number)",
-       type = "function"
-      },
       getType = {
        args = "()",
        description = "Gets a string representing the Shape. This function can be useful for conditional debug drawing.",
@@ -3978,7 +4518,7 @@ local love = {
       },
       rayCast = {
        args = "(x1: number, y1: number, x2: number, y2: number, maxFraction: number, tx: number, ty: number, tr: number, childIndex: number)",
-       description = "Casts a ray against the shape and returns the surface normal vector and the line position where the ray hit. If the ray missed the shape, nil will be returned. The Shape can be transformed to get it into the desired position.\n\nThe ray starts on the first point of the input line and goes towards the second point of the line. The fourth argument is the maximum distance the ray is going to travel as a scale factor of the input line length.\n\nThe world position of the impact can be calculated by multiplying the line vector with the third return value and adding it to the line starting point.\n\nThere is a bug in 0.8.0 where the normal vector returned by this function gets scaled by love.physics.getMeter.",
+       description = "Casts a ray against the shape and returns the surface normal vector and the line position where the ray hit. If the ray missed the shape, nil will be returned. The Shape can be transformed to get it into the desired position.\n\nThe ray starts on the first point of the input line and goes towards the second point of the line. The fourth argument is the maximum distance the ray is going to travel as a scale factor of the input line length.\n\nThe childIndex parameter is used to specify which child of a parent shape, such as a ChainShape, will be ray casted. For ChainShapes, the index of 1 is the first edge on the chain. Ray casting a parent shape will only test the child specified so if you want to test every shape of the parent, you must loop through all of its children.\n\nThe world position of the impact can be calculated by multiplying the line vector with the third return value and adding it to the line starting point.\n\nhitx, hity = x1 + (x2 - x1) * fraction, y1 + (y2 - y1) * fraction",
        returns = "(xn: number, yn: number, fraction: number)",
        type = "function"
       },
@@ -4003,12 +4543,6 @@ local love = {
       setFriction = {
        args = "(friction: number)",
        description = "Sets the friction of the shape. Friction determines how shapes react when they \"slide\" along other shapes. Low friction indicates a slippery surface, like ice, while high friction indicates a rough surface, like concrete. Range: 0.0 - 1.0.",
-       returns = "()",
-       type = "function"
-      },
-      setRestitution = {
-       args = "(restitution: number)",
-       description = "Sets the restitution of the shape. Restitution indicates the \"bounciness\" of the shape. High restitution can be used to model stuff like a rubber ball, while low restitution can be used for \"dull\" objects, like a bag of sand.\n\nA shape with a restitution of 0 will still bounce a little if the shape it collides with has a restitution higher than 0.",
        returns = "()",
        type = "function"
       },
@@ -4052,12 +4586,6 @@ local love = {
     },
     WeldJoint = {
      childs = {
-      getDampingRatio = {
-       args = "()",
-       description = "Returns the damping ratio of the joint.",
-       returns = "(ratio: number)",
-       type = "function"
-      },
       getFrequency = {
        args = "()",
        description = "Returns the frequency.",
@@ -4071,9 +4599,9 @@ local love = {
        type = "function"
       },
       setFrequency = {
-       args = "()",
+       args = "(freq: number)",
        description = "Sets a new frequency.",
-       returns = "(freq: number)",
+       returns = "()",
        type = "function"
       }
      },
@@ -4082,18 +4610,6 @@ local love = {
     },
     World = {
      childs = {
-      destroy = {
-       args = "()",
-       description = "Destroys the world, taking all bodies, joints, fixtures and their shapes with it.\n\nAn error will occur if you attempt to use any of the destroyed objects after calling this function.",
-       returns = "()",
-       type = "function"
-      },
-      getAllowSleeping = {
-       args = "()",
-       description = "Returns the sleep behaviour of the world.",
-       returns = "(allowSleep: boolean)",
-       type = "function"
-      },
       getBodyCount = {
        args = "()",
        description = "Get the number of bodies in the world.",
@@ -4148,16 +4664,16 @@ local love = {
        returns = "(joints: table)",
        type = "function"
       },
-      isAllowSleep = {
-       args = "()",
-       description = "Get the sleep behaviour of the world.\n\nA sleeping body is much more efficient to simulate than when awake.\n\nIf sleeping is allowed, any body that has come to rest will sleep.",
-       returns = "(permission: boolean)",
-       type = "function"
-      },
       isLocked = {
        args = "()",
        description = "Returns if the world is updating its state.\n\nThis will return true inside the callbacks from World:setCallbacks.",
        returns = "(locked: boolean)",
+       type = "function"
+      },
+      isSleepingAllowed = {
+       args = "()",
+       description = "Returns the sleep behaviour of the world.",
+       returns = "(allowSleep: boolean)",
        type = "function"
       },
       queryBoundingBox = {
@@ -4172,21 +4688,21 @@ local love = {
        returns = "()",
        type = "function"
       },
-      setAllowSleeping = {
-       args = "(allowSleep: boolean)",
-       description = "Set the sleep behaviour of the world.\n\nA sleeping body is much more efficient to simulate than when awake.\n\nIf sleeping is allowed, any body that has come to rest will sleep.",
-       returns = "()",
-       type = "function"
-      },
       setCallbacks = {
-       args = "(add: function, persist: function, remove: function, result: function)",
-       description = "Set functions to be called when shapes collide.\n\nFour Lua functions can be given as arguments. The value nil can be given for events that are uninteresting.\n\nWhen called, each function will be passed three arguments. The first two arguments (one for each shape) will pass data that has been set with Shape:setData (or nil). The third argument passes the Contact between the two shapes.\n\nUsing Shape:destroy when there is an active remove callback can lead to a crash. It is possible to work around this issue by only destroying object that are not in active contact with anything.",
+       args = "(beginContact: function, endContact: function, preSolve: function, postSolve: function)",
+       description = "Sets functions for the collision callbacks during the world update.\n\nFour Lua functions can be given as arguments. The value nil removes a function.\n\nWhen called, each function will be passed three arguments. The first two arguments are the colliding fixtures and the third argument is the Contact between them. The PostSolve callback additionally gets the normal and tangent impulse for each contact point.",
        returns = "()",
        type = "function"
       },
       setGravity = {
        args = "(x: number, y: number)",
        description = "Set the gravity of the world.",
+       returns = "()",
+       type = "function"
+      },
+      setSleepingAllowed = {
+       args = "(allowSleep: boolean)",
+       description = "Set the sleep behaviour of the world.\n\nA sleeping body is much more efficient to simulate than when awake.\n\nIf sleeping is allowed, any body that has come to rest will sleep.",
        returns = "()",
        type = "function"
       },
@@ -4199,12 +4715,6 @@ local love = {
      },
      description = "A world is an object that contains all bodies and joints.",
      type = "lib"
-    },
-    getDistance = {
-     args = "(fixture1: Fixture, fixture2: Fixture)",
-     description = "Returns the two closest points between two fixtures and their distance.",
-     returns = "(distance: number, x1: number, y1: number, x2: number, y2: number)",
-     type = "function"
     },
     getMeter = {
      args = "()",
@@ -4226,14 +4736,14 @@ local love = {
     },
     newCircleShape = {
      args = "(body: Body, x: number, y: number, radius: number)",
-     description = "Create a new CircleShape at (x,y) in local coordinates.\n\nlove.physics.newCircleShape() anchors from the center of the shape by default.",
+     description = "Create a new CircleShape at (x,y) in local coordinates.\n\nAnchors from the center of the shape by default.",
      returns = "(shape: CircleShape)",
      type = "function"
     },
     newDistanceJoint = {
      args = "(body1: Body, body2: Body, x1: number, y1: number, x2: number, y2: number, collideConnected: boolean)",
      description = "Create a distance joint between two bodies.\n\nThis joint constrains the distance between two points on two bodies to be constant. These two points are specified in world coordinates and the two bodies are assumed to be in place when this joint is created. The first anchor point is connected to the first body and the second to the second body, and the points define the length of the distance joint.",
-     returns = "(joint: Joint)",
+     returns = "(joint: DistanceJoint)",
      type = "function"
     },
     newEdgeShape = {
@@ -4286,7 +4796,7 @@ local love = {
     },
     newRectangleShape = {
      args = "(body: Body, x: number, y: number, width: number, height: number, angle: number)",
-     description = "Shorthand for creating rectangluar PolygonShapes.\n\nThe rectangle will be created at (x,y) in local coordinates.\n\nlove.physics.newRectangleShape() anchors from the center of the shape by default.",
+     description = "Shorthand for creating rectangluar PolygonShapes.\n\nThe rectangle will be created at (x,y) in local coordinates.\n\nAnchors from the center of the shape by default.",
      returns = "(shape: PolygonShape)",
      type = "function"
     },
@@ -4322,7 +4832,7 @@ local love = {
     },
     setMeter = {
      args = "(scale: number)",
-     description = "Sets the meter scale factor.\n\nAll coordinates in the physics module are divided by this number, creating a convenient way to draw the objects directly to the screen without the need for graphics transformations.\n\nIt is recommended to create shapes no larger than 10 times the scale. This is important because Box2D is tuned to work well with shape sizes from 0.1 to 10 meters.",
+     description = "Sets the pixels to meter scale factor.\n\nAll coordinates in the physics module are divided by this number and converted to meters, and it creates a convenient way to draw the objects directly to the screen without the need for graphics transformations.\n\nIt is recommended to create shapes no larger than 10 times the scale. This is important because Box2D is tuned to work well with shape sizes from 0.1 to 10 meters.\n\nlove.physics.setMeter does not apply retroactively to created objects. Created objects retain their meter coordinates but the scale factor will affect their pixel coordinates.",
      returns = "()",
      type = "function"
     }
@@ -4336,6 +4846,12 @@ local love = {
    returns = "(r: boolean)",
    type = "function"
   },
+  resize = {
+   args = "(w: number, h: number)",
+   description = "Called when the window is resized, for example if the user resizes the window, or if love.window.setMode is called with an unsupported width or height in fullscreen and the window chooses the closest appropriate size.\n\nCalls to love.window.setMode will only trigger this event if the width or height of the window after the call doesn't match the requested width and height. This can happen if a fullscreen mode is requested which doesn't match any supported mode, or if the fullscreen type is 'desktop' and the requested width or height don't match the desktop resolution.",
+   returns = "()",
+   type = "function"
+  },
   run = {
    args = "()",
    description = "The main function, containing the main loop. A sensible default is used when left out.",
@@ -4346,16 +4862,16 @@ local love = {
    childs = {
     Decoder = {
      childs = {
-      getBits = {
-       args = "()",
-       description = "Returns the number of bits per sample.",
-       returns = "(bitSize: number)",
-       type = "function"
-      },
       getChannels = {
        args = "()",
        description = "Returns the number of channels in the stream.",
        returns = "(channels: number)",
+       type = "function"
+      },
+      getDuration = {
+       args = "()",
+       description = "Gets the duration of the sound data.",
+       returns = "(duration: number)",
        type = "function"
       },
       getSampleRate = {
@@ -4370,12 +4886,6 @@ local love = {
     },
     SoundData = {
      childs = {
-      getBits = {
-       args = "()",
-       description = "Returns the number of bits per sample.",
-       returns = "(bitSize: number)",
-       type = "function"
-      },
       getChannels = {
        args = "()",
        description = "Returns the number of channels in the stream.",
@@ -4386,6 +4896,12 @@ local love = {
        args = "(i: number)",
        description = "Gets the sample at the specified position.",
        returns = "(sample: number)",
+       type = "function"
+      },
+      getSampleCount = {
+       args = "()",
+       description = "Returns the sample count of the SoundData.",
+       returns = "(count: number)",
        type = "function"
       },
       getSampleRate = {
@@ -4404,14 +4920,8 @@ local love = {
      description = "Contains raw audio samples. You can not play SoundData back directly. You must wrap a Source object around it.",
      type = "lib"
     },
-    newDecoder = {
-     args = "(file: File, buffer: number)",
-     description = "Attempts to find a decoder for the encoded sound data in the specified file.",
-     returns = "(decoder: Decoder)",
-     type = "function"
-    },
     newSoundData = {
-     args = "(decoder: Decoder)",
+     args = "(filename: string)",
      description = "Creates new SoundData from a Decoder or file. It's also possible to create SoundData with a custom sample rate, channel and bit depth.\n\nThe sound data will be decoded to the memory in a raw format. It is recommended to create only short sounds like effects, as a 3 minute song uses 30 MB of memory this way.",
      returns = "(soundData: SoundData)",
      type = "function"
@@ -4420,49 +4930,117 @@ local love = {
    description = "This module is responsible for decoding sound files. It can't play the sounds, see love.audio for that.",
    type = "class"
   },
+  system = {
+   childs = {
+    PowerState = {
+     childs = {
+      battery = {
+       description = "Not plugged in, running on a battery.",
+       type = "value"
+      },
+      charged = {
+       description = "Plugged in, battery is fully charged.",
+       type = "value"
+      },
+      charging = {
+       description = "Plugged in, charging battery.",
+       type = "value"
+      },
+      nobattery = {
+       description = "Plugged in, no battery available.",
+       type = "value"
+      },
+      unknown = {
+       description = "Cannot determine power status.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
+    getOS = {
+     args = "()",
+     description = "Gets the current operating system. In general, LÖVE abstracts away the need to know the current operating system, but there are a few cases where it can be useful (especially in combination with os.execute.)",
+     returns = "(os_string: string)",
+     type = "function"
+    },
+    getPowerInfo = {
+     args = "()",
+     description = "Gets information about the system's power supply.",
+     returns = "(state: PowerState, percent: number, seconds: number)",
+     type = "function"
+    },
+    getProcessorCount = {
+     args = "()",
+     description = "Gets the number of CPU cores in the system.\n\nThe number includes the threads reported if technologies such as Intel's Hyper-threading are enabled. For example, on a 4-core CPU with Hyper-threading, this function will return 8.",
+     returns = "(cores: number)",
+     type = "function"
+    },
+    setClipboardText = {
+     args = "(text: string)",
+     description = "Puts text in the clipboard.",
+     returns = "()",
+     type = "function"
+    }
+   },
+   description = "Provides access to information about the user's system.",
+   type = "lib"
+  },
+  textinput = {
+   args = "(text: string)",
+   description = "Called when text has been entered by the user. For example if shift-2 is pressed on an American keyboard layout, the text \"@\" will be generated.",
+   returns = "()",
+   type = "function"
+  },
   thread = {
    childs = {
-    Thread = {
+    Channel = {
      childs = {
       demand = {
-       args = "(name: string)",
-       description = "Receive a message from a thread. Wait for the message to exist before returning. (Can return nil in case of an error in the thread.)",
+       args = "()",
+       description = "Retrieves the value of a Channel message and removes it from the message queue.\n\nThe value of the message can be a boolean, string, number, LÖVE userdata, or a simple flat table. It waits until a message is in the queue then returns the message value.",
        returns = "(value: value)",
        type = "function"
       },
-      get = {
-       args = "(name: string)",
-       description = "Get a value (cross-threads). Returns nil when a message is not in the message box.",
-       returns = "(value: mixed)",
-       type = "function"
-      },
-      getKeys = {
+      getCount = {
        args = "()",
-       description = "Returns the names of all messages in a table.",
-       returns = "(msgNames: table)",
-       type = "function"
-      },
-      getName = {
-       args = "()",
-       description = "Get the name of a thread.",
-       returns = "(name: string)",
+       description = "Retrieves the number of messages in the thread Channel queue.",
+       returns = "(count: number)",
        type = "function"
       },
       peek = {
-       args = "(name: string)",
-       description = "Receive a message from a thread, but leave it in the message box.",
+       args = "()",
+       description = "Retrieves the value of a Channel message, but leaves it in the queue.\n\nThe value of the message can be a boolean, string, number or a LÖVE userdata. It returns nil if there's no message in the queue.",
        returns = "(value: value)",
        type = "function"
       },
-      set = {
-       args = "(name: string, value: mixed)",
-       description = "Set a value (cross-threads).",
-       returns = "()",
+      pop = {
+       args = "()",
+       description = "Retrieves the value of a Channel message and removes it from the message queue.\n\nThe value of the message can be a boolean, string, number, LÖVE userdata, or a simple flat table. It returns nil if there are no messages in the queue.",
+       returns = "(value: value)",
        type = "function"
       },
+      push = {
+       args = "()",
+       description = "Send a message to the thread Channel.\n\nThe value of the message can be a boolean, string, number, LÖVE userdata, or a simple flat table. Foreign userdata (Lua's files, LuaSocket, ENet, ...), functions, and tables inside tables are not supported.",
+       returns = "(value: value)",
+       type = "function"
+      },
+      supply = {
+       args = "()",
+       description = "Send a message to the thread Channel and wait for a thread to accept it.\n\nThe value of the message can be a boolean, string, number, LÖVE userdata, or a simple flat table. Foreign userdata (Lua's files, LuaSocket, ENet, ...), functions, and tables inside tables are not supported.",
+       returns = "(value: value)",
+       type = "function"
+      }
+     },
+     description = "A channel is a way to send and receive data to and from different threads.",
+     type = "lib"
+    },
+    Thread = {
+     childs = {
       start = {
        args = "()",
-       description = "Starts the thread.",
+       description = "Starts the thread.\n\nThreads can be restarted after they have completed their execution.",
        returns = "()",
        type = "function"
       },
@@ -4473,30 +5051,30 @@ local love = {
        type = "function"
       }
      },
-     description = "A Thread is a chunk of code that can run in parallel with other threads.\n\nThreads will place all Lua errors in \"error\". To retrieve the error, call thread:receive('error') in the main thread.",
+     description = "A Thread is a chunk of code that can run in parallel with other threads.\n\nThreads will place all Lua errors in \"error\". To retrieve the error, call Thread:get('error') in the main thread.",
      type = "lib"
     },
-    getThread = {
-     args = "(name: string)",
-     description = "Look for a thread and get its object.",
-     returns = "(thread: Thread)",
-     type = "function"
-    },
-    getThreads = {
+    newChannel = {
      args = "()",
-     description = "Get all threads.",
-     returns = "(threads: table)",
+     description = "Create a new unnamed thread channel.\n\nOne use for them is to pass new unnamed channels to other threads via Channel:push",
+     returns = "(channel: Channel)",
      type = "function"
     },
     newThread = {
-     args = "(name: string, filename: string)",
+     args = "(name: string, file: File)",
      description = "Creates a new Thread from a File or Data object.",
      returns = "(thread: Thread)",
      type = "function"
     }
    },
-   description = "Allows you to work with threads.\n\nThreads are separate Lua environments, running in parallel to the main code. As their code runs separately, they can be used to compute complex operations without adversely affecting the frame rate of the main thread. However, as they are separate environments, they cannot access the variables and functions of the main thread, and communication between threads is limited\n\nWhen a Thread is started, it only loads the love.thread module. Every other module has to be loaded with require.\n\nThe love.graphics module has several restrictions and therefore should only be used in the main thread.",
+   description = "Allows you to work with threads.\n\nThreads are separate Lua environments, running in parallel to the main code. As their code runs separately, they can be used to compute complex operations without adversely affecting the frame rate of the main thread. However, as they are separate environments, they cannot access the variables and functions of the main thread, and communication between threads is limited.\n\nAll LOVE objects (userdata) are shared among threads so you'll only have to send their references across threads. You may run into concurrency issues if you manipulate an object on multiple threads at the same time.\n\nWhen a Thread is started, it only loads the love.thread module. Every other module has to be loaded with require.",
    type = "class"
+  },
+  threaderror = {
+   args = "(thread: Thread, errorstr: string)",
+   description = "Callback function triggered when a Thread encounters an error.",
+   returns = "()",
+   type = "function"
   },
   timer = {
    childs = {
@@ -4508,14 +5086,8 @@ local love = {
     },
     getFPS = {
      args = "()",
-     description = "Returns the current frames per second.\n\nDisplaying the FPS with love.graphics.print or love.graphics.setCaption can have an impact on this value. Keep this in mind while benchmarking your game.",
+     description = "Returns the current frames per second.",
      returns = "(fps: number)",
-     type = "function"
-    },
-    getMicroTime = {
-     args = "()",
-     description = "Returns the value of a timer with an unspecified starting time. The time is accurate to the microsecond, and is limited to 24 hours.",
-     returns = "(t: number)",
      type = "function"
     },
     getTime = {
@@ -4545,6 +5117,122 @@ local love = {
    description = "Callback function triggered when a key is pressed.",
    returns = "()",
    type = "function"
+  },
+  visible = {
+   args = "(v: boolean)",
+   description = "Callback function triggered when window is minimized/hidden or unminimized by the user.",
+   returns = "()",
+   type = "function"
+  },
+  window = {
+   childs = {
+    FullscreenType = {
+     childs = {
+      desktop = {
+       description = "Sometimes known as borderless fullscreen windowed mode. A borderless screen-sized window is created which sits on top of all desktop GUI elements (such as the Windows taskbar and the Mac OS X dock.) The window is automatically resized to match the dimensions of the desktop, and its size cannot be changed.",
+       type = "value"
+      },
+      normal = {
+       description = "Standard fullscreen mode. Changes the display mode (actual resolution) of the monitor.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
+    getFullscreen = {
+     args = "()",
+     description = "Gets whether the window is fullscreen.",
+     returns = "(fullscreen: boolean, fstype: FullscreenType)",
+     type = "function"
+    },
+    getFullscreenModes = {
+     args = "()",
+     description = "Gets a list of supported fullscreen modes.",
+     returns = "(modes: table)",
+     type = "function"
+    },
+    getHeight = {
+     args = "()",
+     description = "Gets the height of the window.",
+     returns = "(height: number)",
+     type = "function"
+    },
+    getIcon = {
+     args = "()",
+     description = "Gets the window icon.",
+     returns = "(imagedata: ImageData)",
+     type = "function"
+    },
+    getMode = {
+     args = "()",
+     description = "Returns the current display mode.",
+     returns = "(width: number, height: number, fullscreen: boolean, vsync: boolean, fsaa: number)",
+     type = "function"
+    },
+    getTitle = {
+     args = "()",
+     description = "Gets the window title.",
+     returns = "(title: string)",
+     type = "function"
+    },
+    getWidth = {
+     args = "()",
+     description = "Gets the width of the window.",
+     returns = "(width: number)",
+     type = "function"
+    },
+    hasFocus = {
+     args = "()",
+     description = "Checks if the game window has keyboard focus.",
+     returns = "(focus: boolean)",
+     type = "function"
+    },
+    hasMouseFocus = {
+     args = "()",
+     description = "Checks if the game window has mouse focus.",
+     returns = "(focus: boolean)",
+     type = "function"
+    },
+    isCreated = {
+     args = "()",
+     description = "Checks if the window has been created.",
+     returns = "(created: boolean)",
+     type = "function"
+    },
+    isVisible = {
+     args = "()",
+     description = "Checks if the game window is visible.\n\nThe window is considered visible if it's not minimized and the program isn't hidden.",
+     returns = "(visible: boolean)",
+     type = "function"
+    },
+    setFullscreen = {
+     args = "(fullscreen: boolean, fstype: FullscreenType)",
+     description = "Enters or exits fullscreen. The display to use when entering fullscreen is chosen based on which display the window is currently in, if multiple monitors are connected.\n\nIf fullscreen mode is entered and the window size doesn't match one of the monitor's display modes (in normal fullscreen mode) or the window size doesn't match the desktop size (in 'desktop' fullscreen mode), the window will be resized appropriately. The window will revert back to its original size again when fullscreen mode is exited using this function.",
+     returns = "(success: boolean)",
+     type = "function"
+    },
+    setIcon = {
+     args = "(imagedata: ImageData)",
+     description = "Sets the window icon until the game is quit. Not all operating systems support very large icon images.",
+     returns = "(success: boolean)",
+     type = "function"
+    },
+    setMode = {
+     args = "(width: number, height: number, flags: table)",
+     description = "Changes the display mode.\n\nIf width or height is 0, the width or height of the desktop will be used.",
+     returns = "(success: boolean)",
+     type = "function"
+    },
+    setTitle = {
+     args = "(title: string)",
+     description = "Sets the window title.",
+     returns = "()",
+     type = "function"
+    }
+   },
+   description = "The primary responsibility for the love.graphics module is the drawing of lines, shapes, text, Images and other Drawable objects onto the screen. Its secondary responsibilities include loading external files (including Images and Fonts) into memory, creating specialized objects (such as ParticleSystems or Framebuffers) and managing screen geometry.\n\nLÖVE's coordinate system is rooted in the upper-left corner of the screen, which is at location (0, 0). The x-axis is horizontal: larger values are further to the right. The y-axis is vertical: larger values are further towards the bottom.\n\nIn many cases, you draw images or shapes in terms of their upper-left corner (See the picture above).\n\nMany of the functions are used to manipulate the graphics coordinate system, which is essentially the way coordinates are mapped to the display. You can change the position, scale, and even rotation in this way.",
+   type = "lib"
   }
  },
  description = "Love2d modules, functions, and callbacks.",
@@ -4552,6 +5240,9 @@ local love = {
 }
 
 do return {love = love} end
+
+-- the following code is used to convert love_api.lua to a proper format
+love = dofile('love_api.lua')
 
 -- conversion script
 local function convert(l)
@@ -4583,6 +5274,10 @@ local function convert(l)
   if not l.childs then return end
 
   for n,v in ipairs(l.childs) do
+    if v.functions and #v.functions > 1 and #v.functions[1] == 0 then
+      print("alternative signatured ignored for "..v.name..".")
+      table.remove(v.functions, 1)
+    end
     v.childs = merge(v.types, v.functions, v.constants, v.enums)
     if v.name then
       l.childs[v.name] = v
@@ -4621,4 +5316,6 @@ local function convert(l)
   return l
 end
 
+package.path = package.path .. ';../../lualibs/?/?.lua;../../lualibs/?.lua'
+package.cpath = package.cpath .. ';../../bin/clibs/?.dll'
 print((require 'mobdebug').line(convert(love), {indent = ' ', comment = false}))
