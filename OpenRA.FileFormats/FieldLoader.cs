@@ -247,6 +247,18 @@ namespace OpenRA.FileFormats
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
+			else if (fieldType == typeof(CPos))
+			{
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				return new CPos(int.Parse(parts[0]), int.Parse(parts[1]));
+			}
+
+			else if (fieldType == typeof(CVec))
+			{
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				return new CVec(int.Parse(parts[0]), int.Parse(parts[1]));
+			}
+
 			else if (fieldType.IsEnum)
 			{
 				if (!Enum.GetNames(fieldType).Select(a => a.ToLower()).Contains(value.ToLower()))
