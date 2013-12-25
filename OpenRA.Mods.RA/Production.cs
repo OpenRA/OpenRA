@@ -28,13 +28,12 @@ namespace OpenRA.Mods.RA
 	[Desc("Where the unit should leave the building. Multiples are allowed if IDs are added: Exit@2, ...")]
 	public class ExitInfo : TraitInfo<Exit>
 	{
-		public readonly int2 SpawnOffset = int2.Zero;	// in px relative to CenterLocation
-		public readonly int2 ExitCell = int2.Zero;		// in cells relative to TopLeft
-		public readonly int Facing = -1;
+		[Desc("Offset at which that the exiting actor is spawned")]
+		public readonly WVec SpawnOffset = WVec.Zero;
 
-		// TODO: Push this conversion into the yaml
-		public WVec SpawnOffsetVector { get { return new WVec(SpawnOffset.X, SpawnOffset.Y, 0) * 1024 / Game.CellSize; } }
-		public CVec ExitCellVector { get { return (CVec)ExitCell; } }
+		[Desc("Cell offset where the exiting actor enters the ActorMap")]
+		public readonly CVec ExitCell = CVec.Zero;
+		public readonly int Facing = -1;
 	}
 
 	public class Exit { }
@@ -49,8 +48,8 @@ namespace OpenRA.Mods.RA
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo)
 		{
-			var exit = self.Location + exitinfo.ExitCellVector;
-			var spawn = self.CenterPosition + exitinfo.SpawnOffsetVector;
+			var exit = self.Location + exitinfo.ExitCell;
+			var spawn = self.CenterPosition + exitinfo.SpawnOffset;
 			var to = exit.CenterPosition;
 
 			var fi = producee.Traits.Get<IFacingInfo>();
@@ -126,7 +125,7 @@ namespace OpenRA.Mods.RA
 			var mobileInfo = producee.Traits.GetOrDefault<MobileInfo>();
 
 			return mobileInfo == null ||
-				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCellVector, self, true, true);
+				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, self, true, true);
 		}
 	}
 }

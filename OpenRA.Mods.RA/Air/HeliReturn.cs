@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Air
 				heli.Reservation = res.Reserve(dest, self, heli);
 
 			var exit = dest.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
-			var offset = (exit != null) ? exit.SpawnOffsetVector : WVec.Zero;
+			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
 			return Util.SequenceActivities(
 				new HeliFly(dest.CenterPosition + offset),
