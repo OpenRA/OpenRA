@@ -324,7 +324,7 @@ namespace OpenRA.Utility
 		}
 
 		[Desc("MAPFILE", "MOD", "Upgrade a version 5 map to version 6.")]
-		public static void UpgradeMap(string[] args)
+		public static void UpgradeV5Map(string[] args)
 		{
 			var map = args[1];
 			var mod = args[2];
