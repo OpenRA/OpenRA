@@ -71,6 +71,16 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   editor:Freeze()
   SetupKeywords(editor, GetFileExt(filePath))
   editor:MarkerDeleteAll(-1)
+
+  -- remove BOM from UTF-8 encoded files; store BOM to add back when saving
+  editor.bom = string.char(0xEF,0xBB,0xBF)
+  if file_text and editor:GetCodePage() == wxstc.wxSTC_CP_UTF8
+  and file_text:find("^"..editor.bom) then
+    file_text = file_text:gsub("^"..editor.bom, "")
+  else
+    -- set to 'false' as checks for nil on wxlua objects may fail at run-time
+    editor.bom = false
+  end
   editor:SetText(file_text or "")
 
   -- check the editor as it can be empty if the file has malformed UTF8;
@@ -199,7 +209,8 @@ function SaveFile(editor, filePath)
       end
     end
 
-    local st = editor:GetText()
+    local st = (editor:GetCodePage() == wxstc.wxSTC_CP_UTF8 and editor.bom or "")
+      .. editor:GetText()
     if GetConfigIOFilter("output") then
       st = GetConfigIOFilter("output")(filePath,st)
     end
