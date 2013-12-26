@@ -116,7 +116,6 @@ namespace OpenRA.Mods.RA
 
 			if (self.IsInWorld)
 			{
-				self.World.ActorMap.AddInfluence(self, this);
 				self.World.ActorMap.UpdatePosition(self, this);
 				self.World.ScreenMap.Update(self);
 			}

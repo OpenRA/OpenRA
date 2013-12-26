@@ -563,6 +563,9 @@ CRATE:
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:
+	Selectable:
+		Selectable: false
+		Bounds: 15,15,-1,-1
 	ProximityCaptor:
 		Types: Crate
 	Passenger:
