@@ -540,6 +540,20 @@ function CompileProgram(editor, params)
   else
     DisplayOutputLn(TR("Compilation error").." "..TR("on line %d"):format(line)..":")
     DisplayOutputLn((err:gsub("\n$", "")))
+    -- check for escapes invalid in LuaJIT/Lua 5.2 that are allowed in Lua 5.1
+    if err:find('invalid escape sequence') then
+      local s = editor:GetLine(line-1)
+      local cleaned = s
+        :gsub('\\[abfnrtv\\"\']', '  ')
+        :gsub('(\\x[0-9a-fA-F][0-9a-fA-F])', function(s) return string.rep(' ', #s) end)
+        :gsub('(\\%d%d?%d?)', function(s) return string.rep(' ', #s) end)
+        :gsub('(\\z%s*)', function(s) return string.rep(' ', #s) end)
+      local invalid = cleaned:find("\\")
+      if invalid then
+        DisplayOutputLn(TR("Consider removing backslash from escape sequence '%s'.")
+          :format(s:sub(invalid,invalid+1)))
+      end
+    end
     if line and params.jumponerror then editor:GotoLine(line-1) end
   end
 
