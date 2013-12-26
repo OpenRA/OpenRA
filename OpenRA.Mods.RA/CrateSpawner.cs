@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 
 	public class CrateSpawner : ITick
 	{
-		List<Actor> crates = new List<Actor>();
+		int crates = 0;
 		int ticks = 0;
 		CrateSpawnerInfo info;
 		Actor self;
@@ -64,10 +64,8 @@ namespace OpenRA.Mods.RA
 			{
 				ticks = info.SpawnInterval * 25;
 
-				crates.RemoveAll(x => !x.IsInWorld); // BUG: this removes crates that are cargo of a BADR!
-
-				var toSpawn = Math.Max(0, info.Minimum - crates.Count)
-					+ (crates.Count < info.Maximum ? 1 : 0);
+				var toSpawn = Math.Max(0, info.Minimum - crates)
+					+ (crates < info.Maximum ? 1 : 0);
 
 				for (var n = 0; n < toSpawn; n++)
 					SpawnCrate(self);
@@ -91,8 +89,6 @@ namespace OpenRA.Mods.RA
 				if (info.DeliveryAircraft != null)
 				{
 					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
-					crates.Add(crate);
-
 					var startPos = w.ChooseRandomEdgeCell();
 					var altitude = Rules.Info[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
 					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
@@ -109,7 +105,7 @@ namespace OpenRA.Mods.RA
 				}
 				else
 				{
-					crates.Add(w.CreateActor(crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner), new LocationInit(p) }));
+					w.CreateActor(crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner), new LocationInit(p) });
 				}
 			});
 		}
@@ -150,6 +146,16 @@ namespace OpenRA.Mods.RA
 			}
 
 			return null;
+		}
+
+		public void IncrementCrates()
+		{
+			crates++;
+		}
+
+		public void DecrementCrates()
+		{
+			crates--;
 		}
 	}
 }
