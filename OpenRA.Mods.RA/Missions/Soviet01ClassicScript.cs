@@ -125,12 +125,8 @@ namespace OpenRA.Mods.RA.Missions
 			startJeep.QueueActivity(new Turn(128));
 			startJeep.QueueActivity(new CallFunc(() =>
 			{
-				var bridge = world.Actors
-					.Where(a => a.HasTrait<Bridge>() && !a.IsDead())
-					.ClosestTo(startJeep);
-				Combat.DoExplosion(bridge, "Demolish", bridge.CenterPosition);
-				world.WorldActor.Trait<ScreenShaker>().AddEffect(15, bridge.CenterPosition, 6);
-				bridge.Kill(bridge);
+				var bridge = world.Actors.Where(a => a.HasTrait<BridgeHut>()).ClosestTo(startJeep);
+				bridge.Trait<BridgeHut>().Demolish(bridge, startJeep);
 			}));
 		}
 

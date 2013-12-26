@@ -79,6 +79,10 @@ namespace OpenRA.Mods.RA
 				if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && damage != DamageState.Dead)
 					return false;
 
+				// Obey force moving onto bridges
+				if (modifiers.HasModifier(TargetModifiers.ForceMove))
+					return false;
+
 				// Can't repair an undamaged bridge
 				if (damage == DamageState.Undamaged)
 					cursor = "goldwrench-blocked";

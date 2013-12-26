@@ -353,6 +353,7 @@
 	EngineerRepairable:
 	Huntable:
 	LuaScriptEvents:
+	Demolishable:
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -404,6 +405,8 @@
 	Tooltip:
 		Name: Field
 	-WithBuildingExplosion:
+	-TargetableBuilding:
+	-Demolishable:
 	RenderBuilding:
 		Palette: terrain
 	EditorAppearance:
@@ -456,6 +459,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 	LuaScriptEvents:
+	Demolishable:
 
 ^Tree:
 	Tooltip:

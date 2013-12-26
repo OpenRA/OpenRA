@@ -484,6 +484,7 @@
     <Compile Include="Effects\Rank.cs" />
     <Compile Include="ShroudRenderer.cs" />
     <Compile Include="Render\WithCrateBody.cs" />
+    <Compile Include="Buildings\Demolishable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

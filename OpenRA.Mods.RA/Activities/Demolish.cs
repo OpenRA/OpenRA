@@ -41,8 +41,12 @@ namespace OpenRA.Mods.RA.Activities
 					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
 					.Select(t => t.GetDamageModifier(self, null)).Product();
 
+				var demolishable = target.Actor.TraitOrDefault<IDemolishable>();
+					if (demolishable == null || !demolishable.IsValidTarget(target.Actor, self))
+					return;
+
 				if (modifier > 0)
-					target.Actor.Kill(self);
+					demolishable.Demolish(target.Actor, self);
 			})));
 
 			return NextActivity;

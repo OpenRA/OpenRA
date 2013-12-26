@@ -36,6 +36,7 @@
 	BodyOrientation:
 	Huntable:
 	LuaScriptEvents:
+	Demolishable:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -176,6 +177,7 @@
 	UpdatesPlayerStatistics:
 	BodyOrientation:
 	LuaScriptEvents:
+	Demolishable:
 
 ^Helicopter:
 	AppearsOnRadar:

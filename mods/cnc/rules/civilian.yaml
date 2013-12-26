@@ -363,7 +363,7 @@ BRIDGEHUT:
 		Bounds: 48,48
 	BridgeHut:
 	TargetableBuilding:
-		TargetTypes: BridgeHut
+		TargetTypes: BridgeHut, C4
 
 C1:
 	Inherits: ^CivInfantry
@@ -455,4 +455,3 @@ VICE:
 		QuantizedFacings: 8
 	PoisonedByTiberium:
 		Weapon: Heal
-

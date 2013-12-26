@@ -488,7 +488,7 @@ BRIDGEHUT:
 		Bounds: 48,48
 	BridgeHut:
 	TargetableBuilding:
-		TargetTypes: BridgeHut
+		TargetTypes: BridgeHut, C4
 
 BRIDGEHUT.small:
 	Building:
@@ -499,7 +499,7 @@ BRIDGEHUT.small:
 		Bounds: 24,24
 	BridgeHut:
 	TargetableBuilding:
-		TargetTypes: BridgeHut
+		TargetTypes: BridgeHut, C4
 
 V20:
 	Inherits: ^DesertCivBuilding
