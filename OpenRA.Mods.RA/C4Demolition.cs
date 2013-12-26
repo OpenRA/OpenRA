@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new TargetTypeOrderTargeter("C4", "C4", 6, "c4", true, false); }
+			get { yield return new C4DemolitionOrderTargeter(); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -70,6 +70,34 @@ namespace OpenRA.Mods.RA
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "C4" ? "Attack" : null;
+		}
+
+		class C4DemolitionOrderTargeter : UnitOrderTargeter
+		{
+			public C4DemolitionOrderTargeter()
+				: base("C4", 6, "c4", true, false) { }
+
+			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+			{
+				// Obey force moving onto bridges
+				if (modifiers.HasModifier(TargetModifiers.ForceMove))
+					return false;
+
+				var demolishable = target.TraitOrDefault<IDemolishable>();
+				if (demolishable == null || !demolishable.IsValidTarget(target, self))
+					return false;
+
+				return true;
+			}
+
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+			{
+				// TODO: Bridges don't yet support FrozenUnderFog.
+				if (target.Actor.HasTrait<BridgeHut>())
+					return false;
+
+				return true;
+			}
 		}
 	}
 }
