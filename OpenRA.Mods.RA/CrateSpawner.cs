@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -46,12 +46,12 @@ namespace OpenRA.Mods.RA
 	{
 		List<Actor> crates = new List<Actor>();
 		int ticks = 0;
-		CrateSpawnerInfo Info;
+		CrateSpawnerInfo info;
 		Actor self;
 
 		public CrateSpawner(CrateSpawnerInfo info, Actor self)
 		{
-			Info = info;
+			this.info = info;
 			this.self = self;
 		}
 
@@ -62,12 +62,12 @@ namespace OpenRA.Mods.RA
 
 			if (--ticks <= 0)
 			{
-				ticks = Info.SpawnInterval * 25;
+				ticks = info.SpawnInterval * 25;
 
 				crates.RemoveAll(x => !x.IsInWorld); // BUG: this removes crates that are cargo of a BADR!
 
-				var toSpawn = Math.Max(0, Info.Minimum - crates.Count)
-					+ (crates.Count < Info.Maximum ? 1 : 0);
+				var toSpawn = Math.Max(0, info.Minimum - crates.Count)
+					+ (crates.Count < info.Maximum ? 1 : 0);
 
 				for (var n = 0; n < toSpawn; n++)
 					SpawnCrate(self);
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA
 		void SpawnCrate(Actor self)
 		{
 			var threshold = 100;
-			var inWater = self.World.SharedRandom.NextFloat() < Info.WaterChance;
+			var inWater = self.World.SharedRandom.NextFloat() < info.WaterChance;
 			var pp = ChooseDropCell(self, inWater, threshold);
 
 			if (pp == null)
@@ -88,18 +88,18 @@ namespace OpenRA.Mods.RA
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (Info.DeliveryAircraft != null)
+				if (info.DeliveryAircraft != null)
 				{
 					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
 					crates.Add(crate);
 
 					var startPos = w.ChooseRandomEdgeCell();
-					var plane = w.CreateActor(Info.DeliveryAircraft, new TypeDictionary
+					var altitude = Rules.Info[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
+					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
 					{
-						new LocationInit(startPos),
+						new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
 						new OwnerInit(w.WorldActor.Owner),
-						new FacingInit(Util.GetFacing(p - startPos, 0)),
-						new AltitudeInit(Rules.Info[Info.DeliveryAircraft].Traits.Get<AircraftInfo>().CruiseAltitude),
+						new FacingInit(Util.GetFacing(p - startPos, 0))
 					});
 
 					plane.CancelActivity();
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.RA
 
 				// Is this valid terrain?
 				var terrainType = self.World.GetTerrainType(p);
-				if (!(inWater ? Info.ValidWater : Info.ValidGround).Contains(terrainType))
+				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType))
 					continue;
 
 				// Don't drop on any actors
@@ -138,7 +138,7 @@ namespace OpenRA.Mods.RA
 
 		string ChooseCrateActor()
 		{
-			var crateShares = Info.CrateActorShares;
+			var crateShares = info.CrateActorShares;
 			var n = self.World.SharedRandom.Next(crateShares.Sum());
 
 			var cumulativeShares = 0;
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.RA
 			{
 				cumulativeShares += crateShares[i];
 				if (n <= cumulativeShares)
-					return Info.CrateActors[i];
+					return info.CrateActors[i];
 			}
 
 			return null;
