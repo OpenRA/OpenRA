@@ -554,7 +554,8 @@ function CompileProgram(editor, params)
           :format(s:sub(invalid,invalid+1)))
       end
     end
-    if line and params.jumponerror then editor:GotoLine(line-1) end
+    if line and params.jumponerror and line-1 ~= editor:GetCurrentLine() then
+      editor:GotoLine(line-1) end
   end
 
   return func ~= nil -- return true if it compiled ok
