@@ -16,7 +16,7 @@ V2RL:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 6
+		Speed: 85
 	RevealsShroud:
 		Range: 5
 	Armament:
@@ -45,7 +45,7 @@ V2RL:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 9
+		Speed: 128
 	RevealsShroud:
 		Range: 4
 	Turreted:
@@ -84,7 +84,7 @@ V2RL:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 6
+		Speed: 85
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 5
@@ -126,7 +126,7 @@ V2RL:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 5
+		Speed: 71
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 5
@@ -170,7 +170,7 @@ V2RL:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 3
+		Speed: 42
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 6
@@ -224,7 +224,7 @@ ARTY:
 		Type: Light
 	Mobile:
 		ROT: 2
-		Speed: 6
+		Speed: 85
 	RevealsShroud:
 		Range: 5
 	Armament:
@@ -258,16 +258,14 @@ HARV:
 		Capacity: 20
 		Resources: Ore,Gems
 		UnloadTicksPerBale: 1
-		# How far away from our linked proc (refinery) to find resources (in cells):
 		SearchFromProcRadius: 24
-		# How far away from last harvest order location to find more resources (in cells):
 		SearchFromOrderRadius: 12
 	Health:
 		HP: 600
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 6
+		Speed: 85
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 4
@@ -275,7 +273,7 @@ HARV:
 		ImagesByFullness: harvempty, harvhalf, harv
 	-AttackMove:
 	GpsDot:
-		String:Harvester
+		String: Harvester
 	LeavesHusk:
 		HuskActor: HARV.EmptyHusk
 	HarvesterHuskModifier:
@@ -305,13 +303,13 @@ MCV:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 6
+		Speed: 85
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 4
 	Transforms:
 		IntoActor: fact
-		Offset:-1,-1
+		Offset: -1,-1
 		Facing: 96
 		TransformSounds: placbldg.aud, build5.aud
 		NoTransformSounds: nodeply1.aud
@@ -340,7 +338,7 @@ JEEP:
 		Type: Light
 	Mobile:
 		ROT: 10
-		Speed: 12
+		Speed: 170
 	RevealsShroud:
 		Range: 8
 	Turreted:
@@ -376,7 +374,7 @@ APC:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 10
+		Speed: 142
 	RevealsShroud:
 		Range: 5
 	Armament:
@@ -410,7 +408,7 @@ MNLY.AP:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 9
+		Speed: 128
 	RevealsShroud:
 		Range: 5
 	RenderUnit:
@@ -444,7 +442,7 @@ MNLY.AT:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 9
+		Speed: 128
 	RevealsShroud:
 		Range: 5
 	RenderUnit:
@@ -478,7 +476,7 @@ TRUK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 9
+		Speed: 128
 	RevealsShroud:
 		Range: 3
 	RenderUnit:
@@ -505,7 +503,7 @@ MGG:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 6
+		Speed: 85
 	RenderUnit:
 	WithIdleOverlay@SPINNER:
 		Offset: -299,0,171
@@ -551,7 +549,7 @@ MRJ:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 6
+		Speed: 85
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
@@ -644,7 +642,7 @@ TTNK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 8
+		Speed: 113
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 7
@@ -673,11 +671,11 @@ FTRK:
 		Description: Flak Truck, good for scouting.\n  Strong vs Light Vehicles, Aircraft  \n  Weak vs Tanks
 	Health:
 		HP: 120
-	Armor: 
+	Armor:
 		Type: Light
 	Mobile:
 		ROT: 10
-		Speed: 9
+		Speed: 128
 	RevealsShroud:
 		Range: 4
 	Turreted:
@@ -716,7 +714,7 @@ DTRK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 6
+		Speed: 85
 	RevealsShroud:
 		Range: 3
 	RenderUnit:
@@ -750,7 +748,7 @@ CTNK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 8
+		Speed: 113
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 6
@@ -785,7 +783,7 @@ QTNK:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 4
+		Speed: 56
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 6
@@ -800,3 +798,4 @@ QTNK:
 	-EjectOnDeath:
 	TargetableUnit:
 		TargetTypes: Ground, MADTank
+

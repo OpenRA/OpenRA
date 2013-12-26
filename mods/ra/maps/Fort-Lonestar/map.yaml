@@ -763,7 +763,7 @@ Rules:
 		Armor:
 			Type: Heavy
 		Mobile:
-			Speed: 5
+			Speed: 71
 			Crushes: wall, atmine, crate, infantry
 		RevealsShroud:
 			Range: 7
@@ -814,7 +814,7 @@ Rules:
 		Selectable:
 			Bounds: 12,17,0,-6
 		Mobile:
-			Speed: 4
+			Speed: 56
 		Health:
 			HP: 200
 		Passenger:
@@ -840,7 +840,7 @@ Rules:
 		Health:
 			HP: 25
 		Mobile:
-			Speed: 4
+			Speed: 56
 		RevealsShroud:
 			Range: 5
 		Passenger:
@@ -865,7 +865,7 @@ Rules:
 			Type: Light
 		Mobile:
 			ROT: 10
-			Speed: 9
+			Speed: 128
 		RevealsShroud:
 			Range: 4
 		Turreted:
@@ -890,7 +890,7 @@ Rules:
 		Armor:
 			Type: Heavy
 		Mobile:
-			Speed: 10
+			Speed: 142
 		RevealsShroud:
 			Range: 5
 		Armament:
@@ -923,7 +923,7 @@ Rules:
 			Type: Light
 		Mobile:
 			ROT: 2
-			Speed: 6
+			Speed: 85
 		RevealsShroud:
 			Range: 7
 		AttackFrontal:
@@ -941,7 +941,7 @@ Rules:
 		Armor:
 			Type: Light
 		Mobile:
-			Speed: 7
+			Speed: 99
 		RevealsShroud:
 			Range: 5
 		Armament:
@@ -960,7 +960,7 @@ Rules:
 		Armor:
 			Type: Heavy
 		Mobile:
-			Speed: 4
+			Speed: 56
 		RevealsShroud:
 			Range: 14
 		Turreted:
@@ -1013,7 +1013,7 @@ Rules:
 			Type: Light
 		Plane:
 			ROT: 5
-			Speed: 30
+			Speed: 280
 		LimitedAmmo:
 			Ammo: 30
 		RenderUnit:
@@ -1044,7 +1044,7 @@ Rules:
 		WithShadow:
 		Plane:
 			ROT: 5
-			Speed: 16
+			Speed: 149
 		SmokeTrailWhenDamaged:
 			Offset: -853,0,171
 			Interval: 2
@@ -1057,17 +1057,17 @@ VoxelSequences:
 Weapons:
 	120mm:
 		ROF: 150
-		Range: 10
+		Range: 10c0
 		Report: CANNON1.AUD
 		Burst: 6
 		Projectile: Bullet
-			Speed: 12
+			Speed: 204
 			High: true
-			Inaccuracy: 40
+			Inaccuracy: 1c682
 			Image: 120MM
 			ContrailLength: 50
 		Warhead:
-			Spread: 6
+			Spread: 256
 			Versus:
 				None: 75%
 				Wood: 75%
@@ -1080,23 +1080,23 @@ Weapons:
 			Damage: 150
 	MammothTusk:
 		ROF: 300
-		Range: 10
+		Range: 10c0
 		Report: MISSILE6.AUD
 		Burst: 2
 		ValidTargets: Ground, Air
 		Projectile: Missile
-			Speed: 15
+			Speed: 128
 			Arm: 2
 			High: true
 			Shadow: false
 			Trail: smokey
 			ContrailLength: 150
-			Inaccuracy: 20
+			Inaccuracy: 853
 			Image: DRAGON
 			ROT: 10
 			RangeLimit: 80
 		Warhead:
-			Spread: 15
+			Spread: 640
 			Versus:
 				None: 125%
 				Wood: 110%
@@ -1110,19 +1110,19 @@ Weapons:
 			Damage: 250
 	VolkNapalm:
 		ROF: 40
-		Range: 8
+		Range: 8c0
 		Report: firebl3.aud
 		ValidTargets: Ground
 		Burst: 6
 		BurstDelay: 1
 		Projectile: Bullet
-			Speed: 25
+			Speed: 426
 			Image: 120MM
-			Inaccuracy: 60
+			Inaccuracy: 2c512
 			Trail: smokey
 			ContrailLength: 2
 		Warhead:
-			Spread: 8
+			Spread: 341
 			Versus:
 				None: 90%
 				Wood: 170%
@@ -1137,12 +1137,12 @@ Weapons:
 			Damage: 15
 	ParaBomb:
 		ROF: 5
-		Range: 5
+		Range: 5c0
 		Report: CHUTE1.AUD
 		Projectile: GravityBomb
 			Image: BOMBLET
 		Warhead:
-			Spread: 10
+			Spread: 426
 			Versus:
 				None: 125%
 				Wood: 100%
@@ -1156,20 +1156,20 @@ Weapons:
 			Damage: 200
 	155mm:
 		ROF: 10
-		Range: 7.5
+		Range: 7c512
 		Burst: 20
-		MinRange: 3
+		MinRange: 3c0
 		-Report:
 		Projectile: Bullet
-			Speed: 10
+			Speed: 170
 			Trail: fb4
 			Image: fb3
 			High: true
-			Angle: .1
-			Inaccuracy: 40
+			Angle: 62
+			Inaccuracy: 1c682
 			ContrailLength: 2
 		Warhead:
-			Spread: 10
+			Spread: 426
 			Versus:
 				None: 80%
 				Wood: 100%
@@ -1184,14 +1184,14 @@ Weapons:
 			Damage: 10
 	FLAK-23:
 		ROF: 10
-		Range: 8
+		Range: 8c0
 		Report: AACANON3.AUD
 		ValidTargets: Air,Ground
 		Projectile: Bullet
-			Speed: 100
+			Speed: 1c682
 			High: true
 		Warhead:
-			Spread: 5
+			Spread: 213
 			Versus:
 				None: 35%
 				Wood: 30%
@@ -1202,20 +1202,20 @@ Weapons:
 			Damage: 25
 	SCUD:
 		ROF: 280
-		Range: 7
-		MinRange: 3
+		Range: 7c0
+		MinRange: 3c0
 		Report: MISSILE1.AUD
 		Projectile: Bullet
-			Speed: 10
+			Speed: 170
 			Arm: 10
 			High: true
 			Shadow: false
 			Trail: smokey
-			Inaccuracy: 10
+			Inaccuracy: 426
 			Image: V2
-			Angle: .1
+			Angle: 62
 		Warhead:
-			Spread: 20
+			Spread: 853
 			Versus:
 				None: 100%
 				Wood: 90%
@@ -1230,12 +1230,12 @@ Weapons:
 			WaterImpactSound: kaboom1.aud
 	SilencedPPK:
 		ROF: 80
-		Range: 2.5
+		Range: 2c512
 		Report: silppk.aud
 		Projectile: Bullet
-			Speed: 100
+			Speed: 1c682
 		Warhead:
-			Spread: 3
+			Spread: 128
 			Versus:
 				Wood: 0%
 				Light: 0%

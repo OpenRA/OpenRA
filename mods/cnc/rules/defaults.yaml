@@ -11,17 +11,17 @@
 			Beach: 50
 		ROT: 5
 	SelectionDecorations:
-	Selectable: 
+	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	Buildable:
 		Queue: Vehicle
-	Repairable: 
-	Chronoshiftable: 
-	Passenger: 
+	Repairable:
+	Chronoshiftable:
+	Passenger:
 		CargoType: Vehicle
-	IronCurtainable: 
+	IronCurtainable:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -56,17 +56,17 @@
 			Beach: 70
 		ROT: 5
 	SelectionDecorations:
-	Selectable: 
+	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	Buildable:
 		Queue: Vehicle
-	Repairable: 
-	Chronoshiftable: 
-	Passenger: 
+	Repairable:
+	Chronoshiftable:
+	Passenger:
 		CargoType: Vehicle
-	IronCurtainable: 
+	IronCurtainable:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -123,7 +123,7 @@
 ^Infantry:
 	AppearsOnRadar:
 	Health:
-		Radius: 3
+		Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -195,7 +195,7 @@
 	Tooltip:
 		Name: Civilian
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 25
 	RevealsShroud:
@@ -215,7 +215,7 @@
 ^DINO:
 	AppearsOnRadar:
 	Health:
-		Radius: 3
+		Radius: 128
 		HP: 1000
 	Armor:
 		Type: Wood
@@ -230,7 +230,7 @@
 	RevealsShroud:
 		Range: 6
 	Mobile:
-		Speed: 8
+		Speed: 113
 		TerrainSpeeds:
 			Clear: 90
 			Rough: 80
@@ -362,7 +362,7 @@
 	-EngineerRepairable:
 	Health:
 		HP: 400
-	Armor: 
+	Armor:
 		Type: Wood
 	Building:
 	RenderBuilding:
@@ -502,7 +502,7 @@
 ^Husk:
 	Health:
 		HP: 140
-	Armor: 
+	Armor:
 		Type: Light
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
@@ -515,11 +515,6 @@
 		ForceHealthPercentage: 25
 	BelowUnits:
 	BodyOrientation:
-#	Capturable:
-#		Type: husk
-#		AllowAllies: true
-#		AllowNeutral: true
-#		AllowEnemies: true
 	LuaScriptEvents:
 
 ^HelicopterHusk:
@@ -547,3 +542,4 @@
 		DestroyedSound: xplobig4.aud
 	BodyOrientation:
 	LuaScriptEvents:
+

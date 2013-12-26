@@ -103,19 +103,19 @@ SPEN:
 	RevealsShroud:
 		Range: 4
 	Exit@1:
-		SpawnOffset: 0,-5
+		SpawnOffset: 0,-213,0
 		Facing: 96
 		ExitCell: -1,2
 	Exit@2:
-		SpawnOffset: 0,-5
+		SpawnOffset: 0,-213,0
 		Facing: 160
 		ExitCell: 3,2
 	Exit@3:
-		SpawnOffset: 0,0
+		SpawnOffset: 0,0,0
 		Facing: 32
 		ExitCell: 0,0
 	Exit@4:
-		SpawnOffset: 0,0
+		SpawnOffset: 0,0,0
 		Facing: 224
 		ExitCell: 2,0
 	Production:
@@ -160,19 +160,19 @@ SYRD:
 	RevealsShroud:
 		Range: 4
 	Exit@1:
-		SpawnOffset: -24,24
+		SpawnOffset: -1024,1024,0
 		Facing: 160
 		ExitCell: 0,2
 	Exit@2:
-		SpawnOffset: 24,24
+		SpawnOffset: 1024,1024,0
 		Facing: 224
 		ExitCell: 2,2
 	Exit@3:
-		SpawnOffset: -24,-24
+		SpawnOffset: -1024,-1024,0
 		Facing: 96
 		ExitCell: 0,0
 	Exit@4:
-		SpawnOffset: 24,-24
+		SpawnOffset: 1024,-1024,0
 		Facing: 32
 		ExitCell: 2,0
 	Production:
@@ -410,18 +410,12 @@ PBOX:
 		MaxWeight: 1
 		PipCount: 1
 	-EmitInfantryOnSell:
-#	EmitCargoOnSell:
 	DrawLineToTarget:
 	TransformOnPassenger@e1:
 		PassengerTypes: e1
 		OnEnter: pbox.e1
 		OnExit: pbox
 		SkipMakeAnims: true
-#	TransformOnPassenger@e2:
-#		PassengerTypes: e2
-#		OnEnter: pbox.e2
-#		OnExit: pbox
-#		SkipMakeAnims: true
 	TransformOnPassenger@e3:
 		PassengerTypes: e3
 		OnEnter: pbox.e3
@@ -470,13 +464,6 @@ PBOX.E1:
 	WithMuzzleFlash:
 	Cargo:
 		InitialUnits: e1
-
-#PBOX.E2:
-#	Inherits: PBOX
-#	Tooltip:
-#		Name: Pillbox (Grenades)
-#	RenderBuilding:
-#		Image: PBOX
 
 PBOX.E3:
 	Inherits: PBOX
@@ -572,18 +559,12 @@ HBOX:
 		MaxWeight: 1
 		PipCount: 1
 	-EmitInfantryOnSell:
-#	EmitCargoOnSell:
 	DrawLineToTarget:
 	TransformOnPassenger@e1:
 		PassengerTypes: e1
 		OnEnter: HBOX.e1
 		OnExit: HBOX
 		SkipMakeAnims: true
-#	TransformOnPassenger@e2:
-#		PassengerTypes: e2
-#		OnEnter: HBOX.e2
-#		OnExit: HBOX
-#		SkipMakeAnims: true
 	TransformOnPassenger@e3:
 		PassengerTypes: e3
 		OnEnter: HBOX.e3
@@ -632,13 +613,6 @@ HBOX.E1:
 	WithMuzzleFlash:
 	Cargo:
 		InitialUnits: e1
-
-#HBOX.E2:
-#	Inherits: HBOX
-#	Tooltip:
-#		Name: Camo Pillbox (Grenades)
-#	RenderBuilding:
-#		Image: HBOX
 
 HBOX.E3:
 	Inherits: HBOX
@@ -888,7 +862,7 @@ WEAP:
 	RenderBuildingWarFactory:
 	RallyPoint:
 	Exit@1:
-		SpawnOffset: 5,-3
+		SpawnOffset: 213,-128,0
 		ExitCell: 1,2
 	Production:
 		Produces: Vehicle
@@ -915,7 +889,7 @@ FACT:
 	Bib:
 	Production:
 		Produces: Building,Defense
-	IronCurtainable: 
+	IronCurtainable:
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -926,7 +900,7 @@ FACT:
 	BaseBuilding:
 	Transforms:
 		IntoActor: mcv
-		Offset:1,1
+		Offset: 1,1
 		Facing: 96
 	ProductionBar:
 	DeadBuildingState:
@@ -1033,7 +1007,7 @@ HPAD:
 		Range: 5
 	Bib:
 	Exit@1:
-		SpawnOffset: 0,-6
+		SpawnOffset: 0,-256,0
 		ExitCell: 0,0
 	Production:
 		Produces: Helicopter
@@ -1066,9 +1040,9 @@ AFLD:
 	RevealsShroud:
 		Range: 7
 	Exit@1:
-		SpawnOffset: 0,4
+		SpawnOffset: 0,170,0
 		ExitCell: 1,1
-		Facing:192
+		Facing: 192
 	Production:
 		Produces: Plane
 	Reservable:
@@ -1203,10 +1177,10 @@ BARR:
 	Bib:
 	RallyPoint:
 	Exit@1:
-		SpawnOffset: -4,19
+		SpawnOffset: -170,810,0
 		ExitCell: 0,2
 	Exit@2:
-		SpawnOffset: -17,15
+		SpawnOffset: -725,640,0
 		ExitCell: 0,2
 	Production:
 		Produces: Infantry
@@ -1240,17 +1214,17 @@ TENT:
 	Bib:
 	RallyPoint:
 	Exit@1:
-		SpawnOffset: -1,19
+		SpawnOffset: -42,810,0
 		ExitCell: 0,2
 	Exit@2:
-		SpawnOffset: -17,15
+		SpawnOffset: -725,640,0
 		ExitCell: 0,2
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
-	
+
 KENN:
 	Inherits: ^Building
 	Tooltip:
@@ -1519,9 +1493,9 @@ CYCL:
 	Inherits: ^Wall
 	Health:
 		HP: 100
-	Armor: 
+	Armor:
 		Type: Wood
-		
+
 BARB:
 	Inherits: ^Wall
 	Health:
@@ -1533,10 +1507,9 @@ WOOD:
 	Inherits: ^Wall
 	Health:
 		HP: 100
-	Armor: 
+	Armor:
 		Type: Wood
 
-# custom prerequisites:
 BARRACKS:
 	Tooltip:
 		Name: Infantry Production
@@ -1556,3 +1529,4 @@ ANYPOWER:
 	Tooltip:
 		Name: Power Plant
 		Description: Power Plant
+

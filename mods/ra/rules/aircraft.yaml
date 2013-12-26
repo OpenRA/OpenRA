@@ -8,13 +8,12 @@ BADR:
 		Type: Light
 	Plane:
 		ROT: 5
-		Speed: 16
+		Speed: 149
 	RenderUnit:
 	WithShadow:
 	IronCurtainable:
 	Cargo:
 		MaxWeight: 10
-#		Types: Infantry, Vehicle
 	-Selectable:
 	-GainsExperience:
 	Tooltip:
@@ -46,7 +45,7 @@ BADR.Bomber:
 		Type: Light
 	Plane:
 		ROT: 5
-		Speed: 16
+		Speed: 149
 	LimitedAmmo:
 		Ammo: 7
 	RenderUnit:
@@ -101,7 +100,7 @@ MIG:
 	Plane:
 		InitialFacing: 192
 		ROT: 5
-		Speed: 20
+		Speed: 186
 		RearmBuildings: afld
 	RenderUnit:
 		CameraPitch: 99
@@ -154,7 +153,7 @@ YAK:
 		RearmBuildings: afld
 		InitialFacing: 192
 		ROT: 5
-		Speed: 16
+		Speed: 149
 	RenderUnit:
 		CameraPitch: 99
 	WithShadow:
@@ -190,7 +189,7 @@ TRAN:
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Health:
 		HP: 120
-	Armor: 
+	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 12
@@ -198,7 +197,7 @@ TRAN:
 		RearmBuildings: hpad
 		InitialFacing: 0
 		ROT: 5
-		Speed: 12
+		Speed: 112
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 	RenderUnit:
 	WithRotor@PRIMARY:
@@ -261,7 +260,7 @@ HELI:
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
-		Speed: 16
+		Speed: 149
 	RenderUnit:
 	WithRotor:
 		Offset: 0,0,85
@@ -307,7 +306,7 @@ HIND:
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
-		Speed: 12
+		Speed: 112
 	RenderUnit:
 	WithRotor:
 	WithShadow:
@@ -334,7 +333,7 @@ U2:
 		Type: Heavy
 	Plane:
 		ROT: 7
-		Speed: 40
+		Speed: 373
 	RenderUnit:
 	WithShadow:
 	IronCurtainable:
@@ -360,7 +359,7 @@ BADR.Husk:
 	WithShadow:
 	Plane:
 		ROT: 5
-		Speed: 16
+		Speed: 149
 	SmokeTrailWhenDamaged@0:
 		Offset: -432,560,0
 		Interval: 2
@@ -384,7 +383,7 @@ MIG.Husk:
 		Offset: -598,683,0
 	Plane:
 		ROT: 5
-		Speed: 20
+		Speed: 186
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,171
 		Interval: 2
@@ -404,7 +403,7 @@ YAK.Husk:
 		Offset: -853,0,0
 	Plane:
 		ROT: 5
-		Speed: 16
+		Speed: 149
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,0
 		Interval: 2
@@ -421,7 +420,7 @@ TRAN.Husk:
 	WithShadow:
 	Helicopter:
 		ROT: 4
-		Speed: 16
+		Speed: 149
 	WithRotor@PRIMARY:
 		Offset: -597,0,341
 	WithRotor@SECONDARY:
@@ -439,7 +438,7 @@ HELI.Husk:
 	WithShadow:
 	Helicopter:
 		ROT: 4
-		Speed: 16
+		Speed: 149
 	WithRotor:
 		Offset: 0,0,85
 	SmokeTrailWhenDamaged:
@@ -457,7 +456,7 @@ HIND.Husk:
 	WithShadow:
 	Helicopter:
 		ROT: 4
-		Speed: 12
+		Speed: 112
 	WithRotor:
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
@@ -472,7 +471,7 @@ U2.Husk:
 	WithShadow:
 	Plane:
 		ROT: 7
-		Speed: 40
+		Speed: 373
 	Contrail@1:
 		Offset: -725,683,0
 	Contrail@2:
@@ -481,3 +480,4 @@ U2.Husk:
 		Offset: -1c43,0,0
 		Interval: 2
 		MinDamage: Undamaged
+

@@ -15,7 +15,7 @@ RIFLE:
 	Health:
 		HP: 50
 	Mobile:
-		Speed: 5
+		Speed: 53
 	Armament:
 		Weapon: LMG
 	AttackFrontal:
@@ -43,7 +43,7 @@ ENGINEER:
 	Health:
 		HP: 25
 	Mobile:
-		Speed: 5
+		Speed: 53
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -70,7 +70,7 @@ BAZOOKA:
 	Health:
 		HP: 45
 	Mobile:
-		Speed: 4
+		Speed: 42
 	Armament:
 		Weapon: Bazooka
 		LocalOffset: 0,0,555
@@ -99,7 +99,7 @@ MEDIC:
 	Health:
 		HP: 60
 	Mobile:
-		Speed: 4
+		Speed: 42
 	AutoHeal:
 	Armament:
 		Weapon: Heal
@@ -110,3 +110,4 @@ MEDIC:
 	-AutoTarget:
 	AttackMove:
 		JustMove: true
+

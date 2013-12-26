@@ -11,15 +11,15 @@
 			Beach: 40
 		ROT: 5
 	SelectionDecorations:
-	Selectable: 
+	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
-	Repairable: 
-	Chronoshiftable: 
-	Passenger: 
+	Repairable:
+	Chronoshiftable:
+	Passenger:
 		CargoType: Vehicle
-	IronCurtainable: 
+	IronCurtainable:
 	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
@@ -27,10 +27,10 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
-		Types:Vehicle
+		Types: Vehicle
 	GivesBounty:
 	GpsDot:
-		String:Vehicle
+		String: Vehicle
 	WithSmoke:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
@@ -58,13 +58,13 @@
 			Beach: 70
 		ROT: 5
 	SelectionDecorations:
-	Selectable: 
+	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
-	Repairable: 
-	Chronoshiftable: 
-	Passenger: 
+	Repairable:
+	Chronoshiftable:
+	Passenger:
 		CargoType: Vehicle
 	IronCurtainable:
 	AttackMove:
@@ -74,10 +74,10 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
-		Types:Tank
+		Types: Tank
 	GivesBounty:
 	GpsDot:
-		String:Vehicle
+		String: Vehicle
 	WithSmoke:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
@@ -95,7 +95,7 @@
 ^Infantry:
 	AppearsOnRadar:
 	Health:
-		Radius: 3
+		Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -127,10 +127,10 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
-		Types:Infantry
+		Types: Infantry
 	GivesBounty:
 	GpsDot:
-		String:Infantry
+		String: Infantry
 	ParachuteAttachment:
 		Offset: 0,0,427
 	CrushableInfantry:
@@ -170,10 +170,10 @@
 	ActorLostNotification:
 		Notification: NavalUnitLost
 	ProximityCaptor:
-		Types:Ship
+		Types: Ship
 	GivesBounty:
 	GpsDot:
-		String:Ship
+		String: Ship
 	WithSmoke:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
@@ -199,7 +199,7 @@
 	ActorLostNotification:
 		Notification: AirUnitLost
 	ProximityCaptor:
-		Types:Plane
+		Types: Plane
 	EjectOnDeath:
 		PilotActor: E1
 		SuccessRate: 50
@@ -207,7 +207,7 @@
 		EjectInAir: yes
 	GivesBounty:
 	GpsDot:
-		String:Plane
+		String: Plane
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	BodyOrientation:
@@ -217,7 +217,7 @@
 ^Helicopter:
 	Inherits: ^Plane
 	GpsDot:
-		String:Helicopter
+		String: Helicopter
 
 ^Building:
 	AppearsOnRadar:
@@ -250,7 +250,7 @@
 		RelativeToTopLeft: yes
 	ShakeOnDeath:
 	ProximityCaptor:
-		Types:Building
+		Types: Building
 	Sellable:
 	AcceptsSupplies:
 	GivesBounty:
@@ -261,7 +261,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 	GpsDot:
-		String:Structure
+		String: Structure
 	Huntable:
 	LuaScriptEvents:
 
@@ -294,7 +294,7 @@
 		UseTerrainPalette: true
 	AutoTargetIgnore:
 	ProximityCaptor:
-		Types:Wall
+		Types: Wall
 	Sellable:
 	Guardable:
 	BodyOrientation:
@@ -312,7 +312,7 @@
 	Tooltip:
 		Name: Civilian Building
 	ProximityCaptor:
-		Types:CivilianBuilding
+		Types: CivilianBuilding
 	-AcceptsSupplies:
 	-GivesBuildableArea:
 	-Sellable:
@@ -351,14 +351,14 @@
 	Health:
 		HP: 20
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 2
 	Armament:
 		Weapon: Pistol
 	AttackFrontal:
 	ProximityCaptor:
-		Types:CivilianInfantry
+		Types: CivilianInfantry
 	-RenderInfantry:
 	RenderInfantryPanic:
 	ScaredyCat:
@@ -377,7 +377,7 @@
 		Name: Field
 	-ProximityCaptor:
 	ProximityCaptor:
-		Types:CivilianField
+		Types: CivilianField
 
 ^Tree:
 	Tooltip:
@@ -394,7 +394,7 @@
 		RelativeToTopLeft: yes
 		UseTerrainPalette: true
 	ProximityCaptor:
-		Types:Tree
+		Types: Tree
 	Health:
 		HP: 500
 	DeadBuildingState:
@@ -418,7 +418,7 @@
 	AppearsOnRadar:
 	Burns:
 	ProximityCaptor:
-		Types:Husk
+		Types: Husk
 	BelowUnits:
 	BodyOrientation:
 	Chronoshiftable:
@@ -454,12 +454,11 @@
 	Health:
 		HP: 1000
 	ProximityCaptor:
-		Types:Bridge
+		Types: Bridge
 	AutoTargetIgnore:
 	BodyOrientation:
 	LuaScriptEvents:
 
-#Temperate Terrain Expansion
 ^SVBridge:
 	Tooltip:
 		Name: Small Bridge
@@ -472,7 +471,7 @@
 	Health:
 		HP: 750
 	ProximityCaptor:
-		Types:Bridge
+		Types: Bridge
 	AutoTargetIgnore:
 	BodyOrientation:
 	LuaScriptEvents:
@@ -489,7 +488,7 @@
 	Health:
 		HP: 750
 	ProximityCaptor:
-		Types:Bridge
+		Types: Bridge
 	AutoTargetIgnore:
 	BodyOrientation:
 	LuaScriptEvents:
@@ -506,12 +505,11 @@
 	Health:
 		HP: 750
 	ProximityCaptor:
-		Types:Bridge
+		Types: Bridge
 	AutoTargetIgnore:
 	BodyOrientation:
 	LuaScriptEvents:
 
-#Desert Terrain Expansion:
 ^Rock:
 	Tooltip:
 		Name: Rock
@@ -527,7 +525,7 @@
 		RelativeToTopLeft: yes
 		UseTerrainPalette: true
 	ProximityCaptor:
-		Types:Tree
+		Types: Tree
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
@@ -537,3 +535,4 @@
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		Palette: terrain
+

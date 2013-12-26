@@ -48,7 +48,7 @@ Player:
 	ActorGroupProxy:
 	DeveloperMode:
 	HackyAI@EasyAI:
-		Name:Easy AI
+		Name: Easy AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -100,7 +100,7 @@ Player:
 			3tnk: 50%
 		SquadSize: 20
 	HackyAI@NormalAI:
-		Name:Normal AI
+		Name: Normal AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -166,7 +166,7 @@ Player:
 			pt: 10%
 		SquadSize: 40
 	HackyAI@HardAI:
-		Name:Hard AI
+		Name: Hard AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -231,7 +231,7 @@ Player:
 			pt: 10%
 		SquadSize: 10
 	HackyAI@TestAI:
-		Name:Test AI
+		Name: Test AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -304,7 +304,7 @@ Player:
 			pt: 8%
 		SquadSize: 10
 	HackyAI@IslandMapAI:
-		Name:Island Map AI
+		Name: Island Map AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -354,7 +354,7 @@ Player:
 			pt: 10%
 		SquadSize: 1
 	HackyAI@HightechAI:
-		Name:High-Tech AI
+		Name: High-Tech AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -425,7 +425,7 @@ Player:
 			msub: 100%
 		SquadSize: 10
 	HackyAI@LongrangeAI:
-		Name:Long-Range AI
+		Name: Long-Range AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -477,7 +477,7 @@ Player:
 			3tnk: 15%
 		SquadSize: 25
 	HackyAI@TankAI:
-		Name:Tank AI
+		Name: Tank AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -654,11 +654,11 @@ World:
 		AllowUnderActors: false
 		TerrainType: Gems
 	SmudgeLayer@SCORCH:
-		Type:Scorch
+		Type: Scorch
 		Sequence: scorches
-		SmokePercentage:50
+		SmokePercentage: 50
 	SmudgeLayer@CRATER:
-		Type:Crater
+		Type: Crater
 		Sequence: craters
 	PathfinderDebugOverlay:
 	SpawnMapActors:
@@ -814,24 +814,24 @@ CRATE:
 		Images: scrate
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
 	ProximityCaptor:
-		Types:Crate
+		Types: Crate
 	Passenger:
 	BodyOrientation:
 
 CAMERA:
 	Aircraft:
 	Health:
-		HP:1000
+		HP: 1000
 	RevealsShroud:
 		Range: 10
 	ProximityCaptor:
-		Types:Camera
+		Types: Camera
 	BodyOrientation:
 
 FLARE:
 	Aircraft:
 	Health:
-		HP:1000
+		HP: 1000
 	RevealsShroud:
 		Range: 3
 	RenderFlare:
@@ -873,3 +873,4 @@ waypoint:
 	Waypoint:
 	RenderEditorOnly:
 	BodyOrientation:
+

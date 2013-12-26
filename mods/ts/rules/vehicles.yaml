@@ -18,7 +18,7 @@ MCV:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 6
+		Speed: 85
 		Crushes: wall, crate, infantry
 	RevealsShroud:
 		Range: 4
@@ -27,10 +27,10 @@ MCV:
 	-AttackMove:
 	Transforms:
 		IntoActor: gacnst
-		Offset:-1,-1
+		Offset: -1,-1
 		Facing: 96
-		TransformSounds: # TODO
-		NoTransformSounds: # TODO
+		TransformSounds:
+		NoTransformSounds:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -40,7 +40,7 @@ APC:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Amphibious APC # TODO: not yet amphibious
+		Name: Amphibious APC
 		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
 	Buildable:
 		Queue: Vehicle
@@ -48,7 +48,7 @@ APC:
 		Owner: gdi
 	Mobile:
 		ROT: 5
-		Speed: 8
+		Speed: 113
 	Health:
 		HP: 200
 	Armor:
@@ -67,7 +67,7 @@ APC:
 	RenderVoxels:
 	WithVoxelBody:
 
-HARV: # TODO: without back: HORV
+HARV:
 	Inherits: ^Vehicle
 	Valued:
 		Cost: 1400
@@ -77,28 +77,19 @@ HARV: # TODO: without back: HORV
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-#		Prerequisites: proc
 		Owner: gdi,nod
 	Selectable:
 		Priority: 7
 		Bounds: 36,36
-#	Harvester:
-#		Resources: Tiberium, BlueTiberium
-#		PipCount: 7
-#		Capacity: 28
-#		LoadTicksPerBale: 6
-#		UnloadTicksPerBale: 12
-#		SearchFromProcRadius: 24
-#		SearchFromOrderRadius: 12
 	Mobile:
-		Speed: 5
+		Speed: 71
 	Health:
 		HP: 1000
 	SelfHealing:
 		Ticks: 10
 		HealIfBelow: 50%
 		DamageCooldown: 200
-	Armor: 
+	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4
@@ -120,11 +111,11 @@ HVR:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: gdi
-	Mobile: # TODO: amphibious
-		Speed: 7
+	Mobile:
+		Speed: 99
 	Health:
 		HP: 230
-	Armor: 
+	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 7
@@ -151,7 +142,7 @@ HVR:
 		BuildPaletteOrder: 60
 		Owner: gdi
 	Mobile:
-		Speed: 4
+		Speed: 56
 		ROT: 5
 	Health:
 		HP: 600
@@ -177,7 +168,7 @@ HVR:
 	WithVoxelTurret:
 	WithVoxelBarrel:
 
-TRUCKB: # NOTE: TRUCKA is unloaded
+TRUCKB:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
@@ -193,7 +184,7 @@ TRUCKB: # NOTE: TRUCKA is unloaded
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 5
 	SupplyTruck:
@@ -219,7 +210,7 @@ LPST:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 6
+		Speed: 85
 		ROT: 5
 	RevealsShroud:
 		Range: 10
@@ -230,10 +221,10 @@ LPST:
 	WithVoxelBody:
 	Transforms:
 		IntoActor: gadpsa
-		Offset: -1,-1 # TODO
-		Facing: 96 # TODO
-		TransformSounds: # TODO
-		NoTransformSounds: # TODO
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
 
 ICBM:
 	Inherits: ^Vehicle
@@ -250,7 +241,7 @@ ICBM:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 6
+		Speed: 85
 		ROT: 5
 	RevealsShroud:
 		Range: 7
@@ -261,10 +252,10 @@ ICBM:
 	WithVoxelBody:
 	Transforms:
 		IntoActor: gaicbm
-		Offset:-1,-1 # TODO
-		Facing: 96 # TODO
-		TransformSounds: # TODO
-		NoTransformSounds: # TODO
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
 
 REPAIR:
 	Inherits: ^Vehicle
@@ -280,7 +271,7 @@ REPAIR:
 	Health:
 		HP: 200
 	Mobile:
-		Speed: 6
+		Speed: 85
 		ROT: 5
 	RevealsShroud:
 		Range: 5
@@ -309,7 +300,7 @@ ART2:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 5
+		Speed: 71
 		ROT: 2
 	RevealsShroud:
 		Range: 9
@@ -320,10 +311,10 @@ ART2:
 	WithVoxelBody:
 	Transforms:
 		IntoActor: gaarty
-		Offset: -1,-1 # TODO
-		Facing: 96 # TODO
-		TransformSounds: # TODO
-		NoTransformSounds: # TODO
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
 
 WEED:
 	Inherits: ^Vehicle
@@ -335,18 +326,9 @@ WEED:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-#		Prerequisites: naweap, nawast
 		Owner: nod
-#	Harvester:
-#		Resources: Veins
-#		PipCount: 7
-#		Capacity: 28
-#		LoadTicksPerBale: 6
-#		UnloadTicksPerBale: 12
-#		SearchFromProcRadius: 24
-#		SearchFromOrderRadius: 12
 	Mobile:
-		Speed: 5
+		Speed: 71
 		ROT: 5
 	Health:
 		HP: 600
@@ -373,7 +355,7 @@ BUS:
 		Owner: gdi
 	Mobile:
 		ROT: 5
-		Speed: 8
+		Speed: 113
 	Health:
 		HP: 100
 	Armor:
@@ -402,7 +384,7 @@ PICK:
 		Owner: gdi
 	Mobile:
 		ROT: 5
-		Speed: 8
+		Speed: 113
 	Health:
 		HP: 100
 	Armor:
@@ -431,7 +413,7 @@ CAR:
 		Owner: gdi
 	Mobile:
 		ROT: 5
-		Speed: 8
+		Speed: 113
 	Health:
 		HP: 100
 	Armor:
@@ -460,7 +442,7 @@ GGHUNT:
 		Queue: Vehicle
 	Mobile:
 		ROT: 16
-		Speed: 25
+		Speed: 355
 	Health:
 		HP: 500
 	Armor:
@@ -487,7 +469,7 @@ WINI:
 		Owner: gdi
 	Mobile:
 		ROT: 5
-		Speed: 8
+		Speed: 113
 	Health:
 		HP: 200
 	Armor:
@@ -516,7 +498,7 @@ MMCH:
 		Owner: gdi
 	Mobile:
 		ROT: 5
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 400
 	Armor:
@@ -549,7 +531,7 @@ HMEC:
 		Owner: gdi
 	Mobile:
 		ROT: 3
-		Speed: 3
+		Speed: 42
 	Health:
 		HP: 800
 	SelfHealing:
@@ -581,7 +563,7 @@ SMECH:
 		Owner: gdi
 	Mobile:
 		ROT: 5
-		Speed: 7
+		Speed: 99
 	Health:
 		HP: 800
 	Armor:
@@ -609,7 +591,7 @@ BIKE:
 		Owner: nod
 	Mobile:
 		ROT: 8
-		Speed: 12
+		Speed: 170
 	Health:
 		HP: 150
 	Armor:
@@ -639,7 +621,7 @@ BGGY:
 		Owner: nod
 	Mobile:
 		ROT: 8
-		Speed: 10
+		Speed: 142
 	Health:
 		HP: 220
 	Armor:
@@ -659,7 +641,7 @@ SAPC:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Subterranean APC # TODO: not yet subterranean
+		Name: Subterranean APC
 		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
 	Buildable:
 		Queue: Vehicle
@@ -667,7 +649,7 @@ SAPC:
 		Owner: nod
 	Mobile:
 		ROT: 5
-		Speed: 5
+		Speed: 71
 	Health:
 		HP: 175
 	Armor:
@@ -697,7 +679,7 @@ SUBTANK:
 		Owner: nod
 	Mobile:
 		ROT: 6
-		Speed: 5
+		Speed: 71
 	Health:
 		HP: 300
 	Armor:
@@ -724,7 +706,7 @@ SONIC:
 		Owner: gdi
 	Mobile:
 		ROT: 4
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 500
 	Armor:
@@ -753,7 +735,7 @@ TTNK:
 		Owner: nod
 	Mobile:
 		ROT: 5
-		Speed: 6
+		Speed: 85
 	Health:
 		HP: 350
 	Armor:
@@ -766,10 +748,10 @@ TTNK:
 	WithVoxelBody:
 	Transforms:
 		IntoActor: gatick
-		Offset:-1,-1 # TODO
-		Facing: 96 # TODO
-		TransformSounds: # TODO
-		NoTransformSounds: # TODO
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
 
 STNK:
 	Inherits: ^Vehicle
@@ -784,7 +766,7 @@ STNK:
 		Owner: nod
 	Mobile:
 		ROT: 5
-		Speed: 6
+		Speed: 85
 	Health:
 		HP: 180
 	Armor:
@@ -794,8 +776,8 @@ STNK:
 	Cloak:
 		InitialDelay: 90
 		CloakDelay: 90
-		CloakSound: # TODO
-		UncloakSound: # TODO
+		CloakSound:
+		UncloakSound:
 	Armament:
 		Weapon: Dragon
 		LocalOffset: 213,43,128, 213,-43,128
@@ -805,3 +787,4 @@ STNK:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+

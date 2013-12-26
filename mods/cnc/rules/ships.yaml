@@ -9,9 +9,9 @@ BOAT:
 	Armor:
 		Type: Heavy
 	Mobile:
-		InitialFacing:64
+		InitialFacing: 64
 		ROT: 4
-		Speed: 2
+		Speed: 28
 		OnRails: true
 	RevealsShroud:
 		Range: 7
@@ -47,9 +47,9 @@ LST:
 			BlueTiberium: 100
 			Beach: 100
 			River: 100
-		InitialFacing:0
+		InitialFacing: 0
 		ROT: 4
-		Speed: 10
+		Speed: 142
 	Health:
 		HP: 400
 	Armor:
@@ -69,3 +69,4 @@ LST:
 	AttackMove:
 		JustMove: true
 	RejectsOrders:
+

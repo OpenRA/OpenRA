@@ -1,11 +1,11 @@
 Colt45:
 	ROF: 5
-	Range: 7
+	Range: 7c0
 	Report: GUN5.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 1
+		Spread: 42
 		Versus:
 			None: 100%
 			Wood: 0%
@@ -19,14 +19,14 @@ Colt45:
 
 ZSU-23:
 	ROF: 10
-	Range: 10
+	Range: 10c0
 	Report: AACANON3.AUD
 	ValidTargets: Air
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 		High: true
 	Warhead:
-		Spread: 5
+		Spread: 213
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -37,12 +37,12 @@ ZSU-23:
 
 Vulcan:
 	ROF: 30
-	Range: 6
+	Range: 6c0
 	Report: GUN13.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead@1:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
@@ -53,7 +53,7 @@ Vulcan:
 		InfDeath: 2
 		Damage: 10
 	Warhead@2:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
@@ -65,7 +65,7 @@ Vulcan:
 		Damage: 10
 		Delay: 2
 	Warhead@3:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
@@ -77,7 +77,7 @@ Vulcan:
 		Damage: 10
 		Delay: 4
 	Warhead@4:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
@@ -89,7 +89,7 @@ Vulcan:
 		Damage: 10
 		Delay: 6
 	Warhead@5:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
@@ -101,7 +101,7 @@ Vulcan:
 		Damage: 10
 		Delay: 8
 	Warhead@6:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
@@ -115,24 +115,24 @@ Vulcan:
 
 Maverick:
 	ROF: 30
-	Range: 9
-	MinRange: 3
+	Range: 9c0
+	MinRange: 3c0
 	Report: MISSILE7.AUD
 	Burst: 2
 	BurstDelay: 7
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 30
+		Speed: 256
 		Arm: 2
 		High: true
 		Shadow: false
 		ContrailLength: 10
-		Inaccuracy: 12
+		Inaccuracy: 512
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 60
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -148,16 +148,16 @@ Maverick:
 
 FireballLauncher:
 	ROF: 65
-	Range: 5
+	Range: 5c0
 	Burst: 2
 	BurstDelay: 20
 	Projectile: Bullet
-		Speed: 12
+		Speed: 204
 		Trail: fb2
 		Image: FB1
 	Warhead:
-		Spread: 5
-		Versus: 
+		Spread: 213
+		Versus:
 			None: 90%
 			Wood: 50%
 			Light: 60%
@@ -172,17 +172,17 @@ FireballLauncher:
 
 Flamer:
 	ROF: 50
-	Range: 5
+	Range: 5c0
 	Burst: 15
 	BurstDelay: 1
 	Projectile: Bullet
-		Speed: 10
+		Speed: 170
 		Trail: fb4
 		Image: fb3
-		Angle: .1
-		Inaccuracy: 20
+		Angle: 62
+		Inaccuracy: 853
 	Warhead:
-		Spread: 8
+		Spread: 341
 		Versus:
 			None: 90%
 			Wood: 100%
@@ -198,14 +198,14 @@ Flamer:
 
 ChainGun:
 	ROF: 10
-	Range: 5
-	MinRange: 1
+	Range: 5c0
+	MinRange: 1c0
 	Report: GUN13.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 		High: true
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 120%
 			Wood: 50%
@@ -219,14 +219,14 @@ ChainGun:
 
 ChainGun.Yak:
 	ROF: 3
-	Range: 5
-	MinRange: 3
+	Range: 5c0
+	MinRange: 3c0
 	Report: GUN13.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 		High: true
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
@@ -239,12 +239,12 @@ ChainGun.Yak:
 
 Pistol:
 	ROF: 7
-	Range: 3
+	Range: 3c0
 	Report: GUN27.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
@@ -257,12 +257,12 @@ Pistol:
 
 M1Carbine:
 	ROF: 20
-	Range: 5
+	Range: 5c0
 	Report: GUN11.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 25%
 			Light: 30%
@@ -275,22 +275,22 @@ M1Carbine:
 
 Dragon:
 	ROF: 50
-	Range: 5
+	Range: 5c0
 	Report: MISSILE6.AUD
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 25
+		Speed: 213
 		Arm: 2
 		High: true
 		Shadow: false
 		Trail: smokey
 		ContrailLength: 10
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 35
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 10%
 			Wood: 75%
@@ -306,23 +306,23 @@ Dragon:
 
 HellfireAG:
 	ROF: 60
-	Range: 4
+	Range: 4c0
 	Report: MISSILE6.AUD
 	Burst: 2
 	BurstDelay: 10
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 30
+		Speed: 256
 		Arm: 2
 		High: true
 		Shadow: false
 		ContrailLength: 10
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 10
 		RangeLimit: 20
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -338,23 +338,23 @@ HellfireAG:
 
 HellfireAA:
 	ROF: 60
-	Range: 4
+	Range: 4c0
 	Report: MISSILE6.AUD
 	Burst: 2
 	BurstDelay: 10
 	ValidTargets: Air
 	Projectile: Missile
-		Speed: 45
+		Speed: 384
 		Arm: 2
 		High: true
 		Shadow: false
 		ContrailLength: 10
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 10
 		RangeLimit: 20
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -369,17 +369,17 @@ HellfireAA:
 
 Grenade:
 	ROF: 60
-	Range: 4
+	Range: 4c0
 	Report: grenade1.aud
 	Projectile: Bullet
-		Speed: 8
+		Speed: 136
 		High: true
-		Angle: .1
-		Inaccuracy: 13
+		Angle: 62
+		Inaccuracy: 554
 		Image: BOMB
 	Warhead:
-		Spread: 6
-		Versus: 
+		Spread: 256
+		Versus:
 			None: 50%
 			Wood: 100%
 			Light: 25%
@@ -394,13 +394,13 @@ Grenade:
 
 25mm:
 	ROF: 13
-	Range: 4
+	Range: 4c0
 	Report: CANNON2.AUD
 	Projectile: Bullet
-		Speed: 50
+		Speed: 853
 		Image: 50CAL
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 30%
 			Wood: 40%
@@ -414,13 +414,13 @@ Grenade:
 
 90mm:
 	ROF: 50
-	Range: 4.75
+	Range: 4c768
 	Report: CANNON1.AUD
 	Projectile: Bullet
-		Speed: 40
+		Speed: 682
 		Image: 120MM
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 20%
 			Wood: 75%
@@ -436,15 +436,15 @@ Grenade:
 
 105mm:
 	ROF: 70
-	Range: 4.75
+	Range: 4c768
 	Report: CANNON1.AUD
 	Burst: 2
 	BurstDelay: 4
 	Projectile: Bullet
-		Speed: 40
+		Speed: 682
 		Image: 120MM
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 20%
 			Wood: 75%
@@ -460,14 +460,14 @@ Grenade:
 
 120mm:
 	ROF: 90
-	Range: 4.75
+	Range: 4c768
 	Report: CANNON1.AUD
 	Burst: 2
 	Projectile: Bullet
-		Speed: 40
+		Speed: 682
 		Image: 120MM
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 20%
 			Wood: 75%
@@ -483,13 +483,13 @@ Grenade:
 
 TurretGun:
 	ROF: 30
-	Range: 7
+	Range: 7c0
 	Report: TURRET1.AUD
 	Projectile: Bullet
-		Speed: 40
+		Speed: 682
 		Image: 120MM
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 20%
 			Wood: 50%
@@ -505,22 +505,22 @@ TurretGun:
 
 MammothTusk:
 	ROF: 60
-	Range: 8
+	Range: 8c0
 	Report: MISSILE6.AUD
 	Burst: 2
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 40
+		Speed: 341
 		Arm: 2
 		High: true
 		Shadow: false
 		ContrailLength: 10
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 15
 		RangeLimit: 40
 	Warhead:
-		Spread: 6
+		Spread: 256
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -536,18 +536,18 @@ MammothTusk:
 
 155mm:
 	ROF: 85
-	Range: 14
-	MinRange: 3
+	Range: 14c0
+	MinRange: 3c0
 	Report: TANK5.AUD
 	Projectile: Bullet
-		Speed: 12
+		Speed: 204
 		High: true
-		Angle: .1
-		Inaccuracy: 40
+		Angle: 62
+		Inaccuracy: 1c682
 		Image: 120MM
 		ContrailLength: 30
 	Warhead:
-		Spread: 10
+		Spread: 426
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -564,13 +564,13 @@ MammothTusk:
 
 M60mg:
 	ROF: 30
-	Range: 4
+	Range: 4c0
 	Report: PILLBOX1.AUD
 	Burst: 5
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 10%
 			Light: 30%
@@ -583,13 +583,13 @@ M60mg:
 
 Napalm:
 	ROF: 20
-	Range: 4.5
+	Range: 4c512
 	Projectile: Bullet
 		Image: BOMBLET
-		Speed: 5
+		Speed: 85
 		High: yes
 	Warhead:
-		Spread: 4
+		Spread: 170
 		Versus:
 			None: 90%
 			Light: 60%
@@ -605,7 +605,7 @@ Napalm:
 
 CrateNapalm:
 	Warhead:
-		Spread: 4
+		Spread: 170
 		Versus:
 			None: 90%
 			Light: 60%
@@ -621,8 +621,8 @@ CrateNapalm:
 CrateExplosion:
 	Warhead:
 		Damage: 500
-		Spread: 10
-		Versus: 
+		Spread: 426
+		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
@@ -635,7 +635,7 @@ CrateExplosion:
 CrateNuke:
 	Warhead@impact:
 		Damage: 1000
-		Spread: 6
+		Spread: 256
 		Ore: true
 		Versus:
 			None: 90%
@@ -664,11 +664,11 @@ CrateNuke:
 TeslaZap:
 	ROF: 3
 	Charges: true
-	Range: 8.5
+	Range: 8c512
 	Report: TESLA1.AUD
 	Projectile: TeslaZap
 	Warhead:
-		Spread: 1
+		Spread: 42
 		InfDeath: 6
 		Damage: 100
 		Versus:
@@ -676,7 +676,7 @@ TeslaZap:
 
 Nike:
 	ROF: 15
-	Range: 7.5
+	Range: 7c512
 	Report: MISSILE1.AUD
 	ValidTargets: Air
 	Projectile: Missile
@@ -687,9 +687,9 @@ Nike:
 		Image: MISSILE
 		ROT: 25
 		RangeLimit: 50
-		Speed: 40
+		Speed: 341
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 90%
 			Wood: 0%
@@ -704,7 +704,7 @@ Nike:
 
 RedEye:
 	ROF: 50
-	Range: 7.5
+	Range: 7c512
 	Report: MISSILE1.AUD
 	ValidTargets: Air
 	Projectile: Missile
@@ -715,9 +715,9 @@ RedEye:
 		Image: MISSILE
 		ROT: 20
 		RangeLimit: 30
-		Speed: 35
+		Speed: 298
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -731,18 +731,18 @@ RedEye:
 
 8Inch:
 	ROF: 250
-	Range: 16
+	Range: 16c0
 	Burst: 2
 	Report: TURRET1.AUD
 	Projectile: Bullet
-		Speed: 12
+		Speed: 204
 		High: true
-		Angle: .1
-		Inaccuracy: 70
+		Angle: 62
+		Inaccuracy: 2c938
 		Image: 120MM
 		ContrailLength: 30
 	Warhead:
-		Spread: 5
+		Spread: 213
 		Versus:
 			None: 60%
 			Wood: 75%
@@ -758,19 +758,19 @@ RedEye:
 
 SubMissile:
 	ROF: 300
-	Range: 16
+	Range: 16c0
 	Burst: 2
 	Report: MISSILE6.AUD
 	Projectile: Bullet
-		Speed: 6
+		Speed: 102
 		High: true
-		Angle: .4
-		Inaccuracy: 70
+		Angle: 165
+		Inaccuracy: 2c938
 		Image: MISSILE
 		Trail: smokey
 		ContrailLength: 30
 	Warhead:
-		Spread: 10
+		Spread: 426
 		Versus:
 			None: 40%
 			Light: 30%
@@ -785,7 +785,7 @@ SubMissile:
 
 Stinger:
 	ROF: 60
-	Range: 9
+	Range: 9c0
 	Report: MISSILE6.AUD
 	Burst: 2
 	BurstDelay: 0
@@ -799,9 +799,9 @@ Stinger:
 		ROT: 20
 		RangeLimit: 50
 		TurboBoost: true
-		Speed: 20
+		Speed: 170
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -817,7 +817,7 @@ Stinger:
 
 TorpTube:
 	ROF: 100
-	Range: 9
+	Range: 9c0
 	Report: TORPEDO1.AUD
 	ValidTargets: Water, Underwater
 	Underwater: yes
@@ -826,12 +826,12 @@ TorpTube:
 	Projectile: Missile
 		Image: MISSILE
 		Arm: 3
-		Speed: 10
+		Speed: 85
 		Trail: bubbles
 		ROT: 1
 		RangeLimit: 160
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -845,13 +845,13 @@ TorpTube:
 
 2Inch:
 	ROF: 60
-	Range: 5.5
+	Range: 5c512
 	Report: CANNON2.AUD
 	Projectile: Bullet
-		Speed: 25
+		Speed: 426
 		Image: 120MM
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -867,16 +867,16 @@ TorpTube:
 
 DepthCharge:
 	ROF: 60
-	Range: 5
+	Range: 5c0
 	ValidTargets: Underwater
 	Projectile: Bullet
-		Speed: 5
+		Speed: 85
 		Image: BOMB
-		Angle: .1
+		Angle: 62
 		High: true
-		Inaccuracy: 3
+		Inaccuracy: 128
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -890,14 +890,14 @@ DepthCharge:
 
 ParaBomb:
 	ROF: 10
-	Range: 3
+	Range: 3c0
 	Report: CHUTE1.AUD
 	Projectile: GravityBomb
 		Image: PARABOMB
 		Velocity: 43
 		Acceleration: 0
 	Warhead:
-		Spread: 6
+		Spread: 256
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -914,10 +914,10 @@ ParaBomb:
 DogJaw:
 	ValidTargets: Infantry
 	ROF: 10
-	Range: 3
+	Range: 3c0
 	Report: DOGG5P.AUD
 	Warhead:
-		Spread: 5
+		Spread: 213
 		Versus:
 			Wood: 0%
 			Light: 0%
@@ -928,13 +928,13 @@ DogJaw:
 
 Heal:
 	ROF: 80
-	Range: 4
+	Range: 4c0
 	Report: HEAL2.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 5
-		Versus: 
+		Spread: 213
+		Versus:
 			Wood: 0%
 			Light: 0%
 			Heavy: 0%
@@ -944,13 +944,13 @@ Heal:
 
 Repair:
 	ROF: 80
-	Range: 4
+	Range: 4c0
 	Report: FIXIT1.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 5
-		Versus: 
+		Spread: 213
+		Versus:
 			None: 0%
 			Wood: 0%
 			Light: 100%
@@ -961,12 +961,12 @@ Repair:
 
 SilencedPPK:
 	ROF: 80
-	Range: 2.5
+	Range: 2c512
 	Report: silppk.aud
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 0%
 			Light: 0%
@@ -979,21 +979,21 @@ SilencedPPK:
 
 SCUD:
 	ROF: 240
-	Range: 10
-	MinRange: 3
+	Range: 10c0
+	MinRange: 3c0
 	Report: MISSILE1.AUD
 	Projectile: Bullet
-		Speed: 10
+		Speed: 170
 		High: true
 		Shadow: false
 		Trail: smokey
 		TrailDelay: 5
-		Inaccuracy: 5
+		Inaccuracy: 213
 		Image: V2
-		Angle: .1
+		Angle: 62
 	Warhead:
-		Spread: 8
-		Versus: 
+		Spread: 341
+		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 70%
@@ -1010,7 +1010,7 @@ Atomic:
 	ValidTargets: Ground, Water, Air
 	Warhead@impact:
 		Damage: 1500
-		Spread: 24
+		Spread: 1c0
 		SmudgeType: Scorch
 		Size: 1
 		Ore: true
@@ -1022,7 +1022,7 @@ Atomic:
 		ImpactSound: kaboom1.aud
 	Warhead@areanuke1:
 		Damage: 600
-		Spread: 48
+		Spread: 2c0
 		SmudgeType: Scorch
 		Size: 2
 		Ore: true
@@ -1033,7 +1033,7 @@ Atomic:
 		ImpactSound: kaboom22.aud
 	Warhead@areanuke2:
 		Damage: 600
-		Spread: 72
+		Spread: 3c0
 		SmudgeType: Scorch
 		Size: 3
 		Ore: true
@@ -1043,7 +1043,7 @@ Atomic:
 		InfDeath: 5
 	Warhead@areanuke3:
 		Damage: 600
-		Spread: 96
+		Spread: 4c0
 		SmudgeType: Scorch
 		Size: 4
 		Ore: true
@@ -1053,7 +1053,7 @@ Atomic:
 		InfDeath: 5
 	Warhead@areanuke4:
 		Damage: 600
-		Spread: 120
+		Spread: 5c0
 		SmudgeType: Scorch
 		Size: 5
 		Ore: true
@@ -1066,7 +1066,7 @@ MiniNuke:
 	ValidTargets: Ground, Water, Air
 	Warhead@impact:
 		Damage: 1500
-		Spread: 24
+		Spread: 1c0
 		Size: 1
 		Ore: true
 		Versus:
@@ -1077,7 +1077,7 @@ MiniNuke:
 		ImpactSound: kaboom1.aud
 	Warhead@areanuke1:
 		Damage: 600
-		Spread: 48
+		Spread: 2c0
 		Size: 2
 		Ore: true
 		Versus:
@@ -1087,7 +1087,7 @@ MiniNuke:
 		ImpactSound: kaboom22
 	Warhead@areanuke2:
 		Damage: 600
-		Spread: 72
+		Spread: 3c0
 		Size: 3
 		Ore: true
 		Versus:
@@ -1096,7 +1096,7 @@ MiniNuke:
 		InfDeath: 5
 	Warhead@areanuke3:
 		Damage: 600
-		Spread: 96
+		Spread: 4c0
 		Size: 4
 		SmudgeType: Scorch
 		Ore: true
@@ -1108,8 +1108,8 @@ MiniNuke:
 UnitExplode:
 	Warhead:
 		Damage: 500
-		Spread: 10
-		Versus: 
+		Spread: 426
+		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
@@ -1122,7 +1122,7 @@ UnitExplode:
 UnitExplodeSmall:
 	Warhead:
 		Damage: 40
-		Spread: 10
+		Spread: 426
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -1135,7 +1135,7 @@ UnitExplodeSmall:
 BarrelExplode:
 	Warhead:
 		Damage: 500
-		Spread: 10
+		Spread: 426
 		Versus:
 			None: 120%
 			Wood: 200%
@@ -1157,7 +1157,7 @@ Crush:
 ATMine:
 	Warhead:
 		Damage: 500
-		Versus: 
+		Versus:
 			None: 0%
 			Wood: 0%
 			Concrete: 0%
@@ -1167,7 +1167,7 @@ ATMine:
 APMine:
 	Warhead:
 		Damage: 500
-		Versus: 
+		Versus:
 			Wood: 0%
 			Light: 10%
 			Heavy: 10%
@@ -1183,38 +1183,37 @@ Demolish:
 
 PortaTesla:
 	ROF: 70
-	Range: 3.5
+	Range: 3c512
 	Report: TESLA1.AUD
-#	Report: SHKTROP1.AUD
 	Charges: yes
 	Projectile: TeslaZap
 	Warhead:
-		Spread: 1
+		Spread: 42
 		InfDeath: 6
 		Damage: 45
 
 TTankZap:
 	ROF: 120
-	Range: 7
+	Range: 7c0
 	Report: TESLA1.AUD
 	Charges: yes
 	Projectile: TeslaZap
 	Warhead:
-		Spread: 1
+		Spread: 42
 		InfDeath: 6
 		Damage: 100
 
 FLAK-23:
 	ROF: 10
-	Range: 8
+	Range: 8c0
 	Report: AACANON3.AUD
 	ValidTargets: Air,Ground
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 		High: true
 	Warhead:
-		Spread: 5
-		Versus: 
+		Spread: 213
+		Versus:
 			None: 40%
 			Wood: 10%
 			Light: 60%
@@ -1226,12 +1225,12 @@ FLAK-23:
 Sniper:
 	Report: GUN5.AUD
 	ROF: 70
-	Range: 10
+	Range: 10c0
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
 		Damage: 140
-		Spread: 1
+		Spread: 42
 		Versus:
 			None: 100%
 			Wood: 0%
@@ -1242,22 +1241,22 @@ Sniper:
 
 ChronoTusk:
 	ROF: 60
-	Range: 6
+	Range: 6c0
 	Report: MISSILE6.AUD
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 35
+		Speed: 298
 		Arm: 2
 		High: true
 		Shadow: false
 		Trail: smokey
 		ContrailLength: 10
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 10
 		RangeLimit: 22
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 25%
 			Wood: 75%
@@ -1273,10 +1272,10 @@ ChronoTusk:
 
 Claw:
 	ROF: 30
-	Range: 1
+	Range: 1c0
 	Projectile: Bullet
 	Warhead:
-		Spread: 5
+		Spread: 213
 		Versus:
 			None: 90%
 			Wood: 10%
@@ -1288,10 +1287,10 @@ Claw:
 
 Mandible:
 	ROF: 10
-	Range: 1
+	Range: 1c0
 	Projectile: Bullet
 	Warhead:
-		Spread: 5
+		Spread: 213
 		Versus:
 			None: 90%
 			Wood: 10%
@@ -1321,3 +1320,4 @@ MADTankDetonate:
 		Explosion: med_explosion
 		ImpactSound: mineblo1.aud
 		SmudgeType: Crater
+

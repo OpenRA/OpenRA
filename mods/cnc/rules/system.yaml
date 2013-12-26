@@ -9,7 +9,7 @@ Player:
 	ActorGroupProxy:
 	DeveloperMode:
 	HackyAI@Default:
-		Name:Easy AI
+		Name: Easy AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -71,7 +71,7 @@ Player:
 			orca: 5%
 		SquadSize: 15
 	HackyAI@Normal:
-		Name:Normal AI
+		Name: Normal AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -133,7 +133,7 @@ Player:
 			mtnk: 50%
 		SquadSize: 15
 	HackyAI@hard:
-		Name:Hard AI
+		Name: Hard AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -312,11 +312,11 @@ World:
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
 	SmudgeLayer@SCORCH:
-		Type:Scorch
+		Type: Scorch
 		Sequence: scorches
-		SmokePercentage:50
+		SmokePercentage: 50
 	SmudgeLayer@CRATER:
-		Type:Crater
+		Type: Crater
 		Sequence: craters
 	PathfinderDebugOverlay:
 	SpawnMapActors:
@@ -421,3 +421,4 @@ waypoint:
 	Waypoint:
 	RenderEditorOnly:
 	BodyOrientation:
+

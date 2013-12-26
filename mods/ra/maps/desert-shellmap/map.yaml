@@ -1332,7 +1332,7 @@ Rules:
 		DesertShellmapAutoUnload:
 	MIG:
 		Plane:
-			Speed: 30
+			Speed: 280
 	BADR:
 		Invulnerable:
 	MISS:
@@ -1346,11 +1346,11 @@ Weapons:
 	8Inch:
 		Report: tank6.aud
 	2Inch:
-		Range: 10
+		Range: 10c0
 	TTankZap:
-		Range: 4.75
+		Range: 4c768
 	FLAK-23:
-		Range: 4
+		Range: 4c0
 
 Voices:
 
