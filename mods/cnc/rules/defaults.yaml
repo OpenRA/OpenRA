@@ -353,6 +353,7 @@
 	EngineerRepairable:
 	Huntable:
 	LuaScriptEvents:
+	Demolishable:
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -456,6 +457,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 	LuaScriptEvents:
+	Demolishable:
 
 ^Tree:
 	Tooltip:

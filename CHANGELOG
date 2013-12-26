@@ -1,4 +1,10 @@
 NEW:
+	Dune 2000:
+		Added the Atreides grenadier from the 1.06 patch.
+	Red Alert:
+		Tanya can now plant C4 on bridges.
+	Tiberian Dawn:
+		Commando can now plant C4 on bridges.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.
@@ -9,8 +15,7 @@ NEW:
 		Altitude is no longer parsed from actor templates in maps. Specify CenterPosition instead.
 		Run `OpenRA.Utility.exe --upgrade-mod <mod> 20131223` to automatically upgrade mod rules.
 		Run `OpenRA.Utility.exe --upgrade-map <map path> 20131223` to automatically upgrade custom map rules.
-	Dune 2000:
-		Added the Atreides grenadier from the 1.06 patch.
+		Added a new trait Demolishable for buildings to handle the C4 demolition.
 
 20131223:
 	All mods:

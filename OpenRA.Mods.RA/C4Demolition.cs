@@ -56,6 +56,10 @@ namespace OpenRA.Mods.RA
 			if (target.Type != TargetType.Actor)
 				return;
 
+			var demolishable = order.TargetActor.TraitOrDefault<IDemolishable>();
+			if (demolishable == null || !demolishable.IsValidTarget(target.Actor, self))
+				return;
+
 			if (!order.Queued)
 				self.CancelActivity();
 

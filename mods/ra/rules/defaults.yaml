@@ -264,6 +264,7 @@
 		String: Structure
 	Huntable:
 	LuaScriptEvents:
+	Demolishable:
 
 ^Wall:
 	AppearsOnRadar:
@@ -300,6 +301,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 	LuaScriptEvents:
+	Demolishable:
 
 ^TechBuilding:
 	Inherits: ^Building

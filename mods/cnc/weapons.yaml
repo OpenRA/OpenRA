@@ -1027,3 +1027,7 @@ Claw:
 		InfDeath: 1
 		Damage: 60
 
+Demolish:
+	Warhead:
+		ImpactSound: xplobig6.aud
+		Explosion: building

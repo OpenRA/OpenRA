@@ -288,5 +288,13 @@ namespace OpenRA.Mods.RA
 
 			return damage;
 		}
+
+		public void Demolish(Actor saboteur)
+		{
+			// TODO: completely destroy long bridges in a chain reaction
+			Combat.DoExplosion(saboteur, "Demolish", self.CenterPosition);
+			self.World.WorldActor.Trait<ScreenShaker>().AddEffect(15, self.CenterPosition, 6);
+			self.Kill(saboteur);
+		}
 	}
 }
