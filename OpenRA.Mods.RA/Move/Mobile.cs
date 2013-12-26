@@ -206,11 +206,10 @@ namespace OpenRA.Mods.RA.Move
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
 
-			if (init.Contains<AltitudeInit>())
-			{
-				var z = init.Get<AltitudeInit, int>() * 1024 / Game.CellSize;
-				SetVisualPosition(self, CenterPosition + new WVec(0, 0, z - CenterPosition.Z));
-			}
+			// Sets the visual position to WPos accuracy
+			// Use LocationInit if you want to insert the actor into the ActorMap!
+			if (init.Contains<CenterPositionInit>())
+				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
 		}
 
 		public void SetPosition(Actor self, CPos cell)
@@ -445,7 +444,7 @@ namespace OpenRA.Mods.RA.Move
 			decimal speed = Info.Speed * Info.TerrainSpeeds[type].Speed;
 			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
 				speed *= t.GetSpeedModifier();
-			return (int)(speed / 100) * 1024 / (3 * Game.CellSize);
+			return (int)(speed / 100);
 		}
 
 		public void AddInfluence()

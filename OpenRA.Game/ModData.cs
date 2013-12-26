@@ -146,7 +146,7 @@ namespace OpenRA
 			return map;
 		}
 
-		Dictionary<string, Map> FindMaps()
+		public Dictionary<string, Map> FindMaps()
 		{
 			var paths = Manifest.MapFolders.SelectMany(f => FindMapsIn(f));
 			var ret = new Dictionary<string, Map>();

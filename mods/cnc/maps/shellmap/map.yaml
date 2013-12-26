@@ -999,10 +999,10 @@ Rules:
 			Widget: MENU_BACKGROUND
 	LST:
 		Mobile:
-			Speed: 3
+			Speed: 42
 	BOAT:
 		Mobile:
-			Speed: 3
+			Speed: 42
 
 Sequences:
 

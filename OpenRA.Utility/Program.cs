@@ -29,7 +29,9 @@ namespace OpenRA.Utility
 			{ "--docs", Command.ExtractTraitDocs },
 			{ "--map-hash", Command.GetMapHash },
 			{ "--map-preview", Command.GenerateMinimap },
-			{ "--map-upgrade", Command.UpgradeMap },
+			{ "--map-upgrade-v5", Command.UpgradeV5Map },
+			{ "--upgrade-map", UpgradeRules.UpgradeMap },
+			{ "--upgrade-mod", UpgradeRules.UpgradeMod },
 		};
 
 		static void Main(string[] args)

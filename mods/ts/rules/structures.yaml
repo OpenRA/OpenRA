@@ -26,7 +26,7 @@ GACNST:
 	BaseBuilding:
 	Transforms:
 		IntoActor: mcv
-		Offset:1,1
+		Offset: 1,1
 		Facing: 96
 	ProductionBar:
 	-Sellable:
@@ -89,9 +89,8 @@ GAPILE:
 		Type: Wood
 	RevealsShroud:
 		Range: 5
-#	RallyPoint: #TODO: setup sequences
 	Exit@1:
-		SpawnOffset: -64,64,0
+		SpawnOffset: -2730,2730,0
 		ExitCell: 0,2
 	Production:
 		Produces: Infantry
@@ -112,8 +111,6 @@ GAWEAP:
 	Tooltip:
 		Name: GDI War Factory
 		Description: Assembly point for\nvehicle reinforcements
-#	ProvidesCustomPrerequisite:
-#		Prerequisite: VehicleProduction
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
@@ -128,11 +125,10 @@ GAWEAP:
 		Range: 4
 	-RenderBuilding:
 	RenderBuildingWarFactory:
-	RallyPoint: # TODO: setup sequences/palettes
+	RallyPoint:
 		RallyPoint: 6,5
-#		IndicatorPalettePrefix: effect
 	Exit@1:
-		SpawnOffset: -4,24
+		SpawnOffset: -170,1024,0
 		ExitCell: 3,3
 	Production:
 		Produces: Vehicle
@@ -188,9 +184,8 @@ NAHAND:
 		Type: Wood
 	RevealsShroud:
 		Range: 5
-#	RallyPoint: #TODO: setup sequences
 	Exit@1:
-		SpawnOffset: -64,64,0
+		SpawnOffset: -2730,2730,0
 		ExitCell: 0,2
 	Production:
 		Produces: Infantry
@@ -209,8 +204,6 @@ NAWEAP:
 	Tooltip:
 		Name: Nod War Factory
 		Description: Assembly point for\nvehicle reinforcements
-#	ProvidesCustomPrerequisite:
-#		Prerequisite: VehicleProduction
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
@@ -225,11 +218,10 @@ NAWEAP:
 		Range: 4
 	-RenderBuilding:
 	RenderBuildingWarFactory:
-	RallyPoint: # TODO: setup sequences/palettes
+	RallyPoint:
 		RallyPoint: 6,5
-#		IndicatorPalettePrefix: effect
 	Exit@1:
-		SpawnOffset: -4,24
+		SpawnOffset: -170,1024,0
 		ExitCell: 3,3
 	Production:
 		Produces: Vehicle
@@ -287,16 +279,16 @@ GATICK:
 	RenderBuilding:
 	RenderVoxels:
 		Image: ttnk
-	WithVoxelBarrel: # TODO: offsets
-	WithVoxelTurret: # TODO: offsets
+	WithVoxelBarrel:
+	WithVoxelTurret:
 	Transforms:
 		IntoActor: ttnk
-		Offset: 1,1 # TODO
-		Facing: 96 # TODO
-		TransformSounds: # TODO
-		NoTransformSounds: # TODO
+		Offset: 1,1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
 
-GAICBM: # TODO: does not launch anything yet
+GAICBM:
 	Inherits: ^Building
 	Valued:
 		Cost: 800
@@ -304,8 +296,8 @@ GAICBM: # TODO: does not launch anything yet
 	Tooltip:
 		Name: Deployed ICBM
 	Building:
-		Footprint: _ x # TODO
-		Dimensions: 1,2 # TODO
+		Footprint: _ x
+		Dimensions: 1,2
 	-GivesBuildableArea:
 	Health:
 		HP: 400
@@ -315,10 +307,10 @@ GAICBM: # TODO: does not launch anything yet
 		Range: 5
 	Transforms:
 		IntoActor: icbm
-		Offset: 1,1 # TODO
-		Facing: 96 # TODO
-		TransformSounds: # TODO
-		NoTransformSounds: # TODO
+		Offset: 1,1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
 
 GADPSA:
 	Inherits: ^Building
@@ -328,8 +320,8 @@ GADPSA:
 	Tooltip:
 		Name: Deployed Sensor Array
 	Building:
-		Footprint: _ x # TODO
-		Dimensions: 1,2 # TODO
+		Footprint: _ x
+		Dimensions: 1,2
 	-GivesBuildableArea:
 	Health:
 		HP: 600
@@ -339,10 +331,10 @@ GADPSA:
 		Range: 8
 	Transforms:
 		IntoActor: lpst
-		Offset: 1,1 # TODO
-		Facing: 96 # TODO
-		TransformSounds: # TODO
-		NoTransformSounds: # TODO
+		Offset: 1,1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
@@ -378,16 +370,16 @@ GAARTY:
 	RenderBuilding:
 	RenderVoxels:
 		Image: art2
-	WithVoxelBarrel: # TODO: offsets
-	WithVoxelTurret: # TODO: offsets
+	WithVoxelBarrel:
+	WithVoxelTurret:
 	Transforms:
 		IntoActor: art2
-		Offset: 1,1 # TODO
-		Facing: 96 # TODO
-		TransformSounds: # TODO
-		NoTransformSounds: # TODO
+		Offset: 1,1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
 
-GASPOT: # TODO: has moving spotlights
+GASPOT:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
@@ -422,7 +414,6 @@ GAHPAD:
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 60
-#		Prerequisites: garadr
 		Owner: gdi
 		Queue: Building
 	Building:
@@ -434,13 +425,12 @@ GAHPAD:
 	RevealsShroud:
 		Range: 5
 	Exit@1:
-		SpawnOffset: 0,-6
+		SpawnOffset: 0,-256,0
 	Production:
 		Produces: Air
 	BelowUnits:
 	Reservable:
 	RepairsUnits:
-#	RallyPoint:
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform
@@ -456,7 +446,6 @@ NAHPAD:
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 60
-#		Prerequisites: naradr
 		Owner: nod
 		Queue: Building
 	Building:
@@ -468,20 +457,18 @@ NAHPAD:
 	RevealsShroud:
 		Range: 5
 	Exit@1:
-		SpawnOffset: 0,-6
+		SpawnOffset: 0,-256,0
 	Production:
 		Produces: Air
 	BelowUnits:
 	Reservable:
 	RepairsUnits:
-#	RallyPoint:
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 
-# custom prerequisites:
 ANYPOWER:
 	Tooltip:
 		Name: Power Plant
@@ -491,3 +478,4 @@ BARRACKS:
 	Tooltip:
 		Name: Infantry Production
 		Description: Infantry Production
+

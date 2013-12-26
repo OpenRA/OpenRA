@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 
 namespace OpenRA
@@ -15,7 +16,7 @@ namespace OpenRA
 	/// <summary>
 	/// 1d world distance - 1024 units = 1 cell.
 	/// </summary>
-	public struct WRange
+	public struct WRange : IComparable
 	{
 		public readonly int Range;
 
@@ -80,6 +81,15 @@ namespace OpenRA
 		{
 			var o = obj as WRange?;
 			return o != null && o == this;
+		}
+
+		public int CompareTo(object obj)
+		{
+			var o = obj as WRange?;
+			if (o == null)
+				return 1;
+
+			return Range.CompareTo(o.Value.Range);
 		}
 
 		public override string ToString() { return "{0}".F(Range); }

@@ -49,8 +49,7 @@ namespace OpenRA.Mods.RA
 			// Bombs drop anywhere in range
 			foreach (var a in Armaments.Where(a => a.Info.Name == info.Bombs))
 			{
-				var range = new WRange((int)(1024 * a.Weapon.Range));
-				if (!target.IsInRange(self.CenterPosition, range))
+				if (!target.IsInRange(self.CenterPosition, a.Weapon.Range))
 					continue;
 
 				a.CheckFire(self, this, facing, bombTarget);
@@ -63,11 +62,10 @@ namespace OpenRA.Mods.RA
 
 			foreach (var a in Armaments.Where(a => a.Info.Name == info.Guns))
 			{
-				var range = new WRange((int)(1024 * a.Weapon.Range));
-				if (!target.IsInRange(self.CenterPosition, range))
+				if (!target.IsInRange(self.CenterPosition, a.Weapon.Range))
 				    continue;
 
-				var t = Target.FromPos(cp - new WVec(0, range.Range / 2, cp.Z).Rotate(WRot.FromFacing(facing.Facing)));
+				var t = Target.FromPos(cp - new WVec(0, a.Weapon.Range.Range / 2, cp.Z).Rotate(WRot.FromFacing(facing.Facing)));
 				a.CheckFire(self, this, facing, t);
 			}
 		}

@@ -17,7 +17,8 @@ namespace OpenRA.Traits
 	public class HealthInfo : ITraitInfo, UsesInit<HealthInit>
 	{
 		public readonly int HP = 0;
-		public readonly float Radius = 10;
+		[Desc("Physical size of the unit used for damage calculations.  Impacts within this radius apply full damage")]
+		public readonly WRange Radius = new WRange(426);
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 

@@ -23,8 +23,7 @@ namespace OpenRA.Mods.RA.Air
 
 			// We can't possibly turn this fast
 			var desiredFacing = plane.Facing + 64;
-			var cruiseAltitude = new WRange(plane.Info.CruiseAltitude * 1024 / Game.CellSize);
-			Fly.FlyToward(self, plane, desiredFacing, cruiseAltitude);
+			Fly.FlyToward(self, plane, desiredFacing, plane.Info.CruiseAltitude);
 
 			return this;
 		}

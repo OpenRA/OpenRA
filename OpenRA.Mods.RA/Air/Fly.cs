@@ -51,13 +51,12 @@ namespace OpenRA.Mods.RA.Air
 
 			var plane = self.Trait<Plane>();
 			var desiredFacing = Util.GetFacing(d, plane.Facing);
-			var cruiseAltitude = new WRange(plane.Info.CruiseAltitude * 1024 / Game.CellSize);
 
 			// Don't turn until we've reached the cruise altitude
-			if (plane.CenterPosition.Z < cruiseAltitude.Range)
+			if (plane.CenterPosition.Z <  plane.Info.CruiseAltitude.Range)
 				desiredFacing = plane.Facing;
 
-			FlyToward(self, plane, desiredFacing, cruiseAltitude);
+			FlyToward(self, plane, desiredFacing, plane.Info.CruiseAltitude);
 
 			return this;
 		}

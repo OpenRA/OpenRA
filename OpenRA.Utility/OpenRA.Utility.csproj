@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Command.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="UpgradeRules.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

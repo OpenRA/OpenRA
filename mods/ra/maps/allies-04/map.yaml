@@ -1863,7 +1863,7 @@ Rules:
 		Tooltip:
 			Icon: dogicon
 		Mobile:
-			Speed: 4
+			Speed: 56
 		RenderInfantry:
 			Image: DOG
 	TRUK.Hijackable:

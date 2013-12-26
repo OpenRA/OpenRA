@@ -190,25 +190,25 @@ namespace OpenRA.Graphics
 				selectable.DrawRollover(this);
 		}
 
-		public void DrawRangeCircle(Color c, float2 location, float range)
+		public void DrawRangeCircle(WPos pos, WRange range, Color c)
 		{
+			var offset = new WVec(range.Range, 0, 0);
 			for (var i = 0; i < 32; i++)
 			{
-				var start = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * i) / 16);
-				var end = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * (i + 0.7)) / 16);
-
-				Game.Renderer.WorldLineRenderer.DrawLine(start, end, c, c);
+				var pa = pos + offset.Rotate(WRot.FromFacing(8 * i));
+				var pb = pos + offset.Rotate(WRot.FromFacing(8 * i + 6));
+				Game.Renderer.WorldLineRenderer.DrawLine(ScreenPosition(pa), ScreenPosition(pb), c, c);
 			}
 		}
 
-		public void DrawRangeCircleWithContrast(Color fg, float2 location, float range, Color bg)
+		public void DrawRangeCircleWithContrast(WPos pos, WRange range, Color fg, Color bg)
 		{
 			var wlr = Game.Renderer.WorldLineRenderer;
 			var oldWidth = wlr.LineWidth;
 			wlr.LineWidth = 3;
-			DrawRangeCircle(bg, location, range);
+			DrawRangeCircle(pos, range, bg);
 			wlr.LineWidth = 1;
-			DrawRangeCircle(fg, location, range);
+			DrawRangeCircle(pos, range, fg);
 			wlr.LineWidth = oldWidth;
 		}
 

@@ -28,13 +28,13 @@ namespace OpenRA.Mods.RA
 		public override void Activate(Actor self, Order order)
 		{
 			var enterCell = self.World.ChooseRandomEdgeCell();
+			var altitude = Rules.Info["u2"].Traits.Get<PlaneInfo>().CruiseAltitude;
 
 			var plane = self.World.CreateActor("u2", new TypeDictionary
 			{
-				new LocationInit( enterCell ),
-				new OwnerInit( self.Owner ),
-				new FacingInit( Util.GetFacing(order.TargetLocation - enterCell, 0) ),
-				new AltitudeInit( Rules.Info["u2"].Traits.Get<PlaneInfo>().CruiseAltitude ),
+				new CenterPositionInit(enterCell.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+				new OwnerInit(self.Owner),
+				new FacingInit(Util.GetFacing(order.TargetLocation - enterCell, 0))
 			});
 
 			plane.CancelActivity();

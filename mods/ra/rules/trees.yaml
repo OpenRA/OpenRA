@@ -51,7 +51,7 @@ T08:
 	Building:
 		Footprint: x_
 		Dimensions: 2,1
-	
+
 T10:
 	Inherits: ^Tree
 	Building:
@@ -197,7 +197,6 @@ BOXES01:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
-	
 
 BOXES02:
 	Inherits: ^Tree
@@ -283,7 +282,6 @@ ICE05:
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
-# Desert Terrain Expansion
 ROCK1:
 	Inherits: ^Rock
 	Building:
@@ -404,3 +402,4 @@ LAR2:
 	EditorAppearance:
 		RelativeToTopLeft: yes
 		UseTerrainPalette: true
+

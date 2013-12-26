@@ -54,10 +54,6 @@ namespace OpenRA.Mods.RA
 					td.Add(new HuskSpeedInit(mobile.MovementSpeedForCell(self, self.Location)));
 				}
 
-				var aircraft = self.TraitOrDefault<Aircraft>();
-				if (aircraft != null)
-					td.Add(new AltitudeInit(aircraft.CenterPosition.Z * Game.CellSize / 1024));
-
 				var facing = self.TraitOrDefault<IFacing>();
 				if (facing != null)
 					td.Add(new FacingInit(facing.Facing));

@@ -22,7 +22,6 @@ APC.Husk:
 	RenderUnit:
 		Image: apc
 
-
 FTNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
@@ -30,7 +29,6 @@ FTNK.Husk:
 		Icon: ftnkicnh
 	RenderUnit:
 		Image: ftnk
-
 
 ARTY.Husk:
 	Inherits: ^Husk
@@ -113,7 +111,7 @@ MLRS.Husk:
 		Image: mlrs
 	ThrowsParticle@turret:
 		Anim: turret
-		
+
 STNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
@@ -121,3 +119,4 @@ STNK.Husk:
 		Icon: stnkicnh
 	RenderUnit:
 		Image: stnk
+

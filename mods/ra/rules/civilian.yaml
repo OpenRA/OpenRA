@@ -235,14 +235,14 @@ V18:
 	Inherits: ^CivField
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
-		
+
 V19:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Oil Pump
-	LeavesHusk: 
+	LeavesHusk:
 		HuskActor: V19.Husk
 	AutoTargetIgnore:
 
@@ -501,7 +501,6 @@ BRIDGEHUT.small:
 	TargetableBuilding:
 		TargetTypes: BridgeHut
 
-#Desert Terrain Expansion
 V20:
 	Inherits: ^DesertCivBuilding
 	Building:
@@ -648,5 +647,6 @@ SNOWHUT:
 	Building:
 		Footprint: x x
 		Dimensions: 1,2
-	RenderBuilding: 
+	RenderBuilding:
 		Scale: 0.7
+

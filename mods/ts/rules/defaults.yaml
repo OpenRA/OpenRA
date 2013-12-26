@@ -12,22 +12,20 @@
 	GivesBuildableArea:
 	Capturable:
 	SoundOnDamageTransition:
-		DamagedSound: #TODO
-		DestroyedSound: #TODO
+		DamagedSound:
+		DestroyedSound:
 	RenderBuilding:
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EngineerRepairable:
-#	EmitInfantryOnSell:
 	MustBeDestroyed:
 	GivesExperience:
-#	FrozenUnderFog:
 	CaptureNotification:
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	ShakeOnDeath:
 	ProximityCaptor:
-		Types:Building
+		Types: Building
 	Sellable:
 	AcceptsSupplies:
 	GivesBounty:
@@ -42,7 +40,7 @@
 ^Infantry:
 	AppearsOnRadar:
 	Health:
-		Radius: 3
+		Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -94,21 +92,18 @@
 		Cost: 10
 	Tooltip:
 		Name: Civilian
-	Buildable: # TODO: remove this once the testing period is over
+	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 1000
 		Owner: gdi, nod
 	Health:
 		HP: 50
 	Mobile:
-		Speed: 5
+		Speed: 71
 	RevealsShroud:
 		Range: 2
 	Armament:
-		Weapon: Pistola # deviation from RULES.INI (only CTECH is armed)
-#	LimitedAmmo:
-#		Ammo: 10
-#		PipCount: 2
+		Weapon: Pistola
 	AttackFrontal:
 	ProximityCaptor:
 		Types: CivilianInfantry
@@ -127,7 +122,7 @@
 			Beach: 40
 		ROT: 5
 	SelectionDecorations:
-	Selectable: 
+	Selectable:
 		Voice: Vehicle
 	TargetableUnit:
 		TargetTypes: Ground
@@ -141,9 +136,8 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
-		Types:Vehicle
+		Types: Vehicle
 	GivesBounty:
-#	WithSmoke:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guard:
@@ -207,3 +201,4 @@
 	BodyOrientation:
 	Huntable:
 	LuaScriptEvents:
+

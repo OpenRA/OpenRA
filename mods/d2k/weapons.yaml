@@ -1,15 +1,15 @@
 LMG:
 	ROF: 20
-	Range: 5
+	Range: 5c0
 	Report: MGUN2.WAV
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c256
 		ContrailLength: 3
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
 	Warhead:
-		Spread: 3
+		Spread: 96
 		Versus:
 			Wood: 25%
 			Light: 40%
@@ -21,20 +21,20 @@ LMG:
 
 Bazooka:
 	ROF: 50
-	Range: 5
+	Range: 5c0
 	Report: BAZOOK1.WAV
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 25
+		Speed: 160
 		Arm: 2
 		Shadow: yes
 		ContrailLength: 10
-		Inaccuracy: 3
+		Inaccuracy: 96
 		Image: RPG
 		ROT: 5
 		RangeLimit: 35
 	Warhead:
-		Spread: 3
+		Spread: 96
 		Versus:
 			None: 10%
 			Wood: 75%
@@ -49,17 +49,17 @@ Bazooka:
 
 Sniper:
 	ROF: 100
-	Range: 8.5
+	Range: 8c512
 	Report: FREMODD1.WAV
 	Projectile: Bullet
-		Speed: 150
+		Speed: 1c896
 		ContrailLength: 6
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
-	Warhead: 
+	Warhead:
 		Damage: 60
-		Spread: 1
+		Spread: 32
 		Versus:
 			None: 100%
 			Wood: 0%
@@ -70,17 +70,17 @@ Sniper:
 
 Vulcan:
 	ROF: 30
-	Range: 5.75
-	Report: VULCAN.AUD # TODO: fallback to RA
+	Range: 5c768
+	Report: VULCAN.AUD
 	ValidTargets: Ground, Air
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c256
 		ContrailLength: 3
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
 	Warhead:
-		Spread: 3
+		Spread: 96
 		Versus:
 			Wood: 0%
 			Light: 60%
@@ -93,18 +93,18 @@ Vulcan:
 Slung:
 	ROF: 60
 	Delay: 5
-	Range: 5.5
+	Range: 5c512
 	Report: BAZOOK2.WAV
 	ValidTargets: Ground
 	Projectile: Bullet
-		Speed: 25
+		Speed: 320
 		High: true
 		Shadow: yes
-		Angle: .15
-		Inaccuracy: 12
+		Angle: 88
+		Inaccuracy: 384
 		Image: MISSILE
 	Warhead:
-		Spread: 6
+		Spread: 192
 		Versus:
 			None: 0%
 			Wood: 75%
@@ -118,18 +118,18 @@ Slung:
 
 HMG:
 	ROF: 30
-	Range: 5
+	Range: 5c0
 	Burst: 2
 	BurstDelay: 5
 	Report: 20MMGUN1.WAV
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c256
 		ContrailLength: 3
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
 	Warhead:
-		Spread: 3
+		Spread: 96
 		Versus:
 			Wood: 15%
 			Light: 45%
@@ -141,18 +141,18 @@ HMG:
 
 HMGo:
 	ROF: 30
-	Range: 5
+	Range: 5c0
 	Burst: 2
 	BurstDelay: 5
 	Report: 20MMGUN1.WAV
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c256
 		ContrailLength: 3
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
 	Warhead:
-		Spread: 3
+		Spread: 96
 		Versus:
 			Wood: 15%
 			Light: 45%
@@ -166,19 +166,19 @@ QuadRockets:
 	ROF: 40
 	Burst: 2
 	BurstDelay: 25
-	Range: 7
+	Range: 7c0
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Arm: 0
 		Shadow: yes
-		Inaccuracy: 3
+		Inaccuracy: 96
 		Image: RPG
 		ROT: 10
-		Speed: 40
+		Speed: 256
 		RangeLimit: 40
 	Warhead:
-		Spread: 3
+		Spread: 96
 		Versus:
 			None: 35%
 			Wood: 45%
@@ -193,16 +193,16 @@ QuadRockets:
 
 TurretGun:
 	ROF: 35
-	Range: 7
+	Range: 7c0
 	Report: TURRET1.WAV
 	Projectile: Bullet
-		Speed: 55
+		Speed: 704
 		High: yes
 		Shadow: no
-		Inaccuracy: 9
+		Inaccuracy: 288
 		Image: 120mm
 	Warhead:
-		Spread: 8
+		Spread: 256
 		Versus:
 			None: 50%
 			Wood: 75%
@@ -216,8 +216,8 @@ TurretGun:
 
 TowerMissile:
 	ROF: 35
-	Range: 7.75
-	MinRange: 1
+	Range: 7c768
+	MinRange: 1c0
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Burst: 2
@@ -226,14 +226,14 @@ TowerMissile:
 		Arm: 0
 		High: yes
 		Shadow: yes
-		Inaccuracy: 12
+		Inaccuracy: 384
 		Image: MISSILE2
 		ROT: 10
-		Speed: 20
+		Speed: 256
 		RangeLimit: 50
-		Angle: 0.2
+		Angle: 110
 	Warhead:
-		Spread: 12
+		Spread: 384
 		Versus:
 			None: 50%
 			Wood: 45%
@@ -248,14 +248,14 @@ TowerMissile:
 
 90mm:
 	ROF: 50
-	Range: 5.75
+	Range: 5c768
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
-		Speed: 50
-		Inaccuracy: 12
+		Speed: 640
+		Inaccuracy: 384
 		Image: 120mm
 	Warhead:
-		Spread: 8
+		Spread: 256
 		Versus:
 			None: 50%
 			Wood: 50%
@@ -269,14 +269,14 @@ TowerMissile:
 
 90mma:
 	ROF: 50
-	Range: 7
+	Range: 7c0
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
-		Speed: 55
-		Inaccuracy: 11
+		Speed: 704
+		Inaccuracy: 352
 		Image: 120mm
 	Warhead:
-		Spread: 8
+		Spread: 256
 		Versus:
 			None: 50%
 			Wood: 50%
@@ -290,13 +290,13 @@ TowerMissile:
 
 DevBullet:
 	ROF: 50
-	Range: 5
+	Range: 5c0
 	Report: TANKHVY1.WAV
 	Projectile: Bullet
-		Speed: 50
+		Speed: 640
 		Image: doubleblastbullet
 	Warhead:
-		Spread: 8
+		Spread: 256
 		Versus:
 			None: 100%
 			Wood: 50%
@@ -310,24 +310,24 @@ DevBullet:
 
 227mm:
 	ROF: 100
-	Range: 10
-	MinRange: 4
+	Range: 10c0
+	MinRange: 4c0
 	Burst: 4
 	BurstDelay: 15
 	Report: MISSLE1.WAV
 	ValidTargets: Ground
 	Projectile: Bullet
-		Speed: 28
+		Speed: 358
 		Arm: 5
 		High: yes
 		Shadow: yes
-		Inaccuracy: 45
-		Angle: 0.2
+		Inaccuracy: 1c416
+		Angle: 110
 		Image: MISSILE2
 		ROT: 5
 		ContrailLength: 5
 	Warhead:
-		Spread: 12
+		Spread: 384
 		Versus:
 			None: 20%
 			Wood: 50%
@@ -342,20 +342,20 @@ DevBullet:
 
 FakeMissile:
 	ROF: 120
-	Range: 8
+	Range: 8c0
 	Burst: 1
 	Report: MISSLE1.WAV
 	Projectile: Bullet
-		Speed: 35
+		Speed: 448
 		High: true
 		Shadow: yes
-		Angle: 0.2
-		Inaccuracy: 35
+		Angle: 110
+		Inaccuracy: 1c96
 		Image: MISSILE
 		ContrailLength: 15
-		ContrailUsePlayerColor : True
+		ContrailUsePlayerColor: True
 	Warhead:
-		Spread: 3
+		Spread: 96
 		Versus:
 			None: 0%
 			Wood: 0%
@@ -367,19 +367,19 @@ FakeMissile:
 
 155mm:
 	ROF: 75
-	Range: 8
-	MinRange: 2
+	Range: 8c0
+	MinRange: 2c0
 	Report: MORTAR1.WAV
 	Projectile: Bullet
-		Speed: 20
+		Speed: 256
 		High: true
 		Shadow: yes
-		Angle: .1
-		Inaccuracy: 40
+		Angle: 62
+		Inaccuracy: 1c256
 		ContrailLength: 20
 		Image: 155mm
 	Warhead:
-		Spread: 12
+		Spread: 384
 		Versus:
 			None: 100%
 			Wood: 80%
@@ -394,7 +394,7 @@ FakeMissile:
 
 Sound:
 	ROF: 100
-	Range: 8.5
+	Range: 8c512
 	Report: SONIC1.WAV
 	Projectile: LaserZap
 		BeamWidth: 2
@@ -402,7 +402,7 @@ Sound:
 		BeamDuration: 8
 		UsePlayerColor: true
 	Warhead:
-		Spread: 1
+		Spread: 32
 		Versus:
 			None: 60%
 			Wood: 85%
@@ -413,14 +413,14 @@ Sound:
 
 ChainGun:
 	ROF: 10
-	Range: 5
-	MinRange: 1
+	Range: 5c0
+	MinRange: 1c0
 	Report: 20MMGUN1.WAV
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c256
 		High: true
 	Warhead:
-		Spread: 3
+		Spread: 96
 		Versus:
 			Wood: 50%
 			Light: 60%
@@ -432,12 +432,12 @@ ChainGun:
 
 Heal:
 	ROF: 160
-	Range: 4
+	Range: 4c0
 	Report:
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c256
 	Warhead:
-		Spread: 5
+		Spread: 160
 		Versus:
 			Wood: 0%
 			Light: 0%
@@ -448,10 +448,10 @@ Heal:
 
 WormJaw:
 	ROF: 10
-	Range: 3
+	Range: 3c0
 	Report: WORM.WAV
 	Warhead:
-		Spread: 5
+		Spread: 160
 		Versus:
 			Wood: 0%
 			Concrete: 0%
@@ -459,12 +459,12 @@ WormJaw:
 
 ParaBomb:
 	ROF: 10
-	Range: 4.5
-	Report: 
+	Range: 4c512
+	Report:
 	Projectile: GravityBomb
 		Image: BOMBS
 	Warhead:
-		Spread: 6
+		Spread: 192
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -478,11 +478,11 @@ ParaBomb:
 
 Napalm:
 	ROF: 2
-	Range: 3
+	Range: 3c0
 	Projectile: GravityBomb
 		Image: BOMBS
 	Warhead:
-		Spread: 20
+		Spread: 640
 		Versus:
 			None: 20%
 			Wood: 100%
@@ -508,7 +508,7 @@ Demolish:
 Atomic:
 	Warhead:
 		Damage: 1800
-		Spread: 64
+		Spread: 2c0
 		Versus:
 			None: 100%
 			Wood: 100%
@@ -522,7 +522,7 @@ Atomic:
 CrateNuke:
 	Warhead:
 		Damage: 800
-		Spread: 50
+		Spread: 1c576
 		Versus:
 			None: 20%
 			Wood: 75%
@@ -536,7 +536,7 @@ CrateNuke:
 CrateExplosion:
 	Warhead:
 		Damage: 400
-		Spread: 10
+		Spread: 320
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -549,7 +549,7 @@ CrateExplosion:
 UnitExplode:
 	Warhead:
 		Damage: 500
-		Spread: 10
+		Spread: 320
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -562,7 +562,7 @@ UnitExplode:
 UnitExplodeSmall:
 	Warhead:
 		Damage: 60
-		Spread: 10
+		Spread: 320
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -575,7 +575,7 @@ UnitExplodeSmall:
 UnitExplodeTiny:
 	Warhead:
 		Damage: 30
-		Spread: 7
+		Spread: 224
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -588,7 +588,7 @@ UnitExplodeTiny:
 UnitExplodeScale:
 	Warhead:
 		Damage: 90
-		Spread: 13
+		Spread: 416
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -600,16 +600,16 @@ UnitExplodeScale:
 
 Grenade:
 	ROF: 60
-	Range: 4
-	Report: # TODO
+	Range: 4c0
+	Report:
 	Projectile: Bullet
-		Speed: 16
+		Speed: 204
 		High: true
-		Angle: .1
-		Inaccuracy: 13
-		Image: BOMBS # TODO
+		Angle: 62
+		Inaccuracy: 416
+		Image: BOMBS
 	Warhead:
-		Spread: 6
+		Spread: 192
 		Versus:
 			None: 50%
 			Wood: 100%
@@ -620,3 +620,4 @@ Grenade:
 		SmudgeType: SandCrater
 		Damage: 60
 		ImpactSound: EXPLLG5.WAV
+

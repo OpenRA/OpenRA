@@ -18,7 +18,7 @@
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 6
+		Speed: 64
 		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 8
@@ -64,16 +64,14 @@ HARVESTER:
 		HarvestFacings: 8
 		Resources: Spice
 		UnloadTicksPerBale: 5
-		# How far away from our linked refinery to find resources (in cells):
 		SearchFromProcRadius: 24
-		# How far away from last harvest order location to find more resources (in cells):
 		SearchFromOrderRadius: 12
 	Health:
 		HP: 1000
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 6
+		Speed: 64
 		Crushes: crate, infantry
 	RenderUnit:
 		Image: HARVESTER
@@ -124,7 +122,7 @@ TRIKE:
 		Type: Light
 	Mobile:
 		ROT: 10
-		Speed: 12
+		Speed: 128
 	RevealsShroud:
 		Range: 7
 	RenderUnit:
@@ -137,11 +135,6 @@ TRIKE:
 	Explodes:
 		Weapon: UnitExplodeTiny
 		EmptyWeapon: UnitExplodeTiny
-#	Cargo:
-#		Types: Infantry
-#		MaxWeight: 1
-#		PipCount: 1
-#		UnloadFacing: 220
 
 TRIKE.starport:
 	Inherits: TRIKE
@@ -168,11 +161,11 @@ QUAD:
 		Description: Missile Scout\n Strong vs Vehicles\n  Weak vs Infantry
 	Health:
 		HP: 125
-	Armor: 
+	Armor:
 		Type: Light
 	Mobile:
 		ROT: 8
-		Speed: 9
+		Speed: 96
 	RevealsShroud:
 		Range: 8
 	Armament:
@@ -212,7 +205,7 @@ QUAD.starport:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 6
+		Speed: 64
 		ROT: 6
 		Crushes: crate, infantry
 	RevealsShroud:
@@ -261,7 +254,7 @@ SIEGETANK:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 5
+		Speed: 53
 		ROT: 3
 		Crushes: crate, infantry
 	RevealsShroud:
@@ -318,7 +311,7 @@ MISSILETANK:
 		BuildPaletteOrder: 60
 		Hotkey: r
 	Mobile:
-		Speed: 6
+		Speed: 64
 		ROT: 5
 	Health:
 		HP: 90
@@ -356,3 +349,4 @@ MISSILETANK.starport:
 		Owner: atreides, harkonnen, ordos
 	Valued:
 		Cost: 1250
+
