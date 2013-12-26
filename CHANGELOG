@@ -9,6 +9,8 @@ NEW:
 		Altitude is no longer parsed from actor templates in maps. Specify CenterPosition instead.
 		Run `OpenRA.Utility.exe --upgrade-mod <mod> 20131223` to automatically upgrade mod rules.
 		Run `OpenRA.Utility.exe --upgrade-map <map path> 20131223` to automatically upgrade custom map rules.
+	Dune 2000:
+		Added the Atreides grenadier from the 1.06 patch.
 
 20131223:
 	All mods:
