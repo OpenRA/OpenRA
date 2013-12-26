@@ -630,9 +630,9 @@ RICE:
 RUSHOUSE:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		RequireTilesets: TEMPERAT
 	Building:
-		Footprint: _ x
+		Footprint: x x
 		Dimensions: 1,2
 
 ASIANHUT:
@@ -643,7 +643,7 @@ ASIANHUT:
 SNOWHUT:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		RequiresTilesets: SNOW
+		RequireTilesets: SNOW
 	Building:
 		Footprint: x x
 		Dimensions: 1,2
