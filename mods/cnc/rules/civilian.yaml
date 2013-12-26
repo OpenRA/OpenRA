@@ -410,7 +410,7 @@ C10:
 VICE:
 	AppearsOnRadar:
 	Health:
-		Radius: 128
+		Radius: 427
 		HP: 400
 	Armor:
 		Type: Wood
@@ -438,7 +438,7 @@ VICE:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Viceroid
+		Name: Visceroid
 	Armament:
 		Weapon: Chemspray
 		LocalOffset: 384,0,0
