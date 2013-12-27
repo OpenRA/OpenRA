@@ -7,7 +7,7 @@ return {
   frun = function(self,wfilename,rundebug)
     local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
     local luxDir = ide.config.path.luxinia2 or os.getenv("LUXINIA2")
-    local scratchpad = rundebug:match("scratchpad")
+    local scratchpad = rundebug and rundebug:match("scratchpad")
     local filename = wfilename:GetFullName()
     
     if (wx.wxFileName(luxDir):IsRelative()) then
