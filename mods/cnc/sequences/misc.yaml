@@ -234,6 +234,15 @@ crate-effects:
 		Start: 0
 		Length: *
 		Tick: 200
+	firepowerup: firepowercrate
+		Start: 0
+		Length: *
+	armorup: armorcrate
+		Start: 0
+		Length: *
+	speedup: speedcrate
+		Start: 0
+		Length: *
 
 atomicup:
 	idle:
