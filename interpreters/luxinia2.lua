@@ -30,18 +30,17 @@ return {
       DisplayOutputLn("luxinia2: scratchpad currently requires starting with main.lua\n However, do not edit its content, but add other files to scratchpad.\n In general you should start with the file that hosts the initialization\n and main loop, but then edit other files.")
       return
     end
-
+    
     local pid, proc
     if (CommandLineRunning(self:fuid(wfilename))) then
       -- kill process
       wx.wxProcess.Kill(pid)
     end
     
-    
     local filename = wfilename:GetFullName()
     local args = [[ -e "io.stdout:setvbuf('no');" ]]..(ide.config.luxinia2args or "")
+    
     if rundebug then
-
       DebuggerAttachDefault({ runstart = ide.config.debugger.runonstart == true,
                               startwith = wfilename:GetFullPath(),
                             })
@@ -61,6 +60,7 @@ return {
     
     return pid
   end,
+
   fuid = function(self,wfilename) return "luxinia2: luajit "..wfilename:GetFullName() end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
