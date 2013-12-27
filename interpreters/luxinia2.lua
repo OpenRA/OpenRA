@@ -27,10 +27,10 @@ return {
     end
     
     if (scratchpad and filename ~= wfilename:GetFullName()) then
-      DisplayOutputLn("luxinia2: scratchpad currently requires starting with main.lua\n However, do not edit its content, but add other files to scratchpad.\n In general you should start with the file that hosts the initialization\n and main loop, but then edit other files.")
+      DisplayOutputLn("luxinia2: scratchpad currently requires starting with main.lua (if exists)\n However, do not edit its content, but add other files to scratchpad.\n In general you should start with the file that hosts the initialization\n and main loop, then edit other files.")
       return
     end
-    
+
     local pid, proc
     if (CommandLineRunning(self:fuid(wfilename))) then
       -- kill process
@@ -39,14 +39,14 @@ return {
     
     local filename = wfilename:GetFullName()
     local args = [[ -e "io.stdout:setvbuf('no');" ]]..(ide.config.luxinia2args or "")
-    
+    -- ensure luxinia's libs come first, to allow 32- and 64-bit debugging
+    -- or running from zbstudio in general, as zbs modifies LUA_CPATH
+    args = args..' -e "dofile [['..luxDir..'/../setup_package_paths.lua]];"'
+      
     if rundebug then
       DebuggerAttachDefault({ runstart = ide.config.debugger.runonstart == true,
                               startwith = wfilename:GetFullPath(),
                             })
-
-      local script = "package.path=package.path..';"..editorDir.."lualibs/?/?.lua';"
-      args = args..' -e "'..script..'" '
     end
     
     args = args..(rundebug 
@@ -60,7 +60,6 @@ return {
     
     return pid
   end,
-
   fuid = function(self,wfilename) return "luxinia2: luajit "..wfilename:GetFullName() end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
