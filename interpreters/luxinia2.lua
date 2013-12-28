@@ -47,6 +47,11 @@ return {
       DebuggerAttachDefault({ runstart = ide.config.debugger.runonstart == true,
                               startwith = wfilename:GetFullPath(),
                             })
+      if (scratchpad) then
+        args = args..' -e "_IS_SCRATCH = true;"'
+      else
+        args = args..' -e "_IS_DEBUG = true;"'
+      end
     end
     
     args = args..(rundebug 
