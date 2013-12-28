@@ -1,4 +1,4 @@
-GenericVoice: 
+GenericVoice:
 	Variants:
 		nod: .v01,.v03
 		gdi: .v01,.v03
@@ -8,27 +8,27 @@ GenericVoice:
 		Die: nuyell1,nuyell3,nuyell4,nuyell5
 	DisableVariants: Die
 
-VehicleVoice: 
+VehicleVoice:
 	Variants:
 		nod: .v00,.v02
 		gdi: .v00,.v02
 	Voices:
 		Select: vehic1,yessir1,report1,await1,unit1
-		Move: ackno,affirm1,movout1 
+		Move: ackno,affirm1,movout1
 
-CivilianMaleVoice: 
+CivilianMaleVoice:
 	Voices:
 		Select: guyyeah1
 		Move: guyokay1
 		Die: nuyell1,nuyell3,nuyell4,nuyell5
 
-CivilianFemaleVoice: 
+CivilianFemaleVoice:
 	Voices:
 		Select: girlyeah
 		Move: girlokay
 		Die: nuyell1,nuyell3,nuyell4,nuyell5
 
-CommandoVoice: 
+CommandoVoice:
 	Voices:
 		Select: yeah1,yes1,yo1
 		Move: cmon1,onit1,gotit1

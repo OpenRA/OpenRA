@@ -26,7 +26,7 @@ Options:
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
-	StartingCash: 500
+	StartingCash: 5000
 	ConfigurableStartingUnits: False
 
 Players:
@@ -454,9 +454,15 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		Gdi01Script:
+		PlayMusicOnMapLoad:
+			Music: aoi
+			Loop: false
+		LuaScriptInterface:
+			LuaScripts: mission.lua
 	Player:
 		-ConquestVictoryConditions:
+	^Infantry:
+		MustBeDestroyed:
 	PROC:
 		-Buildable:
 	SILO:
@@ -475,6 +481,7 @@ Rules:
 		-Buildable:
 	GUN:
 		-Buildable:
+		MustBeDestroyed:
 	GTWR:
 		-Buildable:
 	ATWR:
@@ -488,8 +495,12 @@ Rules:
 	RMBO:
 		-Buildable:
 	BOAT:
-		Mobile:
-			OnRails: false
+		Health:
+			HP: 1000
+		AutoTarget:
+			InitialStance: AttackAnything
+		RejectsOrders:
+			Except: Attack
 
 Sequences:
 

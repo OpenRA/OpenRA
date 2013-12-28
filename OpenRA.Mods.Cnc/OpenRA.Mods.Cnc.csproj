@@ -77,7 +77,6 @@
     <Compile Include="CncMenuPaletteEffect.cs" />
     <Compile Include="Effects\IonCannon.cs" />
     <Compile Include="IonCannonPower.cs" />
-    <Compile Include="Missions\Gdi01Script.cs" />
     <Compile Include="Missions\Nod01Script.cs" />
     <Compile Include="PoisonedByTiberium.cs" />
     <Compile Include="ProductionAirdrop.cs" />

@@ -284,7 +284,7 @@
 			Water: 100
 	SelectionDecorations:
 	Selectable:
-		Voice: GenericVoice
+		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground, Water
 	HiddenUnderFog:
