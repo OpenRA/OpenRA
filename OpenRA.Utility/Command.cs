@@ -331,5 +331,20 @@ namespace OpenRA.Utility
 			Game.modData = new ModData(mod);
 			new Map(map, mod);
 		}
+
+		[Desc("MOD", "FILENAME", "Convert a legacy INI/MPR map to the OpenRA format.")]
+		public static void ImportLegacyMap(string[] args)
+		{
+			var mod = args[1];
+			var filename = args[2];
+			Game.modData = new ModData(mod);
+			Rules.LoadRules(Game.modData.Manifest, new Map());
+			var map = LegacyMapImporter.Import(filename, e => Console.WriteLine(e));
+			map.RequiresMod = mod;
+			map.MakeDefaultPlayers();
+			var dest = map.Title + ".oramap";
+			map.Save(dest);
+			Console.WriteLine(dest + " saved.");
+		}
 	}
 }

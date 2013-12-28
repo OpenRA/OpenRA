@@ -77,6 +77,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="UpgradeRules.cs" />
+    <Compile Include="LegacyMapImporter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

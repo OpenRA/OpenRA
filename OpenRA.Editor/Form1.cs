@@ -437,37 +437,6 @@ namespace OpenRA.Editor
 			Close();
 		}
 
-		void ImportLegacyMapClicked(object sender, EventArgs e)
-		{
-			using (var ofd = new OpenFileDialog { RestoreDirectory = true,
-				Filter = "Legacy maps (*.ini;*.mpr)|*.ini;*.mpr" })
-				if (DialogResult.OK == ofd.ShowDialog())
-				{
-					/* massive hack: we should be able to call NewMap() with the imported Map object,
-					 * but something's not right internally in it, unless loaded via the real maploader */
-
-					var savePath = Path.Combine(Path.GetTempPath(), "OpenRA.Import");
-					Directory.CreateDirectory(savePath);
-
-					var errors = new List<string>();
-
-					var map = LegacyMapImporter.Import(ofd.FileName, a => errors.Add(a));
-
-					if (errors.Count > 0)
-						using (var eld = new ErrorListDialog(errors))
-							eld.ShowDialog();
-
-					map.MakeDefaultPlayers();
-
-					map.Save(savePath);
-					LoadMap(savePath);
-					loadedMapName = null;	/* editor needs to think this hasnt been saved */
-
-					Directory.Delete(savePath, true);
-					MakeDirty();
-				}
-		}
-
 		void OnFormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (!dirty) return;
