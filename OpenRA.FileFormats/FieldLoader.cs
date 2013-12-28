@@ -282,6 +282,12 @@ namespace OpenRA.FileFormats
 				return ret;
 			}
 
+			else if (fieldType == typeof(Size))
+			{
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				return new Size(int.Parse(parts[0]), int.Parse(parts[1]));
+			}
+
 			else if (fieldType == typeof(int2))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
