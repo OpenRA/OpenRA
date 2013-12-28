@@ -29,7 +29,7 @@ namespace OpenRA.FileFormats
 		bool CacheWhenLoadingTileset { get; }
 	}
 
-	public enum SpriteType { Unknown, ShpTD, ShpTS, ShpD2, TmpTD, TmpRA, R8 }
+	public enum SpriteType { Unknown, ShpTD, ShpTS, ShpD2, TmpTD, TmpRA, TmpTS, R8 }
 	public static class SpriteSource
 	{
 		static bool IsTmpRA(Stream s)
@@ -55,6 +55,29 @@ namespace OpenRA.FileFormats
 
 			s.Position = start;
 			return a == 0 && b == 0x0D1AFFFF;
+		}
+
+		static bool IsTmpTS(Stream s)
+		{
+			var start = s.Position;
+			s.Position += 8;
+			var sx = s.ReadUInt32();
+			var sy = s.ReadUInt32();
+
+			// Find the first frame
+			var offset = s.ReadUInt32();
+
+			if (offset > s.Length - 52)
+			{
+				s.Position = start;
+				return false;
+			}
+
+			s.Position = offset + 12;
+			var test = s.ReadUInt32();
+
+			s.Position = start;
+			return test == sx * sy / 2 + 52;
 		}
 
 		static bool IsShpTS(Stream s)
@@ -204,6 +227,9 @@ namespace OpenRA.FileFormats
 			if (IsTmpTD(s))
 				return SpriteType.TmpTD;
 
+			if (IsTmpTS(s))
+				return SpriteType.TmpTS;
+
 			if (IsShpD2(s))
 				return SpriteType.ShpD2;
 
@@ -225,6 +251,8 @@ namespace OpenRA.FileFormats
 					return new TmpRAReader(s);
 				case SpriteType.TmpTD:
 					return new TmpTDReader(s);
+				case SpriteType.TmpTS:
+					return new TmpTSReader(s);
 				case SpriteType.ShpD2:
 					return new ShpD2Reader(s);
 				case SpriteType.Unknown:
