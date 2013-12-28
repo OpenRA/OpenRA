@@ -303,14 +303,16 @@ namespace OpenRA.Editor
 			bitmap.UnlockBits(data);
 
 			if (ShowGrid)
+			{
 				using (var g = SGraphics.FromImage(bitmap))
 				{
+					var ts = Game.modData.Manifest.TileSize;
 					var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-					ControlPaint.DrawGrid(g, rect,	new Size(2, Game.CellSize), Color.DarkRed);
-					ControlPaint.DrawGrid(g, rect,	new Size(Game.CellSize, 2), Color.DarkRed);
-					ControlPaint.DrawGrid(g, rect,	new Size(Game.CellSize, Game.CellSize), Color.Red);
+					ControlPaint.DrawGrid(g, rect, new Size(2, ts.Height), Color.DarkRed);
+					ControlPaint.DrawGrid(g, rect, new Size(ts.Width, 2), Color.DarkRed);
+					ControlPaint.DrawGrid(g, rect, new Size(ts.Width, ts.Height), Color.Red);
 				}
-
+			}
 			return bitmap;
 		}
 

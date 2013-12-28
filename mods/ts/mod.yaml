@@ -134,6 +134,8 @@ Notifications:
 TileSets:
 	mods/ra/tilesets/interior.yaml
 
+TileSize: 48,24
+
 Music:
 	mods/ts/music.yaml
 

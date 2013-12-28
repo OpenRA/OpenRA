@@ -95,9 +95,9 @@ namespace OpenRA.Mods.RA
 			// Synthesize unexplored tile if it isn't defined
 			if (!info.Index.Contains(0))
 			{
-				var size = new Size(Game.modData.Manifest.TileSize, Game.modData.Manifest.TileSize);
-				var data = Exts.MakeArray<byte>(size.Width * size.Height, _ => (byte)info.ShroudColor);
-				var s = Game.modData.SheetBuilder.Add(data, size);
+				var ts = Game.modData.Manifest.TileSize;
+				var data = Exts.MakeArray<byte>(ts.Width * ts.Height, _ => (byte)info.ShroudColor);
+				var s = Game.modData.SheetBuilder.Add(data, ts);
 				unexploredTile = new Sprite(s.sheet, s.bounds, s.offset, s.channel, info.ShroudBlend);
 			}
 			else
