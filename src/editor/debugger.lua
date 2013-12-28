@@ -1123,7 +1123,9 @@ function DebuggerRefreshScratchpad()
   if debugger.scratchpad and debugger.scratchpad.updated and not debugger.scratchpad.paused then
 
     local scratchpadEditor = debugger.scratchpad.editor
-    if not ide.interpreter.skipcompile
+    if scratchpadEditor.spec.apitype
+    and scratchpadEditor.spec.apitype == "lua"
+    and not ide.interpreter.skipcompile
     and not CompileProgram(scratchpadEditor, { jumponerror = false, reportstats = false })
     then return end
 
