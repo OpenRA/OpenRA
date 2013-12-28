@@ -12,76 +12,150 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class CrateSpawnerInfo : TraitInfo<CrateSpawner>
+	public class CrateSpawnerInfo : ITraitInfo
 	{
 		[Desc("Minimum number of crates")]
 		public readonly int Minimum = 1;
 		[Desc("Maximum number of crates")]
 		public readonly int Maximum = 255;
-		[Desc("Which terrain types can we drop on?")]
-		public readonly string[] ValidGround = {"Clear", "Rough", "Road", "Ore", "Beach"};
-		[Desc("Which terrain types count as water?")]
-		public readonly string[] ValidWater = {"Water"};
 		[Desc("Average time (seconds) between crate spawn")]
 		public readonly int SpawnInterval = 180;
+		[Desc("Which terrain types can we drop on?")]
+		public readonly string[] ValidGround = { "Clear", "Rough", "Road", "Ore", "Beach" };
+		[Desc("Which terrain types count as water?")]
+		public readonly string[] ValidWater = { "Water" };
 		[Desc("Chance of generating a water crate instead of a land crate")]
 		public readonly float WaterChance = .2f;
+		[Desc("If a DeliveryAircraft: is specified, then this actor will deliver crates"), ActorReference]
+		public readonly string DeliveryAircraft = null;
+		[Desc("Crate actors to drop"), ActorReference]
+		public readonly string[] CrateActors = { "crate" };
+		[Desc("Chance of each crate actor spawning")]
+		public readonly int[] CrateActorShares = { 10 };
+
+		public object Create(ActorInitializer init) { return new CrateSpawner(this, init.self); }
 	}
 
 	public class CrateSpawner : ITick
 	{
-		List<Actor> crates = new List<Actor>();
+		int crates = 0;
 		int ticks = 0;
+		CrateSpawnerInfo info;
+		Actor self;
+
+		public CrateSpawner(CrateSpawnerInfo info, Actor self)
+		{
+			this.info = info;
+			this.self = self;
+		}
 
 		public void Tick(Actor self)
 		{
-			if (!self.World.LobbyInfo.GlobalSettings.Crates) return;
+			if (!self.World.LobbyInfo.GlobalSettings.Crates)
+				return;
 
 			if (--ticks <= 0)
 			{
-				var info = self.Info.Traits.Get<CrateSpawnerInfo>();
-				ticks = info.SpawnInterval * 25;		// TODO: randomize
+				ticks = info.SpawnInterval * 25;
 
-				crates.RemoveAll(x => !x.IsInWorld);
-
-				var toSpawn = Math.Max(0, info.Minimum - crates.Count)
-					+ (crates.Count < info.Maximum ? 1 : 0);
+				var toSpawn = Math.Max(0, info.Minimum - crates)
+					+ (crates < info.Maximum ? 1 : 0);
 
 				for (var n = 0; n < toSpawn; n++)
-					SpawnCrate(self, info);
+					SpawnCrate(self);
 			}
 		}
 
-		void SpawnCrate(Actor self, CrateSpawnerInfo info)
+		void SpawnCrate(Actor self)
 		{
 			var threshold = 100;
 			var inWater = self.World.SharedRandom.NextFloat() < info.WaterChance;
+			var pp = ChooseDropCell(self, inWater, threshold);
 
-			for (var n = 0; n < threshold; n++ )
+			if (pp == null)
+				return;
+
+			var p = pp.Value;
+			var crateActor = ChooseCrateActor();
+
+			self.World.AddFrameEndTask(w =>
+			{
+				if (info.DeliveryAircraft != null)
+				{
+					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
+					var startPos = w.ChooseRandomEdgeCell();
+					var altitude = Rules.Info[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
+					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
+					{
+						new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+						new OwnerInit(w.WorldActor.Owner),
+						new FacingInit(Util.GetFacing(p - startPos, 0))
+					});
+
+					plane.CancelActivity();
+					plane.QueueActivity(new FlyAttack(Target.FromCell(p)));
+					plane.Trait<ParaDrop>().SetLZ(p);
+					plane.Trait<Cargo>().Load(plane, crate);
+				}
+				else
+				{
+					w.CreateActor(crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner), new LocationInit(p) });
+				}
+			});
+		}
+
+		CPos? ChooseDropCell(Actor self, bool inWater, int maxTries)
+		{
+			for (var n = 0; n < maxTries; n++)
 			{
 				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
 
 				// Is this valid terrain?
 				var terrainType = self.World.GetTerrainType(p);
-				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType)) continue;
+				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType))
+					continue;
 
-				// Don't spawn on any actors
-				if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(p) != null) continue;
-				if (self.World.ActorMap.GetUnitsAt(p).Any()) continue;
+				// Don't drop on any actors
+				if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(p) != null
+					|| self.World.ActorMap.GetUnitsAt(p).Any())
+					continue;
 
-				self.World.AddFrameEndTask(
-						w => crates.Add(w.CreateActor("crate", new TypeDictionary
-						{
-							new LocationInit( p ),
-							new OwnerInit( self.World.WorldActor.Owner ),
-						})));
-				return;
+				return p;
 			}
+
+			return null;
+		}
+
+		string ChooseCrateActor()
+		{
+			var crateShares = info.CrateActorShares;
+			var n = self.World.SharedRandom.Next(crateShares.Sum());
+
+			var cumulativeShares = 0;
+			for (var i = 0; i < crateShares.Length; i++)
+			{
+				cumulativeShares += crateShares[i];
+				if (n <= cumulativeShares)
+					return info.CrateActors[i];
+			}
+
+			return null;
+		}
+
+		public void IncrementCrates()
+		{
+			crates++;
+		}
+
+		public void DecrementCrates()
+		{
+			crates--;
 		}
 	}
 }

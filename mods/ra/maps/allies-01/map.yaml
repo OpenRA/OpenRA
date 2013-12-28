@@ -359,7 +359,7 @@ Rules:
 	Player:
 		-ConquestVictoryConditions:
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		Allies01Script:
