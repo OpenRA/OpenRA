@@ -1,7 +1,7 @@
 -- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
 
 -- converted from love_api.lua (http://love2d.org/forums/viewtopic.php?f=3&t=1796&start=50#p158650)
--- (API for love 0.9.0; as of Dec 24, 2013)
+-- (API for love 0.9.0; as of Dec 28, 2013)
 -- the conversion script is at the bottom of this file
 
 local love = {
@@ -792,6 +792,24 @@ local love = {
      description = "class constants",
      type = "class"
     },
+    AreaSpreadDistribution = {
+     childs = {
+      none = {
+       description = "No distribution - area spread is disabled.",
+       type = "value"
+      },
+      normal = {
+       description = "Normal (gaussian) distribution.",
+       type = "value"
+      },
+      uniform = {
+       description = "Uniform distribution.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
     BlendMode = {
      childs = {
       additive = {
@@ -1194,6 +1212,12 @@ local love = {
     },
     ParticleSystem = {
      childs = {
+      getAreaSpread = {
+       args = "()",
+       description = "Gets the area-based spawn parameters for the particles.",
+       returns = "(distribution: AreaSpreadDistribution, dx: number, dy: number)",
+       type = "function"
+      },
       getBufferSize = {
        args = "()",
        description = "Gets the size of the buffer (the max allowed amount of particles in the system).",
@@ -1335,6 +1359,12 @@ local love = {
       reset = {
        args = "()",
        description = "Resets the particle emitter, removing any existing particles and resetting the lifetime counter.",
+       returns = "()",
+       type = "function"
+      },
+      setAreaSpread = {
+       args = "(distribution: AreaSpreadDistribution, dx: number, dy: number)",
+       description = "Sets area-based spawn parameters for the particles. Newly created particles will spawn in an area around the emitter based on the parameters to this function.",
        returns = "()",
        type = "function"
       },
@@ -1670,6 +1700,12 @@ local love = {
      args = "()",
      description = "Returns the default scaling filters used with Images, Canvases, and Fonts.",
      returns = "(min: FilterMode, mag: FilterMode, anisotropy: number)",
+     type = "function"
+    },
+    getDimensions = {
+     args = "()",
+     description = "Gets the width and height of the window.",
+     returns = "(width: number, height: number)",
      type = "function"
     },
     getFont = {
@@ -3036,6 +3072,12 @@ local love = {
        args = "(i: number)",
        description = "Get coordinates of the i-th control point. Indices start with 1.",
        returns = "(x: number, y: number)",
+       type = "function"
+      },
+      getControlPointCount = {
+       args = "()",
+       description = "Get the number of control points in the Bézier curve.",
+       returns = "(count: number)",
        type = "function"
       },
       getDegree = {
@@ -4892,6 +4934,12 @@ local love = {
        returns = "(channels: number)",
        type = "function"
       },
+      getDuration = {
+       args = "()",
+       description = "Returns the number of channels in the stream.",
+       returns = "(duration: number)",
+       type = "function"
+      },
       getSample = {
        args = "(i: number)",
        description = "Gets the sample at the specified position.",
@@ -5275,7 +5323,7 @@ local function convert(l)
 
   for n,v in ipairs(l.childs) do
     if v.functions and #v.functions > 1 and #v.functions[1] == 0 then
-      print("alternative signatured ignored for "..v.name..".")
+      io.stderr:write("alternative signatured ignored for "..v.name..".\n")
       table.remove(v.functions, 1)
     end
     v.childs = merge(v.types, v.functions, v.constants, v.enums)
