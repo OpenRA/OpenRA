@@ -11,11 +11,16 @@ NEW:
 		Converted production exits to world coordinates.
 		Converted weapon projectiles to world coordinates.
 		Converted actor speed to world coordinates.
+		Added support for rectangular cells with forced perspective.
+		Added initial support for Tmp(TS) sprites.
+	Asset Browser:
+		Filenames are now listed in alphabetical order
 	Mod / Custom map compatibility:
 		Altitude is no longer parsed from actor templates in maps. Specify CenterPosition instead.
 		Run `OpenRA.Utility.exe --upgrade-mod <mod> 20131223` to automatically upgrade mod rules.
 		Run `OpenRA.Utility.exe --upgrade-map <map path> 20131223` to automatically upgrade custom map rules.
 		Added a new trait Demolishable for buildings to handle the C4 demolition.
+		Mods that use custom TileSize must specify both width and height.
 
 20131223:
 	All mods:
