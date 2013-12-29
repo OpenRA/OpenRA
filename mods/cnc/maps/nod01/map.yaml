@@ -6,9 +6,9 @@ RequiresMod: cnc
 
 Title: Nikoomba's Demise
 
-Description: Conversion of first Nod mission from Cnc
+Description: Conversion of the first Nod mission
 
-Author: Dan9550
+Author: Westwood Studios
 
 Tileset: DESERT
 
@@ -35,18 +35,18 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: gdi
-	PlayerReference@Creeps:
-		Name: Creeps
+	PlayerReference@Villagers:
+		Name: Villagers
 		NonCombatant: True
 		Race: gdi
 	PlayerReference@GDI:
 		Name: GDI
 		Race: gdi
 		ColorRamp: 31,222,183
-		Allies: Creeps
-		Enemies: NOD
-	PlayerReference@NOD:
-		Name: NOD
+		Allies: Villagers
+		Enemies: Nod
+	PlayerReference@Nod:
+		Name: Nod
 		Playable: True
 		AllowBots: False
 		Required: True
@@ -56,7 +56,7 @@ Players:
 		ColorRamp: 3,255,127
 		LockSpawn: True
 		LockTeam: True
-		Enemies: GDI,Creeps
+		Enemies: GDI,Villagers
 
 Actors:
 	Actor0: rock2
@@ -136,67 +136,67 @@ Actors:
 		Owner: Neutral
 	Vil01: v21
 		Location: 29,23
-		Owner: Creeps
+		Owner: Villagers
 	Vil02: v24
 		Location: 22,24
-		Owner: Creeps
+		Owner: Villagers
 	Vil03: v24
 		Location: 21,16
-		Owner: Creeps
+		Owner: Villagers
 	Vil04: v32
 		Location: 21,20
-		Owner: Creeps
+		Owner: Villagers
 	Vil05: v27
 		Location: 22,21
-		Owner: Creeps
+		Owner: Villagers
 	Vil06: v20
 		Location: 21,21
-		Owner: Creeps
+		Owner: Villagers
 	Vil07: v26
 		Location: 22,23
-		Owner: Creeps
+		Owner: Villagers
 	Vil08: v20
 		Location: 27,23
-		Owner: Creeps
+		Owner: Villagers
 	Vil09: v22
 		Location: 26,23
-		Owner: Creeps
+		Owner: Villagers
 	Vil10: v23
 		Location: 26,22
-		Owner: Creeps
+		Owner: Villagers
 	Vil11: v26
 		Location: 26,21
-		Owner: Creeps
+		Owner: Villagers
 	Vil12: v25
 		Location: 29,21
-		Owner: Creeps
+		Owner: Villagers
 	Vil13: v30
 		Location: 32,18
-		Owner: Creeps
+		Owner: Villagers
 	Civ01: c9
 		Location: 28,20
-		Owner: Creeps
+		Owner: Villagers
 	Civ02: c6
 		Location: 28,19
-		Owner: Creeps
+		Owner: Villagers
 	Civ03: c8
 		Location: 27,19
-		Owner: Creeps
+		Owner: Villagers
 	Civ04: c7
 		Location: 29,20
-		Owner: Creeps
+		Owner: Villagers
 	Civ05: c4
 		Location: 31,19
-		Owner: Creeps
+		Owner: Villagers
 	Civ06: c2
 		Location: 30,19
-		Owner: Creeps
+		Owner: Villagers
 	Civ07: c5
 		Location: 29,19
-		Owner: Creeps
+		Owner: Villagers
 	Nikoomba: c10
 		Location: 29,16
-		Owner: Creeps
+		Owner: Villagers
 	Actor46: e1
 		Location: 28,28
 		Owner: GDI
@@ -244,43 +244,49 @@ Actors:
 		Owner: GDI
 	Actor61: e1
 		Location: 52,17
-		Owner: NOD
+		Owner: Nod
 	Actor62: e1
 		Location: 51,17
-		Owner: NOD
+		Owner: Nod
 	Actor63: e1
 		Location: 51,16
-		Owner: NOD
+		Owner: Nod
 	Actor64: e1
 		Location: 52,16
-		Owner: NOD
+		Owner: Nod
 	Actor65: e1
 		Location: 55,17
-		Owner: NOD
+		Owner: Nod
 	Actor66: e1
 		Location: 56,17
-		Owner: NOD
+		Owner: Nod
 	Actor67: e1
 		Location: 56,16
-		Owner: NOD
+		Owner: Nod
 	Actor68: e1
 		Location: 55,16
-		Owner: NOD
+		Owner: Nod
 	Actor69: bggy
 		Location: 53,16
-		Owner: NOD
+		Owner: Nod
 	Actor70: bggy
 		Location: 54,16
-		Owner: NOD
-	NODReinforceNthA: waypoint
+		Owner: Nod
+	StartSpawnPointLeft: waypoint
 		Location: 52,14
-		Owner: NOD
-	NODReinforceNWstA: waypoint
-		Location: 24,14
-		Owner: NOD
-	NODReinforceNthB: waypoint
+		Owner: Nod
+	StartSpawnPointRight: waypoint
 		Location: 56,14
-		Owner: NOD
+		Owner: Nod
+	StartRallyPoint: waypoint
+		Location: 54,16
+		Owner: Nod
+	VillageSpawnPoint: waypoint
+		Location: 24,14
+		Owner: Nod
+	VillageRallyPoint: waypoint
+		Location: 24,17
+		Owner: Nod
 	Actor27: jeep
 		Location: 31,28
 		Owner: GDI
@@ -297,12 +303,21 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		Nod01Script:
+		LuaScriptInterface:
+			LuaScripts: mission.lua
 	C10:
 		Tooltip:
 			Name: Nikoomba
 	^Bridge:
 		Invulnerable:
+	^CivBuilding:
+		MustBeDestroyed:
+	^CivInfantry:
+		MustBeDestroyed:
+	^Infantry:
+		MustBeDestroyed:
+	^Vehicle:
+		MustBeDestroyed:
 
 Sequences:
 
