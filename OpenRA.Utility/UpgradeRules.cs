@@ -43,7 +43,8 @@ namespace OpenRA.Utility
 		static void ConvertPxToRange(ref string input, int scaleMult, int scaleDiv)
 		{
 			var value = int.Parse(input);
-			var world = value * 1024 * scaleMult / (scaleDiv * Game.CellSize);
+			var ts = Game.modData.Manifest.TileSize;
+			var world = value * 1024 * scaleMult / (scaleDiv * ts.Height);
 			var cells = world / 1024;
 			var subcells = world - 1024 * cells;
 
@@ -59,7 +60,8 @@ namespace OpenRA.Utility
 		static void ConvertInt2ToWVec(ref string input)
 		{
 			var offset = FieldLoader.GetValue<int2>("(value)", input);
-			var world = new WVec(offset.X * 1024 / Game.CellSize, offset.Y * 1024 / Game.CellSize, 0);
+			var ts = Game.modData.Manifest.TileSize;
+			var world = new WVec(offset.X * 1024 / ts.Width, offset.Y * 1024 / ts.Height, 0);
 			input = world.ToString();
 		}
 

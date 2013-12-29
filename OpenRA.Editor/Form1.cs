@@ -145,7 +145,7 @@ namespace OpenRA.Editor
 		{
 			Rules.LoadRules(manifest, map);
 			tileset = Rules.TileSets[map.Tileset];
-			tilesetRenderer = new TileSetRenderer(tileset, new Size(manifest.TileSize, manifest.TileSize));
+			tilesetRenderer = new TileSetRenderer(tileset, manifest.TileSize);
 			var shadowIndex = new int[] { 3, 4 };
 			var palette = new Palette(FileSystem.Open(tileset.Palette), shadowIndex);
 

@@ -91,7 +91,7 @@ Notifications:
 TileSets:
 	mods/d2k/tilesets/arrakis.yaml
 
-TileSize: 32
+TileSize: 32,32
 
 Music:
 	mods/d2k/music.yaml
