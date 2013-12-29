@@ -14,11 +14,11 @@ end
 
 SendNodPatrol = function()
 	local patrol = Reinforcements.Reinforce(enemy, NodPatrol, nod0.Location, nod1.Location, 0)
-	for i, soldier in ipairs(patrol) do
+	Utils.Do(patrol, function(soldier)
 		Actor.Move(soldier, nod2.Location)
 		Actor.Move(soldier, nod3.Location)
 		Actor.Hunt(soldier)
-	end
+	end)
 end
 
 SetGunboatPath = function()
@@ -27,13 +27,13 @@ SetGunboatPath = function()
 end
 
 ReinforceFromSea = function(passengers)
-	local hovercraft, troops = Reinforcements.Insert(player, "lst", passengers, { lstStart.Location, lstEnd.Location  }, { lstStart.Location })
+	local hovercraft, troops = Reinforcements.Insert(player, "oldlst", passengers, { lstStart.Location, lstEnd.Location  }, { lstStart.Location })
 	Media.PlaySpeechNotification("Reinforce")
 end
 
 WorldLoaded = function()
-	player = OpenRA.GetPlayer("GoodGuy")
-	enemy = OpenRA.GetPlayer("BadGuy")
+	player = OpenRA.GetPlayer("GDI")
+	enemy = OpenRA.GetPlayer("Nod")
 
 	Media.PlayMovieFullscreen("gdi1.vqa", function() Media.PlayMovieFullscreen("landing.vqa") end)
 
