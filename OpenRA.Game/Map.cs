@@ -60,7 +60,7 @@ namespace OpenRA
 		// Yaml map data
 		public string Uid { get; private set; }
 		public int MapFormat;
-		public bool Selectable;
+		public bool Selectable = true;
 		public bool UseAsShellmap;
 		public string RequiresMod;
 
