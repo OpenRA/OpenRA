@@ -160,6 +160,8 @@ config = {
     width = 60, -- width of the tooltip text (in characters)
   }
 
+  arg = {}, -- command line arguments
+
   savebak = false, -- if bak files are created on save
 
   filehistorylength = 20, -- historylength for files

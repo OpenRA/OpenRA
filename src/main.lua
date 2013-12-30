@@ -73,6 +73,7 @@ ide = {
       strategy = 2,
       width = 60,
     },
+    arg = {}, -- command line arguments
 
     activateoutput = false, -- activate output/console on Run/Debug/Compile
     unhidewindow = false, -- to unhide a gui window

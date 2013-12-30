@@ -29,6 +29,7 @@ local debugTab = {
   { ID_TOGGLEBREAKPOINT, TR("Toggle Break&point")..KSC(ID_TOGGLEBREAKPOINT), TR("Toggle breakpoint") },
   { },
   { ID_CLEAROUTPUT, TR("C&lear Output Window")..KSC(ID_CLEAROUTPUT), TR("Clear the output window before compiling or debugging"), wx.wxITEM_CHECK },
+  { ID_COMMANDLINEPARAMETERS, TR("Command Line Parameters...")..KSC(ID_COMMANDLINEPARAMETERS), TR("Provide command line parameters") },
 }
 
 local targetDirMenu = wx.wxMenu{
@@ -394,6 +395,17 @@ frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
     event:Enable(debugger.server ~= nil
       and (debugger.running
            or (debugger.scratchpad and not debugger.scratchpad.paused)))
+  end)
+
+frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function ()
+    local params = wx.wxGetTextFromUser(TR("Enter command line parameters (use Cancel to clear)"),
+      TR("Command line parameters"), ide.config.arg.any or "")
+    ide.config.arg.any = params and #params > 0 and params or nil
+  end)
+frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_UPDATE_UI,
+  function (event)
+    event:Enable(ide.interpreter and ide.interpreter.takeparameters and true or false)
   end)
 
 frame:Connect(wx.wxEVT_IDLE,
