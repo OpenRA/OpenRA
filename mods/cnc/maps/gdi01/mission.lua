@@ -50,12 +50,10 @@ Tick = function()
 		SetGunboatPath()
 	end
 
-	if not Mission.MissionIsOver then
-		if Mission.RequiredUnitsAreDestroyed(player) then
-			MissionFailed()
-		end
-		if Mission.RequiredUnitsAreDestroyed(enemy) then
-			MissionAccomplished()
-		end
+	if Mission.RequiredUnitsAreDestroyed(player) then
+		MissionFailed()
+	end
+	if Mission.RequiredUnitsAreDestroyed(enemy) then
+		MissionAccomplished()
 	end
 end

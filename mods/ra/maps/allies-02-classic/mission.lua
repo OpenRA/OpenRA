@@ -34,15 +34,13 @@ end
 
 Tick = function()
 	Mission.TickTakeOre(ussr)
-	
-	if not Mission.MissionIsOver then
-		if Mission.RequiredUnitsAreDestroyed(player) then
-			MissionFailed()
-		end
-		if not trucksSent and Mission.RequiredUnitsAreDestroyed(ussr) and Mission.RequiredUnitsAreDestroyed(badGuy) then
-			SendTrucks()
-			trucksSent = true
-		end
+
+	if Mission.RequiredUnitsAreDestroyed(player) then
+		MissionFailed()
+	end
+	if not trucksSent and Mission.RequiredUnitsAreDestroyed(ussr) and Mission.RequiredUnitsAreDestroyed(badGuy) then
+		SendTrucks()
+		trucksSent = true
 	end
 end
 
