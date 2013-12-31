@@ -26,18 +26,18 @@ Options:
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
-	StartingCash: 500
+	StartingCash: 5000
 	ConfigurableStartingUnits: False
 
 Players:
-	PlayerReference@BadGuy:
-		Name: BadGuy
+	PlayerReference@Nod:
+		Name: Nod
 		Race: nod
 		ColorRamp: 3,255,127
-		Allies: BadGuy
-		Enemies: GoodGuy,Creeps
-	PlayerReference@GoodGuy:
-		Name: GoodGuy
+		Allies: Nod
+		Enemies: GDI,Creeps
+	PlayerReference@GDI:
+		Name: GDI
 		Playable: True
 		AllowBots: False
 		Required: True
@@ -47,8 +47,8 @@ Players:
 		ColorRamp: 31,222,183
 		LockSpawn: True
 		LockTeam: True
-		Allies: GoodGuy
-		Enemies: BadGuy,Creeps
+		Allies: GDI
+		Enemies: Nod,Creeps
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -58,7 +58,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: Random
-		Enemies: BadGuy,GoodGuy
+		Enemies: Nod,GDI
 
 Actors:
 	Actor0: sbag
@@ -312,110 +312,110 @@ Actors:
 		Owner: Neutral
 	Actor83: gun
 		Location: 46,55
-		Owner: BadGuy
+		Owner: Nod
 		Health: 0.5
 		Facing: 160
 	Actor84: gun
 		Location: 41,55
-		Owner: BadGuy
+		Owner: Nod
 		Health: 0.5
 		Facing: 160
 	Actor85: gun
 		Location: 49,55
-		Owner: BadGuy
+		Owner: Nod
 		Health: 0.1875
 		Facing: 160
 	mcv: mcv
 		Location: 56,53
-		Owner: GoodGuy
+		Owner: GDI
 		Health: 1
 		Facing: 0
 	Gunboat: boat
 		Location: 53,59
-		Owner: GoodGuy
+		Owner: GDI
 		Health: 1
 		Facing: 64
 	Actor88: e1
 		Location: 56,55
-		Owner: GoodGuy
+		Owner: GDI
 		Health: 1
 		Facing: 0
 		SubCell: 2
 	Actor89: e1
 		Location: 56,55
-		Owner: GoodGuy
+		Owner: GDI
 		Health: 1
 		Facing: 0
 		SubCell: 4
 	Actor90: e1
 		Location: 56,55
-		Owner: GoodGuy
+		Owner: GDI
 		Health: 1
 		Facing: 0
 		SubCell: 3
 	Actor91: e1
 		Location: 56,55
-		Owner: GoodGuy
+		Owner: GDI
 		Health: 1
 		Facing: 0
 		SubCell: 1
 	Actor92: e1
 		Location: 57,45
-		Owner: BadGuy
+		Owner: Nod
 		Health: 1
 		Facing: 160
 		SubCell: 2
 	Actor93: e1
 		Location: 56,41
-		Owner: BadGuy
+		Owner: Nod
 		Health: 1
 		Facing: 192
 		SubCell: 2
 	Actor94: e1
 		Location: 48,41
-		Owner: BadGuy
+		Owner: Nod
 		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor95: e1
 		Location: 59,45
-		Owner: BadGuy
+		Owner: Nod
 		Health: 1
 		Facing: 160
 		SubCell: 1
 	Actor96: e1
 		Location: 46,50
-		Owner: BadGuy
+		Owner: Nod
 		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor97: e1
 		Location: 48,47
-		Owner: BadGuy
+		Owner: Nod
 		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor98: e1
 		Location: 38,43
-		Owner: BadGuy
+		Owner: Nod
 		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor99: e1
 		Location: 38,43
-		Owner: BadGuy
+		Owner: Nod
 		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor100: e1
 		Location: 48,41
-		Owner: BadGuy
+		Owner: Nod
 		Health: 1
 		Facing: 96
 		SubCell: 2
 	Actor101: e1
 		Location: 41,39
-		Owner: BadGuy
+		Owner: Nod
 		Health: 1
 		Facing: 96
 		SubCell: 4
@@ -454,9 +454,15 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		Gdi01Script:
+		PlayMusicOnMapLoad:
+			Music: aoi
+			Loop: false
+		LuaScriptInterface:
+			LuaScripts: mission.lua
 	Player:
 		-ConquestVictoryConditions:
+	^Infantry:
+		MustBeDestroyed:
 	PROC:
 		-Buildable:
 	SILO:
@@ -475,6 +481,7 @@ Rules:
 		-Buildable:
 	GUN:
 		-Buildable:
+		MustBeDestroyed:
 	GTWR:
 		-Buildable:
 	ATWR:
@@ -488,10 +495,24 @@ Rules:
 	RMBO:
 		-Buildable:
 	BOAT:
-		Mobile:
-			OnRails: false
+		Health:
+			HP: 1000
+		AutoTarget:
+			InitialStance: AttackAnything
+		RejectsOrders:
+			Except: Attack
+	OLDLST:
+		Inherits: LST
+		-WithRoof:
 
 Sequences:
+	oldlst:
+		idle: lst
+			Start: 0
+			Facings: 1
+		unload: lst
+			Start: 0
+			Facings: 1
 
 VoxelSequences:
 
