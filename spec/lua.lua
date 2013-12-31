@@ -164,7 +164,6 @@ return {
           and (not typ:match('^'..identifier..'$') -- not an identifier
                or typ:match('^%d') -- or a number
                or editor.api.tip.keys[typ] -- or a keyword
-               or editor.api.tip.staticnames[typ] -- or a static name
               ) then
             typ = nil
           end
