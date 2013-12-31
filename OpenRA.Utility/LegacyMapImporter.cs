@@ -133,7 +133,7 @@ namespace OpenRA.Utility
 			var height = int.Parse(mapSection.GetValue("Height", "0"));
 			mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
 
-			map.Title = basic.GetValue("Name", "(null)");
+			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile));
 			map.Author = "Westwood Studios";
 			map.Tileset = Truncate(mapSection.GetValue("Theater", "TEMPERAT"), 8);
 			map.MapSize.X = mapSize;
