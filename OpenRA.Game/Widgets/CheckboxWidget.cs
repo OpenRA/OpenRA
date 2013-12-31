@@ -42,6 +42,7 @@ namespace OpenRA.Widgets
 		public override void Draw()
 		{
 			var disabled = IsDisabled();
+			var highlighted = IsHighlighted();
 			var font = Game.Renderer.Fonts[Font];
 			var color = GetColor();
 			var colordisabled = GetColorDisabled();
@@ -50,6 +51,7 @@ namespace OpenRA.Widgets
 			var textSize = font.Measure(Text);
 			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));
 			var state = disabled ? "checkbox-disabled" :
+						highlighted ? "checkbox-highlighted" :
 						Depressed && HasPressedState ? "checkbox-pressed" :
 						Ui.MouseOverWidget == this ? "checkbox-hover" :
 						"checkbox";

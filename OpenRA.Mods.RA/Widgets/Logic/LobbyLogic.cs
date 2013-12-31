@@ -284,6 +284,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				};
 			}
 
+			var statusCheckbox = lobby.GetOrNull<CheckboxWidget>("STATUS_CHECKBOX");
+			if (statusCheckbox != null)
+			{
+				statusCheckbox.IsHighlighted = () => !statusCheckbox.IsChecked() &&
+					orderManager.LobbyInfo.FirstEmptySlot() == null && 
+					world.FrameNumber / 25 % 2 == 0;
+			}
+
 			// Options panel
 			var allowCheats = optionsBin.GetOrNull<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			if (allowCheats != null)
