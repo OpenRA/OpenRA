@@ -3,7 +3,7 @@ General:
 	Id: ARRAKIS
 	SheetSize: 1024
 	Palette: d2k.pal
-	Extensions: .R8, .r8, .shp
+	Extensions: .R8, .r8, .shp, .tex
 
 Terrain:
 	TerrainType@Sand:
@@ -5273,3 +5273,1241 @@ Templates:
 		Tiles:
 			0: Rough
 			1: Rough
+	Template@600:
+		Id: 600
+		Image: t600
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@601:
+		Id: 601
+		Image: t601
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@602:
+		Id: 602
+		Image: t602
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			1: Cliff
+			3: Cliff
+			2: Cliff
+			0: Cliff
+	Template@603:
+		Id: 603
+		Image: t603
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			1: Cliff
+			3: Cliff
+			2: Cliff
+			0: Cliff
+	Template@604:
+		Id: 604
+		Image: t604
+		Size: 2,3
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			4: Cliff
+			5: Cliff
+			3: Cliff
+			1: Cliff
+	Template@605:
+		Id: 605
+		Image: t605
+		Size: 2,3
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			4: Cliff
+			5: Cliff
+			3: Cliff
+			1: Cliff
+	Template@606:
+		Id: 606
+		Image: t606
+		Size: 2,1
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@607:
+		Id: 607
+		Image: t607
+		Size: 2,1
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+	Template@608:
+		Id: 608
+		Image: t608
+		Size: 1,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+	Template@609:
+		Id: 609
+		Image: t609
+		Size: 1,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@610:
+		Id: 610
+		Image: t610
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@611:
+		Id: 611
+		Image: t611
+		Size: 2,1
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+	Template@612:
+		Id: 612
+		Image: t612
+		Size: 3,3
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			6: Cliff
+			3: Cliff
+			0: Cliff
+			1: Transition
+			2: Cliff
+			5: Cliff
+			8: Cliff
+			7: Transition
+			4: Transition
+	Template@613:
+		Id: 613
+		Image: t613
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@614:
+		Id: 614
+		Image: t614
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@615:
+		Id: 615
+		Image: t615
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@616:
+		Id: 616
+		Image: t616
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@617:
+		Id: 617
+		Image: t617
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@618:
+		Id: 618
+		Image: t618
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Transition
+			1: Cliff
+	Template@619:
+		Id: 619
+		Image: t619
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			1: Cliff
+			3: Cliff
+			2: Cliff
+	Template@620:
+		Id: 620
+		Image: t620
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@621:
+		Id: 621
+		Image: t621
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+			2: Cliff
+			3: Cliff
+	Template@622:
+		Id: 622
+		Image: t622
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@623:
+		Id: 623
+		Image: t623
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@624:
+		Id: 624
+		Image: t624
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			1: Cliff
+			3: Cliff
+			2: Cliff
+	Template@625:
+		Id: 625
+		Image: t625
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@626:
+		Id: 626
+		Image: t626
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@627:
+		Id: 627
+		Image: t627
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@628:
+		Id: 628
+		Image: t628
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@629:
+		Id: 629
+		Image: t629
+		Size: 2,3
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			4: Cliff
+			5: Cliff
+			3: Cliff
+			1: Cliff
+	Template@630:
+		Id: 630
+		Image: t630
+		Size: 2,3
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			4: Cliff
+			5: Cliff
+			3: Cliff
+			1: Cliff
+	Template@631:
+		Id: 631
+		Image: t631
+		Size: 3,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			5: Cliff
+			4: Cliff
+			3: Cliff
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@632:
+		Id: 632
+		Image: t632
+		Size: 3,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			5: Cliff
+			4: Cliff
+			3: Cliff
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@633:
+		Id: 633
+		Image: t633
+		Size: 3,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			2: Cliff
+			1: Cliff
+	Template@634:
+		Id: 634
+		Image: t634
+		Size: 3,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			1: Cliff
+			4: Cliff
+			5: Cliff
+			3: Cliff
+			2: Cliff
+	Template@635:
+		Id: 635
+		Image: t635
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			1: Cliff
+			3: Cliff
+			2: Cliff
+			0: Cliff
+	Template@636:
+		Id: 636
+		Image: t636
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@637:
+		Id: 637
+		Image: t637
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@638:
+		Id: 638
+		Image: t638
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@639:
+		Id: 639
+		Image: t639
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@640:
+		Id: 640
+		Image: t640
+		Size: 2,2
+		Category: RockCliffRock
+		PickAny: False
+		Tiles:
+			1: Cliff
+			3: Cliff
+			2: Cliff
+			0: Cliff
+	Template@800:
+		Id: 800
+		Image: t800
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@801:
+		Id: 801
+		Image: t801
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@802:
+		Id: 802
+		Image: t802
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@803:
+		Id: 803
+		Image: t803
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			1: Cliff
+			3: Cliff
+	Template@804:
+		Id: 804
+		Image: t804
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@805:
+		Id: 805
+		Image: t805
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+			2: Cliff
+			3: Cliff
+	Template@806:
+		Id: 806
+		Image: t806
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@807:
+		Id: 807
+		Image: t807
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@808:
+		Id: 808
+		Image: t808
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@809:
+		Id: 809
+		Image: t809
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@810:
+		Id: 810
+		Image: t810
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@811:
+		Id: 811
+		Image: t811
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@812:
+		Id: 812
+		Image: t812
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+			2: Cliff
+			3: Cliff
+	Template@813:
+		Id: 813
+		Image: t813
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@814:
+		Id: 814
+		Image: t814
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@815:
+		Id: 815
+		Image: t815
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Transition
+			0: Cliff
+			1: Cliff
+	Template@816:
+		Id: 816
+		Image: t816
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+			2: Cliff
+			3: Cliff
+	Template@817:
+		Id: 817
+		Image: t817
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@818:
+		Id: 818
+		Image: t818
+		Size: 2,1
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+	Template@819:
+		Id: 819
+		Image: t819
+		Size: 2,1
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@820:
+		Id: 820
+		Image: t820
+		Size: 1,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+	Template@821:
+		Id: 821
+		Image: t821
+		Size: 1,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@822:
+		Id: 822
+		Image: t822
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@823:
+		Id: 823
+		Image: t823
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@824:
+		Id: 824
+		Image: t824
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+			2: Cliff
+			3: Cliff
+	Template@825:
+		Id: 825
+		Image: t825
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+			2: Cliff
+			3: Cliff
+	Template@826:
+		Id: 826
+		Image: t826
+		Size: 2,3
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			4: Cliff
+			5: Cliff
+			3: Cliff
+			1: Cliff
+	Template@827:
+		Id: 827
+		Image: t827
+		Size: 2,3
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			5: Cliff
+	Template@828:
+		Id: 828
+		Image: t828
+		Size: 2,3
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Transition
+			0: Cliff
+			2: Cliff
+			4: Cliff
+			5: Cliff
+			3: Cliff
+	Template@829:
+		Id: 829
+		Image: t829
+		Size: 2,3
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			4: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+			5: Cliff
+	Template@830:
+		Id: 830
+		Image: t830
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@831:
+		Id: 831
+		Image: t831
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			1: Cliff
+			3: Cliff
+			2: Cliff
+	Template@832:
+		Id: 832
+		Image: t832
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@833:
+		Id: 833
+		Image: t833
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@834:
+		Id: 834
+		Image: t834
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@835:
+		Id: 835
+		Image: t835
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@836:
+		Id: 836
+		Image: t836
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@837:
+		Id: 837
+		Image: t837
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@838:
+		Id: 838
+		Image: t838
+		Size: 3,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			2: Cliff
+			1: Cliff
+	Template@839:
+		Id: 839
+		Image: t839
+		Size: 3,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			4: Cliff
+			3: Cliff
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			5: Cliff
+	Template@840:
+		Id: 840
+		Image: t840
+		Size: 3,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			5: Cliff
+			4: Cliff
+			3: Cliff
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@841:
+		Id: 841
+		Image: t841
+		Size: 3,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			2: Cliff
+	Template@842:
+		Id: 842
+		Image: t842
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@843:
+		Id: 843
+		Image: t843
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@844:
+		Id: 844
+		Image: t844
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@845:
+		Id: 845
+		Image: t845
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@846:
+		Id: 846
+		Image: t846
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@847:
+		Id: 847
+		Image: t847
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@848:
+		Id: 848
+		Image: t848
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@849:
+		Id: 849
+		Image: t849
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@850:
+		Id: 850
+		Image: t850
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+			2: Cliff
+			3: Cliff
+	Template@851:
+		Id: 851
+		Image: t851
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			2: Cliff
+			0: Cliff
+			1: Cliff
+			3: Cliff
+	Template@852:
+		Id: 852
+		Image: t852
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@853:
+		Id: 853
+		Image: t853
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@854:
+		Id: 854
+		Image: t854
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			1: Cliff
+			0: Cliff
+			2: Cliff
+			3: Cliff
+	Template@855:
+		Id: 855
+		Image: t855
+		Size: 2,2
+		Category: RockCliffSand
+		PickAny: False
+		Tiles:
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
+	Template@1000:
+		Id: 1000
+		Image: t1000
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1001:
+		Id: 1001
+		Image: t1001
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1002:
+		Id: 1002
+		Image: t1002
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1003:
+		Id: 1003
+		Image: t1003
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1004:
+		Id: 1004
+		Image: t1004
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1005:
+		Id: 1005
+		Image: t1005
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1006:
+		Id: 1006
+		Image: t1006
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1007:
+		Id: 1007
+		Image: t1007
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1008:
+		Id: 1008
+		Image: t1008
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1009:
+		Id: 1009
+		Image: t1009
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1010:
+		Id: 1010
+		Image: t1010
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1011:
+		Id: 1011
+		Image: t1011
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1012:
+		Id: 1012
+		Image: t1012
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1013:
+		Id: 1013
+		Image: t1013
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1014:
+		Id: 1014
+		Image: t1014
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1015:
+		Id: 1015
+		Image: t1015
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@1016:
+		Id: 1016
+		Image: t1016
+		Size: 2,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@1017:
+		Id: 1017
+		Image: t1017
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Rock
+	Template@1018:
+		Id: 1018
+		Image: t1018
+		Size: 1,1
+		Category: Sand-Platform
+		PickAny: False
+		Tiles:
+			0: Rock
