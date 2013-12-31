@@ -138,7 +138,8 @@ namespace OpenRA.Widgets
 
 		void ApplyOrders(World world, int2 xy, MouseInput mi)
 		{
-			if (world.OrderGenerator == null) return;
+			if (world.OrderGenerator == null)
+				return;
 
 			var pos = worldRenderer.Position(xy);
 			var orders = world.OrderGenerator.Order(world, pos.ToCPos(), mi).ToArray();
@@ -149,6 +150,9 @@ namespace OpenRA.Widgets
 			foreach (var order in orders)
 			{
 				var o = order;
+				if (o == null)
+					continue;
+
 				if (!flashed)
 				{
 					if (o.TargetActor != null)
