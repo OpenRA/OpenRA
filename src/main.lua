@@ -448,6 +448,11 @@ end
 
 if app.postinit then app.postinit() end
 
+if ide.osname == 'Macintosh' then
+  ide.frame:SetAcceleratorTable(wx.wxAcceleratorTable({
+     wx.wxAcceleratorEntry(wx.wxACCEL_CTRL, ('M'):byte(), ID_VIEWMINIMIZE)
+  }))
+end
 -- only set menu bar *after* postinit handler as it may include adding
 -- app-specific menus (Help/About), which are not recognized by MacOS
 -- as special items unless SetMenuBar is done after menus are populated.

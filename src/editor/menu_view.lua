@@ -46,6 +46,9 @@ frame:Connect(ID_VIEWDEFAULTLAYOUT, wx.wxEVT_COMMAND_MENU_SELECTED,
     uimgr:LoadPerspective(uimgr.defaultPerspective, true)
   end)
   
+frame:Connect(ID_VIEWMINIMIZE, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event) ide.frame:Iconize(true) end)
+
 frame:Connect(ID_VIEWFULLSCREEN, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
     pcall(function() ShowFullScreen(not frame:IsFullScreen()) end)
   end)
