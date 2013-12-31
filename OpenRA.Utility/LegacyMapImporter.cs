@@ -464,13 +464,15 @@ namespace OpenRA.Utility
 			var neutral = new[] { "Neutral" };
 			foreach (var s in file.GetSection(section, true))
 			{
-				Console.WriteLine(s.Key);
 				switch (s.Key)
 				{
 					case "Allies":
 						pr.Allies = s.Value.Split(',').Intersect(players).Except(neutral).ToArray();
 						pr.Enemies = s.Value.Split(',').SymmetricDifference(players).Except(neutral).ToArray();
-					break;
+						break;
+					default:
+						Console.WriteLine("Ignoring unknown {0}={1} for player {2}", s.Key, s.Value, pr.Name);
+						break;
 				}
 			}
 
