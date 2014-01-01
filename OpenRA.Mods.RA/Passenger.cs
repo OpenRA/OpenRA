@@ -23,13 +23,17 @@ namespace OpenRA.Mods.RA
 		public readonly PipType PipType = PipType.Green;
 		public int Weight = 1;
 
-		public object Create( ActorInitializer init ) { return new Passenger( this ); }
+		public object Create(ActorInitializer init) { return new Passenger(init, this); }
 	}
 
 	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		public readonly PassengerInfo info;
-		public Passenger( PassengerInfo info ) { this.info = info; }
+		public readonly PassengerInfo Info;
+
+		public Passenger(ActorInitializer init, PassengerInfo info)
+		{
+			Info = info;
+		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -40,24 +44,24 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if( order.OrderID == "EnterTransport" )
+			if (order.OrderID == "EnterTransport")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
 		}
 
-		bool IsCorrectCargoType( Actor target )
+		bool IsCorrectCargoType(Actor target)
 		{
 			var ci = target.Info.Traits.Get<CargoInfo>();
-			return ci.Types.Contains( info.CargoType );
+			return ci.Types.Contains(Info.CargoType);
 		}
 
-		bool CanEnter( Actor target )
+		bool CanEnter(Actor target)
 		{
 			var cargo = target.TraitOrDefault<Cargo>();
-			return cargo != null && cargo.HasSpace(info.Weight);
+			return cargo != null && cargo.HasSpace(Info.Weight);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

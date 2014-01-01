@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] InitialUnits = { };
 		public readonly WRange MaximumUnloadAltitude = WRange.Zero;
 
-		public object Create( ActorInitializer init ) { return new Cargo( init, this ); }
+		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
 	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture
@@ -35,6 +35,8 @@ namespace OpenRA.Mods.RA
 		readonly CargoInfo info;
 
 		int totalWeight = 0;
+		static int GetWeight(Actor a) { return a.Info.Traits.Get<PassengerInfo>().Weight; }
+
 		List<Actor> cargo = new List<Actor>();
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
@@ -45,7 +47,7 @@ namespace OpenRA.Mods.RA
 
 			if (init.Contains<CargoInit>())
 			{
-				cargo = init.Get<CargoInit,Actor[]>().ToList();
+				cargo = init.Get<CargoInit, Actor[]>().ToList();
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
 			else
@@ -126,8 +128,6 @@ namespace OpenRA.Mods.RA
 
 		public Actor Peek(Actor self) {	return cargo[0]; }
 
-		static int GetWeight(Actor a) { return a.Info.Traits.Get<PassengerInfo>().Weight; }
-
 		public Actor Unload(Actor self)
 		{
 			var a = cargo[0];
@@ -198,7 +198,7 @@ namespace OpenRA.Mods.RA
 
 	public class CargoInit : IActorInit<Actor[]>
 	{
-		[FieldFromYamlKey] public readonly Actor[] value = {};
+		[FieldFromYamlKey] public readonly Actor[] value = { };
 		public CargoInit() { }
 		public CargoInit(Actor[] init) { value = init; }
 		public Actor[] Value(World world) { return value; }

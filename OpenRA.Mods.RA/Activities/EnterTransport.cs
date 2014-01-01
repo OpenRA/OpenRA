@@ -14,28 +14,26 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class EnterTransport : Activity
 	{
-		public Actor transport;
+		public Actor Transport;
 
 		public EnterTransport(Actor self, Actor transport)
 		{
-			this.transport = transport;
+			Transport = transport;
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
-			if (transport == null || !transport.IsInWorld) return NextActivity;
+			if (Transport == null || !Transport.IsInWorld) return NextActivity;
 
-			var cargo = transport.Trait<Cargo>();
-			if (!cargo.CanLoad(transport, self))
+			var cargo = Transport.Trait<Cargo>();
+			if (!cargo.CanLoad(Transport, self))
 				return NextActivity;
 
-			// TODO: Queue a move order to the transport? need to be
-			// careful about units that can't path to the transport
-			if ((transport.Location - self.Location).LengthSquared > 2)
+			if ((Transport.Location - self.Location).LengthSquared > 2)
 				return NextActivity;
 
-			cargo.Load(transport, self);
+			cargo.Load(Transport, self);
 			self.World.AddFrameEndTask(w => w.Remove(self));
 
 			return this;

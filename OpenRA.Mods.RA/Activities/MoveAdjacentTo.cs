@@ -25,7 +25,8 @@ namespace OpenRA.Mods.RA.Activities
 				return NextActivity;
 
 			var mobile = self.Trait<Mobile>();
-			var ps1 = new PathSearch(self.World, mobile.Info, self)
+
+			var sourcePath = new PathSearch(self.World, mobile.Info, self)
 			{
 				checkForBlocked = true,
 				heuristic = location => 0,
@@ -36,13 +37,16 @@ namespace OpenRA.Mods.RA.Activities
 			{
 				if (cell == self.Location)
 					return NextActivity;
-				else
-					ps1.AddInitialCell(cell);
+				else if (mobile.Info.CanEnterCell(self.World, cell))
+					sourcePath.AddInitialCell(cell);
 			}
 
-			ps1.heuristic = PathSearch.DefaultEstimator(mobile.toCell);
-			var ps2 = PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, target.CenterPosition.ToCPos(), true);
-			var ret = self.World.WorldActor.Trait<PathFinder>().FindBidiPath(ps1, ps2);
+			if (sourcePath.queue.Empty)
+				return NextActivity;
+
+			sourcePath.heuristic = PathSearch.DefaultEstimator(mobile.toCell);
+			var destPath = PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, target.CenterPosition.ToCPos(), true); // TODO: re-evaluate when target changes position
+			var ret = self.World.WorldActor.Trait<PathFinder>().FindBidiPath(sourcePath, destPath);
 
 			return Util.SequenceActivities(mobile.MoveTo(() => ret), this);
 		}
