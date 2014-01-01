@@ -20,18 +20,22 @@ namespace OpenRA.Mods.RA
 		public readonly int ROT = 255;
 		public readonly int InitialFacing = 128;
 		public readonly bool AlignWhenIdle = false;
-
+		[Desc("Should the turret of this Actor randomly sweep when idle?")]
+		public readonly bool IdleSweep = true;
+		[Desc("Number of ticks to wait before sweeping again.")]
+		public readonly int SweepDelay = 50;
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WVec Offset = WVec.Zero;
 
 		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
-	public class Turreted : ITick, ISync, IResolveOrder
+	public class Turreted : ITick, ISync, IResolveOrder, INotifyIdle
 	{
 		[Sync] public int QuantizedFacings = 0;
 		[Sync] public int turretFacing = 0;
 		public int? desiredFacing;
+		public int delayTick = 0;
 		TurretedInfo info;
 		IFacing facing;
 
@@ -63,6 +67,21 @@ namespace OpenRA.Mods.RA
 		{
 			var df = desiredFacing ?? ( facing != null ? facing.Facing : turretFacing );
 			turretFacing = Util.TickFacing(turretFacing, df, info.ROT);
+		}
+
+		public void TickIdle(Actor self)
+		{
+			if (info.IdleSweep)
+			{
+				if (delayTick > 0)
+				{
+					delayTick--;
+					return;
+				}
+
+				desiredFacing = self.World.SharedRandom.Next(0, 256);  //  low inclusive, high exclusive - 255 is the highest that will be chosen
+				delayTick = info.SweepDelay;
+			}
 		}
 
 		public bool FaceTarget(Actor self, Target target)
