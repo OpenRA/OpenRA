@@ -68,6 +68,7 @@ namespace OpenRA.GameRules
 
 	public class DebugSettings
 	{
+		public bool DisplayDebugMessages = true;
 		public bool BotDebug = false;
 		public bool PerfText = false;
 		public bool PerfGraph = false;

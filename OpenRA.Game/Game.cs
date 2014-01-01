@@ -450,7 +450,8 @@ namespace OpenRA
 
 		public static void Debug(string s, params object[] args)
 		{
-			AddChatLine(Color.White, "Debug", string.Format(s, args));
+			if (Settings.Debug.DisplayDebugMessages)
+				AddChatLine(Color.White, "Debug", string.Format(s, args));
 		}
 
 		public static void Disconnect()
