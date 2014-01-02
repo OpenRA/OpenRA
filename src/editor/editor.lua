@@ -139,6 +139,7 @@ local function navigateBack(editor)
   if #editor.jumpstack == 0 then return end
   local pos = table.remove(editor.jumpstack)
   editor:GotoPos(pos)
+  return true
 end
 
 -- ----------------------------------------------------------------------------
@@ -1063,7 +1064,9 @@ function CreateEditor()
         end
         editor:ReplaceTarget("")
       elseif mod == wx.wxMOD_ALT and keycode == wx.WXK_LEFT then
-        navigateBack(editor)
+        -- if no "jump back" is needed, then do normal processing as this
+        -- combination can be mapped to some action
+        if not navigateBack(editor) then event:Skip() end
       elseif ide.osname == "Unix" and ide.wxver >= "2.9.5"
       and mod == wx.wxMOD_CONTROL and editor.ctrlcache[keycode] then
         ide.frame:AddPendingEvent(wx.wxCommandEvent(
