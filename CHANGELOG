@@ -4,6 +4,8 @@ NEW:
 		Added randomized tiles for Sand and Rock terrain.
 	Red Alert:
 		Tanya can now plant C4 on bridges.
+		Submarine torpedoes can now hit bridges when force fired.
+		Increased torpedo splash damage and raised multiplier vs. concrete.
 	Tiberian Dawn:
 		Commando can now plant C4 on bridges.
 	Engine:
