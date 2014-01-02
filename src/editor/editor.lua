@@ -12,6 +12,7 @@ local notebook = ide.frame.notebook
 local funclist = ide.frame.toolBar.funclist
 local edcfg = ide.config.editor
 local styles = ide.config.styles
+local unpack = table.unpack or unpack
 
 local DEFAULT_STYLE = 32
 local margin = { LINENUMBER = 0, MARKER = 1, FOLD = 2 }
@@ -602,6 +603,18 @@ function CreateEditor()
   for id, shortcut in pairs(ide.config.keymap) do
     local key = shortcut:match('^Ctrl[-+](%w)$')
     if key then editor.ctrlcache[key:byte()] = id end
+  end
+
+  -- populate editor keymap with configured combinations
+  for _, map in ipairs(ide.config.editor.keymap) do
+    local key, mod, cmd, os = unpack(map)
+    if not os or os == ide.osname then
+      if cmd then
+        editor:CmdKeyAssign(key, mod, cmd)
+      else
+        editor:CmdKeyClear(key, mod)
+      end
+    end
   end
 
   editor:SetBufferedDraw(not ide.config.hidpi and true or false)
