@@ -105,7 +105,7 @@ namespace OpenRA.GameRules
 		public readonly int ROF = 1;
 		public readonly int Burst = 1;
 		public readonly bool Charges = false;
-		public readonly bool Underwater = false;
+		public readonly string Palette = "effect";
 		public readonly string[] ValidTargets = { "Ground", "Water" };
 		public readonly string[] InvalidTargets = { };
 		public readonly int BurstDelay = 5;

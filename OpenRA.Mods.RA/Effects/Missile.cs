@@ -184,7 +184,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!args.SourceActor.World.FogObscures(pos.ToCPos()))
 			{
-				var palette = wr.Palette(args.Weapon.Underwater ? "shadow" : "effect");
+				var palette = wr.Palette(args.Weapon.Palette);
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
 			}

@@ -820,7 +820,7 @@ TorpTube:
 	Range: 9c0
 	Report: TORPEDO1.AUD
 	ValidTargets: Water, Underwater
-	Underwater: yes
+	Palette: shadow
 	Burst: 2
 	BurstDelay: 20
 	Projectile: Missile
