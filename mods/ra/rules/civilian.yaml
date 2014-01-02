@@ -416,7 +416,7 @@ BRIDGE2:
 		SpawnOffset: 2,1
 
 SBRIDGE1:
-	Inherits: ^SVBridge
+	Inherits: ^Bridge
 	Bridge:
 		Template: 520
 		DamagedTemplate: 521
@@ -432,7 +432,7 @@ SBRIDGE1:
 		SpawnOffset: 1,1
 
 SBRIDGE2:
-	Inherits: ^SHBridge
+	Inherits: ^Bridge
 	Bridge:
 		Template: 531
 		DamagedTemplate: 532
@@ -448,7 +448,7 @@ SBRIDGE2:
 		SpawnOffset: 1,1
 
 SBRIDGE3:
-	Inherits: ^STDBridge
+	Inherits: ^Bridge
 	Bridge:
 		Template: 523
 		DamagedTemplate: 524
@@ -464,7 +464,7 @@ SBRIDGE3:
 		SpawnOffset: 0,1
 
 SBRIDGE4:
-	Inherits: ^STDBridge
+	Inherits: ^Bridge
 	Bridge:
 		Template: 527
 		DamagedTemplate: 528

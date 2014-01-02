@@ -463,57 +463,6 @@
 	BodyOrientation:
 	LuaScriptEvents:
 
-^SVBridge:
-	Tooltip:
-		Name: Small Bridge
-	BelowUnits:
-	TargetableBuilding:
-		TargetTypes: Ground, Water
-	Building:
-		Footprint: ___ ___
-		Dimensions: 3,2
-	Health:
-		HP: 750
-	ProximityCaptor:
-		Types: Bridge
-	AutoTargetIgnore:
-	BodyOrientation:
-	LuaScriptEvents:
-
-^SHBridge:
-	Tooltip:
-		Name: Small Bridge
-	BelowUnits:
-	TargetableBuilding:
-		TargetTypes: Ground, Water
-	Building:
-		Footprint: __ __ __
-		Dimensions: 2,3
-	Health:
-		HP: 750
-	ProximityCaptor:
-		Types: Bridge
-	AutoTargetIgnore:
-	BodyOrientation:
-	LuaScriptEvents:
-
-^STDBridge:
-	Tooltip:
-		Name: Small Bridge
-	BelowUnits:
-	TargetableBuilding:
-		TargetTypes: Ground, Water
-	Building:
-		Footprint: ____ ____
-		Dimensions: 4,2
-	Health:
-		HP: 750
-	ProximityCaptor:
-		Types: Bridge
-	AutoTargetIgnore:
-	BodyOrientation:
-	LuaScriptEvents:
-
 ^Rock:
 	Tooltip:
 		Name: Rock
