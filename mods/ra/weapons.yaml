@@ -508,7 +508,7 @@ MammothTusk:
 	Range: 8c0
 	Report: MISSILE6.AUD
 	Burst: 2
-	ValidTargets: Ground, Air
+	ValidTargets: Air, Ground, Water
 	Projectile: Missile
 		Speed: 341
 		Arm: 2
@@ -789,7 +789,7 @@ Stinger:
 	Report: MISSILE6.AUD
 	Burst: 2
 	BurstDelay: 0
-	ValidTargets: Ground, Air
+	ValidTargets: Air, Ground, Water
 	Projectile: Missile
 		Arm: 3
 		High: true
@@ -830,15 +830,18 @@ TorpTube:
 		Trail: bubbles
 		ROT: 1
 		RangeLimit: 160
+		BoundToTerrainType: Water
 	Warhead:
-		Spread: 128
+		Spread: 426
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
-			Concrete: 50%
+			Concrete: 500%
 		WaterExplosion: large_splash
 		WaterImpactSound: splash9.aud
+		Explosion: large_explosion
+		ImpactSound: kaboom12.aud
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 180
@@ -1207,7 +1210,7 @@ FLAK-23:
 	ROF: 10
 	Range: 8c0
 	Report: AACANON3.AUD
-	ValidTargets: Air,Ground
+	ValidTargets: Air, Ground, Water
 	Projectile: Bullet
 		Speed: 1c682
 		High: true
@@ -1220,6 +1223,7 @@ FLAK-23:
 			Heavy: 10%
 			Concrete: 20%
 		Explosion: small_explosion_air
+		WaterExplosion: small_splash
 		Damage: 20
 
 Sniper:

@@ -42,6 +42,8 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly bool ContrailUsePlayerColor = false;
 		public readonly int ContrailDelay = 1;
 		public readonly bool Jammable = true;
+		[Desc("Explodes when leaving the following terrain type, e.g., Water for torpedoes.")]
+		public readonly string BoundToTerrainType = "";
 
 		public IEffect Create(ProjectileArgs args) { return new Missile(this, args); }
 	}
@@ -153,11 +155,14 @@ namespace OpenRA.Mods.RA.Effects
 			if (info.ContrailLength > 0)
 				trail.Update(pos);
 
+			var cell = pos.ToCPos();
+
 			var shouldExplode = (pos.Z < 0) // Hit the ground
 				|| (dist.LengthSquared < MissileCloseEnough.Range * MissileCloseEnough.Range) // Within range
 				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
-				|| (!info.High && world.ActorMap.GetUnitsAt(pos.ToCPos())
-					.Any(a => a.HasTrait<IBlocksBullets>())); // Hit a wall
+				|| (!info.High && world.ActorMap.GetUnitsAt(cell)
+					.Any(a => a.HasTrait<IBlocksBullets>())) // Hit a wall
+				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.GetTerrainType(cell) != info.BoundToTerrainType); // Hit incompatible terrain
 
 			if (shouldExplode)
 				Explode(world);

@@ -179,13 +179,7 @@ namespace OpenRA.GameRules
 				if (!world.Map.IsInMap(cell))
 					return false;
 
-				if (ValidTargets.Contains("Ground") && world.GetTerrainType(cell) != "Water")
-					return true;
-
-				if (ValidTargets.Contains("Water") && world.GetTerrainType(cell) == "Water")
-					return true;
-
-				return false;
+				return true;
 			}
 
 			return false;

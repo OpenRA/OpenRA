@@ -459,6 +459,8 @@
 		HP: 1000
 	ProximityCaptor:
 		Types: Bridge
+	Armor:
+		Type: Concrete
 	AutoTargetIgnore:
 	BodyOrientation:
 	LuaScriptEvents:
