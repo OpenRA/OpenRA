@@ -59,6 +59,51 @@ Players:
 		Enemies: GDI,Villagers
 
 Actors:
+	Actor46: e1
+		Location: 28,28
+		Owner: GDI
+	Actor47: e1
+		Location: 29,28
+		Owner: GDI
+	Actor48: e1
+		Location: 29,30
+		Owner: GDI
+	Actor49: e1
+		Location: 33,35
+		Owner: GDI
+	Actor50: e1
+		Location: 34,36
+		Owner: GDI
+	Actor51: e1
+		Location: 41,19
+		Owner: GDI
+	Actor52: e1
+		Location: 40,19
+		Owner: GDI
+	Actor53: e1
+		Location: 40,18
+		Owner: GDI
+	Actor54: e1
+		Location: 40,31
+		Owner: GDI
+	Actor55: e1
+		Location: 43,34
+		Owner: GDI
+	Actor56: e1
+		Location: 46,22
+		Owner: GDI
+	Actor57: e1
+		Location: 51,25
+		Owner: GDI
+	Actor58: e1
+		Location: 51,30
+		Owner: GDI
+	Actor59: e1
+		Location: 55,33
+		Owner: GDI
+	Actor60: e1
+		Location: 56,32
+		Owner: GDI
 	Actor0: rock2
 		Location: 54,14
 		Owner: Neutral
@@ -197,51 +242,6 @@ Actors:
 	Nikoomba: c10
 		Location: 29,16
 		Owner: Villagers
-	Actor46: e1
-		Location: 28,28
-		Owner: GDI
-	Actor47: e1
-		Location: 29,28
-		Owner: GDI
-	Actor48: e1
-		Location: 29,30
-		Owner: GDI
-	Actor49: e1
-		Location: 33,35
-		Owner: GDI
-	Actor50: e1
-		Location: 34,36
-		Owner: GDI
-	Actor51: e1
-		Location: 41,19
-		Owner: GDI
-	Actor52: e1
-		Location: 40,19
-		Owner: GDI
-	Actor53: e1
-		Location: 40,18
-		Owner: GDI
-	Actor54: e1
-		Location: 40,31
-		Owner: GDI
-	Actor55: e1
-		Location: 43,34
-		Owner: GDI
-	Actor56: e1
-		Location: 46,22
-		Owner: GDI
-	Actor57: e1
-		Location: 51,25
-		Owner: GDI
-	Actor58: e1
-		Location: 51,30
-		Owner: GDI
-	Actor59: e1
-		Location: 55,33
-		Owner: GDI
-	Actor60: e1
-		Location: 56,32
-		Owner: GDI
 	Actor61: e1
 		Location: 52,17
 		Owner: Nod
