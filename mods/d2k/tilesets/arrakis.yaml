@@ -94,7 +94,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 12,13,32,33
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -106,7 +106,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 14,15,34,35
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -178,7 +178,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 53,73
 		Size: 1,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -188,7 +188,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 98,99,118,119
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -200,7 +200,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 138,139,158,159
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -212,7 +212,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 136,137,156,157
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -224,7 +224,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 134,135,154,155
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -236,7 +236,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 132,133,152,153
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -248,7 +248,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 130,131,150,151
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -260,7 +260,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 128,129,148,149
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -272,7 +272,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 126,127,146,147
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -284,7 +284,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 124,125,144,145
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -296,7 +296,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 122,123,142,143
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -308,7 +308,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 120,121,140,141
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -332,7 +332,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 176,177,196,197
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Rough
@@ -344,7 +344,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 174,175,194,195
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Rough
@@ -356,7 +356,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 172,173,192,193
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -368,7 +368,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 170,171,190,191
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -380,7 +380,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 168,169,188,189
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -392,7 +392,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 166,167,186,187
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Rough
@@ -416,7 +416,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 162,163,182,183
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -428,7 +428,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 160,161,180,181
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -440,7 +440,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 202,203,222,223,242,243
 		Size: 2,3
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -466,7 +466,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 200,201,220,221,240,241
 		Size: 2,3
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Sand
@@ -480,7 +480,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 204,205,224,225,244,245
 		Size: 2,3
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -494,7 +494,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 206,207,226,227,246,247
 		Size: 2,3
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -532,7 +532,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 85,86,105,106
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -544,7 +544,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 87,88,107,108
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -556,7 +556,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 89,90,109,110
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -568,7 +568,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 91,92,111,112
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -580,7 +580,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 93,94,113,114
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -640,7 +640,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 216,217,236,237
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -652,7 +652,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 214,215,234,235
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -664,7 +664,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 211,212,213,231,232,233
 		Size: 3,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -678,7 +678,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 251,252,253,271,272,273
 		Size: 3,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -692,7 +692,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 248,249,250,268,269,270
 		Size: 3,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			5: Sand
@@ -706,7 +706,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 208,209,210,228,229,230
 		Size: 3,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			5: Cliff
@@ -825,7 +825,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 298,299
 		Size: 2,1
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1211,7 +1211,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 692,693
 		Size: 2,1
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1221,7 +1221,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 689,690
 		Size: 2,1
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1231,7 +1231,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 674,694
 		Size: 1,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1241,7 +1241,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 675,695
 		Size: 1,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1269,7 +1269,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 678,679
 		Size: 2,1
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1279,7 +1279,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 698,699
 		Size: 2,1
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -1458,7 +1458,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 603,604,623,624
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1470,7 +1470,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 605,606,625,626
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -3113,7 +3113,7 @@ Templates:
 		Image: BLOXBAT
 		Frames: 716,717,736,737
 		Size: 2,2
-		Category: Rock-Detail(Cliff)
+		Category: Rock-Detail
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -3266,7 +3266,7 @@ Templates:
 		Image: BLOXBGBS
 		Frames: 349,350,351,352,353,354,369,370,371,372,373,374,389,390,391,392,393,394
 		Size: 6,3
-		Category: Rock-Detail(Cliff)
+		Category: Rock-Detail
 		PickAny: False
 		Tiles:
 			5: Rock
@@ -3292,7 +3292,7 @@ Templates:
 		Image: BLOXBGBS
 		Frames: 340,341,342,360,361,362,380,381,382
 		Size: 3,3
-		Category: Rock-Detail(Cliff)
+		Category: Rock-Detail
 		PickAny: False
 		Tiles:
 			2: Rock
@@ -3540,7 +3540,7 @@ Templates:
 		Image: BLOXICE
 		Frames: 164,165,184,185
 		Size: 2,2
-		Category: Rock-Detail(Cliff)
+		Category: Rock-Detail
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -3970,7 +3970,7 @@ Templates:
 		Image: BLOXICE
 		Frames: 718,719,738,739,758,759
 		Size: 2,3
-		Category: Rock-Detail(Cliff)
+		Category: Rock-Detail
 		PickAny: False
 		Tiles:
 			0: Sand
@@ -4251,7 +4251,7 @@ Templates:
 		Image: BLOXTREE
 		Frames: 538,539,558,559
 		Size: 2,2
-		Category: SandyCliff
+		Category: Sand-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -4431,7 +4431,7 @@ Templates:
 		Image: BLOXTREE
 		Frames: 607,608,609,627,628,629
 		Size: 3,2
-		Category: Rock-Detail(Cliff)
+		Category: Rock-Detail
 		PickAny: False
 		Tiles:
 			5: Sand
@@ -4873,7 +4873,7 @@ Templates:
 		Id: 600
 		Image: t600
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -4884,7 +4884,7 @@ Templates:
 		Id: 601
 		Image: t601
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -4895,7 +4895,7 @@ Templates:
 		Id: 602
 		Image: t602
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -4906,7 +4906,7 @@ Templates:
 		Id: 603
 		Image: t603
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -4917,7 +4917,7 @@ Templates:
 		Id: 604
 		Image: t604
 		Size: 2,3
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -4930,7 +4930,7 @@ Templates:
 		Id: 605
 		Image: t605
 		Size: 2,3
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -4943,7 +4943,7 @@ Templates:
 		Id: 606
 		Image: t606
 		Size: 2,1
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -4952,7 +4952,7 @@ Templates:
 		Id: 607
 		Image: t607
 		Size: 2,1
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -4961,7 +4961,7 @@ Templates:
 		Id: 608
 		Image: t608
 		Size: 1,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -4970,7 +4970,7 @@ Templates:
 		Id: 609
 		Image: t609
 		Size: 1,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -4979,7 +4979,7 @@ Templates:
 		Id: 610
 		Image: t610
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -4990,7 +4990,7 @@ Templates:
 		Id: 611
 		Image: t611
 		Size: 2,1
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -4999,7 +4999,7 @@ Templates:
 		Id: 612
 		Image: t612
 		Size: 3,3
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			6: Cliff
@@ -5015,7 +5015,7 @@ Templates:
 		Id: 613
 		Image: t613
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5026,7 +5026,7 @@ Templates:
 		Id: 614
 		Image: t614
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5037,7 +5037,7 @@ Templates:
 		Id: 615
 		Image: t615
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5048,7 +5048,7 @@ Templates:
 		Id: 616
 		Image: t616
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5059,7 +5059,7 @@ Templates:
 		Id: 617
 		Image: t617
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5070,7 +5070,7 @@ Templates:
 		Id: 618
 		Image: t618
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5081,7 +5081,7 @@ Templates:
 		Id: 619
 		Image: t619
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5092,7 +5092,7 @@ Templates:
 		Id: 620
 		Image: t620
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5103,7 +5103,7 @@ Templates:
 		Id: 621
 		Image: t621
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5114,7 +5114,7 @@ Templates:
 		Id: 622
 		Image: t622
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5125,7 +5125,7 @@ Templates:
 		Id: 623
 		Image: t623
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5136,7 +5136,7 @@ Templates:
 		Id: 624
 		Image: t624
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5147,7 +5147,7 @@ Templates:
 		Id: 625
 		Image: t625
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5158,7 +5158,7 @@ Templates:
 		Id: 626
 		Image: t626
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5169,7 +5169,7 @@ Templates:
 		Id: 627
 		Image: t627
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5180,7 +5180,7 @@ Templates:
 		Id: 628
 		Image: t628
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5191,7 +5191,7 @@ Templates:
 		Id: 629
 		Image: t629
 		Size: 2,3
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5204,7 +5204,7 @@ Templates:
 		Id: 630
 		Image: t630
 		Size: 2,3
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5217,7 +5217,7 @@ Templates:
 		Id: 631
 		Image: t631
 		Size: 3,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			5: Cliff
@@ -5230,7 +5230,7 @@ Templates:
 		Id: 632
 		Image: t632
 		Size: 3,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			5: Cliff
@@ -5243,7 +5243,7 @@ Templates:
 		Id: 633
 		Image: t633
 		Size: 3,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5256,7 +5256,7 @@ Templates:
 		Id: 634
 		Image: t634
 		Size: 3,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5269,7 +5269,7 @@ Templates:
 		Id: 635
 		Image: t635
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5280,7 +5280,7 @@ Templates:
 		Id: 636
 		Image: t636
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5291,7 +5291,7 @@ Templates:
 		Id: 637
 		Image: t637
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5302,7 +5302,7 @@ Templates:
 		Id: 638
 		Image: t638
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5313,7 +5313,7 @@ Templates:
 		Id: 639
 		Image: t639
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5324,7 +5324,7 @@ Templates:
 		Id: 640
 		Image: t640
 		Size: 2,2
-		Category: RockCliffRock
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5335,7 +5335,7 @@ Templates:
 		Id: 800
 		Image: t800
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5346,7 +5346,7 @@ Templates:
 		Id: 801
 		Image: t801
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5357,7 +5357,7 @@ Templates:
 		Id: 802
 		Image: t802
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5368,7 +5368,7 @@ Templates:
 		Id: 803
 		Image: t803
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5379,7 +5379,7 @@ Templates:
 		Id: 804
 		Image: t804
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5390,7 +5390,7 @@ Templates:
 		Id: 805
 		Image: t805
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5401,7 +5401,7 @@ Templates:
 		Id: 806
 		Image: t806
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5412,7 +5412,7 @@ Templates:
 		Id: 807
 		Image: t807
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5423,7 +5423,7 @@ Templates:
 		Id: 808
 		Image: t808
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5434,7 +5434,7 @@ Templates:
 		Id: 809
 		Image: t809
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5445,7 +5445,7 @@ Templates:
 		Id: 810
 		Image: t810
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5456,7 +5456,7 @@ Templates:
 		Id: 811
 		Image: t811
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5467,7 +5467,7 @@ Templates:
 		Id: 812
 		Image: t812
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5478,7 +5478,7 @@ Templates:
 		Id: 813
 		Image: t813
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5489,7 +5489,7 @@ Templates:
 		Id: 814
 		Image: t814
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5500,7 +5500,7 @@ Templates:
 		Id: 815
 		Image: t815
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5511,7 +5511,7 @@ Templates:
 		Id: 816
 		Image: t816
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5522,7 +5522,7 @@ Templates:
 		Id: 817
 		Image: t817
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5533,7 +5533,7 @@ Templates:
 		Id: 818
 		Image: t818
 		Size: 2,1
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5542,7 +5542,7 @@ Templates:
 		Id: 819
 		Image: t819
 		Size: 2,1
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5551,7 +5551,7 @@ Templates:
 		Id: 820
 		Image: t820
 		Size: 1,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5560,7 +5560,7 @@ Templates:
 		Id: 821
 		Image: t821
 		Size: 1,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5569,7 +5569,7 @@ Templates:
 		Id: 822
 		Image: t822
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5580,7 +5580,7 @@ Templates:
 		Id: 823
 		Image: t823
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5591,7 +5591,7 @@ Templates:
 		Id: 824
 		Image: t824
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5602,7 +5602,7 @@ Templates:
 		Id: 825
 		Image: t825
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5613,7 +5613,7 @@ Templates:
 		Id: 826
 		Image: t826
 		Size: 2,3
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5626,7 +5626,7 @@ Templates:
 		Id: 827
 		Image: t827
 		Size: 2,3
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5638,7 +5638,7 @@ Templates:
 		Id: 828
 		Image: t828
 		Size: 2,3
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Transition
@@ -5651,7 +5651,7 @@ Templates:
 		Id: 829
 		Image: t829
 		Size: 2,3
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			4: Cliff
@@ -5664,7 +5664,7 @@ Templates:
 		Id: 830
 		Image: t830
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5675,7 +5675,7 @@ Templates:
 		Id: 831
 		Image: t831
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5686,7 +5686,7 @@ Templates:
 		Id: 832
 		Image: t832
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5697,7 +5697,7 @@ Templates:
 		Id: 833
 		Image: t833
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5708,7 +5708,7 @@ Templates:
 		Id: 834
 		Image: t834
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5719,7 +5719,7 @@ Templates:
 		Id: 835
 		Image: t835
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5730,7 +5730,7 @@ Templates:
 		Id: 836
 		Image: t836
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5741,7 +5741,7 @@ Templates:
 		Id: 837
 		Image: t837
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5752,7 +5752,7 @@ Templates:
 		Id: 838
 		Image: t838
 		Size: 3,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5765,7 +5765,7 @@ Templates:
 		Id: 839
 		Image: t839
 		Size: 3,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			4: Cliff
@@ -5778,7 +5778,7 @@ Templates:
 		Id: 840
 		Image: t840
 		Size: 3,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			5: Cliff
@@ -5791,7 +5791,7 @@ Templates:
 		Id: 841
 		Image: t841
 		Size: 3,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5804,7 +5804,7 @@ Templates:
 		Id: 842
 		Image: t842
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5815,7 +5815,7 @@ Templates:
 		Id: 843
 		Image: t843
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5826,7 +5826,7 @@ Templates:
 		Id: 844
 		Image: t844
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5837,7 +5837,7 @@ Templates:
 		Id: 845
 		Image: t845
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5848,7 +5848,7 @@ Templates:
 		Id: 846
 		Image: t846
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5859,7 +5859,7 @@ Templates:
 		Id: 847
 		Image: t847
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5870,7 +5870,7 @@ Templates:
 		Id: 848
 		Image: t848
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5881,7 +5881,7 @@ Templates:
 		Id: 849
 		Image: t849
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5892,7 +5892,7 @@ Templates:
 		Id: 850
 		Image: t850
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5903,7 +5903,7 @@ Templates:
 		Id: 851
 		Image: t851
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -5914,7 +5914,7 @@ Templates:
 		Id: 852
 		Image: t852
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -5925,7 +5925,7 @@ Templates:
 		Id: 853
 		Image: t853
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5936,7 +5936,7 @@ Templates:
 		Id: 854
 		Image: t854
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -5947,7 +5947,7 @@ Templates:
 		Id: 855
 		Image: t855
 		Size: 2,2
-		Category: RockCliffSand
+		Category: Rock-Cliff-Sand
 		PickAny: False
 		Tiles:
 			3: Cliff
