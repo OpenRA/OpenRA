@@ -317,7 +317,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 178,179,198,199
 		Size: 2,2
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -451,7 +451,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 260,261,280,281
 		Size: 2,2
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			1: Transition
@@ -505,7 +505,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 262,263,282,283
 		Size: 2,2
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -517,7 +517,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 264,265,284,285
 		Size: 2,2
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -601,7 +601,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 218,219,238,239
 		Size: 2,2
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -613,7 +613,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 258,259,278,279
 		Size: 2,2
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			1: Transition
@@ -625,7 +625,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 256,257,276,277
 		Size: 2,2
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			3: Transition
@@ -717,7 +717,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 266,267,286,287
 		Size: 2,2
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Sand
@@ -747,7 +747,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 288
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Sand
@@ -774,7 +774,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 329
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -804,7 +804,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 331
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -813,7 +813,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 332
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -832,7 +832,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 317,318
 		Size: 2,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -854,7 +854,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 337
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -863,7 +863,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 336
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -872,7 +872,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 335
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -881,7 +881,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 313,333
 		Size: 1,2
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -891,7 +891,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 314,334
 		Size: 1,2
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -901,7 +901,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 315
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -910,7 +910,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 291,292
 		Size: 2,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -920,7 +920,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 293,294
 		Size: 2,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -930,7 +930,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 295,296
 		Size: 2,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -2385,7 +2385,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 303
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -2394,7 +2394,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 304
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -2403,7 +2403,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 324
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -2412,7 +2412,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 323
 		Size: 1,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Transition
@@ -2491,7 +2491,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 326,327
 		Size: 2,1
-		Category: Rock-SandSmooth
+		Category: Rock-Sand-Smooth
 		PickAny: False
 		Tiles:
 			1: Transition
