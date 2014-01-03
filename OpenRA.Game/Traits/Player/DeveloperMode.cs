@@ -19,7 +19,7 @@ namespace OpenRA.Traits
 		public bool PathDebug = false;
 		public bool UnlimitedPower;
 		public bool BuildAnywhere;
-		public bool ShowMuzzles;
+		public bool ShowCombatGeometry;
 		public bool ShowDebugGeometry;
 
 		public object Create (ActorInitializer init) { return new DeveloperMode(this); }
@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 		[Sync] public bool BuildAnywhere;
 
 		// Client size only
-		public bool ShowMuzzles;
+		public bool ShowCombatGeometry;
 		public bool ShowDebugGeometry;
 
 		public DeveloperMode(DeveloperModeInfo info)
@@ -49,7 +49,7 @@ namespace OpenRA.Traits
 			PathDebug = info.PathDebug;
 			UnlimitedPower = info.UnlimitedPower;
 			BuildAnywhere = info.BuildAnywhere;
-			ShowMuzzles = info.ShowMuzzles;
+			ShowCombatGeometry = info.ShowCombatGeometry;
 			ShowDebugGeometry = info.ShowDebugGeometry;
 		}
 

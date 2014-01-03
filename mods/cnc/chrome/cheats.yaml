@@ -101,7 +101,7 @@ Container@CHEATS_PANEL:
 					Width:200
 					Font:Regular
 					Text:Show A* Cost
-				Checkbox@SHOW_MUZZLES:
+				Checkbox@SHOW_COMBATOVERLAY:
 					X:290
 					Y:235
 					Height:20
