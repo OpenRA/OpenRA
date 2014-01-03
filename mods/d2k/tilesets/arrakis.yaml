@@ -1920,7 +1920,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 347,348,367,368,387,388
 		Size: 2,3
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			1: Sand
@@ -1934,7 +1934,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 386
 		Size: 1,1
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -1943,7 +1943,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 345,346,365,366
 		Size: 2,2
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			1: Rough
@@ -1955,7 +1955,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 343,344,363,364
 		Size: 2,2
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			1: Sand
@@ -1967,7 +1967,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 340,341,342,360,361,362
 		Size: 3,2
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			2: Rough
@@ -1981,7 +1981,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 380,381,382
 		Size: 3,1
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -2246,7 +2246,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 392,393
 		Size: 2,1
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			1: Sand
@@ -2265,7 +2265,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 389
 		Size: 1,1
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -2274,7 +2274,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 349,350,369,370
 		Size: 2,2
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -2830,7 +2830,7 @@ Templates:
 		Image: BLOXBAT
 		Frames: 462,463
 		Size: 2,1
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -2840,7 +2840,7 @@ Templates:
 		Image: BLOXBAT
 		Frames: 551
 		Size: 1,1
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -2849,7 +2849,7 @@ Templates:
 		Image: BLOXBAT
 		Frames: 607,608,627,628
 		Size: 2,2
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -2861,7 +2861,7 @@ Templates:
 		Image: BLOXBAT
 		Frames: 609,610,629,630
 		Size: 2,2
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -2873,7 +2873,7 @@ Templates:
 		Image: BLOXBAT
 		Frames: 652,653,672,673
 		Size: 2,2
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Sand
@@ -2885,7 +2885,7 @@ Templates:
 		Image: BLOXBAT
 		Frames: 713,714,715,733,734,735
 		Size: 3,2
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Sand
@@ -2899,7 +2899,7 @@ Templates:
 		Image: BLOXBAT
 		Frames: 709,710,711,712,729,730,731,732
 		Size: 4,2
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -4050,7 +4050,7 @@ Templates:
 		Image: BLOXTREE
 		Frames: 340,341,360,361
 		Size: 2,2
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -4062,7 +4062,7 @@ Templates:
 		Image: BLOXTREE
 		Frames: 342,343,344,362,363,364
 		Size: 3,2
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -4605,7 +4605,7 @@ Templates:
 		Image: BLOXWAST
 		Frames: 373,374,375
 		Size: 3,1
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -4616,7 +4616,7 @@ Templates:
 		Image: BLOXWAST
 		Frames: 355,356,357,358,359
 		Size: 5,1
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -4629,7 +4629,7 @@ Templates:
 		Image: BLOXWAST
 		Frames: 338,339
 		Size: 2,1
-		Category: Sand-Detail(Rotten Base)
+		Category: Rotten-Base
 		PickAny: False
 		Tiles:
 			0: Rough
