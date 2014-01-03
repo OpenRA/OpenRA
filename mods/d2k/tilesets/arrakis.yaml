@@ -6,6 +6,9 @@ General:
 	Extensions: .R8, .r8, .shp, .tex
 
 Terrain:
+	TerrainType@Clear: # TODO: workaround for the stupid WinForms editor
+		Type: Clear
+		Color: 0, 0, 0
 	TerrainType@Sand:
 		Type: Sand
 		AcceptsSmudgeType: SandCrater
