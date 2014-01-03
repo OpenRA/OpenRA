@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 
 		public bool IsValidTarget(Actor self, Actor saboteur)
 		{
-			return BridgeDamageState == DamageState.Undamaged;
+			return BridgeDamageState != DamageState.Dead;
 		}
 
 		public DamageState BridgeDamageState { get { return bridge.AggregateDamageState(); } }
