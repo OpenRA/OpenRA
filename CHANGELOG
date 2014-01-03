@@ -1,6 +1,7 @@
 NEW:
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
+		Added randomized tiles for Sand and Rock terrain.
 	Red Alert:
 		Tanya can now plant C4 on bridges.
 	Tiberian Dawn:
@@ -17,12 +18,17 @@ NEW:
 		Added support for crates to level up specific unit upgrades.
 	Asset Browser:
 		Filenames are now listed in alphabetical order
+	Map Editor:
+		Removed legacy INI/MPR map import.
+	Utility:
+		Added an improved INI/MPR map import.
 	Mod / Custom map compatibility:
 		Altitude is no longer parsed from actor templates in maps. Specify CenterPosition instead.
 		Run `OpenRA.Utility.exe --upgrade-mod <mod> 20131223` to automatically upgrade mod rules.
 		Run `OpenRA.Utility.exe --upgrade-map <map path> 20131223` to automatically upgrade custom map rules.
 		Added a new trait Demolishable for buildings to handle the C4 demolition.
 		Mods that use custom TileSize must specify both width and height.
+		If you spot black tiles in your Dune 2000 ARRAKIS maps, replace them with the remaining sand and rock tiles. Go to Map → Fix Open Areas to randomize them.
 
 20131223:
 	All mods:
