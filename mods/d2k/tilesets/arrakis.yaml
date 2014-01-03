@@ -57,11 +57,23 @@ Templates:
 	Template@0:
 		Id: 0
 		Image: BLOXBASE
-		Frames: 0
+		Frames: 0, 8, 9, 48, 49, 50, 51, 52, 68, 69, 70, 71, 72
 		Size: 1,1
-		PickAny: True # TODO: add more Frames and Tiles here
+		PickAny: True
 		Tiles:
 			0: Sand
+			1: Sand
+			2: Sand
+			3: Sand
+			4: Sand
+			5: Sand
+			6: Sand
+			7: Sand
+			8: Sand
+			9: Sand
+			10: Sand
+			11: Sand
+			12: Sand
 	Template@1:
 		Id: 1
 		Image: BLOXBASE
@@ -2032,26 +2044,26 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Dune
-	Template@226:
+	Template@226: # TODO: this should go away
 		Id: 226
 		Image: BLOXBASE
-		Frames: 8
+		Frames: 1
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Sand
-	Template@227:
+	Template@227: # TODO: this should go away
 		Id: 227
 		Image: BLOXBASE
-		Frames: 9
+		Frames: 1
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Sand
-	Template@228:
+	Template@228: # TODO: this should go away
 		Id: 228
 		Image: BLOXBASE
-		Frames: 29
+		Frames: 1
 		Size: 1,1
 		PickAny: False
 		Tiles:
@@ -2341,10 +2353,10 @@ Templates:
 			3: Cliff
 			1: Cliff
 			0: Cliff
-	Template@257:
+	Template@257: # TODO: this should go away
 		Id: 257
 		Image: BLOXBASE
-		Frames: 48,49,50,51,52,68,69,70,71,72
+		Frames: 1,1,1,1,1,1,1,1,1,1
 		Size: 5,2
 		PickAny: False
 		Tiles:
