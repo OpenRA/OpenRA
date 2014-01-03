@@ -159,6 +159,24 @@ namespace OpenRA.Utility
 			}
 		}
 
+		static void UpgradeTileset(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		{
+			var parentKey = parent != null ? parent.Key.Split('@').First() : null;
+			List<MiniYamlNode> addNodes = new List<MiniYamlNode>();
+
+			foreach (var node in nodes)
+			{
+				if (engineVersion < 20140104)
+				{
+					if (depth == 2 && parentKey == "TerrainType" && node.Key.Split('@').First() == "Type")
+						addNodes.Add(new MiniYamlNode("TargetTypes", node.Value.Value == "Water" ? "Water" : "Ground"));
+				}
+				UpgradeTileset(engineVersion, ref node.Value.Nodes, node, depth + 1);
+			}
+
+			nodes.AddRange(addNodes);
+		}
+
 		[Desc("MAP", "CURRENTENGINE", "Upgrade map rules to the latest engine version.")]
 		public static void UpgradeMap(string[] args)
 		{
@@ -196,6 +214,17 @@ namespace OpenRA.Utility
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
 				UpgradeWeaponRules(engineDate, ref yaml, null, 0);
+
+				using (var file = new StreamWriter(filename))
+					file.WriteLine(yaml.WriteToString());
+			}
+
+			Console.WriteLine("Processing Tilesets:");
+			foreach (var filename in Game.modData.Manifest.TileSets)
+			{
+				Console.WriteLine("\t" + filename);
+				var yaml = MiniYaml.FromFile(filename);
+				UpgradeTileset(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
 					file.WriteLine(yaml.WriteToString());

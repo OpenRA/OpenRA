@@ -13,65 +13,78 @@ Terrain:
 		Buildable: True
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 134, 95, 69
+		TargetTypes: Ground
 	TerrainType@Water:
 		Type: Water
 		IsWater: true
 		Buildable: False
 		AcceptsSmudgeType:
 		Color: 93, 165, 206
+		TargetTypes: Water
 	TerrainType@Road:
 		Type: Road
 		Buildable: True
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 168, 123, 83
+		TargetTypes: Ground
 	TerrainType@Bridge:
 		Type: Bridge
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 96, 96, 96
+		TargetTypes: Ground, Bridge
 	TerrainType@Rock:
 		Type: Rock
 		Buildable: False
 		AcceptsSmudgeType:
 		Color: 116, 90, 63
+		TargetTypes: Ground
 	TerrainType@Tree:
 		Type: Tree
 		Buildable: False
 		AcceptsSmudgeType:
 		Color: 28, 32, 36
+		TargetTypes: Ground
 	TerrainType@Brush:
 		Type: Brush
 		Buildable: False
 		AcceptsSmudgeType:
 		Color: 28, 32, 36
+		TargetTypes: Ground
 	TerrainType@River:
 		Type: River
 		Buildable: False
 		AcceptsSmudgeType:
 		Color: 111, 132, 139
+		TargetTypes: Ground
 	TerrainType@Rough:
 		Type: Rough
 		Buildable: False
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 68, 68, 60
+		TargetTypes: Ground
 	TerrainType@Wall:
 		Type: Wall
 		Buildable: False
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 208, 192, 160
+		TargetTypes: Ground
 	TerrainType@Beach:
 		Type: Beach
 		Buildable: False
 		AcceptsSmudgeType:
 		Color: 176, 156, 120
+		TargetTypes: Ground
 	TerrainType@Ore:
 		Type: Ore
 		Buildable: False
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 148, 128, 96
+		TargetTypes: Ground
 	TerrainType@Gems:
 		Type: Gems
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 132, 112, 255
+		TargetTypes: Ground
 
 Templates:
 	Template@255:
@@ -3105,3 +3118,4 @@ Templates:
 			12: Rock
 			13: Rock
 			14: Rock
+

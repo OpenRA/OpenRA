@@ -18,8 +18,9 @@ namespace OpenRA.FileFormats
 	public class TerrainTypeInfo
 	{
 		public string Type;
+		public string[] TargetTypes = { };
 		public string[] AcceptsSmudgeType = { };
-		public bool IsWater = false;
+		public bool IsWater = false; // TODO: Remove this
 		public Color Color;
 		public string CustomCursor;
 

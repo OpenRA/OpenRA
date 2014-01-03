@@ -10,51 +10,63 @@ Terrain:
 		Type: Clear
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 40, 68, 40
+		TargetTypes: Ground
 	TerrainType@Water:
 		Type: Water
 		IsWater: true
 		AcceptsSmudgeType:
 		Color: 92, 116, 164
+		TargetTypes: Water
 	TerrainType@Road:
 		Type: Road
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 88, 116, 116
+		TargetTypes: Ground
 	TerrainType@Bridge:
 		Type: Bridge
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 96, 96, 96
+		TargetTypes: Ground, Bridge
 	TerrainType@Rock:
 		Type: Rock
 		AcceptsSmudgeType:
 		Color: 68, 68, 60
+		TargetTypes: Ground
 	TerrainType@Tree:
 		Type: Tree
 		AcceptsSmudgeType:
 		Color: 28, 32, 36
+		TargetTypes: Ground
 	TerrainType@River:
 		Type: River
 		AcceptsSmudgeType:
 		Color: 92, 140, 180
+		TargetTypes: Ground
 	TerrainType@Rough:
 		Type: Rough
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 68, 68, 60
+		TargetTypes: Ground
 	TerrainType@Wall:
 		Type: Wall
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 208, 192, 160
+		TargetTypes: Ground
 	TerrainType@Beach:
 		Type: Beach
 		AcceptsSmudgeType:
 		Color: 176, 156, 120
+		TargetTypes: Ground
 	TerrainType@Ore:
 		Type: Ore
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 148, 128, 96
+		TargetTypes: Ground
 	TerrainType@Gems:
 		Type: Gems
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 132, 112, 255
+		TargetTypes: Ground
 
 Templates:
 	Template@255:
@@ -3225,7 +3237,7 @@ Templates:
 			0: River
 			1: Road
 			2: River
-			3: River 
+			3: River
 			4: Road
 			5: River
 		Category: Bridge
@@ -3237,7 +3249,7 @@ Templates:
 			0: River
 			1: Road
 			2: River
-			3: River 
+			3: River
 			4: Road
 			5: River
 		Category: Bridge
@@ -3249,7 +3261,7 @@ Templates:
 			0: River
 			1: Rock
 			2: River
-			3: River 
+			3: River
 			4: Rock
 			5: River
 		Category: Bridge
@@ -3345,7 +3357,7 @@ Templates:
 			6: Rock
 			7: Rock
 		Category: Bridge
-	Template@530
+	Template@530:
 		Id: 530
 		Image: sbridge4x
 		Size: 5,5
@@ -3365,7 +3377,7 @@ Templates:
 			23: Clear
 			24: Road
 		Category: Bridge
-	Template@531
+	Template@531:
 		Id: 531
 		Image: sbridge2
 		Size: 2,3
@@ -3377,7 +3389,7 @@ Templates:
 			4: Rock
 			5: Rock
 		Category: Bridge
-	Template@532
+	Template@532:
 		Id: 532
 		Image: sbridge2h
 		Size: 2,3
@@ -3389,7 +3401,7 @@ Templates:
 			4: Rock
 			5: Rock
 		Category: Bridge
-	Template@533
+	Template@533:
 		Id: 533
 		Image: sbridge2d
 		Size: 2,3
@@ -3401,7 +3413,7 @@ Templates:
 			4: River
 			5: River
 		Category: Bridge
-	Template@534
+	Template@534:
 		Id: 534
 		Image: sbridge2x
 		Size: 4,4
@@ -3533,7 +3545,7 @@ Templates:
 		Size: 1,1
 		Tiles:
 			0: Rough
-		Category: Debris		
+		Category: Debris
 	Template@583:
 		Id: 583
 		Image: decc
@@ -3604,3 +3616,4 @@ Templates:
 			4: Rough
 			5: Clear
 		Category: Debris
+
