@@ -4626,7 +4626,7 @@ Templates:
 		Image: BLOXWAST
 		Frames: 345,346,365,366
 		Size: 2,2
-		Category: Dead-Wurm
+		Category: Dead-Worm
 		PickAny: False
 		Tiles:
 			0: Rough
