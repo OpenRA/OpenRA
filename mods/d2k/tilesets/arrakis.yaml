@@ -2054,7 +2054,7 @@ Templates:
 		Size: 1,1
 		PickAny: False
 		Tiles:
-			0: Sand
+			0: Clear
 	Template@227: # TODO: this should go away
 		Id: 227
 		Image: BLOXBASE
@@ -2062,7 +2062,7 @@ Templates:
 		Size: 1,1
 		PickAny: False
 		Tiles:
-			0: Sand
+			0: Clear
 	Template@228: # TODO: this should go away
 		Id: 228
 		Image: BLOXBASE
@@ -2070,7 +2070,7 @@ Templates:
 		Size: 1,1
 		PickAny: False
 		Tiles:
-			0: Sand
+			0: Clear
 	Template@229:
 		Id: 229
 		Image: BLOXBASE
@@ -2363,16 +2363,16 @@ Templates:
 		Size: 5,2
 		PickAny: False
 		Tiles:
-			0: Sand
-			1: Sand
-			2: Sand
-			3: Sand
-			4: Sand
-			9: Sand
-			8: Sand
-			7: Sand
-			6: Sand
-			5: Sand
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			9: Clear
+			8: Clear
+			7: Clear
+			6: Clear
+			5: Clear
 	Template@258:
 		Id: 258
 		Image: BLOXBASE
@@ -2454,16 +2454,16 @@ Templates:
 		Size: 5,2
 		PickAny: False
 		Tiles:
-			0: Rock
-			5: Rock
-			6: Rock
-			7: Rock
-			8: Rock
-			9: Rock
-			4: Rock
-			3: Rock
-			2: Rock
-			1: Rock
+			0: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			4: Clear
+			3: Clear
+			2: Clear
+			1: Clear
 	Template@266:
 		Id: 266
 		Image: BLOXBASE
@@ -2495,7 +2495,7 @@ Templates:
 		Size: 1,1
 		PickAny: False
 		Tiles:
-			0: Rock
+			0: Clear
 	Template@268: # TODO: this should go away
 		Id: 268
 		Image: BLOXBASE
@@ -2503,8 +2503,8 @@ Templates:
 		Size: 2,1
 		PickAny: False
 		Tiles:
-			0: Rock
-			1: Rock
+			0: Clear
+			1: Clear
 	Template@269:
 		Id: 269
 		Image: BLOXBASE
@@ -2522,9 +2522,9 @@ Templates:
 		Size: 3,1
 		PickAny: False
 		Tiles:
-			0: Rock
-			1: Rock
-			2: Rock
+			0: Clear
+			1: Clear
+			2: Clear
 	Template@271:
 		Id: 271
 		Image: BLOXBAT
