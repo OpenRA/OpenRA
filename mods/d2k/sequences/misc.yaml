@@ -284,6 +284,7 @@ crate:
 		ZOffset: -511
 		Offset: -16,-16
 
+# TODO: keep the redundant spicebloom.shp for now for the awful WinForms maps editor
 spicebloom:
 	make: DATA
 		Start: 107
