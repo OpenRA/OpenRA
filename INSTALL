@@ -36,6 +36,7 @@ Debian/Ubuntu
 -------------
 
 * mono-gmcs
+* libmono-winforms2.0-cil
 * cli-common-dev (>= 2.10)
 * freetype
 * openal
