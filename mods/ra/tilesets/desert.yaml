@@ -24,6 +24,10 @@ Terrain:
 		Buildable: True
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 168, 123, 83
+	TerrainType@Bridge:
+		Type: Bridge
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 96, 96, 96
 	TerrainType@Rock:
 		Type: Rock
 		Buildable: False
@@ -2816,11 +2820,11 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			2: Road
+			1: Bridge
+			2: Bridge
 			3: Rock
-			4: Road
-			5: Road
+			4: Bridge
+			5: Bridge
 			6: Rock
 			7: Rock
 	Template@621:
@@ -2830,11 +2834,11 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			2: Road
+			1: Bridge
+			2: Bridge
 			3: Rock
-			4: Road
-			5: Road
+			4: Bridge
+			5: Bridge
 			6: Rock
 			7: Rock
 	Template@622:
@@ -2879,13 +2883,13 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			2: Road
+			1: Bridge
+			2: Bridge
 			3: Rock
 			4: Rock
 			5: Rock
-			6: Road
-			7: Road
+			6: Bridge
+			7: Bridge
 	Template@625:
 		Id: 625
 		Image: bridge2h
@@ -2893,13 +2897,13 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			2: Road
+			1: Bridge
+			2: Bridge
 			3: Rock
 			4: Rock
 			5: Rock
-			6: Road
-			7: Road
+			6: Bridge
+			7: Bridge
 	Template@626:
 		Id: 626
 		Image: bridge2d
@@ -2942,10 +2946,10 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			2: Road
+			1: Bridge
+			2: Bridge
 			3: Rock
-			5: Road
+			5: Bridge
 			6: Rock
 			7: River
 	Template@236:
@@ -2955,10 +2959,10 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			2: Road
+			1: Bridge
+			2: Bridge
 			3: Rock
-			5: Road
+			5: Bridge
 			6: Rock
 			7: River
 	Template@237:
@@ -2981,9 +2985,9 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			4: Road
-			5: Road
+			1: Bridge
+			4: Bridge
+			5: Bridge
 			6: Rock
 			7: Rock
 	Template@239:
@@ -2993,9 +2997,9 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			4: Road
-			5: Road
+			1: Bridge
+			4: Bridge
+			5: Bridge
 			6: Rock
 			7: Rock
 	Template@240:
@@ -3017,8 +3021,8 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			5: Road
+			1: Bridge
+			5: Bridge
 			6: Rock
 			7: Rock
 	Template@242:
@@ -3028,8 +3032,8 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			5: Road
+			1: Bridge
+			5: Bridge
 			6: Rock
 			7: Rock
 	Template@243:

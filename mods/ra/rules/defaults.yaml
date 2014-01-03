@@ -6,6 +6,7 @@
 			Clear: 80
 			Rough: 40
 			Road: 100
+			Bridge: 100
 			Ore: 70
 			Gems: 70
 			Beach: 40
@@ -53,6 +54,7 @@
 			Clear: 80
 			Rough: 70
 			Road: 100
+			Bridge: 100
 			Ore: 70
 			Gems: 70
 			Beach: 70
@@ -107,6 +109,7 @@
 			Clear: 90
 			Rough: 80
 			Road: 100
+			Bridge: 100
 			Ore: 80
 			Gems: 80
 			Beach: 80

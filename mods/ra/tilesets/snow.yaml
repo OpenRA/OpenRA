@@ -19,6 +19,10 @@ Terrain:
 		Type: Road
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 88, 116, 116
+	TerrainType@Bridge:
+		Type: Bridge
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 96, 96, 96
 	TerrainType@Rock:
 		Type: Rock
 		AcceptsSmudgeType:
@@ -2487,12 +2491,12 @@ Templates:
 		Category: Bridge
 		Tiles:
 			1: Rock
-			2: Road
+			2: Bridge
 			4: Rock
-			5: Road
-			6: Road
+			5: Bridge
+			6: Bridge
 			7: Rock
-			9: Road
+			9: Bridge
 			10: Rock
 			11: Rock
 	Template@236:
@@ -2532,13 +2536,13 @@ Templates:
 		Category: Bridge
 		Tiles:
 			1: Rock
-			2: Road
+			2: Bridge
 			5: Rock
-			6: Road
-			7: Road
+			6: Bridge
+			7: Bridge
 			8: Rock
 			9: Rock
-			11: Road
+			11: Bridge
 			12: Rock
 			13: Rock
 	Template@239:
@@ -2580,8 +2584,8 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			5: Road
+			1: Bridge
+			5: Bridge
 			6: Rock
 			7: Rock
 	Template@242:
@@ -2591,8 +2595,8 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			5: Road
+			1: Bridge
+			5: Bridge
 			6: Rock
 			7: Rock
 	Template@243:
@@ -2665,12 +2669,12 @@ Templates:
 		Category: Bridge
 		Tiles:
 			1: Rock
-			2: Road
-			3: Road
+			2: Bridge
+			3: Bridge
 			4: Rock
 			5: Rock
-			6: Road
-			7: Road
+			6: Bridge
+			7: Bridge
 			8: Rock
 			9: Rock
 			12: Rock
@@ -2727,13 +2731,13 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rock
-			1: Road
-			2: Road
+			1: Bridge
+			2: Bridge
 			3: Rock
 			5: Rock
 			6: Rock
-			7: Road
-			8: Road
+			7: Bridge
+			8: Bridge
 			9: Rock
 	Template@134:
 		Id: 134
