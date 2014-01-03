@@ -474,5 +474,24 @@ namespace OpenRA
 				Enemies = Players.Where(p => p.Value.Playable).Select(p => p.Key).ToArray()
 			});
 		}
+
+		public void FixOpenAreas()
+		{
+			var r = new Random();
+			var tileset = OpenRA.Rules.TileSets[Tileset];
+
+			for (var j = Bounds.Top; j < Bounds.Bottom; j++)
+			{
+				for (var i = Bounds.Left; i < Bounds.Right; i++)
+				{
+					var tr = MapTiles.Value[i, j];
+					var template = tileset.Templates[tr.Type];
+					if (!template.PickAny)
+						continue;
+					tr.Index = (byte)r.Next(0, template.Tiles.Count);
+					MapTiles.Value[i, j] = tr;
+				}
+			}
+		}
 	}
 }

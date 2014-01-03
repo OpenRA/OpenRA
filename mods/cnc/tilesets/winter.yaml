@@ -60,6 +60,21 @@ Templates:
 		PickAny: True
 		Tiles:
 			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			15: Clear
 	Template@65535:
 		Id: 65535
 		Image: clear1
@@ -67,6 +82,21 @@ Templates:
 		PickAny: True
 		Tiles:
 			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			15: Clear
 	Template@0:
 		Id: 0
 		Image: clear1
@@ -74,6 +104,21 @@ Templates:
 		PickAny: True
 		Tiles:
 			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			15: Clear
 	Template@1:
 		Id: 1
 		Image: w1

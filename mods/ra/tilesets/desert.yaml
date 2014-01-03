@@ -75,6 +75,7 @@ Templates:
 		Image: clear1
 		Size: 1,1
 		Category: Terrain
+		PickAny: True
 		Tiles:
 			0: Clear
 			1: Clear
@@ -97,6 +98,7 @@ Templates:
 		Image: clear1
 		Size: 1,1
 		Category: Terrain
+		PickAny: True
 		Tiles:
 			0: Clear
 			1: Clear
@@ -115,14 +117,14 @@ Templates:
 			14: Clear
 			15: Clear
 	Template@256:
-		Id:	256
+		Id: 256
 		Image: w1
 		Size: 1,1
 		Category: Terrain
 		Tiles:
 			0: Water
 	Template@257:
-		Id:	257
+		Id: 257
 		Image: sh17
 		Size: 2,2
 		Category: Terrain
@@ -132,7 +134,7 @@ Templates:
 			2: Water
 			3: Water
 	Template@258:
-		Id:	258
+		Id: 258
 		Image: sh18
 		Size: 2,2
 		Category: Terrain

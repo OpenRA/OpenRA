@@ -342,6 +342,7 @@ namespace OpenRA.Utility
 			var map = LegacyMapImporter.Import(filename, e => Console.WriteLine(e));
 			map.RequiresMod = mod;
 			map.MakeDefaultPlayers();
+			map.FixOpenAreas();
 			var dest = map.Title + ".oramap";
 			map.Save(dest);
 			Console.WriteLine(dest + " saved.");

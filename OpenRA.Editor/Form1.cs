@@ -402,6 +402,7 @@ namespace OpenRA.Editor
 
 					map.Players.Clear();
 					map.MakeDefaultPlayers();
+					map.FixOpenAreas();
 
 					NewMap(map);
 				}
@@ -484,18 +485,7 @@ namespace OpenRA.Editor
 		void FixOpenAreas(object sender, EventArgs e)
 		{
 			dirty = true;
-			var r = new Random();
-
-			for (var j = surface1.Map.Bounds.Top; j < surface1.Map.Bounds.Bottom; j++)
-				for (var i = surface1.Map.Bounds.Left; i < surface1.Map.Bounds.Right; i++)
-				{
-					var tr = surface1.Map.MapTiles.Value[i, j];
-					if (tr.Type == 0xff || tr.Type == 0xffff || tr.Type == 1 || tr.Type == 2)
-						tr.Index = (byte)r.Next(0, surface1.TileSetRenderer.Data(tr.Type).Count);
-
-					surface1.Map.MapTiles.Value[i, j] = tr;
-				}
-
+			surface1.Map.FixOpenAreas();
 			surface1.Chunks.Clear();
 			surface1.Invalidate();
 		}
