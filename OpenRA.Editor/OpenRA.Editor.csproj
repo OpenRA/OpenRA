@@ -96,7 +96,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ITool.cs" />
-    <Compile Include="LegacyMapImporter.cs" />
     <Compile Include="MapSelect.cs">
       <SubType>Form</SubType>
     </Compile>

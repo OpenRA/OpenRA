@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,7 +18,7 @@ using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
-namespace OpenRA.Editor
+namespace OpenRA.Utility
 {
 	public class LegacyMapImporter
 	{
@@ -133,7 +133,7 @@ namespace OpenRA.Editor
 			var height = int.Parse(mapSection.GetValue("Height", "0"));
 			mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
 
-			map.Title = basic.GetValue("Name", "(null)");
+			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile));
 			map.Author = "Westwood Studios";
 			map.Tileset = Truncate(mapSection.GetValue("Theater", "TEMPERAT"), 8);
 			map.MapSize.X = mapSize;
@@ -464,13 +464,15 @@ namespace OpenRA.Editor
 			var neutral = new[] { "Neutral" };
 			foreach (var s in file.GetSection(section, true))
 			{
-				Console.WriteLine(s.Key);
 				switch (s.Key)
 				{
 					case "Allies":
 						pr.Allies = s.Value.Split(',').Intersect(players).Except(neutral).ToArray();
 						pr.Enemies = s.Value.Split(',').SymmetricDifference(players).Except(neutral).ToArray();
-					break;
+						break;
+					default:
+						Console.WriteLine("Ignoring unknown {0}={1} for player {2}", s.Key, s.Value, pr.Name);
+						break;
 				}
 			}
 

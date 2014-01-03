@@ -402,6 +402,7 @@ namespace OpenRA.Editor
 
 					map.Players.Clear();
 					map.MakeDefaultPlayers();
+					map.FixOpenAreas();
 
 					NewMap(map);
 				}
@@ -435,37 +436,6 @@ namespace OpenRA.Editor
 		void CloseClicked(object sender, EventArgs e)
 		{
 			Close();
-		}
-
-		void ImportLegacyMapClicked(object sender, EventArgs e)
-		{
-			using (var ofd = new OpenFileDialog { RestoreDirectory = true,
-				Filter = "Legacy maps (*.ini;*.mpr)|*.ini;*.mpr" })
-				if (DialogResult.OK == ofd.ShowDialog())
-				{
-					/* massive hack: we should be able to call NewMap() with the imported Map object,
-					 * but something's not right internally in it, unless loaded via the real maploader */
-
-					var savePath = Path.Combine(Path.GetTempPath(), "OpenRA.Import");
-					Directory.CreateDirectory(savePath);
-
-					var errors = new List<string>();
-
-					var map = LegacyMapImporter.Import(ofd.FileName, a => errors.Add(a));
-
-					if (errors.Count > 0)
-						using (var eld = new ErrorListDialog(errors))
-							eld.ShowDialog();
-
-					map.MakeDefaultPlayers();
-
-					map.Save(savePath);
-					LoadMap(savePath);
-					loadedMapName = null;	/* editor needs to think this hasnt been saved */
-
-					Directory.Delete(savePath, true);
-					MakeDirty();
-				}
 		}
 
 		void OnFormClosing(object sender, FormClosingEventArgs e)
@@ -515,18 +485,7 @@ namespace OpenRA.Editor
 		void FixOpenAreas(object sender, EventArgs e)
 		{
 			dirty = true;
-			var r = new Random();
-
-			for (var j = surface1.Map.Bounds.Top; j < surface1.Map.Bounds.Bottom; j++)
-				for (var i = surface1.Map.Bounds.Left; i < surface1.Map.Bounds.Right; i++)
-				{
-					var tr = surface1.Map.MapTiles.Value[i, j];
-					if (tr.Type == 0xff || tr.Type == 0xffff || tr.Type == 1 || tr.Type == 2)
-						tr.Index = (byte)r.Next(0, surface1.TileSetRenderer.Data(tr.Type).Count);
-
-					surface1.Map.MapTiles.Value[i, j] = tr;
-				}
-
+			surface1.Map.FixOpenAreas();
 			surface1.Chunks.Clear();
 			surface1.Invalidate();
 		}

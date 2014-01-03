@@ -64,7 +64,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 0
 		Size: 1,1
-		PickAny: False
+		PickAny: True # TODO: add more Frames and Tiles here
 		Tiles:
 			0: Sand
 	Template@1:
@@ -108,7 +108,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 16,17,36,37
 		Size: 2,2
-		Category: Dune	
+		Category: Dune
 		PickAny: False
 		Tiles:
 			0: Sand
@@ -120,7 +120,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 18,19,38,39
 		Size: 2,2
-		Category: Dune	
+		Category: Dune
 		PickAny: False
 		Tiles:
 			0: Dune
@@ -132,7 +132,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 58,59,78,79
 		Size: 2,2
-		Category: Dune	
+		Category: Dune
 		PickAny: False
 		Tiles:
 			1: Dune
