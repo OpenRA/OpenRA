@@ -10,47 +10,58 @@ Terrain:
 		Type: Clear
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 196, 196, 196
+		TargetTypes: Ground
 	TerrainType@Water:
 		Type: Water
 		IsWater: true
 		AcceptsSmudgeType:
 		Color: 92, 116, 164
+		TargetTypes: Water
 	TerrainType@Road:
 		Type: Road
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 88, 116, 116
+		TargetTypes: Ground
 	TerrainType@Rock:
 		Type: Rock
 		AcceptsSmudgeType:
 		Color: 68, 68, 60
+		TargetTypes: Ground
 	TerrainType@Tree:
 		Type: Tree
 		AcceptsSmudgeType:
 		Color: 28, 32, 36
+		TargetTypes: Ground
 	TerrainType@River:
 		Type: River
 		AcceptsSmudgeType:
 		Color: 92, 140, 180
+		TargetTypes: Ground
 	TerrainType@Rough:
 		Type: Rough
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 68, 68, 60
+		TargetTypes: Ground
 	TerrainType@Wall:
 		Type: Wall
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 208, 192, 160
+		TargetTypes: Ground
 	TerrainType@Beach:
 		Type: Beach
 		AcceptsSmudgeType:
 		Color: 176, 156, 120
+		TargetTypes: Ground
 	TerrainType@Tiberium:
 		Type: Tiberium
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 161, 226, 28
+		TargetTypes: Ground
 	TerrainType@BlueTiberium:
 		Type: BlueTiberium
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 84, 252, 252
+		TargetTypes: Ground
 
 Templates:
 	Template@255:
@@ -1321,3 +1332,4 @@ Templates:
 			3: Water
 			4: River
 			6: Water
+

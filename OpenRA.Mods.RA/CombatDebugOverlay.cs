@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self)
 		{
-			if (devMode == null || !devMode.ShowMuzzles)
+			if (devMode == null || !devMode.ShowCombatGeometry)
 				return;
 
 			if (health.Value != null)

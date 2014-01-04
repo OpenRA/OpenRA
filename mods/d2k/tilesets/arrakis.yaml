@@ -9,52 +9,62 @@ Terrain:
 	TerrainType@Clear: # TODO: workaround for the stupid WinForms editor
 		Type: Clear
 		Color: 0, 0, 0
+		TargetTypes: Ground
 	TerrainType@Sand:
 		Type: Sand
 		AcceptsSmudgeType: SandCrater
 		IsWater: False
 		Color: 255,208,192,160
+		TargetTypes: Ground
 	TerrainType@Transition:
 		Type: Transition
 		AcceptsSmudgeType:
 		IsWater: False
 		Color: 255,207,166,100
+		TargetTypes: Ground
 	TerrainType@Rock:
 		Type: Rock
 		AcceptsSmudgeType: RockCrater
 		IsWater: False
 		Color: 255,206,140,66
+		TargetTypes: Ground
 	TerrainType@Cliff:
 		Type: Cliff
 		AcceptsSmudgeType:
 		IsWater: False
 		Color: 255,74,41,16
+		TargetTypes: Ground
 	TerrainType@Rough:
 		Type: Rough
 		AcceptsSmudgeType:
 		IsWater: False
 		Color: 255,88,116,116
 		CustomCursor: move-rough
+		TargetTypes: Ground
 	TerrainType@Concrete:
 		Type: Concrete
 		AcceptsSmudgeType:
 		IsWater: False
 		Color: 255,208,192,160
+		TargetTypes: Ground
 	TerrainType@Dune:
 		Type: Dune
 		AcceptsSmudgeType:
 		IsWater: False
 		Color: 255,239,222,140
+		TargetTypes: Ground
 	TerrainType@Spice:
 		Type: Spice
 		AcceptsSmudgeType:
 		IsWater: False
 		Color: 255,239,148,74
+		TargetTypes: Ground
 	TerrainType@Ice:
 		Type: Ice
 		AcceptsSmudgeType:
 		IsWater: True
 		Color: 255,255,255,255
+		TargetTypes: Ground
 
 Templates:
 	Template@0:

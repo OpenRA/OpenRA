@@ -105,7 +105,7 @@ namespace OpenRA.GameRules
 		public readonly int ROF = 1;
 		public readonly int Burst = 1;
 		public readonly bool Charges = false;
-		public readonly bool Underwater = false;
+		public readonly string Palette = "effect";
 		public readonly string[] ValidTargets = { "Ground", "Water" };
 		public readonly string[] InvalidTargets = { };
 		public readonly int BurstDelay = 5;
@@ -179,13 +179,12 @@ namespace OpenRA.GameRules
 				if (!world.Map.IsInMap(cell))
 					return false;
 
-				if (ValidTargets.Contains("Ground") && world.GetTerrainType(cell) != "Water")
-					return true;
+				var cellInfo = world.GetTerrainInfo(cell);
+				if (!ValidTargets.Intersect(cellInfo.TargetTypes).Any()
+				    || InvalidTargets.Intersect(cellInfo.TargetTypes).Any())
+					return false;
 
-				if (ValidTargets.Contains("Water") && world.GetTerrainType(cell) == "Water")
-					return true;
-
-				return false;
+				return true;
 			}
 
 			return false;

@@ -57,11 +57,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				fastChargeCheckbox.OnClick = () => Order(world, "DevFastCharge");
 			}
 
-			var showMuzzlesCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_MUZZLES");
-			if (showMuzzlesCheckbox != null)
+			var showCombatCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_COMBATOVERLAY");
+			if (showCombatCheckbox != null)
 			{
-				showMuzzlesCheckbox.IsChecked = () => devTrait.ShowMuzzles;
-				showMuzzlesCheckbox.OnClick = () => devTrait.ShowMuzzles ^= true;
+				showCombatCheckbox.IsChecked = () => devTrait.ShowCombatGeometry;
+				showCombatCheckbox.OnClick = () => devTrait.ShowCombatGeometry ^= true;
 			}
 
 			var showGeometryCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_GEOMETRY");

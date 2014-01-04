@@ -9,6 +9,7 @@ Terrain:
 		Type: Clear
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 0, 0, 0
+		TargetTypes: Ground
 
 Templates:
 	Template@255:
@@ -17,3 +18,4 @@ Templates:
 		Size: 1,1
 		Tiles:
 			0: Clear
+
