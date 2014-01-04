@@ -30,6 +30,19 @@ namespace OpenRA.Mods.RA.AI
 		public readonly int RushInterval = 600;
 		public readonly int AttackForceInterval = 30;
 
+		[Desc("By what factor should power output exceed power consumption.")]
+		public readonly float ExcessPowerFactor = 1.2f;
+		[Desc("By what minimum amount should power output exceed power consumption.")]
+		public readonly int MinimumExcessPower = 50;
+		[Desc("Produce units as long as there are less than this amount of units inside the base.")]
+		public readonly int IdleBaseUnitsMinimum = 12;
+		[Desc("Radius in cells where AI scans for targets to rush.")]
+		public readonly int RushAttackScanRadius = 15;
+		[Desc("Radius in cells around a unit that should be protected where AI will send support.")]
+		public readonly int ProtectUnitScanRadius = 15;
+		[Desc("Radius in cells around a factory scanned for rally points by the AI.")]
+		public readonly int RallyPointScanRadius = 8;
+
 		// Temporary hack to maintain previous rallypoint behavior.
 		public readonly string RallypointTestBuilding = "fact";
 		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
@@ -223,8 +236,8 @@ namespace OpenRA.Mods.RA.AI
 		bool HasAdequatePower()
 		{
 			// note: CNC `fact` provides a small amount of power. don't get jammed because of that.
-			return playerPower.PowerProvided > 50 &&
-				playerPower.PowerProvided > playerPower.PowerDrained * 1.2;
+			return playerPower.PowerProvided > Info.MinimumExcessPower &&
+				playerPower.PowerProvided > playerPower.PowerDrained * Info.ExcessPowerFactor;
 		}
 
 		bool HasAdequateFact()
@@ -617,7 +630,7 @@ namespace OpenRA.Mods.RA.AI
 
 			foreach (var b in allEnemyBaseBuilder)
 			{
-				var enemies = world.FindActorsInCircle(b.CenterPosition, WRange.FromCells(15))
+				var enemies = world.FindActorsInCircle(b.CenterPosition, WRange.FromCells(Info.RushAttackScanRadius))
 					.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
 				
 				if (rushFuzzy.CanAttack(ownUnits, enemies))
@@ -646,7 +659,7 @@ namespace OpenRA.Mods.RA.AI
 
 			if (!protectSq.IsValid)
 			{
-				var ownUnits = world.FindActorsInCircle(baseCenter.CenterPosition, WRange.FromCells(15))
+				var ownUnits = world.FindActorsInCircle(baseCenter.CenterPosition, WRange.FromCells(Info.ProtectUnitScanRadius))
 					.Where(unit => unit.Owner == p && !unit.HasTrait<Building>()
 						&& unit.HasTrait<AttackBase>()).ToList();
 
@@ -679,7 +692,7 @@ namespace OpenRA.Mods.RA.AI
 		// Won't work for shipyards...
 		CPos ChooseRallyLocationNear(CPos startPos)
 		{
-			var possibleRallyPoints = world.FindTilesInCircle(startPos, 8)
+			var possibleRallyPoints = world.FindTilesInCircle(startPos, Info.RallyPointScanRadius)
 				.Where(IsRallyPointValid);
 
 			if (!possibleRallyPoints.Any())
@@ -812,7 +825,7 @@ namespace OpenRA.Mods.RA.AI
 				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", p).Name);
 
 			foreach (var q in Info.UnitQueues)
-				BuildUnit(q, unitsHangingAroundTheBase.Count < 12);
+				BuildUnit(q, unitsHangingAroundTheBase.Count < Info.IdleBaseUnitsMinimum);
 		}
 
 		void BuildUnit(string category, bool buildRandom)
