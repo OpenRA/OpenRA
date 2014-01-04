@@ -119,7 +119,7 @@ LobbyDefaults:
 	Crates: true
 	StartingUnitsClass: none
 	FragileAlliances: false
-	Shroud: false
+	Shroud: true
 	Fog: true
 
 ChromeMetrics:
