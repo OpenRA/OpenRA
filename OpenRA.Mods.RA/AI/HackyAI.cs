@@ -30,6 +30,10 @@ namespace OpenRA.Mods.RA.AI
 		public readonly int RushInterval = 600;
 		public readonly int AttackForceInterval = 30;
 
+		[Desc("By what factor should power output exceed power consumption.")]
+		public readonly float ExcessPowerFactor = 1.2f;
+		[Desc("By what minimum amount should power output exceed power consumption.")]
+		public readonly int MinimumExcessPower = 50;
 		// Temporary hack to maintain previous rallypoint behavior.
 		public readonly string RallypointTestBuilding = "fact";
 		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
@@ -223,8 +227,8 @@ namespace OpenRA.Mods.RA.AI
 		bool HasAdequatePower()
 		{
 			// note: CNC `fact` provides a small amount of power. don't get jammed because of that.
-			return playerPower.PowerProvided > 50 &&
-				playerPower.PowerProvided > playerPower.PowerDrained * 1.2;
+			return playerPower.PowerProvided > Info.MinimumExcessPower &&
+				playerPower.PowerProvided > playerPower.PowerDrained * Info.ExcessPowerFactor;
 		}
 
 		bool HasAdequateFact()
