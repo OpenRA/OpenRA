@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		PaletteFromFile currentPalette;
 
-		static readonly string[] AllowedExtensions = { ".shp", ".r8", ".tem", ".des", ".sno", ".int" };
+		static readonly string[] AllowedExtensions = { ".shp", ".r8", "tmp", ".tem", ".des", ".sno", ".int" };
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
