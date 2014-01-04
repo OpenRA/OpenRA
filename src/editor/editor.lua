@@ -597,6 +597,7 @@ function CreateEditor()
   editor.matchon = false
   editor.assignscache = false
   editor.autocomplete = false
+  editor.bom = false
   editor.jumpstack = {}
   editor.ctrlcache = {}
   -- populate cache with Ctrl-<letter> combinations for workaround on Linux
