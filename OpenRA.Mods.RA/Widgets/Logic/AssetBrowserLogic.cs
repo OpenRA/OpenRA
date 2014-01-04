@@ -78,12 +78,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
 			frameSlider.MaximumValue = (float)spriteWidget.FrameCount;
-			frameSlider.Ticks = spriteWidget.FrameCount + 1;
+			frameSlider.Ticks = spriteWidget.FrameCount;
 			frameSlider.IsVisible = () => spriteWidget.FrameCount > 0;
 			frameSlider.OnChange += x => { spriteWidget.Frame = (int)Math.Round(x); };
 			frameSlider.GetValue = () => spriteWidget.Frame;
 
-			panel.Get<LabelWidget>("FRAME_COUNT").GetText = () => "{0} / {1}".F(spriteWidget.Frame + 1, spriteWidget.FrameCount + 1);
+			panel.Get<LabelWidget>("FRAME_COUNT").GetText = () => "{0} / {1}".F(spriteWidget.Frame, spriteWidget.FrameCount);
 
 			playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = () =>
