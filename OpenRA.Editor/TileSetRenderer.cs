@@ -31,7 +31,7 @@ namespace OpenRA.Editor
 
 			// Invalid tile size: return blank tile
 			if (frame.Size.Width < TileSize || frame.Size.Height < TileSize)
-				return data;
+				return new byte[0];
 
 			var frameData = frame.Data;
 			var xOffset = (frame.Size.Width - TileSize) / 2;
