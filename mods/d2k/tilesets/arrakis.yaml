@@ -3,7 +3,7 @@ General:
 	Id: ARRAKIS
 	SheetSize: 1024
 	Palette: d2k.pal
-	Extensions: .R8, .r8, .shp, .tex
+	Extensions: .R8, .r8, .shp, .tmp
 
 Terrain:
 	TerrainType@Clear: # TODO: workaround for the stupid WinForms editor
