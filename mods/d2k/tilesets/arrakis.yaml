@@ -3,7 +3,7 @@ General:
 	Id: ARRAKIS
 	SheetSize: 1024
 	Palette: d2k.pal
-	Extensions: .R8, .r8, .shp, .tex
+	Extensions: .R8, .r8, .shp, .tmp
 
 Terrain:
 	TerrainType@Clear: # TODO: workaround for the stupid WinForms editor
@@ -4879,6 +4879,218 @@ Templates:
 		Tiles:
 			0: Rough
 			1: Rough
+# Dune 2000 1.06 patch
+	Template@500:
+		Id: 500
+		Image: bloxxmas00
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+	Template@501:
+		Id: 501
+		Image: bloxxmas01
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+	Template@502:
+		Id: 502
+		Image: bloxxmas02
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+	Template@503:
+		Id: 503
+		Image: bloxxmas03
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+	Template@504:
+		Id: 504
+		Image: bloxxmas04
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+	Template@505:
+		Id: 505
+		Image: bloxxmas05
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@506:
+		Id: 506
+		Image: bloxxmas06
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Cliff
+	Template@507:
+		Id: 507
+		Image: bloxxmas07
+		Size: 2,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@508:
+		Id: 508
+		Image: bloxxmas08
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+	Template@509:
+		Id: 509
+		Image: bloxxmas09
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+	Template@510:
+		Id: 510
+		Image: bloxxmas10
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+	Template@511:
+		Id: 511
+		Image: bloxxmas11
+		Size: 2,2
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+	Template@512:
+		Id: 512
+		Image: bloxxmas12
+		Size: 2,3
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+	Template@513:
+		Id: 513
+		Image: bloxxmas13
+		Size: 3,3
+		Category: Rock-Detail
+		PickAny: False
+		Tiles:
+			0: Rock
+			1: Transition
+			2: Rock
+			3: Cliff
+			4: Transition
+			5: Cliff
+			6: Cliff
+			7: Transition
+			8: Cliff
+	Template@514:
+		Id: 514
+		Image: bloxxmas14
+		Size: 3,3
+		Category: Rock-Detail
+		PickAny: False
+		Tiles:
+			0: Sand
+			1: Transition
+			2: Cliff
+			3: Cliff
+			4: Transition
+			5: Cliff
+			6: Rock
+			7: Rock
+			8: Rock
+	Template@515:
+		Id: 515
+		Image: bloxxmas15
+		Size: 4,3
+		Category: Rock-Detail
+		PickAny: False
+		Tiles:
+			0: Cliff
+			1: Sand
+			2: Sand
+			3: Cliff
+			4: Transition
+			5: Transition
+			6: Transition
+			7: Transition
+			8: Cliff
+			9: Cliff
+			10: Cliff
+			11: Cliff
+	Template@516:
+		Id: 516
+		Image: bloxxmas16
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+	Template@517:
+		Id: 517
+		Image: bloxxmas17
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+	Template@518:
+		Id: 518
+		Image: bloxxmas18
+		Size: 1,1
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+	Template@519:
+		Id: 519
+		Image: bloxxmas19
+		Size: 2,2
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+	Template@520:
+		Id: 520
+		Image: bloxxmas20
+		Size: 2,2
+		Category: Sand-Detail
+		PickAny: False
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+# OpenRA Terrain Expansion
 	Template@600:
 		Id: 600
 		Image: t600
