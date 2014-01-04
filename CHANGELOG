@@ -16,6 +16,7 @@ NEW:
 		Added initial support for Tmp(TS) sprites.
 		Added GainsUnitUpgrades trait for leveling specific unit upgrades - firepower, armor, speed.
 		Added support for crates to level up specific unit upgrades.
+		Added a new Launch.Replay=$FILEPATH parameter for OpenRA.Game.exe to instantly start watching a *.rep file.
 	Asset Browser:
 		Filenames are now listed in alphabetical order
 	Map Editor:

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				Ui.CloseWindow();
 				onSwitch();
-				Game.InitializeWithMod(mod);
+				Game.InitializeWithMod(mod, null);
 			});
 		}
 	}
