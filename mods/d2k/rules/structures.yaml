@@ -30,9 +30,6 @@
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Conyard
-	BaseProvider:
-		Cooldown: 25
-		Range: 30
 
 ^POWER:
 	Inherits: ^Building

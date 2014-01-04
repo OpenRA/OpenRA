@@ -210,7 +210,6 @@
 	TargetableBuilding:
 		TargetTypes: Ground, C4
 	Building:
-		RequiresBaseProvider: true
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Rock, Concrete
