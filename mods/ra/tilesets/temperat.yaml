@@ -20,7 +20,7 @@ Terrain:
 	TerrainType@Road:
 		Type: Road
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 88, 116, 116
+		Color: 94, 67, 13
 		TargetTypes: Ground
 	TerrainType@Bridge:
 		Type: Bridge
