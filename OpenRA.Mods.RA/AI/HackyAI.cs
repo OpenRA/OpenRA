@@ -34,11 +34,11 @@ namespace OpenRA.Mods.RA.AI
 		public readonly float ExcessPowerFactor = 1.2f;
 		[Desc("By what minimum amount should power output exceed power consumption.")]
 		public readonly int MinimumExcessPower = 50;
-		[Desc("Produce units as long as there are less than this amount of units inside the base.")]
-		public readonly int IdleBaseUnitsMinimum = 12;
-		[Desc("Radius in cells where AI scans for targets to rush.")]
+		[Desc("Only produce units as long as there are less than this amount of units idling inside the base.")]
+		public readonly int IdleBaseUnitsMaximum = 12;
+		[Desc("Radius in cells around enemy BaseBuilder (Construction Yard) where AI scans for targets to rush.")]
 		public readonly int RushAttackScanRadius = 15;
-		[Desc("Radius in cells around a unit that should be protected where AI will send support.")]
+		[Desc("Radius in cells around the base that should be scanned for units to be protected.")]
 		public readonly int ProtectUnitScanRadius = 15;
 		[Desc("Radius in cells around a factory scanned for rally points by the AI.")]
 		public readonly int RallyPointScanRadius = 8;
@@ -825,7 +825,7 @@ namespace OpenRA.Mods.RA.AI
 				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", p).Name);
 
 			foreach (var q in Info.UnitQueues)
-				BuildUnit(q, unitsHangingAroundTheBase.Count < Info.IdleBaseUnitsMinimum);
+				BuildUnit(q, unitsHangingAroundTheBase.Count < Info.IdleBaseUnitsMaximum);
 		}
 
 		void BuildUnit(string category, bool buildRandom)
