@@ -1,0 +1,9 @@
+mpspawn:
+	Waypoint:
+	RenderEditorOnly:
+	BodyOrientation:
+
+waypoint:
+	Waypoint:
+	RenderEditorOnly:
+	BodyOrientation:

@@ -1,0 +1,42 @@
+CRATE:
+	Tooltip:
+		Name: Crate
+	Crate:
+		Lifetime: 240
+		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 20
+		UseCashTick: yes
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
+	ExplodeCrateAction@fire:
+		Weapon: Napalm.Crate
+		SelectionShares: 5
+	CloakCrateAction:
+		SelectionShares: 5
+		Effect: cloak
+	GiveMcvCrateAction:
+		SelectionShares: 0
+		NoBaseSelectionShares: 120
+		Unit: mcv
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+		XmasImages: xcratea, xcrateb, xcratec, xcrated
+	Selectable:
+		Selectable: false
+		Bounds: 15,15,-1,-1
+	BodyOrientation:
+
+mpspawn:
+	Waypoint:
+	RenderEditorOnly:
+	BodyOrientation:
+
+waypoint:
+	Waypoint:
+	RenderEditorOnly:
+	BodyOrientation:
+

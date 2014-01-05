@@ -1,0 +1,166 @@
+World:
+	ScreenMap:
+	ActorMap:
+	LoadWidgetAtGameStart:
+		Widget: INGAME_ROOT
+	ScreenShaker:
+	WaterPaletteRotation:
+		ExcludePalettes: player, effect
+	ChronoshiftPaletteEffect:
+	NukePaletteEffect:
+	LightPaletteRotator:
+		ExcludePalettes: terrain, effect
+	BuildingInfluence:
+	ChooseBuildTabOnSelect:
+	BridgeLayer:
+		Bridges: bridge1, bridge2, br1, br2, br3, sbridge1, sbridge2, sbridge3, sbridge4
+	CrateSpawner:
+		DeliveryAircraft: badr
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 120
+		WaterChance: .2
+	PlayerPaletteFromCurrentTileset:
+		Name: player
+		ShadowIndex: 3,4
+	PaletteFromCurrentTileset:
+		Name: terrain
+		ShadowIndex: 3,4
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+		ShadowIndex: 3
+		AllowModifiers: false
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: temperat.pal
+		ShadowIndex: 4
+		AllowModifiers: false
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@cloak:
+		Name: cloak
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@moveflash:
+		Name: moveflash
+		R: 255
+		G: 255
+		B: 255
+		A: 64
+	PaletteFromRGBA@invuln:
+		Name: invuln
+		R: 128
+		G: 0
+		B: 0
+		A: 128
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	ShroudPalette@shroud:
+		Type: Shroud
+	ShroudPalette@fog:
+		Name: fog
+		Fog: true
+	ShroudRenderer:
+		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
+		UseExtendedIndex: true
+	Country@0:
+		Name: Allies
+		Race: allies
+	Country@1:
+		Name: Soviet
+		Race: soviet
+	DomainIndex:
+	ResourceLayer:
+	ResourceClaimLayer:
+	ResourceType@ore:
+		ResourceType: 1
+		Palette: player
+		EditorSprite: gold01
+		Variants: gold01,gold02,gold03,gold04
+		MaxDensity: 12
+		ValuePerUnit: 25
+		Name: Ore
+		PipColor: Yellow
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
+		TerrainType: Ore
+	ResourceType@gem:
+		ResourceType: 2
+		Palette: player
+		EditorSprite: gem01
+		Variants: gem01,gem02,gem03,gem04
+		MaxDensity: 3
+		ValuePerUnit: 50
+		Name: Gems
+		PipColor: Red
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
+		TerrainType: Gems
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
+	PathfinderDebugOverlay:
+	SpawnMapActors:
+	CreateMPPlayers:
+	MPStartUnits@mcvonly:
+		Class: none
+		Races: soviet, allies
+		BaseActor: mcv
+	MPStartUnits@lightallies:
+		Class: light
+		Races: allies
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@lightsoviet:
+		Class: light
+		Races: soviet
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3,apc,ftrk
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@heavyallies:
+		Class: heavy
+		Races: allies
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@heavysoviet:
+		Class: heavy
+		Races: soviet
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartLocations:
+	SpawnMPUnits:
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:

@@ -1,0 +1,177 @@
+World:
+	ScreenMap:
+	ActorMap:
+	LoadWidgetAtGameStart:
+		Widget: INGAME_ROOT
+	CncMenuPaletteEffect:
+	CloakPaletteEffect:
+	ScreenShaker:
+	NukePaletteEffect:
+	WaterPaletteRotation:
+		ExcludePalettes: effect
+	BuildingInfluence:
+	BridgeLayer:
+		Bridges: bridge1, bridge2, bridge3, bridge4
+	PaletteFromCurrentTileset@terrain:
+		Name: terrain
+		ShadowIndex: 4
+	PaletteFromCurrentTileset@static:
+		Name: staticterrain
+		ShadowIndex: 4
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+		ShadowIndex: 3
+		AllowModifiers: false
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: temperat.pal
+		ShadowIndex: 4
+		AllowModifiers: false
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@cloak:
+		Name: cloak
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@moveflash:
+		Name: moveflash
+		R: 255
+		G: 255
+		B: 255
+		A: 64
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	ShroudPalette@shroud:
+		Type: Shroud
+	ShroudPalette@fog:
+		Name: fog
+		Fog: true
+	ShroudRenderer:
+		Variants: typea, typeb, typec, typed
+	Country@gdi:
+		Name: GDI
+		Race: gdi
+	Country@nod:
+		Name: Nod
+		Race: nod
+	ProductionQueueFromSelection:
+		ProductionTabsWidget: PRODUCTION_TABS
+	DomainIndex:
+	ResourceLayer:
+	ResourceClaimLayer:
+	ResourceType@green-tib:
+		ResourceType: 1
+		Palette: staticterrain
+		TerrainType: Tiberium
+		EditorSprite: ti1
+		Variants: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
+		MaxDensity: 12
+		ValuePerUnit: 35
+		Name: Tiberium
+		PipColor: Green
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
+	ResourceType@blue-tib:
+		ResourceType: 2
+		Palette: staticterrain
+		TerrainType: BlueTiberium
+		EditorSprite: bti1
+		Variants: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
+		MaxDensity: 12
+		ValuePerUnit: 75
+		Name: BlueTiberium
+		PipColor: Blue
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
+	PathfinderDebugOverlay:
+	SpawnMapActors:
+	MPStartLocations:
+	CreateMPPlayers:
+	MPStartUnits@mcvonly:
+		Class: none
+		Races: gdi, nod
+		BaseActor: mcv
+	MPStartUnits@defaultgdia:
+		Class: light
+		Races: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
+	MPStartUnits@defaultgdib:
+		Class: light
+		Races: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e1,e3,apc
+	MPStartUnits@defaultnoda:
+		Class: light
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,bggy,bike
+	MPStartUnits@defaultnodb:
+		Class: light
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3,e3,bggy
+	MPStartUnits@defaultnodc:
+		Class: light
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e1,e1,e3,bike
+	MPStartUnits@heavynoda:
+		Class: heavy
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
+	MPStartUnits@heavynodb:
+		Class: heavy
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
+	MPStartUnits@heavygdia:
+		Class: heavy
+		Races: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
+	MPStartUnits@heavygdib:
+		Class: heavy
+		Races: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
+	SpawnMPUnits:
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 6
+		SpawnInterval: 120
+		WaterChance: 0
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	ConquestObjectivesPanel:
+		ObjectivesPanel: CONQUEST_OBJECTIVES

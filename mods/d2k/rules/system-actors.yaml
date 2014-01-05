@@ -1,0 +1,115 @@
+CRATE:
+	Tooltip:
+		Name: Crate
+	Crate:
+		Lifetime: 120
+		TerrainTypes: Sand, Dune, Rock
+	GiveCashCrateAction@1:
+		Amount: 750
+		SelectionShares: 25
+		UseCashTick: yes
+	GiveCashCrateAction@2:
+		Amount: 1000
+		SelectionShares: 50
+		UseCashTick: yes
+	GiveCashCrateAction@3:
+		Amount: 1500
+		SelectionShares: 25
+		UseCashTick: yes
+	GiveUnitCrateAction@Trike:
+		SelectionShares: 20
+		Unit: trike
+	GiveUnitCrateAction@Raider:
+		SelectionShares: 15
+		Unit: raider
+	GiveUnitCrateAction@Quad:
+		SelectionShares: 40
+		Unit: quad
+	GiveUnitCrateAction@CombatA:
+		SelectionShares: 10
+		Unit: combata
+	GiveUnitCrateAction@CombatH:
+		SelectionShares: 10
+		Unit: combath
+	GiveUnitCrateAction@CombatO:
+		SelectionShares: 10
+		Unit: combato
+	GiveUnitCrateAction@SiegeTank:
+		SelectionShares: 10
+		Unit: siegetank
+	GiveUnitCrateAction@MissileTank:
+		SelectionShares: 10
+		Unit: missiletank
+	GiveUnitCrateAction@StealthRaider:
+		SelectionShares: 7
+		Unit: stealthraider
+	GiveUnitCrateAction@Fremen:
+		SelectionShares: 5
+		Unit: fremen
+	GiveUnitCrateAction@Sardaukar:
+		SelectionShares: 8
+		Unit: sardaukar
+	GiveUnitCrateAction@Saboteur:
+		SelectionShares: 3
+		Unit: saboteur
+	GiveUnitCrateAction@SonicTank:
+		SelectionShares: 5
+		Unit: sonictank
+	GiveUnitCrateAction@Devast:
+		SelectionShares: 2
+		Unit: devast
+	GiveUnitCrateAction@DeviatorTank:
+		SelectionShares: 5
+		Unit: deviatortank
+	GiveMcvCrateAction@Atreides:
+		SelectionShares: 0
+		NoBaseSelectionShares: 9001
+		Unit: mcva
+	GiveMcvCrateAction@Harkonnen:
+		SelectionShares: 0
+		NoBaseSelectionShares: 9001
+		Unit: mcvh
+	GiveMcvCrateAction@Ordos:
+		SelectionShares: 0
+		NoBaseSelectionShares: 9001
+		Unit: mcvo
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+	Selectable:
+		Selectable: false
+		Bounds: 15,15,-1,-1
+	ProximityCaptor:
+		Types: Crate
+	Passenger:
+	BodyOrientation:
+
+mpspawn:
+	Waypoint:
+	RenderEditorOnly:
+	BodyOrientation:
+
+waypoint:
+	Waypoint:
+	RenderEditorOnly:
+	BodyOrientation:
+
+SPICEBLOOM:
+	RenderBuilding:
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	ProximityCaptor:
+		Types: Tree
+	Tooltip:
+		Name: Spice Bloom
+	SeedsResource:
+		ResourceType: Spice
+		Interval: 75
+	RadarColorFromTerrain:
+		Terrain: Spice
+	BodyOrientation:
+
