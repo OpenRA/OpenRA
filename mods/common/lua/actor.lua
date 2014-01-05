@@ -155,6 +155,10 @@ Actor.OnRemovedFromWorld = function(actor, eh)
 	Actor.Trait(actor, "LuaScriptEvents").OnRemovedFromWorld:Add(eh)
 end
 
+Actor.OnCaptured = function(actor, eh)
+	Actor.Trait(actor, "LuaScriptEvents").OnCaptured:Add(eh)
+end
+
 Actor.ActorsWithTrait = function(className)
 	local ret = { }
 	for item in Utils.Enumerate(Internal.ActorsWithTrait(className)) do

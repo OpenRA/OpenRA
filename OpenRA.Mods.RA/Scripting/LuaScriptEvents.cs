@@ -15,11 +15,12 @@ namespace OpenRA.Mods.RA.Scripting
 {
 	public class LuaScriptEventsInfo : TraitInfo<LuaScriptEvents> { }
 
-	public class LuaScriptEvents : INotifyKilled, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class LuaScriptEvents : INotifyKilled, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyCapture
 	{
 		public event Action<Actor, AttackInfo> OnKilled = (self, e) => { };
 		public event Action<Actor> OnAddedToWorld = self => { };
 		public event Action<Actor> OnRemovedFromWorld = self => { };
+		public event Action<Actor, Actor, Player, Player> OnCaptured = (self, captor, oldOwner, newOwner) => { };
 
 		public void Killed(Actor self, AttackInfo e)
 		{
@@ -34,6 +35,11 @@ namespace OpenRA.Mods.RA.Scripting
 		public void RemovedFromWorld(Actor self)
 		{
 			OnRemovedFromWorld(self);
+		}
+
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			OnCaptured(self, captor, oldOwner, newOwner);
 		}
 	}
 }
