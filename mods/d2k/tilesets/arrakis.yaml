@@ -4643,22 +4643,22 @@ Templates:
 			2: Rough
 			3: Rough
 			1: Rough
-	Template@461:
+	Template@461: # TODO: this should go away
 		Id: 461
-		Image: BLOXWAST
-		Frames: 373,374,375
+		Image: BLOXBASE
+		Frames: 1,1,1
 		Size: 3,1
 		Category: Rotten-Base
 		PickAny: False
 		Tiles:
-			0: Rough
-			1: Rough
-			2: Rough
+			0: Clear
+			1: Clear
+			2: Clear
 	Template@462:
 		Id: 462
 		Image: BLOXWAST
-		Frames: 355,356,357,358,359
-		Size: 5,1
+		Frames: 355,356,357,358,359,373,374,375,338,339
+		Size: 5,2
 		Category: Rotten-Base
 		PickAny: False
 		Tiles:
@@ -4667,16 +4667,21 @@ Templates:
 			2: Rough
 			3: Rough
 			4: Rough
-	Template@463:
+			5: Rough
+			6: Rough
+			7: Rough
+			8: Rough
+			9: Rough
+	Template@463: # TODO this should go away
 		Id: 463
-		Image: BLOXWAST
-		Frames: 338,339
+		Image: BLOXBASE
+		Frames: 1,1
 		Size: 2,1
 		Category: Rotten-Base
 		PickAny: False
 		Tiles:
-			0: Rough
-			1: Rough
+			0: Clear
+			1: Clear
 	Template@464:
 		Id: 464
 		Image: BLOXWAST
