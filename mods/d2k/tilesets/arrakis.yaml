@@ -2902,7 +2902,7 @@ Templates:
 		Image: BLOXBAT
 		Frames: 609,610,629,630
 		Size: 2,2
-		Category: Rotten-Base
+		Category: Dead-Worm
 		PickAny: False
 		Tiles:
 			0: Rough
