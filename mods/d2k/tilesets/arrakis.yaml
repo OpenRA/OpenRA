@@ -3512,29 +3512,29 @@ Templates:
 		Tiles:
 			1: Rough
 			0: Rough
-	Template@361:
+	Template@361: # TODO: this should go away
 		Id: 361
-		Image: BLOXICE
-		Frames: 1,2,3,4
+		Image: BLOXBASE
+		Frames: 1,1,1,1
 		Size: 4,1
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Cliff
-			1: Cliff
-			2: Cliff
-			3: Cliff
-	Template@362:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+	Template@362: # TODO: this should go away
 		Id: 362
-		Image: BLOXICE
-		Frames: 5,6,7
+		Image: BLOXBASE
+		Frames: 1,1,1
 		Size: 3,1
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Sand
-			1: Sand
-			2: Sand
+			0: Clear
+			1: Clear
+			2: Clear
 	Template@363:
 		Id: 363
 		Image: BLOXICE
@@ -3570,8 +3570,8 @@ Templates:
 	Template@366:
 		Id: 366
 		Image: BLOXICE
-		Frames: 309,310,311,312
-		Size: 4,1
+		Frames: 309,310,311,312,355,356,357,358,1,2,3,4,5,6,7,8
+		Size: 4,4
 		Category: Ice-Detail
 		PickAny: False
 		Tiles:
@@ -3579,6 +3579,18 @@ Templates:
 			1: Cliff
 			2: Cliff
 			3: Sand
+			4: Sand
+			5: Sand
+			6: Sand
+			7: Sand
+			8: Cliff
+			9: Cliff
+			10: Cliff
+			11: Cliff
+			12: Sand
+			13: Sand
+			14: Sand
+			15: Sand
 	Template@367:
 		Id: 367
 		Image: BLOXICE
@@ -3706,18 +3718,18 @@ Templates:
 			1: Ice
 			5: Cliff
 			6: Cliff
-	Template@377:
+	Template@377: # TODO: this should go away
 		Id: 377
-		Image: BLOXICE
-		Frames: 355,356,357,358
+		Image: BLOXBASE
+		Frames: 1,1,1,1
 		Size: 4,1
 		Category: Ice-Detail
 		PickAny: False
 		Tiles:
-			0: Sand
-			1: Sand
-			2: Sand
-			3: Sand
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
 	Template@378:
 		Id: 378
 		Image: BLOXICE
