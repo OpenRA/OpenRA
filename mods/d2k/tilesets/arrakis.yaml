@@ -4791,8 +4791,8 @@ Templates:
 	Template@474:
 		Id: 474
 		Image: BLOXWAST
-		Frames: 349,350,351,352,369,370,371,372,389,390,391,392
-		Size: 4,3
+		Frames: 349,350,351,352,369,370,371,372,389,390,391,392,385,386,387,388
+		Size: 4,4
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
@@ -4808,6 +4808,10 @@ Templates:
 			1: Cliff
 			5: Cliff
 			6: Cliff
+			12: Sand
+			13: Cliff
+			14: Cliff
+			15: Rough
 	Template@475:
 		Id: 475
 		Image: BLOXWAST
@@ -4862,18 +4866,18 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Rough
-	Template@480:
+	Template@480: # TODO: this should go away
 		Id: 480
-		Image: BLOXWAST
-		Frames: 385,386,387,388
+		Image: BLOXBASE
+		Frames: 1,1,1,1
 		Size: 4,1
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Sand
-			1: Cliff
-			2: Cliff
-			3: Rough
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
 	Template@481:
 		Id: 481
 		Image: BLOXWAST
