@@ -4682,7 +4682,7 @@ Templates:
 		Image: BLOXWAST
 		Frames: 97,117
 		Size: 1,2
-		Category: Dead-Wurm
+		Category: Dead-Worm
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -4748,7 +4748,7 @@ Templates:
 		Image: BLOXWAST
 		Frames: 312
 		Size: 1,1
-		Category: Dead-Wurm
+		Category: Dead-Worm
 		PickAny: False
 		Tiles:
 			0: Sand
@@ -4757,7 +4757,7 @@ Templates:
 		Image: BLOXWAST
 		Frames: 310,311
 		Size: 2,1
-		Category: Dead-Wurm
+		Category: Dead-Worm
 		PickAny: False
 		Tiles:
 			1: Sand
@@ -4767,7 +4767,7 @@ Templates:
 		Image: BLOXWAST
 		Frames: 309
 		Size: 1,1
-		Category: Dead-Wurm
+		Category: Dead-Worm
 		PickAny: False
 		Tiles:
 			0: Sand
