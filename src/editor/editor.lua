@@ -933,7 +933,17 @@ function CreateEditor()
 
   editor:Connect(wxstc.wxEVT_STC_PAINTED,
     function ()
-      if ide.osname == 'Windows' then updateStatusText(editor) end
+      if ide.osname == 'Windows' then
+        updateStatusText(editor)
+
+        if ide.config.editor.usewrap ~= true and editor:AutoCompActive() then
+          -- showing auto-complete list leaves artifacts on the screen,
+          -- which can only be fixed by a forced refresh.
+          -- shows with wxSTC 3.21 and both wxwidgets 2.9.5 and 3.1
+          editor:Update()
+          editor:Refresh()
+        end
+      end
     end)
 
   editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
