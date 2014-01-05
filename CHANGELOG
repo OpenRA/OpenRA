@@ -33,6 +33,7 @@ NEW:
 		Added an improved INI/MPR map import.
 	Mod / Custom map compatibility:
 		Altitude is no longer parsed from actor templates in maps. Specify CenterPosition instead.
+		system.yaml has been split into four files for all mods: system-actor.yaml, system-ai.yaml, system-player.yaml and system-world.yaml.
 		Run `OpenRA.Utility.exe --upgrade-mod <mod> 20131223` to automatically upgrade mod rules.
 		Run `OpenRA.Utility.exe --upgrade-map <map path> 20131223` to automatically upgrade custom map rules.
 		Added a new trait Demolishable for buildings to handle the C4 demolition.
