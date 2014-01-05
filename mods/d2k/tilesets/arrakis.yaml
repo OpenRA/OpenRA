@@ -4,6 +4,7 @@ General:
 	SheetSize: 1024
 	Palette: d2k.pal
 	Extensions: .R8, .r8, .shp, .tmp
+	EditorTemplateOrder: Dune, Sand-Detail, Brick, Sand-Cliff, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform
 
 Terrain:
 	TerrainType@Clear: # TODO: workaround for the stupid WinForms editor
@@ -1261,7 +1262,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 677
 		Size: 1,1
-		Category: Z-Crap(Unusual)
+		Category: Unidentified
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1451,7 +1452,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 600,601,602,620,621,622,640,641,642
 		Size: 3,3
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Rock
@@ -1492,7 +1493,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 564,565,584,585
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1504,7 +1505,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 566,567,586,587
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1516,7 +1517,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 562,563,582,583
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -1528,7 +1529,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 560,561,580,581
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -1564,7 +1565,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 568,569,588,589
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1576,7 +1577,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 570,571,590,591
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1588,7 +1589,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 529,530,549,550
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			3: Rock
@@ -1600,7 +1601,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 527,528,547,548
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			3: Rock
@@ -1612,7 +1613,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 525,526,545,546
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			3: Rock
@@ -1624,7 +1625,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 523,524,543,544
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			3: Sand
@@ -1636,7 +1637,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 520,521,522,540,541,542
 		Size: 3,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			5: Cliff
@@ -1650,7 +1651,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 480,481,482,500,501,502
 		Size: 3,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -1664,7 +1665,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 440,441,460,461
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Sand-Smooth
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -1676,7 +1677,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 402,403,422,423,442,443
 		Size: 2,3
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1690,7 +1691,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 400,401,420,421
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1702,7 +1703,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 408,409,428,429
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1714,7 +1715,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 410,411,430,431,450,451
 		Size: 2,3
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1728,7 +1729,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 412,413,432,433
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1740,7 +1741,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 452,453
 		Size: 2,1
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1750,7 +1751,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 454,455,474,475,494,495
 		Size: 2,3
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1764,7 +1765,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 489,490,509,510
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -1776,7 +1777,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 448,449,468,469
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1788,7 +1789,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 487,488,507,508
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -1800,7 +1801,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 446,447,466,467
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -1812,7 +1813,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 444,445,464,465
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			1: Rock
@@ -1824,7 +1825,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 456,457,476,477,496,497
 		Size: 2,3
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -1862,7 +1863,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 418,419,438,439
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -1874,7 +1875,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 378,379,398,399
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -1886,7 +1887,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 416,417,436,437
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -1898,7 +1899,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 376,377,396,397
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -2017,7 +2018,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 483,484,503,504
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Sand-Smooth
 		PickAny: False
 		Tiles:
 			1: Transition
@@ -2029,7 +2030,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 485,486,505,506
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Sand
@@ -2311,7 +2312,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 254,255,274,275
 		Size: 2,2
-		Category: Z-Crap(Unusual)
+		Category: Unidentified
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -2347,7 +2348,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 404,405,424,425
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -2359,7 +2360,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 406,407,426,427
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			2: Cliff
@@ -2388,7 +2389,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 676,696
 		Size: 1,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -2434,7 +2435,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 511,512,513,531,532,533
 		Size: 3,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -2448,7 +2449,7 @@ Templates:
 		Image: BLOXBASE
 		Frames: 471,472,473,491,492,493
 		Size: 3,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -3767,7 +3768,7 @@ Templates:
 		Image: BLOXICE
 		Frames: 551
 		Size: 1,1
-		Category: Z-Crap(Unusual)
+		Category: Unidentified
 		PickAny: False
 		Tiles:
 			0: Sand
@@ -3776,7 +3777,7 @@ Templates:
 		Image: BLOXICE
 		Frames: 579,599,619,639
 		Size: 1,4
-		Category: Z-Crap(Unusual)
+		Category: Unidentified
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -3788,7 +3789,7 @@ Templates:
 		Image: BLOXICE
 		Frames: 539,559
 		Size: 1,2
-		Category: Z-Crap(Unusual)
+		Category: Unidentified
 		PickAny: False
 		Tiles:
 			1: Cliff
@@ -4006,7 +4007,7 @@ Templates:
 		Image: BLOXICE
 		Frames: 660,661,662
 		Size: 3,1
-		Category: Z-Crap(Unusual)
+		Category: Unidentified
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -4314,7 +4315,7 @@ Templates:
 		Image: BLOXTREE
 		Frames: 747
 		Size: 1,1
-		Category: Z-Crap(Unusual)
+		Category: Unidentified
 		PickAny: False
 		Tiles:
 			0: Rough
@@ -4817,7 +4818,7 @@ Templates:
 		Image: BLOXWAST
 		Frames: 706,707,726,727
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			3: Cliff
@@ -4829,7 +4830,7 @@ Templates:
 		Image: BLOXWAST
 		Frames: 557,558,559,577,578,579
 		Size: 3,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -4883,7 +4884,7 @@ Templates:
 		Image: BLOXWAST
 		Frames: 414,415,434,435
 		Size: 2,2
-		Category: BaseBorder-Cliff
+		Category: Rock-Cliff
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -6047,7 +6048,7 @@ Templates:
 		Id: 842
 		Image: t842
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -6058,7 +6059,7 @@ Templates:
 		Id: 843
 		Image: t843
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Sand-Smooth
 		PickAny: False
 		Tiles:
 			0: Cliff
