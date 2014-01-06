@@ -27,6 +27,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly Color Color = Color.Red;
 		[Desc("Impact animation. Requires a regular animation with idle: sequence instead of explosion special case.")]
 		public readonly string HitAnim = null;
+		public readonly string HitAnimPalette = "effect";
 
 		public IEffect Create(ProjectileArgs args)
 		{
@@ -88,7 +89,7 @@ namespace OpenRA.Mods.RA.Effects
 			}
 
 			if (hitanim != null)
-				foreach (var r in hitanim.Render(target, wr.Palette("effect")))
+				foreach (var r in hitanim.Render(target, wr.Palette(info.HitAnimPalette)))
 					yield return r;
 		}
 	}
