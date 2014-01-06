@@ -509,12 +509,17 @@ namespace OpenRA
 				var dirPath = new[] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
 				if (!Directory.Exists(dirPath))
 					Directory.CreateDirectory(dirPath);
+				var url = Game.Settings.Game.MapRepository + mapHash;
 
-				var mapPath = Path.Combine(dirPath, mapHash + ".oramap");
+				var request = WebRequest.Create(url);
+				request.Method = "HEAD";
+				var res = request.GetResponse();
+
+				var mapPath = Path.Combine(dirPath, res.Headers["Content-Disposition"].Replace("attachment; filename = ", ""));
 				Console.Write("Trying to download map to {0} ... ".F(mapPath));
 
 				WebClient webClient = new WebClient();
-				webClient.DownloadFile(Game.Settings.Game.MapRepository + mapHash, mapPath);
+				webClient.DownloadFile(url, mapPath);
 				Game.modData.AvailableMaps.Add(mapHash, new Map(mapPath));
 				Console.WriteLine("done");
 
