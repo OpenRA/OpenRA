@@ -152,6 +152,7 @@ if [ $BUILD_WXWIDGETS ]; then
   svn revert -R "$WXWIDGETS_BASENAME"
   cd "$WXWIDGETS_BASENAME"
   ./configure --prefix="$INSTALL_DIR" $WXWIDGETSDEBUG --disable-shared --enable-unicode \
+    --enable-compat28 \
     --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
     --with-zlib=builtin --disable-richtext \
     CFLAGS="-Os -fno-keep-inline-dllexport" CXXFLAGS="-Os -fno-keep-inline-dllexport"
@@ -201,8 +202,8 @@ if [ $BUILD_WXLUA ]; then
   # (temporary) fix for compilation issue in wxlua in Windows using mingw (r184)
   sed -i 's/defined(__MINGW32__) || defined(__GNUWIN32__)/0/' modules/wxbind/src/wxcore_bind.cpp
 
-  [ -f "$INSTALL_DIR/lib/libwxscintilla-2.9.a" ] && cp "$INSTALL_DIR/lib/libwxscintilla-2.9.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-2.9.a"
   [ -f "$INSTALL_DIR/lib/libwxscintilla-3.0.a" ] && cp "$INSTALL_DIR/lib/libwxscintilla-3.0.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-3.0.a"
+  [ -f "$INSTALL_DIR/lib/libwxscintilla-3.1.a" ] && cp "$INSTALL_DIR/lib/libwxscintilla-3.1.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-3.1.a"
 
   echo "set_target_properties(wxLuaModule PROPERTIES LINK_FLAGS -static)" >> modules/luamodule/CMakeLists.txt
   cmake -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$WXLUABUILD -DBUILD_SHARED_LIBS=FALSE \
