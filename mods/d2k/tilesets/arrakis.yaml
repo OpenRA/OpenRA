@@ -1041,24 +1041,24 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Concrete
-	Template@90:
+	Template@90: # TODO: This should go away
 		Id: 90
 		Image: BLOXBASE
-		Frames: 649,650,651,669,670,671
+		Frames: 1,1,1,1,1,1
 		Size: 3,2
 		Category: Brick
 		PickAny: False
 		Tiles:
-			0: Concrete
-			3: Concrete
-			4: Concrete
-			5: Concrete
-			2: Concrete
-			1: Concrete
-	Template@91:
+			0: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			2: Clear
+			1: Clear
+	Template@91: # TODO: This should go away
 		Id: 91
 		Image: BLOXBASE
-		Frames: 646,647,648,666,667,668,686,687,688
+		Frames: 1,1,1,1,1,1,1,1,1
 		Size: 3,3
 		Category: Brick
 		PickAny: False
@@ -1081,20 +1081,20 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Rough
-	Template@93:
+	Template@93: # TODO: This should go away
 		Id: 93
 		Image: BLOXBASE
-		Frames: 643,644,645,663,664,665
+		Frames: 1,1,1,1,1,1
 		Size: 3,2
 		Category: Brick
 		PickAny: False
 		Tiles:
-			5: Concrete
-			4: Concrete
-			3: Concrete
-			0: Concrete
-			1: Concrete
-			2: Concrete
+			5: Clear
+			4: Clear
+			3: Clear
+			0: Clear
+			1: Clear
+			2: Clear
 	Template@94:
 		Id: 94
 		Image: BLOXBASE
@@ -1117,36 +1117,36 @@ Templates:
 		Tiles:
 			0: Rough
 			1: Rock
-	Template@96:
+	Template@96: # TODO: This should go away
 		Id: 96
 		Image: BLOXBASE
-		Frames: 614,615,616,634,635,636,654,655,656
+		Frames: 1,1,1,1,1,1,1,1,1
 		Size: 3,3
 		Category: Rock-Detail
 		PickAny: False
 		Tiles:
-			0: Rock
-			1: Rock
-			2: Rock
-			5: Rock
-			4: Rock
-			3: Rock
-			6: Rock
-			7: Rock
-			8: Rock
-	Template@97:
+			0: Clear
+			1: Clear
+			2: Clear
+			5: Clear
+			4: Clear
+			3: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+	Template@97: # TODO: This should go away
 		Id: 97
 		Image: BLOXBASE
-		Frames: 617,618,637,638
+		Frames: 1,1,1,1
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
 		Tiles:
-			0: Rock
-			1: Rock
-			3: Rock
-			2: Rock
-	Template@98:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@98: # TODO: This should go away
 		Id: 98
 		Image: BLOXBASE
 		Frames: 619,639
@@ -1194,17 +1194,17 @@ Templates:
 	Template@102:
 		Id: 102
 		Image: BLOXBASE
-		Frames: 611,612,613,631,632,633
+		Frames: 1,1,1,1,1,1
 		Size: 3,2
 		Category: Rock-Detail
 		PickAny: False
 		Tiles:
-			0: Rock
-			1: Rock
-			2: Rock
-			5: Rock
-			4: Rock
-			3: Rock
+			0: Clear
+			1: Clear
+			2: Clear
+			5: Clear
+			4: Clear
+			3: Clear
 	Template@103:
 		Id: 103
 		Image: BLOXBASE
