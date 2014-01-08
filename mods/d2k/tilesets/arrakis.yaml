@@ -3774,16 +3774,16 @@ Templates:
 			0: Sand
 	Template@382:
 		Id: 382
-		Image: BLOXICE
-		Frames: 579,599,619,639
+		Image: BLOXBASE
+		Frames: 1,1,1,1
 		Size: 1,4
 		Category: Unidentified
 		PickAny: False
 		Tiles:
-			0: Cliff
-			1: Cliff
-			2: Cliff
-			3: Cliff
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
 	Template@383:
 		Id: 383
 		Image: BLOXICE
