@@ -165,6 +165,7 @@ imageAtomicExchange = fn "performs atomic operation on individual texels returns
 imageAtomicCompSwap = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
 imageStore = fn "stores the texel at the coordinate. - ()(imageN, intN coord, [int sample], vecN data)",
 imageLoad = fn "loads the texel at the coordinate. - (vecN)(imageN, intN coord, [int sample])",
+imageSize = fn "returns the size of the image. - (ivecN)(imageN)",
 
 textureSize = fn "returns the size of the texture (no lod required: Rect, MS and Buffer). - (intN)(samplerN, [int lod])",
 textureQueryLod = fn "returns the lod values for a given coordinate. - (vec2)(samplerN, vecN coord)",

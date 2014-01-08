@@ -152,7 +152,7 @@ return {
     imageAtomicAdd imageAtomicMin imageAtomicMax
     imageAtomicIncWrap imageAtomicDecWrap imageAtomicAnd
     imageAtomicOr imageAtomixXor imageAtomicExchange
-    imageCompSwap
+    imageCompSwap imageSize
     
     memoryBarrier groupMemoryBarrier memoryBarrierAtomicCounter memoryBarrierShared memoryBarrierBuffer memoryBarrierImage
     
