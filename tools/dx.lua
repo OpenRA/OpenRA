@@ -4,7 +4,7 @@
 local fxcpath = ide.config.path.fxcbin or (os.getenv("DXSDK_DIR") and os.getenv("DXSDK_DIR").."/Utilities/bin/x86/")
 local dxprofile
 
-return dxpath and {
+return fxcpath and {
   fninit = function(frame,menuBar)
     dxprofile = ide.config.dxprofile or "dx_5"
 
@@ -103,7 +103,7 @@ return dxpath and {
       local editor = GetEditor()
       local domain = data.domains[event:GetId()]
 
-      if (not (filename and dxpath) or  not (domain == 7 or info.selword )) then
+      if (not (filename and fxcpath) or  not (domain == 7 or info.selword )) then
         DisplayOutput("Error: Dx Compile: Insufficient parameters (nofile / no selected entry function!\n")
         return
       end
