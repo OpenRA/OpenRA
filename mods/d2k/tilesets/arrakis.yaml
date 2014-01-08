@@ -1024,23 +1024,24 @@ Templates:
 	Template@88:
 		Id: 88
 		Image: BLOXBASE
-		Frames: 657,658,659
-		Size: 3,1
+		Frames: 657,658,659,691
+		Size: 1,1
 		Category: Brick
-		PickAny: False
+		PickAny: True
 		Tiles:
 			0: Concrete
 			1: Concrete
 			2: Concrete
-	Template@89:
+			3: Concrete
+	Template@89: # TODO: This should go away
 		Id: 89
 		Image: BLOXBASE
-		Frames: 691
+		Frames: 1
 		Size: 1,1
 		Category: Brick
 		PickAny: False
 		Tiles:
-			0: Concrete
+			0: Clear
 	Template@90: # TODO: This should go away
 		Id: 90
 		Image: BLOXBASE
