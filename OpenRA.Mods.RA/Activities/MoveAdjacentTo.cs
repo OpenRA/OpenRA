@@ -16,15 +16,21 @@ namespace OpenRA.Mods.RA.Activities
 	public class MoveAdjacentTo : Activity
 	{
 		readonly Target target;
+		readonly Mobile mobile;
+		readonly PathFinder pathFinder;
 
-		public MoveAdjacentTo(Target target) { this.target = target; }
+		public MoveAdjacentTo(Actor self, Target target)
+		{
+			this.target = target;
+			mobile = self.Trait<Mobile>();
+			pathFinder = self.World.WorldActor.Trait<PathFinder>();
+		}
 
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
-			var mobile = self.Trait<Mobile>();
 			var ps1 = new PathSearch(self.World, mobile.Info, self)
 			{
 				checkForBlocked = true,
@@ -42,7 +48,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			ps1.heuristic = PathSearch.DefaultEstimator(mobile.toCell);
 			var ps2 = PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, target.CenterPosition.ToCPos(), true);
-			var ret = self.World.WorldActor.Trait<PathFinder>().FindBidiPath(ps1, ps2);
+			var ret = pathFinder.FindBidiPath(ps1, ps2);
 
 			return Util.SequenceActivities(mobile.MoveTo(() => ret), this);
 		}

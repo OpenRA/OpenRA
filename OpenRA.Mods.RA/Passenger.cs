@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA
 				self.SetTargetLine(target, Color.Green);
 
 				self.CancelActivity();
-				self.QueueActivity(new MoveAdjacentTo(target));
+				self.QueueActivity(new MoveAdjacentTo(self, target));
 				self.QueueActivity(new EnterTransport(self, order.TargetActor));
 			}
 		}

@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA
 				self.SetTargetLine(target, Color.Green);
 
 				self.CancelActivity();
-				self.QueueActivity(new MoveAdjacentTo(target));
+				self.QueueActivity(new MoveAdjacentTo(self, target));
 				self.QueueActivity(mobile.MoveTo(order.TargetActor.CenterPosition.ToCPos(), order.TargetActor));
 				self.QueueActivity(new Rearm(self));
 				self.QueueActivity(new Repair(order.TargetActor));
