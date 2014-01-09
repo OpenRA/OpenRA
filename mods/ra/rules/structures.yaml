@@ -4,7 +4,7 @@ MSLO:
 		Cost: 2500
 	Tooltip:
 		Name: Missile Silo
-		Description: Launches a devastating atomic bomb\nat a target location.\n  Special Ability: Atom Bomb\n\nMaximum 1 can be built
+			Description: Provides atomic technologies.\n Special Ability: Atom Bomb\n\nMaximum of 1 can be built
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
@@ -48,7 +48,7 @@ GAP:
 		Cost: 1000
 	Tooltip:
 		Name: Gap Generator
-		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
+		Description: Obscures enemies view with shroud.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
@@ -80,7 +80,7 @@ SPEN:
 		Cost: 800
 	Tooltip:
 		Name: Sub Pen
-		Description: Produces and repairs submarines and \ntransports
+		Description: Produces and repairs submarines, transports.
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
@@ -143,7 +143,7 @@ SYRD:
 		Cost: 1000
 	Tooltip:
 		Name: Shipyard
-		Description: Produces and repairs ships
+		Description: Produces and repairs ships, transports.
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
@@ -199,7 +199,7 @@ IRON:
 		Cost: 1500
 	Tooltip:
 		Name: Iron Curtain
-		Description: Makes a group of units invulnerable\nfor a short time.\n  Special Ability: Invulnerability\n\nMaximum 1 can be built
+		Description: Makes vehicles, subs, ships, and or buildings invulnerable\nfor a short time.\n  Special Ability: Invulnerability\n\nMaximum 1 can be built.
 	Building:
 		Power: -200
 		Footprint: xx
@@ -217,7 +217,7 @@ IRON:
 		Icon: invuln
 		ChargeTime: 120
 		Description: Invulnerability
-		LongDesc: Makes a group of units invulnerable\nfor 20 seconds.
+		LongDesc: Makes vehicles, subs, ships and or buildings invulnerable\nfor 20 seconds.
 		Duration: 20
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: ironchg1.aud
@@ -239,7 +239,7 @@ PDOX:
 		Cost: 1500
 	Tooltip:
 		Name: Chronosphere
-		Description: Teleports a group of units across the\nmap for a short time.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
+		Description: Teleports a group of vehicles, subs, and or ships across the \nmap for a short time.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -255,7 +255,7 @@ PDOX:
 		Icon: chrono
 		ChargeTime: 120
 		Description: Chronoshift
-		LongDesc: Teleports a group of units across\nthe map for 20 seconds.
+		LongDesc: Teleports a group of vehicles, subs and or ships across \nthe map for 20 seconds.
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
@@ -278,7 +278,7 @@ TSLA:
 		Cost: 1200
 	Tooltip:
 		Name: Tesla Coil
-		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+		Description: Advanced base defense. \nRequires powerto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Building:
 		Power: -150
 		Footprint: _ x
@@ -366,7 +366,7 @@ DOME:
 		Cost: 1600
 	Tooltip:
 		Name: Radar Dome
-		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+		Description: Provides minmap and technologies.\n  Requires power to operate.
 	Building:
 		Power: -40
 		Footprint: xx xx
@@ -914,7 +914,6 @@ FACT:
 		Type: Wood
 	RevealsShroud:
 		Range: 5
-	Bib:
 	Production:
 		Produces: Building,Defense
 	IronCurtainable: 
@@ -946,7 +945,7 @@ PROC:
 		Cost: 1400
 	Tooltip:
 		Name: Ore Refinery
-		Description: Converts Ore and Gems into money
+		Description: Refines Ore and Gems into credits.
 	Building:
 		Power: -30
 		Footprint: _x_ xxx x==
@@ -991,7 +990,7 @@ SILO:
 		Cost: 150
 	Tooltip:
 		Name: Silo
-		Description: Stores excess harvested Ore
+		Description: Stores excess credits.
 	Building:
 		Power: -10
 	-GivesBuildableArea:
@@ -1021,7 +1020,7 @@ HPAD:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
-		Description: Produces and reloads helicopters
+		Description: Produces and rearms helicopters.
 	Building:
 		Power: -10
 		Footprint: xx xx
@@ -1032,7 +1031,6 @@ HPAD:
 		Type: Wood
 	RevealsShroud:
 		Range: 5
-	Bib:
 	Exit@1:
 		SpawnOffset: 0,-6
 		ExitCell: 0,0
@@ -1055,7 +1053,7 @@ AFLD:
 		Cost: 500
 	Tooltip:
 		Name: Airfield
-		Description: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
+		Description: Produces and rearms aircraft.\nSpecial Ability: Paratroopers\n  Special Ability: Spy Plane
 	Building:
 		Power: -20
 		Footprint: xxx xxx
@@ -1085,7 +1083,7 @@ AFLD:
 		Icon: paratroopers
 		ChargeTime: 360
 		Description: Paratroopers
-		LongDesc: A Badger drops a squad of Riflemen \nanywhere on the map
+		LongDesc: A Badger drops a squad of 3 Riflemen & 2 Rocket\n Infantry anywhere on the map. 
 		Prerequisites: AFLD
 		DropItems: E1,E1,E1,E3,E3
 		SelectTargetSound: slcttgt1.aud
@@ -1104,7 +1102,7 @@ POWR:
 		Cost: 300
 	Tooltip:
 		Name: Power Plant
-		Description: Provides power for other structures
+		Description: Provides power for other structures.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -1133,7 +1131,7 @@ APWR:
 		Cost: 500
 	Tooltip:
 		Name: Advanced Power Plant
-		Description: Provides more power, cheaper than the \nstandard Power Plant
+		Description: Provides double the power of a standard Power Plant.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -1162,7 +1160,7 @@ STEK:
 		Cost: 1500
 	Tooltip:
 		Name: Soviet Tech Center
-		Description: Provides Soviet advanced technologies
+		Description: Provides Soviet advanced technologies.
 	ProvidesCustomPrerequisite:
 		Prerequisite: techcenter
 	Building:
@@ -1190,7 +1188,7 @@ BARR:
 		Cost: 400
 	Tooltip:
 		Name: Soviet Barracks
-		Description: Produces infantry
+		Description: Trains infantry.
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -1227,7 +1225,7 @@ TENT:
 		Cost: 400
 	Tooltip:
 		Name: Allied Barracks
-		Description: Produces infantry
+		Description: Trains infantry.
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -1281,7 +1279,7 @@ FIX:
 		Cost: 1200
 	Tooltip:
 		Name: Service Depot
-		Description: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
+		Description: Repairs vehicles and grants additional technology.
 	Building:
 		Power: -30
 		Footprint: _x_ xxx _x_
