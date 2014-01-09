@@ -443,7 +443,12 @@ local function stoppedAtBreakpoint(file, line)
 end
 
 debugger.listen = function()
-  local server = socket.bind("*", debugger.portnumber)
+  local server, err = socket.bind("*", debugger.portnumber)
+  if not server then
+    DisplayOutputLn(TR("Can't start debugger server at %s:%d: %s.")
+      :format(debugger.hostname, debugger.portnumber, err or TR("unknown error")))
+    return
+  end
   DisplayOutputLn(TR("Debugger server started at %s:%d.")
     :format(debugger.hostname, debugger.portnumber))
   copas.autoclose = false
