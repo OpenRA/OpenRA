@@ -4,7 +4,7 @@ General:
 	SheetSize: 1024
 	Palette: d2k.pal
 	Extensions: .R8, .r8, .shp, .tmp
-	EditorTemplateOrder: Dune, Sand-Detail, Brick, Sand-Cliff, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform
+	EditorTemplateOrder: Basic, Dune, Sand-Detail, Brick, Sand-Cliff, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Unidentified
 
 Terrain:
 	TerrainType@Clear: # TODO: workaround for the stupid WinForms editor
@@ -74,6 +74,7 @@ Templates:
 		Frames: 0, 8, 9, 48, 49, 50, 51, 52, 68, 69, 70, 71, 72
 		Size: 1,1
 		PickAny: True
+		Category: Basic
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2065,6 +2066,7 @@ Templates:
 		Frames: 1
 		Size: 1,1
 		PickAny: False
+		Category: Unidentified
 		Tiles:
 			0: Clear
 	Template@227: # TODO: this should go away
@@ -2073,6 +2075,7 @@ Templates:
 		Frames: 1
 		Size: 1,1
 		PickAny: False
+		Category: Unidentified
 		Tiles:
 			0: Clear
 	Template@228: # TODO: this should go away
@@ -2081,6 +2084,7 @@ Templates:
 		Frames: 1
 		Size: 1,1
 		PickAny: False
+		Category: Unidentified
 		Tiles:
 			0: Clear
 	Template@229:
@@ -2374,6 +2378,7 @@ Templates:
 		Frames: 1,1,1,1,1,1,1,1,1,1
 		Size: 5,2
 		PickAny: False
+		Category: Unidentified
 		Tiles:
 			0: Clear
 			1: Clear
@@ -2465,6 +2470,7 @@ Templates:
 		Frames: 1,1,1,1,1,1,1,1,1,1
 		Size: 5,2
 		PickAny: False
+		Category: Unidentified
 		Tiles:
 			0: Clear
 			5: Clear
@@ -2482,6 +2488,7 @@ Templates:
 		Frames: 306,307,552,553,554,555,556,572,573,574,575,576,592,593,594,595,596
 		Size: 1,1
 		PickAny: True
+		Category: Basic
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2506,6 +2513,7 @@ Templates:
 		Frames: 1
 		Size: 1,1
 		PickAny: False
+		Category: Unidentified
 		Tiles:
 			0: Clear
 	Template@268: # TODO: this should go away
@@ -2514,6 +2522,7 @@ Templates:
 		Frames: 1,1
 		Size: 2,1
 		PickAny: False
+		Category: Unidentified
 		Tiles:
 			0: Clear
 			1: Clear
@@ -2533,6 +2542,7 @@ Templates:
 		Frames: 1,1,1
 		Size: 3,1
 		PickAny: False
+		Category: Unidentified
 		Tiles:
 			0: Clear
 			1: Clear
