@@ -2107,11 +2107,11 @@ Rules:
 			Critical: false
 		Tooltip:
 			Name: Strategic Point
-		RenderBuilding:
-			Scale: 0.75
 		RevealsShroud:
 			Range: 18
-		-Health:
+		Invulnerable:
+		-Selectable:
+		-TargetableBuilding:
 	Player:
 		StrategicVictoryConditions:
 			TicksToHold: 4500

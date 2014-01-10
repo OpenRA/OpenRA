@@ -536,6 +536,8 @@ miss:
 	idle:
 		Start: 0
 	damaged-idle:
+		Start: 1
+	dead:
 		Start: 2
 	make: missmake
 		Start: 0

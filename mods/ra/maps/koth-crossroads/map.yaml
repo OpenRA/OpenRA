@@ -260,7 +260,9 @@ Rules:
 			Name: Strategic Point
 		RevealsShroud:
 			Range: 20
-		-Health:
+		Invulnerable:
+		-Selectable:
+		-TargetableBuilding:
 	Player:
 		StrategicVictoryConditions:
 			TicksToHold: 3000

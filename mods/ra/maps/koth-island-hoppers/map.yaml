@@ -163,7 +163,9 @@ Rules:
 			BaseNormal: false
 		RevealsShroud:
 			Range: 20
-		-Health:
+		Invulnerable:
+		-Selectable:
+		-TargetableBuilding:
 	Player:
 		StrategicVictoryConditions:
 			TicksToHold: 3000

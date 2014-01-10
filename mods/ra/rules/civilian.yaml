@@ -317,6 +317,7 @@ MISS:
 	Tooltip:
 		Name: Technology Center
 	Bib:
+	DeadBuildingState:
 
 BIO:
 	Inherits: ^TechBuilding
