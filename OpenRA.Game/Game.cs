@@ -420,6 +420,12 @@ namespace OpenRA
 		static bool quit;
 		public static event Action OnQuit = () => { };
 
+		static double idealFrameTime;
+		public static void SetIdealFrameTime(int fps)
+		{ 
+			idealFrameTime = 1.0 / fps;
+		}
+
 		internal static void Run()
 		{
 			if (Settings.Graphics.MaxFramerate < 1)
@@ -428,19 +434,22 @@ namespace OpenRA
 				Settings.Graphics.CapFramerate = false;
 			}
 
+			SetIdealFrameTime(Settings.Graphics.MaxFramerate);
+
 			while (!quit)
 			{
-				var idealFrameTime = 1.0 / Settings.Graphics.MaxFramerate;
-				var sw = new Stopwatch();
-
-				Tick(orderManager);
-
 				if (Settings.Graphics.CapFramerate)
 				{
-					var waitTime = idealFrameTime - sw.ElapsedTime();
+					var sw = new Stopwatch();
+
+					Tick(orderManager);
+
+					var waitTime = Math.Min(idealFrameTime - sw.ElapsedTime(), 1);
 					if (waitTime > 0)
 						System.Threading.Thread.Sleep(TimeSpan.FromSeconds(waitTime));
 				}
+				else
+					Tick(orderManager);
 			}
 
 			OnQuit();

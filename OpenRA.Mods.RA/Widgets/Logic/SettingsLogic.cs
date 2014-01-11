@@ -156,6 +156,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				int.TryParse(frameLimitTextfield.Text, out fps);
 				ds.MaxFramerate = fps.Clamp(20, 200);
 				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
+				Game.SetIdealFrameTime(ds.MaxFramerate);
 			};
 			frameLimitTextfield.OnEnterKey = () => { frameLimitTextfield.YieldKeyboardFocus(); return true; };
 			frameLimitTextfield.IsDisabled = () => !ds.CapFramerate;
@@ -181,6 +182,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gs.ShowShellmap = dgs.ShowShellmap;
 
 				ds.CapFramerate = dds.CapFramerate;
+				Game.SetIdealFrameTime(ds.MaxFramerate);
 				ds.MaxFramerate = dds.MaxFramerate;
 				ds.Language = dds.Language;
 				ds.Mode = dds.Mode;
