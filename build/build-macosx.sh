@@ -136,10 +136,8 @@ if [ $BUILD_WXWIDGETS ]; then
   if [ -d $MACOSX_SDK_PATH ]; then
     MINSDK="--with-macosx-sdk=$MACOSX_SDK_PATH"
   fi
-  # fix auto-complete crash by reverting an earlier revision
-  # http://trac.wxwidgets.org/ticket/15008#comment:12
-  svn merge -r 74098:74097 .
   ./configure --prefix="$INSTALL_DIR" $WXWIDGETSDEBUG --disable-shared --enable-unicode \
+    --enable-compat28 \
     --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
     --with-zlib=builtin --disable-richtext \
     --enable-macosx_arch=$MACOSX_ARCH --with-macosx-version-min=$MACOSX_VERSION $MINSDK \
