@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	public class ColorMixerWidget : Widget
 	{
-		public float[] SRange = {0.2f, 1.0f};
+		public float[] SRange = {0.0f, 1.0f};
 		public float[] VRange = {0.2f, 1.0f};
 		public event Action OnChange = () => {};
 
