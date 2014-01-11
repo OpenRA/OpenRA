@@ -1232,6 +1232,7 @@ Sniper:
 	Range: 10c0
 	Projectile: Bullet
 		Speed: 1c682
+		ContrailLength: 16
 	Warhead:
 		Damage: 140
 		Spread: 42
