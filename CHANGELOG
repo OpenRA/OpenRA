@@ -25,6 +25,8 @@ NEW:
 		Added a new Launch.Replay=$FILEPATH parameter for OpenRA.Game.exe to instantly start watching a *.rep file.
 		Added HackyAI settings: ExcessPowerFactor, MinimumExcessPower, IdleBaseUnitsMaximum, RushAttackScanRadius, ProtectUnitScanRadius, RallyPointScanRadius. See the traits documentation for more information.
 		Added HitAnimPalette trait for LaserZap projectiles. Laser hit animations can now specify individual palettes. Defaults to effect palette.
+		Fixed performance issues with units pathing to naval transports.
+		Fixed unit moving to transports that have moved.
 	Server:
 		Message of the day is now shared between all mods and a default motd.txt gets created in the user directory.
 	Asset Browser:
