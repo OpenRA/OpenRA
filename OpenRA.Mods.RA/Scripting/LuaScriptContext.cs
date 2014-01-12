@@ -25,7 +25,8 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public LuaScriptContext()
 		{
-			Log.Write("debug", "Creating Lua script context");
+			Log.AddChannel("lua", "lua.log");
+			Log.Write("lua", "Creating Lua script context");
 			Lua = new Lua();
 			Lua.HookException += OnLuaException;
 			functionCache = new Cache<string, LuaFunction>(Lua.GetFunction);
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public void RegisterObject(object target, string tableName, bool exposeAllMethods)
 		{
-			Log.Write("debug", "Registering object {0}", target);
+			Log.Write("lua", "Registering object {0}", target);
 
 			if (tableName != null && Lua.GetTable(tableName) == null)
 				Lua.NewTable(tableName);
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public void RegisterType(Type type, string tableName, bool exposeAllMethods)
 		{
-			Log.Write("debug", "Registering type {0}", type);
+			Log.Write("lua", "Registering type {0}", type);
 
 			if (tableName != null && Lua.GetTable(tableName) == null)
 				Lua.NewTable(tableName);
@@ -94,8 +95,8 @@ namespace OpenRA.Mods.RA.Scripting
 		public void ShowErrorMessage(string shortMessage, string longMessage)
 		{
 			Game.Debug("{0}", shortMessage);
-			Game.Debug("See debug.log for details");
-			Log.Write("debug", "{0}", longMessage ?? shortMessage);
+			Game.Debug("See lua.log for details");
+			Log.Write("lua", "{0}", longMessage ?? shortMessage);
 		}
 
 		public void LoadLuaScripts(Func<string, string> getFileContents, params string[] files)
@@ -104,7 +105,7 @@ namespace OpenRA.Mods.RA.Scripting
 			{
 				try
 				{
-					Log.Write("debug", "Loading Lua script {0}", file);
+					Log.Write("lua", "Loading Lua script {0}", file);
 					var content = getFileContents(file);
 					Lua.DoString(content, file);
 				}
