@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Activities
 					return new Wait(20);
 
 				return Util.SequenceActivities(
-					new MoveAdjacentTo(Target.FromActor(rearmTarget)),
+					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
 					mobile.MoveTo(rearmTarget.CenterPosition.ToCPos(), rearmTarget),
 					new Rearm(self),
 					new Repair(rearmTarget),

@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
@@ -27,11 +28,11 @@ namespace OpenRA.Mods.RA
 		public CPos? TargetLocation = null;
 
 		readonly Mobile mobile;
-		readonly AttackMoveInfo Info;
+		readonly AttackMoveInfo info;
 
 		public AttackMove(Actor self, AttackMoveInfo info)
 		{
-			Info = info;
+			this.info = info;
 			mobile = self.Trait<Mobile>();
 		}
 
@@ -39,6 +40,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "AttackMove")
 				return "AttackMove";
+
 			return null;
 		}
 
@@ -61,7 +63,7 @@ namespace OpenRA.Mods.RA
 
 			if (order.OrderString == "AttackMove")
 			{
-				if (Info.JustMove)
+				if (info.JustMove)
 					mobile.ResolveOrder(self, new Order("Move", order));
 				else
 				{
@@ -73,19 +75,19 @@ namespace OpenRA.Mods.RA
 
 		public class AttackMoveActivity : Activity
 		{
+			const int ScanInterval = 7;
+
 			Activity inner;
 			int scanTicks;
 			AutoTarget autoTarget;
 
-			const int ScanInterval = 7;
-
-			public AttackMoveActivity( Actor self, Activity inner )
+			public AttackMoveActivity(Actor self, Activity inner)
 			{
 				this.inner = inner;
-				this.autoTarget = self.TraitOrDefault<AutoTarget>();
+				autoTarget = self.TraitOrDefault<AutoTarget>();
 			}
 
-			public override Activity Tick( Actor self )
+			public override Activity Tick(Actor self)
 			{
 				if (autoTarget != null && --scanTicks <= 0)
 				{
@@ -93,20 +95,28 @@ namespace OpenRA.Mods.RA
 					scanTicks = ScanInterval;
 				}
 
-				if( inner == null )
+				if (inner == null)
 					return NextActivity;
 
-				inner = Util.RunActivity( self, inner );
+				inner = Util.RunActivity(self, inner);
 
 				return this;
 			}
 
-			public override void Cancel( Actor self )
+			public override void Cancel(Actor self)
 			{
-				if( inner != null )
-					inner.Cancel( self );
+				if (inner != null)
+					inner.Cancel(self);
 
-				base.Cancel( self );
+				base.Cancel(self);
+			}
+
+			public override IEnumerable<Target> GetTargets(Actor self)
+			{
+				if (inner != null)
+					return inner.GetTargets(self);
+
+				return Target.None;
 			}
 		}
 	}
