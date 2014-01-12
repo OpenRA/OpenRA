@@ -41,7 +41,7 @@ function DisplayOutputNoMarker(...)
 
   local current = errorlog:GetReadOnly()
   errorlog:SetReadOnly(false)
-  errorlog:AppendText(message)
+  errorlog:AppendText(FixUTF8(message, "\022"))
   errorlog:EmptyUndoBuffer()
   errorlog:SetReadOnly(current)
   errorlog:GotoPos(errorlog:GetLength())
