@@ -20,6 +20,8 @@ namespace OpenRA.Mods.RA.Activities
 		readonly Target target;
 		readonly Mobile mobile;
 		readonly PathFinder pathFinder;
+		readonly DomainIndex domainIndex;
+		readonly int movementClass;
 
 		Activity inner;
 		CPos cachedTargetPosition;
@@ -32,6 +34,8 @@ namespace OpenRA.Mods.RA.Activities
 
 			mobile = self.Trait<Mobile>();
 			pathFinder = self.World.WorldActor.Trait<PathFinder>();
+			domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
+			movementClass = mobile.Info.GetMovementClass(self.World.TileSet);
 
 			repath = true;
 		}
@@ -50,26 +54,35 @@ namespace OpenRA.Mods.RA.Activities
 				adjacentCells = Util.AdjacentCells(target).ToArray();
 				repath = false;
 
-				var ps1 = new PathSearch(self.World, mobile.Info, self)
-				{
-					checkForBlocked = true,
-					heuristic = location => 0,
-					inReverse = true
-				};
 
+				var loc = self.Location;
+				var searchCells = new List<CPos>();
 				foreach (var cell in adjacentCells)
 				{
-					if (cell == self.Location)
+					if (cell == loc)
 						return NextActivity;
-					else
-						ps1.AddInitialCell(cell);
+					else if (domainIndex == null || domainIndex.IsPassable(loc, cell, (uint)movementClass))
+						searchCells.Add(cell);
 				}
 
-				ps1.heuristic = PathSearch.DefaultEstimator(mobile.toCell);
-				var ps2 = PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, target.CenterPosition.ToCPos(), true);
-				var ret = pathFinder.FindBidiPath(ps1, ps2);
+				if (searchCells.Any())
+				{
+					var ps1 = new PathSearch(self.World, mobile.Info, self)
+					{
+						checkForBlocked = true,
+						heuristic = location => 0,
+						inReverse = true
+					};
 
-				inner = mobile.MoveTo(() => ret);
+					foreach (var cell in searchCells)
+						ps1.AddInitialCell(cell);
+
+					ps1.heuristic = PathSearch.DefaultEstimator(mobile.toCell);
+					var ps2 = PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, target.CenterPosition.ToCPos(), true);
+					var ret = pathFinder.FindBidiPath(ps1, ps2);
+
+					inner = mobile.MoveTo(() => ret);
+				}
 			}
 
 			// Force a repath once the actor reaches the next cell
