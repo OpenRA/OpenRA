@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 			if (a == null)
 				return null;
 
-			return new Activities.Heal(newTarget, a.Weapon.Range, allowMove);
+			return new Activities.Heal(self, newTarget, a.Weapon.MinRange, a.Weapon.Range, allowMove);
 		}
 	}
 }

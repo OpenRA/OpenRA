@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 			self.SetTargetLine(target, Color.Yellow);
 
 			var range = WRange.FromCells(target.Actor.Info.Traits.Get<GuardableInfo>().Range);
-			self.QueueActivity(false, new AttackMove.AttackMoveActivity(self, self.Trait<IMove>().MoveFollow(self, target, range)));
+			self.QueueActivity(false, new AttackMove.AttackMoveActivity(self, self.Trait<IMove>().MoveFollow(self, target, WRange.Zero, range)));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
