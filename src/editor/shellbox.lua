@@ -149,7 +149,7 @@ local function shellPrint(marker, ...)
   local promptLine = isPrompt and getPromptLine() or nil
   local insertLineAt = isPrompt and getPromptLine() or out:GetLineCount()-1
   local insertAt = isPrompt and out:PositionFromLine(getPromptLine()) or out:GetLength()
-  out:InsertText(insertAt, text)
+  out:InsertText(insertAt, FixUTF8(text, function (s) return '\\'..string.byte(s) end))
   local linesAdded = out:GetLineCount() - lines
 
   if marker then
