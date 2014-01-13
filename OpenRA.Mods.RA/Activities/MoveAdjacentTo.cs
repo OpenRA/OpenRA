@@ -21,11 +21,10 @@ namespace OpenRA.Mods.RA.Activities
 		readonly Mobile mobile;
 		readonly PathFinder pathFinder;
 		readonly DomainIndex domainIndex;
-		readonly int movementClass;
+		readonly uint movementClass;
 
 		Activity inner;
-		CPos cachedTargetPosition;
-		CPos[] adjacentCells;
+		CPos targetPosition;
 		bool repath;
 
 		public MoveAdjacentTo(Actor self, Target target)
@@ -35,72 +34,84 @@ namespace OpenRA.Mods.RA.Activities
 			mobile = self.Trait<Mobile>();
 			pathFinder = self.World.WorldActor.Trait<PathFinder>();
 			domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
-			movementClass = mobile.Info.GetMovementClass(self.World.TileSet);
+			movementClass = (uint)mobile.Info.GetMovementClass(self.World.TileSet);
 
 			repath = true;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || !target.IsValidFor(self))
-				return NextActivity;
+			var targetIsValid = target.IsValidFor(self);
 
-			var targetPosition = target.CenterPosition.ToCPos();
-
-			// Calculate path to target
-			if (inner == null && repath)
+			// Inner move order has completed.
+			if (inner == null)
 			{
-				cachedTargetPosition = targetPosition;
-				adjacentCells = Util.AdjacentCells(target).ToArray();
+				// We are done here if the order was cancelled for any
+				// reason except the target moving.
+				if (IsCanceled || !repath || !targetIsValid)
+					return NextActivity;
+
+				// Target has moved, and MoveAdjacentTo is still valid.
+				UpdateInnerPath(self);
 				repath = false;
-
-
-				var loc = self.Location;
-				var searchCells = new List<CPos>();
-				foreach (var cell in adjacentCells)
-				{
-					if (cell == loc)
-						return NextActivity;
-					else if (domainIndex == null || domainIndex.IsPassable(loc, cell, (uint)movementClass))
-						searchCells.Add(cell);
-				}
-
-				if (searchCells.Any())
-				{
-					var ps1 = new PathSearch(self.World, mobile.Info, self)
-					{
-						checkForBlocked = true,
-						heuristic = location => 0,
-						inReverse = true
-					};
-
-					foreach (var cell in searchCells)
-						ps1.AddInitialCell(cell);
-
-					ps1.heuristic = PathSearch.DefaultEstimator(mobile.toCell);
-					var ps2 = PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, target.CenterPosition.ToCPos(), true);
-					var ret = pathFinder.FindBidiPath(ps1, ps2);
-
-					inner = mobile.MoveTo(() => ret);
-				}
 			}
 
-			// Force a repath once the actor reaches the next cell
-			if (!repath && cachedTargetPosition != targetPosition)
+			if (targetIsValid)
 			{
-				if (inner != null)
-					inner.Cancel(self);
+				// Check if the target has moved
+				var oldPosition = targetPosition;
+				targetPosition = target.CenterPosition.ToCPos();
+				if (!repath && targetPosition != oldPosition)
+				{
+					// Finish moving into the next cell and then repath.
+					if (inner != null)
+						inner.Cancel(self);
 
-				repath = true;
+					repath = true;
+				}
+			}
+			else
+			{
+				// Target became invalid. Cancel the inner order,
+				// and then wait for it to move into the next cell
+				// before finishing this order (handled above).
+				inner.Cancel(self);
 			}
 
+			// Ticks the inner move activity to actually move the actor.
 			inner = Util.RunActivity(self, inner);
 
-			// Move completed
-			if (inner == null && adjacentCells.Contains(self.Location))
-				return NextActivity;
-
 			return this;
+		}
+
+		void UpdateInnerPath(Actor self)
+		{
+			var targetCells = Util.AdjacentCells(target);
+			var searchCells = new List<CPos>();
+			var loc = self.Location;
+
+			foreach (var cell in targetCells)
+				if (mobile.CanEnterCell(cell) && (domainIndex == null || domainIndex.IsPassable(loc, cell, movementClass)))
+					searchCells.Add(cell);
+
+			if (searchCells.Any())
+			{
+				var ps1 = new PathSearch(self.World, mobile.Info, self)
+				{
+					checkForBlocked = true,
+					heuristic = location => 0,
+					inReverse = true
+				};
+
+				foreach (var cell in searchCells)
+					ps1.AddInitialCell(cell);
+
+				ps1.heuristic = PathSearch.DefaultEstimator(mobile.toCell);
+				var ps2 = PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, targetPosition, true);
+				var ret = pathFinder.FindBidiPath(ps1, ps2);
+
+				inner = mobile.MoveTo(() => ret);
+			}
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
@@ -109,6 +120,14 @@ namespace OpenRA.Mods.RA.Activities
 				return inner.GetTargets(self);
 
 			return Target.None;
+		}
+
+		public override void Cancel(Actor self)
+		{
+			if (inner != null)
+				inner.Cancel(self);
+
+			base.Cancel(self);
 		}
 	}
 }
