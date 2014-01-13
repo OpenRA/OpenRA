@@ -17,14 +17,14 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class MoveAdjacentTo : Activity
 	{
-		readonly Target target;
+		protected readonly Target target;
 		readonly Mobile mobile;
 		readonly PathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 		readonly uint movementClass;
 
+		protected CPos targetPosition;
 		Activity inner;
-		CPos targetPosition;
 		bool repath;
 
 		public MoveAdjacentTo(Actor self, Target target)
@@ -37,6 +37,16 @@ namespace OpenRA.Mods.RA.Activities
 			movementClass = (uint)mobile.Info.GetMovementClass(self.World.TileSet);
 
 			repath = true;
+		}
+
+		protected virtual bool ShouldStop(Actor self, CPos oldTargetPosition)
+		{
+			return false;
+		}
+
+		protected virtual bool ShouldRepath(Actor self, CPos oldTargetPosition)
+		{
+			return targetPosition != oldTargetPosition;
 		}
 
 		public override Activity Tick(Actor self)
@@ -59,15 +69,17 @@ namespace OpenRA.Mods.RA.Activities
 			if (targetIsValid)
 			{
 				// Check if the target has moved
-				var oldPosition = targetPosition;
+				var oldTargetPosition = targetPosition;
 				targetPosition = target.CenterPosition.ToCPos();
-				if (!repath && targetPosition != oldPosition)
+
+				var shroudStop = ShouldStop(self, oldTargetPosition);
+				if (shroudStop || (!repath && ShouldRepath(self, oldTargetPosition)))
 				{
 					// Finish moving into the next cell and then repath.
 					if (inner != null)
 						inner.Cancel(self);
 
-					repath = true;
+					repath = !shroudStop;
 				}
 			}
 			else
@@ -84,9 +96,14 @@ namespace OpenRA.Mods.RA.Activities
 			return this;
 		}
 
+		protected virtual IEnumerable<CPos> CandidateMovementCells(Actor self)
+		{
+			return Util.AdjacentCells(target);
+		}
+
 		void UpdateInnerPath(Actor self)
 		{
-			var targetCells = Util.AdjacentCells(target);
+			var targetCells = CandidateMovementCells(self);
 			var searchCells = new List<CPos>();
 			var loc = self.Location;
 
