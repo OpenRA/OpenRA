@@ -22,10 +22,12 @@ namespace OpenRA.Mods.RA.Activities
 		readonly PathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 		readonly int movementClass;
+		readonly WRange maxRange;
+		readonly WRange minRange;
 
 		Activity inner;
 		CPos cachedTargetPosition;
-		CPos[] adjacentCells;
+		CPos[] targetCells;
 		bool repath;
 
 		public MoveAdjacentTo(Actor self, Target target)
@@ -40,6 +42,13 @@ namespace OpenRA.Mods.RA.Activities
 			repath = true;
 		}
 
+		public MoveAdjacentTo(Actor self, Target target, WRange minRange, WRange maxRange)
+			: this(self, target)
+		{
+			this.minRange = minRange;
+			this.maxRange = maxRange;
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled || !target.IsValidFor(self))
@@ -51,13 +60,33 @@ namespace OpenRA.Mods.RA.Activities
 			if (inner == null && repath)
 			{
 				cachedTargetPosition = targetPosition;
-				adjacentCells = Util.AdjacentCells(target).ToArray();
 				repath = false;
+
+				if (maxRange != WRange.Zero)
+				{
+					// Move to a cell within the requested annulus
+					var maxCells = (maxRange.Range + 1023) / 1024;
+					var outerCells = self.World.FindTilesInCircle(targetPosition, maxCells);
+
+					var minCells = minRange.Range / 1024;
+					var innerCells = self.World.FindTilesInCircle(targetPosition, minCells);
+
+					var outerSq = maxRange.Range * maxRange.Range;
+					var innerSq = minRange.Range * minRange.Range;
+					var center = targetPosition.CenterPosition;
+					targetCells = outerCells.Except(innerCells).Where(c =>
+					{
+						var dxSq = (c.CenterPosition - center).HorizontalLengthSquared;
+						return dxSq >= innerSq || dxSq <= outerSq;
+					}).ToArray();
+				}
+				else
+					targetCells = Util.AdjacentCells(target).ToArray();
 
 
 				var loc = self.Location;
 				var searchCells = new List<CPos>();
-				foreach (var cell in adjacentCells)
+				foreach (var cell in targetCells)
 				{
 					if (cell == loc)
 						return NextActivity;
@@ -97,7 +126,7 @@ namespace OpenRA.Mods.RA.Activities
 			inner = Util.RunActivity(self, inner);
 
 			// Move completed
-			if (inner == null && adjacentCells.Contains(self.Location))
+			if (inner == null && targetCells.Contains(self.Location))
 				return NextActivity;
 
 			return this;
