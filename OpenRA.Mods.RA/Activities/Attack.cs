@@ -17,24 +17,27 @@ namespace OpenRA.Mods.RA.Activities
 	public class Attack : Activity
 	{
 		protected Target Target;
-		WRange Range;
-		bool AllowMovement;
-
-		int nextPathTime;
-
-		const int delayBetweenPathingAttempts = 20;
-		const int delaySpread = 5;
+		AttackBase attack;
+		IFacing facing;
+		Activity move;
+		WRange minRange;
+		WRange maxRange;
 
 		public Attack(Actor self, Target target, WRange minRange, WRange maxRange, bool allowMovement)
 		{
 			Target = target;
-			Range = maxRange;
-			AllowMovement = allowMovement;
+			this.minRange = minRange;
+			this.maxRange = maxRange;
+
+			attack = self.Trait<AttackBase>();
+			facing = self.Trait<IFacing>();
+
+			var imove = self.TraitOrDefault<IMove>();
+			move = allowMovement && imove != null ? imove.MoveWithinRange(target, minRange, maxRange) : null;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			var attack = self.Trait<AttackBase>();
 			var ret = InnerTick(self, attack);
 			attack.IsAttacking = (ret == this);
 			return ret;
@@ -49,27 +52,24 @@ namespace OpenRA.Mods.RA.Activities
 			if (!Target.IsValidFor(self) || type == TargetType.FrozenActor)
 				return NextActivity;
 
-			// TODO: This is horrible, and probably wrong. Work out what it is trying to solve, then redo it properly.
-			if (type == TargetType.Actor && !self.Owner.HasFogVisibility() && Target.Actor.HasTrait<Mobile>() && !self.Owner.Shroud.IsTargetable(Target.Actor))
+			// Drop the target if it moves under the shroud / fog.
+			if (type == TargetType.Actor && !self.Owner.Shroud.IsTargetable(Target.Actor))
 				return NextActivity;
 
-			if (!Target.IsInRange(self.CenterPosition, Range))
+			if (move != null && (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)))
 			{
-				if (--nextPathTime > 0)
-					return this;
+				// Try to move within range
+				move.Tick(self);
+			}
+			else
+			{
+				var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);
+				if (facing.Facing != desiredFacing)
+					return Util.SequenceActivities(new Turn(desiredFacing), this);
 
-				nextPathTime = self.World.SharedRandom.Next(delayBetweenPathingAttempts - delaySpread,
-					delayBetweenPathingAttempts + delaySpread);
-
-				return (AllowMovement) ? Util.SequenceActivities(self.Trait<IMove>().MoveWithinRange(Target, Range), this) : NextActivity;
+				attack.DoAttack(self, Target);
 			}
 
-			var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);
-			var facing = self.Trait<IFacing>();
-			if (facing.Facing != desiredFacing)
-				return Util.SequenceActivities(new Turn(desiredFacing), this);
-
-			attack.DoAttack(self, Target);
 			return this;
 		}
 	}

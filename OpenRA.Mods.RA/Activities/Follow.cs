@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,26 +8,20 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Activities
 {
 	public class Follow : Activity
 	{
+		Activity inner;
 		Target target;
-		IMove move;
-		WRange range;
-		int nextPathTime;
-
-		const int delayBetweenPathingAttempts = 20;
-		const int delaySpread = 5;
 
 		public Follow(Actor self, Target target, WRange minRange, WRange maxRange)
 		{
 			this.target = target;
-			move = self.Trait<IMove>();
-			this.range = maxRange;
+			inner = self.Trait<IMove>().MoveWithinRange(target, minRange, maxRange);
 		}
 
 		public override Activity Tick(Actor self)
@@ -35,13 +29,19 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
-			if (target.IsInRange(self.CenterPosition, range) || --nextPathTime > 0)
-				return this;
+			// Not sequenced because we want to continue ticking inner
+			// even after it returns NextActivity (in case the target moves)
+			Util.RunActivity(self, inner);
 
-			nextPathTime = self.World.SharedRandom.Next(delayBetweenPathingAttempts - delaySpread,
-				delayBetweenPathingAttempts + delaySpread);
+			return this;
+		}
 
-			return Util.SequenceActivities(move.MoveWithinRange(target, range), this);
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			if (inner != null)
+				return inner.GetTargets(self);
+
+			return Target.None;
 		}
 	}
 }

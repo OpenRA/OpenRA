@@ -539,8 +539,8 @@ namespace OpenRA.Mods.RA.Move
 		public Activity ScriptedMove(CPos cell) { return new Move(cell); }
 		public Activity MoveTo(CPos cell, int nearEnough) { return new Move(cell, nearEnough); }
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Move(cell, ignoredActor); }
-		public Activity MoveWithinRange(Target target, WRange range) { return new Move(target, range); }
-		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return new Move(target, maxRange); }
+		public Activity MoveWithinRange(Target target, WRange range) { return new MoveAdjacentTo(self, target, WRange.Zero, range); }
+		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return new MoveAdjacentTo(self, target, minRange, maxRange); }
 		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new Follow(self, target, minRange, maxRange); }
 		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(pathFunc); }
 
