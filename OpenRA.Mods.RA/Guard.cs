@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class GuardInfo : TraitInfo<Guard>, Requires<MobileInfo> { }
+	class GuardInfo : TraitInfo<Guard> { }
 
 	class Guard : IResolveOrder, IOrderVoice
 	{

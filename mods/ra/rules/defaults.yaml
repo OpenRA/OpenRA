@@ -197,6 +197,7 @@
 		GroundedTargetTypes: Ground
 	HiddenUnderFog:
 	AttackMove:
+	Guard:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
