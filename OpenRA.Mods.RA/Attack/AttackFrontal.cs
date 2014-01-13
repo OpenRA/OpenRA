@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 			if (a == null)
 				return null;
 
-			return new Activities.Attack(newTarget, a.Weapon.Range, allowMove);
+			return new Activities.Attack(self, newTarget, a.Weapon.MinRange, a.Weapon.Range, allowMove);
 		}
 	}
 }

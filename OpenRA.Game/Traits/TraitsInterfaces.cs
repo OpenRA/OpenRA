@@ -160,7 +160,8 @@ namespace OpenRA.Traits
 		Activity MoveTo(CPos cell, int nearEnough);
 		Activity MoveTo(CPos cell, Actor ignoredActor);
 		Activity MoveWithinRange(Target target, WRange range);
-		Activity MoveFollow(Actor self, Target target, WRange range);
+		Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange);
+		Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange);
 		Activity MoveIntoWorld(Actor self, CPos cell);
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);

@@ -83,17 +83,16 @@ namespace OpenRA.Mods.RA
 				if (self.IsDisabled())
 					return this;
 
-				const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 				var weapon = attack.ChooseArmamentForTarget(target);
-
 				if (weapon != null)
 				{
-					var range = WRange.FromCells(Math.Max(0, weapon.Weapon.Range.Range / 1024 - RangeTolerance));
+					// Try and sit at least half a cell closer, in case the target starts moving.
+					var maxRange = new WRange(Math.Max(0, weapon.Weapon.Range.Range - 512));
 
 					attack.Target = target;
 
 					if (move != null)
-						return Util.SequenceActivities(move.MoveFollow(self, target, range), this);
+						return Util.SequenceActivities(move.MoveFollow(self, target, weapon.Weapon.MinRange, maxRange), this);
 				}
 
 				return NextActivity;

@@ -12,11 +12,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	/* non-turreted attack */
 	public class Heal : Attack
 	{
-		public Heal(Target target, WRange range, bool allowMovement)
-			: base(target, range, allowMovement) { }
+		public Heal(Actor self, Target target, WRange minRange, WRange maxRange, bool allowMovement)
+			: base(self, target, minRange, maxRange, allowMovement) { }
 
 		protected override Activity InnerTick(Actor self, AttackBase attack)
 		{

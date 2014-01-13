@@ -23,11 +23,11 @@ namespace OpenRA.Mods.RA.Activities
 		const int delayBetweenPathingAttempts = 20;
 		const int delaySpread = 5;
 
-		public Follow(Actor self, Target target, WRange range)
+		public Follow(Actor self, Target target, WRange minRange, WRange maxRange)
 		{
 			this.target = target;
 			move = self.Trait<IMove>();
-			this.range = range;
+			this.range = maxRange;
 		}
 
 		public override Activity Tick(Actor self)
