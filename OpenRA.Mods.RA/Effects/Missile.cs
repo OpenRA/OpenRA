@@ -33,6 +33,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly WRange Inaccuracy = WRange.Zero;
 		public readonly WAngle Angle = WAngle.Zero;
 		public readonly string Image = null;
+		public readonly bool Shadow = false;
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 5;
 		[Desc("Explode when following the target longer than this.")]
@@ -206,6 +207,12 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!args.SourceActor.World.FogObscures(pos.ToCPos()))
 			{
+				if (info.Shadow)
+				{
+					var shadowPos = pos - new WVec(0, 0, pos.Z);
+					foreach (var r in anim.Render(shadowPos, wr.Palette("shadow")))
+						yield return r;
+				}
 				var palette = wr.Palette(args.Weapon.Palette);
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
