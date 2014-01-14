@@ -221,12 +221,12 @@ namespace OpenRA.Mods.RA.Missions
 			var exit = lz.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
 			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
-			chinook.QueueActivity(new HeliFly(lz.CenterPosition + offset)); // no reservation of hpad but it's not needed
+			chinook.QueueActivity(new HeliFly(chinook, Target.FromPos(lz.CenterPosition + offset))); // no reservation of hpad but it's not needed
 			chinook.QueueActivity(new Turn(0));
 			chinook.QueueActivity(new HeliLand(false));
 			chinook.QueueActivity(new UnloadCargo(true));
 			chinook.QueueActivity(new Wait(150));
-			chinook.QueueActivity(new HeliFly(entry));
+			chinook.QueueActivity(new HeliFly(chinook, Target.FromCell(entry)));
 			chinook.QueueActivity(new RemoveSelf());
 		}
 

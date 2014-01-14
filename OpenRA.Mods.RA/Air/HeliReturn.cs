@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Air
 				if (nearestHpad == null)
 					return Util.SequenceActivities(new Turn(initialFacing), new HeliLand(true), NextActivity);
 				else
-					return Util.SequenceActivities(new HeliFly(nearestHpad.CenterPosition));
+					return Util.SequenceActivities(new HeliFly(self, Target.FromActor(nearestHpad)));
 			}
 
 			var res = dest.TraitOrDefault<Reservable>();
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Air
 			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
 			return Util.SequenceActivities(
-				new HeliFly(dest.CenterPosition + offset),
+				new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
 				new Turn(initialFacing),
 				new HeliLand(false),
 				new Rearm(self),

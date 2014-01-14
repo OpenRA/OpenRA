@@ -15,10 +15,14 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HeliFly : Activity
 	{
+		readonly Helicopter helicopter;
 		readonly WPos pos;
 
-		public HeliFly(WPos pos) { this.pos = pos; }
-		public HeliFly(CPos pos) { this.pos = pos.CenterPosition; }
+		public HeliFly(Actor self, Target t)
+		{
+			helicopter = self.Trait<Helicopter>();
+			pos = t.CenterPosition;
+		}
 
 		public static bool AdjustAltitude(Actor self, Helicopter helicopter, WRange targetAltitude)
 		{
@@ -37,8 +41,6 @@ namespace OpenRA.Mods.RA.Air
 		{
 			if (IsCanceled)
 				return NextActivity;
-
-			var helicopter = self.Trait<Helicopter>();
 
 			if (AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
 				return this;
