@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly string Trail = null;
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WRange Inaccuracy = WRange.Zero;
+		public readonly WAngle Angle = WAngle.Zero;
 		public readonly string Image = null;
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 5;
@@ -65,6 +67,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		[Sync] WPos pos;
 		[Sync] int facing;
+		[Sync] int length;
 
 		[Sync] WPos targetPosition;
 		[Sync] WVec offset;
@@ -77,18 +80,18 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			this.info = info;
 			this.args = args;
-
-			pos = args.Source;
-			facing = args.Facing;
-
+			this.pos = args.Source;
+			facing = Traits.Util.GetFacing(targetPosition - pos, 0);
 			targetPosition = args.PassiveTarget;
 
 			if (info.Inaccuracy.Range > 0)
 				offset = WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * info.Inaccuracy.Range / 1024;
 
+			length = Math.Max((targetPosition - pos).Length / info.Speed.Range, 1);
+
 			if (info.Image != null)
 			{
-				anim = new Animation(info.Image, () => facing);
+				anim = new Animation(info.Image, GetEffectiveFacing);
 				anim.PlayRepeating("idle");
 			}
 
@@ -97,6 +100,18 @@ namespace OpenRA.Mods.RA.Effects
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
 				trail = new ContrailRenderable(args.SourceActor.World, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
+		}
+		int GetEffectiveFacing()
+		{
+			var at = (float)ticks / (length - 1);
+			var attitude = info.Angle.Tan() * (1 - 2 * at) / (4 * 1024);
+
+			var u = (facing % 128) / 128f;
+			var scale = 512 * u * (1 - u);
+
+			return (int)(facing < 128
+				? facing - scale * attitude
+				: facing + scale * attitude);
 		}
 
 		bool JammedBy(TraitPair<JamsMissiles> tp)
@@ -114,6 +129,8 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			ticks++;
 			anim.Tick();
+
+			pos = WPos.LerpQuadratic(args.Source, targetPosition, info.Angle, ticks, length);
 
 			// Missile tracks target
 			if (args.GuidedTarget.IsValidFor(args.SourceActor))
