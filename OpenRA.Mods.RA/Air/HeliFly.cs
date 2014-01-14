@@ -16,12 +16,21 @@ namespace OpenRA.Mods.RA.Air
 	class HeliFly : Activity
 	{
 		readonly Helicopter helicopter;
-		readonly WPos pos;
+		readonly Target target;
+		readonly WRange maxRange;
+		readonly WRange minRange;
 
 		public HeliFly(Actor self, Target t)
 		{
 			helicopter = self.Trait<Helicopter>();
-			pos = t.CenterPosition;
+			target = t;
+		}
+
+		public HeliFly(Actor self, Target t, WRange minRange, WRange maxRange)
+			: this(self, t)
+		{
+			this.maxRange = maxRange;
+			this.minRange = minRange;
 		}
 
 		public static bool AdjustAltitude(Actor self, Helicopter helicopter, WRange targetAltitude)
@@ -45,13 +54,26 @@ namespace OpenRA.Mods.RA.Air
 			if (AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
 				return this;
 
+			var pos = target.CenterPosition;
+
 			// Rotate towards the target
 			var dist = pos - self.CenterPosition;
 			var desiredFacing = Util.GetFacing(dist, helicopter.Facing);
 			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.ROT);
+			var move = helicopter.FlyStep(desiredFacing);
+
+			// Inside the minimum range, so reverse
+			if (minRange.Range > 0 && target.IsInRange(helicopter.CenterPosition, minRange))
+			{
+				helicopter.SetPosition(self, helicopter.CenterPosition - move);
+				return this;
+			}
+
+			// Inside the maximum range, so we're done
+			if (maxRange.Range > 0 && target.IsInRange(helicopter.CenterPosition, maxRange))
+				return NextActivity;
 
 			// The next move would overshoot, so just set the final position
-			var move = helicopter.FlyStep(desiredFacing);
 			if (dist.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
 				helicopter.SetPosition(self, pos + new WVec(0, 0, helicopter.Info.CruiseAltitude.Range - pos.Z));
@@ -65,7 +87,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromPos(pos);
+			yield return target;
 		}
 	}
 }
