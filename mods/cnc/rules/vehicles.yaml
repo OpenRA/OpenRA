@@ -28,7 +28,6 @@ MCV:
 	RenderUnit:
 	MustBeDestroyed:
 	AttackMove:
-		JustMove: true
 	BaseBuilding:
 	LeavesHusk:
 		HuskActor: MCV.Husk
@@ -69,7 +68,6 @@ HARV:
 	RevealsShroud:
 		Range: 4
 	AttackMove:
-		JustMove: true
 	LeavesHusk:
 		HuskActor: HARV.Husk
 	-GainsExperience:
@@ -559,7 +557,6 @@ MHQ:
 		Sequence: spinner
 		Offset: -256,0,256
 	AttackMove:
-		JustMove: yes
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall

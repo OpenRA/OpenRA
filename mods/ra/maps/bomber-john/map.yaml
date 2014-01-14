@@ -833,7 +833,6 @@ Rules:
 		RenderUnit:
 			Image: MNLY
 		AttackMove:
-			JustMove: true
 		MustBeDestroyed:
 		Transforms:
 			IntoActor: ftur

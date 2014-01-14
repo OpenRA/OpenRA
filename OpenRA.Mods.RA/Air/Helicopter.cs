@@ -152,5 +152,6 @@ namespace OpenRA.Mods.RA.Air
 		public Activity MoveTo(CPos cell, int nearEnough) { return new HeliFly(cell); }
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new HeliFly(cell); }
 		public Activity MoveWithinRange(Target target, WRange range) { return new HeliFly(target.CenterPosition); }
+		public CPos NearestMoveableCell(CPos cell) { return cell; }
 	}
 }

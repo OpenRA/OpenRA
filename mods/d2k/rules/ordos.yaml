@@ -294,5 +294,4 @@ SABOTEUR:
 		C4Delay: 45
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 

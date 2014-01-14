@@ -50,7 +50,6 @@ ENGINEER:
 	ExternalCaptures:
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 
 BAZOOKA:
 	Inherits: ^Infantry
@@ -109,5 +108,4 @@ MEDIC:
 		PipType: Blue
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 

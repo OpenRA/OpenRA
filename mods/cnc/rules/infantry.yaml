@@ -172,7 +172,6 @@ E6:
 		CaptureTypes: building, husk
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand, stand2

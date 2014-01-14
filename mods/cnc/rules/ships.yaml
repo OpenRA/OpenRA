@@ -67,6 +67,5 @@ LST:
 		MaxWeight: 5
 		PipCount: 5
 	AttackMove:
-		JustMove: true
 	RejectsOrders:
 

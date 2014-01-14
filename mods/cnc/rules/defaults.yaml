@@ -209,7 +209,6 @@
 	ScaredyCat:
 	RenderInfantryPanic:
 	AttackMove:
-		JustMove: yes
 	CrushableInfantry:
 
 ^DINO:
