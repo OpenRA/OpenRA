@@ -1,7 +1,7 @@
 -- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
 
 -- converted from love_api.lua (http://love2d.org/forums/viewtopic.php?f=3&t=1796&start=50#p158650)
--- (API for love 0.9.0; as of Dec 28, 2013)
+-- (API for love 0.9.0; as of Jan 13, 2014)
 -- the conversion script is at the bottom of this file
 
 local love = {
@@ -1108,6 +1108,24 @@ local love = {
      description = "Drawable image type.",
      type = "lib"
     },
+    LineJoin = {
+     childs = {
+      bevel = {
+       description = "Bevel style.",
+       type = "value"
+      },
+      miter = {
+       description = "Miter style.",
+       type = "value"
+      },
+      none = {
+       description = "None style.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
     LineStyle = {
      childs = {
       rough = {
@@ -1269,7 +1287,7 @@ local love = {
       getLinearAcceleration = {
        args = "()",
        description = "Gets the linear acceleration (acceleration along the x and y axes) for particles.\n\nEvery particle created will accelerate along the x and y axes between xmin,ymin and xmax,ymax.",
-       returns = "(xmin: number, ymin: number, xmax: number, max: number)",
+       returns = "(xmin: number, ymin: number, xmax: number, ymax: number)",
        type = "function"
       },
       getOffset = {
@@ -1350,6 +1368,18 @@ local love = {
        returns = "(active: boolean)",
        type = "function"
       },
+      isPaused = {
+       args = "()",
+       description = "Checks whether the particle system is paused.",
+       returns = "(paused: boolean)",
+       type = "function"
+      },
+      isStopped = {
+       args = "()",
+       description = "Checks whether the particle system is stopped.",
+       returns = "(stopped: boolean)",
+       type = "function"
+      },
       pause = {
        args = "()",
        description = "Pauses the particle emitter.",
@@ -1411,7 +1441,7 @@ local love = {
        type = "function"
       },
       setLinearAcceleration = {
-       args = "(xmin: number, ymin: number, xmax: number, max: number)",
+       args = "(xmin: number, ymin: number, xmax: number, ymax: number)",
        description = "Sets the linear acceleration (acceleration along the x and y axes) for particles.\n\nEvery particle created will accelerate along the x and y axes between xmin,ymin and xmax,ymax.",
        returns = "()",
        type = "function"
@@ -1580,6 +1610,12 @@ local love = {
        returns = "()",
        type = "function"
       },
+      setBufferSize = {
+       args = "(size: number)",
+       description = "Sets the maximum number of sprites the SpriteBatch can hold. Existing sprites in the batch (up to the new maximum) will not be cleared when this function is called.",
+       returns = "()",
+       type = "function"
+      },
       setColor = {
        args = "(r: number, g: number, b: number, a: number)",
        description = "Sets the color that will be used for the next add and set operations. Calling the function without arguments will clear the color.\n\nThe global color set with love.graphics.setColor will not work on the SpriteBatch if any of the sprites has its own color.",
@@ -1726,6 +1762,12 @@ local love = {
      returns = "(height: number)",
      type = "function"
     },
+    getLineJoin = {
+     args = "()",
+     description = "Gets the line join style.",
+     returns = "(join: LineJoin)",
+     type = "function"
+    },
     getLineStyle = {
      args = "()",
      description = "Gets the line style.",
@@ -1748,12 +1790,6 @@ local love = {
      args = "()",
      description = "Gets the max supported point size.",
      returns = "(size: number)",
-     type = "function"
-    },
-    getMode = {
-     args = "()",
-     description = "Returns the current display mode.",
-     returns = "(width: number, height: number, fullscreen: boolean, vsync: boolean, fsaa: number)",
      type = "function"
     },
     getPointSize = {
@@ -1790,12 +1826,6 @@ local love = {
      args = "()",
      description = "Gets the width of the window.",
      returns = "(width: number)",
-     type = "function"
-    },
-    isCreated = {
-     args = "()",
-     description = "Checks if the window has been created.",
-     returns = "(created: boolean)",
      type = "function"
     },
     isSupported = {
@@ -1987,6 +2017,12 @@ local love = {
     setInvertedStencil = {
      args = "(stencilFunction: function)",
      description = "Defines an inverted stencil for the drawing operations or releases the active one.\n\nIt's the same as love.graphics.setStencil with the mask inverted.\n\nCalling the function without arguments releases the active stencil.",
+     returns = "()",
+     type = "function"
+    },
+    setLineJoin = {
+     args = "(join: LineJoin)",
+     description = "Sets the line join style.",
      returns = "()",
      type = "function"
     },
@@ -3141,7 +3177,7 @@ local love = {
        type = "function"
       },
       randomNormal = {
-       args = "(stddev: number)",
+       args = "(stddev: number, mean: number)",
        description = "Get a normally distributed pseudo random number.",
        returns = "(number: number)",
        type = "function"
@@ -3187,7 +3223,7 @@ local love = {
      type = "function"
     },
     randomNormal = {
-     args = "(stddev: number)",
+     args = "(stddev: number, mean: number)",
      description = "Get a normally distributed pseudo random number.",
      returns = "(number: number)",
      type = "function"
@@ -3307,6 +3343,12 @@ local love = {
      },
      description = "class constants",
      type = "class"
+    },
+    getPosition = {
+     args = "()",
+     description = "Returns the current position of the mouse.",
+     returns = "(x: number, y: number)",
+     type = "function"
     },
     getX = {
      args = "()",
