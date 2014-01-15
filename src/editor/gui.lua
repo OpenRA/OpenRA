@@ -157,6 +157,8 @@ local function createNotebook(frame)
           local editor = GetEditor(page)
           if editor then ide.openDocuments[editor:GetId()].index = page end
         end
+        -- select the content of the tab after drag is done
+        SetEditorSelection(event:GetSelection())
         event:Skip()
       end)
   end
