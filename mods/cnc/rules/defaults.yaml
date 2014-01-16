@@ -115,6 +115,7 @@
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
 	CombatDebugOverlay:
+	AttackMove:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
