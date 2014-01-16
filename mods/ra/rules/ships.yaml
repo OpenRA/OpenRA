@@ -226,7 +226,6 @@ LST:
 	IronCurtainable:
 	RepairableNear:
 	AttackMove:
-		JustMove: true
 
 PT:
 	Inherits: ^Ship

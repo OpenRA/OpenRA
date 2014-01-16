@@ -849,7 +849,6 @@ Rules:
 		Spy:
 		-AutoTarget:
 		AttackMove:
-			JustMove: true
 		-RenderInfantry:
 		RenderSpy:
 			IdleAnimations: idle1,idle2

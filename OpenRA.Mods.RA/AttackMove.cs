@@ -17,8 +17,6 @@ namespace OpenRA.Mods.RA
 {
 	class AttackMoveInfo : ITraitInfo
 	{
-		public readonly bool JustMove = false;
-
 		public object Create(ActorInitializer init) { return new AttackMove(init.self, this); }
 	}
 
@@ -27,13 +25,11 @@ namespace OpenRA.Mods.RA
 		[Sync] public CPos _targetLocation { get { return TargetLocation.HasValue ? TargetLocation.Value : CPos.Zero; } }
 		public CPos? TargetLocation = null;
 
-		readonly Mobile mobile;
-		readonly AttackMoveInfo info;
+		readonly IMove move;
 
 		public AttackMove(Actor self, AttackMoveInfo info)
 		{
-			this.info = info;
-			mobile = self.Trait<Mobile>();
+			move = self.Trait<IMove>();
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -47,7 +43,7 @@ namespace OpenRA.Mods.RA
 		void Activate(Actor self)
 		{
 			self.CancelActivity();
-			self.QueueActivity(new AttackMoveActivity(self, mobile.MoveTo(TargetLocation.Value, 1)));
+			self.QueueActivity(new AttackMoveActivity(self, move.MoveTo(TargetLocation.Value, 1)));
 			self.SetTargetLine(Target.FromCell(TargetLocation.Value), Color.Red);
 		}
 
@@ -63,13 +59,8 @@ namespace OpenRA.Mods.RA
 
 			if (order.OrderString == "AttackMove")
 			{
-				if (info.JustMove)
-					mobile.ResolveOrder(self, new Order("Move", order));
-				else
-				{
-					TargetLocation = mobile.NearestMoveableCell(order.TargetLocation);
-					Activate(self);
-				}
+				TargetLocation = move.NearestMoveableCell(order.TargetLocation);
+				Activate(self);
 			}
 		}
 

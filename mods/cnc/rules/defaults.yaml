@@ -115,6 +115,7 @@
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
 	CombatDebugOverlay:
+	AttackMove:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
@@ -209,7 +210,6 @@
 	ScaredyCat:
 	RenderInfantryPanic:
 	AttackMove:
-		JustMove: yes
 	CrushableInfantry:
 
 ^DINO:

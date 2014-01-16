@@ -254,7 +254,6 @@
     <Compile Include="LightPaletteRotator.cs" />
     <Compile Include="LimitedAmmo.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
-    <Compile Include="Lint\CheckAutotargetWiring.cs" />
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />

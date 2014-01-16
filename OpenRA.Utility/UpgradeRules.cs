@@ -93,6 +93,13 @@ namespace OpenRA.Utility
 						ConvertPxToRange(ref node.Value.Value);
 				}
 
+				// AttackMove was generalized to support all moveable actor types
+				if (engineVersion < 20140116)
+				{
+					if (depth == 1 && node.Key == "AttackMove")
+						node.Value.Nodes.RemoveAll(n => n.Key == "JustMove");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

@@ -94,7 +94,6 @@ HARV:
 	RevealsShroud:
 		Range: 4
 	AttackMove:
-		JustMove: yes
 	-GainsExperience:
 	RenderSprites:
 	RenderVoxels:
@@ -190,7 +189,6 @@ TRUCKB:
 	SupplyTruck:
 		Payload: 500
 	AttackMove:
-		JustMove: yes
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -215,7 +213,6 @@ LPST:
 	RevealsShroud:
 		Range: 10
 	AttackMove:
-		JustMove: yes
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -246,7 +243,6 @@ ICBM:
 	RevealsShroud:
 		Range: 7
 	AttackMove:
-		JustMove: yes
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -280,7 +276,6 @@ REPAIR:
 	AttackMedic:
 		Cursor: repair
 	AttackMove:
-		JustMove: true
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -305,7 +300,6 @@ ART2:
 	RevealsShroud:
 		Range: 9
 	AttackMove:
-		JustMove: yes
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -337,7 +331,6 @@ WEED:
 	RevealsShroud:
 		Range: 4
 	AttackMove:
-		JustMove: yes
 	-GainsExperience:
 	RenderSprites:
 	RenderVoxels:
@@ -451,7 +444,6 @@ GGHUNT:
 		Range: 7
 	RenderUnit:
 	AttackMove:
-		JustMove: yes
 	DemoTruck:
 	Explodes:
 		Weapon: SuicideBomb

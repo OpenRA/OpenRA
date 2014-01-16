@@ -153,6 +153,7 @@ namespace OpenRA.Traits
 		Activity MoveTo(CPos cell, int nearEnough);
 		Activity MoveTo(CPos cell, Actor ignoredActor);
 		Activity MoveWithinRange(Target target, WRange range);
+		CPos NearestMoveableCell(CPos target);
 	}
 
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }

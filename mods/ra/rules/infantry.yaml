@@ -175,7 +175,6 @@ E6:
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -211,7 +210,6 @@ SPY:
 		Types: Cash, SupportPower, Exploration
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderSpy:
 		IdleAnimations: idle1,idle2
@@ -289,7 +287,6 @@ MEDI:
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -326,7 +323,6 @@ MECH:
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -348,7 +344,6 @@ EINSTEIN:
 		Range: 2
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	ProximityCaptor:
 		Types: CivilianInfantry
 	-RenderInfantry:
@@ -372,7 +367,6 @@ DELPHI:
 		Range: 2
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	ProximityCaptor:
 		Types: CivilianInfantry
 	-RenderInfantry:
@@ -414,7 +408,6 @@ THF:
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 
 SHOK:
 	Inherits: ^Infantry

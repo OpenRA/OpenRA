@@ -419,7 +419,6 @@ MNLY.AP:
 	LimitedAmmo:
 		Ammo: 5
 	AttackMove:
-		JustMove: true
 	DetectCloaked:
 		Range: 5
 	RenderDetectionCircle:
@@ -453,7 +452,6 @@ MNLY.AT:
 	LimitedAmmo:
 		Ammo: 3
 	AttackMove:
-		JustMove: true
 	DetectCloaked:
 		Range: 5
 	RenderDetectionCircle:
@@ -483,7 +481,6 @@ TRUK:
 	SupplyTruck:
 		Payload: 500
 	AttackMove:
-		JustMove: yes
 
 MGG:
 	Inherits: ^Vehicle
@@ -509,7 +506,6 @@ MGG:
 		Offset: -299,0,171
 		Sequence: spinner
 	AttackMove:
-		JustMove: yes
 	RevealsShroud:
 		Range: 6
 	CreatesShroud:
@@ -557,7 +553,6 @@ MRJ:
 		Sequence: spinner
 		Offset: -256,0,256
 	AttackMove:
-		JustMove: yes
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -719,7 +714,6 @@ DTRK:
 		Range: 3
 	RenderUnit:
 	AttackMove:
-		JustMove: yes
 	Explodes:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
@@ -791,7 +785,6 @@ QTNK:
 		Bounds: 44,38,0,-4
 	RenderUnit:
 	AttackMove:
-		JustMove: True
 	Explodes:
 		Weapon: UnitExplodeSmall
 	MadTank:

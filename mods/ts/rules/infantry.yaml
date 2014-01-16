@@ -166,7 +166,6 @@ ENGINEER:
 		CaptureTypes: building
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -294,7 +293,6 @@ CHAMSPY:
 		Types: Cash, SupportPower, Exploration
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderSpy:
 		IdleAnimations: idle1,idle2
