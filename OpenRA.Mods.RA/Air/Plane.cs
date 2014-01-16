@@ -92,10 +92,10 @@ namespace OpenRA.Mods.RA.Air
 			}
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough) { return new Fly(self, Target.FromCell(cell)); }
-		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Fly(self, Target.FromCell(cell)); }
-		public Activity MoveWithinRange(Target target, WRange range) { return new Fly(self, target, WRange.Zero, range); }
-		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return new Fly(self, target, minRange, maxRange); }
+		public Activity MoveTo(CPos cell, int nearEnough) { return Util.SequenceActivities(new Fly(self, Target.FromCell(cell)), new FlyCircle()); }
+		public Activity MoveTo(CPos cell, Actor ignoredActor) { return Util.SequenceActivities(new Fly(self, Target.FromCell(cell)), new FlyCircle()); }
+		public Activity MoveWithinRange(Target target, WRange range) { return Util.SequenceActivities(new Fly(self, target, WRange.Zero, range), new FlyCircle()); }
+		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return Util.SequenceActivities(new Fly(self, target, minRange, maxRange), new FlyCircle()); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 	}
 }
