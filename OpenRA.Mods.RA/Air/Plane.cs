@@ -94,7 +94,8 @@ namespace OpenRA.Mods.RA.Air
 
 		public Activity MoveTo(CPos cell, int nearEnough) { return new Fly(self, Target.FromCell(cell)); }
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Fly(self, Target.FromCell(cell)); }
-		public Activity MoveWithinRange(Target target, WRange range) { return new Fly(self, target); }
+		public Activity MoveWithinRange(Target target, WRange range) { return new Fly(self, target, WRange.Zero, range); }
+		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return new Fly(self, target, minRange, maxRange); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 	}
 }
