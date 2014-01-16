@@ -16,8 +16,13 @@ namespace OpenRA.Mods.RA.Air
 	public class Fly : Activity
 	{
 		readonly WPos pos;
+		readonly Plane plane;
 
-		Fly(WPos pos) { this.pos = pos; }
+		public Fly(Actor self, Target t)
+		{
+			plane = self.Trait<Plane>();
+			pos = t.CenterPosition;
+		}
 
 		public static void FlyToward(Actor self, Plane plane, int desiredFacing, WRange desiredAltitude)
 		{
@@ -36,9 +41,6 @@ namespace OpenRA.Mods.RA.Air
 			plane.SetPosition(self, plane.CenterPosition + move);
 		}
 
-		public static Fly ToPos(WPos pos) { return new Fly(pos); }
-		public static Fly ToCell(CPos pos) { return new Fly(pos.CenterPosition); }
-
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled)
@@ -49,7 +51,6 @@ namespace OpenRA.Mods.RA.Air
 			if (d.HorizontalLengthSquared < 91022)
 				return NextActivity;
 
-			var plane = self.Trait<Plane>();
 			var desiredFacing = Util.GetFacing(d, plane.Facing);
 
 			// Don't turn until we've reached the cruise altitude

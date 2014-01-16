@@ -24,10 +24,12 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public readonly PlaneInfo Info;
 		[Sync] public WPos RTBPathHash;
+		Actor self;
 
 		public Plane(ActorInitializer init, PlaneInfo info)
 			: base(init, info)
 		{
+			self = init.self;
 			Info = info;
 		}
 
@@ -48,10 +50,11 @@ namespace OpenRA.Mods.RA.Air
 			{
 				UnReserve();
 
-				var target = self.World.ClampToWorld(order.TargetLocation);
-				self.SetTargetLine(Target.FromCell(target), Color.Green);
+				var cell = self.World.ClampToWorld(order.TargetLocation);
+				var t = Target.FromCell(cell);
+				self.SetTargetLine(t, Color.Green);
 				self.CancelActivity();
-				self.QueueActivity(Fly.ToCell(target));
+				self.QueueActivity(new Fly(self, t));
 				self.QueueActivity(new FlyCircle());
 			}
 			else if (order.OrderString == "Enter")
@@ -89,9 +92,9 @@ namespace OpenRA.Mods.RA.Air
 			}
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough) { return Fly.ToCell(cell); }
-		public Activity MoveTo(CPos cell, Actor ignoredActor) { return Fly.ToCell(cell); }
-		public Activity MoveWithinRange(Target target, WRange range) { return Fly.ToPos(target.CenterPosition); }
+		public Activity MoveTo(CPos cell, int nearEnough) { return new Fly(self, Target.FromCell(cell)); }
+		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Fly(self, Target.FromCell(cell)); }
+		public Activity MoveWithinRange(Target target, WRange range) { return new Fly(self, target); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 	}
 }

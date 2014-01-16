@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Missions
 			});
 
 			badger.Trait<AttackBomber>().SetTarget(location.CenterPosition);
-			badger.QueueActivity(Fly.ToCell(location));
+			badger.QueueActivity(new Fly(badger, Target.FromCell(location)));
 			badger.QueueActivity(new FlyOffMap());
 			badger.QueueActivity(new RemoveSelf());
 		}

@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Air
 					return;
 				}
 
-				self.QueueActivity(Fly.ToCell(someBuilding.Location));
+				self.QueueActivity(new Fly(self, Target.FromActor(someBuilding)));
 				self.QueueActivity(new FlyCircle());
 			}
 		}

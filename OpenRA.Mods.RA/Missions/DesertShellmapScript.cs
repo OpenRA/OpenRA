@@ -206,7 +206,7 @@ namespace OpenRA.Mods.RA.Missions
 				new FacingInit(Traits.Util.GetFacing(waypoints[1] - waypoints[0], 0))
 			});
 			foreach (var waypoint in waypoints)
-				m.QueueActivity(Fly.ToCell(waypoint));
+				m.QueueActivity(new Fly(m, Target.FromCell(waypoint)));
 			m.QueueActivity(new RemoveSelf());
 		}
 

@@ -263,7 +263,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public void FlyToPos(Actor actor, WPos pos)
 		{
-			actor.QueueActivity(Fly.ToPos(pos));
+			actor.QueueActivity(new Fly(actor, Target.FromPos(pos)));
 		}
 
 		[LuaGlobal]

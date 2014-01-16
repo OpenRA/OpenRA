@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA
 					if (flare != null)
 						a.QueueActivity(new CallFunc(() => flare.Destroy()));
 
-					a.QueueActivity(Fly.ToPos(finishEdge + spawnOffset));
+					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset)));
 					a.QueueActivity(new RemoveSelf());
 				}
 			});
