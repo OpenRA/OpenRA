@@ -17,6 +17,8 @@ hosp:
 	damaged-idle:
 		Start: 4
 		Length: 4
+	dead:
+		Start: 8
 	make: hospmake
 		Start: 0
 		Length: *
