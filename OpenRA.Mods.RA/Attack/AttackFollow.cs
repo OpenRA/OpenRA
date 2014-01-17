@@ -86,8 +86,8 @@ namespace OpenRA.Mods.RA
 				var weapon = attack.ChooseArmamentForTarget(target);
 				if (weapon != null)
 				{
-					// Try and sit at least half a cell closer, in case the target starts moving.
-					var maxRange = new WRange(Math.Max(0, weapon.Weapon.Range.Range - 512));
+					// Try and sit at least one cell closer, in case the target starts moving.
+					var maxRange = new WRange(Math.Max(0, weapon.Weapon.Range.Range - 1024));
 
 					attack.Target = target;
 

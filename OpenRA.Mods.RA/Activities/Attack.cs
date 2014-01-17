@@ -16,12 +16,12 @@ namespace OpenRA.Mods.RA.Activities
 	/* non-turreted attack */
 	public class Attack : Activity
 	{
-		protected Target Target;
-		AttackBase attack;
-		IFacing facing;
-		Activity move;
-		WRange minRange;
-		WRange maxRange;
+		protected readonly Target Target;
+		readonly AttackBase attack;
+		readonly IMove move;
+		readonly IFacing facing;
+		readonly WRange minRange;
+		readonly WRange maxRange;
 
 		public Attack(Actor self, Target target, WRange minRange, WRange maxRange, bool allowMovement)
 		{
@@ -32,8 +32,7 @@ namespace OpenRA.Mods.RA.Activities
 			attack = self.Trait<AttackBase>();
 			facing = self.Trait<IFacing>();
 
-			var imove = self.TraitOrDefault<IMove>();
-			move = allowMovement && imove != null ? imove.MoveWithinRange(target, minRange, maxRange) : null;
+			move = allowMovement ? self.TraitOrDefault<IMove>() : null;
 		}
 
 		public override Activity Tick(Actor self)
@@ -56,19 +55,15 @@ namespace OpenRA.Mods.RA.Activities
 			if (type == TargetType.Actor && !self.Owner.Shroud.IsTargetable(Target.Actor))
 				return NextActivity;
 
+			// Try to move within range
 			if (move != null && (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)))
-			{
-				// Try to move within range
-				move.Tick(self);
-			}
-			else
-			{
-				var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);
-				if (facing.Facing != desiredFacing)
-					return Util.SequenceActivities(new Turn(desiredFacing), this);
+				return Util.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
 
-				attack.DoAttack(self, Target);
-			}
+			var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);
+			if (facing.Facing != desiredFacing)
+				return Util.SequenceActivities(new Turn(desiredFacing), this);
+
+			attack.DoAttack(self, Target);
 
 			return this;
 		}

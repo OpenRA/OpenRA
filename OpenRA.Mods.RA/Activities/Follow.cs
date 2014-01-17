@@ -15,13 +15,18 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class Follow : Activity
 	{
-		Activity inner;
-		Target target;
+		readonly Target target;
+		readonly WRange minRange;
+		readonly WRange maxRange;
+		readonly IMove move;
 
 		public Follow(Actor self, Target target, WRange minRange, WRange maxRange)
 		{
 			this.target = target;
-			inner = self.Trait<IMove>().MoveWithinRange(target, minRange, maxRange);
+			this.minRange = minRange;
+			this.maxRange = maxRange;
+
+			move = self.Trait<IMove>();
 		}
 
 		public override Activity Tick(Actor self)
@@ -29,19 +34,17 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
-			// Not sequenced because we want to continue ticking inner
-			// even after it returns NextActivity (in case the target moves)
-			Util.RunActivity(self, inner);
+			var cachedPosition = target.CenterPosition;
+			var path = move.MoveWithinRange(target, minRange, maxRange);
 
-			return this;
-		}
+			// We are already in range, so wait until the target moves before doing anything
+			if (target.IsInRange(self.CenterPosition, maxRange) && !target.IsInRange(self.CenterPosition, minRange))
+			{
+				var wait = new WaitFor(() => !target.IsValidFor(self) || target.CenterPosition != cachedPosition);
+				return Util.SequenceActivities(wait, path, this);
+			}
 
-		public override IEnumerable<Target> GetTargets(Actor self)
-		{
-			if (inner != null)
-				return inner.GetTargets(self);
-
-			return Target.None;
+			return Util.SequenceActivities(path, this);
 		}
 	}
 }
