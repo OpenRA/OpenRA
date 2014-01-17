@@ -433,3 +433,13 @@ errorlog:Connect(wxstc.wxEVT_STC_DO_DROP,
       event:SetDragResult(wx.wxDragNone)
     end
   end)
+
+if ide.config.outputshell.nomousezoom then
+  -- disable zoom using mouse wheel as it triggers zooming when scrolling
+  -- on OSX with kinetic scroll and then pressing CMD.
+  errorlog:Connect(wx.wxEVT_MOUSEWHEEL,
+    function (event)
+      if wx.wxGetKeyState(wx.WXK_CONTROL) then return end
+      event:Skip()
+    end)
+end
