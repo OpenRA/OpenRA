@@ -491,7 +491,7 @@ namespace OpenRA.Editor
 			if (currentTool == null)
 			{
 				var x = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
-				if (x.Key != null)
+				if (x.Key != null && actorTemplates.ContainsKey(x.Value.Type))
 					DrawActorBorder(e.Graphics, x.Value.Location(), actorTemplates[x.Value.Type]);
 			}
 		}
