@@ -26,6 +26,8 @@ bio:
 		Start: 0
 	damaged-idle:
 		Start: 1
+	dead:
+		Start: 2
 	make: biomake
 		Start: 0
 		Length: *

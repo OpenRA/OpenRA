@@ -326,6 +326,7 @@ BIO:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Biological Lab
+	DeadBuildingState:
 
 OILB:
 	Inherits: ^TechBuilding
