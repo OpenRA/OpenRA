@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || !target.IsValidFor(self))
+			if ((IsCanceled && inner == null) || !target.IsValidFor(self))
 				return NextActivity;
 
 			var targetPosition = target.CenterPosition.ToCPos();
@@ -134,6 +134,13 @@ namespace OpenRA.Mods.RA.Activities
 				return inner.GetTargets(self);
 
 			return Target.None;
+		}
+
+		public override void Cancel(Actor self)
+		{
+			if (inner != null)
+				inner.Cancel(self);
+			base.Cancel(self);
 		}
 	}
 }
