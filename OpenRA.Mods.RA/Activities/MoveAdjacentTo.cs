@@ -20,8 +20,6 @@ namespace OpenRA.Mods.RA.Activities
 		readonly Target target;
 		readonly Mobile mobile;
 		readonly PathFinder pathFinder;
-		readonly DomainIndex domainIndex;
-		readonly int movementClass;
 		readonly WRange maxRange;
 		readonly WRange minRange;
 
@@ -36,8 +34,6 @@ namespace OpenRA.Mods.RA.Activities
 
 			mobile = self.Trait<Mobile>();
 			pathFinder = self.World.WorldActor.Trait<PathFinder>();
-			domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
-			movementClass = mobile.Info.GetMovementClass(self.World.TileSet);
 
 			repath = true;
 		}
@@ -90,7 +86,7 @@ namespace OpenRA.Mods.RA.Activities
 				{
 					if (cell == loc)
 						return NextActivity;
-					else if (domainIndex == null || domainIndex.IsPassable(loc, cell, (uint)movementClass))
+					else if (mobile.CanEnterCell(cell))
 						searchCells.Add(cell);
 				}
 
