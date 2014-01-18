@@ -195,6 +195,7 @@
 	Buildable:
 		Queue: Aircraft
 	HiddenUnderFog:
+	AttackMove:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:

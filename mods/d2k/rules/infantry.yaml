@@ -49,7 +49,6 @@ ENGINEER:
 	EngineerRepair:
 	ExternalCaptures:
 	-AutoTarget:
-	AttackMove:
 
 BAZOOKA:
 	Inherits: ^Infantry
@@ -107,5 +106,3 @@ MEDIC:
 	Passenger:
 		PipType: Blue
 	-AutoTarget:
-	AttackMove:
-

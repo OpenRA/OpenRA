@@ -271,7 +271,6 @@ HARV:
 		Range: 4
 	RenderHarvester:
 		ImagesByFullness: harvempty, harvhalf, harv
-	-AttackMove:
 	GpsDot:
 		String: Harvester
 	LeavesHusk:
@@ -316,7 +315,6 @@ MCV:
 	RenderUnit:
 	MustBeDestroyed:
 	BaseBuilding:
-	-AttackMove:
 	LeavesHusk:
 		HuskActor: MCV.Husk
 
@@ -418,7 +416,6 @@ MNLY.AP:
 	MineImmune:
 	LimitedAmmo:
 		Ammo: 5
-	AttackMove:
 	DetectCloaked:
 		Range: 5
 	RenderDetectionCircle:
@@ -451,7 +448,6 @@ MNLY.AT:
 	MineImmune:
 	LimitedAmmo:
 		Ammo: 3
-	AttackMove:
 	DetectCloaked:
 		Range: 5
 	RenderDetectionCircle:
@@ -480,7 +476,6 @@ TRUK:
 	RenderUnit:
 	SupplyTruck:
 		Payload: 500
-	AttackMove:
 
 MGG:
 	Inherits: ^Vehicle
@@ -505,7 +500,6 @@ MGG:
 	WithIdleOverlay@SPINNER:
 		Offset: -299,0,171
 		Sequence: spinner
-	AttackMove:
 	RevealsShroud:
 		Range: 6
 	CreatesShroud:
@@ -552,7 +546,6 @@ MRJ:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 		Offset: -256,0,256
-	AttackMove:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -713,7 +706,6 @@ DTRK:
 	RevealsShroud:
 		Range: 3
 	RenderUnit:
-	AttackMove:
 	Explodes:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
@@ -784,11 +776,9 @@ QTNK:
 	Selectable:
 		Bounds: 44,38,0,-4
 	RenderUnit:
-	AttackMove:
 	Explodes:
 		Weapon: UnitExplodeSmall
 	MadTank:
 	-EjectOnDeath:
 	TargetableUnit:
 		TargetTypes: Ground, MADTank
-

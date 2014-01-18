@@ -848,7 +848,6 @@ Rules:
 		TakeCover:
 		Spy:
 		-AutoTarget:
-		AttackMove:
 		-RenderInfantry:
 		RenderSpy:
 			IdleAnimations: idle1,idle2

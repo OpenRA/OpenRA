@@ -209,7 +209,6 @@
 		NotifyAll: true
 	ScaredyCat:
 	RenderInfantryPanic:
-	AttackMove:
 	CrushableInfantry:
 
 ^DINO:
@@ -274,6 +273,7 @@
 	CombatDebugOverlay:
 	BodyOrientation:
 	Huntable:
+	AttackMove:
 	LuaScriptEvents:
 
 ^Ship:

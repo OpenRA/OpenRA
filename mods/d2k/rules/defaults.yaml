@@ -197,6 +197,7 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
+	AttackMove:
 	LuaScriptEvents:
 
 ^Helicopter:

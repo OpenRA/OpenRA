@@ -832,7 +832,6 @@ Rules:
 			Range: 40
 		RenderUnit:
 			Image: MNLY
-		AttackMove:
 		MustBeDestroyed:
 		Transforms:
 			IntoActor: ftur

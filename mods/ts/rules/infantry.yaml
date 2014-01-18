@@ -165,7 +165,6 @@ ENGINEER:
 	Captures:
 		CaptureTypes: building
 	-AutoTarget:
-	AttackMove:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -292,7 +291,6 @@ CHAMSPY:
 	Infiltrates:
 		Types: Cash, SupportPower, Exploration
 	-AutoTarget:
-	AttackMove:
 	-RenderInfantry:
 	RenderSpy:
 		IdleAnimations: idle1,idle2
@@ -468,7 +466,6 @@ MHIJACK:
 	RevealsShroud:
 		Range: 6
 	-AutoTarget:
-	-AttackMove:
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
@@ -495,7 +492,6 @@ TRATOS:
 		Range: 4
 	TakeCover:
 	-AutoTarget:
-	-AttackMove:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -521,7 +517,6 @@ OXANNA:
 		Range: 4
 	TakeCover:
 	-AutoTarget:
-	-AttackMove:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -547,7 +542,6 @@ SLAV:
 		Range: 4
 	TakeCover:
 	-AutoTarget:
-	-AttackMove:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -605,7 +599,6 @@ VISSML:
 	TargetableUnit:
 		TargetTypes: Ground
 	-AutoTarget:
-	-AttackMove:
 	-RenderInfantry:
 	RenderUnit:
 

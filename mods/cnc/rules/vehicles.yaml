@@ -27,7 +27,6 @@ MCV:
 		NoTransformSounds: deploy1.aud
 	RenderUnit:
 	MustBeDestroyed:
-	AttackMove:
 	BaseBuilding:
 	LeavesHusk:
 		HuskActor: MCV.Husk
@@ -67,7 +66,6 @@ HARV:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4
-	AttackMove:
 	LeavesHusk:
 		HuskActor: HARV.Husk
 	-GainsExperience:
@@ -556,7 +554,6 @@ MHQ:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 		Offset: -256,0,256
-	AttackMove:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
