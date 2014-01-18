@@ -29,6 +29,10 @@ namespace OpenRA.Mods.RA
 		[Desc("Ticks to wait until next AutoTarget: attempt.")]
 		public readonly int MaximumScanTimeInterval = 8;
 
+		public readonly bool TargetWhenIdle = true;
+		public readonly bool TargetWhenDamaged = true;
+		public readonly bool EnableStances = true;
+
 		public object Create(ActorInitializer init) { return new AutoTarget(init.self, this); }
 	}
 
@@ -59,13 +63,13 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "SetUnitStance")
+			if (order.OrderString == "SetUnitStance" && info.EnableStances)
 				Stance = (UnitStance)order.TargetLocation.X;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (!self.IsIdle)
+			if (!self.IsIdle || !info.TargetWhenDamaged)
 				return;
 
 			if (e.Attacker.Destroyed)
@@ -93,7 +97,7 @@ namespace OpenRA.Mods.RA
 
 		public void TickIdle(Actor self)
 		{
-			if (Stance < UnitStance.Defend)
+			if (Stance < UnitStance.Defend || !info.TargetWhenIdle)
 				return;
 
 			var allowMovement = info.AllowMovement && Stance != UnitStance.Defend;
