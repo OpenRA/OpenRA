@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -283,7 +283,7 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			var at = actor.TraitOrDefault<AutoTarget>();
 			if (at != null)
-				at.stance = Enum<UnitStance>.Parse(stance);
+				at.Stance = Enum<UnitStance>.Parse(stance);
 		}
 
 		[LuaGlobal]

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -290,7 +290,7 @@ namespace OpenRA.Mods.RA.Missions
 			foreach (var actor in actors.Values)
 			{
 				if (actor.Owner == allies && actor.HasTrait<AutoTarget>())
-					actor.Trait<AutoTarget>().stance = UnitStance.Defend;
+					actor.Trait<AutoTarget>().Stance = UnitStance.Defend;
 				
 				if (actor.IsInWorld && (actor.HasTrait<Bridge>() || actor.Owner == allies || (actor.Owner == soviets && actor.HasTrait<Building>())))
 					actor.AddTrait(new Invulnerable());

@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA.Missions
 		void SetSovietUnitsToDefensiveStance()
 		{
 			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && !a.IsDead() && a.HasTrait<AutoTarget>()))
-				actor.Trait<AutoTarget>().stance = UnitStance.Defend;
+				actor.Trait<AutoTarget>().Stance = UnitStance.Defend;
 		}
 
 		Actor FirstUnshroudedOrDefault(IEnumerable<Actor> actors, World world, int shroudRange)
