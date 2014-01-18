@@ -366,7 +366,16 @@ namespace OpenRA.Mods.RA.Widgets
 					}
 				}
 				else
-					Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, world.LocalPlayer.Country.Race);
+				{
+					// Check if the item's build-limit has already been reached
+					var queued = CurrentQueue.AllQueued().Count(a => a.Item == unit.Name);
+					var inWorld = world.ActorsWithTrait<Buildable>().Count(a => a.Actor.Info.Name == unit.Name && a.Actor.Owner == world.LocalPlayer);
+
+					if (!((unit.Traits.Get<BuildableInfo>().BuildLimit != 0) && (inWorld + queued >= unit.Traits.Get<BuildableInfo>().BuildLimit)))
+						Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, world.LocalPlayer.Country.Race);
+					else
+						Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.BlockedAudio, world.LocalPlayer.Country.Race);
+				}
 
 				StartProduction(world, item);
 			}
