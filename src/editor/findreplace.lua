@@ -95,7 +95,7 @@ function findReplace:GetSelectedString()
     local startSel = editor:GetSelectionStart()
     local endSel = editor:GetSelectionEnd()
     if (startSel ~= endSel) and (editor:LineFromPosition(startSel) == editor:LineFromPosition(endSel)) then
-      findReplace.findText = editor:GetSelectedText()
+      findReplace.findText = editor:GetTextRange(startSel, endSel)
       return true
     end
   end
