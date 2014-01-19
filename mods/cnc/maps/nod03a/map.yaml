@@ -570,7 +570,7 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScriptInterface:
-			LuaScripts: mission.lua
+			LuaScripts: nod03a.lua
 	NUK2:
 		Buildable:
 			Owner: None

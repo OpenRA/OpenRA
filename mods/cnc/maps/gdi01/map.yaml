@@ -458,7 +458,7 @@ Rules:
 			Music: aoi
 			Loop: false
 		LuaScriptInterface:
-			LuaScripts: mission.lua
+			LuaScripts: gdi01.lua
 	Player:
 		-ConquestVictoryConditions:
 	^Infantry:

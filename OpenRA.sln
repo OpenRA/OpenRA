@@ -55,6 +55,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common Lua scripts", "Commo
 		mods\common\lua\actor.lua = mods\common\lua\actor.lua
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts", "Tiberian Dawn Lua scripts", "{62FCD0D0-6D24-435D-9DD8-3CCADCF7ECAB}"
+	ProjectSection(SolutionItems) = preProject
+		mods\cnc\maps\shellmap\shellmap.lua = mods\cnc\maps\shellmap\shellmap.lua
+		mods\cnc\maps\gdi01\gdi01.lua = mods\cnc\maps\gdi01\gdi01.lua
+		mods\cnc\maps\gdi02\gdi02.lua = mods\cnc\maps\gdi02\gdi02.lua
+		mods\cnc\maps\nod01\nod01.lua = mods\cnc\maps\nod01\nod01.lua
+		mods\cnc\maps\nod03a\nod03a.lua = mods\cnc\maps\nod03a\nod03a.lua
+		mods\cnc\maps\nod03b\nod03b.lua = mods\cnc\maps\nod01\nod03b.lua
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
