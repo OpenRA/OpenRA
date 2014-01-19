@@ -225,11 +225,8 @@ namespace OpenRA.Mods.RA
 					{
 						var inQueue = Queue.Count(pi => pi.Item == order.TargetString);
 						var owned = self.Owner.World.ActorsWithTrait<Buildable>().Count(a => a.Actor.Info.Name == order.TargetString && a.Actor.Owner == self.Owner);
-						if (inQueue + owned >= bi.BuildLimit)
-						{
-							Sound.PlayNotification(self.Owner, "Speech", Info.BlockedAudio, self.Owner.Country.Race);
-							return;
-						}
+						if (inQueue + owned >= bi.BuildLimit)						
+							return;						
 					}
 
 					for (var n = 0; n < order.TargetLocation.X; n++)	// repeat count
