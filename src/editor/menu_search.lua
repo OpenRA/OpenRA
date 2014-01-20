@@ -54,12 +54,14 @@ frame:Connect(ID_FINDNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
       editor:SetMainSelection(selection)
       editor:EnsureCaretVisible()
     else
-      findReplace:GetSelectedString()
-      findReplace:FindString()
+      if findReplace:GetSelectedString() or findReplace:HasText() then
+        findReplace:FindString()
+      else
+        findReplace:Show(false)
+      end
     end
   end)
-frame:Connect(ID_FINDNEXT, wx.wxEVT_UPDATE_UI,
-  function (event) event:Enable(findReplace:GetSelectedString() or findReplace:HasText()) end)
+frame:Connect(ID_FINDNEXT, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
 
 frame:Connect(ID_FINDPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
@@ -70,12 +72,14 @@ frame:Connect(ID_FINDPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
       editor:SetMainSelection(selection)
       editor:EnsureCaretVisible()
     else
-      findReplace:GetSelectedString()
-      findReplace:FindString(true)
+      if findReplace:GetSelectedString() or findReplace:HasText() then
+        findReplace:FindString(true) -- search up
+      else
+        findReplace:Show(false)
+      end
     end
   end)
-frame:Connect(ID_FINDPREV, wx.wxEVT_UPDATE_UI,
-  function (event) event:Enable(findReplace:GetSelectedString() or findReplace:HasText()) end)
+frame:Connect(ID_FINDPREV, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
 
 -------------------- Find replace end
 
