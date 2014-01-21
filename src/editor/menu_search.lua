@@ -24,19 +24,19 @@ local findMenu = wx.wxMenu{
 }
 menuBar:Append(findMenu, TR("&Search"))
 
-function OnUpdateUISearchMenu(event) event:Enable(GetEditor() ~= nil) end
+local function onUpdateUISearchMenu(event) event:Enable(GetEditor() ~= nil) end
 
 frame:Connect(ID_FIND, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     findReplace:Show(false)
   end)
-frame:Connect(ID_FIND, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
+frame:Connect(ID_FIND, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
 
 frame:Connect(ID_REPLACE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     findReplace:Show(true)
   end)
-frame:Connect(ID_REPLACE, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
+frame:Connect(ID_REPLACE, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
 
 frame:Connect(ID_FINDINFILES, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
@@ -63,7 +63,7 @@ frame:Connect(ID_FINDNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
       end
     end
   end)
-frame:Connect(ID_FINDNEXT, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
+frame:Connect(ID_FINDNEXT, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
 
 frame:Connect(ID_FINDPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
@@ -81,7 +81,7 @@ frame:Connect(ID_FINDPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
       end
     end
   end)
-frame:Connect(ID_FINDPREV, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
+frame:Connect(ID_FINDPREV, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
 
 -- Select and Find behaves like Find if there is a current selection;
 -- if not, it selects a word under cursor (if any) and does find.
@@ -108,7 +108,7 @@ frame:Connect(ID_FINDSELECTNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
       findReplace:FindString()
     end
   end)
-frame:Connect(ID_FINDSELECTNEXT, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
+frame:Connect(ID_FINDSELECTNEXT, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
 
 frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
@@ -125,7 +125,7 @@ frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
       findReplace:FindString(true)
     end
   end)
-frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
+frame:Connect(ID_FINDSELECTPREV, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)
 
 -------------------- Find replace end
 
@@ -143,4 +143,4 @@ frame:Connect(ID_GOTOLINE, wx.wxEVT_COMMAND_MENU_SELECTED,
       editor:GotoLine(linenum-1)
     end
   end)
-frame:Connect(ID_GOTOLINE, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
+frame:Connect(ID_GOTOLINE, wx.wxEVT_UPDATE_UI, onUpdateUISearchMenu)

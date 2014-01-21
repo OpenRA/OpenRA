@@ -50,7 +50,7 @@ local function getControlWithFocus()
   return editor
 end
 
-function OnUpdateUIEditMenu(event)
+local function onUpdateUIEditMenu(event)
   local editor = getControlWithFocus()
   if editor == nil then event:Enable(false); return end
 
@@ -98,7 +98,7 @@ end
 
 for _, event in pairs({ID_CUT, ID_COPY, ID_PASTE, ID_SELECTALL, ID_UNDO, ID_REDO}) do
   frame:Connect(event, wx.wxEVT_COMMAND_MENU_SELECTED, OnEditMenu)
-  frame:Connect(event, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+  frame:Connect(event, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 end
 
 local function generateConfigMessage(type)
@@ -148,7 +148,7 @@ frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     EditorAutoComplete(GetEditor())
   end)
-frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 frame:Connect(ID_AUTOCOMPLETEENABLE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
@@ -215,7 +215,7 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
         + math.max(0, curpos+#editor:GetLine(curline)-curlen))
     end
   end)
-frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 frame:Connect(ID_SORT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
@@ -233,10 +233,10 @@ frame:Connect(ID_SORT, wx.wxEVT_COMMAND_MENU_SELECTED,
       editor:ReplaceSelection(table.concat(buf,"\n"))
     end
   end)
-frame:Connect(ID_SORT, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+frame:Connect(ID_SORT, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 frame:Connect(ID_FOLD, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     FoldSome()
   end)
-frame:Connect(ID_FOLD, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+frame:Connect(ID_FOLD, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
