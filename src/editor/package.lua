@@ -64,6 +64,7 @@ end
 function ide:GetEditor(index) return GetEditor(index) end
 function ide:GetMenuBar() return self.frame.menuBar end
 function ide:GetStatusBar() return self.frame.statusBar end
+function ide:GetToolBar() return self.frame.toolBar end
 function ide:GetMainFrame() return self.frame end
 function ide:GetDocument(ed) return self.openDocuments[ed:GetId()] end
 function ide:GetDocuments() return self.openDocuments end
