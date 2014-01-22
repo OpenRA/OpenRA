@@ -131,6 +131,18 @@ local specialmapping = {
     if ide.wxver >= "2.9.5" then editor:SetAdditionalSelAlpha(127) end
   end,
 
+  seladd = function(editor,style)
+    if ide.wxver >= "2.9.5" then
+      if (style.fg) then
+        editor:SetAdditionalSelForeground(wx.wxColour(unpack(style.fg)))
+      end
+
+      if (style.bg) then
+        editor:SetAdditionalSelBackground(wx.wxColour(unpack(style.bg)))
+      end
+    end
+  end,
+
   caret = function(editor,style)
     if (style.fg) then
       editor:SetCaretForeground(wx.wxColour(unpack(style.fg)))
@@ -288,6 +300,10 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
       applystyle(style,style.st)
     end
   end
+
+  -- additional selection (seladd) attributes can only be set after
+  -- normal selection (sel) attributes are set, so handle them again
+  if styles.seladd then specialmapping.seladd(editor, styles.seladd) end
 
   do
     local defaultfg = styles.text and styles.text.fg or {127,127,127}
