@@ -168,7 +168,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 				.Select(i => i.Value).FirstOrDefault();
 
 			if (clicked != null)
+			{
+				if (!clicked.Power.Active)
+					Sound.PlayToPlayer(spm.self.Owner, clicked.Power.Info.InsufficientPowerSound);
 				spm.Target(clicked.Power.Info.OrderName);
+			}
 
 			return true;
 		}
