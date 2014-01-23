@@ -370,8 +370,9 @@ namespace OpenRA.Mods.RA.Widgets
 					// Check if the item's build-limit has already been reached
 					var queued = CurrentQueue.AllQueued().Count(a => a.Item == unit.Name);
 					var inWorld = world.ActorsWithTrait<Buildable>().Count(a => a.Actor.Info.Name == unit.Name && a.Actor.Owner == world.LocalPlayer);
+					var buildLimit = unit.Traits.Get<BuildableInfo>().BuildLimit;
 
-					if (!((unit.Traits.Get<BuildableInfo>().BuildLimit != 0) && (inWorld + queued >= unit.Traits.Get<BuildableInfo>().BuildLimit)))
+					if (!((buildLimit != 0) && (inWorld + queued >= buildLimit)))
 						Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, world.LocalPlayer.Country.Race);
 					else
 						Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.BlockedAudio, world.LocalPlayer.Country.Race);

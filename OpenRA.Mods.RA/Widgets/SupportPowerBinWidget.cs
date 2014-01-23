@@ -167,7 +167,15 @@ namespace OpenRA.Mods.RA.Widgets
 
 		Action<MouseInput> HandleSupportPower(string key, SupportPowerManager manager)
 		{
-			return mi => { if (mi.Button == MouseButton.Left) manager.Target(key); };
+			return mi =>
+			{
+				if (mi.Button == MouseButton.Left)
+				{
+					if (!manager.Powers[key].Active)
+						Sound.PlayToPlayer(manager.self.Owner, manager.Powers[key].Info.InsufficientPowerSound);
+					manager.Target(key);
+				}
+			};
 		}
 	}
 }
