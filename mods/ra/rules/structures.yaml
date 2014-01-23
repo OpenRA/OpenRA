@@ -377,7 +377,6 @@ DOME:
 		Type: Wood
 	RevealsShroud:
 		Range: 10
-	Bib:
 	ProvidesRadar:
 	IronCurtainable:
 	Infiltratable:
@@ -821,7 +820,6 @@ ATEK:
 		Type: Wood
 	RevealsShroud:
 		Range: 10
-	Bib:
 	IronCurtainable:
 	GpsPower:
 		Icon: gps
@@ -886,7 +884,6 @@ FACT:
 		Type: Wood
 	RevealsShroud:
 		Range: 5
-	Bib:
 	Production:
 		Produces: Building,Defense
 	IronCurtainable:
@@ -1005,7 +1002,6 @@ HPAD:
 		Type: Wood
 	RevealsShroud:
 		Range: 5
-	Bib:
 	Exit@1:
 		SpawnOffset: 0,-256,0
 		ExitCell: 0,0
@@ -1090,7 +1086,6 @@ POWR:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
-	Bib:
 	IronCurtainable:
 	DeadBuildingState:
 
@@ -1119,7 +1114,6 @@ APWR:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
-	Bib:
 	IronCurtainable:
 	DeadBuildingState:
 
@@ -1148,7 +1142,6 @@ STEK:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
-	Bib:
 	IronCurtainable:
 
 BARR:
@@ -1293,7 +1286,6 @@ FACF:
 		HP: 30
 	RevealsShroud:
 		Range: 4
-	Bib:
 	RenderBuilding:
 		Image: FACT
 	Fake:
@@ -1418,7 +1410,6 @@ DOMF:
 		HP: 30
 	RevealsShroud:
 		Range: 4
-	Bib:
 	RenderBuilding:
 		Image: DOME
 	Fake:
