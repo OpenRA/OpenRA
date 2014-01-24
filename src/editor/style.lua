@@ -8,6 +8,7 @@
 -- ---------------------------
 -- fg foreground - {r,g,b} 0-255
 -- bg background - {r,g,b} 0-255
+-- alpha translucency - 0-255 (0 - transparent, 255 - opaque, 256 - opaque/faster)
 -- sel color of the selected block - {r,g,b} 0-255 (only applies to folds)
 -- u underline - boolean
 -- b bold - boolean
@@ -127,6 +128,10 @@ local specialmapping = {
     else
       editor:SetSelBackground(0,wx.wxWHITE)
     end
+    if (style.alpha and ide.wxver >= "2.9.5") then
+      editor:SetSelAlpha(style.alpha)
+    end
+
     -- set alpha for additional selecton: 0 - transparent, 255 - opaque
     if ide.wxver >= "2.9.5" then editor:SetAdditionalSelAlpha(127) end
   end,
@@ -136,9 +141,11 @@ local specialmapping = {
       if (style.fg) then
         editor:SetAdditionalSelForeground(wx.wxColour(unpack(style.fg)))
       end
-
       if (style.bg) then
         editor:SetAdditionalSelBackground(wx.wxColour(unpack(style.bg)))
+      end
+      if (style.alpha) then
+        editor:SetAdditionalSelAlpha(style.alpha)
       end
     end
   end,
@@ -152,6 +159,9 @@ local specialmapping = {
   caretlinebg = function(editor,style)
     if (style.bg) then
       editor:SetCaretLineBackground(wx.wxColour(unpack(style.bg)))
+    end
+    if (style.alpha and ide.wxver >= "2.9.5") then
+      editor:SetCaretLineBackAlpha(style.alpha)
     end
   end,
 
