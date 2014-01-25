@@ -9,7 +9,6 @@ Speech:
 		PrimaryBuildingSelected: pribldg1
 		BuildingCannotPlaceAudio: deploy1
 		NewOptions: newopt1
-		AbilityInsufficientPower: nopower1
 		Win: accom1
 		Lose: fail1
 		BaseAttack: baseatk1
