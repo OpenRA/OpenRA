@@ -6,7 +6,6 @@ Speech:
 		PrimaryBuildingSelected: pribldg1
 		BuildingCannotPlaceAudio: nodeply1
 		NewOptions: newopt1
-		AbilityInsufficientPower: nopowr1
 		Win: misnwon1
 		Lose: misnlst1
 		BaseAttack: baseatk1

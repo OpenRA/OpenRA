@@ -6,7 +6,6 @@ Speech:
 		PrimaryBuildingSelected: 00-i034
 		BuildingCannotPlaceAudio: 00-i016
 		NewOptions: 00-i032
-		AbilityInsufficientPower:
 		Win: 00-i284
 		Lose: 00-i286
 		BaseAttack: 00-i082

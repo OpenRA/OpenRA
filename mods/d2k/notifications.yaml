@@ -12,7 +12,6 @@ Speech:
 		LowPower: POWER
 		SilosNeeded: SILOS
 		PrimaryBuildingSelected: PRMRY
-		AbilityInsufficientPower:
 		NewOptions: NEWOP
 		Win: MWIN
 		Lose: MFAIL
