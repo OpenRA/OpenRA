@@ -36,12 +36,18 @@ for i in astypes:gmatch("([%w_]+)") do
 end
 astypeout = table.concat(astypeout, " ")
 
+local funccall = "([A-Za-z_][A-Za-z0-9_]*)%s*"
+
 return {
   exts = {"cl","ocl","clh",},
   lexer = wxstc.wxSTC_LEX_CPP,
   apitype = "opencl",
   sep = "%.",
   linecomment = "//",
+  
+  isfncall = function(str)
+    return string.find(str, funccall .. "%(")
+  end,
 
   isfndef = function(str)
     local l

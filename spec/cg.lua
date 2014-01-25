@@ -1,12 +1,18 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
+local funccall = "([A-Za-z_][A-Za-z0-9_]*)%s*"
+
 return {
   exts = {"cg","cgh","cgfx","cgfxh",},
   lexer = wxstc.wxSTC_LEX_CPP,
   apitype = "cg",
   sep = "%.",
   linecomment = "//",
+  
+  isfncall = function(str)
+    return string.find(str, funccall .. "%(")
+  end,
 
   isfndef = function(str)
     local l
