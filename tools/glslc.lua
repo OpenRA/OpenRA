@@ -5,6 +5,11 @@ local binpath = ide.config.path.glslcbin or os.getenv("GLSLC_BIN_PATH")
 
 return binpath and {
   fninit = function(frame,menuBar)
+    
+    if (wx.wxFileName(binpath):IsRelative()) then
+      local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
+      binpath = editorDir..binpath
+    end
 
     local myMenu = wx.wxMenu{
       { ID "glslc.compile.input", "&Custom Args", "when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },

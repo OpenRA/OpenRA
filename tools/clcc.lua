@@ -1,10 +1,16 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
-local clccbinpath = ide.config.path.clccbin or os.getenv("CLCC_BIN_PATH")
+local binpath = ide.config.path.clccbin or os.getenv("CLCC_BIN_PATH")
 
-return clccbinpath and {
+return binpath and {
   fninit = function(frame,menuBar)
+    
+    if (wx.wxFileName(binpath):IsRelative()) then
+      local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
+      binpath = editorDir..binpath
+    end
+    
     local myMenu = wx.wxMenu{
       { ID "cl.allplatforms", "&All", "Compiled with all available platforms (otherwise only first)", wx.wxITEM_CHECK },
       { ID "cl.output", "&Output", "Generates output files", wx.wxITEM_CHECK },
@@ -50,7 +56,7 @@ return clccbinpath and {
       cmdline = cmdline..(data.output and "--output " or "")
       cmdline = cmdline..'"'..fullname..'"'
 
-      cmdline = clccbinpath.."/clcc.exe"..cmdline
+      cmdline = binpath.."/clcc.exe"..cmdline
 
       -- run compiler process
       CommandLineRun(cmdline,nil,true,nil,nil)

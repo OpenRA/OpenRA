@@ -1,14 +1,19 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
-local cgbinpath = ide.config.path.cgbin or os.getenv("CG_BIN_PATH")
+local binpath = ide.config.path.cgbin or os.getenv("CG_BIN_PATH")
 local cgprofile 
 local cgglsles 
 
-return cgbinpath and {
+return binpath and {
   fninit = function(frame,menuBar)
     cgprofile = ide.config.cgprofile or "gp5"
     cgglsles = ide.config.cgglsles
+    
+    if (wx.wxFileName(binpath):IsRelative()) then
+      local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
+      binpath = editorDir..binpath
+    end
 
     local myMenu = wx.wxMenu{
       { ID "cg.profile.arb", "&ARB VP/FP", "ARB program profile", wx.wxITEM_CHECK },
@@ -92,7 +97,7 @@ return cgbinpath and {
 
     -- check for NvPerf
     local perfexe = "/NVShaderPerf.exe"
-    local fn = wx.wxFileName(cgbinpath..perfexe)
+    local fn = wx.wxFileName(binpath..perfexe)
     local hasperf = fn:FileExists()
 
     -- master file generator
@@ -408,7 +413,7 @@ return cgbinpath and {
       local glsl = editor and editor.spec and editor.spec.apitype and editor.spec.apitype == "glsl"
       local entryname = (glsl and "main" or info.selword)
 
-      if (not (filename and entryname and cgbinpath)) then
+      if (not (filename and entryname and binpath)) then
         DisplayOutput("Error: Cg Compile: Insufficient parameters (nofile / not selected entry function!\n")
         return
       end
@@ -437,7 +442,7 @@ return cgbinpath and {
       cmdline = cmdline.."-o "..outname.." "
       cmdline = cmdline.."-entry "..entryname
 
-      cmdline = cgbinpath.."/cgc.exe"..cmdline
+      cmdline = binpath.."/cgc.exe"..cmdline
 
       local function nvperfcallback(str)
         local pixels = string.match(str,"([,%d]+) pixels/s")
@@ -492,7 +497,7 @@ return cgbinpath and {
               cmdline = cmdline..(profiletypes[cgperfgpu][profile[domain]] or "")
               cmdline = cmdline..' "'..fullname..'"'
 
-              cmdline = cgbinpath..perfexe..cmdline
+              cmdline = binpath..perfexe..cmdline
               CommandLineRun(cmdline,nil,true,nil,nvperfcallback)
             end
           end

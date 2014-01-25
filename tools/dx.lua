@@ -1,12 +1,17 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
-local fxcpath = ide.config.path.fxcbin or (os.getenv("DXSDK_DIR") and os.getenv("DXSDK_DIR").."/Utilities/bin/x86/")
+local binpath = ide.config.path.fxcbin or (os.getenv("DXSDK_DIR") and os.getenv("DXSDK_DIR").."/Utilities/bin/x86/")
 local dxprofile
 
-return fxcpath and {
+return binpath and {
   fninit = function(frame,menuBar)
     dxprofile = ide.config.dxprofile or "dx_5"
+    
+    if (wx.wxFileName(binpath):IsRelative()) then
+      local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
+      binpath = editorDir..binpath
+    end
 
     local myMenu = wx.wxMenu{
       { ID "dx.profile.dx_2x", "DX SM&2_x", "DirectX sm2_x profile", wx.wxITEM_CHECK },
@@ -103,7 +108,7 @@ return fxcpath and {
       local editor = GetEditor()
       local domain = data.domains[event:GetId()]
 
-      if (not (filename and fxcpath) or  not (domain == 7 or info.selword )) then
+      if (not (filename and binpath) or  not (domain == 7 or info.selword )) then
         DisplayOutput("Error: Dx Compile: Insufficient parameters (nofile / no selected entry function!\n")
         return
       end
@@ -135,7 +140,7 @@ return fxcpath and {
       cmdline = cmdline.."/nologo "
       cmdline = cmdline..' "'..fullname..'"'
 
-      cmdline = fxcpath.."/fxc.exe"..cmdline
+      cmdline = binpath.."/fxc.exe"..cmdline
 
       -- run compiler process
       CommandLineRun(cmdline,nil,true,nil,nil)
