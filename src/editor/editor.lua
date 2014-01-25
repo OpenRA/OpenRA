@@ -1133,6 +1133,14 @@ function CreateEditor()
   editor:Connect(wxstc.wxEVT_STC_ZOOM,
     function(event)
       editor:SetMarginWidth(margin.LINENUMBER, editor:TextWidth(DEFAULT_STYLE, "99999_"))
+      -- if Shift+Zoom is used, then zoom all editors, not just the current one
+      if wx.wxGetKeyState(wx.WXK_SHIFT) then
+        local zoom = editor:GetZoom()
+        for id, doc in pairs(openDocuments) do
+          -- check the editor zoom level to avoid recursion
+          if doc.editor:GetZoom() ~= zoom then doc.editor:SetZoom(zoom) end
+        end
+      end
       event:Skip()
     end)
 
