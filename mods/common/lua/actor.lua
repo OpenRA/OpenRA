@@ -178,3 +178,7 @@ end
 Actor.Trait = function(actor, className)
 	return Internal.Trait(actor, className)
 end
+
+Actor.ReturnToBase = function(actor, airfield)
+	actor:QueueActivity(OpenRA.New("ReturnToBase", {actor, airfield}))
+end
