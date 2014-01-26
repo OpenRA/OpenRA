@@ -296,9 +296,9 @@ namespace OpenRA.Mods.RA.Scripting
 		public void AttackMove(Actor actor, CPos location)
 		{
 			if (actor.HasTrait<AttackMove>())
-				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(location, 0)));
+				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(location, 2)));
 			else
-				actor.QueueActivity(new Move.Move(location, 0));
+				actor.QueueActivity(new Move.Move(location, 2));
 		}
 
 		[LuaGlobal]
