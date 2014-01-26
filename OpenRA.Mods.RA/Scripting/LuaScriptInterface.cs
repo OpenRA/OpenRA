@@ -324,5 +324,11 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			return mapActors[actorName];
 		}
+
+		[LuaGlobal]
+		public int TicksPerSecond()
+		{
+			return 1000 / Game.Timestep;
+		}
 	}
 }
