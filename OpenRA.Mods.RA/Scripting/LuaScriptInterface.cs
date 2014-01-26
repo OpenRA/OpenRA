@@ -330,5 +330,11 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			return 1000 / Game.Timestep;
 		}
+
+		[LuaGlobal]
+		public void Build(Player player, string unit)
+		{
+			MissionUtils.StartProduction(world, player, Rules.Info[unit].Traits.Get<BuildableInfo>().Queue, unit);
+		}
 	}
 }
