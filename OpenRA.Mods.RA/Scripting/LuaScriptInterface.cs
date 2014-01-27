@@ -336,5 +336,17 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			MissionUtils.StartProduction(world, player, Rules.Info[unit].Traits.Get<BuildableInfo>().Queue, unit);
 		}
+
+		[LuaGlobal]
+		public Actor[] FindActorsInBox(WPos topLeft, WPos bottomRight)
+		{
+			return world.FindActorsInBox(topLeft, bottomRight).ToArray();
+		}
+
+		[LuaGlobal]
+		public Actor[] FindActorsInCircle(WPos location, WRange radius)
+		{
+			return world.FindActorsInCircle(location, radius).ToArray();
+		}
 	}
 }
