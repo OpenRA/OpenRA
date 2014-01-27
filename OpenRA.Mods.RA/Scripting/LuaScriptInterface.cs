@@ -330,5 +330,17 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			return mapActors[actorName];
 		}
+
+		[LuaGlobal]
+		public Actor[] FindActorsInBox(WPos topLeft, WPos bottomRight)
+		{
+			return world.FindActorsInBox(topLeft, bottomRight).ToArray();
+		}
+
+		[LuaGlobal]
+		public Actor[] FindActorsInCircle(WPos location, WRange radius)
+		{
+			return world.FindActorsInCircle(location, radius).ToArray();
+		}
 	}
 }
