@@ -525,7 +525,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (!Game.modData.AvailableMaps.ContainsKey (MapUid))
 				if (Game.Settings.Game.AllowDownloading)
 				{
-					Game.DownloadMap (MapUid);
+					if (!Game.DownloadMap (MapUid))
+						throw new InvalidOperationException("Could not download map '{0}'".F(MapUid));
 					Game.Debug("A new map has been downloaded...");
 				}
 				else
