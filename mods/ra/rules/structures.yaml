@@ -31,6 +31,7 @@ MSLO:
 		BeginChargeSound: aprep1.aud
 		EndChargeSound: aready1.aud
 		SelectTargetSound: slcttgt1.aud
+		InsufficientPowerSound: nopowr1.aud
 		IncomingSound: alaunch1.aud
 		LaunchSound:
 		MissileWeapon: atomic
@@ -220,6 +221,7 @@ IRON:
 		LongDesc: Makes a group of units invulnerable\nfor 20 seconds.
 		Duration: 20
 		SelectTargetSound: slcttgt1.aud
+		InsufficientPowerSound: nopowr1.aud
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
 	SupportPowerChargeBar:
@@ -257,6 +259,7 @@ PDOX:
 		Description: Chronoshift
 		LongDesc: Teleports a group of units across\nthe map for 20 seconds.
 		SelectTargetSound: slcttgt1.aud
+		InsufficientPowerSound: nopowr1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
 		Duration: 20
