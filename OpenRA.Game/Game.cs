@@ -514,7 +514,7 @@ namespace OpenRA
 		{
 			var mod = Game.modData.Manifest.Mod;
 			var dirPath = new[] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
-			var tempFile = Path.Combine(dirPath, "tmp.oramap");
+			var tempFile = Path.Combine(dirPath, Path.GetRandomFileName());
 			try
 			{
 				if (!Directory.Exists(dirPath))
