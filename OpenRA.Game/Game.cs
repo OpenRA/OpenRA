@@ -514,7 +514,7 @@ namespace OpenRA
 		{
 			var mod = Game.modData.Manifest.Mod;
 			var dirPath = new[] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
-			var tempPath = Path.Combine(dirPath, "tmp");
+			var tempFile = Path.Combine(dirPath, "tmp.oramap");
 			try
 			{
 				if (!Directory.Exists(dirPath))
@@ -529,8 +529,8 @@ namespace OpenRA
 				Console.Write("Trying to download map to {0} ... ".F(mapPath));
 
 				WebClient webClient = new WebClient();
-				webClient.DownloadFile(url, tempPath);
-				File.Move(tempPath, mapPath);
+				webClient.DownloadFile(url, tempFile);
+				File.Move(tempFile, mapPath);
 				Game.modData.AvailableMaps.Add(mapHash, new Map(mapPath));
 				Console.WriteLine("done");
 
@@ -540,7 +540,7 @@ namespace OpenRA
 			{
 				Log.Write("debug", "Could not download map '{0}'", mapHash);
 				Log.Write("debug", e.ToString());
-				File.Delete(tempPath);
+				File.Delete(tempFile);
 				return false;
 			}
 		}
