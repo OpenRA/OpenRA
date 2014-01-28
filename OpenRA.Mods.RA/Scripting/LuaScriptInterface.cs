@@ -299,12 +299,12 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[LuaGlobal]
-		public void AttackMove(Actor actor, CPos location)
+		public void AttackMove(Actor actor, CPos location, double nearEnough)
 		{
 			if (actor.HasTrait<AttackMove>())
-				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(location, 0)));
+				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(location, (int)nearEnough)));
 			else
-				actor.QueueActivity(new Move.Move(location, 0));
+				actor.QueueActivity(new Move.Move(location, (int)nearEnough));
 		}
 
 		[LuaGlobal]

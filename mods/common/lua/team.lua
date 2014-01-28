@@ -18,7 +18,7 @@ Team.AddActorEventHandlers = function(team)
 			Team.InvokeHandlers(team.OnAnyKilled)
 			if Team.AllAreDead(team) then Team.InvokeHandlers(team.OnAllKilled) end
 		end)
-		
+
 		Actor.OnRemovedFromWorld(actor, function()
 			Team.InvokeHandlers(team.OnAnyRemovedFromWorld)
 			if not Team.AnyAreInWorld(team) then Team.InvokeHandlers(team.OnAllRemovedFromWorld) end
@@ -58,4 +58,12 @@ end
 
 Team.Do = function(team, func)
 	Utils.Do(team.Actors, func)
+end
+
+Team.Patrol = function(team, waypoints, wait, loop)
+	Team.Do(team, function(a) Actor.Patrol(a, waypoints, wait, loop) end)
+end
+
+Team.PatrolUntil = function(team, waypoints, wait, func)
+	Team.Do(team, function(a) Actor.PatrolUntil(a, waypoints, wait, func) end)
 end
