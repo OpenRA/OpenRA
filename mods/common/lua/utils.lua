@@ -75,3 +75,12 @@ end
 Utils.TableToArray = function(luaTable)
 	return Internal.TableToArray(luaTable)
 end
+
+Utils.Seconds = function(seconds)
+	local TicksPerSecond = 25
+	return seconds * TicksPerSecond
+end
+
+Utils.Minutes = function(minutes)
+	return Utils.Seconds(minutes * 60)
+end
