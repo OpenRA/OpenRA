@@ -5,6 +5,8 @@ MCV.Husk:
 		Icon: mcvicnh
 	RenderUnit:
 		Image: mcv
+	TransformOnCapture:
+		IntoActor: mcv
 
 HARV.Husk:
 	Inherits: ^Husk
@@ -13,6 +15,8 @@ HARV.Husk:
 		Icon: harvicnh
 	RenderUnit:
 		Image: harv
+	TransformOnCapture:
+		IntoActor: harv
 
 APC.Husk:
 	Inherits: ^Husk
@@ -21,6 +25,8 @@ APC.Husk:
 		Icon: apcicnh
 	RenderUnit:
 		Image: apc
+	TransformOnCapture:
+		IntoActor: apc
 
 FTNK.Husk:
 	Inherits: ^Husk
@@ -29,6 +35,8 @@ FTNK.Husk:
 		Icon: ftnkicnh
 	RenderUnit:
 		Image: ftnk
+	TransformOnCapture:
+		IntoActor: ftnk
 
 ARTY.Husk:
 	Inherits: ^Husk
@@ -37,6 +45,8 @@ ARTY.Husk:
 		Icon: artyicnh
 	RenderUnit:
 		Image: arty
+	TransformOnCapture:
+		IntoActor: arty
 
 BGGY.Husk:
 	Inherits: ^Husk
@@ -45,6 +55,8 @@ BGGY.Husk:
 		Icon: bggyicnh
 	RenderUnit:
 		Image: bggy
+	TransformOnCapture:
+		IntoActor: bggy
 
 BIKE.Husk:
 	Inherits: ^Husk
@@ -53,6 +65,8 @@ BIKE.Husk:
 		Icon: bikeicnh
 	RenderUnit:
 		Image: bike
+	TransformOnCapture:
+		IntoActor: bike
 
 JEEP.Husk:
 	Inherits: ^Husk
@@ -61,6 +75,8 @@ JEEP.Husk:
 		Icon: jeepicnh
 	RenderUnit:
 		Image: jeep
+	TransformOnCapture:
+		IntoActor: jeep
 
 LTNK.Husk:
 	Inherits: ^Husk
@@ -71,6 +87,8 @@ LTNK.Husk:
 		Image: ltnk
 	ThrowsParticle@turret:
 		Anim: turret
+	TransformOnCapture:
+		IntoActor: ltnk
 
 MTNK.Husk:
 	Inherits: ^Husk
@@ -81,6 +99,8 @@ MTNK.Husk:
 		Image: mtnk
 	ThrowsParticle@turret:
 		Anim: turret
+	TransformOnCapture:
+		IntoActor: mtnk
 
 HTNK.Husk:
 	Inherits: ^Husk
@@ -91,6 +111,8 @@ HTNK.Husk:
 		Image: htnk
 	ThrowsParticle@turret:
 		Anim: turret
+	TransformOnCapture:
+		IntoActor: htnk
 
 MSAM.Husk:
 	Inherits: ^Husk
@@ -101,6 +123,8 @@ MSAM.Husk:
 		Image: msam
 	ThrowsParticle@turret:
 		Anim: turret
+	TransformOnCapture:
+		IntoActor: msam
 
 MLRS.Husk:
 	Inherits: ^Husk
@@ -111,6 +135,8 @@ MLRS.Husk:
 		Image: mlrs
 	ThrowsParticle@turret:
 		Anim: turret
+	TransformOnCapture:
+		IntoActor: mlrs
 
 STNK.Husk:
 	Inherits: ^Husk
@@ -119,4 +145,5 @@ STNK.Husk:
 		Icon: stnkicnh
 	RenderUnit:
 		Image: stnk
-
+	TransformOnCapture:
+		IntoActor: stnk

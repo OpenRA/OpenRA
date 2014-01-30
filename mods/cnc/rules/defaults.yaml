@@ -515,6 +515,10 @@
 	Burns:
 		Interval: 2
 	TargetableUnit:
+	Capturable:
+		Type: husk
+		AllowAllies: yes
+		CaptureThreshold: 1.0
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	BelowUnits:
@@ -530,6 +534,7 @@
 		Moves: False
 		Explosion: HeliCrash
 	-BelowUnits:
+	-Capturable:
 	-TransformOnCapture:
 	-TargetableUnit:
 
