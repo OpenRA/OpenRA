@@ -28,6 +28,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			loadButton.OnClick = () => LoadMod(currentMod.Id, onSwitch);
 			loadButton.IsDisabled = () => currentMod.Id == Game.modData.Manifest.Mod.Id;
 
+			panel.Get<ButtonWidget>("BUTTON_INSTALL_OPTIONAL_CONTENT").OnClick = () => Ui.OpenWindow("INSTALL_OPTIONAL_CONTENT_PANEL");
+
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			currentMod = Game.modData.Manifest.Mod;
 

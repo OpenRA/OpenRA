@@ -1,0 +1,293 @@
+Background@INSTALL_OPTIONAL_CONTENT_PANEL:
+	Logic:TSOptionalInstallMenuLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:510
+	Height:160
+	Children:
+		Label@TITLE:
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Install Optional Content
+			Align:Center
+			Font:Bold
+		Label@DESC1:
+			X:0
+			Y:50
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Please select the disc from which you wish to install content.
+			Align:Center
+		Label@DESC2:
+			X:0
+			Y:70
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Optional content includes items such as movies and music.
+			Align:Center
+		Button@INSTALL_BUTTON:
+			X:250
+			Y:PARENT_BOTTOM - 45
+			Width:110
+			Height:25
+			Text:Install
+			Font:Bold
+		DropDownButton@CONTENT_DISC:
+			X:20
+			Y:PARENT_BOTTOM - 45
+			Width:210
+			Height:25
+			Font:Regular
+			Text:Select Disc...
+		Button@QUIT_BUTTON:
+			X:PARENT_RIGHT - 130
+			Y:PARENT_BOTTOM - 45
+			Width:110
+			Height:25
+			Text:Cancel
+			Font:Bold
+Background@INSTALL_FROMCD_GDI_PANEL:
+	Logic:TSOptionalInstallFromCDLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:500
+	Height:160
+	Children:
+		Label@TITLE:
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Installing from GDI Disc
+			Align:Center
+			Font:Bold
+		Container@INSTALLING:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				ProgressBar@PROGRESS_BAR:
+					X:50
+					Y:55
+					Width:PARENT_RIGHT - 100
+					Height:25
+				Label@STATUS_LABEL:
+					X:50
+					Y:80
+					Width:PARENT_RIGHT - 100
+					Height:25
+					Align:Left
+		Container@INSERT_DISK:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				Label@INFO:
+					Y:50
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Disk not found.
+					Align:Center
+				Label@INFO2:
+					Y:70
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Please insert the GDI Tiberian Sun install CD then click Retry.
+					Align:Center
+		Container@INSTALLED:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				Label@INFO:
+					Y:50
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Content files already present.
+					Align:Center
+				Label@INFO2:
+					Y:70
+					Width:PARENT_RIGHT
+					Height:25
+					Text:You do not need to install optional content from this disc again.
+					Align:Center
+		Button@RETRY_BUTTON:
+			X:PARENT_RIGHT - 280
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Retry
+			Font:Bold
+			Key:return
+		Button@BACK_BUTTON:
+			X:PARENT_RIGHT - 140
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Cancel
+			Font:Bold
+			Key:escape
+Background@INSTALL_FROMCD_NOD_PANEL:
+	Logic:TSOptionalInstallFromCDLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:500
+	Height:160
+	Children:
+		Label@TITLE:
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Installing from NOD Disc
+			Align:Center
+			Font:Bold
+		Container@INSTALLING:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				ProgressBar@PROGRESS_BAR:
+					X:50
+					Y:55
+					Width:PARENT_RIGHT - 100
+					Height:25
+				Label@STATUS_LABEL:
+					X:50
+					Y:80
+					Width:PARENT_RIGHT - 100
+					Height:25
+					Align:Left
+		Container@INSERT_DISK:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				Label@INFO:
+					Y:50
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Disk not found.
+					Align:Center
+				Label@INFO2:
+					Y:70
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Please insert the NOD Tiberian Sun install CD then click Retry.
+					Align:Center
+		Container@INSTALLED:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				Label@INFO:
+					Y:50
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Content files already present.
+					Align:Center
+				Label@INFO2:
+					Y:70
+					Width:PARENT_RIGHT
+					Height:25
+					Text:You do not need to install optional content from this disc again.
+					Align:Center
+		Button@RETRY_BUTTON:
+			X:PARENT_RIGHT - 280
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Retry
+			Font:Bold
+			Key:return
+		Button@BACK_BUTTON:
+			X:PARENT_RIGHT - 140
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Cancel
+			Font:Bold
+			Key:escape
+Background@INSTALL_FROMCD_FIRESTORM_PANEL:
+	Logic:TSOptionalInstallFromCDLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:500
+	Height:160
+	Children:
+		Label@TITLE:
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Installing from Firestrom Disc
+			Align:Center
+			Font:Bold
+		Container@INSTALLING:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				ProgressBar@PROGRESS_BAR:
+					X:50
+					Y:55
+					Width:PARENT_RIGHT - 100
+					Height:25
+				Label@STATUS_LABEL:
+					X:50
+					Y:80
+					Width:PARENT_RIGHT - 100
+					Height:25
+					Align:Left
+		Container@INSERT_DISK:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				Label@INFO:
+					Y:50
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Disk not found.
+					Align:Center
+				Label@INFO2:
+					Y:70
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Please insert the Firestrom Tiberian Sun install CD then click Retry.
+					Align:Center
+		Container@INSTALLED:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				Label@INFO:
+					Y:50
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Content files already present.
+					Align:Center
+				Label@INFO2:
+					Y:70
+					Width:PARENT_RIGHT
+					Height:25
+					Text:You do not need to install optional content from this disc again.
+					Align:Center
+		Button@RETRY_BUTTON:
+			X:PARENT_RIGHT - 280
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Retry
+			Font:Bold
+			Key:return
+		Button@BACK_BUTTON:
+			X:PARENT_RIGHT - 140
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Cancel
+			Font:Bold
+			Key:escape
