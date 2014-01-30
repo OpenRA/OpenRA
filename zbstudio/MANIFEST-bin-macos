@@ -7,7 +7,6 @@ bin/clibs52/socket/core.dylib
 bin/libwx.dylib
 bin/liblua.dylib
 bin/liblua52.dylib
-bin/libluadef.dylib
 bin/lua
 bin/lua.app/Contents/Info.plist
 bin/lua.app/Contents/MacOS/lua

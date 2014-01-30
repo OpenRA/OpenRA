@@ -3,7 +3,6 @@
 ZBS_PATH=${0%/*/*}
 if [ ! -d $ZBS_PATH ]; then ZBS_PATH=${PWD%/*}; fi
 export DYLD_LIBRARY_PATH="$ZBS_PATH/ZeroBraneStudio/bin"
-export DYLD_FORCE_FLAT_NAMESPACE=1
 if [[ ! -e $DYLD_LIBRARY_PATH/libedit.3.dylib && ! -e /usr/lib/libedit.3.dylib ]]
 then ln -s /usr/lib/libedit.2.dylib $DYLD_LIBRARY_PATH/libedit.3.dylib; fi
 (cd "$ZBS_PATH/ZeroBraneStudio"; bin/lua src/main.lua zbstudio "$@")
