@@ -150,6 +150,8 @@ COMBATH.Husk:
 	Inherits: ^COMBAT.Husk
 	RenderUnit:
 		Image: COMBATH
+	TransformOnCapture:
+		IntoActor: combath
 
 COMBATH.starport:
 	Inherits: COMBATH
@@ -202,6 +204,8 @@ DEVAST.Husk:
 		HP: 125
 	RenderUnit:
 		Image: DEVAST
+	TransformOnCapture:
+		IntoActor: devast
 
 SARDAUKAR:
 	Inherits: ^Infantry

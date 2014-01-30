@@ -92,9 +92,16 @@
 	ProximityCaptor:
 		Types: Husk
 	Tooltip:
-		Name: Destroyed Tank
+		Name: Wreck
 	BodyOrientation:
 	LuaScriptEvents:
+	TargetableUnit:
+	Capturable:
+		Type: husk
+		AllowAllies: yes
+		CaptureThreshold: 1.0
+	TransformOnCapture:
+		ForceHealthPercentage: 25
 
 ^TowerHusk:
 	Health:
@@ -119,6 +126,9 @@
 	Inherits: ^Husk
 	-Husk:
 	-Burns:
+	-Capturable:
+	-TransformOnCapture:
+	-TargetableUnit:
 	FallsToEarth:
 		Spins: False
 		Moves: True
