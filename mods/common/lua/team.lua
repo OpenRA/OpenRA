@@ -12,7 +12,7 @@ Team.New = function(actors)
 end
 
 Team.AddActorEventHandlers = function(team)
-	for i, actor in ipairs(team.Actors) do
+	Team.Do(team, function(actor)
 
 		Actor.OnKilled(actor, function()
 			Team.InvokeHandlers(team.OnAnyKilled)
@@ -23,13 +23,11 @@ Team.AddActorEventHandlers = function(team)
 			Team.InvokeHandlers(team.OnAnyRemovedFromWorld)
 			if not Team.AnyAreInWorld(team) then Team.InvokeHandlers(team.OnAllRemovedFromWorld) end
 		end)
-	end
+	end)
 end
 
 Team.InvokeHandlers = function(event)
-	for i, handler in ipairs(event) do
-		handler()
-	end
+	Utils.Do(event, function(handler) handler() end)
 end
 
 Team.AllAreDead = function(team)
