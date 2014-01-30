@@ -430,6 +430,13 @@
 	BodyOrientation:
 	Chronoshiftable:
 	LuaScriptEvents:
+	TargetableUnit:
+	Capturable:
+		Type: husk
+		AllowAllies: yes
+		CaptureThreshold: 1.0
+	TransformOnCapture:
+		ForceHealthPercentage: 25
 
 ^HelicopterHusk:
 	Inherits: ^Husk
@@ -439,6 +446,9 @@
 		Spins: True
 		Moves: False
 	-BelowUnits:
+	-TargetableUnit:
+	-Capturable:
+	-TransformOnCapture:
 
 ^PlaneHusk:
 	Inherits: ^Husk
@@ -448,6 +458,9 @@
 		Spins: False
 		Moves: True
 	-BelowUnits:
+	-TargetableUnit:
+	-Capturable:
+	-TransformOnCapture:
 
 ^Bridge:
 	Tooltip:
