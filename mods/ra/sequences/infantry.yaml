@@ -327,6 +327,7 @@ mech:
 	heal:
 		Start: 56
 		Length: 58
+		Tick: 120
 	standup:
 		Start: 114
 		Length: 2
