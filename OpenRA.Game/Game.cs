@@ -512,10 +512,11 @@ namespace OpenRA
 
 		public static bool DownloadMap(string mapHash)
 		{
+			var mod = Game.modData.Manifest.Mod;
+			var dirPath = new[] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
+			var tempFile = Path.Combine(dirPath, Path.GetRandomFileName());
 			try
 			{
-				var mod = Game.modData.Manifest.Mod;
-				var dirPath = new[] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
 				if (!Directory.Exists(dirPath))
 					Directory.CreateDirectory(dirPath);
 				var url = Game.Settings.Game.MapRepository + mapHash;
@@ -528,7 +529,8 @@ namespace OpenRA
 				Console.Write("Trying to download map to {0} ... ".F(mapPath));
 
 				WebClient webClient = new WebClient();
-				webClient.DownloadFile(url, mapPath);
+				webClient.DownloadFile(url, tempFile);
+				File.Move(tempFile, mapPath);
 				Game.modData.AvailableMaps.Add(mapHash, new Map(mapPath));
 				Console.WriteLine("done");
 
@@ -538,6 +540,7 @@ namespace OpenRA
 			{
 				Log.Write("debug", "Could not download map '{0}'", mapHash);
 				Log.Write("debug", e.ToString());
+				File.Delete(tempFile);
 				return false;
 			}
 		}
