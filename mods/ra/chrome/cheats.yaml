@@ -81,7 +81,7 @@ Background@CHEATS_PANEL:
 			Width:PARENT_RIGHT - 30
 			Height:20
 			Text:Show A* Cost
-		Checkbox@SHOW_MUZZLES:
+		Checkbox@SHOW_COMBATOVERLAY:
 			X:30
 			Y:350
 			Height:20

@@ -13,11 +13,9 @@ URL: http://open-ra.org
 Group: Amusements/Games
 Packager: Matthew Bowra-Dean <matthew@ijw.co.nz>
 Requires: mono-core mono-devel SDL openal
-%if 0%{?fedora}
-Requires: freetype
-%else
-Requires: freetype2
-%endif
+# TODO: make both Fedora and the rest of the RPM world happy
+#Requires: freetype
+#Requires: freetype2
 Prefix: /usr
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /tmp/openra

@@ -439,3 +439,59 @@ sardaukar:
 	icon: DATA
 		Start: 4015
 		Offset: -30,-24
+
+grenadier: # 2502 - 2749 in 1.06 DATA.R8
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	idle:
+		Start: 203
+		Length: 16
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+		Tick: 120
+	shoot:
+		Start: 56
+		Length: 6
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 176
+		Length: 20
+	die2:
+		Start: 176
+		Length: 20
+	die3:
+		Start: 176
+		Length: 20
+	die4:
+		Start: 176
+		Length: 20
+	die5:
+		Start: 176
+		Length: 20
+	die-crushed:
+		Start: 195
+		Length: 8
+		Tick: 1600
+	prone-stand:
+		Start: 104
+		Length: 4
+		Facings: 8
+	prone-run:
+		Start: 104
+		Length: 4
+		Facings: 8
+		Tick: 120
+	prone-shoot:
+		Start: 136
+		Length: 5
+		Facings: 8
+		Tick: 120
+	icon: grenadiericon
+		Start: 0 # 4281 in 1.06 DATA.R8

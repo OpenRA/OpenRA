@@ -85,8 +85,6 @@ namespace OpenRA.Editor
 			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.redAlertMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.miniMapExport = new System.Windows.Forms.ToolStripMenuItem();
 			this.miniMapToPng = new System.Windows.Forms.ToolStripMenuItem();
 			this.fullMapRenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -582,7 +580,6 @@ namespace OpenRA.Editor
 			this.saveToolStripMenuItem,
 			this.saveAsToolStripMenuItem,
 			this.toolStripSeparator2,
-			this.toolStripMenuItem1,
 			this.miniMapExport,
 			this.toolStripSeparator3,
 			this.exitToolStripMenuItem});
@@ -638,25 +635,6 @@ namespace OpenRA.Editor
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(120, 6);
-			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.redAlertMapToolStripMenuItem});
-			this.toolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem1.Image")));
-			this.toolStripMenuItem1.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
-			this.toolStripMenuItem1.Text = "&Import";
-			// 
-			// cCRedAlertMapToolStripMenuItem
-			// 
-			this.redAlertMapToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cCRedAlertMapToolStripMenuItem.Image")));
-			this.redAlertMapToolStripMenuItem.Name = "cCRedAlertMapToolStripMenuItem";
-			this.redAlertMapToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-			this.redAlertMapToolStripMenuItem.Text = "&Legacy Map Format...";
-			this.redAlertMapToolStripMenuItem.ToolTipText = "Import an original C&C / Red Alert and convert it to the .oramap format.";
-			this.redAlertMapToolStripMenuItem.Click += new System.EventHandler(this.ImportLegacyMapClicked);
 			// 
 			// mnuExport
 			// 
@@ -1097,8 +1075,6 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem redAlertMapToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem miniMapExport;
 		private System.Windows.Forms.ToolStripMenuItem miniMapToPng;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;

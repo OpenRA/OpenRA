@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA
 					self.CancelActivity();
 
 				self.SetTargetLine(target, Color.Red);
-				self.QueueActivity(new MoveAdjacentTo(target));
+				self.QueueActivity(new MoveAdjacentTo(self, target));
 				self.QueueActivity(new CallFunc(() => Explode(self)));
 			}
 

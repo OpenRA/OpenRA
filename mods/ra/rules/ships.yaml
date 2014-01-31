@@ -17,7 +17,7 @@ SS:
 		Type: Light
 	Mobile:
 		ROT: 4
-		Speed: 5
+		Speed: 71
 	RevealsShroud:
 		Range: 6
 	-TargetableUnit:
@@ -64,7 +64,7 @@ MSUB:
 		Type: Light
 	Mobile:
 		ROT: 3
-		Speed: 3
+		Speed: 42
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
@@ -111,7 +111,7 @@ DD:
 		Type: Heavy
 	Mobile:
 		ROT: 7
-		Speed: 6
+		Speed: 85
 	RevealsShroud:
 		Range: 6
 	Turreted:
@@ -157,7 +157,7 @@ CA:
 		Type: Heavy
 	Mobile:
 		ROT: 3
-		Speed: 3
+		Speed: 42
 	RevealsShroud:
 		Range: 7
 	Turreted@PRIMARY:
@@ -215,7 +215,7 @@ LST:
 		Type: Heavy
 	Mobile:
 		ROT: 10
-		Speed: 8
+		Speed: 113
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
@@ -226,7 +226,6 @@ LST:
 	IronCurtainable:
 	RepairableNear:
 	AttackMove:
-		JustMove: true
 
 PT:
 	Inherits: ^Ship
@@ -247,7 +246,7 @@ PT:
 		Type: Heavy
 	Mobile:
 		ROT: 7
-		Speed: 9
+		Speed: 128
 	RevealsShroud:
 		Range: 7
 	Turreted:
@@ -269,3 +268,4 @@ PT:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
+

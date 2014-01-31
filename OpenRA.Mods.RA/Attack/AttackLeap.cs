@@ -42,9 +42,7 @@ namespace OpenRA.Mods.RA
 			if (a == null)
 				return;
 
-			// TODO: Define weapon ranges as WRange
-			var range = new WRange((int)(1024*a.Weapon.Range));
-			if (!target.IsInRange(self.CenterPosition, range))
+			if (!target.IsInRange(self.CenterPosition, a.Weapon.Range))
 				return;
 
 			self.CancelActivity();

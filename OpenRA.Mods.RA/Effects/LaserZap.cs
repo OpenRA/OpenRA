@@ -23,8 +23,11 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly int BeamWidth = 2;
 		public readonly int BeamDuration = 10;
 		public readonly bool UsePlayerColor = false;
+		[Desc("Laser color in (A,)R,G,B.")]
 		public readonly Color Color = Color.Red;
+		[Desc("Impact animation. Requires a regular animation with idle: sequence instead of explosion special case.")]
 		public readonly string HitAnim = null;
+		public readonly string HitAnimPalette = "effect";
 
 		public IEffect Create(ProjectileArgs args)
 		{
@@ -86,7 +89,7 @@ namespace OpenRA.Mods.RA.Effects
 			}
 
 			if (hitanim != null)
-				foreach (var r in hitanim.Render(target, wr.Palette("effect")))
+				foreach (var r in hitanim.Render(target, wr.Palette(info.HitAnimPalette)))
 					yield return r;
 		}
 	}

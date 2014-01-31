@@ -190,25 +190,25 @@ namespace OpenRA.Graphics
 				selectable.DrawRollover(this);
 		}
 
-		public void DrawRangeCircle(Color c, float2 location, float range)
+		public void DrawRangeCircle(WPos pos, WRange range, Color c)
 		{
+			var offset = new WVec(range.Range, 0, 0);
 			for (var i = 0; i < 32; i++)
 			{
-				var start = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * i) / 16);
-				var end = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * (i + 0.7)) / 16);
-
-				Game.Renderer.WorldLineRenderer.DrawLine(start, end, c, c);
+				var pa = pos + offset.Rotate(WRot.FromFacing(8 * i));
+				var pb = pos + offset.Rotate(WRot.FromFacing(8 * i + 6));
+				Game.Renderer.WorldLineRenderer.DrawLine(ScreenPosition(pa), ScreenPosition(pb), c, c);
 			}
 		}
 
-		public void DrawRangeCircleWithContrast(Color fg, float2 location, float range, Color bg)
+		public void DrawRangeCircleWithContrast(WPos pos, WRange range, Color fg, Color bg)
 		{
 			var wlr = Game.Renderer.WorldLineRenderer;
 			var oldWidth = wlr.LineWidth;
 			wlr.LineWidth = 3;
-			DrawRangeCircle(bg, location, range);
+			DrawRangeCircle(pos, range, bg);
 			wlr.LineWidth = 1;
-			DrawRangeCircle(fg, location, range);
+			DrawRangeCircle(pos, range, fg);
 			wlr.LineWidth = oldWidth;
 		}
 
@@ -235,8 +235,8 @@ namespace OpenRA.Graphics
 		// Conversion between world and screen coordinates
 		public float2 ScreenPosition(WPos pos)
 		{
-			var c = Game.CellSize / 1024f;
-			return new float2(c * pos.X, c * (pos.Y - pos.Z));
+			var ts = Game.modData.Manifest.TileSize;
+			return new float2(ts.Width * pos.X / 1024f, ts.Height * (pos.Y - pos.Z) / 1024f);
 		}
 
 		public int2 ScreenPxPosition(WPos pos)
@@ -249,8 +249,8 @@ namespace OpenRA.Graphics
 		// For scaling vectors to pixel sizes in the voxel renderer
 		public float[] ScreenVector(WVec vec)
 		{
-			var c = Game.CellSize / 1024f;
-			return new float[] { c * vec.X, c * vec.Y, c * vec.Z, 1 };
+			var ts = Game.modData.Manifest.TileSize;
+			return new float[] { ts.Width * vec.X / 1024f, ts.Height * vec.Y / 1024f, ts.Height * vec.Z / 1024f, 1 };
 		}
 
 		public int2 ScreenPxOffset(WVec vec)
@@ -262,12 +262,14 @@ namespace OpenRA.Graphics
 
 		public float ScreenZPosition(WPos pos, int offset)
 		{
-			return (pos.Y + pos.Z + offset) * Game.CellSize / 1024f;
+			var ts = Game.modData.Manifest.TileSize;
+			return (pos.Y + pos.Z + offset) * ts.Height / 1024f;
 		}
 
 		public WPos Position(int2 screenPx)
 		{
-			return new WPos(1024 * screenPx.X / Game.CellSize, 1024 * screenPx.Y / Game.CellSize, 0);
+			var ts = Game.modData.Manifest.TileSize;
+			return new WPos(1024 * screenPx.X / ts.Width, 1024 * screenPx.Y / ts.Height, 0);
 		}
 	}
 }

@@ -291,7 +291,7 @@ Smudges:
 
 Rules:
 	World:
-		CrateDrop:
+		CrateSpawner:
 			Maximum: 3
 			SpawnInterval: 5
 		-SpawnMPUnits:
@@ -344,7 +344,7 @@ Rules:
 		Health:
 			HP: 120
 		Mobile:
-			Speed: 7
+			Speed: 99
 
 Sequences:
 
@@ -353,9 +353,9 @@ VoxelSequences:
 Weapons:
 	PortaTesla:
 		ROF: 20
-		Range: 10
+		Range: 10c0
 		Warhead:
-			Spread: 1
+			Spread: 42
 			InfDeath: 5
 			Damage: 80
 

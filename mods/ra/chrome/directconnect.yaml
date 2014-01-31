@@ -1,4 +1,4 @@
-Background@DIRECTCONNECT_BG:
+Background@DIRECTCONNECT_PANEL:
 	Logic:DirectConnectLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -10,7 +10,7 @@ Background@DIRECTCONNECT_BG:
 			Y:20
 			Width:400
 			Height:25
-			Text:Direct Connect
+			Text:Connect to Server
 			Align:Center
 			Font:Bold
 		Label@ADDRESS_LABEL:
@@ -47,4 +47,4 @@ Background@DIRECTCONNECT_BG:
 			Height:25
 			Text:Cancel
 			Font:Bold
-			Key:escape 
+			Key:escape

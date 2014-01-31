@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new BridgeHut(init); }
 	}
 
-	class BridgeHut
+	class BridgeHut : IDemolishable
 	{
 		public Bridge bridge;
 
@@ -29,6 +29,16 @@ namespace OpenRA.Mods.RA
 		public void Repair(Actor repairer)
 		{
 			bridge.Repair(repairer, true, true);
+		}
+
+		public void Demolish(Actor self, Actor saboteur)
+		{
+			bridge.Demolish(saboteur, true, true);
+		}
+
+		public bool IsValidTarget(Actor self, Actor saboteur)
+		{
+			return BridgeDamageState != DamageState.Dead;
 		}
 
 		public DamageState BridgeDamageState { get { return bridge.AggregateDamageState(); } }

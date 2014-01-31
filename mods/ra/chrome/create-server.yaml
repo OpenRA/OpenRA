@@ -1,4 +1,4 @@
-Background@CREATESERVER_BG:
+Background@CREATESERVER_PANEL:
 	Logic:ServerCreationLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2

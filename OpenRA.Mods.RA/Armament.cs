@@ -107,13 +107,10 @@ namespace OpenRA.Mods.RA
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return;
 
-			// TODO: Define weapon ranges as WRange
-			var range = new WRange((int)(1024*Weapon.Range));
-			var minRange = new WRange((int)(1024*Weapon.MinRange));
-			if (!target.IsInRange(self.CenterPosition, range))
+			if (!target.IsInRange(self.CenterPosition, Weapon.Range))
 				return;
 
-			if (minRange != WRange.Zero && target.IsInRange(self.CenterPosition, minRange))
+			if (Weapon.MinRange != WRange.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
 				return;
 
 			if (!Weapon.IsValidAgainst(target, self.World))

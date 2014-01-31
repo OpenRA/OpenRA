@@ -74,11 +74,8 @@
   <ItemGroup>
     <Compile Include="Activities\HarvesterDockSequence.cs" />
     <Compile Include="CncLoadScreen.cs" />
-    <Compile Include="CncMenuPaletteEffect.cs" />
     <Compile Include="Effects\IonCannon.cs" />
     <Compile Include="IonCannonPower.cs" />
-    <Compile Include="Missions\Gdi01Script.cs" />
-    <Compile Include="Missions\Nod01Script.cs" />
     <Compile Include="PoisonedByTiberium.cs" />
     <Compile Include="ProductionAirdrop.cs" />
     <Compile Include="ProductionQueueFromSelection.cs" />
@@ -92,7 +89,7 @@
     <Compile Include="Widgets\Logic\CncIngameChromeLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\CncInstallFromCDLogic.cs" />
-    <Compile Include="Widgets\Logic\CncMenuLogic.cs" />
+    <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
     <Compile Include="Widgets\ProductionPaletteWidget.cs" />

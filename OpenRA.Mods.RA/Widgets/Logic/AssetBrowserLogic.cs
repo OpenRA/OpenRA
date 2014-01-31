@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		PaletteFromFile currentPalette;
 
-		static readonly string[] AllowedExtensions = { ".shp", ".r8", ".tem", ".des", ".sno", ".int" };
+		static readonly string[] AllowedExtensions = { ".shp", ".r8", "tmp", ".tem", ".des", ".sno", ".int" };
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (assetSource == null)
 				return;
 
-			var files = assetSource.AllFileNames();
+			var files = assetSource.AllFileNames().OrderBy(s => s);
 			foreach (var file in files)
 			{
 				if (AllowedExtensions.Any(ext => file.EndsWith(ext, true, CultureInfo.InvariantCulture)))

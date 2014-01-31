@@ -116,7 +116,6 @@ namespace OpenRA.Mods.RA
 
 			if (self.IsInWorld)
 			{
-				self.World.ActorMap.AddInfluence(self, this);
 				self.World.ActorMap.UpdatePosition(self, this);
 				self.World.ScreenMap.Update(self);
 			}
@@ -132,6 +131,10 @@ namespace OpenRA.Mods.RA
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.AddPosition(self, this);
 			self.World.ScreenMap.Add(self);
+
+			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();
+			if (cs != null)
+				cs.IncrementCrates();
 		}
 
 		public void RemovedFromWorld(Actor self)
@@ -139,6 +142,10 @@ namespace OpenRA.Mods.RA
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
 			self.World.ScreenMap.Remove(self);
+
+			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();
+			if (cs != null)
+				cs.DecrementCrates();
 		}
 	}
 }

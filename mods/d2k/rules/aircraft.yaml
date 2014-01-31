@@ -7,14 +7,14 @@
 		Description: Fast drop ship.\n  Unarmed
 	Health:
 		HP: 250
-	Armor: 
+	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 12
 	Helicopter:
 		InitialFacing: 0
 		ROT: 4
-		Speed: 30
+		Speed: 210
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
@@ -40,7 +40,7 @@ FRIGATE:
 		Description: Supply spacecraft
 	Plane:
 		ROT: 5
-		Speed: 50
+		Speed: 350
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	Health:
@@ -83,7 +83,7 @@ ORNI:
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 6
-		Speed: 40
+		Speed: 280
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
@@ -106,7 +106,7 @@ ORNI.bomber:
 		Range: 10
 	Plane:
 		ROT: 5
-		Speed: 50
+		Speed: 350
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	LimitedAmmo:
@@ -135,7 +135,7 @@ CARRYALL.infantry:
 		Range: 12
 	Plane:
 		ROT: 4
-		Speed: 40
+		Speed: 280
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
@@ -167,7 +167,7 @@ CARRYALL.Husk:
 		Name: Carryall
 	Helicopter:
 		ROT: 4
-		Speed: 30
+		Speed: 210
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
@@ -180,7 +180,7 @@ ORNI.Husk:
 		Name: Ornithopter
 	Helicopter:
 		ROT: 6
-		Speed: 40
+		Speed: 280
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
@@ -193,7 +193,7 @@ ORNI.bomber.Husk:
 		Name: Ornithopter
 	Plane:
 		ROT: 5
-		Speed: 50
+		Speed: 350
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
@@ -206,7 +206,7 @@ CARRYALL.infantry.Husk:
 		Name: Carryall
 	Plane:
 		ROT: 4
-		Speed: 40
+		Speed: 280
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
@@ -219,9 +219,10 @@ BADR.Husk:
 		Name: Crate Carryall
 	Plane:
 		ROT: 4
-		Speed: 40
+		Speed: 280
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 		Image: carryall
 	WithShadow:
+

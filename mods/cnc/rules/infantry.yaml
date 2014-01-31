@@ -11,7 +11,7 @@ E1:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 50
 	Armament:
@@ -37,7 +37,7 @@ E2:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
-		Speed: 5
+		Speed: 71
 	Health:
 		HP: 50
 	Armament:
@@ -54,7 +54,7 @@ E2:
 		Chance: 50
 	DetectCloaked:
 		Range: 2
-	
+
 E3:
 	Inherits: ^Infantry
 	Valued:
@@ -68,7 +68,7 @@ E3:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
-		Speed: 3
+		Speed: 42
 	Health:
 		HP: 45
 	Armament:
@@ -96,7 +96,7 @@ E4:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
-		Speed: 5
+		Speed: 71
 	Health:
 		HP: 90
 	Armament:
@@ -126,7 +126,7 @@ E5:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
-		Speed: 4
+		Speed: 56
 		TerrainSpeeds:
 			Tiberium: 80
 				PathingCost: 80
@@ -161,7 +161,7 @@ E6:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 25
 	Passenger:
@@ -172,7 +172,6 @@ E6:
 		CaptureTypes: building, husk
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand, stand2
@@ -193,7 +192,7 @@ RMBO:
 		Bounds: 12,17,0,-6
 		Voice: CommandoVoice
 	Mobile:
-		Speed: 5
+		Speed: 71
 	Health:
 		HP: 200
 	Passenger:
@@ -261,3 +260,4 @@ RAPT:
 		Description: Bipedal with enlarged sickle-shaped claw on each hindfoot
 	Armament:
 		Weapon: claw
+

@@ -2,6 +2,8 @@ Selectable: True
 
 MapFormat: 6
 
+RequiresMod: ra
+
 Title: Allies 02: Five to one
 
 Description: Five to one
@@ -9,6 +11,14 @@ Description: Five to one
 Author: Westwood Studios
 
 Tileset: SNOW
+
+MapSize: 128,128
+
+Bounds: 43,44,50,42
+
+UseAsShellmap: False
+
+Type: Campaign
 
 Options:
 	Crates: False
@@ -18,17 +28,6 @@ Options:
 	FragileAlliances: False
 	StartingCash: 5700
 	ConfigurableStartingUnits: False
-	Difficulties:
-
-MapSize: 128,128
-
-RequiresMod: ra
-
-Bounds: 43,44,50,42
-
-UseAsShellmap: False
-
-Type: Campaign
 
 Players:
 	PlayerReference@USSR:
@@ -871,7 +870,7 @@ Rules:
 	Player:
 		-ConquestVictoryConditions:
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScriptInterface:
@@ -943,11 +942,12 @@ VoxelSequences:
 
 Weapons:
 	M60mg:
-		Range: 5
+		Range: 5c0
 		ROF: 20
 		Burst: 1
 		Warhead:
 			Damage: 20
+
 Voices:
 
 Notifications:

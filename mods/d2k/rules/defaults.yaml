@@ -12,11 +12,11 @@
 			Dune: 60
 		ROT: 5
 	SelectionDecorations:
-	Selectable: 
+	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
-	Passenger: 
+	Passenger:
 		CargoType: Vehicle
 	AttackMove:
 	HiddenUnderFog:
@@ -25,7 +25,7 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
-		Types:Vehicle
+		Types: Vehicle
 	GivesBounty:
 	Repairable:
 		RepairBuildings: repaira,repairo,repairh
@@ -52,11 +52,11 @@
 			Dune: 70
 		ROT: 5
 	SelectionDecorations:
-	Selectable: 
+	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
-	Passenger: 
+	Passenger:
 		CargoType: Vehicle
 	AttackMove:
 	HiddenUnderFog:
@@ -65,7 +65,7 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
-		Types:Tank
+		Types: Tank
 	GivesBounty:
 	Repairable:
 		RepairBuildings: repaira,repairo,repairh
@@ -81,7 +81,7 @@
 ^Husk:
 	Health:
 		HP: 75
-	Armor: 
+	Armor:
 		Type: Light
 	Husk:
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceBlobs, Dune
@@ -90,7 +90,7 @@
 	Burns:
 		Interval: 4
 	ProximityCaptor:
-		Types:Husk
+		Types: Husk
 	Tooltip:
 		Name: Destroyed Tank
 	BodyOrientation:
@@ -99,7 +99,7 @@
 ^TowerHusk:
 	Health:
 		HP: 125
-	Armor: 
+	Armor:
 		Type: Concrete
 	Husk:
 	AppearsOnRadar:
@@ -111,7 +111,7 @@
 	Tooltip:
 		Name: Destroyed Tower
 	ProximityCaptor:
-		Types:Husk
+		Types: Husk
 	BodyOrientation:
 	LuaScriptEvents:
 
@@ -127,7 +127,7 @@
 ^Infantry:
 	AppearsOnRadar:
 	Health:
-		Radius: 3
+		Radius: 96
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -161,7 +161,7 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
-		Types:Infantry
+		Types: Infantry
 	GivesBounty:
 	CrushableInfantry:
 		CrushSound: CRUSH1.WAV
@@ -191,7 +191,7 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
-		Types:Plane
+		Types: Plane
 	GivesBounty:
 	CombatDebugOverlay:
 	BodyOrientation:
@@ -210,7 +210,6 @@
 	TargetableBuilding:
 		TargetTypes: Ground, C4
 	Building:
-		RequiresBaseProvider: true
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Rock, Concrete
@@ -238,7 +237,7 @@
 		RelativeToTopLeft: yes
 	ShakeOnDeath:
 	ProximityCaptor:
-		Types:Building
+		Types: Building
 	Sellable:
 	GivesBounty:
 	CombatDebugOverlay:
@@ -249,3 +248,5 @@
 	WithCrumbleOverlay:
 	Huntable:
 	LuaScriptEvents:
+	Demolishable:
+

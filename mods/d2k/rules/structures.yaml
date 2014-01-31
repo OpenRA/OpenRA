@@ -30,9 +30,6 @@
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Conyard
-	BaseProvider:
-		Cooldown: 25
-		Range: 30
 
 ^POWER:
 	Inherits: ^Building
@@ -92,10 +89,10 @@
 	RallyPoint:
 		RallyPoint: 1,3
 	Exit@1:
-		SpawnOffset: 11,18
+		SpawnOffset: 352,576,0
 		ExitCell: 0,2
 	Exit@2:
-		SpawnOffset: 16,15
+		SpawnOffset: 512,480,0
 		ExitCell: 1,2
 	Production:
 		Produces: Infantry
@@ -211,7 +208,7 @@
 	RallyPoint:
 		RallyPoint: 2,2
 	Exit@1:
-		SpawnOffset: 17,-7
+		SpawnOffset: 544,-224,0
 		ExitCell: 2,1
 	Production:
 		Produces: Vehicle
@@ -251,7 +248,7 @@
 	RallyPoint:
 		RallyPoint: 0,3
 	Exit@1:
-		SpawnOffset: 8,6
+		SpawnOffset: 256,192,0
 		ExitCell: 0,2
 	Production:
 		Produces: Armor
@@ -326,10 +323,10 @@
 	RallyPoint:
 		RallyPoint: 1,3
 	Exit@1:
-		SpawnOffset: 0,-15
+		SpawnOffset: 0,-480,0
 		ExitCell: 2,2
 	Exit@2:
-		SpawnOffset: 0,-15
+		SpawnOffset: 0,-480,0
 		ExitCell: 0,2
 	ProductionAirdrop:
 		Produces: Starport
@@ -371,9 +368,6 @@
 		CrushClasses: Concretewall
 	LineBuild:
 		Range: 8
-#	SelectionDecorations:
-#	Selectable:
-#		Priority: 1
 	TargetableBuilding:
 		TargetTypes: Ground, C4
 	RenderBuildingWall:
@@ -383,10 +377,11 @@
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
 	ProximityCaptor:
-		Types:Wall
+		Types: Wall
 	Sellable:
 	Guardable:
 	BodyOrientation:
+	Demolishable:
 
 WALL:
 	Inherits: ^WALL
@@ -463,7 +458,7 @@ WALL:
 	-GivesBuildableArea:
 	Health:
 		HP: 400
-	Armor: 
+	Armor:
 		Type: Concrete
 	RevealsShroud:
 		Range: 10
@@ -665,7 +660,6 @@ HEAVYC:
 	RenderBuildingWarFactory:
 		Image: HEAVYC
 
-# custom prerequisites:
 CONYARD:
 	Tooltip:
 		Name: Construction Yard
@@ -689,3 +683,4 @@ REPAIR:
 RESEARCH:
 	Tooltip:
 		Name: Ix Lab
+

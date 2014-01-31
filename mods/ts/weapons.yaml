@@ -1,11 +1,11 @@
 Minigun:
 	ROF: 21
-	Range: 4
+	Range: 4c0
 	Report: INFGUN2.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 25%
 			Light: 30%
@@ -17,16 +17,16 @@ Minigun:
 
 Grenade:
 	ROF: 60
-	Range: 4.5
+	Range: 4c512
 	Projectile: Bullet
-		Speed: 5
+		Speed: 85
 		High: yes
 		Shadow: yes
-		Angle: 0.1
-		Inaccuracy: 13
+		Angle: 62
+		Inaccuracy: 554
 		Image: DISCUS
 	Warhead:
-		Spread: 6
+		Spread: 256
 		Versus:
 			None: 50%
 			Wood: 100%
@@ -39,20 +39,20 @@ Grenade:
 
 Bazooka:
 	ROF: 60
-	Range: 6
+	Range: 6c0
 	Report: RKETINF1.AUD
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 25
+		Speed: 213
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 10%
 			Wood: 75%
@@ -65,20 +65,20 @@ Bazooka:
 
 MultiCluster:
 	ROF: 80
-	Range: 6
+	Range: 6c0
 	Report: MISL1.AUD
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 20
+		Speed: 170
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 10%
 			Wood: 75%
@@ -91,12 +91,12 @@ MultiCluster:
 
 Heal:
 	ROF: 80
-	Range: 2.83
+	Range: 2c849
 	Report: HEALER1.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 5
+		Spread: 213
 		Versus:
 			Wood: 0%
 			Light: 0%
@@ -107,13 +107,13 @@ Heal:
 
 Sniper:
 	ROF: 60
-	Range: 6.75
+	Range: 6c768
 	Report: SILENCER.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
 		Damage: 150
-		Spread: 1
+		Spread: 42
 		Versus:
 			None: 100%
 			Wood: 5%
@@ -123,12 +123,12 @@ Sniper:
 
 M1Carbine:
 	ROF: 20
-	Range: 4
+	Range: 4c0
 	Report: INFGUN3.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 100%
 			Wood: 25%
@@ -140,13 +140,13 @@ M1Carbine:
 
 LtRail:
 	ROF: 60
-	Range: 6
+	Range: 6c0
 	Report: BIGGGUN1.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
 		Damage: 150
-		Spread: 1
+		Spread: 42
 		Versus:
 			None: 100%
 			Wood: 5%
@@ -157,12 +157,12 @@ LtRail:
 Vulcan3:
 	ROF: 30
 	Burst: 3
-	Range: 4
+	Range: 4c0
 	Report: CYGUN1.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 25%
 			Light: 30%
@@ -175,12 +175,12 @@ Vulcan3:
 Vulcan2:
 	ROF: 50
 	Burst: 3
-	Range: 6
+	Range: 6c0
 	Report: TSGUN4.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 100%
 			Wood: 60%
@@ -193,10 +193,10 @@ Vulcan2:
 
 Vulcan:
 	ROF: 60
-	Range: 4
+	Range: 4c0
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
 		Versus:
 			Wood: 25%
@@ -210,13 +210,13 @@ Vulcan:
 FiendShard:
 	ROF: 30
 	Burst: 3
-	Range: 5
+	Range: 5c0
 	Report: FIEND2.AUD
 	Projectile: Missile
-		Speed: 25
+		Speed: 213
 		Image: CRYSTAL4
 		Shadow: yes
-		Angle: 0.15
+		Angle: 88
 	Warhead:
 		Versus:
 			Wood: 25%
@@ -229,10 +229,10 @@ FiendShard:
 JumpCannon:
 	ROF: 40
 	Burst: 2
-	Range: 5
+	Range: 5c0
 	Report: JUMPJET1.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
 		Versus:
 			Wood: 25%
@@ -246,20 +246,20 @@ JumpCannon:
 HoverMissile:
 	ROF: 68
 	Burst: 2
-	Range: 8
+	Range: 8c0
 	Report: HOVRMIS1.AUD
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 30
+		Speed: 256
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 10%
 			Wood: 75%
@@ -272,17 +272,17 @@ HoverMissile:
 
 120mmx:
 	ROF: 80
-	Range: 6.75
+	Range: 6c768
 	Report: 120MMF.AUD
 	Burst: 2
 	BurstDelay: 5
 	Projectile: Bullet
-		Speed: 40
+		Speed: 682
 		Image: 120mm
 		Shadow: yes
-		Angle: 0.1
+		Angle: 62
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -296,7 +296,7 @@ HoverMissile:
 
 MammothTusk:
 	ROF: 80
-	Range: 6
+	Range: 6c0
 	Report: MISL1.AUD
 	ValidTargets: Air
 	Burst: 2
@@ -304,13 +304,13 @@ MammothTusk:
 		Arm: 0
 		High: yes
 		Shadow: yes
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 10
-		Speed: 20
+		Speed: 170
 		RangeLimit: 35
 	Warhead:
-		Spread: 6
+		Spread: 256
 		Versus:
 			None: 40%
 			Wood: 75%
@@ -323,12 +323,12 @@ MammothTusk:
 
 Repair:
 	ROF: 80
-	Range: 1.8
+	Range: 1c819
 	Report: REPAIR11.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 5
+		Spread: 213
 		Versus:
 			None: 0%
 			Wood: 0%
@@ -341,10 +341,10 @@ Repair:
 SlimeAttack:
 	ROF: 80
 	Burst: 3
-	Range: 5
+	Range: 5c0
 	Report: VICER1.AUD
 	Projectile: Bullet
-		Speed: 25
+		Speed: 426
 	Warhead:
 		Versus:
 			Wood: 25%
@@ -356,11 +356,11 @@ SlimeAttack:
 
 SuicideBomb:
 	ROF: 1
-	Range: 0.5
+	Range: 0c512
 	Report: HUNTER2.AUD
 	Warhead:
 		Damage: 11000
-		Spread: 6
+		Spread: 256
 		Ore: true
 		Versus:
 			None: 90%
@@ -371,12 +371,12 @@ SuicideBomb:
 
 120mm:
 	ROF: 80
-	Range: 6.75
+	Range: 6c768
 	Report: 120MMF.AUD
 	Projectile: Bullet
-		Speed: 90
+		Speed: 1c512
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -390,7 +390,7 @@ SuicideBomb:
 
 MechRailgun:
 	ROF: 60
-	Range: 8
+	Range: 8c0
 	Burst: 2
 	BurstDelay: 10
 	Charges: yes
@@ -399,19 +399,18 @@ MechRailgun:
 		Color: 200,0,255,255
 		BeamWidth: 2
 	Warhead:
-		Spread: 1
+		Spread: 42
 		InfDeath: 5
-#		SmudgeType: Scorch
 		Damage: 200
 
 AssaultCannon:
 	ROF: 50
-	Range: 5
+	Range: 5c0
 	Report: TSGUN4.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 100%
 			Light: 60%
@@ -425,20 +424,20 @@ BikeMissile:
 	ROF: 60
 	Burst: 2
 	BurstDelay: 60
-	Range: 5
+	Range: 5c0
 	Report: MISL1.AUD
 	ValidTargets: Ground
 	Projectile: Missile
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
-		Speed: 30
+		Speed: 256
 		RangeLimit: 35
 	Warhead:
-		Spread: 6
+		Spread: 256
 		Versus:
 			None: 40%
 			Wood: 75%
@@ -451,12 +450,12 @@ BikeMissile:
 
 RaiderCannon:
 	ROF: 55
-	Range: 4
+	Range: 4c0
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 25%
 			Light: 30%
@@ -466,16 +465,16 @@ RaiderCannon:
 		InfDeath: 2
 		Damage: 40
 
-FireballLauncher: # TODO: add fire particles
+FireballLauncher:
 	ROF: 50
-	Range: 4.25
+	Range: 4c256
 	Report: FLAMTNK1.AUD
 	Projectile: Bullet
-		Speed: 20
+		Speed: 341
 	Burst: 2
 	BurstDelay: 25
 	Warhead:
-		Spread: 8
+		Spread: 341
 		Versus:
 			None: 100%
 			Wood: 100%
@@ -487,37 +486,36 @@ FireballLauncher: # TODO: add fire particles
 
 SonicZap:
 	ROF: 120
-	Range: 6
+	Range: 6c0
 	Burst: 2
 	BurstDelay: 10
 	Charges: yes
 	Report: SONIC4.AUD
-	Projectile: LaserZap # TODO: SonicBeam
+	Projectile: LaserZap
 		Color: 200,0,255,255
 		BeamWidth: 10
 	Warhead:
-		Spread: 1
+		Spread: 42
 		InfDeath: 5
-#		SmudgeType: Scorch
 		Damage: 100
 
 Dragon:
 	ROF: 50
-	Range: 6
+	Range: 6c0
 	Burst: 2
 	Report: MISL1.AUD
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 25
+		Speed: 213
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 10%
 			Wood: 75%
@@ -530,15 +528,15 @@ Dragon:
 
 90mm:
 	ROF: 50
-	Range: 6.75
+	Range: 6c768
 	Report: 120MMF.AUD
 	Projectile: Bullet
-		Speed: 40
+		Speed: 682
 		Image: 120mm
 		Shadow: yes
-		Angle: 0.1
+		Angle: 62
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -552,16 +550,16 @@ Dragon:
 
 155mm:
 	ROF: 110
-	Range: 18
+	Range: 18c0
 	Report: 120MMF.AUD
 	Projectile: Bullet
-		Speed: 10
+		Speed: 170
 		Image: 120mm
-		Angle: 0.4
+		Angle: 165
 		Shadow: yes
-	MinRange: 5
+	MinRange: 5c0
 	Warhead:
-		Spread: 7
+		Spread: 298
 		Versus:
 			None: 100%
 			Wood: 85%
@@ -575,21 +573,21 @@ Dragon:
 
 Hellfire:
 	ROF: 50
-	Range: 6
+	Range: 6c0
 	Report: ORCAMIS1.AUD
 	Burst: 2
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 30
+		Speed: 256
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
 	Warhead:
-		Spread: 2
+		Spread: 85
 		Versus:
 			None: 30%
 			Wood: 65%
@@ -603,13 +601,13 @@ Hellfire:
 
 Bomb:
 	ROF: 10
-	Range: 5
+	Range: 5c0
 	Projectile: Bullet
-		Speed: 10
+		Speed: 170
 		Image: 120MM
 		Shadow: yes
 	Warhead:
-		Spread: 7
+		Spread: 298
 		Versus:
 			None: 200%
 			Wood: 90%
@@ -623,21 +621,21 @@ Bomb:
 
 Proton:
 	ROF: 3
-	Range: 5
+	Range: 5c0
 	Report: SCRIN5B.AUD
 	Burst: 2
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 30
+		Speed: 256
 		Arm: 2
 		High: yes
 		Shadow: yes
-		Inaccuracy: 3
+		Inaccuracy: 128
 		Image: TORPEDO
 		ROT: 1
 		RangeLimit: 35
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			None: 25%
 			Wood: 65%
@@ -651,13 +649,13 @@ Proton:
 
 HarpyClaw:
 	ROF: 36
-	Range: 5
+	Range: 5c0
 	Report: CYGUN1.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	ValidTargets: Ground, Air
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 25%
 			Light: 30%
@@ -669,12 +667,12 @@ HarpyClaw:
 
 Pistola:
 	ROF: 20
-	Range: 3
+	Range: 3c0
 	Report: GUN18.AUD
 	Projectile: Bullet
-		Speed: 100
+		Speed: 1c682
 	Warhead:
-		Spread: 3
+		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
@@ -683,3 +681,4 @@ Pistola:
 		Explosion: piff
 		InfDeath: 2
 		Damage: 2
+

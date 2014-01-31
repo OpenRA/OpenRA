@@ -120,8 +120,6 @@
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="InputHandler.cs" />
-    <Compile Include="CVec.cs" />
-    <Compile Include="CPos.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Network\Connection.cs" />

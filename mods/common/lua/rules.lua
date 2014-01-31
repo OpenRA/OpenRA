@@ -15,7 +15,7 @@ end
 Rules.InitialAltitude = function(actorType)
 	local ai = Rules.TraitInfoOrDefault(actorType, "AircraftInfo")
 	if ai ~= nil then
-		return ai.CruiseAltitude
+		return ai.CruiseAltitude.Range
 	end
 	return 0
 end

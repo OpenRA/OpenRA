@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -28,7 +29,7 @@ namespace OpenRA.FileFormats
 		public readonly MiniYaml LoadScreen;
 		public readonly MiniYaml LobbyDefaults;
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
-		public readonly int TileSize = 24;
+		public readonly Size TileSize = new Size(24, 24);
 
 		public Manifest(string mod)
 		{
@@ -68,7 +69,7 @@ namespace OpenRA.FileFormats
 					int.Parse(x.Value.NodesDict["Size"].Value)));
 
 			if (yaml.ContainsKey("TileSize"))
-				TileSize = int.Parse(yaml["TileSize"].Value);
+				TileSize = FieldLoader.GetValue<Size>("TileSize", yaml["TileSize"].Value);
 
 			// Allow inherited mods to import parent maps.
 			var compat = new List<string>();

@@ -204,7 +204,7 @@ Smudges:
 
 Rules:
 	World:
-		CrateDrop:
+		CrateSpawner:
 			Maximum: 3
 			SpawnInterval: 5
 			WaterChance: 1
@@ -253,7 +253,7 @@ Rules:
 		Health:
 			HP: 1000
 		Mobile:
-			Speed: 12
+			Speed: 170
 		RevealsShroud:
 			Range: 50
 		Armament@PRIMARY:
@@ -303,18 +303,18 @@ VoxelSequences:
 Weapons:
 	8Inch:
 		ROF: 200
-		Range: 32
+		Range: 32c0
 		Burst: 4
 		Report: TURRET1
 		Projectile: Bullet
-			Speed: 32
+			Speed: 546
 			High: true
-			Angle: .1
-			Inaccuracy: 80
+			Angle: 62
+			Inaccuracy: 3c341
 			Image: 120MM
 			ContrailLength: 30
 		Warhead:
-			Spread: 3
+			Spread: 128
 			Versus:
 				None: 60%
 				Wood: 75%
@@ -329,19 +329,19 @@ Weapons:
 			WaterImpactSound: splash9
 	SubMissile:
 		ROF: 250
-		Range: 32
+		Range: 32c0
 		Burst: 4
 		Report: MISSILE6
 		Projectile: Bullet
-			Speed: 24
+			Speed: 409
 			High: true
-			Angle: .1
-			Inaccuracy: 70
+			Angle: 62
+			Inaccuracy: 2c938
 			Image: MISSILE
 			Trail: smokey
 			ContrailLength: 30
 		Warhead:
-			Spread: 10
+			Spread: 426
 			Versus:
 				None: 40%,
 				Light: 30%

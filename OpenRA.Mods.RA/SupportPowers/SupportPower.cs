@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly string BeginChargeSound = null;
 		public readonly string EndChargeSound = null;
 		public readonly string SelectTargetSound = null;
+		public readonly string InsufficientPowerSound = null;
 		public readonly string LaunchSound = null;
 		public readonly string IncomingSound = null;
 

@@ -123,6 +123,8 @@
     <Compile Include="Air\Aircraft.cs" />
     <Compile Include="Air\AttackHeli.cs" />
     <Compile Include="Air\AttackPlane.cs" />
+    <Compile Include="MenuPaletteEffect.cs" />
+    <Compile Include="Crates\UnitUpgradeCrateAction.cs" />
     <Compile Include="EjectOnDeath.cs" />
     <Compile Include="Air\FallsToEarth.cs" />
     <Compile Include="Air\Fly.cs" />
@@ -195,7 +197,6 @@
     <Compile Include="ContainsCrate.cs" />
     <Compile Include="Crate.cs" />
     <Compile Include="CrateAction.cs" />
-    <Compile Include="CrateDrop.cs" />
     <Compile Include="CrateSpawner.cs" />
     <Compile Include="Crates\CloakCrateAction.cs" />
     <Compile Include="Crates\ExplodeCrateAction.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Fake.cs" />
     <Compile Include="FreeActor.cs" />
     <Compile Include="GainsExperience.cs" />
+    <Compile Include="GainsUnitUpgrades.cs" />
     <Compile Include="GivesBounty.cs" />
     <Compile Include="GivesExperience.cs" />
     <Compile Include="Guard.cs" />
@@ -253,7 +255,6 @@
     <Compile Include="LightPaletteRotator.cs" />
     <Compile Include="LimitedAmmo.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
-    <Compile Include="Lint\CheckAutotargetWiring.cs" />
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
@@ -401,7 +402,7 @@
     <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
     <Compile Include="Widgets\Logic\LobbyLogic.cs" />
     <Compile Include="Widgets\Logic\LobbyUtils.cs" />
-    <Compile Include="Widgets\Logic\MainMenuButtonsLogic.cs" />
+    <Compile Include="Widgets\Logic\MainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\MapChooserLogic.cs" />
     <Compile Include="Widgets\Logic\MissionObjectivesLogic.cs" />
     <Compile Include="Widgets\Logic\MusicPlayerLogic.cs" />
@@ -412,6 +413,7 @@
     <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
+    <Compile Include="Widgets\Logic\ShellmapDesaturationLogic.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\ObserverProductionIconsWidget.cs" />
     <Compile Include="Widgets\ObserverSupportPowerIconsWidget.cs" />
@@ -484,6 +486,8 @@
     <Compile Include="Effects\Rank.cs" />
     <Compile Include="ShroudRenderer.cs" />
     <Compile Include="Render\WithCrateBody.cs" />
+    <Compile Include="Buildings\Demolishable.cs" />
+    <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

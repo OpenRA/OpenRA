@@ -152,9 +152,12 @@ namespace OpenRA.Mods.RA
 			if (self.Owner != self.World.LocalPlayer)
 				return;
 
-			wr.DrawRangeCircle(
+			wr.DrawRangeCircleWithContrast(
+				self.CenterPosition,
+				WRange.FromCells(self.Trait<ChronoshiftDeploy>().Info.JumpDistance),
 				Color.FromArgb(128, Color.DeepSkyBlue),
-				wr.ScreenPxPosition(self.CenterPosition), (int)self.Trait<ChronoshiftDeploy>().Info.JumpDistance);
+				Color.FromArgb(96, Color.Black)
+			);
 		}
 	}
 }

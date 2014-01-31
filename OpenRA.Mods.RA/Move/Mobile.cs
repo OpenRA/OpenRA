@@ -206,11 +206,10 @@ namespace OpenRA.Mods.RA.Move
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
 
-			if (init.Contains<AltitudeInit>())
-			{
-				var z = init.Get<AltitudeInit, int>() * 1024 / Game.CellSize;
-				SetVisualPosition(self, CenterPosition + new WVec(0, 0, z - CenterPosition.Z));
-			}
+			// Sets the visual position to WPos accuracy
+			// Use LocationInit if you want to insert the actor into the ActorMap!
+			if (init.Contains<CenterPositionInit>())
+				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
 		}
 
 		public void SetPosition(Actor self, CPos cell)
@@ -252,7 +251,7 @@ namespace OpenRA.Mods.RA.Move
 			self.World.ScreenMap.Remove(self);
 		}
 
-		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(Info); } }
+		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(self, Info); } }
 
 		// Note: Returns a valid order even if the unit can't move to the target
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -445,7 +444,7 @@ namespace OpenRA.Mods.RA.Move
 			decimal speed = Info.Speed * Info.TerrainSpeeds[type].Speed;
 			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
 				speed *= t.GetSpeedModifier();
-			return (int)(speed / 100) * 1024 / (3 * Game.CellSize);
+			return (int)(speed / 100);
 		}
 
 		public void AddInfluence()
@@ -505,10 +504,12 @@ namespace OpenRA.Mods.RA.Move
 		class MoveOrderTargeter : IOrderTargeter
 		{
 			readonly MobileInfo unitType;
+			readonly bool rejectMove;
 
-			public MoveOrderTargeter(MobileInfo unitType)
+			public MoveOrderTargeter(Actor self, MobileInfo unitType)
 			{
 				this.unitType = unitType;
+				this.rejectMove = !self.AcceptsOrder("Move");
 			}
 
 			public string OrderID { get { return "Move"; } }
@@ -517,7 +518,7 @@ namespace OpenRA.Mods.RA.Move
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!target.IsValidFor(self))
+				if (rejectMove || !target.IsValidFor(self))
 					return false;
 
 				var location = target.CenterPosition.ToCPos();

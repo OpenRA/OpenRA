@@ -328,11 +328,14 @@ namespace OpenRA.Server
 				// Send initial ping
 				SendOrderTo(newConn, "Ping", Environment.TickCount.ToString());
 
-				var motdPath = Path.Combine(Platform.SupportDir, "motd_{0}.txt".F(ModData.Manifest.Mod.Id));
-				if (File.Exists(motdPath))
+				if (Settings.Dedicated)
 				{
-					var motd = System.IO.File.ReadAllText(motdPath);
-					SendOrderTo(newConn, "Message", motd);
+					var motdFile = Path.Combine(Platform.SupportDir, "motd.txt");
+					if (!File.Exists(motdFile))
+						System.IO.File.WriteAllText(motdFile, "Welcome, have fun and good luck!");
+					var motd = System.IO.File.ReadAllText(motdFile);
+					if (!string.IsNullOrEmpty(motd))
+						SendOrderTo(newConn, "Message", motd);
 				}
 
 				if (handshake.Mod == "{DEV_VERSION}")

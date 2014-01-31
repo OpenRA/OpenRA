@@ -17,7 +17,7 @@ DOG:
 	Health:
 		HP: 12
 	Mobile:
-		Speed: 7
+		Speed: 99
 	RevealsShroud:
 		Range: 5
 	Armament:
@@ -44,7 +44,7 @@ E1:
 	Health:
 		HP: 50
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Armament:
 		Weapon: M1Carbine
 	AttackFrontal:
@@ -72,7 +72,7 @@ E2:
 	Health:
 		HP: 50
 	Mobile:
-		Speed: 5
+		Speed: 71
 	Armament:
 		Weapon: Grenade
 		LocalOffset: 0,0,555
@@ -104,7 +104,7 @@ E3:
 	Health:
 		HP: 45
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Armament@PRIMARY:
 		Weapon: RedEye
 		LocalOffset: 0,0,555
@@ -136,7 +136,7 @@ E4:
 	Health:
 		HP: 40
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Armament:
 		Weapon: Flamer
 		LocalOffset: 427,0,341
@@ -166,7 +166,7 @@ E6:
 	Health:
 		HP: 25
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -175,7 +175,6 @@ E6:
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -200,7 +199,7 @@ SPY:
 	Health:
 		HP: 25
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 5
 	Passenger:
@@ -211,7 +210,6 @@ SPY:
 		Types: Cash, SupportPower, Exploration
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderSpy:
 		IdleAnimations: idle1,idle2
@@ -240,7 +238,7 @@ E7:
 	Health:
 		HP: 100
 	Mobile:
-		Speed: 5
+		Speed: 71
 	RevealsShroud:
 		Range: 6
 	C4Demolition:
@@ -276,7 +274,7 @@ MEDI:
 	Health:
 		HP: 80
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 3
 	Passenger:
@@ -289,7 +287,6 @@ MEDI:
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -313,7 +310,7 @@ MECH:
 	Health:
 		HP: 80
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 3
 	Passenger:
@@ -326,7 +323,6 @@ MECH:
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -343,12 +339,11 @@ EINSTEIN:
 	Health:
 		HP: 25
 	Mobile:
-		Speed: 5
+		Speed: 71
 	RevealsShroud:
 		Range: 2
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	ProximityCaptor:
 		Types: CivilianInfantry
 	-RenderInfantry:
@@ -367,12 +362,11 @@ DELPHI:
 	Health:
 		HP: 25
 	Mobile:
-		Speed: 5
+		Speed: 71
 	RevealsShroud:
 		Range: 2
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	ProximityCaptor:
 		Types: CivilianInfantry
 	-RenderInfantry:
@@ -404,7 +398,7 @@ THF:
 	Health:
 		HP: 25
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 5
 	Passenger:
@@ -414,7 +408,6 @@ THF:
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 
 SHOK:
 	Inherits: ^Infantry
@@ -435,7 +428,7 @@ SHOK:
 	Health:
 		HP: 80
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 4
 	Armament:
@@ -465,7 +458,7 @@ SNIPER:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 80
 	Passenger:
@@ -511,7 +504,7 @@ Zombie:
 	Health:
 		HP: 250
 	Mobile:
-		Speed: 3
+		Speed: 42
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:
@@ -535,9 +528,9 @@ Ant:
 		Bounds: 30,30,0,-2
 	Health:
 		HP: 750
-		Radius: 11
+		Radius: 469
 	Mobile:
-		Speed: 7
+		Speed: 99
 		ROT: 12
 		SharesCell: no
 	AutoTarget:
@@ -545,3 +538,4 @@ Ant:
 	AttackFrontal:
 	Armament:
 		Weapon: mandible
+

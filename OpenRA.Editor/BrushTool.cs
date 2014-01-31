@@ -63,8 +63,8 @@ namespace OpenRA.Editor
 		public void Preview(Surface surface, SGraphics g)
 		{
 			g.DrawImage(brushTemplate.Bitmap,
-					surface.TileSetRenderer.TileSize.Width * surface.GetBrushLocation().X * surface.Zoom + surface.GetOffset().X,
-			        surface.TileSetRenderer.TileSize.Height * surface.GetBrushLocation().Y * surface.Zoom + surface.GetOffset().Y,
+					surface.TileSetRenderer.TileSize * surface.GetBrushLocation().X * surface.Zoom + surface.GetOffset().X,
+			        surface.TileSetRenderer.TileSize * surface.GetBrushLocation().Y * surface.Zoom + surface.GetOffset().Y,
 					brushTemplate.Bitmap.Width * surface.Zoom,
 					brushTemplate.Bitmap.Height * surface.Zoom);
 		}

@@ -3,7 +3,7 @@ SPLIT2:
 	RenderBuilding:
 		Palette: staticterrain
 	SeedsResource:
-		ResourceType:Tiberium
+		ResourceType: Tiberium
 		Interval: 55
 	Tooltip:
 		Name: Blossom Tree
@@ -18,7 +18,7 @@ SPLIT3:
 	RenderBuilding:
 		Palette: staticterrain
 	SeedsResource:
-		ResourceType:Tiberium
+		ResourceType: Tiberium
 		Interval: 55
 	Tooltip:
 		Name: Blossom Tree
@@ -33,7 +33,7 @@ SPLITBLUE:
 	RenderBuilding:
 		Palette: staticterrain
 	SeedsResource:
-		ResourceType:BlueTiberium
+		ResourceType: BlueTiberium
 		Interval: 110
 	Tooltip:
 		Name: Blossom Tree (blue)
@@ -45,16 +45,22 @@ SPLITBLUE:
 
 ROCK1:
 	Inherits: ^Rock
+
 ROCK2:
 	Inherits: ^Rock
+
 ROCK3:
 	Inherits: ^Rock
+
 ROCK4:
 	Inherits: ^Rock
+
 ROCK5:
 	Inherits: ^Rock
+
 ROCK6:
 	Inherits: ^Rock
+
 ROCK7:
 	Inherits: ^Rock
 
@@ -90,16 +96,17 @@ T09:
 	Building:
 		Footprint: x_
 		Dimensions: 2,1
-		
+
 T10:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ xx
+
 T11:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ xx
-		
+
 T12:
 	Inherits: ^Tree
 
@@ -126,9 +133,10 @@ T17:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
+
 T18:
 	Inherits: ^Tree
-	
+
 TC01:
 	Inherits: ^Tree
 	Building:
@@ -158,3 +166,4 @@ TC05:
 	Building:
 		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
+

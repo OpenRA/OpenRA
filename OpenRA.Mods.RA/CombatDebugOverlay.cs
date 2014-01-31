@@ -38,11 +38,11 @@ namespace OpenRA.Mods.RA
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self)
 		{
-			if (devMode == null || !devMode.ShowMuzzles)
+			if (devMode == null || !devMode.ShowCombatGeometry)
 				return;
 
 			if (health.Value != null)
-				wr.DrawRangeCircle(Color.Red, wr.ScreenPxPosition(self.CenterPosition), health.Value.Info.Radius / Game.CellSize);
+				wr.DrawRangeCircle(self.CenterPosition, health.Value.Info.Radius, Color.Red);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
 			var c = Color.White;

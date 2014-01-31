@@ -118,22 +118,9 @@ namespace OpenRA.Network
 
 				case "HandshakeRequest":
 					{
-						var request = HandshakeRequest.Deserialize(order.TargetString);
-
 						// TODO: Switch to the server's mod if we have it
 						// Otherwise send the handshake with our current settings and let the server reject us
 						var mod = Game.modData.Manifest.Mod;
-
-						// Check that the map exists on the client
-						// TODO: This will behave badly if joining a server with a different mod
-						// This needs to occur *after* joining the server
-						if (!Game.modData.AvailableMaps.ContainsKey(request.Map))
-						{
-							if (Game.Settings.Game.AllowDownloading)
-								Game.DownloadMap(request.Map);
-							else
-								throw new InvalidOperationException("Missing map {0}".F(request.Map));
-						}
 
 						var info = new Session.Client()
 						{

@@ -8,6 +8,8 @@ Folders:
 	.
 	./mods/d2k
 	./mods/d2k/bits
+	./mods/d2k/bits/tex
+	./mods/d2k/bits/xmas
 	./mods/d2k/uibits
 	./mods/ra/uibits
 	~^/Content/d2k
@@ -22,7 +24,10 @@ Packages:
 	SOUND.RS
 
 Rules:
-	mods/d2k/rules/system.yaml
+	mods/d2k/rules/system-actors.yaml
+	mods/d2k/rules/system-ai.yaml
+	mods/d2k/rules/system-player.yaml
+	mods/d2k/rules/system-world.yaml
 	mods/d2k/rules/defaults.yaml
 	mods/d2k/rules/vehicles.yaml
 	mods/d2k/rules/structures.yaml
@@ -91,7 +96,7 @@ Notifications:
 TileSets:
 	mods/d2k/tilesets/arrakis.yaml
 
-TileSize: 32
+TileSize: 32,32
 
 Music:
 	mods/d2k/music.yaml
@@ -118,7 +123,7 @@ LobbyDefaults:
 	Crates: true
 	StartingUnitsClass: none
 	FragileAlliances: false
-	Shroud: false
+	Shroud: true
 	Fog: true
 
 ChromeMetrics:

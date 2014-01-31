@@ -22,14 +22,17 @@ namespace OpenRA.Utility
 		{
 			{ "--settings-value", Command.Settings },
 			{ "--shp", Command.ConvertPngToShp },
-			{ "--png", Command.ConvertShpToPng },
+			{ "--png", Command.ConvertSpriteToPng },
 			{ "--extract", Command.ExtractFiles },
 			{ "--remap", Command.RemapShp },
 			{ "--transpose", Command.TransposeShp },
 			{ "--docs", Command.ExtractTraitDocs },
 			{ "--map-hash", Command.GetMapHash },
 			{ "--map-preview", Command.GenerateMinimap },
-			{ "--map-upgrade", Command.UpgradeMap },
+			{ "--map-upgrade-v5", Command.UpgradeV5Map },
+			{ "--upgrade-map", UpgradeRules.UpgradeMap },
+			{ "--upgrade-mod", UpgradeRules.UpgradeMod },
+			{ "--map-import", Command.ImportLegacyMap }
 		};
 
 		static void Main(string[] args)

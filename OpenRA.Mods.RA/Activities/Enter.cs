@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Activities
 				return NextActivity;
 
 			if (!Util.AdjacentCells(target).Any(c => c == self.Location))
-				return Util.SequenceActivities(new MoveAdjacentTo(target), this);
+				return Util.SequenceActivities(new MoveAdjacentTo(self, target), this);
 
 			// Move to the middle of the target, ignoring impassable tiles
 			var mobile = self.Trait<Mobile>();

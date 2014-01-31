@@ -12,23 +12,22 @@ MCV:
 	Selectable:
 		Priority: 3
 	Mobile:
-		Speed: 5
+		Speed: 71
 	Health:
 		HP: 750
-	Armor: 
+	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 8
 	Transforms:
 		IntoActor: fact
-		Offset:-1,-1
+		Offset: -1,-1
 		Facing: 108
 		TransformSounds: constru2.aud, hvydoor1.aud
 		NoTransformSounds: deploy1.aud
 	RenderUnit:
 	MustBeDestroyed:
 	AttackMove:
-		JustMove:true
 	BaseBuilding:
 	LeavesHusk:
 		HuskActor: MCV.Husk
@@ -61,15 +60,14 @@ HARV:
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
 	Mobile:
-		Speed: 6
+		Speed: 85
 	Health:
 		HP: 600
-	Armor: 
+	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4
 	AttackMove:
-		JustMove:true
 	LeavesHusk:
 		HuskActor: HARV.Husk
 	-GainsExperience:
@@ -88,7 +86,7 @@ APC:
 		Owner: gdi
 	Mobile:
 		ROT: 8
-		Speed: 9
+		Speed: 128
 	Health:
 		HP: 200
 	Armor:
@@ -136,7 +134,7 @@ ARTY:
 		Owner: nod
 	Mobile:
 		ROT: 2
-		Speed: 6
+		Speed: 85
 	Health:
 		HP: 75
 	Armor:
@@ -170,7 +168,7 @@ FTNK:
 		Owner: nod
 	Mobile:
 		ROT: 7
-		Speed: 8
+		Speed: 113
 	Health:
 		HP: 350
 	Armor:
@@ -204,7 +202,7 @@ BGGY:
 		Owner: nod
 	Mobile:
 		ROT: 12
-		Speed: 12
+		Speed: 170
 	Health:
 		HP: 120
 	Armor:
@@ -238,7 +236,7 @@ BIKE:
 		Owner: nod
 	Mobile:
 		ROT: 12
-		Speed: 15
+		Speed: 213
 		TerrainSpeeds:
 			Clear: 70
 			Rough: 35
@@ -261,7 +259,7 @@ BIKE:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: BIKE.Husk
-	
+
 JEEP:
 	Inherits: ^Vehicle
 	Valued:
@@ -275,7 +273,7 @@ JEEP:
 		Owner: gdi
 	Mobile:
 		ROT: 11
-		Speed: 11
+		Speed: 156
 	Health:
 		HP: 160
 	Armor:
@@ -308,8 +306,8 @@ LTNK:
 		Prerequisites: anyhq
 		Owner: nod
 	Mobile:
-		ROT: 7	
-		Speed: 8
+		ROT: 7
+		Speed: 113
 	Health:
 		HP: 300
 	Armor:
@@ -346,7 +344,7 @@ MTNK:
 		Prerequisites: anyhq
 		Owner: gdi
 	Mobile:
-		Speed: 6
+		Speed: 85
 	Health:
 		HP: 400
 	Armor:
@@ -386,7 +384,7 @@ HTNK:
 		Owner: gdi
 	Mobile:
 		Crushes: wall, heavywall, crate, infantry
-		Speed: 4
+		Speed: 56
 		ROT: 3
 	Health:
 		HP: 900
@@ -436,7 +434,7 @@ MSAM:
 		Prerequisites: anyhq
 		Owner: gdi
 	Mobile:
-		Speed: 6
+		Speed: 85
 		ROT: 4
 	Health:
 		HP: 120
@@ -473,7 +471,7 @@ MLRS:
 		Prerequisites: anyhq
 		Owner: nod
 	Mobile:
-		Speed: 7
+		Speed: 99
 		ROT: 7
 	Health:
 		HP: 120
@@ -514,7 +512,7 @@ STNK:
 		Owner: nod
 	Mobile:
 		ROT: 8
-		Speed: 10
+		Speed: 142
 		Crushes: crate, infantry
 	Health:
 		HP: 150
@@ -551,7 +549,7 @@ MHQ:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 6
+		Speed: 85
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
@@ -559,7 +557,7 @@ MHQ:
 		Sequence: spinner
 		Offset: -256,0,256
 	AttackMove:
-		JustMove: yes
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+

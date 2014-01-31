@@ -18,8 +18,8 @@ namespace OpenRA.GameRules
 {
 	public class WarheadInfo
 	{
-		[Desc("Distance (in pixels) from the explosion center at which damage is 1/2.")]
-		public readonly int Spread = 1;
+		[Desc("Distance from the explosion center at which damage is 1/2.")]
+		public readonly WRange Spread = new WRange(43);
 		[FieldLoader.LoadUsing("LoadVersus")]
 		[Desc("Damage vs each armortype. 0% = can't target.")]
 		public readonly Dictionary<string, float> Versus;
@@ -99,17 +99,17 @@ namespace OpenRA.GameRules
 
 	public class WeaponInfo
 	{
-		public readonly float Range = 0;
+		public readonly WRange Range = WRange.Zero;
 		public readonly string[] Report = null;
 		[Desc("Rate of Fire")]
 		public readonly int ROF = 1;
 		public readonly int Burst = 1;
 		public readonly bool Charges = false;
-		public readonly bool Underwater = false;
+		public readonly string Palette = "effect";
 		public readonly string[] ValidTargets = { "Ground", "Water" };
 		public readonly string[] InvalidTargets = { };
 		public readonly int BurstDelay = 5;
-		public readonly float MinRange = 0;
+		public readonly WRange MinRange = WRange.Zero;
 
 		[FieldLoader.LoadUsing("LoadProjectile")] public IProjectileInfo Projectile;
 		[FieldLoader.LoadUsing("LoadWarheads")] public List<WarheadInfo> Warheads;
@@ -179,13 +179,12 @@ namespace OpenRA.GameRules
 				if (!world.Map.IsInMap(cell))
 					return false;
 
-				if (ValidTargets.Contains("Ground") && world.GetTerrainType(cell) != "Water")
-					return true;
+				var cellInfo = world.GetTerrainInfo(cell);
+				if (!ValidTargets.Intersect(cellInfo.TargetTypes).Any()
+				    || InvalidTargets.Intersect(cellInfo.TargetTypes).Any())
+					return false;
 
-				if (ValidTargets.Contains("Water") && world.GetTerrainType(cell) == "Water")
-					return true;
-
-				return false;
+				return true;
 			}
 
 			return false;

@@ -2545,7 +2545,7 @@ Rules:
 	Player:
 		-ConquestVictoryConditions:
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		MonsterTankMadnessScript:
@@ -2578,7 +2578,7 @@ Rules:
 		Armor:
 			Type: Concrete
 		Mobile:
-			Speed: 3
+			Speed: 42
 			Crushes: wall, atmine, crate, infantry
 		RevealsShroud:
 			Range: 6
@@ -2750,14 +2750,14 @@ Weapons:
 			High: True
 	SuperTankPrimary:
 		ROF: 70
-		Range: 4.75
+		Range: 4c768
 		Report: TURRET1
 		Burst: 2
 		Projectile: Bullet
-			Speed: 40
+			Speed: 682
 			Image: 120MM
 		Warhead:
-			Spread: 3
+			Spread: 128
 			Versus:
 				None: 20%
 				Wood: 75%

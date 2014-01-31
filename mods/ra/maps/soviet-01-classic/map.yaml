@@ -851,7 +851,7 @@ Rules:
 	Player:
 		-ConquestVictoryConditions:
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		Soviet01ClassicScript:
@@ -911,7 +911,7 @@ Rules:
 		RevealsShroud:
 			Range: 7
 		Exit@1:
-			SpawnOffset: 0,4
+			SpawnOffset: 0,170,0
 			ExitCell: 1,1
 			Facing: 192
 		RenderBuilding:

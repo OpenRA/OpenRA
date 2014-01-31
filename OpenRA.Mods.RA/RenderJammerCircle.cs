@@ -58,10 +58,11 @@ namespace OpenRA.Mods.RA
 		public static void DrawRangeCircle(WorldRenderer wr, WPos pos, int range, Color color)
 		{
 			wr.DrawRangeCircleWithContrast(
+				pos,
+				WRange.FromCells(range),
 				Color.FromArgb(128, color),
-				wr.ScreenPxPosition(pos),
-				range,
-				Color.FromArgb(96, Color.Black));
+				Color.FromArgb(96, Color.Black)
+			);
 		}
 	}
 }

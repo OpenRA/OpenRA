@@ -75,7 +75,7 @@ namespace OpenRA.Utility
 
 		[Desc("SPRITEFILE PALETTE [--noshadow] [--nopadding]",
 		      "Convert a shp/tmp/R8 to a series of PNGs, optionally removing shadow")]
-		public static void ConvertShpToPng(string[] args)
+		public static void ConvertSpriteToPng(string[] args)
 		{
 			var src = args[1];
 			var shadowIndex = new int[] { };
@@ -324,12 +324,28 @@ namespace OpenRA.Utility
 		}
 
 		[Desc("MAPFILE", "MOD", "Upgrade a version 5 map to version 6.")]
-		public static void UpgradeMap(string[] args)
+		public static void UpgradeV5Map(string[] args)
 		{
 			var map = args[1];
 			var mod = args[2];
 			Game.modData = new ModData(mod);
 			new Map(map, mod);
+		}
+
+		[Desc("MOD", "FILENAME", "Convert a legacy INI/MPR map to the OpenRA format.")]
+		public static void ImportLegacyMap(string[] args)
+		{
+			var mod = args[1];
+			var filename = args[2];
+			Game.modData = new ModData(mod);
+			Rules.LoadRules(Game.modData.Manifest, new Map());
+			var map = LegacyMapImporter.Import(filename, e => Console.WriteLine(e));
+			map.RequiresMod = mod;
+			map.MakeDefaultPlayers();
+			map.FixOpenAreas();
+			var dest = map.Title + ".oramap";
+			map.Save(dest);
+			Console.WriteLine(dest + " saved.");
 		}
 	}
 }

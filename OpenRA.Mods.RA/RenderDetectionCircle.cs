@@ -31,8 +31,9 @@ namespace OpenRA.Mods.RA
 				return;
 
 			wr.DrawRangeCircleWithContrast(
+				self.CenterPosition,
+				WRange.FromCells(self.Info.Traits.Get<DetectCloakedInfo>().Range),
 				Color.FromArgb(128, Color.LimeGreen),
-				wr.ScreenPxPosition(self.CenterPosition), self.Info.Traits.Get<DetectCloakedInfo>().Range,
 				Color.FromArgb(96, Color.Black));
 		}
 	}

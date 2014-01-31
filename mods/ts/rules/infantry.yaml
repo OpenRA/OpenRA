@@ -15,7 +15,7 @@ E1:
 	Health:
 		HP: 125
 	Mobile:
-		Speed: 5
+		Speed: 71
 	Armament:
 		Weapon: Minigun
 	AttackFrontal:
@@ -41,7 +41,7 @@ E2:
 	Health:
 		HP: 150
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Armament:
 		Weapon: Grenade
 		LocalOffset: 0,0,555
@@ -70,7 +70,7 @@ E3:
 	Health:
 		HP: 100
 	Mobile:
-		Speed: 3
+		Speed: 42
 	Armament@PRIMARY:
 		Weapon: Bazooka
 		LocalOffset: 0,0,555
@@ -95,7 +95,7 @@ WEEDGUY:
 		Bounds: 12,17,0,-6
 		Voice: Weed
 	Mobile:
-		Speed: 3
+		Speed: 42
 	Health:
 		HP: 130
 	CrushableInfantry:
@@ -105,7 +105,6 @@ WEEDGUY:
 		LocalOffset: 85,0,384
 		FireDelay: 3
 	AttackFrontal:
-#	-PoisonedByTiberium:
 	-RenderInfantry:
 	RenderInfantryProne:
 	TakeCover:
@@ -125,7 +124,7 @@ MEDIC:
 		Bounds: 12,17,0,-6
 		Voice: Medic
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 125
 	CrushableInfantry:
@@ -156,7 +155,7 @@ ENGINEER:
 		Bounds: 12,17,0,-6
 		Voice: Engineer
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 500
 	Passenger:
@@ -167,7 +166,6 @@ ENGINEER:
 		CaptureTypes: building
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -189,11 +187,10 @@ UMAGON:
 		Bounds: 12,17,0,-6
 		Voice: Umagon
 	Mobile:
-		Speed: 5
+		Speed: 71
 	Health:
 		HP: 150
-	Passenger: # TODO:
-#		PipType: White
+	Passenger:
 	RevealsShroud:
 		Range: 7
 	Armament:
@@ -220,11 +217,10 @@ GHOST:
 		Bounds: 12,17,0,-6
 		Voice: Ghost
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 200
-	Passenger: # TODO:
-#		PipType: White
+	Passenger:
 	RevealsShroud:
 		Range: 6
 	Armament:
@@ -253,7 +249,7 @@ JUMPJET:
 		Bounds: 12,17,0,-6
 		Voice: JumpJet
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 120
 	Armor:
@@ -268,8 +264,6 @@ JUMPJET:
 	AttackFrontal:
 	TakeCover:
 	RenderInfantry:
-#	LeavesHusk: # TODO
-#	Transforms: # TODO
 
 CHAMSPY:
 	Inherits: ^Infantry
@@ -289,18 +283,16 @@ CHAMSPY:
 	Health:
 		HP: 120
 	Mobile:
-		Speed: 6
+		Speed: 85
 	RevealsShroud:
 		Range: 9
-	Passenger: # TODO
-#		PipType: White
+	Passenger:
 	TakeCover:
 	Spy:
 	Infiltrates:
 		Types: Cash, SupportPower, Exploration
 	-AutoTarget:
 	AttackMove:
-		JustMove: true
 	-RenderInfantry:
 	RenderSpy:
 		IdleAnimations: idle1,idle2
@@ -321,16 +313,13 @@ CYBORG:
 	-CrushableInfantry:
 		CrushSound: squish2.aud
 	Selectable:
-		Bounds: 12,17,0,-6 # TODO: wrong
+		Bounds: 12,17,0,-6
 		Voice: Cyborg
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 300
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
-	Passenger: # TODO:
-#		PipType: White
+	Passenger:
 	RevealsShroud:
 		Range: 5
 	Armament:
@@ -340,8 +329,6 @@ CYBORG:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-#	LeavesHusk: # TODO:
-#		CrawlingCyborg
 
 CYC2:
 	Inherits: ^Infantry
@@ -359,16 +346,13 @@ CYC2:
 	-CrushableInfantry:
 		CrushSound: squish2.aud
 	Selectable:
-		Bounds: 12,17,0,-6 # TODO: wrong
+		Bounds: 12,17,0,-6
 		Voice: CyborgCommando
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 500
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
-	Passenger: # TODO:
-#		PipType: White
+	Passenger:
 	RevealsShroud:
 		Range: 7
 	Armament:
@@ -378,8 +362,6 @@ CYC2:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-#	LeavesHusk: # TODO:
-#		CrawlingCyborgCommando
 
 MUTANT:
 	Inherits: ^Infantry
@@ -398,7 +380,7 @@ MUTANT:
 	Health:
 		HP: 50
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 4
 	Armament:
@@ -408,8 +390,6 @@ MUTANT:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
 
 MWMN:
 	Inherits: ^Infantry
@@ -428,7 +408,7 @@ MWMN:
 	Health:
 		HP: 50
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 4
 	Armament:
@@ -438,8 +418,6 @@ MWMN:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
 
 MUTANT3:
 	Inherits: ^Infantry
@@ -458,7 +436,7 @@ MUTANT3:
 	Health:
 		HP: 50
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 4
 	Armament:
@@ -468,10 +446,8 @@ MUTANT3:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
 
-MHIJACK: # TODO: does not work
+MHIJACK:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
@@ -488,7 +464,7 @@ MHIJACK: # TODO: does not work
 	Health:
 		HP: 300
 	Mobile:
-		Speed: 7
+		Speed: 99
 	RevealsShroud:
 		Range: 6
 	-AutoTarget:
@@ -497,8 +473,6 @@ MHIJACK: # TODO: does not work
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
 
 TRATOS:
 	Inherits: ^Infantry
@@ -516,7 +490,7 @@ TRATOS:
 	Health:
 		HP: 200
 	Mobile:
-		Speed: 5
+		Speed: 71
 	RevealsShroud:
 		Range: 4
 	TakeCover:
@@ -525,8 +499,6 @@ TRATOS:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
 
 OXANNA:
 	Inherits: ^Infantry
@@ -544,7 +516,7 @@ OXANNA:
 	Health:
 		HP: 50
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 4
 	TakeCover:
@@ -553,8 +525,6 @@ OXANNA:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
 
 SLAV:
 	Inherits: ^Infantry
@@ -572,7 +542,7 @@ SLAV:
 	Health:
 		HP: 300
 	Mobile:
-		Speed: 4
+		Speed: 56
 	RevealsShroud:
 		Range: 4
 	TakeCover:
@@ -581,8 +551,6 @@ SLAV:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
 
 DOGGIE:
 	Inherits: ^Infantry
@@ -593,7 +561,7 @@ DOGGIE:
 		BuildPaletteOrder: 100
 		Owner: None
 	Health:
-		Radius: 3
+		Radius: 128
 		HP: 250
 	Valued:
 		Cost: 100
@@ -602,9 +570,7 @@ DOGGIE:
 	RevealsShroud:
 		Range: 4
 	Mobile:
-		Speed: 8
-#	CrushableInfantry:
-#		CrushSound: squish2.aud
+		Speed: 113
 	Selectable:
 		Voice: Fiend
 	TargetableUnit:
@@ -613,8 +579,6 @@ DOGGIE:
 		Weapon: FiendShard
 	AttackFrontal:
 	AttackWander:
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
 
 VISSML:
 	Inherits: ^Infantry
@@ -633,7 +597,7 @@ VISSML:
 	RevealsShroud:
 		Range: 0
 	Mobile:
-		Speed: 8
+		Speed: 113
 		ROT: 16
 	-CrushableInfantry:
 	Selectable:
@@ -642,8 +606,6 @@ VISSML:
 		TargetTypes: Ground
 	-AutoTarget:
 	-AttackMove:
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
 	-RenderInfantry:
 	RenderUnit:
 
@@ -664,7 +626,7 @@ VISLRG:
 	RevealsShroud:
 		Range: 0
 	Mobile:
-		Speed: 8
+		Speed: 113
 		ROT: 16
 	-CrushableInfantry:
 	Selectable:
@@ -675,8 +637,6 @@ VISLRG:
 		Weapon: SlimeAttack
 	AttackFrontal:
 	AttackWander:
-#	-PoisonedByTiberium:
-#	TiberiumHeal: # TODO
 	-RenderInfantry:
 	RenderUnit:
 
@@ -688,3 +648,4 @@ CIV2:
 
 CIV3:
 	Inherits: ^CivilianInfantry
+

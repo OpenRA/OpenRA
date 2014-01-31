@@ -53,12 +53,12 @@ namespace OpenRA.Mods.RA
 					flare.QueueActivity(new RemoveSelf());
 				}
 
+				var altitude = Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude;
 				var a = w.CreateActor(info.UnitType, new TypeDictionary
 				{
-					new LocationInit( startPos ),
-					new OwnerInit( self.Owner ),
-					new FacingInit( Util.GetFacing(order.TargetLocation - startPos, 0) ),
-					new AltitudeInit( Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude ),
+					new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+					new OwnerInit(self.Owner),
+					new FacingInit(Util.GetFacing(order.TargetLocation - startPos, 0))
 				});
 
 				a.CancelActivity();

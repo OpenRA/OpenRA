@@ -19,9 +19,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
-	public class AircraftInfo : ITraitInfo, IFacingInfo, IOccupySpaceInfo, UsesInit<AltitudeInit>, UsesInit<LocationInit>, UsesInit<FacingInit>
+	public class AircraftInfo : ITraitInfo, IFacingInfo, IOccupySpaceInfo, UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
-		public readonly int CruiseAltitude = 30;
+		public readonly WRange CruiseAltitude = new WRange(1280);
 
 		[ActorReference]
 		public readonly string[] RepairBuildings = { "fix" };
@@ -56,13 +56,6 @@ namespace OpenRA.Mods.RA.Air
 
 			if (init.Contains<LocationInit>())
 				SetPosition(self, init.Get<LocationInit, CPos>());
-
-
-			if (init.Contains<AltitudeInit>())
-			{
-				var z = init.Get<AltitudeInit, int>() * 1024 / Game.CellSize;
-				SetPosition(self, CenterPosition + new WVec(0, 0, z - CenterPosition.Z));
-			}
 
 			if (init.Contains<CenterPositionInit>())
 				SetPosition(self, init.Get<CenterPositionInit, WPos>());
@@ -161,7 +154,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public WVec FlyStep(int facing)
 		{
-			var speed = MovementSpeed * 7 * 1024 / (Game.CellSize * 32);
+			var speed = MovementSpeed;
 			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing));
 			return speed * dir / 1024;
 		}

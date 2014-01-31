@@ -88,7 +88,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var abortButton = panel.Get<ButtonWidget>("ABORT_BUTTON");
 			var retryButton = panel.Get<ButtonWidget>("RETRY_BUTTON");
 
+			abortButton.Visible = onAbort != null;
 			abortButton.OnClick = () => { Ui.CloseWindow(); onAbort(); };
+
+			retryButton.Visible = onRetry != null;
 			retryButton.OnClick = () => 
 			{
 				var password = passwordField != null && passwordField.IsVisible() ? passwordField.Text : orderManager.Password;

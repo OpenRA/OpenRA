@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,31 +8,37 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
 	class EnterTransport : Activity
 	{
-		public Actor transport;
+		readonly Actor transport;
+		readonly Cargo cargo;
 
 		public EnterTransport(Actor self, Actor transport)
 		{
 			this.transport = transport;
+			cargo = transport.Trait<Cargo>();
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled) return NextActivity;
-			if (transport == null || !transport.IsInWorld) return NextActivity;
+			if (IsCanceled)
+				return NextActivity;
 
-			var cargo = transport.Trait<Cargo>();
+			if (transport == null || !transport.IsInWorld)
+				return NextActivity;
+
 			if (!cargo.CanLoad(transport, self))
 				return NextActivity;
 
 			// TODO: Queue a move order to the transport? need to be
 			// careful about units that can't path to the transport
-			if ((transport.Location - self.Location).LengthSquared > 2)
+			var cells = Util.AdjacentCells(Target.FromActor(transport));
+			if (!cells.Contains(self.Location))
 				return NextActivity;
 
 			cargo.Load(transport, self);

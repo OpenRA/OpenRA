@@ -247,6 +247,18 @@ namespace OpenRA.FileFormats
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
+			else if (fieldType == typeof(CPos))
+			{
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				return new CPos(int.Parse(parts[0]), int.Parse(parts[1]));
+			}
+
+			else if (fieldType == typeof(CVec))
+			{
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				return new CVec(int.Parse(parts[0]), int.Parse(parts[1]));
+			}
+
 			else if (fieldType.IsEnum)
 			{
 				if (!Enum.GetNames(fieldType).Select(a => a.ToLower()).Contains(value.ToLower()))
@@ -268,6 +280,12 @@ namespace OpenRA.FileFormats
 				for (int i = 0; i < parts.Length; i++)
 					ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i].Trim(), field), i);
 				return ret;
+			}
+
+			else if (fieldType == typeof(Size))
+			{
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				return new Size(int.Parse(parts[0]), int.Parse(parts[1]));
 			}
 
 			else if (fieldType == typeof(int2))

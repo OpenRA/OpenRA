@@ -35,8 +35,7 @@ namespace OpenRA.Mods.RA.Air
 			var desiredFacing = Util.GetFacing(dist, helicopter.Facing);
 			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.ROT);
 
-			var cruiseAltitude = new WRange(helicopter.Info.CruiseAltitude * 1024 / Game.CellSize);
-			if (HeliFly.AdjustAltitude(self, helicopter, cruiseAltitude))
+			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
 				return this;
 
 			// Fly towards the target

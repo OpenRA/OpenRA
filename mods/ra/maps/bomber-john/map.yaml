@@ -769,7 +769,7 @@ Smudges:
 
 Rules:
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 	APWR:
 		Buildable:
@@ -824,7 +824,7 @@ Rules:
 		Armor:
 			Type: Heavy
 		Mobile:
-			Speed: 9
+			Speed: 128
 			WaitAverage: 1
 			WaitSpread: 1
 			ROT: 900
@@ -833,7 +833,6 @@ Rules:
 		RenderUnit:
 			Image: MNLY
 		AttackMove:
-			JustMove: true
 		MustBeDestroyed:
 		Transforms:
 			IntoActor: ftur

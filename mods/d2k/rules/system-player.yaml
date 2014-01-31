@@ -1,0 +1,54 @@
+Player:
+	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: BuildingReady
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		LowPowerSlowdown: 2
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Armor:
+		Type: Armor
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Starport:
+		Type: Starport
+		BuildSpeed: .2
+		LowPowerSlowdown: 1
+		BlockedAudio: NoRoom
+		QueuedAudio: OrderPlaced
+		ReadyAudio:
+	ClassicProductionQueue@Aircraft:
+		Type: Aircraft
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		BlockedAudio: NoRoom
+	PlaceBuilding:
+	SupportPowerManager:
+	ConquestVictoryConditions:
+	PowerManager:
+		AdviceInterval: 650
+	AllyRepair:
+	PlayerResources:
+		AdviceInterval: 650
+	ActorGroupProxy:
+	DeveloperMode:
+	PlayerColorPalette:
+		BasePalette: d2k
+		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
+	PlayerHighlightPalette:
+	BaseAttackNotifier:
+	Shroud:
+	FrozenActorLayer:
+	HarvesterAttackNotifier:
+	PlayerStatistics:
+

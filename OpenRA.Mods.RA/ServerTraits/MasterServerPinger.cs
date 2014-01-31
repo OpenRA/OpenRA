@@ -51,6 +51,12 @@ namespace OpenRA.Mods.RA.Server
 			isBusy = true;
 
 			var mod = server.ModData.Manifest.Mod;
+
+			// important to grab these on the main server thread, not in the worker we're about to spawn -- they may be modified
+			// by the main thread as clients join and leave.
+			var numPlayers = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null).Count();
+			var numBots = server.LobbyInfo.Clients.Where(c1 => c1.Bot != null).Count();
+
 			Action a = () =>
 				{
 					try
@@ -65,8 +71,8 @@ namespace OpenRA.Mods.RA.Server
 								server.Settings.MasterServer + url.F(
 								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
 								(int)server.State,
-								server.LobbyInfo.Clients.Where(c1 => c1.Bot == null).Count(),
-								server.LobbyInfo.Clients.Where(c1 => c1.Bot != null).Count(),
+								numPlayers,
+								numBots,
 								"{0}@{1}".F(mod.Id, mod.Version),
 								server.LobbyInfo.GlobalSettings.Map,
 								server.Map.PlayerCount));

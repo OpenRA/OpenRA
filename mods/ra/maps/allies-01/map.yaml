@@ -359,7 +359,7 @@ Rules:
 	Player:
 		-ConquestVictoryConditions:
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		Allies01Script:
@@ -414,18 +414,18 @@ VoxelSequences:
 Weapons:
 	8Inch:
 		ROF: 200
-		Range: 25
+		Range: 25c0
 		Burst: 2
 		Report: TURRET1.AUD
 		Projectile: Bullet
-			Speed: 30
+			Speed: 512
 			High: true
-			Angle: .1
-			Inaccuracy: 100
+			Angle: 62
+			Inaccuracy: 4c170
 			Image: 120MM
 			ContrailLength: 10
 		Warhead:
-			Spread: 5
+			Spread: 213
 			Versus:
 				None: 60%
 				Wood: 75%

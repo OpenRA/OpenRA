@@ -8,6 +8,7 @@ Folders:
 	.
 	./mods/cnc
 	./mods/cnc/bits
+	./mods/cnc/bits/ss
 	./mods/cnc/uibits
 	~^/Content/cnc
 
@@ -33,8 +34,11 @@ Packages:
 	~transit.mix
 
 Rules:
+	mods/cnc/rules/system-actors.yaml
+	mods/cnc/rules/system-ai.yaml
+	mods/cnc/rules/system-player.yaml
+	mods/cnc/rules/system-world.yaml
 	mods/cnc/rules/defaults.yaml
-	mods/cnc/rules/system.yaml
 	mods/cnc/rules/structures.yaml
 	mods/cnc/rules/infantry.yaml
 	mods/cnc/rules/vehicles.yaml

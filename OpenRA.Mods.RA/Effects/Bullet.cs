@@ -22,15 +22,16 @@ namespace OpenRA.Mods.RA.Effects
 {
 	public class BulletInfo : IProjectileInfo
 	{
-		public readonly int Speed = 1;
+		[Desc("Projectile speed in WRange / tick")]
+		public readonly WRange Speed = new WRange(17);
 		public readonly string Trail = null;
-		[Desc("Pixels at maximum range")]
-		public readonly float Inaccuracy = 0;
+		[Desc("Maximum offset at the maximum range")]
+		public readonly WRange Inaccuracy = WRange.Zero;
 		public readonly string Image = null;
 		[Desc("Check for whether an actor with Wall: trait blocks fire")]
 		public readonly bool High = false;
 		public readonly bool Shadow = false;
-		public readonly float Angle = 0;
+		public readonly WAngle Angle = WAngle.Zero;
 		public readonly int TrailInterval = 2;
 		public readonly int TrailDelay = 1;
 		public readonly int ContrailLength = 0;
@@ -49,7 +50,6 @@ namespace OpenRA.Mods.RA.Effects
 		ContrailRenderable trail;
 		Animation anim;
 
-		[Sync] WAngle angle;
 		[Sync] WPos pos, target;
 		[Sync] int length;
 		[Sync] int facing;
@@ -63,22 +63,15 @@ namespace OpenRA.Mods.RA.Effects
 			this.args = args;
 			this.pos = args.Source;
 
-			// Convert ProjectileArg definitions to world coordinates
-			// TODO: Change the yaml definitions so we don't need this
-			var range = new WRange((int)(1024 * args.Weapon.Range)); // Range in world units
-			var inaccuracy = new WRange((int)(info.Inaccuracy * 1024 / Game.CellSize)); // Offset in world units at max range
-			var speed = (int)(info.Speed * 4 * 1024 / (10 * Game.CellSize)); // Speed in world units per tick
-			angle = WAngle.ArcTan((int)(info.Angle * 4 * 1024), 1024); // Angle in world angle
-
 			target = args.PassiveTarget;
-			if (info.Inaccuracy > 0)
+			if (info.Inaccuracy.Range > 0)
 			{
-				var maxOffset = inaccuracy.Range * (target - pos).Length / range.Range;
+				var maxOffset = info.Inaccuracy.Range * (target - pos).Length / args.Weapon.Range.Range;
 				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
 			}
 
 			facing = Traits.Util.GetFacing(target - pos, 0);
-			length = Math.Max((target - pos).Length / speed, 1);
+			length = Math.Max((target - pos).Length / info.Speed.Range, 1);
 
 			if (info.Image != null)
 			{
@@ -98,7 +91,7 @@ namespace OpenRA.Mods.RA.Effects
 		int GetEffectiveFacing()
 		{
 			var at = (float)ticks / (length - 1);
-			var attitude = angle.Tan() * (1 - 2 * at) / (4 * 1024);
+			var attitude = info.Angle.Tan() * (1 - 2 * at) / (4 * 1024);
 
 			var u = (facing % 128) / 128f;
 			var scale = 512 * u * (1 - u);
@@ -113,11 +106,11 @@ namespace OpenRA.Mods.RA.Effects
 			if (anim != null)
 				anim.Tick();
 
-			pos = WPos.LerpQuadratic(args.Source, target, angle, ticks, length);
+			pos = WPos.LerpQuadratic(args.Source, target, info.Angle, ticks, length);
 
 			if (info.Trail != null && --smokeTicks < 0)
 			{
-				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
+				var delayedPos = WPos.LerpQuadratic(args.Source, target, info.Angle, ticks - info.TrailDelay, length);
 				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail)));
 				smokeTicks = info.TrailInterval;
 			}
@@ -150,7 +143,7 @@ namespace OpenRA.Mods.RA.Effects
 						yield return r;
 				}
 
-				var palette = wr.Palette(args.Weapon.Underwater ? "shadow" : "effect");
+				var palette = wr.Palette(args.Weapon.Palette);
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
 			}

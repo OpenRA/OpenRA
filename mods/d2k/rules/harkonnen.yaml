@@ -95,7 +95,7 @@ PALACEH:
 		LaunchSound:
 		IncomingSound:
 		MissileWeapon: atomic
-		SpawnOffset:-512,1c171,0
+		SpawnOffset: -512,1c171,0
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:
@@ -107,7 +107,7 @@ MCVH:
 	Transforms:
 		Facing: 16
 		IntoActor: conyardh
-		Offset:-1,-1
+		Offset: -1,-1
 		NoTransformSounds: HI_DPLOY.AUD
 	RenderUnit:
 		Image: DMCV
@@ -134,7 +134,7 @@ COMBATH:
 	Buildable:
 		Owner: harkonnen
 	Mobile:
-		Speed: 5
+		Speed: 53
 		ROT: 4
 	Turreted:
 		ROT: 5
@@ -177,7 +177,7 @@ DEVAST:
 		Type: Heavy
 	Mobile:
 		ROT: 3
-		Speed: 4
+		Speed: 42
 		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 7
@@ -222,7 +222,7 @@ SARDAUKAR:
 	Health:
 		HP: 100
 	Mobile:
-		Speed: 4
+		Speed: 42
 	RevealsShroud:
 		Range: 6
 	TakeCover:
@@ -234,3 +234,4 @@ SARDAUKAR:
 	Armament@SECONDARY:
 		Weapon: Slung
 	AttackFrontal:
+

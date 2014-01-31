@@ -495,6 +495,18 @@ checkbox-disabled: dialog.png
 	corner-bl: 640,383,1,1
 	corner-br: 767,383,1,1
 
+# Same as button-highlighted-pressed
+checkbox-highlighted: dialog.png
+	background: 897,1,126,126
+	border-r: 1023,1,1,126
+	border-l: 896,1,1,126
+	border-b: 897,127,126,1
+	border-t: 897,0,126,1
+	corner-tl: 896,0,1,1
+	corner-tr: 1023,0,1,1
+	corner-bl: 896,127,1,1
+	corner-br: 1023,127,1,1
+
 # A copy of dialog3 (pressed button)
 scrollitem-selected: dialog.png
 	background: 641,1,126,126

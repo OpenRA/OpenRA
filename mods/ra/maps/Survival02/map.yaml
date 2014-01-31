@@ -991,7 +991,7 @@ Smudges:
 
 Rules:
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		Survival02Script:
@@ -1124,12 +1124,12 @@ VoxelSequences:
 Weapons:
 	ParaBomb:
 		ROF: 5
-		Range: 7
+		Range: 7c0
 		Report: CHUTE1
 		Projectile: GravityBomb
 			Image: BOMBLET
 		Warhead:
-			Spread: 15
+			Spread: 640
 			Versus:
 				None: 125%
 				Wood: 100%

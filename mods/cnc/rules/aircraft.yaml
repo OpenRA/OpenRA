@@ -14,7 +14,7 @@ TRAN:
 	Helicopter:
 		LandWhenIdle: true
 		ROT: 5
-		Speed: 15
+		Speed: 140
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 	Health:
@@ -56,7 +56,7 @@ HELI:
 	Helicopter:
 		RearmBuildings: hpad
 		ROT: 4
-		Speed: 20
+		Speed: 186
 	Health:
 		HP: 125
 	Armor:
@@ -108,7 +108,7 @@ ORCA:
 	Helicopter:
 		RearmBuildings: hpad
 		ROT: 4
-		Speed: 20
+		Speed: 186
 	Health:
 		HP: 90
 	Armor:
@@ -149,7 +149,7 @@ C17:
 		Cost: 2000
 	Plane:
 		ROT: 5
-		Speed: 35
+		Speed: 326
 	Health:
 		HP: 25
 	Armor:
@@ -157,7 +157,6 @@ C17:
 	RenderUnit:
 	WithShadow:
 	Cargo:
-#		Types: Infantry, Vehicle
 		MaxWeight: 10
 		PipCount: 10
 	Invulnerable:
@@ -188,7 +187,7 @@ A10:
 		Cost: 2000
 	Plane:
 		ROT: 4
-		Speed: 40
+		Speed: 373
 	Health:
 		HP: 150
 	Armor:
@@ -227,7 +226,7 @@ TRAN.Husk:
 		Name: Chinook Transport
 	Helicopter:
 		ROT: 5
-		Speed: 15
+		Speed: 140
 	RevealsShroud:
 		Range: 8
 	WithRotor@PRIMARY:
@@ -245,7 +244,7 @@ HELI.Husk:
 		Name: Apache Longbow
 	Helicopter:
 		ROT: 4
-		Speed: 20
+		Speed: 186
 	RevealsShroud:
 		Range: 10
 	WithRotor:
@@ -260,9 +259,10 @@ ORCA.Husk:
 		Name: Orca
 	Helicopter:
 		ROT: 4
-		Speed: 20
+		Speed: 186
 	RevealsShroud:
 		Range: 10
 	RenderUnit:
 		Image: orca
 	WithShadow:
+

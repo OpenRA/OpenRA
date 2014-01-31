@@ -77,6 +77,11 @@ namespace OpenRA.Traits
 	public interface INotifyHarvest { void Harvested(Actor self, ResourceType resource); }
 
 	public interface IAcceptInfiltrator { void OnInfiltrate(Actor self, Actor infiltrator); }
+	public interface IDemolishable
+	{
+		void Demolish(Actor self, Actor saboteur);
+		bool IsValidTarget(Actor self, Actor saboteur);
+	}
 	public interface IStoreOre { int Capacity { get; } }
 	public interface IToolTip
 	{
@@ -148,6 +153,7 @@ namespace OpenRA.Traits
 		Activity MoveTo(CPos cell, int nearEnough);
 		Activity MoveTo(CPos cell, Actor ignoredActor);
 		Activity MoveWithinRange(Target target, WRange range);
+		CPos NearestMoveableCell(CPos target);
 	}
 
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }

@@ -1,5 +1,3 @@
-# Arranged structures in order, from basic to advanced: Buildings, Defenses, Walls, Misc.
-
 FACT:
 	Inherits: ^Building
 	Buildable:
@@ -17,7 +15,7 @@ FACT:
 		Dimensions: 3,2
 	Health:
 		HP: 1400
-	Armor: 
+	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 10
@@ -26,7 +24,7 @@ FACT:
 		Produces: Building,Defense
 	Transforms:
 		IntoActor: mcv
-		Offset:1,1
+		Offset: 1,1
 		Facing: 108
 	ProductionQueue@Building:
 		Type: Building
@@ -187,12 +185,12 @@ PYLE:
 	Bib:
 	RallyPoint:
 	Exit@1:
-		SpawnOffset: -10,2
+		SpawnOffset: -426,85,0
 		ExitCell: 0,1
 	Exit@2:
-		SpawnOffset: 7,7
-		ExitCell: 1,1	
-	Production:		
+		SpawnOffset: 298,298,0
+		ExitCell: 1,1
+	Production:
 		Produces: Infantry
 	ProductionQueue:
 		Type: Infantry
@@ -200,7 +198,7 @@ PYLE:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	ProductionBar:
-	
+
 HAND:
 	Inherits: ^Building
 	Valued:
@@ -225,7 +223,7 @@ HAND:
 	Bib:
 	RallyPoint:
 	Exit@1:
-		SpawnOffset: 12,24
+		SpawnOffset: 512,1024,0
 		ExitCell: 1,2
 	Production:
 		Produces: Infantry
@@ -261,7 +259,7 @@ AFLD:
 	RallyPoint:
 		RallyPoint: 4,2
 	Exit@1:
-		SpawnOffset: -24,0
+		SpawnOffset: -1024,0,0
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle
@@ -300,7 +298,7 @@ WEAP:
 	RallyPoint:
 		RallyPoint: 0,3
 	Exit@1:
-		SpawnOffset: -8,-8
+		SpawnOffset: -341,-341,0
 		ExitCell: 0,2
 	Production:
 		Produces: Vehicle
@@ -331,7 +329,7 @@ HPAD:
 	RevealsShroud:
 		Range: 5
 	Exit@1:
-		SpawnOffset: 0,-6
+		SpawnOffset: 0,-256,0
 	Production:
 		Produces: Aircraft
 	Reservable:
@@ -381,6 +379,7 @@ HQ:
 		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
 		EndChargeSound: airredy1.aud
 		SelectTargetSound: select1.aud
+		InsufficientPowerSound: nopower1.aud
 		IncomingSound: enemya.aud
 		UnitType: a10
 	SupportPowerChargeBar:
@@ -407,7 +406,7 @@ FIX:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
-	
+
 EYE:
 	RequiresPower:
 	CanPowerDown:
@@ -445,6 +444,7 @@ EYE:
 		EndChargeSound: ionredy1.aud
 		LaunchSound: ion1.aud
 		SelectTargetSound: select1.aud
+		InsufficientPowerSound: nopower1.aud
 	SupportPowerChargeBar:
 
 TMPL:
@@ -479,6 +479,7 @@ TMPL:
 		BeginChargeSound:
 		EndChargeSound: nukavail.aud
 		SelectTargetSound: select1.aud
+		InsufficientPowerSound: nopower1.aud
 		LaunchSound: nuklnch1.aud
 		IncomingSound: nuke1.aud
 		MissileWeapon: atomic
@@ -540,7 +541,7 @@ SAM:
 	-GivesBuildableArea:
 	Health:
 		HP: 400
-	Armor: 
+	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 5
@@ -576,7 +577,7 @@ OBLI:
 	-GivesBuildableArea:
 	Health:
 		HP: 400
-	Armor: 
+	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8
@@ -588,7 +589,7 @@ OBLI:
 		FireDelay: 8
 	AttackTurreted:
 	Turreted:
-		ROT:255
+		ROT: 255
 	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:
@@ -629,7 +630,7 @@ GTWR:
 	RenderRangeCircle:
 	WithMuzzleFlash:
 	Turreted:
-		ROT:255
+		ROT: 255
 
 ATWR:
 	Inherits: ^Building
@@ -651,12 +652,12 @@ ATWR:
 	-GivesBuildableArea:
 	Health:
 		HP: 600
-	Armor: 
+	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 9
 	Turreted:
-		ROT:255
+		ROT: 255
 		Offset: 128,128,-85
 	Armament:
 		Weapon: TowerMissle
@@ -687,7 +688,7 @@ SBAG:
 		Owner: gdi
 	Health:
 		HP: 100
-	Armor: 
+	Armor:
 		Type: Light
 
 CYCL:
@@ -706,7 +707,7 @@ CYCL:
 		Owner: nod
 	Health:
 		HP: 100
-	Armor: 
+	Armor:
 		Type: Light
 
 BRIK:
@@ -725,7 +726,7 @@ BRIK:
 		Owner: gdi,nod
 	Health:
 		HP: 250
-	Armor: 
+	Armor:
 		Type: Heavy
 	Wall:
 		CrushClasses: heavywall
@@ -733,7 +734,6 @@ BRIK:
 	SoundOnDamageTransition:
 		DestroyedSound: crumble.aud
 
-# custom prerequisites:
 BARRACKS:
 	Tooltip:
 		Name: Infantry Production
@@ -753,3 +753,4 @@ ANYHQ:
 	Tooltip:
 		Name: a communications center
 		Description: a communications center
+

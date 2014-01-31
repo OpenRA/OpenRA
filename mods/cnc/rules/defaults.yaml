@@ -11,17 +11,17 @@
 			Beach: 50
 		ROT: 5
 	SelectionDecorations:
-	Selectable: 
+	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	Buildable:
 		Queue: Vehicle
-	Repairable: 
-	Chronoshiftable: 
-	Passenger: 
+	Repairable:
+	Chronoshiftable:
+	Passenger:
 		CargoType: Vehicle
-	IronCurtainable: 
+	IronCurtainable:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -56,17 +56,17 @@
 			Beach: 70
 		ROT: 5
 	SelectionDecorations:
-	Selectable: 
+	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	Buildable:
 		Queue: Vehicle
-	Repairable: 
-	Chronoshiftable: 
-	Passenger: 
+	Repairable:
+	Chronoshiftable:
+	Passenger:
 		CargoType: Vehicle
-	IronCurtainable: 
+	IronCurtainable:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -115,6 +115,7 @@
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
 	CombatDebugOverlay:
+	AttackMove:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
@@ -123,7 +124,7 @@
 ^Infantry:
 	AppearsOnRadar:
 	Health:
-		Radius: 3
+		Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -195,7 +196,7 @@
 	Tooltip:
 		Name: Civilian
 	Mobile:
-		Speed: 4
+		Speed: 56
 	Health:
 		HP: 25
 	RevealsShroud:
@@ -209,13 +210,12 @@
 	ScaredyCat:
 	RenderInfantryPanic:
 	AttackMove:
-		JustMove: yes
 	CrushableInfantry:
 
 ^DINO:
 	AppearsOnRadar:
 	Health:
-		Radius: 3
+		Radius: 128
 		HP: 1000
 	Armor:
 		Type: Wood
@@ -230,7 +230,7 @@
 	RevealsShroud:
 		Range: 6
 	Mobile:
-		Speed: 8
+		Speed: 113
 		TerrainSpeeds:
 			Clear: 90
 			Rough: 80
@@ -284,7 +284,7 @@
 			Water: 100
 	SelectionDecorations:
 	Selectable:
-		Voice: GenericVoice
+		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground, Water
 	HiddenUnderFog:
@@ -353,6 +353,7 @@
 	EngineerRepairable:
 	Huntable:
 	LuaScriptEvents:
+	Demolishable:
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -362,7 +363,7 @@
 	-EngineerRepairable:
 	Health:
 		HP: 400
-	Armor: 
+	Armor:
 		Type: Wood
 	Building:
 	RenderBuilding:
@@ -404,6 +405,8 @@
 	Tooltip:
 		Name: Field
 	-WithBuildingExplosion:
+	-TargetableBuilding:
+	-Demolishable:
 	RenderBuilding:
 		Palette: terrain
 	EditorAppearance:
@@ -456,6 +459,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 	LuaScriptEvents:
+	Demolishable:
 
 ^Tree:
 	Tooltip:
@@ -502,7 +506,7 @@
 ^Husk:
 	Health:
 		HP: 140
-	Armor: 
+	Armor:
 		Type: Light
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
@@ -515,11 +519,6 @@
 		ForceHealthPercentage: 25
 	BelowUnits:
 	BodyOrientation:
-#	Capturable:
-#		Type: husk
-#		AllowAllies: true
-#		AllowNeutral: true
-#		AllowEnemies: true
 	LuaScriptEvents:
 
 ^HelicopterHusk:
@@ -547,3 +546,4 @@
 		DestroyedSound: xplobig4.aud
 	BodyOrientation:
 	LuaScriptEvents:
+

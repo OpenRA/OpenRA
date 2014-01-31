@@ -27,8 +27,6 @@ namespace OpenRA
 {
 	public static class Game
 	{
-		public static int CellSize { get { return modData.Manifest.TileSize; } }
-
 		public static MouseButtonPreference mouseButtonPreference = new MouseButtonPreference();
 
 		public static ModData modData;
@@ -320,13 +318,13 @@ namespace OpenRA
 			foreach (var mod in Mod.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
-			InitializeWithMod(Settings.Game.Mod);
+			InitializeWithMod(Settings.Game.Mod, args.GetValue("Launch.Replay", null));
 
 			if (Settings.Server.DiscoverNatDevices)
 				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, UPnP.TryStoppingNatDiscovery);
 		}
 
-		public static void InitializeWithMod(string mod)
+		public static void InitializeWithMod(string mod, string replay)
 		{
 			// Clear static state if we have switched mods
 			LobbyInfoChanged = () => { };
@@ -341,9 +339,9 @@ namespace OpenRA
 			if (orderManager != null)
 				orderManager.Dispose();
 
-			// Fall back to RA if the mod doesn't exist
+			// Fall back to default if the mod doesn't exist
 			if (!Mod.AllMods.ContainsKey(mod))
-				mod = "ra";
+				mod = new GameSettings().Mod;
 
 			Console.WriteLine("Loading mod: {0}", mod);
 			Settings.Game.Mod = mod;
@@ -385,6 +383,7 @@ namespace OpenRA
 					if (Settings.Server.DedicatedLoop)
 					{
 						Console.WriteLine("Starting a new server instance...");
+						modData.InitializeLoaders();
 						continue;
 					}
 
@@ -397,6 +396,8 @@ namespace OpenRA
 			{
 				modData.LoadScreen.StartGame();
 				Settings.Save();
+				if (!string.IsNullOrEmpty(replay))
+					Game.JoinReplay(replay);
 			}
 		}
 
@@ -419,6 +420,12 @@ namespace OpenRA
 		static bool quit;
 		public static event Action OnQuit = () => { };
 
+		static double idealFrameTime;
+		public static void SetIdealFrameTime(int fps)
+		{ 
+			idealFrameTime = 1.0 / fps;
+		}
+
 		internal static void Run()
 		{
 			if (Settings.Graphics.MaxFramerate < 1)
@@ -427,19 +434,22 @@ namespace OpenRA
 				Settings.Graphics.CapFramerate = false;
 			}
 
+			SetIdealFrameTime(Settings.Graphics.MaxFramerate);
+
 			while (!quit)
 			{
-				var idealFrameTime = 1.0 / Settings.Graphics.MaxFramerate;
-				var sw = new Stopwatch();
-
-				Tick(orderManager);
-
 				if (Settings.Graphics.CapFramerate)
 				{
-					var waitTime = idealFrameTime - sw.ElapsedTime();
+					var sw = new Stopwatch();
+
+					Tick(orderManager);
+
+					var waitTime = Math.Min(idealFrameTime - sw.ElapsedTime(), 1);
 					if (waitTime > 0)
 						System.Threading.Thread.Sleep(TimeSpan.FromSeconds(waitTime));
 				}
+				else
+					Tick(orderManager);
 			}
 
 			OnQuit();
@@ -502,18 +512,25 @@ namespace OpenRA
 
 		public static bool DownloadMap(string mapHash)
 		{
+			var mod = Game.modData.Manifest.Mod;
+			var dirPath = new[] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
+			var tempFile = Path.Combine(dirPath, Path.GetRandomFileName());
 			try
 			{
-				var mod = Game.modData.Manifest.Mod;
-				var dirPath = new[] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
 				if (!Directory.Exists(dirPath))
 					Directory.CreateDirectory(dirPath);
+				var url = Game.Settings.Game.MapRepository + mapHash;
 
-				var mapPath = Path.Combine(dirPath, mapHash + ".oramap");
+				var request = WebRequest.Create(url);
+				request.Method = "HEAD";
+				var res = request.GetResponse();
+
+				var mapPath = Path.Combine(dirPath, res.Headers["Content-Disposition"].Replace("attachment; filename = ", ""));
 				Console.Write("Trying to download map to {0} ... ".F(mapPath));
 
 				WebClient webClient = new WebClient();
-				webClient.DownloadFile(Game.Settings.Game.MapRepository + mapHash, mapPath);
+				webClient.DownloadFile(url, tempFile);
+				File.Move(tempFile, mapPath);
 				Game.modData.AvailableMaps.Add(mapHash, new Map(mapPath));
 				Console.WriteLine("done");
 
@@ -523,6 +540,7 @@ namespace OpenRA
 			{
 				Log.Write("debug", "Could not download map '{0}'", mapHash);
 				Log.Write("debug", e.ToString());
+				File.Delete(tempFile);
 				return false;
 			}
 		}

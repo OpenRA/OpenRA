@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Air
 						Reservation = res.Reserve(order.TargetActor, self, this);
 
 					var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
-					var offset = (exit != null) ? exit.SpawnOffsetVector : WVec.Zero;
+					var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
 					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
 
@@ -114,8 +114,7 @@ namespace OpenRA.Mods.RA.Air
 
 			// Repulsion only applies when we're flying!
 			var altitude = CenterPosition.Z;
-			var cruiseAltitude = Info.CruiseAltitude * 1024 / Game.CellSize;
-			if (altitude != cruiseAltitude)
+			if (altitude != Info.CruiseAltitude.Range)
 				return;
 
 			var otherHelis = self.World.FindActorsInCircle(self.CenterPosition, Info.IdealSeparation)
@@ -153,5 +152,6 @@ namespace OpenRA.Mods.RA.Air
 		public Activity MoveTo(CPos cell, int nearEnough) { return new HeliFly(cell); }
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new HeliFly(cell); }
 		public Activity MoveWithinRange(Target target, WRange range) { return new HeliFly(target.CenterPosition); }
+		public CPos NearestMoveableCell(CPos cell) { return cell; }
 	}
 }
