@@ -22,6 +22,8 @@ hosp:
 	make: hospmake
 		Start: 0
 		Length: *
+	icon: hospicon
+		Start: 0
 
 bio:
 	idle:
