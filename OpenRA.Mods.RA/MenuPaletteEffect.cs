@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,25 +14,25 @@ using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.RA
 {
-	public class CncMenuPaletteEffectInfo : ITraitInfo
+	public class MenuPaletteEffectInfo : ITraitInfo
 	{
 		public readonly int FadeLength = 10;
 
-		public object Create(ActorInitializer init) { return new CncMenuPaletteEffect(this); }
+		public object Create(ActorInitializer init) { return new MenuPaletteEffect(this); }
 	}
 
-	public class CncMenuPaletteEffect : IPaletteModifier, ITickRender
+	public class MenuPaletteEffect : IPaletteModifier, ITickRender
 	{
 		public enum EffectType { None, Black, Desaturated }
-		public readonly CncMenuPaletteEffectInfo Info;
+		public readonly MenuPaletteEffectInfo Info;
 
 		int remainingFrames;
 		EffectType from = EffectType.Black;
 		EffectType to = EffectType.Black;
 
-		public CncMenuPaletteEffect(CncMenuPaletteEffectInfo info) { Info = info; }
+		public MenuPaletteEffect(MenuPaletteEffectInfo info) { Info = info; }
 
 		public void Fade(EffectType type)
 		{

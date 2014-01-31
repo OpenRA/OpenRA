@@ -3,7 +3,7 @@ World:
 	ActorMap:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
-	CncMenuPaletteEffect:
+	MenuPaletteEffect:
 	CloakPaletteEffect:
 	ScreenShaker:
 	NukePaletteEffect:

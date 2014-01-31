@@ -1,4 +1,5 @@
 Container@MAINMENU:
+	Logic:MainMenuLogic
 	Children:
 		Background@BORDER:
 			Background:mainmenu-border
@@ -19,91 +20,114 @@ Container@MAINMENU:
 			Align:Center
 			Font:Regular
 			Contrast:True
-		Background@MAINMENU_BG:
-			X:(WINDOW_RIGHT - WIDTH)/8
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:250
-			Height:605
-			Logic:MainMenuButtonsLogic
+		Container@MENUS:
+			X:100
+			Y:WINDOW_BOTTOM/2-HEIGHT/2
+			Width:200
+			Height:320
 			Children:
-				Label@MAINMENU_LABEL_TITLE:
-					X:0
-					Y:20
-					Width:250
-					Height:35
-					Text:OpenRA
-					Align:Center
-					Font:Title
-				Button@MAINMENU_BUTTON_JOIN:
-					X:45
-					Y:80
-					Width:160
-					Height:35
-					Text:Join Game
-					Font:Bold
-				Button@MAINMENU_BUTTON_CREATE:
-					X:45
-					Y:130
-					Width:160
-					Height:35
-					Text:Create Game
-					Font:Bold
-				Button@MAINMENU_BUTTON_DIRECTCONNECT:
-					X:45
-					Y:180
-					Width:160
-					Height:35
-					Text:Direct Connect
-					Font:Bold
-				Button@MAINMENU_BUTTON_SETTINGS:
-					X:45
-					Y:230
-					Width:160
-					Height:35
-					Text:Settings
-					Font:Bold
-				Button@MAINMENU_BUTTON_MODS:
-					X:45
-					Y:280
-					Width:160
-					Height:35
-					Text:Mods
-					Font:Bold
-				Button@MAINMENU_BUTTON_MUSIC:
-					X:45
-					Y:330
-					Width:160
-					Height:35
-					Text:Music
-					Font:Bold
-				Button@MAINMENU_BUTTON_REPLAY_VIEWER:
-					X:45
-					Y:380
-					Width:160
-					Height:35
-					Text:Replay Viewer
-					Font:Bold
-				Button@MAINMENU_BUTTON_CREDITS:
-					X:45
-					Y:430
-					Width:160
-					Height:35
-					Text:Credits
-					Font:Bold
-				Button@MAINMENU_BUTTON_ASSET_BROWSER:
-					X:45
-					Y:480
-					Width:160
-					Height:35
-					Text:Asset Browser
-					Font:Bold
-				Button@MAINMENU_BUTTON_QUIT:
-					X:45
-					Y:530
-					Width:160
-					Height:35
-					Text:Quit
-					Font:Bold
+				Background@MAIN_MENU:
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Children:
+						Label@MAINMENU_LABEL_TITLE:
+							X:0
+							Y:20
+							Width:200
+							Height:30
+							Text:OpenRA
+							Align:Center
+							Font:Bold
+						Button@SINGLEPLAYER_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Y:60
+							Width:140
+							Height:30
+							Text:Singleplayer
+							Font:Bold
+						Button@MULTIPLAYER_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Y:100
+							Width:140
+							Height:30
+							Text:Multiplayer
+							Font:Bold
+						Button@MODS_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Y:140
+							Width:140
+							Height:30
+							Text:Mods
+							Font:Bold
+						Button@SETTINGS_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Y:180
+							Width:140
+							Height:30
+							Text:Settings
+							Font:Bold
+						Button@EXTRAS_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Y:220
+							Width:140
+							Height:30
+							Text:Extras
+							Font:Bold
+						Button@QUIT_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Y:260
+							Width:140
+							Height:30
+							Text:Quit
+							Font:Bold
+				Background@EXTRAS_MENU:
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Children:
+						Label@EXTRAS_MENU_TITLE:
+							X:0
+							Y:20
+							Width:200
+							Height:30
+							Text:Extras
+							Align:Center
+							Font:Bold
+						Button@REPLAYS_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Y:60
+							Width:140
+							Height:30
+							Text:Replays
+							Font:Bold
+						Button@MUSIC_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Y:100
+							Width:140
+							Height:30
+							Text:Music
+							Font:Bold
+						Button@ASSETBROWSER_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Y:140
+							Width:140
+							Height:30
+							Text:Asset Browser
+							Font:Bold
+						Button@CREDITS_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Y:180
+							Width:140
+							Height:30
+							Text:Credits
+							Font:Bold
+						Button@BACK_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Key:escape
+							Y:260
+							Width:140
+							Height:30
+							Text:Back
+							Font:Bold
 		Container@PERFORMANCE_INFO:
 			Logic:PerfDebugLogic
 			Children:

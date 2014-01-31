@@ -1,4 +1,4 @@
-Background@ASSETBROWSER_BG:
+Background@ASSETBROWSER_PANEL:
 	Logic:AssetBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
