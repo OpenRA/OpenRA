@@ -1,4 +1,5 @@
 Reinforcements = { }
+Production     = { }
 
 Reinforcements.Insert = function(owner, transportName, passengerNames, enterPath, exitPath)
 	local facing = { Map.GetFacing(CPos.op_Subtraction(enterPath[2], enterPath[1]), 0), "Int32" }
@@ -55,4 +56,16 @@ Reinforcements.Reinforce = function(owner, reinforcementNames, enterLocation, ra
 		end)
 	end
 	return reinforcements
+end
+
+Production.Build = function(player, unit)
+	Internal.Build(player, unit)
+end
+
+Production.SetRallyPoint = function(factory, location)
+	Actor.Trait(factory, "RallyPoint").rallyPoint = location.Location
+end
+
+Production.SetPrimaryBuilding = function(factory)
+	Actor.Trait(factory, "PrimaryBuilding"):SetPrimaryProducer(factory, true)
 end

@@ -178,3 +178,22 @@ end
 Actor.Trait = function(actor, className)
 	return Internal.Trait(actor, className)
 end
+
+Actor.ReturnToBase = function(actor, airfield)
+	actor:QueueActivity(OpenRA.New("ReturnToBase", {actor, airfield}))
+end
+
+Actor.Patrol = function(actor, waypoints, interval, wait)
+	if not Actor.IsDead(actor) then
+		for i, wpt in ipairs(waypoints) do
+			Actor.AttackMove(actor, wpt.Location)
+			Actor.Wait(actor, wait)
+		end
+		interval = interval - wait
+		if interval < 1 then
+			interval = 1
+		end
+		Actor.Wait(actor, interval)
+		Actor.CallFunc(actor, function() Actor.Patrol(actor, waypoints, interval, wait) end)
+	end
+end

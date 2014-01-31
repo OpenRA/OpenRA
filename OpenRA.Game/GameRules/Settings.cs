@@ -135,9 +135,6 @@ namespace OpenRA.GameRules
 		public bool AlwaysShowStatusBars = false;
 		public bool TeamHealthColors = false;
 
-		// Internal game settings
-		public int Timestep = 40;
-
 		public bool AllowDownloading = true;
 		public string MapRepository = "http://content.open-ra.org/map/";
 	}

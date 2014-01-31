@@ -296,9 +296,9 @@ namespace OpenRA.Mods.RA.Scripting
 		public void AttackMove(Actor actor, CPos location)
 		{
 			if (actor.HasTrait<AttackMove>())
-				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(location, 0)));
+				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(location, 2)));
 			else
-				actor.QueueActivity(new Move.Move(location, 0));
+				actor.QueueActivity(new Move.Move(location, 2));
 		}
 
 		[LuaGlobal]
@@ -323,6 +323,30 @@ namespace OpenRA.Mods.RA.Scripting
 		public Actor GetNamedActor(string actorName)
 		{
 			return mapActors[actorName];
+		}
+
+		[LuaGlobal]
+		public int TicksPerSecond()
+		{
+			return 1000 / Game.Timestep;
+		}
+
+		[LuaGlobal]
+		public void Build(Player player, string unit)
+		{
+			MissionUtils.StartProduction(world, player, Rules.Info[unit].Traits.Get<BuildableInfo>().Queue, unit);
+		}
+
+		[LuaGlobal]
+		public Actor[] FindActorsInBox(WPos topLeft, WPos bottomRight)
+		{
+			return world.FindActorsInBox(topLeft, bottomRight).ToArray();
+		}
+
+		[LuaGlobal]
+		public Actor[] FindActorsInCircle(WPos location, WRange radius)
+		{
+			return world.FindActorsInCircle(location, radius).ToArray();
 		}
 	}
 }
