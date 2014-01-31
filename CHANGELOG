@@ -1,10 +1,14 @@
 NEW:
 	All Mods:
-		Display an error dialog if the server connection is lost.
+		An error dialog is now displayed when server connections are lost.
+		Unified the main menu navigation between TD and other mods:
+			Moved Create Game and Direct Connect facilities to the server browser.
+			Added skirmish mode to RA and D2k to complement TD's skirmish mode.
+			Added an Extras submenu for miscellaneous game extras.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
-		Display shroud by default again (disable it in the lobby settings).
+		Shroud is now displayed by default again (disable it in the lobby settings).
 		Removed the build radius restrictions.
 		Added the BLOXXMAS terrain tiles from the 1.06 patch.
 	Red Alert:
@@ -1585,3 +1589,4 @@ NEW:
 	"Give Exploration" developer-mode option
 	Check for .net framework on windows install
 	Allow the viewport to scroll past the map edge to prevent ui from blocking buildings
+
