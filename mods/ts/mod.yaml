@@ -199,3 +199,4 @@ LuaScripts:
 	mods/common/lua/reinforcements.lua
 	mods/common/lua/supportpowers.lua
 	mods/common/lua/rules.lua
+	mods/common/lua/production.lua

@@ -342,5 +342,35 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			return world.FindActorsInCircle(location, radius).ToArray();
 		}
+
+		[LuaGlobal]
+		public void BuildWithSharedQueue(Player player, string unit, double amount)
+		{
+			var ri = Rules.Info[unit];
+			if (ri == null || !ri.Traits.Contains<BuildableInfo>())
+				return;
+
+			var category = ri.Traits.Get<BuildableInfo>().Queue;
+
+			var queue = world.ActorsWithTrait<ClassicProductionQueue>()
+				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category)
+				.Select(a => a.Trait).FirstOrDefault();
+
+			if (queue != null)
+				queue.ResolveOrder(queue.self, Order.StartProduction(queue.self, unit, (int)amount));
+		}
+
+		[LuaGlobal]
+		public void BuildWithPerFactoryQueue(Actor factory, string unit, double amount)
+		{
+			if (!factory.HasTrait<ProductionQueue>())
+				return;
+
+			var ri = Rules.Info[unit];
+			if (ri == null || !ri.Traits.Contains<BuildableInfo>())
+				return;
+
+			factory.Trait<ProductionQueue>().ResolveOrder(factory, Order.StartProduction(factory, unit, (int)amount));
+		}
 	}
 }
