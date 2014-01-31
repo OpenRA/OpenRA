@@ -1,6 +1,8 @@
 Container@INGAME_ROOT:
 	Logic:IngameChromeLogic
 	Children:
+		LogicTicker@DISCONNECT_WATCHER:
+			Logic:DisconnectWatcherLogic
 		WorldInteractionController@INTERACTION_CONTROLLER:
 			X:0
 			Y:0

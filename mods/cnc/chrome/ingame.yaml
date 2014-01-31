@@ -1,6 +1,8 @@
 Container@INGAME_ROOT:
 	Logic:CncIngameChromeLogic
 	Children:
+		LogicTicker@DISCONNECT_WATCHER:
+			Logic:DisconnectWatcherLogic
 		Timer@GAME_TIMER:
 			X: WINDOW_RIGHT/2
 			Y: 0
