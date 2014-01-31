@@ -10,6 +10,7 @@ OpenRA.New = function(className, args)
 end
 
 OpenRA.RunAfterDelay = function(delay, func)
+	if func == nil then error("No function specified", 2) end
 	Internal.RunAfterDelay(delay, func)
 end
 
