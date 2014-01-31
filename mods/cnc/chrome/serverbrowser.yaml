@@ -6,7 +6,7 @@ Container@SERVERBROWSER_PANEL:
 	Height:535
 	Children:
 		Label@TITLE:
-			Text:Find Server
+			Text:Multiplayer
 			Width:740
 			Y:0-25
 			Font:BigBold
@@ -19,38 +19,44 @@ Container@SERVERBROWSER_PANEL:
 			Children:
 				Label@SHOW_LABEL_TITLE:
 					X:20
-					Y:10
+					Y:465
 					Width:20
 					Height:25
 					Text:Show:
 					Font:Bold
 				Checkbox@WAITING_FOR_PLAYERS:
 					X:80
-					Y:13
+					Y:468
 					Width:100
 					Height:20
 					Text:Waiting
 				Checkbox@EMPTY:
 					X:180
-					Y:13
+					Y:468
 					Width:100
 					Height:20
 					Text:Empty
 				Checkbox@ALREADY_STARTED:
 					X:280
-					Y:13
+					Y:468
 					Width:100
 					Height:20
 					Text:Started
 				Checkbox@INCOMPATIBLE_VERSION:
 					X:380
-					Y:13
+					Y:468
 					Width:100
 					Height:20
 					Text:Incompatible
+				Button@REFRESH_BUTTON:
+					X:PARENT_RIGHT - WIDTH - 20
+					Y:465
+					Width:100
+					Height:25
+					Text:Refresh
 				ScrollPanel@SERVER_LIST:
 					X:15
-					Y:45
+					Y:15
 					Width:700
 					Height:440
 					Children:
@@ -120,12 +126,18 @@ Container@SERVERBROWSER_PANEL:
 			Width:140
 			Height:35
 			Text:Back
-		Button@REFRESH_BUTTON:
+		Button@CREATE_BUTTON:
+			X:PARENT_RIGHT - 140 - 10 - 140 - 10 - 140
+			Y:499
+			Width:140
+			Height:35
+			Text:Create
+		Button@DIRECTCONNECT_BUTTON:
 			X:PARENT_RIGHT - 140 - 10 - 140
 			Y:499
 			Width:140
 			Height:35
-			Text:Refresh
+			Text:Direct IP
 		Button@JOIN_BUTTON:
 			Key:return
 			X:PARENT_RIGHT - 140

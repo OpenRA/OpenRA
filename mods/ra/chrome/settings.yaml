@@ -415,13 +415,6 @@ Background@SETTINGS_PANEL:
 					Height:20
 					Font:Regular
 					Text:Show Performance Graph
-				Checkbox@DEVELOPER_MENU_CHECKBOX:
-					X:15
-					Y:100
-					Width:300
-					Height:20
-					Font:Regular
-					Text:Enable Asset Browser (requires restart)
 				Label@HOTKEY_TITLE:
 					Y:140
 					Width:PARENT_RIGHT

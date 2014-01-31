@@ -39,8 +39,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public CncIngameChromeLogic(Widget widget, World world)
 		{
 			this.world = world;
-			world.WorldActor.Trait<CncMenuPaletteEffect>()
-				.Fade(CncMenuPaletteEffect.EffectType.None);
+			world.WorldActor.Trait<MenuPaletteEffect>()
+				.Fade(MenuPaletteEffect.EffectType.None);
 
 			ingameRoot = widget.Get("INGAME_ROOT");
 			var playerRoot = ingameRoot.Get("PLAYER_ROOT");

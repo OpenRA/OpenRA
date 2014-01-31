@@ -356,7 +356,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			BindCheckboxPref(panel, "PERFGRAPH_CHECKBOX", ds, "PerfGraph");
 			BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SanityCheckUnsyncedCode");
 			BindCheckboxPref(panel, "BOTDEBUG_CHECKBOX", ds, "BotDebug");
-			BindCheckboxPref(panel, "DEVELOPER_MENU_CHECKBOX", ds, "DeveloperMenu");
 			BindCheckboxPref(panel, "CRASH_DIALOG_CHECKBOX", ds, "ShowFatalErrorDialog");
 
 			return () => { };
@@ -377,7 +376,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				ds.PerfGraph = dds.PerfGraph;
 				ds.SanityCheckUnsyncedCode = dds.SanityCheckUnsyncedCode;
 				ds.BotDebug = dds.BotDebug;
-				ds.DeveloperMenu = dds.DeveloperMenu;
 				ds.ShowFatalErrorDialog = dds.ShowFatalErrorDialog;
 			};
 		}

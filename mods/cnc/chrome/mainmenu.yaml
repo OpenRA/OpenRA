@@ -1,8 +1,10 @@
 Container@MENU_BACKGROUND:
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
-	Logic:CncMenuLogic
+	Logic:CncMainMenuLogic
 	Children:
+		Container@SHELLMAP_DESATURATION:
+			Logic:ShellmapDesaturationLogic
 		Container@SHELLMAP_DECORATIONS:
 			Children:
 				Image@RETICLE:
@@ -57,7 +59,7 @@ Container@MENU_BACKGROUND:
 		Container@MENUS:
 			X:(WINDOW_RIGHT-WIDTH)/2
 			Y:WINDOW_BOTTOM-33-HEIGHT-10
-			Width:740
+			Width:890
 			Height:35
 			Children:
 				Container@MAIN_MENU:
@@ -72,7 +74,7 @@ Container@MENU_BACKGROUND:
 							Align:Center
 							Font:Bold
 							Contrast:True
-						Button@SOLO_BUTTON:
+						Button@SINGLEPLAYER_BUTTON:
 							X:0
 							Y:0
 							Width:140
@@ -84,72 +86,40 @@ Container@MENU_BACKGROUND:
 							Width:140
 							Height:35
 							Text:Multiplayer
-						Button@SETTINGS_BUTTON:
-							X:300
-							Y:0
-							Width:140
-							Height:35
-							Text:Options
 						Button@MODS_BUTTON:
-							X:450
+							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Mods
-						Button@QUIT_BUTTON:
+						Button@SETTINGS_BUTTON:
+							X:450
+							Y:0
+							Width:140
+							Height:35
+							Text:Settings
+						Button@EXTRAS_BUTTON:
 							X:600
+							Y:0
+							Width:140
+							Height:35
+							Text:Extras
+						Button@QUIT_BUTTON:
+							X:750
 							Y:0
 							Width:140
 							Height:35
 							Text:Quit
-				Container@MULTIPLAYER_MENU:
-					Width:PARENT_RIGHT
-					Visible:false
-					Children:
-						Label@MULTIPLAYER_MENU_TITLE:
-							X:0
-							Y:0-30
-							Width:PARENT_RIGHT
-							Height:20
-							Text:Multiplayer
-							Align:Center
-							Font:Bold
-							Contrast:True
-						Button@CREATE_BUTTON:
-							X:0
-							Y:0
-							Width:140
-							Height:35
-							Text:Create Server
-						Button@JOIN_BUTTON:
-							X:150
-							Y:0
-							Width:140
-							Height:35
-							Text:Find Server
-						Button@DIRECTCONNECT_BUTTON:
-							X:300
-							Y:0
-							Width:140
-							Height:35
-							Text:Direct Connect
-						Button@BACK_BUTTON:
-							Key:escape
-							X:600
-							Y:0
-							Width:140
-							Height:35
-							Text:Back
-				Container@SETTINGS_MENU:
+				Container@EXTRAS_MENU:
 					Width:PARENT_RIGHT
 					Visible:False
 					Children:
-						Label@OPTIONS_MENU_TITLE:
+						Label@EXTRAS_MENU_TITLE:
 							X:0
 							Y:0-30
 							Width:PARENT_RIGHT
 							Height:20
-							Text:Options
+							Text:Extras
 							Align:Center
 							Font:Bold
 							Contrast:True
@@ -165,21 +135,15 @@ Container@MENU_BACKGROUND:
 							Width:140
 							Height:35
 							Text:Music
-						Button@SETTINGS_BUTTON:
-							X:300
-							Y:0
-							Width:140
-							Height:35
-							Text:Settings
 						Button@CREDITS_BUTTON:
-							X:450
+							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Credits
 						Button@BACK_BUTTON:
 							Key:escape
-							X:600
+							X:750
 							Y:0
 							Width:140
 							Height:35

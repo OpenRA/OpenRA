@@ -23,8 +23,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		GameServer currentServer;
 		ScrollItemWidget serverTemplate;
-		Action OpenLobby;
-		Action OnExit;
+
+		Action onStart;
+		Action onExit;
 
 		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
 		SearchStatus searchStatus = SearchStatus.Fetching;
@@ -38,25 +39,29 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			switch (searchStatus)
 			{
-				case SearchStatus.Fetching:	return "Fetching game list...";
-				case SearchStatus.Failed:	return "Failed to contact master server.";
-				case SearchStatus.NoGames:	return "No games found.";
-				default:					return "";
+				case SearchStatus.Fetching: return "Fetching game list...";
+				case SearchStatus.Failed: return "Failed to contact master server.";
+				case SearchStatus.NoGames: return "No games found.";
+				default: return "";
 			}
 		}
 
 		[ObjectCreator.UseCtor]
-		public ServerBrowserLogic(Widget widget, Action openLobby, Action onExit)
+		public ServerBrowserLogic(Widget widget, Action onStart, Action onExit)
 		{
 			var panel = widget;
-			OpenLobby = openLobby;
-			OnExit = onExit;
+			this.onStart = onStart;
+			this.onExit = onExit;
+
 			var sl = panel.Get<ScrollPanelWidget>("SERVER_LIST");
 
 			// Menu buttons
 			var refreshButton = panel.Get<ButtonWidget>("REFRESH_BUTTON");
 			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
 			refreshButton.OnClick = () => ServerList.Query(games => RefreshServerList(panel, games));
+
+			panel.Get<ButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = OpenDirectConnectPanel;
+			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = OpenCreateServerPanel;
 
 			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
@@ -106,6 +111,34 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			ServerList.Query(games => RefreshServerList(panel, games));
 		}
 
+		void OpenLobby()
+		{
+			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
+			{
+				{ "onExit", Game.Disconnect },
+				{ "onStart", onStart },
+				{ "addBots", false }
+			});
+		}
+
+		void OpenDirectConnectPanel()
+		{
+			Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
+			{
+				{ "openLobby", OpenLobby },
+				{ "onExit", () => { } }
+			});
+		}
+
+		void OpenCreateServerPanel()
+		{
+			Ui.OpenWindow("CREATESERVER_PANEL", new WidgetArgs
+			{
+				{ "openLobby", OpenLobby },
+				{ "onExit", () => { } }
+			});
+		}
+
 		void Join(GameServer server)
 		{
 			if (server == null || !server.CanJoin())
@@ -114,8 +147,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var host = server.Address.Split(':')[0];
 			var port = int.Parse(server.Address.Split(':')[1]);
 
-			Ui.CloseWindow();
-			ConnectionLogic.Connect(host, port, "", OpenLobby, OnExit);
+			ConnectionLogic.Connect(host, port, "", OpenLobby, onExit);
 		}
 
 		string GetPlayersLabel(GameServer game)
@@ -164,10 +196,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			if ((game.State == (int)ServerState.GameStarted) && !showStarted)
 				return true;
-			
+
 			if ((game.State == (int)ServerState.WaitingPlayers) && !showWaiting)
 				return true;
-			
+
 			if ((game.Players == 0) && !showEmpty)
 				return true;
 
@@ -230,7 +262,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var state = item.Get<LabelWidget>("STATE");
 				state.GetText = () => GetStateLabel(game);
-	
+
 				var ip = item.Get<LabelWidget>("IP");
 				ip.GetText = () => game.Address;
 

@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -27,8 +28,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			var resumeDisabled = false;
 			menu = widget.Get("INGAME_MENU");
-			var mpe = world.WorldActor.Trait<CncMenuPaletteEffect>();
-			mpe.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
+			var mpe = world.WorldActor.Trait<MenuPaletteEffect>();
+			mpe.Fade(MenuPaletteEffect.EffectType.Desaturated);
 
 			menu.Get<LabelWidget>("VERSION_LABEL").Text = Game.modData.Manifest.Mod.Version;
 
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Sound.PlayNotification(null, "Speech", "Leave", null);
 				resumeDisabled = true;
-				Game.RunAfterDelay(1200, () => mpe.Fade(CncMenuPaletteEffect.EffectType.Black));
+				Game.RunAfterDelay(1200, () => mpe.Fade(MenuPaletteEffect.EffectType.Black));
 				Game.RunAfterDelay(1200 + 40 * mpe.Info.FadeLength, () =>
 				{
 					Game.Disconnect();
@@ -86,7 +87,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Ui.CloseWindow();
 				Ui.Root.RemoveChild(menu);
-				world.WorldActor.Trait<CncMenuPaletteEffect>().Fade(CncMenuPaletteEffect.EffectType.None);
+				world.WorldActor.Trait<MenuPaletteEffect>().Fade(MenuPaletteEffect.EffectType.None);
 				onExit();
 			};
 
