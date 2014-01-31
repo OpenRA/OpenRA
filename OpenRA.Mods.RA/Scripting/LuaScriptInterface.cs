@@ -279,6 +279,12 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[LuaGlobal]
+		public void HeliFlyToPos(Actor actor, WPos pos)
+		{
+			actor.QueueActivity(new HeliFly(actor, Target.FromPos(pos)));
+		}
+
+		[LuaGlobal]
 		public void SetUnitStance(Actor actor, string stance)
 		{
 			var at = actor.TraitOrDefault<AutoTarget>();
