@@ -485,6 +485,7 @@
     <Compile Include="ShroudRenderer.cs" />
     <Compile Include="Render\WithCrateBody.cs" />
     <Compile Include="Buildings\Demolishable.cs" />
+    <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
