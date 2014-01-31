@@ -1,4 +1,6 @@
 NEW:
+	All Mods:
+		Display an error dialog if the server connection is lost.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
