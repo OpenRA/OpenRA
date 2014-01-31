@@ -117,6 +117,7 @@
 	CombatDebugOverlay:
 	AttackMove:
 	Guard:
+	Guardable:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
