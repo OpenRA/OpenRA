@@ -188,6 +188,7 @@ namespace OpenRA.Network
 			catch (SocketException) { /* drop this on the floor; we'll pick up the disconnect from the reader thread */ }
 			catch (ObjectDisposedException) { /* ditto */ }
 			catch (InvalidOperationException) { /* ditto */ }
+			catch (IOException) { /* ditto */ }
 		}
 
 		bool disposed = false;
