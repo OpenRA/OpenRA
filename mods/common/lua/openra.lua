@@ -43,7 +43,11 @@ OpenRA.SetWinState = function(player, winState)
 end
 
 OpenRA.GetRandomInteger = function(low, high)
-	return Internal.GetRandomInteger(low, high)
+	if high <= low then
+		return low
+	else
+		return Internal.GetRandomInteger(low, high)
+	end
 end
 
 OpenRA.TakeOre = function(player, amount)
