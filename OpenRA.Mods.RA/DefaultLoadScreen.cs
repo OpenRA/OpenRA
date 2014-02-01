@@ -8,8 +8,10 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Support;
@@ -77,7 +79,7 @@ namespace OpenRA.Mods.RA
 		void TestAndContinue()
 		{
 			Ui.ResetAll();
-			if (!FileSystem.Exists(info["TestFile"]))
+			if (!info["TestFiles"].Split(',').All(f => FileSystem.Exists(f.Trim())))
 			{
 				var args = new WidgetArgs()
 				{

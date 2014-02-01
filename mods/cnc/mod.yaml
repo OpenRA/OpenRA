@@ -126,7 +126,7 @@ LoadScreen: CncLoadScreen
 	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
 	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
 	InstallerBackgroundWidget: INSTALL_BACKGROUND
-	TestFile: conquer.mix
+	TestFiles: conquer.mix, desert.mix, general.mix, sounds.mix, speech.mix, temperat.mix, tempicnh.mix, winter.mix
 	PackageURL: http://open-ra.org/download/content/cnc-packages
 
 ServerTraits:
