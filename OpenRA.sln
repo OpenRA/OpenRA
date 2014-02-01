@@ -41,6 +41,30 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Irc", "OpenRA.Irc\Op
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Renderer.Sdl2", "OpenRA.Renderer.Sdl2\OpenRA.Renderer.Sdl2.csproj", "{33D03738-C154-4028-8EA8-63A3C488A651}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common Lua scripts", "Common Lua scripts", "{FCA943AB-E622-415E-8A61-639D97F62EEC}"
+	ProjectSection(SolutionItems) = preProject
+		mods\common\lua\utils.lua = mods\common\lua\utils.lua
+		mods\common\lua\team.lua = mods\common\lua\team.lua
+		mods\common\lua\supportpowers.lua = mods\common\lua\supportpowers.lua
+		mods\common\lua\rules.lua = mods\common\lua\rules.lua
+		mods\common\lua\reinforcements.lua = mods\common\lua\reinforcements.lua
+		mods\common\lua\openra.lua = mods\common\lua\openra.lua
+		mods\common\lua\mission.lua = mods\common\lua\mission.lua
+		mods\common\lua\media.lua = mods\common\lua\media.lua
+		mods\common\lua\map.lua = mods\common\lua\map.lua
+		mods\common\lua\actor.lua = mods\common\lua\actor.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts", "Tiberian Dawn Lua scripts", "{62FCD0D0-6D24-435D-9DD8-3CCADCF7ECAB}"
+	ProjectSection(SolutionItems) = preProject
+		mods\cnc\maps\shellmap\shellmap.lua = mods\cnc\maps\shellmap\shellmap.lua
+		mods\cnc\maps\gdi01\gdi01.lua = mods\cnc\maps\gdi01\gdi01.lua
+		mods\cnc\maps\gdi02\gdi02.lua = mods\cnc\maps\gdi02\gdi02.lua
+		mods\cnc\maps\nod01\nod01.lua = mods\cnc\maps\nod01\nod01.lua
+		mods\cnc\maps\nod03a\nod03a.lua = mods\cnc\maps\nod03a\nod03a.lua
+		mods\cnc\maps\nod03b\nod03b.lua = mods\cnc\maps\nod01\nod03b.lua
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

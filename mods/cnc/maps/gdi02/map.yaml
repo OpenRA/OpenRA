@@ -733,7 +733,7 @@ Rules:
 		-MPStartLocations:
 		-CrateSpawner:
 		LuaScriptInterface:
-			LuaScripts: mission.lua
+			LuaScripts: gdi02.lua
 	Player:
 		-ConquestVictoryConditions:
 	PROC:
