@@ -24,7 +24,6 @@ MCV:
 		Range: 4
 	MustBeDestroyed:
 	BaseBuilding:
-	-AttackMove:
 	Transforms:
 		IntoActor: gacnst
 		Offset: -1,-1
@@ -57,7 +56,6 @@ APC:
 		Range: 5
 	Turreted:
 		ROT: 10
-	-AttackMove:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -93,7 +91,6 @@ HARV:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4
-	AttackMove:
 	-GainsExperience:
 	RenderSprites:
 	RenderVoxels:
@@ -188,7 +185,6 @@ TRUCKB:
 		Range: 5
 	SupplyTruck:
 		Payload: 500
-	AttackMove:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -212,7 +208,6 @@ LPST:
 		ROT: 5
 	RevealsShroud:
 		Range: 10
-	AttackMove:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -242,7 +237,6 @@ ICBM:
 		ROT: 5
 	RevealsShroud:
 		Range: 7
-	AttackMove:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -275,7 +269,6 @@ REPAIR:
 		Weapon: Repair
 	AttackMedic:
 		Cursor: repair
-	AttackMove:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -299,7 +292,6 @@ ART2:
 		ROT: 2
 	RevealsShroud:
 		Range: 9
-	AttackMove:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -330,7 +322,6 @@ WEED:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4
-	AttackMove:
 	-GainsExperience:
 	RenderSprites:
 	RenderVoxels:
@@ -355,7 +346,6 @@ BUS:
 		Type: Light
 	RevealsShroud:
 		Range: 5
-	-AttackMove:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 20
@@ -384,7 +374,6 @@ PICK:
 		Type: Light
 	RevealsShroud:
 		Range: 5
-	-AttackMove:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 2
@@ -413,7 +402,6 @@ CAR:
 		Type: Light
 	RevealsShroud:
 		Range: 5
-	-AttackMove:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 4
@@ -443,7 +431,6 @@ GGHUNT:
 	RevealsShroud:
 		Range: 7
 	RenderUnit:
-	AttackMove:
 	DemoTruck:
 	Explodes:
 		Weapon: SuicideBomb
@@ -468,7 +455,6 @@ WINI:
 		Type: Light
 	RevealsShroud:
 		Range: 5
-	-AttackMove:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -648,7 +634,6 @@ SAPC:
 		Type: Heavy
 	RevealsShroud:
 		Range: 5
-	-AttackMove:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -734,7 +719,6 @@ TTNK:
 		Type: Light
 	RevealsShroud:
 		Range: 5
-	-AttackMove:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:

@@ -349,7 +349,7 @@ namespace OpenRA.Mods.RA.Missions
 		void SetupSubStances()
 		{
 			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && !a.IsDead() && a.HasTrait<TargetableSubmarine>()))
-				actor.Trait<AutoTarget>().stance = UnitStance.Defend;
+				actor.Trait<AutoTarget>().Stance = UnitStance.Defend;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)

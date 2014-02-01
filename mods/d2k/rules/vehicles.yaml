@@ -24,7 +24,6 @@
 		Range: 8
 	MustBeDestroyed:
 	BaseBuilding:
-	-AttackMove:
 	Explodes:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale
@@ -80,7 +79,6 @@ HARVESTER:
 	Explodes:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale
-	-AttackMove:
 	LeavesHusk:
 		HuskActor: Harvester.Husk
 	WithHarvestAnimation:

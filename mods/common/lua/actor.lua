@@ -29,7 +29,7 @@ end
 
 Actor.ScriptedMove = function(actor, location)
 	if Actor.HasTrait(actor, "Helicopter") then
-		actor:QueueActivity(OpenRA.New("HeliFly", { location.CenterPosition }))
+		Internal.HeliFlyToPos(actor, location.CenterPosition)
 	else
 		actor:QueueActivity(OpenRA.New("Move", { location }))
 	end
@@ -52,7 +52,7 @@ Actor.AttackMove = function(actor, location)
 end
 
 Actor.HeliFly = function(actor, position)
-	actor:QueueActivity(OpenRA.New("HeliFly", { position }))
+	Internal.HeliFlyToPos(actor, position)
 end
 
 Actor.HeliLand = function(actor, requireSpace)

@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Air
 				if (IsCanceled)
 					return NextActivity;
 
-				inner = Util.SequenceActivities(Fly.ToPos(target.CenterPosition), new FlyTimed(50));
+				inner = Util.SequenceActivities(new Fly(self, target), new FlyTimed(50));
 			}
 
 			inner = Util.RunActivity(self, inner);

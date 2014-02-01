@@ -102,6 +102,10 @@ MIG:
 		ROT: 5
 		Speed: 186
 		RearmBuildings: afld
+	AutoTarget:
+		TargetWhenIdle: false
+		TargetWhenDamaged: false
+		EnableStances: false
 	RenderUnit:
 		CameraPitch: 99
 	WithShadow:
@@ -154,6 +158,10 @@ YAK:
 		InitialFacing: 192
 		ROT: 5
 		Speed: 149
+	AutoTarget:
+		TargetWhenIdle: false
+		TargetWhenDamaged: false
+		EnableStances: false
 	RenderUnit:
 		CameraPitch: 99
 	WithShadow:
@@ -247,6 +255,10 @@ HELI:
 		InitialFacing: 20
 		ROT: 4
 		Speed: 149
+	AutoTarget:
+		TargetWhenIdle: false
+		TargetWhenDamaged: false
+		EnableStances: false
 	RenderUnit:
 	WithRotor:
 		Offset: 0,0,85
@@ -293,6 +305,10 @@ HIND:
 		InitialFacing: 20
 		ROT: 4
 		Speed: 112
+	AutoTarget:
+		TargetWhenIdle: false
+		TargetWhenDamaged: false
+		EnableStances: false
 	RenderUnit:
 	WithRotor:
 	WithShadow:

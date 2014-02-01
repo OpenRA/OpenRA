@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -206,7 +206,7 @@ namespace OpenRA.Mods.RA.Missions
 				new FacingInit(Traits.Util.GetFacing(waypoints[1] - waypoints[0], 0))
 			});
 			foreach (var waypoint in waypoints)
-				m.QueueActivity(Fly.ToCell(waypoint));
+				m.QueueActivity(new Fly(m, Target.FromCell(waypoint)));
 			m.QueueActivity(new RemoveSelf());
 		}
 
@@ -221,12 +221,12 @@ namespace OpenRA.Mods.RA.Missions
 			var exit = lz.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
 			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
-			chinook.QueueActivity(new HeliFly(lz.CenterPosition + offset)); // no reservation of hpad but it's not needed
+			chinook.QueueActivity(new HeliFly(chinook, Target.FromPos(lz.CenterPosition + offset))); // no reservation of hpad but it's not needed
 			chinook.QueueActivity(new Turn(0));
 			chinook.QueueActivity(new HeliLand(false));
 			chinook.QueueActivity(new UnloadCargo(true));
 			chinook.QueueActivity(new Wait(150));
-			chinook.QueueActivity(new HeliFly(entry));
+			chinook.QueueActivity(new HeliFly(chinook, Target.FromCell(entry)));
 			chinook.QueueActivity(new RemoveSelf());
 		}
 
@@ -290,7 +290,7 @@ namespace OpenRA.Mods.RA.Missions
 			foreach (var actor in actors.Values)
 			{
 				if (actor.Owner == allies && actor.HasTrait<AutoTarget>())
-					actor.Trait<AutoTarget>().stance = UnitStance.Defend;
+					actor.Trait<AutoTarget>().Stance = UnitStance.Defend;
 				
 				if (actor.IsInWorld && (actor.HasTrait<Bridge>() || actor.Owner == allies || (actor.Owner == soviets && actor.HasTrait<Building>())))
 					actor.AddTrait(new Invulnerable());

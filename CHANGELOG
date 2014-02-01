@@ -1,6 +1,8 @@
 NEW:
 	All Mods:
 		An error dialog is now displayed when server connections are lost.
+		Added AttackMove and Guard abilities to Aircraft and Helicopters.
+		Aircraft and Helicopters can now be guarded by other units.
 		Unified the main menu navigation between TD and other mods:
 			Moved Create Game and Direct Connect facilities to the server browser.
 			Added skirmish mode to RA and D2k to complement TD's skirmish mode.
@@ -19,7 +21,6 @@ NEW:
 		Fixed transparency glitches in the sniper icon.
 	Tiberian Dawn:
 		Commando can now plant C4 on bridges.
-		Helicopters can now AttackMove.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.

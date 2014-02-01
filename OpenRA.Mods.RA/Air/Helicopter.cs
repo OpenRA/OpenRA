@@ -28,11 +28,13 @@ namespace OpenRA.Mods.RA.Air
 	class Helicopter : Aircraft, ITick, IResolveOrder, IMove
 	{
 		public HelicopterInfo Info;
+		Actor self;
 		bool firstTick = true;
 
 		public Helicopter(ActorInitializer init, HelicopterInfo info)
 			: base(init, info)
 		{
+			self = init.self;
 			Info = info;
 		}
 
@@ -46,11 +48,12 @@ namespace OpenRA.Mods.RA.Air
 
 			if (order.OrderString == "Move")
 			{
-				var target = self.World.ClampToWorld(order.TargetLocation);
+				var cell = self.World.ClampToWorld(order.TargetLocation);
+				var t = Target.FromCell(cell);
 
-				self.SetTargetLine(Target.FromCell(target), Color.Green);
+				self.SetTargetLine(t, Color.Green);
 				self.CancelActivity();
-				self.QueueActivity(new HeliFly(target));
+				self.QueueActivity(new HeliFly(self, t));
 
 				if (Info.LandWhenIdle)
 				{
@@ -78,7 +81,7 @@ namespace OpenRA.Mods.RA.Air
 					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
 
 					self.CancelActivity();
-					self.QueueActivity(new HeliFly(order.TargetActor.CenterPosition + offset));
+					self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
 					self.QueueActivity(new Turn(Info.InitialFacing));
 					self.QueueActivity(new HeliLand(false));
 					self.QueueActivity(new ResupplyAircraft());
@@ -149,9 +152,11 @@ namespace OpenRA.Mods.RA.Air
 			return (d * 1024 * 8) / (int)distSq;
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough) { return new HeliFly(cell); }
-		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new HeliFly(cell); }
-		public Activity MoveWithinRange(Target target, WRange range) { return new HeliFly(target.CenterPosition); }
+		public Activity MoveTo(CPos cell, int nearEnough) { return new HeliFly(self, Target.FromCell(cell)); }
+		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new HeliFly(self, Target.FromCell(cell)); }
+		public Activity MoveWithinRange(Target target, WRange range) { return new HeliFly(self, target, WRange.Zero, range); }
+		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return new HeliFly(self, target, minRange, maxRange); }
+		public Activity MoveFollow(Actor self, Target target, WRange range) { return new Follow(self, target, range); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 	}
 }

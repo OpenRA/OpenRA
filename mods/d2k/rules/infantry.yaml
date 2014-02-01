@@ -52,7 +52,6 @@ ENGINEER:
 	Captures:
 		CaptureTypes: husk
 	-AutoTarget:
-	AttackMove:
 
 BAZOOKA:
 	Inherits: ^Infantry
@@ -110,5 +109,3 @@ MEDIC:
 	Passenger:
 		PipType: Blue
 	-AutoTarget:
-	AttackMove:
-

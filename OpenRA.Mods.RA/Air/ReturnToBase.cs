@@ -110,15 +110,15 @@ namespace OpenRA.Mods.RA.Air
 				
 				self.CancelActivity();
 				if (nearestAfld != null)
-					return Util.SequenceActivities(Fly.ToCell(nearestAfld.Location), new FlyCircle());
+					return Util.SequenceActivities(new Fly(self, Target.FromActor(nearestAfld)), new FlyCircle());
 				else
 					return new FlyCircle();
 			}
 
 			return Util.SequenceActivities(
-				Fly.ToPos(w1),
-				Fly.ToPos(w2),
-				Fly.ToPos(w3),
+				new Fly(self, Target.FromPos(w1)),
+				new Fly(self, Target.FromPos(w2)),
+				new Fly(self, Target.FromPos(w3)),
 				new Land(Target.FromActor(dest)),
 				NextActivity);
 		}

@@ -177,7 +177,6 @@ E6:
 		CaptureTypes: husk
 	TakeCover:
 	-AutoTarget:
-	AttackMove:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -212,7 +211,6 @@ SPY:
 	Infiltrates:
 		Types: Cash, SupportPower, Exploration
 	-AutoTarget:
-	AttackMove:
 	-RenderInfantry:
 	RenderSpy:
 		IdleAnimations: idle1,idle2
@@ -289,7 +287,6 @@ MEDI:
 		Cursor: heal
 	TakeCover:
 	-AutoTarget:
-	AttackMove:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -325,7 +322,6 @@ MECH:
 		Cursor: repair
 	TakeCover:
 	-AutoTarget:
-	AttackMove:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -346,7 +342,6 @@ EINSTEIN:
 	RevealsShroud:
 		Range: 2
 	-AutoTarget:
-	AttackMove:
 	ProximityCaptor:
 		Types: CivilianInfantry
 	-RenderInfantry:
@@ -369,7 +364,6 @@ DELPHI:
 	RevealsShroud:
 		Range: 2
 	-AutoTarget:
-	AttackMove:
 	ProximityCaptor:
 		Types: CivilianInfantry
 	-RenderInfantry:
@@ -410,7 +404,6 @@ THF:
 		InfiltrateTypes: Cash
 	TakeCover:
 	-AutoTarget:
-	AttackMove:
 
 SHOK:
 	Inherits: ^Infantry

@@ -196,6 +196,9 @@
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
 	HiddenUnderFog:
+	AttackMove:
+	Guard:
+	Guardable:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:

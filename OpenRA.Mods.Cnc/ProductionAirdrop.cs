@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Cnc
 					new FacingInit(64)
 				});
 
-				a.QueueActivity(Fly.ToCell(self.Location + new CVec(9, 0)));
+				a.QueueActivity(new Fly(a, Target.FromCell(self.Location + new CVec(9, 0))));
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() =>
 				{
@@ -71,7 +71,8 @@ namespace OpenRA.Mods.Cnc
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit));
 					Sound.PlayNotification(self.Owner, "Speech", (Info as ProductionAirdropInfo).ReadyAudio, self.Owner.Country.Race);
 				}));
-				a.QueueActivity(Fly.ToCell(endPos));
+
+				a.QueueActivity(new Fly(a, Target.FromCell(endPos)));
 				a.QueueActivity(new RemoveSelf());
 			});
 

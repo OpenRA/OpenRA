@@ -15,9 +15,23 @@ namespace OpenRA.Mods.RA.Air
 {
 	public class Fly : Activity
 	{
-		readonly WPos pos;
+		readonly Plane plane;
+		readonly Target target;
+		readonly WRange maxRange;
+		readonly WRange minRange;
 
-		Fly(WPos pos) { this.pos = pos; }
+		public Fly(Actor self, Target t)
+		{
+			plane = self.Trait<Plane>();
+			target = t;
+		}
+
+		public Fly(Actor self, Target t, WRange minRange, WRange maxRange)
+			: this(self, t)
+		{
+			this.maxRange = maxRange;
+			this.minRange = minRange;
+		}
 
 		public static void FlyToward(Actor self, Plane plane, int desiredFacing, WRange desiredAltitude)
 		{
@@ -36,20 +50,22 @@ namespace OpenRA.Mods.RA.Air
 			plane.SetPosition(self, plane.CenterPosition + move);
 		}
 
-		public static Fly ToPos(WPos pos) { return new Fly(pos); }
-		public static Fly ToCell(CPos pos) { return new Fly(pos.CenterPosition); }
-
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled)
 				return NextActivity;
 
+			// Inside the target annulus, so we're done
+			var insideMaxRange = maxRange.Range > 0 && target.IsInRange(plane.CenterPosition, maxRange);
+			var insideMinRange = minRange.Range > 0 && target.IsInRange(plane.CenterPosition, minRange);
+			if (insideMaxRange && !insideMinRange)
+				return NextActivity;
+
 			// Close enough (ported from old code which checked length against sqrt(50) px)
-			var d = pos - self.CenterPosition;
+			var d = target.CenterPosition - self.CenterPosition;
 			if (d.HorizontalLengthSquared < 91022)
 				return NextActivity;
 
-			var plane = self.Trait<Plane>();
 			var desiredFacing = Util.GetFacing(d, plane.Facing);
 
 			// Don't turn until we've reached the cruise altitude
@@ -63,7 +79,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromPos(pos);
+			yield return target;
 		}
 	}
 }

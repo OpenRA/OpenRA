@@ -272,7 +272,7 @@ namespace OpenRA.Mods.RA.Missions
 		void SetAlliedUnitsToDefensiveStance()
 		{
 			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == allies && !a.IsDead() && a.HasTrait<AutoTarget>()))
-				actor.Trait<AutoTarget>().stance = UnitStance.Defend;
+				actor.Trait<AutoTarget>().Stance = UnitStance.Defend;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)

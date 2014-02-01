@@ -540,6 +540,7 @@ namespace OpenRA.Mods.RA.Move
 		public Activity MoveTo(CPos cell, int nearEnough) { return new Move(cell, nearEnough); }
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Move(cell, ignoredActor); }
 		public Activity MoveWithinRange(Target target, WRange range) { return new Move(target, range); }
+		public Activity MoveFollow(Actor self, Target target, WRange range) { return new Follow(self, target, range); }
 		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(pathFunc); }
 	}
 }

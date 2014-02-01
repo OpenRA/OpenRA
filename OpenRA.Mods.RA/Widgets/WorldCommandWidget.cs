@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			var stances = Enum<UnitStance>.GetValues();
 			var nextStance = stances.Concat(stances)
-				.SkipWhile(s => s != actor.Second.predictedStance)
+				.SkipWhile(s => s != actor.Second.PredictedStance)
 				.Skip(1)
 				.First();
 
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				var at = a.TraitOrDefault<AutoTarget>();
 				if (at != null)
-					at.predictedStance = nextStance;
+					at.PredictedStance = nextStance;
 
 				// FIXME: Abuse of the type system here with `CPos`
 				return new Order("SetUnitStance", a, false) { TargetLocation = new CPos((int)nextStance, 0) };

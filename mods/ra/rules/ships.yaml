@@ -43,7 +43,6 @@ SS:
 	-DetectCloaked:
 	AutoTarget:
 		InitialStance: HoldFire
-	AttackMove:
 
 MSUB:
 	Inherits: ^Ship
@@ -90,7 +89,6 @@ MSUB:
 	-DetectCloaked:
 	AutoTarget:
 		InitialStance: HoldFire
-	AttackMove:
 
 DD:
 	Inherits: ^Ship
@@ -225,7 +223,6 @@ LST:
 		PipCount: 5
 	IronCurtainable:
 	RepairableNear:
-	AttackMove:
 
 PT:
 	Inherits: ^Ship

@@ -116,6 +116,8 @@
 		EmptyWeapon: HeliExplode
 	CombatDebugOverlay:
 	AttackMove:
+	Guard:
+	Guardable:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Huntable:
@@ -209,7 +211,6 @@
 		NotifyAll: true
 	ScaredyCat:
 	RenderInfantryPanic:
-	AttackMove:
 	CrushableInfantry:
 
 ^DINO:
@@ -274,6 +275,7 @@
 	CombatDebugOverlay:
 	BodyOrientation:
 	Huntable:
+	AttackMove:
 	LuaScriptEvents:
 
 ^Ship:
