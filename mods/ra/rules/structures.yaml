@@ -1435,6 +1435,7 @@ SBAG:
 		Prerequisites: fact
 		Owner: allies
 		Hotkey: b
+	-Selectable:
 	Valued:
 		Cost: 25
 	CustomSellValue:
@@ -1455,6 +1456,7 @@ FENC:
 		Prerequisites: fact
 		Owner: soviet
 		Hotkey: n
+	-Selectable:
 	Valued:
 		Cost: 25
 	CustomSellValue:
@@ -1475,6 +1477,7 @@ BRIK:
 		Prerequisites: fact
 		Owner: allies,soviet
 		Hotkey: w
+	-Selectable:
 	Valued:
 		Cost: 100
 	CustomSellValue:
