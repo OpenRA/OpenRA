@@ -146,6 +146,8 @@ COMBATA.Husk:
 	Inherits: ^COMBAT.Husk
 	RenderUnit:
 		Image: COMBATA
+	TransformOnCapture:
+		IntoActor: combata
 
 COMBATA.starport:
 	Inherits: COMBATA
@@ -195,6 +197,8 @@ SONICTANK.Husk:
 	Inherits: ^Husk
 	RenderUnit:
 		Image: SONICTANK
+	TransformOnCapture:
+		IntoActor: sonictank
 
 FREMEN:
 	Inherits: ^Infantry

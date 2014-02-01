@@ -48,6 +48,9 @@ ENGINEER:
 		PipType: Yellow
 	EngineerRepair:
 	ExternalCaptures:
+		Type: building
+	Captures:
+		CaptureTypes: husk
 	-AutoTarget:
 	AttackMove:
 

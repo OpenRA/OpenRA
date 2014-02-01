@@ -40,6 +40,7 @@ Rules:
 	mods/ra/rules/system-world.yaml
 	mods/ra/rules/defaults.yaml
 	mods/ra/rules/vehicles.yaml
+	mods/ra/rules/husks.yaml
 	mods/ra/rules/structures.yaml
 	mods/ra/rules/infantry.yaml
 	mods/ra/rules/civilian.yaml

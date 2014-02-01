@@ -1,0 +1,234 @@
+1TNK.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Light Tank)
+	RenderUnit:
+		Image: 1tnk
+	ThrowsParticle@turret:
+		Anim: turret
+	TransformOnCapture:
+		IntoActor: 1tnk
+
+2TNK.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Medium Tank)
+	RenderUnit:
+		Image: 2tnk
+	ThrowsParticle@turret:
+		Anim: turret
+	TransformOnCapture:
+		IntoActor: 2tnk
+
+3TNK.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Heavy Tank)
+	RenderUnit:
+		Image: 3tnk
+	ThrowsParticle@turret:
+		Anim: turret
+	TransformOnCapture:
+		IntoActor: 3tnk
+
+4TNK.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Mammoth Tank)
+	RenderUnit:
+		Image: 4tnk
+	ThrowsParticle@turret:
+		Anim: turret
+	TransformOnCapture:
+		IntoActor: 4tnk
+
+HARV.FullHusk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Harvester)
+	RenderUnit:
+		Image: hhusk
+	TransformOnCapture:
+		IntoActor: harv
+
+HARV.EmptyHusk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Harvester)
+	RenderUnit:
+		Image: hhusk2
+	TransformOnCapture:
+		IntoActor: harv
+
+MCV.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (MCV)
+	RenderUnit:
+		Image: mcvhusk
+	TransformOnCapture:
+		IntoActor: mcv
+
+MGG.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Mobile Gap Generator)
+	RenderUnit:
+		Image: mgg
+	ThrowsParticle@spinner:
+		Anim: spinner-idle
+		Offset: -299,0,171
+	TransformOnCapture:
+		IntoActor: mgg
+
+TRAN.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Transport Helicopter
+	RenderUnit:
+		Image: tran
+	WithShadow:
+	Helicopter:
+		ROT: 4
+		Speed: 149
+	WithRotor@PRIMARY:
+		Offset: -597,0,341
+	WithRotor@SECONDARY:
+		Id: rotor_2
+		Offset: 597,0,213
+	RevealsShroud:
+		Range: 12
+
+TRAN.Husk1:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Transport Helicopter)
+	RenderUnit:
+		Image: tran1husk
+	-TargetableUnit:
+	-Capturable:
+	-TransformOnCapture:
+
+TRAN.Husk2:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Transport Helicopter)
+	RenderUnit:
+		Image: tran2husk
+	-TargetableUnit:
+	-Capturable:
+	-TransformOnCapture:
+
+BADR.Husk:
+	Inherits: ^PlaneHusk
+	Tooltip:
+		Name: Badger
+	RenderUnit:
+		Image: badr
+	WithShadow:
+	Plane:
+		ROT: 5
+		Speed: 149
+	SmokeTrailWhenDamaged@0:
+		Offset: -432,560,0
+		Interval: 2
+		MinDamage: Undamaged
+	SmokeTrailWhenDamaged@1:
+		Offset: -432,-560,0
+		Interval: 2
+		MinDamage: Undamaged
+
+MIG.Husk:
+	Inherits: ^PlaneHusk
+	Tooltip:
+		Name: Mig Attack Plane
+	RenderUnit:
+		CameraPitch: 99
+		Image: mig
+	WithShadow:
+	Contrail@1:
+		Offset: -598,-683,0
+	Contrail@2:
+		Offset: -598,683,0
+	Plane:
+		ROT: 5
+		Speed: 186
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,171
+		Interval: 2
+		MinDamage: Undamaged
+	RevealsShroud:
+		Range: 12
+
+YAK.Husk:
+	Inherits: ^PlaneHusk
+	Tooltip:
+		Name: Yak Attack Plane
+	RenderUnit:
+		CameraPitch: 99
+		Image: yak
+	WithShadow:
+	Contrail:
+		Offset: -853,0,0
+	Plane:
+		ROT: 5
+		Speed: 149
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,0
+		Interval: 2
+		MinDamage: Undamaged
+	RevealsShroud:
+		Range: 10
+
+HELI.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Longbow
+	RenderUnit:
+		Image: heli
+	WithShadow:
+	Helicopter:
+		ROT: 4
+		Speed: 149
+	WithRotor:
+		Offset: 0,0,85
+	SmokeTrailWhenDamaged:
+		Offset: -427,0,0
+		MinDamage: Undamaged
+	RevealsShroud:
+		Range: 12
+
+HIND.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Hind
+	RenderUnit:
+		Image: hind
+	WithShadow:
+	Helicopter:
+		ROT: 4
+		Speed: 112
+	WithRotor:
+	SmokeTrailWhenDamaged:
+		Offset: -427,0,0
+		MinDamage: Undamaged
+	RevealsShroud:
+		Range: 10
+
+U2.Husk:
+	Inherits: ^PlaneHusk
+	RenderUnit:
+		Image: u2
+	WithShadow:
+	Plane:
+		ROT: 7
+		Speed: 373
+	Contrail@1:
+		Offset: -725,683,0
+	Contrail@2:
+		Offset: -725,-683,0
+	SmokeTrailWhenDamaged:
+		Offset: -1c43,0,0
+		Interval: 2
+		MinDamage: Undamaged
+
