@@ -21,6 +21,7 @@ NEW:
 		Fixed transparency glitches in the sniper icon.
 	Tiberian Dawn:
 		Commando can now plant C4 on bridges.
+		Added the Asset Browser to the Extras menu.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.
