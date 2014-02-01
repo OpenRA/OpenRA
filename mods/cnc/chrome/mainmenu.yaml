@@ -135,8 +135,14 @@ Container@MENU_BACKGROUND:
 							Width:140
 							Height:35
 							Text:Music
-						Button@CREDITS_BUTTON:
+						Button@ASSETBROWSER_BUTTON:
 							X:300
+							Y:0
+							Width:140
+							Height:35
+							Text:Asset Browser
+						Button@CREDITS_BUTTON:
+							X:450
 							Y:0
 							Width:140
 							Height:35
