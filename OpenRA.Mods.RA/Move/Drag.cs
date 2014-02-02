@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Move
 		public override Activity Tick(Actor self)
 		{
 			var positionable = self.Trait<IPositionable>();
-			var mobile = positionable as Mobile;
+			var movement = self.Trait<IMove>();
 
 			var pos = length > 1
 				? WPos.Lerp(start, end, ticks, length - 1)
@@ -38,14 +38,14 @@ namespace OpenRA.Mods.RA.Move
 			positionable.SetVisualPosition(self, pos);
 			if (++ticks >= length)
 			{
-				if (mobile != null)
-					mobile.IsMoving = false;
+				if (movement != null)
+					movement.IsMoving = false;
 
 				return NextActivity;
 			}
 
-			if (mobile != null)
-				mobile.IsMoving = true;
+			if (movement != null)
+				movement.IsMoving = true;
 
 			return this;
 		}

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if (IsCanceled) return NextActivity;
 
-			var mobile = self.Trait<Mobile>();
+			var movement = self.Trait<IMove>();
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (!limitedAmmo.HasAmmo())
 			{
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Activities
 
 				return Util.SequenceActivities(
 					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
-					mobile.MoveTo(rearmTarget.CenterPosition.ToCPos(), rearmTarget),
+					movement.MoveTo(rearmTarget.CenterPosition.ToCPos(), rearmTarget),
 					new Rearm(self),
 					new Repair(rearmTarget),
 					this );
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Activities
 				{
 					var p = ml.minefield.Random(self.World.SharedRandom);
 					if (ShouldLayMine(self, p))
-						return Util.SequenceActivities( mobile.MoveTo(p, 0), this );
+						return Util.SequenceActivities( movement.MoveTo(p, 0), this );
 				}
 
 			// TODO: return somewhere likely to be safe (near fix) so we're not sitting out in the minefield.

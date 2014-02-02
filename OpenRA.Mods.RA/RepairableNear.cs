@@ -65,11 +65,11 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "RepairNear" && CanRepairAt(order.TargetActor) && ShouldRepair())
 			{
-				var mobile = self.Trait<Mobile>();
+				var movement = self.Trait<IMove>();
 				var target = Target.FromOrder(order);
 
 				self.CancelActivity();
-				self.QueueActivity(mobile.MoveWithinRange(target, new WRange(1024*info.CloseEnough)));
+				self.QueueActivity(movement.MoveWithinRange(target, new WRange(1024*info.CloseEnough)));
 				self.QueueActivity(new Repair(order.TargetActor));
 
 				self.SetTargetLine(target, Color.Green, false);

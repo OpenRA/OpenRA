@@ -148,6 +148,7 @@ namespace OpenRA.Traits
 		void SetVisualPosition(Actor self, WPos pos);
 	}
 
+	public interface IMoveInfo { }
 	public interface IMove
 	{
 		Activity MoveTo(CPos cell, int nearEnough);
@@ -155,6 +156,7 @@ namespace OpenRA.Traits
 		Activity MoveWithinRange(Target target, WRange range);
 		Activity MoveFollow(Actor self, Target target, WRange range);
 		CPos NearestMoveableCell(CPos target);
+		bool IsMoving { get; set; }
 	}
 
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }

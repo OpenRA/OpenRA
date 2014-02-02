@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
-	public class PlaneInfo : AircraftInfo
+	public class PlaneInfo : AircraftInfo, IMoveInfo
 	{
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(10);
 
@@ -26,6 +26,7 @@ namespace OpenRA.Mods.RA.Air
 		public readonly PlaneInfo Info;
 		[Sync] public WPos RTBPathHash;
 		Actor self;
+		public bool IsMoving { get { return self.CenterPosition.Z > 0; } set { } }
 
 		public Plane(ActorInitializer init, PlaneInfo info)
 			: base(init, info)

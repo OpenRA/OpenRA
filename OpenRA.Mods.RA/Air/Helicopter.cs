@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
-	class HelicopterInfo : AircraftInfo
+	class HelicopterInfo : AircraftInfo, IMoveInfo
 	{
 		public readonly WRange IdealSeparation = new WRange(1706);
 		public readonly bool LandWhenIdle = true;
@@ -30,6 +30,7 @@ namespace OpenRA.Mods.RA.Air
 		public HelicopterInfo Info;
 		Actor self;
 		bool firstTick = true;
+		public bool IsMoving { get { return self.CenterPosition.Z > 0; } set { } }
 
 		public Helicopter(ActorInitializer init, HelicopterInfo info)
 			: base(init, info)
