@@ -79,8 +79,8 @@ return {
   ["Close the current editor window"] = "Закрыть текущее окно редактирования", -- src\editor\menu_file.lua
   ["Co&ntinue"] = "Пр&одолжить", -- src\editor\menu_project.lua
   ["Col: %d"] = "Стб: %d", -- src\editor\editor.lua
-  ["Command Line Parameters..."] = nil, -- src\editor\menu_project.lua
-  ["Command line parameters"] = nil, -- src\editor\menu_project.lua
+  ["Command Line Parameters..."] = "Параметры командной строки...", -- src\editor\menu_project.lua
+  ["Command line parameters"] = "Параметры командной строки", -- src\editor\menu_project.lua
   ["Comment or uncomment current or selected lines"] = "Закомментировать или раскомментировать текущую или выделенные строки", -- src\editor\menu_edit.lua
   ["Compilation error"] = "Ошибка компиляции", -- src\editor\commands.lua, src\editor\debugger.lua
   ["Compilation successful; %.0f%% success rate (%d/%d)."] = "Компиляция завершена успешно; процент успеха: %.0f%% (%d/%d).", -- src\editor\commands.lua
@@ -209,8 +209,8 @@ return {
   ["Searching for"] = "Поиск", -- src\editor\findreplace.lua
   ["Select &All"] = "Выделить &все", -- src\editor\menu_edit.lua, src\editor\editor.lua
   ["Select all text in the editor"] = "Выделить весь текст в редакторе", -- src\editor\menu_edit.lua
-  ["Select and Find Next"] = nil, -- src\editor\menu_search.lua
-  ["Select and Find Previous"] = nil, -- src\editor\menu_search.lua
+  ["Select and Find Next"] = "Выделить и найти далее", -- src\editor\menu_search.lua
+  ["Select and Find Previous"] = "Выделить и найти ранее", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its next occurrence"] = nil, -- src\editor\menu_search.lua
   ["Select the word under cursor and find its previous occurrence"] = nil, -- src\editor\menu_search.lua
   ["Set From Current File"] = "Установить по текущему файлу", -- src\editor\menu_project.lua
