@@ -61,6 +61,7 @@ function PackageRegister(file, ...)
   return PackageEventHandleOne(file, "onRegister", ...)
 end
 
+function ide:GetApp() return self.editorApp end
 function ide:GetEditor(index) return GetEditor(index) end
 function ide:GetMenuBar() return self.frame.menuBar end
 function ide:GetStatusBar() return self.frame.statusBar end
