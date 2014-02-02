@@ -143,7 +143,7 @@ local function shellPrint(marker, ...)
     text = text .. tostring(x)..(i < cnt and "\t" or "")
   end
   -- add "\n" if it is missing
-  if text then text = text:gsub("\n$", "") .. "\n" end
+  if text then text = text:gsub("\n+$", "") .. "\n" end
 
   local lines = out:GetLineCount()
   local promptLine = isPrompt and getPromptLine() or nil
@@ -486,7 +486,7 @@ local function inputEditable(line)
     not (out:LineFromPosition(out:GetSelectionStart()) < getPromptLine())
 end
 
--- new Scintilla changed the way markers move when the text is updated
+-- new Scintilla (3.2.1) changed the way markers move when the text is updated
 -- ticket: http://sourceforge.net/p/scintilla/bugs/939/
 -- discussion: https://groups.google.com/forum/?hl=en&fromgroups#!topic/scintilla-interest/4giFiKG4VXo
 if ide.wxver >= "2.9.5" then
