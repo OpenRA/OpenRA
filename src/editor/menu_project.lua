@@ -33,7 +33,7 @@ local debugTab = {
 }
 
 local targetDirMenu = wx.wxMenu{
-  {ID_PROJECTDIRCHOOSE, TR("Choose ...")..KSC(ID_PROJECTDIRCHOOSE), TR("Choose a project directory")},
+  {ID_PROJECTDIRCHOOSE, TR("Choose...")..KSC(ID_PROJECTDIRCHOOSE), TR("Choose a project directory")},
   {ID_PROJECTDIRFROMFILE, TR("Set From Current File")..KSC(ID_PROJECTDIRFROMFILE), TR("Set project directory from current file")},
 }
 local targetMenu = wx.wxMenu({})

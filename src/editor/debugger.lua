@@ -863,7 +863,7 @@ function debuggerAddWindow(ctrl, panel, name)
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
     - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
-  notebook:AddPage(ctrl, TR(name), true)
+  notebook:AddPage(ctrl, name, true)
 
   local mgr = ide.frame.uimgr
   mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
@@ -877,11 +877,11 @@ function debuggerAddWindow(ctrl, panel, name)
 end
 
 function DebuggerAddStackWindow()
-  return debuggerAddWindow(debugger.stackCtrl, "stackpanel", "Stack")
+  return debuggerAddWindow(debugger.stackCtrl, "stackpanel", TR("Stack"))
 end
 
 function DebuggerAddWatchWindow()
-  return debuggerAddWindow(debugger.watchCtrl, "watchpanel", "Watch")
+  return debuggerAddWindow(debugger.watchCtrl, "watchpanel", TR("Watch"))
 end
 
 function debuggerCreateStackWindow()

@@ -203,8 +203,7 @@ function SaveFile(editor, filePath)
     if ide.config.savebak then
       local ok, err = FileRename(filePath, filePath..".bak")
       if not ok then
-        ReportError(TR("Unable to save file '%s'."):format(filePath..".bak")
-        .."\nError: "..err)
+        ReportError(TR("Unable to save file '%s': %s"):format(filePath..".bak", err))
         return
       end
     end
