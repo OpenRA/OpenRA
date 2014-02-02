@@ -9,6 +9,10 @@
 -- You can also update an existing file with new messages by running:
 --  > bin\lua.exe build/messages.lua cfg/i18n/ru.lua
 
+-- store `print` function as it's modified by wxlua and LuaJIT doesn't like
+-- what wxlua has done in that function.
+local print = print
+
 local iswindows = os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows')
 if iswindows or not pcall(require, "wx") then
   package.cpath = (iswindows and 'bin/?.dll;' or 'bin/lib?.dylib;') .. package.cpath
