@@ -288,7 +288,7 @@
 	LineBuild:
 		Range: 8
 	SelectionDecorations:
-	Selectable:
+	-Selectable:
 		Priority: 1
 	TargetableBuilding:
 		TargetTypes: Ground, C4, DetonateAttack
