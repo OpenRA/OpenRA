@@ -48,7 +48,7 @@ return {
   ["&Up"] = "Verso l'alto", -- src\editor\findreplace.lua
   ["&View"] = "Visualizza", -- src\editor\menu_view.lua
   ["&Watch Window"] = "Finestra Espressioni di Controllo", -- src\editor\menu_view.lua
-  [".&bak on Replace"] = ".bak su Sostiutisci", -- src\editor\findreplace.lua
+  [".&bak on Replace"] = ".bak su Sostituisci", -- src\editor\findreplace.lua
   ["About %s"] = "Informazioni su %s", -- src\editor\menu_help.lua
   ["Add To Scratchpad"] = "Aggiungi a Scratchpad ", -- src\editor\editor.lua
   ["Add Watch Expression"] = "Aggiungi Espressione di Controllo", -- src\editor\editor.lua
