@@ -49,7 +49,7 @@ GAP:
 		Cost: 800
 	Tooltip:
 		Name: Gap Generator
-		Description: Obscures enemies view with shroud.
+		Description: Obscures enemy's view with shroud.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
@@ -81,7 +81,7 @@ SPEN:
 		Cost: 800
 	Tooltip:
 		Name: Sub Pen
-		Description: Produces and repairs submarines and \ntransports.
+		Description: Produces and repairs submarines and\ntransports.
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
@@ -144,10 +144,9 @@ SYRD:
 		Cost: 1000
 	Tooltip:
 		Name: Shipyard
-		Description: Produces and repairs ships \nand transports.
+		Description: Produces and repairs ships\nand transports.
 	TargetableBuilding:
-		TargetTypes: Ground, Water
-	Building:
+		TargetTypes: Ground, Water	Building:
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -967,7 +966,7 @@ SILO:
 		Cost: 150
 	Tooltip:
 		Name: Silo
-		Description: Stores excess harvested Ore.
+		Description: Stores excess refined Ore and gems.
 	Building:
 		Power: -10
 	-GivesBuildableArea:
@@ -1031,7 +1030,7 @@ AFLD:
 		Cost: 500
 	Tooltip:
 		Name: Airfield
-		Description: Produces aircraft.\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
+		Description: Produces and reloads aircraft.\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Building:
 		Power: -20
 		Footprint: xxx xxx
@@ -1109,7 +1108,7 @@ APWR:
 		Cost: 500
 	Tooltip:
 		Name: Advanced Power Plant
-		Description: Provides double the power of a \nstandard Power Plant
+		Description: Provides double the power of a\nstandard Power Plant.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -1257,7 +1256,7 @@ FIX:
 		Cost: 1200
 	Tooltip:
 		Name: Service Depot
-		Description: Repairs vehicles and provides technology.
+		Description: Repairs vehicles for credits.
 	Building:
 		Power: -30
 		Footprint: _x_ xxx _x_
