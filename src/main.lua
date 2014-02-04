@@ -261,7 +261,9 @@ ide.app = dofile(ide.config.path.app.."/app.lua")
 local app = assert(ide.app)
 
 local function loadToTab(filter, folder, tab, recursive, proto)
-  filter = filter and type(filter) ~= 'function' and app.loadfilters[filter] or nil
+  if filter and type(filter) ~= 'function' then
+    filter = app.loadfilters[filter] or nil
+  end
   for _, file in ipairs(FileSysGetRecursive(folder, recursive, "*.lua")) do
     if not filter or filter(file) then
       LoadLuaFileExt(tab, file, proto)
