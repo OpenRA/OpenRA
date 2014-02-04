@@ -545,7 +545,8 @@ namespace OpenRA.Mods.RA.Move
 
         public void OnNotifyBlockingMove(Actor self, Actor blocking)
         {
-            Nudge(self, blocking, true);
+            if (self.Owner == blocking.Owner || self.Owner.Stances[blocking.Owner] == Stance.Ally)
+                Nudge(self, blocking, true);
         }
     }
 }
