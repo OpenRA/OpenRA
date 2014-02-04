@@ -124,6 +124,13 @@ namespace OpenRA.Mods.RA
 		{
 			var mobileInfo = producee.Traits.GetOrDefault<MobileInfo>();
 
+			foreach (var blocker in self.World.ActorMap.GetUnitsAt(self.Location + s.ExitCell))
+			{
+				// Notify the blocker that he's blocking our move:
+				foreach (var moveBlocked in blocker.TraitsImplementing<INotifyBlockingMove>())
+					moveBlocked.OnNotifyBlockingMove(blocker, self);
+			}
+
 			return mobileInfo == null ||
 				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, self, true, true);
 		}
