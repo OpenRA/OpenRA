@@ -240,7 +240,10 @@ namespace OpenRA.Utility
 
 			for (int j = 0; j < mapSize; j++)
 				for (int i = 0; i < mapSize; i++)
-					map.MapTiles.Value[i, j].Type = ms.ReadUInt16();
+				{
+					var tileID = ms.ReadUInt16();
+					map.MapTiles.Value[i, j].Type = tileID == (ushort)0 ? (ushort)255 : tileID; // RAED weirdness
+				}
 
 			for (int j = 0; j < mapSize; j++)
 				for (int i = 0; i < mapSize; i++)
