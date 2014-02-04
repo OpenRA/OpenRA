@@ -144,7 +144,7 @@ namespace OpenRA.Mods.RA.Move
 		public int GetInitialFacing() { return InitialFacing; }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -542,5 +542,10 @@ namespace OpenRA.Mods.RA.Move
 		public Activity MoveWithinRange(Target target, WRange range) { return new Move(target, range); }
 		public Activity MoveFollow(Actor self, Target target, WRange range) { return new Follow(self, target, range); }
 		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(pathFunc); }
-	}
+
+		public void OnNotifyBlockingMove(Actor self, Actor blocking)
+		{
+			Nudge(self, blocking, true);
+		}
+    }
 }
