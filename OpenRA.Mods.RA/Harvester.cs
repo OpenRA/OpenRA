@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips,
 		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync,
-		INotifyResourceClaimLost, INotifyIdle, INotifyBlockingMove
+		INotifyResourceClaimLost, INotifyIdle/*, INotifyBlockingMove*/
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public void OnNotifyBlockingMove(Actor self, Actor blocking)
+		/*public void OnNotifyBlockingMove(Actor self, Actor blocking)
 		{
 			// I'm blocking someone else from moving to my location:
 			Activity act = self.GetCurrentActivity();
@@ -198,7 +198,7 @@ namespace OpenRA.Mods.RA
 				// Find more resources but not at this location:
 				self.QueueActivity(new FindResources(cell));
 			}
-		}
+		}*/
 
 		public void TickIdle(Actor self)
 		{

@@ -144,7 +144,7 @@ namespace OpenRA.Mods.RA.Move
 		public int GetInitialFacing() { return InitialFacing; }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -489,9 +489,12 @@ namespace OpenRA.Mods.RA.Move
 
 			if (moveTo.HasValue)
 			{
+                var currAct = self.GetCurrentActivity();
 				self.CancelActivity();
 				self.SetTargetLine(Target.FromCell(moveTo.Value), Color.Green, false);
 				self.QueueActivity(new Move(moveTo.Value, 0));
+                if (currAct != null )
+                    self.QueueActivity(currAct);
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
 					self.ActorID, self.Location, moveTo.Value);
@@ -542,5 +545,11 @@ namespace OpenRA.Mods.RA.Move
 		public Activity MoveWithinRange(Target target, WRange range) { return new Move(target, range); }
 		public Activity MoveFollow(Actor self, Target target, WRange range) { return new Follow(self, target, range); }
 		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(pathFunc); }
-	}
+
+        public void OnNotifyBlockingMove(Actor self, Actor blocking)
+        {
+            if (self.Owner == blocking.Owner || self.Owner.Stances[blocking.Owner] == Stance.Ally)
+                Nudge(self, blocking, true);
+        }
+    }
 }
