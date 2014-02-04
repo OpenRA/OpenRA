@@ -489,9 +489,12 @@ namespace OpenRA.Mods.RA.Move
 
 			if (moveTo.HasValue)
 			{
+                var currAct = self.GetCurrentActivity();
 				self.CancelActivity();
 				self.SetTargetLine(Target.FromCell(moveTo.Value), Color.Green, false);
 				self.QueueActivity(new Move(moveTo.Value, 0));
+                if (currAct != null )
+                    self.QueueActivity(currAct);
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
 					self.ActorID, self.Location, moveTo.Value);
