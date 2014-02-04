@@ -6,20 +6,22 @@ RIFLE:
 		Owner: atreides,harkonnen,ordos
 		Hotkey: r
 	Valued:
-		Cost: 100
+		Cost: 50
 	Tooltip:
 		Name: Rifleman
 		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
 	Selectable:
 		Bounds: 12,17,0,0
 	Health:
-		HP: 50
+		HP: 600
 	Mobile:
-		Speed: 53
+		Speed: 37
 	Armament:
 		Weapon: LMG
 	AttackFrontal:
 	TakeCover:
+	RevealsShroud:
+		Range: 3
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: stand,stand2
@@ -33,7 +35,7 @@ ENGINEER:
 		Owner: atreides,harkonnen,ordos
 		Hotkey: e
 	Valued:
-		Cost: 500
+		Cost: 400
 	Tooltip:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures\n  Strong vs Nothing\n  Weak vs Everything
@@ -41,9 +43,9 @@ ENGINEER:
 		Bounds: 12,17,0,0
 		Voice: EngineerVoice
 	Health:
-		HP: 25
+		HP: 500
 	Mobile:
-		Speed: 53
+		Speed: 28
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -52,6 +54,8 @@ ENGINEER:
 	Captures:
 		CaptureTypes: husk
 	-AutoTarget:
+	RevealsShroud:
+		Range: 2
 
 BAZOOKA:
 	Inherits: ^Infantry
@@ -62,21 +66,23 @@ BAZOOKA:
 		Owner: atreides,harkonnen,ordos
 		Hotkey: t
 	Valued:
-		Cost: 250
+		Cost: 90
 	Tooltip:
 		Name: Trooper
 		Description: Anti-tank/Anti-aircraft infantry\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry, Artillery
 	Selectable:
 		Bounds: 12,17,0,0
 	Health:
-		HP: 45
+		HP: 700
 	Mobile:
-		Speed: 42
+		Speed: 28
 	Armament:
 		Weapon: Bazooka
 		LocalOffset: 0,0,555
 	AttackFrontal:
 	TakeCover:
+	RevealsShroud:
+		Range: 4
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: stand,stand2
@@ -90,7 +96,7 @@ MEDIC:
 		Prerequisites: Research
 		Hotkey: m
 	Valued:
-		Cost: 500
+		Cost: 200
 	Tooltip:
 		Name: Medic
 		Description: Heals nearby infantry\n  Strong vs Nothing\n  Weak vs Everything
@@ -98,9 +104,9 @@ MEDIC:
 		Bounds: 12,17,0,0
 		Voice: EngineerVoice
 	Health:
-		HP: 60
+		HP: 375
 	Mobile:
-		Speed: 42
+		Speed: 37
 	AutoHeal:
 	Armament:
 		Weapon: Heal
@@ -109,3 +115,5 @@ MEDIC:
 	Passenger:
 		PipType: Blue
 	-AutoTarget:
+	RevealsShroud:
+		Range: 2

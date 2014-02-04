@@ -112,7 +112,7 @@ LoadScreen: DefaultLoadScreen
 # TODO: check if DATA.R8 is at 1.03 patch level with 4840 frames
 	TestFiles: BLOXBASE.R8, BLOXBAT.R8, BLOXBGBS.R8, BLOXICE.R8, BLOXTREE.R8, BLOXWAST.R8, DATA.R8, SOUND.RS
 	PackageURL: http://open-ra.org/download/content/d2k-103-packages
-	Text: Filling Crates..., Breeding Sandworms...
+	Text: Filling Crates..., Breeding Sandworms..., Charging weirding modules...
 
 ServerTraits:
 	LobbyCommands
