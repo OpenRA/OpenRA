@@ -545,7 +545,8 @@ namespace OpenRA.Mods.RA.Move
 
 		public void OnNotifyBlockingMove(Actor self, Actor blocking)
 		{
-			Nudge(self, blocking, true);
+			if (self.IsIdle && self.AppearsFriendlyTo(blocking))
+				Nudge(self, blocking, true);
 		}
     }
 }
