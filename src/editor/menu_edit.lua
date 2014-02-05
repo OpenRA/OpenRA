@@ -47,7 +47,7 @@ local function getControlWithFocus()
        or ide.osname == 'Macintosh' and
          ctrl:GetParent():GetId() == e:GetId()) then editor = e end
   end
-  return editor
+  return pcall(function() editor:GetId() end) and editor or nil
 end
 
 local function onUpdateUIEditMenu(event)
