@@ -485,6 +485,11 @@ namespace OpenRA
 				for (var i = Bounds.Left; i < Bounds.Right; i++)
 				{
 					var tr = MapTiles.Value[i, j];
+					if (!tileset.Templates.ContainsKey(tr.Type))
+					{
+						Console.WriteLine("Unknown Tile ID {0}".F(tr.Type));
+						continue;
+					}
 					var template = tileset.Templates[tr.Type];
 					if (!template.PickAny)
 						continue;
