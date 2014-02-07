@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 
 			if (init.Contains<CargoInit>())
 			{
-				cargo = init.Get<CargoInit,Actor[]>().ToList();
+				cargo = init.Get<CargoInit, Actor[]>().ToList();
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
 			else

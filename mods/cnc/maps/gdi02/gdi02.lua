@@ -28,9 +28,8 @@ end
 
 NodAttack = function()
 	local nodUnits = Mission.GetGroundAttackersOf(enemy)
-	local nodUnitsLeft = table.getn(nodUnits)
-	if (nodUnitsLeft > AttackerSquadSize * 2) then
-		attackers = Utils.Skip(nodUnits, nodUnitsLeft - AttackerSquadSize)
+	if #nodUnits > AttackerSquadSize * 2 then
+		attackers = Utils.Skip(nodUnits, #nodUnits - AttackerSquadSize)
 		local attackSquad = Team.New(attackers)
 		Team.Do(attackSquad, function(unit)
 			Actor.AttackMove(unit, waypoint2.location)
