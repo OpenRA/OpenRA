@@ -35,12 +35,12 @@ namespace OpenRA.Mods.RA.Render
 			IdleAnimating
 		}
 
-		protected bool dirty = false;
-
+		Mobile mobile;
 		RenderInfantryInfo info;
+		public bool IsMoving { get; set; }
+		protected bool dirty = false;
 		string idleSequence;
 		int idleDelay;
-		Mobile mobile;
 
 		protected virtual string NormalizeInfantrySequence(Actor self, string baseSequence)
 		{

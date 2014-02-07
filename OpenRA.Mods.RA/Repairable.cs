@@ -73,13 +73,13 @@ namespace OpenRA.Mods.RA
 				if( !CanRepairAt( order.TargetActor ) || !CanRepair() )
 					return;
 
-				var mobile = self.Trait<Mobile>();
+				var movement = self.Trait<IMove>();
 				var target = Target.FromOrder(order);
 				self.SetTargetLine(target, Color.Green);
 
 				self.CancelActivity();
 				self.QueueActivity(new MoveAdjacentTo(self, target));
-				self.QueueActivity(mobile.MoveTo(order.TargetActor.CenterPosition.ToCPos(), order.TargetActor));
+				self.QueueActivity(movement.MoveTo(order.TargetActor.CenterPosition.ToCPos(), order.TargetActor));
 				self.QueueActivity(new Rearm(self));
 				self.QueueActivity(new Repair(order.TargetActor));
 
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA
 					self.QueueActivity(new CallFunc(() =>
 					{
 						self.SetTargetLine(Target.FromCell(rp.rallyPoint), Color.Green);
-						self.QueueActivity(mobile.MoveTo(rp.rallyPoint, order.TargetActor));
+						self.QueueActivity(movement.MoveTo(rp.rallyPoint, order.TargetActor));
 					}));
 			}
 		}

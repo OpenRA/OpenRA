@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Move
 {
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
+	public class MobileInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, IMoveInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds")]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.RA.Move
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
-		public bool IsMoving { get; internal set; }
+		public bool IsMoving { get; set; }
 
 		int __facing;
 		CPos __fromCell, __toCell;

@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithVoxelWalkerBodyInfo : ITraitInfo, Requires<RenderVoxelsInfo>, Requires<MobileInfo>
+	public class WithVoxelWalkerBodyInfo : ITraitInfo, Requires<RenderVoxelsInfo>, Requires<IMoveInfo>
 	{
 		public readonly int TickRate = 5;
 		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.self, this); }
@@ -25,14 +25,14 @@ namespace OpenRA.Mods.RA.Render
 	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick
 	{
 		WithVoxelWalkerBodyInfo info;
-		Mobile mobile;
+		IMove movement;
 		int2 size;
 		uint tick, frame, frames;
 
 		public WithVoxelWalkerBody(Actor self, WithVoxelWalkerBodyInfo info)
 		{
 			this.info = info;
-			mobile = self.Trait<Mobile>();
+			movement = self.Trait<IMove>();
 
 			var body = self.Trait<IBodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Tick(Actor self)
 		{
-			if (mobile.IsMoving)
+			if (movement.IsMoving)
 				tick++;
 
 			if (tick < info.TickRate)

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (NextActivity != null)
 				return NextActivity;
 
-			var mobile = self.Trait<Mobile>();
+			var movement = self.Trait<IMove>();
 			var harv = self.Trait<Harvester>();
 
 			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
 			if (self.Location != proc.Location + iao.DeliverOffset)
-				return Util.SequenceActivities(mobile.MoveTo(proc.Location + iao.DeliverOffset, 0), this);
+				return Util.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliverOffset, 0), this);
 
 			if (!isDocking)
 			{

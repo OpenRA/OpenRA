@@ -34,12 +34,14 @@ namespace OpenRA.Mods.RA.Render
 	{
 		WithRotorInfo info;
 		Animation rotorAnim;
+		IMove movement;
 
 		public WithRotor(Actor self, WithRotorInfo info)
 		{
 			this.info = info;
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
+			movement = self.Trait<IMove>();
 
 			rotorAnim = new Animation(rs.GetImage(self));
 			rotorAnim.PlayRepeating(info.Sequence);
@@ -50,7 +52,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Tick(Actor self)
 		{
-			var isFlying = self.CenterPosition.Z > 0 && !self.IsDead();
+			var isFlying = movement.IsMoving && !self.IsDead();
 			if (isFlying ^ (rotorAnim.CurrentSequence.Name != info.Sequence))
 				return;
 
