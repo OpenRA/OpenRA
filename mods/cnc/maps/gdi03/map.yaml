@@ -392,7 +392,7 @@ Actors:
 		Owner: Nod
 		Health: 1
 		Facing: 0
-	Actor111: hand
+	NodBarracks: hand
 		Location: 24,26
 		Owner: Nod
 		Health: 1
@@ -912,8 +912,6 @@ Rules:
 	EYE:
 		-Buildable:
 	GUN:
-		-Buildable:
-	GTWR:
 		-Buildable:
 	ATWR:
 		-Buildable:
