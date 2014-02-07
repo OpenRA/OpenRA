@@ -16,6 +16,48 @@ Map.GetNamedActor = function(actorName)
 	return Internal.GetNamedActor(actorName)
 end
 
+Map.FindActorsInCircle = function(location, radius, func)
+	local actors = Internal.FindActorsInCircle(location.CenterPosition, WRange.FromCells(radius))
+	return Utils.EnumerableWhere(actors, func)
+end
+
+Map.FindActorsInBox = function(topLeft, bottomRight, func)
+	local actors = Internal.FindActorsInBox(topLeft.CenterPosition, bottomRight.CenterPosition)
+	return Utils.EnumerableWhere(actors, func)
+end
+
+Map.__FilterByTrait = function(a, player, trait)
+	return Actor.Owner(a) == player and Actor.HasTrait(a, trait)
+end
+
+Map.__FilterByTraitAndIdle = function(a, player, trait)
+	return Map.__FilterByTrait(a, player, trait) and Actor.IsIdle(a)
+end
+
+Map.FindUnitsInCircle = function(player, location, radius)
+	return Map.FindActorsInCircle(location, radius, function(a) return Map.__FilterByTrait(a, player, "Mobile") end)
+end
+
+Map.FindUnitsInBox = function(player, topLeft, bottomRight)
+	return Map.FindActorsInBox(topLeft, bottomRight, function(a) return Map.__FilterByTrait(a, player, "Mobile") end)
+end
+
+Map.FindStructuresInCircle = function(player, location, radius)
+	return Map.FindActorsInCircle(location, radius, function(a) return Map.__FilterByTrait(a, player, "Building") end)
+end
+
+Map.FindStructuresInBox = function(player, topLeft, bottomRight)
+	return Map.FindActorsInBox(topLeft, bottomRight, function(a) return Map.__FilterByTrait(a, player, "Building") end)
+end
+
+Map.FindIdleUnitsInCircle = function(player, location, radius)
+	return Map.FindActorsInCircle(location, radius, function(a) return Map.__FilterByTraitAndIdle(a, player, "Mobile") end)
+end
+
+Map.FindIdleUnitsInBox = function(player, topLeft, bottomRight)
+	return Map.FindActorsInBox(topLeft, bottomRight, function(a) return Map.__FilterByTraitAndIdle(a, player, "Mobile") end)
+end
+
 CPos.New = function(x, y)
 	return OpenRA.New("CPos", { { x, "Int32" }, { y, "Int32" } })
 end

@@ -47,8 +47,8 @@ Actor.Teleport = function(actor, location)
 	actor:QueueActivity(OpenRA.New("SimpleTeleport", { location }))
 end
 
-Actor.AttackMove = function(actor, location)
-	Internal.AttackMove(actor, location)
+Actor.AttackMove = function(actor, location, nearEnough)
+	Internal.AttackMove(actor, location, nearEnough or 0)
 end
 
 Actor.HeliFly = function(actor, position)
@@ -177,4 +177,26 @@ end
 
 Actor.Trait = function(actor, className)
 	return Internal.Trait(actor, className)
+end
+
+Actor.ReturnToBase = function(actor, airfield)
+	actor:QueueActivity(OpenRA.New("ReturnToBase", { actor, airfield }))
+end
+
+Actor.Patrol = function(actor, waypoints, wait, loop)
+	Utils.Do(waypoints, function(wpt)
+		Actor.AttackMove(actor, wpt.Location, 3)
+		Actor.Wait(actor, wait or 0)
+	end)
+	if loop or loop == nil then
+		Actor.CallFunc(actor, function() Actor.Patrol(actor, waypoints, wait, loop) end)
+	end
+end
+
+Actor.PatrolUntil = function(actor, waypoints, wait, func)
+	if func == nil then error("No function specified", 2) end
+	Actor.Patrol(actor, waypoints, wait, false)
+	if not func(actor) then
+		Actor.CallFunc(actor, function() Actor.PatrolUntil(actor, waypoints, wait, func) end)
+	end
 end

@@ -299,12 +299,12 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[LuaGlobal]
-		public void AttackMove(Actor actor, CPos location)
+		public void AttackMove(Actor actor, CPos location, double nearEnough)
 		{
 			if (actor.HasTrait<AttackMove>())
-				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(location, 0)));
+				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(location, (int)nearEnough)));
 			else
-				actor.QueueActivity(new Move.Move(location, 0));
+				actor.QueueActivity(new Move.Move(location, (int)nearEnough));
 		}
 
 		[LuaGlobal]
@@ -329,6 +329,48 @@ namespace OpenRA.Mods.RA.Scripting
 		public Actor GetNamedActor(string actorName)
 		{
 			return mapActors[actorName];
+		}
+
+		[LuaGlobal]
+		public Actor[] FindActorsInBox(WPos topLeft, WPos bottomRight)
+		{
+			return world.FindActorsInBox(topLeft, bottomRight).ToArray();
+		}
+
+		[LuaGlobal]
+		public Actor[] FindActorsInCircle(WPos location, WRange radius)
+		{
+			return world.FindActorsInCircle(location, radius).ToArray();
+		}
+
+		[LuaGlobal]
+		public void BuildWithSharedQueue(Player player, string unit, double amount)
+		{
+			var ri = Rules.Info[unit];
+			if (ri == null || !ri.Traits.Contains<BuildableInfo>())
+				return;
+
+			var category = ri.Traits.Get<BuildableInfo>().Queue;
+
+			var queue = world.ActorsWithTrait<ClassicProductionQueue>()
+				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category)
+				.Select(a => a.Trait).FirstOrDefault();
+
+			if (queue != null)
+				queue.ResolveOrder(queue.self, Order.StartProduction(queue.self, unit, (int)amount));
+		}
+
+		[LuaGlobal]
+		public void BuildWithPerFactoryQueue(Actor factory, string unit, double amount)
+		{
+			if (!factory.HasTrait<ProductionQueue>())
+				return;
+
+			var ri = Rules.Info[unit];
+			if (ri == null || !ri.Traits.Contains<BuildableInfo>())
+				return;
+
+			factory.Trait<ProductionQueue>().ResolveOrder(factory, Order.StartProduction(factory, unit, (int)amount));
 		}
 	}
 }
