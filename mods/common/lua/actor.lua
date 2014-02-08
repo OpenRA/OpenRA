@@ -143,6 +143,10 @@ Actor.SetStance = function(actor, stance)
 	Internal.SetUnitStance(actor, stance)
 end
 
+Actor.OnDamaged = function(actor, eh)
+	Actor.Trait(actor, "LuaScriptEvents").OnDamaged:Add(eh)
+end
+
 Actor.OnKilled = function(actor, eh)
 	Actor.Trait(actor, "LuaScriptEvents").OnKilled:Add(eh)
 end
