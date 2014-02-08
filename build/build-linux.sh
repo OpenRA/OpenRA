@@ -24,14 +24,6 @@ BUILD_FLAGS="-O2 -shared -s -I $INSTALL_DIR/include -L $INSTALL_DIR/lib $FPIC"
 WXWIDGETS_BASENAME="wxWidgets"
 WXWIDGETS_URL="http://svn.wxwidgets.org/svn/wx/wxWidgets/trunk"
 
-LIBPNG_BASENAME="libpng-1.6.2"
-LIBPNG_FILENAME="$LIBPNG_BASENAME.tar.gz"
-LIBPNG_URL="http://sourceforge.net/projects/libpng/files/libpng16/1.6.2/libpng-1.6.2.tar.gz/download"
-
-ZLIB_BASENAME="zlib-1.2.8"
-ZLIB_FILENAME="$ZLIB_BASENAME.tar.gz"
-ZLIB_URL="https://github.com/madler/zlib/archive/v1.2.8.tar.gz"
-
 WXLUA_BASENAME="wxlua"
 WXLUA_URL="https://svn.code.sf.net/p/wxlua/svn/trunk"
 
@@ -127,35 +119,18 @@ fi
 
 # build wxWidgets
 if [ $BUILD_WXWIDGETS ]; then
-  # first build get/configure libpng as v1.6 is needed
-  wget -c "$LIBPNG_URL" -O "$LIBPNG_FILENAME" || { echo "Error: failed to download libpng"; exit 1; }
-  tar -xzf "$LIBPNG_FILENAME"
-  (cd "$LIBPNG_BASENAME"; ./configure --with-libpng-prefix=wxpng_; make $MAKEFLAGS)
-
-  wget -c "$ZLIB_URL" -O "$ZLIB_FILENAME" || { echo "Error: failed to download zlib"; exit 1; }
-  tar -xzf "$ZLIB_FILENAME"
-  (cd "$ZLIB_BASENAME"; ./configure; make $MAKEFLAGS)
-
   svn co "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to checkout wxWidgets"; exit 1; }
-  # replace src/png with the libpng folder
-  rm -rf "$WXWIDGETS_BASENAME/src/png"
-  mv "$LIBPNG_BASENAME" "$WXWIDGETS_BASENAME/src/png"
-
-  # replace src/zlib with the zlib folder
-  rm -rf "$WXWIDGETS_BASENAME/src/zlib"
-  mv "$ZLIB_BASENAME" "$WXWIDGETS_BASENAME/src/zlib"
 
   cd "$WXWIDGETS_BASENAME"
   ./configure --prefix="$INSTALL_DIR" --disable-debug --disable-shared --enable-unicode \
+    --enable-compat28 \
     --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
     --with-zlib=builtin --disable-richtext --with-gtk=2 \
     CFLAGS="-Os -fPIC" CXXFLAGS="-Os -fPIC"
-  # update gzio to gzlib as this has changed between zlib 1.2.3 to 1.2.8
-  sed -i 's/gzio.c/gzlib.c/' Makefile
   make $MAKEFLAGS || { echo "Error: failed to build wxWidgets"; exit 1; }
   make install
   cd ..
-  rm -rf "$WXWIDGETS_BASENAME" "$LIBPNG_FILENAME"
+  rm -rf "$WXWIDGETS_BASENAME"
 fi
 
 # build Lua

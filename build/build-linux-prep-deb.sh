@@ -6,6 +6,8 @@ sudo apt-get install git-core
 sudo apt-get install g++
 sudo apt-get install subversion
 sudo apt-get install libgtk2.0-dev
+sudo apt-get install cmake
+exit
 
 # install cmake as wxwidgets needs 2.8.4+ but "sudo apt-get install cmake" 
 # only installs 2.8.0 on some systems (like Ubuntu 10.4)
