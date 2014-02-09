@@ -187,6 +187,10 @@ Actor.ReturnToBase = function(actor, airfield)
 	actor:QueueActivity(OpenRA.New("ReturnToBase", { actor, airfield }))
 end
 
+Actor.Guard = function(actor, target)
+	Internal.Guard(actor, target)
+end
+
 Actor.Patrol = function(actor, waypoints, wait, loop)
 	Utils.Do(waypoints, function(wpt)
 		Actor.AttackMove(actor, wpt.Location, 3)
