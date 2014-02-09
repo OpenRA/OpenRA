@@ -6,6 +6,9 @@ Metadata:
 
 Folders:
 	.
+# Dune II:
+	~^/Content/d2
+	./mods/d2/uibits
 # Dune 2000:
 	./mods/d2k
 	./mods/d2k/bits
@@ -16,8 +19,6 @@ Folders:
 	~^/Content/d2k
 	~^/Content/d2k/GAMESFX
 	~^/Content/d2k/Music
-# Dune II:
-	~^/Content/d2
 
 MapFolders:
 	./mods/d2k/maps
@@ -72,7 +73,7 @@ Cursors:
 	mods/d2k/cursors.yaml
 
 Chrome:
-	mods/d2k/chrome.yaml
+	mods/d2/chrome.yaml
 
 Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
