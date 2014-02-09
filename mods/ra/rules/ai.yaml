@@ -1,6 +1,6 @@
 Player:
-	HackyAI@EasyAI:
-		Name: Easy AI
+	HackyAI@RushAI:
+		Name: Rush AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -117,8 +117,8 @@ Player:
 			ca: 10%
 			pt: 10%
 		SquadSize: 40
-	HackyAI@HardAI:
-		Name: Hard AI
+	HackyAI@TurtleAI:
+		Name: Turtle AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
