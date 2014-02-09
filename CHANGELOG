@@ -8,6 +8,7 @@ NEW:
 			Added skirmish mode to RA and D2k to complement TD's skirmish mode.
 			Added an Extras submenu for miscellaneous game extras.
 		Engineers can now regain control over husks.
+		A player's units, and allied units, now move out of the way when blocking production facilities.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
