@@ -175,12 +175,8 @@ namespace OpenRA.Mods.RA.Move
 		{
 			foreach (var blocker in self.World.ActorMap.GetUnitsAt(nextCell))
 			{
-				Log.Write("debug", "NotifyBlocker #{0} nudges #{1} at {2} from {3}",
-					self.ActorID, blocker.ActorID, nextCell, self.Location);
-
 				// Notify the blocker that he's blocking our move:
-				var moveBlocked = blocker.TraitOrDefault<INotifyBlockingMove>();
-				if (moveBlocked != null)
+				foreach (var moveBlocked in blocker.TraitsImplementing<INotifyBlockingMove>())
 					moveBlocked.OnNotifyBlockingMove(blocker, self);
 			}
 		}

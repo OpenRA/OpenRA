@@ -183,9 +183,9 @@ namespace OpenRA.Mods.RA
 		public void OnNotifyBlockingMove(Actor self, Actor blocking)
 		{
 			// I'm blocking someone else from moving to my location:
-			Activity act = self.GetCurrentActivity();
+			var act = self.GetCurrentActivity();
 			// If I'm just waiting around then get out of the way:
-			if (act == null || act.GetType() == typeof(Wait))
+			if (act is Wait)
 			{
 				self.CancelActivity();
 				var mobile = self.Trait<Mobile>();
