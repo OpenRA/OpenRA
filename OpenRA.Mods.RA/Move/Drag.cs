@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Move
 		public override Activity Tick(Actor self)
 		{
 			var positionable = self.Trait<IPositionable>();
-			var movement = self.Trait<IMove>();
+			var movement = self.TraitOrDefault<IMove>();
 
 			var pos = length > 1
 				? WPos.Lerp(start, end, ticks, length - 1)
