@@ -19,16 +19,35 @@ namespace OpenRA.Network
 {
 	public static class ServerList
 	{
+		public static string BestMasterServer;
+
+		public static void ChooseMasterServer()
+		{
+			foreach (var masterServer in Game.Settings.Server.MasterServers)
+			{
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(masterServer + "list.php");
+				request.Timeout = 2000;
+				try
+				{
+					var response = (HttpWebResponse)request.GetResponse();
+					if (response.StatusCode == HttpStatusCode.OK && string.IsNullOrEmpty(BestMasterServer))
+					{
+						BestMasterServer = masterServer;
+						Log.Write("server", "Chose {0} as master server.", (BestMasterServer));
+					}
+				}
+				catch (Exception) { }
+			}
+		}
+
 		public static void Query(Action<GameServer[]> onComplete)
 		{
-			var masterServerUrl = Game.Settings.Server.MasterServer;
-
 			new Thread(() =>
 			{
 				GameServer[] games = null;
 				try
 				{
-					var str = GetData(new Uri(masterServerUrl + "list.php"));
+					var str = GetData(new Uri(BestMasterServer + "list.php"));
 
 					var yaml = MiniYaml.FromString(str);
 

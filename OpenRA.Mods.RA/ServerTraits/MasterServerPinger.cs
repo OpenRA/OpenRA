@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using OpenRA.Network;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
 
@@ -68,7 +69,7 @@ namespace OpenRA.Mods.RA.Server
 						{
 							wc.Proxy = null;
 							wc.DownloadData(
-								server.Settings.MasterServer + url.F(
+								ServerList.BestMasterServer + url.F(
 								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
 								(int)server.State,
 								numPlayers,
