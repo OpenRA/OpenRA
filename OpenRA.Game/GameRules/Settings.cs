@@ -25,7 +25,7 @@ namespace OpenRA.GameRules
 		public int ExternalPort = 1234;
 		public bool AdvertiseOnline = true;
 		public string Password = "";
-		public string[] MasterServers = { "http://master.open-ra.org/" };
+		public string[] MasterServers = { "http://master.open-ra.org/", "http://master.ihptru.net/" };
 		public bool DiscoverNatDevices = false; // Allow users to disable NAT discovery if problems occur
 		public bool AllowPortForward = true; // let the user disable it even if compatible devices are found
 		public bool NatDeviceAvailable = false; // internal check if discovery succeeded
