@@ -8,79 +8,64 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.RA.Move;
-using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
 	public class UnloadCargo : Activity
 	{
-		bool unloadAll;
+		readonly Actor self;
+		readonly Cargo cargo;
+		readonly bool unloadAll;
 
-		public UnloadCargo(bool unloadAll) { this.unloadAll = unloadAll; }
-		
-		CPos? ChooseExitTile(Actor self, Actor cargo)
+		public UnloadCargo(Actor self, bool unloadAll)
 		{
-			// is anyone still hogging this tile?
-			if (self.World.ActorMap.GetUnitsAt(self.Location).Count() > 1)
-				return null;
-
-			var mobile = cargo.Trait<Mobile>();
-
-			for (var i = -1; i < 2; i++)
-				for (var j = -1; j < 2; j++)
-					if ((i != 0 || j != 0) &&
-						mobile.CanEnterCell(self.Location + new CVec(i, j)))
-						return self.Location + new CVec(i, j);
-
-			return null;
+			this.self = self;
+			cargo = self.Trait<Cargo>();
+			this.unloadAll = unloadAll;
 		}
 
-		CPos? ChooseRallyPoint(Actor self)
+		public CPos? ChooseExitCell(Actor passenger)
 		{
-			var mobile = self.Trait<Mobile>();
+			var mobile = passenger.Trait<Mobile>();
 
-			for (var i = -1; i < 2; i++)
-				for (var j = -1; j < 2; j++)
-					if ((i != 0 || j != 0) &&
-						mobile.CanEnterCell(self.Location + new CVec(i, j)))
-						return self.Location + new CVec(i, j);
+			return cargo.CurrentAdjacentCells
+				.Shuffle(self.World.SharedRandom)
+				.Cast<CPos?>()
+				.FirstOrDefault(c => mobile.CanEnterCell(c.Value));
+		}
 
-			return self.Location;
+		IEnumerable<CPos> BlockedExitCells(Actor passenger)
+		{
+			var mobile = passenger.Trait<Mobile>();
+
+			return cargo.CurrentAdjacentCells
+				.Where(c => mobile.MovementSpeedForCell(passenger, c) != int.MaxValue && !mobile.CanEnterCell(c));
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled) return NextActivity;
-
-			// if we're a thing that can turn, turn to the
-			// right facing for the unload animation
-			var facing = self.TraitOrDefault<IFacing>();
-			var unloadFacing = self.Info.Traits.Get<CargoInfo>().UnloadFacing;
-			if (facing != null && facing.Facing != unloadFacing)
-				return Util.SequenceActivities( new Turn(unloadFacing), this );
-
-			// TODO: handle the BS of open/close sequences, which are inconsistent,
-			//		for reasons that probably make good sense to the westwood guys.
-
-			var cargo = self.Trait<Cargo>();
-			if (cargo.IsEmpty(self))
+			if (IsCanceled || cargo.IsEmpty(self))
 				return NextActivity;
 
-			var ru = self.TraitOrDefault<RenderUnit>();
-			if (ru != null)
-				ru.PlayCustomAnimation(self, "unload", null);
+			var actor = cargo.Peek(self);
 
-			var exitTile = ChooseExitTile(self, cargo.Peek(self));
-			if (exitTile == null)
-				return this;
+			var exitCell = ChooseExitCell(actor);
+			if (exitCell == null)
+			{
+				foreach (var blocker in BlockedExitCells(actor).SelectMany(self.World.ActorMap.GetUnitsAt))
+				{
+					foreach (var nbm in blocker.TraitsImplementing<INotifyBlockingMove>())
+						nbm.OnNotifyBlockingMove(blocker, self);
+				}
+				return Util.SequenceActivities(new Wait(10), this);
+			}
 
-			var actor = cargo.Unload(self);
-			var exit = exitTile.Value.CenterPosition;
-			var current = self.Location.CenterPosition;
+			cargo.Unload(self);
 
 			self.World.AddFrameEndTask(w =>
 			{
@@ -88,23 +73,33 @@ namespace OpenRA.Mods.RA.Activities
 					return;
 
 				var mobile = actor.Trait<Mobile>();
-				mobile.Facing = Util.GetFacing(exit - current, mobile.Facing );
-				mobile.SetPosition(actor, exitTile.Value);
+
+				var exitSubcell = mobile.GetDesiredSubcell(exitCell.Value, null);
+
+				mobile.fromSubCell = exitSubcell; // these settings make sure that the below Set* calls
+				mobile.toSubCell = exitSubcell; // and the above GetDesiredSubcell call pick a good free subcell for later units being unloaded
+
+				var exit = exitCell.Value.CenterPosition + MobileInfo.SubCellOffsets[exitSubcell];
+				var current = self.Location.CenterPosition + MobileInfo.SubCellOffsets[exitSubcell];
+
+				mobile.Facing = Util.GetFacing(exit - current, mobile.Facing);
+				mobile.SetPosition(actor, exitCell.Value);
 				mobile.SetVisualPosition(actor, current);
-				var speed = mobile.MovementSpeedForCell(actor, exitTile.Value);
+				var speed = mobile.MovementSpeedForCell(actor, exitCell.Value);
 				var length = speed > 0 ? (exit - current).Length / speed : 0;
 
 				w.Add(actor);
 				actor.CancelActivity();
 				actor.QueueActivity(new Drag(current, exit, length));
-				actor.QueueActivity(mobile.MoveTo(exitTile.Value, 0));
+				actor.QueueActivity(mobile.MoveTo(exitCell.Value, 0));
 
-				var rallyPoint = ChooseRallyPoint(actor).Value;
-				actor.QueueActivity(mobile.MoveTo(rallyPoint, 0));
-				actor.SetTargetLine(Target.FromCell(rallyPoint), Color.Green, false);
+				actor.SetTargetLine(Target.FromCell(exitCell.Value), Color.Green, false);
 			});
 
-			return unloadAll ? this : NextActivity;
+			if (!unloadAll || cargo.IsEmpty(self))
+				return NextActivity;
+
+			return this;
 		}
 	}
 }

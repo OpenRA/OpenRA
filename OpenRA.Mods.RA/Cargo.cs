@@ -22,26 +22,27 @@ namespace OpenRA.Mods.RA
 		public readonly int MaxWeight = 0;
 		public readonly int PipCount = 0;
 		public readonly string[] Types = { };
-		public readonly int UnloadFacing = 0;
 		public readonly string[] InitialUnits = { };
-		public readonly WRange MaximumUnloadAltitude = WRange.Zero;
 
-		public object Create( ActorInitializer init ) { return new Cargo( init, this ); }
+		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture, ITick
 	{
 		readonly Actor self;
-		readonly CargoInfo info;
+		public readonly CargoInfo Info;
 
 		int totalWeight = 0;
 		List<Actor> cargo = new List<Actor>();
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
+		CPos currentCell;
+		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
+
 		public Cargo(ActorInitializer init, CargoInfo info)
 		{
-			this.self = init.self;
-			this.info = info;
+			self = init.self;
+			Info = info;
 
 			if (init.Contains<CargoInit>())
 			{
@@ -59,11 +60,14 @@ namespace OpenRA.Mods.RA
 						Load(self, unit);
 				}
 			}
+
+			currentCell = self.CenterPosition.ToCPos();
+			CurrentAdjacentCells = GetAdjacentCells();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("Unload", 10, () => CanUnload(self)); }
+			get { yield return new DeployOrderTargeter("Unload", 10, CanUnload); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -78,41 +82,34 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "Unload")
 			{
-				if (!CanUnload(self))
+				if (!CanUnload())
 					return;
 
 				self.CancelActivity();
-				self.QueueActivity(new UnloadCargo(true));
+				self.QueueActivity(new UnloadCargo(self, true));
 			}
 		}
 
-		bool CanUnload(Actor self)
+		IEnumerable<CPos> GetAdjacentCells()
 		{
-			if (IsEmpty(self))
-				return false;
+			return Util.AdjacentCells(Target.FromActor(self)).Where(c => self.Location != c);
+		}
 
-			// Cannot unload mid-air
-			var ios = self.TraitOrDefault<IOccupySpace>();
-			if (ios != null && ios.CenterPosition.Z > info.MaximumUnloadAltitude.Range)
-				return false;
-
-			// TODO: Check if there is a free tile to unload to
-			return true;
+		bool CanUnload()
+		{
+			return !IsEmpty(self) && self.CenterPosition.Z == 0
+				&& CurrentAdjacentCells.Any(c => Passengers.Any(p => p.Trait<IPositionable>().CanEnterCell(c)));
 		}
 
 		public bool CanLoad(Actor self, Actor a)
 		{
-			if (!HasSpace(GetWeight(a)))
-				return false;
-
-			// Cannot load mid-air
-			return self.CenterPosition.Z <= info.MaximumUnloadAltitude.Range;
+			return HasSpace(GetWeight(a)) && self.CenterPosition.Z == 0;
 		}
 
 		public string CursorForOrder(Actor self, Order order)
 		{
 			if (order.OrderString != "Unload") return null;
-			return CanUnload(self) ? "deploy" : "deploy-blocked";
+			return CanUnload() ? "deploy" : "deploy-blocked";
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -121,10 +118,10 @@ namespace OpenRA.Mods.RA
 			return self.HasVoice("Unload") ? "Unload" : "Move";
 		}
 
-		public bool HasSpace(int weight) { return totalWeight + weight <= info.MaxWeight; }
+		public bool HasSpace(int weight) { return totalWeight + weight <= Info.MaxWeight; }
 		public bool IsEmpty(Actor self) { return cargo.Count == 0; }
 
-		public Actor Peek(Actor self) {	return cargo[0]; }
+		public Actor Peek(Actor self) { return cargo[0]; }
 
 		static int GetWeight(Actor a) { return a.Info.Traits.Get<PassengerInfo>().Weight; }
 
@@ -142,7 +139,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			int numPips = info.PipCount;
+			var numPips = Info.PipCount;
 
 			for (int i = 0; i < numPips; i++)
 				yield return GetPipAt(i);
@@ -150,7 +147,7 @@ namespace OpenRA.Mods.RA
 
 		PipType GetPipAt(int i)
 		{
-			var n = i * info.MaxWeight / info.PipCount;
+			var n = i * Info.MaxWeight / Info.PipCount;
 
 			foreach (var c in cargo)
 			{
@@ -191,6 +188,16 @@ namespace OpenRA.Mods.RA
 					p.Owner = newOwner;
 			});
 		}
+
+		public void Tick(Actor self)
+		{
+			var cell = self.CenterPosition.ToCPos();
+			if (currentCell != cell)
+			{
+				currentCell = cell;
+				CurrentAdjacentCells = GetAdjacentCells();
+			}
+		}
 	}
 
 	public interface INotifyPassengerEntered { void PassengerEntered(Actor self, Actor passenger); }
@@ -198,7 +205,8 @@ namespace OpenRA.Mods.RA
 
 	public class CargoInit : IActorInit<Actor[]>
 	{
-		[FieldFromYamlKey] public readonly Actor[] value = {};
+		[FieldFromYamlKey]
+		public readonly Actor[] value = { };
 		public CargoInit() { }
 		public CargoInit(Actor[] init) { value = init; }
 		public Actor[] Value(World world) { return value; }
