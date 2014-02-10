@@ -517,7 +517,6 @@ debugger.listen = function()
                 local func = loadstring("return "..m)
                 if func then
                   DisplayOutputLn(func())
-                  debugger.terminate()
                   return
                 end
               end
