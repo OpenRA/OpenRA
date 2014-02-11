@@ -576,7 +576,7 @@ OBLI:
 		Dimensions: 1,2
 	-GivesBuildableArea:
 	Health:
-		HP: 400
+		HP: 600
 	Armor:
 		Type: Heavy
 	RevealsShroud:
