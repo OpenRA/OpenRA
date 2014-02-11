@@ -141,17 +141,17 @@ local function fillTips(api,apibasename,apiname)
           :gsub("\t","")
           :gsub("("..widthmask..")[ \t]([^%)])","%1\n %2")
 
-        info.description = (info.description or "")
+        local description = (info.description or "")
           :gsub("\n\n","<br>"):gsub("\n"," "):gsub("<br>","\n")
           :gsub("[ \t]+"," ")
           :gsub("("..widthmask..") ","%1\n")
 
         -- build info
         local inf = (info.type == "value" and "" or frontname.."\n")
-          ..info.description
-        local sentence = info.description:match("^(.-)%. ?\n")
+          ..description
+        local sentence = description:match("^(.-)%. ?\n")
         local infshort = (info.type == "value" and "" or frontname.."\n")
-          ..(sentence and sentence.."..." or info.description)
+          ..(sentence and sentence.."..." or description)
         local infshortbatch = (info.returns and info.args) and frontname or infshort
 
         -- add to infoclass
