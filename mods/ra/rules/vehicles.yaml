@@ -353,7 +353,6 @@ JEEP:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
-		UnloadFacing: 220
 
 APC:
 	Inherits: ^Tank
@@ -386,7 +385,6 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-		UnloadFacing: 220
 
 MNLY.AP:
 	Inherits: ^Tank

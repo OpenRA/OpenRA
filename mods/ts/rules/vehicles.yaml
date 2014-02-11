@@ -60,7 +60,6 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-		UnloadFacing: 220
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -350,7 +349,6 @@ BUS:
 		Types: Infantry
 		MaxWeight: 20
 		PipCount: 5
-		UnloadFacing: 220
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -378,7 +376,6 @@ PICK:
 		Types: Infantry
 		MaxWeight: 2
 		PipCount: 5
-		UnloadFacing: 220
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -406,7 +403,6 @@ CAR:
 		Types: Infantry
 		MaxWeight: 4
 		PipCount: 5
-		UnloadFacing: 220
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -459,7 +455,6 @@ WINI:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-		UnloadFacing: 220
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -638,7 +633,6 @@ SAPC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-		UnloadFacing: 220
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
