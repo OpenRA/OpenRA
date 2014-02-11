@@ -105,9 +105,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var settings = new ServerSettings(Game.Settings.Server);
 
 			// Create and join the server
-			Game.CreateServer(settings);
-			Ui.CloseWindow();
-			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, password, onCreate, onExit);
+			bool serverSuccess = false;
+			try {
+				Game.CreateServer(settings);
+				serverSuccess = true;
+			}
+			catch (System.Net.Sockets.SocketException) {
+				panel.Get<TextFieldWidget>("LISTEN_PORT").Text = (listenPort+1).ToString();
+				// XXX: Much better solution would be something like this:
+				//   AlertBox("Unable to bind on port " + listenPort.ToString() + ": " + e.Message, AlertBox.Buttons.OK);
+			}
+			finally {
+				if (serverSuccess) {
+					Ui.CloseWindow();
+					ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, password, onCreate, onExit);
+				}
+			}
 		}
 	}
 }
