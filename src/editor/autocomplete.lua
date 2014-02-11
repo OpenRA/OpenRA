@@ -142,8 +142,6 @@ local function fillTips(api,apibasename,apiname)
           :gsub("("..widthmask..")[ \t]([^%)])","%1\n %2")
 
         local description = (info.description or "")
-          :gsub("\n\n","<br>"):gsub("\n"," "):gsub("<br>","\n")
-          :gsub("[ \t]+"," ")
           :gsub("("..widthmask..") ","%1\n")
 
         -- build info

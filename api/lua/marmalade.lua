@@ -18,7 +18,7 @@ return {
       },
       show = {
         type = "method",
-        description = "Shows or hides the ad view\nExample::\nif ads:isAvailable() then\nads:newAd(director.displayHeight, 70, \"leadbolt\", \"banner\", \"158316107\")\nelse\ndbg.log(\"Ads are not available\")\nend",
+        description = "Shows or hides the ad view.\nExample::\nif ads:isAvailable() then\nads:newAd(director.displayHeight, 70, \"leadbolt\", \"banner\", \"158316107\")\nelse\ndbg.log(\"Ads are not available\")\nend",
         args = "(visibility: boolean)",
         returns = "()",
       },
@@ -47,7 +47,7 @@ return {
       },
       startSession = {
         type = "method",
-        description = "Starts a Flurry analytics session.\nyour app",
+        description = "Starts a Flurry analytics session.",
         args = "(apiKey: string)",
         returns = "()",
       },
@@ -82,7 +82,7 @@ return {
       },
       setDelay = {
         type = "method",
-        description = "Sets the amount of time, in seconds, each frame of the animation should\nbe displayed for.",
+        description = "Sets the amount of time, in seconds, each frame of the animation should be displayed for.",
         args = "(delay: number)",
         returns = "()",
       },
@@ -99,7 +99,7 @@ return {
       },
       destroy = {
         type = "method",
-        description = "This function has been removed: atlases are destroyed when they go out of Lua scope, i.e. no Lua\nreferences to them remain.",
+        description = "This function has been removed: atlases are destroyed when they go out of Lua scope, i.e. no Lua references to them remain.",
         args = "()",
         returns = "()",
       },
@@ -117,13 +117,13 @@ return {
       },
       initFromFile = {
         type = "method",
-        description = "Initialises the atlas from a texture (bitmap) file, or a .plist file.  This operation\nresults in the creation of one or more sprite frames. If you load from a texture file,\nit will create a single sprite frame covering the entire texture.",
+        description = "Initialises the atlas from a texture (bitmap) file, or a .plist file.  This operation results in the creation of one or more sprite frames. If you load from a texture file, it will create a single sprite frame covering the entire texture.",
         args = "(filename: string)",
         returns = "(boolean)",
       },
       initTexture = {
         type = "method",
-        description = "Initialises the atlas' internal texture.  This operation doesn't create\nany sprite frames - the app is expected to add them manually.",
+        description = "Initialises the atlas' internal texture.  This operation doesn't create any sprite frames - the app is expected to add them manually.",
         args = "(filename: string)",
         returns = "(boolean)",
       },
@@ -135,7 +135,7 @@ return {
       },
       setTextureParams = {
         type = "method",
-        description = "Used to set the minification and magnifaction filtering modes for the atlas texture, and also the texel wrapping\nmodes. For more information, see the OpenGL ES specification page here:\nhttp://www.khronos.org/opengles/sdk/docs/man/xhtml/glTexParameter.xml\n- \"GL_NEAREST_MIPMAP_NEAREST\"\n- \"GL_LINEAR_MIPMAP_NEAREST\"\n- \"GL_NEAREST_MIPMAP_LINEAR\"\n- \"GL_LINEAR_MIPMAP_LINEAR\"\n- \"GL_NEAREST\"\n- \"GL_LINEAR\"\n- \"GL_NEAREST\"\n- \"GL_LINEAR\"\n- \"GL_REPEAT\"\n- \"GL_CLAMP_TO_EDGE\"\n- \"GL_MIRRORED_REPEAT\"\n- \"GL_REPEAT\"\n- \"GL_CLAMP_TO_EDGE\"\n- \"GL_MIRRORED_REPEAT\"\nThese settings will affect all sprites and other nodes that reference this atlas.",
+        description = "Used to set the minification and magnifaction filtering modes for the atlas texture, and also the texel wrapping modes. For more information, see the OpenGL ES specification page here:\nhttp://www.khronos.org/opengles/sdk/docs/man/xhtml/glTexParameter.xml\n- \"GL_NEAREST_MIPMAP_NEAREST\"\n- \"GL_LINEAR_MIPMAP_NEAREST\"\n- \"GL_NEAREST_MIPMAP_LINEAR\"\n- \"GL_LINEAR_MIPMAP_LINEAR\"\n- \"GL_NEAREST\"\n- \"GL_LINEAR\"\n- \"GL_NEAREST\"\n- \"GL_LINEAR\"\n- \"GL_REPEAT\"\n- \"GL_CLAMP_TO_EDGE\"\n- \"GL_MIRRORED_REPEAT\"\n- \"GL_REPEAT\"\n- \"GL_CLAMP_TO_EDGE\"\n- \"GL_MIRRORED_REPEAT\"\nThese settings will affect all sprites and other nodes that reference this atlas.",
         args = "(minFilter: string, magFilter: string, wrapS: string, wrapT: string)",
         returns = "()",
       },
@@ -251,7 +251,7 @@ return {
     childs = {
       finishTransaction = {
         type = "method",
-        description = "Finishes / finalises a transaction. \nWhen a purchase request is made it is not finalised until this function is called. This gives \nthe developer the opportunity to validate the transaction / download content before notifying \nthe store that the purchase was successfully completed. If the app exits before the purchase has \nbeen finished, the system will inform the app of the purchase again in the future. Not required \nfor the BlackBerry platform.",
+        description = "Finishes / finalises a transaction.\nWhen a purchase request is made it is not finalised until this function is called. This gives the developer the opportunity to validate the transaction / download content before notifying the store that the purchase was successfully completed. If the app exits before the purchase has been finished, the system will inform the app of the purchase again in the future. Not required for the BlackBerry platform.",
         args = "()",
         returns = "(boolean)",
       },
@@ -269,7 +269,7 @@ return {
       },
       purchaseProduct = {
         type = "method",
-        description = "Purchases a product.\nUpon successfull purchase the receiptAvailable event will be raised providing access to product \ninformation. The receiptAvailable event table is defined as follows:\n- productId: Product identifier\n- transactionId: Transaction identifier\n- date: Date of purchase\n- receipt: Transaction receipt\n- finaliseData: Data used to finalise the transaction\n- restored: true if item was restored, false if item was purchased\nIf an error occurs then the billingError event will be raised providing information about the \nerror that occurred. The billingError event table is defined as follows:\n- productId: Product identifier\n- error: The error that occurred\nExample::\nfunction billingEvent(event)\nif (event.type == \"billingError\") then\n-- An error occurred\nelseif (event.type == \"receiptAvailable\") then\n-- Receipt is available\nbilling:finishTransaction(event.finaliseData)\nend\nend\nif (billing:isAvailable()) then\nif (billing:init()) then\nsystem:addEventListener(\"billing\", billingEvent)\nbilling:purchaseProduct(\"my product id\")\nend\nend",
+        description = "Purchases a product.\nUpon successfull purchase the receiptAvailable event will be raised providing access to product information. The receiptAvailable event table is defined as follows:\n- productId: Product identifier\n- transactionId: Transaction identifier\n- date: Date of purchase\n- receipt: Transaction receipt\n- finaliseData: Data used to finalise the transaction\n- restored: true if item was restored, false if item was purchased\nIf an error occurs then the billingError event will be raised providing information about the \nerror that occurred. The billingError event table is defined as follows:\n- productId: Product identifier\n- error: The error that occurred\nExample::\nfunction billingEvent(event)\nif (event.type == \"billingError\") then\n-- An error occurred\nelseif (event.type == \"receiptAvailable\") then\n-- Receipt is available\nbilling:finishTransaction(event.finaliseData)\nend\nend\nif (billing:isAvailable()) then\nif (billing:init()) then\nsystem:addEventListener(\"billing\", billingEvent)\nbilling:purchaseProduct(\"my product id\")\nend\nend",
         args = "(productId: string)",
         returns = "(boolean)",
       },
@@ -281,13 +281,13 @@ return {
       },
       restoreTransactions = {
         type = "method",
-        description = "Restores previous purchased products. Supported only on the iOS platform.\nFor each product that is restored the receiptAvailable event will be raised providing access to \nproduct information. The receiptAvailable event table is defined as follows:\n- productId: Product identifier\n- transactionId: Transaction identifier\n- date: Date of purchase\n- receip: Transaction receipt\n- finaliseData:- Data used to finalise the transaction\n- restored: true if item was restored, false if item was purchased\nIf an error occurs then the billingError event will be raised providing information about the \nerror that occurred. The billingError event table is defined as follows:\n- productId: Product identifier\n- error: The error that occurred",
+        description = "Restores previous purchased products. Supported only on the iOS platform.\nFor each product that is restored the receipt Available event will be raised providing access to product information. The receiptAvailable event table is defined as follows:\n- productId: Product identifier\n- transactionId: Transaction identifier\n- date: Date of purchase\n- receip: Transaction receipt\n- finaliseData:- Data used to finalise the transaction\n- restored: true if item was restored, false if item was purchased\nIf an error occurs then the billingError event will be raised providing information about the \nerror that occurred. The billingError event table is defined as follows:\n- productId: Product identifier\n- error: The error that occurred",
         args = "()",
         returns = "(boolean)",
       },
       setTestMode = {
         type = "method",
-        description = "Specifies live or test mode (BlackBerry only). \nTest mode will allow the return of test responses, whilst live mode will carry out valid in-app \npurchases.\nErrors\n======\nBilling errors descriptions:\n- BILLING_ERROR_CLIENT_INVALID			- The client is invalid\n- BILLING_ERROR_PAYMENT_CANCELLED		- Payment was cancelled\n- BILLING_ERROR_PAYMENT_INVALID		- Payment request is invalid\n- BILLING_ERROR_PAYMENT_NOT_ALLOWED	- Payment is prohibited by the device\n- BILLING_ERROR_PURCHASE_UNKNOWN		- Purchase failed for unknown reason\n- BILLING_ERROR_PURCHASE_DISABLED		- Purchasing is disabled\n- BILLING_ERROR_NO_CONNECTION			- No connection to store available\n- BILLING_ERROR_RESTORE_FAILED			- Product restore failed\n- BILLING_ERROR_UNKNOWN_PRODUCT		- Product was not found in the store\n- BILLING_ERROR_DEVELOPER_ERROR		- The application making the request is not properly signed\n- BILLING_ERROR_UNAVAILABLE			- The billing extension is not available\n- BILLING_ERROR_FAILED					- General failure\n- BILLING_ERROR_UNKNOWN_ERROR			- An unknown error has occurred\nProduct Refunds\n===============\nThe billing API does not directly force a product refund, however should one occur the refundAvailable \nevent will be raised. The refundAvailable event table is defined as follows:\n- productId: Product identifier\n- finaliseData: Data used to finalise the transaction\nNote that finishTransaction() should be called to inform the store that the refund was completed.\nRefunds are only supported by the Android (Google Play) platform.\nAndroid Public Key\n==================\nFor the Android platform you must set your public key in the app.icf file as shown below::\n[BILLING]\nandroidPublicKey1=\"Part of Android public key\"\nandroidPublicKey2=\"Part of Android public key\"\nandroidPublicKey3=\"Part of Android public key\"\nandroidPublicKey4=\"Part of Android public key\"\nandroidPublicKey5=\"Part of Android public key\"\nNote that the key is split across up to 5 settings, each setting can carry a max of 127 characters. \nThe complete key will be a concatenation of all 5 settings.",
+        description = "Specifies live or test mode (BlackBerry only). \nTest mode will allow the return of test responses, whilst live mode will carry out valid in-app purchases.\nErrors\n======\nBilling errors descriptions:\n- BILLING_ERROR_CLIENT_INVALID			- The client is invalid\n- BILLING_ERROR_PAYMENT_CANCELLED		- Payment was cancelled\n- BILLING_ERROR_PAYMENT_INVALID		- Payment request is invalid\n- BILLING_ERROR_PAYMENT_NOT_ALLOWED	- Payment is prohibited by the device\n- BILLING_ERROR_PURCHASE_UNKNOWN		- Purchase failed for unknown reason\n- BILLING_ERROR_PURCHASE_DISABLED		- Purchasing is disabled\n- BILLING_ERROR_NO_CONNECTION			- No connection to store available\n- BILLING_ERROR_RESTORE_FAILED			- Product restore failed\n- BILLING_ERROR_UNKNOWN_PRODUCT		- Product was not found in the store\n- BILLING_ERROR_DEVELOPER_ERROR		- The application making the request is not properly signed\n- BILLING_ERROR_UNAVAILABLE			- The billing extension is not available\n- BILLING_ERROR_FAILED					- General failure\n- BILLING_ERROR_UNKNOWN_ERROR			- An unknown error has occurred\nProduct Refunds\n===============\nThe billing API does not directly force a product refund, however should one occur the refundAvailable \nevent will be raised. The refundAvailable event table is defined as follows:\n- productId: Product identifier\n- finaliseData: Data used to finalise the transaction\nNote that finishTransaction() should be called to inform the store that the refund was completed.\nRefunds are only supported by the Android (Google Play) platform.\nAndroid Public Key\n==================\nFor the Android platform you must set your public key in the app.icf file as shown below::\n[BILLING]\nandroidPublicKey1=\"Part of Android public key\"\nandroidPublicKey2=\"Part of Android public key\"\nandroidPublicKey3=\"Part of Android public key\"\nandroidPublicKey4=\"Part of Android public key\"\nandroidPublicKey5=\"Part of Android public key\"\nNote that the key is split across up to 5 settings, each setting can carry a max of 127 characters. \nThe complete key will be a concatenation of all 5 settings.",
         args = "(productId: boolean)",
         returns = "()",
       },
@@ -358,7 +358,7 @@ return {
       },
       getHeadingVector = {
         type = "method",
-        description = "Gets the current compass 3d vector and heading.\nIf this function fails, the result returned is simply a boolean with value \"false\".\nIf this function succeeds, the result returned is a quartet (heading,x,y,z) of number values, followed by a boolean with value \"true\".\n:returns heading (number): The current heading of the compass vector, in degrees east of north, relative to the current orientation of the device. This is normally calculated by the OS based the x,y,z components below.\n:returns x (number): Component of earth's magnetic field vector measured along the device's x axis, in microteslas.\n:returns y (number): Component of earth's magnetic field vector measured along the device's y axis, in microteslas.\n:returns z (number): Component of earth's magnetic field vector measured along the device's z axis, in microteslas.",
+        description = "Gets the current compass 3d vector and heading.\nIf this function fails, the result returned is simply a boolean with value \"false\". If this function succeeds, the result returned is a quartet (heading,x,y,z) of number values, followed by a boolean with value \"true\".\n:returns heading (number): The current heading of the compass vector, in degrees east of north, relative to the current orientation of the device. This is normally calculated by the OS based the x,y,z components below.\n:returns x (number): Component of earth's magnetic field vector measured along the device's x axis, in microteslas.\n:returns y (number): Component of earth's magnetic field vector measured along the device's y axis, in microteslas.\n:returns z (number): Component of earth's magnetic field vector measured along the device's z axis, in microteslas.",
         args = "()",
         returns = "()",
       },
