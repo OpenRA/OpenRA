@@ -130,15 +130,13 @@ local function fillTips(api,apibasename,apiname)
   local function traverse (tab,libname)
     if not tab.childs then return end
     for key,info in pairs(tab.childs) do
-      traverse(info,key)
-      if info.type == "function" or info.type == "method" or info.type == "value" then
-        local libstr = libname ~= "" and libname.."." or ""
+      local fullkey = (libname ~= "" and libname.."." or "")..key
+      traverse(info, fullkey)
 
-        -- fix description
-        local frontname = (info.returns or "(?)").." "..libstr..key.." "..(info.args or "(?)")
+      if info.type == "function" or info.type == "method" or info.type == "value" then
+        local frontname = (info.returns or "(?)").." "..fullkey.." "..(info.args or "(?)")
         frontname = frontname
-          :gsub("\n"," ")
-          :gsub("\t","")
+          :gsub("\n"," "):gsub("\t","")
           :gsub("("..widthmask..")[ \t]([^%)])","%1\n %2")
 
         local description = (info.description or "")
