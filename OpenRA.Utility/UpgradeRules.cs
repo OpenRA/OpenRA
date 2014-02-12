@@ -100,6 +100,13 @@ namespace OpenRA.Utility
 						node.Value.Nodes.RemoveAll(n => n.Key == "JustMove");
 				}
 
+				// UnloadFacing was removed from Cargo
+				if (engineVersion < 20140212)
+				{
+					if (depth == 1 && node.Key == "Cargo")
+						node.Value.Nodes.RemoveAll(n => n.Key == "UnloadFacing");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
