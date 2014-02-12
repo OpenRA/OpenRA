@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.FileFormats", "OpenRA.FileFormats\OpenRA.FileFormats.csproj", "{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
