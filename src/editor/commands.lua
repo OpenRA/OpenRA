@@ -669,8 +669,7 @@ function ProjectConfig(dir, config)
 end
 
 function SetOpenTabs(params)
-  local recovery, nametab = loadstring("return "..params.recovery)
-  if recovery then recovery, nametab = pcall(recovery) end
+  local recovery, nametab = LoadSafe("return "..params.recovery)
   if not recovery then
     DisplayOutputLn(TR("Can't process auto-recovery record; invalid format: %s."):format(nametab))
     return

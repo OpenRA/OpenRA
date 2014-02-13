@@ -514,9 +514,9 @@ debugger.listen = function()
               -- if it's an error returned, then handle the error
               if m and m:find("stack traceback:", 1, true) then
                 -- this is an error message sent remotely
-                local func = loadstring("return "..m)
-                if func then
-                  DisplayOutputLn(func())
+                local ok, res = LoadSafe("return "..m)
+                if ok then
+                  DisplayOutputLn(res)
                   return
                 end
               end
