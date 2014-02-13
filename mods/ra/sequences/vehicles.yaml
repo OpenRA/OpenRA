@@ -177,7 +177,7 @@ apc:
 		Start: 0
 		Length: 6
 		Facings: 8
-	close:
+	open:
 		Start: 32
 		Length: 3
 	unload:

@@ -34,10 +34,10 @@ namespace OpenRA.Mods.RA.Render
 				() => { PlayCustomAnimRepeating(self, name); });
 		}
 
-		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
+		public void PlayCustomAnimBackwards(Actor self, string name, Action after)
 		{
 			anim.PlayBackwardsThen(name,
-				() => { anim.PlayRepeating("idle"); a(); });
+				() => { anim.PlayRepeating("idle"); if (after != null) after(); });
 		}
 	}
 }

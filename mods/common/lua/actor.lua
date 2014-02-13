@@ -80,7 +80,7 @@ Actor.Hunt = function(actor)
 end
 
 Actor.UnloadCargo = function(actor, unloadAll)
-	actor:QueueActivity(OpenRA.New("UnloadCargo", { unloadAll }))
+	actor:QueueActivity(OpenRA.New("UnloadCargo", { actor, unloadAll }))
 end
 
 Actor.Harvest = function(actor)

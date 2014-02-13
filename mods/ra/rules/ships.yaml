@@ -216,7 +216,8 @@ LST:
 		Speed: 113
 	RevealsShroud:
 		Range: 6
-	RenderUnit:
+	RenderLandingCraft:
+		OpenTerrainTypes: Clear, Rough, Road, Ore, Gems, Beach
 	Cargo:
 		Types: Infantry, Vehicle
 		MaxWeight: 5

@@ -1,5 +1,7 @@
 NEW:
 	All Mods:
+		Fixed unloading passengers moving unnecessarily far from their transport.
+		Fixed the unload cursor sometimes being displayed for transports even when they were unable to unload.
 		An error dialog is now displayed when server connections are lost.
 		Added AttackMove and Guard abilities to Aircraft and Helicopters.
 		Aircraft and Helicopters can now be guarded by other units.
@@ -16,6 +18,7 @@ NEW:
 		Removed the build radius restrictions.
 		Added the BLOXXMAS terrain tiles from the 1.06 patch.
 	Red Alert:
+		Transports will now open their doors when at shore.
 		Tanya can now plant C4 on bridges.
 		Submarine torpedoes can now hit bridges when force fired.
 		Increased torpedo splash damage and raised multiplier vs. concrete.

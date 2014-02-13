@@ -285,7 +285,7 @@ namespace OpenRA.Mods.RA.Missions
 				self.QueueActivity(new Move.Move(reinforcementsEntryPoint.Location));
 				self.QueueActivity(new RemoveSelf());
 			}));
-			lst.QueueActivity(new UnloadCargo(true));
+			lst.QueueActivity(new UnloadCargo(lst, true));
 			lst.QueueActivity(new Transform(lst, "lst.unselectable.nocargo") { SkipMakeAnims = true });
 		}
 
@@ -342,7 +342,7 @@ namespace OpenRA.Mods.RA.Missions
 			}));
 			lst.QueueActivity(new Move.Move(spyReinforcementsUnloadPoint.Location));
 			lst.QueueActivity(new Wait(10));
-			lst.QueueActivity(new UnloadCargo(true));
+			lst.QueueActivity(new UnloadCargo(lst, true));
 			lst.QueueActivity(new Transform(lst, "lst.unselectable.nocargo") { SkipMakeAnims = true });
 		}
 

@@ -333,6 +333,7 @@
     <Compile Include="Render\RenderInfantry.cs" />
     <Compile Include="Render\RenderInfantryPanic.cs" />
     <Compile Include="Render\RenderSpy.cs" />
+    <Compile Include="Render\RenderLandingCraft.cs" />
     <Compile Include="Render\RenderUnit.cs" />
     <Compile Include="Render\RenderUnitReload.cs" />
     <Compile Include="Render\WithBuildingExplosion.cs" />

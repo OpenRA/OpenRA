@@ -66,8 +66,7 @@ tran:
 		Start: 32
 		Length: 4
 	unload: tran2
-		Start: 32
-		Length: 4
+		Start: 35
 	icon: tranicon
 		Start: 0
 		

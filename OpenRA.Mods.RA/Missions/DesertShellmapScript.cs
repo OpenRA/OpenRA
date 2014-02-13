@@ -224,7 +224,7 @@ namespace OpenRA.Mods.RA.Missions
 			chinook.QueueActivity(new HeliFly(chinook, Target.FromPos(lz.CenterPosition + offset))); // no reservation of hpad but it's not needed
 			chinook.QueueActivity(new Turn(0));
 			chinook.QueueActivity(new HeliLand(false));
-			chinook.QueueActivity(new UnloadCargo(true));
+			chinook.QueueActivity(new UnloadCargo(chinook, true));
 			chinook.QueueActivity(new Wait(150));
 			chinook.QueueActivity(new HeliFly(chinook, Target.FromCell(entry)));
 			chinook.QueueActivity(new RemoveSelf());
@@ -313,7 +313,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			var cargo = self.Trait<Cargo>();
 			if (!cargo.IsEmpty(self) && !(self.GetCurrentActivity() is UnloadCargo))
-				self.QueueActivity(false, new UnloadCargo(true));
+				self.QueueActivity(false, new UnloadCargo(self, true));
 		}
 	}
 }

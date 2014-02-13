@@ -47,6 +47,7 @@ lst:
 	open:
 		Start: 1
 		Length: 4
+		Tick: 150
 	unload:
 		Start: 4
 	icon: lsticon
