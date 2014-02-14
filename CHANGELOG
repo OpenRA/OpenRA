@@ -44,6 +44,7 @@ NEW:
 		Added HitAnimPalette trait for LaserZap projectiles. Laser hit animations can now specify individual palettes. Defaults to effect palette.
 		Fixed performance issues with units pathing to naval transports.
 		Fixed unit moving to transports that have moved.
+		Fixed replays showing all chat messages at second 0 instead of the time it was sent.
 	Server:
 		Message of the day is now shared between all mods and a default motd.txt gets created in the user directory.
 	Asset Browser:

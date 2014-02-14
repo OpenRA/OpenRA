@@ -454,7 +454,7 @@ namespace OpenRA.Server
 				case "Chat":
 				case "TeamChat":
 				case "PauseGame":
-					DispatchOrdersToClients(conn, 0, so.Serialize());
+					DispatchOrdersToClients(conn, conn.Frame, so.Serialize());
 					break;
 				case "Pong":
 				{

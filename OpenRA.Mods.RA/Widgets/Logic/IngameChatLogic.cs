@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var team = teamChat && !disableTeamChat;
 				if (chatText.Text != "")
-					orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
+					orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim(), false));
 
 				CloseChat();
 				return true;
