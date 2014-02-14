@@ -542,6 +542,14 @@ namespace OpenRA.Mods.RA.Move
 		public Activity MoveWithinRange(Target target, WRange range) { return new Move(target, range); }
 		public Activity MoveFollow(Actor self, Target target, WRange range) { return new Follow(self, target, range); }
 		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(pathFunc); }
+		public Activity VisualMove(CPos dest)
+		{
+			var start = self.Location.CenterPosition + MobileInfo.SubCellOffsets[toSubCell];
+			var end = dest.CenterPosition + MobileInfo.SubCellOffsets[toSubCell];
+			var speed = MovementSpeedForCell(self, self.Location);
+			var length = speed > 0 ? (end - start).Length / speed : 0;
+			return new Drag(start, end, length);
+		}
 
 		public void OnNotifyBlockingMove(Actor self, Actor blocking)
 		{

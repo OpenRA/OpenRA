@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
@@ -41,10 +42,23 @@ namespace OpenRA.Mods.RA.Activities
 			if (!cells.Contains(self.Location))
 				return NextActivity;
 
-			cargo.Load(transport, self);
-			self.World.AddFrameEndTask(w => w.Remove(self));
+			var facing = self.TraitOrDefault<IFacing>();
+			if (facing != null)
+			{
+				var desiredFacing = Util.GetFacing(transport.CenterPosition - self.CenterPosition, 0);
+				if (facing.Facing != desiredFacing)
+					return Util.SequenceActivities(new Turn(desiredFacing), this);
+			}
 
-			return this;
+			var mobile = self.Trait<Mobile>();
+
+			return Util.SequenceActivities(
+				mobile.VisualMove(transport.Location),
+				new CallFunc(() =>
+				{
+					cargo.Load(transport, self);
+					self.World.AddFrameEndTask(w => w.Remove(self));
+				}));
 		}
 	}
 }
