@@ -21,8 +21,6 @@ UseAsShellmap: False
 Type: Conquest
 
 Options:
-	StartingCash: 4000
-	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
