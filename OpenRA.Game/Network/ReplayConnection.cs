@@ -19,41 +19,41 @@ namespace OpenRA.Network
 		FileStream replayStream;
 		List<byte[]> sync = new List<byte[]>();
 
-		public ReplayConnection( string replayFilename ) { replayStream = File.OpenRead( replayFilename ); }
+		public ReplayConnection(string replayFilename) { replayStream = File.OpenRead(replayFilename); }
 
 		public int LocalClientId { get { return 0; } }
 		public ConnectionState ConnectionState { get { return ConnectionState.Connected; } }
 
 		// do nothing; ignore locally generated orders
-		public void Send( int frame, List<byte[]> orders ) { }
-		public void SendImmediate( List<byte[]> orders ) { }
+		public void Send(int frame, List<byte[]> orders) { }
+		public void SendImmediate(List<byte[]> orders) { }
 
-		public void SendSync( int frame, byte[] syncData )
+		public void SendSync(int frame, byte[] syncData)
 		{
 			var ms = new MemoryStream();
-			ms.Write( BitConverter.GetBytes( frame ) );
-			ms.Write( syncData );
-			sync.Add( ms.ToArray() );
+			ms.Write(BitConverter.GetBytes(frame));
+			ms.Write(syncData);
+			sync.Add(ms.ToArray());
 		}
 
-		public void Receive( Action<int, byte[]> packetFn )
+		public void Receive(Action<int, byte[]> packetFn)
 		{
-			while( sync.Count != 0 )
+			while (sync.Count != 0)
 			{
-				packetFn( LocalClientId, sync[ 0 ] );
-				sync.RemoveAt( 0 );
+				packetFn(LocalClientId, sync[0]);
+				sync.RemoveAt(0);
 			}
 
-			if( replayStream == null ) return;
+			if (replayStream == null) return;
 
-			var reader = new BinaryReader( replayStream );
+			var reader = new BinaryReader(replayStream);
 
-			while( replayStream.Position < replayStream.Length )
+			while (replayStream.Position < replayStream.Length)
 			{
 				var client = reader.ReadInt32();
 				var packetLen = reader.ReadInt32();
-				var packet = reader.ReadBytes( packetLen );
-				packetFn( client, packet );
+				var packet = reader.ReadBytes(packetLen);
+				packetFn(client, packet);
 			}
 
 			replayStream = null;

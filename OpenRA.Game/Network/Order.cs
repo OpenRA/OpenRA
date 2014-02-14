@@ -154,7 +154,7 @@ namespace OpenRA
 						var name = r.ReadString();
 						var data = r.ReadString();
 
-						return new Order( name, null, false ) { IsImmediate = true, TargetString = data };
+						return new Order(name, null, false) { IsImmediate = true, TargetString = data };
 					}
 
 				default:
