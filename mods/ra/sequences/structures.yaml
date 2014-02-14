@@ -17,15 +17,21 @@ hosp:
 	damaged-idle:
 		Start: 4
 		Length: 4
+	dead:
+		Start: 8
 	make: hospmake
 		Start: 0
 		Length: *
+	icon: hospicon
+		Start: 0
 
 bio:
 	idle:
 		Start: 0
 	damaged-idle:
 		Start: 1
+	dead:
+		Start: 2
 	make: biomake
 		Start: 0
 		Length: *
@@ -536,6 +542,8 @@ miss:
 	idle:
 		Start: 0
 	damaged-idle:
+		Start: 1
+	dead:
 		Start: 2
 	make: missmake
 		Start: 0
