@@ -77,6 +77,9 @@ Section "Game" GAME
 	File "${SRCDIR}\AUTHORS"
 	File "${SRCDIR}\CHANGELOG"
 	File "${SRCDIR}\COPYING"
+	File "${SRCDIR}\README.html"
+	File "${SRCDIR}\CONTRIBUTING.html"
+	File "${SRCDIR}\DOCUMENTATION.html"
 	File "${SRCDIR}\*.ttf"
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\Tao.*.dll"
@@ -199,6 +202,9 @@ Function ${UN}Clean
 	Delete $INSTDIR\AUTHORS
 	Delete $INSTDIR\CHANGELOG
 	Delete $INSTDIR\COPYING
+	Delete $INSTDIR\README.html
+	Delete $INSTDIR\CONTRIBUTING.html
+	Delete $INSTDIR\DOCUMENTATION.html
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\*.ttf
 	Delete "$INSTDIR\global mix database.dat"
