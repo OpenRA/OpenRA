@@ -22,7 +22,7 @@ namespace OpenRA
 	{
 		public static PlatformType CurrentPlatform { get { return currentPlatform.Value; } }
 
-		static Lazy<PlatformType> currentPlatform = Lazy.New((Func<PlatformType>)GetCurrentPlatform);
+		static OpenRA.FileFormats.Lazy<PlatformType> currentPlatform = Lazy.New((Func<PlatformType>)GetCurrentPlatform);
 
 		static PlatformType GetCurrentPlatform()
 		{

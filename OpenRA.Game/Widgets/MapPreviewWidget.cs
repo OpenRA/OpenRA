@@ -29,7 +29,7 @@ namespace OpenRA.Widgets
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SPAWN_TOOLTIP";
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		OpenRA.FileFormats.Lazy<TooltipContainerWidget> tooltipContainer;
 		public int TooltipSpawnIndex = -1;
 
 		Rectangle MapRect;

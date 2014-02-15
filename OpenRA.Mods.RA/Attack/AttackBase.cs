@@ -33,8 +33,8 @@ namespace OpenRA.Mods.RA
 	{
 		[Sync] public bool IsAttacking { get; internal set; }
 		public IEnumerable<Armament> Armaments { get { return GetArmaments(); } }
-		protected Lazy<IFacing> facing;
-		protected Lazy<Building> building;
+		protected OpenRA.FileFormats.Lazy<IFacing> facing;
+		protected OpenRA.FileFormats.Lazy<Building> building;
 		protected Func<IEnumerable<Armament>> GetArmaments;
 
 		readonly Actor self;

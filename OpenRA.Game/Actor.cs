@@ -24,12 +24,12 @@ namespace OpenRA
 
 		public readonly World World;
 		public readonly uint ActorID;
-		public Lazy<Rectangle> Bounds;
+		public OpenRA.FileFormats.Lazy<Rectangle> Bounds;
 
-		Lazy<IOccupySpace> occupySpace;
-		Lazy<IFacing> facing;
-		Lazy<Health> health;
-		Lazy<IEffectiveOwner> effectiveOwner;
+		OpenRA.FileFormats.Lazy<IOccupySpace> occupySpace;
+		OpenRA.FileFormats.Lazy<IFacing> facing;
+		OpenRA.FileFormats.Lazy<Health> health;
+		OpenRA.FileFormats.Lazy<IEffectiveOwner> effectiveOwner;
 
 		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
 		public IEffectiveOwner EffectiveOwner { get { return effectiveOwner.Value; } }

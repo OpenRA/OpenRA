@@ -58,10 +58,11 @@ namespace OpenRA.Mods.RA
 		public readonly ArmamentInfo Info;
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
+
 		public readonly Actor self;
-		Lazy<Turreted> Turret;
-		Lazy<IBodyOrientation> Coords;
-		Lazy<LimitedAmmo> limitedAmmo;
+		OpenRA.FileFormats.Lazy<Turreted> Turret;
+		OpenRA.FileFormats.Lazy<IBodyOrientation> Coords;
+		OpenRA.FileFormats.Lazy<LimitedAmmo> limitedAmmo;
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public WRange Recoil;

@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 		public readonly FirePort[] Ports;
 
 		AttackGarrisonedInfo info;
-		Lazy<IBodyOrientation> coords;
+		OpenRA.FileFormats.Lazy<IBodyOrientation> coords;
 		List<Armament> armaments;
 		List<AnimationWithOffset> muzzles;
 		Dictionary<Actor, IFacing> paxFacing;

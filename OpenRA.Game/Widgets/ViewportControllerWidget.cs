@@ -25,7 +25,7 @@ namespace OpenRA.Widgets
 	{
 		public readonly string TooltipTemplate = "WORLD_TOOLTIP";
 		public readonly string TooltipContainer;
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		OpenRA.FileFormats.Lazy<TooltipContainerWidget> tooltipContainer;
 
 		public WorldTooltipType TooltipType { get; private set; }
 		public IToolTip ActorTooltip { get; private set; }

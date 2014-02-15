@@ -138,18 +138,18 @@ Section "-DotNet" DotNet
 	IfErrors error 0
 	IntCmp $0 1 0 error 0
 	ClearErrors
-	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "SP"
+	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4.0" "SP"
 	IfErrors error 0
 	IntCmp $0 1 done error done
-	error: 
-		MessageBox MB_YESNO ".NET Framework v3.5 SP1 or later is required to run OpenRA. $\n \
+	error:
+		MessageBox MB_YESNO ".NET Framework v4.0 or later is required to run OpenRA. $\n \
 		Do you wish for the installer to launch your web browser in order to download and install it?" \
 		IDYES download IDNO error2
 	download:
-		ExecShell "open" "http://www.microsoft.com/downloads/en/details.aspx?familyid=ab99342f-5d1a-413d-8319-81da479ab0d7"
+		ExecShell "open" "http://www.microsoft.com/en-us/download/details.aspx?id=17113"
 		Goto done
 	error2:
-		MessageBox MB_OK "Installation will continue but be aware that OpenRA will not run unless .NET v3.5 SP1 \
+		MessageBox MB_OK "Installation will continue, but be aware that OpenRA will not run unless .NET v4.0 \
 		or later is installed."
 	done:
 SectionEnd
