@@ -24,6 +24,7 @@ NEW:
 		Increased torpedo splash damage and raised multiplier vs. concrete.
 		Fixed transparency glitches in the sniper icon.
 		Removed health bars and selection boxes from walls.
+		Fixed build-limited units such as Tanya being unavailable after using the Chronosphere on a vehicle she is in.
 	Tiberian Dawn:
 		Commando can now plant C4 on bridges.
 		Added the Asset Browser to the Extras menu.
