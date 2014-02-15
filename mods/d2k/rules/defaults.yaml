@@ -15,7 +15,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, C4
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:
@@ -37,6 +37,7 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	LuaScriptEvents:
+	Demolishable:
 
 ^Tank:
 	AppearsOnRadar:
@@ -55,7 +56,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, C4
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:
@@ -77,6 +78,7 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	LuaScriptEvents:
+	Demolishable:
 
 ^Husk:
 	Health:

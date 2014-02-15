@@ -18,6 +18,7 @@ NEW:
 		Shroud is now displayed by default again (disable it in the lobby settings).
 		Removed the build radius restrictions.
 		Added the BLOXXMAS terrain tiles from the 1.06 patch.
+		Saboteur can now plant C4 on vehicles.
 	Red Alert:
 		Transports will now open their doors when at shore.
 		Tanya can now plant C4 on bridges.
@@ -25,7 +26,8 @@ NEW:
 		Increased torpedo splash damage and raised multiplier vs. concrete.
 		Fixed transparency glitches in the sniper icon.
 		Removed health bars and selection boxes from walls.
-		Fixed build-limited units such as Tanya being unavailable after using the Chronosphere on a vehicle she is in.
+		Fixed Tanya being unavailable after using the Chronosphere on a vehicle she is in.
+		Tanya can now plant C4 on vehicles.
 	Tiberian Dawn:
 		Commando can now plant C4 on bridges.
 		Added the Asset Browser to the Extras menu.
