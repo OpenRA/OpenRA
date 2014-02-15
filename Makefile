@@ -37,7 +37,7 @@
 CSC         = dmcs
 CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
-COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll
+COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll thirdparty/MaxMind.Db.dll thirdparty/MaxMind.GeoIP2.dll
 
 
 
@@ -65,7 +65,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rcg rgl rsdl rsdl2 rnull game utility geoip irc
+CORE = rcg rgl rsdl rsdl2 rnull game utility irc
 TOOLS = editor tsbuild ralint
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
@@ -75,13 +75,6 @@ VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev
 ######################## PROGRAM TARGET RULES ##########################
 #
 # Core binaries
-
-geoip_SRCS := $(shell find GeoIP/ -iname '*.cs')
-geoip_TARGET = GeoIP.dll
-geoip_KIND = library
-geoip_LIBS = $(COMMON_LIBS)
-PROGRAMS += geoip
-geoip: $(geoip_TARGET)
 
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
@@ -142,8 +135,8 @@ STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 mod_ra_SRCS := $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET = mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND = library
-mod_ra_DEPS = $(STD_MOD_DEPS) $(geoip_TARGET) $(irc_TARGET)
-mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(geoip_TARGET) $(irc_TARGET)
+mod_ra_DEPS = $(STD_MOD_DEPS) $(irc_TARGET)
+mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(irc_TARGET)
 PROGRAMS += mod_ra
 mod_ra: $(mod_ra_TARGET)
 
@@ -318,7 +311,7 @@ install-core: default
 	@$(CP_R) mods/modchooser "$(DATA_INSTALL_DIR)/mods/"
 
 	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
-	@$(INSTALL_DATA) "GeoIP.dat" "$(DATA_INSTALL_DIR)/GeoIP.dat"
+	@$(INSTALL_DATA) "GeoLite2-Country.mmdb" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
 	@$(INSTALL_DATA) CHANGELOG "$(DATA_INSTALL_DIR)/CHANGELOG"
 	@$(INSTALL_DATA) COPYING "$(DATA_INSTALL_DIR)/COPYING"

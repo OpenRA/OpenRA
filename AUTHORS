@@ -83,7 +83,10 @@ FreeType License.
 
 Using OpenAL Soft distributed under the GNU LGPL.
 
-Using GeoLite data created by MaxMind and
+Using MaxMind GeoIP2 .NET API distributed under
+the Apache 2.0 license.
+
+Using GeoLite2 data created by MaxMind and
 distributed under the CC BY-SA 3.0 license.
 
 Using KopiLua created by Mark Feldman and
