@@ -60,9 +60,6 @@ Players:
 		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4
 
 Actors:
-	Actor0: mine
-		Location: 95,19
-		Owner: Neutral
 	Actor1: v18
 		Location: 27,54
 		Owner: Neutral
@@ -74,9 +71,6 @@ Actors:
 		Owner: Neutral
 	Actor6: mine
 		Location: 75,24
-		Owner: Neutral
-	Actor7: mine
-		Location: 80,24
 		Owner: Neutral
 	Actor9: mine
 		Location: 65,46
@@ -90,8 +84,8 @@ Actors:
 	Actor12: mine
 		Location: 57,80
 		Owner: Neutral
-	Actor8: mine
-		Location: 83,21
+	Actor7: mine
+		Location: 86,27
 		Owner: Neutral
 	Actor14: tc05
 		Location: 94,32
@@ -218,9 +212,6 @@ Actors:
 		Owner: Neutral
 	Actor57: mine
 		Location: 82,109
-		Owner: Neutral
-	Actor13: mine
-		Location: 87,26
 		Owner: Neutral
 	Actor91: mine
 		Location: 93,109
@@ -414,17 +405,8 @@ Actors:
 	Actor127: t01
 		Location: 68,21
 		Owner: Neutral
-	Actor128: tc04
-		Location: 88,16
-		Owner: Neutral
-	Actor129: tc01
-		Location: 95,24
-		Owner: Neutral
-	Actor130: t17
-		Location: 90,19
-		Owner: Neutral
-	Actor131: t07
-		Location: 90,18
+	Actor0: tc01
+		Location: 94,24
 		Owner: Neutral
 	Actor132: tc04
 		Location: 63,18
@@ -510,14 +492,11 @@ Actors:
 	Actor159: t11
 		Location: 79,29
 		Owner: Neutral
-	Actor160: t06
-		Location: 87,32
+	Actor8: t06
+		Location: 89,30
 		Owner: Neutral
-	Actor161: t06
-		Location: 96,25
-		Owner: Neutral
-	Actor162: t06
-		Location: 92,23
+	Actor128: t06
+		Location: 95,25
 		Owner: Neutral
 	Actor163: t03
 		Location: 71,33
@@ -732,8 +711,8 @@ Actors:
 	Actor217: t16
 		Location: 21,34
 		Owner: Neutral
-	Actor237: mpspawn
-		Location: 104,29
+	Actor131: mpspawn
+		Location: 103,32
 		Owner: Neutral
 	Actor5: mine
 		Location: 46,88
@@ -771,11 +750,26 @@ Actors:
 	Actor59: mine
 		Location: 78,52
 		Owner: Neutral
-	Actor61: t16
-		Location: 111,41
-		Owner: Neutral
 	Actor93: mine
 		Location: 23,93
+		Owner: Neutral
+	Actor78: t16
+		Location: 111,42
+		Owner: Neutral
+	Actor61: tc01
+		Location: 109,23
+		Owner: Neutral
+	Actor161: t08
+		Location: 107,23
+		Owner: Neutral
+	Actor162: t07
+		Location: 98,28
+		Owner: Neutral
+	Actor237: mine
+		Location: 79,25
+		Owner: Neutral
+	Actor181: mine
+		Location: 82,22
 		Owner: Neutral
 
 Smudges:
