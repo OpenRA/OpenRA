@@ -98,6 +98,8 @@ Section "Game" GAME
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA.lnk" $OUTDIR\OpenRA.Game.exe "" \
 			"$OUTDIR\OpenRA.Game.exe" "" "" "" ""
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.lnk" $OUTDIR\README.html "" \
+			"$OUTDIR\README.html" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 
 	SetOutPath "$INSTDIR\cg"
