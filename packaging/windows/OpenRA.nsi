@@ -77,6 +77,9 @@ Section "Game" GAME
 	File "${SRCDIR}\AUTHORS"
 	File "${SRCDIR}\CHANGELOG"
 	File "${SRCDIR}\COPYING"
+	File "${SRCDIR}\README.html"
+	File "${SRCDIR}\CONTRIBUTING.html"
+	File "${SRCDIR}\DOCUMENTATION.html"
 	File "${SRCDIR}\*.ttf"
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\Tao.*.dll"
@@ -95,6 +98,8 @@ Section "Game" GAME
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA.lnk" $OUTDIR\OpenRA.Game.exe "" \
 			"$OUTDIR\OpenRA.Game.exe" "" "" "" ""
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.lnk" $OUTDIR\README.html "" \
+			"$OUTDIR\README.html" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 
 	SetOutPath "$INSTDIR\cg"
@@ -116,19 +121,12 @@ Section "Editor" EDITOR
 SectionEnd
 
 SectionGroup /e "Settings"
-	Section "Portable Install" PORTABLE
-		CreateDirectory $INSTDIR\Support
-	SectionEnd
 	Section "Desktop Shortcut" DESKTOPSHORTCUT
 		SetOutPath "$INSTDIR"
 		CreateShortCut "$DESKTOP\OpenRA.lnk" $INSTDIR\OpenRA.Game.exe "" \
 			"$INSTDIR\OpenRA.Game.exe" "" "" "" ""
 	SectionEnd
 SectionGroupEnd
-
-Function .onInit
-	SectionSetFlags ${PORTABLE} 0
-FunctionEnd
 
 ;***************************
 ;Dependency Sections
@@ -199,6 +197,9 @@ Function ${UN}Clean
 	Delete $INSTDIR\AUTHORS
 	Delete $INSTDIR\CHANGELOG
 	Delete $INSTDIR\COPYING
+	Delete $INSTDIR\README.html
+	Delete $INSTDIR\CONTRIBUTING.html
+	Delete $INSTDIR\DOCUMENTATION.html
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\*.ttf
 	Delete "$INSTDIR\global mix database.dat"
@@ -234,13 +235,11 @@ SectionEnd
 ;***************************
 LangString DESC_GAME ${LANG_ENGLISH} "OpenRA engine, official mods and dependencies"
 LangString DESC_EDITOR ${LANG_ENGLISH} "OpenRA map editor"
-LangString DESC_PORTABLE ${LANG_ENGLISH} "Store support files in the install directory."
 LangString DESC_DESKTOPSHORTCUT ${LANG_ENGLISH} "Place shortcut on the Desktop."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 	!insertmacro MUI_DESCRIPTION_TEXT ${GAME} $(DESC_GAME)
 	!insertmacro MUI_DESCRIPTION_TEXT ${EDITOR} $(DESC_EDITOR)
-	!insertmacro MUI_DESCRIPTION_TEXT ${PORTABLE} $(DESC_PORTABLE)
 	!insertmacro MUI_DESCRIPTION_TEXT ${DESKTOPSHORTCUT} $(DESC_DESKTOPSHORTCUT)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
