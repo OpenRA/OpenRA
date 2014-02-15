@@ -43,6 +43,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				cashButton.OnClick = () =>
 				world.IssueOrder(new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false));
 
+			var growResourcesButton = widget.GetOrNull<ButtonWidget>("GROW_RESOURCES");
+			if (growResourcesButton != null)
+				growResourcesButton.OnClick = () =>
+				world.IssueOrder(new Order("DevGrowResources", world.LocalPlayer.PlayerActor, false));
+
 			var fastBuildCheckbox = widget.GetOrNull<CheckboxWidget>("INSTANT_BUILD");
 			if (fastBuildCheckbox != null)
 			{

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly int AnimationInterval = 750;
 	}
 
-	class SeedsResource : ITick
+	class SeedsResource : ITick, ISeedableResource
 	{
 		int ticks;
 		int animationTicks;
@@ -33,27 +33,8 @@ namespace OpenRA.Mods.RA
 		{
 			if (--ticks <= 0)
 			{
-				var info = self.Info.Traits.Get<SeedsResourceInfo>();
-				var resourceType = self.World.WorldActor
-					.TraitsImplementing<ResourceType>()
-					.FirstOrDefault(t => t.Info.Name == info.ResourceType);
-
-				if (resourceType == null)
-					throw new InvalidOperationException("No such resource type `{0}`".F(info.ResourceType));
-
-				var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-
-				var cell = RandomWalk(self.Location, self.World.SharedRandom)
-					.Take(info.MaxRange)
-					.SkipWhile(p => resLayer.GetResource(p) == resourceType && resLayer.IsFull(p.X, p.Y))
-					.Cast<CPos?>().FirstOrDefault();
-
-				if (cell != null && self.World.Map.IsInMap(cell.Value) &&
-					(resLayer.GetResource(cell.Value) == resourceType
-					|| (resLayer.GetResource(cell.Value) == null && resLayer.AllowResourceAt(resourceType, cell.Value))))
-					resLayer.AddResource(resourceType, cell.Value, 1);
-
-				ticks = info.Interval;
+				Seed(self);
+				ticks = self.Info.Traits.Get<SeedsResourceInfo>().Interval;
 			}
 
 			if (--animationTicks <= 0)
@@ -62,6 +43,30 @@ namespace OpenRA.Mods.RA
 				self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 				animationTicks = info.AnimationInterval;
 			}
+		}
+
+		public void Seed(Actor self)
+		{
+			var info = self.Info.Traits.Get<SeedsResourceInfo>();
+			var resourceType = self.World.WorldActor
+				.TraitsImplementing<ResourceType>()
+				.FirstOrDefault(t => t.Info.Name == info.ResourceType);
+
+			if (resourceType == null)
+				throw new InvalidOperationException("No such resource type `{0}`".F(info.ResourceType));
+
+			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+
+			var cell = RandomWalk(self.Location, self.World.SharedRandom)
+				.Take(info.MaxRange)
+				.SkipWhile(p => resLayer.GetResource(p) == resourceType && resLayer.IsFull(p.X, p.Y))
+				.Cast<CPos?>().FirstOrDefault();
+
+			if (cell != null && self.World.Map.IsInMap(cell.Value) &&
+				(resLayer.GetResource(cell.Value) == resourceType
+				|| (resLayer.GetResource(cell.Value) == null && resLayer.AllowResourceAt(resourceType, cell.Value))))
+				resLayer.AddResource(resourceType, cell.Value, 1);
+
 		}
 
 		static IEnumerable<CPos> RandomWalk(CPos p, Thirdparty.Random r)

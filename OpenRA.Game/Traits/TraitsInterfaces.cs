@@ -75,6 +75,7 @@ namespace OpenRA.Traits
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
 	public interface INotifyHarvest { void Harvested(Actor self, ResourceType resource); }
+	public interface ISeedableResource { void Seed(Actor self); }
 
 	public interface IAcceptInfiltrator { void OnInfiltrate(Actor self, Actor infiltrator); }
 	public interface IDemolishable

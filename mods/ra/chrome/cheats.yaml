@@ -41,9 +41,16 @@ Background@CHEATS_PANEL:
 		Button@GIVE_CASH:
 			X:30
 			Y:140
-			Width:150
+			Width:135
 			Height:20
 			Text: Give $20000 Cash
+			Height:25
+		Button@GROW_RESOURCES:
+			X:185
+			Y:140
+			Width:135
+			Height:20
+			Text: Grow Resources
 			Height:25
 		Checkbox@INSTANT_BUILD:
 			X:30

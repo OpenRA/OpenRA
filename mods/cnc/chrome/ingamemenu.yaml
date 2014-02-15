@@ -2,7 +2,7 @@ Container@INGAME_MENU_PANEL:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:512
-	Height:320
+	Height:370
 	Children:
 		Button@OBJECTIVES_BUTTON:
 			Y:PARENT_BOTTOM - 1

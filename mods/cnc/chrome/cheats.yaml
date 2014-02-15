@@ -64,53 +64,59 @@ Container@CHEATS_PANEL:
 					Font:Regular
 					Text:Disable Shroud & Fog
 				Button@GIVE_CASH:
-					X:20
-					Y:155
+					X:90
+					Y:145
 					Width:140
 					Height:35
 					Text:Give $20,000
+				Button@GROW_RESOURCES:
+					X:271
+					Y:145
+					Width:140
+					Height:35
+					Text:Grow Resources
 				Button@GIVE_EXPLORATION:
-					X:186
-					Y:155
+					X:90
+					Y:195
 					Width:140
 					Height:35
 					Text:Clear Shroud
 				Button@RESET_EXPLORATION:
-					X:352
-					Y:155
+					X:271
+					Y:195
 					Width:140
 					Height:35
 					Text:Reset Shroud
 				Label@VISUALIZATIONS_TITLE:
-					Y:215
+					Y:255
 					Font:Bold
 					Text:Visualizations
 					Align:Center
 					Width:PARENT_RIGHT
 				Checkbox@SHOW_UNIT_PATHS:
 					X:45
-					Y:235
+					Y:285
 					Width:200
 					Height:20
 					Font:Regular
 					Text:Show Unit Paths
 				Checkbox@SHOW_ASTAR:
 					X:45
-					Y:265
+					Y:315
 					Height:20
 					Width:200
 					Font:Regular
 					Text:Show A* Cost
 				Checkbox@SHOW_COMBATOVERLAY:
 					X:290
-					Y:235
+					Y:285
 					Height:20
 					Width:200
 					Font:Regular
 					Text:Show Combat Geometry
 				Checkbox@SHOW_GEOMETRY:
 					X:290
-					Y:265
+					Y:315
 					Height:20
 					Width:200
 					Font:Regular

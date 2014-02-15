@@ -10,8 +10,8 @@ Container@CONQUEST_OBJECTIVES:
 			Contrast:true
 			Align:Center
 		Background@bg:
-			Width:512
-			Height:320
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
 			Background:panel-black
 			Children:
 				Label@PRIMARY:
@@ -80,7 +80,7 @@ Container@CONQUEST_OBJECTIVES:
 					X:15
 					Y:105
 					Width:482
-					Height:200
+					Height:250
 					ItemSpacing:5
 					Children:
 						Container@PLAYER_TEMPLATE:
