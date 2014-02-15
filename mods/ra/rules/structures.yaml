@@ -146,7 +146,8 @@ SYRD:
 		Name: Shipyard
 		Description: Produces and repairs ships\nand transports.
 	TargetableBuilding:
-		TargetTypes: Ground, Water	Building:
+		TargetTypes: Ground, Water	
+		Building:
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -1346,7 +1347,7 @@ SYRF:
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Shipyard
-		Description: Looks like a Shipyard
+		Description: Looks like a Shipyard.
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
@@ -1380,7 +1381,7 @@ SPEF:
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Sub Pen
-		Description: Looks like a Sub Pen
+		Description: Looks like a Sub Pen.
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -1404,7 +1405,7 @@ DOMF:
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Radar Dome
-		Description: Looks like a Radar Dome
+		Description: Looks like a Radar Dome.
 	Buildable:
 		BuildPaletteOrder: 900
 		Prerequisites: proc
