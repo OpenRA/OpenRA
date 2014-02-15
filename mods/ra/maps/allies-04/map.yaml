@@ -1831,10 +1831,8 @@ Rules:
 		Inherits: LST
 		Buildable:
 			Owner: None
-		RenderUnit:
+		RenderLandingCraft:
 			Image: LST
-		Tooltip:
-			Icon: lsticon
 		-Selectable:
 	LST.Unselectable.NoCargo:
 		Inherits: LST.Unselectable
@@ -1845,8 +1843,6 @@ Rules:
 		Inherits: SPY
 		Buildable:
 			Owner: None
-		SpyToolTip:
-			Icon: spyicon
 		RenderSpy:
 			Image: SPY
 		Health:
@@ -1860,8 +1856,6 @@ Rules:
 		Inherits: DOG
 		Buildable:
 			Owner: None
-		Tooltip:
-			Icon: dogicon
 		Mobile:
 			Speed: 56
 		RenderInfantry:
@@ -1880,8 +1874,6 @@ Rules:
 		Allies04Hijackable:
 		Allies04RenderHijacked:
 			Image: TRUK
-		Tooltip:
-			Icon: TRUK
 		-SupplyTruck:
 		-RenderUnit:
 		Selectable:
