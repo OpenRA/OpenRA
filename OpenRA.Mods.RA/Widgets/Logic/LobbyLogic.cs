@@ -173,6 +173,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				};
 			}
 
+
 			var slotsButton = lobby.GetOrNull<DropDownButtonWidget>("SLOTS_DROPDOWNBUTTON");
 			if (slotsButton != null)
 			{
@@ -613,6 +614,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				idx++;
 			}
 
+			
 			// Add spectators
 			foreach (var client in orderManager.LobbyInfo.Clients.Where(client => client.Slot == null))
 			{
@@ -653,27 +655,48 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				idx++;
 			}
 
-			// Spectate button
-			if (orderManager.LocalClient.Slot != null)
-			{
-				Widget spec = null;
-				if (idx < Players.Children.Count)
-					spec = Players.Children[idx];
-				if (spec == null || spec.Id != NewSpectatorTemplate.Id)
-					spec = NewSpectatorTemplate.Clone();
+				// Spectate button
+				if (orderManager.LocalClient.Slot != null)
+				{
 
-				var btn = spec.Get<ButtonWidget>("SPECTATE");
-				btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
-				btn.IsDisabled = () => orderManager.LocalClient.IsReady;
-				spec.IsVisible = () => true;
+					Widget spec = null;
+					if (idx < Players.Children.Count)
+						spec = Players.Children[idx];
+					if (spec == null || spec.Id != NewSpectatorTemplate.Id)
+						spec = NewSpectatorTemplate.Clone();
 
-				if (idx >= Players.Children.Count)
-					Players.AddChild(spec);
-				else if (Players.Children[idx].Id != spec.Id)
-					Players.ReplaceChild(Players.Children[idx], spec);
+					var block = spec.Get<ButtonWidget>("BLOCK_SPECTATE");
+					block.OnClick = () =>
+						{
+							orderManager.IssueOrder(Order.Command("allow_spectate False"));
+							orderManager.IssueOrders(
+								orderManager.LobbyInfo.Clients.Where(
+									c => c.IsObserver && !c.IsAdmin).Select(
+										client => Order.Command(String.Format("kick {0} {1}", client.Index, client.Name
+										))).ToArray());
+						};  
+					block.IsVisible = () => orderManager.LocalClient.IsAdmin && orderManager.LobbyInfo.GlobalSettings.AllowSpectate;
+					block.IsDisabled =  () => !orderManager.LobbyInfo.GlobalSettings.AllowSpectate;
 
-				idx++;
-			}
+					var allow = spec.Get<ButtonWidget>("ALLOW_SPECTATE");
+					allow.OnClick = () => orderManager.IssueOrder(Order.Command("allow_spectate True"));
+					allow.IsVisible = () => orderManager.LocalClient.IsAdmin && !orderManager.LobbyInfo.GlobalSettings.AllowSpectate;
+					allow.IsDisabled = () => orderManager.LobbyInfo.GlobalSettings.AllowSpectate;
+					
+					var btn = spec.Get<ButtonWidget>("SPECTATE");
+					btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
+					btn.IsDisabled = () => orderManager.LocalClient.IsReady;
+					btn.IsVisible = () => orderManager.LobbyInfo.GlobalSettings.AllowSpectate;
+					spec.IsVisible = () => true;
+					
+					if (idx >= Players.Children.Count)
+						Players.AddChild(spec);
+					else if (Players.Children[idx].Id != spec.Id)
+						Players.ReplaceChild(Players.Children[idx], spec);
+
+					idx++;
+				}
+
 
 			while (Players.Children.Count > idx)
 				Players.RemoveChild(Players.Children[idx]);
