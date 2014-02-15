@@ -231,6 +231,7 @@
 	RevealsShroud:
 		Range: 6
 	Mobile:
+		Crushes: crate
 		Speed: 113
 		TerrainSpeeds:
 			Clear: 90

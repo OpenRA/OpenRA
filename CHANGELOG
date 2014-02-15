@@ -29,6 +29,7 @@ NEW:
 		Added the Asset Browser to the Extras menu.
 		Removed health bars and selection boxes from walls.
 		Changed Nod Obelisk HP to 600 from 400, same as Advanced Guard Tower
+		Fixed dinosaurs not being able to collect crates.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.
