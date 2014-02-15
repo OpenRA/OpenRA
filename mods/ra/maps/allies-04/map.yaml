@@ -1831,7 +1831,7 @@ Rules:
 		Inherits: LST
 		Buildable:
 			Owner: None
-		RenderUnit:
+		RenderLandingCraft:
 			Image: LST
 		-Selectable:
 	LST.Unselectable.NoCargo:
