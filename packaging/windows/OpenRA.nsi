@@ -121,19 +121,12 @@ Section "Editor" EDITOR
 SectionEnd
 
 SectionGroup /e "Settings"
-	Section "Portable Install" PORTABLE
-		CreateDirectory $INSTDIR\Support
-	SectionEnd
 	Section "Desktop Shortcut" DESKTOPSHORTCUT
 		SetOutPath "$INSTDIR"
 		CreateShortCut "$DESKTOP\OpenRA.lnk" $INSTDIR\OpenRA.Game.exe "" \
 			"$INSTDIR\OpenRA.Game.exe" "" "" "" ""
 	SectionEnd
 SectionGroupEnd
-
-Function .onInit
-	SectionSetFlags ${PORTABLE} 0
-FunctionEnd
 
 ;***************************
 ;Dependency Sections
@@ -242,13 +235,11 @@ SectionEnd
 ;***************************
 LangString DESC_GAME ${LANG_ENGLISH} "OpenRA engine, official mods and dependencies"
 LangString DESC_EDITOR ${LANG_ENGLISH} "OpenRA map editor"
-LangString DESC_PORTABLE ${LANG_ENGLISH} "Store support files in the install directory."
 LangString DESC_DESKTOPSHORTCUT ${LANG_ENGLISH} "Place shortcut on the Desktop."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 	!insertmacro MUI_DESCRIPTION_TEXT ${GAME} $(DESC_GAME)
 	!insertmacro MUI_DESCRIPTION_TEXT ${EDITOR} $(DESC_EDITOR)
-	!insertmacro MUI_DESCRIPTION_TEXT ${PORTABLE} $(DESC_PORTABLE)
 	!insertmacro MUI_DESCRIPTION_TEXT ${DESKTOPSHORTCUT} $(DESC_DESKTOPSHORTCUT)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
