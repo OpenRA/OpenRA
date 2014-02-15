@@ -6,9 +6,9 @@ RequiresMod: ra
 
 Title: Poland Raid
 
-Description: ver.4 >> FFA >> there is lot of resources to control, while ore is devaluated
+Description: ver.4 >> there is lot of resources to control, while ore fields replenishment is decreased
 
-Author: s1w
+Author: s1w @ defcongames.net
 
 Tileset: TEMPERAT
 
@@ -781,17 +781,16 @@ Actors:
 Smudges:
 
 Rules:
+	World:
+		LuaScriptInterface:
+			LuaScripts: announce.lua
 	OILB:
 		CashTrickler:
 			Period: 300
 			Amount: 100
-	World:
-		LuaScriptInterface:
-			LuaScripts: announce.lua
-		ResourceType@ore:
-			ValuePerUnit: 20
-		ResourceType@gem:
-			ValuePerUnit: 30
+	MINE:
+		SeedsResource:
+			Interval: 105
 	FACT:
 		RevealsShroud:
 			Range: 8
