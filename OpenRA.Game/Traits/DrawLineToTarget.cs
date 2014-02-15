@@ -21,7 +21,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.self, this); }
 	}
 
-	public class DrawLineToTarget : IPostRenderSelection
+	public class DrawLineToTarget : IPostRenderSelection, INotifySelected, INotifyBecomingIdle
 	{
 		Actor self;
 		DrawLineToTargetInfo Info;
@@ -49,6 +49,12 @@ namespace OpenRA.Traits
 				lifetime = Info.Ticks;
 		}
 
+		public void Selected(Actor a)
+		{
+			// Reset the order line timeout.
+			lifetime = Info.Ticks;
+		}
+
 		public void RenderAfterWorld(WorldRenderer wr)
 		{
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
@@ -69,6 +75,12 @@ namespace OpenRA.Traits
 				wr.DrawTargetMarker(c, from);
 				wr.DrawTargetMarker(c, to);
 			}
+		}
+
+		public void OnBecomingIdle(Actor a)
+		{
+			if (a.IsIdle)
+				targets = null;
 		}
 	}
 
