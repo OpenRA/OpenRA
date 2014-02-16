@@ -56,11 +56,11 @@ namespace OpenRA
 
 		public void Tick(World world)
 		{
-			actors.RemoveAll(a => !a.IsInWorld);
+			actors.RemoveAll(a => !a.IsInWorld || world.FogObscures(a));
 
 			foreach (var cg in controlGroups.Values)
-				cg.RemoveAll(a => a.Destroyed);		// note: NOT `!a.IsInWorld`, since that would remove things
-													// that are in transports.
+				// note: NOT `!a.IsInWorld`, since that would remove things that are in transports.
+				cg.RemoveAll(a => a.Destroyed);
 		}
 
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
@@ -83,14 +83,15 @@ namespace OpenRA
 				return;
 			}
 
+			var groupActors = controlGroups[group].Where(a => !a.IsDead() && !world.FogObscures(a));
+
 			if (mods.HasModifier(Modifiers.Alt) || MultiTapCount >= 2)
 			{
-				worldRenderer.Viewport.Center(controlGroups[group]);
+				worldRenderer.Viewport.Center(groupActors);
 				return;
 			}
 
-			Combine(world, controlGroups[group],
-				mods.HasModifier(Modifiers.Shift), false);
+			Combine(world, groupActors, mods.HasModifier(Modifiers.Shift), false);
 		}
 
 		public int? GetControlGroupForActor(Actor a)
