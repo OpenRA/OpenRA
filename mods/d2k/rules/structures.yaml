@@ -263,6 +263,7 @@
 	Inherits: ^Building
 	RequiresPower:
 	CanPowerDown:
+	DisabledOverlay:
 	Buildable:
 		Prerequisites: Barracks
 		Queue: Building
@@ -335,6 +336,7 @@
 	PrimaryBuilding:
 	RequiresPower:
 	CanPowerDown:
+	DisabledOverlay:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Starport
 
@@ -477,6 +479,7 @@ WALL:
 	AutoTarget:
 	RequiresPower:
 	CanPowerDown:
+	DisabledOverlay:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6

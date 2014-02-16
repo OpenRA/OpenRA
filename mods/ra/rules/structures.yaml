@@ -41,12 +41,11 @@ MSLO:
 		DisplayRadarPing: True
 	CanPowerDown:
 	RequiresPower:
+	DisabledOverlay:
 	SupportPowerChargeBar:
 
 GAP:
 	Inherits: ^Building
-	RequiresPower:
-	CanPowerDown:
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -62,6 +61,9 @@ GAP:
 		Power: -60
 		Footprint: _ x
 		Dimensions: 1,2
+	RequiresPower:
+	CanPowerDown:
+	DisabledOverlay:
 	Health:
 		HP: 1000
 	Armor:
@@ -188,9 +190,7 @@ SYRD:
 	ProductionBar:
 
 IRON:
-	CanPowerDown:
 	Inherits: ^Building
-	RequiresPower:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
@@ -207,6 +207,9 @@ IRON:
 		Power: -200
 		Footprint: xx
 		Dimensions: 2,1
+	RequiresPower:
+	CanPowerDown:
+	DisabledOverlay:
 	Selectable:
 		Bounds: 50,50,0,-12
 	Health:
@@ -231,8 +234,6 @@ IRON:
 
 PDOX:
 	Inherits: ^Building
-	RequiresPower:
-	CanPowerDown:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
@@ -249,6 +250,9 @@ PDOX:
 		Power: -200
 		Footprint: xx xx
 		Dimensions: 2,2
+	RequiresPower:
+	CanPowerDown:
+	DisabledOverlay:
 	Health:
 		HP: 1000
 	Armor:
@@ -273,8 +277,6 @@ PDOX:
 
 TSLA:
 	Inherits: ^Building
-	RequiresPower:
-	CanPowerDown:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 70
@@ -290,6 +292,9 @@ TSLA:
 		Power: -150
 		Footprint: _ x
 		Dimensions: 1,2
+	RequiresPower:
+	CanPowerDown:
+	DisabledOverlay:
 	-GivesBuildableArea:
 	Health:
 		HP: 400
@@ -312,8 +317,6 @@ TSLA:
 
 AGUN:
 	Inherits: ^Building
-	RequiresPower:
-	CanPowerDown:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 50
@@ -329,6 +332,9 @@ AGUN:
 		Power: -50
 		Footprint: _ x
 		Dimensions: 1,2
+	RequiresPower:
+	CanPowerDown:
+	DisabledOverlay:
 	-GivesBuildableArea:
 	Health:
 		HP: 400
@@ -354,8 +360,6 @@ AGUN:
 	DrawLineToTarget:
 
 DOME:
-	RequiresPower:
-	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
@@ -372,6 +376,9 @@ DOME:
 		Power: -40
 		Footprint: xx xx
 		Dimensions: 2,2
+	RequiresPower:
+	CanPowerDown:
+	DisabledOverlay:
 	Health:
 		HP: 1000
 	Armor:
@@ -772,6 +779,9 @@ SAM:
 		Power: -40
 		Footprint: xx
 		Dimensions: 2,1
+	RequiresPower:
+	CanPowerDown:
+	DisabledOverlay:
 	-GivesBuildableArea:
 	Health:
 		HP: 400
@@ -792,8 +802,6 @@ SAM:
 	-RenderBuilding:
 	RenderRangeCircle:
 		RangeCircleType: aa
-	RequiresPower:
-	CanPowerDown:
 	-AcceptsSupplies:
 	DrawLineToTarget:
 

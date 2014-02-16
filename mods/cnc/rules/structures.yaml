@@ -343,8 +343,6 @@ HPAD:
 	ProductionBar:
 
 HQ:
-	RequiresPower:
-	CanPowerDown:
 	Inherits: ^Building
 	Valued:
 		Cost: 1000
@@ -361,6 +359,9 @@ HQ:
 		Power: -40
 		Footprint: x_ xx
 		Dimensions: 2,2
+	RequiresPower:
+	CanPowerDown:
+	DisabledOverlay:
 	Health:
 		HP: 750
 	RevealsShroud:
@@ -408,8 +409,6 @@ FIX:
 	RallyPoint:
 
 EYE:
-	RequiresPower:
-	CanPowerDown:
 	Inherits: ^Building
 	Valued:
 		Cost: 1800
@@ -426,6 +425,9 @@ EYE:
 		Power: -200
 		Footprint: x_ xx
 		Dimensions: 2,2
+	RequiresPower:
+	CanPowerDown:
+	DisabledOverlay:
 	Health:
 		HP: 1200
 	RevealsShroud:
@@ -450,8 +452,6 @@ EYE:
 	SupportPowerChargeBar:
 
 TMPL:
-	RequiresPower:
-	CanPowerDown:
 	Inherits: ^Building
 	Valued:
 		Cost: 2000
@@ -468,6 +468,9 @@ TMPL:
 		Power: -150
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
+	RequiresPower:
+	CanPowerDown:
+	DisabledOverlay:
 	Health:
 		HP: 2000
 	RevealsShroud:

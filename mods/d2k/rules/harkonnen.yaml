@@ -99,6 +99,7 @@ PALACEH:
 		DisplayBeacon: True
 		DisplayRadarPing: True
 	CanPowerDown:
+	DisabledOverlay:
 	RequiresPower:
 	SupportPowerChargeBar:
 

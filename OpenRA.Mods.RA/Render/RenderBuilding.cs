@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged, IRenderModifier
+	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged
 	{
 		public RenderBuilding(ActorInitializer init, RenderBuildingInfo info)
 			: this(init, info, () => 0) { }
@@ -52,19 +52,6 @@ namespace OpenRA.Mods.RA.Render
 				self.QueueActivity(new MakeAnimation(self, () => Complete(self)));
 			else
 				self.QueueActivity(new CallFunc(() => Complete(self)));
-		}
-
-		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
-		{
-			var disabled = self.IsDisabled();
-			foreach (var a in r)
-			{
-				yield return a;
-				if (disabled && !a.IsDecoration)
-					yield return a.WithPalette(wr.Palette("disabled"))
-						.WithZOffset(a.ZOffset + 1)
-						.AsDecoration();
-			}
 		}
 
 		void Complete(Actor self)
