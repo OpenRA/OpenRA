@@ -132,16 +132,16 @@ namespace OpenRA.Mods.RA.Server
 
 						return true;
 					}},
-				{ "allow_spectate",
+				{ "allow_spectators",
 					s =>
 					{
-						s = s.Trim();
-						if(s.Equals("True") || s.Equals("False")){
-							bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllowSpectate);
-
+						if (bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllowSpectators))
+						{
 							server.SyncLobbyInfo();
 							return true;
-						}else{
+						}
+						else
+						{
 							server.SendOrderTo(conn, "Message", "Malformed allow_spectate command");
 							return true;
 						}
@@ -149,15 +149,16 @@ namespace OpenRA.Mods.RA.Server
 				{ "spectate",
 					s =>
 					{
-						if(server.LobbyInfo.GlobalSettings.AllowSpectate){
+						if (server.LobbyInfo.GlobalSettings.AllowSpectators || client.IsAdmin)
+						{
 							client.Slot = null;
 							client.SpawnPoint = 0;
 							client.Color = HSLColor.FromRGB(255, 255, 255);
 							server.SyncLobbyInfo();
 							return true;
-						}else{
-							return false;
 						}
+						else
+							return false;
 					}},
 				{ "slot_close",
 					s =>

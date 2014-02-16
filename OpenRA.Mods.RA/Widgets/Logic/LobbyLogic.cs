@@ -39,6 +39,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly Action OnGameStart;
 		readonly Action onExit;
 		readonly OrderManager orderManager;
+		readonly bool skirmishMode;
 
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						{ "onExit", onExit },
 						{ "onStart", OnGameStart },
-						{ "addBots", false }
+						{ "skirmishMode", false }
 					});
 				};
 
@@ -85,12 +86,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		internal LobbyLogic(Widget widget, World world, OrderManager orderManager,
-			Action onExit, Action onStart, bool addBots)
+			Action onExit, Action onStart, bool skirmishMode)
 		{
 			lobby = widget;
 			this.orderManager = orderManager;
 			this.OnGameStart = () => { CloseWindow(); onStart(); };
 			this.onExit = onExit;
+			this.skirmishMode = skirmishMode;
 
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;
@@ -172,7 +174,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					});
 				};
 			}
-
 
 			var slotsButton = lobby.GetOrNull<DropDownButtonWidget>("SLOTS_DROPDOWNBUTTON");
 			if (slotsButton != null)
@@ -471,7 +472,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{ { "onExit", () => {} } });
 
 			// Add a bot on the first lobbyinfo update
-			if (addBots)
+			if (this.skirmishMode)
 				Game.LobbyInfoChanged += WidgetUtils.Once(() =>
 				{
 					var slot = orderManager.LobbyInfo.FirstEmptySlot();
@@ -614,7 +615,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				idx++;
 			}
 
-			
 			// Add spectators
 			foreach (var client in orderManager.LobbyInfo.Clients.Where(client => client.Slot == null))
 			{
@@ -655,48 +655,33 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				idx++;
 			}
 
-				// Spectate button
-				if (orderManager.LocalClient.Slot != null)
-				{
+			// Spectate button
+			if (orderManager.LocalClient.Slot != null)
+			{
+				Widget spec = null;
+				if (idx < Players.Children.Count)
+					spec = Players.Children[idx];
+				if (spec == null || spec.Id != NewSpectatorTemplate.Id)
+					spec = NewSpectatorTemplate.Clone();
 
-					Widget spec = null;
-					if (idx < Players.Children.Count)
-						spec = Players.Children[idx];
-					if (spec == null || spec.Id != NewSpectatorTemplate.Id)
-						spec = NewSpectatorTemplate.Clone();
-
-					var block = spec.Get<ButtonWidget>("BLOCK_SPECTATE");
-					block.OnClick = () =>
-						{
-							orderManager.IssueOrder(Order.Command("allow_spectate False"));
-							orderManager.IssueOrders(
-								orderManager.LobbyInfo.Clients.Where(
-									c => c.IsObserver && !c.IsAdmin).Select(
-										client => Order.Command(String.Format("kick {0} {1}", client.Index, client.Name
-										))).ToArray());
-						};  
-					block.IsVisible = () => orderManager.LocalClient.IsAdmin && orderManager.LobbyInfo.GlobalSettings.AllowSpectate;
-					block.IsDisabled =  () => !orderManager.LobbyInfo.GlobalSettings.AllowSpectate;
-
-					var allow = spec.Get<ButtonWidget>("ALLOW_SPECTATE");
-					allow.OnClick = () => orderManager.IssueOrder(Order.Command("allow_spectate True"));
-					allow.IsVisible = () => orderManager.LocalClient.IsAdmin && !orderManager.LobbyInfo.GlobalSettings.AllowSpectate;
-					allow.IsDisabled = () => orderManager.LobbyInfo.GlobalSettings.AllowSpectate;
+				LobbyUtils.SetupKickSpectatorsWidget(spec, orderManager, lobby,
+					() => panel = PanelType.Kick, () => panel = PanelType.Players, this.skirmishMode);
 					
-					var btn = spec.Get<ButtonWidget>("SPECTATE");
-					btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
-					btn.IsDisabled = () => orderManager.LocalClient.IsReady;
-					btn.IsVisible = () => orderManager.LobbyInfo.GlobalSettings.AllowSpectate;
-					spec.IsVisible = () => true;
+				var btn = spec.Get<ButtonWidget>("SPECTATE");
+				btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
+				btn.IsDisabled = () => orderManager.LocalClient.IsReady;
+				btn.IsVisible = () => orderManager.LobbyInfo.GlobalSettings.AllowSpectators
+					|| orderManager.LocalClient.IsAdmin;
+
+				spec.IsVisible = () => true;
 					
-					if (idx >= Players.Children.Count)
-						Players.AddChild(spec);
-					else if (Players.Children[idx].Id != spec.Id)
-						Players.ReplaceChild(Players.Children[idx], spec);
+				if (idx >= Players.Children.Count)
+					Players.AddChild(spec);
+				else if (Players.Children[idx].Id != spec.Id)
+					Players.ReplaceChild(Players.Children[idx], spec);
 
-					idx++;
-				}
-
+				idx++;
+			}
 
 			while (Players.Children.Count > idx)
 				Players.RemoveChild(Players.Children[idx]);

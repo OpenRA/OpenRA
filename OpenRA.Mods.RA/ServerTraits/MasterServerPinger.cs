@@ -75,8 +75,7 @@ namespace OpenRA.Mods.RA.Server
 								numBots,
 								"{0}@{1}".F(mod.Id, mod.Version),
 								server.LobbyInfo.GlobalSettings.Map,
-								server.Map.PlayerCount,
-								server.LobbyInfo.GlobalSettings.AllowSpectate));
+								server.Map.PlayerCount));
 
 							if (isInitialPing)
 							{

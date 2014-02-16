@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				{ "onExit", Game.Disconnect },
 				{ "onStart", onStart },
-				{ "addBots", false }
+				{ "skirmishMode", false }
 			});
 		}
 

@@ -293,6 +293,47 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 		}
 
+		public static void SetupKickSpectatorsWidget(Widget parent, OrderManager orderManager, Widget lobby, Action before, Action after, bool skirmishMode)
+		{
+			var checkBox = parent.Get<CheckboxWidget>("TOGGLE_SPECTATORS");
+			checkBox.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowSpectators;
+			checkBox.IsVisible = () => orderManager.LocalClient.IsAdmin && !skirmishMode;
+			checkBox.IsDisabled = () => false;
+
+			Action okPressed = () => 
+			{
+				orderManager.IssueOrder(Order.Command("allow_spectators {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowSpectators)));
+				orderManager.IssueOrders(
+					orderManager.LobbyInfo.Clients.Where(
+						c => c.IsObserver && !c.IsAdmin).Select(
+							client => Order.Command(String.Format("kick {0} {1}", client.Index, client.Name
+							))).ToArray());
+
+				after();
+			};
+
+			checkBox.OnClick = () =>
+			{
+				before();
+
+				int spectatorCount = orderManager.LobbyInfo.Clients.Count(c => c.IsObserver);
+				if (spectatorCount > 0)
+				{
+					Game.LoadWidget(null, "KICK_SPECTATORS_DIALOG", lobby, new WidgetArgs
+					{
+						{ "clientCount", "{0}".F(spectatorCount) },
+						{ "okPressed", okPressed },
+						{ "cancelPressed", after }
+					});
+				}
+				else
+				{
+					orderManager.IssueOrder(Order.Command("allow_spectators {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowSpectators)));
+					after();
+				}
+			};
+		}
+
 		public static void SetupEditableColorWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, ColorPreviewManagerWidget colorPreview)
 		{
 			var color = parent.Get<DropDownButtonWidget>("COLOR");

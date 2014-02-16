@@ -15,6 +15,7 @@ NEW:
 		Fixed units staying selected and contributing to control groups when becoming cloaked or hidden in fog.
 		Swapped the cursors used for sabotaging and capturing buildings/units.
 		Added Ctrl+T shortcut for selection of all units matching the types of the currently selected ones across the screen and map.
+		Added a toggle spectators to multiplayer.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.

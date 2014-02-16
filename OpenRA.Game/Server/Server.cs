@@ -276,7 +276,7 @@ namespace OpenRA.Server
 					IsAdmin = !LobbyInfo.Clients.Any(c1 => c1.IsAdmin)
 				};
 
-				if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectate)
+				if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
 				{
 					SendOrderTo(newConn, "ServerError", "The game is full");
 					DropClient(newConn);
@@ -324,7 +324,7 @@ namespace OpenRA.Server
 				LobbyInfo.Clients.Add(client);
 
 				Log.Write("server", "Client {0}: Accepted connection from {1}.",
-						  newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
+				          newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
 
 				foreach (var t in serverTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
