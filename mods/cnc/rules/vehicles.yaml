@@ -334,7 +334,7 @@ MTNK:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Med. Tank
+		Name: Medium Tank
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
@@ -424,7 +424,7 @@ MSAM:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: MLRS
+		Name: Rocket Launcher
 		Description: Long range rocket artillery.\n  Strong vs all ground units.
 	Buildable:
 		BuildPaletteOrder: 50
