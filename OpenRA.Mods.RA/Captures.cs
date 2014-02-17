@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA
 				var lowEnoughHealth = health.HP <= c.CaptureThreshold * health.MaxHP;
 
 				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
-					? "capture" : "enter";
+					? "enter" : "capture";
 				return true;
 			}
 
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.RA
 				var lowEnoughHealth = target.HP <= c.CaptureThreshold * health.HP;
 
 				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
-					? "capture" : "enter";
+					? "enter" : "capture";
 
 				return true;
 			}
