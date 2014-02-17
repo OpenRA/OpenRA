@@ -21,6 +21,8 @@ namespace OpenRA.Widgets
 	{
 		public static Widget Root = new ContainerWidget();
 
+		public static int LastTickTime = Environment.TickCount;
+
 		static Stack<Widget> WindowList = new Stack<Widget>();
 
 		public static Widget MouseFocusWidget;

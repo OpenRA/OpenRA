@@ -163,17 +163,24 @@ namespace OpenRA
 
 		static void TickInner(OrderManager orderManager)
 		{
-			var t = Environment.TickCount;
-			var dt = t - orderManager.LastTickTime;
+			var tick = Environment.TickCount;
+
+			var uiTickDelta = tick - Ui.LastTickTime;
+			if (uiTickDelta >= Timestep)
+			{
+				Ui.LastTickTime += Timestep;
+				Ui.Tick();
+				cursorFrame += 0.5f;
+			}
+
 			var world = orderManager.world;
-			var timestep = world == null ? Timestep : world.Timestep;
-			if (timestep == 0)
-				return;
-			if (dt >= timestep)
+			var worldTimestep = world == null ? Timestep : world.Timestep;
+			var worldTickDelta = tick - orderManager.LastTickTime;
+			if (worldTimestep != 0 && worldTickDelta >= worldTimestep)
 				using (new PerfSample("tick_time"))
 				{
-					orderManager.LastTickTime += timestep;
-					Ui.Tick();
+					orderManager.LastTickTime += worldTimestep;
+
 					if (orderManager.GameStarted)
 						++Viewport.TicksSinceLastMove;
 
@@ -208,8 +215,6 @@ namespace OpenRA
 								orderManager.LastTickTime = Environment.TickCount;
 
 						Sync.CheckSyncUnchanged(world, () => world.TickRender(worldRenderer));
-
-						cursorFrame += 0.5f;
 					}
 				}
 		}
