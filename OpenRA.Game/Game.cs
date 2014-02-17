@@ -179,7 +179,7 @@ namespace OpenRA
 			if (worldTimestep != 0 && worldTickDelta >= worldTimestep)
 				using (new PerfSample("tick_time"))
 				{
-					orderManager.LastTickTime += worldTimestep;
+					orderManager.LastTickTime += (worldTickDelta / worldTimestep) * worldTimestep;
 
 					if (orderManager.GameStarted)
 						++Viewport.TicksSinceLastMove;
