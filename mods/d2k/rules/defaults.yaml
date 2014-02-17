@@ -142,8 +142,6 @@
 		Radius: 96
 	Armor:
 		Type: None
-	RevealsShroud:
-		Range: 6
 	Mobile:
 		Crushes: crate
 		SharesCell: true

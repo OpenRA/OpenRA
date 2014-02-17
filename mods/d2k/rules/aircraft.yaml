@@ -1,12 +1,12 @@
 ^CARRYALL:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 1200
+		Cost: 1100
 	Tooltip:
 		Name: Carryall
-		Description: Fast drop ship.\n  Unarmed
+		Description: An aerial transport designed for moving harvesters.\n  Unarmed
 	Health:
-		HP: 250
+		HP: 4800
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -14,7 +14,7 @@
 	Helicopter:
 		InitialFacing: 0
 		ROT: 4
-		Speed: 210
+		Speed: 149
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
@@ -39,11 +39,11 @@ FRIGATE:
 		Description: Supply spacecraft
 	Plane:
 		ROT: 5
-		Speed: 350
+		Speed: 149
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	Health:
-		HP: 500
+		HP: 4800
 	-TargetableAircraft:
 	-AppearsOnRadar:
 	Armor:
@@ -68,7 +68,7 @@ ORNI:
 		Name: Ornithopter
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
 	Health:
-		HP: 150
+		HP: 900
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -82,7 +82,7 @@ ORNI:
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 6
-		Speed: 280
+		Speed: 252
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
@@ -98,14 +98,14 @@ ORNI.bomber:
 		Weapon: Napalm
 	Inherits: ^Plane
 	Health:
-		HP: 100
+		HP: 900
 	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 10
 	Plane:
 		ROT: 5
-		Speed: 350
+		Speed: 252
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	LimitedAmmo:

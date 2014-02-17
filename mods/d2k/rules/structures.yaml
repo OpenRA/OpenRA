@@ -13,9 +13,9 @@
 	Selectable:
 		Bounds: 96,64
 	Health:
-		HP: 1000
+		HP: 3000
 	Armor:
-		Type: Concrete
+		Type: Light
 	RevealsShroud:
 		Range: 10
 	Production:
@@ -41,19 +41,19 @@
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 300
+		Cost: 225
 	Tooltip:
 		Name: Windtrap
 		Description: Provides power for other structures
 	Building:
-		Power: 100
+		Power: 200
 		Footprint: xx xx
 		Dimensions: 2,2
 	Bib:
 	Health:
-		HP: 400
+		HP: 3000
 	Armor:
-		Type: Wood
+		Type: Building
 	RevealsShroud:
 		Range: 4
 	ProvidesCustomPrerequisite:
@@ -71,19 +71,19 @@
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 300
+		Cost: 225
 	Tooltip:
 		Name: Barracks
 		Description: Trains infantry
 	Building:
-		Power: -20
+		Power: -30
 		Footprint: =x xx
 		Dimensions: 2,2
 	Bib:
 	Health:
-		HP: 800
+		HP: 3200
 	Armor:
-		Type: Wood
+		Type: WeakBuilding
 	RevealsShroud:
 		Range: 5
 	RallyPoint:
@@ -118,14 +118,14 @@
 		Name: Spice Refinery
 		Description: Harvesters unload Spice here for processing
 	Building:
-		Power: -30
+		Power: -75
 		Footprint: xxx x==
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 900
+		HP: 3000
 	Armor:
-		Type: Wood
+		Type: WeakBuilding
 	RevealsShroud:
 		Range: 6
 	-RenderBuilding:
@@ -157,18 +157,18 @@
 	Selectable:
 		Bounds: 32,32
 	Valued:
-		Cost: 150
+		Cost: 120
 	Tooltip:
 		Name: Silo
 		Description: Stores excess harvested Spice
 	Building:
-		Power: -5
+		Power: -15
 		Adjacent: 4
 	-GivesBuildableArea:
 	Health:
-		HP: 300
+		HP: 1500
 	Armor:
-		Type: Wood
+		Type: WeakBuilding
 	RevealsShroud:
 		Range: 4
 	-RenderBuilding:
@@ -194,14 +194,14 @@
 		Name: Light Factory
 		Description: Produces light vehicles
 	Building:
-		Power: -20
+		Power: -125
 		Footprint: xxx xx=
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 750
+		HP: 3300
 	Armor:
-		Type: Wood
+		Type: Light
 	RevealsShroud:
 		Range: 4
 	-RenderBuilding:
@@ -229,19 +229,19 @@
 	Selectable:
 		Bounds: 96,96
 	Valued:
-		Cost: 2000
+		Cost: 1000
 	Tooltip:
 		Name: Heavy Factory
 		Description: Produces heavy vehicles
 	Building:
-		Power: -30
+		Power: -150
 		Footprint: _x_ xxx =xx
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 1500
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: WeakBuilding
 	RevealsShroud:
 		Range: 4
 	-RenderBuilding:
@@ -271,24 +271,24 @@
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 700
+		Cost: 750
 	Tooltip:
 		Name: Outpost
 		Description: Provides a radar map of the battlefield\n  Requires power to operate
 	Building:
-		Power: -40
+		Power: -125
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 1000
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: Light
 	RevealsShroud:
-		Range: 10
+		Range: 4
 	ProvidesRadar:
 	DetectCloaked:
-		Range: 6
+		Range: 2
 	RenderDetectionCircle:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Outpost
@@ -298,7 +298,7 @@
 ^STARPORT:
 	Inherits: ^Building
 	Valued:
-		Cost: 2000
+		Cost: 1500
 	Tooltip:
 		Name: Starport
 		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
@@ -308,16 +308,16 @@
 		BuildPaletteOrder: 80
 		Hotkey: c
 	Building:
-		Power: -40
+		Power: -150
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 96,64
 	Bib:
 	Health:
-		HP: 1000
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: Building
 	RevealsShroud:
 		Range: 7
 	RallyPoint:
@@ -347,7 +347,7 @@
 		DamagedSound:
 		DestroyedSound: EXPLSML4.WAV
 	Valued:
-		Cost: 100
+		Cost: 20
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -361,15 +361,15 @@
 		Adjacent: 7
 		TerrainTypes: Rock
 	Health:
-		HP: 300
+		HP: 2000
 	Armor:
-		Type: Concrete
+		Type: StrongBuilding
 	Wall:
 		CrushClasses: Concretewall
 	LineBuild:
 		Range: 8
 	TargetableBuilding:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Image: walla
@@ -396,12 +396,12 @@ WALL:
 		BuildPaletteOrder: 90
 		Hotkey: g
 	Valued:
-		Cost: 650
+		Cost: 550
 	Tooltip:
 		Name: Gun Tower
-		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\nRequires power to operate.
 	Building:
-		Power: -20
+		Power: -50
 		Adjacent: 4
 		BuildSounds: CHUNG.WAV
 		SellSounds: CHUNG.WAV
@@ -410,11 +410,11 @@ WALL:
 		Priority: 3
 	-GivesBuildableArea:
 	Health:
-		HP: 400
+		HP: 2700
 	Armor:
-		Type: Concrete
+		Type: Heavy
 	RevealsShroud:
-		Range: 8
+		Range: 3
 	RenderRangeCircle:
 	RenderBuilding:
 		HasMakeAnimation: false
@@ -430,9 +430,11 @@ WALL:
 		LocalOffset: 448,0,128
 	AttackTurreted:
 	AutoTarget:
+	RequiresPower:
+	CanPowerDown:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 5
+		Range: 3
 	-WithCrumbleOverlay:
 
 ^ROCKETTOWER:
@@ -443,12 +445,12 @@ WALL:
 		BuildPaletteOrder: 120
 		Hotkey: m
 	Valued:
-		Cost: 850
+		Cost: 750
 	Tooltip:
 		Name: Rocket Tower
 		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
 	Building:
-		Power: -30
+		Power: -60
 		Adjacent: 4
 		BuildSounds: CHUNG.WAV
 		SellSounds: CHUNG.WAV
@@ -457,11 +459,11 @@ WALL:
 		Priority: 3
 	-GivesBuildableArea:
 	Health:
-		HP: 400
+		HP: 3000
 	Armor:
-		Type: Concrete
+		Type: StrongBuilding
 	RevealsShroud:
-		Range: 10
+		Range: 2
 	RenderRangeCircle:
 	RenderBuilding:
 		HasMakeAnimation: false
@@ -491,20 +493,20 @@ WALL:
 		BuildPaletteOrder: 130
 		Hotkey: e
 	Valued:
-		Cost: 500
+		Cost: 800
 	Tooltip:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
 	Building:
-		Power: -10
+		Power: -50
 		Footprint: =x= =x= ===
 		Dimensions: 3,3
 	Health:
-		HP: 500
+		HP: 3000
 	Armor:
-		Type: Concrete
+		Type: Building
 	RevealsShroud:
-		Range: 5
+		Range: 4
 	Reservable:
 	RepairsUnits:
 		Interval: 15
@@ -524,19 +526,19 @@ WALL:
 	Selectable:
 		Bounds: 96,96
 	Valued:
-		Cost: 750
+		Cost: 1150
 	Tooltip:
 		Name: High Tech Facility
 		Description: Unlocks advanced technology
 	Building:
-		Power: -40
+		Power: -75
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 1500
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: WeakBuilding
 	RevealsShroud:
 		Range: 4
 	ProvidesCustomPrerequisite:
@@ -554,7 +556,7 @@ WALL:
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 1500
+		Cost: 1000
 	Tooltip:
 		Name: Ix Lab
 		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
@@ -570,14 +572,14 @@ WALL:
 		SelectTargetSound:
 		FlareType:
 	Building:
-		Power: -40
+		Power: -175
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 1000
+		HP: 2500
 	Armor:
-		Type: Wood
+		Type: WeakBuilding
 	RevealsShroud:
 		Range: 4
 	ProvidesCustomPrerequisite:
@@ -595,24 +597,24 @@ WALL:
 	Selectable:
 		Bounds: 96,96
 	Valued:
-		Cost: 2000
+		Cost: 1600
 	Tooltip:
 		Name: Palace
 		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
 	Building:
-		Power: -50
+		Power: -200
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 2000
+		HP: 4000
 	Armor:
-		Type: Wood
+		Type: WeakBuilding
 	RevealsShroud:
-		Range: 8
+		Range: 4
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 4
+		Range: 2
 	ProvidesCustomPrerequisite:
 		Prerequisite: Palace
 
@@ -621,18 +623,20 @@ SIETCH:
 	Tooltip:
 		Name: Fremen Sietch
 	Building:
-		Power: 0
+		Power: -50
 		Footprint: xx xx
 		Dimensions: 2,2
 		TerrainTypes: Cliff
+	Valued:
+		Cost: 300
 	Bib:
 		Sprite: bib2x
 	Health:
-		HP: 400
+		HP: 6000
 	Armor:
-		Type: Concrete
+		Type: WeakBuilding
 	RevealsShroud:
-		Range: 10
+		Range: 3
 	-GivesBuildableArea:
 	-Sellable:
 	-ExternalCapturable:

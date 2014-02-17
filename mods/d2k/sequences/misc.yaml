@@ -287,8 +287,9 @@ crate:
 # TODO: keep the redundant spicebloom.shp for now for the awful WinForms maps editor
 spicebloom:
 	make: DATA
-		Start: 107
+		Start: 106
 		Length: 3
+		Tick: 15000
 		Offset: -16,-16
 	active: DATA
 		Start: 109
@@ -354,3 +355,23 @@ sandcraters:
 		Start: 162
 		Length: 16
 		Offset: -16,-16
+worm:
+	attack: DATA
+		Start: 3549
+		Length: 16
+		Offset: -16, -16
+		ZOffset: 511
+			
+othercrates:
+	brown: DATA
+		Start: 103
+		ZOffset: -511
+		Offset: -16, -16
+	grey: DATA
+		Start: 105
+		ZOffset: -511
+		Offset: -16, -16
+	magenta: DATA
+		Start: 105
+		ZOffset: -511
+		Offset: -16, -16

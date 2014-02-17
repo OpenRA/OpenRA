@@ -19,7 +19,7 @@ rifle:
 		Transpose: true
 	shoot: DATA
 		Start: 254
-		Length: 6
+		Length: 7
 		Facings: -8
 		Transpose: true
 	prone-stand: DATA
@@ -90,7 +90,7 @@ bazooka:
 		Transpose: true
 	shoot: DATA
 		Start: 506
-		Length: 6
+		Length: 7
 		Facings: -8
 		Transpose: true
 	prone-stand: DATA
@@ -259,7 +259,7 @@ fremen:
 		Tick: 120
 	shoot: DATA
 		Start: 742
-		Length: 6
+		Length: 7
 		Facings: -8
 		Transpose: true
 	prone-stand: DATA
@@ -473,6 +473,9 @@ grenadier: # 2502 - 2749 in 1.06 DATA.R8
 		Start: 176
 		Length: 20
 	die5:
+		Start: 176
+		Length: 20
+	die6:
 		Start: 176
 		Length: 20
 	die-crushed:

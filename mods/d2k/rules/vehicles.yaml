@@ -18,10 +18,10 @@
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 64
+		Speed: 28
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 8
+		Range: 2
 	MustBeDestroyed:
 	BaseBuilding:
 	Explodes:
@@ -50,7 +50,7 @@ HARVESTER:
 		BuildPaletteOrder: 10
 		Hotkey: h
 	Valued:
-		Cost: 1000
+		Cost: 1200
 	Tooltip:
 		Name: Spice Harvester
 		Description: Collects Spice for processing\n  Unarmed
@@ -66,11 +66,11 @@ HARVESTER:
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
 	Health:
-		HP: 1000
+		HP: 4500
 	Armor:
-		Type: Heavy
+		Type: Harvester
 	Mobile:
-		Speed: 64
+		Speed: 37
 		Crushes: crate, infantry
 	RenderUnit:
 		Image: HARVESTER
@@ -110,21 +110,21 @@ TRIKE:
 		Hotkey: w
 		Owner: atreides, harkonnen
 	Valued:
-		Cost: 250
+		Cost: 300
 	Tooltip:
 		Name: Scout Trike
 		Description: Fast Scout\n Strong vs Infantry
 	Selectable:
 		Bounds: 24,24
 	Health:
-		HP: 100
+		HP: 900
 	Armor:
-		Type: Light
+		Type: WeakVehicle
 	Mobile:
 		ROT: 10
-		Speed: 128
+		Speed: 112
 	RevealsShroud:
-		Range: 7
+		Range: 4
 	RenderUnit:
 	WithMuzzleFlash:
 	Armament:
@@ -160,14 +160,14 @@ QUAD:
 		Name: Missile Quad
 		Description: Missile Scout\n Strong vs Vehicles\n  Weak vs Infantry
 	Health:
-		HP: 125
+		HP: 1100
 	Armor:
 		Type: Light
 	Mobile:
 		ROT: 8
-		Speed: 96
+		Speed: 84
 	RevealsShroud:
-		Range: 8
+		Range: 4
 	Armament:
 		Weapon: QuadRockets
 		LocalOffset: 128,64,64, 128,-64,64
@@ -209,15 +209,10 @@ QUAD.starport:
 		ROT: 6
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 7
+		Range: 5
 	Turreted:
 		ROT: 6
 		AlignWhenIdle: true
-	Armament:
-		Weapon: 90mm
-		Recoil: 128
-		RecoilRecovery: 32
-		LocalOffset: 256,0,0
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnit:
@@ -245,20 +240,20 @@ SIEGETANK:
 		BuildPaletteOrder: 50
 		Hotkey: t
 	Valued:
-		Cost: 850
+		Cost: 700
 	Tooltip:
 		Name: Siege Tank
 		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 120
+		HP: 1200
 	Armor:
-		Type: Heavy
+		Type: Light
 	Mobile:
-		Speed: 53
+		Speed: 37
 		ROT: 3
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 8
+		Range: 6
 	Turreted:
 		ROT: 3
 		Offset: 0,0,-32
@@ -302,7 +297,7 @@ SIEGETANK.starport:
 MISSILETANK:
 	Inherits: ^Tank
 	Valued:
-		Cost: 1000
+		Cost: 900
 	Tooltip:
 		Name: Rocket Tank
 		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
@@ -313,18 +308,18 @@ MISSILETANK:
 		BuildPaletteOrder: 60
 		Hotkey: r
 	Mobile:
-		Speed: 64
+		Speed: 56
 		ROT: 5
 	Health:
-		HP: 90
+		HP: 1300
 	Armor:
-		Type: Light
+		Type: WeakVehicle
 	RevealsShroud:
-		Range: 9
+		Range: 6
 	RenderUnit:
 		Image: MISSILETANK
 	Armament:
-		Weapon: 227mm
+		Weapon: MTANK_PRI
 		LocalOffset: -213,128,171, -213,-256,171
 		FireDelay: 15
 	AttackFrontal:

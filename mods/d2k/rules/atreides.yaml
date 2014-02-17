@@ -127,11 +127,11 @@ COMBATA:
 	Buildable:
 		Owner: atreides
 	RevealsShroud:
-		Range: 8
+		Range: 4
 	Turreted:
 		ROT: 6
 	Armament:
-		Weapon: 90mma
+		Weapon: 80mma
 		Recoil: 128
 		RecoilRecovery: 32
 		LocalOffset: 256,0,0
@@ -139,6 +139,8 @@ COMBATA:
 	RenderUnit:
 		Image: COMBATA
 	WithTurret:
+	Health:
+		HP: 2100
 	LeavesHusk:
 		HuskActor: Combata.Husk
 
@@ -165,19 +167,19 @@ SONICTANK:
 		Owner: atreides
 		Hotkey: o
 	Valued:
-		Cost: 1250
+		Cost: 1000
 	Tooltip:
 		Name: Sonic Tank
 		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery, Aircraft
 	Selectable:
 		Bounds: 30,30
 	Health:
-		HP: 130
+		HP: 3000
 	Armor:
 		Type: Light
 	Mobile:
 		ROT: 3
-		Speed: 74
+		Speed: 28
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
@@ -203,7 +205,7 @@ SONICTANK.Husk:
 FREMEN:
 	Inherits: ^Infantry
 	Valued:
-		Cost: 800
+		Cost: 600
 	Tooltip:
 		Name: Fremen
 		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisible
@@ -217,18 +219,18 @@ FREMEN:
 		Bounds: 12,17,0,0
 		Voice: FremenVoice
 	Mobile:
-		Speed: 53
+		Speed: 37
 	Health:
-		HP: 70
+		HP: 700
 	Passenger:
 	RevealsShroud:
-		Range: 7
+		Range: 4
 	AutoTarget:
 		ScanRadius: 7
 	Armament@PRIMARY:
-		Weapon: Sniper
+		Weapon: WeirdingLongRange
 	Armament@SECONDARY:
-		Weapon: Slung
+		Weapon: WeirdingShortRange
 	AttackFrontal:
 	RenderInfantryProne:
 		IdleAnimations: stand,stand2
@@ -248,16 +250,16 @@ GRENADIER:
 		Owner: atreides
 		Hotkey: g
 	Valued:
-		Cost: 160
+		Cost: 80
 	Tooltip:
 		Name: Grenadier
 		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,0
 	Health:
-		HP: 50
+		HP: 600
 	Mobile:
-		Speed: 53
+		Speed: 38
 	Armament:
 		Weapon: Grenade
 		LocalOffset: 0,0,555

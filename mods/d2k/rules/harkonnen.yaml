@@ -134,12 +134,18 @@ COMBATH:
 	Buildable:
 		Owner: harkonnen
 	Mobile:
-		Speed: 53
+		Speed: 56
 		ROT: 4
 	Turreted:
-		ROT: 5
+		ROT: 6
+	Armament:
+		Weapon: 80mmh
+		Recoil: 128
+		RecoilRecovery: 32
+		LocalOffset: 256,0,0
+	AttackTurreted:
 	Health:
-		HP: 440
+		HP: 2700
 	RenderUnit:
 		Image: COMBATH
 	WithTurret:
@@ -169,20 +175,20 @@ DEVAST:
 		Owner: harkonnen
 		Hotkey: d
 	Valued:
-		Cost: 1200
+		Cost: 1050
 	Tooltip:
 		Name: Devastator
 		Description: Super Heavy Tank\n  Strong vs Tanks\n  Weak vs Artillery, Aircraft
 	Health:
-		HP: 650
+		HP: 5000
 	Armor:
 		Type: Heavy
 	Mobile:
 		ROT: 3
-		Speed: 42
+		Speed: 28
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 7
+		Range: 4
 	RenderUnit:
 	Armament:
 		Weapon: DevBullet
@@ -216,7 +222,7 @@ SARDAUKAR:
 		Owner: harkonnen
 		Hotkey: d
 	Valued:
-		Cost: 400
+		Cost: 200
 	Tooltip:
 		Name: Sardaukar
 		Description: Elite asssault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
@@ -224,18 +230,18 @@ SARDAUKAR:
 		Bounds: 12,17,0,0
 		Voice: GenericVoice
 	Health:
-		HP: 100
+		HP: 1000
 	Mobile:
-		Speed: 42
+		Speed: 28
 	RevealsShroud:
-		Range: 6
+		Range: 4
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: stand,stand2
 	Armament@PRIMARY:
-		Weapon: Vulcan
+		Weapon: LMG
 	Armament@SECONDARY:
-		Weapon: Slung
+		Weapon: HMG
 	AttackFrontal:
 

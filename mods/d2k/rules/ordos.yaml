@@ -117,13 +117,21 @@ COMBATO:
 	Buildable:
 		Owner: ordos
 	RevealsShroud:
-		Range: 8
+		Range: 5
 	Turreted:
-		ROT: 8
+		ROT: 6
 	Mobile:
-		Speed: 96
+		Speed: 75
 		ROT: 8
 		Crushes: crate, infantry
+	Health:
+		HP: 1800
+	Armament:
+		Weapon: 80mmo
+		Recoil: 128
+		RecoilRecovery: 32
+		LocalOffset: 256,0,0
+	AttackTurreted:
 	RenderUnit:
 		Image: COMBATO
 	WithTurret:
@@ -152,21 +160,21 @@ RAIDER:
 		Hotkey: w
 		Owner: ordos
 	Valued:
-		Cost: 300
+		Cost: 350
 	Tooltip:
 		Name: Raider Trike
 		Description: Improved Scout\n Strong vs Infantry, Light Vehicles
 	Selectable:
 		Bounds: 24,24
 	Health:
-		HP: 110
+		HP: 1000
 	Armor:
 		Type: Light
 	Mobile:
 		ROT: 10
-		Speed: 149
+		Speed: 98
 	RevealsShroud:
-		Range: 7
+		Range: 5
 	RenderUnit:
 	WithMuzzleFlash:
 	Armament:
@@ -193,12 +201,12 @@ STEALTHRAIDER:
 	Selectable:
 		Bounds: 24,24
 	Health:
-		HP: 110
+		HP: 1000
 	Armor:
 		Type: Light
 	Mobile:
 		ROT: 10
-		Speed: 149
+		Speed: 98
 	RevealsShroud:
 		Range: 7
 	RenderUnit:
@@ -243,13 +251,13 @@ DEVIATORTANK:
 		Hotkey: d
 	Mobile:
 		ROT: 3
-		Speed: 64
+		Speed: 47
 	Health:
-		HP: 125
+		HP: 1100
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
-		Range: 5
+		Range: 4
 	RenderUnit:
 	Armament:
 		Weapon: FakeMissile
@@ -281,7 +289,7 @@ SABOTEUR:
 		Owner: ordos
 		Hotkey: b
 	Valued:
-		Cost: 800
+		Cost: 400
 	Tooltip:
 		Name: Saboteur
 		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
@@ -289,11 +297,16 @@ SABOTEUR:
 		Voice: SaboteurVoice
 		Bounds: 12,17,0,0
 	Health:
-		HP: 100
+		HP: 200
 	Mobile:
-		Speed: 64
+		Speed: 37
 	RevealsShroud:
-		Range: 7
+		Range: 3
 	C4Demolition:
 		C4Delay: 45
 	-AutoTarget:
+	Cloak:
+		InitialDelay: 0
+		CloakDelay: 400
+		CloakSound: STEALTH1.WAV
+		UncloakSound: STEALTH2.WAV

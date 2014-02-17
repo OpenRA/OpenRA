@@ -1,124 +1,64 @@
 LMG:
-	ROF: 20
-	Range: 5c0
+	ROF: 40
+	Range: 2c512
 	Report: MGUN2.WAV
 	Projectile: Bullet
-		Speed: 1c256
+		Speed: 1000c0
 		ContrailLength: 3
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
 	Warhead:
-		Spread: 96
+		Spread: 128
 		Versus:
-			Wood: 25%
+			None: 100%
+			Wall: 10%
+			Building: 25%
+			WeakBuilding: 25%
+			WeakVehicle: 25%
 			Light: 40%
-			Heavy: 10%
-			Concrete: 20%
+			Heavy: 20%
+			StrongBuilding: 100%
+			Harvester: 25%
 		Explosion: piffs
 		InfDeath: 2
-		Damage: 15
+		Damage: 125
 
 Bazooka:
 	ROF: 50
 	Range: 5c0
-	Report: BAZOOK1.WAV
+	Report: ROCKET1.WAV
 	ValidTargets: Ground
 	Projectile: Missile
 		Speed: 160
-		Arm: 2
+		Arm: 0
 		Shadow: yes
 		ContrailLength: 10
 		Inaccuracy: 96
 		Image: RPG
 		ROT: 5
-		RangeLimit: 35
+		RangeLimit: 0
 	Warhead:
-		Spread: 96
+		Spread: 128
 		Versus:
-			None: 10%
-			Wood: 75%
-			Light: 60%
-			Heavy: 90%
-			Concrete: 40%
+			None: 8%
+			Wall: 75%
+			Building: 40%
+			WeakBuilding: 45%
+			WeakVehicle: 45%
+			Light: 70%
+			Heavy: 100%
+			StrongBuilding: 40%
+			Harvester: 50%
 		Explosion: small_explosion
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
-		Damage: 50
+		Damage: 300
 		ImpactSound: EXPLSML1.WAV
-
-Sniper:
-	ROF: 100
-	Range: 8c512
-	Report: FREMODD1.WAV
-	Projectile: Bullet
-		Speed: 1c896
-		ContrailLength: 6
-		TrailInterval: 1
-		ContrailDelay: 0
-		ContrailUsePlayerColor: true
-	Warhead:
-		Damage: 60
-		Spread: 32
-		Versus:
-			None: 100%
-			Wood: 0%
-			Light: 1%
-			Heavy: 0%
-			Concrete: 0%
-		InfDeath: 2
-
-Vulcan:
-	ROF: 30
-	Range: 5c768
-	Report: VULCAN.AUD
-	ValidTargets: Ground, Air
-	Projectile: Bullet
-		Speed: 1c256
-		ContrailLength: 3
-		TrailInterval: 1
-		ContrailDelay: 0
-		ContrailUsePlayerColor: true
-	Warhead:
-		Spread: 96
-		Versus:
-			Wood: 0%
-			Light: 60%
-			Heavy: 10%
-			Concrete: 0%
-		Explosion: piffs
-		InfDeath: 2
-		Damage: 30
-
-Slung:
-	ROF: 60
-	Delay: 5
-	Range: 5c512
-	Report: BAZOOK2.WAV
-	ValidTargets: Ground
-	Projectile: Bullet
-		Speed: 320
-		High: true
-		Shadow: yes
-		Angle: 88
-		Inaccuracy: 384
-		Image: MISSILE
-	Warhead:
-		Spread: 192
-		Versus:
-			None: 0%
-			Wood: 75%
-			Light: 40%
-			Heavy: 90%
-			Concrete: 50%
-		Explosion: small_explosion
-		InfDeath: 4
-		Damage: 30
-		ImpactSound: EXPLLG5.WAV
 
 HMG:
 	ROF: 30
-	Range: 5c0
+	Range: 3c0
 	Burst: 2
 	BurstDelay: 5
 	Report: 20MMGUN1.WAV
@@ -131,17 +71,22 @@ HMG:
 	Warhead:
 		Spread: 96
 		Versus:
-			Wood: 15%
-			Light: 45%
+			None: 100%
+			Wall: 10%
+			Building: 25%
+			WeakBuilding: 75%
+			WeakVehicle: 75%
+			Light: 40%
 			Heavy: 20%
-			Concrete: 20%
+			StrongBuilding: 100%
+			Harvester: 25%
 		Explosion: piffs
 		InfDeath: 2
-		Damage: 30
+		Damage: 90
 
 HMGo:
-	ROF: 30
-	Range: 5c0
+	ROF: 18
+	Range: 3c0
 	Burst: 2
 	BurstDelay: 5
 	Report: 20MMGUN1.WAV
@@ -154,10 +99,15 @@ HMGo:
 	Warhead:
 		Spread: 96
 		Versus:
-			Wood: 15%
-			Light: 45%
-			Heavy: 25%
-			Concrete: 20%
+			None: 100%
+			Wall: 10%
+			Building: 25%
+			WeakBuilding: 75%
+			WeakVehicle: 75%
+			Light: 40%
+			Heavy: 20%
+			StrongBuilding: 100%
+			Harvester: 25%
 		Explosion: piffs
 		InfDeath: 2
 		Damage: 40
@@ -166,7 +116,7 @@ QuadRockets:
 	ROF: 40
 	Burst: 2
 	BurstDelay: 25
-	Range: 7c0
+	Range: 3c512
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Projectile: Missile
@@ -176,24 +126,28 @@ QuadRockets:
 		Image: RPG
 		ROT: 10
 		Speed: 256
-		RangeLimit: 40
+		RangeLimit: 0
 	Warhead:
 		Spread: 96
 		Versus:
-			None: 35%
-			Wood: 45%
+			None: 25%
+			Wall: 100%
+			Building: 50%
+			WeakBuilding: 65%
+			WeakVehicle: 65%
 			Light: 100%
-			Heavy: 100%
-			Concrete: 35%
+			Heavy: 50%
+			StrongBuilding: 100%
+			Harvester: 50%
 		InfDeath: 4
 		Explosion: med_explosion
 		ImpactSound: EXPLSML1.WAV
 		SmudgeType: SandCrater, RockCrater
-		Damage: 25
+		Damage: 250
 
 TurretGun:
 	ROF: 35
-	Range: 7c0
+	Range: 5c0
 	Report: TURRET1.WAV
 	Projectile: Bullet
 		Speed: 704
@@ -204,20 +158,25 @@ TurretGun:
 	Warhead:
 		Spread: 256
 		Versus:
-			None: 50%
-			Wood: 75%
+			None: 20%
+			Wall: 50%
+			Building: 50%
+			WeakBuilding: 60%
+			WeakVehicle: 60%
 			Light: 100%
-			Concrete: 65%
+			Heavy: 75%
+			StrongBuilding: 100%
+			Harvester: 50%
 		Explosion: small_napalm
 		ImpactSound: EXPLSML4.WAV
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
-		Damage: 55
+		Damage: 290
 
 TowerMissile:
-	ROF: 35
-	Range: 7c768
-	MinRange: 1c0
+	ROF: 70
+	Range: 5c512
+	MinRange: 0c0
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Burst: 2
@@ -235,41 +194,24 @@ TowerMissile:
 	Warhead:
 		Spread: 384
 		Versus:
-			None: 50%
-			Wood: 45%
-			Light: 100%
-			Heavy: 50%
-			Concrete: 35%
+			None: 15%
+			Wall: 75%
+			Building: 60%
+			WeakBuilding: 65%
+			WeakVehicle: 65%
+			Light: 90%
+			Heavy: 100%
+			StrongBuilding: 100%
+			Harvester: 50%
 		InfDeath: 3
 		Explosion: small_explosion
 		ImpactSound: EXPLMD1.WAV
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
 
-90mm:
-	ROF: 50
-	Range: 5c768
-	Report: MEDTANK1.WAV
-	Projectile: Bullet
-		Speed: 640
-		Inaccuracy: 384
-		Image: 120mm
-	Warhead:
-		Spread: 256
-		Versus:
-			None: 50%
-			Wood: 50%
-			Light: 100%
-			Concrete: 50%
-		Explosion: small_napalm
-		ImpactSound: EXPLSML4.WAV
-		InfDeath: 4
-		SmudgeType: SandCrater, RockCrater
-		Damage: 40
-
-90mma:
-	ROF: 50
-	Range: 7c0
+80mma:
+	ROF: 60
+	Range: 4c0
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 704
@@ -278,40 +220,124 @@ TowerMissile:
 	Warhead:
 		Spread: 256
 		Versus:
-			None: 50%
-			Wood: 50%
+			None: 20%
+			Wall: 50%
+			Building: 50%
+			WeakBuilding: 50%
+			WeakVehicle: 50%
 			Light: 100%
-			Concrete: 50%
+			Heavy: 75%
+			StrongBuilding: 100%
+			Harvester: 50%
 		Explosion: small_napalm
 		ImpactSound: EXPLSML4.WAV
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
-		Damage: 40
+		Damage: 270
+
+80mmh:
+	ROF: 65
+	Range: 4c0
+	Report: MEDTANK1.WAV
+	Projectile: Bullet
+		Speed: 704
+		Inaccuracy: 352
+		Image: 120mm
+	Warhead:
+		Spread: 256
+		Versus:
+			None: 20%
+			Wall: 50%
+			Building: 50%
+			WeakBuilding: 50%
+			WeakVehicle: 50%
+			Light: 100%
+			Heavy: 75%
+			StrongBuilding: 100%
+			Harvester: 50%
+		Explosion: small_napalm
+		ImpactSound: EXPLSML4.WAV
+		InfDeath: 4
+		SmudgeType: SandCrater, RockCrater
+		Damage: 270
+	
+80mmo:
+	ROF: 55
+	Range: 4c0
+	Report: MEDTANK1.WAV
+	Projectile: Bullet
+		Speed: 704
+		Inaccuracy: 352
+		Image: 120mm
+	Warhead:
+		Spread: 256
+		Versus:
+			None: 20%
+			Wall: 50%
+			Building: 50%
+			WeakBuilding: 50%
+			WeakVehicle: 50%
+			Light: 100%
+			Heavy: 75%
+			StrongBuilding: 100%
+			Harvester: 50%
+		Explosion: small_napalm
+		ImpactSound: EXPLSML4.WAV
+		InfDeath: 4
+		SmudgeType: SandCrater, RockCrater
+		Damage: 270
 
 DevBullet:
-	ROF: 50
-	Range: 5c0
+	ROF: 85
+	Range: 4c0
 	Report: TANKHVY1.WAV
 	Projectile: Bullet
 		Speed: 640
 		Image: doubleblastbullet
 	Warhead:
-		Spread: 256
+		Spread: 512
 		Versus:
-			None: 100%
-			Wood: 50%
+			None: 50%
+			Wall: 100%
+			Building: 75%
+			WeakBuilding: 60%
+			WeakVehicle: 60%
 			Light: 100%
 			Heavy: 100%
-			Concrete: 80%
+			StrongBuilding: 100%
+			Harvester: 100%
 		Explosion: shockwave
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
-		Damage: 100
+		Damage: 650
 
-227mm:
-	ROF: 100
-	Range: 10c0
-	MinRange: 4c0
+DevastatorExplosion:
+	ROF: 0
+	Range: 3c0
+	Report: TANKHVY1.WAV
+	Projectile: Bullet
+		Speed: 640
+		Image: doubleblastbullet
+	Warhead:
+		Spread: 5120
+		Versus:
+			None: 100%
+			Wall: 100%
+			Building: 100%
+			WeakBuilding: 60%
+			WeakVehicle: 60%
+			Light: 100%
+			Heavy: 100%
+			StrongBuilding: 100%
+			Harvester: 100%
+		Explosion: shockwave
+		InfDeath: 4
+		SmudgeType: SandCrater, RockCrater
+		Damage: 5000
+		
+MTANK_PRI:
+	ROF: 115
+	Range: 6c0
 	Burst: 4
 	BurstDelay: 15
 	Report: MISSLE1.WAV
@@ -321,7 +347,7 @@ DevBullet:
 		Arm: 5
 		High: yes
 		Shadow: yes
-		Inaccuracy: 1c416
+		Inaccuracy: 0c512
 		Angle: 110
 		Image: MISSILE2
 		ROT: 5
@@ -329,11 +355,15 @@ DevBullet:
 	Warhead:
 		Spread: 384
 		Versus:
-			None: 20%
-			Wood: 50%
-			Light: 100%
-			Heavy: 50%
-			Concrete: 80%
+			None: 15%
+			Wall: 75%
+			Building: 60%
+			WeakBuilding: 65%
+			WeakVehicle: 65%
+			Light: 90%
+			Heavy: 100%
+			StrongBuilding: 100%
+			Harvester: 50%
 		InfDeath: 4
 		Explosion: mini_explosion
 		ImpactSound: EXPLMD3.WAV
@@ -357,44 +387,53 @@ FakeMissile:
 	Warhead:
 		Spread: 96
 		Versus:
-			None: 0%
-			Wood: 0%
-			Concrete: 0%
+			None: 20%
+			Wall: 20%
+			Building: 20%
+			WeakBuilding: 20%
+			WeakVehicle: 20%
+			Light: 20%
+			Heavy: 20%
+			StrongBuilding: 100%
+			Harvester: 20%
 		Explosion: deviator
 		SmudgeType: SandCrater, RockCrater
-		Damage: 10
+		Damage: 500
 		ImpactSound: EXPLSML2.WAV
 
 155mm:
 	ROF: 75
-	Range: 8c0
-	MinRange: 2c0
+	Range: 5c512
 	Report: MORTAR1.WAV
 	Projectile: Bullet
 		Speed: 256
 		High: true
 		Shadow: yes
 		Angle: 62
-		Inaccuracy: 1c256
+#		Inaccuracy: 1c256
 		ContrailLength: 20
 		Image: 155mm
 	Warhead:
-		Spread: 384
+		Spread: 1024
 		Versus:
-			None: 100%
-			Wood: 80%
-			Light: 75%
-			Heavy: 50%
-			Concrete: 100%
+			None: 125%
+			Wall: 100%
+			Building: 100%			
+			WeakBuilding: 70%
+			WeakVehicle: 70%
+			Light: 30%
+			Heavy: 20%
+			StrongBuilding: 100%
+			Havester: 25%
 		Explosion: large_explosion
 		ImpactSound: EXPLLG3.WAV
 		InfDeath: 3
 		SmudgeType: SandCrater, RockCrater
-		Damage: 100
+		Damage: 450
 
 Sound:
-	ROF: 100
-	Range: 8c512
+	ROF: 90
+	Range: 5c0
 	Report: SONIC1.WAV
 	Projectile: LaserZap
 		BeamWidth: 2
@@ -402,14 +441,19 @@ Sound:
 		BeamDuration: 8
 		UsePlayerColor: true
 	Warhead:
-		Spread: 32
+		Spread: 2048
 		Versus:
-			None: 60%
-			Wood: 85%
-			Light: 80%
-			Concrete: 75%
+			None: 100%
+			Wall: 50%
+			Building: 60%
+			WeakBuilding: 100%
+			WeakVehicle: 100%
+			Light: 100%
+			Heavy: 60%
+			StrongBuilding: 100%
+			Harvester: 50%
 		InfDeath: 6
-		Damage: 150
+		Damage: 500
 
 ChainGun:
 	ROF: 10
@@ -422,16 +466,17 @@ ChainGun:
 	Warhead:
 		Spread: 96
 		Versus:
-			Wood: 50%
+			WeakBuilding: 50%
+			WeakVehicle: 50%
 			Light: 60%
 			Heavy: 25%
-			Concrete: 25%
+			StrongBuilding: 25%
 		Explosion: piffs
 		InfDeath: 2
 		Damage: 20
 
 Heal:
-	ROF: 160
+	ROF: 40
 	Range: 4c0
 	Report:
 	Projectile: Bullet
@@ -439,61 +484,39 @@ Heal:
 	Warhead:
 		Spread: 160
 		Versus:
-			Wood: 0%
+			Wall: 0%
+			WeakBuilding: 0%
+			WeakVehicle: 0%
 			Light: 0%
 			Heavy: 0%
-			Concrete: 0%
+			StrongBuilding: 0%
+			Havester: 0%
 		InfDeath: 1
-		Damage: -50
-
-WormJaw:
-	ROF: 10
-	Range: 3c0
-	Report: WORM.WAV
-	Warhead:
-		Spread: 160
-		Versus:
-			Wood: 0%
-			Concrete: 0%
-		Damage: 100
-
-ParaBomb:
-	ROF: 10
-	Range: 4c512
-	Report:
-	Projectile: GravityBomb
-		Image: BOMBS
-	Warhead:
-		Spread: 192
-		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
-		Explosion: self_destruct
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 500
-		ImpactSound: EXPLLG3.WAV
+		Damage: -100
 
 Napalm:
 	ROF: 2
-	Range: 3c0
+	Range: 1c0
 	Projectile: GravityBomb
 		Image: BOMBS
 	Warhead:
 		Spread: 640
 		Versus:
-			None: 20%
-			Wood: 100%
-			Light: 30%
-			Heavy: 20%
-			Concrete: 70%
+			None: 90%
+			Wall: 50%
+			Building: 75%
+			WeakBuilding: 60%
+			WeakVehicle: 60%
+			Light: 60%
+			Heavy: 60%
+			StrongBuilding: 100%
+			Harvester: 60%
 		InfDeath: 4
 		Explosion: artillery
 		ImpactSound: NAPALM1.WAV
 		SmudgeType: Crater
-		Damage: 300
+		# Original had 3 passes.
+		Damage: 1200
 
 Crush:
 	Warhead:
@@ -511,10 +534,11 @@ Atomic:
 		Spread: 2c0
 		Versus:
 			None: 100%
-			Wood: 100%
+			WeakBuilding: 100%
+			WeakVehicle: 100%
 			Light: 100%
 			Heavy: 50%
-			Concrete: 50%
+			StrongBuilding: 50%
 		Explosion: nuke
 		InfDeath: 5
 		ImpactSound: EXPLLG2.WAV
@@ -525,10 +549,11 @@ CrateNuke:
 		Spread: 1c576
 		Versus:
 			None: 20%
-			Wood: 75%
+			WeakBuilding: 75%
+			WeakVehicle: 100%
 			Light: 25%
 			Heavy: 25%
-			Concrete: 50%
+			StrongBuilding: 50%
 		Explosion: nuke
 		InfDeath: 5
 		ImpactSound: EXPLLG2.WAV
@@ -539,7 +564,8 @@ CrateExplosion:
 		Spread: 320
 		Versus:
 			None: 90%
-			Wood: 75%
+			WeakBuilding: 75%
+			WeakVehicle: 100%
 			Light: 60%
 			Heavy: 25%
 		Explosion: building
@@ -552,7 +578,8 @@ UnitExplode:
 		Spread: 320
 		Versus:
 			None: 90%
-			Wood: 75%
+			WeakBuilding: 75%
+			WeakVehicle: 75%
 			Light: 60%
 			Heavy: 25%
 		Explosion: building
@@ -565,7 +592,8 @@ UnitExplodeSmall:
 		Spread: 320
 		Versus:
 			None: 90%
-			Wood: 75%
+			WeakBuilding: 75%
+			WeakVehicle: 75%
 			Light: 60%
 			Heavy: 25%
 		Explosion: self_destruct
@@ -578,7 +606,8 @@ UnitExplodeTiny:
 		Spread: 224
 		Versus:
 			None: 90%
-			Wood: 75%
+			WeakBuilding: 75%
+			WeakVehicle: 75%
 			Light: 60%
 			Heavy: 25%
 		Explosion: med_explosion
@@ -591,7 +620,8 @@ UnitExplodeScale:
 		Spread: 416
 		Versus:
 			None: 90%
-			Wood: 75%
+			WeakBuilding: 75%
+			WeakVehicle: 75%
 			Light: 60%
 			Heavy: 25%
 		Explosion: building
@@ -609,15 +639,62 @@ Grenade:
 		Inaccuracy: 416
 		Image: BOMBS
 	Warhead:
-		Spread: 192
+		Spread: 512
 		Versus:
-			None: 50%
-			Wood: 100%
-			Light: 25%
-			Heavy: 5%
+			None: 125%
+			Wall: 100%
+			Building: 100%			
+			WeakBuilding: 70%
+			WeakVehicle: 70%
+			Light: 30%
+			Heavy: 20%
+			StrongBuilding: 100%
+			Havester: 25%
 		Explosion: med_explosion
 		InfDeath: 3
 		SmudgeType: SandCrater
-		Damage: 60
+		Damage: 150
 		ImpactSound: EXPLLG5.WAV
-
+		
+WeirdingLongRange:
+	ROF: 50
+	Range: 3c512
+	Report: FREMODD1.WAV
+	Projectile: Bullet
+		Speed: 1000c0
+	Warhead:
+		Spread: 256
+		Damage: 250
+		Versus:
+			None: 25%
+			Wall: 100%
+			Building: 50%
+			WeakBuilding: 65%
+			WeakVehicle: 65%
+			Light: 100%
+			Heavy: 50%
+			Strongbuilding: 100%
+			Harvester: 50%
+		InfDeath: 1
+		
+WeirdingShortRange:
+	ROF: 50
+	Range: 2c512
+	Report: FREMODD1.WAV
+	Projectile: Bullet
+		Speed: 1000c0
+	Warhead:
+		Spread: 256
+		Damage: 125
+		Versus:
+			None: 100%
+			Wall: 10%
+			Building: 25%
+			WeakBuilding: 25%
+			WeakVehicle: 25%
+			Light: 40%
+			Heavy: 20%
+			StrongBuilding: 100%
+			Harvester: 25%
+		Explosion:
+		InfDeath: 1
