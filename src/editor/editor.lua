@@ -30,15 +30,21 @@ local function updateStatusText(editor)
     local pos = editor:GetCurrentPos()
     local line = editor:LineFromPosition(pos)
     local col = 1 + pos - editor:PositionFromLine(line)
+    local selected = #editor:GetSelectedText()
+    local selections = ide.wxver >= "2.9.5" and editor:GetSelections() or 1
 
     texts = {
       iff(editor:GetOvertype(), TR("OVR"), TR("INS")),
       iff(editor:GetReadOnly(), TR("R/O"), TR("R/W")),
-      TR("Ln: %d"):format(line + 1).." "..TR("Col: %d"):format(col) }
+      table.concat({
+        TR("Ln: %d"):format(line + 1),
+        TR("Col: %d"):format(col),
+        selected > 0 and TR("Sel: %d/%d"):format(selected, selections) or "",
+      }, ' ')}
   end
 
   if ide.frame then
-    for n = 1, 3 do
+    for n in ipairs(texts) do
       if (texts[n] ~= statusTextTable[n]) then
         statusBar:SetStatusText(texts[n], n+1)
         statusTextTable[n] = texts[n]
