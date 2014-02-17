@@ -13,6 +13,7 @@ NEW:
 		A player's units, and allied units, now move out of the way when blocking production facilities.
 		Added cheat button to grow map resources.
 		Fixed units staying selected and contributing to control groups when becoming cloaked or hidden in fog.
+		Swapped the cursors used for sabotaging and capturing buildings/units.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
