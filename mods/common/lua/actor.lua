@@ -143,6 +143,10 @@ Actor.SetStance = function(actor, stance)
 	Internal.SetUnitStance(actor, stance)
 end
 
+Actor.OnDamaged = function(actor, eh)
+	Actor.Trait(actor, "LuaScriptEvents").OnDamaged:Add(eh)
+end
+
 Actor.OnKilled = function(actor, eh)
 	Actor.Trait(actor, "LuaScriptEvents").OnKilled:Add(eh)
 end
@@ -181,6 +185,10 @@ end
 
 Actor.ReturnToBase = function(actor, airfield)
 	actor:QueueActivity(OpenRA.New("ReturnToBase", { actor, airfield }))
+end
+
+Actor.Guard = function(actor, target)
+	Internal.Guard(actor, target)
 end
 
 Actor.Patrol = function(actor, waypoints, wait, loop)

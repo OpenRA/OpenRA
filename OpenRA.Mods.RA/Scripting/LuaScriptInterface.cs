@@ -372,5 +372,17 @@ namespace OpenRA.Mods.RA.Scripting
 
 			factory.Trait<ProductionQueue>().ResolveOrder(factory, Order.StartProduction(factory, unit, (int)amount));
 		}
+
+		[LuaGlobal]
+		public void Guard(Actor guard, Actor target)
+		{
+			if (target.HasTrait<Guardable>())
+			{
+				var gt = guard.TraitOrDefault<Guard>();
+
+				if (gt != null)
+					gt.GuardTarget(guard, Target.FromActor(target));
+			}
+		}
 	}
 }

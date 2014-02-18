@@ -162,3 +162,4 @@ LuaScripts:
 	mods/common/lua/supportpowers.lua
 	mods/common/lua/rules.lua
 	mods/common/lua/production.lua
+	mods/common/lua/facing.lua
