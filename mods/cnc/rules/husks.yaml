@@ -21,7 +21,7 @@ HARV.Husk:
 APC.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Armored Personnel Carrier (Destroyed)
+		Name: APC (Destroyed)
 		Icon: apcicnh
 	RenderUnit:
 		Image: apc
@@ -129,7 +129,7 @@ MSAM.Husk:
 MLRS.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: SSM Launcher (Destroyed)
+		Name: Mobile S.A.M. (Destroyed)
 		Icon: mlrsicnh
 	RenderUnit:
 		Image: mlrs
