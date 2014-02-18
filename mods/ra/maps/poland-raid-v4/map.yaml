@@ -60,23 +60,20 @@ Players:
 		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4
 
 Actors:
-	Actor1: v18
-		Location: 27,54
-		Owner: Neutral
-	Actor2: v16
+	Actor1: v16
 		Location: 26,55
+		Owner: Neutral
+	Actor2: v18
+		Location: 27,54
 		Owner: Neutral
 	Actor4: mine
 		Location: 43,82
 		Owner: Neutral
 	Actor6: mine
-		Location: 75,24
+		Location: 74,24
 		Owner: Neutral
 	Actor9: mine
 		Location: 65,46
-		Owner: Neutral
-	Actor10: mine
-		Location: 59,48
 		Owner: Neutral
 	Actor11: mine
 		Location: 50,78
@@ -228,8 +225,8 @@ Actors:
 	Actor64: tc03
 		Location: 53,35
 		Owner: Neutral
-	Actor65: mine
-		Location: 30,92
+	Actor13: mine
+		Location: 29,92
 		Owner: Neutral
 	Actor66: tc02
 		Location: 41,51
@@ -304,7 +301,7 @@ Actors:
 		Location: 23,48
 		Owner: Neutral
 	Actor58: mine
-		Location: 89,107
+		Location: 88,107
 		Owner: Neutral
 	Actor92: mine
 		Location: 60,45
@@ -567,8 +564,8 @@ Actors:
 	Actor189: mine
 		Location: 109,102
 		Owner: Neutral
-	Actor183: mine
-		Location: 110,95
+	Actor93: mine
+		Location: 110,97
 		Owner: Neutral
 	Actor191: tc03
 		Location: 27,110
@@ -585,8 +582,8 @@ Actors:
 	Actor195: mine
 		Location: 56,103
 		Owner: Neutral
-	Actor196: mine
-		Location: 51,105
+	Actor65: mine
+		Location: 52,105
 		Owner: Neutral
 	Actor134: tc04
 		Location: 32,50
@@ -656,9 +653,6 @@ Actors:
 		Owner: Neutral
 	Actor224: tc01
 		Location: 87,76
-		Owner: Neutral
-	Actor86: mine
-		Location: 60,19
 		Owner: Neutral
 	Actor225: oilb
 		Location: 68,68
@@ -750,8 +744,8 @@ Actors:
 	Actor59: mine
 		Location: 78,52
 		Owner: Neutral
-	Actor93: mine
-		Location: 23,93
+	Actor86: mine
+		Location: 22,93
 		Owner: Neutral
 	Actor78: t16
 		Location: 111,42
@@ -765,11 +759,14 @@ Actors:
 	Actor162: t07
 		Location: 98,28
 		Owner: Neutral
-	Actor237: mine
+	Actor130: mine
 		Location: 79,25
 		Owner: Neutral
 	Actor181: mine
 		Location: 82,22
+		Owner: Neutral
+	Actor10: mine
+		Location: 59,49
 		Owner: Neutral
 
 Smudges:
