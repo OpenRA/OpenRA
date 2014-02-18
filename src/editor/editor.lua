@@ -314,6 +314,38 @@ local function getValAtPosition(editor, pos)
   return var, funccall
 end
 
+local function callTipFitAndShow(editor, pos, tip)
+  local point = editor:PointFromPosition(pos)
+  local height = editor:TextHeight(pos)
+  local maxlines = math.max(1, math.floor(
+    math.max(editor:GetSize():GetHeight()-point:GetY()-height, point:GetY())/height-1
+  ))
+  -- cut the tip to not exceed the number of maxlines.
+  -- move the position to the left if needed to fit.
+  -- find the longest line in terms of width in pixels.
+  local maxwidth = 0
+  local lines = {}
+  for line in tip:gmatch("[^\n]+") do
+    local width = editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, line)
+    if width > maxwidth then maxwidth = width end
+    table.insert(lines, line)
+    if #lines >= maxlines then
+      lines[#lines] = lines[#lines]..'...'
+      break
+    end
+  end
+  tip = table.concat(lines, "\n")
+
+  local startpos = editor:PositionFromLine(editor:LineFromPosition(pos))
+  local afterwidth = editor:GetSize():GetWidth()-point:GetX()
+  if maxwidth > afterwidth then
+    local charwidth = editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, 'A')
+    pos = math.max(startpos, pos - math.floor((maxwidth - afterwidth) / charwidth))
+  end
+
+  editor:CallTipShow(pos, tip)
+end
+
 function EditorCallTip(editor, pos, x, y)
   -- don't show anything if the calltip/auto-complete is active;
   -- this may happen after typing function name, while the mouse is over
@@ -338,7 +370,8 @@ function EditorCallTip(editor, pos, x, y)
           local mpos = wx.wxGetMousePosition()
           if mpos.x ~= x or mpos.y ~= y then return end
         end
-        editor:CallTipShow(pos, val) end)
+        callTipFitAndShow(editor, pos, val)
+      end)
     end
   elseif tip then
     -- only shorten if shown on mouse-over. Use shortcut to get full info.
@@ -349,7 +382,7 @@ function EditorCallTip(editor, pos, x, y)
     if x and y and #tip > shortento then
       tip = tip:sub(1, shortento-#suffix):gsub("%W*%w*$","")..suffix
     end
-    editor:CallTipShow(pos, tip)
+    callTipFitAndShow(editor, pos, tip)
   end
 end
 
@@ -835,7 +868,7 @@ function CreateEditor()
         local tip = GetTipInfo(editor,linetxtopos,ide.config.acandtip.shorttip)
         if tip then
           if editor:CallTipActive() then editor:CallTipCancel() end
-          editor:CallTipShow(pos,tip)
+          callTipFitAndShow(editor, pos, tip)
         end
 
       elseif ide.config.autocomplete then -- code completion prompt
