@@ -338,6 +338,7 @@
     <Compile Include="Render\RenderUnitReload.cs" />
     <Compile Include="Render\WithBuildingExplosion.cs" />
     <Compile Include="Render\WithMuzzleFlash.cs" />
+    <Compile Include="Render\RenderNameTag.cs" />
     <Compile Include="Render\WithRotor.cs" />
     <Compile Include="Render\WithShadow.cs" />
     <Compile Include="Render\WithSmoke.cs" />
