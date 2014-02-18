@@ -107,11 +107,24 @@ end
 -- ToolTip and reserved words list
 -- also fixes function descriptions
 
-local tipwidth = math.max(20, ide.config.acandtip.width or 60)
-local widthmask = ("[^\n]"):rep(tipwidth-10)..("[^\n]?"):rep(10)
+local function formatUpToX(s, x)
+  local splitstr = "([ \t]*)(%S+)([ \t]*)(\n?)"
+  local t = {""}
+  for prefix, word, suffix, newline in s:gmatch(splitstr) do
+    if #(t[#t]) + #prefix + #word > x and #t > 0 then
+      table.insert(t, word..suffix)
+    else
+      t[#t] = t[#t]..prefix..word..suffix
+    end
+    if #newline > 0 then table.insert(t, "") end
+  end
+  return table.concat(t, "\n")
+end
+
 local function fillTips(api,apibasename,apiname)
   local apiac = api.ac
   local tclass = api.tip
+  local tipwidth = math.max(20, ide.config.acandtip.width)
 
   tclass.staticnames = {}
   tclass.keys = {}
@@ -135,12 +148,8 @@ local function fillTips(api,apibasename,apiname)
 
       if info.type == "function" or info.type == "method" or info.type == "value" then
         local frontname = (info.returns or "(?)").." "..fullkey.." "..(info.args or "(?)")
-        frontname = frontname
-          :gsub("\n"," "):gsub("\t","")
-          :gsub("("..widthmask..")[ \t]([^%)])","%1\n %2")
-
-        local description = (info.description or "")
-          :gsub("("..widthmask..") ","%1\n")
+        frontname = formatUpToX(frontname:gsub("\n"," "):gsub("\t",""), tipwidth)
+        local description = formatUpToX(info.description or "", tipwidth)
 
         -- build info
         local inf = (info.type == "value" and "" or frontname.."\n")
