@@ -122,8 +122,8 @@ local function ismarkup (tx)
       if not s then s,e,cap = string.find(tx,"^("..qsep..nonspace..qsep..")", st) end
     end
     if s and -- selected markup is surrounded by spaces or punctuation
-      (s == start or tx:sub(s-1, s-1):match("[%s%p]")) and
-      (e-s == #tx-1 or tx:sub(e+1, e+1):match("[%s%p]"))
+      (s == 1   or tx:sub(s-1, s-1):match("[%s%p]")) and
+      (e == #tx or tx:sub(e+1, e+1):match("[%s%p]"))
       then return s,e,cap,sep end
     start = st+1
   end
