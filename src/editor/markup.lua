@@ -94,6 +94,7 @@ end
 
 local function ismarkup (tx)
   local start = 1
+  local marksep = "[%s!%?%.,;:%(%)]"
   while true do
     -- find a separator first
     local st,_,sep,more = string.find(tx, "(["..MD_MARK_PTRN.."])(.)", start)
@@ -121,9 +122,9 @@ local function ismarkup (tx)
       s,e,cap = string.find(tx,"^("..qsep..nonspace..nonsep.."-"..nonspace..qsep..")", st)
       if not s then s,e,cap = string.find(tx,"^("..qsep..nonspace..qsep..")", st) end
     end
-    if s and -- selected markup is surrounded by spaces or punctuation
-      (s == 1   or tx:sub(s-1, s-1):match("[%s%p]")) and
-      (e == #tx or tx:sub(e+1, e+1):match("[%s%p]"))
+    if s and -- selected markup is surrounded by spaces or punctuation marks
+      (s == 1   or tx:sub(s-1, s-1):match(marksep)) and
+      (e == #tx or tx:sub(e+1, e+1):match(marksep))
       then return s,e,cap,sep end
     start = st+1
   end
