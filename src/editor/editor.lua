@@ -325,7 +325,7 @@ local function callTipFitAndShow(editor, pos, tip)
   -- find the longest line in terms of width in pixels.
   local maxwidth = 0
   local lines = {}
-  for line in tip:gmatch("[^\n]+") do
+  for line in tip:gmatch("[^\n]*\n?") do
     local width = editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, line)
     if width > maxwidth then maxwidth = width end
     table.insert(lines, line)
@@ -334,7 +334,7 @@ local function callTipFitAndShow(editor, pos, tip)
       break
     end
   end
-  tip = table.concat(lines, "\n")
+  tip = table.concat(lines, '')
 
   local startpos = editor:PositionFromLine(editor:LineFromPosition(pos))
   local afterwidth = editor:GetSize():GetWidth()-point:GetX()

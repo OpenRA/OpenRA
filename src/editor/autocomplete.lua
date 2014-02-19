@@ -108,7 +108,7 @@ end
 -- also fixes function descriptions
 
 local function formatUpToX(s, x)
-  local splitstr = "([ \t]*)(%S+)([ \t]*)(\n?)"
+  local splitstr = "([ \t]*)(%S*)([ \t]*)(\n?)"
   local t = {""}
   for prefix, word, suffix, newline in s:gmatch(splitstr) do
     if #(t[#t]) + #prefix + #word > x and #t > 0 then
