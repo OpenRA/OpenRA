@@ -253,6 +253,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{ "ToLastEventKey", "Jump to last radar event" },
 				{ "ToSelectionKey", "Jump to selection" },
 				{ "SelectAllUnitsKey", "Select all units on screen" },
+				{ "SelectUnitsByTypeKey", "Select units by type" },
 
 				{ "PauseKey", "Pause / Unpause" },
 				{ "SellKey", "Sell mode" },

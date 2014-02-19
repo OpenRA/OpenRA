@@ -208,9 +208,27 @@ namespace OpenRA.Widgets
 					World.SetPauseState(!World.Paused);
 				else if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.SelectAllUnitsKey)
 				{
-					var ownUnitsOnScreen = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight, 
+					var ownUnitsOnScreen = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
 						a => a.Owner == World.RenderPlayer);
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
+				}
+				else if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.SelectUnitsByTypeKey)
+				{
+					var selectedTypes = World.Selection.Actors.Where(
+						x => x.Owner == World.RenderPlayer).Select(a => a.Info);
+					Func<Actor, bool> cond = a => a.Owner == World.RenderPlayer && selectedTypes.Contains(a.Info);
+					IEnumerable<Actor> newSelection = SelectActorsInBox(
+						World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight, cond); 
+					if (newSelection.Count() > selectedTypes.Count())
+						Game.Debug("Selected across screen");
+					else
+					{
+						newSelection = World.ActorMap.ActorsInBox(
+							World.Map.Bounds.TopLeftAsCPos().TopLeft,
+							World.Map.Bounds.BottomRightAsCPos().BottomRight).Where(cond);
+						Game.Debug("Selected across map");
+					}
+					World.Selection.Combine(World, newSelection, true, false);
 				}
 			}
 
