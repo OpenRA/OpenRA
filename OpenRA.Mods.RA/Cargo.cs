@@ -61,7 +61,6 @@ namespace OpenRA.Mods.RA
 				}
 			}
 
-			currentCell = self.CenterPosition.ToCPos();
 			CurrentAdjacentCells = GetAdjacentCells();
 		}
 
