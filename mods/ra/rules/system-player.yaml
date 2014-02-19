@@ -56,4 +56,5 @@ Player:
 	FrozenActorLayer:
 	BaseAttackNotifier:
 	PlayerStatistics:
+	PlaceBeacon:
 

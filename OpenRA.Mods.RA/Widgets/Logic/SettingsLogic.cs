@@ -255,6 +255,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{ "SelectAllUnitsKey", "Select all units on screen" },
 				{ "SelectUnitsByTypeKey", "Select units by type" },
 
+				{ "PlaceBeaconKey", "Place beacon" },
+
 				{ "PauseKey", "Pause / Unpause" },
 				{ "SellKey", "Sell mode" },
 				{ "PowerDownKey", "Power-down mode" },

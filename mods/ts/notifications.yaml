@@ -40,3 +40,4 @@ Sounds:
 		TabClick:
 		ClickSound:clicky1
 		ClickDisabledSound:wrong1
+		Beacon: message1

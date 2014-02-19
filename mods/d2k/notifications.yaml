@@ -48,3 +48,4 @@ Sounds:
 		TabClick: SIDEBAR1
 		ClickSound: BUTTON1
 		ClickDisabledSound: ENDLIST1
+		Beacon: CHAT1

@@ -123,6 +123,8 @@
     <Compile Include="Air\Aircraft.cs" />
     <Compile Include="Air\AttackHeli.cs" />
     <Compile Include="Air\AttackPlane.cs" />
+    <Compile Include="Effects\Beacon.cs" />
+    <Compile Include="Player\PlaceBeacon.cs" />
     <Compile Include="MenuPaletteEffect.cs" />
     <Compile Include="Crates\UnitUpgradeCrateAction.cs" />
     <Compile Include="EjectOnDeath.cs" />
@@ -306,6 +308,7 @@
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />
+    <Compile Include="World\RadarPings.cs" />
     <Compile Include="Player\TechTree.cs" />
     <Compile Include="PlayerExts.cs" />
     <Compile Include="PrimaryBuilding.cs" />

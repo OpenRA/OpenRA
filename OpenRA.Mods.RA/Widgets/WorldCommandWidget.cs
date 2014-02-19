@@ -63,6 +63,9 @@ namespace OpenRA.Mods.RA.Widgets
 				if (key == ks.ToggleStatusBarsKey)
 					return ToggleStatusBars();
 
+				if (key == ks.PlaceBeaconKey)
+					return PerformPlaceBeacon();
+
 				// Put all functions that aren't unit-specific before this line!
 				if (!world.Selection.Actors.Any()) 
 					return false;
@@ -177,6 +180,15 @@ namespace OpenRA.Mods.RA.Widgets
 			if (actors.Any())
 				world.OrderGenerator = new GuardOrderGenerator(actors);
 
+			return true;
+		}
+
+		bool PerformPlaceBeacon()
+		{
+			if (world.LocalPlayer == null)
+				return true;
+
+			world.OrderGenerator = new GenericSelectTarget(world.LocalPlayer.PlayerActor, "PlaceBeacon", "ability");
 			return true;
 		}
 
