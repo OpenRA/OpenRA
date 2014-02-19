@@ -1,3 +1,3 @@
 WorldLoaded = function()
-    print("[rule change] ore fields regeneration decresed")
+    print("[rule change] ore fields regeneration decreased")
 end
