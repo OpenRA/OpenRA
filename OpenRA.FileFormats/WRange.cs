@@ -16,7 +16,7 @@ namespace OpenRA
 	/// <summary>
 	/// 1d world distance - 1024 units = 1 cell.
 	/// </summary>
-	public struct WRange : IComparable
+	public struct WRange : IComparable, IComparable<WRange>
 	{
 		public readonly int Range;
 
@@ -91,6 +91,8 @@ namespace OpenRA
 
 			return Range.CompareTo(o.Value.Range);
 		}
+
+		public int CompareTo(WRange other) { return Range.CompareTo(other.Range); }
 
 		public override string ToString() { return "{0}".F(Range); }
 	}

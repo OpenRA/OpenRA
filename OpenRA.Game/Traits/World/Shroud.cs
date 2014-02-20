@@ -64,32 +64,24 @@ namespace OpenRA.Traits
 			Hash = Sync.hash_player(self.Owner) + self.World.FrameNumber * 3;
 		}
 
-		static IEnumerable<CPos> FindVisibleTiles(World world, CPos a, int r)
+		static IEnumerable<CPos> FindVisibleTiles(World world, CPos position, WRange radius)
 		{
-			var min = a - new CVec(r, r);
-			var max = a + new CVec(r, r);
-			if (min.X < world.Map.Bounds.Left - 1)
-				min = new CPos(world.Map.Bounds.Left - 1, min.Y);
+			var r = (radius.Range + 1023) / 1024;
+			var min = (position - new CVec(r, r)).Clamp(world.Map.Bounds);
+			var max = (position + new CVec(r, r)).Clamp(world.Map.Bounds);
 
-			if (min.Y < world.Map.Bounds.Top - 1)
-				min = new CPos(min.X, world.Map.Bounds.Top - 1);
-
-			if (max.X > world.Map.Bounds.Right)
-				max = new CPos(world.Map.Bounds.Right, max.Y);
-
-			if (max.Y > world.Map.Bounds.Bottom)
-				max = new CPos(max.X, world.Map.Bounds.Bottom);
-
+			var circleArea = radius.Range * radius.Range;
+			var pos = position.CenterPosition;
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
-					if (r*r >= (new CPos(i, j) - a).LengthSquared)
+					if (circleArea >= (new CPos(i, j).CenterPosition - pos).LengthSquared)
 						yield return new CPos(i, j);
 		}
 
 		void AddVisibility(Actor a)
 		{
 			var rs = a.TraitOrDefault<RevealsShroud>();
-			if (rs == null || !a.Owner.IsAlliedWith(self.Owner) || rs.Range == 0)
+			if (rs == null || !a.Owner.IsAlliedWith(self.Owner) || rs.Range == WRange.Zero)
 				return;
 
 			var origins = GetVisOrigins(a);
@@ -97,9 +89,11 @@ namespace OpenRA.Traits
 				.Distinct().ToArray();
 
 			// Update bounding rect
+			var r = (rs.Range.Range + 1023) / 1024;
+
 			foreach (var o in origins)
 			{
-				var box = new Rectangle(o.X - rs.Range, o.Y - rs.Range, 2*rs.Range + 1, 2*rs.Range + 1);
+				var box = new Rectangle(o.X - r, o.Y - r, 2 * r + 1, 2 * r + 1);
 				ExploredBounds = Rectangle.Union(ExploredBounds, box);
 			}
 
@@ -143,7 +137,7 @@ namespace OpenRA.Traits
 		void AddShroudGeneration(Actor a)
 		{
 			var cs = a.TraitOrDefault<CreatesShroud>();
-			if (cs == null || a.Owner.IsAlliedWith(self.Owner) || cs.Range == 0)
+			if (cs == null || a.Owner.IsAlliedWith(self.Owner) || cs.Range == WRange.Zero)
 				return;
 
 			var shrouded = GetVisOrigins(a).SelectMany(o => FindVisibleTiles(a.World, o, cs.Range))
@@ -202,12 +196,13 @@ namespace OpenRA.Traits
 			return new[] { a.CenterPosition.ToCPos() };
 		}
 
-		public void Explore(World world, CPos center, int range)
+		public void Explore(World world, CPos center, WRange range)
 		{
 			foreach (var q in FindVisibleTiles(world, center, range))
 				explored[q.X, q.Y] = true;
 
-			var box = new Rectangle(center.X - range, center.Y - range, 2*range + 1, 2*range + 1);
+			var r = (range.Range + 1023) / 1024;
+			var box = new Rectangle(center.X - r, center.Y - r, 2 * r + 1, 2 * r + 1);
 			ExploredBounds = Rectangle.Union(ExploredBounds, box);
 
 			Invalidate();

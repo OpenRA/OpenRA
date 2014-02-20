@@ -462,10 +462,10 @@ namespace OpenRA.Mods.RA.Missions
 			SetupAlliedBase();
 
 			var shroud = allies1.Shroud;
-			shroud.Explore(w, sam1.Location, 2);
-			shroud.Explore(w, sam2.Location, 2);
-			shroud.Explore(w, sam3.Location, 2);
-			shroud.Explore(w, sam4.Location, 2);
+			shroud.Explore(w, sam1.Location, WRange.FromCells(2));
+			shroud.Explore(w, sam2.Location, WRange.FromCells(2));
+			shroud.Explore(w, sam3.Location, WRange.FromCells(2));
+			shroud.Explore(w, sam4.Location, WRange.FromCells(2));
 
 			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
 				wr.Viewport.Center(chinookHusk.CenterPosition);
