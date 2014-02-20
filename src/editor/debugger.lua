@@ -757,13 +757,21 @@ end
 do
   local nextupdatedelta = 0.250
   local nextupdate = TimeGet() + nextupdatedelta
+  local function forceUpdateOnWrap(editor)
+    -- http://www.scintilla.org/ScintillaDoc.html#LineWrapping
+    -- Scintilla doesn't perform wrapping immediately after a content change
+    -- for performance reasons, so the activation calculations can be wrong
+    -- if there is wrapping that pushes the current line out of the screen.
+    -- force editor update that performs wrapping recalculation.
+    if ide.config.editor.usewrap then editor:Update(); editor:Refresh() end
+  end
   debugger.update = function()
     if debugger.server or debugger.listening and TimeGet() > nextupdate then
       copas.step(0)
       nextupdate = TimeGet() + nextupdatedelta
     end
 
-    -- if there are any pending activations
+    -- if there is any pending activation
     if debugger.activate then
       local file, line, content = unpack(debugger.activate)
       if content then
@@ -773,9 +781,14 @@ do
         and not (debugger.options or {}).allowediting then
           editor:SetReadOnly(true)
         end
+        forceUpdateOnWrap(editor)
         activateDocument(file, line)
-      elseif LoadFile(file) then
-        activateDocument(file, line)
+      else
+        local editor = LoadFile(file)
+        if editor then
+          forceUpdateOnWrap(editor)
+          activateDocument(file, line)
+        end
       end
       debugger.activate = nil
     end
