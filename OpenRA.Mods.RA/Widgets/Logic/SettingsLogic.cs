@@ -198,7 +198,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var ss = Game.Settings.Sound;
 
 			BindCheckboxPref(panel, "SHELLMAP_MUSIC", ss, "MapMusic");
-			BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
+			BindCheckboxPref(panel, "CASH_TICK_UP", ss, "CashTickUp");
+			BindCheckboxPref(panel, "CASH_TICK_DOWN", ss, "CashTickDown");
 
 			BindSliderPref(panel, "SOUND_VOLUME", ss, "SoundVolume");
 			BindSliderPref(panel, "MUSIC_VOLUME", ss, "MusicVolume");
@@ -233,7 +234,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				ss.SoundVolume = dss.SoundVolume;
 				ss.MusicVolume = dss.MusicVolume;
 				ss.VideoVolume = dss.VideoVolume;
-				ss.CashTicks = dss.CashTicks;
+				ss.CashTickUp = dss.CashTickUp;
+				ss.CashTickDown = dss.CashTickDown;
 				ss.Device = dss.Device;
 				ss.Engine = dss.Engine;
 
