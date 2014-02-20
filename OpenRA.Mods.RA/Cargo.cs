@@ -60,8 +60,6 @@ namespace OpenRA.Mods.RA
 						Load(self, unit);
 				}
 			}
-
-			CurrentAdjacentCells = GetAdjacentCells();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
