@@ -27,8 +27,7 @@ namespace OpenRA.Mods.RA
 		readonly RadarPings radarPings;
 		readonly HarvesterAttackNotifierInfo info;
 
-		public int lastAttackTime;
-		public CPos lastAttackLocation;
+		int lastAttackTime;
 
 		public HarvesterAttackNotifier(Actor self, HarvesterAttackNotifierInfo info)
 		{
@@ -55,7 +54,6 @@ namespace OpenRA.Mods.RA
 					radarPings.Add(() => self.Owner == self.World.LocalPlayer, self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
 			}
 
-			lastAttackLocation = self.CenterPosition.ToCPos();
 			lastAttackTime = self.World.FrameNumber;
 		}
 	}

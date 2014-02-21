@@ -22,12 +22,14 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
+		readonly RadarPings radarPings;
 
 		[ObjectCreator.UseCtor]
 		public WorldCommandWidget(World world, WorldRenderer worldRenderer)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
+			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();
 		}
 
 		public override string GetCursor(int2 pos) { return null; }
@@ -241,17 +243,10 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool ToLastEvent()
 		{
-			if (world.LocalPlayer == null)
+			if (radarPings == null || radarPings.LastPingPosition == null)
 				return true;
 
-			var eventNotifier = world.LocalPlayer.PlayerActor.TraitOrDefault<BaseAttackNotifier>();
-			if (eventNotifier == null)
-				return true;
-
-			if (eventNotifier.lastAttackTime < 0)
-				return true;
-
-			worldRenderer.Viewport.Center(eventNotifier.lastAttackLocation.CenterPosition);
+			worldRenderer.Viewport.Center(radarPings.LastPingPosition.Value);
 			return true;
 		}
 

@@ -30,6 +30,8 @@ namespace OpenRA.Mods.RA
 		public readonly List<RadarPing> Pings = new List<RadarPing>();
 		readonly RadarPingsInfo info;
 
+		public WPos? LastPingPosition;
+
 		public RadarPings(RadarPingsInfo info)
 		{
 			this.info = info;
@@ -46,7 +48,12 @@ namespace OpenRA.Mods.RA
 		{
 			var ping = new RadarPing(isVisible, position, color, duration,
 				info.FromRadius, info.ToRadius, info.ShrinkSpeed, info.RotationSpeed);
+
+			if (ping.IsVisible())
+				LastPingPosition = ping.Position;
+
 			Pings.Add(ping);
+
 			return ping;
 		}
 
