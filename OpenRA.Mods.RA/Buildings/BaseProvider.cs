@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 			wr.DrawRangeCircleWithContrast(
 				self.CenterPosition,
-				WRange.FromCells(Info.Range),
+				WDist.FromCells(Info.Range),
 				Color.FromArgb(128, Ready() ? Color.White : Color.Red),
 				Color.FromArgb(96, Color.Black)
 			);

@@ -19,7 +19,7 @@ namespace OpenRA.GameRules
 	public class WarheadInfo
 	{
 		[Desc("Distance from the explosion center at which damage is 1/2.")]
-		public readonly WRange Spread = new WRange(43);
+		public readonly WDist Spread = new WDist(43);
 		[FieldLoader.LoadUsing("LoadVersus")]
 		[Desc("Damage vs each armortype. 0% = can't target.")]
 		public readonly Dictionary<string, float> Versus;
@@ -99,7 +99,7 @@ namespace OpenRA.GameRules
 
 	public class WeaponInfo
 	{
-		public readonly WRange Range = WRange.Zero;
+		public readonly WDist Range = WDist.Zero;
 		public readonly string[] Report = null;
 		[Desc("Rate of Fire")]
 		public readonly int ROF = 1;
@@ -109,7 +109,7 @@ namespace OpenRA.GameRules
 		public readonly string[] ValidTargets = { "Ground", "Water" };
 		public readonly string[] InvalidTargets = { };
 		public readonly int BurstDelay = 5;
-		public readonly WRange MinRange = WRange.Zero;
+		public readonly WDist MinRange = WDist.Zero;
 
 		[FieldLoader.LoadUsing("LoadProjectile")] public IProjectileInfo Projectile;
 		[FieldLoader.LoadUsing("LoadWarheads")] public List<WarheadInfo> Warheads;

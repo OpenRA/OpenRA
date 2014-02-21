@@ -191,10 +191,10 @@ namespace OpenRA.FileFormats
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
-			else if (fieldType == typeof(WRange))
+			else if (fieldType == typeof(WDist))
 			{
-				WRange res;
-				if (WRange.TryParse(value, out res))
+				WDist res;
+				if (WDist.TryParse(value, out res))
 					return res;
 
 				return InvalidValueAction(value, fieldType, fieldName);
@@ -205,8 +205,8 @@ namespace OpenRA.FileFormats
 				var parts = value.Split(',');
 				if (parts.Length == 3)
 				{
-					WRange rx, ry, rz;
-					if (WRange.TryParse(parts[0], out rx) && WRange.TryParse(parts[1], out ry) && WRange.TryParse(parts[2], out rz))
+					WDist rx, ry, rz;
+					if (WDist.TryParse(parts[0], out rx) && WDist.TryParse(parts[1], out ry) && WDist.TryParse(parts[2], out rz))
 						return new WVec(rx, ry, rz);
 				}
 
@@ -218,8 +218,8 @@ namespace OpenRA.FileFormats
 				var parts = value.Split(',');
 				if (parts.Length == 3)
 				{
-					WRange rx, ry, rz;
-					if (WRange.TryParse(parts[0], out rx) && WRange.TryParse(parts[1], out ry) && WRange.TryParse(parts[2], out rz))
+					WDist rx, ry, rz;
+					if (WDist.TryParse(parts[0], out rx) && WDist.TryParse(parts[1], out ry) && WDist.TryParse(parts[2], out rz))
 						return new WPos(rx, ry, rz);
 				}
 

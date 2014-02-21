@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Scripting
 			context.RegisterType(typeof(CPos), "CPos", true);
 			context.RegisterType(typeof(WRot), "WRot", true);
 			context.RegisterType(typeof(WAngle), "WAngle", true);
-			context.RegisterType(typeof(WRange), "WRange", true);
+			context.RegisterType(typeof(WDist), "WDist", true);
 			context.RegisterType(typeof(int2), "int2", true);
 			context.RegisterType(typeof(float2), "float2", true);
 
@@ -231,9 +231,9 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[LuaGlobal]
-		public WRange GetWRangeFromCells(double cells)
+		public WDist GetWDistanceFromCells(double cells)
 		{
-			return WRange.FromCells((int)cells);
+			return WDist.FromCells((int)cells);
 		}
 
 		[LuaGlobal]
@@ -338,7 +338,7 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[LuaGlobal]
-		public Actor[] FindActorsInCircle(WPos location, WRange radius)
+		public Actor[] FindActorsInCircle(WPos location, WDist radius)
 		{
 			return world.FindActorsInCircle(location, radius).ToArray();
 		}

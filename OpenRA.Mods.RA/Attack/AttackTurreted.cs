@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA
 
 				if (weapon != null)
 				{
-					var range = WRange.FromCells(Math.Max(0, weapon.Weapon.Range.Range / 1024 - RangeTolerance));
+					var range = WDist.FromCells(Math.Max(0, weapon.Weapon.Range.Range / 1024 - RangeTolerance));
 
 					attack.Target = target;
 					var mobile = self.TraitOrDefault<Mobile>();

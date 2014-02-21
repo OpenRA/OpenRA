@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			var desiredFacing = Util.GetFacing(d, plane.Facing);
-			Fly.FlyToward(self, plane, desiredFacing, WRange.Zero);
+			Fly.FlyToward(self, plane, desiredFacing, WDist.Zero);
 
 			return this;
 		}

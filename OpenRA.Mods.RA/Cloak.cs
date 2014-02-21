@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA
 
 			var centerPosition = self.CenterPosition;
 			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => a.Actor.Owner.IsAlliedWith(viewer) &&
-				(centerPosition - a.Actor.CenterPosition).Length < WRange.FromCells(a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range).Range);
+				(centerPosition - a.Actor.CenterPosition).Length < WDist.FromCells(a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range).Range);
 		}
 
 		public Color RadarColorOverride(Actor self)

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Air
 {
 	public class AircraftInfo : ITraitInfo, IFacingInfo, IOccupySpaceInfo, UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
-		public readonly WRange CruiseAltitude = new WRange(1280);
+		public readonly WDist CruiseAltitude = new WDist(1280);
 
 		[ActorReference]
 		public readonly string[] RepairBuildings = { "fix" };

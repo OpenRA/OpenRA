@@ -17,8 +17,8 @@ namespace OpenRA.Mods.RA.Air
 	{
 		readonly Plane plane;
 		readonly Target target;
-		readonly WRange maxRange;
-		readonly WRange minRange;
+		readonly WDist maxRange;
+		readonly WDist minRange;
 
 		public Fly(Actor self, Target t)
 		{
@@ -26,14 +26,14 @@ namespace OpenRA.Mods.RA.Air
 			target = t;
 		}
 
-		public Fly(Actor self, Target t, WRange minRange, WRange maxRange)
+		public Fly(Actor self, Target t, WDist minRange, WDist maxRange)
 			: this(self, t)
 		{
 			this.maxRange = maxRange;
 			this.minRange = minRange;
 		}
 
-		public static void FlyToward(Actor self, Plane plane, int desiredFacing, WRange desiredAltitude)
+		public static void FlyToward(Actor self, Plane plane, int desiredFacing, WDist desiredAltitude)
 		{
 			var move = plane.FlyStep(plane.Facing);
 			var altitude = plane.CenterPosition.Z;

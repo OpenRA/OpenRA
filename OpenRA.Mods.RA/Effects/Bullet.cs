@@ -22,11 +22,11 @@ namespace OpenRA.Mods.RA.Effects
 {
 	public class BulletInfo : IProjectileInfo
 	{
-		[Desc("Projectile speed in WRange / tick")]
-		public readonly WRange Speed = new WRange(17);
+		[Desc("Projectile speed in WDist / tick")]
+		public readonly WDist Speed = new WDist(17);
 		public readonly string Trail = null;
 		[Desc("Maximum offset at the maximum range")]
-		public readonly WRange Inaccuracy = WRange.Zero;
+		public readonly WDist Inaccuracy = WDist.Zero;
 		public readonly string Image = null;
 		[Desc("Check for whether an actor with Wall: trait blocks fire")]
 		public readonly bool High = false;

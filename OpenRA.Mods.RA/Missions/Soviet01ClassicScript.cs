@@ -107,7 +107,7 @@ namespace OpenRA.Mods.RA.Missions
 				var altitude = Rules.Info["yak"].Traits.Get<PlaneInfo>().CruiseAltitude;
 				var yak = world.CreateActor("yak", new TypeDictionary 
 				{
-					new CenterPositionInit(entry.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+					new CenterPositionInit(entry.CenterPosition + new WVec(WDist.Zero, WDist.Zero, altitude)),
 					new OwnerInit(ussr),
 					new FacingInit(Traits.Util.GetFacing(airfield.Location - entry, 0))
 				});

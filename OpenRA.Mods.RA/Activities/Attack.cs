@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Activities
 	public class Attack : Activity
 	{
 		protected Target Target;
-		WRange Range;
+		WDist Range;
 		bool AllowMovement;
 
 		int nextPathTime;
@@ -25,10 +25,10 @@ namespace OpenRA.Mods.RA.Activities
 		const int delayBetweenPathingAttempts = 20;
 		const int delaySpread = 5;
 
-		public Attack(Target target, WRange range)
+		public Attack(Target target, WDist range)
 			: this(target, range, true) {}
 
-		public Attack(Target target, WRange range, bool allowMovement)
+		public Attack(Target target, WDist range, bool allowMovement)
 		{
 			Target = target;
 			Range = range;

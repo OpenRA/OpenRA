@@ -17,13 +17,13 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		Target target;
 		IMove move;
-		WRange range;
+		WDist range;
 		int nextPathTime;
 
 		const int delayBetweenPathingAttempts = 20;
 		const int delaySpread = 5;
 
-		public Follow(Actor self, Target target, WRange range)
+		public Follow(Actor self, Target target, WDist range)
 		{
 			this.target = target;
 			move = self.Trait<IMove>();
