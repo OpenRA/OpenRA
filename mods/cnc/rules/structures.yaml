@@ -587,9 +587,9 @@ OBLI:
 		Weapon: Laser
 		LocalOffset: 0,0,725
 		FireDelay: 8
-	AttackTurreted:
-	Turreted:
-		ROT: 255
+	AttackTesla:
+		MaxCharge: 1
+		ReloadTime: 90
 	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:
