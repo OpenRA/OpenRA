@@ -20,7 +20,7 @@ namespace OpenRA
 		public readonly int X, Y, Z;
 
 		public WVec(int x, int y, int z) { X = x; Y = y; Z = z; }
-		public WVec(WRange x, WRange y, WRange z) { X = x.Range; Y = y.Range; Z = z.Range; }
+		public WVec(WDist x, WDist y, WDist z) { X = x.Range; Y = y.Range; Z = z.Range; }
 
 		public static readonly WVec Zero = new WVec(0, 0, 0);
 
@@ -75,7 +75,7 @@ namespace OpenRA
 		// N samples approximates a true gaussian
 		public static WVec FromPDF(Thirdparty.Random r, int samples)
 		{
-			return new WVec(WRange.FromPDF(r, samples), WRange.FromPDF(r, samples), WRange.Zero);
+			return new WVec(WDist.FromPDF(r, samples), WDist.FromPDF(r, samples), WDist.Zero);
 		}
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }

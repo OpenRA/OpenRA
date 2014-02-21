@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.AI
 
 			if (!owner.TargetIsValid)
 			{
-				owner.Target = owner.bot.FindClosestEnemy(owner.CenterPosition, WRange.FromCells(8));
+				owner.Target = owner.bot.FindClosestEnemy(owner.CenterPosition, WDist.FromCells(8));
 
 				if (owner.Target == null)
 				{

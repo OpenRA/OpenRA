@@ -18,7 +18,7 @@ namespace OpenRA.Traits
 	{
 		public readonly int HP = 0;
 		[Desc("Physical size of the unit used for damage calculations.  Impacts within this radius apply full damage")]
-		public readonly WRange Radius = new WRange(426);
+		public readonly WDist Radius = new WDist(426);
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 

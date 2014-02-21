@@ -16,42 +16,42 @@ namespace OpenRA
 	/// <summary>
 	/// 1d world distance - 1024 units = 1 cell.
 	/// </summary>
-	public struct WRange : IComparable
+	public struct WDist : IComparable
 	{
 		public readonly int Range;
 
-		public WRange(int r) { Range = r; }
-		public static readonly WRange Zero = new WRange(0);
-		public static WRange FromCells(int cells) { return new WRange(1024*cells); }
+		public WDist(int r) { Range = r; }
+		public static readonly WDist Zero = new WDist(0);
+		public static WDist FromCells(int cells) { return new WDist(1024*cells); }
 
-		public static WRange operator +(WRange a, WRange b) { return new WRange(a.Range + b.Range); }
-		public static WRange operator -(WRange a, WRange b) { return new WRange(a.Range - b.Range); }
-		public static WRange operator -(WRange a) { return new WRange(-a.Range); }
-		public static WRange operator /(WRange a, int b) { return new WRange(a.Range / b); }
-		public static WRange operator *(WRange a, int b) { return new WRange(a.Range * b); }
-		public static WRange operator *(int a, WRange b) { return new WRange(a * b.Range); }
+		public static WDist operator +(WDist a, WDist b) { return new WDist(a.Range + b.Range); }
+		public static WDist operator -(WDist a, WDist b) { return new WDist(a.Range - b.Range); }
+		public static WDist operator -(WDist a) { return new WDist(-a.Range); }
+		public static WDist operator /(WDist a, int b) { return new WDist(a.Range / b); }
+		public static WDist operator *(WDist a, int b) { return new WDist(a.Range * b); }
+		public static WDist operator *(int a, WDist b) { return new WDist(a * b.Range); }
 
-		public static bool operator ==(WRange me, WRange other) { return (me.Range == other.Range); }
-		public static bool operator !=(WRange me, WRange other) { return !(me == other); }
+		public static bool operator ==(WDist me, WDist other) { return (me.Range == other.Range); }
+		public static bool operator !=(WDist me, WDist other) { return !(me == other); }
 
 		// Sampled a N-sample probability density function in the range [-1024..1024]
 		// 1 sample produces a rectangular probability
 		// 2 samples produces a triangular probability
 		// ...
 		// N samples approximates a true gaussian
-		public static WRange FromPDF(Thirdparty.Random r, int samples)
+		public static WDist FromPDF(Thirdparty.Random r, int samples)
 		{
-			return new WRange(Exts.MakeArray(samples, _ => r.Next(-1024, 1024))
+			return new WDist(Exts.MakeArray(samples, _ => r.Next(-1024, 1024))
 				.Sum() / samples);
 		}
 
-		public static bool TryParse(string s, out WRange result)
+		public static bool TryParse(string s, out WDist result)
 		{
 			s = s.ToLowerInvariant();
 			var components = s.Split('c');
 			int cell = 0;
 			int subcell = 0;
-			result = WRange.Zero;
+			result = WDist.Zero;
 
 			switch (components.Length)
 			{
@@ -71,7 +71,7 @@ namespace OpenRA
 			if (cell < 0)
 				subcell = -subcell;
 
-			result = new WRange(1024*cell + subcell);
+			result = new WDist(1024*cell + subcell);
 			return true;
 		}
 
@@ -79,13 +79,13 @@ namespace OpenRA
 
 		public override bool Equals(object obj)
 		{
-			var o = obj as WRange?;
+			var o = obj as WDist?;
 			return o != null && o == this;
 		}
 
 		public int CompareTo(object obj)
 		{
-			var o = obj as WRange?;
+			var o = obj as WDist?;
 			if (o == null)
 				return 1;
 

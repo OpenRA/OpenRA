@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Missions
 {
 	public static class MissionUtils
 	{
-		public static IEnumerable<Actor> FindAliveCombatantActorsInCircle(this World world, WPos location, WRange range)
+		public static IEnumerable<Actor> FindAliveCombatantActorsInCircle(this World world, WPos location, WDist range)
 		{
 			return world.FindActorsInCircle(location, range)
 				.Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && !u.Owner.NonCombatant);
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Missions
 				.Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && !u.Owner.NonCombatant);
 		}
 
-		public static IEnumerable<Actor> FindAliveNonCombatantActorsInCircle(this World world, WPos location, WRange range)
+		public static IEnumerable<Actor> FindAliveNonCombatantActorsInCircle(this World world, WPos location, WDist range)
 		{
 			return world.FindActorsInCircle(location, range)
 				.Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && u.Owner.NonCombatant);
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Missions
 			var altitude = Rules.Info["badr"].Traits.Get<PlaneInfo>().CruiseAltitude;
 			var badger = world.CreateActor("badr", new TypeDictionary
 			{
-				new CenterPositionInit(entry.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+				new CenterPositionInit(entry.CenterPosition + new WVec(WDist.Zero, WDist.Zero, altitude)),
 				new OwnerInit(owner),
 				new FacingInit(Util.GetFacing(location - entry, 0))
 			});
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA.Missions
 			var altitude = Rules.Info["badr.bomber"].Traits.Get<PlaneInfo>().CruiseAltitude;
 			var badger = world.CreateActor("badr.bomber", new TypeDictionary
 			{
-				new CenterPositionInit(entry.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+				new CenterPositionInit(entry.CenterPosition + new WVec(WDist.Zero, WDist.Zero, altitude)),
 				new OwnerInit(owner),
 				new FacingInit(Util.GetFacing(location - entry, 0))
 			});
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA.Missions
 			badger.QueueActivity(new RemoveSelf());
 		}
 
-		public static bool AreaSecuredWithUnits(World world, Player player, WPos location, WRange range)
+		public static bool AreaSecuredWithUnits(World world, Player player, WPos location, WDist range)
 		{
 			var units = world.FindAliveCombatantActorsInCircle(location, range).Where(a => a.HasTrait<IPositionable>());
 			return units.Any() && units.All(a => a.Owner == player);
@@ -217,7 +217,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			var enemy = enemies.ClosestTo(self);
 			if (enemy != null)
-				self.QueueActivity(queued, new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), WRange.FromCells(3))));
+				self.QueueActivity(queued, new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), WDist.FromCells(3))));
 		}
 	}
 

@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA
 
 		IEnumerable<Actor> UnitsInRange()
 		{
-			return Self.World.FindActorsInCircle(Self.CenterPosition, WRange.FromCells(Info.Range))
+			return Self.World.FindActorsInCircle(Self.CenterPosition, WDist.FromCells(Info.Range))
 				.Where(a => a.IsInWorld && a != Self && !a.Destroyed)
 				.Where(a => !a.Owner.NonCombatant);
 		}

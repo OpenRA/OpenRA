@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 				var altitude = Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude;
 				var a = w.CreateActor(info.UnitType, new TypeDictionary
 				{
-					new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+					new CenterPositionInit(startPos.CenterPosition + new WVec(WDist.Zero, WDist.Zero, altitude)),
 					new OwnerInit(self.Owner),
 					new FacingInit(Util.GetFacing(order.TargetLocation - startPos, 0))
 				});

@@ -94,8 +94,8 @@ namespace OpenRA.Graphics
 
 				if (d.ContainsKey("ShadowZOffset"))
 				{
-					WRange r;
-					if (WRange.TryParse(d["ShadowZOffset"].Value, out r))
+					WDist r;
+					if (WDist.TryParse(d["ShadowZOffset"].Value, out r))
 						ShadowZOffset = r.Range;
 				}
 				else
@@ -103,8 +103,8 @@ namespace OpenRA.Graphics
 
 				if (d.ContainsKey("ZOffset"))
 				{
-					WRange r;
-					if (WRange.TryParse(d["ZOffset"].Value, out r))
+					WDist r;
+					if (WDist.TryParse(d["ZOffset"].Value, out r))
 						ZOffset = r.Range;
 				}
 

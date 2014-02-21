@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Render
 
 		WVec BarrelOffset()
 		{
-			var localOffset = info.LocalOffset + new WVec(-armament.Recoil, WRange.Zero, WRange.Zero);
+			var localOffset = info.LocalOffset + new WVec(-armament.Recoil, WDist.Zero, WDist.Zero);
 			var turretOffset = turreted != null ? turreted.Position(self) : WVec.Zero;
 			var turretOrientation = turreted != null ? turreted.LocalOrientation(self) : WRot.Zero;
 

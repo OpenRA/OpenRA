@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Armament name")]
 		public readonly string Guns = "secondary";
 		public readonly int FacingTolerance = 2;
-		public readonly WRange VisionRange = WRange.FromCells(10);
+		public readonly WDist VisionRange = WDist.FromCells(10);
 
 		public override object Create(ActorInitializer init) { return new AttackBomber(init.self, this); }
 	}
