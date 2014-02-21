@@ -330,7 +330,7 @@ local function callTipFitAndShow(editor, pos, tip)
     if width > maxwidth then maxwidth = width end
     table.insert(lines, line)
     if #lines >= maxlines then
-      lines[#lines] = lines[#lines]..'...'
+      lines[#lines] = lines[#lines]:gsub("%s*\n$","")..'...'
       break
     end
   end
