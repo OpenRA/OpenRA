@@ -17,8 +17,8 @@ namespace OpenRA.Mods.RA.Air
 	{
 		readonly Helicopter helicopter;
 		readonly Target target;
-		readonly WRange maxRange;
-		readonly WRange minRange;
+		readonly WDist maxRange;
+		readonly WDist minRange;
 
 		public HeliFly(Actor self, Target t)
 		{
@@ -26,14 +26,14 @@ namespace OpenRA.Mods.RA.Air
 			target = t;
 		}
 
-		public HeliFly(Actor self, Target t, WRange minRange, WRange maxRange)
+		public HeliFly(Actor self, Target t, WDist minRange, WDist maxRange)
 			: this(self, t)
 		{
 			this.maxRange = maxRange;
 			this.minRange = minRange;
 		}
 
-		public static bool AdjustAltitude(Actor self, Helicopter helicopter, WRange targetAltitude)
+		public static bool AdjustAltitude(Actor self, Helicopter helicopter, WDist targetAltitude)
 		{
 			var altitude = helicopter.CenterPosition.Z;
 			if (altitude == targetAltitude.Range)

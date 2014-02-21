@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA
 			{
 				case DamageModel.Normal:
 					{
-						var maxSpread = new WRange((int)(warhead.Spread.Range * (float)Math.Log(Math.Abs(warhead.Damage), 2)));
+						var maxSpread = new WDist((int)(warhead.Spread.Range * (float)Math.Log(Math.Abs(warhead.Damage), 2)));
 						var hitActors = world.FindActorsInCircle(pos, maxSpread);
 
 						foreach (var victim in hitActors)
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA
 
 				case DamageModel.HealthPercentage:
 					{
-						var range = new WRange(warhead.Size[0] * 1024);
+						var range = new WDist(warhead.Size[0] * 1024);
 						var hitActors = world.FindActorsInCircle(pos, range);
 
 						foreach (var victim in hitActors)

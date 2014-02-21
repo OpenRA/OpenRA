@@ -204,7 +204,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		Actor FirstUnshroudedOrDefault(IEnumerable<Actor> actors, World world, int shroudRange)
 		{
-			return actors.FirstOrDefault(u => world.FindAliveCombatantActorsInCircle(u.CenterPosition, WRange.FromCells(shroudRange)).All(a => !a.HasTrait<CreatesShroud>()));
+			return actors.FirstOrDefault(u => world.FindAliveCombatantActorsInCircle(u.CenterPosition, WDist.FromCells(shroudRange)).All(a => !a.HasTrait<CreatesShroud>()));
 		}
 
 		void ManageSovietAircraft()
@@ -299,14 +299,14 @@ namespace OpenRA.Mods.RA.Missions
 
 			var enemy = FirstUnshroudedOrDefault(enemies.OrderBy(u => (self.CenterPosition - u.CenterPosition).LengthSquared), world, 10);
 			if (enemy != null)
-				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), WRange.FromCells(3))));
+				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), WDist.FromCells(3))));
 		}
 
 		void ManageSovietUnits()
 		{
 			foreach (var rallyPoint in sovietRallyPoints)
 			{
-				var units = world.FindAliveCombatantActorsInCircle(rallyPoint.CenterPosition, WRange.FromCells(10))
+				var units = world.FindAliveCombatantActorsInCircle(rallyPoint.CenterPosition, WDist.FromCells(10))
 					.Where(u => u.IsIdle && u.HasTrait<Mobile>() && u.HasTrait<AttackBase>() && u.Owner == soviets);
 				if (units.Count() >= SovietGroupSize)
 				{
@@ -317,7 +317,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			var scatteredUnits = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && u.HasTrait<Mobile>() && u.IsIdle && u.Owner == soviets)
 				.Except(world.WorldActor.Trait<SpawnMapActors>().Actors.Values)
-				.Except(sovietRallyPoints.SelectMany(rp => world.FindAliveCombatantActorsInCircle(rp.CenterPosition, WRange.FromCells(10))));
+				.Except(sovietRallyPoints.SelectMany(rp => world.FindAliveCombatantActorsInCircle(rp.CenterPosition, WDist.FromCells(10))));
 
 			foreach (var unit in scatteredUnits)
 				AttackNearestAlliedActor(unit);

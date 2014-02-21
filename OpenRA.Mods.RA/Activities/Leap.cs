@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Activities
 		int length;
 		WAngle angle;
 
-		public Leap(Actor self, Actor target, WeaponInfo weapon, WRange speed, WAngle angle)
+		public Leap(Actor self, Actor target, WeaponInfo weapon, WDist speed, WAngle angle)
 		{
 			var targetMobile = target.TraitOrDefault<Mobile>();
 			if (targetMobile == null)

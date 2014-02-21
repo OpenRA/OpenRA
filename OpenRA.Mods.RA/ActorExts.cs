@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA
 				var sight = self.TraitOrDefault<RevealsShroud>();
 				var range = sight != null ? sight.Range : 2;
 
-				self.QueueActivity(move.MoveWithinRange(Target.FromPos(frozen.CenterPosition), WRange.FromCells(range)));
+				self.QueueActivity(move.MoveWithinRange(Target.FromPos(frozen.CenterPosition), WDist.FromCells(range)));
 			}
 
 			return Target.Invalid;

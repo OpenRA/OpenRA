@@ -122,7 +122,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			MissionUtils.CapOre(ussr);
 
-			if (!hospitalEvacuated && !hospital.IsDead() && MissionUtils.AreaSecuredWithUnits(world, greece, hospital.CenterPosition, WRange.FromCells(5)))
+			if (!hospitalEvacuated && !hospital.IsDead() && MissionUtils.AreaSecuredWithUnits(world, greece, hospital.CenterPosition, WDist.FromCells(5)))
 			{
 				EvacuateCivilians();
 				hospitalEvacuated = true;
@@ -185,7 +185,7 @@ namespace OpenRA.Mods.RA.Missions
 						MissionFailed("Dr. Demitri was killed.");
 					}
 
-					else if (MissionUtils.AreaSecuredWithUnits(world, greece, demitriTriggerAreaCenter.CenterPosition, WRange.FromCells(3)))
+					else if (MissionUtils.AreaSecuredWithUnits(world, greece, demitriTriggerAreaCenter.CenterPosition, WDist.FromCells(3)))
 					{
 						demitri = world.CreateActor("demitri", greece, demitriChurchSpawnPoint.Location, null);
 						demitri.QueueActivity(new Move.Move(demitriTriggerAreaCenter.Location, 0));

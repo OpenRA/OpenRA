@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.AI
 				return false;
 
 			var u = squad.units.Random(squad.random);
-			var units = squad.world.FindActorsInCircle(u.CenterPosition, WRange.FromCells(DangerRadius)).ToList();
+			var units = squad.world.FindActorsInCircle(u.CenterPosition, WDist.FromCells(DangerRadius)).ToList();
 			var ownBaseBuildingAround = units.Where(unit => unit.Owner == squad.bot.p && unit.HasTrait<Building>());
 			if (ownBaseBuildingAround.Any())
 				return false;

@@ -100,8 +100,8 @@ namespace OpenRA.Mods.RA
 			var renderables = new List<IRenderable>();
 			if (Game.CosmeticRandom.Next(2) != 0)
 			{
-				var p1 = from + (1 / 3f) * dist + WRange.FromPDF(Game.CosmeticRandom, 2).Range * dist.Length / 4096 * norm;
-				var p2 = from + (2 / 3f) * dist + WRange.FromPDF(Game.CosmeticRandom, 2).Range * dist.Length / 4096 * norm;
+				var p1 = from + (1 / 3f) * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Range * dist.Length / 4096 * norm;
+				var p2 = from + (2 / 3f) * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Range * dist.Length / 4096 * norm;
 
 				renderables.AddRange(DrawZap(wr, from, p1, s, out p1));
 				renderables.AddRange(DrawZap(wr, p1, p2, s, out p2));
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA
 			}
 			else
 			{
-				var p1 = from + (1 / 2f) * dist + WRange.FromPDF(Game.CosmeticRandom, 2).Range * dist.Length / 4096 * norm;
+				var p1 = from + (1 / 2f) * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Range * dist.Length / 4096 * norm;
 
 				renderables.AddRange(DrawZap(wr, from, p1, s, out p1));
 				renderables.AddRange(DrawZap(wr, p1, to, s, out z));

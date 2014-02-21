@@ -36,13 +36,13 @@ namespace OpenRA.Mods.RA
 		public readonly int FireDelay = 0;
 
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
-		public readonly WRange[] LocalOffset = {};
+		public readonly WDist[] LocalOffset = {};
 		[Desc("Muzzle yaw relative to turret or body.")]
 		public readonly WAngle[] LocalYaw = {};
 		[Desc("Move the turret backwards when firing.")]
-		public readonly WRange Recoil = WRange.Zero;
+		public readonly WDist Recoil = WDist.Zero;
 		[Desc("Recoil recovery per-frame")]
-		public readonly WRange RecoilRecovery = new WRange(9);
+		public readonly WDist RecoilRecovery = new WDist(9);
 
 		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
 	}
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 		Lazy<Turreted> Turret;
 		Lazy<IBodyOrientation> Coords;
 
-		public WRange Recoil;
+		public WDist Recoil;
 		public int FireDelay { get; private set; }
 		public int Burst { get; private set; }
 
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (FireDelay > 0)
 				--FireDelay;
-			Recoil = new WRange(Math.Max(0, Recoil.Range - Info.RecoilRecovery.Range));
+			Recoil = new WDist(Math.Max(0, Recoil.Range - Info.RecoilRecovery.Range));
 		}
 
 		// Note: facing is only used by the legacy positioning code
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA
 			if (!target.IsInRange(self.CenterPosition, Weapon.Range))
 				return;
 
-			if (Weapon.MinRange != WRange.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
+			if (Weapon.MinRange != WDist.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
 				return;
 
 			if (!Weapon.IsValidAgainst(target, self.World))
@@ -166,7 +166,7 @@ namespace OpenRA.Mods.RA
 		public WVec MuzzleOffset(Actor self, Barrel b)
 		{
 			var bodyOrientation = Coords.Value.QuantizeOrientation(self, self.Orientation);
-			var localOffset = b.Offset + new WVec(-Recoil, WRange.Zero, WRange.Zero);
+			var localOffset = b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
 			if (Turret.Value != null)
 			{
 				var turretOrientation = Coords.Value.QuantizeOrientation(self, Turret.Value.LocalOrientation(self));

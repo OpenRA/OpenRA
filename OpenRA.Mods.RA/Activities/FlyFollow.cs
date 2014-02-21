@@ -18,9 +18,9 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		Target target;
 		Plane plane;
-		WRange range;
+		WDist range;
 
-		public FlyFollow(Actor self, Target target, WRange range)
+		public FlyFollow(Actor self, Target target, WDist range)
 		{
 			this.target = target;
 			plane = self.Trait<Plane>();
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Activities
 				return this;
 			}
 
-			return Util.SequenceActivities(new Fly(self, target, WRange.Zero, range), this);
+			return Util.SequenceActivities(new Fly(self, target, WDist.Zero, range), this);
 		}
 	}
 }
