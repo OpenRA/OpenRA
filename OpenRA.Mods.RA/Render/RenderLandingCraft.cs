@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -39,7 +40,11 @@ namespace OpenRA.Mods.RA.Render
 
 		public bool ShouldBeOpen()
 		{
-			if (self.CenterPosition.Z > 0)
+			var mobile = self.TraitOrDefault<Mobile>();
+			if (mobile == null)
+				return false;
+
+			if (self.CenterPosition.Z > 0 || mobile.IsMoving)
 				return false;
 
 			return cargo.CurrentAdjacentCells
