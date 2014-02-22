@@ -475,6 +475,9 @@ grenadier: # 2502 - 2749 in 1.06 DATA.R8
 	die5:
 		Start: 176
 		Length: 20
+	die6:
+		Start: 176
+		Length: 20
 	die-crushed:
 		Start: 195
 		Length: 8
