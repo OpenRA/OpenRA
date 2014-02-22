@@ -60,6 +60,7 @@ NEW:
 		Filenames are now listed in alphabetical order
 	Map Editor:
 		Removed legacy INI/MPR map import.
+		Fixed being unable to use the flood fill tool on similar grass/snow/desert tiles.
 	Utility:
 		Added an improved INI/MPR map import.
 	Mod / Custom map compatibility:
