@@ -47,6 +47,8 @@ NEW:
 		Added initial support for Tmp(TS) sprites.
 		Added GainsUnitUpgrades trait for leveling specific unit upgrades - firepower, armor, speed.
 		Added support for crates to level up specific unit upgrades.
+		Merged CrateDrop functionality into CrateSpawner.
+		Added support to CrateSpawner for spawning multiple types of crates.
 		Added a new Launch.Replay=$FILEPATH parameter for OpenRA.Game.exe to instantly start watching a *.rep file.
 		Added HackyAI settings: ExcessPowerFactor, MinimumExcessPower, IdleBaseUnitsMaximum, RushAttackScanRadius, ProtectUnitScanRadius, RallyPointScanRadius. See the traits documentation for more information.
 		Added HitAnimPalette trait for LaserZap projectiles. Laser hit animations can now specify individual palettes. Defaults to effect palette.
