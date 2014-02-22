@@ -148,6 +148,10 @@ namespace OpenRA.Mods.RA.Widgets
 			if (actor.First == null)
 				return true;
 
+			var ati = actor.First.Info.Traits.GetOrDefault<AutoTargetInfo>();
+			if (ati == null || !ati.EnableStances)
+				return false;
+
 			var stances = Enum<UnitStance>.GetValues();
 			var nextStance = stances.Concat(stances)
 				.SkipWhile(s => s != actor.Second.PredictedStance)
