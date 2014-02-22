@@ -36,6 +36,10 @@ LST:
 		Cost: 300
 	Tooltip:
 		Name: Landing Craft
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 1000
+		Owner: None
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -61,10 +65,7 @@ LST:
 	WithCargo:
 		DisplayTypes: Infantry, Vehicle
 		LocalOffset: 0,0,0, -390,-256,0, 390,-256,0, -390,256,0, 390,256,0
-	-Selectable:
 	Cargo:
 		Types: Infantry, Vehicle
 		MaxWeight: 5
 		PipCount: 5
-	RejectsOrders:
-

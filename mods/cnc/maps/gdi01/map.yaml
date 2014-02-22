@@ -504,6 +504,8 @@ Rules:
 	OLDLST:
 		Inherits: LST
 		-WithRoof:
+		-Selectable:
+		RejectsOrders:
 
 Sequences:
 	oldlst:

@@ -8,6 +8,9 @@ lst:
 	roof: lstnew2
 		Start: 0
 		Facings: 32
+	icon: lsticnh
+		Start: 0
+
 boat:
 	left:
 		Start: 0
