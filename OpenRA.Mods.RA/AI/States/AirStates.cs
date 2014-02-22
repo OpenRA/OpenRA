@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA.AI
 		protected static bool NearToPosSafely(Squad owner, WPos loc, out Actor detectedEnemyTarget)
 		{
 			detectedEnemyTarget = null;
-			var unitsAroundPos = owner.world.FindActorsInCircle(loc, WRange.FromCells(DangerRadius))
+			var unitsAroundPos = owner.world.FindActorsInCircle(loc, WDist.FromCells(DangerRadius))
 				.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
 
 			if (!unitsAroundPos.Any())

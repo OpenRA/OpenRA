@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 		{
 			wr.DrawRangeCircleWithContrast(
 				pos,
-				WRange.FromCells(range),
+				WDist.FromCells(range),
 				Color.FromArgb(128, color),
 				Color.FromArgb(96, Color.Black)
 			);

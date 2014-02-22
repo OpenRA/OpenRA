@@ -154,8 +154,8 @@ namespace OpenRA.Traits
 	{
 		Activity MoveTo(CPos cell, int nearEnough);
 		Activity MoveTo(CPos cell, Actor ignoredActor);
-		Activity MoveWithinRange(Target target, WRange range);
-		Activity MoveFollow(Actor self, Target target, WRange range);
+		Activity MoveWithinRange(Target target, WDist range);
+		Activity MoveFollow(Actor self, Target target, WDist range);
 		CPos NearestMoveableCell(CPos target);
 		bool IsMoving { get; set; }
 	}

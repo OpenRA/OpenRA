@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Move
 		static readonly List<CPos> NoPath = new List<CPos>();
 
 		CPos? destination;
-		WRange nearEnough;
+		WDist nearEnough;
 		List<CPos> path;
 		Func<Actor, Mobile, List<CPos>> getPath;
 		Actor ignoreBuilding;
@@ -42,14 +42,14 @@ namespace OpenRA.Mods.RA.Move
 					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, destination, false)
 					.WithoutLaneBias());
 			this.destination = destination;
-			this.nearEnough = WRange.Zero;
+			this.nearEnough = WDist.Zero;
 		}
 
 		// HACK: for legacy code
 		public Move(CPos destination, int nearEnough)
-			: this(destination, WRange.FromCells(nearEnough)) { }
+			: this(destination, WDist.FromCells(nearEnough)) { }
 
-		public Move(CPos destination, WRange nearEnough)
+		public Move(CPos destination, WDist nearEnough)
 		{
 			this.getPath = (self, mobile) => self.World.WorldActor.Trait<PathFinder>()
 				.FindUnitPath(mobile.toCell, destination, self);
@@ -65,11 +65,11 @@ namespace OpenRA.Mods.RA.Move
 					.WithIgnoredBuilding(ignoreBuilding));
 
 			this.destination = destination;
-			this.nearEnough = WRange.Zero;
+			this.nearEnough = WDist.Zero;
 			this.ignoreBuilding = ignoreBuilding;
 		}
 
-		public Move(Target target, WRange range)
+		public Move(Target target, WDist range)
 		{
 			this.getPath = (self, mobile) =>
 			{
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA.Move
 		{
 			this.getPath = (_1, _2) => getPath();
 			this.destination = null;
-			this.nearEnough = WRange.Zero;
+			this.nearEnough = WDist.Zero;
 		}
 
 		static int HashList<T>(List<T> xs)

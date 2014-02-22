@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc
 	public class WithCargoInfo : ITraitInfo, Requires<CargoInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Cargo position relative to turret or body. (forward, right, up) triples")]
-		public readonly WRange[] LocalOffset = { };
+		public readonly WDist[] LocalOffset = { };
 		public readonly string[] DisplayTypes = { };
 
 		public object Create(ActorInitializer init) { return new WithCargo(init.self, this); }

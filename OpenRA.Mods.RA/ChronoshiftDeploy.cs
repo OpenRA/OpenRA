@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA
 
 			wr.DrawRangeCircleWithContrast(
 				self.CenterPosition,
-				WRange.FromCells(self.Trait<ChronoshiftDeploy>().Info.JumpDistance),
+				WDist.FromCells(self.Trait<ChronoshiftDeploy>().Info.JumpDistance),
 				Color.FromArgb(128, Color.DeepSkyBlue),
 				Color.FromArgb(96, Color.Black)
 			);

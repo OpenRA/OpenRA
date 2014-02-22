@@ -190,7 +190,7 @@ namespace OpenRA.Graphics
 				selectable.DrawRollover(this);
 		}
 
-		public void DrawRangeCircle(WPos pos, WRange range, Color c)
+		public void DrawRangeCircle(WPos pos, WDist range, Color c)
 		{
 			var offset = new WVec(range.Range, 0, 0);
 			for (var i = 0; i < 32; i++)
@@ -201,7 +201,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawRangeCircleWithContrast(WPos pos, WRange range, Color fg, Color bg)
+		public void DrawRangeCircleWithContrast(WPos pos, WDist range, Color fg, Color bg)
 		{
 			var wlr = Game.Renderer.WorldLineRenderer;
 			var oldWidth = wlr.LineWidth;

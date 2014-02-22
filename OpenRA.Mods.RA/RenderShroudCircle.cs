@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		{
 			wr.DrawRangeCircleWithContrast(
 				centerPosition,
-				WRange.FromCells(ai.Traits.Get<CreatesShroudInfo>().Range),
+				WDist.FromCells(ai.Traits.Get<CreatesShroudInfo>().Range),
 				Color.FromArgb(128, Color.Cyan),
 				Color.FromArgb(96, Color.Black)
 			);
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 
 			wr.DrawRangeCircleWithContrast(
 				self.CenterPosition,
-				WRange.FromCells(self.Info.Traits.Get<CreatesShroudInfo>().Range),
+				WDist.FromCells(self.Info.Traits.Get<CreatesShroudInfo>().Range),
 				Color.FromArgb(128, Color.Cyan),
 				Color.FromArgb(96, Color.Black)
 			);

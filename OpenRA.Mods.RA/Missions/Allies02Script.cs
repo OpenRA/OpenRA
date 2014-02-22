@@ -170,7 +170,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				if (yak == null || (yak != null && !yak.IsDead() && (yak.GetCurrentActivity() is FlyCircle || yak.IsIdle)))
 				{
-					var alliedUnitsNearYakPoint = world.FindAliveCombatantActorsInCircle(yakAttackPoint.CenterPosition, WRange.FromCells(10))
+					var alliedUnitsNearYakPoint = world.FindAliveCombatantActorsInCircle(yakAttackPoint.CenterPosition, WDist.FromCells(10))
 						.Where(a => a.Owner != soviets && a.HasTrait<IPositionable>() && a != tanya && a != einstein && a != engineer);
 					if (alliedUnitsNearYakPoint.Any())
 						YakStrafe(alliedUnitsNearYakPoint);
@@ -270,7 +270,7 @@ namespace OpenRA.Mods.RA.Missions
 				var altitude = Rules.Info[YakName].Traits.Get<PlaneInfo>().CruiseAltitude;
 				yak = world.CreateActor(YakName, new TypeDictionary
 				{
-					new CenterPositionInit(yakEntryPoint.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+					new CenterPositionInit(yakEntryPoint.CenterPosition + new WVec(WDist.Zero, WDist.Zero, altitude)),
 					new OwnerInit(soviets),
 					new FacingInit(Traits.Util.GetFacing(yakAttackPoint.Location - yakEntryPoint.Location, 0))
 				});
@@ -300,7 +300,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void ManageSovietUnits()
 		{
-			var units = world.FindAliveCombatantActorsInCircle(sovietRallyPoint.CenterPosition, WRange.FromCells(10))
+			var units = world.FindAliveCombatantActorsInCircle(sovietRallyPoint.CenterPosition, WDist.FromCells(10))
 				.Where(u => u.IsIdle && u.HasTrait<Mobile>() && u.HasTrait<AttackBase>() && u.Owner == soviets)
 				.Except(world.WorldActor.Trait<SpawnMapActors>().Actors.Values);
 			if (units.Count() >= SovietGroupSize)
@@ -384,22 +384,22 @@ namespace OpenRA.Mods.RA.Missions
 
 		bool AlliesNearTown()
 		{
-			return world.FindAliveCombatantActorsInCircle(townPoint.CenterPosition, WRange.FromCells(AlliedTownTransferRange))
+			return world.FindAliveCombatantActorsInCircle(townPoint.CenterPosition, WDist.FromCells(AlliedTownTransferRange))
 				.Any(a => a.Owner == allies1 && a.HasTrait<IPositionable>());
 		}
 
 		void TransferTownUnitsToAllies()
 		{
-			foreach (var unit in world.FindAliveNonCombatantActorsInCircle(townPoint.CenterPosition, WRange.FromCells(AlliedTownTransferRange))
+			foreach (var unit in world.FindAliveNonCombatantActorsInCircle(townPoint.CenterPosition, WDist.FromCells(AlliedTownTransferRange))
 				.Where(a => a.HasTrait<Mobile>()))
 				unit.ChangeOwner(allies1);
 		}
 
 		void SovietsAttackTown()
 		{
-			var sovietAttackUnits = world.FindAliveCombatantActorsInCircle(sovietTownAttackPoint1.CenterPosition, WRange.FromCells(SovietTownAttackGroupRange))
-				.Union(world.FindAliveCombatantActorsInCircle(sovietTownAttackPoint2.CenterPosition, WRange.FromCells(SovietTownAttackGroupRange)))
-				.Union(world.FindAliveCombatantActorsInCircle(townPoint.CenterPosition, WRange.FromCells(AlliedTownTransferRange)))
+			var sovietAttackUnits = world.FindAliveCombatantActorsInCircle(sovietTownAttackPoint1.CenterPosition, WDist.FromCells(SovietTownAttackGroupRange))
+				.Union(world.FindAliveCombatantActorsInCircle(sovietTownAttackPoint2.CenterPosition, WDist.FromCells(SovietTownAttackGroupRange)))
+				.Union(world.FindAliveCombatantActorsInCircle(townPoint.CenterPosition, WDist.FromCells(AlliedTownTransferRange)))
 				.Where(a => a.HasTrait<IPositionable>() && a.Owner == soviets);
 
 			foreach (var unit in sovietAttackUnits)
