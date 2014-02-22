@@ -93,6 +93,19 @@ namespace OpenRA.Utility
 						ConvertPxToRange(ref node.Value.Value);
 				}
 
+				// CrateDrop was replaced with CrateSpawner
+				if (engineVersion < 20131231)
+				{
+					if (depth == 1 && parentKey == "World")
+					{
+						if (node.Key == "CrateDrop")
+							node.Key = "CrateSpawner";
+
+						if (node.Key == "-CrateDrop")
+							node.Key = "-CrateSpawner";
+					}
+				}
+
 				// AttackMove was generalized to support all moveable actor types
 				if (engineVersion < 20140116)
 				{
