@@ -47,6 +47,9 @@ namespace OpenRA.Mods.RA.Render
 			if (self.CenterPosition.Z > 0 || mobile.IsMoving)
 				return false;
 
+			if (cargo.IsFull(self))
+				return false;
+
 			return cargo.CurrentAdjacentCells
 				.Any(c => info.OpenTerrainTypes.Contains(self.World.GetTerrainType(c)));
 		}

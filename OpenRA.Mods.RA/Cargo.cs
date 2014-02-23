@@ -117,6 +117,7 @@ namespace OpenRA.Mods.RA
 
 		public bool HasSpace(int weight) { return totalWeight + weight <= Info.MaxWeight; }
 		public bool IsEmpty(Actor self) { return cargo.Count == 0; }
+		public bool IsFull(Actor self) { return totalWeight == Info.MaxWeight;}
 
 		public Actor Peek(Actor self) { return cargo[0]; }
 
