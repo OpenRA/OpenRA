@@ -411,7 +411,7 @@ VICE:
 	AppearsOnRadar:
 	Health:
 		Radius: 427
-		HP: 400
+		HP: 300
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -433,7 +433,6 @@ VICE:
 		ScanRadius: 5
 	AttackMove:
 	HiddenUnderFog:
-	GainsExperience:
 	GivesExperience:
 	Valued:
 		Cost: 1000

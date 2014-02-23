@@ -58,6 +58,9 @@ NEW:
 		Reduced Obelisk range from 8.5 to 6.5.
 		Reduced Obelisk vision from 8 to 7.
 		Increased Obelisk build time from 36 seconds to 52 seconds.
+		Decreased Tiberium damage rate by a factor of 3.
+		Decreased Visceroid health by 25% and removed their ability to gain experience.
+		Increased the chance of Tiberium or chemical deaths spawning a Visceroid from 2% to 10%.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.
