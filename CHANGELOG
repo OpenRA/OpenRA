@@ -3,6 +3,7 @@ NEW:
 		Added the ability to place map beacons for highlighting areas to teammates.
 		Structures under attack and friendly superweapon launch targets will now be highlighted on the radar.
 		Fixed unloading passengers moving unnecessarily far from their transport.
+		Fixed loading passengers teleporting into their transport.
 		Fixed the unload cursor sometimes being displayed for transports even when they were unable to unload.
 		An error dialog is now displayed when server connections are lost.
 		Added AttackMove and Guard abilities to Aircraft and Helicopters.
