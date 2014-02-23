@@ -767,3 +767,124 @@ rmbo:
 		Tick: 1600
 	icon: rmboicnh
 		Start: 0
+
+stlk:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+		Tick: 100
+	shoot:
+		Start: 64
+		Length: 16
+		Facings: 8
+	# stand -> prone transition
+	liedown:
+		Start: 192
+		Length: 2
+		Facings: 8
+	# prone -> stand transition
+	standup:
+		Start: 240
+		Length: 2
+		Facings: 8
+	prone-stand:
+		Start: 208
+		Length: 4
+		Facings: 8
+	prone-run:
+		Start: 208
+		Length: 4
+		Facings: 8
+		Tick: 100
+	prone-shoot:
+		Start: 256
+		Length: 16
+		Facings: 8
+	idle1:
+		Start: 384
+		Length: 16
+		Tick: 120
+	idle2:
+		Start: 400
+		Length: 16
+		Tick: 120
+	cheer:
+		Start: 588
+		Length: 3
+		Facings: 8
+		Tick: 120	
+	# Shot
+	die1:
+		Start: 509
+		Length: 9
+		Tick: 80
+	# Explode
+	die2:
+		Start: 518
+		Length: 8
+		Tick: 80
+	# Fly and explode in air
+	die3:
+		Start: 526
+		Length: 8
+		Tick: 80
+	# Fly through air squish on ground
+	die4:
+		Start: 534
+		Length: 12
+		Tick: 80
+	# Burn
+	die5:
+		Start: 546
+		Length: 18
+		Tick: 80
+	# Tib
+	die6:
+		Start: 494
+		Length: 10
+		Tick: 80
+	die-crushed: e4rot
+		Start: 16
+		Length: 4
+		Tick: 1600
+	muzzle0: chem-n
+		Start: 0
+		Length: *
+		Offset: 1,2
+	muzzle1: chem-nw
+		Start: 0
+		Length: *
+		Offset: 8,2
+	muzzle2: chem-w
+		Start: 0
+		Length: *
+		Offset: 8,-3
+	muzzle3: chem-sw
+		Start: 0
+		Length: *
+		Offset: 7,-6
+	muzzle4: chem-s
+		Start: 0
+		Length: *
+		Offset: 1,-6
+	muzzle5: chem-se
+		Start: 0
+		Length: *
+		Offset: -5,-6
+	muzzle6: chem-e
+		Start: 0
+		Length: *
+		Offset: -7,-3
+	muzzle7: chem-ne
+		Start: 0
+		Length: *
+		Offset: -3,2
+	icon: stlkicnh
+		Start: 0
