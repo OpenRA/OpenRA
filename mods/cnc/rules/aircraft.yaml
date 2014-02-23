@@ -192,8 +192,6 @@ A10:
 		HP: 150
 	Armor:
 		Type: Heavy
-	RevealsShroud:
-		Range: 12
 	RenderUnit:
 	WithShadow:
 	AttackBomber:
