@@ -31,14 +31,13 @@ namespace OpenRA.Mods.RA
 	class AttackBomber : AttackBase, ISync, INotifyKilled
 	{
 		AttackBomberInfo info;
-		Actor camera;
+		Actor camera = null;
 		[Sync] Target target;
 
 		public AttackBomber(Actor self, AttackBomberInfo info)
 			: base(self)
 		{
 			this.info = info;
-			this.camera = null;
 		}
 
 		public override void Tick(Actor self)
@@ -50,20 +49,20 @@ namespace OpenRA.Mods.RA
 			var bombTarget = Target.FromPos(cp - new WVec(0, 0, cp.Z));
 
 			// Provide vision
-			if (this.camera == null &&
-				target.IsInRange(self.CenterPosition, this.info.VisionRange))
+			if (camera == null &&
+				target.IsInRange(self.CenterPosition, info.VisionRange))
 			{
-				this.camera = self.World.CreateActor("camera", new TypeDictionary
+				camera = self.World.CreateActor("camera", new TypeDictionary
 				{
 					new LocationInit(target.CenterPosition.ToCPos()),
 					new OwnerInit(self.Owner),
 				});
 			}
-			else if (this.camera != null &&
-				!target.IsInRange(self.CenterPosition, this.info.VisionRange))
+			else if (camera != null &&
+				!target.IsInRange(self.CenterPosition, info.VisionRange))
 			{
-				self.World.Remove(this.camera);
-				this.camera = null;
+				self.World.AddFrameEndTask(w => w.Remove(camera));
+				camera = null;
 			}
 
 			// Bombs drop anywhere in range
