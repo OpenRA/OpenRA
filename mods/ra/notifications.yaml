@@ -43,3 +43,4 @@ Sounds:
 		TabClick: ramenu1
 		ClickSound:
 		ClickDisabledSound:
+		Beacon: beepslct

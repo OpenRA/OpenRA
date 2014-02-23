@@ -152,6 +152,14 @@ rallypoint:
 		Start: 0
 		Length: *
 
+beacon:
+	arrow: mouse2
+		Start: 5
+		Offset: 1,-12
+	circles: fpls
+		Start: 0
+		Length: *
+
 select:
 	repair:
 		Start: 2

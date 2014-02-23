@@ -42,3 +42,4 @@ Sounds:
 		TabClick: button
 		ClickSound: button
 		ClickDisabledSound: scold2
+		Beacon: bleep2

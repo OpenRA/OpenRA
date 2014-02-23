@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
@@ -22,8 +23,8 @@ namespace OpenRA.Mods.RA.Widgets
 		public string RadarOnlineSound = null;
 		public string RadarOfflineSound = null;
 		public Func<bool> IsEnabled = () => true;
-		public Action AfterOpen = () => {};
-		public Action AfterClose = () => {};
+		public Action AfterOpen = () => { };
+		public Action AfterClose = () => { };
 
 		float radarMinimapHeight;
 		int frame;
@@ -43,11 +44,14 @@ namespace OpenRA.Mods.RA.Widgets
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
 
+		readonly RadarPings radarPings;
+
 		[ObjectCreator.UseCtor]
 		public RadarWidget(World world, WorldRenderer worldRenderer)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
+			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -60,8 +64,8 @@ namespace OpenRA.Mods.RA.Widgets
 			var rb = RenderBounds;
 
 			previewScale = Math.Min(rb.Width * 1f / width, rb.Height * 1f / height);
-			previewOrigin = new int2((int)(previewScale*(size - width)/2), (int)(previewScale*(size - height)/2));
-			mapRect = new Rectangle(previewOrigin.X, previewOrigin.Y, (int)(previewScale*width), (int)(previewScale*height));
+			previewOrigin = new int2((int)(previewScale * (size - width) / 2), (int)(previewScale * (size - height) / 2));
+			mapRect = new Rectangle(previewOrigin.X, previewOrigin.Y, (int)(previewScale * width), (int)(previewScale * height));
 
 			// Only needs to be done once
 			var terrainBitmap = Minimap.TerrainBitmap(world.Map);
@@ -95,7 +99,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (cursor == null)
 				return "default";
 
-			return CursorProvider.HasCursorSequence(cursor+"-minimap") ? cursor+"-minimap" : cursor;
+			return CursorProvider.HasCursorSequence(cursor + "-minimap") ? cursor + "-minimap" : cursor;
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -140,8 +144,8 @@ namespace OpenRA.Mods.RA.Widgets
 			if (world == null)
 				return;
 
-			var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight)/2);
-			var s = new float2(mapRect.Size.Width, mapRect.Size.Height*radarMinimapHeight);
+			var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight) / 2);
+			var s = new float2(mapRect.Size.Width, mapRect.Size.Height * radarMinimapHeight);
 
 			var rsr = Game.Renderer.RgbaSpriteRenderer;
 			rsr.DrawSprite(terrainSprite, o, s);
@@ -156,9 +160,32 @@ namespace OpenRA.Mods.RA.Widgets
 				var br = CellToMinimapPixel(worldRenderer.Position(worldRenderer.Viewport.BottomRight).ToCPos());
 
 				Game.Renderer.EnableScissor(mapRect);
+				DrawRadarPings();
 				Game.Renderer.LineRenderer.DrawRect(tl, br, Color.White);
 				Game.Renderer.DisableScissor();
 			}
+		}
+
+		void DrawRadarPings()
+		{
+			if (radarPings == null)
+				return;
+
+			var lr = Game.Renderer.LineRenderer;
+			var oldWidth = lr.LineWidth;
+			lr.LineWidth = 2;
+
+			foreach (var radarPing in radarPings.Pings.Where(e => e.IsVisible()))
+			{
+				var c = radarPing.Color;
+				var points = radarPing.Points(CellToMinimapPixel(radarPing.Position.ToCPos())).ToArray();
+
+				lr.DrawLine(points[0], points[1], c, c);
+				lr.DrawLine(points[1], points[2], c, c);
+				lr.DrawLine(points[2], points[0], c, c);
+			}
+
+			lr.LineWidth = oldWidth;
 		}
 
 		public override void Tick()

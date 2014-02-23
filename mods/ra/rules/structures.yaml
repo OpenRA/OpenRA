@@ -37,6 +37,8 @@ MSLO:
 		MissileWeapon: atomic
 		SpawnOffset: 0,427,0
 		DisplayTimer: True
+		DisplayBeacon: True
+		DisplayRadarPing: True
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:
@@ -224,6 +226,7 @@ IRON:
 		InsufficientPowerSound: nopowr1.aud
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
+		DisplayRadarPing: True
 	SupportPowerChargeBar:
 
 PDOX:
@@ -264,6 +267,7 @@ PDOX:
 		EndChargeSound: chrordy1.aud
 		Duration: 20
 		KillCargo: yes
+		DisplayRadarPing: True
 	SupportPowerChargeBar:
 	-AcceptsSupplies:
 

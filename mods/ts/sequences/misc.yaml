@@ -44,6 +44,15 @@ rallypoint:
 		Length: 12
 		BlendMode: Additive
 
+beacon:
+	arrow: mouse
+		Start: 6
+		Offset: 1,-12
+	circles: ring
+		Start: 0
+		Length: 12
+		BlendMode: Additive
+
 rank: # TODO: backfall to RA asset
 	rank:
 		Start: 0

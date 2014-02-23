@@ -96,6 +96,8 @@ PALACEH:
 		IncomingSound:
 		MissileWeapon: atomic
 		SpawnOffset: -512,1c171,0
+		DisplayBeacon: True
+		DisplayRadarPing: True
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:

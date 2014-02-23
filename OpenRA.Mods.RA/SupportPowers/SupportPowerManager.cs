@@ -10,7 +10,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -23,13 +25,16 @@ namespace OpenRA.Mods.RA
 	public class SupportPowerManager : ITick, IResolveOrder
 	{
 		public readonly Actor self;
-		public Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
+		public readonly Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
 
-		public readonly DeveloperMode devMode;
+		public readonly DeveloperMode DevMode;
+		public readonly Lazy<RadarPings> RadarPings;
+
 		public SupportPowerManager(ActorInitializer init)
 		{
 			self = init.self;
-			devMode = init.self.Trait<DeveloperMode>();
+			DevMode = init.self.Trait<DeveloperMode>();
+			RadarPings = Lazy.New(() => init.world.WorldActor.TraitOrDefault<RadarPings>());
 
 			init.world.ActorAdded += ActorAdded;
 			init.world.ActorRemoved += ActorRemoved;
@@ -148,7 +153,7 @@ namespace OpenRA.Mods.RA
 			if (Active)
 			{
 				var power = Instances.First();
-				if (Manager.devMode.FastCharge && RemainingTime > 25)
+				if (Manager.DevMode.FastCharge && RemainingTime > 25)
 					RemainingTime = 25;
 
 				if (RemainingTime > 0) --RemainingTime;
@@ -186,6 +191,20 @@ namespace OpenRA.Mods.RA
 			power.Activate(power.self, order);
 			RemainingTime = TotalTime;
 			notifiedCharging = notifiedReady = false;
+
+			if (power.Info.DisplayBeacon)
+				power.self.World.Add(new Beacon(
+					order.Player,
+					order.TargetLocation.CenterPosition,
+					power.Info.BeaconDuration,
+					power.Info.BeaconPalettePrefix));
+
+			if (power.Info.DisplayRadarPing && Manager.RadarPings != null)
+				Manager.RadarPings.Value.Add(
+					() => order.Player.IsAlliedWith(power.self.World.RenderPlayer),
+					order.TargetLocation.CenterPosition,
+					order.Player.Color.RGB,
+					power.Info.BeaconDuration);
 
 			if (Info.OneShot)
 				Disabled = true;

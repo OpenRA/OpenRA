@@ -30,6 +30,11 @@ namespace OpenRA.Mods.RA
 
 		public readonly bool DisplayTimer = false;
 
+		public readonly bool DisplayBeacon = false;
+		public readonly int BeaconDuration = 10 * 25;
+		public readonly string BeaconPalettePrefix = "player";
+		public readonly bool DisplayRadarPing = false;
+
 		public readonly string OrderName;
 		public abstract object Create(ActorInitializer init);
 

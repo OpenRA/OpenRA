@@ -130,6 +130,14 @@ rallypoint:
 		Start: 0
 		Length: *
 
+beacon:
+	arrow: mouse
+		Start: 148
+		Offset: -24,-24
+	circles: fpls
+		Start: 0
+		Length: *
+
 rpg:
 	idle: DATA
 		Start: 3015
