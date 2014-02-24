@@ -88,6 +88,7 @@ NEW:
 		Added RenderNameTag trait to show the player's name above an actor.
 		Fixed performance issues with units pathing to naval transports.
 		Fixed unit moving to transports that have moved.
+		Updated shroud-based traits to use world units.
 	Server:
 		Message of the day is now shared between all mods and a default motd.txt gets created in the user directory.
 	Asset Browser:
@@ -97,6 +98,7 @@ NEW:
 		Fixed being unable to use the flood fill tool on similar grass/snow/desert tiles.
 	Utility:
 		Added an improved INI/MPR map import.
+		Added an --upgrade-mod feature to upgrade the yaml of mods to the latest specifications.
 	Mod / Custom map compatibility:
 		Altitude is no longer parsed from actor templates in maps. Specify CenterPosition instead.
 		system.yaml has been split into four files for all mods: system-actor.yaml, system-ai.yaml, system-player.yaml and system-world.yaml.
