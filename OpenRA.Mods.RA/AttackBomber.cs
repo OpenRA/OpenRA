@@ -93,10 +93,10 @@ namespace OpenRA.Mods.RA
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (this.camera != null)
+			if (camera != null)
 			{
-				self.World.Remove(this.camera);
-				this.camera = null;
+				self.World.AddFrameEndTask(w => w.Remove(camera));
+				camera = null;
 			}
 		}
 
