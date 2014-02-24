@@ -64,8 +64,17 @@ namespace OpenRA.Mods.RA.Buildings
 				return false;
 
 			var buildingMaxBounds = (CVec)Dimensions;
-			if (Rules.Info[buildingName].Traits.Contains<BibInfo>())
-				buildingMaxBounds += new CVec(0, 1);
+			
+			TypeDictionary buildingTraits = Rules.Info[buildingName].Traits;
+			int boundsOffsetY = 1;
+			
+			if (buildingTraits.Contains<BibInfo>())
+			{
+				if (buildingTraits.Get<BibInfo>().Sequence == "minibib")
+					boundsOffsetY = 2;
+
+				buildingMaxBounds += new CVec(0, boundsOffsetY);
+			}
 
 			var scanStart = world.ClampToWorld(topLeft - new CVec(Adjacent, Adjacent));
 			var scanEnd = world.ClampToWorld(topLeft + buildingMaxBounds + new CVec(Adjacent, Adjacent));

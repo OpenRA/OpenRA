@@ -39,7 +39,12 @@ namespace OpenRA.Mods.RA.Buildings
 			var centerOffset = FootprintUtils.CenterOffset(building);
 
 			tiles = new List<AnimationWithOffset>();
-			for (var i = 0; i < 2*width; i++)
+
+				int rows = 2;
+				if (info.Sequence == "minibib")
+					rows = 1;
+
+			for (var i = 0; i < rows * width; i++)
 			{
 				var index = i;
 				var anim = new Animation(rs.GetImage(self));

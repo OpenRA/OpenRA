@@ -91,10 +91,16 @@ silo:
 	idle: silo2
 		Start: 0
 		Length: 9
+		Offset: 0,-2
 	damaged-idle: silo2
 		Start: 9
 		Length: 9
+		Offset: 0,-2
 	make: silomake
+		Start: 0
+		Length: *
+		Offset: 0,-2
+	minibib: minibib1x1
 		Start: 0
 		Length: *
 	icon: siloicon
@@ -178,12 +184,15 @@ kenn:
 dome:
 	idle:
 		Start: 0
+		Offset: 0,-5
 	damaged-idle:
 		Start: 1
+		Offset: 0,-5
 	make: domemake
 		Start: 0
 		Length: *
-	bib: bib3
+		Offset: 0,-5
+	minibib: minibib2x1
 		Start: 0
 		Length: *
 	icon: domeicon
@@ -194,16 +203,19 @@ dome:
 atek:
 	idle:
 		Start: 0
+		Offset: 0,-5
 	damaged-idle:
 		Start: 1
+		Offset: 0,-5
 	make: atekmake
 		Start: 0
 		Length: *
+		Offset: 0,-5
 	active: sputdoor
 		Start: 0
 		Length: *
-		Offset: -4,0
-	bib: bib3
+		Offset: -4,-5
+	minibib: minibib2x1
 		Start: 0
 		Length: *
 	icon: atekicon
@@ -212,12 +224,15 @@ atek:
 stek:
 	idle:
 		Start: 0
+		Offset: 0,-5
 	damaged-idle:
 		Start: 1
+		Offset: 0,-5
 	make: stekmake
 		Start: 0
 		Length: *
-	bib: bib2
+		Offset: 0,-5
+	minibib: minibib3x1
 		Start: 0
 		Length: *
 	icon: stekicon
@@ -278,23 +293,31 @@ afld:
 		Start: 0
 		Length: 8
 		Tick: 160
+		Offset: 0,-7
 		ZOffset: -1023
 	damaged-idle: afldidle
 		Start: 8
 		Length: 8
 		Tick: 160
+		Offset: 0,-7
 		ZOffset: -1023
 	active:
 		Start: 0
 		Length: 8
 		Tick: 160
+		Offset: 0,-7
 		ZOffset: -1023
 	damaged-active:
 		Start: 8
 		Length: 8
 		Tick: 160
+		Offset: 0,-7
 		ZOffset: -1023
-	make: afldmake
+	make: afldidle
+		Start: 0
+		Length: 1
+		Offset: 0,-7
+	minibib: minibib3x1
 		Start: 0
 		Length: *
 	icon: afldicon
@@ -329,19 +352,27 @@ syrd:
 fix:
 	idle:
 		Start: 0
+		Offset: 0,7
 		ZOffset: -1c511
 	damaged-idle:
 		Start: 7
+		Offset: 0,7
 		ZOffset: -1c511
 	active:
 		Start: 1
 		Length: 6
+		Offset: 0,7
 		ZOffset: -1c511
 	damaged-active:
 		Start: 8
 		Length: 6
+		Offset: 0,7
 		ZOffset: -1c511
 	make: fixmake
+		Start: 0
+		Length: *
+		Offset: 0,7
+	minibib: minibib3x1
 		Start: 0
 		Length: *
 	icon: fixicon
@@ -351,21 +382,30 @@ gun:
 	idle:
 		Start: 0
 		Facings: 32
+		Offset: 0,1
 	recoil:
 		Start: 32
 		Facings: 32
+		Offset: 0,1
 	make: gunmake
 		Start: 0
 		Length: *
+		Offset: 0,1
 	damaged-idle:
 		Start: 64
 		Facings: 32
+		Offset: 0,1
 	damaged-recoil:
 		Start: 96
 		Facings: 32
+		Offset: 0,1
 	muzzle: gunfire2
 		Start: 0
 		Length: 5
+		Offset: 0,1
+	minibib: minibib1x1
+		Start: 0
+		Length: *
 	icon: gunicon
 		Start: 0
 
@@ -373,21 +413,30 @@ agun:
 	idle:
 		Start: 0
 		Facings: 32
+		Offset: 0,-3
 	recoil:
 		Start: 32
 		Facings: 32
+		Offset: 0,-3
 	make: agunmake
 		Start: 0
 		Length: *
+		Offset: 0,-3
 	damaged-idle:
 		Start: 64
 		Facings: 32
+		Offset: 0,-3
 	damaged-recoil:
 		Start: 96
 		Facings: 32
+		Offset: 0,-3
 	muzzle: gunfire2
 		Start: 1
 		Length: 4
+		Offset: 0,-3
+	minibib: minibib1x1
+		Start: 0
+		Length: *
 	icon: agunicon
 		Start: 0
 
@@ -411,9 +460,15 @@ sam:
 ftur:
 	idle:
 		Start: 0
+		Offset: 0,-2
 	damaged-idle:
 		Start: 1
+		Offset: 0,-2
 	make: fturmake
+		Start: 0
+		Length: *
+		Offset: 0,-2
+	minibib: minibib1x1
 		Start: 0
 		Length: *
 	icon: fturicon
@@ -422,34 +477,49 @@ ftur:
 tsla:
 	idle:
 		Start: 0
+		Offset: 0,-2
 	damaged-idle:
 		Start: 10
+		Offset: 0,-2
 	make: tslamake
 		Start: 0
 		Length: *
+		Offset: 0,-2
 	active:
 		Start: 1
 		Length: 9
 		Tick: 100
+		Offset: 0,-2
 	damaged-active:
 		Start: 11
 		Length: 9
 		Tick: 100
+		Offset: 0,-2
+	minibib: minibib1x1
+		Start: 0
+		Length: *
 	icon: tslaicon
 		Start: 0
 
 pbox:
 	idle:
 		Start: 0
+		Offset: 0,1
 	damaged-idle:
 		Start: 1
+		Offset: 0,1
 	make: pboxmake
 		Start: 0
 		Length: *
+		Offset: 0,1
 	muzzle: minigun
 		Start: 0
 		Length: 6
 		Facings: 8
+		Offset: 0,1
+	minibib: minibib1x1
+		Start: 0
+		Length: *
 	icon: pboxicon
 		Start: 0
 
@@ -465,6 +535,9 @@ hbox:
 		Start: 0
 		Length: 6
 		Facings: 8
+	minibib: minibib1x1
+		Start: 0
+		Length: *
 	icon: hboxicon
 		Start: 0
 
@@ -472,10 +545,16 @@ gap:
 	idle:
 		Start: 0
 		Length: 32
+		Offset: 0,-2
 	damaged-idle:
 		Start: 32
 		Length: 32
+		Offset: 0,-2
 	make: gapmake
+		Start: 0
+		Length: *
+		Offset: 0,-2
+	minibib: minibib1x1
 		Start: 0
 		Length: *
 	icon: gapicon
@@ -484,37 +563,48 @@ gap:
 iron:
 	idle:
 		Start: 0
-		Offset: 0,-12
+		Offset: 0,-14
 	active:
 		Start: 0
 		Length: 11
-		Offset: 0,-12
+		Offset: 0,-14
 	damaged-idle:
 		Start: 11
-		Offset: 0,-12
+		Offset: 0,-14
 	damaged-active:
 		Start: 11
 		Length: 11
-		Offset: 0,-12
+		Offset: 0,-14
 	make: ironmake
 		Start: 0
 		Length: *
-		Offset: 0,-12
+		Offset: 0,-14
+	minibib: minibib2x1
+		Start: 0
+		Length: *
 	icon: ironicon
 		Start: 0
 
 pdox:
 	idle:
 		Start: 0
+		Offset: 0,3
 	damaged-idle:
 		Start: 29
+		Offset: 0,3
 	active:
 		Start: 0
 		Length: 29
+		Offset: 0,3
 	damaged-active:
 		Start: 29
 		Length: 29
+		Offset: 0,3
 	make: pdoxmake
+		Start: 0
+		Length: *
+		Offset: 0,3
+	minibib: minibib2x1
 		Start: 0
 		Length: *
 	icon: pdoxicon
@@ -523,18 +613,26 @@ pdox:
 mslo:
 	idle:
 		Start: 0
+		Offset:0,-3
 	damaged-idle:
 		Start: 8
+		Offset:0,-3
 	make: mslomake
 		Start: 0
 		Length: *
+		Offset:0,-3
 	active:
 		Start: 1
 		Length: 7
+		Offset:0,-3
 		Tick: 80
 	damaged-active:
 		Start: 9
 		Length: 7
+		Offset:0,-3
+	minibib: minibib2x1
+		Start: 0
+		Length: *
 	icon: msloicon2
 		Start: 0
 

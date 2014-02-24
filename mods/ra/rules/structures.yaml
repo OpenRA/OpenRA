@@ -22,6 +22,8 @@ MSLO:
 		Type: Wood
 	RevealsShroud:
 		Range: 5
+	Bib:
+		Sequence: minibib
 	IronCurtainable:
 	NukePower:
 		Icon: abomb
@@ -68,6 +70,8 @@ GAP:
 		Type: Wood
 	RevealsShroud:
 		Range: 6
+	Bib:
+		Sequence: minibib
 	CreatesShroud:
 		Range: 6
 	IronCurtainable:
@@ -215,6 +219,8 @@ IRON:
 		Type: Wood
 	RevealsShroud:
 		Range: 10
+	Bib:
+		Sequence: minibib
 	IronCurtainable:
 	IronCurtainPower:
 		Icon: invuln
@@ -255,6 +261,8 @@ PDOX:
 		Type: Wood
 	RevealsShroud:
 		Range: 10
+	Bib:
+		Sequence: minibib
 	IronCurtainable:
 	ChronoshiftPower:
 		Icon: chrono
@@ -297,6 +305,8 @@ TSLA:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8
+	Bib:
+		Sequence: minibib
 	RenderBuildingCharge:
 	Armament:
 		Weapon: TeslaZap
@@ -336,6 +346,8 @@ AGUN:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6
+	Bib:
+		Sequence: minibib
 	Turreted:
 		ROT: 15
 		InitialFacing: 224
@@ -385,6 +397,7 @@ DOME:
 	RevealsShroud:
 		Range: 10
 	Bib:
+		Sequence: minibib
 	ProvidesRadar:
 	IronCurtainable:
 	Infiltratable:
@@ -406,6 +419,8 @@ PBOX:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6
+	Bib:
+		Sequence: minibib
 	IronCurtainable:
 	-AcceptsSupplies:
 	Turreted:
@@ -708,6 +723,8 @@ GUN:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7
+	Bib:
+		Sequence: minibib
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -746,6 +763,8 @@ FTUR:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6
+	Bib:
+		Sequence: minibib
 	Turreted:
 		ROT: 255
 		Offset: 0,0,112
@@ -829,6 +848,7 @@ ATEK:
 	RevealsShroud:
 		Range: 10
 	Bib:
+		Sequence: minibib
 	IronCurtainable:
 	GpsPower:
 		Icon: gps
@@ -981,6 +1001,8 @@ SILO:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
+	Bib:
+		Sequence: minibib
 	RenderBuildingSilo:
 	StoresOre:
 		PipCount: 5
@@ -1046,6 +1068,8 @@ AFLD:
 		Type: Wood
 	RevealsShroud:
 		Range: 7
+	Bib:
+		Sequence: minibib
 	Exit@1:
 		SpawnOffset: 0,170,0
 		ExitCell: 1,1
@@ -1156,6 +1180,7 @@ STEK:
 	RevealsShroud:
 		Range: 4
 	Bib:
+		Sequence: minibib
 	IronCurtainable:
 
 BARR:
@@ -1264,7 +1289,7 @@ FIX:
 		Description: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
 	Building:
 		Power: -30
-		Footprint: _x_ xxx _x_
+		Footprint: ___ xxx xxx
 		Dimensions: 3,3
 	Health:
 		HP: 800
@@ -1272,6 +1297,8 @@ FIX:
 		Type: Wood
 	RevealsShroud:
 		Range: 5
+	Bib:
+		Sequence: minibib
 	Reservable:
 	RallyPoint:
 	IronCurtainable:
@@ -1426,6 +1453,7 @@ DOMF:
 	RevealsShroud:
 		Range: 4
 	Bib:
+		Sequence: minibib
 	RenderBuilding:
 		Image: DOME
 	Fake:
