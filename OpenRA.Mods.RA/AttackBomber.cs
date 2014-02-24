@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new AttackBomber(init.self, this); }
 	}
 
-	class AttackBomber : AttackBase, ISync
+	class AttackBomber : AttackBase, ISync, INotifyKilled
 	{
 		AttackBomberInfo info;
 		Actor camera;
@@ -91,6 +91,15 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void SetTarget(WPos pos) { target = Target.FromPos(pos); }
+
+		public void Killed(Actor self, AttackInfo e)
+		{
+			if (this.camera != null)
+			{
+				self.World.Remove(this.camera);
+				this.camera = null;
+			}
+		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
