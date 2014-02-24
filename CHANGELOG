@@ -79,7 +79,8 @@ NEW:
 	Packaging:
 		Removed portable install option from Windows installer as the game left without write access breaks content download and error log generation.
 		Added HTML documentation to the Windows installer.
-
+		Fixed broken FreeType 2 dependency for Fedora RPM.
+		Added SDL 2 as a dependency for the RPM package.
 20131223:
 	All mods:
 		Fixed dead units sometimes exploding or leaving husks when they weren't in the world.
