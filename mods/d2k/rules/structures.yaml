@@ -369,7 +369,7 @@
 	LineBuild:
 		Range: 8
 	TargetableBuilding:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Image: walla
@@ -381,7 +381,6 @@
 	Sellable:
 	Guardable:
 	BodyOrientation:
-	Demolishable:
 
 WALL:
 	Inherits: ^WALL
