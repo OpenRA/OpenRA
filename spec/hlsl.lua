@@ -53,7 +53,7 @@ return {
     half2x3 half2x4 half3x1 half3x2 half3x3 half3x4 half4x1 half4x2 half4x3 half4x4 float1x1 float1x2 float1x3 float1x4 float2x1 float2x2 float2x3
     float2x4 float3x1 float3x2 float3x3 float3x4 float4x1 float4x2 float4x3 float4x4 double1x1 double1x2 double1x3 double1x4 double2x1 double2x2 
     double2x3 double2x4 double3x1 double3x2 double3x3 double3x4 double4x1 double4x2 double4x3 double4x4 cbuffer groupshared SamplerState 
-    in out inout vector matrix interface class point triangle line lineadj triangleadj
+    in out inout vector matrix interface class point triangle line lineadj triangleadj unsigned
     pass technique technique10 technique11
     
     Texture Texture1D Texture1DArray Texture2D Texture2DArray Texture2DMS Texture2DMSArray Texture3D TextureCube RWTexture1D RWTexture1DArray RWTexture2D RWTexture2DArray RWTexture3D 

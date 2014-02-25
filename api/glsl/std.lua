@@ -153,19 +153,31 @@ memoryBarrierShared = fn "control ordering of memory transactions issued by shad
 memoryBarrierBuffer = fn "control ordering of memory transactions issued by shader thread. - ()()",
 memoryBarrierImage = fn "control ordering of memory transactions issued by shader thread. - ()()",
 groupMemoryBarrier = fn "control ordering of memory transactions issued by shader thread. - ()()",
-imageAtomicAdd = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
-imageAtomicMin = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
-imageAtomicMax = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
-imageAtomicIncWrap = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
-imageAtomicDecWrap = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
-imageAtomicAnd = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
-imageAtomicOr = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
-imageAtomicXor = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
-imageAtomicExchange = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
-imageAtomicCompSwap = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
+imageAtomicAdd = fn "performs atomic operation on individual texels returns old value. - (uint)(imageN, intN coord, [int sample], uint data)",
+imageAtomicMin = fn "performs atomic operation on individual texels returns old value. - (uint)(imageN, intN coord, [int sample], uint data)",
+imageAtomicMax = fn "performs atomic operation on individual texels returns old value. - (uint)(imageN, intN coord, [int sample], uint data)",
+imageAtomicIncWrap = fn "performs atomic operation on individual texels returns old value. - (uint)(imageN, intN coord, [int sample], uint data)",
+imageAtomicDecWrap = fn "performs atomic operation on individual texels returns old value. - (uint)(imageN, intN coord, [int sample], uint data)",
+imageAtomicAnd = fn "performs atomic operation on individual texels returns old value. - (uint)(imageN, intN coord, [int sample], uint data)",
+imageAtomicOr = fn "performs atomic operation on individual texels returns old value. - (uint)(imageN, intN coord, [int sample], uint data)",
+imageAtomicXor = fn "performs atomic operation on individual texels returns old value. - (uint)(imageN, intN coord, [int sample], uint data)",
+imageAtomicExchange = fn "performs atomic operation on individual texels returns old value. - (uint)(imageN, intN coord, [int sample], uint data)",
+imageAtomicCompSwap = fn "performs atomic operation on individual texels returns old value. - (uint)(imageN, intN coord, [int sample], uint data)",
 imageStore = fn "stores the texel at the coordinate. - ()(imageN, intN coord, [int sample], vecN data)",
 imageLoad = fn "loads the texel at the coordinate. - (vecN)(imageN, intN coord, [int sample])",
 imageSize = fn "returns the size of the image. - (ivecN)(imageN)",
+
+atomicCounterIncrement = fn "increments counter and returns old value. - (uint)(atomic_uint)",
+atomicCounterDecrement = fn "decrements counter and returns old value. - (uint)(atomic_uint)",
+atomicCounter = fn "returns current counter value. - (uint)(atomic_uint)",
+atomicMin = fn "performs atomic operation on memory location (ssbo/shared) returns old value. - (uint)(inout uint mem, uint data)",
+atomicMax = fn "performs atomic operation on memory location (ssbo/shared) returns old value. - (uint)(inout uint mem, uint data)",
+atomicAdd = fn "performs atomic operation on memory location (ssbo/shared) returns old value. - (uint)(inout uint mem, uint data)",
+atomicAnd = fn "performs atomic operation on memory location (ssbo/shared) returns old value. - (uint)(inout uint mem, uint data)",
+atomicOr  = fn "performs atomic operation on memory location (ssbo/shared) returns old value. - (uint)(inout uint mem, uint data)",
+atomicXor = fn "performs atomic operation on memory location (ssbo/shared) returns old value. - (uint)(inout uint mem, uint data)",
+atomicExchange = fn "performs atomic operation on memory location (ssbo/shared) returns old value. - (uint)(inout uint mem, uint data)",
+atomicCompSwap = fn "performs atomic operation on memory location (ssbo/shared) returns old value. - (uint)(inout uint mem, uint data)",
 
 textureSize = fn "returns the size of the texture (no lod required: Rect, MS and Buffer). - (intN)(samplerN, [int lod])",
 textureQueryLod = fn "returns the lod values for a given coordinate. - (vec2)(samplerN, vecN coord)",
@@ -235,7 +247,7 @@ local keyw =
     gl_NumWorkGroups gl_WorkGroupSize gl_WorkGroupID gl_LocalInvocationID gl_GlobalInvocationID gl_LocalInvocationIndex
     local_size_x local_size_y local_size_z
     gl_BaseVertexARB gl_BaseInstanceARB gl_DrawIDARB
-    bindless_sampler bound_sampler bindless_image bound_image
+    bindless_sampler bound_sampler bindless_image bound_image early_fragment_tests
 
     coherent volatile restrict readonly writeonly
     image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray
