@@ -39,6 +39,8 @@ namespace OpenRA.Utility
 		{
 			if (args.Length == 0) { PrintUsage(); return; }
 
+			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
+
 			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
 
 			try

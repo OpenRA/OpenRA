@@ -441,7 +441,7 @@
 		Adjacent: 7
 		TerrainTypes: Clear,Road
 	TargetableBuilding:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground
 	Wall:
 		CrushClasses: wall
 		CrushSound: sandbag2.aud
@@ -459,7 +459,6 @@
 	BodyOrientation:
 	FrozenUnderFog:
 	LuaScriptEvents:
-	Demolishable:
 
 ^Tree:
 	Tooltip:

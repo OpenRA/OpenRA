@@ -445,6 +445,8 @@ EYE:
 		LaunchSound: ion1.aud
 		SelectTargetSound: select1.aud
 		InsufficientPowerSound: nopower1.aud
+		DisplayBeacon: True
+		DisplayRadarPing: True
 	SupportPowerChargeBar:
 
 TMPL:
@@ -483,6 +485,8 @@ TMPL:
 		LaunchSound: nuklnch1.aud
 		IncomingSound: nuke1.aud
 		MissileWeapon: atomic
+		DisplayBeacon: True
+		DisplayRadarPing: True
 	SupportPowerChargeBar:
 
 GUN:
@@ -587,9 +591,9 @@ OBLI:
 		Weapon: Laser
 		LocalOffset: 0,0,725
 		FireDelay: 8
-	AttackTurreted:
-	Turreted:
-		ROT: 255
+	AttackTesla:
+		MaxCharge: 1
+		ReloadTime: 90
 	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:

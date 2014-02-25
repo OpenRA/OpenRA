@@ -1,5 +1,7 @@
 NEW:
 	All Mods:
+		Added the ability to place map beacons for highlighting areas to teammates.
+		Structures under attack and friendly superweapon launch targets will now be highlighted on the radar.
 		Fixed unloading passengers moving unnecessarily far from their transport.
 		Fixed the unload cursor sometimes being displayed for transports even when they were unable to unload.
 		An error dialog is now displayed when server connections are lost.
@@ -14,6 +16,9 @@ NEW:
 		Added cheat button to grow map resources.
 		Fixed units staying selected and contributing to control groups when becoming cloaked or hidden in fog.
 		Swapped the cursors used for sabotaging and capturing buildings/units.
+		Added Ctrl+T shortcut for selection of all units matching the types of the currently selected ones across the screen and map.
+		Added a toggle spectators to multiplayer.
+		Removed the ability of commandos to plant C4 on walls.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
@@ -30,12 +35,14 @@ NEW:
 		Removed health bars and selection boxes from walls.
 		Fixed Tanya being unavailable after using the Chronosphere on a vehicle she is in.
 		Tanya can now plant C4 on vehicles.
+		Parachute bomb air strike will reveal the whole target area.
 	Tiberian Dawn:
 		Commando can now plant C4 on bridges.
 		Added the Asset Browser to the Extras menu.
 		Removed health bars and selection boxes from walls.
 		Changed Nod Obelisk HP to 600 from 400, same as Advanced Guard Tower
 		Fixed dinosaurs not being able to collect crates.
+		A10 air strike will only reveal the target area.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.
@@ -46,6 +53,8 @@ NEW:
 		Added initial support for Tmp(TS) sprites.
 		Added GainsUnitUpgrades trait for leveling specific unit upgrades - firepower, armor, speed.
 		Added support for crates to level up specific unit upgrades.
+		Merged CrateDrop functionality into CrateSpawner.
+		Added support to CrateSpawner for spawning multiple types of crates.
 		Added a new Launch.Replay=$FILEPATH parameter for OpenRA.Game.exe to instantly start watching a *.rep file.
 		Added HackyAI settings: ExcessPowerFactor, MinimumExcessPower, IdleBaseUnitsMaximum, RushAttackScanRadius, ProtectUnitScanRadius, RallyPointScanRadius. See the traits documentation for more information.
 		Added HitAnimPalette trait for LaserZap projectiles. Laser hit animations can now specify individual palettes. Defaults to effect palette.
@@ -57,6 +66,7 @@ NEW:
 		Filenames are now listed in alphabetical order
 	Map Editor:
 		Removed legacy INI/MPR map import.
+		Fixed being unable to use the flood fill tool on similar grass/snow/desert tiles.
 	Utility:
 		Added an improved INI/MPR map import.
 	Mod / Custom map compatibility:
@@ -71,7 +81,8 @@ NEW:
 	Packaging:
 		Removed portable install option from Windows installer as the game left without write access breaks content download and error log generation.
 		Added HTML documentation to the Windows installer.
-
+		Fixed broken FreeType 2 dependency for Fedora RPM.
+		Added SDL 2 as a dependency for the RPM package.
 20131223:
 	All mods:
 		Fixed dead units sometimes exploding or leaving husks when they weren't in the world.

@@ -114,6 +114,14 @@ rallypoint:
 		Start: 0
 		Length: *
 
+beacon:
+	arrow: mouse
+		Start: 5
+		Offset: 1,-12
+	circles: fpls
+		Start: 0
+		Length: *
+
 smoke_m:
 	idle:
 		Start: 0

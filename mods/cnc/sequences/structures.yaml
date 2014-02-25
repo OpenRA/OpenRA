@@ -340,9 +340,11 @@ obli:
 	active:
 		Start: 0
 		Length: 4
+		Tick: 400
 	damaged-active:
 		Start: 4
 		Length: 4
+		Tick: 400
 	dead:
 		Start: 8
 	make: oblimake

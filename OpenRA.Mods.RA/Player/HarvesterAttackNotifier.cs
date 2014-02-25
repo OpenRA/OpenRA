@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -15,18 +16,25 @@ namespace OpenRA.Mods.RA
 	public class HarvesterAttackNotifierInfo : ITraitInfo
 	{
 		public readonly int NotifyInterval = 30;	// seconds
+		public readonly Color RadarPingColor = Color.Red;
+		public readonly int RadarPingDuration = 10 * 25;
 
-		public object Create(ActorInitializer init) { return new HarvesterAttackNotifier(this); }
+		public object Create(ActorInitializer init) { return new HarvesterAttackNotifier(init.self, this); }
 	}
 
 	public class HarvesterAttackNotifier : INotifyDamage
 	{
-		HarvesterAttackNotifierInfo info;
+		readonly RadarPings radarPings;
+		readonly HarvesterAttackNotifierInfo info;
 
-		public int lastAttackTime = -1;
-		public CPos lastAttackLocation;
+		int lastAttackTime;
 
-		public HarvesterAttackNotifier(HarvesterAttackNotifierInfo info) { this.info = info; }
+		public HarvesterAttackNotifier(Actor self, HarvesterAttackNotifierInfo info)
+		{
+			radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
+			this.info = info;
+			lastAttackTime = -info.NotifyInterval * 25;
+		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
@@ -39,9 +47,13 @@ namespace OpenRA.Mods.RA
 				return;
 
 			if (self.World.FrameNumber - lastAttackTime > info.NotifyInterval * 25)
+			{
 				Sound.PlayNotification(self.Owner, "Speech", "HarvesterAttack", self.Owner.Country.Race);
 
-			lastAttackLocation = self.CenterPosition.ToCPos();
+				if (radarPings != null)
+					radarPings.Add(() => self.Owner == self.World.LocalPlayer, self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
+			}
+
 			lastAttackTime = self.World.FrameNumber;
 		}
 	}

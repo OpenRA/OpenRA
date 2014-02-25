@@ -276,6 +276,13 @@ namespace OpenRA.Server
 					IsAdmin = !LobbyInfo.Clients.Any(c1 => c1.IsAdmin)
 				};
 
+				if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
+				{
+					SendOrderTo(newConn, "ServerError", "The game is full");
+					DropClient(newConn);
+					return;
+				}
+
 				if (client.Slot != null)
 					SyncClientToPlayerReference(client, Map.Players[client.Slot]);
 				else

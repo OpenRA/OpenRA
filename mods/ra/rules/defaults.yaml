@@ -290,7 +290,7 @@
 	LineBuild:
 		Range: 8
 	TargetableBuilding:
-		TargetTypes: Ground, C4, DetonateAttack
+		TargetTypes: Ground, DetonateAttack
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: terrain
@@ -306,7 +306,6 @@
 	BodyOrientation:
 	FrozenUnderFog:
 	LuaScriptEvents:
-	Demolishable:
 
 ^TechBuilding:
 	Inherits: ^Building

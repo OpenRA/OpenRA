@@ -86,7 +86,7 @@ namespace OpenRA.FileFormats
 		public Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
 		public string[] EditorTemplateOrder;
 
-		static readonly string[] Fields = { "Name", "TileSize", "Id", "SheetSize", "Palette", "Extensions" };
+		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "Extensions" };
 
 		public TileSet() { }
 

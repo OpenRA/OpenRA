@@ -88,7 +88,7 @@ namespace OpenRA.Editor
 			while (queue.Count > 0)
 			{
 				var p = queue.Dequeue();
-				if (!s.Map.MapTiles.Value[p.X, p.Y].Equals(replace))
+				if (s.Map.MapTiles.Value[p.X, p.Y].Type != replace.Type)
 					continue;
 
 				var a = FindEdge(s, p, new CVec(-1, 0), replace);
@@ -97,9 +97,9 @@ namespace OpenRA.Editor
 				for (var x = a.X; x <= b.X; x++)
 				{
 					s.Map.MapTiles.Value[x, p.Y] = new TileReference<ushort, byte> { Type = brushTemplate.N, Index = (byte)0 };
-					if (s.Map.MapTiles.Value[x, p.Y - 1].Equals(replace))
+					if (s.Map.MapTiles.Value[x, p.Y - 1].Type == replace.Type)
 						maybeEnqueue(x, p.Y - 1);
-					if (s.Map.MapTiles.Value[x, p.Y + 1].Equals(replace))
+					if (s.Map.MapTiles.Value[x, p.Y + 1].Type == replace.Type)
 						maybeEnqueue(x, p.Y + 1);
 				}
 			}
@@ -115,7 +115,7 @@ namespace OpenRA.Editor
 			{
 				var q = p + d;
 				if (!s.Map.IsInMap(q)) return p;
-				if (!s.Map.MapTiles.Value[q.X, q.Y].Equals(replace)) return p;
+				if (s.Map.MapTiles.Value[q.X, q.Y].Type != replace.Type) return p;
 				p = q;
 			}
 		}

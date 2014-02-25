@@ -39,6 +39,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly Action OnGameStart;
 		readonly Action onExit;
 		readonly OrderManager orderManager;
+		readonly bool skirmishMode;
 
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						{ "onExit", onExit },
 						{ "onStart", OnGameStart },
-						{ "addBots", false }
+						{ "skirmishMode", false }
 					});
 				};
 
@@ -85,12 +86,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		internal LobbyLogic(Widget widget, World world, OrderManager orderManager,
-			Action onExit, Action onStart, bool addBots)
+			Action onExit, Action onStart, bool skirmishMode)
 		{
 			lobby = widget;
 			this.orderManager = orderManager;
 			this.OnGameStart = () => { CloseWindow(); onStart(); };
 			this.onExit = onExit;
+			this.skirmishMode = skirmishMode;
 
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;
@@ -470,7 +472,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{ { "onExit", () => {} } });
 
 			// Add a bot on the first lobbyinfo update
-			if (addBots)
+			if (this.skirmishMode)
 				Game.LobbyInfoChanged += WidgetUtils.Once(() =>
 				{
 					var slot = orderManager.LobbyInfo.FirstEmptySlot();
@@ -662,11 +664,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (spec == null || spec.Id != NewSpectatorTemplate.Id)
 					spec = NewSpectatorTemplate.Clone();
 
+				LobbyUtils.SetupKickSpectatorsWidget(spec, orderManager, lobby,
+					() => panel = PanelType.Kick, () => panel = PanelType.Players, this.skirmishMode);
+					
 				var btn = spec.Get<ButtonWidget>("SPECTATE");
 				btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
 				btn.IsDisabled = () => orderManager.LocalClient.IsReady;
-				spec.IsVisible = () => true;
+				btn.IsVisible = () => orderManager.LobbyInfo.GlobalSettings.AllowSpectators
+					|| orderManager.LocalClient.IsAdmin;
 
+				spec.IsVisible = () => true;
+					
 				if (idx >= Players.Children.Count)
 					Players.AddChild(spec);
 				else if (Players.Children[idx].Id != spec.Id)

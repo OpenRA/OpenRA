@@ -22,12 +22,14 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
+		readonly RadarPings radarPings;
 
 		[ObjectCreator.UseCtor]
 		public WorldCommandWidget(World world, WorldRenderer worldRenderer)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
+			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();
 		}
 
 		public override string GetCursor(int2 pos) { return null; }
@@ -62,6 +64,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 				if (key == ks.ToggleStatusBarsKey)
 					return ToggleStatusBars();
+
+				if (key == ks.PlaceBeaconKey)
+					return PerformPlaceBeacon();
 
 				// Put all functions that aren't unit-specific before this line!
 				if (!world.Selection.Actors.Any()) 
@@ -148,6 +153,10 @@ namespace OpenRA.Mods.RA.Widgets
 			if (actor.First == null)
 				return true;
 
+			var ati = actor.First.Info.Traits.GetOrDefault<AutoTargetInfo>();
+			if (ati == null || !ati.EnableStances)
+				return false;
+
 			var stances = Enum<UnitStance>.GetValues();
 			var nextStance = stances.Concat(stances)
 				.SkipWhile(s => s != actor.Second.PredictedStance)
@@ -177,6 +186,15 @@ namespace OpenRA.Mods.RA.Widgets
 			if (actors.Any())
 				world.OrderGenerator = new GuardOrderGenerator(actors);
 
+			return true;
+		}
+
+		bool PerformPlaceBeacon()
+		{
+			if (world.LocalPlayer == null)
+				return true;
+
+			world.OrderGenerator = new GenericSelectTarget(world.LocalPlayer.PlayerActor, "PlaceBeacon", "ability");
 			return true;
 		}
 
@@ -229,17 +247,10 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool ToLastEvent()
 		{
-			if (world.LocalPlayer == null)
+			if (radarPings == null || radarPings.LastPingPosition == null)
 				return true;
 
-			var eventNotifier = world.LocalPlayer.PlayerActor.TraitOrDefault<BaseAttackNotifier>();
-			if (eventNotifier == null)
-				return true;
-
-			if (eventNotifier.lastAttackTime < 0)
-				return true;
-
-			worldRenderer.Viewport.Center(eventNotifier.lastAttackLocation.CenterPosition);
+			worldRenderer.Viewport.Center(radarPings.LastPingPosition.Value);
 			return true;
 		}
 

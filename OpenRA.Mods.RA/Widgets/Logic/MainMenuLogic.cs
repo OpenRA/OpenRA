@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				{ "onExit", () => { Game.Disconnect(); menuType = MenuType.Main; } },
 				{ "onStart", RemoveShellmapUI },
-				{ "addBots", true }
+				{ "skirmishMode", true }
 			});
 		}
 

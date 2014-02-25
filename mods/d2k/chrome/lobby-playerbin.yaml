@@ -298,6 +298,13 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 			Height:25
 			Visible:false
 			Children:
+				Checkbox@TOGGLE_SPECTATORS:
+					Font:Regular
+					Width:165
+					Height:20
+					X:15
+					Y:0
+					Text:Allow Spectators?
 				Button@SPECTATE:
 					Text:Spectate
 					Font:Regular

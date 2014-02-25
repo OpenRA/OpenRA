@@ -23,13 +23,15 @@ namespace OpenRA.Mods.RA
 		[Desc("Armament name")]
 		public readonly string Guns = "secondary";
 		public readonly int FacingTolerance = 2;
+		public readonly WRange VisionRange = WRange.FromCells(10);
 
 		public override object Create(ActorInitializer init) { return new AttackBomber(init.self, this); }
 	}
 
-	class AttackBomber : AttackBase, ISync
+	class AttackBomber : AttackBase, ISync, INotifyKilled
 	{
 		AttackBomberInfo info;
+		Actor camera = null;
 		[Sync] Target target;
 
 		public AttackBomber(Actor self, AttackBomberInfo info)
@@ -45,6 +47,23 @@ namespace OpenRA.Mods.RA
 			var facing = self.TraitOrDefault<IFacing>();
 			var cp = self.CenterPosition;
 			var bombTarget = Target.FromPos(cp - new WVec(0, 0, cp.Z));
+
+			// Provide vision
+			if (camera == null &&
+				target.IsInRange(self.CenterPosition, info.VisionRange))
+			{
+				camera = self.World.CreateActor("camera", new TypeDictionary
+				{
+					new LocationInit(target.CenterPosition.ToCPos()),
+					new OwnerInit(self.Owner),
+				});
+			}
+			else if (camera != null &&
+				!target.IsInRange(self.CenterPosition, info.VisionRange))
+			{
+				self.World.AddFrameEndTask(w => w.Remove(camera));
+				camera = null;
+			}
 
 			// Bombs drop anywhere in range
 			foreach (var a in Armaments.Where(a => a.Info.Name == info.Bombs))
@@ -71,6 +90,15 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void SetTarget(WPos pos) { target = Target.FromPos(pos); }
+
+		public void Killed(Actor self, AttackInfo e)
+		{
+			if (camera != null)
+			{
+				self.World.AddFrameEndTask(w => w.Remove(camera));
+				camera = null;
+			}
+		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
