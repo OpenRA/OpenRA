@@ -125,7 +125,7 @@ local function isFileAlteredOnDisk(editor)
             GetIDEString("editormessage"),
             wx.wxYES_NO + wx.wxCENTRE, ide.frame)
 
-        if ret ~= wx.wxYES or LoadFile(filePath, editor, true) then
+        if ret ~= wx.wxYES or ReLoadFile(filePath, editor, true) then
           openDocuments[id].modTime = GetFileModTime(filePath)
         end
       end

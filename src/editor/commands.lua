@@ -154,6 +154,45 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   return editor
 end
 
+function ReLoadFile(filePath, editor, ...)
+  if not editor then return LoadFile(filePath, editor, ...) end
+
+  -- save all markers
+  local maskany = 2^24-1
+  local markers = {}
+  local line = editor:MarkerNext(0, maskany)
+  while line > -1 do
+    table.insert(markers, {line, editor:MarkerGet(line), editor:GetLine(line)})
+    line = editor:MarkerNext(line + 1, maskany)
+  end
+  local lines = editor:GetLineCount()
+
+  -- load file into the same editor
+  editor = LoadFile(filePath, editor, ...)
+  if not editor then return end
+
+  if #markers > 0 then -- restore all markers
+    local samelinecount = lines == editor:GetLineCount()
+    for _, marker in ipairs(markers) do
+      local line, mask, text = unpack(marker)
+      if samelinecount then
+        -- restore marker at the same line number
+        editor:MarkerAddSet(line, mask)
+      else
+        -- find matching line in the surrounding area and restore marker there
+        for _, l in ipairs({line, line-1, line-2, line+1, line+2}) do
+          if text == editor:GetLine(l) then
+            editor:MarkerAddSet(l, mask)
+            break
+          end
+        end
+      end
+    end
+  end
+
+  return editor
+end
+
 local function getExtsString()
   local knownexts = ""
   for i,spec in pairs(ide.specs) do
