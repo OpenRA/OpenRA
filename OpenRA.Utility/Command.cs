@@ -351,16 +351,33 @@ namespace OpenRA.Utility
 		[Desc("MOD", "OUTPUT DIR", "Output game rules for visual representation.")]
 		public static void GenerateStats(string[] args)
 		{
-			var mod = args[1];
+			try
+			{
+				var mod = args[1];
 
-			var outputDir = "html";
-			if (args.Length > 2)
-				outputDir = args[2];
+				var outputDir = "html";
+				if (args.Length > 2)
+					outputDir = args[2];
 
-			var modFolder = "mods\\" + mod;
-
-			YamlToHtml yth = new YamlToHtml();
-			yth.Run(modFolder, outputDir + "\\" + mod);
+				YamlToHtml yth = new YamlToHtml();
+				if (mod == "all")
+				{
+					string[] dirs = Directory.GetDirectories("mods");
+					foreach (var dir in dirs)
+					{
+						yth.Run(dir, outputDir + "\\" + dir.Substring(dir.LastIndexOf('\\') + 1));
+					}
+				}
+				else
+				{
+					var modFolder = "mods\\" + mod;
+					yth.Run(modFolder, outputDir + "\\" + mod);
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+			}
 		}
 	}
 }

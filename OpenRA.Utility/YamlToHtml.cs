@@ -47,8 +47,12 @@ namespace OpenRA.Utility
 
 		public void ProcessDirectory(string dir, string output, bool recursive = true)
 		{
-			//sw.WriteLine("<div class='directory {0}'>", dir.Substring(dir.LastIndexOf('\\') + 1));
-			Console.WriteLine(output + "\\" + dir.Substring(dir.LastIndexOf("\\") + 1) + ".html");
+			if (!Directory.Exists(dir))
+				throw new ArgumentException(dir + " doesn't exist.");
+
+			if (!Directory.Exists(output))
+				Directory.CreateDirectory(output);
+
 			using (StreamWriter sw = new StreamWriter(output + "\\" + dir.Substring(dir.LastIndexOf("\\") + 1) + ".html"))
 			{
 				string[] files = Directory.GetFiles(dir);
@@ -62,18 +66,14 @@ namespace OpenRA.Utility
 				string[] directories = Directory.GetDirectories(dir);
 				foreach (var d in directories)
 				{
-					ProcessDirectory(d, output, recursive);
+					ProcessDirectory(d, output + "\\" + d.Substring(d.LastIndexOf('\\') + 1), recursive);
 				}
 			}
-			//sw.WriteLine("</div>");
 		}
 
 		public void Run(string where, string output = "html", bool recursive = true)
 		{
-			if (!Directory.Exists(output))
-				Directory.CreateDirectory(output);
-
-				ProcessDirectory(where, output, recursive);
+			ProcessDirectory(where, output, recursive);
 		}
 	}
 }
