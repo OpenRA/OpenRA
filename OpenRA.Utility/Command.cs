@@ -376,7 +376,8 @@ namespace OpenRA.Utility
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e.Message);
+				Console.WriteLine("Error: {0}", e.Message);
+				Console.WriteLine("Usage: --stats MOD [output directory]");
 			}
 		}
 	}
