@@ -1,0 +1,10 @@
+.container > .node {
+	background-color: #CAA0A0;
+	margin-bottom: 20px;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+.container > .node > .key:first-child {
+	font-size: 24px;
+}

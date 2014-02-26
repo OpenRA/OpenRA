@@ -35,14 +35,14 @@ namespace OpenRA.Utility
 
 		public void WriteYamlFile(StreamWriter sw, string file)
 		{
-			var fileOutput = file.Substring(file.LastIndexOf('\\') + 1);
-			fileOutput = fileOutput.Substring(0, fileOutput.IndexOf(".yaml"));
-			sw.WriteLine("<div class='file {0}'><div class='value'>{0}</div>", fileOutput);
+			//var fileOutput = file.Substring(file.LastIndexOf('\\') + 1);
+			//fileOutput = fileOutput.Substring(0, fileOutput.IndexOf(".yaml"));
+			//sw.WriteLine("<div class='file {0}'><div class='value'>{0}</div>", fileOutput);
 
 			List<MiniYamlNode> yamlFile = MiniYaml.FromFile(file);
 			WriteYamlNodeList(sw, yamlFile);
 
-			sw.WriteLine("</div>");
+			//sw.WriteLine("</div>");
 		}
 
 		public void ProcessDirectory(string dir, string output, bool recursive = true)
