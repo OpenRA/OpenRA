@@ -53,10 +53,13 @@ namespace OpenRA.Utility
 			if (!Directory.Exists(output))
 				Directory.CreateDirectory(output);
 
-			using (StreamWriter sw = new StreamWriter(output + "\\" + dir.Substring(dir.LastIndexOf("\\") + 1) + ".html"))
+			
+			string[] files = Directory.GetFiles(dir);
+			foreach (var file in files.Where(f => f.EndsWith(".yaml")))
 			{
-				string[] files = Directory.GetFiles(dir);
-				foreach (var file in files.Where(f => f.EndsWith(".yaml")))
+				if (!Directory.Exists(output + '\\' + file.Substring(0, file.LastIndexOf('\\'))))
+					Directory.CreateDirectory(output + '\\' + file.Substring(0, file.LastIndexOf('\\')));
+				using (StreamWriter sw = new StreamWriter(output + '\\' + file.Substring(0, file.IndexOf(".yaml")) + ".html"))
 				{
 					WriteYamlFile(sw, file);
 				}
@@ -66,7 +69,7 @@ namespace OpenRA.Utility
 				string[] directories = Directory.GetDirectories(dir);
 				foreach (var d in directories)
 				{
-					ProcessDirectory(d, output + "\\" + d.Substring(d.LastIndexOf('\\') + 1), recursive);
+					ProcessDirectory(d, output, recursive);
 				}
 			}
 		}
