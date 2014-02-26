@@ -347,5 +347,20 @@ namespace OpenRA.Utility
 			map.Save(dest);
 			Console.WriteLine(dest + " saved.");
 		}
+
+		[Desc("MOD", "OUTPUT DIR", "Output game rules for visual representation.")]
+		public static void GenerateStats(string[] args)
+		{
+			var mod = args[1];
+
+			var outputDir = "html";
+			if (args.Length > 2)
+				outputDir = args[2];
+
+			var modFolder = "mods\\" + mod;
+
+			YamlToHtml yth = new YamlToHtml();
+			yth.Run(modFolder, outputDir + "\\" + mod);
+		}
 	}
 }

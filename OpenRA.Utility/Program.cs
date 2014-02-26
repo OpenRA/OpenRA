@@ -32,7 +32,8 @@ namespace OpenRA.Utility
 			{ "--map-upgrade-v5", Command.UpgradeV5Map },
 			{ "--upgrade-map", UpgradeRules.UpgradeMap },
 			{ "--upgrade-mod", UpgradeRules.UpgradeMod },
-			{ "--map-import", Command.ImportLegacyMap }
+			{ "--map-import", Command.ImportLegacyMap },
+			{ "--stats", Command.GenerateStats }
 		};
 
 		static void Main(string[] args)
