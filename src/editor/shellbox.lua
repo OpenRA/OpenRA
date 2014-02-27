@@ -391,8 +391,8 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         -- through multiline entry
         if out:GetCurrentLine() > getPromptLine() then break end
 
-        -- if we are not on the caret line, then don't move
-        if not caretOnPromptLine() then return end
+        -- if we are not on the caret line, move normally
+        if not caretOnPromptLine() then break end
 
         local promptText = getPromptText()
         setPromptText(getNextHistoryLine(false, promptText))
@@ -403,7 +403,9 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         local totalLines = out:GetLineCount()-1
         if out:GetCurrentLine() < totalLines then break end
 
+        -- if we are not on the caret line, move normally
         if not caretOnPromptLine() then break end
+
         local promptText = getPromptText()
         setPromptText(getNextHistoryLine(true, promptText))
         return
@@ -429,8 +431,6 @@ out:Connect(wx.wxEVT_KEY_DOWN,
       elseif key == wx.WXK_ESCAPE then
         setPromptText("")
         return
-      elseif key == wx.WXK_LEFT or key == wx.WXK_NUMPAD_LEFT then
-        if not caretOnPromptLine(true) then return end
       elseif key == wx.WXK_BACK then
         if not caretOnPromptLine(true) then return end
       elseif key == wx.WXK_DELETE or key == wx.WXK_NUMPAD_DELETE then
@@ -442,6 +442,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
           or key == wx.WXK_PAGEDOWN or key == wx.WXK_NUMPAD_PAGEDOWN
           or key == wx.WXK_END or key == wx.WXK_NUMPAD_END
           or key == wx.WXK_HOME or key == wx.WXK_NUMPAD_HOME
+          or key == wx.WXK_LEFT or key == wx.WXK_NUMPAD_LEFT
           or key == wx.WXK_RIGHT or key == wx.WXK_NUMPAD_RIGHT
           or key == wx.WXK_SHIFT or key == wx.WXK_CONTROL
           or key == wx.WXK_ALT then
