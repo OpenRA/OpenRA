@@ -382,6 +382,8 @@ HQ:
 		InsufficientPowerSound: nopower1.aud
 		IncomingSound: enemya.aud
 		UnitType: a10
+		DisplayBeacon: True
+		DisplayRadarPing: True
 	SupportPowerChargeBar:
 
 FIX:
@@ -445,7 +447,6 @@ EYE:
 		LaunchSound: ion1.aud
 		SelectTargetSound: select1.aud
 		InsufficientPowerSound: nopower1.aud
-		DisplayBeacon: True
 		DisplayRadarPing: True
 	SupportPowerChargeBar:
 
