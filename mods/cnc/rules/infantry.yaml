@@ -260,3 +260,40 @@ RAPT:
 	Armament:
 		Weapon: claw
 
+STLK:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Tiberium Stalk
+		Description: Mutated plant life.\n  Strong vs Infantry\n  Weak vs Vehicles
+	Buildable:
+		Queue: Biolab
+		BuildPaletteOrder: 50
+		Owner: gdi, nod
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: DinoVoice
+	Mobile:
+		Speed: 56
+		TerrainSpeeds:
+			Tiberium: 80
+				PathingCost: 80
+			BlueTiberium: 80
+				PathingCost: 80
+	Health:
+		HP: 250
+	Armament:
+		Weapon: Chemspray
+		LocalOffset: 341,0,256
+		FireDelay: 3
+	AttackFrontal:
+	WithMuzzleFlash:
+		SplitFacings: true
+	PoisonedByTiberium:
+		Weapon: Heal
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+		StandAnimations: stand, stand2
+	DetectCloaked:
+		Range: 2
