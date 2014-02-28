@@ -984,7 +984,7 @@ SILO:
 	RenderBuildingSilo:
 	StoresOre:
 		PipCount: 5
-		Capacity: 1500
+		Capacity: 2000
 	IronCurtainable:
 	-RenderBuilding:
 	-EmitInfantryOnSell:
