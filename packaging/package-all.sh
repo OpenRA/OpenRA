@@ -64,9 +64,6 @@ cp thirdparty/NLua.dll packaging/built
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built
 
-# Remove demo.mix from cnc
-rm ./packaging/built/mods/cnc/bits/demo.mix
-
 #
 # Change into packaging directory and run the 
 # platform-dependant packaging in parallel
