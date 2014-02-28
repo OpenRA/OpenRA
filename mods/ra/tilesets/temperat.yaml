@@ -3617,3 +3617,165 @@ Templates:
 			5: Clear
 		Category: Debris
 
+	Template@593:
+		Id: 593
+		Image: cobble01
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@594:
+		Id: 594
+		Image: cobble02
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@595:
+		Id: 595
+		Image: cobble03
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@596:
+		Id: 596
+		Image: cobble04
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@597:
+		Id: 597
+		Image: cobble1ne
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@598:
+		Id: 598
+		Image: cobble1nw
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@599:
+		Id: 599
+		Image: cobble1se
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@600:
+		Id: 600
+		Image: cobble1sw
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@601:
+		Id: 601
+		Image: cobble2ne
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@602:
+		Id: 602
+		Image: cobble2nw
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@603:
+		Id: 603
+		Image: cobble2se
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@604:
+		Id: 604
+		Image: cobble2sw
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@605:
+		Id: 605
+		Image: cobble3e
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@606:
+		Id: 606
+		Image: cobble3n
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@607:
+		Id: 607
+		Image: cobble3s
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@608:
+		Id: 608
+		Image: cobble3w
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@609:
+		Id: 609
+		Image: cobbleb
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
+	Template@610:
+		Id: 610
+		Image: cobblene
+		Size: 1,3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+		Category: Cobblestone
+	Template@611:
+		Id: 611
+		Image: cobblenn
+		Size: 3,1
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+		Category: Cobblestone
+	Template@612:
+		Id: 612
+		Image: cobblens
+		Size: 3,1
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+		Category: Cobblestone
+	Template@613:
+		Id: 613
+		Image: cobblenv
+		Size: 1,3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+		Category: Cobblestone
+	Template@614:
+		Id: 614
+		Image: cobble00
+		Size: 1,1
+		Tiles:
+			0: Road
+		Category: Cobblestone
