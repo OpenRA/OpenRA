@@ -166,7 +166,7 @@ Sniper:
 
 HighV:
 	ROF: 30
-	Range: 6c0
+	Range: 5c0
 	Report: GUN8.AUD
 	Projectile: Bullet
 		Speed: 1c682
@@ -548,7 +548,7 @@ Grenade:
 
 TurretGun:
 	ROF: 25
-	Range: 6c0
+	Range: 5c0
 	Report: TNKFIRE6.AUD
 	Projectile: Bullet
 		Image: 120MM
@@ -735,7 +735,7 @@ BoatMissile:
 
 TowerMissle:
 	ROF: 24
-	Range: 8c0
+	Range: 6c0
 	Report: ROCKET2.AUD
 	ValidTargets: Ground, Air
 	Burst: 2
@@ -820,7 +820,7 @@ Napalm.Crate:
 
 Laser:
 	ROF: 90
-	Range: 8c512
+	Range: 6c512
 	Charges: true
 	Report: OBELRAY1.AUD
 	Projectile: LaserZap
@@ -836,7 +836,7 @@ Laser:
 
 SAMMissile:
 	ROF: 15
-	Range: 10c0
+	Range: 7c0
 	Report: ROCKET2.AUD
 	ValidTargets: Air
 	Projectile: Missile

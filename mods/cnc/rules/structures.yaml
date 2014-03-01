@@ -493,6 +493,8 @@ GUN:
 	Inherits: ^Building
 	Valued:
 		Cost: 600
+	CustomBuildTimeValue:
+		Value: 1440
 	Tooltip:
 		Name: Turret
 		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
@@ -507,7 +509,7 @@ GUN:
 	Health:
 		HP: 400
 	RevealsShroud:
-		Range: 7
+		Range: 6
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -530,6 +532,8 @@ SAM:
 	RequiresPower:
 	Valued:
 		Cost: 750
+	CustomBuildTimeValue:
+		Value: 2160
 	Tooltip:
 		Name: SAM Site
 		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
@@ -566,6 +570,8 @@ OBLI:
 	Inherits: ^Building
 	Valued:
 		Cost: 1500
+	CustomBuildTimeValue:
+		Value: 3120
 	Tooltip:
 		Name: Obelisk of Light
 		Description: Advanced base defense.\n  Requires power to operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
@@ -584,7 +590,7 @@ OBLI:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 8
+		Range: 7
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
 	Armament:
@@ -606,6 +612,8 @@ GTWR:
 	Inherits: ^Building
 	Valued:
 		Cost: 500
+	CustomBuildTimeValue:
+		Value: 1440
 	Tooltip:
 		Name: Guard Tower
 		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
@@ -620,7 +628,7 @@ GTWR:
 	Health:
 		HP: 400
 	RevealsShroud:
-		Range: 7
+		Range: 6
 	Armament:
 		Weapon: HighV
 		LocalOffset: 256,0,256
@@ -641,6 +649,8 @@ ATWR:
 	RequiresPower:
 	Valued:
 		Cost: 1000
+	CustomBuildTimeValue:
+		Value: 2880
 	Tooltip:
 		Name: Advanced Guard Tower
 		Description: Anti-armor defensive structure.\n  Strong vs Light Vehicles, Tanks\n  Weak vs Infantry
@@ -659,7 +669,7 @@ ATWR:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 9
+		Range: 7
 	Turreted:
 		ROT: 255
 		Offset: 128,128,-85
