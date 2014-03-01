@@ -124,17 +124,17 @@ config = {
     runonstart = nil, -- if debugger should run immediately after starting
     -- default values are different for different interpreters
     redirect = nil, -- "d", "c", or "r" values for default, copy, or redirect
-  }
+  },
 
   outputshell = { -- output and shell settings
     fontname = "Courier New", -- default font
     fontsize = 10, -- defult size
-  }
+  },
 
   filetree = { -- filetree settings
     fontname = nil, -- no default font as it is system dependent
     fontsize = nil, -- no default size as it is system dependent
-  }
+  },
 
   keymap = {}, -- mapping of menu IDs to hot keys
   messages = {}, -- list of messages in a particular language
@@ -158,7 +158,7 @@ config = {
     -- 1: substring leading characters (camel case or _ separated)
     -- 2: leading + any correctly ordered fragments (default)
     width = 60, -- width of the tooltip text (in characters)
-  }
+  },
 
   arg = {}, -- command line arguments
 
@@ -189,7 +189,7 @@ app = {
     tools = function(file) return true end,
     specs = function(file) return true end,
     interpreters = function(file) return true end,
-  }
+  },
   stringtable = { -- optional entries uses defaults otherwise
     editor = nil, statuswelcome = nil,
     -- ...
@@ -238,7 +238,7 @@ api = {
 -- ----------------------------------------------------
 -- all entries are optional
 spec = {
-  exts = {"ext","ext2",..},
+  exts = {"ext","ext2",},
   -- compatible extensions
 
   lexer = wxstc.wxSTC_LEX_LUA,
@@ -249,7 +249,7 @@ spec = {
     -- appropriate lexer id
     stringeol = {wxstc.wxSTC_LUA_STRINGEOL,},
     -- ...
-  }
+  },
 
   linecomment = "//",
   -- string for linecomments
@@ -260,7 +260,7 @@ spec = {
   -- default is "\1" which should yield no matches
   -- and therefore disable class.func type autocompletion
 
-  isfncall = function(str) return from,to end
+  isfncall = function(str) return from,to end,
   -- function that detects positions for a substring that
   -- stands for a functioncall, ie " call(..)" -> 2,5
 
@@ -322,7 +322,7 @@ debuginterface = {
 interpreter = {
   name = "",
   description = "",
-  api = {"apifile_without_extension"} -- (opt) to limit loaded lua apis
+  api = {"apifile_without_extension"}, -- (opt) to limit loaded lua apis
   frun = function(self,wfilename,withdebugger) end,
   fprojdir = function(self,wfilename) return "projpath_from_filename" end, -- (opt)
   fattachdebug = function(self) end, -- (opt)
