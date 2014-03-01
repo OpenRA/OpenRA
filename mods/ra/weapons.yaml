@@ -18,13 +18,17 @@ Colt45:
 		Damage: 50
 
 ZSU-23:
-	ROF: 10
+	Burst: 2
+	BurstDelay: 5
+	ROF: 0
 	Range: 10c0
 	Report: AACANON3.AUD
 	ValidTargets: Air
 	Projectile: Bullet
 		Speed: 1c682
 		High: true
+		ContrailDelay: 0
+		ContrailLength: 5
 	Warhead:
 		Spread: 213
 		Versus:

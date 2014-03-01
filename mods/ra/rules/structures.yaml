@@ -340,17 +340,11 @@ AGUN:
 		ROT: 15
 		InitialFacing: 224
 	RenderBuildingTurreted:
-	Armament@PRIMARY:
+	Armament:
 		Weapon: ZSU-23
-		LocalOffset: 432,80,-30
-	Armament@SECONDARY:
-		Name: secondary
-		Weapon: ZSU-23
-		LocalOffset: 432,-80,-30
+		LocalOffset: 432,150,-30, 432,-150,-30
 	AttackTurreted:
-	WithMuzzleFlash@PRIMARY:
-	WithMuzzleFlash@SECONDARY:
-		Armament: secondary
+	WithMuzzleFlash:
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
