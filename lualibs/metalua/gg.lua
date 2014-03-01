@@ -58,7 +58,7 @@ function parser_metatable.__call (parser, lx, ...)
          -- lexstream.
          -- Since the error is rethrown, these places are stacked. 
          error (string.format ("%s\n - (l.%s, c.%s, k.%s) in parser %s", 
-                               ast :strmatch "gg.lua:%d+: (.*)" or ast,
+                               ast:match "gg.lua:%d+: (.*)" or ast,
                                li[1], li[2], li[3], parser.name or parser.kind))
       end
    end
