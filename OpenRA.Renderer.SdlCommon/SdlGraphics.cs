@@ -14,7 +14,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using OpenRA.FileFormats.Graphics;
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Platform;
 using Tao.Sdl;
 
 namespace OpenRA.Renderer.SdlCommon
@@ -26,10 +28,30 @@ namespace OpenRA.Renderer.SdlCommon
 
 		public Size WindowSize { get { return windowSize; } }
 
-		public SdlGraphics(Size size, WindowMode window, string[] extensions)
+		public SdlGraphics(Size size, WindowMode window, string[] requiredExtensions)
 		{
 			windowSize = size;
-			InitializeSdlGl(ref windowSize, window, extensions);
+
+			Toolkit.Init();
+			var surf = InitializeSdlGl(ref windowSize, window);
+			var windowInfo = OpenTK.Platform.Utilities.CreateDummyWindowInfo();
+			var dummyContext = new GraphicsContext(new ContextHandle(surf), windowInfo);
+			dummyContext.MakeCurrent(windowInfo);
+
+			ErrorHandler.CheckGlError();
+
+			var extensions = GL.GetString(StringName.Extensions);
+			if (extensions == null)
+				Console.WriteLine("Failed to fetch GL_EXTENSIONS, this is bad.");
+
+			var missingExtensions = requiredExtensions.Where(r => !extensions.Contains(r)).ToArray();
+
+			if (missingExtensions.Any())
+			{
+				ErrorHandler.WriteGraphicsLog("Unsupported GPU: Missing extensions: {0}"
+					.F(missingExtensions.JoinWith(",")));
+				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
+			}
 
 			GL.EnableClientState(ArrayCap.VertexArray);
 			ErrorHandler.CheckGlError();
@@ -41,7 +63,7 @@ namespace OpenRA.Renderer.SdlCommon
 			input = new SdlInput();
 		}
 
-		IntPtr InitializeSdlGl(ref Size size, WindowMode window, string[] requiredExtensions)
+		IntPtr InitializeSdlGl(ref Size size, WindowMode window)
 		{
 			Sdl.SDL_Init(Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1);
@@ -88,21 +110,6 @@ namespace OpenRA.Renderer.SdlCommon
 			Sdl.SDL_ShowCursor(0);
 			Sdl.SDL_EnableUNICODE(1);
 			Sdl.SDL_EnableKeyRepeat(Sdl.SDL_DEFAULT_REPEAT_DELAY, Sdl.SDL_DEFAULT_REPEAT_INTERVAL);
-
-			ErrorHandler.CheckGlError();
-
-			var extensions = GL.GetString(StringName.Extensions);
-			if (extensions == null)
-				Console.WriteLine("Failed to fetch GL_EXTENSIONS, this is bad.");
-
-			var missingExtensions = requiredExtensions.Where(r => !extensions.Contains(r)).ToArray();
-
-			if (missingExtensions.Any())
-			{
-				ErrorHandler.WriteGraphicsLog("Unsupported GPU: Missing extensions: {0}"
-					.F(missingExtensions.JoinWith(",")));
-				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
-			}
 
 			return surf;
 		}
