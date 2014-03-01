@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			var targetEnemy = enemies.ClosestTo(self);
 			if (targetEnemy != null)
-				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(targetEnemy), WRange.FromCells(6))));
+				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(targetEnemy), WDist.FromCells(6))));
 		}
 
 		void SendVehicles()
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.RA.Missions
 								new OwnerInit(soviets) 
 							});
 						squad.QueueActivity(new AttackMove.AttackMoveActivity(squad, new Move.Move(paradrop1.Location, 3)));
-						var scatteredUnits = world.FindAliveCombatantActorsInCircle(paradrop1.Location.CenterPosition, WRange.FromCells(15))
+						var scatteredUnits = world.FindAliveCombatantActorsInCircle(paradrop1.Location.CenterPosition, WDist.FromCells(15))
 						.Where(unit => unit.IsIdle && unit.HasTrait<Mobile>() && unit.Owner == soviets);
 						foreach (var unit in scatteredUnits)
 						{

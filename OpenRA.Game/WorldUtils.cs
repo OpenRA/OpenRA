@@ -43,12 +43,12 @@ namespace OpenRA
 			return actors.OrderBy(a => (a.CenterPosition - pos).LengthSquared).FirstOrDefault();
 		}
 
-		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WRange r)
+		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WDist r)
 		{
 			using (new PerfSample("FindUnitsInCircle"))
 			{
 				// Target ranges are calculated in 2D, so ignore height differences
-				var vec = new WVec(r, r, WRange.Zero);
+				var vec = new WVec(r, r, WDist.Zero);
 				var rSq = r.Range*r.Range;
 				return world.FindActorsInBox(origin - vec, origin + vec).Where(
 					a => (a.CenterPosition - origin).HorizontalLengthSquared <= rSq);
@@ -124,13 +124,13 @@ namespace OpenRA
 				r.Next(w.Map.Bounds.Top, w.Map.Bounds.Bottom));
 		}
 
-		public static WRange DistanceToMapEdge(this World w, WPos pos, WVec dir)
+		public static WDist DistanceToMapEdge(this World w, WPos pos, WVec dir)
 		{
 			var tl = w.Map.Bounds.TopLeftAsCPos().TopLeft;
 			var br = w.Map.Bounds.BottomRightAsCPos().BottomRight;
 			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? tl.X : br.X) - pos.X) / dir.X;
 			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? tl.Y : br.Y) - pos.Y) / dir.Y;
-			return new WRange(Math.Min(x, y) * dir.Length);
+			return new WDist(Math.Min(x, y) * dir.Length);
 		}
 
 		public static bool HasVoices(this Actor a)

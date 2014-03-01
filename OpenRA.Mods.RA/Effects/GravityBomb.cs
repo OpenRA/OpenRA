@@ -18,8 +18,8 @@ namespace OpenRA.Mods.RA.Effects
 	public class GravityBombInfo : IProjectileInfo
 	{
 		public readonly string Image = null;
-		public readonly WRange Velocity = WRange.Zero;
-		public readonly WRange Acceleration = new WRange(15);
+		public readonly WDist Velocity = WDist.Zero;
+		public readonly WDist Acceleration = new WDist(15);
 
 		public IEffect Create(ProjectileArgs args) { return new GravityBomb(this, args); }
 	}
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Effects
 			this.info = info;
 			this.args = args;
 			pos = args.Source;
-			velocity = new WVec(WRange.Zero, WRange.Zero, -info.Velocity);
+			velocity = new WVec(WDist.Zero, WDist.Zero, -info.Velocity);
 
 			anim = new Animation(info.Image);
 			if (anim.HasSequence("open"))
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			velocity -= new WVec(WRange.Zero, WRange.Zero, info.Acceleration);
+			velocity -= new WVec(WDist.Zero, WDist.Zero, info.Acceleration);
 			pos += velocity;
 
 			if (pos.Z <= args.PassiveTarget.Z)

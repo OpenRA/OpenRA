@@ -192,14 +192,14 @@ namespace OpenRA.Mods.RA.Missions
 				if (einstein != null)
 				{
 					if (einstein.IsInWorld)
-						innerActivity = new Move.Move(Target.FromActor(einstein), WRange.FromCells(3));
+						innerActivity = new Move.Move(Target.FromActor(einstein), WDist.FromCells(3));
 
 					else
 					{
 						var container = world.UnitContaining(einstein);
 
 						if (container != null && !container.HasTrait<Aircraft>() && container.HasTrait<Mobile>())
-							innerActivity = new Move.Move(Target.FromActor(container), WRange.FromCells(3));
+							innerActivity = new Move.Move(Target.FromActor(container), WDist.FromCells(3));
 
 						else
 							innerActivity = new Move.Move(extractionLZ.Location, 3);
@@ -222,7 +222,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		bool AlliesControlLab()
 		{
-			return MissionUtils.AreaSecuredWithUnits(world, allies, lab.CenterPosition, WRange.FromCells(LabClearRange));
+			return MissionUtils.AreaSecuredWithUnits(world, allies, lab.CenterPosition, WDist.FromCells(LabClearRange));
 		}
 
 		void SpawnEinsteinAtLab()

@@ -462,7 +462,7 @@ namespace OpenRA.Mods.RA.AI
 			return null;
 		}
 
-		internal Actor FindClosestEnemy(WPos pos, WRange radius)
+		internal Actor FindClosestEnemy(WPos pos, WDist radius)
 		{
 			var enemyUnits = world.FindActorsInCircle(pos, radius)
 				.Where(unit => p.Stances[unit.Owner] == Stance.Enemy &&
@@ -630,7 +630,7 @@ namespace OpenRA.Mods.RA.AI
 
 			foreach (var b in allEnemyBaseBuilder)
 			{
-				var enemies = world.FindActorsInCircle(b.CenterPosition, WRange.FromCells(Info.RushAttackScanRadius))
+				var enemies = world.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
 					.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
 				
 				if (rushFuzzy.CanAttack(ownUnits, enemies))
@@ -659,7 +659,7 @@ namespace OpenRA.Mods.RA.AI
 
 			if (!protectSq.IsValid)
 			{
-				var ownUnits = world.FindActorsInCircle(baseCenter.CenterPosition, WRange.FromCells(Info.ProtectUnitScanRadius))
+				var ownUnits = world.FindActorsInCircle(baseCenter.CenterPosition, WDist.FromCells(Info.ProtectUnitScanRadius))
 					.Where(unit => unit.Owner == p && !unit.HasTrait<Building>()
 						&& unit.HasTrait<AttackBase>()).ToList();
 
@@ -789,7 +789,7 @@ namespace OpenRA.Mods.RA.AI
 				for (int j = 0; j < y; j += radiusOfPower * 2)
 				{
 					var pos = new CPos(i, j);
-					var targets = world.FindActorsInCircle(pos.CenterPosition, WRange.FromCells(radiusOfPower)).ToList();
+					var targets = world.FindActorsInCircle(pos.CenterPosition, WDist.FromCells(radiusOfPower)).ToList();
 					var enemies = targets.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
 					var ally = targets.Where(unit => p.Stances[unit.Owner] == Stance.Ally || unit.Owner == p).ToList();
 

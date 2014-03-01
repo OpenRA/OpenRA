@@ -22,10 +22,10 @@ namespace OpenRA.Mods.RA
 		public readonly WVec Offset = WVec.Zero;
 
 		[Desc("Minimum distance to throw the particle")]
-		public readonly WRange MinThrowRange = new WRange(256);
+		public readonly WDist MinThroWDistance = new WDist(256);
 
 		[Desc("Maximum distance to throw the particle")]
-		public readonly WRange MaxThrowRange = new WRange(768);
+		public readonly WDist MaxThroWDistance = new WDist(768);
 
 		[Desc("Minimum angle to throw the particle")]
 		public readonly WAngle MinThrowAngle = WAngle.FromDegrees(30);
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 
 			// Calculate final position
 			var throwRotation = WRot.FromFacing(Game.CosmeticRandom.Next(1024));
-			var throwDistance = Game.CosmeticRandom.Next(info.MinThrowRange.Range, info.MaxThrowRange.Range);
+			var throwDistance = Game.CosmeticRandom.Next(info.MinThroWDistance.Range, info.MaxThroWDistance.Range);
 
 			initialPos = pos = info.Offset.Rotate(body.QuantizeOrientation(self, WRot.FromFacing(bodyFacing)));
 			finalPos = initialPos + new WVec(throwDistance, 0, 0).Rotate(throwRotation);
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA
 			length = (finalPos - initialPos).Length / info.Velocity;
 
 			// Facing rotation
-			rotation = WRange.FromPDF(Game.CosmeticRandom, 2).Range * info.ROT / 1024;
+			rotation = WDist.FromPDF(Game.CosmeticRandom, 2).Range * info.ROT / 1024;
 
 			var anim = new Animation(rs.GetImage(self), () => (int)facing);
 			anim.PlayRepeating(info.Anim);

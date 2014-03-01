@@ -21,15 +21,15 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class MissileInfo : IProjectileInfo
 	{
-		[Desc("Projectile speed in WRange / tick")]
-		public readonly WRange Speed = new WRange(8);
+		[Desc("Projectile speed in WDist / tick")]
+		public readonly WDist Speed = new WDist(8);
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(30);
 		public readonly int Arm = 0;
 		[Desc("Check for whether an actor with Wall: trait blocks fire")]
 		public readonly bool High = false;
 		public readonly string Trail = null;
 		[Desc("Maximum offset at the maximum range")]
-		public readonly WRange Inaccuracy = WRange.Zero;
+		public readonly WDist Inaccuracy = WDist.Zero;
 		public readonly string Image = null;
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 5;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Effects
 		// when the projectile passes the actor.  This defines an arbitrary
 		// proximity radius that they will explode within, which makes
 		// missiles difficult to consistently balance.
-		static readonly WRange MissileCloseEnough = new WRange(298);
+		static readonly WDist MissileCloseEnough = new WDist(298);
 
 		readonly MissileInfo info;
 		readonly ProjectileArgs args;

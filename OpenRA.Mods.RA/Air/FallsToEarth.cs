@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public readonly bool Spins = true;
 		public readonly bool Moves = false;
-		public readonly WRange Velocity = new WRange(43);
+		public readonly WDist Velocity = new WDist(43);
 
 		public object Create(ActorInitializer init) { return new FallsToEarth(init.self, this); }
 	}
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			var move = info.Moves ? aircraft.FlyStep(aircraft.Facing) : WVec.Zero;
-			move -= new WVec(WRange.Zero, WRange.Zero, info.Velocity);
+			move -= new WVec(WDist.Zero, WDist.Zero, info.Velocity);
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 
 			return this;

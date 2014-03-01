@@ -17,10 +17,10 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HelicopterInfo : AircraftInfo, IMoveInfo
 	{
-		public readonly WRange IdealSeparation = new WRange(1706);
+		public readonly WDist IdealSeparation = new WDist(1706);
 		public readonly bool LandWhenIdle = true;
-		public readonly WRange LandAltitude = WRange.Zero;
-		public readonly WRange AltitudeVelocity = new WRange(43);
+		public readonly WDist LandAltitude = WDist.Zero;
+		public readonly WDist AltitudeVelocity = new WDist(43);
 
 		public override object Create(ActorInitializer init) { return new Helicopter(init, this); }
 	}
@@ -155,9 +155,9 @@ namespace OpenRA.Mods.RA.Air
 
 		public Activity MoveTo(CPos cell, int nearEnough) { return new HeliFly(self, Target.FromCell(cell)); }
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new HeliFly(self, Target.FromCell(cell)); }
-		public Activity MoveWithinRange(Target target, WRange range) { return new HeliFly(self, target, WRange.Zero, range); }
-		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return new HeliFly(self, target, minRange, maxRange); }
-		public Activity MoveFollow(Actor self, Target target, WRange range) { return new Follow(self, target, range); }
+		public Activity MoveWithinRange(Target target, WDist range) { return new HeliFly(self, target, WDist.Zero, range); }
+		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange) { return new HeliFly(self, target, minRange, maxRange); }
+		public Activity MoveFollow(Actor self, Target target, WDist range) { return new Follow(self, target, range); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 	}
 }
