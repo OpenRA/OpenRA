@@ -14,6 +14,8 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;
+using OpenTK;
+using OpenTK.Compatibility;
 using Tao.OpenAl;
 
 namespace OpenRA

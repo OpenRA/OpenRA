@@ -15,6 +15,8 @@ using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Renderer.SdlCommon;
+using OpenTK;
+using OpenTK.Compatibility;
 using Tao.OpenGl;
 
 namespace OpenRA.Renderer.Glsl

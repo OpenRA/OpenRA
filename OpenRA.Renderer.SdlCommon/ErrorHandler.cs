@@ -11,6 +11,8 @@
 using System;
 using System.Diagnostics;
 using Tao.OpenGl;
+using OpenTK;
+using OpenTK.Compatibility;
 
 namespace OpenRA.Renderer.SdlCommon
 {

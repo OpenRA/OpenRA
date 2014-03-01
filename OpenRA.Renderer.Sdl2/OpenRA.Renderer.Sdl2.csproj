@@ -34,12 +34,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Tao.OpenGl">
-      <HintPath>..\thirdparty\Tao\Tao.OpenGl.dll</HintPath>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="SDL2#">
       <HintPath>..\thirdparty\SDL2#.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl">
+      <HintPath>..\thirdparty\OpenTK\OpenTK.GLControl.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK">
+      <HintPath>..\thirdparty\OpenTK\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.Compatibility">
+      <HintPath>..\thirdparty\OpenTK\OpenTK.Compatibility.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -75,9 +75,11 @@
       <Package>mono.nat</Package>
       <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
     </Reference>
-    <Reference Include="Tao.OpenAl, Version=1.1.0.1, Culture=neutral, PublicKeyToken=a7579dda88828311">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\thirdparty\Tao\Tao.OpenAl.dll</HintPath>
+    <Reference Include="OpenTK">
+      <HintPath>..\thirdparty\OpenTK\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.Compatibility">
+      <HintPath>..\thirdparty\OpenTK\OpenTK.Compatibility.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,8 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using OpenRA.FileFormats.Graphics;
+using OpenTK;
+using OpenTK.Compatibility;
 using Tao.OpenGl;
 using Tao.Sdl;
 
