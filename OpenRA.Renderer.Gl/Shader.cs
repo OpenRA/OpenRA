@@ -16,8 +16,7 @@ using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Renderer.SdlCommon;
 using OpenTK;
-using OpenTK.Compatibility;
-using Tao.OpenGl;
+using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.Glsl
 {
@@ -34,15 +33,15 @@ namespace OpenRA.Renderer.Glsl
 			using (var file = new StreamReader(FileSystem.Open("glsl{0}{1}.vert".F(Path.DirectorySeparatorChar, name))))
 				vertexCode = file.ReadToEnd();
 
-			var v = Gl.glCreateShaderObjectARB(Gl.GL_VERTEX_SHADER_ARB);
+			var v = GL.CreateShader(ShaderType.VertexShader);
 			ErrorHandler.CheckGlError();
-			Gl.glShaderSourceARB(v, 1, new string[] { vertexCode }, null);
+			GL.Arb.ShaderSource(v, 1, new string[] { vertexCode }, new int[0]);
 			ErrorHandler.CheckGlError();
-			Gl.glCompileShaderARB(v);
+			GL.Arb.CompileShader(v);
 			ErrorHandler.CheckGlError();
 
 			int success;
-			Gl.glGetObjectParameterivARB(v, Gl.GL_OBJECT_COMPILE_STATUS_ARB, out success);
+			GL.Arb.GetObjectParameter(v, ArbShaderObjects.ObjectCompileStatusArb, out success);
 			ErrorHandler.CheckGlError();
 			if (success == 0)
 				throw new InvalidProgramException("Compile error in {0}{1}.vert".F(Path.DirectorySeparatorChar, name));
@@ -52,58 +51,59 @@ namespace OpenRA.Renderer.Glsl
 			using (var file = new StreamReader(FileSystem.Open("glsl{0}{1}.frag".F(Path.DirectorySeparatorChar, name))))
 				fragmentCode = file.ReadToEnd();
 
-			var f = Gl.glCreateShaderObjectARB(Gl.GL_FRAGMENT_SHADER_ARB);
+			var f = GL.CreateShader(ShaderType.FragmentShader);
 			ErrorHandler.CheckGlError();
-			Gl.glShaderSourceARB(f, 1, new string[] { fragmentCode }, null);
+			GL.Arb.ShaderSource(f, 1, new string[] { fragmentCode }, new int[0]);
 			ErrorHandler.CheckGlError();
-			Gl.glCompileShaderARB(f);
+			GL.Arb.CompileShader(f);
 			ErrorHandler.CheckGlError();
 
-			Gl.glGetObjectParameterivARB(f, Gl.GL_OBJECT_COMPILE_STATUS_ARB, out success);
+			GL.Arb.GetObjectParameter(f, ArbShaderObjects.ObjectCompileStatusArb, out success);
 			ErrorHandler.CheckGlError();
 			if (success == 0)
 				throw new InvalidProgramException("Compile error in glsl{0}{1}.frag".F(Path.DirectorySeparatorChar, name));
 
 			// Assemble program
-			program = Gl.glCreateProgramObjectARB();
+			program = GL.Arb.CreateProgramObject();
 			ErrorHandler.CheckGlError();
-			Gl.glAttachObjectARB(program, v);
+			GL.Arb.AttachObject(program, v);
 			ErrorHandler.CheckGlError();
-			Gl.glAttachObjectARB(program, f);
-			ErrorHandler.CheckGlError();
-
-			Gl.glLinkProgramARB(program);
+			GL.Arb.AttachObject(program, f);
 			ErrorHandler.CheckGlError();
 
-			Gl.glGetObjectParameterivARB(program, Gl.GL_OBJECT_LINK_STATUS_ARB, out success);
+			GL.Arb.LinkProgram(program);
+			ErrorHandler.CheckGlError();
+
+			GL.Arb.GetObjectParameter(program, ArbShaderObjects.ObjectLinkStatusArb, out success);
 			ErrorHandler.CheckGlError();
 			if (success == 0)
 				throw new InvalidProgramException("Linking error in {0} shader".F(name));
 
-			Gl.glUseProgramObjectARB(program);
+			GL.Arb.UseProgramObject(program);
 			ErrorHandler.CheckGlError();
 
 			int numUniforms;
-			Gl.glGetObjectParameterivARB(program, Gl.GL_ACTIVE_UNIFORMS, out numUniforms);
+			GL.Arb.GetObjectParameter(program, ArbShaderObjects.ObjectActiveUniformsArb, out numUniforms);
 			ErrorHandler.CheckGlError();
 
 			int nextTexUnit = 0;
 			for (var i = 0; i < numUniforms; i++)
 			{
-				int length, size, type;
+				int length, size;
+				ArbShaderObjects type;
 				var sb = new StringBuilder(128);
 
-				Gl.glGetActiveUniformARB(program, i, 128, out length, out size, out type, sb);
+				GL.Arb.GetActiveUniform(program, i, 128, out length, out size, out type, sb);
 				var sampler = sb.ToString();
 				ErrorHandler.CheckGlError();
 
-				if (type == Gl.GL_SAMPLER_2D_ARB)
+				if (type == ArbShaderObjects.Sampler2DArb)
 				{
 					samplers.Add(sampler, nextTexUnit);
 
-					var loc = Gl.glGetUniformLocationARB(program, sampler);
+					var loc = GL.Arb.GetUniformLocation(program, sampler);
 					ErrorHandler.CheckGlError();
-					Gl.glUniform1iARB(loc, nextTexUnit);
+					GL.Arb.Uniform1(loc, nextTexUnit);
 					ErrorHandler.CheckGlError();
 
 					nextTexUnit++;
@@ -113,13 +113,13 @@ namespace OpenRA.Renderer.Glsl
 
 		public void Render(Action a)
 		{
-			Gl.glUseProgramObjectARB(program);
+			GL.Arb.UseProgramObject(program);
 
 			// bind the textures
 			foreach (var kv in textures)
 			{
-				Gl.glActiveTextureARB(Gl.GL_TEXTURE0_ARB + kv.Key);
-				Gl.glBindTexture(Gl.GL_TEXTURE_2D, ((Texture)kv.Value).ID);
+				GL.Arb.ActiveTexture(TextureUnit.Texture0 + kv.Key);
+				GL.BindTexture(TextureTarget.Texture2D, ((Texture)kv.Value).ID);
 			}
 
 			ErrorHandler.CheckGlError();
@@ -139,34 +139,34 @@ namespace OpenRA.Renderer.Glsl
 
 		public void SetVec(string name, float x)
 		{
-			Gl.glUseProgramObjectARB(program);
+			GL.Arb.UseProgramObject(program);
 			ErrorHandler.CheckGlError();
-			var param = Gl.glGetUniformLocationARB(program, name);
+			var param = GL.Arb.GetUniformLocation(program, name);
 			ErrorHandler.CheckGlError();
-			Gl.glUniform1fARB(param, x);
+			GL.Arb.Uniform1(param, x);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void SetVec(string name, float x, float y)
 		{
-			Gl.glUseProgramObjectARB(program);
+			GL.Arb.UseProgramObject(program);
 			ErrorHandler.CheckGlError();
-			var param = Gl.glGetUniformLocationARB(program, name);
+			var param = GL.Arb.GetUniformLocation(program, name);
 			ErrorHandler.CheckGlError();
-			Gl.glUniform2fARB(param, x, y);
+			GL.Arb.Uniform2(param, x, y);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void SetVec(string name, float[] vec, int length)
 		{
-			var param = Gl.glGetUniformLocationARB(program, name);
+			var param = GL.Arb.GetUniformLocation(program, name);
 			ErrorHandler.CheckGlError();
 			switch (length)
 			{
-				case 1: Gl.glUniform1fv(param, 1, vec); break;
-				case 2: Gl.glUniform2fv(param, 1, vec); break;
-				case 3: Gl.glUniform3fv(param, 1, vec); break;
-				case 4: Gl.glUniform4fv(param, 1, vec); break;
+				case 1: GL.Uniform1(param, 1, vec); break;
+				case 2: GL.Uniform2(param, 1, vec); break;
+				case 3: GL.Uniform3(param, 1, vec); break;
+				case 4: GL.Uniform4(param, 1, vec); break;
 				default: throw new InvalidDataException("Invalid vector length");
 			}
 
@@ -178,11 +178,11 @@ namespace OpenRA.Renderer.Glsl
 			if (mtx.Length != 16)
 				throw new InvalidDataException("Invalid 4x4 matrix");
 
-			Gl.glUseProgramObjectARB(program);
+			GL.Arb.UseProgramObject(program);
 			ErrorHandler.CheckGlError();
-			var param = Gl.glGetUniformLocationARB(program, name);
+			var param = GL.Arb.GetUniformLocation(program, name);
 			ErrorHandler.CheckGlError();
-			Gl.glUniformMatrix4fv(param, 1, Gl.GL_FALSE, mtx);
+			GL.Arb.UniformMatrix4(param, 1, false, mtx);
 			ErrorHandler.CheckGlError();
 		}
 	}

@@ -64,9 +64,6 @@
     <Reference Include="OpenTK">
       <HintPath>..\thirdparty\OpenTK\OpenTK.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK.Compatibility">
-      <HintPath>..\thirdparty\OpenTK\OpenTK.Compatibility.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ErrorHandler.cs" />

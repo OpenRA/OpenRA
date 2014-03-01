@@ -47,7 +47,7 @@ namespace OpenRA.FileFormats.Graphics
 		void Present();
 		void PumpInput(IInputHandler inputHandler);
 
-		void DrawPrimitives( PrimitiveType type, int firstVertex, int numVertices );
+		void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices);
 
 		void SetLineWidth( float width );
 		void EnableScissor( int left, int top, int width, int height );
