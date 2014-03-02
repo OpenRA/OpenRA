@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 	public class SpawnMapActors : IWorldLoaded
 	{
 		public Dictionary<string, Actor> Actors = new Dictionary<string, Actor>();
+		public uint LastMapActorID { get; private set; }
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
@@ -32,7 +33,9 @@ namespace OpenRA.Mods.RA
 
 				var initDict = actorReference.Value.InitDict;
 				initDict.Add(new SkipMakeAnimsInit());
-				Actors[actorReference.Key] = world.CreateActor(actorReference.Value.Type, initDict);
+				var actor = world.CreateActor(actorReference.Value.Type, initDict);
+				Actors[actorReference.Key] = actor;
+				LastMapActorID = actor.ActorID;
 			}
 		}
 	}

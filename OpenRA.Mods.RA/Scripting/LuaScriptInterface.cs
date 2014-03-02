@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Scripting
 	public class LuaScriptInterface : IWorldLoaded, ITick
 	{
 		World world;
-		Dictionary<string, Actor> mapActors;
+		SpawnMapActors sma;
 		readonly LuaScriptContext context = new LuaScriptContext();
 		readonly LuaScriptInterfaceInfo info;
 
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
-			mapActors = world.WorldActor.Trait<SpawnMapActors>().Actors;
+			sma = world.WorldActor.Trait<SpawnMapActors>();
 
 			context.Lua["World"] = w;
 			context.Lua["WorldRenderer"] = wr;
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		void AddMapActorGlobals()
 		{
-			foreach (var kv in mapActors)
+			foreach (var kv in sma.Actors)
 			{
 				if (context.Lua[kv.Key] != null)
 					context.ShowErrorMessage("{0}: The global name '{1}' is reserved and may not be used by map actor {2}".F(GetType().Name, kv.Key, kv.Value), null);
@@ -328,7 +328,19 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public Actor GetNamedActor(string actorName)
 		{
-			return mapActors[actorName];
+			return sma.Actors[actorName];
+		}
+
+		[LuaGlobal]
+		public bool IsNamedActor(Actor actor)
+		{
+			return actor.ActorID <= sma.LastMapActorID && actor.ActorID > sma.LastMapActorID - sma.Actors.Count;
+		}
+
+		[LuaGlobal]
+		public IEnumerable<Actor> GetNamedActors()
+		{
+			return sma.Actors.Values;
 		}
 
 		[LuaGlobal]
@@ -343,18 +355,28 @@ namespace OpenRA.Mods.RA.Scripting
 			return world.FindActorsInCircle(location, radius).ToArray();
 		}
 
+		ClassicProductionQueue GetSharedQueueForCategory(Player player, string category)
+		{
+			return world.ActorsWithTrait<ClassicProductionQueue>()
+				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category)
+				.Select(a => a.Trait).FirstOrDefault();
+		}
+
+		ClassicProductionQueue GetSharedQueueForUnit(Player player, string unit)
+		{
+			var ri = Rules.Info[unit];
+
+			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
+			if (bi == null)
+				return null;
+
+			return GetSharedQueueForCategory(player, bi.Queue);
+		}
+
 		[LuaGlobal]
 		public void BuildWithSharedQueue(Player player, string unit, double amount)
 		{
-			var ri = Rules.Info[unit];
-			if (ri == null || !ri.Traits.Contains<BuildableInfo>())
-				return;
-
-			var category = ri.Traits.Get<BuildableInfo>().Queue;
-
-			var queue = world.ActorsWithTrait<ClassicProductionQueue>()
-				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category)
-				.Select(a => a.Trait).FirstOrDefault();
+			var queue = GetSharedQueueForUnit(player, unit);
 
 			if (queue != null)
 				queue.ResolveOrder(queue.self, Order.StartProduction(queue.self, unit, (int)amount));
@@ -363,14 +385,38 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public void BuildWithPerFactoryQueue(Actor factory, string unit, double amount)
 		{
-			if (!factory.HasTrait<ProductionQueue>())
-				return;
-
 			var ri = Rules.Info[unit];
-			if (ri == null || !ri.Traits.Contains<BuildableInfo>())
+
+			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
+			if (bi == null)
 				return;
 
-			factory.Trait<ProductionQueue>().ResolveOrder(factory, Order.StartProduction(factory, unit, (int)amount));
+			var queue = factory.TraitOrDefault<ProductionQueue>();
+
+			if (queue != null)
+				queue.ResolveOrder(factory, Order.StartProduction(factory, unit, (int)amount));
+		}
+
+		[LuaGlobal]
+		public bool SharedQueueIsBusy(Player player, string category)
+		{
+			var queue = GetSharedQueueForCategory(player, category);
+
+			if (queue == null)
+				return true;
+
+			return queue.CurrentItem() != null;
+		}
+
+		[LuaGlobal]
+		public bool PerFactoryQueueIsBusy(Actor factory)
+		{
+			var queue = factory.TraitOrDefault<ProductionQueue>();
+
+			if (queue == null)
+				return true;
+
+			return queue.CurrentItem() != null;
 		}
 
 		[LuaGlobal]
@@ -383,6 +429,12 @@ namespace OpenRA.Mods.RA.Scripting
 				if (gt != null)
 					gt.GuardTarget(guard, Target.FromActor(target));
 			}
+		}
+
+		[LuaGlobal]
+		public IEnumerable<CPos> ExpandFootprint(LuaTable cells, bool allowDiagonal)
+		{
+			return Util.ExpandFootprint(cells.Values.Cast<CPos>(), allowDiagonal);
 		}
 	}
 }

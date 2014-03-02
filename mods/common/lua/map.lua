@@ -12,8 +12,16 @@ Map.GetRandomEdgeCell = function()
 	return Internal.GetRandomEdgeCell()
 end
 
+Map.IsNamedActor = function(actor)
+	return Internal.IsNamedActor(actor)
+end
+
 Map.GetNamedActor = function(actorName)
 	return Internal.GetNamedActor(actorName)
+end
+
+Map.GetNamedActors = function()
+	return Internal.GetNamedActors()
 end
 
 Map.FindActorsInCircle = function(location, radius, func)
@@ -56,6 +64,10 @@ end
 
 Map.FindIdleUnitsInBox = function(player, topLeft, bottomRight)
 	return Map.FindActorsInBox(topLeft, bottomRight, function(a) return Map.__FilterByTraitAndIdle(a, player, "Mobile") end)
+end
+
+Map.ExpandFootprint = function(cells, allowDiagonal)
+	return Utils.EnumerableToTable(Internal.ExpandFootprint(cells, allowDiagonal))
 end
 
 CPos.New = function(x, y)
