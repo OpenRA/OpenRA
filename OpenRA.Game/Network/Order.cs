@@ -74,7 +74,7 @@ namespace OpenRA
 
 		public byte[] Serialize()
 		{
-			if (IsImmediate)		/* chat, whatever */
+			if (IsImmediate)
 			{
 				var ret = new MemoryStream();
 				var w = new BinaryWriter(ret);
@@ -154,7 +154,7 @@ namespace OpenRA
 						var name = r.ReadString();
 						var data = r.ReadString();
 
-						return new Order( name, null, false ) { IsImmediate = true, TargetString = data };
+						return new Order(name, null, false) { IsImmediate = true, TargetString = data };
 					}
 
 				default:
@@ -197,9 +197,9 @@ namespace OpenRA
 		// Named constructors for Orders.
 		// Now that Orders are resolved by individual Actors, these are weird; you unpack orders manually, but not pack them.
 
-		public static Order Chat(bool team, string text)
+		public static Order Chat(bool team, string text, bool preGame)
 		{
-			return new Order(team ? "TeamChat" : "Chat", null, false) { IsImmediate = true, TargetString = text};
+			return new Order(team ? "TeamChat" : "Chat", null, false) { IsImmediate = preGame, TargetString = text};
 		}
 
 		public static Order HandshakeResponse(string text)

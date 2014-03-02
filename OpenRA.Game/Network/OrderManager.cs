@@ -75,15 +75,15 @@ namespace OpenRA.Network
 
 		public void TickImmediate()
 		{
-			var immediateOrders = localOrders.Where( o => o.IsImmediate ).ToList();
-			if( immediateOrders.Count != 0 )
-				Connection.SendImmediate( immediateOrders.Select( o => o.Serialize() ).ToList() );
-			localOrders.RemoveAll( o => o.IsImmediate );
+			var immediateOrders = localOrders.Where(o => o.IsImmediate).ToList();
+			if (immediateOrders.Count != 0)
+				Connection.SendImmediate(immediateOrders.Select(o => o.Serialize()).ToList());
+			localOrders.RemoveAll(o => o.IsImmediate);
 
 			var immediatePackets = new List<Pair<int, byte[]>>();
 
 			Connection.Receive(
-				( clientId, packet ) =>
+				(clientId, packet) =>
 				{
 					var frame = BitConverter.ToInt32(packet, 0);
 					if (packet.Length == 5 && packet[4] == 0xBF)
@@ -94,7 +94,7 @@ namespace OpenRA.Network
 						immediatePackets.Add(Pair.New(clientId, packet));
 					else
 						frameData.AddFrameOrders(clientId, frame, packet);
-				} );
+				});
 
 			foreach (var p in immediatePackets)
 				foreach (var o in p.Second.ToOrderList(world))
@@ -160,7 +160,7 @@ namespace OpenRA.Network
 			get { return NetFrameNumber >= 1 && frameData.IsReadyForFrame(NetFrameNumber); }
 		}
 
-		static readonly IEnumerable<Session.Client> NoClients = new Session.Client[] {};
+		static readonly IEnumerable<Session.Client> NoClients = new Session.Client[] { };
 		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
 		{
 			get

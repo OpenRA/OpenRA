@@ -450,7 +450,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (chatTextField.Text.Length == 0)
 					return true;
 
-				orderManager.IssueOrder(Order.Chat(teamChat, chatTextField.Text));
+				orderManager.IssueOrder(Order.Chat(teamChat, chatTextField.Text, true));
 				chatTextField.Text = "";
 				return true;
 			};
