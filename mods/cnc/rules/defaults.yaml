@@ -165,7 +165,7 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	SpawnViceroid:
-		Probability: 2
+		Probability: 10
 	CrushableInfantry:
 		WarnProbability: 60
 	CombatDebugOverlay:

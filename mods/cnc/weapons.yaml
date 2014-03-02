@@ -890,7 +890,7 @@ HonestJohn:
 		Damage: 100
 
 Tiberium:
-	ROF: 4
+	ROF: 12
 	Warhead:
 		Spread: 42
 		InfDeath: 6
