@@ -36,6 +36,14 @@ function M.warnings_from_string(src, file)
   return M.show_warnings(ast)
 end
 
+function AnalyzeFile(file)
+  local warn, err, line, pos = M.warnings_from_string(FileRead(file), file)
+  if err then
+    err = err:gsub("line %d+, char %d+", "syntax error")
+  end
+  return warn, err, line, pos
+end
+
 function M.show_warnings(top_ast)
   local warnings = {}
   local function warn(msg, linenum, path)
