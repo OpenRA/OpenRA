@@ -971,6 +971,7 @@ Tail:
 	ROF: 30
 	Range: 1c0
 	Projectile: Bullet
+		Speed: 1c682
 	Warhead:
 		Spread: 213
 		Versus:
@@ -986,6 +987,7 @@ Horn:
 	ROF: 20
 	Range: 1c0
 	Projectile: Bullet
+		Speed: 1c682
 	Warhead:
 		Spread: 213
 		Versus:
@@ -1001,6 +1003,7 @@ Teeth:
 	ROF: 30
 	Range: 1c0
 	Projectile: Bullet
+		Speed: 1c682
 	Warhead:
 		Spread: 213
 		Versus:
@@ -1016,6 +1019,7 @@ Claw:
 	ROF: 10
 	Range: 1c0
 	Projectile: Bullet
+		Speed: 1c682
 	Warhead:
 		Spread: 213
 		Versus:
