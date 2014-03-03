@@ -23,6 +23,7 @@ lualibs/mobdebug/mobdebug.lua
 lualibs/ltn12.lua
 lualibs/luadist.lua
 lualibs/mime.lua
+lualibs/sha2.lua
 lualibs/socket.lua
 lualibs/socket/*.lua
 lualibs/ssl.lua
