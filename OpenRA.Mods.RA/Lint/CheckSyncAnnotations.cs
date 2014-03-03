@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 {
 	class CheckSyncAnnotations : ILintPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning)
+		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
 			/* first, check all the types implementing ISync */
 			foreach (var t in Game.modData.ObjectCreator.GetTypesImplementing<ISync>())
