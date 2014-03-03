@@ -70,6 +70,14 @@ function ide:GetDebugger() return self.debugger end
 function ide:GetMainFrame() return self.frame end
 function ide:GetDocument(ed) return self.openDocuments[ed:GetId()] end
 function ide:GetDocuments() return self.openDocuments end
+function ide:FindMenuItem(menu, itemid)
+  for pos = 0, menu:GetMenuItemCount()-1 do
+    if menu:FindItemByPosition(pos):GetId() == itemid then
+      return menu:FindItemByPosition(pos), pos
+    end
+  end
+  return nil
+end
 function ide:FindDocument(path)
   local fileName = wx.wxFileName(path)
   for _, doc in pairs(ide.openDocuments) do
