@@ -55,6 +55,9 @@ local function setPromptText(text)
   out:SetTargetStart(length - string.len(getPromptText()))
   out:SetTargetEnd(length)
   out:ReplaceTarget(text)
+  -- refresh the output window to force recalculation of wrapped lines;
+  -- otherwise a wrapped part of the last line may not be visible.
+  out:Update(); out:Refresh()
   out:GotoPos(out:GetLength())
 end
 
