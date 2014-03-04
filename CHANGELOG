@@ -37,6 +37,9 @@ NEW:
 		Tanya can now plant C4 on vehicles.
 		Parachute bomb air strike will reveal the whole target area.
 		Adjusted AA Guns to fire their guns alternately at a high fire rate, and added contrails to their bullets.
+		Decreased AA Gun ZSU-23 damage from 25 to 12.
+		Increased SAM Site power cost from -20 to -40.
+		Decreased SAM Site Nike damage from 100 to 50.
 	Tiberian Dawn:
 		Commando can now plant C4 on bridges.
 		Added the Asset Browser to the Extras menu.

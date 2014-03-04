@@ -37,7 +37,7 @@ ZSU-23:
 			Light: 75%
 			Concrete: 50%
 		Explosion: small_explosion_air
-		Damage: 25
+		Damage: 12
 
 Vulcan:
 	ROF: 30
@@ -704,7 +704,7 @@ Nike:
 		ImpactSound: kaboom25.aud
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 100
+		Damage: 50
 
 RedEye:
 	ROF: 50
