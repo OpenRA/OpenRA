@@ -530,7 +530,7 @@ Rules:
 			Type: Wood
 		Bib:
 		RevealsShroud:
-			Range: 3
+			Range: 3c0
 		ExternalCapturable:
 		ExternalCapturableBar:
 		EngineerRepairable:
@@ -766,7 +766,7 @@ Rules:
 			Speed: 71
 			Crushes: wall, atmine, crate, infantry
 		RevealsShroud:
-			Range: 7
+			Range: 7c0
 		Turreted:
 			ROT: 5
 		Armament:
@@ -820,7 +820,7 @@ Rules:
 		Passenger:
 			PipType: Red
 		RevealsShroud:
-			Range: 6
+			Range: 6c0
 		AutoTarget:
 			InitialStance: Defend
 		Armament:
@@ -842,7 +842,7 @@ Rules:
 		Mobile:
 			Speed: 56
 		RevealsShroud:
-			Range: 5
+			Range: 5c0
 		Passenger:
 			PipType: Yellow
 		TakeCover:
@@ -865,7 +865,7 @@ Rules:
 			ROT: 10
 			Speed: 128
 		RevealsShroud:
-			Range: 4
+			Range: 4c0
 		Turreted:
 			ROT: 5
 			Offset: -298,0,298
@@ -890,7 +890,7 @@ Rules:
 		Mobile:
 			Speed: 142
 		RevealsShroud:
-			Range: 5
+			Range: 5c0
 		Armament:
 			Weapon: M60mg
 			LocalOffset: 0,0,171
@@ -922,7 +922,7 @@ Rules:
 			ROT: 2
 			Speed: 85
 		RevealsShroud:
-			Range: 7
+			Range: 7c0
 		AttackFrontal:
 			PrimaryWeapon: 155mm
 			SecondaryWeapon: 155mm
@@ -940,7 +940,7 @@ Rules:
 		Mobile:
 			Speed: 99
 		RevealsShroud:
-			Range: 5
+			Range: 5c0
 		Armament:
 			Weapon: SCUD
 		AttackFrontal:
@@ -959,7 +959,7 @@ Rules:
 		Mobile:
 			Speed: 56
 		RevealsShroud:
-			Range: 14
+			Range: 14c0
 		Turreted:
 			ROT: 1
 		AttackTurreted:

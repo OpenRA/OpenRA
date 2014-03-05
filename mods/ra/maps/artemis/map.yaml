@@ -2939,7 +2939,7 @@ Rules:
 		RenderBuilding:
 			Scale: 0.75
 		RevealsShroud:
-			Range: 20
+			Range: 20c0
 		Health:
 			HP: 1500
 		Armor:

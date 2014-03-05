@@ -829,7 +829,7 @@ Rules:
 			WaitSpread: 1
 			ROT: 900
 		RevealsShroud:
-			Range: 40
+			Range: 40c0
 		RenderUnit:
 			Image: MNLY
 		MustBeDestroyed:

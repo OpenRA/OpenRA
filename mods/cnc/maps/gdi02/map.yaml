@@ -2,6 +2,8 @@ Selectable: True
 
 MapFormat: 6
 
+RequiresMod: cnc
+
 Title: Knock out the Refinery
 
 Author: Westwood Studios
@@ -15,8 +17,6 @@ Bounds: 31,31,31,31
 UseAsShellmap: False
 
 Type: Campaign
-
-RequiresMod: cnc
 
 Options:
 	Crates: False

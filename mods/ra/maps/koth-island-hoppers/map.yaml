@@ -162,7 +162,7 @@ Rules:
 		Building:
 			BaseNormal: false
 		RevealsShroud:
-			Range: 20
+			Range: 20c0
 		Invulnerable:
 		-Selectable:
 		-TargetableBuilding:

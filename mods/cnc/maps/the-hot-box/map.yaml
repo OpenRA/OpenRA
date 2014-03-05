@@ -236,7 +236,7 @@ Rules:
 		Health:
 			HP: 1000
 		RevealsShroud:
-			Range: 40
+			Range: 40c0
 		MustBeDestroyed:
 		-AttackMove:
 
