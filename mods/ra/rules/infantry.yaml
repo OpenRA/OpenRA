@@ -19,7 +19,7 @@ DOG:
 	Mobile:
 		Speed: 99
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Armament:
 		Weapon: DogJaw
 	AttackLeap:
@@ -203,7 +203,7 @@ SPY:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Passenger:
 		PipType: Yellow
 	TakeCover:
@@ -241,7 +241,7 @@ E7:
 	Mobile:
 		Speed: 71
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	C4Demolition:
 		C4Delay: 45
 	Passenger:
@@ -277,7 +277,7 @@ MEDI:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 3
+		Range: 3c0
 	Passenger:
 		PipType: Yellow
 	AutoHeal:
@@ -312,7 +312,7 @@ MECH:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 3
+		Range: 3c0
 	Passenger:
 		PipType: Yellow
 	AutoHeal:
@@ -340,7 +340,7 @@ EINSTEIN:
 	Mobile:
 		Speed: 71
 	RevealsShroud:
-		Range: 2
+		Range: 2c0
 	-AutoTarget:
 	ProximityCaptor:
 		Types: CivilianInfantry
@@ -362,7 +362,7 @@ DELPHI:
 	Mobile:
 		Speed: 71
 	RevealsShroud:
-		Range: 2
+		Range: 2c0
 	-AutoTarget:
 	ProximityCaptor:
 		Types: CivilianInfantry
@@ -397,7 +397,7 @@ THF:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Passenger:
 		PipType: Yellow
 	Infiltrates:
@@ -426,7 +426,7 @@ SHOK:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Armament:
 		Weapon: PortaTesla
 		LocalOffset: 427,0,341
@@ -460,7 +460,7 @@ SNIPER:
 	Passenger:
 		PipType: Red
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	AutoTarget:
 		InitialStance: HoldFire
 	Armament:

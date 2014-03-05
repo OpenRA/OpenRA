@@ -97,7 +97,7 @@ TRAN.Husk:
 		Id: rotor_2
 		Offset: 597,0,213
 	RevealsShroud:
-		Range: 12
+		Range: 12c0
 
 TRAN.Husk1:
 	Inherits: ^Husk
@@ -158,7 +158,7 @@ MIG.Husk:
 		Interval: 2
 		MinDamage: Undamaged
 	RevealsShroud:
-		Range: 12
+		Range: 12c0
 
 YAK.Husk:
 	Inherits: ^PlaneHusk
@@ -178,7 +178,7 @@ YAK.Husk:
 		Interval: 2
 		MinDamage: Undamaged
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 
 HELI.Husk:
 	Inherits: ^HelicopterHusk
@@ -196,7 +196,7 @@ HELI.Husk:
 		Offset: -427,0,0
 		MinDamage: Undamaged
 	RevealsShroud:
-		Range: 12
+		Range: 12c0
 
 HIND.Husk:
 	Inherits: ^HelicopterHusk
@@ -213,7 +213,7 @@ HIND.Husk:
 		Offset: -427,0,0
 		MinDamage: Undamaged
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 
 U2.Husk:
 	Inherits: ^PlaneHusk

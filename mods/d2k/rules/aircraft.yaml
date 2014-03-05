@@ -10,7 +10,7 @@
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 12
+		Range: 12c0
 	Helicopter:
 		InitialFacing: 0
 		ROT: 4
@@ -72,7 +72,7 @@ ORNI:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Armament:
 		Weapon: ChainGun
 		LocalOffset: 85,-213,-85
@@ -102,7 +102,7 @@ ORNI.bomber:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Plane:
 		ROT: 5
 		Speed: 350
@@ -131,7 +131,7 @@ CARRYALL.infantry:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 12
+		Range: 12c0
 	Plane:
 		ROT: 4
 		Speed: 280

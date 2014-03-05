@@ -21,7 +21,7 @@ MCV:
 		Speed: 85
 		Crushes: wall, crate, infantry
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	MustBeDestroyed:
 	BaseBuilding:
 	Transforms:
@@ -53,7 +53,7 @@ APC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Turreted:
 		ROT: 10
 	Cargo:
@@ -89,7 +89,7 @@ HARV:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	-GainsExperience:
 	RenderSprites:
 	RenderVoxels:
@@ -113,7 +113,7 @@ HVR:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Armament:
 		Weapon: HoverMissile
 	Turreted:
@@ -144,7 +144,7 @@ HVR:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Turreted:
 		ROT: 3
 	Armament@PRIMARY:
@@ -181,7 +181,7 @@ TRUCKB:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	SupplyTruck:
 		Payload: 500
 	RenderSprites:
@@ -206,7 +206,7 @@ LPST:
 		Speed: 85
 		ROT: 5
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -235,7 +235,7 @@ ICBM:
 		Speed: 85
 		ROT: 5
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -263,7 +263,7 @@ REPAIR:
 		Speed: 85
 		ROT: 5
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Armament:
 		Weapon: Repair
 	AttackMedic:
@@ -290,7 +290,7 @@ ART2:
 		Speed: 71
 		ROT: 2
 	RevealsShroud:
-		Range: 9
+		Range: 9c0
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -320,7 +320,7 @@ WEED:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	-GainsExperience:
 	RenderSprites:
 	RenderVoxels:
@@ -344,7 +344,7 @@ BUS:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Cargo:
 		Types: Infantry
 		MaxWeight: 20
@@ -371,7 +371,7 @@ PICK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Cargo:
 		Types: Infantry
 		MaxWeight: 2
@@ -398,7 +398,7 @@ CAR:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Cargo:
 		Types: Infantry
 		MaxWeight: 4
@@ -425,7 +425,7 @@ GGHUNT:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	RenderUnit:
 	DemoTruck:
 	Explodes:
@@ -450,7 +450,7 @@ WINI:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -477,7 +477,7 @@ MMCH:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	RenderInfantry:
 	Turreted:
 	AttackTurreted:
@@ -511,7 +511,7 @@ HMEC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	RenderSprites:
 	AttackFrontal:
 	AutoTarget:
@@ -542,7 +542,7 @@ SMECH:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	AttackFrontal:
 	AutoTarget:
 	Armament:
@@ -570,7 +570,7 @@ BIKE:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Armament:
 		Weapon: BikeMissile
 		LocalOffset: -128, -170, 170, -128, 170, 170
@@ -600,7 +600,7 @@ BGGY:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Armament:
 		Weapon: RaiderCannon
 	AttackFrontal:
@@ -628,7 +628,7 @@ SAPC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -656,7 +656,7 @@ SUBTANK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Armament:
 		Weapon: FireballLauncher
 	AttackFrontal:
@@ -683,7 +683,7 @@ SONIC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Armament:
 		Weapon: SonicZap
 	AttackTurreted:
@@ -712,7 +712,7 @@ TTNK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
@@ -742,7 +742,7 @@ STNK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Cloak:
 		InitialDelay: 90
 		CloakDelay: 90

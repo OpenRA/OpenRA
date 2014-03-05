@@ -191,7 +191,7 @@ UMAGON:
 		HP: 150
 	Passenger:
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Armament:
 		Weapon: Sniper
 	AttackFrontal:
@@ -221,7 +221,7 @@ GHOST:
 		HP: 200
 	Passenger:
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Armament:
 		Weapon: LtRail
 	CrushableInfantry:
@@ -256,7 +256,7 @@ JUMPJET:
 	Passenger:
 		PipType: Green
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Armament:
 		Weapon: JumpCannon
 	-CrushableInfantry:
@@ -284,7 +284,7 @@ CHAMSPY:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
-		Range: 9
+		Range: 9c0
 	Passenger:
 	TakeCover:
 	Spy:
@@ -319,7 +319,7 @@ CYBORG:
 		HP: 300
 	Passenger:
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Armament:
 		Weapon: Vulcan3
 	AttackFrontal:
@@ -352,7 +352,7 @@ CYC2:
 		HP: 500
 	Passenger:
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Armament:
 		Weapon: Sniper
 	AttackFrontal:
@@ -380,7 +380,7 @@ MUTANT:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Armament:
 		Weapon: Vulcan
 	AttackFrontal:
@@ -408,7 +408,7 @@ MWMN:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Armament:
 		Weapon: Vulcan
 	AttackFrontal:
@@ -436,7 +436,7 @@ MUTANT3:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Armament:
 		Weapon: Vulcan
 	AttackFrontal:
@@ -464,7 +464,7 @@ MHIJACK:
 	Mobile:
 		Speed: 99
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	-AutoTarget:
 	TakeCover:
 	-RenderInfantry:
@@ -489,7 +489,7 @@ TRATOS:
 	Mobile:
 		Speed: 71
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	TakeCover:
 	-AutoTarget:
 	-RenderInfantry:
@@ -514,7 +514,7 @@ OXANNA:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	TakeCover:
 	-AutoTarget:
 	-RenderInfantry:
@@ -539,7 +539,7 @@ SLAV:
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	TakeCover:
 	-AutoTarget:
 	-RenderInfantry:
@@ -562,7 +562,7 @@ DOGGIE:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Mobile:
 		Speed: 113
 	Selectable:
@@ -589,7 +589,7 @@ VISSML:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 0
+		Range: 0c0
 	Mobile:
 		Speed: 113
 		ROT: 16
@@ -617,7 +617,7 @@ VISLRG:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 0
+		Range: 0c0
 	Mobile:
 		Speed: 113
 		ROT: 16

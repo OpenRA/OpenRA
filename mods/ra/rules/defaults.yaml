@@ -103,7 +103,7 @@
 	Armor:
 		Type: None
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Mobile:
 		Crushes: apmine, crate
 		SharesCell: true
@@ -359,7 +359,7 @@
 	Mobile:
 		Speed: 56
 	RevealsShroud:
-		Range: 2
+		Range: 2c0
 	Armament:
 		Weapon: Pistol
 	AttackFrontal:

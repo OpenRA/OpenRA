@@ -128,7 +128,7 @@ COMBATA:
 	Buildable:
 		Owner: atreides
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	Turreted:
 		ROT: 6
 	Armament:
@@ -180,7 +180,7 @@ SONICTANK:
 		ROT: 3
 		Speed: 74
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	RenderUnit:
 		Image: SONICTANK
 	Armament:
@@ -223,7 +223,7 @@ FREMEN:
 		HP: 70
 	Passenger:
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	AutoTarget:
 		ScanRadius: 7
 	Armament@PRIMARY:

@@ -18,7 +18,7 @@ FACT:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Bib:
 	Production:
 		Produces: Building,Defense
@@ -66,7 +66,7 @@ NUKE:
 	Health:
 		HP: 400
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Bib:
 
 NUK2:
@@ -89,7 +89,7 @@ NUK2:
 	Health:
 		HP: 650
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Bib:
 
 PROC:
@@ -110,7 +110,7 @@ PROC:
 	Health:
 		HP: 900
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Bib:
 	TiberiumRefinery:
 		DockOffset: 0,2
@@ -150,7 +150,7 @@ SILO:
 	Health:
 		HP: 400
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	RenderBuildingSilo:
 	StoresOre:
 		PipCount: 10
@@ -181,7 +181,7 @@ PYLE:
 	Health:
 		HP: 500
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Bib:
 	RallyPoint:
 	Exit@1:
@@ -219,7 +219,7 @@ HAND:
 	Health:
 		HP: 500
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Bib:
 	RallyPoint:
 	Exit@1:
@@ -254,7 +254,7 @@ AFLD:
 	Health:
 		HP: 1000
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Bib:
 	RallyPoint:
 		RallyPoint: 4,2
@@ -291,7 +291,7 @@ WEAP:
 	Health:
 		HP: 1000
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Bib:
 	-RenderBuilding:
 	RenderBuildingWarFactory:
@@ -327,7 +327,7 @@ HPAD:
 	Health:
 		HP: 400
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
 	Production:
@@ -365,7 +365,7 @@ HQ:
 	Health:
 		HP: 750
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Bib:
 	ProvidesRadar:
 	RenderDetectionCircle:
@@ -403,7 +403,7 @@ FIX:
 	Health:
 		HP: 400
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
@@ -431,7 +431,7 @@ EYE:
 	Health:
 		HP: 1200
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Bib:
 	ProvidesRadar:
 	RenderDetectionCircle:
@@ -474,7 +474,7 @@ TMPL:
 	Health:
 		HP: 2000
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Bib:
 	NukePower:
 		Icon: abomb
@@ -512,7 +512,7 @@ GUN:
 	Health:
 		HP: 400
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -555,7 +555,7 @@ SAM:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Turreted:
 		ROT: 10
 		InitialFacing: 0
@@ -593,7 +593,7 @@ OBLI:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
 	Armament:
@@ -631,7 +631,7 @@ GTWR:
 	Health:
 		HP: 400
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Armament:
 		Weapon: HighV
 		LocalOffset: 256,0,256
@@ -672,7 +672,7 @@ ATWR:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Turreted:
 		ROT: 255
 		Offset: 128,128,-85

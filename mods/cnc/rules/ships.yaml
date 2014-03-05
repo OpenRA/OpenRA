@@ -14,7 +14,7 @@ BOAT:
 		Speed: 28
 		OnRails: true
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Turreted:
 		ROT: 7
 		Offset: 640,0,171
@@ -59,7 +59,7 @@ LST:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	RenderUnit:
 	WithRoof:
 	WithCargo:
@@ -69,3 +69,4 @@ LST:
 		Types: Infantry, Vehicle
 		MaxWeight: 5
 		PipCount: 5
+

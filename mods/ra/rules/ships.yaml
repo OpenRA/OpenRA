@@ -19,7 +19,7 @@ SS:
 		ROT: 4
 		Speed: 71
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	-TargetableUnit:
 	TargetableSubmarine:
 		TargetTypes: Ground, Water
@@ -65,7 +65,7 @@ MSUB:
 		ROT: 3
 		Speed: 42
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	RenderUnit:
 	-TargetableUnit:
 	TargetableSubmarine:
@@ -111,7 +111,7 @@ DD:
 		ROT: 7
 		Speed: 85
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Turreted:
 		ROT: 7
 		Offset: 341,0,128
@@ -157,7 +157,7 @@ CA:
 		ROT: 3
 		Speed: 42
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Turreted@PRIMARY:
 		Turret: primary
 		Offset: -864,0,128
@@ -215,7 +215,7 @@ LST:
 		ROT: 10
 		Speed: 113
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	RenderLandingCraft:
 		OpenTerrainTypes: Clear, Rough, Road, Ore, Gems, Beach
 	Cargo:
@@ -246,7 +246,7 @@ PT:
 		ROT: 7
 		Speed: 128
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Turreted:
 		ROT: 7
 		Offset: 512,0,0

@@ -147,3 +147,4 @@ STNK.Husk:
 		Image: stnk
 	TransformOnCapture:
 		IntoActor: stnk
+

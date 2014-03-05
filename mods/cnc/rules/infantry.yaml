@@ -197,7 +197,7 @@ RMBO:
 	Passenger:
 		PipType: Red
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	AutoTarget:
 		ScanRadius: 5
 	C4Demolition:

@@ -18,7 +18,7 @@ V2RL:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Armament:
 		Weapon: SCUD
 	AttackFrontal:
@@ -47,7 +47,7 @@ V2RL:
 	Mobile:
 		Speed: 128
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Turreted:
 		ROT: 5
 	Armament:
@@ -87,7 +87,7 @@ V2RL:
 		Speed: 85
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Turreted:
 		ROT: 5
 	Armament:
@@ -129,7 +129,7 @@ V2RL:
 		Speed: 71
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Turreted:
 		ROT: 5
 	Armament:
@@ -173,7 +173,7 @@ V2RL:
 		Speed: 42
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Turreted:
 		ROT: 2
 	Armament@PRIMARY:
@@ -226,7 +226,7 @@ ARTY:
 		ROT: 2
 		Speed: 85
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Armament:
 		Weapon: 155mm
 		LocalOffset: 624,0,208
@@ -268,7 +268,7 @@ HARV:
 		Speed: 85
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	RenderHarvester:
 		ImagesByFullness: harvempty, harvhalf, harv
 	GpsDot:
@@ -305,7 +305,7 @@ MCV:
 		Speed: 85
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Transforms:
 		IntoActor: fact
 		Offset: -1,-1
@@ -338,7 +338,7 @@ JEEP:
 		ROT: 10
 		Speed: 170
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	Turreted:
 		ROT: 10
 		Offset: 0,0,85
@@ -373,7 +373,7 @@ APC:
 	Mobile:
 		Speed: 142
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Armament:
 		Weapon: M60mg
 		LocalOffset: 0,0,171
@@ -406,7 +406,7 @@ MNLY.AP:
 	Mobile:
 		Speed: 128
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	RenderUnit:
 		Image: MNLY
 	Minelayer:
@@ -438,7 +438,7 @@ MNLY.AT:
 	Mobile:
 		Speed: 128
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	RenderUnit:
 		Image: MNLY
 	Minelayer:
@@ -470,7 +470,7 @@ TRUK:
 	Mobile:
 		Speed: 128
 	RevealsShroud:
-		Range: 3
+		Range: 3c0
 	RenderUnit:
 	SupplyTruck:
 		Payload: 500
@@ -499,9 +499,9 @@ MGG:
 		Offset: -299,0,171
 		Sequence: spinner
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	CreatesShroud:
-		Range: 6
+		Range: 6c0
 	RenderShroudCircle:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -529,7 +529,7 @@ MRJ:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	RenderUnit:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
@@ -564,7 +564,7 @@ TTNK:
 		Speed: 113
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Armament:
 		Weapon: TTankZap
 		LocalOffset: 0,0,213
@@ -596,7 +596,7 @@ FTRK:
 		ROT: 10
 		Speed: 128
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Turreted:
 		ROT: 5
 		Offset: -298,0,298
@@ -635,7 +635,7 @@ DTRK:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
-		Range: 3
+		Range: 3c0
 	RenderUnit:
 	Explodes:
 		Weapon: MiniNuke
@@ -668,7 +668,7 @@ CTNK:
 		Speed: 113
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	RenderUnit:
 	AutoTarget:
 	Armament@PRIMARY:
@@ -703,7 +703,7 @@ QTNK:
 		Speed: 56
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Selectable:
 		Bounds: 44,38,0,-4
 	RenderUnit:
@@ -713,3 +713,4 @@ QTNK:
 	-EjectOnDeath:
 	TargetableUnit:
 		TargetTypes: Ground, MADTank
+
