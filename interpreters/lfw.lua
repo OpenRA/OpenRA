@@ -1,3 +1,6 @@
+-- add `lfw = {chdirtofile = true}` to the configuration file to set file
+-- directory as the current one when Running or Debugging LuaForWindows projects.
+
 if ide.osname ~= "Windows" or not os.getenv("LUA_DEV") then return end
 
 local exe
@@ -54,7 +57,8 @@ return {
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
   end,
   fworkdir = function (self,wfilename)
-    return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
+    return (not ide.config.lfw or ide.config.lfw.chdirtofile ~= true)
+      and ide.config.path.projectdir or wfilename:GetPath(wx.wxPATH_GET_VOLUME)
   end,
   hasdebugger = true,
   fattachdebug = function(self) DebuggerAttachDefault() end,
