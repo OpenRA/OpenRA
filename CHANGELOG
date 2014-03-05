@@ -21,6 +21,7 @@ NEW:
 		Added a toggle spectators to multiplayer.
 		Removed the ability of commandos to plant C4 on walls.
 		Order lines are now shown on unit selection.
+		Fixed chat synchronization in replays.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
