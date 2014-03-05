@@ -29,7 +29,7 @@ MedicVoice:
 		Select: mrespon1,myessir1
 		Move: maffirm1,mmovout1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
-		
+
 MechanicVoice:
 	Voices:
 		Select: mhuh1,mhowdy1,myes1,mrise1
