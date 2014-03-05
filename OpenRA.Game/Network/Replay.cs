@@ -12,7 +12,6 @@ using System;
 
 namespace OpenRA.Network
 {
-	/* HACK: a maze of twisty little hacks... */
 	public class Replay
 	{
 		public readonly string Filename;
@@ -22,34 +21,12 @@ namespace OpenRA.Network
 		public Replay(string filename)
 		{
 			Filename = filename;
-			var lastFrame = 0;
-			var hasSeenGameStart = false;
-			var lobbyInfo = null as Session;
 
 			using (var conn = new ReplayConnection(filename))
-				conn.Receive((client, packet) =>
-					{
-						var frame = BitConverter.ToInt32(packet, 0);
-						if (packet.Length == 5 && packet[4] == 0xBF)
-							return;	// disconnect
-						else if (packet.Length >= 5 && packet[4] == 0x65)
-							return;	// sync
-						else if (frame == 0)
-						{
-							/* decode this to recover lobbyinfo, etc */
-							var orders = packet.ToOrderList(null);
-							foreach (var o in orders)
-								if (o.OrderString == "StartGame")
-									hasSeenGameStart = true;
-								else if (o.OrderString == "SyncInfo" && !hasSeenGameStart)
-									lobbyInfo = Session.Deserialize(o.TargetString);
-						}
-						else
-							lastFrame = Math.Max(lastFrame, frame);
-					});
-
-			Duration = lastFrame * Game.NetTickScale;
-			LobbyInfo = lobbyInfo;
+			{
+				Duration = conn.TickCount * Game.NetTickScale;
+				LobbyInfo = conn.LobbyInfo;
+			}
 		}
 
 		public Map Map()
