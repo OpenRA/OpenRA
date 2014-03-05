@@ -68,6 +68,7 @@ NEW:
 		Decreased Tiberium damage rate by a factor of 3.
 		Decreased Visceroid health by 25% and removed their ability to gain experience.
 		Increased the chance of Tiberium or chemical deaths spawning a Visceroid from 2% to 10%.
+		Increased Obelisk of Light laser damage from 200 to 360.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.
