@@ -832,7 +832,7 @@ Laser:
 			Wood: 50%
 		InfDeath: 5
 		SmudgeType: Scorch
-		Damage: 200
+		Damage: 360
 
 SAMMissile:
 	ROF: 15
