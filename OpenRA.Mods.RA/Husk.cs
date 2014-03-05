@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public int GetInitialFacing() { return 128; }
 	}
 
-	class Husk : IPositionable, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
+	class Husk : IPositionable, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisable
 	{
 		readonly HuskInfo info;
 		readonly Actor self;
@@ -99,6 +100,11 @@ namespace OpenRA.Mods.RA
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
 			self.World.ScreenMap.Remove(self);
+		}
+
+		public bool Disabled
+		{
+			get { return true; }
 		}
 	}
 

@@ -104,6 +104,7 @@
 		CaptureThreshold: 1.0
 	TransformOnCapture:
 		ForceHealthPercentage: 25
+	DisabledOverlay:
 
 ^TowerHusk:
 	Health:

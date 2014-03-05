@@ -90,6 +90,7 @@ PALACEO:
 		SelectTargetSound:
 		FlareType:
 	CanPowerDown:
+	DisabledOverlay:
 	RequiresPower:
 	SupportPowerChargeBar:
 
