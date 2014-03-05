@@ -184,6 +184,7 @@ namespace OpenRA.Traits
 	public interface Requires<T> where T : class { }
 	public interface UsesInit<T> where T : IActorInit { }
 
+	public interface INotifySelected { void Selected(Actor self); }
 	public interface INotifySelection { void SelectionChanged(); }
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }
@@ -196,6 +197,7 @@ namespace OpenRA.Traits
 	}
 
 	public interface IRenderOverlay { void Render(WorldRenderer wr); }
+	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); } 
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IBlocksBullets { }
