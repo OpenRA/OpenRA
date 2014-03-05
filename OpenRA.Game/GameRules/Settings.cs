@@ -139,7 +139,7 @@ namespace OpenRA.GameRules
 		public int Timestep = 40;
 
 		public bool AllowDownloading = true;
-		public string MapRepository = "http://content.open-ra.org/map/";
+		public string[] MapRepositories = { "http://resource.openra.net/map/", "http://resource.ihptru.net:8080/map/" };
 	}
 
 	public class KeySettings
