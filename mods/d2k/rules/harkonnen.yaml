@@ -185,7 +185,7 @@ DEVAST:
 		Speed: 42
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	RenderUnit:
 	Armament:
 		Weapon: DevBullet
@@ -231,7 +231,7 @@ SARDAUKAR:
 	Mobile:
 		Speed: 42
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:

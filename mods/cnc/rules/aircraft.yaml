@@ -22,7 +22,7 @@ TRAN:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	RenderUnit:
 	WithRotor@PRIMARY:
 		Offset: -597,0,171
@@ -62,7 +62,7 @@ HELI:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Armament@PRIMARY:
 		Weapon: HeliAGGun
 		LocalOffset: 128,-213,-85, 128,213,-85
@@ -114,7 +114,7 @@ ORCA:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Armament@PRIMARY:
 		Weapon: OrcaAGMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
@@ -226,7 +226,7 @@ TRAN.Husk:
 		ROT: 5
 		Speed: 140
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	WithRotor@PRIMARY:
 		Offset: -597,0,171
 	WithRotor@SECONDARY:
@@ -244,7 +244,7 @@ HELI.Husk:
 		ROT: 4
 		Speed: 186
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	WithRotor:
 		Offset: 0,0,85
 	RenderUnit:
@@ -259,7 +259,7 @@ ORCA.Husk:
 		ROT: 4
 		Speed: 186
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	RenderUnit:
 		Image: orca
 	WithShadow:

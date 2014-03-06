@@ -1558,14 +1558,14 @@ Rules:
 		Buildable:
 			Owner: None
 		CreatesShroud:
-			Range: 6
+			Range: 6c0
 	GAP:
 		Buildable:
 			Owner: None
 	CAMERA.Large:
 		Inherits: CAMERA
 		RevealsShroud:
-			Range: 1000
+			Range: 1000c0
 
 Sequences:
 

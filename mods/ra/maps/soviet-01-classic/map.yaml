@@ -909,7 +909,7 @@ Rules:
 		Armor:
 			Type: Wood
 		RevealsShroud:
-			Range: 7
+			Range: 7c0
 		Exit@1:
 			SpawnOffset: 0,170,0
 			ExitCell: 1,1
@@ -938,7 +938,7 @@ Rules:
 	CAMERA.Large:
 		Inherits: CAMERA
 		RevealsShroud:
-			Range: 1000
+			Range: 1000c0
 
 Sequences:
 

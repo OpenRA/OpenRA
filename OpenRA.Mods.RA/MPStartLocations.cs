@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 {
 	public class MPStartLocationsInfo : TraitInfo<MPStartLocations>
 	{
-		public readonly int InitialExploreRange = 5;
+		public readonly WRange InitialExploreRange = WRange.FromCells(5);
 	}
 
 	public class MPStartLocations : IWorldLoaded

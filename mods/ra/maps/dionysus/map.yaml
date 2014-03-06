@@ -2156,7 +2156,7 @@ Rules:
 		Tooltip:
 			Name: Wuschel's Wall Street Speculator HQ
 		RevealsShroud:
-			Range: 30
+			Range: 30c0
 		Health:
 			HP: 2000
 		Armor:

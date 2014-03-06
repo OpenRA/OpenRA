@@ -21,7 +21,7 @@ MSLO:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	IronCurtainable:
 	NukePower:
 		Icon: abomb
@@ -69,9 +69,9 @@ GAP:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	CreatesShroud:
-		Range: 6
+		Range: 6c0
 	IronCurtainable:
 	RenderShroudCircle:
 
@@ -106,7 +106,7 @@ SPEN:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Exit@1:
 		SpawnOffset: 0,-213,0
 		Facing: 96
@@ -163,7 +163,7 @@ SYRD:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Exit@1:
 		SpawnOffset: -1024,1024,0
 		Facing: 160
@@ -217,7 +217,7 @@ IRON:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	IronCurtainable:
 	IronCurtainPower:
 		Icon: invuln
@@ -258,7 +258,7 @@ PDOX:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	IronCurtainable:
 	ChronoshiftPower:
 		Icon: chrono
@@ -301,7 +301,7 @@ TSLA:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	RenderBuildingCharge:
 	Armament:
 		Weapon: TeslaZap
@@ -341,7 +341,7 @@ AGUN:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Turreted:
 		ROT: 15
 		InitialFacing: 224
@@ -384,7 +384,7 @@ DOME:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Bib:
 	ProvidesRadar:
 	IronCurtainable:
@@ -406,7 +406,7 @@ PBOX:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	IronCurtainable:
 	-AcceptsSupplies:
 	Turreted:
@@ -552,7 +552,7 @@ HBOX:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 60
@@ -708,7 +708,7 @@ GUN:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -746,7 +746,7 @@ FTUR:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Turreted:
 		ROT: 255
 		Offset: 0,0,112
@@ -788,7 +788,7 @@ SAM:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Turreted:
 		ROT: 30
 		InitialFacing: 0
@@ -829,7 +829,7 @@ ATEK:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Bib:
 	IronCurtainable:
 	GpsPower:
@@ -865,7 +865,7 @@ WEAP:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Bib:
 	-RenderBuilding:
 	RenderBuildingWarFactory:
@@ -894,7 +894,7 @@ FACT:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Bib:
 	Production:
 		Produces: Building,Defense
@@ -938,7 +938,7 @@ PROC:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Bib:
 	OreRefinery:
 	StoresOre:
@@ -982,7 +982,7 @@ SILO:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	RenderBuildingSilo:
 	StoresOre:
 		PipCount: 5
@@ -1013,7 +1013,7 @@ HPAD:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Bib:
 	Exit@1:
 		SpawnOffset: 0,-256,0
@@ -1047,7 +1047,7 @@ AFLD:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Exit@1:
 		SpawnOffset: 0,170,0
 		ExitCell: 1,1
@@ -1098,7 +1098,7 @@ POWR:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Bib:
 	IronCurtainable:
 	DeadBuildingState:
@@ -1127,7 +1127,7 @@ APWR:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Bib:
 	IronCurtainable:
 	DeadBuildingState:
@@ -1156,7 +1156,7 @@ STEK:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Bib:
 	IronCurtainable:
 
@@ -1182,7 +1182,7 @@ BARR:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Bib:
 	RallyPoint:
 	Exit@1:
@@ -1219,7 +1219,7 @@ TENT:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Bib:
 	RallyPoint:
 	Exit@1:
@@ -1246,7 +1246,7 @@ KENN:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	IronCurtainable:
 	-EmitInfantryOnSell:
 	-AcceptsSupplies:
@@ -1273,7 +1273,7 @@ FIX:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Reservable:
 	RallyPoint:
 	IronCurtainable:
@@ -1301,7 +1301,7 @@ FACF:
 	Health:
 		HP: 30
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Bib:
 	RenderBuilding:
 		Image: FACT
@@ -1331,7 +1331,7 @@ WEAF:
 	Health:
 		HP: 30
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Bib:
 	-RenderBuilding:
 	RenderBuildingWarFactory:
@@ -1366,7 +1366,7 @@ SYRF:
 	Health:
 		HP: 30
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	RenderBuilding:
 		Image: SYRD
 	Fake:
@@ -1398,7 +1398,7 @@ SPEF:
 	Health:
 		HP: 30
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	RenderBuilding:
 		Image: SPEN
 	Fake:
@@ -1426,7 +1426,7 @@ DOMF:
 	Health:
 		HP: 30
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Bib:
 	RenderBuilding:
 		Image: DOME

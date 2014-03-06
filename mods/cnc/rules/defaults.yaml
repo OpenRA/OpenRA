@@ -130,7 +130,7 @@
 	Armor:
 		Type: None
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	AutoTarget:
 		ScanRadius: 4
 	Mobile:
@@ -202,7 +202,7 @@
 	Health:
 		HP: 25
 	RevealsShroud:
-		Range: 2
+		Range: 2c0
 	Armament:
 		Weapon: Pistol
 	AttackFrontal:
@@ -229,7 +229,7 @@
 	Tooltip:
 		Name: Dinosaur
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Mobile:
 		Crushes: crate
 		Speed: 113
@@ -400,7 +400,7 @@
 	RepairableBuilding:
 	EngineerRepairable:
 	RevealsShroud:
-		Range: 3
+		Range: 3c0
 
 ^CivField:
 	Inherits: ^CivBuilding

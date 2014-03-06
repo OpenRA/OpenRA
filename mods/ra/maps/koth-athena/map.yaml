@@ -2108,7 +2108,7 @@ Rules:
 		Tooltip:
 			Name: Strategic Point
 		RevealsShroud:
-			Range: 18
+			Range: 18c0
 		Invulnerable:
 		-Selectable:
 		-TargetableBuilding:

@@ -462,11 +462,6 @@ Actors:
 		Owner: Nod
 		Health: 1
 		Facing: 128
-#	Actor71: bggy
-#		Location: 48,38
-#		Owner: Nod
-#		Health: 0.9921875
-#		Facing: 128
 	Actor72: jeep
 		Location: 28,21
 		Owner: GDI
@@ -507,11 +502,6 @@ Actors:
 		Owner: Nod
 		Health: 1
 		Facing: 128
-#	Actor80: bggy
-#		Location: 48,37
-#		Owner: Nod
-#		Health: 1
-#		Facing: 128
 	Actor83: e6
 		Location: 48,40
 		Owner: Nod
@@ -572,24 +562,12 @@ Actors:
 		Health: 1
 		Facing: 224
 		SubCell: 4
-#	Actor110: e1
-#		Location: 51,41
-#		Owner: Nod
-#		Health: 1
-#		Facing: 128
-#		SubCell: 3
 	Actor112: e1
 		Location: 50,40
 		Owner: Nod
 		Health: 1
 		Facing: 128
 		SubCell: 3
-#	Actor113: e1
-#		Location: 51,40
-#		Owner: Nod
-#		Health: 1
-#		Facing: 128
-#		SubCell: 3
 	Actor114: e1
 		Location: 50,40
 		Owner: Nod
@@ -736,7 +714,7 @@ Rules:
 		Health:
 			HP: 750
 		RevealsShroud:
-			Range: 10
+			Range: 10c0
 		Bib:
 		ProvidesRadar:
 		RenderDetectionCircle:

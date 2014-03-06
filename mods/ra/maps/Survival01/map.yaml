@@ -1314,7 +1314,7 @@ Rules:
 	CAMERA.Large:
 		Inherits: CAMERA
 		RevealsShroud:
-			Range: 1000
+			Range: 1000c0
 
 Sequences:
 

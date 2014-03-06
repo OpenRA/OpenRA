@@ -2581,7 +2581,7 @@ Rules:
 			Speed: 42
 			Crushes: wall, atmine, crate, infantry
 		RevealsShroud:
-			Range: 6
+			Range: 6c0
 		Turreted:
 			ROT: 1
 		Armament@PRIMARY:
@@ -2735,7 +2735,7 @@ Rules:
 	CAMERA.Large:
 		Inherits: CAMERA
 		RevealsShroud:
-			Range: 1000
+			Range: 1000c0
 
 Sequences:
 

@@ -255,7 +255,7 @@ Rules:
 		Mobile:
 			Speed: 170
 		RevealsShroud:
-			Range: 50
+			Range: 50c0
 		Armament@PRIMARY:
 			Weapon: M60mg
 		Armament@SECONDARY:

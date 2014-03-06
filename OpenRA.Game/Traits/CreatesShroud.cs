@@ -14,7 +14,7 @@ namespace OpenRA.Traits
 {
 	public class CreatesShroudInfo : ITraitInfo
 	{
-		public readonly int Range = 0;
+		public readonly WRange Range = WRange.Zero;
 		public object Create(ActorInitializer init) { return new CreatesShroud(this); }
 	}
 
@@ -43,6 +43,6 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public int Range { get { return cachedDisabled ? 0 : Info.Range; } }
+		public WRange Range { get { return cachedDisabled ? WRange.Zero : Info.Range; } }
 	}
 }

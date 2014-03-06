@@ -415,7 +415,7 @@ VICE:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Mobile:
 		Speed: 71
 		TerrainSpeeds:

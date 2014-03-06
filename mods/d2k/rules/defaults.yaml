@@ -144,7 +144,7 @@
 	Armor:
 		Type: None
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Mobile:
 		Crushes: crate
 		SharesCell: true

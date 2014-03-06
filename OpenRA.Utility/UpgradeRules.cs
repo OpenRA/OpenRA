@@ -120,6 +120,16 @@ namespace OpenRA.Utility
 						node.Value.Nodes.RemoveAll(n => n.Key == "UnloadFacing");
 				}
 
+				// RevealShroud was updated to use world units.
+				if (engineVersion < 20140220)
+				{
+					if (depth == 2 && parentKey == "RevealsShroud" && node.Key == "Range")
+						ConvertFloatToRange(ref node.Value.Value);
+
+					if (depth == 2 && parentKey == "CreatesShroud" && node.Key == "Range")
+						ConvertFloatToRange(ref node.Value.Value);
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

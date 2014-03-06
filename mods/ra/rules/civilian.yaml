@@ -67,7 +67,7 @@ FCOM:
 	Tooltip:
 		Name: Forward Command
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Bib:
 
 HOSP:
@@ -87,7 +87,7 @@ HOSP:
 	Tooltip:
 		Name: Hospital
 	RevealsShroud:
-		Range: 3
+		Range: 3c0
 	DeadBuildingState:
 
 V01:
@@ -98,7 +98,7 @@ V01:
 	Tooltip:
 		Name: Church
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	TransformOnCapture:
 		IntoActor: v01.sniper
 		SkipMakeAnims: true
@@ -341,7 +341,7 @@ OILB:
 	Health:
 		HP: 1000
 	RevealsShroud:
-		Range: 3
+		Range: 3c0
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EngineerRepairable:
@@ -541,7 +541,7 @@ V25:
 	Tooltip:
 		Name: Church
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	TransformOnCapture:
 		IntoActor: v25.sniper
 		SkipMakeAnims: true

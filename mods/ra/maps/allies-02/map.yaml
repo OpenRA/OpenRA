@@ -1774,7 +1774,7 @@ Rules:
 		Buildable:
 			Owner: None
 		RevealsShroud:
-			Range: 0
+			Range: 0c0
 	TENT:
 		ProvidesCustomPrerequisite:
 			Prerequisite: barracks
@@ -1932,7 +1932,7 @@ Rules:
 	CAMERA.Large:
 		Inherits: CAMERA
 		RevealsShroud:
-			Range: 1000
+			Range: 1000c0
 
 Sequences:
 

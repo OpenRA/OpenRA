@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			var total = (double)world.Map.Bounds.Width * world.Map.Bounds.Height;
 			MapControl = world.Actors
 				.Where(a => !a.IsDead() && a.IsInWorld && a.Owner == player && a.HasTrait<RevealsShroud>())
-				.SelectMany(a => world.FindTilesInCircle(a.Location, a.Trait<RevealsShroud>().Range.Clamp(0, 50)))
+				.SelectMany(a => world.FindTilesInCircle(a.Location, a.Trait<RevealsShroud>().Range.Clamp(WRange.Zero, WRange.FromCells(50)).Range / 1024))
 				.Distinct()
 				.Count() / total;
 		}

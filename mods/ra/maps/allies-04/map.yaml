@@ -1848,7 +1848,7 @@ Rules:
 		Health:
 			HP: 100
 		RevealsShroud:
-			Range: 6
+			Range: 6c0
 		Spy:
 		Infiltrates:
 			Types: Lab, Truck
@@ -1879,7 +1879,7 @@ Rules:
 		Selectable:
 			Voice: SpyVoice
 		RevealsShroud:
-			Range: 6
+			Range: 6c0
 	BARL:
 		Allies04TrivialBuilding:
 	BRL3:
@@ -1985,7 +1985,7 @@ Rules:
 	CAMERA.Large:
 		Inherits: CAMERA
 		RevealsShroud:
-			Range: 1000
+			Range: 1000c0
 
 Sequences:
 	truk:

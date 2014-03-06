@@ -45,7 +45,7 @@
 	Armor:
 		Type: None
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Mobile:
 		Crushes: crate
 		SharesCell: yes
@@ -102,7 +102,7 @@
 	Mobile:
 		Speed: 71
 	RevealsShroud:
-		Range: 2
+		Range: 2c0
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:

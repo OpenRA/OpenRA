@@ -118,7 +118,7 @@ COMBATO:
 	Buildable:
 		Owner: ordos
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	Turreted:
 		ROT: 8
 	Mobile:
@@ -167,7 +167,7 @@ RAIDER:
 		ROT: 10
 		Speed: 149
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	RenderUnit:
 	WithMuzzleFlash:
 	Armament:
@@ -201,7 +201,7 @@ STEALTHRAIDER:
 		ROT: 10
 		Speed: 149
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	RenderUnit:
 	WithMuzzleFlash:
 	Armament:
@@ -250,7 +250,7 @@ DEVIATORTANK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	RenderUnit:
 	Armament:
 		Weapon: FakeMissile
@@ -294,7 +294,8 @@ SABOTEUR:
 	Mobile:
 		Speed: 64
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	C4Demolition:
 		C4Delay: 45
 	-AutoTarget:
+

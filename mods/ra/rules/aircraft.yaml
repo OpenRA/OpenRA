@@ -90,7 +90,7 @@ MIG:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 12
+		Range: 12c0
 	Armament:
 		Weapon: Maverick
 		LocalOffset: 0,-640,0, 0,640,0
@@ -143,7 +143,7 @@ YAK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Armament@PRIMARY:
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,-213,0
@@ -200,7 +200,7 @@ TRAN:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 12
+		Range: 12c0
 	Helicopter:
 		RearmBuildings: hpad
 		InitialFacing: 0
@@ -240,7 +240,7 @@ HELI:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 12
+		Range: 12c0
 	Armament@PRIMARY:
 		Weapon: HellfireAA
 		LocalOffset: 0,-213,-85
@@ -289,7 +289,7 @@ HIND:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Armament@PRIMARY:
 		Weapon: ChainGun
 		LocalOffset: 85,-213,-85
@@ -351,3 +351,4 @@ U2:
 		Offset: -1c43,0,0
 		Interval: 2
 	RejectsOrders:
+

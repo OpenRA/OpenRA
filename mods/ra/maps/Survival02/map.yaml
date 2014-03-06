@@ -1115,7 +1115,7 @@ Rules:
 			Owner: None
 	CAMERA:
 		RevealsShroud:
-			Range: 7
+			Range: 7c0
 
 Sequences:
 

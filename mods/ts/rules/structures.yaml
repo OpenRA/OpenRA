@@ -13,7 +13,7 @@ GACNST:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Production:
 		Produces: Building,Defense
 	Valued:
@@ -60,7 +60,7 @@ GAPOWR:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
@@ -88,7 +88,7 @@ GAPILE:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Exit@1:
 		SpawnOffset: -2730,2730,0
 		ExitCell: 0,2
@@ -122,7 +122,7 @@ GAWEAP:
 	Health:
 		HP: 1000
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	-RenderBuilding:
 	RenderBuildingWarFactory:
 	RallyPoint:
@@ -157,7 +157,7 @@ NAPOWR:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 
@@ -183,7 +183,7 @@ NAHAND:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Exit@1:
 		SpawnOffset: -2730,2730,0
 		ExitCell: 0,2
@@ -215,7 +215,7 @@ NAWEAP:
 	Health:
 		HP: 1000
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	-RenderBuilding:
 	RenderBuildingWarFactory:
 	RallyPoint:
@@ -266,7 +266,7 @@ GATICK:
 	Armor:
 		Type: Concrete
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
@@ -304,7 +304,7 @@ GAICBM:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Transforms:
 		IntoActor: icbm
 		Offset: 1,1
@@ -328,7 +328,7 @@ GADPSA:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	Transforms:
 		IntoActor: lpst
 		Offset: 1,1
@@ -355,7 +355,7 @@ GAARTY:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 9
+		Range: 9c0
 	Selectable:
 		Voice: Vehicle
 	Turreted:
@@ -398,7 +398,7 @@ GASPOT:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 3
@@ -423,7 +423,7 @@ GAHPAD:
 	Health:
 		HP: 600
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
 	Production:
@@ -455,7 +455,7 @@ NAHPAD:
 	Health:
 		HP: 600
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
 	Production:

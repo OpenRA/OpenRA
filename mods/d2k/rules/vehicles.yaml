@@ -21,7 +21,7 @@
 		Speed: 64
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	MustBeDestroyed:
 	BaseBuilding:
 	Explodes:
@@ -75,7 +75,7 @@ HARVESTER:
 	RenderUnit:
 		Image: HARVESTER
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	Explodes:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale
@@ -124,7 +124,7 @@ TRIKE:
 		ROT: 10
 		Speed: 128
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	RenderUnit:
 	WithMuzzleFlash:
 	Armament:
@@ -167,7 +167,7 @@ QUAD:
 		ROT: 8
 		Speed: 96
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	Armament:
 		Weapon: QuadRockets
 		LocalOffset: 128,64,64, 128,-64,64
@@ -209,7 +209,7 @@ QUAD.starport:
 		ROT: 6
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Turreted:
 		ROT: 6
 		AlignWhenIdle: true
@@ -258,7 +258,7 @@ SIEGETANK:
 		ROT: 3
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	Turreted:
 		ROT: 3
 		Offset: 0,0,-32
@@ -320,7 +320,7 @@ MISSILETANK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 9
+		Range: 9c0
 	RenderUnit:
 		Image: MISSILETANK
 	Armament:

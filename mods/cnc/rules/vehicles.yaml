@@ -18,7 +18,7 @@ MCV:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	Transforms:
 		IntoActor: fact
 		Offset: -1,-1
@@ -65,7 +65,7 @@ HARV:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 4
+		Range: 4c0
 	LeavesHusk:
 		HuskActor: HARV.Husk
 	-GainsExperience:
@@ -90,7 +90,7 @@ APC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Turreted:
 		ROT: 10
 	Armament@PRIMARY:
@@ -137,7 +137,7 @@ ARTY:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 9
+		Range: 9c0
 	Armament:
 		Weapon: ArtilleryShell
 		LocalOffset: 624,0,208
@@ -171,7 +171,7 @@ FTNK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 5c0
 	Armament:
 		Weapon: BigFlamer
 		LocalOffset: 512,128,42, 512,-128,42
@@ -205,7 +205,7 @@ BGGY:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Turreted:
 		ROT: 10
 		Offset: -43,0,128
@@ -246,7 +246,7 @@ BIKE:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	Armament:
 		Weapon: BikeRockets
 		LocalOffset: -128, -170, 170, -128, 170, 170
@@ -276,7 +276,7 @@ JEEP:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8
+		Range: 8c0
 	Turreted:
 		ROT: 10
 		Offset: -85,0,128
@@ -310,7 +310,7 @@ LTNK:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Turreted:
 		ROT: 5
 	Armament:
@@ -347,7 +347,7 @@ MTNK:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Turreted:
 		ROT: 5
 	Armament:
@@ -388,7 +388,7 @@ HTNK:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	Turreted:
 		ROT: 3
 	Armament@PRIMARY:
@@ -438,7 +438,7 @@ MSAM:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Turreted:
 		ROT: 255
 		Offset: -256,0,128
@@ -475,7 +475,7 @@ MLRS:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10
+		Range: 10c0
 	Turreted:
 		ROT: 8
 		Offset: -128,0,128
@@ -516,7 +516,7 @@ STNK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 7
+		Range: 7c0
 	Cloak:
 		RequiresCrate: false
 		InitialDelay: 90
@@ -548,7 +548,7 @@ MHQ:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	RenderUnit:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner

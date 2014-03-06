@@ -333,8 +333,8 @@ namespace OpenRA.Mods.RA.Missions
 			sam2 = actors["Sam2"];
 
 			var shroud = allies.PlayerActor.Trait<Shroud>();
-			shroud.Explore(w, sam1.Location, 4);
-			shroud.Explore(w, sam2.Location, 4);
+			shroud.Explore(w, sam1.Location, WRange.FromCells(4));
+			shroud.Explore(w, sam2.Location, WRange.FromCells(4));
 
 			wr.Viewport.Center(alliesbase.CenterPosition);
 			StartCountDownTimer();
