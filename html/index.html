@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=utf-8">
+		<link rel="stylesheet" href="style.css" />
+		<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+		<script>
+			var gCurrentFile = "";
+
+			function reloadContent() {
+				gCurrentFile = "mods/" + $("#mod > option:selected").attr("value") + $("#file > option:selected").attr("value");
+				$("#content").load(gCurrentFile);
+			}
+
+			$(document).ready(function () {
+				reloadContent();
+				$("#mod").change(function () {
+					reloadContent();
+				});
+				$("#file").change(function () {
+					reloadContent();
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<div id="container">
+			<div id="header">
+				<select id="mod">
+					<option value="ra/" selected>Red Alert</option>
+					<option value="cnc/">Tiberium Dawn</option>
+					<option value="d2k/">Dune 2000</option>
+					<option value="ts/">Tiberian Sun</option>
+				</select>
+				<select id="file">
+					<!-- Might want to insert options here by traversing filesystem -->
+					<option value="rules/infantry.html" selected>Infantry</option>
+					<option value="rules/vehicles.html" >Vehicles</option>
+					<option value="rules/aircraft.html" >Aircraft</option>
+					<option value="rules/ships.html" >Ships</option>
+					<option value="rules/structures.html" >Structures</option>
+					<option value="weapons.html" >Weapons</option>
+				</select>
+			</div>
+			<div id="content">
+			</div>
+		</div>
+	</body>
+</head>
