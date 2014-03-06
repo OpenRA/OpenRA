@@ -26,6 +26,8 @@ TRAN:
 	RenderUnit:
 	WithRotor@PRIMARY:
 		Offset: -597,0,171
+		Sequence: rotor2
+		GroundSequence: slow-rotor2
 	WithRotor@SECONDARY:
 		Id: rotor_2
 		Offset: 597,0,85
