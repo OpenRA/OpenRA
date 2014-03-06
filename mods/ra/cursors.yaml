@@ -70,6 +70,12 @@ Cursors:
 		attack-minimap:
 			start:203
 			length: 8
+		attackoutsiderange:
+			start:21
+			length: 8
+		attackoutsiderange-minimap:
+			start:134
+			length: 8
 		harvest:
 			start:21
 			length: 8

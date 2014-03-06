@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 	public abstract class AttackBaseInfo : ITraitInfo
 	{
 		public readonly string Cursor = "attack";
+		public readonly string OutsideRangeCursor = "attackoutsiderange";
 
 		public abstract object Create(ActorInitializer init);
 	}
@@ -188,7 +189,10 @@ namespace OpenRA.Mods.RA
 			{
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				cursor = ab.info.Cursor;
+				var a = ab.ChooseArmamentForTarget(target);
+				cursor = a != null && !target.IsInRange(self.CenterPosition, a.Weapon.Range)
+					? ab.info.OutsideRangeCursor
+					: ab.info.Cursor;
 
 				if (target.Type == TargetType.Actor && target.Actor == self)
 					return false;
@@ -220,11 +224,18 @@ namespace OpenRA.Mods.RA
 				if (negativeDamage)
 					return false;
 
-				if (!self.Trait<AttackBase>().HasAnyValidWeapons(Target.FromCell(location)))
+				if (!ab.HasAnyValidWeapons(Target.FromCell(location)))
 					return false;
 
 				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
+				{
+					var maxRange = ab.GetMaximumRange().Range;
+					var targetRange = (location.CenterPosition - self.CenterPosition).HorizontalLengthSquared;
+					if (targetRange > maxRange * maxRange)
+						cursor = ab.info.OutsideRangeCursor;
+
 					return true;
+				}
 
 				return false;
 			}
