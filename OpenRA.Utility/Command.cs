@@ -348,7 +348,7 @@ namespace OpenRA.Utility
 			Console.WriteLine(dest + " saved.");
 		}
 
-		[Desc("MOD", "OUTPUT DIR", "Output game rules for visual representation.")]
+		[Desc("MOD", "OUTPUTDIR", "Output game rules for visual representation.")]
 		public static void GenerateStats(string[] args)
 		{
 			try
