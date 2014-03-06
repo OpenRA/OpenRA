@@ -231,6 +231,30 @@ local specialmapping = {
       editor:MarkerDefine(id, ch, fg, bg)
     end
   end,
+
+  auxwindow = function(editor,style)
+    if not style then return end
+
+    local default = wxstc.wxSTC_STYLE_DEFAULT
+    local bg = style.bg and wx.wxColour(unpack(style.bg)) or editor:StyleGetBackground(default)
+    local fg = style.fg and wx.wxColour(unpack(style.fg)) or editor:StyleGetForeground(default)
+
+    local uimgr = ide.frame.uimgr
+    local panes = uimgr:GetAllPanes()
+    for index = 0, panes:GetCount()-1 do
+      local wind = uimgr:GetPane(panes:Item(index).name).window
+      local children = wind:GetChildren()
+      for child = 0, children:GetCount()-1 do
+        local data = children:Item(child):GetData()
+        local _, window = pcall(function() return data:DynamicCast("wxWindow") end)
+        if window then
+          window:SetBackgroundColour(bg)
+          window:SetForegroundColour(fg)
+          window:Refresh()
+        end
+      end
+    end
+  end,
 }
 
 local defaultmapping = {
