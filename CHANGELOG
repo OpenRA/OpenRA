@@ -92,6 +92,7 @@ NEW:
 		Fixed unit moving to transports that have moved.
 		Updated shroud-based traits to use world units.
 		Renamed AttackTesla into AttackCharge and un-hardcoded initial charge delay and delay for additional charges.
+		Updated RenderBuildingCharge so you can set a custom charge sequence name (default is active).
 	Server:
 		Message of the day is now shared between all mods and a default motd.txt gets created in the user directory.
 	Asset Browser:
