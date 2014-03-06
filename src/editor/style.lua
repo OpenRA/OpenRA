@@ -315,6 +315,9 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
   -- normal selection (sel) attributes are set, so handle them again
   if styles.seladd then specialmapping.seladd(editor, styles.seladd) end
 
+  -- calltip has a special style that needs to be enabled
+  if styles.calltip then editor:CallTipUseStyle(2) end
+
   do
     local defaultfg = styles.text and styles.text.fg or {127,127,127}
     local indic = styles.indicator or {}
