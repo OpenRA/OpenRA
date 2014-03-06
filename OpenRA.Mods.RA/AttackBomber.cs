@@ -47,10 +47,10 @@ namespace OpenRA.Mods.RA
 			var facing = self.TraitOrDefault<IFacing>();
 			var cp = self.CenterPosition;
 			var bombTarget = Target.FromPos(cp - new WVec(0, 0, cp.Z));
+			var visionRange = target.IsInRange(self.CenterPosition, info.VisionRange);
 
 			// Provide vision
-			if (camera == null &&
-				target.IsInRange(self.CenterPosition, info.VisionRange))
+			if (camera == null && visionRange)
 			{
 				self.World.AddFrameEndTask(w => camera = w.CreateActor("camera", new TypeDictionary
 				{
@@ -58,11 +58,12 @@ namespace OpenRA.Mods.RA
 					new OwnerInit(self.Owner),
 				}));
 			}
-			else if (camera != null &&
-				!target.IsInRange(self.CenterPosition, info.VisionRange))
+			else if (camera != null && !visionRange)
 			{
-				self.World.AddFrameEndTask(w => w.Remove(camera));
-				camera = null;
+				self.World.AddFrameEndTask(w => {
+					w.Remove(camera);
+					camera = null;
+				});
 			}
 
 			// Bombs drop anywhere in range
@@ -95,8 +96,10 @@ namespace OpenRA.Mods.RA
 		{
 			if (camera != null)
 			{
-				self.World.AddFrameEndTask(w => w.Remove(camera));
-				camera = null;
+				self.World.AddFrameEndTask(w => {
+					w.Remove(camera);
+					camera = null;
+				});
 			}
 		}
 
