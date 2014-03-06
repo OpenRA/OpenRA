@@ -338,19 +338,17 @@ function ReApplySpecAndStyles()
   -- these styles need to be updated as they are based on comment styles
   if MarkupAddStyles then MarkupAddStyles(ide.config.styles) end
 
+  local errorlog = ide.frame.bottomnotebook.errorlog
+  local shellbox = ide.frame.bottomnotebook.shellbox
+  SetupKeywords(shellbox,"lua",nil,ide.config.stylesoutshell,ide.font.oNormal,ide.font.oItalic)
+  StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font.oNormal,ide.font.oItalic)
+
   local openDocuments = ide.openDocuments
   for i,doc in pairs(openDocuments) do
     if (doc.editor.spec) then
       SetupKeywords(doc.editor,nil,doc.editor.spec)
     end
   end
-
-  local errorlog = ide.frame.bottomnotebook.errorlog
-  local shellbox = ide.frame.bottomnotebook.shellbox
-
-  SetupKeywords(shellbox,"lua",nil,ide.config.stylesoutshell,ide.font.oNormal,ide.font.oItalic)
-
-  StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font.oNormal,ide.font.oItalic)
 end
 
 function ApplyStyleConfig(config, style)
