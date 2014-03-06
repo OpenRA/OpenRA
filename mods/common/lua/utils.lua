@@ -28,6 +28,14 @@ Utils.EnumerableWhere = function(netEnumerable, func)
 	return ret
 end
 
+Utils.EnumerableToTable = function(netEnumerable, func)
+	local ret = { }
+	for item in Utils.Enumerate(netEnumerable) do
+		table.insert(ret, item)
+	end
+	return ret
+end
+
 Utils.Where = function(array, func)
 	local ret = { }
 	for i, item in ipairs(array) do

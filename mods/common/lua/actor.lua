@@ -76,7 +76,14 @@ Actor.FlyOffMap = function(actor)
 end
 
 Actor.Hunt = function(actor)
-	actor:QueueActivity(OpenRA.New("Hunt", { actor }))
+	if Actor.HasTrait(actor, "AttackBase") and Actor.HasTrait(actor, "IMove") then
+		actor:QueueActivity(OpenRA.New("Hunt", { actor }))
+	end
+end
+
+Actor.CargoIsEmpty = function(actor)
+	local cargo = Actor.TraitOrDefault(actor, "Cargo")
+	return cargo == nil or cargo:IsEmpty(actor)
 end
 
 Actor.UnloadCargo = function(actor, unloadAll)
@@ -161,6 +168,14 @@ end
 
 Actor.OnCaptured = function(actor, eh)
 	Actor.Trait(actor, "LuaScriptEvents").OnCaptured:Add(eh)
+end
+
+Actor.OnIdle = function(actor, eh)
+	Actor.Trait(actor, "LuaScriptEvents").OnIdle:Add(eh)
+end
+
+Actor.OnProduced = function(actor, eh)
+	Actor.Trait(actor, "LuaScriptEvents").OnProduced:Add(eh)
 end
 
 Actor.ActorsWithTrait = function(className)

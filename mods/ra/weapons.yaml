@@ -1283,6 +1283,7 @@ Claw:
 	ROF: 30
 	Range: 1c0
 	Projectile: Bullet
+		Speed: 1c682
 	Warhead:
 		Spread: 213
 		Versus:
@@ -1298,6 +1299,7 @@ Mandible:
 	ROF: 10
 	Range: 1c0
 	Projectile: Bullet
+		Speed: 1c682
 	Warhead:
 		Spread: 213
 		Versus:

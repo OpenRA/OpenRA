@@ -261,7 +261,6 @@
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="MadTank.cs" />
-    <Compile Include="Missions\DesertShellmapScript.cs" />
     <Compile Include="Missions\FortLonestarScript.cs" />
     <Compile Include="Missions\Survival02Script.cs" />
     <Compile Include="MPStartLocations.cs" />
@@ -272,7 +271,6 @@
     <Compile Include="Missions\Allies03Script.cs" />
     <Compile Include="Missions\Allies04Script.cs" />
     <Compile Include="Missions\CountdownTimer.cs" />
-    <Compile Include="Missions\DefaultShellmapScript.cs" />
     <Compile Include="Missions\MissionUtils.cs" />
     <Compile Include="Missions\MissionWidgets.cs" />
     <Compile Include="Missions\MonsterTankMadnessScript.cs" />
@@ -353,7 +351,6 @@
     <Compile Include="Scripting\LuaScriptEvents.cs" />
     <Compile Include="Scripting\LuaScriptInterface.cs" />
     <Compile Include="Scripting\Media.cs" />
-    <Compile Include="Scripting\RASpecialPowers.cs" />
     <Compile Include="Scripting\LuaScriptContext.cs" />
     <Compile Include="SeedsResource.cs" />
     <Compile Include="SelfHealing.cs" />
