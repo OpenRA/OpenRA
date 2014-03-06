@@ -260,7 +260,6 @@ return {
   calltip = nil,
 
   -- common special (need custom fg & bg)
-  calltipbg = nil,
   sel = {bg = C.Selection},
   caret = {fg = C.Foreground},
   caretlinebg = {bg = C.CurrentLine},

@@ -59,7 +59,6 @@ style = {
   calltip = stattr,
 
   -- common special (need custom fg & bg )
-  calltipbg = nil,
   sel = nil,
   caret = nil,
   caretlinebg = nil,

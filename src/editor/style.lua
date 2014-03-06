@@ -51,7 +51,6 @@ function StylesGetDefault()
     calltip = nil,
 
     -- common special (need custom fg & bg)
-    calltipbg = nil,
     sel = {bg = {192, 192, 192}},
     caret = {fg = {0, 0, 0}},
     caretlinebg = {bg = {240, 240, 230}},
@@ -175,12 +174,6 @@ local specialmapping = {
       editor:SetWhitespaceBackground(1,wx.wxColour(unpack(style.bg)))
     else
       --editor:SetWhitespaceBackground(0)
-    end
-  end,
-
-  calltipbg = function(editor,style)
-    if (style.bg) then
-      editor:CallTipSetBackground(wx.wxColour(unpack(style.bg)))
     end
   end,
 
