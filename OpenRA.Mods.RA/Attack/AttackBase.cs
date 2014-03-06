@@ -19,7 +19,8 @@ namespace OpenRA.Mods.RA
 {
 	public abstract class AttackBaseInfo : ITraitInfo
 	{
-		public readonly string Cursor = "attack";
+		public readonly string AttackCursor = "attack";
+		public readonly string AttackOutOfRangeCursor = "attackoutofrange";
 
 		public abstract object Create(ActorInitializer init);
 	}
@@ -32,11 +33,16 @@ namespace OpenRA.Mods.RA
 
 		Lazy<IEnumerable<Armament>> armaments;
 		protected IEnumerable<Armament> Armaments { get { return armaments.Value; } }
+		protected static string attackCursor;
+		protected static string attackOutOfRangeCursor;
 
 		public AttackBase(Actor self)
 		{
 			this.self = self;
 			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
+			var info = self.Info.Traits.Get<AttackBaseInfo>();
+			attackCursor = info.AttackCursor;
+			attackOutOfRangeCursor = info.AttackOutOfRangeCursor;
 		}
 
 		protected virtual bool CanAttack(Actor self, Target target)
@@ -183,7 +189,10 @@ namespace OpenRA.Mods.RA
 			{
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				cursor = self.Info.Traits.Get<AttackBaseInfo>().Cursor;
+				var a = self.Trait<AttackBase>().ChooseArmamentForTarget(target);
+				cursor = a != null && !target.IsInRange(self.CenterPosition, a.Weapon.Range)
+					? attackOutOfRangeCursor
+					: attackCursor;
 
 				if (target.Type == TargetType.Actor && target.Actor == self)
 					return false;
@@ -210,16 +219,24 @@ namespace OpenRA.Mods.RA
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				cursor = self.Info.Traits.Get<AttackBaseInfo>().Cursor;
+				cursor = attackCursor;
 
 				if (negativeDamage)
 					return false;
 
-				if (!self.Trait<AttackBase>().HasAnyValidWeapons(Target.FromCell(location)))
+				var a = self.Trait<AttackBase>();
+				if (!a.HasAnyValidWeapons(Target.FromCell(location)))
 					return false;
 
 				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
+				{
+					var maxRange = Math.Pow(a.GetMaximumRange().Range, 2);
+					var targetRange = (location.CenterPosition - self.CenterPosition).HorizontalLengthSquared;
+					if (targetRange > maxRange)
+						cursor = attackOutOfRangeCursor;
+
 					return true;
+				}
 
 				return false;
 			}
