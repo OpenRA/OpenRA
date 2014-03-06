@@ -51,9 +51,10 @@ namespace OpenRA.Utility
 			string[] files = Directory.GetFiles(dir);
 			foreach (var file in files.Where(f => f.EndsWith(".yaml")))
 			{
-				if (!Directory.Exists(output + '\\' + file.Substring(0, file.LastIndexOf('\\'))))
-					Directory.CreateDirectory(output + '\\' + file.Substring(0, file.LastIndexOf('\\')));
-				using (StreamWriter sw = new StreamWriter(output + '\\' + file.Substring(0, file.IndexOf(".yaml")) + ".html"))
+
+				if (!Directory.Exists(Path.Combine(output,file.Substring(0, file.LastIndexOf(Path.DirectorySeparatorChar)))))
+					Directory.CreateDirectory(Path.Combine(output, file.Substring(0, file.LastIndexOf(Path.DirectorySeparatorChar))));
+				using (StreamWriter sw = new StreamWriter(Path.Combine(output, file.Substring(0, file.IndexOf(".yaml"))) + ".html"))
 				{
 					WriteYamlFile(sw, file);
 				}

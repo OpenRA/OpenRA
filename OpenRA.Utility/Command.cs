@@ -370,7 +370,7 @@ namespace OpenRA.Utility
 				}
 				else
 				{
-					var modFolder = "mods\\" + mod;
+					var modFolder = Path.Combine("mods", mod);
 					yth.Run(modFolder, outputDir);
 				}
 			}
