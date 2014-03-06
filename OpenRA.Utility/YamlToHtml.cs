@@ -71,7 +71,7 @@ namespace OpenRA.Utility
 			}
 		}
 
-		public void Run(string where, string output = "html", bool recursive = true)
+		public void Run(string where, string output, bool recursive)
 		{
 			ProcessDirectory(where, output, recursive);
 		}

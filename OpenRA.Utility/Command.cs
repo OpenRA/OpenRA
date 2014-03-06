@@ -365,13 +365,13 @@ namespace OpenRA.Utility
 					string[] dirs = Directory.GetDirectories("mods");
 					foreach (var dir in dirs)
 					{
-						yth.Run(dir, outputDir);
+						yth.Run(dir, outputDir, true);
 					}
 				}
 				else
 				{
 					var modFolder = Path.Combine("mods", mod);
-					yth.Run(modFolder, outputDir);
+					yth.Run(modFolder, outputDir, true);
 				}
 			}
 			catch (Exception e)
