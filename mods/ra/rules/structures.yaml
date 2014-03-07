@@ -4,7 +4,7 @@ MSLO:
 		Cost: 2500
 	Tooltip:
 		Name: Missile Silo
-		Description: Launches a devastating atomic bomb\nat a target location.\n  Special Ability: Atom Bomb\n\nMaximum 1 can be built
+		Description: Provides an atomic bomb.\nSpecial Ability: Atom Bomb\n\nMaximum 1 can be built
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
@@ -50,7 +50,7 @@ GAP:
 		Cost: 800
 	Tooltip:
 		Name: Gap Generator
-		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
+		Description: Obscures enemy's view with shroud.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
@@ -85,7 +85,7 @@ SPEN:
 		Cost: 800
 	Tooltip:
 		Name: Sub Pen
-		Description: Produces and repairs submarines and \ntransports
+		Description: Produces and repairs submarines and\ntransports.
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
@@ -148,10 +148,10 @@ SYRD:
 		Cost: 1000
 	Tooltip:
 		Name: Shipyard
-		Description: Produces and repairs ships
+		Description: Produces and repairs ships\nand transports.
 	TargetableBuilding:
-		TargetTypes: Ground, Water
-	Building:
+		TargetTypes: Ground, Water	
+		Building:
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -327,7 +327,7 @@ AGUN:
 		Cost: 800
 	Tooltip:
 		Name: AA Gun
-		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+		Description: Anti-Air base defense. Requires power\nto operate.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
 		Power: -50
 		Footprint: _ x
@@ -774,7 +774,7 @@ SAM:
 		Cost: 750
 	Tooltip:
 		Name: SAM Site
-		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+		Description: Anti-Air base defense. Requires power\nto operate.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
 		Power: -40
 		Footprint: xx
@@ -837,7 +837,7 @@ ATEK:
 		OneShot: yes
 		ChargeTime: 480
 		Description: GPS Satellite
-		LongDesc: Reveals the entire map.
+		LongDesc: Reveals map terrain and provides tactical\ninformation.
 		RevealDelay: 15
 		LaunchSound: satlnch1.aud
 		DisplayTimer: True
@@ -855,7 +855,7 @@ WEAP:
 		Cost: 2000
 	Tooltip:
 		Name: War Factory
-		Description: Produces tanks & light vehicles.
+		Description: Produces vehicles.
 	Building:
 		Power: -30
 		Footprint: xxx xxx
@@ -903,7 +903,7 @@ FACT:
 		Cost: 2500
 	Tooltip:
 		Name: Construction Yard
-		Description: Builds base structures.
+		Description: Produces structures.
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
@@ -928,7 +928,7 @@ PROC:
 		Cost: 1400
 	Tooltip:
 		Name: Ore Refinery
-		Description: Converts Ore and Gems into money
+		Description: Refines Ore and Gems into credits.
 	Building:
 		Power: -30
 		Footprint: _x_ xxx x==
@@ -973,7 +973,7 @@ SILO:
 		Cost: 150
 	Tooltip:
 		Name: Silo
-		Description: Stores excess harvested Ore
+		Description: Stores excess refined Ore and gems.
 	Building:
 		Power: -10
 	-GivesBuildableArea:
@@ -1003,7 +1003,7 @@ HPAD:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
-		Description: Produces and reloads helicopters
+		Description: Produces and reloads helicopters.
 	Building:
 		Power: -10
 		Footprint: xx xx
@@ -1037,7 +1037,7 @@ AFLD:
 		Cost: 500
 	Tooltip:
 		Name: Airfield
-		Description: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
+		Description: Produces and reloads aircraft.\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Building:
 		Power: -20
 		Footprint: xxx xxx
@@ -1067,7 +1067,7 @@ AFLD:
 		Icon: paratroopers
 		ChargeTime: 360
 		Description: Paratroopers
-		LongDesc: A Badger drops a squad of infantry \nanywhere on the map
+		LongDesc: A Badger drops a squad of infantry \nanywhere on the map.
 		Prerequisites: AFLD
 		DropItems: E1,E1,E1,E3,E3
 		SelectTargetSound: slcttgt1.aud
@@ -1086,7 +1086,7 @@ POWR:
 		Cost: 300
 	Tooltip:
 		Name: Power Plant
-		Description: Provides power for other structures
+		Description: Provides power for other structures.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -1115,7 +1115,7 @@ APWR:
 		Cost: 500
 	Tooltip:
 		Name: Advanced Power Plant
-		Description: Provides more power, cheaper than the \nstandard Power Plant
+		Description: Provides double the power of a\nstandard Power Plant.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -1144,7 +1144,7 @@ STEK:
 		Cost: 1500
 	Tooltip:
 		Name: Soviet Tech Center
-		Description: Provides Soviet advanced technologies
+		Description: Provides Soviet advanced technologies.
 	ProvidesCustomPrerequisite:
 		Prerequisite: techcenter
 	Building:
@@ -1172,7 +1172,7 @@ BARR:
 		Cost: 400
 	Tooltip:
 		Name: Soviet Barracks
-		Description: Produces infantry
+		Description: Trains infantry.
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -1209,7 +1209,7 @@ TENT:
 		Cost: 400
 	Tooltip:
 		Name: Allied Barracks
-		Description: Produces infantry
+		Description: Trains infantry.
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -1263,7 +1263,7 @@ FIX:
 		Cost: 1200
 	Tooltip:
 		Name: Service Depot
-		Description: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
+		Description: Repairs vehicles for credits.
 	Building:
 		Power: -30
 		Footprint: _x_ xxx _x_
@@ -1353,7 +1353,7 @@ SYRF:
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Shipyard
-		Description: Looks like a Shipyard
+		Description: Looks like a Shipyard.
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
@@ -1387,7 +1387,7 @@ SPEF:
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Sub Pen
-		Description: Looks like a Sub Pen
+		Description: Looks like a Sub Pen.
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -1411,7 +1411,7 @@ DOMF:
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Radar Dome
-		Description: Looks like a Radar Dome
+		Description: Looks like a Radar Dome.
 	Buildable:
 		BuildPaletteOrder: 900
 		Prerequisites: proc
