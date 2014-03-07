@@ -84,6 +84,9 @@ Cursors:
 		guard-minimap:
 			start:152
 			length:1
+		ability:
+			start:88
+			length:8
 
 # Cursors that need minimap variants
 		deploy:
@@ -101,9 +104,6 @@ Cursors:
 		sell-blocked:
 			start:125
 			length:1
-		ability:
-			start:88
-			length:8
 		nuke:
 			start:96
 			length:7
@@ -177,3 +177,11 @@ Cursors:
 		powerdown:
 			start:1
 			length: 3
+
+	attackoutofrange.shp: cursor
+		attackoutofrange:
+			start:0
+			length:8
+		attackoutofrange-minimap:
+			start:8
+			length:8

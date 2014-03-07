@@ -70,12 +70,18 @@ Cursors:
 		attack-minimap:
 			start:203
 			length: 8
-		attackmove:
+		attackoutofrange:
 			start:21
 			length: 8
-		attackmove-minimap:
+		attackoutofrange-minimap:
 			start:134
 			length: 8
+		attackmove:
+			start:222
+			length: 4
+		attackmove-minimap:
+			start:226
+			length: 4
 		harvest:
 			start:21
 			length: 8
