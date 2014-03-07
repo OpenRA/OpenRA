@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 {
 	public class CheckTraitPrerequisites : ILintPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning)
+		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
 			foreach (var actorInfo in Rules.Info.Where(a => !a.Key.StartsWith("^")))
 				try

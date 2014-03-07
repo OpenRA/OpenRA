@@ -68,7 +68,7 @@ namespace OpenRA.Lint
 						if (verbose)
 							Console.WriteLine("Pass: {0}".F(customPassType.ToString()));
 
-						customPass.Run(EmitError, EmitWarning);
+						customPass.Run(EmitError, EmitWarning, testMap);
 					}
 					catch (Exception e)
 					{

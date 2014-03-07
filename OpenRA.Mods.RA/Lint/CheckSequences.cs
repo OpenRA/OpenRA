@@ -17,10 +17,11 @@ namespace OpenRA.Mods.RA
 {
 	class CheckSequences : ILintPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning)
+		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			var sequences = Game.modData.Manifest.Sequences
-				.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal);
+			var sequences = MiniYaml.MergeLiberal(map.Sequences,
+				Game.modData.Manifest.Sequences.Select(s => MiniYaml.FromFile(s))
+				.Aggregate(MiniYaml.MergeLiberal));
 
 			foreach (var actorInfo in Rules.Info)
 				foreach (var renderInfo in actorInfo.Value.Traits.WithInterface<RenderSimpleInfo>())

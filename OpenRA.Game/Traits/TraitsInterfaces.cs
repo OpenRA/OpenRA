@@ -234,10 +234,10 @@ namespace OpenRA.Traits
 			Stance oldStance, Stance newStance);
 	}
 
-	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning); }
+	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning, Map map); }
 
 	public interface IObjectivesPanel { string ObjectivesPanel { get; } }
-	
+
 	public static class DisableExts
 	{
 		public static bool IsDisabled(this Actor a)

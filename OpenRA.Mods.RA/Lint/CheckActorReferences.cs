@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 	{
 		Action<string> EmitError;
 
-		public void Run(Action<string> emitError, Action<string> emitWarning)
+		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
 			EmitError = emitError;
 
