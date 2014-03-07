@@ -755,10 +755,12 @@ function SetAutoRecoveryMark()
 end
 
 local function saveAutoRecovery(event)
-  if not ide.config.autorecoverinactivity or not ide.session.lastupdated then return end
-  if ide.session.lastupdated < (ide.session.lastsaved or 0)
-  or ide.session.lastupdated + ide.config.autorecoverinactivity > os.time()
-    then return end
+  local lastupdated = ide.session.lastupdated
+  if not ide.config.autorecoverinactivity or not lastupdated then return end
+  if lastupdated < (ide.session.lastsaved or 0) then return end
+
+  local now = os.time()
+  if lastupdated + ide.config.autorecoverinactivity > now then return end
 
   -- find all open modified files and save them
   local opentabs, params = getOpenTabs()
@@ -768,7 +770,7 @@ local function saveAutoRecovery(event)
     SettingsSaveFileSession({}, params)
     ide.settings:Flush()
   end
-  ide.session.lastsaved = os.time()
+  ide.session.lastsaved = now
   ide.frame.statusBar:SetStatusText(
     TR("Saved auto-recover at %s."):format(os.date("%H:%M:%S")), 1)
 end
