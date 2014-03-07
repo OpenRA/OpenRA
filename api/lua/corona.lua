@@ -1,5 +1,5 @@
 -- Author Sergey Lerg
--- converted from CoronaSDK-APIDOC-2013-2100.zip;
+-- converted from CoronaSDK-APIDOC-2014-2189.zip;
 -- the conversion script is at the bottom of this file
 
 do return {
@@ -347,7 +347,7 @@ do return {
    },
    setMask = {
     args = "( mask )",
-    description = "Associates a mask with a display object. To remove an object's mask, use `object:setMask( nil )`. You can modify a display object's mask's x and y position (object.maskX).",
+    description = "Associates a mask with a display object. To remove an object's mask, use `object:setMask( nil )`. You can modify a display object's mask __x__ and __y__ position (object.maskX).",
     returns = "()",
     type = "method"
    },
@@ -554,7 +554,7 @@ do return {
     type = "value"
    },
    type = {
-    description = "A string describing the type of axis input the device has, such as \"x\" or \"y\" for a joystick's x-axis or y-axis input. This is informational only and should not be used to identify the type of data provided by the axis input. See the \"Gotchas\" section below for the reason why.",
+    description = "* `InputAxis:type`\9\9<!--- completion -->",
     type = "value"
    }
   },
@@ -821,6 +821,10 @@ do return {
  },
  _LineObject = {
   childs = {
+   anchorSegments = {
+    description = "This boolean property controls whether LineObjects into account. This value is `false` by default.",
+    type = "value"
+   },
    append = {
     args = "( x, y [, ... ] )",
     description = "Append one or more segments to an existing object created using display.newLine().",
@@ -1099,6 +1103,12 @@ do return {
     returns = "()",
     type = "method"
    },
+   setIsLocked = {
+    args = "( isLocked )",
+    description = "Sets a ScrollView to either locked (does not scroll) or unlocked (default behavior).",
+    returns = "()",
+    type = "method"
+   },
    setScrollHeight = {
     args = "( newHeight )",
     description = "Updates the scrollable content height of a ScrollView.",
@@ -1142,7 +1152,7 @@ do return {
     type = "value"
    },
    fill = {
-    description = "The fill of a shape refers to the interior area of the shape. When you assign a paint to a fill, you control how the interior area of the shape is rendered.",
+    description = "For object fills, Corona uses the concept of paint to a fill, you control how the interior area of the shape is rendered.",
     type = "value"
    },
    path = {
@@ -1162,7 +1172,7 @@ do return {
     type = "method"
    },
    stroke = {
-    description = "The stroke of a shape refers to the boundary of the shape. When you assign a paint to a stroke, you control how the boundary is rendered.",
+    description = "For object strokes, Corona uses the concept of paint to a stroke, you control how the boundary is rendered.",
     type = "value"
    },
    strokeWidth = {
@@ -1306,7 +1316,7 @@ do return {
     type = "method"
    }
   },
-  description = "This object is the current \"stage\" object, which is the root group for all display objects and child groups. This global stage object can be retrieved at any time via display.getCurrentStage().",
+  description = "This object is the current \"stage\" object, which is the parent group for all display objects and child groups. This global stage object can be retrieved at any time via display.getCurrentStage().",
   type = "class"
  },
  _StepperWidget = {
@@ -1478,6 +1488,10 @@ do return {
    },
    isSecure = {
     description = "Controls whether text in the field is obscured, e.g. passwords. Default is `false`.",
+    type = "value"
+   },
+   placeholder = {
+    description = "Native text fields can display optional placeholder text (`nil` by default). This can provide a \"hint\" as to what the user should enter in the field. If set, the placeholder string is displayed using the same style information (except the text color). The placeholder does not appear once actual text has been input into the field and it does not currently participate in determining the size of the text field.",
     type = "value"
    },
    setReturnKey = {
@@ -1748,7 +1762,7 @@ do return {
    },
    play = {
     args = "( audioHandle [, options ] )",
-    description = "Plays audio.",
+    description = "Plays the audio specified by the audio handle on a channel. If a channel is not explicitly specified, an available channel will be automatically chosen for you.",
     returns = "(Number)",
     type = "function"
    },
@@ -1828,6 +1842,119 @@ do return {
    }
   },
   description = "The Corona Audio system gives you access to advanced OpenAL features. See the Audio Usage/Functionsguide.media.audioSystem guide for more information.",
+  type = "lib"
+ },
+ composer = {
+  childs = {
+   getScene = {
+    args = "( sceneName )",
+    description = "Returns the specified scene object, as returned from composer.newScene(). Returns `nil` if the scene object does not exist. This function is useful for getting a reference to a specific scene object - for instance, if the current scene needs access to a specific function that's attached to another scene.",
+    returns = "(Table)",
+    type = "function"
+   },
+   getSceneName = {
+    args = "( sceneType )",
+    description = "Returns the current, previous, or overlay scene name as a string. This can then be used with composer.gotoScene().",
+    returns = "(String)",
+    type = "function",
+    valuetype = "string"
+   },
+   getVariable = {
+    args = "( variableName )",
+    description = "This function retrieves the value of a variable (from within the Composer object) that you previously set via composer.setVariable().",
+    returns = "()",
+    type = "function"
+   },
+   gotoScene = {
+    args = "( sceneName [, options] )",
+    description = "This function is used to transition to a specific scene. When called, the hide event will be dispatched.",
+    returns = "()",
+    type = "function"
+   },
+   hideOverlay = {
+    args = "( [recycleOnly] [, effect] [, time] )",
+    description = "This function hides/removes the current overlay scene (see composer.showOverlay()), if one is being displayed.",
+    returns = "()",
+    type = "function"
+   },
+   isDebug = {
+    description = "Toggles \"Composer Debug Mode\" which, if set to `true`, prints useful debugging information to the Corona Terminal in certain situations. This should be set to `false` (default) before building the project for deployment.",
+    type = "value"
+   },
+   loadScene = {
+    args = "( sceneName [, doNotLoadView] [, params] )",
+    description = "Loads the specified scene, hidden behind the current scene, without initiating a scene transition. This function is similar to composer.gotoScene() event will be dispatched on the scene, assuming its `self.view` does not already exist.",
+    returns = "()",
+    type = "function"
+   },
+   migration = {
+    description = "This guide aims to ease your migration from Storyboard to Composer.",
+    type = "value"
+   },
+   newScene = {
+    args = "()",
+    description = "This function creates new scene objects which can be used with the Composer library.",
+    returns = "(Table)",
+    type = "function"
+   },
+   purgeOnSceneChange = {
+    description = "If set to `true`, whenever a scene change is completed, all scenes (except for the newly active scene) will be automatically purged. The default value for this property is `false`.",
+    type = "value"
+   },
+   purgeScene = {
+    args = "( sceneName )",
+    description = "Unloads the specified scene's `scene.view` property, which is a group that contains all of the scene's display objects. It takes one (required) argument, `sceneName`, which is the name of the scene (usually the name of the module, without the \".lua\" extension) you are attempting to unload. If the scene has its own module, this function preserves the scene's module in the global `package.loaded` table.",
+    returns = "()",
+    type = "function"
+   },
+   recycleAutomatically = {
+    description = "If this property is set to `true` (default), the scene used least recently will be automatically recycled if the OS issues a low memory warning. If you prefer to manage the recycling of scenes manually and disable the <nobr>auto-recycling</nobr> functionality, set this property to `false`.",
+    type = "value"
+   },
+   recycleOnLowMemory = {
+    description = "If the OS issues a low memory warning, Composer will automatically recycle the scene used least recently (that scene's `self.view` will be removed). If you prefer to disable <nobr>auto-recycling</nobr> functionality, set this property to `false`. Default is `true`.",
+    type = "value"
+   },
+   recycleOnSceneChange = {
+    description = "By default, when changing scenes, Composer keeps the current scene's view in memory, which can improve performance if you access the same scenes frequently. If you wish to recycle the current scene when changing to a new scene (remove the current scene's `self.view`) set `composer.recycleOnSceneChange` to `true`. The default value is `false`.",
+    type = "value"
+   },
+   reloadScene = {
+    args = "()",
+    description = "Reloads the currently loaded scene. This does not support scene transition effects. When a scene is reloaded, it behaves as if composer.gotoScene() was called on the currently active scene.",
+    returns = "()",
+    type = "function"
+   },
+   removeHidden = {
+    args = "( shouldRecycle )",
+    description = "This function removes (or optionally recycles) all scenes __except__ for the currently active scene. A destroy event is first dispatched to all of these scenes.",
+    returns = "()",
+    type = "function"
+   },
+   removeScene = {
+    args = "( sceneName, shouldRecycle )",
+    description = "This function removes the specified scene (or optionally recycles it). A destroy event is first dispatched to the scene.",
+    returns = "()",
+    type = "function"
+   },
+   setVariable = {
+    args = "( variableName, value )",
+    description = "This function sets a variable (within the Composer module) which you can access from any other scene via  composer.getVariable().",
+    returns = "()",
+    type = "function"
+   },
+   showOverlay = {
+    args = "( sceneName [, options] )",
+    description = "This function loads an overlay scene above the currently active scene (the __parent__ scene), leaving the parent scene intact.",
+    returns = "()",
+    type = "function"
+   },
+   stage = {
+    description = "Returns a reference to the top-level Composer display group which all scene views are inserted into. This can be considered as the \"Composer scene layer\" and it's useful if you need to place display objects above or below all Composer scenes, even during transition effects. For example:",
+    type = "value"
+   }
+  },
+  description = "Composer is the official scene (screen) creation and management library in Corona SDK. This library provides developers with an easy way to create and transition between individual scenes.",
   type = "lib"
  },
  credits = {
@@ -1931,6 +2058,13 @@ do return {
     type = "function",
     valuetype = "_DisplayObject"
    },
+   colorSample = {
+    args = "( x, y, listener )",
+    description = "Get the color of a pixel on screen.",
+    returns = "(LineObject)",
+    type = "function",
+    valuetype = "_LineObject"
+   },
    contentCenterX = {
     description = "Equivalent to `display.contentWidth * 0.5`.",
     type = "value"
@@ -1965,10 +2099,16 @@ do return {
    },
    getCurrentStage = {
     args = "()",
-    description = "Returns a reference to the current stage object, which is the root group for all display objects and groups. Currently, Corona has a single stage instance, so this function always returns a reference to the same object.",
+    description = "Returns a reference to the current stage object, which is the parent group for all display objects and groups. Currently, Corona has a single stage instance, so this function always returns a reference to the same object.",
     returns = "(DisplayObject)",
     type = "function",
     valuetype = "_DisplayObject"
+   },
+   getDefault = {
+    args = "( key )",
+    description = "Get default display values including default colors for display objects, anchor point defaults, texture wrapping settings, etc.",
+    returns = "()",
+    type = "function"
    },
    imageSuffix = {
     description = "Returns the suffix used by the dynamic image selectionguide.basics.configSettings feature of Corona. If the content scaling is 1, then returns `nil`.",
@@ -1994,8 +2134,8 @@ do return {
     type = "function"
    },
    newEmbossedText = {
-    args = "( { options } )",
-    description = "Creates an embossed text object. The local origin is at the center of the text. Supports multi-line text by specifying a `width` and `height` when the object is created.",
+    args = "( [parentGroup,] string, left, top, [width, height,] font, size )",
+    description = "Creates text with an embossed (inset) effect.",
     returns = "(DisplayObject)",
     type = "function",
     valuetype = "_DisplayObject"
@@ -2028,7 +2168,7 @@ do return {
     valuetype = "_DisplayObject"
    },
    newLine = {
-    args = "( [parentGroup,] x1, y1, x2, y2 )",
+    args = "( [parentGroup,] x1, y1, x2, y2 [, x3, y3, ... ] )",
     description = "Draw a line from one point to another. Optionally, you may append points to the end of the line to create outline shapes or paths.",
     returns = "(LineObject)",
     type = "function",
@@ -2070,8 +2210,8 @@ do return {
     valuetype = "_SpriteObject"
    },
    newText = {
-    args = "( options )",
-    description = "Creates a text object. The local origin is at the center of the text. Supports multi-line text by specifying a `width` when the object is created (optional).",
+    args = "( { options } )",
+    description = "Creates a text object with its top-left corner at (left, top). The local origin is at the center of the text; the reference point is initialized to this local origin. By default, the text color is white `(255, 255, 255)`. See object:setTextColor() for more information.",
     returns = "(DisplayObject)",
     type = "function",
     valuetype = "_DisplayObject"
@@ -2106,7 +2246,7 @@ do return {
    },
    setDefault = {
     args = "()",
-    description = "Set defaults for display objects, such as default colors for display objects, anchor points, or texture wrapping.",
+    description = "Set default display values including default colors for display objects, anchor point defaults, texture wrapping settings, etc.",
     returns = "()",
     type = "function"
    },
@@ -2261,7 +2401,7 @@ do return {
  graphics = {
   childs = {
    newGradient = {
-    args = "( color1, color2, direction )",
+    args = "( color1, color2 [, direction] )",
     description = "Creates a gradient object that adds horizontal/vertical linear gradients to rectangle and text objects.",
     returns = "(Object)",
     type = "function"
@@ -2279,6 +2419,12 @@ do return {
     returns = "(Mask)",
     type = "function",
     valuetype = "_Mask"
+   },
+   newOutline = {
+    args = "()",
+    description = "This function produces the outline of the shape obtained from an image file or a frame within an ImageSheet. A shape is recognized by the image's <nobr>non-transparent</nobr> alpha value. Generally, simpler images produce better outlines.",
+    returns = "(Table)",
+    type = "function"
    }
   },
   description = "",
@@ -3002,6 +3148,12 @@ do return {
     returns = "(Number)",
     type = "function"
    },
+   getParticleRadius = {
+    args = "()",
+    description = "Returns the radius of particles in content units.",
+    returns = "(Numbers)",
+    type = "function"
+   },
    getReportCollisionsInContentCoordinates = {
     args = "()",
     description = "This function is used to determine if the content origin is the collision point in the collision physics events.",
@@ -3081,6 +3233,12 @@ do return {
     returns = "()",
     type = "function"
    },
+   setParticleRadius = {
+    args = "( radius_in_content_units )",
+    description = "Sets the the radius of particles in content units.",
+    returns = "()",
+    type = "function"
+   },
    setPositionIterations = {
     args = "( value )",
     description = "Sets the accuracy of the engine's position calculations. The default value is `8`.",
@@ -3139,7 +3297,15 @@ do return {
   type = "lib"
  },
  sprite = {
-  childs = {},
+  childs = {
+   newSpriteSheet = {
+    args = "( spriteSheetFile, [baseDir,]  frameWidth, frameHeight )",
+    description = "Creates a new sprite sheet object from an sprite sheet image file whose animation frames are all the same height and width. To use a sprite sheet with non-uniformly spaced animation frames, use sprite.newSpriteSheetFromData()sprite.newSpriteSheetFromData.",
+    returns = "(SpriteSheet)",
+    type = "function",
+    valuetype = "_SpriteSheet"
+   }
+  },
   description = "The old sprite library is only available in legacy versions of Corona. It has been removed from production builds of Corona.",
   type = "lib"
  },
