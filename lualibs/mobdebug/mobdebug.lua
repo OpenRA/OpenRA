@@ -1,5 +1,5 @@
 --
--- MobDebug 0.551
+-- MobDebug 0.5511
 -- Copyright 2011-14 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
@@ -18,10 +18,10 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.551,
+  _VERSION = 0.5511,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
+  port = os and os.getenv and tonumber(os.getenv("MOBDEBUG_PORT")) or 8172,
   checkcount = 200,
   yieldtimeout = 0.02,
 }
