@@ -1,10 +1,10 @@
 -- This is a file that sets color scheme based on Tomorrow format.
--- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+-- Copyright 2011-14 Paul Kulchenko, ZeroBrane LLC
 
 -- Tomorrow colors from https://github.com/chriskempson/tomorrow-theme
 -- Zenburn colors from https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim (contributed by Srdjan Marković)
 -- Monokai colors from http://www.monokai.nl/blog/2006/07/15/textmate-color-theme/
--- Molokay colors based on https://github.com/tomasr/molokai/blob/master/colors/molokai.vim
+-- Molokai colors based on https://github.com/tomasr/molokai/blob/master/colors/molokai.vim
 -- Solarized colors from https://github.com/altercation/vim-colors-solarized
 
 local theme = ...

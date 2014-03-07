@@ -1,29 +1,29 @@
 --[[
 1. Pick a color scheme by clicking on its name:
-  - [Tomorrow](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Tomorrow')))
-  - [TomorrowContrast](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowContrast')))
-  - [TomorrowNight](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNight')))
-  - [TomorrowNightBlue](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNightBlue')))
-  - [TomorrowNightBright](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNightBright')))
-  - [TomorrowNightEighties](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNightEighties')))
-  - [Zenburn](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Zenburn')))
-  - [Monokai](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Monokai')))
-  - [Molokai](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Molokai')))
-  - [SolarizedDark](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','SolarizedDark')))
-  - [SolarizedLight](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','SolarizedLight')))
-  - [Notepad++](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','NotepadPlusPlus')))
-  - [SciTeLuaIDE](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','SciTeLuaIDE')))
+  - [Tomorrow](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','Tomorrow'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [TomorrowContrast](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowContrast'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [TomorrowNight](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNight'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [TomorrowNightBlue](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNightBlue'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [TomorrowNightBright](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNightBright'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [TomorrowNightEighties](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNightEighties'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [Zenburn](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','Zenburn'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [Monokai](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','Monokai'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [Molokai](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','Molokai'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [SolarizedDark](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','SolarizedDark'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [SolarizedLight](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','SolarizedLight'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [Notepad++](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','NotepadPlusPlus'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
+  - [SciTeLuaIDE](macro:inline(ApplyStyleConfig('cfg/tomorrow.lua','SciTeLuaIDE'); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = c.styles.text; ReApplySpecAndStyles()))
 
-  - [ZeroBrane Studio](macro:shell(ide.config.styles = StylesGetDefault(); ReApplySpecAndStyles()))
+  - [ZeroBrane Studio](macro:inline(ide.config.styles = StylesGetDefault(); local c = ide.config; c.stylesoutshell = c.styles; c.styles.auxwindow = {}; ReApplySpecAndStyles()))
 
-2. [Apply the same scheme to Output/Console windows](macro:shell(ide.config.stylesoutshell = ide.config.styles; ReApplySpecAndStyles())).
-
-3. Add the following code with the scheme you selected to `cfg/user.lua`.
+2. Add the following code with the scheme you selected to `cfg/user.lua`.
 --]]
 
 local G = ...
 styles = G.loadfile('cfg/tomorrow.lua')('TomorrowNightBlue')
-stylesoutshell = styles -- also apply the same scheme to Output/Console windows
+stylesoutshell = styles -- apply the same scheme to Output/Console windows
+styles.auxwindow = styles.text -- apply text colors to auxiliary windows
+styles.calltip = styles.text -- apply text colors to tooltips
 
 -- code example
 if false and true then func(1, 2, 3) end
