@@ -31,8 +31,6 @@ namespace OpenRA.Mods.RA
 	{
 		[Sync] int charges;
 		[Sync] int timeToRecharge;
-		[Sync] int initDelay;
-		[Sync] int chargeDelay;
 
 		public AttackCharge(Actor self)
 			: base(self)
@@ -80,7 +78,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
-
+				
 				var initDelay = self.Info.Traits.Get<AttackChargeInfo>().InitialChargeDelay;
 				
 				var attack = self.Trait<AttackCharge>();
@@ -104,7 +102,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
-				
+
 				var chargeDelay = self.Info.Traits.Get<AttackChargeInfo>().ChargeDelay;
 
 				var attack = self.Trait<AttackCharge>();
