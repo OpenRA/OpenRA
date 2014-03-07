@@ -113,3 +113,12 @@ SPICEBLOOM:
 		Terrain: Spice
 	BodyOrientation:
 
+CAMERA:
+	Aircraft:
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 10c0
+	ProximityCaptor:
+		Types: Camera
+	BodyOrientation:

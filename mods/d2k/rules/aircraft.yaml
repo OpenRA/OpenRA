@@ -101,8 +101,6 @@ ORNI.bomber:
 		HP: 100
 	Armor:
 		Type: Light
-	RevealsShroud:
-		Range: 10c0
 	Plane:
 		ROT: 5
 		Speed: 350
