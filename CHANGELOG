@@ -29,6 +29,7 @@ NEW:
 		Added the BLOXXMAS terrain tiles from the 1.06 patch.
 		Saboteur can now plant C4 on vehicles.
 	Red Alert:
+		Chinook rotors now counter-rotate.
 		Transports will now open their doors when at shore.
 		Tanya can now plant C4 on bridges.
 		Submarine torpedoes can now hit bridges when force fired.
@@ -47,6 +48,7 @@ NEW:
 		Added a desert variation of the Missile Silo by Kilkakon.
 		Removed the temperate shellmap and improved the design and performance of the desert shellmap.
 	Tiberian Dawn:
+		Chinook rotors now counter-rotate.
 		Commando can now plant C4 on bridges.
 		Added the Asset Browser to the Extras menu.
 		Removed health bars and selection boxes from walls.
