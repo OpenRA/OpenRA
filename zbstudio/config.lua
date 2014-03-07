@@ -28,7 +28,7 @@ end
 
 filehistorylength = 20
 
-singleinstance = true
+singleinstance = G.ide.osname ~= 'Macintosh'
 singleinstanceport = 0xe493
 
 acandtip.shorttip = true
