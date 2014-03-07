@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	[Desc("Unit got to face the target")]
-	public class AttackFrontalInfo : AttackBaseInfo
+	public class AttackFrontalInfo : AttackBaseInfo, Requires<IFacingInfo>
 	{
 		public readonly int FacingTolerance = 1;
 
@@ -37,10 +37,10 @@ namespace OpenRA.Mods.RA
 			if (!base.CanAttack(self, target))
 				return false;
 
-			var facing = self.Trait<IFacing>().Facing;
-			var facingToTarget = Util.GetFacing(target.CenterPosition - self.CenterPosition, facing);
+			var f = facing.Value.Facing;
+			var facingToTarget = Util.GetFacing(target.CenterPosition - self.CenterPosition, f);
 
-			if (Math.Abs(facingToTarget - facing) % 256 > info.FacingTolerance)
+			if (Math.Abs(facingToTarget - f) % 256 > info.FacingTolerance)
 				return false;
 
 			return true;

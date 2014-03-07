@@ -29,14 +29,20 @@ namespace OpenRA.Mods.RA
 		[Sync] public bool IsAttacking { get; internal set; }
 
 		readonly Actor self;
+		readonly AttackBaseInfo info;
 
+		protected Lazy<IFacing> facing;
 		Lazy<IEnumerable<Armament>> armaments;
 		protected IEnumerable<Armament> Armaments { get { return armaments.Value; } }
+		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public AttackBase(Actor self, AttackBaseInfo info)
 		{
 			this.self = self;
+			this.info = info;
+
 			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
+			facing = Lazy.New(() => self.TraitOrDefault<IFacing>());
 		}
 
 		protected virtual bool CanAttack(Actor self, Target target)
@@ -59,8 +65,6 @@ namespace OpenRA.Mods.RA
 		public bool ShouldExplode(Actor self) { return !IsReloading(); }
 
 		public bool IsReloading() { return Armaments.Any(a => a.IsReloading); }
-
-		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public virtual void Tick(Actor self)
 		{
@@ -88,9 +92,8 @@ namespace OpenRA.Mods.RA
 			if (!CanAttack(self, target))
 				return;
 
-			var facing = self.TraitOrDefault<IFacing>();
 			foreach (var a in Armaments)
-				a.CheckFire(self, this, facing, target);
+				a.CheckFire(self, this, facing.Value, target);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -101,7 +104,7 @@ namespace OpenRA.Mods.RA
 					yield break;
 
 				var negativeDamage = Armaments.First().Weapon.Warheads[0].Damage < 0;
-				yield return new AttackOrderTargeter("Attack", 6, negativeDamage);
+				yield return new AttackOrderTargeter(this, "Attack", 6, negativeDamage);
 			}
 		}
 
@@ -168,9 +171,11 @@ namespace OpenRA.Mods.RA
 		class AttackOrderTargeter : IOrderTargeter
 		{
 			readonly bool negativeDamage;
+			readonly AttackBase ab;
 
-			public AttackOrderTargeter(string order, int priority, bool negativeDamage)
+			public AttackOrderTargeter(AttackBase ab, string order, int priority, bool negativeDamage)
 			{
+				this.ab = ab;
 				this.OrderID = order;
 				this.OrderPriority = priority;
 				this.negativeDamage = negativeDamage;
@@ -183,12 +188,12 @@ namespace OpenRA.Mods.RA
 			{
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				cursor = self.Info.Traits.Get<AttackBaseInfo>().Cursor;
+				cursor = ab.info.Cursor;
 
 				if (target.Type == TargetType.Actor && target.Actor == self)
 					return false;
 
-				if (!self.Trait<AttackBase>().HasAnyValidWeapons(target))
+				if (!ab.HasAnyValidWeapons(target))
 					return false;
 
 				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
@@ -210,7 +215,7 @@ namespace OpenRA.Mods.RA
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				cursor = self.Info.Traits.Get<AttackBaseInfo>().Cursor;
+				cursor = ab.info.Cursor;
 
 				if (negativeDamage)
 					return false;
