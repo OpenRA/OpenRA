@@ -17,7 +17,7 @@ using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
-using OpenRA.Mods.RA.Missions;
+using OpenRA.Network;
 using OpenRA.Scripting;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -245,7 +245,25 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public void PlayRandomMusic()
 		{
-			MissionUtils.PlayMissionMusic();
+			if (!Rules.InstalledMusic.Any() || !Game.Settings.Sound.MapMusic)
+				return;
+			Game.ConnectionStateChanged += StopMusic;
+			PlayMusic();
+		}
+
+		void PlayMusic()
+		{
+			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
+			Sound.PlayMusicThen(track.Value, PlayMusic);
+		}
+
+		void StopMusic(OrderManager orderManager)
+		{
+			if (!orderManager.GameStarted)
+			{
+				Sound.StopMusic();
+				Game.ConnectionStateChanged -= StopMusic;
+			}
 		}
 
 		[LuaGlobal]
