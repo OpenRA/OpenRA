@@ -137,7 +137,15 @@ local function createNotebook(frame)
         and debug:traceback():find("'AddPage'"))
 
       if doc and event:GetOldSelection() ~= -1 and not double then
-        SetEditorSelection(notebook:GetSelection()) end
+        -- switching between editor tabs doesn't trigger KILL_FOCUS events
+        -- on OSX (http://trac.wxwidgets.org/ticket/14142); trigger manually
+        if ide.osname == 'Macintosh' then
+          local win = notebook:GetPage(event:GetOldSelection())
+          local ev = wx.wxFocusEvent(wx.wxEVT_KILL_FOCUS)
+          win:GetEventHandler():ProcessEvent(ev)
+        end
+        SetEditorSelection(notebook:GetSelection())
+      end
     end)
 
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
