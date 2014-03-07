@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 		Turreted turret;
 
 		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info)
-			: base(init.self)
+			: base(init.self, info)
 		{
 			this.info = info;
 			buildComplete = init.Contains<SkipMakeAnimsInit>();

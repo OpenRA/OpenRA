@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 		readonly AttackFrontalInfo info;
 
 		public AttackFrontal(Actor self, AttackFrontalInfo info)
-			: base(self)
+			: base(self, info)
 		{
 			this.info = info;
 		}

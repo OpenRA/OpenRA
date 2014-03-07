@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly int InitialChargeDelay = 22;
 		[Desc("Delay for additional charges if MaxCharge is larger than 1.")]
 		public readonly int ChargeDelay = 3;
-		public override object Create(ActorInitializer init) { return new AttackCharge(init.self); }
+		public override object Create(ActorInitializer init) { return new AttackCharge(init.self, this); }
 	}
 
 	class AttackCharge : AttackOmni, ITick, INotifyAttack, ISync
@@ -34,8 +34,8 @@ namespace OpenRA.Mods.RA
 		[Sync] int charges;
 		[Sync] int timeToRecharge;
 
-		public AttackCharge(Actor self)
-			: base(self)
+		public AttackCharge(Actor self, AttackChargeInfo info)
+			: base(self, info)
 		{
 			aci = self.Info.Traits.Get<AttackChargeInfo>();
 			charges = aci.MaxCharges;

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 {
 	class AttackTurretedInfo : AttackBaseInfo, Requires<TurretedInfo>
 	{
-		public override object Create(ActorInitializer init) { return new AttackTurreted(init.self); }
+		public override object Create(ActorInitializer init) { return new AttackTurreted(init.self, this); }
 	}
 
 	class AttackTurreted : AttackBase, INotifyBuildComplete, ISync
@@ -28,8 +28,8 @@ namespace OpenRA.Mods.RA
 		protected IEnumerable<Turreted> turrets;
 		[Sync] protected bool buildComplete;
 
-		public AttackTurreted(Actor self)
-			: base(self)
+		public AttackTurreted(Actor self, AttackTurretedInfo info)
+			: base(self, info)
 		{
 			turrets = self.TraitsImplementing<Turreted>();
 		}

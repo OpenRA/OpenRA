@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA
 {
 	class AttackOmniInfo : AttackBaseInfo
 	{
-		public override object Create(ActorInitializer init) { return new AttackOmni(init.self); }
+		public override object Create(ActorInitializer init) { return new AttackOmni(init.self, this); }
 	}
 
 	class AttackOmni : AttackBase, INotifyBuildComplete, ISync
@@ -23,8 +23,8 @@ namespace OpenRA.Mods.RA
 		[Sync] bool buildComplete = false;
 		public void BuildingComplete(Actor self) { buildComplete = true; }
 
-		public AttackOmni(Actor self)
-			: base(self) { }
+		public AttackOmni(Actor self, AttackOmniInfo info)
+			: base(self, info) { }
 
 		protected override bool CanAttack(Actor self, Target target)
 		{

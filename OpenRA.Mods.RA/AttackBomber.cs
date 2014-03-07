@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 		[Sync] Target target;
 
 		public AttackBomber(Actor self, AttackBomberInfo info)
-			: base(self)
+			: base(self, info)
 		{
 			this.info = info;
 			this.camera = null;

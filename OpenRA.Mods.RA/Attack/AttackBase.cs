@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 		Lazy<IEnumerable<Armament>> armaments;
 		protected IEnumerable<Armament> Armaments { get { return armaments.Value; } }
 
-		public AttackBase(Actor self)
+		public AttackBase(Actor self, AttackBaseInfo info)
 		{
 			this.self = self;
 			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
