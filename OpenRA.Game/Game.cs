@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -355,6 +355,7 @@ namespace OpenRA
 			modData = new ModData(mod);
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.InitializeLoaders();
+			modData.LoadMaps();
 
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
@@ -385,7 +386,7 @@ namespace OpenRA
 					if (Settings.Server.DedicatedLoop)
 					{
 						Console.WriteLine("Starting a new server instance...");
-						modData.InitializeLoaders();
+						modData.LoadMaps();
 						continue;
 					}
 
