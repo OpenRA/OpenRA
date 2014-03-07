@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,73 +16,74 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class AttackPopupTurretedInfo : AttackTurretedInfo
+	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<RenderBuildingInfo>
 	{
 		public int CloseDelay = 125;
 		public int DefaultFacing = 0;
 		public float ClosedDamageMultiplier = 0.5f;
-		public override object Create(ActorInitializer init) { return new AttackPopupTurreted( init, this ); }
+
+		public override object Create(ActorInitializer init) { return new AttackPopupTurreted(init, this); }
 	}
 
 	class AttackPopupTurreted : AttackTurreted, INotifyBuildComplete, INotifyIdle, IDamageModifier
 	{
-		enum PopupState { Open, Rotating, Transitioning, Closed };
+		enum PopupState { Open, Rotating, Transitioning, Closed }
 
-		AttackPopupTurretedInfo Info;
-		int IdleTicks = 0;
-		PopupState State = PopupState.Open;
+		AttackPopupTurretedInfo info;
+		RenderBuilding rb;
+
+		int idleTicks = 0;
+		PopupState state = PopupState.Open;
 		Turreted turret;
 
-		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info) : base(init.self)
+		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info)
+			: base(init.self)
 		{
-			Info = info;
+			this.info = info;
 			buildComplete = init.Contains<SkipMakeAnimsInit>();
 			turret = turrets.FirstOrDefault();
+			rb = init.self.Trait<RenderBuilding>();
 		}
 
-		protected override bool CanAttack( Actor self, Target target )
+		protected override bool CanAttack(Actor self, Target target)
 		{
-			if (State == PopupState.Transitioning)
+			if (state == PopupState.Transitioning || !buildComplete)
 				return false;
 
-			if( self.HasTrait<Building>() && !buildComplete )
+			if (!base.CanAttack(self, target))
 				return false;
 
-			if (!base.CanAttack( self, target ))
-				return false;
-
-			IdleTicks = 0;
-			if (State == PopupState.Closed)
+			idleTicks = 0;
+			if (state == PopupState.Closed)
 			{
-				State = PopupState.Transitioning;
-				var rb = self.Trait<RenderBuilding>();
+				state = PopupState.Transitioning;
 				rb.PlayCustomAnimThen(self, "opening", () =>
 				{
-					State = PopupState.Open;
+					state = PopupState.Open;
 					rb.PlayCustomAnimRepeating(self, "idle");
 				});
 				return false;
 			}
 
-			if (!turret.FaceTarget(self,target)) return false;
+			if (!turret.FaceTarget(self, target))
+				return false;
 
 			return true;
 		}
 
 		public void TickIdle(Actor self)
 		{
-			if (State == PopupState.Open && IdleTicks++ > Info.CloseDelay)
+			if (state == PopupState.Open && idleTicks++ > info.CloseDelay)
 			{
-				turret.desiredFacing = Info.DefaultFacing;
-				State = PopupState.Rotating;
+				turret.desiredFacing = info.DefaultFacing;
+				state = PopupState.Rotating;
 			}
-			else if (State == PopupState.Rotating && turret.turretFacing == Info.DefaultFacing)
+			else if (state == PopupState.Rotating && turret.turretFacing == info.DefaultFacing)
 			{
-				State = PopupState.Transitioning;
-				var rb = self.Trait<RenderBuilding>();
+				state = PopupState.Transitioning;
 				rb.PlayCustomAnimThen(self, "closing", () =>
 				{
-					State = PopupState.Closed;
+					state = PopupState.Closed;
 					rb.PlayCustomAnimRepeating(self, "closed-idle");
 					turret.desiredFacing = null;
 				});
@@ -94,17 +95,17 @@ namespace OpenRA.Mods.RA
 			// Set true for SkipMakeAnimsInit
 			if (buildComplete)
 			{
-				State = PopupState.Closed;
-				self.Trait<RenderBuilding>()
-					.PlayCustomAnimRepeating(self, "closed-idle");
+				state = PopupState.Closed;
+				rb.PlayCustomAnimRepeating(self, "closed-idle");
 				turret.desiredFacing = null;
 			}
+
 			buildComplete = true;
 		}
 
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
 		{
-			return State == PopupState.Closed ? Info.ClosedDamageMultiplier : 1f;
+			return state == PopupState.Closed ? info.ClosedDamageMultiplier : 1f;
 		}
 	}
 }
