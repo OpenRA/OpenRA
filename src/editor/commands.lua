@@ -899,6 +899,17 @@ frame:Connect(wx.wxEVT_TIMER, saveAutoRecovery)
 ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
   function(event)
     if not ide.exitingProgram then
+      -- wxSTC controls on OSX don't generate KILL_FOCUS events
+      -- when focus is switched between controls in the app;
+      -- manually kill focus when the app is deactivated
+      if ide.osname == 'Macintosh' and not event:GetActive() then
+        local ntbk = frame.bottomnotebook
+        for _,win in ipairs({ntbk.errorlog, ntbk.shellbox, GetEditor()}) do
+          local ev = wx.wxFocusEvent(wx.wxEVT_KILL_FOCUS)
+          win:GetEventHandler():ProcessEvent(ev)
+        end
+      end
+
       local event = event:GetActive() and "onAppFocusSet" or "onAppFocusLost"
       PackageEventHandle(event, ide.editorApp)
     end
