@@ -48,6 +48,7 @@ NEW:
 		Added a desert variation of the Missile Silo by Kilkakon.
 		Removed the temperate shellmap and improved the design and performance of the desert shellmap.
 		Removed the hardcoded missions. These will be later reimplemented.
+		Removed maps: Battle Lake, Crossing the River, Doughnut Hole, Ice Woods, Island Hoppers (KOTH), Mad Scramble, Nishnekolymsk, Strip Mine
 	Tiberian Dawn:
 		Chinook rotors now counter-rotate.
 		Commando can now plant C4 on bridges.
