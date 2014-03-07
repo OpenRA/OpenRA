@@ -156,7 +156,7 @@
     <Compile Include="Attack\AttackMedic.cs" />
     <Compile Include="Attack\AttackOmni.cs" />
     <Compile Include="Attack\AttackPopupTurreted.cs" />
-    <Compile Include="Attack\AttackTesla.cs" />
+    <Compile Include="Attack\AttackCharge.cs" />
     <Compile Include="Attack\AttackTurreted.cs" />
     <Compile Include="Attack\AttackWander.cs" />
     <Compile Include="AutoHeal.cs" />

@@ -76,6 +76,7 @@ NEW:
 		Decreased Visceroid health by 25% and removed their ability to gain experience.
 		Increased the chance of Tiberium or chemical deaths spawning a Visceroid from 2% to 10%.
 		Increased Obelisk of Light laser damage from 200 to 360.
+		Fixed Obelisk of Light charge animation and sound not playing.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.
@@ -95,6 +96,8 @@ NEW:
 		Fixed performance issues with units pathing to naval transports.
 		Fixed unit moving to transports that have moved.
 		Updated shroud-based traits to use world units.
+		Renamed AttackTesla into AttackCharge and un-hardcoded initial charge delay and delay for additional charges.
+		Updated RenderBuildingCharge so you can set a custom charge sequence name (default is active).
 	Server:
 		Message of the day is now shared between all mods and a default motd.txt gets created in the user directory.
 	Asset Browser:

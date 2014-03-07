@@ -303,10 +303,12 @@ TSLA:
 	RevealsShroud:
 		Range: 8c0
 	RenderBuildingCharge:
+		ChargeAudio: tslachg2.aud
 	Armament:
 		Weapon: TeslaZap
 		LocalOffset: 0,0,427
-	AttackTesla:
+	AttackCharge:
+		MaxCharges: 3
 		ReloadTime: 120
 	AutoTarget:
 	IronCurtainable:
