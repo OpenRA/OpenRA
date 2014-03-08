@@ -101,7 +101,7 @@ function KSC(id, default)
   -- this is only for the rare case of someone assigning a complete list
   -- to ide.config.keymap.
   local keymap = ide.config.keymap
-  return keymap[id] and "\t"..keymap[id] or default or ""
+  return (keymap[id] and "\t"..keymap[id]) or (default and "\t"..default) or ""
 end
 
 ide.config.editor.keymap = {
