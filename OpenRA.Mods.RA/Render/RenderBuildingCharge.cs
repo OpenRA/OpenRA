@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,15 +8,20 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
+
 namespace OpenRA.Mods.RA.Render
 {
 	public class RenderBuildingChargeInfo : RenderBuildingInfo
 	{
-		public readonly string ChargeAudio = "tslachg2.aud";
+		[Desc("Sound to play when building charges.")]
+		public readonly string ChargeAudio = null;
+		[Desc("Sequence to use for building charge animation.")]
+		public readonly string ChargeSequence = "active";
 		public override object Create(ActorInitializer init) { return new RenderBuildingCharge(init, this); }
 	}
 
-	/* used for tesla */
+	/* used for tesla and obelisk */
 	public class RenderBuildingCharge : RenderBuilding
 	{
 		RenderBuildingChargeInfo info;
@@ -30,7 +35,7 @@ namespace OpenRA.Mods.RA.Render
 		public void PlayCharge(Actor self)
 		{
 			Sound.Play(info.ChargeAudio, self.CenterPosition);
-			anim.PlayThen(NormalizeSequence(self, "active"),
+			anim.PlayThen(NormalizeSequence(self, info.ChargeSequence),
 				() => anim.PlayRepeating(NormalizeSequence(self, "idle")));
 		}
 	}

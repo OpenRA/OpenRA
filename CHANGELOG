@@ -21,6 +21,8 @@ NEW:
 		Added a toggle spectators to multiplayer.
 		Removed the ability of commandos to plant C4 on walls.
 		Order lines are now shown on unit selection.
+		Fixed chat synchronization in replays.
+		Fixed the game sometimes crashing when deploying and activating the guard cursor at the same time.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
@@ -48,6 +50,8 @@ NEW:
 		Added a desert variation of the Allied Barracks by Kilkakon.
 		Added a desert variation of the Missile Silo by Kilkakon.
 		Removed the temperate shellmap and improved the design and performance of the desert shellmap.
+		Removed the hardcoded missions. These will be later reimplemented.
+		Removed maps: Battle Lake, Crossing the River, Doughnut Hole, Ice Woods, Island Hoppers (KOTH), Mad Scramble, Nishnekolymsk, Strip Mine
 	Tiberian Dawn:
 		Chinook rotors now counter-rotate.
 		Commando can now plant C4 on bridges.
@@ -74,6 +78,7 @@ NEW:
 		Decreased Visceroid health by 25% and removed their ability to gain experience.
 		Increased the chance of Tiberium or chemical deaths spawning a Visceroid from 2% to 10%.
 		Increased Obelisk of Light laser damage from 200 to 360.
+		Fixed Obelisk of Light charge animation and sound not playing.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.
@@ -93,6 +98,8 @@ NEW:
 		Fixed performance issues with units pathing to naval transports.
 		Fixed unit moving to transports that have moved.
 		Updated shroud-based traits to use world units.
+		Renamed AttackTesla into AttackCharge and un-hardcoded initial charge delay and delay for additional charges.
+		Updated RenderBuildingCharge so you can set a custom charge sequence name (default is active).
 	Server:
 		Message of the day is now shared between all mods and a default motd.txt gets created in the user directory.
 	Asset Browser:

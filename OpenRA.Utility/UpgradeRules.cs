@@ -106,6 +106,19 @@ namespace OpenRA.Utility
 					}
 				}
 
+				// AttackTesla was replaced with AttackCharge
+				if (engineVersion < 20140307)
+				{
+					if (depth == 1 && parentKey == "World")
+					{
+						if (node.Key == "AttackTesla")
+							node.Key = "AttackCharge";
+
+						if (node.Key == "-AttackTesla")
+							node.Key = "-AttackCharge";
+					}
+				}
+
 				// AttackMove was generalized to support all moveable actor types
 				if (engineVersion < 20140116)
 				{
