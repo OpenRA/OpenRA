@@ -32,17 +32,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		static string LabelForPlayer(Player p)
 		{
-			return p != null ? "{0}'s view".F(p.PlayerName) : "World view";
+			return p != null ? p.PlayerName == "Everyone" ? "Combined view" : "{0}'s view".F(p.PlayerName) : "World view";
 		}
 
 		[ObjectCreator.UseCtor]
 		public ObserverShroudSelectorLogic(Widget widget, World world)
 		{
-			var views = world.Players.Where(p => !p.NonCombatant).Concat(new[] { (Player)null }).Select(
-				p => new CameraOption(LabelForPlayer(p),
-				      () => world.RenderPlayer == p,
-				      () => world.RenderPlayer = p
-			)).ToArray();
+			var views = world.Players.Where(p => (p.NonCombatant && p.Spectating)
+				|| !p.NonCombatant).Concat(new[] { (Player)null }).Select(
+					p => new CameraOption(LabelForPlayer(p),
+						() => world.RenderPlayer == p,
+						() => world.RenderPlayer = p
+				)).ToArray();
 
 			var shroudSelector = widget.Get<DropDownButtonWidget>("SHROUD_SELECTOR");
 			shroudSelector.GetText = () => LabelForPlayer(world.RenderPlayer);

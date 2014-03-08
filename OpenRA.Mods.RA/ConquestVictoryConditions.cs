@@ -36,13 +36,13 @@ namespace OpenRA.Mods.RA
 			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
 
 			var hasAnything = self.World.ActorsWithTrait<MustBeDestroyed>()
-				.Any( a => a.Actor.Owner == self.Owner );
+				.Any(a => a.Actor.Owner == self.Owner);
 
 			if (!hasAnything && !self.Owner.NonCombatant)
 				Lose(self);
 
-			var others = self.World.Players.Where( p => !p.NonCombatant
-				&& p != self.Owner && p.Stances[self.Owner] != Stance.Ally );
+			var others = self.World.Players.Where(p => !p.NonCombatant
+				&& p != self.Owner && p.Stances[self.Owner] != Stance.Ally);
 
 			if (!others.Any()) return;
 
