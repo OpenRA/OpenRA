@@ -84,6 +84,9 @@ namespace OpenRA.Mods.RA
 
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
+			if (!subjects.Any())
+				return null;
+
 			var multiple = subjects.Count() > 1;
 			var canGuard = FriendlyGuardableUnits(world, mi)
 				.Any(a => multiple || a != subjects.First());
