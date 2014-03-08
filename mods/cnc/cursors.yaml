@@ -171,6 +171,13 @@ Cursors:
 			start:17
 			length:1
 
+	mouse7.shp: cursor
+		attackoutsiderange:
+			start:0
+			length:8
+		attackoutsiderange-minimap:
+			start:8
+
 	mouse3.shp: cursor2
 		heal:
 			start:160
