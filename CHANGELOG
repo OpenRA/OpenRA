@@ -22,6 +22,7 @@ NEW:
 		Removed the ability of commandos to plant C4 on walls.
 		Order lines are now shown on unit selection.
 		Fixed chat synchronization in replays.
+		Fixed the game sometimes crashing when deploying and activating the guard cursor at the same time.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
