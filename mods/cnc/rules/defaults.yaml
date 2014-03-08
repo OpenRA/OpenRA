@@ -332,7 +332,6 @@
 	GivesBuildableArea:
 	RenderBuilding:
 	WithBuildingExplosion:
-	DeadBuildingState:
 	EmitInfantryOnSell:
 		ActorTypes: e6,e1
 	MustBeDestroyed:
@@ -360,7 +359,6 @@
 
 ^CivBuilding:
 	Inherits: ^Building
-	-DeadBuildingState:
 	-Buildable:
 	-GivesBuildableArea:
 	-EngineerRepairable:
@@ -475,7 +473,6 @@
 		RelativeToTopLeft: yes
 	Health:
 		HP: 500
-	DeadBuildingState:
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:
@@ -552,3 +549,19 @@
 	BodyOrientation:
 	LuaScriptEvents:
 
+^DeadBuilding:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	RenderBuilding:
+	BodyOrientation:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	Tooltip:
+		Name: Destroyed Building
+	Health:
+		HP: 100
+	Burns:
+		Damage: 20
+		Interval: 5

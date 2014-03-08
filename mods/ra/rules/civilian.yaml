@@ -88,7 +88,14 @@ HOSP:
 		Name: Hospital
 	RevealsShroud:
 		Range: 3c0
-	DeadBuildingState:
+	LeavesHusk:
+		HuskActor: HOSPDEAD
+
+HOSPDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
 
 V01:
 	Inherits: ^CivBuilding
@@ -320,7 +327,14 @@ MISS:
 	Tooltip:
 		Name: Technology Center
 	Bib:
-	DeadBuildingState:
+	LeavesHusk:
+		HuskActor: MISSDEAD
+
+MISSDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
 
 BIO:
 	Inherits: ^TechBuilding
@@ -329,7 +343,14 @@ BIO:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Biological Lab
-	DeadBuildingState:
+	LeavesHusk:
+		HuskActor: BIODEAD
+
+BIODEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
 
 OILB:
 	Inherits: ^TechBuilding

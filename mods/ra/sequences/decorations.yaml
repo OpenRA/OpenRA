@@ -375,15 +375,11 @@ utilpol1:
 		Start: 0
 	damaged-idle:
 		Start: 1
-	dead:
-		Start: 1
 
 utilpol2:
 	idle:
 		Start: 0
 	damaged-idle:
-		Start: 1
-	dead:
 		Start: 1
 
 ammobox1:

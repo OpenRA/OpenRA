@@ -10,7 +10,6 @@ SPLIT2:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
 	-Health:
-	-DeadBuildingState:
 	-Armor:
 
 SPLIT3:
@@ -25,7 +24,6 @@ SPLIT3:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
 	-Health:
-	-DeadBuildingState:
 	-Armor:
 
 SPLITBLUE:
@@ -40,7 +38,6 @@ SPLITBLUE:
 	RadarColorFromTerrain:
 		Terrain: BlueTiberium
 	-Health:
-	-DeadBuildingState:
 	-Armor:
 
 ROCK1:

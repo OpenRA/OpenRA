@@ -172,7 +172,6 @@
     <Compile Include="Buildings\CanPowerDown.cs" />
     <Compile Include="Buildings\CustomSellValue.cs" />
     <Compile Include="Buildings\CustomBuildTimeValue.cs" />
-    <Compile Include="Buildings\DeadBuildingState.cs" />
     <Compile Include="Buildings\FootprintUtils.cs" />
     <Compile Include="Buildings\LineBuild.cs" />
     <Compile Include="Buildings\PowerManager.cs" />

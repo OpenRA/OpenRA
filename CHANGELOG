@@ -115,6 +115,7 @@ NEW:
 		Updated shroud-based traits to use world units.
 		Renamed AttackTesla into AttackCharge and un-hardcoded initial charge delay and delay for additional charges.
 		Updated RenderBuildingCharge so you can set a custom charge sequence name (default is active).
+		Fixed an exploit where dead buildings counted as adjacent cells for buildable space.
 	Server:
 		Message of the day is now shared between all mods and a default motd.txt gets created in the user directory.
 	Asset Browser:
@@ -135,6 +136,7 @@ NEW:
 		If you spot black tiles in your Dune 2000 ARRAKIS maps, replace them with the remaining sand and rock tiles. Go to Map → Fix Open Areas to randomize them.
 		The TestFile check in mod.yaml has been renamed to TestFiles (plural!) and now supports a comma-separated list of assets that are required to load the game.
 		DisabledOverlay has been split from RenderBuilding. Use it together with RequiresPower and CanPowerDown for buildings or directly with Husk.
+		Removed DeadBuildingState. Use LeavesHusk instead.
 	Packaging:
 		Removed portable install option from Windows installer as the game left without write access breaks content download and error log generation.
 		Added HTML documentation to the Windows installer.

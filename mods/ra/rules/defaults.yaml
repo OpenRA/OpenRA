@@ -403,14 +403,12 @@
 		Types: Tree
 	Health:
 		HP: 500
-	DeadBuildingState:
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 
 ^Husk:
 	Husk:
@@ -500,10 +498,25 @@
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
-	LuaScriptEvents:
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		Palette: terrain
 
+^DeadBuilding:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	RenderBuilding:
+	BodyOrientation:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	Tooltip:
+		Name: Destroyed Building
+	Health:
+		HP: 100
+	Burns:
+		Damage: 20
+		Interval: 5

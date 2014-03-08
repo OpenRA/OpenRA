@@ -150,6 +150,16 @@ namespace OpenRA.Utility
 						node.Key = "Immobile";
 				}
 
+				// DeadBuildingState was removed
+				if (engineVersion < 20140308)
+				{
+					if (depth == 1 && node.Key == "DeadBuildingState")
+						nodes.Remove(node);
+
+					if (depth == 1 && node.Key == "-DeadBuildingState")
+						nodes.Remove(node);
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
