@@ -206,5 +206,11 @@ namespace OpenRA.Traits
 				}
 			}
 		}
+
+		public IEnumerable<Actor> ActorsInWorld()
+		{
+			return actors.SelectMany(a => a.Where(b => b.IsInWorld))
+				.Distinct();
+		}
 	}
 }
