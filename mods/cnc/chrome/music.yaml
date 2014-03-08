@@ -65,6 +65,7 @@ Container@MUSIC_PANEL:
 						Button@BUTTON_PREV:
 							Width:26
 							Height:26
+							IgnoreChildMouseOver:true
 							Children:
 								Image@IMAGE_PREV:
 									X:5
@@ -77,6 +78,7 @@ Container@MUSIC_PANEL:
 							X:35
 							Width:26
 							Height:26
+							IgnoreChildMouseOver:true
 							Children:
 								Image@IMAGE_PLAY:
 									X:5
@@ -90,6 +92,7 @@ Container@MUSIC_PANEL:
 							X:35
 							Width:26
 							Height:26
+							IgnoreChildMouseOver:true
 							Children:
 								Image@IMAGE_PAUSE:
 									X:5
@@ -102,6 +105,7 @@ Container@MUSIC_PANEL:
 							X:70
 							Width:26
 							Height:26
+							IgnoreChildMouseOver:true
 							Children:
 								Image@IMAGE_STOP:
 									X:5
@@ -114,6 +118,7 @@ Container@MUSIC_PANEL:
 							X:105
 							Width:26
 							Height:26
+							IgnoreChildMouseOver:true
 							Children:
 								Image@IMAGE_NEXT:
 									X:5
