@@ -126,12 +126,15 @@ smoke_m:
 	idle:
 		Start: 0
 		Length: *
+		ZOffset: 1023
 	loop:
 		Start: 49
 		Length: 42
+		ZOffset: 1023
 	end:
 		Start: 0
 		Length: 26
+		ZOffset: 1023
 
 dragon:
 	idle:
@@ -142,6 +145,7 @@ smokey:
 	idle:
 		Start: 0
 		Length: *
+		ZOffset: 1023
 
 bomb:
 	idle:
@@ -390,10 +394,12 @@ smokland:
 		Start: 0
 		Length: 60
 		Tick: 120
+		ZOffset: 1023
 	idle: playersmoke
 		Start: 60
 		Length: 32
 		Tick: 120
+		ZOffset: 1023
 
 fire:
 	1: fire1
