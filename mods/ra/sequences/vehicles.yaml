@@ -9,6 +9,7 @@ mcvhusk:
 	idle:
 		Start: 0
 		Facings: 32
+		ZOffset: -1023
 
 truk:
 	idle:
@@ -68,11 +69,13 @@ hhusk:
 	idle:
 		Start: 0
 		Facings: 32
+		ZOffset: -1023
 
 hhusk2:
 	idle:
 		Start: 0
 		Facings: 32
+		ZOffset: -1023
 
 1tnk:
 	idle:

@@ -198,21 +198,25 @@ fire:
 		Start: 3712
 		Length: 10
 		Offset: 0,-3
+		ZOffset: 1023
 		BlendMode: Additive
 	2: DATA
 		Start: 3723
 		Length: 11
 		Offset: 0,-3
+		ZOffset: 1023
 		BlendMode: Additive
 	3: DATA
 		Start: 3885
 		Length: 13
 		Offset: 0,-3
+		ZOffset: 1023
 		BlendMode: Additive
 	4: DATA
 		Start: 3712
 		Length: 10
 		Offset: 0,-3
+		ZOffset: 1023
 		BlendMode: Additive
 
 smoke_m:
