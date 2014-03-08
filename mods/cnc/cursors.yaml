@@ -139,19 +139,39 @@ Cursors:
 			start:8
 			length:8
 
-	mouse3.shp: cursor2
-		enter-blocked:
-			start:212
+	mouse6.shp: cursor
+		goldwrench:
+			start:0
+			length:3
+		goldwrench-minimap:
+			start:3
+			length:3
+		goldwrench-blocked:
+			start:6
 			length:1
-		enter-blocked-minimap:
-			start:33
+		goldwrench-blocked-minimap:
+			start:7
 			length:1
 		capture:
-			start:164
+			start:8
 			length:3
 		capture-minimap:
-			start:167
+			start:11
 			length:3
+		capture-blocked:
+			start:14
+			length:1
+		capture-blocked-minimap:
+			start:15
+			length:1
+		enter-blocked:
+			start:16
+			length:1
+		enter-blocked-minimap:
+			start:17
+			length:1
+
+	mouse3.shp: cursor2
 		heal:
 			start:160
 			length:4
@@ -163,12 +183,6 @@ Cursors:
 			length:8
 		deploy-blocked:
 			start:211
-			length:1
-		goldwrench:
-			start:170
-			length:24
-		goldwrench-blocked:
-			start:213
 			length:1
 
 	nopower.shp: cursor
