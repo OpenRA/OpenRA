@@ -226,8 +226,10 @@ t01:
 mine:
 	idle:
 		Start: 0
+		ZOffset: -1023
 	active:
 		Start: 0
+		ZOffset: -1023
 
 railmine:
 	idle:

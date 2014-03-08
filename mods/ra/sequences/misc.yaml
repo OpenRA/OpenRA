@@ -497,12 +497,14 @@ lar2:
 minp:
 	idle:
 		Start: 0
+		ZOffset: -1023
 	icon: jmin
 		Start: 0
 
 minv:
 	idle:
 		Start: 0
+		ZOffset: -1023
 	icon: jmin
 		Start: 0
 

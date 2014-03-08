@@ -892,7 +892,6 @@ Rules:
 		RenderBuilding:
 			Image: miner
 			HasMakeAnimation: false
-		BelowUnits:
 		Tooltip:
 			Name: Bomb
 			Description: Bomb (Hotkey B)

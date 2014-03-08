@@ -427,7 +427,6 @@
 	Burns:
 	ProximityCaptor:
 		Types: Husk
-	BelowUnits:
 	BodyOrientation:
 	Chronoshiftable:
 	LuaScriptEvents:
@@ -447,7 +446,6 @@
 	FallsToEarth:
 		Spins: True
 		Moves: False
-	-BelowUnits:
 	-TargetableUnit:
 	-Capturable:
 	-TransformOnCapture:
@@ -459,7 +457,6 @@
 	FallsToEarth:
 		Spins: False
 		Moves: True
-	-BelowUnits:
 	-TargetableUnit:
 	-Capturable:
 	-TransformOnCapture:
@@ -467,7 +464,6 @@
 ^Bridge:
 	Tooltip:
 		Name: Bridge
-	BelowUnits:
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:

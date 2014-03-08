@@ -424,7 +424,6 @@
 		RelativeToTopLeft: yes
 	Tooltip:
 		Name: Field (Destroyed)
-	BelowUnits:
 	BodyOrientation:
 	RenderBuilding:
 		Palette: terrain
@@ -520,7 +519,6 @@
 		CaptureThreshold: 1.0
 	TransformOnCapture:
 		ForceHealthPercentage: 25
-	BelowUnits:
 	BodyOrientation:
 	LuaScriptEvents:
 	DisabledOverlay:
@@ -533,7 +531,6 @@
 		Spins: True
 		Moves: False
 		Explosion: HeliCrash
-	-BelowUnits:
 	-Capturable:
 	-TransformOnCapture:
 	-TargetableUnit:
@@ -543,7 +540,6 @@
 		Name: Bridge
 	TargetableBuilding:
 		TargetTypes: Ground, Water
-	BelowUnits:
 	Health:
 		HP: 500
 	SoundOnDamageTransition:

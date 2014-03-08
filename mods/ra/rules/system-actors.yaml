@@ -10,7 +10,6 @@ MINP:
 	Armor:
 		Type: Light
 	RenderSimple:
-	BelowUnits:
 	Cloak:
 		CloakSound:
 		UncloakSound:
@@ -35,7 +34,6 @@ MINV:
 	Armor:
 		Type: Light
 	RenderSimple:
-	BelowUnits:
 	Cloak:
 		CloakSound:
 		UncloakSound:

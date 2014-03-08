@@ -428,7 +428,6 @@ GAHPAD:
 		SpawnOffset: 0,-256,0
 	Production:
 		Produces: Air
-	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	ProductionBar:
@@ -460,7 +459,6 @@ NAHPAD:
 		SpawnOffset: 0,-256,0
 	Production:
 		Produces: Air
-	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	ProductionBar:
