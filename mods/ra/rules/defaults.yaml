@@ -1,7 +1,7 @@
 ^Vehicle:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: atmine, crate, apmine
+		Crushes: mine, crate
 		TerrainSpeeds:
 			Clear: 80
 			Rough: 40
@@ -50,7 +50,7 @@
 ^Tank:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: wall, atmine, crate, apmine
+		Crushes: wall, mine, crate
 		TerrainSpeeds:
 			Clear: 80
 			Rough: 70
@@ -105,7 +105,7 @@
 	RevealsShroud:
 		Range: 4c0
 	Mobile:
-		Crushes: apmine, crate
+		Crushes: mine, crate
 		SharesCell: true
 		TerrainSpeeds:
 			Clear: 90

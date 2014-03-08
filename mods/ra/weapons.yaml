@@ -1163,23 +1163,16 @@ Crush:
 
 ATMine:
 	Warhead:
-		Damage: 500
-		Versus:
-			None: 0%
-			Wood: 0%
-			Concrete: 0%
+		Spread: 256
+		Damage: 400
 		ImpactSound: mineblo1.aud
 		Explosion: large_explosion
 
 APMine:
 	Warhead:
-		Damage: 500
-		Versus:
-			Wood: 0%
-			Light: 10%
-			Heavy: 10%
-			Concrete: 0%
-		ImpactSound: mine1
+		Spread: 256
+		Damage: 400
+		ImpactSound: mine1.aud
 		InfDeath: 3
 		Explosion: napalm
 
