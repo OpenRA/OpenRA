@@ -1,7 +1,5 @@
 ﻿Palettes:
 	cursor: cursor.pal
-	cursor2: racursor.pal
-
 
 Cursors:
 	mouse2.shp: cursor
@@ -40,11 +38,6 @@ Cursors:
 		select:
 			start:12
 			length:6
-	
-		default:
-			start:0
-			x: -16
-			y: -12
 		default-minimap:
 			start:86
 			length:1
@@ -107,6 +100,15 @@ Cursors:
 		sell-vehicle:
 			start:154
 			length:24
+
+	mouse3.shp: cursor
+		default:
+			start:0
+			x: -16
+			y: -12
+		deploy-blocked:
+			start:1
+			length:1
 
 	mouse4.shp:cursor
 		move:
@@ -177,25 +179,3 @@ Cursors:
 			length:8
 		attackoutsiderange-minimap:
 			start:8
-
-	mouse3.shp: cursor2
-		heal:
-			start:160
-			length:4
-		heal-minimap:
-			start:194
-			length:1
-		ability-minimap:
-			start:214
-			length:8
-		deploy-blocked:
-			start:211
-			length:1
-
-	nopower.shp: cursor
-		powerdown-blocked:
-			start:0
-			length: 1
-		powerdown:
-			start:1
-			length: 3
