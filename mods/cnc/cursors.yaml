@@ -119,23 +119,22 @@ Cursors:
 			start:0
 			length:8
 		move-minimap:
-			start:9
+			start:8
 			length:4
 		move-rough:
 			start:0
 			length: 8
-
-	attackmove.shp:cursor
 		attackmove:
-			start:0
+			start:12
 			length:8
 		attackmove-minimap:
-			start:9
+			start:20
 			length:4
 		move-blocked:
-			start:8
+			start:24
+			length:1
 		move-blocked-minimap:
-			start:13
+			start:25
 			length:1
 
 	mouse3.shp: cursor2
