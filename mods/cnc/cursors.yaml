@@ -78,12 +78,6 @@ Cursors:
 		c4-minimap:
 			start:127
 			length:3
-		guard:
-			start:153
-			length:1
-		guard-minimap:
-			start:152
-			length:1
 
 # Cursors that need minimap variants
 		deploy:
@@ -136,6 +130,14 @@ Cursors:
 		move-blocked-minimap:
 			start:25
 			length:1
+
+	mouse5.shp: cursor
+		guard:
+			start:0
+			length:8
+		guard-minimap:
+			start:8
+			length:8
 
 	mouse3.shp: cursor2
 		enter-blocked:
