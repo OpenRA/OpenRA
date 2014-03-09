@@ -114,6 +114,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			EditableSpectatorTemplate = Players.Get("TEMPLATE_EDITABLE_SPECTATOR");
 			NonEditableSpectatorTemplate = Players.Get("TEMPLATE_NONEDITABLE_SPECTATOR");
 			NewSpectatorTemplate = Players.Get("TEMPLATE_NEW_SPECTATOR");
+
+			var playerBinHeaders = lobby.GetOrNull<ContainerWidget>("LABEL_CONTAINER");
+			if (playerBinHeaders != null)
+				playerBinHeaders.IsVisible = () => panel == PanelType.Players;
+
 			colorPreview = lobby.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = Game.Settings.Player.Color;
 
