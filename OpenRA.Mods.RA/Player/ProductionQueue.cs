@@ -232,7 +232,7 @@ namespace OpenRA.Mods.RA
 					for (var n = 0; n < order.TargetLocation.X; n++)	// repeat count
 					{
 						bool hasPlayedSound = false;
-						BeginProduction(new ProductionItem(this, order.TargetString, time, cost, PlayerPower,
+						BeginProduction(new ProductionItem(this, order.TargetString, cost, PlayerPower,
 								() => self.World.AddFrameEndTask(
 									_ =>
 									{
@@ -347,7 +347,7 @@ namespace OpenRA.Mods.RA
 		public readonly string Item;
 		public readonly ProductionQueue Queue;
 		readonly PowerManager pm;
-		public readonly int TotalTime;
+		public int TotalTime;
 		public readonly int TotalCost;
 		public int RemainingTime { get; private set; }
 		public int RemainingCost { get; private set; }
@@ -360,15 +360,14 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public bool Paused = false, Done = false;
+		public bool Paused = false, Done = false, Started = false;
 		public Action OnComplete;
 		public int slowdown = 0;
 
-		public ProductionItem(ProductionQueue queue, string item, int time, int cost, PowerManager pm, Action onComplete)
+		public ProductionItem(ProductionQueue queue, string item, int cost, PowerManager pm, Action onComplete)
 		{
-			if (time <= 0) time = 1;
 			Item = item;
-			RemainingTime = TotalTime = time;
+			RemainingTime = TotalTime = 1;
 			RemainingCost = TotalCost = cost;
 			OnComplete = onComplete;
 			Queue = queue;
@@ -378,6 +377,13 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(PlayerResources pr)
 		{
+			if (!Started)
+			{
+				var time = Queue.GetBuildTime(Item);
+				if (time > 0) RemainingTime = TotalTime = time;
+				Started = true;
+			}
+
 			if (Done)
 			{
 				if (OnComplete != null) OnComplete();
