@@ -130,7 +130,7 @@ LoadScreen: CncLoadScreen
 	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
 	InstallerBackgroundWidget: INSTALL_BACKGROUND
 	TestFiles: conquer.mix, desert.mix, general.mix, sounds.mix, speech.mix, temperat.mix, tempicnh.mix, winter.mix
-	PackageURL: http://open-ra.org/download/content/cnc-packages
+	PackageMirrorList: http://open-ra.org/packages/cnc-mirrors.txt
 
 ServerTraits:
 	LobbyCommands
