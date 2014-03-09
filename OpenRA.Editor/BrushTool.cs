@@ -75,9 +75,10 @@ namespace OpenRA.Editor
 
 			Action<int, int> maybeEnqueue = (x, y) =>
 			{
-				if (s.Map.IsInMap(x, y) && !touched[x, y])
+				var c = new CPos(x, y);
+				if (s.Map.IsInMap(c) && !touched[x, y])
 				{
-					queue.Enqueue(new CPos(x, y));
+					queue.Enqueue(c);
 					touched[x, y] = true;
 				}
 			};

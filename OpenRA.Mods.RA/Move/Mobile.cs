@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public int MovementCostForCell(World world, CPos cell)
 		{
-			if (!world.Map.IsInMap(cell.X, cell.Y))
+			if (!world.Map.IsInMap(cell))
 				return int.MaxValue;
 
 			var index = world.Map.GetTerrainIndex(cell);
