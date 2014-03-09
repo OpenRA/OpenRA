@@ -10,8 +10,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -20,7 +23,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class LobbyLogic
 	{
-		enum PanelType { Players, Options, Kick }
+		enum PanelType { Players, Options, Kick, MapDownload }
 		PanelType panel = PanelType.Players;
 
 		Widget lobby;
@@ -31,10 +34,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollPanelWidget chatPanel;
 		Widget chatTemplate;
 
+		Widget downloadMapPanel;
+		ProgressBarWidget progressBar;
+		LabelWidget statusLabel;
+
 		ScrollPanelWidget players;
 		Dictionary<string, string> countryNames;
 		string mapUid;
 		Map map;
+		int mapDownloadAttempts;
 
 		ColorPreviewManagerWidget colorPreview;
 
@@ -97,7 +105,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.skirmishMode = skirmishMode;
 
 			Game.LobbyInfoChanged += UpdateCurrentMap;
-			Game.LobbyInfoChanged += UpdatePlayerList;
 			Game.BeforeGameStart += OnGameStart;
 			Game.AddChatLine += AddChatLine;
 			Game.ConnectionStateChanged += ConnectionStateChanged;
@@ -110,7 +117,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			players = Ui.LoadWidget<ScrollPanelWidget>("LOBBY_PLAYER_BIN", lobby.Get("PLAYER_BIN_ROOT"), new WidgetArgs());
 			players.IsVisible = () => panel == PanelType.Players;
 
-
 			var playerBinHeaders = lobby.GetOrNull<ContainerWidget>("LABEL_CONTAINER");
 			if (playerBinHeaders != null)
 				playerBinHeaders.IsVisible = () => panel == PanelType.Players;
@@ -121,6 +127,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			editableSpectatorTemplate = players.Get("TEMPLATE_EDITABLE_SPECTATOR");
 			nonEditableSpectatorTemplate = players.Get("TEMPLATE_NONEDITABLE_SPECTATOR");
 			newSpectatorTemplate = players.Get("TEMPLATE_NEW_SPECTATOR");
+
 			colorPreview = lobby.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = Game.Settings.Player.Color;
 
@@ -151,14 +158,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				mapAuthor.GetText = () => "Created by {0}".F(map.Author);
 			}
 
+			downloadMapPanel = Ui.LoadWidget("DOWNLOAD_MAP_PANEL", lobby, new WidgetArgs());
+			downloadMapPanel.IsVisible = () => panel == PanelType.MapDownload;
+			progressBar = downloadMapPanel.Get<ProgressBarWidget>("PROGRESS_BAR");
+			statusLabel = downloadMapPanel.Get<LabelWidget>("STATUS_LABEL");
+
 			countryNames = Rules.Info["world"].Traits.WithInterface<CountryInfo>()
 				.Where(c => c.Selectable)
 				.ToDictionary(a => a.Race, a => a.Name);
 			countryNames.Add("random", "Any");
 
 			var gameStarting = false;
-			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting || panel == PanelType.Kick ||
-				orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
+			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting
+				|| orderManager.LocalClient == null || orderManager.LocalClient.IsReady
+				|| panel == PanelType.MapDownload || panel == PanelType.Kick;
 
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
 			if (mapButton != null)
@@ -277,7 +290,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			optionsBin.IsVisible = () => panel == PanelType.Options;
 
 			var optionsButton = lobby.Get<ButtonWidget>("OPTIONS_BUTTON");
-			optionsButton.IsDisabled = () => panel == PanelType.Kick;
+			optionsButton.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.MapDownload;
 			optionsButton.GetText = () => panel == PanelType.Options ? "Players" : "Options";
 			optionsButton.OnClick = () => panel = (panel == PanelType.Options) ? PanelType.Players : PanelType.Options;
 
@@ -532,15 +545,95 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			mapUid = orderManager.LobbyInfo.GlobalSettings.Map;
 
-			if (!Game.modData.AvailableMaps.ContainsKey(mapUid))
-				if (Game.Settings.Game.AllowDownloading)
+			if (Game.modData.AvailableMaps.ContainsKey(mapUid))
+				LoadMap();
+			else
+				DownloadMap();
+		}
+
+		void DownloadMap()
+		{
+			if (Game.Settings.Game.AllowDownloading) // TODO: wire this up with GUI checkbox
+			{
+				panel = PanelType.MapDownload;
+
+				statusLabel.GetText = () => "Initializing...";
+				progressBar.SetIndeterminate(true);
+
+				var mod = Game.modData.Manifest.Mod;
+				var dirPath = new[] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
+				if (!Directory.Exists(dirPath))
+					Directory.CreateDirectory(dirPath);
+
+				var mapRepository = Game.Settings.Game.MapRepositories.Skip(mapDownloadAttempts).First();
+
+				try
 				{
-					Game.DownloadMap(mapUid);
-					Game.Debug("A new map has been downloaded...");
+					mapDownloadAttempts++;
+					var url = mapRepository + mapUid;
+
+					var request = WebRequest.Create(url);
+					request.Method = "HEAD";
+					var res = request.GetResponse();
+
+					// retry another mirror
+					if (res.Headers["Content-Disposition"] == null)
+						DownloadMap();
+
+					var mapPath = Path.Combine(dirPath, res.Headers ["Content-Disposition"].Replace("attachment; filename = ", ""));
+					Log.Write("server", "Trying to download map to '{0}' using {1}", mapPath, mapRepository);
+
+					Action<DownloadProgressChangedEventArgs> onDownloadProgress = i =>
+					{
+						if (progressBar.Indeterminate)
+							progressBar.SetIndeterminate(false);
+
+						progressBar.Percentage = i.ProgressPercentage;
+						statusLabel.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived / 1024, i.TotalBytesToReceive / 1024);
+					};
+
+					Action<string> onError = s => Game.RunAfterTick(() => statusLabel.GetText = () => "Error: " + s);
+
+					Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
+					{
+						if (i.Error != null)
+						{
+							onError(Download.FormatErrorMessage(i.Error));
+							return;
+						}
+						else if (cancelled)
+						{
+							onError("Map download cancelled");
+							return;
+						}
+
+						Game.Debug("A new map has been downloaded...");
+						Log.Write("server", "New map has been downloaded to '{0}'", mapPath);
+						Game.modData.AvailableMaps.Add(mapUid, new Map(mapPath));
+						LoadMap();
+					};
+
+					new Download(url, mapPath, onDownloadProgress, onDownloadComplete);
 				}
-				else
-					throw new InvalidOperationException("Server's new map doesn't exist on your system and Downloading turned off");
+				catch (WebException e)
+				{
+					Game.RunAfterTick(() =>
+					{
+						statusLabel.GetText = () => e.Message;
+					});
+					Log.Write("server", "Error: Could not download map '{0}' using {1}".F(mapUid, mapRepository));
+					if (mapDownloadAttempts < Game.Settings.Game.MapRepositories.Count())
+						DownloadMap();
+				}
+			}
+		}
+
+		void LoadMap()
+		{
 			map = new Map(Game.modData.AvailableMaps[mapUid].Path);
+
+			panel = PanelType.Players;
+			Game.LobbyInfoChanged += UpdatePlayerList;
 
 			// Restore default starting cash if the last map set it to something invalid
 			var pri = Rules.Info["player"].Traits.Get<PlayerResourcesInfo>();
