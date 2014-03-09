@@ -161,6 +161,7 @@ function ide:AddConfig(name, files)
   if not name or configcache[name] then return end -- don't overwrite existing slots
   configcache[name] = require('mobdebug').dump(ide.config, {nocode = true})
   for _, file in pairs(files) do LoadLuaConfig(MergeFullPath(name, file)) end
+  ReApplySpecAndStyles() -- apply current config to the UI
 end
 function ide:RemoveConfig(name)
   if not name or not configcache[name] then return end
@@ -170,4 +171,5 @@ function ide:RemoveConfig(name)
     DisplayOutputLn(("Error while restoring configuration: '%s'."):format(res))
   end
   configcache[name] = nil -- clear the slot after use
+  ReApplySpecAndStyles() -- apply current config to the UI
 end
