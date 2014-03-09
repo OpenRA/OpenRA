@@ -171,6 +171,8 @@ if not setfenv then -- Lua 5.2
     return f end
 end
 
+dofile "src/version.lua"
+
 for _, file in ipairs({"ids", "style", "keymap", "proto"}) do
   dofile("src/editor/"..file..".lua")
 end
@@ -288,8 +290,26 @@ local function loadPackages(filter)
     local userpackages = MergeFullPath(ide.oshome, ".zbstudio/packages")
     loadToTab(filter, userpackages, ide.packages, false, ide.proto.Plugin)
   end
-  -- assign file names to each package
-  for fname, package in pairs(ide.packages) do package.fname = fname end
+
+  -- check dependencies and assign file names to each package
+  local unload = {}
+  for fname, package in pairs(ide.packages) do
+    local needsversion = tonumber(package.dependencies)
+      or type(package.dependencies) == 'table' and tonumber(package.dependencies[1])
+      or -1
+    local isversion = tonumber(ide.VERSION)
+    if isversion and needsversion > isversion then
+      (DisplayOutputLn or print)(
+        ("Package '%s' not loaded: requires version %s, but you are running version %s")
+          :format(fname, needsversion, ide.VERSION)
+      )
+      table.insert(unload, fname)
+    end
+    package.fname = fname
+  end
+
+  -- remove packages that need to be unloaded
+  for _, fname in ipairs(unload) do ide.packages[fname] = nil end
 end
 
 function UpdateSpecs()
@@ -410,8 +430,6 @@ for _, file in ipairs({
     "inspect" }) do
   dofile("src/editor/"..file..".lua")
 end
-
-dofile "src/version.lua"
 
 -- register all the plugins
 PackageEventHandle("onRegister")
