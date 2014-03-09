@@ -53,7 +53,8 @@ NEW:
 		Removed the temperate shellmap and improved the design and performance of the desert shellmap.
 		Removed the hardcoded missions. These will be later reimplemented.
 		Removed maps: Battle Lake, Crossing the River, Doughnut Hole, Ice Woods, Island Hoppers (KOTH), Mad Scramble, Nishnekolymsk, Strip Mine
-		Fixed spys staying on the minimap after infiltration.
+		Fixed spies staying on the minimap after infiltration.
+		Added maps: Blitzkrieg and Burlesca by s1w.
 	Tiberian Dawn:
 		Chinook rotors now counter-rotate.
 		Commando can now plant C4 on bridges.
