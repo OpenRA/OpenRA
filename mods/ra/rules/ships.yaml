@@ -102,7 +102,7 @@ DD:
 		Cost: 1000
 	Tooltip:
 		Name: Destroyer
-		Description: Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
+		Description: Fast multi-role ship.\nCan detect submarines.\n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
 	Health:
 		HP: 400
 	Armor:
