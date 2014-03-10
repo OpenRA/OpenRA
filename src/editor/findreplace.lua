@@ -594,8 +594,9 @@ function findReplace:createDialog(replace,infiles)
   -- if on OSX then select the current value of the default dropdown
   -- and don't set the default as it doesn't make Enter to work, but
   -- prevents associated hotkey (Cmd-F) from working (wx2.9.5).
-  if ide.osname == 'Macintosh' then
-    findTextCombo:SetSelection(0, #findTextCombo:GetValue())
+  if mac then
+    findTextCombo:SetSelection(-1, -1)
+    findTextCombo:SetFocus() -- force focus on the Find
   else
     findButton:SetDefault()
   end
