@@ -149,7 +149,7 @@ CA:
 		Cost: 2400
 	Tooltip:
 		Name: Cruiser
-		Description: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
+		Description: Very slow long-range ship.\n  Strong vs Buildings\n  Weak vs Ships, Submarines
 	Health:
 		HP: 800
 	Armor:
@@ -238,7 +238,7 @@ PT:
 		Cost: 500
 	Tooltip:
 		Name: Gunboat
-		Description: Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft
+		Description: Light scout & support ship.\nCan detect submarines.\n  Strong vs Ships, Submarines\n  Weak vs Aircraft
 	Health:
 		HP: 200
 	Armor:
