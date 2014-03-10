@@ -10,7 +10,7 @@ DOG:
 		Cost: 200
 	Tooltip:
 		Name: Attack Dog
-		Description: Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: Anti-infantry unit.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
 		Voice: DogVoice
 		Bounds: 12,17,-1,-4
@@ -26,6 +26,8 @@ DOG:
 	RenderInfantry:
 		IdleAnimations: idle1,idle2
 	IgnoresDisguise:
+	DetectCloaked:
+		Range: 5
 
 E1:
 	Inherits: ^Infantry
