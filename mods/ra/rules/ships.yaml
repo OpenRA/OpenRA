@@ -26,6 +26,7 @@ SS:
 		CloakedTargetTypes: Underwater
 	RenderUnit:
 	Cloak:
+		CloakTypes: Underwater
 		InitialDelay: 0
 		CloakDelay: 50
 		CloakSound: subshow1.aud
@@ -71,6 +72,7 @@ MSUB:
 		TargetTypes: Ground, Water
 		CloakedTargetTypes: Underwater
 	Cloak:
+		CloakTypes: Underwater
 		InitialDelay: 0
 		CloakDelay: 100
 		CloakSound: subshow1.aud
@@ -131,6 +133,7 @@ DD:
 	IronCurtainable:
 	RepairableNear:
 	DetectCloaked:
+		CloakTypes: Underwater
 		Range: 4
 	RenderDetectionCircle:
 
@@ -265,6 +268,7 @@ PT:
 	IronCurtainable:
 	RepairableNear:
 	DetectCloaked:
+		CloakTypes: Underwater
 		Range: 4
 	RenderDetectionCircle:
 

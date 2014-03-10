@@ -29,6 +29,8 @@ namespace OpenRA.Mods.RA
 		public readonly string UncloakSound = null;
 		public readonly string Palette = "cloak";
 
+		public readonly string[] CloakTypes = { "Cloak" };
+
 		public object Create(ActorInitializer init) { return new Cloak(init.self, this); }
 	}
 
@@ -109,9 +111,14 @@ namespace OpenRA.Mods.RA
 			if (!Cloaked || self.Owner.IsAlliedWith(viewer))
 				return true;
 
-			var centerPosition = self.CenterPosition;
-			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => a.Actor.Owner.IsAlliedWith(viewer) &&
-				(centerPosition - a.Actor.CenterPosition).Length < WRange.FromCells(a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range).Range);
+			return self.World.ActorsWithTrait<DetectCloaked>().Any(a =>
+			{
+				var dc = a.Actor.Info.Traits.Get<DetectCloakedInfo>();
+
+				return a.Actor.Owner.IsAlliedWith(viewer)
+					&& Info.CloakTypes.Intersect(dc.CloakTypes).Any()
+					&& (self.CenterPosition - a.Actor.CenterPosition).Length <= WRange.FromCells(dc.Range).Range;
+			});
 		}
 
 		public Color RadarColorOverride(Actor self)

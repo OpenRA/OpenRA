@@ -14,6 +14,7 @@ namespace OpenRA.Mods.RA
 {
 	class DetectCloakedInfo : TraitInfo<DetectCloaked>
 	{
+		public readonly string[] CloakTypes = { "Cloak" };
 		public readonly int Range = 5;
 	}
 
