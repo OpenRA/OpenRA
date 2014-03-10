@@ -265,3 +265,13 @@ qtnk:
 		Length: 8
 	icon: qtnkicon
 		Start: 0
+
+stnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 38
+		Facings: 32
+	icon: stnkicon
+		Start: 0

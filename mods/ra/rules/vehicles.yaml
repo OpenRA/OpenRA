@@ -674,11 +674,11 @@ CTNK:
 	RenderUnit:
 	AutoTarget:
 	Armament@PRIMARY:
-		Weapon: ChronoTusk
+		Weapon: APTusk
 		LocalOffset: 0,-171,0
 		LocalYaw: 100
 	Armament@SECONDARY:
-		Weapon: ChronoTusk
+		Weapon: APTusk
 		LocalOffset: 0,171,0
 		LocalYaw: -100
 	AttackFrontal:
@@ -715,4 +715,47 @@ QTNK:
 	-EjectOnDeath:
 	TargetableUnit:
 		TargetTypes: Ground, MADTank
-
+STNK:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 170
+		Prerequisites: atek
+		Owner: allies
+		Hotkey: p
+	Valued:
+		Cost: 1350
+	Tooltip:
+		Name: Phase Transport
+		Description: Lightly armored infantry transport\nwhich can cloak. Can detect cloaked units.\n  Strong vs Light Vehicles\n  Weak vs Aircraft
+	Selectable:
+		Bounds: 28,28
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 113
+		Crushes: wall, mine, crate, infantry
+	RevealsShroud:
+		Range: 6c0
+	RenderUnit:
+	AutoTarget:
+		InitialStance: ReturnFire
+	Armament:
+		Weapon: APTusk
+		LocalOffset: 400,0,0
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+	WithTurret:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 3
+		PipCount: 3
+	Cloak:
+		InitialDelay: 125
+		CloakDelay: 250
+		UncloakOnUnload: True
+	DetectCloaked:
+		Range: 6
