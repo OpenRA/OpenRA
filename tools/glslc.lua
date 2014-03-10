@@ -13,14 +13,16 @@ return binpath and {
 
     local myMenu = wx.wxMenu{
       { ID "glslc.compile.input", "&Custom Args", "when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
-      { ID "glslc.compile.separable", "Separable", "when set separable programs are not used", wx.wxITEM_CHECK },
+      { ID "glslc.compile.separable", "Separable", "when set separable programs are used", wx.wxITEM_CHECK },
       { },
-      { ID "glslc.compile.vertex", "Compile &Vertex\tCtrl-1", "Compile Vertex program" },
-      { ID "glslc.compile.fragment", "Compile &Fragment\tCtrl-2", "Compile Fragment program" },
-      { ID "glslc.compile.geometry", "Compile &Geometry\tCtrl-3", "Compile Geometry program" },
-      { ID "glslc.compile.tessctrl", "Compile T.Ctrl\tCtrl-4", "Compile T.Ctrl program" },
-      { ID "glslc.compile.tesseval", "Compile T.Eval\tCtrl-5", "Compile T.Eval program" },
-      { ID "glslc.compile.compute", "Compile Compute\tCtrl-6", "Compile Compute program" },
+      { ID "glslc.compile.ext", "Compile from .ext\tCtrl-1", "Compile based on file extension" },
+      { ID "glslc.compile.all", "Link multiple .ext\tCtrl-2", "Tries to link multiple shaders based on filename" },
+      { ID "glslc.compile.vertex", "Compile &Vertex", "Compile Vertex program" },
+      { ID "glslc.compile.fragment", "Compile &Fragment", "Compile Fragment program" },
+      { ID "glslc.compile.geometry", "Compile &Geometry", "Compile Geometry program" },
+      { ID "glslc.compile.tessctrl", "Compile T.Ctrl", "Compile T.Ctrl program" },
+      { ID "glslc.compile.tesseval", "Compile T.Eval", "Compile T.Eval program" },
+      { ID "glslc.compile.compute", "Compile Compute", "Compile Compute program" },
       { },
       { ID "glslc.format.asm", "Annotate ASM", "indent and add comments to ASM output" },
     }
@@ -55,7 +57,7 @@ return binpath and {
       " -D_COMPUTE_ ",
     }
 
-    local function beautifyAsm(tx)
+    local function beautifyAsmEach(tx)
       local newtx = ""
       local indent = 0
       local maxindent = 0
@@ -155,7 +157,8 @@ return binpath and {
           end
           registermem = tonumber(string.match(w,"lmem%[(%d+)%]"))
         elseif (string.find(w,"CBUFFER ") or string.find(w,"ATTRIB ") or string.find(w,"OPTION ") or 
-                string.find(w,"OUTPUT ") or string.find(w,"PARAM ") or string.find(w,"!!NV")) then
+                string.find(w,"OUTPUT ") or string.find(w,"PARAM ") or string.find(w,"!!NV") or 
+                string.find(w,"STORAGE ")) then
           
         else
           regsuccess = false
@@ -249,13 +252,23 @@ return binpath and {
       local registers = tonumber(string.match(lastline, "(%d+) R%-regs")) or registers
       registermem = registermem or 0
       registercc = registercc or 0
-      local stats = "# "..instructions.." instructions\n"
+      local stats = "# "..instructions.." ~ instructions\n"
       stats = stats.."# "..registers.." R-regs\n"
       stats = stats.."# "..tostring(registercc).." C-regs, "..tostring(registermem).." L-regs\n"
       stats = stats.."# "..tostring(registercc + registermem + registers).." maximum registers\n"
       stats = stats.."# "..maxindent.." maximum nesting level\n"
-      newtx = newtx..stats
+      newtx = newtx..stats.."\n"
 
+      return newtx,stats
+    end
+    local function beautifyAsm(tx)
+      local newtx = ""
+      local stats
+      for t in tx:gmatch("!!.-END[^%w]%s*") do
+        local nt
+        nt,stats = beautifyAsmEach(t)
+        newtx = newtx..nt
+      end
       return newtx,stats
     end
 
@@ -301,40 +314,107 @@ return binpath and {
         DisplayOutput("Error: GLSL Compile: Insufficient parameters (nofile)\n")
         return
       end
+      
+      local function getDomain(filename)
+        local fname = filename:GetFullName()
+        if (fname:match("%.v")) then
+          domain = 1
+        elseif (fname:match("%.f")) then
+          domain = 2
+        elseif (fname:match("%.g")) then
+          domain = 3
+        elseif (fname:match("%.t.*c")) then
+          domain = 4
+        elseif (fname:match("%.t.*v")) then
+          domain = 5
+        elseif (fname:match("%.c")) then
+          domain = 6
+        end
+        if (not domain) then
+          DisplayOutput("Error: GLSL Compile: could not derive domain\n")
+        end
+        return domain
+      end
+      
+      local function getCompileArg(filename,domain)
+        return "-profile "..data.domainprofiles[domain]..' "'..filename:GetFullPath()..'" '
+      end
 
-      local domain = data.domains[event:GetId()]
-      local profile = data.domainprofiles[domain]
-
+      
+      local outname
+      local outsuffix
+      local compileargs
+      local getinstructions
+      
+      if (event:GetId() == ID "glslc.compile.all") then
+        -- look for multiple files to link
+        local basename = filename:GetFullName():match(".-%.")
+        
+        outname = filename:GetPathWithSep()..basename
+        
+        local cnt,files = wx.wxDir.GetAllFiles(filename:GetPathWithSep(), basename.."*" )
+        compileargs = ""
+        for i,v in ipairs(files) do
+          local filename = wx.wxFileName(v)
+          if (filename:GetExt() ~= "glp" and 
+              filename:GetExt() ~= "bak") 
+          then
+            local domain = getDomain(filename)
+            if (not domain) then
+              return
+            end
+            compileargs = compileargs..getCompileArg(filename,domain)
+          end
+        end
+        
+      else
+        -- compile single file
+        getinstructions = true
+        
+        local domain = data.domains[event:GetId()]
+        if (not domain) then
+          domain = getDomain(filename)
+        end
+        if (not domain) then
+          return
+        end
+        
+        local profile   = data.domainprofiles[domain]
+        local fullname  = filename:GetFullPath()
+        
+        outname     = fullname.."."
+        outsuffix   = profile
+        compileargs = data.domaindefs[domain].." "..getCompileArg(filename,domain)
+      end
+      
       -- popup for custom input
       data.custom = data.customarg and wx.wxGetTextFromUser("Compiler Args","GLSLC",data.custom) or data.custom
       local args = data.customarg and data.custom or ""
       args = args:len() > 0 and args or nil
 
-      local fullname  = filename:GetFullPath()
-      local outname = fullname..".main^"
-      outname = args and outname..args:gsub("%s*[%-%/]",";-")..";^" or outname
-      outname = outname..profile..".glp"
+      outname = outname..(args and "^"..args:gsub("%s*[%-%/]",";-")..";^" or "")
+      outname = outname..(outsuffix or "")
+      outname = outname..((outsuffix or args) and "." or "").."glp"
       outname = '"'..outname..'"'
 
-      local cmdline = "-profile "..profile.." "
-      cmdline = args and cmdline..args.." " or cmdline
-      cmdline = cmdline.."-I*.glsl -I*.h "
+      local cmdline = binpath.."/glslc.exe "
+      cmdline = cmdline..(args and args.." " or "")
       cmdline = cmdline..(data.separable and "-separable " or "")
-      cmdline = cmdline..data.domaindefs[domain].." "
       cmdline = cmdline.."-o "..outname.." "
-      cmdline = cmdline..'"'..fullname..'"'
-      cmdline = binpath.."/glslc.exe "..cmdline
+      cmdline = cmdline..compileargs
 
       local function compilecallback(str)
         local postfunc
         -- check for errors, if none, launch nvperf
         -- and indentation
-        if (string.find(str,"successfully compiled")) then
+        if (string.find(str,"successfully linked")) then
           postfunc = function()
             -- beautify asm
             if (true) then
               local statlines = beautifyAsmFile(outname:sub(2,-2))
-              DisplayOutput(statlines)
+              if (getinstructions) then
+                DisplayOutput(statlines)
+              end
             end
           end
         end
@@ -355,7 +435,9 @@ return binpath and {
     frame:Connect(ID "glslc.compile.tessctrl",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
     frame:Connect(ID "glslc.compile.tesseval",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
     frame:Connect(ID "glslc.compile.compute",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
-
+    frame:Connect(ID "glslc.compile.ext",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
+    frame:Connect(ID "glslc.compile.all",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
+    
     -- indent asm
     frame:Connect(ID "glslc.format.asm", wx.wxEVT_COMMAND_MENU_SELECTED,
       function(event)
