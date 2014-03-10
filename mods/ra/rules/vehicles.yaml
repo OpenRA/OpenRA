@@ -515,7 +515,7 @@ MRJ:
 		Cost: 1000
 	Tooltip:
 		Name: Mobile Radar Jammer
-		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\n  Unarmed
+		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\nCan detect cloaked units.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 150
@@ -542,6 +542,8 @@ MRJ:
 	JamsMissiles:
 		Range: 4
 	RenderJammerCircle:
+	DetectCloaked:
+		Range: 6
 
 TTNK:
 	Inherits: ^Tank
