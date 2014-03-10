@@ -40,7 +40,6 @@ SS:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
-	-DetectCloaked:
 	AutoTarget:
 		InitialStance: HoldFire
 
@@ -86,7 +85,6 @@ MSUB:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
-	-DetectCloaked:
 	AutoTarget:
 		InitialStance: HoldFire
 
@@ -266,4 +264,7 @@ PT:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
+	DetectCloaked:
+		Range: 4
+	RenderDetectionCircle:
 
