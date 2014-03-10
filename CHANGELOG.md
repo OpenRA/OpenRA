@@ -1,5 +1,142 @@
 # ZeroBrane Studio Changelog
 
+## v0.50 (Mar 10 2014)
+
+### Highlights
+  - Fixed opening files and launching on OSX 10.6.x and 10.9.1+.
+  - Improved CPU utilization when idle on OSX.
+  - Added handling of command-line parameters.
+  - Implemented various auto-complete and tooltip improvements.
+  - Updated Love2d API for 0.9.0.
+  - Updated Corona API auto-complete/description to match v2014.2189 (G2.0).
+  - Updated Marmalade Quick API for v7.2.
+  - Updated French, German, Italian, and Russian translations.
+
+### Special thanks
+  - To [Asmageddon](https://github.com/Asmageddon) for fixed launching zbstudio from folders with spaces.
+  - To [Christoph Kubisch](https://github.com/pixeljetstream) for various luxinia2 fixes.
+  - To [Yonaba](https://github.com/Yonaba/) for updated French translation.
+  - To [riidom](https://github.com/riidom/) for updated German translation.
+  - To [bartoleo](https://github.com/bartoleo/) for updated Italian translations.
+
+### Improvements
+  - Added explicit focus for Find field in the find dialog on OSX.
+  - Added version dependency check for loaded plugins.
+  - Added `auxwindow` attribute to style auxiliary windows.
+  - Added sha2 library to provide sha256 hashing.
+  - Added package GetRootPath/GetPackagePath calls (ref #166).
+  - Added package FindMenuItem API call (ref #166).
+  - Added API call to analyze one file.
+  - Added restoring markers after external modification and file reload.
+  - Added displaying number of selected characters and instances (closes #274).
+  - Added using safe load for external data instead of loadstring.
+  - Added check for editor state during Edit menu display (ref #70).
+  - added italian translations; thanks to [bartoleo](https://github.com/bartoleo/).
+  - Added Russian translation for new items in the main menu (ref #70).
+  - Added package GetApp method (ref #166).
+  - Added package GetDebugger API call (ref #166).
+  - Added setting project directory passed as a parameter (second instance).
+  - Added Shift+Zoom to zoom all editors (closes #269).
+  - Added `alpha` setting for sel/seladd/caretlinebg styles.
+  - Added package GetToolBar API call (ref #166).
+  - Added `seladd` setting for styling additional selections.
+  - Added `Select and Find Next/Prev` (closes #268).
+  - Added showing search dialog for Quick Find on first search (closes #265).
+  - Added `nomousezoom` option for Console/Output windows (closes #266).
+  - Added error reporting when debugger server fails to start (closes #263).
+  - Added support for command line parameters for GSL-shell (ref #251).
+  - Added support for editor shortcuts and included standard OSX ones (closes #252).
+  - Added auto-complete for metamethods (closes #256).
+  - Added Minimize shortcut on OSX (closes #254).
+  - Added handling of command line parameters for love2d (ref #251).
+  - Added handling of command line parameters (closes #251).
+  - Added calling of end callback for detached processes.
+  - Added skipping compile check for non-lua files in scratchpad.
+  - Added handling of (optional) BOM in UTF-8 encoded files (closes #246).
+  - Added hint about removing backslash for invalid escape sequences.
+  - Adjusted tooltip position and content to always fit on the screen.
+  - allow tool exe paths to be set in config prior load
+  - Changed the order of applying styles to apply the main style last.
+  - Disabled singleinstance check by default on OSX (ref #204).
+  - Disable debugging termination when stack trace received from remote process.
+  - glsl: added imageSize to spec and api
+  - luxinia2 define some global vars if debugger is present
+  - luxinia2 support 32 and 64 bit runtime
+  - luxinia2: new setup, added support for debugging with main.lua and rudimentary scratchpad functionality
+  - Reduced the number of inactivity checks and timer calls (ref #204).
+  - Removed `calltipbg` attribute as it's replaced by `calltip.bg`.
+  - Removed unused files from metalua.
+  - Removed paragraph-to-newline conversion for API tooltips.
+  - Resolved conflict for Opt+Left (ref #252 and #203).
+  - Removed jumping to the current line after compilation errors.
+  - Switched to using temp files instead of -e option for debugging (ref #251).
+  - shader tools: allow relative directories for binaries
+  - shader specs: add isfncall definition to allow indication style
+  - Updated AddConfig/RemoveConfig to refresh styles after changes (ref #166).
+  - Updated Marmalade Quick API for v7.2.
+  - Updated Corona API for v2014.2189.
+  - Updated scheme picker to apply styles to all windows.
+  - Updated LfW interpreter to use project directory as current one (fixes #276).
+  - Updated README.
+  - Updated comment markup separators to apply markup in fewer cases.
+  - Updated French translation; thanks to [Yonaba](https://github.com/Yonaba/).
+  - Update de.lua; thanks to [riidom](https://github.com/riidom/).
+  - Updated Linux scripts to remove custom libpng/zlib as it's fixed in wxwidgets.
+  - Updated check for editor state during Edit menu display (ref #70).
+  - Updated Corona API auto-complete/description to match v2013.2100 (ref #73).
+  - Updated all language files with new messages (ref #70).
+  - Updated messages for better translation (ref #70).
+  - Updated love2d api with LineJoin and few other calls (ref #247).
+  - Updated OSX build script for wxwidgets 3.x (ref #260).
+  - Updated build script to compile wxwidgets 3.x on Windows (ref #260).
+  - Updated love2d api with some missing calls (ref #247).
+  - updated luxinia2 interpreter to reflect new luxinia2 structure
+  - Updated Love2d API for 0.9.0. (closes #247).
+  - Upgraded Mobdebug (0.551) to fix serialization of table/array indexes.
+  - updates to shader apis (bugfix in GLSL atomic description)
+
+### Incompatibilities
+  - Updated LfW interpreter to use project directory as current one (fixes #276).
+  - Removed `styles.calltipbg` as it is replaced by `styles.calltip.bg`.
+
+### Fixes
+  - Fixed shortcut menu generator to display default shortcuts.
+  - Fixed removing focus from editor when IDE loses focus on OSX (ref #204).
+  - Fixed hiding calltip and auto-complete when switching between tabs on OSX.
+  - Fixed handling of getenv returning general message (Mobdebug v0.5511).
+  - Fixed launching zbstudio from folders with spaces; thanks to @Asmageddon.
+  - Fixed `calltip` attribute to use/enable proper style.
+  - Fixed visibility of wrapped lines in console when going through history.
+  - Fixed syntax issues in definitions of IDE tables.
+  - Fixed an issue in metalua files when syntax error is reported.
+  - Fixed arrow key handling in Local console (fixes #279).
+  - Fixed removing temporary files in GSL-shell interpreter.
+  - Fixed tooltip positioning for long messages.
+  - Fixed current line in debugging after activation of files with wrapped lines.
+  - Fixed spurious ESC after activation on Windows when modifiers are pressed.
+  - Fixed skipping empty lines in tooltip formatting.
+  - Fixed comment markup at the end of a file.
+  - Fixed formatting calculations for tooltip to better fill the window.
+  - Fixed stopping debugging when switching projects with the same interpreter.
+  - Fixed auto-complete for classes with more than two levels.
+  - Fixed removal of paragraph breaks in tooltips after interpreter switch.
+  - Fixed API reloading that caused removal of paragraph breaks in tooltips.
+  - Fixed translations for stock menu items on Ubuntu 13.10 (ref #70).
+  - Fixed an issue with spec/tools/interpreters filters not working from config.
+  - Fixed messages script to work with LuaJIT.
+  - Fixed console output with multiple new lines at the end.
+  - Fixed issues on OSX 10.6.x and 10.9.1+ caused by flat namespace (fix #270, fix #264).
+  - Fixed an issue with `isfncall` spec property not being checked.
+  - Fixed function localization in menu handlers.
+  - Fixed default selection for search in case of multiple selections.
+  - Fixed dependency of lfs/git dlls on lualib.dll.
+  - Fixed an issue with activating proper tab after dragging.
+  - Fixed displaying local console output with invalid unicode characters.
+  - Fixed displaying script output with invalid unicode characters.
+  - Fixed drawing artifacts on Windows when line wrapping disabled (fixes #250).
+  - Fixed setting bom value for a new editor (fixes #258).
+  - Fixed auto-complete for values returned by 'core' functions (ref #256).
+
 ## v0.40 (Dec 14 2013)
 
 ### Highlights
