@@ -373,7 +373,7 @@ DOME:
 		Cost: 1800
 	Tooltip:
 		Name: Radar Dome
-		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\n  Requires power to operate.
 	Building:
 		Power: -40
 		Footprint: xx xx
@@ -393,6 +393,9 @@ DOME:
 	Infiltratable:
 		Type: Exploration
 	InfiltrateForExploration:
+	DetectCloaked:
+		Range: 10
+	RenderDetectionCircle:
 
 PBOX:
 	Inherits: ^Building
