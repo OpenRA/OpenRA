@@ -479,6 +479,8 @@
     <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />
     <Compile Include="Activities\FlyFollow.cs" />
     <Compile Include="Modifiers\DisabledOverlay.cs" />
+    <Compile Include="Widgets\Logic\ReplayControlBarLogic.cs" />
+    <Compile Include="Widgets\Logic\GameTimerLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
