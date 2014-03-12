@@ -873,9 +873,9 @@ function CreateEditor()
 
       elseif ide.config.autocomplete then -- code completion prompt
         local trigger = linetxtopos:match("["..editor.spec.sep.."%w_]+$")
-        if (trigger and (#trigger > 1 or trigger:match("["..editor.spec.sep.."]"))) then
-          editor.autocomplete = true
-        end
+        -- make sure .autocomplete is never `nil` or editor.autocomplete fails
+        editor.autocomplete = trigger and (#trigger > 1 or trigger:match("["..editor.spec.sep.."]"))
+          and true or false
       end
     end)
 
@@ -1009,7 +1009,10 @@ function CreateEditor()
         firstvisible)
       MarkupStyle(editor,minupdated or firstline,lastline)
       editor.ev = {}
+    end)
 
+  editor:Connect(wx.wxEVT_IDLE,
+    function (event)
       -- show auto-complete if needed
       if editor.autocomplete then
         EditorAutoComplete(editor)
