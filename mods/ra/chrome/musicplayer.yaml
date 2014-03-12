@@ -53,6 +53,7 @@ Background@MUSIC_PANEL:
 				Button@BUTTON_PREV:
 					Width:25
 					Height:25
+					IgnoreChildMouseOver:true
 					Children:
 						Image@IMAGE_PREV:
 							X:0
@@ -65,6 +66,7 @@ Background@MUSIC_PANEL:
 					X:35
 					Width:25
 					Height:25
+					IgnoreChildMouseOver:true
 					Children:
 						Image@IMAGE_PLAY:
 							X:0
@@ -78,6 +80,7 @@ Background@MUSIC_PANEL:
 					X:35
 					Width:25
 					Height:25
+					IgnoreChildMouseOver:true
 					Children:
 						Image@IMAGE_PAUSE:
 							X:0
@@ -90,6 +93,7 @@ Background@MUSIC_PANEL:
 					X:70
 					Width:25
 					Height:25
+					IgnoreChildMouseOver:true
 					Children:
 						Image@IMAGE_STOP:
 							X:0
@@ -102,6 +106,7 @@ Background@MUSIC_PANEL:
 					X:105
 					Width:25
 					Height:25
+					IgnoreChildMouseOver:true
 					Children:
 						Image@IMAGE_NEXT:
 							X:0
