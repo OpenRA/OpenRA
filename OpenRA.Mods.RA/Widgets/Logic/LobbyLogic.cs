@@ -554,6 +554,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (!Map.Map.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
 					orderManager.IssueOrder(Order.Command("startingcash {0}".F(pri.DefaultCash)));
 			}
+			else if (Game.Settings.Game.AllowDownloading)
+				Game.modData.MapCache.QueryRemoteMapDetails(new [] { uid });
 		}
 
 		void UpdatePlayerList()

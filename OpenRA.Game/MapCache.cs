@@ -14,10 +14,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Widgets;
 
 namespace OpenRA
 {
@@ -55,6 +56,43 @@ namespace OpenRA
 					Console.WriteLine("Details: {0}", e);
 				}
 			}
+		}
+
+		public void QueryRemoteMapDetails(IEnumerable<string> uids)
+		{
+			var maps = uids.Distinct()
+				.Select(uid => previews[uid])
+				.Where(p => p.Status == MapStatus.Unavailable)
+				.ToDictionary(p => p.Uid, p => p);
+
+			if (!maps.Any())
+				return;
+
+			foreach (var p in maps.Values)
+				p.UpdateRemoteSearch(MapStatus.Searching, null);
+
+			var url = Game.Settings.Game.MapRepository + "hash/" + string.Join(",", maps.Keys.ToArray()) + "/yaml";
+
+			Action<DownloadDataCompletedEventArgs, bool> onInfoComplete = (i, cancelled) =>
+			{
+				if (cancelled || i.Error != null)
+				{
+					Log.Write("debug", "Remote map query failed with error: {0}", i.Error != null ? i.Error.Message : "cancelled");
+					Log.Write("debug", "URL was: {0}", url);
+					foreach (var p in maps.Values)
+						p.UpdateRemoteSearch(MapStatus.Unavailable, null);
+
+					return;
+				}
+
+				var data = Encoding.UTF8.GetString(i.Result);
+				var yaml = MiniYaml.FromString(data);
+
+				foreach (var kv in yaml)
+					maps[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value);
+			};
+
+			new Download(url, _ => { }, onInfoComplete);
 		}
 
 		public static IEnumerable<string> FindMapsIn(string dir)
