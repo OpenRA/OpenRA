@@ -18,8 +18,10 @@ namespace OpenRA.Mods.RA
 	public class SonarPulsePower : SupportPower
 	{
 		public SonarPulsePower(Actor self, SonarPulsePowerInfo info) : base(self, info) { }
-		public override void Activate(Actor self, Order order)
+		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
+			base.Activate(self, order, manager);
+
 			// TODO: Reveal submarines
 
 			// Should this play for all players?

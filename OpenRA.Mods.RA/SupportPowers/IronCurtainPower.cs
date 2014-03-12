@@ -34,8 +34,10 @@ namespace OpenRA.Mods.RA
 			return new SelectTarget(order, manager, this);
 		}
 
-		public override void Activate(Actor self, Order order)
+		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
+			base.Activate(self, order, manager);
+
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 
 			Sound.Play("ironcur9.aud", order.TargetLocation.CenterPosition);

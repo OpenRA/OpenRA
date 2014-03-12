@@ -38,8 +38,10 @@ namespace OpenRA.Mods.RA
 			return new SelectGenericPowerTarget(order, manager, "nuke", MouseButton.Left);
 		}
 
-		public override void Activate(Actor self, Order order)
+		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
+			base.Activate(self, order, manager);
+
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				Sound.Play(Info.LaunchSound);
 			else

@@ -97,8 +97,10 @@ namespace OpenRA.Mods.RA
 			self.Owner.PlayerActor.Trait<SupportPowerManager>().Powers[key].Activate(new Order());
 		}
 
-		public override void Activate(Actor self, Order order)
+		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
+			base.Activate(self, order, manager);
+
 			self.World.AddFrameEndTask(w =>
 			{
 				Sound.PlayToPlayer(self.Owner, Info.LaunchSound);

@@ -50,10 +50,11 @@ namespace OpenRA.Mods.RA
 		public AirstrikePower(Actor self, AirstrikePowerInfo info)
 			: base(self, info) { }
 
-		public override void Activate(Actor self, Order order)
+		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
-			var info = Info as AirstrikePowerInfo;
+			base.Activate(self, order, manager);
 
+			var info = Info as AirstrikePowerInfo;
 			var attackFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
 			var attackRotation = WRot.FromFacing(attackFacing);
 			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
@@ -69,7 +70,7 @@ namespace OpenRA.Mods.RA
 
 			Action<Actor> onEnterRange = a =>
 			{
-				// Spawn a camera when the first plane enters the target area
+				// Spawn a camera and remove the beacon when the first plane enters the target area
 				if (info.CameraActor != null && !aircraftInRange.Any(kv => kv.Value))
 				{
 					self.World.AddFrameEndTask(w =>
@@ -82,6 +83,15 @@ namespace OpenRA.Mods.RA
 					});
 				}
 
+				if (beacon != null)
+				{
+					self.World.AddFrameEndTask(w =>
+					{
+						w.Remove(beacon);
+						beacon = null;
+					});
+				}
+
 				aircraftInRange[a] = true;
 			};
 
@@ -89,7 +99,7 @@ namespace OpenRA.Mods.RA
 			{
 				aircraftInRange[a] = false;
 
-				// Remove the camera when the final plane leaves the target area
+				// Remove the camera and flare when the final plane leaves the target area
 				if (!aircraftInRange.Any(kv => kv.Value))
 				{
 					if (camera != null)
