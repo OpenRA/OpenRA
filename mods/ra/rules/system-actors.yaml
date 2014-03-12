@@ -119,7 +119,7 @@ CRATE:
 	BodyOrientation:
 
 CAMERA:
-	Aircraft:
+	Immobile:
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -129,7 +129,7 @@ CAMERA:
 	BodyOrientation:
 
 FLARE:
-	Aircraft:
+	Immobile:
 	Health:
 		HP: 1000
 	RevealsShroud:

@@ -41,7 +41,7 @@ waypoint:
 	BodyOrientation:
 
 CAMERA:
-	Aircraft:
+	Immobile:
 	Health:
 		HP: 1000
 	RevealsShroud:
