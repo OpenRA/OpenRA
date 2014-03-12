@@ -7,22 +7,24 @@ Team.New = function(actors)
 	team.OnAnyKilled = { }
 	team.OnAllRemovedFromWorld = { }
 	team.OnAnyRemovedFromWorld = { }
-	Team.AddActorEventHandlers(team)
+	Team.Do(team, function(actor) Team.AddActorEventHandlers(team, actor) end)
 	return team
 end
 
-Team.AddActorEventHandlers = function(team)
-	Team.Do(team, function(actor)
+Team.Add = function(team, actor)
+	table.insert(team.Actors, actor)
+	Team.AddActorEventHandlers(team, actor)
+end
 
-		Actor.OnKilled(actor, function()
-			Team.InvokeHandlers(team.OnAnyKilled)
-			if Team.AllAreDead(team) then Team.InvokeHandlers(team.OnAllKilled) end
-		end)
+Team.AddActorEventHandlers = function(team, actor)
+	Actor.OnKilled(actor, function()
+		Team.InvokeHandlers(team.OnAnyKilled)
+		if Team.AllAreDead(team) then Team.InvokeHandlers(team.OnAllKilled) end
+	end)
 
-		Actor.OnRemovedFromWorld(actor, function()
-			Team.InvokeHandlers(team.OnAnyRemovedFromWorld)
-			if not Team.AnyAreInWorld(team) then Team.InvokeHandlers(team.OnAllRemovedFromWorld) end
-		end)
+	Actor.OnRemovedFromWorld(actor, function()
+		Team.InvokeHandlers(team.OnAnyRemovedFromWorld)
+		if not Team.AnyAreInWorld(team) then Team.InvokeHandlers(team.OnAllRemovedFromWorld) end
 	end)
 end
 
