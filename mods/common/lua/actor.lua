@@ -150,6 +150,13 @@ Actor.SetStance = function(actor, stance)
 	Internal.SetUnitStance(actor, stance)
 end
 
+Actor.RepairBuilding = function(actor)
+	local rb = Actor.TraitOrDefault(actor, "RepairableBuilding")
+	if rb ~= nil and rb.Repairer == nil then
+		rb:RepairBuilding(actor, Actor.Owner(actor))
+	end
+end
+
 Actor.OnDamaged = function(actor, eh)
 	Actor.Trait(actor, "LuaScriptEvents").OnDamaged:Add(eh)
 end
