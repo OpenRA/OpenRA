@@ -34,10 +34,10 @@ namespace OpenRA.Mods.RA.Activities
 			{
 				// Maybe we lost the owner-linked refinery:
 				harv.OwnerLinkedProc = null;
-				if (self.World.FrameNumber - chosenTicks > NextChooseTime)
+				if (self.World.WorldTick - chosenTicks > NextChooseTime)
 				{
 					harv.ChooseNewProc(self, null);
-					chosenTicks = self.World.FrameNumber;
+					chosenTicks = self.World.WorldTick;
 				}
 			}
 			else

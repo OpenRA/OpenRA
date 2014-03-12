@@ -73,7 +73,8 @@ namespace OpenRA
 		public static int RenderFrame = 0;
 		public static int NetFrameNumber { get { return orderManager.NetFrameNumber; } }
 		public static int LocalTick { get { return orderManager.LocalFrameNumber; } }
-		public const int NetTickScale = 3;		// 120ms net tick for 40ms local tick
+		public const int NetTickScale = 3; // 120ms net tick for 40ms local tick
+		public const int Timestep = 40;
 
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
@@ -224,6 +225,7 @@ namespace OpenRA
 
 			var map = modData.PrepareMap(mapUID);
 			orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
+			orderManager.world.Timestep = Timestep;
 			worldRenderer = new WorldRenderer(orderManager.world);
 			orderManager.world.LoadComplete(worldRenderer);
 

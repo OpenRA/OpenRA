@@ -30,7 +30,7 @@ namespace OpenRA
 		List<IEffect> effects = new List<IEffect>();
 		Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
-		public int FrameNumber { get { return orderManager.LocalFrameNumber; } }
+		public int Timestep;
 
 		internal readonly OrderManager orderManager;
 		public Session LobbyInfo { get { return orderManager.LobbyInfo; } }
@@ -190,6 +190,7 @@ namespace OpenRA
 		public bool PredictedPaused { get; internal set; }
 		public bool PauseStateLocked { get; set; }
 		public bool IsShellmap = false;
+		public int WorldTick { get; private set; }
 
 		public void SetPauseState(bool paused)
 		{
@@ -209,6 +210,8 @@ namespace OpenRA
 		{
 			if (!Paused && (!IsShellmap || Game.Settings.Game.ShowShellmap))
 			{
+				WorldTick++;
+
 				using (new PerfSample("tick_idle"))
 					foreach (var ni in ActorsWithTrait<INotifyIdle>())
 						if (ni.Actor.IsIdle)
