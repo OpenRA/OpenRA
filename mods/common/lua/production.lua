@@ -17,9 +17,15 @@ Production.PerFactoryQueueIsBusy = function(factory)
 end
 
 Production.SetRallyPoint = function(factory, location)
-	Actor.Trait(factory, "RallyPoint").rallyPoint = location.Location
+	local srp = Actor.Trait(factory, "RallyPoint")
+	if srp ~= nil then
+		srp.rallyPoint = location.Location
+	end
 end
 
 Production.SetPrimaryBuilding = function(factory)
-	Actor.Trait(factory, "PrimaryBuilding"):SetPrimaryProducer(factory, true)
+	local pb = Actor.TraitOrDefault(factory, "PrimaryBuilding")
+	if pb ~= nil then
+		pb:SetPrimaryProducer(factory, true)
+	end
 end
