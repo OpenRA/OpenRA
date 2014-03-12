@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
-* Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+* Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
 * This file is part of OpenRA, which is free software. It is made
 * available to you under the terms of the GNU General Public License
 * as published by the Free Software Foundation. For more information,
@@ -13,7 +13,10 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using OpenRA.FileFormats.Graphics;
-using Tao.OpenGl;
+using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Platform;
 using Tao.Sdl;
 
 namespace OpenRA.Renderer.SdlCommon
@@ -25,14 +28,34 @@ namespace OpenRA.Renderer.SdlCommon
 
 		public Size WindowSize { get { return windowSize; } }
 
-		public SdlGraphics(Size size, WindowMode window, string[] extensions)
+		public SdlGraphics(Size size, WindowMode window, string[] requiredExtensions)
 		{
 			windowSize = size;
-			InitializeSdlGl(ref windowSize, window, extensions);
 
-			Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
+			Toolkit.Init();
+			var surf = InitializeSdlGl(ref windowSize, window);
+			var windowInfo = OpenTK.Platform.Utilities.CreateDummyWindowInfo();
+			var dummyContext = new GraphicsContext(new ContextHandle(surf), windowInfo);
+			dummyContext.MakeCurrent(windowInfo);
+
 			ErrorHandler.CheckGlError();
-			Gl.glEnableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
+
+			var extensions = GL.GetString(StringName.Extensions);
+			if (extensions == null)
+				Console.WriteLine("Failed to fetch GL_EXTENSIONS, this is bad.");
+
+			var missingExtensions = requiredExtensions.Where(r => !extensions.Contains(r)).ToArray();
+
+			if (missingExtensions.Any())
+			{
+				ErrorHandler.WriteGraphicsLog("Unsupported GPU: Missing extensions: {0}"
+					.F(missingExtensions.JoinWith(",")));
+				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
+			}
+
+			GL.EnableClientState(ArrayCap.VertexArray);
+			ErrorHandler.CheckGlError();
+			GL.EnableClientState(ArrayCap.TextureCoordArray);
 			ErrorHandler.CheckGlError();
 
 			Sdl.SDL_SetModState(0);
@@ -40,7 +63,7 @@ namespace OpenRA.Renderer.SdlCommon
 			input = new SdlInput();
 		}
 
-		IntPtr InitializeSdlGl(ref Size size, WindowMode window, string[] requiredExtensions)
+		IntPtr InitializeSdlGl(ref Size size, WindowMode window)
 		{
 			Sdl.SDL_Init(Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1);
@@ -88,21 +111,6 @@ namespace OpenRA.Renderer.SdlCommon
 			Sdl.SDL_EnableUNICODE(1);
 			Sdl.SDL_EnableKeyRepeat(Sdl.SDL_DEFAULT_REPEAT_DELAY, Sdl.SDL_DEFAULT_REPEAT_INTERVAL);
 
-			ErrorHandler.CheckGlError();
-
-			var extensions = Gl.glGetString(Gl.GL_EXTENSIONS);
-			if (extensions == null)
-				Console.WriteLine("Failed to fetch GL_EXTENSIONS, this is bad.");
-
-			var missingExtensions = requiredExtensions.Where(r => !extensions.Contains(r)).ToArray();
-
-			if (missingExtensions.Any())
-			{
-				ErrorHandler.WriteGraphicsLog("Unsupported GPU: Missing extensions: {0}"
-					.F(missingExtensions.JoinWith(",")));
-				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
-			}
-
 			return surf;
 		}
 
@@ -111,78 +119,78 @@ namespace OpenRA.Renderer.SdlCommon
 			Sdl.SDL_Quit();
 		}
 
-		int ModeFromPrimitiveType(PrimitiveType pt)
+		OpenTK.Graphics.OpenGL.PrimitiveType ConvertPrimitiveType(OpenRA.FileFormats.Graphics.PrimitiveType pt)
 		{
 			switch (pt)
 			{
-			case PrimitiveType.PointList: return Gl.GL_POINTS;
-			case PrimitiveType.LineList: return Gl.GL_LINES;
-			case PrimitiveType.TriangleList: return Gl.GL_TRIANGLES;
-			case PrimitiveType.QuadList: return Gl.GL_QUADS;
+				case OpenRA.FileFormats.Graphics.PrimitiveType.PointList: return OpenTK.Graphics.OpenGL.PrimitiveType.Points;
+				case OpenRA.FileFormats.Graphics.PrimitiveType.LineList: return OpenTK.Graphics.OpenGL.PrimitiveType.Lines;
+				case OpenRA.FileFormats.Graphics.PrimitiveType.TriangleList: return OpenTK.Graphics.OpenGL.PrimitiveType.Triangles;
+				case OpenRA.FileFormats.Graphics.PrimitiveType.QuadList: return OpenTK.Graphics.OpenGL.PrimitiveType.Quads;
 			}
 
 			throw new NotImplementedException();
 		}
 
-		public void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices)
+		public void DrawPrimitives(OpenRA.FileFormats.Graphics.PrimitiveType pt, int firstVertex, int numVertices)
 		{
-			Gl.glDrawArrays(ModeFromPrimitiveType(pt), firstVertex, numVertices);
+			GL.DrawArrays(ConvertPrimitiveType(pt), firstVertex, numVertices);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void Clear()
 		{
-			Gl.glClearColor(0, 0, 0, 0);
+			GL.ClearColor(0, 0, 0, 0);
 			ErrorHandler.CheckGlError();
-			Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
+			GL.Clear(ClearBufferMask.ColorBufferBit);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void EnableDepthBuffer()
 		{
-			Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT);
+			GL.Clear(ClearBufferMask.DepthBufferBit);
 			ErrorHandler.CheckGlError();
-			Gl.glEnable(Gl.GL_DEPTH_TEST);
+			GL.Enable(EnableCap.DepthTest);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void DisableDepthBuffer()
 		{
-			Gl.glDisable(Gl.GL_DEPTH_TEST);
+			GL.Disable(EnableCap.DepthTest);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void SetBlendMode(BlendMode mode)
 		{
-			Gl.glBlendEquation(Gl.GL_FUNC_ADD);
+			GL.BlendEquation(BlendEquationMode.FuncAdd);
 			ErrorHandler.CheckGlError();
 
 			switch (mode)
 			{
 				case BlendMode.None:
-					Gl.glDisable(Gl.GL_BLEND);
+					GL.Disable(EnableCap.Blend);
 					break;
 				case BlendMode.Alpha:
-					Gl.glEnable(Gl.GL_BLEND);
+					GL.Enable(EnableCap.Blend);
 					ErrorHandler.CheckGlError();
-					Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
+					GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 					break;
 				case BlendMode.Additive:
-					Gl.glEnable(Gl.GL_BLEND);
+					GL.Enable(EnableCap.Blend);
 					ErrorHandler.CheckGlError();
-					Gl.glBlendFunc(Gl.GL_ONE, Gl.GL_ONE);
+					GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.One);
 					break;
 				case BlendMode.Subtractive:
-					Gl.glEnable(Gl.GL_BLEND);
+					GL.Enable(EnableCap.Blend);
 					ErrorHandler.CheckGlError();
-					Gl.glBlendFunc(Gl.GL_ONE, Gl.GL_ONE);
+					GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.One);
 					ErrorHandler.CheckGlError();
-					Gl.glBlendEquation(Gl.GL_FUNC_REVERSE_SUBTRACT);
+					GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
 					break;
 				case BlendMode.Multiply:
-					Gl.glEnable(Gl.GL_BLEND);
+					GL.Enable(EnableCap.Blend);
 					ErrorHandler.CheckGlError();
-					Gl.glBlendFuncSeparate(Gl.GL_DST_COLOR, Gl.GL_ZERO, Gl.GL_ONE, Gl.GL_ONE_MINUS_SRC_ALPHA);
+					GL.BlendFuncSeparate(BlendingFactorSrc.DstColor, BlendingFactorDest.Zero, BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcColor);
 					ErrorHandler.CheckGlError();
 					break;
 			}
@@ -194,21 +202,21 @@ namespace OpenRA.Renderer.SdlCommon
 			if (width < 0) width = 0;
 			if (height < 0) height = 0;
 
-			Gl.glScissor(left, windowSize.Height - (top + height), width, height);
+			GL.Scissor(left, windowSize.Height - (top + height), width, height);
 			ErrorHandler.CheckGlError();
-			Gl.glEnable(Gl.GL_SCISSOR_TEST);
+			GL.Enable(EnableCap.ScissorTest);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void DisableScissor()
 		{
-			Gl.glDisable(Gl.GL_SCISSOR_TEST);
+			GL.Disable(EnableCap.ScissorTest);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void SetLineWidth(float width)
 		{
-			Gl.glLineWidth(width);
+			GL.LineWidth(width);
 			ErrorHandler.CheckGlError();
 		}
 

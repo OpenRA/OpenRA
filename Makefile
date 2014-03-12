@@ -93,7 +93,7 @@ game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
 game_KIND = winexe
 game_DEPS = $(fileformats_TARGET)
-game_LIBS = $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) thirdparty/Tao/Tao.OpenAl.dll thirdparty/SharpFont.dll
+game_LIBS = $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) thirdparty/OpenTK/OpenTK.dll thirdparty/OpenTK/OpenTK.Compatibility.dll thirdparty/SharpFont.dll
 game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS += game
 game: $(game_TARGET)
@@ -111,25 +111,25 @@ rsdl_SRCS := $(shell find OpenRA.Renderer.SdlCommon/ -iname '*.cs')
 rsdl_TARGET = OpenRA.Renderer.SdlCommon.dll
 rsdl_KIND = library
 rsdl_DEPS = $(fileformats_TARGET) $(game_TARGET)
-rsdl_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll $(rsdl_DEPS)
+rsdl_LIBS = $(COMMON_LIBS) thirdparty/OpenTK/OpenTK.dll thirdparty/OpenTK/OpenTK.Compatibility.dll thirdparty/Tao/Tao.Sdl.dll $(rsdl_DEPS)
 
 rcg_SRCS := $(shell find OpenRA.Renderer.Cg/ -iname '*.cs')
 rcg_TARGET = OpenRA.Renderer.Cg.dll
 rcg_KIND = library
 rcg_DEPS = $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
-rcg_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll $(rcg_DEPS)
+rcg_LIBS = $(COMMON_LIBS) thirdparty/OpenTK/OpenTK.dll thirdparty/OpenTK/OpenTK.Compatibility.dll thirdparty/Tao/Tao.Cg.dll $(rcg_DEPS)
 
 rgl_SRCS := $(shell find OpenRA.Renderer.Gl/ -iname '*.cs')
 rgl_TARGET = OpenRA.Renderer.Gl.dll
 rgl_KIND = library
 rgl_DEPS = $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
-rgl_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll $(rgl_DEPS)
+rgl_LIBS = $(COMMON_LIBS) thirdparty/OpenTK/OpenTK.dll thirdparty/OpenTK/OpenTK.Compatibility.dll $(rgl_DEPS)
 
 rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
 rsdl2_TARGET = OpenRA.Renderer.Sdl2.dll
 rsdl2_KIND = library
 rsdl2_DEPS = $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET) $(rgl_TARGET)
-rsdl2_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/SDL2\#.dll $(rsdl2_DEPS)
+rsdl2_LIBS = $(COMMON_LIBS) thirdparty/OpenTK/OpenTK.dll thirdparty/OpenTK/OpenTK.Compatibility.dll thirdparty/SDL2\#.dll $(rsdl2_DEPS)
 
 rnull_SRCS := $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
 rnull_TARGET = OpenRA.Renderer.Null.dll
@@ -294,6 +294,7 @@ distclean: clean
 dependencies:
 	@ $(CP_R) thirdparty/*.dl* .
 	@ $(CP_R) thirdparty/Tao/* .
+	@ $(CP_R) thirdparty/OpenTK/* .
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml
 	@for i in $? ; do \
@@ -331,7 +332,7 @@ install-core: default
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) cg "$(DATA_INSTALL_DIR)"
 	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/Tao/* "$(DATA_INSTALL_DIR)"
+	@$(CP) thirdparty/OpenTK/* "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/SDL2\#* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"

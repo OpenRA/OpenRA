@@ -13,33 +13,33 @@ using System.Drawing;
 
 namespace OpenRA.FileFormats.Graphics
 {
-	[AttributeUsage( AttributeTargets.Assembly )]
+	[AttributeUsage(AttributeTargets.Assembly)]
 	public class RendererAttribute : Attribute
 	{
 		public readonly Type Type;
 
-		public RendererAttribute( Type graphicsDeviceType )
+		public RendererAttribute(Type graphicsDeviceType)
 		{
-			if( !typeof( IDeviceFactory ).IsAssignableFrom( graphicsDeviceType ) )
-				throw new InvalidOperationException( "Incorrect type in RendererAttribute" );
+			if (!typeof(IDeviceFactory).IsAssignableFrom(graphicsDeviceType))
+				throw new InvalidOperationException("Incorrect type in RendererAttribute");
 			Type = graphicsDeviceType;
 		}
 	}
 
 	public interface IDeviceFactory
 	{
-		IGraphicsDevice Create( Size size, WindowMode windowMode );
+		IGraphicsDevice Create(Size size, WindowMode windowMode);
 	}
 
 	public enum BlendMode { None, Alpha, Additive, Subtractive, Multiply }
 
 	public interface IGraphicsDevice
 	{
-		IVertexBuffer<Vertex> CreateVertexBuffer( int length );
-		ITexture CreateTexture( Bitmap bitmap );
+		IVertexBuffer<Vertex> CreateVertexBuffer(int length);
+		ITexture CreateTexture(Bitmap bitmap);
 		ITexture CreateTexture();
 		IFrameBuffer CreateFrameBuffer(Size s);
-		IShader CreateShader( string name );
+		IShader CreateShader(string name);
 
 		Size WindowSize { get; }
 
@@ -47,10 +47,10 @@ namespace OpenRA.FileFormats.Graphics
 		void Present();
 		void PumpInput(IInputHandler inputHandler);
 
-		void DrawPrimitives( PrimitiveType type, int firstVertex, int numVertices );
+		void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices);
 
-		void SetLineWidth( float width );
-		void EnableScissor( int left, int top, int width, int height );
+		void SetLineWidth(float width);
+		void EnableScissor(int left, int top, int width, int height);
 		void DisableScissor();
 
 		void EnableDepthBuffer();
@@ -64,7 +64,7 @@ namespace OpenRA.FileFormats.Graphics
 	public interface IVertexBuffer<T>
 	{
 		void Bind();
-		void SetData( T[] vertices, int length );
+		void SetData(T[] vertices, int length);
 	}
 
 	public interface IShader
@@ -104,7 +104,7 @@ namespace OpenRA.FileFormats.Graphics
 	public struct Range<T>
 	{
 		public readonly T Start, End;
-		public Range( T start, T end ) { Start = start; End = end; }
+		public Range(T start, T end) { Start = start; End = end; }
 	}
 
 	public enum WindowMode

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,7 +13,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using OpenRA.FileFormats.Graphics;
-using Tao.OpenGl;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.SdlCommon
 {
@@ -27,38 +28,38 @@ namespace OpenRA.Renderer.SdlCommon
 
 		public Texture()
 		{
-			Gl.glGenTextures(1, out texture);
+			GL.GenTextures(1, out texture);
 			ErrorHandler.CheckGlError();
 		}
 
 		public Texture(Bitmap bitmap)
 		{
-			Gl.glGenTextures(1, out texture);
+			GL.GenTextures(1, out texture);
 			ErrorHandler.CheckGlError();
 			SetData(bitmap);
 		}
 
-		void FinalizeInner() { Gl.glDeleteTextures(1, ref texture); }
+		void FinalizeInner() { GL.DeleteTextures(1, ref texture); }
 		~Texture() { Game.RunAfterTick(FinalizeInner); }
 
 		void PrepareTexture()
 		{
 			ErrorHandler.CheckGlError();
-			Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
+			GL.BindTexture(TextureTarget.Texture2D, texture);
 			ErrorHandler.CheckGlError();
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_NEAREST);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMinFilter.Nearest);
 			ErrorHandler.CheckGlError();
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_NEAREST);
-			ErrorHandler.CheckGlError();
-
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_CLAMP_TO_EDGE);
-			ErrorHandler.CheckGlError();
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_CLAMP_TO_EDGE);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Nearest);
 			ErrorHandler.CheckGlError();
 
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (float) TextureWrapMode.ClampToEdge);
 			ErrorHandler.CheckGlError();
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (float) TextureWrapMode.ClampToEdge);
+			ErrorHandler.CheckGlError();
+
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
+			ErrorHandler.CheckGlError();
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 0);
 			ErrorHandler.CheckGlError();
 		}
 
@@ -74,8 +75,8 @@ namespace OpenRA.Renderer.SdlCommon
 				{
 					IntPtr intPtr = new IntPtr((void*)ptr);
 					PrepareTexture();
-					Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, width, height,
-						0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
+					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, width, height,
+						0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, intPtr);
 					ErrorHandler.CheckGlError();
 				}
 			}
@@ -97,8 +98,8 @@ namespace OpenRA.Renderer.SdlCommon
 				{
 					IntPtr intPtr = new IntPtr((void*)ptr);
 					PrepareTexture();
-					Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, width, height,
-						0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
+					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, width, height,
+						0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, intPtr);
 					ErrorHandler.CheckGlError();
 				}
 			}
@@ -111,11 +112,11 @@ namespace OpenRA.Renderer.SdlCommon
 
 			size = new Size(bitmap.Width, bitmap.Height);
 			var bits = bitmap.LockBits(bitmap.Bounds(),
-				ImageLockMode.ReadOnly,	PixelFormat.Format32bppArgb);
+				ImageLockMode.ReadOnly,	System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
 			PrepareTexture();
-			Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, bits.Width, bits.Height,
-				0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, bits.Scan0);        // todo: weird strides
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, bits.Width, bits.Height,
+				0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bits.Scan0); // TODO: weird strides
 			ErrorHandler.CheckGlError();
 			bitmap.UnlockBits(bits);
 		}
@@ -125,13 +126,13 @@ namespace OpenRA.Renderer.SdlCommon
 			var data = new byte[4 * size.Width * size.Height];
 
 			ErrorHandler.CheckGlError();
-			Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
+			GL.BindTexture(TextureTarget.Texture2D, texture);
 			unsafe
 			{
 				fixed (byte* ptr = &data[0])
 				{
 					IntPtr intPtr = new IntPtr((void*)ptr);
-					Gl.glGetTexImage(Gl.GL_TEXTURE_2D, 0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
+					GL.GetTexImage(TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, intPtr);
 				}
 			}
 
@@ -146,8 +147,8 @@ namespace OpenRA.Renderer.SdlCommon
 
 			size = new Size(width, height);
 			PrepareTexture();
-			Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, width, height,
-			                0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, null);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, width, height,
+				0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
 			ErrorHandler.CheckGlError();
 		}
 	}

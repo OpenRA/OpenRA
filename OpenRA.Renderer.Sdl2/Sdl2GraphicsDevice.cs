@@ -14,8 +14,10 @@ using System.Linq;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Renderer.Glsl;
 using OpenRA.Renderer.SdlCommon;
-using SDL2;
+using OpenTK;
+using OpenTK.Compatibility;
 using Tao.OpenGl;
+using SDL2;
 
 [assembly: Renderer(typeof(OpenRA.Renderer.Sdl2.DeviceFactory))]
 

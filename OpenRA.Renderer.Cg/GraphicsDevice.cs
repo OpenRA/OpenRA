@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Renderer.SdlCommon;
+using OpenTK;
 using Tao.Cg;
 
 [assembly: Renderer(typeof(OpenRA.Renderer.Cg.DeviceFactory))]
