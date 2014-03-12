@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -34,7 +35,7 @@ namespace OpenRA.Mods.RA
 		{
 			self = init.self;
 			DevMode = init.self.Trait<DeveloperMode>();
-			RadarPings = Lazy.New(() => init.world.WorldActor.TraitOrDefault<RadarPings>());
+			RadarPings = Exts.Lazy(() => init.world.WorldActor.TraitOrDefault<RadarPings>());
 
 			init.world.ActorAdded += ActorAdded;
 			init.world.ActorRemoved += ActorRemoved;

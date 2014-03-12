@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 		internal readonly TerrainRenderer terrainRenderer;
 		internal readonly HardwarePalette palette;
 		internal Cache<string, PaletteReference> palettes;
-		OpenRA.FileFormats.Lazy<DeveloperMode> devTrait;
+		Lazy<DeveloperMode> devTrait;
 
 		internal WorldRenderer(World world)
 		{
@@ -56,7 +56,7 @@ namespace OpenRA.Graphics
 			Theater = new Theater(world.TileSet);
 			terrainRenderer = new TerrainRenderer(world, this);
 
-			devTrait = Lazy.New(() => world.LocalPlayer != null ? world.LocalPlayer.PlayerActor.Trait<DeveloperMode>() : null);
+			devTrait = new Lazy<DeveloperMode>(() => world.LocalPlayer != null ? world.LocalPlayer.PlayerActor.Trait<DeveloperMode>() : null);
 		}
 
 		PaletteReference CreatePaletteReference(string name)

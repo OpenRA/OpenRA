@@ -60,9 +60,9 @@ namespace OpenRA.Mods.RA
 		public readonly Barrel[] Barrels;
 
 		public readonly Actor self;
-		OpenRA.FileFormats.Lazy<Turreted> Turret;
-		OpenRA.FileFormats.Lazy<IBodyOrientation> Coords;
-		OpenRA.FileFormats.Lazy<LimitedAmmo> limitedAmmo;
+		Lazy<Turreted> Turret;
+		Lazy<IBodyOrientation> Coords;
+		Lazy<LimitedAmmo> limitedAmmo;
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public WRange Recoil;
@@ -75,9 +75,9 @@ namespace OpenRA.Mods.RA
 			Info = info;
 
 			// We can't resolve these until runtime
-			Turret = Lazy.New(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
-			Coords = Lazy.New(() => self.Trait<IBodyOrientation>());
-			limitedAmmo = Lazy.New(() => self.TraitOrDefault<LimitedAmmo>());
+			Turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
+			Coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
+			limitedAmmo = Exts.Lazy(() => self.TraitOrDefault<LimitedAmmo>());
 
 			Weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;

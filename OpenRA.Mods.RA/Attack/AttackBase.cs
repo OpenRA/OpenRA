@@ -33,8 +33,8 @@ namespace OpenRA.Mods.RA
 	{
 		[Sync] public bool IsAttacking { get; internal set; }
 		public IEnumerable<Armament> Armaments { get { return GetArmaments(); } }
-		protected OpenRA.FileFormats.Lazy<IFacing> facing;
-		protected OpenRA.FileFormats.Lazy<Building> building;
+		protected Lazy<IFacing> facing;
+		protected Lazy<Building> building;
 		protected Func<IEnumerable<Armament>> GetArmaments;
 
 		readonly Actor self;
@@ -45,13 +45,13 @@ namespace OpenRA.Mods.RA
 			this.self = self;
 			this.info = info;
 
-			var armaments = Lazy.New(() => self.TraitsImplementing<Armament>()
+			var armaments = Exts.Lazy(() => self.TraitsImplementing<Armament>()
 				.Where(a => info.Armaments.Contains(a.Info.Name)));
 
 			GetArmaments = () => armaments.Value;
 
-			facing = Lazy.New(() => self.TraitOrDefault<IFacing>());
-			building = Lazy.New(() => self.TraitOrDefault<Building>());
+			facing = Exts.Lazy(() => self.TraitOrDefault<IFacing>());
+			building = Exts.Lazy(() => self.TraitOrDefault<Building>());
 		}
 
 		protected virtual bool CanAttack(Actor self, Target target)

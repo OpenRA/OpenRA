@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -41,9 +42,9 @@ namespace OpenRA.Mods.RA
 			// Spawned actors (e.g. building husks) shouldn't be revealed
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
 			footprint = FootprintUtils.Tiles(init.self);
-			tooltip = Lazy.New(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
-			tooltip = Lazy.New(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
-			health = Lazy.New(() => init.self.TraitOrDefault<Health>());
+			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
+			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
+			health = Exts.Lazy(() => init.self.TraitOrDefault<Health>());
 
 			frozen = new Dictionary<Player, FrozenActor>();
 			visible = init.world.Players.ToDictionary(p => p, p => false);

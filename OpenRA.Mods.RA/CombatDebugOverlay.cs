@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.FileFormats;
@@ -30,9 +31,9 @@ namespace OpenRA.Mods.RA
 
 		public CombatDebugOverlay(Actor self)
 		{
-			attack = Lazy.New(() => self.TraitOrDefault<AttackBase>());
-			coords = Lazy.New(() => self.Trait<IBodyOrientation>());
-			health = Lazy.New(() => self.TraitOrDefault<Health>());
+			attack = Exts.Lazy(() => self.TraitOrDefault<AttackBase>());
+			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
+			health = Exts.Lazy(() => self.TraitOrDefault<Health>());
 
 			var localPlayer = self.World.LocalPlayer;
 			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;

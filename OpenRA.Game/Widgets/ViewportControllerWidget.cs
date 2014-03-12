@@ -25,7 +25,7 @@ namespace OpenRA.Widgets
 	{
 		public readonly string TooltipTemplate = "WORLD_TOOLTIP";
 		public readonly string TooltipContainer;
-		OpenRA.FileFormats.Lazy<TooltipContainerWidget> tooltipContainer;
+		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		public WorldTooltipType TooltipType { get; private set; }
 		public IToolTip ActorTooltip { get; private set; }
@@ -64,7 +64,7 @@ namespace OpenRA.Widgets
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
-			tooltipContainer = Lazy.New(() =>
+			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 

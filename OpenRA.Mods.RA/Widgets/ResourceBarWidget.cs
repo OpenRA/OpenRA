@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		public readonly string TooltipTemplate;
 		public readonly string TooltipContainer;
-		OpenRA.FileFormats.Lazy<TooltipContainerWidget> tooltipContainer;
+		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		public string TooltipFormat = "";
 		public ResourceBarOrientation Orientation = ResourceBarOrientation.Vertical;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Widgets
 		[ObjectCreator.UseCtor]
 		public ResourceBarWidget(World world)
 		{
-			tooltipContainer = Lazy.New(() =>
+			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 

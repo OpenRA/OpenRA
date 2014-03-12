@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		bool rightPressed = false;
 		Rectangle leftButtonRect;
 		Rectangle rightButtonRect;
-		OpenRA.FileFormats.Lazy<ProductionPaletteWidget> paletteWidget;
+		Lazy<ProductionPaletteWidget> paletteWidget;
 		string queueGroup;
 
 		[ObjectCreator.UseCtor]
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			// Only visible if the production palette has icons to display
 			IsVisible = () => queueGroup != null && Groups[queueGroup].Tabs.Count > 0;
 
-			paletteWidget = Lazy.New(() => Ui.Root.Get<ProductionPaletteWidget>(PaletteWidget));
+			paletteWidget = Exts.Lazy(() => Ui.Root.Get<ProductionPaletteWidget>(PaletteWidget));
 		}
 
 		public bool SelectNextTab(bool reverse)

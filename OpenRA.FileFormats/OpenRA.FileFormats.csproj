@@ -113,7 +113,6 @@
     <Compile Include="Primitives\Cached.cs" />
     <Compile Include="Primitives\DisposableAction.cs" />
     <Compile Include="Primitives\IObservableCollection.cs" />
-    <Compile Include="Primitives\Lazy.cs" />
     <Compile Include="Primitives\ObservableCollection.cs" />
     <Compile Include="Primitives\ObservableDictionary.cs" />
     <Compile Include="Primitives\Pair.cs" />

@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 		public readonly FirePort[] Ports;
 
 		AttackGarrisonedInfo info;
-		OpenRA.FileFormats.Lazy<IBodyOrientation> coords;
+		Lazy<IBodyOrientation> coords;
 		List<Armament> armaments;
 		List<AnimationWithOffset> muzzles;
 		Dictionary<Actor, IFacing> paxFacing;
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			: base(self, info)
 		{
 			this.info = info;
-			coords = Lazy.New(() => self.Trait<IBodyOrientation>());
+			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
 			armaments = new List<Armament>();
 			muzzles = new List<AnimationWithOffset>();
 			paxFacing = new Dictionary<Actor, IFacing>();

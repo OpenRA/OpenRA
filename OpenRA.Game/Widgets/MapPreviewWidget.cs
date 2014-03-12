@@ -29,7 +29,7 @@ namespace OpenRA.Widgets
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SPAWN_TOOLTIP";
-		OpenRA.FileFormats.Lazy<TooltipContainerWidget> tooltipContainer;
+		Lazy<TooltipContainerWidget> tooltipContainer;
 		public int TooltipSpawnIndex = -1;
 
 		Rectangle MapRect;
@@ -37,7 +37,7 @@ namespace OpenRA.Widgets
 
 		public MapPreviewWidget()
 		{
-			tooltipContainer = Lazy.New(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		protected MapPreviewWidget(MapPreviewWidget other)
@@ -48,7 +48,7 @@ namespace OpenRA.Widgets
 			ShowSpawnPoints = other.ShowSpawnPoints;
 			TooltipTemplate = other.TooltipTemplate;
 			TooltipContainer = other.TooltipContainer;
-			tooltipContainer = Lazy.New(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		public override Widget Clone() { return new MapPreviewWidget(this); }
