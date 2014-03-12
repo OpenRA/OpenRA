@@ -63,6 +63,10 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			var cell = pos.ToCPos();
+			if (args.SourceActor.World.FogObscures(cell))
+				return SpriteRenderable.None;
+
 			return anim.Render(pos, wr.Palette("effect"));
 		}
 	}
