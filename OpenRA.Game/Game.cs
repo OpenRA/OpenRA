@@ -272,6 +272,8 @@ namespace OpenRA
 			Log.AddChannel("sound", "sound.log");
 			Log.AddChannel("graphics", "graphics.log");
 
+			ServerList.ChooseMasterServer();
+
 			if (Settings.Server.DiscoverNatDevices)
 				UPnP.TryNatDiscovery();
 			else
