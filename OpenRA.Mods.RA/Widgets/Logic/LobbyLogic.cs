@@ -527,21 +527,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return;
 
 			Map = Game.modData.MapCache[uid];
-			if (Map.Status != MapStatus.Available)
-			{
-				if (Game.Settings.Game.AllowDownloading)
-				{
-					Game.DownloadMap(uid);
-					Game.Debug("A new map has been downloaded...");
-				}
-				else
-					throw new InvalidOperationException("Server's new map doesn't exist on your system and Downloading turned off");
-			}
 
-			// Restore default starting cash if the last map set it to something invalid
-			var pri = Rules.Info["player"].Traits.Get<PlayerResourcesInfo>();
-			if (!Map.Map.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
-				orderManager.IssueOrder(Order.Command("startingcash {0}".F(pri.DefaultCash)));
+			if (Map.Status == MapStatus.Available)
+			{
+				// Restore default starting cash if the last map set it to something invalid
+				var pri = Rules.Info["player"].Traits.Get<PlayerResourcesInfo>();
+				if (!Map.Map.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
+					orderManager.IssueOrder(Order.Command("startingcash {0}".F(pri.DefaultCash)));
+			}
 		}
 
 		void UpdatePlayerList()
@@ -590,8 +583,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, colorPreview);
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, countryNames);
-					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map.SpawnPoints.Count);
-					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager);
+					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map);
+					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, Map);
 				}
 				else
 				{

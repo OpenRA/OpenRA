@@ -531,46 +531,5 @@ namespace OpenRA
 		{
 			return orderManager != null && orderManager.world == world;
 		}
-
-		public static bool DownloadMap(string mapHash)
-		{
-			var mod = Game.modData.Manifest.Mod;
-			var dirPath = new[] { Platform.SupportDir, "maps", mod.Id }.Aggregate(Path.Combine);
-			var tempFile = Path.Combine(dirPath, Path.GetRandomFileName());
-			if (!Directory.Exists(dirPath))
-				Directory.CreateDirectory(dirPath);
-			foreach (var MapRepository in Game.Settings.Game.MapRepositories)
-			{
-				try
-				{
-					var url = MapRepository + mapHash;
-
-					var request = WebRequest.Create(url);
-					request.Method = "HEAD";
-					var res = request.GetResponse();
-
-					if (res.Headers["Content-Disposition"] == null)
-						continue;
-					var mapPath = Path.Combine(dirPath, res.Headers ["Content-Disposition"].Replace("attachment; filename = ", ""));
-					Log.Write("debug", "Trying to download map to '{0}' using {1}", mapPath, MapRepository);
-
-					WebClient webClient = new WebClient();
-					webClient.DownloadFile(url, tempFile);
-					File.Move(tempFile, mapPath);
-					Game.modData.MapCache[mapHash].UpdateFromMap(new Map(mapPath));
-					Log.Write("debug", "New map has been downloaded to '{0}'", mapPath);
-
-					return true;
-				} 
-				catch (WebException e)
-				{
-					Log.Write("debug", "Could not download map '{0}' using {1}", mapHash, MapRepository);
-					Log.Write("debug", e.ToString());
-					File.Delete(tempFile);
-					continue;
-				}
-			}
-			return false;
-		}
 	}
 }
