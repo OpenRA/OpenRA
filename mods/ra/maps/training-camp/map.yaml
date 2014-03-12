@@ -819,9 +819,6 @@ Rules:
 			Type: Vehicle
 			BuildSpeed: 1
 			LowPowerSlowdown: 3
-	^Tank:
-		Mobile:
-			Crushes: wall, atmine, crate, ^Tree
 	OILB:
 		Health:
 			HP: 6000

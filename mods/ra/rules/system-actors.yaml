@@ -1,12 +1,12 @@
 MINP:
 	Mine:
-		CrushClasses: apmine,atmine
-		DetonateClasses: apmine,atmine
+		CrushClasses: mine
+		DetonateClasses: mine
 		AvoidFriendly: no
 	Explodes:
 		Weapon: APMine
 	Health:
-		HP: 50
+		HP: 100
 	Armor:
 		Type: Light
 	RenderSimple:
@@ -16,7 +16,7 @@ MINP:
 		UncloakSound:
 		Palette:
 	Tooltip:
-		Name: Anti-Personnel Mine
+		Name: Mine
 	ProximityCaptor:
 		Types: Mine
 	TargetableUnit:
@@ -25,13 +25,13 @@ MINP:
 
 MINV:
 	Mine:
-		CrushClasses: atmine,apmine
-		DetonateClasses: atmine
+		CrushClasses: mine
+		DetonateClasses: mine
 		AvoidFriendly: no
 	Explodes:
 		Weapon: ATMine
 	Health:
-		HP: 50
+		HP: 100
 	Armor:
 		Type: Light
 	RenderSimple:
@@ -41,7 +41,7 @@ MINV:
 		UncloakSound:
 		Palette:
 	Tooltip:
-		Name: Anti-Tank Mine
+		Name: Mine
 	ProximityCaptor:
 		Types: Mine
 	TargetableUnit:
