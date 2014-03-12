@@ -73,7 +73,7 @@ namespace OpenRA
 		public static int RenderFrame = 0;
 		public static int NetFrameNumber { get { return orderManager.NetFrameNumber; } }
 		public static int LocalTick { get { return orderManager.LocalFrameNumber; } }
-		public const int NetTickScale = 3; // 120ms net tick for 40ms local tick
+		public const int NetTickScale = 3; // 120 ms net tick for 40 ms local tick
 		public const int Timestep = 40;
 
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
@@ -163,14 +163,15 @@ namespace OpenRA
 
 		static void TickInner(OrderManager orderManager)
 		{
-			int t = Environment.TickCount;
-			int dt = t - orderManager.LastTickTime;
-			if (dt >= Settings.Game.Timestep)
+			var t = Environment.TickCount;
+			var dt = t - orderManager.LastTickTime;
+			var world = orderManager.world;
+			var timestep = world == null ? Timestep : world.Timestep;
+			if (dt >= timestep)
 				using (new PerfSample("tick_time"))
 				{
-					orderManager.LastTickTime += Settings.Game.Timestep;
+					orderManager.LastTickTime += timestep;
 					Ui.Tick();
-					var world = orderManager.world;
 					if (orderManager.GameStarted)
 						++Viewport.TicksSinceLastMove;
 
