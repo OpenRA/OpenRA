@@ -22,9 +22,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			if (world.IsReplay)
 			{
-				var container = widget.Get<ContainerWidget>("REPLAY_PLAYER");
+				var container = widget.Get("REPLAY_PLAYER");
 
-				var background = widget.Parent.GetOrNull<BackgroundWidget>("OBSERVER_CONTROL_BG");
+				var background = widget.Parent.GetOrNull("OBSERVER_CONTROL_BG");
 				if (background != null)
 					background.Bounds.Height += container.Bounds.Height;
 
