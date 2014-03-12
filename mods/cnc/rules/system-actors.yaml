@@ -31,12 +31,12 @@ CRATE:
 	BodyOrientation:
 
 mpspawn:
-	Waypoint:
+	Immobile:
 	RenderEditorOnly:
 	BodyOrientation:
 
 waypoint:
-	Waypoint:
+	Immobile:
 	RenderEditorOnly:
 	BodyOrientation:
 

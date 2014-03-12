@@ -165,12 +165,12 @@ powerproxy.sonarpulse:
 		SelectTargetSound: slcttgt1.aud
 
 mpspawn:
-	Waypoint:
+	Immobile:
 	RenderEditorOnly:
 	BodyOrientation:
 
 waypoint:
-	Waypoint:
+	Immobile:
 	RenderEditorOnly:
 	BodyOrientation:
 

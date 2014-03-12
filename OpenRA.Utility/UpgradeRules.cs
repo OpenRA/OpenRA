@@ -143,6 +143,13 @@ namespace OpenRA.Utility
 						ConvertFloatToRange(ref node.Value.Value);
 				}
 
+				// Waypoint was renamed to Immobile
+				if (engineVersion < 20140312)
+				{
+					if (depth == 1 && node.Key == "Waypoint")
+						node.Key = "Immobile";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
