@@ -167,6 +167,8 @@ namespace OpenRA
 			var dt = t - orderManager.LastTickTime;
 			var world = orderManager.world;
 			var timestep = world == null ? Timestep : world.Timestep;
+			if (timestep == 0)
+				return;
 			if (dt >= timestep)
 				using (new PerfSample("tick_time"))
 				{

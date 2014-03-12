@@ -62,7 +62,9 @@ ChromeLayout:
 	mods/ra/chrome/ingame-diplomacy.yaml
 	mods/ra/chrome/ingame-fmvplayer.yaml
 	mods/ra/chrome/ingame-menu.yaml
+	mods/ra/chrome/ingame-observer.yaml
 	mods/ra/chrome/ingame-observerstats.yaml
+	mods/d2k/chrome/ingame-player.yaml
 	mods/d2k/chrome/mainmenu.yaml
 	mods/ra/chrome/settings.yaml
 	mods/ra/chrome/credits.yaml

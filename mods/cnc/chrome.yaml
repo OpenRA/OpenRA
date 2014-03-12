@@ -388,6 +388,8 @@ music: chrome.png
 	play: 288,0,16,16
 	next: 256,16,16,16
 	prev: 272,16,16,16
+	fastforward: 400,64,16,16
+	slowmo: 400,80,16,16
 
 lobby-bits: chrome.png
 	spawn-claimed: 256,32,16,16

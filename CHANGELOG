@@ -23,6 +23,7 @@ NEW:
 		Order lines are now shown on unit selection.
 		Fixed chat synchronization in replays.
 		Added a combined shroud view of every player to the replay viewer and spectator mode.
+		Added pause, slowdown, play and fastforward buttons for replays.
 		Fixed the game sometimes crashing when deploying and activating the guard cursor at the same time.
 		Build time is now set when an item reaches the front of a queue, instead of immediately when queued.
 		The attack cursor now changes if the target is out of range.
