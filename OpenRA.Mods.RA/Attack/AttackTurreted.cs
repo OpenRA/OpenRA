@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 {
 	class AttackTurretedInfo : AttackBaseInfo, Requires<TurretedInfo>
 	{
-		public override object Create(ActorInitializer init) { return new AttackTurreted(init.self); }
+		public override object Create(ActorInitializer init) { return new AttackTurreted(init.self, this); }
 	}
 
 	class AttackTurreted : AttackBase, INotifyBuildComplete, ISync
@@ -28,7 +28,8 @@ namespace OpenRA.Mods.RA
 		protected IEnumerable<Turreted> turrets;
 		[Sync] protected bool buildComplete;
 
-		public AttackTurreted(Actor self) : base(self)
+		public AttackTurreted(Actor self, AttackTurretedInfo info)
+			: base(self, info)
 		{
 			turrets = self.TraitsImplementing<Turreted>();
 		}
@@ -41,11 +42,13 @@ namespace OpenRA.Mods.RA
 			if (!target.IsValidFor(self))
 				return false;
 
-			bool canAttack = false;
+			var canAttack = false;
 			foreach (var t in turrets)
 				if (t.FaceTarget(self, target))
 					canAttack = true;
-			if (!canAttack) return false;
+
+			if (!canAttack)
+				return false;
 
 			return base.CanAttack(self, target);
 		}
@@ -88,7 +91,8 @@ namespace OpenRA.Mods.RA
 				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
 
-				if (self.IsDisabled()) return this;
+				if (self.IsDisabled())
+					return this;
 
 				var attack = self.Trait<AttackTurreted>();
 				const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */

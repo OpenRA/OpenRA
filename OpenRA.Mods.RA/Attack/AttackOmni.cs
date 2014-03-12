@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA
 {
 	class AttackOmniInfo : AttackBaseInfo
 	{
-		public override object Create(ActorInitializer init) { return new AttackOmni(init.self); }
+		public override object Create(ActorInitializer init) { return new AttackOmni(init.self, this); }
 	}
 
 	class AttackOmni : AttackBase, INotifyBuildComplete, ISync
@@ -23,30 +23,37 @@ namespace OpenRA.Mods.RA
 		[Sync] bool buildComplete = false;
 		public void BuildingComplete(Actor self) { buildComplete = true; }
 
-		public AttackOmni(Actor self) : base(self) { }
+		public AttackOmni(Actor self, AttackOmniInfo info)
+			: base(self, info) { }
 
-		protected override bool CanAttack( Actor self, Target target )
+		protected override bool CanAttack(Actor self, Target target)
 		{
-			var isBuilding = ( self.HasTrait<Building>() && !buildComplete );
-			return base.CanAttack( self, target ) && !isBuilding;
+			var isBuilding = self.HasTrait<Building>() && !buildComplete;
+			return base.CanAttack(self, target) && !isBuilding;
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
-			return new SetTarget( newTarget );
+			return new SetTarget(newTarget, this);
 		}
 
 		class SetTarget : Activity
 		{
 			readonly Target target;
-			public SetTarget( Target target ) { this.target = target; }
+			readonly AttackOmni ao;
 
-			public override Activity Tick( Actor self )
+			public SetTarget(Target target, AttackOmni ao)
+			{
+				this.target = target;
+				this.ao = ao;
+			}
+
+			public override Activity Tick(Actor self)
 			{
 				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
 
-				self.Trait<AttackOmni>().DoAttack(self, target);
+				ao.DoAttack(self, target);
 				return this;
 			}
 		}

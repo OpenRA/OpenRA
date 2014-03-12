@@ -70,10 +70,10 @@ Cursors:
 		attack-minimap:
 			start:203
 			length: 8
-		attackmove:
+		attackoutsiderange:
 			start:21
 			length: 8
-		attackmove-minimap:
+		attackoutsiderange-minimap:
 			start:134
 			length: 8
 		harvest:
@@ -170,3 +170,11 @@ Cursors:
 		powerdown:
 			start:1
 			length: 3
+
+	attackmove.shp: cursor
+		attackmove:
+			start:0
+			length: 4
+		attackmove-minimap:
+			start:4
+			length: 4

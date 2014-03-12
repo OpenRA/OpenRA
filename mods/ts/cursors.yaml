@@ -72,6 +72,12 @@ Cursors:
 		attack-minimap:
 			start: 63
 			length: 5
+		attackoutsiderange:
+			start: 58
+			length: 5
+		attackoutsiderange-minimap:
+			start: 63
+			length: 5
 		attackmove: #TODO
 			start: 58
 			length: 5

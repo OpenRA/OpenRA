@@ -24,6 +24,7 @@ NEW:
 		Fixed chat synchronization in replays.
 		Fixed the game sometimes crashing when deploying and activating the guard cursor at the same time.
 		Build time is now set when an item reaches the front of a queue, instead of immediately when queued.
+		The attack cursor now changes if the target is out of range.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
@@ -56,6 +57,7 @@ NEW:
 		Fixed spies staying on the minimap after infiltration.
 		Added maps: Blitzkrieg and Burlesca by s1w.
 		Both Allied and Soviet factions now build general-purpose mines instead of AT and AP mines respectively.
+		Added new attack-move cursor artwork.
 	Tiberian Dawn:
 		Chinook rotors now counter-rotate.
 		Commando can now plant C4 on bridges.
@@ -83,6 +85,7 @@ NEW:
 		Increased the chance of Tiberium or chemical deaths spawning a Visceroid from 2% to 10%.
 		Increased Obelisk of Light laser damage from 200 to 360.
 		Fixed Obelisk of Light charge animation and sound not playing.
+		Replaced or improved several mouse cursors.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.

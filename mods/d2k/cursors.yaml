@@ -119,6 +119,16 @@ Cursors:
 			length: 8
 			x: 24
 			y: 24
+		attackoutsiderange:
+			start:16
+			length: 8
+			x: 24
+			y: 24
+		attackoutsiderange-minimap:
+			start:16
+			length: 8
+			x: 24
+			y: 24
 		attackmove:
 			start:16
 			length: 8

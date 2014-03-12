@@ -8,8 +8,8 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Activities;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
@@ -24,39 +24,41 @@ namespace OpenRA.Mods.RA
 		public readonly int InitialChargeDelay = 22;
 		[Desc("Delay for additional charges if MaxCharge is larger than 1.")]
 		public readonly int ChargeDelay = 3;
-		public override object Create(ActorInitializer init) { return new AttackCharge(init.self); }
+		public override object Create(ActorInitializer init) { return new AttackCharge(init.self, this); }
 	}
 
 	class AttackCharge : AttackOmni, ITick, INotifyAttack, ISync
 	{
+		readonly AttackChargeInfo aci;
+
 		[Sync] int charges;
 		[Sync] int timeToRecharge;
 
-		public AttackCharge(Actor self)
-			: base(self)
+		public AttackCharge(Actor self, AttackChargeInfo info)
+			: base(self, info)
 		{
-			charges = self.Info.Traits.Get<AttackChargeInfo>().MaxCharges;
+			aci = self.Info.Traits.Get<AttackChargeInfo>();
+			charges = aci.MaxCharges;
 		}
 
-		public override void Tick( Actor self )
+		public override void Tick(Actor self)
 		{
-			if( --timeToRecharge <= 0 )
-				charges = self.Info.Traits.Get<AttackChargeInfo>().MaxCharges;
+			if (--timeToRecharge <= 0)
+				charges = aci.MaxCharges;
 
-			base.Tick( self );
+			base.Tick(self);
 		}
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			--charges;
-			timeToRecharge = self.Info.Traits.Get<AttackChargeInfo>().ReloadTime;
+			timeToRecharge = aci.ReloadTime;
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			return new ChargeAttack(newTarget);
 		}
-		
 
 		public override void ResolveOrder(Actor self, Order order)
 		{
@@ -82,7 +84,7 @@ namespace OpenRA.Mods.RA
 				var initDelay = self.Info.Traits.Get<AttackChargeInfo>().InitialChargeDelay;
 				
 				var attack = self.Trait<AttackCharge>();
-				if(attack.charges == 0 || !attack.CanAttack(self, target))
+				if (attack.charges == 0 || !attack.CanAttack(self, target))
 					return this;
 
 				self.Trait<RenderBuildingCharge>().PlayCharge(self);
@@ -106,7 +108,7 @@ namespace OpenRA.Mods.RA
 				var chargeDelay = self.Info.Traits.Get<AttackChargeInfo>().ChargeDelay;
 
 				var attack = self.Trait<AttackCharge>();
-				if(attack.charges == 0) 
+				if (attack.charges == 0)
 					return NextActivity;
 
 				attack.DoAttack(self, target);

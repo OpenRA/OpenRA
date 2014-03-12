@@ -1,7 +1,5 @@
 ﻿Palettes:
 	cursor: cursor.pal
-	cursor2: racursor.pal
-
 
 Cursors:
 	mouse2.shp: cursor
@@ -40,11 +38,6 @@ Cursors:
 		select:
 			start:12
 			length:6
-	
-		default:
-			start:0
-			x: -16
-			y: -12
 		default-minimap:
 			start:86
 			length:1
@@ -78,12 +71,6 @@ Cursors:
 		c4-minimap:
 			start:127
 			length:3
-		guard:
-			start:153
-			length:1
-		guard-minimap:
-			start:152
-			length:1
 
 # Cursors that need minimap variants
 		deploy:
@@ -114,66 +101,81 @@ Cursors:
 			start:154
 			length:24
 
+	mouse3.shp: cursor
+		default:
+			start:0
+			x: -16
+			y: -12
+		deploy-blocked:
+			start:1
+			length:1
+
 	mouse4.shp:cursor
 		move:
 			start:0
 			length:8
 		move-minimap:
-			start:9
+			start:8
 			length:4
 		move-rough:
 			start:0
 			length: 8
-
-	attackmove.shp:cursor
 		attackmove:
-			start:0
+			start:12
 			length:8
 		attackmove-minimap:
-			start:9
+			start:20
 			length:4
 		move-blocked:
-			start:8
+			start:24
+			length:1
 		move-blocked-minimap:
-			start:13
+			start:25
 			length:1
 
-	mouse3.shp: cursor2
-		enter-blocked:
-			start:212
+	mouse5.shp: cursor
+		guard:
+			start:0
+			length:8
+		guard-minimap:
+			start:8
+			length:8
+
+	mouse6.shp: cursor
+		goldwrench:
+			start:0
+			length:3
+		goldwrench-minimap:
+			start:3
+			length:3
+		goldwrench-blocked:
+			start:6
 			length:1
-		enter-blocked-minimap:
-			start:33
+		goldwrench-blocked-minimap:
+			start:7
 			length:1
 		capture:
-			start:164
+			start:8
 			length:3
 		capture-minimap:
-			start:167
+			start:11
 			length:3
-		heal:
-			start:160
-			length:4
-		heal-minimap:
-			start:194
+		capture-blocked:
+			start:14
 			length:1
-		ability-minimap:
-			start:214
-			length:8
-		deploy-blocked:
-			start:211
+		capture-blocked-minimap:
+			start:15
 			length:1
-		goldwrench:
-			start:170
-			length:24
-		goldwrench-blocked:
-			start:213
+		enter-blocked:
+			start:16
+			length:1
+		enter-blocked-minimap:
+			start:17
 			length:1
 
-	nopower.shp: cursor
-		powerdown-blocked:
+	mouse7.shp: cursor
+		attackoutsiderange:
 			start:0
-			length: 1
-		powerdown:
-			start:1
-			length: 3
+			length:8
+		attackoutsiderange-minimap:
+			start:8
