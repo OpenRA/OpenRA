@@ -167,15 +167,15 @@ namespace OpenRA
 		{
 			var tick = Environment.TickCount;
 
+			var world = orderManager.world;
 			var uiTickDelta = tick - Ui.LastTickTime;
 			if (uiTickDelta >= Timestep)
 			{
 				Ui.LastTickTime += Timestep;
-				Ui.Tick();
+				Sync.CheckSyncUnchanged(world, Ui.Tick);
 				cursorFrame += 0.5f;
 			}
 
-			var world = orderManager.world;
 			var worldTimestep = world == null ? Timestep : world.Timestep;
 			var worldTickDelta = (tick - orderManager.LastTickTime);
 			if (worldTimestep != 0 && worldTickDelta >= worldTimestep)
