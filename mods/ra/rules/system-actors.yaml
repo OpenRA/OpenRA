@@ -152,7 +152,7 @@ powerproxy.parabombs:
 		AllowMultiple: yes
 		UnitType: badr.bomber
 		SelectTargetSound: slcttgt1.aud
-		FlareType: flare
+		FlareActor: flare
 
 powerproxy.sonarpulse:
 	SonarPulsePower:

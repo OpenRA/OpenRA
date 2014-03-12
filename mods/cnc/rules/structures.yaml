@@ -385,6 +385,7 @@ HQ:
 		UnitType: a10
 		DisplayBeacon: True
 		DisplayRadarPing: True
+		CameraActor: camera
 	SupportPowerChargeBar:
 
 FIX:
