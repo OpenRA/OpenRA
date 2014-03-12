@@ -171,7 +171,6 @@ MINE:
 	AutoTargetIgnore:
 	BodyOrientation:
 	SeedsResource:
-	BelowUnits:
 
 RAILMINE:
 	Tooltip:
@@ -191,7 +190,6 @@ RAILMINE:
 	BodyOrientation:
 	SeedsResource:
 		ResourceType: Gems
-	BelowUnits:
 
 BOXES01:
 	Inherits: ^Tree

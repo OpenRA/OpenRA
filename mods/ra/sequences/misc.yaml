@@ -126,12 +126,15 @@ smoke_m:
 	idle:
 		Start: 0
 		Length: *
+		ZOffset: 1023
 	loop:
 		Start: 49
 		Length: 42
+		ZOffset: 1023
 	end:
 		Start: 0
 		Length: 26
+		ZOffset: 1023
 
 dragon:
 	idle:
@@ -142,6 +145,7 @@ smokey:
 	idle:
 		Start: 0
 		Length: *
+		ZOffset: 1023
 
 bomb:
 	idle:
@@ -390,28 +394,34 @@ smokland:
 		Start: 0
 		Length: 60
 		Tick: 120
+		ZOffset: 1023
 	idle: playersmoke
 		Start: 60
 		Length: 32
 		Tick: 120
+		ZOffset: 1023
 
 fire:
 	1: fire1
 		Start: 0
 		Length: *
 		Offset: 0,-3
+		ZOffset: 1023
 	2: fire2
 		Start: 0
 		Length: *
 		Offset: 0,-3
+		ZOffset: 1023
 	3: fire3
 		Start: 0
 		Length: *
 		Offset: 0,-3
+		ZOffset: 1023
 	4: fire4
 		Start: 0
 		Length: *
 		Offset: 0,-3
+		ZOffset: 1023
 
 rank:
 	rank:
@@ -497,12 +507,14 @@ lar2:
 minp:
 	idle:
 		Start: 0
+		ZOffset: -1023
 	icon: jmin
 		Start: 0
 
 minv:
 	idle:
 		Start: 0
+		ZOffset: -1023
 	icon: jmin
 		Start: 0
 

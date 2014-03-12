@@ -124,6 +124,7 @@ NEW:
 		If you spot black tiles in your Dune 2000 ARRAKIS maps, replace them with the remaining sand and rock tiles. Go to Map → Fix Open Areas to randomize them.
 		The TestFile check in mod.yaml has been renamed to TestFiles (plural!) and now supports a comma-separated list of assets that are required to load the game.
 		DisabledOverlay has been split from RenderBuilding. Use it together with RequiresPower and CanPowerDown for buildings or directly with Husk.
+		Removed BelowUnits trait. Use ZOffset in sequence definitions instead.
 	Packaging:
 		Removed portable install option from Windows installer as the game left without write access breaks content download and error log generation.
 		Added HTML documentation to the Windows installer.

@@ -8,10 +8,12 @@ fire:
 		Start: 0
 		Length: *
 		Offset: 0,-3
+		ZOffset: 1023
 	2: fire2
 		Start: 0
 		Length: *
 		Offset: 0,-3
+		ZOffset: 1023
 
 120mm:
 	idle:

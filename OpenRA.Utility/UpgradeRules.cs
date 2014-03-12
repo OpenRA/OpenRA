@@ -143,6 +143,16 @@ namespace OpenRA.Utility
 						ConvertFloatToRange(ref node.Value.Value);
 				}
 
+				// BelowUnits was removed
+				if (engineVersion < 20140308)
+				{
+					if (depth == 1 && node.Key == "BelowUnits")
+						nodes.Remove(node);
+
+					if (depth == 1 && node.Key == "-BelowUnits")
+						nodes.Remove(node);
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
