@@ -285,12 +285,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		string AverageOrdersPerMinute(double orders)
 		{
-			return (world.FrameNumber == 0 ? 0 : orders / (world.FrameNumber / 1500.0)).ToString("F1");
+			return (world.WorldTick == 0 ? 0 : orders / (world.WorldTick / 1500.0)).ToString("F1");
 		}
 
 		string AverageEarnedPerMinute(double earned)
 		{
-			return "$" + (world.FrameNumber == 0 ? 0 : earned / (world.FrameNumber / 1500.0)).ToString("F2");
+			return "$" + (world.WorldTick == 0 ? 0 : earned / (world.WorldTick / 1500.0)).ToString("F2");
 		}
 
 		static Color GetPowerColor(PowerState state)

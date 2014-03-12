@@ -291,7 +291,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				statusCheckbox.IsHighlighted = () => !statusCheckbox.IsChecked() &&
 					orderManager.LobbyInfo.FirstEmptySlot() == null && 
-					world.FrameNumber / 25 % 2 == 0;
+					orderManager.LocalFrameNumber / 25 % 2 == 0;
 			}
 
 			// Options panel

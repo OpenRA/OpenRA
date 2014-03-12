@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 			if (e.Attacker != null && e.Attacker.Owner == self.Owner)
 				return;
 
-			if (self.World.FrameNumber - lastAttackTime > info.NotifyInterval * 25)
+			if (self.World.WorldTick - lastAttackTime > info.NotifyInterval * 25)
 			{
 				Sound.PlayNotification(self.Owner, "Speech", "HarvesterAttack", self.Owner.Country.Race);
 
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 					radarPings.Add(() => self.Owner == self.World.LocalPlayer, self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
 			}
 
-			lastAttackTime = self.World.FrameNumber;
+			lastAttackTime = self.World.WorldTick;
 		}
 	}
 }

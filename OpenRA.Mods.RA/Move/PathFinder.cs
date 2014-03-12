@@ -49,8 +49,8 @@ namespace OpenRA.Mods.RA.Move
 				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.actor == self);
 				if (cached != null)
 				{
-					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.FrameNumber - cached.tick);
-					if (world.FrameNumber - cached.tick > MaxPathAge)
+					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.WorldTick - cached.tick);
+					if (world.WorldTick - cached.tick > MaxPathAge)
 						CachedPaths.Remove(cached);
 					return new List<CPos>(cached.result);
 				}
@@ -73,8 +73,8 @@ namespace OpenRA.Mods.RA.Move
 
 				CheckSanePath2(pb, from, target);
 
-				CachedPaths.RemoveAll(p => world.FrameNumber - p.tick > MaxPathAge);
-				CachedPaths.Add(new CachedPath { from = from, to = target, actor = self, result = pb, tick = world.FrameNumber });
+				CachedPaths.RemoveAll(p => world.WorldTick - p.tick > MaxPathAge);
+				CachedPaths.Add(new CachedPath { from = from, to = target, actor = self, result = pb, tick = world.WorldTick });
 				return new List<CPos>(pb);
 			}
 		}

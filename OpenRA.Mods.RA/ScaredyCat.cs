@@ -40,14 +40,14 @@ namespace OpenRA.Mods.RA
 		{
 			if (!Panicking)
 				Self.CancelActivity();
-			PanicStartedTick = Self.World.FrameNumber;
+			PanicStartedTick = Self.World.WorldTick;
 		}
 
 		public void Tick(Actor self)
 		{
 			if (!Panicking) return;
 
-			if (self.World.FrameNumber >= PanicStartedTick + Info.PanicLength)
+			if (self.World.WorldTick >= PanicStartedTick + Info.PanicLength)
 			{
 				self.CancelActivity();
 				PanicStartedTick = 0;

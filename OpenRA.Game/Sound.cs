@@ -518,8 +518,7 @@ namespace OpenRA
 				return null;
 			}
 
-			var world = Game.orderManager.world;
-			int currFrame = world != null ? world.FrameNumber : 0;
+			var currFrame = Game.orderManager.LocalFrameNumber;
 			float atten = 1f;
 
 			// Check if max # of instances-per-location reached:

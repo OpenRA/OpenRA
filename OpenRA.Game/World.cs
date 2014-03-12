@@ -30,7 +30,6 @@ namespace OpenRA
 		List<IEffect> effects = new List<IEffect>();
 		Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
-		public int FrameNumber { get { return orderManager.LocalFrameNumber; } }
 		public int Timestep;
 
 		internal readonly OrderManager orderManager;

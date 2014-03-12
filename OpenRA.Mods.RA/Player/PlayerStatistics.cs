@@ -73,9 +73,9 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (self.World.FrameNumber % 1500 == 1)
+			if (self.World.WorldTick % 1500 == 1)
 				UpdateEarnedThisMinute();
-			if (self.World.FrameNumber % 250 == 0)
+			if (self.World.WorldTick % 250 == 0)
 				UpdateMapControl();
 		}
 

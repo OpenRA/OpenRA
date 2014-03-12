@@ -61,7 +61,7 @@ namespace OpenRA.Traits
 
 		void Invalidate()
 		{
-			Hash = Sync.hash_player(self.Owner) + self.World.FrameNumber * 3;
+			Hash = Sync.hash_player(self.Owner) + self.World.WorldTick * 3;
 		}
 
 		static IEnumerable<CPos> FindVisibleTiles(World world, CPos position, WRange radius)
