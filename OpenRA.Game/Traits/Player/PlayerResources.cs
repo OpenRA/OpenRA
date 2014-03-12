@@ -162,13 +162,13 @@ namespace OpenRA.Traits
 		
 		public void playCashTickUp(Actor self)
 		{
-			if (Game.Settings.Sound.CashTicks)
+			if (Game.Settings.Sound.CashTickUp)
 				Sound.PlayNotification(self.Owner, "Sounds", "CashTickUp", self.Owner.Country.Race);
 		}
 		
 		public void playCashTickDown(Actor self)
 		{
-			if (Game.Settings.Sound.CashTicks && nextCashTickTime == 0)
+			if (Game.Settings.Sound.CashTickDown && nextCashTickTime == 0)
 			{
 				Sound.PlayNotification(self.Owner, "Sounds", "CashTickDown", self.Owner.Country.Race);
 				nextCashTickTime = 2;

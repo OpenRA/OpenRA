@@ -111,7 +111,8 @@ namespace OpenRA.GameRules
 		public string Engine = "AL";
 		public string Device = null;
 
-		public bool CashTicks = true;
+		public bool CashTickUp = true;
+		public bool CashTickDown = true;
 	}
 
 	public class PlayerSettings
