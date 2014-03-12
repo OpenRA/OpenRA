@@ -88,7 +88,6 @@ PALACEO:
 		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target
 		UnitType: orni.bomber
 		SelectTargetSound:
-		FlareType:
 	CanPowerDown:
 	DisabledOverlay:
 	RequiresPower:

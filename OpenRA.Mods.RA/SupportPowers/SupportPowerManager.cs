@@ -188,23 +188,9 @@ namespace OpenRA.Mods.RA
 			var power = Instances.First(i => !InstanceDisabled(i));
 
 			// Note: order.Subject is the *player* actor
-			power.Activate(power.self, order);
+			power.Activate(power.self, order, Manager);
 			RemainingTime = TotalTime;
 			notifiedCharging = notifiedReady = false;
-
-			if (power.Info.DisplayBeacon)
-				power.self.World.Add(new Beacon(
-					order.Player,
-					order.TargetLocation.CenterPosition,
-					power.Info.BeaconDuration,
-					power.Info.BeaconPalettePrefix));
-
-			if (power.Info.DisplayRadarPing && Manager.RadarPings != null)
-				Manager.RadarPings.Value.Add(
-					() => order.Player.IsAlliedWith(power.self.World.RenderPlayer),
-					order.TargetLocation.CenterPosition,
-					order.Player.Color.RGB,
-					power.Info.BeaconDuration);
 
 			if (Info.OneShot)
 				Disabled = true;

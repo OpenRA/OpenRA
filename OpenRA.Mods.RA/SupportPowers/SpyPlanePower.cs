@@ -25,8 +25,10 @@ namespace OpenRA.Mods.RA
 	{
 		public SpyPlanePower(Actor self, SpyPlanePowerInfo info) : base(self, info) { }
 
-		public override void Activate(Actor self, Order order)
+		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
+			base.Activate(self, order, manager);
+
 			var enterCell = self.World.ChooseRandomEdgeCell();
 			var altitude = Rules.Info["u2"].Traits.Get<PlaneInfo>().CruiseAltitude;
 

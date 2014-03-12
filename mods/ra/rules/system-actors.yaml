@@ -119,7 +119,7 @@ CRATE:
 	BodyOrientation:
 
 CAMERA:
-	Aircraft:
+	Immobile:
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -129,7 +129,7 @@ CAMERA:
 	BodyOrientation:
 
 FLARE:
-	Aircraft:
+	Immobile:
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -152,7 +152,7 @@ powerproxy.parabombs:
 		AllowMultiple: yes
 		UnitType: badr.bomber
 		SelectTargetSound: slcttgt1.aud
-		FlareType: flare
+		FlareActor: flare
 
 powerproxy.sonarpulse:
 	SonarPulsePower:
@@ -165,12 +165,12 @@ powerproxy.sonarpulse:
 		SelectTargetSound: slcttgt1.aud
 
 mpspawn:
-	Waypoint:
+	Immobile:
 	RenderEditorOnly:
 	BodyOrientation:
 
 waypoint:
-	Waypoint:
+	Immobile:
 	RenderEditorOnly:
 	BodyOrientation:
 

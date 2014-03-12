@@ -33,8 +33,10 @@ namespace OpenRA.Mods.RA
 	{
 		public ParatroopersPower(Actor self, ParatroopersPowerInfo info) : base(self, info) { }
 
-		public override void Activate(Actor self, Order order)
+		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
+			base.Activate(self, order, manager);
+
 			var items = (Info as ParatroopersPowerInfo).DropItems;
 			var startPos = self.World.ChooseRandomEdgeCell();
 

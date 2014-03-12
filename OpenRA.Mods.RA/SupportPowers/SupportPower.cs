@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -45,6 +46,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly Actor self;
 		public readonly SupportPowerInfo Info;
+		protected Beacon beacon;
 
 		public SupportPower(Actor self, SupportPowerInfo info)
 		{
@@ -62,7 +64,26 @@ namespace OpenRA.Mods.RA
 			Sound.PlayToPlayer(self.Owner, Info.EndChargeSound);
 		}
 
-		public virtual void Activate(Actor self, Order order) { }
+		public virtual void Activate(Actor self, Order order, SupportPowerManager manager)
+		{
+			if (Info.DisplayBeacon)
+			{
+				beacon = new Beacon(
+					order.Player,
+					order.TargetLocation.CenterPosition,
+					Info.BeaconDuration,
+					Info.BeaconPalettePrefix);
+
+				self.World.Add(beacon);
+			}
+
+			if (Info.DisplayRadarPing && manager.RadarPings != null)
+				manager.RadarPings.Value.Add(
+					() => order.Player.IsAlliedWith(self.World.RenderPlayer),
+					order.TargetLocation.CenterPosition,
+					order.Player.Color.RGB,
+					Info.BeaconDuration);
+		}
 
 		public virtual IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{

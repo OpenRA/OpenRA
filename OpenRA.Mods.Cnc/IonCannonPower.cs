@@ -28,8 +28,10 @@ namespace OpenRA.Mods.Cnc
 			return new SelectGenericPowerTarget(order, manager, "ioncannon", MouseButton.Left);
 		}
 
-		public override void Activate(Actor self, Order order)
+		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
+			base.Activate(self, order, manager);
+
 			self.World.AddFrameEndTask(w =>
 			{
 				Sound.Play(Info.LaunchSound, order.TargetLocation.CenterPosition);
