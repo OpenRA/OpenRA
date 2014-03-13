@@ -591,9 +591,17 @@ function findReplace:createDialog(replace,infiles)
       end)
   end
 
+  -- reset search when re-creating dialog to avoid modifying selected
+  -- fragment after successful search and updated replacement
+  findReplace.foundString = false
+  findReplace.dialog = findDialog
+  findDialog:Show(true)
+
   -- if on OSX then select the current value of the default dropdown
   -- and don't set the default as it doesn't make Enter to work, but
   -- prevents associated hotkey (Cmd-F) from working (wx2.9.5).
+  -- SetFocus has to be done after :Show on OSX as it doesn't put
+  -- the focus on the Find field on some instances of OSX 10.9.2.
   if mac then
     findTextCombo:SetSelection(-1, -1)
     findTextCombo:SetFocus() -- force focus on the Find
@@ -601,11 +609,6 @@ function findReplace:createDialog(replace,infiles)
     findButton:SetDefault()
   end
 
-  -- reset search when re-creating dialog to avoid modifying selected
-  -- fragment after successful search and updated replacement
-  findReplace.foundString = false
-  findReplace.dialog = findDialog
-  findDialog:Show(true)
   return findDialog
 end
 
