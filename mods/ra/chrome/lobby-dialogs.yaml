@@ -179,3 +179,68 @@ Background@LOBBY_OPTIONS_BIN:
 					Width:140
 					Height:25
 					Font:Regular
+
+Background@FORCE_START_DIALOG:
+	X:20
+	Y:67
+	Width:535
+	Height:235
+	Background:dialog3
+	Children:
+		Label@TITLE:
+			X:0
+			Y:40
+			Width:PARENT_RIGHT
+			Height:25
+			Font:Bold
+			Align:Center
+			Text: Start Game?
+		Label@TEXTA:
+			X:0
+			Y:67
+			Width:PARENT_RIGHT
+			Height:25
+			Font:Regular
+			Align:Center
+			Text:One or more players are not yet ready.
+		Label@TEXTB:
+			X:0
+			Y:85
+			Width:PARENT_RIGHT
+			Height:25
+			Font:Regular
+			Align:Center
+			Text:Are you sure that you want to force start the game?
+		Container@KICK_WARNING:
+			Width:PARENT_RIGHT
+			Children:
+				Label@KICK_WARNING_A:
+					X:0
+					Y:106
+					Width:PARENT_RIGHT
+					Height:25
+					Font:Bold
+					Align:Center
+					Text:One or more clients are missing the selected
+				Label@KICK_WARNING_B:
+					X:0
+					Y:123
+					Width:PARENT_RIGHT
+					Height:25
+					Font:Bold
+					Align:Center
+					Text:map, and will be kicked from the server.
+		Button@OK_BUTTON:
+			X:(PARENT_RIGHT - WIDTH)/2 + 75
+			Y:155
+			Width:120
+			Height:25
+			Text:Start
+			Font:Bold
+		Button@CANCEL_BUTTON:
+			X:(PARENT_RIGHT - WIDTH)/2 - 75
+			Y:155
+			Width:120
+			Height:25
+			Text:Cancel
+			Font:Bold

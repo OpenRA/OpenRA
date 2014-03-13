@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly OrderManager orderManager;
 		readonly bool skirmishMode;
 
-		enum PanelType { Players, Options, Kick }
+		enum PanelType { Players, Options, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
 
 		Widget lobby;
@@ -138,7 +138,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			countryNames.Add("random", "Any");
 
 			var gameStarting = false;
-			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting || panel == PanelType.Kick ||
+			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||
+				panel == PanelType.Kick || panel == PanelType.ForceStart ||
 				orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
@@ -261,9 +262,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			optionsBin.IsVisible = () => panel == PanelType.Options;
 
 			var optionsButton = lobby.Get<ButtonWidget>("OPTIONS_BUTTON");
-			optionsButton.IsDisabled = () => panel == PanelType.Kick;
+			optionsButton.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
 			optionsButton.GetText = () => panel == PanelType.Options ? "Players" : "Options";
 			optionsButton.OnClick = () => panel = (panel == PanelType.Options) ? PanelType.Players : PanelType.Options;
+
+			// Force start panel
+			Action startGame = () =>
+			{
+				gameStarting = true;
+				orderManager.IssueOrder(Order.Command("startgame"));
+			};
 
 			var startGameButton = lobby.GetOrNull<ButtonWidget>("START_GAME_BUTTON");
 			if (startGameButton != null)
@@ -272,18 +280,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null);
 				startGameButton.OnClick = () =>
 				{
-					gameStarting = true;
-					orderManager.IssueOrder(Order.Command("startgame"));
+					Func<KeyValuePair<string, Session.Slot>, bool> notReady = sl =>
+					{
+						var cl = orderManager.LobbyInfo.ClientInSlot(sl.Key);
+
+						// Bots and admins don't count
+						return cl != null && !cl.IsAdmin && cl.Bot == null && !cl.IsReady;
+					};
+
+					if (orderManager.LobbyInfo.Slots.Any(notReady))
+						panel = PanelType.ForceStart;
+					else
+						startGame();
 				};
 			}
 
-			var statusCheckbox = lobby.GetOrNull<CheckboxWidget>("STATUS_CHECKBOX");
-			if (statusCheckbox != null)
-			{
-				statusCheckbox.IsHighlighted = () => !statusCheckbox.IsChecked() &&
-					orderManager.LobbyInfo.FirstEmptySlot() == null && 
-					orderManager.LocalFrameNumber / 25 % 2 == 0;
-			}
+			var forceStartBin = Ui.LoadWidget("FORCE_START_DIALOG", lobby, new WidgetArgs());
+			forceStartBin.IsVisible = () => panel == PanelType.ForceStart;
+			forceStartBin.Get("KICK_WARNING").IsVisible = () => orderManager.LobbyInfo.Clients.Any(c => c.IsInvalid);
+			forceStartBin.Get<ButtonWidget>("OK_BUTTON").OnClick = startGame;
+			forceStartBin.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => panel = PanelType.Players;
 
 			// Options panel
 			var allowCheats = optionsBin.GetOrNull<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
