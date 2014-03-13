@@ -1065,7 +1065,7 @@ AFLD:
 		Icon: spyplane
 		ChargeTime: 180
 		Description: Spy Plane
-		LongDesc: Reveals an area of the map.
+		LongDesc: Reveals an area of the map\nand cloaked enemy units.
 		SelectTargetSound: slcttgt1.aud
 		EndChargeSound: spypln1.aud
 	ParatroopersPower:

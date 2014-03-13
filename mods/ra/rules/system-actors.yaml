@@ -129,6 +129,8 @@ CAMERA:
 	ProximityCaptor:
 		Types: Camera
 	BodyOrientation:
+	DetectCloaked:
+		Range: 10
 
 FLARE:
 	Immobile:
