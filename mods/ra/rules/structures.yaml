@@ -603,6 +603,8 @@ HBOX:
 		OnEnter: HBOX.sniper
 		OnExit: HBOX
 		SkipMakeAnims: true
+	DetectCloaked:
+		Range: 6
 
 HBOX.E1:
 	Inherits: HBOX
@@ -614,7 +616,7 @@ HBOX.E1:
 		Hotkey: l
 	Tooltip:
 		Name: Camo Pillbox (Guns)
-		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Description: Hidden defensive structure.\nCan detect cloaked units.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	RenderBuilding:
 		Image: HBOX
 	RenderRangeCircle:
