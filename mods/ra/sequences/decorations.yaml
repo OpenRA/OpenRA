@@ -665,3 +665,195 @@ snowhut:
 		Start: 3
 		Length: 1
 		Tick: 120
+
+carcassb1:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassb1s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassb2:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassb2s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassc1:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassc1s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassc2:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassc2s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassc3:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassc3s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassc4:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassc4s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcasse1:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcasse1s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcasse2:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcasse2s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcasse3:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcasse3s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcasse4:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcasse4s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassend1:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassend2:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassend3:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassend4:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassh1:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassh1s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassh2:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassh2s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassl1:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassl1s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassl2:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+carcassl2s:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1

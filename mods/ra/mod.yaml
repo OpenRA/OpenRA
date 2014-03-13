@@ -8,7 +8,9 @@ Folders:
 	.
 	./mods/ra
 	./mods/ra/bits
+	./mods/ra/bits/cobble
 	./mods/ra/bits/desert
+	./mods/ra/bits/temperat
 	./mods/ra/uibits
 	~^/Content/ra
 

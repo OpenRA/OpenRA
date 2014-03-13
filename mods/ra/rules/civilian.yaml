@@ -655,3 +655,323 @@ SNOWHUT:
 	RenderBuilding:
 		Scale: 0.7
 
+# Urban Terrain Expansion:
+CARCASSB1:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSB1S:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSB2:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSB2S:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSC1:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSC1S:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSC2:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSC2S:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSC3:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSC3S:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSC4:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSC4S:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSE1:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSE1S:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSE2:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSE2S:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSE3:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSE3S:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSE4:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSE4S:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSEND1:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSEND2:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSEND3:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSEND4:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSH1:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSH1s:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSH2:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSH2s:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSL1:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x _
+		Dimensions: 1,3
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSL1s:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x _
+		Dimensions: 1,3
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSL2:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x _
+		Dimensions: 1,3
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
+
+CARCASSL2s:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: _ x _
+		Dimensions: 1,3
+	Health:
+		HP: 200
+	Armor:
+		Type: Wood
