@@ -52,6 +52,20 @@ namespace OpenRA
 			wc.DownloadFileAsync(new Uri(url), path);
 		}
 
+		public Download(string url, Action<DownloadProgressChangedEventArgs> onProgress, Action<DownloadDataCompletedEventArgs, bool> onComplete)
+		{
+			wc = new WebClient();
+			wc.Proxy = null;
+
+			wc.DownloadProgressChanged += (_, a) => onProgress(a);
+			wc.DownloadDataCompleted += (_, a) => onComplete(a, cancelled);
+
+			Game.OnQuit += Cancel;
+			wc.DownloadDataCompleted += (_, a) => { Game.OnQuit -= Cancel; };
+
+			wc.DownloadDataAsync(new Uri(url));
+		}
+
 		public void Cancel()
 		{
 			Game.OnQuit -= Cancel;
