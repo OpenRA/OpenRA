@@ -383,7 +383,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			status.IsVisible = () => true;
 			status.IsDisabled = () => c.Bot != null || map.Status != MapStatus.Available;
 
-			status.OnClick = () => orderManager.IssueOrder(Order.Command("ready"));
+			var state = orderManager.LocalClient.IsReady ? Session.ClientState.NotReady : Session.ClientState.Ready;
+			status.OnClick = () => orderManager.IssueOrder(Order.Command("state {0}".F(state)));
 		}
 
 		public static void SetupReadyWidget(Widget parent, Session.Slot s, Session.Client c)

@@ -81,7 +81,7 @@ namespace OpenRA.Network
 			get { return Clients.Count(c => c.Bot == null) == 1; }
 		}
 
-		public enum ClientState { NotReady, Ready, Disconnected = 1000 }
+		public enum ClientState { NotReady, Invalid, Ready, Disconnected = 1000 }
 
 		public class Client
 		{
@@ -93,13 +93,14 @@ namespace OpenRA.Network
 			public int SpawnPoint;
 			public string Name;
 			public string IpAddress;
-			public ClientState State;
+			public ClientState State = ClientState.Invalid;
 			public int Team;
 			public string Slot;	// slot ID, or null for observer
 			public string Bot; // Bot type, null for real clients
 			public int BotControllerClientIndex; // who added the bot to the slot
 			public bool IsAdmin;
 			public bool IsReady { get { return State == ClientState.Ready; } }
+			public bool IsInvalid { get { return State == ClientState.Invalid; } }
 			public bool IsObserver { get { return Slot == null; } }
 			public int Latency = -1;
 			public int LatencyJitter = -1;

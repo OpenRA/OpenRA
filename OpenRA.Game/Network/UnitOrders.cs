@@ -130,7 +130,7 @@ namespace OpenRA.Network
 							Country = "random",
 							SpawnPoint = 0,
 							Team = 0,
-							State = Session.ClientState.NotReady
+							State = Session.ClientState.Invalid
 						};
 
 						var response = new HandshakeResponse()

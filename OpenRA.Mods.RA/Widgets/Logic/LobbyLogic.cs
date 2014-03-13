@@ -530,6 +530,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			if (Map.Status == MapStatus.Available)
 			{
+				// Tell the server that we have the map
+				orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
+
 				// Restore default starting cash if the last map set it to something invalid
 				var pri = Rules.Info["player"].Traits.Get<PlayerResourcesInfo>();
 				if (!Map.Map.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
