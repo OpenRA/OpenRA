@@ -15,6 +15,7 @@ MINP:
 		CloakSound:
 		UncloakSound:
 		Palette:
+		CloakTypes: Mine
 	Tooltip:
 		Name: Mine
 	ProximityCaptor:
@@ -40,6 +41,7 @@ MINV:
 		CloakSound:
 		UncloakSound:
 		Palette:
+		CloakTypes: Mine
 	Tooltip:
 		Name: Mine
 	ProximityCaptor:

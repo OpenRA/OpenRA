@@ -398,7 +398,7 @@ MNLY.AP:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer
-		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
+		Description: Lays mines to destroy unwary enemy units.\nCan detect mines.\n  Unarmed
 	Health:
 		HP: 100
 	Armor:
@@ -416,6 +416,7 @@ MNLY.AP:
 		Ammo: 3
 	DetectCloaked:
 		Range: 5
+		CloakTypes: Mine
 	RenderDetectionCircle:
 
 MNLY.AT:
@@ -430,7 +431,7 @@ MNLY.AT:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer
-		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
+		Description: Lays mines to destroy unwary enemy units.\nCan detect mines.\n  Unarmed
 	Health:
 		HP: 100
 	Armor:
@@ -448,6 +449,7 @@ MNLY.AT:
 		Ammo: 3
 	DetectCloaked:
 		Range: 5
+		CloakTypes: Mine
 	RenderDetectionCircle:
 
 TRUK:
