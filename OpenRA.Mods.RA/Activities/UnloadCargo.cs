@@ -20,12 +20,14 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		readonly Actor self;
 		readonly Cargo cargo;
+		readonly Cloak cloak;
 		readonly bool unloadAll;
 
 		public UnloadCargo(Actor self, bool unloadAll)
 		{
 			this.self = self;
 			cargo = self.Trait<Cargo>();
+			cloak = self.TraitOrDefault<Cloak>();
 			this.unloadAll = unloadAll;
 		}
 
@@ -51,6 +53,9 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if (IsCanceled || cargo.IsEmpty(self))
 				return NextActivity;
+
+			if (cloak != null && cloak.Info.UncloakOnUnload)
+				cloak.Uncloak();
 
 			var actor = cargo.Peek(self);
 

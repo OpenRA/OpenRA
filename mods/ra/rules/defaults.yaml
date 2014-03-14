@@ -165,8 +165,6 @@
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground, Water
-	DetectCloaked:
-		Range: 3
 	HiddenUnderFog:
 	AttackMove:
 	GainsExperience:

@@ -10,7 +10,7 @@ DOG:
 		Cost: 200
 	Tooltip:
 		Name: Attack Dog
-		Description: Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: Anti-infantry unit.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
 		Voice: DogVoice
 		Bounds: 12,17,-1,-4
@@ -26,6 +26,8 @@ DOG:
 	RenderInfantry:
 		IdleAnimations: idle1,idle2
 	IgnoresDisguise:
+	DetectCloaked:
+		Range: 5
 
 E1:
 	Inherits: ^Infantry
@@ -444,7 +446,7 @@ SNIPER:
 		Cost: 700
 	Tooltip:
 		Name: Sniper
-		Description: Elite sniper infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
@@ -462,7 +464,7 @@ SNIPER:
 	RevealsShroud:
 		Range: 6c0
 	AutoTarget:
-		InitialStance: HoldFire
+		InitialStance: ReturnFire
 	Armament:
 		Weapon: Sniper
 	AttackFrontal:
@@ -481,6 +483,8 @@ SNIPER:
 		CaptureTypes: CivilianBuilding
 		Sabotage: no
 		SabotageHPRemoval: 0
+	DetectCloaked:
+		Range: 6
 
 Zombie:
 	Inherits: ^Infantry

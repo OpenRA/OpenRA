@@ -373,7 +373,7 @@ DOME:
 		Cost: 1800
 	Tooltip:
 		Name: Radar Dome
-		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\n  Requires power to operate.
 	Building:
 		Power: -40
 		Footprint: xx xx
@@ -393,6 +393,9 @@ DOME:
 	Infiltratable:
 		Type: Exploration
 	InfiltrateForExploration:
+	DetectCloaked:
+		Range: 10
+	RenderDetectionCircle:
 
 PBOX:
 	Inherits: ^Building
@@ -600,6 +603,8 @@ HBOX:
 		OnEnter: HBOX.sniper
 		OnExit: HBOX
 		SkipMakeAnims: true
+	DetectCloaked:
+		Range: 6
 
 HBOX.E1:
 	Inherits: HBOX
@@ -611,7 +616,7 @@ HBOX.E1:
 		Hotkey: l
 	Tooltip:
 		Name: Camo Pillbox (Guns)
-		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Description: Hidden defensive structure.\nCan detect cloaked units.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	RenderBuilding:
 		Image: HBOX
 	RenderRangeCircle:
@@ -1062,7 +1067,7 @@ AFLD:
 		Icon: spyplane
 		ChargeTime: 180
 		Description: Spy Plane
-		LongDesc: Reveals an area of the map.
+		LongDesc: Reveals an area of the map\nand cloaked enemy units.
 		SelectTargetSound: slcttgt1.aud
 		EndChargeSound: spypln1.aud
 	ParatroopersPower:

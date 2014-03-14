@@ -22,11 +22,14 @@ namespace OpenRA.Mods.RA
 		public readonly int InitialDelay = 10; // Ticks
 		public readonly int CloakDelay = 30; // Ticks
 		public readonly bool UncloakOnMove = false;
+		public readonly bool UncloakOnUnload = false;
 		public readonly bool RequiresCrate = false;
 
 		public readonly string CloakSound = null;
 		public readonly string UncloakSound = null;
 		public readonly string Palette = "cloak";
+
+		public readonly string[] CloakTypes = { "Cloak" };
 
 		public object Create(ActorInitializer init) { return new Cloak(init.self, this); }
 	}
@@ -38,24 +41,24 @@ namespace OpenRA.Mods.RA
 		[Sync] bool crateDisabled;
 
 		Actor self;
-		CloakInfo info;
+		public readonly CloakInfo Info;
 		CPos? lastPos;
 
 		public Cloak(Actor self, CloakInfo info)
 		{
-			this.info = info;
 			this.self = self;
+			Info = info;
 
 			remainingTime = info.InitialDelay;
 			crateDisabled = info.RequiresCrate;
 		}
 
-		public void Uncloak() { Uncloak(info.CloakDelay); }
+		public void Uncloak() { Uncloak(Info.CloakDelay); }
 
 		public void Uncloak(int time)
 		{
 			if (Cloaked)
-				Sound.Play(info.UncloakSound, self.CenterPosition);
+				Sound.Play(Info.UncloakSound, self.CenterPosition);
 
 			remainingTime = Math.Max(remainingTime, time);
 		}
@@ -77,10 +80,10 @@ namespace OpenRA.Mods.RA
 				return r;
 
 			if (Cloaked && IsVisible(self, self.World.RenderPlayer))
-				if (string.IsNullOrEmpty(info.Palette))
+				if (string.IsNullOrEmpty(Info.Palette))
 					return r;
 				else
-					return r.Select(a => a.WithPalette(wr.Palette(info.Palette)));
+					return r.Select(a => a.WithPalette(wr.Palette(Info.Palette)));
 			else
 				return SpriteRenderable.None;
 		}
@@ -88,15 +91,12 @@ namespace OpenRA.Mods.RA
 		public void Tick(Actor self)
 		{
 			if (remainingTime > 0 && !crateDisabled && !damageDisabled && --remainingTime <= 0)
-			{
-				self.Generation++;
-				Sound.Play(info.CloakSound, self.CenterPosition);
-			}
+				Sound.Play(Info.CloakSound, self.CenterPosition);
 
 			if (self.IsDisabled())
 				Uncloak();
 
-			if (info.UncloakOnMove && (lastPos == null || lastPos.Value != self.Location))
+			if (Info.UncloakOnMove && (lastPos == null || lastPos.Value != self.Location))
 			{
 				Uncloak();
 				lastPos = self.Location;
@@ -108,9 +108,14 @@ namespace OpenRA.Mods.RA
 			if (!Cloaked || self.Owner.IsAlliedWith(viewer))
 				return true;
 
-			var centerPosition = self.CenterPosition;
-			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => a.Actor.Owner.IsAlliedWith(viewer) &&
-				(centerPosition - a.Actor.CenterPosition).Length < WRange.FromCells(a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range).Range);
+			return self.World.ActorsWithTrait<DetectCloaked>().Any(a =>
+			{
+				var dc = a.Actor.Info.Traits.Get<DetectCloakedInfo>();
+
+				return a.Actor.Owner.IsAlliedWith(viewer)
+					&& Info.CloakTypes.Intersect(dc.CloakTypes).Any()
+					&& (self.CenterPosition - a.Actor.CenterPosition).Length <= WRange.FromCells(dc.Range).Range;
+			});
 		}
 
 		public Color RadarColorOverride(Actor self)
@@ -121,7 +126,7 @@ namespace OpenRA.Mods.RA
 			return c;
 		}
 
-		public bool AcceptsCloakCrate { get { return info.RequiresCrate && crateDisabled; } }
+		public bool AcceptsCloakCrate { get { return Info.RequiresCrate && crateDisabled; } }
 
 		public void ReceivedCloakCrate(Actor self)
 		{

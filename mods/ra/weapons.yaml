@@ -1241,7 +1241,7 @@ Sniper:
 			Concrete: 0%
 		InfDeath: 2
 
-ChronoTusk:
+APTusk:
 	ROF: 60
 	Range: 6c0
 	Report: MISSILE6.AUD

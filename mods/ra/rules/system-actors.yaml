@@ -15,6 +15,7 @@ MINP:
 		CloakSound:
 		UncloakSound:
 		Palette:
+		CloakTypes: Mine
 	Tooltip:
 		Name: Mine
 	ProximityCaptor:
@@ -40,6 +41,7 @@ MINV:
 		CloakSound:
 		UncloakSound:
 		Palette:
+		CloakTypes: Mine
 	Tooltip:
 		Name: Mine
 	ProximityCaptor:
@@ -127,6 +129,8 @@ CAMERA:
 	ProximityCaptor:
 		Types: Camera
 	BodyOrientation:
+	DetectCloaked:
+		Range: 10
 
 FLARE:
 	Immobile:

@@ -10,7 +10,7 @@ SS:
 		Cost: 950
 	Tooltip:
 		Name: Submarine
-		Description: Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
+		Description: Submerged anti-ship unit armed with\ntorpedoes.\nCan detect other submarines.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
 		HP: 250
 	Armor:
@@ -26,6 +26,7 @@ SS:
 		CloakedTargetTypes: Underwater
 	RenderUnit:
 	Cloak:
+		CloakTypes: Underwater
 		InitialDelay: 0
 		CloakDelay: 50
 		CloakSound: subshow1.aud
@@ -40,9 +41,12 @@ SS:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
-	-DetectCloaked:
 	AutoTarget:
-		InitialStance: HoldFire
+		InitialStance: ReturnFire
+	DetectCloaked:
+		CloakTypes: Underwater
+		Range: 4
+	RenderDetectionCircle:
 
 MSUB:
 	Inherits: ^Ship
@@ -56,7 +60,7 @@ MSUB:
 		Cost: 2400
 	Tooltip:
 		Name: Missile Submarine
-		Description: Submerged anti-ground unit armed with \nlong-range ballistic missiles.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
+		Description: Submerged anti-ground unit armed with\nlong-range ballistic missiles.\nCan detect other submarines.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
 		HP: 400
 	Armor:
@@ -72,6 +76,7 @@ MSUB:
 		TargetTypes: Ground, Water
 		CloakedTargetTypes: Underwater
 	Cloak:
+		CloakTypes: Underwater
 		InitialDelay: 0
 		CloakDelay: 100
 		CloakSound: subshow1.aud
@@ -86,9 +91,12 @@ MSUB:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
-	-DetectCloaked:
 	AutoTarget:
-		InitialStance: HoldFire
+		InitialStance: ReturnFire
+	DetectCloaked:
+		CloakTypes: Underwater
+		Range: 4
+	RenderDetectionCircle:
 
 DD:
 	Inherits: ^Ship
@@ -102,7 +110,7 @@ DD:
 		Cost: 1000
 	Tooltip:
 		Name: Destroyer
-		Description: Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
+		Description: Fast multi-role ship.\nCan detect submarines.\n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
 	Health:
 		HP: 400
 	Armor:
@@ -133,6 +141,7 @@ DD:
 	IronCurtainable:
 	RepairableNear:
 	DetectCloaked:
+		CloakTypes: Underwater
 		Range: 4
 	RenderDetectionCircle:
 
@@ -148,7 +157,7 @@ CA:
 		Cost: 2400
 	Tooltip:
 		Name: Cruiser
-		Description: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
+		Description: Very slow long-range ship.\n  Strong vs Buildings\n  Weak vs Ships, Submarines
 	Health:
 		HP: 800
 	Armor:
@@ -237,7 +246,7 @@ PT:
 		Cost: 500
 	Tooltip:
 		Name: Gunboat
-		Description: Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft
+		Description: Light scout & support ship.\nCan detect submarines.\n  Strong vs Ships, Submarines\n  Weak vs Aircraft
 	Health:
 		HP: 200
 	Armor:
@@ -266,4 +275,8 @@ PT:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
+	DetectCloaked:
+		CloakTypes: Underwater
+		Range: 4
+	RenderDetectionCircle:
 
