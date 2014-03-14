@@ -45,6 +45,14 @@ FACT:
 	BaseProvider:
 		Cooldown: 75
 		Range: 14
+	LeavesHusk:
+		HuskActor: FACTDEAD
+
+FACTDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
 
 NUKE:
 	Inherits: ^Building
@@ -68,6 +76,14 @@ NUKE:
 	RevealsShroud:
 		Range: 4c0
 	Bib:
+	LeavesHusk:
+		HuskActor: NUKEDEAD
+
+NUKEDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: x_ xx
+		Dimensions: 2,2
 
 NUK2:
 	Inherits: ^Building
@@ -91,6 +107,14 @@ NUK2:
 	RevealsShroud:
 		Range: 4c0
 	Bib:
+	LeavesHusk:
+		HuskActor: NUK2DEAD
+
+NUK2DEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
 
 PROC:
 	Inherits: ^Building
@@ -129,6 +153,14 @@ PROC:
 		SpawnOffset: 1,2
 		Facing: 64
 	WithResources:
+	LeavesHusk:
+		HuskActor: PROCDEAD
+
+PROCDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: _x_ xxx ===
+		Dimensions: 3,3
 
 SILO:
 	Inherits: ^Building
@@ -160,6 +192,14 @@ SILO:
 		Bounds: 49,30
 	-RenderBuilding:
 	-EmitInfantryOnSell:
+	LeavesHusk:
+		HuskActor: SILODEAD
+
+SILODEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
 
 PYLE:
 	Inherits: ^Building
@@ -198,6 +238,14 @@ PYLE:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	ProductionBar:
+	LeavesHusk:
+		HuskActor: PYLEDEAD
+
+PYLEDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
 
 HAND:
 	Inherits: ^Building
@@ -233,6 +281,14 @@ HAND:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	ProductionBar:
+	LeavesHusk:
+		HuskActor: HANDDEAD
+
+HANDDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: __ xx xx
+		Dimensions: 2,3
 
 AFLD:
 	Inherits: ^Building
@@ -270,6 +326,14 @@ AFLD:
 		LowPowerSlowdown: 3
 		ReadyAudio:
 	ProductionBar:
+	LeavesHusk:
+		HuskActor: AFLDDEAD
+
+AFLDDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4,2
 
 WEAP:
 	Inherits: ^Building
@@ -308,6 +372,14 @@ WEAP:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	ProductionBar:
+	LeavesHusk:
+		HuskActor: WEAPDEAD
+
+WEAPDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: ___ xxx ===
+		Dimensions: 3,3
 
 HPAD:
 	Inherits: ^Building
@@ -341,6 +413,14 @@ HPAD:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	ProductionBar:
+	LeavesHusk:
+		HuskActor: HPADDEAD
+
+HPADDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
 
 HQ:
 	Inherits: ^Building
@@ -387,6 +467,14 @@ HQ:
 		DisplayRadarPing: True
 		CameraActor: camera
 	SupportPowerChargeBar:
+	LeavesHusk:
+		HuskActor: HQDEAD
+
+HQDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: x_ xx
+		Dimensions: 2,2
 
 FIX:
 	Inherits: ^Building
@@ -410,6 +498,14 @@ FIX:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
+	LeavesHusk:
+		HuskActor: FIXDEAD
+
+FIXDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: _x_ xxx _x_
+		Dimensions: 3,3
 
 EYE:
 	Inherits: ^Building
@@ -452,6 +548,14 @@ EYE:
 		InsufficientPowerSound: nopower1.aud
 		DisplayRadarPing: True
 	SupportPowerChargeBar:
+	LeavesHusk:
+		HuskActor: EYEDEAD
+
+EYEDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: x_ xx
+		Dimensions: 2,2
 
 TMPL:
 	Inherits: ^Building
@@ -493,6 +597,14 @@ TMPL:
 		DisplayBeacon: True
 		DisplayRadarPing: True
 	SupportPowerChargeBar:
+	LeavesHusk:
+		HuskActor: TMPLDEAD
+
+TMPLDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: ___ xxx xxx
+		Dimensions: 3,3
 
 GUN:
 	Inherits: ^Building
@@ -526,7 +638,6 @@ GUN:
 	WithMuzzleFlash:
 	AutoTarget:
 	-RenderBuilding:
-	-DeadBuildingState:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	DetectCloaked:
@@ -569,6 +680,14 @@ SAM:
 	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:
+	LeavesHusk:
+		HuskActor: SAMDEAD
+
+SAMDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
 
 OBLI:
 	RequiresPower:
@@ -612,6 +731,15 @@ OBLI:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
+	LeavesHusk:
+		HuskActor: OBLIDEAD
+
+OBLIDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+
 
 GTWR:
 	Inherits: ^Building
@@ -648,6 +776,12 @@ GTWR:
 	WithMuzzleFlash:
 	Turreted:
 		ROT: 255
+	LeavesHusk:
+		HuskActor: GTWRDEAD
+
+GTWRDEAD:
+	Inherits: ^DeadBuilding
+	Building:
 
 ATWR:
 	Inherits: ^Building
@@ -690,6 +824,14 @@ ATWR:
 	DetectCloaked:
 		Range: 6
 	RenderRangeCircle:
+	LeavesHusk:
+		HuskActor: ATWRDEAD
+
+ATWRDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
 
 SBAG:
 	Inherits: ^Wall

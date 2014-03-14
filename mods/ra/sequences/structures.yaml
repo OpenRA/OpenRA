@@ -17,24 +17,28 @@ hosp:
 	damaged-idle:
 		Start: 4
 		Length: 4
-	dead:
-		Start: 8
 	make: hospmake
 		Start: 0
 		Length: *
 	icon: hospicon
 		Start: 0
 
+hospdead:
+	idle: hosp
+		Start: 8
+
 bio:
 	idle:
 		Start: 0
 	damaged-idle:
 		Start: 1
-	dead:
-		Start: 2
 	make: biomake
 		Start: 0
 		Length: *
+
+biodead:
+	idle: bio
+		Start: 2
 
 oilb:
 	idle:
@@ -61,14 +65,16 @@ fact:
 	damaged-build:
 		Start: 27
 		Length: 25
-	dead: factdead
-		Start: 0
 	bib: bib2
 		Start: 0
 		Length: *
 	icon: facticon
 		Start: 0
 	fake-icon: facficon
+		Start: 0
+
+factdead:
+	idle:
 		Start: 0
 
 proc:
@@ -79,12 +85,14 @@ proc:
 	make: procmake
 		Start: 0
 		Length: *
-	dead: procdead
-		Start: 0
 	bib: bib2
 		Start: 0
 		Length: *
 	icon: procicon
+		Start: 0
+
+procdead:
+	idle:
 		Start: 0
 
 silo:
@@ -108,12 +116,14 @@ powr:
 	make: powrmake
 		Start: 0
 		Length: *
-	dead: powrdead
-		Start: 0
 	bib: bib3
 		Start: 0
 		Length: *
 	icon: powricon
+		Start: 0
+
+powrdead:
+	idle:
 		Start: 0
 
 apwr:
@@ -124,12 +134,14 @@ apwr:
 	make: apwrmake
 		Start: 0
 		Length: *
-	dead: apwrdead
-		Start: 0
 	bib: bib2
 		Start: 0
 		Length: *
 	icon: apwricon
+		Start: 0
+
+apwrdead:
+	idle:
 		Start: 0
 
 barr:
@@ -543,14 +555,16 @@ miss:
 		Start: 0
 	damaged-idle:
 		Start: 1
-	dead:
-		Start: 2
 	make: missmake
 		Start: 0
 		Length: *
 	bib: bib2
 		Start: 0
 		Length: *
+
+missdead:
+	idle: miss
+		Start: 2
 
 brik:
 	idle:

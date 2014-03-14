@@ -919,9 +919,16 @@ FACT:
 		Offset: 1,1
 		Facing: 96
 	ProductionBar:
-	DeadBuildingState:
 	BaseProvider:
 		Range: 16
+	LeavesHusk:
+		HuskActor: FACTDEAD
+
+FACTDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
 
 PROC:
 	Inherits: ^Building
@@ -966,7 +973,14 @@ PROC:
 		Percentage: 50
 		Minimum: 500
 		SoundToVictim: credit1.aud
-	DeadBuildingState:
+	LeavesHusk:
+		HuskActor: PROCDEAD
+
+PROCDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: _x_ xxx x==
+		Dimensions: 3,3
 
 SILO:
 	Inherits: ^Building
@@ -1108,7 +1122,14 @@ POWR:
 		Range: 4c0
 	Bib:
 	IronCurtainable:
-	DeadBuildingState:
+	LeavesHusk:
+		HuskActor: POWRDEAD
+
+POWRDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
 
 APWR:
 	Inherits: ^Building
@@ -1137,7 +1158,14 @@ APWR:
 		Range: 4c0
 	Bib:
 	IronCurtainable:
-	DeadBuildingState:
+	LeavesHusk:
+		HuskActor: APWRDEAD
+
+APWRDEAD:
+	Inherits: ^DeadBuilding
+	Building:
+		Footprint: ___ xxx xxx
+		Dimensions: 3,3
 
 STEK:
 	Inherits: ^Building
