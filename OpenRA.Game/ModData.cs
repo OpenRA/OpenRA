@@ -76,8 +76,6 @@ namespace OpenRA
 			SpriteLoader = new SpriteLoader(new string[0], SheetBuilder);
 			VoxelLoader = new VoxelLoader();
 			CursorProvider.Initialize(Manifest.Cursors);
-
-			AvailableMaps = FindMaps();
 		}
 
 		public IEnumerable<string> Languages { get; private set; }
@@ -119,6 +117,11 @@ namespace OpenRA
 			}
 
 			FieldLoader.Translations = translations;
+		}
+
+		public void LoadMaps()
+		{
+			AvailableMaps = FindMaps();
 		}
 
 		public Map PrepareMap(string uid)

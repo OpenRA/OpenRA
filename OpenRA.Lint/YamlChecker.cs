@@ -52,27 +52,46 @@ namespace OpenRA.Lint
 				AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 				Game.modData = new ModData(mod);
 
-				var testMap = string.IsNullOrEmpty(map) ? new Map() : new Map(map);
-				if (verbose && !string.IsNullOrEmpty(map))
-					Console.WriteLine("Map: {0}".F(testMap.Title));
-				Rules.LoadRules(Game.modData.Manifest, testMap);
-
-				foreach (var customPassType in Game.modData.ObjectCreator
-					.GetTypesImplementing<ILintPass>())
+				var maps = new Map[] { new Map() };
+				if (!string.IsNullOrEmpty(map))
+					maps = new Map[] { new Map(map) };
+				else
 				{
-					try
-					{
-						var customPass = (ILintPass)Game.modData.ObjectCreator
-							.CreateBasic(customPassType);
+					Game.modData.LoadMaps();
+					maps = Game.modData.AvailableMaps.Values.ToArray();
+				}
 
+				foreach (var testMap in maps)
+				{
+					if (testMap.Rules.Count < 1)
+					{
 						if (verbose)
-							Console.WriteLine("Pass: {0}".F(customPassType.ToString()));
+							Console.WriteLine("No custom rules detected. Omitting Map: {0}".F(testMap.Title));
 
-						customPass.Run(EmitError, EmitWarning, testMap);
+						continue;
 					}
-					catch (Exception e)
+
+					if (verbose)
+						Console.WriteLine("Map: {0}".F(testMap.Title));
+					Rules.LoadRules(Game.modData.Manifest, testMap);
+
+					foreach (var customPassType in Game.modData.ObjectCreator
+						.GetTypesImplementing<ILintPass>())
 					{
-						EmitError("Failed with exception: {0}".F(e));
+						try
+						{
+							var customPass = (ILintPass)Game.modData.ObjectCreator
+								.CreateBasic(customPassType);
+	
+							if (verbose)
+								Console.WriteLine("Pass: {0}".F(customPassType.ToString()));
+	
+							customPass.Run(EmitError, EmitWarning, testMap);
+						}
+						catch (Exception e)
+						{
+							EmitError("Failed with exception: {0}".F(e));
+						}
 					}
 				}
 

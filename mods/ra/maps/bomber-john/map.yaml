@@ -903,12 +903,9 @@ Rules:
 			Ticks: 1
 			HealIfBelow: 101%
 			DamageCooldown: 0
-		Armament:
-			Weapon: CrateNuke
-			LocalOffset: 0,0,171
-		AttackFrontal:
 		Explodes:
-		DemoTruck:
+			Weapon: CrateNuke
+			EmptyWeapon: CrateNuke
 		BodyOrientation:
 	T17:
 		Health:
