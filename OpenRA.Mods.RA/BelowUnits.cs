@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			return r.Select(a => a.WithZOffset(offset));
+			return r.Select(a => a.WithZOffset(a.ZOffset + offset));
 		}
 	}
 }
