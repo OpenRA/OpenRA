@@ -30,6 +30,8 @@ namespace OpenRA
 		public readonly string InternalName;
 		public readonly CountryInfo Country;
 		public readonly bool NonCombatant = false;
+		public readonly bool Spectating = false;
+		public readonly bool Playable = true;
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerReference;
 		public bool IsBot;
@@ -70,6 +72,8 @@ namespace OpenRA
 				Color = pr.Color;
 				PlayerName = pr.Name;
 				NonCombatant = pr.NonCombatant;
+				Playable = pr.Playable;
+				Spectating = pr.Spectating;
 				botType = pr.Bot;
 				Country = ChooseCountry(world, pr.Race);
 			}

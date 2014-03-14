@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Traits;
 
@@ -43,6 +44,15 @@ namespace OpenRA.Mods.RA
 					w.SetLocalPlayer(player.InternalName);
 			}
 
+			// create a player that is allied with everyone for shared observer shroud
+			w.AddPlayer(new Player(w, null, null, new PlayerReference
+			{
+				Name = "Everyone",
+				NonCombatant = true,
+				Spectating = true,
+				Allies = w.Players.Where(p => !p.NonCombatant && p.Playable).Select(p => p.InternalName).ToArray()
+			}));
+
 			foreach (var p in w.Players)
 				foreach (var q in w.Players)
 					if (!p.Stances.ContainsKey(q))
@@ -51,7 +61,11 @@ namespace OpenRA.Mods.RA
 
 		static Stance ChooseInitialStance(Player p, Player q)
 		{
-			if (p == q) return Stance.Ally;
+			if (p == q)
+				return Stance.Ally;
+
+			if (q.Spectating && !p.NonCombatant && p.Playable)
+				return Stance.Ally;
 
 			// Stances set via PlayerReference
 			if (p.PlayerReference.Allies.Contains(q.InternalName))

@@ -17,6 +17,7 @@ namespace OpenRA.FileFormats
 		public bool OwnsWorld = false;
 		public bool NonCombatant = false;
 		public bool Playable = false;
+		public bool Spectating = false;
 		public string Bot = null;
 		public string StartingUnitsClass = null;
 		public bool AllowBots = true;
