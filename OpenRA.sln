@@ -63,6 +63,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts",
 		mods\cnc\maps\nod01\nod01.lua = mods\cnc\maps\nod01\nod01.lua
 		mods\cnc\maps\nod03a\nod03a.lua = mods\cnc\maps\nod03a\nod03a.lua
 		mods\cnc\maps\nod03b\nod03b.lua = mods\cnc\maps\nod03b\nod03b.lua
+		mods\cnc\maps\gdi03\gdi03.lua = mods\cnc\maps\gdi03\gdi03.lua
 	EndProjectSection
 EndProject
 Global
