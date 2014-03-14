@@ -66,9 +66,14 @@ namespace OpenRA
 			}
 		}
 
+		public bool IsReplay
+		{
+			get { return orderManager.Connection is ReplayConnection; }
+		}
+
 		public void SetLocalPlayer(string pr)
 		{
-			if (orderManager.Connection is ReplayConnection)
+			if (IsReplay)
 				return;
 
 			LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);

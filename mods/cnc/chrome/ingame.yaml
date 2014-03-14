@@ -56,6 +56,7 @@ Container@INGAME_ROOT:
 			TooltipContainer:TOOLTIP_CONTAINER
 		Container@PLAYER_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
+
 Container@OBSERVER_WIDGETS:
 	Children:
 		Button@OPTIONS_BUTTON:
@@ -85,6 +86,71 @@ Container@OBSERVER_WIDGETS:
 					Y:1
 					Width:PARENT_RIGHT-2
 					Height:PARENT_BOTTOM-2
+		Background@REPLAY_PLAYER:
+			Logic:ReplayControlBarLogic
+			X:WINDOW_RIGHT-173
+			Y:195
+			Width:168
+			Height:46
+			Background:panel-black
+			Visible:false
+			Children:
+				Button@BUTTON_PAUSE:
+					X:14
+					Y:10
+					Width:26
+					Height:26
+					IgnoreChildMouseOver:true
+					Children:
+						Image@IMAGE_PAUSE:
+							X:5
+							Y:5
+							Width:16
+							Height:16
+							ImageCollection:music
+							ImageName:pause
+				Button@BUTTON_SLOW:
+					X:14 + 38
+					Y:10
+					Width:26
+					Height:26
+					IgnoreChildMouseOver:true
+					Children:
+						Image@IMAGE_SLOW:
+							X:5
+							Y:5
+							Width:16
+							Height:16
+							ImageCollection:music
+							ImageName:slowmo
+				Button@BUTTON_NORMALSPEED:
+					X:14 + 38*2
+					Y:10
+					Width:26
+					Height:26
+					IgnoreChildMouseOver:true
+					Children:
+						Image@IMAGE_PLAY:
+							X:5
+							Y:5
+							Width:16
+							Height:16
+							ImageCollection:music
+							ImageName:play
+				Button@BUTTON_FASTFORWARD:
+					X:14 + 38*3
+					Y:10
+					Width:26
+					Height:26
+					IgnoreChildMouseOver:true
+					Children:
+						Image@IMAGE_FASTFORWARD:
+							X:5
+							Y:5
+							Width:16
+							Height:16
+							ImageCollection:music
+							ImageName:fastforward
 		DropDownButton@SHROUD_SELECTOR:
 			Logic:ObserverShroudSelectorLogic
 			X:WINDOW_RIGHT-173
@@ -92,7 +158,7 @@ Container@OBSERVER_WIDGETS:
 			Width:168
 			Height:25
 			Font:Bold
-			Visible:true
+
 Container@PLAYER_WIDGETS:
 	Children:
 		LogicTicker@SIDEBAR_TICKER:

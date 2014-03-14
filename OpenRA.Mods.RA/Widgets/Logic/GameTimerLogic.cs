@@ -26,9 +26,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var status = widget.GetOrNull<LabelWidget>("GAME_TIMER_STATUS");
 			if (status != null)
 			{
+				var startTick = Ui.LastTickTime;
 				// Blink the status line
 				status.IsVisible = () => (world.Paused || world.Timestep != Game.Timestep)
-					&& orderManager.LocalFrameNumber / 25 % 2 == 0;
+					&& (Ui.LastTickTime - startTick) / 1000 % 2 == 0;
 
 				status.GetText = () =>
 				{

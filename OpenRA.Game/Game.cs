@@ -73,8 +73,9 @@ namespace OpenRA
 		public static int RenderFrame = 0;
 		public static int NetFrameNumber { get { return orderManager.NetFrameNumber; } }
 		public static int LocalTick { get { return orderManager.LocalFrameNumber; } }
-		public const int NetTickScale = 3; // 120ms net tick for 40ms local tick
+		public const int NetTickScale = 3; // 120 ms net tick for 40 ms local tick
 		public const int Timestep = 40;
+		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
 
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
@@ -163,14 +164,30 @@ namespace OpenRA
 
 		static void TickInner(OrderManager orderManager)
 		{
-			int t = Environment.TickCount;
-			int dt = t - orderManager.LastTickTime;
-			if (dt >= Settings.Game.Timestep)
+			var tick = Environment.TickCount;
+
+			var world = orderManager.world;
+			var uiTickDelta = tick - Ui.LastTickTime;
+			if (uiTickDelta >= Timestep)
+			{
+				Ui.LastTickTime += Timestep;
+				Sync.CheckSyncUnchanged(world, Ui.Tick);
+				cursorFrame += 0.5f;
+			}
+
+			var worldTimestep = world == null ? Timestep : world.Timestep;
+			var worldTickDelta = (tick - orderManager.LastTickTime);
+			if (worldTimestep != 0 && worldTickDelta >= worldTimestep)
 				using (new PerfSample("tick_time"))
 				{
-					orderManager.LastTickTime += Settings.Game.Timestep;
-					Ui.Tick();
-					var world = orderManager.world;
+					// Tick the world to advance the world time to match real time:
+					//    If dt < TickJankThreshold then we should try and catch up by repeatedly ticking
+					//    If dt >= TickJankThreshold then we should accept the jank and progress at the normal rate
+					// dt is rounded down to an integer tick count in order to preserve fractional tick components.
+
+					var integralTickTimestep = (worldTickDelta / worldTimestep) * worldTimestep;
+					orderManager.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : worldTimestep;
+
 					if (orderManager.GameStarted)
 						++Viewport.TicksSinceLastMove;
 
@@ -205,8 +222,6 @@ namespace OpenRA
 								orderManager.LastTickTime = Environment.TickCount;
 
 						Sync.CheckSyncUnchanged(world, () => world.TickRender(worldRenderer));
-
-						cursorFrame += 0.5f;
 					}
 				}
 		}

@@ -120,7 +120,7 @@ tabs-normal: tabs.png
 	soviet-Helicopter: 54,160,27,41
 	soviet-Ship: 134,200,27,41
 
-# Used for the menu	
+# Used for the menu
 dialog: dialog.png
 	background: 0,0,480,480
 	border-r: 489,0,9,192
@@ -208,6 +208,8 @@ music: musicplayer.png
 	play: 56,0,25,25
 	next: 84,0,25,25
 	prev: 112,0,25,25
+	fastforward: 140,0,25,25
+	slowmo: 168,0,25,25
 
 scrollbar: buttons.png
 	down_arrow: 16,112,16,16
