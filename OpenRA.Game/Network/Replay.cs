@@ -35,10 +35,7 @@ namespace OpenRA.Network
 				return null;
 
 			var map = LobbyInfo.GlobalSettings.Map;
-			if (!Game.modData.AvailableMaps.ContainsKey(map))
-				return null;
-
-			return Game.modData.AvailableMaps[map];
+			return Game.modData.MapCache[map].Map;
 		}
 	}
 }

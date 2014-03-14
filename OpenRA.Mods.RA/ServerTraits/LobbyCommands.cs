@@ -280,7 +280,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (!server.ModData.AvailableMaps.ContainsKey(s))
+						if (server.ModData.MapCache[s].Status != MapStatus.Available)
 						{
 							server.SendOrderTo(conn, "Message", "Map was not found on server");
 							return true;
@@ -720,7 +720,7 @@ namespace OpenRA.Mods.RA.Server
 
 		static void LoadMap(S server)
 		{
-			server.Map = new Map(server.ModData.AvailableMaps[server.LobbyInfo.GlobalSettings.Map].Path);
+			server.Map = server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map].Map;
 			server.LobbyInfo.Slots = server.Map.Players
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
 				.Where(s => s != null)

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		}
 
 		Replay currentReplay;
-		Map currentMap;
+		MapPreview currentMap = MapCache.UnknownMap;
 
 		void SelectReplay(string filename)
 		{
@@ -61,11 +61,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			try
 			{
 				currentReplay = new Replay(filename);
-				currentMap = currentReplay.Map();
+				currentMap = Game.modData.MapCache[currentReplay.LobbyInfo.GlobalSettings.Map];
 
 				panel.Get<LabelWidget>("DURATION").GetText =
 					() => WidgetUtils.FormatTime(currentReplay.Duration);
-				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
+				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Preview = () => currentMap;
 				panel.Get<LabelWidget>("MAP_TITLE").GetText =
 					() => currentMap != null ? currentMap.Title : "(Unknown Map)";
 
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				Log.Write("debug", "Exception while parsing replay: {0}", e);
 				currentReplay = null;
-				currentMap = null;
+				currentMap = MapCache.UnknownMap;
 			}
 		}
 

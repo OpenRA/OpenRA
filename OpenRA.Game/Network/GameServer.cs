@@ -37,7 +37,7 @@ namespace OpenRA.Network
 
 			// Don't have the map locally
 			// TODO: We allow joining, then drop on game start if the map isn't available
-			if (!Game.modData.AvailableMaps.ContainsKey(Map) && !Game.Settings.Game.AllowDownloading)
+			if (Game.modData.MapCache[Map].Status != MapStatus.Available && !Game.Settings.Game.AllowDownloading)
 				return false;
 
 			return true;

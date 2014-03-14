@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		Widget panel;
 		Action onCreate;
 		Action onExit;
-		Map map;
+		MapPreview preview = MapCache.UnknownMap;
 		bool advertiseOnline;
 		bool allowPortForward;
 
@@ -32,11 +32,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.onExit = onExit;
 
 			var settings = Game.Settings;
+			preview = Game.modData.MapCache[WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map)];
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
-
-			map = Game.modData.AvailableMaps[ WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map) ];
 
 			var mapButton = panel.GetOrNull<ButtonWidget>("MAP_BUTTON");
 			if (mapButton != null)
@@ -45,14 +44,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
-						{ "initialMap", map.Uid },
+						{ "initialMap", preview.Uid },
 						{ "onExit", () => {} },
-						{ "onSelect", (Action<Map>)(m => map = m) }
+						{ "onSelect", (Action<Map>)(m => preview = Game.modData.MapCache[m.Uid]) }
 					});
 				};
 
-				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
-				panel.Get<LabelWidget>("MAP_NAME").GetText = () => map.Title;
+				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Preview = () => preview;
+				panel.Get<LabelWidget>("MAP_NAME").GetText = () => preview.Title;
 			}
 
 			panel.Get<TextFieldWidget>("SERVER_NAME").Text = settings.Server.Name ?? "";
@@ -97,7 +96,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.Settings.Server.ExternalPort = externalPort;
 			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
 			Game.Settings.Server.AllowPortForward = allowPortForward;
-			Game.Settings.Server.Map = map.Uid;
+			Game.Settings.Server.Map = preview.Uid;
 			Game.Settings.Server.Password = password;
 			Game.Settings.Save();
 

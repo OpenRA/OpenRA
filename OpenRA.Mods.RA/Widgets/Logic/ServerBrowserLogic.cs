@@ -155,10 +155,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (game == null || game.Players == 0)
 				return "";
 
-			var map = Game.modData.FindMapByUid(game.Map);
-
-			var maxPlayers = map == null ? "?" : (object)map.PlayerCount;
-			return "{0} / {1}".F(game.Players, maxPlayers);
+			var map = Game.modData.MapCache[game.Map];
+			return "{0} / {1}".F(game.Players, map.PlayerCount == 0 ? "?" : map.PlayerCount.ToString());
 		}
 
 		string GetStateLabel(GameServer game)
@@ -174,11 +172,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return "Server shutting down";
 
 			return "Unknown server state";
-		}
-
-		Map GetMapPreview(GameServer game)
-		{
-			return (game == null) ? null : Game.modData.FindMapByUid(game.Map);
 		}
 
 		public static string GenerateModLabel(GameServer s)
@@ -241,20 +234,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game, () => Join(game));
 
+				var map = Game.modData.MapCache[game.Map];
 				var preview = item.Get<MapPreviewWidget>("MAP_PREVIEW");
-				preview.Map = () => GetMapPreview(game);
-				preview.IsVisible = () => GetMapPreview(game) != null;
+				preview.Preview = () => map;
 
 				var title = item.Get<LabelWidget>("TITLE");
 				title.GetText = () => game.Name;
 
 				// TODO: Use game.MapTitle once the server supports it
 				var maptitle = item.Get<LabelWidget>("MAP");
-				maptitle.GetText = () =>
-				{
-					var map = Game.modData.FindMapByUid(game.Map);
-					return map == null ? "Unknown Map" : map.Title;
-				};
+				maptitle.GetText = () => map.Title;
 
 				// TODO: Use game.MaxPlayers once the server supports it
 				var players = item.Get<LabelWidget>("PLAYERS");

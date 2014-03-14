@@ -22,33 +22,12 @@ namespace OpenRA
 	{
 		public readonly Manifest Manifest;
 		public readonly ObjectCreator ObjectCreator;
-		public Dictionary<string, Map> AvailableMaps { get; private set; }
 		public readonly WidgetLoader WidgetLoader;
+		public readonly MapCache MapCache;
 		public ILoadScreen LoadScreen = null;
 		public SheetBuilder SheetBuilder;
 		public SpriteLoader SpriteLoader;
 		public VoxelLoader VoxelLoader;
-
-		public static IEnumerable<string> FindMapsIn(string dir)
-		{
-			string[] noMaps = { };
-
-			// ignore optional flag
-			if (dir.StartsWith("~"))
-				dir = dir.Substring(1);
-
-			// paths starting with ^ are relative to the user directory
-			if (dir.StartsWith("^"))
-				dir = Platform.SupportDir + dir.Substring(1);
-
-			if (!Directory.Exists(dir))
-				return noMaps;
-
-			var dirsWithMaps = Directory.GetDirectories(dir)
-				.Where(d => Directory.GetFiles(d, "map.yaml").Any() && Directory.GetFiles(d, "map.bin").Any());
-
-			return dirsWithMaps.Concat(Directory.GetFiles(dir, "*.oramap"));
-		}
 
 		public ModData(string mod)
 		{
@@ -59,6 +38,7 @@ namespace OpenRA
 			LoadScreen.Init(Manifest, Manifest.LoadScreen.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value));
 			LoadScreen.Display();
 			WidgetLoader = new WidgetLoader(this);
+			MapCache = new MapCache(Manifest);
 
 			// HACK: Mount only local folders so we have a half-working environment for the asset installer
 			FileSystem.UnmountAll();
@@ -119,17 +99,13 @@ namespace OpenRA
 			FieldLoader.Translations = translations;
 		}
 
-		public void LoadMaps()
-		{
-			AvailableMaps = FindMaps();
-		}
-
 		public Map PrepareMap(string uid)
 		{
 			LoadScreen.Display();
-			if (!AvailableMaps.ContainsKey(uid))
+
+			var map = MapCache[uid].Map;
+			if (map == null)
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
-			var map = new Map(AvailableMaps[uid].Path);
 
 			LoadTranslations(map);
 
@@ -147,33 +123,6 @@ namespace OpenRA
 			SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
 			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequences);
 			return map;
-		}
-
-		public Dictionary<string, Map> FindMaps()
-		{
-			var paths = Manifest.MapFolders.SelectMany(f => FindMapsIn(f));
-			var ret = new Dictionary<string, Map>();
-			foreach (var path in paths)
-			{
-				try
-				{
-					var map = new Map(path, Manifest.Mod.Id);
-					if (Manifest.MapCompatibility.Contains(map.RequiresMod))
-						ret.Add(map.Uid, map);
-				}
-				catch (Exception e)
-				{
-					Console.WriteLine("Failed to load map: {0}", path);
-					Console.WriteLine("Details: {0}", e);
-				}
-			}
-
-			return ret;
-		}
-
-		public Map FindMapByUid(string uid)
-		{
-			return AvailableMaps.ContainsKey(uid) ? AvailableMaps[uid] : null;
 		}
 	}
 

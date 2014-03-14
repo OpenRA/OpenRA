@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		internal MapChooserLogic(Widget widget, string initialMap, Action onExit, Action<Map> onSelect)
 		{
-			map = Game.modData.AvailableMaps[WidgetUtils.ChooseInitialMap(initialMap)];
+			map = Game.modData.MapCache[WidgetUtils.ChooseInitialMap(initialMap)].Map;
 
 			widget.Get<ButtonWidget>("BUTTON_OK").OnClick = () => { Ui.CloseWindow(); onSelect(map); };
 			widget.Get<ButtonWidget>("BUTTON_CANCEL").OnClick = () => { Ui.CloseWindow(); onExit(); };
@@ -44,9 +44,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var gameModeDropdown = widget.GetOrNull<DropDownButtonWidget>("GAMEMODE_FILTER");
 			if (gameModeDropdown != null)
 			{
-				var selectableMaps = Game.modData.AvailableMaps.Where(m => m.Value.Selectable).ToList();
+				var selectableMaps = Game.modData.MapCache.Where(m => m.Status == MapStatus.Available && m.Map.Selectable);
 				var gameModes = selectableMaps
-					.GroupBy(m => m.Value.Type)
+					.GroupBy(m => m.Type)
 					.Select(g => Pair.New(g.Key, g.Count())).ToList();
 
 				// 'all game types' extra item
@@ -87,8 +87,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void EnumerateMaps(Action<Map> onSelect)
 		{
-			var maps = Game.modData.AvailableMaps
-				.Where(kv => kv.Value.Selectable)
+			var maps = Game.modData.MapCache
+				.Where(m => m.Status == MapStatus.Available && m.Map.Selectable)
+				.ToDictionary(m => m.Uid, m => m.Map)
 				.Where(kv => kv.Value.Type == gameMode || gameMode == null)
 				.OrderBy(kv => kv.Value.PlayerCount)
 				.ThenBy(kv => kv.Value.Title);
@@ -102,10 +103,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var titleLabel = item.Get<LabelWidget>("TITLE");
 				titleLabel.GetText = () => m.Title;
 
+				var preview = Game.modData.MapCache[m.Uid];
 				var previewWidget = item.Get<MapPreviewWidget>("PREVIEW");
 				previewWidget.IgnoreMouseOver = true;
 				previewWidget.IgnoreMouseInput = true;
-				previewWidget.Map = () => m;
+				previewWidget.Preview = () => preview;
 				previewWidget.IsVisible = () => previewWidget.RenderBounds.IntersectsWith(scrollpanel.RenderBounds);
 
 				var previewLoadingWidget = item.GetOrNull<BackgroundWidget>("PREVIEW_PLACEHOLDER");

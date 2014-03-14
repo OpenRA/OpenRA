@@ -225,14 +225,13 @@ namespace OpenRA.Widgets
 
 		public static Action Once( Action a ) { return () => { if (a != null) { a(); a = null; } }; }
 
-		public static string ChooseInitialMap(string map)
+		public static string ChooseInitialMap(string initialUid)
 		{
-			var availableMaps = Game.modData.AvailableMaps;
-			if (string.IsNullOrEmpty(map) || !availableMaps.ContainsKey(map))
+			if (string.IsNullOrEmpty(initialUid) || Game.modData.MapCache[initialUid].Status != MapStatus.Available)
 			{
-				Func<Map, bool> isIdealMap = m =>
+				Func<MapPreview, bool> isIdealMap = m =>
 				{
-					if (!m.Selectable)
+					if (m.Status != MapStatus.Available || !m.Map.Selectable)
 						return false;
 
 					// Other map types may have confusing settings or gameplay
@@ -240,22 +239,22 @@ namespace OpenRA.Widgets
 						return false;
 
 					// Maps with bots disabled confuse new players
-					if (m.Players.Any(s => !s.Value.AllowBots))
+					if (m.Map.Players.Any(s => !s.Value.AllowBots))
 						return false;
 
 					// Large maps expose unfortunate performance problems
-					if (m.MapSize.X > 128 || m.MapSize.Y > 128)
+					if (m.Bounds.Width > 128 || m.Bounds.Height > 128)
 						return false;
 
 					return true;
 				};
 
-				var selected = availableMaps.Values.Where(m => isIdealMap(m)).RandomOrDefault(Game.CosmeticRandom) ??
-				               availableMaps.Values.First(m => m.Selectable);
+				var selected = Game.modData.MapCache.Where(m => isIdealMap(m)).RandomOrDefault(Game.CosmeticRandom) ??
+					Game.modData.MapCache.First(m => m.Status == MapStatus.Available && m.Map.Selectable);
 				return selected.Uid;
 			}
 
-			return map;
+			return initialUid;
 		}
 	}
 

@@ -130,26 +130,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			color.AttachPanel(colorChooser, onExit);
 		}
 
-		public static Dictionary<CPos, Session.Client> GetSpawnClients(OrderManager orderManager, Map map)
+		public static Dictionary<CPos, Session.Client> GetSpawnClients(OrderManager orderManager, MapPreview preview)
 		{
-			var spawns = map.GetSpawnPoints();
+			var spawns = preview.SpawnPoints;
 			return orderManager.LobbyInfo.Clients
 				.Where(c => c.SpawnPoint != 0)
-					.ToDictionary(
-						c => spawns[c.SpawnPoint - 1],
-						c => c);
+				.ToDictionary(c => spawns[c.SpawnPoint - 1], c => c);
 		}
 
-		public static void SelectSpawnPoint(OrderManager orderManager, MapPreviewWidget mapPreview, Map map, MouseInput mi)
+		public static void SelectSpawnPoint(OrderManager orderManager, MapPreviewWidget mapPreview, MapPreview preview, MouseInput mi)
 		{
-			if (map == null)
-				return;
 			if (mi.Button != MouseButton.Left)
 				return; 
+
 			if (!orderManager.LocalClient.IsObserver && orderManager.LocalClient.State == Session.ClientState.Ready)
 				return;
 
-			var selectedSpawn = map.GetSpawnPoints()
+			var selectedSpawn = preview.SpawnPoints
 				.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp), i))
 				.Where(a => (a.First - mi.Location).LengthSquared < 64)
 				.Select(a => a.Second + 1)
