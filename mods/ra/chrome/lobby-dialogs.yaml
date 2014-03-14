@@ -179,3 +179,38 @@ Background@LOBBY_OPTIONS_BIN:
 					Width:140
 					Height:25
 					Font:Regular
+
+Background@DOWNLOAD_MAP_PANEL:
+	X:20
+	Y:67
+	Width:535
+	Height:235
+	Visible:false
+	Background:dialog3
+	Children:
+		Label@TITLE:
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Downloading Map
+			Align:Center
+			Font:Bold
+		Label@EXPLAIN_LABEL:
+			X:50
+			Y:80
+			Width:PARENT_RIGHT - 100
+			Height:25
+			Align:Left
+			Text:Maps submitted to http://resource.openra.net can be downloaded.
+		ProgressBar@PROGRESS_BAR:
+			X:50
+			Y:155
+			Width:PARENT_RIGHT - 100
+			Height:25
+		Label@STATUS_LABEL:
+			X:50
+			Y:180
+			Width:PARENT_RIGHT - 100
+			Height:25
+			Align:Left
