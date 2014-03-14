@@ -22,7 +22,7 @@ namespace OpenRA.Widgets
 	public class MapPreviewWidget : Widget
 	{
 		public Func<Map> Map = () => null;
-		public Func<Dictionary<int2, Session.Client>> SpawnClients = () => new Dictionary<int2, Session.Client>();
+		public Func<Dictionary<CPos, Session.Client>> SpawnClients = () => new Dictionary<CPos, Session.Client>();
 		public Action<MouseInput> OnMouseDown = _ => {};
 		public bool IgnoreMouseInput = false;
 		public bool ShowSpawnPoints = true;
@@ -75,7 +75,7 @@ namespace OpenRA.Widgets
 			tooltipContainer.Value.RemoveTooltip();
 		}
 
-		public int2 ConvertToPreview(int2 point)
+		public int2 ConvertToPreview(CPos point)
 		{
 			var map = Map();
 			return new int2(MapRect.X + (int)(PreviewScale*(point.X - map.Bounds.Left)) , MapRect.Y + (int)(PreviewScale*(point.Y - map.Bounds.Top)));

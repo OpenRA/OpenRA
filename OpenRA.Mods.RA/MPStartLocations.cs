@@ -28,9 +28,10 @@ namespace OpenRA.Mods.RA
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
+			var spawns = world.Map.GetSpawnPoints();
 			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != null)
-				.Select(c => (CPos) world.Map.GetSpawnPoints()[c.SpawnPoint-1]).ToList();
-			var available = world.Map.GetSpawnPoints().Select(c => (CPos)c).Except(taken).ToList();
+					.Select(c => spawns[c.SpawnPoint-1]).ToList();
+			var available = spawns.Except(taken).ToList();
 
 			// Set spawn
 			foreach (var kv in world.LobbyInfo.Slots)
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.RA
 				var client = world.LobbyInfo.ClientInSlot(kv.Key);
 				var spid = (client == null || client.SpawnPoint == 0)
 					? ChooseSpawnPoint(world, available, taken)
-					: (CPos)world.Map.GetSpawnPoints()[client.SpawnPoint-1];
+					: world.Map.GetSpawnPoints()[client.SpawnPoint-1];
 
 				Start.Add(player, spid);
 			}

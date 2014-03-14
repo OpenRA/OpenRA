@@ -228,12 +228,12 @@ namespace OpenRA
 			Uid = ComputeHash();
 		}
 
-		public int2[] GetSpawnPoints()
+		public CPos[] GetSpawnPoints()
 		{
 			return Actors.Value.Values
 				.Where(a => a.Type == "mpspawn")
-					.Select(a => a.InitDict.Get<LocationInit>().value)
-					.ToArray();
+				.Select(a => (CPos)a.InitDict.Get<LocationInit>().value)
+				.ToArray();
 		}
 
 		public void Save(string toPath)

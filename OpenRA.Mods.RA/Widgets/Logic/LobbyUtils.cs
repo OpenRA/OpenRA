@@ -130,7 +130,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			color.AttachPanel(colorChooser, onExit);
 		}
 
-		public static Dictionary<int2, Session.Client> GetSpawnClients(OrderManager orderManager, Map map)
+		public static Dictionary<CPos, Session.Client> GetSpawnClients(OrderManager orderManager, Map map)
 		{
 			var spawns = map.GetSpawnPoints();
 			return orderManager.LobbyInfo.Clients
