@@ -154,10 +154,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				mapButton.IsDisabled = configurationDisabled; 
 				mapButton.OnClick = () =>
 				{
-					var onSelect = new Action<Map>(m =>
+					var onSelect = new Action<string>(uid =>
 					{
-						orderManager.IssueOrder(Order.Command("map " + m.Uid));
-						Game.Settings.Server.Map = m.Uid;
+						orderManager.IssueOrder(Order.Command("map " + uid));
+						Game.Settings.Server.Map = uid;
 						Game.Settings.Save();
 					});
 

@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						{ "initialMap", preview.Uid },
 						{ "onExit", () => {} },
-						{ "onSelect", (Action<Map>)(m => preview = Game.modData.MapCache[m.Uid]) }
+						{ "onSelect", (Action<String>)(uid => preview = Game.modData.MapCache[uid]) }
 					});
 				};
 
