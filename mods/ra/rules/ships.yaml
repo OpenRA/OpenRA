@@ -42,7 +42,7 @@ SS:
 	IronCurtainable:
 	RepairableNear:
 	AutoTarget:
-		InitialStance: HoldFire
+		InitialStance: ReturnFire
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4
@@ -92,7 +92,7 @@ MSUB:
 	IronCurtainable:
 	RepairableNear:
 	AutoTarget:
-		InitialStance: HoldFire
+		InitialStance: ReturnFire
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4
