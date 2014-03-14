@@ -130,7 +130,6 @@
     <Compile Include="Network\OrderIO.cs" />
     <Compile Include="Network\OrderManager.cs" />
     <Compile Include="Network\ReplayConnection.cs" />
-    <Compile Include="Network\ServerList.cs" />
     <Compile Include="Network\Session.cs" />
     <Compile Include="Network\SyncReport.cs" />
     <Compile Include="Network\UnitOrders.cs" />
