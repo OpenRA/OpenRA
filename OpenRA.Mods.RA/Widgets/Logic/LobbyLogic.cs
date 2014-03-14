@@ -23,6 +23,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		static readonly Action DoNothing = () => { };
 
+		public MapPreview Map = MapCache.UnknownMap;
+
 		readonly Action onStart;
 		readonly Action onExit;
 		readonly OrderManager orderManager;
@@ -41,7 +43,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		ScrollPanelWidget players;
 		Dictionary<string, string> countryNames;
-		MapPreview preview = MapCache.UnknownMap;
 
 		ColorPreviewManagerWidget colorPreview;
 
@@ -108,6 +109,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (name != null)
 				name.GetText = () => orderManager.LobbyInfo.GlobalSettings.ServerName;
 
+			Ui.LoadWidget("LOBBY_MAP_PREVIEW", lobby.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
+			{
+				{ "orderManager", orderManager },
+				{ "lobby", this }
+			});
+
 			UpdateCurrentMap();
 			players = Ui.LoadWidget<ScrollPanelWidget>("LOBBY_PLAYER_BIN", lobby.Get("PLAYER_BIN_ROOT"), new WidgetArgs());
 			players.IsVisible = () => panel == PanelType.Players;
@@ -124,23 +131,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			newSpectatorTemplate = players.Get("TEMPLATE_NEW_SPECTATOR");
 			colorPreview = lobby.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = Game.Settings.Player.Color;
-
-			var mapPreview = lobby.Get<MapPreviewWidget>("MAP_PREVIEW");
-			mapPreview.Preview = () => preview;
-			mapPreview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, mapPreview, preview, mi);
-			mapPreview.SpawnClients = () => LobbyUtils.GetSpawnClients(orderManager, preview);
-
-			var mapTitle = lobby.GetOrNull<LabelWidget>("MAP_TITLE");
-			if (mapTitle != null)
-				mapTitle.GetText = () => preview.Title;
-
-			var mapType = lobby.GetOrNull<LabelWidget>("MAP_TYPE");
-			if (mapType != null)
-				mapType.GetText = () => preview.Type;
-
-			var mapAuthor = lobby.GetOrNull<LabelWidget>("MAP_AUTHOR");
-			if (mapAuthor != null)
-				mapAuthor.GetText = () => "Created by {0}".F(preview.Author);
 
 			countryNames = Rules.Info["world"].Traits.WithInterface<CountryInfo>()
 				.Where(c => c.Selectable)
@@ -166,7 +156,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
-						{ "initialMap", preview.Uid },
+						{ "initialMap", Map.Uid },
 						{ "onExit", DoNothing },
 						{ "onSelect", onSelect }
 					});
@@ -300,7 +290,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (allowCheats != null)
 			{
 				allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
-				allowCheats.IsDisabled = () => preview.Status != MapStatus.Available || preview.Map.Options.Cheats.HasValue || configurationDisabled();
+				allowCheats.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Cheats.HasValue || configurationDisabled();
 				allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 			}
@@ -309,7 +299,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (crates != null)
 			{
 				crates.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Crates;
-				crates.IsDisabled = () => preview.Status != MapStatus.Available || preview.Map.Options.Crates.HasValue || configurationDisabled();
+				crates.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Crates.HasValue || configurationDisabled();
 				crates.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"crates {0}".F(!orderManager.LobbyInfo.GlobalSettings.Crates)));
 			}
@@ -318,7 +308,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (allybuildradius != null)
 			{
 				allybuildradius.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllyBuildRadius;
-				allybuildradius.IsDisabled = () => preview.Status != MapStatus.Available || preview.Map.Options.AllyBuildRadius.HasValue || configurationDisabled();
+				allybuildradius.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.AllyBuildRadius.HasValue || configurationDisabled();
 				allybuildradius.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"allybuildradius {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllyBuildRadius)));
 			}
@@ -327,7 +317,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (fragileAlliance != null)
 			{
 				fragileAlliance.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.FragileAlliances;
-				fragileAlliance.IsDisabled = () => preview.Status != MapStatus.Available || preview.Map.Options.FragileAlliances.HasValue || configurationDisabled();
+				fragileAlliance.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.FragileAlliances.HasValue || configurationDisabled();
 				fragileAlliance.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"fragilealliance {0}".F(!orderManager.LobbyInfo.GlobalSettings.FragileAlliances)));
 			}
@@ -335,12 +325,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var difficulty = optionsBin.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			if (difficulty != null)
 			{
-				difficulty.IsVisible = () => preview.Status == MapStatus.Available && preview.Map.Options.Difficulties.Any();
-				difficulty.IsDisabled = () => preview.Status != MapStatus.Available || configurationDisabled();
+				difficulty.IsVisible = () => Map.Status == MapStatus.Available && Map.Map.Options.Difficulties.Any();
+				difficulty.IsDisabled = () => Map.Status != MapStatus.Available || configurationDisabled();
 				difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
 				difficulty.OnMouseDown = _ =>
 				{
-					var options = preview.Map.Options.Difficulties.Select(d => new DropDownOption
+					var options = Map.Map.Options.Difficulties.Select(d => new DropDownOption
 					{
 						Title = d,
 						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Difficulty == d,
@@ -372,8 +362,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var classes = Rules.Info["world"].Traits.WithInterface<MPStartUnitsInfo>()
 					.Select(a => a.Class).Distinct();
 
-				startingUnits.IsDisabled = () => preview.Status != MapStatus.Available || !preview.Map.Options.ConfigurableStartingUnits || configurationDisabled();
-				startingUnits.GetText = () => preview.Status != MapStatus.Available || !preview.Map.Options.ConfigurableStartingUnits ? "Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
+				startingUnits.IsDisabled = () => Map.Status != MapStatus.Available || !Map.Map.Options.ConfigurableStartingUnits || configurationDisabled();
+				startingUnits.GetText = () => Map.Status != MapStatus.Available || !Map.Map.Options.ConfigurableStartingUnits ? "Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
 				startingUnits.OnMouseDown = _ =>
 				{
 					var options = classes.Select(c => new DropDownOption
@@ -399,8 +389,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var startingCash = optionsBin.GetOrNull<DropDownButtonWidget>("STARTINGCASH_DROPDOWNBUTTON");
 			if (startingCash != null)
 			{
-				startingCash.IsDisabled = () => preview.Status != MapStatus.Available || preview.Map.Options.StartingCash.HasValue || configurationDisabled();
-				startingCash.GetText = () => preview.Status != MapStatus.Available || preview.Map.Options.StartingCash.HasValue ? "Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
+				startingCash.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.StartingCash.HasValue || configurationDisabled();
+				startingCash.GetText = () => Map.Status != MapStatus.Available || Map.Map.Options.StartingCash.HasValue ? "Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
 				startingCash.OnMouseDown = _ =>
 				{
 					var options = Rules.Info["player"].Traits.Get<PlayerResourcesInfo>().SelectableCash.Select(c => new DropDownOption
@@ -425,7 +415,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (enableShroud != null)
 			{
 				enableShroud.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Shroud;
-				enableShroud.IsDisabled = () => preview.Status != MapStatus.Available || preview.Map.Options.Shroud.HasValue || configurationDisabled();
+				enableShroud.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Shroud.HasValue || configurationDisabled();
 				enableShroud.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"shroud {0}".F(!orderManager.LobbyInfo.GlobalSettings.Shroud)));
 			}
@@ -434,7 +424,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (enableFog != null)
 			{
 				enableFog.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Fog;
-				enableFog.IsDisabled = () => preview.Status != MapStatus.Available || preview.Map.Options.Fog.HasValue || configurationDisabled();
+				enableFog.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Fog.HasValue || configurationDisabled();
 				enableFog.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"fog {0}".F(!orderManager.LobbyInfo.GlobalSettings.Fog)));
 			}
@@ -533,11 +523,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void UpdateCurrentMap()
 		{
 			var uid = orderManager.LobbyInfo.GlobalSettings.Map;
-			if (preview.Uid == uid)
+			if (Map.Uid == uid)
 				return;
 
-			preview = Game.modData.MapCache[uid];
-			if (preview.Status != MapStatus.Available)
+			Map = Game.modData.MapCache[uid];
+			if (Map.Status != MapStatus.Available)
 			{
 				if (Game.Settings.Game.AllowDownloading)
 				{
@@ -550,7 +540,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			// Restore default starting cash if the last map set it to something invalid
 			var pri = Rules.Info["player"].Traits.Get<PlayerResourcesInfo>();
-			if (!preview.Map.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
+			if (!Map.Map.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
 				orderManager.IssueOrder(Order.Command("startingcash {0}".F(pri.DefaultCash)));
 		}
 
@@ -600,7 +590,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, colorPreview);
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, countryNames);
-					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, preview.SpawnPoints.Count);
+					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map.SpawnPoints.Count);
 					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager);
 				}
 				else
