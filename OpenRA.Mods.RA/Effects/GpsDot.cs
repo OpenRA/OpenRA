@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		Lazy<HiddenUnderFog> huf;
 		Lazy<FrozenUnderFog> fuf;
-		Lazy<Spy> spy;
+		Lazy<Disguise> disguise;
 		Lazy<Cloak> cloak;
 		Cache<Player, GpsWatcher> watcher;
 		Cache<Player, FrozenActorLayer> frozen;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			huf = Lazy.New(() => self.TraitOrDefault<HiddenUnderFog>());
 			fuf = Lazy.New(() => self.TraitOrDefault<FrozenUnderFog>());
-			spy = Lazy.New(() => self.TraitOrDefault<Spy>());
+			disguise = Lazy.New(() => self.TraitOrDefault<Disguise>());
 			cloak = Lazy.New(() => self.TraitOrDefault<Cloak>());
 
 			watcher = new Cache<Player, GpsWatcher>(p => p.PlayerActor.Trait<GpsWatcher>());
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (cloak.Value != null && cloak.Value.Cloaked)
 				return false;
 
-			if (spy.Value != null && spy.Value.Disguised)
+			if (disguise.Value != null && disguise.Value.Disguised)
 				return false;
 
 			if (huf.Value != null && !huf.Value.IsVisible(self, self.World.RenderPlayer))

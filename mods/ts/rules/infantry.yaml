@@ -273,7 +273,7 @@ CHAMSPY:
 		Hotkey: p
 	Valued:
 		Cost: 700
-	SpyToolTip:
+	DisguiseToolTip:
 		Name: Chameleon Spy
 		Description: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
 	Selectable:
@@ -287,12 +287,12 @@ CHAMSPY:
 		Range: 9c0
 	Passenger:
 	TakeCover:
-	Spy:
+	Disguise:
 	Infiltrates:
 		Types: Cash, SupportPower, Exploration
 	-AutoTarget:
 	-RenderInfantry:
-	RenderSpy:
+	RenderDisguise:
 		IdleAnimations: idle1,idle2
 
 CYBORG:
