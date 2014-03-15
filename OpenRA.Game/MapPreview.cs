@@ -33,6 +33,7 @@ namespace OpenRA
 		public int PlayerCount { get; private set; }
 		public List<CPos> SpawnPoints { get; private set; }
 		public Rectangle Bounds { get; private set; }
+		public Bitmap CustomPreview { get; private set; }
 		public Map Map { get; private set; }
 		public MapStatus Status { get; private set; }
 
@@ -85,6 +86,7 @@ namespace OpenRA
 			PlayerCount = m.Players.Count(x => x.Value.Playable);
 			Bounds = m.Bounds;
 			SpawnPoints = m.GetSpawnPoints().ToList();
+			CustomPreview = m.CustomPreview;
 			Status = MapStatus.Available;
 		}
 	}

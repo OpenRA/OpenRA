@@ -70,6 +70,7 @@ namespace OpenRA
 		public string Author;
 		public string Tileset;
 		public bool AllowStartUnitConfig = true;
+		public Bitmap CustomPreview;
 
 		[FieldLoader.LoadUsing("LoadOptions")]
 		public MapOptions Options;
@@ -226,6 +227,9 @@ namespace OpenRA
 				Save(path);
 
 			Uid = ComputeHash();
+
+			if (Container.Exists("map.png"))
+				CustomPreview = new Bitmap(Container.GetContent("map.png"));
 		}
 
 		public CPos[] GetSpawnPoints()

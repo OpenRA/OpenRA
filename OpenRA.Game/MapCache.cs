@@ -107,7 +107,7 @@ namespace OpenRA
 				//       the next render cycle.
 				//   (d) Any partially written bytes from the next minimap is in an
 				//       unallocated area, and will be committed in the next cycle.
-				var bitmap = Minimap.RenderMapPreview(p.Map, true);
+				var bitmap = p.CustomPreview ?? Minimap.RenderMapPreview(p.Map, true);
 				p.Minimap = sheetBuilder.Add(bitmap);
 
 				lock (syncRoot)
