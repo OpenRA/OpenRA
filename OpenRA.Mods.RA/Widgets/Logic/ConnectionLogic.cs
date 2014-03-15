@@ -113,6 +113,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				passwordField.IsVisible = () => orderManager.AuthenticationFailed;
 				var passwordLabel = widget.Get<LabelWidget>("PASSWORD_LABEL");
 				passwordLabel.IsVisible = passwordField.IsVisible;
+				passwordField.OnEnterKey = () => { retryButton.OnClick(); return true; };
+				passwordField.OnEscKey = () => { abortButton.OnClick(); return true; };
 			}
 
 			passwordOffsetAdjusted = false;
