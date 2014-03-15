@@ -1,7 +1,7 @@
 ^Vehicle:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: crate
+		Crushes: crate, husk
 		TerrainSpeeds:
 			Clear: 80
 			Rough: 50
@@ -231,7 +231,7 @@
 	RevealsShroud:
 		Range: 6c0
 	Mobile:
-		Crushes: crate
+		Crushes: crate, husk
 		Speed: 113
 		TerrainSpeeds:
 			Clear: 90
@@ -509,6 +509,8 @@
 		Type: Light
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
+		CrushClasses: husk
+		CrushSound: crumble.aud
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:

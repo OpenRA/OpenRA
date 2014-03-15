@@ -20,13 +20,15 @@ namespace OpenRA.Mods.RA
 	class HuskInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo
 	{
 		public readonly string[] AllowedTerrain = { };
+		public readonly string[] CrushClasses = { };
+		public readonly string CrushSound = "";
 
 		public object Create(ActorInitializer init) { return new Husk(init, this); }
 
 		public int GetInitialFacing() { return 128; }
 	}
 
-	class Husk : IPositionable, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisable
+	class Husk : IPositionable, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisable, ICrushable
 	{
 		readonly HuskInfo info;
 		readonly Actor self;
@@ -105,6 +107,19 @@ namespace OpenRA.Mods.RA
 		public bool Disabled
 		{
 			get { return true; }
+		}
+
+		public void WarnCrush(Actor crusher) { }
+
+		public bool CrushableBy(string[] crushClasses, Player crushOwner)
+		{
+			return info.CrushClasses.Intersect(crushClasses).Any();
+		}
+
+		public void OnCrush(Actor crusher)
+		{
+			self.Kill(crusher);
+			Sound.Play(info.CrushSound, self.CenterPosition);
 		}
 	}
 

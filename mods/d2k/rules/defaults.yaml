@@ -1,7 +1,7 @@
 ^Vehicle:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: crate
+		Crushes: crate, husk
 		TerrainSpeeds:
 			Sand: 90
 			Rock: 100
@@ -42,7 +42,7 @@
 ^Tank:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: crate
+		Crushes: crate, husk
 		TerrainSpeeds:
 			Sand: 85
 			Rock: 100
@@ -87,6 +87,8 @@
 		Type: Light
 	Husk:
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceBlobs, Dune
+		CrushClasses: husk
+		CrushSound:
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:

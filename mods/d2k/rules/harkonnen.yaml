@@ -183,7 +183,7 @@ DEVAST:
 	Mobile:
 		ROT: 3
 		Speed: 42
-		Crushes: crate, infantry
+		Crushes: crate, infantry, husk
 	RevealsShroud:
 		Range: 7c0
 	RenderUnit:

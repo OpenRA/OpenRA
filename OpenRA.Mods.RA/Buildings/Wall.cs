@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Buildings
 			this.info = info;
 		}
 
-		public void WarnCrush(Actor crusher) {}
+		public void WarnCrush(Actor crusher) { }
 
 		public bool CrushableBy(string[] crushClasses, Player crushOwner)
 		{

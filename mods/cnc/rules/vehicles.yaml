@@ -380,7 +380,7 @@ HTNK:
 		Prerequisites: eye
 		Owner: gdi
 	Mobile:
-		Crushes: wall, heavywall, crate, infantry
+		Crushes: wall, heavywall, crate, infantry, husk
 		Speed: 56
 		ROT: 3
 	Health:
@@ -510,7 +510,7 @@ STNK:
 	Mobile:
 		ROT: 8
 		Speed: 142
-		Crushes: crate, infantry
+		Crushes: crate, infantry, husk
 	Health:
 		HP: 150
 	Armor:

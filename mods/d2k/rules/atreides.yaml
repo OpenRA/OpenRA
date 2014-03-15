@@ -176,6 +176,7 @@ SONICTANK:
 	Armor:
 		Type: Light
 	Mobile:
+		Crushes: crate, infantry, husk
 		ROT: 3
 		Speed: 74
 	RevealsShroud:
