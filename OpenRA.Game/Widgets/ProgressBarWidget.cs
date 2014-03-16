@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 
 namespace OpenRA.Widgets
@@ -17,45 +18,57 @@ namespace OpenRA.Widgets
 		public int Percentage = 0;
 		public bool Indeterminate = false;
 
+		public Func<int> GetPercentage;
+		public Func<bool> IsIndeterminate;
+
 		// Indeterminant bar properties
 		float offset = 0f;
 		float tickStep = 0.04f;
 
-		public ProgressBarWidget() {}
-		protected ProgressBarWidget(ProgressBarWidget widget)
-			: base(widget)
+		public ProgressBarWidget()
 		{
-			Percentage = widget.Percentage;
+			GetPercentage = () => Percentage;
+			IsIndeterminate = () => Indeterminate;
+		}
+
+		protected ProgressBarWidget(ProgressBarWidget other)
+			: base(other)
+		{
+			Percentage = other.Percentage;
+			GetPercentage = other.GetPercentage;
+			IsIndeterminate = other.IsIndeterminate;
 		}
 
 		public override void Draw()
 		{
 			var rb = RenderBounds;
+			var percentage = GetPercentage();
 			WidgetUtils.DrawPanel("progressbar-bg", rb);
 
-			Rectangle barRect = Indeterminate ?
+			Rectangle barRect = wasIndeterminate ?
 				new Rectangle(rb.X + 2 + (int)(0.75*offset*(rb.Width - 4)), rb.Y + 2, (rb.Width - 4) / 4, rb.Height - 4) :
-				new Rectangle(rb.X + 2, rb.Y + 2, Percentage * (rb.Width - 4) / 100, rb.Height - 4);
+				new Rectangle(rb.X + 2, rb.Y + 2, percentage * (rb.Width - 4) / 100, rb.Height - 4);
 
 			if (barRect.Width > 0)
 				WidgetUtils.DrawPanel("progressbar-thumb", barRect);
 		}
 
+		bool wasIndeterminate;
 		public override void Tick()
 		{
-			if (Indeterminate)
+			var indeterminate = IsIndeterminate();
+			if (indeterminate != wasIndeterminate)
+				offset = 0f;
+
+			if (indeterminate)
 			{
 				offset += tickStep;
 				offset = offset.Clamp(0f, 1f);
 				if (offset == 0f || offset == 1f)
 					tickStep *= -1;
 			}
-		}
 
-		public void SetIndeterminate(bool value)
-		{
-			Indeterminate = value;
-			offset = 0f;
+			wasIndeterminate = indeterminate;
 		}
 
 		public override Widget Clone() { return new ProgressBarWidget(this); }

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void ShowDownloadDialog()
 		{
 			statusLabel.GetText = () => "Initializing...";
-			progressBar.SetIndeterminate(true);
+			progressBar.Indeterminate = true;
 			var retryButton = panel.Get<ButtonWidget>("RETRY_BUTTON");
 			retryButton.IsVisible = () => false;
 
@@ -55,9 +55,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			Action<DownloadProgressChangedEventArgs> onDownloadProgress = i =>
 			{
-				if (progressBar.Indeterminate)
-					progressBar.SetIndeterminate(false);
-
+				progressBar.Indeterminate = false;
 				progressBar.Percentage = i.ProgressPercentage;
 				statusLabel.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived / 1024, i.TotalBytesToReceive / 1024);
 			};
@@ -91,7 +89,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				// Automatically extract
 				statusLabel.GetText = () => "Extracting...";
-				progressBar.SetIndeterminate(true);
+				progressBar.Indeterminate = true;
 				if (InstallUtils.ExtractZip(file, dest, onExtractProgress, onError))
 				{
 					Game.RunAfterTick(() =>
