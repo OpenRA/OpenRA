@@ -49,6 +49,9 @@ namespace OpenRA.Mods.RA
 			if (e.Attacker.Owner == self.Owner)
 				return;
 
+			if (e.Attacker == self.World.WorldActor)
+				return;
+
 			if (e.Attacker.Owner.IsAlliedWith(self.Owner) && e.Damage <= 0)
 				return;
 
