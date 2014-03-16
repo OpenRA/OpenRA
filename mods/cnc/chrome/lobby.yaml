@@ -161,6 +161,7 @@ Container@SERVER_LOBBY:
 			Width:140
 			Height:35
 			Text:Leave Game
+			Key: escape
 		Button@MUSIC_BUTTON:
 			X:450
 			Y:499

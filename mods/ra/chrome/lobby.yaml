@@ -164,4 +164,5 @@ Background@SERVER_LOBBY:
 			Height:25
 			Text:Disconnect
 			Font:Bold
+			Key: escape
 		TooltipContainer@TOOLTIP_CONTAINER:
