@@ -482,6 +482,8 @@
     <Compile Include="Widgets\Logic\GameTimerLogic.cs" />
     <Compile Include="Immobile.cs" />
     <Compile Include="Widgets\Logic\ReplayControlBarLogic.cs" />
+    <Compile Include="World\BuildableTerrainLayer.cs" />
+    <Compile Include="Buildings\LaysTerrain.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
