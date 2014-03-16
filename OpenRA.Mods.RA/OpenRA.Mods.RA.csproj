@@ -485,6 +485,7 @@
     <Compile Include="World\BuildableTerrainLayer.cs" />
     <Compile Include="Buildings\LaysTerrain.cs" />
     <Compile Include="RemoveImmediately.cs" />
+    <Compile Include="Attack\AttackFollow.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

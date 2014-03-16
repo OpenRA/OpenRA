@@ -25,7 +25,8 @@ namespace OpenRA.Mods.RA
 
 		public override void DoAttack(Actor self, Target target)
 		{
-			if (!CanAttack(self, target)) return;
+			if (!CanAttack(self, target))
+				return;
 
 			var arm = Armaments.FirstOrDefault();
 			if (arm == null)
@@ -34,9 +35,8 @@ namespace OpenRA.Mods.RA
 			if (!target.IsInRange(self.CenterPosition, arm.Weapon.Range))
 				return;
 
-			var facing = self.TraitOrDefault<IFacing>();
 			foreach (var a in Armaments)
-				a.CheckFire(self, facing, target);
+				a.CheckFire(self, facing.Value, target);
 
 			if (target.Actor != null)
 				target.Actor.ChangeOwner(self.Owner);

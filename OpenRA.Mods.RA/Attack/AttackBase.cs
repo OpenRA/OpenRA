@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -35,6 +36,7 @@ namespace OpenRA.Mods.RA
 		protected Lazy<IFacing> facing;
 		Lazy<IEnumerable<Armament>> armaments;
 		protected IEnumerable<Armament> Armaments { get { return armaments.Value; } }
+		protected Lazy<Building> building;
 
 		public AttackBase(Actor self, AttackBaseInfo info)
 		{
@@ -43,11 +45,16 @@ namespace OpenRA.Mods.RA
 
 			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
 			facing = Lazy.New(() => self.TraitOrDefault<IFacing>());
+			building = Lazy.New(() => self.TraitOrDefault<Building>());
 		}
 
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
 			if (!self.IsInWorld)
+				return false;
+
+			// Building is under construction or is being sold
+			if (building.Value != null && !building.Value.BuildComplete)
 				return false;
 
 			if (!target.IsValidFor(self))
