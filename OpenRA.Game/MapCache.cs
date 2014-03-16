@@ -57,7 +57,7 @@ namespace OpenRA
 			}
 		}
 
-		static IEnumerable<string> FindMapsIn(string dir)
+		public static IEnumerable<string> FindMapsIn(string dir)
 		{
 			string[] noMaps = { };
 
