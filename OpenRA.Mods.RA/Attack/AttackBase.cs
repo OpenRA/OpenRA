@@ -20,6 +20,9 @@ namespace OpenRA.Mods.RA
 {
 	public abstract class AttackBaseInfo : ITraitInfo
 	{
+		[Desc("Armament names")]
+		public readonly string[] Armaments = { "primary", "secondary" };
+
 		public readonly string Cursor = "attack";
 		public readonly string OutsideRangeCursor = "attackoutsiderange";
 
@@ -29,21 +32,24 @@ namespace OpenRA.Mods.RA
 	public abstract class AttackBase : IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
 		[Sync] public bool IsAttacking { get; internal set; }
+		public IEnumerable<Armament> Armaments { get { return GetArmaments(); } }
+		protected Lazy<IFacing> facing;
+		protected Lazy<Building> building;
+		protected Func<IEnumerable<Armament>> GetArmaments;
 
 		readonly Actor self;
 		readonly AttackBaseInfo info;
-
-		protected Lazy<IFacing> facing;
-		Lazy<IEnumerable<Armament>> armaments;
-		protected IEnumerable<Armament> Armaments { get { return armaments.Value; } }
-		protected Lazy<Building> building;
 
 		public AttackBase(Actor self, AttackBaseInfo info)
 		{
 			this.self = self;
 			this.info = info;
 
-			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
+			var armaments = Lazy.New(() => self.TraitsImplementing<Armament>()
+				.Where(a => info.Armaments.Contains(a.Info.Name)));
+
+			GetArmaments = () => armaments.Value;
+
 			facing = Lazy.New(() => self.TraitOrDefault<IFacing>());
 			building = Lazy.New(() => self.TraitOrDefault<Building>());
 		}

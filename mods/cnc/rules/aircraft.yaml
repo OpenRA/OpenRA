@@ -197,6 +197,7 @@ A10:
 	RenderUnit:
 	WithShadow:
 	AttackBomber:
+		Armaments: gun, bombs
 		Guns: gun
 		Bombs: bombs
 	Armament@GUNS:
