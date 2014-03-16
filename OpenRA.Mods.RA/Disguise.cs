@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,69 +16,73 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SpyToolTipInfo : TooltipInfo, Requires<SpyInfo>
+	class DisguiseToolTipInfo : TooltipInfo, Requires<DisguiseInfo>
 	{
-		public override object Create (ActorInitializer init) { return new SpyToolTip(init.self, this); }
+		public override object Create (ActorInitializer init) { return new DisguiseToolTip(init.self, this); }
 	}
 
-	class SpyToolTip : IToolTip
+	class DisguiseToolTip : IToolTip
 	{
 		Actor self;
-		TooltipInfo Info;
-		Spy spy;
+		TooltipInfo info;
+		Disguise disguise;
+
+		public DisguiseToolTip(Actor self, TooltipInfo info)
+		{
+			this.self = self;
+			this.info = info;
+			disguise = self.Trait<Disguise>();
+		}
 
 		public string Name()
 		{
-			if (spy.Disguised)
+			if (disguise.Disguised)
 			{
 				if (self.Owner == self.World.LocalPlayer)
-					return "{0} ({1})".F(Info.Name, spy.disguisedAsName);
-				return spy.disguisedAsName;
+					return "{0} ({1})".F(info.Name, disguise.AsName);
+
+				return disguise.AsName;
 			}
-			return Info.Name;
+			return info.Name;
 		}
 
 		public Player Owner()
 		{
-			if (spy.Disguised)
+			if (disguise.Disguised)
 			{
 				if (self.Owner == self.World.LocalPlayer)
 					return self.Owner;
-				return spy.disguisedAsPlayer;
+
+				return disguise.AsPlayer;
 			}
 			return self.Owner;
 		}
-
-		public SpyToolTip( Actor self, TooltipInfo info )
-		{
-			this.self = self;
-			Info = info;
-			spy = self.Trait<Spy>();
-		}
 	}
 
+	class DisguiseInfo : TraitInfo<Disguise> { }
 
-	class SpyInfo : TraitInfo<Spy> { }
-
-	class Spy : IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
+	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
 	{
-		public Player disguisedAsPlayer;
-		public string disguisedAsSprite, disguisedAsName;
+		public Player AsPlayer;
+		public string AsSprite;
+		public string AsName;
 
-		public bool Disguised {  get { return disguisedAsPlayer != null; }	}
+		public bool Disguised { get { return AsPlayer != null; } }
+		public Player Owner { get { return AsPlayer; } }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter("Disguise", "Disguise", 7, "ability", true, true) { ForceAttack=false };
+				yield return new TargetTypeOrderTargeter("Disguise", "Disguise", 7, "ability", true, true) { ForceAttack = false };
 			}
 		}
 
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
-			if( order.OrderID == "Disguise" )
+			if (order.OrderID == "Disguise")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+
 			return null;
 		}
 
@@ -97,7 +101,7 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Disguise") ? "Attack" : null;
+			return order.OrderString == "Disguise" ? "Attack" : null;
 		}
 
 		public Color RadarColorOverride(Actor self)
@@ -105,25 +109,24 @@ namespace OpenRA.Mods.RA
 			if (!Disguised || self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return self.Owner.Color.RGB;
 
-			return disguisedAsPlayer.Color.RGB;
+			return AsPlayer.Color.RGB;
 		}
 
 		void DisguiseAs(Actor target)
 		{
 			var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
-			disguisedAsName = tooltip.Name();
-			disguisedAsPlayer = tooltip.Owner();
-			disguisedAsSprite = target.Trait<RenderSprites>().GetImage(target);
+			AsName = tooltip.Name();
+			AsPlayer = tooltip.Owner();
+			AsSprite = target.Trait<RenderSprites>().GetImage(target);
 		}
 
 		void DropDisguise()
 		{
-			disguisedAsName = null;
-			disguisedAsPlayer = null;
-			disguisedAsSprite = null;
+			AsName = null;
+			AsPlayer = null;
+			AsSprite = null;
 		}
 
-		/* lose our disguise if we attack anything */
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { DropDisguise(); }
 	}
 

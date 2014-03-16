@@ -150,6 +150,19 @@ namespace OpenRA.Utility
 						node.Key = "Immobile";
 				}
 
+				// Spy was renamed to Disguise
+				if (engineVersion < 20140314)
+				{
+					if (depth == 1 && node.Key == "Spy")
+						node.Key = "Disguise";
+
+					if (depth == 1 && node.Key == "SpyToolTip")
+						node.Key = "DisguiseToolTip";
+
+					if (depth == 1 && node.Key == "RenderSpy")
+						node.Key = "RenderDisguise";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

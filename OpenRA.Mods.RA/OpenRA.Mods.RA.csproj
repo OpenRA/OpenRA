@@ -320,7 +320,7 @@
     <Compile Include="Render\RenderHarvester.cs" />
     <Compile Include="Render\RenderInfantry.cs" />
     <Compile Include="Render\RenderInfantryPanic.cs" />
-    <Compile Include="Render\RenderSpy.cs" />
+    <Compile Include="Render\RenderDisguise.cs" />
     <Compile Include="Render\RenderLandingCraft.cs" />
     <Compile Include="Render\RenderUnit.cs" />
     <Compile Include="Render\RenderUnitReload.cs" />
@@ -348,7 +348,7 @@
     <Compile Include="SmokeTrailWhenDamaged.cs" />
     <Compile Include="SpawnMPUnits.cs" />
     <Compile Include="SpawnMapActors.cs" />
-    <Compile Include="Spy.cs" />
+    <Compile Include="Disguise.cs" />
     <Compile Include="StoresOre.cs" />
     <Compile Include="StrategicVictoryConditions.cs" />
     <Compile Include="SupplyTruck.cs" />

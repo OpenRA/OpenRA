@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -29,8 +29,10 @@ namespace OpenRA
 		Lazy<IOccupySpace> occupySpace;
 		Lazy<IFacing> facing;
 		Lazy<Health> health;
+		Lazy<IEffectiveOwner> effectiveOwner;
 
 		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
+		public IEffectiveOwner EffectiveOwner { get { return effectiveOwner.Value; } }
 
 		public CPos Location { get { return occupySpace.Value.TopLeft; } }
 		public WPos CenterPosition { get { return occupySpace.Value.CenterPosition; } }
@@ -74,6 +76,7 @@ namespace OpenRA
 
 			facing = Lazy.New(() => TraitOrDefault<IFacing>());
 			health = Lazy.New(() => TraitOrDefault<Health>());
+			effectiveOwner = Lazy.New(() => TraitOrDefault<IEffectiveOwner>());
 
 			applyIRender = (x, wr) => x.Render(this, wr);
 			applyRenderModifier = (m, p, wr) => p.ModifyRender(this, wr, m);
