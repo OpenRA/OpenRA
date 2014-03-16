@@ -147,30 +147,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			List<Widget> rows = new List<Widget>();
 
-			Game.RunAfterTick(() =>
-			{
-				serverList.RemoveChildren();
-				currentServer = null;
-
-				if (games == null)
-				{
-					searchStatus = SearchStatus.Failed;
-					return;
-				}
-
-				if (!games.Any())
-				{
-					searchStatus = SearchStatus.NoGames;
-					return;
-				}
-
-				currentServer = games.FirstOrDefault();
-				searchStatus = SearchStatus.Hidden;
-
-				foreach (var row in rows)
-					serverList.AddChild(row);
-			});
-
 			foreach (var loop in games.OrderByDescending(g => g.CanJoin()).ThenByDescending(g => g.Players))
 			{
 				var game = loop;
@@ -241,6 +217,34 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (!Filtered(game))
 					rows.Add(item);
 			}
+
+			Game.RunAfterTick(() =>
+			{
+				serverList.RemoveChildren();
+				currentServer = null;
+
+				if (games == null)
+				{
+					searchStatus = SearchStatus.Failed;
+					return;
+				}
+
+				if (!games.Any())
+				{
+					searchStatus = SearchStatus.NoGames;
+					return;
+				}
+
+				currentServer = games.FirstOrDefault();
+				searchStatus = SearchStatus.Hidden;
+
+				// Search for any unknown maps
+				if (Game.Settings.Game.AllowDownloading)
+					Game.modData.MapCache.QueryRemoteMapDetails(games.Where(g => !Filtered(g)).Select(g => g.Map));
+
+				foreach (var row in rows)
+					serverList.AddChild(row);
+			});
 		}
 
 		void OpenLobby()
