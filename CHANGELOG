@@ -27,6 +27,9 @@ NEW:
 		Fixed the game sometimes crashing when deploying and activating the guard cursor at the same time.
 		Build time is now set when an item reaches the front of a queue, instead of immediately when queued.
 		The attack cursor now changes if the target is out of range.
+		The server browser will now show map details from other mods if the maps are available online.
+		Fixed a crash when connecting to a server with an unavailable map.
+		Added a warning dialog when force starting a match.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
