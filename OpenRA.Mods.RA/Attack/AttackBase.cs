@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public abstract object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice, ISync
+	public abstract class AttackBase : IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
 		[Sync] public bool IsAttacking { get; internal set; }
 
@@ -35,7 +35,6 @@ namespace OpenRA.Mods.RA
 		protected Lazy<IFacing> facing;
 		Lazy<IEnumerable<Armament>> armaments;
 		protected IEnumerable<Armament> Armaments { get { return armaments.Value; } }
-		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public AttackBase(Actor self, AttackBaseInfo info)
 		{
@@ -63,38 +62,13 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		public bool ShouldExplode(Actor self) { return !IsReloading(); }
-
-		public bool IsReloading() { return Armaments.Any(a => a.IsReloading); }
-
-		public virtual void Tick(Actor self)
-		{
-			for (var i = 0; i < delayedActions.Count; i++)
-			{
-				var x = delayedActions[i];
-				if (--x.First <= 0)
-					x.Second();
-				delayedActions[i] = x;
-			}
-
-			delayedActions.RemoveAll(a => a.First <= 0);
-		}
-
-		internal void ScheduleDelayedAction(int t, Action a)
-		{
-			if (t > 0)
-				delayedActions.Add(Pair.New(t, a));
-			else
-				a();
-		}
-
 		public virtual void DoAttack(Actor self, Target target)
 		{
 			if (!CanAttack(self, target))
 				return;
 
 			foreach (var a in Armaments)
-				a.CheckFire(self, this, facing.Value, target);
+				a.CheckFire(self, facing.Value, target);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders

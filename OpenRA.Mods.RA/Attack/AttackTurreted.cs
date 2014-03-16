@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new AttackTurreted(init.self, this); }
 	}
 
-	class AttackTurreted : AttackBase, INotifyBuildComplete, ISync
+	class AttackTurreted : AttackBase, ITick, INotifyBuildComplete, ISync
 	{
 		public Target Target { get; protected set; }
 		protected IEnumerable<Turreted> turrets;
@@ -53,9 +53,8 @@ namespace OpenRA.Mods.RA
 			return base.CanAttack(self, target);
 		}
 
-		public override void Tick(Actor self)
+		public void Tick(Actor self)
 		{
-			base.Tick(self);
 			DoAttack(self, Target);
 			IsAttacking = Target.IsValidFor(self);
 		}

@@ -41,12 +41,10 @@ namespace OpenRA.Mods.RA
 			charges = aci.MaxCharges;
 		}
 
-		public override void Tick(Actor self)
+		public void Tick(Actor self)
 		{
 			if (--timeToRecharge <= 0)
 				charges = aci.MaxCharges;
-
-			base.Tick(self);
 		}
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)

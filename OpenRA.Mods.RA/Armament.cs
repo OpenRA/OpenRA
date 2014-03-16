@@ -47,13 +47,15 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
 	}
 
-	public class Armament : ITick
+	public class Armament : ITick, IExplodeModifier
 	{
 		public readonly ArmamentInfo Info;
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
 		Lazy<Turreted> Turret;
 		Lazy<IBodyOrientation> Coords;
+		Lazy<LimitedAmmo> limitedAmmo;
+		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public WRange Recoil;
 		public int FireDelay { get; private set; }
@@ -66,6 +68,7 @@ namespace OpenRA.Mods.RA
 			// We can't resolve these until runtime
 			Turret = Lazy.New(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
 			Coords = Lazy.New(() => self.Trait<IBodyOrientation>());
+			limitedAmmo = Lazy.New(() => self.TraitOrDefault<LimitedAmmo>());
 
 			Weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;
@@ -94,17 +97,34 @@ namespace OpenRA.Mods.RA
 			if (FireDelay > 0)
 				--FireDelay;
 			Recoil = new WRange(Math.Max(0, Recoil.Range - Info.RecoilRecovery.Range));
+
+			for (var i = 0; i < delayedActions.Count; i++)
+			{
+				var x = delayedActions[i];
+				if (--x.First <= 0)
+					x.Second();
+				delayedActions[i] = x;
+			}
+
+			delayedActions.RemoveAll(a => a.First <= 0);
+		}
+
+		void ScheduleDelayedAction(int t, Action a)
+		{
+			if (t > 0)
+				delayedActions.Add(Pair.New(t, a));
+			else
+				a();
 		}
 
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
-		public void CheckFire(Actor self, AttackBase attack, IFacing facing, Target target)
+		public void CheckFire(Actor self, IFacing facing, Target target)
 		{
 			if (FireDelay > 0)
 				return;
 
-			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
+			if (limitedAmmo.Value != null && !limitedAmmo.Value.HasAmmo())
 				return;
 
 			if (!target.IsInRange(self.CenterPosition, Weapon.Range))
@@ -134,7 +154,7 @@ namespace OpenRA.Mods.RA
 				GuidedTarget = target
 			};
 
-			attack.ScheduleDelayedAction(Info.FireDelay, () =>
+			ScheduleDelayedAction(Info.FireDelay, () =>
 			{
 				if (args.Weapon.Projectile != null)
 				{
@@ -162,6 +182,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public bool IsReloading { get { return FireDelay > 0; } }
+		public bool ShouldExplode(Actor self) { return !IsReloading; }
 
 		public WVec MuzzleOffset(Actor self, Barrel b)
 		{

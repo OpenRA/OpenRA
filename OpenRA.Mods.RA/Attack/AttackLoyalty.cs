@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 
 			var facing = self.TraitOrDefault<IFacing>();
 			foreach (var a in Armaments)
-				a.CheckFire(self, this, facing, target);
+				a.CheckFire(self, facing, target);
 
 			if (target.Actor != null)
 				target.Actor.ChangeOwner(self.Owner);

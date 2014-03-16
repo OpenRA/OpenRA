@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new AttackBomber(init.self, this); }
 	}
 
-	class AttackBomber : AttackBase, ISync, INotifyRemovedFromWorld
+	class AttackBomber : AttackBase, ITick, ISync, INotifyRemovedFromWorld
 	{
 		AttackBomberInfo info;
 		[Sync] Target target;
@@ -43,10 +43,8 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public override void Tick(Actor self)
+		public void Tick(Actor self)
 		{
-			base.Tick(self);
-
 			var cp = self.CenterPosition;
 			var bombTarget = Target.FromPos(cp - new WVec(0, 0, cp.Z));
 			var wasInAttackRange = inAttackRange;
@@ -59,7 +57,7 @@ namespace OpenRA.Mods.RA
 					continue;
 
 				inAttackRange = true;
-				a.CheckFire(self, this, facing.Value, bombTarget);
+				a.CheckFire(self, facing.Value, bombTarget);
 			}
 
 			// Guns only fire when approaching the target
@@ -74,7 +72,7 @@ namespace OpenRA.Mods.RA
 
 					var t = Target.FromPos(cp - new WVec(0, a.Weapon.Range.Range / 2, cp.Z).Rotate(WRot.FromFacing(f)));
 					inAttackRange = true;
-					a.CheckFire(self, this, facing.Value, t);
+					a.CheckFire(self, facing.Value, t);
 				}
 			}
 
