@@ -1,3 +1,13 @@
+concretea:
+	icon: DATA
+		Start:4050
+		Offset: -30,-24
+
+concreteb:
+	icon: DATA
+		Start:4053
+		Offset: -30,-24
+
 walla:
 	idle: DATA
 		Frames: 2527, 2530, 2528, 2538, 2531, 2532, 2542, 2535, 2529, 2539, 2533, 2534, 2540, 2536, 2537, 2541

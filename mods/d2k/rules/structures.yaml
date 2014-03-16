@@ -1,3 +1,42 @@
+^CONCRETE:
+	Building:
+		Adjacent: 4
+		TerrainTypes: Rock
+		BuildSounds: BUILD1.WAV
+		AllowInvalidPlacement: true
+	LaysTerrain:
+		Template: 88
+		TerrainTypes: Rock
+	Tooltip:
+		Name: Concrete
+		Description: Provides a strong foundation that prevents\ndamage from the terrain.
+	RenderSprites:
+	RemoveImmediately:
+
+CONCRETEA:
+	Inherits: ^CONCRETE
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder:10
+		Owner: atreides, harkonnen, ordos
+	Valued:
+		Cost: 20
+
+CONCRETEB:
+	Inherits: ^CONCRETE
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 10
+		Owner: atreides, harkonnen, ordos
+	Valued:
+		Cost: 50
+
 ^CONYARD:
 	Inherits: ^Building
 	Building:
@@ -5,6 +44,9 @@
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Adjacent: 4
+	LaysTerrain:
+		TerrainTypes: Rock
+		Template: 88
 	Bib:
 	Buildable:
 		Queue: Building

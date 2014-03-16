@@ -88,6 +88,7 @@ World:
 		Race: ordos
 	DomainIndex:
 	PathfinderDebugOverlay:
+	BuildableTerrainLayer:
 	D2kResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@Spice:
