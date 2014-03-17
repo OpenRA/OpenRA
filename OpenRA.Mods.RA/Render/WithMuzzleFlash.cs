@@ -19,67 +19,56 @@ namespace OpenRA.Mods.RA.Render
 {
 	class WithMuzzleFlashInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>, Requires<ArmamentInfo>
 	{
-		[Desc("Sequence name to use")]
-		public readonly string Sequence = "muzzle";
-
-		[Desc("Armament name")]
-		public readonly string Armament = "primary";
-
-		[Desc("Are the muzzle facings split into multiple shps?")]
-		public readonly bool SplitFacings = false;
-
-		[Desc("Number of separate facing images that are defined in the sequences.")]
-		public readonly int FacingCount = 8;
-
-		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self); }
 	}
 
 	class WithMuzzleFlash : INotifyAttack, IRender, ITick
 	{
-		readonly WithMuzzleFlashInfo info;
 		Dictionary<Barrel, bool> visible = new Dictionary<Barrel, bool>();
 		Dictionary<Barrel, AnimationWithOffset> anims = new Dictionary<Barrel, AnimationWithOffset>();
 		Func<int> getFacing;
 
-		public WithMuzzleFlash(Actor self, WithMuzzleFlashInfo info)
+		public WithMuzzleFlash(Actor self)
 		{
-			this.info = info;
 			var render = self.Trait<RenderSprites>();
 			var facing = self.TraitOrDefault<IFacing>();
 
-			var arm = self.TraitsImplementing<Armament>()
-				.Single(a => a.Info.Name == info.Armament);
-
-			foreach (var b in arm.Barrels)
+			foreach (var arm in self.TraitsImplementing<Armament>())
 			{
-				var barrel = b;
-				var turreted = self.TraitsImplementing<Turreted>()
-					.FirstOrDefault(t => t.Name ==  arm.Info.Turret);
+				// Skip armaments that don't define muzzles
+				if (arm.Info.MuzzleSequence == null)
+					continue;
 
-				getFacing = turreted != null ? () => turreted.turretFacing :
-					facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
+				foreach (var b in arm.Barrels)
+				{
+					var barrel = b;
+					var turreted = self.TraitsImplementing<Turreted>()
+						.FirstOrDefault(t => t.Name ==  arm.Info.Turret);
 
-				var muzzleFlash = new Animation(render.GetImage(self), getFacing);
-				visible.Add(barrel, false);
-				anims.Add(barrel,
-			    	new AnimationWithOffset(muzzleFlash,
-						() => arm.MuzzleOffset(self, barrel),
-						() => !visible[barrel],
-						p => WithTurret.ZOffsetFromCenter(self, p, 2)));
+					getFacing = turreted != null ? () => turreted.turretFacing :
+						facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
+
+					var muzzleFlash = new Animation(render.GetImage(self), getFacing);
+					visible.Add(barrel, false);
+					anims.Add(barrel,
+				    	new AnimationWithOffset(muzzleFlash,
+							() => arm.MuzzleOffset(self, barrel),
+							() => !visible[barrel],
+							p => WithTurret.ZOffsetFromCenter(self, p, 2)));
+				}
 			}
 		}
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (a.Info.Name != info.Armament)
+			var sequence = a.Info.MuzzleSequence;
+			if (sequence == null)
 				return;
 
+			if (a.Info.MuzzleSplitFacings > 0)
+				sequence += Traits.Util.QuantizeFacing(getFacing(), a.Info.MuzzleSplitFacings).ToString();
+
 			visible[barrel] = true;
-			var sequence = info.Sequence;
-
-			if (info.SplitFacings)
-				sequence += Traits.Util.QuantizeFacing(getFacing(), info.FacingCount).ToString();
-
 			anims[barrel].Animation.PlayThen(sequence, () => visible[barrel] = false);
 		}
 

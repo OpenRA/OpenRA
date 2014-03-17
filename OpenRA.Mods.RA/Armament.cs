@@ -44,6 +44,12 @@ namespace OpenRA.Mods.RA
 		[Desc("Recoil recovery per-frame")]
 		public readonly WRange RecoilRecovery = new WRange(9);
 
+		[Desc("Muzzle flash sequence to render")]
+		public readonly string MuzzleSequence = null;
+
+		[Desc("Use multiple muzzle images if non-zero")]
+		public readonly int MuzzleSplitFacings = 0;
+
 		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
 	}
 
