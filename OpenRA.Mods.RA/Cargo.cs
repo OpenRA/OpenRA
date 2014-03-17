@@ -44,9 +44,21 @@ namespace OpenRA.Mods.RA
 			self = init.self;
 			Info = info;
 
-			if (init.Contains<CargoInit>())
+			if (init.Contains<RuntimeCargoInit>())
 			{
-				cargo = init.Get<CargoInit, Actor[]>().ToList();
+				cargo = init.Get<RuntimeCargoInit, Actor[]>().ToList();
+				totalWeight = cargo.Sum(c => GetWeight(c));
+			}
+			else if (init.Contains<CargoInit>())
+			{
+				foreach (var u in init.Get<CargoInit, string[]>())
+				{
+					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
+						new TypeDictionary { new OwnerInit(self.Owner) });
+
+					cargo.Add(unit);
+				}
+
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
 			else
@@ -56,9 +68,10 @@ namespace OpenRA.Mods.RA
 					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
 						new TypeDictionary { new OwnerInit(self.Owner) });
 
-					if (CanLoad(self, unit))
-						Load(self, unit);
+					cargo.Add(unit);
 				}
+
+				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
 		}
 
@@ -186,8 +199,19 @@ namespace OpenRA.Mods.RA
 			});
 		}
 
+		bool initialized;
 		public void Tick(Actor self)
 		{
+			// Notify initial cargo load
+			if (!initialized)
+			{
+				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+					foreach (var c in cargo)
+						npe.PassengerEntered(self, c);
+
+				initialized = true;
+			}
+
 			var cell = self.CenterPosition.ToCPos();
 			if (currentCell != cell)
 			{
@@ -200,12 +224,21 @@ namespace OpenRA.Mods.RA
 	public interface INotifyPassengerEntered { void PassengerEntered(Actor self, Actor passenger); }
 	public interface INotifyPassengerExited { void PassengerExited(Actor self, Actor passenger); }
 
-	public class CargoInit : IActorInit<Actor[]>
+	public class RuntimeCargoInit : IActorInit<Actor[]>
 	{
 		[FieldFromYamlKey]
 		public readonly Actor[] value = { };
-		public CargoInit() { }
-		public CargoInit(Actor[] init) { value = init; }
+		public RuntimeCargoInit() { }
+		public RuntimeCargoInit(Actor[] init) { value = init; }
 		public Actor[] Value(World world) { return value; }
+	}
+
+	public class CargoInit : IActorInit<string[]>
+	{
+		[FieldFromYamlKey]
+		public readonly string[] value = { };
+		public CargoInit() { }
+		public CargoInit(string[] init) { value = init; }
+		public string[] Value(World world) { return value; }
 	}
 }

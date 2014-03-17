@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA.Activities
 
 				var cargo = self.TraitOrDefault<Cargo>();
 				if (cargo != null)
-					init.Add( new CargoInit( cargo.Passengers.ToArray() ) );
+					init.Add( new RuntimeCargoInit( cargo.Passengers.ToArray() ) );
 
 				var a = w.CreateActor( ToActor, init );
 
