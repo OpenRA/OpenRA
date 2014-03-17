@@ -56,7 +56,7 @@ NEW:
 		Added a desert variation of the Missile Silo by Kilkakon.
 		Removed the temperate shellmap and improved the design and performance of the desert shellmap.
 		Removed the hardcoded missions. These will be later reimplemented.
-		Removed maps: Battle Lake, Crossing the River, Doughnut Hole, Ice Woods, Island Hoppers (KOTH), Mad Scramble, Nishnekolymsk, Strip Mine
+		Removed maps: Battle Lake, Crossing the River, Doughnut Hole, Ice Woods, Island Hoppers (KOTH), Mad Scramble, Nishnekolymsk, Strip Mine, Free Coasts
 		Fixed spies staying on the minimap after infiltration.
 		Added maps: Blitzkrieg and Burlesca by s1w.
 		Both Allied and Soviet factions now build general-purpose mines instead of AT and AP mines respectively.
