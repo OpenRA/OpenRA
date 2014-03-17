@@ -181,8 +181,11 @@ namespace OpenRA.Traits
 		Color GetHealthColor(Health health)
 		{
 			if (Game.Settings.Game.TeamHealthColors)
-				return self.Owner.IsAlliedWith(self.World.LocalPlayer) ? Color.LimeGreen :
-						self.Owner.NonCombatant ? Color.Tan : Color.Red;
+			{
+				var isAlly = self.Owner.IsAlliedWith(self.World.LocalPlayer)
+					|| (self.IsDisguised() && self.World.LocalPlayer.IsAlliedWith(self.EffectiveOwner.Owner));
+				return isAlly ?	Color.LimeGreen : self.Owner.NonCombatant ? Color.Tan : Color.Red;
+			}
 			else
 				return health.DamageState == DamageState.Critical ? Color.Red :
 						health.DamageState == DamageState.Heavy ? Color.Yellow : Color.LimeGreen;
