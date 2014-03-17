@@ -1320,25 +1320,6 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
       end
     end
 
-    if (spec.api == "lua") then
-      -- Get the items in the global "wx" table for autocompletion
-      if not wxkeywords then
-        local keyword_table = {}
-        for index in pairs(wx) do
-          table.insert(keyword_table, "wx."..index.." ")
-        end
-
-        for index in pairs(wxstc) do
-          table.insert(keyword_table, "wxstc."..index.." ")
-        end
-
-        table.sort(keyword_table)
-        wxkeywords = table.concat(keyword_table)
-      end
-      local offset = spec.keywords and #spec.keywords or 5
-      editor:SetKeyWords(offset, wxkeywords)
-    end
-
     editor.api = GetApi(spec.apitype or "none")
     editor.spec = spec
   else
