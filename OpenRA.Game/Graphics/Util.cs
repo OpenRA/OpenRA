@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
@@ -57,6 +59,36 @@ namespace OpenRA.Graphics
 				}
 				destOffset += destSkip;
 			}
+		}
+
+		public static void FastCopyIntoSprite(Sprite dest, Bitmap src)
+		{
+			var destStride = dest.sheet.Size.Width;
+			var width = dest.bounds.Width;
+			var height = dest.bounds.Height;
+
+			var srcData = src.LockBits(src.Bounds(),
+				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+			unsafe
+			{
+				var c = (int*)srcData.Scan0;
+
+				// Cast the data to an int array so we can copy the src data directly
+				fixed (byte* bd = &dest.sheet.Data[0])
+				{
+					var data = (int*)bd;
+					var x = dest.bounds.Left;
+					var y = dest.bounds.Top;
+
+					for (var j = 0; j < height; j++)
+						for (var i = 0; i < width; i++)
+							data[(y + j) * destStride + x + i] = *(c + (j * srcData.Stride >> 2) + i);
+				}
+			}
+
+			src.UnlockBits(srcData);
+
 		}
 
 		public static float[] IdentityMatrix()

@@ -370,7 +370,7 @@ namespace OpenRA
 			modData = new ModData(mod);
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.InitializeLoaders();
-			modData.LoadMaps();
+			modData.MapCache.LoadMaps();
 
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
@@ -401,7 +401,7 @@ namespace OpenRA
 					if (Settings.Server.DedicatedLoop)
 					{
 						Console.WriteLine("Starting a new server instance...");
-						modData.LoadMaps();
+						modData.MapCache.LoadMaps();
 						continue;
 					}
 
@@ -426,13 +426,14 @@ namespace OpenRA
 
 		static string ChooseShellmap()
 		{
-			var shellmaps = modData.AvailableMaps
-				.Where(m => m.Value.UseAsShellmap);
+			var shellmaps = modData.MapCache
+				.Where(m => m.Status == MapStatus.Available && m.Map.UseAsShellmap)
+				.Select(m => m.Uid);
 
 			if (!shellmaps.Any())
 				throw new InvalidDataException("No valid shellmaps available");
 
-			return shellmaps.Random(CosmeticRandom).Key;
+			return shellmaps.Random(CosmeticRandom);
 		}
 
 		static bool quit;
@@ -553,7 +554,7 @@ namespace OpenRA
 					WebClient webClient = new WebClient();
 					webClient.DownloadFile(url, tempFile);
 					File.Move(tempFile, mapPath);
-					Game.modData.AvailableMaps.Add(mapHash, new Map(mapPath));
+					Game.modData.MapCache[mapHash].UpdateFromMap(new Map(mapPath));
 					Log.Write("debug", "New map has been downloaded to '{0}'", mapPath);
 
 					return true;

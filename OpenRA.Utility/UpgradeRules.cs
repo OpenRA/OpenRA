@@ -301,7 +301,11 @@ namespace OpenRA.Utility
 			}
 
 			Console.WriteLine("Processing Maps:");
-			foreach (var map in Game.modData.FindMaps().Values)
+			var maps = Game.modData.MapCache
+				.Where(m => m.Status == MapStatus.Available)
+				.Select(m => m.Map);
+
+			foreach (var map in maps)
 			{
 				Console.WriteLine("\t" + map.Path);
 				UpgradeActorRules(engineDate, ref map.Rules, null, 0);

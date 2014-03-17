@@ -45,7 +45,7 @@ namespace OpenRA.Editor
 			if (DirectoryIsEmpty(MapFolderPath))
 				return;
 
-			foreach (var map in ModData.FindMapsIn(MapFolderPath))
+			foreach (var map in MapCache.FindMapsIn(MapFolderPath))
 			{
 				ListViewItem map1 = new ListViewItem();
 				map1.Tag = map;

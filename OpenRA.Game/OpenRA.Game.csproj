@@ -129,9 +129,7 @@
     <Compile Include="Network\Order.cs" />
     <Compile Include="Network\OrderIO.cs" />
     <Compile Include="Network\OrderManager.cs" />
-    <Compile Include="Network\Replay.cs" />
     <Compile Include="Network\ReplayConnection.cs" />
-    <Compile Include="Network\ServerList.cs" />
     <Compile Include="Network\Session.cs" />
     <Compile Include="Network\SyncReport.cs" />
     <Compile Include="Network\UnitOrders.cs" />
@@ -232,6 +230,8 @@
     <Compile Include="Traits\World\ActorMap.cs" />
     <Compile Include="Widgets\HotkeyEntryWidget.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
+    <Compile Include="MapCache.cs" />
+    <Compile Include="MapPreview.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

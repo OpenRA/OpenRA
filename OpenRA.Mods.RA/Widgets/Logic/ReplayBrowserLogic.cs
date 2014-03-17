@@ -19,6 +19,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class ReplayBrowserLogic
 	{
 		Widget panel;
+		MapPreview selectedMap = MapCache.UnknownMap;
+		string selectedFilename;
+		string selectedDuration;
+		string selectedPlayers;
+		bool selectedValid;
 
 		[ObjectCreator.UseCtor]
 		public ReplayBrowserLogic(Widget widget, Action onExit, Action onStart)
@@ -44,14 +49,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 
 			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
-			watch.IsDisabled = () => currentReplay == null || currentMap == null || currentReplay.Duration == 0;
+			watch.IsDisabled = () => !selectedValid || selectedMap.Status != MapStatus.Available;
 			watch.OnClick = () => { WatchReplay(); onStart(); };
 
-			panel.Get("REPLAY_INFO").IsVisible = () => currentReplay != null;
+			panel.Get("REPLAY_INFO").IsVisible = () => selectedFilename != null;;
+			panel.Get<LabelWidget>("DURATION").GetText = () => selectedDuration;
+			panel.Get<MapPreviewWidget>("MAP_PREVIEW").Preview = () => selectedMap;
+			panel.Get<LabelWidget>("MAP_TITLE").GetText = () => selectedMap.Title;
+			panel.Get<LabelWidget>("PLAYERS").GetText = () => selectedPlayers;
 		}
-
-		Replay currentReplay;
-		Map currentMap;
 
 		void SelectReplay(string filename)
 		{
@@ -60,32 +66,31 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			try
 			{
-				currentReplay = new Replay(filename);
-				currentMap = currentReplay.Map();
-
-				panel.Get<LabelWidget>("DURATION").GetText =
-					() => WidgetUtils.FormatTime(currentReplay.Duration);
-				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
-				panel.Get<LabelWidget>("MAP_TITLE").GetText =
-					() => currentMap != null ? currentMap.Title : "(Unknown Map)";
-
-				var players = currentReplay.LobbyInfo.Slots
-					.Count(s => currentReplay.LobbyInfo.ClientInSlot(s.Key) != null);
-				panel.Get<LabelWidget>("PLAYERS").GetText = () => players.ToString();
+				using (var conn = new ReplayConnection(filename))
+				{
+					selectedFilename = filename;
+					selectedMap = Game.modData.MapCache[conn.LobbyInfo.GlobalSettings.Map];
+					selectedDuration = WidgetUtils.FormatTime(conn.TickCount * Game.NetTickScale);
+					selectedPlayers = conn.LobbyInfo.Slots
+						.Count(s => conn.LobbyInfo.ClientInSlot(s.Key) != null)
+						.ToString();
+					selectedValid = conn.TickCount > 0;
+				}
 			}
 			catch (Exception e)
 			{
 				Log.Write("debug", "Exception while parsing replay: {0}", e);
-				currentReplay = null;
-				currentMap = null;
+				selectedFilename = null;
+				selectedValid = false;
+				selectedMap = MapCache.UnknownMap;
 			}
 		}
 
 		void WatchReplay()
 		{
-			if (currentReplay != null)
+			if (selectedFilename != null)
 			{
-				Game.JoinReplay(currentReplay.Filename);
+				Game.JoinReplay(selectedFilename);
 				Ui.CloseWindow();
 			}
 		}
@@ -93,7 +98,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void AddReplay(ScrollPanelWidget list, string filename, ScrollItemWidget template)
 		{
 			var item = ScrollItemWidget.Setup(template,
-				() => currentReplay != null && currentReplay.Filename == filename,
+				() => selectedFilename == filename,
 				() => SelectReplay(filename),
 				() => WatchReplay());
 			var f = Path.GetFileName(filename);

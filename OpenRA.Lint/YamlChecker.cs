@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
@@ -52,14 +53,16 @@ namespace OpenRA.Lint
 				AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 				Game.modData = new ModData(mod);
 
-				var maps = new Map[] { new Map() };
-				if (!string.IsNullOrEmpty(map))
-					maps = new Map[] { new Map(map) };
-				else
+				IEnumerable<Map> maps;
+				if (string.IsNullOrEmpty(map))
 				{
-					Game.modData.LoadMaps();
-					maps = Game.modData.AvailableMaps.Values.ToArray();
+					Game.modData.MapCache.LoadMaps();
+					maps = Game.modData.MapCache
+						.Where(m => m.Status == MapStatus.Available)
+						.Select(m => m.Map);
 				}
+				else
+					maps = new [] { new Map(map) };
 
 				foreach (var testMap in maps)
 				{
