@@ -401,9 +401,15 @@ DOME:
 PBOX:
 	Inherits: ^Building
 	Tooltip:
-		Name: Pillbox (Unarmed)
+		Name: Pillbox
 	Building:
 		Power: -15
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 20
+		Prerequisites: tent
+		Owner: allies
+		Hotkey: p
 	-GivesBuildableArea:
 	Valued:
 		Cost: 400
@@ -423,133 +429,67 @@ PBOX:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
+		InitialUnits: e1
 	-EmitInfantryOnSell:
 	DrawLineToTarget:
-	TransformOnPassenger@e1:
-		PassengerTypes: e1
-		OnEnter: pbox.e1
-		OnExit: pbox
-		SkipMakeAnims: true
-	TransformOnPassenger@e3:
-		PassengerTypes: e3
-		OnEnter: pbox.e3
-		OnExit: pbox
-		SkipMakeAnims: true
-	TransformOnPassenger@e4:
-		PassengerTypes: e4
-		OnEnter: pbox.e4
-		OnExit: pbox
-		SkipMakeAnims: true
-	TransformOnPassenger@e7:
-		PassengerTypes: e7
-		OnEnter: pbox.e7
-		OnExit: pbox
-		SkipMakeAnims: true
-	TransformOnPassenger@SHOK:
-		PassengerTypes: shok
-		OnEnter: pbox.shok
-		OnExit: pbox
-		SkipMakeAnims: true
-	TransformOnPassenger@Sniper:
-		PassengerTypes: sniper
-		OnEnter: pbox.sniper
-		OnExit: pbox
-		SkipMakeAnims: true
+	AttackGarrisoned:
+		Armaments: garrisoned
+		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
+		PortYaws: 0, 176, 341, 512, 682, 853
+		PortCones: 86, 86, 86, 86, 86, 86
+	RenderRangeCircle:
+		FallbackRange: 6c0
+	AutoTarget:
 
+# Legacy definitions to keep compatibility with outdated maps
 PBOX.E1:
 	Inherits: PBOX
+	-Buildable:
+	RenderBuilding:
+		Image: PBOX
+
+PBOX.E3:
+	Inherits: PBOX
+	-Buildable:
+	RenderBuilding:
+		Image: PBOX
+
+PBOX.E4:
+	Inherits: PBOX
+	-Buildable:
+	RenderBuilding:
+		Image: PBOX
+
+PBOX.E7:
+	Inherits: PBOX
+	-Buildable:
+	RenderBuilding:
+		Image: PBOX
+
+PBOX.SHOK:
+	Inherits: PBOX
+	-Buildable:
+	RenderBuilding:
+		Image: PBOX
+
+PBOX.SNIPER:
+	Inherits: PBOX
+	-Buildable:
+	RenderBuilding:
+		Image: PBOX
+
+HBOX:
+	Inherits: ^Building
+	Tooltip:
+		Name: Camo Pillbox
+	Building:
+		Power: -15
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: tent
 		Owner: allies
-		Hotkey: p
-	Tooltip:
-		Name: Pillbox (Guns)
-		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
-	RenderBuilding:
-		Image: PBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: Vulcan
-		LocalOffset: 384,0,88
-	AttackTurreted:
-	WithMuzzleFlash:
-	Cargo:
-		InitialUnits: e1
-
-PBOX.E3:
-	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Rockets)
-	RenderBuilding:
-		Image: PBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: Dragon
-		LocalOffset: 384,0,88
-	AttackTurreted:
-
-PBOX.E4:
-	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Flamethrower)
-	RenderBuilding:
-		Image: PBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: Flamer
-		LocalOffset: 384,0,88
-	AttackTurreted:
-
-PBOX.E7:
-	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Tanya)
-	RenderBuilding:
-		Image: PBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: Colt45
-		LocalOffset: 384,0,88
-	AttackTurreted:
-
-PBOX.SHOK:
-	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Tesla)
-	RenderBuilding:
-		Image: PBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: PortaTesla
-		LocalOffset: 384,0,88
-	AttackTurreted:
-
-PBOX.SNIPER:
-	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Sniper)
-	RenderBuilding:
-		Image: PBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: Sniper
-		LocalOffset: 384,0,88
-	AttackTurreted:
-
-HBOX:
-	Inherits: ^Building
-	Tooltip:
-		Name: Camo Pillbox (Unarmed)
-	Building:
-		Power: -15
+		Hotkey: l
 	-GivesBuildableArea:
 	Valued:
 		Cost: 600
@@ -572,129 +512,56 @@ HBOX:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
+		InitialUnits: e1
 	-EmitInfantryOnSell:
 	DrawLineToTarget:
-	TransformOnPassenger@e1:
-		PassengerTypes: e1
-		OnEnter: HBOX.e1
-		OnExit: HBOX
-		SkipMakeAnims: true
-	TransformOnPassenger@e3:
-		PassengerTypes: e3
-		OnEnter: HBOX.e3
-		OnExit: HBOX
-		SkipMakeAnims: true
-	TransformOnPassenger@e4:
-		PassengerTypes: e4
-		OnEnter: HBOX.e4
-		OnExit: HBOX
-		SkipMakeAnims: true
-	TransformOnPassenger@e7:
-		PassengerTypes: e7
-		OnEnter: HBOX.e7
-		OnExit: HBOX
-		SkipMakeAnims: true
-	TransformOnPassenger@SHOK:
-		PassengerTypes: shok
-		OnEnter: HBOX.shok
-		OnExit: HBOX
-		SkipMakeAnims: true
-	TransformOnPassenger@Sniper:
-		PassengerTypes: sniper
-		OnEnter: HBOX.sniper
-		OnExit: HBOX
-		SkipMakeAnims: true
 	DetectCloaked:
 		Range: 6
+	RenderRangeCircle:
+		FallbackRange: 6c0
+	AutoTarget:
+	AttackGarrisoned:
+		Armaments: garrisoned
+		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
+		PortYaws: 0, 176, 341, 512, 682, 853
+		PortCones: 86, 86, 86, 86, 86, 86
 
+# Legacy definitions to keep compatibility with outdated maps
 HBOX.E1:
 	Inherits: HBOX
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 20
-		Prerequisites: tent
-		Owner: allies
-		Hotkey: l
-	Tooltip:
-		Name: Camo Pillbox (Guns)
-		Description: Hidden defensive structure.\nCan detect cloaked units.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+	-Buildable:
 	RenderBuilding:
 		Image: HBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: Vulcan
-		LocalOffset: 400,0,48
-		MuzzleSequence: muzzle
-	AttackTurreted:
-	WithMuzzleFlash:
-	Cargo:
-		InitialUnits: e1
 
 HBOX.E3:
 	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Rockets)
+	-Buildable:
 	RenderBuilding:
 		Image: HBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: Dragon
-		LocalOffset: 400,0,48
-	AttackTurreted:
 
 HBOX.E4:
 	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Flamethrower)
+	-Buildable:
 	RenderBuilding:
 		Image: HBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: Flamer
-		LocalOffset: 400,0,48
-	AttackTurreted:
 
 HBOX.E7:
 	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Tanya)
+	-Buildable:
 	RenderBuilding:
 		Image: HBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: Colt45
-		LocalOffset: 400,0,48
-	AttackTurreted:
 
 HBOX.SHOK:
 	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Tesla)
+	-Buildable:
 	RenderBuilding:
 		Image: HBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: PortaTesla
-		LocalOffset: 400,0,48
-	AttackTurreted:
 
 HBOX.SNIPER:
 	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Sniper)
+	-Buildable:
 	RenderBuilding:
 		Image: HBOX
-	RenderRangeCircle:
-	AutoTarget:
-	Armament:
-		Weapon: Sniper
-		LocalOffset: 400,0,48
-	AttackTurreted:
 
 GUN:
 	Inherits: ^Building

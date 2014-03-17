@@ -64,6 +64,10 @@ e1:
 		Start: 0
 		Length: 6
 		Tick: 1600
+	garrison-muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
 	icon: e1icon
 		Start: 0
 
@@ -132,6 +136,11 @@ sniper:
 		Start: 0
 		Length: 6
 		Tick: 1600
+	garrison-muzzle: minigun
+		Start: 0
+		Length: 3
+		Stride: 6
+		Facings: 8
 	icon: snipericon
 		Start: 0
 
@@ -643,6 +652,11 @@ e7:
 	prone-shoot:
 		Start: 176
 		Length: 7
+		Facings: 8
+	garrison-muzzle: minigun
+		Start: 0
+		Length: 3
+		Stride: 6
 		Facings: 8
 	icon: e7icon
 		Start: 0
