@@ -174,6 +174,54 @@ namespace OpenRA.Utility
 								i.Value.Nodes.Add(new MiniYamlNode("OccupiesSpace", "false"));
 				}
 
+				// Armaments and muzzleflashes were reworked to support garrisoning
+				if (engineVersion < 20140321)
+				{
+					if (depth == 0)
+					{
+						var muzzles = node.Value.Nodes.Where(n => n.Key.StartsWith("WithMuzzleFlash"));
+						var armaments = node.Value.Nodes.Where(n => n.Key.StartsWith("Armament"));
+
+						// Shift muzzle flash definitions to Armament
+						foreach (var m in muzzles)
+						{
+							var muzzleArmNode = m.Value.Nodes.SingleOrDefault(n => n.Key == "Armament");
+							var muzzleSequenceNode = m.Value.Nodes.SingleOrDefault(n => n.Key == "Sequence");
+							var muzzleSplitFacingsNode = m.Value.Nodes.SingleOrDefault(n => n.Key == "SplitFacings");
+							var muzzleFacingsCountNode = m.Value.Nodes.SingleOrDefault(n => n.Key == "FacingCount");
+
+							var muzzleArmName = muzzleArmNode != null ? muzzleArmNode.Value.Value.Trim() : "primary";
+							var muzzleSequence = muzzleSequenceNode != null ? muzzleSequenceNode.Value.Value.Trim() : "muzzle";
+							var muzzleSplitFacings = muzzleSplitFacingsNode != null ? FieldLoader.GetValue<bool>("SplitFacings", muzzleSplitFacingsNode.Value.Value) : false;
+							var muzzleFacingsCount = muzzleFacingsCountNode != null ? FieldLoader.GetValue<int>("FacingsCount", muzzleFacingsCountNode.Value.Value) : 8;
+
+							foreach (var a in armaments)
+							{
+								var armNameNode = m.Value.Nodes.SingleOrDefault(n => n.Key == "Name");
+								var armName = armNameNode != null ? armNameNode.Value.Value.Trim() : "primary";
+
+								if (muzzleArmName == armName)
+								{
+									a.Value.Nodes.Add(new MiniYamlNode("MuzzleSequence", muzzleSequence));
+									if (muzzleSplitFacings)
+										a.Value.Nodes.Add(new MiniYamlNode("MuzzleSplitFacings", muzzleFacingsCount.ToString()));
+								}
+							}
+						}
+
+						foreach (var m in muzzles.ToList().Skip(1))
+							node.Value.Nodes.Remove(m);
+					}
+
+					// Remove all but the first muzzle flash definition
+					if (depth == 1 && node.Key.StartsWith("WithMuzzleFlash"))
+					{
+						node.Key = "WithMuzzleFlash";
+						node.Value.Nodes.RemoveAll(n => n.Key == "Armament");
+						node.Value.Nodes.RemoveAll(n => n.Key == "Sequence");
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

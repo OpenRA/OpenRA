@@ -98,16 +98,16 @@ APC:
 		Recoil: 96
 		RecoilRecovery: 18
 		LocalOffset: 85,85,299, 85,-85,299
+		MuzzleSequence: muzzle
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: APCGun.AA
 		Recoil: 96
 		RecoilRecovery: 18
 		LocalOffset: 85,85,299, 85,-85,299
+		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash@PRIMARY:
-	WithMuzzleFlash@SECONDARY:
-		Armament: secondary
+	WithMuzzleFlash:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
@@ -141,6 +141,7 @@ ARTY:
 	Armament:
 		Weapon: ArtilleryShell
 		LocalOffset: 624,0,208
+		MuzzleSequence: muzzle
 	AttackFrontal:
 	WithMuzzleFlash:
 	RenderUnit:
@@ -175,6 +176,8 @@ FTNK:
 	Armament:
 		Weapon: BigFlamer
 		LocalOffset: 512,128,42, 512,-128,42
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
@@ -212,6 +215,7 @@ BGGY:
 	Armament:
 		Weapon: MachineGun
 		LocalOffset: 171,0,43
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnit:
@@ -283,6 +287,7 @@ JEEP:
 	Armament:
 		Weapon: MachineGun
 		LocalOffset: 171,0,85
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnit:
@@ -318,6 +323,7 @@ LTNK:
 		Recoil: 85
 		RecoilRecovery: 17
 		LocalOffset: 720,0,90
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnit:
@@ -355,6 +361,7 @@ MTNK:
 		Recoil: 128
 		RecoilRecovery: 26
 		LocalOffset: 768,0,90
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnit:
@@ -396,14 +403,16 @@ HTNK:
 		LocalOffset: 900,180,340, 900,-180,340
 		Recoil: 170
 		RecoilRecovery: 42
+		MuzzleSequence: muzzle
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: MammothMissiles
 		LocalOffset: -85,384,340, -85,-384,340
 		LocalYaw: -100, 100
 		Recoil: 42
+		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash@PRIMARY:
+	WithMuzzleFlash:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:

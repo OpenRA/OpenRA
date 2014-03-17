@@ -190,6 +190,7 @@ DEVAST:
 	Armament:
 		Weapon: DevBullet
 		LocalOffset: 256,0,32
+		MuzzleSequence: muzzle
 	AttackFrontal:
 	WithMuzzleFlash:
 	AutoTarget:

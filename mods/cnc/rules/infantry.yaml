@@ -103,6 +103,8 @@ E4:
 		Weapon: Flamethrower
 		LocalOffset: 341,0,256
 		FireDelay: 3
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
 	AttackFrontal:
 	WithMuzzleFlash:
 		SplitFacings: true
@@ -138,6 +140,8 @@ E5:
 		Weapon: Chemspray
 		LocalOffset: 341,0,256
 		FireDelay: 3
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
 	AttackFrontal:
 	WithMuzzleFlash:
 		SplitFacings: true

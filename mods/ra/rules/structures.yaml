@@ -351,6 +351,7 @@ AGUN:
 	Armament:
 		Weapon: ZSU-23
 		LocalOffset: 432,150,-30, 432,-150,-30
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
@@ -624,6 +625,7 @@ HBOX.E1:
 	Armament:
 		Weapon: Vulcan
 		LocalOffset: 400,0,48
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
 	Cargo:
@@ -723,6 +725,7 @@ GUN:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
@@ -802,6 +805,7 @@ SAM:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: Nike
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
