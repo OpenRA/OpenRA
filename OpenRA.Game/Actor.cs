@@ -228,6 +228,11 @@ namespace OpenRA
 			return (health.Value == null) ? false : health.Value.IsDead;
 		}
 
+		public bool IsDisguised()
+		{
+			return effectiveOwner.Value != null && effectiveOwner.Value.Disguised;
+		}
+
 		public void Kill(Actor attacker)
 		{
 			if (health.Value == null)
