@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 			return base.CanAttack(self, target);
 		}
 
-		public void Tick(Actor self)
+		public virtual void Tick(Actor self)
 		{
 			DoAttack(self, Target);
 			IsAttacking = Target.IsValidFor(self);

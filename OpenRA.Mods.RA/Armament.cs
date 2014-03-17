@@ -58,6 +58,7 @@ namespace OpenRA.Mods.RA
 		public readonly ArmamentInfo Info;
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
+		public readonly Actor self;
 		Lazy<Turreted> Turret;
 		Lazy<IBodyOrientation> Coords;
 		Lazy<LimitedAmmo> limitedAmmo;
@@ -69,6 +70,7 @@ namespace OpenRA.Mods.RA
 
 		public Armament(Actor self, ArmamentInfo info)
 		{
+			this.self = self;
 			Info = info;
 
 			// We can't resolve these until runtime
@@ -125,22 +127,22 @@ namespace OpenRA.Mods.RA
 
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
-		public void CheckFire(Actor self, IFacing facing, Target target)
+		public Barrel CheckFire(Actor self, IFacing facing, Target target)
 		{
 			if (FireDelay > 0)
-				return;
+				return null;
 
 			if (limitedAmmo.Value != null && !limitedAmmo.Value.HasAmmo())
-				return;
+				return null;
 
 			if (!target.IsInRange(self.CenterPosition, Weapon.Range))
-				return;
+				return null;
 
 			if (Weapon.MinRange != WRange.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
-				return;
+				return null;
 
 			if (!Weapon.IsValidAgainst(target, self.World))
-				return;
+				return null;
 
 			var barrel = Barrels[Burst % Barrels.Length];
 			var muzzlePosition = self.CenterPosition + MuzzleOffset(self, barrel);
@@ -185,6 +187,8 @@ namespace OpenRA.Mods.RA
 				FireDelay = Weapon.ROF;
 				Burst = Weapon.Burst;
 			}
+
+			return barrel;
 		}
 
 		public bool IsReloading { get { return FireDelay > 0; } }
@@ -211,5 +215,7 @@ namespace OpenRA.Mods.RA
 				orientation += Turret.Value.LocalOrientation(self);
 			return orientation;
 		}
+
+		public Actor Actor { get { return self; } }
 	}
 }
