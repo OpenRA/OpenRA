@@ -66,6 +66,7 @@ NEW:
 		Removed the submarine detection ability from Cruiser and Transport.
 		Added the submarine detection ability to Submarines and Missile Subs.
 		Increased the submarine detection range of Gunboat from 3 to 4.
+		Fixed Spies having an enemy color health bar when disguised as a friendly unit (occurred using the Team Health Colors setting).
 	Tiberian Dawn:
 		Chinook rotors now counter-rotate.
 		Commando can now plant C4 on bridges.
