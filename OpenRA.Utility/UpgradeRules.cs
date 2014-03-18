@@ -109,7 +109,7 @@ namespace OpenRA.Utility
 				// AttackTesla was replaced with AttackCharge
 				if (engineVersion < 20140307)
 				{
-					if (depth == 1 && parentKey == "World")
+					if (depth == 1)
 					{
 						if (node.Key == "AttackTesla")
 							node.Key = "AttackCharge";

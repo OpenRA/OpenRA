@@ -141,11 +141,14 @@ NEW:
 		The TestFile check in mod.yaml has been renamed to TestFiles (plural!) and now supports a comma-separated list of assets that are required to load the game.
 		DisabledOverlay has been split from RenderBuilding. Use it together with RequiresPower and CanPowerDown for buildings or directly with Husk.
 		Added support for custom map previews that replace the minimap in the game browser and lobby. Add map.png inside the map package.
+		The UI definition files have changed. Refer to the RA or TD mod.yaml and adjust the ChromeLayout of your mod.yaml to match.
+		A new cursor definition is required for "attackoutsiderange".
 	Packaging:
 		Removed portable install option from Windows installer as the game left without write access breaks content download and error log generation.
 		Added HTML documentation to the Windows installer.
 		Fixed broken FreeType 2 dependency for Fedora RPM.
 		Added SDL 2 as a dependency for the RPM package.
+
 20131223:
 	All mods:
 		Fixed dead units sometimes exploding or leaving husks when they weren't in the world.
