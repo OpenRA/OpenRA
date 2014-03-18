@@ -1,3 +1,13 @@
+concretea:
+	icon: DATA
+		Start:4050
+		Offset: -30,-24
+
+concreteb:
+	icon: DATA
+		Start:4053
+		Offset: -30,-24
+
 walla:
 	idle: DATA
 		Frames: 2527, 2530, 2528, 2538, 2531, 2532, 2542, 2535, 2529, 2539, 2533, 2534, 2540, 2536, 2537, 2541
@@ -254,6 +264,10 @@ conyarda:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4046
 		Offset: -30,-24
@@ -388,6 +402,10 @@ starporta:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4092
 		Offset: -30,-24
@@ -422,6 +440,10 @@ pwra:
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 649, 650, 669, 670
+		Length: 4
+		Offset: -16,-16
 	icon: DATA
 		Start: 4056
 		Offset: -30,-24
@@ -444,6 +466,10 @@ barra:
 		Offset: -32,64
 	bib: BLOXBASE
 		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
 	icon: DATA
@@ -472,6 +498,10 @@ radara:
 		Offset: -48,80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -503,6 +533,10 @@ refa:
 		Offset: -48,64
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -557,6 +591,10 @@ hightecha:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4078
 		Offset: -30,-24
@@ -584,6 +622,10 @@ researcha:
 		Offset: -48,80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -615,6 +657,10 @@ researchh:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4100
 		Offset: -30,-24
@@ -644,6 +690,10 @@ researcho:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4101
 		Offset: -30,-24
@@ -666,6 +716,10 @@ palacea:
 		Offset: -48,48
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -713,6 +767,10 @@ lighta:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4081
 		Offset: -30,-24
@@ -758,6 +816,10 @@ heavya:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4087
 		Offset: -30,-24
@@ -788,6 +850,10 @@ conyardh:
 #		Offset: -48,64
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -825,6 +891,10 @@ starporth:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4093
 		Offset: -30,-24
@@ -859,6 +929,10 @@ pwrh:
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 649, 650, 669, 670
+		Length: 4
+		Offset: -16,-16
 	icon: DATA
 		Start: 4057
 		Offset: -30,-24
@@ -881,6 +955,10 @@ barrh:
 		Offset: -32,64
 	bib: BLOXBASE
 		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
 	icon: DATA
@@ -909,6 +987,10 @@ radarh:
 		Offset: -48,80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -940,6 +1022,10 @@ refh:
 		Offset: -48,64
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -994,6 +1080,10 @@ hightechh:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4079
 		Offset: -30,-24
@@ -1024,6 +1114,10 @@ palaceh:
 		Offset: -48,64
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -1071,6 +1165,10 @@ lighth:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4082
 		Offset: -30,-24
@@ -1116,6 +1214,10 @@ heavyh:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4088
 		Offset: -30,-24
@@ -1146,6 +1248,10 @@ conyardo:
 #		Offset: -48,64
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -1183,6 +1289,10 @@ starporto:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4094
 		Offset: -30,-24
@@ -1218,6 +1328,10 @@ pwro:
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 649, 650, 669, 670
+		Length: 4
+		Offset: -16,-16
 	icon: DATA
 		Start: 4058
 		Offset: -30,-24
@@ -1240,6 +1354,10 @@ barro:
 		Offset: -32,64
 	bib: BLOXBASE
 		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
 	icon: DATA
@@ -1268,6 +1386,10 @@ radaro:
 		Offset: -48,80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -1299,6 +1421,10 @@ refo:
 		Offset: -48,64
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -1353,6 +1479,10 @@ hightecho:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4080
 		Offset: -30,-24
@@ -1375,6 +1505,10 @@ palaceo:
 		Offset: -48,64
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA
@@ -1422,6 +1556,10 @@ lighto:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4083
 		Offset: -30,-24
@@ -1467,6 +1605,10 @@ heavyo:
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA
 		Start: 4089
 		Offset: -30,-24
@@ -1480,6 +1622,10 @@ palacec: # TODO: unused
 		Offset: -48,64
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: palacecicon
@@ -1523,6 +1669,10 @@ starportc: # TODO: unused
 		Tick: 100
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA # TODO: blank
@@ -1570,6 +1720,10 @@ heavyc: # TODO: unused
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
 	icon: DATA # TODO: blank
 		Start: 4020
 		Offset: -30,-24
@@ -1600,6 +1754,10 @@ conyardc: # TODO: unused
 #		Offset: -48,64
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete: BLOXBASE
+		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
 	icon: DATA

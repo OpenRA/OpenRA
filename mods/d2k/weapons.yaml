@@ -621,3 +621,7 @@ Grenade:
 		Damage: 60
 		ImpactSound: EXPLLG5.WAV
 
+Weathering:
+	ROF: 100
+	Warhead:
+		Damage: 5

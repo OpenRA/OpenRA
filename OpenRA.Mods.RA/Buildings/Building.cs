@@ -32,6 +32,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly string Footprint = "x";
 		public readonly int2 Dimensions = new int2(1, 1);
 		public readonly bool RequiresBaseProvider = false;
+		public readonly bool AllowInvalidPlacement = false;
 
 		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
 		public readonly string[] SellSounds = {"cashturn.aud"};
@@ -81,7 +82,7 @@ namespace OpenRA.Mods.RA.Buildings
 				{
 				    var pos = new CPos(x, y);
 					var at = bi.GetBuildingAt(pos);
-					if (at == null || !at.HasTrait<GivesBuildableArea>())
+					if (at == null || !at.IsInWorld || !at.HasTrait<GivesBuildableArea>())
 						continue;
 
 					if (at.Owner == p || (allyBuildRadius && at.Owner.Stances[p] == Stance.Ally))

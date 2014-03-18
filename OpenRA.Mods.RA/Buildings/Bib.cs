@@ -23,31 +23,40 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new Bib(init.self, this); }
 	}
 
-	public class Bib : IRender
+	public class Bib : IRender, INotifyAddedToWorld
 	{
 		readonly BibInfo info;
-		readonly List<AnimationWithOffset> tiles;
+		List<AnimationWithOffset> tiles;
 
 		public Bib(Actor self, BibInfo info)
 		{
 			this.info = info;
+		}
 
+		public void AddedToWorld(Actor self)
+		{
 			var rs = self.Trait<RenderSprites>();
 			var building = self.Info.Traits.Get<BuildingInfo>();
 			var width = building.Dimensions.X;
 			var bibOffset = building.Dimensions.Y - 1;
 			var centerOffset = FootprintUtils.CenterOffset(building);
-
+			var location = self.Location;
 			tiles = new List<AnimationWithOffset>();
 			for (var i = 0; i < 2*width; i++)
 			{
 				var index = i;
 				var anim = new Animation(rs.GetImage(self));
-				anim.PlayFetchIndex(info.Sequence, () => index);
+				var cellOffset = new CVec(i % width, i / width + bibOffset);
+
+				// Some mods may define terrain-specific bibs
+				var terrain = self.World.GetTerrainType(location + cellOffset);
+				var testSequence = info.Sequence + "-" + terrain;
+				var sequence = anim.HasSequence(testSequence) ? testSequence : info.Sequence;
+				anim.PlayFetchIndex(sequence, () => index);
 				anim.IsDecoration = true;
 
 				// Z-order is one set to the top of the footprint
-				var offset = new CVec(i % width, i / width + bibOffset).ToWVec() - centerOffset;
+				var offset = cellOffset.ToWVec() - centerOffset;
 				tiles.Add(new AnimationWithOffset(anim, () => offset, null, -(offset.Y + centerOffset.Y + 512)));
 			}
 		}

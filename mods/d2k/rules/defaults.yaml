@@ -263,4 +263,4 @@
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
-
+	DamagedWithoutFoundation:

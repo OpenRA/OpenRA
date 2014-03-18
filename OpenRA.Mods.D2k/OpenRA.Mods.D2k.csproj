@@ -81,6 +81,7 @@
     <Compile Include="PaletteFromR8.cs" />
     <Compile Include="D2kResourceLayer.cs" />
     <Compile Include="FogPaletteFromR8.cs" />
+    <Compile Include="DamagedWithoutFoundation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

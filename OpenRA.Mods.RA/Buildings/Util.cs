@@ -31,6 +31,9 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, CPos topLeft, Actor toIgnore)
 		{
+			if (building.AllowInvalidPlacement)
+				return true;
+
 			var res = world.WorldActor.Trait<ResourceLayer>();
 			return FootprintUtils.Tiles(name, building, topLeft).All(
 				t => world.Map.IsInMap(t.X, t.Y) && res.GetResource(t) == null &&

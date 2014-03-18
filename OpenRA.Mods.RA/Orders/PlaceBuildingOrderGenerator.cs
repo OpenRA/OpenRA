@@ -90,11 +90,17 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				if (!initialized)
 				{
-					var rbi = Rules.Info[Building].Traits.Get<RenderBuildingInfo>();
-					var palette = rbi.Palette ?? (Producer.Owner != null ?
-					                              rbi.PlayerPalette + Producer.Owner.InternalName : null);
+					var rbi = Rules.Info[Building].Traits.GetOrDefault<RenderBuildingInfo>();
+					if (rbi == null)
+						preview = new IRenderable[0];
+					else
+					{
+						var palette = rbi.Palette ?? (Producer.Owner != null ?
+							rbi.PlayerPalette + Producer.Owner.InternalName : null);
 
-					preview = rbi.RenderPreview(Rules.Info[Building], wr.Palette(palette));
+						preview = rbi.RenderPreview(Rules.Info[Building], wr.Palette(palette));
+					}
+
 					initialized = true;
 				}
 
