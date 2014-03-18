@@ -31,23 +31,24 @@ namespace OpenRA.Mods.RA.Buildings
 			world.ActorAdded +=	a =>
 			{
 				var b = a.TraitOrDefault<Building>();
-				if (b != null)
-					ChangeInfluence(a, b, true);
+				if (b == null)
+					return;
+
+				foreach (var u in FootprintUtils.Tiles(a.Info.Name, b.Info, a.Location))
+					if (map.IsInMap(u) && influence[u.X, u.Y] == null)
+						influence[u.X, u.Y] = a;
 			};
 
 			world.ActorRemoved += a =>
 			{
 				var b = a.TraitOrDefault<Building>();
-				if (b != null)
-					ChangeInfluence(a, b, false);
-			};
-		}
+				if (b == null)
+					return;
 
-		void ChangeInfluence(Actor a, Building building, bool isAdd)
-		{
-			foreach (var u in FootprintUtils.Tiles(a.Info.Name, building.Info, a.Location))
-				if (map.IsInMap(u))
-					influence[u.X, u.Y] = isAdd ? a : null;
+				foreach (var u in FootprintUtils.Tiles(a.Info.Name, b.Info, a.Location))
+					if (map.IsInMap(u) && influence[u.X, u.Y] == a)
+						influence[u.X, u.Y] = null;
+			};
 		}
 
 		public Actor GetBuildingAt(CPos cell)
