@@ -66,6 +66,9 @@ ide.config.keymap = {
   [ID_VIEWCALLSTACK]    = "Ctrl-Shift-S",
   [ID_VIEWDEFAULTLAYOUT] = "",
   [ID_VIEWFULLSCREEN]   = "Ctrl-Shift-A",
+  [ID_ZOOMRESET]        = "Ctrl-0",
+  [ID_ZOOMIN]           = "Ctrl-+",
+  [ID_ZOOMOUT]          = "Ctrl--",
 -- Project menu
   [ID_RUN]              = "F6",
   [ID_RUNNOW]           = "Ctrl-F6",
