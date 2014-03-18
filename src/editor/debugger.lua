@@ -442,7 +442,19 @@ local function stoppedAtBreakpoint(file, line)
   return breakpoint > -1 and breakpoint == current
 end
 
-debugger.listen = function()
+debugger.listen = function(start)
+  if start == false then
+    if debugger.listening then
+      copas.removeserver(debugger.listening)
+      DisplayOutputLn(TR("Debugger server stopped at %s:%d.")
+        :format(debugger.hostname, debugger.portnumber))
+      debugger.listening = false
+    else
+      DisplayOutputLn(TR("Can't stop debugger server as it is not started."))
+    end
+    return
+  end
+
   local server, err = socket.bind("*", debugger.portnumber)
   if not server then
     DisplayOutputLn(TR("Can't start debugger server at %s:%d: %s.")
@@ -657,7 +669,7 @@ debugger.listen = function()
         end
       end
     end)
-  debugger.listening = true
+  debugger.listening = server
 end
 
 debugger.handle = function(command, server, options)

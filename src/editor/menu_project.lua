@@ -17,7 +17,7 @@ local debugTab = {
   { ID_RUNNOW, TR("Run as Scratchpad")..KSC(ID_RUNNOW), TR("Execute the current project/file and keep updating the code to see immediate results"), wx.wxITEM_CHECK },
   { ID_COMPILE, TR("&Compile")..KSC(ID_COMPILE), TR("Compile the current file") },
   { ID_STARTDEBUG, TR("Start &Debugging")..KSC(ID_STARTDEBUG), TR("Start or continue debugging") },
-  { ID_ATTACHDEBUG, TR("&Start Debugger Server")..KSC(ID_ATTACHDEBUG), TR("Allow external process to start debugging") },
+  { ID_ATTACHDEBUG, TR("&Start Debugger Server")..KSC(ID_ATTACHDEBUG), TR("Allow external process to start debugging"), wx.wxITEM_CHECK },
   { },
   { ID_STOPDEBUG, TR("S&top Debugging")..KSC(ID_STOPDEBUG), TR("Stop the currently running process") },
   { ID_STEP, TR("Step &Into")..KSC(ID_STEP), TR("Step into") },
@@ -299,15 +299,19 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function ()
-    if (ide.interpreter.fattachdebug) then ide.interpreter:fattachdebug() end
+  function (event)
+    if event:IsChecked() then
+      if (ide.interpreter.fattachdebug) then ide.interpreter:fattachdebug() end
+    else
+      debugger.listen(false) -- stop listening
+    end
   end)
 frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((ide.interpreter) and (ide.interpreter.fattachdebug)
-      and (not debugger.listening) and (debugger.server == nil)
-      and (editor ~= nil) and (not debugger.scratchpad))
+      and (not debugger.server))
+    ide.frame.menuBar:Check(event:GetId(), debugger.listening and true or false)
   end)
 
 frame:Connect(ID_STARTDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED, function () ProjectDebug() end)
