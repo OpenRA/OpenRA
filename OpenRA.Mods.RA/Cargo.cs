@@ -144,6 +144,7 @@ namespace OpenRA.Mods.RA
 			foreach (var npe in self.TraitsImplementing<INotifyPassengerExited>())
 				npe.PassengerExited(self, a);
 
+			a.Trait<Passenger>().Transport = null;
 			return a;
 		}
 
@@ -178,6 +179,8 @@ namespace OpenRA.Mods.RA
 
 			foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
 				npe.PassengerEntered(self, a);
+
+			a.Trait<Passenger>().Transport = self;
 		}
 
 		public void Killed(Actor self, AttackInfo e)
@@ -205,10 +208,13 @@ namespace OpenRA.Mods.RA
 			// Notify initial cargo load
 			if (!initialized)
 			{
-				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
-					foreach (var c in cargo)
-						npe.PassengerEntered(self, c);
+				foreach (var c in cargo)
+				{
+					c.Trait<Passenger>().Transport = self;
 
+					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+						npe.PassengerEntered(self, c);
+				}
 				initialized = true;
 			}
 

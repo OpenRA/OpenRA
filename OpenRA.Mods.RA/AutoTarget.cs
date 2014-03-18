@@ -72,27 +72,33 @@ namespace OpenRA.Mods.RA
 			if (!self.IsIdle || !info.TargetWhenDamaged)
 				return;
 
-			if (e.Attacker.Destroyed)
+			var attacker = e.Attacker;
+			if (attacker.Destroyed || Stance < UnitStance.ReturnFire)
 				return;
 
-			if (Stance < UnitStance.ReturnFire) return;
+			if (!attacker.IsInWorld && !attacker.Destroyed)
+			{
+				// If the aggressor is in a transport, then attack the transport instead
+				var passenger = attacker.TraitOrDefault<Passenger>();
+				if (passenger != null && passenger.Transport != null)
+					attacker = passenger.Transport;
+			}
 
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
-			if (!attack.HasAnyValidWeapons(Target.FromActor(e.Attacker)))
+			if (!attack.HasAnyValidWeapons(Target.FromActor(attacker)))
 				return;
 
 			// don't retaliate against own units force-firing on us. It's usually not what the player wanted.
-			if (e.Attacker.AppearsFriendlyTo(self))
+			if (attacker.AppearsFriendlyTo(self))
 				return;
 
 			// don't retaliate against healers
 			if (e.Damage < 0)
 				return;
 
-			Aggressor = e.Attacker;
-
+			Aggressor = attacker;
 			if (at == null || !at.IsReachableTarget(at.Target, info.AllowMovement && Stance != UnitStance.Defend))
-				Attack(self, e.Attacker);
+				Attack(self, Aggressor);
 		}
 
 		public void TickIdle(Actor self)
