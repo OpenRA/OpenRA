@@ -25,7 +25,7 @@ namespace OpenRA.Network
 
 		Queue<Chunk> chunks = new Queue<Chunk>();
 		List<byte[]> sync = new List<byte[]>();
-		int ordersFrame = 1;
+		int ordersFrame;
 
 		public int LocalClientId { get { return 0; } }
 		public ConnectionState ConnectionState { get { return ConnectionState.Connected; } }
@@ -76,6 +76,8 @@ namespace OpenRA.Network
 					}
 				}
 			}
+
+			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency;
 		}
 
 		// Do nothing: ignore locally generated orders
@@ -90,7 +92,7 @@ namespace OpenRA.Network
 			sync.Add(ms.ToArray());
 
 			// Store the current frame so Receive() can return the next chunk of orders.
-			ordersFrame = frame + 1;
+			ordersFrame = frame + LobbyInfo.GlobalSettings.OrderLatency;
 		}
 
 		public void Receive(Action<int, byte[]> packetFn)
