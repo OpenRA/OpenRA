@@ -38,20 +38,8 @@ menuBar:Append(editMenu, TR("&Edit"))
 
 editMenu:Check(ID_AUTOCOMPLETEENABLE, ide.config.autocomplete)
 
-local function getControlWithFocus()
-  local editor = GetEditor()
-  for _,e in pairs({frame.bottomnotebook.shellbox, frame.bottomnotebook.errorlog}) do
-    local ctrl = e:FindFocus()
-    if ctrl and
-      (ctrl:GetId() == e:GetId()
-       or ide.osname == 'Macintosh' and
-         ctrl:GetParent():GetId() == e:GetId()) then editor = e end
-  end
-  return editor or nil
-end
-
 local function onUpdateUIEditMenu(event)
-  local editor = getControlWithFocus()
+  local editor = GetEditorWithFocus()
   if editor == nil then event:Enable(false); return end
 
   local cancomment = pcall(function() return editor.spec end) and editor.spec
@@ -77,7 +65,7 @@ local function onUpdateUIEditMenu(event)
 end
 
 function OnEditMenu(event)
-  local editor = getControlWithFocus()
+  local editor = GetEditorWithFocus()
 
   -- if there is no editor, or if it's not the editor we care about,
   -- then allow normal processing to take place

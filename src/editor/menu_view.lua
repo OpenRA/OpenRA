@@ -24,14 +24,17 @@ do -- Add zoom submenu
   }
 
   frame:Connect(ID_ZOOMRESET, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function () GetEditor():SetZoom(0) end)
+    function() local editor = GetEditorWithFocus()
+      if editor then editor:SetZoom(0) end end)
   frame:Connect(ID_ZOOMIN, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function () GetEditor():SetZoom(GetEditor():GetZoom()+1) end)
+    function() local editor = GetEditorWithFocus()
+      if editor then editor:SetZoom(editor:GetZoom()+1) end end)
   frame:Connect(ID_ZOOMOUT, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function () GetEditor():SetZoom(GetEditor():GetZoom()-1) end)
+    function() local editor = GetEditorWithFocus()
+      if editor then editor:SetZoom(editor:GetZoom()-1) end end)
 
   -- only enable if there is an editor
-  local iseditor = function (event) event:Enable(GetEditor() ~= nil) end
+  local iseditor = function (event) event:Enable(GetEditorWithFocus() ~= nil) end
   for _, id in ipairs({ID_ZOOMRESET, ID_ZOOMIN, ID_ZOOMOUT}) do
     frame:Connect(id, wx.wxEVT_UPDATE_UI, iseditor)
   end
