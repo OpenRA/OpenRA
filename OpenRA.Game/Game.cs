@@ -170,7 +170,10 @@ namespace OpenRA
 			var uiTickDelta = tick - Ui.LastTickTime;
 			if (uiTickDelta >= Timestep)
 			{
-				Ui.LastTickTime += Timestep;
+				// Explained below for the world tick calculation
+				var integralTickTimestep = (uiTickDelta / Timestep) * Timestep;
+				Ui.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : Timestep;
+
 				Sync.CheckSyncUnchanged(world, Ui.Tick);
 				cursorFrame += 0.5f;
 			}
