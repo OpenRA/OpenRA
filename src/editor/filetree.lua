@@ -373,10 +373,14 @@ local function treeSetConnectorsAndIcons(tree)
       local mask = wx.wxTREE_HITTEST_ONITEMINDENT
         + wx.wxTREE_HITTEST_ONITEMICON + wx.wxTREE_HITTEST_ONITEMRIGHT
       local item_id, flags = tree:HitTest(event:GetPosition())
-      if item_id and tree:GetItemImage(item_id) == IMG_DIRECTORY
-      and bit.band(flags, mask) > 0 then
-        tree:Toggle(item_id)
-        tree:SelectItem(item_id)
+      if item_id and bit.band(flags, mask) > 0 then
+        if tree:GetItemImage(item_id) == IMG_DIRECTORY then
+          tree:Toggle(item_id)
+          tree:SelectItem(item_id)
+        else
+          local name = tree:GetItemFullName(item_id)
+          if wx.wxFileExists(name) then LoadFile(name,nil,true) end
+        end
       else
         event:Skip()
       end
