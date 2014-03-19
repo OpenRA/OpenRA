@@ -445,6 +445,7 @@ end
 debugger.listen = function(start)
   if start == false then
     if debugger.listening then
+      debugger.terminate() -- terminate if running
       copas.removeserver(debugger.listening)
       DisplayOutputLn(TR("Debugger server stopped at %s:%d.")
         :format(debugger.hostname, debugger.portnumber))

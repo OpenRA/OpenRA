@@ -309,8 +309,7 @@ frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((ide.interpreter) and (ide.interpreter.fattachdebug)
-      and (not debugger.server))
+    event:Enable(ide.interpreter and ide.interpreter.fattachdebug and true or false)
     ide.frame.menuBar:Check(event:GetId(), debugger.listening and true or false)
   end)
 
