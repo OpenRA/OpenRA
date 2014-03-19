@@ -342,10 +342,10 @@ local function createBottomNotebook(frame)
     end)
 
   local errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
+    wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_NONE)
 
   local shellbox = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
+    wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_NONE)
 
   bottomnotebook:AddPage(errorlog, TR("Output"), true)
   bottomnotebook:AddPage(shellbox, TR("Local console"), false)

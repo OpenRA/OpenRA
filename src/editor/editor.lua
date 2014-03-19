@@ -632,7 +632,7 @@ if ide.wxver < "2.9.5" or not ide.config.autoanalizer then
 function CreateEditor()
   local editor = wxstc.wxStyledTextCtrl(notebook, editorID,
     wx.wxDefaultPosition, wx.wxSize(0, 0),
-    wx.wxBORDER_STATIC)
+    wx.wxBORDER_NONE)
 
   editorID = editorID + 1 -- increment so they're always unique
 

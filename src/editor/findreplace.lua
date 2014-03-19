@@ -303,7 +303,7 @@ function findReplace:RunInFiles(replace)
   if not findReplace:HasText() then return end
 
   findReplace.oveditor = wxstc.wxStyledTextCtrl(findReplace.dialog, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxSize(1,1), wx.wxBORDER_STATIC)
+    wx.wxDefaultPosition, wx.wxSize(1,1), wx.wxBORDER_NONE)
   findReplace.occurrences = 0
 
   ActivateOutput()
