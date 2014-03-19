@@ -91,10 +91,16 @@ silo:
 	idle: silo2
 		Start: 0
 		Length: 9
+		Offset: 0,-1
 	damaged-idle: silo2
 		Start: 9
 		Length: 9
+		Offset: 0,-1
 	make: silomake
+		Start: 0
+		Length: *
+		Offset: 0,-1
+	bib: mbSILO
 		Start: 0
 		Length: *
 	icon: siloicon
@@ -329,21 +335,31 @@ syrd:
 fix:
 	idle:
 		Start: 0
+		Offset: 0,1
 		ZOffset: -1c511
 	damaged-idle:
 		Start: 7
+		Offset: 0,1
 		ZOffset: -1c511
 	active:
 		Start: 1
 		Length: 6
+		Offset: 0,1
 		ZOffset: -1c511
 	damaged-active:
 		Start: 8
 		Length: 6
+		Offset: 0,1
 		ZOffset: -1c511
 	make: fixmake
 		Start: 0
 		Length: *
+		Offset: 0,1
+	bib: mbFIX
+		Start: 0
+		Length: *
+		ZOffset: -1c511
+		Offset: 0,-4
 	icon: fixicon
 		Start: 0
 
@@ -366,6 +382,10 @@ gun:
 	muzzle: gunfire2
 		Start: 0
 		Length: 5
+	bib: mbGUN
+		Start: 0
+		Length: *
+		Offset: -1,-1
 	icon: gunicon
 		Start: 0
 
@@ -373,21 +393,30 @@ agun:
 	idle:
 		Start: 0
 		Facings: 32
+		Offset: 0,-1
 	recoil:
 		Start: 32
 		Facings: 32
+		Offset: 0,-1
 	make: agunmake
 		Start: 0
 		Length: *
+		Offset: 0,-1
 	damaged-idle:
 		Start: 64
 		Facings: 32
+		Offset: 0,-1
 	damaged-recoil:
 		Start: 96
 		Facings: 32
+		Offset: 0,-1
 	muzzle: gunfire2
 		Start: 1
 		Length: 4
+		Offset: 0,-1
+	bib: mbAGUN
+		Start: 0
+		Length: *
 	icon: agunicon
 		Start: 0
 
@@ -395,25 +424,39 @@ sam:
 	idle: sam2
 		Start: 0
 		Facings: 32
+		Offset: -2,-2
 	damaged-idle: sam2
 		Start: 34
 		Facings: 32
+		Offset: -2,-2
 	make: sammake
 		Start: 0
 		Length: *
+		Offset: -2,-2
 	muzzle: samfire
 		Start: 0
 		Length: 18
 		Facings: 8
+		Offset: -2,-2
+	bib: mbSAM
+		Start: 0
+		Length: *
+		Offset: 0,1
 	icon: samicon
 		Start: 0
 
 ftur:
 	idle:
 		Start: 0
+		Offset: 0,-2
 	damaged-idle:
 		Start: 1
+		Offset: 0,-2
 	make: fturmake
+		Start: 0
+		Length: *
+		Offset: 0,-2
+	bib: mbFTUR
 		Start: 0
 		Length: *
 	icon: fturicon
@@ -422,19 +465,27 @@ ftur:
 tsla:
 	idle:
 		Start: 0
+		Offset: 0,-1
 	damaged-idle:
 		Start: 10
+		Offset: 0,-1
 	make: tslamake
 		Start: 0
 		Length: *
+		Offset: 0,-1
 	active:
 		Start: 1
 		Length: 9
 		Tick: 100
+		Offset: 0,-1
 	damaged-active:
 		Start: 11
 		Length: 9
 		Tick: 100
+		Offset: 0,-1
+	bib: mbTSLA
+		Start: 0
+		Length: *
 	icon: tslaicon
 		Start: 0
 
@@ -450,6 +501,10 @@ pbox:
 		Start: 0
 		Length: 6
 		Facings: 8
+	bib: mbPBOX
+		Start: 0
+		Length: *
+		Offset: 0,-2
 	icon: pboxicon
 		Start: 0
 
@@ -472,10 +527,16 @@ gap:
 	idle:
 		Start: 0
 		Length: 32
+		Offset: 0,-2
 	damaged-idle:
 		Start: 32
 		Length: 32
+		Offset: 0,-2
 	make: gapmake
+		Start: 0
+		Length: *
+		Offset: 0,-2
+	bib: mbGAP
 		Start: 0
 		Length: *
 	icon: gapicon
@@ -500,6 +561,10 @@ iron:
 		Start: 0
 		Length: *
 		Offset: 0,-12
+	bib: mbIRON
+		Start: 0
+		Length: *
+		Offset: 0,2
 	icon: ironicon
 		Start: 0
 
@@ -517,6 +582,10 @@ pdox:
 	make: pdoxmake
 		Start: 0
 		Length: *
+	bib: mbPDOX
+		Start: 0
+		Length: *
+		Offset: 0,-4
 	icon: pdoxicon
 		Start: 0
 

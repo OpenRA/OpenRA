@@ -22,7 +22,8 @@ namespace OpenRA.Mods.RA.Buildings
 
 			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x));
 
-			if (Rules.Info[ name ].Traits.Contains<BibInfo>())
+			var buildingTraits = Rules.Info[name].Traits;
+			if (buildingTraits.Contains<BibInfo>() && !(buildingTraits.Get<BibInfo>().HasMinibib))
 			{
 				dim += new CVec(0, 1);
 				footprint = footprint.Concat(new char[dim.X]);

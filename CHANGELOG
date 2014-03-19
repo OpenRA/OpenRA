@@ -79,6 +79,7 @@ NEW:
 		Increased the submarine detection range of Gunboat from 3 to 4.
 		Fixed Spies having an enemy color health bar when disguised as a friendly unit (occurred using the Team Health Colors setting).
 		Chrono Tanks can now be teleported in groups by holding SHIFT or ALT and issuing a move order.
+		Added Minibibs for bibless buildings.
 	Tiberian Dawn:
 		Chinook rotors now counter-rotate.
 		Commando can now plant C4 on bridges.
@@ -107,6 +108,7 @@ NEW:
 		Increased Obelisk of Light laser damage from 200 to 360.
 		Fixed Obelisk of Light charge animation and sound not playing.
 		Replaced or improved several mouse cursors.
+		Added Minibibs for bibless buildings.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.

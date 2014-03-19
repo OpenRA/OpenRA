@@ -33,6 +33,8 @@ HOSP:
 		Name: Hospital
 	LeavesHusk:
 		HuskActor: HOSP.Husk
+	Bib:
+		HasMinibib: Yes
 
 HOSP.Husk:
 	Inherits: ^CivBuildingHusk
@@ -41,6 +43,8 @@ HOSP.Husk:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Hospital (Destroyed)
+	Bib:
+		HasMinibib: Yes
 
 BIO:
 	Inherits: ^TechBuilding
@@ -87,4 +91,6 @@ MISS:
 		Owner: None
 	Valued:
 		Cost: 2000
+	Bib:
+		HasMinibib: Yes
 
