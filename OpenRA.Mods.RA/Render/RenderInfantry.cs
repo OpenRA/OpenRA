@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderInfantryInfo : RenderSimpleInfo, Requires<MobileInfo>
+	public class RenderInfantryInfo : RenderSimpleInfo, Requires<IMoveInfo>
 	{
 		public readonly int MinIdleWaitTicks = 30;
 		public readonly int MaxIdleWaitTicks = 110;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Render
 			IdleAnimating
 		}
 
-		Mobile mobile;
+		IMove move;
 		RenderInfantryInfo info;
 		public bool IsMoving { get; set; }
 		protected bool dirty = false;
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.Render
 			this.info = info;
 			anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 			State = AnimationState.Waiting;
-			mobile = self.Trait<Mobile>();
+			move = self.Trait<IMove>();
 
 			self.Trait<IBodyOrientation>().SetAutodetectedFacings(anim.CurrentSequence.Facings);
 		}
@@ -83,12 +83,12 @@ namespace OpenRA.Mods.RA.Render
 		{
 			base.Tick(self);
 
-			if ((State == AnimationState.Moving || dirty) && !mobile.IsMoving)
+			if ((State == AnimationState.Moving || dirty) && !move.IsMoving)
 			{
 				State = AnimationState.Waiting;
 				anim.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 			}
-			else if ((State != AnimationState.Moving || dirty) && mobile.IsMoving)
+			else if ((State != AnimationState.Moving || dirty) && move.IsMoving)
 			{
 				State = AnimationState.Moving;
 				anim.PlayRepeating(NormalizeInfantrySequence(self, "run"));
