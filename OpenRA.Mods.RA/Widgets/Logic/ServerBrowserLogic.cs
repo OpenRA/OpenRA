@@ -23,11 +23,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class ServerBrowserLogic
 	{
+		readonly static Action DoNothing = () => { };
+
 		GameServer currentServer;
 		ScrollItemWidget serverTemplate;
 
 		Action onStart;
-		Action onExit;
 
 		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
 		SearchStatus searchStatus = SearchStatus.Fetching;
@@ -54,7 +55,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			panel = widget;
 			this.onStart = onStart;
-			this.onExit = onExit;
 
 			serverList = panel.Get<ScrollPanelWidget>("SERVER_LIST");
 			serverTemplate = serverList.Get<ScrollItemWidget>("SERVER_TEMPLATE");
@@ -258,7 +258,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
 			{
 				{ "openLobby", OpenLobby },
-				{ "onExit", () => { } }
+				{ "onExit", DoNothing }
 			});
 		}
 
@@ -267,7 +267,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Ui.OpenWindow("CREATESERVER_PANEL", new WidgetArgs
 			{
 				{ "openLobby", OpenLobby },
-				{ "onExit", () => { } }
+				{ "onExit", DoNothing }
 			});
 		}
 
@@ -279,7 +279,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var host = server.Address.Split(':')[0];
 			var port = int.Parse(server.Address.Split(':')[1]);
 
-			ConnectionLogic.Connect(host, port, "", OpenLobby, onExit);
+			ConnectionLogic.Connect(host, port, "", OpenLobby, DoNothing);
 		}
 
 		string GetPlayersLabel(GameServer game)
