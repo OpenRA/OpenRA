@@ -392,10 +392,10 @@ agun:
 		Start: 0
 
 sam:
-	idle:
+	idle: sam2
 		Start: 0
 		Facings: 32
-	damaged-idle:
+	damaged-idle: sam2
 		Start: 34
 		Facings: 32
 	make: sammake
