@@ -386,6 +386,13 @@ local function treeSetConnectorsAndIcons(tree)
       end
       return true
     end)
+  local parent
+  tree:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT,
+    function (event)
+      local itemsrc = event:GetItem()
+      parent = tree:GetItemParent(itemsrc)
+      if not (itemsrc:IsOk() and parent:IsOk()) then event:Veto() end
+    end)
   tree:Connect(wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT,
     function (event)
       -- veto the event to keep the original label intact as the tree
@@ -393,14 +400,14 @@ local function treeSetConnectorsAndIcons(tree)
       event:Veto()
 
       local itemsrc = event:GetItem()
-      if itemsrc == tree:GetRootItem() then return end -- don't edit root
+      if not itemsrc:IsOk() or not parent or not parent:IsOk() then return end
 
-      local sourcedir = tree:GetItemFullName(tree:GetItemParent(itemsrc))
       local label = event:GetLabel():gsub("^%s+$","") -- clean all spaces
+      local sourcedir = tree:GetItemFullName(parent)
       local target = MergeFullPath(sourcedir, label)
       if event:IsEditCancelled() or label == empty
       or target and not renameItem(itemsrc, target)
-      then refreshAncestors(tree:GetItemParent(itemsrc)) end
+      then refreshAncestors(parent) end
     end)
   tree:Connect(wx.wxEVT_KEY_DOWN,
     function (event)
@@ -418,7 +425,7 @@ local function treeSetConnectorsAndIcons(tree)
   local itemsrc
   tree:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_DRAG,
     function (event)
-      if event:GetItem() ~= tree:GetRootItem() then
+      if tree:GetItemParent(event:GetItem()):IsOk() then
         itemsrc = event:GetItem()
         event:Allow()
       end
@@ -426,7 +433,7 @@ local function treeSetConnectorsAndIcons(tree)
   tree:Connect(wx.wxEVT_COMMAND_TREE_END_DRAG,
     function (event)
       local itemdst = event:GetItem()
-      if not itemdst:IsOk() then return end
+      if not itemdst:IsOk() or not itemsrc:IsOk() then return end
 
       -- check if itemdst is a folder
       local target = tree:GetItemFullName(itemdst)
