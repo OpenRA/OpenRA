@@ -33,6 +33,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			// Mod list
 			var modTemplate = modList.Get<ScrollItemWidget>("MOD_TEMPLATE");
+			modList.RemoveChildren();
 
 			foreach (var m in Mod.AllMods)
 			{
