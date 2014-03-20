@@ -33,20 +33,21 @@ namespace OpenRA.Mods.RA.Activities
 
 		public CPos? ChooseExitCell(Actor passenger)
 		{
-			var mobile = passenger.Trait<Mobile>();
+			var pos = passenger.Trait<IPositionable>();
 
 			return cargo.CurrentAdjacentCells
 				.Shuffle(self.World.SharedRandom)
 				.Cast<CPos?>()
-				.FirstOrDefault(c => mobile.CanEnterCell(c.Value));
+				.FirstOrDefault(c => pos.CanEnterCell(c.Value));
 		}
 
 		IEnumerable<CPos> BlockedExitCells(Actor passenger)
 		{
-			var mobile = passenger.Trait<Mobile>();
+			var pos = passenger.Trait<IPositionable>();
 
+			// Find the cells that are blocked by transient actors
 			return cargo.CurrentAdjacentCells
-				.Where(c => mobile.MovementSpeedForCell(passenger, c) != int.MaxValue && !mobile.CanEnterCell(c));
+				.Where(c => pos.CanEnterCell(c, null, true) != pos.CanEnterCell(c, null, false));
 		}
 
 		public override Activity Tick(Actor self)
@@ -58,6 +59,7 @@ namespace OpenRA.Mods.RA.Activities
 				cloak.Uncloak();
 
 			var actor = cargo.Peek(self);
+			var spawn = self.CenterPosition;
 
 			var exitCell = ChooseExitCell(actor);
 			if (exitCell == null)
@@ -71,33 +73,18 @@ namespace OpenRA.Mods.RA.Activities
 			}
 
 			cargo.Unload(self);
-
 			self.World.AddFrameEndTask(w =>
 			{
 				if (actor.Destroyed)
 					return;
 
-				var mobile = actor.Trait<Mobile>();
-
-				var exitSubcell = mobile.GetDesiredSubcell(exitCell.Value, null);
-
-				mobile.fromSubCell = exitSubcell; // these settings make sure that the below Set* calls
-				mobile.toSubCell = exitSubcell; // and the above GetDesiredSubcell call pick a good free subcell for later units being unloaded
-
-				var exit = exitCell.Value.CenterPosition + MobileInfo.SubCellOffsets[exitSubcell];
-				var current = self.Location.CenterPosition + MobileInfo.SubCellOffsets[exitSubcell];
-
-				mobile.Facing = Util.GetFacing(exit - current, mobile.Facing);
-				mobile.SetPosition(actor, exitCell.Value);
-				mobile.SetVisualPosition(actor, current);
-				var speed = mobile.MovementSpeedForCell(actor, exitCell.Value);
-				var length = speed > 0 ? (exit - current).Length / speed : 0;
+				var move = actor.Trait<IMove>();
+				var pos = actor.Trait<IPositionable>();
 
 				w.Add(actor);
 				actor.CancelActivity();
-				actor.QueueActivity(new Drag(current, exit, length));
-				actor.QueueActivity(mobile.MoveTo(exitCell.Value, 0));
-
+				pos.SetVisualPosition(actor, spawn);
+				actor.QueueActivity(move.MoveIntoWorld(actor, exitCell.Value));
 				actor.SetTargetLine(Target.FromCell(exitCell.Value), Color.Green, false);
 			});
 

@@ -34,6 +34,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Cell offset where the exiting actor enters the ActorMap")]
 		public readonly CVec ExitCell = CVec.Zero;
 		public readonly int Facing = -1;
+		public readonly bool MoveIntoWorld = true;
 	}
 
 	public class Exit { }
@@ -58,28 +59,15 @@ namespace OpenRA.Mods.RA
 			var newUnit = self.World.CreateActor(producee.Name, new TypeDictionary
 			{
 				new OwnerInit(self.Owner),
-				new LocationInit(exit),
+				new CenterPositionInit(spawn),
 				new FacingInit(initialFacing)
 			});
 
-			// TODO: Move this into an *Init
-			// TODO: We should be adjusting the actual position for aircraft, not just visuals.
-			var teleportable = newUnit.Trait<IPositionable>();
-			teleportable.SetVisualPosition(newUnit, spawn);
-
-			// TODO: Generalize this for non-mobile (e.g. aircraft) too
-			// Remember to update the Enter activity too
-			var mobile = newUnit.TraitOrDefault<Mobile>();
-			if (mobile != null)
-			{
-				// Animate the spawn -> exit transition
-				var speed = mobile.MovementSpeedForCell(newUnit, exit);
-				var length = speed > 0 ? (to - spawn).Length / speed : 0;
-				newUnit.QueueActivity(new Drag(spawn, to, length));
-			}
+			var move = newUnit.Trait<IMove>();
+			if (exitinfo.MoveIntoWorld)
+				newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
 
 			var target = MoveToRallyPoint(self, newUnit, exit);
-
 			newUnit.SetTargetLine(Target.FromCell(target), Color.Green, false);
 			foreach (var t in self.TraitsImplementing<INotifyProduction>())
 				t.UnitProduced(self, newUnit, exit);

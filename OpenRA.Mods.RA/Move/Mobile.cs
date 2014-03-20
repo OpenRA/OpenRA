@@ -548,5 +548,31 @@ namespace OpenRA.Mods.RA.Move
 			if (self.IsIdle && self.AppearsFriendlyTo(blocking))
 				Nudge(self, blocking, true);
 		}
+
+		public Activity MoveIntoWorld(Actor self, CPos cell)
+		{
+			var pos = self.CenterPosition;
+
+			// Reserve the exit cell
+			SetPosition(self, cell);
+			SetVisualPosition(self, pos);
+
+			// Animate transition
+			var to = cell.CenterPosition;
+			var speed = MovementSpeedForCell(self, cell);
+			var length = speed > 0 ? (to - pos).Length / speed : 0;
+
+			var facing = Util.GetFacing(to - pos, Facing);
+			return Util.SequenceActivities(new Turn(facing), new Drag(pos, to, length));
+		}
+
+		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
+		{
+			var speed = MovementSpeedForCell(self, self.Location);
+			var length = speed > 0 ? (toPos - fromPos).Length / speed : 0;
+
+			var facing = Util.GetFacing(toPos - fromPos, Facing);
+			return Util.SequenceActivities(new Turn(facing), new Drag(fromPos, toPos, length));
+		}
     }
 }

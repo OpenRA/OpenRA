@@ -14,7 +14,7 @@ using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderLandingCraftInfo : RenderUnitInfo
+	public class RenderLandingCraftInfo : RenderUnitInfo, Requires<IMoveInfo>
 	{
 		public readonly string[] OpenTerrainTypes = { "Clear" };
 		public readonly string OpenAnim = "open";
@@ -25,26 +25,24 @@ namespace OpenRA.Mods.RA.Render
 
 	public class RenderLandingCraft : RenderUnit
 	{
+		readonly RenderLandingCraftInfo info;
 		readonly Actor self;
 		readonly Cargo cargo;
-		readonly RenderLandingCraftInfo info;
+		readonly IMove move;
 		bool open;
 
 		public RenderLandingCraft(Actor self, RenderLandingCraftInfo info)
 			: base(self)
 		{
+			this.info = info;
 			this.self = self;
 			cargo = self.Trait<Cargo>();
-			this.info = info;
+			move = self.Trait<IMove>();
 		}
 
 		public bool ShouldBeOpen()
 		{
-			var mobile = self.TraitOrDefault<Mobile>();
-			if (mobile == null)
-				return false;
-
-			if (self.CenterPosition.Z > 0 || mobile.IsMoving)
+			if (self.CenterPosition.Z > 0 || move.IsMoving)
 				return false;
 
 			return cargo.CurrentAdjacentCells

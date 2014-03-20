@@ -37,18 +37,11 @@ namespace OpenRA.Mods.RA.Activities
 				return Util.SequenceActivities(new MoveAdjacentTo(self, target), this);
 
 			// Move to the middle of the target, ignoring impassable tiles
-			var mobile = self.Trait<Mobile>();
-			var to = target.CenterPosition;
-			var from = self.CenterPosition;
-			var speed = mobile.MovementSpeedForCell(self, self.Location);
-			var length = speed > 0 ? (to - from).Length / speed : 0;
-
+			var move = self.Trait<IMove>();
 			return Util.SequenceActivities(
-				new Turn(Util.GetFacing(to - from, mobile.Facing)),
-				new Drag(from, to, length),
+				move.VisualMove(self, self.CenterPosition, target.CenterPosition),
 				inner,
-				new Turn(Util.GetFacing(from - to, mobile.Facing)),
-				new Drag(to, from, length),
+				move.VisualMove(self, target.CenterPosition, self.CenterPosition),
 				NextActivity
 			);
 		}
