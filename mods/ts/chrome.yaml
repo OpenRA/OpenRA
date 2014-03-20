@@ -185,6 +185,9 @@ order-icons: buttons.png
 	power: 0,56,34,28
 	power-disabled: 68,56,34,28
 	power-active: 34,56,34,28
+	beacon: 0,56,34,28
+	beacon-disabled: 68,56,34,28
+	beacon-active: 34,56,34,28
 
 flags: buttons.png
 	gdi: 30,84,30,15

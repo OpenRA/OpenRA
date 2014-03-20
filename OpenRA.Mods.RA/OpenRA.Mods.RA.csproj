@@ -488,6 +488,7 @@
     <Compile Include="Attack\AttackGarrisoned.cs" />
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
+    <Compile Include="Orders\BeaconOrderGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

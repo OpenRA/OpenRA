@@ -86,6 +86,19 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							ImageCollection:order-icons
+				Button@BEACON_BUTTON:
+					X:75
+					# Hidden offscreen so that the shortcut still works
+					# while we wait for new button art to be created
+					Y:0-100
+					Width:34
+					Height:28
+					TooltipText: Place Beacon
+					TooltipContainer:TOOLTIP_CONTAINER
+					VisualHeight:0
+					Children:
+						Image@ICON:
+							ImageCollection:order-icons
 		SupportPowerBin@INGAME_POWERS_BIN:
 			X:0
 			Y:25
