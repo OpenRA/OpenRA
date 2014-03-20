@@ -38,7 +38,7 @@ return {
   isfndef = isfndef,
   isdecindent = function(str)
     -- this handles three different cases:
-    local term = str:match("^%s*(%w+)%s*$")
+    local term = str:match("^%s*(%w+)%s*$") or str:match("^%s*(elseif)%s")
     -- (1) 'end', 'elseif', 'else'
     local match = term and decindent[term]
     -- (2) 'end)' and 'end}'
