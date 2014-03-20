@@ -20,20 +20,29 @@ namespace OpenRA.Mods.RA.Effects
 		readonly Player owner;
 		readonly WPos position;
 		readonly string palettePrefix;
+		readonly string posterPalette;
 		readonly Animation arrow = new Animation("beacon");
 		readonly Animation circles = new Animation("beacon");
+		readonly Animation poster;
 		static readonly int maxArrowHeight = 512;
 		int arrowHeight = maxArrowHeight;
 		int arrowSpeed = 50;
 
-		public Beacon(Player owner, WPos position, int duration, string palettePrefix)
+		public Beacon(Player owner, WPos position, int duration, string palettePrefix, string posterType, string posterPalette)
 		{
 			this.owner = owner;
 			this.position = position;
 			this.palettePrefix = palettePrefix;
+			this.posterPalette = posterPalette;
 
 			arrow.Play("arrow");
 			circles.Play("circles");
+
+			if (posterType != null)
+			{
+				poster = new Animation("beacon");
+				poster.Play(posterType);
+			}
 
 			owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
 		}
@@ -55,10 +64,18 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<IRenderable> Render(WorldRenderer r)
 		{
 			if (!owner.IsAlliedWith(owner.World.RenderPlayer))
-				return SpriteRenderable.None;
+				yield break;
 
 			var palette = r.Palette(palettePrefix + owner.InternalName);
-			return circles.Render(position, palette).Concat(arrow.Render(position + new WVec(0, 0, arrowHeight), palette));
+			foreach (var a in circles.Render(position, palette))
+				yield return a;
+				
+			foreach (var a in arrow.Render(position + new WVec(0, 0, arrowHeight), palette))
+				yield return a;
+
+			if (poster != null)
+				foreach (var a in poster.Render(position, r.Palette(posterPalette)))
+					yield return a;
 		}
 	}
 }

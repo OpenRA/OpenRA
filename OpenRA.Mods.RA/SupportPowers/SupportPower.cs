@@ -34,6 +34,8 @@ namespace OpenRA.Mods.RA
 		public readonly bool DisplayBeacon = false;
 		public readonly int BeaconDuration = 10 * 25;
 		public readonly string BeaconPalettePrefix = "player";
+		public readonly string BeaconPoster = null;
+		public readonly string BeaconPosterPalette = "chrome";
 		public readonly bool DisplayRadarPing = false;
 
 		public readonly string OrderName;
@@ -72,7 +74,9 @@ namespace OpenRA.Mods.RA
 					order.Player,
 					order.TargetLocation.CenterPosition,
 					Info.BeaconDuration,
-					Info.BeaconPalettePrefix);
+					Info.BeaconPalettePrefix,
+					Info.BeaconPoster,
+					Info.BeaconPosterPalette);
 
 				self.World.Add(beacon);
 			}
