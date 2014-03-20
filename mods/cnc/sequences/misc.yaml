@@ -161,6 +161,14 @@ beacon:
 	circles: fpls
 		Start: 0
 		Length: *
+	airstrike: bombicon
+		Start: 0
+		Length: 1
+		Offset: 0,-42
+	atomic: atomicon
+		Start: 0
+		Length: 1
+		Offset: 0,-42
 
 select:
 	repair:
