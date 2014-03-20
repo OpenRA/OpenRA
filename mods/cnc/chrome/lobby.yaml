@@ -156,14 +156,19 @@ Container@SERVER_LOBBY:
 							Align:Right
 							Text:Chat:
 		Button@DISCONNECT_BUTTON:
-			X:600
 			Y:499
 			Width:140
 			Height:35
 			Text:Leave Game
 			Key: escape
+		Button@SETTINGS_BUTTON:
+			X:150
+			Y:499
+			Width:140
+			Height:35
+			Text:Settings
 		Button@MUSIC_BUTTON:
-			X:450
+			X:300
 			Y:499
 			Width:140
 			Height:35

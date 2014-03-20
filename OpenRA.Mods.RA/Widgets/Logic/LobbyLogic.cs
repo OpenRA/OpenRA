@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -20,6 +21,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class LobbyLogic
 	{
+		static readonly Action DoNothing = () => { };
+
 		readonly Action onStart;
 		readonly Action onExit;
 		readonly OrderManager orderManager;
@@ -86,7 +89,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		internal LobbyLogic(Widget widget, World world, OrderManager orderManager,
+		internal LobbyLogic(Widget widget, World world, WorldRenderer worldRenderer, OrderManager orderManager,
 			Action onExit, Action onStart, bool skirmishMode)
 		{
 			lobby = widget;
@@ -164,7 +167,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
 						{ "initialMap", preview.Uid },
-						{ "onExit", () => { } },
+						{ "onExit", DoNothing },
 						{ "onSelect", onSelect }
 					});
 				};
@@ -469,9 +472,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var musicButton = lobby.GetOrNull<ButtonWidget>("MUSIC_BUTTON");
 			if (musicButton != null)
-				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL",
-					new WidgetArgs { { "onExit", () => { } } });
+				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs { { "onExit", DoNothing } });
 
+			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");
+			if (settingsButton != null)
+			{
+				settingsButton.OnClick = () => Ui.OpenWindow("SETTINGS_PANEL", new WidgetArgs
+				{
+					{ "onExit", DoNothing },
+					{ "worldRenderer", worldRenderer }
+				});
+			}
 			// Add a bot on the first lobbyinfo update
 			if (this.skirmishMode)
 				Game.LobbyInfoChanged += WidgetUtils.Once(() =>

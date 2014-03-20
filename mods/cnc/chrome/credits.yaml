@@ -28,7 +28,6 @@ Container@CREDITS_PANEL:
 							Height:16
 							VAlign:Top
 		Button@BACK_BUTTON:
-			X:PARENT_RIGHT-140
 			Y:399
 			Width:140
 			Height:35
