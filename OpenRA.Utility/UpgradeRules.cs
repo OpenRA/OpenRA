@@ -163,6 +163,17 @@ namespace OpenRA.Utility
 						node.Key = "RenderDisguise";
 				}
 
+				// IOccupySpace was removed from Mine
+				if (engineVersion < 20140320)
+				{
+					if (depth == 0 && node.Value.Nodes.Any(n => n.Key == "Mine"))
+						node.Value.Nodes.Add(new MiniYamlNode("Immobile", new MiniYaml("", new List<MiniYamlNode>() { new MiniYamlNode("OccupiesSpace", "true") })));
+					else
+						foreach (var i in nodes.Where(n => n.Key == "Immobile"))
+							if (!i.Value.Nodes.Any(n => n.Key == "OccupiesSpace"))
+								i.Value.Nodes.Add(new MiniYamlNode("OccupiesSpace", "false"));
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

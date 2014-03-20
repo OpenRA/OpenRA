@@ -25,17 +25,15 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Mine(init, this); }
 	}
 
-	class Mine : ICrushable, IOccupySpace, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
+	class Mine : ICrushable
 	{
 		readonly Actor self;
 		readonly MineInfo info;
-		[Sync] readonly CPos location;
 
 		public Mine(ActorInitializer init, MineInfo info)
 		{
 			this.self = init.self;
 			this.info = info;
-			this.location = init.Get<LocationInit,CPos>();
 		}
 
 		public void WarnCrush(Actor crusher) {}
@@ -55,25 +53,6 @@ namespace OpenRA.Mods.RA
 		public bool CrushableBy(string[] crushClasses, Player owner)
 		{
 			return info.CrushClasses.Intersect(crushClasses).Any();
-		}
-
-		public CPos TopLeft { get { return location; } }
-
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
-		public WPos CenterPosition { get { return location.CenterPosition; } }
-
-		public void AddedToWorld(Actor self)
-		{
-			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
-			self.World.ScreenMap.Add(self);
-		}
-
-		public void RemovedFromWorld(Actor self)
-		{
-			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
-			self.World.ScreenMap.Remove(self);
 		}
 	}
 
