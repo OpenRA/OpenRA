@@ -33,18 +33,6 @@ Container@SETTINGS_PANEL:
 					Width:140
 					Height:35
 					Text:Advanced
-		Button@RESET_BUTTON:
-			Y:343
-			Width:140
-			Height:35
-			Text:Reset
-		Button@BACK_BUTTON:
-			Key:escape
-			X:PARENT_RIGHT-WIDTH
-			Y:343
-			Width:140
-			Height:35
-			Text:Back
 		Background@bg:
 			Y:34
 			Width:590
@@ -454,3 +442,15 @@ Container@SETTINGS_PANEL:
 							Height:20
 							Font:Regular
 							Text:Check Sync around Unsynced Code
+		Button@BACK_BUTTON:
+			Key:escape
+			Y:343
+			Width:140
+			Height:35
+			Text:Back
+		Button@RESET_BUTTON:
+			X:150
+			Y:343
+			Width:140
+			Height:35
+			Text:Reset

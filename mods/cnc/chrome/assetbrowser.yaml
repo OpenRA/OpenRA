@@ -186,7 +186,6 @@ Container@ASSETBROWSER_PANEL:
 							Align:Left
 		Button@CLOSE_BUTTON:
 			Key:escape
-			X:PARENT_RIGHT-140
 			Y:434
 			Width:140
 			Height:35
