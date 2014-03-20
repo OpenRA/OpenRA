@@ -163,6 +163,16 @@ namespace OpenRA.Utility
 						node.Key = "RenderDisguise";
 				}
 
+				// ChronoshiftDeploy was replaced with PortableChrono
+				if (engineVersion < 20140320)
+				{
+					if (depth == 1 && node.Key == "ChronoshiftDeploy")
+						node.Key = "PortableChrono";
+
+					if (depth == 2 && parentKey == "PortableChrono" && node.Key == "JumpDistance")
+						node.Key = "MaxDistance";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

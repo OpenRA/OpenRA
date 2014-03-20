@@ -190,7 +190,6 @@
     <Compile Include="ExternalCaptures.cs" />
     <Compile Include="Cargo.cs" />
     <Compile Include="CashTrickler.cs" />
-    <Compile Include="ChronoshiftDeploy.cs" />
     <Compile Include="ChronoshiftPaletteEffect.cs" />
     <Compile Include="Chronoshiftable.cs" />
     <Compile Include="Cloak.cs" />
@@ -293,6 +292,7 @@
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />
+    <Compile Include="PortableChrono.cs" />
     <Compile Include="World\RadarPings.cs" />
     <Compile Include="Player\TechTree.cs" />
     <Compile Include="PlayerExts.cs" />
@@ -454,7 +454,6 @@
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
     <Compile Include="World\DomainIndex.cs" />
     <Compile Include="MPStartUnits.cs" />
-    <Compile Include="Orders\SetChronoTankDestination.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="TeslaZapRenderable.cs" />
     <Compile Include="Buildings\Bib.cs" />
