@@ -266,6 +266,7 @@ namespace OpenRA.Utility
 			var engineDate = int.Parse(args[2]);
 
 			Game.modData = new ModData(mod);
+			Game.modData.MapCache.LoadMaps();
 
 			Console.WriteLine("Processing Rules:");
 			foreach (var filename in Game.modData.Manifest.Rules)
