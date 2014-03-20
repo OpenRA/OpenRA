@@ -684,7 +684,7 @@ CTNK:
 		LocalOffset: 0,171,0
 		LocalYaw: -100
 	AttackFrontal:
-	ChronoshiftDeploy:
+	PortableChrono:
 
 QTNK:
 	Inherits: ^Tank
