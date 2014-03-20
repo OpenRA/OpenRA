@@ -23,6 +23,8 @@ MINP:
 	TargetableUnit:
 		TargetTypes: Ground
 	BodyOrientation:
+	Immobile:
+		OccupiesSpace: true
 
 MINV:
 	Mine:
@@ -49,6 +51,8 @@ MINV:
 	TargetableUnit:
 		TargetTypes: Ground
 	BodyOrientation:
+	Immobile:
+		OccupiesSpace: true
 
 CRATE:
 	Tooltip:
@@ -122,6 +126,7 @@ CRATE:
 
 CAMERA:
 	Immobile:
+		OccupiesSpace: false
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -134,6 +139,7 @@ CAMERA:
 
 FLARE:
 	Immobile:
+		OccupiesSpace: false
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -170,11 +176,13 @@ powerproxy.sonarpulse:
 
 mpspawn:
 	Immobile:
+		OccupiesSpace: false
 	RenderEditorOnly:
 	BodyOrientation:
 
 waypoint:
 	Immobile:
+		OccupiesSpace: false
 	RenderEditorOnly:
 	BodyOrientation:
 

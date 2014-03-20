@@ -16,20 +16,27 @@ namespace OpenRA.Mods.RA
 {
 	class ImmobileInfo : ITraitInfo, IOccupySpaceInfo
 	{
-		public object Create(ActorInitializer init) { return new Immobile(init); }
+		public readonly bool OccupiesSpace = true;
+		public object Create(ActorInitializer init) { return new Immobile(init, this); }
 	}
 
 	class Immobile : IOccupySpace, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		[Sync] readonly CPos location;
+		readonly IEnumerable<Pair<CPos, SubCell>> occupied;
 
-		public Immobile(ActorInitializer init)
+		public Immobile(ActorInitializer init, ImmobileInfo info)
 		{
 			this.location = init.Get<LocationInit, CPos>();
+
+			if (info.OccupiesSpace)
+				occupied = new [] { Pair.New(TopLeft, SubCell.FullCell) };
+			else
+				occupied = new Pair<CPos, SubCell>[0];
 		}
 
 		public CPos TopLeft { get { return location; } }
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield break; }
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupied; }
 		public WPos CenterPosition { get { return location.CenterPosition; } }
 
 		public void AddedToWorld(Actor self)
