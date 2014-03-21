@@ -10,11 +10,11 @@ Folders:
 	./mods/ra/bits
 	./mods/ra/bits/desert
 	./mods/ra/uibits
-	~^/Content/ra
+	~^Content/ra
 
 MapFolders:
 	./mods/ra/maps
-	~^/maps/ra
+	~^maps/ra
 
 Packages:
 	~main.mix
