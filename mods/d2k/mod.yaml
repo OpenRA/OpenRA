@@ -12,13 +12,13 @@ Folders:
 	./mods/d2k/bits/xmas
 	./mods/d2k/uibits
 	./mods/ra/uibits
-	~^/Content/d2k
-	~^/Content/d2k/GAMESFX
-	~^/Content/d2k/Music
+	~^Content/d2k
+	~^Content/d2k/GAMESFX
+	~^Content/d2k/Music
 
 MapFolders:
 	./mods/d2k/maps
-	~^/maps/d2k
+	~^maps/d2k
 
 Packages:
 	SOUND.RS

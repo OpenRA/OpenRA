@@ -10,11 +10,11 @@ Folders:
 	./mods/cnc/bits
 	./mods/cnc/bits/ss
 	./mods/cnc/uibits
-	~^/Content/cnc
+	~^Content/cnc
 
 MapFolders:
 	./mods/cnc/maps
-	~^/maps/cnc
+	~^maps/cnc
 
 Packages:
 	bluetib.mix
