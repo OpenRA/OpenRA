@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Orders
 			if (mi.Button != MouseButton.Left)
 				world.CancelInputMode();
 
-			if (world.Map.IsInMap(xy))
+			if (!world.ShroudObscures(xy))
 			{
 				world.CancelInputMode();
 				yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, false) { TargetLocation = xy };
@@ -30,6 +30,6 @@ namespace OpenRA.Mods.RA.Orders
 		public virtual void Tick(World world) { }
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
-		public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.IsInMap(xy) ? "ability" : "generic-blocked"; }
+		public string GetCursor(World world, CPos xy, MouseInput mi) { return !world.ShroudObscures(xy) ? "ability" : "generic-blocked"; }
 	}
 }
