@@ -759,6 +759,18 @@ debugger.handleAsync = function(command)
     copas.addthread(function () debugger.handle(command) end)
   end
 end
+debugger.handleDirect = function(command)
+  local sock = debugger.socket
+  if debugger.server and sock then
+    local running = debugger.running
+    -- this needs to be short as it will block the UI
+    sock:settimeout(0.25)
+    debugger.handle(command, sock)
+    sock:settimeout(0)
+    -- restore running status
+    debugger.running = running
+  end
+end
 
 debugger.loadfile = function(file)
   return debugger.handle("load " .. file)
@@ -852,7 +864,10 @@ debugger.breaknow = function(command)
   end
 end
 debugger.breakpoint = function(file, line, state)
-  debugger.handleAsync((state and "setb " or "delb ") .. file .. " " .. line)
+  if debugger.running then
+    return debugger.handleDirect((state and "asetb " or "adelb ") .. file .. " " .. line)
+  end
+  return debugger.handleAsync((state and "setb " or "delb ") .. file .. " " .. line)
 end
 debugger.quickeval = function(var, callback)
   if debugger.server and not debugger.running
@@ -1132,8 +1147,6 @@ function DebuggerMakeFileName(editor, filePath)
 end
 
 function DebuggerToggleBreakpoint(editor, line)
-  -- ignore requests to toggle when the debugger is running
-  if debugger.server and debugger.running then return end
   local markers = editor:MarkerGet(line)
   local id = editor:GetId()
   local filePath = debugger.editormap and debugger.editormap[editor]

@@ -1,5 +1,5 @@
 --
--- MobDebug 0.5511
+-- MobDebug 0.552
 -- Copyright 2011-14 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
@@ -18,7 +18,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.5511,
+  _VERSION = 0.552,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber(os.getenv("MOBDEBUG_PORT")) or 8172,
@@ -429,6 +429,43 @@ local function is_pending(peer)
   return buf
 end
 
+local function handle_breakpoint(peer)
+  -- check if the buffer has the beginning of SETB/DELB command;
+  -- this is to avoid reading the entire line for commands that
+  -- don't need to be handled here.
+  if not buf or not (buf:sub(1,1) == 'S' or buf:sub(1,1) == 'D') then return end
+
+  -- need to read few more characters
+  peer:settimeout(0) -- non-blocking
+  local res, err, partial = peer:receive(5-#buf)
+  peer:settimeout() -- back to blocking
+  if not res then
+    if partial then buf = buf .. partial end
+    return
+  end
+
+  buf = buf..res
+  if buf ~= 'SETB ' and buf ~= 'DELB ' then return end
+
+  res, err, partial = peer:receive() -- get the rest of the line; blocking
+  if not res then
+    if partial then buf = buf .. partial end
+    return
+  end
+
+  local _, _, cmd, file, line = (buf..res):find("^([A-Z]+)%s+(.-)%s+(%d+)%s*$")
+  if cmd == 'SETB' then set_breakpoint(file, tonumber(line))
+  elseif cmd == 'DELB' then remove_breakpoint(file, tonumber(line))
+  else
+    -- this looks like a breakpoint command, but something went wrong;
+    -- return here to let the "normal" processing to handle,
+    -- although this is likely to not go well.
+    return
+  end
+
+  buf = nil
+end
+
 local function debug_hook(event, line)
   -- (1) LuaJIT needs special treatment. Because debug_hook is set for
   -- *all* coroutines, and not just the one being debugged as in regular Lua
@@ -524,6 +561,8 @@ local function debug_hook(event, line)
       seen_hook = true
       lastfile = file
     end
+
+    if is_pending(server) then handle_breakpoint(server) end
 
     local vars, status, res
     if (watchescnt > 0) then
@@ -1099,7 +1138,7 @@ local function handle(params, client, options)
       end
       if done then break end
     end
-  elseif command == "setb" then
+  elseif command == "setb" or command == "asetb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
       -- if this is a file name, and not a file source
@@ -1108,7 +1147,7 @@ local function handle(params, client, options)
         file = removebasedir(file, basedir)
       end
       client:send("SETB " .. file .. " " .. line .. "\n")
-      if client:receive() == "200 OK" then
+      if command == "asetb" or client:receive() == "200 OK" then
         set_breakpoint(file, line)
       else
         print("Error: breakpoint not inserted")
@@ -1137,7 +1176,7 @@ local function handle(params, client, options)
     else
       print("Invalid command")
     end
-  elseif command == "delb" then
+  elseif command == "delb" or command == "adelb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
       -- if this is a file name, and not a file source
@@ -1146,7 +1185,7 @@ local function handle(params, client, options)
         file = removebasedir(file, basedir)
       end
       client:send("DELB " .. file .. " " .. line .. "\n")
-      if client:receive() == "200 OK" then
+      if command == "adelb" or client:receive() == "200 OK" then
         remove_breakpoint(file, line)
       else
         print("Error: breakpoint not removed")
