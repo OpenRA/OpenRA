@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -20,15 +21,23 @@ namespace OpenRA.Mods.RA
 		void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
 	}
 
-	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecoration
+	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecoration, Requires<AttackBaseInfo>
 	{
 		public readonly string RangeCircleType = null;
 
+		[Desc("Range to draw if no armaments are available")]
+		public readonly WRange FallbackRange = WRange.Zero;
+
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
-			var range = ai.Traits.WithInterface<ArmamentInfo>()
-				.Select(a => Rules.Weapons[a.Weapon.ToLowerInvariant()].Range)
-				.Max();
+			var armaments = ai.Traits.WithInterface<ArmamentInfo>();
+			var range = FallbackRange;
+
+			if (armaments.Any())
+				range = armaments.Select(a => Rules.Weapons[a.Weapon.ToLowerInvariant()].Range).Max();
+
+			if (range == WRange.Zero)
+				return;
 
 			wr.DrawRangeCircleWithContrast(
 				centerPosition,
@@ -49,8 +58,13 @@ namespace OpenRA.Mods.RA
 	class RenderRangeCircle : IPostRenderSelection
 	{
 		Actor self;
+		AttackBase attack;
 
-		public RenderRangeCircle(Actor self) { this.self = self; }
+		public RenderRangeCircle(Actor self)
+		{
+			this.self = self;
+			attack = self.Trait<AttackBase>();
+		}
 
 		public void RenderAfterWorld(WorldRenderer wr)
 		{
@@ -59,7 +73,7 @@ namespace OpenRA.Mods.RA
 
 			wr.DrawRangeCircleWithContrast(
 				self.CenterPosition,
-				self.Trait<AttackBase>().GetMaximumRange(),
+				attack.GetMaximumRange(),
 				Color.FromArgb(128, Color.Yellow),
 				Color.FromArgb(96, Color.Black)
 			);

@@ -23,13 +23,15 @@ namespace OpenRA.Mods.RA
 
 	public class CombatDebugOverlay : IPostRender
 	{
-		Lazy<IEnumerable<Armament>> armaments;
+		Lazy<AttackBase> attack;
+		Lazy<IBodyOrientation> coords;
 		Lazy<Health> health;
 		DeveloperMode devMode;
 
 		public CombatDebugOverlay(Actor self)
 		{
-			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
+			attack = Lazy.New(() => self.TraitOrDefault<AttackBase>());
+			coords = Lazy.New(() => self.Trait<IBodyOrientation>());
 			health = Lazy.New(() => self.TraitOrDefault<Health>());
 
 			var localPlayer = self.World.LocalPlayer;
@@ -44,10 +46,35 @@ namespace OpenRA.Mods.RA
 			if (health.Value != null)
 				wr.DrawRangeCircle(self.CenterPosition, health.Value.Info.Radius, Color.Red);
 
+			// No armaments to draw
+			if (attack.Value == null)
+				return;
+
 			var wlr = Game.Renderer.WorldLineRenderer;
 			var c = Color.White;
 
-			foreach (var a in armaments.Value)
+			// Fire ports on garrisonable structures
+			var garrison = attack.Value as AttackGarrisoned;
+			if (garrison != null)
+			{
+				var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
+				foreach (var p in garrison.Ports)
+				{
+					var pos = self.CenterPosition + coords.Value.LocalToWorld(p.Offset.Rotate(bodyOrientation));
+					var da = coords.Value.LocalToWorld(new WVec(224, 0, 0).Rotate(WRot.FromYaw(p.Yaw + p.Cone)).Rotate(bodyOrientation));
+					var db = coords.Value.LocalToWorld(new WVec(224, 0, 0).Rotate(WRot.FromYaw(p.Yaw - p.Cone)).Rotate(bodyOrientation));
+
+					var o = wr.ScreenPosition(pos);
+					var a = wr.ScreenPosition(pos + da * 224 / da.Length);
+					var b = wr.ScreenPosition(pos + db * 224 / db.Length);
+					wlr.DrawLine(o, a, c, c);
+					wlr.DrawLine(o, b, c, c);
+				}
+
+				return;
+			}
+
+			foreach (var a in attack.Value.Armaments)
 			{
 				foreach (var b in a.Barrels)
 				{

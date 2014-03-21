@@ -8,7 +8,7 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -18,34 +18,25 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new AttackOmni(init.self, this); }
 	}
 
-	class AttackOmni : AttackBase, INotifyBuildComplete, ISync
+	class AttackOmni : AttackBase, ISync
 	{
-		[Sync] bool buildComplete = false;
-		public void BuildingComplete(Actor self) { buildComplete = true; }
-
 		public AttackOmni(Actor self, AttackOmniInfo info)
 			: base(self, info) { }
 
-		protected override bool CanAttack(Actor self, Target target)
-		{
-			var isBuilding = self.HasTrait<Building>() && !buildComplete;
-			return base.CanAttack(self, target) && !isBuilding;
-		}
-
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
-			return new SetTarget(newTarget, this);
+			return new SetTarget(this, newTarget);
 		}
 
 		class SetTarget : Activity
 		{
 			readonly Target target;
-			readonly AttackOmni ao;
+			readonly AttackOmni attack;
 
-			public SetTarget(Target target, AttackOmni ao)
+			public SetTarget(AttackOmni attack, Target target)
 			{
 				this.target = target;
-				this.ao = ao;
+				this.attack = attack;
 			}
 
 			public override Activity Tick(Actor self)
@@ -53,7 +44,7 @@ namespace OpenRA.Mods.RA
 				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
 
-				ao.DoAttack(self, target);
+				attack.DoAttack(self, target);
 				return this;
 			}
 		}

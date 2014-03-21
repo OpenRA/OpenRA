@@ -181,6 +181,7 @@ CA:
 		LocalOffset: 480,-100,40, 480,100,40
 		Recoil: 171
 		RecoilRecovery: 34
+		MuzzleSequence: muzzle
 	Armament@SECONDARY:
 		Name: secondary
 		Turret: secondary
@@ -188,10 +189,9 @@ CA:
 		LocalOffset: 480,-100,40, 480,100,40
 		Recoil: 171
 		RecoilRecovery: 34
+		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash@PRIMARY:
-	WithMuzzleFlash@SECONDARY:
-		Armament: secondary
+	WithMuzzleFlash:
 	Selectable:
 		Bounds: 44,44
 	RenderUnit:
@@ -262,11 +262,13 @@ PT:
 	Armament@PRIMARY:
 		Weapon: 2Inch
 		LocalOffset: 208,0,48
+		MuzzleSequence: muzzle
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: DepthCharge
+		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash@PRIMARY:
+	WithMuzzleFlash:
 	Selectable:
 		Bounds: 32,32
 	RenderUnit:

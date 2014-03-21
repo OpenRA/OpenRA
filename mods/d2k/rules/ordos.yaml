@@ -172,6 +172,7 @@ RAIDER:
 	Armament:
 		Weapon: HMGo
 		LocalOffset: 256,0,128
+		MuzzleSequence: muzzle
 	AttackFrontal:
 	AutoTarget:
 	Explodes:
@@ -206,6 +207,7 @@ STEALTHRAIDER:
 	Armament:
 		Weapon: HMGo
 		LocalOffset: 256,0,128
+		MuzzleSequence: muzzle
 	AttackFrontal:
 	Explodes:
 		Weapon: UnitExplodeTiny

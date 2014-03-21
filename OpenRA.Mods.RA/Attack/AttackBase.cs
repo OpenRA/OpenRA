@@ -13,42 +13,54 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	public abstract class AttackBaseInfo : ITraitInfo
 	{
+		[Desc("Armament names")]
+		public readonly string[] Armaments = { "primary", "secondary" };
+
 		public readonly string Cursor = "attack";
 		public readonly string OutsideRangeCursor = "attackoutsiderange";
 
 		public abstract object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice, ISync
+	public abstract class AttackBase : IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
 		[Sync] public bool IsAttacking { get; internal set; }
+		public IEnumerable<Armament> Armaments { get { return GetArmaments(); } }
+		protected Lazy<IFacing> facing;
+		protected Lazy<Building> building;
+		protected Func<IEnumerable<Armament>> GetArmaments;
 
 		readonly Actor self;
 		readonly AttackBaseInfo info;
-
-		protected Lazy<IFacing> facing;
-		Lazy<IEnumerable<Armament>> armaments;
-		protected IEnumerable<Armament> Armaments { get { return armaments.Value; } }
-		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public AttackBase(Actor self, AttackBaseInfo info)
 		{
 			this.self = self;
 			this.info = info;
 
-			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
+			var armaments = Lazy.New(() => self.TraitsImplementing<Armament>()
+				.Where(a => info.Armaments.Contains(a.Info.Name)));
+
+			GetArmaments = () => armaments.Value;
+
 			facing = Lazy.New(() => self.TraitOrDefault<IFacing>());
+			building = Lazy.New(() => self.TraitOrDefault<Building>());
 		}
 
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
 			if (!self.IsInWorld)
+				return false;
+
+			// Building is under construction or is being sold
+			if (building.Value != null && !building.Value.BuildComplete)
 				return false;
 
 			if (!target.IsValidFor(self))
@@ -63,38 +75,13 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		public bool ShouldExplode(Actor self) { return !IsReloading(); }
-
-		public bool IsReloading() { return Armaments.Any(a => a.IsReloading); }
-
-		public virtual void Tick(Actor self)
-		{
-			for (var i = 0; i < delayedActions.Count; i++)
-			{
-				var x = delayedActions[i];
-				if (--x.First <= 0)
-					x.Second();
-				delayedActions[i] = x;
-			}
-
-			delayedActions.RemoveAll(a => a.First <= 0);
-		}
-
-		internal void ScheduleDelayedAction(int t, Action a)
-		{
-			if (t > 0)
-				delayedActions.Add(Pair.New(t, a));
-			else
-				a();
-		}
-
 		public virtual void DoAttack(Actor self, Target target)
 		{
 			if (!CanAttack(self, target))
 				return;
 
 			foreach (var a in Armaments)
-				a.CheckFire(self, this, facing.Value, target);
+				a.CheckFire(self, facing.Value, target);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -148,7 +135,13 @@ namespace OpenRA.Mods.RA
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
 
 		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World)); }
-		public WRange GetMaximumRange() { return Armaments.Max(a => a.Weapon.Range); }
+		public WRange GetMaximumRange()
+		{
+			if (!Armaments.Any())
+				return WRange.Zero;
+
+			return Armaments.Max(a => a.Weapon.Range);
+		}
 
 		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World)); }
 

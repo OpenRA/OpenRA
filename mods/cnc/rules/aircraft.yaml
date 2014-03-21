@@ -68,10 +68,12 @@ HELI:
 	Armament@PRIMARY:
 		Weapon: HeliAGGun
 		LocalOffset: 128,-213,-85, 128,213,-85
+		MuzzleSequence: muzzle
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: HeliAAGun
 		LocalOffset: 128,-213,-85, 128,213,-85
+		MuzzleSequence: muzzle
 	AttackHeli:
 		FacingTolerance: 20
 	LimitedAmmo:
@@ -83,9 +85,7 @@ HELI:
 	RenderUnit:
 	WithRotor:
 		Offset: 0,0,85
-	WithMuzzleFlash@PRIMARY:
-	WithMuzzleFlash@SECONDARY:
-		Armament: secondary
+	WithMuzzleFlash:
 	WithShadow:
 	LeavesHusk:
 		HuskActor: HELI.Husk
@@ -197,14 +197,14 @@ A10:
 	RenderUnit:
 	WithShadow:
 	AttackBomber:
+		Armaments: gun, bombs
 		Guns: gun
 		Bombs: bombs
 	Armament@GUNS:
 		Name: gun
 		Weapon: Vulcan
 		LocalOffset: 1024,0,-85
-	WithMuzzleFlash@SECONDARY:
-		Armament: gun
+	WithMuzzleFlash:
 	Armament@BOMBS:
 		Name: bombs
 		Weapon: Napalm

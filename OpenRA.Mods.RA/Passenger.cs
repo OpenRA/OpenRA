@@ -30,6 +30,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly PassengerInfo info;
 		public Passenger( PassengerInfo info ) { this.info = info; }
+		public Actor Transport;
 
 		public IEnumerable<IOrderTargeter> Orders
 		{

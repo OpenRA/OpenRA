@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 
 	class AttackCharge : AttackOmni, ITick, INotifyAttack, ISync
 	{
-		readonly AttackChargeInfo aci;
+		readonly AttackChargeInfo info;
 
 		[Sync] int charges;
 		[Sync] int timeToRecharge;
@@ -37,27 +37,25 @@ namespace OpenRA.Mods.RA
 		public AttackCharge(Actor self, AttackChargeInfo info)
 			: base(self, info)
 		{
-			aci = self.Info.Traits.Get<AttackChargeInfo>();
-			charges = aci.MaxCharges;
+			this.info = info;
+			charges = info.MaxCharges;
 		}
 
-		public override void Tick(Actor self)
+		public void Tick(Actor self)
 		{
 			if (--timeToRecharge <= 0)
-				charges = aci.MaxCharges;
-
-			base.Tick(self);
+				charges = info.MaxCharges;
 		}
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			--charges;
-			timeToRecharge = aci.ReloadTime;
+			timeToRecharge = info.ReloadTime;
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
-			return new ChargeAttack(newTarget);
+			return new ChargeAttack(this, newTarget);
 		}
 
 		public override void ResolveOrder(Actor self, Order order)
@@ -70,9 +68,12 @@ namespace OpenRA.Mods.RA
 
 		class ChargeAttack : Activity
 		{
+			readonly AttackCharge attack;
 			readonly Target target;
-			public ChargeAttack(Target target) 
+
+			public ChargeAttack(AttackCharge attack, Target target) 
 			{ 
+				this.attack = attack;
 				this.target = target; 
 			}
 
@@ -80,23 +81,22 @@ namespace OpenRA.Mods.RA
 			{
 				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
-				
-				var initDelay = self.Info.Traits.Get<AttackChargeInfo>().InitialChargeDelay;
-				
-				var attack = self.Trait<AttackCharge>();
+
 				if (attack.charges == 0 || !attack.CanAttack(self, target))
 					return this;
 
 				self.Trait<RenderBuildingCharge>().PlayCharge(self);
-				return Util.SequenceActivities(new Wait(initDelay), new ChargeFire(target), this);
+				return Util.SequenceActivities(new Wait(attack.info.InitialChargeDelay), new ChargeFire(attack, target), this);
 			}
 		}
 
 		class ChargeFire : Activity
 		{
+			readonly AttackCharge attack;
 			readonly Target target;
-			public ChargeFire(Target target) 
+			public ChargeFire(AttackCharge attack, Target target) 
 			{ 
+				this.attack = attack;
 				this.target = target; 
 			}
 
@@ -105,15 +105,12 @@ namespace OpenRA.Mods.RA
 				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
 
-				var chargeDelay = self.Info.Traits.Get<AttackChargeInfo>().ChargeDelay;
-
-				var attack = self.Trait<AttackCharge>();
 				if (attack.charges == 0)
 					return NextActivity;
 
 				attack.DoAttack(self, target);
 
-				return Util.SequenceActivities(new Wait(chargeDelay), this);
+				return Util.SequenceActivities(new Wait(attack.info.ChargeDelay), this);
 			}
 		}
 	}

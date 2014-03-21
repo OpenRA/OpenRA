@@ -122,6 +122,9 @@ NEW:
 		Added IEffectiveOwner interface for traits/logic that temporarily alter an actor's apparent owner.
 		Renamed Spy trait to Disguise, SpyToolTip trait to DisguiseToolTip, and RenderSpy trait to RenderDisguise.
 		Overhauled the internal map management and preview generation code.
+		Muzzleflash definitions have moved from WithMuzzleFlash to each Armament. Only one WithMuzzleFlash is now required per actor.
+		Added an AttackGarrisoned trait that allows passengers to fire through a set of defined ports.
+		Maps can define initial cargo for actors by adding "Cargo: actora, actorb, ..." to the actor reference.
 	Server:
 		Message of the day is now shared between all mods and a default motd.txt gets created in the user directory.
 	Asset Browser:

@@ -47,8 +47,12 @@ E1:
 		HP: 50
 	Mobile:
 		Speed: 56
-	Armament:
+	Armament@PRIMARY:
 		Weapon: M1Carbine
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Vulcan
+		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:
@@ -75,9 +79,13 @@ E2:
 		HP: 50
 	Mobile:
 		Speed: 71
-	Armament:
+	Armament@PRIMARY:
 		Weapon: Grenade
 		LocalOffset: 0,0,555
+		FireDelay: 15
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Grenade
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
@@ -113,6 +121,9 @@ E3:
 	Armament@SECONDARY:
 		Weapon: Dragon
 		LocalOffset: 0,0,555
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Dragon
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:
@@ -139,10 +150,13 @@ E4:
 		HP: 40
 	Mobile:
 		Speed: 56
-	Armament:
+	Armament@PRIMARY:
 		Weapon: Flamer
 		LocalOffset: 427,0,341
 		FireDelay: 8
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Flamer
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:
@@ -252,6 +266,10 @@ E7:
 		Weapon: Colt45
 	Armament@SECONDARY:
 		Weapon: Colt45
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Colt45
+		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:
@@ -429,9 +447,12 @@ SHOK:
 		Speed: 56
 	RevealsShroud:
 		Range: 4c0
-	Armament:
+	Armament@PRIMARY:
 		Weapon: PortaTesla
 		LocalOffset: 427,0,341
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: PortaTesla
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:
@@ -465,8 +486,12 @@ SNIPER:
 		Range: 6c0
 	AutoTarget:
 		InitialStance: ReturnFire
-	Armament:
+	Armament@PRIMARY:
 		Weapon: Sniper
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Sniper
+		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:

@@ -35,19 +35,20 @@ namespace OpenRA.Mods.RA
 		int idleTicks = 0;
 		PopupState state = PopupState.Open;
 		Turreted turret;
+		bool skippedMakeAnimation;
 
 		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info)
 			: base(init.self, info)
 		{
 			this.info = info;
-			buildComplete = init.Contains<SkipMakeAnimsInit>();
 			turret = turrets.FirstOrDefault();
 			rb = init.self.Trait<RenderBuilding>();
+			skippedMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
 		protected override bool CanAttack(Actor self, Target target)
 		{
-			if (state == PopupState.Transitioning || !buildComplete)
+			if (state == PopupState.Transitioning || !building.Value.BuildComplete)
 				return false;
 
 			if (!base.CanAttack(self, target))
@@ -90,17 +91,14 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public override void BuildingComplete(Actor self)
+		public void BuildingComplete(Actor self)
 		{
-			// Set true for SkipMakeAnimsInit
-			if (buildComplete)
+			if (!skippedMakeAnimation)
 			{
 				state = PopupState.Closed;
 				rb.PlayCustomAnimRepeating(self, "closed-idle");
 				turret.desiredFacing = null;
 			}
-
-			buildComplete = true;
 		}
 
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)

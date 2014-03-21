@@ -524,6 +524,7 @@ GUN:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
@@ -566,6 +567,7 @@ SAM:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: SAMMissile
+		MuzzleSequence: muzzle
 	AttackPopupTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
@@ -639,6 +641,7 @@ GTWR:
 	Armament:
 		Weapon: HighV
 		LocalOffset: 256,0,256
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	BodyOrientation:
 		QuantizedFacings: 8

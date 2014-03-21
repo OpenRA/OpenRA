@@ -123,7 +123,7 @@ namespace OpenRA.Graphics
 
 			// added for contrails
 			foreach (var a in world.ActorsWithTrait<IPostRender>())
-				if (!a.Actor.Destroyed)
+				if (a.Actor.IsInWorld && !a.Actor.Destroyed)
 					a.Trait.RenderAfterWorld(this, a.Actor);
 
 			if (world.OrderGenerator != null)

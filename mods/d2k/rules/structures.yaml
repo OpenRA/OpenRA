@@ -471,6 +471,7 @@ WALL:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 448,0,128
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	AutoTarget:
 	RenderDetectionCircle:

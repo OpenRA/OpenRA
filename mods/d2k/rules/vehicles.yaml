@@ -130,6 +130,7 @@ TRIKE:
 	Armament:
 		Weapon: HMG
 		LocalOffset: -416,0,0
+		MuzzleSequence: muzzle
 	AttackFrontal:
 	AutoTarget:
 	Explodes:
@@ -218,6 +219,7 @@ QUAD.starport:
 		Recoil: 128
 		RecoilRecovery: 32
 		LocalOffset: 256,0,0
+		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnit:
@@ -267,6 +269,7 @@ SIEGETANK:
 		Recoil: 150
 		RecoilRecovery: 19
 		LocalOffset: 512,0,320
+		MuzzleSequence: muzzle
 	AttackFrontal:
 	WithMuzzleFlash:
 	RenderUnit:
