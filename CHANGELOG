@@ -1,6 +1,7 @@
 NEW:
 	All Mods:
-		Added the ability to place map beacons for highlighting areas to teammates.
+		Added the ability to place map beacons for highlighting areas to teammates (Hotkey: F9).
+		The default pause hotkey has changed to F8.
 		Structures under attack and friendly superweapon launch targets will now be highlighted on the radar.
 		Fixed unloading passengers moving unnecessarily far from their transport.
 		Fixed the unload cursor sometimes being displayed for transports even when they were unable to unload.
