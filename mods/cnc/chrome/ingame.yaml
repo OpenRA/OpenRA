@@ -172,6 +172,7 @@ Container@PLAYER_WIDGETS:
 			ReadyText:Ready
 			HoldText:On Hold
 		Background@SIDEBAR_BACKGROUND:
+			Logic:OrderButtonsChromeLogic
 			X:WINDOW_RIGHT - 204
 			Y:30
 			Width:194

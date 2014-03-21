@@ -406,7 +406,6 @@
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\ObserverProductionIconsWidget.cs" />
     <Compile Include="Widgets\ObserverSupportPowerIconsWidget.cs" />
-    <Compile Include="Widgets\OrderButtonWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="Widgets\StrategicProgressWidget.cs" />
     <Compile Include="Widgets\SupportPowerTimerWidget.cs" />
@@ -488,6 +487,7 @@
     <Compile Include="Attack\AttackFollow.cs" />
     <Compile Include="Attack\AttackGarrisoned.cs" />
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
+    <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

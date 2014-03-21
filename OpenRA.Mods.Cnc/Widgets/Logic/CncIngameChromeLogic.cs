@@ -24,17 +24,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		Widget ingameRoot;
 		World world;
 
-		static void BindOrderButton<T>(World world, Widget parent, string button, string icon)
-			where T : IOrderGenerator, new()
-		{
-			var w = parent.Get<ButtonWidget>(button);
-			w.OnClick = () => world.ToggleInputMode<T>();
-			w.IsHighlighted = () => world.OrderGenerator is T;
-
-			w.Get<ImageWidget>("ICON").GetImageName =
-				() => world.OrderGenerator is T ? icon + "-active" : icon;
-		}
-
 		[ObjectCreator.UseCtor]
 		public CncIngameChromeLogic(Widget widget, World world)
 		{
@@ -87,13 +76,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			playerWidgets.IsVisible = () => true;
 
 			var sidebarRoot = playerWidgets.Get("SIDEBAR_BACKGROUND");
-
-			BindOrderButton<SellOrderGenerator>(world, sidebarRoot, "SELL_BUTTON", "sell");
-			BindOrderButton<RepairOrderGenerator>(world, sidebarRoot, "REPAIR_BUTTON", "repair");
-
-			sidebarRoot.Get<ButtonWidget>("SELL_BUTTON").Key = Game.Settings.Keys.SellKey;
-			sidebarRoot.Get<ButtonWidget>("REPAIR_BUTTON").Key = Game.Settings.Keys.RepairKey;
-
 			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 			sidebarRoot.Get<LabelWidget>("CASH").GetText = () =>

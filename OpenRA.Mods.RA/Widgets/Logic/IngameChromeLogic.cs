@@ -111,11 +111,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				objectivesButton.OnClick += () => objectivesWidget.Visible ^= true;
 			}
 
-			var moneyBin = playerWidgets.Get("INGAME_MONEY_BIN");
-			moneyBin.Get<OrderButtonWidget>("SELL").GetKey = _ => Game.Settings.Keys.SellKey;
-			moneyBin.Get<OrderButtonWidget>("POWER_DOWN").GetKey = _ => Game.Settings.Keys.PowerDownKey;
-			moneyBin.Get<OrderButtonWidget>("REPAIR").GetKey = _ => Game.Settings.Keys.RepairKey;
-
 			bool radarActive = false;
 			RadarBinState binState = RadarBinState.Closed;
 			var radarBin = playerWidgets.Get<SlidingContainerWidget>("INGAME_RADAR_BIN");
