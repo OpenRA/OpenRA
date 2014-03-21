@@ -32,6 +32,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				BindOrderButton<RepairOrderGenerator>(world, repair, "repair");
 			}
 
+			var beacon = widget.GetOrNull<ButtonWidget>("BEACON_BUTTON");
+			if (beacon != null)
+			{
+				beacon.GetKey = _ => Game.Settings.Keys.PlaceBeaconKey;
+				BindOrderButton<BeaconOrderGenerator>(world, beacon, "beacon");
+			}
+
 			var power = widget.GetOrNull<ButtonWidget>("POWER_BUTTON");
 			if (power != null)
 			{

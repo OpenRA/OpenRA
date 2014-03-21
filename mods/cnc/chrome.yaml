@@ -388,8 +388,8 @@ music: chrome.png
 	play: 288,0,16,16
 	next: 256,16,16,16
 	prev: 272,16,16,16
-	fastforward: 400,64,16,16
-	slowmo: 400,80,16,16
+	fastforward: 416,64,16,16
+	slowmo: 416,80,16,16
 
 lobby-bits: chrome.png
 	spawn-claimed: 256,32,16,16
@@ -427,8 +427,8 @@ strategic: strategic.png
 	player_owned: 96,0,32,32
 
 sidebar-bits: chrome.png
-	indicator-left: 400,48,16,8
-	indicator-right: 400,56,16,8
+	indicator-left: 416,48,16,8
+	indicator-right: 416,56,16,8
 
 production-icons: chrome.png
 	building: 384,0,16,16
@@ -460,3 +460,6 @@ order-icons: chrome.png
 	repair: 384,48,16,16
 	repair-disabled: 384,64,16,16
 	repair-active: 384,80,16,16
+	beacon: 400,48,16,16
+	beacon-disabled: 400,64,16,16
+	beacon-active: 400,80,16,16

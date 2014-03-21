@@ -181,7 +181,7 @@ Container@PLAYER_WIDGETS:
 			Children:
 				Button@OPTIONS_BUTTON:
 					Key:escape
-					X:42
+					X:22
 					Y:0-24
 					Width:30
 					Height:25
@@ -194,8 +194,21 @@ Container@PLAYER_WIDGETS:
 							Y:5
 							ImageCollection:order-icons
 							ImageName:options
+				Button@BEACON_BUTTON:
+					X:62
+					Y:0-24
+					Width:30
+					Height:25
+					Font:Bold
+					TooltipText: Place Beacon
+					TooltipContainer:TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X:7
+							Y:5
+							ImageCollection:order-icons
 				Button@SELL_BUTTON:
-					X:82
+					X:102
 					Y:0-24
 					Width:30
 					Height:25
@@ -208,7 +221,7 @@ Container@PLAYER_WIDGETS:
 							Y:5
 							ImageCollection:order-icons
 				Button@REPAIR_BUTTON:
-					X:122
+					X:142
 					Y:0-24
 					Width:30
 					Height:25

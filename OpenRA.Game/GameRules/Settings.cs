@@ -147,9 +147,8 @@ namespace OpenRA.GameRules
 		public Hotkey SelectAllUnitsKey = new Hotkey(Keycode.A, Modifiers.Ctrl);
 		public Hotkey SelectUnitsByTypeKey = new Hotkey(Keycode.T, Modifiers.Ctrl);
 
-		public Hotkey PlaceBeaconKey = new Hotkey(Keycode.B, Modifiers.Ctrl);
-
-		public Hotkey PauseKey = new Hotkey(Keycode.F9, Modifiers.None);
+		public Hotkey PauseKey = new Hotkey(Keycode.F8, Modifiers.None);
+		public Hotkey PlaceBeaconKey = new Hotkey(Keycode.F9, Modifiers.None);
 		public Hotkey SellKey = new Hotkey(Keycode.F10, Modifiers.None);
 		public Hotkey PowerDownKey = new Hotkey(Keycode.F11, Modifiers.None);
 		public Hotkey RepairKey = new Hotkey(Keycode.F12, Modifiers.None);
