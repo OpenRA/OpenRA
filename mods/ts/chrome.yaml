@@ -175,20 +175,16 @@ strategic: strategic.png
 	enemy_owned: 32,32,32,32
 	player_owned: 96,0,32,32
 
-sell-button: buttons.png
-	normal: 0,0,34,28
-	pressed: 34,0,34,28
-	disabled: 68,0,34,28
-
-repair-button: buttons.png
-	normal: 0,28,34,28
-	pressed: 34,28,34,28
-	disabled: 68,28,34,28
-
-power-button: buttons.png
-	normal: 0,56,34,28
-	pressed: 34,56,34,28
-	disabled: 68,56,34,28
+order-icons: buttons.png
+	sell: 0,0,34,28
+	sell-disabled: 68,0,34,28
+	sell-active: 34,0,34,28
+	repair: 0,28,34,28
+	repair-disabled: 68,28,34,28
+	repair-active: 34,28,34,28
+	power: 0,56,34,28
+	power-disabled: 68,56,34,28
+	power-active: 34,56,34,28
 
 flags: buttons.png
 	gdi: 30,84,30,15

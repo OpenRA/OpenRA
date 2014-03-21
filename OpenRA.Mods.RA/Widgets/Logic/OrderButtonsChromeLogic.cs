@@ -16,32 +16,38 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class OrderButtonsChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public OrderButtonsChromeLogic(World world)
+		public OrderButtonsChromeLogic(Widget widget, World world)
 		{
-			/* TODO: attach this to the correct widget, to remove the lookups below */
-			var r = Ui.Root;
-			var gameRoot = r.Get("INGAME_ROOT");
+			var sell = widget.GetOrNull<ButtonWidget>("SELL_BUTTON");
+			if (sell != null)
+			{
+				sell.GetKey = _ => Game.Settings.Keys.SellKey;
+				BindOrderButton<SellOrderGenerator>(world, sell, "sell");
+			}
 
-			var moneybin = gameRoot.Get("INGAME_MONEY_BIN");
-			moneybin.IsVisible = () => {
-				return world.LocalPlayer.WinState == WinState.Undefined;
-			};
+			var repair = widget.GetOrNull<ButtonWidget>("REPAIR_BUTTON");
+			if (repair != null)
+			{
+				repair.GetKey = _ => Game.Settings.Keys.RepairKey;
+				BindOrderButton<RepairOrderGenerator>(world, repair, "repair");
+			}
 
-			BindOrderButton<SellOrderGenerator>(world, moneybin, "SELL");
-			BindOrderButton<PowerDownOrderGenerator>(world, moneybin, "POWER_DOWN");
-			BindOrderButton<RepairOrderGenerator>(world, moneybin, "REPAIR");
+			var power = widget.GetOrNull<ButtonWidget>("POWER_BUTTON");
+			if (power != null)
+			{
+				power.GetKey = _ => Game.Settings.Keys.PowerDownKey;
+				BindOrderButton<PowerDownOrderGenerator>(world, power, "power");
+			}
 		}
 
-		static void BindOrderButton<T>(World world, Widget parent, string button)
+		static void BindOrderButton<T>(World world, ButtonWidget w, string icon)
 			where T : IOrderGenerator, new()
 		{
-			var w = parent.GetOrNull<OrderButtonWidget>(button);
-			if (w != null)
-			{
-				w.Pressed = () => world.OrderGenerator is T;
-				w.OnMouseDown = mi => world.ToggleInputMode<T>();
-				w.OnKeyPress = ki => world.ToggleInputMode<T>();
-			}
+			w.OnClick = () => world.ToggleInputMode<T>();
+			w.IsHighlighted = () => world.OrderGenerator is T;
+
+			w.Get<ImageWidget>("ICON").GetImageName =
+				() => world.OrderGenerator is T ? icon + "-active" : icon;
 		}
 	}
 }
