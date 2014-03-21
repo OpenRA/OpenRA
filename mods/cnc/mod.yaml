@@ -79,8 +79,11 @@ ChromeLayout:
 	mods/cnc/chrome/createserver.yaml
 	mods/cnc/chrome/directconnect.yaml
 	mods/cnc/chrome/lobby.yaml
+	mods/cnc/chrome/lobby-mappreview.yaml
 	mods/cnc/chrome/lobby-playerbin.yaml
+	mods/cnc/chrome/lobby-dialogs.yaml
 	mods/cnc/chrome/connection.yaml
+	mods/cnc/chrome/color-picker.yaml
 	mods/cnc/chrome/mapchooser.yaml
 	mods/cnc/chrome/replaybrowser.yaml
 	mods/cnc/chrome/ingame.yaml

@@ -1,10 +1,10 @@
 Background@KICK_CLIENT_DIALOG:
-	X:20
-	Y:67
-	Width:535
-	Height:235
+	X:15
+	Y:30
+	Width:501
+	Height:219
 	Logic:KickClientLogic
-	Background:dialog3
+	Background:scrollpanel-bg
 	Children:
 		Label@TITLE:
 			X:0
@@ -34,6 +34,7 @@ Background@KICK_CLIENT_DIALOG:
 			Y:120
 			Width:150
 			Height:20
+			Font:Regular
 			Text:Temporarily Ban
 		Button@OK_BUTTON:
 			X:(PARENT_RIGHT - WIDTH)/2 + 75
@@ -51,12 +52,12 @@ Background@KICK_CLIENT_DIALOG:
 			Font:Bold
 
 Background@KICK_SPECTATORS_DIALOG:
-	X:20
-	Y:67
-	Width:535
-	Height:235
+	X:15
+	Y:30
+	Width:501
+	Height:219
 	Logic:KickSpectatorsLogic
-	Background:dialog3
+	Background:scrollpanel-bg
 	Children:
 		Label@TITLE:
 			X:0
@@ -89,11 +90,11 @@ Background@KICK_SPECTATORS_DIALOG:
 			Font:Bold
 
 Background@LOBBY_OPTIONS_BIN:
-	X:20
-	Y:67
-	Width:535
-	Height:235
-	Background:dialog3
+	X:15
+	Y:30
+	Width:501
+	Height:219
+	Background:scrollpanel-bg
 	Children:
 		Label@TITLE:
 			X:0
@@ -105,87 +106,88 @@ Background@LOBBY_OPTIONS_BIN:
 			Text: Map Options
 		Container:
 			X:30
-			Y:70
+			Y:65
 			Width: PARENT_RIGHT-60
 			Height: PARENT_BOTTOM-75
 			Children:
 				Checkbox@SHROUD_CHECKBOX:
 					Width:230
 					Height:20
+					Font:Regular
 					Text:Shroud
 				Checkbox@FOG_CHECKBOX:
-					Y:40
+					Y:35
 					Width:230
 					Height:20
+					Font:Regular
 					Text:Fog of War
 				Checkbox@CRATES_CHECKBOX:
-					X:125
+					X:160
 					Width:230
 					Height:20
+					Font:Regular
 					Text:Crates Appear
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X:125
-					Y:40
+					X:160
+					Y:35
 					Width:230
 					Height:20
+					Font:Regular
 					Text:Build off Ally ConYards
 				Checkbox@ALLOWCHEATS_CHECKBOX:
-					X:320
+					X:325
 					Width:230
 					Height:20
+					Font:Regular
 					Text:Debug Menu
-				Checkbox@FRAGILEALLIANCES_CHECKBOX:
-					X:320
-					Y:40
-					Width:220
-					Height:20
-					Text:Diplomacy Changes
 				Label@STARTINGCASH_DESC:
-					Y:87
-					Width:80
+					X:10
+					Y:72
+					Width:70
 					Height:25
+					Font:Regular
 					Text:Starting Cash:
 					Align:Right
 				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:
 					X:85
-					Y:87
-					Width:130
+					Y:72
+					Width:120
 					Height:25
 					Font:Regular
 					Text:$5000
 				Label@STARTINGUNITS_DESC:
-					X:PARENT_RIGHT - WIDTH - 145
-					Y:87
+					X:PARENT_RIGHT - WIDTH - 135
+					Y:72
 					Width:120
 					Height:25
 					Text:Starting Units:
 					Align:Right
 				DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
-					X:PARENT_RIGHT - WIDTH
-					Y:87
+					X:PARENT_RIGHT - WIDTH + 10
+					Y:72
 					Width:140
 					Height:25
 					Font:Regular
 				Label@DIFFICULTY_DESC:
-					X:PARENT_RIGHT - WIDTH - 145
-					Y:122
+					X:PARENT_RIGHT - WIDTH - 135
+					Y:107
 					Width:120
 					Height:25
 					Text:Mission Difficulty:
 					Align:Right
 				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-					X:PARENT_RIGHT - WIDTH
-					Y:122
+					X:PARENT_RIGHT - WIDTH + 10
+					Y:107
 					Width:140
 					Height:25
 					Font:Regular
 
 Background@FORCE_START_DIALOG:
-	X:20
-	Y:67
-	Width:535
-	Height:235
-	Background:dialog3
+	X:15
+	Y:30
+	Width:501
+	Height:219
+	Background:scrollpanel-bg
 	Children:
 		Label@TITLE:
 			X:0

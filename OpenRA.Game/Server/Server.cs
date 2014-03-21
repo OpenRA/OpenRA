@@ -272,7 +272,7 @@ namespace OpenRA.Server
 					Country = "random",
 					SpawnPoint = 0,
 					Team = 0,
-					State = Session.ClientState.NotReady,
+					State = Session.ClientState.Invalid,
 					IsAdmin = !LobbyInfo.Clients.Any(c1 => c1.IsAdmin)
 				};
 
@@ -572,18 +572,30 @@ namespace OpenRA.Server
 
 		public void StartGame()
 		{
-			State = ServerState.GameStarted;
 			listener.Stop();
 
 			Console.WriteLine("Game started");
 
-			foreach (var c in Conns)
-				foreach (var d in Conns)
-					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });
-
 			// Drop any unvalidated clients
 			foreach (var c in PreConns.ToArray())
 				DropClient(c);
+
+			// Drop any players who are not ready
+			foreach (var c in Conns.ToArray())
+			{
+				if (GetClient(c).IsInvalid)
+				{
+					SendOrderTo(c, "ServerError", "You have been kicked from the server");
+					DropClient(c);
+				}
+			}
+
+			SyncLobbyInfo();
+			State = ServerState.GameStarted;
+
+			foreach (var c in Conns)
+				foreach (var d in Conns)
+					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });
 
 			DispatchOrders(null, 0,
 				new ServerOrder("StartGame", "").Serialize());

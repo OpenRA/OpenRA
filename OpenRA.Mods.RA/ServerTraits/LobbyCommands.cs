@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Server
 				server.SendOrderTo(conn, "Message", "Cannot change state when game started. ({0})".F(cmd));
 				return false;
 			}
-			else if (client.State == Session.ClientState.Ready && !(cmd == "ready" || cmd == "startgame"))
+			else if (client.State == Session.ClientState.Ready && !(cmd.StartsWith("state") || cmd == "startgame"))
 			{
 				server.SendOrderTo(conn, "Message", "Cannot change state when marked as ready.");
 				return false;
@@ -75,14 +75,17 @@ namespace OpenRA.Mods.RA.Server
 
 			var dict = new Dictionary<string, Func<string, bool>>
 			{
-				{ "ready",
+				{ "state",
 					s =>
 					{
-						// if we're downloading, we can't ready up.
-						if (client.State == Session.ClientState.NotReady)
-							client.State = Session.ClientState.Ready;
-						else if (client.State == Session.ClientState.Ready)
-							client.State = Session.ClientState.NotReady;
+						var state = Session.ClientState.Invalid;
+						if (!Enum<Session.ClientState>.TryParse(s, false, out state))
+						{
+							server.SendOrderTo(conn, "Message", "Malformed state command");
+							return true;
+						}
+
+						client.State = state;
 
 						Log.Write("server", "Player @{0} is {1}",
 							conn.socket.RemoteEndPoint, client.State);
@@ -290,6 +293,10 @@ namespace OpenRA.Mods.RA.Server
 						LoadMap(server);
 						SetDefaultDifficulty(server);
 
+						// Reset client states
+						foreach (var c in server.LobbyInfo.Clients)
+							c.State = Session.ClientState.Invalid;
+
 						// Reassign players into new slots based on their old slots:
 						//  - Observers remain as observers
 						//  - Players who now lack a slot are made observers
@@ -303,7 +310,6 @@ namespace OpenRA.Mods.RA.Server
 								continue;
 
 							c.SpawnPoint = 0;
-							c.State = Session.ClientState.NotReady;
 							c.Slot = i < slots.Length ? slots[i++] : null;
 							if (c.Slot != null)
 							{

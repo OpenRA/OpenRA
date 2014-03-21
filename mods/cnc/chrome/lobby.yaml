@@ -17,40 +17,9 @@ Container@SERVER_LOBBY:
 			Height:500
 			Background:panel-black
 			Children:
-				Background@MAP_BG:
-					X:PARENT_RIGHT-15-WIDTH
-					Y:30
-					Width:194
-					Height:194
-					Background:panel-gray
-					Children:
-						MapPreview@MAP_PREVIEW:
-							X:1
-							Y:1
-							Width:192
-							Height:192
-							TooltipContainer:TOOLTIP_CONTAINER
-				Label@MAP_TITLE:
-					X:PARENT_RIGHT-15-WIDTH
-					Y:227
-					Width:194
-					Height:25
-					Font:Bold
-					Align:Center
-				Label@MAP_TYPE:
-					X:PARENT_RIGHT-15-WIDTH
-					Y:242
-					Width:194
-					Height:25
-					Font:TinyBold
-					Align:Center
-				Label@MAP_AUTHOR:
-					X:PARENT_RIGHT-15-WIDTH
-					Y:255
-					Width:194
-					Height:25
-					Font:Tiny
-					Align:Center
+				Container@MAP_PREVIEW_ROOT:
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
 				Container@LABEL_CONTAINER:
 					X:20
 					Y:5

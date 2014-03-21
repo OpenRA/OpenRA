@@ -136,7 +136,7 @@ namespace OpenRA.GameRules
 		public bool TeamHealthColors = false;
 
 		public bool AllowDownloading = true;
-		public string[] MapRepositories = { "http://resource.openra.net/map/", "http://resource.ihptru.net:8080/map/" };
+		public string MapRepository = "http://resource.openra.net/map/";
 	}
 
 	public class KeySettings

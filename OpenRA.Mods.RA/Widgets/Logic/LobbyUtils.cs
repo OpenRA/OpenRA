@@ -363,11 +363,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			factionflag.GetImageCollection = () => "flags";
 		}
 
-		public static void SetupEditableTeamWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, int teamCount)
+		public static void SetupEditableTeamWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("TEAM");
 			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady;
-			dropdown.OnMouseDown = _ => ShowTeamDropDown(dropdown, c, orderManager, teamCount);
+			dropdown.OnMouseDown = _ => ShowTeamDropDown(dropdown, c, orderManager, map.PlayerCount);
 			dropdown.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 		}
 
@@ -376,13 +376,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			parent.Get<LabelWidget>("TEAM").GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 		}
 
-		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
+		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
 		{
 			var status = parent.Get<CheckboxWidget>("STATUS_CHECKBOX");
 			status.IsChecked = () => orderManager.LocalClient.IsReady || c.Bot != null;
 			status.IsVisible = () => true;
-			status.IsDisabled = () => c.Bot != null;
-			status.OnClick = () => orderManager.IssueOrder(Order.Command("ready"));
+			status.IsDisabled = () => c.Bot != null || map.Status != MapStatus.Available;
+
+			var state = orderManager.LocalClient.IsReady ? Session.ClientState.NotReady : Session.ClientState.Ready;
+			status.OnClick = () => orderManager.IssueOrder(Order.Command("state {0}".F(state)));
 		}
 
 		public static void SetupReadyWidget(Widget parent, Session.Slot s, Session.Client c)

@@ -487,6 +487,7 @@
     <Compile Include="RemoveImmediately.cs" />
     <Compile Include="Attack\AttackFollow.cs" />
     <Compile Include="Attack\AttackGarrisoned.cs" />
+    <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
