@@ -86,7 +86,7 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 85
-		Crushes: wall, mine, crate, infantry
+		Crushes: wall, mine, crate, infantry, husk
 	RevealsShroud:
 		Range: 5c0
 	Turreted:
@@ -129,7 +129,7 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 71
-		Crushes: wall, mine, crate, infantry
+		Crushes: wall, mine, crate, infantry, husk
 	RevealsShroud:
 		Range: 5c0
 	Turreted:
@@ -174,7 +174,7 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 42
-		Crushes: wall, mine, crate, infantry
+		Crushes: wall, mine, crate, infantry, husk
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
@@ -272,7 +272,7 @@ HARV:
 		Type: Heavy
 	Mobile:
 		Speed: 85
-		Crushes: wall, mine, crate, infantry
+		Crushes: wall, mine, crate, infantry, husk
 	RevealsShroud:
 		Range: 4c0
 	RenderHarvester:
@@ -574,7 +574,7 @@ TTNK:
 		Type: Light
 	Mobile:
 		Speed: 113
-		Crushes: wall, mine, crate, infantry
+		Crushes: wall, mine, crate, infantry, husk
 	RevealsShroud:
 		Range: 7c0
 	Armament:
@@ -679,7 +679,7 @@ CTNK:
 		Type: Light
 	Mobile:
 		Speed: 113
-		Crushes: wall, mine, crate, infantry
+		Crushes: wall, mine, crate, infantry, husk
 	RevealsShroud:
 		Range: 6c0
 	RenderUnit:
@@ -714,7 +714,7 @@ QTNK:
 		Type: Heavy
 	Mobile:
 		Speed: 56
-		Crushes: wall, mine, crate, infantry
+		Crushes: wall, mine, crate, infantry, husk
 	RevealsShroud:
 		Range: 6c0
 	Selectable:
@@ -748,7 +748,7 @@ STNK:
 		Type: Light
 	Mobile:
 		Speed: 113
-		Crushes: wall, mine, crate, infantry
+		Crushes: wall, mine, crate, infantry, husk
 	RevealsShroud:
 		Range: 6c0
 	RenderUnit:

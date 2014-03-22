@@ -19,7 +19,7 @@
 		Type: Light
 	Mobile:
 		Speed: 64
-		Crushes: crate, infantry
+		Crushes: crate, infantry, husk
 	RevealsShroud:
 		Range: 8c0
 	MustBeDestroyed:
@@ -71,7 +71,7 @@ HARVESTER:
 		Type: Heavy
 	Mobile:
 		Speed: 64
-		Crushes: crate, infantry
+		Crushes: crate, infantry, husk
 	RenderUnit:
 		Image: HARVESTER
 	RevealsShroud:
@@ -208,7 +208,7 @@ QUAD.starport:
 	Mobile:
 		Speed: 64
 		ROT: 6
-		Crushes: crate, infantry
+		Crushes: crate, infantry, husk
 	RevealsShroud:
 		Range: 7c0
 	Turreted:
@@ -258,7 +258,7 @@ SIEGETANK:
 	Mobile:
 		Speed: 53
 		ROT: 3
-		Crushes: crate, infantry
+		Crushes: crate, infantry, husk
 	RevealsShroud:
 		Range: 8c0
 	Turreted:

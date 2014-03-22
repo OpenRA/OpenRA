@@ -123,7 +123,7 @@ COMBATO:
 	Mobile:
 		Speed: 96
 		ROT: 8
-		Crushes: crate, infantry
+		Crushes: crate, infantry, husk
 	RenderUnit:
 		Image: COMBATO
 	WithTurret:
