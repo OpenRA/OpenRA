@@ -488,6 +488,8 @@
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
+    <Compile Include="Widgets\LogicKeyListenerWidget.cs" />
+    <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

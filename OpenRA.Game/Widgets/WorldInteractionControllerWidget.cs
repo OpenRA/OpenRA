@@ -198,13 +198,7 @@ namespace OpenRA.Widgets
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{
-				if (e.Key >= Keycode.NUMBER_0 && e.Key <= Keycode.NUMBER_9)
-				{
-					var group = (int)e.Key - (int)Keycode.NUMBER_0;
-					World.Selection.DoControlGroup(World, worldRenderer, group, e.Modifiers, e.MultiTapCount);
-					return true;
-				}
-				else if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.PauseKey && World.LocalPlayer != null) // Disable pausing for spectators
+				if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.PauseKey && World.LocalPlayer != null) // Disable pausing for spectators
 					World.SetPauseState(!World.Paused);
 				else if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.SelectAllUnitsKey)
 				{

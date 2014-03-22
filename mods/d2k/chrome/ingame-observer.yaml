@@ -36,12 +36,12 @@ Container@OBSERVER_WIDGETS:
 					Children:
 						LogicKeyListener@SHROUD_KEYHANDLER:
 						Image@FLAG:
+							Width:23
+							Height:23
 							X:4
-							Y:4
-							Width:32
-							Height:16
+							Y:2
 						Label@LABEL:
-							X:40
+							X:34
 							Width:60
 							Height:25
 						Label@NOFLAG_LABEL:

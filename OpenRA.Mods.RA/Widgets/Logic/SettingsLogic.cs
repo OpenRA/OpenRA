@@ -279,6 +279,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{ "GuardKey", "Guard" }
 			};
 
+			var observerHotkeys = new Dictionary<string, string>()
+			{
+				{ "ObserverCombinedView", "All Players" },
+				{ "ObserverWorldView", "Disable Shroud" }
+			};
+
 			var gs = Game.Settings.Game;
 			var ks = Game.Settings.Keys;
 
@@ -302,6 +308,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			hotkeyList.AddChild(globalHeader);
 
 			foreach (var kv in specialHotkeys)
+				BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
+
+			var observerHeader = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+			observerHeader.Get<LabelWidget>("LABEL").GetText = () => "Observer Commands";
+			hotkeyList.AddChild(observerHeader);
+
+			foreach (var kv in observerHotkeys)
 				BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
 
 			var unitHeader = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});

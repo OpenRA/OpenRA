@@ -1,5 +1,7 @@
 Container@PLAYER_WIDGETS:
 	Children:
+		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
+			Logic:ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
 		Button@INGAME_DIPLOMACY_BUTTON:
 			X:162
