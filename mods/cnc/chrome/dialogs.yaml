@@ -64,6 +64,43 @@ ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
 					Height:25
 					Align:Center
 
+ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
+	Width:DROPDOWN_WIDTH
+	Background:panel-black
+	Children:
+		ScrollItem@HEADER:
+			Width:PARENT_RIGHT-27
+			Height:13
+			X:2
+			Y:0
+			Visible:false
+			Children:
+				Label@LABEL:
+					Font:TinyBold
+					Width:PARENT_RIGHT
+					Height:10
+					Align:Center
+		ScrollItem@TEMPLATE:
+			Width:PARENT_RIGHT-27
+			Height:25
+			X:2
+			Y:0
+			Visible:false
+			Children:
+				Image@FLAG:
+					X:4
+					Y:4
+					Width:32
+					Height:16
+				Label@LABEL:
+					X:40
+					Width:60
+					Height:25
+				Label@NOFLAG_LABEL:
+					X:5
+					Width:PARENT_RIGHT
+					Height:25
+
 Container@CONFIRM_PROMPT:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 90)/2
