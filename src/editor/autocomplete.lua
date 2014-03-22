@@ -220,7 +220,8 @@ local function resolveAssign(editor,tx)
     if (key and rest and tab.childs and tab.childs[key]) then
       return getclass(tab.childs[key],rest)
     end
-    if (tab.valuetype) then
+    -- process valuetype, but only if it doesn't reference the current tab
+    if (tab.valuetype and tab ~= ac.childs[tab.valuetype]) then
       return getclass(ac,tab.valuetype.."."..a)
     end
     return tab,a

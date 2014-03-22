@@ -24,6 +24,20 @@ ide.app.postinit = function()
     return ok, res
   end
 
+  function limitdepth (limit, func)
+    local n = 0
+    debug.sethook(function(event)
+      if event == 'call' then n = n + 1
+      elseif event == 'return' or event == 'tail return' then n = n - 1
+      end
+      if n > limit then error("exceeded") end
+    end, "cr")
+    local ok, res = pcall(func)
+    n = 0
+    debug.sethook()
+    return ok, res
+  end
+
   -- find all test files and load them
   local files = FileSysGetRecursive("t", true, "*.lua")
   for k, v in ipairs(files) do

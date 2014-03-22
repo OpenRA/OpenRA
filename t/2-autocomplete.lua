@@ -52,6 +52,23 @@ editor:AddText([[
 ok(limit(10000, function() EditorAutoComplete(editor) end),
   "Auto-complete doesn't loop for classes that reference '...'.")
 
+-- create a valuetype self-reference
+-- this is to test "s = Scan(); s:" fragment
+ide.apis.lua.baselib.io.valuetype = "io"
+ReloadLuaAPI()
+
+editor:SetText('')
+editor:AddText([[
+  s = io;
+  s:]])
+
+ok(limitdepth(1000, function() EditorAutoComplete(editor) end),
+  "Auto-complete doesn't loop for classes that self-reference with 'valuetype'.")
+
+-- restore valuetype
+ide.apis.lua.baselib.io.valuetype = nil
+ReloadLuaAPI()
+
 local interpreter = ide:GetInterpreter():GetFileName()
 ProjectSetInterpreter("gideros")
 
