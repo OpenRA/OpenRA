@@ -1,9 +1,9 @@
 Container@REPLAYBROWSER_PANEL:
 	Logic:ReplayBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 300)/2
+	Y:(WINDOW_BOTTOM - 500)/2
 	Width:520
-	Height:335
+	Height:535
 	Children:
 		Label@TITLE:
 			Width:520
@@ -14,14 +14,14 @@ Container@REPLAYBROWSER_PANEL:
 			Text:Replay Viewer
 		Background@bg:
 			Width:520
-			Height:300
+			Height:500
 			Background:panel-black
 			Children:
 				ScrollPanel@REPLAY_LIST:
 					X:15
 					Y:15
-					Width:286
-					Height:270
+					Width:282
+					Height:PARENT_BOTTOM-30
 					Children:
 						ScrollItem@REPLAY_TEMPLATE:
 							Width:PARENT_RIGHT-27
@@ -46,58 +46,81 @@ Container@REPLAYBROWSER_PANEL:
 							Y:1
 							Width:192
 							Height:192
+							TooltipContainer:TOOLTIP_CONTAINER
 				Container@REPLAY_INFO:
 					X:PARENT_RIGHT-WIDTH-15
-					Y:219
+					Y:15
 					Width:194
-					Height:56
-					Visible:false
+					Height:PARENT_BOTTOM - 15
 					Children:
-						Label@MAP_TITLE_LABEL:
-							Align:Right
-							Width:70
-							Height:20
-							Text:Map:
-							Font:Bold
 						Label@MAP_TITLE:
-							X:75
-							Width:70
-							Height:20
-						Label@DURATION_LABEL:
-							Y:20
-							Align:Right
-							Width:70
-							Height:20
-							Text:Duration:
+							Y:197
+							Width:PARENT_RIGHT
+							Height:25
 							Font:Bold
+							Align:Center
+						Label@MAP_TYPE:
+							Y:212
+							Width:PARENT_RIGHT
+							Height:25
+							Font:TinyBold
+							Align:Center
 						Label@DURATION:
-							X:75
-							Y:20
-							Width:70
-							Height:20
-						Label@PLAYERS_LABEL:
-							Y:40
-							Align:Right
-							Width:70
-							Height:20
-							Text:Players:
-							Font:Bold
-						Label@PLAYERS:
-							X:75
-							Y:40
-							Width:70
-							Height:20
+							Y:225
+							Width:PARENT_RIGHT
+							Height:25
+							Font:Tiny
+							Align:Center
+						ScrollPanel@PLAYER_LIST:
+							Y:250
+							Width:PARENT_RIGHT
+							Height:PARENT_BOTTOM - 250 - 15
+							IgnoreChildMouseOver:true
+							Children:
+								ScrollItem@HEADER:
+									Width:PARENT_RIGHT-27
+									Height:13
+									X:2
+									Y:0
+									Visible:false
+									Children:
+										Label@LABEL:
+											Font:TinyBold
+											Width:PARENT_RIGHT
+											Height:10
+											Align:Center
+								ScrollItem@TEMPLATE:
+									Width:PARENT_RIGHT-27
+									Height:25
+									X:2
+									Y:0
+									Visible:false
+									Children:
+										Image@FLAG:
+											X:4
+											Y:4
+											Width:32
+											Height:16
+										Label@LABEL:
+											X:40
+											Width:60
+											Height:25
+										Label@NOFLAG_LABEL:
+											X:5
+											Width:PARENT_RIGHT
+											Height:25
 				Button@CANCEL_BUTTON:
 					Key:escape
 					X:0
-					Y:299
+					Y:499
 					Width:140
 					Height:35
 					Text:Back
 				Button@WATCH_BUTTON:
 					Key:return
 					X:380
-					Y:299
+					Y:499
 					Width:140
 					Height:35
 					Text:Watch
+				TooltipContainer@TOOLTIP_CONTAINER:
