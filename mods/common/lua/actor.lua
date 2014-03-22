@@ -150,6 +150,13 @@ Actor.SetStance = function(actor, stance)
 	Internal.SetUnitStance(actor, stance)
 end
 
+Actor.RepairBuilding = function(actor)
+	local rb = Actor.TraitOrDefault(actor, "RepairableBuilding")
+	if rb ~= nil and rb.Repairer == nil then
+		rb:RepairBuilding(actor, Actor.Owner(actor))
+	end
+end
+
 Actor.OnDamaged = function(actor, eh)
 	Actor.Trait(actor, "LuaScriptEvents").OnDamaged:Add(eh)
 end
@@ -207,19 +214,23 @@ Actor.Guard = function(actor, target)
 end
 
 Actor.Patrol = function(actor, waypoints, wait, loop)
-	Utils.Do(waypoints, function(wpt)
-		Actor.AttackMove(actor, wpt.Location, 3)
-		Actor.Wait(actor, wait or 0)
-	end)
-	if loop or loop == nil then
-		Actor.CallFunc(actor, function() Actor.Patrol(actor, waypoints, wait, loop) end)
+	if not Actor.IsDead(actor) then
+		Utils.Do(waypoints, function(wpt)
+			Actor.AttackMove(actor, wpt.Location, 3)
+			Actor.Wait(actor, wait or 0)
+		end)
+		if loop or loop == nil then
+			Actor.CallFunc(actor, function() Actor.Patrol(actor, waypoints, wait, loop) end)
+		end
 	end
 end
 
 Actor.PatrolUntil = function(actor, waypoints, wait, func)
 	if func == nil then error("No function specified", 2) end
-	Actor.Patrol(actor, waypoints, wait, false)
-	if not func(actor) then
-		Actor.CallFunc(actor, function() Actor.PatrolUntil(actor, waypoints, wait, func) end)
+	if not Actor.IsDead(actor) then
+		Actor.Patrol(actor, waypoints, wait, false)
+		if not func(actor) then
+			Actor.CallFunc(actor, function() Actor.PatrolUntil(actor, waypoints, wait, func) end)
+		end
 	end
 end
