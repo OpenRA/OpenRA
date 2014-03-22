@@ -85,7 +85,7 @@ namespace OpenRA
 			return ts;
 		}
 
-		const int MaxRange = 50;
+		public const int MaxRange = 50;
 		static List<CVec>[] TilesByDistance = InitTilesByDistance(MaxRange);
 
 		public static string GetTerrainType(this World world, CPos cell)

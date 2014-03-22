@@ -54,9 +54,7 @@ namespace OpenRA.Mods.RA
 			if (--ReturnTicks == 0)
 			{
 				self.CancelActivity();
-
-				// TODO: need a new Teleport method that will move to the closest available cell
-				self.QueueActivity(new Teleport(chronosphere, Origin, killCargo, info.ChronoshiftSound));
+				self.QueueActivity(new Teleport(chronosphere, Origin, null, killCargo, true, info.ChronoshiftSound));
 			}
 		}
 
@@ -90,7 +88,7 @@ namespace OpenRA.Mods.RA
 
 			// Set up the teleport
 			self.CancelActivity();
-			self.QueueActivity(new Teleport(chronosphere, targetLocation, killCargo, info.ChronoshiftSound));
+			self.QueueActivity(new Teleport(chronosphere, targetLocation, null, killCargo, true, info.ChronoshiftSound));
 
 			return true;
 		}
