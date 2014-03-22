@@ -175,6 +175,8 @@ Container@OBSERVER_WIDGETS:
 
 Container@PLAYER_WIDGETS:
 	Children:
+		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
+			Logic:ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
 		WorldCommand:
 			Width:WINDOW_RIGHT
