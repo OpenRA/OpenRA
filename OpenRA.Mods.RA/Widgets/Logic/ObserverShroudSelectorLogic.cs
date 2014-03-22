@@ -20,9 +20,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class ObserverShroudSelectorLogic
 	{
 		CameraOption selected;
+		CameraOption combined, disableShroud;
+		IOrderedEnumerable<IGrouping<int, CameraOption>> teams;
 
 		class CameraOption
 		{
+			public readonly Player Player;
 			public readonly string Label;
 			public readonly Color Color;
 			public readonly string Race;
@@ -31,6 +34,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			public CameraOption(ObserverShroudSelectorLogic logic, Player p)
 			{
+				Player = p;
 				Label = p.PlayerName;
 				Color = p.Color.RGB;
 				Race = p.Country.Race;
@@ -40,6 +44,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			public CameraOption(ObserverShroudSelectorLogic logic, World w, string label, Player p)
 			{
+				Player = p;
 				Label = label;
 				Color = Color.White;
 				Race = null;
@@ -53,23 +58,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var groups = new Dictionary<string, IEnumerable<CameraOption>>();
 
-			var teams = world.Players.Where(p => !p.NonCombatant)
-				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.ClientIndex) ?? new Session.Client()).Team).OrderBy(g => g.Key);
-			var noTeams = teams.Count() == 1;
+			teams = world.Players.Where(p => !p.NonCombatant)
+				.Select(p => new CameraOption(this, p))
+				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.Player.ClientIndex) ?? new Session.Client()).Team)
+				.OrderBy(g => g.Key);
 
+			var noTeams = teams.Count() == 1;
 			foreach (var t in teams)
 			{
 				var label = noTeams ? "Players" : t.Key == 0 ? "No Team" : "Team {0}".F(t.Key);
-				groups.Add(label, t.Select(p => new CameraOption(this, p)));
+				groups.Add(label, t);
 			}
 
-			var combined = world.Players.First(p => p.InternalName == "Everyone");
-			var disableShroud = new CameraOption(this, world, "Disable Shroud", null);
-			groups.Add("Other", new List<CameraOption>()
-			{
-				new CameraOption(this, world, "All Players", combined),
-				disableShroud
-			});
+			combined = new CameraOption(this, world, "All Players", world.Players.First(p => p.InternalName == "Everyone"));
+			disableShroud = new CameraOption(this, world, "Disable Shroud", null);
+			groups.Add("Other", new List<CameraOption>() { combined, disableShroud });
 
 			var shroudSelector = widget.Get<DropDownButtonWidget>("SHROUD_SELECTOR");
 			shroudSelector.OnMouseDown = _ =>
@@ -115,7 +118,51 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			shroudLabelAlt.GetText = () => selected.Label;
 			shroudLabelAlt.GetColor = () => selected.Color;
 
+			var keyhandler = shroudSelector.Get<LogicKeyListenerWidget>("SHROUD_KEYHANDLER");
+			keyhandler.OnKeyPress = HandleKeyPress;
+
 			selected = disableShroud;
+		}
+
+		public bool HandleKeyPress(KeyInput e)
+		{
+			if (e.Event == KeyInputEvent.Down)
+			{
+				var h = Hotkey.FromKeyInput(e);
+				if (h == Game.Settings.Keys.ObserverCombinedView)
+				{
+					selected = combined;
+					selected.OnClick();
+
+					return true;
+				}
+
+				if (h == Game.Settings.Keys.ObserverWorldView)
+				{
+					selected = disableShroud;
+					selected.OnClick();
+
+					return true;
+				}
+
+				if (e.Key >= Keycode.NUMBER_0 && e.Key <= Keycode.NUMBER_9)
+				{
+					var key = (int)e.Key - (int)Keycode.NUMBER_0;
+					var team = teams.Where(t => t.Key == key).SelectMany(s => s);
+					if (!team.Any())
+						return false;
+
+					if (e.Modifiers == Modifiers.Shift)
+						team = team.Reverse();
+
+					selected = team.SkipWhile(t => t.Player != selected.Player).Skip(1).FirstOrDefault() ?? team.FirstOrDefault();
+					selected.OnClick();
+
+					return true;
+				}
+			}
+
+			return false;
 		}
 	}
 }

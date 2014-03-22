@@ -165,6 +165,9 @@ namespace OpenRA.GameRules
 		public Hotkey DeployKey = new Hotkey(Keycode.F, Modifiers.None);
 		public Hotkey StanceCycleKey = new Hotkey(Keycode.Z, Modifiers.None);
 		public Hotkey GuardKey = new Hotkey(Keycode.D, Modifiers.None);
+
+		public Hotkey ObserverCombinedView = new Hotkey(Keycode.MINUS, Modifiers.None);
+		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
 	}
 
 	public class IrcSettings

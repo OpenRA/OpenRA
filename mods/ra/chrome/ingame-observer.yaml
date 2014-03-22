@@ -34,6 +34,7 @@ Container@OBSERVER_WIDGETS:
 					Height:25
 					Font:Bold
 					Children:
+						LogicKeyListener@SHROUD_KEYHANDLER:
 						Image@FLAG:
 							X:4
 							Y:4
