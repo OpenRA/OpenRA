@@ -18,13 +18,15 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		Target target;
 		Plane plane;
-		WRange range;
+		WRange minRange;
+		WRange maxRange;
 
-		public FlyFollow(Actor self, Target target, WRange range)
+		public FlyFollow(Actor self, Target target, WRange minRange, WRange maxRange)
 		{
 			this.target = target;
 			plane = self.Trait<Plane>();
-			this.range = range;
+			this.minRange = minRange;
+			this.maxRange = maxRange;
 		}
 
 		public override Activity Tick(Actor self)
@@ -32,13 +34,13 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
-			if (target.IsInRange(self.CenterPosition, range))
+			if (target.IsInRange(self.CenterPosition, maxRange) && !target.IsInRange(self.CenterPosition, minRange))
 			{
 				Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);
 				return this;
 			}
 
-			return Util.SequenceActivities(new Fly(self, target, WRange.Zero, range), this);
+			return Util.SequenceActivities(new Fly(self, target, minRange, maxRange), this);
 		}
 	}
 }
