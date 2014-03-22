@@ -14,6 +14,7 @@ NEW:
 			Added an Extras submenu for miscellaneous game extras.
 		Engineers can now regain control over husks.
 		Husks are now rendered with a black overlay.
+		Allow force fire to destroy husks.
 		A player's units, and allied units, now move out of the way when blocking production facilities.
 		Added cheat button to grow map resources.
 		Fixed units staying selected and contributing to control groups when becoming cloaked or hidden in fog.

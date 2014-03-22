@@ -514,6 +514,9 @@
 	Burns:
 		Interval: 2
 	TargetableUnit:
+		RequiresForceFire: yes
+		TargetTypes: Ground
+	AutoTargetIgnore:
 	Capturable:
 		Type: husk
 		AllowAllies: yes
@@ -542,6 +545,7 @@
 	Tooltip:
 		Name: Bridge
 	TargetableBuilding:
+		RequiresForceFire: yes
 		TargetTypes: Ground, Water
 	BelowUnits:
 	Health:

@@ -199,6 +199,9 @@ namespace OpenRA.Mods.RA
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;
 
+				if (target.RequiresForceFire)
+					return false;
+
 				var targetableRelationship = negativeDamage ? Stance.Ally : Stance.Enemy;
 
 				var owner = target.Type == TargetType.FrozenActor ? target.FrozenActor.Owner : target.Actor.Owner;

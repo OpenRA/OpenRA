@@ -430,6 +430,9 @@
 	Chronoshiftable:
 	LuaScriptEvents:
 	TargetableUnit:
+		TargetTypes: Ground
+		RequiresForceFire: yes
+	AutoTargetIgnore:
 	Capturable:
 		Type: husk
 		AllowAllies: yes
@@ -468,6 +471,7 @@
 	BelowUnits:
 	TargetableBuilding:
 		TargetTypes: Ground, Water
+		RequiresForceFire: yes
 	Building:
 		Footprint: ____ ____
 		Dimensions: 4,2

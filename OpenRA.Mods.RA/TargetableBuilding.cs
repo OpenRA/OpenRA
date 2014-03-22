@@ -18,8 +18,10 @@ namespace OpenRA.Mods.RA
 	public class TargetableBuildingInfo : ITraitInfo, ITargetableInfo, Requires<BuildingInfo>
 	{
 		public readonly string[] TargetTypes = { };
-
 		public string[] GetTargetTypes() { return TargetTypes; }
+
+		public bool RequiresForceFire = false;
+
 		public object Create(ActorInitializer init) { return new TargetableBuilding(init.self, this); }
 	}
 
@@ -41,5 +43,7 @@ namespace OpenRA.Mods.RA
 		{
 			return building.OccupiedCells().Select(c => c.First.CenterPosition);
 		}
+
+		public bool RequiresForceFire { get { return info.RequiresForceFire; } }
 	}
 }

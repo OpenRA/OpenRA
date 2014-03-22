@@ -85,6 +85,11 @@ namespace OpenRA.Traits
 			return true;
 		}
 
+		public bool RequiresForceFire
+		{
+			get { return targetable != null && targetable.RequiresForceFire; }
+		}
+
 		// Representative position - see Positions for the full set of targetable positions.
 		public WPos CenterPosition
 		{
