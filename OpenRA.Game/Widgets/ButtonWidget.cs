@@ -24,6 +24,7 @@ namespace OpenRA.Widgets
 		}
 
 		[Translate] public string Text = "";
+		public string Background = "button";
 		public bool Depressed = false;
 		public int VisualHeight = ChromeMetrics.Get<int>("ButtonDepth");
 		public string Font = ChromeMetrics.Get<string>("ButtonFont");
@@ -76,6 +77,7 @@ namespace OpenRA.Widgets
 			Contrast = other.Contrast;
 			ContrastColor = other.ContrastColor;
 			Depressed = other.Depressed;
+			Background = other.Background;
 			VisualHeight = other.VisualHeight;
 			GetText = other.GetText;
 			GetColor = other.GetColor;
@@ -210,7 +212,7 @@ namespace OpenRA.Widgets
 
 		public virtual void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
 		{
-			DrawBackground("button", rect, disabled, pressed, hover, highlighted);
+			DrawBackground(Background, rect, disabled, pressed, hover, highlighted);
 		}
 
 		public static void DrawBackground(string baseName, Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
