@@ -56,3 +56,27 @@ Reinforcements.Reinforce = function(owner, reinforcementNames, enterLocation, ra
 	end
 	return reinforcements
 end
+
+Reinforcements.ReinforceWithCargo = function(owner, actorName, path, cargoNames, actionFunc)
+	local facing = { Map.GetFacing(CPos.op_Subtraction(path[2].Location, path[1].Location), 0), "Int32" }
+	local center = WPos.op_Addition(path[1].CenterPosition, WVec.New(0, 0, Rules.InitialAltitude(actorName)))
+	local actor  = Actor.Create(actorName, { Owner = owner, Location = path[1].Location, CenterPosition = center, Facing = facing })
+	local cargo  = Actor.TraitOrDefault(actor, "Cargo")
+	local team   = Team.New({})
+	if cargo ~= nil and cargoNames ~= nil and #cargoNames > 0 then
+		local passengers = { }
+
+		for i, cargoName in ipairs(cargoNames) do
+			local passenger = Actor.Create(cargoName, { AddToWorld = false, Owner = owner })
+			Team.Add(team, passenger)
+			passengers[i] = passenger
+			cargo:Load(actor, passenger)
+		end
+
+	end
+
+	Utils.Do(Utils.Skip(path, 1), function(waypoint) Actor.ScriptedMove(actor, waypoint.Location) end)
+
+	if actionFunc then actionFunc(actor, team) end
+	return actor, team
+end
