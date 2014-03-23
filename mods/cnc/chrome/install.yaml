@@ -63,17 +63,11 @@ Container@INSTALL_PANEL:
 					WordWrap:true
 					Text:OpenRA can download these files (excluding music and videos) from the internet, or you can install from the original C&C CDs.
 					Font:Bold
-		Button@QUIT_BUTTON:
+		Button@BACK_BUTTON:
 			Y:149
 			Width:140
 			Height:35
-			Text:Quit
-		Button@MODS_BUTTON:
-			X:150
-			Y:149
-			Width:140
-			Height:35
-			Text:Change Mod
+			Text:Back
 		Button@DOWNLOAD_BUTTON:
 			X:350
 			Y:149

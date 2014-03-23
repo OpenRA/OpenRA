@@ -123,7 +123,8 @@ namespace OpenRA.GameRules
 
 	public class GameSettings
 	{
-		public string Mod = "ra";
+		public string Mod = "modchooser";
+		public string PreviousMod = "ra";
 
 		public bool ShowShellmap = true;
 

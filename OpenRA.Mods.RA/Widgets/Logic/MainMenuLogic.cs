@@ -44,12 +44,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			mainMenu.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
-				menuType = MenuType.None;
-				Ui.OpenWindow("MODS_PANEL", new WidgetArgs
-				{
-					{ "onExit", () => menuType = MenuType.Main },
-					{ "onSwitch", RemoveShellmapUI }
-				});
+				Game.Settings.Game.PreviousMod = Game.modData.Manifest.Mod.Id;
+				Game.InitializeWithMod("modchooser", null);
 			};
 
 			mainMenu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>

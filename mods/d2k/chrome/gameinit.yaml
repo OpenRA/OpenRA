@@ -48,19 +48,12 @@ Background@INSTALL_PANEL:
 			Height:25
 			Text:From CD
 			Font:Bold
-		Button@MODS_BUTTON:
-			X:PARENT_RIGHT - 250
-			Y:PARENT_BOTTOM - 45
-			Width:110
-			Height:25
-			Text:Change Mod
-			Font:Bold
-		Button@QUIT_BUTTON:
+		Button@BACK_BUTTON:
 			X:PARENT_RIGHT - 130
 			Y:PARENT_BOTTOM - 45
 			Width:110
 			Height:25
-			Text:Quit
+			Text:Back
 			Font:Bold
 
 Background@INSTALL_DOWNLOAD_PANEL:

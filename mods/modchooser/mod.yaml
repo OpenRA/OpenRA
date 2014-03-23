@@ -1,0 +1,51 @@
+Metadata:
+	Title: Mod Chooser
+	Version: {DEV_VERSION}
+	Author: The OpenRA Developers
+
+Folders:
+	.
+	./mods/modchooser
+
+
+Cursors:
+	mods/modchooser/cursors.yaml
+
+Chrome:
+	mods/modchooser/chrome.yaml
+
+Assemblies:
+	mods/ra/OpenRA.Mods.RA.dll
+
+ChromeLayout:
+	mods/modchooser/modchooser.yaml
+
+Notifications:
+	mods/modchooser/notifications.yaml
+
+LoadScreen: ModChooserLoadScreen
+
+ChromeMetrics:
+	mods/modchooser/metrics.yaml
+
+Fonts:
+	Regular:
+		Font:FreeSans.ttf
+		Size:14
+	Bold:
+		Font:FreeSansBold.ttf
+		Size:14
+	BigBold:
+		Font:FreeSansBold.ttf
+		Size:24
+	MediumBold:
+		Font:FreeSansBold.ttf
+		Size:18
+	Tiny:
+		Font:FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font:FreeSansBold.ttf
+		Size:10
+Packages:
+LobbyDefaults:
