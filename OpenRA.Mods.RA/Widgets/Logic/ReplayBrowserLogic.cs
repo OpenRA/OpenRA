@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.Network;
@@ -19,16 +21,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class ReplayBrowserLogic
 	{
 		Widget panel;
+		ScrollPanelWidget playerList;
+		ScrollItemWidget playerTemplate, playerHeader;
+
 		MapPreview selectedMap = MapCache.UnknownMap;
+		Dictionary<CPos, Session.Client> selectedSpawns;
 		string selectedFilename;
 		string selectedDuration;
-		string selectedPlayers;
 		bool selectedValid;
 
 		[ObjectCreator.UseCtor]
 		public ReplayBrowserLogic(Widget widget, Action onExit, Action onStart)
 		{
 			panel = widget;
+
+			playerList = panel.Get<ScrollPanelWidget>("PLAYER_LIST");
+			playerHeader = playerList.Get<ScrollItemWidget>("HEADER");
+			playerTemplate = playerList.Get<ScrollItemWidget>("TEMPLATE");
+			playerList.RemoveChildren();
 
 			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
@@ -52,11 +62,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			watch.IsDisabled = () => !selectedValid || selectedMap.Status != MapStatus.Available;
 			watch.OnClick = () => { WatchReplay(); onStart(); };
 
-			panel.Get("REPLAY_INFO").IsVisible = () => selectedFilename != null;;
+			panel.Get("REPLAY_INFO").IsVisible = () => selectedFilename != null;
+
+			var preview = panel.Get<MapPreviewWidget>("MAP_PREVIEW");
+			preview.SpawnClients = () => selectedSpawns;
+			preview.Preview = () => selectedMap;
+
+			var title = panel.GetOrNull<LabelWidget>("MAP_TITLE");
+			if (title != null)
+				title.GetText = () => selectedMap.Title;
+
+			var type = panel.GetOrNull<LabelWidget>("MAP_TYPE");
+			if (type != null)
+				type.GetText = () => selectedMap.Type;
+
 			panel.Get<LabelWidget>("DURATION").GetText = () => selectedDuration;
-			panel.Get<MapPreviewWidget>("MAP_PREVIEW").Preview = () => selectedMap;
-			panel.Get<LabelWidget>("MAP_TITLE").GetText = () => selectedMap.Title;
-			panel.Get<LabelWidget>("PLAYERS").GetText = () => selectedPlayers;
 		}
 
 		void SelectReplay(string filename)
@@ -70,11 +90,53 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					selectedFilename = filename;
 					selectedMap = Game.modData.MapCache[conn.LobbyInfo.GlobalSettings.Map];
+					selectedSpawns = LobbyUtils.GetSpawnClients(conn.LobbyInfo, selectedMap);
 					selectedDuration = WidgetUtils.FormatTime(conn.TickCount * Game.NetTickScale);
-					selectedPlayers = conn.LobbyInfo.Slots
-						.Count(s => conn.LobbyInfo.ClientInSlot(s.Key) != null)
-						.ToString();
 					selectedValid = conn.TickCount > 0;
+
+					var clients = conn.LobbyInfo.Clients.Where(c => c.Slot != null)
+						.GroupBy(c => c.Team)
+						.OrderBy(g => g.Key);
+
+					var teams = new Dictionary<string, IEnumerable<Session.Client>>();
+					var noTeams = clients.Count() == 1;
+					foreach (var c in clients)
+					{
+						var label = noTeams ? "Players" : c.Key == 0 ? "No Team" : "Team {0}".F(c.Key);
+						teams.Add(label, c);
+					}
+
+					playerList.RemoveChildren();
+
+					foreach (var kv in teams)
+					{
+						var group = kv.Key;
+						if (group.Length > 0)
+						{
+							var header = ScrollItemWidget.Setup(playerHeader, () => true, () => {});
+							header.Get<LabelWidget>("LABEL").GetText = () => group;
+							playerList.AddChild(header);
+						}
+
+						foreach (var option in kv.Value)
+						{
+							var o = option;
+
+							var color = o.Color.RGB;
+
+							var item = ScrollItemWidget.Setup(playerTemplate, () => false, () => { });
+
+							var label = item.Get<LabelWidget>("LABEL");
+							label.GetText = () => o.Name;
+							label.GetColor = () => color;
+
+							var flag = item.Get<ImageWidget>("FLAG");
+							flag.GetImageCollection = () => "flags";
+							flag.GetImageName = () => o.Country;
+
+							playerList.AddChild(item);
+						}
+					}
 				}
 			}
 			catch (Exception e)
