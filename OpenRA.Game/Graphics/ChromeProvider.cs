@@ -79,12 +79,8 @@ namespace OpenRA.Graphics
 				return cachedSprites[collection][image];
 
 			MappedImage mi;
-			try { mi = collections[collection].regions[image]; }
-			catch (KeyNotFoundException)
-			{
-				throw new InvalidOperationException(
-					"Collection `{0}` does not have an image `{1}`".F(collection, image));
-			}
+			if (!collections[collection].regions.TryGetValue(image, out mi))
+				return null;
 
 			// Cached sheet
 			Sheet sheet;
