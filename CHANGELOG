@@ -32,6 +32,7 @@ NEW:
 		The server browser will now show map details from other mods if the maps are available online.
 		Fixed a crash when connecting to a server with an unavailable map.
 		Added a warning dialog when force starting a match.
+		Added a new mod selection window, which now appears on the first game start.
 	Dune 2000:
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
@@ -153,6 +154,11 @@ NEW:
 	Utility:
 		Added an improved INI/MPR map import.
 		Added an --upgrade-mod feature to upgrade the yaml of mods to the latest specifications.
+	Packaging:
+		Removed portable install option from Windows installer as the game left without write access breaks content download and error log generation.
+		Added HTML documentation to the Windows installer.
+		Fixed broken FreeType 2 dependency for Fedora RPM.
+		Added SDL 2 as a dependency for the RPM package.
 	Mod / Custom map compatibility:
 		Altitude is no longer parsed from actor templates in maps. Specify CenterPosition instead.
 		system.yaml has been split into four files for all mods: system-actor.yaml, system-ai.yaml, system-player.yaml and system-world.yaml.
@@ -166,11 +172,8 @@ NEW:
 		Added support for custom map previews that replace the minimap in the game browser and lobby. Add map.png inside the map package.
 		The UI definition files have changed. Refer to the RA or TD mod.yaml and adjust the ChromeLayout of your mod.yaml to match.
 		A new cursor definition is required for "attackoutsiderange".
-	Packaging:
-		Removed portable install option from Windows installer as the game left without write access breaks content download and error log generation.
-		Added HTML documentation to the Windows installer.
-		Fixed broken FreeType 2 dependency for Fedora RPM.
-		Added SDL 2 as a dependency for the RPM package.
+		Mods can now include a 96x96 logo.png for the mod selector.
+		Mods can now include a 296x196 preview.png for the mod selector.
 
 20131223:
 	All mods:
