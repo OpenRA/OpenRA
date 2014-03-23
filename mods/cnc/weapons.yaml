@@ -257,7 +257,7 @@ M16:
 
 Rockets:
 	ROF: 50
-	Range: 6c0
+	Range: 5c0
 	Report: BAZOOK1.AUD
 	ValidTargets: Ground, Air
 	Projectile: Missile
@@ -287,7 +287,7 @@ Rockets:
 
 BikeRockets:
 	ROF: 50
-	Range: 6c0
+	Range: 5c0
 	Report: BAZOOK1.AUD
 	ValidTargets: Ground, Air
 	Burst: 2
