@@ -121,6 +121,10 @@ beacon:
 	circles: fpls
 		Start: 0
 		Length: *
+	atomicon: lores-atomicon
+		Start: 0
+		Length: *
+		Offset: 0,-42
 
 smoke_m:
 	idle:

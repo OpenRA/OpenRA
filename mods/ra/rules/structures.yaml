@@ -39,6 +39,7 @@ MSLO:
 		DisplayTimer: True
 		DisplayBeacon: True
 		DisplayRadarPing: True
+		BeaconPoster: atomicon
 	CanPowerDown:
 	RequiresPower:
 	DisabledOverlay:
