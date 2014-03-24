@@ -174,6 +174,8 @@ namespace OpenRA
 				var integralTickTimestep = (uiTickDelta / Timestep) * Timestep;
 				Ui.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : Timestep;
 
+				Viewport.TicksSinceLastMove += uiTickDelta / Timestep;
+
 				Sync.CheckSyncUnchanged(world, Ui.Tick);
 				cursorFrame += 0.5f;
 			}
@@ -190,9 +192,6 @@ namespace OpenRA
 
 					var integralTickTimestep = (worldTickDelta / worldTimestep) * worldTimestep;
 					orderManager.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : worldTimestep;
-
-					if (orderManager.GameStarted)
-						++Viewport.TicksSinceLastMove;
 
 					Sound.Tick();
 					Sync.CheckSyncUnchanged(world, orderManager.TickImmediate);
