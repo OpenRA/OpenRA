@@ -9,7 +9,7 @@ See [configuration](http://studio.zerobrane.com/doc-configuration.html) page for
 
 --]]--
 
--- an example of how loaded configuration can be modified from this file
+-- to modify loaded configuration for recognized extensions for lua files
 local G = ... -- this now points to the global environment in the script
 local luaspec = G.ide.specs['lua']
 luaspec.exts[#luaspec.exts+1] = "luaz"
@@ -140,3 +140,16 @@ editor.nomousezoom = true
 -- you can also change it between runs from Local Console by executing
 -- `ide.config.corona = {skin = 'iPad'}`
 corona = { skin = "iPad" }
+
+-- to style individual keywords; `return` and `break` are shown in red
+local G = ... -- this now points to the global environment in the script
+local luaspec = G.ide.specs.lua
+
+local num = #luaspec.keywords
+-- take a new slot in the list of keywords (starting from 1)
+luaspec.keywords[num+1] = 'return break'
+-- remove 'return' from the list of "regular" keywords
+luaspec.keywords[1] = luaspec.keywords[1]:gsub(' return', ''):gsub(' break', '')
+
+-- assign new style to the added slot (starting from 0)
+styles["keywords"..num] = {fg = {240, 0, 0}, b = true}
