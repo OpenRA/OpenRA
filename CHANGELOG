@@ -50,7 +50,10 @@ NEW:
 		Increased torpedo splash damage and raised multiplier vs. concrete.
 		Fixed transparency glitches in the sniper icon.
 		Removed health bars and selection boxes from walls.
-		Flak Truck has been renamed to Mobile Flak.
+		Renamed Flak Truck to Mobile Flak.
+		Increased the shroud reveal range of Mobile Flak from 4 to 6.
+		Increased the turret rotation speed of Mobile Flak from 5 to 10.
+		Increased the hitpoints of Mobile Flak from 120 to 150.
 		Fixed Tanya being unavailable after using the Chronosphere on a vehicle she is in.
 		Tanya can now plant C4 on vehicles.
 		Parachute bomb air strike will reveal the whole target area.

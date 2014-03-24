@@ -601,16 +601,16 @@ FTRK:
 		Name: Mobile Flak
 		Description: Mobile unit with mounted Flak Cannon.\n  Strong vs Light Vehicles, Aircraft  \n  Weak vs Tanks
 	Health:
-		HP: 120
+		HP: 150
 	Armor:
 		Type: Light
 	Mobile:
 		ROT: 10
 		Speed: 128
 	RevealsShroud:
-		Range: 4c0
+		Range: 6c0
 	Turreted:
-		ROT: 5
+		ROT: 10
 		Offset: -298,0,298
 	Armament:
 		Weapon: FLAK-23
