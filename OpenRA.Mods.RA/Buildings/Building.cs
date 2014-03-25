@@ -65,7 +65,8 @@ namespace OpenRA.Mods.RA.Buildings
 				return false;
 
 			var buildingMaxBounds = (CVec)Dimensions;
-			if (Rules.Info[buildingName].Traits.Contains<BibInfo>())
+			var buildingTraits = Rules.Info[buildingName].Traits;
+			if (buildingTraits.Contains<BibInfo>() && !(buildingTraits.Get<BibInfo>().HasMinibib))
 				buildingMaxBounds += new CVec(0, 1);
 
 			var scanStart = world.ClampToWorld(topLeft - new CVec(Adjacent, Adjacent));

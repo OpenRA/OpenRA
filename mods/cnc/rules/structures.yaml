@@ -151,6 +151,8 @@ SILO:
 		HP: 400
 	RevealsShroud:
 		Range: 4c0
+	Bib:
+		HasMinibib: Yes
 	RenderBuildingSilo:
 	StoresOre:
 		PipCount: 10
@@ -408,6 +410,8 @@ FIX:
 		HP: 400
 	RevealsShroud:
 		Range: 5c0
+	Bib:
+		HasMinibib: Yes
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
@@ -517,6 +521,8 @@ GUN:
 		HP: 400
 	RevealsShroud:
 		Range: 6c0
+	Bib:
+		HasMinibib: Yes
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -600,6 +606,8 @@ OBLI:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7c0
+	Bib:
+		HasMinibib: Yes
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
 	Armament:
@@ -638,6 +646,8 @@ GTWR:
 		HP: 400
 	RevealsShroud:
 		Range: 6c0
+	Bib:
+		HasMinibib: Yes
 	Armament:
 		Weapon: HighV
 		LocalOffset: 256,0,256
@@ -680,6 +690,8 @@ ATWR:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7c0
+	Bib:
+		HasMinibib: Yes
 	Turreted:
 		ROT: 255
 		Offset: 128,128,-85

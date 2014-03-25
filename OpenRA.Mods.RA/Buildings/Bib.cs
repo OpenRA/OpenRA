@@ -19,6 +19,7 @@ namespace OpenRA.Mods.RA.Buildings
 	{
 		public readonly string Sequence = "bib";
 		public readonly string Palette = "terrain";
+		public readonly bool HasMinibib = false;
 
 		public object Create(ActorInitializer init) { return new Bib(init.self, this); }
 	}
@@ -42,7 +43,12 @@ namespace OpenRA.Mods.RA.Buildings
 			var centerOffset = FootprintUtils.CenterOffset(building);
 			var location = self.Location;
 			tiles = new List<AnimationWithOffset>();
-			for (var i = 0; i < 2*width; i++)
+
+			int rows = 2;
+			if (info.HasMinibib)
+				rows = 1;
+
+			for (var i = 0; i < rows * width; i++)
 			{
 				var index = i;
 				var anim = new Animation(rs.GetImage(self));

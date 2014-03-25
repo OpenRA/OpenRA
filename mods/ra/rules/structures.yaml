@@ -71,6 +71,8 @@ GAP:
 		Type: Wood
 	RevealsShroud:
 		Range: 6c0
+	Bib:
+		HasMinibib: Yes
 	CreatesShroud:
 		Range: 6c0
 	IronCurtainable:
@@ -219,6 +221,8 @@ IRON:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
+	Bib:
+		HasMinibib: Yes
 	IronCurtainable:
 	IronCurtainPower:
 		Icon: invuln
@@ -260,6 +264,8 @@ PDOX:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
+	Bib:
+		HasMinibib: Yes
 	IronCurtainable:
 	ChronoshiftPower:
 		Icon: chrono
@@ -303,6 +309,8 @@ TSLA:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
+	Bib:
+		HasMinibib: Yes
 	RenderBuildingCharge:
 		ChargeAudio: tslachg2.aud
 	Armament:
@@ -345,6 +353,8 @@ AGUN:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
+	Bib:
+		HasMinibib: Yes
 	Turreted:
 		ROT: 15
 		InitialFacing: 224
@@ -420,6 +430,8 @@ PBOX:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
+	Bib:
+		HasMinibib: Yes
 	IronCurtainable:
 	-AcceptsSupplies:
 	Turreted:
@@ -586,6 +598,8 @@ GUN:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7c0
+	Bib:
+		HasMinibib: Yes
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -625,6 +639,8 @@ FTUR:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
+	Bib:
+		HasMinibib: Yes
 	Turreted:
 		ROT: 255
 		Offset: 0,0,112
@@ -667,6 +683,8 @@ SAM:
 		Type: Heavy
 	RevealsShroud:
 		Range: 5c0
+	Bib:
+		HasMinibib: Yes
 	Turreted:
 		ROT: 30
 		InitialFacing: 0
@@ -862,6 +880,8 @@ SILO:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+	Bib:
+		HasMinibib: Yes
 	RenderBuildingSilo:
 	StoresOre:
 		PipCount: 5
@@ -1155,6 +1175,8 @@ FIX:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+	Bib:
+		HasMinibib: Yes
 	Reservable:
 	RallyPoint:
 	IronCurtainable:
