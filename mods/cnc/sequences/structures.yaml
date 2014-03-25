@@ -270,6 +270,7 @@ fix:
 		ZOffset: -1c511
 	damaged-idle:
 		Start: 7
+		ZOffset: -1c511
 	active:
 		Start: 0
 		Length: 7
