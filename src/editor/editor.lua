@@ -624,7 +624,7 @@ function IndicateAll(editor, lines, linee)
   return delayed[editor] ~= nil -- request more events if still need to work
 end
 
-if ide.wxver < "2.9.5" or not ide.config.autoanalizer then
+if ide.wxver < "2.9.5" or not ide.config.autoanalyzer then
   IndicateAll = indicateFunctionsOnly end
 
 -- ----------------------------------------------------------------------------

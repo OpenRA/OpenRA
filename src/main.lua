@@ -66,7 +66,7 @@ ide = {
     stylesoutshell = nil,
 
     autocomplete = true,
-    autoanalizer = true,
+    autoanalyzer = true,
     acandtip = {
       shorttip = false,
       ignorecase = false,
