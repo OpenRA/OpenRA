@@ -287,6 +287,9 @@
 		CrushClasses: wall
 	LineBuild:
 		Range: 8
+		NodeTypes: wall
+	LineBuildNode:
+		Types: wall
 	TargetableBuilding:
 		TargetTypes: Ground, DetonateAttack
 	RenderBuildingWall:

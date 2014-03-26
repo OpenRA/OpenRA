@@ -412,6 +412,9 @@ CONCRETEB:
 		CrushClasses: Concretewall
 	LineBuild:
 		Range: 8
+		NodeTypes: wall, turret
+	LineBuildNode:
+		Types: wall
 	TargetableBuilding:
 		TargetTypes: Ground
 	RenderBuildingWall:
@@ -478,6 +481,8 @@ WALL:
 	DetectCloaked:
 		Range: 5
 	-WithCrumbleOverlay:
+	LineBuildNode:
+		Types: turret
 
 ^ROCKETTOWER:
 	Inherits: ^Building
@@ -527,6 +532,8 @@ WALL:
 	DetectCloaked:
 		Range: 6
 	-WithCrumbleOverlay:
+	LineBuildNode:
+		Types: turret
 
 ^REPAIR:
 	Inherits: ^Building

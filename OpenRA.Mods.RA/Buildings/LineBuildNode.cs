@@ -13,15 +13,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
-	[Desc("Place the second actor in line to build more of the same at once (used for walls).")]
-	public class LineBuildInfo : TraitInfo<LineBuild>
+	[Desc("LineBuild actors attach to LineBuildNodes.")]
+	public class LineBuildNodeInfo : TraitInfo<LineBuildNode>
 	{
-		[Desc("The maximum allowed length of the line.")]
-		public readonly int Range = 5;
-
-		[Desc("LineBuildNode 'Types' to attach to.")]
-		public readonly string[] NodeTypes = { "wall" };
+		[Desc("This actor is of LineBuild 'NodeType'...")]
+		public readonly string[] Types = { "wall" };
 	}
 
-	public class LineBuild {}
+	public class LineBuildNode {}
 }

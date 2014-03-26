@@ -40,6 +40,7 @@ NEW:
 		Added the BLOXXMAS terrain tiles from the 1.06 patch.
 		Saboteur can now plant C4 on vehicles.
 		Added concrete plates and building weathering.
+		Walls will now extend themselves when placed in line with a turret.
 	Red Alert:
 		Engineers are now remapped to team colors.
 		Added some remap to the bottom edge of SAM sites.
@@ -138,6 +139,7 @@ NEW:
 		Maps can define initial cargo for actors by adding "Cargo: actora, actorb, ..." to the actor reference.
 		Modified Teleport activity to use the best/closest open cell to the target destination for teleports (for ChronoshiftPower this only applies on the return trip).
 		Renamed ChronoshiftDeploy trait to PortableChrono.
+		Added LineBuildNode trait to filter which structure(s) a LineBuild actor can be attached to.
 	Server:
 		Message of the day is now shared between all mods and a default motd.txt gets created in the user directory.
 	Asset Browser:

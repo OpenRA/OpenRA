@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public static IEnumerable<CPos> GetLineBuildCells(World world, CPos location, string name, BuildingInfo bi)
 		{
-			int range = Rules.Info[name].Traits.Get<LineBuildInfo>().Range;
+			var lbi = Rules.Info[name].Traits.Get<LineBuildInfo>();
 			var topLeft = location;	// 1x1 assumption!
 
 			if (world.IsCellBuildable(topLeft, bi))
@@ -54,17 +54,21 @@ namespace OpenRA.Mods.RA.Buildings
 			int[] dirs = { 0, 0, 0, 0 };
 			for (int d = 0; d < 4; d++)
 			{
-				for (int i = 1; i < range; i++)
+				for (int i = 1; i < lbi.Range; i++)
 				{
 					if (dirs[d] != 0)
 						continue;
 
-					CPos cell = topLeft + i * vecs[d];
+					var cell = topLeft + i * vecs[d];
 					if (world.IsCellBuildable(cell, bi))
 						continue; // Cell is empty; continue search
 
 					// Cell contains an actor. Is it the type we want?
-					if (world.ActorsWithTrait<LineBuild>().Any(a => (a.Actor.Info.Name == name && a.Actor.Location.X == cell.X && a.Actor.Location.Y == cell.Y)))
+					if (world.ActorsWithTrait<LineBuildNode>().Any(a =>
+					(
+						a.Actor.Location == cell &&
+						a.Actor.Info.Traits.Get<LineBuildNodeInfo>().Types.Intersect(lbi.NodeTypes).Any()
+					)))
 						dirs[d] = i; // Cell contains actor of correct type
 					else
 						dirs[d] = -1; // Cell is blocked by another actor type

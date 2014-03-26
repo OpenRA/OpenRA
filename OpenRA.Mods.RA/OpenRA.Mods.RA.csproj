@@ -490,6 +490,7 @@
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Widgets\LogicKeyListenerWidget.cs" />
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
+    <Compile Include="Buildings\LineBuildNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

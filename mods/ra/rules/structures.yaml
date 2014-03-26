@@ -1355,6 +1355,11 @@ SBAG:
 		HP: 300
 	Armor:
 		Type: Wood
+	LineBuild:
+		Range: 8
+		NodeTypes: sandbag
+	LineBuildNode:
+		Types: sandbag
 
 FENC:
 	Inherits: ^Wall
@@ -1375,6 +1380,11 @@ FENC:
 		HP: 300
 	Armor:
 		Type: Wood
+	LineBuild:
+		Range: 8
+		NodeTypes: fence
+	LineBuildNode:
+		Types: fence
 
 BRIK:
 	Inherits: ^Wall
@@ -1400,6 +1410,11 @@ BRIK:
 		Type: Concrete
 	Wall:
 		CrushClasses: heavywall
+	LineBuild:
+		Range: 8
+		NodeTypes: concrete
+	LineBuildNode:
+		Types: concrete
 
 CYCL:
 	Inherits: ^Wall
