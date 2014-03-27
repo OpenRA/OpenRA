@@ -74,6 +74,9 @@
       <Package>mono.nat</Package>
       <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
     </Reference>
+    <Reference Include="Eluant">
+      <HintPath>..\thirdparty\Eluant.dll</HintPath>
+    </Reference>
     <Reference Include="Tao.OpenAl, Version=1.1.0.1, Culture=neutral, PublicKeyToken=a7579dda88828311">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\Tao\Tao.OpenAl.dll</HintPath>
@@ -236,6 +239,13 @@
     <Compile Include="Widgets\SpriteWidget.cs" />
     <Compile Include="Widgets\SpriteSequenceWidget.cs" />
     <Compile Include="Widgets\RGBASpriteWidget.cs" />
+    <Compile Include="Scripting\ScriptContext.cs" />
+    <Compile Include="Scripting\ScriptActorInterface.cs" />
+    <Compile Include="Scripting\ScriptObjectWrapper.cs" />
+    <Compile Include="Scripting\ScriptTypes.cs" />
+    <Compile Include="Scripting\ScriptMemberWrapper.cs" />
+    <Compile Include="Scripting\ScriptMemberExts.cs" />
+    <Compile Include="Scripting\ScriptPlayerInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
@@ -359,4 +369,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Scripting\" />
+  </ItemGroup>
 </Project>

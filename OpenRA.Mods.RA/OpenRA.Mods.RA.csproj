@@ -85,6 +85,9 @@
     <Reference Include="MaxMind.GeoIP2">
       <HintPath>..\thirdparty\MaxMind.GeoIP2.dll</HintPath>
     </Reference>
+    <Reference Include="Eluant">
+      <HintPath>..\thirdparty\Eluant.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\CaptureActor.cs" />
@@ -498,6 +501,7 @@
     <Compile Include="Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="StartGameNotification.cs" />
     <Compile Include="Widgets\ConfirmationDialogs.cs" />
+    <Compile Include="Scripting\LuaScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

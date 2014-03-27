@@ -10,13 +10,13 @@
 
 using System;
 using System.Drawing;
+using Eluant;
+using Eluant.ObjectBinding;
+using OpenRA.Scripting;
 
 namespace OpenRA
 {
-	/// <summary>
-	/// Cell coordinate position in the world (coarse).
-	/// </summary>
-	public struct CPos
+	public struct CPos : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding
 	{
 		public readonly int X, Y;
 
@@ -60,6 +60,56 @@ namespace OpenRA
 
 		public override string ToString() { return "{0},{1}".F(X, Y); }
 
+		#region Scripting interface
+
+		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			CPos a;
+			CVec b;
+			if (!left.TryGetClrValue<CPos>(out a) || !right.TryGetClrValue<CVec>(out b))
+				throw new LuaException("Attempted to call CPos.Add(CPos, CVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+
+			return new LuaCustomClrObject(a + b);
+		}
+
+		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			CPos a;
+			CVec b;
+			if (!left.TryGetClrValue<CPos>(out a) || !right.TryGetClrValue<CVec>(out b))
+				throw new LuaException("Attempted to call CPos.Subtract(CPos, CVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+
+			return new LuaCustomClrObject(a - b);
+		}
+
+		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			CPos a, b;
+			if (!left.TryGetClrValue<CPos>(out a) || !right.TryGetClrValue<CPos>(out b))
+				return false;
+
+			return a == b;
+		}
+
+		public LuaValue this[LuaRuntime runtime, LuaValue key]
+		{
+			get
+			{
+				switch (key.ToString())
+				{
+					case "X": return X;
+					case "Y": return Y;
+					default: throw new LuaException("CPos does not define a member '{0}'".F(key));
+				}
+			}
+
+			set
+			{
+				throw new LuaException("CPos is read-only. Use CPos.New to create a new value");
+			}
+		}
+
+		#endregion
 	}
 
 	public static class RectangleExtensions
