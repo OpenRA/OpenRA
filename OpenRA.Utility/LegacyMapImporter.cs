@@ -179,10 +179,20 @@ namespace OpenRA.Utility
 			// Add waypoint actors
 			foreach (var kv in wps)
 			{
-				var a = new ActorReference("waypoint");
-				a.Add(new LocationInit((CPos)kv.Second));
-				a.Add(new OwnerInit("Neutral"));
-				map.Actors.Value.Add("waypoint" + kv.First, a);
+				if (kv.First <= 7)
+				{
+					var a = new ActorReference("mpspawn");
+					a.Add(new LocationInit((CPos)kv.Second));
+					a.Add(new OwnerInit("Neutral"));
+					map.Actors.Value.Add("Actor" + map.Actors.Value.Count.ToString(), a);
+				}
+				else
+				{
+					var a = new ActorReference("waypoint");
+					a.Add(new LocationInit((CPos)kv.Second));
+					a.Add(new OwnerInit("Neutral"));
+					map.Actors.Value.Add("waypoint" + kv.First, a);
+				}
 			}
 		}
 
