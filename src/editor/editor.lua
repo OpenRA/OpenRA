@@ -772,10 +772,10 @@ function CreateEditor()
   editor:Connect(wxstc.wxEVT_STC_MARGINCLICK,
     function (event)
       local line = editor:LineFromPosition(event:GetPosition())
-      local margin = event:GetMargin()
-      if margin == 1 then
+      local marginno = event:GetMargin()
+      if marginno == margin.MARKER then
         DebuggerToggleBreakpoint(editor, line)
-      elseif margin == 2 then
+      elseif marginno == margin.FOLD then
         if wx.wxGetKeyState(wx.WXK_SHIFT) and wx.wxGetKeyState(wx.WXK_CONTROL) then
           FoldSome()
         else
