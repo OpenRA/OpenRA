@@ -417,31 +417,3 @@ function ApplyStyleConfig(config, style)
     ReApplySpecAndStyles()
   end
 end
-
-function LoadStyleConfig()
-  local fileDialog = wx.wxFileDialog(ide.frame, "Open Config File",
-    "/cfg",
-    "",
-    "Lua file (*.lua)|*.lua|All files (*)|*",
-    wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST)
-  if fileDialog:ShowModal() == wx.wxID_OK then
-    ApplyStyleConfig(fileDialog:GetPath())
-  end
-  fileDialog:Destroy()
-end
-
---[[
-  wxSTC_LUA_DEFAULT 0
-  wxSTC_LUA_COMMENT 1
-  wxSTC_LUA_COMMENTLINE 2
-  wxSTC_LUA_COMMENTDOC 3
-  wxSTC_LUA_NUMBER 4
-  wxSTC_LUA_WORD 5
-  wxSTC_LUA_STRING 6
-  wxSTC_LUA_CHARACTER 7
-  wxSTC_LUA_LITERALSTRING 8
-  wxSTC_LUA_PREPROCESSOR 9
-  wxSTC_LUA_OPERATOR 10
-  wxSTC_LUA_IDENTIFIER 11
-  wxSTC_LUA_STRINGEOL 12
---]]
