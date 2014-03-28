@@ -547,9 +547,12 @@ function IndicateAll(editor, lines, linee)
     while vars do
       for name, var in pairs(vars) do
         -- remove all variables that are created later than the current pos
-        while type(var) == 'table' and var.fpos and (var.fpos > pos) do
-          var = var.masked -- restored a masked var
-          vars[name] = var
+        -- skip all non-variable elements from the vars table
+        if type(name) == 'string' then
+          while type(var) == 'table' and var.fpos and (var.fpos > pos) do
+            var = var.masked -- restored a masked var
+            vars[name] = var
+          end
         end
       end
       vars = getmetatable(vars) and getmetatable(vars).__index
