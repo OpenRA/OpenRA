@@ -319,16 +319,20 @@ errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
     end
 
     if (fname and jumpline) then
-      local name = GetFullPathIfExists(FileTreeGetDir(), fname)
-        or FileTreeFindByPartialName(fname)
-
       -- fname may include name of executable, as in "path/to/lua: file.lua";
-      -- strip it and try to find match again if needed
-      local fixedname = fname:match(": (.+)")
-      if not name and fixedname then
+      -- strip it and try to find match again if needed.
+      -- try the stripped name first as if it doesn't match, the longer
+      -- name may have parts that may be interpreter as network path and
+      -- may take few seconds to check.
+      local name
+      local fixedname = fname:match(":%s+(.+)")
+      if fixedname then
         name = GetFullPathIfExists(FileTreeGetDir(), fixedname)
           or FileTreeFindByPartialName(fixedname)
       end
+      name = name
+        or GetFullPathIfExists(FileTreeGetDir(), fname)
+        or FileTreeFindByPartialName(fname)
 
       local editor = LoadFile(name or fname,nil,true)
       if (editor) then
