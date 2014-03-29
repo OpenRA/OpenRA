@@ -49,6 +49,7 @@ Container@PLAYER_WIDGETS:
 					Width:138
 					Height:5
 					TooltipContainer:TOOLTIP_CONTAINER
+					TooltipTemplate:SIMPLE_TOOLTIP
 					IndicatorImage:power-indicator
 					Orientation:Horizontal
 					Style:Bevelled

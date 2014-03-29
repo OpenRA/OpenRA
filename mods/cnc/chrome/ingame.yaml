@@ -276,6 +276,7 @@ Container@PLAYER_WIDGETS:
 							Width:PARENT_RIGHT-2
 							Height:PARENT_BOTTOM-2
 							TooltipContainer:TOOLTIP_CONTAINER
+							TooltipTemplate:SIMPLE_TOOLTIP
 							IndicatorImage:indicator-left
 				Background@SILOBAR_PANEL:
 					X:180
@@ -290,6 +291,7 @@ Container@PLAYER_WIDGETS:
 							Width:PARENT_RIGHT-2
 							Height:PARENT_BOTTOM-2
 							TooltipContainer:TOOLTIP_CONTAINER
+							TooltipTemplate:SIMPLE_TOOLTIP
 							IndicatorImage:indicator-right
 				Label@CASH:
 					Y:170
