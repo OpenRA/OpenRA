@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Buildings
 	{
 		PowerManager power;
 
-		public RequiresPower( Actor self )
+		public RequiresPower(Actor self)
 		{
 			power = self.Owner.PlayerActor.Trait<PowerManager>();
 		}

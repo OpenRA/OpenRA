@@ -358,7 +358,9 @@ namespace OpenRA.Mods.RA.Widgets
 				{
 					if (producing.Done)
 					{
-						if (unit.Traits.Contains<BuildingInfo>())
+						if (unit.Traits.Contains<UpgradeModuleInfo>())
+							world.OrderGenerator = new PlaceModuleOrderGenerator(CurrentQueue.self, item);
+						else if (unit.Traits.Contains<BuildingInfo>())
 							world.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue.self, item);
 						else
 							StartProduction(world, item);

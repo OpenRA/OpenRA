@@ -39,10 +39,6 @@ namespace OpenRA.Mods.RA
 				ns.Selling(self);
 
 			self.CancelActivity();
-
-			var rb = self.TraitOrDefault<RenderBuilding>();
-			if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
-				self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
 			self.QueueActivity(new Sell());
 		}
 	}

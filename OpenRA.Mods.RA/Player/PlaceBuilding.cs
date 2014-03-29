@@ -22,7 +22,9 @@ namespace OpenRA.Mods.RA
 	{
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PlaceBuilding" || order.OrderString == "LineBuild")
+			if (order.OrderString == "PlaceBuilding" ||
+				order.OrderString == "PlaceModule" ||
+				order.OrderString == "LineBuild")
 			{
 				self.World.AddFrameEndTask(w =>
 				{
@@ -57,8 +59,30 @@ namespace OpenRA.Mods.RA
 							if (playSounds)
 								foreach (var s in buildingInfo.BuildSounds)
 									Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
+
 							playSounds = false;
 						}
+					}
+					else if (order.OrderString == "PlaceModule")
+					{
+						var placeLocation = order.TargetLocation;
+						var existing = self.World.ActorMap.GetUnitsAt(placeLocation).FirstOrDefault();
+
+						if (!self.World.CanPlaceModule(existing, unit, placeLocation))
+							return;
+
+						var module = w.CreateActor(order.TargetString, new TypeDictionary
+						{
+							new LocationInit(placeLocation),
+							new OwnerInit(order.Player)
+						});
+
+						foreach (var mod in existing.TraitsImplementing<Modular>())
+							if (mod.Info.CellOffset + existing.Location == placeLocation)
+								mod.UpgradeActor = module;
+
+						foreach (var s in buildingInfo.BuildSounds)
+							Sound.PlayToPlayer(order.Player, s, module.CenterPosition);
 					}
 					else
 					{
@@ -73,6 +97,7 @@ namespace OpenRA.Mods.RA
 							new LocationInit(order.TargetLocation),
 							new OwnerInit(order.Player),
 						});
+
 						foreach (var s in buildingInfo.BuildSounds)
 							Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
 					}

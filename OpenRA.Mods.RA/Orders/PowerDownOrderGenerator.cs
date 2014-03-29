@@ -31,10 +31,10 @@ namespace OpenRA.Mods.RA.Orders
 			if (mi.Button == MouseButton.Right)
 				world.CancelInputMode();
 
-			return OrderInner(world, mi);
+			return OrderInner(world, xy, mi);
 		}
 
-		IEnumerable<Order> OrderInner(World world, MouseInput mi)
+		IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Left)
 			{
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Orders
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
-			return cursor + (OrderInner(world, mi).Any()	? "" : "-blocked");
+			return cursor + (OrderInner(world, xy, mi).Any() ? "" : "-blocked");
 		}
 	}
 

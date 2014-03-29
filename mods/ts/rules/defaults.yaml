@@ -1,3 +1,20 @@
+^UpgradeModule:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: place2.aud
+		TerrainTypes: Clear, Road
+	RenderBuilding:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	Sellable:
+	BodyOrientation:
+	ScriptTriggers:
+	LuaScriptEvents:
+	Module:
+		Type: generic
+		DestroyOrSell: Destroy	
+
 ^Building:
 	AppearsOnRadar:
 	SelectionDecorations:
