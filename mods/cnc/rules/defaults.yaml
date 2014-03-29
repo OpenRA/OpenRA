@@ -447,6 +447,9 @@
 		CrushSound: sandbag2.aud
 	LineBuild:
 		Range: 8
+		NodeTypes: wall
+	LineBuildNode:
+		Types: wall
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: staticterrain

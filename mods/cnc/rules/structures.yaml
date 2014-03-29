@@ -726,6 +726,11 @@ SBAG:
 		HP: 100
 	Armor:
 		Type: Light
+	LineBuild:
+		Range: 8
+		NodeTypes: sandbag
+	LineBuildNode:
+		Types: sandbag
 
 CYCL:
 	Inherits: ^Wall
@@ -745,6 +750,11 @@ CYCL:
 		HP: 100
 	Armor:
 		Type: Light
+	LineBuild:
+		Range: 8
+		NodeTypes: chain
+	LineBuildNode:
+		Types: chain
 
 BRIK:
 	Inherits: ^Wall
@@ -769,6 +779,11 @@ BRIK:
 		-CrushSound:
 	SoundOnDamageTransition:
 		DestroyedSound: crumble.aud
+	LineBuild:
+		Range: 8
+		NodeTypes: concrete
+	LineBuildNode:
+		Types: concrete
 
 BARRACKS:
 	Tooltip:
