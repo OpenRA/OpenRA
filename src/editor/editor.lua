@@ -696,6 +696,7 @@ function CreateEditor()
 
   editor:SetMarginWidth(margin.MARKER, 16)
   editor:SetMarginType(margin.MARKER, wxstc.wxSTC_MARGIN_SYMBOL)
+  editor:SetMarginMask(margin.MARKER, bit.bnot(wxstc.wxSTC_MASK_FOLDERS))
   editor:SetMarginSensitive(margin.MARKER, true)
 
   editor:MarkerDefine(StylesGetMarker("currentline"))
