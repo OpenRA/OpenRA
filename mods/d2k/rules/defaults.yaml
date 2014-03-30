@@ -88,7 +88,6 @@
 	Husk:
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceBlobs, Dune
 	HiddenUnderFog:
-	AppearsOnRadar:
 	Burns:
 		Interval: 4
 	ProximityCaptor:
