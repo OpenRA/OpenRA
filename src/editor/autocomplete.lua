@@ -270,7 +270,7 @@ function GetTipInfo(editor, content, short, fullmatch)
 
   -- try to resolve the class
   content = content:gsub("%b[]",".0")
-  local tab, rest = resolveAssign(editor, content)
+  local tab = resolveAssign(editor, content)
 
   local caller = content:match("([%w_]+)%(?%s*$")
   local class = (tab and tab.classname
@@ -415,7 +415,6 @@ end
 local cachemain = {}
 local cachemethod = {}
 local laststrategy
-local lastmethod
 local function getAutoCompApiList(childs,fragment,method)
   fragment = fragment:lower()
   local strategy = ide.config.acandtip.strategy
@@ -502,10 +501,6 @@ local function getAutoCompApiList(childs,fragment,method)
   end
 
   return t
-end
-
-function ClearAutoCompCache()
-  cache = {}
 end
 
 -- make syntype dependent

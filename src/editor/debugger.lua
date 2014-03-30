@@ -406,7 +406,6 @@ debugger.shell = function(expression, isstatement)
           DisplayShellErr(err)
         elseif addedret or #values > 0 then
           if forceexpression then -- display elements as multi-line
-            local mobdebug = require "mobdebug"
             for i,v in pairs(values) do -- stringify each of the returned values
               local func = loadstring('return '..v) -- deserialize the value first
               if func then -- if it's deserialized correctly

@@ -2,8 +2,6 @@
 -- authors: Lomtik Software (J. Winwood & John Labenski)
 -- Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
-local wxkeywords = nil -- a string of the keywords for scintilla of wxLua's wx.XXX items
-
 local editorID = 100 -- window id to create editor pages with, incremented for new editors
 
 local openDocuments = ide.openDocuments
@@ -453,7 +451,7 @@ function IndicateIfNeeded()
   local editor = GetEditor()
   -- do the current one first
   if delayed[editor] then return IndicateAll(editor) end
-  for editor in pairs(delayed) do return IndicateAll(editor) end
+  for ed in pairs(delayed) do return IndicateAll(ed) end
 end
 
 -- find all instances of a symbol at pos
@@ -617,7 +615,7 @@ function IndicateAll(editor, lines, linee)
   end
 
   -- clear indicators till the end of processed fragment
-  local pos = delayed[editor] and delayed[editor][1] or editor:GetLength()+1
+  pos = delayed[editor] and delayed[editor][1] or editor:GetLength()+1
 
   -- don't clear "masked" indicators as those can be set out of order (so
   -- last updated fragment is not always the last in terms of its position);
@@ -1142,7 +1140,7 @@ function CreateEditor()
   local function selectAllInstances(instances, name, curpos)
     local this
     local idx = 0
-    for i, pos in pairs(instances) do
+    for _, pos in pairs(instances) do
       pos = pos - 1 -- positions are 0-based in Scintilla
       if idx == 0 then
         -- clear selections first as there seems to be a bug (Scintilla 3.2.3)
@@ -1182,7 +1180,7 @@ function CreateEditor()
       -- if Shift+Zoom is used, then zoom all editors, not just the current one
       if wx.wxGetKeyState(wx.WXK_SHIFT) then
         local zoom = editor:GetZoom()
-        for id, doc in pairs(openDocuments) do
+        for _, doc in pairs(openDocuments) do
           -- check the editor zoom level to avoid recursion
           if doc.editor:GetZoom() ~= zoom then doc.editor:SetZoom(zoom) end
         end

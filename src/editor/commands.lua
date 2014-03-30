@@ -10,7 +10,6 @@ local unpack = table.unpack or unpack
 
 local CURRENT_LINE_MARKER = StylesGetMarker("currentline")
 local CURRENT_LINE_MARKER_VALUE = 2^CURRENT_LINE_MARKER
-local BREAKPOINT_MARKER = StylesGetMarker("breakpoint")
 
 function NewFile(filename)
   filename = filename or ide.config.default.fullname
@@ -27,7 +26,7 @@ end
 -- Find an editor page that hasn't been used at all, eg. an untouched NewFile()
 local function findUnusedEditor()
   local editor
-  for id, document in pairs(openDocuments) do
+  for _, document in pairs(openDocuments) do
     if (document.editor:GetLength() == 0) and
     (not document.isModified) and (not document.filePath) and
     not (document.editor:GetReadOnly() == true) then
@@ -195,9 +194,9 @@ end
 
 local function getExtsString()
   local knownexts = ""
-  for i,spec in pairs(ide.specs) do
+  for _,spec in pairs(ide.specs) do
     if (spec.exts) then
-      for n,ext in ipairs(spec.exts) do
+      for _,ext in ipairs(spec.exts) do
         knownexts = knownexts.."*."..ext..";"
       end
     end
@@ -343,7 +342,7 @@ function SaveFileAs(editor)
 end
 
 function SaveAll(quiet)
-  for id, document in pairs(openDocuments) do
+  for _, document in pairs(openDocuments) do
     local editor = document.editor
     local filePath = document.filePath
 
@@ -471,7 +470,7 @@ function SaveModifiedDialog(editor, allow_cancel)
 end
 
 function SaveOnExit(allow_cancel)
-  for id, document in pairs(openDocuments) do
+  for _, document in pairs(openDocuments) do
     if (SaveModifiedDialog(document.editor, allow_cancel) == wx.wxID_CANCEL) then
       return false
     end
@@ -547,9 +546,8 @@ function EnsureRangeVisible(posStart, posEnd)
 end
 
 function SetAllEditorsReadOnly(enable)
-  for id, document in pairs(openDocuments) do
-    local editor = document.editor
-    editor:SetReadOnly(enable)
+  for _, document in pairs(openDocuments) do
+    document.editor:SetReadOnly(enable)
   end
 end
 
@@ -557,9 +555,8 @@ end
 -- Debug related
 
 function ClearAllCurrentLineMarkers()
-  for id, document in pairs(openDocuments) do
-    local editor = document.editor
-    editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
+  for _, document in pairs(openDocuments) do
+    document.editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
   end
 end
 
@@ -640,7 +637,7 @@ end
 
 function GetOpenFiles()
   local opendocs = {}
-  for id, document in pairs(ide.openDocuments) do
+  for _, document in pairs(ide.openDocuments) do
     if (document.filePath) then
       local wxfname = wx.wxFileName(document.filePath)
       wxfname:Normalize()
@@ -659,7 +656,7 @@ function GetOpenFiles()
 end
 
 function SetOpenFiles(nametab,params)
-  for i,doc in ipairs(nametab) do
+  for _, doc in ipairs(nametab) do
     local editor = LoadFile(doc.filename,nil,true,true) -- skip selection
     if editor then editor:GotoPosDelayed(doc.cursorpos or 0) end
   end
@@ -733,7 +730,7 @@ end
 
 local function getOpenTabs()
   local opendocs = {}
-  for id, document in pairs(ide.openDocuments) do
+  for _, document in pairs(ide.openDocuments) do
     table.insert(opendocs, {
       filename = document.filePath,
       tabname = notebook:GetPageText(document.index),
