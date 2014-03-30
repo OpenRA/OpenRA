@@ -424,7 +424,6 @@
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
-	AppearsOnRadar:
 	Burns:
 	ProximityCaptor:
 		Types: Husk

@@ -513,7 +513,6 @@
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	HiddenUnderFog:
-	AppearsOnRadar:
 	Burns:
 		Interval: 2
 	TargetableUnit:
