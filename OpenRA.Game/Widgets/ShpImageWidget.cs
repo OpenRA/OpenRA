@@ -68,16 +68,18 @@ namespace OpenRA.Widgets
 			var frame = GetFrame();
 			var palette = GetPalette();
 
-			if (image != cachedImage || frame != cachedFrame)
+			if (image != cachedImage || frame != cachedFrame || sprite == null)
 			{
 				if (!string.IsNullOrEmpty(image) && frame >= 0)
 					sprite = Game.modData.SpriteLoader.LoadAllSprites(image)[frame];
 				cachedImage = image;
 				cachedFrame = frame;
-				cachedOffset = 0.5f * (new float2(RenderBounds.Size) - sprite.size);
+				if (sprite != null)
+					cachedOffset = 0.5f * (new float2(RenderBounds.Size) - sprite.size);
 			}
 
-			Game.Renderer.SpriteRenderer.DrawSprite(sprite, RenderOrigin + cachedOffset, worldRenderer.Palette(palette));
+			if (sprite != null)
+				Game.Renderer.SpriteRenderer.DrawSprite(sprite, RenderOrigin + cachedOffset, worldRenderer.Palette(palette));
 		}
 
 		public int FrameCount
