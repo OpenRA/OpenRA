@@ -150,6 +150,7 @@ NEW:
 	Utility:
 		Added an improved INI/MPR map import.
 		Added an --upgrade-mod feature to upgrade the yaml of mods to the latest specifications.
+		Added regular expression filename matching to the --shp command for easier usage on Windows.
 	Mod / Custom map compatibility:
 		Altitude is no longer parsed from actor templates in maps. Specify CenterPosition instead.
 		system.yaml has been split into four files for all mods: system-actor.yaml, system-ai.yaml, system-player.yaml and system-world.yaml.

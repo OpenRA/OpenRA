@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
@@ -42,11 +43,23 @@ namespace OpenRA.Utility
 			Console.WriteLine(result);
 		}
 
+		static IEnumerable<string> Glob(IEnumerable<string> patterns)
+		{
+			var files = Directory.GetFiles(".");
+			return patterns
+				.SelectMany(p => files.Where(f => Regex.IsMatch(f, p)))
+				.OrderBy(f => f);
+		}
+
 		[Desc("PNGFILE [PNGFILE ...]", "Combine a list of PNG images into a SHP")]
 		public static void ConvertPngToShp(string[] args)
 		{
+			var files = Glob(args.Skip(1));
+			if (!files.Any())
+				throw new ArgumentException("No matching files specified");
+
 			var dest = args[1].Split('-').First() + ".shp";
-			var frames = args.Skip(1).Select(a => PngLoader.Load(a));
+			var frames = files.Select(a => PngLoader.Load(a));
 
 			var size = frames.First().Size;
 			if (frames.Any(f => f.Size != size))
