@@ -159,6 +159,23 @@ local function treeSetConnectorsAndIcons(tree)
     return fullPath:GetFullPath()
   end
 
+  function tree:ActivateItem(item_id)
+    local name = tree:GetItemFullName(item_id)
+
+    if PackageEventHandle("onFiletreeActivate", tree, event, item_id) == false then
+      return
+    end
+
+    -- refresh the folder
+    if (tree:IsDirectory(item_id)) then
+      if wx.wxDirExists(name) then treeAddDir(tree,item_id,name)
+      else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
+    else -- open file
+      if wx.wxFileExists(name) then LoadFile(name,nil,true)
+      else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
+    end
+  end
+
   local function refreshAncestors(node)
     -- when this method is called from END_EDIT, it causes infinite loop
     -- on OSX (wxwidgets 2.9.5) as Delete in treeAddDir calls END_EDIT again.
@@ -267,21 +284,7 @@ local function treeSetConnectorsAndIcons(tree)
     end)
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
     function (event)
-      local item_id = event:GetItem()
-      local name = tree:GetItemFullName(item_id)
-
-      if PackageEventHandle("onFiletreeActivate", tree, event, item_id) == false then
-        return
-      end
-
-      -- refresh the folder
-      if (tree:GetItemImage(item_id) == IMG_DIRECTORY) then
-        if wx.wxDirExists(name) then treeAddDir(tree,item_id,name)
-        else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
-      else -- open file
-        if wx.wxFileExists(name) then LoadFile(name,nil,true)
-        else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
-      end
+      tree:ActivateItem(event:GetItem())
     end)
   -- handle context menu
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_MENU,
