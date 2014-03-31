@@ -136,6 +136,12 @@ end
 local function treeSetConnectorsAndIcons(tree)
   tree:SetImageList(filetree.imglist)
 
+  local function isIt(item, imgtype) return tree:GetItemImage(item) == imgtype end
+
+  function tree:IsDirectory(item_id) return isIt(item_id, IMG_DIRECTORY) end
+  function tree:IsFileKnown(item_id) return isIt(item_id, IMG_FILE_KNOWN) end
+  function tree:IsFileOther(item_id) return isIt(item_id, IMG_FILE_OTHER) end
+
   function tree:GetItemFullName(item_id)
     local tree = self
     local str = tree:GetItemText(item_id)
@@ -263,6 +269,11 @@ local function treeSetConnectorsAndIcons(tree)
     function (event)
       local item_id = event:GetItem()
       local name = tree:GetItemFullName(item_id)
+
+      if PackageEventHandle("onFiletreeActivate", tree, event, item_id) == false then
+        return
+      end
+
       -- refresh the folder
       if (tree:GetItemImage(item_id) == IMG_DIRECTORY) then
         if wx.wxDirExists(name) then treeAddDir(tree,item_id,name)
@@ -365,6 +376,14 @@ local function treeSetConnectorsAndIcons(tree)
 
       tree:PopupMenu(menu)
     end)
+  tree:Connect(wx.wxEVT_RIGHT_DOWN,
+    function (event)
+      local item_id = tree:HitTest(event:GetPosition())
+      if PackageEventHandle("onFiletreeRDown", tree, event, item_id) == false then
+        return
+      end
+    end)
+
   -- toggle a folder on a single click
   tree:Connect(wx.wxEVT_LEFT_DOWN,
     function (event)
@@ -373,6 +392,11 @@ local function treeSetConnectorsAndIcons(tree)
       local mask = wx.wxTREE_HITTEST_ONITEMINDENT
         + wx.wxTREE_HITTEST_ONITEMICON + wx.wxTREE_HITTEST_ONITEMRIGHT
       local item_id, flags = tree:HitTest(event:GetPosition())
+
+      if PackageEventHandle("onFiletreeLDown", tree, event, item_id) == false then
+        return
+      end
+
       if item_id and bit.band(flags, mask) > 0 then
         if tree:GetItemImage(item_id) == IMG_DIRECTORY then
           tree:Toggle(item_id)
