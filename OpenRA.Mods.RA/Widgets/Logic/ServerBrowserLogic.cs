@@ -145,6 +145,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public void RefreshServerListInner(IEnumerable<GameServer> games)
 		{
+			if (games == null)
+				return;
+
 			List<Widget> rows = new List<Widget>();
 
 			foreach (var loop in games.OrderByDescending(g => g.CanJoin()).ThenByDescending(g => g.Players))
