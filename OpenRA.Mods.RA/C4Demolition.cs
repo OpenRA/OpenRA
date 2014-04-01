@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
 				// TODO: Bridges don't yet support FrozenUnderFog.
-				if (target.Actor.HasTrait<BridgeHut>())
+				if (target.Actor != null && target.Actor.HasTrait<BridgeHut>())
 					return false;
 
 				return true;
