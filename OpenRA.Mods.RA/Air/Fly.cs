@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
+			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
 			// Inside the target annulus, so we're done

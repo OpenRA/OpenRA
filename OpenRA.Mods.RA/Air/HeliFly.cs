@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
+			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
 			if (AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
