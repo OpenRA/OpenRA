@@ -29,14 +29,15 @@ Background@COLOR_CHOOSER:
 					Y:2
 					Width:144
 					Height:72
-		ShpImage@FACT:
+		SpriteSequence@FACT:
 			X:153
 			Y:1
 			Width:80
 			Height:73
-			Image:DATA.R8
-			Frame:1936
 			Palette:colorpicker
+			Unit:carryall
+			Sequence:idle
+			Facing:104
 		Button@RANDOM_BUTTON:
 			Key:tab
 			X:158

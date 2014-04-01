@@ -194,7 +194,6 @@
     <Compile Include="Widgets\ProgressBarWidget.cs" />
     <Compile Include="Widgets\ScrollItemWidget.cs" />
     <Compile Include="Widgets\ScrollPanelWidget.cs" />
-    <Compile Include="Widgets\ShpImageWidget.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
     <Compile Include="Widgets\TextFieldWidget.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
@@ -233,6 +232,7 @@
     <Compile Include="MapCache.cs" />
     <Compile Include="MapPreview.cs" />
     <Compile Include="Widgets\SpriteWidget.cs" />
+    <Compile Include="Widgets\SpriteSequenceWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

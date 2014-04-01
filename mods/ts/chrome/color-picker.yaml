@@ -29,13 +29,14 @@ Background@COLOR_CHOOSER:
 					Y:2
 					Width:144
 					Height:72
-		ShpImage@GTCNST:
+		SpriteSequence@PREVIEW:
 			X:153
 			Y:1-40
 			Width:80
 			Height:73
-			Image:gtcnstmk
 			Palette:colorpicker
+			Unit:gacnst
+			Sequence:make
 		Button@RANDOM_BUTTON:
 			Key:tab
 			X:158
