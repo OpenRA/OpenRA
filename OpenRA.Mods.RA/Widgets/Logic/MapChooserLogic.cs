@@ -36,7 +36,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			widget.Get<ButtonWidget>("BUTTON_CANCEL").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			scrollpanel = widget.Get<ScrollPanelWidget>("MAP_LIST");
-			scrollpanel.ScrollVelocity = 40f;
 			scrollpanel.Layout = new GridLayout(scrollpanel);
 
 			itemTemplate = scrollpanel.Get<ScrollItemWidget>("MAP_TEMPLATE");

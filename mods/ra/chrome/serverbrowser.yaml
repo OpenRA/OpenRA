@@ -49,6 +49,7 @@ Background@SERVERBROWSER_PANEL:
 			Y:80
 			Width:700
 			Height:360
+			ScrollVelocity:20
 			Children:
 				ScrollItem@SERVER_TEMPLATE:
 					Width:PARENT_RIGHT-27

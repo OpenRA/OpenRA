@@ -35,6 +35,7 @@ Container@MAPCHOOSER_PANEL:
 					Y:45
 					Width:PARENT_RIGHT - 30
 					Height:440
+					ScrollVelocity:40
 					Children:
 						ScrollItem@MAP_TEMPLATE:
 							Width:168

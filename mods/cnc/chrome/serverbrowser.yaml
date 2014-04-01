@@ -59,6 +59,7 @@ Container@SERVERBROWSER_PANEL:
 					Y:15
 					Width:700
 					Height:440
+					ScrollVelocity:20
 					Children:
 						ScrollItem@SERVER_TEMPLATE:
 							Width:PARENT_RIGHT-27

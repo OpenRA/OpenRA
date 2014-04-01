@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Widgets
 	public enum ResourceBarStyle { Flat, Bevelled }
 	public class ResourceBarWidget : Widget
 	{
-		public readonly string TooltipTemplate = "SIMPLE_TOOLTIP";
+		public readonly string TooltipTemplate;
 		public readonly string TooltipContainer;
 		Lazy<TooltipContainerWidget> tooltipContainer;
 
