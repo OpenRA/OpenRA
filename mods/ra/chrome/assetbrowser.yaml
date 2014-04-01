@@ -5,6 +5,7 @@ Background@ASSETBROWSER_PANEL:
 	Width:700
 	Height:500
 	Children:
+		LogicTicker@ANIMATION_TICKER:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@ASSETBROWSER_TITLE:
 			Y:20
@@ -58,7 +59,6 @@ Background@ASSETBROWSER_PANEL:
 			Y:395
 			Width:160
 			Height:25
-			Text:mouse.shp
 		Button@LOAD_BUTTON:
 			X:20
 			Y:425
@@ -99,10 +99,9 @@ Background@ASSETBROWSER_PANEL:
 			Height:330
 			Background:dialog3
 			Children:
-				ShpImage@SPRITE:
+				Sprite@SPRITE:
 					Width:PARENT_RIGHT
 					Height:PARENT_BOTTOM
-					Image:mouse
 		Container@FRAME_SELECTOR:
 			X:190
 			Y:425
