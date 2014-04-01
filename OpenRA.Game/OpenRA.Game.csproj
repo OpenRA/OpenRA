@@ -232,6 +232,7 @@
     <Compile Include="Effects\MoveFlash.cs" />
     <Compile Include="MapCache.cs" />
     <Compile Include="MapPreview.cs" />
+    <Compile Include="Widgets\SpriteWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
