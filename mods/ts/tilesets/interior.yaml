@@ -3,6 +3,7 @@ General:
 	Id: INTERIOR
 	Extensions: .tem, .shp
 	Palette: isotem.pal
+	EditorTemplateOrder: Placeholder
 
 Terrain:
 	TerrainType@Clear:
@@ -16,6 +17,7 @@ Templates:
 		Id: 255
 		Image: clear01
 		Size: 1,1
+		Category: Placeholder
 		Tiles:
 			0: Clear
 
