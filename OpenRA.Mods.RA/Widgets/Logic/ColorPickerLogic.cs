@@ -20,6 +20,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ColorPickerLogic(Widget widget, HSLColor initialColor, Action<HSLColor> onChange, WorldRenderer worldRenderer)
 		{
+			var ticker = widget.GetOrNull<LogicTickerWidget>("ANIMATE_PREVIEW");
+			if (ticker != null)
+			{
+				var preview = widget.Get<SpriteSequenceWidget>("PREVIEW");
+				var anim = preview.GetAnimation();
+				anim.PlayRepeating(anim.CurrentSequence.Name);
+				ticker.OnTick = () => anim.Tick();
+			}
+
 			var hueSlider = widget.Get<SliderWidget>("HUE");
 			var mixer = widget.Get<ColorMixerWidget>("MIXER");
 			var randomButton = widget.GetOrNull<ButtonWidget>("RANDOM_BUTTON");

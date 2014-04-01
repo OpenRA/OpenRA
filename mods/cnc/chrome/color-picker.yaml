@@ -4,6 +4,7 @@ Background@COLOR_CHOOSER:
 	Width:234
 	Height:105
 	Children:
+		LogicTicker@ANIMATE_PREVIEW:
 		Background@HUEBG:
 			Background:panel-black
 			X:5
@@ -29,7 +30,7 @@ Background@COLOR_CHOOSER:
 					Y:2
 					Width:144
 					Height:72
-		SpriteSequence@FACT:
+		SpriteSequence@PREVIEW:
 			X:153
 			Y:1
 			Width:80
