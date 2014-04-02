@@ -14,6 +14,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -23,17 +24,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		Widget panel;
 
-		ShpImageWidget spriteWidget;
 		TextFieldWidget filenameInput;
 		SliderWidget frameSlider;
-		ButtonWidget playButton, pauseButton;
 		ScrollPanelWidget assetList;
 		ScrollItemWidget template;
 
 		IFolder assetSource = null;
 		List<string> availableShps = new List<string>();
+		bool animateFrames = false;
 
-		PaletteFromFile currentPalette;
+		string currentPalette;
+		string currentFilename;
+		Sprite[] currentSprites;
+		int currentFrame;
 
 		static readonly string[] AllowedExtensions = { ".shp", ".r8", "tmp", ".tem", ".des", ".sno", ".int" };
 
@@ -41,94 +44,139 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
 		{
 			panel = widget;
-
-			var sourceDropdown = panel.Get<DropDownButtonWidget>("SOURCE_SELECTOR");
-			sourceDropdown.OnMouseDown = _ => ShowSourceDropdown(sourceDropdown);
-			sourceDropdown.GetText = () =>
-			{
-				var name = assetSource != null ? assetSource.Name.Replace(Platform.SupportDir, "^") : "All Packages";
-		
-				if (name.Length > 15)
-					name = "..." + name.Substring(name.Length - 15);
-
-				return name;
-			};
-
 			assetSource = FileSystem.MountedFolders.First();
 
-			spriteWidget = panel.Get<ShpImageWidget>("SPRITE");
+			var ticker = panel.GetOrNull<LogicTickerWidget>("ANIMATION_TICKER");
+			if (ticker != null)
+			{
+				ticker.OnTick = () =>
+				{
+					if (animateFrames)
+						SelectNextFrame();
+				};
+			}
 
-			currentPalette = world.WorldActor.TraitsImplementing<PaletteFromFile>().First(p => p.Name == spriteWidget.Palette);
+			var sourceDropdown = panel.GetOrNull<DropDownButtonWidget>("SOURCE_SELECTOR");
+			if (sourceDropdown != null)
+			{
+				sourceDropdown.OnMouseDown = _ => ShowSourceDropdown(sourceDropdown);
+				sourceDropdown.GetText = () =>
+				{
+					var name = assetSource != null ? assetSource.Name.Replace(Platform.SupportDir, "^") : "All Packages";
+					if (name.Length > 15)
+						name = "..." + name.Substring(name.Length - 15);
 
-			var paletteDropDown = panel.Get<DropDownButtonWidget>("PALETTE_SELECTOR");
-			paletteDropDown.OnMouseDown = _ => ShowPaletteDropdown(paletteDropDown, world);
-			paletteDropDown.GetText = () => currentPalette.Name;
+					return name;
+				};
+			}
 
-			var colorPreview = panel.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
-			colorPreview.Color = Game.Settings.Player.Color;
+			var spriteWidget = panel.GetOrNull<SpriteWidget>("SPRITE");
+			if (spriteWidget != null)
+			{
+				spriteWidget.GetSprite = () => currentSprites != null ? currentSprites[currentFrame] : null;
+				currentPalette = spriteWidget.Palette;
+				spriteWidget.GetPalette = () => currentPalette;
+			}
 
-			var color = panel.Get<DropDownButtonWidget>("COLOR");
-			color.IsDisabled = () => currentPalette.Name != colorPreview.Palette;
-			color.OnMouseDown = _ => ShowColorDropDown(color, colorPreview, world);
-			var block = panel.Get<ColorBlockWidget>("COLORBLOCK");
-			block.GetColor = () => Game.Settings.Player.Color.RGB;
+			var paletteDropDown = panel.GetOrNull<DropDownButtonWidget>("PALETTE_SELECTOR");
+			if (paletteDropDown != null)
+			{
+				paletteDropDown.OnMouseDown = _ => ShowPaletteDropdown(paletteDropDown, world);
+				paletteDropDown.GetText = () => currentPalette;
+			}
+
+			var colorPreview = panel.GetOrNull<ColorPreviewManagerWidget>("COLOR_MANAGER");
+			if (colorPreview != null)
+				colorPreview.Color = Game.Settings.Player.Color;
+
+			var colorDropdown = panel.GetOrNull<DropDownButtonWidget>("COLOR");
+			if (colorDropdown != null)
+			{
+				colorDropdown.IsDisabled = () => currentPalette != colorPreview.Palette;
+				colorDropdown.OnMouseDown = _ => ShowColorDropDown(colorDropdown, colorPreview, world);
+				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => Game.Settings.Player.Color.RGB;
+			}
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
 			filenameInput.OnEnterKey = () => LoadAsset(filenameInput.Text);
 
+			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
+			if (frameContainer != null)
+				frameContainer.IsVisible = () => currentSprites != null && currentSprites.Length > 1;
+
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
-			frameSlider.MaximumValue = (float)spriteWidget.FrameCount;
-			frameSlider.Ticks = spriteWidget.FrameCount + 1;
-			frameSlider.IsVisible = () => spriteWidget.FrameCount > 0;
-			frameSlider.OnChange += x => { spriteWidget.Frame = (int)Math.Round(x); };
-			frameSlider.GetValue = () => spriteWidget.Frame;
+			frameSlider.OnChange += x => { currentFrame = (int)Math.Round(x); };
+			frameSlider.GetValue = () => currentFrame;
 
-			panel.Get<LabelWidget>("FRAME_COUNT").GetText = () => "{0} / {1}".F(spriteWidget.Frame + 1, spriteWidget.FrameCount + 1);
+			var frameText = panel.GetOrNull<LabelWidget>("FRAME_COUNT");
+			if (frameText != null)
+				frameText.GetText = () => "{0} / {1}".F(currentFrame + 1, currentSprites.Length);
 
-			playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
-			playButton.OnClick = () =>
+			var playButton = panel.GetOrNull<ButtonWidget>("BUTTON_PLAY");
+			if (playButton != null)
 			{
-				spriteWidget.LoopAnimation = true;
-				playButton.Visible = false;
-				pauseButton.Visible = true;
-			};
-			pauseButton = panel.Get<ButtonWidget>("BUTTON_PAUSE");
-			pauseButton.OnClick = () =>
-			{
-				spriteWidget.LoopAnimation = false;
-				playButton.Visible = true;
-				pauseButton.Visible = false;
-			};
+				playButton.OnClick = () => animateFrames = true;
+				playButton.IsVisible = () => !animateFrames;
+			}
 
-			panel.Get<ButtonWidget>("BUTTON_STOP").OnClick = () =>
+			var pauseButton = panel.GetOrNull<ButtonWidget>("BUTTON_PAUSE");
+			if (pauseButton != null)
 			{
-				spriteWidget.LoopAnimation = false;
-				frameSlider.Value = 0;
-				spriteWidget.Frame = 0;
-				playButton.Visible = true;
-				pauseButton.Visible = false;
-			};
+				pauseButton.OnClick = () => animateFrames = false;
+				pauseButton.IsVisible = () => animateFrames;
+			}
 
-			panel.Get<ButtonWidget>("BUTTON_NEXT").OnClick = () => { spriteWidget.RenderNextFrame(); };
-			panel.Get<ButtonWidget>("BUTTON_PREV").OnClick = () => { spriteWidget.RenderPreviousFrame(); };
-
-			panel.Get<ButtonWidget>("LOAD_BUTTON").OnClick = () =>
+			var stopButton = panel.GetOrNull<ButtonWidget>("BUTTON_STOP");
+			if (stopButton != null)
 			{
-				LoadAsset(filenameInput.Text);
-			};
+				stopButton.OnClick = () =>
+				{
+					frameSlider.Value = 0;
+					currentFrame = 0;
+					animateFrames = false;
+				};
+			}
+
+			var nextButton = panel.GetOrNull<ButtonWidget>("BUTTON_NEXT");
+			if (nextButton != null)
+				nextButton.OnClick = SelectNextFrame;
+
+			var prevButton = panel.GetOrNull<ButtonWidget>("BUTTON_PREV");
+			if (prevButton != null)
+				prevButton.OnClick = SelectPreviousFrame;
+
+			var loadButton = panel.GetOrNull<ButtonWidget>("LOAD_BUTTON");
+			if (loadButton != null)
+				loadButton.OnClick = () => LoadAsset(filenameInput.Text);
 
 			assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
 			PopulateAssetList();
 
-			panel.Get<ButtonWidget>("CLOSE_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
+			var closeButton = panel.GetOrNull<ButtonWidget>("CLOSE_BUTTON");
+			if (closeButton != null)
+				closeButton.OnClick = () => { Ui.CloseWindow(); onExit(); };
+		}
+
+		void SelectNextFrame()
+		{
+			currentFrame++;
+			if (currentFrame >= currentSprites.Length)
+				currentFrame = 0;
+		}
+
+		void SelectPreviousFrame()
+		{
+			currentFrame--;
+			if (currentFrame < 0)
+				currentFrame = currentSprites.Length - 1;
 		}
 
 		void AddAsset(ScrollPanelWidget list, string filepath, ScrollItemWidget template)
 		{
 			var filename = Path.GetFileName(filepath);
 			var item = ScrollItemWidget.Setup(template,
-				() => spriteWidget.Image == filename,
+				() => currentFilename == filename,
 				() => { filenameInput.Text = filename; LoadAsset(filename); });
 			item.Get<LabelWidget>("TITLE").GetText = () => filepath;
 
@@ -143,10 +191,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (!FileSystem.Exists(filename))
 				return false;
 
-			spriteWidget.Frame = 0;
-			spriteWidget.Image = filename;
-			frameSlider.MaximumValue = (float)spriteWidget.FrameCount;
-			frameSlider.Ticks = spriteWidget.FrameCount + 1;
+			currentFilename = filename;
+			currentSprites = Game.modData.SpriteLoader.LoadAllSprites(filename);
+			currentFrame = 0;
+			frameSlider.MaximumValue = (float)currentSprites.Length - 1;
+			frameSlider.Ticks = currentSprites.Length;
+
 			return true;
 		}
 
@@ -196,10 +246,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			Func<PaletteFromFile, ScrollItemWidget, ScrollItemWidget> setupItem = (palette, itemTemplate) =>
 			{
+				var name = palette.Name;
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => currentPalette.Name == palette.Name,
-					() => { currentPalette = palette; spriteWidget.Palette = currentPalette.Name; });
-				item.Get<LabelWidget>("LABEL").GetText = () => palette.Name;
+					() => currentPalette == name,
+					() => currentPalette = name);
+				item.Get<LabelWidget>("LABEL").GetText = () => name;
+
 				return item;
 			};
 

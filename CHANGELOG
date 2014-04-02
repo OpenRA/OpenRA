@@ -110,6 +110,7 @@ NEW:
 		Fixed Obelisk of Light charge animation and sound not playing.
 		Replaced or improved several mouse cursors.
 		Added Minibibs for bibless buildings.
+		The Construction Yard fans now turn in the color picker preview.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.
