@@ -178,8 +178,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var dds = new GraphicSettings();
 			var dgs = new GameSettings();
 			return () =>
-			{
-				gs.ShowShellmap = dgs.ShowShellmap;
+			{				
+				gs.ShowShellmap = false;
 
 				ds.CapFramerate = dds.CapFramerate;
 				Game.SetIdealFrameTime(ds.MaxFramerate);

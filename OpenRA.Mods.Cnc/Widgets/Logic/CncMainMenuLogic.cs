@@ -23,8 +23,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			shellmapDecorations.IsVisible = () => menuType != MenuType.None && Game.Settings.Game.ShowShellmap;
 			shellmapDecorations.Get<ImageWidget>("RECBLOCK").IsVisible = () => world.WorldTick / 25 % 2 == 0;
 
+			//TODO: on lua update
 			var shellmapDisabledDecorations = widget.Get("SHELLMAP_DISABLED_DECORATIONS");
-			shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
+			shellmapDisabledDecorations.IsVisible = () => true;
 		}
 	}
 }
