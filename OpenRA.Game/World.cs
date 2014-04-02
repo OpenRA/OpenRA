@@ -207,7 +207,7 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			if (!Paused && (!IsShellmap || Game.Settings.Game.ShowShellmap))
+			if (!Paused && (!IsShellmap || false))
 			{
 				using (new PerfSample("tick_idle"))
 					foreach (var ni in ActorsWithTrait<INotifyIdle>())
