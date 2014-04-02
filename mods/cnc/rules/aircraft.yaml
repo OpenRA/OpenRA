@@ -16,7 +16,7 @@ TRAN:
 		ROT: 5
 		Speed: 140
 		InitialFacing: 0
-		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
 	Health:
 		HP: 90
 	Armor:
