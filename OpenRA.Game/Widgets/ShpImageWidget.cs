@@ -20,6 +20,7 @@ namespace OpenRA.Widgets
 		public string Palette = "chrome";
 		public bool LoopAnimation = false;
 
+		public Func<Sprite> GetSprite;
 		public Func<string> GetImage;
 		public Func<int> GetFrame;
 		public Func<string> GetPalette;
@@ -29,6 +30,7 @@ namespace OpenRA.Widgets
 		[ObjectCreator.UseCtor]
 		public ShpImageWidget(WorldRenderer worldRenderer)
 		{
+			GetSprite = () => { return sprite; };
 			GetImage = () => { return Image; };
 			GetFrame = () => { return Frame; };
 			GetPalette = () => { return Palette; };
@@ -44,6 +46,7 @@ namespace OpenRA.Widgets
 			Palette = other.Palette;
 			LoopAnimation = other.LoopAnimation;
 
+			GetSprite = other.GetSprite;
 			GetImage = other.GetImage;
 			GetFrame = other.GetFrame;
 			GetPalette = other.GetPalette;
@@ -60,19 +63,23 @@ namespace OpenRA.Widgets
 
 		public override void Draw()
 		{
+			sprite = GetSprite();
 			var image = GetImage();
 			var frame = GetFrame();
 			var palette = GetPalette();
 
-			if (image != cachedImage || frame != cachedFrame)
+			if (image != cachedImage || frame != cachedFrame || sprite == null)
 			{
-				sprite = Game.modData.SpriteLoader.LoadAllSprites(image)[frame];
+				if (!string.IsNullOrEmpty(image) && frame >= 0)
+					sprite = Game.modData.SpriteLoader.LoadAllSprites(image)[frame];
 				cachedImage = image;
 				cachedFrame = frame;
-				cachedOffset = 0.5f * (new float2(RenderBounds.Size) - sprite.size);
+				if (sprite != null)
+					cachedOffset = 0.5f * (new float2(RenderBounds.Size) - sprite.size);
 			}
 
-			Game.Renderer.SpriteRenderer.DrawSprite(sprite, RenderOrigin + cachedOffset, worldRenderer.Palette(palette));
+			if (sprite != null)
+				Game.Renderer.SpriteRenderer.DrawSprite(sprite, RenderOrigin + cachedOffset, worldRenderer.Palette(palette));
 		}
 
 		public int FrameCount
