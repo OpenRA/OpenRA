@@ -233,6 +233,7 @@
     <Compile Include="MapPreview.cs" />
     <Compile Include="Widgets\SpriteWidget.cs" />
     <Compile Include="Widgets\SpriteSequenceWidget.cs" />
+    <Compile Include="Widgets\RGBASpriteWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

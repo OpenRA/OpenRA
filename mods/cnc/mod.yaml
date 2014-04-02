@@ -1,8 +1,8 @@
 Metadata:
 	Title: Tiberian Dawn
-	Description: OpenRA Reimagining of the classic game
+	Description: Join the Global Defense Initiative or the Brotherhood of Nod in our\nrecreation of the classic game that started it all.\n\nTiberian Dawn modernizes the original Command & Conquer gameplay\nby introducing features from later games, including per-factory\nproduction queues, unit veterancy, and capturable tech structures.
 	Version: {DEV_VERSION}
-	Author: The OpenRA Developers
+	Author: the OpenRA Developers
 
 Folders:
 	.
@@ -90,7 +90,6 @@ ChromeLayout:
 	mods/cnc/chrome/ingame-chat.yaml
 	mods/cnc/chrome/ingamemenu.yaml
 	mods/cnc/chrome/music.yaml
-	mods/cnc/chrome/modchooser.yaml
 	mods/cnc/chrome/settings.yaml
 	mods/cnc/chrome/credits.yaml
 	mods/cnc/chrome/cheats.yaml

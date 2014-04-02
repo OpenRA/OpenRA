@@ -1,8 +1,8 @@
 Metadata:
 	Title: Dune 2000
-	Description: OpenRA Reimagining of the classic game
+	Description: Three great houses fight for the precious spice, melange.\nHe who controls the spice controls the universe!\n\nOur work in progress Dune 2000 recreation brings modern\ngameplay improvements into the Dune universe.\n\nFuture versions of OpenRA will incorporate more of the missing\nunique features from this classic game.
 	Version: {DEV_VERSION}
-	Author: The OpenRA Developers
+	Author: the OpenRA Developers
 
 Folders:
 	.
@@ -80,7 +80,6 @@ ChromeLayout:
 	mods/ra/chrome/directconnect.yaml
 	mods/ra/chrome/replaybrowser.yaml
 	mods/d2k/chrome/dropdowns.yaml
-	mods/ra/chrome/modchooser.yaml
 	mods/ra/chrome/cheats.yaml
 	mods/ra/chrome/musicplayer.yaml
 	mods/d2k/chrome/tooltips.yaml

@@ -52,26 +52,26 @@ Container@MAINMENU:
 							Height:30
 							Text:Multiplayer
 							Font:Bold
-						Button@MODS_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:140
-							Width:140
-							Height:30
-							Text:Mods
-							Font:Bold
 						Button@SETTINGS_BUTTON:
 							X:PARENT_RIGHT/2-WIDTH/2
-							Y:180
+							Y:140
 							Width:140
 							Height:30
 							Text:Settings
 							Font:Bold
 						Button@EXTRAS_BUTTON:
 							X:PARENT_RIGHT/2-WIDTH/2
-							Y:220
+							Y:180
 							Width:140
 							Height:30
 							Text:Extras
+							Font:Bold
+						Button@MODS_BUTTON:
+							X:PARENT_RIGHT/2-WIDTH/2
+							Y:220
+							Width:140
+							Height:30
+							Text:Mods
 							Font:Bold
 						Button@QUIT_BUTTON:
 							X:PARENT_RIGHT/2-WIDTH/2

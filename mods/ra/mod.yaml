@@ -1,8 +1,8 @@
 Metadata:
 	Title: Red Alert
-	Description: OpenRA Reimagining of the classic game
+	Description: In a world where Hitler was assassinated and the Third Reich never\nexisted, the Soviet Union seeks power over all of Europe.  Allied\nagainst this Evil Empire, the free world faces a Cold War turned hot.\n\nRed Alert fuses the quick and fun gameplay of the original\nC&C: Red Alert, with balance improvements and new gameplay\nfeatures inspired by modern RTS games.
 	Version: {DEV_VERSION}
-	Author: The OpenRA Developers
+	Author: the OpenRA Developers
 
 Folders:
 	.
@@ -94,7 +94,6 @@ ChromeLayout:
 	mods/ra/chrome/directconnect.yaml
 	mods/ra/chrome/replaybrowser.yaml
 	mods/ra/chrome/dropdowns.yaml
-	mods/ra/chrome/modchooser.yaml
 	mods/ra/chrome/cheats.yaml
 	mods/ra/chrome/musicplayer.yaml
 	mods/ra/chrome/tooltips.yaml

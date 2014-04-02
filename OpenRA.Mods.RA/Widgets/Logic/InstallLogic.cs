@@ -42,15 +42,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			panel.Get<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
 				Ui.OpenWindow("INSTALL_FROMCD_PANEL", args);
 
-			panel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
-
-			panel.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
+			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
-				Ui.OpenWindow("MODS_PANEL", new WidgetArgs()
-				{
-					{ "onExit", () => { } },
-					{ "onSwitch", Ui.CloseWindow },
-				});
+				Game.Settings.Game.PreviousMod = Game.modData.Manifest.Mod.Id;
+				Game.InitializeWithMod("modchooser", null);
 			};
 		}
 	}

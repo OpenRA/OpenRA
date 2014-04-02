@@ -86,24 +86,24 @@ Container@MENU_BACKGROUND:
 							Width:140
 							Height:35
 							Text:Multiplayer
-						Button@MODS_BUTTON:
-							X:300
-							Y:0
-							Width:140
-							Height:35
-							Text:Mods
 						Button@SETTINGS_BUTTON:
-							X:450
+							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Settings
 						Button@EXTRAS_BUTTON:
-							X:600
+							X:450
 							Y:0
 							Width:140
 							Height:35
 							Text:Extras
+						Button@MODS_BUTTON:
+							X:600
+							Y:0
+							Width:140
+							Height:35
+							Text:Mods
 						Button@QUIT_BUTTON:
 							X:750
 							Y:0

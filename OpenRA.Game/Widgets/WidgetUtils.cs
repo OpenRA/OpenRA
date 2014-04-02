@@ -91,53 +91,50 @@ namespace OpenRA.Widgets
 
 		public static void DrawPanelPartial(Sprite[] ss, Rectangle bounds, PanelSides ps)
 		{
+			var marginLeft = ss[2] == null ? 0 : (int)ss[2].size.X;
+			var marginTop = ss[0] == null ? 0 : (int)ss[0].size.Y;
+			var marginRight = ss[3] == null ? 0 : (int)ss[3].size.X;
+			var marginBottom = ss[1] == null ? 0 : (int)ss[1].size.Y;
+			var marginWidth = marginRight + marginLeft;
+			var marginHeight = marginBottom + marginTop;
+
 			// Background
-			if (ps.HasFlags(PanelSides.Center))
-				FillRectWithSprite(new Rectangle(bounds.Left + (int)ss[2].size.X,
-								 bounds.Top + (int)ss[0].size.Y,
-								 bounds.Right - (int)ss[3].size.X - bounds.Left - (int)ss[2].size.X,
-								 bounds.Bottom - (int)ss[1].size.Y - bounds.Top - (int)ss[0].size.Y),
-				   ss[8]);
+			if (ps.HasFlags(PanelSides.Center) && ss[8] != null)
+				FillRectWithSprite(new Rectangle(bounds.Left + marginLeft, bounds.Top + marginTop,
+					bounds.Width - marginWidth,	bounds.Height - marginHeight),
+				    ss[8]);
 
 			// Left border
-			if (ps.HasFlags(PanelSides.Left))
-				FillRectWithSprite(new Rectangle(bounds.Left,
-									 bounds.Top + (int)ss[0].size.Y,
-									 (int)ss[2].size.X,
-									 bounds.Bottom - (int)ss[1].size.Y - bounds.Top - (int)ss[0].size.Y),
-					   ss[2]);
+			if (ps.HasFlags(PanelSides.Left) && ss[2] != null)
+				FillRectWithSprite(new Rectangle(bounds.Left, bounds.Top + marginTop,
+					marginLeft, bounds.Height - marginHeight),
+					ss[2]);
 
 			// Right border
-			if (ps.HasFlags(PanelSides.Right))
-				FillRectWithSprite(new Rectangle(bounds.Right - (int)ss[3].size.X,
-									 bounds.Top + (int)ss[0].size.Y,
-									 (int)ss[2].size.X,
-									 bounds.Bottom - (int)ss[1].size.Y - bounds.Top - (int)ss[0].size.Y),
-					   ss[3]);
+			if (ps.HasFlags(PanelSides.Right) && ss[3] != null)
+				FillRectWithSprite(new Rectangle(bounds.Right - marginRight, bounds.Top + marginTop,
+					marginLeft, bounds.Height - marginHeight),
+					ss[3]);
 
 			// Top border
-			if (ps.HasFlags(PanelSides.Top))
-				FillRectWithSprite(new Rectangle(bounds.Left + (int)ss[2].size.X,
-									 bounds.Top,
-									 bounds.Right - (int)ss[3].size.X - bounds.Left - (int)ss[2].size.X,
-									 (int)ss[0].size.Y),
-					   ss[0]);
+			if (ps.HasFlags(PanelSides.Top) && ss[0] != null)
+				FillRectWithSprite(new Rectangle(bounds.Left + marginLeft, bounds.Top,
+					bounds.Width - marginWidth, marginTop),
+					ss[0]);
 
 			// Bottom border
-			if (ps.HasFlags(PanelSides.Bottom))
-				FillRectWithSprite(new Rectangle(bounds.Left + (int)ss[2].size.X,
-									bounds.Bottom - (int)ss[1].size.Y,
-									 bounds.Right - (int)ss[3].size.X - bounds.Left - (int)ss[2].size.X,
-									 (int)ss[0].size.Y),
-					   ss[1]);
+			if (ps.HasFlags(PanelSides.Bottom) && ss[1] != null)
+				FillRectWithSprite(new Rectangle(bounds.Left + marginLeft, bounds.Bottom - marginBottom,
+					bounds.Width - marginWidth, marginTop),
+					ss[1]);
 
-			if (ps.HasFlags(PanelSides.Left | PanelSides.Top))
+			if (ps.HasFlags(PanelSides.Left | PanelSides.Top) && ss[4] != null)
 				DrawRGBA(ss[4], new float2(bounds.Left, bounds.Top));
-			if (ps.HasFlags(PanelSides.Right | PanelSides.Top))
+			if (ps.HasFlags(PanelSides.Right | PanelSides.Top) && ss[5] != null)
 				DrawRGBA(ss[5], new float2(bounds.Right - ss[5].size.X, bounds.Top));
-			if (ps.HasFlags(PanelSides.Left | PanelSides.Bottom))
+			if (ps.HasFlags(PanelSides.Left | PanelSides.Bottom) && ss[6] != null)
 				DrawRGBA(ss[6], new float2(bounds.Left, bounds.Bottom - ss[6].size.Y));
-			if (ps.HasFlags(PanelSides.Right | PanelSides.Bottom))
+			if (ps.HasFlags(PanelSides.Right | PanelSides.Bottom) && ss[7] != null)
 				DrawRGBA(ss[7], new float2(bounds.Right - ss[7].size.X, bounds.Bottom - ss[7].size.Y));
 		}
 

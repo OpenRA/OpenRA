@@ -42,10 +42,10 @@ namespace OpenRA.Graphics
 			return new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize));
 		}
 
-		internal SheetBuilder(SheetType t)
+		public SheetBuilder(SheetType t)
 			: this(t, AllocateSheet) {}
 
-		internal SheetBuilder(SheetType t, Func<Sheet> allocateSheet)
+		public SheetBuilder(SheetType t, Func<Sheet> allocateSheet)
 		{
 			channel = TextureChannel.Red;
 			type = t;

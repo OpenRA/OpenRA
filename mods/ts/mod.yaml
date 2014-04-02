@@ -2,7 +2,7 @@ Metadata:
 	Title: Tiberian Sun
 	Description: Developer stub, not yet ready for release!
 	Version: {DEV_VERSION}
-	Author: The OpenRA Developers
+	Author: the OpenRA Developers
 
 Folders:
 	.
@@ -119,7 +119,6 @@ ChromeLayout:
 	mods/ra/chrome/directconnect.yaml
 	mods/ra/chrome/replaybrowser.yaml
 	mods/ra/chrome/dropdowns.yaml
-	mods/ra/chrome/modchooser.yaml
 	mods/ra/chrome/cheats.yaml
 	mods/ra/chrome/musicplayer.yaml
 	mods/ra/chrome/tooltips.yaml

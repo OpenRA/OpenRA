@@ -1,0 +1,9 @@
+﻿Palettes:
+	cursor: cursor.pal
+
+Cursors:
+	cursor.shp: cursor
+		default:
+			start:0
+			x: -4
+			y: -7
