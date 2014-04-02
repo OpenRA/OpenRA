@@ -111,6 +111,8 @@ NEW:
 		Replaced or improved several mouse cursors.
 		Added Minibibs for bibless buildings.
 		The Construction Yard fans now turn in the color picker preview.
+		The chance of artillery exploding on death has been reduced from 100% to 75%.
+		Fixed Chinook being unable to land on tiberium.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.
