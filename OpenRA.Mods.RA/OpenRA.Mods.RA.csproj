@@ -491,6 +491,8 @@
     <Compile Include="Widgets\LogicKeyListenerWidget.cs" />
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Buildings\LineBuildNode.cs" />
+    <Compile Include="Buildings\Pluggable.cs" />
+    <Compile Include="Buildings\Plug.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

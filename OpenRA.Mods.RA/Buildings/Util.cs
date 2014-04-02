@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -29,9 +29,32 @@ namespace OpenRA.Mods.RA.Buildings
 			return world.Map.IsInMap(a) && bi.TerrainTypes.Contains(world.GetTerrainType(a));
 		}
 
+		public static bool CanPlacePlug(Actor host, ActorInfo toPlaceInfo, CPos placeLocation)
+		{
+			if (host == null)
+				return false;
+
+			var toPlace = Rules.Info[toPlaceInfo.Name.ToLowerInvariant()];
+			var node = toPlace.Traits.GetOrDefault<Plug>();
+
+			if (node == null)
+				return false;
+
+			var hostTL = host.Location.TopLeft.ToCPos();
+			var iePluggable = host.Info.Traits.WithInterface<PluggableInfo>();
+
+			return iePluggable.Any(p => placeLocation == hostTL + p.CellOffset && p.NodeTypes.Contains(node.Type));
+		}
+
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, CPos topLeft, Actor toIgnore)
 		{
 			if (building.AllowInvalidPlacement)
+				return true;
+
+			var existing = world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(topLeft);
+			var toPlace = Rules.Info[name.ToLowerInvariant()];
+
+			if (existing.HasTrait<Pluggable>() && CanPlacePlug(existing, toPlace, topLeft))
 				return true;
 
 			var res = world.WorldActor.Trait<ResourceLayer>();
