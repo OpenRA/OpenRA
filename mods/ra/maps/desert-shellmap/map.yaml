@@ -1303,8 +1303,9 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LuaScriptInterface:
-			LuaScripts: desert-shellmap.lua
+# TODO: huge memory leak, see bug 4965
+#		LuaScriptInterface:
+#			LuaScripts: desert-shellmap.lua
 		LoadWidgetAtGameStart:
 			Widget: MAINMENU
 	TRAN.Husk2:
