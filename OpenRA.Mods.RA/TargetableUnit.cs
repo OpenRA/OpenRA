@@ -16,8 +16,10 @@ namespace OpenRA.Mods.RA
 	public class TargetableUnitInfo : ITraitInfo, ITargetableInfo
 	{
 		public readonly string[] TargetTypes = { };
-
 		public string[] GetTargetTypes() { return TargetTypes; }
+
+		public bool RequiresForceFire = false;
+
 		public virtual object Create(ActorInitializer init) { return new TargetableUnit(init.self, this); }
 	}
 
@@ -46,5 +48,7 @@ namespace OpenRA.Mods.RA
 		{
 			yield return self.CenterPosition;
 		}
+
+		public bool RequiresForceFire { get { return info.RequiresForceFire; } }
 	}
 }

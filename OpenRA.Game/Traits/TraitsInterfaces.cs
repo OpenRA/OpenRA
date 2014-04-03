@@ -233,6 +233,7 @@ namespace OpenRA.Traits
 		string[] TargetTypes { get; }
 		IEnumerable<WPos> TargetablePositions(Actor self);
 		bool TargetableBy(Actor self, Actor byActor);
+		bool RequiresForceFire { get; }
 	}
 
 	public interface INotifyStanceChanged
