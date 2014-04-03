@@ -289,7 +289,8 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
 
           -- give time to the UI to refresh
           if TimeGet() - start > 0.25 then wx.wxYield() end
-          if not findReplace.dialog:IsShown() then
+          -- the dialog could disappear after user action, so check for it
+          if not findReplace.dialog or not findReplace.dialog:IsShown() then
             DisplayOutputLn(TR("Cancelled by the user."))
             break
           end
