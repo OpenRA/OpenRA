@@ -543,7 +543,6 @@ GUN:
 
 SAM:
 	Inherits: ^Building
-	RequiresPower:
 	Valued:
 		Cost: 750
 	CustomBuildTimeValue:
@@ -560,6 +559,8 @@ SAM:
 		Power: -20
 		Footprint: xx
 		Dimensions: 2,1
+	RequiresPower:
+	DisabledOverlay:
 	-GivesBuildableArea:
 	Health:
 		HP: 400
@@ -581,7 +582,6 @@ SAM:
 	RenderRangeCircle:
 
 OBLI:
-	RequiresPower:
 	Inherits: ^Building
 	Valued:
 		Cost: 1500
@@ -599,6 +599,8 @@ OBLI:
 		Power: -150
 		Footprint: _ x
 		Dimensions: 1,2
+	RequiresPower:
+	DisabledOverlay:
 	-GivesBuildableArea:
 	Health:
 		HP: 600
@@ -666,7 +668,6 @@ GTWR:
 
 ATWR:
 	Inherits: ^Building
-	RequiresPower:
 	Valued:
 		Cost: 1000
 	CustomBuildTimeValue:
@@ -683,6 +684,8 @@ ATWR:
 		Power: -40
 		Footprint: _ x
 		Dimensions: 1,2
+	RequiresPower:
+	DisabledOverlay:
 	-GivesBuildableArea:
 	Health:
 		HP: 600
