@@ -222,6 +222,16 @@ namespace OpenRA.Utility
 					}
 				}
 
+				// "disabled" palette overlay has been moved into it's own DisabledOverlay trait
+				if (engineVersion < 20140305)
+				{
+					if (node.Value.Nodes.Any(n => n.Key.StartsWith("RequiresPower"))
+						&& !node.Value.Nodes.Any(n => n.Key.StartsWith("DisabledOverlay")))
+					{
+						node.Value.Nodes.Add(new MiniYamlNode("DisabledOverlay", new MiniYaml("")));
+					}
+				}
+
 				// ChronoshiftDeploy was replaced with PortableChrono
 				if (engineVersion < 20140321)
 				{
