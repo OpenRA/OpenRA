@@ -522,7 +522,7 @@ MGG:
 MRJ:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 1000
+		Cost: 800
 	Tooltip:
 		Name: Mobile Radar Jammer
 		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\nCan detect cloaked units.\n  Unarmed

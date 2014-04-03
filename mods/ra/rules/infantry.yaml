@@ -436,13 +436,13 @@ SHOK:
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Tesla Trooper
+		Name: Shock Trooper
 		Description: Infantry with tesla coils\n Strong vs Infantry\n Weak vs Vehicles
 	Selectable:
 		Voice: ShokVoice
 		Bounds: 12,17,0,-9
 	Health:
-		HP: 80
+		HP: 100
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -454,9 +454,7 @@ SHOK:
 		Name: garrisoned
 		Weapon: PortaTesla
 	AttackFrontal:
-	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
 	-CrushableInfantry:

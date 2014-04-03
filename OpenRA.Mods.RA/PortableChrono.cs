@@ -21,11 +21,11 @@ namespace OpenRA.Mods.RA
 	class PortableChronoInfo : ITraitInfo
 	{
 		[Desc("Cooldown in seconds until the unit can teleport.")]
-		public readonly int ChargeTime = 30;
+		public readonly int ChargeTime = 20;
 		[Desc("Can the unit teleport only a certain distance?")]
 		public readonly bool HasDistanceLimit = true;
 		[Desc("The maximum distance in cells this unit can teleport (only used if HasDistanceLimit = true).")]
-		public readonly int MaxDistance = 10;
+		public readonly int MaxDistance = 12;
 		[Desc("Sound to play when teleporting.")]
 		public readonly string ChronoshiftSound = "chrotnk1.aud";
 

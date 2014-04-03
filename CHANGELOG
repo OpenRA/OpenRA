@@ -58,6 +58,10 @@ NEW:
 		Increased the hitpoints of Mobile Flak from 120 to 150.
 		Fixed Tanya being unavailable after using the Chronosphere on a vehicle she is in.
 		Tanya can now plant C4 on vehicles.
+		Decreased the cost of Mobile Radar Jammer from 1000 to 800.
+		Increased the hitpoints of Shock Trooper from 80 to 100.
+		Fixed Shock Trooper tooltip having the incorrect unit name.
+		Removed the TakeCover trait from Shock Trooper.
 		Parachute bomb air strike will reveal the whole target area.
 		Adjusted AA Guns to fire their guns alternately at a high fire rate, and added contrails to their bullets.
 		Decreased AA Gun ZSU-23 damage from 25 to 12.
@@ -82,6 +86,8 @@ NEW:
 		Increased the submarine detection range of Gunboat from 3 to 4.
 		Fixed Spies having an enemy color health bar when disguised as a friendly unit (occurred using the Team Health Colors setting).
 		Chrono Tanks can now be teleported in groups by holding SHIFT or ALT and issuing a move order.
+		Increased the maximum teleport distance in cells for Chrono Tank from 10 to 12.
+		Decreased the teleport cooldown in seconds for Chrono Tank from 30 to 20.
 		Added Minibibs for bibless buildings.
 	Tiberian Dawn:
 		Chinook rotors now counter-rotate.
