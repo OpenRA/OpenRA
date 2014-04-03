@@ -20,11 +20,15 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			: base(widget, world)
 		{
 			var shellmapDecorations = widget.Get("SHELLMAP_DECORATIONS");
-			shellmapDecorations.IsVisible = () => menuType != MenuType.None && Game.Settings.Game.ShowShellmap;
+			// workaround for #4965
+			// shellmapDecorations.IsVisible = () => menuType != MenuType.None && Game.Settings.Game.ShowShellmap;
+			shellmapDecorations.IsVisible = () => false;
 			shellmapDecorations.Get<ImageWidget>("RECBLOCK").IsVisible = () => world.WorldTick / 25 % 2 == 0;
 
 			var shellmapDisabledDecorations = widget.Get("SHELLMAP_DISABLED_DECORATIONS");
-			shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
+			// workaround for #4965
+			// shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
+			shellmapDisabledDecorations.IsVisible = () => true;
 		}
 	}
 }
