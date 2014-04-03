@@ -83,6 +83,8 @@ NEW:
 		Increased the submarine detection range of Gunboat from 3 to 4.
 		Fixed Spies having an enemy color health bar when disguised as a friendly unit (occurred using the Team Health Colors setting).
 		Chrono Tanks can now be teleported in groups by holding SHIFT or ALT and issuing a move order.
+		Increased the maximum teleport distance in cells for Chrono Tank from 10 to 12.
+		Decreased the teleport cooldown in seconds for Chrono Tank from 30 to 20.
 		Added Minibibs for bibless buildings.
 	Tiberian Dawn:
 		Chinook rotors now counter-rotate.
