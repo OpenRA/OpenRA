@@ -16,6 +16,8 @@ ide.findReplace = {
   fSubDirs = true, -- search in subdirectories
   fMakeBak = true, -- make bak files for replace in files
 
+  buttons = {},
+
   findTextArray = {}, -- array of last entered find text
   findText = "", -- string to find
   replaceTextArray = {}, -- array of last entered replace text
@@ -289,8 +291,7 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
 
           -- give time to the UI to refresh
           if TimeGet() - start > 0.25 then wx.wxYield() end
-          -- the dialog could disappear after user action, so check for it
-          if not findReplace.dialog or not findReplace.dialog:IsShown() then
+          if not findReplace.dialog:IsShown() then
             DisplayOutputLn(TR("Cancelled by the user."))
             break
           end
@@ -545,6 +546,7 @@ function findReplace:createDialog(replace,infiles)
     function()
       TransferDataFromWindow()
       if (findReplace.infiles) then
+        for _, b in pairs(findReplace.buttons) do b:Disable() end
         findReplace:RunInFiles()
         findReplace.dialog:Destroy()
         findReplace.dialog = nil
@@ -559,6 +561,7 @@ function findReplace:createDialog(replace,infiles)
       event:Skip()
       if findReplace.replace then
         if (findReplace.infiles) then
+          for _, b in pairs(findReplace.buttons) do b:Disable() end
           findReplace:RunInFiles(true)
           findReplace.dialog:Destroy()
           findReplace.dialog = nil
@@ -609,6 +612,8 @@ function findReplace:createDialog(replace,infiles)
   else
     findButton:SetDefault()
   end
+
+  findReplace.buttons = {findButton, replaceButton}
 
   return findDialog
 end
