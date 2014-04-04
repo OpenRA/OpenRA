@@ -12,7 +12,6 @@ NEW:
 			Moved Create Game and Direct Connect facilities to the server browser.
 			Added skirmish mode to RA and D2k to complement TD's skirmish mode.
 			Added an Extras submenu for miscellaneous game extras.
-		Engineers can now regain control over husks.
 		Husks are now rendered with a black overlay.
 		Allow force fire to destroy husks.
 		A player's units, and allied units, now move out of the way when blocking production facilities.
@@ -35,6 +34,7 @@ NEW:
 		Added a warning dialog when force starting a match.
 		Added a new mod selection window, which now appears on the first game start.
 	Dune 2000:
+		Engineers can now regain control over husks.
 		Added the Atreides grenadier from the 1.06 patch.
 		Added randomized tiles for Sand and Rock terrain.
 		Shroud is now displayed by default again (disable it in the lobby settings).
@@ -44,6 +44,7 @@ NEW:
 		Added concrete plates and building weathering.
 		Walls will now extend themselves when placed in line with a turret.
 	Red Alert:
+		Mechanics can now regain control over husks.
 		Engineers are now remapped to team colors.
 		Added some remap to the bottom edge of SAM sites.
 		Chinook rotors now counter-rotate.
@@ -91,6 +92,7 @@ NEW:
 		Decreased the teleport cooldown in seconds for Chrono Tank from 30 to 20.
 		Added Minibibs for bibless buildings.
 	Tiberian Dawn:
+		Engineers can now regain control over husks.
 		Chinook rotors now counter-rotate.
 		Commando can now plant C4 on bridges.
 		Added the Asset Browser to the Extras menu.

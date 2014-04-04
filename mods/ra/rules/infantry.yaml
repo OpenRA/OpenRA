@@ -189,8 +189,6 @@ E6:
 	RepairsBridges:
 	ExternalCaptures:
 		Type: building
-	Captures:
-		CaptureTypes: husk
 	TakeCover:
 	-AutoTarget:
 	-RenderInfantry:
@@ -323,7 +321,7 @@ MECH:
 		Cost: 500
 	Tooltip:
 		Name: Mechanic
-		Description: Repairs nearby vehicles.\n  Strong vs Nothing\n  Weak vs Everything
+		Description: Repairs nearby vehicles and restores\nhusks to working condition.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
 		Voice: MechanicVoice
 		Bounds: 12,17,0,-9
@@ -340,6 +338,8 @@ MECH:
 		Weapon: Repair
 	AttackMedic:
 		Cursor: repair
+	Captures:
+		CaptureTypes: husk
 	TakeCover:
 	-AutoTarget:
 	-RenderInfantry:
