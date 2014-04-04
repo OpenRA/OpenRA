@@ -43,6 +43,7 @@ NEW:
 		Saboteur can now plant C4 on vehicles.
 		Added concrete plates and building weathering.
 		Walls will now extend themselves when placed in line with a turret.
+		Fixed Small portion of Production tab on Right side was unresponsive
 	Red Alert:
 		Engineers are now remapped to team colors.
 		Added some remap to the bottom edge of SAM sites.
@@ -90,6 +91,7 @@ NEW:
 		Increased the maximum teleport distance in cells for Chrono Tank from 10 to 12.
 		Decreased the teleport cooldown in seconds for Chrono Tank from 30 to 20.
 		Added Minibibs for bibless buildings.
+		Fixed Small portion of Production tab on Right side was unresponsive
 	Tiberian Dawn:
 		Chinook rotors now counter-rotate.
 		Commando can now plant C4 on bridges.
