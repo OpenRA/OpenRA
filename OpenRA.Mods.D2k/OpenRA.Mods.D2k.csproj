@@ -76,6 +76,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ThrowsShrapnel.cs" />
     <Compile Include="Widgets\Logic\D2kInstallFromCDLogic.cs" />
     <Compile Include="Render\WithCrumbleOverlay.cs" />
     <Compile Include="PaletteFromR8.cs" />
@@ -120,7 +121,5 @@ cd "$(SolutionDir)"</PostBuildEvent>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Render\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

@@ -625,3 +625,26 @@ Weathering:
 	ROF: 100
 	Warhead:
 		Damage: 5
+		
+Shrapnel:
+	ROF: 60
+	Range: 4c0
+	Report:
+	Projectile: Bullet
+		Speed: 50, 125
+		High: true
+		Angle: 91, 264
+		Inaccuracy: 416
+		Image: bombs
+	Warhead:
+		Spread: 192
+		Versus:
+			None: 50%
+			Wood: 100%
+			Light: 25%
+			Heavy: 5%
+		Explosion: med_explosion
+		InfDeath: 3
+		SmudgeType: SandCrater
+		Damage: 60
+		ImpactSound: EXPLLG5.WAV
