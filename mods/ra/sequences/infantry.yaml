@@ -587,11 +587,56 @@ thf:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600
 	crawl:
 		Start: 72
 		Length: 4
 		Facings: 8
 	icon: thficon
+		Start: 0
+
+hijacker:
+	stand: thf
+		Start: 0
+		Facings: 8
+	stand2: thf
+		Start: 0
+		Facings: 8
+	run: thf
+		Start: 8
+		Length: 6
+		Facings: 8
+		Tick: 100
+	die1: thf
+		Start: 139
+		Length: 8
+	die2: thf
+		Start: 147
+		Length: 8
+	die3: thf
+		Start: 155
+		Length: 8
+	die4: thf
+		Start: 163
+		Length: 12
+	die5: thf
+		Start: 175
+		Length: 18
+	die6: electro
+		Start: 0
+		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600
+	crawl: thf
+		Start: 72
+		Length: 4
+		Facings: 8
+	icon: hijackericon
 		Start: 0
 
 e7:

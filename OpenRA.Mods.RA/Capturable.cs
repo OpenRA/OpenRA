@@ -9,8 +9,9 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -24,6 +25,7 @@ namespace OpenRA.Mods.RA
 		public readonly bool AllowEnemies = true;
 		[Desc("Health percentage the target must be at (or below) before it can be captured.")]
 		public readonly float CaptureThreshold = 0.5f;
+		public readonly bool CancelActivity = false;
 
 		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
@@ -48,5 +50,17 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	class Capturable { }
+	class Capturable : INotifyCapture
+	{
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			var info = self.Info.Traits.Get<CapturableInfo>();
+			if (info.CancelActivity)
+			{
+				var stop = new Order("Stop", self, false);
+				foreach (var t in self.TraitsImplementing<IResolveOrder>())
+					t.ResolveOrder(self, stop);
+			}
+		}
+	}
 }

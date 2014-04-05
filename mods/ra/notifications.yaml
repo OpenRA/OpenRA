@@ -23,6 +23,7 @@ Speech:
 		NavalUnitLost: navylst1
 		AirUnitLost: aunitl1
 		BuildingCaptured: strucap1
+		UnitStolen: unitsto
 		ReinforcementsArrived: reinfor1
 		SignalFlareNorth: flaren1
 		AlliedReinforcementsArrived: aarrive1

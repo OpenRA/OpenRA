@@ -166,7 +166,7 @@
     <Compile Include="Bridge.cs" />
     <Compile Include="BridgeLayer.cs" />
     <Compile Include="Buildable.cs" />
-    <Compile Include="BuildingCaptureNotification.cs" />
+    <Compile Include="CaptureNotification.cs" />
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\BuildingInfluence.cs" />
     <Compile Include="Buildings\CanPowerDown.cs" />

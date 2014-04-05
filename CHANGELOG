@@ -83,6 +83,7 @@ NEW:
 		Both Allied and Soviet factions now build general-purpose mines instead of AT and AP mines respectively.
 		Added new attack-move cursor artwork.
 		Added Phase Transport, an Allied high-tech infantry transport which can cloak.
+		Added Hijacker, a Soviet infantry unit with a vehicle hijacking ability.
 		Attack Dogs, Snipers, Mobile Radar Jammers, Camo Pillboxes, Phase Transports, Radar Domes, and Spy Planes can now detect cloaked units.
 		Removed the submarine detection ability from Cruiser and Transport.
 		Added the submarine detection ability to Submarines and Missile Subs.
