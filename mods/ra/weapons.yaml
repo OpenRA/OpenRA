@@ -953,6 +953,7 @@ Repair:
 	ROF: 80
 	Range: 4c0
 	Report: FIXIT1.AUD
+	ValidTargets: Repair
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead:

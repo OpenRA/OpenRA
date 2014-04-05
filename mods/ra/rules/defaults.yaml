@@ -15,7 +15,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground, C4, Repair
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -64,7 +64,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground, C4, Repair
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -164,7 +164,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground, Water
+		TargetTypes: Ground, Water, Repair
 	HiddenUnderFog:
 	AttackMove:
 	GainsExperience:
@@ -194,7 +194,7 @@
 		Voice: GenericVoice
 	TargetableAircraft:
 		TargetTypes: Air
-		GroundedTargetTypes: Ground
+		GroundedTargetTypes: Ground, Repair
 	HiddenUnderFog:
 	AttackMove:
 	Guard:
