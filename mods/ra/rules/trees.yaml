@@ -179,8 +179,8 @@ RAILMINE:
 	RenderBuilding:
 		Palette: terrain
 	Building:
-		Footprint: _x
-		Dimensions: 1,2
+		Footprint: xx
+		Dimensions: 2,1
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Gems

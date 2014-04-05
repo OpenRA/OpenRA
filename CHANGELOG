@@ -96,6 +96,7 @@ NEW:
 		Added Minibibs for bibless buildings.
 		Fixed Small portion of Production tab on Right side was unresponsive
 		Fixed unclickable area on the right edge of the production palette.
+		Fixed Gem Mines having an incorrect land footprint.
 	Tiberian Dawn:
 		Engineers can now regain control over husks.
 		Chinook rotors now counter-rotate.
