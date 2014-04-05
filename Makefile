@@ -295,7 +295,7 @@ dependencies:
 	@ $(CP_R) thirdparty/*.dl* .
 	@ $(CP_R) thirdparty/Tao/* .
 
-version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml
+version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
 	@for i in $? ; do \
 		awk '{sub("Version:.*$$","Version: $(VERSION)"); print $0}' $${i} > $${i}.tmp && \
 		mv -f $${i}.tmp $${i} ; \
