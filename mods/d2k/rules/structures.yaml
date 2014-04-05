@@ -452,7 +452,7 @@ WALL:
 		BuildSounds: CHUNG.WAV
 		SellSounds: CHUNG.WAV
 	Selectable:
-		Bounds: 32,32
+		Bounds: 32,40,0,-8
 		Priority: 3
 	-GivesBuildableArea:
 	Health:
@@ -462,18 +462,20 @@ WALL:
 	RevealsShroud:
 		Range: 8c0
 	RenderRangeCircle:
-	RenderBuilding:
+	-RenderBuilding:
+	RenderBuildingWall:
 		HasMakeAnimation: false
 	BodyOrientation:
 		QuantizedFacings: 32
 	WithTurret:
 	WithMuzzleFlash:
+		IgnoreOffset: true
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
 	Armament:
 		Weapon: TurretGun
-		LocalOffset: 448,0,128
+		LocalOffset: 672,0,480
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	AutoTarget:
@@ -502,7 +504,7 @@ WALL:
 		BuildSounds: CHUNG.WAV
 		SellSounds: CHUNG.WAV
 	Selectable:
-		Bounds: 32,32
+		Bounds: 32,40,0,-8
 		Priority: 3
 	-GivesBuildableArea:
 	Health:
@@ -512,14 +514,15 @@ WALL:
 	RevealsShroud:
 		Range: 10c0
 	RenderRangeCircle:
-	RenderBuilding:
+	-RenderBuilding:
+	RenderBuildingWall:
 		HasMakeAnimation: false
 	BodyOrientation:
 		QuantizedFacings: 32
 	WithTurret:
 	Armament:
 		Weapon: TowerMissile
-		LocalOffset: 256,384,448, 256,-384,448
+		LocalOffset: 256,384,768, 256,-384,768
 	AttackTurreted:
 	Turreted:
 		ROT: 8
