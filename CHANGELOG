@@ -45,6 +45,7 @@ NEW:
 		Added concrete plates and building weathering.
 		Turrets now integrate with walls (visually, and as line building targets).
 		Fixed unclickable area on the right edge of the production palette.
+		Buildings now throw damaging shrapnel when they explode.
 	Red Alert:
 		Mechanics can now regain control over husks.
 		Engineers are now remapped to team colors.
