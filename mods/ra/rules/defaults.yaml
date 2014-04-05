@@ -46,6 +46,12 @@
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
+	Capturable:
+		Type: vehicle
+		CaptureThreshold: 1
+		CancelActivity: True
+	CaptureNotification:
+		Notification: UnitStolen
 
 ^Tank:
 	AppearsOnRadar:
@@ -95,6 +101,12 @@
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
+	Capturable:
+		Type: vehicle
+		CaptureThreshold: 1
+		CancelActivity: True
+	CaptureNotification:
+		Notification: UnitStolen
 
 ^Infantry:
 	AppearsOnRadar:

@@ -425,6 +425,34 @@ THF:
 	TakeCover:
 	-AutoTarget:
 
+HIJACKER:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 90
+		Owner: soviet
+		Prerequisites: fix
+		Hotkey: j
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Hijacker
+		Description: Hijacks enemy vehicles. Unarmed\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+	Selectable:
+		Voice: ThiefVoice
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 80
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 5c0
+	Passenger:
+		PipType: Yellow
+	Captures:
+		CaptureTypes: vehicle
+	-AutoTarget:
+
 SHOK:
 	Inherits: ^Infantry
 	Buildable:
