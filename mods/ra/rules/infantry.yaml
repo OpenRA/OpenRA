@@ -303,6 +303,7 @@ MEDI:
 		Weapon: Heal
 	AttackMedic:
 		Cursor: heal
+		OutsideRangeCursor: heal
 	TakeCover:
 	-AutoTarget:
 	-RenderInfantry:
@@ -338,6 +339,7 @@ MECH:
 		Weapon: Repair
 	AttackMedic:
 		Cursor: repair
+		OutsideRangeCursor: repair
 	Captures:
 		CaptureTypes: husk
 	TakeCover:

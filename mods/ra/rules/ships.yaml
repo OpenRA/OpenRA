@@ -22,8 +22,8 @@ SS:
 		Range: 6c0
 	-TargetableUnit:
 	TargetableSubmarine:
-		TargetTypes: Ground, Water
-		CloakedTargetTypes: Underwater
+		TargetTypes: Ground, Water, Repair
+		CloakedTargetTypes: Underwater, Repair
 	RenderUnit:
 	Cloak:
 		CloakTypes: Underwater
@@ -73,8 +73,8 @@ MSUB:
 	RenderUnit:
 	-TargetableUnit:
 	TargetableSubmarine:
-		TargetTypes: Ground, Water
-		CloakedTargetTypes: Underwater
+		TargetTypes: Ground, Water, Repair
+		CloakedTargetTypes: Underwater, Repair
 	Cloak:
 		CloakTypes: Underwater
 		InitialDelay: 0
