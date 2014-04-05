@@ -15,6 +15,7 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingWallInfo : RenderBuildingInfo
 	{
+		public readonly string Type = "wall";
 		public readonly string Sequence = "idle";
 
 		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init, this); }
@@ -57,7 +58,7 @@ namespace OpenRA.Mods.RA.Render
 			foreach (var a in adjacentActors)
 			{
 				var rb = a.TraitOrDefault<RenderBuildingWall>();
-				if (rb == null)
+				if (rb == null || rb.info.Type != info.Type)
 					continue;
 
 				var location = self.Location;
