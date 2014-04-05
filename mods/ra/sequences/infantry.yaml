@@ -587,6 +587,10 @@ thf:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600
 	crawl:
 		Start: 72
 		Length: 4
@@ -624,6 +628,10 @@ hijacker:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600
 	crawl: thf
 		Start: 72
 		Length: 4
