@@ -469,6 +469,7 @@ WALL:
 		QuantizedFacings: 32
 	WithTurret:
 	WithMuzzleFlash:
+		IgnoreOffset: true
 	Turreted:
 		ROT: 6
 		InitialFacing: 128

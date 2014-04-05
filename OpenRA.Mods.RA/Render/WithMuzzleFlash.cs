@@ -19,7 +19,10 @@ namespace OpenRA.Mods.RA.Render
 {
 	class WithMuzzleFlashInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>, Requires<ArmamentInfo>
 	{
-		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self); }
+		[Desc("Ignore the weapon position, and always draw relative to the center of the actor")]
+		public readonly bool IgnoreOffset = false;
+
+		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self, this); }
 	}
 
 	class WithMuzzleFlash : INotifyAttack, IRender, ITick
@@ -28,7 +31,7 @@ namespace OpenRA.Mods.RA.Render
 		Dictionary<Barrel, AnimationWithOffset> anims = new Dictionary<Barrel, AnimationWithOffset>();
 		Func<int> getFacing;
 
-		public WithMuzzleFlash(Actor self)
+		public WithMuzzleFlash(Actor self, WithMuzzleFlashInfo info)
 		{
 			var render = self.Trait<RenderSprites>();
 			var facing = self.TraitOrDefault<IFacing>();
@@ -52,7 +55,7 @@ namespace OpenRA.Mods.RA.Render
 					visible.Add(barrel, false);
 					anims.Add(barrel,
 				    	new AnimationWithOffset(muzzleFlash,
-							() => arm.MuzzleOffset(self, barrel),
+							() => info.IgnoreOffset ? WVec.Zero : arm.MuzzleOffset(self, barrel),
 							() => !visible[barrel],
 							p => WithTurret.ZOffsetFromCenter(self, p, 2)));
 				}
