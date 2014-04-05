@@ -105,18 +105,13 @@ NEW:
 		Changed Nod Obelisk HP to 600 from 400, same as Advanced Guard Tower
 		Fixed dinosaurs not being able to collect crates.
 		A10 air strike will only reveal the target area.
-		Reduced Guard Tower range from 6 to 5.
 		Reduced Guard Tower vision from 7 to 6.
 		Increased Guard Tower build time from 12 seconds to 24 seconds.
-		Reduced Gun Turret range from 6 to 5
 		Reduced Gun Turret vision from 7 to 6.
 		Increased Gun Turret build time from 15 seconds to 30 seconds.
-		Reduced SAM Site range from 10 to 7.
 		Increased Sam Site build time from 18 seconds to 36 seconds.
-		Reduced Advanced Guard Tower range from 8 to 6.
 		Reduced Advanced Guard Tower vision from 9 to 7.
 		Increased Advanced Guard Tower build time from 24 seconds to 48 seconds.
-		Reduced Obelisk range from 8.5 to 6.5.
 		Reduced Obelisk vision from 8 to 7.
 		Increased Obelisk build time from 36 seconds to 52 seconds.
 		Decreased Tiberium damage rate by a factor of 3.
