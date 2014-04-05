@@ -13,15 +13,7 @@ walla:
 		Frames: 2527, 2530, 2528, 2538, 2531, 2532, 2542, 2535, 2529, 2539, 2533, 2534, 2540, 2536, 2537, 2541
 		Length: 16
 		Offset: -16,16
-	scratched-idle: DATA
-		Frames: 2527, 2530, 2528, 2538, 2531, 2532, 2542, 2535, 2529, 2539, 2533, 2534, 2540, 2536, 2537, 2541
-		Length: 16
-		Offset: -16,16
 	damaged-idle: DATA
-		Frames: 2543, 2546, 2544, 2554, 2547, 2548, 2558, 2551, 2545, 2555, 2549, 2550, 2556, 2552, 2553, 2557
-		Length: 16
-		Offset: -16,16
-	critical-idle: DATA
 		Frames: 2543, 2546, 2544, 2554, 2547, 2548, 2558, 2551, 2545, 2555, 2549, 2550, 2556, 2552, 2553, 2557
 		Length: 16
 		Offset: -16,16
@@ -34,15 +26,7 @@ wallh:
 		Frames: 2687, 2690, 2688, 2698, 2691, 2692, 2702, 2695, 2689, 2699, 2693, 2694, 2700, 2696, 2697, 2701
 		Length: 16
 		Offset: -16,16
-	scratched-idle: DATA
-		Frames: 2687, 2690, 2688, 2698, 2691, 2692, 2702, 2695, 2689, 2699, 2693, 2694, 2700, 2696, 2697, 2701
-		Length: 16
-		Offset: -16,16
 	damaged-idle: DATA
-		Frames: 2703, 2706, 2704, 2714, 2707, 2708, 2718, 2711, 2705, 2715, 2709, 2710, 2716, 2712, 2713, 2717
-		Length: 16
-		Offset: -16,16
-	critical-idle: DATA
 		Frames: 2703, 2706, 2704, 2714, 2707, 2708, 2718, 2711, 2705, 2715, 2709, 2710, 2716, 2712, 2713, 2717
 		Length: 16
 		Offset: -16,16
@@ -55,15 +39,7 @@ wallo:
 		Frames: 2847, 2850, 2848, 2858, 2851, 2852, 2862, 2855, 2849, 2859, 2853, 2854, 2860, 2856, 2857, 2861
 		Length: 16
 		Offset: -16,16
-	scratched-idle: DATA
-		Frames: 2847, 2850, 2848, 2858, 2851, 2852, 2862, 2855, 2849, 2859, 2853, 2854, 2860, 2856, 2857, 2861
-		Length: 16
-		Offset: -16,16
 	damaged-idle: DATA
-		Frames: 2863, 2866, 2864, 2874, 2867, 2868, 2878, 2871, 2865, 2875, 2869, 2870, 2876, 2872, 2873, 2877
-		Length: 16
-		Offset: -16,16
-	critical-idle: DATA
 		Frames: 2863, 2866, 2864, 2874, 2867, 2868, 2878, 2871, 2865, 2875, 2869, 2870, 2876, 2872, 2873, 2877
 		Length: 16
 		Offset: -16,16
@@ -73,25 +49,17 @@ wallo:
 
 guntowera:
 	idle: DATA
-		Start: 2573
-		Facings: 1
-		Offset: -24,24
-	recoil: DATA
-		Start: 2573
-		Facings: 1
-		Offset: -24,24
+		Frames: 2573, 2576, 2574, 2584, 2577, 2578, 2588, 2581, 2575, 2585, 2579, 2580, 2586, 2582, 2583, 2587
+		Length: 16
+		Offset: -24,16
 	damaged-idle: DATA
-		Start: 2573
-		Facings: 1
-		Offset: -24,24
-	damaged-recoil: DATA
-		Start: 2573
-		Facings: 1
-		Offset: -24,24
+		Frames: 2621, 2624, 2622, 2632, 2625, 2626, 2636, 2629, 2623, 2633, 2627, 2628, 2634, 2630, 2631, 2635
+		Length: 16
+		Offset: -24,16
 	turret: DATA
 		Start: 2589
 		Facings: -32
-		Offset: -24,24
+		Offset: -24,16
 	muzzle: DATA
 		Frames: 3775, 3775, 3776, 3776, 3777, 3777, 3778, 3778, 3779, 3779, 3780, 3780, 3781, 3781, 3782, 3782, 3783, 3783, 3784, 3784, 3785, 3785, 3786, 3786, 3787, 3787, 3788, 3788, 3789, 3789, 3790, 3790, 3791, 3791, 3792, 3792, 3793, 3793, 3794, 3794, 3795, 3795, 3796, 3796, 3797, 3797, 3798, 3798, 3799, 3799, 3800, 3800, 3801, 3801, 3802, 3802, 3803, 3803, 3804, 3804, 3805, 3805, 3806, 3806
 		Facings: -32
@@ -103,25 +71,17 @@ guntowera:
 
 guntowerh:
 	idle: DATA
-		Start: 2733
-		Facings: 1
-		Offset: -24,24
-	recoil: DATA
-		Start: 2733
-		Facings: 1
-		Offset: -24,24
+		Frames: 2733, 2736, 2734, 2744, 2737, 2738, 2748, 2741, 2735, 2745, 2739, 2740, 2746, 2742, 2743, 2747
+		Length: 16
+		Offset: -24,16
 	damaged-idle: DATA
-		Start: 2733
-		Facings: 1
-		Offset: -24,24
-	damaged-recoil: DATA
-		Start: 2733
-		Facings: 1
-		Offset: -24,24
+		Frames: 2781, 2784, 2782, 2792, 2785, 2786, 2796, 2789, 2783, 2793, 2787, 2788, 2794, 2790, 2791, 2795
+		Length: 16
+		Offset: -24,16
 	turret: DATA
 		Start: 2749
 		Facings: -32
-		Offset: -24,24
+		Offset: -24,16
 	muzzle: DATA
 		Frames: 3775, 3775, 3776, 3776, 3777, 3777, 3778, 3778, 3779, 3779, 3780, 3780, 3781, 3781, 3782, 3782, 3783, 3783, 3784, 3784, 3785, 3785, 3786, 3786, 3787, 3787, 3788, 3788, 3789, 3789, 3790, 3790, 3791, 3791, 3792, 3792, 3793, 3793, 3794, 3794, 3795, 3795, 3796, 3796, 3797, 3797, 3798, 3798, 3799, 3799, 3800, 3800, 3801, 3801, 3802, 3802, 3803, 3803, 3804, 3804, 3805, 3805, 3806, 3806
 		Facings: -32
@@ -133,25 +93,17 @@ guntowerh:
 
 guntowero:
 	idle: DATA
-		Start: 2893
-		Facings: 1
-		Offset: -24,24
-	recoil: DATA
-		Start: 2893
-		Facings: 1
-		Offset: -24,24
+		Frames: 2893, 2896, 2894, 2904, 2897, 2898, 2908, 2901, 2895, 2905, 2899, 2900, 2906, 2902, 2903, 2907
+		Length: 16
+		Offset: -24,16
 	damaged-idle: DATA
-		Start: 2893
-		Facings: 1
-		Offset: -24,24
-	damaged-recoil: DATA
-		Start: 2893
-		Facings: 1
-		Offset: -24,24
+		Frames: 2941, 2944, 2942, 2952, 2945, 2946, 2956, 2949, 2943, 2953, 2947, 2948, 2954, 2950, 2951, 2955
+		Length: 16
+		Offset: -24,16
 	turret: DATA
 		Start: 2909
 		Facings: -32
-		Offset: -24,24
+		Offset: -24,16
 	muzzle: DATA
 		Frames: 3775, 3775, 3776, 3776, 3777, 3777, 3778, 3778, 3779, 3779, 3780, 3780, 3781, 3781, 3782, 3782, 3783, 3783, 3784, 3784, 3785, 3785, 3786, 3786, 3787, 3787, 3788, 3788, 3789, 3789, 3790, 3790, 3791, 3791, 3792, 3792, 3793, 3793, 3794, 3794, 3795, 3795, 3796, 3796, 3797, 3797, 3798, 3798, 3799, 3799, 3800, 3800, 3801, 3801, 3802, 3802, 3803, 3803, 3804, 3804, 3805, 3805, 3806, 3806
 		Facings: -32
@@ -163,75 +115,51 @@ guntowero:
 
 rockettowera:
 	idle: DATA
-		Start: 2733
-		Facings: 1
-		Offset: -24,24
-	recoil: DATA
-		Start: 2733
-		Facings: 1
-		Offset: -24,24
+		Frames: 2573, 2576, 2574, 2584, 2577, 2578, 2588, 2581, 2575, 2585, 2579, 2580, 2586, 2582, 2583, 2587
+		Length: 16
+		Offset: -24,16
 	damaged-idle: DATA
-		Start: 2733
-		Facings: 1
-		Offset: -24,24
-	damaged-recoil: DATA
-		Start: 2733
-		Facings: 1
-		Offset: -24,24
+		Frames: 2621, 2624, 2622, 2632, 2625, 2626, 2636, 2629, 2623, 2633, 2627, 2628, 2634, 2630, 2631, 2635
+		Length: 16
+		Offset: -24,16
 	turret: DATA
 		Start: 2637
 		Facings: -32
-		Offset: -24,24
+		Offset: -24,16
 	icon: DATA
 		Start: 4075
 		Offset: -30,-24
 
 rockettowerh:
 	idle: DATA
-		Start: 2781
-		Facings: 1
-		Offset: -24,24
-	recoil: DATA
-		Start: 2781
-		Facings: 1
-		Offset: -24,24
+		Frames: 2733, 2736, 2734, 2744, 2737, 2738, 2748, 2741, 2735, 2745, 2739, 2740, 2746, 2742, 2743, 2747
+		Length: 16
+		Offset: -24,16
 	damaged-idle: DATA
-		Start: 2781
-		Facings: 1
-		Offset: -24,24
-	damaged-recoil: DATA
-		Start: 2781
-		Facings: 1
-		Offset: -24,24
+		Frames: 2781, 2784, 2782, 2792, 2785, 2786, 2796, 2789, 2783, 2793, 2787, 2788, 2794, 2790, 2791, 2795
+		Length: 16
+		Offset: -24,16
 	turret: DATA
 		Start: 2797
 		Facings: -32
-		Offset: -24,24
+		Offset: -24,16
 	icon: DATA
 		Start: 4076
 		Offset: -30,-24
 
 rockettowero:
 	idle: DATA
-		Start: 2941
-		Facings: 1
-		Offset: -24,24
-	recoil: DATA
-		Start: 2941
-		Facings: 1
-		Offset: -24,24
+		Frames: 2893, 2896, 2894, 2904, 2897, 2898, 2908, 2901, 2895, 2905, 2899, 2900, 2906, 2902, 2903, 2907
+		Length: 16
+		Offset: -24,16
 	damaged-idle: DATA
-		Start: 2941
-		Facings: 1
-		Offset: -24,24
-	damaged-recoil: DATA
-		Start: 2941
-		Facings: 1
-		Offset: -24,24
+		Frames: 2941, 2944, 2942, 2952, 2945, 2946, 2956, 2949, 2943, 2953, 2947, 2948, 2954, 2950, 2951, 2955
+		Length: 16
+		Offset: -24,16
 	turret: DATA
 		Start: 2957
 		Facings: -32
-		Offset: -24,24
+		Offset: -24,16
 	icon: DATA
 		Start: 4077
 		Offset: -30,-24
