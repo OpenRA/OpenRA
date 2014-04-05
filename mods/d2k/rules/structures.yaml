@@ -403,7 +403,7 @@ CONCRETEB:
 		BuildSounds: CHUNG.WAV
 		SellSounds: CHUNG.WAV
 		Adjacent: 7
-		TerrainTypes: Rock
+		TerrainTypes: Rock, Concrete
 	Health:
 		HP: 300
 	Armor:
