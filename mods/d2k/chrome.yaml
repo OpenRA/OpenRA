@@ -594,3 +594,16 @@ scrollheader-selected: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
+logos: loadscreen.png
+	logo: 0,0,256,256
+
+mainmenu-border: dialog.png
+	background: 688,427,40,40
+	border-r: 728,427,40,40
+	border-l: 648,427,40,40
+	border-b: 688,467,40,40
+	border-t: 688,387,40,40
+	corner-tl: 648,387,40,40
+	corner-tr: 728,387,40,40
+	corner-bl: 648,467,40,40
+	corner-br: 728,467,40,40
