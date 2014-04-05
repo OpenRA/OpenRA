@@ -33,6 +33,7 @@ NEW:
 		Fixed a crash when connecting to a server with an unavailable map.
 		Added a warning dialog when force starting a match.
 		Added a new mod selection window, which now appears on the first game start.
+		Fixed walls not updating when neighboring sections were sold or destroyed.
 	Dune 2000:
 		Engineers can now regain control over husks.
 		Added the Atreides grenadier from the 1.06 patch.
@@ -42,8 +43,8 @@ NEW:
 		Added the BLOXXMAS terrain tiles from the 1.06 patch.
 		Saboteur can now plant C4 on vehicles.
 		Added concrete plates and building weathering.
-		Walls will now extend themselves when placed in line with a turret.
-		Fixed Small portion of Production tab on Right side was unresponsive
+		Turrets now integrate with walls (visually, and as line building targets).
+		Fixed unclickable area on the right edge of the production palette.
 	Red Alert:
 		Mechanics can now regain control over husks.
 		Engineers are now remapped to team colors.
@@ -94,6 +95,7 @@ NEW:
 		Decreased the teleport cooldown in seconds for Chrono Tank from 30 to 20.
 		Added Minibibs for bibless buildings.
 		Fixed Small portion of Production tab on Right side was unresponsive
+		Fixed unclickable area on the right edge of the production palette.
 	Tiberian Dawn:
 		Engineers can now regain control over husks.
 		Chinook rotors now counter-rotate.
