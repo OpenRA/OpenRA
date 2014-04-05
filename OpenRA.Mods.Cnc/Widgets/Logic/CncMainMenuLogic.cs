@@ -19,16 +19,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public CncMainMenuLogic(Widget widget, World world)
 			: base(widget, world)
 		{
-			var shellmapDecorations = widget.Get("SHELLMAP_DECORATIONS");
-			// workaround for #4965
-			// shellmapDecorations.IsVisible = () => menuType != MenuType.None && Game.Settings.Game.ShowShellmap;
-			shellmapDecorations.IsVisible = () => false;
-			shellmapDecorations.Get<ImageWidget>("RECBLOCK").IsVisible = () => world.WorldTick / 25 % 2 == 0;
-
-			var shellmapDisabledDecorations = widget.Get("SHELLMAP_DISABLED_DECORATIONS");
-			// workaround for #4965
-			// shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
-			shellmapDisabledDecorations.IsVisible = () => true;
+			var shellmapDecorations = widget.GetOrNull("SHELLMAP_DECORATIONS");
+			if (shellmapDecorations != null)
+				shellmapDecorations.Get<ImageWidget>("RECBLOCK").IsVisible = () => world.WorldTick / 25 % 2 == 0;
 		}
 	}
 }
