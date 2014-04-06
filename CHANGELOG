@@ -125,6 +125,7 @@ NEW:
 		The Construction Yard fans now turn in the color picker preview.
 		The chance of artillery exploding on death has been reduced from 100% to 75%.
 		Fixed Chinook being unable to land on tiberium.
+		Commando will no longer shoot at vehicles or buildings.
 	Engine:
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.

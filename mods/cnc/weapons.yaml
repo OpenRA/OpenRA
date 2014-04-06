@@ -150,6 +150,7 @@ IonCannon:
 
 Sniper:
 	Report: RAMGUN2.AUD
+	ValidTargets: Infantry
 	ROF: 40
 	Range: 6c0
 	Projectile: Bullet
@@ -157,11 +158,6 @@ Sniper:
 	Warhead:
 		Damage: 100
 		Spread: 42
-		Versus:
-			None: 100%
-			Wood: 5%
-			Light: 5%
-			Heavy: 5%
 		InfDeath: 2
 
 HighV:
