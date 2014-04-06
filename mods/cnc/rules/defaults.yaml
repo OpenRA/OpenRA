@@ -14,7 +14,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Vehicle
 	Buildable:
 		Queue: Vehicle
 	Repairable:
@@ -59,7 +59,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Vehicle
 	Buildable:
 		Queue: Vehicle
 	Repairable:
@@ -149,7 +149,7 @@
 	Selectable:
 		Voice: GenericVoice
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Infantry
 	Buildable:
 		Queue: Infantry
 	TakeCover:
@@ -243,7 +243,7 @@
 	Selectable:
 		Voice: DinoVoice
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Infantry
 	HiddenUnderFog:
 	GivesExperience:
 	RenderInfantry:
