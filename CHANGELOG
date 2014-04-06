@@ -97,6 +97,7 @@ NEW:
 		Fixed Small portion of Production tab on Right side was unresponsive
 		Fixed unclickable area on the right edge of the production palette.
 		Fixed Gem Mines having an incorrect land footprint.
+		Removed Mobile Radar Jammer's jamming effect for allied missiles.
 	Tiberian Dawn:
 		Engineers can now regain control over husks.
 		Chinook rotors now counter-rotate.
