@@ -177,7 +177,7 @@ V11.Husk:
 		ExcludeTilesets: DESERT
 
 V12:
-	Inherits: ^CivBuilding
+	Inherits: ^CivField
 	LeavesHusk:
 		HuskActor: V12.Husk
 	EditorTilesetFilter:
@@ -189,7 +189,7 @@ V12.Husk:
 		ExcludeTilesets: DESERT
 
 V13:
-	Inherits: ^CivBuilding
+	Inherits: ^CivField
 	LeavesHusk:
 		HuskActor: V13.Husk
 	EditorTilesetFilter:
