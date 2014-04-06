@@ -60,6 +60,7 @@ PALACEA:
 		UnitType: orni.bomber
 		SelectTargetSound:
 		DisplayBeacon: True
+		BeaconDuration: -1
 		CameraActor: camera
 	CanPowerDown:
 	DisabledOverlay:

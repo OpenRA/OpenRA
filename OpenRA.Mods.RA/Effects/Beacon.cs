@@ -44,7 +44,8 @@ namespace OpenRA.Mods.RA.Effects
 				poster.Play(posterType);
 			}
 
-			owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
+			if (duration > 0)
+				owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
 		}
 
 		public void Tick(World world)
