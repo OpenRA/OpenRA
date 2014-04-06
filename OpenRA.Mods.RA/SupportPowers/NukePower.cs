@@ -32,6 +32,16 @@ namespace OpenRA.Mods.RA
 		[Desc("Descend immediately on the target, with half the FlightDelay")]
 		public readonly bool SkipAscent = false;
 
+		[ActorReference]
+		[Desc("Actor to spawn before detonation")]
+		public readonly string CameraActor = null;
+
+		[Desc("Amount of time before detonation to spawn the camera")]
+		public readonly int CameraSpawnAdvance = 25;
+
+		[Desc("Amount of time after detonation to remove the camera")]
+		public readonly int CameraRemoveDelay = 25;
+
 		public override object Create(ActorInitializer init) { return new NukePower(init.self, this); }
 	}
 
@@ -68,6 +78,21 @@ namespace OpenRA.Mods.RA
 				self.CenterPosition + body.LocalToWorld(npi.SpawnOffset),
 				order.TargetLocation.CenterPosition,
 				npi.FlightVelocity, npi.FlightDelay, npi.SkipAscent)));
+
+			if (npi.CameraActor != null)
+			{
+				var camera = self.World.CreateActor(false, npi.CameraActor, new TypeDictionary
+				{
+					new LocationInit(order.TargetLocation),
+					new OwnerInit(self.Owner),
+				});
+
+				camera.QueueActivity(new Wait(npi.CameraSpawnAdvance + npi.CameraRemoveDelay));
+				camera.QueueActivity(new RemoveSelf());
+
+				Action addCamera = () => self.World.AddFrameEndTask(w => w.Add(camera));
+				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(npi.FlightDelay - npi.CameraSpawnAdvance, addCamera)));
+			}
 		}
 	}
 }

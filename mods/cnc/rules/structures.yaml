@@ -499,6 +499,7 @@ TMPL:
 		DisplayBeacon: True
 		BeaconPoster: atomic
 		DisplayRadarPing: True
+		CameraActor: camera
 	SupportPowerChargeBar:
 
 GUN:
