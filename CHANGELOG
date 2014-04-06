@@ -166,11 +166,12 @@ NEW:
 	Utility:
 		Added an improved INI/MPR map import.
 		Added an --upgrade-mod feature to upgrade the yaml of mods to the latest specifications.
-	Packaging:
+	Build system and packages:
 		Removed portable install option from Windows installer as the game left without write access breaks content download and error log generation.
 		Added HTML documentation to the Windows installer.
 		Fixed broken FreeType 2 dependency for Fedora RPM.
 		Added SDL 2 as a dependency for the RPM package.
+		Added a counterpart to the Makefile for Windows users.
 	Mod / Custom map compatibility:
 		Altitude is no longer parsed from actor templates in maps. Specify CenterPosition instead.
 		system.yaml has been split into four files for all mods: misc.yaml, ai.yaml, player.yaml and world.yaml.
