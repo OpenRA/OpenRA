@@ -133,11 +133,6 @@ IonCannon:
 		Damage: 900
 		Spread: 682
 		Ore: true
-		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 100%
-			Heavy: 100%
 		InfDeath: 5
 	Warhead@area:
 		DamageModel: PerCell
