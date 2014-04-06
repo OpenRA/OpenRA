@@ -456,6 +456,7 @@ EYE:
 		SelectTargetSound: select1.aud
 		InsufficientPowerSound: nopower1.aud
 		DisplayRadarPing: True
+		CameraActor: camera.small
 	SupportPowerChargeBar:
 
 TMPL:

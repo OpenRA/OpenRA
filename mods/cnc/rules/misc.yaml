@@ -49,7 +49,14 @@ CAMERA:
 		HP: 1000
 	RevealsShroud:
 		Range: 10c0
-	ProximityCaptor:
-		Types: Camera
+	BodyOrientation:
+
+CAMERA.small:
+	Immobile:
+		OccupiesSpace: false
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 6c0
 	BodyOrientation:
 
