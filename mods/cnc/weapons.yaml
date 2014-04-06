@@ -159,9 +159,9 @@ Sniper:
 		Spread: 42
 		Versus:
 			None: 100%
-			Wood: 5%
-			Light: 5%
-			Heavy: 5%
+			Wood: 0%
+			Light: 0%
+			Heavy: 0%
 		InfDeath: 2
 
 HighV:
