@@ -212,11 +212,12 @@ function ReportError(msg)
 end
 
 function OpenFile(event)
-  local exts = getExtsString()
+  local editor = GetEditor()
+  local path = editor and ide:GetDocument(editor):GetFilePath() or nil
   local fileDialog = wx.wxFileDialog(ide.frame, TR("Open file"),
+    (path and GetPathWithSep(path) or FileTreeGetDir() or ""),
     "",
-    "",
-    exts,
+    getExtsString(),
     wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST)
   if fileDialog:ShowModal() == wx.wxID_OK then
     if not LoadFile(fileDialog:GetPath(), nil, true) then
