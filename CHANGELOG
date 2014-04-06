@@ -98,6 +98,7 @@ NEW:
 		Fixed unclickable area on the right edge of the production palette.
 		Fixed Gem Mines having an incorrect land footprint.
 	Tiberian Dawn:
+		Snipers can no longer shoot at vehicles and buildings.
 		Engineers can now regain control over husks.
 		Chinook rotors now counter-rotate.
 		Commando can now plant C4 on bridges.
