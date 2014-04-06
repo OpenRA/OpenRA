@@ -34,17 +34,17 @@ Packages:
 	~movies2.mix
 
 Rules:
-	mods/ra/rules/system-actors.yaml
-	mods/ra/rules/system-ai.yaml
-	mods/ra/rules/system-player.yaml
-	mods/ra/rules/system-world.yaml
+	mods/ra/rules/misc.yaml
+	mods/ra/rules/ai.yaml
+	mods/ra/rules/player.yaml
+	mods/ra/rules/world.yaml
 	mods/ra/rules/defaults.yaml
 	mods/ra/rules/vehicles.yaml
 	mods/ra/rules/husks.yaml
 	mods/ra/rules/structures.yaml
 	mods/ra/rules/infantry.yaml
 	mods/ra/rules/civilian.yaml
-	mods/ra/rules/trees.yaml
+	mods/ra/rules/decoration.yaml
 	mods/ra/rules/aircraft.yaml
 	mods/ra/rules/ships.yaml
 
