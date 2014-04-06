@@ -63,10 +63,10 @@ Packages:
 PackageContents:
 
 Rules:
-	mods/ts/rules/system-actors.yaml
-	mods/ts/rules/system-ai.yaml
-	mods/ts/rules/system-player.yaml
-	mods/ts/rules/system-world.yaml
+	mods/ts/rules/misc.yaml
+	mods/ts/rules/ai.yaml
+	mods/ts/rules/player.yaml
+	mods/ts/rules/world.yaml
 	mods/ts/rules/aircraft.yaml
 	mods/ts/rules/defaults.yaml
 	mods/ts/rules/infantry.yaml

@@ -34,10 +34,10 @@ Packages:
 	~transit.mix
 
 Rules:
-	mods/cnc/rules/system-actors.yaml
-	mods/cnc/rules/system-ai.yaml
-	mods/cnc/rules/system-player.yaml
-	mods/cnc/rules/system-world.yaml
+	mods/cnc/rules/misc.yaml
+	mods/cnc/rules/ai.yaml
+	mods/cnc/rules/player.yaml
+	mods/cnc/rules/world.yaml
 	mods/cnc/rules/defaults.yaml
 	mods/cnc/rules/structures.yaml
 	mods/cnc/rules/infantry.yaml
