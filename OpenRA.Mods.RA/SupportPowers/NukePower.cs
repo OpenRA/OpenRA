@@ -32,6 +32,9 @@ namespace OpenRA.Mods.RA
 		[Desc("Descend immediately on the target, with half the FlightDelay")]
 		public readonly bool SkipAscent = false;
 
+		[Desc("Amount of time before detonation to remove the beacon")]
+		public readonly int BeaconRemoveAdvance = 25;
+
 		[ActorReference]
 		[Desc("Actor to spawn before detonation")]
 		public readonly string CameraActor = null;
@@ -92,6 +95,17 @@ namespace OpenRA.Mods.RA
 
 				Action addCamera = () => self.World.AddFrameEndTask(w => w.Add(camera));
 				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(npi.FlightDelay - npi.CameraSpawnAdvance, addCamera)));
+			}
+
+			if (beacon != null)
+			{
+				Action removeBeacon = () => self.World.AddFrameEndTask(w =>
+				{
+					w.Remove(beacon);
+					beacon = null;
+				});
+
+				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(npi.FlightDelay - npi.BeaconRemoveAdvance, removeBeacon)));
 			}
 		}
 	}

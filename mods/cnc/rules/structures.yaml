@@ -498,6 +498,7 @@ TMPL:
 		IncomingSound: nuke1.aud
 		MissileWeapon: atomic
 		DisplayBeacon: True
+		BeaconDuration: -1
 		BeaconPoster: atomic
 		DisplayRadarPing: True
 		CameraActor: camera
