@@ -1,5 +1,5 @@
 --
--- MobDebug 0.552
+-- MobDebug 0.553
 -- Copyright 2011-14 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
@@ -18,7 +18,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.552,
+  _VERSION = 0.553,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber(os.getenv("MOBDEBUG_PORT")) or 8172,
@@ -429,22 +429,25 @@ local function is_pending(peer)
   return buf
 end
 
+local function readnext(peer, num)
+  peer:settimeout(0) -- non-blocking
+  local res, err, partial = peer:receive(num)
+  peer:settimeout() -- back to blocking
+  return res or partial or '', err
+end
+
 local function handle_breakpoint(peer)
   -- check if the buffer has the beginning of SETB/DELB command;
   -- this is to avoid reading the entire line for commands that
   -- don't need to be handled here.
   if not buf or not (buf:sub(1,1) == 'S' or buf:sub(1,1) == 'D') then return end
 
-  -- need to read few more characters
-  peer:settimeout(0) -- non-blocking
-  local res, err, partial = peer:receive(5-#buf)
-  peer:settimeout() -- back to blocking
-  if not res then
-    if partial then buf = buf .. partial end
-    return
-  end
+  -- check second character to avoid reading STEP or other S* and D* commands
+  if #buf == 1 then buf = buf .. readnext(peer, 1) end
+  if buf:sub(2,2) ~= 'E' then return end
 
-  buf = buf..res
+  -- need to read few more characters
+  buf = buf .. readnext(peer, 5-#buf)
   if buf ~= 'SETB ' and buf ~= 'DELB ' then return end
 
   res, err, partial = peer:receive() -- get the rest of the line; blocking
@@ -1472,7 +1475,7 @@ local function coro()
   cocreate = cocreate or coroutine.create
   coroutine.create = function(f, ...)
     return cocreate(function(...)
-      require("mobdebug").on()
+      mobdebug.on()
       return f(...)
     end, ...)
   end
@@ -1491,7 +1494,7 @@ local function moai()
     local patched = mt.run
     mt.run = function(self, f, ...)
       return patched(self,  function(...)
-        require("mobdebug").on()
+        mobdebug.on()
         return f(...)
       end, ...)
     end
