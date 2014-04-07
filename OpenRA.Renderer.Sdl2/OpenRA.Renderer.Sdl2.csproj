@@ -37,8 +37,8 @@
       <HintPath>..\thirdparty\Tao\Tao.OpenGl.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="SDL2#">
-      <HintPath>..\thirdparty\SDL2#.dll</HintPath>
+    <Reference Include="SDL2-CS">
+      <HintPath>..\thirdparty\SDL2-CS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
