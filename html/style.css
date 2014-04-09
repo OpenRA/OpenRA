@@ -1,0 +1,32 @@
+.file > .node {
+	background-color: #E44;
+	margin-bottom: 20px;
+	margin-left: 10%;
+	margin-right: 10%;
+
+	text-align: center;
+}
+
+.file > .node > .key:first-child {
+	font-size: 24px;
+}
+
+.file > .node > .node {
+	display: inline-block;
+	background-color: #A44;
+}
+
+.file > .node > .node > .key:first-child {
+	font-size: 18px;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.file > .node > .node > .node {
+	display: inline-block;
+	background-color: #44E;
+}
+
+.file > .node > .node > .node > .key:first-child {
+	font-weight: bold;
+}

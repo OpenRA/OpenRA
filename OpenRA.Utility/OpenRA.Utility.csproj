@@ -78,6 +78,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="UpgradeRules.cs" />
     <Compile Include="LegacyMapImporter.cs" />
+    <Compile Include="YamlToHtml.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
