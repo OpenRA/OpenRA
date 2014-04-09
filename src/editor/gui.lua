@@ -154,6 +154,24 @@ local function createNotebook(frame)
       event:Veto() -- don't propagate the event as the page is already closed
     end)
 
+  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_BG_DCLICK,
+    function (event)
+      -- as this event can be on different tab controls,
+      -- need to find the control to add the page to
+      local tabctrl = event:GetEventObject():DynamicCast("wxAuiTabCtrl")
+      -- check if the active page is in the current control
+      local active = tabctrl:GetActivePage()
+      if active >= 0 and tabctrl:GetPage(active).window
+        ~= notebook:GetPage(notebook:GetSelection()) then
+        -- if not, need to activate the control that was clicked on;
+        -- find the last window and switch to it (assuming there is always one)
+        assert(tabctrl:GetPageCount() >= 1, "Expected at least one page in a notebook tab control.")
+        local lastwin = tabctrl:GetPage(tabctrl:GetPageCount()-1).window
+        notebook:SetSelection(notebook:GetPageIndex(lastwin))
+      end
+      NewFile()
+    end)
+
   -- tabs can be dragged around which may change their indexes;
   -- when this happens stored indexes need to be updated to reflect the change.
   -- there is DRAG_DONE event that I'd prefer to use, but it
