@@ -594,3 +594,8 @@ scrollheader-selected: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
+logos: loadscreen.png
+	logo: 0, 0, 256, 256
+
+stripe: loadscreen.png
+	background:256, 0, 256, 256

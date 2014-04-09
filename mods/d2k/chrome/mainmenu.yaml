@@ -1,6 +1,24 @@
 Container@MAINMENU:
 	Logic:MainMenuLogic
 	Children:
+		Background@SHELLMAP_DISABLED_DECORATIONS:
+			X:0-10
+			Y:0-10
+			Width:WINDOW_RIGHT+20
+			Height:WINDOW_BOTTOM+20
+			Children:
+				Background:
+					Width:PARENT_RIGHT
+					Height:256
+					Y:PARENT_BOTTOM/2 - 128
+					Background:stripe
+				Image@LOGO:
+					X:(PARENT_RIGHT - WIDTH) / 2
+					Y:(PARENT_BOTTOM - HEIGHT) / 2
+					Width:256
+					Height:256
+					ImageCollection:logos
+					ImageName:logo
 		Label@VERSION_LABEL:
 			X:WINDOW_RIGHT - 10
 			Y:WINDOW_BOTTOM - 20

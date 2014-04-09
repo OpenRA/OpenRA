@@ -105,6 +105,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 
 			extrasMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Main;
+
+			var shellmapDecorations = widget.GetOrNull("SHELLMAP_DECORATIONS");
+
+			// workaround for #4965
+			// if (shellmapDecorations != null)
+			// shellmapDecorations.IsVisible = () => menuType != MenuType.None && Game.Settings.Game.ShowShellmap;
+			if (shellmapDecorations != null)
+				shellmapDecorations.IsVisible = () => false;
+
+			var shellmapDisabledDecorations = widget.GetOrNull("SHELLMAP_DISABLED_DECORATIONS");
+
+			// workaround for #4965
+			// if (shellmapDecorations != null)
+			// shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
+			if (shellmapDisabledDecorations != null)
+				shellmapDisabledDecorations.IsVisible = () => true;
 		}
 
 		void RemoveShellmapUI()
