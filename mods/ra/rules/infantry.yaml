@@ -484,10 +484,11 @@ SHOK:
 		Name: garrisoned
 		Weapon: PortaTesla
 	AttackFrontal:
-	RenderInfantry:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand,stand2
-	-CrushableInfantry:
 
 SNIPER:
 	Inherits: ^Infantry

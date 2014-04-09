@@ -65,8 +65,8 @@ NEW:
 		Tanya can now plant C4 on vehicles.
 		Decreased the cost of Mobile Radar Jammer from 1000 to 800.
 		Increased the hitpoints of Shock Trooper from 80 to 100.
+		Made Shock Trooper crushable by tanks/heavy vehicles.
 		Fixed Shock Trooper tooltip having the incorrect unit name.
-		Removed the TakeCover trait from Shock Trooper.
 		Parachute bomb air strike will reveal the whole target area.
 		Adjusted AA Guns to fire their guns alternately at a high fire rate, and added contrails to their bullets.
 		Decreased AA Gun ZSU-23 damage from 25 to 12.
