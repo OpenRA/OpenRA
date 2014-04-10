@@ -227,8 +227,7 @@ return {
   keywords = {
     [[and break do else elseif end for function goto if in local not or repeat return then until while]],
 
-    [[_G _VERSION _ENV false io.stderr io.stdin io.stdout nil math.huge math.pi package.config
-      package.cpath package.loaded package.loaders package.path package.preload package.searchers self true]],
+    [[_G _VERSION _ENV false io.stderr io.stdin io.stdout nil math.huge math.pi self true]],
 
     [[assert collectgarbage dofile error getfenv getmetatable ipairs load loadfile loadstring
       module next pairs pcall print rawequal rawget rawlen rawset require
@@ -247,7 +246,8 @@ return {
       math.floor math.fmod math.frexp math.ldexp math.log math.log10 math.max math.min math.modf
       math.pow math.rad math.random math.randomseed math.sin math.sinh math.sqrt math.tan math.tanh
       os.clock os.date os.difftime os.execute os.exit os.getenv os.remove os.rename os.setlocale os.time os.tmpname
-      package.loadlib package.searchpath package.seeall
+      package.loadlib package.searchpath package.seeall package.config
+      package.cpath package.loaded package.loaders package.path package.preload package.searchers
       string.byte string.char string.dump string.find string.format string.gmatch string.gsub string.len
       string.lower string.match string.rep string.reverse string.sub string.upper
       byte find format gmatch gsub len lower match rep reverse sub upper
