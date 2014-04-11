@@ -10,12 +10,14 @@ A minimal asset pack can also be downloaded and installed by the game.
 Windows
 -------
 
-* .NET Framework >= 3.5-SP1
-	(http://www.microsoft.com/downloads/details.aspx?FamilyID=AB99342F-5D1A-413D-8319-81DA479AB0D7&displaylang=en)
+* .NET Framework >= 4.0 (Client Profile)
+	(http://www.microsoft.com/en-us/download/details.aspx?id=17113)
 * Cg Toolkit >= 2.2 (optional, for Cg renderer)
 	(https://developer.nvidia.com/cg-toolkit-download)
 * SDL 1.2 (included)
 	(http://libsdl.org/download-1.2.php)
+* SDL 2 (optional)
+	(http://www.libsdl.org/download-2.0.php)
 * FreeType (included)
 	(http://gnuwin32.sourceforge.net/packages/freetype.htm)
 * zlib (included)
@@ -30,7 +32,7 @@ Copy both the native DLLs from .\packaging\windows
 and the CLI images from .\thirdparty to the main folder.
 
 Run the game with `OpenRA.Game.exe Game.Mod=ra` for Red Alert
-or `OpenRA.Game.exe Game.Mod=cnc` for Command & Conquer
+or `OpenRA.Game.exe Game.Mod=cnc` for Tiberian Dawn.
 
 Debian/Ubuntu
 -------------
