@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			this.worldRenderer = worldRenderer;
 			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
-			tooltipContainer = Lazy.New(() =>
+			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
 			icon = new Animation("icon");

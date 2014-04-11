@@ -35,6 +35,8 @@ namespace OpenRA
 				fn(ee);
 		}
 
+		public static Lazy<T> Lazy<T>(Func<T> p) { return new Lazy<T>(p); }
+
 		public static IEnumerable<string> GetNamespaces(this Assembly a)
 		{
 			return a.GetTypes().Select(t => t.Namespace).Distinct().Where(n => n != null);

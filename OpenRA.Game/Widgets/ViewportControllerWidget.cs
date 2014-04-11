@@ -64,7 +64,7 @@ namespace OpenRA.Widgets
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
-			tooltipContainer = Lazy.New(() =>
+			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 

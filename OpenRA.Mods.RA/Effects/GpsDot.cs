@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
@@ -51,10 +52,10 @@ namespace OpenRA.Mods.RA.Effects
 
 			self.World.AddFrameEndTask(w => w.Add(this));
 
-			huf = Lazy.New(() => self.TraitOrDefault<HiddenUnderFog>());
-			fuf = Lazy.New(() => self.TraitOrDefault<FrozenUnderFog>());
-			disguise = Lazy.New(() => self.TraitOrDefault<Disguise>());
-			cloak = Lazy.New(() => self.TraitOrDefault<Cloak>());
+			huf = Exts.Lazy(() => self.TraitOrDefault<HiddenUnderFog>());
+			fuf = Exts.Lazy(() => self.TraitOrDefault<FrozenUnderFog>());
+			disguise = Exts.Lazy(() => self.TraitOrDefault<Disguise>());
+			cloak = Exts.Lazy(() => self.TraitOrDefault<Cloak>());
 
 			watcher = new Cache<Player, GpsWatcher>(p => p.PlayerActor.Trait<GpsWatcher>());
 			frozen = new Cache<Player, FrozenActorLayer>(p => p.PlayerActor.Trait<FrozenActorLayer>());

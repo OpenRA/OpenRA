@@ -141,10 +141,10 @@ namespace OpenRA.Utility
 			map.Bounds = Rectangle.FromLTRB(offsetX, offsetY, offsetX + width, offsetY + height);
 			map.Selectable = true;
 
-			map.Smudges = Lazy.New(() => new List<SmudgeReference>());
-			map.Actors = Lazy.New(() => new Dictionary<string, ActorReference>());
-			map.MapResources = Lazy.New(() => new TileReference<byte, byte>[mapSize, mapSize]);
-			map.MapTiles = Lazy.New(() => new TileReference<ushort, byte>[mapSize, mapSize]);
+			map.Smudges = Exts.Lazy(() => new List<SmudgeReference>());
+			map.Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>());
+			map.MapResources = Exts.Lazy(() => new TileReference<byte, byte>[mapSize, mapSize]);
+			map.MapTiles = Exts.Lazy(() => new TileReference<ushort, byte>[mapSize, mapSize]);
 
 			map.Options = new MapOptions();
 

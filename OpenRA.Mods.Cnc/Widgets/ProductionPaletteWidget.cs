@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -65,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			this.World = world;
 			this.worldRenderer = worldRenderer;
-			tooltipContainer = Lazy.New(() =>
+			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
 			cantBuild = new Animation("clock");

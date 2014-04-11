@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 
@@ -23,7 +24,7 @@ namespace OpenRA.Widgets
 
 		public ClientTooltipRegionWidget()
 		{
-			tooltipContainer = Lazy.New(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		protected ClientTooltipRegionWidget(ClientTooltipRegionWidget other)
@@ -31,7 +32,7 @@ namespace OpenRA.Widgets
 		{
 			Template = other.Template;
 			TooltipContainer = other.TooltipContainer;
-			tooltipContainer = Lazy.New(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 			orderManager = other.orderManager;
 			clientIndex = other.clientIndex;
 		}

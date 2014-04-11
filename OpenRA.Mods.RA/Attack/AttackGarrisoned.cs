@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			: base(self, info)
 		{
 			this.info = info;
-			coords = Lazy.New(() => self.Trait<IBodyOrientation>());
+			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
 			armaments = new List<Armament>();
 			muzzles = new List<AnimationWithOffset>();
 			paxFacing = new Dictionary<Actor, IFacing>();

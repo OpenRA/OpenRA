@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -34,8 +35,8 @@ namespace OpenRA.GameRules
 				: new Dictionary<string, string[]>();
 		}
 
-		public readonly OpenRA.FileFormats.Lazy<Dictionary<string, SoundPool>> VoicePools;
-		public readonly OpenRA.FileFormats.Lazy<Dictionary<string, SoundPool>> NotificationsPools;
+		public readonly Lazy<Dictionary<string, SoundPool>> VoicePools;
+		public readonly Lazy<Dictionary<string, SoundPool>> NotificationsPools;
 
 		public SoundInfo( MiniYaml y )
 		{
@@ -45,8 +46,8 @@ namespace OpenRA.GameRules
 			Voices = Load(y, "Voices");
 			Notifications = Load(y, "Notifications");
 
-			VoicePools = Lazy.New(() => Voices.ToDictionary( a => a.Key, a => new SoundPool(a.Value) ));
-			NotificationsPools = Lazy.New(() => Notifications.ToDictionary( a => a.Key, a => new SoundPool(a.Value) ));
+			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(a.Value)));
+			NotificationsPools = Exts.Lazy(() => Notifications.ToDictionary( a => a.Key, a => new SoundPool(a.Value) ));
 		}
 	}
 

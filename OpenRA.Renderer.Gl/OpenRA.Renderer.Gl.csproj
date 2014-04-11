@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>OpenRA.Renderer.Glsl</RootNamespace>
     <AssemblyName>OpenRA.Renderer.Gl</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>

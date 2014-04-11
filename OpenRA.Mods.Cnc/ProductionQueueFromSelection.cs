@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA;
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			this.world = world;
 
-			tabsWidget = Lazy.New(() =>
+			tabsWidget = Exts.Lazy(() =>
 				Ui.Root.Get<ProductionTabsWidget>(info.ProductionTabsWidget));
 		}
 

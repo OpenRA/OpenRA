@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>OpenRA.Renderer.Sdl2</RootNamespace>
     <AssemblyName>OpenRA.Renderer.Sdl2</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>

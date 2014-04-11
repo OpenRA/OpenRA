@@ -123,10 +123,10 @@ namespace OpenRA
 				MapSize = new int2(1, 1),
 				Tileset = tileset.Id,
 				Options = new MapOptions(),
-				MapResources = Lazy.New(() => new TileReference<byte, byte>[1, 1]),
-				MapTiles = Lazy.New(() => new TileReference<ushort, byte>[1, 1] { { tileRef } }),
-				Actors = Lazy.New(() => new Dictionary<string, ActorReference>()),
-				Smudges = Lazy.New(() => new List<SmudgeReference>())
+				MapResources = Exts.Lazy(() => new TileReference<byte, byte>[1, 1]),
+				MapTiles = Exts.Lazy(() => new TileReference<ushort, byte>[1, 1] { { tileRef } }),
+				Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>()),
+				Smudges = Exts.Lazy(() => new List<SmudgeReference>())
 			};
 
 			return map;
@@ -185,7 +185,7 @@ namespace OpenRA
 				Players.Add(player.Name, player);
 			}
 
-			Actors = Lazy.New(() =>
+			Actors = Exts.Lazy(() =>
 			{
 				var ret = new Dictionary<string, ActorReference>();
 				foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
@@ -194,7 +194,7 @@ namespace OpenRA
 			});
 
 			// Smudges
-			Smudges = Lazy.New(() =>
+			Smudges = Exts.Lazy(() =>
 			{
 				var ret = new List<SmudgeReference>();
 				foreach (var kv in yaml.NodesDict["Smudges"].NodesDict)
@@ -217,8 +217,8 @@ namespace OpenRA
 
 			CustomTerrain = new string[MapSize.X, MapSize.Y];
 
-			MapTiles = Lazy.New(() => LoadMapTiles());
-			MapResources = Lazy.New(() => LoadResourceTiles());
+			MapTiles = Exts.Lazy(() => LoadMapTiles());
+			MapResources = Exts.Lazy(() => LoadResourceTiles());
 
 			// The Uid is calculated from the data on-disk, so
 			// format changes must be flushed to disk.
@@ -418,8 +418,8 @@ namespace OpenRA
 			var oldMapTiles = MapTiles.Value;
 			var oldMapResources = MapResources.Value;
 
-			MapTiles = Lazy.New(() => Exts.ResizeArray(oldMapTiles, oldMapTiles[0, 0], width, height));
-			MapResources = Lazy.New(() => Exts.ResizeArray(oldMapResources, oldMapResources[0, 0], width, height));
+			MapTiles = Exts.Lazy(() => Exts.ResizeArray(oldMapTiles, oldMapTiles[0, 0], width, height));
+			MapResources = Exts.Lazy(() => Exts.ResizeArray(oldMapResources, oldMapResources[0, 0], width, height));
 			MapSize = new int2(width, height);
 		}
 

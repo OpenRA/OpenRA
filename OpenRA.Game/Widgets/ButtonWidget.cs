@@ -63,7 +63,7 @@ namespace OpenRA.Widgets
 			OnKeyPress = _ => OnClick();
 			IsDisabled = () => Disabled;
 			IsHighlighted = () => Highlighted;
-			tooltipContainer = Lazy.New(() =>
+			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
@@ -95,7 +95,7 @@ namespace OpenRA.Widgets
 			TooltipTemplate = other.TooltipTemplate;
 			TooltipText = other.TooltipText;
 			TooltipContainer = other.TooltipContainer;
-			tooltipContainer = Lazy.New(() =>
+			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 

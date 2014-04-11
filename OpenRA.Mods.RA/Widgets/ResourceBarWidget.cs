@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Widgets
 		[ObjectCreator.UseCtor]
 		public ResourceBarWidget(World world)
 		{
-			tooltipContainer = Lazy.New(() =>
+			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 

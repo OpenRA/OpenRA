@@ -58,6 +58,7 @@ namespace OpenRA.Mods.RA
 		public readonly ArmamentInfo Info;
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
+
 		public readonly Actor self;
 		Lazy<Turreted> Turret;
 		Lazy<IBodyOrientation> Coords;
@@ -74,9 +75,9 @@ namespace OpenRA.Mods.RA
 			Info = info;
 
 			// We can't resolve these until runtime
-			Turret = Lazy.New(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
-			Coords = Lazy.New(() => self.Trait<IBodyOrientation>());
-			limitedAmmo = Lazy.New(() => self.TraitOrDefault<LimitedAmmo>());
+			Turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
+			Coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
+			limitedAmmo = Exts.Lazy(() => self.TraitOrDefault<LimitedAmmo>());
 
 			Weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;

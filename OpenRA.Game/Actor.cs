@@ -62,7 +62,7 @@ namespace OpenRA
 			if (initDict.Contains<OwnerInit>())
 				Owner = init.Get<OwnerInit, Player>();
 
-			occupySpace = Lazy.New(() => TraitOrDefault<IOccupySpace>());
+			occupySpace = Exts.Lazy(() => TraitOrDefault<IOccupySpace>());
 
 			if (name != null)
 			{
@@ -74,14 +74,14 @@ namespace OpenRA
 					AddTrait(trait.Create(init));
 			}
 
-			facing = Lazy.New(() => TraitOrDefault<IFacing>());
-			health = Lazy.New(() => TraitOrDefault<Health>());
-			effectiveOwner = Lazy.New(() => TraitOrDefault<IEffectiveOwner>());
+			facing = Exts.Lazy(() => TraitOrDefault<IFacing>());
+			health = Exts.Lazy(() => TraitOrDefault<Health>());
+			effectiveOwner = Exts.Lazy(() => TraitOrDefault<IEffectiveOwner>());
 
 			applyIRender = (x, wr) => x.Render(this, wr);
 			applyRenderModifier = (m, p, wr) => p.ModifyRender(this, wr, m);
 
-			Bounds = Lazy.New(() =>
+			Bounds = Exts.Lazy(() =>
 			{
 				var si = Info.Traits.GetOrDefault<SelectableInfo>();
 				var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
