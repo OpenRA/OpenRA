@@ -444,7 +444,7 @@ HIJACKER:
 		Voice: ThiefVoice
 		Bounds: 12,17,0,-9
 	Health:
-		HP: 80
+		HP: 50
 	Mobile:
 		Speed: 56
 	RevealsShroud:
