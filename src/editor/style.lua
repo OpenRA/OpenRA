@@ -54,7 +54,7 @@ function StylesGetDefault()
     sel = {bg = {208, 208, 208}},
     caret = {fg = {0, 0, 0}},
     caretlinebg = {bg = {240, 240, 230}},
-    fold = {fg = {90, 90, 80}, bg = {250, 250, 250}, sel = {90+96, 90, 80}},
+    fold = {fg = {192, 192, 192}, bg = {250, 250, 250}, sel = {160, 128, 224}},
     whitespace = nil,
     edge = {},
 
