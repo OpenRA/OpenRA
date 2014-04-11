@@ -268,7 +268,7 @@ return {
   edge = {},
 
   indicator = {
-    fncall = {fg = C.Purple, st = wxstc.wxSTC_INDIC_ROUNDBOX},
+    fncall = {fg = C.Purple, st = wxstc.wxSTC_INDIC_HIDDEN},
     --[[ other possible values are:
       wxSTC_INDIC_PLAIN	 Single-line underline
       wxSTC_INDIC_SQUIGGLE Squiggly underline

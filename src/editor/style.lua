@@ -79,7 +79,7 @@ function StylesGetDefault()
 
     -- indicators
     indicator = {
-      fncall = {},
+      fncall = {st = wxstc.wxSTC_INDIC_HIDDEN}, -- hide by default
       varlocal = {},
       varglobal = {},
       varmasking = {},
