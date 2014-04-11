@@ -47,6 +47,9 @@ SS:
 		CloakTypes: Underwater
 		Range: 4
 	RenderDetectionCircle:
+	Explodes:
+		Weapon: UnitExplodeSubmarine
+		EmpyWeapon: UnitExplodeSubmarine
 
 MSUB:
 	Inherits: ^Ship
@@ -97,6 +100,9 @@ MSUB:
 		CloakTypes: Underwater
 		Range: 4
 	RenderDetectionCircle:
+	Explodes:
+		Weapon: UnitExplode
+		EmpyWeapon: UnitExplode
 
 DD:
 	Inherits: ^Ship
@@ -144,6 +150,9 @@ DD:
 		CloakTypes: Underwater
 		Range: 4
 	RenderDetectionCircle:
+	Explodes:
+		Weapon: UnitExplodeShip
+		EmpyWeapon: UnitExplodeShip
 
 CA:
 	Inherits: ^Ship
@@ -203,6 +212,9 @@ CA:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
+	Explodes:
+		Weapon: UnitExplodeShip
+		EmpyWeapon: UnitExplodeShip
 
 LST:
 	Inherits: ^Ship
@@ -233,6 +245,9 @@ LST:
 		PipCount: 5
 	IronCurtainable:
 	RepairableNear:
+	Explodes:
+		Weapon: UnitExplodeShip
+		EmpyWeapon: UnitExplodeShip
 
 PT:
 	Inherits: ^Ship
@@ -281,4 +296,7 @@ PT:
 		CloakTypes: Underwater
 		Range: 4
 	RenderDetectionCircle:
+	Explodes:
+		Weapon: UnitExplodeShip
+		EmpyWeapon: UnitExplodeShip
 
