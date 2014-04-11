@@ -43,7 +43,7 @@ function StylesGetDefault()
 
     -- common (inherit fg/bg from text)
     text = {fg = {64, 64, 64}, bg = {250, 250, 250}},
-    linenumber = {fg = {128, 128, 128}, bg = {250, 250, 250}},
+    linenumber = {fg = {128, 128, 128}, bg = {250, 250, 250}, fs = 9},
     bracematch = {fg = {32, 128, 255}, b = true},
     bracemiss = {fg = {255, 128, 32}, b = true},
     ctrlchar = nil,

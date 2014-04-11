@@ -12,8 +12,8 @@ local edcfg = ide.config.editor
 local styles = ide.config.styles
 local unpack = table.unpack or unpack
 
-local DEFAULT_STYLE = 32
 local margin = { LINENUMBER = 0, MARKER = 1, FOLD = 2 }
+local linenummask = "99999"
 
 -- ----------------------------------------------------------------------------
 -- Update the statusbar text of the frame using the given editor.
@@ -690,7 +690,8 @@ function CreateEditor()
 
   editor:SetVisiblePolicy(wxstc.wxSTC_VISIBLE_STRICT, 3)
 
-  editor:SetMarginWidth(margin.LINENUMBER, editor:TextWidth(DEFAULT_STYLE, "99999_"))
+  editor:SetMarginWidth(margin.LINENUMBER,
+    editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, linenummask))
 
   editor:SetMarginWidth(margin.MARKER, 16)
   editor:SetMarginType(margin.MARKER, wxstc.wxSTC_MARGIN_SYMBOL)
@@ -1186,7 +1187,8 @@ function CreateEditor()
 
   editor:Connect(wxstc.wxEVT_STC_ZOOM,
     function(event)
-      editor:SetMarginWidth(margin.LINENUMBER, editor:TextWidth(DEFAULT_STYLE, "99999_"))
+      editor:SetMarginWidth(margin.LINENUMBER,
+        editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, linenummask))
       -- if Shift+Zoom is used, then zoom all editors, not just the current one
       if wx.wxGetKeyState(wx.WXK_SHIFT) then
         local zoom = editor:GetZoom()
