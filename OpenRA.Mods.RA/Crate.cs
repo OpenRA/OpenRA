@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.RA
 
 			if (self.IsInWorld)
 			{
-				self.World.ActorMap.UpdatePosition(self, this);
+				self.World.ActorMap.UpdatePosition(self);
 				self.World.ScreenMap.Update(self);
 			}
 		}
@@ -128,8 +128,7 @@ namespace OpenRA.Mods.RA
 
 		public void AddedToWorld(Actor self)
 		{
-			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
+			self.World.ActorMap.Add(self, this);
 			self.World.ScreenMap.Add(self);
 
 			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();
@@ -139,8 +138,7 @@ namespace OpenRA.Mods.RA
 
 		public void RemovedFromWorld(Actor self)
 		{
-			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
+			self.World.ActorMap.Remove(self, this);
 			self.World.ScreenMap.Remove(self);
 
 			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -20,7 +20,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Shroud(init.self); }
 	}
 
-	public class Shroud
+	public class Shroud : INotifyActorMovement
 	{
 		[Sync] public bool Disabled = false;
 
@@ -80,16 +80,16 @@ namespace OpenRA.Traits
 
 		void AddVisibility(Actor a)
 		{
-			var rs = a.TraitOrDefault<RevealsShroud>();
-			if (rs == null || !a.Owner.IsAlliedWith(self.Owner) || rs.Range == WRange.Zero)
+			var rsi = a.Info.Traits.GetOrDefault<RevealsShroudInfo>();
+			if (rsi == null || !a.Owner.IsAlliedWith(self.Owner) || rsi.Range == WRange.Zero)
 				return;
 
 			var origins = GetVisOrigins(a);
-			var visible = origins.SelectMany(o => FindVisibleTiles(a.World, o, rs.Range))
+			var visible = origins.SelectMany(o => FindVisibleTiles(a.World, o, rsi.Range))
 				.Distinct().ToArray();
 
 			// Update bounding rect
-			var r = (rs.Range.Range + 1023) / 1024;
+			var r = (rsi.Range.Range + 1023) / 1024;
 
 			foreach (var o in origins)
 			{
@@ -282,6 +282,11 @@ namespace OpenRA.Traits
 				return false;
 
 			return GetVisOrigins(a).Any(o => IsVisible(o));
+		}
+
+		public void OnMovement(Actor self, Actor moved)
+		{
+			UpdateVisibility(moved);
 		}
 	}
 }

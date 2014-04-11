@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 			if (move != null)
 			{
 				// Move within sight range of the frozen actor
-				var sight = self.TraitOrDefault<RevealsShroud>();
+				var sight = self.Info.Traits.GetOrDefault<RevealsShroudInfo>();
 				var range = sight != null ? sight.Range : WRange.FromCells(2);
 
 				self.QueueActivity(move.MoveWithinRange(Target.FromPos(frozen.CenterPosition), range));

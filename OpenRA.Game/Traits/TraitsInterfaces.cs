@@ -76,6 +76,7 @@ namespace OpenRA.Traits
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
 	public interface INotifyHarvest { void Harvested(Actor self, ResourceType resource); }
 	public interface ISeedableResource { void Seed(Actor self); }
+	public interface INotifyActorMovement { void OnMovement(Actor self, Actor moved); }
 
 	public interface IAcceptInfiltrator { void OnInfiltrate(Actor self, Actor infiltrator); }
 	public interface IDemolishable
@@ -204,7 +205,7 @@ namespace OpenRA.Traits
 	}
 
 	public interface IRenderOverlay { void Render(WorldRenderer wr); }
-	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); } 
+	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); }
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IBlocksBullets { }

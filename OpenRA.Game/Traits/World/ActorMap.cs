@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -45,6 +45,8 @@ namespace OpenRA.Traits
 		InfluenceNode[,] influence;
 
 		List<Actor>[] actors;
+		List<Actor> moved;
+		Dictionary<Actor, CPos> positions;
 		int rows, cols;
 
 		// Position updates are done in one pass
@@ -65,6 +67,8 @@ namespace OpenRA.Traits
 				for (var i = 0; i < cols; i++)
 					actors[j * cols + i] = new List<Actor>();
 
+			moved = new List<Actor>();
+			positions = new Dictionary<Actor, CPos>();
 			addActorPosition = new List<Actor>();
 			removeActorPosition = new List<Actor>();
 		}
@@ -160,22 +164,48 @@ namespace OpenRA.Traits
 			}
 
 			addActorPosition.Clear();
+
+			foreach (var actor in moved.Distinct())
+			{
+				if (positions.ContainsKey(actor) && actor.Location != positions[actor])
+					GenerateEvents(actor);
+
+				positions[actor] = actor.Location;
+			}
+			moved.Clear();
 		}
 
-		public void AddPosition(Actor a, IOccupySpace ios)
-		{
-			addActorPosition.Add(a);
-		}
-
-		public void RemovePosition(Actor a, IOccupySpace ios)
+		public void UpdatePosition(Actor a)
 		{
 			removeActorPosition.Add(a);
+			addActorPosition.Add(a);
+
+			moved.Add(a);
 		}
 
-		public void UpdatePosition(Actor a, IOccupySpace ios)
+		public void Add(Actor a, IOccupySpace ios)
 		{
-			RemovePosition(a, ios);
-			AddPosition(a, ios);
+			AddInfluence(a, ios);
+			addActorPosition.Add(a);
+
+			moved.Add(a);
+		}
+
+		public void Remove(Actor a, IOccupySpace ios)
+		{
+			RemoveInfluence(a, ios);
+			removeActorPosition.Add(a);
+
+			moved.Add(a);
+		}
+
+		void GenerateEvents(Actor a)
+		{
+			var actors = a.World.Players.Select(p => p.PlayerActor).Append(a.World.WorldActor);
+
+			foreach (var actor in actors)
+				foreach (var t in actor.TraitsImplementing<INotifyActorMovement>())
+					t.OnMovement(actor, a);
 		}
 
 		public IEnumerable<Actor> ActorsInBox(WPos a, WPos b)
