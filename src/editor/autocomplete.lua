@@ -121,7 +121,7 @@ local function formatUpToX(s, x)
   return table.concat(t, "\n")
 end
 
-local function fillTips(api,apibasename,apiname)
+local function fillTips(api,apibasename)
   local apiac = api.ac
   local tclass = api.tip
   local tipwidth = math.max(20, ide.config.acandtip.width)
@@ -386,27 +386,26 @@ local function getEditorLines(editor,line,numlines)
     editor:PositionFromLine(line),editor:PositionFromLine(line+numlines+1))
 end
 
-function DynamicWordsAdd(ev,editor,content,line,numlines)
+function DynamicWordsAdd(editor,content,line,numlines)
   if ide.config.acandtip.nodynwords then return end
   local api = editor.api
-  local content = content or getEditorLines(editor,line,numlines)
+  content = content or getEditorLines(editor,line,numlines)
   for word in content:gmatch "[%.:]?%s*([a-zA-Z_]+[a-zA-Z_0-9]+)" do
     addDynamicWord(api,word)
   end
 end
 
-function DynamicWordsRem(ev,editor,content,line,numlines)
+function DynamicWordsRem(editor,content,line,numlines)
   if ide.config.acandtip.nodynwords then return end
   local api = editor.api
-  local content = content or getEditorLines(editor,line,numlines)
+  content = content or getEditorLines(editor,line,numlines)
   for word in content:gmatch "[%.:]?%s*([a-zA-Z_]+[a-zA-Z_0-9]+)" do
     removeDynamicWord(api,word)
   end
 end
 
-function DynamicWordsRemoveAll (editor)
-  local tx = editor:GetText()
-  DynamicWordsRem("close",editor,tx)
+function DynamicWordsRemoveAll(editor)
+  DynamicWordsRem(editor,editor:GetText())
 end
 
 ------------

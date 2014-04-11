@@ -795,22 +795,22 @@ function CreateEditor()
       if (bit.band(evtype,wxstc.wxSTC_MOD_INSERTTEXT) ~= 0) then
         SetAutoRecoveryMark()
         table.insert(editor.ev,{event:GetPosition(),event:GetLinesAdded()})
-        DynamicWordsAdd("post",editor,nil,editor:LineFromPosition(event:GetPosition()),event:GetLinesAdded())
+        DynamicWordsAdd(editor,nil,editor:LineFromPosition(event:GetPosition()),event:GetLinesAdded())
       end
       if (bit.band(evtype,wxstc.wxSTC_MOD_DELETETEXT) ~= 0) then
         SetAutoRecoveryMark()
         table.insert(editor.ev,{event:GetPosition(),0})
-        DynamicWordsAdd("post",editor,nil,editor:LineFromPosition(event:GetPosition()),0)
+        DynamicWordsAdd(editor,nil,editor:LineFromPosition(event:GetPosition()),0)
       end
       
       if ide.config.acandtip.nodynwords then return end
       -- only required to track changes
       if (bit.band(evtype,wxstc.wxSTC_MOD_BEFOREDELETE) ~= 0) then
         local _, numlines = event:GetText():gsub("\r?\n","%1")
-        DynamicWordsRem("pre",editor,nil,editor:LineFromPosition(event:GetPosition()), numlines)
+        DynamicWordsRem(editor,nil,editor:LineFromPosition(event:GetPosition()), numlines)
       end
       if (bit.band(evtype,wxstc.wxSTC_MOD_BEFOREINSERT) ~= 0) then
-        DynamicWordsRem("pre",editor,nil,editor:LineFromPosition(event:GetPosition()), 0)
+        DynamicWordsRem(editor,nil,editor:LineFromPosition(event:GetPosition()), 0)
       end
     end)
 
