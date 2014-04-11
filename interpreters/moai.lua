@@ -87,7 +87,7 @@ return {
       or ('"%s" "%s"'):format(moai, file)
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
-      function() ide.debugger.pid = nil if rundebug then wx.wxRemoveFile(file) end end)
+      function() if rundebug then wx.wxRemoveFile(file) end end)
   end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)

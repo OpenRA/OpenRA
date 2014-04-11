@@ -46,8 +46,7 @@ return {
     end
 
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-    local pid = CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
-      function() ide.debugger.pid = nil end)
+    local pid = CommandLineRun(cmd,self:fworkdir(wfilename),true,false)
 
     -- restore PATH
     wx.wxSetEnv("PATH", path)

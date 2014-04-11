@@ -60,10 +60,7 @@ return {
        
     local cmd = '"'..exe..'" '..args
 
-    local pid = CommandLineRun(cmd,wdir,true,true,nil,self:fuid(wfilename),
-      function() ide.debugger.pid = nil end)
-    
-    return pid
+    return CommandLineRun(cmd,wdir,true,true,nil,self:fuid(wfilename))
   end,
   fuid = function(self,wfilename) return "luxinia2: luajit "..wfilename:GetFullName() end,
   fprojdir = function(self,wfilename)

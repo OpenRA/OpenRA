@@ -1125,7 +1125,6 @@ end
 function DebuggerStop()
   if (debugger.server) then
     debugger.server = nil
-    debugger.pid = nil
     SetAllEditorsReadOnly(false)
     ShellSupportRemote(nil)
     ClearAllCurrentLineMarkers()
@@ -1139,6 +1138,8 @@ function DebuggerStop()
     -- no debugger.server, but scratchpad may still be on. Turn it off.
     DebuggerScratchpadOff()
   end
+  -- debugger can be stopped after "normal" run; need to reset debugger.pid
+  debugger.pid = nil
 end
 
 function DebuggerMakeFileName(editor, filePath)

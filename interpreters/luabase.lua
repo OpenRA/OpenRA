@@ -57,7 +57,7 @@ return {
 
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     local pid = CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
-      function() ide.debugger.pid = nil if rundebug then wx.wxRemoveFile(filepath) end end)
+      function() if rundebug then wx.wxRemoveFile(filepath) end end)
 
     if version and cpath then wx.wxSetEnv("LUA_CPATH", cpath) end
     return pid

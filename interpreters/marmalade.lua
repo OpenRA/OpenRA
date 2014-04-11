@@ -113,8 +113,7 @@ return {
 
     local cmd = ('"%s" %s'):format(quick, options)
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-    return CommandLineRun(cmd,GetPathWithSep(projdir),true,true,nil,nil,
-      function() ide.debugger.pid = nil end)
+    return CommandLineRun(cmd,GetPathWithSep(projdir),true,true)
   end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)

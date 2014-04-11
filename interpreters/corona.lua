@@ -82,8 +82,7 @@ return {
     local cmd = ('"%s" %s"%s"%s')
       :format(corona, rundebug and debugopt or "", file, skin)
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-    return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
-      function() ide.debugger.pid = nil end)
+    return CommandLineRun(cmd,self:fworkdir(wfilename),true,false)
   end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
