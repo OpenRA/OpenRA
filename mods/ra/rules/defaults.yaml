@@ -432,11 +432,12 @@
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
 	RenderUnit:
 	Health:
-		HP: 140
+		HP: 280
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
 	Burns:
+		Damage: 2
 	ProximityCaptor:
 		Types: Husk
 	BelowUnits:
