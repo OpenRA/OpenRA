@@ -65,7 +65,7 @@ ChromeLayout:
 	mods/d2k/chrome/ingame-observer.yaml
 	mods/ra/chrome/ingame-observerstats.yaml
 	mods/d2k/chrome/ingame-player.yaml
-	mods/d2k/chrome/mainmenu.yaml
+	mods/ra/chrome/mainmenu.yaml
 	mods/ra/chrome/settings.yaml
 	mods/ra/chrome/credits.yaml
 	mods/ra/chrome/lobby.yaml
