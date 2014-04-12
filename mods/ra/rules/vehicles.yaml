@@ -286,7 +286,7 @@ HARV:
 		FullnessThreshold: 50
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmpyWeapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 MCV:
 	Inherits: ^Vehicle
@@ -328,7 +328,7 @@ MCV:
 		HuskActor: MCV.Husk
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmpyWeapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 JEEP:
 	Inherits: ^Vehicle
@@ -368,7 +368,7 @@ JEEP:
 		PipCount: 1
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmpyWeapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 APC:
 	Inherits: ^Tank
@@ -404,7 +404,7 @@ APC:
 		PipCount: 5
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmpyWeapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 MNLY.AP:
 	Inherits: ^Tank
@@ -502,7 +502,7 @@ TRUK:
 		Payload: 500
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmpyWeapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 MGG:
 	Inherits: ^Vehicle
@@ -609,7 +609,7 @@ TTNK:
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmpyWeapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 FTRK:
 	Inherits: ^Vehicle
@@ -719,7 +719,7 @@ CTNK:
 	PortableChrono:
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmpyWeapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 QTNK:
 	Inherits: ^Tank
@@ -799,5 +799,5 @@ STNK:
 		Range: 6
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmpyWeapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
