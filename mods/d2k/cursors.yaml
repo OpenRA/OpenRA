@@ -1,7 +1,6 @@
 ShadowIndex: 1
 
 Palettes:
-	cursor: cursor.pal
 	mouse: d2k.pal
 
 Cursors:
@@ -262,7 +261,7 @@ Cursors:
 			x: 24
 			y: 24
 
-	nopower.shp: cursor
+	nopower.shp: mouse
 		powerdown-blocked:
 			start:0
 			length: 1
