@@ -170,13 +170,13 @@ tabs-normal: tabs.png
 	ordos-Starport: 214,200,27,41
 
 flags: buttons.png
-	atreides: 0,86,22,21
-	harkonnen: 22,86,23,21
-	ordos: 45,86,22,21
-	random: 67,86,23,21
-	spectator: 67,86,23,21
+	atreides: 0,114,22,21
+	harkonnen: 22,114,23,21
+	ordos: 45,114,22,21
+	random: 67,114,23,21
+	spectator: 67,114,23,21
 
-# Used for the menu	
+# Used for the menu
 dialog: dialog.png
 	background: 0,0,480,480
 	border-r: 489,0,9,192
@@ -247,9 +247,9 @@ order-icons: buttons.png
 	power: 0,56,34,28
 	power-disabled: 68,56,34,28
 	power-active: 34,56,34,28
-	beacon: 0,56,34,28
-	beacon-disabled: 68,56,34,28
-	beacon-active: 34,56,34,28
+	beacon: 0,84,34,28
+	beacon-disabled: 68,84,34,28
+	beacon-active: 34,84,34,28
 
 music: musicplayer.png
 	pause: 0,0,25,25
@@ -261,10 +261,10 @@ music: musicplayer.png
 	slowmo: 168,0,25,25
 
 scrollbar: buttons.png
-	down_arrow: 16,112,16,16
-	down_pressed: 16,112,16,16
-	up_arrow: 32,112,16,16
-	up_pressed: 32,112,16,16
+	down_arrow: 16,140,16,16
+	down_pressed: 16,140,16,16
+	up_arrow: 32,140,16,16
+	up_pressed: 32,140,16,16
 
 # A copy of dialog3 (pressed button)
 progressbar-bg: dialog.png
@@ -521,7 +521,7 @@ checkbox: dialog.png
 	corner-br: 767,127,1,1
 
 checkbox-bits: buttons.png
-	checked: 0,112,16,16
+	checked: 0,140,16,16
 
 checkbox-hover: dialog.png
 	background: 641,129,126,126
