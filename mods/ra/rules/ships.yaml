@@ -49,7 +49,7 @@ SS:
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
-		EmpyWeapon: UnitExplodeSubmarine
+		EmptyWeapon: UnitExplodeSubmarine
 
 MSUB:
 	Inherits: ^Ship
@@ -101,8 +101,8 @@ MSUB:
 		Range: 4
 	RenderDetectionCircle:
 	Explodes:
-		Weapon: UnitExplode
-		EmpyWeapon: UnitExplode
+		Weapon: UnitExplodeSubmarine
+		EmptyWeapon: UnitExplodeSubmarine
 
 DD:
 	Inherits: ^Ship
@@ -152,7 +152,7 @@ DD:
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeShip
-		EmpyWeapon: UnitExplodeShip
+		EmptyWeapon: UnitExplodeShip
 
 CA:
 	Inherits: ^Ship
@@ -214,7 +214,7 @@ CA:
 	RepairableNear:
 	Explodes:
 		Weapon: UnitExplodeShip
-		EmpyWeapon: UnitExplodeShip
+		EmptyWeapon: UnitExplodeShip
 
 LST:
 	Inherits: ^Ship
@@ -247,7 +247,7 @@ LST:
 	RepairableNear:
 	Explodes:
 		Weapon: UnitExplodeShip
-		EmpyWeapon: UnitExplodeShip
+		EmptyWeapon: UnitExplodeShip
 
 PT:
 	Inherits: ^Ship
@@ -298,5 +298,5 @@ PT:
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeShip
-		EmpyWeapon: UnitExplodeShip
+		EmptyWeapon: UnitExplodeShip
 
