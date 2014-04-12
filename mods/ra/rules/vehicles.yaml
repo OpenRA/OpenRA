@@ -26,7 +26,7 @@ V2RL:
 	AutoTarget:
 	Explodes:
 		Weapon: SCUD
-		EmptyWeapon:
+		EmptyWeapon: UnitExplodeSmall
 
 1TNK:
 	Inherits: ^Tank
@@ -284,6 +284,9 @@ HARV:
 	HarvesterHuskModifier:
 		FullHuskActor: HARV.FullHusk
 		FullnessThreshold: 50
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 MCV:
 	Inherits: ^Vehicle
@@ -323,6 +326,9 @@ MCV:
 	BaseBuilding:
 	LeavesHusk:
 		HuskActor: MCV.Husk
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 JEEP:
 	Inherits: ^Vehicle
@@ -360,6 +366,9 @@ JEEP:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 APC:
 	Inherits: ^Tank
@@ -393,6 +402,9 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 MNLY.AP:
 	Inherits: ^Tank
@@ -426,6 +438,8 @@ MNLY.AP:
 		Range: 5
 		CloakTypes: Mine
 	RenderDetectionCircle:
+	Explodes:
+		Weapon: APMine
 
 MNLY.AT:
 	Inherits: ^Tank
@@ -459,6 +473,8 @@ MNLY.AT:
 		Range: 5
 		CloakTypes: Mine
 	RenderDetectionCircle:
+	Explodes:
+		Weapon: ATMine
 
 TRUK:
 	Inherits: ^Vehicle
@@ -484,6 +500,9 @@ TRUK:
 	RenderUnit:
 	SupplyTruck:
 		Payload: 500
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 MGG:
 	Inherits: ^Vehicle
@@ -588,6 +607,9 @@ TTNK:
 	Selectable:
 		Bounds: 28,28,0,0
 	AutoTarget:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 FTRK:
 	Inherits: ^Vehicle
@@ -695,6 +717,9 @@ CTNK:
 		LocalYaw: -100
 	AttackFrontal:
 	PortableChrono:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 QTNK:
 	Inherits: ^Tank
@@ -772,4 +797,7 @@ STNK:
 		UncloakOnUnload: True
 	DetectCloaked:
 		Range: 6
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 

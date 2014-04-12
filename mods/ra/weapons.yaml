@@ -1092,7 +1092,7 @@ MiniNuke:
 			Concrete: 25%
 		Delay: 5
 		InfDeath: 5
-		ImpactSound: kaboom22
+		ImpactSound: kaboom22.aud
 	Warhead@areanuke2:
 		Damage: 600
 		Spread: 3c0
@@ -1126,6 +1126,35 @@ UnitExplode:
 		WaterExplosion: large_splash
 		InfDeath: 4
 		ImpactSound: kaboom22.aud
+		WaterImpactSound: splash9.aud
+
+UnitExplodeShip:
+	Warhead:
+		Damage: 50
+		Spread: 426
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: building
+		WaterExplosion: building
+		InfDeath: 4
+		ImpactSound: kaboom25.aud
+		WaterImpactSound: kaboom25.aud
+
+UnitExplodeSubmarine:
+	Warhead:
+		Damage: 50
+		Spread: 426
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		WaterExplosion: large_splash
+		InfDeath: 4
+		WaterImpactSound: splash9.aud
 
 UnitExplodeSmall:
 	Warhead:
