@@ -74,8 +74,10 @@ fact:
 proc:
 	idle:
 		Start: 0
+		ZOffset: -96
 	damaged-idle:
 		Start: 1
+		ZOffset: -96
 	make: procmake
 		Start: 0
 		Length: *
