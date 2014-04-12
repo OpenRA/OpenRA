@@ -109,9 +109,7 @@ namespace OpenRA.Graphics
 		{
 			RefreshPalette();
 
-			// workaround for #4965
-			// if (world.IsShellmap && !Game.Settings.Game.ShowShellmap)
-			if (world.IsShellmap)
+			if (world.IsShellmap && !Game.Settings.Game.ShowShellmap)
 				return;
 
 			var renderables = GenerateRenderables();
