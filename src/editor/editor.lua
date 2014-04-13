@@ -651,7 +651,7 @@ function CreateEditor()
   end
 
   -- populate editor keymap with configured combinations
-  for _, map in ipairs(ide.config.editor.keymap) do
+  for _, map in ipairs(edcfg.keymap) do
     local key, mod, cmd, os = unpack(map)
     if not os or os == ide.osname then
       if cmd then
@@ -668,25 +668,25 @@ function CreateEditor()
   editor:SetFont(ide.font.eNormal)
   editor:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.eNormal)
 
-  editor:SetTabWidth(ide.config.editor.tabwidth or 2)
-  editor:SetIndent(ide.config.editor.tabwidth or 2)
-  editor:SetUseTabs(ide.config.editor.usetabs and true or false)
+  editor:SetTabWidth(edcfg.tabwidth or 2)
+  editor:SetIndent(edcfg.tabwidth or 2)
+  editor:SetUseTabs(edcfg.usetabs and true or false)
   editor:SetIndentationGuides(true)
-  editor:SetViewWhiteSpace(ide.config.editor.whitespace and true or false)
+  editor:SetViewWhiteSpace(edcfg.whitespace and true or false)
 
-  if (ide.config.editor.usewrap) then
+  if (edcfg.usewrap) then
     editor:SetWrapMode(wxstc.wxSTC_WRAP_WORD)
     editor:SetWrapStartIndent(0)
     editor:SetWrapVisualFlagsLocation(wxstc.wxSTC_WRAPVISUALFLAGLOC_END_BY_TEXT)
   end
 
-  if (ide.config.editor.defaulteol == wxstc.wxSTC_EOL_CRLF
-     or ide.config.editor.defaulteol == wxstc.wxSTC_EOL_LF) then
-    editor:SetEOLMode(ide.config.editor.defaulteol)
+  if (edcfg.defaulteol == wxstc.wxSTC_EOL_CRLF
+     or edcfg.defaulteol == wxstc.wxSTC_EOL_LF) then
+    editor:SetEOLMode(edcfg.defaulteol)
   -- else: keep wxStyledTextCtrl default behavior (CRLF on Windows, LF on Unix)
   end
 
-  editor:SetCaretLineVisible(ide.config.editor.caretline and 1 or 0)
+  editor:SetCaretLineVisible(edcfg.caretline and true or false)
 
   editor:SetVisiblePolicy(wxstc.wxSTC_VISIBLE_STRICT, 3)
 
@@ -701,7 +701,7 @@ function CreateEditor()
   editor:MarkerDefine(StylesGetMarker("currentline"))
   editor:MarkerDefine(StylesGetMarker("breakpoint"))
 
-  if ide.config.editor.fold then
+  if edcfg.fold then
     editor:SetMarginWidth(margin.FOLD, 16)
     editor:SetMarginType(margin.FOLD, wxstc.wxSTC_MARGIN_SYMBOL)
     editor:SetMarginMask(margin.FOLD, wxstc.wxSTC_MASK_FOLDERS)
@@ -730,8 +730,8 @@ function CreateEditor()
     bg:delete()
   end
 
-  if ide.config.editor.calltipdelay and ide.config.editor.calltipdelay > 0 then
-    editor:SetMouseDwellTime(ide.config.editor.calltipdelay)
+  if edcfg.calltipdelay and edcfg.calltipdelay > 0 then
+    editor:SetMouseDwellTime(edcfg.calltipdelay)
   end
 
   editor:AutoCompSetIgnoreCase(ide.config.acandtip.ignorecase)
@@ -845,7 +845,7 @@ function CreateEditor()
           local ut = editor:GetUseTabs()
           local tw = ut and editor:GetTabWidth() or editor:GetIndent()
 
-          if ide.config.editor.smartindent
+          if edcfg.smartindent
           and editor.spec.isdecindent and editor.spec.isincindent then
             local closed, blockend = editor.spec.isdecindent(linedone)
             local opened = editor.spec.isincindent(linedone)
@@ -981,7 +981,7 @@ function CreateEditor()
       if ide.osname == 'Windows' then
         updateStatusText(editor)
 
-        if ide.config.editor.usewrap ~= true and editor:AutoCompActive() then
+        if edcfg.usewrap ~= true and editor:AutoCompActive() then
           -- showing auto-complete list leaves artifacts on the screen,
           -- which can only be fixed by a forced refresh.
           -- shows with wxSTC 3.21 and both wxwidgets 2.9.5 and 3.1
@@ -1047,7 +1047,7 @@ function CreateEditor()
       event:Skip()
     end)
 
-  if ide.config.editor.nomousezoom then
+  if edcfg.nomousezoom then
     -- disable zoom using mouse wheel as it triggers zooming when scrolling
     -- on OSX with kinetic scroll and then pressing CMD.
     editor:Connect(wx.wxEVT_MOUSEWHEEL,
@@ -1346,10 +1346,10 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
 
   -- need to set folding property after lexer is set, otherwise
   -- the folds are not shown (wxwidgets 2.9.5)
-  if ide.config.editor.fold then
+  if edcfg.fold then
     editor:SetProperty("fold", "1")
     editor:SetProperty("fold.html", "1")
-    editor:SetProperty("fold.compact", ide.config.editor.foldcompact and "1" or "0")
+    editor:SetProperty("fold.compact", edcfg.foldcompact and "1" or "0")
     editor:SetProperty("fold.comment", "1")
   end
   
