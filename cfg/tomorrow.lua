@@ -252,7 +252,7 @@ return {
   -- common (inherit fg/bg from text)
   -- wxstc.wxSTC_LUA_IDENTIFIER
   text = {fg = C.Foreground, bg = C.Background},
-  linenumber = {fg = C.Comment, fs = 9},
+  linenumber = {fg = C.Comment},
   bracematch = {fg = C.Orange, b = true},
   bracemiss = {fg = C.Red, b = true},
   ctrlchar = {fg = C.Yellow},

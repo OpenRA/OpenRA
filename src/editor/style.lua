@@ -43,7 +43,7 @@ function StylesGetDefault()
 
     -- common (inherit fg/bg from text)
     text = {fg = {64, 64, 64}, bg = {250, 250, 250}},
-    linenumber = {fg = {128, 128, 128}, bg = {250, 250, 250}, fs = 9},
+    linenumber = {fg = {128, 128, 128}, bg = {250, 250, 250}},
     bracematch = {fg = {32, 128, 255}, b = true},
     bracemiss = {fg = {255, 128, 32}, b = true},
     ctrlchar = nil,
@@ -308,6 +308,11 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
     applystyle({},defaultmapping["text"])
   end
   editor:StyleClearAll()
+
+  -- set the default linenumber font size based on the editor font size
+  if styles.linenumber then
+    styles.linenumber.fs = styles.linenumber.fs or ide.config.editor.fontsize - 1
+  end
 
   for name,style in pairs(styles) do
     if (specialmapping[name]) then
