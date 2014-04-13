@@ -739,7 +739,6 @@ ATEK:
 		LaunchSound: satlnch1.aud
 		DisplayTimer: True
 	SupportPowerChargeBar:
-	CanPowerDown:
 	RequiresPower:
 	DisabledOverlay:
 
