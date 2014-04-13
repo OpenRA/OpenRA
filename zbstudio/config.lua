@@ -29,6 +29,7 @@ else
   outputshell.fontname = editor.fontname
 end
 
+outputshell.usewrap = true
 filehistorylength = 20
 
 singleinstance = G.ide.osname ~= 'Macintosh'

@@ -23,6 +23,13 @@ errorlog:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL)
 errorlog:MarkerDefine(StylesGetMarker("message"))
 errorlog:MarkerDefine(StylesGetMarker("prompt"))
 errorlog:SetReadOnly(true)
+if (ide.config.outputshell.usewrap) then
+  errorlog:SetWrapMode(wxstc.wxSTC_WRAP_WORD)
+  errorlog:SetWrapStartIndent(0)
+  errorlog:SetWrapVisualFlags(wxstc.wxSTC_WRAPVISUALFLAG_END)
+  errorlog:SetWrapVisualFlagsLocation(wxstc.wxSTC_WRAPVISUALFLAGLOC_END_BY_TEXT)
+end
+
 StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font.oNormal,ide.font.oItalic)
 
 function ClearOutput()
