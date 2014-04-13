@@ -693,7 +693,7 @@ function CreateEditor()
   if (edcfg.usewrap) then
     editor:SetWrapMode(wxstc.wxSTC_WRAP_WORD)
     editor:SetWrapStartIndent(0)
-    editor:SetWrapVisualFlagsLocation(wxstc.wxSTC_WRAPVISUALFLAGLOC_END_BY_TEXT)
+    editor:SetWrapVisualFlags(wxstc.wxSTC_WRAPVISUALFLAG_MARGIN)
   end
 
   if edcfg.defaulteol == wxstc.wxSTC_EOL_CRLF
