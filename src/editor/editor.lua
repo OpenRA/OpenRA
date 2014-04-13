@@ -684,8 +684,8 @@ function CreateEditor()
   editor:SetFont(ide.font.eNormal)
   editor:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.eNormal)
 
-  editor:SetTabWidth(edcfg.tabwidth or 2)
-  editor:SetIndent(edcfg.tabwidth or 2)
+  editor:SetTabWidth(tonumber(edcfg.tabwidth) or 2)
+  editor:SetIndent(tonumber(edcfg.tabwidth) or 2)
   editor:SetUseTabs(edcfg.usetabs and true or false)
   editor:SetIndentationGuides(true)
   editor:SetViewWhiteSpace(edcfg.whitespace and true or false)
@@ -696,8 +696,8 @@ function CreateEditor()
     editor:SetWrapVisualFlagsLocation(wxstc.wxSTC_WRAPVISUALFLAGLOC_END_BY_TEXT)
   end
 
-  if (edcfg.defaulteol == wxstc.wxSTC_EOL_CRLF
-     or edcfg.defaulteol == wxstc.wxSTC_EOL_LF) then
+  if edcfg.defaulteol == wxstc.wxSTC_EOL_CRLF
+  or edcfg.defaulteol == wxstc.wxSTC_EOL_LF then
     editor:SetEOLMode(edcfg.defaulteol)
   -- else: keep wxStyledTextCtrl default behavior (CRLF on Windows, LF on Unix)
   end
