@@ -78,9 +78,11 @@ local function treeAddDir(tree,parent_id,rootdir)
   end
 
   -- cache the mapping from names to tree items
-  local data = wx.wxLuaTreeItemData()
-  data:SetData(cache)
-  tree:SetItemData(parent_id, data)
+  if ide.wxver >= "2.9.5" then
+    local data = wx.wxLuaTreeItemData()
+    data:SetData(cache)
+    tree:SetItemData(parent_id, data)
+  end
 
   tree:SetItemHasChildren(parent_id,
     tree:GetChildrenCount(parent_id, false) > 0)

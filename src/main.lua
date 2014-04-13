@@ -288,7 +288,9 @@ local function loadPackages(filter)
   loadToTab(filter, "packages", ide.packages, false, ide.proto.Plugin)
   if ide.oshome then
     local userpackages = MergeFullPath(ide.oshome, ".zbstudio/packages")
-    loadToTab(filter, userpackages, ide.packages, false, ide.proto.Plugin)
+    if wx.wxDirExists(userpackages) then
+      loadToTab(filter, userpackages, ide.packages, false, ide.proto.Plugin)
+    end
   end
 
   -- check dependencies and assign file names to each package
