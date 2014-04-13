@@ -51,8 +51,8 @@ cp thirdparty/FuzzyLogicLibrary.dll packaging/built
 # SharpFont for FreeType support
 cp thirdparty/SharpFont* packaging/built
 
-# SDL2#
-cp thirdparty/SDL2\#* packaging/built
+# SDL2-CS
+cp thirdparty/SDL2-CS packaging/built
 
 # Mono.NAT for UPnP support
 cp thirdparty/Mono.Nat.dll packaging/built

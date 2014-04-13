@@ -28,8 +28,8 @@ rm OpenRA.app/Contents/Resources/Tao.Sdl.*
 rm OpenRA.app/Contents/Resources/Tao.Cg.*
 
 # Change the .config to use the packaged SDL
-sed "s/\/Library\/Frameworks\/SDL2.framework/./" OpenRA.app/Contents/Resources/SDL2\#.dll.config > temp
-mv temp OpenRA.app/Contents/Resources/SDL2\#.dll.config
+sed "s/\/Library\/Frameworks\/SDL2.framework/./" OpenRA.app/Contents/Resources/SDL2-CS.dll.config > temp
+mv temp OpenRA.app/Contents/Resources/SDL2-CS.dll.config
 rm temp
 
 # Package app bundle into a zip and clean up

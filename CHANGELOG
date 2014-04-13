@@ -159,6 +159,7 @@ NEW:
 		Modified Teleport activity to use the best/closest open cell to the target destination for teleports (for ChronoshiftPower this only applies on the return trip).
 		Renamed ChronoshiftDeploy trait to PortableChrono.
 		Added LineBuildNode trait to filter which structure(s) a LineBuild actor can be attached to.
+		Updated to SDL 2.0.3 under OSX, which improves platform integration.
 	Server:
 		Message of the day is now shared between all mods and a default motd.txt gets created in the user directory.
 	Asset Browser:
