@@ -729,6 +729,7 @@ function CreateEditor()
 
   if ide.wxver >= "2.9.5" then
     editor:SetExtraAscent(tonumber(edcfg.extraascent) or 0)
+    editor:SetFoldFlags(tonumber(edcfg.foldflags) or wxstc.wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED)
   end
 
   -- allow multiple selection and multi-cursor editing if supported
