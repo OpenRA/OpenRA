@@ -709,7 +709,7 @@ function CreateEditor()
   editor:SetMarginWidth(margin.LINENUMBER,
     editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, linenummask))
 
-  editor:SetMarginWidth(margin.MARKER, 16)
+  editor:SetMarginWidth(margin.MARKER, 18)
   editor:SetMarginType(margin.MARKER, wxstc.wxSTC_MARGIN_SYMBOL)
   editor:SetMarginMask(margin.MARKER, bit.bnot(wxstc.wxSTC_MASK_FOLDERS))
   editor:SetMarginSensitive(margin.MARKER, true)
@@ -718,7 +718,7 @@ function CreateEditor()
   editor:MarkerDefine(StylesGetMarker("breakpoint"))
 
   if edcfg.fold then
-    editor:SetMarginWidth(margin.FOLD, 16)
+    editor:SetMarginWidth(margin.FOLD, 18)
     editor:SetMarginType(margin.FOLD, wxstc.wxSTC_MARGIN_SYMBOL)
     editor:SetMarginMask(margin.FOLD, wxstc.wxSTC_MASK_FOLDERS)
     editor:SetMarginSensitive(margin.FOLD, true)
