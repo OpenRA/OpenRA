@@ -241,7 +241,7 @@ Background@SETTINGS_PANEL:
 					Height:25
 					Align:Right
 					Text:Music Volume:
-				Slider@VIDEO_VOLUME:
+				Slider@MUSIC_VOLUME:
 					X:PARENT_RIGHT - WIDTH - 15
 					Y:73
 					Width:250
@@ -254,7 +254,7 @@ Background@SETTINGS_PANEL:
 					Height:25
 					Align:Right
 					Text:Video Volume:
-				Slider@MUSIC_VOLUME:
+				Slider@VIDEO_VOLUME:
 					X:PARENT_RIGHT - WIDTH - 15
 					Y:103
 					Width:250
