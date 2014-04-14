@@ -59,6 +59,16 @@ Container@PLAYER_WIDGETS:
 			Width:320
 			Height: 32
 			Children:
+				Button@BEACON_BUTTON:
+					X:3-36
+					Width:34
+					Height:28
+					TooltipText: Place Beacon
+					TooltipContainer:TOOLTIP_CONTAINER
+					VisualHeight:0
+					Children:
+						Image@ICON:
+							ImageCollection:order-icons
 				Button@SELL_BUTTON:
 					X:3
 					Width:34
@@ -84,19 +94,6 @@ Container@PLAYER_WIDGETS:
 					Width:34
 					Height:28
 					TooltipText: Repair
-					TooltipContainer:TOOLTIP_CONTAINER
-					VisualHeight:0
-					Children:
-						Image@ICON:
-							ImageCollection:order-icons
-				Button@BEACON_BUTTON:
-					X:75
-					# Hidden offscreen so that the shortcut still works
-					# while we wait for new button art to be created
-					Y:0-100
-					Width:34
-					Height:28
-					TooltipText: Place Beacon
 					TooltipContainer:TOOLTIP_CONTAINER
 					VisualHeight:0
 					Children:

@@ -2,7 +2,8 @@
 	Building:
 		Adjacent: 4
 		TerrainTypes: Rock
-		BuildSounds: BUILD1.WAV
+		BuildSounds: CHUNG.WAV
+		SellSounds: CHUNG.WAV
 		AllowInvalidPlacement: true
 	LaysTerrain:
 		Template: 88

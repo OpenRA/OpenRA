@@ -185,15 +185,15 @@ order-icons: buttons.png
 	power: 0,56,34,28
 	power-disabled: 68,56,34,28
 	power-active: 34,56,34,28
-	beacon: 0,56,34,28
-	beacon-disabled: 68,56,34,28
-	beacon-active: 34,56,34,28
+	beacon: 0,84,34,28
+	beacon-disabled: 68,84,34,28
+	beacon-active: 34,84,34,28
 
 flags: buttons.png
-	gdi: 30,84,30,15
-	nod: 0,84,30,15
-	random: 60,84,30,15
-	spectator: 60,84,30,15
+	gdi: 30,112,30,15
+	nod: 0,112,30,15
+	random: 60,112,30,15
+	spectator: 60,112,30,15
 
 music: musicplayer.png
 	pause: 0,0,25,25
@@ -205,10 +205,10 @@ music: musicplayer.png
 	slowmo: 168,0,25,25
 
 scrollbar: buttons.png
-	down_arrow: 16,112,16,16
-	down_pressed: 16,112,16,16
-	up_arrow: 32,112,16,16
-	up_pressed: 32,112,16,16
+	down_arrow: 16,140,16,16
+	down_pressed: 16,140,16,16
+	up_arrow: 32,140,16,16
+	up_pressed: 32,140,16,16
 
 # A copy of dialog3 (pressed button)
 progressbar-bg: dialog.png
@@ -465,7 +465,7 @@ checkbox: dialog.png
 	corner-br: 767,127,1,1
 
 checkbox-bits: buttons.png
-	checked: 0,112,16,16
+	checked: 0,140,16,16
 
 checkbox-hover: dialog.png
 	background: 641,129,126,126
