@@ -100,6 +100,7 @@ NEW:
 		Fixed Gem Mines having an incorrect land footprint.
 		Removed Mobile Radar Jammer's jamming effect for allied missiles.
 		Increased the HP of husks from 140 to 280.
+		Fixed incorrect Red Alert dialog corners.
 	Tiberian Dawn:
 		Engineers can now regain control over husks.
 		Chinook rotors now counter-rotate.
