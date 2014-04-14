@@ -39,6 +39,7 @@
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
+	ScriptTriggers:
 
 ^Wall:
 	AppearsOnRadar:
@@ -77,6 +78,7 @@
 	BodyOrientation:
 	LuaScriptEvents:
 	Demolishable:
+	ScriptTriggers:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -129,6 +131,7 @@
 	BodyOrientation:
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
@@ -199,6 +202,7 @@
 		CameraPitch: 90
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -232,4 +236,5 @@
 		CameraPitch: 90
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 

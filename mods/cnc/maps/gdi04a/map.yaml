@@ -520,10 +520,10 @@ Actors:
 		Location: 11,52
 		Owner: Neutral
 	GDIReinforcementsEntry: waypoint
-		Location: 7, 50
+		Location: 7,50
 		Owner: Neutral
 	Auto1Trigger: waypoint
-		Location: 52, 47
+		Location: 52,47
 		Owner: Neutral
 	NodHeliEntry: waypoint
 		Location: 41,23
@@ -561,6 +561,7 @@ Rules:
 		-GiveCashCrateAction:
 		-ExplodeCrateAction@fire:
 		-CloakCrateAction:
+		ScriptTriggers:
 
 Sequences:
 

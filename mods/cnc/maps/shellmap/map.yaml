@@ -993,8 +993,8 @@ Rules:
 		PlayMusicOnMapLoad:
 			Music: map1
 			Loop: true
-		LuaScriptInterface:
-			LuaScripts: shellmap.lua
+		LuaScript:
+			Scripts: shellmap.lua
 		LoadWidgetAtGameStart:
 			Widget: MENU_BACKGROUND
 	LST:

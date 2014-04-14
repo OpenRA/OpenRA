@@ -242,6 +242,13 @@ namespace OpenRA.Utility
 						node.Key = "MaxDistance";
 				}
 
+				// Added new Lua API
+				if (engineVersion < 20140421)
+				{
+					if (depth == 0 && node.Value.Nodes.Any(n => n.Key == "LuaScriptEvents"))
+						node.Value.Nodes.Add(new MiniYamlNode("ScriptTriggers", ""));
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
