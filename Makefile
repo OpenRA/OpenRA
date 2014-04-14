@@ -288,6 +288,7 @@ all: dependencies core tools
 
 clean:
 	@-$(RM_F) *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+	@-$(RM_R) ./*/obj ./*/bin
 
 distclean: clean
 
