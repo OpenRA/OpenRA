@@ -1,4 +1,4 @@
-NEW:
+﻿NEW:
 	All Mods:
 		Added the ability to place map beacons for highlighting areas to teammates (Hotkey: F9).
 		The default pause hotkey has changed to F8.
@@ -100,6 +100,7 @@ NEW:
 		Fixed Gem Mines having an incorrect land footprint.
 		Removed Mobile Radar Jammer's jamming effect for allied missiles.
 		Increased the HP of husks from 140 to 280.
+		Fixed incorrect Red Alert dialog corners
 	Tiberian Dawn:
 		Engineers can now regain control over husks.
 		Chinook rotors now counter-rotate.
