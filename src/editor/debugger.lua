@@ -214,7 +214,8 @@ local function debuggerToggleViews(show)
     local pane = bar and view or mgr:GetPane(view)
     if show then -- starting debugging and pane is not shown
       debugger.toggleview[view] = not pane:IsShown()
-      if debugger.toggleview[view] and (needed or bar) then
+      if debugger.toggleview[view] and (needed or bar)
+      and (not bar or not ide.frame:IsFullScreen()) then
         pane:Show()
         refresh = true
       end
