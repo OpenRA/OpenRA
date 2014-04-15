@@ -490,15 +490,21 @@ PackageEventHandle("onAppLoad")
 -- wxwidgets has a bug that leaves a small artifact on the screen
 -- when toolbar is shown after initially being hidden and the main
 -- frame is maximized.
--- Show the toolbar and hide it after showing the frame, which fixes the issue.
-local toolbarfix = ide.osname == 'Windows'
+-- Similarly, the status bar content is drawn incorrectly if it is shown
+-- after being initially hidden.
+-- Show the *bar and hide it after showing the frame, which fixes the issue.
+local toolbarfix = ide.osname == 'Windows' and ide.frame:IsMaximized()
   and not ide.frame:GetToolBar():IsShown()
-  and ide.frame:IsMaximized()
+local statusbarfix = ide.osname == 'Windows'
+  and not ide.frame:GetStatusBar():IsShown()
+
 if toolbarfix then ide.frame:GetToolBar():Show(true) end
+if statusbarfix then ide.frame:GetStatusBar():Show(true) end
 
 ide.frame:Show(true)
 
 if toolbarfix then ide.frame:GetToolBar():Show(false) end
+if statusbarfix then ide.frame:GetStatusBar():Show(false) end
 
 wx.wxGetApp():MainLoop()
 
