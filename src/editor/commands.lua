@@ -868,6 +868,12 @@ local function closeWindow(event)
 
   PackageEventHandle("onAppClose")
 
+  -- first need to detach all processes IDE has launched as the current
+  -- process is likely to terminate before child processes are terminated,
+  -- which may lead to a crash when EVT_END_PROCESS event is called.
+  DetachChildProcess()
+  DebuggerShutdown()
+
   SettingsSaveAll()
   ide.settings:Flush()
 
@@ -881,12 +887,6 @@ local function closeWindow(event)
   frame.uimgr:Update() -- hide floating panes
   frame.uimgr:UnInit()
   frame:Hide() -- hide the main frame while the IDE exits
-
-  -- first need to detach all processes IDE has launched as the current
-  -- process is likely to terminate before child processes are terminated,
-  -- which may lead to a crash when EVT_END_PROCESS event is called.
-  DetachChildProcess()
-  DebuggerShutdown()
 
   if ide.session.timer then ide.session.timer:Stop() end
 
