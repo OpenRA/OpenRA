@@ -404,6 +404,7 @@ function SettingsRestoreView()
   end
 
   frame:GetToolBar():Show(settingsReadSafe(settings,"toolbar",true))
+  frame:GetStatusBar():Show(settingsReadSafe(settings,"statusbar",true))
 
   uimgr:Update()
   
@@ -452,6 +453,7 @@ function SettingsSaveView()
   settings:Write("nblayout",   saveNotebook(frame.notebook))
   settings:Write("nbbtmlayout",saveNotebook(frame.bottomnotebook))
   settings:Write("toolbar",frame:GetToolBar():IsShown())
+  settings:Write("statusbar",frame:GetStatusBar():IsShown())
 
   settings:SetPath(path)
 end

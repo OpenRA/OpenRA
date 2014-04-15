@@ -13,6 +13,7 @@ local viewMenu = wx.wxMenu {
   { ID_VIEWCALLSTACK, TR("&Stack Window")..KSC(ID_VIEWCALLSTACK), TR("View the stack window"), wx.wxITEM_CHECK },
   { },
   { ID_VIEWTOOLBAR, TR("&Tool Bar")..KSC(ID_VIEWTOOLBAR), TR("Show/Hide the toolbar"), wx.wxITEM_CHECK },
+  { ID_VIEWSTATUSBAR, TR("&Status Bar")..KSC(ID_VIEWSTATUSBAR), TR("Show/Hide the status bar"), wx.wxITEM_CHECK },
   { },
   { ID_VIEWDEFAULTLAYOUT, TR("&Default Layout")..KSC(ID_VIEWDEFAULTLAYOUT), TR("Reset to default layout") },
   { ID_VIEWFULLSCREEN, TR("Full &Screen")..KSC(ID_VIEWFULLSCREEN), TR("Switch to or from full screen mode") },
@@ -96,5 +97,13 @@ frame:Connect(ID_VIEWTOOLBAR, wx.wxEVT_COMMAND_MENU_SELECTED,
   end)
 frame:Connect(ID_VIEWTOOLBAR, wx.wxEVT_UPDATE_UI,
   function (event) menuBar:Check(event:GetId(), frame:GetToolBar():IsShown()) end)
+
+frame:Connect(ID_VIEWSTATUSBAR, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event)
+    frame:GetStatusBar():Show(menuBar:IsChecked(event:GetId()))
+    uimgr:Update()
+  end)
+frame:Connect(ID_VIEWSTATUSBAR, wx.wxEVT_UPDATE_UI,
+  function (event) menuBar:Check(event:GetId(), frame:GetStatusBar():IsShown()) end)
 
 for id in pairs(panels) do frame:Connect(id, wx.wxEVT_UPDATE_UI, checkPanel) end
