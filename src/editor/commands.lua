@@ -666,6 +666,9 @@ function SetOpenFiles(nametab,params)
 end
 
 local beforeFullScreenPerspective
+local statusbarShown
+local toolbarShown
+
 function ShowFullScreen(setFullScreen)
   if setFullScreen then
     beforeFullScreenPerspective = uimgr:SavePerspective()
@@ -687,6 +690,9 @@ function ShowFullScreen(setFullScreen)
   -- need to turn off before showing full screen and turn on after,
   -- otherwise the window is restored incorrectly and is reduced in size.
   if ide.osname == 'Macintosh' and setFullScreen then
+    statusbarShown = frame:GetStatusBar():IsShown()
+    toolbarShown = frame:GetToolBar():IsShown()
+
     frame:GetStatusBar():Hide()
     frame:GetToolBar():Hide()
   end
@@ -695,8 +701,8 @@ function ShowFullScreen(setFullScreen)
   pcall(function() frame:ShowFullScreen(setFullScreen) end)
 
   if ide.osname == 'Macintosh' and not setFullScreen then
-    frame:GetStatusBar():Show()
-    frame:GetToolBar():Show()
+    if statusbarShown then frame:GetStatusBar():Show() end
+    if toolbarShown then frame:GetToolBar():Show() end
   end
 end
 
