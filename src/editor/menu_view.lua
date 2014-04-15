@@ -12,6 +12,8 @@ local viewMenu = wx.wxMenu {
   { ID_VIEWWATCHWINDOW, TR("&Watch Window")..KSC(ID_VIEWWATCHWINDOW), TR("View the watch window"), wx.wxITEM_CHECK },
   { ID_VIEWCALLSTACK, TR("&Stack Window")..KSC(ID_VIEWCALLSTACK), TR("View the stack window"), wx.wxITEM_CHECK },
   { },
+  { ID_VIEWTOOLBAR, TR("&Tool Bar")..KSC(ID_VIEWTOOLBAR), TR("Show/Hide the toolbar"), wx.wxITEM_CHECK },
+  { },
   { ID_VIEWDEFAULTLAYOUT, TR("&Default Layout")..KSC(ID_VIEWDEFAULTLAYOUT), TR("Reset to default layout") },
   { ID_VIEWFULLSCREEN, TR("Full &Screen")..KSC(ID_VIEWFULLSCREEN), TR("Switch to or from full screen mode") },
 }
@@ -53,19 +55,17 @@ local panels = {
 
 local function togglePanel(event)
   local panel = panels[event:GetId()]
-  local mgr = ide.frame.uimgr
-  local shown = not mgr:GetPane(panel):IsShown()
-  mgr:GetPane(panel):Show(shown)
-  mgr:Update()
+  local shown = not uimgr:GetPane(panel):IsShown()
+  uimgr:GetPane(panel):Show(shown)
+  uimgr:Update()
 
   return shown
 end
 
 local function checkPanel(event)
-  local menubar = ide.frame.menuBar
-  local pane = ide.frame.uimgr:GetPane(panels[event:GetId()])
-  menubar:Enable(event:GetId(), pane:IsOk()) -- disable if doesn't exist
-  menubar:Check(event:GetId(), pane:IsOk() and pane:IsShown())
+  local pane = uimgr:GetPane(panels[event:GetId()])
+  menuBar:Enable(event:GetId(), pane:IsOk()) -- disable if doesn't exist
+  menuBar:Check(event:GetId(), pane:IsOk() and pane:IsShown())
 end
 
 frame:Connect(ID_VIEWDEFAULTLAYOUT, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -88,5 +88,13 @@ frame:Connect(ID_VIEWWATCHWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) if togglePanel(event) then DebuggerRefreshPanels() end end)
 frame:Connect(ID_VIEWCALLSTACK, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) if togglePanel(event) then DebuggerRefreshPanels() end end)
+
+frame:Connect(ID_VIEWTOOLBAR, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event)
+    frame:GetToolBar():Show(menuBar:IsChecked(event:GetId()))
+    uimgr:Update()
+  end)
+frame:Connect(ID_VIEWTOOLBAR, wx.wxEVT_UPDATE_UI,
+  function (event) menuBar:Check(event:GetId(), frame:GetToolBar():IsShown()) end)
 
 for id in pairs(panels) do frame:Connect(id, wx.wxEVT_UPDATE_UI, checkPanel) end

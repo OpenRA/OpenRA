@@ -402,6 +402,9 @@ function SettingsRestoreView()
     -- it is set now (which affects its translation)
     uimgr:GetPane("projpanel"):Caption(TR("Project"))
   end
+
+  frame:GetToolBar():Show(settingsReadSafe(settings,"toolbar",true))
+
   uimgr:Update()
   
   local layoutcur = saveNotebook(frame.bottomnotebook)
@@ -448,6 +451,7 @@ function SettingsSaveView()
   settings:Write("uimgrlayout",uimgr:SavePerspective())
   settings:Write("nblayout",   saveNotebook(frame.notebook))
   settings:Write("nbbtmlayout",saveNotebook(frame.bottomnotebook))
+  settings:Write("toolbar",frame:GetToolBar():IsShown())
 
   settings:SetPath(path)
 end
