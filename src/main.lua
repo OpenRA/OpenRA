@@ -487,7 +487,19 @@ resumePrint()
 
 PackageEventHandle("onAppLoad")
 
+-- wxwidgets has a bug that leaves a small artifact on the screen
+-- when toolbar is shown after initially being hidden and the main
+-- frame is maximized.
+-- Show the toolbar and hide it after showing the frame, which fixes the issue.
+local toolbarfix = ide.osname == 'Windows'
+  and not ide.frame:GetToolBar():IsShown()
+  and ide.frame:IsMaximized()
+if toolbarfix then ide.frame:GetToolBar():Show(true) end
+
 ide.frame:Show(true)
+
+if toolbarfix then ide.frame:GetToolBar():Show(false) end
+
 wx.wxGetApp():MainLoop()
 
 -- There are several reasons for this call:
