@@ -298,7 +298,7 @@ CHAMSPY:
 CYBORG:
 	Inherits: ^Infantry
 	Armor:
-		Type: Heavy
+		Type: Light
 	Valued:
 		Cost: 650
 	Tooltip:
