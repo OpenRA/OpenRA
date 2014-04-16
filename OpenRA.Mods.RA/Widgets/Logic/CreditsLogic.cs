@@ -10,7 +10,7 @@
 #endregion
 
 using System;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var template = scrollPanel.Get<LabelWidget>("CREDITS_TEMPLATE");
 			scrollPanel.RemoveChildren();
 
-			var lines = FileSystem.Open("AUTHORS").ReadAllLines();
+			var lines = GlobalFileSystem.Open("AUTHORS").ReadAllLines();
 			foreach (var l in lines)
 			{
 				// Improve the formatting

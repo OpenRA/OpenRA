@@ -11,7 +11,7 @@
 using System;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using XRandom = OpenRA.Thirdparty.Random;
+using XRandom = OpenRA.Support.Random;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {

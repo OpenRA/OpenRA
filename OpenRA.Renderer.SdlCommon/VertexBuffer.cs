@@ -10,7 +10,7 @@
 
 using System;
 using System.Runtime.InteropServices;
-using OpenRA.FileFormats.Graphics;
+using OpenRA.Graphics;
 using Tao.OpenGl;
 
 namespace OpenRA.Renderer.SdlCommon

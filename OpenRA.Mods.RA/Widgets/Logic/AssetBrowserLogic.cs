@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
 		{
 			panel = widget;
-			assetSource = FileSystem.MountedFolders.First();
+			assetSource = GlobalFileSystem.MountedFolders.First();
 
 			var ticker = panel.GetOrNull<LogicTickerWidget>("ANIMATION_TICKER");
 			if (ticker != null)
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (string.IsNullOrEmpty(filename))
 				return false;
 
-			if (!FileSystem.Exists(filename))
+			if (!GlobalFileSystem.Exists(filename))
 				return false;
 
 			currentFilename = filename;
@@ -212,9 +212,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 
 			// TODO: Re-enable "All Packages" once list generation is done in a background thread
-			// var sources = new[] { (IFolder)null }.Concat(FileSystem.MountedFolders);
+			// var sources = new[] { (IFolder)null }.Concat(GlobalFileSystem.MountedFolders);
 
-			var sources = FileSystem.MountedFolders;
+			var sources = GlobalFileSystem.MountedFolders;
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, sources, setupItem);
 			return true;
 		}
@@ -226,7 +226,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			// TODO: This is too slow to run in the main thread
 			// var files = AssetSource != null ? AssetSource.AllFileNames() :
-			// FileSystem.MountedFolders.SelectMany(f => f.AllFileNames());
+			// GlobalFileSystem.MountedFolders.SelectMany(f => f.AllFileNames());
 
 			if (assetSource == null)
 				return;

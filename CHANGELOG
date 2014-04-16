@@ -131,6 +131,7 @@ NEW:
 		Fixed Chinook being unable to land on tiberium.
 		Commando will no longer shoot at vehicles or buildings.
 	Engine:
+		The contents of OpenRA.FileFormats.dll have been merged into OpenRA.Game.exe, and namespaces reorganized.
 		Converted Aircraft CruiseAltitude to world coordinates.
 		Converted Health Radius to world coordinates.
 		Converted production exits to world coordinates.

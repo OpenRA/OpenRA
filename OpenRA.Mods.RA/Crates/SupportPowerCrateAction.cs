@@ -9,7 +9,7 @@
 #endregion
 
 using OpenRA.Traits;
-using OpenRA.FileFormats;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.RA.Crates
 {

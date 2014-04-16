@@ -17,10 +17,10 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
-
-using OpenRA.FileFormats;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Primitives;
 
 using XTimer = System.Timers.Timer;
 
@@ -39,7 +39,7 @@ namespace OpenRA.Server
 		public readonly int Port;
 
 		int randomSeed;
-		public readonly Thirdparty.Random Random = new Thirdparty.Random();
+		public readonly Support.Random Random = new Support.Random();
 
 		// Valid player connections
 		public List<Connection> Conns = new List<Connection>();

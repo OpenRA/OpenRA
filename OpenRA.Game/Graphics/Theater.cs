@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Graphics
 {
@@ -28,7 +28,7 @@ namespace OpenRA.Graphics
 			ISpriteSource source;
 			if (!sourceCache.ContainsKey(filename))
 			{
-				using (var s = FileSystem.OpenWithExts(filename, exts))
+				using (var s = GlobalFileSystem.OpenWithExts(filename, exts))
 					source = SpriteSource.LoadSpriteSource(s, filename);
 
 				if (source.CacheWhenLoadingTileset)

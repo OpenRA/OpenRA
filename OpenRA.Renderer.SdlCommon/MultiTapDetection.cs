@@ -10,7 +10,7 @@
 
 using System;
 using OpenRA;
-using OpenRA.FileFormats;
+using OpenRA.Primitives;
 
 public static class MultiTapDetection
 {

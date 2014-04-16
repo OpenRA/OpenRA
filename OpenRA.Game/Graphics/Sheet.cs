@@ -12,7 +12,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using OpenRA.FileFormats;
-using OpenRA.FileFormats.Graphics;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Graphics
 {
@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 
 		public Sheet(string filename)
 		{
-			var bitmap = (Bitmap)Image.FromStream(FileSystem.Open(filename));
+			var bitmap = (Bitmap)Image.FromStream(GlobalFileSystem.Open(filename));
 			Size = bitmap.Size;
 
 			data = new byte[4*Size.Width*Size.Height];

@@ -10,8 +10,8 @@
 
 using System.Linq;
 using OpenRA.Effects;
-using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

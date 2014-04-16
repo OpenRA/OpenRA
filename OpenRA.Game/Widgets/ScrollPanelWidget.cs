@@ -11,7 +11,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats.Primitives;
+using OpenRA.Primitives;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets

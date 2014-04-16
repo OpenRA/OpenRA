@@ -78,11 +78,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\Tao\Tao.OpenAl.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
-    <Compile Include="ActorInitializer.cs" />
-    <Compile Include="ActorReference.cs" />
     <Compile Include="Graphics\QuadRenderer.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\MusicInfo.cs" />
     <Compile Include="GameRules\Rules.cs" />
-    <Compile Include="GameRules\Settings.cs" />
     <Compile Include="GameRules\SoundInfo.cs" />
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Graphics\Animation.cs" />
@@ -119,7 +119,6 @@
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="InputHandler.cs" />
-    <Compile Include="Map.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\FrameData.cs" />
@@ -228,17 +227,96 @@
     <Compile Include="Traits\World\ActorMap.cs" />
     <Compile Include="Widgets\HotkeyEntryWidget.cs" />
     <Compile Include="Effects\MoveFlash.cs" />
-    <Compile Include="MapCache.cs" />
-    <Compile Include="MapPreview.cs" />
     <Compile Include="Widgets\SpriteWidget.cs" />
     <Compile Include="Widgets\SpriteSequenceWidget.cs" />
     <Compile Include="Widgets\RGBASpriteWidget.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
-      <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
-      <Name>OpenRA.FileFormats</Name>
-    </ProjectReference>
+    <Compile Include="FileSystem\D2kSoundResources.cs" />
+    <Compile Include="FileSystem\Folder.cs" />
+    <Compile Include="FileSystem\InstallShieldPackage.cs" />
+    <Compile Include="FileSystem\MixFile.cs" />
+    <Compile Include="FileSystem\Pak.cs" />
+    <Compile Include="FileSystem\ZipFile.cs" />
+    <Compile Include="Map\PlayerReference.cs" />
+    <Compile Include="Map\SmudgeReference.cs" />
+    <Compile Include="Map\TileReference.cs" />
+    <Compile Include="Map\TileSet.cs" />
+    <Compile Include="FieldLoader.cs" />
+    <Compile Include="FieldSaver.cs" />
+    <Compile Include="InstallUtils.cs" />
+    <Compile Include="Manifest.cs" />
+    <Compile Include="IGraphicsDevice.cs" />
+    <Compile Include="IInputHandler.cs" />
+    <Compile Include="Graphics\Vertex.cs" />
+    <Compile Include="FileFormats\AudLoader.cs" />
+    <Compile Include="FileFormats\Blast.cs" />
+    <Compile Include="FileFormats\Blowfish.cs" />
+    <Compile Include="FileFormats\BlowfishKeyProvider.cs" />
+    <Compile Include="FileFormats\CRC32.cs" />
+    <Compile Include="FileFormats\Format2.cs" />
+    <Compile Include="FileFormats\Format40.cs" />
+    <Compile Include="FileFormats\Format80.cs" />
+    <Compile Include="FileFormats\IniFile.cs" />
+    <Compile Include="FileFormats\WavLoader.cs" />
+    <Compile Include="FileFormats\XccGlobalDatabase.cs" />
+    <Compile Include="FileFormats\XccLocalDatabase.cs" />
+    <Compile Include="FileFormats\HvaReader.cs" />
+    <Compile Include="FileFormats\PngLoader.cs" />
+    <Compile Include="FileFormats\R8Reader.cs" />
+    <Compile Include="FileFormats\ShpD2Reader.cs" />
+    <Compile Include="FileFormats\ShpReader.cs" />
+    <Compile Include="FileFormats\ShpTSReader.cs" />
+    <Compile Include="FileFormats\TmpRAReader.cs" />
+    <Compile Include="FileFormats\TmpTDReader.cs" />
+    <Compile Include="FileFormats\TmpTSReader.cs" />
+    <Compile Include="FileFormats\VqaReader.cs" />
+    <Compile Include="FileFormats\VxlReader.cs" />
+    <Compile Include="Primitives\ActionQueue.cs" />
+    <Compile Include="Primitives\Bits.cs" />
+    <Compile Include="Primitives\Cache.cs" />
+    <Compile Include="Primitives\Cached.cs" />
+    <Compile Include="Primitives\DisposableAction.cs" />
+    <Compile Include="Primitives\float2.cs" />
+    <Compile Include="Primitives\int2.cs" />
+    <Compile Include="Primitives\IObservableCollection.cs" />
+    <Compile Include="Primitives\ObservableCollection.cs" />
+    <Compile Include="Primitives\ObservableDictionary.cs" />
+    <Compile Include="Primitives\Pair.cs" />
+    <Compile Include="Primitives\PriorityQueue.cs" />
+    <Compile Include="Primitives\Set.cs" />
+    <Compile Include="Support\Log.cs" />
+    <Compile Include="Support\Stopwatch.cs" />
+    <Compile Include="Support\Timer.cs" />
+    <Compile Include="Exts.cs" />
+    <Compile Include="Hotkey.cs" />
+    <Compile Include="Keycode.cs" />
+    <Compile Include="MiniYaml.cs" />
+    <Compile Include="Mod.cs" />
+    <Compile Include="Platform.cs" />
+    <Compile Include="StreamExts.cs" />
+    <Compile Include="Map\Map.cs" />
+    <Compile Include="Map\MapCache.cs" />
+    <Compile Include="Map\MapPreview.cs" />
+    <Compile Include="Graphics\HSLColor.cs" />
+    <Compile Include="FileSystem\PackageEntry.cs" />
+    <Compile Include="CPos.cs" />
+    <Compile Include="CVec.cs" />
+    <Compile Include="WAngle.cs" />
+    <Compile Include="WPos.cs" />
+    <Compile Include="WRange.cs" />
+    <Compile Include="WRot.cs" />
+    <Compile Include="WVec.cs" />
+    <Compile Include="Primitives\TypeDictionary.cs" />
+    <Compile Include="Support\Random.cs" />
+    <Compile Include="Map\ActorInitializer.cs" />
+    <Compile Include="Map\ActorReference.cs" />
+    <Compile Include="Support\Evaluator.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Graphics\SpriteSource.cs" />
+    <Compile Include="Graphics\PlayerColorRemap.cs" />
+    <Compile Include="Graphics\Palette.cs" />
+    <Compile Include="FileSystem\GlobalFileSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

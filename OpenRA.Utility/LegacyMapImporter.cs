@@ -16,6 +16,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using OpenRA.FileFormats;
+using OpenRA.FileSystem;
+using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Utility
@@ -123,7 +126,7 @@ namespace OpenRA.Utility
 
 		public void ConvertIniMap(string iniFile)
 		{
-			var file = new IniFile(FileSystem.Open(iniFile));
+			var file = new IniFile(GlobalFileSystem.Open(iniFile));
 			var basic = file.GetSection("Basic");
 			var mapSection = file.GetSection("Map");
 			var legacyMapFormat = (IniMapFormat)int.Parse(basic.GetValue("NewINIFormat", "0"));
@@ -157,7 +160,7 @@ namespace OpenRA.Utility
 			else
 			{
 				// CnC
-				UnpackCncTileData(FileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"));
+				UnpackCncTileData(GlobalFileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"));
 				ReadCncOverlay(file);
 				ReadCncTrees(file);
 			}
