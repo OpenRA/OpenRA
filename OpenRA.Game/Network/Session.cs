@@ -110,6 +110,13 @@ namespace OpenRA.Network
 			public int Latency = -1;
 			public int LatencyJitter = -1;
 			public int[] LatencyHistory = { };
+
+			public string Serialize()
+			{
+				var clientData = new List<MiniYamlNode>();
+				clientData.Add(new MiniYamlNode("Client@{0}".F(this.Index), FieldSaver.Save(this)));
+				return clientData.WriteToString();
+			}
 		}
 
 		public class Slot
@@ -123,6 +130,13 @@ namespace OpenRA.Network
 			public bool LockTeam;
 			public bool LockSpawn;
 			public bool Required;
+
+			public string Serialize()
+			{
+				var slotData = new List<MiniYamlNode>();
+				slotData.Add(new MiniYamlNode("Slot@{0}".F(this.PlayerReference), FieldSaver.Save(this)));
+				return slotData.WriteToString();
+			}
 		}
 
 		public class Global
@@ -144,21 +158,28 @@ namespace OpenRA.Network
 			public string StartingUnitsClass = "none";
 			public bool AllowVersionMismatch;
 			public string GameUid;
+
+			public string Serialize()
+			{
+				var globalData = new List<MiniYamlNode>();
+				globalData.Add(new MiniYamlNode("GlobalSettings", FieldSaver.Save(this)));
+				return globalData.WriteToString();
+			}
 		}
 
 		public string Serialize()
 		{
-			var clientData = new List<MiniYamlNode>();
+			var sessionData = new System.Text.StringBuilder();
 
 			foreach (var client in Clients)
-				clientData.Add(new MiniYamlNode("Client@{0}".F(client.Index), FieldSaver.Save(client)));
+				sessionData.Append(client.Serialize());
 
 			foreach (var slot in Slots)
-				clientData.Add(new MiniYamlNode("Slot@{0}".F(slot.Key), FieldSaver.Save(slot.Value)));
+				sessionData.Append(slot.Value.Serialize());
 
-			clientData.Add(new MiniYamlNode("GlobalSettings", FieldSaver.Save(GlobalSettings)));
+			sessionData.Append(GlobalSettings.Serialize());
 
-			return clientData.WriteToString();
+			return sessionData.ToString();
 		}
 	}
 }

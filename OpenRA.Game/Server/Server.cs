@@ -361,7 +361,7 @@ namespace OpenRA.Server
 			else
 				LobbyInfo.GlobalSettings.OrderLatency = 3;
 
-			SyncLobbyInfo();
+			SyncLobbyGlobalSettings();
 		}
 
 		public void UpdateInFlightFrames(Connection conn)
@@ -485,7 +485,7 @@ namespace OpenRA.Server
 					fromClient.LatencyHistory = history.ToArray();
 
 					if (State == ServerState.WaitingPlayers)
-						SyncLobbyInfo();
+						SyncLobbyClients(); // TODO: SyncClientLatency
 
 					break;
 				}
@@ -545,7 +545,7 @@ namespace OpenRA.Server
 				}
 
 				if (Conns.Any() || LobbyInfo.GlobalSettings.Dedicated)
-					SyncLobbyInfo();
+					SyncLobbyClients();
 
 				if (!LobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
 					Shutdown();
@@ -565,6 +565,50 @@ namespace OpenRA.Server
 			if (State == ServerState.WaitingPlayers) // Don't do this while the game is running, it breaks things!
 				DispatchOrders(null, 0,
 					new ServerOrder("SyncInfo", LobbyInfo.Serialize()).Serialize());
+
+			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+				t.LobbyInfoSynced(this);
+		}
+
+		public void SyncLobbyClients()
+		{
+			if (State != ServerState.WaitingPlayers)
+				return;
+
+			var clientData = new System.Text.StringBuilder();
+			foreach (var client in LobbyInfo.Clients)
+				clientData.Append(client.Serialize());
+
+			DispatchOrders(null, 0,
+				new ServerOrder("SyncLobbyClients", clientData.ToString()).Serialize());
+
+			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+				t.LobbyInfoSynced(this);
+		}
+
+		public void SyncLobbySlots()
+		{
+			if (State != ServerState.WaitingPlayers)
+				return;
+
+			var slotData = new System.Text.StringBuilder();
+			foreach (var slot in LobbyInfo.Slots)
+				slotData.Append(slot.Value.Serialize());
+
+			DispatchOrders(null, 0,
+				new ServerOrder("SyncLobbySlots", slotData.ToString()).Serialize());
+
+			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+				t.LobbyInfoSynced(this);
+		}
+
+		public void SyncLobbyGlobalSettings()
+		{
+			if (State != ServerState.WaitingPlayers)
+				return;
+
+			DispatchOrders(null, 0,
+				new ServerOrder("SyncLobbyGlobalSettings", LobbyInfo.GlobalSettings.Serialize()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
