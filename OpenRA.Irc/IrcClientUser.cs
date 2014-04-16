@@ -10,7 +10,7 @@
 
 using System;
 using System.Linq;
-using OpenRA.FileFormats.Primitives;
+using OpenRA.Primitives;
 
 namespace OpenRA.Irc
 {

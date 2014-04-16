@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
@@ -50,7 +51,7 @@ namespace OpenRA.Widgets
 			OnComplete = () => {};
 
 			cachedVideo = filename;
-			video = new VqaReader(FileSystem.Open(filename));
+			video = new VqaReader(GlobalFileSystem.Open(filename));
 
 			invLength = video.Framerate*1f/video.Frames;
 

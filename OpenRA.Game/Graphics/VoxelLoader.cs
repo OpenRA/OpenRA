@@ -13,7 +13,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.FileFormats.Graphics;
+using OpenRA.FileSystem;
+using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -209,8 +210,8 @@ namespace OpenRA.Graphics
 
 		Voxel LoadFile(Pair<string,string> files)
 		{
-			var vxl = new VxlReader(FileSystem.OpenWithExts(files.First, ".vxl"));
-			var hva = new HvaReader(FileSystem.OpenWithExts(files.Second, ".hva"));
+			var vxl = new VxlReader(GlobalFileSystem.OpenWithExts(files.First, ".vxl"));
+			var hva = new HvaReader(GlobalFileSystem.OpenWithExts(files.Second, ".hva"));
 			return new Voxel(this, vxl, hva);
 		}
 

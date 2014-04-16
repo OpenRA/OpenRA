@@ -12,7 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.GameRules;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 using Tao.OpenAl;
 
@@ -29,16 +31,16 @@ namespace OpenRA
 
 		static ISoundSource LoadSound(string filename)
 		{
-			if (!FileSystem.Exists(filename))
+			if (!GlobalFileSystem.Exists(filename))
 			{
 				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
 				return null;
 			}
 
 			if (filename.ToLowerInvariant().EndsWith("wav"))
-				return LoadWave(new WavLoader(FileSystem.Open(filename)));
+				return LoadWave(new WavLoader(GlobalFileSystem.Open(filename)));
 
-			return LoadSoundRaw(AudLoader.LoadSound(FileSystem.Open(filename)));
+			return LoadSoundRaw(AudLoader.LoadSound(GlobalFileSystem.Open(filename)));
 		}
 
 		static ISoundSource LoadWave(WavLoader wave)

@@ -9,7 +9,6 @@
 #endregion
 
 using System.Drawing;
-using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
 {

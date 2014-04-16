@@ -16,6 +16,7 @@ using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {

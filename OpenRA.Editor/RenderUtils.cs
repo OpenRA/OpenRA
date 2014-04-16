@@ -13,6 +13,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.FileSystem;
+using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Editor
@@ -48,14 +51,14 @@ namespace OpenRA.Editor
 		{
 			var image = RenderSprites.GetImage(info);
 
-			using (var s = FileSystem.OpenWithExts(image, tileset.Extensions))
+			using (var s = GlobalFileSystem.OpenWithExts(image, tileset.Extensions))
 			{
 				var shp = new ShpReader(s);
 				var bitmap = RenderShp(shp, p);
 
 				try
 				{
-					using (var s2 = FileSystem.OpenWithExts(image + "2", tileset.Extensions))
+					using (var s2 = GlobalFileSystem.OpenWithExts(image + "2", tileset.Extensions))
 					{
 						var shp2 = new ShpReader(s2);
 						var roofBitmap = RenderShp(shp2, p);
@@ -78,7 +81,7 @@ namespace OpenRA.Editor
 		public static ResourceTemplate RenderResourceType(ResourceTypeInfo info, string[] exts, Palette p)
 		{
 			var image = info.EditorSprite;
-			using (var s = FileSystem.OpenWithExts(image, exts))
+			using (var s = GlobalFileSystem.OpenWithExts(image, exts))
 			{
 				// TODO: Do this properly
 				var shp = new ShpReader(s) as ISpriteSource;

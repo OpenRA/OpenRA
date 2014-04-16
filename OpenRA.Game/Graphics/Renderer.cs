@@ -15,8 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using OpenRA.FileFormats;
-using OpenRA.FileFormats.Graphics;
 using OpenRA.Support;
 
 namespace OpenRA.Graphics

@@ -9,7 +9,7 @@
 #endregion
 
 using System.IO;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 		public void InitPalette(WorldRenderer wr)
 		{
 			var colors = new uint[256];
-			using (var s = FileSystem.Open(info.Filename))
+			using (var s = GlobalFileSystem.Open(info.Filename))
 			{
 				s.Seek(info.Offset, SeekOrigin.Begin);
 

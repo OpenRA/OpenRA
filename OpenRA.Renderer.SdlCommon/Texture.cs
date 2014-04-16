@@ -12,7 +12,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using OpenRA.FileFormats.Graphics;
+using OpenRA.Graphics;
 using Tao.OpenGl;
 
 namespace OpenRA.Renderer.SdlCommon

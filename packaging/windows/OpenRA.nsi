@@ -66,7 +66,6 @@ Section "Game" GAME
 	SetOutPath "$INSTDIR"
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
-	File "${SRCDIR}\OpenRA.FileFormats.dll"
 	File "${SRCDIR}\OpenRA.Renderer.SdlCommon.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Gl.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Cg.dll"
@@ -184,7 +183,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Game.exe
 	Delete $INSTDIR\OpenRA.Utility.exe
 	Delete $INSTDIR\OpenRA.Editor.exe
-	Delete $INSTDIR\OpenRA.FileFormats.dll
 	Delete $INSTDIR\OpenRA.Renderer.Gl.dll
 	Delete $INSTDIR\OpenRA.Renderer.Cg.dll
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll

@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using OpenRA.FileFormats;
+using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {

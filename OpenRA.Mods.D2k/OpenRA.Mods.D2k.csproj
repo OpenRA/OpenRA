@@ -94,10 +94,6 @@ cd "$(SolutionDir)"</PostBuildEvent>
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
       <Name>OpenRA.Game</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
-      <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
-      <Name>OpenRA.FileFormats</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OpenRA.Mods.RA\OpenRA.Mods.RA.csproj">
       <Project>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</Project>
       <Name>OpenRA.Mods.RA</Name>

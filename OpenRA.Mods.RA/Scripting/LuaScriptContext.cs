@@ -14,7 +14,7 @@ using System.Linq;
 using System.Reflection;
 using NLua;
 using NLua.Event;
-using OpenRA.FileFormats;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.RA.Scripting
 {

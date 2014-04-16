@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-using OpenRA.FileFormats.Primitives;
+using OpenRA.Primitives;
 
 namespace OpenRA.Irc
 {

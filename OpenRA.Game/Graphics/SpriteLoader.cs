@@ -11,6 +11,8 @@
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.FileSystem;
+using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -31,7 +33,7 @@ namespace OpenRA.Graphics
 
 		Sprite[] CacheSpriteFrames(string filename)
 		{
-			var stream = FileSystem.OpenWithExts(filename, exts);
+			var stream = GlobalFileSystem.OpenWithExts(filename, exts);
 			return SpriteSource.LoadSpriteSource(stream, filename).Frames
 				.Select(a => SheetBuilder.Add(a))
 				.ToArray();

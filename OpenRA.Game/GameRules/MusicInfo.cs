@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 
 namespace OpenRA.GameRules
 {
@@ -26,20 +27,20 @@ namespace OpenRA.GameRules
 			var nd = value.NodesDict;
 			var ext = nd.ContainsKey("Extension") ? nd["Extension"].Value : "aud";
 			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key)+"."+ext;
-			if (!FileSystem.Exists(Filename))
+			if (!GlobalFileSystem.Exists(Filename))
 				return;
 
 			Exists = true;
-			Length = (int)AudLoader.SoundLength(FileSystem.Open(Filename));
+			Length = (int)AudLoader.SoundLength(GlobalFileSystem.Open(Filename));
 		}
 
 		public void Reload()
 		{
-			if (!FileSystem.Exists(Filename))
+			if (!GlobalFileSystem.Exists(Filename))
 				return;
 
 			Exists = true;
-			Length = (int)AudLoader.SoundLength(FileSystem.Open(Filename));
+			Length = (int)AudLoader.SoundLength(GlobalFileSystem.Open(Filename));
 		}
 	}
 }

@@ -10,8 +10,8 @@
 
 using System;
 using System.IO;
-using OpenRA.FileFormats;
-using OpenRA.FileFormats.Graphics;
+using OpenRA.FileSystem;
+using OpenRA.Graphics;
 using OpenRA.Renderer.SdlCommon;
 
 namespace OpenRA.Renderer.Cg
@@ -26,7 +26,7 @@ namespace OpenRA.Renderer.Cg
 		{
 			this.dev = dev;
 			string code;
-			using (var file = new StreamReader(FileSystem.Open("cg{0}{1}.fx".F(Path.DirectorySeparatorChar, name))))
+			using (var file = new StreamReader(GlobalFileSystem.Open("cg{0}{1}.fx".F(Path.DirectorySeparatorChar, name))))
 				code = file.ReadToEnd();
 			effect = Tao.Cg.Cg.cgCreateEffect(dev.Context, code, null);
 

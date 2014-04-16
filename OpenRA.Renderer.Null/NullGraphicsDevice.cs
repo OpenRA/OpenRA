@@ -10,7 +10,8 @@
 
 using System;
 using System.Drawing;
-using OpenRA.FileFormats.Graphics;
+using OpenRA;
+using OpenRA.Graphics;
 
 [assembly: Renderer(typeof(OpenRA.Renderer.Null.DeviceFactory))]
 

@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Traits;
 
 namespace OpenRA.Lint
@@ -50,7 +50,7 @@ namespace OpenRA.Lint
 				ObjectCreator.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 
-				AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
+				AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 				Game.modData = new ModData(mod);
 
 				IEnumerable<Map> maps;

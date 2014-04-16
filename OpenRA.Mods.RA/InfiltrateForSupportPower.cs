@@ -8,8 +8,8 @@
  */
 #endregion
 
+using OpenRA.Primitives;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {

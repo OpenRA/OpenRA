@@ -10,7 +10,8 @@
 
 using System;
 using System.Drawing;
-using OpenRA.FileFormats.Graphics;
+using OpenRA;
+using OpenRA.Graphics;
 using OpenRA.Renderer.SdlCommon;
 using Tao.Cg;
 

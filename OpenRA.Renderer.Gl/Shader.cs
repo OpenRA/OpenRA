@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using OpenRA.FileFormats;
-using OpenRA.FileFormats.Graphics;
+using OpenRA.FileSystem;
+using OpenRA.Graphics;
 using OpenRA.Renderer.SdlCommon;
 using Tao.OpenGl;
 
@@ -29,7 +29,7 @@ namespace OpenRA.Renderer.Glsl
 		{
 			// Vertex shader
 			string vertexCode;
-			using (var file = new StreamReader(FileSystem.Open("glsl{0}{1}.vert".F(Path.DirectorySeparatorChar, name))))
+			using (var file = new StreamReader(GlobalFileSystem.Open("glsl{0}{1}.vert".F(Path.DirectorySeparatorChar, name))))
 				vertexCode = file.ReadToEnd();
 
 			var v = Gl.glCreateShaderObjectARB(Gl.GL_VERTEX_SHADER_ARB);
@@ -47,7 +47,7 @@ namespace OpenRA.Renderer.Glsl
 
 			// Fragment shader
 			string fragmentCode;
-			using (var file = new StreamReader(FileSystem.Open("glsl{0}{1}.frag".F(Path.DirectorySeparatorChar, name))))
+			using (var file = new StreamReader(GlobalFileSystem.Open("glsl{0}{1}.frag".F(Path.DirectorySeparatorChar, name))))
 				fragmentCode = file.ReadToEnd();
 
 			var f = Gl.glCreateShaderObjectARB(Gl.GL_FRAGMENT_SHADER_ARB);

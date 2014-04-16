@@ -17,7 +17,8 @@ using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
-using XRandom = OpenRA.Thirdparty.Random;
+using OpenRA.Primitives;
+using XRandom = OpenRA.Support.Random;
 
 namespace OpenRA.Mods.RA.AI
 {

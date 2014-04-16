@@ -14,14 +14,15 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
-using XRandom = OpenRA.Thirdparty.Random;
+using XRandom = OpenRA.Support.Random;
 
 namespace OpenRA
 {
@@ -279,7 +280,7 @@ namespace OpenRA
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
-			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
+			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
 			Settings = new Settings(Platform.SupportDir + "settings.yaml", args);
 
@@ -299,7 +300,7 @@ namespace OpenRA
 				Settings.Server.AllowPortForward = false;
 			}
 
-			FileSystem.Mount("."); // Needed to access shaders
+			GlobalFileSystem.Mount("."); // Needed to access shaders
 			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", "Gl", "Cg", null };
 			foreach (var r in renderers)
 			{

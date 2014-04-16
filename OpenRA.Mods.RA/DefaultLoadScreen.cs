@@ -12,8 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
@@ -79,7 +80,7 @@ namespace OpenRA.Mods.RA
 		void TestAndContinue()
 		{
 			Ui.ResetAll();
-			if (!info["TestFiles"].Split(',').All(f => FileSystem.Exists(f.Trim())))
+			if (!info["TestFiles"].Split(',').All(f => GlobalFileSystem.Exists(f.Trim())))
 			{
 				var args = new WidgetArgs()
 				{

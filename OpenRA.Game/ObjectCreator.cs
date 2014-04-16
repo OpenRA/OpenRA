@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using OpenRA.FileFormats;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -26,8 +26,6 @@ namespace OpenRA
 			// All the core namespaces
 			var asms = typeof(Game).Assembly.GetNamespaces() // Game
 				.Select(c => Pair.New(typeof(Game).Assembly, c))
-				.Concat(typeof(Mod).Assembly.GetNamespaces() // FileFormats
-				.Select(c => Pair.New(typeof(Mod).Assembly, c)))
 				.ToList();
 
 			// Namespaces from each mod assembly

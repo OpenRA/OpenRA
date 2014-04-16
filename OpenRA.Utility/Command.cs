@@ -17,7 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using OpenRA.FileFormats;
-using OpenRA.FileFormats.Graphics;
+using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -147,11 +147,11 @@ namespace OpenRA.Utility
 			var files = args.Skip(2);
 
 			var manifest = new Manifest(mod);
-			FileSystem.LoadFromManifest(manifest);
+			GlobalFileSystem.LoadFromManifest(manifest);
 
 			foreach (var f in files)
 			{
-				var src = FileSystem.Open(f);
+				var src = GlobalFileSystem.Open(f);
 				if (src == null)
 					throw new InvalidOperationException("File not found: {0}".F(f));
 				var data = src.ReadAllBytes();
@@ -181,14 +181,14 @@ namespace OpenRA.Utility
 
 			var srcMod = args[1].Split(':')[0];
 			Game.modData = new ModData(srcMod);
-			FileSystem.LoadFromManifest(Game.modData.Manifest);
+			GlobalFileSystem.LoadFromManifest(Game.modData.Manifest);
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 			var srcPaletteInfo = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
 			int[] srcRemapIndex = srcPaletteInfo.RemapIndex;
 
 			var destMod = args[2].Split(':')[0];
 			Game.modData = new ModData(destMod);
-			FileSystem.LoadFromManifest(Game.modData.Manifest);
+			GlobalFileSystem.LoadFromManifest(Game.modData.Manifest);
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 			var destPaletteInfo = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
 			var destRemapIndex = destPaletteInfo.RemapIndex;
@@ -310,9 +310,9 @@ namespace OpenRA.Utility
 			var map = new Map(args[1]);
 			Game.modData = new ModData(map.RequiresMod);
 
-			FileSystem.UnmountAll();
+			GlobalFileSystem.UnmountAll();
 			foreach (var dir in Game.modData.Manifest.Folders)
-				FileSystem.Mount(dir);
+				GlobalFileSystem.Mount(dir);
 
 			Rules.LoadRules(Game.modData.Manifest, map);
 
