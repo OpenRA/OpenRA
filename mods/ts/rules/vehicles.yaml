@@ -28,7 +28,7 @@ MCV:
 		IntoActor: gacnst
 		Offset: -1,-1
 		Facing: 96
-		TransformSounds:
+		TransformSounds: facbld1.aud
 		NoTransformSounds:
 	RenderSprites:
 	RenderVoxels:

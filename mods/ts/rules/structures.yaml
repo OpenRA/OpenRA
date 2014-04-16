@@ -3,6 +3,7 @@ GACNST:
 	Building:
 		Power: 0
 		Footprint: xxx xxx xxx
+		BuildSounds: facbld1.aud
 		Dimensions: 3,3
 	Buildable:
 		Queue: Building
