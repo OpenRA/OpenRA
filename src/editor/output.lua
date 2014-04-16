@@ -349,12 +349,14 @@ errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
         editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1))
           + (jumplinepos and (math.max(0,jumplinepos-1)) or 0))
         editor:SetFocus()
-
-        -- doubleclick can set selection, so reset it
-        errorlog:SetSelection(event:GetPosition(), event:GetPosition())
-        event:Skip()
       end
     end
+
+    -- doubleclick can set selection, so reset it;
+    -- for consistency, do it even when no pattern is detected.
+    local pos = event:GetPosition()
+    if pos == -1 then pos = errorlog:GetLineEndPosition(event:GetLine()) end
+    errorlog:SetSelection(pos, pos)
   end)
 
 local function positionInLine(line)
