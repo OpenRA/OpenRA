@@ -322,6 +322,9 @@ namespace OpenRA.Server
 				PreConns.Remove(newConn);
 				Conns.Add(newConn);
 				LobbyInfo.Clients.Add(client);
+				var clientPing = new Session.ClientPing();
+				clientPing.Index = client.Index;
+				LobbyInfo.ClientPings.Add(clientPing);
 
 				Log.Write("server", "Client {0}: Accepted connection from {1}.",
 				          newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
@@ -442,6 +445,7 @@ namespace OpenRA.Server
 			switch (so.Name)
 			{
 				case "Command":
+				{
 					bool handled = false;
 					foreach (var t in serverTraits.WithInterface<IInterpretCommand>())
 						if (handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data))
@@ -454,7 +458,7 @@ namespace OpenRA.Server
 					}
 
 					break;
-				
+				}
 				case "HandshakeResponse":
 					ValidateClient(conn, so.Data);
 					break;
@@ -472,20 +476,22 @@ namespace OpenRA.Server
 						break;
 					}
 
-					var fromClient = GetClient(conn);
-					var history = fromClient.LatencyHistory.ToList();
+					var pingFromClient = LobbyInfo.PingFromClient(GetClient(conn));
+					if (pingFromClient == null)
+						return;
+
+					var history = pingFromClient.LatencyHistory.ToList();
 					history.Add(Environment.TickCount - pingSent);
 
 					// Cap ping history at 5 values (25 seconds)
 					if (history.Count > 5)
 						history.RemoveRange(0, history.Count - 5);
 
-					fromClient.Latency = history.Sum() / history.Count;
-					fromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
-					fromClient.LatencyHistory = history.ToArray();
+					pingFromClient.Latency = history.Sum() / history.Count;
+					pingFromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
+					pingFromClient.LatencyHistory = history.ToArray();
 
-					if (State == ServerState.WaitingPlayers)
-						SyncLobbyClients(); // TODO: SyncClientLatency
+					SyncClientPing();
 
 					break;
 				}
@@ -609,6 +615,19 @@ namespace OpenRA.Server
 
 			DispatchOrders(null, 0,
 				new ServerOrder("SyncLobbyGlobalSettings", LobbyInfo.GlobalSettings.Serialize()).Serialize());
+
+			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+				t.LobbyInfoSynced(this);
+		}
+
+		public void SyncClientPing()
+		{
+			var clientPings = new System.Text.StringBuilder();
+			foreach (var ping in LobbyInfo.ClientPings)
+				clientPings.Append(ping.Serialize());
+
+			DispatchOrders(null, 0,
+				new ServerOrder("SyncClientPings", clientPings.ToString()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);

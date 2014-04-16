@@ -218,6 +218,21 @@ namespace OpenRA.Network
 						break;
 					}
 
+				case "SyncClientPings":
+					{
+						var pings = new List<Session.ClientPing>();
+						var nodes = MiniYaml.FromString(order.TargetString);
+						foreach (var node in nodes)
+						{
+							var strings = node.Key.Split('@');
+							if (strings[0] == "ClientPing")
+								pings.Add(FieldLoader.Load<Session.ClientPing>(node.Value));
+						}
+
+						orderManager.LobbyInfo.ClientPings = pings;
+						break;
+					}
+
 				case "SetStance":
 					{
 						if (!Game.orderManager.LobbyInfo.GlobalSettings.FragileAlliances)

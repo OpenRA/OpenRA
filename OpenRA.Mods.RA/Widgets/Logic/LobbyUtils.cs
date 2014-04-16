@@ -163,26 +163,32 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		public static Color LatencyColor(int latency)
+		public static Color LatencyColor(Session.ClientPing ping)
 		{
+			if (ping == null)
+				return Color.Gray;
+
 			// Levels set relative to the default order lag of 3 net ticks (360ms)
 			// TODO: Adjust this once dynamic lag is implemented
-			if (latency < 0)
+			if (ping.Latency < 0)
 				return Color.Gray;
-			if (latency < 300)
+			if (ping.Latency < 300)
 				return Color.LimeGreen;
-			if (latency < 600)
+			if (ping.Latency < 600)
 				return Color.Orange;
 			return Color.Red;
 		}
 
-		public static string LatencyDescription(int latency)
+		public static string LatencyDescription(Session.ClientPing ping)
 		{
-			if (latency < 0)
+			if (ping == null)
 				return "Unknown";
-			if (latency < 300)
+
+			if (ping.Latency < 0)
+				return "Unknown";
+			if (ping.Latency < 300)
 				return "Good";
-			if (latency < 600)
+			if (ping.Latency < 600)
 				return "Moderate";
 			return "Poor";
 		}
@@ -216,7 +222,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			block.IsVisible = () => visible;
 
 			if (visible)
-				block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => LatencyColor(c.Latency);
+				block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => LatencyColor(
+					orderManager.LobbyInfo.PingFromClient(c));
 
 			var tooltip = parent.Get<ClientTooltipRegionWidget>("CLIENT_REGION");
 			tooltip.IsVisible = () => visible;

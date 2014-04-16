@@ -95,6 +95,9 @@ namespace OpenRA.Mods.RA
 				case "SyncClientInfo":
 				case "SyncLobbySlots":
 				case "SyncLobbyGlobalSettings":
+				case "SyncClientPing":
+				case "Ping":
+				case "Pong":
 					return;
 			}
 			if (order.OrderString.StartsWith("Dev"))

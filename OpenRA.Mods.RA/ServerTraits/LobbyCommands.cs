@@ -174,7 +174,11 @@ namespace OpenRA.Mods.RA.Server
 						if (occupant != null)
 						{
 							if (occupant.Bot != null)
+							{
 								server.LobbyInfo.Clients.Remove(occupant);
+								var ping = server.LobbyInfo.PingFromClient(occupant);
+								server.LobbyInfo.ClientPings.Remove(ping);
+							}
 							else
 							{
 								var occupantConn = server.Conns.FirstOrDefault(c => c.PlayerIndex == occupant.Index);
@@ -203,7 +207,11 @@ namespace OpenRA.Mods.RA.Server
 						// Slot may have a bot in it
 						var occupant = server.LobbyInfo.ClientInSlot(s);
 						if (occupant != null && occupant.Bot != null)
+						{
 							server.LobbyInfo.Clients.Remove(occupant);
+							var ping = server.LobbyInfo.PingFromClient(occupant);
+							server.LobbyInfo.ClientPings.Remove(ping);
+						}
 						server.SyncLobbyClients();
 
 						return true;

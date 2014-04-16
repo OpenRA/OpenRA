@@ -18,6 +18,7 @@ namespace OpenRA.Network
 	public class Session
 	{
 		public List<Client> Clients = new List<Client>();
+		public List<ClientPing> ClientPings = new List<ClientPing>();
 
 		// Keyed by the PlayerReference id that the slot corresponds to
 		public Dictionary<string, Slot> Slots = new Dictionary<string, Slot>();
@@ -43,6 +44,10 @@ namespace OpenRA.Network
 
 							case "Client":
 							session.Clients.Add(FieldLoader.Load<Client>(y.Value));
+							break;
+
+							case "ClientPing":
+							session.ClientPings.Add(FieldLoader.Load<ClientPing>(y.Value));
 							break;
 
 							case "Slot":
@@ -107,6 +112,23 @@ namespace OpenRA.Network
 			public bool IsReady { get { return State == ClientState.Ready; } }
 			public bool IsInvalid { get { return State == ClientState.Invalid; } }
 			public bool IsObserver { get { return Slot == null; } }
+
+			public string Serialize()
+			{
+				var clientData = new List<MiniYamlNode>();
+				clientData.Add(new MiniYamlNode("Client@{0}".F(this.Index), FieldSaver.Save(this)));
+				return clientData.WriteToString();
+			}
+		}
+
+		public ClientPing PingFromClient(Client client)
+		{
+			return ClientPings.SingleOrDefault(p => p.Index == client.Index);
+		}
+
+		public class ClientPing
+		{
+			public int Index;
 			public int Latency = -1;
 			public int LatencyJitter = -1;
 			public int[] LatencyHistory = { };
@@ -114,7 +136,7 @@ namespace OpenRA.Network
 			public string Serialize()
 			{
 				var clientData = new List<MiniYamlNode>();
-				clientData.Add(new MiniYamlNode("Client@{0}".F(this.Index), FieldSaver.Save(this)));
+				clientData.Add(new MiniYamlNode("ClientPing@{0}".F(this.Index), FieldSaver.Save(this)));
 				return clientData.WriteToString();
 			}
 		}
@@ -173,6 +195,9 @@ namespace OpenRA.Network
 
 			foreach (var client in Clients)
 				sessionData.Append(client.Serialize());
+
+			foreach (var clientPing in ClientPings)
+				sessionData.Append(clientPing.Serialize());
 
 			foreach (var slot in Slots)
 				sessionData.Append(slot.Value.Serialize());
