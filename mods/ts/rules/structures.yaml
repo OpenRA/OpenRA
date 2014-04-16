@@ -546,7 +546,7 @@ GATECH:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Owner: gdi
-		Prerequisites: GARADR
+		Prerequisites: garadr
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -573,7 +573,7 @@ NATECH:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Owner: nod
-		Prerequisites: NARADR
+		Prerequisites: naradr
 	Valued:
 		Cost: 2000
 	Tooltip:
