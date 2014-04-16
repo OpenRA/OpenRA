@@ -502,7 +502,7 @@ debugger.listen = function(start)
       debugger.editormap = {}
 
       local wxfilepath = GetEditorFileAndCurInfo()
-      local startfile = options.startfile or options.startwith
+      local startfile = options.startwith
         or (wxfilepath and wxfilepath:GetFullPath())
 
       if not startfile then
