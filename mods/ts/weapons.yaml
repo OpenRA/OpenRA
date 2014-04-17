@@ -12,7 +12,7 @@ Minigun:
 			Heavy: 10%
 			Concrete: 10%
 		Explosion: piffpiff
-		InfDeath: 2
+		InfDeath: 1
 		Damage: 15
 
 Grenade:
@@ -32,7 +32,7 @@ Grenade:
 			Wood: 100%
 			Light: 25%
 			Heavy: 5%
-		InfDeath: 2
+		InfDeath: 3
 		Damage: 40
 		Explosion: large_grey_explosion
 		ImpactSound: expnew13.aud
@@ -84,7 +84,7 @@ MultiCluster:
 			Wood: 75%
 			Light: 35%
 			Concrete: 20%
-		InfDeath: 2
+		InfDeath: 3
 		Damage: 65
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
@@ -119,7 +119,7 @@ Sniper:
 			Wood: 5%
 			Light: 5%
 			Heavy: 5%
-		InfDeath: 2
+		InfDeath: 1
 
 M1Carbine:
 	ROF: 20
@@ -135,7 +135,7 @@ M1Carbine:
 			Light: 30%
 			Heavy: 10%
 		Explosion: piffpiff
-		InfDeath: 2
+		InfDeath: 1
 		Damage: 15
 
 LtRail:
@@ -169,7 +169,7 @@ Vulcan3:
 			Heavy: 10%
 			Concrete: 10%
 		Explosion: piffpiff
-		InfDeath: 2
+		InfDeath: 1
 		Damage: 10
 
 Vulcan2:
@@ -204,7 +204,7 @@ Vulcan:
 			Heavy: 10%
 			Concrete: 10%
 		Explosion: piffpiff
-		InfDeath: 2
+		InfDeath: 1
 		Damage: 20
 
 FiendShard:
@@ -223,7 +223,7 @@ FiendShard:
 			Light: 30%
 			Heavy: 10%
 			Concrete: 10%
-		InfDeath: 2
+		InfDeath: 1
 		Damage: 35
 
 JumpCannon:
@@ -240,7 +240,7 @@ JumpCannon:
 			Heavy: 10%
 			Concrete: 10%
 		Explosion: piffpiff
-		InfDeath: 2
+		InfDeath: 1
 		Damage: 15
 
 HoverMissile:
@@ -316,7 +316,7 @@ MammothTusk:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 2
+		InfDeath: 3
 		Damage: 40
 		Explosion: medium_bang
 		ImpactSound: expnew12.aud
@@ -383,7 +383,7 @@ SuicideBomb:
 			Light: 100%
 			Heavy: 100%
 			Concrete: 100%
-		InfDeath: 3
+		InfDeath: 2
 		Damage: 70
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
@@ -417,7 +417,7 @@ AssaultCannon:
 			Heavy: 40%
 			Concrete: 10%
 		Explosion: piffpiff
-		InfDeath: 2
+		InfDeath: 1
 		Damage: 40
 
 BikeMissile:
@@ -462,7 +462,7 @@ RaiderCannon:
 			Heavy: 10%
 			Concrete: 10%
 		Explosion: piffpiff
-		InfDeath: 2
+		InfDeath: 1
 		Damage: 40
 
 FireballLauncher:
@@ -566,7 +566,7 @@ Dragon:
 			Light: 68%
 			Heavy: 35%
 			Concrete: 35%
-		InfDeath: 2
+		InfDeath: 3
 		Damage: 150
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
@@ -594,7 +594,7 @@ Hellfire:
 			Light: 150%
 			Heavy: 100%
 			Concrete: 30%
-		InfDeath: 3
+		InfDeath: 2
 		Damage: 30
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
@@ -614,7 +614,7 @@ Bomb:
 			Light: 75%
 			Heavy: 32%
 			Concrete: 100%
-		InfDeath: 2
+		InfDeath: 3
 		Damage: 160
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
@@ -662,7 +662,7 @@ HarpyClaw:
 			Heavy: 10%
 			Concrete: 10%
 		Explosion: piffpiff
-		InfDeath: 2
+		InfDeath: 1
 		Damage: 60
 
 Pistola:
@@ -679,6 +679,6 @@ Pistola:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piff
-		InfDeath: 2
+		InfDeath: 1
 		Damage: 2
 

@@ -8,12 +8,13 @@
 	Building:
 		Dimensions: 1,1
 		Footprint: x
+		BuildSounds: place2.aud
 		TerrainTypes: Clear,Road
 	GivesBuildableArea:
 	Capturable:
 	SoundOnDamageTransition:
-		DamagedSound:
-		DestroyedSound:
+		DamagedSound: expnew01.aud
+		DestroyedSound: crmble2.aud
 	RenderBuilding:
 	WithBuildingExplosion:
 	RepairableBuilding:
@@ -35,6 +36,44 @@
 		Range: 3
 	BodyOrientation:
 	Huntable:
+	LuaScriptEvents:
+	Demolishable:
+
+^Wall:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: place2.aud
+		Adjacent: 7
+		TerrainTypes: Clear,Road
+	SoundOnDamageTransition:
+		DamagedSound: expnew01.aud
+		DestroyedSound: crmble2.aud
+	Wall:
+		CrushClasses: wall
+	LineBuild:
+		Range: 8
+		NodeTypes: wall
+	LineBuildNode:
+		Types: wall
+	SelectionDecorations:
+	Selectable:
+		Priority: 1
+	TargetableBuilding:
+		TargetTypes: Ground, C4
+	RenderBuildingWall:
+		HasMakeAnimation: no
+	GivesExperience:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		UseTerrainPalette: yes
+	AutoTargetIgnore:
+	ProximityCaptor:
+		Types: Wall
+	Sellable:
+	UpdatesPlayerStatistics:
+	BodyOrientation:
 	LuaScriptEvents:
 	Demolishable:
 
@@ -146,41 +185,6 @@
 	BodyOrientation:
 	Huntable:
 	LuaScriptEvents:
-
-^Wall:
-	AppearsOnRadar:
-	Building:
-		Dimensions: 1,1
-		Footprint: x
-		BuildSounds: placbldg.aud
-		Adjacent: 7
-		TerrainTypes: Clear,Road
-	Wall:
-		CrushClasses: wall
-	LineBuild:
-		Range: 8
-		NodeTypes: wall
-	LineBuildNode:
-		Types: wall
-	SelectionDecorations:
-	Selectable:
-		Priority: 1
-	TargetableBuilding:
-		TargetTypes: Ground, C4
-	RenderBuildingWall:
-		HasMakeAnimation: no
-	GivesExperience:
-	EditorAppearance:
-		RelativeToTopLeft: yes
-		UseTerrainPalette: yes
-	AutoTargetIgnore:
-	ProximityCaptor:
-		Types: Wall
-	Sellable:
-	UpdatesPlayerStatistics:
-	BodyOrientation:
-	LuaScriptEvents:
-	Demolishable:
 
 ^Helicopter:
 	AppearsOnRadar:

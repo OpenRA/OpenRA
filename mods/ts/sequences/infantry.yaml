@@ -11,33 +11,37 @@ e1:
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
 		ShadowStart: 441
+	die3: infdie
+		Start: 0
+		Length: *
 	shoot:
 		Start: 164
 		Length: 6
@@ -76,33 +80,37 @@ e2:
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
 		ShadowStart: 441
+	die3: infdie
+		Start: 0
+		Length: *
 	shoot:
 		Start: 164
 		Length: 6
@@ -141,33 +149,37 @@ e3:
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
 		ShadowStart: 441
+	die3: infdie
+		Start: 0
+		Length: *
 	shoot:
 		Start: 164
 		Length: 6
@@ -218,15 +230,16 @@ weedguy:
 		Facings: 8
 	prone-run: weed
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 288
 	prone-stand: weed
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 346
+		Stride: 6
+		ShadowStart: 288
 	die1: weed
 		Start: 160
 		Length: 6
@@ -257,34 +270,47 @@ medic:
 	stand:
 		Start: 0
 		Facings: 8
+		ShadowStart: 307
 	run:
 		Start: 8
 		Length: 6
 		Facings: 8
 		Tick: 100
+		ShadowStart: 315
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
+		ShadowStart: 363
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
+		ShadowStart: 378
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
+		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
+		ShadowStart: 441
 	die2:
 		Start: 149
+		Length: 15
+		ShadowStart: 455
+	die3: # TODO: copy-paste of die2
+		Start: 149
 		Length: 14
+		ShadowStart: 455
 	shoot:
 		Start: 164
 		Length: 6
@@ -297,9 +323,11 @@ medic:
 		Start: 260
 		Length: 2
 		Facings: 8
+		ShadowStart: 567
 	heal:
 		Start: 292
 		Length: 14
+		ShadowStart: 599
 	die5: flameguy # TODO: walking animation unused
 		Start: 42
 		Length: 104
@@ -313,41 +341,56 @@ engineer:
 	stand:
 		Start: 0
 		Facings: 8
+		ShadowStart: 292
 	run:
 		Start: 8
 		Length: 6
 		Facings: 8
 		Tick: 100
+		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
+		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
+		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
+		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
+		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
+		ShadowStart: 441
 	standup-0:
 		Start: 260
 		Length: 2
 		Facings: 8
+		ShadowStart: 552
 	die5: flameguy # TODO: walking animation unused
 		Start: 42
 		Length: 104
+		ShadowStart: 190
 	die6: electro
 		Start: 0
 		Length: *
@@ -367,32 +410,37 @@ umagon:
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
 		ShadowStart: 441
 	shoot:
 		Start: 164
@@ -432,32 +480,37 @@ ghost: # TODO unused GUNFIRE.SHP
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
 		ShadowStart: 441
 	shoot:
 		Start: 164
@@ -488,46 +541,60 @@ jumpjet: # TODO: ShadowStart:
 	stand:
 		Start: 0
 		Facings: 8
+		ShadowStart: 451
 	run:
 		Start: 8
 		Length: 6
 		Facings: 8
 		Tick: 100
+		ShadowStart: 459
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
+		ShadowStart: 507
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
+		ShadowStart: 523
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
+		ShadowStart: 538
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 0
 		Facings: 8
-	die1:
+		ShadowStart: 451
+	die1: 
 		Start: 134
-		Length: 14
+		Length: 15
+		ShadowStart: 585
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 600
+	die3:
+		Start: 436
+		Length: 15
+		ShadowStart: 887
 	shoot:
 		Start: 164
 		Length: 6
 		Facings: 8
+		ShadowStart: 615
 	prone-shoot:
 		Start: 212
 		Length: 6
 		Facings: 8
+		ShadowStart: 663
 	standup-0:
 		Start: 260
 		Length: 2
 		Facings: 8
+		ShadowStart: 711
 	die5: flameguy # TODO: walking animation unused
 		Start: 42
 		Length: 104
@@ -551,32 +618,37 @@ mhijack:
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
 		ShadowStart: 441
 	shoot:
 		Start: 164
@@ -616,32 +688,37 @@ chamspy:
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
 		ShadowStart: 441
 	shoot:
 		Start: 164
@@ -681,12 +758,12 @@ cyc2:
 		ShadowStart: 316
 	idle1:
 		Start: 80
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 388
 	idle2:
 		Start: 95
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 413
 	prone-run:
@@ -695,19 +772,23 @@ cyc2:
 		Facings: 8
 		Tick: 100
 		ShadowStart: 418
-	prone-stand: # TODO: N/A?
-		Start: 144
-		Length: 4
+	prone-stand:
+		Start: 110
+		Length: 1
 		Facings: 8
-		ShadowStart: 452
+		Stride: 8
+		ShadowStart: 418
 	die1:
 		Start: 182
-		Length: 14
+		Length: 15
 		ShadowStart: 490
 	die2:
 		Start: 197
-		Length: 14
+		Length: 15
 		ShadowStart: 505
+	die3: infexpl
+		Start: 0
+		Length: *
 	shoot:
 		Start: 212
 		Length: 6
@@ -746,53 +827,64 @@ cyborg:
 		ShadowStart: 378
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
+		ShadowStart: 426
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
+		ShadowStart: 441
 	prone-run:
 		Start: 86
 		Length: 6
 		Facings: 8
 		Tick: 100
+		ShadowStart: 456
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
+		Stride: 6
+		ShadowStart: 456
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
+		ShadowStart: 504
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 519
 	shoot:
 		Start: 164
 		Length: 6
 		Facings: 8
+		ShadowStart: 534
 	prone-shoot:
 		Start: 212
 		Length: 6
 		Facings: 8
+		ShadowStart: 582
 	standup-0: # TODO: N/A as they don't do that
 		Start: 260
 		Length: 2
 		Facings: 8
+		ShadowStart: 630
 	die5: # TODO: unused running frame 322 and following
 		Start: 292
 		Length: 14
-		ShadowStart: 560
+		ShadowStart: 662
 	die3:
 		Start: 307
 		Length: 14
+		ShadowStart: 677
 	die6: electro
 		Start: 0
 		Length: *
 	icon: cybiicon
 		Start: 0
 
-mutant: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-NW
+mutant:
 	stand:
 		Start: 0
 		Facings: 8
@@ -805,32 +897,37 @@ mutant: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-N
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
 		ShadowStart: 441
 	shoot:
 		Start: 164
@@ -857,7 +954,7 @@ mutant: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-N
 	icon: mutcicon
 		Start: 0
 
-mwmn: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-NW
+mwmn:
 	stand:
 		Start: 0
 		Facings: 8
@@ -870,32 +967,37 @@ mwmn: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-NW
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
 		ShadowStart: 441
 	shoot:
 		Start: 164
@@ -935,32 +1037,37 @@ mutant3: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
 		ShadowStart: 441
 	shoot:
 		Start: 164
@@ -1000,32 +1107,37 @@ tratos:
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
 		ShadowStart: 441
 	shoot:
 		Start: 164
@@ -1065,32 +1177,37 @@ oxanna:
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
 		ShadowStart: 441
 	shoot:
 		Start: 164
@@ -1130,32 +1247,37 @@ slav:
 		ShadowStart: 300
 	idle1:
 		Start: 56
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 348
 	idle2:
 		Start: 71
-		Length: 14
+		Length: 15
 		Tick: 120
 		ShadowStart: 363
 	prone-run:
 		Start: 86
-		Length: 4
+		Length: 6
 		Facings: 8
 		Tick: 100
 		ShadowStart: 378
 	prone-stand:
-		Start: 144
-		Length: 4
+		Start: 86
+		Length: 1
 		Facings: 8
-		ShadowStart: 436
+		Stride: 6
+		ShadowStart: 378
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
+		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
 		ShadowStart: 441
 	shoot:
 		Start: 164
@@ -1195,24 +1317,28 @@ doggie: # TODO: not sure what frame 88 and following is
 		ShadowStart: 127
 	die1:
 		Start: 99
-		Length: 9
+		Length: 10
 		ShadowStart: 218
 	die2:
 		Start: 99
-		Length: 9
+		Length: 10
 		ShadowStart: 218
-	shoot: # TODO: partly wrong
+	die3:
+		Start: 99
+		Length: 10
+		ShadowStart: 218
+	shoot:
 		Start: 56
-		Length: 6
+		Length: 4
 		Facings: 8
 		ShadowStart: 175
 	die5:
 		Start: 109
-		Length: 9
+		Length: 10
 		ShadowStart: 228
 	die6:
 		Start: 109
-		Length: 9
+		Length: 10
 		ShadowStart: 228
 	icon: xxicon
 		Start: 0
@@ -1259,18 +1385,26 @@ civ1:
 		Facings: 8
 		ShadowStart: 378
 	shoot:
-		Start: 165
+		Start: 164
 		Length: 6
 		Facings: 8
 		ShadowStart: 457
 	die1:
 		Start: 134
-		Length: 14
+		Length: 15
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
 		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 15
+		ShadowStart: 441
+	die5: flameguy # TODO: walking animation unused
+		Start: 42
+		Length: 104
+		ShadowStart: 190
 	die6: electro
 		Start: 0
 		Length: *
@@ -1310,6 +1444,14 @@ civ2:
 		Start: 149
 		Length: 14
 		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 14
+		ShadowStart: 441
+	die5: flameguy # TODO: walking animation unused
+		Start: 42
+		Length: 104
+		ShadowStart: 190
 	die6: electro
 		Start: 0
 		Length: *
@@ -1349,6 +1491,14 @@ civ3:
 		Start: 149
 		Length: 14
 		ShadowStart: 441
+	die3: # TODO: copy-paste of die2
+		Start: 149
+		Length: 14
+		ShadowStart: 441
+	die5: flameguy # TODO: walking animation unused
+		Start: 42
+		Length: 104
+		ShadowStart: 190
 	die6: electro
 		Start: 0
 		Length: *

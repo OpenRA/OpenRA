@@ -139,6 +139,36 @@ gaweap:
 	dead: gtweap
 		Start: 2
 		ShadowStart: 5
+	idle-lights1: gtweap_a
+		Start: 0
+		Length: 8
+		Tick: 100
+		ZOffset: 2048
+	damaged-idle-lights1: gtweap_a
+		Start: 8
+		Length: 8
+		Tick: 100
+		ZOffset: 2048
+	idle-lights2: gtweap_b
+		Start: 0
+		Length: 4
+		Tick: 120
+		ZOffset: 2048
+	damaged-idle-lights2: gtweap_b
+		Start: 4
+		Length: 4
+		Tick: 120
+		ZOffset: 2048
+	idle-turbines: gtweap_c
+		Start: 0
+		Length: 4
+		Tick: 80
+		ZOffset: 2048
+	damaged-idle-turbines: gtweap_c
+		Start: 0
+		Length: 4
+		Tick: 80
+		ZOffset: 2048
 	build-top: gtweap_d
 		Start: 0
 		Length: 9
@@ -232,6 +262,16 @@ naweap:
 	dead: ntweap
 		Start: 2
 		ShadowStart: 5
+	idle-lights: ntweap_a
+		Start: 0
+		Length: 16
+		Tick: 100
+		ZOffset: 2048
+	damaged-idle-lights: ntweap_a
+		Start: 16
+		Length: 16
+		Tick: 100
+		ZOffset: 2048
 	build-top: ntweap_b
 		Start: 0
 		Length: 10
@@ -251,7 +291,115 @@ naweap:
 		ShadowStart: 22
 	icon: nwepicon
 		Start: 0
-# TODO: ntweap_1 & ntweapbb & ntweap_a & ntweap_b & ntweap_c are unused
+# TODO: ntweap_1 & ntweapbb & ntweap_b & ntweap_c are unused
+
+naradr:
+	idle: ntradr
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: ntradr
+		Start: 1
+		ShadowStart: 4
+	critical-idle: ntradr
+		Start: 2
+		ShadowStart: 5
+	idle-dish: ntradr_a
+		Start: 0
+		Length: 24
+		Tick: 120
+	damaged-idle-dish: ntradr_a
+		Start: 24
+		Length: 24
+		Tick: 120
+	make: ntradrmk
+		Start: 0
+		Length: 20
+		ShadowStart: 20
+	icon: nradicon
+		Start: 0
+
+natech:
+	idle: nttech
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: nttech
+		Start: 1
+		ShadowStart: 4
+	critical-idle: nttech
+		Start: 2
+		ShadowStart: 5
+	idle-lights: nttech_a
+		Start: 0
+		Length: 9
+		Tick: 120
+	damaged-idle-lights: nttech_a
+		Start: 0
+		Length: 9
+		Tick: 120
+	critical-idle-lights: nttech_a
+		Start: 0
+		Length: 9
+		Tick: 120
+	make: nttechmk
+		Start: 0
+		Length: 18
+		ShadowStart: 18
+	icon: ntchicon
+		Start: 0
+
+garadr:
+	idle: gtradr
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: gtradr
+		Start: 1
+		ShadowStart: 4
+	critical-idle: gtradr
+		Start: 2
+		ShadowStart: 5
+	idle-dish: gtradr_a # TODO: needs to ping-pong
+		Start: 0
+		Length: 15
+		Tick: 120
+	damaged-idle-dish: gtradr_a # TODO: needs to ping-pong
+		Start: 15
+		Length: 15
+		Tick: 160
+	make: gtradrmk
+		Start: 0
+		Length: 20
+		ShadowStart: 20
+	icon: radricon
+		Start: 0
+
+gatech:
+	idle: gttech
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: gttech
+		Start: 1
+		ShadowStart: 4
+	critical-idle: gttech
+		Start: 2
+		ShadowStart: 5
+	idle-lights: gttech_a
+		Start: 0
+		Length: 8
+		Tick: 200
+	damaged-idle-lights: gttech_a
+		Start: 8
+		Length: 8
+		Tick: 240
+	critical-idle-lights: gttech_a
+		Start: 8
+		Length: 8
+		Tick: 240
+	make: gttechmk
+		Start: 0
+		Length: 20
+		ShadowStart: 20
+	icon: techicon
+		Start: 0
 
 gasand: # TODO frame order (horizontal seems busted)
 	idle: gtsand
@@ -263,6 +411,38 @@ gasand: # TODO frame order (horizontal seems busted)
 		Length: 16
 		ShadowStart: 48
 	icon: sbagicon
+		Start: 0
+
+gawall: # TODO frame order (horizontal seems busted)
+	idle: gtwall
+		Start: 0
+		Length: 16
+		ShadowStart: 48
+	damaged-idle: gtwall
+		Start: 16
+		Length: 16
+		ShadowStart: 64
+	critical-idle: gtwall
+		Start: 32
+		Length: 16
+		ShadowStart: 80
+	icon: wallicon
+		Start: 0
+
+nawall: # TODO frame order (horizontal seems busted)
+	idle: ntwall
+		Start: 0
+		Length: 16
+		ShadowStart: 48
+	damaged-idle: ntwall
+		Start: 16
+		Length: 16
+		ShadowStart: 64
+	critical-idle: ntwall
+		Start: 32
+		Length: 16
+		ShadowStart: 80
+	icon: nwalicon
 		Start: 0
 
 gatick:
