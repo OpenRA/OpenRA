@@ -196,16 +196,14 @@ function FileSysGetRecursive(path, recursive, spec, skip)
   end
   getDir(path, spec)
 
-  -- explicitly sort files on Linux; directories first
-  if ide.osname == 'Unix' then
-    table.sort(content, function(a,b)
-      local ad, bd = a:sub(-1) == sep, b:sub(-1) == sep
-      -- both are folders or both are files
-      if ad and bd or not ad and not bd then return a < b
-      -- only one is folder; return true if it's the first one
-      else return ad end
-    end)
-  end
+  -- explicitly sort files; directories first
+  table.sort(content, function(a,b)
+    local ad, bd = a:sub(-1) == sep, b:sub(-1) == sep
+    -- both are folders or both are files
+    if ad and bd or not ad and not bd then return a < b
+    -- only one is folder; return true if it's the first one
+    else return ad end
+  end)
 
   return content
 end
