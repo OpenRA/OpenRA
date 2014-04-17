@@ -592,6 +592,9 @@ function findReplace:createDialog(replace,infiles)
         if res == wx.wxID_OK then
           infilesDirCombo:SetValue(FixDir(filePicker:GetPath()))
         end
+        -- when the dropdown is used to select the directory on OSX,
+        -- the find dialog moves to the background; this keeps it on top.
+        if ide.osname == 'Macintosh' then findDialog:Raise() end
       end)
   end
 
