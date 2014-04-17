@@ -280,7 +280,7 @@ mods: mod_ra mod_cnc mod_d2k mod_ts
 all: dependencies core tools
 
 clean:
-	@-$(RM_F) *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+	@-$(RM_F) *.exe *.dll ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 	@-$(RM_R) ./*/obj ./*/bin
 
 distclean: clean
