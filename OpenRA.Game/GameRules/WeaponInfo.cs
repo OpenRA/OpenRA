@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -27,8 +27,12 @@ namespace OpenRA.GameRules
 		public readonly bool Ore = false;
 		[Desc("Explosion effect to use.")]
 		public readonly string Explosion = null;
+		[Desc("Palette to use for explosion effect.")]
+		public readonly string ExplosionPalette = "effect";
 		[Desc("Explosion effect on hitting water (usually a splash).")]
 		public readonly string WaterExplosion = null;
+		[Desc("Palette to use for effect on hitting water (usually a splash).")]
+		public readonly string WaterExplosionPalette = "effect";
 		[Desc("Type of smudge to apply to terrain.")]
 		public readonly string[] SmudgeType = { };
 		[Desc("Size of the explosion. provide 2 values for a ring effect (outer/inner).")]
