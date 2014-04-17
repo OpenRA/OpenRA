@@ -45,7 +45,12 @@ namespace OpenRA.Mods.RA
 					state = State.Dock;
 					return Util.SequenceActivities(new Turn(angle), this);
 				case State.Dock:
-					ru.PlayCustomAnimation(self, "dock", () => {ru.PlayCustomAnimRepeating(self, "dock-loop"); state = State.Loop;});
+					ru.PlayCustomAnimation(self, "dock", () => {
+						ru.PlayCustomAnimRepeating(self, "dock-loop");
+						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
+							nd.Docked(proc, self);
+						state = State.Loop;
+					});
 					state = State.Wait;
 					return this;
 				case State.Loop:
@@ -59,8 +64,11 @@ namespace OpenRA.Mods.RA
 				case State.Complete:
 					harv.LastLinkedProc = harv.LinkedProc;
 					harv.LinkProc(self, null);
+					foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
+						nd.Undocked(proc, self);
 					return NextActivity;
 			}
+
 			throw new InvalidOperationException("Invalid harvester dock state");
 		}
 
