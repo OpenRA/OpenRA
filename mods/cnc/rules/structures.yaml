@@ -41,7 +41,10 @@ FACT:
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 	BaseBuilding:
-	ProductionBar:
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Defense:
+		ProductionType: Defense
 	BaseProvider:
 		Cooldown: 75
 		Range: 14

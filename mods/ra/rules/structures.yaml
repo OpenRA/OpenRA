@@ -810,7 +810,10 @@ FACT:
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
-	ProductionBar:
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Defense:
+		ProductionType: Defense
 	DeadBuildingState:
 	BaseProvider:
 		Range: 16
