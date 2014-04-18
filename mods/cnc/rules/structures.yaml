@@ -320,7 +320,7 @@ HPAD:
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: barracks
+		Prerequisites: proc
 		Owner: gdi,nod
 	Building:
 		Power: -10
