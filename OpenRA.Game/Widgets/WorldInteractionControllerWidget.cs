@@ -124,6 +124,18 @@ namespace OpenRA.Widgets
 					ApplyOrders(World, xy, mi);
 			}
 
+			if (mi.Button == MouseButton.WheelUp)
+			{
+				worldRenderer.Viewport.Zoom = 2;
+				Game.Settings.Graphics.PixelDouble = true;
+			}
+
+			if (mi.Button == MouseButton.WheelDown)
+			{
+				worldRenderer.Viewport.Zoom = 1;
+				Game.Settings.Graphics.PixelDouble = false;
+			}
+
 			return true;
 		}
 
