@@ -634,7 +634,7 @@ OBLI:
 GTWR:
 	Inherits: ^Building
 	Valued:
-		Cost: 500
+		Cost: 600
 	CustomBuildTimeValue:
 		Value: 1440
 	Tooltip:
