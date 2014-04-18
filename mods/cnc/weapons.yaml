@@ -558,11 +558,12 @@ TurretGun:
 		Damage: 40
 
 MammothMissiles:
-	ROF: 100
+	ROF: 45
 	Range: 5c0
 	Report: ROCKET1.AUD
 	ValidTargets: Ground, Air
 	Burst: 2
+	BurstDelay: 15
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -572,20 +573,20 @@ MammothMissiles:
 		ROT: 10
 		Trail: smokey
 		ContrailLength: 8
-		Speed: 213
+		Speed: 341
 		RangeLimit: 35
 	Warhead:
-		Spread: 256
+		Spread: 298
 		Versus:
-			None: 40%
+			None: 50%
 			Wood: 75%
-			Light: 75%
+			Light: 100%
 			Heavy: 50%
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
 		SmudgeType: Crater
-		Damage: 75
+		Damage: 45
 
 227mm:
 	ROF: 140
