@@ -607,10 +607,10 @@ MammothMissiles:
 		Trail: smokey
 		Speed: 341
 	Warhead:
-		Spread: 640
+		Spread: 683
 		Versus:
-			None: 25%
-			Wood: 30%
+			None: 35%
+			Wood: 60%
 			Light: 100%
 			Heavy: 50%
 		InfDeath: 4
