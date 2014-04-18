@@ -392,7 +392,7 @@ HTNK:
 		Speed: 56
 		ROT: 3
 	Health:
-		HP: 900
+		HP: 800
 	Armor:
 		Type: Heavy
 	RevealsShroud:
