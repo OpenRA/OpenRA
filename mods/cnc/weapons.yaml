@@ -686,13 +686,13 @@ MachineGun:
 		Spread: 128
 		Versus:
 			None: 100%
-			Wood: 25%
-			Light: 75%
-			Heavy: 25%
+			Wood: 20%
+			Light: 50%
+			Heavy: 20%
 			Concrete: 10%
 		InfDeath: 2
 		Explosion: piffs
-		Damage: 10
+		Damage: 15
 
 BoatMissile:
 	ROF: 35
