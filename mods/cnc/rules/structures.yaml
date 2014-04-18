@@ -386,6 +386,7 @@ HQ:
 		IncomingSound: enemya.aud
 		UnitType: a10
 		DisplayBeacon: True
+		BeaconDuration: -1
 		BeaconPoster: airstrike
 		DisplayRadarPing: True
 		CameraActor: camera
@@ -456,6 +457,7 @@ EYE:
 		SelectTargetSound: select1.aud
 		InsufficientPowerSound: nopower1.aud
 		DisplayRadarPing: True
+		CameraActor: camera.small
 	SupportPowerChargeBar:
 
 TMPL:
@@ -496,8 +498,10 @@ TMPL:
 		IncomingSound: nuke1.aud
 		MissileWeapon: atomic
 		DisplayBeacon: True
+		BeaconDuration: -1
 		BeaconPoster: atomic
 		DisplayRadarPing: True
+		CameraActor: camera
 	SupportPowerChargeBar:
 
 GUN:

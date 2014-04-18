@@ -115,3 +115,11 @@ SPICEBLOOM:
 		Terrain: Spice
 	BodyOrientation:
 
+CAMERA:
+	Immobile:
+		OccupiesSpace: false
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 8c0
+	BodyOrientation:

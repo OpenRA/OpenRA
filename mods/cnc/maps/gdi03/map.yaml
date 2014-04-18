@@ -972,6 +972,11 @@ Rules:
 			SelectTargetSound: select1.aud
 			IncomingSound: enemya.aud
 			UnitType: a10
+			DisplayBeacon: True
+			BeaconDuration: -1
+			BeaconPoster: airstrike
+			DisplayRadarPing: True
+			CameraActor: camera
 
 Sequences:
 

@@ -38,8 +38,10 @@ MSLO:
 		SpawnOffset: 0,427,0
 		DisplayTimer: True
 		DisplayBeacon: True
+		BeaconDuration: -1
 		DisplayRadarPing: True
 		BeaconPoster: atomicon
+		CameraActor: camera
 	CanPowerDown:
 	RequiresPower:
 	DisabledOverlay:

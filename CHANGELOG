@@ -34,6 +34,7 @@ NEW:
 		Added a warning dialog when force starting a match.
 		Added a new mod selection window, which now appears on the first game start.
 		Fixed walls not updating when neighboring sections were sold or destroyed.
+		Nuclear missile delay is now independent of map size, and reveals the target area immediately before detonation.
 	Dune 2000:
 		Engineers can now regain control over husks.
 		Added the Atreides grenadier from the 1.06 patch.
@@ -46,6 +47,7 @@ NEW:
 		Turrets now integrate with walls (visually, and as line building targets).
 		Fixed unclickable area on the right edge of the production palette.
 		Buildings now throw damaging shrapnel when they explode.
+		Airstrike will now reveal (only) the target area when it strikes.
 	Red Alert:
 		Mechanics can now regain control over husks.
 		Engineers are now remapped to team colors.
@@ -109,7 +111,7 @@ NEW:
 		Removed health bars and selection boxes from walls.
 		Changed Nod Obelisk HP to 600 from 400, same as Advanced Guard Tower
 		Fixed dinosaurs not being able to collect crates.
-		A10 air strike will only reveal the target area.
+		A10 air strike and the ion cannon will now reveal (only) the target area when they strike.
 		Reduced Guard Tower vision from 7 to 6.
 		Increased Guard Tower build time from 12 seconds to 24 seconds.
 		Reduced Gun Turret vision from 7 to 6.

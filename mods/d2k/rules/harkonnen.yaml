@@ -98,6 +98,8 @@ PALACEH:
 		SpawnOffset: -512,1c171,0
 		DisplayBeacon: True
 		DisplayRadarPing: True
+		BeaconDuration: -1
+		CameraActor: camera
 	CanPowerDown:
 	DisabledOverlay:
 	RequiresPower:
