@@ -878,11 +878,11 @@ HonestJohn:
 		Damage: 100
 
 Tiberium:
-	ROF: 12
+	ROF: 16
 	Warhead:
 		Spread: 42
 		InfDeath: 6
-		Damage: 1
+		Damage: 2
 		PreventProne: yes
 
 Heal:
