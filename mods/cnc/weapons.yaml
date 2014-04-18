@@ -640,7 +640,7 @@ MammothMissiles:
 		Spread: 128
 		Versus:
 			None: 35%
-			Wood: 50%
+			Wood: 75%
 			Light: 100%
 			Heavy: 90%
 		InfDeath: 4
