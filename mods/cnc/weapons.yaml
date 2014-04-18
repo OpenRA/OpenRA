@@ -402,7 +402,7 @@ BigFlamer:
 		Versus:
 			None: 100%
 			Wood: 100%
-			Light: 50%
+			Light: 67%
 			Heavy: 25%
 		InfDeath: 5
 		Explosion: med_napalm
