@@ -29,7 +29,10 @@ GACNST:
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
-	ProductionBar:
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Defense:
+		ProductionType: Defense
 	-Sellable:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
