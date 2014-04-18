@@ -80,6 +80,7 @@
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="MaxMind.GeoIP2">
       <HintPath>..\thirdparty\MaxMind.GeoIP2.dll</HintPath>
     </Reference>
