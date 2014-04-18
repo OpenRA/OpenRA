@@ -611,7 +611,7 @@ OBLI:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7c0
+		Range: 8c0
 	Bib:
 		HasMinibib: Yes
 	RenderBuildingCharge:
@@ -651,7 +651,7 @@ GTWR:
 	Health:
 		HP: 400
 	RevealsShroud:
-		Range: 6c0
+		Range: 7c0
 	Bib:
 		HasMinibib: Yes
 	Armament:
@@ -696,7 +696,7 @@ ATWR:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7c0
+		Range: 8c0
 	Bib:
 		HasMinibib: Yes
 	Turreted:
