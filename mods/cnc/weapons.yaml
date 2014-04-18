@@ -297,8 +297,8 @@ BikeRockets:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 65%
-			Wood: 50%
+			None: 25%
+			Wood: 75%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 50%
