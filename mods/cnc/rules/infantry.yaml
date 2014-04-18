@@ -67,6 +67,8 @@ E3:
 		Speed: 42
 	Health:
 		HP: 45
+	AutoTarget:
+		ScanRadius: 5
 	Armament:
 		Weapon: Rockets
 		LocalOffset: 256,43,341
