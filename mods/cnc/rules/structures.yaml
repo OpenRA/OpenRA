@@ -619,10 +619,10 @@ OBLI:
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,0,725
-		FireDelay: 25
+		FireDelay: 0
 	AttackCharge:
-		ReloadTime: 90
-		InitialChargeDelay: 25
+		ReloadTime: 40
+		InitialChargeDelay: 50
 	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:
