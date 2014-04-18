@@ -20,8 +20,6 @@ E1:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2,idle3,idle4
 		StandAnimations: stand, stand2
-	DetectCloaked:
-		Range: 2
 
 E2:
 	Inherits: ^Infantry
@@ -52,8 +50,6 @@ E2:
 		Weapon: GrenadierExplode
 		EmptyWeapon: GrenadierExplode
 		Chance: 50
-	DetectCloaked:
-		Range: 2
 
 E3:
 	Inherits: ^Infantry
@@ -79,8 +75,6 @@ E3:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand, stand2
-	DetectCloaked:
-		Range: 2
 
 E4:
 	Inherits: ^Infantry
@@ -111,8 +105,6 @@ E4:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand, stand2
-	DetectCloaked:
-		Range: 2
 
 E5:
 	Inherits: ^Infantry
@@ -149,8 +141,6 @@ E5:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand, stand2
-	DetectCloaked:
-		Range: 2
 
 E6:
 	Inherits: ^Infantry
@@ -214,8 +204,6 @@ RMBO:
 		StandAnimations: stand, stand2
 	AnnounceOnBuild:
 	AnnounceOnKill:
-	DetectCloaked:
-		Range: 2
 
 PVICE:
 	Inherits: VICE
