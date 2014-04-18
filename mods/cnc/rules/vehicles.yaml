@@ -157,7 +157,7 @@ ARTY:
 FTNK:
 	Inherits: ^Tank
 	Valued:
-		Cost: 800
+		Cost: 600
 	Tooltip:
 		Name: Flame Tank
 		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings, Vehicles\n  Weak vs Aircraft
@@ -169,9 +169,9 @@ FTNK:
 		ROT: 7
 		Speed: 113
 	Health:
-		HP: 350
+		HP: 300
 	Armor:
-		Type: Light
+		Type: Heavy
 	RevealsShroud:
 		Range: 5c0
 	Armament:
