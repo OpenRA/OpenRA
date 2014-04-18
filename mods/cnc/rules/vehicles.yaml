@@ -137,7 +137,7 @@ ARTY:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 9c0
+		Range: 8c0
 	Armament:
 		Weapon: ArtilleryShell
 		LocalOffset: 624,0,208
@@ -209,7 +209,7 @@ BGGY:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 7c0
+		Range: 8c0
 	Turreted:
 		ROT: 10
 		Offset: -43,0,128
@@ -448,7 +448,7 @@ MSAM:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10c0
+		Range: 8c0
 	Turreted:
 		ROT: 255
 		Offset: -256,0,128
@@ -485,7 +485,7 @@ MLRS:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10c0
+		Range: 8c0
 	Turreted:
 		ROT: 8
 		Offset: -128,0,128
