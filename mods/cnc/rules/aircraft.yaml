@@ -22,7 +22,7 @@ TRAN:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8c0
+		Range: 10c0
 	RenderUnit:
 	WithRotor@PRIMARY:
 		Offset: -597,0,171
