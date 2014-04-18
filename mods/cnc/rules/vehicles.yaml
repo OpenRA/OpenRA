@@ -39,7 +39,7 @@ MCV:
 HARV:
 	Inherits: ^Tank
 	Valued:
-		Cost: 1200
+		Cost: 1000
 	Tooltip:
 		Name: Harvester
 		Description: Collects Tiberium for processing.\n  Unarmed
