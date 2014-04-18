@@ -64,7 +64,7 @@ NUKE:
 		Footprint: x_ xx
 		Dimensions: 2,2
 	Health:
-		HP: 400
+		HP: 500
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -87,7 +87,7 @@ NUK2:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 650
+		HP: 700
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -327,7 +327,7 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 400
+		HP: 500
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
@@ -365,7 +365,7 @@ HQ:
 	CanPowerDown:
 	DisabledOverlay:
 	Health:
-		HP: 750
+		HP: 700
 	RevealsShroud:
 		Range: 10c0
 	Bib:
