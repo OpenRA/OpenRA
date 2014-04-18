@@ -494,6 +494,7 @@
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Buildings\LineBuildNode.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
+    <Compile Include="Render\WithBuildingPlacedAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

@@ -113,6 +113,9 @@ namespace OpenRA.Mods.RA
 
 			if (producer.Actor == null)
 				return;
+
+			foreach (var nbp in producer.Actor.TraitsImplementing<INotifyBuildingPlaced>())
+				nbp.BuildingPlaced(producer.Actor);
 		}
 
 		static int GetNumBuildables(Player p)

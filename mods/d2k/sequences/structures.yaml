@@ -183,14 +183,16 @@ conyarda:
 	damaged-idle: DATA
 		Start: 2560
 		Offset: -48,64
-#	build: DATA # TODO: overlay
-#		Start: 4436
-#		Length: 14
-#		Offset: -48,64
-#	damaged-build: DATA  # TODO: overlay
-#		Start: 4436
-#		Length: 14
-#		Offset: -48,64
+	crane-overlay: DATA
+		Start: 4436
+		Length: 14
+		Offset: -48,64
+		Tick: 80
+	damaged-crane-overlay: DATA
+		Start: 4436
+		Length: 14
+		Offset: -48,64
+		Tick: 80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -771,14 +773,16 @@ conyardh:
 	damaged-idle: DATA
 		Start: 2720
 		Offset: -48,64
-#	build: DATA  # TODO: overlay
-#		Start: 4450
-#		Length: 14
-#		Offset: -48,64
-#	damaged-build: DATA  # TODO: overlay
-#		Start: 4450
-#		Length: 14
-#		Offset: -48,64
+	crane-overlay: DATA
+		Start: 4450
+		Length: 14
+		Offset: -48,64
+		Tick: 80
+	damaged-crane-overlay: DATA
+		Start: 4450
+		Length: 14
+		Offset: -48,64
+		Tick: 80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1169,14 +1173,16 @@ conyardo:
 	damaged-idle: DATA
 		Start: 2880
 		Offset: -48,64
-#	build: DATA # TODO: overlay
-#		Start: 4464
-#		Length: 14
-#		Offset: -48,64
-#	damaged-build: DATA # TODO: overlay
-#		Start: 4464
-#		Length: 14
-#		Offset: -48,64
+	crane-overlay: DATA
+		Start: 4464
+		Length: 14
+		Offset: -48,64
+		Tick: 80
+	damaged-crane-overlay: DATA
+		Start: 4464
+		Length: 14
+		Offset: -48,64
+		Tick: 80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1675,14 +1681,16 @@ conyardc: # TODO: unused
 	damaged-idle: DATA
 		Start: 3007
 		Offset: -48,64
-#	build: DATA  # TODO: overlay
-#		Start: 4478
-#		Length: 14
-#		Offset: -48,64
-#	damaged-build: DATA  # TODO: overlay
-#		Start: 4478
-#		Length: 14
-#		Offset: -48,64
+	crane-overlay: DATA
+		Start: 4478
+		Length: 14
+		Offset: -48,64
+		Tick: 80
+	damaged-crane-overlay: DATA
+		Start: 4478
+		Length: 14
+		Offset: -48,64
+		Tick: 80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
