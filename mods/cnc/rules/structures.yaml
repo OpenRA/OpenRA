@@ -10,7 +10,7 @@ FACT:
 		Name: Construction Yard
 		Description: Builds structures
 	Building:
-		Power: 15
+		Power: 0
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
