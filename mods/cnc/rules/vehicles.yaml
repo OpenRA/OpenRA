@@ -410,7 +410,7 @@ HTNK:
 		Weapon: MammothMissiles
 		LocalOffset: -85,384,340, -85,-384,340
 		LocalYaw: -100, 100
-		Recoil: 42
+		Recoil: 10
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
