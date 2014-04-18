@@ -122,7 +122,7 @@ PROC:
 	Selectable:
 		Bounds: 73,72
 	CustomSellValue:
-		Value: 300
+		Value: 500
 	FreeActor:
 		Actor: HARV
 		InitialActivity: FindResources
