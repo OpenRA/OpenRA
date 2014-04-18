@@ -693,8 +693,8 @@ function CreateEditor()
   if (edcfg.usewrap) then
     editor:SetWrapMode(wxstc.wxSTC_WRAP_WORD)
     editor:SetWrapStartIndent(0)
-    if ide.wxver >= "2.9.5" then
-      editor:SetWrapVisualFlags(wxstc.wxSTC_WRAPVISUALFLAG_MARGIN)
+    if ide.wxver >= "2.9.5" and edcfg.wrapflags then
+      editor:SetWrapVisualFlags(tonumber(edcfg.wrapflags) or wxstc.wxSTC_WRAPVISUALFLAG_NONE)
     end
   end
 
