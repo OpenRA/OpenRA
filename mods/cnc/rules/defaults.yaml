@@ -141,9 +141,9 @@
 			Rough: 80
 			Road: 100
 			Tiberium: 70
-				PathingCost: 1000
+				PathingCost: 300
 			BlueTiberium: 70
-				PathingCost: 1000
+				PathingCost: 300
 			Beach: 80
 	SelectionDecorations:
 	Selectable:
