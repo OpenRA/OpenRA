@@ -130,7 +130,7 @@ ORCA:
 		PipCount: 6
 	Reloads:
 		Count: 2
-		Period: 200
+		Period: 100
 	RenderUnit:
 	WithShadow:
 	LeavesHusk:
