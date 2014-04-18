@@ -571,7 +571,7 @@ SAM:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 5c0
+		Range: 8c0
 	Turreted:
 		ROT: 10
 		InitialFacing: 0
