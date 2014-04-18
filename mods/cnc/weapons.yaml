@@ -309,9 +309,9 @@ BikeRockets:
 		Damage: 30
 
 OrcaAGMissiles:
-	ROF: 15
+	ROF: 12
 	Burst: 2
-	BurstDelay: 15
+	BurstDelay: 12
 	Range: 5c0
 	Report: BAZOOK1.AUD
 	ValidTargets: Ground
@@ -332,7 +332,7 @@ OrcaAGMissiles:
 			None: 50%
 			Wood: 100%
 			Light: 100%
-			Heavy: 50%
+			Heavy: 75%
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -340,9 +340,9 @@ OrcaAGMissiles:
 		Damage: 25
 
 OrcaAAMissiles:
-	ROF: 15
+	ROF: 12
 	Burst: 2
-	BurstDelay: 15
+	BurstDelay: 12
 	Range: 5c0
 	Report: BAZOOK1.AUD
 	ValidTargets: Air
@@ -360,9 +360,7 @@ OrcaAAMissiles:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 50%
-			Wood: 100%
-			Light: 100%
+			Light: 75%
 			Heavy: 50%
 		InfDeath: 4
 		Explosion: small_frag
