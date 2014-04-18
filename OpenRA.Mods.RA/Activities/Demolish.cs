@@ -30,6 +30,14 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
+			self.World.Add(new DelayedAction(delay * 1/3, () =>
+				self.World.Add(new FlashTarget(target.Actor, 2))));
+
+			self.World.Add(new DelayedAction(delay * 2/3, () =>
+				self.World.Add(new FlashTarget(target.Actor, 2))));
+
+			self.World.Add(new FlashTarget(target.Actor, 2));
+
 			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
 			{
 				// Can't demolish an already dead actor
