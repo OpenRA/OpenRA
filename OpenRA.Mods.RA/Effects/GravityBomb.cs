@@ -18,6 +18,7 @@ namespace OpenRA.Mods.RA.Effects
 	public class GravityBombInfo : IProjectileInfo
 	{
 		public readonly string Image = null;
+		public readonly bool Shadow = false;
 		public readonly WRange Velocity = WRange.Zero;
 		public readonly WRange Acceleration = new WRange(15);
 
@@ -64,10 +65,19 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			var cell = pos.ToCPos();
-			if (args.SourceActor.World.FogObscures(cell))
-				return SpriteRenderable.None;
+			if (!args.SourceActor.World.FogObscures(cell))
+			{
+				if (info.Shadow)
+				{
+					var shadowPos = pos - new WVec(0, 0, pos.Z);
+					foreach (var r in anim.Render(shadowPos, wr.Palette("shadow")))
+						yield return r;
+				}
 
-			return anim.Render(pos, wr.Palette("effect"));
+				var palette = wr.Palette(args.Weapon.Palette);
+				foreach (var r in anim.Render(pos, palette))
+					yield return r;
+			}
 		}
 	}
 }
