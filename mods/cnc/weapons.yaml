@@ -807,7 +807,7 @@ Napalm.Crate:
 		Damage: 500
 
 Laser:
-	ROF: 90
+	ROF: 1
 	Range: 7c512
 	Charges: true
 	Report: OBELRAY1.AUD
