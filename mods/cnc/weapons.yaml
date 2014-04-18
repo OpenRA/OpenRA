@@ -894,7 +894,7 @@ Heal:
 		PreventProne: yes
 
 APCGun:
-	ROF: 12
+	ROF: 18
 	Range: 5c0
 	Report: gun20.aud
 	ValidTargets: Ground
@@ -903,15 +903,15 @@ APCGun:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 35%
+			None: 50%
 			Wood: 50%
 			Light: 100%
-			Heavy: 20%
+			Heavy: 50%
 		Explosion: small_poof
 		Damage: 15
 
 APCGun.AA:
-	ROF: 12
+	ROF: 18
 	Range: 7c0
 	Report: gun20.aud
 	ValidTargets: Air
