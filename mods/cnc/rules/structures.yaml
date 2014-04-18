@@ -372,7 +372,7 @@ HQ:
 	ProvidesRadar:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 8
+		Range: 5
 	AirstrikePower:
 		Icon: airstrike
 		ChargeTime: 180
@@ -445,7 +445,7 @@ EYE:
 	ProvidesRadar:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 8
+		Range: 5
 	IonCannonPower:
 		Icon: ioncannon
 		ChargeTime: 180
@@ -543,7 +543,7 @@ GUN:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 5
+		Range: 3
 
 SAM:
 	Inherits: ^Building
@@ -629,7 +629,7 @@ OBLI:
 	-EmitInfantryOnSell:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 6
+		Range: 5
 
 GTWR:
 	Inherits: ^Building
@@ -663,7 +663,7 @@ GTWR:
 		QuantizedFacings: 8
 	AutoTarget:
 	DetectCloaked:
-		Range: 5
+		Range: 3
 	RenderDetectionCircle:
 	RenderRangeCircle:
 	WithMuzzleFlash:
@@ -712,7 +712,7 @@ ATWR:
 		QuantizedFacings: 8
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 6
+		Range: 5
 	RenderRangeCircle:
 
 SBAG:
