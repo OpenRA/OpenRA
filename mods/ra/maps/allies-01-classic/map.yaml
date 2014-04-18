@@ -1,4 +1,4 @@
-Selectable: True
+Selectable: False
 
 MapFormat: 6
 
@@ -6,7 +6,7 @@ RequiresMod: ra
 
 Title: Allies 01: In the thick of it
 
-Description: In the thick of it
+Description: Rescue Einstein from the Headquarters inside this Soviet complex.\n\nOnce found, evacuate him via the helicopter at the signal flare.\n\nEinstein and Tanya must be kept alive at all costs.\n\nBeware the Soviet's Tesla Coils.\n\nDirect Tanya to destroy the westmost power plants to take them off-line.
 
 Author: Westwood Studios
 

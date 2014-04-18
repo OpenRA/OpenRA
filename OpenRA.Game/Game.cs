@@ -45,10 +45,12 @@ namespace OpenRA
 
 		public static DatabaseReader GeoIpDatabase;
 
-		public static void JoinServer(string host, int port, string password)
+		public static OrderManager JoinServer(string host, int port, string password)
 		{
-			JoinInner(new OrderManager(host, port, password,
-				new ReplayRecorderConnection(new NetworkConnection(host, port), ChooseReplayFilename)));
+			var om = new OrderManager(host, port, password,
+				new ReplayRecorderConnection(new NetworkConnection(host, port), ChooseReplayFilename));
+			JoinInner(om);
+			return om;
 		}
 
 		static string ChooseReplayFilename()

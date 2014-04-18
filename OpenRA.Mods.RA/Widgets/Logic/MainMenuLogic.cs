@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using System.Net;
 using OpenRA.Widgets;
 
@@ -15,7 +16,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class MainMenuLogic
 	{
-		protected enum MenuType { Main, Extras, None }
+		protected enum MenuType { Main, Singleplayer, Extras, None }
 
 		protected MenuType menuType = MenuType.Main;
 		Widget rootMenu;
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var mainMenu = widget.Get("MAIN_MENU");
 			mainMenu.IsVisible = () => menuType == MenuType.Main;
 
-			mainMenu.Get<ButtonWidget>("SINGLEPLAYER_BUTTON").OnClick = StartSkirmishGame;
+			mainMenu.Get<ButtonWidget>("SINGLEPLAYER_BUTTON").OnClick = () => menuType = MenuType.Singleplayer;
 
 			mainMenu.Get<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () =>
 			{
@@ -60,6 +61,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			mainMenu.Get<ButtonWidget>("EXTRAS_BUTTON").OnClick = () => menuType = MenuType.Extras;
 
 			mainMenu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+
+			// Singleplayer menu
+			var singleplayerMenu = widget.Get("SINGLEPLAYER_MENU");
+			singleplayerMenu.IsVisible = () => menuType == MenuType.Singleplayer;
+
+			var missionsButton = singleplayerMenu.Get<ButtonWidget>("MISSIONS_BUTTON");
+			missionsButton.OnClick = () =>
+			{
+				menuType = MenuType.None;
+				Ui.OpenWindow("MISSIONBROWSER_PANEL", new WidgetArgs
+				{
+					{ "onExit", () => menuType = MenuType.Singleplayer },
+					{ "onStart", RemoveShellmapUI }
+				});
+			};
+			missionsButton.Disabled = !Game.modData.Manifest.Missions.Any();
+
+			singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON").OnClick = StartSkirmishGame;
+
+			singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Main;
 
 			// Extras menu
 			var extrasMenu = widget.Get("EXTRAS_MENU");

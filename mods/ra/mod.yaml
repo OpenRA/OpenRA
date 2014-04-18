@@ -99,6 +99,7 @@ ChromeLayout:
 	mods/ra/chrome/tooltips.yaml
 	mods/ra/chrome/assetbrowser.yaml
 	mods/ra/chrome/irc.yaml
+	mods/ra/chrome/missionbrowser.yaml
 
 Weapons:
 	mods/ra/weapons.yaml
@@ -181,3 +182,6 @@ LuaScripts:
 	mods/common/lua/rules.lua
 	mods/common/lua/production.lua
 	mods/common/lua/facing.lua
+
+Missions:
+	mods/ra/missions.yaml

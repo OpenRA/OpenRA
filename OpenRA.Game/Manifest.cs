@@ -24,7 +24,7 @@ namespace OpenRA
 			Folders, MapFolders, Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Movies, Translations, TileSets,
-			ChromeMetrics, PackageContents, LuaScripts, MapCompatibility;
+			ChromeMetrics, PackageContents, LuaScripts, MapCompatibility, Missions;
 
 		public readonly Dictionary<string, string> Packages;
 		public readonly MiniYaml LoadScreen;
@@ -62,6 +62,7 @@ namespace OpenRA
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
 			PackageContents = YamlList(yaml, "PackageContents");
 			LuaScripts = YamlList(yaml, "LuaScripts");
+			Missions = YamlList(yaml, "Missions");
 
 			LoadScreen = yaml["LoadScreen"];
 			LobbyDefaults = yaml["LobbyDefaults"];

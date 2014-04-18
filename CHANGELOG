@@ -103,6 +103,7 @@ NEW:
 		Removed Mobile Radar Jammer's jamming effect for allied missiles.
 		Increased the HP of husks from 140 to 280.
 		Fixed incorrect Red Alert dialog corners.
+		Added a singleplayer mission menu.
 	Tiberian Dawn:
 		Engineers can now regain control over husks.
 		Chinook rotors now counter-rotate.
@@ -132,6 +133,7 @@ NEW:
 		The chance of artillery exploding on death has been reduced from 100% to 75%.
 		Fixed Chinook being unable to land on tiberium.
 		Commando will no longer shoot at vehicles or buildings.
+		Added a singleplayer mission menu.
 	Engine:
 		The contents of OpenRA.FileFormats.dll have been merged into OpenRA.Game.exe, and namespaces reorganized.
 		Converted Aircraft CruiseAltitude to world coordinates.

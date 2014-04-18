@@ -1,4 +1,4 @@
-Selectable: True
+Selectable: False
 
 MapFormat: 6
 
@@ -6,7 +6,7 @@ RequiresMod: cnc
 
 Title: Storm the Beachhead
 
-Description: Conversion of the first GDI Mission
+Description: Use the units provided to protect the Mobile Construction Vehicle. (MCV)\n\nYou should then deploy the MCV by double clicking on it.\n\nThen you can begin to build up a base. Start with a Power Plant.\n\nFinally, search out and destroy all enemy Nod units in the surrounding area.
 
 Author: Westwood Studios
 

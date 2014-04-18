@@ -85,6 +85,7 @@ ChromeLayout:
 	mods/d2k/chrome/tooltips.yaml
 	mods/ra/chrome/assetbrowser.yaml
 	mods/ra/chrome/irc.yaml
+	mods/ra/chrome/missionbrowser.yaml
 
 Weapons:
 	mods/d2k/weapons.yaml

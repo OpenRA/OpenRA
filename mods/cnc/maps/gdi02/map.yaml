@@ -1,10 +1,12 @@
-Selectable: True
+Selectable: False
 
 MapFormat: 6
 
 RequiresMod: cnc
 
 Title: Knock out the Refinery
+
+Description: Defend your position, deploy the MCV, then build a sizable force to search out and destroy the Nod base in the area.\n\nAll Nod units and structures must be either destroyed or captured to complete objective.
 
 Author: Westwood Studios
 
