@@ -156,19 +156,19 @@ Sniper:
 		InfDeath: 2
 
 HighV:
-	ROF: 30
+	ROF: 25
 	Range: 6c0
 	Report: GUN8.AUD
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead:
-		Damage: 50
-		Spread: 128
+		Damage: 30
+		Spread: 683
 		Versus:
 			None: 100%
 			Wood: 50%
-			Light: 100%
-			Heavy: 25%
+			Light: 70%
+			Heavy: 35%
 		InfDeath: 2
 		Explosion: piffs
 
@@ -538,7 +538,7 @@ Grenade:
 		Damage: 40
 
 TurretGun:
-	ROF: 25
+	ROF: 20
 	Range: 6c0
 	Report: TNKFIRE6.AUD
 	Projectile: Bullet
@@ -547,15 +547,15 @@ TurretGun:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
+			None: 20%
 			Wood: 25%
-			Light: 80%
+			Light: 100%
 			Heavy: 100%
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
 		SmudgeType: Crater
-		Damage: 50
+		Damage: 40
 
 MammothMissiles:
 	ROF: 100
@@ -725,12 +725,10 @@ BoatMissile:
 		Damage: 60
 
 TowerMissle:
-	ROF: 24
-	Range: 8c0
+	ROF: 20
+	Range: 7c0
 	Report: ROCKET2.AUD
 	ValidTargets: Ground, Air
-	Burst: 2
-	BurstDelay: 16
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -743,17 +741,17 @@ TowerMissle:
 		Speed: 298
 		RangeLimit: 40
 	Warhead:
-		Spread: 512
+		Spread: 683
 		Versus:
-			None: 25%
+			None: 50%
 			Wood: 25%
 			Light: 100%
-			Heavy: 80%
+			Heavy: 100%
 		InfDeath: 3
 		Explosion: med_frag
 		ImpactSound: xplos.aud
 		SmudgeType: Crater
-		Damage: 45
+		Damage: 30
 
 Vulcan:
 	ValidTargets: Ground, Water
@@ -811,7 +809,7 @@ Napalm.Crate:
 
 Laser:
 	ROF: 90
-	Range: 8c512
+	Range: 7c512
 	Charges: true
 	Report: OBELRAY1.AUD
 	Projectile: LaserZap
@@ -827,7 +825,7 @@ Laser:
 
 SAMMissile:
 	ROF: 15
-	Range: 10c0
+	Range: 8c0
 	Report: ROCKET2.AUD
 	ValidTargets: Air
 	Projectile: Missile
