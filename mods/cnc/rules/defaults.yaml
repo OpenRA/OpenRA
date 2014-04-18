@@ -181,6 +181,8 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	LuaScriptEvents:
+	DetectCloaked:
+		Range: 1
 
 ^CivInfantry:
 	Inherits: ^Infantry
