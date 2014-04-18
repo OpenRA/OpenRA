@@ -202,7 +202,7 @@ BGGY:
 		Prerequisites: afld
 		Owner: nod
 	Mobile:
-		ROT: 12
+		ROT: 10
 		Speed: 170
 	Health:
 		HP: 120
@@ -237,7 +237,7 @@ BIKE:
 		Prerequisites: afld
 		Owner: nod
 	Mobile:
-		ROT: 12
+		ROT: 10
 		Speed: 213
 		TerrainSpeeds:
 			Clear: 70
@@ -274,7 +274,7 @@ JEEP:
 		Prerequisites: weap
 		Owner: gdi
 	Mobile:
-		ROT: 11
+		ROT: 10
 		Speed: 156
 	Health:
 		HP: 160
@@ -318,7 +318,7 @@ LTNK:
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		ROT: 5
+		ROT: 7
 	Armament:
 		Weapon: 70mm
 		Recoil: 85
@@ -518,7 +518,7 @@ STNK:
 		Prerequisites: tmpl
 		Owner: nod
 	Mobile:
-		ROT: 8
+		ROT: 10
 		Speed: 142
 		Crushes: crate, infantry
 	Health:
