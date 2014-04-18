@@ -124,10 +124,10 @@ E5:
 	Mobile:
 		Speed: 56
 		TerrainSpeeds:
-			Tiberium: 80
-				PathingCost: 80
-			BlueTiberium: 80
-				PathingCost: 80
+			Tiberium: 90
+				PathingCost: 90
+			BlueTiberium: 90
+				PathingCost: 90
 	Health:
 		HP: 90
 	Armament:
