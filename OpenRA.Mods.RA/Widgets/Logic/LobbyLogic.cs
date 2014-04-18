@@ -448,7 +448,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
 
-			if (this.skirmishMode)
+			if (skirmishMode)
 				disconnectButton.Text = "Cancel";
 
 			bool teamChat = false;
@@ -489,16 +489,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{ "worldRenderer", worldRenderer }
 				});
 			}
+
 			// Add a bot on the first lobbyinfo update
-			if (this.skirmishMode)
+			if (skirmishMode)
+			{
 				Game.LobbyInfoChanged += WidgetUtils.Once(() =>
 				{
-					var slot = orderManager.LobbyInfo.FirstEmptySlot();
+					var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
 					var bot = Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name).FirstOrDefault();
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
 					if (slot != null && bot != null)
 						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
 				});
+			}
 		}
 
 		void AddChatLine(Color c, string from, string text)
@@ -683,8 +686,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					spec = newSpectatorTemplate.Clone();
 
 				LobbyUtils.SetupKickSpectatorsWidget(spec, orderManager, lobby,
-					() => panel = PanelType.Kick, () => panel = PanelType.Players, this.skirmishMode);
-					
+					() => panel = PanelType.Kick, () => panel = PanelType.Players, skirmishMode);
+
 				var btn = spec.Get<ButtonWidget>("SPECTATE");
 				btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
 				btn.IsDisabled = () => orderManager.LocalClient.IsReady;
