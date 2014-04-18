@@ -927,7 +927,7 @@ APCGun.AA:
 
 Patriot:
 	ROF: 30
-	Range: 10c0
+	Range: 9c0
 	MinRange: 1c0
 	Burst: 2
 	BurstDelay: 15
@@ -954,7 +954,7 @@ Patriot:
 		Explosion: poof
 		ImpactSound: xplos.aud
 		SmudgeType: Crater
-		Damage: 30
+		Damage: 40
 
 Tail:
 	ROF: 30
