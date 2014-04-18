@@ -104,7 +104,7 @@ PROC:
 		Prerequisites: anypower
 		Owner: gdi,nod
 	Building:
-		Power: -30
+		Power: -50
 		Footprint: _x_ xxx ===
 		Dimensions: 3,3
 	Health:
