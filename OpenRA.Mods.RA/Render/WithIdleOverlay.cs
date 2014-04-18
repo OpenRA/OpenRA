@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -23,6 +24,8 @@ namespace OpenRA.Mods.RA.Render
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
+		public readonly bool HideOnLowPower = false;
+
 		public object Create(ActorInitializer init) { return new WithIdleOverlay(init.self, this); }
 	}
 
@@ -35,14 +38,16 @@ namespace OpenRA.Mods.RA.Render
 		{
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
+			var disabled = self.TraitsImplementing<IDisable>();
 
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 			overlay = new Animation(rs.GetImage(self));
 			overlay.PlayRepeating(info.Sequence);
-			rs.anims.Add("idle_overlay_{0}".F(info.Sequence), 
+			rs.anims.Add("idle_overlay_{0}".F(info.Sequence),
 				new AnimationWithOffset(overlay,
 					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-					() => !buildComplete, p => WithTurret.ZOffsetFromCenter(self, p, 1)));
+					() => !buildComplete || (info.HideOnLowPower && disabled.Any(d => d.Disabled)),
+					p => WithTurret.ZOffsetFromCenter(self, p, 1)));
 		}
 
 		public void BuildingComplete(Actor self)
