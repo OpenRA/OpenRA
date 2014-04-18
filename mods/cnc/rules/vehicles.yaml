@@ -312,7 +312,7 @@ LTNK:
 		ROT: 7
 		Speed: 113
 	Health:
-		HP: 300
+		HP: 360
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -350,7 +350,7 @@ MTNK:
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 400
+		HP: 450
 	Armor:
 		Type: Heavy
 	RevealsShroud:
