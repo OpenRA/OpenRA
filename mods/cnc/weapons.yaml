@@ -416,16 +416,16 @@ Chemspray:
 
 Grenade:
 	ROF: 50
-	Range: 5c0
+	Range: 4c0
 	Report: toss1.aud
 	Projectile: Bullet
-		Speed: 204
+		Speed: 85
 		High: yes
 		Angle: 62
 		Inaccuracy: 213
 		Image: BOMB
 	Warhead:
-		Spread: 256
+		Spread: 341
 		Versus:
 			None: 90%
 			Wood: 75%
