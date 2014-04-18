@@ -85,8 +85,11 @@ Section "Game" GAME
 	File "${SRCDIR}\Tao.*.dll"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\global mix database.dat"
-	File "${SRCDIR}\GeoIP.dll"
-	File "${SRCDIR}\GeoIP.dat"
+	File "${SRCDIR}\MaxMind.Db.dll"
+	File "${SRCDIR}\MaxMind.GeoIP2.dll"
+	File "${SRCDIR}\Newtonsoft.Json.dll"
+	File "${SRCDIR}\RestSharp.dll"
+	File "${SRCDIR}\GeoLite2-Country.mmdb"
 	File "${SRCDIR}\KopiLua.dll"
 	File "${SRCDIR}\NLua.dll"
 	File OpenAL32.dll
@@ -202,8 +205,11 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\*.ttf
 	Delete "$INSTDIR\global mix database.dat"
-	Delete $INSTDIR\GeoIP.dat
-	Delete $INSTDIR\GeoIP.dll
+	Delete $INSTDIR\MaxMind.Db.dll
+	Delete $INSTDIR\MaxMind.GeoIP2.dll
+	Delete $INSTDIR\Newtonsoft.Json.dll
+	Delete $INSTDIR\RestSharp.dll
+	Delete $INSTDIR\GeoLite2-Country.mmdb
 	Delete $INSTDIR\KopiLua.dll
 	Delete $INSTDIR\NLua.dll
 	Delete $INSTDIR\OpenAL32.dll

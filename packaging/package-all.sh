@@ -32,7 +32,7 @@ FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
 'cg' 'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \
 'AUTHORS' 'CHANGELOG' 'COPYING' \
 'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' \
-'global mix database.dat' 'GeoIP.dll' 'GeoIP.dat')
+'global mix database.dat' 'GeoLite2-Country.mmdb')
 
 echo "Copying files..."
 for i in "${FILES[@]}"; do
@@ -60,6 +60,12 @@ cp thirdparty/Mono.Nat.dll packaging/built
 # Lua
 cp thirdparty/KopiLua.dll packaging/built
 cp thirdparty/NLua.dll packaging/built
+
+# GeoIP database access
+cp thirdparty/MaxMind.Db.dll packaging/built
+cp thirdparty/MaxMind.GeoIP2.dll packaging/built
+cp thirdparty/Newtonsoft.Json.dll packaging/built
+cp thirdparty/RestSharp.dll packaging/built
 
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built

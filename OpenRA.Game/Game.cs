@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using OpenRA.FileSystem;
+using MaxMind.GeoIP2;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -41,6 +42,8 @@ namespace OpenRA
 
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;
+
+		public static DatabaseReader GeoIpDatabase;
 
 		public static void JoinServer(string host, int port, string password)
 		{
@@ -291,6 +294,7 @@ namespace OpenRA
 			Log.AddChannel("server", "server.log");
 			Log.AddChannel("sound", "sound.log");
 			Log.AddChannel("graphics", "graphics.log");
+			Log.AddChannel("geoip", "geoip.log");
 
 			if (Settings.Server.DiscoverNatDevices)
 				UPnP.TryNatDiscovery();
@@ -298,6 +302,15 @@ namespace OpenRA
 			{
 				Settings.Server.NatDeviceAvailable = false;
 				Settings.Server.AllowPortForward = false;
+			}
+
+			try
+			{
+				GeoIpDatabase = new DatabaseReader("GeoLite2-Country.mmdb");
+			}
+			catch (Exception e)
+			{
+				Log.Write("geoip", "DatabaseReader failed: {0}", e);
 			}
 
 			GlobalFileSystem.Mount("."); // Needed to access shaders
