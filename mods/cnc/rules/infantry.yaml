@@ -92,7 +92,7 @@ E4:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
-		Speed: 71
+		Speed: 56
 	Health:
 		HP: 90
 	Armament:
