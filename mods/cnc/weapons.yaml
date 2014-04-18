@@ -118,7 +118,7 @@ IonCannon:
 	ValidTargets: Ground, Air
 	Warhead@impact:
 		Damage: 900
-		Spread: 682
+		Spread: 853
 		Ore: true
 		InfDeath: 5
 	Warhead@area:
