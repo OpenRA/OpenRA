@@ -167,7 +167,7 @@
 	SpawnViceroid:
 		Probability: 10
 	CrushableInfantry:
-		WarnProbability: 60
+		WarnProbability: 67
 	CombatDebugOverlay:
 	Guard:
 	Guardable:
