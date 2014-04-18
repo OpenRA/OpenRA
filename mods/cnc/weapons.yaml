@@ -438,17 +438,17 @@ Grenade:
 		Damage: 50
 
 70mm:
-	ROF: 38
+	ROF: 30
 	Range: 4c0
 	Report: TNKFIRE3.AUD
 	Projectile: Bullet
 		Image: 120MM
-		Speed: 1c0
+		Speed: 853
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
+			None: 25%
+			Wood: 100%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 50%
@@ -479,7 +479,7 @@ Grenade:
 		Damage: 30
 
 120mm:
-	ROF: 50
+	ROF: 40
 	Range: 4c768
 	Report: TNKFIRE6.AUD
 	Projectile: Bullet
@@ -488,8 +488,8 @@ Grenade:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
+			None: 25%
+			Wood: 100%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 50%
@@ -500,19 +500,19 @@ Grenade:
 		Damage: 40
 
 120mmDual:
-	ROF: 60
+	ROF: 40
 	Range: 4c768
 	Report: TNKFIRE6.AUD
 	Burst: 2
-	BurstDelay: 5
+	BurstDelay: 8
 	Projectile: Bullet
 		Image: 120MM
 		Speed: 682
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
+			None: 25%
+			Wood: 100%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 100%
