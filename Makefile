@@ -57,6 +57,7 @@ DATA_INSTALL_DIR = $(DESTDIR)$(libexecdir)/openra
 RM = rm
 RM_R = $(RM) -r
 RM_F = $(RM) -f
+RM_RF = $(RM) -rf
 CP = cp
 CP_R = $(CP) -r
 INSTALL = install
@@ -274,7 +275,7 @@ all: dependencies core tools
 
 clean:
 	@-$(RM_F) *.exe *.dll ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
-	@-$(RM_R) ./*/obj ./*/bin
+	@-$(RM_RF) ./*/bin ./*/obj
 
 distclean: clean
 
