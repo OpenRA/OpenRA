@@ -371,7 +371,7 @@ OrcaAAMissiles:
 		Damage: 25
 
 Flamethrower:
-	ROF: 50
+	ROF: 55
 	Range: 2c512
 	Report: FLAMER2.AUD
 	Projectile: Bullet
@@ -379,15 +379,15 @@ Flamethrower:
 	Warhead:
 		Spread: 341
 		Versus:
-			None: 90%
+			None: 100%
 			Wood: 100%
-			Light: 75%
-			Heavy: 25%
+			Light: 100%
+			Heavy: 20%
 		Explosion: small_napalm
 		InfDeath: 5
 		ImpactSound: flamer2
 		SmudgeType: Scorch
-		Damage: 35
+		Damage: 40
 
 BigFlamer:
 	ROF: 50
