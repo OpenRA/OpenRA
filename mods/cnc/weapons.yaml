@@ -63,39 +63,39 @@ Atomic:
 	ValidTargets: Ground, Air
 	Report: nukemisl.aud
 	Warhead@impact:
-		Damage: 1000
-		Spread: 640
+		Damage: 1500	#1000
+		Spread: 1c0
 		Versus:
-			None: 90%
-			Wood: 60%
+			None: 100%
+			Wood: 100%
 			Light: 60%
 			Heavy: 50%
 		Explosion: 6
 		InfDeath: 5
 		ImpactSound: nukexplo.aud
 	Warhead@areanukea:
-		Damage: 200
+		Damage: 1000	#200
 		SmudgeType: Scorch
 		Spread: 2c512
 		Size: 3
 		Ore: true
 		Versus:
-			None: 90%
-			Wood: 60%
+			None: 100%
+			Wood: 100%
 			Light: 60%
 			Heavy: 50%
 		Delay: 3
 		InfDeath: 5
 		ImpactSound: xplobig4.aud
 	Warhead@areanukeb:
-		Damage: 200
+		Damage: 500	#200
 		SmudgeType: Scorch
 		Spread: 3c768
 		Size: 4
 		Ore: true
 		Versus:
-			None: 90%
-			Wood: 60%
+			None: 100%
+			Wood: 100%
 			Light: 60%
 			Heavy: 50%
 		Delay: 6
@@ -107,24 +107,11 @@ Atomic:
 		Size: 5
 		Ore: true
 		Versus:
-			None: 90%
-			Wood: 60%
+			None: 100%
+			Wood: 100%
 			Light: 60%
 			Heavy: 50%
 		Delay: 9
-		InfDeath: 5
-	Warhead@areanuke:
-		Damage: 200
-		SmudgeType: Scorch
-		Spread: 6c256
-		Size: 6
-		Ore: true
-		Versus:
-			None: 90%
-			Wood: 60%
-			Light: 60%
-			Heavy: 50%
-		Delay: 12
 		InfDeath: 5
 
 IonCannon:
