@@ -54,8 +54,8 @@ HARV:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
 		Capacity: 20
-		LoadTicksPerBale: 6
-		UnloadTicksPerBale: 12
+		LoadTicksPerBale: 12
+		UnloadTicksPerBale: 6
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
 	Mobile:
