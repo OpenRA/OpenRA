@@ -280,6 +280,7 @@ NEW:
 		Fixed helicopters falling down not revealing shroud.
 		Fixed effect (explosions, etc) saturation when the ingame menu is activated.
 		Added shadow to crate artwork.
+		Fixed build palette tooltip not taking low power slowdown into account when displaying the build time.
 	Dune 2000:
 		Added buildable concrete walls.
 		Fixed some cliffs being passable.
