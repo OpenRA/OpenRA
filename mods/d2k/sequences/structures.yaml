@@ -514,7 +514,7 @@ hightecha:
 	damaged-idle: DATA
 		Start: 2565
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4614
 		Length: 30
 		Offset: -48,80
@@ -690,7 +690,7 @@ lighta:
 	damaged-idle-top: DATA
 		Start: 2675
 		Offset: -48,64
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4644
 		Length: 30
 		Offset: -48,64
@@ -739,7 +739,7 @@ heavya:
 	damaged-idle-top: DATA
 		Start: 2520
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4674
 		Length: 47
 		Offset: -48,80
@@ -1005,7 +1005,7 @@ hightechh:
 	damaged-idle: DATA
 		Start: 2725
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4614
 		Length: 30
 		Offset: -48,80
@@ -1090,7 +1090,7 @@ lighth:
 	damaged-idle-top: DATA
 		Start: 2835
 		Offset: -48,64
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4644
 		Length: 30
 		Offset: -48,64
@@ -1139,7 +1139,7 @@ heavyh:
 	damaged-idle-top: DATA
 		Start: 2680
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4674
 		Length: 47
 		Offset: -48,80
@@ -1406,7 +1406,7 @@ hightecho:
 	damaged-idle: DATA
 		Start: 2885
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4614
 		Length: 30
 		Offset: -48,80
@@ -1483,7 +1483,7 @@ lighto:
 	damaged-idle-top: DATA
 		Start: 2995
 		Offset: -48,64
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4644
 		Length: 30
 		Offset: -48,64
@@ -1532,7 +1532,7 @@ heavyo:
 	damaged-idle-top: DATA
 		Start: 2840
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4674
 		Length: 47
 		Offset: -48,80
@@ -1647,7 +1647,7 @@ heavyc: # TODO: unused
 	damaged-idle-top: DATA
 		Start: 3003
 		Offset: -48,64
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4674
 		Length: 47
 		Offset: -48,80
