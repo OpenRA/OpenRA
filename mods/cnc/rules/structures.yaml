@@ -49,7 +49,7 @@ FACT:
 NUKE:
 	Inherits: ^Building
 	Valued:
-		Cost: 300
+		Cost: 500
 	Tooltip:
 		Name: Power Plant
 		Description: Generates power
@@ -72,7 +72,7 @@ NUKE:
 NUK2:
 	Inherits: ^Building
 	Valued:
-		Cost: 500
+		Cost: 800
 	Tooltip:
 		Name: Advanced Power Plant
 		Description: Provides more power, cheaper than the \nstandard Power Plant
