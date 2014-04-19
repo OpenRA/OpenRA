@@ -381,8 +381,8 @@ Container@PLAYER_WIDGETS:
 			X:WINDOW_RIGHT - 204
 			Y:287
 			TooltipContainer:TOOLTIP_CONTAINER
-			ReadyText:@ready@
-			HoldText:@on-hold@
+			ReadyText:Ready
+			HoldText:On Hold
 Background@FMVPLAYER:
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM

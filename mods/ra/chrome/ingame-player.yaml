@@ -102,14 +102,14 @@ Container@PLAYER_WIDGETS:
 		SupportPowerBin@INGAME_POWERS_BIN:
 			X:0
 			Y:25
-			ReadyText: @ready@
-			HoldText: @on-hold@
+			ReadyText: READY
+			HoldText: ON HOLD
 		BuildPalette@INGAME_BUILD_PALETTE:
 			X:WINDOW_RIGHT - 250
 			Y:280
 			Width:250
 			Height:500
-			ReadyText: @ready@
-			HoldText: @on-hold@
-			RequiresText: @requires@
+			ReadyText: READY
+			HoldText: ON HOLD
+			RequiresText: Requires {0}
 
