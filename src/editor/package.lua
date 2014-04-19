@@ -114,7 +114,7 @@ function ide:FindDocumentsByPartialPath(path)
   return docs
 end
 function ide:GetInterpreter() return self.interpreter end
-function ide:GetInterpreters() return ide.interpreters end
+function ide:GetInterpreters() return self.interpreters end
 function ide:GetConfig() return self.config end
 function ide:GetOutput() return self.frame.bottomnotebook.errorlog end
 function ide:GetEditorNotebook() return self.frame.notebook end
