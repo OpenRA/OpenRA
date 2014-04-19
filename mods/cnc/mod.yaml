@@ -98,6 +98,7 @@ ChromeLayout:
 	mods/cnc/chrome/tooltips.yaml
 	mods/cnc/chrome/irc.yaml
 	mods/cnc/chrome/assetbrowser.yaml
+	mods/cnc/chrome/missionbrowser.yaml
 
 Weapons:
 	mods/cnc/weapons.yaml
@@ -184,3 +185,6 @@ LuaScripts:
 	mods/common/lua/rules.lua
 	mods/common/lua/production.lua
 	mods/common/lua/facing.lua
+
+Missions:
+	mods/cnc/missions.yaml

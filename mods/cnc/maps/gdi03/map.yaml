@@ -1,4 +1,4 @@
-Selectable: True
+Selectable: False
 
 MapFormat: 6
 
@@ -6,7 +6,7 @@ RequiresMod: cnc
 
 Title: Destroy The SAM Sites
 
-Description: Build up forces to destroy Nod base. Once all Nod SAM sites are neutralized then air support will be provided to combat obstacles such as turrets. Destroy all units and structures to complete the mission objective.
+Description: Build up forces to destroy Nod base.\n\nOnce all Nod SAM sites are neutralized then air support will be provided to combat obstacles such as turrets.\n\nDestroy all units and structures to complete the mission objective.
 
 Author: Westwood Studios
 

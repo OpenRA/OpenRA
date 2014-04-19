@@ -381,6 +381,7 @@
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
+    <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\IrcLogic.cs" />
     <Compile Include="Widgets\Logic\KickClientLogic.cs" />
