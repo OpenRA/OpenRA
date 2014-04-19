@@ -702,8 +702,12 @@ ATWR:
 	Turreted:
 		ROT: 255
 		Offset: 128,128,-85
-	Armament:
+	Armament@PRIMARY:
 		Weapon: TowerMissle
+		LocalOffset: 256,128,0, 256,-128,0
+		LocalYaw: -100,100
+	Armament@SECONDARY:
+		Weapon: SAMMissile
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:
