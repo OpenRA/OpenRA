@@ -650,7 +650,7 @@ ArtilleryShell:
 		Image: 120MM
 	Warhead:
 		Damage: 150
-		Spread: 256
+		Spread: 341
 		Versus:
 			None: 100%
 			Wood: 80%
