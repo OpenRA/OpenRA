@@ -21,7 +21,7 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 
 ## Contribute
 
-* Please read [INSTALL](https://github.com/OpenRA/OpenRA/blob/bleed/INSTALL) and [Compiling](https://github.com/OpenRA/OpenRA/wiki/Compiling) on how to set up an OpenRA development environment.
+* Please read [INSTALL.md](https://github.com/OpenRA/OpenRA/blob/bleed/INSTALL.md) and [Compiling](https://github.com/OpenRA/OpenRA/wiki/Compiling) on how to set up an OpenRA development environment.
 * See [Hacking](https://github.com/OpenRA/OpenRA/wiki/Hacking) for an overview of the engine.
 * To get your patches merged, please adhere to the [Contributing](https://github.com/OpenRA/OpenRA/blob/bleed/CONTRIBUTING.md) guidelines.
 
@@ -42,3 +42,10 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 * Sponsor a [mirror server](https://github.com/OpenRA/OpenRAWeb/tree/master/content/packages) if you have some bandwidth to spare.
 * You can immediately set up a [Dedicated](https://github.com/OpenRA/OpenRA/wiki/Dedicated) Game Server.
 * Fund development by creating [Bounties](https://www.bountysource.com/trackers/36085-openra) on specific tasks.
+
+## License
+Copyright 2007-2014 The OpenRA Developers (see [AUTHORS](https://github.com/OpenRA/OpenRA/blob/bleed/AUTHORS))
+This file is part of OpenRA, which is free software. It is made 
+available to you under the terms of the GNU General Public License
+as published by the Free Software Foundation. For more information,
+see [COPYING](https://github.com/OpenRA/OpenRA/blob/bleed/COPYING).
