@@ -46,7 +46,9 @@ end
 function PackageUnRegister(file, ...)
   PackageEventHandleOne(file, "onUnRegister", ...)
   -- remove from the list of installed packages
+  local package = ide.packages[file]
   ide.packages[file] = nil
+  return package
 end
 
 function PackageRegister(file, ...)
