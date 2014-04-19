@@ -327,6 +327,10 @@ install-core: default
 	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/KopiLua.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/NLua.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/RestSharp.dll "$(DATA_INSTALL_DIR)"
 
 	@echo "#!/bin/sh" > openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra
