@@ -711,10 +711,10 @@ BoatMissile:
 		Damage: 60
 
 TowerMissle:
-	ROF: 20
+	ROF: 15
 	Range: 7c0
 	Report: ROCKET2.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -737,7 +737,7 @@ TowerMissle:
 		Explosion: med_frag
 		ImpactSound: xplos.aud
 		SmudgeType: Crater
-		Damage: 30
+		Damage: 25
 
 Vulcan:
 	ValidTargets: Ground, Water
