@@ -20,6 +20,11 @@ namespace OpenRA
 {
 	public static class Exts
 	{
+		public static bool IsUppercase(this string str)
+		{
+			return string.Compare(str.ToUpperInvariant(), str, false) == 0;
+		}
+
 		public static string F(this string fmt, params object[] args)
 		{
 			return string.Format(fmt, args);
