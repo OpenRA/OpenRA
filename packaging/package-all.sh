@@ -54,7 +54,7 @@ cp thirdparty/FuzzyLogicLibrary.dll packaging/built
 cp thirdparty/SharpFont* packaging/built
 
 # SDL2-CS
-cp thirdparty/SDL2-CS packaging/built
+cp thirdparty/SDL2-CS* packaging/built
 
 # Mono.NAT for UPnP support
 cp thirdparty/Mono.Nat.dll packaging/built
