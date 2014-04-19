@@ -9,7 +9,7 @@ local mobdebug = require "mobdebug"
 local unpack = table.unpack or unpack
 
 local ide = ide
-local debugger = ide.debugger
+local debugger = setmetatable(ide.debugger, ide.proto.Debugger)
 debugger.server = nil -- DebuggerServer object when debugging, else nil
 debugger.running = false -- true when the debuggee is running
 debugger.listening = false -- true when the debugger is listening for a client

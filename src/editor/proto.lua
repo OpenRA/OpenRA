@@ -23,3 +23,8 @@ ide.proto.Interpreter = {__index = {
   GetName = function(self) return self.name end,
   GetFileName = function(self) return self.fname end,
 }}
+
+ide.proto.Debugger = {__index = {
+  IsRunning = function(self) return self.running end,
+  IsConnected = function(self) return self.server end,
+}}
