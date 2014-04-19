@@ -85,7 +85,7 @@ namespace OpenRA
 				for (var i = 0; i < 10; i++)	/* all control groups */
 					controlGroups[i].RemoveAll(a => actors.Contains(a));
 
-				controlGroups[group].AddRange(actors);
+				controlGroups[group].AddRange(actors.Where(a => a.Owner == world.LocalPlayer));
 				return;
 			}
 
