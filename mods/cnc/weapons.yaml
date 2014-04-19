@@ -308,7 +308,7 @@ OrcaAGMissiles:
 		Shadow: no
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 10
+		ROT: 20
 		Trail: smokey
 		ContrailLength: 8
 		Speed: 213
@@ -339,7 +339,7 @@ OrcaAAMissiles:
 		Shadow: no
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 10
+		ROT: 20
 		Trail: smokey
 		ContrailLength: 8
 		Speed: 213
@@ -555,7 +555,7 @@ MammothMissiles:
 		Shadow: no
 		Inaccuracy: 128
 		Image: DRAGON
-		ROT: 10
+		ROT: 20
 		Trail: smokey
 		ContrailLength: 8
 		Speed: 341
