@@ -166,7 +166,7 @@ SILO:
 PYLE:
 	Inherits: ^Building
 	Valued:
-		Cost: 300
+		Cost: 500
 	Tooltip:
 		Name: Barracks
 		Description: Trains infantry
@@ -204,7 +204,7 @@ PYLE:
 HAND:
 	Inherits: ^Building
 	Valued:
-		Cost: 300
+		Cost: 500
 	Tooltip:
 		Name: Hand of Nod
 		Description: Trains infantry
