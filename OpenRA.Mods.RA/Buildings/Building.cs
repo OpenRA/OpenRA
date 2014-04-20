@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA.Buildings
 			{
 				for (var x = scanStart.X; x < scanEnd.X; x++)
 				{
-				    var pos = new CPos(x, y);
+					var pos = new CPos(x, y);
 					var at = bi.GetBuildingAt(pos);
 					if (at == null || !at.IsInWorld || !at.HasTrait<GivesBuildableArea>())
 						continue;

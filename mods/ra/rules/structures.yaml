@@ -67,6 +67,8 @@ GAP:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+	RenderBuilding:
+		PauseOnLowPower: yes
 	Health:
 		HP: 1000
 	Armor:

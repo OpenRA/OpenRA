@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Render
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
-		public readonly bool HideOnLowPower = false;
+		public readonly bool PauseOnLowPower = false;
 
 		public object Create(ActorInitializer init) { return new WithIdleOverlay(init.self, this); }
 	}
@@ -46,7 +46,8 @@ namespace OpenRA.Mods.RA.Render
 			rs.anims.Add("idle_overlay_{0}".F(info.Sequence),
 				new AnimationWithOffset(overlay,
 					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-					() => !buildComplete || (info.HideOnLowPower && disabled.Any(d => d.Disabled)),
+					() => !buildComplete,
+					() => info.PauseOnLowPower && disabled.Any(d => d.Disabled),
 					p => WithTurret.ZOffsetFromCenter(self, p, 1)));
 		}
 

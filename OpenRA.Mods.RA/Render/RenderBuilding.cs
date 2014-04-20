@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
@@ -20,6 +21,7 @@ namespace OpenRA.Mods.RA.Render
 	public class RenderBuildingInfo : RenderSimpleInfo, Requires<BuildingInfo>, IPlaceBuildingDecoration
 	{
 		public readonly bool HasMakeAnimation = true;
+		public readonly bool PauseOnLowPower = false;
 
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
 
@@ -35,6 +37,8 @@ namespace OpenRA.Mods.RA.Render
 
 	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged
 	{
+		RenderBuildingInfo info;
+
 		public RenderBuilding(ActorInitializer init, RenderBuildingInfo info)
 			: this(init, info, () => 0) { }
 
@@ -42,6 +46,7 @@ namespace OpenRA.Mods.RA.Render
 			: base(init.self, baseFacing)
 		{
 			var self = init.self;
+			this.info = info;
 
 			// Work around a bogus crash
 			anim.PlayRepeating(NormalizeSequence(self, "idle"));
@@ -59,6 +64,13 @@ namespace OpenRA.Mods.RA.Render
 			anim.PlayRepeating(NormalizeSequence(self, "idle"));
 			foreach (var x in self.TraitsImplementing<INotifyBuildComplete>())
 				x.BuildingComplete(self);
+
+			if (info.PauseOnLowPower)
+			{
+				var disabled = self.TraitsImplementing<IDisable>();
+				anim.Paused = () => disabled.Any(d => d.Disabled)
+					&& anim.CurrentSequence.Name == NormalizeSequence(self, "idle");
+			}
 		}
 
 		public void PlayCustomAnimThen(Actor self, string name, Action a)

@@ -367,6 +367,8 @@ HQ:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+	RenderBuilding:
+		PauseOnLowPower: yes
 	Health:
 		HP: 750
 	RevealsShroud:
@@ -440,6 +442,8 @@ EYE:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+	RenderBuilding:
+		PauseOnLowPower: yes
 	Health:
 		HP: 1200
 	RevealsShroud:
