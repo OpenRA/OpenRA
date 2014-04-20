@@ -103,11 +103,11 @@ gapile:
 	critical-idle: gtpile
 		Start: 2
 		ShadowStart: 5
-	idle-lights: gtpile_a
+	production-lights: gtpile_a
 		Start: 0
 		Length: 7
 		Tick: 200
-	damaged-idle-lights: gtpile_a
+	damaged-production-lights: gtpile_a
 		Start:7
 		Length: 7
 		Tick: 200
@@ -142,22 +142,22 @@ gaweap:
 	dead: gtweap
 		Start: 2
 		ShadowStart: 5
-	idle-lights1: gtweap_a
+	production-lights-white: gtweap_a
 		Start: 0
 		Length: 8
 		Tick: 100
 		ZOffset: 2048
-	damaged-idle-lights1: gtweap_a
+	damaged-production-lights-white: gtweap_a
 		Start: 8
 		Length: 8
 		Tick: 100
 		ZOffset: 2048
-	idle-lights2: gtweap_b
+	production-lights-red: gtweap_b
 		Start: 0
 		Length: 4
 		Tick: 120
 		ZOffset: 2048
-	damaged-idle-lights2: gtweap_b
+	damaged-production-lights-red: gtweap_b
 		Start: 4
 		Length: 4
 		Tick: 120
@@ -232,11 +232,11 @@ nahand:
 	critical-idle: nthand
 		Start: 2
 		ShadowStart: 5
-	idle-light: nthand_a
+	production-light: nthand_a
 		Start: 0
 		Length: 5
 		Tick: 100
-	damaged-idle-light: nthand_a
+	damaged-production-light: nthand_a
 		Start: 5
 		Length: 5
 		Tick: 100
@@ -265,12 +265,12 @@ naweap:
 	dead: ntweap
 		Start: 2
 		ShadowStart: 5
-	idle-lights: ntweap_a
+	production-lights: ntweap_a
 		Start: 0
 		Length: 16
 		Tick: 100
 		ZOffset: 2048
-	damaged-idle-lights: ntweap_a
+	damaged-production-lights: ntweap_a
 		Start: 16
 		Length: 16
 		Tick: 100
