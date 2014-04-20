@@ -169,6 +169,8 @@ namespace OpenRA
 
 		public Hotkey ObserverCombinedView = new Hotkey(Keycode.MINUS, Modifiers.None);
 		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
+
+		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
 	}
 
 	public class IrcSettings
