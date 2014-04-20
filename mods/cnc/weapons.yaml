@@ -311,7 +311,7 @@ OrcaAGMissiles:
 		ROT: 20
 		Trail: smokey
 		ContrailLength: 8
-		Speed: 213
+		Speed: 298
 		RangeLimit: 30
 	Warhead:
 		Spread: 128
@@ -342,7 +342,7 @@ OrcaAAMissiles:
 		ROT: 20
 		Trail: smokey
 		ContrailLength: 8
-		Speed: 213
+		Speed: 298
 		RangeLimit: 30
 	Warhead:
 		Spread: 128
