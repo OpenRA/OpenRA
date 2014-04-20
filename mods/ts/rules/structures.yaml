@@ -104,8 +104,8 @@ GAPILE:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
+	WithProductionOverlay@LIGHTS:
+		Sequence: production-lights
 	WithIdleOverlay@LIGHT:
 		Sequence: idle-light
 	WithIdleOverlay@FLAG:
@@ -142,10 +142,10 @@ GAWEAP:
 	Production:
 		Produces: Vehicle
 	ProductionBar:
-	WithIdleOverlay@LIGHTS1:
-		Sequence: idle-lights1
-	WithIdleOverlay@LIGHTS2:
-		Sequence: idle-lights2
+	WithProductionOverlay@WHITELIGHTS:
+		Sequence: production-lights-white
+	WithProductionOverlay@REDLIGHTS:
+		Sequence: production-lights-red
 	WithIdleOverlay@TURBINES:
 		Sequence: idle-turbines
 
@@ -211,8 +211,8 @@ NAHAND:
 	ProductionBar:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
-	WithIdleOverlay@LIGHT:
-		Sequence: idle-light
+	WithProductionOverlay@LIGHT:
+		Sequence: production-light
 
 NAWEAP:
 	Inherits: ^Building
@@ -245,8 +245,8 @@ NAWEAP:
 	Production:
 		Produces: Vehicle
 	ProductionBar:
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
+	WithProductionOverlay@LIGHTS:
+		Sequence: production-lights
 
 GASAND:
 	Inherits: ^Wall

@@ -260,8 +260,8 @@ CONCRETEB:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Light
-	WithIdleOverlay@WELDING:
-		Sequence: idle-welding
+	WithProductionOverlay@WELDING:
+		Sequence: production-welding
 
 ^HEAVY:
 	Inherits: ^Building
@@ -300,8 +300,8 @@ CONCRETEB:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Heavy
-	WithIdleOverlay@WELDING:
-		Sequence: idle-welding
+	WithProductionOverlay@WELDING:
+		Sequence: production-welding
 
 ^RADAR:
 	Inherits: ^Building
@@ -603,8 +603,8 @@ WALL:
 		Range: 4c0
 	ProvidesCustomPrerequisite:
 		Prerequisite: Hitech
-	WithIdleOverlay@WELDING:
-		Sequence: idle-welding
+#	WithProductionOverlay@WELDING:
+#		Sequence: production-welding
 
 ^RESEARCH:
 	Inherits: ^Building

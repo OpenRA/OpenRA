@@ -83,6 +83,7 @@
     <Compile Include="FogPaletteFromR8.cs" />
     <Compile Include="DamagedWithoutFoundation.cs" />
     <Compile Include="Render\WithBuildingPlacedOverlayInfo.cs" />
+    <Compile Include="Render\WithProductionOverlay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
