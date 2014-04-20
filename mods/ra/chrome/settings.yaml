@@ -164,7 +164,7 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Always Show Status Bars
-				Label@VIDEO_TITLE:
+				Label@LOCALIZATION_TITLE:
 					Y: 225
 					Width: PARENT_RIGHT
 					Font: Bold
@@ -329,7 +329,7 @@ Background@SETTINGS_PANEL:
 					Ticks: 5
 					MinimumValue: 10
 					MaximumValue: 50
-				Label@HOTKEY_TITLE:
+				Label@HOTKEYS_TITLE:
 					Y: 115
 					Width: PARENT_RIGHT
 					Font: Bold
@@ -415,7 +415,7 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Show Performance Graph
-				Label@HOTKEY_TITLE:
+				Label@DEBUG_TITLE:
 					Y: 140
 					Width: PARENT_RIGHT
 					Font: Bold

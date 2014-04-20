@@ -29,7 +29,7 @@ Container@DIRECTCONNECT_PANEL:
 					Y: 15
 					Width: 200
 					Height: 25
-				Label@ADDRESS_LABEL:
+				Label@PORT_LABEL:
 					X: 50
 					Y: 49
 					Width: 95

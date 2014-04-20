@@ -222,14 +222,14 @@ Container@INSTALL_MUSIC_PANEL:
 					Height: PARENT_BOTTOM
 					Visible: false
 					Children:
-						Label@INFO:
+						Label@MUSIC_DISK_NOT_FOUND:
 							X: 170
 							Y: 35
 							Width: PARENT_RIGHT-30
 							Height: 25
 							Text: Disk not found
 							Font: Bold
-						Label@INFO2:
+						Label@PLEASE_INSERT_MUSIC_DISK:
 							X: 170
 							Y: 70
 							Width: PARENT_RIGHT-185

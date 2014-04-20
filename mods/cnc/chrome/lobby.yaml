@@ -20,7 +20,7 @@ Container@SERVER_LOBBY:
 				Container@MAP_PREVIEW_ROOT:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
-				Container@LABEL_CONTAINER:
+				Container@LOBBY_LABEL_CONTAINER:
 					X: 20
 					Y: 5
 					Children:
