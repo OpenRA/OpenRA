@@ -30,7 +30,7 @@ FACT:
 		Type: Building
 		Group: Building
 		BuildSpeed: .4
-		LowPowerSlowdown: 3
+		LowPowerSlowdown: 2
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 	ProductionQueue@Defense:
