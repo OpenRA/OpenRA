@@ -12,11 +12,14 @@ gacnst:
 		Start: 0
 		Length: 24
 		ShadowStart: 24
-	build-front: gtcnst_d # TODO: needs a render overlay trait
+	crane-overlay: gtcnst_d
 		Start: 0
 		Length: 20
-	damaged-build-front: gtcnst_d # TODO: needs a render overlay trait
+	damaged-crane-overlay: gtcnst_d
 		Start: 0
+		Length: 20
+	critical-crane-overlay: gtcnst_d
+		Start: 20
 		Length: 20
 	idle-top: gtcnst_c
 		Start: 0

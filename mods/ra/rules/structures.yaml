@@ -817,6 +817,7 @@ FACT:
 	DeadBuildingState:
 	BaseProvider:
 		Range: 16
+	WithBuildingPlacedAnimation:
 
 PROC:
 	Inherits: ^Building

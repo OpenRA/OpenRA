@@ -48,6 +48,7 @@ FACT:
 	BaseProvider:
 		Cooldown: 75
 		Range: 14
+	WithBuildingPlacedAnimation:
 
 NUKE:
 	Inherits: ^BaseBuilding

@@ -72,6 +72,7 @@ namespace OpenRA.Traits
 	public interface INotifyKilled { void Killed(Actor self, AttackInfo e); }
 	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
+	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }

@@ -73,6 +73,7 @@ CONCRETEB:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Conyard
+	WithBuildingPlacedOverlay:
 
 ^POWER:
 	Inherits: ^Building
