@@ -76,6 +76,11 @@ namespace OpenRA.Network
 			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null).Key;
 		}
 
+		public string FirstEmptyBotSlot()
+		{
+			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null && s.Value.AllowBots).Key;
+		}
+
 		public bool IsSinglePlayer
 		{
 			get { return Clients.Count(c => c.Bot == null) == 1; }
