@@ -339,6 +339,7 @@ CONCRETEB:
 		Prerequisite: Outpost
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
+		PauseOnLowPower: yes
 
 ^STARPORT:
 	Inherits: ^Building

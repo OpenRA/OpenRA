@@ -507,6 +507,7 @@ GARADR:
 		Range: 10c0
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
+		PauseOnLowPower: yes
 
 NARADR:
 	Inherits: ^Building
@@ -543,6 +544,7 @@ NARADR:
 		Range: 10c0
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
+		PauseOnLowPower: yes
 
 GATECH:
 	Inherits: ^Building

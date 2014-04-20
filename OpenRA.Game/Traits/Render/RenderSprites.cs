@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 		{
 			get { return anims[""].Animation; }
 			protected set { anims[""] = new AnimationWithOffset(value,
-				anims[""].OffsetFunc, anims[""].DisableFunc, anims[""].ZOffset); }
+				anims[""].OffsetFunc, anims[""].DisableFunc, anims[""].Paused, anims[""].ZOffset); }
 		}
 
 		RenderSpritesInfo Info;

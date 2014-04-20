@@ -15,14 +15,16 @@ namespace OpenRA.Graphics
 {
 	public class Animation
 	{
-		string name;
 		public Sequence CurrentSequence { get; private set; }
 		public bool IsDecoration = false;
+		public Func<bool> Paused;
+
+		Func<int> facingFunc;
+
 		int frame = 0;
 		bool backwards = false;
 		bool tickAlways;
-
-		Func<int> facingFunc;
+		string name;
 
 		public string Name { get { return name; } }
 
@@ -122,7 +124,8 @@ namespace OpenRA.Graphics
 
 		public void Tick()
 		{
-			Tick(40); // tick one frame
+			if (Paused == null || !Paused())
+				Tick(40); // tick one frame
 		}
 
 		public bool HasSequence(string seq) { return SequenceProvider.HasSequence(name, seq); }
