@@ -313,14 +313,13 @@ install-core: default
 	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
 	@$(INSTALL_DATA) "GeoLite2-Country.mmdb" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
-	@$(INSTALL_DATA) CHANGELOG "$(DATA_INSTALL_DIR)/CHANGELOG"
 	@$(INSTALL_DATA) COPYING "$(DATA_INSTALL_DIR)/COPYING"
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) cg "$(DATA_INSTALL_DIR)"
 	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/Tao/* "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/SDL2\#* "$(DATA_INSTALL_DIR)"
+	@$(CP) thirdparty/SDL2-CS* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll "$(DATA_INSTALL_DIR)"
@@ -328,6 +327,10 @@ install-core: default
 	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/KopiLua.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/NLua.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/RestSharp.dll "$(DATA_INSTALL_DIR)"
 
 	@echo "#!/bin/sh" > openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra

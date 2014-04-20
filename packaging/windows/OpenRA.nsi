@@ -75,9 +75,9 @@ Section "Game" GAME
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
 	File "${SRCDIR}\Mono.Nat.dll"
 	File "${SRCDIR}\AUTHORS"
-	File "${SRCDIR}\CHANGELOG"
 	File "${SRCDIR}\COPYING"
 	File "${SRCDIR}\README.html"
+	File "${SRCDIR}\CHANGELOG.html"
 	File "${SRCDIR}\CONTRIBUTING.html"
 	File "${SRCDIR}\DOCUMENTATION.html"
 	File "${SRCDIR}\*.ttf"
@@ -197,9 +197,9 @@ Function ${UN}Clean
 	Delete $INSTDIR\Tao.*.dll
 	Delete $INSTDIR\SharpFont.dll
 	Delete $INSTDIR\AUTHORS
-	Delete $INSTDIR\CHANGELOG
 	Delete $INSTDIR\COPYING
 	Delete $INSTDIR\README.html
+	Delete $INSTDIR\CHANGELOG.html
 	Delete $INSTDIR\CONTRIBUTING.html
 	Delete $INSTDIR\DOCUMENTATION.html
 	Delete $INSTDIR\OpenRA.ico

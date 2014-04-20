@@ -25,6 +25,10 @@ cp *.sh "$PWD/packaging/linux/$ROOTDIR/usr/lib/openra/" || exit 3
 # Icons and .desktop files
 make install-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
+# Documentation
+mkdir -p $PWD/packaging/linux/$ROOTDIR/usr/share/doc/openra/
+cp *.html $PWD/packaging/linux/$ROOTDIR/usr/share/doc/openra/
+
 cd packaging/linux
 
 (

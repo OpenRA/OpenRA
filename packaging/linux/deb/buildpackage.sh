@@ -39,10 +39,9 @@ gzip -9 "${DEB_BUILD_ROOT}/${DOCDIR}/AUTHORS"
 DATE=`date -R`
 
 echo -e "openra (${VERSION}) unstable; urgency=low\n" > "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
-cat "${DEB_BUILD_ROOT}/${LIBDIR}/CHANGELOG" >> "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
+cat "../../../CHANGELOG.md" >> "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
 echo -e "\n\n-- Paul Chote <sleipnir@sleipnirstuff.com> ${DATE}" >> "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
 gzip -9 "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
-rm "${DEB_BUILD_ROOT}/${LIBDIR}/CHANGELOG"
 rm "${DEB_BUILD_ROOT}/${LIBDIR}/COPYING"
 
 # Create the control file
