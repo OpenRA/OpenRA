@@ -37,6 +37,7 @@ Smudges:
 
 Rules:
 	World:
+		-StartGameNotification:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LoadWidgetAtGameStart:

@@ -26,12 +26,12 @@ namespace OpenRA.GameRules
 		public readonly string[] DisableVariants = { };
 		public readonly string[] DisablePrefixes = { };
 
-		static Dictionary<string, string[]> Load( MiniYaml y, string name )
+		static Dictionary<string, string[]> Load(MiniYaml y, string name)
 		{
-			return y.NodesDict.ContainsKey( name )
-				? y.NodesDict[ name ].NodesDict.ToDictionary(
+			return y.NodesDict.ContainsKey(name)
+				? y.NodesDict[name].NodesDict.ToDictionary(
 					a => a.Key,
-					a => FieldLoader.GetValue<string[]>( "(value)", a.Value.Value ) )
+					a => FieldLoader.GetValue<string[]>("(value)", a.Value.Value))
 				: new Dictionary<string, string[]>();
 		}
 
