@@ -4,7 +4,7 @@ A Libre/Free Real Time Strategy game engine supporting early Westwood classics.
 
 * Website: [http://www.open-ra.org](http://www.open-ra.org)
 * IRC: \#openra on irc.freenode.net
-* Repository: [https://github.com/openra/openra](https://github.com/openra/openra) [![Build Status](https://travis-ci.org/OpenRA/OpenRA.png?branch=bleed)](https://travis-ci.org/OpenRA/OpenRA)
+* Repository: [https://github.com/openra/openra](https://github.com/openra/openra) [![Build Status](https://travis-ci.org/OpenRA/OpenRA.svg?branch=bleed)](https://travis-ci.org/OpenRA/OpenRA)
 
 Please read the [FAQ](https://github.com/OpenRA/OpenRA/wiki/FAQ) in our [Wiki](https://github.com/OpenRA/OpenRA/wiki) and report problems at [http://bugs.open-ra.org](http://bugs.open-ra.org).
 
