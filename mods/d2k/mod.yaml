@@ -36,6 +36,7 @@ Rules:
 	mods/d2k/rules/atreides.yaml
 	mods/d2k/rules/harkonnen.yaml
 	mods/d2k/rules/ordos.yaml
+	mods/d2k/rules/arrakis.yaml
 
 Sequences:
 	mods/d2k/sequences/aircraft.yaml
