@@ -1,334 +1,335 @@
 ScrollPanel@LOBBY_PLAYER_BIN:
-	X:20
-	Y:67
-	ItemSpacing:5
-	Width:535
-	Height:235
+	X: 20
+	Y: 67
+	ItemSpacing: 5
+	Width: 535
+	Height: 235
 	Children:
 		Container@TEMPLATE_EDITABLE_PLAYER:
-			X:5
-			Y:0
-			Width:475
-			Height:25
-			Visible:false
+			X: 5
+			Y: 0
+			Width: 475
+			Height: 25
+			Visible: false
 			Children:
 				Image@ADMIN_INDICATOR:
-					ImageCollection:lobby-bits
-					ImageName:admin
-					X:2
-					Visible:false
+					ImageCollection: lobby-bits
+					ImageName: admin
+					X: 2
+					Visible: false
 				Container@LATENCY:
-					X:0
-					Y:6
-					Width:11
-					Height:14
-					Visible:false
+					X: 0
+					Y: 6
+					Width: 11
+					Height: 14
+					Visible: false
 					Children:
 						ColorBlock@LATENCY_COLOR:
-							X:2
-							Y:2
-							Width:PARENT_RIGHT-4
-							Height:PARENT_BOTTOM-4
+							X: 2
+							Y: 2
+							Width: PARENT_RIGHT-4
+							Height: PARENT_BOTTOM-4
 				ClientTooltipRegion@CLIENT_REGION:
-					TooltipContainer:TOOLTIP_CONTAINER
-					Template:CLIENT_TOOLTIP
-					Width:11
-					Height:25
+					TooltipContainer: TOOLTIP_CONTAINER
+					Template: CLIENT_TOOLTIP
+					Width: 11
+					Height: 25
 				TextField@NAME:
-					Text:Name
-					X:15
-					Width:165
-					Height:25
-					MaxLength:16
+					Text: Name
+					X: 15
+					Width: 165
+					Height: 25
+					MaxLength: 16
 				DropDownButton@SLOT_OPTIONS:
-					Text:Name
-					X:15
-					Width:165
-					Height:25
-					Font:Regular
-					Visible:false
+					Text: Name
+					X: 15
+					Width: 165
+					Height: 25
+					Font: Regular
+					Visible: false
 				DropDownButton@COLOR:
-					X:190
-					Width:80
-					Height:25
+					X: 190
+					Width: 80
+					Height: 25
 					Children:
 						ColorBlock@COLORBLOCK:
-							X:5
-							Y:6
-							Width:PARENT_RIGHT-35
-							Height:PARENT_BOTTOM-12
+							X: 5
+							Y: 6
+							Width: PARENT_RIGHT-35
+							Height: PARENT_BOTTOM-12
 				DropDownButton@FACTION:
-					X:280
-					Width:130
-					Height:25
+					X: 280
+					Width: 130
+					Height: 25
 					Children:
 						Image@FACTIONFLAG:
-							Width:30
-							Height:15
-							X:5
-							Y:5
+							Width: 30
+							Height: 15
+							X: 5
+							Y: 5
 						Label@FACTIONNAME:
-							Text:Faction
-							Width:60
-							Height:25
-							X:40
-							Y:0
+							Text: Faction
+							Width: 60
+							Height: 25
+							X: 40
+							Y: 0
 				DropDownButton@TEAM:
-					X:420
-					Width:48
-					Height:25
-					Text:Team
+					X: 420
+					Width: 48
+					Height: 25
+					Text: Team
 				Checkbox@STATUS_CHECKBOX:
-					X:477
-					Y:2
-					Width:20
-					Height:20
-					Visible:false
+					X: 477
+					Y: 2
+					Width: 20
+					Height: 20
+					Visible: false
 				Image@STATUS_IMAGE:
-					Visible:false
-					X:479
-					Y:4
-					Width:20
-					Height:20
-					ImageCollection:checkbox-bits
-					ImageName:checked
-					Visible:false
+					Visible: false
+					X: 479
+					Y: 4
+					Width: 20
+					Height: 20
+					ImageCollection: checkbox-bits
+					ImageName: checked
+					Visible: false
 		Container@TEMPLATE_NONEDITABLE_PLAYER:
-			X:5
-			Y:0
-			Width:475
-			Height:25
-			Visible:false
+			X: 5
+			Y: 0
+			Width: 475
+			Height: 25
+			Visible: false
 			Children:
 				Image@ADMIN_INDICATOR:
-					ImageCollection:lobby-bits
-					ImageName:admin
-					X:2
-					Visible:false
+					ImageCollection: lobby-bits
+					ImageName: admin
+					X: 2
+					Visible: false
 				Container@LATENCY:
-					X:0
-					Y:6
-					Width:11
-					Height:14
-					Visible:false
+					X: 0
+					Y: 6
+					Width: 11
+					Height: 14
+					Visible: false
 					Children:
 						ColorBlock@LATENCY_COLOR:
-							X:2
-							Y:2
-							Width:PARENT_RIGHT-4
-							Height:PARENT_BOTTOM-4
+							X: 2
+							Y: 2
+							Width: PARENT_RIGHT-4
+							Height: PARENT_BOTTOM-4
 				ClientTooltipRegion@CLIENT_REGION:
-					TooltipContainer:TOOLTIP_CONTAINER
-					Template:CLIENT_TOOLTIP
-					Width:11
-					Height:25
+					TooltipContainer: TOOLTIP_CONTAINER
+					Template: CLIENT_TOOLTIP
+					Width: 11
+					Height: 25
 				Label@NAME:
-					Text:Name
-					Width:165
-					Height:25
-					X:20
-					Y:0-1
+					Text: Name
+					Width: 165
+					Height: 25
+					X: 20
+					Y: 0-1
 				Button@KICK:
-					Text:X
-					Width:25
-					Height:23
-					X:155
-					Y:2
-					Font:Bold
+					Text: X
+					Width: 25
+					Height: 23
+					X: 155
+					Y: 2
+					Font: Bold
 				ColorBlock@COLORBLOCK:
-					X:195
-					Y:6
-					Width:45
-					Height:13
+					X: 195
+					Y: 6
+					Width: 45
+					Height: 13
 				Container@FACTION:
-					Width:160
-					Height:25
-					X:280
-					Y:0
+					Width: 160
+					Height: 25
+					X: 280
+					Y: 0
 					Children:
 						Image@FACTIONFLAG:
-							Width:30
-							Height:15
-							X:5
-							Y:5
+							Width: 30
+							Height: 15
+							X: 5
+							Y: 5
 						Label@FACTIONNAME:
-							Text:Faction
-							Width:60
-							Height:25
-							X:40
-							Y:0
+							Text: Faction
+							Width: 60
+							Height: 25
+							X: 40
+							Y: 0
 				Label@TEAM:
-					Text:Team
-					Width:23
-					Height:25
-					Align:Center
-					X:420
-					Y:0
+					Text: Team
+					Width: 23
+					Height: 25
+					Align: Center
+					X: 420
+					Y: 0
 				Image@STATUS_IMAGE:
-					Visible:false
-					X:479
-					Y:4
-					Width:20
-					Height:20
-					ImageCollection:checkbox-bits
-					ImageName:checked
+					Visible: false
+					X: 479
+					Y: 4
+					Width: 20
+					Height: 20
+					ImageCollection: checkbox-bits
+					ImageName: checked
 		Container@TEMPLATE_EMPTY:
-			X:5
-			Y:0
-			Width:475
-			Height:25
-			Visible:false
+			X: 5
+			Y: 0
+			Width: 475
+			Height: 25
+			Visible: false
 			Children:
 				Label@NAME:
-					Text:Name
-					Width:165
-					Height:25
-					X:20
-					Y:0-1
+					Text: Name
+					Width: 165
+					Height: 25
+					X: 20
+					Y: 0-1
 				DropDownButton@SLOT_OPTIONS:
-					Text:Name
-					Width:165
-					Height:25
-					X:15
-					Y:0
-					Visible:false
+					Text: Name
+					Width: 165
+					Height: 25
+					X: 15
+					Y: 0
+					Visible: false
 				Button@JOIN:
-					Text:Play in this slot
-					Width:278
-					Height:25
-					X:190
-					Y:0
+					Text: Play in this slot
+					Width: 278
+					Height: 25
+					X: 190
+					Y: 0
 		Container@TEMPLATE_EDITABLE_SPECTATOR:
-			X:5
-			Y:0
-			Width:475
-			Height:25
-			Visible:false
+			X: 5
+			Y: 0
+			Width: 475
+			Height: 25
+			Visible: false
 			Children:
 				Image@ADMIN_INDICATOR:
-					ImageCollection:lobby-bits
-					ImageName:admin
-					X:2
-					Visible:false
+					ImageCollection: lobby-bits
+					ImageName: admin
+					X: 2
+					Visible: false
 				Container@LATENCY:
-					X:0
-					Y:6
-					Width:11
-					Height:14
-					Visible:false
+					X: 0
+					Y: 6
+					Width: 11
+					Height: 14
+					Visible: false
 					Children:
 						ColorBlock@LATENCY_COLOR:
-							X:2
-							Y:2
-							Width:PARENT_RIGHT-4
-							Height:PARENT_BOTTOM-4
+							X: 2
+							Y: 2
+							Width: PARENT_RIGHT-4
+							Height: PARENT_BOTTOM-4
 				ClientTooltipRegion@CLIENT_REGION:
-					TooltipContainer:TOOLTIP_CONTAINER
-					Template:CLIENT_TOOLTIP
-					Width:11
-					Height:25
+					TooltipContainer: TOOLTIP_CONTAINER
+					Template: CLIENT_TOOLTIP
+					Width: 11
+					Height: 25
 				TextField@NAME:
-					Text:Name
-					X:15
-					Width:165
-					Height:25
-					MaxLength:16
+					Text: Name
+					X: 15
+					Width: 165
+					Height: 25
+					MaxLength: 16
 				Label@SPECTATOR:
-					Text:Spectator
-					Width:278
-					Height:25
-					X:190
-					Y:0
-					Align:Center
-					Font:Bold
+					Text: Spectator
+					Width: 278
+					Height: 25
+					X: 190
+					Y: 0
+					Align: Center
+					Font: Bold
 		Container@TEMPLATE_NONEDITABLE_SPECTATOR:
-			X:5
-			Y:0
-			Width:475
-			Height:25
-			Visible:false
+			X: 5
+			Y: 0
+			Width: 475
+			Height: 25
+			Visible: false
 			Children:
 				Image@ADMIN_INDICATOR:
-					ImageCollection:lobby-bits
-					ImageName:admin
-					X:2
-					Visible:false
+					ImageCollection: lobby-bits
+					ImageName: admin
+					X: 2
+					Visible: false
 				Container@LATENCY:
-					X:0
-					Y:6
-					Width:11
-					Height:14
-					Visible:false
+					X: 0
+					Y: 6
+					Width: 11
+					Height: 14
+					Visible: false
 					Children:
 						ColorBlock@LATENCY_COLOR:
-							X:2
-							Y:2
-							Width:PARENT_RIGHT-4
-							Height:PARENT_BOTTOM-4
+							X: 2
+							Y: 2
+							Width: PARENT_RIGHT-4
+							Height: PARENT_BOTTOM-4
 				ClientTooltipRegion@CLIENT_REGION:
-					TooltipContainer:TOOLTIP_CONTAINER
-					Template:CLIENT_TOOLTIP
-					Width:11
-					Height:25
+					TooltipContainer: TOOLTIP_CONTAINER
+					Template: CLIENT_TOOLTIP
+					Width: 11
+					Height: 25
 				Label@NAME:
-					Text:Name
-					Width:160
-					Height:25
-					X:20
-					Y:0-1
+					Text: Name
+					Width: 160
+					Height: 25
+					X: 20
+					Y: 0-1
 				Button@KICK:
-					Text:X
-					Width:25
-					Height:23
-					X:155
-					Y:2
-					Font:Bold
+					Text: X
+					Width: 25
+					Height: 23
+					X: 155
+					Y: 2
+					Font: Bold
 				Label@SPECTATOR:
-					Text:Spectator
-					Width:278
-					Height:25
-					X:190
-					Y:0
-					Align:Center
-					Font:Bold
+					Text: Spectator
+					Width: 278
+					Height: 25
+					X: 190
+					Y: 0
+					Align: Center
+					Font: Bold
 		Container@TEMPLATE_NEW_SPECTATOR:
-			X:5
-			Y:0
-			Width:475
-			Height:25
-			Visible:false
+			X: 5
+			Y: 0
+			Width: 475
+			Height: 25
+			Visible: false
 			Children:
 				Checkbox@TOGGLE_SPECTATORS:
-					Font:Regular
-					Width:165
-					Height:20
-					X:15
-					Y:0
-					Text:Allow Spectators?
+					Font: Regular
+					Width: 165
+					Height: 20
+					X: 15
+					Y: 0
+					Text: Allow Spectators?
 				Button@SPECTATE:
-					Text:Spectate
-					Font:Regular
-					Width:278
-					Height:25
-					X:190
-					Y:0
+					Text: Spectate
+					Font: Regular
+					Width: 278
+					Height: 25
+					X: 190
+					Y: 0
 
 ScrollPanel@RACE_DROPDOWN_TEMPLATE:
-	Width:DROPDOWN_WIDTH
+	Width: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@TEMPLATE:
-			Width:PARENT_RIGHT-27
-			Height:25
-			X:2
-			Y:0
-			Visible:false
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
 			Children:
 				Image@FLAG:
-					X:5
-					Y:5
-					Width:30
-					Height:15
+					X: 5
+					Y: 5
+					Width: 30
+					Height: 15
 				Label@LABEL:
-					X:40
-					Width:60
-					Height:25
+					X: 40
+					Width: 60
+					Height: 25
+

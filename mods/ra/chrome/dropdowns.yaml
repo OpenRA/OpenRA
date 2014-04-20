@@ -1,80 +1,81 @@
 ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
-	Width:DROPDOWN_WIDTH
+	Width: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@HEADER:
-			BaseName:scrollheader
-			Width:PARENT_RIGHT-27
-			Height:13
-			X:2
-			Y:0
-			Visible:false
+			BaseName: scrollheader
+			Width: PARENT_RIGHT-27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
 			Children:
 				Label@LABEL:
-					Font:TinyBold
-					Width:PARENT_RIGHT
-					Height:10
-					Align:Center
+					Font: TinyBold
+					Width: PARENT_RIGHT
+					Height: 10
+					Align: Center
 		ScrollItem@TEMPLATE:
-			Width:PARENT_RIGHT-27
-			Height:25
-			X:2
-			Y:0
-			Visible:false
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
 			Children:
 				Label@LABEL:
-					X:10
-					Width:PARENT_RIGHT-20
-					Height:25
+					X: 10
+					Width: PARENT_RIGHT-20
+					Height: 25
 
 ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
-	Width:DROPDOWN_WIDTH
+	Width: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@TEMPLATE:
-			Width:PARENT_RIGHT-27
-			Height:25
-			X:2
-			Y:0
-			Visible:false
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
 			Children:
 				Label@LABEL:
-					X:0
-					Width:PARENT_RIGHT
-					Height:25
-					Align:Center
+					X: 0
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
 
 ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
-	Width:DROPDOWN_WIDTH
+	Width: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@HEADER:
-			BaseName:scrollheader
-			Width:PARENT_RIGHT-27
-			Height:13
-			X:2
-			Y:0
-			Visible:false
+			BaseName: scrollheader
+			Width: PARENT_RIGHT-27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
 			Children:
 				Label@LABEL:
-					Font:TinyBold
-					Width:PARENT_RIGHT
-					Height:10
-					Align:Center
+					Font: TinyBold
+					Width: PARENT_RIGHT
+					Height: 10
+					Align: Center
 		ScrollItem@TEMPLATE:
-			Width:PARENT_RIGHT-27
-			Height:25
-			X:2
-			Y:0
-			Visible:false
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
 			Children:
 				Image@FLAG:
-					X:4
-					Y:4
-					Width:32
-					Height:16
+					X: 4
+					Y: 4
+					Width: 32
+					Height: 16
 				Label@LABEL:
-					X:40
-					Width:60
-					Height:25
+					X: 40
+					Width: 60
+					Height: 25
 				Label@NOFLAG_LABEL:
-					X:5
-					Width:PARENT_RIGHT
-					Height:25
+					X: 5
+					Width: PARENT_RIGHT
+					Height: 25
+

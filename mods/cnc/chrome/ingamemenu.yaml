@@ -1,78 +1,80 @@
 Container@INGAME_MENU_PANEL:
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:512
-	Height:370
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 512
+	Height: 370
 	Children:
 		Button@OBJECTIVES_BUTTON:
-			Y:PARENT_BOTTOM - 1
-			Width:140
-			Height:35
-			Text:Objectives
+			Y: PARENT_BOTTOM - 1
+			Width: 140
+			Height: 35
+			Text: Objectives
 			Visible: false
 		Button@DEBUG_BUTTON:
-			X:150
-			Y:PARENT_BOTTOM - 1
-			Width:140
-			Height:35
-			Text:Debug
+			X: 150
+			Y: PARENT_BOTTOM - 1
+			Width: 140
+			Height: 35
+			Text: Debug
 			Visible: false
+
 Container@INGAME_MENU:
-	Width:WINDOW_RIGHT
-	Height:WINDOW_BOTTOM
-	Logic:CncIngameMenuLogic
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Logic: CncIngameMenuLogic
 	Children:
 		Image@EVA:
-			X:WINDOW_RIGHT-128-43
-			Y:43
-			Width:128
-			Height:64
-			ImageCollection:logos
-			ImageName:eva
+			X: WINDOW_RIGHT-128-43
+			Y: 43
+			Width: 128
+			Height: 64
+			ImageCollection: logos
+			ImageName: eva
 		Label@VERSION_LABEL:
-			X:WINDOW_RIGHT-128-43
-			Y:115
-			Width:128
-			Align:Center
-			Contrast:true
+			X: WINDOW_RIGHT-128-43
+			Y: 115
+			Width: 128
+			Align: Center
+			Contrast: true
 		Background@BORDER:
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
-			Background:shellmapborder
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			Background: shellmapborder
 		Container@MENU_BUTTONS:
-			X:(WINDOW_RIGHT-WIDTH)/2
-			Y:WINDOW_BOTTOM-33-HEIGHT-10
-			Width:740
-			Height:35
+			X: (WINDOW_RIGHT-WIDTH)/2
+			Y: WINDOW_BOTTOM-33-HEIGHT-10
+			Width: 740
+			Height: 35
 			Children:
 				Button@QUIT_BUTTON:
-					X:0
-					Y:0
-					Width:140
-					Height:35
-					Text:Abort Mission
+					X: 0
+					Y: 0
+					Width: 140
+					Height: 35
+					Text: Abort Mission
 				Button@SURRENDER_BUTTON:
-					X:150
-					Y:0
-					Width:140
-					Height:35
-					Text:Surrender
+					X: 150
+					Y: 0
+					Width: 140
+					Height: 35
+					Text: Surrender
 				Button@MUSIC_BUTTON:
-					X:300
-					Y:0
-					Width:140
-					Height:35
-					Text:Music
+					X: 300
+					Y: 0
+					Width: 140
+					Height: 35
+					Text: Music
 				Button@SETTINGS_BUTTON:
-					X:450
-					Y:0
-					Width:140
-					Height:35
-					Text:Settings
+					X: 450
+					Y: 0
+					Width: 140
+					Height: 35
+					Text: Settings
 				Button@RESUME_BUTTON:
-					Key:escape
-					X:600
-					Y:0
-					Width:140
-					Height:35
-					Text:Resume
+					Key: escape
+					X: 600
+					Y: 0
+					Width: 140
+					Height: 35
+					Text: Resume
+

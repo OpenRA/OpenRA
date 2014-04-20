@@ -1,395 +1,397 @@
 Container@INGAME_ROOT:
-	Logic:CncIngameChromeLogic
+	Logic: CncIngameChromeLogic
 	Children:
 		LogicTicker@DISCONNECT_WATCHER:
-			Logic:DisconnectWatcherLogic
+			Logic: DisconnectWatcherLogic
 		Container@GAME_TIMER_BLOCK:
-			Logic:GameTimerLogic
-			X:WINDOW_RIGHT/2 - WIDTH
-			Width:100
-			Height:55
+			Logic: GameTimerLogic
+			X: WINDOW_RIGHT/2 - WIDTH
+			Width: 100
+			Height: 55
 			Children:
 				Label@GAME_TIMER:
-					Width:PARENT_RIGHT
-					Height:30
-					Align:Center
-					Font:Title
-					Contrast:true
+					Width: PARENT_RIGHT
+					Height: 30
+					Align: Center
+					Font: Title
+					Contrast: true
 				Label@GAME_TIMER_STATUS:
-					Y:35
-					Width:PARENT_RIGHT
-					Height:15
-					Align:Center
-					Font:Bold
-					Contrast:true
+					Y: 35
+					Width: PARENT_RIGHT
+					Height: 15
+					Align: Center
+					Font: Bold
+					Contrast: true
 		StrategicProgress@STRATEGIC_PROGRESS:
 			X: WINDOW_RIGHT/2
 			Y: 40
 		Container@PERFORMANCE_INFO:
-			Logic:PerfDebugLogic
+			Logic: PerfDebugLogic
 			Children:
 				Label@PERF_TEXT:
-					X:WINDOW_RIGHT - 200
-					Y:WINDOW_BOTTOM - 70
-					Width:170
-					Height:40
-					Contrast:true
-					VAlign:Top
+					X: WINDOW_RIGHT - 200
+					Y: WINDOW_BOTTOM - 70
+					Width: 170
+					Height: 40
+					Contrast: true
+					VAlign: Top
 				Background@GRAPH_BG:
-					X:10
-					Y:WINDOW_BOTTOM-HEIGHT-10
-					Width:220
-					Height:220
-					Background:panel-black
+					X: 10
+					Y: WINDOW_BOTTOM-HEIGHT-10
+					Width: 220
+					Height: 220
+					Background: panel-black
 					Children:
 						PerfGraph@GRAPH:
-							X:10
-							Y:10
-							Width:200
-							Height:200
+							X: 10
+							Y: 10
+							Width: 200
+							Height: 200
 		WorldInteractionController@INTERACTION_CONTROLLER:
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
 		ViewportController:
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
-			TooltipContainer:TOOLTIP_CONTAINER
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			TooltipContainer: TOOLTIP_CONTAINER
 		Container@PLAYER_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Container@OBSERVER_WIDGETS:
 	Children:
 		Button@OPTIONS_BUTTON:
-			Key:escape
-			X:WINDOW_RIGHT-202
-			Y:5
-			Width:30
-			Height:25
-			Font:Bold
+			Key: escape
+			X: WINDOW_RIGHT-202
+			Y: 5
+			Width: 30
+			Height: 25
+			Font: Bold
 			TooltipText: Menu
-			TooltipContainer:TOOLTIP_CONTAINER
+			TooltipContainer: TOOLTIP_CONTAINER
 			Children:
 				Image:
-					X:7
-					Y:5
-					ImageCollection:order-icons
-					ImageName:options
+					X: 7
+					Y: 5
+					ImageCollection: order-icons
+					ImageName: options
 		Background@RADAR:
-			X:WINDOW_RIGHT-173
-			Y:5
-			Width:168
-			Height:168
-			Background:panel-gray
+			X: WINDOW_RIGHT-173
+			Y: 5
+			Width: 168
+			Height: 168
+			Background: panel-gray
 			Children:
 				Radar:
-					X:1
-					Y:1
-					Width:PARENT_RIGHT-2
-					Height:PARENT_BOTTOM-2
+					X: 1
+					Y: 1
+					Width: PARENT_RIGHT-2
+					Height: PARENT_BOTTOM-2
 		Background@REPLAY_PLAYER:
-			Logic:ReplayControlBarLogic
-			X:WINDOW_RIGHT-173
-			Y:195
-			Width:168
-			Height:46
-			Background:panel-black
-			Visible:false
+			Logic: ReplayControlBarLogic
+			X: WINDOW_RIGHT-173
+			Y: 195
+			Width: 168
+			Height: 46
+			Background: panel-black
+			Visible: false
 			Children:
 				Button@BUTTON_PAUSE:
-					X:14
-					Y:10
-					Width:26
-					Height:26
-					IgnoreChildMouseOver:true
+					X: 14
+					Y: 10
+					Width: 26
+					Height: 26
+					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PAUSE:
-							X:5
-							Y:5
-							Width:16
-							Height:16
-							ImageCollection:music
-							ImageName:pause
+							X: 5
+							Y: 5
+							Width: 16
+							Height: 16
+							ImageCollection: music
+							ImageName: pause
 				Button@BUTTON_SLOW:
-					X:14 + 38
-					Y:10
-					Width:26
-					Height:26
-					IgnoreChildMouseOver:true
+					X: 14 + 38
+					Y: 10
+					Width: 26
+					Height: 26
+					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_SLOW:
-							X:5
-							Y:5
-							Width:16
-							Height:16
-							ImageCollection:music
-							ImageName:slowmo
+							X: 5
+							Y: 5
+							Width: 16
+							Height: 16
+							ImageCollection: music
+							ImageName: slowmo
 				Button@BUTTON_NORMALSPEED:
-					X:14 + 38*2
-					Y:10
-					Width:26
-					Height:26
-					IgnoreChildMouseOver:true
+					X: 14 + 38*2
+					Y: 10
+					Width: 26
+					Height: 26
+					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PLAY:
-							X:5
-							Y:5
-							Width:16
-							Height:16
-							ImageCollection:music
-							ImageName:play
+							X: 5
+							Y: 5
+							Width: 16
+							Height: 16
+							ImageCollection: music
+							ImageName: play
 				Button@BUTTON_FASTFORWARD:
-					X:14 + 38*3
-					Y:10
-					Width:26
-					Height:26
-					IgnoreChildMouseOver:true
+					X: 14 + 38*3
+					Y: 10
+					Width: 26
+					Height: 26
+					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_FASTFORWARD:
-							X:5
-							Y:5
-							Width:16
-							Height:16
-							ImageCollection:music
-							ImageName:fastforward
+							X: 5
+							Y: 5
+							Width: 16
+							Height: 16
+							ImageCollection: music
+							ImageName: fastforward
 		DropDownButton@SHROUD_SELECTOR:
-			Logic:ObserverShroudSelectorLogic
-			X:WINDOW_RIGHT-173
-			Y:172
-			Width:168
-			Height:25
-			Font:Bold
+			Logic: ObserverShroudSelectorLogic
+			X: WINDOW_RIGHT-173
+			Y: 172
+			Width: 168
+			Height: 25
+			Font: Bold
 			Children:
 				LogicKeyListener@SHROUD_KEYHANDLER:
 				Image@FLAG:
-					X:4
-					Y:4
-					Width:32
-					Height:16
+					X: 4
+					Y: 4
+					Width: 32
+					Height: 16
 				Label@LABEL:
-					X:40
-					Width:60
-					Height:25
+					X: 40
+					Width: 60
+					Height: 25
 				Label@NOFLAG_LABEL:
-					X:5
-					Width:PARENT_RIGHT
-					Height:25
+					X: 5
+					Width: PARENT_RIGHT
+					Height: 25
 
 Container@PLAYER_WIDGETS:
 	Children:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
-			Logic:ControlGroupLogic
+			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
 		WorldCommand:
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
 		SupportPowers:
-			TooltipContainer:TOOLTIP_CONTAINER
-			X:10
-			Y:10
-			ReadyText:Ready
-			HoldText:On Hold
+			TooltipContainer: TOOLTIP_CONTAINER
+			X: 10
+			Y: 10
+			ReadyText: Ready
+			HoldText: On Hold
 		Background@SIDEBAR_BACKGROUND:
-			Logic:OrderButtonsChromeLogic
-			X:WINDOW_RIGHT - 204
-			Y:30
-			Width:194
-			Height:240
-			Background:panel-black
+			Logic: OrderButtonsChromeLogic
+			X: WINDOW_RIGHT - 204
+			Y: 30
+			Width: 194
+			Height: 240
+			Background: panel-black
 			Children:
 				Button@OPTIONS_BUTTON:
-					Key:escape
-					X:22
-					Y:0-24
-					Width:30
-					Height:25
-					Font:Bold
+					Key: escape
+					X: 22
+					Y: 0-24
+					Width: 30
+					Height: 25
+					Font: Bold
 					TooltipText: Menu
-					TooltipContainer:TOOLTIP_CONTAINER
+					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X:7
-							Y:5
-							ImageCollection:order-icons
-							ImageName:options
+							X: 7
+							Y: 5
+							ImageCollection: order-icons
+							ImageName: options
 				Button@BEACON_BUTTON:
-					X:62
-					Y:0-24
-					Width:30
-					Height:25
-					Font:Bold
+					X: 62
+					Y: 0-24
+					Width: 30
+					Height: 25
+					Font: Bold
 					TooltipText: Place Beacon
-					TooltipContainer:TOOLTIP_CONTAINER
+					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X:7
-							Y:5
-							ImageCollection:order-icons
+							X: 7
+							Y: 5
+							ImageCollection: order-icons
 				Button@SELL_BUTTON:
-					X:102
-					Y:0-24
-					Width:30
-					Height:25
-					Font:Bold
+					X: 102
+					Y: 0-24
+					Width: 30
+					Height: 25
+					Font: Bold
 					TooltipText: Sell
-					TooltipContainer:TOOLTIP_CONTAINER
+					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X:7
-							Y:5
-							ImageCollection:order-icons
+							X: 7
+							Y: 5
+							ImageCollection: order-icons
 				Button@REPAIR_BUTTON:
-					X:142
-					Y:0-24
-					Width:30
-					Height:25
-					Font:Bold
+					X: 142
+					Y: 0-24
+					Width: 30
+					Height: 25
+					Font: Bold
 					TooltipText: Repair
-					TooltipContainer:TOOLTIP_CONTAINER
+					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X:7
-							Y:5
-							ImageCollection:order-icons
+							X: 7
+							Y: 5
+							ImageCollection: order-icons
 				Background@RADAR:
-					X:13
-					Y:5
-					Width:168
-					Height:168
-					Background:panel-gray
+					X: 13
+					Y: 5
+					Width: 168
+					Height: 168
+					Background: panel-gray
 					Children:
 						Radar@RADAR_MINIMAP:
-							X:1
-							Y:1
-							Width:PARENT_RIGHT-2
-							Height:PARENT_BOTTOM-2
-							WorldInteractionController:INTERACTION_CONTROLLER
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							WorldInteractionController: INTERACTION_CONTROLLER
 				Background@POWERBAR_PANEL:
-					X:4
-					Y:5
-					Width:10
-					Height:168
-					Background:panel-black
+					X: 4
+					Y: 5
+					Width: 10
+					Height: 168
+					Background: panel-black
 					Children:
 						ResourceBar@POWERBAR:
-							X:1
-							Y:1
-							Width:PARENT_RIGHT-2
-							Height:PARENT_BOTTOM-2
-							TooltipContainer:TOOLTIP_CONTAINER
-							TooltipTemplate:SIMPLE_TOOLTIP
-							IndicatorImage:indicator-left
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							IndicatorImage: indicator-left
 				Background@SILOBAR_PANEL:
-					X:180
-					Y:5
-					Width:10
-					Height:168
-					Background:panel-black
+					X: 180
+					Y: 5
+					Width: 10
+					Height: 168
+					Background: panel-black
 					Children:
 						ResourceBar@SILOBAR:
-							X:1
-							Y:1
-							Width:PARENT_RIGHT-2
-							Height:PARENT_BOTTOM-2
-							TooltipContainer:TOOLTIP_CONTAINER
-							TooltipTemplate:SIMPLE_TOOLTIP
-							IndicatorImage:indicator-right
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							IndicatorImage: indicator-right
 				Label@CASH:
-					Y:170
-					Width:PARENT_RIGHT
-					Height:25
-					Align:Center
-					Font:Bold
+					Y: 170
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+					Font: Bold
 				Container@PRODUCTION_TYPES:
-					X:12
-					Y:197
-					Width:170
-					Height:30
+					X: 12
+					Y: 197
+					Width: 170
+					Height: 30
 					Children:
 						ProductionTypeButton@BUILDING:
-							Width:30
-							Height:30
+							Width: 30
+							Height: 30
 							Key: q
 							TooltipText: Buildings
-							TooltipContainer:TOOLTIP_CONTAINER
-							ProductionGroup:Building
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Building
 							Children:
 								Image@ICON:
-									X:7
-									Y:7
-									ImageCollection:production-icons
+									X: 7
+									Y: 7
+									ImageCollection: production-icons
 						ProductionTypeButton@DEFENSE:
-							X:35
-							Width:30
-							Height:30
+							X: 35
+							Width: 30
+							Height: 30
 							Key: w
 							TooltipText: Defense
-							TooltipContainer:TOOLTIP_CONTAINER
-							ProductionGroup:Defense
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Defense
 							Children:
 								Image@ICON:
-									X:7
-									Y:7
-									ImageCollection:production-icons
+									X: 7
+									Y: 7
+									ImageCollection: production-icons
 						ProductionTypeButton@INFANTRY:
-							X:70
-							Width:30
-							Height:30
+							X: 70
+							Width: 30
+							Height: 30
 							Key: e
 							TooltipText: Infantry
-							TooltipContainer:TOOLTIP_CONTAINER
-							ProductionGroup:Infantry
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Infantry
 							Children:
 								Image@ICON:
-									X:7
-									Y:7
-									ImageCollection:production-icons
+									X: 7
+									Y: 7
+									ImageCollection: production-icons
 						ProductionTypeButton@VEHICLE:
-							X:105
-							Width:30
-							Height:30
+							X: 105
+							Width: 30
+							Height: 30
 							Key: r
 							TooltipText: Vehicles
-							TooltipContainer:TOOLTIP_CONTAINER
-							ProductionGroup:Vehicle
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Vehicle
 							Children:
 								Image@ICON:
-									X:7
-									Y:7
-									ImageCollection:production-icons
+									X: 7
+									Y: 7
+									ImageCollection: production-icons
 						ProductionTypeButton@AIRCRAFT:
-							X:140
-							Width:30
-							Height:30
+							X: 140
+							Width: 30
+							Height: 30
 							Key: t
 							TooltipText: Aircraft
-							TooltipContainer:TOOLTIP_CONTAINER
-							ProductionGroup:Aircraft
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Aircraft
 							Children:
 								Image@ICON:
-									X:7
-									Y:7
-									ImageCollection:production-icons
+									X: 7
+									Y: 7
+									ImageCollection: production-icons
 		ProductionTabs@PRODUCTION_TABS:
-			Logic:ProductionTabsLogic
-			PaletteWidget:PRODUCTION_PALETTE
-			TypesContainer:PRODUCTION_TYPES
-			X:WINDOW_RIGHT - 204
-			Y:268
-			Width:194
-			Height:20
+			Logic: ProductionTabsLogic
+			PaletteWidget: PRODUCTION_PALETTE
+			TypesContainer: PRODUCTION_TYPES
+			X: WINDOW_RIGHT - 204
+			Y: 268
+			Width: 194
+			Height: 20
 		ProductionPalette@PRODUCTION_PALETTE:
-			X:WINDOW_RIGHT - 204
-			Y:287
-			TooltipContainer:TOOLTIP_CONTAINER
-			ReadyText:Ready
-			HoldText:On Hold
+			X: WINDOW_RIGHT - 204
+			Y: 287
+			TooltipContainer: TOOLTIP_CONTAINER
+			ReadyText: Ready
+			HoldText: On Hold
+
 Background@FMVPLAYER:
-	Width:WINDOW_RIGHT
-	Height:WINDOW_BOTTOM
-	Background:panel-black
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Background: panel-black
 	Children:
 		VqaPlayer@PLAYER:
-			X:0
-			Y:0
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+

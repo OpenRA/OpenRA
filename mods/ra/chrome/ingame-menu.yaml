@@ -1,52 +1,53 @@
 Background@INGAME_OPTIONS_BG:
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:300
-	Height:295
-	Logic:IngameMenuLogic
-	Visible:false
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 300
+	Height: 295
+	Logic: IngameMenuLogic
+	Visible: false
 	Children:
 		Label@LABEL_TITLE:
-			X:(PARENT_RIGHT - WIDTH)/2
-			Y:20
-			Width:250
-			Height:25
-			Text:Options
-			Align:Center
-			Font:Bold
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 20
+			Width: 250
+			Height: 25
+			Text: Options
+			Align: Center
+			Font: Bold
 		Button@RESUME:
-			X:(PARENT_RIGHT - WIDTH)/2
-			Y:60
-			Width:160
-			Height:25
-			Text:Resume
-			Font:Bold
-			Key:escape
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 60
+			Width: 160
+			Height: 25
+			Text: Resume
+			Font: Bold
+			Key: escape
 		Button@SETTINGS:
-			X:(PARENT_RIGHT - WIDTH)/2
-			Y:100
-			Width:160
-			Height:25
-			Text:Settings
-			Font:Bold
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 100
+			Width: 160
+			Height: 25
+			Text: Settings
+			Font: Bold
 		Button@MUSIC:
-			X:(PARENT_RIGHT - WIDTH)/2
-			Y:140
-			Width:160
-			Height:25
-			Text:Music
-			Font:Bold
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 140
+			Width: 160
+			Height: 25
+			Text: Music
+			Font: Bold
 		Button@SURRENDER:
-			X:(PARENT_RIGHT - WIDTH)/2
-			Y:180
-			Width:160
-			Height:25
-			Text:Surrender
-			Font:Bold
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 180
+			Width: 160
+			Height: 25
+			Text: Surrender
+			Font: Bold
 		Button@DISCONNECT:
-			X:(PARENT_RIGHT - WIDTH)/2
-			Y:220
-			Width:160
-			Height:25
-			Text:Abort Mission
-			Font:Bold
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 220
+			Width: 160
+			Height: 25
+			Text: Abort Mission
+			Font: Bold
+

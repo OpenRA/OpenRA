@@ -1,82 +1,83 @@
 Container@MISSIONBROWSER_PANEL:
-	Logic:MissionBrowserLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:629
-	Height:399
+	Logic: MissionBrowserLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 629
+	Height: 399
 	Children:
 		Label@MISSIONBROWSER_LABEL_TITLE:
-			Y:0-25
-			Width:PARENT_RIGHT
-			Text:Missions
-			Align:Center
-			Font:BigBold
+			Y: 0-25
+			Width: PARENT_RIGHT
+			Text: Missions
+			Align: Center
+			Font: BigBold
 		Background@BG:
-			Width:629
-			Height:360
-			Background:panel-black
+			Width: 629
+			Height: 360
+			Background: panel-black
 			Children:
 				ScrollPanel@MISSION_LIST:
-					X:15
-					Y:15
-					Width:260
-					Height:330
+					X: 15
+					Y: 15
+					Width: 260
+					Height: 330
 					Children:
 						ScrollItem@MISSION_TEMPLATE:
-							Width:PARENT_RIGHT-27
-							Height:25
-							X:2
-							Y:0
-							Visible:False
+							Width: PARENT_RIGHT-27
+							Height: 25
+							X: 2
+							Y: 0
+							Visible: False
 							Children:
 								Label@TITLE:
-									X:10
-									Width:PARENT_RIGHT-20
-									Height:25
+									X: 10
+									Width: PARENT_RIGHT-20
+									Height: 25
 				Container@MISSION_INFO:
-					X:290
-					Y:15
-					Width:324
-					Height:334
+					X: 290
+					Y: 15
+					Width: 324
+					Height: 334
 					Children:
 						Background@MISSION_BG:
-							X:0
-							Y:0
-							Width:324
-							Height:160
-							Background:panel-gray
+							X: 0
+							Y: 0
+							Width: 324
+							Height: 160
+							Background: panel-gray
 							Children:
 								MapPreview@MISSION_PREVIEW:
-									X:2
-									Y:2
-									Width:PARENT_RIGHT-4
-									Height:PARENT_BOTTOM-4
-									IgnoreMouseOver:True
-									IgnoreMouseInput:True
-									ShowSpawnPoints:False
+									X: 2
+									Y: 2
+									Width: PARENT_RIGHT-4
+									Height: PARENT_BOTTOM-4
+									IgnoreMouseOver: True
+									IgnoreMouseInput: True
+									ShowSpawnPoints: False
 						ScrollPanel@MISSION_DESCRIPTION_PANEL:
-							X:0
-							Y:171
-							Width:324
-							Height:159
+							X: 0
+							Y: 171
+							Width: 324
+							Height: 159
 							Children:
 								Label@MISSION_DESCRIPTION:
-									X:5
-									Y:5
-									Width:290
-									VAlign:Top
+									X: 5
+									Y: 5
+									Width: 290
+									VAlign: Top
 		Button@BACK_BUTTON:
-			X:0
-			Y:359
-			Width:140
-			Height:35
-			Text:Back
-			Font:Bold
-			Key:escape
+			X: 0
+			Y: 359
+			Width: 140
+			Height: 35
+			Text: Back
+			Font: Bold
+			Key: escape
 		Button@STARTGAME_BUTTON:
-			X:PARENT_RIGHT - 140
-			Y:359
-			Width:140
-			Height:35
-			Text:Start Game
-			Font:Bold
+			X: PARENT_RIGHT - 140
+			Y: 359
+			Width: 140
+			Height: 35
+			Text: Start Game
+			Font: Bold
+

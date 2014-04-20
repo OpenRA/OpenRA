@@ -1,252 +1,252 @@
 Container@MUSIC_PANEL:
-	Logic:MusicPlayerLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 400)/2
-	Width:360
-	Height:435
+	Logic: MusicPlayerLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 400)/2
+	Width: 360
+	Height: 435
 	Children:
 		Label@TITLE:
-			Width:360
-			Y:0-25
-			Font:BigBold
-			Contrast:true
-			Align:Center
-			Text:Music Player
+			Width: 360
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Music Player
 		Background@bg:
-			Width:360
-			Height:400
-			Background:panel-black
+			Width: 360
+			Height: 400
+			Background: panel-black
 			Children:
 				ScrollPanel@MUSIC_LIST:
-					X:15
-					Y:30
-					Width:330
-					Height:275
+					X: 15
+					Y: 30
+					Width: 330
+					Height: 275
 					Children:
 						ScrollItem@MUSIC_TEMPLATE:
-							Width:PARENT_RIGHT-27
-							Height:25
-							X:2
-							Y:0
-							Visible:false
+							Width: PARENT_RIGHT-27
+							Height: 25
+							X: 2
+							Y: 0
+							Visible: false
 							Children:
 								Label@TITLE:
-									X:10
-									Width:PARENT_RIGHT-50
-									Height:25
+									X: 10
+									Width: PARENT_RIGHT-50
+									Height: 25
 								Label@LENGTH:
-									Width:50
-									X:PARENT_RIGHT-60
-									Align:Right
-									Height:25
+									Width: 50
+									X: PARENT_RIGHT-60
+									Align: Right
+									Height: 25
 				Container@LABEL_CONTAINER:
-					X:25
-					Y:5
-					Width:330
+					X: 25
+					Y: 5
+					Width: 330
 					Children:
 						Label@TITLE:
-							Width:100
-							Height:25
-							Text:Track
-							Align:Center
-							Font:Bold
+							Width: 100
+							Height: 25
+							Text: Track
+							Align: Center
+							Font: Bold
 						Label@TYPE:
-							X:PARENT_RIGHT-85
-							Height:25
-							Width:50
-							Text:Length
-							Align:Right
-							Font:Bold
+							X: PARENT_RIGHT-85
+							Height: 25
+							Width: 50
+							Text: Length
+							Align: Right
+							Font: Bold
 				Container@BUTTONS:
-					X:15
-					Y:PARENT_BOTTOM-HEIGHT-40
-					Width:170
+					X: 15
+					Y: PARENT_BOTTOM-HEIGHT-40
+					Width: 170
 					Children:
 						Button@BUTTON_PREV:
-							Width:26
-							Height:26
-							IgnoreChildMouseOver:true
+							Width: 26
+							Height: 26
+							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_PREV:
-									X:5
-									Y:5
-									Width:16
-									Height:16
-									ImageCollection:music
-									ImageName:prev
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: prev
 						Button@BUTTON_PLAY:
-							X:35
-							Width:26
-							Height:26
-							IgnoreChildMouseOver:true
+							X: 35
+							Width: 26
+							Height: 26
+							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_PLAY:
-									X:5
-									Y:5
-									Width:16
-									Height:16
-									ImageCollection:music
-									ImageName:play
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: play
 						Button@BUTTON_PAUSE:
-							Visible:false
-							X:35
-							Width:26
-							Height:26
-							IgnoreChildMouseOver:true
+							Visible: false
+							X: 35
+							Width: 26
+							Height: 26
+							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_PAUSE:
-									X:5
-									Y:5
-									Width:16
-									Height:16
-									ImageCollection:music
-									ImageName:pause
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: pause
 						Button@BUTTON_STOP:
-							X:70
-							Width:26
-							Height:26
-							IgnoreChildMouseOver:true
+							X: 70
+							Width: 26
+							Height: 26
+							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_STOP:
-									X:5
-									Y:5
-									Width:16
-									Height:16
-									ImageCollection:music
-									ImageName:stop
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: stop
 						Button@BUTTON_NEXT:
-							X:105
-							Width:26
-							Height:26
-							IgnoreChildMouseOver:true
+							X: 105
+							Width: 26
+							Height: 26
+							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_NEXT:
-									X:5
-									Y:5
-									Width:16
-									Height:16
-									ImageCollection:music
-									ImageName:next
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: next
 						Slider@MUSIC_SLIDER:
-							X:145
-							Y:3
-							Width:185
-							Height:20
-							Ticks:5
+							X: 145
+							Y: 3
+							Width: 185
+							Height: 20
+							Ticks: 5
 				Label@TIME_LABEL:
-					X:(PARENT_RIGHT-WIDTH)/2
-					Y:315
-					Width:140
-					Height:25
-					Align:Center
+					X: (PARENT_RIGHT-WIDTH)/2
+					Y: 315
+					Width: 140
+					Height: 25
+					Align: Center
 				Checkbox@SHUFFLE:
-					X:15
-					Y:320
-					Width:85
-					Height:20
-					Font:Regular
-					Text:Shuffle
+					X: 15
+					Y: 320
+					Width: 85
+					Height: 20
+					Font: Regular
+					Text: Shuffle
 				Checkbox@REPEAT:
-					X:PARENT_RIGHT-15-WIDTH
-					Y:320
-					Width:70
-					Height:20
-					Font:Regular
-					Text:Loop
+					X: PARENT_RIGHT-15-WIDTH
+					Y: 320
+					Width: 70
+					Height: 20
+					Font: Regular
+					Text: Loop
 				Label@NO_MUSIC_LABEL:
-					X:15
-					Y:147
-					Width:330
-					Height:25
-					Font:Bold
-					Align:Center
-					Visible:false
-					Text:No Music Installed
+					X: 15
+					Y: 147
+					Width: 330
+					Height: 25
+					Font: Bold
+					Align: Center
+					Visible: false
+					Text: No Music Installed
 		Button@BACK_BUTTON:
-			Key:escape
-			X:0
-			Y:399
-			Width:140
-			Height:35
-			Text:Back
+			Key: escape
+			X: 0
+			Y: 399
+			Width: 140
+			Height: 35
+			Text: Back
 		Button@INSTALL_BUTTON:
-			Logic:CncInstallMusicLogic
-			X:220
-			Y:399
-			Width:140
-			Height:35
-			Text:Install Music
+			Logic: CncInstallMusicLogic
+			X: 220
+			Y: 399
+			Width: 140
+			Height: 35
+			Text: Install Music
 
 Container@INSTALL_MUSIC_PANEL:
-	Logic:CncInstallFromCDLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 150)/2
-	Width:640
-	Height:150
+	Logic: CncInstallFromCDLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 150)/2
+	Width: 640
+	Height: 150
 	Children:
 		Label@TITLE:
-			Width:PARENT_RIGHT
-			Y:0-25
-			Font:BigBold
-			Contrast:true
-			Align:Center
-			Text:Install Music
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Install Music
 		Background@bg:
-			Width:640
-			Height:150
-			Background:panel-black
+			Width: 640
+			Height: 150
+			Background: panel-black
 			Children:
 				Image@INSTALL:
-					X:11
-					Y:11
-					ImageCollection:logos
-					ImageName:install
+					X: 11
+					Y: 11
+					ImageCollection: logos
+					ImageName: install
 				Container@INSTALLING:
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Visible: false
 					Children:
 						ProgressBar@PROGRESS_BAR:
-							X:170
-							Y:45
-							Width:PARENT_RIGHT - 185
-							Height:35
+							X: 170
+							Y: 45
+							Width: PARENT_RIGHT - 185
+							Height: 35
 						Label@STATUS_LABEL:
-							X:170
-							Y:85
-							Width:PARENT_RIGHT - 185
-							Height:25
-							Align:Left
+							X: 170
+							Y: 85
+							Width: PARENT_RIGHT - 185
+							Height: 25
+							Align: Left
 				Container@INSERT_DISK:
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Visible: false
 					Children:
 						Label@INFO:
-							X:170
-							Y:35
-							Width:PARENT_RIGHT-30
-							Height:25
-							Text:Disk not found
-							Font:Bold
+							X: 170
+							Y: 35
+							Width: PARENT_RIGHT-30
+							Height: 25
+							Text: Disk not found
+							Font: Bold
 						Label@INFO2:
-							X:170
-							Y:70
-							Width:PARENT_RIGHT-185
-							Height:25
-							WordWrap:true
-							Text:Please insert one of the Command & Conquer install CDs then click Retry.
-							Font:Bold
+							X: 170
+							Y: 70
+							Width: PARENT_RIGHT-185
+							Height: 25
+							WordWrap: true
+							Text: Please insert one of the Command & Conquer install CDs then click Retry.
+							Font: Bold
 		Button@BACK_BUTTON:
-			Key:escape
-			Y:149
-			Width:140
-			Height:35
-			Text:Back
+			Key: escape
+			Y: 149
+			Width: 140
+			Height: 35
+			Text: Back
 		Button@RETRY_BUTTON:
-			X:500
-			Y:149
-			Width:140
-			Height:35
-			Text:Retry
+			X: 500
+			Y: 149
+			Width: 140
+			Height: 35
+			Text: Retry
 

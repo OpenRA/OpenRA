@@ -1,488 +1,489 @@
 Container@OBSERVER_STATS:
-	Logic:ObserverStatsLogic
-	X:25
-	Y:50
-	Width:950
-	Height:500
-	Visible:false
+	Logic: ObserverStatsLogic
+	X: 25
+	Y: 50
+	Width: 950
+	Height: 500
+	Visible: false
 	Children:
 		Background@BACKGROUND:
-			Width:PARENT_RIGHT
-			Height:PARENT_BOTTOM
-			Background:dialog
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: dialog
 			Children:
 				Label@TITLE:
-					X:0
-					Y:15
-					Width:PARENT_RIGHT
-					Height:25
-					Font:Bold
-					Align:Center
-					Text:Statistics
+					X: 0
+					Y: 15
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: Statistics
 				DropDownButton@STATS_DROPDOWN:
-					X:PARENT_RIGHT-200
-					Y:15
-					Width:185
-					Height:25
-					Font:Bold
+					X: PARENT_RIGHT-200
+					Y: 15
+					Width: 185
+					Height: 25
+					Font: Bold
 				Container@BASIC_STATS_HEADERS:
-					X:0
-					Y:0
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Children:
 						Label@PLAYER_HEADER:
-							X:85
-							Y:40
-							Width:160
-							Height:25
-							Font:Bold
-							Text:Player
+							X: 85
+							Y: 40
+							Width: 160
+							Height: 25
+							Font: Bold
+							Text: Player
 						Label@CASH_HEADER:
-							X:245
-							Y:40
-							Width:80
-							Height:25
-							Font:Bold
-							Text:Cash
+							X: 245
+							Y: 40
+							Width: 80
+							Height: 25
+							Font: Bold
+							Text: Cash
 						Label@EARNED_MIN_HEADER:
-							X:325
-							Y:40
-							Width:60
-							Height:25
-							Font:Bold
-							Text:Earned/min
+							X: 325
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Earned/min
 						Label@POWER_HEADER:
-							X:425
-							Y:40
-							Width:80
-							Height:25
-							Font:Bold
-							Text:Power
+							X: 425
+							Y: 40
+							Width: 80
+							Height: 25
+							Font: Bold
+							Text: Power
 						Label@KILLS_HEADER:
-							X:505
-							Y:40
-							Width:40
-							Height:25
-							Font:Bold
-							Text:Kills
-							Align:Right
+							X: 505
+							Y: 40
+							Width: 40
+							Height: 25
+							Font: Bold
+							Text: Kills
+							Align: Right
 						Label@DEATHS_HEADER:
-							X:565
-							Y:40
-							Width:40
-							Height:25
-							Font:Bold
-							Text:Deaths
-							Align:Right
+							X: 565
+							Y: 40
+							Width: 40
+							Height: 25
+							Font: Bold
+							Text: Deaths
+							Align: Right
 						Label@ACTIONS_MIN_HEADER:
-							X:665
-							Y:40
-							Width:40
-							Height:25
-							Font:Bold
-							Text:Actions/min
-							Align:Right
+							X: 665
+							Y: 40
+							Width: 40
+							Height: 25
+							Font: Bold
+							Text: Actions/min
+							Align: Right
 				Container@ECONOMY_STATS_HEADERS:
-					X:0
-					Y:0
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Children:
 						Label@PLAYER_HEADER:
-							X:85
-							Y:40
-							Width:160
-							Height:25
-							Font:Bold
-							Text:Player
+							X: 85
+							Y: 40
+							Width: 160
+							Height: 25
+							Font: Bold
+							Text: Player
 						Label@CASH_HEADER:
-							X:245
-							Y:40
-							Width:80
-							Height:25
-							Font:Bold
-							Text:Cash
+							X: 245
+							Y: 40
+							Width: 80
+							Height: 25
+							Font: Bold
+							Text: Cash
 						Label@EARNED_MIN_HEADER:
-							X:325
-							Y:40
-							Width:60
-							Height:25
-							Font:Bold
-							Text:Earned/min
+							X: 325
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Earned/min
 						Label@EARNED_THIS_MIN_HEADER:
-							X:425
-							Y:40
-							Width:60
-							Height:25
-							Font:Bold
-							Text:Earned this min
+							X: 425
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Earned this min
 						Label@ASSETS_HEADER:
-							X:565
-							Y:40
-							Width:60
-							Height:25
-							Font:Bold
-							Text:Assets
+							X: 565
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Assets
 						Label@EARNED_HEADER:
-							X:645
-							Y:40
-							Width:60
-							Height:25
-							Font:Bold
-							Text:Earned
+							X: 645
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Earned
 						Label@SPENT_HEADER:
-							X:725
-							Y:40
-							Width:60
-							Height:25
-							Font:Bold
-							Text:Spent
+							X: 725
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Spent
 						Label@HARVESTERS_HEADER:
-							X:805
-							Y:40
-							Width:60
-							Height:25
-							Font:Bold
-							Text:Harvesters
-							Align:Right
+							X: 805
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Harvesters
+							Align: Right
 				Container@PRODUCTION_STATS_HEADERS:
-					X:0
-					Y:0
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Children:
 						Label@PLAYER_HEADER:
-							X:85
-							Y:40
-							Width:160
-							Height:25
-							Font:Bold
-							Text:Player
+							X: 85
+							Y: 40
+							Width: 160
+							Height: 25
+							Font: Bold
+							Text: Player
 						Label@PRODUCTION_HEADER:
-							X:245
-							Y:40
-							Width:320
-							Height:25
-							Font:Bold
-							Text:Production
+							X: 245
+							Y: 40
+							Width: 320
+							Height: 25
+							Font: Bold
+							Text: Production
 						Label@SUPPORT_POWERS_HEADER:
-							X:565
-							Y:40
-							Width:320
-							Height:25
-							Font:Bold
-							Text:Support Powers
+							X: 565
+							Y: 40
+							Width: 320
+							Height: 25
+							Font: Bold
+							Text: Support Powers
 				Container@COMBAT_STATS_HEADERS:
-					X:0
-					Y:0
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Children:
 						Label@PLAYER_HEADER:
-							X:85
-							Y:40
-							Width:160
-							Height:25
-							Font:Bold
-							Text:Player
+							X: 85
+							Y: 40
+							Width: 160
+							Height: 25
+							Font: Bold
+							Text: Player
 						Label@CONTROL_HEADER:
-							X:245
-							Y:40
-							Width:60
-							Height:25
-							Font:Bold
-							Text:Control
+							X: 245
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Control
 						Label@KILLS_COST_HEADER:
-							X:325
-							Y:40
-							Width:60
-							Height:25
-							Font:Bold
-							Text:Kills
+							X: 325
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Kills
 						Label@DEATHS_COST_HEADER:
-							X:405
-							Y:40
-							Width:60
-							Height:25
-							Font:Bold
-							Text:Deaths
+							X: 405
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Deaths
 						Label@UNITS_KILLED_HEADER:
-							X:505
-							Y:40
-							Width:40
-							Height:25
-							Font:Bold
-							Text:Units Killed
-							Align:Right
+							X: 505
+							Y: 40
+							Width: 40
+							Height: 25
+							Font: Bold
+							Text: Units Killed
+							Align: Right
 						Label@UNITS_DEAD_HEADER:
-							X:605
-							Y:40
-							Width:40
-							Height:25
-							Font:Bold
-							Text:Units Lost
-							Align:Right
+							X: 605
+							Y: 40
+							Width: 40
+							Height: 25
+							Font: Bold
+							Text: Units Lost
+							Align: Right
 						Label@BUILDINGS_KILLED_HEADER:
-							X:725
-							Y:40
-							Width:40
-							Height:25
-							Font:Bold
-							Text:Bldg Killed
-							Align:Right
+							X: 725
+							Y: 40
+							Width: 40
+							Height: 25
+							Font: Bold
+							Text: Bldg Killed
+							Align: Right
 						Label@BUILDINGS_DEAD_HEADER:
-							X:825
-							Y:40
-							Width:40
-							Height:25
-							Font:Bold
-							Text:Bldg Lost
-							Align:Right
+							X: 825
+							Y: 40
+							Width: 40
+							Height: 25
+							Font: Bold
+							Text: Bldg Lost
+							Align: Right
 				Container@EARNED_THIS_MIN_GRAPH_HEADERS:
-					X:0
-					Y:0
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Children:
 						Label@EARNED_THIS_MIN_HEADER:
-							X:0
-							Y:40
-							Width:PARENT_RIGHT
-							Height:25
-							Font:Bold
-							Text:Earnings received each minute
-							Align:Center
+							X: 0
+							Y: 40
+							Width: PARENT_RIGHT
+							Height: 25
+							Font: Bold
+							Text: Earnings received each minute
+							Align: Center
 				ScrollPanel@PLAYER_STATS_PANEL:
-					X:25
-					Y:70
-					Width:PARENT_RIGHT-50
-					Height:PARENT_BOTTOM-45-50
-					ItemSpacing:5
+					X: 25
+					Y: 70
+					Width: PARENT_RIGHT-50
+					Height: PARENT_BOTTOM-45-50
+					ItemSpacing: 5
 					Children:
 						ScrollItem@TEAM_TEMPLATE:
-							X:0
-							Y:0
-							Width:PARENT_RIGHT-35
-							Height:25
+							X: 0
+							Y: 0
+							Width: PARENT_RIGHT-35
+							Height: 25
 							Children:
 								Label@TEAM:
-									X:0
-									Y:0
-									Width:PARENT_RIGHT
-									Height:PARENT_BOTTOM
-									Font:Bold
+									X: 0
+									Y: 0
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									Font: Bold
 						ScrollItem@BASIC_PLAYER_TEMPLATE:
-							X:0
-							Y:0
-							Width:PARENT_RIGHT-35
-							Height:25
+							X: 0
+							Y: 0
+							Width: PARENT_RIGHT-35
+							Height: 25
 							Children:
 								Image@FLAG:
-									X:20
-									Y:5
-									Width:35
-									Height:PARENT_BOTTOM-5
-									ImageName:random
-									ImageCollection:flags
+									X: 20
+									Y: 5
+									Width: 35
+									Height: PARENT_BOTTOM-5
+									ImageName: random
+									ImageCollection: flags
 								Label@PLAYER:
-									X:55
-									Y:0
-									Width:160
-									Height:PARENT_BOTTOM
-									Font:Bold
+									X: 55
+									Y: 0
+									Width: 160
+									Height: PARENT_BOTTOM
+									Font: Bold
 								Label@CASH:
-									X:215
-									Y:0
-									Width:80
-									Height:PARENT_BOTTOM
+									X: 215
+									Y: 0
+									Width: 80
+									Height: PARENT_BOTTOM
 								Label@EARNED_MIN:
-									X:295
-									Y:0
-									Width:60
-									Height:PARENT_BOTTOM
+									X: 295
+									Y: 0
+									Width: 60
+									Height: PARENT_BOTTOM
 								Label@POWER:
-									X:395
-									Y:0
-									Width:80
-									Height:PARENT_BOTTOM
+									X: 395
+									Y: 0
+									Width: 80
+									Height: PARENT_BOTTOM
 								Label@KILLS:
-									X:475
-									Y:0
-									Width:40
-									Height:PARENT_BOTTOM
-									Align:Right
+									X: 475
+									Y: 0
+									Width: 40
+									Height: PARENT_BOTTOM
+									Align: Right
 								Label@DEATHS:
-									X:535
-									Y:0
-									Width:40
-									Height:PARENT_BOTTOM
-									Align:Right
+									X: 535
+									Y: 0
+									Width: 40
+									Height: PARENT_BOTTOM
+									Align: Right
 								Label@ACTIONS_MIN:
-									X:635
-									Y:0
-									Width:40
-									Height:PARENT_BOTTOM
-									Align:Right
+									X: 635
+									Y: 0
+									Width: 40
+									Height: PARENT_BOTTOM
+									Align: Right
 						ScrollItem@ECONOMY_PLAYER_TEMPLATE:
-							X:0
-							Y:0
-							Width:PARENT_RIGHT-35
-							Height:25
+							X: 0
+							Y: 0
+							Width: PARENT_RIGHT-35
+							Height: 25
 							Children:
 								Image@FLAG:
-									X:20
-									Y:5
-									Width:35
-									Height:PARENT_BOTTOM-5
-									ImageName:random
-									ImageCollection:flags
+									X: 20
+									Y: 5
+									Width: 35
+									Height: PARENT_BOTTOM-5
+									ImageName: random
+									ImageCollection: flags
 								Label@PLAYER:
-									X:55
-									Y:0
-									Width:160
-									Height:PARENT_BOTTOM
-									Font:Bold
+									X: 55
+									Y: 0
+									Width: 160
+									Height: PARENT_BOTTOM
+									Font: Bold
 								Label@CASH:
-									X:215
-									Y:0
-									Width:80
-									Height:PARENT_BOTTOM
+									X: 215
+									Y: 0
+									Width: 80
+									Height: PARENT_BOTTOM
 								Label@EARNED_MIN:
-									X:295
-									Y:0
-									Width:60
-									Height:PARENT_BOTTOM
+									X: 295
+									Y: 0
+									Width: 60
+									Height: PARENT_BOTTOM
 								Label@EARNED_THIS_MIN:
-									X:395
-									Y:0
-									Width:60
-									Height:PARENT_BOTTOM
+									X: 395
+									Y: 0
+									Width: 60
+									Height: PARENT_BOTTOM
 								Label@ASSETS:
-									X:535
-									Y:0
-									Width:60
-									Height:PARENT_BOTTOM
+									X: 535
+									Y: 0
+									Width: 60
+									Height: PARENT_BOTTOM
 								Label@EARNED:
-									X:615
-									Y:0
-									Width:60
-									Height:PARENT_BOTTOM
+									X: 615
+									Y: 0
+									Width: 60
+									Height: PARENT_BOTTOM
 								Label@SPENT:
-									X:695
-									Y:0
-									Width:60
-									Height:PARENT_BOTTOM
+									X: 695
+									Y: 0
+									Width: 60
+									Height: PARENT_BOTTOM
 								Label@HARVESTERS:
-									X:775
-									Y:0
-									Width:60
-									Height:PARENT_BOTTOM
-									Align:Right
+									X: 775
+									Y: 0
+									Width: 60
+									Height: PARENT_BOTTOM
+									Align: Right
 						ScrollItem@PRODUCTION_PLAYER_TEMPLATE:
-							X:0
-							Y:0
-							Width:PARENT_RIGHT-35
-							Height:25
+							X: 0
+							Y: 0
+							Width: PARENT_RIGHT-35
+							Height: 25
 							Children:
 								Image@FLAG:
-									X:20
-									Y:5
-									Width:35
-									Height:PARENT_BOTTOM-5
-									ImageName:random
-									ImageCollection:flags
+									X: 20
+									Y: 5
+									Width: 35
+									Height: PARENT_BOTTOM-5
+									ImageName: random
+									ImageCollection: flags
 								Label@PLAYER:
-									X:55
-									Y:0
-									Width:160
-									Height:PARENT_BOTTOM
-									Font:Bold
+									X: 55
+									Y: 0
+									Width: 160
+									Height: PARENT_BOTTOM
+									Font: Bold
 								ObserverProductionIcons@PRODUCTION_ICONS:
-									X:215
-									Y:0
-									Width:320
-									Height:PARENT_BOTTOM
+									X: 215
+									Y: 0
+									Width: 320
+									Height: PARENT_BOTTOM
 								ObserverSupportPowerIcons@SUPPORT_POWER_ICONS:
-									X:535
-									Y:0
-									Width:320
-									Height:PARENT_BOTTOM
+									X: 535
+									Y: 0
+									Width: 320
+									Height: PARENT_BOTTOM
 						ScrollItem@COMBAT_PLAYER_TEMPLATE:
-							X:0
-							Y:0
-							Width:PARENT_RIGHT-35
-							Height:25
+							X: 0
+							Y: 0
+							Width: PARENT_RIGHT-35
+							Height: 25
 							Children:
 								Image@FLAG:
-									X:20
-									Y:5
-									Width:35
-									Height:PARENT_BOTTOM-5
-									ImageName:random
-									ImageCollection:flags
+									X: 20
+									Y: 5
+									Width: 35
+									Height: PARENT_BOTTOM-5
+									ImageName: random
+									ImageCollection: flags
 								Label@PLAYER:
-									X:55
-									Y:0
-									Width:160
-									Height:PARENT_BOTTOM
-									Font:Bold
+									X: 55
+									Y: 0
+									Width: 160
+									Height: PARENT_BOTTOM
+									Font: Bold
 								Label@CONTROL:
-									X:215
-									Y:0
-									Width:60
-									Height:PARENT_BOTTOM
+									X: 215
+									Y: 0
+									Width: 60
+									Height: PARENT_BOTTOM
 								Label@KILLS_COST:
-									X:295
-									Y:0
-									Width:60
-									Height:PARENT_BOTTOM
+									X: 295
+									Y: 0
+									Width: 60
+									Height: PARENT_BOTTOM
 								Label@DEATHS_COST:
-									X:375
-									Y:0
-									Width:60
-									Height:PARENT_BOTTOM
+									X: 375
+									Y: 0
+									Width: 60
+									Height: PARENT_BOTTOM
 								Label@UNITS_KILLED:
-									X:475
-									Y:0
-									Width:40
-									Height:PARENT_BOTTOM
-									Align:Right
+									X: 475
+									Y: 0
+									Width: 40
+									Height: PARENT_BOTTOM
+									Align: Right
 								Label@UNITS_DEAD:
-									X:575
-									Y:0
-									Width:40
-									Height:PARENT_BOTTOM
-									Align:Right
+									X: 575
+									Y: 0
+									Width: 40
+									Height: PARENT_BOTTOM
+									Align: Right
 								Label@BUILDINGS_KILLED:
-									X:695
-									Y:0
-									Width:40
-									Height:PARENT_BOTTOM
-									Align:Right
+									X: 695
+									Y: 0
+									Width: 40
+									Height: PARENT_BOTTOM
+									Align: Right
 								Label@BUILDINGS_DEAD:
-									X:795
-									Y:0
-									Width:40
-									Height:PARENT_BOTTOM
-									Align:Right
+									X: 795
+									Y: 0
+									Width: 40
+									Height: PARENT_BOTTOM
+									Align: Right
 						Container@EARNED_THIS_MIN_GRAPH_TEMPLATE:
-							X:0
-							Y:0
-							Width:PARENT_RIGHT-100
-							Height:PARENT_BOTTOM-50
+							X: 0
+							Y: 0
+							Width: PARENT_RIGHT-100
+							Height: PARENT_BOTTOM-50
 							Children:
 								LineGraph@EARNED_THIS_MIN_GRAPH:
-									X:0
-									Y:0
-									Width:PARENT_RIGHT
-									Height:PARENT_BOTTOM
-									ValueFormat:${0}
-									XAxisValueFormat:{0}
-									YAxisValueFormat:${0:F0}
-									XAxisSize:20
-									YAxisSize:10
-									XAxisLabel:m
-									YAxisLabel:$
-									LabelFont:TinyBold
-									AxisFont:Bold
+									X: 0
+									Y: 0
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									ValueFormat: ${0}
+									XAxisValueFormat: {0}
+									YAxisValueFormat: ${0:F0}
+									XAxisSize: 20
+									YAxisSize: 10
+									XAxisLabel: m
+									YAxisLabel: $
+									LabelFont: TinyBold
+									AxisFont: Bold
+

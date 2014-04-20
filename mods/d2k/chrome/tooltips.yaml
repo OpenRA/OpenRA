@@ -1,108 +1,109 @@
 Background@SIMPLE_TOOLTIP:
-	Logic:SimpleTooltipLogic
-	Background:dialog3
-	Height:31
+	Logic: SimpleTooltipLogic
+	Background: dialog3
+	Height: 31
 	Children:
 		Label@LABEL:
-			X:5
-			Y:3
-			Height:23
-			Font:Bold
+			X: 5
+			Y: 3
+			Height: 23
+			Font: Bold
 
 Background@BUTTON_TOOLTIP:
-	Logic:ButtonTooltipLogic
-	Background:dialog3
-	Height:31
+	Logic: ButtonTooltipLogic
+	Background: dialog3
+	Height: 31
 	Children:
 		Label@LABEL:
-			X:5
-			Y:3
-			Height:23
-			Font:Bold
+			X: 5
+			Y: 3
+			Height: 23
+			Font: Bold
 		Label@HOTKEY:
-			Y:3
-			Height:23
-			TextColor:255,255,0
-			Font:Bold
+			Y: 3
+			Height: 23
+			TextColor: 255,255,0
+			Font: Bold
 
 Background@WORLD_TOOLTIP:
-	Logic:WorldTooltipLogic
-	Background:dialog3
+	Logic: WorldTooltipLogic
+	Background: dialog3
 	Children:
 		Container@SINGLE_HEIGHT:
-			Height:31
+			Height: 31
 		Container@DOUBLE_HEIGHT:
-			Height:56
+			Height: 56
 		Label@LABEL:
-			X:7
-			Y:2
-			Height:23
-			Font:Bold
+			X: 7
+			Y: 2
+			Height: 23
+			Font: Bold
 		Image@FLAG:
-			X:7
-			Y:27
-			Width:23
-			Height:23
+			X: 7
+			Y: 27
+			Width: 23
+			Height: 23
 		Label@OWNER:
-			X:35
-			Y:25
-			Height:23
-			Font:Bold
+			X: 35
+			Y: 25
+			Height: 23
+			Font: Bold
 
 Background@SPAWN_TOOLTIP:
-	Logic:SpawnSelectorTooltipLogic
-	Background:dialog3
-	Width:7
+	Logic: SpawnSelectorTooltipLogic
+	Background: dialog3
+	Width: 7
 	Children:
 		Container@SINGLE_HEIGHT:
-			Height:31
+			Height: 31
 		Container@DOUBLE_HEIGHT:
-			Height:47
+			Height: 47
 		Label@LABEL:
-			Y:3
-			Height:23
-			Font:Bold
+			Y: 3
+			Height: 23
+			Font: Bold
 		Image@FLAG:
-			X:5
-			Y:5
-			Width:23
-			Height:23
+			X: 5
+			Y: 5
+			Width: 23
+			Height: 23
 		Label@TEAM:
-			Y:28
-			Height:15
-			Font:TinyBold
-			Align:center
+			Y: 28
+			Height: 15
+			Font: TinyBold
+			Align: center
 
 Background@CLIENT_TOOLTIP:
-	Logic:ClientTooltipLogic
-	Background:dialog3
-	Height:51
-	Width:7
+	Logic: ClientTooltipLogic
+	Background: dialog3
+	Height: 51
+	Width: 7
 	Children:
 		Label@ADMIN:
-			Y:4
-			Height:18
-			Font:Bold
-			Text:Game Admin
-			Align:Center
+			Y: 4
+			Height: 18
+			Font: Bold
+			Text: Game Admin
+			Align: Center
 		Label@IP:
-			Y:7
-			Width:5
-			Height:10
-			Font:TinyBold
-			Align:Center
+			Y: 7
+			Width: 5
+			Height: 10
+			Font: TinyBold
+			Align: Center
 		Label@LOCATION:
-			Y:19
-			Height:10
-			Font:TinyBold
-			Align:Center
+			Y: 19
+			Height: 10
+			Font: TinyBold
+			Align: Center
 		Label@LATENCY_PREFIX:
-			X:10
-			Y:31
-			Height:10
-			Font:TinyBold
-			Text:Latency:
+			X: 10
+			Y: 31
+			Height: 10
+			Font: TinyBold
+			Text: Latency:
 		Label@LATENCY:
-			Y:31
-			Height:10
-			Font:TinyBold
+			Y: 31
+			Height: 10
+			Font: TinyBold
+

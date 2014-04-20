@@ -1,173 +1,174 @@
 Container@MAINMENU:
-	Logic:MainMenuLogic
+	Logic: MainMenuLogic
 	Children:
 		Label@VERSION_LABEL:
-			X:WINDOW_RIGHT - 10
-			Y:WINDOW_BOTTOM - 20
-			Align:Right
-			Font:Regular
-			Contrast:True
+			X: WINDOW_RIGHT - 10
+			Y: WINDOW_BOTTOM - 20
+			Align: Right
+			Font: Regular
+			Contrast: True
 		Container@MENUS:
-			X:100
-			Y:WINDOW_BOTTOM/2-HEIGHT/2
-			Width:200
-			Height:320
+			X: 100
+			Y: WINDOW_BOTTOM/2-HEIGHT/2
+			Width: 200
+			Height: 320
 			Children:
 				Background@MAIN_MENU:
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Children:
 						Label@MAINMENU_LABEL_TITLE:
-							X:0
-							Y:20
-							Width:200
-							Height:30
-							Text:OpenRA
-							Align:Center
-							Font:Bold
+							X: 0
+							Y: 20
+							Width: 200
+							Height: 30
+							Text: OpenRA
+							Align: Center
+							Font: Bold
 						Button@SINGLEPLAYER_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:60
-							Width:140
-							Height:30
-							Text:Singleplayer
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 60
+							Width: 140
+							Height: 30
+							Text: Singleplayer
+							Font: Bold
 						Button@MULTIPLAYER_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:100
-							Width:140
-							Height:30
-							Text:Multiplayer
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 100
+							Width: 140
+							Height: 30
+							Text: Multiplayer
+							Font: Bold
 						Button@SETTINGS_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:140
-							Width:140
-							Height:30
-							Text:Settings
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 140
+							Width: 140
+							Height: 30
+							Text: Settings
+							Font: Bold
 						Button@EXTRAS_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:180
-							Width:140
-							Height:30
-							Text:Extras
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 180
+							Width: 140
+							Height: 30
+							Text: Extras
+							Font: Bold
 						Button@MODS_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:220
-							Width:140
-							Height:30
-							Text:Mods
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 220
+							Width: 140
+							Height: 30
+							Text: Mods
+							Font: Bold
 						Button@QUIT_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:260
-							Width:140
-							Height:30
-							Text:Quit
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 260
+							Width: 140
+							Height: 30
+							Text: Quit
+							Font: Bold
 				Background@SINGLEPLAYER_MENU:
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Children:
 						Label@SINGLEPLAYER_MENU_TITLE:
-							X:0
-							Y:20
-							Width:200
-							Height:30
-							Text:Singleplayer
-							Align:Center
-							Font:Bold
+							X: 0
+							Y: 20
+							Width: 200
+							Height: 30
+							Text: Singleplayer
+							Align: Center
+							Font: Bold
 						Button@SKIRMISH_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:60
-							Width:140
-							Height:30
-							Text:Skirmish
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 60
+							Width: 140
+							Height: 30
+							Text: Skirmish
+							Font: Bold
 						Button@MISSIONS_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:100
-							Width:140
-							Height:30
-							Text:Missions
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 100
+							Width: 140
+							Height: 30
+							Text: Missions
+							Font: Bold
 						Button@BACK_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Key:escape
-							Y:260
-							Width:140
-							Height:30
-							Text:Back
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Key: escape
+							Y: 260
+							Width: 140
+							Height: 30
+							Text: Back
+							Font: Bold
 				Background@EXTRAS_MENU:
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Children:
 						Label@EXTRAS_MENU_TITLE:
-							X:0
-							Y:20
-							Width:200
-							Height:30
-							Text:Extras
-							Align:Center
-							Font:Bold
+							X: 0
+							Y: 20
+							Width: 200
+							Height: 30
+							Text: Extras
+							Align: Center
+							Font: Bold
 						Button@REPLAYS_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:60
-							Width:140
-							Height:30
-							Text:Replays
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 60
+							Width: 140
+							Height: 30
+							Text: Replays
+							Font: Bold
 						Button@MUSIC_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:100
-							Width:140
-							Height:30
-							Text:Music
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 100
+							Width: 140
+							Height: 30
+							Text: Music
+							Font: Bold
 						Button@ASSETBROWSER_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:140
-							Width:140
-							Height:30
-							Text:Asset Browser
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 140
+							Width: 140
+							Height: 30
+							Text: Asset Browser
+							Font: Bold
 						Button@CREDITS_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Y:180
-							Width:140
-							Height:30
-							Text:Credits
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 180
+							Width: 140
+							Height: 30
+							Text: Credits
+							Font: Bold
 						Button@BACK_BUTTON:
-							X:PARENT_RIGHT/2-WIDTH/2
-							Key:escape
-							Y:260
-							Width:140
-							Height:30
-							Text:Back
-							Font:Bold
+							X: PARENT_RIGHT/2-WIDTH/2
+							Key: escape
+							Y: 260
+							Width: 140
+							Height: 30
+							Text: Back
+							Font: Bold
 		Container@PERFORMANCE_INFO:
-			Logic:PerfDebugLogic
+			Logic: PerfDebugLogic
 			Children:
 				Label@PERF_TEXT:
-					X:30
-					Y:WINDOW_BOTTOM - 70
-					Width:170
-					Height:40
-					Contrast:true
+					X: 30
+					Y: WINDOW_BOTTOM - 70
+					Width: 170
+					Height: 40
+					Contrast: true
 				Background@GRAPH_BG:
-					ClickThrough:true
-					Background:dialog4
-					X:WINDOW_RIGHT - 240
-					Y:WINDOW_BOTTOM - 240
-					Width:210
-					Height:210
+					ClickThrough: true
+					Background: dialog4
+					X: WINDOW_RIGHT - 240
+					Y: WINDOW_BOTTOM - 240
+					Width: 210
+					Height: 210
 					Children:
 						PerfGraph@GRAPH:
-							X:5
-							Y:5
-							Width:200
-							Height:200
+							X: 5
+							Y: 5
+							Width: 200
+							Height: 200
+
