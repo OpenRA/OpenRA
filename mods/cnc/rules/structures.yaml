@@ -1,5 +1,5 @@
 FACT:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
@@ -50,7 +50,7 @@ FACT:
 		Range: 14
 
 NUKE:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -73,7 +73,7 @@ NUKE:
 	Bib:
 
 NUK2:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -96,7 +96,7 @@ NUK2:
 	Bib:
 
 PROC:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -134,7 +134,7 @@ PROC:
 	WithResources:
 
 SILO:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -167,7 +167,7 @@ SILO:
 	-EmitInfantryOnSell:
 
 PYLE:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -205,7 +205,7 @@ PYLE:
 	ProductionBar:
 
 HAND:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -240,7 +240,7 @@ HAND:
 	ProductionBar:
 
 AFLD:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -277,7 +277,7 @@ AFLD:
 	ProductionBar:
 
 WEAP:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -315,7 +315,7 @@ WEAP:
 	ProductionBar:
 
 HPAD:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -348,7 +348,7 @@ HPAD:
 	ProductionBar:
 
 HQ:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -396,7 +396,7 @@ HQ:
 	SupportPowerChargeBar:
 
 FIX:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -421,7 +421,7 @@ FIX:
 	RallyPoint:
 
 EYE:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -464,7 +464,7 @@ EYE:
 	SupportPowerChargeBar:
 
 TMPL:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -508,7 +508,7 @@ TMPL:
 	SupportPowerChargeBar:
 
 GUN:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 600
 	CustomBuildTimeValue:
@@ -549,7 +549,7 @@ GUN:
 		Range: 5
 
 SAM:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 750
 	CustomBuildTimeValue:
@@ -589,7 +589,7 @@ SAM:
 	RenderRangeCircle:
 
 OBLI:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1500
 	CustomBuildTimeValue:
@@ -635,7 +635,7 @@ OBLI:
 		Range: 6
 
 GTWR:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 500
 	CustomBuildTimeValue:
@@ -674,7 +674,7 @@ GTWR:
 		ROT: 255
 
 ATWR:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1000
 	CustomBuildTimeValue:

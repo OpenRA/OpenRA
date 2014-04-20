@@ -313,9 +313,6 @@
 		TargetTypes: Ground, C4
 	Armor:
 		Type: Wood
-	RepairableBuilding:
-		RepairPercent: 40
-		RepairStep: 14
 	Building:
 		Adjacent: 4
 		RequiresBaseProvider: true
@@ -327,15 +324,10 @@
 	SoundOnDamageTransition:
 		DamagedSound: xplos.aud
 		DestroyedSound: crumble.aud
-	Buildable:
-		Queue: Building
-	GivesBuildableArea:
 	RenderBuilding:
 	WithBuildingExplosion:
-	DeadBuildingState:
 	EmitInfantryOnSell:
 		ActorTypes: e6,e1
-	MustBeDestroyed:
 	GivesExperience:
 	CaptureNotification:
 		Notification: BuildingCaptured
@@ -345,35 +337,37 @@
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	ShakeOnDeath:
-	Sellable:
-	Capturable:
 	CombatDebugOverlay:
 	Guardable:
 		Range: 3
 	BodyOrientation:
 	FrozenUnderFog:
 	UpdatesPlayerStatistics:
-	EngineerRepairable:
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
 
+^BaseBuilding:
+	Inherits: ^Building
+	MustBeDestroyed:
+	Buildable:
+		Queue: Building
+	RepairableBuilding:
+		RepairPercent: 40
+		RepairStep: 14
+	DeadBuildingState:
+	GivesBuildableArea:
+	EngineerRepairable:
+	Sellable:
+	Capturable:
+
 ^CivBuilding:
 	Inherits: ^Building
-	-DeadBuildingState:
-	-Buildable:
-	-GivesBuildableArea:
-	-EngineerRepairable:
 	Health:
 		HP: 400
 	Armor:
 		Type: Wood
 	Building:
-	RenderBuilding:
-	WithBuildingExplosion:
-	-RepairableBuilding:
-	-Capturable:
-	-Sellable:
 	Tooltip:
 		Name: Civilian Building
 	FrozenUnderFog:
@@ -398,6 +392,8 @@
 	Inherits: ^CivBuilding
 	Capturable:
 	RepairableBuilding:
+		RepairPercent: 40
+		RepairStep: 14
 	EngineerRepairable:
 	RevealsShroud:
 		Range: 3c0
