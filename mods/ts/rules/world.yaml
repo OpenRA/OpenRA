@@ -82,17 +82,18 @@ World:
 		Race: nod
 	ResourceLayer:
 	ResourceClaimLayer:
-	ResourceType@gem:
-		ResourceType: 2
-		Palette: player
-		EditorSprite: shadow
-		Variants: fake
+	ResourceType@Tiberium:
+		ResourceType: 1
+		Palette: player # TODO: this has to remap to green
+		EditorSprite: waypoint # TODO: editor can't handle the real ones
+		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
+		MaxDensity: 12
 		ValuePerUnit: 50
-		Name: Gems
-		PipColor: Red
-		AllowedTerrainTypes: Clear,Road
+		Name: Tiberium
+		PipColor: Green
+		AllowedTerrainTypes: Clear
 		AllowUnderActors: false
-		TerrainType: Gems
+		TerrainType: Tiberium
 	PathfinderDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:

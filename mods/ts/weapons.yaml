@@ -693,3 +693,10 @@ Pistola:
 		InfDeath: 1
 		Damage: 2
 
+Tiberium:
+	ROF: 16
+	Warhead:
+		Spread: 42
+		InfDeath: 6
+		Damage: 2
+		PreventProne: yes

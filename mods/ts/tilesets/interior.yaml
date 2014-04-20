@@ -11,6 +11,11 @@ Terrain:
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 0, 0, 0
 		TargetTypes: Ground
+	TerrainType@Tiberium:
+		Type: Tiberium
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 161, 226, 28
+		TargetTypes: Ground
 
 Templates:
 	Template@255:
