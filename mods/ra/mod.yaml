@@ -185,3 +185,5 @@ LuaScripts:
 
 Missions:
 	mods/ra/missions.yaml
+
+SupportsMapsFrom: ra
