@@ -10,7 +10,7 @@ FACT:
 		Name: Construction Yard
 		Description: Builds structures
 	Building:
-		Power: 15
+		Power: 0
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -30,7 +30,7 @@ FACT:
 		Type: Building
 		Group: Building
 		BuildSpeed: .4
-		LowPowerSlowdown: 3
+		LowPowerSlowdown: 2
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 	ProductionQueue@Defense:
@@ -53,7 +53,7 @@ FACT:
 NUKE:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 300
+		Cost: 500
 	Tooltip:
 		Name: Power Plant
 		Description: Generates power
@@ -68,7 +68,7 @@ NUKE:
 		Footprint: x_ xx
 		Dimensions: 2,2
 	Health:
-		HP: 400
+		HP: 500
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -76,7 +76,7 @@ NUKE:
 NUK2:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 500
+		Cost: 800
 	Tooltip:
 		Name: Advanced Power Plant
 		Description: Provides more power, cheaper than the \nstandard Power Plant
@@ -91,7 +91,7 @@ NUK2:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 650
+		HP: 700
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -108,7 +108,7 @@ PROC:
 		Prerequisites: anypower
 		Owner: gdi,nod
 	Building:
-		Power: -30
+		Power: -50
 		Footprint: _x_ xxx ===
 		Dimensions: 3,3
 	Health:
@@ -121,12 +121,12 @@ PROC:
 		TickRate: 15
 	StoresOre:
 		PipColor: Green
-		PipCount: 15
-		Capacity: 1500
+		PipCount: 10
+		Capacity: 2000
 	Selectable:
 		Bounds: 73,72
 	CustomSellValue:
-		Value: 300
+		Value: 500
 	FreeActor:
 		Actor: HARV
 		InitialActivity: FindResources
@@ -161,7 +161,7 @@ SILO:
 	StoresOre:
 		PipCount: 10
 		PipColor: Green
-		Capacity: 2400
+		Capacity: 2000
 	Selectable:
 		Bounds: 49,30
 	-RenderBuilding:
@@ -170,7 +170,7 @@ SILO:
 PYLE:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 300
+		Cost: 500
 	Tooltip:
 		Name: Barracks
 		Description: Trains infantry
@@ -208,7 +208,7 @@ PYLE:
 HAND:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 300
+		Cost: 500
 	Tooltip:
 		Name: Hand of Nod
 		Description: Trains infantry
@@ -324,14 +324,14 @@ HPAD:
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: barracks
+		Prerequisites: proc
 		Owner: gdi,nod
 	Building:
 		Power: -10
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 400
+		HP: 500
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
@@ -371,14 +371,14 @@ HQ:
 	RenderBuilding:
 		PauseOnLowPower: yes
 	Health:
-		HP: 750
+		HP: 700
 	RevealsShroud:
 		Range: 10c0
 	Bib:
 	ProvidesRadar:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 8
+		Range: 5
 	AirstrikePower:
 		Icon: airstrike
 		ChargeTime: 180
@@ -453,7 +453,7 @@ EYE:
 	ProvidesRadar:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 8
+		Range: 5
 	IonCannonPower:
 		Icon: ioncannon
 		ChargeTime: 180
@@ -551,7 +551,7 @@ GUN:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 5
+		Range: 3
 
 SAM:
 	Inherits: ^BaseBuilding
@@ -579,7 +579,7 @@ SAM:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 5c0
+		Range: 8c0
 	Turreted:
 		ROT: 10
 		InitialFacing: 0
@@ -619,7 +619,7 @@ OBLI:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7c0
+		Range: 8c0
 	Bib:
 		HasMinibib: Yes
 	RenderBuildingCharge:
@@ -627,22 +627,22 @@ OBLI:
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,0,725
-		FireDelay: 25
+		FireDelay: 0
 	AttackCharge:
-		ReloadTime: 90
-		InitialChargeDelay: 25
+		ReloadTime: 40
+		InitialChargeDelay: 50
 	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-EmitInfantryOnSell:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 6
+		Range: 5
 
 GTWR:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 500
+		Cost: 600
 	CustomBuildTimeValue:
 		Value: 1440
 	Tooltip:
@@ -659,7 +659,7 @@ GTWR:
 	Health:
 		HP: 400
 	RevealsShroud:
-		Range: 6c0
+		Range: 7c0
 	Bib:
 		HasMinibib: Yes
 	Armament:
@@ -671,7 +671,7 @@ GTWR:
 		QuantizedFacings: 8
 	AutoTarget:
 	DetectCloaked:
-		Range: 5
+		Range: 3
 	RenderDetectionCircle:
 	RenderRangeCircle:
 	WithMuzzleFlash:
@@ -704,14 +704,18 @@ ATWR:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7c0
+		Range: 8c0
 	Bib:
 		HasMinibib: Yes
 	Turreted:
 		ROT: 255
 		Offset: 128,128,-85
-	Armament:
+	Armament@PRIMARY:
 		Weapon: TowerMissle
+		LocalOffset: 256,128,0, 256,-128,0
+		LocalYaw: -100,100
+	Armament@SECONDARY:
+		Weapon: SAMMissile
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:
@@ -720,7 +724,7 @@ ATWR:
 		QuantizedFacings: 8
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 6
+		Range: 5
 	RenderRangeCircle:
 
 SBAG:

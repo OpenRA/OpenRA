@@ -39,7 +39,7 @@ MCV:
 HARV:
 	Inherits: ^Tank
 	Valued:
-		Cost: 1200
+		Cost: 1000
 	Tooltip:
 		Name: Harvester
 		Description: Collects Tiberium for processing.\n  Unarmed
@@ -54,8 +54,8 @@ HARV:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
 		Capacity: 20
-		LoadTicksPerBale: 6
-		UnloadTicksPerBale: 12
+		LoadTicksPerBale: 12
+		UnloadTicksPerBale: 6
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
 	Mobile:
@@ -137,7 +137,7 @@ ARTY:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 9c0
+		Range: 8c0
 	Armament:
 		Weapon: ArtilleryShell
 		LocalOffset: 624,0,208
@@ -157,7 +157,7 @@ ARTY:
 FTNK:
 	Inherits: ^Tank
 	Valued:
-		Cost: 800
+		Cost: 600
 	Tooltip:
 		Name: Flame Tank
 		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings, Vehicles\n  Weak vs Aircraft
@@ -169,9 +169,9 @@ FTNK:
 		ROT: 7
 		Speed: 113
 	Health:
-		HP: 350
+		HP: 300
 	Armor:
-		Type: Light
+		Type: Heavy
 	RevealsShroud:
 		Range: 5c0
 	Armament:
@@ -202,14 +202,14 @@ BGGY:
 		Prerequisites: afld
 		Owner: nod
 	Mobile:
-		ROT: 12
+		ROT: 10
 		Speed: 170
 	Health:
 		HP: 120
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 7c0
+		Range: 8c0
 	Turreted:
 		ROT: 10
 		Offset: -43,0,128
@@ -237,7 +237,7 @@ BIKE:
 		Prerequisites: afld
 		Owner: nod
 	Mobile:
-		ROT: 12
+		ROT: 10
 		Speed: 213
 		TerrainSpeeds:
 			Clear: 70
@@ -274,7 +274,7 @@ JEEP:
 		Prerequisites: weap
 		Owner: gdi
 	Mobile:
-		ROT: 11
+		ROT: 10
 		Speed: 156
 	Health:
 		HP: 160
@@ -312,13 +312,13 @@ LTNK:
 		ROT: 7
 		Speed: 113
 	Health:
-		HP: 300
+		HP: 360
 	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		ROT: 5
+		ROT: 7
 	Armament:
 		Weapon: 70mm
 		Recoil: 85
@@ -350,7 +350,7 @@ MTNK:
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 400
+		HP: 450
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -392,7 +392,7 @@ HTNK:
 		Speed: 56
 		ROT: 3
 	Health:
-		HP: 900
+		HP: 800
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -410,7 +410,7 @@ HTNK:
 		Weapon: MammothMissiles
 		LocalOffset: -85,384,340, -85,-384,340
 		LocalYaw: -100, 100
-		Recoil: 42
+		Recoil: 10
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
@@ -448,7 +448,7 @@ MSAM:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10c0
+		Range: 8c0
 	Turreted:
 		ROT: 255
 		Offset: -256,0,128
@@ -485,7 +485,7 @@ MLRS:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10c0
+		Range: 8c0
 	Turreted:
 		ROT: 8
 		Offset: -128,0,128
@@ -518,7 +518,7 @@ STNK:
 		Prerequisites: tmpl
 		Owner: nod
 	Mobile:
-		ROT: 8
+		ROT: 10
 		Speed: 142
 		Crushes: crate, infantry
 	Health:
