@@ -255,8 +255,8 @@ Player:
 			ca: 8%
 			pt: 8%
 		SquadSize: 10
-	HackyAI@IslandMapAI:
-		Name: Island Map AI
+	HackyAI@NavalAI:
+		Name: Naval AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
