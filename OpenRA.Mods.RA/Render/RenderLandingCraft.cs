@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Render
 				return false;
 
 			return cargo.CurrentAdjacentCells
-				.Any(c => self.World.Map.IsInMap(c) && info.OpenTerrainTypes.Contains(self.World.GetTerrainType(c)) );
+				.Any(c => self.World.Map.IsInMap(c) && info.OpenTerrainTypes.Contains(self.World.GetTerrainType(c)));
 		}
 
 		void Open()
