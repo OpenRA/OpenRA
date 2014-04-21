@@ -1,94 +1,95 @@
 Container@CONNECTING_PANEL:
-	Logic:ConnectionLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 90)/2
-	Width:370
-	Height:125
+	Logic: ConnectionLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 90)/2
+	Width: 370
+	Height: 125
 	Children:
 		Label@TITLE:
-			Width:PARENT_RIGHT
-			Y:0-25
-			Font:BigBold
-			Contrast:true
-			Align:Center
-			Text:Connecting
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Connecting
 		Background@bg:
-			Width:370
-			Height:90
-			Background:panel-black
+			Width: 370
+			Height: 90
+			Background: panel-black
 			Children:
 				Label@CONNECTING_DESC:
-					Y:(PARENT_BOTTOM-HEIGHT)/2
-					Width:PARENT_RIGHT
-					Height:25
-					Text:Connecting...
-					Font:Bold
-					Align:Center
+					Y: (PARENT_BOTTOM-HEIGHT)/2
+					Width: PARENT_RIGHT
+					Height: 25
+					Text: Connecting...
+					Font: Bold
+					Align: Center
 		Button@ABORT_BUTTON:
-			Key:escape
-			X:230
-			Y:89
-			Width:140
-			Height:35
-			Text:Abort
+			Key: escape
+			X: 230
+			Y: 89
+			Width: 140
+			Height: 35
+			Text: Abort
 
 Container@CONNECTIONFAILED_PANEL:
-	Logic:ConnectionFailedLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 90)/2
-	Width:370
-	Height:129
+	Logic: ConnectionFailedLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 90)/2
+	Width: 370
+	Height: 129
 	Children:
 		LogicTicker@CONNECTION_FAILED_TICKER:
 		Label@TITLE:
-			Width:PARENT_RIGHT
-			Y:0-25
-			Font:BigBold
-			Contrast:true
-			Align:Center
-			Text:Connection Failed
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Connection Failed
 		Background@CONNECTION_BACKGROUND:
-			Width:370
-			Height:85
-			Background:panel-black
+			Width: 370
+			Height: 85
+			Background: panel-black
 			Children:
 				Label@CONNECTING_DESC:
-					Y:15
-					Width:PARENT_RIGHT
-					Height:25
-					Text:Failed to connect
-					Font:Bold
-					Align:Center
+					Y: 15
+					Width: PARENT_RIGHT
+					Height: 25
+					Text: Failed to connect
+					Font: Bold
+					Align: Center
 				Label@CONNECTION_ERROR:
-					Y:40
-					Width:PARENT_RIGHT
-					Height:25
-					Align:Center
-					Font:Bold
+					Y: 40
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+					Font: Bold
 				Label@PASSWORD_LABEL:
-					X:40
-					Y:79
-					Width:95
-					Height:25
-					Align:Right
-					Text:Password:
-					Font:Bold
+					X: 40
+					Y: 79
+					Width: 95
+					Height: 25
+					Align: Right
+					Text: Password:
+					Font: Bold
 				PasswordField@PASSWORD:
-					X:140
-					Y:80
-					Width:155
-					MaxLength:20
-					Height:25
+					X: 140
+					Y: 80
+					Width: 155
+					MaxLength: 20
+					Height: 25
 		Button@RETRY_BUTTON:
-			Key:return
-			Y:84
-			Width:140
-			Height:35
-			Text:Retry
+			Key: return
+			Y: 84
+			Width: 140
+			Height: 35
+			Text: Retry
 		Button@ABORT_BUTTON:
-			Key:escape
-			X:230
-			Y:84
-			Width:140
-			Height:35
-			Text:Abort
+			Key: escape
+			X: 230
+			Y: 84
+			Width: 140
+			Height: 35
+			Text: Abort
+

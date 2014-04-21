@@ -1,68 +1,69 @@
 Container@SERVERBROWSER_IRC:
-	Logic:IrcLogic
-	Width:700
-	Height:250
+	Logic: IrcLogic
+	Width: 700
+	Height: 250
 	Children:
 		Container@IRC_CONTAINER:
-			Width:PARENT_RIGHT
-			Height:PARENT_BOTTOM
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
 			Children:
 				ScrollPanel@HISTORY_PANEL:
-					Width:565
-					Height:PARENT_BOTTOM - 30
-					ItemSpacing:5
+					Width: 565
+					Height: PARENT_BOTTOM - 30
+					ItemSpacing: 5
 				Label@HISTORY_TEMPLATE:
-					X:5
-					Width:530
-					Height:25
-					WordWrap:True
+					X: 5
+					Width: 530
+					Height: 25
+					WordWrap: True
 				TextField@INPUT_BOX:
-					Y:PARENT_BOTTOM - 25
-					Width:565
-					Height:25
+					Y: PARENT_BOTTOM - 25
+					Width: 565
+					Height: 25
 				ScrollPanel@NICKNAME_PANEL:
-					X:570
-					Width:130
-					Height:PARENT_BOTTOM - 30
+					X: 570
+					Width: 130
+					Height: PARENT_BOTTOM - 30
 				Label@NICKNAME_TEMPLATE:
-					X:5
+					X: 5
 				Button@DISCONNECT_BUTTON:
-					X:570
-					Y:PARENT_BOTTOM - 25
-					Width:130
-					Height:25
-					Text:Disconnect
-					Font:Bold
+					X: 570
+					Y: PARENT_BOTTOM - 25
+					Width: 130
+					Height: 25
+					Text: Disconnect
+					Font: Bold
 		Background@IRC_CONNECT_BG:
-			Width:PARENT_RIGHT
-			Height:PARENT_BOTTOM
-			Background:scrollpanel-bg
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: scrollpanel-bg
 			Children:
 				Label@GLOBAL_CHAT_LABEL:
-					Y:PARENT_BOTTOM / 4
-					Width:PARENT_RIGHT
-					Align:Center
-					Text:Global Chat
-					Font:Bold
+					Y: PARENT_BOTTOM / 4
+					Width: PARENT_RIGHT
+					Align: Center
+					Text: Global Chat
+					Font: Bold
 				Label@NICKNAME_LABEL:
-					X:200
-					Y:PARENT_BOTTOM / 4 + 35
-					Text:Nickname:
+					X: 200
+					Y: PARENT_BOTTOM / 4 + 35
+					Text: Nickname:
 				TextField@NICKNAME_BOX:
-					X:270
-					Y:PARENT_BOTTOM / 4 + 25
-					Width:150
-					Height:25
+					X: 270
+					Y: PARENT_BOTTOM / 4 + 25
+					Width: 150
+					Height: 25
 				Checkbox@CONNECT_AUTOMATICALLY_CHECKBOX:
-					X:270
-					Y:PARENT_BOTTOM / 4 + 75
-					Height:20
-					Width:180
-					Text:Connect Automatically
+					X: 270
+					Y: PARENT_BOTTOM / 4 + 75
+					Height: 20
+					Width: 180
+					Text: Connect Automatically
 				Button@CONNECT_BUTTON:
-					X:430
-					Y:PARENT_BOTTOM / 4 + 25
-					Width:100
-					Height:25
-					Text:Connect
-					Font:Bold
+					X: 430
+					Y: PARENT_BOTTOM / 4 + 25
+					Width: 100
+					Height: 25
+					Text: Connect
+					Font: Bold
+

@@ -1,206 +1,207 @@
 Container@INSTALL_BACKGROUND:
-	Width:WINDOW_RIGHT
-	Height:WINDOW_BOTTOM
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
 	Children:
 		Image@NOD:
-			X:WINDOW_RIGHT/2-384
-			Y:(WINDOW_BOTTOM-256)/2
-			ImageCollection:logos
-			ImageName:nod-load
+			X: WINDOW_RIGHT/2-384
+			Y: (WINDOW_BOTTOM-256)/2
+			ImageCollection: logos
+			ImageName: nod-load
 		Image@GDI:
-			X:WINDOW_RIGHT/2+128
-			Y:(WINDOW_BOTTOM-256)/2
-			ImageCollection:logos
-			ImageName:gdi-load
+			X: WINDOW_RIGHT/2+128
+			Y: (WINDOW_BOTTOM-256)/2
+			ImageCollection: logos
+			ImageName: gdi-load
 		Image@EVA:
-			X:WINDOW_RIGHT-128-43
-			Y:43
-			Width:128
-			Height:64
-			ImageCollection:logos
-			ImageName:eva
+			X: WINDOW_RIGHT-128-43
+			Y: 43
+			Width: 128
+			Height: 64
+			ImageCollection: logos
+			ImageName: eva
 		Background:
-			Width:PARENT_RIGHT
-			Height:PARENT_BOTTOM
-			Background:shellmapborder
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: shellmapborder
 
 Container@INSTALL_PANEL:
-	Logic:InstallLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 150)/2
-	Width:640
-	Height:150
+	Logic: InstallLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 150)/2
+	Width: 640
+	Height: 150
 	Children:
 		Label@TITLE:
-			Width:PARENT_RIGHT
-			Y:0-25
-			Font:BigBold
-			Contrast:true
-			Align:Center
-			Text:Install Game Content
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Install Game Content
 		Background@bg:
-			Width:640
-			Height:150
-			Background:panel-black
+			Width: 640
+			Height: 150
+			Background: panel-black
 			Children:
 				Image@INSTALL:
-					X:11
-					Y:11
-					ImageCollection:logos
-					ImageName:install
+					X: 11
+					Y: 11
+					ImageCollection: logos
+					ImageName: install
 				Label@INFO:
-					X:170
-					Y:35
-					Width:PARENT_RIGHT-30
-					Height:25
-					Text:OpenRA requires the original C&C content files.
-					Font:Bold
+					X: 170
+					Y: 35
+					Width: PARENT_RIGHT-30
+					Height: 25
+					Text: OpenRA requires the original C&C content files.
+					Font: Bold
 				Label@INFO2:
-					X:170
-					Y:70
-					Width:PARENT_RIGHT-185
-					Height:25
-					WordWrap:true
-					Text:OpenRA can download these files (excluding music and videos) from the internet, or you can install from the original C&C CDs.
-					Font:Bold
+					X: 170
+					Y: 70
+					Width: PARENT_RIGHT-185
+					Height: 25
+					WordWrap: true
+					Text: OpenRA can download these files (excluding music and videos) from the internet, or you can install from the original C&C CDs.
+					Font: Bold
 		Button@BACK_BUTTON:
-			Y:149
-			Width:140
-			Height:35
-			Text:Back
+			Y: 149
+			Width: 140
+			Height: 35
+			Text: Back
 		Button@DOWNLOAD_BUTTON:
-			X:350
-			Y:149
-			Width:140
-			Height:35
-			Text:Download
+			X: 350
+			Y: 149
+			Width: 140
+			Height: 35
+			Text: Download
 		Button@INSTALL_BUTTON:
-			X:500
-			Y:149
-			Width:140
-			Height:35
-			Text:Use CD
+			X: 500
+			Y: 149
+			Width: 140
+			Height: 35
+			Text: Use CD
 
 Container@INSTALL_FROMCD_PANEL:
-	Logic:CncInstallFromCDLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 150)/2
-	Width:640
-	Height:150
+	Logic: CncInstallFromCDLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 150)/2
+	Width: 640
+	Height: 150
 	Children:
 		Label@TITLE:
-			Width:PARENT_RIGHT
-			Y:0-25
-			Font:BigBold
-			Contrast:true
-			Align:Center
-			Text:Installing from CD
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Installing from CD
 		Background@bg:
-			Width:640
-			Height:150
-			Background:panel-black
+			Width: 640
+			Height: 150
+			Background: panel-black
 			Children:
 				Image@INSTALL:
-					X:11
-					Y:11
-					ImageCollection:logos
-					ImageName:install
+					X: 11
+					Y: 11
+					ImageCollection: logos
+					ImageName: install
 				Container@INSTALLING:
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Visible: false
 					Children:
 						ProgressBar@PROGRESS_BAR:
-							X:170
-							Y:45
-							Width:PARENT_RIGHT - 185
-							Height:35
+							X: 170
+							Y: 45
+							Width: PARENT_RIGHT - 185
+							Height: 35
 						Label@STATUS_LABEL:
-							X:170
-							Y:85
-							Width:PARENT_RIGHT - 185
-							Height:25
-							Align:Left
+							X: 170
+							Y: 85
+							Width: PARENT_RIGHT - 185
+							Height: 25
+							Align: Left
 				Container@INSERT_DISK:
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Visible: false
 					Children:
 						Label@INFO:
-							X:170
-							Y:35
-							Width:PARENT_RIGHT-30
-							Height:25
-							Text:Disk not found
-							Font:Bold
+							X: 170
+							Y: 35
+							Width: PARENT_RIGHT-30
+							Height: 25
+							Text: Disk not found
+							Font: Bold
 						Label@INFO2:
-							X:170
-							Y:70
-							Width:PARENT_RIGHT-185
-							Height:25
-							WordWrap:true
-							Text:Please insert one of the Command & Conquer install CDs then click Retry.
-							Font:Bold
+							X: 170
+							Y: 70
+							Width: PARENT_RIGHT-185
+							Height: 25
+							WordWrap: true
+							Text: Please insert one of the Command & Conquer install CDs then click Retry.
+							Font: Bold
 		Button@BACK_BUTTON:
-			Key:escape
-			Y:149
-			Width:140
-			Height:35
-			Text:Back
+			Key: escape
+			Y: 149
+			Width: 140
+			Height: 35
+			Text: Back
 		Button@RETRY_BUTTON:
-			Key:return
-			X:500
-			Y:149
-			Width:140
-			Height:35
-			Text:Retry
+			Key: return
+			X: 500
+			Y: 149
+			Width: 140
+			Height: 35
+			Text: Retry
 
 Container@INSTALL_DOWNLOAD_PANEL:
-	Logic:DownloadPackagesLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 150)/2
-	Width:640
-	Height:150
+	Logic: DownloadPackagesLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 150)/2
+	Width: 640
+	Height: 150
 	Children:
 		Label@TITLE:
-			Width:PARENT_RIGHT
-			Y:0-25
-			Font:BigBold
-			Contrast:true
-			Align:Center
-			Text:Downloading Content
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Downloading Content
 		Background@bg:
-			Width:640
-			Height:150
-			Background:panel-black
+			Width: 640
+			Height: 150
+			Background: panel-black
 			Children:
 				Image@INSTALL:
-					X:11
-					Y:11
-					ImageCollection:logos
-					ImageName:install
+					X: 11
+					Y: 11
+					ImageCollection: logos
+					ImageName: install
 				ProgressBar@PROGRESS_BAR:
-					X:170
-					Y:45
-					Width:PARENT_RIGHT - 185
-					Height:35
+					X: 170
+					Y: 45
+					Width: PARENT_RIGHT - 185
+					Height: 35
 				Label@STATUS_LABEL:
-					X:170
-					Y:85
-					Width:PARENT_RIGHT - 185
-					Height:25
-					Align:Left
-					Text:Initialising...
+					X: 170
+					Y: 85
+					Width: PARENT_RIGHT - 185
+					Height: 25
+					Align: Left
+					Text: Initialising...
 		Button@CANCEL_BUTTON:
-			Key:escape
-			Y:149
-			Width:140
-			Height:35
-			Text:Cancel
+			Key: escape
+			Y: 149
+			Width: 140
+			Height: 35
+			Text: Cancel
 		Button@RETRY_BUTTON:
-			Key:return
-			X:500
-			Y:149
-			Width:140
-			Height:35
-			Text:Retry
+			Key: return
+			X: 500
+			Y: 149
+			Width: 140
+			Height: 35
+			Text: Retry
+

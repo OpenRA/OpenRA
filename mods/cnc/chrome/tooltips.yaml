@@ -1,163 +1,164 @@
 Background@SIMPLE_TOOLTIP:
-	Logic:SimpleTooltipLogic
-	Background:panel-black
-	Height:25
+	Logic: SimpleTooltipLogic
+	Background: panel-black
+	Height: 25
 	Children:
 		Label@LABEL:
-			X:5
-			Height:23
-			Font:Bold
+			X: 5
+			Height: 23
+			Font: Bold
 
 Background@BUTTON_TOOLTIP:
-	Logic:ButtonTooltipLogic
-	Background:panel-black
-	Height:25
+	Logic: ButtonTooltipLogic
+	Background: panel-black
+	Height: 25
 	Children:
 		Label@LABEL:
-			X:5
-			Height:23
-			Font:Bold
+			X: 5
+			Height: 23
+			Font: Bold
 		Label@HOTKEY:
-			TextColor:255,255,0
-			Height:23
-			Font:Bold
+			TextColor: 255,255,0
+			Height: 23
+			Font: Bold
 
 Background@WORLD_TOOLTIP:
-	Logic:WorldTooltipLogic
-	Background:panel-black
+	Logic: WorldTooltipLogic
+	Background: panel-black
 	Children:
 		Container@SINGLE_HEIGHT:
-			Height:25
+			Height: 25
 		Container@DOUBLE_HEIGHT:
-			Height:45
+			Height: 45
 		Label@LABEL:
-			X:5
-			Height:23
-			Font:Bold
+			X: 5
+			Height: 23
+			Font: Bold
 		Image@FLAG:
-			X:5
-			Y:24
-			Width:32
-			Height:16
+			X: 5
+			Y: 24
+			Width: 32
+			Height: 16
 		Label@OWNER:
-			X:42
-			Y:19
-			Height:23
-			Font:Bold
+			X: 42
+			Y: 19
+			Height: 23
+			Font: Bold
 
 Background@PRODUCTION_TOOLTIP:
-	Logic:ProductionTooltipLogic
-	Background:panel-black
-	Width:200
-	Height:65
+	Logic: ProductionTooltipLogic
+	Background: panel-black
+	Width: 200
+	Height: 65
 	Children:
 		Label@NAME:
-			X:5
-			Height:23
-			Font:Bold
+			X: 5
+			Height: 23
+			Font: Bold
 		Label@REQUIRES:
-			X:5
-			Y:19
-			Height:23
-			Font:TinyBold
-			Text:@requires@
+			X: 5
+			Y: 19
+			Height: 23
+			Font: TinyBold
+			Text: @requires@
 		Label@DESC:
-			X:5
-			Y:39
-			Height:23
-			Font:TinyBold
-			VAlign:Top
+			X: 5
+			Y: 39
+			Height: 23
+			Font: TinyBold
+			VAlign: Top
 		Label@COST:
-			Height:23
-			Font:Bold
+			Height: 23
+			Font: Bold
 		Label@TIME:
-			Y:19
-			Height:23
-			Font:Bold
+			Y: 19
+			Height: 23
+			Font: Bold
 		Label@POWER:
-			Y:39
-			Height:23
-			Font:Bold
+			Y: 39
+			Height: 23
+			Font: Bold
 		Label@TIME:
-			Y:39
-			Height:23
-			Font:Bold
+			Y: 39
+			Height: 23
+			Font: Bold
 
 Background@SUPPORT_POWER_TOOLTIP:
-	Logic:SupportPowerTooltipLogic
-	Background:panel-black
-	Width:200
-	Height:25
+	Logic: SupportPowerTooltipLogic
+	Background: panel-black
+	Width: 200
+	Height: 25
 	Children:
 		Label@NAME:
-			X:5
-			Height:20
-			Font:Bold
+			X: 5
+			Height: 20
+			Font: Bold
 		Label@TIME:
-			X:20
-			Y:6
-			Font:TinyBold
-			VAlign:Top
+			X: 20
+			Y: 6
+			Font: TinyBold
+			VAlign: Top
 		Label@DESC:
-			X:5
-			Y:20
-			Font:TinyBold
-			VAlign:Top
+			X: 5
+			Y: 20
+			Font: TinyBold
+			VAlign: Top
 
 Background@SPAWN_TOOLTIP:
-	Logic:SpawnSelectorTooltipLogic
-	Background:panel-black
-	Width:5
+	Logic: SpawnSelectorTooltipLogic
+	Background: panel-black
+	Width: 5
 	Children:
 		Container@SINGLE_HEIGHT:
-			Height:26
+			Height: 26
 		Container@DOUBLE_HEIGHT:
-			Height:40
+			Height: 40
 		Label@LABEL:
-			X:5
-			Height:23
-			Font:Bold
+			X: 5
+			Height: 23
+			Font: Bold
 		Image@FLAG:
-			X:5
-			Y:5
-			Width:32
-			Height:16
+			X: 5
+			Y: 5
+			Width: 32
+			Height: 16
 		Label@TEAM:
-			Y:21
-			Height:15
-			Font:TinyBold
-			Align:center
+			Y: 21
+			Height: 15
+			Font: TinyBold
+			Align: center
 
 Background@CLIENT_TOOLTIP:
-	Logic:ClientTooltipLogic
-	Background:panel-black
-	Height:47
-	Width:5
+	Logic: ClientTooltipLogic
+	Background: panel-black
+	Height: 47
+	Width: 5
 	Children:
 		Label@ADMIN:
-			Y:2
-			Height:18
-			Font:Bold
-			Text:Game Admin
-			Align:Center
+			Y: 2
+			Height: 18
+			Font: Bold
+			Text: Game Admin
+			Align: Center
 		Label@IP:
-			Y:5
-			Width:5
-			Height:10
-			Font:TinyBold
-			Align:Center
+			Y: 5
+			Width: 5
+			Height: 10
+			Font: TinyBold
+			Align: Center
 		Label@LOCATION:
-			Y:17
-			Height:10
-			Font:TinyBold
-			Align:Center
+			Y: 17
+			Height: 10
+			Font: TinyBold
+			Align: Center
 		Label@LATENCY_PREFIX:
-			X:10
-			Y:29
-			Height:10
-			Font:TinyBold
-			Text:Latency:
+			X: 10
+			Y: 29
+			Height: 10
+			Font: TinyBold
+			Text: Latency:
 		Label@LATENCY:
-			Y:29
-			Height:10
-			Font:TinyBold
+			Y: 29
+			Height: 10
+			Font: TinyBold
+
