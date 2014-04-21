@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA
 
 		}
 
-		static IEnumerable<CPos> RandomWalk(CPos p, Thirdparty.Random r)
+		static IEnumerable<CPos> RandomWalk(CPos p, Support.Random r)
 		{
 			for (; ; )
 			{

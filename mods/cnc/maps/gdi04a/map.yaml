@@ -1,4 +1,4 @@
-Selectable: True
+Selectable: False
 
 MapFormat: 6
 
@@ -6,7 +6,7 @@ RequiresMod: cnc
 
 Title: Get the Rods back (a)
 
-Description: Nod has captured classified GDI property. You must find and retrieve the stolen equipment. It is being transported in a shipping crate. Use the new APC to strategically transport infantry through Nod forces.
+Description: Nod has captured classified GDI property.\n\nYou must find and retrieve the stolen equipment.\n\nIt is being transported in a shipping crate.\n\nUse the new APC to strategically transport infantry through Nod forces.
 
 Author: Westwood Studios
 

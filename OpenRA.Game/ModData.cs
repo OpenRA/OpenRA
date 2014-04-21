@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
@@ -41,9 +41,9 @@ namespace OpenRA
 			MapCache = new MapCache(Manifest);
 
 			// HACK: Mount only local folders so we have a half-working environment for the asset installer
-			FileSystem.UnmountAll();
+			GlobalFileSystem.UnmountAll();
 			foreach (var dir in Manifest.Folders)
-				FileSystem.Mount(dir);
+				GlobalFileSystem.Mount(dir);
 		}
 
 		public void InitializeLoaders()
@@ -113,10 +113,10 @@ namespace OpenRA
 
 			// Reinit all our assets
 			InitializeLoaders();
-			FileSystem.LoadFromManifest(Manifest);
+			GlobalFileSystem.LoadFromManifest(Manifest);
 
 			// Mount map package so custom assets can be used. TODO: check priority.
-			FileSystem.Mount(FileSystem.OpenPackage(map.Path, null, int.MaxValue));
+			GlobalFileSystem.Mount(GlobalFileSystem.OpenPackage(map.Path, null, int.MaxValue));
 
 			Rules.LoadRules(Manifest, map);
 			SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset].Extensions, SheetBuilder);

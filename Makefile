@@ -37,7 +37,7 @@
 CSC         = dmcs
 CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
-COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll
+COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll thirdparty/MaxMind.Db.dll thirdparty/MaxMind.GeoIP2.dll
 
 
 
@@ -57,6 +57,7 @@ DATA_INSTALL_DIR = $(DESTDIR)$(libexecdir)/openra
 RM = rm
 RM_R = $(RM) -r
 RM_F = $(RM) -f
+RM_RF = $(RM) -rf
 CP = cp
 CP_R = $(CP) -r
 INSTALL = install
@@ -65,7 +66,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = fileformats rcg rgl rsdl rsdl2 rnull game utility geoip irc
+CORE = rcg rgl rsdl rsdl2 rnull game utility irc
 TOOLS = editor tsbuild ralint
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
@@ -75,24 +76,10 @@ VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev
 ######################## PROGRAM TARGET RULES ##########################
 #
 # Core binaries
-fileformats_SRCS := $(shell find OpenRA.FileFormats/ -iname '*.cs')
-fileformats_TARGET = OpenRA.FileFormats.dll
-fileformats_KIND = library
-fileformats_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll
-PROGRAMS = fileformats
-fileformats: $(fileformats_TARGET)
-
-geoip_SRCS := $(shell find GeoIP/ -iname '*.cs')
-geoip_TARGET = GeoIP.dll
-geoip_KIND = library
-geoip_LIBS = $(COMMON_LIBS)
-PROGRAMS += geoip
-geoip: $(geoip_TARGET)
 
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
 game_KIND = winexe
-game_DEPS = $(fileformats_TARGET)
 game_LIBS = $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) thirdparty/Tao/Tao.OpenAl.dll thirdparty/SharpFont.dll
 game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS += game
@@ -101,7 +88,7 @@ game: $(game_TARGET)
 irc_SRCS := $(shell find OpenRA.Irc/ -iname '*.cs')
 irc_TARGET = OpenRA.Irc.dll
 irc_KIND = library
-irc_DEPS = $(fileformats_TARGET) $(game_TARGET)
+irc_DEPS = $(game_TARGET)
 irc_LIBS = $(COMMON_LIBS) $(irc_DEPS)
 PROGRAMS += irc
 irc: $(irc_TARGET)
@@ -110,31 +97,31 @@ irc: $(irc_TARGET)
 rsdl_SRCS := $(shell find OpenRA.Renderer.SdlCommon/ -iname '*.cs')
 rsdl_TARGET = OpenRA.Renderer.SdlCommon.dll
 rsdl_KIND = library
-rsdl_DEPS = $(fileformats_TARGET) $(game_TARGET)
+rsdl_DEPS = $(game_TARGET)
 rsdl_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll $(rsdl_DEPS)
 
 rcg_SRCS := $(shell find OpenRA.Renderer.Cg/ -iname '*.cs')
 rcg_TARGET = OpenRA.Renderer.Cg.dll
 rcg_KIND = library
-rcg_DEPS = $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
+rcg_DEPS = $(game_TARGET) $(rsdl_TARGET)
 rcg_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll $(rcg_DEPS)
 
 rgl_SRCS := $(shell find OpenRA.Renderer.Gl/ -iname '*.cs')
 rgl_TARGET = OpenRA.Renderer.Gl.dll
 rgl_KIND = library
-rgl_DEPS = $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
+rgl_DEPS = $(game_TARGET) $(rsdl_TARGET)
 rgl_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll $(rgl_DEPS)
 
 rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
 rsdl2_TARGET = OpenRA.Renderer.Sdl2.dll
 rsdl2_KIND = library
-rsdl2_DEPS = $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET) $(rgl_TARGET)
+rsdl2_DEPS = $(game_TARGET) $(rsdl_TARGET) $(rgl_TARGET)
 rsdl2_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/SDL2-CS.dll $(rsdl2_DEPS)
 
 rnull_SRCS := $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
 rnull_TARGET = OpenRA.Renderer.Null.dll
 rnull_KIND = library
-rnull_DEPS = $(fileformats_TARGET) $(game_TARGET)
+rnull_DEPS = $(game_TARGET)
 rnull_LIBS = $(COMMON_LIBS) $(rnull_DEPS)
 PROGRAMS += rcg rgl rsdl2 rnull rsdl
 renderers: $(rcg_TARGET) $(rgl_TARGET) $(rsdl2_TARGET) $(rnull_TARGET) $(rsdl_TARGET)
@@ -142,15 +129,15 @@ renderers: $(rcg_TARGET) $(rgl_TARGET) $(rsdl2_TARGET) $(rnull_TARGET) $(rsdl_TA
 
 ##### Official Mods #####
 
-STD_MOD_LIBS	= $(fileformats_TARGET) $(game_TARGET) thirdparty/KopiLua.dll thirdparty/NLua.dll
+STD_MOD_LIBS	= $(game_TARGET) thirdparty/KopiLua.dll thirdparty/NLua.dll
 STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 
 # Red Alert
 mod_ra_SRCS := $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET = mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND = library
-mod_ra_DEPS = $(STD_MOD_DEPS) $(geoip_TARGET) $(irc_TARGET)
-mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(geoip_TARGET) $(irc_TARGET)
+mod_ra_DEPS = $(STD_MOD_DEPS) $(irc_TARGET)
+mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(irc_TARGET)
 PROGRAMS += mod_ra
 mod_ra: $(mod_ra_TARGET)
 
@@ -187,8 +174,8 @@ mod_ts: $(mod_ts_TARGET)
 editor_SRCS := $(shell find OpenRA.Editor/ -iname '*.cs')
 editor_TARGET = OpenRA.Editor.exe
 editor_KIND = winexe
-editor_DEPS = $(fileformats_TARGET) $(game_TARGET)
-editor_LIBS = $(COMMON_LIBS) System.Windows.Forms.dll System.Data.dll $(editor_DEPS)
+editor_DEPS = $(game_TARGET)
+editor_LIBS = System.Windows.Forms.dll System.Data.dll System.Drawing.dll $(editor_DEPS)
 editor_EXTRA = -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
 editor_FLAGS = -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
 
@@ -203,7 +190,7 @@ editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor
 ralint_SRCS := $(shell find OpenRA.Lint/ -iname '*.cs')
 ralint_TARGET = OpenRA.Lint.exe
 ralint_KIND = exe
-ralint_DEPS = $(fileformats_TARGET) $(game_TARGET)
+ralint_DEPS = $(game_TARGET)
 ralint_LIBS = $(COMMON_LIBS) $(ralint_DEPS)
 PROGRAMS += ralint
 ralint: $(ralint_TARGET)
@@ -222,7 +209,7 @@ test:
 tsbuild_SRCS := $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
 tsbuild_TARGET = OpenRA.TilesetBuilder.exe
 tsbuild_KIND = winexe
-tsbuild_DEPS = $(fileformats_TARGET) $(game_TARGET)
+tsbuild_DEPS = $(game_TARGET)
 tsbuild_LIBS = $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
 tsbuild_EXTRA = -resource:OpenRA.TilesetBuilder.FormBuilder.resources -resource:OpenRA.TilesetBuilder.FormNew.resources -resource:OpenRA.TilesetBuilder.Surface.resources
 PROGRAMS += tsbuild
@@ -241,7 +228,7 @@ tsbuild: OpenRA.TilesetBuilder.FormBuilder.resources OpenRA.TilesetBuilder.FormN
 utility_SRCS := $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET = OpenRA.Utility.exe
 utility_KIND = exe
-utility_DEPS = $(fileformats_TARGET) $(game_TARGET)
+utility_DEPS = $(game_TARGET)
 utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
 PROGRAMS += utility
 utility: $(utility_TARGET)
@@ -287,8 +274,8 @@ mods: mod_ra mod_cnc mod_d2k mod_ts
 all: dependencies core tools
 
 clean:
-	@-$(RM_F) *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
-	@-$(RM_R) ./*/obj ./*/bin
+	@-$(RM_F) *.exe *.dll ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+	@-$(RM_RF) ./*/bin ./*/obj
 
 distclean: clean
 
@@ -325,16 +312,15 @@ install-core: default
 	@$(CP_R) mods/modchooser "$(DATA_INSTALL_DIR)/mods/"
 
 	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
-	@$(INSTALL_DATA) "GeoIP.dat" "$(DATA_INSTALL_DIR)/GeoIP.dat"
+	@$(INSTALL_DATA) "GeoLite2-Country.mmdb" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
-	@$(INSTALL_DATA) CHANGELOG "$(DATA_INSTALL_DIR)/CHANGELOG"
 	@$(INSTALL_DATA) COPYING "$(DATA_INSTALL_DIR)/COPYING"
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) cg "$(DATA_INSTALL_DIR)"
 	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/Tao/* "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/SDL2\#* "$(DATA_INSTALL_DIR)"
+	@$(CP) thirdparty/SDL2-CS* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll "$(DATA_INSTALL_DIR)"
@@ -342,6 +328,10 @@ install-core: default
 	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/KopiLua.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/NLua.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/RestSharp.dll "$(DATA_INSTALL_DIR)"
 
 	@echo "#!/bin/sh" > openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra

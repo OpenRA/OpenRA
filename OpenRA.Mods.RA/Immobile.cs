@@ -9,7 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.FileFormats;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

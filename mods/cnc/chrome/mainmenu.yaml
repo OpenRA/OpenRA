@@ -110,6 +110,38 @@ Container@MENU_BACKGROUND:
 							Width:140
 							Height:35
 							Text:Quit
+				Container@SINGLEPLAYER_MENU:
+					Width:PARENT_RIGHT
+					Visible:False
+					Children:
+						Label@SINGLEPLAYER_MENU_TITLE:
+							X:0
+							Y:0-30
+							Width:PARENT_RIGHT
+							Height:20
+							Text:Singleplayer
+							Align:Center
+							Font:Bold
+							Contrast:True
+						Button@SKIRMISH_BUTTON:
+							X:150
+							Y:0
+							Width:140
+							Height:35
+							Text:Skirmish
+						Button@MISSIONS_BUTTON:
+							X:300
+							Y:0
+							Width:140
+							Height:35
+							Text:Missions
+						Button@BACK_BUTTON:
+							Key:escape
+							X:600
+							Y:0
+							Width:140
+							Height:35
+							Text:Back
 				Container@EXTRAS_MENU:
 					Width:PARENT_RIGHT
 					Visible:False

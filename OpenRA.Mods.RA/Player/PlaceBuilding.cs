@@ -10,13 +10,13 @@
 
 using System.Linq;
 using OpenRA.Effects;
-using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class PlaceBuildingInfo : TraitInfo<PlaceBuilding> {}
+	class PlaceBuildingInfo : TraitInfo<PlaceBuilding> { }
 
 	class PlaceBuilding : IResolveOrder
 	{
@@ -50,8 +50,8 @@ namespace OpenRA.Mods.RA
 						{
 							var building = w.CreateActor(order.TargetString, new TypeDictionary
 							{
-								new LocationInit( t ),
-								new OwnerInit( order.Player ),
+								new LocationInit(t),
+								new OwnerInit(order.Player),
 							});
 
 							if (playSounds)
@@ -70,14 +70,14 @@ namespace OpenRA.Mods.RA
 
 						var building = w.CreateActor(order.TargetString, new TypeDictionary
 						{
-							new LocationInit( order.TargetLocation ),
-							new OwnerInit( order.Player ),
+							new LocationInit(order.TargetLocation),
+							new OwnerInit(order.Player),
 						});
 						foreach (var s in buildingInfo.BuildSounds)
 							Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
 					}
 
-					PlayBuildAnim( self, unit );
+					PlayBuildAnim(self, unit);
 
 					queue.FinishProduction();
 
@@ -98,21 +98,24 @@ namespace OpenRA.Mods.RA
 		}
 
 		// finds a construction yard (or equivalent) and runs its "build" animation.
-		static void PlayBuildAnim( Actor self, ActorInfo unit )
+		static void PlayBuildAnim(Actor self, ActorInfo unit)
 		{
 			var bi = unit.Traits.GetOrDefault<BuildableInfo>();
 			if (bi == null)
 				return;
 
 			var producers = self.World.ActorsWithTrait<Production>()
-				.Where( x => x.Actor.Owner == self.Owner
-					&& x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( bi.Queue ) )
+				.Where(x => x.Actor.Owner == self.Owner
+					&& x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains(bi.Queue))
 					.ToList();
-			var producer = producers.Where( x => x.Actor.IsPrimaryBuilding() ).Concat( producers )
+			var producer = producers.Where(x => x.Actor.IsPrimaryBuilding()).Concat(producers)
 				.FirstOrDefault();
 
-			if( producer.Actor != null )
-				producer.Actor.Trait<RenderSimple>().PlayCustomAnim( producer.Actor, "build" );
+			if (producer.Actor == null)
+				return;
+
+			foreach (var nbp in producer.Actor.TraitsImplementing<INotifyBuildingPlaced>())
+				nbp.BuildingPlaced(producer.Actor);
 		}
 
 		static int GetNumBuildables(Player p)

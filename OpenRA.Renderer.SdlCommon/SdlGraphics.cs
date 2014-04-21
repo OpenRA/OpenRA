@@ -12,7 +12,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-using OpenRA.FileFormats.Graphics;
+using OpenRA.Graphics;
 using Tao.OpenGl;
 using Tao.Sdl;
 

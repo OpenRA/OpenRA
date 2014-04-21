@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NLua;
 using OpenRA.Effects;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Network;
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 			var sharedScripts = Game.modData.Manifest.LuaScripts ?? new string[0];
 			if (sharedScripts.Any())
-				context.LoadLuaScripts(f => FileSystem.Open(f).ReadAllText(), sharedScripts);
+				context.LoadLuaScripts(f => GlobalFileSystem.Open(f).ReadAllText(), sharedScripts);
 
 			AddMapActorGlobals();
 

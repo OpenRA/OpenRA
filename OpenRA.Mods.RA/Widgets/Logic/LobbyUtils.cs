@@ -12,8 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats;
+using MaxMind.GeoIP2;
+using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -196,9 +198,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public static string LookupCountry(string ip)
 		{
-			var ip2geo = new GeoIP.LookupService("GeoIP.dat", GeoIP.LookupService.GEOIP_MEMORY_CACHE);
-			var country = ip2geo.getCountry(ip);
-			return country.getName();
+			try
+			{
+				return Game.GeoIpDatabase.Omni(ip).Country.Name;
+			}
+			catch (Exception e)
+			{
+				Log.Write("geoip", "LookupCountry failed: {0}", e);
+				return "Unknown Location";
+			}
 		}
 
 		public static void SetupClientWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, bool visible)

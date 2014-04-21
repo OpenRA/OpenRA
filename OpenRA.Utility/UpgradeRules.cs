@@ -17,9 +17,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using OpenRA.FileFormats;
-using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Utility

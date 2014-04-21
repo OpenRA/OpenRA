@@ -90,6 +90,7 @@ Chrome:
 	mods/ts/chrome.yaml
 
 Assemblies:
+	mods/d2k/OpenRA.Mods.D2k.dll
 	mods/ra/OpenRA.Mods.RA.dll
 	mods/ts/OpenRA.Mods.TS.dll
 
@@ -124,6 +125,7 @@ ChromeLayout:
 	mods/ra/chrome/tooltips.yaml
 	mods/ra/chrome/assetbrowser.yaml
 	mods/ra/chrome/irc.yaml
+	mods/ra/chrome/missionbrowser.yaml
 
 Weapons:
 	mods/ts/weapons.yaml

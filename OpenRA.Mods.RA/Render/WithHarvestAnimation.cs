@@ -42,7 +42,8 @@ namespace OpenRA.Mods.RA.Render
 			rs.anims.Add("harvest_{0}".F(info.Sequence), new AnimationWithOffset(anim,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => !visible,
-			    p => WithTurret.ZOffsetFromCenter(self, p, 0)));
+				() => false,
+				p => WithTurret.ZOffsetFromCenter(self, p, 0)));
 		}
 
 		public void Harvested(Actor self, ResourceType resource)

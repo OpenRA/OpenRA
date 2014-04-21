@@ -11,7 +11,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Mods.RA.Widgets.Logic;
 using OpenRA.Widgets;
 
@@ -30,8 +30,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					try
 					{
 						var path = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
-						FileSystem.Mount(Path.Combine(path, "scores.mix"));
-						FileSystem.Mount(Path.Combine(path, "transit.mix"));
+						GlobalFileSystem.Mount(Path.Combine(path, "scores.mix"));
+						GlobalFileSystem.Mount(Path.Combine(path, "transit.mix"));
 
 						Rules.Music.Do(m => m.Value.Reload());
 

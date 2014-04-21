@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -19,15 +19,17 @@ namespace OpenRA.Mods.RA.Effects
 		World world;
 		WPos pos;
 		CPos cell;
+		string palette;
 		Animation anim;
 
-		public Explosion(World world, WPos pos, string style)
+		public Explosion(World world, WPos pos, string sequence, string palette)
 		{
 			this.world = world;
 			this.pos = pos;
 			this.cell = pos.ToCPos();
+			this.palette = palette;
 			anim = new Animation("explosion");
-			anim.PlayThen(style, () => world.AddFrameEndTask(w => w.Remove(this)));
+			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
 		public void Tick(World world) { anim.Tick(); }
@@ -37,7 +39,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (world.FogObscures(cell))
 				return SpriteRenderable.None;
 
-			return anim.Render(pos, wr.Palette("effect"));
+			return anim.Render(pos, wr.Palette(palette));
 		}
 	}
 }

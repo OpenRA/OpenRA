@@ -21,18 +21,20 @@ make package
 # Remove the mdb files that are created during `make`
 find . -path "*.mdb" -delete
 
+wget https://raw.github.com/wiki/OpenRA/OpenRA/CHANGELOG.md
+markdown CHANGELOG.md > CHANGELOG.html
 markdown README.md > README.html
 markdown CONTRIBUTING.md > CONTRIBUTING.html
 markdown DOCUMENTATION.md > DOCUMENTATION.html
 
 # List of files that are packaged on all platforms
 FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
-'OpenRA.FileFormats.dll' 'OpenRA.Renderer.SdlCommon.dll' 'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Cg.dll' 'OpenRA.Renderer.Gl.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
+'OpenRA.Renderer.SdlCommon.dll' 'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Cg.dll' 'OpenRA.Renderer.Gl.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
 'FreeSans.ttf' 'FreeSansBold.ttf' \
 'cg' 'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \
-'AUTHORS' 'CHANGELOG' 'COPYING' \
-'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' \
-'global mix database.dat' 'GeoIP.dll' 'GeoIP.dat')
+'AUTHORS' 'COPYING' \
+'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' 'CHANGELOG.html' \
+'global mix database.dat' 'GeoLite2-Country.mmdb')
 
 echo "Copying files..."
 for i in "${FILES[@]}"; do
@@ -52,7 +54,7 @@ cp thirdparty/FuzzyLogicLibrary.dll packaging/built
 cp thirdparty/SharpFont* packaging/built
 
 # SDL2-CS
-cp thirdparty/SDL2-CS packaging/built
+cp thirdparty/SDL2-CS* packaging/built
 
 # Mono.NAT for UPnP support
 cp thirdparty/Mono.Nat.dll packaging/built
@@ -60,6 +62,12 @@ cp thirdparty/Mono.Nat.dll packaging/built
 # Lua
 cp thirdparty/KopiLua.dll packaging/built
 cp thirdparty/NLua.dll packaging/built
+
+# GeoIP database access
+cp thirdparty/MaxMind.Db.dll packaging/built
+cp thirdparty/MaxMind.GeoIP2.dll packaging/built
+cp thirdparty/Newtonsoft.Json.dll packaging/built
+cp thirdparty/RestSharp.dll packaging/built
 
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built

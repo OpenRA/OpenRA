@@ -38,8 +38,10 @@ MSLO:
 		SpawnOffset: 0,427,0
 		DisplayTimer: True
 		DisplayBeacon: True
+		BeaconDuration: -1
 		DisplayRadarPing: True
 		BeaconPoster: atomicon
+		CameraActor: camera
 	CanPowerDown:
 	RequiresPower:
 	DisabledOverlay:
@@ -65,6 +67,8 @@ GAP:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+	RenderBuilding:
+		PauseOnLowPower: yes
 	Health:
 		HP: 1000
 	Armor:
@@ -808,10 +812,14 @@ FACT:
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
-	ProductionBar:
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Defense:
+		ProductionType: Defense
 	DeadBuildingState:
 	BaseProvider:
 		Range: 16
+	WithBuildingPlacedAnimation:
 
 PROC:
 	Inherits: ^Building

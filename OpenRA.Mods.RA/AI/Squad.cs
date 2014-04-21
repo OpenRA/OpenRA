@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
-using XRandom = OpenRA.Thirdparty.Random;
+using XRandom = OpenRA.Support.Random;
 
 namespace OpenRA.Mods.RA.AI
 {

@@ -203,9 +203,9 @@ namespace OpenRA.Mods.RA
 				Queue[ 0 ].Tick(playerResources);
 		}
 
-		public void ResolveOrder( Actor self, Order order )
+		public void ResolveOrder(Actor self, Order order)
 		{
-			switch( order.OrderString )
+			switch(order.OrderString)
 			{
 			case "StartProduction":
 				{
@@ -225,45 +225,43 @@ namespace OpenRA.Mods.RA
 					{
 						var inQueue = Queue.Count(pi => pi.Item == order.TargetString);
 						var owned = self.Owner.World.ActorsWithTrait<Buildable>().Count(a => a.Actor.Info.Name == order.TargetString && a.Actor.Owner == self.Owner);
-						if (inQueue + owned >= bi.BuildLimit)						
-							return;						
+						if (inQueue + owned >= bi.BuildLimit)
+							return;
 					}
 
-					for (var n = 0; n < order.TargetLocation.X; n++)	// repeat count
+					for (var n = 0; n < order.TargetLocation.X; n++) // repeat count
 					{
 						bool hasPlayedSound = false;
 						BeginProduction(new ProductionItem(this, order.TargetString, cost, PlayerPower,
-								() => self.World.AddFrameEndTask(
-									_ =>
+								() => self.World.AddFrameEndTask(_ =>
+								{
+									var isBuilding = unit.Traits.Contains<BuildingInfo>();
+									if (isBuilding && !hasPlayedSound)
 									{
-										var isBuilding = unit.Traits.Contains<BuildingInfo>();
-
-										if (isBuilding && !hasPlayedSound)
+										hasPlayedSound = Sound.PlayNotification(self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
+									}
+									else if (!isBuilding)
+									{
+										if (BuildUnit(order.TargetString))
+											Sound.PlayNotification(self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
+										else if (!hasPlayedSound && time > 0)
 										{
-											hasPlayedSound = Sound.PlayNotification(self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
+											hasPlayedSound = Sound.PlayNotification(self.Owner, "Speech", Info.BlockedAudio, self.Owner.Country.Race);
 										}
-										else if (!isBuilding)
-										{
-											if (BuildUnit(order.TargetString))
-												Sound.PlayNotification(self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
-											else if (!hasPlayedSound && time > 0)
-											{
-												hasPlayedSound = Sound.PlayNotification(self.Owner, "Speech", Info.BlockedAudio, self.Owner.Country.Race);
-											}
-										}
-									})));
+									}
+								})));
 					}
 					break;
 				}
 			case "PauseProduction":
 				{
-					if( Queue.Count > 0 && Queue[0].Item == order.TargetString )
+					if (Queue.Count > 0 && Queue[0].Item == order.TargetString)
 						Queue[0].Paused = ( order.TargetLocation.X != 0 );
 					break;
 				}
 			case "CancelProduction":
 				{
-					CancelProduction(order.TargetString,order.TargetLocation.X);
+					CancelProduction(order.TargetString, order.TargetLocation.X);
 					break;
 				}
 			}
@@ -309,14 +307,14 @@ namespace OpenRA.Mods.RA
 			Queue.RemoveAt(0);
 		}
 
-		protected void BeginProduction( ProductionItem item )
+		protected void BeginProduction(ProductionItem item)
 		{
 			Queue.Add(item);
 		}
 
 		// Builds a unit from the actor that holds this queue (1 queue per building)
 		// Returns false if the unit can't be built
-		protected virtual bool BuildUnit( string name )
+		protected virtual bool BuildUnit(string name)
 		{
 			// Cannot produce if i'm dead
 			if (!self.IsInWorld || self.IsDead())
@@ -326,7 +324,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			if (sp != null && !self.IsDisabled() && sp.Produce(self, Rules.Info[ name ]))
+			if (sp != null && !self.IsDisabled() && sp.Produce(self, Rules.Info[name]))
 			{
 				FinishProduction();
 				return true;

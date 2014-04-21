@@ -18,17 +18,19 @@ namespace OpenRA.Graphics
 		public readonly Animation Animation;
 		public readonly Func<WVec> OffsetFunc;
 		public readonly Func<bool> DisableFunc;
+		public readonly Func<bool> Paused;
 		public readonly Func<WPos, int> ZOffset;
 
 		public AnimationWithOffset(Animation a, Func<WVec> offset, Func<bool> disable)
-			: this(a, offset, disable, null) { }
+			: this(a, offset, disable, () => false, null) { }
 
 		public AnimationWithOffset(Animation a, Func<WVec> offset, Func<bool> disable, int zOffset)
-			: this(a, offset, disable, _ => zOffset) { }
+			: this(a, offset, disable, () => false, _ => zOffset) { }
 
-		public AnimationWithOffset(Animation a, Func<WVec> offset, Func<bool> disable, Func<WPos, int> zOffset)
+		public AnimationWithOffset(Animation a, Func<WVec> offset, Func<bool> disable, Func<bool> pause, Func<WPos, int> zOffset)
 		{
 			this.Animation = a;
+			this.Animation.Paused = pause;
 			this.OffsetFunc = offset;
 			this.DisableFunc = disable;
 			this.ZOffset = zOffset;
@@ -45,7 +47,7 @@ namespace OpenRA.Graphics
 
 		public static implicit operator AnimationWithOffset(Animation a)
 		{
-			return new AnimationWithOffset(a, null, null, null);
+			return new AnimationWithOffset(a, null, null, null, null);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 FACT:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
@@ -41,13 +41,17 @@ FACT:
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 	BaseBuilding:
-	ProductionBar:
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Defense:
+		ProductionType: Defense
 	BaseProvider:
 		Cooldown: 75
 		Range: 14
+	WithBuildingPlacedAnimation:
 
 NUKE:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -70,7 +74,7 @@ NUKE:
 	Bib:
 
 NUK2:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -93,7 +97,7 @@ NUK2:
 	Bib:
 
 PROC:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -131,7 +135,7 @@ PROC:
 	WithResources:
 
 SILO:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -164,7 +168,7 @@ SILO:
 	-EmitInfantryOnSell:
 
 PYLE:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -202,7 +206,7 @@ PYLE:
 	ProductionBar:
 
 HAND:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -237,7 +241,7 @@ HAND:
 	ProductionBar:
 
 AFLD:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -274,7 +278,7 @@ AFLD:
 	ProductionBar:
 
 WEAP:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -312,7 +316,7 @@ WEAP:
 	ProductionBar:
 
 HPAD:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -345,7 +349,7 @@ HPAD:
 	ProductionBar:
 
 HQ:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -364,6 +368,8 @@ HQ:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+	RenderBuilding:
+		PauseOnLowPower: yes
 	Health:
 		HP: 750
 	RevealsShroud:
@@ -386,13 +392,14 @@ HQ:
 		IncomingSound: enemya.aud
 		UnitType: a10
 		DisplayBeacon: True
+		BeaconDuration: -1
 		BeaconPoster: airstrike
 		DisplayRadarPing: True
 		CameraActor: camera
 	SupportPowerChargeBar:
 
 FIX:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -417,7 +424,7 @@ FIX:
 	RallyPoint:
 
 EYE:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -436,6 +443,8 @@ EYE:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+	RenderBuilding:
+		PauseOnLowPower: yes
 	Health:
 		HP: 1200
 	RevealsShroud:
@@ -456,10 +465,11 @@ EYE:
 		SelectTargetSound: select1.aud
 		InsufficientPowerSound: nopower1.aud
 		DisplayRadarPing: True
+		CameraActor: camera.small
 	SupportPowerChargeBar:
 
 TMPL:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -496,12 +506,14 @@ TMPL:
 		IncomingSound: nuke1.aud
 		MissileWeapon: atomic
 		DisplayBeacon: True
+		BeaconDuration: -1
 		BeaconPoster: atomic
 		DisplayRadarPing: True
+		CameraActor: camera
 	SupportPowerChargeBar:
 
 GUN:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 600
 	CustomBuildTimeValue:
@@ -542,7 +554,7 @@ GUN:
 		Range: 5
 
 SAM:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 750
 	CustomBuildTimeValue:
@@ -582,7 +594,7 @@ SAM:
 	RenderRangeCircle:
 
 OBLI:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1500
 	CustomBuildTimeValue:
@@ -628,7 +640,7 @@ OBLI:
 		Range: 6
 
 GTWR:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 500
 	CustomBuildTimeValue:
@@ -667,7 +679,7 @@ GTWR:
 		ROT: 255
 
 ATWR:
-	Inherits: ^Building
+	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1000
 	CustomBuildTimeValue:

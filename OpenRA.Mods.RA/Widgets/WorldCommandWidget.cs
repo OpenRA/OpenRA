@@ -11,9 +11,9 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Orders;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets
@@ -65,8 +65,11 @@ namespace OpenRA.Mods.RA.Widgets
 				if (key == ks.ToggleStatusBarsKey)
 					return ToggleStatusBars();
 
+				if (key == ks.TogglePixelDoubleKey)
+					return TogglePixelDouble();
+
 				// Put all functions that aren't unit-specific before this line!
-				if (!world.Selection.Actors.Any()) 
+				if (!world.Selection.Actors.Any())
 					return false;
 
 				if (key == ks.AttackMoveKey)
@@ -251,6 +254,13 @@ namespace OpenRA.Mods.RA.Widgets
 		bool ToggleStatusBars()
 		{
 			Game.Settings.Game.AlwaysShowStatusBars ^= true;
+			return true;
+		}
+
+		bool TogglePixelDouble()
+		{
+			Game.Settings.Graphics.PixelDouble ^= true;
+			worldRenderer.Viewport.Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 			return true;
 		}
 	}

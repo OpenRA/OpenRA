@@ -11,7 +11,6 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
 {

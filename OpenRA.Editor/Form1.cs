@@ -14,7 +14,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -25,7 +25,7 @@ namespace OpenRA.Editor
 		public Form1(string[] args)
 		{
 			InitializeComponent();
-			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
+			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
 			currentMod = args.FirstOrDefault() ?? "ra";
 
@@ -47,7 +47,7 @@ namespace OpenRA.Editor
 				currentMod = toolStripComboBox1.SelectedItem as string;
 
 				Game.modData = new ModData(currentMod);
-				FileSystem.LoadFromManifest(Game.modData.Manifest);
+				GlobalFileSystem.LoadFromManifest(Game.modData.Manifest);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 
 				var mod = Game.modData.Manifest.Mod;
@@ -147,11 +147,11 @@ namespace OpenRA.Editor
 			tileset = Rules.TileSets[map.Tileset];
 			tilesetRenderer = new TileSetRenderer(tileset, manifest.TileSize);
 			var shadowIndex = new int[] { 3, 4 };
-			var palette = new Palette(FileSystem.Open(tileset.Palette), shadowIndex);
+			var palette = new Palette(GlobalFileSystem.Open(tileset.Palette), shadowIndex);
 
 			// required for desert terrain in RA
 			var playerPalette = tileset.PlayerPalette ?? tileset.Palette;
-			var shadowedPalette = new Palette(FileSystem.Open(playerPalette), shadowIndex);
+			var shadowedPalette = new Palette(GlobalFileSystem.Open(playerPalette), shadowIndex);
 
 			surface1.Bind(map, tileset, tilesetRenderer, palette, shadowedPalette);
 

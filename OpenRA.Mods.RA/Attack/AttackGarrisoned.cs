@@ -164,6 +164,7 @@ namespace OpenRA.Mods.RA
 					var muzzleFlash = new AnimationWithOffset(muzzleAnim,
 						() => PortOffset(self, port),
 						() => false,
+						() => false,
 						p => WithTurret.ZOffsetFromCenter(self, p, 1024));
 
 					muzzles.Add(muzzleFlash);

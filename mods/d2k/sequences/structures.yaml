@@ -183,14 +183,16 @@ conyarda:
 	damaged-idle: DATA
 		Start: 2560
 		Offset: -48,64
-#	build: DATA # TODO: overlay
-#		Start: 4436
-#		Length: 14
-#		Offset: -48,64
-#	damaged-build: DATA  # TODO: overlay
-#		Start: 4436
-#		Length: 14
-#		Offset: -48,64
+	crane-overlay: DATA
+		Start: 4436
+		Length: 14
+		Offset: -48,64
+		Tick: 80
+	damaged-crane-overlay: DATA
+		Start: 4436
+		Length: 14
+		Offset: -48,64
+		Tick: 80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -512,7 +514,7 @@ hightecha:
 	damaged-idle: DATA
 		Start: 2565
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4614
 		Length: 30
 		Offset: -48,80
@@ -688,7 +690,7 @@ lighta:
 	damaged-idle-top: DATA
 		Start: 2675
 		Offset: -48,64
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4644
 		Length: 30
 		Offset: -48,64
@@ -737,7 +739,7 @@ heavya:
 	damaged-idle-top: DATA
 		Start: 2520
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4674
 		Length: 47
 		Offset: -48,80
@@ -771,14 +773,16 @@ conyardh:
 	damaged-idle: DATA
 		Start: 2720
 		Offset: -48,64
-#	build: DATA  # TODO: overlay
-#		Start: 4450
-#		Length: 14
-#		Offset: -48,64
-#	damaged-build: DATA  # TODO: overlay
-#		Start: 4450
-#		Length: 14
-#		Offset: -48,64
+	crane-overlay: DATA
+		Start: 4450
+		Length: 14
+		Offset: -48,64
+		Tick: 80
+	damaged-crane-overlay: DATA
+		Start: 4450
+		Length: 14
+		Offset: -48,64
+		Tick: 80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1001,7 +1005,7 @@ hightechh:
 	damaged-idle: DATA
 		Start: 2725
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4614
 		Length: 30
 		Offset: -48,80
@@ -1086,7 +1090,7 @@ lighth:
 	damaged-idle-top: DATA
 		Start: 2835
 		Offset: -48,64
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4644
 		Length: 30
 		Offset: -48,64
@@ -1135,7 +1139,7 @@ heavyh:
 	damaged-idle-top: DATA
 		Start: 2680
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4674
 		Length: 47
 		Offset: -48,80
@@ -1169,14 +1173,16 @@ conyardo:
 	damaged-idle: DATA
 		Start: 2880
 		Offset: -48,64
-#	build: DATA # TODO: overlay
-#		Start: 4464
-#		Length: 14
-#		Offset: -48,64
-#	damaged-build: DATA # TODO: overlay
-#		Start: 4464
-#		Length: 14
-#		Offset: -48,64
+	crane-overlay: DATA
+		Start: 4464
+		Length: 14
+		Offset: -48,64
+		Tick: 80
+	damaged-crane-overlay: DATA
+		Start: 4464
+		Length: 14
+		Offset: -48,64
+		Tick: 80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1400,7 +1406,7 @@ hightecho:
 	damaged-idle: DATA
 		Start: 2885
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4614
 		Length: 30
 		Offset: -48,80
@@ -1477,7 +1483,7 @@ lighto:
 	damaged-idle-top: DATA
 		Start: 2995
 		Offset: -48,64
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4644
 		Length: 30
 		Offset: -48,64
@@ -1526,7 +1532,7 @@ heavyo:
 	damaged-idle-top: DATA
 		Start: 2840
 		Offset: -48,80
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4674
 		Length: 47
 		Offset: -48,80
@@ -1641,7 +1647,7 @@ heavyc: # TODO: unused
 	damaged-idle-top: DATA
 		Start: 3003
 		Offset: -48,64
-	idle-welding: DATA
+	production-welding: DATA
 		Start: 4674
 		Length: 47
 		Offset: -48,80
@@ -1675,14 +1681,16 @@ conyardc: # TODO: unused
 	damaged-idle: DATA
 		Start: 3007
 		Offset: -48,64
-#	build: DATA  # TODO: overlay
-#		Start: 4478
-#		Length: 14
-#		Offset: -48,64
-#	damaged-build: DATA  # TODO: overlay
-#		Start: 4478
-#		Length: 14
-#		Offset: -48,64
+	crane-overlay: DATA
+		Start: 4478
+		Length: 14
+		Offset: -48,64
+		Tick: 80
+	damaged-crane-overlay: DATA
+		Start: 4478
+		Length: 14
+		Offset: -48,64
+		Tick: 80
 	bib: BLOXBASE
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6

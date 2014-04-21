@@ -10,8 +10,6 @@
 
 using System;
 using System.Linq;
-using OpenRA.FileFormats;
-using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
 {

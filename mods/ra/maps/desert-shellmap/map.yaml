@@ -1307,6 +1307,7 @@ Rules:
 			LuaScripts: desert-shellmap.lua
 		LoadWidgetAtGameStart:
 			Widget: MAINMENU
+		-StartGameNotification:
 	TRAN.Husk2:
 		Burns:
 			Damage: 0

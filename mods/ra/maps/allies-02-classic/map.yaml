@@ -1,4 +1,4 @@
-Selectable: True
+Selectable: False
 
 MapFormat: 6
 
@@ -6,7 +6,7 @@ RequiresMod: ra
 
 Title: Allies 02: Five to one
 
-Description: Five to one
+Description: A critical supply convoy is due through this area in 25 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short so work quickly.
 
 Author: Westwood Studios
 

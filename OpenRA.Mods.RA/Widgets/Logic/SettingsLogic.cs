@@ -12,8 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileFormats;
-using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
@@ -273,6 +271,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{ "CycleProductionBuildingsKey", "Cycle production facilities" },
 
 				{ "ToggleStatusBarsKey", "Toggle status bars" },
+				{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
 			};
 
 			var unitHotkeys = new Dictionary<string, string>()

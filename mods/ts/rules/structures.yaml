@@ -3,6 +3,7 @@ GACNST:
 	Building:
 		Power: 0
 		Footprint: xxx xxx xxx
+		BuildSounds: facbld1.aud
 		Dimensions: 3,3
 	Buildable:
 		Queue: Building
@@ -28,7 +29,10 @@ GACNST:
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
-	ProductionBar:
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Defense:
+		ProductionType: Defense
 	-Sellable:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
@@ -36,6 +40,7 @@ GACNST:
 		Sequence: idle-side
 	WithIdleOverlay@FRONT:
 		Sequence: idle-front
+	WithBuildingPlacedOverlay:
 
 GAPOWR:
 	Inherits: ^Building
@@ -79,6 +84,8 @@ GAPILE:
 	Tooltip:
 		Name: GDI Barracks
 		Description: Produces infantry
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -97,8 +104,8 @@ GAPILE:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
+	WithProductionOverlay@LIGHTS:
+		Sequence: production-lights
 	WithIdleOverlay@LIGHT:
 		Sequence: idle-light
 	WithIdleOverlay@FLAG:
@@ -111,6 +118,8 @@ GAWEAP:
 	Tooltip:
 		Name: GDI War Factory
 		Description: Assembly point for\nvehicle reinforcements
+	ProvidesCustomPrerequisite:
+		Prerequisite: factory
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
@@ -133,6 +142,12 @@ GAWEAP:
 	Production:
 		Produces: Vehicle
 	ProductionBar:
+	WithProductionOverlay@WHITELIGHTS:
+		Sequence: production-lights-white
+	WithProductionOverlay@REDLIGHTS:
+		Sequence: production-lights-red
+	WithIdleOverlay@TURBINES:
+		Sequence: idle-turbines
 
 NAPOWR:
 	Inherits: ^Building
@@ -174,6 +189,8 @@ NAHAND:
 	Tooltip:
 		Name: Hand of Nod
 		Description: Produces infantry
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
 	Building:
 		Power: -20
 		Footprint: xxx xxx
@@ -194,8 +211,8 @@ NAHAND:
 	ProductionBar:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
-	WithIdleOverlay@LIGHT:
-		Sequence: idle-light
+	WithProductionOverlay@LIGHT:
+		Sequence: production-light
 
 NAWEAP:
 	Inherits: ^Building
@@ -204,6 +221,8 @@ NAWEAP:
 	Tooltip:
 		Name: Nod War Factory
 		Description: Assembly point for\nvehicle reinforcements
+	ProvidesCustomPrerequisite:
+		Prerequisite: factory
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
@@ -226,6 +245,8 @@ NAWEAP:
 	Production:
 		Produces: Vehicle
 	ProductionBar:
+	WithProductionOverlay@LIGHTS:
+		Sequence: production-lights
 
 GASAND:
 	Inherits: ^Wall
@@ -249,6 +270,52 @@ GASAND:
 		HP: 250
 	Armor:
 		Type: Light
+
+GAWALL:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1001
+		Prerequisites: gacnst
+		Owner: gdi
+		Hotkey: b
+	SoundOnDamageTransition:
+		DamagedSound:
+		DestroyedSound:
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Concrete Wall
+		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
+	Health:
+		HP: 300
+	Armor:
+		Type: Concrete
+
+NAWALL:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1001
+		Prerequisites: gacnst
+		Owner: nod
+		Hotkey: b
+	SoundOnDamageTransition:
+		DamagedSound:
+		DestroyedSound:
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Concrete Wall
+		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
+	Health:
+		HP: 300
+	Armor:
+		Type: Concrete
 
 GATICK:
 	Inherits: ^Building
@@ -405,6 +472,134 @@ GASPOT:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 
+GARADR:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 90
+		Owner: gdi
+		Prerequisites: anypower, factory
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: GDI Radar
+		Description: Provides radar screen
+	ProvidesCustomPrerequisite:
+		Prerequisite: radar
+	Building:
+		Power: -50
+		Footprint: ___ xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RequiresPower:
+	CanPowerDown:
+	ProvidesRadar:
+	Infiltratable:
+		Type: Exploration
+	InfiltrateForExploration:
+	DetectCloaked:
+		Range: 10
+	RenderDetectionCircle:
+	RevealsShroud:
+		Range: 10c0
+	WithIdleOverlay@DISH:
+		Sequence: idle-dish
+		PauseOnLowPower: yes
+
+NARADR:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 90
+		Owner: nod
+		Prerequisites: anypower, factory
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Nod Radar
+		Description: Provides radar screen
+	ProvidesCustomPrerequisite:
+		Prerequisite: radar
+	Building:
+		Power: -50
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RequiresPower:
+	CanPowerDown:
+	ProvidesRadar:
+	Infiltratable:
+		Type: Exploration
+	InfiltrateForExploration:
+	DetectCloaked:
+		Range: 10
+	RenderDetectionCircle:
+	RevealsShroud:
+		Range: 10c0
+	WithIdleOverlay@DISH:
+		Sequence: idle-dish
+		PauseOnLowPower: yes
+
+GATECH:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 100
+		Owner: gdi
+		Prerequisites: garadr
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: GDI Tech Center
+		Description: Required for high-\ntech research
+	ProvidesCustomPrerequisite:
+		Prerequisite: tech
+	Building:
+		Power: -150
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+
+NATECH:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 100
+		Owner: nod
+		Prerequisites: naradr
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Nod Tech Center
+		Description: Required for high-\ntech research
+	ProvidesCustomPrerequisite:
+		Prerequisite: tech
+	Building:
+		Power: -150
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+
 GAHPAD:
 	Inherits: ^Building
 	Valued:
@@ -479,3 +674,17 @@ BARRACKS:
 		Name: Infantry Production
 		Description: Infantry Production
 
+FACTORY:
+	Tooltip:
+		Name: Vehicle Production
+		Description: Vehicle Production
+
+RADAR:
+	Tooltip:
+		Name: Radar
+		Description: Radar
+
+TECH:
+	Tooltip:
+		Name: Tech Center
+		Description: Tech Center

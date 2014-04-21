@@ -14,14 +14,16 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
+using MaxMind.GeoIP2;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
-using XRandom = OpenRA.Thirdparty.Random;
+using XRandom = OpenRA.Support.Random;
 
 namespace OpenRA
 {
@@ -41,10 +43,14 @@ namespace OpenRA
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;
 
-		public static void JoinServer(string host, int port, string password)
+		public static DatabaseReader GeoIpDatabase;
+
+		public static OrderManager JoinServer(string host, int port, string password)
 		{
-			JoinInner(new OrderManager(host, port, password,
-				new ReplayRecorderConnection(new NetworkConnection(host, port), ChooseReplayFilename)));
+			var om = new OrderManager(host, port, password,
+				new ReplayRecorderConnection(new NetworkConnection(host, port), ChooseReplayFilename));
+			JoinInner(om);
+			return om;
 		}
 
 		static string ChooseReplayFilename()
@@ -256,9 +262,6 @@ namespace OpenRA
 			orderManager.LastTickTime = Environment.TickCount;
 			orderManager.StartGame();
 			worldRenderer.RefreshPalette();
-
-			if (!isShellmap)
-				Sound.PlayNotification(null, "Speech", "StartGame", null);
 		}
 
 		public static bool IsHost
@@ -279,7 +282,7 @@ namespace OpenRA
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
-			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
+			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
 			Settings = new Settings(Platform.SupportDir + "settings.yaml", args);
 
@@ -290,6 +293,7 @@ namespace OpenRA
 			Log.AddChannel("server", "server.log");
 			Log.AddChannel("sound", "sound.log");
 			Log.AddChannel("graphics", "graphics.log");
+			Log.AddChannel("geoip", "geoip.log");
 
 			if (Settings.Server.DiscoverNatDevices)
 				UPnP.TryNatDiscovery();
@@ -299,7 +303,16 @@ namespace OpenRA
 				Settings.Server.AllowPortForward = false;
 			}
 
-			FileSystem.Mount("."); // Needed to access shaders
+			try
+			{
+				GeoIpDatabase = new DatabaseReader("GeoLite2-Country.mmdb");
+			}
+			catch (Exception e)
+			{
+				Log.Write("geoip", "DatabaseReader failed: {0}", e);
+			}
+
+			GlobalFileSystem.Mount("."); // Needed to access shaders
 			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", "Gl", "Cg", null };
 			foreach (var r in renderers)
 			{

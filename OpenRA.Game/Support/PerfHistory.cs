@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRA.FileFormats;
+using OpenRA.Primitives;
 
 namespace OpenRA.Support
 {

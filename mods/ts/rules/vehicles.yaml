@@ -28,7 +28,7 @@ MCV:
 		IntoActor: gacnst
 		Offset: -1,-1
 		Facing: 96
-		TransformSounds:
+		TransformSounds: facbld1.aud
 		NoTransformSounds:
 	RenderSprites:
 	RenderVoxels:
@@ -104,7 +104,7 @@ HVR:
 		Description: Hover Multi-Launch Rocket System
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 50
 		Owner: gdi
 	Mobile:
 		Speed: 99
@@ -468,7 +468,7 @@ MMCH:
 		Name: Medium Mech
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 300
+		BuildPaletteOrder: 30
 		Owner: gdi
 	Mobile:
 		ROT: 5
@@ -501,7 +501,7 @@ HMEC:
 		Name: Mammoth Mk. II
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 80
 		Owner: gdi
 	Mobile:
 		ROT: 3
@@ -674,7 +674,7 @@ SONIC:
 		Name: Disruptor
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 70
 		Owner: gdi
 	Mobile:
 		ROT: 4

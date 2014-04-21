@@ -1,4 +1,4 @@
-Selectable: True
+Selectable: False
 
 MapFormat: 6
 
@@ -6,7 +6,7 @@ RequiresMod: cnc
 
 Title: Nikoomba's Demise
 
-Description: In order for the Brotherhood to gain a foothold, we must begin by eliminating certain elements. Nikoomba, the nearby village's leader, is one such element. His views and ours do not coincide. He and his whole group must be eliminated.
+Description: In order for the Brotherhood to gain a foothold, we must begin by eliminating certain elements.\n\nNikoomba, the nearby village's leader, is one such element.\n\nHis views and ours do not coincide.\n\nHe and his whole group must be eliminated.
 
 Author: Westwood Studios
 

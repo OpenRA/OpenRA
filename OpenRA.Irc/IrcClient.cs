@@ -13,7 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
-using OpenRA.FileFormats.Primitives;
+using OpenRA.Primitives;
 
 namespace OpenRA.Irc
 {

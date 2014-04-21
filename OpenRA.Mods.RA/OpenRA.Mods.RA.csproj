@@ -82,6 +82,9 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="MaxMind.GeoIP2">
+      <HintPath>..\thirdparty\MaxMind.GeoIP2.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\CaptureActor.cs" />
@@ -378,6 +381,7 @@
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
+    <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\IrcLogic.cs" />
     <Compile Include="Widgets\Logic\KickClientLogic.cs" />
@@ -491,13 +495,10 @@
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Buildings\LineBuildNode.cs" />
     <Compile Include="ModChooserLoadScreen.cs" />
+    <Compile Include="Render\WithBuildingPlacedAnimation.cs" />
+    <Compile Include="StartGameNotification.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
-      <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
-      <Name>OpenRA.FileFormats</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
       <Name>OpenRA.Game</Name>
@@ -506,10 +507,6 @@
     <ProjectReference Include="..\OpenRA.Irc\OpenRA.Irc.csproj">
       <Project>{85B48234-8B31-4BE6-AF9C-665CC6866841}</Project>
       <Name>OpenRA.Irc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GeoIP\GeoIP.csproj">
-      <Project>{021DDD6A-A608-424C-9A9A-252D8A9989E0}</Project>
-      <Name>GeoIP</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

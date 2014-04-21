@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileFormats;
+using OpenRA.Graphics;
 
 namespace OpenRA.Network
 {
@@ -74,6 +74,11 @@ namespace OpenRA.Network
 		public string FirstEmptySlot()
 		{
 			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null).Key;
+		}
+
+		public string FirstEmptyBotSlot()
+		{
+			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null && s.Value.AllowBots).Key;
 		}
 
 		public bool IsSinglePlayer

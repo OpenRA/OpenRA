@@ -27,7 +27,7 @@ Speech:
 
 Sounds:
 	Notifications:
-		RadarUp:
+		RadarUp:commup1
 		RadarDown:radardn1
 		CashTickUp: credup1
 		CashTickDown: creddwn1
@@ -35,8 +35,8 @@ Sounds:
 		DisablePower:
 		EnablePower:
 		ChatLine:message1
-		BuildPaletteOpen:
-		BuildPaletteClose:
+		BuildPaletteOpen:emblem
+		BuildPaletteClose:emblem
 		TabClick:
 		ClickSound:clicky1
 		ClickDisabledSound:wrong1

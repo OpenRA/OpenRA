@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Utility
 {
@@ -39,7 +39,7 @@ namespace OpenRA.Utility
 		{
 			if (args.Length == 0) { PrintUsage(); return; }
 
-			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
+			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
 			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
 

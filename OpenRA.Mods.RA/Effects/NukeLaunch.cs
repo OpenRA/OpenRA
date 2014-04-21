@@ -18,18 +18,33 @@ namespace OpenRA.Mods.RA.Effects
 {
 	public class NukeLaunch : IEffect
 	{
-		readonly Player firedBy;
-		Animation anim;
-		WPos pos;
-		CPos targetLocation;
-		bool goingUp = true;
-		string weapon;
+		readonly Actor firedBy;
+		readonly Animation anim;
+		readonly string weapon;
 
-		public NukeLaunch(Player firedBy, Actor silo, string weapon, WPos launchPos, CPos targetLocation)
+		readonly WPos ascendSource;
+		readonly WPos ascendTarget;
+		readonly WPos descendSource;
+		readonly WPos descendTarget;
+		readonly int delay;
+		readonly int turn;
+
+		WPos pos;
+		int ticks;
+
+		public NukeLaunch(Actor firedBy, string weapon, WPos launchPos, WPos targetPos, WRange velocity, int delay, bool skipAscent)
 		{
 			this.firedBy = firedBy;
-			this.targetLocation = targetLocation;
 			this.weapon = weapon;
+			this.delay = delay;
+			this.turn = delay / 2;
+
+			var offset = new WVec(WRange.Zero, WRange.Zero, velocity * turn);
+			ascendSource = launchPos;
+			ascendTarget = launchPos + offset;
+			descendSource = targetPos + offset;
+			descendTarget = targetPos;
+
 			anim = new Animation(weapon);
 			anim.PlayRepeating("up");
 
@@ -37,40 +52,34 @@ namespace OpenRA.Mods.RA.Effects
 			var weaponRules = Rules.Weapons[weapon.ToLowerInvariant()];
 			if (weaponRules.Report != null && weaponRules.Report.Any())
 				Sound.Play(weaponRules.Report.Random(firedBy.World.SharedRandom), pos);
-			if (silo == null)
-				StartDescent(firedBy.World);
+
+			if (skipAscent)
+				ticks = turn;
 		}
 
-		void StartDescent(World world)
-		{
-			pos = targetLocation.CenterPosition + new WVec(0, 0, 1024*firedBy.World.Map.Bounds.Height);
-			anim.PlayRepeating("down");
-			goingUp = false;
-		}
 
 		public void Tick(World world)
 		{
 			anim.Tick();
 
-			var delta = new WVec(0,0,427);
-			if (goingUp)
-			{
-				pos += delta;
-				if (pos.Z >= world.Map.Bounds.Height*1024)
-					StartDescent(world);
-			}
+			if (ticks == turn)
+				anim.PlayRepeating("down");
+
+			if (ticks <= turn)
+				pos = WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks, turn);
 			else
-			{
-				pos -= delta;
-				if (pos.Z <= 0)
-					Explode(world);
-			}
+				pos = WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn, delay - turn);
+
+			if (ticks == delay)
+				Explode(world);
+
+			ticks++;
 		}
 
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoExplosion(firedBy.PlayerActor, weapon, pos);
+			Combat.DoExplosion(firedBy, weapon, pos);
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 
 			foreach (var a in world.ActorsWithTrait<NukePaletteEffect>())

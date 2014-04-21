@@ -66,7 +66,6 @@ Section "Game" GAME
 	SetOutPath "$INSTDIR"
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
-	File "${SRCDIR}\OpenRA.FileFormats.dll"
 	File "${SRCDIR}\OpenRA.Renderer.SdlCommon.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Gl.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Cg.dll"
@@ -76,9 +75,9 @@ Section "Game" GAME
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
 	File "${SRCDIR}\Mono.Nat.dll"
 	File "${SRCDIR}\AUTHORS"
-	File "${SRCDIR}\CHANGELOG"
 	File "${SRCDIR}\COPYING"
 	File "${SRCDIR}\README.html"
+	File "${SRCDIR}\CHANGELOG.html"
 	File "${SRCDIR}\CONTRIBUTING.html"
 	File "${SRCDIR}\DOCUMENTATION.html"
 	File "${SRCDIR}\*.ttf"
@@ -86,8 +85,11 @@ Section "Game" GAME
 	File "${SRCDIR}\Tao.*.dll"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\global mix database.dat"
-	File "${SRCDIR}\GeoIP.dll"
-	File "${SRCDIR}\GeoIP.dat"
+	File "${SRCDIR}\MaxMind.Db.dll"
+	File "${SRCDIR}\MaxMind.GeoIP2.dll"
+	File "${SRCDIR}\Newtonsoft.Json.dll"
+	File "${SRCDIR}\RestSharp.dll"
+	File "${SRCDIR}\GeoLite2-Country.mmdb"
 	File "${SRCDIR}\KopiLua.dll"
 	File "${SRCDIR}\NLua.dll"
 	File OpenAL32.dll
@@ -184,7 +186,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Game.exe
 	Delete $INSTDIR\OpenRA.Utility.exe
 	Delete $INSTDIR\OpenRA.Editor.exe
-	Delete $INSTDIR\OpenRA.FileFormats.dll
 	Delete $INSTDIR\OpenRA.Renderer.Gl.dll
 	Delete $INSTDIR\OpenRA.Renderer.Cg.dll
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
@@ -196,16 +197,19 @@ Function ${UN}Clean
 	Delete $INSTDIR\Tao.*.dll
 	Delete $INSTDIR\SharpFont.dll
 	Delete $INSTDIR\AUTHORS
-	Delete $INSTDIR\CHANGELOG
 	Delete $INSTDIR\COPYING
 	Delete $INSTDIR\README.html
+	Delete $INSTDIR\CHANGELOG.html
 	Delete $INSTDIR\CONTRIBUTING.html
 	Delete $INSTDIR\DOCUMENTATION.html
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\*.ttf
 	Delete "$INSTDIR\global mix database.dat"
-	Delete $INSTDIR\GeoIP.dat
-	Delete $INSTDIR\GeoIP.dll
+	Delete $INSTDIR\MaxMind.Db.dll
+	Delete $INSTDIR\MaxMind.GeoIP2.dll
+	Delete $INSTDIR\Newtonsoft.Json.dll
+	Delete $INSTDIR\RestSharp.dll
+	Delete $INSTDIR\GeoLite2-Country.mmdb
 	Delete $INSTDIR\KopiLua.dll
 	Delete $INSTDIR\NLua.dll
 	Delete $INSTDIR\OpenAL32.dll

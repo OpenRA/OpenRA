@@ -11,7 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
+using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -45,7 +46,7 @@ namespace OpenRA.Graphics
 
 			palette = new HardwarePalette();
 			foreach (var p in sequences.NodesDict["Palettes"].Nodes)
-				palette.AddPalette(p.Key, new Palette(FileSystem.Open(p.Value.Value), shadowIndex), false);
+				palette.AddPalette(p.Key, new Palette(GlobalFileSystem.Open(p.Value.Value), shadowIndex), false);
 
 			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(s.Key, s.Value);

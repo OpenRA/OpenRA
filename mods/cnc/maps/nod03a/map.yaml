@@ -1,4 +1,4 @@
-Selectable: True
+Selectable: False
 
 MapFormat: 6
 
@@ -6,7 +6,7 @@ RequiresMod: cnc
 
 Title: Sudanese Prison Break (a)
 
-Description: GDI has established a prison camp, where they are detaining some of the local political leaders. Kane wishes to liberate these victims. Destroy the GDI forces and capture the prison, do not destroy it.
+Description: GDI has established a prison camp, where they are detaining some of the local political leaders.\n\nKane wishes to liberate these victims.\n\nDestroy the GDI forces and capture the prison, do not destroy it.
 
 Author: Westwood Studios
 
