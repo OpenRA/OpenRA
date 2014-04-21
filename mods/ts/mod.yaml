@@ -205,3 +205,5 @@ LuaScripts:
 	mods/common/lua/rules.lua
 	mods/common/lua/production.lua
 	mods/common/lua/facing.lua
+
+SupportsMapsFrom: ts
