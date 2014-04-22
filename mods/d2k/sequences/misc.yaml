@@ -83,6 +83,10 @@ pips:
 		Start: 15
 	pip-green: DATA
 		Start: 16
+	pip-ammo: DATA
+		Start: 16
+	pip-ammoempty: DATA
+		Start: 15
 
 clock:
 	idle:

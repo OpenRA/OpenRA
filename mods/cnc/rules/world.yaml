@@ -23,8 +23,17 @@ World:
 		Filename: temperat.pal
 		ShadowIndex: 3
 		AllowModifiers: false
+	PaletteFromFile@pips:
+		Name: pips
+		Filename: temperat.pal
+		ShadowIndex: 3
+		AllowModifiers: false
 	PaletteFromFile@effect:
 		Name: effect
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromFile@rank:
+		Name: rank
 		Filename: temperat.pal
 		ShadowIndex: 4
 	PaletteFromFile@colorpicker:

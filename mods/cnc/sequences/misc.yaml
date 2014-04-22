@@ -319,6 +319,10 @@ pips:
 		Start: 4
 	pip-blue:
 		Start: 5
+	pip-ammo:
+		Start: 1
+	pip-ammoempty:
+		Start: 0
 	groups: pdigits
 		Start: 0
 		Length: *

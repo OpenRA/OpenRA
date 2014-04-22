@@ -323,9 +323,9 @@ CYBORG:
 	Armament:
 		Weapon: Vulcan3
 	AttackFrontal:
-	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+#	TakeCover: #TODO: add special cyborg destruction logic
+	RenderInfantry:
+#	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 
 CYC2:
@@ -356,9 +356,9 @@ CYC2:
 	Armament:
 		Weapon: Sniper
 	AttackFrontal:
-	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+#	TakeCover: #TODO: add special cyborg destruction logic
+	RenderInfantry:
+#	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 
 MUTANT:

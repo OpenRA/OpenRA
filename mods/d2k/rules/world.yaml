@@ -23,8 +23,18 @@ World:
 		Filename: d2k.pal
 		ShadowIndex: 3
 		AllowModifiers: false
+	PaletteFromFile@pips:
+		Name: pips
+		Filename: d2k.pal
+		ShadowIndex: 3
+		AllowModifiers: false
 	PaletteFromFile@effect:
 		Name: effect
+		Filename: d2k.pal
+		ShadowIndex: 4
+		AllowModifiers: false
+	PaletteFromFile@rank:
+		Name: rank
 		Filename: d2k.pal
 		ShadowIndex: 4
 		AllowModifiers: false
