@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 		{
 			var pips = Info.PipCount != 0 ? Info.PipCount : Info.Ammo;
 			return Exts.MakeArray(pips,
-				i => (ammo * pips) / Info.Ammo > i ? PipType.Green : PipType.Transparent);
+				i => (ammo * pips) / Info.Ammo > i ? PipType.Ammo : PipType.AmmoEmpty);
 		}
 	}
 }

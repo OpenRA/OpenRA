@@ -99,6 +99,10 @@ pips:
 		Start: 4
 	pip-blue: pips2
 		Start: 5
+	pip-ammo: pips2
+		Start: 1
+	pip-ammoempty: pips2
+		Start: 0
 
 v2:
 	idle:

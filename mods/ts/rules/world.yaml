@@ -17,6 +17,11 @@ World:
 		Filename: cameo.pal
 		AllowModifiers: false
 		ShadowIndex: 242
+	PaletteFromFile@pips:
+		Name: pips
+		Filename: palette.pal
+		AllowModifiers: false
+		ShadowIndex: 1
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: anim.pal
