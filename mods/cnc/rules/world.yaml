@@ -32,6 +32,10 @@ World:
 		Name: effect
 		Filename: temperat.pal
 		ShadowIndex: 4
+	PaletteFromFile@rank:
+		Name: rank
+		Filename: temperat.pal
+		ShadowIndex: 4
 	PaletteFromFile@colorpicker:
 		Name: colorpicker
 		Filename: temperat.pal

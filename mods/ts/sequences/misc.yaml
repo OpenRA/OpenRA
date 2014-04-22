@@ -53,7 +53,7 @@ beacon:
 		Length: 12
 		BlendMode: Additive
 
-rank: # TODO: backfall to RA asset
+rank:
 	rank:
 		Start: 0
 		Length: *

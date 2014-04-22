@@ -33,6 +33,11 @@ World:
 		Filename: d2k.pal
 		ShadowIndex: 4
 		AllowModifiers: false
+	PaletteFromFile@rank:
+		Name: rank
+		Filename: d2k.pal
+		ShadowIndex: 4
+		AllowModifiers: false
 	PaletteFromFile@colorpicker:
 		Name: colorpicker
 		Filename: d2k.pal

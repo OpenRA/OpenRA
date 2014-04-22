@@ -22,6 +22,10 @@ World:
 		Filename: palette.pal
 		AllowModifiers: false
 		ShadowIndex: 1
+	PaletteFromFile@rank:
+		Name: rank
+		Filename: palette.pal
+		ShadowIndex: 4
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: anim.pal
