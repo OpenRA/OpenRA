@@ -118,11 +118,17 @@ namespace OpenRA
 			// Mount map package so custom assets can be used. TODO: check priority.
 			GlobalFileSystem.Mount(GlobalFileSystem.OpenPackage(map.Path, null, int.MaxValue));
 
-			Rules.LoadRules(Manifest, map);
+			using (new Support.PerfTimer("LoadRules"))
+			{
+				Rules.LoadRules(Manifest, map);
+			}
 			SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset].Extensions, SheetBuilder);
 
-			// TODO: Don't load the sequences for assets that are not used in this tileset. Maybe use the existing EditorTilesetFilters.
-			SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
+			using (new Support.PerfTimer("SequenceProvider.Initialize"))
+			{
+				// TODO: Don't load the sequences for assets that are not used in this tileset. Maybe use the existing EditorTilesetFilters.
+				SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
+			}
 			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequences);
 			return map;
 		}

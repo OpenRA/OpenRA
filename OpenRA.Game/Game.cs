@@ -246,11 +246,18 @@ namespace OpenRA
 		{
 			BeforeGameStart();
 
-			var map = modData.PrepareMap(mapUID);
+			Map map;
+			using (new PerfTimer("PrepareMap"))
+			{
+				map = modData.PrepareMap(mapUID);
+			}
 			orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
 			orderManager.world.Timestep = Timestep;
 			worldRenderer = new WorldRenderer(orderManager.world);
-			orderManager.world.LoadComplete(worldRenderer);
+			using (new PerfTimer("LoadComplete"))
+			{
+				orderManager.world.LoadComplete(worldRenderer);
+			}
 
 			if (orderManager.GameStarted)
 				return;
@@ -385,7 +392,10 @@ namespace OpenRA
 			modData = new ModData(mod);
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.InitializeLoaders();
-			modData.MapCache.LoadMaps();
+			using (new PerfTimer("LoadMaps"))
+			{
+				modData.MapCache.LoadMaps();
+			}
 
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
@@ -436,7 +446,12 @@ namespace OpenRA
 
 		public static void LoadShellMap()
 		{
-			StartGame(ChooseShellmap(), true);
+			string shellMap = ChooseShellmap();
+
+			using (new PerfTimer("StartGame"))
+			{
+				StartGame(shellMap, true);
+			}
 		}
 
 		static string ChooseShellmap()
