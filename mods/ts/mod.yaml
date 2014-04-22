@@ -126,6 +126,7 @@ ChromeLayout:
 	mods/ra/chrome/assetbrowser.yaml
 	mods/ra/chrome/irc.yaml
 	mods/ra/chrome/missionbrowser.yaml
+	mods/ra/chrome/confirmation-dialogs.yaml
 
 Weapons:
 	mods/ts/weapons.yaml
