@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -241,7 +241,7 @@ namespace OpenRA.Mods.RA
 				domain += 1;
 			}
 
-			Log.Write("debug", "{0}: Found {1} domains.  Took {2} s", map.Title, domain-1, timer.ElapsedTime());
+			Log.Write("debug", "{0}: Found {1} domains.  Took {2} s", map.Title, domain-1, timer.Elapsed.TotalSeconds);
 		}
 	}
 }

@@ -478,7 +478,7 @@ namespace OpenRA
 
 					Tick(orderManager);
 
-					var waitTime = Math.Min(idealFrameTime - sw.ElapsedTime(), 1);
+					var waitTime = Math.Min(idealFrameTime - sw.Elapsed.TotalSeconds, 1);
 					if (waitTime > 0)
 						System.Threading.Thread.Sleep(TimeSpan.FromSeconds(waitTime));
 				}

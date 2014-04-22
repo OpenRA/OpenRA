@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,14 +13,14 @@ namespace OpenRA.Support
 	public static class Timer
 	{
 		static Stopwatch sw = new Stopwatch();
-		static double lastTime = 0;
+		static System.TimeSpan lastTime;
 
 		public static void Time( string message )
 		{
-			var time = sw.ElapsedTime();
+			var time = sw.Elapsed;
 			var dt = time - lastTime;
-			if( dt > 0.0001 )
-				Log.Write("perf", message, dt );
+			if( dt.TotalSeconds > 0.0001 )
+				Log.Write("perf", message, dt.TotalSeconds );
 			lastTime = time;
 		}
 	}
