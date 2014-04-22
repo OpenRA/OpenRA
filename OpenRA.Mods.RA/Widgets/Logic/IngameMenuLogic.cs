@@ -21,8 +21,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			widget.Get<ButtonWidget>("DISCONNECT").OnClick = () =>
 			{
-				onExit();
-				LeaveGame(world);
+				ConfirmationDialogs.PromptConfirmAction(
+					"Abort Mission",
+					"Leave this game and return to the menu?",
+					() =>
+					{
+						onExit();
+						LeaveGame(world);
+					},
+					null,
+					"Abort");
 			};
 
 			widget.Get<ButtonWidget>("SETTINGS").OnClick = () =>
@@ -44,8 +52,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			widget.Get<ButtonWidget>("SURRENDER").OnClick = () =>
 			{
-				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
-				onExit();
+				ConfirmationDialogs.PromptConfirmAction(
+					"Surrender",
+					"Are you sure you want to surrender?",
+					() =>
+					{
+						world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
+						onExit();
+					},
+					null,
+					"Surrender");
 			};
 			widget.Get("SURRENDER").IsVisible = () => world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined;
 		}
