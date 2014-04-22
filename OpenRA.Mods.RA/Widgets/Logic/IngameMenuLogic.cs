@@ -19,18 +19,35 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public IngameMenuLogic(Widget widget, World world, Action onExit, WorldRenderer worldRenderer)
 		{
+			Action onQuit = () =>
+			{
+				onExit();
+				LeaveGame(world);
+			};
+			Action onSurrender = () =>
+			{
+				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
+				onExit();
+			};
+
 			widget.Get<ButtonWidget>("DISCONNECT").OnClick = () =>
 			{
-				ConfirmationDialogs.PromptConfirmAction(
-					"Abort Mission",
-					"Leave this game and return to the menu?",
-					() =>
-					{
-						onExit();
-						LeaveGame(world);
-					},
-					null,
-					"Abort");
+				bool gameOver = world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined;
+
+				if (gameOver)
+				{
+					onQuit();
+				}
+				else
+				{
+					widget.Visible = false;
+					ConfirmationDialogs.PromptConfirmAction(
+						"Abort Mission",
+						"Leave this game and return to the menu?",
+						onQuit,
+						() => widget.Visible = true,
+						"Abort");
+				}
 			};
 
 			widget.Get<ButtonWidget>("SETTINGS").OnClick = () =>
@@ -52,15 +69,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			widget.Get<ButtonWidget>("SURRENDER").OnClick = () =>
 			{
+				widget.Visible = false;
 				ConfirmationDialogs.PromptConfirmAction(
 					"Surrender",
 					"Are you sure you want to surrender?",
-					() =>
-					{
-						world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
-						onExit();
-					},
-					null,
+					onSurrender,
+					() => widget.Visible = true,
 					"Surrender");
 			};
 			widget.Get("SURRENDER").IsVisible = () => world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined;
