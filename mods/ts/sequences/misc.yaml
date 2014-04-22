@@ -226,13 +226,11 @@ discus:
 		Start: 0
 		Length: *
 
-# TODO: needs unit*.pal
 canister:
 	idle:
 		Start: 0
 		Length: *
 
-# TODO: needs unit*.pal + ShadowIndex: 4
 dragon:
 	idle:
 		Start: 0
@@ -245,6 +243,10 @@ crystal4:
 		ShadowStart: 15
 
 120mm:
+	idle:
+		Start: 0
+
+50cal:
 	idle:
 		Start: 0
 

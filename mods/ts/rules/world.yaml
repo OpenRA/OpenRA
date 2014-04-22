@@ -26,6 +26,10 @@ World:
 		Name: rank
 		Filename: palette.pal
 		ShadowIndex: 4
+	PaletteFromFile@ra:
+		Name: ra
+		Filename: palette.pal
+		ShadowIndex: 4
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: anim.pal

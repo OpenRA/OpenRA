@@ -42,6 +42,7 @@ Bazooka:
 	Range: 6c0
 	Report: RKETINF1.AUD
 	ValidTargets: Ground, Air
+	Palette: ra
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
@@ -68,6 +69,7 @@ MultiCluster:
 	Range: 6c0
 	Report: MISL1.AUD
 	ValidTargets: Ground
+	Palette: ra
 	Projectile: Missile
 		Speed: 170
 		Arm: 2
@@ -249,6 +251,7 @@ HoverMissile:
 	Range: 8c0
 	Report: HOVRMIS1.AUD
 	ValidTargets: Ground, Air
+	Palette: ra
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
@@ -276,6 +279,7 @@ HoverMissile:
 	Report: 120MMF.AUD
 	Burst: 2
 	BurstDelay: 5
+	Palette: ra
 	Projectile: Bullet
 		Speed: 682
 		Image: 120mm
@@ -300,6 +304,7 @@ MammothTusk:
 	Report: MISL1.AUD
 	ValidTargets: Air
 	Burst: 2
+	Palette: ra
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -427,6 +432,7 @@ BikeMissile:
 	Range: 5c0
 	Report: MISL1.AUD
 	ValidTargets: Ground
+	Palette: ra
 	Projectile: Missile
 		Arm: 2
 		High: yes
@@ -505,6 +511,7 @@ Dragon:
 	Burst: 2
 	Report: MISL1.AUD
 	ValidTargets: Ground, Air
+	Palette: ra
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
@@ -530,6 +537,7 @@ Dragon:
 	ROF: 50
 	Range: 6c768
 	Report: 120MMF.AUD
+	Palette: ra
 	Projectile: Bullet
 		Speed: 682
 		Image: 120mm
@@ -538,20 +546,45 @@ Dragon:
 	Warhead:
 		Spread: 128
 		Versus:
+			None: 10%
+			Wood: 75%
+			Light: 75%
+			Heavy: 100%
+			Concrete: 50%
+		InfDeath: 2
+		Damage: 36
+		Explosion: medium_clsn
+		ImpactSound: expnew14.aud
+
+RPGLauncher:
+	ROF: 50
+	Range: 8c0
+	Report: GLNCH4.AUD
+	Palette: player
+	Projectile: Bullet
+		Speed: 384
+		Image: canister
+		High: yes
+		Shadow: yes
+		Angle: 75
+	Warhead:
+		Spread: 192
+		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 100%
 		InfDeath: 2
-		Damage: 36
-		Explosion: medium_clsn
+		Damage: 60
+		Explosion: large_clsn
 		ImpactSound: expnew14.aud
 
 155mm:
 	ROF: 110
 	Range: 18c0
 	Report: 120MMF.AUD
+	Palette: ra
 	Projectile: Bullet
 		Speed: 170
 		Image: 120mm
@@ -577,6 +610,7 @@ Hellfire:
 	Report: ORCAMIS1.AUD
 	Burst: 2
 	ValidTargets: Ground, Air
+	Palette: ra
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
@@ -602,9 +636,10 @@ Hellfire:
 Bomb:
 	ROF: 10
 	Range: 5c0
+	Palette: player
 	Projectile: Bullet
 		Speed: 170
-		Image: 120MM
+		Image: canister
 		Shadow: yes
 	Warhead:
 		Spread: 298
@@ -674,10 +709,10 @@ Pistola:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
+			Wood: 5%
+			Light: 5%
+			Heavy: 5%
+			Concrete: 5%
 		Explosion: piff
 		InfDeath: 1
 		Damage: 2
