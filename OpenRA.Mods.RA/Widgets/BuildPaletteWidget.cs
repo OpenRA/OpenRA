@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -53,10 +54,12 @@ namespace OpenRA.Mods.RA.Widgets
 
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
+		readonly OrderManager orderManager;
 
 		[ObjectCreator.UseCtor]
-		public BuildPaletteWidget(World world, WorldRenderer worldRenderer)
+		public BuildPaletteWidget(OrderManager orderManager, World world, WorldRenderer worldRenderer)
 		{
+			this.orderManager = orderManager;
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 
@@ -299,8 +302,12 @@ namespace OpenRA.Mods.RA.Widgets
 
 		string GetOverlayForItem(ProductionItem item)
 		{
-			if (item.Paused) return HoldText;
-			if (item.Done) return ReadyText;
+			if (item.Paused)
+				return HoldText;
+
+			if (item.Done)
+				return orderManager.LocalFrameNumber / 25 % 2 == 0 ? ReadyText : "";
+
 			return WidgetUtils.FormatTime(item.RemainingTimeActual);
 		}
 
