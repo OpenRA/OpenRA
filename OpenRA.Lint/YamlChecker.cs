@@ -6,6 +6,9 @@
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
  */
+using System.IO;
+
+
 #endregion
 
 using System;
@@ -41,6 +44,8 @@ namespace OpenRA.Lint
 
 			try
 			{
+				Log.AddChannel("perf", null);
+
 				var options = args.Where(a => a.StartsWith("-"));
 				var mod = args.Where(a => !options.Contains(a)).First();
 				var map = args.Where(a => !options.Contains(a)).Skip(1).FirstOrDefault();

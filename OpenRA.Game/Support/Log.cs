@@ -46,6 +46,12 @@ namespace OpenRA
 		{
 			if (Channels.ContainsKey(channelName)) return;
 
+			if (string.IsNullOrEmpty(baseFilename))
+			{
+				Channels.Add(channelName, new ChannelInfo());
+				return;
+			}
+
 			foreach (var filename in FilenamesForChannel(channelName, baseFilename))
 				try
 				{
@@ -69,6 +75,9 @@ namespace OpenRA
 			ChannelInfo info;
 			if (!Channels.TryGetValue(channel, out info))
 				throw new Exception("Tried logging to non-existant channel " + channel);
+
+			if (info.Writer == null)
+				return;
 
 			info.Writer.WriteLine(format, args);
 		}
