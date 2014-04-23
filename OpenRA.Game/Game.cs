@@ -251,8 +251,11 @@ namespace OpenRA
 			{
 				map = modData.PrepareMap(mapUID);
 			}
-			orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
-			orderManager.world.Timestep = Timestep;
+			using (new PerfTimer("NewWorld"))
+			{
+				orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
+				orderManager.world.Timestep = Timestep;
+			}
 			worldRenderer = new WorldRenderer(orderManager.world);
 			using (new PerfTimer("LoadComplete"))
 			{

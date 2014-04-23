@@ -148,7 +148,10 @@ namespace OpenRA
 		public void LoadComplete(WorldRenderer wr)
 		{
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
-				wlh.WorldLoaded(this, wr);
+			{
+				using (new Support.PerfTimer(wlh.GetType().Name + ".WorldLoaded"))
+					wlh.WorldLoaded(this, wr);
+			}
 		}
 
 		public Actor CreateActor(string name, TypeDictionary initDict)
