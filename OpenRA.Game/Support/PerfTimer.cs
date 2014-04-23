@@ -18,9 +18,15 @@ namespace OpenRA.Support
 		readonly Stopwatch sw = new Stopwatch();
 		readonly string Name;
 
+		//
 		// Hacks to give the output a tree-like structure
+		//
 		static System.Threading.ThreadLocal<int> depth = new System.Threading.ThreadLocal<int>();
 		static System.Threading.ThreadLocal<string> prevHeader = new System.Threading.ThreadLocal<string>();
+		const int MaxWidth = 60, Digits = 6;
+		const int MaxIndentedLabel = MaxWidth - Digits;
+		const string IndentationString = "|   ";
+		readonly string FormatString = "{0," + MaxIndentedLabel + "} {1," + Digits + "} ms";
 
 		public PerfTimer(string name)
 		{
@@ -32,8 +38,65 @@ namespace OpenRA.Support
 
 			this.Name = name;
 
-			prevHeader.Value = string.Format("{0}{1}", Indentation, this.Name);
+			prevHeader.Value = GetHeader(Indentation, this.Name);
 			depth.Value++;
+		}
+
+		public void Dispose()
+		{
+			depth.Value--;
+
+			string s;
+
+			if (prevHeader.Value == null)
+			{
+				s = GetFooter(Indentation);
+			}
+			else
+			{
+				s = GetOneLiner(Indentation, this.Name);
+				prevHeader.Value = null;
+			}
+
+			Log.Write("perf", FormatString, s, Math.Round(this.sw.Elapsed.TotalMilliseconds));
+		}
+
+		private static string GetHeader(string indentation, string label)
+		{
+			return string.Concat(indentation, LimitLength(label, MaxIndentedLabel - indentation.Length));
+		}
+
+		private static string GetOneLiner(string indentation, string label)
+		{
+			return string.Concat(indentation, SetLength(label, MaxIndentedLabel - indentation.Length));
+		}
+
+		private static string GetFooter(string indentation)
+		{
+			return string.Concat(indentation, new string('-', MaxIndentedLabel - indentation.Length));
+		}
+
+		private static string LimitLength(string s, int length, int minLength = 8)
+		{
+			length = Math.Max(length, minLength);
+
+			if (s == null || s.Length <= length)
+				return s;
+
+			return s.Substring(0, length);
+		}
+
+		private static string SetLength(string s, int length, int minLength = 8)
+		{
+			length = Math.Max(length, minLength);
+
+			if (s == null || s.Length == length)
+				return s;
+
+			if (s.Length < length)
+				return s.PadRight(length);
+
+			return s.Substring(0, length);
 		}
 
 		private static string Indentation
@@ -42,28 +105,12 @@ namespace OpenRA.Support
 			{
 				var d = depth.Value;
 				if (d == 1)
-					return "|   ";
+					return IndentationString;
 				else if (d <= 0)
 					return string.Empty;
 				else
-					return string.Concat(Enumerable.Repeat("|   ", depth.Value));
+					return string.Concat(Enumerable.Repeat(IndentationString, depth.Value));
 			}
-		}
-
-		public void Dispose()
-		{
-			string format;
-			if (prevHeader.Value == null)
-			{
-				format = "{0}: {2} ms";
-			}
-			else
-			{
-				format = "{0}{1}: {2} ms";
-				prevHeader.Value = null;
-			}
-			depth.Value--;
-			Log.Write("perf", format, Indentation, this.Name, Math.Round(this.sw.Elapsed.TotalMilliseconds));
 		}
 	}
 }
