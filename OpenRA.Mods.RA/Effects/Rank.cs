@@ -19,10 +19,12 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		Actor self;
 		Animation anim = new Animation("rank");
+		readonly string paletteName;
 
-		public Rank(Actor self)
+		public Rank(Actor self, string paletteName)
 		{
 			this.self = self;
+			this.paletteName = paletteName;
 			var xp = self.Trait<GainsExperience>();
 
 			anim.PlayRepeating("rank");
@@ -55,9 +57,10 @@ namespace OpenRA.Mods.RA.Effects
 			var bounds = self.Bounds.Value;
 			bounds.Offset(pos.X, pos.Y);
 
+			var palette = wr.Palette(paletteName);
 			var offset = (int)(4 / wr.Viewport.Zoom);
 			var effectPos = wr.Position(new int2(bounds.Right - offset, bounds.Bottom - offset));
-			yield return new SpriteRenderable(anim.Image, effectPos, WVec.Zero, 0, wr.Palette("effect"), 1f / wr.Viewport.Zoom, true);
+			yield return new SpriteRenderable(anim.Image, effectPos, WVec.Zero, 0, palette, 1f / wr.Viewport.Zoom, true);
 		}
 	}
 }
