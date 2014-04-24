@@ -531,6 +531,8 @@ GUN:
 	-GivesBuildableArea:
 	Health:
 		HP: 400
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
 	Bib:
