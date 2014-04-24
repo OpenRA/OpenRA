@@ -345,3 +345,15 @@ waypoint:
 	RenderEditorOnly:
 	BodyOrientation:
 
+CTFLAG:
+	Inherits: ^TechBuilding
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Tooltip:
+		Name: Flag
+	Bib:
+		HasMinibib: Yes
+	Invulnerable:
+	-Selectable:
+	-TargetableBuilding:
