@@ -249,7 +249,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					if (first.Done)
 					{
 						// Blink the ready text
-						if (orderManager.LocalFrameNumber / 25 % 2 == 0)
+						if (orderManager.LocalFrameNumber / 9 % 2 == 0)
 							overlayFont.DrawTextWithContrast(ReadyText,
 															 icon.Pos + readyOffset,
 															 Color.White, Color.Black, 1);

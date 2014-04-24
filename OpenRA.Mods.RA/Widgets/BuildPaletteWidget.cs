@@ -306,7 +306,7 @@ namespace OpenRA.Mods.RA.Widgets
 				return HoldText;
 
 			if (item.Done)
-				return orderManager.LocalFrameNumber / 25 % 2 == 0 ? ReadyText : "";
+				return orderManager.LocalFrameNumber / 9 % 2 == 0 ? ReadyText : "";
 
 			return WidgetUtils.FormatTime(item.RemainingTimeActual);
 		}
