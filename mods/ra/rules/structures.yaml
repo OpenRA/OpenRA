@@ -743,6 +743,8 @@ ATEK:
 		LaunchSound: satlnch1.aud
 		DisplayTimer: True
 	SupportPowerChargeBar:
+	RequiresPower:
+	DisabledOverlay:
 
 WEAP:
 	Inherits: ^Building

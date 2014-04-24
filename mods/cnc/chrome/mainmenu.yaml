@@ -1,210 +1,211 @@
 Container@MENU_BACKGROUND:
-	Width:WINDOW_RIGHT
-	Height:WINDOW_BOTTOM
-	Logic:CncMainMenuLogic
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Logic: CncMainMenuLogic
 	Children:
 		Container@SHELLMAP_DESATURATION:
-			Logic:ShellmapDesaturationLogic
+			Logic: ShellmapDesaturationLogic
 		Container@SHELLMAP_DECORATIONS:
 			Children:
 				Image@RETICLE:
-					X:(WINDOW_RIGHT-WIDTH)/2
-					Y:(WINDOW_BOTTOM-HEIGHT)/2
-					Width:512
-					Height:512
-					ImageCollection:shellmap
-					ImageName:reticle
+					X: (WINDOW_RIGHT-WIDTH)/2
+					Y: (WINDOW_BOTTOM-HEIGHT)/2
+					Width: 512
+					Height: 512
+					ImageCollection: shellmap
+					ImageName: reticle
 				Label@REC:
-					X:(WINDOW_RIGHT-512)/2+10
-					Y:(WINDOW_BOTTOM+512)/2-28
-					Height:18
-					Font:Bold
-					Text:REC
+					X: (WINDOW_RIGHT-512)/2+10
+					Y: (WINDOW_BOTTOM+512)/2-28
+					Height: 18
+					Font: Bold
+					Text: REC
 				Image@RECBLOCK:
-					X:(WINDOW_RIGHT-512)/2+40
-					Y:(WINDOW_BOTTOM+512)/2-25
-					Width:16
-					Height:16
-					ImageCollection:shellmapbits
-					ImageName:record
+					X: (WINDOW_RIGHT-512)/2+40
+					Y: (WINDOW_BOTTOM+512)/2-25
+					Width: 16
+					Height: 16
+					ImageCollection: shellmapbits
+					ImageName: record
 		Container@SHELLMAP_DISABLED_DECORATIONS:
 			Children:
 				Image@NOD:
-					X:WINDOW_RIGHT/2-384
-					Y:(WINDOW_BOTTOM-256)/2
-					ImageCollection:logos
-					ImageName:nod-load
+					X: WINDOW_RIGHT/2-384
+					Y: (WINDOW_BOTTOM-256)/2
+					ImageCollection: logos
+					ImageName: nod-load
 				Image@GDI:
-					X:WINDOW_RIGHT/2+128
-					Y:(WINDOW_BOTTOM-256)/2
-					ImageCollection:logos
-					ImageName:gdi-load
+					X: WINDOW_RIGHT/2+128
+					Y: (WINDOW_BOTTOM-256)/2
+					ImageCollection: logos
+					ImageName: gdi-load
 		Image@EVA:
-			X:WINDOW_RIGHT-128-43
-			Y:43
-			Width:128
-			Height:64
-			ImageCollection:logos
-			ImageName:eva
+			X: WINDOW_RIGHT-128-43
+			Y: 43
+			Width: 128
+			Height: 64
+			ImageCollection: logos
+			ImageName: eva
 		Label@VERSION_LABEL:
-			X:WINDOW_RIGHT-128-43
-			Y:115
-			Width:128
-			Align:Center
-			Contrast:true
+			X: WINDOW_RIGHT-128-43
+			Y: 115
+			Width: 128
+			Align: Center
+			Contrast: true
 		Background@BORDER:
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
-			Background:shellmapborder
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			Background: shellmapborder
 		Container@MENUS:
-			X:(WINDOW_RIGHT-WIDTH)/2
-			Y:WINDOW_BOTTOM-33-HEIGHT-10
-			Width:890
-			Height:35
+			X: (WINDOW_RIGHT-WIDTH)/2
+			Y: WINDOW_BOTTOM-33-HEIGHT-10
+			Width: 890
+			Height: 35
 			Children:
 				Container@MAIN_MENU:
-					Width:PARENT_RIGHT
+					Width: PARENT_RIGHT
 					Children:
 						Label@MAINMENU_LABEL_TITLE:
-							X:0
-							Y:0-30
-							Width:PARENT_RIGHT
-							Height:20
-							Text:Main Menu
-							Align:Center
-							Font:Bold
-							Contrast:True
+							X: 0
+							Y: 0-30
+							Width: PARENT_RIGHT
+							Height: 20
+							Text: Main Menu
+							Align: Center
+							Font: Bold
+							Contrast: True
 						Button@SINGLEPLAYER_BUTTON:
-							X:0
-							Y:0
-							Width:140
-							Height:35
-							Text:Singleplayer
+							X: 0
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Singleplayer
 						Button@MULTIPLAYER_BUTTON:
-							X:150
-							Y:0
-							Width:140
-							Height:35
-							Text:Multiplayer
+							X: 150
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Multiplayer
 						Button@SETTINGS_BUTTON:
-							X:300
-							Y:0
-							Width:140
-							Height:35
-							Text:Settings
+							X: 300
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Settings
 						Button@EXTRAS_BUTTON:
-							X:450
-							Y:0
-							Width:140
-							Height:35
-							Text:Extras
+							X: 450
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Extras
 						Button@MODS_BUTTON:
-							X:600
-							Y:0
-							Width:140
-							Height:35
-							Text:Mods
+							X: 600
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Mods
 						Button@QUIT_BUTTON:
-							X:750
-							Y:0
-							Width:140
-							Height:35
-							Text:Quit
+							X: 750
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Quit
 				Container@SINGLEPLAYER_MENU:
-					Width:PARENT_RIGHT
-					Visible:False
+					Width: PARENT_RIGHT
+					Visible: False
 					Children:
 						Label@SINGLEPLAYER_MENU_TITLE:
-							X:0
-							Y:0-30
-							Width:PARENT_RIGHT
-							Height:20
-							Text:Singleplayer
-							Align:Center
-							Font:Bold
-							Contrast:True
+							X: 0
+							Y: 0-30
+							Width: PARENT_RIGHT
+							Height: 20
+							Text: Singleplayer
+							Align: Center
+							Font: Bold
+							Contrast: True
 						Button@SKIRMISH_BUTTON:
-							X:150
-							Y:0
-							Width:140
-							Height:35
-							Text:Skirmish
+							X: 150
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Skirmish
 						Button@MISSIONS_BUTTON:
-							X:300
-							Y:0
-							Width:140
-							Height:35
-							Text:Missions
+							X: 300
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Missions
 						Button@BACK_BUTTON:
-							Key:escape
-							X:600
-							Y:0
-							Width:140
-							Height:35
-							Text:Back
+							Key: escape
+							X: 600
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Back
 				Container@EXTRAS_MENU:
-					Width:PARENT_RIGHT
-					Visible:False
+					Width: PARENT_RIGHT
+					Visible: False
 					Children:
 						Label@EXTRAS_MENU_TITLE:
-							X:0
-							Y:0-30
-							Width:PARENT_RIGHT
-							Height:20
-							Text:Extras
-							Align:Center
-							Font:Bold
-							Contrast:True
+							X: 0
+							Y: 0-30
+							Width: PARENT_RIGHT
+							Height: 20
+							Text: Extras
+							Align: Center
+							Font: Bold
+							Contrast: True
 						Button@REPLAYS_BUTTON:
-							X:0
-							Y:0
-							Width:140
-							Height:35
+							X: 0
+							Y: 0
+							Width: 140
+							Height: 35
 							Text: Replays
 						Button@MUSIC_BUTTON:
-							X:150
-							Y:0
-							Width:140
-							Height:35
-							Text:Music
+							X: 150
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Music
 						Button@ASSETBROWSER_BUTTON:
-							X:300
-							Y:0
-							Width:140
-							Height:35
-							Text:Asset Browser
+							X: 300
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Asset Browser
 						Button@CREDITS_BUTTON:
-							X:450
-							Y:0
-							Width:140
-							Height:35
-							Text:Credits
+							X: 450
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Credits
 						Button@BACK_BUTTON:
-							Key:escape
-							X:750
-							Y:0
-							Width:140
-							Height:35
-							Text:Back
+							Key: escape
+							X: 750
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Back
 		Container@PERFORMANCE_INFO:
-			Logic:PerfDebugLogic
+			Logic: PerfDebugLogic
 			Children:
 				Label@PERF_TEXT:
-					X:40
-					Y:40
-					Width:170
-					Height:40
-					Contrast:true
-					VAlign:Top
+					X: 40
+					Y: 40
+					Width: 170
+					Height: 40
+					Contrast: true
+					VAlign: Top
 				Background@GRAPH_BG:
-					X:WINDOW_RIGHT-WIDTH-31
-					Y:31
-					Width:220
-					Height:220
-					Background:panel-black
+					X: WINDOW_RIGHT-WIDTH-31
+					Y: 31
+					Width: 220
+					Height: 220
+					Background: panel-black
 					Children:
 						PerfGraph@GRAPH:
-							X:10
-							Y:10
-							Width:200
-							Height:200
+							X: 10
+							Y: 10
+							Width: 200
+							Height: 200
+

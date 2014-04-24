@@ -22,7 +22,7 @@ TRAN:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8c0
+		Range: 10c0
 	RenderUnit:
 	WithRotor@PRIMARY:
 		Offset: -597,0,171
@@ -130,7 +130,7 @@ ORCA:
 		PipCount: 6
 	Reloads:
 		Count: 2
-		Period: 200
+		Period: 100
 	RenderUnit:
 	WithShadow:
 	LeavesHusk:
@@ -210,6 +210,7 @@ A10:
 		Weapon: Napalm
 		LocalOffset: 0,-256,-43, 0,256,-43
 	-Selectable:
+	-TargetableUnit:	
 	-GainsExperience:
 	FlyAwayOnIdle:
 	RejectsOrders:

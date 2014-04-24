@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -19,10 +19,35 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public IngameMenuLogic(Widget widget, World world, Action onExit, WorldRenderer worldRenderer)
 		{
-			widget.Get<ButtonWidget>("DISCONNECT").OnClick = () =>
+			Action onQuit = () =>
 			{
 				onExit();
 				LeaveGame(world);
+			};
+			Action onSurrender = () =>
+			{
+				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
+				onExit();
+			};
+
+			widget.Get<ButtonWidget>("DISCONNECT").OnClick = () =>
+			{
+				bool gameOver = world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined;
+
+				if (gameOver)
+				{
+					onQuit();
+				}
+				else
+				{
+					widget.Visible = false;
+					ConfirmationDialogs.PromptConfirmAction(
+						"Abort Mission",
+						"Leave this game and return to the menu?",
+						onQuit,
+						() => widget.Visible = true,
+						"Abort");
+				}
 			};
 
 			widget.Get<ButtonWidget>("SETTINGS").OnClick = () =>
@@ -44,8 +69,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			widget.Get<ButtonWidget>("SURRENDER").OnClick = () =>
 			{
-				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
-				onExit();
+				widget.Visible = false;
+				ConfirmationDialogs.PromptConfirmAction(
+					"Surrender",
+					"Are you sure you want to surrender?",
+					onSurrender,
+					() => widget.Visible = true,
+					"Surrender");
 			};
 			widget.Get("SURRENDER").IsVisible = () => world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined;
 		}

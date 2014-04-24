@@ -137,13 +137,13 @@
 		Crushes: crate
 		SharesCell: true
 		TerrainSpeeds:
-			Clear: 100
+			Clear: 90
 			Rough: 80
 			Road: 100
 			Tiberium: 70
-				PathingCost: 1000
+				PathingCost: 300
 			BlueTiberium: 70
-				PathingCost: 1000
+				PathingCost: 300
 			Beach: 80
 	SelectionDecorations:
 	Selectable:
@@ -167,7 +167,7 @@
 	SpawnViceroid:
 		Probability: 10
 	CrushableInfantry:
-		WarnProbability: 60
+		WarnProbability: 67
 	CombatDebugOverlay:
 	Guard:
 	Guardable:
@@ -181,6 +181,8 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	LuaScriptEvents:
+	DetectCloaked:
+		Range: 1
 
 ^CivInfantry:
 	Inherits: ^Infantry

@@ -18,7 +18,7 @@ else
 
 if ($command -eq "all")
 {
-	$msBuildVersions = @("4.0", "3.5")
+	$msBuildVersions = @("4.0")
 	foreach ($msBuildVersion in $msBuildVersions)
 	{
 		$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\{0}" -f $msBuildVersion

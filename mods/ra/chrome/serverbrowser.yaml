@@ -1,148 +1,149 @@
 Background@SERVERBROWSER_PANEL:
-	Logic:ServerBrowserLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:740
-	Height:500
+	Logic: ServerBrowserLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 740
+	Height: 500
 	Children:
 		Label@MULTIPLAYER_LABEL_TITLE:
-			X:0
-			Y:15
-			Width:PARENT_RIGHT
-			Height:25
-			Text:Multiplayer
-			Align:Center
-			Font:Bold
+			X: 0
+			Y: 15
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Multiplayer
+			Align: Center
+			Font: Bold
 		Label@SHOW_LABEL_TITLE:
-			X:20
-			Y:45
-			Width:20
-			Height:25
-			Text:Show:
-			Font:Bold
+			X: 20
+			Y: 45
+			Width: 20
+			Height: 25
+			Text: Show:
+			Font: Bold
 		Checkbox@WAITING_FOR_PLAYERS:
-			X:80
-			Y:50
-			Width:100
-			Height:20
-			Text:Waiting
+			X: 80
+			Y: 50
+			Width: 100
+			Height: 20
+			Text: Waiting
 		Checkbox@EMPTY:
-			X:180
-			Y:50
-			Width:100
-			Height:20
-			Text:Empty
+			X: 180
+			Y: 50
+			Width: 100
+			Height: 20
+			Text: Empty
 		Checkbox@ALREADY_STARTED:
-			X:280
-			Y:50
-			Width:100
-			Height:20
-			Text:Started
+			X: 280
+			Y: 50
+			Width: 100
+			Height: 20
+			Text: Started
 		Checkbox@INCOMPATIBLE_VERSION:
-			X:380
-			Y:50
-			Width:100
-			Height:20
-			Text:Incompatible
+			X: 380
+			Y: 50
+			Width: 100
+			Height: 20
+			Text: Incompatible
 		ScrollPanel@SERVER_LIST:
-			X:20
-			Y:80
-			Width:700
-			Height:360
-			ScrollVelocity:20
+			X: 20
+			Y: 80
+			Width: 700
+			Height: 360
+			ScrollVelocity: 20
 			Children:
 				ScrollItem@SERVER_TEMPLATE:
-					Width:PARENT_RIGHT-27
-					Height:68
-					X:2
-					Y:0
+					Width: PARENT_RIGHT-27
+					Height: 68
+					X: 2
+					Y: 0
 					Children:
 						MapPreview@MAP_PREVIEW:
-							X:2
-							Y:2
-							Width:64
-							Height:64
-							ShowSpawnPoints:no
+							X: 2
+							Y: 2
+							Width: 64
+							Height: 64
+							ShowSpawnPoints: no
 						Label@TITLE:
-							X:70
-							Width:200
-							Height:25
-							Font:Bold
+							X: 70
+							Width: 200
+							Height: 25
+							Font: Bold
 						Label@MAP:
-							X:70
-							Y:20
-							Width:250
-							Height:25
+							X: 70
+							Y: 20
+							Width: 250
+							Height: 25
 						Label@PLAYERS:
-							X:70
-							Y:40
-							Width:50
-							Height:25
+							X: 70
+							Y: 40
+							Width: 50
+							Height: 25
 						Label@STATE:
-							Width:140
-							X:PARENT_RIGHT-150
-							Align:Right
-							Height:25
-							Font:Bold
+							Width: 140
+							X: PARENT_RIGHT-150
+							Align: Right
+							Height: 25
+							Font: Bold
 						Label@IP:
-							Width:140
-							X:PARENT_RIGHT-150
-							Y:20
-							Align:Right
-							Height:25
+							Width: 140
+							X: PARENT_RIGHT-150
+							Y: 20
+							Align: Right
+							Height: 25
 						Label@VERSION:
-							Width:140
-							X:PARENT_RIGHT-150
-							Y:40
-							Align:Right
-							Height:25
+							Width: 140
+							X: PARENT_RIGHT-150
+							Y: 40
+							Align: Right
+							Height: 25
 						Label@LOCATION:
-							Width:140
-							X:PARENT_RIGHT-150
-							Y:40
-							Align:Right
-							Height:25
+							Width: 140
+							X: PARENT_RIGHT-150
+							Y: 40
+							Align: Right
+							Height: 25
 		Label@PROGRESS_LABEL:
-			X:(PARENT_RIGHT - WIDTH) / 2
-			Y:PARENT_BOTTOM / 2 - HEIGHT
-			Width:150
-			Height:30
-			Text:Fetching games...
-			Align:Center
+			X: (PARENT_RIGHT - WIDTH) / 2
+			Y: PARENT_BOTTOM / 2 - HEIGHT
+			Width: 150
+			Height: 30
+			Text: Fetching games...
+			Align: Center
 		Button@REFRESH_BUTTON:
-			X:20
-			Y:PARENT_BOTTOM - 45
-			Width:100
-			Height:25
-			Text:Refresh
-			Font:Bold
+			X: 20
+			Y: PARENT_BOTTOM - 45
+			Width: 100
+			Height: 25
+			Text: Refresh
+			Font: Bold
 		Button@CREATE_BUTTON:
-			X:PARENT_RIGHT - 120 - 120 - 120 - 120
-			Y:PARENT_BOTTOM - 45
-			Width:100
-			Height:25
-			Text:Create
-			Font:Bold
+			X: PARENT_RIGHT - 120 - 120 - 120 - 120
+			Y: PARENT_BOTTOM - 45
+			Width: 100
+			Height: 25
+			Text: Create
+			Font: Bold
 		Button@DIRECTCONNECT_BUTTON:
-			X:PARENT_RIGHT - 120 - 120 - 120
-			Y:PARENT_BOTTOM - 45
-			Width:100
-			Height:25
-			Text:Direct IP
-			Font:Bold
+			X: PARENT_RIGHT - 120 - 120 - 120
+			Y: PARENT_BOTTOM - 45
+			Width: 100
+			Height: 25
+			Text: Direct IP
+			Font: Bold
 		Button@JOIN_BUTTON:
-			X:PARENT_RIGHT - 120 - 120
-			Y:PARENT_BOTTOM - 45
-			Width:100
-			Height:25
-			Text:Join
-			Font:Bold
-			Key:return
+			X: PARENT_RIGHT - 120 - 120
+			Y: PARENT_BOTTOM - 45
+			Width: 100
+			Height: 25
+			Text: Join
+			Font: Bold
+			Key: return
 		Button@BACK_BUTTON:
-			X:PARENT_RIGHT - 120
-			Y:PARENT_BOTTOM - 45
-			Width:100
-			Height:25
-			Text:Cancel
-			Font:Bold
-			Key:escape
+			X: PARENT_RIGHT - 120
+			Y: PARENT_BOTTOM - 45
+			Width: 100
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape
+

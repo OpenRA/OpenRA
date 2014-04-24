@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Network;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
@@ -43,6 +44,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public string TooltipActor { get; private set; }
 		public readonly World World;
+		readonly OrderManager orderManager;
 
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		ProductionQueue currentQueue;
@@ -62,8 +64,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 		float2 holdOffset, readyOffset, timeOffset, queuedOffset;
 
 		[ObjectCreator.UseCtor]
-		public ProductionPaletteWidget(World world, WorldRenderer worldRenderer)
+		public ProductionPaletteWidget(OrderManager orderManager, World world, WorldRenderer worldRenderer)
 		{
+			this.orderManager = orderManager;
 			this.World = world;
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() =>
@@ -244,9 +247,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 					var first = icon.Queued[0];
 					var waiting = first != CurrentQueue.CurrentItem() && !first.Done;
 					if (first.Done)
-						overlayFont.DrawTextWithContrast(ReadyText,
-														 icon.Pos + readyOffset,
-														 Color.White, Color.Black, 1);
+					{
+						// Blink the ready text
+						if (orderManager.LocalFrameNumber / 25 % 2 == 0)
+							overlayFont.DrawTextWithContrast(ReadyText,
+															 icon.Pos + readyOffset,
+															 Color.White, Color.Black, 1);
+					}
 					else if (first.Paused)
 						overlayFont.DrawTextWithContrast(HoldText,
 														 icon.Pos + holdOffset,

@@ -20,8 +20,6 @@ E1:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2,idle3,idle4
 		StandAnimations: stand, stand2
-	DetectCloaked:
-		Range: 2
 
 E2:
 	Inherits: ^Infantry
@@ -52,8 +50,6 @@ E2:
 		Weapon: GrenadierExplode
 		EmptyWeapon: GrenadierExplode
 		Chance: 50
-	DetectCloaked:
-		Range: 2
 
 E3:
 	Inherits: ^Infantry
@@ -71,6 +67,8 @@ E3:
 		Speed: 42
 	Health:
 		HP: 45
+	AutoTarget:
+		ScanRadius: 5
 	Armament:
 		Weapon: Rockets
 		LocalOffset: 256,43,341
@@ -79,8 +77,6 @@ E3:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand, stand2
-	DetectCloaked:
-		Range: 2
 
 E4:
 	Inherits: ^Infantry
@@ -96,7 +92,7 @@ E4:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
-		Speed: 71
+		Speed: 56
 	Health:
 		HP: 90
 	Armament:
@@ -111,8 +107,6 @@ E4:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand, stand2
-	DetectCloaked:
-		Range: 2
 
 E5:
 	Inherits: ^Infantry
@@ -130,10 +124,10 @@ E5:
 	Mobile:
 		Speed: 56
 		TerrainSpeeds:
-			Tiberium: 80
-				PathingCost: 80
-			BlueTiberium: 80
-				PathingCost: 80
+			Tiberium: 90
+				PathingCost: 90
+			BlueTiberium: 90
+				PathingCost: 90
 	Health:
 		HP: 90
 	Armament:
@@ -149,8 +143,6 @@ E5:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 		StandAnimations: stand, stand2
-	DetectCloaked:
-		Range: 2
 
 E6:
 	Inherits: ^Infantry
@@ -214,8 +206,6 @@ RMBO:
 		StandAnimations: stand, stand2
 	AnnounceOnBuild:
 	AnnounceOnKill:
-	DetectCloaked:
-		Range: 2
 
 PVICE:
 	Inherits: VICE

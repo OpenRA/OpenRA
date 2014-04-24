@@ -752,7 +752,7 @@ cyc2:
 		ShadowStart: 308
 	run:
 		Start: 8
-		Length: 10
+		Length: 9
 		Facings: 8
 		Tick: 100
 		ShadowStart: 316
@@ -768,7 +768,7 @@ cyc2:
 		ShadowStart: 413
 	prone-run:
 		Start: 110
-		Length: 8
+		Length: 9
 		Facings: 8
 		Tick: 100
 		ShadowStart: 418
@@ -776,7 +776,7 @@ cyc2:
 		Start: 110
 		Length: 1
 		Facings: 8
-		Stride: 8
+		Stride: 9
 		ShadowStart: 418
 	die1:
 		Start: 182

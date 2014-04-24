@@ -86,6 +86,7 @@ ChromeLayout:
 	mods/ra/chrome/assetbrowser.yaml
 	mods/ra/chrome/irc.yaml
 	mods/ra/chrome/missionbrowser.yaml
+	mods/ra/chrome/confirmation-dialogs.yaml
 
 Weapons:
 	mods/d2k/weapons.yaml
@@ -166,3 +167,5 @@ LuaScripts:
 	mods/common/lua/rules.lua
 	mods/common/lua/production.lua
 	mods/common/lua/facing.lua
+
+SupportsMapsFrom: d2k

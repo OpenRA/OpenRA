@@ -188,3 +188,5 @@ LuaScripts:
 
 Missions:
 	mods/cnc/missions.yaml
+
+SupportsMapsFrom: cnc

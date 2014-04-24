@@ -100,6 +100,7 @@ ChromeLayout:
 	mods/ra/chrome/assetbrowser.yaml
 	mods/ra/chrome/irc.yaml
 	mods/ra/chrome/missionbrowser.yaml
+	mods/ra/chrome/confirmation-dialogs.yaml
 
 Weapons:
 	mods/ra/weapons.yaml
@@ -185,3 +186,5 @@ LuaScripts:
 
 Missions:
 	mods/ra/missions.yaml
+
+SupportsMapsFrom: ra

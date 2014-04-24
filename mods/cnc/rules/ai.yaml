@@ -1,6 +1,6 @@
 Player:
-	HackyAI@Default:
-		Name: Easy AI
+	HackyAI@Cabal:
+		Name:Cabal
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -61,8 +61,8 @@ Player:
 			heli: 5%
 			orca: 5%
 		SquadSize: 15
-	HackyAI@Normal:
-		Name: Normal AI
+	HackyAI@Watson:
+		Name:Watson
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -123,8 +123,8 @@ Player:
 			jeep: 20%
 			mtnk: 50%
 		SquadSize: 15
-	HackyAI@hard:
-		Name: Hard AI
+	HackyAI@HAL9001:
+		Name:HAL 9001
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -187,4 +187,3 @@ Player:
 			htnk: 50%
 			orca: 10%
 		SquadSize: 8
-
