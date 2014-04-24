@@ -119,9 +119,7 @@ namespace OpenRA
 			GlobalFileSystem.Mount(GlobalFileSystem.OpenPackage(map.Path, null, int.MaxValue));
 
 			using (new Support.PerfTimer("LoadRules"))
-			{
 				Rules.LoadRules(Manifest, map);
-			}
 			SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset].Extensions, SheetBuilder);
 
 			using (new Support.PerfTimer("SequenceProvider.Initialize"))

@@ -6,14 +6,12 @@
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
  */
-using System.IO;
-
-
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using OpenRA.FileSystem;
 using OpenRA.Traits;
 

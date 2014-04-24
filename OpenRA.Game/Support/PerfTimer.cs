@@ -61,22 +61,22 @@ namespace OpenRA.Support
 			Log.Write("perf", FormatString, s, Math.Round(this.sw.Elapsed.TotalMilliseconds));
 		}
 
-		private static string GetHeader(string indentation, string label)
+		static string GetHeader(string indentation, string label)
 		{
 			return string.Concat(indentation, LimitLength(label, MaxIndentedLabel - indentation.Length));
 		}
 
-		private static string GetOneLiner(string indentation, string label)
+		static string GetOneLiner(string indentation, string label)
 		{
 			return string.Concat(indentation, SetLength(label, MaxIndentedLabel - indentation.Length));
 		}
 
-		private static string GetFooter(string indentation)
+		static string GetFooter(string indentation)
 		{
 			return string.Concat(indentation, new string('-', MaxIndentedLabel - indentation.Length));
 		}
 
-		private static string LimitLength(string s, int length, int minLength = 8)
+		static string LimitLength(string s, int length, int minLength = 8)
 		{
 			length = Math.Max(length, minLength);
 
@@ -86,7 +86,7 @@ namespace OpenRA.Support
 			return s.Substring(0, length);
 		}
 
-		private static string SetLength(string s, int length, int minLength = 8)
+		static string SetLength(string s, int length, int minLength = 8)
 		{
 			length = Math.Max(length, minLength);
 
@@ -99,7 +99,7 @@ namespace OpenRA.Support
 			return s.Substring(0, length);
 		}
 
-		private static string Indentation
+		static string Indentation
 		{
 			get
 			{
