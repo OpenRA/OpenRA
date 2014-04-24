@@ -410,8 +410,19 @@ namespace OpenRA.Mods.RA.Widgets
 
 		void StartProduction(World world, string item)
 		{
-			world.IssueOrder(Order.StartProduction(CurrentQueue.self, item,
-				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
+			var count = 1;
+
+			if (Game.GetModifierKeys().HasModifier(Modifiers.Shift))
+			{
+				var limit = Rules.Info[item].Traits.Get<BuildableInfo>().BuildLimit;
+				var existing = world.Actors.Where(a => a.Info.Name == item && a.Owner == world.LocalPlayer).Count();
+				count = (limit - existing) >= 5 ? 5 : limit - existing;
+
+				if (count <= 0)
+					count = 1;
+			}
+
+			world.IssueOrder(Order.StartProduction(CurrentQueue.self, item, count));
 		}
 
 		void DrawBuildTabs(World world, int paletteHeight)
