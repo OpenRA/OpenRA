@@ -643,10 +643,8 @@ end
 function FileTreeProjectListUpdate(menu, items)
   local list = getProjectLabels()
   for i=#list, 1, -1 do
-    local file = list[i].filename
     local id = ID("file.recentprojects."..i)
     local label = list[i]
-    local item = menu:FindItemByPosition(i-1)
     if i <= items then -- this is an existing item; update the label
       menu:FindItem(id):SetItemLabel(label)
     else -- need to add an item
@@ -655,6 +653,8 @@ function FileTreeProjectListUpdate(menu, items)
       ide.frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, function()
         ProjectUpdateProjectDir(FileTreeGetProjects()[i]) end)
     end
+    -- disable the currently selected project
+    if i == 1 then menu:Enable(id, false) end
   end
   for i=items, #list+1, -1 do -- delete the rest if the list got shorter
     menu:Delete(menu:FindItemByPosition(i-1))
