@@ -91,7 +91,7 @@ namespace OpenRA.Widgets
 				return;
 
 			// This takes advantage of the fact that recentLines is ordered by expiration, from sooner to later
-			while (recentLines.Count > 0 && totalTicks >= recentLines [0].Expiration)
+			while (recentLines.Count > 0 && totalTicks >= recentLines[0].Expiration)
 				recentLines.RemoveAt(0);
 		}
 	}
