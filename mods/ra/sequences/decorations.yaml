@@ -671,4 +671,4 @@ ctflag:
 		Start: 0
 		Length: 9
 		Tick: 50
-		Offset: 0,12
+		Offset: 0,-12
