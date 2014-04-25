@@ -872,7 +872,7 @@ local love = {
       },
       getWrap = {
        args = "()",
-       description = "Gets the wrapping properties of a Canvas.\n\nThis functions returns the currently set horizontal and vertical wrapping modes for the Canvas.",
+       description = "Gets the wrapping properties of a Canvas.\n\nThis function returns the currently set horizontal and vertical wrapping modes for the Canvas.",
        returns = "(horizontal: WrapMode, vertical: WrapMode)",
        type = "function"
       },
@@ -1094,7 +1094,7 @@ local love = {
       },
       getWrap = {
        args = "()",
-       description = "Gets the wrapping properties of an Image.\n\nThis functions returns the currently set horizontal and vertical wrapping modes for the image.",
+       description = "Gets the wrapping properties of an Image.\n\nThis function returns the currently set horizontal and vertical wrapping modes for the image.",
        returns = "(horizontal: WrapMode, vertical: WrapMode)",
        type = "function"
       },
