@@ -47,9 +47,12 @@ namespace OpenRA
 			{
 				try
 				{
-					var map = new Map(path, manifest.Mod.Id);
-					if (manifest.MapCompatibility.Contains(map.RequiresMod))
-						previews[map.Uid].UpdateFromMap(map);
+					using (new Support.PerfTimer(path))
+					{
+						var map = new Map(path, manifest.Mod.Id);
+						if (manifest.MapCompatibility.Contains(map.RequiresMod))
+							previews[map.Uid].UpdateFromMap(map);
+					}
 				}
 				catch (Exception e)
 				{

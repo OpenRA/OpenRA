@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -171,17 +171,17 @@ namespace OpenRA
 			}
 		}
 
-		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text, double time)
+		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text, TimeSpan time)
 		{
 			var sw = new Stopwatch();
 
 			e.Do(x =>
 			{
-				var t = sw.ElapsedTime();
+				var t = sw.Elapsed;
 				a(x);
-				var dt = sw.ElapsedTime() - t;
+				var dt = sw.Elapsed - t;
 				if (dt > time)
-					Log.Write("perf", text, x, dt * 1000, Game.LocalTick);
+					Log.Write("perf", text, x, dt.TotalMilliseconds, Game.LocalTick);
 			});
 		}
 
