@@ -16,7 +16,7 @@ local fileMenu = wx.wxMenu({
     { ID_SAVEAS, TR("Save &As...")..KSC(ID_SAVEAS), TR("Save the current document to a file with a new name") },
     { ID_SAVEALL, TR("Save A&ll")..KSC(ID_SAVEALL), TR("Save all open documents") },
     { },
-    -- placeholder for ID_RECENTFILES
+    -- placeholder for ID_RECENTFILES and ID_RECENTPROJECTS
     { },
     { ID_EXIT, TR("E&xit")..KSC(ID_EXIT), TR("Exit program") }})
 menuBar:Append(fileMenu, TR("&File"))
@@ -25,6 +25,14 @@ local filehistorymenu = wx.wxMenu({})
 local filehistory = wx.wxMenuItem(fileMenu, ID_RECENTFILES,
   TR("Recent Files")..KSC(ID_RECENTFILES), TR("File history"), wx.wxITEM_NORMAL, filehistorymenu)
 fileMenu:Insert(8,filehistory)
+
+local projecthistorymenu = wx.wxMenu({
+    { },
+    { ID_RECENTPROJECTSCLEAR, TR("Clear Items")..KSC(ID_RECENTPROJECTSCLEAR), TR("Clear project history") },
+})
+local projecthistory = wx.wxMenuItem(fileMenu, ID_RECENTPROJECTS,
+  TR("Recent &Projects")..KSC(ID_RECENTPROJECTS), TR("Project history"), wx.wxITEM_NORMAL, projecthistorymenu)
+fileMenu:Insert(9,projecthistory)
 
 do -- recent file history
   local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
@@ -204,4 +212,19 @@ frame:Connect(ID_EXIT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     if not SaveOnExit(true) then return end
     frame:Close() -- this will trigger wxEVT_CLOSE_WINDOW
+  end)
+
+frame:Connect(ID_RECENTPROJECTSCLEAR, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event) FileTreeProjectListClear() end)
+
+local recentprojects = 0
+frame:Connect(ID_RECENTPROJECTS, wx.wxEVT_UPDATE_UI,
+  function (event)
+    recentprojects = FileTreeProjectListUpdate(projecthistorymenu, recentprojects)
+    local pos = 1 -- add shortcut for the previous project (if any)
+    if recentprojects > pos then
+      local item = projecthistorymenu:FindItemByPosition(pos)
+      item:SetItemLabel(item:GetItemLabelText()..KSC(ID_RECENTPROJECTSPREV))
+    end
+    event:Enable(recentprojects > 0)
   end)

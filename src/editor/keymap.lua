@@ -35,6 +35,7 @@ ide.config.keymap = {
   [ID_RECENTFILESPREV]  = "Ctrl-<",
   [ID_RECENTFILESNEXT]  = "Ctrl->",
   [ID_EXIT]             = "Ctrl-Q",
+  [ID_RECENTPROJECTSPREV] = "Ctrl-Shift-<",
 -- Edit menu
   [ID_CUT]              = "Ctrl-X",
   [ID_COPY]             = "Ctrl-C",

@@ -553,6 +553,12 @@ local function abbreviateProjList(projdirlist)
   return projlist
 end
 
+local function refreshProjectList()
+  projcombobox:Clear()
+  projcombobox:Append(abbreviateProjList(filetree.projdirlist))
+  projcombobox:Select(0)
+end
+
 function filetree:updateProjectDir(newdir)
   if (not newdir) or not wx.wxDirExists(newdir) then return end
   local dirname = wx.wxFileName.DirName(newdir)
@@ -580,10 +586,8 @@ function filetree:updateProjectDir(newdir)
     newdir,
     ide.config.projecthistorylength,
     function(s1, s2) return dirname:SameAs(wx.wxFileName.DirName(s2)) end)
-  projcombobox:Clear()
-  projcombobox:Append(abbreviateProjList(filetree.projdirlist))
-  projcombobox:Select(0)
 
+  refreshProjectList()
   ProjectUpdateProjectDir(newdir,true)
   treeSetRoot(projtree,newdir)
 
@@ -605,7 +609,7 @@ projpanel.projtree = projtree
 
 function FileTreeGetDir()
   return filetree.projdir and #filetree.projdir > 0
-    and wx.wxFileName.DirName(filetree.projdir):GetFullPath()
+    and wx.wxFileName.DirName(filetree.projdir):GetFullPath() or nil
 end
 
 function FileTreeSetProjects(tab)
@@ -617,6 +621,45 @@ end
 
 function FileTreeGetProjects()
   return filetree.projdirlist
+end
+
+local function getProjectLabels()
+  local labels = {}
+  for i, proj in ipairs(FileTreeGetProjects()) do
+    local config = ide.session.projects[proj]
+    local intfname = config and config[2] and config[2].interpreter or ide.interpreter:GetFileName()
+    local interpreter = intfname and ide.interpreters[intfname]
+    table.insert(labels, proj..(interpreter and (' ('..interpreter:GetName()..')') or ''))
+  end
+  return labels
+end
+
+function FileTreeProjectListClear()
+  -- remove all items from the list except the current one
+  filetree.projdirlist = {FileTreeGetDir()}
+  refreshProjectList()
+end
+
+function FileTreeProjectListUpdate(menu, items)
+  local list = getProjectLabels()
+  for i=#list, 1, -1 do
+    local file = list[i].filename
+    local id = ID("file.recentprojects."..i)
+    local label = list[i]
+    local item = menu:FindItemByPosition(i-1)
+    if i <= items then -- this is an existing item; update the label
+      menu:FindItem(id):SetItemLabel(label)
+    else -- need to add an item
+      local item = wx.wxMenuItem(menu, id, label, "")
+      menu:Insert(items, item)
+      ide.frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+        ProjectUpdateProjectDir(FileTreeGetProjects()[i]) end)
+    end
+  end
+  for i=items, #list+1, -1 do -- delete the rest if the list got shorter
+    menu:Delete(menu:FindItemByPosition(i-1))
+  end
+  return #list
 end
 
 local curr_file
