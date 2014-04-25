@@ -170,52 +170,38 @@ namespace OpenRA.Widgets
 			var textSize = font.Measure(text);
 			if (textSize.X > width)
 			{
-				var lines = text.Split('\n');
-				var newLines = new List<string>();
-				var i = 0;
-				var line = lines[i++];
+				var lines = text.Split('\n').ToList();
 
-				for(;;)
+				for (int i=0; i<lines.Count; i++)
 				{
-					newLines.Add(line);
+					var line = lines[i];
 					var m = font.Measure(line);
-					var spaceIndex = 0;
-					var start = line.Length - 1;
 
 					if (m.X <= width)
-					{
-						if (i < lines.Length - 1)
-						{
-							line = lines[i++];
-							continue;
-						}
-						else
-							break;
-					}
+						continue;
+
+					var bestSpaceIndex = -1;
+					var start = line.Length - 1;
 
 					while (m.X > width)
 					{
-						if (-1 == (spaceIndex = line.LastIndexOf(' ', start)))
+						int spaceIndex = line.LastIndexOf(' ', start);
+						if (spaceIndex == -1)
 							break;
+						bestSpaceIndex = spaceIndex;
+
 						start = spaceIndex - 1;
 						m = font.Measure(line.Substring(0, spaceIndex));
 					}
 
-					if (spaceIndex != -1)
+					if (bestSpaceIndex != -1)
 					{
-						newLines.RemoveAt(newLines.Count - 1);
-						newLines.Add(line.Substring(0, spaceIndex));
-						line = line.Substring(spaceIndex + 1);
+						lines[i] = line.Substring(0, bestSpaceIndex);
+						lines.Insert(i + 1, line.Substring(bestSpaceIndex + 1));
 					}
-					else if (i < lines.Length - 1)
-					{
-						line = lines[i++];
-						continue;
-					}
-					else
-						break;
 				}
-				return newLines.JoinWith("\n");
+
+				return string.Join("\n", lines);
 			}
 			return text;
 		}

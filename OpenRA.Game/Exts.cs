@@ -149,7 +149,7 @@ namespace OpenRA
 
 		public static string JoinWith<T>(this IEnumerable<T> ts, string j)
 		{
-			return string.Join(j, ts.Select(t => t.ToString()).ToArray());
+			return string.Join(j, ts);
 		}
 
 		public static IEnumerable<T> Append<T>(this IEnumerable<T> ts, params T[] moreTs)
