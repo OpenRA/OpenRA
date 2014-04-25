@@ -5306,10 +5306,10 @@ local function convert(l)
   if l.modules then
     l.description = 'Love2d modules, functions, and callbacks.'
     l.type = "lib"
-    l.childs = l.modules
+    l.childs = merge(l.modules, l.functions or {}, l.callbacks or {})
     l.types = nil -- don't need types
-    for _,v in pairs(l.callbacks or {}) do table.insert(l.childs, v) end
     l.callbacks = nil
+    l.functions = nil
     l.modules = nil
   end
 
