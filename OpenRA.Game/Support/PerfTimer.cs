@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace OpenRA.Support
 {
@@ -21,8 +22,8 @@ namespace OpenRA.Support
 		//
 		// Hacks to give the output a tree-like structure
 		//
-		static System.Threading.ThreadLocal<int> depth = new System.Threading.ThreadLocal<int>();
-		static System.Threading.ThreadLocal<string> prevHeader = new System.Threading.ThreadLocal<string>();
+		static ThreadLocal<int> depth = new ThreadLocal<int>();
+		static ThreadLocal<string> prevHeader = new ThreadLocal<string>();
 		const int MaxWidth = 60, Digits = 6;
 		const int MaxIndentedLabel = MaxWidth - Digits;
 		const string IndentationString = "|   ";
