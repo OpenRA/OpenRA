@@ -23,8 +23,7 @@ namespace OpenRA.Widgets
 
 		const int logLength = 9;
 		uint totalTicks;
-
-		internal List<ChatLine> recentLines = new List<ChatLine>();
+		List<ChatLine> recentLines = new List<ChatLine>();
 
 		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
 
@@ -82,11 +81,6 @@ namespace OpenRA.Widgets
 		{
 			if (recentLines.Count > 0)
 				recentLines.RemoveAt(0);
-		}
-
-		public void ClearChat()
-		{
-			recentLines = new List<ChatLine>();
 		}
 
 		public override void Tick()
