@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA
 			var p = end - start;
 			var q = new float2(p.Y, -p.X);
 			q = (start != end) ? (1 / q.Length) * q : new float2(1, 0);
-			var c = -float2.Dot(q, start.ToInt2());
+			var c = -float2.Dot(q, new float2(start.X, start.Y));
 
 			/* return all points such that |ax + by + c| < depth */
 

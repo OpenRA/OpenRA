@@ -242,18 +242,18 @@ namespace OpenRA.Mods.RA.Widgets
 
 		int2 CellToMinimapPixel(CPos p)
 		{
-			var viewOrigin = new float2(mapRect.X, mapRect.Y);
 			var mapOrigin = new CPos(world.Map.Bounds.Left, world.Map.Bounds.Top);
+			var mapOffset = p - mapOrigin;
 
-			return (viewOrigin + previewScale * (p - mapOrigin).ToFloat2()).ToInt2();
+			return new int2(mapRect.X, mapRect.Y) + (previewScale * new float2(mapOffset.X, mapOffset.Y)).ToInt2();
 		}
 
 		CPos MinimapPixelToCell(int2 p)
 		{
 			var viewOrigin = new float2(mapRect.X, mapRect.Y);
-			var mapOrigin = new CPos(world.Map.Bounds.Left, world.Map.Bounds.Top);
-
-			return (CPos)(mapOrigin.ToFloat2() + (1f / previewScale) * (p - viewOrigin)).ToInt2();
+			var mapOrigin = new float2(world.Map.Bounds.Left, world.Map.Bounds.Top);
+			var fcell = mapOrigin + (1f / previewScale) * (p - viewOrigin);
+			return new CPos((int)fcell.X, (int)fcell.Y);
 		}
 	}
 }

@@ -37,9 +37,6 @@ namespace OpenRA
 		public static CPos Max(CPos a, CPos b) { return new CPos(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }
 		public static CPos Min(CPos a, CPos b) { return new CPos(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
 
-		public float2 ToFloat2() { return new float2(X, Y); }
-		public int2 ToInt2() { return new int2(X, Y); }
-
 		public CPos Clamp(Rectangle r)
 		{
 			return new CPos(Math.Min(r.Right, Math.Max(X, r.Left)),

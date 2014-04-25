@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 {
 	public class OreRefineryInfo : ITraitInfo
 	{
-		public readonly int2 DockOffset = new int2(1, 2);
+		public readonly CVec DockOffset = new CVec(1, 2);
 
 		public readonly bool ShowTicks = true;
 		public readonly int TickLifetime = 30;
@@ -44,8 +44,7 @@ namespace OpenRA.Mods.RA
 		[Sync] bool preventDock = false;
 
 		public bool AllowDocking { get { return !preventDock; } }
-
-		public CVec DeliverOffset { get { return (CVec)Info.DockOffset; } }
+		public CVec DeliverOffset { get { return Info.DockOffset; } }
 
 		public virtual Activity DockSequence(Actor harv, Actor self) { return new RAHarvesterDockSequence(harv, self, Info.DockAngle); }
 

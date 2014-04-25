@@ -21,12 +21,7 @@ namespace OpenRA
 		public readonly int X, Y;
 
 		public CVec(int x, int y) { X = x; Y = y; }
-		public CVec(Size p) { X = p.Width; Y = p.Height; }
-
 		public static readonly CVec Zero = new CVec(0, 0);
-
-		public static explicit operator CVec(int2 a) { return new CVec(a.X, a.Y); }
-		public static explicit operator CVec(float2 a) { return new CVec((int)a.X, (int)a.Y); }
 
 		public static CVec operator +(CVec a, CVec b) { return new CVec(a.X + b.X, a.Y + b.Y); }
 		public static CVec operator -(CVec a, CVec b) { return new CVec(a.X - b.X, a.Y - b.Y); }
@@ -49,8 +44,6 @@ namespace OpenRA
 		public int LengthSquared { get { return X * X + Y * Y; } }
 		public int Length { get { return (int)Math.Sqrt(LengthSquared); } }
 
-		public float2 ToFloat2() { return new float2(X, Y); }
-		public int2 ToInt2() { return new int2(X, Y); }
 		public WVec ToWVec() { return new WVec(X*1024, Y*1024, 0); }
 
 		public CVec Clamp(Rectangle r)

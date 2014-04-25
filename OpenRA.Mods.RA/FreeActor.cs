@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		[Desc("What the unit should start doing. Warning: If this is not a harvester", "it will break if you use FindResources.")]
 		public readonly string InitialActivity = null;
 		[Desc("Offset relative to structure-center in 2D (e.g. 1, 2)")]
-		public readonly int2 SpawnOffset = int2.Zero;
+		public readonly CVec SpawnOffset = CVec.Zero;
 		[Desc("Which direction the unit should face.")]
 		public readonly int Facing = 0;
 
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 				var a = w.CreateActor(info.Actor, new TypeDictionary
 				{
 					new ParentActorInit(init.self),
-					new LocationInit(init.self.Location + (CVec)info.SpawnOffset),
+					new LocationInit(init.self.Location + info.SpawnOffset),
 					new OwnerInit(init.self.Owner),
 					new FacingInit(info.Facing),
 				});
