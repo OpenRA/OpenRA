@@ -123,6 +123,7 @@ namespace OpenRA.Widgets
 						WidgetUtils.FillRectWithColor(new Rectangle(pos.X + offset.X + 2, pos.Y + offset.Y + 2, 12, 12), colors[p]);
 
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset);
+					Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")].DrawTextWithContrast(Convert.ToString(spawnPoints.IndexOf(p) + 1), new int2(pos.X + offset.X + 4, pos.Y + offset.Y - 15), ChromeMetrics.Get<Color>("SpawnColor"), ChromeMetrics.Get<Color>("SpawnContrastColor"), 2);
 
 					if ((pos - Viewport.LastMousePos).LengthSquared < 64)
 						TooltipSpawnIndex = spawnPoints.IndexOf(p) + 1;

@@ -19,3 +19,6 @@ Metrics:
 	TextContrast: false
 	TextContrastColor: 0,0,0
 	ColorPickerRemapIndices: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
+	SpawnFont: Bold
+	SpawnColor: 255,255,255
+	SpawnContrastColor: 0,0,0

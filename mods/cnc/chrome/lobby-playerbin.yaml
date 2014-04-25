@@ -1,14 +1,14 @@
 ScrollPanel@LOBBY_PLAYER_BIN:
 	X: 15
 	Y: 30
-	Width: 501
+	Width: 556
 	Height: 219
 	ItemSpacing: 5
 	Children:
 		Container@TEMPLATE_EDITABLE_PLAYER:
 			X: 5
 			Y: 0
-			Width: 475
+			Width: 530
 			Height: 25
 			Visible: false
 			Children:
@@ -84,9 +84,14 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Height: 25
 					X: 390
 					Font: Regular
+				DropDownButton@SPAWN:
+					X: 445
+					Width: 50
+					Height: 25
+					Text: Spawn
 				Image@STATUS_IMAGE:
 					Visible: false
-					X: 450
+					X: 495
 					Y: 4
 					Width: 20
 					Height: 20
@@ -94,14 +99,14 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					ImageName: checked
 				Checkbox@STATUS_CHECKBOX:
 					Visible: false
-					X: 446
+					X: 501
 					Y: 2
 					Width: 20
 					Height: 20
 		Container@TEMPLATE_NONEDITABLE_PLAYER:
 			X: 5
 			Y: 0
-			Width: 475
+			Width: 530
 			Height: 25
 			Visible: false
 			Children:
@@ -173,7 +178,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Y: 0
 				Image@STATUS_IMAGE:
 					Visible: false
-					X: 448
+					X: 501
 					Y: 4
 					Width: 20
 					Height: 20
@@ -182,7 +187,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 		Container@TEMPLATE_EMPTY:
 			X: 5
 			Y: 0
-			Width: 475
+			Width: 530
 			Height: 25
 			Visible: false
 			Children:
@@ -202,14 +207,14 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 				Button@JOIN:
 					Text: Play in this slot
 					Font: Regular
-					Width: 257
+					Width: 312
 					Height: 25
 					X: 210
 					Y: 0
 		Container@TEMPLATE_EDITABLE_SPECTATOR:
 			X: 5
 			Y: 0
-			Width: 475
+			Width: 530
 			Height: 25
 			Visible: false
 			Children:
@@ -244,7 +249,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					MaxLength: 16
 				Label@SPECTATOR:
 					Text: Spectator
-					Width: 315-55
+					Width: 315-55+55
 					Height: 25
 					X: 210
 					Y: 0
@@ -253,7 +258,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 		Container@TEMPLATE_NONEDITABLE_SPECTATOR:
 			X: 5
 			Y: 0
-			Width: 475
+			Width: 530
 			Height: 25
 			Visible: false
 			Children:
@@ -294,7 +299,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Font: Bold
 				Label@SPECTATOR:
 					Text: Spectator
-					Width: 315-55
+					Width: 315-55+55
 					Height: 25
 					X: 210
 					Y: 0
@@ -303,7 +308,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 		Container@TEMPLATE_NEW_SPECTATOR:
 			X: 5
 			Y: 0
-			Width: 474
+			Width: 529
 			Height: 25
 			Visible: false
 			Children:
@@ -317,7 +322,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 				Button@SPECTATE:
 					Text: Spectate
 					Font: Regular
-					Width: 257
+					Width: 312
 					Height: 25
 					X: 210
 					Y: 0

@@ -608,6 +608,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, colorPreview);
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, countryNames);
 					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map);
+					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, Map);
 					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, Map);
 				}
 				else
@@ -623,6 +624,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					LobbyUtils.SetupColorWidget(template, slot, client);
 					LobbyUtils.SetupFactionWidget(template, slot, client, countryNames);
 					LobbyUtils.SetupTeamWidget(template, slot, client);
+					LobbyUtils.SetupSpawnWidget(template, slot, client);
 					LobbyUtils.SetupReadyWidget(template, slot, client);
 				}
 

@@ -88,6 +88,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 
+		public static void ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client,
+			OrderManager orderManager, int teamCount)
+		{
+			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => client.SpawnPoint == ii,
+					() => orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(client.Index, ii))));
+				item.Get<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
+				return item;
+			};
+
+			var options = Exts.MakeArray(teamCount + 1, i => i).ToList();
+			dropdown.ShowDropDown("SPAWN_DROPDOWN_TEMPLATE", 150, options, setupItem);
+		}
+
 		public static void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client,
 			OrderManager orderManager, Dictionary<string, string> countryNames)
 		{
@@ -382,6 +398,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static void SetupTeamWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
 			parent.Get<LabelWidget>("TEAM").GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
+		}
+
+		public static void SetupEditableSpawnWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
+		{
+			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN");
+			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady;
+			dropdown.OnMouseDown = _ => ShowSpawnDropDown(dropdown, c, orderManager, map.PlayerCount);
+			dropdown.GetText = () => (c.SpawnPoint == 0) ? "-" : c.SpawnPoint.ToString();
+		}
+
+		public static void SetupSpawnWidget(Widget parent, Session.Slot s, Session.Client c)
+		{
+			parent.Get<LabelWidget>("SPAWN").GetText = () => (c.SpawnPoint == 0) ? "-" : c.SpawnPoint.ToString();
 		}
 
 		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)

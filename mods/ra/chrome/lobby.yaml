@@ -2,7 +2,7 @@ Background@SERVER_LOBBY:
 	Logic: LobbyLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
-	Width: 800
+	Width: 858
 	Height: 600
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
@@ -48,8 +48,15 @@ Background@SERVER_LOBBY:
 					Text: Team
 					Align: Center
 					Font: Bold
+				Label@LABEL_LOBBY_TEAM:
+					X: 478
+					Width: 48
+					Height: 25
+					Text: Spawn
+					Align: Center
+					Font: Bold
 				Label@LABEL_LOBBY_STATUS:
-					X: 477
+					X: 535
 					Width: 20
 					Height: 25
 					Text: Ready
@@ -59,35 +66,35 @@ Background@SERVER_LOBBY:
 		DropDownButton@SLOTS_DROPDOWNBUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 291
-			Width: 151
+			Width: 167
 			Height: 25
 			Font: Bold
 			Text: Slot Admin
 		Button@OPTIONS_BUTTON:
-			X: 178
+			X: 194
 			Y: PARENT_BOTTOM - 291
-			Width: 121
+			Width: 135
 			Height: 25
 			Font: Bold
 			Text: Game Options
 		Button@CHANGEMAP_BUTTON:
-			X: 306
+			X: 336
 			Y: PARENT_BOTTOM - 291
-			Width: 121
+			Width: 135
 			Height: 25
 			Text: Change Map
 			Font: Bold
 		Button@START_GAME_BUTTON:
-			X: 434
+			X: 478
 			Y: PARENT_BOTTOM - 291
-			Width: 121
+			Width: 135
 			Height: 25
 			Text: Start Game
 			Font: Bold
 		ScrollPanel@CHAT_DISPLAY:
 			X: 20
 			Y: PARENT_BOTTOM - HEIGHT - 52
-			Width: 760
+			Width: 818
 			Height: 210
 			ItemSpacing: 1
 			Children:

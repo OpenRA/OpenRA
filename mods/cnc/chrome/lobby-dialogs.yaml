@@ -92,7 +92,7 @@ Background@KICK_SPECTATORS_DIALOG:
 Background@LOBBY_OPTIONS_BIN:
 	X: 15
 	Y: 30
-	Width: 501
+	Width: 556
 	Height: 219
 	Background: scrollpanel-bg
 	Children:
