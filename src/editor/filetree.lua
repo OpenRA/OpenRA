@@ -295,6 +295,7 @@ local function treeSetConnectorsAndIcons(tree)
       tree:SelectItem(item_id)
 
       local menu = wx.wxMenu {
+        { },
         { ID_NEWFILE, TR("New &File") },
         { ID_NEWDIRECTORY, TR("&New Directory") },
         { },
@@ -305,6 +306,15 @@ local function treeSetConnectorsAndIcons(tree)
         { ID_COPYFULLPATH, TR("Copy Full Path") },
         { ID_SHOWLOCATION, TR("Show Location") },
       }
+      local projectdirectorymenu = wx.wxMenu({
+        { },
+        {ID_PROJECTDIRCHOOSE, TR("Choose...")..KSC(ID_PROJECTDIRCHOOSE), TR("Choose a project directory")},
+      })
+      local projectdirectory = wx.wxMenuItem(menu, ID_PROJECTDIR,
+        TR("Project Directory"), TR("Set the project directory to be used"),
+        wx.wxITEM_NORMAL, projectdirectorymenu)
+      menu:Insert(0, projectdirectory)
+      FileTreeProjectListUpdate(projectdirectorymenu, 0)
 
       local function addItem(item_id, name, image)
         local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
