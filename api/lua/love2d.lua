@@ -5313,8 +5313,6 @@ local function convert(l)
     l.modules = nil
   end
 
-  l.description = l.description and l.description:gsub("\n\n", "\n") or nil
-
   if not l.childs then return end
 
   for n,v in ipairs(l.childs) do
