@@ -42,11 +42,6 @@ namespace OpenRA.Traits
 			return (angle / 4 - 0x40) & 0xFF;
 		}
 
-		public static int GetFacing(CVec d, int currentFacing)
-		{
-			return GetFacing(d.ToWVec(), currentFacing);
-		}
-
 		public static int GetNearestFacing(int facing, int desiredFacing)
 		{
 			var turn = desiredFacing - facing;

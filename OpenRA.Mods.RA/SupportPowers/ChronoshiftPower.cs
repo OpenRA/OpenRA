@@ -226,7 +226,7 @@ namespace OpenRA.Mods.RA
 				// Unit previews
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					var offset = (xy - sourceLocation).ToWVec();
+					var offset = world.Map.CenterOfCell(xy) - world.Map.CenterOfCell(sourceLocation);
 					if (manager.self.Owner.Shroud.IsTargetable(unit))
 						foreach (var r in unit.Render(wr))
 							yield return r.OffsetBy(offset);

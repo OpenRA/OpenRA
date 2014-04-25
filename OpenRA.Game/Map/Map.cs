@@ -476,6 +476,11 @@ namespace OpenRA
 			return new CPos(pos.X / 1024, pos.Y / 1024);
 		}
 
+		public int FacingBetween(CPos cell, CPos towards, int fallbackfacing)
+		{
+			return Traits.Util.GetFacing(CenterOfCell(towards) - CenterOfCell(cell), fallbackfacing);
+		}
+
 		public void Resize(int width, int height)		// editor magic.
 		{
 			var oldMapTiles = MapTiles.Value;

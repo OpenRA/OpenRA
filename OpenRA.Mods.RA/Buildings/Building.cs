@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public Actor FindBaseProvider(World world, Player p, CPos topLeft)
 		{
-			var center = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(this);
+			var center = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, this);
 			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
 			{
 				var validOwner = bp.Actor.Owner == p || (world.LobbyInfo.GlobalSettings.AllyBuildRadius && bp.Actor.Owner.Stances[p] == Stance.Ally);
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA.Buildings
 			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
-			CenterPosition = init.world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(Info);
+			CenterPosition = init.world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.world, Info);
 			BuildComplete = init.Contains<SkipMakeAnimsInit>();
 		}
 

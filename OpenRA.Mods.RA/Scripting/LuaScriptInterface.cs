@@ -229,7 +229,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public int GetFacing(object vec, double currentFacing)
 		{
 			if (vec is CVec)
-				return Util.GetFacing((CVec)vec, (int)currentFacing);
+				return world.Map.FacingBetween(CPos.Zero, CPos.Zero + (CVec)vec, (int)currentFacing);
 			if (vec is WVec)
 				return Util.GetFacing((WVec)vec, (int)currentFacing);
 			throw new ArgumentException("Unsupported vector type: {0}".F(vec.GetType()));

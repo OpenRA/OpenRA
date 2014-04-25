@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 			{
 				new CenterPositionInit(self.World.Map.CenterOfCell(enterCell) + new WVec(WRange.Zero, WRange.Zero, altitude)),
 				new OwnerInit(self.Owner),
-				new FacingInit(Util.GetFacing(order.TargetLocation - enterCell, 0))
+				new FacingInit(self.World.Map.FacingBetween(enterCell, order.TargetLocation, 0))
 			});
 
 			plane.CancelActivity();

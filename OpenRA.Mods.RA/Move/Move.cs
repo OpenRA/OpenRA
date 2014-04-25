@@ -139,8 +139,7 @@ namespace OpenRA.Mods.RA.Move
 			if (nextCell == null)
 				return this;
 
-			var dir = nextCell.Value.First - mobile.fromCell;
-			var firstFacing = Util.GetFacing(dir, mobile.Facing);
+			var firstFacing = self.World.Map.FacingBetween(mobile.fromCell, nextCell.Value.First, mobile.Facing);
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
@@ -362,7 +361,7 @@ namespace OpenRA.Mods.RA.Move
 							Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
 							Util.BetweenCells(self.World, mobile.toCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
 							mobile.Facing,
-							Util.GetNearestFacing(mobile.Facing, Util.GetFacing(nextCell.Value.First - mobile.toCell, mobile.Facing)),
+							Util.GetNearestFacing(mobile.Facing, self.World.Map.FacingBetween(mobile.toCell, nextCell.Value.First, mobile.Facing)),
 							moveFraction - moveFractionTotal);
 
 						mobile.SetLocation(mobile.toCell, mobile.toSubCell, nextCell.Value.First, nextCell.Value.Second);

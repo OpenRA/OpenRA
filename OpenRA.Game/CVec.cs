@@ -44,8 +44,6 @@ namespace OpenRA
 		public int LengthSquared { get { return X * X + Y * Y; } }
 		public int Length { get { return (int)Math.Sqrt(LengthSquared); } }
 
-		public WVec ToWVec() { return new WVec(X*1024, Y*1024, 0); }
-
 		public CVec Clamp(Rectangle r)
 		{
 			return new CVec(
@@ -115,7 +113,6 @@ namespace OpenRA
 				{
 					case "X": return X;
 					case "Y": return Y;
-					case "Facing": return Traits.Util.GetFacing(this, 0);
 					default: throw new LuaException("CVec does not define a member '{0}'".F(key));
 				}
 			}
