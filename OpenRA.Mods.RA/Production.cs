@@ -56,22 +56,25 @@ namespace OpenRA.Mods.RA
 			var fi = producee.Traits.Get<IFacingInfo>();
 			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi.GetInitialFacing()) : exitinfo.Facing;
 
-			var newUnit = self.World.CreateActor(producee.Name, new TypeDictionary
+			self.World.AddFrameEndTask(w =>
 			{
-				new OwnerInit(self.Owner),
-				new LocationInit(exit),
-				new CenterPositionInit(spawn),
-				new FacingInit(initialFacing)
+				var newUnit = self.World.CreateActor(producee.Name, new TypeDictionary
+				{
+					new OwnerInit(self.Owner),
+					new LocationInit(exit),
+					new CenterPositionInit(spawn),
+					new FacingInit(initialFacing)
+				});
+
+				var move = newUnit.Trait<IMove>();
+				if (exitinfo.MoveIntoWorld)
+					newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
+
+				var target = MoveToRallyPoint(self, newUnit, exit);
+				newUnit.SetTargetLine(Target.FromCell(target), Color.Green, false);
+				foreach (var t in self.TraitsImplementing<INotifyProduction>())
+					t.UnitProduced(self, newUnit, exit);
 			});
-
-			var move = newUnit.Trait<IMove>();
-			if (exitinfo.MoveIntoWorld)
-				newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
-
-			var target = MoveToRallyPoint(self, newUnit, exit);
-			newUnit.SetTargetLine(Target.FromCell(target), Color.Green, false);
-			foreach (var t in self.TraitsImplementing<INotifyProduction>())
-				t.UnitProduced(self, newUnit, exit);
 		}
 
 		static CPos MoveToRallyPoint(Actor self, Actor newUnit, CPos exitLocation)
