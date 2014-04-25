@@ -658,8 +658,8 @@ SNOWHUT:
 CTFLAG:
 	Inherits: ^TechBuilding
 	Building:
-		Footprint: x x
-		Dimensions: 1,2
+		Footprint: x
+		Dimensions: 1,1
 	ExternalCapturable:
 	ExternalCapturableBar:
 	Tooltip:
