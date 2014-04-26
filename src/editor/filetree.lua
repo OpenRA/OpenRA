@@ -295,12 +295,14 @@ local function treeSetConnectorsAndIcons(tree)
       local item_id = event:GetItem()
       tree:SelectItem(item_id)
 
+      local renamelabel = tree:IsRoot(item_id) and
+        TR("&Edit Project Directory") or TR("&Rename")
       local menu = wx.wxMenu {
         { },
         { ID_NEWFILE, TR("New &File") },
         { ID_NEWDIRECTORY, TR("&New Directory") },
         { },
-        { ID_RENAMEFILE, TR("&Rename")..KSC(ID_RENAMEFILE) },
+        { ID_RENAMEFILE, renamelabel..KSC(ID_RENAMEFILE) },
         { ID_DELETEFILE, TR("&Delete")..KSC(ID_DELETEFILE) },
         { },
         { ID_OPENEXTENSION, TR("Open With Default Program") },
