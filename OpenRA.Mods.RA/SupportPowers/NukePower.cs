@@ -169,7 +169,9 @@ namespace OpenRA.Mods.RA
 				double[] levels = { 0.5, 0.25, 0.125, 0.0625 };
 				foreach (var level in levels)
 				{
-					var range = new WRange(Convert.ToInt32(damage.Where(radius => radius.Value >= level * damage.Values.Max()).ToDictionary(radius => radius.Key).Keys.Max()));
+					var radiusUp = damage.Where(radius => radius.Value >= level * damage.Values.Max()).ToDictionary(radius => radius.Key).Keys.Max();
+					var radiusDown = damage.Keys.Where(radius => radius > radiusUp).Min();
+					var range = new WRange(Convert.ToInt32((level * damage.Values.Max() * (radiusDown - radiusUp) - damage[radiusUp] * radiusDown + damage[radiusDown] * radiusUp) / (damage[radiusDown] - damage[radiusUp])));
 					wr.DrawRangeCircleWithContrast(
 						xy.CenterPosition,
 						range,
