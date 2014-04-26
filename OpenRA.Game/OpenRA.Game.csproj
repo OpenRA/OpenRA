@@ -289,7 +289,6 @@
     <Compile Include="Primitives\ObservableDictionary.cs" />
     <Compile Include="Primitives\Pair.cs" />
     <Compile Include="Primitives\PriorityQueue.cs" />
-    <Compile Include="Primitives\Set.cs" />
     <Compile Include="Support\Log.cs" />
     <Compile Include="Support\PerfTimer.cs" />
     <Compile Include="Exts.cs" />
