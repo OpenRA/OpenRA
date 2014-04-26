@@ -22,7 +22,6 @@ namespace OpenRA.Widgets
 		public string Notification = "";
 
 		const int logLength = 9;
-		uint totalTicks;
 		List<ChatLine> recentLines = new List<ChatLine>();
 
 		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
@@ -68,7 +67,7 @@ namespace OpenRA.Widgets
 
 		public void AddLine(Color c, string from, string text)
 		{
-			recentLines.Add(new ChatLine(from, text, totalTicks + (uint)RemoveTime, c));
+			recentLines.Add(new ChatLine(from, text, Game.LocalTick + RemoveTime, c));
 
 			if (Notification != null)
 				Sound.Play(Notification);
@@ -85,13 +84,11 @@ namespace OpenRA.Widgets
 
 		public override void Tick()
 		{
-			totalTicks++;
-
 			if (RemoveTime == 0)
 				return;
 
 			// This takes advantage of the fact that recentLines is ordered by expiration, from sooner to later
-			while (recentLines.Count > 0 && totalTicks >= recentLines[0].Expiration)
+			while (recentLines.Count > 0 && Game.LocalTick >= recentLines[0].Expiration)
 				recentLines.RemoveAt(0);
 		}
 	}
@@ -100,9 +97,9 @@ namespace OpenRA.Widgets
 	{
 		public readonly Color Color;
 		public readonly string Owner, Text;
-		public readonly uint Expiration;
+		public readonly int Expiration;
 
-		public ChatLine(string owner, string text, uint expiration, Color color)
+		public ChatLine(string owner, string text, int expiration, Color color)
 		{
 			Owner = owner;
 			Text = text;
