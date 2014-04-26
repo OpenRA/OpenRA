@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA
 			DoImpacts(pos, attacker, weapon, 1f);
 		}
 
-		static readonly float[] falloff =
+		public static readonly float[] falloff =
 		{
 			1f, 0.3678795f, 0.1353353f, 0.04978707f,
 			0.01831564f, 0.006737947f, 0.002478752f, 0.000911882f

@@ -8,7 +8,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System;
+using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Effects;
@@ -61,7 +64,7 @@ namespace OpenRA.Mods.RA
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
-			return new SelectGenericPowerTarget(order, manager, "nuke", MouseButton.Left);
+			return new SelectTarget(order, manager, this);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -107,6 +110,107 @@ namespace OpenRA.Mods.RA
 
 				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(npi.FlightDelay - npi.BeaconRemoveAdvance, removeBeacon)));
 			}
+		}
+
+		class SelectTarget : IOrderGenerator
+		{
+			readonly NukePower power;
+			readonly SupportPowerManager manager;
+			readonly string order;
+			readonly string cursor;
+			readonly MouseButton expectedButton;
+
+			public SelectTarget(string order, SupportPowerManager manager, NukePower power)
+			{
+				this.manager = manager;
+				this.order = order;
+				this.power = power;
+				this.cursor = "nuke";
+				expectedButton = MouseButton.Left;
+			}
+
+			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+			{
+				world.CancelInputMode();
+				if (mi.Button == expectedButton && world.Map.IsInMap(xy))
+					yield return new Order(order, manager.self, false) { TargetLocation = xy };
+			}
+
+			public virtual void Tick(World world)
+			{
+				// Cancel the OG if we can't use the power
+				if (!manager.Powers.ContainsKey(order))
+					world.CancelInputMode();
+			}
+
+			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
+			public void RenderAfterWorld(WorldRenderer wr, World world)
+			{
+				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
+				var radii = new HashSet<int>() { 0 };
+				var steps = new int[Combat.falloff.Length - 1];
+				for (int j = 1; j < Combat.falloff.Length; j++)
+					steps[j - 1] = j;
+				foreach (var wh in Rules.Weapons[(power.Info as NukePowerInfo).MissileWeapon.ToLowerInvariant()].Warheads)
+				{
+					//wh.Size.Do(Size => radii.Add(Size * 1024));
+					steps.Do(j => radii.Add(j * wh.Spread.Range));
+				}
+				var damage = new Dictionary<int, double>();
+				radii.Do(radius => damage[radius] = 0);
+				int size = 0;
+				foreach (var wh in Rules.Weapons[(power.Info as NukePowerInfo).MissileWeapon.ToLowerInvariant()].Warheads)
+				{
+					size = Math.Max(wh.Size[0], size);
+					//radii.Where(radius => radius <= wh.Spread.Range).Do(radius => damage[radius] += wh.Damage);
+					steps.Do(j => radii.Where(radius => ((j - 1) * wh.Spread.Range <= radius) && (radius < j * wh.Spread.Range))
+						.Do(radius => damage[radius] += Convert.ToDouble(wh.Damage) / wh.Spread.Range * (Combat.falloff[j] * (radius - (j - 1) * wh.Spread.Range) + Combat.falloff[j - 1] * (j * wh.Spread.Range - radius))));
+				}
+				double[] levels = { 0.5, 0.25, 0.125, 0.0625 };
+				foreach (var level in levels)
+				{
+					var range = new WRange(Convert.ToInt32(damage.Where(radius => radius.Value >= level * damage.Values.Max()).ToDictionary(radius => radius.Key).Keys.Max()));
+					wr.DrawRangeCircleWithContrast(
+						xy.CenterPosition,
+						range,
+						System.Drawing.Color.FromArgb(128, System.Drawing.Color.Red),
+						System.Drawing.Color.FromArgb(96, System.Drawing.Color.Black)
+					);
+				}
+				wr.DrawRangeCircleWithContrast(
+					xy.CenterPosition,
+					WRange.FromCells(size),
+					System.Drawing.Color.FromArgb(128, System.Drawing.Color.Yellow),
+					System.Drawing.Color.FromArgb(96, System.Drawing.Color.Yellow)
+				);
+				/*int range1 = 0;
+				int range2 = 0;
+				foreach (var wh in Rules.Weapons[(power.Info as NukePowerInfo).MissileWeapon.ToLowerInvariant()].Warheads)
+				{
+					range1 = Math.Max(wh.Size[0], range1);
+					wr.DrawRangeCircleWithContrast(
+						xy.CenterPosition,
+						WRange.FromCells(wh.Size[0]),
+						System.Drawing.Color.FromArgb(128, System.Drawing.Color.Red),
+						System.Drawing.Color.FromArgb(96, System.Drawing.Color.Black)
+					);
+					int damage = wh.Damage;
+					int i = Array.FindLastIndex(Combat.falloff, f => f * damage >= 1);
+					int x=0;
+					if (i >= Combat.falloff.Length - 1)
+						x = wh.Spread.Range * 7;
+					else if (i != -1)
+						x = Convert.ToInt32((1f / damage + i * Combat.falloff[i + 1] - (i + 1) * Combat.falloff[i]) / (Combat.falloff[i + 1] - Combat.falloff[i]) * wh.Spread.Range);
+					range2 = Math.Max(x, range2);
+				}
+				wr.DrawRangeCircleWithContrast(
+					xy.CenterPosition,
+					new WRange(range2),
+					System.Drawing.Color.FromArgb(30, System.Drawing.Color.Red),
+					System.Drawing.Color.FromArgb(30, System.Drawing.Color.Black)
+				);*/
+			}
+			public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 		}
 	}
 }
