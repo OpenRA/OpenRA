@@ -104,10 +104,10 @@ namespace OpenRA.Widgets
 
 		public ChatLine(string owner, string text, uint expiration, Color color)
 		{
-			this.Owner = owner;
-			this.Text = text;
-			this.Expiration = expiration;
-			this.Color = color;
+			Owner = owner;
+			Text = text;
+			Expiration = expiration;
+			Color = color;
 		}
 	}
 }

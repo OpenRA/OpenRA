@@ -172,7 +172,7 @@ namespace OpenRA.Widgets
 			{
 				var lines = text.Split('\n').ToList();
 
-				for (int i=0; i<lines.Count; i++)
+				for (var i=0; i<lines.Count; i++)
 				{
 					var line = lines[i];
 					var m = font.Measure(line);
@@ -185,7 +185,7 @@ namespace OpenRA.Widgets
 
 					while (m.X > width)
 					{
-						int spaceIndex = line.LastIndexOf(' ', start);
+						var spaceIndex = line.LastIndexOf(' ', start);
 						if (spaceIndex == -1)
 							break;
 						bestSpaceIndex = spaceIndex;
