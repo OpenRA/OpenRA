@@ -143,6 +143,7 @@ local function treeSetConnectorsAndIcons(tree)
   function tree:IsDirectory(item_id) return isIt(item_id, IMG_DIRECTORY) end
   function tree:IsFileKnown(item_id) return isIt(item_id, IMG_FILE_KNOWN) end
   function tree:IsFileOther(item_id) return isIt(item_id, IMG_FILE_OTHER) end
+  function tree:IsRoot(item_id) return not tree:GetItemParent(item_id):IsOk() end
 
   function tree:GetItemFullName(item_id)
     local tree = self
@@ -430,7 +431,7 @@ local function treeSetConnectorsAndIcons(tree)
     function (event)
       local itemsrc = event:GetItem()
       parent = tree:GetItemParent(itemsrc)
-      if not (itemsrc:IsOk() and parent:IsOk()) then event:Veto() end
+      if not itemsrc:IsOk() then event:Veto() end
     end)
   tree:Connect(wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT,
     function (event)
@@ -439,9 +440,19 @@ local function treeSetConnectorsAndIcons(tree)
       event:Veto()
 
       local itemsrc = event:GetItem()
-      if not itemsrc:IsOk() or not parent or not parent:IsOk() then return end
+      if not itemsrc:IsOk() then return end
 
       local label = event:GetLabel():gsub("^%s+$","") -- clean all spaces
+
+      -- edited the root element; set the new project directory if needed
+      if tree:IsRoot(itemsrc) then
+        if not event:IsEditCancelled() and wx.wxDirExists(label) then
+          ProjectUpdateProjectDir(label)
+        end
+        return
+      end
+
+      if not parent or not parent:IsOk() then return end
       local sourcedir = tree:GetItemFullName(parent)
       local target = MergeFullPath(sourcedir, label)
       if event:IsEditCancelled() or label == empty
