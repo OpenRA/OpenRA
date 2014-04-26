@@ -655,3 +655,12 @@ SNOWHUT:
 	RenderBuilding:
 		Scale: 0.7
 
+CTFLAG:
+	Inherits: ^TechBuilding
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	ExternalCapturable:
+	ExternalCapturableBar:
+	Tooltip:
+		Name: Flag

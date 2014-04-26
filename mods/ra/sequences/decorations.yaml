@@ -665,3 +665,10 @@ snowhut:
 		Start: 3
 		Length: 1
 		Tick: 120
+
+ctflag:
+	idle:
+		Start: 0
+		Length: 9
+		Tick: 50
+		Offset: 0,-12
