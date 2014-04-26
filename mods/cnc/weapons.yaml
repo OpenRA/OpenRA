@@ -753,7 +753,7 @@ Vulcan:
 			None: 100%
 			Wood: 25%
 			Light: 100%
-			Heavy: 75%
+			Heavy: 35%
 		InfDeath: 2
 		Explosion: piffs
 
@@ -770,8 +770,8 @@ Napalm:
 		Versus:
 			None: 100%
 			Wood: 100%
-			Light: 75%
-			Heavy: 25%
+			Light: 100%
+			Heavy: 80%
 		InfDeath: 5
 		Explosion: med_napalm
 		WaterExplosion: med_napalm
