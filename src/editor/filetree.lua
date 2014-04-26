@@ -623,6 +623,9 @@ function filetree:updateProjectDir(newdir)
     end
   end
 
+  -- refresh Recent Projects menu item
+  ide.frame:AddPendingEvent(wx.wxUpdateUIEvent(ID_RECENTPROJECTS))
+
   PackageEventHandle("onProjectLoad", newdir)
 end
 
