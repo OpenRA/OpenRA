@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
@@ -187,7 +188,7 @@ namespace OpenRA.Mods.RA
 
 		void BuildDomains(World world)
 		{
-			var timer = new Stopwatch();
+			var timer = Stopwatch.StartNew();
 			var map = world.Map;
 
 			var domain = 1;

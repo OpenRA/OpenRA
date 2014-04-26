@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using OpenRA.Support;
 
@@ -81,7 +82,7 @@ namespace OpenRA.Traits
 			{
 				var prev = act;
 
-				var sw = new Stopwatch();
+				var sw = Stopwatch.StartNew();
 				act = act.Tick(self);
 				var dt = sw.Elapsed;
 				if (dt > Game.Settings.Debug.LongTickThreshold)

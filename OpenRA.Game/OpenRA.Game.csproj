@@ -291,7 +291,6 @@
     <Compile Include="Primitives\PriorityQueue.cs" />
     <Compile Include="Primitives\Set.cs" />
     <Compile Include="Support\Log.cs" />
-    <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\PerfTimer.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="Hotkey.cs" />
