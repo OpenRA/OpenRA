@@ -281,7 +281,6 @@
     <Compile Include="Primitives\ActionQueue.cs" />
     <Compile Include="Primitives\Bits.cs" />
     <Compile Include="Primitives\Cache.cs" />
-    <Compile Include="Primitives\Cached.cs" />
     <Compile Include="Primitives\DisposableAction.cs" />
     <Compile Include="Primitives\float2.cs" />
     <Compile Include="Primitives\int2.cs" />
