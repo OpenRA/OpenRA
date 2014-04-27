@@ -1,37 +1,17 @@
 SPLIT2:
-	Inherits: ^Tree
-	RenderBuilding:
-		Palette: staticterrain
+	Inherits: ^TibTree
 	SeedsResource:
 		ResourceType: Tiberium
 		Interval: 55
-	Tooltip:
-		Name: Blossom Tree
-	RadarColorFromTerrain:
-		Terrain: Tiberium
-	-Health:
-	-DeadBuildingState:
-	-Armor:
 
 SPLIT3:
-	Inherits: ^Tree
-	RenderBuilding:
-		Palette: staticterrain
+	Inherits: ^TibTree
 	SeedsResource:
 		ResourceType: Tiberium
 		Interval: 55
-	Tooltip:
-		Name: Blossom Tree
-	RadarColorFromTerrain:
-		Terrain: Tiberium
-	-Health:
-	-DeadBuildingState:
-	-Armor:
 
 SPLITBLUE:
-	Inherits: ^Tree
-	RenderBuilding:
-		Palette: staticterrain
+	Inherits: ^TibTree
 	SeedsResource:
 		ResourceType: BlueTiberium
 		Interval: 110
@@ -39,9 +19,6 @@ SPLITBLUE:
 		Name: Blossom Tree (blue)
 	RadarColorFromTerrain:
 		Terrain: BlueTiberium
-	-Health:
-	-DeadBuildingState:
-	-Armor:
 
 ROCK1:
 	Inherits: ^Rock

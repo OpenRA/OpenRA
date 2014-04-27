@@ -485,6 +485,24 @@
 		StartsRevealed: true
 	LuaScriptEvents:
 
+^TibTree:
+	Tooltip:
+		Name: Blossom Tree
+	RenderBuilding:
+		Palette: staticterrain
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tiberium
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	BodyOrientation:
+	FrozenUnderFog:
+		StartsRevealed: true
+	LuaScriptEvents:
+
 ^Rock:
 	Tooltip:
 		Name: Rock
