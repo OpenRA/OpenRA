@@ -2,31 +2,40 @@ split2:
 	make:
 		Start: 0
 		Length: 30
+		Offset: 11, -15
 	active:
 		Start: 30
 		Length: 24
+		Offset: 11, -15
 	idle:
 		Start: 54
+		Offset: 11, -15
 
 split3:
 	make: split2
 		Start: 0
 		Length: 30
+		Offset: 11, -15
 	active: split2
 		Start: 30
 		Length: 24
+		Offset: 11, -15
 	idle: split2
 		Start: 54
+		Offset: 11, -15
 
 splitblue:
 	make: split3
 		Start: 0
 		Length: 30
+		Offset: 11, -15
 	active: split3
 		Start: 30
 		Length: 24
+		Offset: 11, -15
 	idle: split3
 		Start: 54
+		Offset: 11, -15
 
 rock1:
 	idle:
