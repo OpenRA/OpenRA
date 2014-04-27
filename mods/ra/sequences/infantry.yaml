@@ -889,6 +889,10 @@ shok:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600
 	icon: shokicon
 		Start: 0
 
