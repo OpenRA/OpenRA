@@ -53,10 +53,16 @@ beacon:
 		Length: 12
 		BlendMode: Additive
 
-rank: # TODO: backfall to RA asset
-	rank:
+crate-effects:
+	levelup: levelup
 		Start: 0
 		Length: *
+		Tick: 200
+
+rank:
+	rank: pips
+		Start: 7
+		Length: 2
 
 mpspawn: # TODO: backfall to RA asset
 	idle:

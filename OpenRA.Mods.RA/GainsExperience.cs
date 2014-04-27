@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA
 		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
 		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
 		public readonly decimal[] SpeedModifier = { 1.1m, 1.15m, 1.2m, 1.5m };
+		public readonly string ChevronPalette = "effect";
 		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 	}
 
@@ -75,7 +76,7 @@ namespace OpenRA.Mods.RA
 					self.World.AddFrameEndTask(w =>
 					{
 						if (!self.IsDead())
-							w.Add(new Rank(self));
+							w.Add(new Rank(self, info.ChevronPalette));
 					});
 			}
 		}

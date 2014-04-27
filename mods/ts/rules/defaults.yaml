@@ -107,6 +107,11 @@
 		CargoType: Infantry
 	HiddenUnderFog:
 	GainsExperience:
+		ChevronPalette: ra
+		CostThreshold: 5, 10
+		FirepowerModifier: 1.2, 1.5
+		ArmorModifier: 1.2, 1.5
+		SpeedModifier: 1.2, 1.5
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -172,6 +177,11 @@
 	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
+		ChevronPalette: ra
+		CostThreshold: 5, 10
+		FirepowerModifier: 1.2, 1.5
+		ArmorModifier: 1.2, 1.5
+		SpeedModifier: 1.2, 1.5
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -204,6 +214,11 @@
 	HiddenUnderFog:
 	AttackMove:
 	GainsExperience:
+		ChevronPalette: ra
+		CostThreshold: 5, 10
+		FirepowerModifier: 1.2, 1.5
+		ArmorModifier: 1.2, 1.5
+		SpeedModifier: 1.2, 1.5
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
