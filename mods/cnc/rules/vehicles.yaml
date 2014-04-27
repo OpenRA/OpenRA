@@ -13,6 +13,7 @@ MCV:
 		Priority: 3
 	Mobile:
 		Speed: 71
+		Crushes: crate, infantry
 	Health:
 		HP: 750
 	Armor:
