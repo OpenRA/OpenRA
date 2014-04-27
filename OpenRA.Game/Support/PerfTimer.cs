@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
@@ -16,7 +17,7 @@ namespace OpenRA.Support
 {
 	public class PerfTimer : IDisposable
 	{
-		readonly Stopwatch sw = new Stopwatch();
+		readonly Stopwatch sw = Stopwatch.StartNew();
 		readonly string Name;
 
 		//

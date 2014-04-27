@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Cnc
 	public class CncLoadScreen : ILoadScreen
 	{
 		Dictionary<string, string> loadInfo;
-		Stopwatch loadTimer = new Stopwatch();
+		Stopwatch loadTimer = Stopwatch.StartNew();
 		Sprite[] ss;
 		int loadTick;
 		float2 nodPos, gdiPos, evaPos;
@@ -79,7 +80,7 @@ namespace OpenRA.Mods.Cnc
 			if (r == null || loadTimer.Elapsed.TotalSeconds < 0.25)
 				return;
 
-			loadTimer.Reset();
+			loadTimer.Restart();
 
 			loadTick = ++loadTick % 8;
 			r.BeginFrame(float2.Zero, 1f);

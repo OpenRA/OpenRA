@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -173,7 +174,7 @@ namespace OpenRA
 
 		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text, TimeSpan time)
 		{
-			var sw = new Stopwatch();
+			var sw = Stopwatch.StartNew();
 
 			e.Do(x =>
 			{

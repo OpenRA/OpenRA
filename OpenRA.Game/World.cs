@@ -27,7 +27,7 @@ namespace OpenRA
 	public class World
 	{
 		internal TraitDictionary traitDict = new TraitDictionary();
-		Set<Actor> actors = new Set<Actor>();
+		HashSet<Actor> actors = new HashSet<Actor>();
 		List<IEffect> effects = new List<IEffect>();
 		Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using OpenRA.Primitives;
 
@@ -106,7 +107,7 @@ namespace OpenRA.Support
 
 	public class PerfSample : IDisposable
 	{
-		readonly Stopwatch sw = new Stopwatch();
+		readonly Stopwatch sw = Stopwatch.StartNew();
 		readonly string Item;
 
 		public PerfSample(string item)

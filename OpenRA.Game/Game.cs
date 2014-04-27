@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -484,7 +485,7 @@ namespace OpenRA
 			{
 				if (Settings.Graphics.CapFramerate)
 				{
-					var sw = new Stopwatch();
+					var sw = Stopwatch.StartNew();
 
 					Tick(orderManager);
 

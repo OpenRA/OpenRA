@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.RA
 	public class DefaultLoadScreen : ILoadScreen
 	{
 		Dictionary<string, string> info;
-		Stopwatch lastUpdate = new Stopwatch();
+		Stopwatch lastUpdate = Stopwatch.StartNew();
 		Renderer r;
 
 		Rectangle stripeRect;
@@ -61,7 +62,7 @@ namespace OpenRA.Mods.RA
 			if (r.Fonts == null)
 				return;
 
-			lastUpdate.Reset();
+			lastUpdate.Restart();
 			var text = messages.Random(Game.CosmeticRandom);
 			var textSize = r.Fonts["Bold"].Measure(text);
 
