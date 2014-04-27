@@ -67,11 +67,15 @@ namespace OpenRA.Mods.RA
 				a.Kill(a);
 
 			if (self.Owner == self.World.LocalPlayer)
+			{
+				self.World.OnLocalPlayerWinStateChanged();
+
 				Game.RunAfterDelay(Info.NotificationDelay, () =>
 				{
 					if (Game.IsCurrentWorld(self.World))
 						Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "Lose", self.Owner.Country.Race);
 				});
+			}
 		}
 
 		public void Win(Actor self)
@@ -81,7 +85,11 @@ namespace OpenRA.Mods.RA
 
 			Game.Debug("{0} is victorious.".F(self.Owner.PlayerName));
 			if (self.Owner == self.World.LocalPlayer)
+			{
+				self.World.OnLocalPlayerWinStateChanged();
+
 				Game.RunAfterDelay(Info.NotificationDelay, () => Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "Win", self.Owner.Country.Race));
+			}
 		}
 	}
 

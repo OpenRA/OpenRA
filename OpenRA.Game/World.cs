@@ -287,6 +287,13 @@ namespace OpenRA
 		{
 			return traitDict.ActorsWithTraitMultiple<T>(this);
 		}
+
+		public void OnLocalPlayerWinStateChanged()
+		{
+			var rc = orderManager.Connection as ReplayRecorderConnection;
+			if (rc != null)
+				rc.LocalGameState = LocalPlayer.WinState;
+		}
 	}
 
 	public struct TraitPair<T>

@@ -12,12 +12,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Network
 {
 	class ReplayRecorderConnection : IConnection
 	{
+		public ReplayMetadata Metadata;
+		public WinState LocalGameState = WinState.Undefined;
+
 		IConnection inner;
 		BinaryWriter writer;
 		Func<string> chooseFilename;
@@ -100,6 +104,12 @@ namespace OpenRA.Network
 		{
 			if (disposed)
 				return;
+
+			if (Metadata != null)
+			{
+				Metadata.FinalizeReplayMetadata(DateTime.UtcNow, LocalGameState);
+				Metadata.Write(writer);
+			}
 
 			writer.Close();
 			inner.Dispose();

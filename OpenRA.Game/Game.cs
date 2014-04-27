@@ -263,6 +263,10 @@ namespace OpenRA
 			using (new PerfTimer("LoadComplete"))
 				orderManager.world.LoadComplete(worldRenderer);
 
+			var rc = orderManager.Connection as ReplayRecorderConnection;
+			if (rc != null)
+				rc.Metadata = new OpenRA.FileFormats.ReplayMetadata(DateTime.UtcNow, orderManager.LobbyInfo);
+
 			if (orderManager.GameStarted)
 				return;
 
