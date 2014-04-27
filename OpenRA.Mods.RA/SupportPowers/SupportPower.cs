@@ -39,6 +39,8 @@ namespace OpenRA.Mods.RA
 		public readonly bool DisplayRadarPing = false;
 		public readonly int RadarPingDuration = 5 * 25;
 
+		public WRange[] DisplayRanges;
+
 		public readonly string OrderName;
 		public abstract object Create(ActorInitializer init);
 

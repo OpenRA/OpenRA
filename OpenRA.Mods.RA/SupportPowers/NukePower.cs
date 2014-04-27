@@ -48,7 +48,15 @@ namespace OpenRA.Mods.RA
 		[Desc("Amount of time after detonation to remove the camera")]
 		public readonly int CameraRemoveDelay = 25;
 
-		public override object Create(ActorInitializer init) { return new NukePower(init.self, this); }
+		public WRange SmudgeRange;
+
+		protected readonly double[] DamagePercentages = { 0.5, 0.25, 0.125, 0.0625 };
+
+		public override object Create(ActorInitializer init) {
+			DisplayRanges = Combat.FindDamageThresholds(Rules.Weapons[MissileWeapon.ToLowerInvariant()].Warheads, DamagePercentages).ToArray();
+			SmudgeRange = Combat.FindSmudgeRange(Rules.Weapons[MissileWeapon.ToLowerInvariant()].Warheads);
+			return new NukePower(init.self, this);
+		}
 	}
 
 	class NukePower : SupportPower
@@ -69,14 +77,32 @@ namespace OpenRA.Mods.RA
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
-			base.Activate(self, order, manager);
+			var npi = Info as NukePowerInfo;
+			if (Info.DisplayBeacon)
+			{
+				beacon = new Beacon(
+					order.Player,
+					order.TargetLocation.CenterPosition,
+					Info.BeaconDuration == -1 ? npi.FlightDelay - npi.BeaconRemoveAdvance : Info.BeaconDuration,
+					Info.BeaconPalettePrefix,
+					Info.BeaconPoster,
+					Info.BeaconPosterPalette);
+
+				self.World.Add(beacon);
+			}
+
+			if (Info.DisplayRadarPing && manager.RadarPings != null)
+				manager.RadarPings.Value.Add(
+					() => order.Player.IsAlliedWith(self.World.RenderPlayer),
+					order.TargetLocation.CenterPosition,
+					order.Player.Color.RGB,
+					Info.BeaconDuration == -1 ? npi.FlightDelay - npi.BeaconRemoveAdvance : Info.BeaconDuration);
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				Sound.Play(Info.LaunchSound);
 			else
 				Sound.Play(Info.IncomingSound);
 
-			var npi = Info as NukePowerInfo;
 			var rb = self.Trait<RenderSimple>();
 			rb.PlayCustomAnim(self, "active");
 
@@ -98,17 +124,6 @@ namespace OpenRA.Mods.RA
 
 				Action addCamera = () => self.World.AddFrameEndTask(w => w.Add(camera));
 				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(npi.FlightDelay - npi.CameraSpawnAdvance, addCamera)));
-			}
-
-			if (beacon != null)
-			{
-				Action removeBeacon = () => self.World.AddFrameEndTask(w =>
-				{
-					w.Remove(beacon);
-					beacon = null;
-				});
-
-				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(npi.FlightDelay - npi.BeaconRemoveAdvance, removeBeacon)));
 			}
 		}
 
@@ -147,70 +162,18 @@ namespace OpenRA.Mods.RA
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
-				var radii = new HashSet<int>() { 0 };
-				var steps = new int[Combat.falloff.Length - 1];
-				for (int j = 1; j < Combat.falloff.Length; j++)
-					steps[j - 1] = j;
-				foreach (var wh in Rules.Weapons[(power.Info as NukePowerInfo).MissileWeapon.ToLowerInvariant()].Warheads)
-				{
-					//wh.Size.Do(Size => radii.Add(Size * 1024));
-					steps.Do(j => radii.Add(j * wh.Spread.Range));
-				}
-				var damage = new Dictionary<int, double>();
-				radii.Do(radius => damage[radius] = 0);
-				int size = 0;
-				foreach (var wh in Rules.Weapons[(power.Info as NukePowerInfo).MissileWeapon.ToLowerInvariant()].Warheads)
-				{
-					size = Math.Max(wh.Size[0], size);
-					//radii.Where(radius => radius <= wh.Spread.Range).Do(radius => damage[radius] += wh.Damage);
-					steps.Do(j => radii.Where(radius => ((j - 1) * wh.Spread.Range <= radius) && (radius < j * wh.Spread.Range))
-						.Do(radius => damage[radius] += Convert.ToDouble(wh.Damage) / wh.Spread.Range * (Combat.falloff[j] * (radius - (j - 1) * wh.Spread.Range) + Combat.falloff[j - 1] * (j * wh.Spread.Range - radius))));
-				}
-				double[] levels = { 0.5, 0.25, 0.125, 0.0625 };
-				foreach (var level in levels)
-				{
-					var radiusUp = damage.Where(radius => radius.Value >= level * damage.Values.Max()).ToDictionary(radius => radius.Key).Keys.Max();
-					var radiusDown = damage.Keys.Where(radius => radius > radiusUp).Min();
-					var range = new WRange(Convert.ToInt32((level * damage.Values.Max() * (radiusDown - radiusUp) - damage[radiusUp] * radiusDown + damage[radiusDown] * radiusUp) / (damage[radiusDown] - damage[radiusUp])));
-					wr.DrawRangeCircleWithContrast(
-						xy.CenterPosition,
-						range,
-						System.Drawing.Color.FromArgb(128, System.Drawing.Color.Red),
-						System.Drawing.Color.FromArgb(96, System.Drawing.Color.Black)
-					);
-				}
+				(power.Info as NukePowerInfo).DisplayRanges.Do(range => wr.DrawRangeCircleWithContrast(
+					xy.CenterPosition,
+					range,
+					System.Drawing.Color.FromArgb(128, System.Drawing.Color.Red),
+					System.Drawing.Color.FromArgb(96, System.Drawing.Color.Black)
+				));
 				wr.DrawRangeCircleWithContrast(
 					xy.CenterPosition,
-					WRange.FromCells(size),
+					(power.Info as NukePowerInfo).SmudgeRange,
 					System.Drawing.Color.FromArgb(128, System.Drawing.Color.Yellow),
-					System.Drawing.Color.FromArgb(96, System.Drawing.Color.Yellow)
+					System.Drawing.Color.FromArgb(96, System.Drawing.Color.Black)
 				);
-				/*int range1 = 0;
-				int range2 = 0;
-				foreach (var wh in Rules.Weapons[(power.Info as NukePowerInfo).MissileWeapon.ToLowerInvariant()].Warheads)
-				{
-					range1 = Math.Max(wh.Size[0], range1);
-					wr.DrawRangeCircleWithContrast(
-						xy.CenterPosition,
-						WRange.FromCells(wh.Size[0]),
-						System.Drawing.Color.FromArgb(128, System.Drawing.Color.Red),
-						System.Drawing.Color.FromArgb(96, System.Drawing.Color.Black)
-					);
-					int damage = wh.Damage;
-					int i = Array.FindLastIndex(Combat.falloff, f => f * damage >= 1);
-					int x=0;
-					if (i >= Combat.falloff.Length - 1)
-						x = wh.Spread.Range * 7;
-					else if (i != -1)
-						x = Convert.ToInt32((1f / damage + i * Combat.falloff[i + 1] - (i + 1) * Combat.falloff[i]) / (Combat.falloff[i + 1] - Combat.falloff[i]) * wh.Spread.Range);
-					range2 = Math.Max(x, range2);
-				}
-				wr.DrawRangeCircleWithContrast(
-					xy.CenterPosition,
-					new WRange(range2),
-					System.Drawing.Color.FromArgb(30, System.Drawing.Color.Red),
-					System.Drawing.Color.FromArgb(30, System.Drawing.Color.Black)
-				);*/
 			}
 			public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 		}

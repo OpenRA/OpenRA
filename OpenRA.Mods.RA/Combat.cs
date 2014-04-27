@@ -165,7 +165,36 @@ namespace OpenRA.Mods.RA
 			DoImpacts(pos, attacker, weapon, 1f);
 		}
 
-		public static readonly float[] falloff =
+		public static WRange FindSmudgeRange(IEnumerable<WarheadInfo> warheads)
+		{
+			int smudge = 0;
+			foreach (var wh in warheads)
+				smudge = Math.Max(wh.Size[0], smudge);
+			return WRange.FromCells(smudge);
+		}
+
+		public static IEnumerable<WRange> FindDamageThresholds(IEnumerable<WarheadInfo> warheads, IEnumerable<double> damagePercentages)
+		{
+			var radii = new HashSet<int>() { 0 };
+			var steps = Enumerable.Range(1, falloff.Length - 1);
+			foreach (var wh in warheads)
+				steps.Do(j => radii.Add(j * wh.Spread.Range));
+
+			var damage = new Dictionary<int, double>();
+			radii.Do(radius => damage[radius] = 0);
+			foreach (var wh in warheads)
+				steps.Do(j => radii.Where(radius => ((j - 1) * wh.Spread.Range <= radius) && (radius < j * wh.Spread.Range))
+					.Do(radius => damage[radius] += wh.Damage * (Combat.falloff[j] * (radius - (j - 1) * wh.Spread.Range) + Combat.falloff[j - 1] * (j * wh.Spread.Range - radius)) / Convert.ToDouble(wh.Spread.Range)));
+			
+			foreach (var level in damagePercentages)
+			{
+				var radiusUp = damage.Where(radius => radius.Value >= level * damage.Values.Max()).ToDictionary(radius => radius.Key).Keys.Max();
+				var radiusDown = damage.Keys.Where(radius => radius > radiusUp).Min();
+				yield return new WRange(Convert.ToInt32((level * damage.Values.Max() * (radiusDown - radiusUp) - damage[radiusUp] * radiusDown + damage[radiusDown] * radiusUp) / (damage[radiusDown] - damage[radiusUp])));
+			}
+		}
+
+		static readonly float[] falloff =
 		{
 			1f, 0.3678795f, 0.1353353f, 0.04978707f,
 			0.01831564f, 0.006737947f, 0.002478752f, 0.000911882f
