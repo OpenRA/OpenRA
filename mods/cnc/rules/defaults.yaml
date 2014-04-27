@@ -439,7 +439,7 @@
 		Adjacent: 7
 		TerrainTypes: Clear,Road
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, Wall
 	Wall:
 		CrushClasses: wall
 		CrushSound: sandbag2.aud
