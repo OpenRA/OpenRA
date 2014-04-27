@@ -224,17 +224,17 @@ namespace OpenRA
 
 		public static Order StartProduction(Actor subject, string item, int count)
 		{
-			return new Order("StartProduction", subject, false) { TargetLocation = new CPos(count, 0), TargetString = item };
+			return new Order("StartProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
 
 		public static Order PauseProduction(Actor subject, string item, bool pause)
 		{
-			return new Order("PauseProduction", subject, false) { TargetLocation = new CPos(pause ? 1 : 0, 0), TargetString = item };
+			return new Order("PauseProduction", subject, false) { ExtraData = pause ? 1u : 0u, TargetString = item };
 		}
 
 		public static Order CancelProduction(Actor subject, string item, int count)
 		{
-			return new Order("CancelProduction", subject, false) { TargetLocation = new CPos(count, 0), TargetString = item };
+			return new Order("CancelProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
 	}
 }
