@@ -6,46 +6,46 @@
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
  */
-using System.Text;
-
-
 #endregion
 
 using System;
 using System.IO;
+using System.Text;
 using OpenRA.Network;
 
 namespace OpenRA.FileFormats
 {
 	public class ReplayMetadata
 	{
-		public const int MetaStartMarker = -1;      // Must be an invalid replay 'client' value
+		// Must be an invalid replay 'client' value
+		public const int MetaStartMarker = -1;
 		public const int MetaEndMarker = -2;
 		public const int MetaVersion = 0x00000001;
 
 		public string FilePath { get; private set; }
 		public DateTime EndTimestampUtc { get; private set; }
-		public TimeSpan Duration { get { return EndTimestampUtc.Subtract(StartTimestampUtc); } }
+		public TimeSpan Duration { get { return EndTimestampUtc - StartTimestampUtc; } }
 		public WinState Outcome { get; private set; }
 
-		public readonly Lazy<Session> Session;
+		public readonly Lazy<Session> LobbyInfo;
 		public readonly DateTime StartTimestampUtc;
-		readonly string sessionData;
+		readonly string lobbyInfoData;
 
 		ReplayMetadata()
 		{
 			Outcome = WinState.Undefined;
 		}
 
-		public ReplayMetadata(DateTime startGameTimestampUtc, Session session)
+		public ReplayMetadata(DateTime startGameTimestampUtc, Session lobbyInfo)
 			: this()
 		{
 			if (startGameTimestampUtc.Kind == DateTimeKind.Unspecified)
 				throw new ArgumentException("The 'Kind' property of the timestamp must be specified", "startGameTimestamp");
+
 			StartTimestampUtc = startGameTimestampUtc.ToUniversalTime();
 
-			sessionData = session.Serialize();
-			Session = new Lazy<OpenRA.Network.Session>(() => OpenRA.Network.Session.Deserialize(this.sessionData));
+			lobbyInfoData = lobbyInfo.Serialize();
+			LobbyInfo = Exts.Lazy(() => Session.Deserialize(this.lobbyInfoData));
 		}
 
 		public void FinalizeReplayMetadata(DateTime endGameTimestampUtc, WinState outcome)
@@ -80,9 +80,9 @@ namespace OpenRA.FileFormats
 			if (Enum.TryParse(ReadUtf8String(reader), true, out outcome))
 				Outcome = outcome;
 
-			// Read session
-			sessionData = ReadUtf8String(reader);
-			Session = new Lazy<OpenRA.Network.Session>(() => OpenRA.Network.Session.Deserialize(this.sessionData));
+			// Read lobby info
+			lobbyInfoData = ReadUtf8String(reader);
+			LobbyInfo = Exts.Lazy(() => Session.Deserialize(this.lobbyInfoData));
 		}
 
 		public void Write(BinaryWriter writer)
@@ -105,8 +105,8 @@ namespace OpenRA.FileFormats
 				// Write game outcome
 				dataLength += WriteUtf8String(writer, Outcome.ToString());
 
-				// Write session data
-				dataLength += WriteUtf8String(writer, sessionData);
+				// Write lobby info data
+				dataLength += WriteUtf8String(writer, lobbyInfoData);
 			}
 
 			// Write total length & end marker
@@ -116,7 +116,8 @@ namespace OpenRA.FileFormats
 
 		public static ReplayMetadata Read(string path, bool enableFallbackMethod = true)
 		{
-			Func<DateTime> timestampProvider = () => {
+			Func<DateTime> timestampProvider = () =>
+			{
 				try
 				{
 					return File.GetCreationTimeUtc(path);
@@ -159,11 +160,13 @@ namespace OpenRA.FileFormats
 						{
 							return new ReplayMetadata(reader);
 						}
-						catch (InvalidOperationException)
+						catch (InvalidOperationException ex)
 						{
+							Log.Write("debug", ex.ToString());
 						}
-						catch (NotSupportedException)
+						catch (NotSupportedException ex)
 						{
+							Log.Write("debug", ex.ToString());
 						}
 					}
 
@@ -210,7 +213,7 @@ namespace OpenRA.FileFormats
 
 		public MapPreview MapPreview
 		{
-			get { return Game.modData.MapCache[Session.Value.GlobalSettings.Map]; }
+			get { return Game.modData.MapCache[LobbyInfo.Value.GlobalSettings.Map]; }
 		}
 	}
 }

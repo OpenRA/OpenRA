@@ -36,9 +36,7 @@ namespace OpenRA.Network
 		public ReplayConnection(string replayFilename)
 		{
 			using (var rs = File.OpenRead(replayFilename))
-			{
 				Read(rs, ref TickCount, ref IsValid, ref LobbyInfo);
-			}
 
 			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency;
 		}

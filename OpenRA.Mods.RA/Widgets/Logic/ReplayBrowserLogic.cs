@@ -245,7 +245,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_PLAYER_DROPDOWNBUTTON");
 				if (ddb != null)
 				{
-					var options = new HashSet<string>(replays.SelectMany(r => r.Session.Value.Clients.Select(c => c.Name)), StringComparer.OrdinalIgnoreCase).ToList();
+					var options = new HashSet<string>(replays.SelectMany(r => r.LobbyInfo.Value.Clients.Select(c => c.Name)), StringComparer.OrdinalIgnoreCase).ToList();
 					options.Sort(StringComparer.OrdinalIgnoreCase);
 					options.Insert(0, null);	// no filter
 
@@ -273,7 +273,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		bool EvaluateReplayVisibility(ReplayMetadata replay)
 		{
 			// Game type
-			if ((filter.Type == GameType.Multiplayer && replay.Session.Value.IsSinglePlayer) || (filter.Type == GameType.Singleplayer && !replay.Session.Value.IsSinglePlayer))
+			if ((filter.Type == GameType.Multiplayer && replay.LobbyInfo.Value.IsSinglePlayer) || (filter.Type == GameType.Singleplayer && !replay.LobbyInfo.Value.IsSinglePlayer))
 				return false;
 
 			// Date type
@@ -334,7 +334,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			// Player
 			if (!string.IsNullOrEmpty(filter.PlayerName))
 			{
-				var player = replay.Session.Value.Clients.Find(c => string.Compare(filter.PlayerName, c.Name, true) == 0);
+				var player = replay.LobbyInfo.Value.Clients.Find(c => string.Compare(filter.PlayerName, c.Name, true) == 0);
 				if (player == null)
 					return false;
 			}
@@ -361,14 +361,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void SelectReplay(ReplayMetadata replay)
 		{
 			selectedReplay = replay;
-			selectedSpawns = (selectedReplay != null) ? LobbyUtils.GetSpawnClients(selectedReplay.Session.Value, selectedReplay.MapPreview) : null;
+			selectedSpawns = (selectedReplay != null) ? LobbyUtils.GetSpawnClients(selectedReplay.LobbyInfo.Value, selectedReplay.MapPreview) : null;
 
 			if (replay == null)
 				return;
 
 			try
 			{
-				var lobby = replay.Session.Value;
+				var lobby = replay.LobbyInfo.Value;
 
 				var clients = lobby.Clients.Where(c => c.Slot != null)
 					.GroupBy(c => c.Team)
