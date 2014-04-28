@@ -196,14 +196,12 @@ function FileSysGetRecursive(path, recursive, spec, skip)
   end
   getDir(path, spec)
 
-  -- explicitly sort files; directories first
-  table.sort(content, function(a,b)
-    local ad, bd = a:sub(-1) == sep, b:sub(-1) == sep
-    -- both are folders or both are files
-    if ad and bd or not ad and not bd then return a < b
-    -- only one is folder; return true if it's the first one
-    else return ad end
-  end)
+  local prefix = '\001' -- prefix to sort directories first
+  local shadow = {}
+  for _, v in ipairs(content) do
+    shadow[v] = (v:sub(-1) == sep and prefix or '')..v:lower()
+  end
+  table.sort(content, function(a,b) return shadow[a] < shadow[b] end)
 
   return content
 end
