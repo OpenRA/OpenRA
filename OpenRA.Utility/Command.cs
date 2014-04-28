@@ -248,6 +248,42 @@ namespace OpenRA.Utility
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 				return "Dictionary<{0},{1}>".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
 
+			if (t.IsSubclassOf(typeof(Array)))
+				return "Multiple {0}".F(FriendlyTypeName(t.GetElementType()));
+
+			if (t == typeof(int) || t == typeof(uint))
+				return "Integer";
+
+			if (t == typeof(int2))
+				return "2D Integer";
+
+			if (t == typeof(float) || t == typeof(decimal))
+				return "Real Number";
+
+			if (t == typeof(float2))
+				return "2D Real Number";
+
+			if (t == typeof(CPos))
+				return "2D Cell Position";
+
+			if (t == typeof(CVec))
+				return "2D Cell Vector";
+
+			if (t == typeof(WAngle))
+				return "1D World Angle";
+
+			if (t == typeof(WRot))
+				return "3D World Rotation";
+
+			if (t == typeof(WPos))
+				return "3D World Position";
+
+			if (t == typeof(WRange))
+				return "3D World Range";
+
+			if (t == typeof(WVec))
+				return "3D World Vector";
+
 			return t.Name;
 		}
 
