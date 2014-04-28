@@ -53,6 +53,8 @@ namespace OpenRA.FileFormats
 			if (endGameTimestampUtc.Kind == DateTimeKind.Unspecified)
 				throw new ArgumentException("The 'Kind' property of the timestamp must be specified", "endGameTimestampUtc");
 			EndTimestampUtc = endGameTimestampUtc.ToUniversalTime();
+
+			Outcome = outcome;
 		}
 
 		ReplayMetadata(BinaryReader reader)

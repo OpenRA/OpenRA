@@ -22,7 +22,8 @@ namespace OpenRA.Widgets
 				widget.ContentHeight = widget.ItemSpacing;
 
 			w.Bounds.Y = widget.ContentHeight;
-			widget.ContentHeight += w.Bounds.Height + widget.ItemSpacing;
+			if (!widget.CollapseHiddenChildren || w.IsVisible())
+				widget.ContentHeight += w.Bounds.Height + widget.ItemSpacing;
 		}
 
 		public void AdjustChildren()
@@ -31,7 +32,8 @@ namespace OpenRA.Widgets
 			foreach (var w in widget.Children)
 			{
 				w.Bounds.Y = widget.ContentHeight;
-				widget.ContentHeight += w.Bounds.Height + widget.ItemSpacing;
+				if (!widget.CollapseHiddenChildren || w.IsVisible())
+					widget.ContentHeight += w.Bounds.Height + widget.ItemSpacing;
 			}
 		}
 	}
