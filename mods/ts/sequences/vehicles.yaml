@@ -117,19 +117,20 @@ gghunt:
 		Start: 0
 
 smech:
-	stand: # TODO: slightly glitchy
-		Start: 0
-		Facings: 8
-		ShadowStart: 136
+	stand:
+		Start: 96
+		Facings: -8
+		ShadowStart: 232
 	run:
 		Start: 0
 		Facings: -8
 		Length: 12
 		ShadowStart: 136
-	shoot: # TODO: played somehow too fast
+	shoot:
 		Start: 104
 		Length: 4
 		Facings: -8
 		ShadowStart: 240
+		Tick: 100
 	icon: smchicon
 		Start: 0
