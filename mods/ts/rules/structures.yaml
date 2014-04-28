@@ -141,6 +141,7 @@ GAWEAP:
 		ExitCell: 3,3
 	Production:
 		Produces: Vehicle
+	PrimaryBuilding:
 	ProductionBar:
 	WithProductionOverlay@WHITELIGHTS:
 		Sequence: production-lights-white
@@ -244,6 +245,7 @@ NAWEAP:
 		ExitCell: 3,3
 	Production:
 		Produces: Vehicle
+	PrimaryBuilding:
 	ProductionBar:
 	WithProductionOverlay@LIGHTS:
 		Sequence: production-lights
@@ -623,6 +625,7 @@ GAHPAD:
 		SpawnOffset: 0,-256,0
 	Production:
 		Produces: Air
+	PrimaryBuilding:
 	BelowUnits:
 	Reservable:
 	RepairsUnits:
@@ -655,6 +658,7 @@ NAHPAD:
 		SpawnOffset: 0,-256,0
 	Production:
 		Produces: Air
+	PrimaryBuilding:
 	BelowUnits:
 	Reservable:
 	RepairsUnits:
