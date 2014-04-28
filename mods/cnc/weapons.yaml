@@ -667,7 +667,7 @@ ArtilleryShell:
 
 MachineGun:
 	ROF: 20
-	Burst: 4
+	Burst: 5
 	InvalidTargets: Wall	
 	Range: 4c0
 	Report: MGUN11.AUD
