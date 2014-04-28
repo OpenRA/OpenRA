@@ -417,5 +417,20 @@ do
     uimgr:GetArtProvider():SetMetric(wxaui.wxAUI_DOCKART_SASH_SIZE, 2)
   end
 
+  for _, nb in pairs {frame.bottomnotebook, frame.projnotebook} do
+    nb:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_BG_DCLICK,
+      function(event)
+        local pane = mgr:GetPane(nb)
+        if pane:IsFloating() then
+          pane:Dock()
+        else
+          pane:Float()
+          pane:FloatingPosition(pane.window:GetScreenPosition())
+          pane:FloatingSize(pane.window:GetSize())
+        end
+        mgr:Update()
+      end)
+  end
+
   mgr.defaultPerspective = mgr:SavePerspective()
 end
