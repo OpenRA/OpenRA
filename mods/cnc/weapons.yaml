@@ -49,7 +49,7 @@ UnitExplodeSmall:
 GrenadierExplode:
 	Warhead:
 		Damage: 10
-		Spread: 384
+		Spread: 256
 		Versus:
 			None: 90%
 			Wood: 75%
