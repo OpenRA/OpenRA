@@ -400,6 +400,7 @@ local function treeSetConnectorsAndIcons(tree)
       if PackageEventHandle("onFiletreeRDown", tree, event, item_id) == false then
         return
       end
+      event:Skip()
     end)
 
   -- toggle a folder on a single click
