@@ -402,12 +402,12 @@ do
               Name("notebook"):
               CenterPane():PaneBorder(false))
   mgr:AddPane(frame.projnotebook, wxaui.wxAuiPaneInfo():
-              Name("projpanel"):Caption(TR("Project")):
+              Name("projpanel"):CaptionVisible(false):Caption(TR("Project")):
               MinSize(200,200):FloatingSize(200,400):
               Left():Layer(1):Position(1):PaneBorder(false):
               CloseButton(true):MaximizeButton(false):PinButton(true))
   mgr:AddPane(frame.bottomnotebook, wxaui.wxAuiPaneInfo():
-              Name("bottomnotebook"):
+              Name("bottomnotebook"):CaptionVisible(false):
               MinSize(100,100):BestSize(200,200):FloatingSize(400,200):
               Bottom():Layer(1):Position(1):PaneBorder(false):
               CloseButton(true):MaximizeButton(false):PinButton(true))
