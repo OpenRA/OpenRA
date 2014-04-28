@@ -500,88 +500,22 @@ local function treeSetConnectorsAndIcons(tree)
 end
 
 -- project
--- panel
--- (combobox, button)
--- (treectrl)
-local projpanel = ide.frame.projpanel
-local projcombobox = wx.wxComboBox(projpanel, ID "filetree.proj.drivecb",
-  filetree.projdir,
-  wx.wxDefaultPosition, wx.wxDefaultSize,
-  filetree.projdirlist, wx.wxTE_PROCESS_ENTER)
-
-local projbutton = wx.wxButton(projpanel, ID_PROJECTDIRCHOOSE,
-  "...", wx.wxDefaultPosition, wx.wxSize(26,20))
-
-local projtree = wx.wxTreeCtrl(projpanel, wx.wxID_ANY,
+local projtree = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
   wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_LINES_AT_ROOT
   + wx.wxTR_EDIT_LABELS)
-
--- use the same font in the combobox as is used in the filetree
 projtree:SetFont(ide.font.fNormal)
-projcombobox:SetFont(ide.font.fNormal)
 
-local projTopSizer = wx.wxBoxSizer( wx.wxHORIZONTAL );
-projTopSizer:Add(projcombobox, 1, wx.wxALL + wx.wxALIGN_LEFT + wx.wxGROW, 0)
-projTopSizer:Add(projbutton, 0, wx.wxALL + wx.wxALIGN_RIGHT + wx.wxADJUST_MINSIZE + wx.wxALIGN_CENTER_VERTICAL, 0)
-
-local projSizer = wx.wxBoxSizer( wx.wxVERTICAL );
-projSizer:Add(projTopSizer, 0, wx.wxALL + wx.wxALIGN_CENTER_HORIZONTAL + wx.wxGROW, 0)
-projSizer:Add(projtree, 1, wx.wxALL + wx.wxALIGN_LEFT + wx.wxGROW, 0)
-
-projpanel:SetSizer(projSizer)
+local projnotebook = ide.frame.projnotebook
+projnotebook:AddPage(projtree, "Project", true)
 
 -- proj connectors
 -- ---------------
-
-local inupdate = false
-local function projcomboboxUpdate(event)
-  if inupdate then return end
-  local cur = projcombobox:GetValue()
-  local fn = wx.wxFileName(filetree.projdirmap[cur] or cur)
-  fn:Normalize()
-
-  -- on Windows, wxwidgets (2.9.5+) generates two COMMAND_COMBOBOX_SELECTED
-  -- events when the selection is done with ENTER, which causes recursive
-  -- call of updateProjectDir. To prevent this the second call is ignored.
-  inupdate = true
-  filetree:updateProjectDir(fn:GetFullPath())
-  inupdate = false
-end
-
-projpanel:Connect(ID "filetree.proj.drivecb", wx.wxEVT_COMMAND_COMBOBOX_SELECTED, projcomboboxUpdate)
-projpanel:Connect(ID "filetree.proj.drivecb", wx.wxEVT_COMMAND_TEXT_ENTER, projcomboboxUpdate)
 
 treeSetConnectorsAndIcons(projtree)
 
 -- proj functions
 -- ---------------
-
-local function abbreviateProjList(projdirlist)
-  filetree.projdirmap = {}
-  local sep = "\t"
-  local dirs = table.concat(projdirlist, sep)..sep
-  local projlist = {}
-  for _, v in ipairs(projdirlist) do
-    -- using FileName because the path doesn't have trailing slash
-    local parts = wx.wxFileName(v..pathsep):GetDirs()
-    local name = table.remove(parts, #parts) or v
-    while #parts > 0
-    and select(2, dirs:gsub("%f[^".. pathsep .."]"..q(name)..sep, "")) > 1 do
-      name = table.remove(parts, #parts) .. pathsep .. name
-    end
-    local abbrev = ("%s (%s)"):format(name, v)
-    filetree.projdirmap[abbrev] = v
-    table.insert(projlist, abbrev)
-  end
-  return projlist
-end
-
-local function refreshProjectList()
-  projcombobox:Clear()
-  projcombobox:Append(abbreviateProjList(filetree.projdirlist))
-  projcombobox:Select(0)
-end
 
 function filetree:updateProjectDir(newdir)
   if (not newdir) or not wx.wxDirExists(newdir) then return end
@@ -611,7 +545,6 @@ function filetree:updateProjectDir(newdir)
     ide.config.projecthistorylength,
     function(s1, s2) return dirname:SameAs(wx.wxFileName.DirName(s2)) end)
 
-  refreshProjectList()
   ProjectUpdateProjectDir(newdir,true)
   treeSetRoot(projtree,newdir)
 
@@ -629,10 +562,6 @@ function filetree:updateProjectDir(newdir)
 
   PackageEventHandle("onProjectLoad", newdir)
 end
-
-projpanel.projbutton = projbutton
-projpanel.projcombobox = projcombobox
-projpanel.projtree = projtree
 
 function FileTreeGetDir()
   return filetree.projdir and #filetree.projdir > 0
@@ -664,7 +593,6 @@ end
 function FileTreeProjectListClear()
   -- remove all items from the list except the current one
   filetree.projdirlist = {FileTreeGetDir()}
-  refreshProjectList()
 end
 
 function FileTreeProjectListUpdate(menu, items)

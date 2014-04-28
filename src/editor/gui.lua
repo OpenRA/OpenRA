@@ -375,10 +375,13 @@ local function createBottomNotebook(frame)
   return bottomnotebook
 end
 
-local function createProjpanel(frame)
-  local projpanel = wx.wxPanel(frame,wx.wxID_ANY)
-  frame.projpanel = projpanel
-  return projpanel
+local function createProjNotebook(frame)
+  local projnotebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wxaui.wxAUI_NB_DEFAULT_STYLE
+    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+  frame.projnotebook = projnotebook
+  return projnotebook
 end
 
 -- ----------------------------------------------------------------------------
@@ -388,7 +391,7 @@ local frame = createFrame()
 ide.frame = frame
 createToolBar(frame)
 createNotebook(frame)
-createProjpanel(frame)
+createProjNotebook(frame)
 createBottomNotebook(frame)
 
 do
@@ -398,10 +401,10 @@ do
   mgr:AddPane(frame.notebook, wxaui.wxAuiPaneInfo():
               Name("notebook"):
               CenterPane():PaneBorder(false))
-  mgr:AddPane(frame.projpanel, wxaui.wxAuiPaneInfo():
+  mgr:AddPane(frame.projnotebook, wxaui.wxAuiPaneInfo():
               Name("projpanel"):Caption(TR("Project")):
               MinSize(200,200):FloatingSize(200,400):
-              Left():Layer(1):Position(1):
+              Left():Layer(1):Position(1):PaneBorder(false):
               CloseButton(true):MaximizeButton(false):PinButton(true))
   mgr:AddPane(frame.bottomnotebook, wxaui.wxAuiPaneInfo():
               Name("bottomnotebook"):
