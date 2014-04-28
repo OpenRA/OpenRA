@@ -60,14 +60,14 @@ namespace OpenRA
 			return (uint)((orig & 0xff000000) >> 24) | ((orig & 0x00ff0000) >> 8) | ((orig & 0x0000ff00) << 8) | ((orig & 0x000000ff) << 24);
 		}
 
-		public static int Lerp( int a, int b, int mul, int div )
+		public static int Lerp(int a, int b, int mul, int div)
 		{
-			return a + ( b - a ) * mul / div;
+			return a + (b - a) * mul / div;
 		}
 
-		public static int2 Lerp( int2 a, int2 b, int mul, int div )
+		public static int2 Lerp(int2 a, int2 b, int mul, int div)
 		{
-			return a + ( b - a ) * mul / div;
+			return a + (b - a) * mul / div;
 		}
 
 		public int2 Clamp(Rectangle r)
