@@ -467,6 +467,7 @@ Grenade:
 	Range: 4c768
 	Report: CANNON1.AUD
 	Burst: 2
+	InvalidTargets: Air, Infantry
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
@@ -512,7 +513,7 @@ MammothTusk:
 	Range: 8c0
 	Report: MISSILE6.AUD
 	Burst: 2
-	ValidTargets: Air, Ground, Water
+	ValidTargets: Air, Infantry
 	Projectile: Missile
 		Speed: 341
 		Arm: 2
@@ -526,7 +527,7 @@ MammothTusk:
 	Warhead:
 		Spread: 256
 		Versus:
-			None: 90%
+			None: 100%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
@@ -536,7 +537,7 @@ MammothTusk:
 		WaterImpactSound: splash9.aud
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 45
+		Damage: 50
 
 155mm:
 	ROF: 85
