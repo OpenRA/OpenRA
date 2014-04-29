@@ -196,6 +196,7 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+		CameraPitch: 90
 	Huntable:
 	LuaScriptEvents:
 
@@ -228,6 +229,7 @@
 	ActorLostNotification:
 	CombatDebugOverlay:
 	BodyOrientation:
+		CameraPitch: 90
 	Huntable:
 	LuaScriptEvents:
 
