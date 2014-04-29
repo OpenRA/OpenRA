@@ -359,6 +359,10 @@ local function createBottomNotebook(frame)
       mgr:Update()
     end)
 
+  -- disallow tabs closing
+  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
+    function (event) event:Veto() end)
+
   local errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_NONE)
 
@@ -368,10 +372,10 @@ local function createBottomNotebook(frame)
   bottomnotebook:AddPage(errorlog, TR("Output"), true)
   bottomnotebook:AddPage(shellbox, TR("Local console"), false)
   
-  frame.bottomnotebook = bottomnotebook
   bottomnotebook.errorlog = errorlog
   bottomnotebook.shellbox = shellbox
   
+  frame.bottomnotebook = bottomnotebook
   return bottomnotebook
 end
 
@@ -380,6 +384,11 @@ local function createProjNotebook(frame)
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wxaui.wxAUI_NB_DEFAULT_STYLE
     - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+
+  -- disallow tabs closing
+  projnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
+    function (event) event:Veto() end)
+
   frame.projnotebook = projnotebook
   return projnotebook
 end
