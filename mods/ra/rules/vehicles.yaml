@@ -162,9 +162,9 @@ V2RL:
 		Owner: soviet
 		Hotkey: m
 	Valued:
-		Cost: 1800
+		Cost: 2000
 	CustomBuildTimeValue:
-		Value: 2225
+		Value: 2500
 	Tooltip:
 		Name: Mammoth Tank
 		Description: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
@@ -204,8 +204,8 @@ V2RL:
 		HuskActor: 4TNK.Husk
 	SelfHealing:
 		Step: 1
-		Ticks: 1
-		HealIfBelow: 80%
+		Ticks: 3
+		HealIfBelow: 50%
 		DamageCooldown: 150
 	Selectable:
 		Bounds: 44,38,0,-4
