@@ -1,6 +1,7 @@
 ^Building:
 	AppearsOnRadar:
 	SelectionDecorations:
+		Palette: pips
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
@@ -96,6 +97,7 @@
 			Gems: 80
 			Beach: 80
 	SelectionDecorations:
+		Palette: pips
 	Selectable:
 		Voice: Infantry
 	TargetableUnit:
@@ -167,6 +169,7 @@
 			Beach: 40
 		ROT: 5
 	SelectionDecorations:
+		Palette: pips
 	Selectable:
 		Voice: Vehicle
 	TargetableUnit:
@@ -203,6 +206,7 @@
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
 	SelectionDecorations:
+		Palette: pips
 	Selectable:
 		Voice: Heli
 	Helicopter:

@@ -30,6 +30,8 @@ DPOD:
 	LimitedAmmo:
 		Ammo: 5
 		PipCount: 5
+		PipType: Ammo
+		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -97,6 +99,8 @@ ORCA:
 	LimitedAmmo:
 		Ammo: 5
 		PipCount: 5
+		PipType: Ammo
+		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -132,6 +136,8 @@ ORCAB:
 	LimitedAmmo:
 		Ammo: 2
 		PipCount: 2
+		PipType: Ammo
+		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -225,6 +231,8 @@ SCRIN:
 	LimitedAmmo:
 		Ammo: 3
 		PipCount: 3
+		PipType: Ammo
+		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -260,6 +268,8 @@ APACHE:
 	LimitedAmmo:
 		Ammo: 12
 		PipCount: 4
+		PipType: Ammo
+		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	WithRotor:
 		Offset: 85,0,384
