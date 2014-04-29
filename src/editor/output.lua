@@ -98,7 +98,8 @@ function CommandLineToShell(uid,state)
 end
 
 -- logic to "unhide" wxwidget window using winapi
-pcall(function () return require 'winapi' end)
+pcall(require, 'winapi')
+local checkstart, checknext, checkperiod
 local pid = nil
 local function unHideWindow(pidAssign)
   -- skip if not configured to do anything
@@ -107,6 +108,18 @@ local function unHideWindow(pidAssign)
     pid = pidAssign > 0 and pidAssign or nil
   end
   if pid and winapi then
+    local now = TimeGet()
+    if pidAssign and pidAssign > 0 then
+      checkstart, checknext, checkperiod = now, now, 0.02
+    end
+    if now - checkstart > 1 and checkperiod < 0.5 then
+      checkperiod = checkperiod * 2
+    end
+    if now >= checknext then
+      checknext = now + checkperiod
+    else
+      return
+    end
     local wins = winapi.find_all_windows(function(w)
       return w:get_process():get_pid() == pid
     end)
@@ -299,7 +312,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
 
 errorlog:Connect(wx.wxEVT_IDLE, function()
     if (#streamins or #streamerrs) then getStreams() end
-    unHideWindow()
+    if ide.osname == 'Windows' then unHideWindow() end
   end)
 
 local jumptopatterns = {
