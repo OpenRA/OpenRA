@@ -113,7 +113,11 @@ namespace OpenRA.Mods.RA
 
 			public void Update(Cache<string, List<Actor>> buildables)
 			{
-				var hasReachedBuildLimit = buildLimit > 0 && buildables[Key].Count >= buildLimit;
+				var hasReachedBuildLimit = false;
+				
+				if(buildables.Keys.Contains(Key))
+					hasReachedBuildLimit = buildLimit > 0 && buildables[Key].Count >= buildLimit;
+
 				var nowHasPrerequisites = HasPrerequisites(buildables) && !hasReachedBuildLimit;
 
 				if (nowHasPrerequisites && !hasPrerequisites)
