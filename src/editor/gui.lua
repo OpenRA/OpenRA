@@ -72,7 +72,7 @@ local function SCinB(id) -- shortcut in brackets
 end
 
 local function createToolBar(frame)
-  local toolBar = frame:CreateToolBar(wx.wxTB_FLAT + wx.wxTB_NODIVIDER, wx.wxID_ANY)
+  local toolBar = wxaui.wxAuiToolBar(frame, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize)
   -- wxChoice is a bit too narrow on Linux, so make it a bit larger
   local funclist = wx.wxChoice.new(toolBar, ID "toolBar.funclist",
     wx.wxDefaultPosition, wx.wxSize.new(240, ide.osname == 'Unix' and 28 or 24))
@@ -105,7 +105,7 @@ local function createToolBar(frame)
   toolBar:AddSeparator()
   toolBar:AddControl(funclist)
   toolBar:Realize()
-  
+
   toolBar.funclist = funclist
   frame.toolBar = toolBar
   return toolBar
@@ -407,6 +407,11 @@ do
   local frame = ide.frame
   local mgr = frame.uimgr
 
+  mgr:AddPane(frame.toolBar, wxaui.wxAuiPaneInfo():
+              Name("toolbar"):Caption("Toolbar"):
+              MinSize(300,16):FloatingSize(800,48):
+              ToolbarPane():Top():CloseButton(false):PaneBorder(false):
+              LeftDockable(false):RightDockable(false))
   mgr:AddPane(frame.notebook, wxaui.wxAuiPaneInfo():
               Name("notebook"):
               CenterPane():PaneBorder(false))
