@@ -909,7 +909,7 @@ function debuggerAddWindow(ctrl, panel, name)
 
   local mgr = ide.frame.uimgr
   mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
-              Name(panel):Float():
+              Name(panel):Float():CaptionVisible(false):PaneBorder(false):
               MinSize(width/2,height/2):
               BestSize(width,height):FloatingSize(width,height):
               PinButton(true):Hide())
