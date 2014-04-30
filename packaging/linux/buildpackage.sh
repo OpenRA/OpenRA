@@ -1,23 +1,28 @@
 #!/bin/bash
 # OpenRA packaging master script for linux packages
 
-if [ $# -ne "3" ]; then
-	echo "Usage: `basename $0` version files-dir outputdir"
+if [ $# -ne "4" ]; then
+	echo "Usage: `basename $0` tag files-dir platform-files-dir outputdir"
     exit 1
 fi
 
 TAG=$1
 VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
 BUILTDIR=$2
-PACKAGEDIR=$3
+DEPSDIR=$3
+PACKAGEDIR=$4
 ROOTDIR=root
 
 # Clean up
 rm -rf $ROOTDIR
 
 cd ../..
+
 # Copy files for OpenRA.Game.exe and OpenRA.Editor.exe as well as all dependencies.
 make install-all prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
+
+# Native library dependencies
+cp "$DEPSDIR"/* "$PWD/packaging/linux/$ROOTDIR/usr/lib/openra/" || exit 3
 
 # Launch scripts (executed by Desura)
 cp *.sh "$PWD/packaging/linux/$ROOTDIR/usr/lib/openra/" || exit 3
