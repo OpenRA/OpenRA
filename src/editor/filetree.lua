@@ -298,7 +298,6 @@ local function treeSetConnectorsAndIcons(tree)
       local renamelabel = tree:IsRoot(item_id) and
         TR("&Edit Project Directory") or TR("&Rename")
       local menu = wx.wxMenu {
-        { },
         { ID_NEWFILE, TR("New &File") },
         { ID_NEWDIRECTORY, TR("&New Directory") },
         { },
@@ -316,7 +315,7 @@ local function treeSetConnectorsAndIcons(tree)
       local projectdirectory = wx.wxMenuItem(menu, ID_PROJECTDIR,
         TR("Project Directory"), TR("Set the project directory to be used"),
         wx.wxITEM_NORMAL, projectdirectorymenu)
-      menu:Insert(0, projectdirectory)
+      menu:Insert(6, projectdirectory)
       FileTreeProjectListUpdate(projectdirectorymenu, 0)
 
       local function addItem(item_id, name, image)
