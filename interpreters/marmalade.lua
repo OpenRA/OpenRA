@@ -16,8 +16,7 @@ return {
       local sep = win and ';' or ':'
       local path =
            win and ([[C:\Marmalade]]..sep..[[D:\Marmalade]]..sep..
-                    [[C:\Program Files\Marmalade]]..sep..[[D:\Program Files\Marmalade]]..sep..
-                    [[C:\Program Files (x86)\Marmalade]]..sep..[[D:\Program Files (x86)\Marmalade]]..sep)
+                    GenerateProgramFilesPath('Marmalade', sep)..sep)
         or mac and ([[/Applications/Marmalade.app/Contents]]..sep..
                     [[/Developer/Marmalade]]..sep)
         or ''

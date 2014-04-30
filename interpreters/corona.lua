@@ -13,10 +13,8 @@ return {
     if not corona then
       local sep = win and ';' or ':'
       local default =
-           win and ([[C:\Program Files\Corona SDK]]..sep..[[D:\Program Files\Corona SDK]]..sep..
-                    [[C:\Program Files\Corona Labs\Corona SDK]]..sep..[[D:\Program Files\Corona Labs\Corona SDK]]..sep..
-                    [[C:\Program Files (x86)\Corona SDK]]..sep..[[D:\Program Files (x86)\Corona SDK]]..sep..
-                    [[C:\Program Files (x86)\Corona Labs\Corona SDK]]..sep..[[D:\Program Files (x86)\Corona Labs\Corona SDK]]..sep)
+           win and (GenerateProgramFilesPath('Corona SDK', sep)..sep..
+                    GenerateProgramFilesPath('Corona Labs\\Corona SDK', sep)..sep)
         or mac and ('/Applications/CoronaSDK/Corona Simulator.app/Contents/MacOS'..sep)
         or ''
       local path = default

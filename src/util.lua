@@ -460,3 +460,13 @@ function GetEditorWithFocus()
   end
   return editor or nil
 end
+
+function GenerateProgramFilesPath(exec, sep)
+  local env = os.getenv('ProgramFiles')
+  return
+    (env and env..'\\'..exec..sep or '')..
+    [[C:\Program Files\]]..exec..sep..
+    [[D:\Program Files\]]..exec..sep..
+    [[C:\Program Files (x86)\]]..exec..sep..
+    [[D:\Program Files (x86)\]]..exec
+end

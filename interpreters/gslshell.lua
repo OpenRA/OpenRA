@@ -11,10 +11,7 @@ return {
     gslshell = gslshell or ide.config.path.gslshell -- check if the path is configured
     if not gslshell then
       local sep = win and ';' or ':'
-      local default =
-           win and ([[C:\Program Files\gsl-shell]]..sep..[[D:\Program Files\gsl-shell]]..sep..
-                    [[C:\Program Files (x86)\gsl-shell]]..sep..[[D:\Program Files (x86)\gsl-shell]]..sep)
-        or ''
+      local default = win and GenerateProgramFilesPath('gsl-shell', sep)..sep or ''
       local path = default
                  ..(os.getenv('PATH') or '')..sep
                  ..(GetPathWithSep(self:fworkdir(wfilename)))..sep
