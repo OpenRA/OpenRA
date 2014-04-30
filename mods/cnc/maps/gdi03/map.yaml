@@ -931,12 +931,14 @@ Rules:
 		-Buildable:
 	SAM:
 		-Buildable:
+		Building:
+			Power: -10
 	HQ:
 		-Buildable:
 	NOHQ:
 		RequiresPower:
 		CanPowerDown:
-		Inherits: ^Building
+		Inherits: ^BaseBuilding
 		Valued:
 			Cost: 1000
 		Tooltip:
