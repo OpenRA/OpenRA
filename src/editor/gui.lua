@@ -121,6 +121,7 @@ local function createToolBar(frame)
     end
   end)
 
+  toolBar:GetArtProvider():SetElementSize(wxaui.wxAUI_TBART_GRIPPER_SIZE, 0)
   toolBar:Realize()
 
   toolBar.funclist = funclist
