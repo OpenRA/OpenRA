@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Drawing;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets
@@ -37,6 +38,102 @@ namespace OpenRA.Mods.RA.Widgets
 				if (onCancel != null)
 					onCancel();
 			};
+		}
+
+		public static void TextInputPrompt(
+			string title, string prompt, string initialText,
+			Action<string> onAccept, Action onCancel = null,
+			string acceptText = null, string cancelText = null,
+			Func<string, bool> inputValidator = null)
+		{
+			var panel = Ui.OpenWindow("TEXT_INPUT_PROMPT");
+			Func<bool> doValidate = null;
+			ButtonWidget acceptButton = null, cancelButton = null;
+
+			//
+			// Title
+			//
+			panel.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
+
+			//
+			// Prompt
+			//
+			panel.Get<LabelWidget>("PROMPT_TEXT").GetText = () => prompt;
+
+			//
+			// Text input
+			//
+			var input = panel.Get<TextFieldWidget>("INPUT_TEXT");
+			var isValid = false;
+			input.Text = initialText;
+			input.IsValid = () => isValid;
+			input.OnEnterKey = () =>
+			{
+				if (acceptButton.IsDisabled())
+					return false;
+
+				acceptButton.OnClick();
+				return true;
+			};
+			input.OnEscKey = () =>
+			{
+				if (cancelButton.IsDisabled())
+					return false;
+
+				cancelButton.OnClick();
+				return true;
+			};
+			input.TakeKeyboardFocus();
+			input.CursorPosition = input.Text.Length;
+			input.OnTextEdited = () => doValidate();
+
+			//
+			// Buttons
+			//
+			acceptButton = panel.Get<ButtonWidget>("ACCEPT_BUTTON");
+			if (!string.IsNullOrEmpty(acceptText))
+				acceptButton.GetText = () => acceptText;
+
+			acceptButton.OnClick = () =>
+			{
+				if (!doValidate())
+					return;
+
+				Ui.CloseWindow();
+				onAccept(input.Text);
+			};
+
+			cancelButton = panel.Get<ButtonWidget>("CANCEL_BUTTON");
+			if (!string.IsNullOrEmpty(cancelText))
+				cancelButton.GetText = () => cancelText;
+
+			cancelButton.OnClick = () =>
+			{
+				Ui.CloseWindow();
+				if (onCancel != null)
+					onCancel();
+			};
+
+			//
+			// Validation
+			//
+			doValidate = () =>
+			{
+				if (inputValidator == null)
+					return true;
+
+				isValid = inputValidator(input.Text);
+				if (isValid)
+				{
+					acceptButton.Disabled = false;
+					return true;
+				}
+
+				acceptButton.Disabled = true;
+				return false;
+			};
+
+			doValidate();
 		}
 	}
 }

@@ -154,3 +154,49 @@ Container@CONFIRM_PROMPT:
 			Height: 35
 			Text: Confirm
 
+
+Container@TEXT_INPUT_PROMPT:
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 370
+	Height: 80
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: 80
+			Background: panel-black
+			Children:
+				Label@PROMPT_TEXT:
+					X: 20
+					Y: 10
+					Width: PARENT_RIGHT - 40
+					Height: 25
+					Font: Bold
+					Align: Center
+				TextField@INPUT_TEXT:
+					X: 20
+					Y: 40
+					Width: PARENT_RIGHT - 40
+					Height: 25
+		Button@ACCEPT_BUTTON:
+			X: PARENT_RIGHT - 160
+			Y: PARENT_BOTTOM - 1
+			Width: 160
+			Height: 30
+			Text: OK
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: 0
+			Y: PARENT_BOTTOM - 1
+			Width: 160
+			Height: 30
+			Text: Cancel
+			Font: Bold
+			Key: escape
