@@ -279,9 +279,15 @@ clean:
 
 distclean: clean
 
+platformdeps = "linux"
+ifeq ($(shell uname),Darwin)
+	platformdeps = "osx"
+endif
+
 dependencies:
 	@ $(CP_R) thirdparty/*.dl* .
 	@ $(CP_R) thirdparty/Tao/* .
+	@ $(CP_R) thirdparty/${platformdeps}/* .
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
 	@for i in $? ; do \
