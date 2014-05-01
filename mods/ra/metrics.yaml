@@ -14,6 +14,7 @@ Metrics:
 	TextfieldFont: Regular
 	TextfieldColor: 255,255,255
 	TextfieldColorDisabled: 128,128,128
+	TextfieldColorInvalid: 255,192,192
 	TextFont: Regular
 	TextColor: 255,255,255
 	TextContrast: false
