@@ -105,6 +105,21 @@ local function createToolBar(frame)
   end
   toolBar:AddSeparator()
   toolBar:AddControl(funclist)
+
+  toolBar:SetToolDropDown(ID_PROJECTDIRCHOOSE, true)
+  toolBar:Connect(ID_PROJECTDIRCHOOSE, wxaui.wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, function(event)
+    if event:IsDropDownClicked() then
+      local tb = event:GetEventObject():DynamicCast('wxAuiToolBar')
+      local rect = tb:GetToolRect(event:GetId())
+      local pt = frame:ScreenToClient(tb:ClientToScreen(rect:GetBottomLeft()))
+      local menu = wx.wxMenu()
+      FileTreeProjectListUpdate(menu, 0)
+      tb:PopupMenu(menu, pt)
+    else
+      event:Skip()
+    end
+  end)
+
   toolBar:Realize()
 
   toolBar.funclist = funclist
