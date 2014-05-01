@@ -14,10 +14,15 @@ Group: Amusements/Games
 Packager: Matthias Mailänder <matthias@mailaender.name>
 Requires: mono-core
 Requires: mono-winforms
-Requires: SDL
 Requires: openal
 Requires: libfreetype.so.6
-Requires: libSDL2-2.0.so.0
+Requires: libasound.so.2
+Requires: libc.so.6
+Requires: libdl.so.2
+Requires: libm.so.6
+Requires: libpthread.so.0
+Requires: librt.so.1
+
 Prefix: /usr
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /tmp/openra
