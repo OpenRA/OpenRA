@@ -28,6 +28,8 @@ namespace OpenRA
 		public SheetBuilder SheetBuilder;
 		public SpriteLoader SpriteLoader;
 		public VoxelLoader VoxelLoader;
+		public ModSequenceProvider SequenceProvider;
+		public ModRules Rules;
 
 		public ModData(string mod)
 		{
@@ -39,6 +41,8 @@ namespace OpenRA
 			LoadScreen.Display();
 			WidgetLoader = new WidgetLoader(this);
 			MapCache = new MapCache(Manifest);
+			SequenceProvider = new ModSequenceProvider(this);
+			Rules = new ModRules(this);
 
 			// HACK: Mount only local folders so we have a half-working environment for the asset installer
 			GlobalFileSystem.UnmountAll();
@@ -118,15 +122,13 @@ namespace OpenRA
 			// Mount map package so custom assets can be used. TODO: check priority.
 			GlobalFileSystem.Mount(GlobalFileSystem.OpenPackage(map.Path, null, int.MaxValue));
 
-			using (new Support.PerfTimer("LoadRules"))
-				Rules.LoadRules(Manifest, map);
+			using (new Support.PerfTimer("Rules.ActivateMap"))
+				Rules.ActivateMap(map);
 			SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset].Extensions, SheetBuilder);
 
-			using (new Support.PerfTimer("SequenceProvider.Initialize"))
-			{
-				// TODO: Don't load the sequences for assets that are not used in this tileset. Maybe use the existing EditorTilesetFilters.
-				SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
-			}
+			using (new Support.PerfTimer("SequenceProvider.ActivateMap"))
+				SequenceProvider.ActivateMap(map);
+
 			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequences);
 			return map;
 		}
