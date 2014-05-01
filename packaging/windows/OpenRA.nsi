@@ -93,11 +93,10 @@ Section "Game" GAME
 	File "${SRCDIR}\KopiLua.dll"
 	File "${SRCDIR}\NLua.dll"
 	File "${SRCDIR}\eluant.dll"
-	File OpenAL32.dll
-	File SDL.dll
-	File freetype6.dll
-	File zlib1.dll
-
+	File "${DEPSDIR}\OpenAL32.dll"
+	File "${DEPSDIR}\SDL.dll"
+	File "${DEPSDIR}\freetype6.dll"
+	File "${DEPSDIR}\zlib1.dll"
 	File "${DEPSDIR}\lua51.dll"
 	SetOutPath "$INSTDIR\lua"
 	File "${SRCDIR}\lua\*.lua"
