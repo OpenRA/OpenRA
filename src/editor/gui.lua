@@ -72,7 +72,8 @@ local function SCinB(id) -- shortcut in brackets
 end
 
 local function createToolBar(frame)
-  local toolBar = wxaui.wxAuiToolBar(frame, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize)
+  local toolBar = wxaui.wxAuiToolBar(frame, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize,
+    wxaui.wxAUI_TB_PLAIN_BACKGROUND)
   -- wxChoice is a bit too narrow on Linux, so make it a bit larger
   local funclist = wx.wxChoice.new(toolBar, ID "toolBar.funclist",
     wx.wxDefaultPosition, wx.wxSize.new(240, ide.osname == 'Unix' and 28 or 24))
