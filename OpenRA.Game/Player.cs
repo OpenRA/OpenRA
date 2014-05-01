@@ -41,6 +41,7 @@ namespace OpenRA
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerReference;
 		public bool IsBot;
+		public int SpawnPoint;
 
 		public Shroud Shroud;
 		public World World { get; private set; }

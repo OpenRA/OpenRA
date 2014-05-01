@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using OpenRA.FileFormats;
 using OpenRA.Primitives;
 
 namespace OpenRA.Network
@@ -35,59 +36,51 @@ namespace OpenRA.Network
 
 		public ReplayConnection(string replayFilename)
 		{
-			using (var rs = File.OpenRead(replayFilename))
-				Read(rs, ref TickCount, ref IsValid, ref LobbyInfo);
-
-			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency;
-		}
-
-		public ReplayConnection(FileStream rs)
-		{
-			Read(rs, ref TickCount, ref IsValid, ref LobbyInfo);
-		}
-
-		void Read(FileStream rs, ref int TickCount, ref bool IsValid, ref Session LobbyInfo)
-		{
 			// Parse replay data into a struct that can be fed to the game in chunks
 			// to avoid issues with all immediate orders being resolved on the first tick.
-			var chunk = new Chunk();
-
-			while (rs.Position < rs.Length)
+			using (var rs = File.OpenRead(replayFilename))
 			{
-				var client = rs.ReadInt32();
-				if (client == FileFormats.ReplayMetadata.MetaStartMarker)
-					break;
-				var packetLen = rs.ReadInt32();
-				var packet = rs.ReadBytes(packetLen);
-				var frame = BitConverter.ToInt32(packet, 0);
-				chunk.Packets.Add(Pair.New(client, packet));
+				var chunk = new Chunk();
 
-				if (packet.Length == 5 && packet[4] == 0xBF)
-					continue; // disconnect
-				else if (packet.Length >= 5 && packet[4] == 0x65)
-					continue; // sync
-				else if (frame == 0)
+				while (rs.Position < rs.Length)
 				{
-					// Parse replay metadata from orders stream
-					var orders = packet.ToOrderList(null);
-					foreach (var o in orders)
+					var client = rs.ReadInt32();
+					if (client == ReplayMetadata.MetaStartMarker)
+						break;
+					var packetLen = rs.ReadInt32();
+					var packet = rs.ReadBytes(packetLen);
+					var frame = BitConverter.ToInt32(packet, 0);
+					chunk.Packets.Add(Pair.New(client, packet));
+
+					if (packet.Length == 5 && packet[4] == 0xBF)
+						continue; // disconnect
+					else if (packet.Length >= 5 && packet[4] == 0x65)
+						continue; // sync
+					else if (frame == 0)
 					{
-						if (o.OrderString == "StartGame")
-							IsValid = true;
-						else if (o.OrderString == "SyncInfo" && !IsValid)
-							LobbyInfo = Session.Deserialize(o.TargetString);
+						// Parse replay metadata from orders stream
+						var orders = packet.ToOrderList(null);
+						foreach (var o in orders)
+						{
+							if (o.OrderString == "StartGame")
+								IsValid = true;
+							else if (o.OrderString == "SyncInfo" && !IsValid)
+								LobbyInfo = Session.Deserialize(o.TargetString);
+						}
+					}
+					else
+					{
+						// Regular order - finalize the chunk
+						chunk.Frame = frame;
+						chunks.Enqueue(chunk);
+						chunk = new Chunk();
+
+						TickCount = Math.Max(TickCount, frame);
 					}
 				}
-				else
-				{
-					// Regular order - finalize the chunk
-					chunk.Frame = frame;
-					chunks.Enqueue(chunk);
-					chunk = new Chunk();
-
-					TickCount = Math.Max(TickCount, frame);
-				}
 			}
+
+			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency;
 		}
 
 		// Do nothing: ignore locally generated orders

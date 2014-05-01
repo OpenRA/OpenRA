@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -25,12 +25,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		static Filter filter = new Filter();
 
 		Widget panel;
-		ScrollPanelWidget playerList;
+		ScrollPanelWidget replayList, playerList;
 		ScrollItemWidget playerTemplate, playerHeader;
 		List<ReplayMetadata> replays;
-		Dictionary<ReplayMetadata, bool> replayVis = new Dictionary<ReplayMetadata, bool>();
+		Dictionary<ReplayMetadata, ReplayState> replayState = new Dictionary<ReplayMetadata, ReplayState>();
 
-		Dictionary<CPos, Session.Client> selectedSpawns;
+		Dictionary<CPos, SpawnOccupant> selectedSpawns;
 		ReplayMetadata selectedReplay;
 
 		[ObjectCreator.UseCtor]
@@ -45,13 +45,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
-			var rl = panel.Get<ScrollPanelWidget>("REPLAY_LIST");
+			replayList = panel.Get<ScrollPanelWidget>("REPLAY_LIST");
 			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
 
 			var mod = Game.modData.Manifest.Mod;
 			var dir = new[] { Platform.SupportDir, "Replays", mod.Id, mod.Version }.Aggregate(Path.Combine);
 
-			rl.RemoveChildren();
+			replayList.RemoveChildren();
 			if (Directory.Exists(dir))
 			{
 				using (new Support.PerfTimer("Load replays"))
@@ -60,37 +60,38 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						.GetFiles(dir, "*.rep")
 						.Select((filename) => ReplayMetadata.Read(filename))
 						.Where((r) => r != null)
-						.OrderByDescending(r => r.StartTimestampUtc)
+						.OrderByDescending(r => r.GameInfo.StartTimeUtc)
 						.ToList();
 				}
 
 				foreach (var replay in replays)
-					AddReplay(rl, replay, template);
+					AddReplay(replay, template);
 
 				ApplyFilter();
 			}
 
 			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
-			watch.IsDisabled = () => selectedReplay == null || selectedReplay.MapPreview.Status != MapStatus.Available;
+			watch.IsDisabled = () => selectedReplay == null || selectedReplay.GameInfo.MapPreview.Status != MapStatus.Available;
 			watch.OnClick = () => { WatchReplay(); onStart(); };
 
 			panel.Get("REPLAY_INFO").IsVisible = () => selectedReplay != null;
 
 			var preview = panel.Get<MapPreviewWidget>("MAP_PREVIEW");
-			preview.SpawnClients = () => selectedSpawns;
-			preview.Preview = () => selectedReplay != null ? selectedReplay.MapPreview : null;
+			preview.SpawnOccupants = () => selectedSpawns;
+			preview.Preview = () => selectedReplay != null ? selectedReplay.GameInfo.MapPreview : null;
 
 			var title = panel.GetOrNull<LabelWidget>("MAP_TITLE");
 			if (title != null)
-				title.GetText = () => selectedReplay != null ? selectedReplay.MapPreview.Title : null;
+				title.GetText = () => selectedReplay != null ? selectedReplay.GameInfo.MapPreview.Title : null;
 
 			var type = panel.GetOrNull<LabelWidget>("MAP_TYPE");
 			if (type != null)
-				type.GetText = () => selectedReplay.MapPreview.Type;
+				type.GetText = () => selectedReplay.GameInfo.MapPreview.Type;
 
-			panel.Get<LabelWidget>("DURATION").GetText = () => WidgetUtils.FormatTimeSeconds((int)selectedReplay.Duration.TotalSeconds);
+			panel.Get<LabelWidget>("DURATION").GetText = () => WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds);
 
 			SetupFilters();
+			SetupManagement();
 		}
 
 		void SetupFilters()
@@ -204,25 +205,89 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 
 			//
-			// Outcome
+			// Map
+			//
+			{
+				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_MAPNAME_DROPDOWNBUTTON");
+				if (ddb != null)
+				{
+					var options = new HashSet<string>(replays.Select(r => r.GameInfo.MapTitle), StringComparer.OrdinalIgnoreCase).ToList();
+					options.Sort(StringComparer.OrdinalIgnoreCase);
+					options.Insert(0, null);	// no filter
+
+					var anyText = ddb.GetText();
+					ddb.GetText = () => string.IsNullOrEmpty(filter.MapName) ? anyText : filter.MapName;
+					ddb.OnMouseDown = _ =>
+					{
+						Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						{
+							var item = ScrollItemWidget.Setup(
+								tpl,
+								() => string.Compare(filter.MapName, option, true) == 0,
+								() => { filter.MapName = option; ApplyFilter(); }
+							);
+							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
+							return item;
+						};
+
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+					};
+				}
+			}
+
+			//
+			// Players
+			//
+			{
+				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_PLAYER_DROPDOWNBUTTON");
+				if (ddb != null)
+				{
+					var options = new HashSet<string>(replays.SelectMany(r => r.GameInfo.Players.Select(p => p.Name)), StringComparer.OrdinalIgnoreCase).ToList();
+					options.Sort(StringComparer.OrdinalIgnoreCase);
+					options.Insert(0, null);	// no filter
+
+					var anyText = ddb.GetText();
+					ddb.GetText = () => string.IsNullOrEmpty(filter.PlayerName) ? anyText : filter.PlayerName;
+					ddb.OnMouseDown = _ =>
+					{
+						Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						{
+							var item = ScrollItemWidget.Setup(
+								tpl,
+								() => string.Compare(filter.PlayerName, option, true) == 0,
+								() => { filter.PlayerName = option; ApplyFilter(); }
+							);
+							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
+							return item;
+						};
+
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+					};
+				}
+			}
+
+			//
+			// Outcome (depends on Player)
 			//
 			{
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_OUTCOME_DROPDOWNBUTTON");
 				if (ddb != null)
 				{
+					ddb.IsDisabled = () => string.IsNullOrEmpty(filter.PlayerName);
+
 					// Using list to maintain the order
-					var options = new List<KeyValuePair<WinState, string>>
+					var options = new List<KeyValuePair<GameInformation.GameOutcome, string>>
 					{
-						new KeyValuePair<WinState, string>(WinState.Undefined, ddb.GetText()),
-						new KeyValuePair<WinState, string>(WinState.Won, "Won"),
-						new KeyValuePair<WinState, string>(WinState.Lost, "Lost")
+						new KeyValuePair<GameInformation.GameOutcome, string>(GameInformation.GameOutcome.Undefined, ddb.GetText()),
+						new KeyValuePair<GameInformation.GameOutcome, string>(GameInformation.GameOutcome.Defeat, "Defeat"),
+						new KeyValuePair<GameInformation.GameOutcome, string>(GameInformation.GameOutcome.Victory, "Victory")
 					};
 					var lookup = options.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
 					ddb.GetText = () => lookup[filter.Outcome];
 					ddb.OnMouseDown = _ =>
 					{
-						Func<KeyValuePair<WinState, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						Func<KeyValuePair<GameInformation.GameOutcome, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
@@ -239,28 +304,30 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 
 			//
-			// Players
+			// Faction (depends on Player)
 			//
 			{
-				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_PLAYER_DROPDOWNBUTTON");
+				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_FACTION_DROPDOWNBUTTON");
 				if (ddb != null)
 				{
-					var options = new HashSet<string>(replays.SelectMany(r => r.LobbyInfo.Value.Clients.Select(c => c.Name)), StringComparer.OrdinalIgnoreCase).ToList();
+					ddb.IsDisabled = () => string.IsNullOrEmpty(filter.PlayerName);
+
+					var options = new HashSet<string>(replays.SelectMany(r => r.GameInfo.Players.Select(p => p.FactionName).Where(n => !string.IsNullOrEmpty(n))), StringComparer.OrdinalIgnoreCase).ToList();
 					options.Sort(StringComparer.OrdinalIgnoreCase);
 					options.Insert(0, null);	// no filter
 
-					var nobodyText = ddb.GetText();
-					ddb.GetText = () => string.IsNullOrEmpty(filter.PlayerName) ? nobodyText : filter.PlayerName;
+					var anyText = ddb.GetText();
+					ddb.GetText = () => string.IsNullOrEmpty(filter.Faction) ? anyText : filter.Faction;
 					ddb.OnMouseDown = _ =>
 					{
 						Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
-								() => string.Compare(filter.PlayerName, option, true) == 0,
-								() => { filter.PlayerName = option; ApplyFilter(); }
+								() => string.Compare(filter.Faction, option, true) == 0,
+								() => { filter.Faction = option; ApplyFilter(); }
 							);
-							item.Get<LabelWidget>("LABEL").GetText = () => option ?? nobodyText;
+							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
 							return item;
 						};
 
@@ -268,12 +335,152 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					};
 				}
 			}
+
+			//
+			// Reset button
+			//
+			{
+				var button = panel.Get<ButtonWidget>("FLT_RESET_BUTTON");
+				button.IsDisabled = () => filter.IsEmpty;
+				button.OnClick = () => { filter = new Filter(); ApplyFilter(); };
+			}
+		}
+
+		void SetupManagement()
+		{
+			{
+				var button = panel.Get<ButtonWidget>("MNG_RENSEL_BUTTON");
+				button.IsDisabled = () => selectedReplay == null;
+				button.OnClick = () =>
+				{
+					var r = selectedReplay;
+					var initialName = Path.GetFileNameWithoutExtension(r.FilePath);
+					var directoryName = Path.GetDirectoryName(r.FilePath);
+					var invalidChars = Path.GetInvalidFileNameChars();
+
+					ConfirmationDialogs.TextInputPrompt(
+						"Rename Replay",
+						"Enter a new file name:",
+						initialName,
+						onAccept: (newName) =>
+						{
+							RenameReplay(r, newName);
+						},
+						onCancel: null,
+						acceptText: "Rename",
+						cancelText: null,
+						inputValidator: (newName) =>
+						{
+							if (newName == initialName)
+								return false;
+
+							if (string.IsNullOrWhiteSpace(newName))
+								return false;
+
+							if (newName.IndexOfAny(invalidChars) >= 0)
+								return false;
+
+							if (File.Exists(Path.Combine(directoryName, newName)))
+								return false;
+
+							return true;
+						});
+				};
+			}
+
+			Action<ReplayMetadata, Action> onDeleteReplay = (r, after) =>
+			{
+				ConfirmationDialogs.PromptConfirmAction(
+					"Delete selected replay?",
+					"Delete replay '{0}'?".F(Path.GetFileNameWithoutExtension(r.FilePath)),
+					() =>
+					{
+						DeleteReplay(r);
+						if (after != null)
+							after.Invoke();
+					},
+					null,
+					"Delete");
+			};
+
+			{
+				var button = panel.Get<ButtonWidget>("MNG_DELSEL_BUTTON");
+				button.IsDisabled = () => selectedReplay == null;
+				button.OnClick = () =>
+				{
+					onDeleteReplay(selectedReplay, () => { if (selectedReplay == null) SelectFirstVisibleReplay(); });
+				};
+			}
+
+			{
+				var button = panel.Get<ButtonWidget>("MNG_DELALL_BUTTON");
+				button.IsDisabled = () => replayState.Count(kvp => kvp.Value.Visible) == 0;
+				button.OnClick = () =>
+				{
+					var list = replayState.Where(kvp => kvp.Value.Visible).Select(kvp => kvp.Key).ToList();
+					if (list.Count == 0)
+						return;
+
+					if (list.Count == 1)
+					{
+						onDeleteReplay(list[0], () => { if (selectedReplay == null) SelectFirstVisibleReplay(); });
+						return;
+					}
+
+					ConfirmationDialogs.PromptConfirmAction(
+						"Delete all selected replays?",
+						"Delete {0} replays?".F(list.Count),
+						() =>
+						{
+							list.ForEach((r) => DeleteReplay(r));
+							if (selectedReplay == null)
+								SelectFirstVisibleReplay();
+						},
+						null,
+						"Delete All");
+				};
+			}
+		}
+
+		void RenameReplay(ReplayMetadata replay, string newFilenameWithoutExtension)
+		{
+			try
+			{
+				replay.RenameFile(newFilenameWithoutExtension);
+				replayState[replay].Item.Text = newFilenameWithoutExtension;
+			}
+			catch (Exception ex)
+			{
+				Log.Write("debug", ex.ToString());
+				return;
+			}
+		}
+
+		void DeleteReplay(ReplayMetadata replay)
+		{
+			try
+			{
+				File.Delete(replay.FilePath);
+			}
+			catch (Exception ex)
+			{
+				Game.Debug("Failed to delete replay file '{0}'. See the logs for details.", replay.FilePath);
+				Log.Write("debug", ex.ToString());
+				return;
+			}
+
+			if (replay == selectedReplay)
+				SelectReplay(null);
+
+			replayList.RemoveChild(replayState[replay].Item);
+			replays.Remove(replay);
+			replayState.Remove(replay);
 		}
 
 		bool EvaluateReplayVisibility(ReplayMetadata replay)
 		{
 			// Game type
-			if ((filter.Type == GameType.Multiplayer && replay.LobbyInfo.Value.IsSinglePlayer) || (filter.Type == GameType.Singleplayer && !replay.LobbyInfo.Value.IsSinglePlayer))
+			if ((filter.Type == GameType.Multiplayer && replay.GameInfo.IsSinglePlayer) || (filter.Type == GameType.Singleplayer && !replay.GameInfo.IsSinglePlayer))
 				return false;
 
 			// Date type
@@ -295,14 +502,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						t = TimeSpan.FromDays(30d);
 						break;
 				}
-				if (replay.StartTimestampUtc < DateTime.UtcNow.Subtract(t))
+				if (replay.GameInfo.StartTimeUtc < DateTime.UtcNow - t)
 					return false;
 			}
 
 			// Duration
 			if (filter.Duration != DurationType.Any)
 			{
-				double minutes = replay.Duration.TotalMinutes;
+				double minutes = replay.GameInfo.Duration.TotalMinutes;
 				switch (filter.Duration)
 				{
 					case DurationType.VeryShort:
@@ -327,15 +534,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}
 			}
 
-			// Outcome
-			if (filter.Outcome != WinState.Undefined && filter.Outcome != replay.Outcome)
+			// Map
+			if (!string.IsNullOrEmpty(filter.MapName) && string.Compare(filter.MapName, replay.GameInfo.MapTitle, true) != 0)
 				return false;
 
 			// Player
 			if (!string.IsNullOrEmpty(filter.PlayerName))
 			{
-				var player = replay.LobbyInfo.Value.Clients.Find(c => string.Compare(filter.PlayerName, c.Name, true) == 0);
+				var player = replay.GameInfo.Players.FirstOrDefault(p => string.Compare(filter.PlayerName, p.Name, true) == 0);
 				if (player == null)
+					return false;
+
+				// Outcome
+				if (filter.Outcome != GameInformation.GameOutcome.Undefined && filter.Outcome != player.Outcome)
+					return false;
+
+				// Faction
+				if (!string.IsNullOrEmpty(filter.Faction) && string.Compare(filter.Faction, player.FactionName, true) != 0)
 					return false;
 			}
 
@@ -345,41 +560,41 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void ApplyFilter()
 		{
 			foreach (var replay in replays)
-				replayVis[replay] = EvaluateReplayVisibility(replay);
+				replayState[replay].Visible = EvaluateReplayVisibility(replay);
 
-			if (selectedReplay == null || replayVis[selectedReplay] == false)
+			if (selectedReplay == null || replayState[selectedReplay].Visible == false)
 				SelectFirstVisibleReplay();
 
-			panel.Get<ScrollPanelWidget>("REPLAY_LIST").Layout.AdjustChildren();
+			replayList.Layout.AdjustChildren();
 		}
 
 		void SelectFirstVisibleReplay()
 		{
-			SelectReplay(replays.FirstOrDefault(r => replayVis[r]));
+			SelectReplay(replays.FirstOrDefault(r => replayState[r].Visible));
 		}
 
 		void SelectReplay(ReplayMetadata replay)
 		{
 			selectedReplay = replay;
-			selectedSpawns = (selectedReplay != null) ? LobbyUtils.GetSpawnClients(selectedReplay.LobbyInfo.Value, selectedReplay.MapPreview) : null;
+			selectedSpawns = (selectedReplay != null)
+				? LobbyUtils.GetSpawnClients(selectedReplay.GameInfo.Players, selectedReplay.GameInfo.MapPreview)
+				: new Dictionary<CPos, SpawnOccupant>();
 
 			if (replay == null)
 				return;
 
 			try
 			{
-				var lobby = replay.LobbyInfo.Value;
-
-				var clients = lobby.Clients.Where(c => c.Slot != null)
-					.GroupBy(c => c.Team)
+				var players = replay.GameInfo.Players
+					.GroupBy(p => p.Team)
 					.OrderBy(g => g.Key);
 
-				var teams = new Dictionary<string, IEnumerable<Session.Client>>();
-				var noTeams = clients.Count() == 1;
-				foreach (var c in clients)
+				var teams = new Dictionary<string, IEnumerable<GameInformation.Player>>();
+				var noTeams = players.Count() == 1;
+				foreach (var p in players)
 				{
-					var label = noTeams ? "Players" : c.Key == 0 ? "No Team" : "Team {0}".F(c.Key);
-					teams.Add(label, c);
+					var label = noTeams ? "Players" : p.Key == 0 ? "No Team" : "Team {0}".F(p.Key);
+					teams.Add(label, p);
 				}
 
 				playerList.RemoveChildren();
@@ -408,7 +623,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 						var flag = item.Get<ImageWidget>("FLAG");
 						flag.GetImageCollection = () => "flags";
-						flag.GetImageName = () => o.Country;
+						flag.GetImageName = () => o.FactionId;
 
 						playerList.AddChild(item);
 					}
@@ -430,16 +645,29 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		void AddReplay(ScrollPanelWidget list, ReplayMetadata replay, ScrollItemWidget template)
+		void AddReplay(ReplayMetadata replay, ScrollItemWidget template)
 		{
 			var item = ScrollItemWidget.Setup(template,
 				() => selectedReplay == replay,
 				() => SelectReplay(replay),
 				() => WatchReplay());
-			var f = Path.GetFileNameWithoutExtension(replay.FilePath);
-			item.Get<LabelWidget>("TITLE").GetText = () => f;
-			item.IsVisible = () => { bool visible; return replayVis.TryGetValue(replay, out visible) && visible; };
-			list.AddChild(item);
+
+			replayState[replay] = new ReplayState
+			{
+				Item = item,
+				Visible = true
+			};
+
+			item.Text = Path.GetFileNameWithoutExtension(replay.FilePath);
+			item.Get<LabelWidget>("TITLE").GetText = () => item.Text;
+			item.IsVisible = () => replayState[replay].Visible;
+			replayList.AddChild(item);
+		}
+
+		class ReplayState
+		{
+			public bool Visible;
+			public ScrollItemWidget Item;
 		}
 
 		class Filter
@@ -447,8 +675,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			public GameType Type;
 			public DateType Date;
 			public DurationType Duration;
-			public WinState Outcome = WinState.Undefined;
+			public GameInformation.GameOutcome Outcome;
 			public string PlayerName;
+			public string MapName;
+			public string Faction;
+
+			public bool IsEmpty
+			{
+				get
+				{
+					return Type == default(GameType)
+						&& Date == default(DateType)
+						&& Duration == default(DurationType)
+						&& Outcome == default(GameInformation.GameOutcome)
+						&& string.IsNullOrEmpty(PlayerName)
+						&& string.IsNullOrEmpty(MapName)
+						&& string.IsNullOrEmpty(Faction);
+				}
+			}
 		}
 		enum GameType
 		{

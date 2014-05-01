@@ -19,10 +19,42 @@ using OpenRA.Network;
 
 namespace OpenRA.Widgets
 {
+	public class SpawnOccupant
+	{
+		public readonly HSLColor Color;
+		public readonly int ClientIndex;
+		public readonly string PlayerName;
+		public readonly int Team;
+		public readonly string Country;
+		public readonly int SpawnPoint;
+
+		public SpawnOccupant()
+		{
+		}
+		public SpawnOccupant(Session.Client client)
+		{
+			Color = client.Color;
+			ClientIndex = client.Index;
+			PlayerName = client.Name;
+			Team = client.Team;
+			Country = client.Country;
+			SpawnPoint = client.SpawnPoint;
+		}
+		public SpawnOccupant(GameInformation.Player player)
+		{
+			Color = player.Color;
+			ClientIndex = player.ClientIndex;
+			PlayerName = player.Name;
+			Team = player.Team;
+			Country = player.FactionId;
+			SpawnPoint = player.SpawnPoint;
+		}
+	}
+
 	public class MapPreviewWidget : Widget
 	{
 		public Func<MapPreview> Preview = () => null;
-		public Func<Dictionary<CPos, Session.Client>> SpawnClients = () => new Dictionary<CPos, Session.Client>();
+		public Func<Dictionary<CPos, SpawnOccupant>> SpawnOccupants = () => new Dictionary<CPos, SpawnOccupant>();
 		public Action<MouseInput> OnMouseDown = _ => {};
 		public bool IgnoreMouseInput = false;
 		public bool ShowSpawnPoints = true;
@@ -44,7 +76,7 @@ namespace OpenRA.Widgets
 			: base(other)
 		{
 			Preview = other.Preview;
-			SpawnClients = other.SpawnClients;
+			SpawnOccupants = other.SpawnOccupants;
 			ShowSpawnPoints = other.ShowSpawnPoints;
 			TooltipTemplate = other.TooltipTemplate;
 			TooltipContainer = other.TooltipContainer;
@@ -109,7 +141,7 @@ namespace OpenRA.Widgets
 			TooltipSpawnIndex = -1;
 			if (ShowSpawnPoints)
 			{
-				var colors = SpawnClients().ToDictionary(c => c.Key, c => c.Value.Color.RGB);
+				var colors = SpawnOccupants().ToDictionary(c => c.Key, c => c.Value.Color.RGB);
 
 				var spawnPoints = preview.SpawnPoints;
 				foreach (var p in spawnPoints)

@@ -248,6 +248,7 @@
     <Compile Include="GameRules\Ruleset.cs" />
     <Compile Include="GameRules\RulesetCache.cs" />
     <Compile Include="Support\MersenneTwister.cs" />
+    <Compile Include="GameInformation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

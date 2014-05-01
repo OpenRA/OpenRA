@@ -258,13 +258,19 @@ namespace OpenRA.Widgets
 			return true;
 		}
 
-		// Remove focus from this widget; return false if you don't want to give it up
+		// Remove focus from this widget; return false to hint that you don't want to give it up
 		public virtual bool YieldMouseFocus(MouseInput mi)
 		{
 			if (Ui.MouseFocusWidget == this)
 				Ui.MouseFocusWidget = null;
 
 			return true;
+		}
+
+		void ForceYieldMouseFocus()
+		{
+			if (Ui.MouseFocusWidget == this && !YieldMouseFocus(default(MouseInput)))
+				Ui.MouseFocusWidget = null;
 		}
 
 		public virtual bool TakeKeyboardFocus()
@@ -285,6 +291,12 @@ namespace OpenRA.Widgets
 				Ui.KeyboardFocusWidget = null;
 
 			return true;
+		}
+
+		void ForceYieldKeyboardFocus()
+		{
+			if (Ui.KeyboardFocusWidget == this && !YieldKeyboardFocus())
+				Ui.KeyboardFocusWidget = null;
 		}
 
 		public virtual string GetCursor(int2 pos) { return "default"; }
@@ -410,6 +422,11 @@ namespace OpenRA.Widgets
 
 		public virtual void Removed()
 		{
+			// Using the forced versions because the widgets
+			// have been removed
+			ForceYieldKeyboardFocus();
+			ForceYieldMouseFocus();
+
 			foreach (var c in Children.OfType<Widget>().Reverse())
 				c.Removed();
 		}

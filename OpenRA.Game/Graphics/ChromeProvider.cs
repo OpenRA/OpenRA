@@ -72,14 +72,23 @@ namespace OpenRA.Graphics
 			collections.Add(name, collection);
 		}
 
-		public static Sprite GetImage(string collection, string image)
+		public static Sprite GetImage(string collectionName, string imageName)
 		{
 			// Cached sprite
-			if (cachedSprites.ContainsKey(collection) && cachedSprites[collection].ContainsKey(image))
-				return cachedSprites[collection][image];
+			Dictionary<string, Sprite> cachedCollection;
+			Sprite sprite;
+			if (cachedSprites.TryGetValue(collectionName, out cachedCollection) && cachedCollection.TryGetValue(imageName, out sprite))
+				return sprite;
+
+			Collection collection;
+			if (!collections.TryGetValue(collectionName, out collection))
+			{
+				Log.Write("debug", "Could not find collection '{0}'", collectionName);
+				return null;
+			}
 
 			MappedImage mi;
-			if (!collections[collection].regions.TryGetValue(image, out mi))
+			if (!collection.regions.TryGetValue(imageName, out mi))
 				return null;
 
 			// Cached sheet
@@ -93,11 +102,15 @@ namespace OpenRA.Graphics
 			}
 
 			// Cache the sprite
-			if (!cachedSprites.ContainsKey(collection))
-				cachedSprites.Add(collection, new Dictionary<string, Sprite>());
-			cachedSprites[collection].Add(image, mi.GetImage(sheet));
+			if (cachedCollection == null)
+			{
+				cachedCollection = new Dictionary<string, Sprite>();
+				cachedSprites.Add(collectionName, cachedCollection);
+			}
+			var image = mi.GetImage(sheet);
+			cachedCollection.Add(imageName, image);
 
-			return cachedSprites[collection][image];
+			return image;
 		}
 	}
 }

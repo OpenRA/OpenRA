@@ -38,10 +38,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			tooltipContainer.BeforeRender = () =>
 			{
-				var client = preview.SpawnClients().Values.FirstOrDefault(c => c.SpawnPoint == preview.TooltipSpawnIndex);
+				var occupant = preview.SpawnOccupants().Values.FirstOrDefault(c => c.SpawnPoint == preview.TooltipSpawnIndex);
 
 				var teamWidth = 0;
-				if (client == null)
+				if (occupant == null)
 				{
 					labelText = "Available spawn";
 					playerCountry = null;
@@ -50,9 +50,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}
 				else
 				{
-					labelText = client.Name;
-					playerCountry = client.Country;
-					playerTeam = client.Team;
+					labelText = occupant.PlayerName;
+					playerCountry = occupant.Country;
+					playerTeam = occupant.Team;
 					widget.Bounds.Height = playerTeam > 0 ? doubleHeight : singleHeight;
 					teamWidth = teamFont.Measure(team.GetText()).X;
 				}

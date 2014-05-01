@@ -149,12 +149,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			color.AttachPanel(colorChooser, onExit);
 		}
 
-		public static Dictionary<CPos, Session.Client> GetSpawnClients(Session lobbyInfo, MapPreview preview)
+		public static Dictionary<CPos, SpawnOccupant> GetSpawnClients(Session lobbyInfo, MapPreview preview)
 		{
 			var spawns = preview.SpawnPoints;
 			return lobbyInfo.Clients
 				.Where(c => c.SpawnPoint != 0)
-				.ToDictionary(c => spawns[c.SpawnPoint - 1], c => c);
+				.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c));
+		}
+		public static Dictionary<CPos, SpawnOccupant> GetSpawnClients(IEnumerable<GameInformation.Player> players, MapPreview preview)
+		{
+			var spawns = preview.SpawnPoints;
+			return players
+					.Where(c => c.SpawnPoint != 0)
+					.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c));
 		}
 
 		public static void SelectSpawnPoint(OrderManager orderManager, MapPreviewWidget mapPreview, MapPreview preview, MouseInput mi)

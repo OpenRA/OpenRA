@@ -41,9 +41,12 @@ namespace OpenRA.Widgets
 		{
 			var name = GetImageName();
 			var collection = GetImageCollection();
-			WidgetUtils.DrawRGBA(
-				ChromeProvider.GetImage(collection, name),
-				RenderOrigin);
+
+			var sprite = ChromeProvider.GetImage(collection, name);
+			if (sprite == null)
+				throw new ArgumentException("Sprite {0}/{1} was not found.".F(collection, name));
+
+			WidgetUtils.DrawRGBA(sprite, RenderOrigin);
 		}
 	}
 }

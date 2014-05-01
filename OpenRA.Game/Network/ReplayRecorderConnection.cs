@@ -20,7 +20,6 @@ namespace OpenRA.Network
 	class ReplayRecorderConnection : IConnection
 	{
 		public ReplayMetadata Metadata;
-		public WinState LocalGameState = WinState.Undefined;
 
 		IConnection inner;
 		BinaryWriter writer;
@@ -107,7 +106,8 @@ namespace OpenRA.Network
 
 			if (Metadata != null)
 			{
-				Metadata.FinalizeReplayMetadata(DateTime.UtcNow, LocalGameState);
+				if (Metadata.GameInfo != null)
+					Metadata.GameInfo.EndTimeUtc = DateTime.UtcNow;
 				Metadata.Write(writer);
 			}
 
