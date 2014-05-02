@@ -49,7 +49,7 @@ UnitExplodeSmall:
 GrenadierExplode:
 	Warhead:
 		Damage: 10
-		Spread: 384
+		Spread: 256
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -423,7 +423,7 @@ Grenade:
 	Range: 4c0
 	Report: toss1.aud
 	Projectile: Bullet
-		Speed: 85
+		Speed: 119
 		High: yes
 		Angle: 62
 		Inaccuracy: 213
@@ -431,7 +431,7 @@ Grenade:
 	Warhead:
 		Spread: 341
 		Versus:
-			None: 90%
+			None: 100%
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
@@ -667,7 +667,7 @@ ArtilleryShell:
 
 MachineGun:
 	ROF: 20
-	Burst: 4
+	Burst: 5
 	InvalidTargets: Wall	
 	Range: 4c0
 	Report: MGUN11.AUD
