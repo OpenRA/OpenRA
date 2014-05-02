@@ -169,6 +169,8 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	DeathSounds:
+		Burned: dedman10.aud
+		Zapped: dedman6.aud
 
 ^Ship:
 	AppearsOnRadar:

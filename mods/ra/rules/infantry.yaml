@@ -14,6 +14,9 @@ DOG:
 	Selectable:
 		Voice: DogVoice
 		Bounds: 12,17,-1,-4
+	DeathSounds:
+		Zapped: dogw6.aud
+		Burned: dogw6.aud
 	Health:
 		HP: 12
 	Mobile:
@@ -250,6 +253,9 @@ E7:
 	Selectable:
 		Voice: TanyaVoice
 		Bounds: 12,17,0,-9
+	DeathSounds:
+		Zapped: tandeth1.aud
+		Burned: tandeth1.aud
 	Health:
 		HP: 100
 	Mobile:
@@ -580,6 +586,9 @@ Ant:
 	Selectable:
 		Voice: AntVoice
 		Bounds: 30,30,0,-2
+	DeathSounds:
+		Zapped: antdie.aud
+		Burned: antdie.aud
 	Health:
 		HP: 750
 		Radius: 469
