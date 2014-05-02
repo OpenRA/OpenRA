@@ -46,6 +46,9 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
+			Game.Debug("Warning: This map uses the deprecated scripting interface, which will be removed in a future release. " +
+				"If you are the map author, then please see the OpenRA wiki for instructions on how to migrate to the new API.");
+
 			world = w;
 			sma = world.WorldActor.Trait<SpawnMapActors>();
 

@@ -217,9 +217,7 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			// workaround for #4965
-			// if (!Paused && (!IsShellmap || Game.Settings.Game.ShowShellmap))
-			if (!Paused && !IsShellmap)
+			if (!Paused && (!IsShellmap || Game.Settings.Game.ShowShellmap))
 			{
 				WorldTick++;
 

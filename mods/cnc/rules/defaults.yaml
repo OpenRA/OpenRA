@@ -42,6 +42,7 @@
 		UncloakSound: trans1.aud
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Tank:
 	AppearsOnRadar:
@@ -90,6 +91,7 @@
 		UncloakSound: trans1.aud
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -122,6 +124,7 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -183,6 +186,7 @@
 	LuaScriptEvents:
 	DetectCloaked:
 		Range: 1
+	ScriptTriggers:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -261,6 +265,7 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Plane:
 	AppearsOnRadar:
@@ -280,6 +285,7 @@
 	Huntable:
 	AttackMove:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Ship:
 	AppearsOnRadar:
@@ -305,6 +311,7 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Building:
 	AppearsOnRadar:
@@ -348,6 +355,7 @@
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
+	ScriptTriggers:
 
 ^BaseBuilding:
 	Inherits: ^Building
@@ -389,6 +397,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
@@ -429,6 +438,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Wall:
 	AppearsOnRadar:
@@ -460,6 +470,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Tree:
 	Tooltip:
@@ -484,6 +495,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^TibTree:
 	Tooltip:
@@ -520,6 +532,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Husk:
 	Health:
@@ -545,6 +558,7 @@
 	BodyOrientation:
 	LuaScriptEvents:
 	DisabledOverlay:
+	ScriptTriggers:
 
 ^HelicopterHusk:
 	Inherits: ^Husk
@@ -573,4 +587,5 @@
 		DestroyedSound: xplobig4.aud
 	BodyOrientation:
 	LuaScriptEvents:
+	ScriptTriggers:
 

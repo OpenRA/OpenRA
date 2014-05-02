@@ -117,15 +117,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			BindCheckboxPref(panel, "PIXELDOUBLE_CHECKBOX", ds, "PixelDouble");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
-			// workaround for #4965
-			// BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
+			BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
 			BindCheckboxPref(panel, "ALWAYS_SHOW_STATUS_BARS_CHECKBOX", gs, "AlwaysShowStatusBars");
 			BindCheckboxPref(panel, "TEAM_HEALTH_COLORS_CHECKBOX", gs, "TeamHealthColors");
-
-			// workaround for #4965
-			var shellmapCheckbox = panel.Get<CheckboxWidget>("SHOW_SHELLMAP");
-			shellmapCheckbox.IsDisabled = () =>  true;
-			shellmapCheckbox.IsChecked = () =>  false;
 
 			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
 			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton);

@@ -9,13 +9,13 @@
 #endregion
 
 using System;
+using Eluant;
+using Eluant.ObjectBinding;
+using OpenRA.Scripting;
 
 namespace OpenRA
 {
-	/// <summary>
-	/// 3d World vector for describing offsets and distances - 1024 units = 1 cell.
-	/// </summary>
-	public struct WVec
+	public struct WVec : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding
 	{
 		public readonly int X, Y, Z;
 
@@ -87,5 +87,61 @@ namespace OpenRA
 		}
 
 		public override string ToString() { return "{0},{1},{2}".F(X, Y, Z); }
+
+		#region Scripting interface
+
+		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			WVec a, b;
+			if (!left.TryGetClrValue<WVec>(out a) || !right.TryGetClrValue<WVec>(out b))
+				throw new LuaException("Attempted to call WVec.Add(WVec, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+
+			return new LuaCustomClrObject(a + b);
+		}
+
+		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			WVec a, b;
+			if (!left.TryGetClrValue<WVec>(out a) || !right.TryGetClrValue<WVec>(out b))
+				throw new LuaException("Attempted to call WVec.Subtract(WVec, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+
+			return new LuaCustomClrObject(a - b);
+		}
+
+		public LuaValue Minus(LuaRuntime runtime)
+		{
+			return new LuaCustomClrObject(-this);
+		}
+
+		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			WVec a, b;
+			if (!left.TryGetClrValue<WVec>(out a) || !right.TryGetClrValue<WVec>(out b))
+				return false;
+
+			return a == b;
+		}
+
+		public LuaValue this[LuaRuntime runtime, LuaValue key]
+		{
+			get
+			{
+				switch (key.ToString())
+				{
+					case "X": return X;
+					case "Y": return Y;
+					case "Z": return Z;
+					case "Facing": return Traits.Util.GetFacing(this, 0);
+					default: throw new LuaException("WVec does not define a member '{0}'".F(key));
+				}
+			}
+
+			set
+			{
+				throw new LuaException("WVec is read-only. Use WVec.New to create a new value");
+			}
+		}
+
+		#endregion
 	}
 }

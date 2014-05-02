@@ -85,6 +85,9 @@
     <Reference Include="MaxMind.GeoIP2">
       <HintPath>..\thirdparty\MaxMind.GeoIP2.dll</HintPath>
     </Reference>
+    <Reference Include="Eluant">
+      <HintPath>..\thirdparty\Eluant.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\CaptureActor.cs" />
@@ -498,6 +501,25 @@
     <Compile Include="Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="StartGameNotification.cs" />
     <Compile Include="Widgets\ConfirmationDialogs.cs" />
+    <Compile Include="Scripting\LuaScript.cs" />
+    <Compile Include="Scripting\CallLuaFunc.cs" />
+    <Compile Include="Scripting\Global\ActorGlobal.cs" />
+    <Compile Include="Scripting\Global\CoordinateGlobals.cs" />
+    <Compile Include="Scripting\Properties\ResourceProperties.cs" />
+    <Compile Include="Scripting\Properties\ProductionProperties.cs" />
+    <Compile Include="Scripting\Properties\MobileProperties.cs" />
+    <Compile Include="Scripting\Properties\GeneralProperties.cs" />
+    <Compile Include="Scripting\Properties\HealthProperties.cs" />
+    <Compile Include="Scripting\Properties\CombatProperties.cs" />
+    <Compile Include="Scripting\Global\MapGlobal.cs" />
+    <Compile Include="Scripting\Global\PlayerGlobal.cs" />
+    <Compile Include="Scripting\Global\UtilsGlobal.cs" />
+    <Compile Include="Scripting\Global\TriggerGlobal.cs" />
+    <Compile Include="Scripting\ScriptTriggers.cs" />
+    <Compile Include="Scripting\Properties\TransportProperties.cs" />
+    <Compile Include="Scripting\Global\CameraGlobal.cs" />
+    <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
+    <Compile Include="Scripting\ScriptInvulnerable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -543,4 +565,8 @@ copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripting\Global\" />
+    <Folder Include="Scripting\Properties\" />
+  </ItemGroup>
 </Project>

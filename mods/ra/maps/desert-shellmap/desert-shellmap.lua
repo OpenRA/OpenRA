@@ -1,4 +1,4 @@
-local ants = OpenRA.GetRandomInteger(0, 51) == 0
+local ants = Utils.RandomInteger(0, 51) == 0
 
 if ants then
 	UnitTypes = { "ant", "ant", "ant" }
@@ -29,85 +29,110 @@ else
 		{ SovietWarFactory1, { "3tnk", "4tnk", "v2rl", "ttnk", "apc" } }
 	}
 end
-ParadropPlaneType = "badr"
-ParadropWaypointCount = 8
 
-SendSovietUnits = function(entryCell, unitTypes, interval)
-	local units = Reinforcements.Reinforce(soviets, unitTypes, entryCell, entryCell, interval)
-	local team = Team.New(units)
-	Team.AddEventHandler(team.OnAllKilled, function()
-		SendSovietUnits(entryCell, unitTypes, interval)
-	end)
-	Team.Do(team, function(a)
-		Actor.OnDamaged(a, function()
-			if not Actor.CargoIsEmpty(a) then
-				Actor.Stop(a)
-				Actor.UnloadCargo(a, true)
+ParadropWaypoints = { Paradrop1, Paradrop2, Paradrop3, Paradrop4, Paradrop5, Paradrop6, Paradrop7, Paradrop8 }
+
+BindActorTriggers = function(a)
+	if a.HasProperty("Hunt") then
+		if a.Owner == allies then
+			Trigger.OnIdle(a, a.Hunt)
+		else
+			Trigger.OnIdle(a, function(a) a.AttackMove(AlliedTechnologyCenter.Location) end)
+		end
+	end
+
+	if a.HasProperty("HasPassengers") then
+		Trigger.OnDamaged(a, function()
+			if a.HasPassengers then
+				a.Stop()
+				a.UnloadPassengers()
 			end
 		end)
-		Actor.OnIdle(a, function() Actor.AttackMove(a, AlliedTechnologyCenter.Location) end)
+	end
+end
+
+SendSovietUnits = function(entryCell, unitTypes, interval)
+	local i = 0
+	team = {}
+
+	Utils.Do(unitTypes, function(type)
+		local a = Actor.Create(type, false, { Owner = soviets, Location = entryCell })
+		BindActorTriggers(a)
+		Trigger.AfterDelay(i * interval, function() a.IsInWorld = true end)
+		table.insert(team, a)
+		i = i + 1
 	end)
+
+	Trigger.OnAllKilled(team, function() SendSovietUnits(entryCell, unitTypes, interval) end)
 end
 
 ShipAlliedUnits = function()
-	local transport, reinforcements = Reinforcements.Insert(allies, "lst", { "1tnk", "1tnk", "jeep", "2tnk", "2tnk" }, { LstEntry.Location, LstUnload.Location }, { LstEntry.Location })
-	Utils.Do(reinforcements, function(a) Actor.OnIdle(a, Actor.Hunt) end)
-	OpenRA.RunAfterDelay(60 * 25, ShipAlliedUnits)
+	local transport = Actor.Create("lst", true, { Location = LstEntry.Location, Owner = allies })
+
+	Utils.Do({ "1tnk", "1tnk", "jeep", "2tnk", "2tnk" }, function(type)
+		local a = Actor.Create(type, false, { Owner = allies })
+		BindActorTriggers(a)
+		transport.LoadPassenger(a)
+	end)
+
+	transport.Move(LstUnload.Location)
+	transport.UnloadPassengers()
+	transport.Wait(50)
+	transport.Move(LstEntry.Location)
+	transport.Destroy()
+ 	Trigger.AfterDelay(60 * 25, ShipAlliedUnits)
 end
 
 ParadropSovietUnits = function()
-	local lz = Map.GetNamedActor("Paradrop" .. OpenRA.GetRandomInteger(1, ParadropWaypointCount - 1)).Location
-	local plane, passengers = SupportPowers.Paradrop(soviets, ParadropPlaneType, ParadropUnitTypes, Map.GetRandomEdgeCell(), lz)
-	Utils.Do(passengers, function(a) Actor.OnIdle(a, Actor.Hunt) end)
-	OpenRA.RunAfterDelay(35 * 25, ParadropSovietUnits)
+ 	local lz = Utils.Random(ParadropWaypoints).Location
+	local start = Utils.CenterOfCell(Map.RandomEdgeCell()) + WVec.New(0, 0, Actor.CruiseAltitude("badr"))
+	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Utils.CenterOfCell(lz) - start).Facing })
+
+	Utils.Do(ParadropUnitTypes, function(type)
+		local a = Actor.Create(type, false, { Owner = soviets })
+		BindActorTriggers(a)
+		transport.LoadPassenger(a)
+	end)
+
+	transport.Paradrop(lz)
+ 	Trigger.AfterDelay(35 * 25, ParadropSovietUnits)
 end
 
-ProduceUnits = function()
-	Utils.Do(ProducedUnitTypes, function(t)
-		local factory = t[1]
-		if not Actor.IsDead(factory) and not Production.PerFactoryQueueIsBusy(factory) then
-			local unitType = t[2][OpenRA.GetRandomInteger(1, #t[2] + 1)]
-			Production.BuildWithPerFactoryQueue(factory, unitType)
-		end
-	end)
-	OpenRA.RunAfterDelay(15, ProduceUnits)
+ProduceUnits = function(t)
+	local factory = t[1]
+	if not factory.IsDead then
+		local unitType = t[2][Utils.RandomInteger(1, #t[2] + 1)]
+		factory.Wait(Actor.BuildTime(unitType))
+		factory.Produce(unitType)
+		factory.CallFunc(function() ProduceUnits(t) end)
+	end
 end
 
 SetupAlliedUnits = function()
-	for a in Utils.Enumerate(Map.GetNamedActors()) do
-		if Actor.Owner(a) == allies then
-			if Actor.HasTrait(a, "LuaScriptEvents") then
-				a:AddTrait(OpenRA.New("Invulnerable")) -- todo: replace
-			end
-			Actor.SetStance(a, "Defend")
+	Utils.Do(Map.NamedActors, function(a)
+		if a.Owner == allies and a.HasProperty("Invulnerable") then
+			a.Invulnerable = true
+			a.Stance = "Defend"
 		end
-	end
-end
-
-SetupFactories = function()
-	Utils.Do(ProducedUnitTypes, function(pair)
-		Actor.OnProduced(pair[1], function(self, other, ex)
-			Actor.Hunt(other)
-			Actor.OnDamaged(other, function()
-				if not Actor.CargoIsEmpty(other) then
-					Actor.Stop(other)
-					Actor.UnloadCargo(other, true)
-				end
-			end)
-		end)
 	end)
 end
 
+SetupFactories = function()
+ 	Utils.Do(ProducedUnitTypes, function(pair)
+		Trigger.OnProduction(pair[1], function(_, a) BindActorTriggers(a) end)
+ 	end)
+end
+
 ChronoshiftAlliedUnits = function()
-	local cells = Map.ExpandFootprint({ ChronoshiftLocation.Location }, false)
+	local cells = Utils.ExpandFootprint({ ChronoshiftLocation.Location }, false)
 	local units = { }
 	for i = 1, #cells do
-		local unit = Actor.Create("2tnk", { Owner = allies, Facing = { 0, "Int32" } })
-		Actor.OnIdle(unit, Actor.Hunt)
-		table.insert(units, { unit, cells[i] })
-	end
-	SupportPowers.Chronoshift(units, Chronosphere)
-	OpenRA.RunAfterDelay(60 * 25, ChronoshiftAlliedUnits)
+		local unit = Actor.Create("2tnk", true, { Owner = allies, Facing = 0 })
+		BindActorTriggers(unit)
+ 		units[unit] = cells[i]
+ 	end
+ 	Chronosphere.Chronoshift(units)
+	Trigger.AfterDelay(60 * 25, ChronoshiftAlliedUnits)
 end
 
 ticks = 0
@@ -117,33 +142,21 @@ Tick = function()
 	ticks = ticks + 1
 	
 	local t = (ticks + 45) % (360 * speed) * (math.pi / 180) / speed;
-	OpenRA.SetViewportCenterPosition(WPos.op_Addition(viewportOrigin, WVec.New(19200 * math.sin(t), 20480 * math.cos(t))))
-	
-	if ticks % 150 == 0 then
-		Utils.Do(Actor.ActorsWithTrait("AttackBase"), function(a)
-			if Actor.IsIdle(a) and not Map.IsNamedActor(a) and not Actor.IsDead(a) and Actor.IsInWorld(a) and (Actor.Owner(a) == soviets or Actor.Owner(a) == allies) then
-				Actor.Hunt(a)
-			end
-		end)
-	end
+	Camera.Position = viewportOrigin + WVec.New(19200 * math.sin(t), 20480 * math.cos(t), 0)
 end
 
 WorldLoaded = function()
-	allies = OpenRA.GetPlayer("Allies")
-	soviets = OpenRA.GetPlayer("Soviets")
-	
-	viewportOrigin = OpenRA.GetViewportCenterPosition()
-	
+	allies = Player.GetPlayer("Allies")
+	soviets = Player.GetPlayer("Soviets")
+	viewportOrigin = Camera.Position
+
 	SetupAlliedUnits()
 	SetupFactories()
-	ProduceUnits()
 	ShipAlliedUnits()
 	ParadropSovietUnits()
-	OpenRA.RunAfterDelay(5 * 25, ChronoshiftAlliedUnits)
-	
-	OpenRA.GiveCash(allies, 1000000)
-	OpenRA.GiveCash(soviets, 1000000)
-	
+	Trigger.AfterDelay(5 * 25, ChronoshiftAlliedUnits)
+ 	Utils.Do(ProducedUnitTypes, ProduceUnits)
+
 	SendSovietUnits(Entry1.Location, UnitTypes, 50)
 	SendSovietUnits(Entry2.Location, UnitTypes, 50)
 	SendSovietUnits(Entry3.Location, UnitTypes, 50)

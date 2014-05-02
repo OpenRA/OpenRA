@@ -1,8 +1,8 @@
 #!/bin/bash
 # OpenRA packaging script for Mac OSX
 
-if [ $# -ne "3" ]; then
-	echo "Usage: `basename $0` tag files-dir outputdir"
+if [ $# -ne "4" ]; then
+	echo "Usage: `basename $0` tag files-dir platform-files-dir outputdir"
     exit 1
 fi
 
@@ -13,9 +13,8 @@ if [ -e "OpenRA.app" ]; then
 fi
 
 # Copy the template to build the game package
-# Assumes it is layed out with the correct directory structure
 cp -rv template.app OpenRA.app
-cp -rv $2/* "OpenRA.app/Contents/Resources/" || exit 3
+cp -rv $2/* $3/* "OpenRA.app/Contents/Resources/" || exit 3
 
 # Icon isn't used, and editor doesn't work.
 rm OpenRA.app/Contents/Resources/OpenRA.ico
@@ -34,5 +33,5 @@ rm temp
 
 # Package app bundle into a zip and clean up
 zip OpenRA-$1 -r -9 OpenRA.app
-mv OpenRA-$1.zip $3
+mv OpenRA-$1.zip $4
 rm -rf OpenRA.app
