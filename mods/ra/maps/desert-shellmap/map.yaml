@@ -1321,6 +1321,11 @@ Rules:
 		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
+		GainsExperience:
+			CostThreshold:
+			FirepowerModifier:
+			ArmorModifier:
+			SpeedModifier:
 	^Plane:
 		ScriptInvulnerable:
 		GivesBounty:
