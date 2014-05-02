@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
@@ -248,6 +249,42 @@ namespace OpenRA.Utility
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 				return "Dictionary<{0},{1}>".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
 
+			if (t.IsSubclassOf(typeof(Array)))
+				return "Multiple {0}".F(FriendlyTypeName(t.GetElementType()));
+
+			if (t == typeof(int) || t == typeof(uint))
+				return "Integer";
+
+			if (t == typeof(int2))
+				return "2D Integer";
+
+			if (t == typeof(float) || t == typeof(decimal))
+				return "Real Number";
+
+			if (t == typeof(float2))
+				return "2D Real Number";
+
+			if (t == typeof(CPos))
+				return "2D Cell Position";
+
+			if (t == typeof(CVec))
+				return "2D Cell Vector";
+
+			if (t == typeof(WAngle))
+				return "1D World Angle";
+
+			if (t == typeof(WRot))
+				return "3D World Rotation";
+
+			if (t == typeof(WPos))
+				return "3D World Position";
+
+			if (t == typeof(WRange))
+				return "3D World Range";
+
+			if (t == typeof(WVec))
+				return "3D World Vector";
+
 			return t.Name;
 		}
 
@@ -257,44 +294,50 @@ namespace OpenRA.Utility
 			Game.modData = new ModData(args[1]);
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 
-			Console.WriteLine("## Documentation");
 			Console.WriteLine(
-				"This documentation is aimed at modders and contributors of OpenRA. It displays all traits with default values and developer commentary. " +
-				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been automatically generated on {0}. " +
-				"Type `make docs` to create a new one. A copy of this is uploaded to https://github.com/OpenRA/OpenRA/wiki/Traits " +
-				"as well as compiled to HTML and shipped with every release during the automated packaging process.", DateTime.Now);
-			Console.WriteLine();
-			Console.WriteLine("```yaml");
+				"This documentation is aimed at modders. It displays all traits with default values and developer commentary. " +
+				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
+				"automatically generated for version {0} of OpenRA.", Game.modData.Manifest.Mod.Version);
 			Console.WriteLine();
 
-			foreach (var t in Game.modData.ObjectCreator.GetTypesImplementing<ITraitInfo>())
+			var toc = new StringBuilder();
+			var doc = new StringBuilder();
+
+			foreach (var t in Game.modData.ObjectCreator.GetTypesImplementing<ITraitInfo>().OrderBy(t => t.Namespace))
 			{
 				if (t.ContainsGenericParameters || t.IsAbstract)
 					continue; // skip helpers like TraitInfo<T>
 
 				var traitName = t.Name.EndsWith("Info") ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
+				toc.AppendLine("* [{0}](#{1})".F(traitName, traitName.ToLowerInvariant()));
 				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
-				Console.WriteLine("\t{0}:{1}", traitName, traitDescLines.Count() == 1 ? " # " + traitDescLines.First() : "");
-				if (traitDescLines.Count() >= 2)
-					foreach (var line in traitDescLines)
-						Console.WriteLine("\t\t# {0}", line);
+				doc.AppendLine();
+				doc.AppendLine("### {0}".F(traitName));
+				foreach (var line in traitDescLines)
+					doc.AppendLine(line);
 
+				var fields = t.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+				if (!fields.Any())
+					continue;
+				doc.AppendLine("<table>");
+				doc.AppendLine("<tr><th>Property</th><th>Default Value</th><th>Type</th><th>Description</th></tr>");
 				var liveTraitInfo = Game.modData.ObjectCreator.CreateBasic(t);
-
-				foreach (var f in t.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
+				foreach (var f in fields)
 				{
 					var fieldDescLines = f.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
 					var fieldType = FriendlyTypeName(f.FieldType);
 					var defaultValue = FieldSaver.SaveField(liveTraitInfo, f.Name).Value.Value;
-					Console.WriteLine("\t\t{0}: {1} # Type: {2}{3}", f.Name, defaultValue, fieldType, fieldDescLines.Count() == 1 ? ". " + fieldDescLines.First() : "");
-					if (fieldDescLines.Count() >= 2)
-						foreach (var line in fieldDescLines)
-							Console.WriteLine("\t\t# {0}", line);
+					doc.Append("<tr><td>{0}</td><td>{1}</td><td>{2}</td>".F(f.Name, defaultValue, fieldType));
+					doc.Append("<td>");
+					foreach (var line in fieldDescLines)
+						doc.Append(line);
+					doc.AppendLine("</td></tr>");
 				}
+				doc.AppendLine("</table>");
 			}
 
-			Console.WriteLine();
-			Console.WriteLine("```");
+			Console.Write(toc.ToString());
+			Console.Write(doc.ToString());
 		}
 
 		[Desc("MAPFILE", "Generate hash of specified oramap file.")]
