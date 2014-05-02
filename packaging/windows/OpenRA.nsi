@@ -66,6 +66,7 @@ Section "Game" GAME
 	SetOutPath "$INSTDIR"
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
+	File "${SRCDIR}\OpenRA.CrashDialog.exe"
 	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
 	File "${SRCDIR}\OpenRA.Irc.dll"
@@ -186,6 +187,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Launcher.exe
 	Delete $INSTDIR\OpenRA.Game.exe
 	Delete $INSTDIR\OpenRA.Utility.exe
+	Delete $INSTDIR\OpenRA.CrashDialog.exe
 	Delete $INSTDIR\OpenRA.Editor.exe
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
 	Delete $INSTDIR\OpenRA.Renderer.Sdl2.dll

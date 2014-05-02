@@ -62,7 +62,7 @@ namespace OpenRA
 			if (Game.Settings.Debug.ShowFatalErrorDialog && !Game.Settings.Server.Dedicated)
 			{
 				Game.Renderer.Device.Quit();
-				FatalErrorDialog.Show();
+				Platform.ShowFatalErrorDialog();
 			}
 		}
 

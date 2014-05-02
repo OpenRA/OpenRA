@@ -154,7 +154,6 @@
     <Compile Include="Server\TraitInterfaces.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Support\Arguments.cs" />
-    <Compile Include="Support\FatalErrorDialog.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Support\Program.cs" />
     <Compile Include="Sync.cs" />

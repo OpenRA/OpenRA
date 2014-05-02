@@ -28,7 +28,7 @@ markdown CONTRIBUTING.md > CONTRIBUTING.html
 markdown DOCUMENTATION.md > DOCUMENTATION.html
 
 # List of files that are packaged on all platforms
-FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
+FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' 'OpenRA.CrashDialog.exe' \
 'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
 'FreeSans.ttf' 'FreeSansBold.ttf' 'lua' \
 'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \

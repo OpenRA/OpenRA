@@ -92,5 +92,16 @@ namespace OpenRA
 				return dir + Path.DirectorySeparatorChar;
 			}
 		}
+
+		public static void ShowFatalErrorDialog()
+		{
+			var process = "OpenRA.CrashDialog.exe";
+			var args = "";
+
+			var psi = new ProcessStartInfo(process, args);
+			psi.UseShellExecute = false;
+			psi.CreateNoWindow = true;
+			Process.Start(psi);
+		}
 	}
 }
