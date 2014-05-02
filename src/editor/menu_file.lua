@@ -21,14 +21,17 @@ local fileMenu = wx.wxMenu({
     { ID_EXIT, TR("E&xit")..KSC(ID_EXIT), TR("Exit program") }})
 menuBar:Append(fileMenu, TR("&File"))
 
-local filehistorymenu = wx.wxMenu({})
+local filehistorymenu = wx.wxMenu({
+    { },
+    { ID_RECENTFILESCLEAR, TR("Clear Items")..KSC(ID_RECENTFILESCLEAR), TR("Clear items from this list") },
+})
 local filehistory = wx.wxMenuItem(fileMenu, ID_RECENTFILES,
   TR("Recent Files")..KSC(ID_RECENTFILES), TR("File history"), wx.wxITEM_NORMAL, filehistorymenu)
 fileMenu:Insert(8,filehistory)
 
 local projecthistorymenu = wx.wxMenu({
     { },
-    { ID_RECENTPROJECTSCLEAR, TR("Clear Items")..KSC(ID_RECENTPROJECTSCLEAR), TR("Clear project history") },
+    { ID_RECENTPROJECTSCLEAR, TR("Clear Items")..KSC(ID_RECENTPROJECTSCLEAR), TR("Clear items from this list") },
 })
 local projecthistory = wx.wxMenuItem(fileMenu, ID_RECENTPROJECTS,
   TR("Recent &Projects")..KSC(ID_RECENTPROJECTS), TR("Project history"), wx.wxITEM_NORMAL, projecthistorymenu)
@@ -124,8 +127,8 @@ do -- recent file history
     end
   end
 
+  local items = 0
   updateRecentFiles = function (list)
-    local items = filehistorymenu:GetMenuItemCount()
     for i=1, #list do
       local file = list[i].filename
       local id = ID("file.recentfiles."..i)
@@ -137,13 +140,14 @@ do -- recent file history
         filehistorymenu:FindItem(id):SetItemLabel(label)
       else -- need to add an item
         local item = wx.wxMenuItem(filehistorymenu, id, label, "")
-        filehistorymenu:Append(item)
+        filehistorymenu:Insert(i-1, item)
         frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, loadRecent)
       end
     end
     for i=items, #list+1, -1 do -- delete the rest if the list got shorter
       filehistorymenu:Delete(filehistorymenu:FindItemByPosition(i-1))
     end
+    items = #list -- update the number of items for the next refresh
 
     -- enable if there are any recent files
     fileMenu:Enable(ID_RECENTFILES, #list > 0)
@@ -227,6 +231,13 @@ frame:Connect(ID_EXIT, wx.wxEVT_COMMAND_MENU_SELECTED,
 
 frame:Connect(ID_RECENTPROJECTSCLEAR, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) FileTreeProjectListClear() end)
+
+frame:Connect(ID_RECENTFILESCLEAR, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event)
+    SetFileHistory({})
+    local ed = ide:GetEditor()
+    if ed then AddToFileHistory(ide:GetDocument(ed):GetFilePath()) end
+  end)
 
 local recentprojects = 0
 frame:Connect(ID_RECENTPROJECTS, wx.wxEVT_UPDATE_UI,

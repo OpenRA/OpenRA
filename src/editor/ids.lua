@@ -30,6 +30,7 @@ ID_SAVE             = linux and NewID() or wx.wxID_SAVE
 ID_SAVEAS           = linux and NewID() or wx.wxID_SAVEAS
 ID_SAVEALL          = NewID()
 ID_RECENTFILES      = NewID()
+ID_RECENTFILESCLEAR = NewID()
 ID_RECENTFILESPREV  = NewID()
 ID_RECENTFILESNEXT  = NewID()
 ID_RECENTPROJECTS   = NewID()
