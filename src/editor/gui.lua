@@ -71,6 +71,12 @@ local function SCinB(id) -- shortcut in brackets
   return shortcut and #shortcut > 0 and (" ("..shortcut..")") or ""
 end
 
+local function menuDropDownPosition(event)
+  local tb = event:GetEventObject():DynamicCast('wxAuiToolBar')
+  local rect = tb:GetToolRect(event:GetId())
+  return ide.frame:ScreenToClient(tb:ClientToScreen(rect:GetBottomLeft()))
+end
+
 local function createToolBar(frame)
   local toolBar = wxaui.wxAuiToolBar(frame, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize,
     wxaui.wxAUI_TB_PLAIN_BACKGROUND)
@@ -107,15 +113,23 @@ local function createToolBar(frame)
   toolBar:AddSeparator()
   toolBar:AddControl(funclist)
 
+  toolBar:SetToolDropDown(ID_OPEN, true)
+  toolBar:Connect(ID_OPEN, wxaui.wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, function(event)
+    if event:IsDropDownClicked() then
+      local menu = wx.wxMenu()
+      FileRecentListUpdate(menu)
+      toolBar:PopupMenu(menu, menuDropDownPosition(event))
+    else
+      event:Skip()
+    end
+  end)
+
   toolBar:SetToolDropDown(ID_PROJECTDIRCHOOSE, true)
   toolBar:Connect(ID_PROJECTDIRCHOOSE, wxaui.wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, function(event)
     if event:IsDropDownClicked() then
-      local tb = event:GetEventObject():DynamicCast('wxAuiToolBar')
-      local rect = tb:GetToolRect(event:GetId())
-      local pt = frame:ScreenToClient(tb:ClientToScreen(rect:GetBottomLeft()))
       local menu = wx.wxMenu()
       FileTreeProjectListUpdate(menu, 0)
-      tb:PopupMenu(menu, pt)
+      toolBar:PopupMenu(menu, menuDropDownPosition(event))
     else
       event:Skip()
     end

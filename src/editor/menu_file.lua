@@ -160,6 +160,17 @@ do -- recent file history
     addFileHistory(filename)
     updateRecentFiles(filehistory)
   end
+
+  function FileRecentListUpdate(menu)
+    local list = filehistory
+    for i=#list, 1, -1 do
+      local id = ID("file.recentfiles."..i)
+      local label = list[i].filename
+      local item = wx.wxMenuItem(menu, id, label, "")
+      menu:Insert(0, item)
+      ide.frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, loadRecent)
+    end
+  end
 end
 
 frame:Connect(ID_NEW, wx.wxEVT_COMMAND_MENU_SELECTED, function() return NewFile() end)
