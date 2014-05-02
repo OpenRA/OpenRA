@@ -67,8 +67,6 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
 	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
-	File "${SRCDIR}\OpenRA.Renderer.SdlCommon.dll"
-	File "${SRCDIR}\OpenRA.Renderer.Gl.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
 	File "${SRCDIR}\OpenRA.Irc.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
@@ -190,8 +188,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Utility.exe
 	Delete $INSTDIR\OpenRA.Editor.exe
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
-	Delete $INSTDIR\OpenRA.Renderer.SdlCommon.dll
-	Delete $INSTDIR\OpenRA.Renderer.Gl.dll
 	Delete $INSTDIR\OpenRA.Renderer.Sdl2.dll
 	Delete $INSTDIR\OpenRA.Irc.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll

@@ -29,9 +29,9 @@ markdown DOCUMENTATION.md > DOCUMENTATION.html
 
 # List of files that are packaged on all platforms
 FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
-'OpenRA.Renderer.SdlCommon.dll' 'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Cg.dll' 'OpenRA.Renderer.Gl.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
+'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
 'FreeSans.ttf' 'FreeSansBold.ttf' 'lua' \
-'cg' 'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \
+'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \
 'AUTHORS' 'COPYING' \
 'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' 'CHANGELOG.html' \
 'global mix database.dat' 'GeoLite2-Country.mmdb')

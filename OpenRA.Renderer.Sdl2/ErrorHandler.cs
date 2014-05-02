@@ -12,7 +12,7 @@ using System;
 using System.Diagnostics;
 using Tao.OpenGl;
 
-namespace OpenRA.Renderer.SdlCommon
+namespace OpenRA.Renderer.Sdl2
 {
 	public static class ErrorHandler
 	{
