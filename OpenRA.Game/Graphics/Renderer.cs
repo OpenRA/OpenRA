@@ -14,7 +14,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
 using OpenRA.Support;
 
 namespace OpenRA.Graphics
@@ -125,15 +124,8 @@ namespace OpenRA.Graphics
 
 		public Size Resolution { get { return device.WindowSize; } }
 
-		// Work around a bug in OSX 10.6.8 / mono 2.10.2 / SDL 1.2.14
-		// which makes the window non-interactive in Windowed/Pseudofullscreen mode.
-		static Screen FixOSX() { return Screen.PrimaryScreen; }
-
 		internal static void Initialize(WindowMode windowMode)
 		{
-			if (Platform.CurrentPlatform == PlatformType.OSX)
-				FixOSX();
-
 			var resolution = GetResolution(windowMode);
 
 			var renderer = Game.Settings.Server.Dedicated ? "Null" : Game.Settings.Graphics.Renderer;
