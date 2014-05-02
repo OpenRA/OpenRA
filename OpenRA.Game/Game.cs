@@ -320,7 +320,7 @@ namespace OpenRA
 			}
 
 			GlobalFileSystem.Mount("."); // Needed to access shaders
-			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", "Gl", "Cg", null };
+			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", null };
 			foreach (var r in renderers)
 			{
 				if (r == null)

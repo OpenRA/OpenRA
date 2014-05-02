@@ -66,7 +66,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rcg rgl rsdl rsdl2 rnull game utility irc
+CORE = rsdl2 rnull game utility irc
 TOOLS = editor tsbuild ralint
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
@@ -94,28 +94,10 @@ PROGRAMS += irc
 irc: $(irc_TARGET)
 
 # Renderer dlls
-rsdl_SRCS := $(shell find OpenRA.Renderer.SdlCommon/ -iname '*.cs')
-rsdl_TARGET = OpenRA.Renderer.SdlCommon.dll
-rsdl_KIND = library
-rsdl_DEPS = $(game_TARGET)
-rsdl_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll $(rsdl_DEPS)
-
-rcg_SRCS := $(shell find OpenRA.Renderer.Cg/ -iname '*.cs')
-rcg_TARGET = OpenRA.Renderer.Cg.dll
-rcg_KIND = library
-rcg_DEPS = $(game_TARGET) $(rsdl_TARGET)
-rcg_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll $(rcg_DEPS)
-
-rgl_SRCS := $(shell find OpenRA.Renderer.Gl/ -iname '*.cs')
-rgl_TARGET = OpenRA.Renderer.Gl.dll
-rgl_KIND = library
-rgl_DEPS = $(game_TARGET) $(rsdl_TARGET)
-rgl_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll $(rgl_DEPS)
-
 rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
 rsdl2_TARGET = OpenRA.Renderer.Sdl2.dll
 rsdl2_KIND = library
-rsdl2_DEPS = $(game_TARGET) $(rsdl_TARGET) $(rgl_TARGET)
+rsdl2_DEPS = $(game_TARGET)
 rsdl2_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/SDL2-CS.dll $(rsdl2_DEPS)
 
 rnull_SRCS := $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
@@ -123,8 +105,8 @@ rnull_TARGET = OpenRA.Renderer.Null.dll
 rnull_KIND = library
 rnull_DEPS = $(game_TARGET)
 rnull_LIBS = $(COMMON_LIBS) $(rnull_DEPS)
-PROGRAMS += rcg rgl rsdl2 rnull rsdl
-renderers: $(rcg_TARGET) $(rgl_TARGET) $(rsdl2_TARGET) $(rnull_TARGET) $(rsdl_TARGET)
+PROGRAMS += rsdl2 rnull
+renderers: $(rsdl2_TARGET) $(rnull_TARGET)
 
 
 ##### Official Mods #####
@@ -323,7 +305,6 @@ install-core: default
 	@$(INSTALL_DATA) COPYING "$(DATA_INSTALL_DIR)/COPYING"
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
-	@$(CP_R) cg "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
 	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/Tao/* "$(DATA_INSTALL_DIR)"

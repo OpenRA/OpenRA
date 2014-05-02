@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using Tao.OpenGl;
 
-namespace OpenRA.Renderer.SdlCommon
+namespace OpenRA.Renderer.Sdl2
 {
 	public class VertexBuffer<T> : IVertexBuffer<T>
 			where T : struct

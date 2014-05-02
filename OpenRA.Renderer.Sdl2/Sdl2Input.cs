@@ -9,7 +9,6 @@
 #endregion
 
 using System.Text;
-using OpenRA.Renderer.SdlCommon;
 using SDL2;
 
 namespace OpenRA.Renderer.Sdl2
@@ -117,7 +116,7 @@ namespace OpenRA.Renderer.Sdl2
 					case SDL.SDL_EventType.SDL_MOUSEWHEEL:
 					{
 						// Retain compatibility with existing bogus behavior
-						// TODO: Implement real scroll behavior after we drop SDL 1.2 support
+						// TODO: Implement real scroll behavior. We've dropped SDL 1.2 support!
 						if (e.wheel.y == 0)
 							break;
 

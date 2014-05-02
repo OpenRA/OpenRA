@@ -14,10 +14,9 @@ using System.IO;
 using System.Text;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
-using OpenRA.Renderer.SdlCommon;
 using Tao.OpenGl;
 
-namespace OpenRA.Renderer.Glsl
+namespace OpenRA.Renderer.Sdl2
 {
 	public class Shader : IShader
 	{
