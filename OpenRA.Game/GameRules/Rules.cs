@@ -94,13 +94,15 @@ namespace OpenRA
 			string[] files, List<MiniYamlNode> nodes,
 			Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> f)
 		{
+			string inputKey = string.Concat(string.Join("|", files), "|", nodes.WriteToString());
+
 			var mergedNodes = files
 				.Select(s => MiniYaml.FromFile(s))
 				.Aggregate(nodes, MiniYaml.MergeLiberal);
 
 			Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> wrap = (wkv, wyy) =>
 			{
-				var key = wkv.Value.ToLines(wkv.Key).JoinWith("|");
+				var key = inputKey + wkv.Value.ToLines(wkv.Key).JoinWith("|");
 				T t;
 				if (itemCache.TryGetValue(key, out t))
 					return t;
