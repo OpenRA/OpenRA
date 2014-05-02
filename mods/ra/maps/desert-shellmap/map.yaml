@@ -1308,7 +1308,8 @@ Rules:
 			SpeedModifier:
 	^Infantry:
 		ScriptInvulnerable:
-		-Selectable: # short-term hack to make infantry not play die sounds until we fix RenderInfantry
+		DeathSounds:
+			DeathVoice:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
@@ -1320,6 +1321,11 @@ Rules:
 		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
+		GainsExperience:
+			CostThreshold:
+			FirepowerModifier:
+			ArmorModifier:
+			SpeedModifier:
 	^Plane:
 		ScriptInvulnerable:
 		GivesBounty:

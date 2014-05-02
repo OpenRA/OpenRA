@@ -132,6 +132,8 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	DeathSounds:
+		Zapped: electro1.aud
 
 ^CivilianInfantry:
 	Inherits: ^Infantry

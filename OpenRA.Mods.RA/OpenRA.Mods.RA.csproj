@@ -216,6 +216,7 @@
     <Compile Include="Crates\SupportPowerCrateAction.cs" />
     <Compile Include="CreateMPPlayers.cs" />
     <Compile Include="CrushableInfantry.cs" />
+    <Compile Include="DeathSounds.cs" />
     <Compile Include="DemoTruck.cs" />
     <Compile Include="DetectCloaked.cs" />
     <Compile Include="Effects\Bullet.cs" />

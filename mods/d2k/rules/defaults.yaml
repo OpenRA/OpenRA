@@ -195,6 +195,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	DeathSounds:
 
 ^Plane:
 	AppearsOnRadar:
