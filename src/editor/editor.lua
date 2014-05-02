@@ -718,6 +718,7 @@ function CreateEditor()
 
   editor:MarkerDefine(StylesGetMarker("currentline"))
   editor:MarkerDefine(StylesGetMarker("breakpoint"))
+  editor:MarkerDefine(StylesGetMarker("bookmark"))
 
   if edcfg.fold then
     editor:SetMarginWidth(margin.FOLD, 18)

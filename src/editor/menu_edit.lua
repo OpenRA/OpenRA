@@ -21,12 +21,21 @@ local editMenu = wx.wxMenu{
   { ID_AUTOCOMPLETE, TR("Complete &Identifier")..KSC(ID_AUTOCOMPLETE), TR("Complete the current identifier") },
   { ID_AUTOCOMPLETEENABLE, TR("Auto Complete Identifiers")..KSC(ID_AUTOCOMPLETEENABLE), TR("Auto complete while typing"), wx.wxITEM_CHECK },
   { },
-  { ID_COMMENT, TR("C&omment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
   { },
+  { ID_COMMENT, TR("C&omment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
   { ID_FOLD, TR("&Fold/Unfold All")..KSC(ID_FOLD), TR("Fold or unfold all code folds") },
   { ID_SORT, TR("&Sort")..KSC(ID_SORT), TR("Sort selected lines") },
   { },
 }
+
+local bookmarkmenu = wx.wxMenu{
+  {ID_BOOKMARKTOGGLE, TR("Toggle Bookmark")..KSC(ID_BOOKMARKTOGGLE)},
+  {ID_BOOKMARKNEXT, TR("Go To Next Bookmark")..KSC(ID_BOOKMARKNEXT)},
+  {ID_BOOKMARKPREV, TR("Go To Previous Bookmark")..KSC(ID_BOOKMARKPREV)},
+}
+local bookmark = wx.wxMenuItem(editMenu, ID_BOOKMARK,
+  TR("Bookmark")..KSC(ID_BOOKMARK), TR("Bookmark"), wx.wxITEM_NORMAL, bookmarkmenu)
+editMenu:Insert(12, bookmark)
 
 local preferencesMenu = wx.wxMenu{
   {ID_PREFERENCESSYSTEM, TR("Settings: System")..KSC(ID_PREFERENCESSYSTEM)},
@@ -62,6 +71,8 @@ local function onUpdateUIEditMenu(event)
   and menu_id == ID_SELECTALL then enable = false end
   event:Enable(enable)
 end
+
+local function onUpdateUIisEditor(event) event:Enable(GetEditor() ~= nil) end
 
 function OnEditMenu(event)
   local editor = GetEditorWithFocus()
@@ -132,8 +143,7 @@ frame:Connect(ID_SHOWTOOLTIP, wx.wxEVT_COMMAND_MENU_SELECTED,
 
     EditorCallTip(editor, editor:GetCurrentPos())
   end)
-frame:Connect(ID_SHOWTOOLTIP, wx.wxEVT_UPDATE_UI,
-  function (event) event:Enable(GetEditor() ~= nil) end)
+frame:Connect(ID_SHOWTOOLTIP, wx.wxEVT_UPDATE_UI, onUpdateUIisEditor)
 
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
@@ -231,3 +241,37 @@ frame:Connect(ID_FOLD, wx.wxEVT_COMMAND_MENU_SELECTED,
     FoldSome()
   end)
 frame:Connect(ID_FOLD, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
+
+local BOOKMARK_MARKER = StylesGetMarker("bookmark")
+local BOOKMARK_MARKER_VALUE = 2^BOOKMARK_MARKER
+
+local function bookmarkToggle()
+  local editor = GetEditor()
+  local line = editor:GetCurrentLine()
+  local markers = editor:MarkerGet(line)
+  if bit.band(markers, BOOKMARK_MARKER_VALUE) > 0 then
+    editor:MarkerDelete(line, BOOKMARK_MARKER)
+  else
+    editor:MarkerAdd(line, BOOKMARK_MARKER)
+  end
+end
+
+local function bookmarkNext()
+  local editor = GetEditor()
+  local line = editor:MarkerNext(editor:GetCurrentLine()+1, BOOKMARK_MARKER_VALUE)
+  if line ~= -1 then editor:GotoLine(line) end
+end
+
+local function bookmarkPrev()
+  local editor = GetEditor()
+  local line = editor:MarkerPrevious(editor:GetCurrentLine()-1, BOOKMARK_MARKER_VALUE)
+  if line ~= -1 then editor:GotoLine(line) end
+end
+
+for _, event in pairs({ID_BOOKMARKTOGGLE, ID_BOOKMARKNEXT, ID_BOOKMARKPREV}) do
+  frame:Connect(event, wx.wxEVT_UPDATE_UI, onUpdateUIisEditor)
+end
+
+frame:Connect(ID_BOOKMARKTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkToggle)
+frame:Connect(ID_BOOKMARKNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkNext)
+frame:Connect(ID_BOOKMARKPREV, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkPrev)

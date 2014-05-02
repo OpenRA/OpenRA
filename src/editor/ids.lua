@@ -50,6 +50,10 @@ ID_AUTOCOMPLETEENABLE = NewID()
 ID_COMMENT          = NewID()
 ID_FOLD             = NewID()
 ID_CLEARDYNAMICWORDS = NewID()
+ID_BOOKMARK         = NewID()
+ID_BOOKMARKTOGGLE   = NewID()
+ID_BOOKMARKNEXT     = NewID()
+ID_BOOKMARKPREV     = NewID()
 -- don't use wx.wxID_PREFERENCES to avoid merging with OSX app menu, because
 -- Apple guidelines describe Preferences as a "normal" item without submenus.
 ID_PREFERENCES      = NewID()
