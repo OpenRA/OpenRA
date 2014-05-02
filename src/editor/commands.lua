@@ -926,3 +926,15 @@ if ide.config.autorecoverinactivity then
   -- check at least 5s to be never more than 5s off
   ide.session.timer:Start(math.min(5, ide.config.autorecoverinactivity)*1000)
 end
+
+function PaneFloatToggle(window)
+  local pane = uimgr:GetPane(window)
+  if pane:IsFloating() then
+    pane:Dock()
+  else
+    pane:Float()
+    pane:FloatingPosition(pane.window:GetScreenPosition())
+    pane:FloatingSize(pane.window:GetSize())
+  end
+  uimgr:Update()
+end

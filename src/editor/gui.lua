@@ -465,17 +465,7 @@ do
 
   for _, nb in pairs {frame.bottomnotebook, frame.projnotebook} do
     nb:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_BG_DCLICK,
-      function(event)
-        local pane = mgr:GetPane(nb)
-        if pane:IsFloating() then
-          pane:Dock()
-        else
-          pane:Float()
-          pane:FloatingPosition(pane.window:GetScreenPosition())
-          pane:FloatingSize(pane.window:GetSize())
-        end
-        mgr:Update()
-      end)
+      function() PaneFloatToggle(nb) end)
   end
 
   mgr.defaultPerspective = mgr:SavePerspective()
