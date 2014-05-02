@@ -46,7 +46,7 @@ do
     local exec = tool.exec
     if (exec and cnt < maxcnt and exec.name and exec.fn and exec.description) then
       local id = ID("tools.exec."..tool.fname)
-      table.insert(toolArgs,{id , exec.name, exec.description})
+      table.insert(toolArgs,{id, exec.name, exec.description})
       -- flag it
       tool._execid = id
       cnt = cnt + 1

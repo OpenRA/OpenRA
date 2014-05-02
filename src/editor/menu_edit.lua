@@ -74,7 +74,7 @@ end
 
 local function onUpdateUIisEditor(event) event:Enable(GetEditor() ~= nil) end
 
-function OnEditMenu(event)
+local function onEditMenu(event)
   local editor = GetEditorWithFocus()
 
   -- if there is no editor, or if it's not the editor we care about,
@@ -99,7 +99,7 @@ function OnEditMenu(event)
 end
 
 for _, event in pairs({ID_CUT, ID_COPY, ID_PASTE, ID_SELECTALL, ID_UNDO, ID_REDO}) do
-  frame:Connect(event, wx.wxEVT_COMMAND_MENU_SELECTED, OnEditMenu)
+  frame:Connect(event, wx.wxEVT_COMMAND_MENU_SELECTED, onEditMenu)
   frame:Connect(event, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 end
 
