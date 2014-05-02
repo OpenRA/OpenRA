@@ -51,7 +51,8 @@ local panels = {
   [ID_VIEWOUTPUT] = "bottomnotebook",
   [ID_VIEWFILETREE] = "projpanel",
   [ID_VIEWWATCHWINDOW] = "watchpanel",
-  [ID_VIEWCALLSTACK] = "stackpanel"
+  [ID_VIEWCALLSTACK] = "stackpanel",
+  [ID_VIEWTOOLBAR] = "toolbar",
 }
 
 local function togglePanel(event)
@@ -85,18 +86,11 @@ frame:Connect(ID_VIEWFULLSCREEN, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_VIEWOUTPUT, wx.wxEVT_COMMAND_MENU_SELECTED, togglePanel)
 frame:Connect(ID_VIEWFILETREE, wx.wxEVT_COMMAND_MENU_SELECTED, togglePanel)
+frame:Connect(ID_VIEWTOOLBAR, wx.wxEVT_COMMAND_MENU_SELECTED, togglePanel)
 frame:Connect(ID_VIEWWATCHWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) if togglePanel(event) then DebuggerRefreshPanels() end end)
 frame:Connect(ID_VIEWCALLSTACK, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) if togglePanel(event) then DebuggerRefreshPanels() end end)
-
-frame:Connect(ID_VIEWTOOLBAR, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    frame:GetToolBar():Show(menuBar:IsChecked(event:GetId()))
-    uimgr:Update()
-  end)
-frame:Connect(ID_VIEWTOOLBAR, wx.wxEVT_UPDATE_UI,
-  function (event) menuBar:Check(event:GetId(), frame:GetToolBar():IsShown()) end)
 
 frame:Connect(ID_VIEWSTATUSBAR, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)

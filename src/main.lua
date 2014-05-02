@@ -152,6 +152,7 @@ end
 if not wx.wxMOD_SHIFT then wx.wxMOD_SHIFT = 0x04 end
 -- wxDIR_NO_FOLLOW is missing in wxlua 2.8.12 as well
 if not wx.wxDIR_NO_FOLLOW then wx.wxDIR_NO_FOLLOW = 0x10 end
+if not wxaui.wxAUI_TB_PLAIN_BACKGROUND then wxaui.wxAUI_TB_PLAIN_BACKGROUND = 2^8 end
 
 if not setfenv then -- Lua 5.2
   -- based on http://lua-users.org/lists/lua-l/2010-06/msg00314.html
@@ -484,23 +485,14 @@ resumePrint()
 
 PackageEventHandle("onAppLoad")
 
--- wxwidgets has a bug that leaves a small artifact on the screen
--- when toolbar is shown after initially being hidden and the main
--- frame is maximized.
--- Similarly, the status bar content is drawn incorrectly if it is shown
+-- The status bar content is drawn incorrectly if it is shown
 -- after being initially hidden.
--- Show the *bar and hide it after showing the frame, which fixes the issue.
-local toolbarfix = ide.osname == 'Windows' and ide.frame:IsMaximized()
-  and not ide.frame:GetToolBar():IsShown()
-local statusbarfix = ide.osname == 'Windows'
-  and not ide.frame:GetStatusBar():IsShown()
-
-if toolbarfix then ide.frame:GetToolBar():Show(true) end
+-- Show the statusbar and hide it after showing the frame, which fixes the issue.
+local statusbarfix = ide.osname == 'Windows' and not ide.frame:GetStatusBar():IsShown()
 if statusbarfix then ide.frame:GetStatusBar():Show(true) end
 
 ide.frame:Show(true)
 
-if toolbarfix then ide.frame:GetToolBar():Show(false) end
 if statusbarfix then ide.frame:GetStatusBar():Show(false) end
 
 wx.wxGetApp():MainLoop()

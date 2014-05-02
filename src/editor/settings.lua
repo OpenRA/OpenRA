@@ -392,18 +392,24 @@ function SettingsRestoreView()
     uimgr:LoadPerspective(layout, false)
 
     -- check if debugging panes are not mentioned and float them
-    local panes = frame.uimgr:GetAllPanes()
     for _, name in pairs({"stackpanel", "watchpanel"}) do
       local pane = frame.uimgr:GetPane(name)
       if pane:IsOk() and not layout:find(name) then pane:Float() end
     end
-    -- unfortunately need to explicitly (re-)assign the caption,
-    -- as it's going to be restored from the config regardless of how
-    -- it is set now (which affects its translation)
-    uimgr:GetPane("projpanel"):Caption(TR("Project"))
+
+    -- check if the toolbar is not mentioned in the layout and show it
+    for _, name in pairs({"toolbar"}) do
+      local pane = frame.uimgr:GetPane(name)
+      if pane:IsOk() and not layout:find(name) then pane:Show() end
+    end
+
+    -- remove captions from all panes
+    local panes = frame.uimgr:GetAllPanes()
+    for index = 0, panes:GetCount()-1 do
+      uimgr:GetPane(panes:Item(index).name):CaptionVisible(false)
+    end
   end
 
-  frame:GetToolBar():Show(settingsReadSafe(settings,"toolbar",true))
   frame:GetStatusBar():Show(settingsReadSafe(settings,"statusbar",true))
 
   uimgr:Update()
@@ -452,7 +458,6 @@ function SettingsSaveView()
   settings:Write("uimgrlayout",uimgr:SavePerspective())
   settings:Write("nblayout",   saveNotebook(frame.notebook))
   settings:Write("nbbtmlayout",saveNotebook(frame.bottomnotebook))
-  settings:Write("toolbar",frame:GetToolBar():IsShown())
   settings:Write("statusbar",frame:GetStatusBar():IsShown())
 
   settings:SetPath(path)

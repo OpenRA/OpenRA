@@ -16,8 +16,8 @@ debugger.listening = false -- true when the debugger is listening for a client
 debugger.portnumber = ide.config.debugger.port or mobdebug.port -- the port # to use for debugging
 debugger.watchCtrl = nil -- the watch ctrl that shows watch information
 debugger.stackCtrl = nil -- the stack ctrl that shows stack information
-debugger.toggleview = { stackpanel = false, watchpanel = false,
-  [ide.frame:GetToolBar()] = true }
+debugger.toggleview = {
+  stackpanel = false, watchpanel = false, toolbar = true }
 debugger.hostname = ide.config.debugger.hostname or (function()
   local hostname = socket.dns.gethostname()
   return hostname and socket.dns.toip(hostname) and hostname or "localhost"
@@ -210,8 +210,8 @@ local function debuggerToggleViews(show)
   local mgr = ide.frame.uimgr
   local refresh = false
   for view, needed in pairs(debugger.toggleview) do
-    local bar = type(view) == 'userdata'
-    local pane = bar and view or mgr:GetPane(view)
+    local bar = view == 'toolbar'
+    local pane = mgr:GetPane(view)
     if show then -- starting debugging and pane is not shown
       debugger.toggleview[view] = not pane:IsShown()
       if debugger.toggleview[view] and (needed or bar)
@@ -909,7 +909,7 @@ function debuggerAddWindow(ctrl, panel, name)
 
   local mgr = ide.frame.uimgr
   mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
-              Name(panel):Float():
+              Name(panel):Float():CaptionVisible(false):PaneBorder(false):
               MinSize(width/2,height/2):
               BestSize(width,height):FloatingSize(width,height):
               PinButton(true):Hide())
