@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Render
 	{
 		public readonly int MinIdleWaitTicks = 30;
 		public readonly int MaxIdleWaitTicks = 110;
-		public readonly bool UseInfantryDeath = true;
+		public readonly bool SpawnsCorpse = true;
 		public readonly string[] IdleAnimations = { };
 		public readonly string[] StandAnimations = { "stand" };
 
@@ -125,19 +125,17 @@ namespace OpenRA.Mods.RA.Render
 			}
 		}
 
+		// TODO: Possibly move this into a separate trait
 		public void Killed(Actor self, AttackInfo e)
 		{
 			// Killed by some non-standard means
 			if (e.Warhead == null)
 				return;
 
-			// TODO: Possibly move Die sound out of this Render trait entirely
-			if (info.UseInfantryDeath == true)
+			if (info.SpawnsCorpse)
 			{
-				Sound.PlayVoice("Die", self, self.Owner.Country.Race);
 				SpawnCorpse(self, "die{0}".F(e.Warhead.InfDeath));
-			}
-			
+			}	
 		}
 
 		public void SpawnCorpse(Actor self, string sequence)
