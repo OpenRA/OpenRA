@@ -49,10 +49,10 @@ namespace OpenRA.Graphics
 
 		public void ActivateMap(Map map)
 		{
-			sequences = Load(modData.Manifest.Sequences, map.Sequences);
+			sequences = Load(modData.Manifest.Sequences, map.Tileset, map.Sequences);
 		}
 
-		public Dictionary<string, Lazy<Dictionary<string, Sequence>>> Load(string[] sequenceFiles, List<MiniYamlNode> sequenceNodes)
+		public Dictionary<string, Lazy<Dictionary<string, Sequence>>> Load(string[] sequenceFiles, string tileset, List<MiniYamlNode> sequenceNodes)
 		{
 			Game.modData.LoadScreen.Display();
 
@@ -63,7 +63,10 @@ namespace OpenRA.Graphics
 			var items = new Dictionary<string, Lazy<Dictionary<string, Sequence>>>();
 			foreach (var node in nodes)
 			{
-				var key = node.Value.ToLines(node.Key).JoinWith("|");
+				// Sequence loading uses the active SpriteLoader that depends on the current map's tileset
+
+				var key = tileset + node.Value.ToLines(node.Key).JoinWith("|");
+
 				Lazy<Dictionary<string, Sequence>> t;
 				if (sequenceCache.TryGetValue(key, out t))
 				{
