@@ -667,7 +667,6 @@ end
 
 local beforeFullScreenPerspective
 local statusbarShown
-local toolbarShown
 
 function ShowFullScreen(setFullScreen)
   if setFullScreen then
@@ -685,24 +684,24 @@ function ShowFullScreen(setFullScreen)
     beforeFullScreenPerspective = nil
   end
 
-  -- On OSX, toolbar and status bar are not hidden when switched to
+  -- On OSX, status bar is not hidden when switched to
   -- full screen: http://trac.wxwidgets.org/ticket/14259; do manually.
   -- need to turn off before showing full screen and turn on after,
   -- otherwise the window is restored incorrectly and is reduced in size.
   if ide.osname == 'Macintosh' and setFullScreen then
     statusbarShown = frame:GetStatusBar():IsShown()
-    toolbarShown = frame:GetToolBar():IsShown()
-
     frame:GetStatusBar():Hide()
-    frame:GetToolBar():Hide()
   end
 
   -- protect from systems that don't have ShowFullScreen (GTK on linux?)
   pcall(function() frame:ShowFullScreen(setFullScreen) end)
 
   if ide.osname == 'Macintosh' and not setFullScreen then
-    if statusbarShown then frame:GetStatusBar():Show() end
-    if toolbarShown then frame:GetToolBar():Show() end
+    if statusbarShown then
+      frame:GetStatusBar():Show()
+      -- refresh AuiManager as the statusbar may be shown below the border
+      uimgr:Update()
+    end
   end
 end
 
