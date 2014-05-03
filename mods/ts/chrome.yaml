@@ -163,11 +163,11 @@ dialog4: dialog.png
 	corner-br: 571,446,6,6
 
 lobby-bits: spawnpoints.png
-	spawn-unclaimed: 16,0,16,16
-	spawn-claimed: 0,0,16,16
-	admin: 37,5,7,5
-	colorpicker: 0,0,16,16
-	huepicker: 45,0,7,15
+	spawn-unclaimed: 32,0,32,32
+	spawn-claimed: 0,0,32,32
+	admin: 64,5,7,5
+	colorpicker: 0,0,32,32
+	huepicker: 71,0,7,15
 
 strategic: strategic.png
 	unowned: 0,0,32,32

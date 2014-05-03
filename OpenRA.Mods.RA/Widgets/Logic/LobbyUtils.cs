@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => client.SpawnPoint == ii,
-					() => orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(client.Index, ii))));
+					() => SetSpawnPoint(orderManager, client, ii));
 				item.Get<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
 				return item;
 			};
@@ -166,17 +166,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var selectedSpawn = preview.SpawnPoints
 				.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp), i))
-				.Where(a => (a.First - mi.Location).LengthSquared < 64)
+				.Where(a => ((a.First - mi.Location).ToFloat2() / new float2(ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").bounds.Width / 2, ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").bounds.Height / 2)).LengthSquared <= 1)
 				.Select(a => a.Second + 1)
 				.FirstOrDefault();
 
+			var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
+			var playerToMove = locals.FirstOrDefault(c => ((selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver));
+			SetSpawnPoint(orderManager, playerToMove, selectedSpawn);
+		}
+
+		private static void SetSpawnPoint(OrderManager orderManager, Session.Client playerToMove, int selectedSpawn)
+		{
 			var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == selectedSpawn);
 			if (selectedSpawn == 0 || !owned)
-			{
-				var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
-				var playerToMove = locals.FirstOrDefault(c => ((selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver));
 				orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawn)));
-			}
 		}
 
 		public static Color LatencyColor(int latency)
