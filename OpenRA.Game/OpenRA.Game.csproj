@@ -246,6 +246,7 @@
     <Compile Include="Scripting\ScriptMemberWrapper.cs" />
     <Compile Include="Scripting\ScriptMemberExts.cs" />
     <Compile Include="Scripting\ScriptPlayerInterface.cs" />
+    <Compile Include="Traits\Player\FixedColorPalette.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

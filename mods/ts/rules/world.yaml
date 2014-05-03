@@ -82,9 +82,14 @@ World:
 		Race: nod
 	ResourceLayer:
 	ResourceClaimLayer:
+	FixedColorPalette@GreenTiberium:
+		Base: player
+		Name: greentiberium
+		Color: 57, 201, 128
+		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
 	ResourceType@Tiberium:
 		ResourceType: 1
-		Palette: player # TODO: this has to remap to green
+		Palette: greentiberium
 		EditorSprite: waypoint # TODO: editor can't handle the real ones
 		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
 		MaxDensity: 12
