@@ -29,7 +29,6 @@ Options:
 	FragileAlliances: False
 	StartingCash: 0
 	ConfigurableStartingUnits: False
-	Difficulties: Easy,Normal
 
 Players:
 	PlayerReference@Nod:
@@ -550,6 +549,10 @@ Rules:
 	Player:
 		-ConquestVictoryConditions:
 	^Infantry:
+		MustBeDestroyed:
+	^Vehicle:
+		MustBeDestroyed:
+	^Tank:
 		MustBeDestroyed:
 	CRATE:
 		Crate:
