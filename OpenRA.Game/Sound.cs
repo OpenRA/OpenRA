@@ -296,7 +296,7 @@ namespace OpenRA
 		}
 
 		// Returns true if played successfully
-		public static bool PlayPredefined(Player p, Actor voicedUnit, string type, string definition, string variant, bool attenuateVolume)
+		public static bool PlayPredefined(Player p, Actor voicedUnit, string type, string definition, string variant, bool relative, WPos pos, float volumeModifier, bool attenuateVolume)
 		{
 			if (definition == null)
 				return false;
@@ -350,8 +350,8 @@ namespace OpenRA
 
 			if (!string.IsNullOrEmpty(name) && (p == null || p == p.World.LocalPlayer))
 				soundEngine.Play2D(sounds[name],
-					false, true, WPos.Zero,
-					InternalSoundVolume, attenuateVolume);
+					false, relative, pos,
+					(InternalSoundVolume * volumeModifier), attenuateVolume);
 
 			return true;
 		}
@@ -366,10 +366,10 @@ namespace OpenRA
 				return false;
 
 			var type = mi.Voice.ToLowerInvariant();
-			return PlayPredefined(null, voicedUnit, type, phrase, variant, true);
+			return PlayPredefined(null, voicedUnit, type, phrase, variant, true, WPos.Zero, 1f, true);
 		}
 		
-		public static bool PlayVoiceLocal(string phrase, Actor voicedUnit, string variant, WPos pos)
+		public static bool PlayVoiceLocal(string phrase, Actor voicedUnit, string variant, WPos pos, float volume)
 		{
 			if (voicedUnit == null || phrase == null)
 				return false;
@@ -379,7 +379,7 @@ namespace OpenRA
 				return false;
 
 			var type = mi.Voice.ToLowerInvariant();
-			return PlayPredefined(null, voicedUnit, type, phrase, variant, true);
+			return PlayPredefined(null, voicedUnit, type, phrase, variant, false, pos, volume, true);
 		}
 
 		public static bool PlayNotification(Player player, string type, string notification, string variant)
@@ -387,7 +387,7 @@ namespace OpenRA
 			if (type == null || notification == null)
 				return false;
 
-			return PlayPredefined(player, null, type.ToLowerInvariant(), notification, variant, false);
+			return PlayPredefined(player, null, type.ToLowerInvariant(), notification, variant, true, WPos.Zero, 1f, false);
 		}
 	}
 
