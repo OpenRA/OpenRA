@@ -80,8 +80,8 @@ namespace OpenRA.Mods.RA.Activities
 			self.World.AddFrameEndTask(
 				w => w.CreateActor(self.Info.Traits.Get<MinelayerInfo>().Mine, new TypeDictionary
 				{
-					new LocationInit( self.Location ),
-					new OwnerInit( self.Owner ),
+					new LocationInit(self.Location),
+					new OwnerInit(self.Owner),
 				}));
 		}
 	}

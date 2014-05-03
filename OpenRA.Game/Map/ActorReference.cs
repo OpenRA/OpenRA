@@ -24,9 +24,9 @@ namespace OpenRA
 		}
 		Lazy<TypeDictionary> initDict;
 
-		public ActorReference( string type ) : this( type, new Dictionary<string, MiniYaml>() ) { }
+		public ActorReference( string type ) : this(type, new Dictionary<string, MiniYaml>()) { }
 
-		public ActorReference( string type, Dictionary<string, MiniYaml> inits )
+		public ActorReference(string type, Dictionary<string, MiniYaml> inits)
 		{
 			Type = type;
 			initDict = Exts.Lazy(() =>
@@ -47,17 +47,17 @@ namespace OpenRA
 
 		public MiniYaml Save()
 		{
-			var ret = new MiniYaml( Type );
-			foreach( var init in InitDict )
+			var ret = new MiniYaml(Type);
+			foreach (var init in InitDict)
 			{
 				var initName = init.GetType().Name;
-				ret.Nodes.Add( new MiniYamlNode( initName.Substring( 0, initName.Length - 4 ), FieldSaver.Save( init ) ) );
+				ret.Nodes.Add(new MiniYamlNode(initName.Substring(0, initName.Length - 4), FieldSaver.Save(init)));
 			}
 			return ret;
 		}
 
 		// for initialization syntax
-		public void Add( object o ) { InitDict.Add( o ); }
+		public void Add(object o) { InitDict.Add(o); }
 		public IEnumerator GetEnumerator() { return InitDict.GetEnumerator(); }
 	}
 }

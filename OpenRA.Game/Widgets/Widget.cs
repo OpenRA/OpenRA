@@ -209,8 +209,8 @@ namespace OpenRA.Widgets
 			substitutions.Add("PARENT_LEFT", parentBounds.Left);
 			substitutions.Add("PARENT_TOP", parentBounds.Top);
 			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
-			int width = Evaluator.Evaluate(Width, substitutions);
-			int height = Evaluator.Evaluate(Height, substitutions);
+			var width = Evaluator.Evaluate(Width, substitutions);
+			var height = Evaluator.Evaluate(Height, substitutions);
 
 			substitutions.Add("WIDTH", width);
 			substitutions.Add("HEIGHT", height);

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Render
 	{
 		PlayerResources playerResources;
 
-		public RenderBuildingSilo( ActorInitializer init, RenderBuildingSiloInfo info )
+		public RenderBuildingSilo(ActorInitializer init, RenderBuildingSiloInfo info)
 			: base(init, info)
 		{
 			playerResources = init.self.Owner.PlayerActor.Trait<PlayerResources>();
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Render
 					: 0);
 		}
 
-		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}

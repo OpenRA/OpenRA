@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 				var cargo = a.Trait<Cargo>();
 				foreach (var i in items)
 					cargo.Load(a, self.World.CreateActor(false, i.ToLowerInvariant(),
-						new TypeDictionary { new OwnerInit( a.Owner ) }));
+						new TypeDictionary { new OwnerInit(a.Owner) }));
 			});
 		}
 	}

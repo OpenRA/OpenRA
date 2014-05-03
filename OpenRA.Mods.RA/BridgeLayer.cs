@@ -76,9 +76,9 @@ namespace OpenRA.Mods.RA
 			// Create a new actor for this bridge and keep track of which subtiles this bridge includes
 			var bridge = w.CreateActor(BridgeTypes[tile].First, new TypeDictionary
 			{
-				new LocationInit( new CPos(ni, nj) ),
-				new OwnerInit( w.WorldActor.Owner ),
-				new HealthInit( BridgeTypes[tile].Second ),
+				new LocationInit(new CPos(ni, nj)),
+				new OwnerInit(w.WorldActor.Owner),
+				new HealthInit(BridgeTypes[tile].Second),
 			}).Trait<Bridge>();
 
 			var subTiles = new Dictionary<CPos, byte>();
