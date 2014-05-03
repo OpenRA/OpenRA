@@ -11,6 +11,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using OpenRA.FileFormats;
 
@@ -97,6 +98,36 @@ namespace OpenRA
 		{
 			var process = "OpenRA.CrashDialog.exe";
 			var args = "";
+
+			if (CurrentPlatform == PlatformType.OSX)
+			{
+				// Winforms requires X11 under OSX, which may not exist.
+				// Show a native dialog using applescript instead.
+				var title = "Fatal Error";
+				var logsButton = "View Logs";
+				var faqButton = "View FAQ";
+				var quitButton = "Quit";
+				var message = "OpenRA has encountered a fatal error.\nRefer to the crash logs and FAQ for more information.";
+
+				var faqPath = Game.Settings.Debug.FatalErrorDialogFaq;
+				var logsPath = "file://" + Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
+
+				var iconPath = new [] { "./OpenRA.icns", "./packaging/osx/template.app/Contents/Resources/OpenRA.icns" }.FirstOrDefault(f => File.Exists(f));
+				var icon = iconPath != null ? "with icon alias (POSIX file \\\"file://{0}\\\")".F(Environment.CurrentDirectory + "/" + iconPath) : "";
+
+				process = "/usr/bin/osascript";
+				args = (
+					"-e \"repeat\"\n" +
+					"-e \"  tell application \\\"Finder\\\"\"\n" +
+					"-e \"    set question to display dialog \\\"{1}\\\" with title \\\"{0}\\\" {2} buttons {{\\\"{3}\\\", \\\"{5}\\\", \\\"{7}\\\"}} default button 3\"\n" +
+					"-e \"    if button returned of question is equal to \\\"{3}\\\" then open (POSIX file \\\"{4}\\\")\"\n" +
+					"-e \"    if button returned of question is equal to \\\"{5}\\\" then open location \\\"{6}\\\"\"\n" +
+					"-e \"    if button returned of question is equal to \\\"{7}\\\" then exit repeat\"\n" +
+					"-e \"    activate\"\n" +
+					"-e \"  end tell\"\n" +
+					"-e \"end repeat\""
+				).F(title, message, icon, logsButton, logsPath, faqButton, faqPath, quitButton);
+			}
 
 			var psi = new ProcessStartInfo(process, args);
 			psi.UseShellExecute = false;
