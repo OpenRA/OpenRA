@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,13 +16,13 @@ namespace OpenRA.Mods.RA.Buildings
 {
 	public static class FootprintUtils
 	{
-		public static IEnumerable<CPos> Tiles(string name, BuildingInfo buildingInfo, CPos topLeft)
+		public static IEnumerable<CPos> Tiles(MapRuleset rules, string name, BuildingInfo buildingInfo, CPos topLeft)
 		{
 			var dim = (CVec)buildingInfo.Dimensions;
 
 			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x));
 
-			var buildingTraits = Rules.Info[name].Traits;
+			var buildingTraits = rules.Actors[name].Traits;
 			if (buildingTraits.Contains<BibInfo>() && !(buildingTraits.Get<BibInfo>().HasMinibib))
 			{
 				dim += new CVec(0, 1);
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public static IEnumerable<CPos> Tiles(Actor a)
 		{
-			return Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location );
+			return Tiles(a.World.Map.Rules, a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location);
 		}
 
 		public static IEnumerable<CPos> UnpathableTiles(string name, BuildingInfo buildingInfo, CPos position)

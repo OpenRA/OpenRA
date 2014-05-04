@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Crates
 
 		public bool CanGiveTo(Actor collector)
 		{
-			var bi = Rules.Info[Info.Unit].Traits.GetOrDefault<BuildableInfo>();
+			var bi = self.World.Map.Rules.Actors[Info.Unit].Traits.GetOrDefault<BuildableInfo>();
 
 			// this unit is not buildable by the collector's country, so
 			// don't give them free ones either.
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Crates
 
 		IEnumerable<CPos> GetSuitableCells(CPos near)
 		{
-			var mi = Rules.Info[Info.Unit].Traits.Get<MobileInfo>();
+			var mi = self.World.Map.Rules.Actors[Info.Unit].Traits.Get<MobileInfo>();
 
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)

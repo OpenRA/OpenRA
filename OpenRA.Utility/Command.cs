@@ -195,15 +195,15 @@ namespace OpenRA.Utility
 			var srcMod = args[1].Split(':')[0];
 			Game.modData = new ModData(srcMod);
 			GlobalFileSystem.LoadFromManifest(Game.modData.Manifest);
-			Rules.LoadRules(Game.modData.Manifest, new Map());
-			var srcPaletteInfo = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
+			var srcRules = Game.modData.RulesetCache.LoadDefaultRules();
+			var srcPaletteInfo = srcRules.Actors["player"].Traits.Get<PlayerColorPaletteInfo>();
 			int[] srcRemapIndex = srcPaletteInfo.RemapIndex;
 
 			var destMod = args[2].Split(':')[0];
 			Game.modData = new ModData(destMod);
 			GlobalFileSystem.LoadFromManifest(Game.modData.Manifest);
-			Rules.LoadRules(Game.modData.Manifest, new Map());
-			var destPaletteInfo = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
+			var destRules = Game.modData.RulesetCache.LoadDefaultRules();
+			var destPaletteInfo = destRules.Actors["player"].Traits.Get<PlayerColorPaletteInfo>();
 			var destRemapIndex = destPaletteInfo.RemapIndex;
 			var shadowIndex = new int[] { };
 
@@ -304,7 +304,6 @@ namespace OpenRA.Utility
 		public static void ExtractTraitDocs(string[] args)
 		{
 			Game.modData = new ModData(args[1]);
-			Rules.LoadRules(Game.modData.Manifest, new Map());
 
 			Console.WriteLine(
 				"This documentation is aimed at modders. It displays all traits with default values and developer commentary. " +
@@ -371,7 +370,6 @@ namespace OpenRA.Utility
 		public static void ExtractLuaDocs(string[] args)
 		{
 			Game.modData = new ModData(args[1]);
-			Rules.LoadRules(Game.modData.Manifest, new Map());
 
 			Console.WriteLine("This is an automatically generated lising of the new Lua map scripting API, generated for {0} of OpenRA.", Game.modData.Manifest.Mod.Version);
 			Console.WriteLine();
@@ -520,9 +518,7 @@ namespace OpenRA.Utility
 			foreach (var dir in Game.modData.Manifest.Folders)
 				GlobalFileSystem.Mount(dir);
 
-			Rules.LoadRules(Game.modData.Manifest, map);
-
-			var minimap = Minimap.RenderMapPreview(map, true);
+			var minimap = Minimap.RenderMapPreview(map.Rules.TileSets[map.Tileset], map, true);
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".png";
 			minimap.Save(dest);
@@ -544,11 +540,11 @@ namespace OpenRA.Utility
 			var mod = args[1];
 			var filename = args[2];
 			Game.modData = new ModData(mod);
-			Rules.LoadRules(Game.modData.Manifest, new Map());
-			var map = LegacyMapImporter.Import(filename, e => Console.WriteLine(e));
+			var rules = Game.modData.RulesetCache.LoadDefaultRules();
+			var map = LegacyMapImporter.Import(filename, rules, e => Console.WriteLine(e));
 			map.RequiresMod = mod;
 			map.MakeDefaultPlayers();
-			map.FixOpenAreas();
+			map.FixOpenAreas(rules);
 			var dest = map.Title + ".oramap";
 			map.Save(dest);
 			Console.WriteLine(dest + " saved.");

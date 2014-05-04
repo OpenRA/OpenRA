@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc
 		{
 			this.info = info;
 			health = self.Trait<Health>();
-			weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
+			weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 		}
 
 		public void AddedToWorld(Actor self)

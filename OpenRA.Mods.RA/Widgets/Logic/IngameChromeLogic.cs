@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,9 +18,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class IngameChromeLogic
 	{
-		Widget gameRoot;
-		Widget playerRoot;
-		World world;
+		readonly Widget gameRoot;
+		readonly Widget playerRoot;
+		readonly World world;
 
 		[ObjectCreator.UseCtor]
 		public IngameChromeLogic(World world)
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
 
 				if (radarActive != cachedRadarActive)
-					Sound.PlayNotification(null, "Sounds", (radarActive ? "RadarUp" : "RadarDown"), null);
+					Sound.PlayNotification(world.Map.Rules, null, "Sounds", (radarActive ? "RadarUp" : "RadarDown"), null);
 				cachedRadarActive = radarActive;
 
 				// Switch to observer mode after win/loss

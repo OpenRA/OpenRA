@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 		void SpawnUnitsForPlayer(World w, Player p, CPos sp)
 		{
 			var spawnClass = p.PlayerReference.StartingUnitsClass ?? w.LobbyInfo.GlobalSettings.StartingUnitsClass;
-			var unitGroup = Rules.Info["world"].Traits.WithInterface<MPStartUnitsInfo>()
+			var unitGroup = w.Map.Rules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>()
 				.Where(g => g.Class == spawnClass && g.Races != null && g.Races.Contains(p.Country.Race))
 				.RandomOrDefault(w.SharedRandom);
 
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA
 
 			foreach (var s in unitGroup.SupportActors)
 			{
-				var mi = Rules.Info[s.ToLowerInvariant()].Traits.Get<MobileInfo>();
+				var mi = w.Map.Rules.Actors[s.ToLowerInvariant()].Traits.Get<MobileInfo>();
 				var validCells = supportSpawnCells.Where(c => mi.CanEnterCell(w, c));
 				if (!validCells.Any())
 					throw new InvalidOperationException("No cells available to spawn starting unit {0}".F(s));

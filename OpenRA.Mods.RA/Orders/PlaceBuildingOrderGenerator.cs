@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -31,10 +31,10 @@ namespace OpenRA.Mods.RA.Orders
 			Producer = producer;
 			Building = name;
 			var tileset = producer.World.TileSet.Id.ToLower();
-			BuildingInfo = Rules.Info[Building].Traits.Get<BuildingInfo>();
+			BuildingInfo = producer.World.Map.Rules.Actors[Building].Traits.Get<BuildingInfo>();
 
-			buildOk = SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
-			buildBlocked = SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
+			buildOk = producer.World.Map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+			buildBlocked = producer.World.Map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
 		}
 
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
@@ -57,11 +57,11 @@ namespace OpenRA.Mods.RA.Orders
 				if (!world.CanPlaceBuilding(Building, BuildingInfo, topLeft, null)
 					|| !BuildingInfo.IsCloseEnoughToBase(world, Producer.Owner, Building, topLeft))
 				{
-					Sound.PlayNotification(Producer.Owner, "Speech", "BuildingCannotPlaceAudio", Producer.Owner.Country.Race);
+					Sound.PlayNotification(world.Map.Rules, Producer.Owner, "Speech", "BuildingCannotPlaceAudio", Producer.Owner.Country.Race);
 					yield break;
 				}
 
-				var isLineBuild = Rules.Info[Building].Traits.Contains<LineBuildInfo>();
+				var isLineBuild = world.Map.Rules.Actors[Building].Traits.Contains<LineBuildInfo>();
 				yield return new Order(isLineBuild ? "LineBuild" : "PlaceBuilding",
 					Producer.Owner.PlayerActor, false) { TargetLocation = topLeft, TargetString = Building };
 			}
@@ -74,14 +74,16 @@ namespace OpenRA.Mods.RA.Orders
 			var position = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
 			var topLeft = position - FootprintUtils.AdjustForBuildingSize(BuildingInfo);
 
-			var actorInfo = Rules.Info[Building];
+			var rules = world.Map.Rules;
+
+			var actorInfo = rules.Actors[Building];
 			foreach (var dec in actorInfo.Traits.WithInterface<IPlaceBuildingDecoration>())
 				dec.Render(wr, world, actorInfo, position.CenterPosition);	/* hack hack */
 
 			var cells = new Dictionary<CPos, bool>();
 			// Linebuild for walls.
 			// Assumes a 1x1 footprint; weird things will happen for other footprints
-			if (Rules.Info[Building].Traits.Contains<LineBuildInfo>())
+			if (rules.Actors[Building].Traits.Contains<LineBuildInfo>())
 			{
 				foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, Building, BuildingInfo))
 					cells.Add(t, BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, t));
@@ -90,7 +92,7 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				if (!initialized)
 				{
-					var rbi = Rules.Info[Building].Traits.GetOrDefault<RenderBuildingInfo>();
+					var rbi = rules.Actors[Building].Traits.GetOrDefault<RenderBuildingInfo>();
 					if (rbi == null)
 						preview = new IRenderable[0];
 					else
@@ -98,7 +100,7 @@ namespace OpenRA.Mods.RA.Orders
 						var palette = rbi.Palette ?? (Producer.Owner != null ?
 							rbi.PlayerPalette + Producer.Owner.InternalName : null);
 
-						preview = rbi.RenderPreview(Rules.Info[Building], wr.Palette(palette));
+						preview = rbi.RenderPreview(rules.Actors[Building], wr.Palette(palette));
 					}
 
 					initialized = true;
@@ -110,7 +112,7 @@ namespace OpenRA.Mods.RA.Orders
 
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, topLeft);
-				foreach (var t in FootprintUtils.Tiles(Building, BuildingInfo, topLeft))
+				foreach (var t in FootprintUtils.Tiles(rules, Building, BuildingInfo, topLeft))
 					cells.Add(t, isCloseEnough && world.IsCellBuildable(t, BuildingInfo) && res.GetResource(t) == null);
 			}
 

@@ -17,34 +17,10 @@ using OpenRA.Support;
 
 namespace OpenRA
 {
-	public static class Rules
-	{
-		public static Dictionary<string, ActorInfo> Info { get { return Game.modData.Rules.Actors; } }
-		public static Dictionary<string, WeaponInfo> Weapons { get { return Game.modData.Rules.Weapons; } }
-		public static Dictionary<string, SoundInfo> Voices { get { return Game.modData.Rules.Voices; } }
-		public static Dictionary<string, SoundInfo> Notifications { get { return Game.modData.Rules.Notifications; } }
-		public static Dictionary<string, MusicInfo> Music { get { return Game.modData.Rules.Music; } }
-		public static Dictionary<string, string> Movies { get { return Game.modData.Rules.Movies; } }
-		public static Dictionary<string, TileSet> TileSets { get { return Game.modData.Rules.TileSets; } }
-
-		public static void LoadRules(Manifest m, Map map)
-		{
-			// HACK: Fallback for code that hasn't been updated yet
-			Game.modData.Rules = new ModRules(Game.modData);
-			Game.modData.Rules.ActivateMap(map);
-		}
-
-		public static IEnumerable<KeyValuePair<string, MusicInfo>> InstalledMusic { get { return Music.Where(m => m.Value.Exists); } }
-	}
-
-
-	public class ModRules
+	public class RulesetCache
 	{
 		readonly ModData modData;
 
-		//
-		// These contain all unique instances created from each mod/map combination
-		//
 		readonly Dictionary<string, ActorInfo> actorCache = new Dictionary<string, ActorInfo>();
 		readonly Dictionary<string, WeaponInfo> weaponCache = new Dictionary<string, WeaponInfo>();
 		readonly Dictionary<string, SoundInfo> voiceCache = new Dictionary<string, SoundInfo>();
@@ -53,40 +29,60 @@ namespace OpenRA
 		readonly Dictionary<string, string> movieCache = new Dictionary<string, string>();
 		readonly Dictionary<string, TileSet> tileSetCache = new Dictionary<string, TileSet>();
 
-		//
-		// These are the instances needed for the current map
-		//
-		public Dictionary<string, ActorInfo> Actors { get; private set; }
-		public Dictionary<string, WeaponInfo> Weapons { get; private set; }
-		public Dictionary<string, SoundInfo> Voices { get; private set; }
-		public Dictionary<string, SoundInfo> Notifications { get; private set; }
-		public Dictionary<string, MusicInfo> Music { get; private set; }
-		public Dictionary<string, string> Movies { get; private set; }
-		public Dictionary<string, TileSet> TileSets { get; private set; }
+		public Action OnProgress = () => { if (Game.modData != null && Game.modData.LoadScreen != null) Game.modData.LoadScreen.Display(); };
 
-
-		public ModRules(ModData modData)
+		public RulesetCache(ModData modData)
 		{
 			this.modData = modData;
 		}
 
-		public void ActivateMap(Map map)
+		public ModRuleset LoadModRules()
 		{
 			var m = modData.Manifest;
-			using (new PerfTimer("Actors"))
-				Actors = LoadYamlRules(actorCache, m.Rules, map.Rules, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
-			using (new PerfTimer("Weapons"))
-				Weapons = LoadYamlRules(weaponCache, m.Weapons, map.Weapons, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
-			using (new PerfTimer("Voices"))
-				Voices = LoadYamlRules(voiceCache, m.Voices, map.Voices, (k, _) => new SoundInfo(k.Value));
-			using (new PerfTimer("Notifications"))
-				Notifications = LoadYamlRules(notificationCache, m.Notifications, map.Notifications, (k, _) => new SoundInfo(k.Value));
+
+			Dictionary<string, MusicInfo> music;
+			Dictionary<string, string> movies;
+			Dictionary<string, TileSet> tileSets;
+
 			using (new PerfTimer("Music"))
-				Music = LoadYamlRules(musicCache, m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
+				music = LoadYamlRules(musicCache, m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
 			using (new PerfTimer("Movies"))
-				Movies = LoadYamlRules(movieCache, m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
+				movies = LoadYamlRules(movieCache, m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
 			using (new PerfTimer("TileSets"))
-				TileSets = LoadTileSets(tileSetCache, m.TileSets);
+				tileSets = LoadTileSets(tileSetCache, m.TileSets);
+
+			return new ModRuleset(music, movies, tileSets);
+		}
+
+		public MapRuleset LoadDefaultRules()
+		{
+			return LoadMapRules(new Map());
+		}
+
+		public MapRuleset LoadMapRules(Map map)
+		{
+			var m = modData.Manifest;
+
+			Dictionary<string, ActorInfo> actors;
+			Dictionary<string, WeaponInfo> weapons;
+			Dictionary<string, SoundInfo> voices;
+			Dictionary<string, SoundInfo> notifications;
+
+			OnProgress();
+			using (new PerfTimer("Actors"))
+				actors = LoadYamlRules(actorCache, m.Rules, map.RuleDefinitions, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
+			OnProgress();
+			using (new PerfTimer("Weapons"))
+				weapons = LoadYamlRules(weaponCache, m.Weapons, map.WeaponDefinitions, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
+			OnProgress();
+			using (new PerfTimer("Voices"))
+				voices = LoadYamlRules(voiceCache, m.Voices, map.VoiceDefinitions, (k, _) => new SoundInfo(k.Value));
+			OnProgress();
+			using (new PerfTimer("Notifications"))
+				notifications = LoadYamlRules(notificationCache, m.Notifications, map.NotificationDefinitions, (k, _) => new SoundInfo(k.Value));
+
+			OnProgress();
+			return new MapRuleset(LoadModRules(), actors, weapons, voices, notifications);
 		}
 
 		Dictionary<string, T> LoadYamlRules<T>(
@@ -131,7 +127,7 @@ namespace OpenRA
 				}
 				else
 				{
-					t = new TileSet(file);
+					t = new TileSet(modData, file);
 					itemCache.Add(file, t);
 
 					items.Add(t.Id, t);

@@ -117,6 +117,7 @@ namespace OpenRA
 			}, parent, id);
 		}
 
+		// TODO: Delayed actions shouldn't be static or at least should be cleared when the map/world is changed
 		static ActionQueue delayedActions = new ActionQueue();
 		public static void RunAfterTick(Action a) { delayedActions.Add(a); }
 		public static void RunAfterDelay(int delay, Action a) { delayedActions.Add(a, delay); }
@@ -151,8 +152,11 @@ namespace OpenRA
 				using (new PerfSample("render_widgets"))
 				{
 					Ui.Draw();
-					var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-					CursorProvider.DrawCursor(Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
+					if (modData != null && modData.CursorProvider != null)
+					{
+						var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
+						modData.CursorProvider.DrawCursor(Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
+					}
 				}
 
 				using (new PerfSample("render_flip"))
@@ -248,6 +252,7 @@ namespace OpenRA
 			BeforeGameStart();
 
 			Map map;
+
 			using (new PerfTimer("PrepareMap"))
 				map = modData.PrepareMap(mapUID);
 			using (new PerfTimer("NewWorld"))
@@ -354,7 +359,7 @@ namespace OpenRA
 			}
 
 			Console.WriteLine("Available mods:");
-			foreach (var mod in Mod.AllMods)
+			foreach (var mod in ModInformation.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
 			InitializeWithMod(Settings.Game.Mod, args.GetValue("Launch.Replay", null));
@@ -379,7 +384,7 @@ namespace OpenRA
 				orderManager.Dispose();
 
 			// Fall back to default if the mod doesn't exist
-			if (!Mod.AllMods.ContainsKey(mod))
+			if (!ModInformation.AllMods.ContainsKey(mod))
 				mod = new GameSettings().Mod;
 
 			Console.WriteLine("Loading mod: {0}", mod);

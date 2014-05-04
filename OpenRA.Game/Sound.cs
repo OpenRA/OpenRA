@@ -296,15 +296,18 @@ namespace OpenRA
 		}
 
 		// Returns true if played successfully
-		public static bool PlayPredefined(Player p, Actor voicedUnit, string type, string definition, string variant, bool relative, WPos pos, float volumeModifier, bool attenuateVolume)
+		public static bool PlayPredefined(MapRuleset ruleset, Player p, Actor voicedUnit, string type, string definition, string variant, bool relative, WPos pos, float volumeModifier, bool attenuateVolume)
 		{
+			if (ruleset == null)
+				throw new ArgumentNullException("ruleset");
+
 			if (definition == null)
 				return false;
 
-			if (Rules.Voices == null || Rules.Notifications == null)
+			if (ruleset.Voices == null || ruleset.Notifications == null)
 				return false;
 
-			var rules = (voicedUnit != null) ? Rules.Voices[type] : Rules.Notifications[type];
+			var rules = (voicedUnit != null) ? ruleset.Voices[type] : ruleset.Notifications[type];
 			if (rules == null)
 				return false;
 
@@ -366,7 +369,7 @@ namespace OpenRA
 				return false;
 
 			var type = mi.Voice.ToLowerInvariant();
-			return PlayPredefined(null, voicedUnit, type, phrase, variant, true, WPos.Zero, 1f, true);
+			return PlayPredefined(voicedUnit.World.Map.Rules, null, voicedUnit, type, phrase, variant, true, WPos.Zero, 1f, true);
 		}
 		
 		public static bool PlayVoiceLocal(string phrase, Actor voicedUnit, string variant, WPos pos, float volume)
@@ -379,15 +382,18 @@ namespace OpenRA
 				return false;
 
 			var type = mi.Voice.ToLowerInvariant();
-			return PlayPredefined(null, voicedUnit, type, phrase, variant, false, pos, volume, true);
+			return PlayPredefined(voicedUnit.World.Map.Rules, null, voicedUnit, type, phrase, variant, false, pos, volume, true);
 		}
 
-		public static bool PlayNotification(Player player, string type, string notification, string variant)
+		public static bool PlayNotification(MapRuleset rules, Player player, string type, string notification, string variant)
 		{
+			if (rules == null)
+				throw new ArgumentNullException("rules");
+
 			if (type == null || notification == null)
 				return false;
 
-			return PlayPredefined(player, null, type.ToLowerInvariant(), notification, variant, true, WPos.Zero, 1f, false);
+			return PlayPredefined(rules, player, null, type.ToLowerInvariant(), notification, variant, true, WPos.Zero, 1f, false);
 		}
 	}
 

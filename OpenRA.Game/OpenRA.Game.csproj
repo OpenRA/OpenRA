@@ -99,7 +99,6 @@
     <Compile Include="Game.cs" />
     <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\MusicInfo.cs" />
-    <Compile Include="GameRules\Rules.cs" />
     <Compile Include="GameRules\SoundInfo.cs" />
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Graphics\Animation.cs" />
@@ -244,6 +243,10 @@
     <Compile Include="Scripting\ScriptMemberExts.cs" />
     <Compile Include="Scripting\ScriptPlayerInterface.cs" />
     <Compile Include="Traits\Player\FixedColorPalette.cs" />
+    <Compile Include="Primitives\ReadOnlyDictionary.cs" />
+    <Compile Include="ModInformation.cs" />
+    <Compile Include="Map\Ruleset.cs" />
+    <Compile Include="GameRules\RulesetCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
@@ -303,7 +306,6 @@
     <Compile Include="Hotkey.cs" />
     <Compile Include="Keycode.cs" />
     <Compile Include="MiniYaml.cs" />
-    <Compile Include="Mod.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="StreamExts.cs" />
     <Compile Include="Map\Map.cs" />

@@ -27,30 +27,30 @@ namespace OpenRA
 	{
 		public static readonly MapPreview UnknownMap = new MapPreview(null, null);
 		readonly Cache<string, MapPreview> previews;
-		readonly Manifest manifest;
+		readonly ModData modData;
 		readonly SheetBuilder sheetBuilder;
 		Thread previewLoaderThread;
 		object syncRoot = new object();
 		Queue<MapPreview> generateMinimap = new Queue<MapPreview>();
 
-		public MapCache(Manifest m)
+		public MapCache(ModData modData)
 		{
-			manifest = m;
+			this.modData = modData;
 			previews = new Cache<string, MapPreview>(uid => new MapPreview(uid, this));
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);
 		}
 
 		public void LoadMaps()
 		{
-			var paths = manifest.MapFolders.SelectMany(f => FindMapsIn(f));
+			var paths = modData.Manifest.MapFolders.SelectMany(f => FindMapsIn(f));
 			foreach (var path in paths)
 			{
 				try
 				{
 					using (new Support.PerfTimer(path))
 					{
-						var map = new Map(path, manifest.Mod.Id);
-						if (manifest.MapCompatibility.Contains(map.RequiresMod))
+						var map = new Map(path, modData.Manifest.Mod.Id);
+						if (modData.Manifest.MapCompatibility.Contains(map.RequiresMod))
 							previews[map.Uid].UpdateFromMap(map);
 					}
 				}
@@ -149,7 +149,7 @@ namespace OpenRA
 				//       the next render cycle.
 				//   (d) Any partially written bytes from the next minimap is in an
 				//       unallocated area, and will be committed in the next cycle.
-				var bitmap = p.CustomPreview ?? Minimap.RenderMapPreview(p.Map, true);
+				var bitmap = p.CustomPreview ?? Minimap.RenderMapPreview(modData.ModRules.TileSets[p.Map.Tileset], p.Map, true);
 				p.Minimap = sheetBuilder.Add(bitmap);
 
 				lock (syncRoot)

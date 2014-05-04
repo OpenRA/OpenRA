@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -28,6 +28,9 @@ namespace OpenRA.Graphics
 
 		public string Name { get { return name; } }
 
+		readonly SequenceProvider sequenceProvider;
+		static SequenceProvider lastSequenceProvider;
+
 		public Animation(string name)
 			: this(name, () => 0)	{}
 
@@ -36,6 +39,17 @@ namespace OpenRA.Graphics
 			this.name = name.ToLowerInvariant();
 			this.tickFunc = () => {};
 			this.facingFunc = facingFunc;
+
+			// TODO: This is wrong, don't use the static
+			if (Game.orderManager != null && Game.orderManager.world != null && Game.orderManager.world.Map != null)
+				sequenceProvider = Game.orderManager.world.Map.SequenceProvider;
+			// HACK: This just makes sure we have a sequence provider in between map changes for delayed actions
+			// It sucks but it can only be removed when we don't use the statics above but replace them with
+			// a possible parameter on this constructor.
+			if (sequenceProvider == null)
+				sequenceProvider = lastSequenceProvider;
+			else
+				lastSequenceProvider = sequenceProvider;
 		}
 
 		int CurrentFrame { get { return backwards ? CurrentSequence.Start + CurrentSequence.Length - frame - 1 : frame; } }
@@ -66,7 +80,7 @@ namespace OpenRA.Graphics
 		{
 			backwards = false;
 			tickAlways = false;
-			CurrentSequence = SequenceProvider.GetSequence(name, sequenceName);
+			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
 			frame = 0;
 			tickFunc = () =>
 			{
@@ -81,7 +95,7 @@ namespace OpenRA.Graphics
 			if (!HasSequence(sequenceName))
 				return false;
 
-			CurrentSequence = SequenceProvider.GetSequence(name, sequenceName);
+			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
 			frame %= CurrentSequence.Length;
 			return true;
 		}
@@ -90,7 +104,7 @@ namespace OpenRA.Graphics
 		{
 			backwards = false;
 			tickAlways = false;
-			CurrentSequence = SequenceProvider.GetSequence(name, sequenceName);
+			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
 			frame = 0;
 			tickFunc = () =>
 			{
@@ -114,7 +128,7 @@ namespace OpenRA.Graphics
 		{
 			backwards = false;
 			tickAlways = true;
-			CurrentSequence = SequenceProvider.GetSequence(name, sequenceName);
+			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
 			frame = func();
 			tickFunc = () => frame = func();
 		}
@@ -128,7 +142,7 @@ namespace OpenRA.Graphics
 				Tick(40); // tick one frame
 		}
 
-		public bool HasSequence(string seq) { return SequenceProvider.HasSequence(name, seq); }
+		public bool HasSequence(string seq) { return sequenceProvider.HasSequence(name, seq); }
 
 		public void Tick(int t)
 		{
@@ -159,7 +173,7 @@ namespace OpenRA.Graphics
 
 		public Sequence GetSequence(string sequenceName)
 		{
-			return SequenceProvider.GetSequence(name, sequenceName);
+			return sequenceProvider.GetSequence(name, sequenceName);
 		}
 	}
 }

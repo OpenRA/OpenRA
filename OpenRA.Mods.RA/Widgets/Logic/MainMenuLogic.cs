@@ -110,10 +110,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			extrasMenu.Get<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				menuType = MenuType.None;
-				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs
-				{
-					{ "onExit", () => menuType = MenuType.Extras },
-				});
+				MusicPlayerLogic.OpenWindow(world, () => menuType = MenuType.Extras);
 			};
 
 			var assetBrowserButton = extrasMenu.GetOrNull<ButtonWidget>("ASSETBROWSER_BUTTON");

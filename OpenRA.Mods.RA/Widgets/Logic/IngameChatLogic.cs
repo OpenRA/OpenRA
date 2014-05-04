@@ -20,6 +20,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class IngameChatLogic
 	{
+		readonly World world;
+
 		readonly ContainerWidget chatOverlay;
 		readonly ChatDisplayWidget chatOverlayDisplay;
 
@@ -35,6 +37,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world)
 		{
+			this.world = world;
+
 			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToList();
 
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
@@ -161,7 +165,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (scrolledToBottom)
 				chatScrollPanel.ScrollToBottom();
 
-			Sound.PlayNotification(null, "Sounds", "ChatLine", null);
+			Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ChatLine", null);
 		}
 	}
 }

@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			widget.Get<ButtonWidget>("MUSIC").OnClick = () =>
 			{
 				widget.Visible = false;
-				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs { { "onExit", () => { widget.Visible = true; } } });
+				MusicPlayerLogic.OpenWindow(world, () => { widget.Visible = true; });
 			};
 			widget.Get<ButtonWidget>("RESUME").OnClick = () => onExit();
 
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void LeaveGame(World world)
 		{
-			Sound.PlayNotification(null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
+			Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
 			Game.Disconnect();
 			Ui.CloseWindow();
 			Game.LoadShellMap();

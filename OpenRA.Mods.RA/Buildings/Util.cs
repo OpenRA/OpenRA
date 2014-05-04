@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -35,14 +35,14 @@ namespace OpenRA.Mods.RA.Buildings
 				return true;
 
 			var res = world.WorldActor.Trait<ResourceLayer>();
-			return FootprintUtils.Tiles(name, building, topLeft).All(
+			return FootprintUtils.Tiles(world.Map.Rules, name, building, topLeft).All(
 				t => world.Map.IsInMap(t.X, t.Y) && res.GetResource(t) == null &&
 					world.IsCellBuildable(t, building, toIgnore));
 		}
 
 		public static IEnumerable<CPos> GetLineBuildCells(World world, CPos location, string name, BuildingInfo bi)
 		{
-			var lbi = Rules.Info[name].Traits.Get<LineBuildInfo>();
+			var lbi = world.Map.Rules.Actors[name].Traits.Get<LineBuildInfo>();
 			var topLeft = location;	// 1x1 assumption!
 
 			if (world.IsCellBuildable(topLeft, bi))

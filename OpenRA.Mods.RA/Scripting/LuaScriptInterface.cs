@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -171,10 +171,10 @@ namespace OpenRA.Mods.RA.Scripting
 		public object TraitInfoOrDefault(string actorType, string className)
 		{
 			var type = Game.modData.ObjectCreator.FindType(className);
-			if (type == null || !Rules.Info.ContainsKey(actorType))
+			if (type == null || !world.Map.Rules.Actors.ContainsKey(actorType))
 				return null;
 
-			return Rules.Info[actorType].Traits.GetOrDefault(type);
+			return world.Map.Rules.Actors[actorType].Traits.GetOrDefault(type);
 		}
 
 		[LuaGlobal]
@@ -202,13 +202,13 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public void PlaySpeechNotification(Player player, string notification)
 		{
-			Sound.PlayNotification(player, "Speech", notification, player != null ? player.Country.Race : null);
+			Sound.PlayNotification(world.Map.Rules, player, "Speech", notification, player != null ? player.Country.Race : null);
 		}
 
 		[LuaGlobal]
 		public void PlaySoundNotification(Player player, string notification)
 		{
-			Sound.PlayNotification(player, "Sounds", notification, player != null ? player.Country.Race : null);
+			Sound.PlayNotification(world.Map.Rules, player, "Sounds", notification, player != null ? player.Country.Race : null);
 		}
 
 		[LuaGlobal]
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public void PlayRandomMusic()
 		{
-			if (!Rules.InstalledMusic.Any() || !Game.Settings.Sound.MapMusic)
+			if (!Game.Settings.Sound.MapMusic || !world.Map.Rules.InstalledMusic.Any())
 				return;
 			Game.ConnectionStateChanged += StopMusic;
 			PlayMusic();
@@ -256,7 +256,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		void PlayMusic()
 		{
-			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
+			var track = world.Map.Rules.InstalledMusic.Random(Game.CosmeticRandom);
 			Sound.PlayMusicThen(track.Value, PlayMusic);
 		}
 
@@ -385,7 +385,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		ClassicProductionQueue GetSharedQueueForUnit(Player player, string unit)
 		{
-			var ri = Rules.Info[unit];
+			var ri = world.Map.Rules.Actors[unit];
 
 			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
 			if (bi == null)
@@ -406,7 +406,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public void BuildWithPerFactoryQueue(Actor factory, string unit, double amount)
 		{
-			var ri = Rules.Info[unit];
+			var ri = world.Map.Rules.Actors[unit];
 
 			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
 			if (bi == null)

@@ -69,10 +69,10 @@ namespace OpenRA
 
 			if (name != null)
 			{
-				if (!Rules.Info.ContainsKey(name.ToLowerInvariant()))
+				if (!world.Map.Rules.Actors.ContainsKey(name.ToLowerInvariant()))
 					throw new NotImplementedException("No rules definition for unit {0}".F(name.ToLowerInvariant()));
 
-				Info = Rules.Info[name.ToLowerInvariant()];
+				Info = world.Map.Rules.Actors[name.ToLowerInvariant()];
 				foreach (var trait in Info.TraitsInConstructOrder())
 					AddTrait(trait.Create(init));
 			}

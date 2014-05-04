@@ -16,23 +16,18 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public static class CursorProvider
+	public class CursorProvider
 	{
-		static HardwarePalette palette;
-		static Dictionary<string, CursorSequence> cursors;
-		static Cache<string, PaletteReference> palettes;
+		HardwarePalette palette;
+		Dictionary<string, CursorSequence> cursors;
+		Cache<string, PaletteReference> palettes;
 
-		static PaletteReference CreatePaletteReference(string name)
+		public Action OnProgress = () => { if (Game.modData != null && Game.modData.LoadScreen != null) Game.modData.LoadScreen.Display(); };
+
+		public CursorProvider(ModData modData)
 		{
-			var pal = palette.GetPalette(name);
-			if (pal == null)
-				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
+			var sequenceFiles = modData.Manifest.Cursors;
 
-			return new PaletteReference(name, palette.GetPaletteIndex(name), pal);
-		}
-
-		public static void Initialize(string[] sequenceFiles)
-		{
 			cursors = new Dictionary<string, CursorSequence>();
 			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
 			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
@@ -49,26 +44,37 @@ namespace OpenRA.Graphics
 			foreach (var p in sequences.NodesDict["Palettes"].Nodes)
 				palette.AddPalette(p.Key, new Palette(GlobalFileSystem.Open(p.Value.Value), shadowIndex), false);
 
+
+			var spriteLoader = new SpriteLoader(new string[0], new SheetBuilder(SheetType.Indexed));
 			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
-				LoadSequencesForCursor(s.Key, s.Value);
+				LoadSequencesForCursor(spriteLoader, s.Key, s.Value);
 
 			palette.Initialize();
 		}
 
-		static void LoadSequencesForCursor(string cursorSrc, MiniYaml cursor)
+		PaletteReference CreatePaletteReference(string name)
 		{
-			Game.modData.LoadScreen.Display();
+			var pal = palette.GetPalette(name);
+			if (pal == null)
+				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
 
-			foreach (var sequence in cursor.Nodes)
-				cursors.Add(sequence.Key, new CursorSequence(cursorSrc, cursor.Value, sequence.Value));
+			return new PaletteReference(name, palette.GetPaletteIndex(name), pal);
 		}
 
-		public static bool HasCursorSequence(string cursor)
+		void LoadSequencesForCursor(SpriteLoader loader, string cursorSrc, MiniYaml cursor)
+		{
+			OnProgress();
+
+			foreach (var sequence in cursor.Nodes)
+				cursors.Add(sequence.Key, new CursorSequence(loader, cursorSrc, cursor.Value, sequence.Value));
+		}
+
+		public bool HasCursorSequence(string cursor)
 		{
 			return cursors.ContainsKey(cursor);
 		}
 
-		public static void DrawCursor(Renderer renderer, string cursorName, int2 lastMousePos, int cursorFrame)
+		public void DrawCursor(Renderer renderer, string cursorName, int2 lastMousePos, int cursorFrame)
 		{
 			var cursorSequence = GetCursorSequence(cursorName);
 			var cursorSprite = cursorSequence.GetSprite(cursorFrame);
@@ -80,13 +86,12 @@ namespace OpenRA.Graphics
 			                                   cursorSprite.size);
 		}
 
-		public static CursorSequence GetCursorSequence(string cursor)
+		public CursorSequence GetCursorSequence(string cursor)
 		{
 			try { return cursors[cursor]; }
 			catch (KeyNotFoundException)
 			{
-				throw new InvalidOperationException(
-					"Cursor does not have a sequence `{0}`".F(cursor));
+				throw new InvalidOperationException("Cursor does not have a sequence `{0}`".F(cursor));
 			}
 		}
 	}

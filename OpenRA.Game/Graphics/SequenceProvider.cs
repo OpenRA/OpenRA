@@ -17,102 +17,101 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public static class SequenceProvider
+	public class SequenceProvider
 	{
-		public static Sequence GetSequence(string unitName, string sequenceName)
+		readonly Lazy<IReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>> sequences;
+
+		public SequenceProvider(Map map)
 		{
-			return Game.modData.SequenceProvider.GetSequence(unitName, sequenceName);
+			this.sequences = Exts.Lazy(() => map.Rules.TileSets[map.Tileset].Data.SequenceCache.LoadSequences(map));
 		}
 
-		public static bool HasSequence(string unitName, string sequenceName)
+		public Sequence GetSequence(string unitName, string sequenceName)
 		{
-			return Game.modData.SequenceProvider.HasSequence(unitName, sequenceName);
+			try
+			{
+				return sequences.Value[unitName].Value[sequenceName];
+			}
+			catch (KeyNotFoundException)
+			{
+				if (sequences.Value.ContainsKey(unitName))
+					throw new InvalidOperationException("Unit `{0}` does not have a sequence `{1}`".F(unitName, sequenceName));
+				else
+					throw new InvalidOperationException("Unit `{0}` does not have all sequences defined.".F(unitName));
+			}
 		}
 
-		public static IEnumerable<string> Sequences(string unitName)
+		public bool HasSequence(string unitName, string sequenceName)
 		{
-			return Game.modData.SequenceProvider.Sequences(unitName);
+			if (!sequences.Value.ContainsKey(unitName))
+				throw new InvalidOperationException("Unit `{0}` does not have sequence `{1}` defined.".F(unitName, sequenceName));
+
+			return sequences.Value[unitName].Value.ContainsKey(sequenceName);
+		}
+
+		public IEnumerable<string> Sequences(string unitName)
+		{
+			if (!sequences.Value.ContainsKey(unitName))
+				throw new InvalidOperationException("Unit `{0}` does not have all sequences defined.".F(unitName));
+
+			return sequences.Value[unitName].Value.Keys;
 		}
 	}
 
-	public class ModSequenceProvider
+	public class SequenceCache
 	{
 		readonly ModData modData;
+		readonly TileSet tileSet;
 
-		readonly Dictionary<string, Lazy<Dictionary<string, Sequence>>> sequenceCache = new Dictionary<string, Lazy<Dictionary<string, Sequence>>>();
-		Dictionary<string, Lazy<Dictionary<string, Sequence>>> sequences;
+		readonly Dictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>> sequenceCache = new Dictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>();
 
-		public ModSequenceProvider(ModData modData)
+		public Action OnProgress = () => { if (Game.modData != null && Game.modData.LoadScreen != null) Game.modData.LoadScreen.Display(); };
+
+		public SequenceCache(ModData modData, TileSet tileSet)
 		{
 			this.modData = modData;
+			this.tileSet = tileSet;
 		}
 
-		public void ActivateMap(Map map)
+		public IReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>> LoadSequences(Map map)
 		{
-			sequences = Load(modData.Manifest.Sequences, map.Tileset, map.Sequences);
+			using (new Support.PerfTimer("LoadSequences"))
+				return Load(map.SequenceDefinitions);
 		}
 
-		public Dictionary<string, Lazy<Dictionary<string, Sequence>>> Load(string[] sequenceFiles, string tileset, List<MiniYamlNode> sequenceNodes)
+		IReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>> Load(List<MiniYamlNode> sequenceNodes)
 		{
-			Game.modData.LoadScreen.Display();
+			OnProgress();
+
+			var sequenceFiles = modData.Manifest.Sequences;
 
 			var nodes = sequenceFiles
 				.Select(s => MiniYaml.FromFile(s))
 				.Aggregate(sequenceNodes, MiniYaml.MergeLiberal);
 
-			var items = new Dictionary<string, Lazy<Dictionary<string, Sequence>>>();
+			var items = new Dictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>();
 			foreach (var node in nodes)
 			{
-				// Sequence loading uses the active SpriteLoader that depends on the current map's tileset
+				var key = node.Value.ToLines(node.Key).JoinWith("|");
 
-				var key = tileset + node.Value.ToLines(node.Key).JoinWith("|");
-
-				Lazy<Dictionary<string, Sequence>> t;
+				Lazy<IReadOnlyDictionary<string, Sequence>> t;
 				if (sequenceCache.TryGetValue(key, out t))
 				{
 					items.Add(node.Key, t);
 				}
 				else
 				{
-					t = Exts.Lazy(() => node.Value.NodesDict.ToDictionary(x => x.Key, x => new Sequence(node.Key, x.Key, x.Value)));
+					t = Exts.Lazy(() => (IReadOnlyDictionary<string, Sequence>)new ReadOnlyDictionary<string, Sequence>(
+						node.Value.NodesDict.ToDictionary(x => x.Key, x => 
+							new Sequence(tileSet.Data.SpriteLoader, node.Key, x.Key, x.Value))));
 					sequenceCache.Add(key, t);
 					items.Add(node.Key, t);
 				}
+
+				OnProgress();
 			}
 
-			return items;
-		}
-
-		public Sequence GetSequence(string unitName, string sequenceName)
-		{
-			try { return sequences[unitName].Value[sequenceName]; }
-			catch (KeyNotFoundException)
-			{
-				if (sequences.ContainsKey(unitName))
-					throw new InvalidOperationException(
-						"Unit `{0}` does not have a sequence `{1}`".F(unitName, sequenceName));
-				else
-					throw new InvalidOperationException(
-						"Unit `{0}` does not have all sequences defined.".F(unitName));
-			}
-		}
-
-		public bool HasSequence(string unitName, string sequenceName)
-		{
-			if (!sequences.ContainsKey(unitName))
-				throw new InvalidOperationException(
-					"Unit `{0}` does not have sequence `{1}` defined.".F(unitName, sequenceName));
-
-			return sequences[unitName].Value.ContainsKey(sequenceName);
-		}
-
-		public IEnumerable<string> Sequences(string unitName)
-		{
-			if (!sequences.ContainsKey(unitName))
-				throw new InvalidOperationException(
-					"Unit `{0}` does not have all sequences defined.".F(unitName));
-
-			return sequences[unitName].Value.Keys;
+			return new ReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>(items);
 		}
 	}
 }

@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA
 
 		public static void DoExplosion(Actor attacker, string weapontype, WPos pos)
 		{
-			var weapon = Rules.Weapons[weapontype.ToLowerInvariant()];
+			var weapon = attacker.World.Map.Rules.Weapons[weapontype.ToLowerInvariant()];
 			if (weapon.Report != null && weapon.Report.Any())
 				Sound.Play(weapon.Report.Random(attacker.World.SharedRandom), pos);
 

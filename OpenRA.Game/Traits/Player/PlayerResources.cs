@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -118,7 +118,7 @@ namespace OpenRA.Traits
 			{
 				if (Ore > 0.8 * OreCapacity)
 				{
-					Sound.PlayNotification(Owner, "Speech", "SilosNeeded", Owner.Country.Race);
+					Sound.PlayNotification(self.World.Map.Rules, Owner, "Speech", "SilosNeeded", Owner.Country.Race);
 					AlertSilo = true;
 				}
 				else
@@ -163,14 +163,14 @@ namespace OpenRA.Traits
 		public void playCashTickUp(Actor self)
 		{
 			if (Game.Settings.Sound.CashTicks)
-				Sound.PlayNotification(self.Owner, "Sounds", "CashTickUp", self.Owner.Country.Race);
+				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickUp", self.Owner.Country.Race);
 		}
 		
 		public void playCashTickDown(Actor self)
 		{
 			if (Game.Settings.Sound.CashTicks && nextCashTickTime == 0)
 			{
-				Sound.PlayNotification(self.Owner, "Sounds", "CashTickDown", self.Owner.Country.Race);
+				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickDown", self.Owner.Country.Race);
 				nextCashTickTime = 2;
 			}
 		}

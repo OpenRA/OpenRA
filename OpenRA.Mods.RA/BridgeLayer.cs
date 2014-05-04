@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 			// Build a list of templates that should be overlayed with bridges
 			foreach(var bridge in Info.Bridges)
 			{
-				var bi = Rules.Info[bridge].Traits.Get<BridgeInfo>();
+				var bi = w.Map.Rules.Actors[bridge].Traits.Get<BridgeInfo>();
 				foreach (var template in bi.Templates)
 					BridgeTypes.Add(template.First, Pair.New(bridge, template.Second));
 			}

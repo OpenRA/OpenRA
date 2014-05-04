@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,6 +18,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class MusicPlayerLogic
 	{
+		readonly World world;
+
 		bool installed;
 		MusicInfo currentSong = null;
 		MusicInfo[] music;
@@ -26,9 +28,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		ScrollItemWidget itemTemplate;
 
-		[ObjectCreator.UseCtor]
-		public MusicPlayerLogic(Widget widget, Action onExit)
+		public static Widget OpenWindow(World world, Action onExit = null)
 		{
+			return Ui.OpenWindow(
+				"MUSIC_PANEL",
+				new WidgetArgs
+				{
+					{ "onExit", onExit != null ? onExit : (() => {}) }
+				}
+			);
+		}
+
+		[ObjectCreator.UseCtor]
+		public MusicPlayerLogic(Widget widget, World world, Action onExit)
+		{
+			this.world = world;
+
 			var panel = widget.Get("MUSIC_PANEL");
 
 			musicList = panel.Get<ScrollPanelWidget>("MUSIC_LIST");
@@ -82,7 +97,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public void BuildMusicTable()
 		{
-			music = Rules.InstalledMusic.Select(a => a.Value).ToArray();
+			music = world.Map.Rules.InstalledMusic.Select(a => a.Value).ToArray();
 			random = music.Shuffle(Game.CosmeticRandom).ToArray();
 			currentSong = Sound.CurrentMusic;
 			if (currentSong == null && music.Any())
@@ -105,7 +120,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (currentSong != null)
 				musicList.ScrollToItem(currentSong.Filename);
 
-			installed = Rules.InstalledMusic.Any();
+			installed = world.Map.Rules.InstalledMusic.Any();
 		}
 
 		void Play()

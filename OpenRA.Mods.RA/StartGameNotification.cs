@@ -28,9 +28,9 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public void WorldLoaded(World w, WorldRenderer wr)
+		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			Sound.PlayNotification(null, "Speech", info.Notification, null);
+			Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, null);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		public static void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot,
+		public static void ShowSlotDropDown(MapRuleset rules, DropDownButtonWidget dropdown, Session.Slot slot,
 			Session.Client client, OrderManager orderManager)
 		{
 			var options = new Dictionary<string, IEnumerable<SlotDropDownOption>>() {{"Slot", new List<SlotDropDownOption>()
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var bots = new List<SlotDropDownOption>();
 			if (slot.AllowBots)
 			{
-				foreach (var b in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
+				foreach (var b in rules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
 				{
 					var bot = b;
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
@@ -280,13 +280,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			name.GetText = () => c.Name;
 		}
 
-		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
+		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapRuleset rules)
 		{
 			var slot = parent.Get<DropDownButtonWidget>("SLOT_OPTIONS");
 			slot.IsVisible = () => true;
 			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
 			slot.GetText = () => c != null ? c.Name : s.Closed ? "Closed" : "Open";
-			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager);
+			slot.OnMouseDown = _ => ShowSlotDropDown(rules, slot, s, c, orderManager);
 
 			// Ensure Name selector (if present) is hidden
 			var name = parent.GetOrNull("NAME");

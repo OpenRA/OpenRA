@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 			var attackRotation = WRot.FromFacing(attackFacing);
 			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
 
-			var altitude = Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude.Range;
+			var altitude = self.World.Map.Rules.Actors[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude.Range;
 			var target = order.TargetLocation.CenterPosition + new WVec(0, 0, altitude);
 			var startEdge = target - (self.World.DistanceToMapEdge(target, -delta) + info.Cordon).Range * delta / 1024;
 			var finishEdge = target + (self.World.DistanceToMapEdge(target, delta) + info.Cordon).Range * delta / 1024;

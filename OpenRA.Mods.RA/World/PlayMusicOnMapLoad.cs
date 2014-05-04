@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -24,19 +24,28 @@ namespace OpenRA.Mods.RA
 
 	class PlayMusicOnMapLoad : IWorldLoaded
 	{
-		PlayMusicOnMapLoadInfo Info;
+		readonly PlayMusicOnMapLoadInfo info;
+		World world;
 
-		public PlayMusicOnMapLoad(PlayMusicOnMapLoadInfo info) { Info = info; }
+		public PlayMusicOnMapLoad(PlayMusicOnMapLoadInfo info)
+		{
+			this.info = info;
+		}
 
-		public void WorldLoaded(World w, WorldRenderer wr) { PlayMusic(); }
+		public void WorldLoaded(World world, WorldRenderer wr)
+		{
+			this.world = world;
+
+			PlayMusic();
+		}
 
 		void PlayMusic()
 		{
-			var onComplete = Info.Loop ? (Action)PlayMusic : () => {};
+			var onComplete = info.Loop ? (Action)PlayMusic : () => {};
 
 			if (Game.Settings.Sound.MapMusic &&
-				Rules.Music.ContainsKey(Info.Music))
-				Sound.PlayMusicThen(Rules.Music[Info.Music], onComplete);
+				world.Map.Rules.Music.ContainsKey(info.Music))
+				Sound.PlayMusicThen(world.Map.Rules.Music[info.Music], onComplete);
 		}
 	}
 }

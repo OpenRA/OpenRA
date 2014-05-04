@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		public void Killed(Actor self, AttackInfo e)
 		{
 			var player = (info.NotifyAll) ? self.World.LocalPlayer : self.Owner;
-			Sound.PlayNotification(player, "Speech", info.Notification, self.Owner.Country.Race);
+			Sound.PlayNotification(self.World.Map.Rules, player, "Speech", info.Notification, self.Owner.Country.Race);
 		}
 	}
 }

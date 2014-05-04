@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA
 			Coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
 			limitedAmmo = Exts.Lazy(() => self.TraitOrDefault<LimitedAmmo>());
 
-			Weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
+			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;
 
 			if (info.LocalOffset.Length % 3 != 0)

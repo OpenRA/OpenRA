@@ -340,8 +340,8 @@ namespace OpenRA.Utility
 			var engineDate = Exts.ParseIntegerInvariant(args[2]);
 
 			Game.modData = new ModData(map.RequiresMod);
-			UpgradeWeaponRules(engineDate, ref map.Weapons, null, 0);
-			UpgradeActorRules(engineDate, ref map.Rules, null, 0);
+			UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
+			UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
 			map.Save(args[1]);
 		}
 
@@ -395,8 +395,8 @@ namespace OpenRA.Utility
 			foreach (var map in maps)
 			{
 				Console.WriteLine("\t" + map.Path);
-				UpgradeActorRules(engineDate, ref map.Rules, null, 0);
-				UpgradeWeaponRules(engineDate, ref map.Weapons, null, 0);
+				UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
+				UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
 				map.Save(map.Path);
 			}
 		}

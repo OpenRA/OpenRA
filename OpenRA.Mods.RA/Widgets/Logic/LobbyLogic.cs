@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -29,6 +29,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly Action onExit;
 		readonly OrderManager orderManager;
 		readonly bool skirmishMode;
+		readonly World world;
 
 		enum PanelType { Players, Options, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
@@ -98,6 +99,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.onStart = onStart;
 			this.onExit = onExit;
 			this.skirmishMode = skirmishMode;
+			this.world = world;
 
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;
@@ -132,7 +134,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			colorPreview = lobby.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = Game.Settings.Player.Color;
 
-			countryNames = Rules.Info["world"].Traits.WithInterface<CountryInfo>()
+			countryNames = world.Map.Rules.Actors["world"].Traits.WithInterface<CountryInfo>()
 				.Where(c => c.Selectable)
 				.ToDictionary(a => a.Race, a => a.Name);
 			countryNames.Add("random", "Any");
@@ -170,7 +172,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||
 					!orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots || !s.LockTeam);
 
-				var botNames = Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
+				var botNames = world.Map.Rules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
 				slotsButton.OnMouseDown = _ =>
 				{
 					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
@@ -375,7 +377,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				};
 
 				Func<string, string> className = c => classNames.ContainsKey(c) ? classNames[c] : c;
-				var classes = Rules.Info["world"].Traits.WithInterface<MPStartUnitsInfo>()
+				var classes = world.Map.Rules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>()
 					.Select(a => a.Class).Distinct();
 
 				startingUnits.IsDisabled = () => Map.Status != MapStatus.Available || !Map.Map.Options.ConfigurableStartingUnits || configurationDisabled();
@@ -409,7 +411,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				startingCash.GetText = () => Map.Status != MapStatus.Available || Map.Map.Options.StartingCash.HasValue ? "Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
 				startingCash.OnMouseDown = _ =>
 				{
-					var options = Rules.Info["player"].Traits.Get<PlayerResourcesInfo>().SelectableCash.Select(c => new DropDownOption
+					var options = world.Map.Rules.Actors["player"].Traits.Get<PlayerResourcesInfo>().SelectableCash.Select(c => new DropDownOption
 					{
 						Title = "${0}".F(c),
 						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.StartingCash == c,
@@ -481,7 +483,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var musicButton = lobby.GetOrNull<ButtonWidget>("MUSIC_BUTTON");
 			if (musicButton != null)
-				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs { { "onExit", DoNothing } });
+				musicButton.OnClick = () => MusicPlayerLogic.OpenWindow(world);
 
 			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");
 			if (settingsButton != null)
@@ -499,7 +501,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.LobbyInfoChanged += WidgetUtils.Once(() =>
 				{
 					var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
-					var bot = Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name).FirstOrDefault();
+					var bot = world.Map.Rules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name).FirstOrDefault();
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
 					if (slot != null && bot != null)
 						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
@@ -542,7 +544,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (scrolledToBottom)
 				chatPanel.ScrollToBottom();
 
-			Sound.PlayNotification(null, "Sounds", "ChatLine", null);
+			Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ChatLine", null);
 		}
 
 		void UpdateCurrentMap()
@@ -559,7 +561,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
 
 				// Restore default starting cash if the last map set it to something invalid
-				var pri = Rules.Info["player"].Traits.Get<PlayerResourcesInfo>();
+				var pri = world.Map.Rules.Actors["player"].Traits.Get<PlayerResourcesInfo>();
 				if (!Map.Map.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
 					orderManager.IssueOrder(Order.Command("startingcash {0}".F(pri.DefaultCash)));
 			}
@@ -588,7 +590,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						template = emptySlotTemplate.Clone();
 
 					if (Game.IsHost)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager);
+						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, world.Map.Rules);
 					else
 						LobbyUtils.SetupSlotWidget(template, slot, client);
 
@@ -607,7 +609,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					LobbyUtils.SetupClientWidget(template, slot, client, orderManager, client.Bot == null);
 
 					if (client.Bot != null)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager);
+						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, world.Map.Rules);
 					else
 						LobbyUtils.SetupEditableNameWidget(template, slot, client, orderManager);
 

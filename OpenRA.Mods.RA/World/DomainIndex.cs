@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 		{
 			domainIndexes = new Dictionary<uint, MovementClassDomainIndex>();
 			var movementClasses = new HashSet<uint>(
-				Rules.Info.Where(ai => ai.Value.Traits.Contains<MobileInfo>())
+				world.Map.Rules.Actors.Where(ai => ai.Value.Traits.Contains<MobileInfo>())
 				.Select(ai => (uint)ai.Value.Traits.Get<MobileInfo>().GetMovementClass(world.TileSet)));
 
 			foreach (var mc in movementClasses)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -29,7 +29,7 @@ namespace OpenRA.Editor
 
 			currentMod = args.FirstOrDefault() ?? "ra";
 
-			toolStripComboBox1.Items.AddRange(Mod.AllMods.Keys.ToArray());
+			toolStripComboBox1.Items.AddRange(ModInformation.AllMods.Keys.ToArray());
 
 			toolStripComboBox1.SelectedIndexChanged += (_, e) =>
 			{
@@ -48,7 +48,7 @@ namespace OpenRA.Editor
 
 				Game.modData = new ModData(currentMod);
 				GlobalFileSystem.LoadFromManifest(Game.modData.Manifest);
-				Rules.LoadRules(Game.modData.Manifest, new Map());
+				Program.Rules = Game.modData.RulesetCache.LoadDefaultRules();
 
 				var mod = Game.modData.Manifest.Mod;
 				Text = "{0} Mod Version: {1} - OpenRA Editor".F(mod.Title, mod.Version);
@@ -69,7 +69,8 @@ namespace OpenRA.Editor
 		void OnMapChanged()
 		{
 			MakeDirty();
-			miniMapBox.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
+			var tileSet = Program.Rules.TileSets[surface1.Map.Tileset];
+			miniMapBox.Image = Minimap.AddStaticResources(tileSet, surface1.Map, Minimap.TerrainBitmap(tileSet, surface1.Map, true));
 			cashToolStripStatusLabel.Text = CalculateTotalResource().ToString();
 		}
 
@@ -84,7 +85,7 @@ namespace OpenRA.Editor
 				var objSaved = kv.Value.Save();
 
 				// TODO: make this work properly
-				foreach (var init in Rules.Info[kv.Value.Type].GetInitKeys())
+				foreach (var init in Program.Rules.Actors[kv.Value.Type].GetInitKeys())
 					apd.AddRow(init.First,
 						apd.MakeEditorControl(init.Second,
 							() => objSaved.NodesDict.ContainsKey(init.First) ? objSaved.NodesDict[init.First].Value : null,
@@ -120,7 +121,7 @@ namespace OpenRA.Editor
 			if (map.Players.Count == 0)
 				map.MakeDefaultPlayers();
 
-			PrepareMapResources(Game.modData.Manifest, map);
+			PrepareMapResources(Game.modData, map);
 
 			// Calculate total net worth of resources in cash
 			cashToolStripStatusLabel.Text = CalculateTotalResource().ToString();
@@ -135,17 +136,18 @@ namespace OpenRA.Editor
 			resourcePalette.Controls.Clear();
 
 			loadedMapName = null;
-			PrepareMapResources(Game.modData.Manifest, map);
+			PrepareMapResources(Game.modData, map);
 
 			MakeDirty();
 		}
 
 		// this code is insanely stupid, and mostly my fault -- chrisf
-		void PrepareMapResources(Manifest manifest, Map map)
+		void PrepareMapResources(ModData modData, Map map)
 		{
-			Rules.LoadRules(manifest, map);
-			tileset = Rules.TileSets[map.Tileset];
-			tilesetRenderer = new TileSetRenderer(tileset, manifest.TileSize);
+			Program.Rules = map.Rules;
+
+			tileset = Program.Rules.TileSets[map.Tileset];
+			tilesetRenderer = new TileSetRenderer(tileset, modData.Manifest.TileSize);
 			var shadowIndex = new int[] { 3, 4 };
 			var palette = new Palette(GlobalFileSystem.Open(tileset.Palette), shadowIndex);
 
@@ -208,11 +210,11 @@ namespace OpenRA.Editor
 
 			var actorTemplates = new List<ActorTemplate>();
 
-			foreach (var a in Rules.Info.Keys)
+			foreach (var a in Program.Rules.Actors.Keys)
 			{
 				try
 				{
-					var info = Rules.Info[a];
+					var info = Program.Rules.Actors[a];
 					if (!info.Traits.Contains<RenderSimpleInfo>()) continue;
 
 					var etf = info.Traits.GetOrDefault<EditorTilesetFilterInfo>();
@@ -253,7 +255,7 @@ namespace OpenRA.Editor
 
 			var resourceTemplates = new List<ResourceTemplate>();
 
-			foreach (var a in Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>())
+			foreach (var a in Program.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>())
 			{
 				try
 				{
@@ -286,7 +288,7 @@ namespace OpenRA.Editor
 				p.ResumeLayout();
 			}
 
-			miniMapBox.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
+			miniMapBox.Image = Minimap.AddStaticResources(tileset, surface1.Map, Minimap.TerrainBitmap(tileset, surface1.Map, true));
 
 			propertiesToolStripMenuItem.Enabled = true;
 			toolStripMenuItemProperties.Enabled = true;
@@ -388,12 +390,12 @@ namespace OpenRA.Editor
 			using (var nmd = new NewMapDialog())
 			{
 				nmd.TheaterBox.Items.Clear();
-				nmd.TheaterBox.Items.AddRange(Rules.TileSets.Select(a => a.Value.Id).ToArray());
+				nmd.TheaterBox.Items.AddRange(Program.Rules.TileSets.Select(a => a.Value.Id).ToArray());
 				nmd.TheaterBox.SelectedIndex = 0;
 
 				if (DialogResult.OK == nmd.ShowDialog())
 				{
-					var tileset = OpenRA.Rules.TileSets[nmd.TheaterBox.SelectedItem as string];
+					var tileset = Program.Rules.TileSets[nmd.TheaterBox.SelectedItem as string];
 					var map = Map.FromTileset(tileset);
 
 					map.Resize((int)nmd.MapWidth.Value, (int)nmd.MapHeight.Value);
@@ -402,7 +404,7 @@ namespace OpenRA.Editor
 
 					map.Players.Clear();
 					map.MakeDefaultPlayers();
-					map.FixOpenAreas();
+					map.FixOpenAreas(Program.Rules);
 
 					NewMap(map);
 				}
@@ -485,7 +487,7 @@ namespace OpenRA.Editor
 		void FixOpenAreas(object sender, EventArgs e)
 		{
 			dirty = true;
-			surface1.Map.FixOpenAreas();
+			surface1.Map.FixOpenAreas(Program.Rules);
 			surface1.Chunks.Clear();
 			surface1.Invalidate();
 		}

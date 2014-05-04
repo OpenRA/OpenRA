@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -107,18 +107,20 @@ namespace OpenRA.Utility
 		int mapSize;
 		int actorCount = 0;
 		Map map = new Map();
+		MapRuleset rules;
 		List<string> players = new List<string>();
 		Action<string> errorHandler;
 
-		LegacyMapImporter(string filename, Action<string> errorHandler)
+		LegacyMapImporter(string filename, MapRuleset rules, Action<string> errorHandler)
 		{
+			this.rules = rules;
 			this.errorHandler = errorHandler;
 			ConvertIniMap(filename);
 		}
 
-		public static Map Import(string filename, Action<string> errorHandler)
+		public static Map Import(string filename, MapRuleset rules, Action<string> errorHandler)
 		{
-			var converter = new LegacyMapImporter(filename, errorHandler);
+			var converter = new LegacyMapImporter(filename, rules, errorHandler);
 			return converter.map;
 		}
 
@@ -399,7 +401,7 @@ namespace OpenRA.Utility
 					if (section == "INFANTRY")
 						actor.Add(new SubCellInit(Exts.ParseIntegerInvariant(parts[4])));
 
-					if (!Rules.Info.ContainsKey(parts[1].ToLowerInvariant()))
+					if (!rules.Actors.ContainsKey(parts[1].ToLowerInvariant()))
 						errorHandler("Ignoring unknown actor type: `{0}`".F(parts[1].ToLowerInvariant()));
 					else
 						map.Actors.Value.Add("Actor" + actorCount++, actor);

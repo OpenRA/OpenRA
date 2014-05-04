@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -75,7 +75,8 @@ namespace OpenRA.Editor
 
 				try
 				{
-					MiniMapBox.Image = Minimap.AddStaticResources(map, Minimap.TerrainBitmap(map, true));
+					var tileset = Program.Rules.TileSets[map.Tileset];
+					MiniMapBox.Image = Minimap.AddStaticResources(tileset, map, Minimap.TerrainBitmap(tileset, map, true));
 				}
 				catch (Exception ed)
 				{

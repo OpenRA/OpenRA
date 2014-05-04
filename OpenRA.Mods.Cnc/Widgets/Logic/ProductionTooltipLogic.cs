@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class ProductionTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ProductionTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, ProductionPaletteWidget palette)
+		public ProductionTooltipLogic(Widget widget, MapRuleset rules, TooltipContainerWidget tooltipContainer, ProductionPaletteWidget palette)
 		{
 			var pm = palette.World.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var pr = palette.World.LocalPlayer.PlayerActor.Trait<PlayerResources>();
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				if (actor == null || actor == lastActor)
 					return;
 
-				var info = Rules.Info[actor];
+				var info = rules.Actors[actor];
 				var tooltip = info.Traits.Get<TooltipInfo>();
 				var buildable = info.Traits.Get<BuildableInfo>();
 				var cost = info.Traits.Get<ValuedInfo>().Cost;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 				nameLabel.GetText = () => tooltip.Name;
 
-				var prereqs = buildable.Prerequisites.Select(a => ActorName(a));
+				var prereqs = buildable.Prerequisites.Select(a => ActorName(rules, a));
 				var requiresString = prereqs.Any() ? requiresLabel.Text.F(prereqs.JoinWith(", ")) : "";
 				requiresLabel.GetText = () => requiresString;
 
@@ -92,11 +92,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 		}
 
-		static string ActorName(string a)
+		static string ActorName(MapRuleset rules, string a)
 		{
 			ActorInfo ai;
-			Rules.Info.TryGetValue(a.ToLowerInvariant(), out ai);
-			if (ai != null && ai.Traits.Contains<TooltipInfo>())
+			if (rules.Actors.TryGetValue(a.ToLowerInvariant(), out ai) && ai.Traits.Contains<TooltipInfo>())
 				return ai.Traits.Get<TooltipInfo>().Name;
 
 			return a;
