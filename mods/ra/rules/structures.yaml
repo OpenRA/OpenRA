@@ -928,6 +928,7 @@ HPAD:
 		SpawnOffset: 0,-256,0
 		ExitCell: 0,0
 		MoveIntoWorld: false
+	RallyPoint:
 	Production:
 		Produces: Helicopter
 	Reservable:

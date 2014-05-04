@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
@@ -30,7 +31,13 @@ namespace OpenRA.Mods.RA.Activities
 			health = self.TraitOrDefault<Health>();
 			if (health == null) return NextActivity;
 			if (health.DamageState == DamageState.Undamaged)
+			{
+				var helicopter = self.TraitOrDefault<Helicopter>();
+				if (helicopter != null)
+					return helicopter.TakeOff(host);
+
 				return NextActivity;
+			}
 
 			if (remainingTicks == 0)
 			{
@@ -44,6 +51,7 @@ namespace OpenRA.Mods.RA.Activities
 					remainingTicks = 1;
 					return this;
 				}
+
 				self.InflictDamage(self, -hpToRepair, null);
 
 				if (host != null)

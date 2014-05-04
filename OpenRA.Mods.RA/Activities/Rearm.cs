@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
@@ -34,10 +35,16 @@ namespace OpenRA.Mods.RA.Activities
 
 			if (--remainingTicks == 0)
 			{
-				if (!limitedAmmo.GiveAmmo()) return NextActivity;
-
 				var hostBuilding = self.World.ActorMap.GetUnitsAt(self.Location)
 					.FirstOrDefault(a => a.HasTrait<RenderBuilding>());
+
+				if (!limitedAmmo.GiveAmmo())
+				{
+					var helicopter = self.TraitOrDefault<Helicopter>();
+					if (helicopter != null)
+						return helicopter.TakeOff(hostBuilding);
+					else return NextActivity;
+				}
 
 				if (hostBuilding != null)
 					hostBuilding.Trait<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");

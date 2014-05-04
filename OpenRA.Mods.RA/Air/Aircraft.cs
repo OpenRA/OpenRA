@@ -171,7 +171,7 @@ namespace OpenRA.Mods.RA.Air
 			return info.LandableTerrainTypes.Contains(type);
 		}
 
-		public IEnumerable<Activity> GetResupplyActivities(Actor a)
+		public virtual IEnumerable<Activity> GetResupplyActivities(Actor a)
 		{
 			var name = a.Info.Name;
 			if (info.RearmBuildings.Contains(name))
