@@ -62,7 +62,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="SharpFont">
       <SpecificVersion>False</SpecificVersion>
@@ -154,7 +153,6 @@
     <Compile Include="Server\TraitInterfaces.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Support\Arguments.cs" />
-    <Compile Include="Support\FatalErrorDialog.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Support\Program.cs" />
     <Compile Include="Sync.cs" />

@@ -66,7 +66,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rsdl2 rnull game utility irc
+CORE = rsdl2 rnull game utility irc crashdialog
 TOOLS = editor tsbuild ralint
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
@@ -80,7 +80,7 @@ VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
 game_KIND = winexe
-game_LIBS = $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) thirdparty/Tao/Tao.OpenAl.dll thirdparty/SharpFont.dll
+game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/Tao/Tao.OpenAl.dll thirdparty/SharpFont.dll
 game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS += game
 game: $(game_TARGET)
@@ -107,7 +107,6 @@ rnull_DEPS = $(game_TARGET)
 rnull_LIBS = $(COMMON_LIBS) $(rnull_DEPS)
 PROGRAMS += rsdl2 rnull
 renderers: $(rsdl2_TARGET) $(rnull_TARGET)
-
 
 ##### Official Mods #####
 
@@ -206,12 +205,21 @@ tsbuild: OpenRA.TilesetBuilder.FormBuilder.resources OpenRA.TilesetBuilder.FormN
 
 ##### Launchers / Utilities #####
 
+crashdialog_SRCS := $(shell find OpenRA.CrashDialog/ -iname '*.cs')
+crashdialog_TARGET = OpenRA.CrashDialog.exe
+crashdialog_KIND = exe
+crashdialog_DEPS = $(game_TARGET)
+crashdialog_LIBS = $(COMMON_LIBS) $(crashdialog_DEPS) System.Windows.Forms.dll
+crashdialog_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
+PROGRAMS += crashdialog
+crashdialog: $(crashdialog_TARGET)
+
 # Backend for the launcher apps - queries game/mod info and applies actions to an install
 utility_SRCS := $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET = OpenRA.Utility.exe
 utility_KIND = exe
 utility_DEPS = $(game_TARGET)
-utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
+utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll
 PROGRAMS += utility
 utility: $(utility_TARGET)
 
@@ -245,7 +253,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 #
 default: dependencies core
 
-core: game renderers mods utility
+core: game renderers mods utility crashdialog
 
 tools: editor tsbuild ralint
 

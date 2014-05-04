@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,15 +11,21 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Media;
+using System.Reflection;
 using System.Windows.Forms;
+using OpenRA;
 
-namespace OpenRA
+namespace OpenRA.CrashDialog
 {
-	public static class FatalErrorDialog
+	class FatalErrorDialog
 	{
-		public static void Show()
+		static Settings settings;
+		public static void Main(string[] args)
 		{
+			settings = new Settings(Platform.SupportDir + "settings.yaml", new Arguments());
+
 			var form = new Form
 			{
 				Size = new Size(315, 140),
@@ -27,7 +33,8 @@ namespace OpenRA
 				MinimizeBox = false,
 				MaximizeBox = false,
 				FormBorderStyle = FormBorderStyle.FixedDialog,
-				StartPosition = FormStartPosition.CenterScreen
+				StartPosition = FormStartPosition.CenterScreen,
+				Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
 			};
 
 			var notice = new Label
@@ -76,8 +83,8 @@ namespace OpenRA
 
 			form.FormClosed += (sender, e) =>
 			{
-				Game.Settings.Debug.ShowFatalErrorDialog = !dontShowAgain.Checked;
-				Game.Settings.Save();
+				settings.Debug.ShowFatalErrorDialog = !dontShowAgain.Checked;
+				settings.Save();
 			};
 
 			SystemSounds.Exclamation.Play();
@@ -88,7 +95,7 @@ namespace OpenRA
 		{
 			try
 			{
-				Process.Start(Log.LogPath);
+				Process.Start(Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar);
 			}
 			catch { }
 		}
@@ -97,7 +104,7 @@ namespace OpenRA
 		{
 			try
 			{
-				Process.Start(Game.Settings.Debug.FatalErrorDialogFaq);
+				Process.Start(settings.Debug.FatalErrorDialogFaq);
 			}
 			catch { }
 		}

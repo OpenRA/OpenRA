@@ -50,6 +50,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts",
 		mods\cnc\maps\gdi03\gdi03.lua = mods\cnc\maps\gdi03\gdi03.lua
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.CrashDialog", "OpenRA.CrashDialog\OpenRA.CrashDialog.csproj", "{47F1B0EE-EB35-47F2-93E4-273C70909157}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,14 @@ Global
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|Any CPU.Build.0 = Release|Any CPU
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
