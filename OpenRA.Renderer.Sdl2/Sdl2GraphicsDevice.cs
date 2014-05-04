@@ -79,6 +79,7 @@ namespace OpenRA.Renderer.Sdl2
 			context = SDL.SDL_GL_CreateContext(window);
 			SDL.SDL_GL_MakeCurrent(window, context);
 			GL.LoadAll();
+			ErrorHandler.CheckGlVersion();
 			ErrorHandler.CheckGlError();
 
 			if (SDL.SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object") == SDL.SDL_bool.SDL_FALSE)
