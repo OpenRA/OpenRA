@@ -81,7 +81,6 @@ Section "Game" GAME
 	File "${SRCDIR}\DOCUMENTATION.html"
 	File "${SRCDIR}\*.ttf"
 	File "${SRCDIR}\OpenRA.ico"
-	File "${SRCDIR}\Tao.*.dll"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\SDL2-CS.dll"
 	File "${SRCDIR}\global mix database.dat"
@@ -195,7 +194,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Mono.Nat.dll
-	Delete $INSTDIR\Tao.*.dll
 	Delete $INSTDIR\SharpFont.dll
 	Delete $INSTDIR\AUTHORS
 	Delete $INSTDIR\COPYING

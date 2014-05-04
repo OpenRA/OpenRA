@@ -33,9 +33,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Tao.OpenGl">
-      <HintPath>..\thirdparty\Tao\Tao.OpenGl.dll</HintPath>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="SDL2-CS">
       <HintPath>..\thirdparty\SDL2-CS.dll</HintPath>

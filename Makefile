@@ -98,7 +98,7 @@ rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
 rsdl2_TARGET = OpenRA.Renderer.Sdl2.dll
 rsdl2_KIND = library
 rsdl2_DEPS = $(game_TARGET)
-rsdl2_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/SDL2-CS.dll $(rsdl2_DEPS)
+rsdl2_LIBS = $(COMMON_LIBS) thirdparty/SDL2-CS.dll $(rsdl2_DEPS)
 
 rnull_SRCS := $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
 rnull_TARGET = OpenRA.Renderer.Null.dll
@@ -276,7 +276,6 @@ endif
 
 dependencies:
 	@ $(CP_R) thirdparty/*.dl* .
-	@ $(CP_R) thirdparty/Tao/* .
 	@ $(CP_R) thirdparty/${platformdeps}/* .
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
@@ -315,7 +314,6 @@ install-core: default
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
 	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/Tao/* "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/SDL2-CS* "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/Eluant* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
