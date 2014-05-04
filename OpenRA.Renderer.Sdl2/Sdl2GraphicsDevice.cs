@@ -31,15 +31,6 @@ namespace OpenRA.Renderer.Sdl2
 
 	public class Sdl2GraphicsDevice : IGraphicsDevice
 	{
-		static string[] requiredExtensions =
-		{
-			// TODO: not ARB anymore
-			"GL_ARB_vertex_shader",
-			"GL_ARB_fragment_shader",
-			"GL_ARB_vertex_buffer_object",
-			"GL_EXT_framebuffer_object"
-		};
-
 		Size size;
 		Sdl2Input input;
 		IntPtr context, window;
@@ -90,15 +81,11 @@ namespace OpenRA.Renderer.Sdl2
 			GL.LoadAll();
 			ErrorHandler.CheckGlError();
 
-			var extensions = GL.GetString(StringName.Extensions);
-			if (extensions == null)
-				Console.WriteLine("Failed to fetch GL_EXTENSIONS, this is bad.");
-
-			var missingExtensions = requiredExtensions.Where(r => !extensions.Contains(r)).ToArray();
-			if (missingExtensions.Any())
+			if (SDL.SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object") == SDL.SDL_bool.SDL_FALSE)
 			{
-				ErrorHandler.WriteGraphicsLog("Unsupported GPU: Missing extensions: {0}".F(missingExtensions.JoinWith(",")));
-				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
+				ErrorHandler.WriteGraphicsLog("OpenRA requires the OpenGL extension GL_EXT_framebuffer_object.\n"
+					+"Please try updating your GPU driver to the latest version provided by the manufacturer.");
+				throw new InvalidProgramException("Missing OpenGL extension GL_EXT_framebuffer_object. See graphics.log for details.");
 			}
 
 			GL.EnableClientState(ArrayCap.VertexArray);
