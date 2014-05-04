@@ -643,7 +643,7 @@ MammothMissiles:
 ArtilleryShell:
 	ROF: 65
 	Range: 11c0
-	MinRange: 2c0
+	MinRange: 2c896
 	Report: TNKFIRE2.AUD
 	Projectile: Bullet
 		Speed: 204
