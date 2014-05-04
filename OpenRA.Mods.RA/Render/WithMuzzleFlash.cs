@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -78,16 +78,20 @@ namespace OpenRA.Mods.RA.Render
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			foreach (var kv in anims)
+			foreach (var arm in self.TraitsImplementing<Armament>())
 			{
-				if (!visible[kv.Key])
-					continue;
+				var palette = wr.Palette(arm.Info.MuzzlePalette);
+				foreach (var kv in anims)
+				{
+					if (!visible[kv.Key])
+						continue;
 
-				if (kv.Value.DisableFunc != null && kv.Value.DisableFunc())
-					continue;
+					if (kv.Value.DisableFunc != null && kv.Value.DisableFunc())
+						continue;
 
-				foreach (var r in kv.Value.Render(self, wr, wr.Palette("effect"), 1f))
-					yield return r;
+					foreach (var r in kv.Value.Render(self, wr, palette, 1f))
+						yield return r;
+				}
 			}
 		}
 

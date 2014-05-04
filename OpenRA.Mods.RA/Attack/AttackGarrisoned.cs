@@ -38,6 +38,8 @@ namespace OpenRA.Mods.RA
 		[Desc("Fire port yaw cone angle")]
 		public readonly WAngle[] PortCones = {};
 
+		public readonly string MuzzlePalette = "effect";
+
 		public override object Create(ActorInitializer init) { return new AttackGarrisoned(init.self, this); }
 	}
 
@@ -175,9 +177,10 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
+			var pal = wr.Palette(info.MuzzlePalette);
 			// Display muzzle flashes
 			foreach (var m in muzzles)
-				foreach (var r in m.Render(self, wr, wr.Palette("effect"), 1f))
+				foreach (var r in m.Render(self, wr, pal, 1f))
 					yield return r;
 		}
 
