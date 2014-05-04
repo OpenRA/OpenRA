@@ -93,7 +93,7 @@ Section "Game" GAME
 	File "${SRCDIR}\KopiLua.dll"
 	File "${SRCDIR}\NLua.dll"
 	File "${SRCDIR}\eluant.dll"
-	File "${DEPSDIR}\OpenAL32.dll"
+	File "${DEPSDIR}\soft_oal.dll"
 	File "${DEPSDIR}\SDL2.dll"
 	File "${DEPSDIR}\freetype6.dll"
 	File "${DEPSDIR}\zlib1.dll"
@@ -214,7 +214,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\KopiLua.dll
 	Delete $INSTDIR\NLua.dll
 	Delete $INSTDIR\SDL2-CS.dll
-	Delete $INSTDIR\OpenAL32.dll
+	Delete $INSTDIR\soft_oal.dll
 	Delete $INSTDIR\SDL2.dll
 	Delete $INSTDIR\lua51.dll
 	Delete $INSTDIR\eluant.dll
