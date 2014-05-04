@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA.Effects
 		readonly Animation paraAnim;
 		readonly WVec parachuteOffset;
 		readonly Actor cargo;
+		readonly Animation paraShadow;
 		WPos pos;
 		WVec fallRate = new WVec(0, 0, 13);
 
@@ -31,6 +32,9 @@ namespace OpenRA.Mods.RA.Effects
 			var pai = cargo.Info.Traits.GetOrDefault<ParachuteAttachmentInfo>();
 			paraAnim = new Animation(cargo.World, pai != null ? pai.ParachuteSprite : "parach");
 			paraAnim.PlayThen("open", () => paraAnim.PlayRepeating("idle"));
+
+			paraShadow = new Animation("parach-shadow");
+			paraShadow.PlayRepeating("idle");
 
 			if (pai != null)
 				parachuteOffset = pai.Offset;
@@ -73,7 +77,8 @@ namespace OpenRA.Mods.RA.Effects
 			foreach (var c in rc)
 			{
 				if (!c.IsDecoration)
-					yield return c.WithPalette(shadow).WithZOffset(c.ZOffset - 1).AsDecoration();
+					foreach (var r in paraShadow.Render(c.Pos, shadow))
+						yield return r;
 
 				yield return c.OffsetBy(pos - c.Pos);
 			}
