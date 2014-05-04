@@ -521,6 +521,9 @@
     <Compile Include="Scripting\Global\CameraGlobal.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
     <Compile Include="Scripting\ScriptInvulnerable.cs" />
+    <Compile Include="DevCommands.cs" />
+    <Compile Include="HelpCommand.cs" />
+    <Compile Include="ChatCommands.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

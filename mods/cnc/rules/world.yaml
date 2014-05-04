@@ -1,4 +1,5 @@
 World:
+	GameConsole:
 	ScreenMap:
 	ActorMap:
 	LoadWidgetAtGameStart:

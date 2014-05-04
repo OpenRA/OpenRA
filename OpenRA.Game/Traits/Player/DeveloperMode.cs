@@ -77,7 +77,8 @@ namespace OpenRA.Traits
 					}
 				case "DevGiveCash":
 					{
-						self.Trait<PlayerResources>().GiveCash(Info.Cash);
+						var amount = order.ExtraData != 0 ? (int)order.ExtraData : Info.Cash;
+						self.Trait<PlayerResources>().GiveCash(amount);
 						break;
 					}
 				case "DevGrowResources":
