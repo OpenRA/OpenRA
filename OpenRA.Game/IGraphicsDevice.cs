@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,33 +14,33 @@ using OpenRA.Graphics;
 
 namespace OpenRA
 {
-	[AttributeUsage( AttributeTargets.Assembly )]
+	[AttributeUsage(AttributeTargets.Assembly)]
 	public class RendererAttribute : Attribute
 	{
 		public readonly Type Type;
 
-		public RendererAttribute( Type graphicsDeviceType )
+		public RendererAttribute(Type graphicsDeviceType)
 		{
-			if( !typeof( IDeviceFactory ).IsAssignableFrom( graphicsDeviceType ) )
-				throw new InvalidOperationException( "Incorrect type in RendererAttribute" );
+			if (!typeof(IDeviceFactory).IsAssignableFrom(graphicsDeviceType))
+				throw new InvalidOperationException("Incorrect type in RendererAttribute");
 			Type = graphicsDeviceType;
 		}
 	}
 
 	public interface IDeviceFactory
 	{
-		IGraphicsDevice Create( Size size, WindowMode windowMode );
+		IGraphicsDevice Create(Size size, WindowMode windowMode);
 	}
 
 	public enum BlendMode { None, Alpha, Additive, Subtractive, Multiply }
 
 	public interface IGraphicsDevice
 	{
-		IVertexBuffer<Vertex> CreateVertexBuffer( int length );
-		ITexture CreateTexture( Bitmap bitmap );
+		IVertexBuffer<Vertex> CreateVertexBuffer(int length);
+		ITexture CreateTexture(Bitmap bitmap);
 		ITexture CreateTexture();
 		IFrameBuffer CreateFrameBuffer(Size s);
-		IShader CreateShader( string name );
+		IShader CreateShader(string name);
 
 		Size WindowSize { get; }
 
@@ -48,10 +48,10 @@ namespace OpenRA
 		void Present();
 		void PumpInput(IInputHandler inputHandler);
 
-		void DrawPrimitives( PrimitiveType type, int firstVertex, int numVertices );
+		void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices);
 
-		void SetLineWidth( float width );
-		void EnableScissor( int left, int top, int width, int height );
+		void SetLineWidth(float width);
+		void EnableScissor(int left, int top, int width, int height);
 		void DisableScissor();
 
 		void EnableDepthBuffer();
@@ -65,7 +65,7 @@ namespace OpenRA
 	public interface IVertexBuffer<T>
 	{
 		void Bind();
-		void SetData( T[] vertices, int length );
+		void SetData(T[] vertices, int length);
 	}
 
 	public interface IShader
@@ -105,7 +105,7 @@ namespace OpenRA
 	public struct Range<T>
 	{
 		public readonly T Start, End;
-		public Range( T start, T end ) { Start = start; End = end; }
+		public Range(T start, T end) { Start = start; End = end; }
 	}
 
 	public enum WindowMode
