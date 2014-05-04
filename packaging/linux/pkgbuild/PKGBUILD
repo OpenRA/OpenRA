@@ -7,7 +7,7 @@ arch=('any')
 url="http://open-ra.org"
 license=('GPL3')
 groups=()
-depends=('mono' 'openal' 'mesa' 'freetype2' 'glibc' 'alsa-lib')
+depends=('mono' 'openal' 'mesa' 'freetype2' 'glibc' 'alsa-lib' 'xdg-utils' 'zenity')
 makedepends=('git' 'unzip' 'wget')
 optdepends=('gksu: Elevation for installing game packages on Gnome platforms'
 'kdesudo: Elevation for installing game packages on KDE platforms')
