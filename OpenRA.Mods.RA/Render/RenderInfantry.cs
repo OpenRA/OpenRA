@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Render
 
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
-			return (info.IdleAnimations.Length > 0 && self.IsInWorld);
+			return (info.IdleAnimations.Length > 0 && (self.IsInWorld && self.CenterPosition.Z == 0));
 		}
 
 		public AnimationState State { get; private set; }

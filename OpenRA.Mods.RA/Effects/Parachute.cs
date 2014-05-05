@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA.Effects
 		readonly Actor cargo;
 		readonly Animation paraShadow;
 		WPos pos;
+		WPos dropPosition;
 		WVec fallRate = new WVec(0, 0, 13);
 
 		public Parachute(Actor cargo, WPos dropPosition)
@@ -43,6 +44,8 @@ namespace OpenRA.Mods.RA.Effects
 			cargo.Trait<IPositionable>().SetPosition(cargo, dropPosition.ToCPos());
 			var cp = cargo.CenterPosition;
 			pos = new WPos(cp.X, cp.Y, dropPosition.Z);
+			this.dropPosition = cp;
+			cargo.Trait<IPositionable>().SetPosition(cargo, pos);
 		}
 
 		public void Tick(World world)
@@ -50,6 +53,7 @@ namespace OpenRA.Mods.RA.Effects
 			paraAnim.Tick();
 
 			pos -= fallRate;
+			cargo.Trait<IPositionable>().SetPosition(cargo, pos);
 
 			if (pos.Z <= 0)
 			{
@@ -77,10 +81,10 @@ namespace OpenRA.Mods.RA.Effects
 			foreach (var c in rc)
 			{
 				if (!c.IsDecoration)
-					foreach (var r in paraShadow.Render(c.Pos, shadow))
+					foreach (var r in paraShadow.Render(dropPosition, shadow))
 						yield return r;
 
-				yield return c.OffsetBy(pos - c.Pos);
+				yield return c;
 			}
 
 			foreach (var r in paraAnim.Render(pos, parachuteOffset, 1, rc.First().Palette, 1f))
