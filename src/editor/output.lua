@@ -304,7 +304,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
       end
       customprocs[pid] = nil
       unHideWindow(0)
-      DebuggerStop()
+      DebuggerStop(true)
       DisplayOutputLn(TR("Program completed in %.2f seconds (pid: %d).")
         :format(runtime, pid))
     end

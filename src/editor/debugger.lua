@@ -1127,7 +1127,7 @@ function DebuggerShutdown()
   if debugger.pid then killClient() end
 end
 
-function DebuggerStop()
+function DebuggerStop(resetpid)
   if (debugger.server) then
     debugger.server = nil
     SetAllEditorsReadOnly(false)
@@ -1143,8 +1143,8 @@ function DebuggerStop()
     -- no debugger.server, but scratchpad may still be on. Turn it off.
     DebuggerScratchpadOff()
   end
-  -- debugger can be stopped after "normal" run; need to reset debugger.pid
-  debugger.pid = nil
+  -- reset pid for "running" (not debugged) processes
+  if resetpid then debugger.pid = nil end
 end
 
 function DebuggerMakeFileName(editor, filePath)
