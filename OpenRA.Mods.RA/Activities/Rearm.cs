@@ -42,8 +42,17 @@ namespace OpenRA.Mods.RA.Activities
 				{
 					var helicopter = self.TraitOrDefault<Helicopter>();
 					if (helicopter != null)
+					{
+						if (helicopter.Info.RepairBuildings.Contains(hostBuilding.Info.Name) && self.HasTrait<Health>())
+						{
+							if (self.Trait<Health>().DamageState != DamageState.Undamaged)
+								return NextActivity;
+						}
+
 						return helicopter.TakeOff(hostBuilding);
-					else return NextActivity;
+					}
+
+					return NextActivity;
 				}
 
 				if (hostBuilding != null)
