@@ -123,7 +123,7 @@ TC02:
 TC03:
 	Inherits: ^Tree
 	Building:
-		Footprint: xx_ xx_
+		Footprint: _x_ xx_
 		Dimensions: 3,2
 
 TC04:
