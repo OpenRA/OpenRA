@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -28,7 +29,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			panel.Get<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
 			{
-				var port = Exts.WithDefault(1234, () => int.Parse(portField.Text));
+				var port = Exts.WithDefault(1234, () => int.Parse(portField.Text, NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
 
 				Game.Settings.Player.LastServer = "{0}:{1}".F(ipField.Text, port);
 				Game.Settings.Save();

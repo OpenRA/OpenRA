@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -466,7 +467,7 @@ namespace OpenRA.Server
 				case "Pong":
 				{
 					int pingSent;
-					if (!int.TryParse(so.Data, out pingSent))
+					if (!int.TryParse(so.Data, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out pingSent))
 					{
 						Log.Write("server", "Invalid order pong payload: {0}", so.Data);
 						break;

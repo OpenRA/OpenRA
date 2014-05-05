@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Primitives;
 
@@ -47,7 +48,7 @@ namespace OpenRA.Irc
 					{
 						var topic = line.GetChannel().Topic;
 						topic.Author = new User(line[4]);
-						topic.Time = IrcUtils.DateTimeFromUnixTime(int.Parse(line[5]));
+						topic.Time = IrcUtils.DateTimeFromUnixTime(int.Parse(line[5], NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
 					}
 					break;
 				case NumericCommand.ERR_NICKNAMEINUSE:

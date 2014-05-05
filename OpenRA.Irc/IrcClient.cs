@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -280,7 +281,7 @@ namespace OpenRA.Irc
 			OnLineRead(l);
 
 			int numeric;
-			if (int.TryParse(l.Command, out numeric))
+			if (int.TryParse(l.Command, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out numeric))
 			{
 				var nl = new NumericLine(l, numeric);
 				LocalUser.OnNumeric(nl);

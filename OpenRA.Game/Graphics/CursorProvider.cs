@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -41,7 +42,8 @@ namespace OpenRA.Graphics
 			if (sequences.NodesDict.ContainsKey("ShadowIndex"))
 			{
 				Array.Resize(ref shadowIndex, shadowIndex.Length + 1);
-				int.TryParse(sequences.NodesDict["ShadowIndex"].Value, out shadowIndex[shadowIndex.Length - 1]);
+				int.TryParse(sequences.NodesDict["ShadowIndex"].Value, NumberStyles.Any, NumberFormatInfo.InvariantInfo,
+					out shadowIndex[shadowIndex.Length - 1]);
 			}
 
 			palette = new HardwarePalette();

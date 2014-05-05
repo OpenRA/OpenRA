@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -42,7 +43,7 @@ namespace OpenRA.Utility
 
 		static void ConvertPxToRange(ref string input, int scaleMult, int scaleDiv)
 		{
-			var value = int.Parse(input);
+			var value = int.Parse(input, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 			var ts = Game.modData.Manifest.TileSize;
 			var world = value * 1024 * scaleMult / (scaleDiv * ts.Height);
 			var cells = world / 1024;
@@ -337,7 +338,7 @@ namespace OpenRA.Utility
 		public static void UpgradeMap(string[] args)
 		{
 			var map = new Map(args[1]);
-			var engineDate = int.Parse(args[2]);
+			var engineDate = int.Parse(args[2], NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 
 			Game.modData = new ModData(map.RequiresMod);
 			UpgradeWeaponRules(engineDate, ref map.Weapons, null, 0);
@@ -349,7 +350,7 @@ namespace OpenRA.Utility
 		public static void UpgradeMod(string[] args)
 		{
 			var mod = args[1];
-			var engineDate = int.Parse(args[2]);
+			var engineDate = int.Parse(args[2], NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 
 			Game.modData = new ModData(mod);
 			Game.modData.MapCache.LoadMaps();

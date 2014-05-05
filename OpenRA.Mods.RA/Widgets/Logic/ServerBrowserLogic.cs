@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Drawing;
 using System.Net;
@@ -284,7 +285,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return;
 
 			var host = server.Address.Split(':')[0];
-			var port = int.Parse(server.Address.Split(':')[1]);
+			var port = int.Parse(server.Address.Split(':')[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 
 			ConnectionLogic.Connect(host, port, "", OpenLobby, DoNothing);
 		}

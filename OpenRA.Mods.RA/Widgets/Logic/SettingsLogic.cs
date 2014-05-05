@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -151,7 +152,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			frameLimitTextfield.OnLoseFocus = () =>
 			{
 				int fps;
-				int.TryParse(frameLimitTextfield.Text, out fps);
+				int.TryParse(frameLimitTextfield.Text, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out fps);
 				ds.MaxFramerate = fps.Clamp(20, 200);
 				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
 				Game.SetIdealFrameTime(ds.MaxFramerate);
@@ -162,8 +163,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return () =>
 			{
 				int x, y;
-				int.TryParse(windowWidth.Text, out x);
-				int.TryParse(windowHeight.Text, out y);
+				int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out x);
+				int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out y);
 				ds.WindowedSize = new int2(x, y);
 				frameLimitTextfield.YieldKeyboardFocus();
 			};

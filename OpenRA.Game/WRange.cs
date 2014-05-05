@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace OpenRA
@@ -56,12 +57,12 @@ namespace OpenRA
 			switch (components.Length)
 			{
 			case 2:
-				if (!int.TryParse(components[0], out cell) ||
-				    !int.TryParse(components[1], out subcell))
-					return false;
+				if (!int.TryParse(components[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out cell) ||
+					!int.TryParse(components[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out subcell))
+						return false;
 				break;
 			case 1:
-				if (!int.TryParse(components[0], out subcell))
+				if (!int.TryParse(components[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out subcell))
 					return false;
 				break;
 			default: return false;

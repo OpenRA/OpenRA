@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using System.Globalization;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.RA
 			{
 				/* create a group */
 				var actors = order.TargetString.Split(',')
-					.Select(id => uint.Parse(id))
+					.Select(id => uint.Parse(id, NumberStyles.Any, NumberFormatInfo.InvariantInfo))
 					.Select(id => self.World.Actors.FirstOrDefault(a => a.ActorID == id))
 						.Where(a => a != null);
 

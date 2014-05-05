@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using OpenRA.Primitives;
@@ -68,7 +69,7 @@ namespace OpenRA
 			LobbyDefaults = yaml["LobbyDefaults"];
 			Fonts = yaml["Fonts"].NodesDict.ToDictionary(x => x.Key,
 				x => Pair.New(x.Value.NodesDict["Font"].Value,
-					int.Parse(x.Value.NodesDict["Size"].Value)));
+					int.Parse(x.Value.NodesDict["Size"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo)));
 
 			if (yaml.ContainsKey("TileSize"))
 				TileSize = FieldLoader.GetValue<Size>("TileSize", yaml["TileSize"].Value);

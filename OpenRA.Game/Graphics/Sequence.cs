@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace OpenRA.Graphics
@@ -40,7 +41,7 @@ namespace OpenRA.Graphics
 			try
 			{
 				if (d.ContainsKey("Start"))
-					Start = int.Parse(d["Start"].Value);
+					Start = int.Parse(d["Start"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 
 				if (d.ContainsKey("Offset"))
 					offset = FieldLoader.GetValue<float2>("Offset", d["Offset"].Value);
@@ -58,16 +59,16 @@ namespace OpenRA.Graphics
 				else if (d["Length"].Value == "*")
 					Length = sprites.Length - Start;
 				else
-					Length = int.Parse(d["Length"].Value);
+					Length = int.Parse(d["Length"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 
 				if (d.ContainsKey("Stride"))
-					Stride = int.Parse(d["Stride"].Value);
+					Stride = int.Parse(d["Stride"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 				else
 					Stride = Length;
 
 				if (d.ContainsKey("Facings"))
 				{
-					var f = int.Parse(d["Facings"].Value);
+					var f = int.Parse(d["Facings"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 					Facings = Math.Abs(f);
 					reverseFacings = f < 0;
 				}
@@ -75,7 +76,7 @@ namespace OpenRA.Graphics
 					Facings = 1;
 
 				if (d.ContainsKey("Tick"))
-					Tick = int.Parse(d["Tick"].Value);
+					Tick = int.Parse(d["Tick"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 				else
 					Tick = 40;
 
@@ -83,10 +84,10 @@ namespace OpenRA.Graphics
 					transpose = bool.Parse(d["Transpose"].Value);
 
 				if (d.ContainsKey("Frames"))
-					Frames = Array.ConvertAll<string, int>(d["Frames"].Value.Split(','), int.Parse);
+					Frames = Array.ConvertAll<string, int>(d["Frames"].Value.Split(','), (s) => int.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
 
 				if (d.ContainsKey("ShadowStart"))
-					ShadowStart = int.Parse(d["ShadowStart"].Value);
+					ShadowStart = int.Parse(d["ShadowStart"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 				else
 					ShadowStart = -1;
 

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -235,9 +236,9 @@ namespace OpenRA.Utility
 
 			for (var z = 3; z < args.Length - 2; z += 3)
 			{
-				var start = int.Parse(args[z]);
-				var m = int.Parse(args[z + 1]);
-				var n = int.Parse(args[z + 2]);
+				var start = int.Parse(args[z], NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+				var m = int.Parse(args[z + 1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+				var n = int.Parse(args[z + 2], NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 
 				for (var i = 0; i < m; i++)
 					for (var j = 0; j < n; j++)

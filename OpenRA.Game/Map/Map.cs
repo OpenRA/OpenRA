@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -201,7 +202,10 @@ namespace OpenRA
 				{
 					var vals = kv.Key.Split(' ');
 					var loc = vals[1].Split(',');
-					ret.Add(new SmudgeReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), int.Parse(vals[2])));
+					ret.Add(new SmudgeReference(vals[0], new int2(
+							int.Parse(loc[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo),
+							int.Parse(loc[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo)),
+							int.Parse(vals[2], NumberStyles.Integer, NumberFormatInfo.InvariantInfo)));
 				}
 
 				return ret;

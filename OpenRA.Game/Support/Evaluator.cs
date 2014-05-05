@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace OpenRA.Support
@@ -36,7 +37,7 @@ namespace OpenRA.Support
 					case '-': ApplyBinop(s, (x, y) => y - x); break;
 					case '*': ApplyBinop(s, (x, y) => y * x); break;
 					case '/': ApplyBinop(s, (x, y) => y / x); break;
-					default: s.Push(int.Parse(t)); break;
+					default: s.Push(int.Parse(t, NumberStyles.Integer, NumberFormatInfo.InvariantInfo)); break;
 				}
 			}
 
