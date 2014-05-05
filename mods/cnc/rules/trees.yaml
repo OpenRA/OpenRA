@@ -92,9 +92,6 @@ T13:
 
 T14:
 	Inherits: ^Tree
-	Building:
-		Footprint: ___ xx_
-		Dimensions: 3,2
 
 T15:
 	Inherits: ^Tree
@@ -107,9 +104,6 @@ T16:
 
 T17:
 	Inherits: ^Tree
-	Building:
-		Footprint: ___ xx_
-		Dimensions: 3,2
 
 T18:
 	Inherits: ^Tree
