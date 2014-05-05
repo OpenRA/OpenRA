@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
@@ -114,6 +115,12 @@ namespace OpenRA.Mods.RA.Air
 				firstTick = false;
 				if (!self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
 					ReserveSpawnBuilding();
+
+				var afld = GetActorBelow();
+				if (afld == null)
+					return;
+
+				self.QueueActivity(TakeOff(afld));
 			}
 
 			// Repulsion only applies when we're flying!
@@ -169,6 +176,32 @@ namespace OpenRA.Mods.RA.Air
 		{
 			// TODO: Ignore repulsion when moving
 			return Util.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)), new HeliFly(self, Target.FromPos(toPos)));
+		}
+
+		public override IEnumerable<Activity> GetResupplyActivities(Actor a)
+		{
+			foreach (var b in base.GetResupplyActivities(a))
+				yield return b;
+		}
+
+		public Activity TakeOff(Actor a)
+		{
+			self.CancelActivity();
+			if (Reservation != null)
+			{
+				Reservation.Dispose();
+				Reservation = null;
+			}
+
+			if (a != null)
+			{
+				if (a.HasTrait<RallyPoint>())
+					return new HeliFly(self, Target.FromCell(a.Trait<RallyPoint>().rallyPoint));
+
+				return new HeliFly(self, Target.FromPos(a.CenterPosition));
+			}
+
+			return new HeliFly(self, Target.FromPos(self.CenterPosition));
 		}
 	}
 }
