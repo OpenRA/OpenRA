@@ -20,6 +20,7 @@ local debugTab = {
   { ID_ATTACHDEBUG, TR("&Start Debugger Server")..KSC(ID_ATTACHDEBUG), TR("Allow external process to start debugging"), wx.wxITEM_CHECK },
   { },
   { ID_STOPDEBUG, TR("S&top Debugging")..KSC(ID_STOPDEBUG), TR("Stop the currently running process") },
+  { ID_DETACHDEBUG, TR("Detach &Process")..KSC(ID_DETACHDEBUG), TR("Stop debugging and continue running the process") },
   { ID_STEP, TR("Step &Into")..KSC(ID_STEP), TR("Step into") },
   { ID_STEPOVER, TR("Step &Over")..KSC(ID_STEPOVER), TR("Step over") },
   { ID_STEPOUT, TR("Step O&ut")..KSC(ID_STEPOUT), TR("Step out of the current function") },
@@ -340,10 +341,16 @@ frame:Connect(ID_STOPDEBUG, wx.wxEVT_UPDATE_UI,
     end
   end)
 
-frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function ()
-    debugger.step()
+frame:Connect(ID_DETACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function () debugger.detach() end)
+frame:Connect(ID_DETACHDEBUG, wx.wxEVT_UPDATE_UI,
+  function (event)
+    event:Enable((debugger.server ~= nil) and (not debugger.running)
+      and (not debugger.scratchpad))
   end)
+
+frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function () debugger.step() end)
 frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
@@ -352,9 +359,7 @@ frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_STEPOVER, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function ()
-    debugger.over()
-  end)
+  function () debugger.over() end)
 frame:Connect(ID_STEPOVER, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
@@ -363,9 +368,7 @@ frame:Connect(ID_STEPOVER, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_STEPOUT, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function ()
-    debugger.out()
-  end)
+  function () debugger.out() end)
 frame:Connect(ID_STEPOUT, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
@@ -374,9 +377,7 @@ frame:Connect(ID_STEPOUT, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_TRACE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function ()
-    debugger.trace()
-  end)
+  function () debugger.trace() end)
 frame:Connect(ID_TRACE, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()

@@ -1,5 +1,5 @@
 --
--- MobDebug 0.553
+-- MobDebug 0.554
 -- Copyright 2011-14 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
@@ -18,10 +18,10 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.553,
+  _VERSION = 0.554,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  port = os and os.getenv and tonumber(os.getenv("MOBDEBUG_PORT")) or 8172,
+  port = os and os.getenv and tonumber(os.getenv("MOBDEBUG_PORT"), 10) or 8172,
   checkcount = 200,
   yieldtimeout = 0.02,
 }
@@ -641,6 +641,30 @@ local function stringify_results(status, ...)
   return pcall(mobdebug.dump, t, {sparse = false})
 end
 
+local function isrunning()
+  return coro_debugger and coroutine.status(coro_debugger) == 'suspended'
+end
+
+-- this is a function that removes all hooks and closes the socket to
+-- report back to the controller that the debugging is done.
+-- the script that called `done` can still continue.
+local function done()
+  if not (isrunning() and server) then return end
+
+  if not jit then
+    for co, debugged in pairs(coroutines) do
+      if debugged then debug.sethook(co) end
+    end
+  end
+
+  debug.sethook()
+  server:close()
+
+  coro_debugger = nil -- to make sure isrunning() returns `false`
+  seen_hook = nil -- to make sure that the next start() call works
+  abort = nil -- to make sure that callback calls use proper "abort" value
+end
+
 local function debugger_loop(sev, svars, sfile, sline)
   local command
   local app, osname
@@ -851,6 +875,10 @@ local function debugger_loop(sev, svars, sfile, sline)
       end
     elseif command == "SUSPEND" then
       -- do nothing; it already fulfilled its role
+    elseif command == "DONE" then
+      done()
+      server:send("200 OK\n")
+      return -- done with all the debugging
     elseif command == "STACK" then
       -- first check if we can execute the stack command
       -- as it requires yielding back to debug_hook it cannot be executed
@@ -907,10 +935,6 @@ end
 
 local function connect(controller_host, controller_port)
   return (socket.connect4 or socket.connect)(controller_host, controller_port)
-end
-
-local function isrunning()
-  return coro_debugger and coroutine.status(coro_debugger) == 'suspended'
 end
 
 local lasthost, lastport
@@ -1140,6 +1164,13 @@ local function handle(params, client, options)
         return nil, nil, "Debugger error: unexpected response '" .. breakpoint .. "'"
       end
       if done then break end
+    end
+  elseif command == "done" then
+    client:send(string.upper(command) .. "\n")
+    if client:receive() ~= "200 OK" then
+      print("Unknown error")
+      os.exit(1, true)
+      return nil, nil, "Debugger error: unexpected response after 'done'"
     end
   elseif command == "setb" or command == "asetb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
@@ -1422,7 +1453,8 @@ local function handle(params, client, options)
     print("stack                 -- reports stack trace")
     print("output stdout <d|c|r> -- capture and redirect io stream (default|copy|redirect)")
     print("basedir [<path>]      -- sets the base path of the remote application, or shows the current one")
-    print("exit                  -- exits debugger")
+    print("done                  -- stops the debugger and continues application execution")
+    print("exit                  -- exits debugger and the application")
   else
     local _, _, spaces = string.find(params, "^(%s*)$")
     if not spaces then
@@ -1500,26 +1532,6 @@ local function moai()
     end
     return thread
   end
-end
-
--- this is a function that removes all hooks and closes the socket to
--- report back to the controller that the debugging is done.
--- the script that called `done` can still continue.
-local function done()
-  if not (isrunning() and server) then return end
-
-  if not jit then
-    for co, debugged in pairs(coroutines) do
-      if debugged then debug.sethook(co) end
-    end
-  end
-
-  debug.sethook()
-  server:close()
-
-  coro_debugger = nil -- to make sure isrunning() returns `false`
-  seen_hook = nil -- to make sure that the next start() call works
-  abort = nil -- to make sure that callback calls use proper "abort" value
 end
 
 -- make public functions available

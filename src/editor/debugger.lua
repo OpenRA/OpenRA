@@ -840,6 +840,7 @@ end
 debugger.over = function() debugger.exec("over") end
 debugger.out = function() debugger.exec("out") end
 debugger.run = function() debugger.exec("run") end
+debugger.detach = function() debugger.exec("done") end
 debugger.evaluate = function(expression) return debugger.handle('eval ' .. expression) end
 debugger.execute = function(expression) return debugger.handle('exec ' .. expression) end
 debugger.stack = function() return debugger.handle('stack') end
