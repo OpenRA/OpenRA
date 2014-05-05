@@ -1,5 +1,5 @@
 --
--- MobDebug 0.554
+-- MobDebug 0.555
 -- Copyright 2011-14 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
@@ -18,7 +18,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.554,
+  _VERSION = 0.555,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber(os.getenv("MOBDEBUG_PORT"), 10) or 8172,
@@ -1548,6 +1548,7 @@ mobdebug.off = off
 mobdebug.moai = moai
 mobdebug.coro = coro
 mobdebug.done = done
+mobdebug.pause = function() step_into = true end
 mobdebug.yield = nil -- callback
 
 -- this is needed to make "require 'modebug'" to work when mobdebug
