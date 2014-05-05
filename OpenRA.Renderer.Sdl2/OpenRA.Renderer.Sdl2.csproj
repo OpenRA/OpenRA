@@ -44,20 +44,18 @@
   <ItemGroup>
     <Compile Include="Sdl2Input.cs" />
     <Compile Include="Sdl2GraphicsDevice.cs" />
+    <Compile Include="Shader.cs" />
+    <Compile Include="ErrorHandler.cs" />
+    <Compile Include="FrameBuffer.cs" />
+    <Compile Include="MultiTapDetection.cs" />
+    <Compile Include="Texture.cs" />
+    <Compile Include="VertexBuffer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
       <Name>OpenRA.Game</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenRA.Renderer.SdlCommon\OpenRA.Renderer.SdlCommon.csproj">
-      <Project>{52FD9F0B-B209-4ED7-8A32-AC8033363263}</Project>
-      <Name>OpenRA.Renderer.SdlCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenRA.Renderer.Gl\OpenRA.Renderer.Gl.csproj">
-      <Project>{E9C01A96-C3E2-4772-825B-A740AC513D31}</Project>
-      <Name>OpenRA.Renderer.Gl</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

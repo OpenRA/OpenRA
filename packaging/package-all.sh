@@ -21,17 +21,17 @@ make package
 # Remove the mdb files that are created during `make`
 find . -path "*.mdb" -delete
 
-wget https://raw.github.com/wiki/OpenRA/OpenRA/CHANGELOG.md
-markdown CHANGELOG.md > CHANGELOG.html
+wget https://raw.github.com/wiki/OpenRA/OpenRA/Changelog.md
+markdown Changelog.md > CHANGELOG.html
 markdown README.md > README.html
 markdown CONTRIBUTING.md > CONTRIBUTING.html
 markdown DOCUMENTATION.md > DOCUMENTATION.html
 
 # List of files that are packaged on all platforms
-FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' \
-'OpenRA.Renderer.SdlCommon.dll' 'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Cg.dll' 'OpenRA.Renderer.Gl.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
-'FreeSans.ttf' 'FreeSansBold.ttf' \
-'cg' 'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \
+FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' 'OpenRA.CrashDialog.exe' \
+'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
+'FreeSans.ttf' 'FreeSansBold.ttf' 'lua' \
+'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \
 'AUTHORS' 'COPYING' \
 'README.html' 'CONTRIBUTING.html' 'DOCUMENTATION.html' 'CHANGELOG.html' \
 'global mix database.dat' 'GeoLite2-Country.mmdb')
@@ -59,9 +59,12 @@ cp thirdparty/SDL2-CS* packaging/built
 # Mono.NAT for UPnP support
 cp thirdparty/Mono.Nat.dll packaging/built
 
-# Lua
+# (legacy) Lua
 cp thirdparty/KopiLua.dll packaging/built
 cp thirdparty/NLua.dll packaging/built
+
+# Eluant (new lua)
+cp thirdparty/Eluant* packaging/built
 
 # GeoIP database access
 cp thirdparty/MaxMind.Db.dll packaging/built
@@ -81,7 +84,7 @@ echo "Creating packages..."
 
 (
     cd windows
-    makensis -DSRCDIR="$BUILTDIR" OpenRA.nsi &> package.log
+    makensis -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/windows" OpenRA.nsi &> package.log
     if [ $? -eq 0 ]; then
         mv OpenRA.exe "$OUTPUTDIR"/OpenRA-$TAG.exe
     else
@@ -91,7 +94,7 @@ echo "Creating packages..."
 
 (
     cd osx
-    sh buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR" &> package.log
+    sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/osx" "$OUTPUTDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "OS X package build failed, refer to osx/package.log."
     fi
@@ -99,7 +102,7 @@ echo "Creating packages..."
 
 (
     cd linux
-    sh buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR" &> package.log
+    sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/linux" "$OUTPUTDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "Linux package build failed, refer to linux/package.log."
     fi

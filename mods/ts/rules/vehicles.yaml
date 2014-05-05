@@ -480,6 +480,7 @@ MMCH:
 	RevealsShroud:
 		Range: 8c0
 	RenderInfantry:
+		SpawnsCorpse: false
 	Turreted:
 	AttackTurreted:
 	WithTurret:
@@ -549,6 +550,7 @@ SMECH:
 	Armament:
 		Weapon: AssaultCannon
 	RenderInfantry:
+		SpawnsCorpse: false
 	Selectable:
 		Voices: Mech
 

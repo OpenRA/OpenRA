@@ -221,15 +221,20 @@ namespace OpenRA.Mods.RA
 						return;	/* you can't build that!! */
 
 					// Check if the player is trying to build more units that they are allowed
+					var fromLimit = int.MaxValue;
 					if (bi.BuildLimit > 0)
 					{
 						var inQueue = Queue.Count(pi => pi.Item == order.TargetString);
 						var owned = self.Owner.World.ActorsWithTrait<Buildable>().Count(a => a.Actor.Info.Name == order.TargetString && a.Actor.Owner == self.Owner);
-						if (inQueue + owned >= bi.BuildLimit)
+						fromLimit = bi.BuildLimit - (inQueue + owned);
+
+						if (fromLimit <= 0)
 							return;
 					}
 
-					for (var n = 0; n < order.TargetLocation.X; n++) // repeat count
+					var amountToBuild = Math.Min(fromLimit, order.ExtraData);
+
+					for (var n = 0; n < amountToBuild; n++) // repeat count
 					{
 						bool hasPlayedSound = false;
 						BeginProduction(new ProductionItem(this, order.TargetString, cost, PlayerPower,
@@ -256,12 +261,12 @@ namespace OpenRA.Mods.RA
 			case "PauseProduction":
 				{
 					if (Queue.Count > 0 && Queue[0].Item == order.TargetString)
-						Queue[0].Paused = ( order.TargetLocation.X != 0 );
+						Queue[0].Paused = ( order.ExtraData != 0 );
 					break;
 				}
 			case "CancelProduction":
 				{
-					CancelProduction(order.TargetString, order.TargetLocation.X);
+					CancelProduction(order.TargetString, order.ExtraData);
 					break;
 				}
 			}
@@ -281,7 +286,7 @@ namespace OpenRA.Mods.RA
 			return (int) time;
 		}
 
-		protected void CancelProduction(string itemName, int numberToCancel)
+		protected void CancelProduction(string itemName, uint numberToCancel)
 		{
 			for (var i = 0; i < numberToCancel; i++)
 				CancelProductionInner(itemName);

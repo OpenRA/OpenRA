@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Cnc
 	public class CncLoadScreen : ILoadScreen
 	{
 		Dictionary<string, string> loadInfo;
-		Stopwatch loadTimer = new Stopwatch();
+		Stopwatch loadTimer = Stopwatch.StartNew();
 		Sprite[] ss;
 		int loadTick;
 		float2 nodPos, gdiPos, evaPos;
@@ -76,10 +77,10 @@ namespace OpenRA.Mods.Cnc
 
 		public void Display()
 		{
-			if (r == null || loadTimer.ElapsedTime() < 0.25)
+			if (r == null || loadTimer.Elapsed.TotalSeconds < 0.25)
 				return;
 
-			loadTimer.Reset();
+			loadTimer.Restart();
 
 			loadTick = ++loadTick % 8;
 			r.BeginFrame(float2.Zero, 1f);

@@ -33,18 +33,20 @@ namespace OpenRA.Mods.RA
 		readonly int zOffset;
 		readonly WVec length;
 		readonly string image;
+		readonly string palette;
 		readonly int brightZaps, dimZaps;
 
 		WPos cachedPos;
 		WVec cachedLength;
 		IEnumerable<IRenderable> cache;
 
-		public TeslaZapRenderable(WPos pos, int zOffset, WVec length, string image, int brightZaps, int dimZaps)
+		public TeslaZapRenderable(WPos pos, int zOffset, WVec length, string image, int brightZaps, int dimZaps, string palette)
 		{
 			this.pos = pos;
 			this.zOffset = zOffset;
 			this.length = length;
 			this.image = image;
+			this.palette = palette;
 			this.brightZaps = brightZaps;
 			this.dimZaps = dimZaps;
 
@@ -59,10 +61,10 @@ namespace OpenRA.Mods.RA
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 		
-		public IRenderable WithScale(float newScale) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps); }
-		public IRenderable WithPalette(PaletteReference newPalette) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps); }
-		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps); }
-		public IRenderable OffsetBy(WVec vec) { return new TeslaZapRenderable(pos + vec, zOffset, length, image, brightZaps, dimZaps); }
+		public IRenderable WithScale(float newScale) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps, palette); }
+		public IRenderable WithPalette(PaletteReference newPalette) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps, palette); }
+		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps, palette); }
+		public IRenderable OffsetBy(WVec vec) { return new TeslaZapRenderable(pos + vec, zOffset, length, image, brightZaps, dimZaps, palette); }
 		public IRenderable AsDecoration() { return this; }
 
 		public void BeforeRender(WorldRenderer wr) { }
@@ -84,14 +86,14 @@ namespace OpenRA.Mods.RA
 			var target = wr.ScreenPosition(pos + length);
 			
 			for (var n = 0; n < dimZaps; n++)
-				foreach (var z in DrawZapWandering(wr, source, target, dim))
+				foreach (var z in DrawZapWandering(wr, source, target, dim, palette))
 					yield return z;
 			for (var n = 0; n < brightZaps; n++)
-				foreach (var z in DrawZapWandering(wr, source, target, bright))
+				foreach (var z in DrawZapWandering(wr, source, target, bright, palette))
 					yield return z;
 		}
 
-		static IEnumerable<IRenderable> DrawZapWandering(WorldRenderer wr, float2 from, float2 to, Sequence s)
+		static IEnumerable<IRenderable> DrawZapWandering(WorldRenderer wr, float2 from, float2 to, Sequence s, string pal)
 		{
 			var z = float2.Zero;	/* hack */
 			var dist = to - from;
@@ -103,29 +105,29 @@ namespace OpenRA.Mods.RA
 				var p1 = from + (1 / 3f) * dist + WRange.FromPDF(Game.CosmeticRandom, 2).Range * dist.Length / 4096 * norm;
 				var p2 = from + (2 / 3f) * dist + WRange.FromPDF(Game.CosmeticRandom, 2).Range * dist.Length / 4096 * norm;
 
-				renderables.AddRange(DrawZap(wr, from, p1, s, out p1));
-				renderables.AddRange(DrawZap(wr, p1, p2, s, out p2));
-				renderables.AddRange(DrawZap(wr, p2, to, s, out z));
+				renderables.AddRange(DrawZap(wr, from, p1, s, out p1, pal));
+				renderables.AddRange(DrawZap(wr, p1, p2, s, out p2, pal));
+				renderables.AddRange(DrawZap(wr, p2, to, s, out z, pal));
 			}
 			else
 			{
 				var p1 = from + (1 / 2f) * dist + WRange.FromPDF(Game.CosmeticRandom, 2).Range * dist.Length / 4096 * norm;
 
-				renderables.AddRange(DrawZap(wr, from, p1, s, out p1));
-				renderables.AddRange(DrawZap(wr, p1, to, s, out z));
+				renderables.AddRange(DrawZap(wr, from, p1, s, out p1, pal));
+				renderables.AddRange(DrawZap(wr, p1, to, s, out z, pal));
 			}
 
 			return renderables;
 		}
 
-		static IEnumerable<IRenderable> DrawZap(WorldRenderer wr, float2 from, float2 to, Sequence s, out float2 p)
+		static IEnumerable<IRenderable> DrawZap(WorldRenderer wr, float2 from, float2 to, Sequence s, out float2 p, string palette)
 		{
 			var dist = to - from;
 			var q = new float2(-dist.Y, dist.X);
 			var c = -float2.Dot(from, q);
 			var rs = new List<IRenderable>();
 			var z = from;
-			var pal = wr.Palette("effect");
+			var pal = wr.Palette(palette);
 
 			while ((to - z).X > 5 || (to - z).X < -5 || (to - z).Y > 5 || (to - z).Y < -5)
 			{

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA
 		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
 		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
 		public readonly decimal[] SpeedModifier = { 1.1m, 1.15m, 1.2m, 1.5m };
+		public readonly string ChevronPalette = "effect";
 		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 	}
 
@@ -70,12 +71,12 @@ namespace OpenRA.Mods.RA
 				Level++;
 
 				Sound.PlayNotification(self.Owner, "Sounds", "LevelUp", self.Owner.Country.Race);
-				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup")));
+				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.ChevronPalette)));
 				if (Level == 1)
 					self.World.AddFrameEndTask(w =>
 					{
 						if (!self.IsDead())
-							w.Add(new Rank(self));
+							w.Add(new Rank(self, info.ChevronPalette));
 					});
 			}
 		}

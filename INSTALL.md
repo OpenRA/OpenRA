@@ -7,9 +7,7 @@ Windows
 =======
 
 * [.NET Framework >= 4.0 (Client Profile)](http://www.microsoft.com/en-us/download/details.aspx?id=17113)
-* [Cg Toolkit >= 2.2 (optional, for Cg renderer)](https://developer.nvidia.com/cg-toolkit-download)
-* [SDL 1.2 (included)](http://libsdl.org/download-1.2.php)
-* [SDL 2 (optional)](http://www.libsdl.org/download-2.0.php)
+* [SDL 2 (included)](http://www.libsdl.org/download-2.0.php)
 * [FreeType (included)](http://gnuwin32.sourceforge.net/packages/freetype.htm)
 * [zlib (included)](http://gnuwin32.sourceforge.net/packages/zlib.htm)
 * [OpenAL (included)](http://kcat.strangesoft.net/openal.html)
@@ -37,12 +35,10 @@ Debian/Ubuntu
 -------------
 
 * mono-dmcs
-* libmono-winforms2.0-cil
+* libmono-winforms4.0-cil
 * cli-common-dev (>= 2.10)
 * freetype
 * openal
-* sdl
-* nvidia-cg-toolkit (optional, for Cg renderer)
 
 Slackware
 ---------
@@ -51,7 +47,6 @@ The following packages from slackbuilds.org are required, on 13.37 32-bit:
 * libgdiplus
 * mono
 * openAL
-* nvidia-cg-toolkit (optional, for Cg renderer)
 
 openSUSE
 --------
@@ -59,8 +54,7 @@ openSUSE
 * mono-devel
 * openal
 * freetype2
-* SDL
-* cg (optional, for Cg renderer)
+* SDL2
 
 Gentoo
 ------
@@ -68,4 +62,3 @@ Gentoo
 * dev-lang/mono
 * dev-dotnet/libgdiplus
 * media-libs/openal
-* media-gfx/nvidia-cg-toolkit (optional, for Cg renderer)

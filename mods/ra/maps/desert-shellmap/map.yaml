@@ -315,9 +315,6 @@ Actors:
 	Actor110: fcom
 		Location: 106,44
 		Owner: Soviets
-	Actor111: silo
-		Location: 96,28
-		Owner: Soviets
 	Actor106: fact
 		Location: 114,43
 		Owner: Soviets
@@ -476,9 +473,6 @@ Actors:
 		Owner: Allies
 	Actor105: brik
 		Location: 94,70
-		Owner: Allies
-	Actor154: silo
-		Location: 82,86
 		Owner: Allies
 	SovietBarracks1: barr
 		Location: 109,48
@@ -956,30 +950,6 @@ Actors:
 	Actor195: hpad
 		Location: 70,75
 		Owner: Allies
-	Actor75: oilb
-		Location: 4,126
-		Owner: Allies
-	Actor334: oilb
-		Location: 6,126
-		Owner: Allies
-	Actor335: oilb
-		Location: 8,126
-		Owner: Allies
-	Actor336: oilb
-		Location: 10,126
-		Owner: Allies
-	Actor337: oilb
-		Location: 12,126
-		Owner: Allies
-	Actor338: oilb
-		Location: 14,126
-		Owner: Allies
-	Actor339: oilb
-		Location: 2,126
-		Owner: Allies
-	Actor340: oilb
-		Location: 0,126
-		Owner: Allies
 	Actor341: dome
 		Location: 63,73
 		Owner: Allies
@@ -1033,15 +1003,6 @@ Actors:
 		Owner: Allies
 	Actor361: pbox.e1
 		Location: 71,96
-		Owner: Allies
-	Actor55: silo
-		Location: 81,85
-		Owner: Allies
-	Actor76: silo
-		Location: 81,86
-		Owner: Allies
-	Actor159: silo
-		Location: 82,85
 		Owner: Allies
 	Actor365: hpad
 		Location: 64,78
@@ -1303,11 +1264,16 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LuaScriptInterface:
-			LuaScripts: desert-shellmap.lua
+		ResourceType@ore:
+			ValuePerUnit: 0
+		LuaScript:
+			Scripts: desert-shellmap.lua
 		LoadWidgetAtGameStart:
 			Widget: MAINMENU
 		-StartGameNotification:
+	OILB:
+		CashTrickler:
+			ShowTicks: false
 	TRAN.Husk2:
 		Burns:
 			Damage: 0
@@ -1316,24 +1282,6 @@ Rules:
 	APC:
 		Cargo:
 			InitialUnits: e1, e1, e2, e3, e4
-	TENT:
-		ProductionQueue:
-			Type: Infantry
-			Group: Infantry
-			BuildSpeed: .4
-			LowPowerSlowdown: 3
-	BARR:
-		ProductionQueue:
-			Type: Infantry
-			Group: Infantry
-			BuildSpeed: .4
-			LowPowerSlowdown: 3
-	WEAP:
-		ProductionQueue:
-			Type: Vehicle
-			Group: Vehicle
-			BuildSpeed: .4
-			LowPowerSlowdown: 3
 	Ant:
 		Buildable:
 			Owner: soviet
@@ -1341,6 +1289,7 @@ Rules:
 		Health:
 			HP: 200
 	^Vehicle:
+		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
@@ -1349,6 +1298,7 @@ Rules:
 			ArmorModifier:
 			SpeedModifier:
 	^Tank:
+		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
@@ -1357,7 +1307,9 @@ Rules:
 			ArmorModifier:
 			SpeedModifier:
 	^Infantry:
-		-Selectable: # short-term hack to make infantry not play die sounds until we fix RenderInfantry
+		ScriptInvulnerable:
+		DeathSounds:
+			DeathVoice:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
@@ -1366,12 +1318,20 @@ Rules:
 			ArmorModifier:
 			SpeedModifier:
 	^Ship:
+		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
+		GainsExperience:
+			CostThreshold:
+			FirepowerModifier:
+			ArmorModifier:
+			SpeedModifier:
 	^Plane:
+		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
 	^Building:
+		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
 

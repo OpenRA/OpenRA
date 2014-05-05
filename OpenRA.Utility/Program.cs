@@ -27,6 +27,7 @@ namespace OpenRA.Utility
 			{ "--remap", Command.RemapShp },
 			{ "--transpose", Command.TransposeShp },
 			{ "--docs", Command.ExtractTraitDocs },
+			{ "--lua-docs", Command.ExtractLuaDocs },
 			{ "--map-hash", Command.GetMapHash },
 			{ "--map-preview", Command.GenerateMinimap },
 			{ "--map-upgrade-v5", Command.UpgradeV5Map },

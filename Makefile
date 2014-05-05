@@ -37,7 +37,7 @@
 CSC         = dmcs
 CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
-COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll thirdparty/MaxMind.Db.dll thirdparty/MaxMind.GeoIP2.dll
+COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll thirdparty/MaxMind.Db.dll thirdparty/MaxMind.GeoIP2.dll thirdparty/Eluant.dll
 
 
 
@@ -66,7 +66,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rcg rgl rsdl rsdl2 rnull game utility irc
+CORE = rsdl2 rnull game utility irc crashdialog
 TOOLS = editor tsbuild ralint
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
@@ -80,7 +80,7 @@ VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
 game_KIND = winexe
-game_LIBS = $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) thirdparty/Tao/Tao.OpenAl.dll thirdparty/SharpFont.dll
+game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/Tao/Tao.OpenAl.dll thirdparty/SharpFont.dll
 game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS += game
 game: $(game_TARGET)
@@ -94,28 +94,10 @@ PROGRAMS += irc
 irc: $(irc_TARGET)
 
 # Renderer dlls
-rsdl_SRCS := $(shell find OpenRA.Renderer.SdlCommon/ -iname '*.cs')
-rsdl_TARGET = OpenRA.Renderer.SdlCommon.dll
-rsdl_KIND = library
-rsdl_DEPS = $(game_TARGET)
-rsdl_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll $(rsdl_DEPS)
-
-rcg_SRCS := $(shell find OpenRA.Renderer.Cg/ -iname '*.cs')
-rcg_TARGET = OpenRA.Renderer.Cg.dll
-rcg_KIND = library
-rcg_DEPS = $(game_TARGET) $(rsdl_TARGET)
-rcg_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll $(rcg_DEPS)
-
-rgl_SRCS := $(shell find OpenRA.Renderer.Gl/ -iname '*.cs')
-rgl_TARGET = OpenRA.Renderer.Gl.dll
-rgl_KIND = library
-rgl_DEPS = $(game_TARGET) $(rsdl_TARGET)
-rgl_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll $(rgl_DEPS)
-
 rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
 rsdl2_TARGET = OpenRA.Renderer.Sdl2.dll
 rsdl2_KIND = library
-rsdl2_DEPS = $(game_TARGET) $(rsdl_TARGET) $(rgl_TARGET)
+rsdl2_DEPS = $(game_TARGET)
 rsdl2_LIBS = $(COMMON_LIBS) thirdparty/Tao/Tao.OpenGl.dll thirdparty/SDL2-CS.dll $(rsdl2_DEPS)
 
 rnull_SRCS := $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
@@ -123,9 +105,8 @@ rnull_TARGET = OpenRA.Renderer.Null.dll
 rnull_KIND = library
 rnull_DEPS = $(game_TARGET)
 rnull_LIBS = $(COMMON_LIBS) $(rnull_DEPS)
-PROGRAMS += rcg rgl rsdl2 rnull rsdl
-renderers: $(rcg_TARGET) $(rgl_TARGET) $(rsdl2_TARGET) $(rnull_TARGET) $(rsdl_TARGET)
-
+PROGRAMS += rsdl2 rnull
+renderers: $(rsdl2_TARGET) $(rnull_TARGET)
 
 ##### Official Mods #####
 
@@ -175,7 +156,7 @@ editor_SRCS := $(shell find OpenRA.Editor/ -iname '*.cs')
 editor_TARGET = OpenRA.Editor.exe
 editor_KIND = winexe
 editor_DEPS = $(game_TARGET)
-editor_LIBS = System.Windows.Forms.dll System.Data.dll System.Drawing.dll $(editor_DEPS)
+editor_LIBS = System.Windows.Forms.dll System.Data.dll System.Drawing.dll $(editor_DEPS) thirdparty/Eluant.dll
 editor_EXTRA = -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
 editor_FLAGS = -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
 
@@ -224,12 +205,21 @@ tsbuild: OpenRA.TilesetBuilder.FormBuilder.resources OpenRA.TilesetBuilder.FormN
 
 ##### Launchers / Utilities #####
 
+crashdialog_SRCS := $(shell find OpenRA.CrashDialog/ -iname '*.cs')
+crashdialog_TARGET = OpenRA.CrashDialog.exe
+crashdialog_KIND = exe
+crashdialog_DEPS = $(game_TARGET)
+crashdialog_LIBS = $(COMMON_LIBS) $(crashdialog_DEPS) System.Windows.Forms.dll
+crashdialog_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
+PROGRAMS += crashdialog
+crashdialog: $(crashdialog_TARGET)
+
 # Backend for the launcher apps - queries game/mod info and applies actions to an install
 utility_SRCS := $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET = OpenRA.Utility.exe
 utility_KIND = exe
 utility_DEPS = $(game_TARGET)
-utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
+utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll
 PROGRAMS += utility
 utility: $(utility_TARGET)
 
@@ -263,7 +253,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 #
 default: dependencies core
 
-core: game renderers mods utility
+core: game renderers mods utility crashdialog
 
 tools: editor tsbuild ralint
 
@@ -279,9 +269,15 @@ clean:
 
 distclean: clean
 
+platformdeps = "linux"
+ifeq ($(shell uname),Darwin)
+	platformdeps = "osx"
+endif
+
 dependencies:
 	@ $(CP_R) thirdparty/*.dl* .
 	@ $(CP_R) thirdparty/Tao/* .
+	@ $(CP_R) thirdparty/${platformdeps}/* .
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
 	@for i in $? ; do \
@@ -317,10 +313,11 @@ install-core: default
 	@$(INSTALL_DATA) COPYING "$(DATA_INSTALL_DIR)/COPYING"
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
-	@$(CP_R) cg "$(DATA_INSTALL_DIR)"
+	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
 	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/Tao/* "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/SDL2-CS* "$(DATA_INSTALL_DIR)"
+	@$(CP) thirdparty/Eluant* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll "$(DATA_INSTALL_DIR)"

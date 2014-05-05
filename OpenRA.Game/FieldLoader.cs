@@ -263,9 +263,14 @@ namespace OpenRA
 
 			else if (fieldType.IsEnum)
 			{
-				if (!Enum.GetNames(fieldType).Select(a => a.ToLower()).Contains(value.ToLower()))
+				try
+				{
+					return Enum.Parse(fieldType, value, true);
+				}
+				catch (ArgumentException)
+				{
 					return InvalidValueAction(value, fieldType, fieldName);
-				return Enum.Parse(fieldType, value, true);
+				}
 			}
 
 			else if (fieldType == typeof(bool))

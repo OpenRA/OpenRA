@@ -431,13 +431,20 @@ namespace OpenRA
 		string ComputeHash()
 		{
 			// UID is calculated by taking an SHA1 of the yaml and binary data
-			// Read the relevant data into a buffer
-			var data = Container.GetContent("map.yaml").ReadAllBytes()
-				.Concat(Container.GetContent("map.bin").ReadAllBytes()).ToArray();
 
-			// Take the SHA1
-			using (var csp = SHA1.Create())
-				return new string(csp.ComputeHash(data).SelectMany(a => a.ToString("x2")).ToArray());
+			using (var ms = new MemoryStream())
+			{
+				// Read the relevant data into the buffer
+				using (var s = Container.GetContent("map.yaml"))
+					s.CopyTo(ms);
+				using (var s = Container.GetContent("map.bin"))
+					s.CopyTo(ms);
+
+				// Take the SHA1
+				ms.Seek(0, SeekOrigin.Begin);
+				using (var csp = SHA1.Create())
+					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToString("x2")).ToArray());
+			}
 		}
 
 		public void MakeDefaultPlayers()

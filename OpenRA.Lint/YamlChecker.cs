@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using OpenRA.FileSystem;
 using OpenRA.Traits;
 
@@ -41,6 +42,8 @@ namespace OpenRA.Lint
 
 			try
 			{
+				Log.AddChannel("perf", null);
+
 				var options = args.Where(a => a.StartsWith("-"));
 				var mod = args.Where(a => !options.Contains(a)).First();
 				var map = args.Where(a => !options.Contains(a)).Skip(1).FirstOrDefault();

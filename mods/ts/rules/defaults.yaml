@@ -1,6 +1,7 @@
 ^Building:
 	AppearsOnRadar:
 	SelectionDecorations:
+		Palette: pips
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
@@ -38,6 +39,7 @@
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
+	ScriptTriggers:
 
 ^Wall:
 	AppearsOnRadar:
@@ -76,6 +78,7 @@
 	BodyOrientation:
 	LuaScriptEvents:
 	Demolishable:
+	ScriptTriggers:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -96,6 +99,7 @@
 			Gems: 80
 			Beach: 80
 	SelectionDecorations:
+		Palette: pips
 	Selectable:
 		Voice: Infantry
 	TargetableUnit:
@@ -107,6 +111,11 @@
 		CargoType: Infantry
 	HiddenUnderFog:
 	GainsExperience:
+		ChevronPalette: ra
+		CostThreshold: 5, 10
+		FirepowerModifier: 1.2, 1.5
+		ArmorModifier: 1.2, 1.5
+		SpeedModifier: 1.2, 1.5
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -122,6 +131,9 @@
 	BodyOrientation:
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
+	DeathSounds:
+		Zapped: electro1.aud
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
@@ -162,6 +174,7 @@
 			Beach: 40
 		ROT: 5
 	SelectionDecorations:
+		Palette: pips
 	Selectable:
 		Voice: Vehicle
 	TargetableUnit:
@@ -172,6 +185,11 @@
 	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
+		ChevronPalette: ra
+		CostThreshold: 5, 10
+		FirepowerModifier: 1.2, 1.5
+		ArmorModifier: 1.2, 1.5
+		SpeedModifier: 1.2, 1.5
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -183,8 +201,10 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+		CameraPitch: 90
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -193,6 +213,7 @@
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
 	SelectionDecorations:
+		Palette: pips
 	Selectable:
 		Voice: Heli
 	Helicopter:
@@ -204,11 +225,18 @@
 	HiddenUnderFog:
 	AttackMove:
 	GainsExperience:
+		ChevronPalette: ra
+		CostThreshold: 5, 10
+		FirepowerModifier: 1.2, 1.5
+		ArmorModifier: 1.2, 1.5
+		SpeedModifier: 1.2, 1.5
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
 	CombatDebugOverlay:
 	BodyOrientation:
+		CameraPitch: 90
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 

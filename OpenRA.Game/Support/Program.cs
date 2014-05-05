@@ -13,7 +13,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace OpenRA
 {
@@ -22,9 +21,6 @@ namespace OpenRA
 		[STAThread]
 		static void Main(string[] args)
 		{
-			// brutal hack
-			Application.CurrentCulture = CultureInfo.InvariantCulture;
-
 			if (Debugger.IsAttached || args.Contains("--just-die"))
 			{
 				Run(args);
@@ -62,7 +58,7 @@ namespace OpenRA
 			if (Game.Settings.Debug.ShowFatalErrorDialog && !Game.Settings.Server.Dedicated)
 			{
 				Game.Renderer.Device.Quit();
-				FatalErrorDialog.Show();
+				Platform.ShowFatalErrorDialog();
 			}
 		}
 

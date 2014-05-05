@@ -42,6 +42,7 @@
 		UncloakSound: trans1.aud
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Tank:
 	AppearsOnRadar:
@@ -90,6 +91,7 @@
 		UncloakSound: trans1.aud
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -122,6 +124,7 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -183,6 +186,9 @@
 	LuaScriptEvents:
 	DetectCloaked:
 		Range: 1
+	ScriptTriggers:
+	DeathSounds:
+		Burned: yell1.aud
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -261,6 +267,8 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
+	DeathSounds:
 
 ^Plane:
 	AppearsOnRadar:
@@ -280,6 +288,7 @@
 	Huntable:
 	AttackMove:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Ship:
 	AppearsOnRadar:
@@ -305,6 +314,7 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Building:
 	AppearsOnRadar:
@@ -348,6 +358,7 @@
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
+	ScriptTriggers:
 
 ^BaseBuilding:
 	Inherits: ^Building
@@ -389,6 +400,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
@@ -429,6 +441,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Wall:
 	AppearsOnRadar:
@@ -439,7 +452,7 @@
 		Adjacent: 7
 		TerrainTypes: Clear,Road
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, Wall
 	Wall:
 		CrushClasses: wall
 		CrushSound: sandbag2.aud
@@ -460,6 +473,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Tree:
 	Tooltip:
@@ -484,6 +498,25 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	LuaScriptEvents:
+	ScriptTriggers:
+
+^TibTree:
+	Tooltip:
+		Name: Blossom Tree
+	RenderBuilding:
+		Palette: staticterrain
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tiberium
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	BodyOrientation:
+	FrozenUnderFog:
+		StartsRevealed: true
+	LuaScriptEvents:
 
 ^Rock:
 	Tooltip:
@@ -502,6 +535,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Husk:
 	Health:
@@ -527,6 +561,7 @@
 	BodyOrientation:
 	LuaScriptEvents:
 	DisabledOverlay:
+	ScriptTriggers:
 
 ^HelicopterHusk:
 	Inherits: ^Husk
@@ -555,4 +590,4 @@
 		DestroyedSound: xplobig4.aud
 	BodyOrientation:
 	LuaScriptEvents:
-
+	ScriptTriggers:

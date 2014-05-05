@@ -151,7 +151,7 @@ namespace OpenRA.Widgets
 
 		public bool ScrolledToBottom
 		{
-			get { return ListOffset == Math.Min(0, Bounds.Height - ContentHeight); }
+			get { return ListOffset == Math.Min(0, Bounds.Height - ContentHeight) || ContentHeight <= Bounds.Height; }
 		}
 
 		public void ScrollToItem(string itemKey)

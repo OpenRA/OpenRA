@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Orders;
@@ -21,20 +22,21 @@ namespace OpenRA.Mods.RA
 	public class HarvesterInfo : ITraitInfo
 	{
 		public readonly string[] DeliveryBuildings = { };
+		[Desc("How much resources it can carry.")]
 		public readonly int Capacity = 28;
 		public readonly int LoadTicksPerBale = 4;
+		[Desc("How fast it can dump it's carryage.")]
 		public readonly int UnloadTicksPerBale = 4;
+		[Desc("How many squares to show the fill level.")]
 		public readonly int PipCount = 7;
 		public readonly int HarvestFacings = 0;
+		[Desc("Which resources it can harvest.")]
 		public readonly string[] Resources = { };
+		[Desc("How much it is slowed down when returning to the refinery.")]
 		public readonly decimal FullyLoadedSpeed = .85m;
-		/// <summary>
-		/// Initial search radius (in cells) from the refinery (proc) that created us.
-		/// </summary>
+		[Desc("Initial search radius (in cells) from the refinery that created us.")]
 		public readonly int SearchFromProcRadius = 24;
-		/// <summary>
-		/// Search radius (in cells) from the last harvest order location to find more resources.
-		/// </summary>
+		[Desc("Search radius (in cells) from the last harvest order location to find more resources.")]
 		public readonly int SearchFromOrderRadius = 12;
 
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }

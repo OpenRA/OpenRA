@@ -38,6 +38,7 @@
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
+	ScriptTriggers:
 
 ^Tank:
 	AppearsOnRadar:
@@ -79,6 +80,7 @@
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
+	ScriptTriggers:
 
 ^Husk:
 	Health:
@@ -107,6 +109,7 @@
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	DisabledOverlay:
+	ScriptTriggers:
 
 ^TowerHusk:
 	Health:
@@ -126,6 +129,7 @@
 		Types: Husk
 	BodyOrientation:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^AircraftHusk:
 	Inherits: ^Husk
@@ -190,6 +194,8 @@
 	UpdatesPlayerStatistics:
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
+	DeathSounds:
 
 ^Plane:
 	AppearsOnRadar:
@@ -214,6 +220,7 @@
 	Huntable:
 	AttackMove:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -270,3 +277,5 @@
 		Weapons: shrapnel
 		Pieces: 3, 7
 		Range: 2c0, 5c0
+	ScriptTriggers:
+

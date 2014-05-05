@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,12 +8,16 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Eluant;
+using Eluant.ObjectBinding;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Scripting;
 using OpenRA.Traits;
 
 namespace OpenRA
@@ -21,7 +25,7 @@ namespace OpenRA
 	public enum PowerState { Normal, Low, Critical };
 	public enum WinState { Won, Lost, Undefined };
 
-	public class Player
+	public class Player :  IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{
 		public Actor PlayerActor;
 		public WinState WinState = WinState.Undefined;
@@ -106,5 +110,35 @@ namespace OpenRA
 			// Observers are considered as allies
 			return p == null || Stances[p] == Stance.Ally;
 		}
+
+		#region Scripting interface
+
+		Lazy<ScriptPlayerInterface> luaInterface;
+		public void OnScriptBind(ScriptContext context)
+		{
+			luaInterface = Exts.Lazy(() => new ScriptPlayerInterface(context, this));
+		}
+
+		public LuaValue this[LuaRuntime runtime, LuaValue keyValue]
+		{
+			get { return luaInterface.Value[runtime, keyValue]; }
+			set { luaInterface.Value[runtime, keyValue] = value; }
+		}
+
+		public LuaValue Equals (LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			Player a, b;
+			if (!left.TryGetClrValue<Player>(out a) || !right.TryGetClrValue<Player>(out b))
+				return false;
+
+			return a == b;
+		}
+
+		public LuaValue ToString(LuaRuntime runtime)
+		{
+			return "Player ({0})".F(PlayerName);
+		}
+
+		#endregion
 	}
 }

@@ -66,10 +66,9 @@ Section "Game" GAME
 	SetOutPath "$INSTDIR"
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
-	File "${SRCDIR}\OpenRA.Renderer.SdlCommon.dll"
-	File "${SRCDIR}\OpenRA.Renderer.Gl.dll"
-	File "${SRCDIR}\OpenRA.Renderer.Cg.dll"
+	File "${SRCDIR}\OpenRA.CrashDialog.exe"
 	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
+	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
 	File "${SRCDIR}\OpenRA.Irc.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
@@ -84,6 +83,7 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\Tao.*.dll"
 	File "${SRCDIR}\SharpFont.dll"
+	File "${SRCDIR}\SDL2-CS.dll"
 	File "${SRCDIR}\global mix database.dat"
 	File "${SRCDIR}\MaxMind.Db.dll"
 	File "${SRCDIR}\MaxMind.GeoIP2.dll"
@@ -92,10 +92,14 @@ Section "Game" GAME
 	File "${SRCDIR}\GeoLite2-Country.mmdb"
 	File "${SRCDIR}\KopiLua.dll"
 	File "${SRCDIR}\NLua.dll"
-	File OpenAL32.dll
-	File SDL.dll
-	File freetype6.dll
-	File zlib1.dll
+	File "${SRCDIR}\eluant.dll"
+	File "${DEPSDIR}\OpenAL32.dll"
+	File "${DEPSDIR}\SDL2.dll"
+	File "${DEPSDIR}\freetype6.dll"
+	File "${DEPSDIR}\zlib1.dll"
+	File "${DEPSDIR}\lua51.dll"
+	SetOutPath "$INSTDIR\lua"
+	File "${SRCDIR}\lua\*.lua"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -105,8 +109,6 @@ Section "Game" GAME
 			"$OUTDIR\README.html" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 
-	SetOutPath "$INSTDIR\cg"
-	File "${SRCDIR}\cg\*.fx"
 	SetOutPath "$INSTDIR\glsl"
 	File "${SRCDIR}\glsl\*.frag"
 	File "${SRCDIR}\glsl\*.vert"
@@ -136,11 +138,11 @@ SectionGroupEnd
 ;***************************
 Section "-DotNet" DotNet
 	ClearErrors
-	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "Install"
+	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client" "Install"
 	IfErrors error 0
 	IntCmp $0 1 0 error 0
 	ClearErrors
-	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4.0" "SP"
+	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Install"
 	IfErrors error 0
 	IntCmp $0 1 done error done
 	error:
@@ -180,16 +182,15 @@ SectionEnd
 Function ${UN}Clean
 	RMDir /r $INSTDIR\mods
 	RMDir /r $INSTDIR\maps
-	RMDir /r $INSTDIR\cg
 	RMDir /r $INSTDIR\glsl
+	RMDir /r $INSTDIR\lua
 	Delete $INSTDIR\OpenRA.Launcher.exe
 	Delete $INSTDIR\OpenRA.Game.exe
 	Delete $INSTDIR\OpenRA.Utility.exe
+	Delete $INSTDIR\OpenRA.CrashDialog.exe
 	Delete $INSTDIR\OpenRA.Editor.exe
-	Delete $INSTDIR\OpenRA.Renderer.Gl.dll
-	Delete $INSTDIR\OpenRA.Renderer.Cg.dll
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
-	Delete $INSTDIR\OpenRA.Renderer.SdlCommon.dll
+	Delete $INSTDIR\OpenRA.Renderer.Sdl2.dll
 	Delete $INSTDIR\OpenRA.Irc.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
@@ -212,8 +213,11 @@ Function ${UN}Clean
 	Delete $INSTDIR\GeoLite2-Country.mmdb
 	Delete $INSTDIR\KopiLua.dll
 	Delete $INSTDIR\NLua.dll
+	Delete $INSTDIR\SDL2-CS.dll
 	Delete $INSTDIR\OpenAL32.dll
-	Delete $INSTDIR\SDL.dll
+	Delete $INSTDIR\SDL2.dll
+	Delete $INSTDIR\lua51.dll
+	Delete $INSTDIR\eluant.dll
 	Delete $INSTDIR\freetype6.dll
 	Delete $INSTDIR\zlib1.dll
 	RMDir /r $INSTDIR\Support

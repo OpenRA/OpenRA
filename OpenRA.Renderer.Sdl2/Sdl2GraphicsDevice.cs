@@ -13,8 +13,6 @@ using System.Drawing;
 using System.Linq;
 using OpenRA;
 using OpenRA.Graphics;
-using OpenRA.Renderer.Glsl;
-using OpenRA.Renderer.SdlCommon;
 using SDL2;
 using Tao.OpenGl;
 

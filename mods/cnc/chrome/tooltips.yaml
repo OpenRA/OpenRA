@@ -60,7 +60,7 @@ Background@PRODUCTION_TOOLTIP:
 			Y: 19
 			Height: 23
 			Font: TinyBold
-			Text: @requires@
+			Text: Requires {0}
 		Label@DESC:
 			X: 5
 			Y: 39

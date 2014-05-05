@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -246,11 +247,17 @@ namespace OpenRA
 		{
 			BeforeGameStart();
 
-			var map = modData.PrepareMap(mapUID);
-			orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
-			orderManager.world.Timestep = Timestep;
+			Map map;
+			using (new PerfTimer("PrepareMap"))
+				map = modData.PrepareMap(mapUID);
+			using (new PerfTimer("NewWorld"))
+			{
+				orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
+				orderManager.world.Timestep = Timestep;
+			}
 			worldRenderer = new WorldRenderer(orderManager.world);
-			orderManager.world.LoadComplete(worldRenderer);
+			using (new PerfTimer("LoadComplete"))
+				orderManager.world.LoadComplete(worldRenderer);
 
 			if (orderManager.GameStarted)
 				return;
@@ -313,7 +320,7 @@ namespace OpenRA
 			}
 
 			GlobalFileSystem.Mount("."); // Needed to access shaders
-			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", "Gl", "Cg", null };
+			var renderers = new[] { Settings.Graphics.Renderer, "Sdl2", null };
 			foreach (var r in renderers)
 			{
 				if (r == null)
@@ -385,7 +392,8 @@ namespace OpenRA
 			modData = new ModData(mod);
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.InitializeLoaders();
-			modData.MapCache.LoadMaps();
+			using (new PerfTimer("LoadMaps"))
+				modData.MapCache.LoadMaps();
 
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
@@ -436,7 +444,10 @@ namespace OpenRA
 
 		public static void LoadShellMap()
 		{
-			StartGame(ChooseShellmap(), true);
+			var shellmap = ChooseShellmap();
+
+			using (new PerfTimer("StartGame"))
+				StartGame(shellmap, true);
 		}
 
 		static string ChooseShellmap()
@@ -474,11 +485,11 @@ namespace OpenRA
 			{
 				if (Settings.Graphics.CapFramerate)
 				{
-					var sw = new Stopwatch();
+					var sw = Stopwatch.StartNew();
 
 					Tick(orderManager);
 
-					var waitTime = Math.Min(idealFrameTime - sw.ElapsedTime(), 1);
+					var waitTime = Math.Min(idealFrameTime - sw.Elapsed.TotalSeconds, 1);
 					if (waitTime > 0)
 						System.Threading.Thread.Sleep(TimeSpan.FromSeconds(waitTime));
 				}

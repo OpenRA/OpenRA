@@ -52,6 +52,7 @@
 		CancelActivity: True
 	CaptureNotification:
 		Notification: UnitStolen
+	ScriptTriggers:
 
 ^Tank:
 	AppearsOnRadar:
@@ -107,6 +108,7 @@
 		CancelActivity: True
 	CaptureNotification:
 		Notification: UnitStolen
+	ScriptTriggers:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -165,6 +167,8 @@
 		RequiresTech: InfantryHealing
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
+	DeathSounds:
 
 ^Ship:
 	AppearsOnRadar:
@@ -197,6 +201,7 @@
 	BodyOrientation:
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Plane:
 	AppearsOnRadar:
@@ -231,6 +236,7 @@
 	BodyOrientation:
 	Huntable:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -283,6 +289,7 @@
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
+	ScriptTriggers:
 
 ^Wall:
 	AppearsOnRadar:
@@ -319,6 +326,7 @@
 	BodyOrientation:
 	FrozenUnderFog:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^TechBuilding:
 	Inherits: ^Building
@@ -426,6 +434,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Husk:
 	Husk:
@@ -455,6 +464,7 @@
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	DisabledOverlay:
+	ScriptTriggers:
 
 ^HelicopterHusk:
 	Inherits: ^Husk
@@ -499,6 +509,7 @@
 	AutoTargetIgnore:
 	BodyOrientation:
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^Rock:
 	Tooltip:
@@ -520,6 +531,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	LuaScriptEvents:
+	ScriptTriggers:
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding

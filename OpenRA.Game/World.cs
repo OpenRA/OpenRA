@@ -27,7 +27,7 @@ namespace OpenRA
 	public class World
 	{
 		internal TraitDictionary traitDict = new TraitDictionary();
-		Set<Actor> actors = new Set<Actor>();
+		HashSet<Actor> actors = new HashSet<Actor>();
 		List<IEffect> effects = new List<IEffect>();
 		Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
@@ -148,7 +148,10 @@ namespace OpenRA
 		public void LoadComplete(WorldRenderer wr)
 		{
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
-				wlh.WorldLoaded(this, wr);
+			{
+				using (new Support.PerfTimer(wlh.GetType().Name + ".WorldLoaded"))
+					wlh.WorldLoaded(this, wr);
+			}
 		}
 
 		public Actor CreateActor(string name, TypeDictionary initDict)
@@ -214,9 +217,7 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			// workaround for #4965
-			// if (!Paused && (!IsShellmap || Game.Settings.Game.ShowShellmap))
-			if (!Paused && !IsShellmap)
+			if (!Paused && (!IsShellmap || Game.Settings.Game.ShowShellmap))
 			{
 				WorldTick++;
 

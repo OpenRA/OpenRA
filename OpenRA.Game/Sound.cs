@@ -367,6 +367,19 @@ namespace OpenRA
 			var type = mi.Voice.ToLowerInvariant();
 			return PlayPredefined(null, voicedUnit, type, phrase, variant, true);
 		}
+		
+		public static bool PlayVoiceLocal(string phrase, Actor voicedUnit, string variant, WPos pos)
+		{
+			if (voicedUnit == null || phrase == null)
+				return false;
+
+			var mi = voicedUnit.Info.Traits.GetOrDefault<SelectableInfo>();
+			if (mi == null || mi.Voice == null)
+				return false;
+
+			var type = mi.Voice.ToLowerInvariant();
+			return PlayPredefined(null, voicedUnit, type, phrase, variant, true);
+		}
 
 		public static bool PlayNotification(Player player, string type, string notification, string variant)
 		{

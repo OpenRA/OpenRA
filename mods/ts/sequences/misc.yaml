@@ -53,10 +53,16 @@ beacon:
 		Length: 12
 		BlendMode: Additive
 
-rank: # TODO: backfall to RA asset
-	rank:
+crate-effects:
+	levelup: levelup
 		Start: 0
 		Length: *
+		Tick: 200
+
+rank:
+	rank: pips
+		Start: 7
+		Length: 2
 
 mpspawn: # TODO: backfall to RA asset
 	idle:
@@ -73,13 +79,14 @@ clock:
 		Start: 0
 		Length: *
 
-# TODO:
-# needs palette.pal
 pips:
 	medic: 
 		Start: 6
-	tag-primary: 
+	groups: pipsra #TODO: backfall to RA asset
 		Start: 8
+		Length: 10
+	tag-primary: pipsra #TODO: backfall to RA asset
+		Start: 2
 	pip-empty: pips2
 		Start: 0
 	pip-green: pips2
@@ -92,8 +99,10 @@ pips:
 		Start: 4
 	pip-blue: pips2
 		Start: 5
-	pip-ammo: pips2
-		Start: 6
+	pip-ammo: ammopips
+		Start: 0
+	pip-ammoempty: ammopips
+		Start: 1
 # TODO:
 	pip-empty-building:
 		Start: 0
