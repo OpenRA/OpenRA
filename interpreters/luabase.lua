@@ -1,7 +1,5 @@
 function MakeLuaInterpreter(version, name)
 
-local exe
-
 local function exePath(self, version)
   local version = tostring(version):gsub('%.','')
   local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
@@ -19,7 +17,7 @@ return {
   luaversion = version or '5.1',
   fexepath = exePath,
   frun = function(self,wfilename,rundebug)
-    exe = exe or self:fexepath(version or "")
+    local exe = self:fexepath(version or "")
     local filepath = wfilename:GetFullPath()
     if rundebug then
       DebuggerAttachDefault({runstart = ide.config.debugger.runonstart == true})
