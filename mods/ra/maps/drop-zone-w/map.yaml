@@ -343,7 +343,7 @@ Weapons:
 		Warhead:
 			Spread: 426
 			Versus:
-				None: 40%,
+				None: 40%
 				Light: 30%
 				Heavy: 30%
 			Explosion: large_explosion
