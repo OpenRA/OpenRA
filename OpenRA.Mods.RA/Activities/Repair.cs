@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
@@ -34,7 +35,15 @@ namespace OpenRA.Mods.RA.Activities
 			{
 				var helicopter = self.TraitOrDefault<Helicopter>();
 				if (helicopter != null)
+				{
+					if (helicopter.Info.RearmBuildings.Contains(host.Info.Name) && self.HasTrait<LimitedAmmo>())
+					{
+						if (self.Trait<LimitedAmmo>().FullAmmo() == false)
+							return NextActivity;
+					}
+
 					return helicopter.TakeOff(host);
+				}
 
 				return NextActivity;
 			}
