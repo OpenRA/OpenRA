@@ -96,25 +96,6 @@ waypoint:
 	RenderEditorOnly:
 	BodyOrientation:
 
-SPICEBLOOM:
-	RenderBuilding:
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	AppearsOnRadar:
-	EditorAppearance:
-		RelativeToTopLeft: yes
-	ProximityCaptor:
-		Types: Tree
-	Tooltip:
-		Name: Spice Bloom
-	SeedsResource:
-		ResourceType: Spice
-		Interval: 75
-	RadarColorFromTerrain:
-		Terrain: Spice
-	BodyOrientation:
-
 CAMERA:
 	Immobile:
 		OccupiesSpace: false

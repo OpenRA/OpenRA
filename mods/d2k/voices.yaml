@@ -79,3 +79,9 @@ SaboteurVoice:
 		Move: O_SCONF1,O_SCONF2,O_SCONF3
 		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
 	DisableVariants: Select, Move
+
+WormVoice:
+	DefaultVariant: .WAV
+	Voices:
+		Select: WRMSIGN1
+		Move: WORM
