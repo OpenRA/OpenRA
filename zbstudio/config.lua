@@ -32,6 +32,8 @@ end
 outputshell.usewrap = true
 filehistorylength = 20
 
+hidpi = G.ide.osname == 'Macintosh' -- support Retina displays by default (OSX)
+
 singleinstance = G.ide.osname ~= 'Macintosh'
 singleinstanceport = 0xe493
 
