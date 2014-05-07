@@ -342,7 +342,7 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
   if styles.calltip then editor:CallTipUseStyle(2) end
 
   do
-    local defaultfg = styles.text and styles.text.fg or {127,127,127}
+    local defaultfg = {127,127,127}
     local indic = styles.indicator or {}
 
     -- use styles.fncall if not empty and if indic.fncall is empty
