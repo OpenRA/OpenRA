@@ -69,13 +69,13 @@ hhusk:
 	idle:
 		Start: 0
 		Facings: 32
-		ZOffset: -1023
+		ZOffset: -63
 
 hhusk2:
 	idle:
 		Start: 0
 		Facings: 32
-		ZOffset: -1023
+		ZOffset: -63
 
 1tnk:
 	idle:
