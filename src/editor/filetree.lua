@@ -178,6 +178,7 @@ local function treeSetConnectorsAndIcons(tree)
   function tree:ActivateItem(item_id)
     local name = tree:GetItemFullName(item_id)
 
+    local event = wx.wxTreeEvent(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED, item_id:GetValue())
     if PackageEventHandle("onFiletreeActivate", tree, event, item_id) == false then
       return
     end
