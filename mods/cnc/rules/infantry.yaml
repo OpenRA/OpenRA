@@ -68,7 +68,7 @@ E3:
 	Health:
 		HP: 45
 	AutoTarget:
-		ScanRadius: 5
+		ScanRadius: 6
 	Armament:
 		Weapon: Rockets
 		LocalOffset: 256,43,341
@@ -195,7 +195,7 @@ RMBO:
 	RevealsShroud:
 		Range: 6c0
 	AutoTarget:
-		ScanRadius: 5
+		ScanRadius: 6
 	C4Demolition:
 		C4Delay: 45
 	Armament:
