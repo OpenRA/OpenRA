@@ -34,6 +34,14 @@ e1:
 		Start: 192
 		Length: 8
 		Facings: 8
+	panic-stand: e1panic
+		Start: 0
+		Length: 6
+		Facings: 8
+	panic-run: e1panic
+		Start: 0
+		Length: 6
+		Facings: 8
 	idle1:
 		Start: 256
 		Length: 16
