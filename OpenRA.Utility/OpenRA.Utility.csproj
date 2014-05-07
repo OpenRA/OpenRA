@@ -79,6 +79,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="UpgradeRules.cs" />
     <Compile Include="LegacyMapImporter.cs" />
+    <Compile Include="Glob.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
