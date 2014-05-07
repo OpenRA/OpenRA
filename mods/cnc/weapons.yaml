@@ -410,7 +410,7 @@ Chemspray:
 		Spread: 256
 		Versus:
 			None: 100%
-			Wood: 50%
+			Wood: 35%
 			Light: 75%
 			Heavy: 50%
 		InfDeath: 6
