@@ -250,7 +250,7 @@ Rockets:
 		Trail: smokey
 		ContrailLength: 8
 		Speed: 298
-		RangeLimit: 30
+		RangeLimit: 20
 	Warhead:
 		Spread: 128
 		Versus:
@@ -282,7 +282,7 @@ BikeRockets:
 		Trail: smokey
 		ContrailLength: 8
 		Speed: 298
-		RangeLimit: 40
+		RangeLimit: 20
 	Warhead:
 		Spread: 128
 		Versus:
