@@ -10,7 +10,7 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: place2.aud
-		TerrainTypes: Clear,Road
+		TerrainTypes: Clear, Road
 	GivesBuildableArea:
 	Capturable:
 	SoundOnDamageTransition:
@@ -48,7 +48,7 @@
 		Footprint: x
 		BuildSounds: place2.aud
 		Adjacent: 7
-		TerrainTypes: Clear,Road
+		TerrainTypes: Clear, Road
 	SoundOnDamageTransition:
 		DamagedSound: expnew01.aud
 		DestroyedSound: crmble2.aud
@@ -95,8 +95,7 @@
 			Clear: 90
 			Rough: 80
 			Road: 100
-			Ore: 80
-			Gems: 80
+			Tiberium: 80
 			Beach: 80
 	SelectionDecorations:
 		Palette: pips
@@ -124,6 +123,9 @@
 	GivesBounty:
 	CrushableInfantry:
 		CrushSound: squish6.aud
+	PoisonedByTiberium:
+	SpawnViceroid:
+		ViceroidActor: vissml
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guard:
@@ -172,6 +174,7 @@
 			Rough: 40
 			Road: 100
 			Beach: 40
+			Tiberium: 40
 		ROT: 5
 	SelectionDecorations:
 		Palette: pips

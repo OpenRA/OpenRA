@@ -41,7 +41,7 @@ namespace OpenRA.Graphics
 				for (var i = 15; i > 0; i--)
 					remapRamp = ramp.Select(r => r - ramp[15]).ToArray();
 			}
-			
+
 			remapColors = remapRamp.Select((x, i) => Pair.New(baseIndex + i, Exts.ColorLerp(x / 16f, c1, c2)))
 				.ToDictionary(u => u.First, u => u.Second);
 		}

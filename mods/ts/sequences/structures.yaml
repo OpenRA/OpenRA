@@ -614,3 +614,35 @@ nahpad:
 		ShadowStart: 20
 	icon: nhpdicon
 		Start: 0
+
+proc: # TODO: unused narefn_a, narefn_b
+	idle: narefn
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: narefn
+		Start: 1
+		ShadowStart: 4
+	critical-idle: narefn
+		Start: 2
+		ShadowStart: 5
+	make: narefnmk
+		Start: 0
+		Length: 20
+		ShadowStart: 20
+	idle-redlights: narefn_c
+		Start: 0
+		Length: 16
+		Tick: 120
+	damaged-idle-redlights: narefn_c
+		Start: 0
+		Length: 16
+		Tick: 120
+	critical-idle-redlights: narefn_c
+		Start: 16
+		Length: 16
+		Tick: 200
+#	bib: narefnbb
+#		Start: 0
+#		Length: *
+	icon: reficon
+		Start: 0
