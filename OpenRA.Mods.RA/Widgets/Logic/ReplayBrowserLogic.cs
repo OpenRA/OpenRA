@@ -143,8 +143,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						new KeyValuePair<DateType, string>(DateType.Any, ddb.GetText()),
 						new KeyValuePair<DateType, string>(DateType.Today, "Today"),
-						new KeyValuePair<DateType, string>(DateType.LastWeek, "Last Week"),
-						new KeyValuePair<DateType, string>(DateType.LastMonth, "Last Month")
+						new KeyValuePair<DateType, string>(DateType.LastWeek, "Last 7 days"),
+						new KeyValuePair<DateType, string>(DateType.LastFortnight, "Last 14 days"),
+						new KeyValuePair<DateType, string>(DateType.LastMonth, "Last 30 days")
 					};
 					var lookup = options.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -497,6 +498,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						t = TimeSpan.FromDays(7d);
 						break;
 
+					case DateType.LastFortnight:
+						t = TimeSpan.FromDays(14d);
+						break;
+
 					case DateType.LastMonth:
 					default:
 						t = TimeSpan.FromDays(30d);
@@ -705,6 +710,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Any,
 			Today,
 			LastWeek,
+			LastFortnight,
 			LastMonth
 		}
 		enum DurationType
