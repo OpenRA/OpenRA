@@ -162,6 +162,19 @@ local function treeSetConnectorsAndIcons(tree)
     return fullPath:GetFullPath()
   end
 
+  local function refreshAncestors(node)
+    -- when this method is called from END_EDIT, it causes infinite loop
+    -- on OSX (wxwidgets 2.9.5) as Delete in treeAddDir calls END_EDIT again.
+    -- disable handlers while the tree is populated and then enable back.
+    tree:SetEvtHandlerEnabled(false)
+    while node:IsOk() do
+      local dir = tree:GetItemFullName(node)
+      treeAddDir(tree,node,dir)
+      node = tree:GetItemParent(node)
+    end
+    tree:SetEvtHandlerEnabled(true)
+  end
+
   function tree:ActivateItem(item_id)
     local name = tree:GetItemFullName(item_id)
 
@@ -177,19 +190,6 @@ local function treeSetConnectorsAndIcons(tree)
       if wx.wxFileExists(name) then LoadFile(name,nil,true)
       else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
     end
-  end
-
-  local function refreshAncestors(node)
-    -- when this method is called from END_EDIT, it causes infinite loop
-    -- on OSX (wxwidgets 2.9.5) as Delete in treeAddDir calls END_EDIT again.
-    -- disable handlers while the tree is populated and then enable back.
-    tree:SetEvtHandlerEnabled(false)
-    while node:IsOk() do
-      local dir = tree:GetItemFullName(node)
-      treeAddDir(tree,node,dir)
-      node = tree:GetItemParent(node)
-    end
-    tree:SetEvtHandlerEnabled(true)
   end
 
   local empty = ""
