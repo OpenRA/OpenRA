@@ -371,6 +371,16 @@ ide.config.os = os
 ide.config.wxstc = wxstc
 ide.config.load = { interpreters = loadInterpreters, specs = loadSpecs,
   tools = loadTools }
+do
+  local num = 0
+  ide.config.package = function(p)
+    if p then
+      num = num + 1
+      local name = 'config'..num..'package'
+      ide.packages[name] = setmetatable(p, ide.proto.Plugin)
+    end
+  end
+end
 
 LoadLuaConfig(ide.config.path.app.."/config.lua")
 
