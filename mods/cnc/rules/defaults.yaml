@@ -187,8 +187,14 @@
 	DetectCloaked:
 		Range: 1
 	ScriptTriggers:
-	DeathSounds:
-		Burned: yell1.aud
+	DeathSounds@NORMAL:
+		InfDeaths: 1, 2, 3, 4
+	DeathSounds@BURNED:
+		DeathSound: Burned
+		InfDeaths: 5
+	DeathSounds@POISONED:
+		DeathSound: Poisoned
+		InfDeaths: 6
 
 ^CivInfantry:
 	Inherits: ^Infantry

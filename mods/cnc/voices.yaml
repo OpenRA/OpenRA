@@ -5,8 +5,11 @@ GenericVoice:
 	Voices:
 		Select: await1,ready,report1,yessir1
 		Move: ackno,affirm1,noprob,ritaway,roger,ugotit
-		Die: nuyell1,nuyell3,nuyell4,nuyell5
-	DisableVariants: Die
+		Die: nuyell1,nuyell4,nuyell5,nuyell6
+		Burned: yell1
+		Zapped: nuyell3
+		Poisoned: nuyell12
+	DisableVariants: Die, Burned, Zapped, Poisoned
 
 VehicleVoice:
 	Variants:
@@ -20,13 +23,19 @@ CivilianMaleVoice:
 	Voices:
 		Select: guyyeah1
 		Move: guyokay1
-		Die: nuyell1,nuyell3,nuyell4,nuyell5
+		Die: nuyell1,nuyell4,nuyell5,nuyell6
+		Burned: yell1
+		Zapped: nuyell3
+		Poisoned: nuyell12
 
 CivilianFemaleVoice:
 	Voices:
 		Select: girlyeah
 		Move: girlokay
-		Die: nuyell1,nuyell3,nuyell4,nuyell5
+		Die: nuyell1,nuyell4,nuyell5,nuyell6
+		Burned: yell1
+		Zapped: nuyell3
+		Poisoned: nuyell12
 
 CommandoVoice:
 	Voices:
@@ -35,6 +44,9 @@ CommandoVoice:
 		Attack: onit1,gotit1
 		Demolish: bombit1
 		Die: ramyell1
+		Burned: ramyell1
+		Zapped: ramyell1
+		Poisoned: ramyell1
 		Build: rokroll1
 		Kill: keepem1,laugh1,lefty1
 
@@ -44,3 +56,6 @@ DinoVoice:
 		Move: dinomout
 		Attack: dinoatk1
 		Die: dinodie1
+		Burned: dinodie1
+		Zapped: dinodie1
+		Poisoned: dinodie1

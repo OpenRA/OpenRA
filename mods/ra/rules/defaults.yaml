@@ -168,7 +168,14 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
-	DeathSounds:
+	DeathSounds@NORMAL:
+		InfDeaths: 1, 2, 3, 4
+	DeathSounds@BURNED:
+		DeathSound: Burned
+		InfDeaths: 5
+	DeathSounds@ZAPPED:
+		DeathSound: Zapped
+		InfDeaths: 6
 
 ^Ship:
 	AppearsOnRadar:

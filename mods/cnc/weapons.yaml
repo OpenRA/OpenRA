@@ -373,7 +373,7 @@ Flamethrower:
 			Heavy: 20%
 		Explosion: small_napalm
 		InfDeath: 5
-		ImpactSound: flamer2
+		ImpactSound: flamer2.aud
 		SmudgeType: Scorch
 		Damage: 40
 

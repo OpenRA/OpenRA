@@ -325,8 +325,8 @@ Weapons:
 			InfDeath: 2
 			SmudgeType: Crater
 			Damage: 250
-			ImpactSound: kaboom12
-			WaterImpactSound: splash9
+			ImpactSound: kaboom12.aud
+			WaterImpactSound: splash9.aud
 	SubMissile:
 		ROF: 250
 		Range: 32c0
@@ -348,11 +348,11 @@ Weapons:
 				Heavy: 30%
 			Explosion: large_explosion
 			WaterExplosion: large_splash
-			InfDeath: 2
+			InfDeath: blownaway
 			SmudgeType: Crater
 			Damage: 400
-			ImpactSound: kaboom12
-			WaterImpactSound: splash9
+			ImpactSound: kaboom12.aud
+			WaterImpactSound: splash9.aud
 
 Voices:
 
