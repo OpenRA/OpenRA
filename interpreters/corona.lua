@@ -54,12 +54,13 @@ return {
         or MergeFullPath(GetPathWithSep(corona), "Resources/mobdebug.lua")
       local mdbl = MergeFullPath(GetPathWithSep(ide.editorFilename), "lualibs/mobdebug/mobdebug.lua")
       local needed = needRefresh(mdbl, mdbc)
+      local mdbcplugin = win and MergeFullPath(wx.wxStandardPaths.Get():GetUserLocalDataDir(),
+        "../../Roaming/Corona Labs/Corona Simulator/Plugins/mobdebug.lua")
       if needed then
         local copied = FileCopy(mdbl, mdbc)
         -- couldn't copy to the Resources/ folder; not have permissions?
         if not copied and win then
-          mdbc = MergeFullPath(wx.wxStandardPaths.Get():GetUserLocalDataDir(),
-            "../../Roaming/Corona Labs/Corona Simulator/Plugins/mobdebug.lua")
+          mdbc = mdbcplugin
           needed = needRefresh(mdbl, mdbc)
           copied = needed and FileCopy(mdbl, mdbc)
         end
@@ -71,6 +72,10 @@ return {
           DisplayOutputLn(message)
           if not copied then return end
         end
+      end
+      -- remove debugger if copied to plugin directory as it may be obsolete
+      if mdbcplugin and mdbcplugin ~= mdbc and wx.wxFileExists(mdbcplugin) then
+        wx.wxRemoveFile(mdbcplugin)
       end
     end
 
