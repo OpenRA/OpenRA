@@ -31,6 +31,7 @@ end
 
 outputshell.usewrap = true
 filehistorylength = 20
+menuformatrecentprojects = "%f | %i"
 
 hidpi = G.ide.osname == 'Macintosh' -- support Retina displays by default (OSX)
 

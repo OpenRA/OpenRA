@@ -581,11 +581,16 @@ end
 
 local function getProjectLabels()
   local labels = {}
+  local fmt = ide.config.menuformatrecentprojects or '%f'
   for i, proj in ipairs(FileTreeGetProjects()) do
     local config = ide.session.projects[proj]
     local intfname = config and config[2] and config[2].interpreter or ide.interpreter:GetFileName()
     local interpreter = intfname and ide.interpreters[intfname]
-    table.insert(labels, proj..(interpreter and (' ('..interpreter:GetName()..')') or ''))
+    local parts = wx.wxFileName(proj..pathsep):GetDirs()
+    table.insert(labels, (fmt
+      :gsub('%%f', proj)
+      :gsub('%%i', interpreter and interpreter:GetName() or '?')
+      :gsub('%%s', parts[#parts] or '')))
   end
   return labels
 end
