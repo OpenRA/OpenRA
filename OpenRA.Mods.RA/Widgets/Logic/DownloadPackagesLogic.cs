@@ -26,6 +26,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
 		Action afterInstall;
+		string mirror;
 
 		[ObjectCreator.UseCtor]
 		public DownloadPackagesLogic(Widget widget, Dictionary<string, string> installData, Action afterInstall)
@@ -42,14 +43,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void ShowDownloadDialog()
 		{
-			statusLabel.GetText = () => "Initializing...";
+			statusLabel.GetText = () => "Fetching list of mirrors...";
 			progressBar.Indeterminate = true;
+
 			var retryButton = panel.Get<ButtonWidget>("RETRY_BUTTON");
 			retryButton.IsVisible = () => false;
 
 			var cancelButton = panel.Get<ButtonWidget>("CANCEL_BUTTON");
 
-			// Save the package to a temp file
+			var mirrorsFile = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id, "mirrors.txt" }.Aggregate(Path.Combine);
 			var file = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 			var dest = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
 
@@ -57,7 +59,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				progressBar.Indeterminate = false;
 				progressBar.Percentage = i.ProgressPercentage;
-				statusLabel.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived / 1024, i.TotalBytesToReceive / 1024);
+				statusLabel.GetText = () => "Downloading from {3} {1}/{2} kB ({0}%)".F(i.ProgressPercentage,
+					i.BytesReceived / 1024, i.TotalBytesToReceive / 1024, 
+					mirror != null ? new Uri(mirror).Host : "unknown host");
 			};
 
 			Action<string> onExtractProgress = s =>
@@ -100,10 +104,41 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}
 			};
 
-			var dl = new Download(installData["PackageURL"], file, onDownloadProgress, onDownloadComplete);
+			Action<AsyncCompletedEventArgs, bool> onFetchMirrorsComplete = (i, cancelled) =>
+			{
+				progressBar.Indeterminate = true;
 
-			cancelButton.OnClick = () => { dl.Cancel(); Ui.CloseWindow(); };
-			retryButton.OnClick = () => { dl.Cancel(); ShowDownloadDialog(); };
+				if (i.Error != null)
+				{
+					onError(Download.FormatErrorMessage(i.Error));
+					return;
+				}
+				else if (cancelled)
+				{
+					onError("Download cancelled");
+					return;
+				}
+
+				var mirrorList = new List<string>();
+				using (var r = new StreamReader(mirrorsFile))
+				{
+					string line;
+					while ((line = r.ReadLine()) != null)
+						if (!string.IsNullOrEmpty(line))
+							mirrorList.Add(line);
+				}
+				mirror = mirrorList.Random(new OpenRA.Thirdparty.Random());
+
+				// Save the package to a temp file
+				var dl = new Download(mirror, file, onDownloadProgress, onDownloadComplete);
+				cancelButton.OnClick = () => { dl.Cancel(); Ui.CloseWindow(); };
+				retryButton.OnClick = () => { dl.Cancel(); ShowDownloadDialog(); };
+			};
+
+			// Get the list of mirrors
+			var updateMirrors = new Download(installData["PackageMirrorList"], mirrorsFile, onDownloadProgress, onFetchMirrorsComplete);
+			cancelButton.OnClick = () => { updateMirrors.Cancel(); Ui.CloseWindow(); };
+			retryButton.OnClick = () => { updateMirrors.Cancel(); ShowDownloadDialog(); };
 		}
 	}
 }

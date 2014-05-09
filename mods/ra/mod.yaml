@@ -131,7 +131,7 @@ LoadScreen: DefaultLoadScreen
 	Image: mods/ra/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFiles: allies.mix, conquer.mix, general.mix, interior.mix, redalert.mix, russian.mix, scores.mix, snow.mix, sounds.mix, temperat.mix
-	PackageURL: http://open-ra.org/download/content/ra-packages
+	PackageMirrorList: http://open-ra.org/packages/ra-mirrors.txt
 	Text: Filling Crates..., Charging Capacitors..., Reticulating Splines..., Planting Trees..., Building Bridges..., Aging Empires..., Compiling EVA..., Constructing Pylons..., Activating Skynet..., Splitting Atoms...
 
 ServerTraits:
