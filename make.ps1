@@ -76,7 +76,6 @@ elseif ($command -eq "version")
 elseif ($command -eq "dependencies")
 {
 	cp thirdparty/*.dll .
-	cp thirdparty/Tao/*.dll .
 	cp thirdparty/windows/*.dll .
 	echo "Dependencies copied."
 }

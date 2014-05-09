@@ -81,7 +81,6 @@ Section "Game" GAME
 	File "${SRCDIR}\DOCUMENTATION.html"
 	File "${SRCDIR}\*.ttf"
 	File "${SRCDIR}\OpenRA.ico"
-	File "${SRCDIR}\Tao.*.dll"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\SDL2-CS.dll"
 	File "${SRCDIR}\global mix database.dat"
@@ -93,7 +92,7 @@ Section "Game" GAME
 	File "${SRCDIR}\KopiLua.dll"
 	File "${SRCDIR}\NLua.dll"
 	File "${SRCDIR}\eluant.dll"
-	File "${DEPSDIR}\OpenAL32.dll"
+	File "${DEPSDIR}\soft_oal.dll"
 	File "${DEPSDIR}\SDL2.dll"
 	File "${DEPSDIR}\freetype6.dll"
 	File "${DEPSDIR}\zlib1.dll"
@@ -195,7 +194,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Mono.Nat.dll
-	Delete $INSTDIR\Tao.*.dll
 	Delete $INSTDIR\SharpFont.dll
 	Delete $INSTDIR\AUTHORS
 	Delete $INSTDIR\COPYING
@@ -214,7 +212,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\KopiLua.dll
 	Delete $INSTDIR\NLua.dll
 	Delete $INSTDIR\SDL2-CS.dll
-	Delete $INSTDIR\OpenAL32.dll
+	Delete $INSTDIR\soft_oal.dll
 	Delete $INSTDIR\SDL2.dll
 	Delete $INSTDIR\lua51.dll
 	Delete $INSTDIR\eluant.dll

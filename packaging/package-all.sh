@@ -41,9 +41,6 @@ for i in "${FILES[@]}"; do
 	cp -R "${i}" "packaging/built/${i}" || exit 3
 done
 
-# Copy Tao
-cp thirdparty/Tao/* packaging/built
-
 # SharpZipLib for zip file support
 cp thirdparty/ICSharpCode.SharpZipLib.dll packaging/built
 

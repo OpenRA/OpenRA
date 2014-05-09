@@ -76,10 +76,6 @@
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
     </Reference>
-    <Reference Include="Tao.OpenAl, Version=1.1.0.1, Culture=neutral, PublicKeyToken=a7579dda88828311">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\thirdparty\Tao\Tao.OpenAl.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -88,6 +84,9 @@
     </Reference>
     <Reference Include="MaxMind.Db">
       <HintPath>..\thirdparty\MaxMind.Db.dll</HintPath>
+    </Reference>
+    <Reference Include="SDL2-CS">
+      <HintPath>..\thirdparty\SDL2-CS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
