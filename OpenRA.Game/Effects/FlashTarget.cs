@@ -18,15 +18,22 @@ namespace OpenRA.Effects
 	{
 		Actor target;
 		Player player;
-		int remainingTicks = 4;
+		int remainingTicks;
 
 		public FlashTarget(Actor target)
-			: this(target, null) { }
+			: this(target, null, 4) { }
+
+		public FlashTarget(Actor target, int ticks)
+			: this(target, null, ticks) { }
 
 		public FlashTarget(Actor target, Player asPlayer)
+			: this(target, asPlayer, 4) { }
+
+		public FlashTarget(Actor target, Player asPlayer, int ticks)
 		{
 			this.target = target;
 			player = asPlayer;
+			remainingTicks = ticks;
 			foreach (var e in target.World.Effects.OfType<FlashTarget>().Where(a => a.target == target).ToArray())
 				target.World.Remove(e);
 		}
