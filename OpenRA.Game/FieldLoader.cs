@@ -116,7 +116,7 @@ namespace OpenRA
 			if (fieldType == typeof(int))
 			{
 				int res;
-				if (int.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out res))
+				if (Exts.TryParseIntegerInvariant(value, out res))
 					return res;
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -165,15 +165,15 @@ namespace OpenRA
 				var parts = value.Split(',');
 				if (parts.Length == 3)
 					return Color.FromArgb(
-						int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo).Clamp(0, 255),
-						int.Parse(parts[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo).Clamp(0, 255),
-						int.Parse(parts[2], NumberStyles.Integer, NumberFormatInfo.InvariantInfo).Clamp(0, 255));
+						Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255));
 				if (parts.Length == 4)
 					return Color.FromArgb(
-						int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo).Clamp(0, 255),
-						int.Parse(parts[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo).Clamp(0, 255),
-						int.Parse(parts[2], NumberStyles.Integer, NumberFormatInfo.InvariantInfo).Clamp(0, 255),
-						int.Parse(parts[3], NumberStyles.Integer, NumberFormatInfo.InvariantInfo).Clamp(0, 255));
+						Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[3]).Clamp(0, 255));
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
@@ -184,9 +184,9 @@ namespace OpenRA
 				// Allow old ColorRamp format to be parsed as HSLColor
 				if (parts.Length == 3 || parts.Length == 4)
 					return new HSLColor(
-						(byte)int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo).Clamp(0, 255),
-						(byte)int.Parse(parts[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo).Clamp(0, 255),
-						(byte)int.Parse(parts[2], NumberStyles.Integer, NumberFormatInfo.InvariantInfo).Clamp(0, 255));
+						(byte)Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+						(byte)Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+						(byte)Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255));
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -238,7 +238,7 @@ namespace OpenRA
 			else if (fieldType == typeof(WAngle))
 			{
 				int res;
-				if (int.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out res))
+				if (Exts.TryParseIntegerInvariant(value, out res))
 					return new WAngle(res);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -249,9 +249,9 @@ namespace OpenRA
 				if (parts.Length == 3)
 				{
 					int rr, rp, ry;
-					if (int.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out rr)
-						&& int.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out rp)
-						&& int.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out ry))
+					if (Exts.TryParseIntegerInvariant(value, out rr)
+						&& Exts.TryParseIntegerInvariant(value, out rp)
+						&& Exts.TryParseIntegerInvariant(value, out ry))
 							return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
 				}
 
@@ -262,16 +262,16 @@ namespace OpenRA
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				return new CPos(
-					int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo),
-					int.Parse(parts[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
+					Exts.ParseIntegerInvariant(parts[0]),
+					Exts.ParseIntegerInvariant(parts[1]));
 			}
 
 			else if (fieldType == typeof(CVec))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				return new CVec(
-					int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo),
-					int.Parse(parts[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
+					Exts.ParseIntegerInvariant(parts[0]),
+					Exts.ParseIntegerInvariant(parts[1]));
 			}
 
 			else if (fieldType.IsEnum)
@@ -306,16 +306,16 @@ namespace OpenRA
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				return new Size(
-					int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo),
-					int.Parse(parts[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
+					Exts.ParseIntegerInvariant(parts[0]),
+					Exts.ParseIntegerInvariant(parts[1]));
 			}
 
 			else if (fieldType == typeof(int2))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				return new int2(
-					int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo),
-					int.Parse(parts[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
+					Exts.ParseIntegerInvariant(parts[0]),
+					Exts.ParseIntegerInvariant(parts[1]));
 			}
 
 			else if (fieldType == typeof(float2))
@@ -335,10 +335,10 @@ namespace OpenRA
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				return new Rectangle(
-					int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo),
-					int.Parse(parts[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo),
-					int.Parse(parts[2], NumberStyles.Integer, NumberFormatInfo.InvariantInfo),
-					int.Parse(parts[3], NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
+					Exts.ParseIntegerInvariant(parts[0]),
+					Exts.ParseIntegerInvariant(parts[1]),
+					Exts.ParseIntegerInvariant(parts[2]),
+					Exts.ParseIntegerInvariant(parts[3]));
 			}
 
 			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Bits<>))

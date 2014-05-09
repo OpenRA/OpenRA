@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Globalization;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
@@ -31,22 +30,22 @@ namespace OpenRA.Graphics
 			sprites = Game.modData.SpriteLoader.LoadAllSprites(cursorSrc);
 			var d = info.NodesDict;
 
-			start = int.Parse(d["start"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+			start = Exts.ParseIntegerInvariant(d["start"].Value);
 			this.palette = palette;
 
 			if ((d.ContainsKey("length") && d["length"].Value == "*") || (d.ContainsKey("end") && d["end"].Value == "*"))
 				length = sprites.Length - start;
 			else if (d.ContainsKey("length"))
-				length = int.Parse(d["length"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+				length = Exts.ParseIntegerInvariant(d["length"].Value);
 			else if (d.ContainsKey("end"))
-				length = int.Parse(d["end"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo) - start;
+				length = Exts.ParseIntegerInvariant(d["end"].Value) - start;
 			else
 				length = 1;
 
 			if (d.ContainsKey("x"))
-				int.TryParse(d["x"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out Hotspot.X);
+				Exts.TryParseIntegerInvariant(d["x"].Value, out Hotspot.X);
 			if (d.ContainsKey("y"))
-				int.TryParse(d["y"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out Hotspot.Y);
+				Exts.TryParseIntegerInvariant(d["y"].Value, out Hotspot.Y);
 		}
 
 		public Sprite GetSprite(int frame)

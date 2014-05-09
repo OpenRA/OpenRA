@@ -142,7 +142,7 @@ namespace OpenRA.FileSystem
 			// Maybe we were given a raw hash?
 			uint raw;
 			if (!uint.TryParse(filename, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out raw))
-			    return null;
+				return null;
 
 			if ("{0:X}".F(raw) == filename && index.ContainsKey(raw))
 				return raw;

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -226,7 +225,7 @@ namespace OpenRA.Mods.RA.Server
 						var slot = server.LobbyInfo.Slots[parts[0]];
 						var bot = server.LobbyInfo.ClientInSlot(parts[0]);
 						int controllerClientIndex;
-						if (!int.TryParse(parts[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out controllerClientIndex))
+						if (!Exts.TryParseIntegerInvariant(parts[1], out controllerClientIndex))
 						{
 							Log.Write("server", "Invalid bot controller client index: {0}", parts[1]);
 							return false;
@@ -414,7 +413,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						int teamCount;
-						if (!int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out teamCount))
+						if (!Exts.TryParseIntegerInvariant(s, out teamCount))
 						{
 							server.SendOrderTo(conn, "Message", "Number of teams could not be parsed: {0}".F(s));
 							return true;
@@ -537,7 +536,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						server.LobbyInfo.GlobalSettings.StartingCash = int.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+						server.LobbyInfo.GlobalSettings.StartingCash = Exts.ParseIntegerInvariant(s);
 						server.SyncLobbyInfo();
 						return true;
 					}},
@@ -558,7 +557,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						int kickClientID;
-						int.TryParse(split[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out kickClientID);
+						Exts.TryParseIntegerInvariant(split[0], out kickClientID);
 
 						var kickConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == kickClientID);
 						if (kickConn == null)
@@ -597,7 +596,7 @@ namespace OpenRA.Mods.RA.Server
 					s =>
 					{
 						var parts = s.Split(' ');
-						var targetClient = server.LobbyInfo.ClientWithIndex(int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
+						var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
 
 						// Only the host can change other client's info
 						if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -615,7 +614,7 @@ namespace OpenRA.Mods.RA.Server
 					s =>
 					{
 						var parts = s.Split(' ');
-						var targetClient = server.LobbyInfo.ClientWithIndex(int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
+						var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
 
 						// Only the host can change other client's info
 						if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -626,7 +625,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 
 						int team;
-						if (!int.TryParse(parts[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out team))
+						if (!Exts.TryParseIntegerInvariant(parts[1], out team))
 						{
 							Log.Write("server", "Invalid team: {0}", s );
 							return false;
@@ -640,7 +639,7 @@ namespace OpenRA.Mods.RA.Server
 					s =>
 					{
 						var parts = s.Split(' ');
-						var targetClient = server.LobbyInfo.ClientWithIndex(int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
+						var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
 
 						// Only the host can change other client's info
 						if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -655,14 +654,14 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 
 						int spawnPoint;
-						if (!int.TryParse(parts[1], NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out spawnPoint)
+						if (!Exts.TryParseIntegerInvariant(parts[1], out spawnPoint)
 							|| spawnPoint < 0 || spawnPoint > server.Map.GetSpawnPoints().Length)
 						{
 							Log.Write("server", "Invalid spawn point: {0}", parts[1]);
 							return true;
 						}
 
-						if (server.LobbyInfo.Clients.Where( cc => cc != client ).Any( cc => (cc.SpawnPoint == spawnPoint) && (cc.SpawnPoint != 0) ))
+						if (server.LobbyInfo.Clients.Where(cc => cc != client).Any(cc => (cc.SpawnPoint == spawnPoint) && (cc.SpawnPoint != 0)))
 						{
 							server.SendOrderTo(conn, "Message", "You can't be at the same spawn point as another player");
 							return true;
@@ -676,7 +675,7 @@ namespace OpenRA.Mods.RA.Server
 					s =>
 					{
 						var parts = s.Split(' ');
-						var targetClient = server.LobbyInfo.ClientWithIndex(int.Parse(parts[0], NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
+						var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
 
 						// Only the host can change other client's info
 						if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -686,7 +685,7 @@ namespace OpenRA.Mods.RA.Server
 						if (targetClient.Slot == null || server.LobbyInfo.Slots[targetClient.Slot].LockColor)
 							return true;
 
-						var ci = parts[1].Split(',').Select(cc => int.Parse(cc, NumberStyles.Integer, NumberFormatInfo.InvariantInfo)).ToArray();
+						var ci = parts[1].Split(',').Select(cc => Exts.ParseIntegerInvariant(cc)).ToArray();
 						targetClient.Color = targetClient.PreferredColor = new HSLColor((byte)ci[0], (byte)ci[1], (byte)ci[2]);
 						server.SyncLobbyInfo();
 						return true;

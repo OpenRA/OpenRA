@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Globalization;
 using System.Linq;
 using OpenRA.Primitives;
 
@@ -48,7 +47,7 @@ namespace OpenRA.Irc
 					{
 						var topic = line.GetChannel().Topic;
 						topic.Author = new User(line[4]);
-						topic.Time = IrcUtils.DateTimeFromUnixTime(int.Parse(line[5], NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
+						topic.Time = IrcUtils.DateTimeFromUnixTime(Exts.ParseIntegerInvariant(line[5]));
 					}
 					break;
 				case NumericCommand.ERR_NICKNAMEINUSE:

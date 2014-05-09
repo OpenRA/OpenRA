@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,7 +11,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -467,7 +466,7 @@ namespace OpenRA.Server
 				case "Pong":
 				{
 					int pingSent;
-					if (!int.TryParse(so.Data, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out pingSent))
+					if (!OpenRA.Exts.TryParseIntegerInvariant(so.Data, out pingSent))
 					{
 						Log.Write("server", "Invalid order pong payload: {0}", so.Data);
 						break;

@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Globalization;
 using System.Net;
 using OpenRA.GameRules;
 using OpenRA.Widgets;
@@ -82,10 +81,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var name = panel.Get<TextFieldWidget>("SERVER_NAME").Text;
 			int listenPort, externalPort;
-			if (!int.TryParse(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out listenPort))
+			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, out listenPort))
 				listenPort = 1234;
 
-			if (!int.TryParse(panel.Get<TextFieldWidget>("EXTERNAL_PORT").Text, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out externalPort))
+			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("EXTERNAL_PORT").Text, out externalPort))
 				externalPort = 1234;
 
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");

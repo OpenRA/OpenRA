@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Globalization;
 using System.Linq;
 
 namespace OpenRA.Graphics
@@ -41,7 +40,7 @@ namespace OpenRA.Graphics
 			try
 			{
 				if (d.ContainsKey("Start"))
-					Start = int.Parse(d["Start"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+					Start = Exts.ParseIntegerInvariant(d["Start"].Value);
 
 				if (d.ContainsKey("Offset"))
 					offset = FieldLoader.GetValue<float2>("Offset", d["Offset"].Value);
@@ -59,16 +58,16 @@ namespace OpenRA.Graphics
 				else if (d["Length"].Value == "*")
 					Length = sprites.Length - Start;
 				else
-					Length = int.Parse(d["Length"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+					Length = Exts.ParseIntegerInvariant(d["Length"].Value);
 
 				if (d.ContainsKey("Stride"))
-					Stride = int.Parse(d["Stride"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+					Stride = Exts.ParseIntegerInvariant(d["Stride"].Value);
 				else
 					Stride = Length;
 
 				if (d.ContainsKey("Facings"))
 				{
-					var f = int.Parse(d["Facings"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+					var f = Exts.ParseIntegerInvariant(d["Facings"].Value);
 					Facings = Math.Abs(f);
 					reverseFacings = f < 0;
 				}
@@ -76,7 +75,7 @@ namespace OpenRA.Graphics
 					Facings = 1;
 
 				if (d.ContainsKey("Tick"))
-					Tick = int.Parse(d["Tick"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+					Tick = Exts.ParseIntegerInvariant(d["Tick"].Value);
 				else
 					Tick = 40;
 
@@ -84,10 +83,10 @@ namespace OpenRA.Graphics
 					transpose = bool.Parse(d["Transpose"].Value);
 
 				if (d.ContainsKey("Frames"))
-					Frames = Array.ConvertAll<string, int>(d["Frames"].Value.Split(','), (s) => int.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo));
+					Frames = Array.ConvertAll<string, int>(d["Frames"].Value.Split(','), Exts.ParseIntegerInvariant);
 
 				if (d.ContainsKey("ShadowStart"))
-					ShadowStart = int.Parse(d["ShadowStart"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+					ShadowStart = Exts.ParseIntegerInvariant(d["ShadowStart"].Value);
 				else
 					ShadowStart = -1;
 
