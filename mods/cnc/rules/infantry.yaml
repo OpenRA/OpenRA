@@ -113,8 +113,8 @@ E5:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Chem Warrior
-		Description: Weaponized-tiberium infantry.\n  Strong vs all Ground units
+		Name: Chemical Warrior
+		Description: Advanced general-purpose infantry.\n  Strong vs all Ground units
 	Buildable:
 		BuildPaletteOrder: 50
 		Owner: nod
