@@ -127,7 +127,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						if (!string.IsNullOrEmpty(line))
 							mirrorList.Add(line);
 				}
-				mirror = mirrorList.Random(new OpenRA.Thirdparty.Random());
+				mirror = mirrorList.Random(new OpenRA.Support.Random());
 
 				// Save the package to a temp file
 				var dl = new Download(mirror, file, onDownloadProgress, onDownloadComplete);
