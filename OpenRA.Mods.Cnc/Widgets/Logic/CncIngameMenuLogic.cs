@@ -65,7 +65,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			menu.Get<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				hideButtons = true;
-				MusicPlayerLogic.OpenWindow(world, () => hideButtons = false);
+				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs()
+				{
+					{ "onExit", () => hideButtons = false },
+				});
 			};
 
 			menu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>

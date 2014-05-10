@@ -28,17 +28,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		ScrollItemWidget itemTemplate;
 
-		public static Widget OpenWindow(World world, Action onExit = null)
-		{
-			return Ui.OpenWindow(
-				"MUSIC_PANEL",
-				new WidgetArgs
-				{
-					{ "onExit", onExit != null ? onExit : (() => {}) }
-				}
-			);
-		}
-
 		[ObjectCreator.UseCtor]
 		public MusicPlayerLogic(Widget widget, World world, Action onExit)
 		{

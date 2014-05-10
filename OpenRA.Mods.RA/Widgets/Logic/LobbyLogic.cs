@@ -483,7 +483,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var musicButton = lobby.GetOrNull<ButtonWidget>("MUSIC_BUTTON");
 			if (musicButton != null)
-				musicButton.OnClick = () => MusicPlayerLogic.OpenWindow(world);
+				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs { { "onExit", DoNothing } });
 
 			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");
 			if (settingsButton != null)
