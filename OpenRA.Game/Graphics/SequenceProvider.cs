@@ -30,33 +30,33 @@ namespace OpenRA.Graphics
 
 		public Sequence GetSequence(string unitName, string sequenceName)
 		{
-			try
-			{
-				return sequences.Value[unitName].Value[sequenceName];
-			}
-			catch (KeyNotFoundException)
-			{
-				if (sequences.Value.ContainsKey(unitName))
-					throw new InvalidOperationException("Unit `{0}` does not have a sequence `{1}`".F(unitName, sequenceName));
-				else
-					throw new InvalidOperationException("Unit `{0}` does not have all sequences defined.".F(unitName));
-			}
+			Lazy<IReadOnlyDictionary<string, Sequence>> unitSeq;
+			if (!sequences.Value.TryGetValue(unitName, out unitSeq))
+				throw new InvalidOperationException("Unit `{0}` does not have any sequences defined.".F(unitName));
+
+			Sequence seq;
+			if (!unitSeq.Value.TryGetValue(sequenceName, out seq))
+				throw new InvalidOperationException("Unit `{0}` does not have a sequence named `{1}`".F(unitName, sequenceName));
+
+			return seq;
 		}
 
 		public bool HasSequence(string unitName, string sequenceName)
 		{
-			if (!sequences.Value.ContainsKey(unitName))
-				throw new InvalidOperationException("Unit `{0}` does not have sequence `{1}` defined.".F(unitName, sequenceName));
+			Lazy<IReadOnlyDictionary<string, Sequence>> unitSeq;
+			if (!sequences.Value.TryGetValue(unitName, out unitSeq))
+				throw new InvalidOperationException("Unit `{0}` does not have any sequences defined.".F(unitName));
 
-			return sequences.Value[unitName].Value.ContainsKey(sequenceName);
+			return unitSeq.Value.ContainsKey(sequenceName);
 		}
 
 		public IEnumerable<string> Sequences(string unitName)
 		{
-			if (!sequences.Value.ContainsKey(unitName))
-				throw new InvalidOperationException("Unit `{0}` does not have all sequences defined.".F(unitName));
+			Lazy<IReadOnlyDictionary<string, Sequence>> unitSeq;
+			if (!sequences.Value.TryGetValue(unitName, out unitSeq))
+				throw new InvalidOperationException("Unit `{0}` does not have any sequences defined.".F(unitName));
 
-			return sequences.Value[unitName].Value.Keys;
+			return unitSeq.Value.Keys;
 		}
 	}
 
