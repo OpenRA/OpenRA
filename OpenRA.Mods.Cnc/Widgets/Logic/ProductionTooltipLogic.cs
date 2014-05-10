@@ -21,8 +21,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class ProductionTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ProductionTooltipLogic(Widget widget, Ruleset rules, TooltipContainerWidget tooltipContainer, ProductionPaletteWidget palette)
+		public ProductionTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, ProductionPaletteWidget palette)
 		{
+			var mapRules = palette.World.Map.Rules;
 			var pm = palette.World.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var pr = palette.World.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				if (actor == null || actor == lastActor)
 					return;
 
-				var info = rules.Actors[actor];
+				var info = mapRules.Actors[actor];
 				var tooltip = info.Traits.Get<TooltipInfo>();
 				var buildable = info.Traits.Get<BuildableInfo>();
 				var cost = info.Traits.Get<ValuedInfo>().Cost;
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 				nameLabel.GetText = () => tooltip.Name;
 
-				var prereqs = buildable.Prerequisites.Select(a => ActorName(rules, a));
+				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a));
 				var requiresString = prereqs.Any() ? requiresLabel.Text.F(prereqs.JoinWith(", ")) : "";
 				requiresLabel.GetText = () => requiresString;
 
