@@ -55,12 +55,12 @@ namespace OpenRA.Widgets
 		public Action OnDoubleClick = () => {}; 
 		public Action<KeyInput> OnKeyPress = _ => {};
 
-		readonly Ruleset rules;
+		readonly Ruleset modRules;
 
 		[ObjectCreator.UseCtor]
-		public ButtonWidget(Ruleset rules)
+		public ButtonWidget(Ruleset modRules)
 		{
-			this.rules = rules;
+			this.modRules = modRules;
 
 			GetText = () => { return Text; };
 			GetColor = () => TextColor;
@@ -77,7 +77,7 @@ namespace OpenRA.Widgets
 		protected ButtonWidget(ButtonWidget other)
 			: base(other)
 		{
-			this.rules = other.rules;
+			this.modRules = other.modRules;
 
 			Text = other.Text;
 			Font = other.Font;
@@ -122,10 +122,10 @@ namespace OpenRA.Widgets
 			if (!IsDisabled())
 			{
 				OnKeyPress(e);
-				Sound.PlayNotification(rules, null, "Sounds", "ClickSound", null);
+				Sound.PlayNotification(modRules, null, "Sounds", "ClickSound", null);
 			}
 			else
-				Sound.PlayNotification(rules, null, "Sounds", "ClickDisabledSound", null);
+				Sound.PlayNotification(modRules, null, "Sounds", "ClickDisabledSound", null);
 
 			return true;
 		}
@@ -162,12 +162,12 @@ namespace OpenRA.Widgets
 				{
 					OnMouseDown(mi);
 					Depressed = true;
-					Sound.PlayNotification(rules, null, "Sounds", "ClickSound", null);
+					Sound.PlayNotification(modRules, null, "Sounds", "ClickSound", null);
 				}
 				else
 				{
 					YieldMouseFocus(mi);
-					Sound.PlayNotification(rules, null, "Sounds", "ClickDisabledSound", null);
+					Sound.PlayNotification(modRules, null, "Sounds", "ClickDisabledSound", null);
 				}
 			}
 			else if (mi.Event == MouseInputEvent.Move && HasMouseFocus)

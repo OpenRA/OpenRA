@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public readonly string ProductionGroup;
 
 		[ObjectCreator.UseCtor]
-		public ProductionTypeButtonWidget(Ruleset rules)
-			: base(rules) { }
+		public ProductionTypeButtonWidget(Ruleset modRules)
+			: base(modRules) { }
 
 		protected ProductionTypeButtonWidget(ProductionTypeButtonWidget other)
 			: base(other)

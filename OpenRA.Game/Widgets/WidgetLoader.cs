@@ -58,8 +58,8 @@ namespace OpenRA
 				if (child.Key != "Children")
 					FieldLoader.LoadField(widget, child.Key, child.Value.Value);
 
-			if (!args.ContainsKey("rules"))
-				args = new WidgetArgs(args) { { "rules", modData.DefaultRules } };
+			if (!args.ContainsKey("modRules"))
+				args = new WidgetArgs(args) { { "modRules", modData.DefaultRules } };
 			widget.Initialize(args);
 
 			foreach (var child in node.Value.Nodes)

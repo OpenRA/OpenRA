@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class CncInstallMusicLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CncInstallMusicLogic(Widget widget, Ruleset rules, Action onExit)
+		public CncInstallMusicLogic(Widget widget, Ruleset modRules, Action onExit)
 		{
 			var installButton = widget.GetOrNull<ButtonWidget>("INSTALL_BUTTON");
 			if (installButton != null)
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						GlobalFileSystem.Mount(Path.Combine(path, "scores.mix"));
 						GlobalFileSystem.Mount(Path.Combine(path, "transit.mix"));
 
-						rules.Music.Do(m => m.Value.Reload());
+						modRules.Music.Do(m => m.Value.Reload());
 
 						var musicPlayerLogic = (MusicPlayerLogic)installButton.Parent.LogicObject;
 						musicPlayerLogic.BuildMusicTable();
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						{ "filesToCopy", new[] { "SCORES.MIX" } },
 						{ "filesToExtract", new[] { "transit.mix" } },
 					});
-				installButton.IsVisible = () => rules.InstalledMusic.ToArray().Length < 3; // HACK around music being split between transit.mix and scores.mix
+				installButton.IsVisible = () => modRules.InstalledMusic.ToArray().Length < 3; // HACK around music being split between transit.mix and scores.mix
 			}
 		}
 	}

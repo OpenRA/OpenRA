@@ -22,8 +22,8 @@ namespace OpenRA.Widgets
 		MaskWidget fullscreenMask;
 
 		[ObjectCreator.UseCtor]
-		public DropDownButtonWidget(Ruleset rules)
-			: base(rules) { }
+		public DropDownButtonWidget(Ruleset modRules)
+			: base(modRules) { }
 
 		protected DropDownButtonWidget(DropDownButtonWidget widget)	: base(widget) { }
 

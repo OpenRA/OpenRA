@@ -20,8 +20,8 @@ namespace OpenRA.Widgets
 		public string BaseName = "scrollitem";
 
 		[ObjectCreator.UseCtor]
-		public ScrollItemWidget(Ruleset rules)
-			: base(rules)
+		public ScrollItemWidget(Ruleset modRules)
+			: base(modRules)
 		{
 			IsVisible = () => false;
 			VisualHeight = 0;
