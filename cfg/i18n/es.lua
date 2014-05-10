@@ -1,6 +1,4 @@
 -- Traducción realiazada por Iñigo Sola
--- para la versión ZeroBrane Studio 17bdb48
--- 10 de Noviembre de 2012
 return {
   [0] = function(c) return c == 1 and 1 or 2 end, -- plural
   ["%d instance"] = nil, -- src\editor\findreplace.lua
@@ -17,6 +15,7 @@ return {
   ["&Delete"] = nil, -- src\editor\filetree.lua
   ["&Documentation"] = nil, -- src\editor\menu_help.lua
   ["&Down"] = nil, -- src\editor\findreplace.lua
+  ["&Edit Project Directory"] = nil, -- src\editor\filetree.lua
   ["&Edit Watch"] = "Editar observación", -- src\editor\debugger.lua
   ["&Edit"] = "Editar", -- src\editor\menu_edit.lua
   ["&File"] = "Archivo", -- src\editor\menu_file.lua
@@ -45,7 +44,9 @@ return {
   ["&Sort"] = "Clasificar", -- src\editor\menu_edit.lua
   ["&Stack Window"] = "Ventana de la pila de ejecución", -- src\editor\menu_view.lua
   ["&Start Debugger Server"] = "Lanzar servidor de depuración", -- src\editor\menu_project.lua
+  ["&Status Bar"] = nil, -- src\editor\menu_view.lua
   ["&Subdirectories"] = nil, -- src\editor\findreplace.lua
+  ["&Tool Bar"] = nil, -- src\editor\menu_view.lua
   ["&Tutorials"] = nil, -- src\editor\menu_help.lua
   ["&Undo"] = "Deshacer", -- src\editor\menu_edit.lua, src\editor\editor.lua
   ["&Up"] = nil, -- src\editor\findreplace.lua
@@ -61,6 +62,7 @@ return {
   ["Analyze"] = "Analizar", -- src\editor\inspect.lua
   ["Auto Complete Identifiers"] = "Autocompletar identificadores", -- src\editor\menu_edit.lua
   ["Auto complete while typing"] = "Autocompletar mientras se escribe", -- src\editor\menu_edit.lua
+  ["Bookmark"] = nil, -- src\editor\menu_edit.lua
   ["Break execution at the next executed line of code"] = "Parar ejecución en la siguiente línea de código", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["C&lear Output Window"] = "Limpiar ventana de Salida", -- src\editor\menu_project.lua
   ["C&omment/Uncomment"] = "Comentar/descomentar", -- src\editor\menu_edit.lua
@@ -71,11 +73,13 @@ return {
   ["Can't start debugger server at %s:%d: %s."] = nil, -- src\editor\debugger.lua
   ["Can't start debugging session due to internal error '%s'."] = "No se puede iniciar la sesión de depuración debido a un error interno '%s'.'", -- src\editor\debugger.lua
   ["Can't start debugging without an opened file or with the current file not being saved ('%s')."] = "No se puede iniciar la depuración sin abrir un archivo o si no ha sido guardado ('%s').", -- src\editor\debugger.lua
+  ["Can't stop debugger server as it is not started."] = nil, -- src\editor\debugger.lua
   ["Cancel"] = nil, -- src\editor\findreplace.lua
   ["Cancelled by the user."] = nil, -- src\editor\findreplace.lua
-  ["Choose..."] = nil, -- src\editor\menu_project.lua
-  ["Choose a project directory"] = "Elegir el directorio del proyecto", -- src\editor\findreplace.lua, src\editor\menu_project.lua
-  ["Clear &Dynamic Words"] = "Limpiar las palabras dinámicas", -- src\editor\menu_edit.lua
+  ["Choose a project directory"] = "Elegir el directorio del proyecto", -- src\editor\findreplace.lua, src\editor\menu_project.lua, src\editor\gui.lua, src\editor\filetree.lua
+  ["Choose..."] = nil, -- src\editor\menu_project.lua, src\editor\filetree.lua
+  ["Clear Items"] = nil, -- src\editor\menu_file.lua
+  ["Clear items from this list"] = nil, -- src\editor\menu_file.lua
   ["Clear the output window before compiling or debugging"] = "Limpiar la ventana de salida antes de compilar o depurar", -- src\editor\menu_project.lua
   ["Close &Other Pages"] = nil, -- src\editor\gui.lua
   ["Close A&ll Pages"] = nil, -- src\editor\gui.lua
@@ -98,9 +102,11 @@ return {
   ["Cu&t"] = "Cortar", -- src\editor\menu_edit.lua, src\editor\editor.lua
   ["Cut selected text to clipboard"] = "Cortar el texto selecionado al portapapeles", -- src\editor\menu_edit.lua
   ["Debugger server started at %s:%d."] = "Servidor de depuración inciado en %s:%s", -- src\editor\debugger.lua
+  ["Debugger server stopped at %s:%d."] = nil, -- src\editor\debugger.lua
   ["Debugging session completed (%s)."] = "Sesión de depuración completada (%s).", -- src\editor\debugger.lua
   ["Debugging session started in '%s'."] = "Sesión de depuración iniciada en '%s'.", -- src\editor\debugger.lua
   ["Debugging suspended at %s:%s (couldn't activate the file)."] = nil, -- src\editor\debugger.lua
+  ["Detach &Process"] = nil, -- src\editor\menu_project.lua
   ["Directory"] = nil, -- src\editor\findreplace.lua
   ["Do you want to delete '%s'?"] = nil, -- src\editor\filetree.lua
   ["Do you want to overwrite it?"] = nil, -- src\editor\commands.lua
@@ -144,8 +150,10 @@ return {
   ["Found"] = nil, -- src\editor\findreplace.lua
   ["Full &Screen"] = "Pantalla completa", -- src\editor\menu_view.lua
   ["Go To Definition"] = nil, -- src\editor\editor.lua
-  ["Go to a selected line"] = "Ir a línea seleccionada", -- src\editor\menu_search.lua
   ["Go To Line"] = "Ir a línea", -- src\editor\menu_search.lua
+  ["Go To Next Bookmark"] = nil, -- src\editor\menu_edit.lua
+  ["Go To Previous Bookmark"] = nil, -- src\editor\menu_edit.lua
+  ["Go to a selected line"] = "Ir a línea seleccionada", -- src\editor\menu_search.lua
   ["INS"] = "INS", -- src\editor\editor.lua
   ["In Files"] = nil, -- src\editor\findreplace.lua
   ["Jump to a function definition..."] = "Saltar a la definición de la función...", -- src\editor\editor.lua
@@ -175,13 +183,15 @@ return {
   ["Program starting as '%s'."] = "Programa iniciado como '%s'.", -- src\editor\output.lua
   ["Program stopped (pid: %d)."] = "Programa parado (pid: %d).", -- src\editor\debugger.lua
   ["Program unable to run as '%s'."] = "No se puede ejecutar el programa como '%s'.", -- src\editor\output.lua
-  ["Project Directory"] = nil, -- src\editor\menu_project.lua
-  ["Project"] = "Proyecto", -- src\editor\gui.lua, src\editor\settings.lua
+  ["Project Directory"] = nil, -- src\editor\menu_project.lua, src\editor\filetree.lua
+  ["Project history"] = nil, -- src\editor\menu_file.lua
+  ["Project"] = "Proyecto", -- src\editor\gui.lua
   ["Project/&FileTree Window"] = "Ventana de proyecto/árbol de archivos", -- src\editor\menu_view.lua
   ["Provide command line parameters"] = nil, -- src\editor\menu_project.lua
   ["R/O"] = "R/O", -- src\editor\editor.lua
   ["R/W"] = "R/W", -- src\editor\editor.lua
   ["Re&place In Files"] = "Remplazar en archivos", -- src\editor\menu_search.lua
+  ["Recent &Projects"] = nil, -- src\editor\menu_file.lua
   ["Recent Files"] = "Archivos recientes", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Rehacer la última edición deshecha", -- src\editor\menu_edit.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "No se pudo lanzar una nueva sesión de depuración porque ya hay una en curso.", -- src\editor\debugger.lua
@@ -194,7 +204,6 @@ return {
   ["Replaced"] = nil, -- src\editor\findreplace.lua
   ["Replacing"] = nil, -- src\editor\findreplace.lua
   ["Reset to default layout"] = "Restablecer el diseño por defecto", -- src\editor\menu_view.lua
-  ["Resets the dynamic word list for autocompletion"] = "Restablecer la lista dinámica de palabras para autocompletado", -- src\editor\menu_edit.lua
   ["Run as Scratchpad"] = "Ejecutar como borrador", -- src\editor\menu_project.lua
   ["S&top Debugging"] = "Parar depuración", -- src\editor\menu_project.lua
   ["S&top Process"] = "Parar proceso", -- src\editor\menu_project.lua
@@ -210,6 +219,7 @@ return {
   ["Scope"] = nil, -- src\editor\findreplace.lua
   ["Scratchpad error"] = "Error en el borrador", -- src\editor\debugger.lua
   ["Searching for"] = nil, -- src\editor\findreplace.lua
+  ["Sel: %d/%d"] = nil, -- src\editor\editor.lua
   ["Select &All"] = "Seleccionar todo", -- src\editor\menu_edit.lua, src\editor\editor.lua
   ["Select all text in the editor"] = "Seleccionar todo el texto en el editor", -- src\editor\menu_edit.lua
   ["Select and Find Next"] = nil, -- src\editor\menu_search.lua
@@ -219,12 +229,14 @@ return {
   ["Set From Current File"] = nil, -- src\editor\menu_project.lua
   ["Set project directory from current file"] = "Establecer el directorio del proyecto del archivo actual", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["Set the interpreter to be used"] = "Establecer el intérprete a ser usado", -- src\editor\menu_project.lua
-  ["Set the project directory to be used"] = nil, -- src\editor\menu_project.lua
+  ["Set the project directory to be used"] = nil, -- src\editor\menu_project.lua, src\editor\filetree.lua
   ["Settings: System"] = nil, -- src\editor\menu_edit.lua
   ["Settings: User"] = nil, -- src\editor\menu_edit.lua
   ["Show &Tooltip"] = "Ver tooltip", -- src\editor\menu_edit.lua
   ["Show Location"] = nil, -- src\editor\gui.lua, src\editor\filetree.lua
   ["Show tooltip for current position; place cursor after opening bracket of function"] = "Ver tooltip para la posición actual; posicionar el cursor después de abrir el paréntisis de los argumentos de la función", -- src\editor\menu_edit.lua
+  ["Show/Hide the status bar"] = nil, -- src\editor\menu_view.lua
+  ["Show/Hide the toolbar"] = nil, -- src\editor\menu_view.lua
   ["Sort selected lines"] = "Clasificar las líneas seleccionadas", -- src\editor\menu_edit.lua
   ["Stack"] = nil, -- src\editor\debugger.lua, src\editor\gui.lua
   ["Start &Debugging"] = "Comenzar depuración", -- src\editor\menu_project.lua
@@ -236,10 +248,12 @@ return {
   ["Step into"] = "Paso dentro", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["Step out of the current function"] = "Hasta salir de la función actual", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["Step over"] = "Paso sin entrar", -- src\editor\gui.lua, src\editor\menu_project.lua
+  ["Stop debugging and continue running the process"] = nil, -- src\editor\gui.lua, src\editor\menu_project.lua
   ["Stop the currently running process"] = "Parar el proceso en ejecución", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["Switch to or from full screen mode"] = "Conmutar el modo de pantalla completa", -- src\editor\menu_view.lua
   ["Text not found."] = nil, -- src\editor\findreplace.lua
   ["The API file must be located in a subdirectory of the API directory."] = "El archivo de API debe ser almacenado en un subdirectorio del directorio de API.", -- src\editor\autocomplete.lua
+  ["Toggle Bookmark"] = nil, -- src\editor\menu_edit.lua
   ["Toggle Break&point"] = "Conmutar punto de ruptura", -- src\editor\menu_project.lua
   ["Toggle breakpoint"] = "Conmutar punto de ruptura", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["Tr&ace"] = "Traza", -- src\editor\menu_project.lua
@@ -264,6 +278,10 @@ return {
   ["Welcome to the interactive Lua interpreter."] = "Bienvenido al intérprete interactico de Lua.", -- src\editor\shellbox.lua
   ["Wrap ar&ound"] = nil, -- src\editor\findreplace.lua
   ["You must save the program first."] = "Debes guardar el programa primero", -- src\editor\commands.lua
+  ["Zoom In"] = nil, -- src\editor\menu_view.lua
+  ["Zoom Out"] = nil, -- src\editor\menu_view.lua
+  ["Zoom to 100%"] = nil, -- src\editor\menu_view.lua
+  ["Zoom"] = nil, -- src\editor\menu_view.lua
   ["on line %d"] = "en la línea %d", -- src\editor\debugger.lua, src\editor\editor.lua, src\editor\commands.lua
   ["traced %d instruction"] = {"%d instrucción trazada", "%d instrucciones trazadas"}, -- src\editor\debugger.lua
   ["unknown error"] = nil, -- src\editor\debugger.lua
