@@ -315,10 +315,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public static string GenerateModLabel(GameServer s)
 		{
-			ModInformation mod;
+			ModMetadata mod;
 			var modVersion = s.Mods.Split('@');
 
-			if (modVersion.Length == 2 && ModInformation.AllMods.TryGetValue(modVersion[0], out mod))
+			if (modVersion.Length == 2 && ModMetadata.AllMods.TryGetValue(modVersion[0], out mod))
 				return "{0} ({1})".F(mod.Title, modVersion[1]);
 
 			return "Unknown mod: {0}".F(s.Mods);

@@ -360,7 +360,7 @@ namespace OpenRA
 			}
 
 			Console.WriteLine("Available mods:");
-			foreach (var mod in ModInformation.AllMods)
+			foreach (var mod in ModMetadata.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
 			InitializeWithMod(Settings.Game.Mod, args.GetValue("Launch.Replay", null));
@@ -385,7 +385,7 @@ namespace OpenRA
 				orderManager.Dispose();
 
 			// Fall back to default if the mod doesn't exist
-			if (!ModInformation.AllMods.ContainsKey(mod))
+			if (!ModMetadata.AllMods.ContainsKey(mod))
 				mod = new GameSettings().Mod;
 
 			Console.WriteLine("Loading mod: {0}", mod);

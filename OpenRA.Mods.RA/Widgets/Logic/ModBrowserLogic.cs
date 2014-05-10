@@ -23,8 +23,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		Widget modList;
 		ButtonWidget modTemplate;
-		ModInformation[] allMods;
-		ModInformation selectedMod;
+		ModMetadata[] allMods;
+		ModMetadata selectedMod;
 		string selectedAuthor;
 		string selectedDescription;
 		int modOffset = 0;
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var sheetBuilder = new SheetBuilder(SheetType.BGRA);
 			previews = new Dictionary<string, Sprite>();
 			logos = new Dictionary<string, Sprite>();
-			allMods = ModInformation.AllMods.Values.Where(m => m.Id != "modchooser")
+			allMods = ModMetadata.AllMods.Values.Where(m => m.Id != "modchooser")
 				.OrderBy(m => m.Title)
 				.ToArray();
 
@@ -96,9 +96,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 
 
-			ModInformation initialMod = null;
-			ModInformation.AllMods.TryGetValue(Game.Settings.Game.PreviousMod, out initialMod);
-			SelectMod(initialMod ?? ModInformation.AllMods["ra"]);
+			ModMetadata initialMod = null;
+			ModMetadata.AllMods.TryGetValue(Game.Settings.Game.PreviousMod, out initialMod);
+			SelectMod(initialMod ?? ModMetadata.AllMods["ra"]);
 
 			RebuildModList();
 		}
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		void SelectMod(ModInformation mod)
+		void SelectMod(ModMetadata mod)
 		{
 			selectedMod = mod;
 			selectedAuthor = "By " + mod.Author ?? "unknown author";
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				modOffset = selectedIndex - 4;
 		}
 
-		void LoadMod(ModInformation mod)
+		void LoadMod(ModMetadata mod)
 		{
 			Game.RunAfterTick(() =>
 			{

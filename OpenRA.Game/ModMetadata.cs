@@ -14,9 +14,9 @@ using System.Linq;
 
 namespace OpenRA
 {
-	public class ModInformation
+	public class ModMetadata
 	{
-		public static readonly Dictionary<string, ModInformation> AllMods = ValidateMods(Directory.GetDirectories("mods").Select(x => x.Substring(5)).ToArray());
+		public static readonly Dictionary<string, ModMetadata> AllMods = ValidateMods(Directory.GetDirectories("mods").Select(x => x.Substring(5)).ToArray());
 
 		public string Id;
 		public string Title;
@@ -24,9 +24,9 @@ namespace OpenRA
 		public string Version;
 		public string Author;
 
-		public static Dictionary<string, ModInformation> ValidateMods(string[] mods)
+		public static Dictionary<string, ModMetadata> ValidateMods(string[] mods)
 		{
-			var ret = new Dictionary<string, ModInformation>();
+			var ret = new Dictionary<string, ModMetadata>();
 			foreach (var m in mods)
 			{
 				var yamlPath = new[] { "mods", m, "mod.yaml" }.Aggregate(Path.Combine);
@@ -37,7 +37,7 @@ namespace OpenRA
 				if (!yaml.NodesDict.ContainsKey("Metadata"))
 					continue;
 
-				var mod = FieldLoader.Load<ModInformation>(yaml.NodesDict["Metadata"]);
+				var mod = FieldLoader.Load<ModMetadata>(yaml.NodesDict["Metadata"]);
 				mod.Id = m;
 
 				ret.Add(m, mod);

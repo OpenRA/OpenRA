@@ -29,7 +29,7 @@ namespace OpenRA.Editor
 
 			currentMod = args.FirstOrDefault() ?? "ra";
 
-			toolStripComboBox1.Items.AddRange(ModInformation.AllMods.Keys.ToArray());
+			toolStripComboBox1.Items.AddRange(ModMetadata.AllMods.Keys.ToArray());
 
 			toolStripComboBox1.SelectedIndexChanged += (_, e) =>
 			{
