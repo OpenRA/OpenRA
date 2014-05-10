@@ -244,6 +244,7 @@ local function createNotebook(frame)
         { ID_SAVE, TR("&Save") },
         { ID_SAVEAS, TR("Save &As...") },
         { },
+        { ID_COPYFULLPATH, TR("Copy Full Path") },
         { ID_SHOWLOCATION, TR("Show Location") },
       }
 
@@ -287,6 +288,14 @@ local function createNotebook(frame)
       ShowLocation(ide:GetDocument(GetEditor(selection)):GetFilePath())
     end)
   notebook:Connect(ID_SHOWLOCATION, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
+  
+  notebook:Connect(ID_COPYFULLPATH, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+		local tdo = wx.wxTextDataObject(ide:GetDocument(GetEditor(selection)):GetFilePath())
+		if wx.wxClipboard:Get():Open() then
+			wx.wxClipboard:Get():SetData(tdo)
+			wx.wxClipboard:Get():Close()
+		end
+    end)
 
   frame.notebook = notebook
   return notebook
@@ -400,6 +409,28 @@ local function createBottomNotebook(frame)
 
   local errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_NONE)
+	
+	errorlog:Connect(wx.wxEVT_CONTEXT_MENU,
+		function (event)
+			errorlog:PopupMenu(
+				wx.wxMenu {
+					{ ID_UNDO, TR("&Undo") },
+					{ ID_REDO, TR("&Redo") },
+					{ },
+					{ ID_CUT, TR("Cu&t") },
+					{ ID_COPY, TR("&Copy") },
+					{ ID_PASTE, TR("&Paste") },
+					{ ID_SELECTALL, TR("Select &All") },
+					{ },
+					{ ID_CLEAROUTPUT, TR("C&lear Output Window") },
+				}
+			)
+		end)
+	
+	errorlog:Connect(ID_CLEAROUTPUT, wx.wxEVT_COMMAND_MENU_SELECTED,
+		function(event)
+			ClearOutput()
+		end)
 
   local shellbox = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_NONE)
