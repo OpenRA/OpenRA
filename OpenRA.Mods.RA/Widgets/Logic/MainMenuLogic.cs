@@ -8,8 +8,12 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -20,6 +24,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		protected MenuType menuType = MenuType.Main;
 		Widget rootMenu;
+
+		protected readonly Widget newsBG;
+		readonly ScrollPanelWidget newsPanel;
+		readonly Widget newsItemTemplate;
+		readonly LabelWidget newsStatus;
+		readonly ButtonWidget showNewsButton;
+		bool newsExpanded = false;
 
 		[ObjectCreator.UseCtor]
 		public MainMenuLogic(Widget widget, World world)
@@ -126,6 +137,149 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 
 			extrasMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Main;
+
+			newsBG = widget.GetOrNull("NEWS_BG");
+			if (newsBG != null)
+			{
+				var collapsedNewsBG = widget.Get("COLLAPSED_NEWS_BG");
+
+				if (!Game.Settings.Game.FetchNews)
+					collapsedNewsBG.Visible = false;
+				else
+				{
+					newsPanel = widget.Get<ScrollPanelWidget>("NEWS_PANEL");
+					newsItemTemplate = widget.Get("NEWS_ITEM_TEMPLATE");
+					newsStatus = widget.Get<LabelWidget>("NEWS_STATUS");
+					showNewsButton = widget.Get<ButtonWidget>("SHOW_NEWS_BUTTON");
+
+					newsPanel.RemoveChildren();
+
+					newsBG.IsVisible = () => newsExpanded && menuType != MenuType.None;
+					collapsedNewsBG.IsVisible = () => !newsExpanded && menuType != MenuType.None;
+
+					newsBG.Get<DropDownButtonWidget>("HIDE_NEWS_BUTTON").OnMouseDown = mi => newsExpanded = false;
+					collapsedNewsBG.Get<DropDownButtonWidget>("SHOW_NEWS_BUTTON").OnMouseDown = mi =>
+					{
+						showNewsButton.IsHighlighted = () => false;
+						newsExpanded = true;
+					};
+
+					SetNewsStatus("Loading news");
+
+					if (Game.modData.Manifest.NewsUrl != null)
+					{
+						var cacheFile = GetNewsCacheFile();
+						var cacheValid = File.Exists(cacheFile) && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
+
+						if (cacheValid)
+							DisplayNews(ReadNews(File.ReadAllBytes(cacheFile)));
+						else
+							new Download(Game.modData.Manifest.NewsUrl, e => { }, NewsDownloadComplete);
+					}
+				}
+			}
+		}
+
+		string GetNewsCacheFile()
+		{
+			var cacheDir = Path.Combine(Platform.SupportDir, "cache", Game.modData.Manifest.Mod.Id);
+			Directory.CreateDirectory(cacheDir);
+			return Path.Combine(cacheDir, "news.yaml");
+		}
+
+		void SetNewsStatus(string message)
+		{
+			message = WidgetUtils.WrapText(message, newsStatus.Bounds.Width, Game.Renderer.Fonts[newsStatus.Font]);
+			newsStatus.GetText = () => message;
+		}
+
+		class NewsItem
+		{
+			public string Title;
+			public string Author;
+			public DateTime DateTime;
+			public string Content;
+		}
+
+		IEnumerable<NewsItem> ReadNews(byte[] bytes)
+		{
+			var str = Encoding.UTF8.GetString(bytes);
+			return MiniYaml.FromString(str).Select(node => new NewsItem
+			{
+				Title = node.Value.NodesDict["Title"].Value,
+				Author = node.Value.NodesDict["Author"].Value,
+				DateTime = FieldLoader.GetValue<DateTime>("DateTime", node.Key),
+				Content = node.Value.NodesDict["Content"].Value
+			});
+		}
+
+		void DisplayNews(IEnumerable<NewsItem> newsItems)
+		{
+			newsPanel.RemoveChildren();
+			SetNewsStatus("");
+
+			foreach (var i in newsItems)
+			{
+				var item = i;
+
+				var newsItem = newsItemTemplate.Clone();
+
+				var titleLabel = newsItem.Get<LabelWidget>("TITLE");
+				titleLabel.GetText = () => item.Title;
+
+				var authorDateTimeLabel = newsItem.Get<LabelWidget>("AUTHOR_DATETIME");
+				var authorDateTime = authorDateTimeLabel.Text.F(item.Author, item.DateTime.ToLocalTime());
+				authorDateTimeLabel.GetText = () => authorDateTime;
+
+				var contentLabel = newsItem.Get<LabelWidget>("CONTENT");
+				var content = item.Content.Replace("\\n", "\n");
+				content = WidgetUtils.WrapText(content, contentLabel.Bounds.Width, Game.Renderer.Fonts[contentLabel.Font]);
+				contentLabel.GetText = () => content;
+				contentLabel.Bounds.Height = Game.Renderer.Fonts[contentLabel.Font].Measure(content).Y;
+				newsItem.Bounds.Height += contentLabel.Bounds.Height;
+
+				newsPanel.AddChild(newsItem);
+				newsPanel.Layout.AdjustChildren();
+			}
+		}
+
+		void NewsDownloadComplete(DownloadDataCompletedEventArgs e, bool cancelled)
+		{
+			Game.RunAfterTick(() => // run on the main thread
+			{
+				if (e.Error != null)
+				{
+					SetNewsStatus("Failed to retrieve news: {0}".F(Download.FormatErrorMessage(e.Error)));
+					return;
+				}
+
+				IEnumerable<NewsItem> newNews;
+				try
+				{
+					newNews = ReadNews(e.Result);
+					DisplayNews(newNews);
+				}
+				catch (Exception ex)
+				{
+					SetNewsStatus("Failed to retrieve news: {0}".F(ex.Message));
+					return;
+				}
+
+				Game.Settings.Game.NewsFetchedDate = DateTime.Today.ToUniversalTime();
+				Game.Settings.Save();
+
+				var cacheFile = GetNewsCacheFile();
+				if (File.Exists(cacheFile))
+				{
+					var oldNews = ReadNews(File.ReadAllBytes(cacheFile));
+					if (newNews.Any(n => !oldNews.Select(c => c.DateTime).Contains(n.DateTime)))
+						showNewsButton.IsHighlighted = () => Game.LocalTick % 50 < 25;
+				}
+				else
+					showNewsButton.IsHighlighted = () => Game.LocalTick % 50 < 25;
+
+				File.WriteAllBytes(cacheFile, e.Result);
+			});
 		}
 
 		void RemoveShellmapUI()

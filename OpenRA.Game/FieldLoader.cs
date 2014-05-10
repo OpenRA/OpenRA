@@ -356,6 +356,14 @@ namespace OpenRA
 				return fieldType.GetConstructor(new[] { innerType }).Invoke(new[] { innerValue });
 			}
 
+			else if (fieldType == typeof(DateTime))
+			{
+				DateTime dt;
+				if (DateTime.TryParseExact(value, "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out dt))
+					return dt;
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
+
 			UnknownFieldAction("[Type] {0}".F(value), fieldType);
 			return null;
 		}

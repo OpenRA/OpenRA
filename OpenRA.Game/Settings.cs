@@ -138,6 +138,9 @@ namespace OpenRA
 
 		public bool AllowDownloading = true;
 		public string MapRepository = "http://resource.openra.net/map/";
+
+		public bool FetchNews = true;
+		public DateTime NewsFetchedDate;
 	}
 
 	public class KeySettings
