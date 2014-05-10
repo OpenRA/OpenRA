@@ -119,7 +119,6 @@ namespace OpenRA.Mods.RA.AI
 		const int MaxBaseDistance = 40;
 		public const int feedbackTime = 30;		// ticks; = a bit over 1s. must be >= netlag.
 
-		//public World world { get { return p.PlayerActor.World; } }
 		public readonly World world;
 		public Map Map { get { return world.Map; } }
 		IBotInfo IBot.Info { get { return this.Info; } }
