@@ -1,7 +1,8 @@
--- Copyright 2011-13 Paul Kulchenko, ZeroBrane LLC
+-- Copyright 2011-14 Paul Kulchenko, ZeroBrane LLC
 -- authors: Lomtik Software (J. Winwood & John Labenski)
 -- Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
+
 local editorID = 100 -- window id to create editor pages with, incremented for new editors
 
 local openDocuments = ide.openDocuments

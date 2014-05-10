@@ -1,6 +1,8 @@
+-- Copyright 2011-14 Paul Kulchenko, ZeroBrane LLC
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 -- Lomtik Software (J. Winwood & John Labenski)
 ---------------------------------------------------------
+
 local ide = ide
 
 -- Pick some reasonable fixed width fonts to use for the editor

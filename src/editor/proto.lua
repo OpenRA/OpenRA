@@ -1,4 +1,5 @@
--- Copyright 2013 Paul Kulchenko, ZeroBrane LLC
+-- Copyright 2013-14 Paul Kulchenko, ZeroBrane LLC
+---------------------------------------------------------
 
 ide.proto.Document = {__index = {
   GetFileName = function(self) return self.fileName end,

@@ -1,5 +1,6 @@
--- Copyright (C) Paul Kulchenko 2011-2012
+-- Copyright 2011-14 Paul Kulchenko, ZeroBrane LLC
 -- styles for comment markup
+---------------------------------------------------------
 
 local MD_MARK_ITAL = '_' -- italic
 local MD_MARK_BOLD = '**' -- bold

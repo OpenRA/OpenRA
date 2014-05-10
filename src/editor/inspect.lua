@@ -1,5 +1,6 @@
+-- Copyright 2012-14 Paul Kulchenko, ZeroBrane LLC
 -- Integration with LuaInspect
--- (C) 2012 Paul Kulchenko
+---------------------------------------------------------
 
 local M, LA, LI, T = {}
 local FAST = true

@@ -1,5 +1,6 @@
--- author: Paul Kulchenko
+-- Copyright 2011-14 Paul Kulchenko, ZeroBrane LLC
 ---------------------------------------------------------
+
 local ide = ide
 -- ---------------------------------------------------------------------------
 -- Create the Help menu and attach the callback functions
@@ -45,7 +46,7 @@ local function DisplayAbout(event)
 	  <tr>
 		<td>
 		<b>ZeroBrane Studio (%s; MobDebug %s)</b><br>
-		<b>Copyright &copy; 2011-2013 ZeroBrane LLC</b><br>
+		<b>Copyright &copy; 2011-2014 ZeroBrane LLC</b><br>
 		Paul Kulchenko<br>
 		Licensed under the MIT License.
 		</td>

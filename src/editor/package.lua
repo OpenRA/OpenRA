@@ -1,4 +1,5 @@
--- Copyright 2013 Paul Kulchenko, ZeroBrane LLC
+-- Copyright 2013-14 Paul Kulchenko, ZeroBrane LLC
+---------------------------------------------------------
 
 local ide = ide
 local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
