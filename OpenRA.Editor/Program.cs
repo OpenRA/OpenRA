@@ -19,7 +19,7 @@ namespace OpenRA.Editor
 {
 	static class Program
 	{
-		public static MapRuleset Rules;
+		public static Ruleset Rules;
 
 		[STAThread]
 		static void Main(string[] args)

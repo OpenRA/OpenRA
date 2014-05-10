@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA.Buildings
 {
 	public static class FootprintUtils
 	{
-		public static IEnumerable<CPos> Tiles(MapRuleset rules, string name, BuildingInfo buildingInfo, CPos topLeft)
+		public static IEnumerable<CPos> Tiles(Ruleset rules, string name, BuildingInfo buildingInfo, CPos topLeft)
 		{
 			var dim = (CVec)buildingInfo.Dimensions;
 

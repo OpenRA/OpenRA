@@ -36,30 +36,12 @@ namespace OpenRA
 			this.modData = modData;
 		}
 
-		public ModRuleset LoadModRules()
-		{
-			var m = modData.Manifest;
-
-			Dictionary<string, MusicInfo> music;
-			Dictionary<string, string> movies;
-			Dictionary<string, TileSet> tileSets;
-
-			using (new PerfTimer("Music"))
-				music = LoadYamlRules(musicCache, m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
-			using (new PerfTimer("Movies"))
-				movies = LoadYamlRules(movieCache, m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
-			using (new PerfTimer("TileSets"))
-				tileSets = LoadTileSets(tileSetCache, m.TileSets);
-
-			return new ModRuleset(music, movies, tileSets);
-		}
-
-		public MapRuleset LoadDefaultRules()
+		public Ruleset LoadDefaultRules()
 		{
 			return LoadMapRules(new Map());
 		}
 
-		public MapRuleset LoadMapRules(Map map)
+		public Ruleset LoadMapRules(Map map)
 		{
 			var m = modData.Manifest;
 
@@ -67,6 +49,9 @@ namespace OpenRA
 			Dictionary<string, WeaponInfo> weapons;
 			Dictionary<string, SoundInfo> voices;
 			Dictionary<string, SoundInfo> notifications;
+			Dictionary<string, MusicInfo> music;
+			Dictionary<string, string> movies;
+			Dictionary<string, TileSet> tileSets;
 
 			OnProgress();
 			using (new PerfTimer("Actors"))
@@ -80,9 +65,18 @@ namespace OpenRA
 			OnProgress();
 			using (new PerfTimer("Notifications"))
 				notifications = LoadYamlRules(notificationCache, m.Notifications, map.NotificationDefinitions, (k, _) => new SoundInfo(k.Value));
+			OnProgress();
+			using (new PerfTimer("Music"))
+				music = LoadYamlRules(musicCache, m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
+			OnProgress();
+			using (new PerfTimer("Movies"))
+				movies = LoadYamlRules(movieCache, m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
+			OnProgress();
+			using (new PerfTimer("TileSets"))
+				tileSets = LoadTileSets(tileSetCache, m.TileSets);
 
 			OnProgress();
-			return new MapRuleset(LoadModRules(), actors, weapons, voices, notifications);
+			return new Ruleset(actors, weapons, voices, notifications, music, movies, tileSets);
 		}
 
 		Dictionary<string, T> LoadYamlRules<T>(

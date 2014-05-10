@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		public static void ShowSlotDropDown(MapRuleset rules, DropDownButtonWidget dropdown, Session.Slot slot,
+		public static void ShowSlotDropDown(Ruleset rules, DropDownButtonWidget dropdown, Session.Slot slot,
 			Session.Client client, OrderManager orderManager)
 		{
 			var options = new Dictionary<string, IEnumerable<SlotDropDownOption>>() {{"Slot", new List<SlotDropDownOption>()
@@ -280,7 +280,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			name.GetText = () => c.Name;
 		}
 
-		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapRuleset rules)
+		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Ruleset rules)
 		{
 			var slot = parent.Get<DropDownButtonWidget>("SLOT_OPTIONS");
 			slot.IsVisible = () => true;

@@ -20,7 +20,7 @@ namespace OpenRA.Widgets
 		public string BaseName = "scrollitem";
 
 		[ObjectCreator.UseCtor]
-		public ScrollItemWidget(MapRuleset rules)
+		public ScrollItemWidget(Ruleset rules)
 			: base(rules)
 		{
 			IsVisible = () => false;

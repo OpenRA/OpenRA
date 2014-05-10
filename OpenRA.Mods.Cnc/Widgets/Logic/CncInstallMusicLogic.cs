@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class CncInstallMusicLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CncInstallMusicLogic(Widget widget, MapRuleset rules, Action onExit)
+		public CncInstallMusicLogic(Widget widget, Ruleset rules, Action onExit)
 		{
 			var installButton = widget.GetOrNull<ButtonWidget>("INSTALL_BUTTON");
 			if (installButton != null)

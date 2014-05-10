@@ -29,10 +29,8 @@ namespace OpenRA
 		public readonly RulesetCache RulesetCache;
 		public CursorProvider CursorProvider { get; private set; }
 
-		Lazy<ModRuleset> modRules;
-		public ModRuleset ModRules { get { return modRules.Value; } }
-		Lazy<MapRuleset> defaultRules;
-		public MapRuleset DefaultRules { get { return defaultRules.Value; } }
+		Lazy<Ruleset> defaultRules;
+		public Ruleset DefaultRules { get { return defaultRules.Value; } }
 
 		public ModData(string mod)
 		{
@@ -51,7 +49,6 @@ namespace OpenRA
 			foreach (var dir in Manifest.Folders)
 				GlobalFileSystem.Mount(dir);
 
-			modRules = Exts.Lazy(() => RulesetCache.LoadModRules());
 			defaultRules = Exts.Lazy(() => RulesetCache.LoadDefaultRules());
 		}
 

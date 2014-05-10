@@ -337,7 +337,7 @@ namespace OpenRA.Mods.RA.Widgets
 			};
 		}
 
-		static string Description(MapRuleset rules, string a)
+		static string Description(Ruleset rules, string a)
 		{
 			ActorInfo ai;
 			rules.Actors.TryGetValue(a.ToLowerInvariant(), out ai);

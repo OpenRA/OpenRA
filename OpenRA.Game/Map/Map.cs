@@ -111,8 +111,8 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Lazy<TileReference<byte, byte>[,]> MapResources;
 		[FieldLoader.Ignore] public string[,] CustomTerrain;
 
-		[FieldLoader.Ignore] Lazy<MapRuleset> rules;
-		public MapRuleset Rules { get { return rules != null ? rules.Value : null; } }
+		[FieldLoader.Ignore] Lazy<Ruleset> rules;
+		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
 		public SequenceProvider SequenceProvider { get; private set; }
 
 		public static Map FromTileset(TileSet tileset)
@@ -249,7 +249,7 @@ namespace OpenRA
 			SequenceProvider = new SequenceProvider(this);
 		}
 
-		public MapRuleset PreloadRules()
+		public Ruleset PreloadRules()
 		{
 			return rules.Value;
 		}
@@ -508,7 +508,7 @@ namespace OpenRA
 			});
 		}
 
-		public void FixOpenAreas(MapRuleset rules)
+		public void FixOpenAreas(Ruleset rules)
 		{
 			var r = new Random();
 			var tileset = rules.TileSets[Tileset];

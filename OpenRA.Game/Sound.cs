@@ -296,7 +296,7 @@ namespace OpenRA
 		}
 
 		// Returns true if played successfully
-		public static bool PlayPredefined(MapRuleset ruleset, Player p, Actor voicedUnit, string type, string definition, string variant, bool relative, WPos pos, float volumeModifier, bool attenuateVolume)
+		public static bool PlayPredefined(Ruleset ruleset, Player p, Actor voicedUnit, string type, string definition, string variant, bool relative, WPos pos, float volumeModifier, bool attenuateVolume)
 		{
 			if (ruleset == null)
 				throw new ArgumentNullException("ruleset");

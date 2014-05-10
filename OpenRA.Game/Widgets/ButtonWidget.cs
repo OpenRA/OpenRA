@@ -55,10 +55,10 @@ namespace OpenRA.Widgets
 		public Action OnDoubleClick = () => {}; 
 		public Action<KeyInput> OnKeyPress = _ => {};
 
-		readonly MapRuleset rules;
+		readonly Ruleset rules;
 
 		[ObjectCreator.UseCtor]
-		public ButtonWidget(MapRuleset rules)
+		public ButtonWidget(Ruleset rules)
 		{
 			this.rules = rules;
 

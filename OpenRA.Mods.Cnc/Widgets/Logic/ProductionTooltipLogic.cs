@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class ProductionTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ProductionTooltipLogic(Widget widget, MapRuleset rules, TooltipContainerWidget tooltipContainer, ProductionPaletteWidget palette)
+		public ProductionTooltipLogic(Widget widget, Ruleset rules, TooltipContainerWidget tooltipContainer, ProductionPaletteWidget palette)
 		{
 			var pm = palette.World.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var pr = palette.World.LocalPlayer.PlayerActor.Trait<PlayerResources>();
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 		}
 
-		static string ActorName(MapRuleset rules, string a)
+		static string ActorName(Ruleset rules, string a)
 		{
 			ActorInfo ai;
 			if (rules.Actors.TryGetValue(a.ToLowerInvariant(), out ai) && ai.Traits.Contains<TooltipInfo>())

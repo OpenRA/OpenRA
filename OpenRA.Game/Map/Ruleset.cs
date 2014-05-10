@@ -15,51 +15,34 @@ using OpenRA.GameRules;
 
 namespace OpenRA
 {
-	public class ModRuleset
+	public class Ruleset
 	{
+		public readonly IReadOnlyDictionary<string, ActorInfo> Actors;
+		public readonly IReadOnlyDictionary<string, WeaponInfo> Weapons;
+		public readonly IReadOnlyDictionary<string, SoundInfo> Voices;
+		public readonly IReadOnlyDictionary<string, SoundInfo> Notifications;
 		public readonly IReadOnlyDictionary<string, MusicInfo> Music;
 		public readonly IReadOnlyDictionary<string, string> Movies;
 		public readonly IReadOnlyDictionary<string, TileSet> TileSets;
 
-		public ModRuleset(ModRuleset other)
-		{
-			this.Music = other.Music;
-			this.Movies = other.Movies;
-			this.TileSets = other.TileSets;
-		}
-
-		public ModRuleset(
+		public Ruleset(
+			IDictionary<string, ActorInfo> actors,
+			IDictionary<string, WeaponInfo> weapons,
+			IDictionary<string, SoundInfo> voices,
+			IDictionary<string, SoundInfo> notifications,
 			IDictionary<string, MusicInfo> music,
 			IDictionary<string, string> movies,
 			IDictionary<string, TileSet> tileSets)
 		{
+			this.Actors = new ReadOnlyDictionary<string, ActorInfo>(actors);
+			this.Weapons = new ReadOnlyDictionary<string, WeaponInfo>(weapons);
+			this.Voices = new ReadOnlyDictionary<string, SoundInfo>(voices);
+			this.Notifications = new ReadOnlyDictionary<string, SoundInfo>(notifications);
 			this.Music = new ReadOnlyDictionary<string, MusicInfo>(music);
 			this.Movies = new ReadOnlyDictionary<string, string>(movies);
 			this.TileSets = new ReadOnlyDictionary<string, TileSet>(tileSets);
 		}
 
 		public IEnumerable<KeyValuePair<string, MusicInfo>> InstalledMusic { get { return Music.Where(m => m.Value.Exists); } }
-	}
-
-	public class MapRuleset : ModRuleset
-	{
-		public readonly IReadOnlyDictionary<string, ActorInfo> Actors;
-		public readonly IReadOnlyDictionary<string, WeaponInfo> Weapons;
-		public readonly IReadOnlyDictionary<string, SoundInfo> Voices;
-		public readonly IReadOnlyDictionary<string, SoundInfo> Notifications;
-
-		public MapRuleset(
-			ModRuleset modRuleset,
-			IDictionary<string, ActorInfo> actors,
-			IDictionary<string, WeaponInfo> weapons,
-			IDictionary<string, SoundInfo> voices,
-			IDictionary<string, SoundInfo> notifications)
-			: base(modRuleset)
-		{
-			this.Actors = new ReadOnlyDictionary<string, ActorInfo>(actors);
-			this.Weapons = new ReadOnlyDictionary<string, WeaponInfo>(weapons);
-			this.Voices = new ReadOnlyDictionary<string, SoundInfo>(voices);
-			this.Notifications = new ReadOnlyDictionary<string, SoundInfo>(notifications);
-		}
 	}
 }

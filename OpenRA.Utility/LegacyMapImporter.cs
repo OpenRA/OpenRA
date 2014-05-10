@@ -107,18 +107,18 @@ namespace OpenRA.Utility
 		int mapSize;
 		int actorCount = 0;
 		Map map = new Map();
-		MapRuleset rules;
+		Ruleset rules;
 		List<string> players = new List<string>();
 		Action<string> errorHandler;
 
-		LegacyMapImporter(string filename, MapRuleset rules, Action<string> errorHandler)
+		LegacyMapImporter(string filename, Ruleset rules, Action<string> errorHandler)
 		{
 			this.rules = rules;
 			this.errorHandler = errorHandler;
 			ConvertIniMap(filename);
 		}
 
-		public static Map Import(string filename, MapRuleset rules, Action<string> errorHandler)
+		public static Map Import(string filename, Ruleset rules, Action<string> errorHandler)
 		{
 			var converter = new LegacyMapImporter(filename, rules, errorHandler);
 			return converter.map;
