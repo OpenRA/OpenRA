@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 
 namespace OpenRA
 {
@@ -24,6 +25,7 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, MusicInfo> Music;
 		public readonly IReadOnlyDictionary<string, string> Movies;
 		public readonly IReadOnlyDictionary<string, TileSet> TileSets;
+		public readonly IReadOnlyDictionary<string, SequenceProvider> Sequences;
 
 		public Ruleset(
 			IDictionary<string, ActorInfo> actors,
@@ -32,7 +34,8 @@ namespace OpenRA
 			IDictionary<string, SoundInfo> notifications,
 			IDictionary<string, MusicInfo> music,
 			IDictionary<string, string> movies,
-			IDictionary<string, TileSet> tileSets)
+			IDictionary<string, TileSet> tileSets,
+			IDictionary<string, SequenceProvider> sequences)
 		{
 			this.Actors = new ReadOnlyDictionary<string, ActorInfo>(actors);
 			this.Weapons = new ReadOnlyDictionary<string, WeaponInfo>(weapons);
@@ -41,6 +44,7 @@ namespace OpenRA
 			this.Music = new ReadOnlyDictionary<string, MusicInfo>(music);
 			this.Movies = new ReadOnlyDictionary<string, string>(movies);
 			this.TileSets = new ReadOnlyDictionary<string, TileSet>(tileSets);
+			this.Sequences = new ReadOnlyDictionary<string, SequenceProvider>(sequences);
 		}
 
 		public IEnumerable<KeyValuePair<string, MusicInfo>> InstalledMusic { get { return Music.Where(m => m.Value.Exists); } }

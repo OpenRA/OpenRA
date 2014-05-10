@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Support;
 
 namespace OpenRA
@@ -28,6 +29,7 @@ namespace OpenRA
 		readonly Dictionary<string, MusicInfo> musicCache = new Dictionary<string, MusicInfo>();
 		readonly Dictionary<string, string> movieCache = new Dictionary<string, string>();
 		readonly Dictionary<string, TileSet> tileSetCache = new Dictionary<string, TileSet>();
+		readonly Dictionary<string, SequenceCache> sequenceCaches = new Dictionary<string, SequenceCache>();
 
 		public Action OnProgress = () => { if (Game.modData != null && Game.modData.LoadScreen != null) Game.modData.LoadScreen.Display(); };
 
@@ -73,10 +75,12 @@ namespace OpenRA
 				movies = LoadYamlRules(movieCache, m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
 			OnProgress();
 			using (new PerfTimer("TileSets"))
-				tileSets = LoadTileSets(tileSetCache, m.TileSets);
+				tileSets = LoadTileSets(tileSetCache, sequenceCaches, m.TileSets);
+
+			var sequences = sequenceCaches.ToDictionary((kvp) => kvp.Key, (kvp) => new SequenceProvider(kvp.Value, map));
 
 			OnProgress();
-			return new Ruleset(actors, weapons, voices, notifications, music, movies, tileSets);
+			return new Ruleset(actors, weapons, voices, notifications, music, movies, tileSets, sequences);
 		}
 
 		Dictionary<string, T> LoadYamlRules<T>(
@@ -108,7 +112,7 @@ namespace OpenRA
 			return itemSet;
 		}
 
-		Dictionary<string, TileSet> LoadTileSets(Dictionary<string, TileSet> itemCache, string[] files)
+		Dictionary<string, TileSet> LoadTileSets(Dictionary<string, TileSet> itemCache, Dictionary<string, SequenceCache> sequenceCaches, string[] files)
 		{
 			var items = new Dictionary<string, TileSet>();
 
@@ -123,6 +127,10 @@ namespace OpenRA
 				{
 					t = new TileSet(modData, file);
 					itemCache.Add(file, t);
+
+					// every time we load a tile set, we create a sequence cache for it
+					var sc = new SequenceCache(modData, t);
+					sequenceCaches.Add(t.Id, sc);
 
 					items.Add(t.Id, t);
 				}

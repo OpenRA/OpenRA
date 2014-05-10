@@ -113,7 +113,7 @@ namespace OpenRA
 
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
-		public SequenceProvider SequenceProvider { get; private set; }
+		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
 
 		public static Map FromTileset(TileSet tileset)
 		{
@@ -246,7 +246,6 @@ namespace OpenRA
 		void PostInit()
 		{
 			rules = Exts.Lazy(() => Game.modData.RulesetCache.LoadMapRules(this));
-			SequenceProvider = new SequenceProvider(this);
 		}
 
 		public Ruleset PreloadRules()

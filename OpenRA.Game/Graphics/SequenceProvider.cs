@@ -20,10 +20,12 @@ namespace OpenRA.Graphics
 	public class SequenceProvider
 	{
 		readonly Lazy<IReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>> sequences;
+		public readonly SpriteLoader SpriteLoader;
 
-		public SequenceProvider(Map map)
+		public SequenceProvider(SequenceCache cache, Map map)
 		{
-			this.sequences = Exts.Lazy(() => map.Rules.TileSets[map.Tileset].Data.SequenceCache.LoadSequences(map));
+			this.sequences = Exts.Lazy(() => cache.LoadSequences(map));
+			this.SpriteLoader = cache.SpriteLoader;
 		}
 
 		public Sequence GetSequence(string unitName, string sequenceName)
@@ -61,7 +63,8 @@ namespace OpenRA.Graphics
 	public class SequenceCache
 	{
 		readonly ModData modData;
-		readonly TileSet tileSet;
+		readonly Lazy<SpriteLoader> spriteLoader;
+		public SpriteLoader SpriteLoader { get { return spriteLoader.Value; } }
 
 		readonly Dictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>> sequenceCache = new Dictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>();
 
@@ -70,7 +73,8 @@ namespace OpenRA.Graphics
 		public SequenceCache(ModData modData, TileSet tileSet)
 		{
 			this.modData = modData;
-			this.tileSet = tileSet;
+
+			spriteLoader = Exts.Lazy(() => new SpriteLoader(tileSet.Extensions, new SheetBuilder(SheetType.Indexed)));
 		}
 
 		public IReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>> LoadSequences(Map map)
@@ -103,7 +107,7 @@ namespace OpenRA.Graphics
 				{
 					t = Exts.Lazy(() => (IReadOnlyDictionary<string, Sequence>)new ReadOnlyDictionary<string, Sequence>(
 						node.Value.NodesDict.ToDictionary(x => x.Key, x => 
-							new Sequence(tileSet.Data.SpriteLoader, node.Key, x.Key, x.Value))));
+							new Sequence(spriteLoader.Value, node.Key, x.Key, x.Value))));
 					sequenceCache.Add(key, t);
 					items.Add(node.Key, t);
 				}

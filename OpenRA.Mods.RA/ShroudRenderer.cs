@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA
 			{
 				var ts = Game.modData.Manifest.TileSize;
 				var data = Exts.MakeArray<byte>(ts.Width * ts.Height, _ => (byte)info.ShroudColor);
-				var s = map.Rules.TileSets[map.Tileset].Data.SpriteLoader.SheetBuilder.Add(data, ts);
+				var s = map.SequenceProvider.SpriteLoader.SheetBuilder.Add(data, ts);
 				unexploredTile = new Sprite(s.sheet, s.bounds, s.offset, s.channel, info.ShroudBlend);
 			}
 			else

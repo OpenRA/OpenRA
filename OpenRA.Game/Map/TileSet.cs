@@ -82,20 +82,6 @@ namespace OpenRA
 		}
 	}
 
-	public class TileSetData
-	{
-		Lazy<SpriteLoader> spriteLoader;
-		public SpriteLoader SpriteLoader { get { return spriteLoader.Value; } }
-
-		public readonly SequenceCache SequenceCache;
-
-		public TileSetData(ModData modData, TileSet tileSet)
-		{
-			spriteLoader = Exts.Lazy(() => new SpriteLoader(tileSet.Extensions, new SheetBuilder(SheetType.Indexed)));
-			SequenceCache = new SequenceCache(modData, tileSet);
-		}
-	}
-
 	public class TileSet
 	{
 		public readonly string Name;
@@ -111,9 +97,6 @@ namespace OpenRA
 
 		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "Extensions" };
 
-		[FieldLoader.IgnoreAttribute]
-		public readonly TileSetData Data;
-
 		public TileSet(ModData modData, string filepath)
 		{
 			var yaml = MiniYaml.DictFromFile(filepath);
@@ -128,8 +111,6 @@ namespace OpenRA
 			// Templates
 			Templates = yaml["Templates"].NodesDict.Values
 				.Select(y => new TileTemplate(y)).ToDictionary(t => t.Id);
-
-			Data = new TileSetData(modData, this);
 		}
 
 		public TileSet(string name, string id, string palette, string[] extensions)
