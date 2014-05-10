@@ -154,7 +154,5 @@ namespace OpenRA
 
 			return ret;
 		}
-
-
 	}
 }
