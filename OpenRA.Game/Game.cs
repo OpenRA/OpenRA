@@ -117,7 +117,8 @@ namespace OpenRA
 			}, parent, id);
 		}
 
-		// TODO: Delayed actions shouldn't be static or at least should be cleared when the map/world is changed
+		// Note: These delayed actions should only be used by widgets or disposing objects
+		// - things that depend on a particular world should be queuing them on the worldactor.
 		static ActionQueue delayedActions = new ActionQueue();
 		public static void RunAfterTick(Action a) { delayedActions.Add(a); }
 		public static void RunAfterDelay(int delay, Action a) { delayedActions.Add(a, delay); }
