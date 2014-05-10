@@ -7,7 +7,7 @@ GenericVoice:
 	Voices:
 		Select: await1,ready,report1,yessir1
 		Move: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 	DisableVariants: Die
 
 VehicleVoice:
@@ -22,20 +22,20 @@ EngineerVoice:
 	Voices:
 		Select: eengin1,eyessir1
 		Move: eaffirm1,emovout1
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 
 MedicVoice:
 	Voices:
 		Select: mrespon1,myessir1
 		Move: maffirm1,mmovout1
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 
 MechanicVoice:
 	Voices:
 		Select: mhuh1,mhowdy1,myes1,mrise1
 		Move: mboss1,mhear1
 		Attack: mhotdig1,mwrench1
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 
 TanyaVoice:
 	Voices:
@@ -49,45 +49,45 @@ DogVoice:
 		Select: dogw3px
 		Move: dogy1
 		Attack: dogg5p
-		Die: dogw5,dogw6,dogw7
+		Die: dogw5,dogw7
 
 SpyVoice:
 	Voices:
 		Select: syessir1,scomnd1
 		Move: sonway1,sindeed1
 		Attack: sking1
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 
 ThiefVoice:
 	Voices:
 		Select: swhat1,syeah1
 		Move: saffirm1,smout1,sokay1
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 
 CivilianMaleVoice:
 	Voices:
 		Select: guyyeah1
 		Move: guyokay1
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 
 CivilianFemaleVoice:
 	Voices:
 		Select: girlyeah
 		Move: girlokay
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 
 EinsteinVoice:
 	Voices:
 		Select: einah1
 		Move: einok1,einyes1
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 
 ShokVoice:
 	Voices:
 		Select: jchrge1,jjuice1,jjump1,jpower1
 		Move: jdance1,jyes1
 		Attack: jburn1,jcrisp1,jshock1,jlight1
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 
 AntVoice:
 	Voices:
@@ -101,4 +101,4 @@ StavrosVoice:
 		Select: stavcmdr
 		Move: stavcrse, stavyes, stavmov
 		Attack: stavcrse, stavyes
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
