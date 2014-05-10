@@ -27,7 +27,7 @@ E2:
 		Cost: 160
 	Tooltip:
 		Name: Grenadier
-		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+		Description: Fast infantry armed with grenades. \n  Strong vs Buildings, slow-moving targets
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq
@@ -68,7 +68,7 @@ E3:
 	Health:
 		HP: 45
 	AutoTarget:
-		ScanRadius: 5
+		ScanRadius: 6
 	Armament:
 		Weapon: Rockets
 		LocalOffset: 256,43,341
@@ -84,7 +84,7 @@ E4:
 		Cost: 200
 	Tooltip:
 		Name: Flamethrower
-		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 40
 		Owner: nod
@@ -113,8 +113,8 @@ E5:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Chem Warrior
-		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Name: Chemical Warrior
+		Description: Advanced general-purpose infantry.\n  Strong vs all Ground units
 	Buildable:
 		BuildPaletteOrder: 50
 		Owner: nod
@@ -195,7 +195,7 @@ RMBO:
 	RevealsShroud:
 		Range: 6c0
 	AutoTarget:
-		ScanRadius: 5
+		ScanRadius: 6
 	C4Demolition:
 		C4Delay: 45
 	Armament:

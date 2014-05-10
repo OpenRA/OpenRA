@@ -250,7 +250,7 @@ Rockets:
 		Trail: smokey
 		ContrailLength: 8
 		Speed: 298
-		RangeLimit: 30
+		RangeLimit: 20
 	Warhead:
 		Spread: 128
 		Versus:
@@ -282,7 +282,7 @@ BikeRockets:
 		Trail: smokey
 		ContrailLength: 8
 		Speed: 298
-		RangeLimit: 40
+		RangeLimit: 20
 	Warhead:
 		Spread: 128
 		Versus:
@@ -410,7 +410,7 @@ Chemspray:
 		Spread: 256
 		Versus:
 			None: 100%
-			Wood: 50%
+			Wood: 35%
 			Light: 75%
 			Heavy: 50%
 		InfDeath: 6
@@ -643,7 +643,7 @@ MammothMissiles:
 ArtilleryShell:
 	ROF: 65
 	Range: 11c0
-	MinRange: 2c0
+	MinRange: 2c896
 	Report: TNKFIRE2.AUD
 	Projectile: Bullet
 		Speed: 204

@@ -283,7 +283,7 @@ WEAP:
 		Cost: 2000
 	Tooltip:
 		Name: Weapons Factory
-		Description: Assembly point for\nvehicle reinforcements
+		Description: Produces vehicles
 	ProvidesCustomPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
@@ -354,7 +354,7 @@ HQ:
 		Cost: 1000
 	Tooltip:
 		Name: Communications Center
-		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+		Description: Provides radar & Air Strike support power. \nUnlocks higher-tech units & buildings.  \nRequires power to operate.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anyhq
 	Buildable:
@@ -429,7 +429,7 @@ EYE:
 		Cost: 1800
 	Tooltip:
 		Name: Advanced Communications Center
-		Description: Provides access to the Ion Cannon.\n  Requires power to operate.
+		Description: Provides radar & Orbital Ion Cannon support power. \nUnlocks Mammoth Tank & Commando.  \nRequires power to operate.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anyhq
 	Buildable:
@@ -474,7 +474,7 @@ TMPL:
 		Cost: 2000
 	Tooltip:
 		Name: Temple of Nod
-		Description: Place of worship and secret missile silo.\n  Requires power to operate.
+		Description: Provides Nuclear Strike support power. \nUnlocks Stealth Tank, Chem. Warrior & Obelisk of Light.  \nRequires power to operate.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anyhq
 	Buildable:
@@ -520,7 +520,7 @@ GUN:
 		Value: 1440
 	Tooltip:
 		Name: Turret
-		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Description: Basic Anti-Tank base defense.\n  Strong vs Tanks, vehicles\n  Weak vs Infantry
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 45
@@ -563,7 +563,7 @@ SAM:
 		Value: 2160
 	Tooltip:
 		Name: SAM Site
-		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+		Description: Anti-Aircraft base defense.\n  Strong vs Aircraft\n  Cannot target Ground units.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 50
@@ -603,7 +603,7 @@ OBLI:
 		Value: 3120
 	Tooltip:
 		Name: Obelisk of Light
-		Description: Advanced base defense.\n  Requires power to operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+		Description: Advanced base defense. \nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
@@ -649,7 +649,7 @@ GTWR:
 		Value: 1440
 	Tooltip:
 		Name: Guard Tower
-		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
@@ -688,7 +688,7 @@ ATWR:
 		Value: 2880
 	Tooltip:
 		Name: Advanced Guard Tower
-		Description: Anti-armor defensive structure.\n  Strong vs Light Vehicles, Tanks\n  Weak vs Infantry
+		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Tanks\n  Weak vs Infantry
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
@@ -737,7 +737,7 @@ SBAG:
 		Value: 0
 	Tooltip:
 		Name: Sandbag Barrier
-		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+		Description: Stops infantry & light vehicles. \nCan be crushed by tanks.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 20
@@ -761,7 +761,7 @@ CYCL:
 		Value: 0
 	Tooltip:
 		Name: Chain Link Barrier
-		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+		Description: Stops infantry & light vehicles. \nCan be crushed by tanks.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 20
@@ -785,7 +785,7 @@ BRIK:
 		Value: 0
 	Tooltip:
 		Name: Concrete Barrier
-		Description: Stop units and blocks enemy fire.
+		Description: Stop units.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 30
