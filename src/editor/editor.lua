@@ -696,6 +696,9 @@ function CreateEditor()
     if ide.wxver >= "2.9.5" and edcfg.wrapflags then
       editor:SetWrapVisualFlags(tonumber(edcfg.wrapflags) or wxstc.wxSTC_WRAPVISUALFLAG_NONE)
     end
+  else
+    editor:SetScrollWidth(100) -- set default width
+    editor:SetScrollWidthTracking(1) -- enable width auto-adjustment
   end
 
   if edcfg.defaulteol == wxstc.wxSTC_EOL_CRLF
