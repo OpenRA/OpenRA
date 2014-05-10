@@ -23,7 +23,7 @@ return {
   ["&Fold/Unfold All"] = "Св&ернуть/развернуть все", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = nil, -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = nil, -- src\editor\menu_help.lua
-  ["&Goto Line"] = "&Перейти к строке", -- src\editor\menu_search.lua
+  ["&Go To Line..."] = "&Перейти к строке...", -- src\editor\menu_search.lua
   ["&Help"] = "&Справка", -- src\editor\menu_help.lua
   ["&New Directory"] = nil, -- src\editor\filetree.lua
   ["&New"] = "Соз&дать", -- src\editor\menu_file.lua
@@ -142,7 +142,7 @@ return {
   ["Full &Screen"] = "Во весь экр&ан", -- src\editor\menu_view.lua
   ["Go To Definition"] = nil, -- src\editor\editor.lua
   ["Go to a selected line"] = "Перейти к заданной строке", -- src\editor\menu_search.lua
-  ["Goto Line"] = "Перейти к строке", -- src\editor\menu_search.lua
+  ["Go To Line"] = "Перейти к строке", -- src\editor\menu_search.lua
   ["INS"] = "ВСТ", -- src\editor\editor.lua
   ["In Files"] = "Установки файлов", -- src\editor\findreplace.lua
   ["Jump to a function definition..."] = "Перейти к определению функции...", -- src\editor\editor.lua

@@ -23,7 +23,7 @@ return {
   ["&Fold/Unfold All"] = "Re&plier/Déplier tout", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = "&Questions Fréquemment Posées" , -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = "&Guide de Prise en Main", -- src\editor\menu_help.lua
-  ["&Goto Line"] = "&Aller à la ligne", -- src\editor\menu_search.lua
+  ["&Go To Line..."] = "&Aller à la ligne...", -- src\editor\menu_search.lua
   ["&Help"] = "Aid&e", -- src\editor\menu_help.lua
   ["&New Directory"] = "&Nouveau Répertoire", -- src\editor\filetree.lua
   ["&New"] = "&Nouveau", -- src\editor\menu_file.lua
@@ -142,7 +142,7 @@ return {
   ["Full &Screen"] = "&Plein écran", -- src\editor\menu_view.lua
   ["Go To Definition"] = "Aller à la définition", -- src\editor\editor.lua
   ["Go to a selected line"] = "Aller à la ligne sélectionnée", -- src\editor\menu_search.lua
-  ["Goto Line"] = "Aller à la ligne", -- src\editor\menu_search.lua
+  ["Go To Line"] = "Aller à la ligne", -- src\editor\menu_search.lua
   ["INS"] = "INS", -- src\editor\editor.lua
   ["In Files"] = "Dans les fichiers", -- src\editor\findreplace.lua
   ["Jump to a function definition..."] = "Aller à la définition de fonction...", -- src\editor\editor.lua

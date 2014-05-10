@@ -26,7 +26,7 @@ return {
   ["&Fold/Unfold All"] = "Plegar/desplegar todo", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = nil, -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = nil, -- src\editor\menu_help.lua
-  ["&Goto Line"] = "Ir a línea", -- src\editor\menu_search.lua
+  ["&Go To Line..."] = "Ir a línea...", -- src\editor\menu_search.lua
   ["&Help"] = "Ayuda", -- src\editor\menu_help.lua
   ["&New Directory"] = nil, -- src\editor\filetree.lua
   ["&New"] = "&Nuevo", -- src\editor\menu_file.lua
@@ -145,7 +145,7 @@ return {
   ["Full &Screen"] = "Pantalla completa", -- src\editor\menu_view.lua
   ["Go To Definition"] = nil, -- src\editor\editor.lua
   ["Go to a selected line"] = "Ir a línea seleccionada", -- src\editor\menu_search.lua
-  ["Goto Line"] = "Ir a línea", -- src\editor\menu_search.lua
+  ["Go To Line"] = "Ir a línea", -- src\editor\menu_search.lua
   ["INS"] = "INS", -- src\editor\editor.lua
   ["In Files"] = nil, -- src\editor\findreplace.lua
   ["Jump to a function definition..."] = "Saltar a la definición de la función...", -- src\editor\editor.lua

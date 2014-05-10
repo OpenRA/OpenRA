@@ -22,7 +22,7 @@ return {
   ["&Fold/Unfold All"] = "全 折叠/展开", -- src\editor\menu_edit.lua
   ["&Frequently Asked Questions"] = nil, -- src\editor\menu_help.lua
   ["&Getting Started Guide"] = nil, -- src\editor\menu_help.lua
-  ["&Goto Line"] = "到...行", -- src\editor\menu_search.lua
+  ["&Go To Line..."] = "到...行", -- src\editor\menu_search.lua
   ["&Help"] = "帮助", -- src\editor\menu_help.lua
   ["&New Directory"] = nil, -- src\editor\filetree.lua
   ["&New"] = "新建", -- src\editor\menu_file.lua
@@ -141,7 +141,7 @@ return {
   ["Full &Screen"] = "全屏", -- src\editor\menu_view.lua
   ["Go To Definition"] = nil, -- src\editor\editor.lua
   ["Go to a selected line"] = "到所选的行", -- src\editor\menu_search.lua
-  ["Goto Line"] = "到...行", -- src\editor\menu_search.lua
+  ["Go To Line"] = "到...行", -- src\editor\menu_search.lua
   ["INS"] = "INS", -- src\editor\editor.lua
   ["In Files"] = "在档案里", -- src\editor\findreplace.lua
   ["Jump to a function definition..."] = "跳到函数定义", -- src\editor\editor.lua
