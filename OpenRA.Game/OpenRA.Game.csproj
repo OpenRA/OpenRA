@@ -245,7 +245,7 @@
     <Compile Include="Traits\Player\FixedColorPalette.cs" />
     <Compile Include="Primitives\ReadOnlyDictionary.cs" />
     <Compile Include="ModInformation.cs" />
-    <Compile Include="Map\Ruleset.cs" />
+    <Compile Include="GameRules\Ruleset.cs" />
     <Compile Include="GameRules\RulesetCache.cs" />
   </ItemGroup>
   <ItemGroup>
