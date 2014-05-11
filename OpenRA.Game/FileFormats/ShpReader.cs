@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -58,7 +59,8 @@ namespace OpenRA.FileFormats
 	public class ShpReader : ISpriteSource
 	{
 		readonly List<ImageHeader> headers = new List<ImageHeader>();
-		public IEnumerable<ISpriteFrame> Frames { get { return headers.Cast<ISpriteFrame>(); } }
+		Lazy<IEnumerable<ISpriteFrame>> spriteFrames;
+		public IEnumerable<ISpriteFrame> Frames { get { return spriteFrames.Value; } }
 		public bool CacheWhenLoadingTileset { get { return false; } }
 		public readonly Size Size;
 
@@ -93,6 +95,8 @@ namespace OpenRA.FileFormats
 
 			foreach (var h in headers)
 				Decompress(stream, h);
+
+			spriteFrames = Exts.Lazy(() => headers.Cast<ISpriteFrame>());
 		}
 
 		static byte[] ReadCompressedData(Stream stream, ImageHeader h)

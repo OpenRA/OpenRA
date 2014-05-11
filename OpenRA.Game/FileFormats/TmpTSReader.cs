@@ -51,8 +51,8 @@ namespace OpenRA.FileFormats
 
 	public class TmpTSReader : ISpriteSource
 	{
-		readonly List<TmpTSTile> tiles = new List<TmpTSTile>();
-		public IEnumerable<ISpriteFrame> Frames { get { return tiles.Cast<ISpriteFrame>(); } }
+		readonly List<ISpriteFrame> tiles = new List<ISpriteFrame>();
+		public IEnumerable<ISpriteFrame> Frames { get { return tiles; } }
 		public bool CacheWhenLoadingTileset { get { return false; } }
 
 		public TmpTSReader(Stream s)

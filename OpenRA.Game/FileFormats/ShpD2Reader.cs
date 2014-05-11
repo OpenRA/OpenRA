@@ -86,8 +86,8 @@ namespace OpenRA.FileFormats
 
 	public class ShpD2Reader : ISpriteSource
 	{
-		List<Frame> headers = new List<Frame>();
-		public IEnumerable<ISpriteFrame> Frames { get { return headers.Cast<ISpriteFrame>(); } }
+		readonly List<ISpriteFrame> frames = new List<ISpriteFrame>();
+		public IEnumerable<ISpriteFrame> Frames { get { return frames; } }
 		public bool CacheWhenLoadingTileset { get { return false; } }
 
 		public ShpD2Reader(Stream s)
@@ -108,7 +108,7 @@ namespace OpenRA.FileFormats
 			for (var i = 0; i < imageCount; i++)
 			{
 				s.Position = offsets[i];
-				headers.Add(new Frame(s));
+				frames.Add(new Frame(s));
 			}
 		}
 	}
