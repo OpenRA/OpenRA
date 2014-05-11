@@ -452,7 +452,7 @@ Grenade:
 		Spread: 128
 		Versus:
 			None: 25%
-			Wood: 100%
+			Wood: 75%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 50%
