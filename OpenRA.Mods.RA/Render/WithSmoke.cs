@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			var rs = self.Trait<RenderSprites>();
 
-			anim = new Animation("smoke_m");
+			anim = new Animation(self.World, "smoke_m");
 			rs.anims.Add("smoke", new AnimationWithOffset(anim, null, () => !isSmoking));
 		}
 

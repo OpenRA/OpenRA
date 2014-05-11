@@ -26,7 +26,8 @@ namespace OpenRA.Mods.RA.Effects
 			this.world = world;
 			this.pos = pos;
 			this.cell = pos.ToCPos();
-			anim = new Animation(trail);
+
+			anim = new Animation(world, trail);
 			anim.PlayThen("idle",
 				() => world.AddFrameEndTask(w => w.Remove(this)));
 		}

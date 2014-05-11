@@ -25,15 +25,15 @@ namespace OpenRA.Mods.RA.Render
 
 	class WithCrateBody : INotifyParachuteLanded
 	{
-		Actor self;
-		Animation anim;
+		readonly Actor self;
+		readonly Animation anim;
 
 		public WithCrateBody(Actor self, WithCrateBodyInfo info)
 		{
 			this.self = self;
 			var rs = self.Trait<RenderSprites>();
 			var images = info.XmasImages.Any() && DateTime.Today.Month == 12 ? info.XmasImages : info.Images;
-			anim = new Animation(images.Random(Game.CosmeticRandom));
+			anim = new Animation(self.World, images.Random(Game.CosmeticRandom));
 			anim.Play("idle");
 			rs.anims.Add("", anim);
 		}

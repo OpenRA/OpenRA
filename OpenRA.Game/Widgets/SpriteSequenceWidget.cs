@@ -36,7 +36,7 @@ namespace OpenRA.Widgets
 
 			if (Unit != null && Sequence != null)
 			{
-				var anim = new Animation(Unit, () => Facing);
+				var anim = new Animation(worldRenderer.world, Unit, () => Facing);
 				anim.PlayFetchIndex(Sequence, () => Frame);
 				GetAnimation = () => anim;
 			}

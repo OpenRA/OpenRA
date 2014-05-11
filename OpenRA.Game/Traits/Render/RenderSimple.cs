@@ -19,9 +19,9 @@ namespace OpenRA.Traits
 	{
 		public override object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
-		public virtual IEnumerable<IRenderable> RenderPreview(ActorInfo ai, PaletteReference pr)
+		public virtual IEnumerable<IRenderable> RenderPreview(World world, ActorInfo ai, PaletteReference pr)
 		{
-			var anim = new Animation(RenderSimple.GetImage(ai), () => 0);
+			var anim = new Animation(world, RenderSimple.GetImage(ai), () => 0);
 			anim.PlayRepeating("idle");
 
 			return anim.Render(WPos.Zero, WVec.Zero, 0, pr, Scale);
@@ -35,7 +35,7 @@ namespace OpenRA.Traits
 		public RenderSimple(Actor self, Func<int> baseFacing)
 			: base(self)
 		{
-			anims.Add("", new Animation(GetImage(self), baseFacing));
+			anims.Add("", new Animation(self.World, GetImage(self), baseFacing));
 			Info = self.Info.Traits.Get<RenderSimpleInfo>();
 		}
 

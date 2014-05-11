@@ -17,11 +17,13 @@ namespace OpenRA.Mods.RA.Effects
 	class SatelliteLaunch : IEffect
 	{
 		int frame = 0;
-		Animation doors = new Animation("atek");
-		WPos pos;
+		readonly Animation doors;
+		readonly WPos pos;
 
 		public SatelliteLaunch(Actor a)
 		{
+			doors = new Animation(a.World, "atek");
+
 			doors.PlayThen("active",
 				() => a.World.AddFrameEndTask(w => w.Remove(this)));
 
@@ -33,7 +35,7 @@ namespace OpenRA.Mods.RA.Effects
 			doors.Tick();
 
 			if (++frame == 19)
-				world.AddFrameEndTask(w => w.Add(new GpsSatellite(pos)));
+				world.AddFrameEndTask(w => w.Add(new GpsSatellite(world, pos)));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

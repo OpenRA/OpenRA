@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 
 			if (!init.Contains<SkipMakeAnimsInit>())
 			{
-				var overlay = new Animation(rs.GetImage(init.self));
+				var overlay = new Animation(init.world, rs.GetImage(init.self));
 				overlay.PlayThen(info.Sequence, () => buildComplete = false);
 				rs.anims.Add("make_overlay_{0}".F(info.Sequence),
 					new AnimationWithOffset(overlay, null, () => !buildComplete));

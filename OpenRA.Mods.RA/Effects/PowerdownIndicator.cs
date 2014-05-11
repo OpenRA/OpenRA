@@ -18,12 +18,15 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class PowerdownIndicator : IEffect
 	{
-		Actor a;
-		Animation anim = new Animation("poweroff");
+		readonly Actor a;
+		readonly Animation anim;
 
 		public PowerdownIndicator(Actor a)
 		{
-			this.a = a; anim.PlayRepeating("offline");
+			this.a = a;
+
+			anim = new Animation(a.World, "poweroff");
+			anim.PlayRepeating("offline");
 		}
 
 		public void Tick(World world)

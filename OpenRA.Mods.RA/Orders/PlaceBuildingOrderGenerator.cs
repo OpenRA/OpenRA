@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA.Orders
 						var palette = rbi.Palette ?? (Producer.Owner != null ?
 							rbi.PlayerPalette + Producer.Owner.InternalName : null);
 
-						preview = rbi.RenderPreview(rules.Actors[Building], wr.Palette(palette));
+						preview = rbi.RenderPreview(world, rules.Actors[Building], wr.Palette(palette));
 					}
 
 					initialized = true;

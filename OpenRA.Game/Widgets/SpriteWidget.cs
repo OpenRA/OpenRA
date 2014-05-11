@@ -19,7 +19,7 @@ namespace OpenRA.Widgets
 		public Func<string> GetPalette;
 		public Func<Sprite> GetSprite;
 
-		readonly WorldRenderer worldRenderer;
+		protected readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
 		public SpriteWidget(WorldRenderer worldRenderer)

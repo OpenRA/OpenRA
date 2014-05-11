@@ -16,27 +16,29 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class GpsSatellite : IEffect
 	{
-		WPos Pos;
-		Animation Anim = new Animation("sputnik");
+		WPos pos;
+		readonly Animation anim;
 
-		public GpsSatellite(WPos pos)
+		public GpsSatellite(World world, WPos pos)
 		{
-			Pos = pos;
-			Anim.PlayRepeating("idle");
+			this.pos = pos;
+
+			anim = new Animation(world, "sputnik");
+			anim.PlayRepeating("idle");
 		}
 
 		public void Tick( World world )
 		{
-			Anim.Tick();
-			Pos += new WVec(0, 0, 427);
+			anim.Tick();
+			pos += new WVec(0, 0, 427);
 
-			if (Pos.Z > Pos.Y)
+			if (pos.Z > pos.Y)
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return Anim.Render(Pos, wr.Palette("effect"));
+			return anim.Render(pos, wr.Palette("effect"));
 		}
 	}
 }

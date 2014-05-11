@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Render
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
 
-			anim = new Animation(rs.GetImage(self), RenderSimple.MakeFacingFunc(self));
+			anim = new Animation(self.World, rs.GetImage(self), RenderSimple.MakeFacingFunc(self));
 			anim.Play(info.Sequence);
 			rs.anims.Add("harvest_{0}".F(info.Sequence), new AnimationWithOffset(anim,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),

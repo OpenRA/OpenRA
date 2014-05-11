@@ -17,13 +17,15 @@ namespace OpenRA.Mods.RA.Effects
 	class CrateEffect : IEffect
 	{
 		readonly string palette;
-		Actor a;
-		Animation anim = new Animation("crate-effects");
+		readonly Actor a;
+		readonly Animation anim;
 
 		public CrateEffect(Actor a, string seq, string palette)
 		{
 			this.a = a;
 			this.palette = palette;
+
+			anim = new Animation(a.World, "crate-effects");
 			anim.PlayThen(seq, () => a.World.AddFrameEndTask(w => w.Remove(this)));
 		}
 

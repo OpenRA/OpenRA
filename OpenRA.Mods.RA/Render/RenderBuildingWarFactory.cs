@@ -21,15 +21,15 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderBuildingWarFactory( init, this ); }
 
 		/* get around unverifiability */
-		IEnumerable<IRenderable> BaseBuildingPreview(ActorInfo building, PaletteReference pr)
+		IEnumerable<IRenderable> BaseBuildingPreview(World world, ActorInfo building, PaletteReference pr)
 		{
-			return base.RenderPreview(building, pr);
+			return base.RenderPreview(world, building, pr);
 		}
 
-		public override IEnumerable<IRenderable> RenderPreview(ActorInfo building, PaletteReference pr)
+		public override IEnumerable<IRenderable> RenderPreview(World world, ActorInfo building, PaletteReference pr)
 		{
-			var p = BaseBuildingPreview(building, pr);
-			var anim = new Animation(RenderSprites.GetImage(building), () => 0);
+			var p = BaseBuildingPreview(world, building, pr);
+			var anim = new Animation(world, RenderSprites.GetImage(building), () => 0);
 			anim.PlayRepeating("idle-top");
 
 			return p.Concat(anim.Render(WPos.Zero, WVec.Zero, 0, pr, Scale));
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Render
 		public RenderBuildingWarFactory(ActorInitializer init, RenderBuildingInfo info)
 			: base(init, info)
 		{
-			roof = new Animation(GetImage(init.self));
+			roof = new Animation(init.world, GetImage(init.self));
 			var bi = init.self.Info.Traits.Get<BuildingInfo>();
 
 			// Additional 512 units move from center -> top of cell

@@ -44,8 +44,8 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			base.Initialize(args);
 
-			icon = new Animation("icon");
-			clock = new Animation("clock");
+			icon = new Animation(world, "icon");
+			clock = new Animation(world, "clock");
 		}
 
 		public override Rectangle EventBounds

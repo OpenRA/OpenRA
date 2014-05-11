@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Render
 			rs = self.Trait<RenderSimple>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 
-			anim = new Animation(rs.GetImage(self));
+			anim = new Animation(self.World, rs.GetImage(self));
 			anim.PlayFetchIndex(info.Sequence,
 			                    () => playerResources.OreCapacity != 0
 			                    ? ((10 * anim.CurrentSequence.Length - 1) * playerResources.Ore) / (10 * playerResources.OreCapacity)

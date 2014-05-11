@@ -63,9 +63,9 @@ namespace OpenRA.Mods.RA.Widgets
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 
-			cantBuild = new Animation("clock");
+			cantBuild = new Animation(world, "clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
-			clock = new Animation("clock");
+			clock = new Animation(world, "clock");
 			VisibleQueues = new List<ProductionQueue>();
 			CurrentQueue = null;
 		}
@@ -231,7 +231,7 @@ namespace OpenRA.Mods.RA.Widgets
 				{
 					var rect = new RectangleF(origin.X + x * IconWidth, origin.Y + IconHeight * y, IconWidth, IconHeight);
 					var drawPos = new float2(rect.Location);
-					var icon = new Animation(RenderSimple.GetImage(item));
+					var icon = new Animation(world, RenderSimple.GetImage(item));
 					icon.Play(item.Traits.Get<TooltipInfo>().Icon);
 					WidgetUtils.DrawSHPCentered(icon.Image, drawPos + iconOffset, worldRenderer);
 

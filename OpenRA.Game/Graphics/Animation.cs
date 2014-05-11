@@ -19,7 +19,7 @@ namespace OpenRA.Graphics
 		public bool IsDecoration = false;
 		public Func<bool> Paused;
 
-		Func<int> facingFunc;
+		readonly Func<int> facingFunc;
 
 		int frame = 0;
 		bool backwards = false;
@@ -29,27 +29,19 @@ namespace OpenRA.Graphics
 		public string Name { get { return name; } }
 
 		readonly SequenceProvider sequenceProvider;
-		static SequenceProvider lastSequenceProvider;
 
-		public Animation(string name)
-			: this(name, () => 0)	{}
+		public Animation(World world, string name)
+			: this(world, name, () => 0) { }
 
-		public Animation(string name, Func<int> facingFunc)
+		public Animation(World world, string name, Func<int> facingFunc)
+			: this(world.Map.SequenceProvider, name, facingFunc) { }
+
+		public Animation(SequenceProvider sequenceProvider, string name, Func<int> facingFunc)
 		{
+			this.sequenceProvider = sequenceProvider;
 			this.name = name.ToLowerInvariant();
 			this.tickFunc = () => {};
 			this.facingFunc = facingFunc;
-
-			// TODO: This is wrong, don't use the static
-			if (Game.orderManager != null && Game.orderManager.world != null && Game.orderManager.world.Map != null)
-				sequenceProvider = Game.orderManager.world.Map.SequenceProvider;
-			// HACK: This just makes sure we have a sequence provider in between map changes for delayed actions
-			// It sucks but it can only be removed when we don't use the statics above but replace them with
-			// a possible parameter on this constructor.
-			if (sequenceProvider == null)
-				sequenceProvider = lastSequenceProvider;
-			else
-				lastSequenceProvider = sequenceProvider;
 		}
 
 		int CurrentFrame { get { return backwards ? CurrentSequence.Start + CurrentSequence.Length - frame - 1 : frame; } }

@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Effects
 			this.target = args.PassiveTarget;
 
 			if (info.HitAnim != null)
-				this.hitanim = new Animation(info.HitAnim);
+				this.hitanim = new Animation(args.SourceActor.World, info.HitAnim);
 		}
 
 		public void Tick(World world)

@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				if (!clocks.ContainsKey(queue.Trait))
 				{
-					clocks.Add(queue.Trait, new Animation("clock"));
+					clocks.Add(queue.Trait, new Animation(world, "clock"));
 				}
 			}
 
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Widgets
 				if (actor == null)
 					continue;
 
-				var icon = new Animation(RenderSimple.GetImage(actor));
+				var icon = new Animation(world, RenderSimple.GetImage(actor));
 				icon.Play(actor.Traits.Get<TooltipInfo>().Icon);
 				var location = new float2(RenderBounds.Location) + new float2(queue.i * (IconWidth + IconSpacing), 0);
 				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);

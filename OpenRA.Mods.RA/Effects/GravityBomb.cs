@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Effects
 			pos = args.Source;
 			velocity = new WVec(WRange.Zero, WRange.Zero, -info.Velocity);
 
-			anim = new Animation(info.Image);
+			anim = new Animation(args.SourceActor.World, info.Image);
 			if (anim.HasSequence("open"))
 				anim.PlayThen("open", () => anim.PlayRepeating("idle"));
 			else

@@ -21,14 +21,19 @@ namespace OpenRA.Mods.RA.Effects
 		readonly Actor building;
 		readonly RA.RallyPoint rp;
 		readonly string palettePrefix;
-		public Animation flag = new Animation("rallypoint");
-		public Animation circles = new Animation("rallypoint");
+		readonly Animation flag;
+		readonly Animation circles;
 
 		public RallyPoint(Actor building, string palettePrefix)
 		{
 			this.building = building;
-			rp = building.Trait<RA.RallyPoint>();
 			this.palettePrefix = palettePrefix;
+
+			rp = building.Trait<RA.RallyPoint>();
+
+			flag = new Animation(building.World, "rallypoint");
+			circles = new Animation(building.World, "rallypoint");
+
 			flag.PlayRepeating("flag");
 			circles.Play("circles");
 		}

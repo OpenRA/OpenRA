@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Render
 					getFacing = turreted != null ? () => turreted.turretFacing :
 						facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
 
-					var muzzleFlash = new Animation(render.GetImage(self), getFacing);
+					var muzzleFlash = new Animation(self.World, render.GetImage(self), getFacing);
 					visible.Add(barrel, false);
 					anims.Add(barrel,
 						new AnimationWithOffset(muzzleFlash,

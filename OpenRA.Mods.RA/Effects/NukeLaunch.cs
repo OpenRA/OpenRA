@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Effects
 			descendSource = targetPos + offset;
 			descendTarget = targetPos;
 
-			anim = new Animation(weapon);
+			anim = new Animation(firedBy.World, weapon);
 			anim.PlayRepeating("up");
 
 			pos = launchPos;

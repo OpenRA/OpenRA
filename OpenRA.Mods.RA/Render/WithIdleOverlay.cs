@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Render
 			var disabled = self.TraitsImplementing<IDisable>();
 
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
-			overlay = new Animation(rs.GetImage(self));
+			overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.PlayRepeating(info.Sequence);
 			rs.anims.Add("idle_overlay_{0}".F(info.Sequence),
 				new AnimationWithOffset(overlay,

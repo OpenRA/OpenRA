@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Effects
 			this.pos = pos;
 			this.cell = pos.ToCPos();
 			this.palette = palette;
-			anim = new Animation("explosion");
+			anim = new Animation(world, "explosion");
 			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 

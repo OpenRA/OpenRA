@@ -18,18 +18,20 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class RepairIndicator : IEffect
 	{
-		Actor building;
-		Player player;
-		string palettePrefix;
-		Animation anim = new Animation("allyrepair");
-		RepairableBuilding rb;
+		readonly Actor building;
+		readonly Player player;
+		readonly string palettePrefix;
+		readonly Animation anim;
+		readonly RepairableBuilding rb;
 
 		public RepairIndicator(Actor building, string palettePrefix, Player player)
 		{
 			this.building = building;
 			this.player = player;
 			this.palettePrefix = palettePrefix;
+
 			rb = building.Trait<RepairableBuilding>();
+			anim = new Animation(building.World, "allyrepair");
 			anim.PlayRepeating("repair");
 		}
 

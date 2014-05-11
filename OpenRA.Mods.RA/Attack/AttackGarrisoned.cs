@@ -157,7 +157,7 @@ namespace OpenRA.Mods.RA
 				if (barrel != null && a.Info.MuzzleSequence != null)
 				{
 					// Muzzle facing is fixed once the firing starts
-					var muzzleAnim = new Animation(paxRender[a.Actor].GetImage(a.Actor), () => muzzleFacing);
+					var muzzleAnim = new Animation(self.World, paxRender[a.Actor].GetImage(a.Actor), () => muzzleFacing);
 					var sequence = a.Info.MuzzleSequence;
 
 					if (a.Info.MuzzleSplitFacings > 0)

@@ -72,9 +72,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			cantBuild = new Animation("clock");
+			cantBuild = new Animation(world, "clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
-			clock = new Animation("clock");
+			clock = new Animation(world, "clock");
 		}
 
 		public override void Tick()
@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var x = i % Columns;
 				var y = i / Columns;
 				var rect = new Rectangle(rb.X + x * 64 + 1, rb.Y + y * 48 + 1, 64, 48);
-				var icon = new Animation(RenderSimple.GetImage(item));
+				var icon = new Animation(World, RenderSimple.GetImage(item));
 				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
 				var pi = new ProductionIcon()
 				{
