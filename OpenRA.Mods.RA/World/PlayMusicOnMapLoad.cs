@@ -19,23 +19,22 @@ namespace OpenRA.Mods.RA
 		public readonly string Music = null;
 		public readonly bool Loop = false;
 
-		public object Create(ActorInitializer init) { return new PlayMusicOnMapLoad(this); }
+		public object Create(ActorInitializer init) { return new PlayMusicOnMapLoad(init.world, this); }
 	}
 
 	class PlayMusicOnMapLoad : IWorldLoaded
 	{
 		readonly PlayMusicOnMapLoadInfo info;
-		World world;
+		readonly World world;
 
-		public PlayMusicOnMapLoad(PlayMusicOnMapLoadInfo info)
+		public PlayMusicOnMapLoad(World world, PlayMusicOnMapLoadInfo info)
 		{
+			this.world = world;
 			this.info = info;
 		}
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			this.world = world;
-
 			PlayMusic();
 		}
 
