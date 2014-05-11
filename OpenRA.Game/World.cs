@@ -118,7 +118,7 @@ namespace OpenRA
 			}
 		}
 
-		internal World(Manifest manifest, Map map, OrderManager orderManager, bool isShellmap)
+		internal World(Map map, OrderManager orderManager, bool isShellmap)
 		{
 			IsShellmap = isShellmap;
 			this.orderManager = orderManager;
