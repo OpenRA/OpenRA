@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class MusicPlayerLogic
 	{
-		readonly World world;
+		readonly Ruleset modRules;
 
 		bool installed;
 		MusicInfo currentSong = null;
@@ -29,9 +29,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollItemWidget itemTemplate;
 
 		[ObjectCreator.UseCtor]
-		public MusicPlayerLogic(Widget widget, World world, Action onExit)
+		public MusicPlayerLogic(Widget widget, Ruleset modRules, Action onExit)
 		{
-			this.world = world;
+			this.modRules = modRules;
 
 			var panel = widget.Get("MUSIC_PANEL");
 
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public void BuildMusicTable()
 		{
-			music = world.Map.Rules.InstalledMusic.Select(a => a.Value).ToArray();
+			music = modRules.InstalledMusic.Select(a => a.Value).ToArray();
 			random = music.Shuffle(Game.CosmeticRandom).ToArray();
 			currentSong = Sound.CurrentMusic;
 			if (currentSong == null && music.Any())
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (currentSong != null)
 				musicList.ScrollToItem(currentSong.Filename);
 
-			installed = world.Map.Rules.InstalledMusic.Any();
+			installed = modRules.InstalledMusic.Any();
 		}
 
 		void Play()
