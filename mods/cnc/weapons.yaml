@@ -432,7 +432,7 @@ Grenade:
 		Spread: 341
 		Versus:
 			None: 100%
-			Wood: 75%
+			Wood: 50%
 			Light: 75%
 			Heavy: 50%
 		InfDeath: 3
@@ -452,7 +452,7 @@ Grenade:
 		Spread: 128
 		Versus:
 			None: 25%
-			Wood: 100%
+			Wood: 75%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 50%
