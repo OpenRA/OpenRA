@@ -1,5 +1,5 @@
 --
--- MobDebug 0.555
+-- MobDebug 0.56
 -- Copyright 2011-14 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
@@ -18,7 +18,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.555,
+  _VERSION = 0.56,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber(os.getenv("MOBDEBUG_PORT"), 10) or 8172,
@@ -876,8 +876,8 @@ local function debugger_loop(sev, svars, sfile, sline)
     elseif command == "SUSPEND" then
       -- do nothing; it already fulfilled its role
     elseif command == "DONE" then
-      done()
       server:send("200 OK\n")
+      done()
       return -- done with all the debugging
     elseif command == "STACK" then
       -- first check if we can execute the stack command
