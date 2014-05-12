@@ -677,6 +677,7 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+			2: Rock
 	Template@88:
 		Id: 88
 		Image: sh6
