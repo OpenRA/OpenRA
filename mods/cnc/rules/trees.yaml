@@ -22,24 +22,41 @@ SPLITBLUE:
 
 ROCK1:
 	Inherits: ^Rock
-
+	Building:
+		Footprint: __ xx
+		
 ROCK2:
 	Inherits: ^Rock
+	Building:
+		Footprint: xx_
+		Dimensions: 3,1
 
 ROCK3:
 	Inherits: ^Rock
 
 ROCK4:
 	Inherits: ^Rock
+	Building:
+		Footprint: x
+		Dimensions: 1,1
 
 ROCK5:
 	Inherits: ^Rock
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
 
 ROCK6:
 	Inherits: ^Rock
+	Building:
+		Footprint: ___ xxx
+		Dimensions: 3,2
 
 ROCK7:
 	Inherits: ^Rock
+	Building:
+		Footprint: xxxx
+		Dimensions: 4,1
 
 T01:
 	Inherits: ^Tree
