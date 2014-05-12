@@ -164,14 +164,13 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			// Eat mouse-up events
-			if (mi.Event != MouseInputEvent.Down)
+			if (mi.Event != MouseInputEvent.Scroll && mi.Event != MouseInputEvent.Down)
 				return true;
 
-			if (mi.Button == MouseButton.WheelDown)
+			if (mi.Event == MouseInputEvent.Scroll && mi.ScrollDelta < 0)
 				return ChangeTab(false);
 
-			if (mi.Button == MouseButton.WheelUp)
+			if (mi.Event == MouseInputEvent.Scroll && mi.ScrollDelta > 0)
 				return ChangeTab(true);
 
 			var action = tabs.Where(a => a.First.Contains(mi.Location))

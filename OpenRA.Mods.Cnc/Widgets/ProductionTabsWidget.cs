@@ -63,7 +63,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public readonly string PaletteWidget = null;
 		public readonly string TypesContainer = null;
 
-		public readonly float ScrollVelocity = 4f;
 		public readonly int TabWidth = 30;
 		public readonly int ArrowWidth = 20;
 		public Dictionary<string, ProductionTabGroup> Groups;
@@ -182,9 +181,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			Game.Renderer.DisableScissor();
 		}
 
-		void Scroll(int direction)
+		void Scroll(int amount)
 		{
-			listOffset += direction * ScrollVelocity;
+			listOffset += amount * Game.Settings.Game.UIScrollSpeed;
 			listOffset = Math.Min(0, Math.Max(Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - contentWidth, listOffset));
 		}
 
@@ -228,15 +227,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Button == MouseButton.WheelDown)
+			if (mi.Event == MouseInputEvent.Scroll)
 			{
-				Scroll(-1);
-				return true;
-			}
-
-			if (mi.Button == MouseButton.WheelUp)
-			{
-				Scroll(1);
+				Scroll(mi.ScrollDelta);
 				return true;
 			}
 

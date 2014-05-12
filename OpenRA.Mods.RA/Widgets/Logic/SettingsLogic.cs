@@ -290,6 +290,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			BindCheckboxPref(panel, "CLASSICORDERS_CHECKBOX", gs, "UseClassicMouseStyle");
 			BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
 			BindSliderPref(panel, "SCROLLSPEED_SLIDER", gs, "ViewportEdgeScrollStep");
+			BindSliderPref(panel, "UI_SCROLLSPEED_SLIDER", gs, "UIScrollSpeed");
 
 			var mouseScrollDropdown = panel.Get<DropDownButtonWidget>("MOUSE_SCROLL");
 			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gs);
@@ -348,6 +349,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gs.MouseScroll = dgs.MouseScroll;
 				gs.ViewportEdgeScroll = dgs.ViewportEdgeScroll;
 				gs.ViewportEdgeScrollStep = dgs.ViewportEdgeScrollStep;
+				gs.UIScrollSpeed = dgs.UIScrollSpeed;
 
 				foreach (var f in ks.GetType().GetFields())
 				{
@@ -357,6 +359,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}
 
 				panel.Get<SliderWidget>("SCROLLSPEED_SLIDER").Value = gs.ViewportEdgeScrollStep;
+				panel.Get<SliderWidget>("UI_SCROLLSPEED_SLIDER").Value = gs.UIScrollSpeed;
 			};
 		}
 

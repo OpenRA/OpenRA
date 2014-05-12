@@ -23,7 +23,6 @@ namespace OpenRA.Widgets
 	public class ScrollPanelWidget : Widget
 	{
 		public int ScrollbarWidth = 24;
-		public float ScrollVelocity = 4f;
 		public int ItemSpacing = 2;
 		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
 		public string Background = "scrollpanel-bg";
@@ -130,9 +129,9 @@ namespace OpenRA.Widgets
 			return EventBounds;
 		}
 
-		void Scroll(int direction)
+		void Scroll(int amount)
 		{
-			ListOffset += direction*ScrollVelocity;
+			ListOffset += amount * Game.Settings.Game.UIScrollSpeed;
 			ListOffset = Math.Min(0,Math.Max(Bounds.Height - ContentHeight, ListOffset));
 		}
 
@@ -188,15 +187,9 @@ namespace OpenRA.Widgets
 		int2 lastMouseLocation;
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Button == MouseButton.WheelDown)
+			if (mi.Event == MouseInputEvent.Scroll)
 			{
-				Scroll(-1);
-				return true;
-			}
-
-			if (mi.Button == MouseButton.WheelUp)
-			{
-				Scroll(1);
+				Scroll(mi.ScrollDelta);
 				return true;
 			}
 

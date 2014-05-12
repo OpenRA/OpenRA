@@ -18,7 +18,6 @@ Background@MAPCHOOSER_PANEL:
 			Y: 47
 			Width: PARENT_RIGHT - 40
 			Height: 474
-			ScrollVelocity: 40
 			Children:
 				ScrollItem@MAP_TEMPLATE:
 					Width: 180
