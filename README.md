@@ -1,8 +1,8 @@
 # Project Description
 
-[ZeroBrane Studio](http://studio.zerobrane.com/) is a lightweight Lua IDE with code completion, syntax
-highlighting, remote debugger, code analyzer, live coding, and debugging
-support for several Lua engines (LuaJIT,
+[ZeroBrane Studio](http://studio.zerobrane.com/) is a lightweight Lua IDE with code completion,
+syntax highlighting, remote debugger, code analyzer, live coding,
+and debugging support for several Lua engines (LuaJIT,
 [Löve 2D](http://notebook.kulchenko.com/zerobrane/love2d-debugging),
 [Moai](http://notebook.kulchenko.com/zerobrane/moai-debugging-with-zerobrane-studio),
 [Gideros](http://notebook.kulchenko.com/zerobrane/gideros-debugging-with-zerobrane-studio-ide),
@@ -10,7 +10,8 @@ support for several Lua engines (LuaJIT,
 [Marmalade Quick](http://notebook.kulchenko.com/zerobrane/marmalade-quick-debugging-with-zerobrane-studio),
 [Cocos2d-x](http://notebook.kulchenko.com/zerobrane/cocos2d-x-simulator-and-on-device-debugging-with-zerobrane-studio),
 [GSL-shell](http://notebook.kulchenko.com/zerobrane/gsl-shell-debugging-with-zerobrane-studio),
-MobileLua, and others). It originated from the [Estrela Editor](http://www.luxinia.de/index.php/Estrela/).
+[Adobe Lightroom](http://notebook.kulchenko.com/zerobrane/debugging-lightroom-plugins-zerobrane-studio-ide),
+and others). It originated from the [Estrela Editor](http://www.luxinia.de/index.php/Estrela/).
 
 ## Features
 

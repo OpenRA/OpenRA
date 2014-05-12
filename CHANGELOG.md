@@ -1,5 +1,172 @@
 # ZeroBrane Studio Changelog
 
+## v0.60 (May 11 2014)
+
+### Highlights
+  - Added support for switching breakpoints at run-time.
+  - Added bookmark handling.
+  - Added `Detach process` command to stop debugging and continue process.
+  - Added detaching debugger server.
+  - Added showing/hiding toolbar and status bar.
+  - Simplified user interface and updated application icons.
+  - Updated love2d API for v0.9.1.
+  - Updated Moai API for v1.5 (thanks to @DanielSWolf).
+  - Added `outputshell.usewrap` to set Output wrapping; on by default.
+  - Added `editor.wrapflags` to configure line wrapping indicators.
+  - Added `editor.foldflags`; set default to draw one line when folded.
+  - Added `editor.foldtype` with box, cirle, arrow, and plus types.
+  - Added `editor.extraascent` option to add line spacing.
+
+### Special thanks
+  - To @bartoleo for italian translation update.
+  - To @riidom for german translation update.
+  - To @sclark39 for Copy Full Path implementation.
+  - To @DanielSWolf for Moai API update for v1.5.
+  - To @madmaxoft for AnalyzeString patch.
+  - To @crumblingstatue for Zoom update.
+  - To @SiENcE for notepad++ colorscheme update.
+
+### Improvements
+  - Added new italian translations (thanks to @bartoleo)
+  - Added Russian translation for new messages (#70).
+  - Adding Copy Full Path to editor tabs, and a Clear Output Window option to the Output tab (thanks to @sclark39)
+  - Added support for packages in config files (#166).
+  - Added formatting for Recent Projects menu (#305).
+  - Added `Detach process` command to stop debugging and continue process.
+  - Added re/docking of Watch/Stack notebooks on tab background doubleclick (#305).
+  - Added bookmark handling (closes #233).
+  - Added `Clear items` to the Recent Files menu (ref #305).
+  - Added recent files dropdown to the toolbar (ref #305).
+  - Added applying new UI settings after upgrade (ref #305).
+  - Added toolbar button dropdown with recent projects (ref #305).
+  - Added `Choose Project Directory` to the toolbar (ref #305).
+  - Added floating/docking of notebooks on tab background doubleclick (ref #305).
+  - Added Recent Project menu refresh after switching projects (ref #305).
+  - Added setting project directory by renaming the filetree root element (#305).
+  - Added filetree popup menu with the list of projects (ref #305).
+  - Added 'Recent Projects' menu (ref #305).
+  - Added package `GetLaunchedProcess` call (ref #166).
+  - Added `IsRunning` and `IsConnected` API calls for the debugger (ref #166).
+  - Added `editor.wrapflags` to configure line wrapping indicators (ref #305).
+  - Added explicit sorting of files in the filetree.
+  - Added showing/hiding of the status bar (ref #305).
+  - Added auto-showing toolbar when debugging starts (ref #305).
+  - Added showing/hiding of the toolbar (ref #305).
+  - Added `outputshell.usewrap` to set Output wrapping; on by default (ref #305).
+  - Added `editor.foldflags`; set default to draw one line when folded (ref #305).
+  - Added `editor.extraascent` option to add line spacing (ref #305).
+  - Added explicit conversion to number for numeric settings.
+  - Added `editor.foldtype` with box, cirle, arrow, and plus types (ref #305).
+  - Added opening a new tab on double click on tab background (ref #305).
+  - Added ActivateItem method to the filetree API (ref #166).
+  - Added onFiletree* package events (ref #166).
+  - Added setting margin mask to allow for different margin order.
+  - Added support for switching breakpoints at run-time (closes #288).
+  - Added stopping debugging when debugger server is detached/stopped.
+  - Added opening file on one-click in icon/padding area in the filetree.
+  - Added AnalyzeString function (thanks to @madmaxoft).
+  - Added zooming for Output/Console windows (ref #290).
+  - Added IDs for Zoom menu items (ref #290).
+  - Add zoom actions with appropriate keyboard shortcuts to View menu (thanks to @crumblingstatue)
+  - Added detaching debugger server.
+  - Added skipping reporting for known globals in static analysis (closes #286).
+  - Added support for running zbstudio script from any folder on OSX.
+  - Adjusted `code` color in the comment markup for better visibility (#305).
+  - Changed order of stopping debugger and saving settings (ref #305).
+  - Cleaned unused variables and functions based on static analysis.
+  - Disallowed closing Output/Console/Project tabs (fixes #310).
+  - Disabled current project on the recent projects list (ref #305).
+  - Disable function call indicator by default to reduce clutter (ref #305).
+  - Disabled startng multiple find-in-files searches.
+  - Disabled editing/dragging of the project directory in the filetree.
+  - Enabled editor width auto-adjustment when wrapping is off.
+  - Enable retina support (`hidpi=true`) by default on OSX (#305).
+  - Increased default font size in the editor (ref #305).
+  - Increased wait time for Gideros player to start for more reliable launching.
+  - Made fold and marker margins wider (ref #305).
+  - Made jump-to-line in the Output window to work faster and more reliably.
+  - Moved `Project Directory` menu item lower to not activate on OSX (ref #305).
+  - Moved code to populate `wx` and `wxstc` descriptions to API files.
+  - Rearranged global functions in lua spec for simpler grouping (ref #79).
+  - Reduced sash (border between subsections) in all notebooks (ref #305).
+  - Reduced the line number margin width and default font size (ref #305).
+  - Refactored editor config references.
+  - Removed `Clear Dynamic Words` menu as it's rarely used.
+  - Removed the gripper on the toolbar (ref #305).
+  - Removed project selection dropdown from the filetree (ref #305).
+  - Removed paragraph conversion from love2d API conversion script (ref #247).
+  - Removed border around Output/Console panels (ref #305).
+  - Removed deprecated `startfile` interpreter option.
+  - Removed explicit margin numbers to make configuraton simpler.
+  - Removed border around editor components.
+  - Reordered markers to keep the curent line marker on top (#305).
+  - Reorganized and updated configuration examples.
+  - Set def linenumber font size as one smaller than editor font size (ref #305).
+  - Switched to plain background for the toolbar (ref #305).
+  - Switched to AuiToolBar as it provides buttons with dropdowns (ref #305).
+  - Upgraded Mobdebug (0.56).
+  - Upgraded debugger (mobdebug 0.553) to fix an issue with STEP command.
+  - Upgraded copas to the current version (v1.2.1).
+  - Updated default fonts for Windows and Linux for better looking ones (#305).
+  - Update de.lua (thanks to @riidom)
+  - Updated language files with new messages (#70).
+  - Updated copyright messages.
+  - Updated `Go To Line` menu item and its translations.
+  - Updated build scripts with a fix for a wxlua compilation issue (#260).
+  - Updated build prerequisites Linux install script.
+  - Updated default indicator color to more neutral one (#305).
+  - Updated OSX build script to use 10.7 SDK with 10.6 min-version (#260).
+  - Updated Mobdebug (0.555) to add support for `pause` debugger call.
+  - Updated lua interpreter to remove caching of executable path.
+  - Updated resetting pid only after completing non-debbugged process.
+  - Updated shortcut for Recent File navigation (ref #305).
+  - Updated application icons (ref #305).
+  - Updated stack/watch panel captions to be invisible (ref #305).
+  - Updated interpreters to check `ProgramFiles` env variable on Windows.
+  - Updated panel captions to be invisible (rev #305).
+  - Updated 'window unhide' logic (Windows only) to be called less frequently.
+  - Updated love2d interpreter to not hide the application window.
+  - Updated file sorting to be case-insensitive on all platforms.
+  - Updated filetree menu to use 'Edit Project Directory' on root element (#305).
+  - Updated love2d API to fix typos in descriptions (ref #247).
+  - Updated love2d API for v0.9.1 (ref #247).
+  - Updated love2d API conversion script to handle top-level functions (ref #247).
+  - Updated `PackageUnRegister` call to return the package on success (ref #166).
+  - Updated fold/wrap flag handling to work with wxwidgets 2.8 (ref #305).
+  - Updated breakpoint/currentline markers for less contrast colors (ref #305).
+  - Updated default folding to use lighter colors (ref #305).
+  - Updated default colors to have less contrast (ref #305).
+  - Updated Open file dialog to use current file or project location (closes #303).
+  - Updated Moai API for v1.5 (thanks to @DanielSWolf).
+  - Updated `autoanalyzer` option to more common spelling (analizer -> analyzer).
+  - Updated auto-complete to show in IDLE event for smoother processing.
+  - -minor color changes to notepad++ colorscheme (thanks to @SiENcE).
+
+### Incompatibilities
+  - Added opening a new tab on double click on tab background.
+  - Added re/docking of Watch/Stack notebooks on tab background doubleclick.
+  - Enabled retina support (`hidpi=true`) by default on OSX.
+  - Removed deprecated `startfile` interpreter option; use `startwith` option instead.
+  - Updated file sorting to be case-insensitive on all platforms.
+  - Updated `autoanalyzer` option to more common spelling (analizer -> analyzer).
+  - wxwidgets 2.8 is no longer supported (wxwidgets 2.9.5+ required).
+
+### Fixes
+  - Fixed Corona interpreter to clean debugger in `plugin` folder (Win).
+  - Fixed file tree activation of a deleted file.
+  - Fixed switching to full screen and restoring status bar on OSX (ref #305).
+  - Fixed right-click handling in filetree on OSX broken by 3709f61f (ref #166).
+  - Fixed usage of `self` in one of package API calls (ref #166).
+  - Fixed find dialog to stay on top after search directory selection on OSX.
+  - Fixed search result navigation after clicking beyond the end of line.
+  - Fixed an issue with running processes not terminated when closing IDE.
+  - Fixed an error after manual canceling Find-in-files dialog.
+  - Fixed an issue with deleting column-based selection (fixes #300).
+  - Fixed an error in variable indicator processing.
+  - Fixed looping when `valuetype` creates self-reference in APIs (ref #297).
+  - Fixed `elseif` auto-indentation (fixes #294).
+  - Fixed focus for Find field in the find dialog on some instances of OSX.
+
 ## v0.50 (Mar 10 2014)
 
 ### Highlights
