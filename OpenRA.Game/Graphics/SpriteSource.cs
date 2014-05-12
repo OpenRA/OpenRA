@@ -26,6 +26,7 @@ namespace OpenRA.Graphics
 
 	public interface ISpriteSource
 	{
+		// TODO: Change this to IReadOnlyList so users don't need to call .ToArray()
 		IEnumerable<ISpriteFrame> Frames { get; }
 		bool CacheWhenLoadingTileset { get; }
 	}

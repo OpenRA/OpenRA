@@ -37,8 +37,8 @@ namespace OpenRA.FileFormats
 
 	public class TmpTDReader : ISpriteSource
 	{
-		readonly List<TmpTile> tiles = new List<TmpTile>();
-		public IEnumerable<ISpriteFrame> Frames { get { return tiles.Cast<ISpriteFrame>(); } }
+		readonly List<ISpriteFrame> tiles = new List<ISpriteFrame>();
+		public IEnumerable<ISpriteFrame> Frames { get { return tiles; } }
 		public bool CacheWhenLoadingTileset { get { return false; } }
 
 		public TmpTDReader(Stream s)

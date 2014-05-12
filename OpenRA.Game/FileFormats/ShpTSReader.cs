@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -46,7 +47,8 @@ namespace OpenRA.FileFormats
 	public class ShpTSReader : ISpriteSource
 	{
 		readonly List<FrameHeader> frames = new List<FrameHeader>();
-		public IEnumerable<ISpriteFrame> Frames { get { return frames.Cast<ISpriteFrame>(); } }
+		Lazy<IEnumerable<ISpriteFrame>> spriteFrames;
+		public IEnumerable<ISpriteFrame> Frames { get { return spriteFrames.Value; } }
 		public bool CacheWhenLoadingTileset { get { return false; } }
 
 		public ShpTSReader(Stream stream)
@@ -95,6 +97,8 @@ namespace OpenRA.FileFormats
 					}
 				}
 			}
+
+			spriteFrames = Exts.Lazy(() => frames.Cast<ISpriteFrame>());
 		}
 	}
 }
