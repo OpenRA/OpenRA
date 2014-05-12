@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA
 {
@@ -18,10 +19,22 @@ namespace OpenRA.Mods.RA
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			var providedPrereqs = map.Rules.Actors.Keys.Concat(
-				map.Rules.Actors.SelectMany(a => a.Value.Traits
-					.WithInterface<ProvidesCustomPrerequisiteInfo>()
-					.Select(p => p.Prerequisite))).ToArray();
+			// Buildings provide their actor names as a prerequisite
+			var buildingPrereqs = map.Rules.Actors.Where(a => a.Value.Traits.Contains<BuildingInfo>())
+				.Select(a => a.Key);
+
+			// ProvidesCustomPrerequisite allows arbitrary prereq definitions
+			var customPrereqs = map.Rules.Actors.SelectMany(a => a.Value.Traits
+				.WithInterface<ProvidesCustomPrerequisiteInfo>())
+				.Select(p => p.Prerequisite);
+
+			// ProvidesTechPrerequisite allows arbitrary prereq definitions
+			// (but only one group at a time during gameplay)
+			var techPrereqs = map.Rules.Actors.SelectMany(a => a.Value.Traits
+				.WithInterface<ProvidesTechPrerequisiteInfo>())
+				.SelectMany(p => p.Prerequisites);
+
+			var providedPrereqs = buildingPrereqs.Concat(customPrereqs).Concat(techPrereqs);
 
 			// TODO: this check is case insensitive while the real check in-game is not
 			foreach (var i in map.Rules.Actors)
@@ -29,7 +42,7 @@ namespace OpenRA.Mods.RA
 				var bi = i.Value.Traits.GetOrDefault<BuildableInfo>();
 				if (bi != null)
 					foreach (var prereq in bi.Prerequisites)
-						if (!providedPrereqs.Contains(prereq.Replace("!", "")))
+						if (!providedPrereqs.Contains(prereq.Replace("!", "").Replace("~", "")))
 							emitError("Buildable actor {0} has prereq {1} not provided by anything.".F(i.Key, prereq));
 			}
 		}

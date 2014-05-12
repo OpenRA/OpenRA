@@ -123,11 +123,12 @@ namespace OpenRA.Mods.RA
 			foreach (var a in AllBuildables(Info.Type))
 			{
 				var bi = a.Traits.Get<BuildableInfo>();
-				// Can our race build this by satisfying normal prereqs?
+				// Can our race build this by satisfying normal prerequisites?
 				var buildable = bi.Owner.Contains(Race.Race);
-				tech.Add(a, new ProductionState { Visible = buildable && !bi.Hidden });
+				// Checks if Prerequisites want to hide the Actor from buildQueue if they are false
+				tech.Add(a, new ProductionState { Visible = buildable });
 				if (buildable)
-					ttc.Add(a.Name, bi, this);
+					ttc.Add(a.Name, bi.Prerequisites, bi.BuildLimit, this);
 			}
 
 			return tech;
@@ -159,6 +160,18 @@ namespace OpenRA.Mods.RA
 			var ps = Produceable[ self.World.Map.Rules.Actors[key] ];
 			if (!ps.Sticky)
 				ps.Buildable = false;
+		}
+
+		public void PrerequisitesItemHidden(string key)
+		{
+			var ps = Produceable[self.World.Map.Rules.Actors[key]];
+			ps.Visible = false;
+		}
+
+		public void PrerequisitesItemVisable(string key)
+		{
+			var ps = Produceable[self.World.Map.Rules.Actors[key]];
+			ps.Visible = true;
 		}
 
 		public ProductionItem CurrentItem()

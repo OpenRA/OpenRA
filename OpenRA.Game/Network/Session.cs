@@ -186,6 +186,7 @@ namespace OpenRA.Network
 			public bool Fog = true;
 			public bool AllyBuildRadius = true;
 			public int StartingCash = 5000;
+			public String TechLevel = "none";
 			public string StartingUnitsClass = "none";
 			public bool AllowVersionMismatch;
 			public string GameUid;

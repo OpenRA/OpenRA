@@ -500,7 +500,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var prereqs = buildable.Prerequisites.Select(s => Description(world.Map.Rules, s));
 				if (prereqs.Any())
 				{
-					Game.Renderer.Fonts["Regular"].DrawText(RequiresText.F(prereqs.JoinWith(", ")), p.ToInt2(), Color.White);
+					Game.Renderer.Fonts["Regular"].DrawText(RequiresText.F(prereqs.Where(s => !s.StartsWith("~")).JoinWith(", ")), p.ToInt2(), Color.White);
 
 					p += new int2(0, 8);
 				}
