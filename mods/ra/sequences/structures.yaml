@@ -74,13 +74,22 @@ fact:
 proc:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 1
+		ZOffset: -1c511
+	idle-top: proctop
+		Start: 0
+		ZOffset: 0
+	damaged-idle-top: proctop
+		Start: 1
+		ZOffset: 0
 	make: procmake
 		Start: 0
 		Length: *
 	dead: procdead
 		Start: 0
+		ZOffset: -1c511
 	bib: bib2
 		Start: 0
 		Length: *
