@@ -2,6 +2,7 @@ World:
 	ChatCommands:
 	DevCommands:
 	PauseCommand:
+	SurrenderCommand:
 	HelpCommand:
 	ScreenMap:
 	ActorMap:
