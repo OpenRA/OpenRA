@@ -24,6 +24,8 @@ namespace OpenRA.GameRules
 		public readonly Dictionary<string, float> Versus;
 		[Desc("Can this damage resource patches?")]
 		public readonly bool DestroyResources = false;
+		[Desc("Will this splatter resources and which?")]
+		public readonly string AddsResourceType = null;
 		[Desc("Explosion effect to use.")]
 		public readonly string Explosion = null;
 		[Desc("Palette to use for explosion effect.")]

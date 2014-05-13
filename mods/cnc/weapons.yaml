@@ -877,6 +877,21 @@ Tiberium:
 		Damage: 2
 		PreventProne: yes
 
+TiberiumExplosion:
+	Warhead:
+		Damage: 10
+		Spread: 9
+		Size: 1,1
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: chemball
+		InfDeath: 3
+		ImpactSound: xplosml2.aud
+		AddsResourceType: Tiberium
+
 Heal:
 	ROF: 4
 	Warhead:

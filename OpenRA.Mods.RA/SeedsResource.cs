@@ -63,16 +63,13 @@ namespace OpenRA.Mods.RA
 				.SkipWhile(p => resLayer.GetResource(p) == resourceType && resLayer.IsFull(p.X, p.Y))
 				.Cast<CPos?>().FirstOrDefault();
 
-			if (cell != null && self.World.Map.IsInMap(cell.Value) &&
-				(resLayer.GetResource(cell.Value) == resourceType
-				|| (resLayer.GetResource(cell.Value) == null && resLayer.AllowResourceAt(resourceType, cell.Value))))
+			if (cell != null && resLayer.CanSpawnResourceAt(resourceType, cell.Value))
 				resLayer.AddResource(resourceType, cell.Value, 1);
-
 		}
 
 		static IEnumerable<CPos> RandomWalk(CPos p, MersenneTwister r)
 		{
-			for (; ; )
+			for (;;)
 			{
 				var dx = r.Next(-1, 2);
 				var dy = r.Next(-1, 2);

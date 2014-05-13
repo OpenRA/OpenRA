@@ -1360,3 +1360,18 @@ MADTankDetonate:
 		ImpactSound: mineblo1.aud
 		SmudgeType: Crater
 
+OreExplosion:
+	Warhead:
+		Damage: 10
+		Spread: 9
+		Size: 1,1
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: med_explosion
+		InfDeath: 3
+		ImpactSound: kaboom25.aud
+		AddsResourceType: Ore
+

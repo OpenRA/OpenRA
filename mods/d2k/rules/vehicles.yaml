@@ -77,7 +77,7 @@ HARVESTER:
 	RevealsShroud:
 		Range: 4c0
 	Explodes:
-		Weapon: UnitExplodeScale
+		Weapon: SpiceExplosion
 		EmptyWeapon: UnitExplodeScale
 	LeavesHusk:
 		HuskActor: Harvester.Husk
