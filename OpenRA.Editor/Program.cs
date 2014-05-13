@@ -24,6 +24,8 @@ namespace OpenRA.Editor
 		[STAThread]
 		static void Main(string[] args)
 		{
+			Log.AddChannel("perf", null);
+
 			Application.CurrentCulture = CultureInfo.InvariantCulture;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
