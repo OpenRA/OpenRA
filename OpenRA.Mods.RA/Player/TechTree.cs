@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA
 
 			// Add buildables that have a build limit set and are not already in the list
 			player.World.ActorsWithTrait<Buildable>()
-				  .Where(a => a.Actor.Info.Traits.Get<BuildableInfo>().BuildLimit > 0 && !a.Actor.IsDead() && a.Actor.Owner == player && ret.Keys.All(k => k != a.Actor.Info.Name))
+				  .Where(a => a.Actor.Info.Traits.Get<BuildableInfo>().BuildLimit > 0 && !a.Actor.IsDead() && a.Actor.IsInWorld && a.Actor.Owner == player && ret.Keys.All(k => k != a.Actor.Info.Name))
 				  .ToList()
 				  .ForEach(b => ret[b.Actor.Info.Name].Add(b.Actor));
 
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA
 
 			public void Update(Cache<string, List<Actor>> buildables)
 			{
-				var hasReachedBuildLimit = buildLimit > 0 && buildables[Key].Count >= buildLimit;
+				var hasReachedBuildLimit = buildLimit > 0 && buildables.Keys.Contains(Key) && buildables[Key].Count >= buildLimit;
 				var nowHasPrerequisites = HasPrerequisites(buildables) && !hasReachedBuildLimit;
 
 				if (nowHasPrerequisites && !hasPrerequisites)
