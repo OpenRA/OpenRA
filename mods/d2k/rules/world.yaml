@@ -1,6 +1,7 @@
 World:
 	ChatCommands:
 	DevCommands:
+	PauseCommand:
 	HelpCommand:
 	ScreenMap:
 	ActorMap:
