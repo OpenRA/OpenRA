@@ -46,8 +46,8 @@ namespace OpenRA.FileFormats
 			if (version != MetaVersion)
 				throw new NotSupportedException("Metadata version {0} is not supported".F(version));
 
-			// Read game info
-			string data = ReadUtf8String(reader);
+			// Read game info (max 100K limit as a safeguard against corrupted files)
+			string data = ReadUtf8String(reader, 1024 * 100);
 			GameInfo = GameInformation.Deserialize(data);
 		}
 
@@ -87,27 +87,37 @@ namespace OpenRA.FileFormats
 			if (!fs.CanSeek)
 				return null;
 
-			fs.Seek(-(4 + 4), SeekOrigin.End);
-			using (var reader = new BinaryReader(fs))
+			if (fs.Length < 20)
+				return null;
+
+			try
 			{
-				var dataLength = reader.ReadInt32();
-				if (reader.ReadInt32() == MetaEndMarker)
+				fs.Seek(-(4 + 4), SeekOrigin.End);
+				using (var reader = new BinaryReader(fs))
 				{
-					// go back end marker + length storage + data + version + start marker
-					fs.Seek(-(4 + 4 + dataLength + 4 + 4), SeekOrigin.Current);
-					try
+					var dataLength = reader.ReadInt32();
+					if (reader.ReadInt32() == MetaEndMarker)
 					{
-						return new ReplayMetadata(reader, path);
-					}
-					catch (InvalidOperationException ex)
-					{
-						Log.Write("debug", ex.ToString());
-					}
-					catch (NotSupportedException ex)
-					{
-						Log.Write("debug", ex.ToString());
+						// go back by (end marker + length storage + data + version + start marker) bytes
+						fs.Seek(-(4 + 4 + dataLength + 4 + 4), SeekOrigin.Current);
+						try
+						{
+							return new ReplayMetadata(reader, path);
+						}
+						catch (InvalidOperationException ex)
+						{
+							Log.Write("debug", ex.ToString());
+						}
+						catch (NotSupportedException ex)
+						{
+							Log.Write("debug", ex.ToString());
+						}
 					}
 				}
+			}
+			catch (IOException ex)
+			{
+				Log.Write("debug", ex.ToString());
 			}
 
 			return null;
@@ -128,9 +138,13 @@ namespace OpenRA.FileFormats
 			return 4 + bytes.Length;
 		}
 
-		static string ReadUtf8String(BinaryReader reader)
+		static string ReadUtf8String(BinaryReader reader, int maxLength)
 		{
-			return Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadInt32()));
+			var length = reader.ReadInt32();
+			if (length > maxLength)
+				throw new InvalidOperationException("The length of the string ({0}) is longer than the maximum allowed ({1}).".F(length, maxLength));
+
+			return Encoding.UTF8.GetString(reader.ReadBytes(length));
 		}
 	}
 }
