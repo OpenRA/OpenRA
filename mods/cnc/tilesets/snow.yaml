@@ -262,6 +262,7 @@ Templates:
 			0: Rock
 			2: Rock
 			3: Rock
+			4: Rock
 			5: Rock
 	Template@15:
 		Id: 15
@@ -431,8 +432,8 @@ Templates:
 		Image: s23
 		Size: 3,2
 		Tiles:
-			0: Rock
 			1: Rock
+			2: Rock
 			3: Rock
 			4: Rock
 	Template@36:
@@ -553,6 +554,7 @@ Templates:
 		Size: 2,2
 		Tiles:
 			0: Rock
+			1: Rock
 			2: Rock
 			3: Rock
 	Template@50:
@@ -677,6 +679,7 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+			2: Rock
 	Template@88:
 		Id: 88
 		Image: sh6
