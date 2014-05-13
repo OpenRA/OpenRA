@@ -460,6 +460,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (chatTextField.Text.Length == 0)
 					return true;
 
+				// Always scroll to bottom when we've typed something
+				chatPanel.ScrollToBottom();
+
 				orderManager.IssueOrder(Order.Chat(teamChat, chatTextField.Text));
 				chatTextField.Text = "";
 				return true;
@@ -534,8 +537,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				template.Bounds.Height += dh;
 			}
 
+			var scrolledToBottom = chatPanel.ScrolledToBottom;
 			chatPanel.AddChild(template);
-			chatPanel.ScrollToBottom();
+			if (scrolledToBottom)
+				chatPanel.ScrollToBottom();
+
 			Sound.PlayNotification(null, "Sounds", "ChatLine", null);
 		}
 
