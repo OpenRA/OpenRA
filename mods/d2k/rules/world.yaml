@@ -1,4 +1,7 @@
 World:
+	ChatCommands:
+	DevCommands:
+	HelpCommand:
 	ScreenMap:
 	ActorMap:
 	LoadWidgetAtGameStart:

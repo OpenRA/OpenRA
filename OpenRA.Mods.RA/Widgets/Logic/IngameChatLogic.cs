@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,10 +8,13 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Widgets;
+using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
@@ -25,11 +28,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly ContainerWidget chatTemplate;
 		readonly TextFieldWidget chatText;
 
+		readonly List<INotifyChat> chatTraits;
+
 		bool teamChat;
 
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world)
 		{
+			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToList();
+
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
 			var disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));
 			teamChat = !disableTeamChat;
@@ -117,6 +124,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public void AddChatLine(Color c, string from, string text)
 		{
+			if (chatTraits != null && !chatTraits.All(x => x.OnChat(from, text)))
+				return;
+			
 			chatOverlayDisplay.AddLine(c, from, text);
 
 			var template = chatTemplate.Clone();
