@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA
 		public readonly string LongDesc = "";
 		public readonly bool AllowMultiple = false;
 		public readonly bool OneShot = false;
+		public readonly string[] Prerequisites = {};
 
 		public readonly string BeginChargeSound = null;
 		public readonly string EndChargeSound = null;
