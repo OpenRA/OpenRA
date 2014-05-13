@@ -31,13 +31,16 @@ namespace OpenRA
 		readonly Dictionary<string, TileSet> tileSetCache = new Dictionary<string, TileSet>();
 		readonly Dictionary<string, SequenceCache> sequenceCaches = new Dictionary<string, SequenceCache>();
 
-		public Action OnProgress;
+		public event EventHandler LoadingProgress;
+		void RaiseProgress()
+		{
+			if (LoadingProgress != null)
+				LoadingProgress(this, new EventArgs());
+		}
 
 		public RulesetCache(ModData modData)
 		{
 			this.modData = modData;
-
-			OnProgress = () => { if (modData.LoadScreen != null) modData.LoadScreen.Display(); };
 		}
 
 		public Ruleset LoadDefaultRules()
@@ -57,31 +60,23 @@ namespace OpenRA
 			Dictionary<string, string> movies;
 			Dictionary<string, TileSet> tileSets;
 
-			OnProgress();
 			using (new PerfTimer("Actors"))
 				actors = LoadYamlRules(actorCache, m.Rules, map.RuleDefinitions, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
-			OnProgress();
 			using (new PerfTimer("Weapons"))
 				weapons = LoadYamlRules(weaponCache, m.Weapons, map.WeaponDefinitions, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
-			OnProgress();
 			using (new PerfTimer("Voices"))
 				voices = LoadYamlRules(voiceCache, m.Voices, map.VoiceDefinitions, (k, _) => new SoundInfo(k.Value));
-			OnProgress();
 			using (new PerfTimer("Notifications"))
 				notifications = LoadYamlRules(notificationCache, m.Notifications, map.NotificationDefinitions, (k, _) => new SoundInfo(k.Value));
-			OnProgress();
 			using (new PerfTimer("Music"))
 				music = LoadYamlRules(musicCache, m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
-			OnProgress();
 			using (new PerfTimer("Movies"))
 				movies = LoadYamlRules(movieCache, m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
-			OnProgress();
 			using (new PerfTimer("TileSets"))
 				tileSets = LoadTileSets(tileSetCache, sequenceCaches, m.TileSets);
 
 			var sequences = sequenceCaches.ToDictionary(kvp => kvp.Key, kvp => new SequenceProvider(kvp.Value, map));
 
-			OnProgress();
 			return new Ruleset(actors, weapons, voices, notifications, music, movies, tileSets, sequences);
 		}
 
@@ -90,6 +85,8 @@ namespace OpenRA
 			string[] files, List<MiniYamlNode> nodes,
 			Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> f)
 		{
+			RaiseProgress();
+
 			var inputKey = string.Concat(string.Join("|", files), "|", nodes.WriteToString());
 
 			var mergedNodes = files
@@ -105,12 +102,15 @@ namespace OpenRA
 
 				t = f(wkv, wyy);
 				itemCache.Add(key, t);
+
+				RaiseProgress();
 				return t;
 			};
 
 			var yy = mergedNodes.ToDictionary(x => x.Key, x => x.Value);
 			var itemSet = mergedNodes.ToDictionaryWithConflictLog(kv => kv.Key.ToLowerInvariant(), kv => wrap(kv, yy), "LoadYamlRules", null, null);
 
+			RaiseProgress();
 			return itemSet;
 		}
 

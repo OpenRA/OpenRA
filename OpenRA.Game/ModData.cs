@@ -42,6 +42,7 @@ namespace OpenRA
 			LoadScreen.Display();
 			WidgetLoader = new WidgetLoader(this);
 			RulesetCache = new RulesetCache(this);
+			RulesetCache.LoadingProgress += HandleLoadingProgress;
 			MapCache = new MapCache(this);
 
 			// HACK: Mount only local folders so we have a half-working environment for the asset installer
@@ -50,6 +51,16 @@ namespace OpenRA
 				GlobalFileSystem.Mount(dir);
 
 			defaultRules = Exts.Lazy(() => RulesetCache.LoadDefaultRules());
+
+			initialThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+		}
+
+		// HACK: Only update the loading screen if we're in the main thread.
+		int initialThreadId;
+		void HandleLoadingProgress(object sender, EventArgs e)
+		{
+			if (LoadScreen != null && System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId)
+				LoadScreen.Display();
 		}
 
 		public void InitializeLoaders()

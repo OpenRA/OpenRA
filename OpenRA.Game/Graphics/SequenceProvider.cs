@@ -68,12 +68,8 @@ namespace OpenRA.Graphics
 
 		readonly Dictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>> sequenceCache = new Dictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>();
 
-		public Action OnProgress;
-
 		public SequenceCache(ModData modData, TileSet tileSet)
 		{
-			OnProgress = () => { if (modData.LoadScreen != null) modData.LoadScreen.Display(); };
-
 			this.modData = modData;
 
 			spriteLoader = Exts.Lazy(() => new SpriteLoader(tileSet.Extensions, new SheetBuilder(SheetType.Indexed)));
@@ -87,8 +83,6 @@ namespace OpenRA.Graphics
 
 		IReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>> Load(List<MiniYamlNode> sequenceNodes)
 		{
-			OnProgress();
-
 			var sequenceFiles = modData.Manifest.Sequences;
 
 			var nodes = sequenceFiles
@@ -113,8 +107,6 @@ namespace OpenRA.Graphics
 					sequenceCache.Add(key, t);
 					items.Add(node.Key, t);
 				}
-
-				OnProgress();
 			}
 
 			return new ReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>(items);

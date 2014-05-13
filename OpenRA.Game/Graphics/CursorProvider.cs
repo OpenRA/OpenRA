@@ -22,12 +22,8 @@ namespace OpenRA.Graphics
 		Dictionary<string, CursorSequence> cursors;
 		Cache<string, PaletteReference> palettes;
 
-		public Action OnProgress;
-
 		public CursorProvider(ModData modData)
 		{
-			OnProgress = () => { if (modData.LoadScreen != null) modData.LoadScreen.Display(); };
-
 			var sequenceFiles = modData.Manifest.Cursors;
 
 			cursors = new Dictionary<string, CursorSequence>();
@@ -65,8 +61,6 @@ namespace OpenRA.Graphics
 
 		void LoadSequencesForCursor(SpriteLoader loader, string cursorSrc, MiniYaml cursor)
 		{
-			OnProgress();
-
 			foreach (var sequence in cursor.Nodes)
 				cursors.Add(sequence.Key, new CursorSequence(loader, cursorSrc, cursor.Value, sequence.Value));
 		}
