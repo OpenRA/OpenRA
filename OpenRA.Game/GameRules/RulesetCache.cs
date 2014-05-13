@@ -31,11 +31,13 @@ namespace OpenRA
 		readonly Dictionary<string, TileSet> tileSetCache = new Dictionary<string, TileSet>();
 		readonly Dictionary<string, SequenceCache> sequenceCaches = new Dictionary<string, SequenceCache>();
 
-		public Action OnProgress = () => { if (Game.modData != null && Game.modData.LoadScreen != null) Game.modData.LoadScreen.Display(); };
+		public Action OnProgress;
 
 		public RulesetCache(ModData modData)
 		{
 			this.modData = modData;
+
+			OnProgress = () => { if (modData.LoadScreen != null) modData.LoadScreen.Display(); };
 		}
 
 		public Ruleset LoadDefaultRules()
@@ -77,7 +79,7 @@ namespace OpenRA
 			using (new PerfTimer("TileSets"))
 				tileSets = LoadTileSets(tileSetCache, sequenceCaches, m.TileSets);
 
-			var sequences = sequenceCaches.ToDictionary((kvp) => kvp.Key, (kvp) => new SequenceProvider(kvp.Value, map));
+			var sequences = sequenceCaches.ToDictionary(kvp => kvp.Key, kvp => new SequenceProvider(kvp.Value, map));
 
 			OnProgress();
 			return new Ruleset(actors, weapons, voices, notifications, music, movies, tileSets, sequences);
@@ -88,7 +90,7 @@ namespace OpenRA
 			string[] files, List<MiniYamlNode> nodes,
 			Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> f)
 		{
-			string inputKey = string.Concat(string.Join("|", files), "|", nodes.WriteToString());
+			var inputKey = string.Concat(string.Join("|", files), "|", nodes.WriteToString());
 
 			var mergedNodes = files
 				.Select(s => MiniYaml.FromFile(s))
@@ -120,9 +122,7 @@ namespace OpenRA
 			{
 				TileSet t;
 				if (itemCache.TryGetValue(file, out t))
-				{
 					items.Add(t.Id, t);
-				}
 				else
 				{
 					t = new TileSet(modData, file);

@@ -9,8 +9,6 @@
 #endregion
 
 using OpenRA.Widgets;
-using OpenRA.Graphics;
-using OpenRA.Network;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {

@@ -68,10 +68,12 @@ namespace OpenRA.Graphics
 
 		readonly Dictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>> sequenceCache = new Dictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>();
 
-		public Action OnProgress = () => { if (Game.modData != null && Game.modData.LoadScreen != null) Game.modData.LoadScreen.Display(); };
+		public Action OnProgress;
 
 		public SequenceCache(ModData modData, TileSet tileSet)
 		{
+			OnProgress = () => { if (modData.LoadScreen != null) modData.LoadScreen.Display(); };
+
 			this.modData = modData;
 
 			spriteLoader = Exts.Lazy(() => new SpriteLoader(tileSet.Extensions, new SheetBuilder(SheetType.Indexed)));
