@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA
 
 		public void BuildingComplete(Actor self)
 		{
-			if (!skippedMakeAnimation)
+			if (skippedMakeAnimation)
 			{
 				state = PopupState.Closed;
 				rb.PlayCustomAnimRepeating(self, "closed-idle");
