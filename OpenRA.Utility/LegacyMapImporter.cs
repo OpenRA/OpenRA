@@ -129,11 +129,11 @@ namespace OpenRA.Utility
 			var file = new IniFile(GlobalFileSystem.Open(iniFile));
 			var basic = file.GetSection("Basic");
 			var mapSection = file.GetSection("Map");
-			var legacyMapFormat = (IniMapFormat)int.Parse(basic.GetValue("NewINIFormat", "0"));
-			var offsetX = int.Parse(mapSection.GetValue("X", "0"));
-			var offsetY = int.Parse(mapSection.GetValue("Y", "0"));
-			var width = int.Parse(mapSection.GetValue("Width", "0"));
-			var height = int.Parse(mapSection.GetValue("Height", "0"));
+			var legacyMapFormat = (IniMapFormat)Exts.ParseIntegerInvariant(basic.GetValue("NewINIFormat", "0"));
+			var offsetX = Exts.ParseIntegerInvariant(mapSection.GetValue("X", "0"));
+			var offsetY = Exts.ParseIntegerInvariant(mapSection.GetValue("Y", "0"));
+			var width = Exts.ParseIntegerInvariant(mapSection.GetValue("Width", "0"));
+			var height = Exts.ParseIntegerInvariant(mapSection.GetValue("Height", "0"));
 			mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
 
 			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile));
@@ -174,9 +174,9 @@ namespace OpenRA.Utility
 				LoadPlayer(file, p, legacyMapFormat == IniMapFormat.RedAlert);
 
 			var wps = file.GetSection("Waypoints")
-					.Where(kv => int.Parse(kv.Value) > 0)
-					.Select(kv => Pair.New(int.Parse(kv.Key),
-						LocationFromMapOffset(int.Parse(kv.Value), mapSize)))
+					.Where(kv => Exts.ParseIntegerInvariant(kv.Value) > 0)
+					.Select(kv => Pair.New(Exts.ParseIntegerInvariant(kv.Key),
+						LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), mapSize)))
 					.ToArray();
 
 			// Add waypoint actors
@@ -298,7 +298,7 @@ namespace OpenRA.Utility
 
 			foreach (KeyValuePair<string, string> kv in terrain)
 			{
-				var loc = int.Parse(kv.Key);
+				var loc = Exts.ParseIntegerInvariant(kv.Key);
 				map.Actors.Value.Add("Actor" + actorCount++,
 					new ActorReference(kv.Value.ToLowerInvariant())
 					{
@@ -332,7 +332,7 @@ namespace OpenRA.Utility
 
 			foreach (KeyValuePair<string, string> kv in overlay)
 			{
-				var loc = int.Parse(kv.Key);
+				var loc = Exts.ParseIntegerInvariant(kv.Key);
 				var cell = new CPos(loc % mapSize, loc / mapSize);
 
 				var res = Pair.New((byte)0, (byte)0);
@@ -359,7 +359,7 @@ namespace OpenRA.Utility
 
 			foreach (KeyValuePair<string, string> kv in terrain)
 			{
-				var loc = int.Parse(kv.Key);
+				var loc = Exts.ParseIntegerInvariant(kv.Key);
 				map.Actors.Value.Add("Actor" + actorCount++,
 					new ActorReference(kv.Value.Split(',')[0].ToLowerInvariant())
 					{
@@ -379,7 +379,7 @@ namespace OpenRA.Utility
 				try
 				{
 					var parts = s.Value.Split(',');
-					var loc = int.Parse(parts[3]);
+					var loc = Exts.ParseIntegerInvariant(parts[3]);
 					if (parts[0] == "")
 						parts[0] = "Neutral";
 
@@ -391,11 +391,13 @@ namespace OpenRA.Utility
 						new LocationInit(new CPos(loc % mapSize, loc / mapSize)),
 						new OwnerInit(parts[0]),
 						new HealthInit(float.Parse(parts[2], NumberFormatInfo.InvariantInfo) / 256),
-						new FacingInit((section == "INFANTRY") ? int.Parse(parts[6]) : int.Parse(parts[4])),
+						new FacingInit((section == "INFANTRY")
+							? Exts.ParseIntegerInvariant(parts[6])
+							: Exts.ParseIntegerInvariant(parts[4])),
 					};
 
 					if (section == "INFANTRY")
-						actor.Add(new SubCellInit(int.Parse(parts[4])));
+						actor.Add(new SubCellInit(Exts.ParseIntegerInvariant(parts[4])));
 
 					if (!Rules.Info.ContainsKey(parts[1].ToLowerInvariant()))
 						errorHandler("Ignoring unknown actor type: `{0}`".F(parts[1].ToLowerInvariant()));
@@ -415,8 +417,8 @@ namespace OpenRA.Utility
 			{
 				// loc=type,loc,depth
 				var parts = s.Value.Split(',');
-				var loc = int.Parse(parts[1]);
-				map.Smudges.Value.Add(new SmudgeReference(parts[0].ToLowerInvariant(), new int2(loc % mapSize, loc / mapSize), int.Parse(parts[2])));
+				var loc = Exts.ParseIntegerInvariant(parts[1]);
+				map.Smudges.Value.Add(new SmudgeReference(parts[0].ToLowerInvariant(), new int2(loc % mapSize, loc / mapSize), Exts.ParseIntegerInvariant(parts[2])));
 			}
 		}
 

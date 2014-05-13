@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -42,7 +42,7 @@ namespace OpenRA.Utility
 
 		static void ConvertPxToRange(ref string input, int scaleMult, int scaleDiv)
 		{
-			var value = int.Parse(input);
+			var value = Exts.ParseIntegerInvariant(input);
 			var ts = Game.modData.Manifest.TileSize;
 			var world = value * 1024 * scaleMult / (scaleDiv * ts.Height);
 			var cells = world / 1024;
@@ -337,7 +337,7 @@ namespace OpenRA.Utility
 		public static void UpgradeMap(string[] args)
 		{
 			var map = new Map(args[1]);
-			var engineDate = int.Parse(args[2]);
+			var engineDate = Exts.ParseIntegerInvariant(args[2]);
 
 			Game.modData = new ModData(map.RequiresMod);
 			UpgradeWeaponRules(engineDate, ref map.Weapons, null, 0);
@@ -349,7 +349,7 @@ namespace OpenRA.Utility
 		public static void UpgradeMod(string[] args)
 		{
 			var mod = args[1];
-			var engineDate = int.Parse(args[2]);
+			var engineDate = Exts.ParseIntegerInvariant(args[2]);
 
 			Game.modData = new ModData(mod);
 			Game.modData.MapCache.LoadMaps();

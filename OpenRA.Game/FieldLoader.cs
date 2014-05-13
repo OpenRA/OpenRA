@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -116,7 +116,7 @@ namespace OpenRA
 			if (fieldType == typeof(int))
 			{
 				int res;
-				if (int.TryParse(value, out res))
+				if (Exts.TryParseIntegerInvariant(value, out res))
 					return res;
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -124,7 +124,7 @@ namespace OpenRA
 			else if (fieldType == typeof(ushort))
 			{
 				ushort res;
-				if (ushort.TryParse(value, out res))
+				if (ushort.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out res))
 					return res;
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -132,7 +132,7 @@ namespace OpenRA
 			if (fieldType == typeof(long))
 			{
 				long res;
-				if (long.TryParse(value, out res))
+				if (long.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out res))
 					return res;
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -140,7 +140,7 @@ namespace OpenRA
 			else if (fieldType == typeof(float))
 			{
 				float res;
-				if (float.TryParse(value.Replace("%", ""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
+				if (float.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
 					return res * (value.Contains('%') ? 0.01f : 1f);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -148,7 +148,7 @@ namespace OpenRA
 			else if (fieldType == typeof(decimal))
 			{
 				decimal res;
-				if (decimal.TryParse(value.Replace("%", ""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
+				if (decimal.TryParse(value.Replace("%", ""),  NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
 					return res * (value.Contains('%') ? 0.01m : 1m);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -164,9 +164,16 @@ namespace OpenRA
 			{
 				var parts = value.Split(',');
 				if (parts.Length == 3)
-					return Color.FromArgb(int.Parse(parts[0]).Clamp(0, 255), int.Parse(parts[1]).Clamp(0, 255), int.Parse(parts[2]).Clamp(0, 255));
+					return Color.FromArgb(
+						Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255));
 				if (parts.Length == 4)
-					return Color.FromArgb(int.Parse(parts[0]).Clamp(0, 255), int.Parse(parts[1]).Clamp(0, 255), int.Parse(parts[2]).Clamp(0, 255), int.Parse(parts[3]).Clamp(0, 255));
+					return Color.FromArgb(
+						Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[3]).Clamp(0, 255));
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
@@ -177,9 +184,9 @@ namespace OpenRA
 				// Allow old ColorRamp format to be parsed as HSLColor
 				if (parts.Length == 3 || parts.Length == 4)
 					return new HSLColor(
-						(byte)int.Parse(parts[0]).Clamp(0, 255),
-						(byte)int.Parse(parts[1]).Clamp(0, 255),
-						(byte)int.Parse(parts[2]).Clamp(0, 255));
+						(byte)Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+						(byte)Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+						(byte)Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255));
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -231,7 +238,7 @@ namespace OpenRA
 			else if (fieldType == typeof(WAngle))
 			{
 				int res;
-				if (int.TryParse(value, out res))
+				if (Exts.TryParseIntegerInvariant(value, out res))
 					return new WAngle(res);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -242,8 +249,10 @@ namespace OpenRA
 				if (parts.Length == 3)
 				{
 					int rr, rp, ry;
-					if (int.TryParse(value, out rr) && int.TryParse(value, out rp) && int.TryParse(value, out ry))
-						return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
+					if (Exts.TryParseIntegerInvariant(value, out rr)
+						&& Exts.TryParseIntegerInvariant(value, out rp)
+						&& Exts.TryParseIntegerInvariant(value, out ry))
+							return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
 				}
 
 				return InvalidValueAction(value, fieldType, fieldName);
@@ -252,13 +261,17 @@ namespace OpenRA
 			else if (fieldType == typeof(CPos))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				return new CPos(int.Parse(parts[0]), int.Parse(parts[1]));
+				return new CPos(
+					Exts.ParseIntegerInvariant(parts[0]),
+					Exts.ParseIntegerInvariant(parts[1]));
 			}
 
 			else if (fieldType == typeof(CVec))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				return new CVec(int.Parse(parts[0]), int.Parse(parts[1]));
+				return new CVec(
+					Exts.ParseIntegerInvariant(parts[0]),
+					Exts.ParseIntegerInvariant(parts[1]));
 			}
 
 			else if (fieldType.IsEnum)
@@ -292,13 +305,17 @@ namespace OpenRA
 			else if (fieldType == typeof(Size))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				return new Size(int.Parse(parts[0]), int.Parse(parts[1]));
+				return new Size(
+					Exts.ParseIntegerInvariant(parts[0]),
+					Exts.ParseIntegerInvariant(parts[1]));
 			}
 
 			else if (fieldType == typeof(int2))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				return new int2(int.Parse(parts[0]), int.Parse(parts[1]));
+				return new int2(
+					Exts.ParseIntegerInvariant(parts[0]),
+					Exts.ParseIntegerInvariant(parts[1]));
 			}
 
 			else if (fieldType == typeof(float2))
@@ -307,9 +324,9 @@ namespace OpenRA
 				float xx = 0;
 				float yy = 0;
 				float res;
-				if (float.TryParse(parts[0].Replace("%", ""), out res))
+				if (float.TryParse(parts[0].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
 					xx = res * (parts[0].Contains('%') ? 0.01f : 1f);
-				if (float.TryParse(parts[1].Replace("%", ""), out res))
+				if (float.TryParse(parts[1].Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
 					yy = res * (parts[1].Contains('%') ? 0.01f : 1f);
 				return new float2(xx, yy);
 			}
@@ -317,7 +334,11 @@ namespace OpenRA
 			else if (fieldType == typeof(Rectangle))
 			{
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				return new Rectangle(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
+				return new Rectangle(
+					Exts.ParseIntegerInvariant(parts[0]),
+					Exts.ParseIntegerInvariant(parts[1]),
+					Exts.ParseIntegerInvariant(parts[2]),
+					Exts.ParseIntegerInvariant(parts[3]));
 			}
 
 			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Bits<>))

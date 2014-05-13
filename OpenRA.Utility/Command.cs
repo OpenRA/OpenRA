@@ -235,9 +235,9 @@ namespace OpenRA.Utility
 
 			for (var z = 3; z < args.Length - 2; z += 3)
 			{
-				var start = int.Parse(args[z]);
-				var m = int.Parse(args[z + 1]);
-				var n = int.Parse(args[z + 2]);
+				var start = Exts.ParseIntegerInvariant(args[z]);
+				var m = Exts.ParseIntegerInvariant(args[z + 1]);
+				var n = Exts.ParseIntegerInvariant(args[z + 2]);
 
 				for (var i = 0; i < m; i++)
 					for (var j = 0; j < n; j++)

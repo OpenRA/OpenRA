@@ -280,7 +280,7 @@ namespace OpenRA.Irc
 			OnLineRead(l);
 
 			int numeric;
-			if (int.TryParse(l.Command, out numeric))
+			if (Exts.TryParseIntegerInvariant(l.Command, out numeric))
 			{
 				var nl = new NumericLine(l, numeric);
 				LocalUser.OnNumeric(nl);
