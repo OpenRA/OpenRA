@@ -170,7 +170,7 @@ Container@MUSIC_PANEL:
 			Height: 35
 			Text: Back
 		Button@INSTALL_BUTTON:
-			Logic: CncInstallMusicLogic
+			Logic: InstallMusicLogic
 			X: 220
 			Y: 399
 			Width: 140
@@ -178,7 +178,7 @@ Container@MUSIC_PANEL:
 			Text: Install Music
 
 Container@INSTALL_MUSIC_PANEL:
-	Logic: CncInstallFromCDLogic
+	Logic: InstallMusicLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - 150)/2
 	Width: 640
@@ -201,52 +201,37 @@ Container@INSTALL_MUSIC_PANEL:
 					Y: 11
 					ImageCollection: logos
 					ImageName: install
-				Container@INSTALLING:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
-					Visible: false
-					Children:
-						ProgressBar@PROGRESS_BAR:
-							X: 170
-							Y: 45
-							Width: PARENT_RIGHT - 185
-							Height: 35
-						Label@STATUS_LABEL:
-							X: 170
-							Y: 85
-							Width: PARENT_RIGHT - 185
-							Height: 25
-							Align: Left
-				Container@INSERT_DISK:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
-					Visible: false
-					Children:
-						Label@MUSIC_DISK_NOT_FOUND:
-							X: 170
-							Y: 35
-							Width: PARENT_RIGHT-30
-							Height: 25
-							Text: Disk not found
-							Font: Bold
-						Label@PLEASE_INSERT_MUSIC_DISK:
-							X: 170
-							Y: 70
-							Width: PARENT_RIGHT-185
-							Height: 25
-							WordWrap: true
-							Text: Please insert one of the Command & Conquer install CDs then click Retry.
-							Font: Bold
-		Button@BACK_BUTTON:
+		Label@INFO:
+			X: 170
+			Y: 35
+			Width: PARENT_RIGHT-30
+			Height: 25
+			Text: The soundtrack is currently unavailable.
+			Font: Bold
+		Label@INFO2:
+			X: 170
+			Y: 70
+			Width: PARENT_RIGHT-185
+			Height: 25
+			WordWrap: true
+			Text: OpenRA can download the music files from the internet, or you can install from the original C&C CDs.
+			Font: Bold
+		Button@CANCEL_BUTTON:
 			Key: escape
 			Y: 149
 			Width: 140
 			Height: 35
 			Text: Back
-		Button@RETRY_BUTTON:
+		Button@DOWNLOAD_BUTTON:
+			X: 350
+			Y: 149
+			Width: 140
+			Height: 35
+			Text: Download
+		Button@COPY_FROM_CD_BUTTON:
 			X: 500
 			Y: 149
 			Width: 140
 			Height: 35
-			Text: Retry
+			Text: Use CD
 

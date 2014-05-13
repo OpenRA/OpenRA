@@ -519,6 +519,7 @@
     <Compile Include="Parachutable.cs" />
     <Compile Include="Render\WithMakeAnimation.cs" />
     <Compile Include="Widgets\Logic\InstallFromCDLogic.cs" />
+    <Compile Include="Widgets\Logic\InstallMusicLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

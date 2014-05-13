@@ -141,6 +141,8 @@ ContentInstaller:
 	PackageToExtractFromCD: INSTALL/SETUP.Z
 	ExtractFilesFromCD: speech.mix, tempicnh.mix, transit.mix
 	CopyFilesFromCD: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
+	ShippedSoundtracks: 2
+	MusicPackageMirrorList: http://www.openra.net/packages/cnc-music-mirrors.txt
 
 ServerTraits:
 	LobbyCommands
