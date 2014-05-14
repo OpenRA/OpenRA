@@ -1,4 +1,5 @@
 #!/bin/bash
+# example launch script, see https://github.com/OpenRA/OpenRA/wiki/Dedicated for details
 Name="Dedicated-Server"
 Mod="ra"
 Dedicated="True"
