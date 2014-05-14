@@ -8,6 +8,7 @@ if ($args.Length -eq 0)
 	echo "                  version for the current Git branch."
 	echo "  clean           Removes all built and copied files. Use the 'all' and"
 	echo "                  'dependencies' commands to restore removed files."
+	echo "  test            Tests the default mods for errors."
 	echo ""
 	$command = Read-Host "Enter command"
 }
@@ -78,6 +79,18 @@ elseif ($command -eq "dependencies")
 	cp thirdparty/*.dll .
 	cp thirdparty/windows/*.dll .
 	echo "Dependencies copied."
+}
+elseif ($command -eq "test")
+{
+	echo "Testing mods..."
+	echo "OpenRA.Lint: checking Red Alert mod MiniYAML..."
+	./OpenRA.Lint.exe --verbose ra
+	echo "OpenRA.Lint: checking Tiberian Dawn mod MiniYAML..."
+	./OpenRA.Lint.exe --verbose cnc
+	echo "OpenRA.Lint: checking Dune 2000 mod MiniYAML..."
+	./OpenRA.Lint.exe --verbose d2k
+	echo "OpenRA.Lint: checking Tiberian Sun mod MiniYAML..."
+	./OpenRA.Lint.exe --verbose ts
 }
 else
 {
