@@ -52,7 +52,12 @@ namespace OpenRA.Mods.Cnc
 					state = State.Dock;
 					return Util.SequenceActivities(new Drag(startDock, endDock, 12), this);
 				case State.Dock:
-					ru.PlayCustomAnimation(self, "dock", () => { ru.PlayCustomAnimRepeating(self, "dock-loop"); state = State.Loop; });
+					ru.PlayCustomAnimation(self, "dock", () => {
+						ru.PlayCustomAnimRepeating(self, "dock-loop");
+						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
+							nd.Docked(proc, self);
+						state = State.Loop;
+					});
 					state = State.Wait;
 					return this;
 				case State.Loop:
@@ -61,6 +66,8 @@ namespace OpenRA.Mods.Cnc
 					return this;
 				case State.Undock:
 					ru.PlayCustomAnimBackwards(self, "dock", () => state = State.DragOut);
+					foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
+						nd.Undocked(proc, self);
 					state = State.Wait;
 					return this;
 				case State.DragOut:

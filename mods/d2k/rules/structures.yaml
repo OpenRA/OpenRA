@@ -190,6 +190,8 @@ CONCRETEB:
 		Facing: 160
 	ProvidesCustomPrerequisite:
 		Prerequisite: Refinery
+	WithDockingOverlay@SMOKE:
+		Sequence: smoke
 
 ^SILO:
 	Inherits: ^Building

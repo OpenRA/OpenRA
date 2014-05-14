@@ -475,6 +475,12 @@ refa:
 	icon: DATA
 		Start: 4066
 		Offset: -30,-24
+	smoke: DATA
+		Start: 3885
+		Length: 14
+		Offset: 10,-16
+		Tick: 200
+		BlendMode: Additive
 
 siloa:
 	idle: DATA
@@ -966,6 +972,12 @@ refh:
 	icon: DATA
 		Start: 4067
 		Offset: -30,-24
+	smoke: DATA
+		Start: 3885
+		Length: 14
+		Offset: 10,-16
+		Tick: 200
+		BlendMode: Additive
 
 siloh:
 	idle: DATA
@@ -1367,6 +1379,12 @@ refo:
 	icon: DATA
 		Start: 4068
 		Offset: -30,-24
+	smoke: DATA
+		Start: 3885
+		Length: 14
+		Offset: 10,-16
+		Tick: 200
+		BlendMode: Additive
 
 siloo:
 	idle: DATA

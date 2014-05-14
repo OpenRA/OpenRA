@@ -86,6 +86,7 @@ namespace OpenRA.Traits
 		bool IsValidTarget(Actor self, Actor saboteur);
 	}
 	public interface IStoreOre { int Capacity { get; } }
+	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 	public interface IEffectiveOwner
 	{
 		bool Disguised { get; }
