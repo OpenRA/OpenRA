@@ -70,7 +70,7 @@ namespace OpenRA.Editor
 		{
 			MakeDirty();
 			var tileSet = Program.Rules.TileSets[surface1.Map.Tileset];
-			miniMapBox.Image = Minimap.AddStaticResources(tileSet, surface1.Map, Minimap.TerrainBitmap(tileSet, surface1.Map, true));
+			miniMapBox.Image = Minimap.RenderMapPreview(tileSet, surface1.Map, true);
 			cashToolStripStatusLabel.Text = CalculateTotalResource().ToString();
 		}
 
@@ -288,7 +288,7 @@ namespace OpenRA.Editor
 				p.ResumeLayout();
 			}
 
-			miniMapBox.Image = Minimap.AddStaticResources(tileset, surface1.Map, Minimap.TerrainBitmap(tileset, surface1.Map, true));
+			miniMapBox.Image = Minimap.RenderMapPreview(tileset, surface1.Map, true);
 
 			propertiesToolStripMenuItem.Enabled = true;
 			toolStripMenuItemProperties.Enabled = true;

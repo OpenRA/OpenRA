@@ -55,7 +55,7 @@ namespace OpenRA.Graphics
 
 		// Add the static resources defined in the map; if the map lives
 		// in a world use AddCustomTerrain instead
-		public static Bitmap AddStaticResources(TileSet tileset, Map map, Bitmap terrainBitmap)
+		static Bitmap AddStaticResources(TileSet tileset, Map map, Ruleset resourceRules, Bitmap terrainBitmap)
 		{
 			Bitmap terrain = new Bitmap(terrainBitmap);
 
@@ -74,7 +74,7 @@ namespace OpenRA.Graphics
 						if (map.MapResources.Value[mapX, mapY].Type == 0)
 							continue;
 
-						var res = map.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
+						var res = resourceRules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
 								.Where(t => t.ResourceType == map.MapResources.Value[mapX, mapY].Type)
 								.Select(t => t.TerrainType).FirstOrDefault();
 						if (res == null)
@@ -180,8 +180,13 @@ namespace OpenRA.Graphics
 
 		public static Bitmap RenderMapPreview(TileSet tileset, Map map, bool actualSize)
 		{
+			return RenderMapPreview(tileset, map, map.Rules, actualSize);
+		}
+
+		public static Bitmap RenderMapPreview(TileSet tileset, Map map, Ruleset resourceRules, bool actualSize)
+		{
 			Bitmap terrain = TerrainBitmap(tileset, map, actualSize);
-			return AddStaticResources(tileset, map, terrain);
+			return AddStaticResources(tileset, map, resourceRules, terrain);
 		}
 	}
 }

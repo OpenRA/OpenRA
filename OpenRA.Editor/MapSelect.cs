@@ -76,7 +76,7 @@ namespace OpenRA.Editor
 				try
 				{
 					var tileset = Program.Rules.TileSets[map.Tileset];
-					MiniMapBox.Image = Minimap.AddStaticResources(tileset, map, Minimap.TerrainBitmap(tileset, map, true));
+					MiniMapBox.Image = Minimap.RenderMapPreview(tileset, map, true);
 				}
 				catch (Exception ed)
 				{
