@@ -18,6 +18,7 @@ Background@SETTINGS_PANEL:
 			Width: 160
 			Height: 25
 			Text: Reset
+			Font: Bold
 		Button@BACK_BUTTON:
 			Key: escape
 			X: PARENT_RIGHT - 180
