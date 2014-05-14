@@ -79,9 +79,9 @@ namespace OpenRA.Graphics
 					dirty = true;
 				}
 
-				if (dirty)
+				lock (dirtyLock)
 				{
-					lock (dirtyLock)
+					if (dirty)
 					{
 						texture.SetData(data, Size.Width, Size.Height);
 						dirty = false;

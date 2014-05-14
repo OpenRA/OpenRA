@@ -125,42 +125,50 @@ namespace OpenRA
 
 		void LoadAsyncInternal()
 		{
-			for (;;)
+			Log.Write("debug", "MapCache.LoadAsyncInternal started");
+
+			// Milliseconds to wait on one loop when nothing to do
+			var emptyDelay = 50;
+			// Keep the thread alive for at least 5 seconds after the last minimap generation
+			var maxKeepAlive = 5000 / emptyDelay;
+			var keepAlive = maxKeepAlive;
+
+			while (keepAlive-- > 0)
 			{
-				MapPreview p;
+				List<MapPreview> todo;
 				lock (syncRoot)
 				{
-					if (generateMinimap.Count == 0)
-						break;
-
-					p = generateMinimap.Peek();
-
-					// Preview already exists
-					if (p.Minimap != null)
-					{
-						generateMinimap.Dequeue();
-						continue;
-					}
+					todo = generateMinimap.Where(p => p.Minimap == null).ToList();
+					generateMinimap.Clear();
 				}
+				if (todo.Count == 0)
+				{
+					Thread.Sleep(emptyDelay);
+					continue;
+				}
+				else
+					keepAlive = maxKeepAlive;
 
 				// Render the minimap into the shared sheet
-				// Note: this is not generally thread-safe, but it works here because:
-				//   (a) This worker is the only thread writing to this sheet
-				//   (b) The main thread is the only thread reading this sheet
-				//   (c) The sheet is marked dirty after the write is completed,
-				//       which causes the main thread to copy this to the texture during
-				//       the next render cycle.
-				//   (d) Any partially written bytes from the next minimap is in an
-				//       unallocated area, and will be committed in the next cycle.
-				var bitmap = p.CustomPreview ?? Minimap.RenderMapPreview(modData.DefaultRules.TileSets[p.Map.Tileset], p.Map, modData.DefaultRules, true);
-				p.Minimap = sheetBuilder.Add(bitmap);
+				foreach (var p in todo)
+				{
+					// The rendering is thread safe because it only reads from the passed instances and writes to a new bitmap
+					var bitmap = p.CustomPreview ?? Minimap.RenderMapPreview(modData.DefaultRules.TileSets[p.Map.Tileset], p.Map, modData.DefaultRules, true);
+					// Note: this is not generally thread-safe, but it works here because:
+					//   (a) This worker is the only thread writing to this sheet
+					//   (b) The main thread is the only thread reading this sheet
+					//   (c) The sheet is marked dirty after the write is completed,
+					//       which causes the main thread to copy this to the texture during
+					//       the next render cycle.
+					//   (d) Any partially written bytes from the next minimap is in an
+					//       unallocated area, and will be committed in the next cycle.
+					p.Minimap = sheetBuilder.Add(bitmap);
 
-				lock (syncRoot)
-					generateMinimap.Dequeue();
-
-				// Yuck... But this helps the UI Jank when opening the map selector significantly.
-				Thread.Sleep(50);
+					// Yuck... But this helps the UI Jank when opening the map selector significantly.
+					Thread.Sleep(Environment.ProcessorCount == 1 ? 25 : 5);
+				};
 			}
+			Log.Write("debug", "MapCache.LoadAsyncInternal ended");
 		}
 
 		public void CacheMinimap(MapPreview preview)
@@ -171,6 +179,7 @@ namespace OpenRA
 			if (previewLoaderThread == null || !previewLoaderThread.IsAlive)
 			{
 				previewLoaderThread = new Thread(LoadAsyncInternal);
+				previewLoaderThread.IsBackground = true;
 				previewLoaderThread.Start();
 			}
 		}
