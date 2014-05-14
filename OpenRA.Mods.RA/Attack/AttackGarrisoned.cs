@@ -172,6 +172,8 @@ namespace OpenRA.Mods.RA
 					muzzles.Add(muzzleFlash);
 					muzzleAnim.PlayThen(sequence, () => muzzles.Remove(muzzleFlash));
 				}
+				foreach (var npa in self.TraitsImplementing<INotifyAttack>())
+					npa.Attacking(self, target, a, barrel);
 			}
 		}
 
