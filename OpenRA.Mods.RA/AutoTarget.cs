@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 	{
 		readonly AutoTargetInfo info;
 		readonly AttackBase attack;
-		readonly AttackTurreted at;
+		readonly AttackFollow at;
 		[Sync] int nextScanTime = 0;
 
 		public UnitStance Stance;
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			attack = self.Trait<AttackBase>();
 			Stance = info.InitialStance;
 			PredictedStance = Stance;
-			at = self.TraitOrDefault<AttackTurreted>();
+			at = self.TraitOrDefault<AttackFollow>();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
