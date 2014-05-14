@@ -328,7 +328,9 @@ install-core: default
 	@$(INSTALL_PROGRAM) thirdparty/Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/RestSharp.dll "$(DATA_INSTALL_DIR)"
 
-	@$(INSTALL_PROGRAM) -m +rx "error-dialog.sh" "$(DATA_INSTALL_DIR)"
+ifeq ($(shell uname),Linux)
+	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
+endif
 
 	@echo "#!/bin/sh" > openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra
