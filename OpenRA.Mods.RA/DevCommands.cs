@@ -29,19 +29,21 @@ namespace OpenRA.Mods.RA
 			var console = world.WorldActor.Trait<ChatCommands>();
 			var help = world.WorldActor.Trait<HelpCommand>();
 
-			console.RegisterCommand("shroud", this);
-			console.RegisterCommand("give", this);
-			console.RegisterCommand("instabuild", this);
-			console.RegisterCommand("buildrange", this);
-			console.RegisterCommand("power", this);
-			console.RegisterCommand("tech", this);
+			console.RegisterCommand("disableshroud", this);
+			console.RegisterCommand("givecash", this);
+			console.RegisterCommand("instantbuild", this);
+			console.RegisterCommand("buildanywhere", this);
+			console.RegisterCommand("unlimitedpower", this);
+			console.RegisterCommand("enabletech", this);
+			console.RegisterCommand("instantcharge", this);
 
-			help.RegisterHelp("shroud", "enables or disables shroud.");
-			help.RegisterHelp("give", "gives the default or specified amount of money.");
-			help.RegisterHelp("instabuild", "enables or disables instant building");
-			help.RegisterHelp("buildrange", "allows or disallows you to build out of your build-range");
-			help.RegisterHelp("power", "enables or disables infinite power");
-			help.RegisterHelp("tech", "gives or takes the ability to build everything");
+			help.RegisterHelp("disableshroud", "toggles shroud.");
+			help.RegisterHelp("givecash", "gives the default or specified amount of money.");
+			help.RegisterHelp("instantbuild", "toggles instant building.");
+			help.RegisterHelp("buildanywhere", "toggles you the ability to build anywhere.");
+			help.RegisterHelp("unlimitedpower", "toggles infinite power.");
+			help.RegisterHelp("enabletech", "toggles the ability to build everything.");
+			help.RegisterHelp("instantcharge", "toggles instant support power charging.");
 		}
 
 		public void InvokeCommand(string name, string arg)
@@ -54,7 +56,7 @@ namespace OpenRA.Mods.RA
 
 			switch (name)
 			{
-				case "give":
+				case "givecash":
 					var order = new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false);
 					var cash = 0;
 
@@ -66,12 +68,12 @@ namespace OpenRA.Mods.RA
 
 					break;
 
-				case "shroud": IssueDevCommand(world, "DevShroudDisable"); break;
-				case "instabuild": IssueDevCommand(world, "DevFastBuild"); break;
-				case "buildrange": IssueDevCommand(world, "DevBuildAnywhere"); break;
-				case "power": IssueDevCommand(world, "DevUnlimitedPower"); break;
-				case "tech": IssueDevCommand(world, "DevEnableTech"); break;
-				case "support": IssueDevCommand(world, "DevFastCharge"); break;
+				case "disableshroud": IssueDevCommand(world, "DevShroudDisable"); break;
+				case "instantbuild": IssueDevCommand(world, "DevFastBuild"); break;
+				case "buildanywhere": IssueDevCommand(world, "DevBuildAnywhere"); break;
+				case "unlimitedpower": IssueDevCommand(world, "DevUnlimitedPower"); break;
+				case "enabletech": IssueDevCommand(world, "DevEnableTech"); break;
+				case "instantcharge": IssueDevCommand(world, "DevFastCharge"); break;
 			}
 		}
 
