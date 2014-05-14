@@ -867,6 +867,8 @@ PROC:
 		Minimum: 500
 		SoundToVictim: credit1.aud
 	DeadBuildingState:
+	WithIdleOverlay@TOP:
+		Sequence: idle-top
 
 SILO:
 	Inherits: ^Building
