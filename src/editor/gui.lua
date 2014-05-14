@@ -110,6 +110,7 @@ local function createToolBar(frame)
     toolBar:AddTool(ID_STEPOUT, "Step out", getBitmap("wxART_DEBUG_STEP_OUT", wx.wxART_TOOLBAR, toolBmpSize), TR("Step out of the current function")..SCinB(ID_STEPOUT))
     toolBar:AddSeparator()
     toolBar:AddTool(ID_TOGGLEBREAKPOINT, "Toggle breakpoint", getBitmap("wxART_DEBUG_BREAKPOINT_TOGGLE", wx.wxART_TOOLBAR, toolBmpSize), TR("Toggle breakpoint")..SCinB(ID_TOGGLEBREAKPOINT))
+    toolBar:AddTool(ID_BOOKMARKTOGGLE, "Toggle bookmark", getBitmap("wxART_BOOKMARK_TOGGLE", wx.wxART_TOOLBAR, toolBmpSize), TR("Toggle bookmark")..SCinB(ID_BOOKMARKTOGGLE))
     toolBar:AddTool(ID_VIEWCALLSTACK, "Stack window", getBitmap("wxART_DEBUG_CALLSTACK", wx.wxART_TOOLBAR, toolBmpSize), TR("View the stack window")..SCinB(ID_VIEWCALLSTACK))
     toolBar:AddTool(ID_VIEWWATCHWINDOW, "Watch window", getBitmap("wxART_DEBUG_WATCH", wx.wxART_TOOLBAR, toolBmpSize), TR("View the watch window")..SCinB(ID_VIEWWATCHWINDOW))
   end
