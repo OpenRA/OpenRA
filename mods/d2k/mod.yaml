@@ -169,3 +169,5 @@ LuaScripts:
 	mods/common/lua/facing.lua
 
 SupportsMapsFrom: d2k
+
+NewsUrl: https://raw.githubusercontent.com/OpenRA/OpenRAWeb/master/content/news/ingame-news.yaml

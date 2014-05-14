@@ -364,6 +364,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var ds = Game.Settings.Debug;
 			var ss = Game.Settings.Server;
+			var gs = Game.Settings.Game;
 
 			BindCheckboxPref(panel, "NAT_DISCOVERY", ss, "DiscoverNatDevices");
 			BindCheckboxPref(panel, "VERBOSE_NAT_CHECKBOX", ss, "VerboseNatDiscovery");
@@ -372,6 +373,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SanityCheckUnsyncedCode");
 			BindCheckboxPref(panel, "BOTDEBUG_CHECKBOX", ds, "BotDebug");
 			BindCheckboxPref(panel, "CRASH_DIALOG_CHECKBOX", ds, "ShowFatalErrorDialog");
+			BindCheckboxPref(panel, "FETCH_NEWS_CHECKBOX", gs, "FetchNews");
 
 			return () => { };
 		}

@@ -82,6 +82,9 @@ namespace OpenRA
 				return elems.JoinWith(",");
 			}
 
+			if (t == typeof(DateTime))
+				return ((DateTime)v).ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
+
 			return v.ToString();
 		}
 

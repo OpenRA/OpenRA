@@ -190,3 +190,5 @@ Missions:
 	mods/cnc/missions.yaml
 
 SupportsMapsFrom: cnc
+
+NewsUrl: https://raw.githubusercontent.com/OpenRA/OpenRAWeb/master/content/news/ingame-news.yaml
