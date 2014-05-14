@@ -21,9 +21,6 @@ cd ../..
 # Copy files for OpenRA.Game.exe and OpenRA.Editor.exe as well as all dependencies.
 make install-all prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
-# Native library dependencies
-cp "$DEPSDIR"/* "$PWD/packaging/linux/$ROOTDIR/usr/lib/openra/" || exit 3
-
 # Icons and .desktop files
 make install-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 

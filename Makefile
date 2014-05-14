@@ -327,6 +327,7 @@ install-core: default
 	@$(INSTALL_PROGRAM) thirdparty/MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/RestSharp.dll "$(DATA_INSTALL_DIR)"
+	@$(CP) thirdparty/${platformdeps}/* "$(DATA_INSTALL_DIR)"
 
 ifeq ($(shell uname),Linux)
 	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
