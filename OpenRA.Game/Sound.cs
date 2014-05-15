@@ -385,7 +385,7 @@ namespace OpenRA
 			return PlayPredefined(voicedUnit.World.Map.Rules, null, voicedUnit, type, phrase, variant, false, pos, volume, true);
 		}
 
-		public static bool PlayNotification(MapRuleset rules, Player player, string type, string notification, string variant)
+		public static bool PlayNotification(Ruleset rules, Player player, string type, string notification, string variant)
 		{
 			if (rules == null)
 				throw new ArgumentNullException("rules");

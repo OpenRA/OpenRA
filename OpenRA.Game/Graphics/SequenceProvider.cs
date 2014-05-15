@@ -96,9 +96,7 @@ namespace OpenRA.Graphics
 
 				Lazy<IReadOnlyDictionary<string, Sequence>> t;
 				if (sequenceCache.TryGetValue(key, out t))
-				{
 					items.Add(node.Key, t);
-				}
 				else
 				{
 					t = Exts.Lazy(() => (IReadOnlyDictionary<string, Sequence>)new ReadOnlyDictionary<string, Sequence>(

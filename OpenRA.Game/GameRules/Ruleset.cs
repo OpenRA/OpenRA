@@ -37,14 +37,14 @@ namespace OpenRA
 			IDictionary<string, TileSet> tileSets,
 			IDictionary<string, SequenceProvider> sequences)
 		{
-			this.Actors = new ReadOnlyDictionary<string, ActorInfo>(actors);
-			this.Weapons = new ReadOnlyDictionary<string, WeaponInfo>(weapons);
-			this.Voices = new ReadOnlyDictionary<string, SoundInfo>(voices);
-			this.Notifications = new ReadOnlyDictionary<string, SoundInfo>(notifications);
-			this.Music = new ReadOnlyDictionary<string, MusicInfo>(music);
-			this.Movies = new ReadOnlyDictionary<string, string>(movies);
-			this.TileSets = new ReadOnlyDictionary<string, TileSet>(tileSets);
-			this.Sequences = new ReadOnlyDictionary<string, SequenceProvider>(sequences);
+			Actors = new ReadOnlyDictionary<string, ActorInfo>(actors);
+			Weapons = new ReadOnlyDictionary<string, WeaponInfo>(weapons);
+			Voices = new ReadOnlyDictionary<string, SoundInfo>(voices);
+			Notifications = new ReadOnlyDictionary<string, SoundInfo>(notifications);
+			Music = new ReadOnlyDictionary<string, MusicInfo>(music);
+			Movies = new ReadOnlyDictionary<string, string>(movies);
+			TileSets = new ReadOnlyDictionary<string, TileSet>(tileSets);
+			Sequences = new ReadOnlyDictionary<string, SequenceProvider>(sequences);
 		}
 
 		public IEnumerable<KeyValuePair<string, MusicInfo>> InstalledMusic { get { return Music.Where(m => m.Value.Exists); } }
