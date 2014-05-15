@@ -248,7 +248,7 @@ local specialmapping = {
       for child = 0, children:GetCount()-1 do
         local data = children:Item(child):GetData()
         local _, window = pcall(function() return data:DynamicCast("wxWindow") end)
-        if window then
+        if window and panes:Item(index).name ~= 'toolbar' then
           window:SetBackgroundColour(bg)
           window:SetForegroundColour(fg)
           window:Refresh()
