@@ -31,27 +31,27 @@ namespace OpenRA.Network
 			{
 				var session = new Session();
 
-				var ys = MiniYaml.FromString(data);
-				foreach (var y in ys)
+				var nodes = MiniYaml.FromString(data);
+				foreach (var node in nodes)
 				{
-					var yy = y.Key.Split('@');
+					var strings = node.Key.Split('@');
 
-					switch (yy[0])
+					switch (strings[0])
 					{
 						case "Client":
-							session.Clients.Add(FieldLoader.Load<Client>(y.Value));
+							session.Clients.Add(Client.Deserialize(node.Value));
 							break;
 
 						case "ClientPing":
-							session.ClientPings.Add(FieldLoader.Load<ClientPing>(y.Value));
+							session.ClientPings.Add(ClientPing.Deserialize(node.Value));
 							break;
 
 						case "GlobalSettings":
-							FieldLoader.Load(session.GlobalSettings, y.Value);
+							session.GlobalSettings = Global.Deserialize(node.Value);
 							break;
 
 						case "Slot":
-							var s = FieldLoader.Load<Slot>(y.Value);
+							var s = Slot.Deserialize(node.Value);
 							session.Slots.Add(s.PlayerReference, s);
 							break;
 					}
@@ -113,11 +113,14 @@ namespace OpenRA.Network
 			public bool IsInvalid { get { return State == ClientState.Invalid; } }
 			public bool IsObserver { get { return Slot == null; } }
 
-			public string Serialize()
+			public MiniYamlNode Serialize()
 			{
-				var clientData = new List<MiniYamlNode>();
-				clientData.Add(new MiniYamlNode("Client@{0}".F(this.Index), FieldSaver.Save(this)));
-				return clientData.WriteToString();
+				return new MiniYamlNode("Client@{0}".F(this.Index), FieldSaver.Save(this));
+			}
+
+			public static Client Deserialize(MiniYaml data)
+			{
+				return FieldLoader.Load<Client>(data);
 			}
 		}
 
@@ -133,11 +136,14 @@ namespace OpenRA.Network
 			public int LatencyJitter = -1;
 			public int[] LatencyHistory = { };
 
-			public string Serialize()
+			public MiniYamlNode Serialize()
 			{
-				var clientData = new List<MiniYamlNode>();
-				clientData.Add(new MiniYamlNode("ClientPing@{0}".F(this.Index), FieldSaver.Save(this)));
-				return clientData.WriteToString();
+				return new MiniYamlNode("ClientPing@{0}".F(this.Index), FieldSaver.Save(this));
+			}
+
+			public static ClientPing Deserialize(MiniYaml data)
+			{
+				return FieldLoader.Load<ClientPing>(data);
 			}
 		}
 
@@ -153,11 +159,14 @@ namespace OpenRA.Network
 			public bool LockSpawn;
 			public bool Required;
 
-			public string Serialize()
+			public MiniYamlNode Serialize()
 			{
-				var slotData = new List<MiniYamlNode>();
-				slotData.Add(new MiniYamlNode("Slot@{0}".F(this.PlayerReference), FieldSaver.Save(this)));
-				return slotData.WriteToString();
+				return new MiniYamlNode("Slot@{0}".F(this.PlayerReference), FieldSaver.Save(this));
+			}
+
+			public static Slot Deserialize(MiniYaml data)
+			{
+				return FieldLoader.Load<Slot>(data);
 			}
 		}
 
@@ -181,30 +190,33 @@ namespace OpenRA.Network
 			public bool AllowVersionMismatch;
 			public string GameUid;
 
-			public string Serialize()
+			public MiniYamlNode Serialize()
 			{
-				var globalData = new List<MiniYamlNode>();
-				globalData.Add(new MiniYamlNode("GlobalSettings", FieldSaver.Save(this)));
-				return globalData.WriteToString();
+				return new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
+			}
+
+			public static Global Deserialize(MiniYaml data)
+			{
+				return FieldLoader.Load<Global>(data);
 			}
 		}
 
 		public string Serialize()
 		{
-			var sessionData = new System.Text.StringBuilder();
+			var sessionData = new List<MiniYamlNode>();
 
 			foreach (var client in Clients)
-				sessionData.Append(client.Serialize());
+				sessionData.Add(client.Serialize());
 
 			foreach (var clientPing in ClientPings)
-				sessionData.Append(clientPing.Serialize());
+				sessionData.Add(clientPing.Serialize());
 
 			foreach (var slot in Slots)
-				sessionData.Append(slot.Value.Serialize());
+				sessionData.Add(slot.Value.Serialize());
 
-			sessionData.Append(GlobalSettings.Serialize());
+			sessionData.Add(GlobalSettings.Serialize());
 
-			return sessionData.ToString();
+			return sessionData.WriteToString();
 		}
 	}
 }

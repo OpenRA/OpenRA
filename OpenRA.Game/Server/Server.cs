@@ -583,12 +583,12 @@ namespace OpenRA.Server
 				return;
 
 			// TODO: only need to sync the specific client that has changed to avoid conflicts
-			var clientData = new System.Text.StringBuilder();
+			var clientData = new List<MiniYamlNode>();
 			foreach (var client in LobbyInfo.Clients)
-				clientData.Append(client.Serialize());
+				clientData.Add(client.Serialize());
 
 			DispatchOrders(null, 0,
-				new ServerOrder("SyncLobbyClients", clientData.ToString()).Serialize());
+				new ServerOrder("SyncLobbyClients", clientData.WriteToString()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -600,12 +600,12 @@ namespace OpenRA.Server
 				return;
 
 			// TODO: don't sync all the slots if just one changed
-			var slotData = new System.Text.StringBuilder();
+			var slotData = new List<MiniYamlNode>();
 			foreach (var slot in LobbyInfo.Slots)
-				slotData.Append(slot.Value.Serialize());
+				slotData.Add(slot.Value.Serialize());
 
 			DispatchOrders(null, 0,
-				new ServerOrder("SyncLobbySlots", slotData.ToString()).Serialize());
+				new ServerOrder("SyncLobbySlots", slotData.WriteToString()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -616,8 +616,11 @@ namespace OpenRA.Server
 			if (State != ServerState.WaitingPlayers)
 				return;
 
+			var sessionData = new List<MiniYamlNode>();
+			sessionData.Add(LobbyInfo.GlobalSettings.Serialize());
+
 			DispatchOrders(null, 0,
-				new ServerOrder("SyncLobbyGlobalSettings", LobbyInfo.GlobalSettings.Serialize()).Serialize());
+				new ServerOrder("SyncLobbyGlobalSettings", sessionData.WriteToString()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -626,12 +629,12 @@ namespace OpenRA.Server
 		public void SyncClientPing()
 		{
 			// TODO: split this further into per client ping orders
-			var clientPings = new System.Text.StringBuilder();
+			var clientPings = new List<MiniYamlNode>();
 			foreach (var ping in LobbyInfo.ClientPings)
-				clientPings.Append(ping.Serialize());
+				clientPings.Add(ping.Serialize());
 
 			DispatchOrders(null, 0,
-				new ServerOrder("SyncClientPings", clientPings.ToString()).Serialize());
+				new ServerOrder("SyncClientPings", clientPings.WriteToString()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -669,7 +672,7 @@ namespace OpenRA.Server
 
 			foreach (var t in serverTraits.WithInterface<IStartGame>())
 				t.GameStarted(this);
-			
+
 			// Check TimeOut
 			if (Settings.TimeOut > 10000)
 			{

@@ -176,7 +176,7 @@ namespace OpenRA.Network
 						{
 							var strings = node.Key.Split('@');
 							if (strings[0] == "Client")
-								clients.Add(FieldLoader.Load<Session.Client>(node.Value));
+								clients.Add(Session.Client.Deserialize(node.Value));
 						}
 
 						orderManager.LobbyInfo.Clients = clients;
@@ -193,7 +193,7 @@ namespace OpenRA.Network
 							var strings = node.Key.Split('@');
 							if (strings[0] == "Slot")
 							{
-								var slot = FieldLoader.Load<Session.Slot>(node.Value);
+								var slot = Session.Slot.Deserialize(node.Value);
 								slots.Add(slot.PlayerReference, slot);
 							}
 						}
@@ -210,7 +210,7 @@ namespace OpenRA.Network
 						{
 							var strings = node.Key.Split('@');
 							if (strings[0] == "GlobalSettings")
-								FieldLoader.Load(orderManager.LobbyInfo.GlobalSettings, node.Value);
+								orderManager.LobbyInfo.GlobalSettings = Session.Global.Deserialize(node.Value);
 						}
 
 						SetOrderLag(orderManager);
@@ -226,7 +226,7 @@ namespace OpenRA.Network
 						{
 							var strings = node.Key.Split('@');
 							if (strings[0] == "ClientPing")
-								pings.Add(FieldLoader.Load<Session.ClientPing>(node.Value));
+								pings.Add(Session.ClientPing.Deserialize(node.Value));
 						}
 
 						orderManager.LobbyInfo.ClientPings = pings;
