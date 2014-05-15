@@ -459,6 +459,7 @@ namespace OpenRA.Server
 
 					break;
 				}
+
 				case "HandshakeResponse":
 					ValidateClient(conn, so.Data);
 					break;
@@ -581,6 +582,7 @@ namespace OpenRA.Server
 			if (State != ServerState.WaitingPlayers)
 				return;
 
+			// TODO: only need to sync the specific client that has changed to avoid conflicts
 			var clientData = new System.Text.StringBuilder();
 			foreach (var client in LobbyInfo.Clients)
 				clientData.Append(client.Serialize());
@@ -597,6 +599,7 @@ namespace OpenRA.Server
 			if (State != ServerState.WaitingPlayers)
 				return;
 
+			// TODO: don't sync all the slots if just one changed
 			var slotData = new System.Text.StringBuilder();
 			foreach (var slot in LobbyInfo.Slots)
 				slotData.Append(slot.Value.Serialize());
@@ -622,6 +625,7 @@ namespace OpenRA.Server
 
 		public void SyncClientPing()
 		{
+			// TODO: split this further into per client ping orders
 			var clientPings = new System.Text.StringBuilder();
 			foreach (var ping in LobbyInfo.ClientPings)
 				clientPings.Append(ping.Serialize());

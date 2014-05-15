@@ -38,19 +38,19 @@ namespace OpenRA.Network
 
 					switch (yy[0])
 					{
+						case "Client":
+							session.Clients.Add(FieldLoader.Load<Client>(y.Value));
+							break;
+
+						case "ClientPing":
+							session.ClientPings.Add(FieldLoader.Load<ClientPing>(y.Value));
+							break;
+
 						case "GlobalSettings":
 							FieldLoader.Load(session.GlobalSettings, y.Value);
 							break;
 
-							case "Client":
-							session.Clients.Add(FieldLoader.Load<Client>(y.Value));
-							break;
-
-							case "ClientPing":
-							session.ClientPings.Add(FieldLoader.Load<ClientPing>(y.Value));
-							break;
-
-							case "Slot":
+						case "Slot":
 							var s = FieldLoader.Load<Slot>(y.Value);
 							session.Slots.Add(s.PlayerReference, s);
 							break;
