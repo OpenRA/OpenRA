@@ -99,7 +99,7 @@ namespace OpenRA
 			}
 			catch (InvalidOperationException)
 			{
-				Log.Write("exception", "GameInformation deserialized invalid MiniYaml:\n{0}".F(data));
+				Log.Write("debug", "GameInformation deserialized invalid MiniYaml:\n{0}".F(data));
 				throw;
 			}
 		}
