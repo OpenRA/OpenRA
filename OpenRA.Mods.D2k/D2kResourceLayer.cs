@@ -97,28 +97,28 @@ namespace OpenRA.Traits
 		ClearSides FindClearSides(ResourceType t, CPos p)
 		{
 			var ret = ClearSides.None;
-			if (render[p.X, p.Y - 1].Type != t)
+			if (render[p + new CVec(0, -1)].Type != t)
 				ret |= ClearSides.Top | ClearSides.TopLeft | ClearSides.TopRight;
 
-			if (render[p.X - 1, p.Y].Type != t)
+			if (render[p + new CVec(-1, 0)].Type != t)
 				ret |= ClearSides.Left | ClearSides.TopLeft | ClearSides.BottomLeft;
 
-			if (render[p.X + 1, p.Y].Type != t)
+			if (render[p + new CVec(1, 0)].Type != t)
 				ret |= ClearSides.Right | ClearSides.TopRight | ClearSides.BottomRight;
 
-			if (render[p.X, p.Y + 1].Type != t)
+			if (render[p + new CVec(0, 1)].Type != t)
 				ret |= ClearSides.Bottom | ClearSides.BottomLeft | ClearSides.BottomRight;
 
-			if (render[p.X - 1, p.Y - 1].Type != t)
+			if (render[p + new CVec(-1, -1)].Type != t)
 				ret |= ClearSides.TopLeft;
 
-			if (render[p.X + 1, p.Y - 1].Type != t)
+			if (render[p + new CVec(1, -1)].Type != t)
 				ret |= ClearSides.TopRight;
 
-			if (render[p.X - 1, p.Y + 1].Type != t)
+			if (render[p + new CVec(-1, 1)].Type != t)
 				ret |= ClearSides.BottomLeft;
 
-			if (render[p.X + 1, p.Y + 1].Type != t)
+			if (render[p + new CVec(1, 1)].Type != t)
 				ret |= ClearSides.BottomRight;
 
 			return ret;
@@ -126,7 +126,7 @@ namespace OpenRA.Traits
 
 		void UpdateRenderedTileInner(CPos p)
 		{
-			var t = render[p.X, p.Y];
+			var t = render[p];
 			if (t.Density > 0)
 			{
 				var clear = FindClearSides(t.Type, p);
@@ -146,7 +146,7 @@ namespace OpenRA.Traits
 			else
 				t.Sprite = null;
 
-			render[p.X, p.Y] = t;
+			render[p] = t;
 		}
 
 		protected override void UpdateRenderedSprite(CPos p)

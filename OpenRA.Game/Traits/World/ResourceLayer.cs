@@ -22,89 +22,78 @@ namespace OpenRA.Traits
 		static readonly CellContents EmptyCell = new CellContents();
 
 		World world;
-		protected CellContents[,] content;
-		protected CellContents[,] render;
+		protected CellLayer<CellContents> content;
+		protected CellLayer<CellContents> render;
 		List<CPos> dirty;
 
 		public void Render(WorldRenderer wr)
 		{
-			var clip = wr.Viewport.CellBounds;
-			for (var x = clip.Left; x < clip.Right; x++)
+			foreach (var cell in wr.Viewport.VisibleCells)
 			{
-				for (var y = clip.Top; y < clip.Bottom; y++)
-				{
-					var pos = new CPos(x, y);
-					if (world.ShroudObscures(pos))
-						continue;
+				if (world.ShroudObscures(cell))
+					continue;
 
-					var c = render[x, y];
-					if (c.Sprite != null)
-						new SpriteRenderable(c.Sprite, pos.CenterPosition,
-							WVec.Zero, -511, c.Type.Palette, 1f, true).Render(wr);
-				}
+				var c = render[cell];
+				if (c.Sprite != null)
+					new SpriteRenderable(c.Sprite, cell.CenterPosition,
+						WVec.Zero, -511, c.Type.Palette, 1f, true).Render(wr);
 			}
 		}
 
-		int GetAdjacentCellsWith(ResourceType t, int i, int j)
+		int GetAdjacentCellsWith(ResourceType t, CPos cell)
 		{
 			var sum = 0;
 			for (var u = -1; u < 2; u++)
 				for (var v = -1; v < 2; v++)
-					if (content[i + u, j + v].Type == t)
+					if (content[cell + new CVec(u, v)].Type == t)
 						++sum;
+
 			return sum;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			this.world = w;
-			content = new CellContents[w.Map.MapSize.X, w.Map.MapSize.Y];
-			render = new CellContents[w.Map.MapSize.X, w.Map.MapSize.Y];
+			content = new CellLayer<CellContents>(w.Map);
+			render = new CellLayer<CellContents>(w.Map);
 			dirty = new List<CPos>();
 
 			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
-			var map = w.Map;
-			for (var x = map.Bounds.Left; x < map.Bounds.Right; x++)
+			foreach (var cell in w.Map.Cells)
 			{
-				for (var y = map.Bounds.Top; y < map.Bounds.Bottom; y++)
-				{
-					var cell = new CPos(x, y);
-					ResourceType t;
-					if (!resources.TryGetValue(w.Map.MapResources.Value[x, y].Type, out t))
-						continue;
+				ResourceType t;
+				if (!resources.TryGetValue(w.Map.MapResources.Value[cell.X, cell.Y].Type, out t))
+					continue;
 
-					if (!AllowResourceAt(t, cell))
-						continue;
+				if (!AllowResourceAt(t, cell))
+					continue;
 
-					content[x, y] = CreateResourceCell(t, cell);
-				}
+				content[cell] = CreateResourceCell(t, cell);
 			}
 
 			// Set initial density based on the number of neighboring resources
-			for (var x = map.Bounds.Left; x < map.Bounds.Right; x++)
+			foreach (var cell in w.Map.Cells)
 			{
-				for (var y = map.Bounds.Top; y < map.Bounds.Bottom; y++)
+				var type = content[cell].Type;
+				if (type != null)
 				{
-					var type = content[x, y].Type;
-					if (type != null)
-					{
-						// Adjacent includes the current cell, so is always >= 1
-						var adjacent = GetAdjacentCellsWith(type, x, y);
-						var density = int2.Lerp(0, type.Info.MaxDensity, adjacent, 9);
-						content[x, y].Density = Math.Max(density, 1);
+					// Adjacent includes the current cell, so is always >= 1
+					var adjacent = GetAdjacentCellsWith(type, cell);
+					var density = int2.Lerp(0, type.Info.MaxDensity, adjacent, 9);
+					var temp = content[cell];
+					temp.Density = Math.Max(density, 1);
 
-						render[x, y] = content[x, y];
-						UpdateRenderedSprite(new CPos(x, y));
-					}
+					render[cell] = content[cell] = temp;
+					UpdateRenderedSprite(cell);
 				}
 			}
 		}
 
-		protected virtual void UpdateRenderedSprite(CPos p)
+		protected virtual void UpdateRenderedSprite(CPos cell)
 		{
-			var t = render[p.X, p.Y];
+			var t = render[cell];
 			if (t.Density > 0)
 			{
 				var sprites = t.Type.Variants[t.Variant];
@@ -114,7 +103,7 @@ namespace OpenRA.Traits
 			else
 				t.Sprite = null;
 
-			render[p.X, p.Y] = t;
+			render[cell] = t;
 		}
 
 		protected virtual string ChooseRandomVariant(ResourceType t)
@@ -129,7 +118,7 @@ namespace OpenRA.Traits
 			{
 				if (!self.World.FogObscures(c))
 				{
-					render[c.X, c.Y] = content[c.X, c.Y];
+					render[c] = content[c];
 					UpdateRenderedSprite(c);
 					remove.Add(c);
 				}
@@ -139,15 +128,15 @@ namespace OpenRA.Traits
 				dirty.Remove(r);
 		}
 
-		public bool AllowResourceAt(ResourceType rt, CPos a)
+		public bool AllowResourceAt(ResourceType rt, CPos cell)
 		{
-			if (!world.Map.IsInMap(a.X, a.Y))
+			if (!world.Map.IsInMap(cell))
 				return false;
 
-			if (!rt.Info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(a).Type))
+			if (!rt.Info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type))
 				return false;
 
-			if (!rt.Info.AllowUnderActors && world.ActorMap.AnyUnitsAt(a))
+			if (!rt.Info.AllowUnderActors && world.ActorMap.AnyUnitsAt(cell))
 				return false;
 
 			return true;
@@ -160,9 +149,10 @@ namespace OpenRA.Traits
 				|| (currentResourceType == null && AllowResourceAt(newResourceType, cell));
 		}
 
-		CellContents CreateResourceCell(ResourceType t, CPos p)
+		CellContents CreateResourceCell(ResourceType t, CPos cell)
 		{
-			world.Map.CustomTerrain[p.X, p.Y] = world.TileSet.GetTerrainIndex(t.Info.TerrainType);
+			world.Map.CustomTerrain[cell.X, cell.Y] = world.TileSet.GetTerrainIndex(t.Info.TerrainType);
+
 			return new CellContents
 			{
 				Type = t,
@@ -172,7 +162,7 @@ namespace OpenRA.Traits
 
 		public void AddResource(ResourceType t, CPos p, int n)
 		{
-			var cell = content[p.X, p.Y];
+			var cell = content[p];
 			if (cell.Type == null)
 				cell = CreateResourceCell(t, p);
 
@@ -180,58 +170,60 @@ namespace OpenRA.Traits
 				return;
 
 			cell.Density = Math.Min(cell.Type.Info.MaxDensity, cell.Density + n);
-			content[p.X, p.Y] = cell;
+			content[p] = cell;
 
 			if (!dirty.Contains(p))
 				dirty.Add(p);
 		}
 
-		public bool IsFull(CPos c)
+		public bool IsFull(CPos cell)
 		{
-			return content[c.X, c.Y].Density == content[c.X, c.Y].Type.Info.MaxDensity;
+			return content[cell].Density == content[cell].Type.Info.MaxDensity;
 		}
 
-		public ResourceType Harvest(CPos p)
+		public ResourceType Harvest(CPos cell)
 		{
-			var type = content[p.X, p.Y].Type;
-			if (type == null)
+			var c = content[cell];
+			if (c.Type == null)
 				return null;
 
-			if (--content[p.X, p.Y].Density < 0)
+			if (--c.Density < 0)
 			{
-				content[p.X, p.Y] = EmptyCell;
-				world.Map.CustomTerrain[p.X, p.Y] = -1;
+				content[cell] = EmptyCell;
+				world.Map.CustomTerrain[cell.X, cell.Y] = -1;
 			}
+			else
+				content[cell] = c;
 
-			if (!dirty.Contains(p))
-				dirty.Add(p);
+			if (!dirty.Contains(cell))
+				dirty.Add(cell);
 
-			return type;
+			return c.Type;
 		}
 
-		public void Destroy(CPos p)
+		public void Destroy(CPos cell)
 		{
 			// Don't break other users of CustomTerrain if there are no resources
-			if (content[p.X, p.Y].Type == null)
+			if (content[cell].Type == null)
 				return;
 
 			// Clear cell
-			content[p.X, p.Y] = EmptyCell;
-			world.Map.CustomTerrain[p.X, p.Y] = -1;
+			content[cell] = EmptyCell;
+			world.Map.CustomTerrain[cell.X, cell.Y] = -1;
 
-			if (!dirty.Contains(p))
-				dirty.Add(p);
+			if (!dirty.Contains(cell))
+				dirty.Add(cell);
 		}
 
-		public ResourceType GetResource(CPos p) { return content[p.X, p.Y].Type; }
-		public ResourceType GetRenderedResource(CPos p) { return render[p.X, p.Y].Type; }
-		public int GetResourceDensity(CPos p) { return content[p.X, p.Y].Density; }
-		public int GetMaxResourceDensity(CPos p)
+		public ResourceType GetResource(CPos cell) { return content[cell].Type; }
+		public ResourceType GetRenderedResource(CPos cell) { return render[cell].Type; }
+		public int GetResourceDensity(CPos cell) { return content[cell].Density; }
+		public int GetMaxResourceDensity(CPos cell)
 		{
-			if (content[p.X, p.Y].Type == null)
+			if (content[cell].Type == null)
 				return 0;
 
-			return content[p.X, p.Y].Type.Info.MaxDensity;
+			return content[cell].Type.Info.MaxDensity;
 		}
 
 		public struct CellContents
