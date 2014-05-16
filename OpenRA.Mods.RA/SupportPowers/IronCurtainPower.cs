@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
@@ -19,15 +20,24 @@ namespace OpenRA.Mods.RA
 {
 	class IronCurtainPowerInfo : SupportPowerInfo
 	{
-		public readonly int Duration = 10; // Seconds
-		public readonly int Range = 1; // Range in cells
+		[Desc("Seconds")]
+		public readonly int Duration = 10;
+		[Desc("Cells")]
+		public readonly int Range = 1;
+		public readonly string IronCurtainSound = "ironcur9.aud";
 
 		public override object Create(ActorInitializer init) { return new IronCurtainPower(init.self, this); }
 	}
 
 	class IronCurtainPower : SupportPower
 	{
-		public IronCurtainPower(Actor self, IronCurtainPowerInfo info) : base(self, info) { }
+		IronCurtainPowerInfo info;
+
+		public IronCurtainPower(Actor self, IronCurtainPowerInfo info) : base(self, info)
+		{
+			this.info = info;
+		}
+
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
@@ -40,7 +50,7 @@ namespace OpenRA.Mods.RA
 
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 
-			Sound.Play("ironcur9.aud", order.TargetLocation.CenterPosition);
+			Sound.Play(info.IronCurtainSound, order.TargetLocation.CenterPosition);
 
 			foreach (var target in UnitsInRange(order.TargetLocation)
 				.Where(a => a.Owner.Stances[self.Owner] == Stance.Ally))
