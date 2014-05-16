@@ -20,13 +20,17 @@ namespace OpenRA.Mods.Cnc.Effects
 	{
 		Target target;
 		Animation anim;
-		Actor firedBy;
+		Player firedBy;
+		string palette;
+		string weapon;
 
-		public IonCannon(Actor firedBy, World world, CPos location)
+		public IonCannon(Player firedBy, string weapon, World world, CPos location, string effect, string palette)
 		{
 			this.firedBy = firedBy;
+			this.weapon = weapon;
+			this.palette = palette;
 			target = Target.FromCell(location);
-			anim = new Animation("ionsfx");
+			anim = new Animation(effect);
 			anim.PlayThen("idle", () => Finish(world));
 		}
 
@@ -34,13 +38,13 @@ namespace OpenRA.Mods.Cnc.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return anim.Render(target.CenterPosition, wr.Palette("effect"));
+			return anim.Render(target.CenterPosition, wr.Palette(palette));
 		}
 
 		void Finish(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoExplosion(firedBy, "IonCannon", target.CenterPosition);
+			Combat.DoExplosion(firedBy.PlayerActor, weapon, target.CenterPosition);
 		}
 	}
 }
