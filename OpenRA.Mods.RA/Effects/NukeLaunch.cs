@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Effects
 {
 	public class NukeLaunch : IEffect
 	{
-		readonly Actor firedBy;
+		readonly Player firedBy;
 		readonly Animation anim;
 		readonly string weapon;
 
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Effects
 		WPos pos;
 		int ticks;
 
-		public NukeLaunch(Actor firedBy, string weapon, WPos launchPos, WPos targetPos, WRange velocity, int delay, bool skipAscent)
+		public NukeLaunch(Player firedBy, string weapon, WPos launchPos, WPos targetPos, WRange velocity, int delay, bool skipAscent)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoExplosion(firedBy, weapon, pos);
+			Combat.DoExplosion(firedBy.PlayerActor, weapon, pos);
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 
 			foreach (var a in world.ActorsWithTrait<NukePaletteEffect>())

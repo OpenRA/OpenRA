@@ -21,9 +21,13 @@ namespace OpenRA.Mods.Cnc
 		[ActorReference]
 		[Desc("Actor to spawn when the attack starts")]
 		public readonly string CameraActor = null;
-
 		[Desc("Amount of time to keep the camera alive")]
 		public readonly int CameraRemoveDelay = 25;
+		[Desc("Effect sequence to display")]
+		public readonly string Effect = "ionsfx";
+		public readonly string EffectPalette = "effect";
+		[Desc("Which weapon to fire")]
+		public readonly string Weapon = "IonCannon";
 
 		public override object Create(ActorInitializer init) { return new IonCannonPower(init.self, this); }
 	}
@@ -46,7 +50,7 @@ namespace OpenRA.Mods.Cnc
 			{
 				var info = Info as IonCannonPowerInfo;
 				Sound.Play(Info.LaunchSound, order.TargetLocation.CenterPosition);
-				w.Add(new IonCannon(self, w, order.TargetLocation));
+				w.Add(new IonCannon(self.Owner, info.Weapon, w, order.TargetLocation, info.Effect, info.EffectPalette));
 
 				if (info.CameraActor == null)
 					return;
