@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		bool IsValidDisk(string diskRoot)
 		{
-			var files = Game.modData.Manifest.ContentInstaller["DiskTestFiles"].Split(',');
+			var files = Game.modData.Manifest.ContentInstaller["DiskTestFiles"].Split(',').Select(x => x.Trim()).ToArray();
 			return files.All(f => File.Exists(Path.Combine(diskRoot, f)));
 		}
 
@@ -71,10 +71,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			installingContainer.IsVisible = () => true;
 
 			var dest = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
-			var copyFiles = Game.modData.Manifest.ContentInstaller["CopyFilesFromCD"].Split(',');
+			var copyFiles = Game.modData.Manifest.ContentInstaller["CopyFilesFromCD"].Split(',').Select(x => x.Trim()).ToArray();
 
-			var extractPackage = Game.modData.Manifest.ContentInstaller["PackageToExtractFromCD"];
-			var extractFiles = Game.modData.Manifest.ContentInstaller["ExtractFilesFromCD"].Split(',');
+			var extractPackage = Game.modData.Manifest.ContentInstaller["PackageToExtractFromCD"].Trim();
+			var extractFiles = Game.modData.Manifest.ContentInstaller["ExtractFilesFromCD"].Split(',').Select(x => x.Trim()).ToArray();
 
 			var installCounter = 0;
 			var installTotal = copyFiles.Count() + extractFiles.Count();
@@ -93,16 +93,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				retryButton.IsDisabled = () => false;
 			}));
 
-			var t = new Thread( _ =>
+			new Thread(() =>
 			{
 				try
 				{
 					if (!InstallUtils.CopyFiles(source, copyFiles, dest, onProgress, onError))
+					{
+						onError("Copying files from CD failed.");
 						return;
+					}
 
 					if (!string.IsNullOrEmpty(extractPackage))
+					{
 						if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest, onProgress, onError))
+						{
+							onError("Extracting files from CD failed.");
 							return;
+						}
+					}
 
 					Game.RunAfterTick(() =>
 					{
@@ -111,12 +119,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						continueLoading();
 					});
 				}
-				catch
+				catch(Exception e)
 				{
-					onError("Installation failed");
+					onError("Installation failed.\n{0}".F(e.Message));
+					Log.Write("debug", e.ToString());
+					return;
 				}
-			}) { IsBackground = true };
-			t.Start();
+			}) { IsBackground = true }.Start();
 		}
 	}
 }

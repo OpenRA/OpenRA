@@ -44,18 +44,21 @@ namespace OpenRA
 			if (!Directory.Exists(destPath))
 				Directory.CreateDirectory(destPath);
 
-			if (!GlobalFileSystem.Exists(srcPath)) { onError("Cannot find " + package); return false; }
+			Log.Write("debug", "Mounting {0}".F(srcPath));
 			GlobalFileSystem.Mount(srcPath);
-			if (!GlobalFileSystem.Exists(package)) { onError("Cannot find " + package); return false; }
+			Log.Write("debug", "Mounting {0}".F(package));
 			GlobalFileSystem.Mount(package);
 
-			foreach (var s in files)
+			foreach (var file in files)
 			{
-				var destFile = Path.Combine(destPath, s);
-				using (var sourceStream = GlobalFileSystem.Open(s))
-				using (var destStream = File.Create(destFile))
+				var dest = Path.Combine(destPath, file);
+				if (File.Exists(dest))
+					File.Delete(dest);
+				using (var sourceStream = GlobalFileSystem.Open(file))
+				using (var destStream = File.Create(dest))
 				{
-					onProgress("Extracting " + s);
+					Log.Write("debug", "Extracting {0} to {1}".F(file, dest));
+					onProgress("Extracting " + file);
 					destStream.Write(sourceStream.ReadAllBytes());
 				}
 			}
@@ -75,8 +78,12 @@ namespace OpenRA
 				}
 
 				var destFile = Path.GetFileName(file).ToLowerInvariant();
-				onProgress("Extracting " + destFile);
-				File.Copy(fromPath,	Path.Combine(destPath, destFile), true);
+				var dest = Path.Combine(destPath, destFile);
+				if (File.Exists(dest))
+					File.Delete(dest);
+				onProgress("Copying " + destFile);
+				Log.Write("debug", "Copy {0} to {1}".F(fromPath, dest));
+				File.Copy(fromPath, dest, true);
 			}
 
 			return true;
