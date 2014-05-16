@@ -41,8 +41,14 @@ namespace OpenRA.Mods.RA.Activities
 			if (!cells.Contains(self.Location))
 				return NextActivity;
 
-			cargo.Load(transport, self);
-			self.World.AddFrameEndTask(w => w.Remove(self));
+			self.World.AddFrameEndTask(w => 
+			{
+				if(self.IsDead() || transport.IsDead() || !cargo.CanLoad(transport, self))
+					return;
+
+				cargo.Load(transport, self);
+				w.Remove(self);
+			});
 
 			return this;
 		}
