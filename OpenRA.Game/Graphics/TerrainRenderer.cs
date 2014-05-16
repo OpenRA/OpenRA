@@ -46,9 +46,9 @@ namespace OpenRA.Graphics
 		public void Draw(WorldRenderer wr, Viewport viewport)
 		{
 			var verticesPerRow = 4*map.Bounds.Width;
-			var bounds = viewport.CellBounds;
-			var firstRow = bounds.Top - map.Bounds.Top;
-			var lastRow = bounds.Bottom - map.Bounds.Top;
+			var cells = viewport.VisibleCells;
+			var firstRow = cells.TopLeft.Y - map.Bounds.Top;
+			var lastRow = cells.BottomRight.Y - map.Bounds.Top + 1;
 
 			if (lastRow < 0 || firstRow > map.Bounds.Height)
 				return;

@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -48,6 +49,9 @@ namespace OpenRA.Graphics
 		int2 viewportSize;
 		bool cellBoundsDirty = true;
 
+		CellRegion cells;
+		bool cellsDirty = true;
+
 		float zoom = 1f;
 		public float Zoom
 		{
@@ -61,6 +65,7 @@ namespace OpenRA.Graphics
 				zoom = value;
 				viewportSize = (1f / zoom * new float2(Game.Renderer.Resolution)).ToInt2();
 				cellBoundsDirty = true;
+				cellsDirty = true;
 			}
 		}
 
@@ -111,6 +116,7 @@ namespace OpenRA.Graphics
 		{
 			CenterLocation = worldRenderer.ScreenPxPosition(pos).Clamp(mapBounds);
 			cellBoundsDirty = true;
+			cellsDirty = true;
 		}
 
 		public void Scroll(float2 delta, bool ignoreBorders)
@@ -118,6 +124,7 @@ namespace OpenRA.Graphics
 			// Convert scroll delta from world-px to viewport-px
 			CenterLocation += (1f / Zoom * delta).ToInt2();
 			cellBoundsDirty = true;
+			cellsDirty = true;
 
 			if (!ignoreBorders)
 				CenterLocation = CenterLocation.Clamp(mapBounds);
@@ -156,6 +163,25 @@ namespace OpenRA.Graphics
 
 				var b = worldRenderer.world.VisibleBounds;
 				return b.HasValue ? Rectangle.Intersect(cachedRect, b.Value) : cachedRect;
+			}
+		}
+
+		public CellRegion VisibleCells
+		{
+			get
+			{
+				if (cellsDirty)
+				{
+					// Calculate the intersection of the visible rectangle and the map.
+					var map = worldRenderer.world.Map;
+					var tl = map.Clamp(worldRenderer.Position(TopLeft).ToCPos() - new CVec(1, 1));
+					var br = map.Clamp(worldRenderer.Position(BottomRight).ToCPos());
+
+					cells = new CellRegion(tl, br);
+					cellsDirty = false;
+				}
+
+				return cells;
 			}
 		}
 	}

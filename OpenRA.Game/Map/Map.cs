@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -117,6 +118,8 @@ namespace OpenRA
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
 		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
+
+		[FieldLoader.Ignore] public CellRegion Cells;
 
 		public static Map FromTileset(TileSet tileset)
 		{
@@ -229,11 +232,6 @@ namespace OpenRA
 			NotificationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Notifications");
 			TranslationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Translations");
 
-			CustomTerrain = new int[MapSize.X, MapSize.Y];
-			for (var x = 0; x < MapSize.X; x++)
-				for (var y = 0; y < MapSize.Y; y++)
-					CustomTerrain[x, y] = -1;
-
 			MapTiles = Exts.Lazy(() => LoadMapTiles());
 			MapResources = Exts.Lazy(() => LoadResourceTiles());
 
@@ -254,6 +252,14 @@ namespace OpenRA
 		void PostInit()
 		{
 			rules = Exts.Lazy(() => Game.modData.RulesetCache.LoadMapRules(this));
+
+			var tl = new CPos(Bounds.Left, Bounds.Top);
+			var br = new CPos(Bounds.Right - 1, Bounds.Bottom - 1);
+			Cells = new CellRegion(tl, br);
+
+			CustomTerrain = new int[MapSize.X, MapSize.Y];
+			foreach (var cell in Cells)
+				CustomTerrain[cell.X, cell.Y] = -1;
 		}
 
 		public Ruleset PreloadRules()
@@ -455,6 +461,7 @@ namespace OpenRA
 		public void ResizeCordon(int left, int top, int right, int bottom)
 		{
 			Bounds = Rectangle.FromLTRB(left, top, right, bottom);
+			Cells = new CellRegion(new CPos(Bounds.Left, Bounds.Top), new CPos(Bounds.Right - 1, Bounds.Bottom - 1));
 		}
 
 		string ComputeHash()
