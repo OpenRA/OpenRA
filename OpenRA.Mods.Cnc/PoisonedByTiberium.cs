@@ -32,6 +32,9 @@ namespace OpenRA.Mods.Cnc
 		{
 			if (--poisonTicks > 0) return;
 
+			// Prevents harming infantry in cargo.
+			if (!self.IsInWorld) return;
+
 			var rl = self.World.WorldActor.Trait<ResourceLayer>();
 			var r = rl.GetResource(self.Location);
 			if (r == null) return;
