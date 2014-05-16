@@ -27,9 +27,9 @@ namespace OpenRA.Traits
 		Actor self;
 		Map map;
 
-		int[,] visibleCount;
-		int[,] generatedShroudCount;
-		bool[,] explored;
+		CellLayer<int> visibleCount;
+		CellLayer<int> generatedShroudCount;
+		CellLayer<bool> explored;
 
 		readonly Lazy<IFogVisibilityModifier[]> fogVisibilities;
 
@@ -47,9 +47,9 @@ namespace OpenRA.Traits
 			this.self = self;
 			map = self.World.Map;
 
-			visibleCount = new int[map.MapSize.X, map.MapSize.Y];
-			generatedShroudCount = new int[map.MapSize.X, map.MapSize.Y];
-			explored = new bool[map.MapSize.X, map.MapSize.Y];
+			visibleCount = new CellLayer<int>(map);
+			generatedShroudCount = new CellLayer<int>(map);
+			explored = new CellLayer<bool>(map);
 
 			self.World.ActorAdded += AddVisibility;
 			self.World.ActorRemoved += RemoveVisibility;
@@ -104,8 +104,8 @@ namespace OpenRA.Traits
 			// Update visibility
 			foreach (var c in visible)
 			{
-				visibleCount[c.X, c.Y]++;
-				explored[c.X, c.Y] = true;
+				visibleCount[c]++;
+				explored[c] = true;
 			}
 
 			if (visibility.ContainsKey(a))
@@ -122,7 +122,7 @@ namespace OpenRA.Traits
 				return;
 
 			foreach (var c in visible)
-				visibleCount[c.X, c.Y]--;
+				visibleCount[c]--;
 
 			visibility.Remove(a);
 			Invalidate();
@@ -147,7 +147,7 @@ namespace OpenRA.Traits
 			var shrouded = GetVisOrigins(a).SelectMany(o => FindVisibleTiles(a.World, o, cs.Range))
 				.Distinct().ToArray();
 			foreach (var c in shrouded)
-				generatedShroudCount[c.X, c.Y]++;
+				generatedShroudCount[c]++;
 
 			if (generation.ContainsKey(a))
 				throw new InvalidOperationException("Attempting to add duplicate shroud generation");
@@ -163,7 +163,7 @@ namespace OpenRA.Traits
 				return;
 
 			foreach (var c in shrouded)
-				generatedShroudCount[c.X, c.Y]--;
+				generatedShroudCount[c]--;
 
 			generation.Remove(a);
 			Invalidate();
@@ -203,7 +203,7 @@ namespace OpenRA.Traits
 		public void Explore(World world, CPos center, WRange range)
 		{
 			foreach (var q in FindVisibleTiles(world, center, range))
-				explored[q.X, q.Y] = true;
+				explored[q] = true;
 
 			var r = (range.Range + 1023) / 1024;
 			var box = new Rectangle(center.X - r, center.Y - r, 2 * r + 1, 2 * r + 1);
@@ -214,19 +214,17 @@ namespace OpenRA.Traits
 
 		public void Explore(Shroud s)
 		{
-			for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
-				for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-					if (s.explored[i,j] == true)
-						explored[i, j] = true;
+			foreach (var cell in map.Cells)
+				if (s.explored[cell])
+					explored[cell] = true;
 
 			ExploredBounds = Rectangle.Union(ExploredBounds, s.ExploredBounds);
+			Invalidate();
 		}
 
 		public void ExploreAll(World world)
 		{
-			for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
-				for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-					explored[i, j] = true;
+			explored.Clear(true);
 
 			ExploredBounds = world.Map.Bounds;
 
@@ -235,23 +233,21 @@ namespace OpenRA.Traits
 
 		public void ResetExploration()
 		{
-			for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
-				for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-					explored[i, j] = visibleCount[i, j] > 0;
+			foreach (var cell in map.Cells)
+				explored[cell] = visibleCount[cell] > 0;
 
 			Invalidate();
 		}
 
-		public bool IsExplored(CPos xy) { return IsExplored(xy.X, xy.Y); }
-		public bool IsExplored(int x, int y)
+		public bool IsExplored(CPos cell)
 		{
-			if (!map.IsInMap(x, y))
+			if (!map.IsInMap(cell))
 				return false;
 
 			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Shroud)
 				return true;
 
-			return explored[x, y] && (generatedShroudCount[x, y] == 0 || visibleCount[x, y] > 0);
+			return explored[cell] && (generatedShroudCount[cell] == 0 || visibleCount[cell] > 0);
 		}
 
 		public bool IsExplored(Actor a)
@@ -259,16 +255,15 @@ namespace OpenRA.Traits
 			return GetVisOrigins(a).Any(o => IsExplored(o));
 		}
 
-		public bool IsVisible(CPos xy) { return IsVisible(xy.X, xy.Y); }
-		public bool IsVisible(int x, int y)
+		public bool IsVisible(CPos cell)
 		{
-			if (!map.IsInMap(x, y))
+			if (!map.IsInMap(cell))
 				return false;
 
 			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Fog)
 				return true;
 
-			return visibleCount[x, y] > 0;
+			return visibleCount[cell] > 0;
 		}
 
 		// Actors are hidden under shroud, but not under fog by default
