@@ -235,6 +235,8 @@
     <Compile Include="Support\MersenneTwister.cs" />
     <Compile Include="GameInformation.cs" />
     <Compile Include="Widgets\RootWidget.cs" />
+    <Compile Include="Map\CellLayer.cs" />
+    <Compile Include="Map\CellRegion.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
