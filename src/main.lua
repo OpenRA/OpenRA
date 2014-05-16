@@ -487,6 +487,50 @@ if ide.osname == 'Macintosh' then
      wx.wxAcceleratorEntry(wx.wxACCEL_CTRL, ('M'):byte(), ID_VIEWMINIMIZE)
   }))
 end
+
+-- this is a workaround for a conflict between global shortcuts and local
+-- shortcuts (like F2) used in the file tree or a watch panel.
+-- because of several issues on OSX (as described in details in this thread:
+-- https://groups.google.com/d/msg/wx-dev/juJj_nxn-_Y/JErF1h24UFsJ),
+-- the workaround installs a global event handler that manually re-routes
+-- conflicting events when the current focus is on a proper object.
+-- non-conflicting shortcuts are handled through key-down events.
+local remap = {
+  [ID_ADDWATCH]    = ide:GetWatch(),
+  [ID_EDITWATCH]   = ide:GetWatch(),
+  [ID_DELETEWATCH] = ide:GetWatch(),
+  [ID_RENAMEFILE]  = ide:GetProjectTree(),
+  [ID_DELETEFILE]  = ide:GetProjectTree(),
+}
+local function remapkey(event)
+  local keycode = event:GetKeyCode()
+  local mod = event:GetModifiers()
+  for id, obj in pairs(remap) do
+    if obj:FindFocus():GetId() == obj:GetId() then
+      local ae = wx.wxAcceleratorEntry(); ae:FromString(KSC(id))
+      if ae:GetFlags() == mod and ae:GetKeyCode() == keycode then
+        obj:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, id))
+        return
+      end
+    end
+  end
+  event:Skip()
+end
+ide:GetWatch():Connect(wx.wxEVT_KEY_DOWN, remapkey)
+ide:GetProjectTree():Connect(wx.wxEVT_KEY_DOWN, remapkey)
+ide.frame:Connect(wx.wxID_ANY, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function(event)
+    local shortcut = ide.config.keymap[event:GetId()]
+    for id, obj in pairs(remap) do
+      if ide.config.keymap[id] == shortcut
+      and obj:FindFocus():GetId() == obj:GetId() then
+        obj:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, id))
+        return
+      end
+    end
+    event:Skip()
+  end)
+
 -- only set menu bar *after* postinit handler as it may include adding
 -- app-specific menus (Help/About), which are not recognized by MacOS
 -- as special items unless SetMenuBar is done after menus are populated.

@@ -1044,16 +1044,6 @@ local function debuggerCreateWatchWindow()
   watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event) watchCtrl:PopupMenu(watchMenu) end)
 
-  watchCtrl:Connect(wx.wxEVT_KEY_DOWN,
-    function (event)
-      local keycode = event:GetKeyCode()
-      if (keycode == wx.WXK_DELETE) then return deleteWatch()
-      elseif (keycode == wx.WXK_INSERT) then return addWatch()
-      elseif (keycode == wx.WXK_F2) then return editWatch()
-      end
-      event:Skip()
-    end)
-
   watchCtrl:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, addWatch)
 
   watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, editWatch)

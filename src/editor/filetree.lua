@@ -292,7 +292,66 @@ local function treeSetConnectorsAndIcons(tree)
     function (event)
       tree:ActivateItem(event:GetItem())
     end)
+
   -- handle context menu
+  local function addItem(item_id, name, image)
+    local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
+    local parent = isdir and item_id or tree:GetItemParent(item_id)
+    if isdir then tree:Expand(item_id) end -- expand to populate if needed
+
+    local item = tree:PrependItem(parent, name, image)
+    tree:SetItemHasChildren(parent, true)
+    -- temporarily disable expand as we don't need this node populated
+    tree:SetEvtHandlerEnabled(false)
+    tree:EnsureVisible(item)
+    tree:SetEvtHandlerEnabled(true)
+    return item
+  end
+
+  tree:Connect(ID_NEWFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function()
+      tree:EditLabel(addItem(tree:GetSelection(), empty, IMG_FILE_OTHER))
+    end)
+  tree:Connect(ID_NEWDIRECTORY, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function()
+      tree:EditLabel(addItem(tree:GetSelection(), empty, IMG_DIRECTORY))
+    end)
+  tree:Connect(ID_RENAMEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function() tree:EditLabel(tree:GetSelection()) end)
+  tree:Connect(ID_DELETEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function() deleteItem(tree:GetSelection()) end)
+  tree:Connect(ID_COPYFULLPATH, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function()
+      local tdo = wx.wxTextDataObject(tree:GetItemFullName(tree:GetSelection()))
+      if wx.wxClipboard:Get():Open() then
+        wx.wxClipboard:Get():SetData(tdo)
+        wx.wxClipboard:Get():Close()
+      end
+    end)
+  tree:Connect(ID_OPENEXTENSION, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function()
+      local fname = tree:GetItemFullName(tree:GetSelection())
+      local ext = '.'..wx.wxFileName(fname):GetExt()
+      local ft = wx.wxTheMimeTypesManager:GetFileTypeFromExtension(ext)
+      if ft then
+        local cmd = ft:GetOpenCommand(fname:gsub('"','\\"'))
+        local pid = wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
+        if ide.osname == 'Windows' and pid and pid > 0 then
+          -- some programs on Windows (for example, PhotoViewer) accept
+          -- files with spaces in names ONLY if they are not in quotes.
+          -- wait for the process that failed to open file to finish
+          -- and retry without quotes.
+          wx.wxMilliSleep(250) -- 250ms seems enough; picked empirically.
+          if not wx.wxProcess.Exists(pid) then
+            local cmd = ft:GetOpenCommand(""):gsub('""%s*$', '')..fname
+            wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
+          end
+        end
+      end
+    end)
+  tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function() ShowLocation(tree:GetItemFullName(tree:GetSelection())) end)
+
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_MENU,
     function (event)
       local item_id = event:GetItem()
@@ -321,20 +380,6 @@ local function treeSetConnectorsAndIcons(tree)
       menu:Insert(6, projectdirectory)
       FileTreeProjectListUpdate(projectdirectorymenu, 0)
 
-      local function addItem(item_id, name, image)
-        local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
-        local parent = isdir and item_id or tree:GetItemParent(item_id)
-        if isdir then tree:Expand(item_id) end -- expand to populate if needed
-
-        local item = tree:PrependItem(parent, name, image)
-        tree:SetItemHasChildren(parent, true)
-        -- temporarily disable expand as we don't need this node populated
-        tree:SetEvtHandlerEnabled(false)
-        tree:EnsureVisible(item)
-        tree:SetEvtHandlerEnabled(true)
-        return item
-      end
-
       -- disable Delete on non-empty directories
       local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
       if isdir then
@@ -348,54 +393,11 @@ local function treeSetConnectorsAndIcons(tree)
         menu:Enable(ID_OPENEXTENSION, ft and #ft:GetOpenCommand("") > 0)
       end
 
-      tree:Connect(ID_NEWFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
-        function()
-          tree:EditLabel(addItem(item_id, empty, IMG_FILE_OTHER))
-        end)
-      tree:Connect(ID_NEWDIRECTORY, wx.wxEVT_COMMAND_MENU_SELECTED,
-        function()
-          tree:EditLabel(addItem(item_id, empty, IMG_DIRECTORY))
-        end)
-      tree:Connect(ID_RENAMEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
-        function() tree:EditLabel(item_id) end)
-      tree:Connect(ID_DELETEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
-        function() deleteItem(item_id) end)
-      tree:Connect(ID_COPYFULLPATH, wx.wxEVT_COMMAND_MENU_SELECTED,
-        function()
-          local tdo = wx.wxTextDataObject(tree:GetItemFullName(item_id))
-          if wx.wxClipboard:Get():Open() then
-            wx.wxClipboard:Get():SetData(tdo)
-            wx.wxClipboard:Get():Close()
-          end
-        end)
-      tree:Connect(ID_OPENEXTENSION, wx.wxEVT_COMMAND_MENU_SELECTED,
-        function()
-          local fname = tree:GetItemFullName(item_id)
-          local ext = '.'..wx.wxFileName(fname):GetExt()
-          local ft = wx.wxTheMimeTypesManager:GetFileTypeFromExtension(ext)
-          if ft then
-            local cmd = ft:GetOpenCommand(fname:gsub('"','\\"'))
-            local pid = wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
-            if ide.osname == 'Windows' and pid and pid > 0 then
-              -- some programs on Windows (for example, PhotoViewer) accept
-              -- files with spaces in names ONLY if they are not in quotes.
-              -- wait for the process that failed to open file to finish
-              -- and retry without quotes.
-              wx.wxMilliSleep(250) -- 250ms seems enough; picked empirically.
-              if not wx.wxProcess.Exists(pid) then
-                local cmd = ft:GetOpenCommand(""):gsub('""%s*$', '')..fname
-                wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
-              end
-            end
-          end
-        end)
-      tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
-        function() ShowLocation(tree:GetItemFullName(item_id)) end)
-
       PackageEventHandle("onMenuFiletree", menu, tree, event)
 
       tree:PopupMenu(menu)
     end)
+
   tree:Connect(wx.wxEVT_RIGHT_DOWN,
     function (event)
       local item_id = tree:HitTest(event:GetPosition())
@@ -463,18 +465,6 @@ local function treeSetConnectorsAndIcons(tree)
       if event:IsEditCancelled() or label == empty
       or target and not renameItem(itemsrc, target)
       then refreshAncestors(parent) end
-    end)
-  tree:Connect(wx.wxEVT_KEY_DOWN,
-    function (event)
-      local item = tree:GetSelection()
-      if item:IsOk() then
-        local keycode = event:GetKeyCode()
-        if keycode == wx.WXK_F2 then return tree:EditLabel(item)
-        elseif keycode == wx.WXK_DELETE then return deleteItem(item)
-        elseif keycode == wx.WXK_RETURN or keycode == wx.WXK_NUMPAD_ENTER then
-          tree:Toggle(item) end
-      end
-      event:Skip()
     end)
 
   local itemsrc
