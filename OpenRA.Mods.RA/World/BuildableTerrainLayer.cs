@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 
 		public void AddTile(CPos cell, TileReference<ushort, byte> tile)
 		{
-			map.CustomTerrain[cell.X, cell.Y] = tileset.GetTerrainIndex(tile);
+			map.CustomTerrain[cell] = tileset.GetTerrainIndex(tile);
 
 			// Terrain tiles define their origin at the topleft
 			var s = theater.TileSprite(tile);

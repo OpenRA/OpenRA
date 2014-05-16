@@ -113,7 +113,7 @@ namespace OpenRA
 
 		[FieldLoader.Ignore] public Lazy<TileReference<ushort, byte>[,]> MapTiles;
 		[FieldLoader.Ignore] public Lazy<TileReference<byte, byte>[,]> MapResources;
-		[FieldLoader.Ignore] public int[,] CustomTerrain;
+		[FieldLoader.Ignore] public CellLayer<int> CustomTerrain;
 
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
@@ -257,9 +257,9 @@ namespace OpenRA
 			var br = new CPos(Bounds.Right - 1, Bounds.Bottom - 1);
 			Cells = new CellRegion(tl, br);
 
-			CustomTerrain = new int[MapSize.X, MapSize.Y];
+			CustomTerrain = new CellLayer<int>(this);
 			foreach (var cell in Cells)
-				CustomTerrain[cell.X, cell.Y] = -1;
+				CustomTerrain[cell] = -1;
 		}
 
 		public Ruleset PreloadRules()
@@ -548,7 +548,7 @@ namespace OpenRA
 
 		public int GetTerrainIndex(CPos cell)
 		{
-			var custom = CustomTerrain[cell.X, cell.Y];
+			var custom = CustomTerrain[cell];
 			var tileSet = Rules.TileSets[Tileset];
 			return custom != -1 ? custom : tileSet.GetTerrainIndex(MapTiles.Value[cell.X, cell.Y]);
 		}

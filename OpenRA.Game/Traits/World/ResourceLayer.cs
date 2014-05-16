@@ -151,7 +151,7 @@ namespace OpenRA.Traits
 
 		CellContents CreateResourceCell(ResourceType t, CPos cell)
 		{
-			world.Map.CustomTerrain[cell.X, cell.Y] = world.TileSet.GetTerrainIndex(t.Info.TerrainType);
+			world.Map.CustomTerrain[cell] = world.TileSet.GetTerrainIndex(t.Info.TerrainType);
 
 			return new CellContents
 			{
@@ -190,7 +190,7 @@ namespace OpenRA.Traits
 			if (--c.Density < 0)
 			{
 				content[cell] = EmptyCell;
-				world.Map.CustomTerrain[cell.X, cell.Y] = -1;
+				world.Map.CustomTerrain[cell] = -1;
 			}
 			else
 				content[cell] = c;
@@ -209,7 +209,7 @@ namespace OpenRA.Traits
 
 			// Clear cell
 			content[cell] = EmptyCell;
-			world.Map.CustomTerrain[cell.X, cell.Y] = -1;
+			world.Map.CustomTerrain[cell] = -1;
 
 			if (!dirty.Contains(cell))
 				dirty.Add(cell);

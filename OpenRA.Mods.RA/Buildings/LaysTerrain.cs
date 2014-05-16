@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Buildings
 						continue;
 
 					// Don't place under other buildings or custom terrain
-					if (bi.GetBuildingAt(c) != self || map.CustomTerrain[c.X, c.Y] != -1)
+					if (bi.GetBuildingAt(c) != self || map.CustomTerrain[c] != -1)
 						continue;
 
 					var index = Game.CosmeticRandom.Next(template.TilesCount);
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.Buildings
 					continue;
 
 				// Don't place under other buildings or custom terrain
-				if (bi.GetBuildingAt(c) != self || map.CustomTerrain[c.X, c.Y] != -1)
+				if (bi.GetBuildingAt(c) != self || map.CustomTerrain[c] != -1)
 					continue;
 
 				layer.AddTile(c, new TileReference<ushort, byte>(template.Id, (byte)i));

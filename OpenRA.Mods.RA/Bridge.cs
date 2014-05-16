@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA
 
 			// Set the initial custom terrain types
 			foreach (var c in footprint.Keys)
-				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
+				self.World.Map.CustomTerrain[c] = GetTerrainType(c);
 		}
 
 		int GetTerrainType(CPos cell)
@@ -204,7 +204,7 @@ namespace OpenRA.Mods.RA
 
 			// Update map
 			foreach (var c in footprint.Keys)
-				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
+				self.World.Map.CustomTerrain[c] = GetTerrainType(c);
 
 			// If this bridge repair operation connects two pathfinding domains,
 			// update the domain index.
