@@ -417,6 +417,7 @@ PBOX:
 	Inherits: ^Building
 	Tooltip:
 		Name: Pillbox
+		Description: Static defense with a fireport for a garrisoned soldier.
 	Building:
 		Power: -15
 	Buildable:
@@ -499,6 +500,7 @@ HBOX:
 	Inherits: ^Building
 	Tooltip:
 		Name: Camo Pillbox
+		Description: Camouflaged static defense with a fireport for a garrisoned soldier.
 	Building:
 		Power: -15
 	Buildable:
