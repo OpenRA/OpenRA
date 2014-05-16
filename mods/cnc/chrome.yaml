@@ -392,10 +392,10 @@ music: chrome.png
 	slowmo: 416,80,16,16
 
 lobby-bits: chrome.png
-	spawn-claimed: 256,32,16,16
-	spawn-unclaimed: 256,48,16,16
+	spawn-claimed: 485,69,22,22
+	spawn-unclaimed: 453,69,22,22
 	admin: 340,39,7,5
-	colorpicker: 256,32,16,16
+	colorpicker: 485,69,22,22
 	huepicker: 388,96,7,15
 	kick: 386,115,11,11
 

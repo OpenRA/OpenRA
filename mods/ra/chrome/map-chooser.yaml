@@ -2,14 +2,14 @@ Background@MAPCHOOSER_PANEL:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Logic: MapChooserLogic
-	Width: 800
+	Width: 858
 	Height: 600
 	Children:
 		Label@MAPCHOOSER_TITLE:
 			X: 0
 			Y: 17
 			Align: Center
-			Width: 800
+			Width: 858
 			Height: 20
 			Text: Choose Map
 			Font: Bold
@@ -21,8 +21,8 @@ Background@MAPCHOOSER_PANEL:
 			ScrollVelocity: 40
 			Children:
 				ScrollItem@MAP_TEMPLATE:
-					Width: 180
-					Height: 229
+					Width: 194
+					Height: 243
 					X: 4
 					Y: 0
 					Visible: false
@@ -30,15 +30,15 @@ Background@MAPCHOOSER_PANEL:
 						Background@PREVIEW_PLACEHOLDER:
 							X: (PARENT_RIGHT - WIDTH)/2
 							Y: 4
-							Width: 170
-							Height: 170
+							Width: 184
+							Height: 184
 							Background: dialog3
 							ClickThrough: true
 						MapPreview@PREVIEW:
 							X: (PARENT_RIGHT - WIDTH)/2
 							Y: 4
-							Width: 170
-							Height: 170
+							Width: 184
+							Height: 184
 						Label@TITLE:
 							X: 2
 							Y: PARENT_BOTTOM-48

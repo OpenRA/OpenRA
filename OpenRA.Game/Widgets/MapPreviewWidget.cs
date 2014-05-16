@@ -124,7 +124,7 @@ namespace OpenRA.Widgets
 
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos - offset);
 					var fonts = Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")];
-					var number = Convert.ToString(spawnPoints.IndexOf(p) + 1);
+					var number = Convert.ToChar('A' + spawnPoints.IndexOf(p)).ToString();
 					offset = fonts.Measure(number) / 2;
 					offset.Y += 1; // Does not center well vertically for some reason
 					fonts.DrawTextWithContrast(number, pos - offset, ChromeMetrics.Get<Color>("SpawnColor"), ChromeMetrics.Get<Color>("SpawnContrastColor"), 1);

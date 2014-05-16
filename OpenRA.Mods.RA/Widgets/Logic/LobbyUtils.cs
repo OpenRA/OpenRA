@@ -89,18 +89,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		}
 
 		public static void ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client,
-			OrderManager orderManager, int teamCount)
+			OrderManager orderManager, IEnumerable<int> spawnPoints)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
+				var spawnPoint = spawnPoints.ToList()[ii];
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => client.SpawnPoint == ii,
-					() => SetSpawnPoint(orderManager, client, ii));
-				item.Get<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
+					() => client.SpawnPoint == spawnPoint,
+					() => SetSpawnPoint(orderManager, client, spawnPoint));
+				item.Get<LabelWidget>("LABEL").GetText = () => spawnPoint == 0 ? "-" : Convert.ToChar('A' - 1 + spawnPoint).ToString();
 				return item;
 			};
 
-			var options = Exts.MakeArray(teamCount + 1, i => i).ToList();
+			var options = Exts.MakeArray(spawnPoints.Count(), i => i).ToList();
 			dropdown.ShowDropDown("SPAWN_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 
@@ -407,8 +408,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN");
 			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady;
-			dropdown.OnMouseDown = _ => ShowSpawnDropDown(dropdown, c, orderManager, map.PlayerCount);
-			dropdown.GetText = () => (c.SpawnPoint == 0) ? "-" : c.SpawnPoint.ToString();
+			dropdown.OnMouseDown = _ => ShowSpawnDropDown(dropdown, c, orderManager, Enumerable.Range(0, map.PlayerCount + 1)
+					.Except(orderManager.LobbyInfo.Clients.Where(client => client != c && client.SpawnPoint != 0).Select(client => client.SpawnPoint)));
+			dropdown.GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
 		}
 
 		public static void SetupSpawnWidget(Widget parent, Session.Slot s, Session.Client c)

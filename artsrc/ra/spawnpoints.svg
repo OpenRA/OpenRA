@@ -140,16 +140,6 @@
          offset="1"
          id="stop3847-6-0" />
     </linearGradient>
-    <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3843"
-       id="radialGradient5380"
-       cx="8.1976452"
-       cy="7.9116955"
-       fx="8.1976452"
-       fy="7.9116955"
-       r="8.1255808"
-       gradientUnits="userSpaceOnUse" />
     <linearGradient
        gradientUnits="userSpaceOnUse"
        y2="7.9116955"
@@ -379,9 +369,9 @@
      inkscape:window-height="1027"
      id="namedview4"
      showgrid="false"
-     inkscape:zoom="8.94932"
-     inkscape:cx="15.532246"
-     inkscape:cy="99.440441"
+     inkscape:zoom="4"
+     inkscape:cx="35.896801"
+     inkscape:cy="81.895569"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -394,44 +384,47 @@
      inkscape:label="Layer">
     <path
        sodipodi:type="arc"
-       style="fill:none;stroke:#4b4b4b;stroke-width:0.50400807999999997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;fill-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.74416703;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="path3782"
        sodipodi:cx="8.1976452"
        sodipodi:cy="7.9116955"
        sodipodi:rx="7.8141294"
        sodipodi:ry="7.8141294"
        d="m 16.011775,7.9116955 a 7.8141294,7.8141294 0 1 1 -15.62825917,0 7.8141294,7.8141294 0 1 1 15.62825917,0 z"
-       transform="matrix(0.99204758,0,0,0.99204758,-0.13245406,0.15122163)" />
+       transform="matrix(0.67186134,0,0,0.67186135,2.4923191,2.6844376)" />
     <path
        sodipodi:type="arc"
-       style="fill:none;stroke:#bebebe;stroke-width:1.11612278000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;fill-opacity:1"
+       style="fill:none;stroke:#8c8c8c;stroke-width:1.26696873;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="path3782-1"
        sodipodi:cx="8.1976452"
        sodipodi:cy="7.9116955"
        sodipodi:rx="7.8141294"
        sodipodi:ry="7.8141294"
        d="m 16.011775,7.9116955 a 7.8141294,7.8141294 0 1 1 -15.62825917,0 7.8141294,7.8141294 0 1 1 15.62825917,0 z"
-       transform="matrix(0.89595878,0,0,0.89595878,0.6563856,0.91030919)" />
+       transform="matrix(0.59188312,0,0,0.59188312,3.1479522,3.317201)"
+       inkscape:export-filename="D:\Documents\Visual Studio 2013\Projects\OpenRA\mods\ra\uibits\path3782-1.png"
+       inkscape:export-xdpi="180"
+       inkscape:export-ydpi="180" />
     <path
        sodipodi:type="arc"
-       style="fill:none;stroke:#4b4b4b;stroke-width:0.62324654999999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;fill-opacity:1"
+       style="fill:none;stroke:#000000;stroke-width:0.4736065;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="path3782-8"
        sodipodi:cx="8.1976452"
        sodipodi:cy="7.9116955"
        sodipodi:rx="7.8141294"
        sodipodi:ry="7.8141294"
        d="m 16.011775,7.9116955 a 7.8141294,7.8141294 0 1 1 -15.62825917,0 7.8141294,7.8141294 0 1 1 15.62825917,0 z"
-       transform="matrix(0.80225069,0,0,0.80225069,1.4234335,1.6339462)" />
+       transform="matrix(0.52786438,0,0,0.52786438,3.6727551,3.8236978)" />
     <path
        sodipodi:type="arc"
-       style="fill:url(#radialGradient5380);stroke:#383838;stroke-width:0.6229033;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;fill-opacity:1"
+       style="fill:#8c8c8c;fill-opacity:1;stroke:#000000;stroke-width:0.94717479000000004;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="path3782-8-9"
        sodipodi:cx="8.1976452"
        sodipodi:cy="7.9116955"
        sodipodi:rx="7.8141294"
        sodipodi:ry="7.8141294"
        d="m 16.011775,7.9116955 a 7.8141294,7.8141294 0 1 1 -15.62825917,0 7.8141294,7.8141294 0 1 1 15.62825917,0 z"
-       transform="matrix(0.79987958,0,0,0.80229708,17.442871,1.6335792)" />
+       transform="matrix(0.52788567,0,0,0.52788567,19.672581,3.8235293)" />
   </g>
   <path
      style="fill:#ffc000;fill-opacity:1;stroke:none"
