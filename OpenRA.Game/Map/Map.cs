@@ -112,7 +112,7 @@ namespace OpenRA
 		public int2 MapSize;
 
 		[FieldLoader.Ignore] public Lazy<TileReference<ushort, byte>[,]> MapTiles;
-		[FieldLoader.Ignore] public Lazy<TileReference<byte, byte>[,]> MapResources;
+		[FieldLoader.Ignore] public Lazy<CellLayer<ResourceTile>> MapResources;
 		[FieldLoader.Ignore] public CellLayer<int> CustomTerrain;
 
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
@@ -126,15 +126,16 @@ namespace OpenRA
 			var tile = tileset.Templates.First();
 			var tileRef = new TileReference<ushort, byte> { Type = tile.Key, Index = (byte)0 };
 
+			var size = new Size(1, 1);
 			var map = new Map()
 			{
 				Title = "Name your map here",
 				Description = "Describe your map here",
 				Author = "Your name here",
-				MapSize = new int2(1, 1),
+				MapSize = new int2(size),
 				Tileset = tileset.Id,
 				Options = new MapOptions(),
-				MapResources = Exts.Lazy(() => new TileReference<byte, byte>[1, 1]),
+				MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(size)),
 				MapTiles = Exts.Lazy(() => new TileReference<ushort, byte>[1, 1] { { tileRef } }),
 				Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>()),
 				Smudges = Exts.Lazy(() => new List<SmudgeReference>())
@@ -385,9 +386,9 @@ namespace OpenRA
 			return tiles;
 		}
 
-		public TileReference<byte, byte>[,] LoadResourceTiles()
+		public CellLayer<ResourceTile> LoadResourceTiles()
 		{
-			var resources = new TileReference<byte, byte>[MapSize.X, MapSize.Y];
+			var resources = new CellLayer<ResourceTile>(this);
 
 			using (var dataStream = Container.GetContent("map.bin"))
 			{
@@ -406,10 +407,11 @@ namespace OpenRA
 
 				var data = dataStream.ReadBytes(MapSize.X * MapSize.Y * 2);
 				var d = 0;
+
 				// Load resource data
 				for (var i = 0; i < MapSize.X; i++)
 					for (var j = 0; j < MapSize.Y; j++)
-						resources[i, j] = new TileReference<byte, byte>(data[d++], data[d++]);
+						resources[i, j] = new ResourceTile(data[d++], data[d++]);
 			}
 
 			return resources;
@@ -435,11 +437,14 @@ namespace OpenRA
 
 				// Resource data
 				for (var i = 0; i < MapSize.X; i++)
+				{
 					for (var j = 0; j < MapSize.Y; j++)
 					{
-						writer.Write(MapResources.Value[i, j].Type);
-						writer.Write(MapResources.Value[i, j].Index);
+						var tile = MapResources.Value[new CPos(i, j)];
+						writer.Write(tile.Type);
+						writer.Write(tile.Index);
 					}
+				}
 			}
 
 			return dataStream.ToArray();
@@ -452,10 +457,11 @@ namespace OpenRA
 		{
 			var oldMapTiles = MapTiles.Value;
 			var oldMapResources = MapResources.Value;
+			var newSize = new Size(width, height);
 
 			MapTiles = Exts.Lazy(() => Exts.ResizeArray(oldMapTiles, oldMapTiles[0, 0], width, height));
-			MapResources = Exts.Lazy(() => Exts.ResizeArray(oldMapResources, oldMapResources[0, 0], width, height));
-			MapSize = new int2(width, height);
+			MapResources = Exts.Lazy(() => CellLayer.Resize(oldMapResources, newSize, oldMapResources[0, 0]));
+			MapSize = new int2(newSize);
 		}
 
 		public void ResizeCordon(int left, int top, int right, int bottom)

@@ -148,7 +148,7 @@ namespace OpenRA.Utility
 
 			map.Smudges = Exts.Lazy(() => new List<SmudgeReference>());
 			map.Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>());
-			map.MapResources = Exts.Lazy(() => new TileReference<byte, byte>[mapSize, mapSize]);
+			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(new Size(mapSize, mapSize)));
 			map.MapTiles = Exts.Lazy(() => new TileReference<ushort, byte>[mapSize, mapSize]);
 
 			map.Options = new MapOptions();
@@ -277,15 +277,16 @@ namespace OpenRA.Utility
 
 					if (o != 255 && overlayResourceMapping.ContainsKey(redAlertOverlayNames[o]))
 						res = overlayResourceMapping[redAlertOverlayNames[o]];
-
-					map.MapResources.Value[i, j] = new TileReference<byte, byte>(res.First, res.Second);
+					
+					var cell = new CPos(i, j);
+					map.MapResources.Value[cell] = new ResourceTile(res.First, res.Second);
 
 					if (o != 255 && overlayActorMapping.ContainsKey(redAlertOverlayNames[o]))
 					{
 						map.Actors.Value.Add("Actor" + actorCount++,
 							new ActorReference(overlayActorMapping[redAlertOverlayNames[o]])
 							{
-								new LocationInit(new CPos(i, j)),
+								new LocationInit(cell),
 								new OwnerInit("Neutral")
 							});
 					}
@@ -342,7 +343,7 @@ namespace OpenRA.Utility
 				if (overlayResourceMapping.ContainsKey(kv.Value.ToLower()))
 					res = overlayResourceMapping[kv.Value.ToLower()];
 
-				map.MapResources.Value[cell.X, cell.Y] = new TileReference<byte, byte>(res.First, res.Second);
+				map.MapResources.Value[cell] = new ResourceTile(res.First, res.Second);
 
 				if (overlayActorMapping.ContainsKey(kv.Value.ToLower()))
 					map.Actors.Value.Add("Actor" + actorCount++,

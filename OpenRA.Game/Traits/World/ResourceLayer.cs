@@ -64,7 +64,7 @@ namespace OpenRA.Traits
 			foreach (var cell in w.Map.Cells)
 			{
 				ResourceType t;
-				if (!resources.TryGetValue(w.Map.MapResources.Value[cell.X, cell.Y].Type, out t))
+				if (!resources.TryGetValue(w.Map.MapResources.Value[cell].Type, out t))
 					continue;
 
 				if (!AllowResourceAt(t, cell))

@@ -74,8 +74,9 @@ namespace OpenRA.Graphics
 							continue;
 
 						var res = resourceRules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
-								.Where(t => t.ResourceType == map.MapResources.Value[mapX, mapY].Type)
+							.Where(t => t.ResourceType == map.MapResources.Value[mapX, mapY].Type)
 								.Select(t => t.TerrainType).FirstOrDefault();
+
 						if (res == null)
 							continue;
 
