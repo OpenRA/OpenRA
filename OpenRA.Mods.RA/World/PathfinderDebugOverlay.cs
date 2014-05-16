@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.RA
 	class PathfinderDebugOverlayInfo : TraitInfo<PathfinderDebugOverlay> { }
 	class PathfinderDebugOverlay : IRenderOverlay, IWorldLoaded
 	{
-		Dictionary<Player, int[,]> layers;
+		Dictionary<Player, CellLayer<int>> layers;
 		int refreshTick;
 		World world;
 		public bool Visible;
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.RA
 		{
 			world = w;
 			refreshTick = 0;
-			layers = new Dictionary<Player, int[,]>(8);
+			layers = new Dictionary<Player, CellLayer<int>>(8);
 
 			// Enabled via Cheats menu
 			Visible = false;
@@ -39,15 +40,15 @@ namespace OpenRA.Mods.RA
 		{
 			if (maxWeight == 0) return;
 
-			int[,] layer;
+			CellLayer<int> layer;
 			if (!layers.TryGetValue(pl, out layer))
 			{
-				layer = new int[world.Map.MapSize.X, world.Map.MapSize.Y];
+				layer = new CellLayer<int>(world.Map);
 				layers.Add(pl, layer);
 			}
 
 			foreach (var p in cellWeights)
-				layer[p.First.X, p.First.Y] = Math.Min(128, layer[p.First.X, p.First.Y] + (maxWeight - p.Second) * 64 / maxWeight);
+				layer[p.First] = Math.Min(128, layer[p.First] + (maxWeight - p.Second) * 64 / maxWeight);
 		}
 
 		public void Render(WorldRenderer wr)
@@ -59,29 +60,25 @@ namespace OpenRA.Mods.RA
 			var doDim = refreshTick - world.WorldTick <= 0;
 			if (doDim) refreshTick = world.WorldTick + 20;
 
-			var viewBounds = wr.Viewport.CellBounds;
 			foreach (var pair in layers)
 			{
 				var c = (pair.Key != null) ? pair.Key.Color.RGB : Color.PaleTurquoise;
 				var layer = pair.Value;
 
 				// Only render quads in viewing range:
-				for (var j = viewBounds.Top; j <= viewBounds.Bottom; ++j)
+				foreach (var cell in wr.Viewport.VisibleCells)
 				{
-					for (var i = viewBounds.Left; i <= viewBounds.Right; ++i)
-					{
-						if (layer[i, j] <= 0)
-							continue;
+					if (layer[cell] <= 0)
+						continue;
 
-						var w = Math.Max(0, Math.Min(layer[i, j], 128));
-						if (doDim)
-							layer[i, j] = layer[i, j] * 5 / 6;
+					var w = Math.Max(0, Math.Min(layer[cell], 128));
+					if (doDim)
+						layer[cell] = layer[cell] * 5 / 6;
 
-						// TODO: This doesn't make sense for isometric terrain
-						var tl = wr.ScreenPxPosition(new CPos(i, j).TopLeft);
-						var br = wr.ScreenPxPosition(new CPos(i, j).BottomRight);
-						qr.FillRect(RectangleF.FromLTRB(tl.X, tl.Y, br.X, br.Y), Color.FromArgb(w, c));
-					}
+					// TODO: This doesn't make sense for isometric terrain
+					var tl = wr.ScreenPxPosition(cell.TopLeft);
+					var br = wr.ScreenPxPosition(cell.BottomRight);
+					qr.FillRect(RectangleF.FromLTRB(tl.X, tl.Y, br.X, br.Y), Color.FromArgb(w, c));
 				}
 			}
 		}
