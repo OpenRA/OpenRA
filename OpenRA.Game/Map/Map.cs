@@ -111,7 +111,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] public byte TileFormat = 1;
 		public int2 MapSize;
 
-		[FieldLoader.Ignore] public Lazy<TileReference<ushort, byte>[,]> MapTiles;
+		[FieldLoader.Ignore] public Lazy<CellLayer<TerrainTile>> MapTiles;
 		[FieldLoader.Ignore] public Lazy<CellLayer<ResourceTile>> MapResources;
 		[FieldLoader.Ignore] public CellLayer<int> CustomTerrain;
 
@@ -123,10 +123,16 @@ namespace OpenRA
 
 		public static Map FromTileset(TileSet tileset)
 		{
-			var tile = tileset.Templates.First();
-			var tileRef = new TileReference<ushort, byte> { Type = tile.Key, Index = (byte)0 };
-
 			var size = new Size(1, 1);
+			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
+
+			var makeMapTiles =  Exts.Lazy(() =>
+			{
+				var ret = new CellLayer<TerrainTile>(size);
+				ret.Clear(tileRef);
+				return ret;
+			});
+
 			var map = new Map()
 			{
 				Title = "Name your map here",
@@ -136,7 +142,7 @@ namespace OpenRA
 				Tileset = tileset.Id,
 				Options = new MapOptions(),
 				MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(size)),
-				MapTiles = Exts.Lazy(() => new TileReference<ushort, byte>[1, 1] { { tileRef } }),
+				MapTiles = makeMapTiles,
 				Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>()),
 				Smudges = Exts.Lazy(() => new List<SmudgeReference>())
 			};
@@ -353,9 +359,9 @@ namespace OpenRA
 			Container.Write(entries);
 		}
 
-		public TileReference<ushort, byte>[,] LoadMapTiles()
+		public CellLayer<TerrainTile> LoadMapTiles()
 		{
-			var tiles = new TileReference<ushort, byte>[MapSize.X, MapSize.Y];
+			var tiles = new CellLayer<TerrainTile>(this);
 			using (var dataStream = Container.GetContent("map.bin"))
 			{
 				if (dataStream.ReadUInt8() != 1)
@@ -372,15 +378,19 @@ namespace OpenRA
 				var data = dataStream.ReadBytes(MapSize.X * MapSize.Y * 3);
 				var d = 0;
 				for (var i = 0; i < MapSize.X; i++)
+				{
 					for (var j = 0; j < MapSize.Y; j++)
 					{
 						var tile = BitConverter.ToUInt16(data, d);
 						d += 2;
+
 						var index = data[d++];
 						if (index == byte.MaxValue)
 							index = (byte)(i % 4 + (j % 4) * 4);
-						tiles[i, j] = new TileReference<ushort, byte>(tile, index);
+
+						tiles[i, j] = new TerrainTile(tile, index);
 					}
+				}
 			}
 
 			return tiles;
@@ -431,8 +441,9 @@ namespace OpenRA
 				for (var i = 0; i < MapSize.X; i++)
 					for (var j = 0; j < MapSize.Y; j++)
 					{
-						writer.Write(MapTiles.Value[i, j].Type);
-						writer.Write(MapTiles.Value[i, j].Index);
+						var tile = MapTiles.Value[new CPos(i, j)];
+						writer.Write(tile.Type);
+						writer.Write(tile.Index);
 					}
 
 				// Resource data
@@ -459,7 +470,7 @@ namespace OpenRA
 			var oldMapResources = MapResources.Value;
 			var newSize = new Size(width, height);
 
-			MapTiles = Exts.Lazy(() => Exts.ResizeArray(oldMapTiles, oldMapTiles[0, 0], width, height));
+			MapTiles = Exts.Lazy(() => CellLayer.Resize(oldMapTiles, newSize, oldMapTiles[0, 0]));
 			MapResources = Exts.Lazy(() => CellLayer.Resize(oldMapResources, newSize, oldMapResources[0, 0]));
 			MapSize = new int2(newSize);
 		}
@@ -537,17 +548,21 @@ namespace OpenRA
 			{
 				for (var i = Bounds.Left; i < Bounds.Right; i++)
 				{
-					var tr = MapTiles.Value[i, j];
-					if (!tileset.Templates.ContainsKey(tr.Type))
+					var cell = new CPos(i, j);
+					var type = MapTiles.Value[cell].Type;
+					var index = MapTiles.Value[cell].Index;
+					if (!tileset.Templates.ContainsKey(type))
 					{
-						Console.WriteLine("Unknown Tile ID {0}".F(tr.Type));
+						Console.WriteLine("Unknown Tile ID {0}".F(type));
 						continue;
 					}
-					var template = tileset.Templates[tr.Type];
+
+					var template = tileset.Templates[type];
 					if (!template.PickAny)
 						continue;
-					tr.Index = (byte)r.Next(0, template.TilesCount);
-					MapTiles.Value[i, j] = tr;
+
+					index = (byte)r.Next(0, template.TilesCount);
+					MapTiles.Value[cell] = new TerrainTile(type, index);
 				}
 			}
 		}
@@ -556,7 +571,7 @@ namespace OpenRA
 		{
 			var custom = CustomTerrain[cell];
 			var tileSet = Rules.TileSets[Tileset];
-			return custom != -1 ? custom : tileSet.GetTerrainIndex(MapTiles.Value[cell.X, cell.Y]);
+			return custom != -1 ? custom : tileSet.GetTerrainIndex(MapTiles.Value[cell]);
 		}
 
 		public TerrainTypeInfo GetTerrainInfo(CPos cell)

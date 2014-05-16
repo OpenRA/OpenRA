@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Buildings
 						continue;
 
 					var index = Game.CosmeticRandom.Next(template.TilesCount);
-					layer.AddTile(c, new TileReference<ushort, byte>(template.Id, (byte)index));
+					layer.AddTile(c, new TerrainTile(template.Id, (byte)index));
 				}
 
 				return;
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA.Buildings
 				if (bi.GetBuildingAt(c) != self || map.CustomTerrain[c] != -1)
 					continue;
 
-				layer.AddTile(c, new TileReference<ushort, byte>(template.Id, (byte)i));
+				layer.AddTile(c, new TerrainTile(template.Id, (byte)i));
 			}
 		}
 	}

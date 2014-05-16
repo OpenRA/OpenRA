@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 			dirty = new Dictionary<CPos, Sprite>();
 		}
 
-		public void AddTile(CPos cell, TileReference<ushort, byte> tile)
+		public void AddTile(CPos cell, TerrainTile tile)
 		{
 			map.CustomTerrain[cell] = tileset.GetTerrainIndex(tile);
 

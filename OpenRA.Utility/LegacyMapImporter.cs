@@ -137,6 +137,7 @@ namespace OpenRA.Utility
 			var width = Exts.ParseIntegerInvariant(mapSection.GetValue("Width", "0"));
 			var height = Exts.ParseIntegerInvariant(mapSection.GetValue("Height", "0"));
 			mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
+			var size = new Size(mapSize, mapSize);
 
 			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile));
 			map.Author = "Westwood Studios";
@@ -148,8 +149,8 @@ namespace OpenRA.Utility
 
 			map.Smudges = Exts.Lazy(() => new List<SmudgeReference>());
 			map.Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>());
-			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(new Size(mapSize, mapSize)));
-			map.MapTiles = Exts.Lazy(() => new TileReference<ushort, byte>[mapSize, mapSize]);
+			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(size));
+			map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(size));
 
 			map.Options = new MapOptions();
 
@@ -250,20 +251,20 @@ namespace OpenRA.Utility
 
 		void UnpackRATileData(MemoryStream ms)
 		{
-			for (var i = 0; i < mapSize; i++)
-				for (var j = 0; j < mapSize; j++)
-					map.MapTiles.Value[i, j] = new TileReference<ushort, byte>();
-
+			var types = new ushort[mapSize, mapSize];
 			for (var j = 0; j < mapSize; j++)
+			{
 				for (var i = 0; i < mapSize; i++)
 				{
 					var tileID = ms.ReadUInt16();
-					map.MapTiles.Value[i, j].Type = tileID == (ushort)0 ? (ushort)255 : tileID; // RAED weirdness
+					types[i, j] = tileID == (ushort)0 ? (ushort)255 : tileID; // RAED weirdness
 				}
+			}
 
 			for (var j = 0; j < mapSize; j++)
 				for (var i = 0; i < mapSize; i++)
-					map.MapTiles.Value[i, j].Index = ms.ReadUInt8();
+					map.MapTiles.Value[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
+
 		}
 
 		void UnpackRAOverlayData(MemoryStream ms)
@@ -314,16 +315,13 @@ namespace OpenRA.Utility
 
 		void UnpackCncTileData(Stream ms)
 		{
-			for (var i = 0; i < mapSize; i++)
-				for (var j = 0; j < mapSize; j++)
-					map.MapTiles.Value[i, j] = new TileReference<ushort, byte>();
-
 			for (var j = 0; j < mapSize; j++)
 			{
 				for (var i = 0; i < mapSize; i++)
 				{
-					map.MapTiles.Value[i, j].Type = ms.ReadUInt8();
-					map.MapTiles.Value[i, j].Index = ms.ReadUInt8();
+					var type = ms.ReadUInt8();
+					var index = ms.ReadUInt8();
+					map.MapTiles.Value[new CPos(i, j)] = new TerrainTile(type, index);
 				}
 			}
 		}

@@ -62,7 +62,7 @@ namespace OpenRA.Editor
 		public bool ShowRuler;
 
 		public bool IsPaste { get { return TileSelection != null && ResourceSelection != null; } }
-		public TileReference<ushort, byte>[,] TileSelection;
+		public TerrainTile[,] TileSelection;
 		public ResourceTile[,] ResourceSelection;
 		public CPos SelectionStart;
 		public CPos SelectionEnd;
@@ -272,7 +272,7 @@ namespace OpenRA.Editor
 					for (var j = 0; j < ChunkSize; j++)
 					{
 						var cell = new CPos(u * ChunkSize + i, v * ChunkSize + j);
-						var tr = Map.MapTiles.Value[u * ChunkSize + i, v * ChunkSize + j];
+						var tr = Map.MapTiles.Value[cell];
 						var tile = TileSetRenderer.Data(tr.Type);
 						var index = (tr.Index < tile.Count) ? tr.Index : (byte)0;
 						var rawImage = tile[index];
@@ -509,7 +509,7 @@ namespace OpenRA.Editor
 			var width = Math.Abs((start - end).X);
 			var height = Math.Abs((start - end).Y);
 
-			TileSelection = new TileReference<ushort, byte>[width, height];
+			TileSelection = new TerrainTile[width, height];
 			ResourceSelection = new ResourceTile[width, height];
 
 			for (var x = 0; x < width; x++)
@@ -518,7 +518,7 @@ namespace OpenRA.Editor
 				{
 					// TODO: crash prevention
 					var cell = new CPos(start.X + x, start.Y + y);
-					TileSelection[x, y] = Map.MapTiles.Value[start.X + x, start.Y + y];
+					TileSelection[x, y] = Map.MapTiles.Value[cell];
 					ResourceSelection[x, y] = Map.MapResources.Value[cell];
 				}
 			}
@@ -539,7 +539,7 @@ namespace OpenRA.Editor
 					var cell = new CPos(mapX, mapY);
 
 					// TODO: crash prevention for outside of bounds
-					Map.MapTiles.Value[mapX, mapY] = TileSelection[x, y];
+					Map.MapTiles.Value[cell] = TileSelection[x, y];
 					Map.MapResources.Value[cell] = ResourceSelection[x, y];
 
 					var ch = new int2(mapX / ChunkSize, mapY / ChunkSize);

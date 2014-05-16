@@ -51,9 +51,14 @@ namespace OpenRA.Mods.RA
 
 			// Loop through the map looking for templates to overlay
 			for (var i = w.Map.Bounds.Left; i < w.Map.Bounds.Right; i++)
+			{
 				for (var j = w.Map.Bounds.Top; j < w.Map.Bounds.Bottom; j++)
-					if (bridgeTypes.Keys.Contains(w.Map.MapTiles.Value[i, j].Type))
-						ConvertBridgeToActor(w, new CPos(i, j));
+				{
+					var cell = new CPos(i, j);
+					if (bridgeTypes.Keys.Contains(w.Map.MapTiles.Value[cell].Type))
+						ConvertBridgeToActor(w, cell);
+				}
+			}
 
 			// Link adjacent (long)-bridges so that artwork is updated correctly
 			foreach (var b in w.Actors.SelectMany(a => a.TraitsImplementing<Bridge>()))
@@ -67,8 +72,8 @@ namespace OpenRA.Mods.RA
 				return;
 
 			// Correlate the tile "image" aka subtile with its position to find the template origin
-			var tile = w.Map.MapTiles.Value[cell.X, cell.Y].Type;
-			var index = w.Map.MapTiles.Value[cell.X, cell.Y].Index;
+			var tile = w.Map.MapTiles.Value[cell].Type;
+			var index = w.Map.MapTiles.Value[cell].Index;
 			var template = w.TileSet.Templates[tile];
 			var ni = cell.X - index % template.Size.X;
 			var nj = cell.Y - index / template.Size.X;
@@ -90,8 +95,8 @@ namespace OpenRA.Mods.RA
 				var subtile = new CPos(ni + ind % template.Size.X, nj + ind / template.Size.X);
 
 				// This isn't the bridge you're looking for
-				if (!w.Map.IsInMap(subtile) || w.Map.MapTiles.Value[subtile.X, subtile.Y].Type != tile ||
-					w.Map.MapTiles.Value[subtile.X, subtile.Y].Index != ind)
+				if (!w.Map.IsInMap(subtile) || w.Map.MapTiles.Value[subtile].Type != tile ||
+					w.Map.MapTiles.Value[subtile].Index != ind)
 					continue;
 
 				subTiles.Add(subtile, ind);

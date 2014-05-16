@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA
 		{
 			var dx = cell - self.Location;
 			var index = dx.X + self.World.TileSet.Templates[template].Size.X * dx.Y;
-			return self.World.TileSet.GetTerrainIndex(new TileReference<ushort, byte>(template, (byte)index));
+			return self.World.TileSet.GetTerrainIndex(new TerrainTile(template, (byte)index));
 		}
 
 		public void LinkNeighbouringBridges(World world, BridgeLayer bridges)
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA
 		IRenderable[] TemplateRenderables(WorldRenderer wr, PaletteReference palette, ushort template)
 		{
 			return footprint.Select(c => (IRenderable)(new SpriteRenderable(
-				wr.Theater.TileSprite(new TileReference<ushort, byte>(template, c.Value)),
+				wr.Theater.TileSprite(new TerrainTile(template, c.Value)),
 				c.Key.CenterPosition, WVec.Zero, -512, palette, 1f, true))).ToArray();
 		}
 

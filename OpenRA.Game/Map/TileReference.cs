@@ -10,15 +10,15 @@
 
 namespace OpenRA
 {
-	public struct TileReference<T, U>
+	public struct TerrainTile
 	{
-		public T Type;
-		public U Index;
+		public readonly ushort Type;
+		public readonly byte Index;
 
-		public TileReference(T t, U i)
+		public TerrainTile(ushort type, byte index)
 		{
-			Type = t;
-			Index = i;
+			Type = type;
+			Index = index;
 		}
 
 		public override int GetHashCode() { return Type.GetHashCode() ^ Index.GetHashCode(); }

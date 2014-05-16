@@ -37,16 +37,15 @@ namespace OpenRA.Editor
 			for (var u = 0; u < template.Size.X; u++)
 				for (var v = 0; v < template.Size.Y; v++)
 				{
-					if (surface.Map.IsInMap(new CVec(u, v) + pos))
+					var cell = pos + new CVec(u, v);
+					if (surface.Map.IsInMap(cell))
 					{
 						var z = u + v * template.Size.X;
 						if (tile[z].Length > 0)
-							surface.Map.MapTiles.Value[u + pos.X, v + pos.Y] =
-								new TileReference<ushort, byte>
-								{
-									Type = brushTemplate.N,
-									Index = template.PickAny ? (byte)((u + pos.X) % 4 + ((v + pos.Y) % 4) * 4) : (byte)z,
-								};
+						{
+							var index = template.PickAny ? (byte)((u + pos.X) % 4 + ((v + pos.Y) % 4) * 4) : (byte)z;
+							surface.Map.MapTiles.Value[cell] = new TerrainTile(brushTemplate.N, index);
+						}
 
 						var ch = new int2((pos.X + u) / Surface.ChunkSize, (pos.Y + v) / Surface.ChunkSize);
 						if (surface.Chunks.ContainsKey(ch))
@@ -70,7 +69,7 @@ namespace OpenRA.Editor
 		void FloodFillWithBrush(Surface s, CPos pos)
 		{
 			var queue = new Queue<CPos>();
-			var replace = s.Map.MapTiles.Value[pos.X, pos.Y];
+			var replace = s.Map.MapTiles.Value[pos];
 			var touched = new bool[s.Map.MapSize.X, s.Map.MapSize.Y];
 
 			Action<int, int> maybeEnqueue = (x, y) =>
@@ -87,7 +86,7 @@ namespace OpenRA.Editor
 			while (queue.Count > 0)
 			{
 				var p = queue.Dequeue();
-				if (s.Map.MapTiles.Value[p.X, p.Y].Type != replace.Type)
+				if (s.Map.MapTiles.Value[p].Type != replace.Type)
 					continue;
 
 				var a = FindEdge(s, p, new CVec(-1, 0), replace);
@@ -95,10 +94,10 @@ namespace OpenRA.Editor
 
 				for (var x = a.X; x <= b.X; x++)
 				{
-					s.Map.MapTiles.Value[x, p.Y] = new TileReference<ushort, byte> { Type = brushTemplate.N, Index = (byte)0 };
-					if (s.Map.MapTiles.Value[x, p.Y - 1].Type == replace.Type)
+					s.Map.MapTiles.Value[new CPos(x, p.Y)] = new TerrainTile(brushTemplate.N, (byte)0);
+					if (s.Map.MapTiles.Value[new CPos(x, p.Y - 1)].Type == replace.Type)
 						maybeEnqueue(x, p.Y - 1);
-					if (s.Map.MapTiles.Value[x, p.Y + 1].Type == replace.Type)
+					if (s.Map.MapTiles.Value[new CPos(x, p.Y + 1)].Type == replace.Type)
 						maybeEnqueue(x, p.Y + 1);
 				}
 			}
@@ -108,13 +107,13 @@ namespace OpenRA.Editor
 			s.Chunks.Clear();
 		}
 
-		static CPos FindEdge(Surface s, CPos p, CVec d, TileReference<ushort, byte> replace)
+		static CPos FindEdge(Surface s, CPos p, CVec d, TerrainTile replace)
 		{
 			for (;;)
 			{
 				var q = p + d;
 				if (!s.Map.IsInMap(q)) return p;
-				if (s.Map.MapTiles.Value[q.X, q.Y].Type != replace.Type) return p;
+				if (s.Map.MapTiles.Value[q].Type != replace.Type) return p;
 				p = q;
 			}
 		}
