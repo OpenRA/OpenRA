@@ -10,8 +10,8 @@ local ide = ide
 ide.filetree = {
   projdir = "",
   projdirlist = {},
-  projdirmap = {},
   projdirpartmap = {},
+  projtree = nil,
 }
 local filetree = ide.filetree
 
@@ -507,6 +507,7 @@ local projtree = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
   wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_LINES_AT_ROOT
   + wx.wxTR_EDIT_LABELS)
 projtree:SetFont(ide.font.fNormal)
+filetree.projtree = projtree
 
 local projnotebook = ide.frame.projnotebook
 projnotebook:AddPage(projtree, "Project", true)
@@ -584,7 +585,7 @@ end
 local function getProjectLabels()
   local labels = {}
   local fmt = ide.config.menuformatrecentprojects or '%f'
-  for i, proj in ipairs(FileTreeGetProjects()) do
+  for _, proj in ipairs(FileTreeGetProjects()) do
     local config = ide.session.projects[proj]
     local intfname = config and config[2] and config[2].interpreter or ide.interpreter:GetFileName()
     local interpreter = intfname and ide.interpreters[intfname]
