@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public readonly string EmptyWeapon = "UnitExplode";
 
 		public readonly int Chance = 100;
-		public readonly string[] InfDeath = { };
+		public readonly string[] InfDeath = null;
 
 		public object Create(ActorInitializer init) { return new Explodes(this); }
 	}
