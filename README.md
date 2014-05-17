@@ -28,7 +28,7 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 ## Mapping
 
 * We offer a [Mapping](https://github.com/OpenRA/OpenRA/wiki/Mapping) Tutorial as you can change gameplay drastically with custom maps.
-* If you want to share your maps, mini-games and units with the community, upload them at [http://content.open-ra.org](http://content.open-ra.org).
+* If you want to share your maps with the community, upload them at the [OpenRA Resource Center](http://resource.openra.net).
 
 ## Modding
 
