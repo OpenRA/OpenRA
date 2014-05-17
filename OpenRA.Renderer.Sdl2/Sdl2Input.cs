@@ -37,6 +37,7 @@ namespace OpenRA.Renderer.Sdl2
 		public void PumpInput(IInputHandler inputHandler)
 		{
 			var mods = MakeModifiers((int)SDL.SDL_GetModState());
+			var scrollDelta = 0;
 			inputHandler.ModifierKeys(mods);
 			MouseInput? pendingMotion = null;
 
@@ -79,7 +80,7 @@ namespace OpenRA.Renderer.Sdl2
 						var pos = new int2(e.button.x, e.button.y);
 
 						inputHandler.OnMouseInput(new MouseInput(
-							MouseInputEvent.Down, button, pos, mods,
+							MouseInputEvent.Down, button, scrollDelta, pos, mods,
 							MultiTapDetection.DetectFromMouse(e.button.button, pos)));
 
 						break;
@@ -98,7 +99,7 @@ namespace OpenRA.Renderer.Sdl2
 
 						var pos = new int2(e.button.x, e.button.y);
 						inputHandler.OnMouseInput(new MouseInput(
-							MouseInputEvent.Up, button, pos, mods,
+							MouseInputEvent.Up, button, scrollDelta, pos, mods,
 							MultiTapDetection.InfoFromMouse(e.button.button)));
 
 						break;
@@ -107,7 +108,7 @@ namespace OpenRA.Renderer.Sdl2
 					case SDL.SDL_EventType.SDL_MOUSEMOTION:
 					{
 						pendingMotion = new MouseInput(
-							MouseInputEvent.Move, lastButtonBits,
+							MouseInputEvent.Move, lastButtonBits, scrollDelta,
 							new int2(e.motion.x, e.motion.y), mods, 0);
 
 						break;
@@ -115,15 +116,10 @@ namespace OpenRA.Renderer.Sdl2
 
 					case SDL.SDL_EventType.SDL_MOUSEWHEEL:
 					{
-						// Retain compatibility with existing bogus behavior
-						// TODO: Implement real scroll behavior. We've dropped SDL 1.2 support!
-						if (e.wheel.y == 0)
-							break;
-
 						int x, y;
 						SDL.SDL_GetMouseState(out x, out y);
-						var button = e.wheel.y < 0 ? MouseButton.WheelDown : MouseButton.WheelUp;
-						inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Down, button, new int2(x, y), Modifiers.None, 0));
+						scrollDelta = e.wheel.y;
+						inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, scrollDelta, new int2(x, y), Modifiers.None, 0));
 
 						break;
 					}
@@ -173,7 +169,7 @@ namespace OpenRA.Renderer.Sdl2
 
 						// Special case workaround for windows users
 						if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
-						    Platform.CurrentPlatform == PlatformType.Windows)
+							Platform.CurrentPlatform == PlatformType.Windows)
 						{
 							Game.Exit();
 						}

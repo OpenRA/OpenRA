@@ -20,19 +20,21 @@ namespace OpenRA
 		void OnTextInput(string text);
 	}
 
-	public enum MouseInputEvent { Down, Move, Up }
+	public enum MouseInputEvent { Down, Move, Up, Scroll }
 	public struct MouseInput
 	{
 		public MouseInputEvent Event;
 		public MouseButton Button;
+		public int ScrollDelta;
 		public int2 Location;
 		public Modifiers Modifiers;
 		public int MultiTapCount;
 
-		public MouseInput(MouseInputEvent ev, MouseButton button, int2 location, Modifiers mods, int multiTapCount)
+		public MouseInput(MouseInputEvent ev, MouseButton button, int scrollDelta, int2 location, Modifiers mods, int multiTapCount)
 		{
 			Event = ev;
 			Button = button;
+			ScrollDelta = scrollDelta;
 			Location = location;
 			Modifiers = mods;
 			MultiTapCount = multiTapCount;
@@ -45,9 +47,7 @@ namespace OpenRA
 		None = 0,
 		Left = 1,
 		Right = 2,
-		Middle = 4,
-		WheelDown = 8,
-		WheelUp = 16
+		Middle = 4
 	}
 
 	[Flags]

@@ -3,7 +3,7 @@ Container@SETTINGS_PANEL:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Width: 590
-	Height: 310+68
+	Height: 378
 	Children:
 		Label@TITLE:
 			Width: 590
@@ -36,7 +36,7 @@ Container@SETTINGS_PANEL:
 		Background@bg:
 			Y: 34
 			Width: 590
-			Height: 310
+			Height: 360
 			Background: panel-black
 			Children:
 				Container@DISPLAY_PANEL:
@@ -326,18 +326,33 @@ Container@SETTINGS_PANEL:
 							Ticks: 5
 							MinimumValue: 10
 							MaximumValue: 50
+						Label@UI_SCROLL_SPEED_LABEL:
+							X: PARENT_RIGHT - WIDTH - 270
+							Y: 97
+							Width: 95
+							Height: 25
+							Text: UI Scroll Speed:
+							Align: Right
+						Slider@UI_SCROLLSPEED_SLIDER:
+							X: PARENT_RIGHT - WIDTH - 15
+							Y: 103
+							Width: 250
+							Height: 20
+							Ticks: 5
+							MinimumValue: 1
+							MaximumValue: 100
 						Label@HOTKEYS_TITLE:
-							Y: 115
+							Y: 135
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Hotkeys
 							Align: Center
 						ScrollPanel@HOTKEY_LIST:
 							X: 15
-							Y: 135
+							Y: 155
 							Width: 560
 							ItemSpacing: 4
-							Height: 160
+							Height: 180
 							Children:
 								ScrollItem@HEADER:
 									Width: 528
@@ -451,13 +466,13 @@ Container@SETTINGS_PANEL:
 							Text: Check Sync around Unsynced Code
 		Button@BACK_BUTTON:
 			Key: escape
-			Y: 343
+			Y: 393
 			Width: 140
 			Height: 35
 			Text: Back
 		Button@RESET_BUTTON:
 			X: 150
-			Y: 343
+			Y: 393
 			Width: 140
 			Height: 35
 			Text: Reset
