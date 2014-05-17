@@ -164,14 +164,12 @@ namespace OpenRA.Mods.RA
 
 		public void PrerequisitesItemHidden(string key)
 		{
-			var ps = Produceable[self.World.Map.Rules.Actors[key]];
-			ps.Visible = false;
+			Produceable[self.World.Map.Rules.Actors[key]].Visible = false;
 		}
 
 		public void PrerequisitesItemVisable(string key)
 		{
-			var ps = Produceable[self.World.Map.Rules.Actors[key]];
-			ps.Visible = true;
+			Produceable[self.World.Map.Rules.Actors[key]].Visible = true;
 		}
 
 		public ProductionItem CurrentItem()
