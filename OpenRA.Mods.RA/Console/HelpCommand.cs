@@ -38,9 +38,9 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void InvokeCommand(string name, string arg)
-		{	
+		{
 			Game.Debug("Here are the available commands:");
-			
+
 			foreach (var key in console.Commands.Keys)
 			{
 				var description = "";
