@@ -18,6 +18,7 @@ namespace OpenRA.Network
 	public class Session
 	{
 		public List<Client> Clients = new List<Client>();
+		public List<ClientPing> ClientPings = new List<ClientPing>();
 
 		// Keyed by the PlayerReference id that the slot corresponds to
 		public Dictionary<string, Slot> Slots = new Dictionary<string, Slot>();
@@ -30,23 +31,27 @@ namespace OpenRA.Network
 			{
 				var session = new Session();
 
-				var ys = MiniYaml.FromString(data);
-				foreach (var y in ys)
+				var nodes = MiniYaml.FromString(data);
+				foreach (var node in nodes)
 				{
-					var yy = y.Key.Split('@');
+					var strings = node.Key.Split('@');
 
-					switch (yy[0])
+					switch (strings[0])
 					{
+						case "Client":
+							session.Clients.Add(Client.Deserialize(node.Value));
+							break;
+
+						case "ClientPing":
+							session.ClientPings.Add(ClientPing.Deserialize(node.Value));
+							break;
+
 						case "GlobalSettings":
-							FieldLoader.Load(session.GlobalSettings, y.Value);
+							session.GlobalSettings = Global.Deserialize(node.Value);
 							break;
 
-							case "Client":
-							session.Clients.Add(FieldLoader.Load<Client>(y.Value));
-							break;
-
-							case "Slot":
-							var s = FieldLoader.Load<Slot>(y.Value);
+						case "Slot":
+							var s = Slot.Deserialize(node.Value);
 							session.Slots.Add(s.PlayerReference, s);
 							break;
 					}
@@ -107,9 +112,39 @@ namespace OpenRA.Network
 			public bool IsReady { get { return State == ClientState.Ready; } }
 			public bool IsInvalid { get { return State == ClientState.Invalid; } }
 			public bool IsObserver { get { return Slot == null; } }
+
+			public MiniYamlNode Serialize()
+			{
+				return new MiniYamlNode("Client@{0}".F(this.Index), FieldSaver.Save(this));
+			}
+
+			public static Client Deserialize(MiniYaml data)
+			{
+				return FieldLoader.Load<Client>(data);
+			}
+		}
+
+		public ClientPing PingFromClient(Client client)
+		{
+			return ClientPings.SingleOrDefault(p => p.Index == client.Index);
+		}
+
+		public class ClientPing
+		{
+			public int Index;
 			public int Latency = -1;
 			public int LatencyJitter = -1;
 			public int[] LatencyHistory = { };
+
+			public MiniYamlNode Serialize()
+			{
+				return new MiniYamlNode("ClientPing@{0}".F(this.Index), FieldSaver.Save(this));
+			}
+
+			public static ClientPing Deserialize(MiniYaml data)
+			{
+				return FieldLoader.Load<ClientPing>(data);
+			}
 		}
 
 		public class Slot
@@ -123,6 +158,16 @@ namespace OpenRA.Network
 			public bool LockTeam;
 			public bool LockSpawn;
 			public bool Required;
+
+			public MiniYamlNode Serialize()
+			{
+				return new MiniYamlNode("Slot@{0}".F(this.PlayerReference), FieldSaver.Save(this));
+			}
+
+			public static Slot Deserialize(MiniYaml data)
+			{
+				return FieldLoader.Load<Slot>(data);
+			}
 		}
 
 		public class Global
@@ -144,21 +189,34 @@ namespace OpenRA.Network
 			public string StartingUnitsClass = "none";
 			public bool AllowVersionMismatch;
 			public string GameUid;
+
+			public MiniYamlNode Serialize()
+			{
+				return new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
+			}
+
+			public static Global Deserialize(MiniYaml data)
+			{
+				return FieldLoader.Load<Global>(data);
+			}
 		}
 
 		public string Serialize()
 		{
-			var clientData = new List<MiniYamlNode>();
+			var sessionData = new List<MiniYamlNode>();
 
 			foreach (var client in Clients)
-				clientData.Add(new MiniYamlNode("Client@{0}".F(client.Index), FieldSaver.Save(client)));
+				sessionData.Add(client.Serialize());
+
+			foreach (var clientPing in ClientPings)
+				sessionData.Add(clientPing.Serialize());
 
 			foreach (var slot in Slots)
-				clientData.Add(new MiniYamlNode("Slot@{0}".F(slot.Key), FieldSaver.Save(slot.Value)));
+				sessionData.Add(slot.Value.Serialize());
 
-			clientData.Add(new MiniYamlNode("GlobalSettings", FieldSaver.Save(GlobalSettings)));
+			sessionData.Add(GlobalSettings.Serialize());
 
-			return clientData.WriteToString();
+			return sessionData.WriteToString();
 		}
 	}
 }

@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA.Server
 						Log.Write("server", "Player @{0} is {1}",
 							conn.socket.RemoteEndPoint, client.State);
 
-						server.SyncLobbyInfo();
+						server.SyncLobbyClients();
 
 						CheckAutoStart(server, conn, client);
 
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required && 
+						if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required &&
 							server.LobbyInfo.ClientInSlot(sl.Key) == null))
 						{
 							server.SendOrderTo(conn, "Message", "Unable to start the game until required slots are full.");
@@ -130,8 +130,7 @@ namespace OpenRA.Mods.RA.Server
 
 						client.Slot = s;
 						S.SyncClientToPlayerReference(client, server.Map.Players[s]);
-
-						server.SyncLobbyInfo();
+						server.SyncLobbyClients();
 						CheckAutoStart(server, conn, client);
 
 						return true;
@@ -141,7 +140,7 @@ namespace OpenRA.Mods.RA.Server
 					{
 						if (bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllowSpectators))
 						{
-							server.SyncLobbyInfo();
+							server.SyncLobbyGlobalSettings();
 							return true;
 						}
 						else
@@ -158,7 +157,7 @@ namespace OpenRA.Mods.RA.Server
 							client.Slot = null;
 							client.SpawnPoint = 0;
 							client.Color = HSLColor.FromRGB(255, 255, 255);
-							server.SyncLobbyInfo();
+							server.SyncLobbyClients();
 							return true;
 						}
 						else
@@ -167,7 +166,7 @@ namespace OpenRA.Mods.RA.Server
 				{ "slot_close",
 					s =>
 					{
-						if (!ValidateSlotCommand( server, conn, client, s, true ))
+						if (!ValidateSlotCommand(server, conn, client, s, true))
 							return false;
 
 						// kick any player that's in the slot
@@ -175,10 +174,14 @@ namespace OpenRA.Mods.RA.Server
 						if (occupant != null)
 						{
 							if (occupant.Bot != null)
+							{
 								server.LobbyInfo.Clients.Remove(occupant);
+								var ping = server.LobbyInfo.PingFromClient(occupant);
+								server.LobbyInfo.ClientPings.Remove(ping);
+							}
 							else
 							{
-								var occupantConn = server.Conns.FirstOrDefault( c => c.PlayerIndex == occupant.Index );
+								var occupantConn = server.Conns.FirstOrDefault(c => c.PlayerIndex == occupant.Index);
 								if (occupantConn != null)
 								{
 									server.SendOrderTo(occupantConn, "ServerError", "Your slot was closed by the host");
@@ -188,7 +191,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						server.LobbyInfo.Slots[s].Closed = true;
-						server.SyncLobbyInfo();
+						server.SyncLobbySlots();
 						return true;
 					}},
 				{ "slot_open",
@@ -199,13 +202,18 @@ namespace OpenRA.Mods.RA.Server
 
 						var slot = server.LobbyInfo.Slots[s];
 						slot.Closed = false;
+						server.SyncLobbySlots();
 
 						// Slot may have a bot in it
 						var occupant = server.LobbyInfo.ClientInSlot(s);
 						if (occupant != null && occupant.Bot != null)
+						{
 							server.LobbyInfo.Clients.Remove(occupant);
+							var ping = server.LobbyInfo.PingFromClient(occupant);
+							server.LobbyInfo.ClientPings.Remove(ping);
+						}
+						server.SyncLobbyClients();
 
-						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "slot_bot",
@@ -272,7 +280,8 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						S.SyncClientToPlayerReference(bot, server.Map.Players[parts[0]]);
-						server.SyncLobbyInfo();
+						server.SyncLobbyClients();
+						server.SyncLobbySlots();
 						return true;
 					}},
 				{ "map",
@@ -290,6 +299,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 						server.LobbyInfo.GlobalSettings.Map = s;
+
 						var oldSlots = server.LobbyInfo.Slots.Keys.ToArray();
 						LoadMap(server);
 						SetDefaultDifficulty(server);
@@ -342,7 +352,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.FragileAlliances);
-						server.SyncLobbyInfo();
+						server.SyncLobbyGlobalSettings();
 						return true;
 					}},
 				{ "allowcheats",
@@ -361,7 +371,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllowCheats);
-						server.SyncLobbyInfo();
+						server.SyncLobbyGlobalSettings();
 						return true;
 					}},
 				{ "shroud",
@@ -380,7 +390,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Shroud);
-						server.SyncLobbyInfo();
+						server.SyncLobbyGlobalSettings();
 						return true;
 					}},
 				{ "fog",
@@ -400,7 +410,7 @@ namespace OpenRA.Mods.RA.Server
 
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Fog);
-						server.SyncLobbyInfo();
+						server.SyncLobbyGlobalSettings();
 						return true;
 					}},
 				{ "assignteams",
@@ -441,7 +451,7 @@ namespace OpenRA.Mods.RA.Server
 								player.Team = assigned++ * teamCount / playerCount + 1;
 						}
 
-						server.SyncLobbyInfo();
+						server.SyncLobbyClients();
 						return true;
 					}},
 				{ "crates",
@@ -460,7 +470,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Crates);
-						server.SyncLobbyInfo();
+						server.SyncLobbyGlobalSettings();
 						return true;
 					}},
 				{ "allybuildradius",
@@ -479,7 +489,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllyBuildRadius);
-						server.SyncLobbyInfo();
+						server.SyncLobbyGlobalSettings();
 						return true;
 					}},
 				{ "difficulty",
@@ -499,7 +509,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						server.LobbyInfo.GlobalSettings.Difficulty = s;
-						server.SyncLobbyInfo();
+						server.SyncLobbyGlobalSettings();
 						return true;
 					}},
 				{ "startingunits",
@@ -518,7 +528,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						server.LobbyInfo.GlobalSettings.StartingUnitsClass = s;
-						server.SyncLobbyInfo();
+						server.SyncLobbyGlobalSettings();
 						return true;
 					}},
 				{ "startingcash",
@@ -537,7 +547,8 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						server.LobbyInfo.GlobalSettings.StartingCash = Exts.ParseIntegerInvariant(s);
-						server.SyncLobbyInfo();
+						server.SyncLobbyGlobalSettings();
+
 						return true;
 					}},
 				{ "kick",
@@ -581,7 +592,8 @@ namespace OpenRA.Mods.RA.Server
 							server.TempBans.Add(kickConnIP);
 						}
 
-						server.SyncLobbyInfo();
+						server.SyncLobbyClients();
+						server.SyncLobbySlots();
 						return true;
 					}},
 				{ "name",
@@ -589,7 +601,7 @@ namespace OpenRA.Mods.RA.Server
 					{
 						Log.Write("server", "Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
 						client.Name = s;
-						server.SyncLobbyInfo();
+						server.SyncLobbyClients();
 						return true;
 					}},
 				{ "race",
@@ -607,7 +619,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 
 						targetClient.Country = parts[1];
-						server.SyncLobbyInfo();
+						server.SyncLobbyClients();
 						return true;
 					}},
 				{ "team",
@@ -632,7 +644,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						targetClient.Team = team;
-						server.SyncLobbyInfo();
+						server.SyncLobbyClients();
 						return true;
 					}},
 				{ "spawn",
@@ -668,7 +680,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						targetClient.SpawnPoint = spawnPoint;
-						server.SyncLobbyInfo();
+						server.SyncLobbyClients();
 						return true;
 					}},
 				{ "color",
@@ -687,7 +699,7 @@ namespace OpenRA.Mods.RA.Server
 
 						var ci = parts[1].Split(',').Select(cc => Exts.ParseIntegerInvariant(cc)).ToArray();
 						targetClient.Color = targetClient.PreferredColor = new HSLColor((byte)ci[0], (byte)ci[1], (byte)ci[2]);
-						server.SyncLobbyInfo();
+						server.SyncLobbyClients();
 						return true;
 					}}
 			};

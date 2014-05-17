@@ -91,7 +91,13 @@ namespace OpenRA.Mods.RA
 				case "Disconnected":
 				case "ServerError":
 				case "AuthenticationError":
-				case "SyncInfo":
+				case "SyncLobbyInfo":
+				case "SyncClientInfo":
+				case "SyncLobbySlots":
+				case "SyncLobbyGlobalSettings":
+				case "SyncClientPing":
+				case "Ping":
+				case "Pong":
 					return;
 			}
 			if (order.OrderString.StartsWith("Dev"))

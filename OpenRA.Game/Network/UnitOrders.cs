@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
@@ -162,14 +163,73 @@ namespace OpenRA.Network
 				case "SyncInfo":
 					{
 						orderManager.LobbyInfo = Session.Deserialize(order.TargetString);
-
-						if (orderManager.FramesAhead != orderManager.LobbyInfo.GlobalSettings.OrderLatency
-							&& !orderManager.GameStarted)
-						{
-							orderManager.FramesAhead = orderManager.LobbyInfo.GlobalSettings.OrderLatency;
-							Log.Write("server", "Order lag is now {0} frames.", orderManager.LobbyInfo.GlobalSettings.OrderLatency);
-						}
+						SetOrderLag(orderManager);
 						Game.SyncLobbyInfo();
+						break;
+					}
+
+				case "SyncLobbyClients":
+					{
+						var clients = new List<Session.Client>();
+						var nodes = MiniYaml.FromString(order.TargetString);
+						foreach (var node in nodes)
+						{
+							var strings = node.Key.Split('@');
+							if (strings[0] == "Client")
+								clients.Add(Session.Client.Deserialize(node.Value));
+						}
+
+						orderManager.LobbyInfo.Clients = clients;
+						Game.SyncLobbyInfo();
+						break;
+					}
+
+				case "SyncLobbySlots":
+					{
+						var slots = new Dictionary<string, Session.Slot>();
+						var nodes = MiniYaml.FromString(order.TargetString);
+						foreach (var node in nodes)
+						{
+							var strings = node.Key.Split('@');
+							if (strings[0] == "Slot")
+							{
+								var slot = Session.Slot.Deserialize(node.Value);
+								slots.Add(slot.PlayerReference, slot);
+							}
+						}
+
+						orderManager.LobbyInfo.Slots = slots;
+						Game.SyncLobbyInfo();
+						break;
+					}
+
+				case "SyncLobbyGlobalSettings":
+					{
+						var nodes = MiniYaml.FromString(order.TargetString);
+						foreach (var node in nodes)
+						{
+							var strings = node.Key.Split('@');
+							if (strings[0] == "GlobalSettings")
+								orderManager.LobbyInfo.GlobalSettings = Session.Global.Deserialize(node.Value);
+						}
+
+						SetOrderLag(orderManager);
+						Game.SyncLobbyInfo();
+						break;
+					}
+
+				case "SyncClientPings":
+					{
+						var pings = new List<Session.ClientPing>();
+						var nodes = MiniYaml.FromString(order.TargetString);
+						foreach (var node in nodes)
+						{
+							var strings = node.Key.Split('@');
+							if (strings[0] == "ClientPing")
+								pings.Add(Session.ClientPing.Deserialize(node.Value));
+						}
+
+						orderManager.LobbyInfo.ClientPings = pings;
 						break;
 					}
 
@@ -226,6 +286,15 @@ namespace OpenRA.Network
 
 			foreach (var nsc in w.ActorsWithTrait<INotifyStanceChanged>())
 				nsc.Trait.StanceChanged(nsc.Actor, p, target, oldStance, s);
+		}
+
+		static void SetOrderLag(OrderManager o)
+		{
+			if (o.FramesAhead != o.LobbyInfo.GlobalSettings.OrderLatency && !o.GameStarted)
+			{
+				o.FramesAhead = o.LobbyInfo.GlobalSettings.OrderLatency;
+				Log.Write("server", "Order lag is now {0} frames.", o.LobbyInfo.GlobalSettings.OrderLatency);
+			}
 		}
 	}
 }

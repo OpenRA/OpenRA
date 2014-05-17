@@ -71,8 +71,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 
 			admin.IsVisible = () => orderManager.LobbyInfo.ClientWithIndex(clientIndex).IsAdmin;
-			latency.GetText = () => LobbyUtils.LatencyDescription(orderManager.LobbyInfo.ClientWithIndex(clientIndex).Latency);
-			latency.GetColor = () => LobbyUtils.LatencyColor(orderManager.LobbyInfo.ClientWithIndex(clientIndex).Latency);
+			var client = orderManager.LobbyInfo.ClientWithIndex(clientIndex);
+			var ping = orderManager.LobbyInfo.PingFromClient(client);
+			latency.GetText = () => LobbyUtils.LatencyDescription(ping);
+			latency.GetColor = () => LobbyUtils.LatencyColor(ping);
 			var address = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
 			if (address == "127.0.0.1" && UPnP.NatDevice != null)
 				address = UPnP.NatDevice.GetExternalIP().ToString();

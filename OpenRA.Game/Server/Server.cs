@@ -322,6 +322,9 @@ namespace OpenRA.Server
 				PreConns.Remove(newConn);
 				Conns.Add(newConn);
 				LobbyInfo.Clients.Add(client);
+				var clientPing = new Session.ClientPing();
+				clientPing.Index = client.Index;
+				LobbyInfo.ClientPings.Add(clientPing);
 
 				Log.Write("server", "Client {0}: Accepted connection from {1}.",
 				          newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
@@ -361,7 +364,7 @@ namespace OpenRA.Server
 			else
 				LobbyInfo.GlobalSettings.OrderLatency = 3;
 
-			SyncLobbyInfo();
+			SyncLobbyGlobalSettings();
 		}
 
 		public void UpdateInFlightFrames(Connection conn)
@@ -442,6 +445,7 @@ namespace OpenRA.Server
 			switch (so.Name)
 			{
 				case "Command":
+				{
 					bool handled = false;
 					foreach (var t in serverTraits.WithInterface<IInterpretCommand>())
 						if (handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data))
@@ -454,7 +458,8 @@ namespace OpenRA.Server
 					}
 
 					break;
-				
+				}
+
 				case "HandshakeResponse":
 					ValidateClient(conn, so.Data);
 					break;
@@ -472,20 +477,22 @@ namespace OpenRA.Server
 						break;
 					}
 
-					var fromClient = GetClient(conn);
-					var history = fromClient.LatencyHistory.ToList();
+					var pingFromClient = LobbyInfo.PingFromClient(GetClient(conn));
+					if (pingFromClient == null)
+						return;
+
+					var history = pingFromClient.LatencyHistory.ToList();
 					history.Add(Environment.TickCount - pingSent);
 
 					// Cap ping history at 5 values (25 seconds)
 					if (history.Count > 5)
 						history.RemoveRange(0, history.Count - 5);
 
-					fromClient.Latency = history.Sum() / history.Count;
-					fromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
-					fromClient.LatencyHistory = history.ToArray();
+					pingFromClient.Latency = history.Sum() / history.Count;
+					pingFromClient.LatencyJitter = (history.Max() - history.Min()) / 2;
+					pingFromClient.LatencyHistory = history.ToArray();
 
-					if (State == ServerState.WaitingPlayers)
-						SyncLobbyInfo();
+					SyncClientPing();
 
 					break;
 				}
@@ -545,7 +552,7 @@ namespace OpenRA.Server
 				}
 
 				if (Conns.Any() || LobbyInfo.GlobalSettings.Dedicated)
-					SyncLobbyInfo();
+					SyncLobbyClients();
 
 				if (!LobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
 					Shutdown();
@@ -565,6 +572,69 @@ namespace OpenRA.Server
 			if (State == ServerState.WaitingPlayers) // Don't do this while the game is running, it breaks things!
 				DispatchOrders(null, 0,
 					new ServerOrder("SyncInfo", LobbyInfo.Serialize()).Serialize());
+
+			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+				t.LobbyInfoSynced(this);
+		}
+
+		public void SyncLobbyClients()
+		{
+			if (State != ServerState.WaitingPlayers)
+				return;
+
+			// TODO: only need to sync the specific client that has changed to avoid conflicts
+			var clientData = new List<MiniYamlNode>();
+			foreach (var client in LobbyInfo.Clients)
+				clientData.Add(client.Serialize());
+
+			DispatchOrders(null, 0,
+				new ServerOrder("SyncLobbyClients", clientData.WriteToString()).Serialize());
+
+			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+				t.LobbyInfoSynced(this);
+		}
+
+		public void SyncLobbySlots()
+		{
+			if (State != ServerState.WaitingPlayers)
+				return;
+
+			// TODO: don't sync all the slots if just one changed
+			var slotData = new List<MiniYamlNode>();
+			foreach (var slot in LobbyInfo.Slots)
+				slotData.Add(slot.Value.Serialize());
+
+			DispatchOrders(null, 0,
+				new ServerOrder("SyncLobbySlots", slotData.WriteToString()).Serialize());
+
+			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+				t.LobbyInfoSynced(this);
+		}
+
+		public void SyncLobbyGlobalSettings()
+		{
+			if (State != ServerState.WaitingPlayers)
+				return;
+
+			var sessionData = new List<MiniYamlNode>();
+			sessionData.Add(LobbyInfo.GlobalSettings.Serialize());
+
+			DispatchOrders(null, 0,
+				new ServerOrder("SyncLobbyGlobalSettings", sessionData.WriteToString()).Serialize());
+
+			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
+				t.LobbyInfoSynced(this);
+		}
+
+		public void SyncClientPing()
+		{
+			// TODO: split this further into per client ping orders
+			var clientPings = new List<MiniYamlNode>();
+			foreach (var ping in LobbyInfo.ClientPings)
+				clientPings.Add(ping.Serialize());
+
+			DispatchOrders(null, 0,
+				new ServerOrder("SyncClientPings", clientPings.WriteToString()).Serialize());
 
 			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
 				t.LobbyInfoSynced(this);
@@ -602,7 +672,7 @@ namespace OpenRA.Server
 
 			foreach (var t in serverTraits.WithInterface<IStartGame>())
 				t.GameStarted(this);
-			
+
 			// Check TimeOut
 			if (Settings.TimeOut > 10000)
 			{
