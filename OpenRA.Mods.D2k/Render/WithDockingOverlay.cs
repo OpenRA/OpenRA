@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Render
 
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 
-			overlay = new Animation(rs.GetImage(self));
+			overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.Play(info.Sequence);
 			rs.anims.Add("docking_overlay_{0}".F(info.Sequence),
 				new AnimationWithOffset(overlay,

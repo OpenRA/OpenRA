@@ -66,6 +66,8 @@ namespace OpenRA.Mods.RA.Effects
 			this.args = args;
 			this.pos = args.Source;
 
+			var world = args.SourceActor.World;
+
 			if (info.Angle.Length > 1 && info.Speed.Length > 1)
 			{
 				angle = new WAngle(args.SourceActor.World.SharedRandom.Next(info.Angle[0].Angle, info.Angle[1].Angle));
@@ -89,7 +91,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (info.Image != null)
 			{
-				anim = new Animation(info.Image, GetEffectiveFacing);
+				anim = new Animation(world, info.Image, GetEffectiveFacing);
 				anim.PlayRepeating("idle");
 			}
 

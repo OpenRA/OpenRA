@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Buildings
 			for (var i = 0; i < rows * width; i++)
 			{
 				var index = i;
-				var anim = new Animation(rs.GetImage(self));
+				var anim = new Animation(self.World, rs.GetImage(self));
 				var cellOffset = new CVec(i % width, i / width + bibOffset);
 
 				// Some mods may define terrain-specific bibs

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -72,9 +72,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			cantBuild = new Animation("clock");
+			cantBuild = new Animation(world, "clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
-			clock = new Animation("clock");
+			clock = new Animation(world, "clock");
 		}
 
 		public override void Tick()
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (mi.Event != MouseInputEvent.Down)
 				return true;
 
-			var actor = Rules.Info[icon.Name];
+			var actor = World.Map.Rules.Actors[icon.Name];
 			var first = icon.Queued.FirstOrDefault();
 
 			if (mi.Button == MouseButton.Left)
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				{
 					// Queue a new item
 					Sound.Play(TabClick);
-					Sound.PlayNotification(World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Country.Race);
+					Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Country.Race);
 					World.IssueOrder(Order.StartProduction(CurrentQueue.self, icon.Name,
 						Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 				}
@@ -152,13 +152,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 					// instant cancel of things we havent started yet and things that are finished
 					if (first.Paused || first.Done || first.TotalCost == first.RemainingCost)
 					{
-						Sound.PlayNotification(World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Country.Race);
+						Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Country.Race);
 						World.IssueOrder(Order.CancelProduction(CurrentQueue.self, icon.Name,
 							Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 					}
 					else
 					{
-						Sound.PlayNotification(World.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, World.LocalPlayer.Country.Race);
+						Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, World.LocalPlayer.Country.Race);
 						World.IssueOrder(Order.PauseProduction(CurrentQueue.self, icon.Name, true));
 					}
 				}
@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var x = i % Columns;
 				var y = i / Columns;
 				var rect = new Rectangle(rb.X + x * 64 + 1, rb.Y + y * 48 + 1, 64, 48);
-				var icon = new Animation(RenderSimple.GetImage(item));
+				var icon = new Animation(World, RenderSimple.GetImage(item));
 				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
 				var pi = new ProductionIcon()
 				{

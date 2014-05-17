@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,13 +18,13 @@ namespace OpenRA.Mods.RA
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			var providedPrereqs = Rules.Info.Keys.Concat(
-				Rules.Info.SelectMany(a => a.Value.Traits
+			var providedPrereqs = map.Rules.Actors.Keys.Concat(
+				map.Rules.Actors.SelectMany(a => a.Value.Traits
 					.WithInterface<ProvidesCustomPrerequisiteInfo>()
 					.Select(p => p.Prerequisite))).ToArray();
 
 			// TODO: this check is case insensitive while the real check in-game is not
-			foreach (var i in Rules.Info)
+			foreach (var i in map.Rules.Actors)
 			{
 				var bi = i.Value.Traits.GetOrDefault<BuildableInfo>();
 				if (bi != null)

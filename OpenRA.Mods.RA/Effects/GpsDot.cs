@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			this.self = self;
 			this.info = info;
-			anim = new Animation("gpsdot");
+			anim = new Animation(self.World, "gpsdot");
 			anim.PlayRepeating(info.String);
 
 			self.World.AddFrameEndTask(w => w.Add(this));

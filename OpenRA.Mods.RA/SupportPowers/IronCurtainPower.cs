@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
-			return new SelectTarget(order, manager, this);
+			return new SelectTarget(self.World, order, manager, this);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -76,13 +76,13 @@ namespace OpenRA.Mods.RA
 			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectTarget(string order, SupportPowerManager manager, IronCurtainPower power)
+			public SelectTarget(World world, string order, SupportPowerManager manager, IronCurtainPower power)
 			{
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
 				this.range = (power.Info as IronCurtainPowerInfo).Range;
-				tile = SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
+				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
 			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)

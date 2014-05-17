@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -21,8 +21,8 @@ namespace OpenRA.Mods.RA.Widgets
 	public class ObserverProductionIconsWidget : Widget
 	{
 		public Func<Player> GetPlayer;
-		World world;
-		WorldRenderer worldRenderer;
+		readonly World world;
+		readonly WorldRenderer worldRenderer;
 		Dictionary<ProductionQueue, Animation> clocks;
 
 		public int IconWidth = 32;
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				if (!clocks.ContainsKey(queue.Trait))
 				{
-					clocks.Add(queue.Trait, new Animation("clock"));
+					clocks.Add(queue.Trait, new Animation(world, "clock"));
 				}
 			}
 
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Widgets
 				if (actor == null)
 					continue;
 
-				var icon = new Animation(RenderSimple.GetImage(actor));
+				var icon = new Animation(world, RenderSimple.GetImage(actor));
 				icon.Play(actor.Traits.Get<TooltipInfo>().Icon);
 				var location = new float2(RenderBounds.Location) + new float2(queue.i * (IconWidth + IconSpacing), 0);
 				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);

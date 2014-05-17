@@ -43,6 +43,7 @@ namespace OpenRA.Utility
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
 			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
+			Log.AddChannel("perf", null);
 
 			try
 			{

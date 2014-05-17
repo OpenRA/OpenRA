@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 
 			// HACK: Force images to be loaded up-front
 			foreach (var image in info.ImagesByFullness)
-				new Animation(image);
+				new Animation(self.World, image);
 		}
 
 		public override void Tick(Actor self)

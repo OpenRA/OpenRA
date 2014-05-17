@@ -117,6 +117,8 @@ namespace OpenRA
 			}, parent, id);
 		}
 
+		// Note: These delayed actions should only be used by widgets or disposing objects
+		// - things that depend on a particular world should be queuing them on the worldactor.
 		static ActionQueue delayedActions = new ActionQueue();
 		public static void RunAfterTick(Action a) { delayedActions.Add(a); }
 		public static void RunAfterDelay(int delay, Action a) { delayedActions.Add(a, delay); }
@@ -151,8 +153,11 @@ namespace OpenRA
 				using (new PerfSample("render_widgets"))
 				{
 					Ui.Draw();
-					var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-					CursorProvider.DrawCursor(Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
+					if (modData != null && modData.CursorProvider != null)
+					{
+						var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
+						modData.CursorProvider.DrawCursor(Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
+					}
 				}
 
 				using (new PerfSample("render_flip"))
@@ -248,11 +253,12 @@ namespace OpenRA
 			BeforeGameStart();
 
 			Map map;
+
 			using (new PerfTimer("PrepareMap"))
 				map = modData.PrepareMap(mapUID);
 			using (new PerfTimer("NewWorld"))
 			{
-				orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
+				orderManager.world = new World(map, orderManager, isShellmap);
 				orderManager.world.Timestep = Timestep;
 			}
 			worldRenderer = new WorldRenderer(orderManager.world);
@@ -354,7 +360,7 @@ namespace OpenRA
 			}
 
 			Console.WriteLine("Available mods:");
-			foreach (var mod in Mod.AllMods)
+			foreach (var mod in ModMetadata.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
 			InitializeWithMod(Settings.Game.Mod, args.GetValue("Launch.Replay", null));
@@ -379,7 +385,7 @@ namespace OpenRA
 				orderManager.Dispose();
 
 			// Fall back to default if the mod doesn't exist
-			if (!Mod.AllMods.ContainsKey(mod))
+			if (!ModMetadata.AllMods.ContainsKey(mod))
 				mod = new GameSettings().Mod;
 
 			Console.WriteLine("Loading mod: {0}", mod);

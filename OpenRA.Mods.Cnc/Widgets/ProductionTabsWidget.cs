@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -60,6 +60,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 	class ProductionTabsWidget : Widget
 	{
+		readonly World world;
+
 		public readonly string PaletteWidget = null;
 		public readonly string TypesContainer = null;
 
@@ -79,7 +81,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 		[ObjectCreator.UseCtor]
 		public ProductionTabsWidget(World world)
 		{
-			Groups = Rules.Info.Values.SelectMany(a => a.Traits.WithInterface<ProductionQueueInfo>())
+			this.world = world;
+
+			Groups = world.Map.Rules.Actors.Values.SelectMany(a => a.Traits.WithInterface<ProductionQueueInfo>())
 				.Select(q => q.Group).Distinct().ToDictionary(g => g, g => new ProductionTabGroup() { Group = g });
 
 			// Only visible if the production palette has icons to display
@@ -93,7 +97,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (queueGroup == null)
 				return true;
 
-			Sound.PlayNotification(null, "Sounds", "ClickSound", null);
+			Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 
 			// Prioritize alerted queues
 			var queues = Groups[queueGroup].Tabs.Select(t => t.Queue)
@@ -253,9 +257,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (leftPressed || rightPressed)
 			{
 				if ((leftPressed && !leftDisabled) || (rightPressed && !rightDisabled))
-					Sound.PlayNotification(null, "Sounds", "ClickSound", null);
+					Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 				else
-					Sound.PlayNotification(null, "Sounds", "ClickDisabledSound", null);
+					Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickDisabledSound", null);
 			}
 
 			// Check production tabs
@@ -263,7 +267,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (offsetloc.X > 0 && offsetloc.X < contentWidth)
 			{
 				CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X / (TabWidth - 1)].Queue;
-				Sound.PlayNotification(null, "Sounds", "ClickSound", null);
+				Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 			}
 
 			return true;

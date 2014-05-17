@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -25,9 +25,12 @@ namespace OpenRA
 		public readonly WidgetLoader WidgetLoader;
 		public readonly MapCache MapCache;
 		public ILoadScreen LoadScreen = null;
-		public SheetBuilder SheetBuilder;
-		public SpriteLoader SpriteLoader;
 		public VoxelLoader VoxelLoader;
+		public readonly RulesetCache RulesetCache;
+		public CursorProvider CursorProvider { get; private set; }
+
+		Lazy<Ruleset> defaultRules;
+		public Ruleset DefaultRules { get { return defaultRules.Value; } }
 
 		public ModData(string mod)
 		{
@@ -38,12 +41,26 @@ namespace OpenRA
 			LoadScreen.Init(Manifest, Manifest.LoadScreen.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value));
 			LoadScreen.Display();
 			WidgetLoader = new WidgetLoader(this);
-			MapCache = new MapCache(Manifest);
+			RulesetCache = new RulesetCache(this);
+			RulesetCache.LoadingProgress += HandleLoadingProgress;
+			MapCache = new MapCache(this);
 
 			// HACK: Mount only local folders so we have a half-working environment for the asset installer
 			GlobalFileSystem.UnmountAll();
 			foreach (var dir in Manifest.Folders)
 				GlobalFileSystem.Mount(dir);
+
+			defaultRules = Exts.Lazy(() => RulesetCache.LoadDefaultRules());
+
+			initialThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+		}
+
+		// HACK: Only update the loading screen if we're in the main thread.
+		int initialThreadId;
+		void HandleLoadingProgress(object sender, EventArgs e)
+		{
+			if (LoadScreen != null && System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId)
+				LoadScreen.Display();
 		}
 
 		public void InitializeLoaders()
@@ -52,10 +69,9 @@ namespace OpenRA
 			// horribly when you use ModData in unexpected ways.
 			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
 			ChromeProvider.Initialize(Manifest.Chrome);
-			SheetBuilder = new SheetBuilder(SheetType.Indexed);
-			SpriteLoader = new SpriteLoader(new string[0], SheetBuilder);
 			VoxelLoader = new VoxelLoader();
-			CursorProvider.Initialize(Manifest.Cursors);
+
+			CursorProvider = new CursorProvider(this);
 		}
 
 		public IEnumerable<string> Languages { get; private set; }
@@ -75,7 +91,7 @@ namespace OpenRA
 			var yaml = Manifest.Translations.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
 			Languages = yaml.Select(t => t.Key).ToArray();
 
-			yaml = MiniYaml.MergeLiberal(map.Translations, yaml);
+			yaml = MiniYaml.MergeLiberal(map.TranslationDefinitions, yaml);
 
 			foreach (var y in yaml)
 			{
@@ -118,16 +134,11 @@ namespace OpenRA
 			// Mount map package so custom assets can be used. TODO: check priority.
 			GlobalFileSystem.Mount(GlobalFileSystem.OpenPackage(map.Path, null, int.MaxValue));
 
-			using (new Support.PerfTimer("LoadRules"))
-				Rules.LoadRules(Manifest, map);
-			SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset].Extensions, SheetBuilder);
+			using (new Support.PerfTimer("Map.LoadRules"))
+				map.PreloadRules();
 
-			using (new Support.PerfTimer("SequenceProvider.Initialize"))
-			{
-				// TODO: Don't load the sequences for assets that are not used in this tileset. Maybe use the existing EditorTilesetFilters.
-				SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
-			}
-			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequences);
+			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
+
 			return map;
 		}
 	}

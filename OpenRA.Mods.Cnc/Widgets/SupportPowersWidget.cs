@@ -52,8 +52,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			icon = new Animation("icon");
-			clock = new Animation("clock");
+			icon = new Animation(world, "icon");
+			clock = new Animation(world, "clock");
 		}
 
 		public class SupportPowerIcon

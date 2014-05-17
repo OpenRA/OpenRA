@@ -19,7 +19,7 @@ namespace OpenRA
 	// Describes what is to be loaded in order to run a mod
 	public class Manifest
 	{
-		public readonly Mod Mod;
+		public readonly ModMetadata Mod;
 		public readonly string[]
 			Folders, MapFolders, Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
@@ -38,7 +38,7 @@ namespace OpenRA
 			var path = new[] { "mods", mod, "mod.yaml" }.Aggregate(Path.Combine);
 			var yaml = new MiniYaml(null, MiniYaml.FromFile(path)).NodesDict;
 
-			Mod = FieldLoader.Load<Mod>(yaml["Metadata"]);
+			Mod = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
 			Mod.Id = mod;
 
 			// TODO: Use fieldloader

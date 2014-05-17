@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -53,8 +53,13 @@ namespace OpenRA.Widgets
 		public Action OnDoubleClick = () => {}; 
 		public Action<KeyInput> OnKeyPress = _ => {};
 
-		public ButtonWidget()
+		readonly Ruleset modRules;
+
+		[ObjectCreator.UseCtor]
+		public ButtonWidget(Ruleset modRules)
 		{
+			this.modRules = modRules;
+
 			GetText = () => { return Text; };
 			GetColor = () => TextColor;
 			GetColorDisabled = () => TextColorDisabled;
@@ -70,6 +75,8 @@ namespace OpenRA.Widgets
 		protected ButtonWidget(ButtonWidget other)
 			: base(other)
 		{
+			this.modRules = other.modRules;
+
 			Text = other.Text;
 			Font = other.Font;
 			TextColor = other.TextColor;
@@ -113,10 +120,10 @@ namespace OpenRA.Widgets
 			if (!IsDisabled())
 			{
 				OnKeyPress(e);
-				Sound.PlayNotification(null, "Sounds", "ClickSound", null);
+				Sound.PlayNotification(modRules, null, "Sounds", "ClickSound", null);
 			}
 			else
-				Sound.PlayNotification(null, "Sounds", "ClickDisabledSound", null);
+				Sound.PlayNotification(modRules, null, "Sounds", "ClickDisabledSound", null);
 
 			return true;
 		}
@@ -153,12 +160,12 @@ namespace OpenRA.Widgets
 				{
 					OnMouseDown(mi);
 					Depressed = true;
-					Sound.PlayNotification(null, "Sounds", "ClickSound", null);
+					Sound.PlayNotification(modRules, null, "Sounds", "ClickSound", null);
 				}
 				else
 				{
 					YieldMouseFocus(mi);
-					Sound.PlayNotification(null, "Sounds", "ClickDisabledSound", null);
+					Sound.PlayNotification(modRules, null, "Sounds", "ClickDisabledSound", null);
 				}
 			}
 			else if (mi.Event == MouseInputEvent.Move && HasMouseFocus)

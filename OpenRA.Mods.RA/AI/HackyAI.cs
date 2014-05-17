@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA.AI
 
 		static object LoadBuildingLimits(MiniYaml y) { return LoadList<int>(y, "BuildingLimits"); }
 
-		public object Create(ActorInitializer init) { return new HackyAI(this); }
+		public object Create(ActorInitializer init) { return new HackyAI(this, init); }
 	}
 
 	public class Enemy { public int Aggro; }
@@ -119,15 +119,17 @@ namespace OpenRA.Mods.RA.AI
 		const int MaxBaseDistance = 40;
 		public const int feedbackTime = 30;		// ticks; = a bit over 1s. must be >= netlag.
 
-		public World world { get { return p.PlayerActor.World; } }
+		public readonly World world;
+		public Map Map { get { return world.Map; } }
 		IBotInfo IBot.Info { get { return this.Info; } }
 
-		public HackyAI(HackyAIInfo info)
+		public HackyAI(HackyAIInfo info, ActorInitializer init)
 		{
 			Info = info;
+			world = init.world;
 
 			// Temporary hack.
-			rallypointTestBuilding = Rules.Info[Info.RallypointTestBuilding].Traits.Get<BuildingInfo>();
+			rallypointTestBuilding = Map.Rules.Actors[Info.RallypointTestBuilding].Traits.Get<BuildingInfo>();
 		}
 
 		public static void BotDebug(string s, params object[] args)
@@ -151,7 +153,7 @@ namespace OpenRA.Mods.RA.AI
 
 			random = new XRandom((int)p.PlayerActor.ActorID);
 
-			resourceTypes = Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>()
+			resourceTypes = Map.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
 				.Select(t => t.TerrainType).ToArray();
 		}
 
@@ -185,8 +187,8 @@ namespace OpenRA.Mods.RA.AI
 			foreach (var unit in Info.UnitsToBuild)
 				if (buildableThings.Any(b => b.Name == unit.Key))
 					if (myUnits.Count(a => a == unit.Key) < unit.Value * myUnits.Length)
-						if (HasAdequateAirUnits(Rules.Info[unit.Key]))
-							return Rules.Info[unit.Key];
+						if (HasAdequateAirUnits(Map.Rules.Actors[unit.Key]))
+							return Map.Rules.Actors[unit.Key];
 
 			return null;
 		}
@@ -215,7 +217,7 @@ namespace OpenRA.Mods.RA.AI
 		ActorInfo GetBuildingInfoByCommonName(string commonName, Player owner)
 		{
 			if (commonName == "ConstructionYard")
-				return Rules.Info.Where(k => Info.BuildingCommonNames[commonName].Contains(k.Key)).Random(random).Value;
+				return Map.Rules.Actors.Where(k => Info.BuildingCommonNames[commonName].Contains(k.Key)).Random(random).Value;
 
 			return GetInfoByCommonName(Info.BuildingCommonNames, commonName, owner);
 		}
@@ -230,7 +232,7 @@ namespace OpenRA.Mods.RA.AI
 			if (!names.Any() || !names.ContainsKey(commonName))
 				return null;
 
-			return Rules.Info.Where(k => names[commonName].Contains(k.Key) &&
+			return Map.Rules.Actors.Where(k => names[commonName].Contains(k.Key) &&
 				k.Value.Traits.Get<BuildableInfo>().Owner.Contains(owner.Country.Race)).Random(random).Value;
 		}
 
@@ -314,8 +316,8 @@ namespace OpenRA.Mods.RA.AI
 			foreach (var frac in Info.BuildingFractions)
 				if (buildableThings.Any(b => b.Name == frac.Key))
 					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length && HasAdequateNumber(frac.Key, p) &&
-						playerPower.ExcessPower >= Rules.Info[frac.Key].Traits.Get<BuildingInfo>().Power)
-						return Rules.Info[frac.Key];
+						playerPower.ExcessPower >= Map.Rules.Actors[frac.Key].Traits.Get<BuildingInfo>().Power)
+						return Map.Rules.Actors[frac.Key];
 
 			return null;
 		}
@@ -334,7 +336,7 @@ namespace OpenRA.Mods.RA.AI
 
 		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, int maxBaseDistance, BuildingType type)
 		{
-			var bi = Rules.Info[actorType].Traits.GetOrDefault<BuildingInfo>();
+			var bi = Map.Rules.Actors[actorType].Traits.GetOrDefault<BuildingInfo>();
 			if (bi == null)
 				return null;
 
@@ -348,7 +350,7 @@ namespace OpenRA.Mods.RA.AI
 					foreach (var t in tlist)
 						if (world.CanPlaceBuilding(actorType, bi, t, null))
 							if (bi.IsCloseEnoughToBase(world, p, actorType, t))
-								if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(actorType, bi, t), false)))
+								if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(Map.Rules, actorType, bi, t), false)))
 									return t;
 				}
 
@@ -377,7 +379,7 @@ namespace OpenRA.Mods.RA.AI
 								if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(world, p, actorType, t))
 									continue;
 
-								if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(actorType, bi, t), false)))
+								if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(Map.Rules, actorType, bi, t), false)))
 									return t;
 							}
 						}
@@ -850,7 +852,7 @@ namespace OpenRA.Mods.RA.AI
 			if (queue == null)
 				return;
 
-			if (Rules.Info[name] != null)
+			if (Map.Rules.Actors[name] != null)
 				world.IssueOrder(Order.StartProduction(queue.self, name, 1));
 		}
 

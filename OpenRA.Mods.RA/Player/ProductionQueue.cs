@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.RA
 
 		IEnumerable<ActorInfo> AllBuildables(string category)
 		{
-			return Rules.Info.Values
+			return self.World.Map.Rules.Actors.Values
 				.Where( x => x.Name[ 0 ] != '^' )
 				.Where( x => x.Traits.Contains<BuildableInfo>() )
 				.Where( x => x.Traits.Get<BuildableInfo>().Queue == category );
@@ -149,14 +149,14 @@ namespace OpenRA.Mods.RA
 
 		public void PrerequisitesAvailable(string key)
 		{
-			var ps = Produceable[ Rules.Info[key] ];
+			var ps = Produceable[ self.World.Map.Rules.Actors[key] ];
 			if (!ps.Sticky)
 				ps.Buildable = true;
 		}
 
 		public void PrerequisitesUnavailable(string key)
 		{
-			var ps = Produceable[ Rules.Info[key] ];
+			var ps = Produceable[ self.World.Map.Rules.Actors[key] ];
 			if (!ps.Sticky)
 				ps.Buildable = false;
 		}
@@ -209,7 +209,7 @@ namespace OpenRA.Mods.RA
 			{
 			case "StartProduction":
 				{
-					var unit = Rules.Info[order.TargetString];
+					var unit = self.World.Map.Rules.Actors[order.TargetString];
 					var bi = unit.Traits.Get<BuildableInfo>();
 					if (bi.Queue != Info.Type)
 						return; /* Not built by this queue */
@@ -243,15 +243,15 @@ namespace OpenRA.Mods.RA
 									var isBuilding = unit.Traits.Contains<BuildingInfo>();
 									if (isBuilding && !hasPlayedSound)
 									{
-										hasPlayedSound = Sound.PlayNotification(self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
+										hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
 									}
 									else if (!isBuilding)
 									{
 										if (BuildUnit(order.TargetString))
-											Sound.PlayNotification(self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
+											Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
 										else if (!hasPlayedSound && time > 0)
 										{
-											hasPlayedSound = Sound.PlayNotification(self.Owner, "Speech", Info.BlockedAudio, self.Owner.Country.Race);
+											hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Country.Race);
 										}
 									}
 								})));
@@ -274,7 +274,7 @@ namespace OpenRA.Mods.RA
 
 		virtual public int GetBuildTime(String unitString)
 		{
-			var unit = Rules.Info[unitString];
+			var unit = self.World.Map.Rules.Actors[unitString];
 			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
 				return 0;
 
@@ -329,7 +329,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			if (sp != null && !self.IsDisabled() && sp.Produce(self, Rules.Info[name]))
+			if (sp != null && !self.IsDisabled() && sp.Produce(self, self.World.Map.Rules.Actors[name]))
 			{
 				FinishProduction();
 				return true;

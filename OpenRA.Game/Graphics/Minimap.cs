@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -19,14 +19,8 @@ namespace OpenRA.Graphics
 {
 	public class Minimap
 	{
-		public static Bitmap TerrainBitmap(Map map)
+		public static Bitmap TerrainBitmap(TileSet tileset, Map map, bool actualSize = false)
 		{
-			return TerrainBitmap(map, false);
-		}
-
-		public static Bitmap TerrainBitmap(Map map, bool actualSize)
-		{
-			var tileset = Rules.TileSets[map.Tileset];
 			var width = map.Bounds.Width;
 			var height = map.Bounds.Height;
 
@@ -61,10 +55,9 @@ namespace OpenRA.Graphics
 
 		// Add the static resources defined in the map; if the map lives
 		// in a world use AddCustomTerrain instead
-		public static Bitmap AddStaticResources(Map map, Bitmap terrainBitmap)
+		static Bitmap AddStaticResources(TileSet tileset, Map map, Ruleset resourceRules, Bitmap terrainBitmap)
 		{
 			Bitmap terrain = new Bitmap(terrainBitmap);
-			var tileset = Rules.TileSets[map.Tileset];
 
 			var bitmapData = terrain.LockBits(terrain.Bounds(),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
@@ -81,7 +74,7 @@ namespace OpenRA.Graphics
 						if (map.MapResources.Value[mapX, mapY].Type == 0)
 							continue;
 
-						var res = Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>()
+						var res = resourceRules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
 								.Where(t => t.ResourceType == map.MapResources.Value[mapX, mapY].Type)
 								.Select(t => t.TerrainType).FirstOrDefault();
 						if (res == null)
@@ -185,10 +178,15 @@ namespace OpenRA.Graphics
 			return bitmap;
 		}
 
-		public static Bitmap RenderMapPreview(Map map, bool actualSize)
+		public static Bitmap RenderMapPreview(TileSet tileset, Map map, bool actualSize)
 		{
-			Bitmap terrain = TerrainBitmap(map, actualSize);
-			return AddStaticResources(map, terrain);
+			return RenderMapPreview(tileset, map, map.Rules, actualSize);
+		}
+
+		public static Bitmap RenderMapPreview(TileSet tileset, Map map, Ruleset resourceRules, bool actualSize)
+		{
+			Bitmap terrain = TerrainBitmap(tileset, map, actualSize);
+			return AddStaticResources(tileset, map, resourceRules, terrain);
 		}
 	}
 }

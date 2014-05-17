@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Effects
 			this.cargo = cargo;
 
 			var pai = cargo.Info.Traits.GetOrDefault<ParachuteAttachmentInfo>();
-			paraAnim = new Animation(pai != null ? pai.ParachuteSprite : "parach");
+			paraAnim = new Animation(cargo.World, pai != null ? pai.ParachuteSprite : "parach");
 			paraAnim.PlayThen("open", () => paraAnim.PlayRepeating("idle"));
 
 			if (pai != null)

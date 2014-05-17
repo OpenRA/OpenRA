@@ -21,7 +21,7 @@ namespace OpenRA.Effects
 		public MoveFlash(WPos pos, World world)
 		{
 			this.pos = pos;
-			anim = new Animation("moveflsh");
+			anim = new Animation(world, "moveflsh");
 			anim.PlayThen("idle", () => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 

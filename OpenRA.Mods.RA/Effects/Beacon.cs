@@ -21,8 +21,8 @@ namespace OpenRA.Mods.RA.Effects
 		readonly WPos position;
 		readonly string palettePrefix;
 		readonly string posterPalette;
-		readonly Animation arrow = new Animation("beacon");
-		readonly Animation circles = new Animation("beacon");
+		readonly Animation arrow;
+		readonly Animation circles;
 		readonly Animation poster;
 		static readonly int maxArrowHeight = 512;
 		int arrowHeight = maxArrowHeight;
@@ -35,12 +35,15 @@ namespace OpenRA.Mods.RA.Effects
 			this.palettePrefix = palettePrefix;
 			this.posterPalette = posterPalette;
 
+			arrow = new Animation(owner.World, "beacon");
+			circles = new Animation(owner.World, "beacon");
+
 			arrow.Play("arrow");
 			circles.Play("circles");
 
 			if (posterType != null)
 			{
-				poster = new Animation("beacon");
+				poster = new Animation(owner.World, "beacon");
 				poster.Play(posterType);
 			}
 

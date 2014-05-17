@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,21 +8,23 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using OpenRA.Graphics;
 
 namespace OpenRA
 {
 	public class TerrainTypeInfo
 	{
-		public string Type;
-		public string[] TargetTypes = { };
-		public string[] AcceptsSmudgeType = { };
-		public bool IsWater = false; // TODO: Remove this
-		public Color Color;
-		public string CustomCursor;
+		public readonly string Type;
+		public readonly string[] TargetTypes = { };
+		public readonly string[] AcceptsSmudgeType = { };
+		public readonly bool IsWater = false; // TODO: Remove this
+		public readonly Color Color;
+		public readonly string CustomCursor;
 
 		public TerrainTypeInfo() { }
 		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
@@ -32,18 +34,25 @@ namespace OpenRA
 
 	public class TileTemplate
 	{
-		public ushort Id;
-		public string Image;
-		public int[] Frames;
-		public int2 Size;
-		public bool PickAny;
-		public string Category;
+		public readonly ushort Id;
+		public readonly string Image;
+		public readonly int[] Frames;
+		public readonly int2 Size;
+		public readonly bool PickAny;
+		public readonly string Category;
 
 		[FieldLoader.LoadUsing("LoadTiles")]
-		public Dictionary<byte, string> Tiles = new Dictionary<byte, string>();
+		public readonly Dictionary<byte, string> Tiles = new Dictionary<byte, string>();
 
 		public TileTemplate() { }
 		public TileTemplate(MiniYaml my) { FieldLoader.Load(this, my); }
+
+		public TileTemplate(ushort id, string image, int2 size)
+		{
+			this.Id = id;
+			this.Image = image;
+			this.Size = size;
+		}
 
 		static object LoadTiles(MiniYaml y)
 		{
@@ -75,22 +84,20 @@ namespace OpenRA
 
 	public class TileSet
 	{
-		public string Name;
-		public string Id;
-		public int SheetSize = 512;
-		public string Palette;
-		public string PlayerPalette;
-		public string[] Extensions;
-		public int WaterPaletteRotationBase = 0x60; 
-		public Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
-		public Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
-		public string[] EditorTemplateOrder;
+		public readonly string Name;
+		public readonly string Id;
+		public readonly int SheetSize = 512;
+		public readonly string Palette;
+		public readonly string PlayerPalette;
+		public readonly string[] Extensions;
+		public readonly int WaterPaletteRotationBase = 0x60; 
+		public readonly Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
+		public readonly Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
+		public readonly string[] EditorTemplateOrder;
 
 		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "Extensions" };
 
-		public TileSet() { }
-
-		public TileSet(string filepath)
+		public TileSet(ModData modData, string filepath)
 		{
 			var yaml = MiniYaml.DictFromFile(filepath);
 
@@ -104,6 +111,14 @@ namespace OpenRA
 			// Templates
 			Templates = yaml["Templates"].NodesDict.Values
 				.Select(y => new TileTemplate(y)).ToDictionary(t => t.Id);
+		}
+
+		public TileSet(string name, string id, string palette, string[] extensions)
+		{
+			this.Name = name;
+			this.Id = id;
+			this.Palette = palette;
+			this.Extensions = extensions;
 		}
 
 		public void Save(string filepath)

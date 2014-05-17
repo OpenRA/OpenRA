@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class CncInstallMusicLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CncInstallMusicLogic(Widget widget, Action onExit)
+		public CncInstallMusicLogic(Widget widget, Ruleset modRules, Action onExit)
 		{
 			var installButton = widget.GetOrNull<ButtonWidget>("INSTALL_BUTTON");
 			if (installButton != null)
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						GlobalFileSystem.Mount(Path.Combine(path, "scores.mix"));
 						GlobalFileSystem.Mount(Path.Combine(path, "transit.mix"));
 
-						Rules.Music.Do(m => m.Value.Reload());
+						modRules.Music.Do(m => m.Value.Reload());
 
 						var musicPlayerLogic = (MusicPlayerLogic)installButton.Parent.LogicObject;
 						musicPlayerLogic.BuildMusicTable();
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						{ "filesToCopy", new[] { "SCORES.MIX" } },
 						{ "filesToExtract", new[] { "transit.mix" } },
 					});
-				installButton.IsVisible = () => Rules.InstalledMusic.ToArray().Length < 3; // HACK around music being split between transit.mix and scores.mix
+				installButton.IsVisible = () => modRules.InstalledMusic.ToArray().Length < 3; // HACK around music being split between transit.mix and scores.mix
 			}
 		}
 	}

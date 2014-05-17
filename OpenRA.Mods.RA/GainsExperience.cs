@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 			{
 				Level++;
 
-				Sound.PlayNotification(self.Owner, "Sounds", "LevelUp", self.Owner.Country.Race);
+				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "LevelUp", self.Owner.Country.Race);
 				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.ChevronPalette)));
 				if (Level == 1)
 					self.World.AddFrameEndTask(w =>

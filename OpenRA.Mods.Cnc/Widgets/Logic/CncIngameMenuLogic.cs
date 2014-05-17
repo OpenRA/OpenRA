@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			// TODO: Create a mechanism to do things like this cleaner. Also needed for scripted missions
 			Action onQuit = () =>
 			{
-				Sound.PlayNotification(null, "Speech", "Leave", null);
+				Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave", null);
 				resumeDisabled = true;
 				Game.RunAfterDelay(1200, () => mpe.Fade(MenuPaletteEffect.EffectType.Black));
 				Game.RunAfterDelay(1200 + 40 * mpe.Info.FadeLength, () =>

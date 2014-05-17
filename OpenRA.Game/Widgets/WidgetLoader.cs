@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,10 +18,13 @@ namespace OpenRA
 {
 	public class WidgetLoader
 	{
-		Dictionary<string, MiniYamlNode> widgets = new Dictionary<string, MiniYamlNode>();
+		readonly Dictionary<string, MiniYamlNode> widgets = new Dictionary<string, MiniYamlNode>();
+		readonly ModData modData;
 
 		public WidgetLoader(ModData modData)
 		{
+			this.modData = modData;
+
 			foreach (var file in modData.Manifest.ChromeLayout.Select(a => MiniYaml.FromFile(a)))
 				foreach( var w in file )
 				{
@@ -55,6 +58,8 @@ namespace OpenRA
 				if (child.Key != "Children")
 					FieldLoader.LoadField(widget, child.Key, child.Value.Value);
 
+			if (!args.ContainsKey("modRules"))
+				args = new WidgetArgs(args) { { "modRules", modData.DefaultRules } };
 			widget.Initialize(args);
 
 			foreach (var child in node.Value.Nodes)

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Render
 			var body = self.Trait<IBodyOrientation>();
 			movement = self.Trait<IMove>();
 
-			rotorAnim = new Animation(rs.GetImage(self));
+			rotorAnim = new Animation(self.World, rs.GetImage(self));
 			rotorAnim.PlayRepeating(info.Sequence);
 			rs.anims.Add(info.Id, new AnimationWithOffset(rotorAnim,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),

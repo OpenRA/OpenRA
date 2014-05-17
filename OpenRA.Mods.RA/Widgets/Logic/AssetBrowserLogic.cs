@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -38,11 +38,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		Sprite[] currentSprites;
 		int currentFrame;
 
+		readonly World world;
+
 		static readonly string[] AllowedExtensions = { ".shp", ".r8", "tmp", ".tem", ".des", ".sno", ".int" };
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
 		{
+			this.world = world;
+
 			panel = widget;
 			assetSource = GlobalFileSystem.MountedFolders.First();
 
@@ -192,7 +196,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return false;
 
 			currentFilename = filename;
-			currentSprites = Game.modData.SpriteLoader.LoadAllSprites(filename);
+			currentSprites = world.Map.SequenceProvider.SpriteLoader.LoadAllSprites(filename);
 			currentFrame = 0;
 			frameSlider.MaximumValue = (float)currentSprites.Length - 1;
 			frameSlider.Ticks = currentSprites.Length;

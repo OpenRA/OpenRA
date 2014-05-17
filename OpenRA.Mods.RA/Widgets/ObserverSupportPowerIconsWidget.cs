@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Widgets
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 			clocks = new Dictionary<string, Animation>();
-			icon = new Animation("icon");
+			icon = new Animation(world, "icon");
 		}
 
 		protected ObserverSupportPowerIconsWidget(ObserverSupportPowerIconsWidget other)
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				if (!clocks.ContainsKey(power.a.Key))
 				{
-					clocks.Add(power.a.Key, new Animation("clock"));
+					clocks.Add(power.a.Key, new Animation(world, "clock"));
 				}
 			}
 

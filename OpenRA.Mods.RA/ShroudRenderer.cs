@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA
 			variantStride = info.Index.Length;
 			for (var j = 0; j < info.Variants.Length; j++)
 			{
-				var seq = SequenceProvider.GetSequence(info.Sequence, info.Variants[j]);
+				var seq = map.SequenceProvider.GetSequence(info.Sequence, info.Variants[j]);
 				for (var i = 0; i < info.Index.Length; i++)
 					sprites[j * variantStride + i] = seq.GetSprite(i);
 			}
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA
 			{
 				var ts = Game.modData.Manifest.TileSize;
 				var data = Exts.MakeArray<byte>(ts.Width * ts.Height, _ => (byte)info.ShroudColor);
-				var s = Game.modData.SheetBuilder.Add(data, ts);
+				var s = map.SequenceProvider.SpriteLoader.SheetBuilder.Add(data, ts);
 				unexploredTile = new Sprite(s.sheet, s.bounds, s.offset, s.channel, info.ShroudBlend);
 			}
 			else

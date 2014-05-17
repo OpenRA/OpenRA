@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using OpenRA.Primitives;
@@ -17,16 +18,24 @@ namespace OpenRA
 	public class ActorReference : IEnumerable
 	{
 		public string Type;
-		public TypeDictionary InitDict;
+		public TypeDictionary InitDict
+		{
+			get { return initDict.Value; }
+		}
+		Lazy<TypeDictionary> initDict;
 
 		public ActorReference( string type ) : this( type, new Dictionary<string, MiniYaml>() ) { }
 
 		public ActorReference( string type, Dictionary<string, MiniYaml> inits )
 		{
 			Type = type;
-			InitDict = new TypeDictionary();
-			foreach( var i in inits )
-				InitDict.Add( LoadInit( i.Key, i.Value ) );
+			initDict = Exts.Lazy(() =>
+			{
+				var dict = new TypeDictionary();
+				foreach (var i in inits)
+					dict.Add(LoadInit(i.Key, i.Value));
+				return dict;
+			});
 		}
 
 		static IActorInit LoadInit(string traitName, MiniYaml my)

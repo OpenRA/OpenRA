@@ -18,6 +18,7 @@ using System.Text;
 using OpenRA.FileSystem;
 using OpenRA.Network;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA
 {
@@ -94,13 +95,13 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
 		[FieldLoader.Ignore] public Lazy<List<SmudgeReference>> Smudges;
 
-		[FieldLoader.Ignore] public List<MiniYamlNode> Rules = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> Sequences = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> VoxelSequences = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> Weapons = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> Voices = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> Notifications = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> Translations = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> RuleDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> SequenceDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> VoxelSequenceDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> WeaponDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> VoiceDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> NotificationDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> TranslationDefinitions = new List<MiniYamlNode>();
 
 		// Binary map data
 		[FieldLoader.Ignore] public byte TileFormat = 1;
@@ -109,6 +110,10 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Lazy<TileReference<ushort, byte>[,]> MapTiles;
 		[FieldLoader.Ignore] public Lazy<TileReference<byte, byte>[,]> MapResources;
 		[FieldLoader.Ignore] public string[,] CustomTerrain;
+
+		[FieldLoader.Ignore] Lazy<Ruleset> rules;
+		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
+		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
 
 		public static Map FromTileset(TileSet tileset)
 		{
@@ -128,6 +133,7 @@ namespace OpenRA
 				Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>()),
 				Smudges = Exts.Lazy(() => new List<SmudgeReference>())
 			};
+			map.PostInit();
 
 			return map;
 		}
@@ -210,13 +216,13 @@ namespace OpenRA
 				return ret;
 			});
 
-			Rules = MiniYaml.NodesOrEmpty(yaml, "Rules");
-			Sequences = MiniYaml.NodesOrEmpty(yaml, "Sequences");
-			VoxelSequences = MiniYaml.NodesOrEmpty(yaml, "VoxelSequences");
-			Weapons = MiniYaml.NodesOrEmpty(yaml, "Weapons");
-			Voices = MiniYaml.NodesOrEmpty(yaml, "Voices");
-			Notifications = MiniYaml.NodesOrEmpty(yaml, "Notifications");
-			Translations = MiniYaml.NodesOrEmpty(yaml, "Translations");
+			RuleDefinitions = MiniYaml.NodesOrEmpty(yaml, "Rules");
+			SequenceDefinitions = MiniYaml.NodesOrEmpty(yaml, "Sequences");
+			VoxelSequenceDefinitions = MiniYaml.NodesOrEmpty(yaml, "VoxelSequences");
+			WeaponDefinitions = MiniYaml.NodesOrEmpty(yaml, "Weapons");
+			VoiceDefinitions = MiniYaml.NodesOrEmpty(yaml, "Voices");
+			NotificationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Notifications");
+			TranslationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Translations");
 
 			CustomTerrain = new string[MapSize.X, MapSize.Y];
 
@@ -233,6 +239,18 @@ namespace OpenRA
 
 			if (Container.Exists("map.png"))
 				CustomPreview = new Bitmap(Container.GetContent("map.png"));
+
+			PostInit();
+		}
+
+		void PostInit()
+		{
+			rules = Exts.Lazy(() => Game.modData.RulesetCache.LoadMapRules(this));
+		}
+
+		public Ruleset PreloadRules()
+		{
+			return rules.Value;
 		}
 
 		public CPos[] GetSpawnPoints()
@@ -282,13 +300,13 @@ namespace OpenRA
 			);
 
 			root.Add(new MiniYamlNode("Smudges", MiniYaml.FromList<SmudgeReference>(Smudges.Value)));
-			root.Add(new MiniYamlNode("Rules", null, Rules));
-			root.Add(new MiniYamlNode("Sequences", null, Sequences));
-			root.Add(new MiniYamlNode("VoxelSequences", null, VoxelSequences));
-			root.Add(new MiniYamlNode("Weapons", null, Weapons));
-			root.Add(new MiniYamlNode("Voices", null, Voices));
-			root.Add(new MiniYamlNode("Notifications", null, Notifications));
-			root.Add(new MiniYamlNode("Translations", null, Translations));
+			root.Add(new MiniYamlNode("Rules", null, RuleDefinitions));
+			root.Add(new MiniYamlNode("Sequences", null, SequenceDefinitions));
+			root.Add(new MiniYamlNode("VoxelSequences", null, VoxelSequenceDefinitions));
+			root.Add(new MiniYamlNode("Weapons", null, WeaponDefinitions));
+			root.Add(new MiniYamlNode("Voices", null, VoiceDefinitions));
+			root.Add(new MiniYamlNode("Notifications", null, NotificationDefinitions));
+			root.Add(new MiniYamlNode("Translations", null, TranslationDefinitions));
 
 			var entries = new Dictionary<string, byte[]>();
 			entries.Add("map.bin", SaveBinaryData());
@@ -452,7 +470,7 @@ namespace OpenRA
 
 		public void MakeDefaultPlayers()
 		{
-			var firstRace = OpenRA.Rules.Info["world"].Traits
+			var firstRace = Rules.Actors["world"].Traits
 				.WithInterface<CountryInfo>().First(c => c.Selectable).Race;
 
 			if (!Players.ContainsKey("Neutral"))
@@ -489,10 +507,10 @@ namespace OpenRA
 			});
 		}
 
-		public void FixOpenAreas()
+		public void FixOpenAreas(Ruleset rules)
 		{
 			var r = new Random();
-			var tileset = OpenRA.Rules.TileSets[Tileset];
+			var tileset = rules.TileSets[Tileset];
 
 			for (var j = Bounds.Top; j < Bounds.Bottom; j++)
 			{

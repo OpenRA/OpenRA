@@ -32,7 +32,7 @@ namespace OpenRA.Traits
 
 		public PipType PipColor = PipType.Yellow;
 
-		public object Create(ActorInitializer init) { return new ResourceType(this); }
+		public object Create(ActorInitializer init) { return new ResourceType(this, init.world); }
 	}
 
 	public class ResourceType : IWorldLoaded
@@ -41,13 +41,13 @@ namespace OpenRA.Traits
 		public PaletteReference Palette { get; private set; }
 		public readonly Dictionary<string, Sprite[]> Variants;
 
-		public ResourceType(ResourceTypeInfo info)
+		public ResourceType(ResourceTypeInfo info, World world)
 		{
 			this.Info = info;
 			Variants = new Dictionary<string, Sprite[]>();
 			foreach (var v in info.Variants)
 			{
-				var seq = SequenceProvider.GetSequence("resources", v);
+				var seq = world.Map.SequenceProvider.GetSequence("resources", v);
 				var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
 				Variants.Add(v, sprites);
 			}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Buildings
 				return false;
 
 			var buildingMaxBounds = (CVec)Dimensions;
-			var buildingTraits = Rules.Info[buildingName].Traits;
+			var buildingTraits = world.Map.Rules.Actors[buildingName].Traits;
 			if (buildingTraits.Contains<BibInfo>() && !(buildingTraits.Get<BibInfo>().HasMinibib))
 				buildingMaxBounds += new CVec(0, 1);
 
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA.Buildings
 				}
 			}
 
-			var buildingTiles = FootprintUtils.Tiles(buildingName, this, topLeft).ToList();
+			var buildingTiles = FootprintUtils.Tiles(world.Map.Rules, buildingName, this, topLeft).ToList();
 			return nearnessCandidates
 				.Any(a => buildingTiles
 					.Any(b => Math.Abs(a.X - b.X) <= Adjacent

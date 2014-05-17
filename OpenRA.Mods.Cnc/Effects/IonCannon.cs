@@ -18,11 +18,11 @@ namespace OpenRA.Mods.Cnc.Effects
 {
 	public class IonCannon : IEffect
 	{
-		Target target;
-		Animation anim;
-		Player firedBy;
-		string palette;
-		string weapon;
+		readonly Target target;
+		readonly Animation anim;
+		readonly Player firedBy;
+		readonly string palette;
+		readonly string weapon;
 
 		public IonCannon(Player firedBy, string weapon, World world, CPos location, string effect, string palette)
 		{
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			this.weapon = weapon;
 			this.palette = palette;
 			target = Target.FromCell(location);
-			anim = new Animation(effect);
+			anim = new Animation(world, effect);
 			anim.PlayThen("idle", () => Finish(world));
 		}
 

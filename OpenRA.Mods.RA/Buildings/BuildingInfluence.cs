@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Buildings
 				if (b == null)
 					return;
 
-				foreach (var u in FootprintUtils.Tiles(a.Info.Name, b.Info, a.Location))
+				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b.Info, a.Location))
 					if (map.IsInMap(u) && influence[u.X, u.Y] == null)
 						influence[u.X, u.Y] = a;
 			};
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Buildings
 				if (b == null)
 					return;
 
-				foreach (var u in FootprintUtils.Tiles(a.Info.Name, b.Info, a.Location))
+				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b.Info, a.Location))
 					if (map.IsInMap(u) && influence[u.X, u.Y] == a)
 						influence[u.X, u.Y] = null;
 			};

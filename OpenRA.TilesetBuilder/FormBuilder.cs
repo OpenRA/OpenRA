@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -361,13 +361,12 @@ namespace OpenRA.TilesetBuilder
 				tilesetFile = tilesetName.ToLower().Substring(0, 8) + ".yaml";
 
 			var ext = tilesetExt.Split(',');
-			var tileset = new TileSet()
-			{
-				Name = tilesetName,
-				Id = tilesetID.ToUpper(),
-				Palette = tilesetPalette.ToLower(),
-				Extensions = new string[] { ext[0], ext[1] }
-			};
+			var tileset = new TileSet(
+				name: tilesetName,
+				id: tilesetID.ToUpper(),
+				palette: tilesetPalette.ToLower(),
+				extensions: new string[] { ext[0], ext[1] }
+			);
 
 			// List of files to add to the mix file
 			List<string> fileList = new List<string>();
@@ -390,12 +389,11 @@ namespace OpenRA.TilesetBuilder
 			ushort cur = 0;
 			foreach (var tp in surface1.Templates)
 			{
-				var template = new TileTemplate()
-				{
-					Id = cur,
-					Image = "{0}{1:00}".F(txtTilesetName.Text, cur),
-					Size = new int2(tp.Width, tp.Height),
-				};
+				var template = new TileTemplate(
+					id: cur,
+					image: "{0}{1:00}".F(txtTilesetName.Text, cur),
+					size: new int2(tp.Width, tp.Height)
+				);
 
 				foreach (var t in tp.Cells)
 				{

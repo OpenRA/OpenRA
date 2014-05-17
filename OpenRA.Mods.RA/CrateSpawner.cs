@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA
 				{
 					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
 					var startPos = w.ChooseRandomEdgeCell();
-					var altitude = Rules.Info[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
+					var altitude = self.World.Map.Rules.Actors[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
 					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
 					{
 						new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),

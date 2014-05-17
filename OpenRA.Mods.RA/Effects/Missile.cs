@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (info.Image != null)
 			{
-				anim = new Animation(info.Image, () => facing);
+				anim = new Animation(args.SourceActor.World, info.Image, () => facing);
 				anim.PlayRepeating("idle");
 			}
 

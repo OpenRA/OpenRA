@@ -67,7 +67,7 @@ namespace OpenRA.Scripting
 		public int BuildTime(string type)
 		{
 			ActorInfo ai;
-			if (!Rules.Info.TryGetValue(type, out ai))
+			if (!context.World.Map.Rules.Actors.TryGetValue(type, out ai))
 				throw new LuaException("Unknown actor type '{0}'".F(type));
 
 			return ai.GetBuildTime();
@@ -77,7 +77,7 @@ namespace OpenRA.Scripting
 		public int CruiseAltitude(string type)
 		{
 			ActorInfo ai;
-			if (!Rules.Info.TryGetValue(type, out ai))
+			if (!context.World.Map.Rules.Actors.TryGetValue(type, out ai))
 				throw new LuaException("Unknown actor type '{0}'".F(type));
 
 			var pi = ai.Traits.GetOrDefault<PlaneInfo>();

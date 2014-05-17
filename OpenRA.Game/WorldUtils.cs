@@ -151,7 +151,7 @@ namespace OpenRA
 			var selectable = a.Info.Traits.GetOrDefault<SelectableInfo>();
 			if (selectable == null) return null;
 			var v = selectable.Voice;
-			return (v == null) ? null : Rules.Voices[v.ToLowerInvariant()];
+			return (v == null) ? null : a.World.Map.Rules.Voices[v.ToLowerInvariant()];
 		}
 
 		public static void PlayVoiceForOrders(this World w, Order[] orders)

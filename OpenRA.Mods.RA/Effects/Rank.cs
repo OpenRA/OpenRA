@@ -17,16 +17,17 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class Rank : IEffect
 	{
-		Actor self;
-		Animation anim = new Animation("rank");
+		readonly Actor self;
+		readonly Animation anim;
 		readonly string paletteName;
 
 		public Rank(Actor self, string paletteName)
 		{
 			this.self = self;
 			this.paletteName = paletteName;
-			var xp = self.Trait<GainsExperience>();
 
+			var xp = self.Trait<GainsExperience>();
+			anim = new Animation(self.World, "rank");
 			anim.PlayRepeating("rank");
 			anim.PlayFetchIndex("rank", () => xp.Level == 0 ? 0 : xp.Level - 1);
 		}

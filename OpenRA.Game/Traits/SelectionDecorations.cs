@@ -57,7 +57,7 @@ namespace OpenRA.Traits
 			var group = self.World.Selection.GetControlGroupForActor(self);
 			if (group == null) return;
 
-			var pipImages = new Animation("pips");
+			var pipImages = new Animation(self.World, "pips");
 			var pal = wr.Palette(Info.Palette);
 			pipImages.PlayFetchIndex("groups", () => (int)group);
 			pipImages.Tick();
@@ -75,7 +75,7 @@ namespace OpenRA.Traits
 			if (!pipSources.Any())
 				return;
 
-			var pipImages = new Animation("pips");
+			var pipImages = new Animation(self.World, "pips");
 			pipImages.PlayRepeating(pipStrings[0]);
 
 			var pipSize = pipImages.Image.size.ToInt2();
@@ -115,7 +115,7 @@ namespace OpenRA.Traits
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 			    return;
 
-			var tagImages = new Animation("pips");
+			var tagImages = new Animation(self.World, "pips");
 			var pal = wr.Palette(Info.Palette);
 			var tagxyOffset = new int2(0, 6);
 			var tagBase = wr.Viewport.WorldToViewPx(basePosition);

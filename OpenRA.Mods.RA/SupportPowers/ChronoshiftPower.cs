@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
-			return new SelectTarget(order, manager, this);
+			return new SelectTarget(self.World, order, manager, this);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -115,20 +115,20 @@ namespace OpenRA.Mods.RA
 			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectTarget(string order, SupportPowerManager manager, ChronoshiftPower power)
+			public SelectTarget(World world, string order, SupportPowerManager manager, ChronoshiftPower power)
 			{
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
 				this.range = (power.Info as ChronoshiftPowerInfo).Range;
-				tile = SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
+				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
 			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 			{
 				world.CancelInputMode();
 				if (mi.Button == MouseButton.Left)
-					world.OrderGenerator = new SelectDestination(order, manager, power, xy);
+					world.OrderGenerator = new SelectDestination(world, order, manager, power, xy);
 
 				yield break;
 			}
@@ -173,7 +173,7 @@ namespace OpenRA.Mods.RA
 			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectDestination(string order, SupportPowerManager manager, ChronoshiftPower power, CPos sourceLocation)
+			public SelectDestination(World world, string order, SupportPowerManager manager, ChronoshiftPower power, CPos sourceLocation)
 			{
 				this.manager = manager;
 				this.order = order;
@@ -182,9 +182,9 @@ namespace OpenRA.Mods.RA
 				this.range = (power.Info as ChronoshiftPowerInfo).Range;
 
 				var tileset = manager.self.World.TileSet.Id.ToLower();
-				validTile = SequenceProvider.GetSequence("overlay", "target-valid-{0}".F(tileset)).GetSprite(0);
-				invalidTile = SequenceProvider.GetSequence("overlay", "target-invalid").GetSprite(0);
-				sourceTile = SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
+				validTile = world.Map.SequenceProvider.GetSequence("overlay", "target-valid-{0}".F(tileset)).GetSprite(0);
+				invalidTile = world.Map.SequenceProvider.GetSequence("overlay", "target-invalid").GetSprite(0);
+				sourceTile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
 			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)

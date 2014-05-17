@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void LeaveGame(World world)
 		{
-			Sound.PlayNotification(null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
+			Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
 			Game.Disconnect();
 			Ui.CloseWindow();
 			Game.LoadShellMap();
