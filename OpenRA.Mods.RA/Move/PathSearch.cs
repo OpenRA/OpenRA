@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,38 +17,88 @@ namespace OpenRA.Mods.RA.Move
 {
 	public sealed class PathSearch : IDisposable
 	{
-		World world;
-		public CellInfo[,] cellInfo;
-		public PriorityQueue<PathDistance> queue;
-		public Func<CPos, int> heuristic;
+		public CellInfo[,] CellInfo;
+		public PriorityQueue<PathDistance> Queue;
+		public Func<CPos, int> Heuristic;
+		public bool CheckForBlocked;
+		public Actor IgnoreBuilding;
+		public bool InReverse;
+		public HashSet<CPos> Considered;
+		public Player Owner { get { return self.Owner; } }
+		public int MaxCost;
+
+		Actor self;
+		MobileInfo mobileInfo;
 		Func<CPos, int> customCost;
 		Func<CPos, bool> customBlock;
-		public bool checkForBlocked;
-		public Actor ignoreBuilding;
-		public bool inReverse;
-		public HashSet<CPos> considered;
-		public int maxCost;
 		Pair<CVec, int>[] nextDirections;
-		MobileInfo mobileInfo;
-		Actor self;
-		public Player owner { get { return self.Owner; } }
+		int laneBias = 1;
 
 		public PathSearch(World world, MobileInfo mobileInfo, Actor self)
 		{
-			this.world = world;
-			cellInfo = InitCellInfo();
+			this.self = self;
+			CellInfo = InitCellInfo();
 			this.mobileInfo = mobileInfo;
 			this.self = self;
 			customCost = null;
-			queue = new PriorityQueue<PathDistance>();
-			considered = new HashSet<CPos>();
-			maxCost = 0;
+			Queue = new PriorityQueue<PathDistance>();
+			Considered = new HashSet<CPos>();
+			MaxCost = 0;
 			nextDirections = CVec.directions.Select(d => new Pair<CVec, int>(d, 0)).ToArray();
 		}
 
-		public PathSearch InReverse()
+		public static PathSearch Search(World world, MobileInfo mi, Actor self, bool checkForBlocked)
 		{
-			inReverse = true;
+			var search = new PathSearch(world, mi, self)
+			{
+				CheckForBlocked = checkForBlocked
+			};
+
+			return search;
+		}
+
+		public static PathSearch FromPoint(World world, MobileInfo mi, Actor self, CPos from, CPos target, bool checkForBlocked)
+		{
+			var search = new PathSearch(world, mi, self)
+			{
+				Heuristic = DefaultEstimator(target),
+				CheckForBlocked = checkForBlocked
+			};
+
+			search.AddInitialCell(from);
+			return search;
+		}
+
+		public static PathSearch FromPoints(World world, MobileInfo mi, Actor self, IEnumerable<CPos> froms, CPos target, bool checkForBlocked)
+		{
+			var search = new PathSearch(world, mi, self)
+			{
+				Heuristic = DefaultEstimator(target),
+				CheckForBlocked = checkForBlocked
+			};
+
+			foreach (var sl in froms)
+				search.AddInitialCell(sl);
+
+			return search;
+		}
+
+		public static Func<CPos, int> DefaultEstimator(CPos destination)
+		{
+			return here =>
+			{
+				var diag = Math.Min(Math.Abs(here.X - destination.X), Math.Abs(here.Y - destination.Y));
+				var straight = Math.Abs(here.X - destination.X) + Math.Abs(here.Y - destination.Y);
+
+				// HACK: this relies on fp and cell-size assumptions.
+				var h = (3400 * diag / 24) + 100 * (straight - (2 * diag));
+				return (int)(h * 1.001);
+			};
+		}
+
+		public PathSearch Reverse()
+		{
+			InReverse = true;
 			return this;
 		}
 
@@ -60,13 +110,13 @@ namespace OpenRA.Mods.RA.Move
 
 		public PathSearch WithIgnoredBuilding(Actor b)
 		{
-			ignoreBuilding = b;
+			IgnoreBuilding = b;
 			return this;
 		}
 
 		public PathSearch WithHeuristic(Func<CPos, int> h)
 		{
-			heuristic = h;
+			Heuristic = h;
 			return this;
 		}
 
@@ -78,7 +128,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public PathSearch WithoutLaneBias()
 		{
-			LaneBias = 0;
+			laneBias = 0;
 			return this;
 		}
 
@@ -88,18 +138,18 @@ namespace OpenRA.Mods.RA.Move
 			return this;
 		}
 
-		int LaneBias = 1;
-
 		public CPos Expand(World world)
 		{
-			var p = queue.Pop();
-			while (cellInfo[p.Location.X, p.Location.Y].Seen)
-				if (queue.Empty)
+			var p = Queue.Pop();
+			while (CellInfo[p.Location.X, p.Location.Y].Seen)
+			{
+				if (Queue.Empty)
 					return p.Location;
-				else
-					p = queue.Pop();
 
-			cellInfo[p.Location.X, p.Location.Y].Seen = true;
+				p = Queue.Pop();
+			}
+
+			CellInfo[p.Location.X, p.Location.Y].Seen = true;
 
 			var thisCost = mobileInfo.MovementCostForCell(world, p.Location);
 
@@ -114,7 +164,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 
 			// This current cell is ok; check all immediate directions:
-			considered.Add(p.Location);
+			Considered.Add(p.Location);
 
 			for (var i = 0; i < nextDirections.Length; ++i)
 			{
@@ -126,7 +176,8 @@ namespace OpenRA.Mods.RA.Move
 				// Is this direction flat-out unusable or already seen?
 				if (!world.Map.IsInMap(newHere))
 					continue;
-				if (cellInfo[newHere.X, newHere.Y].Seen)
+
+				if (CellInfo[newHere.X, newHere.Y].Seen)
 					continue;
 
 				// Now we may seriously consider this direction using heuristics:
@@ -135,18 +186,19 @@ namespace OpenRA.Mods.RA.Move
 				if (costHere == int.MaxValue)
 					continue;
 
-				if (!mobileInfo.CanEnterCell(world, self, newHere, ignoreBuilding, checkForBlocked, false))
+				if (!mobileInfo.CanEnterCell(world, self, newHere, IgnoreBuilding, CheckForBlocked, false))
 					continue;
 
 				if (customBlock != null && customBlock(newHere))
 					continue;
 
-				var est = heuristic(newHere);
+				var est = Heuristic(newHere);
 				if (est == int.MaxValue)
 					continue;
 
 				var cellCost = costHere;
-				if (d.X * d.Y != 0) cellCost = (cellCost * 34) / 24;
+				if (d.X * d.Y != 0)
+					cellCost = (cellCost * 34) / 24;
 
 				var userCost = 0;
 				if (customCost != null)
@@ -156,105 +208,80 @@ namespace OpenRA.Mods.RA.Move
 				}
 
 				// directional bonuses for smoother flow!
-				if (LaneBias != 0)
+				if (laneBias != 0)
 				{
-					var ux = (newHere.X + (inReverse ? 1 : 0) & 1);
-					var uy = (newHere.Y + (inReverse ? 1 : 0) & 1);
+					var ux = newHere.X + (InReverse ? 1 : 0) & 1;
+					var uy = newHere.Y + (InReverse ? 1 : 0) & 1;
 
-					if (ux == 0 && d.Y < 0) cellCost += LaneBias;
-					else if (ux == 1 && d.Y > 0) cellCost += LaneBias;
-					if (uy == 0 && d.X < 0) cellCost += LaneBias;
-					else if (uy == 1 && d.X > 0) cellCost += LaneBias;
+					if (ux == 0 && d.Y < 0)
+						cellCost += laneBias;
+					else if (ux == 1 && d.Y > 0)
+						cellCost += laneBias;
+
+					if (uy == 0 && d.X < 0)
+						cellCost += laneBias;
+					else if (uy == 1 && d.X > 0)
+						cellCost += laneBias;
 				}
 
-				var newCost = cellInfo[p.Location.X, p.Location.Y].MinCost + cellCost;
+				var newCost = CellInfo[p.Location.X, p.Location.Y].MinCost + cellCost;
 
 				// Cost is even higher; next direction:
-				if (newCost > cellInfo[newHere.X, newHere.Y].MinCost)
+				if (newCost > CellInfo[newHere.X, newHere.Y].MinCost)
 					continue;
 
-				cellInfo[newHere.X, newHere.Y].Path = p.Location;
-				cellInfo[newHere.X, newHere.Y].MinCost = newCost;
+				CellInfo[newHere.X, newHere.Y].Path = p.Location;
+				CellInfo[newHere.X, newHere.Y].MinCost = newCost;
 
 				nextDirections[i].Second = newCost + est;
-				queue.Add(new PathDistance(newCost + est, newHere));
+				Queue.Add(new PathDistance(newCost + est, newHere));
 
-				if (newCost > maxCost) maxCost = newCost;
-				considered.Add(newHere);
+				if (newCost > MaxCost)
+					MaxCost = newCost;
+
+				Considered.Add(newHere);
 			}
 
 			// Sort to prefer the cheaper direction:
-			//Array.Sort(nextDirections, (a, b) => a.Second.CompareTo(b.Second));
-
+			// Array.Sort(nextDirections, (a, b) => a.Second.CompareTo(b.Second));
 			return p.Location;
 		}
 
 		public void AddInitialCell(CPos location)
 		{
-			if (!world.Map.IsInMap(location))
+			if (!self.World.Map.IsInMap(location))
 				return;
 
-			cellInfo[location.X, location.Y] = new CellInfo(0, location, false);
-			queue.Add(new PathDistance(heuristic(location), location));
+			CellInfo[location.X, location.Y] = new CellInfo(0, location, false);
+			Queue.Add(new PathDistance(Heuristic(location), location));
 		}
 
-		public static PathSearch Search(World world, MobileInfo mi, Actor self, bool checkForBlocked)
-		{
-			var search = new PathSearch(world, mi, self)
-			{
-				checkForBlocked = checkForBlocked
-			};
-			return search;
-		}
-
-		public static PathSearch FromPoint(World world, MobileInfo mi, Actor self, CPos from, CPos target, bool checkForBlocked)
-		{
-			var search = new PathSearch(world, mi, self)
-			{
-				heuristic = DefaultEstimator(target),
-				checkForBlocked = checkForBlocked
-			};
-
-			search.AddInitialCell(from);
-			return search;
-		}
-
-		public static PathSearch FromPoints(World world, MobileInfo mi, Actor self, IEnumerable<CPos> froms, CPos target, bool checkForBlocked)
-		{
-			var search = new PathSearch(world, mi, self)
-			{
-				heuristic = DefaultEstimator(target),
-				checkForBlocked = checkForBlocked
-			};
-
-			foreach (var sl in froms)
-				search.AddInitialCell(sl);
-
-			return search;
-		}
-
-		static readonly Queue<CellInfo[,]> cellInfoPool = new Queue<CellInfo[,]>();
+		static readonly Queue<CellInfo[,]> CellInfoPool = new Queue<CellInfo[,]>();
 
 		static CellInfo[,] GetFromPool()
 		{
-			lock (cellInfoPool)
-				return cellInfoPool.Dequeue();
+			lock (CellInfoPool)
+				return CellInfoPool.Dequeue();
 		}
 
 		static void PutBackIntoPool(CellInfo[,] ci)
 		{
-			lock (cellInfoPool)
-				cellInfoPool.Enqueue(ci);
+			lock (CellInfoPool)
+				CellInfoPool.Enqueue(ci);
 		}
 
 		CellInfo[,] InitCellInfo()
 		{
 			CellInfo[,] result = null;
-			while (cellInfoPool.Count > 0)
+
+			// HACK: Uses a static cache so that double-ended searches (which have two PathSearch instances)
+			// can implicitly share data.  The PathFinder should allocate the CellInfo array and pass it
+			// explicitly to the things that need to share it.
+			while (CellInfoPool.Count > 0)
 			{
 				var cellInfo = GetFromPool();
-				if (cellInfo.GetUpperBound(0) != world.Map.MapSize.X - 1 ||
-					cellInfo.GetUpperBound(1) != world.Map.MapSize.Y - 1)
+				if (cellInfo.GetUpperBound(0) != self.World.Map.MapSize.X - 1 ||
+					cellInfo.GetUpperBound(1) != self.World.Map.MapSize.Y - 1)
 				{
 					Log.Write("debug", "Discarding old pooled CellInfo of wrong size.");
 					continue;
@@ -265,25 +292,13 @@ namespace OpenRA.Mods.RA.Move
 			}
 
 			if (result == null)
-				result = new CellInfo[world.Map.MapSize.X, world.Map.MapSize.Y];
+				result = new CellInfo[self.World.Map.MapSize.X, self.World.Map.MapSize.Y];
 
-			for (var x = 0; x < world.Map.MapSize.X; x++)
-				for (var y = 0; y < world.Map.MapSize.Y; y++)
-					result[ x, y ] = new CellInfo( int.MaxValue, new CPos( x, y ), false );
+			for (var x = 0; x < self.World.Map.MapSize.X; x++)
+				for (var y = 0; y < self.World.Map.MapSize.Y; y++)
+					result[x, y] = new CellInfo(int.MaxValue, new CPos(x, y), false);
 
 			return result;
-		}
-
-		public static Func<CPos, int> DefaultEstimator(CPos destination)
-		{
-			return here =>
-			{
-				var diag = Math.Min(Math.Abs(here.X - destination.X), Math.Abs(here.Y - destination.Y));
-				var straight = (Math.Abs(here.X - destination.X) + Math.Abs(here.Y - destination.Y));
-				var h = (3400 * diag / 24) + 100 * (straight - (2 * diag));
-				h = (int)(h * 1.001);
-				return h;
-			};
 		}
 
 		bool disposed;
@@ -291,10 +306,11 @@ namespace OpenRA.Mods.RA.Move
 		{
 			if (disposed)
 				return;
+
 			disposed = true;
 
-			PutBackIntoPool(cellInfo);
-			cellInfo = null;
+			PutBackIntoPool(CellInfo);
+			CellInfo = null;
 
 			GC.SuppressFinalize(this);
 		}

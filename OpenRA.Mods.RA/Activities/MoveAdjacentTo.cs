@@ -119,7 +119,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			var path = pathFinder.FindBidiPath(
 				PathSearch.FromPoints(self.World, mobile.Info, self, searchCells, loc, true),
-				PathSearch.FromPoint(self.World, mobile.Info, self, loc, targetPosition, true).InReverse()
+				PathSearch.FromPoint(self.World, mobile.Info, self, loc, targetPosition, true).Reverse()
 			);
 
 			inner = mobile.MoveTo(() => path);

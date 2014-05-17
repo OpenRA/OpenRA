@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Move
 
 				var pb = FindBidiPath(
 					PathSearch.FromPoint(world, mi, self, target, from, true),
-					PathSearch.FromPoint(world, mi, self, from, target, true).InReverse()
+					PathSearch.FromPoint(world, mi, self, from, target, true).Reverse()
 				);
 
 				CheckSanePath2(pb, from, target);
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA.Move
 
 				var path = FindBidiPath(
 					PathSearch.FromPoints(world, mi, self, tilesInRange, src, true),
-					PathSearch.FromPoint(world, mi, self, src, targetCell, true).InReverse()
+					PathSearch.FromPoint(world, mi, self, src, targetCell, true).Reverse()
 				);
 
 				return path;
@@ -124,12 +124,12 @@ namespace OpenRA.Mods.RA.Move
 				{
 					List<CPos> path = null;
 
-					while (!search.queue.Empty)
+					while (!search.Queue.Empty)
 					{
 						var p = search.Expand(world);
-						if (search.heuristic(p) == 0)
+						if (search.Heuristic(p) == 0)
 						{
-							path = MakePath(search.cellInfo, p);
+							path = MakePath(search.CellInfo, p);
 							break;
 						}
 					}
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA.Move
 					var dbg = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
 					if (dbg != null)
 					{
-						dbg.AddLayer(search.considered.Select(p => new Pair<CPos, int>(p, search.cellInfo[p.X, p.Y].MinCost)), search.maxCost, search.owner);
+						dbg.AddLayer(search.Considered.Select(p => new Pair<CPos, int>(p, search.CellInfo[p.X, p.Y].MinCost)), search.MaxCost, search.Owner);
 					}
 
 					if (path != null)
@@ -176,13 +176,13 @@ namespace OpenRA.Mods.RA.Move
 				{
 					List<CPos> path = null;
 
-					while (!fromSrc.queue.Empty && !fromDest.queue.Empty)
+					while (!fromSrc.Queue.Empty && !fromDest.Queue.Empty)
 					{
 						/* make some progress on the first search */
 						var p = fromSrc.Expand(world);
 
-						if (fromDest.cellInfo[p.X, p.Y].Seen &&
-							fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
+						if (fromDest.CellInfo[p.X, p.Y].Seen &&
+							fromDest.CellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
 						{
 							path = MakeBidiPath(fromSrc, fromDest, p);
 							break;
@@ -191,8 +191,8 @@ namespace OpenRA.Mods.RA.Move
 						/* make some progress on the second search */
 						var q = fromDest.Expand(world);
 
-						if (fromSrc.cellInfo[q.X, q.Y].Seen &&
-							fromSrc.cellInfo[q.X, q.Y].MinCost < float.PositiveInfinity)
+						if (fromSrc.CellInfo[q.X, q.Y].Seen &&
+							fromSrc.CellInfo[q.X, q.Y].MinCost < float.PositiveInfinity)
 						{
 							path = MakeBidiPath(fromSrc, fromDest, q);
 							break;
@@ -202,8 +202,8 @@ namespace OpenRA.Mods.RA.Move
 					var dbg = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
 					if (dbg != null)
 					{
-						dbg.AddLayer(fromSrc.considered.Select(p => new Pair<CPos, int>(p, fromSrc.cellInfo[p.X, p.Y].MinCost)), fromSrc.maxCost, fromSrc.owner);
-						dbg.AddLayer(fromDest.considered.Select(p => new Pair<CPos, int>(p, fromDest.cellInfo[p.X, p.Y].MinCost)), fromDest.maxCost, fromDest.owner);
+						dbg.AddLayer(fromSrc.Considered.Select(p => new Pair<CPos, int>(p, fromSrc.CellInfo[p.X, p.Y].MinCost)), fromSrc.MaxCost, fromSrc.Owner);
+						dbg.AddLayer(fromDest.Considered.Select(p => new Pair<CPos, int>(p, fromDest.CellInfo[p.X, p.Y].MinCost)), fromDest.MaxCost, fromDest.Owner);
 					}
 
 					if (path != null)
@@ -216,8 +216,8 @@ namespace OpenRA.Mods.RA.Move
 
 		static List<CPos> MakeBidiPath(PathSearch a, PathSearch b, CPos p)
 		{
-			var ca = a.cellInfo;
-			var cb = b.cellInfo;
+			var ca = a.CellInfo;
+			var cb = b.CellInfo;
 
 			var ret = new List<CPos>();
 
