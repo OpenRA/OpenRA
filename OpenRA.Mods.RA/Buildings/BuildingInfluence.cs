@@ -19,14 +19,14 @@ namespace OpenRA.Mods.RA.Buildings
 
 	public class BuildingInfluence
 	{
-		Actor[,] influence;
+		CellLayer<Actor> influence;
 		Map map;
 
 		public BuildingInfluence(World world)
 		{
 			map = world.Map;
 
-			influence = new Actor[map.MapSize.X, map.MapSize.Y];
+			influence = new CellLayer<Actor>(map);
 
 			world.ActorAdded +=	a =>
 			{
@@ -35,8 +35,8 @@ namespace OpenRA.Mods.RA.Buildings
 					return;
 
 				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b.Info, a.Location))
-					if (map.IsInMap(u) && influence[u.X, u.Y] == null)
-						influence[u.X, u.Y] = a;
+					if (map.IsInMap(u) && influence[u] == null)
+						influence[u] = a;
 			};
 
 			world.ActorRemoved += a =>
@@ -46,8 +46,8 @@ namespace OpenRA.Mods.RA.Buildings
 					return;
 
 				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b.Info, a.Location))
-					if (map.IsInMap(u) && influence[u.X, u.Y] == a)
-						influence[u.X, u.Y] = null;
+					if (map.IsInMap(u) && influence[u] == a)
+						influence[u] = null;
 			};
 		}
 
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Buildings
 			if (!map.IsInMap(cell))
 				return null;
 
-			return influence[cell.X, cell.Y];
+			return influence[cell];
 		}
 	}
 }
