@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int InitialDelay = 10; // Ticks
 		public readonly int CloakDelay = 30; // Ticks
+		public readonly bool UncloakOnAttack = true;
 		public readonly bool UncloakOnMove = false;
 		public readonly bool UncloakOnUnload = false;
 		public readonly bool RequiresCrate = false;
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.RA
 			remainingTime = Math.Max(remainingTime, time);
 		}
 
-		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { Uncloak(); }
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { if (Info.UncloakOnAttack) Uncloak(); }
 
 		public bool Cloaked { get { return remainingTime <= 0; } }
 
