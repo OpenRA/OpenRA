@@ -47,8 +47,9 @@ namespace OpenRA.Mods.RA
 				case State.Dock:
 					ru.PlayCustomAnimation(self, "dock", () => {
 						ru.PlayCustomAnimRepeating(self, "dock-loop");
-						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
-							nd.Docked(proc, self);
+						if (proc.IsInWorld && !proc.IsDead())
+							foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
+								nd.Docked(proc, self);
 						state = State.Loop;
 					});
 					state = State.Wait;
@@ -64,8 +65,9 @@ namespace OpenRA.Mods.RA
 				case State.Complete:
 					harv.LastLinkedProc = harv.LinkedProc;
 					harv.LinkProc(self, null);
-					foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
-						nd.Undocked(proc, self);
+					if (proc.IsInWorld && !proc.IsDead())
+						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
+							nd.Undocked(proc, self);
 					return NextActivity;
 			}
 
