@@ -71,10 +71,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			installingContainer.IsVisible = () => true;
 
 			var dest = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
-			var copyFiles = Game.modData.Manifest.ContentInstaller["CopyFilesFromCD"].Split(',').Select(x => x.Trim()).ToArray();
+			var copyFiles = Game.modData.Manifest.ContentInstaller["CopyFilesFromCD"].Split(',').Select(x => x.TrimOrEmpty()).ToArray();
 
-			var extractPackage = Game.modData.Manifest.ContentInstaller["PackageToExtractFromCD"].Trim();
-			var extractFiles = Game.modData.Manifest.ContentInstaller["ExtractFilesFromCD"].Split(',').Select(x => x.Trim()).ToArray();
+			var extractPackage = Game.modData.Manifest.ContentInstaller["PackageToExtractFromCD"].TrimOrEmpty();
+			var extractFiles = Game.modData.Manifest.ContentInstaller["ExtractFilesFromCD"].Split(',').Select(x => x.TrimOrEmpty()).ToArray();
 
 			var installCounter = 0;
 			var installTotal = copyFiles.Count() + extractFiles.Count();
