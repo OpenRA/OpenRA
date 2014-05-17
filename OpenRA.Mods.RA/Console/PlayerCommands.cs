@@ -13,13 +13,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class SurrenderCommandInfo : TraitInfo<SurrenderCommand> { }
+	public class PlayerCommandsInfo : TraitInfo<PlayerCommands> { }
 
-	public class SurrenderCommand : IChatCommand, IWorldLoaded
+	public class PlayerCommands : IChatCommand, IWorldLoaded
 	{
 		World world;
 
-		public SurrenderCommand() { }
+		public PlayerCommands() { }
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
@@ -27,13 +27,24 @@ namespace OpenRA.Mods.RA
 			var console = world.WorldActor.Trait<ChatCommands>();
 			var help = world.WorldActor.Trait<HelpCommand>();
 
+			console.RegisterCommand("pause", this);
+			help.RegisterHelp("pause", "pause or unpause the game");
 			console.RegisterCommand("surrender", this);
 			help.RegisterHelp("surrender", "self-destruct everything and lose the game");
 		}
 
 		public void InvokeCommand(string name, string arg)
 		{
-			world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
+			switch (name)
+			{
+				case "pause":
+					world.IssueOrder(new Order("PauseGame", null, false)
+						{ TargetString = world.Paused ? "UnPause" : "Pause" });
+					break;
+				case "surrender":
+					world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
+					break;
+			}
 		}
 	}
 }

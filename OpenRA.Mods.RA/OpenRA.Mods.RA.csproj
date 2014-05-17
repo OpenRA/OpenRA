@@ -526,8 +526,7 @@
     <Compile Include="Console\ChatCommands.cs" />
     <Compile Include="Console\DevCommands.cs" />
     <Compile Include="Console\HelpCommand.cs" />
-    <Compile Include="Console\PauseCommand.cs" />
-    <Compile Include="Console\SurrenderCommand.cs" />
+    <Compile Include="Console\PlayerCommands.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
