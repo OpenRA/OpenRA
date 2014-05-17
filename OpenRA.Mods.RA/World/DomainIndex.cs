@@ -53,17 +53,17 @@ namespace OpenRA.Mods.RA
 
 	class MovementClassDomainIndex
 	{
-		Rectangle bounds;
+		Map map;
 
 		uint movementClass;
-		int[,] domains;
+		CellLayer<int> domains;
 		Dictionary<int, HashSet<int>> transientConnections;
 
 		public MovementClassDomainIndex(World world, uint movementClass)
 		{
-			bounds = world.Map.Bounds;
+			map = world.Map;
 			this.movementClass = movementClass;
-			domains = new int[(bounds.Width + bounds.X), (bounds.Height + bounds.Y)];
+			domains = new CellLayer<int>(world.Map);
 			transientConnections = new Dictionary<int, HashSet<int>>();
 
 			BuildDomains(world);
@@ -71,15 +71,15 @@ namespace OpenRA.Mods.RA
 
 		public bool IsPassable(CPos p1, CPos p2)
 		{
-			if (!bounds.Contains(p1.X, p1.Y) || !bounds.Contains(p2.X, p2.Y))
+			if (!map.IsInMap(p1) || !map.IsInMap(p2))
 				return false;
 
-			if (domains[p1.X, p1.Y] == domains[p2.X, p2.Y])
+			if (domains[p1] == domains[p2])
 				return true;
 
 			// Even though p1 and p2 are in different domains, it's possible
 			// that some dynamic terrain (i.e. bridges) may connect them.
-			return HasConnection(GetDomainOf(p1), GetDomainOf(p2));
+			return HasConnection(domains[p1], domains[p2]);
 		}
 
 		public void UpdateCells(World world, HashSet<CPos> dirtyCells)
@@ -90,22 +90,21 @@ namespace OpenRA.Mods.RA
 			{
 				// Select all neighbors inside the map boundries
 				var neighbors = CVec.directions.Select(d => d + cell)
-					.Where(c => bounds.Contains(c.X, c.Y));
+					.Where(c => map.IsInMap(c));
 
 				var found = false;
-				foreach (var neighbor in neighbors)
+				foreach (var n in neighbors)
 				{
-					if (!dirtyCells.Contains(neighbor))
+					if (!dirtyCells.Contains(n))
 					{
-						var neighborDomain = GetDomainOf(neighbor);
-
-						var match = CanTraverseTile(world, neighbor);
-						if (match) neighborDomains.Add(neighborDomain);
+						var neighborDomain = domains[n];
+						if (CanTraverseTile(world, n))
+							neighborDomains.Add(neighborDomain);
 
 						// Set ourselves to the first non-dirty neighbor we find.
 						if (!found)
 						{
-							SetDomain(cell, neighborDomain);
+							domains[cell] = neighborDomain;
 							found = true;
 						}
 					}
@@ -113,20 +112,8 @@ namespace OpenRA.Mods.RA
 			}
 
 			foreach (var c1 in neighborDomains)
-			{
 				foreach (var c2 in neighborDomains)
 					CreateConnection(c1, c2);
-			}
-		}
-
-		int GetDomainOf(CPos p)
-		{
-			return domains[p.X, p.Y];
-		}
-
-		void SetDomain(CPos p, int domain)
-		{
-			domains[p.X, p.Y] = domain;
 		}
 
 		bool HasConnection(int d1, int d2)
@@ -146,6 +133,7 @@ namespace OpenRA.Mods.RA
 				{
 					if (neighbor == d2)
 						return true;
+
 					if (!visited.Contains(neighbor))
 						toProcess.Push(neighbor);
 				}
@@ -180,7 +168,7 @@ namespace OpenRA.Mods.RA
 
 			var domain = 1;
 
-			var visited = new bool[(bounds.Width + bounds.X), (bounds.Height + bounds.Y)];
+			var visited = new CellLayer<bool>(map);
 
 			var toProcess = new Queue<CPos>();
 			toProcess.Enqueue(new CPos(map.Bounds.Left, map.Bounds.Top));
@@ -192,7 +180,7 @@ namespace OpenRA.Mods.RA
 
 				// Technically redundant with the check in the inner loop, but prevents
 				// ballooning the domain counter.
-				if (visited[start.X, start.Y])
+				if (visited[start])
 					continue;
 
 				var domainQueue = new Queue<CPos>();
@@ -205,7 +193,7 @@ namespace OpenRA.Mods.RA
 				while (domainQueue.Count != 0)
 				{
 					var n = domainQueue.Dequeue();
-					if (visited[n.X, n.Y])
+					if (visited[n])
 						continue;
 
 					var candidatePassable = CanTraverseTile(world, n);
@@ -215,12 +203,12 @@ namespace OpenRA.Mods.RA
 						continue;
 					}
 
-					visited[n.X, n.Y] = true;
-					SetDomain(n, domain);
+					visited[n] = true;
+					domains[n] = domain;
 
 					// Don't crawl off the map, or add already-visited cells
 					var neighbors = CVec.directions.Select(d => n + d)
-						.Where(p => bounds.Contains(p.X, p.Y) && !visited[p.X, p.Y]);
+						.Where(p => map.IsInMap(p) && !visited[p]);
 
 					foreach (var neighbor in neighbors)
 						domainQueue.Enqueue(neighbor);
