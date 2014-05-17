@@ -1373,6 +1373,8 @@ SBAG:
 		NodeTypes: sandbag
 	LineBuildNode:
 		Types: sandbag
+	RenderBuildingWall:
+		Type: sandbag
 
 FENC:
 	Inherits: ^Wall
@@ -1398,6 +1400,8 @@ FENC:
 		NodeTypes: fence
 	LineBuildNode:
 		Types: fence
+	RenderBuildingWall:
+		Type: fence
 
 BRIK:
 	Inherits: ^Wall
@@ -1428,6 +1432,8 @@ BRIK:
 		NodeTypes: concrete
 	LineBuildNode:
 		Types: concrete
+	RenderBuildingWall:
+		Type: concrete
 
 CYCL:
 	Inherits: ^Wall

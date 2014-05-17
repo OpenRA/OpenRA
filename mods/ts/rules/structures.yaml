@@ -307,6 +307,12 @@ GASAND:
 		HP: 250
 	Armor:
 		Type: Light
+	LineBuild:
+		NodeTypes: sandbags
+	LineBuildNode:
+		Types: sandbags
+	RenderBuildingWall:
+		Type: sandbags
 
 GAWALL:
 	Inherits: ^Wall

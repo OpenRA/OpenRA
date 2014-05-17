@@ -752,6 +752,8 @@ SBAG:
 		NodeTypes: sandbag
 	LineBuildNode:
 		Types: sandbag
+	RenderBuildingWall:
+		Type: sandbag
 
 CYCL:
 	Inherits: ^Wall
@@ -776,6 +778,8 @@ CYCL:
 		NodeTypes: chain
 	LineBuildNode:
 		Types: chain
+	RenderBuildingWall:
+		Type: chain
 
 BRIK:
 	Inherits: ^Wall
@@ -805,6 +809,8 @@ BRIK:
 		NodeTypes: concrete
 	LineBuildNode:
 		Types: concrete
+	RenderBuildingWall:
+		Type: concrete
 
 BARRACKS:
 	Tooltip:
