@@ -90,6 +90,19 @@ namespace OpenRA.Graphics
 				DrawLine(new float2(r.Left, y), new float2(r.Right, y), color, color);
 		}
 
+		public void FillEllipse(RectangleF r, Color color)
+		{
+			var a = (r.Right - r.Left) / 2;
+			var b = (r.Bottom - r.Top) / 2;
+			var xc = (r.Right + r.Left) / 2;
+			var yc = (r.Bottom + r.Top) / 2;
+			for (var y = r.Top; y <= r.Bottom; y++)
+			{
+				var dx = a * System.Convert.ToSingle(System.Math.Sqrt(1 - (y - yc) * (y - yc) / b / b));
+				DrawLine(new float2(xc - dx, y), new float2(xc + dx, y), color, color);
+			}
+		}
+
 		public void SetViewportParams(Size screen, float zoom, float2 scroll)
 		{
 			shader.SetVec("Scroll", (int)scroll.X, (int)scroll.Y);

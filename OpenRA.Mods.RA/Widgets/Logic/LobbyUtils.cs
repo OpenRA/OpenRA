@@ -88,6 +88,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 
+		public static void ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client,
+			OrderManager orderManager, IEnumerable<int> spawnPoints)
+		{
+			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
+			{
+				var spawnPoint = spawnPoints.ToList()[ii];
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => client.SpawnPoint == spawnPoint,
+					() => SetSpawnPoint(orderManager, client, spawnPoint));
+				item.Get<LabelWidget>("LABEL").GetText = () => spawnPoint == 0 ? "-" : Convert.ToChar('A' - 1 + spawnPoint).ToString();
+				return item;
+			};
+
+			var options = Exts.MakeArray(spawnPoints.Count(), i => i).ToList();
+			dropdown.ShowDropDown("SPAWN_DROPDOWN_TEMPLATE", 150, options, setupItem);
+		}
+
 		public static void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client,
 			OrderManager orderManager, Dictionary<string, string> countryNames)
 		{
@@ -150,17 +167,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var selectedSpawn = preview.SpawnPoints
 				.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp), i))
-				.Where(a => (a.First - mi.Location).LengthSquared < 64)
+				.Where(a => ((a.First - mi.Location).ToFloat2() / new float2(ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").bounds.Width / 2, ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").bounds.Height / 2)).LengthSquared <= 1)
 				.Select(a => a.Second + 1)
 				.FirstOrDefault();
 
+			var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
+			var playerToMove = locals.FirstOrDefault(c => ((selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver));
+			SetSpawnPoint(orderManager, playerToMove, selectedSpawn);
+		}
+
+		private static void SetSpawnPoint(OrderManager orderManager, Session.Client playerToMove, int selectedSpawn)
+		{
 			var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == selectedSpawn);
 			if (selectedSpawn == 0 || !owned)
-			{
-				var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
-				var playerToMove = locals.FirstOrDefault(c => ((selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver));
 				orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawn)));
-			}
 		}
 
 		public static Color LatencyColor(int latency)
@@ -382,6 +402,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static void SetupTeamWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
 			parent.Get<LabelWidget>("TEAM").GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
+		}
+
+		public static void SetupEditableSpawnWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
+		{
+			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN");
+			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady;
+			dropdown.OnMouseDown = _ => ShowSpawnDropDown(dropdown, c, orderManager, Enumerable.Range(0, map.PlayerCount + 1)
+					.Except(orderManager.LobbyInfo.Clients.Where(client => client != c && client.SpawnPoint != 0).Select(client => client.SpawnPoint)));
+			dropdown.GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
+		}
+
+		public static void SetupSpawnWidget(Widget parent, Session.Slot s, Session.Client c)
+		{
+			parent.Get<LabelWidget>("SPAWN").GetText = () => (c.SpawnPoint == 0) ? "-" : c.SpawnPoint.ToString();
 		}
 
 		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)

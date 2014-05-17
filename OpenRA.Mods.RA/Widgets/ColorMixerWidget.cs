@@ -134,8 +134,8 @@ namespace OpenRA.Mods.RA.Widgets
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(mixerSprite, RenderOrigin, new float2(RenderBounds.Size));
 
 			var sprite = ChromeProvider.GetImage("lobby-bits", "colorpicker");
-			var pos = RenderOrigin + PxFromValue() - new int2(sprite.bounds.Width/2, sprite.bounds.Height/2);
-			WidgetUtils.FillRectWithColor(new Rectangle(pos.X + 3, pos.Y + 3, 10, 10), Color.RGB);
+			var pos = RenderOrigin + PxFromValue() - new int2(sprite.bounds.Width, sprite.bounds.Height) / 2;
+			WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X + 1, pos.Y + 1, sprite.bounds.Width - 2, sprite.bounds.Height - 2), Color.RGB);
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos);
 		}
 

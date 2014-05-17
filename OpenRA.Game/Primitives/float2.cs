@@ -66,6 +66,7 @@ namespace OpenRA
 		public static float2 operator *(float2 b, float a) { return new float2(a * b.X, a * b.Y); }
 		public static float2 operator *( float2 a, float2 b ) { return new float2( a.X * b.X, a.Y * b.Y ); }
 		public static float2 operator /( float2 a, float2 b ) { return new float2( a.X / b.X, a.Y / b.Y ); }
+		public static float2 operator /(float2 a, float b) { return new float2(a.X / b, a.Y / b); }
 
 		public static bool operator ==(float2 me, float2 other) { return (me.X == other.X && me.Y == other.Y); }
 		public static bool operator !=(float2 me, float2 other) { return !(me == other); }

@@ -2,7 +2,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 	X: 20
 	Y: 67
 	ItemSpacing: 5
-	Width: 535
+	Width: 593
 	Height: 235
 	Children:
 		Container@TEMPLATE_EDITABLE_PLAYER:
@@ -78,15 +78,20 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Width: 48
 					Height: 25
 					Text: Team
+				DropDownButton@SPAWN:
+					X: 478
+					Width: 48
+					Height: 25
+					Text: Spawn
 				Checkbox@STATUS_CHECKBOX:
-					X: 477
+					X: 535
 					Y: 2
 					Width: 20
 					Height: 20
 					Visible: false
 				Image@STATUS_IMAGE:
 					Visible: false
-					X: 479
+					X: 537
 					Y: 4
 					Width: 20
 					Height: 20
@@ -166,7 +171,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Y: 0
 				Image@STATUS_IMAGE:
 					Visible: false
-					X: 479
+					X: 537
 					Y: 4
 					Width: 20
 					Height: 20
@@ -194,7 +199,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Visible: false
 				Button@JOIN:
 					Text: Play in this slot
-					Width: 278
+					Width: 336
 					Height: 25
 					X: 190
 					Y: 0
@@ -235,7 +240,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					MaxLength: 16
 				Label@SPECTATOR:
 					Text: Spectator
-					Width: 278
+					Width: 336
 					Height: 25
 					X: 190
 					Y: 0
@@ -285,7 +290,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Font: Bold
 				Label@SPECTATOR:
 					Text: Spectator
-					Width: 278
+					Width: 336
 					Height: 25
 					X: 190
 					Y: 0
@@ -308,7 +313,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 				Button@SPECTATE:
 					Text: Spectate
 					Font: Regular
-					Width: 278
+					Width: 336
 					Height: 25
 					X: 190
 					Y: 0

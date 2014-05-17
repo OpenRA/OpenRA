@@ -42,6 +42,22 @@ ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
 					Height: 25
 					Align: Center
 
+ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 0
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+
 ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
 	Children:

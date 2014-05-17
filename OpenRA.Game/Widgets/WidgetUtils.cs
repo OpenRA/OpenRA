@@ -68,6 +68,11 @@ namespace OpenRA.Widgets
 			Game.Renderer.LineRenderer.FillRect(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
 		}
 
+		public static void FillEllipseWithColor(Rectangle r, Color c)
+		{
+			Game.Renderer.LineRenderer.FillEllipse(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
+		}
+
 		public static int[] GetBorderSizes(string collection)
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r" };

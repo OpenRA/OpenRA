@@ -2,7 +2,7 @@ Container@MAPCHOOSER_PANEL:
 	Logic: MapChooserLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - 500)/2
-	Width: 740
+	Width: 800
 	Height: 535
 	Children:
 		Label@TITLE:
@@ -37,8 +37,8 @@ Container@MAPCHOOSER_PANEL:
 					Height: 440
 					Children:
 						ScrollItem@MAP_TEMPLATE:
-							Width: 168
-							Height: 217
+							Width: 183
+							Height: 232
 							X: 2
 							Y: 0
 							Visible: false
@@ -46,15 +46,15 @@ Container@MAPCHOOSER_PANEL:
 								Background@PREVIEW_PLACEHOLDER:
 									X: (PARENT_RIGHT - WIDTH)/2
 									Y: 4
-									Width: 158
-									Height: 158
+									Width: 173
+									Height: 173
 									Background: panel-black
 									ClickThrough: false
 								MapPreview@PREVIEW:
 									X: (PARENT_RIGHT - WIDTH)/2
 									Y: 4
-									Width: 158
-									Height: 158
+									Width: 173
+									Height: 173
 								Label@TITLE:
 									X: 2
 									Y: PARENT_BOTTOM-48
