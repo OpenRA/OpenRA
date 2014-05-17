@@ -58,6 +58,8 @@ namespace OpenRA.Mods.RA
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { TakeAmmo(); }
 
+		public int GetAmmoCount() { return ammo; }
+
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			var pips = Info.PipCount != 0 ? Info.PipCount : Info.Ammo;

@@ -20,6 +20,8 @@ namespace OpenRA.Mods.RA
 		public readonly int Count = 0;
 		[Desc("How long it takes to do so.")]
 		public readonly int Period = 50;
+		[Desc("Whether or not reload counter should be reset when ammo has been fired.")]
+		public readonly bool ResetOnFire = false;
 
 		public object Create(ActorInitializer init) { return new Reloads(init.self, this); }
 	}
@@ -29,21 +31,33 @@ namespace OpenRA.Mods.RA
 		[Sync] int remainingTicks;
 		ReloadsInfo Info;
 		LimitedAmmo la;
+		int previousAmmo;
 
 		public Reloads(Actor self, ReloadsInfo info)
 		{
 			Info = info;
 			remainingTicks = info.Period;
 			la = self.Trait<LimitedAmmo>();
+			previousAmmo = la.GetAmmoCount();
 		}
 
 		public void Tick(Actor self)
 		{
-			if (--remainingTicks == 0)
+			if (!la.FullAmmo() && --remainingTicks == 0)
 			{
 				remainingTicks = Info.Period;
+
 				for (var i = 0; i < Info.Count; i++)
 					la.GiveAmmo();
+
+				previousAmmo = la.GetAmmoCount();
+			}
+
+			// Resets the tick counter if ammo was fired.
+			if (Info.ResetOnFire && la.GetAmmoCount() < previousAmmo)
+			{
+				remainingTicks = Info.Period;
+				previousAmmo = la.GetAmmoCount();
 			}
 		}
 	}
