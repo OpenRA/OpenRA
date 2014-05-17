@@ -1,7 +1,7 @@
 Minigun:
 	ROF: 21
 	Range: 4c0
-	Report: INFGUN2.AUD
+	Report: INFGUN3.AUD
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead:

@@ -38,7 +38,7 @@ namespace OpenRA.GameRules
 		[Desc("Size of the explosion. provide 2 values for a ring effect (outer/inner).")]
 		public readonly int[] Size = { 0, 0 };
 		[Desc("Infantry death animation to use")]
-		public readonly int InfDeath = 1;
+		public readonly string InfDeath = "1";
 		[Desc("Sound to play on impact.")]
 		public readonly string ImpactSound = null;
 		[Desc("Sound to play on impact with water")]

@@ -17,9 +17,14 @@ namespace OpenRA.Mods.RA
 {
 	public class DeathSoundsInfo : ITraitInfo
 	{
-		public readonly string DeathVoice = "Die";
-		public readonly string Burned = null;
-		public readonly string Zapped = null;
+		[Desc("Death notification voice.")]
+		public readonly string DeathSound = "Die";
+		
+		[Desc("Multiply volume with this factor.")]
+		public readonly float VolumeMultiplier = 1f;
+
+		[Desc("InfDeaths that this should be used for. If empty, this will be used as the default sound.")]
+		public readonly string[] InfDeaths = { };
 
 		public object Create(ActorInitializer init) { return new DeathSounds(this); }
 	}
@@ -38,16 +43,8 @@ namespace OpenRA.Mods.RA
 
 			var cp = self.CenterPosition;
 
-			// Killed by fire
-			if (info.Burned != null && e.Warhead.InfDeath == 5)
-				Sound.Play(info.Burned, cp);
-
-			// Killed by Tesla/Laser zap
-			if (info.Zapped != null && e.Warhead.InfDeath == 6)
-				Sound.Play(info.Zapped, cp);
-
-			if ((e.Warhead.InfDeath < 5) || (info.Burned == null && info.Zapped == null))
-				Sound.PlayVoiceLocal(info.DeathVoice, self, self.Owner.Country.Race, cp);
+			if (info.InfDeaths.Contains(e.Warhead.InfDeath) || (!info.InfDeaths.Any() && !self.Info.Traits.WithInterface<DeathSoundsInfo>().Any(dsi => dsi.InfDeaths.Contains(e.Warhead.InfDeath))))
+				Sound.PlayVoiceLocal(info.DeathSound, self, self.Owner.Country.Race, cp, info.VolumeMultiplier);
 		}
 	}
 }

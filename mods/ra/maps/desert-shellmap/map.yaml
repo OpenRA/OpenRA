@@ -1308,8 +1308,6 @@ Rules:
 			SpeedModifier:
 	^Infantry:
 		ScriptInvulnerable:
-		DeathSounds:
-			DeathVoice:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
@@ -1317,6 +1315,12 @@ Rules:
 			FirepowerModifier:
 			ArmorModifier:
 			SpeedModifier:
+		DeathSounds@NORMAL:
+			VolumeMultiplier: 0.1
+		DeathSounds@BURNED:
+			VolumeMultiplier: 0.1
+		DeathSounds@ZAPPED:
+			VolumeMultiplier: 0.1
 	^Ship:
 		ScriptInvulnerable:
 		GivesBounty:

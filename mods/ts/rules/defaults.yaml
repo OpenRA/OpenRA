@@ -134,8 +134,14 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
-	DeathSounds:
-		Zapped: electro1.aud
+	DeathSounds@NORMAL:
+		InfDeaths: 1, 2, 3
+	DeathSounds@BURNED:
+		DeathSound: Burned
+		InfDeaths: 5
+	DeathSounds@ZAPPED:
+		DeathSound: Zapped
+		InfDeaths: 6
 
 ^CivilianInfantry:
 	Inherits: ^Infantry

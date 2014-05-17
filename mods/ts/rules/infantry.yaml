@@ -402,7 +402,7 @@ MWMN:
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-9
-		Voice: Mutant
+		Voice: CivilianFemale
 	Health:
 		HP: 50
 	Mobile:

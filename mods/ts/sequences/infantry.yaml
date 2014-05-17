@@ -240,13 +240,13 @@ weedguy:
 		Facings: 8
 		Stride: 6
 		ShadowStart: 288
-	die1: weed
+	die2: weed
 		Start: 160
 		Length: 6
-		ShadowStart: 336
-	die2: weed
+		ShadowStart: 362
+	die1: weed
 		Start: 149
-		Length: 14
+		Length: 11
 		ShadowStart: 351
 	die3: weed
 		Start: 166
@@ -309,7 +309,7 @@ medic:
 		ShadowStart: 455
 	die3: # TODO: copy-paste of die2
 		Start: 149
-		Length: 14
+		Length: 15
 		ShadowStart: 455
 	shoot:
 		Start: 164
@@ -576,7 +576,7 @@ jumpjet: # TODO: ShadowStart:
 		Start: 149
 		Length: 15
 		ShadowStart: 600
-	die3:
+	die3: #TODO: animation doesn't fit this InfDeath
 		Start: 436
 		Length: 15
 		ShadowStart: 887
@@ -1442,11 +1442,11 @@ civ2:
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
 		ShadowStart: 441
 	die3: # TODO: copy-paste of die2
 		Start: 149
-		Length: 14
+		Length: 15
 		ShadowStart: 441
 	die5: flameguy # TODO: walking animation unused
 		Start: 42
@@ -1489,11 +1489,11 @@ civ3:
 		ShadowStart: 426
 	die2:
 		Start: 149
-		Length: 14
+		Length: 15
 		ShadowStart: 441
 	die3: # TODO: copy-paste of die2
 		Start: 149
-		Length: 14
+		Length: 15
 		ShadowStart: 441
 	die5: flameguy # TODO: walking animation unused
 		Start: 42

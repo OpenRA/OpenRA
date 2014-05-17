@@ -134,7 +134,7 @@ namespace OpenRA.Mods.RA.Render
 
 			if (info.SpawnsCorpse)
 			{
-				SpawnCorpse(self, "die{0}".F(e.Warhead.InfDeath));
+				SpawnCorpse(self, "die" + (e.Warhead.InfDeath));
 			}	
 		}
 
