@@ -639,7 +639,7 @@ CrateNuke:
 	Warhead@impact:
 		Damage: 1000
 		Spread: 256
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -654,7 +654,7 @@ CrateNuke:
 		Damage: 250
 		SmudgeType: Scorch
 		Size: 5,4
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -1021,7 +1021,7 @@ Atomic:
 		Spread: 1c0
 		SmudgeType: Scorch
 		Size: 1
-		Ore: true
+		DestroyResources: true
 		Versus:
 			Concrete: 25%
 		Explosion: nuke
@@ -1033,7 +1033,7 @@ Atomic:
 		Spread: 2c0
 		SmudgeType: Scorch
 		Size: 2
-		Ore: true
+		DestroyResources: true
 		Versus:
 			Concrete: 25%
 		Delay: 5
@@ -1044,7 +1044,7 @@ Atomic:
 		Spread: 3c0
 		SmudgeType: Scorch
 		Size: 3
-		Ore: true
+		DestroyResources: true
 		Versus:
 			Concrete: 25%
 		Delay: 10
@@ -1054,7 +1054,7 @@ Atomic:
 		Spread: 4c0
 		SmudgeType: Scorch
 		Size: 4
-		Ore: true
+		DestroyResources: true
 		Versus:
 			Concrete: 25%
 		Delay: 15
@@ -1064,7 +1064,7 @@ Atomic:
 		Spread: 5c0
 		SmudgeType: Scorch
 		Size: 5
-		Ore: true
+		DestroyResources: true
 		Versus:
 			Concrete: 25%
 		Delay: 20
@@ -1076,7 +1076,7 @@ MiniNuke:
 		Damage: 1500
 		Spread: 1c0
 		Size: 1
-		Ore: true
+		DestroyResources: true
 		Versus:
 			Concrete: 25%
 		Explosion: nuke
@@ -1087,7 +1087,7 @@ MiniNuke:
 		Damage: 600
 		Spread: 2c0
 		Size: 2
-		Ore: true
+		DestroyResources: true
 		Versus:
 			Concrete: 25%
 		Delay: 5
@@ -1097,7 +1097,7 @@ MiniNuke:
 		Damage: 600
 		Spread: 3c0
 		Size: 3
-		Ore: true
+		DestroyResources: true
 		Versus:
 			Concrete: 25%
 		Delay: 10
@@ -1107,7 +1107,7 @@ MiniNuke:
 		Spread: 4c0
 		Size: 4
 		SmudgeType: Scorch
-		Ore: true
+		DestroyResources: true
 		Versus:
 			Concrete: 25%
 		Delay: 15

@@ -63,11 +63,11 @@ namespace OpenRA.Mods.RA
 				.Where(a => a.Trait.LinkedProc == self);
 		}
 
-		public bool CanGiveOre(int amount) { return PlayerResources.CanGiveOre(amount); }
+		public bool CanGiveOre(int amount) { return PlayerResources.CanGiveResources(amount); }
 
 		public void GiveOre(int amount)
 		{
-			PlayerResources.GiveOre(amount);
+			PlayerResources.GiveResources(amount);
 			if (Info.ShowTicks)
 				currentDisplayValue += amount;
 		}

@@ -358,7 +358,7 @@
     <Compile Include="SpawnMPUnits.cs" />
     <Compile Include="SpawnMapActors.cs" />
     <Compile Include="Disguise.cs" />
-    <Compile Include="StoresOre.cs" />
+    <Compile Include="StoresResources.cs" />
     <Compile Include="StrategicVictoryConditions.cs" />
     <Compile Include="SupplyTruck.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />

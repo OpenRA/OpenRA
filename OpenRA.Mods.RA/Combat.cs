@@ -71,14 +71,14 @@ namespace OpenRA.Mods.RA
 						throw new NotImplementedException("Unknown smudge type `{0}`".F(smudgeType));
 
 					smudgeLayer.AddSmudge(sc);
-					if (warhead.Ore)
+					if (warhead.DestroyResources)
 						resLayer.Destroy(sc);
 				}
 
 				// Destroy all resources in range, not just the outer shell:
 				foreach (var cell in allCells)
 				{
-					if (warhead.Ore)
+					if (warhead.DestroyResources)
 						resLayer.Destroy(cell);
 				}
 			}
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA
 				}
 			}
 
-			if (warhead.Ore)
+			if (warhead.DestroyResources)
 				world.WorldActor.Trait<ResourceLayer>().Destroy(targetTile);
 
 			switch (warhead.DamageModel)

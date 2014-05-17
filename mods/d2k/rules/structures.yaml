@@ -178,7 +178,7 @@ CONCRETEB:
 		DockOffset: 2,1
 		DockAngle: 160
 		TickRate: 20
-	StoresOre:
+	StoresResources:
 		PipColor: green
 		PipCount: 10
 		Capacity: 2000
@@ -220,7 +220,7 @@ CONCRETEB:
 		Range: 4c0
 	-RenderBuilding:
 	RenderBuildingSilo:
-	StoresOre:
+	StoresResources:
 		PipColor: green
 		PipCount: 5
 		Capacity: 2000

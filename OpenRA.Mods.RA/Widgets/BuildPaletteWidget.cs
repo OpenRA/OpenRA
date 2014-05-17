@@ -489,7 +489,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var power = pl.PlayerActor.Trait<PowerManager>();
 
 			DrawRightAligned("${0}".F(cost), pos + new int2(-5, 5),
-				(resources.DisplayCash + resources.DisplayOre >= cost ? Color.White : Color.Red));
+				(resources.DisplayCash + resources.DisplayResources >= cost ? Color.White : Color.Red));
 
 			var lowpower = power.PowerState != PowerState.Normal;
 			var time = CurrentQueue.GetBuildTime(info.Name)

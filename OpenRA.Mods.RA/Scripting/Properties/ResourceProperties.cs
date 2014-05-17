@@ -28,12 +28,12 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("The amount of harvestable resources held by the player.")]
 		public int Resources
 		{
-			get { return pr.Ore; }
-			set { pr.Ore = value.Clamp(0, pr.OreCapacity); }
+			get { return pr.Resources; }
+			set { pr.Resources = value.Clamp(0, pr.ResourceCapacity); }
 		}
 
 		[Desc("The maximum resource storage of the player.")]
-		public int ResourceCapacity { get { return pr.OreCapacity; } }
+		public int ResourceCapacity { get { return pr.ResourceCapacity; } }
 
 		[Desc("The amount of cash held by the player.")]
 		public int Cash

@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 				var costString = "$: {0}".F(cost);
 				costLabel.GetText = () => costString;
-				costLabel.GetColor = () => pr.DisplayCash + pr.DisplayOre >= cost
+				costLabel.GetColor = () => pr.DisplayCash + pr.DisplayResources >= cost
 					? Color.White : Color.Red;
 
 				var descString = tooltip.Description.Replace("\\n", "\n");
