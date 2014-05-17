@@ -51,6 +51,9 @@ namespace OpenRA.Traits
 
 		public void Selected(Actor a)
 		{
+			if (a.IsIdle)
+				return;
+
 			// Reset the order line timeout.
 			lifetime = Info.Ticks;
 		}
