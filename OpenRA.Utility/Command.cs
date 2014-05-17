@@ -31,6 +31,13 @@ namespace OpenRA.Utility
 {
 	public static class Command
 	{
+		static IEnumerable<string> GlobArgs(string[] args, int startIndex = 1)
+		{
+			for (var i = startIndex; i < args.Length; i++)
+				foreach (var path in Glob.Expand(args[i]))
+					yield return path;
+		}
+
 		[Desc("KEY", "Get value of KEY from settings.yaml")]
 		public static void Settings(string[] args)
 		{
@@ -50,8 +57,9 @@ namespace OpenRA.Utility
 		[Desc("PNGFILE [PNGFILE ...]", "Combine a list of PNG images into a SHP")]
 		public static void ConvertPngToShp(string[] args)
 		{
-			var dest = args[1].Split('-').First() + ".shp";
-			var frames = args.Skip(1).Select(a => PngLoader.Load(a));
+			var inputFiles = GlobArgs(args).OrderBy(a => a).ToList();
+			var dest = inputFiles[0].Split('-').First() + ".shp";
+			var frames = inputFiles.Select(a => PngLoader.Load(a));
 
 			var size = frames.First().Size;
 			if (frames.Any(f => f.Size != size))
