@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,14 +11,17 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
 	class ChronoshiftPowerInfo : SupportPowerInfo
 	{
-		public readonly int Range = 1; // Range in cells
-		public readonly int Duration = 30; // Seconds
+		[Desc("Cells")]
+		public readonly int Range = 1;
+		[Desc("Seconds")]
+		public readonly int Duration = 30;
 		public readonly bool KillCargo = true;
 
 		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.self,this); }
@@ -51,7 +54,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
-			int range = (Info as ChronoshiftPowerInfo).Range;
+			var range = (Info as ChronoshiftPowerInfo).Range;
 			var tiles = self.World.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
@@ -59,48 +62,50 @@ namespace OpenRA.Mods.RA
 
 			return units.Distinct().Where(a => a.HasTrait<Chronoshiftable>());
 		}
-		
-		
-		public bool SimilarTerrain(CPos xy, CPos sourceLocation) {
-			
+
+		public bool SimilarTerrain(CPos xy, CPos sourceLocation)
+		{
 			if (!self.Owner.Shroud.IsExplored(xy))
 				return false;
-			
-			int range = (Info as ChronoshiftPowerInfo).Range;
+
+			var range = (Info as ChronoshiftPowerInfo).Range;
 			var sourceTiles = self.World.FindTilesInCircle(xy, range);
 			var destTiles = self.World.FindTilesInCircle(sourceLocation, range);
-			List<string> sourceTerrain = new List<string>();
-			List<string> destTerrain = new List<string>();
-			
+			var sourceTerrain = new List<string>();
+			var destTerrain = new List<string>();
+
 			int j = 0;
-			foreach (var t in sourceTiles) {
+			foreach (var t in sourceTiles)
+			{
 				j = j + 1;
 				if (!self.Owner.Shroud.IsExplored(t))
 					return false;
-				sourceTerrain.Add(self.World.GetTerrainType( t ));
+				sourceTerrain.Add(self.World.GetTerrainType(t));
 			}
+
 			j = 0;
-			foreach (var t in destTiles) {
+			foreach (var t in destTiles)
+			{
 				j = j + 1;
-				if (!self.Owner.Shroud.IsExplored(t)) {
+				if (!self.Owner.Shroud.IsExplored(t))
 					return false;
-				}
-				self.World.GetTerrainType( t );
-				destTerrain.Add(self.World.GetTerrainType( t ));
+
+				self.World.GetTerrainType(t);
+				destTerrain.Add(self.World.GetTerrainType(t));
 			}
-			
+
 			// HACK but I don't want to write a comparison function
 			if (sourceTerrain.Count != destTerrain.Count)
 				return false;
-			
-			for (int i = 0; i < sourceTerrain.Count; i++) {
-			        if (!sourceTerrain[i].Equals(destTerrain[i]))
-			            return false;
+
+			for (int i = 0; i < sourceTerrain.Count; i++)
+			{
+				if (!sourceTerrain[i].Equals(destTerrain[i]))
+					return false;
 			}
-			
+
 			return true;
 		}
-		
 
 		class SelectTarget : IOrderGenerator
 		{
