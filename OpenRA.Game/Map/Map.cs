@@ -461,8 +461,7 @@ namespace OpenRA
 			return dataStream.ToArray();
 		}
 
-		public bool IsInMap(CPos xy) { return IsInMap(xy.X, xy.Y); }
-		public bool IsInMap(int x, int y) { return Bounds.Contains(x, y); }
+		public bool IsInMap(CPos xy) { return Bounds.Contains(xy.X, xy.Y); }
 
 		public void Resize(int width, int height)		// editor magic.
 		{
