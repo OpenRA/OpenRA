@@ -16,9 +16,11 @@ fi
 cp -rv template.app OpenRA.app
 cp -rv $2/* $3/* "OpenRA.app/Contents/Resources/" || exit 3
 
-# Icon isn't used, and editor doesn't work.
+# Remove unused icon
 rm OpenRA.app/Contents/Resources/OpenRA.ico
+# Remove broken WinForms applications
 rm OpenRA.app/Contents/Resources/OpenRA.Editor.exe
+rm OpenRA.app/Contents/Resources/OpenRA.CrashDialog.exe
 
 # Package app bundle into a zip and clean up
 zip OpenRA-$1 -r -9 OpenRA.app

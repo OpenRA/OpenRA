@@ -129,6 +129,9 @@ namespace OpenRA
 				).F(title, message, icon, logsButton, logsPath, faqButton, faqPath, quitButton);
 			}
 
+			if (CurrentPlatform == PlatformType.Linux)
+				process = "error-dialog.sh";
+
 			var psi = new ProcessStartInfo(process, args);
 			psi.UseShellExecute = false;
 			psi.CreateNoWindow = true;

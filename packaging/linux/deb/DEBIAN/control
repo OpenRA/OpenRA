@@ -3,7 +3,7 @@ Version: {VERSION}
 Architecture: all
 Maintainer: Chris Forbes <chrisf@ijw.co.nz>
 Installed-Size: {SIZE}
-Depends: libopenal1, mono-runtime (>= 2.10), libmono-system-core4.0-cil, libmono-system-drawing4.0-cil, libmono-system-windows-forms4.0-cil, libfreetype6, libc6, libasound2, libgl1-mesa-glx, libgl1-mesa-dri
+Depends: libopenal1, mono-runtime (>= 2.10), libmono-system-core4.0-cil, libmono-system-drawing4.0-cil, libmono-system-windows-forms4.0-cil, libfreetype6, libc6, libasound2, libgl1-mesa-glx, libgl1-mesa-dri, xdg-utils, zenity
 Section: games
 Priority: extra
 Homepage: http://www.open-ra.org/

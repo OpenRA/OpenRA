@@ -22,6 +22,8 @@ Requires: libdl.so.2
 Requires: libm.so.6
 Requires: libpthread.so.0
 Requires: librt.so.1
+Requires: xdg-utils
+Requires: zenity
 
 Prefix: /usr
 Source: %{name}-%{version}.tar.gz

@@ -66,7 +66,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rsdl2 rnull game utility irc crashdialog
+CORE = rsdl2 rnull game utility irc
 TOOLS = editor tsbuild ralint
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
@@ -253,11 +253,11 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 #
 default: dependencies core
 
-core: game renderers mods utility crashdialog
+core: game renderers mods utility ralint
 
-tools: editor tsbuild ralint
+tools: editor tsbuild crashdialog
 
-package: dependencies core editor docs version
+package: dependencies core editor crashdialog docs version
 
 mods: mod_ra mod_cnc mod_d2k mod_ts
 
@@ -327,6 +327,11 @@ install-core: default
 	@$(INSTALL_PROGRAM) thirdparty/MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/RestSharp.dll "$(DATA_INSTALL_DIR)"
+	@$(CP) thirdparty/${platformdeps}/* "$(DATA_INSTALL_DIR)"
+
+ifeq ($(shell uname),Linux)
+	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
+endif
 
 	@echo "#!/bin/sh" > openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra
