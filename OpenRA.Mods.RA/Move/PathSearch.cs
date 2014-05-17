@@ -10,14 +10,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using OpenRA;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.RA.Move
 {
 	public sealed class PathSearch : IDisposable
 	{
-		public CellInfo[,] CellInfo;
+		public CellLayer<CellInfo> CellInfo;
 		public PriorityQueue<PathDistance> Queue;
 		public Func<CPos, int> Heuristic;
 		public bool CheckForBlocked;
@@ -141,7 +143,7 @@ namespace OpenRA.Mods.RA.Move
 		public CPos Expand(World world)
 		{
 			var p = Queue.Pop();
-			while (CellInfo[p.Location.X, p.Location.Y].Seen)
+			while (CellInfo[p.Location].Seen)
 			{
 				if (Queue.Empty)
 					return p.Location;
@@ -149,7 +151,9 @@ namespace OpenRA.Mods.RA.Move
 				p = Queue.Pop();
 			}
 
-			CellInfo[p.Location.X, p.Location.Y].Seen = true;
+			var pCell = CellInfo[p.Location];
+			pCell.Seen = true;
+			CellInfo[p.Location] = pCell;
 
 			var thisCost = mobileInfo.MovementCostForCell(world, p.Location);
 
@@ -177,7 +181,7 @@ namespace OpenRA.Mods.RA.Move
 				if (!world.Map.IsInMap(newHere))
 					continue;
 
-				if (CellInfo[newHere.X, newHere.Y].Seen)
+				if (CellInfo[newHere].Seen)
 					continue;
 
 				// Now we may seriously consider this direction using heuristics:
@@ -224,14 +228,16 @@ namespace OpenRA.Mods.RA.Move
 						cellCost += laneBias;
 				}
 
-				var newCost = CellInfo[p.Location.X, p.Location.Y].MinCost + cellCost;
+				var newCost = CellInfo[p.Location].MinCost + cellCost;
 
 				// Cost is even higher; next direction:
-				if (newCost > CellInfo[newHere.X, newHere.Y].MinCost)
+				if (newCost > CellInfo[newHere].MinCost)
 					continue;
 
-				CellInfo[newHere.X, newHere.Y].Path = p.Location;
-				CellInfo[newHere.X, newHere.Y].MinCost = newCost;
+				var hereCell = CellInfo[newHere];
+				hereCell.Path = p.Location;
+				hereCell.MinCost = newCost;
+				CellInfo[newHere] = hereCell;
 
 				nextDirections[i].Second = newCost + est;
 				Queue.Add(new PathDistance(newCost + est, newHere));
@@ -252,27 +258,28 @@ namespace OpenRA.Mods.RA.Move
 			if (!self.World.Map.IsInMap(location))
 				return;
 
-			CellInfo[location.X, location.Y] = new CellInfo(0, location, false);
+			CellInfo[location] = new CellInfo(0, location, false);
 			Queue.Add(new PathDistance(Heuristic(location), location));
 		}
 
-		static readonly Queue<CellInfo[,]> CellInfoPool = new Queue<CellInfo[,]>();
+		static readonly Queue<CellLayer<CellInfo>> CellInfoPool = new Queue<CellLayer<CellInfo>>();
 
-		static CellInfo[,] GetFromPool()
+		static CellLayer<CellInfo> GetFromPool()
 		{
 			lock (CellInfoPool)
 				return CellInfoPool.Dequeue();
 		}
 
-		static void PutBackIntoPool(CellInfo[,] ci)
+		static void PutBackIntoPool(CellLayer<CellInfo> ci)
 		{
 			lock (CellInfoPool)
 				CellInfoPool.Enqueue(ci);
 		}
 
-		CellInfo[,] InitCellInfo()
+		CellLayer<CellInfo> InitCellInfo()
 		{
-			CellInfo[,] result = null;
+			CellLayer<CellInfo> result = null;
+			var mapSize = new Size(self.World.Map.MapSize.X, self.World.Map.MapSize.Y);
 
 			// HACK: Uses a static cache so that double-ended searches (which have two PathSearch instances)
 			// can implicitly share data.  The PathFinder should allocate the CellInfo array and pass it
@@ -280,8 +287,7 @@ namespace OpenRA.Mods.RA.Move
 			while (CellInfoPool.Count > 0)
 			{
 				var cellInfo = GetFromPool();
-				if (cellInfo.GetUpperBound(0) != self.World.Map.MapSize.X - 1 ||
-					cellInfo.GetUpperBound(1) != self.World.Map.MapSize.Y - 1)
+				if (cellInfo.Size != mapSize)
 				{
 					Log.Write("debug", "Discarding old pooled CellInfo of wrong size.");
 					continue;
@@ -292,11 +298,10 @@ namespace OpenRA.Mods.RA.Move
 			}
 
 			if (result == null)
-				result = new CellInfo[self.World.Map.MapSize.X, self.World.Map.MapSize.Y];
+				result = new CellLayer<CellInfo>(self.World.Map);
 
-			for (var x = 0; x < self.World.Map.MapSize.X; x++)
-				for (var y = 0; y < self.World.Map.MapSize.Y; y++)
-					result[x, y] = new CellInfo(int.MaxValue, new CPos(x, y), false);
+			foreach (var cell in self.World.Map.Cells)
+				result[cell] = new CellInfo(int.MaxValue, cell, false);
 
 			return result;
 		}
