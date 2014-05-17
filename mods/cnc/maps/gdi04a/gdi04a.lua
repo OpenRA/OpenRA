@@ -1,20 +1,15 @@
-Nod1Template  = { {HandOfNod, {"e1", "e1", "e1", "e3", "e3"}} }
+Nod1Template  = { {HandOfNod, {"e1", "e1", "e3", "e3"}} }
 Auto1Template = { {HandOfNod, {"e1", "e1", "e3"}} }
 
-if OpenRA.GetDifficulty() == "Easy" then
-	KillsUntilReinforcements = 8
-	HeliDelay = {83, 137, 211}
-else
-	KillsUntilReinforcements = 16
-	HeliDelay = {57, 89, 123}
-end
+KillsUntilReinforcements = 12
+HeliDelay = {83, 137, 211}
 
 GDIReinforcements = {"e2", "e2", "e2", "e2"}
 GDIReinforcementsWaypoints = {GDIReinforcementsEntry, GDIReinforcementsWP1}
 
 NodHelis = {
-		{Utils.Seconds(HeliDelay[1]), {NodHeliEntry, NodHeliLZ1}, {"e1", "e3", "e3"}},
-		{Utils.Seconds(HeliDelay[2]), {NodHeliEntry, NodHeliLZ2}, {"e1", "e1", "e1", "e1", "e1"}},
+		{Utils.Seconds(HeliDelay[1]), {NodHeliEntry, NodHeliLZ1}, {"e1", "e1", "e3"}},
+		{Utils.Seconds(HeliDelay[2]), {NodHeliEntry, NodHeliLZ2}, {"e1", "e1", "e1", "e1"}},
 		{Utils.Seconds(HeliDelay[3]), {NodHeliEntry, NodHeliLZ3}, {"e1", "e1", "e3"}}
 	   }
 
@@ -49,11 +44,7 @@ BuildNod1 = function()
 	Production.BuildTeamFromTemplate(nod, Nod1Template, function(team)
 		Team.Do(team, function(actor)
 			if not Actor.IsDead(actor) then
-				if OpenRA.GetDifficulty() == "Normal" then
-					Actor.OnIdle(actor, Actor.Hunt)
-				else
-					Actor.Scatter(actor)
-				end
+				Actor.OnIdle(actor, Actor.Hunt)
 				Actor.OnKilled(actor, KillCounter)
 			end
 		end)

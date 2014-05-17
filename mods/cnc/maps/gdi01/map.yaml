@@ -496,7 +496,7 @@ Rules:
 		-Buildable:
 	BOAT:
 		Health:
-			HP: 1000
+			HP: 1500
 		AutoTarget:
 			InitialStance: AttackAnything
 		RejectsOrders:
@@ -519,6 +519,11 @@ Sequences:
 VoxelSequences:
 
 Weapons:
+	BoatMissile:
+		Warhead:
+			Versus:
+				Heavy: 50%
+		Damage: 50
 
 Voices:
 
