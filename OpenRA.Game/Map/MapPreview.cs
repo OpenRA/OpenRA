@@ -27,6 +27,9 @@ namespace OpenRA
 	// Used for grouping maps in the UI
 	public enum MapClassification { Unknown, System, User, Remote }
 
+	// Used for verifying map availability in the lobby
+	public enum MapRuleStatus { Unknown, Cached, Invalid }
+
 	// Fields names must match the with the remote API
 	public class RemoteMapData
 	{
@@ -57,6 +60,8 @@ namespace OpenRA
 		public Map Map { get; private set; }
 		public MapStatus Status { get; private set; }
 		public MapClassification Class { get; private set; }
+
+		public MapRuleStatus RuleStatus { get; private set; }
 
 		Download download;
 		public long DownloadBytes { get; private set; }
@@ -226,6 +231,23 @@ namespace OpenRA
 
 			download.Cancel();
 			download = null;
+		}
+
+		public void CacheRules()
+		{
+			if (RuleStatus != MapRuleStatus.Unknown)
+				return;
+
+			try
+			{
+				Map.PreloadRules();
+				RuleStatus = MapRuleStatus.Cached;
+			}
+			catch (Exception e)
+			{
+				Log.Write("debug", "Map {0} failed validation with an exception:\n{1}", Uid, e.Message);
+				RuleStatus = MapRuleStatus.Invalid;
+			}
 		}
 	}
 }

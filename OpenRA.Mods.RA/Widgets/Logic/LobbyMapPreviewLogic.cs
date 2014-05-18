@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var available = widget.GetOrNull("MAP_AVAILABLE");
 			if (available != null)
 			{
-				available.IsVisible = () => lobby.Map.Status == MapStatus.Available;
+				available.IsVisible = () => lobby.Map.Status == MapStatus.Available && lobby.Map.RuleStatus == MapRuleStatus.Cached;
 
 				var preview = available.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Preview = () => lobby.Map;
@@ -44,6 +44,25 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var author = available.GetOrNull<LabelWidget>("MAP_AUTHOR");
 				if (author != null)
 					author.GetText = () => "Created by {0}".F(lobby.Map.Author);
+			}
+
+			var invalid = widget.GetOrNull("MAP_INVALID");
+			if (invalid != null)
+			{
+				invalid.IsVisible = () => lobby.Map.Status == MapStatus.Available && lobby.Map.RuleStatus == MapRuleStatus.Invalid;
+
+				var preview = invalid.Get<MapPreviewWidget>("MAP_PREVIEW");
+				preview.Preview = () => lobby.Map;
+				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
+				preview.SpawnClients = () => LobbyUtils.GetSpawnClients(orderManager.LobbyInfo, lobby.Map);
+
+				var title = invalid.GetOrNull<LabelWidget>("MAP_TITLE");
+				if (title != null)
+					title.GetText = () => lobby.Map.Title;
+
+				var type = invalid.GetOrNull<LabelWidget>("MAP_TYPE");
+				if (type != null)
+					type.GetText = () => lobby.Map.Type;
 			}
 
 			var download = widget.GetOrNull("MAP_DOWNLOADABLE");
@@ -76,7 +95,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var progress = widget.GetOrNull("MAP_PROGRESS");
 			if (progress != null)
 			{
-				progress.IsVisible = () => lobby.Map.Status != MapStatus.Available && lobby.Map.Status != MapStatus.DownloadAvailable;
+				progress.IsVisible = () => (lobby.Map.Status != MapStatus.Available || lobby.Map.RuleStatus == MapRuleStatus.Unknown) && lobby.Map.Status != MapStatus.DownloadAvailable;
 
 				var preview = progress.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Preview = () => lobby.Map;
