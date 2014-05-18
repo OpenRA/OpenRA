@@ -11,13 +11,13 @@
 using System;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using XRandom = OpenRA.Support.Random;
+using OpenRA.Support;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class CheatsLogic
 	{
-		public static XRandom CosmeticRandom = new XRandom();
+		public static MersenneTwister CosmeticRandom = new MersenneTwister();
 
 		[ObjectCreator.UseCtor]
 		public CheatsLogic(Widget widget, Action onExit, World world)

@@ -10,8 +10,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Support;
 using OpenRA.Traits;
-using XRandom = OpenRA.Support.Random;
 
 namespace OpenRA.Mods.RA.AI
 {
@@ -24,12 +24,11 @@ namespace OpenRA.Mods.RA.AI
 
 		internal World world;
 		internal HackyAI bot;
-		internal XRandom random;
+		internal MersenneTwister random;
 
 		internal Target target;
 		internal StateMachine fsm;
 
-		//fuzzy
 		internal AttackOrFleeFuzzy attackOrFleeFuzzy = new AttackOrFleeFuzzy();
 
 		public Squad(HackyAI bot, SquadType type) : this(bot, type, null) { }

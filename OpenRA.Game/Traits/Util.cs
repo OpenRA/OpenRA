@@ -96,7 +96,7 @@ namespace OpenRA.Traits
 		}
 
 		/* pretty crap */
-		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> ts, Support.Random random)
+		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> ts, MersenneTwister random)
 		{
 			var items = ts.ToList();
 			while (items.Count > 0)

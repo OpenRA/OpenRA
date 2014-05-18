@@ -24,8 +24,6 @@ using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
-using XRandom = OpenRA.Support.Random;
-
 namespace OpenRA
 {
 	public static class Game
@@ -39,7 +37,7 @@ namespace OpenRA
 		internal static OrderManager orderManager;
 		static Server.Server server;
 
-		public static XRandom CosmeticRandom = new XRandom();	// not synced
+		public static MersenneTwister CosmeticRandom = new MersenneTwister(); // not synced
 
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;

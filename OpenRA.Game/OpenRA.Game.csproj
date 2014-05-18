@@ -247,6 +247,7 @@
     <Compile Include="ModMetadata.cs" />
     <Compile Include="GameRules\Ruleset.cs" />
     <Compile Include="GameRules\RulesetCache.cs" />
+    <Compile Include="Support\MersenneTwister.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
@@ -321,7 +322,6 @@
     <Compile Include="WRot.cs" />
     <Compile Include="WVec.cs" />
     <Compile Include="Primitives\TypeDictionary.cs" />
-    <Compile Include="Support\Random.cs" />
     <Compile Include="Map\ActorInitializer.cs" />
     <Compile Include="Map\ActorReference.cs" />
     <Compile Include="Support\Evaluator.cs" />

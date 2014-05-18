@@ -20,7 +20,6 @@ using OpenRA.Orders;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
-using XRandom = OpenRA.Support.Random;
 
 namespace OpenRA
 {
@@ -36,7 +35,7 @@ namespace OpenRA
 		internal readonly OrderManager orderManager;
 		public Session LobbyInfo { get { return orderManager.LobbyInfo; } }
 
-		public XRandom SharedRandom;
+		public MersenneTwister SharedRandom;
 
 		public readonly List<Player> Players = new List<Player>();
 
@@ -126,7 +125,7 @@ namespace OpenRA
 			Map = map;
 
 			TileSet = map.Rules.TileSets[Map.Tileset];
-			SharedRandom = new XRandom(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
+			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
 			WorldActor = CreateActor("World", new TypeDictionary());
 			ActorMap = WorldActor.Trait<ActorMap>();
