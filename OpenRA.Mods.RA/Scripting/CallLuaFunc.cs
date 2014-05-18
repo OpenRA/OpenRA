@@ -15,12 +15,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class CallLuaFunc : Activity
+	public class CallLuaFunc : Activity, IDisposable
 	{
 		LuaFunction function;
+
 		public CallLuaFunc(LuaFunction func)
 		{
-			function = func.CopyReference() as LuaFunction;
+			function = (LuaFunction)func.CopyReference();
 		}
 
 		public override Activity Tick(Actor self)
@@ -38,20 +39,28 @@ namespace OpenRA.Mods.RA.Activities
 			base.Cancel(self);
 		}
 
-		public void Dispose()
+		protected void Dispose(bool disposing)
 		{
 			if (function == null)
 				return;
 
+			if (disposing)
+			{
+				function.Dispose();
+				function = null;
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
 			GC.SuppressFinalize(this);
-			function.Dispose();
-			function = null;
 		}
 
 		~CallLuaFunc()
 		{
-			if (function != null)
-				Game.RunAfterTick(Dispose);
+			// Dispose unmanaged resources only
+			Dispose(false);
 		}
 	}
 }
