@@ -411,7 +411,6 @@
     <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
-    <Compile Include="Widgets\Logic\ShellmapDesaturationLogic.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\ObserverProductionIconsWidget.cs" />
     <Compile Include="Widgets\ObserverSupportPowerIconsWidget.cs" />

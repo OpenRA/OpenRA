@@ -18,12 +18,16 @@ namespace OpenRA.Mods.RA
 {
 	public class MenuPaletteEffectInfo : ITraitInfo
 	{
+		[Desc("Time (in ticks) to fade between states")]
 		public readonly int FadeLength = 10;
+
+		[Desc("Effect style to fade into")]
+		public readonly MenuPaletteEffect.EffectType Effect = MenuPaletteEffect.EffectType.None;
 
 		public object Create(ActorInitializer init) { return new MenuPaletteEffect(this); }
 	}
 
-	public class MenuPaletteEffect : IPaletteModifier, ITickRender
+	public class MenuPaletteEffect : IPaletteModifier, ITickRender, IWorldLoaded
 	{
 		public enum EffectType { None, Black, Desaturated }
 		public readonly MenuPaletteEffectInfo Info;
@@ -83,6 +87,11 @@ namespace OpenRA.Mods.RA
 					}
 				}
 			}
+		}
+
+		public void WorldLoaded(World w, WorldRenderer wr)
+		{
+			Fade(Info.Effect);
 		}
 	}
 }
