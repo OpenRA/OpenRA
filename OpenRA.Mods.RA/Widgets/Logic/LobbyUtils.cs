@@ -422,7 +422,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public static void SetupSpawnWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
-			parent.Get<LabelWidget>("SPAWN").GetText = () => (c.SpawnPoint == 0) ? "-" : c.SpawnPoint.ToString();
+			parent.Get<LabelWidget>("SPAWN").GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
 		}
 
 		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)

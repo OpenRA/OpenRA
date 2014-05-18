@@ -169,6 +169,11 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Align: Center
 					X: 420
 					Y: 0
+				Label@SPAWN:
+					Align: Center
+					X: 478
+					Width: 23
+					Height: 25
 				Image@STATUS_IMAGE:
 					Visible: false
 					X: 537
