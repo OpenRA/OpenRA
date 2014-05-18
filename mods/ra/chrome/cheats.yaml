@@ -11,7 +11,7 @@ Background@CHEATS_PANEL:
 			Y: 20
 			Width: 250
 			Height: 25
-			Text: Developer Mode
+			Text: Cheats
 			Align: Center
 			Font: Bold
 		Checkbox@DISABLE_SHROUD:
@@ -19,7 +19,7 @@ Background@CHEATS_PANEL:
 			Y: 50
 			Height: 20
 			Width: PARENT_RIGHT - 30
-			Text: Disable Shroud
+			Text: Disable Shroud & Fog
 		Button@GIVE_EXPLORATION:
 			X: 30
 			Y: 80
