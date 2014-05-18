@@ -16,12 +16,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Fades the world from/to black at the start/end of the game, and can (optionally) desaturate the world")]
 	public class MenuPaletteEffectInfo : ITraitInfo
 	{
 		[Desc("Time (in ticks) to fade between states")]
 		public readonly int FadeLength = 10;
 
-		[Desc("Effect style to fade into")]
+		[Desc("Effect style to fade to. Accepts values of None or Desaturated")]
 		public readonly MenuPaletteEffect.EffectType Effect = MenuPaletteEffect.EffectType.None;
 
 		public object Create(ActorInitializer init) { return new MenuPaletteEffect(this); }
