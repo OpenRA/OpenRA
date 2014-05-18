@@ -395,7 +395,7 @@ lobby-bits: chrome.png
 	spawn-claimed: 458,55,19,19
 	spawn-unclaimed: 435,55,19,19
 	admin: 340,39,7,5
-	colorpicker: 256,32,16,16
+	colorpicker: 257,33,14,14
 	huepicker: 388,96,7,15
 	kick: 386,115,11,11
 
