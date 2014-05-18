@@ -124,20 +124,20 @@ Container@MENU_BACKGROUND:
 							Font: Bold
 							Contrast: True
 						Button@SKIRMISH_BUTTON:
-							X: 150
+							X: 0
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Skirmish
 						Button@MISSIONS_BUTTON:
-							X: 300
+							X: 150
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Missions
 						Button@BACK_BUTTON:
 							Key: escape
-							X: 600
+							X: 450
 							Y: 0
 							Width: 140
 							Height: 35
