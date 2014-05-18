@@ -13,8 +13,8 @@ Folders:
 	~^Content/cnc
 
 MapFolders:
-	./mods/cnc/maps
-	~^maps/cnc
+	./mods/cnc/maps: System
+	~^maps/cnc: User
 
 Packages:
 	bluetib.mix

@@ -24,6 +24,9 @@ namespace OpenRA
 {
 	public enum MapStatus { Available, Unavailable, Searching, DownloadAvailable, Downloading, DownloadError }
 
+	// Used for grouping maps in the UI
+	public enum MapClassification { Unknown, System, User, Remote }
+
 	// Fields names must match the with the remote API
 	public class RemoteMapData
 	{
@@ -53,6 +56,7 @@ namespace OpenRA
 		public Bitmap CustomPreview { get; private set; }
 		public Map Map { get; private set; }
 		public MapStatus Status { get; private set; }
+		public MapClassification Class { get; private set; }
 
 		Download download;
 		public long DownloadBytes { get; private set; }
@@ -94,9 +98,10 @@ namespace OpenRA
 			Bounds = Rectangle.Empty;
 			SpawnPoints = NoSpawns;
 			Status = MapStatus.Unavailable;
+			Class = MapClassification.Unknown;
 		}
 
-		public void UpdateFromMap(Map m)
+		public void UpdateFromMap(Map m, MapClassification classification)
 		{
 			Map = m;
 			Title = m.Title;
@@ -108,6 +113,7 @@ namespace OpenRA
 			SpawnPoints = m.GetSpawnPoints().ToList();
 			CustomPreview = m.CustomPreview;
 			Status = MapStatus.Available;
+			Class = classification;
 		}
 
 		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml)
@@ -146,8 +152,9 @@ namespace OpenRA
 					if (CustomPreview != null)
 						cache.CacheMinimap(this);
 				}
-				Status = status;
 
+				Status = status;
+				Class = MapClassification.Remote;
 			});
 		}
 
@@ -199,7 +206,7 @@ namespace OpenRA
 						}
 
 						Log.Write("debug", "Downloaded map to '{0}'", mapPath);
-						Game.RunAfterTick(() => UpdateFromMap(new Map(mapPath)));
+						Game.RunAfterTick(() => UpdateFromMap(new Map(mapPath), MapClassification.User));
 					};
 
 					download = new Download(mapUrl, mapPath, onDownloadProgress, onDownloadComplete);

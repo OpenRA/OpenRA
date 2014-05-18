@@ -13,8 +13,8 @@ Folders:
 	~^Content/ra
 
 MapFolders:
-	./mods/ra/maps
-	~^maps/ra
+	./mods/ra/maps: System
+	~^maps/ra: User
 
 Packages:
 	~main.mix

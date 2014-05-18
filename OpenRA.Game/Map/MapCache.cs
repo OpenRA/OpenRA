@@ -42,16 +42,19 @@ namespace OpenRA
 
 		public void LoadMaps()
 		{
-			var paths = modData.Manifest.MapFolders.SelectMany(f => FindMapsIn(f));
-			foreach (var path in paths)
+			// Expand the dictionary (dir path, dir type) to a dictionary of (map path, dir type)
+			var mapPaths = modData.Manifest.MapFolders.SelectMany(kv =>
+				FindMapsIn(kv.Key).ToDictionary(p => p, p => string.IsNullOrEmpty(kv.Value) ? MapClassification.Unknown : Enum<MapClassification>.Parse(kv.Value)));
+
+			foreach (var path in mapPaths)
 			{
 				try
 				{
-					using (new Support.PerfTimer(path))
+					using (new Support.PerfTimer(path.Key))
 					{
-						var map = new Map(path, modData.Manifest.Mod.Id);
+						var map = new Map(path.Key, modData.Manifest.Mod.Id);
 						if (modData.Manifest.MapCompatibility.Contains(map.RequiresMod))
-							previews[map.Uid].UpdateFromMap(map);
+							previews[map.Uid].UpdateFromMap(map, path.Value);
 					}
 				}
 				catch (Exception e)
