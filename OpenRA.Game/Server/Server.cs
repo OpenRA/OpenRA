@@ -21,6 +21,7 @@ using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Support;
 
 using XTimer = System.Timers.Timer;
 
@@ -39,7 +40,7 @@ namespace OpenRA.Server
 		public readonly int Port;
 
 		int randomSeed;
-		public readonly Support.Random Random = new Support.Random();
+		public readonly MersenneTwister Random = new MersenneTwister();
 
 		// Valid player connections
 		public List<Connection> Conns = new List<Connection>();

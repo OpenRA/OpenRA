@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -39,7 +40,7 @@ namespace OpenRA
 		// 2 samples produces a triangular probability
 		// ...
 		// N samples approximates a true gaussian
-		public static WRange FromPDF(Support.Random r, int samples)
+		public static WRange FromPDF(MersenneTwister r, int samples)
 		{
 			return new WRange(Exts.MakeArray(samples, _ => r.Next(-1024, 1024))
 				.Sum() / samples);

@@ -118,7 +118,7 @@ namespace OpenRA
 					: (edge ? w.Map.Bounds.Top : w.Map.Bounds.Bottom));
 		}
 
-		public static CPos ChooseRandomCell(this World w, Support.Random r)
+		public static CPos ChooseRandomCell(this World w, MersenneTwister r)
 		{
 			return new CPos(
 				r.Next(w.Map.Bounds.Left, w.Map.Bounds.Right),

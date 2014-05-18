@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,6 +12,7 @@ using System;
 using Eluant;
 using Eluant.ObjectBinding;
 using OpenRA.Scripting;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -73,7 +74,7 @@ namespace OpenRA
 		// 2 samples produces a triangular probability
 		// ...
 		// N samples approximates a true gaussian
-		public static WVec FromPDF(Support.Random r, int samples)
+		public static WVec FromPDF(MersenneTwister r, int samples)
 		{
 			return new WVec(WRange.FromPDF(r, samples), WRange.FromPDF(r, samples), WRange.Zero);
 		}

@@ -18,7 +18,7 @@ using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using OpenRA.Primitives;
-using XRandom = OpenRA.Support.Random;
+using OpenRA.Support;
 
 namespace OpenRA.Mods.RA.AI
 {
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA.AI
 		bool enabled;
 		public int ticks;
 		public Player p;
-		public XRandom random;
+		public MersenneTwister random;
 		public CPos baseCenter;
 		PowerManager playerPower;
 		SupportPowerManager supportPowerMngr;
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA.AI
 				new BaseBuilder(this, "Defense", q => ChooseBuildingToBuild(q, true))
 			};
 
-			random = new XRandom((int)p.PlayerActor.ActorID);
+			random = new MersenneTwister((int)p.PlayerActor.ActorID);
 
 			resourceTypes = Map.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
 				.Select(t => t.TerrainType).ToArray();

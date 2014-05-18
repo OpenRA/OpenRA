@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using OpenRA.FileFormats;
+using OpenRA.Support;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -127,7 +128,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						if (!string.IsNullOrEmpty(line))
 							mirrorList.Add(line);
 				}
-				mirror = mirrorList.Random(new OpenRA.Support.Random());
+				mirror = mirrorList.Random(new MersenneTwister());
 
 				// Save the package to a temp file
 				var dl = new Download(mirror, file, onDownloadProgress, onDownloadComplete);

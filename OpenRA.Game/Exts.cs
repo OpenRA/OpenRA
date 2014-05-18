@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -100,13 +101,13 @@ namespace OpenRA
 			return ret;
 		}
 
-		public static T Random<T>(this IEnumerable<T> ts, Support.Random r)
+		public static T Random<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
 			var xs = ts.ToArray();
 			return xs[r.Next(xs.Length)];
 		}
 
-		public static T RandomOrDefault<T>(this IEnumerable<T> ts, Support.Random r)
+		public static T RandomOrDefault<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
 			if (!ts.Any())
 				return default(T);
