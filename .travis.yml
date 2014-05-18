@@ -15,7 +15,6 @@ cache: apt
 script:
  - make all
  - make test
- - cd packaging && mkdir temp &&./package-all.sh travis-build temp
 
 # Only watch the development branch.
 branches:
@@ -31,3 +30,20 @@ notifications:
       - "irc.freenode.net#openra"
     use_notice: true
     skip_join: true
+
+before_deploy: cd packaging && mkdir build && ./package-all.sh $TRAVIS_TAG build
+deploy:
+  provider: releases
+  api_key:
+    secure: XBjG29ypu7Ay+ISR7AIf5Uclm+1ZVvfc472Exr7GTP0qoE67k7ItXeoLsqMYgY6nxfWfAzOZHUTqfFpVD78/wZp6Z2LsLZazGAk4vVNf6SunZGn1GsyDSTE82mj9HYFg5QaNLOiVEjeSswx9WZQkhiVuo40JIZCSZq+KaxzPRFw=
+  file:
+    - packaging/build/OpenRA-$TRAVIS_TAG.exe
+    - packaging/build/OpenRA-$TRAVIS_TAG.zip
+    - packaging/build/openra-$TRAVIS_TAG-1-any.pkg.tar.xz
+    - packaging/build/openra-$TRAVIS_TAG-1-noarch.rpm
+    - packaging/build/openra_$TRAVIS_TAG_all.deb
+  skip_cleanup: true
+  on:
+    all_branches: true
+    tags: true
+    repo: OpenRA/OpenRA
