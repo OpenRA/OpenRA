@@ -13,9 +13,9 @@
    height="512"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.48.2 r9819"
    sodipodi:docname="chrome.svg"
-   inkscape:export-filename="D:\Documents\Visual Studio 2013\Projects\OpenRA\mods\cnc\uibits\chrome.png"
+   inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/chrome.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
    enable-background="new">
@@ -99,16 +99,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.9999996"
-     inkscape:cx="465.51623"
-     inkscape:cy="457.58054"
+     inkscape:zoom="5.656854"
+     inkscape:cx="423.65331"
+     inkscape:cy="458.4384"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1680"
-     inkscape:window-height="1027"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-width="1624"
+     inkscape:window-height="1006"
+     inkscape:window-x="56"
+     inkscape:window-y="22"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true">
@@ -700,19 +700,6 @@
        d="M 264 32.5 C 259.85786 32.499386 256.50061 35.857864 256.5 40 C 256.49939 44.142136 259.85786 47.499386 264 47.5 C 268.14214 47.500614 271.49939 44.142136 271.5 40 C 271.5 35.858298 268.1417 32.500614 264 32.5 z M 264 34.5 C 267.03725 34.50045 269.5 36.962752 269.5 40 C 269.49955 43.037566 267.03757 45.50045 264 45.5 C 260.96243 45.49955 258.49955 43.037566 258.5 40 C 258.50045 36.962434 260.96243 34.49955 264 34.5 z "
        transform="translate(0,540.3622)"
        id="path4279" />
-    <path
-       sodipodi:open="true"
-       sodipodi:end="6.2831853"
-       sodipodi:start="0.00014815468"
-       transform="matrix(0.90203431,0,0,0.77317229,6.750015,557.2837)"
-       d="m 290.17741,50.543926 c -4e-4,3.214396 -2.23426,5.819792 -4.98946,5.819316 -2.75519,-4.77e-4 -4.98839,-2.606645 -4.98798,-5.82104 4e-4,-3.214395 2.23426,-5.819792 4.98946,-5.819315 2.75491,4.76e-4 4.98798,2.606119 4.98798,5.820177"
-       sodipodi:ry="5.8201776"
-       sodipodi:rx="4.9887238"
-       sodipodi:cy="50.543064"
-       sodipodi:cx="285.18869"
-       id="path4289"
-       style="fill:#000000;fill-opacity:0.75294118;stroke:#800000;stroke-width:1.19743049;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       sodipodi:type="arc" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none"
        d="m 285.46818,573.86741 2.54657,2.47487 -10.5441,10.51992 -5.47065,-5.52386 2.49822,-2.51412 2.74107,3.21472 z"
@@ -1438,14 +1425,14 @@
        transform="matrix(1.0557288,0,0,1.0557288,487.34552,612.0096)" />
     <path
        sodipodi:type="arc"
-       style="fill:#000000;fill-opacity:0.75294119;stroke:#800000;stroke-width:0.94717479000000004;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:#000000;fill-opacity:0.75294118;stroke:#800000;stroke-width:0.97676605;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="path3782-8-9"
        sodipodi:cx="8.1976452"
        sodipodi:cy="7.9116955"
        sodipodi:rx="7.8141294"
        sodipodi:ry="7.8141294"
        d="m 16.011775,7.9116955 a 7.8141294,7.8141294 0 1 1 -15.62825917,0 7.8141294,7.8141294 0 1 1 15.62825917,0 z"
-       transform="matrix(1.0557713,0,0,1.0557713,455.34516,612.00926)" />
+       transform="matrix(1.0237865,0,0,1.0237865,439.60736,596.26231)" />
   </g>
   <g
      inkscape:groupmode="layer"
