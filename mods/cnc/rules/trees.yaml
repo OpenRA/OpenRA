@@ -24,7 +24,7 @@ ROCK1:
 	Inherits: ^Rock
 	Building:
 		Footprint: __ xx
-		
+
 ROCK2:
 	Inherits: ^Rock
 	Building:

@@ -21,7 +21,7 @@ CONCRETEA:
 		Dimensions: 2,2
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder:10
+		BuildPaletteOrder: 10
 		Owner: atreides, harkonnen, ordos
 	Valued:
 		Cost: 20
