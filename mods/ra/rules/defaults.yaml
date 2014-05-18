@@ -140,7 +140,6 @@
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
-	TeslaInstantKills:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
