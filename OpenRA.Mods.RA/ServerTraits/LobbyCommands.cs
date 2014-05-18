@@ -176,8 +176,10 @@ namespace OpenRA.Mods.RA.Server
 							if (occupant.Bot != null)
 							{
 								server.LobbyInfo.Clients.Remove(occupant);
+								server.SyncLobbyClients();
 								var ping = server.LobbyInfo.PingFromClient(occupant);
 								server.LobbyInfo.ClientPings.Remove(ping);
+								server.SyncClientPing();
 							}
 							else
 							{
