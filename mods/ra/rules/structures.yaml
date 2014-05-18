@@ -417,6 +417,7 @@ PBOX:
 	Inherits: ^Building
 	Tooltip:
 		Name: Pillbox
+		Description: Static defense with a fireport for a\ngarrisoned soldier.
 	Building:
 		Power: -15
 	Buildable:
@@ -499,6 +500,7 @@ HBOX:
 	Inherits: ^Building
 	Tooltip:
 		Name: Camo Pillbox
+		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.
 	Building:
 		Power: -15
 	Buildable:
@@ -981,7 +983,7 @@ AFLD:
 		Icon: paratroopers
 		ChargeTime: 360
 		Description: Paratroopers
-		LongDesc: A Badger drops a squad of infantry \nanywhere on the map.
+		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
 		Prerequisites: AFLD
 		DropItems: E1,E1,E1,E3,E3
 		SelectTargetSound: slcttgt1.aud
