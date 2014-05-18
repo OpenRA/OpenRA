@@ -88,7 +88,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					X: 445
 					Width: 50
 					Height: 25
-					Text: Spawn
+					Font: Regular
 				Image@STATUS_IMAGE:
 					Visible: false
 					X: 495
@@ -178,9 +178,10 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Y: 0
 				Label@SPAWN:
 					Align: Center
-					X: 445
 					Width: 25
 					Height: 25
+					X: 445
+					Y: 0
 				Image@STATUS_IMAGE:
 					Visible: false
 					X: 501
