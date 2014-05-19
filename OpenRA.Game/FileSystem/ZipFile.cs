@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
 using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
 
@@ -20,6 +21,11 @@ namespace OpenRA.FileSystem
 		string filename;
 		SZipFile pkg;
 		int priority;
+
+		static ZipFile()
+		{
+			ZipConstants.DefaultCodePage = Encoding.Default.CodePage;
+		}
 
 		public ZipFile(string filename, int priority)
 		{
