@@ -8,6 +8,7 @@ Folders:
 	.
 	./mods/cnc
 	./mods/cnc/bits
+	./mods/cnc/bits/jungle
 	./mods/cnc/bits/ss
 	./mods/cnc/uibits
 	~^Content/cnc
@@ -124,6 +125,7 @@ TileSets:
 	mods/cnc/tilesets/winter.yaml
 	mods/cnc/tilesets/snow.yaml
 	mods/cnc/tilesets/temperat.yaml
+	mods/cnc/tilesets/jungle.yaml
 
 LoadScreen: CncLoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
