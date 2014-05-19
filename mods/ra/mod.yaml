@@ -133,11 +133,11 @@ LoadScreen: DefaultLoadScreen
 
 ContentInstaller:
 	InstallerMenuWidget: INSTALL_PANEL
-	TestFiles: allies.mix, conquer.mix, general.mix, interior.mix, redalert.mix, russian.mix, scores.mix, snow.mix, sounds.mix, temperat.mix
+	TestFiles: allies.mix, conquer.mix, interior.mix, redalert.mix, russian.mix, scores.mix, snow.mix, sounds.mix, temperat.mix
 	PackageMirrorList: http://openra.net/packages/ra-mirrors.txt
 	DiskTestFiles: MAIN.MIX, INSTALL/REDALERT.MIX
 	PackageToExtractFromCD: MAIN.MIX
-	ExtractFilesFromCD: conquer.mix, russian.mix, allies.mix, sounds.mix, scores.mix, snow.mix, interior.mix, temperat.mix
+	ExtractFilesFromCD: conquer.mix, russian.mix, allies.mix, sounds.mix, scores.mix, snow.mix, interior.mix, temperat.mix, general.mix
 	CopyFilesFromCD: INSTALL/REDALERT.MIX
 	ShippedSoundtracks: 1
 	MusicPackageMirrorList: http://www.openra.net/packages/ra-music-mirrors.txt

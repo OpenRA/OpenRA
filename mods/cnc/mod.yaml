@@ -131,7 +131,7 @@ LoadScreen: CncLoadScreen
 	Text: Loading
 
 ContentInstaller:
-	TestFiles: conquer.mix, desert.mix, general.mix, sounds.mix, speech.mix, temperat.mix, tempicnh.mix, winter.mix
+	TestFiles: conquer.mix, desert.mix, sounds.mix, speech.mix, temperat.mix, tempicnh.mix, winter.mix
 	InstallerBackgroundWidget: INSTALL_BACKGROUND
 	InstallerMenuWidget: INSTALL_PANEL
 	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
