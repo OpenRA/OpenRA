@@ -677,6 +677,7 @@ TeslaZap:
 		InfDeath: 6
 		Damage: 100
 		Versus:
+			None: 1000%
 			Wood: 60%
 
 Nike:
@@ -1222,6 +1223,8 @@ PortaTesla:
 		Spread: 42
 		InfDeath: 6
 		Damage: 45
+		Versus:
+			None: 1000%
 
 TTankZap:
 	ROF: 120
@@ -1233,6 +1236,8 @@ TTankZap:
 		Spread: 42
 		InfDeath: 6
 		Damage: 100
+		Versus:
+			None: 1000%
 
 FLAK-23:
 	ROF: 10

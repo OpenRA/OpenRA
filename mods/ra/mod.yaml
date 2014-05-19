@@ -62,7 +62,7 @@ Cursors:
 
 Chrome:
 	mods/ra/chrome.yaml
-	
+
 Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
 	mods/cnc/OpenRA.Mods.Cnc.dll

@@ -1,6 +1,6 @@
 Player:
 	HackyAI@Cabal:
-		Name:Cabal
+		Name: Cabal
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -62,7 +62,7 @@ Player:
 			orca: 5%
 		SquadSize: 15
 	HackyAI@Watson:
-		Name:Watson
+		Name: Watson
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -124,7 +124,7 @@ Player:
 			mtnk: 50%
 		SquadSize: 15
 	HackyAI@HAL9001:
-		Name:HAL 9001
+		Name: HAL 9001
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -187,3 +187,4 @@ Player:
 			htnk: 50%
 			orca: 10%
 		SquadSize: 8
+

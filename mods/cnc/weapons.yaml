@@ -202,7 +202,7 @@ HeliAAGun:
 Pistol:
 	ROF: 7
 	Range: 3c0
-	InvalidTargets: Wall	
+	InvalidTargets: Wall
 	Report: GUN18.AUD
 	Projectile: Bullet
 		Speed: 1c682
@@ -220,7 +220,7 @@ Pistol:
 M16:
 	ROF: 20
 	Range: 4c0
-	InvalidTargets: Wall	
+	InvalidTargets: Wall
 	Report: MGUN2.AUD
 	Projectile: Bullet
 		Speed: 1c682
@@ -360,7 +360,7 @@ OrcaAAMissiles:
 Flamethrower:
 	ROF: 55
 	Range: 2c512
-	InvalidTargets: Wall	
+	InvalidTargets: Wall
 	Report: FLAMER2.AUD
 	Projectile: Bullet
 		Speed: 1c682
@@ -380,7 +380,7 @@ Flamethrower:
 BigFlamer:
 	ROF: 50
 	Range: 3c512
-	InvalidTargets: Wall	
+	InvalidTargets: Wall
 	Report: FLAMER2.AUD
 	Projectile: Bullet
 		Speed: 341
@@ -668,7 +668,7 @@ ArtilleryShell:
 MachineGun:
 	ROF: 20
 	Burst: 5
-	InvalidTargets: Wall	
+	InvalidTargets: Wall
 	Range: 4c0
 	Report: MGUN11.AUD
 	Projectile: Bullet

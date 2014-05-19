@@ -625,7 +625,7 @@ Weathering:
 	ROF: 100
 	Warhead:
 		Damage: 5
-		
+
 Shrapnel:
 	ROF: 60
 	Range: 4c0
@@ -648,3 +648,4 @@ Shrapnel:
 		SmudgeType: SandCrater
 		Damage: 60
 		ImpactSound: EXPLLG5.WAV
+

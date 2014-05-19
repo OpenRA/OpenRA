@@ -249,6 +249,12 @@ namespace OpenRA.Utility
 						node.Value.Nodes.Add(new MiniYamlNode("ScriptTriggers", ""));
 				}
 
+				if (engineVersion < 20140517)
+				{
+					if (depth == 0)
+						node.Value.Nodes.RemoveAll(n => n.Key == "TeslaInstantKills");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
