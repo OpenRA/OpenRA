@@ -1,6 +1,6 @@
 # Project Description
 
-[ZeroBrane Studio](http://studio.zerobrane.com/) is a lightweight Lua IDE with code completion,
+[ZeroBrane Studio](http://studio.zerobrane.com/) is a lightweight cross-platform Lua IDE with code completion,
 syntax highlighting, remote debugger, code analyzer, live coding,
 and debugging support for several Lua engines (LuaJIT,
 [Löve 2D](http://notebook.kulchenko.com/zerobrane/love2d-debugging),
@@ -11,7 +11,10 @@ and debugging support for several Lua engines (LuaJIT,
 [Cocos2d-x](http://notebook.kulchenko.com/zerobrane/cocos2d-x-simulator-and-on-device-debugging-with-zerobrane-studio),
 [GSL-shell](http://notebook.kulchenko.com/zerobrane/gsl-shell-debugging-with-zerobrane-studio),
 [Adobe Lightroom](http://notebook.kulchenko.com/zerobrane/debugging-lightroom-plugins-zerobrane-studio-ide),
+[OpenResty/Nginx](http://notebook.kulchenko.com/zerobrane/debugging-openresty-nginx-lua-scripts-with-zerobrane-studio)
 and others). It originated from the [Estrela Editor](http://www.luxinia.de/index.php/Estrela/).
+
+![ZeroBrane Studio debugger screenshot](http://studio.zerobrane.com/images/debugging.png)
 
 ## Features
 
@@ -46,16 +49,17 @@ GSL-shell, and other engines.
 * [Tutorials and demos](http://studio.zerobrane.com/tutorials.html) that cover debugging and live coding for different environments.
 * [Tips and tricks](http://studio.zerobrane.com/doc-tips-and-tricks.html).
 
-## Screenshot
+## Installation
 
-![ZeroBrane Studio debugger screenshot](http://studio.zerobrane.com/images/debugging.png)
+ZeroBrane Studio can be installed into and run from any folder.
+No compilation is needed, although the scripts to compile required libraries for Windows, OSX, and Linux platforms are available in the `build/` folder.
 
 ## Usage
 
 ```
 Open file(s):
   zbstudio <filename> [<filename>...]
-  any non-option will be treated as filename
+  any non-option will be treated as a file to open or a directory to set as the project directory
 
 Set project directory:
   zbstudio <project directory> [<filename>...]
