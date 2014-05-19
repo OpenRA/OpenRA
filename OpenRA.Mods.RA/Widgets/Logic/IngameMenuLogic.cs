@@ -19,11 +19,29 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public IngameMenuLogic(Widget widget, World world, Action onExit, WorldRenderer worldRenderer)
 		{
+			var resumeDisabled = false;
+			var mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
+
 			Action onQuit = () =>
 			{
-				onExit();
-				LeaveGame(world);
+				Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
+				resumeDisabled = true;
+
+				var exitDelay = 1200;
+				if (mpe != null)
+				{
+					Game.RunAfterDelay(exitDelay, () => mpe.Fade(MenuPaletteEffect.EffectType.Black));
+					exitDelay += 40 * mpe.Info.FadeLength;
+				}
+
+				Game.RunAfterDelay(exitDelay, () =>
+				{
+					Game.Disconnect();
+					Ui.ResetAll();
+					Game.LoadShellMap();
+				});
 			};
+
 			Action onSurrender = () =>
 			{
 				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
@@ -32,22 +50,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			widget.Get<ButtonWidget>("DISCONNECT").OnClick = () =>
 			{
-				bool gameOver = world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined;
-
-				if (gameOver)
-				{
-					onQuit();
-				}
-				else
-				{
-					widget.Visible = false;
-					ConfirmationDialogs.PromptConfirmAction(
-						"Abort Mission",
-						"Leave this game and return to the menu?",
-						onQuit,
-						() => widget.Visible = true,
-						"Abort");
-				}
+				widget.Visible = false;
+				ConfirmationDialogs.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, () => widget.Visible = true);
 			};
 
 			widget.Get<ButtonWidget>("SETTINGS").OnClick = () =>
@@ -65,7 +69,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				widget.Visible = false;
 				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs { { "onExit", () => { widget.Visible = true; } } });
 			};
-			widget.Get<ButtonWidget>("RESUME").OnClick = () => onExit();
+
+			var resumeButton = widget.Get<ButtonWidget>("RESUME");
+			resumeButton.OnClick = () => onExit();
+			resumeButton.IsDisabled = () => resumeDisabled;
 
 			widget.Get<ButtonWidget>("SURRENDER").OnClick = () =>
 			{
@@ -78,14 +85,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					"Surrender");
 			};
 			widget.Get("SURRENDER").IsVisible = () => world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined;
-		}
-
-		void LeaveGame(World world)
-		{
-			Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
-			Game.Disconnect();
-			Ui.CloseWindow();
-			Game.LoadShellMap();
 		}
 	}
 }

@@ -990,6 +990,8 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
+		MenuPaletteEffect:
+			Effect: Desaturated
 		PlayMusicOnMapLoad:
 			Music: map1
 			Loop: true

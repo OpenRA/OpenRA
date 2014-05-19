@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA;
+using OpenRA.Mods.RA.Widgets;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -53,13 +54,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Action doNothing = () => { };
 
 			menu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = () =>
-				CncWidgetUtils.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, doNothing);
+				ConfirmationDialogs.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, doNothing);
 
 			Action onSurrender = () => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 			var surrenderButton = menu.Get<ButtonWidget>("SURRENDER_BUTTON");
 			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined);
 			surrenderButton.OnClick = () =>
-				CncWidgetUtils.PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
+				ConfirmationDialogs.PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
 
 			menu.Get<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{

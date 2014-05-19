@@ -8,6 +8,7 @@ World:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	ScreenShaker:
+	MenuPaletteEffect:
 	WaterPaletteRotation:
 		ExcludePalettes: player, effect
 	ChronoshiftPaletteEffect:

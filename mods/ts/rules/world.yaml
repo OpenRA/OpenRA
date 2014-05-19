@@ -7,6 +7,7 @@ World:
 	ActorMap:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
+	MenuPaletteEffect:
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
 	PaletteFromFile@player:

@@ -3,8 +3,6 @@ Container@MENU_BACKGROUND:
 	Height: WINDOW_BOTTOM
 	Logic: CncMainMenuLogic
 	Children:
-		Container@SHELLMAP_DESATURATION:
-			Logic: ShellmapDesaturationLogic
 		Container@SHELLMAP_DECORATIONS:
 			Children:
 				Image@RETICLE:
