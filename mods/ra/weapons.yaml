@@ -1168,8 +1168,10 @@ UnitExplodeSmall:
 			Light: 60%
 			Heavy: 25%
 		Explosion: large_explosion
+		WaterExplosion: large_splash
 		InfDeath: 4
 		ImpactSound: kaboom15.aud
+		WaterImpactSound: splash9.aud
 
 BarrelExplode:
 	Warhead:

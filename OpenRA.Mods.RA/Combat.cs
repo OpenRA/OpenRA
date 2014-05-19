@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 			if (!world.Map.IsInMap(targetTile))
 				return;
 
-			var isWater = pos.Z == 0 && world.GetTerrainInfo(targetTile).IsWater;
+			var isWater = pos.Z <= 0 && world.GetTerrainInfo(targetTile).IsWater;
 			var explosionType = isWater ? warhead.WaterExplosion : warhead.Explosion;
 			var explosionTypePalette = isWater ? warhead.WaterExplosionPalette : warhead.ExplosionPalette;
 
