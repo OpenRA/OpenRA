@@ -429,6 +429,34 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				};
 			}
 
+			var techLevel = optionsBin.GetOrNull<DropDownButtonWidget>("TECHLEVEL_DROPDOWNBUTTON");
+			if (techLevel != null)
+			{
+				var techTraits = modRules.Actors["player"].Traits.WithInterface<ProvidesTechPrerequisiteInfo>().ToArray();
+				techLevel.IsVisible = () => techTraits.Length > 0;
+				optionsBin.GetOrNull<LabelWidget>("TECHLEVEL_DESC").IsVisible = () => techTraits.Length > 0;
+				techLevel.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.TechLevel != null || configurationDisabled() || techTraits.Length <= 1;
+				techLevel.GetText = () => Map.Status != MapStatus.Available || Map.Map.Options.TechLevel != null ? "Not Available" : "{0}".F(orderManager.LobbyInfo.GlobalSettings.TechLevel);
+				techLevel.OnMouseDown = _ =>
+				{
+					var options = techTraits.Select(c => new DropDownOption
+					{
+						Title = "{0}".F(c.Name),
+						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.TechLevel == c.Name,
+						OnClick = () => orderManager.IssueOrder(Order.Command("techlevel {0}".F(c.Name)))
+					});
+
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+
+					techLevel.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+				};
+			}
+
 			var enableShroud = optionsBin.GetOrNull<CheckboxWidget>("SHROUD_CHECKBOX");
 			if (enableShroud != null)
 			{

@@ -41,14 +41,14 @@ namespace OpenRA.Mods.RA
 
 		public void Update()
 		{
-			var buildables = GatherBuildables(player);
+			var ownedPrerequisites = GatherOwnedPrerequisites(player);
 			foreach (var w in watchers)
-				w.Update(buildables);
+				w.Update(ownedPrerequisites);
 		}
 
-		public void Add(string key, BuildableInfo info, ITechTreeElement tte)
+		public void Add(string key, string[] prerequisites, int limit, ITechTreeElement tte)
 		{
-			watchers.Add(new Watcher(key, info, tte));
+			watchers.Add(new Watcher(key, prerequisites, limit, tte));
 		}
 
 		public void Remove(string key)
@@ -56,17 +56,17 @@ namespace OpenRA.Mods.RA
 			watchers.RemoveAll(x => x.Key == key);
 		}
 
-		static Cache<string, List<Actor>> GatherBuildables(Player player)
+		static Cache<string, List<Actor>> GatherOwnedPrerequisites(Player player)
 		{
 			var ret = new Cache<string, List<Actor>>(x => new List<Actor>());
 			if (player == null)
 				return ret;
 
-			// Add buildables that provide prerequisites
-			var prereqs = player.World.ActorsWithTrait<ITechTreePrerequisite>()
+			// Add all actors that provide prerequisites
+			var prerequisites = player.World.ActorsWithTrait<ITechTreePrerequisite>()
 				.Where(a => a.Actor.Owner == player && !a.Actor.IsDead() && a.Actor.IsInWorld);
 
-			foreach (var b in prereqs)
+			foreach (var b in prerequisites)
 			{
 				foreach (var p in b.Trait.ProvidesPrerequisites)
 				{
@@ -91,30 +91,54 @@ namespace OpenRA.Mods.RA
 		{
 			public readonly string Key;
 
-			// strings may be either actor type, or "alternate name" key
+			// Strings may be either actor type, or "alternate name" key
 			readonly string[] prerequisites;
 			readonly ITechTreeElement watcher;
 			bool hasPrerequisites;
-			int buildLimit;
+			int limit;
+			bool hidden;
+			bool initialized = false;
 
-			public Watcher(string key, BuildableInfo info, ITechTreeElement watcher)
+			public Watcher(string key, string[] prerequisites, int limit, ITechTreeElement watcher)
 			{
 				this.Key = key;
-				this.prerequisites = info.Prerequisites;
+				this.prerequisites = prerequisites;
 				this.watcher = watcher;
 				this.hasPrerequisites = false;
-				this.buildLimit = info.BuildLimit;
+				this.limit = limit;
+				this.hidden = false;
 			}
 
-			bool HasPrerequisites(Cache<string, List<Actor>> buildables)
+			bool HasPrerequisites(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				return prerequisites.All(p => !(p.StartsWith("!") ^ !buildables.Keys.Contains(p.Replace("!", ""))));
+				return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.Keys.Contains(p.Replace("!", "").Replace("~", ""))));
 			}
 
-			public void Update(Cache<string, List<Actor>> buildables)
+			bool IsHidden(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				var hasReachedBuildLimit = buildLimit > 0 && buildables.Keys.Contains(Key) && buildables[Key].Count >= buildLimit;
-				var nowHasPrerequisites = HasPrerequisites(buildables) && !hasReachedBuildLimit;
+				return prerequisites.Any(prereq => prereq.StartsWith("~") && (prereq.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.Keys.Contains(prereq.Replace("~", "").Replace("!", ""))));
+			}
+
+			public void Update(Cache<string, List<Actor>> ownedPrerequisites)
+			{
+				var hasReachedLimit = limit > 0 && ownedPrerequisites.Keys.Contains(Key) && ownedPrerequisites[Key].Count >= limit;
+				// The '!' annotation inverts prerequisites: "I'm buildable if this prerequisite *isn't* met"
+				var nowHasPrerequisites = HasPrerequisites(ownedPrerequisites) && !hasReachedLimit;
+				var nowHidden = IsHidden(ownedPrerequisites);
+
+				if (initialized == false)
+				{
+					initialized = true;
+					hasPrerequisites = !nowHasPrerequisites;
+					hidden = !nowHidden;
+				}
+
+				// Hide the item from the UI if a prereq annotated with '~' is not met.
+				if (nowHidden && !hidden)
+					watcher.PrerequisitesItemHidden(Key);
+
+				if (!nowHidden && hidden)
+					watcher.PrerequisitesItemVisable(Key);
 
 				if (nowHasPrerequisites && !hasPrerequisites)
 					watcher.PrerequisitesAvailable(Key);
@@ -122,6 +146,7 @@ namespace OpenRA.Mods.RA
 				if (!nowHasPrerequisites && hasPrerequisites)
 					watcher.PrerequisitesUnavailable(Key);
 
+				hidden = nowHidden;
 				hasPrerequisites = nowHasPrerequisites;
 			}
 		}

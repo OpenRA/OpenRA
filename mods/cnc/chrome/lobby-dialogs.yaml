@@ -181,6 +181,19 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 140
 					Height: 25
 					Font: Regular
+				DropDownButton@TECHLEVEL_DROPDOWNBUTTON:
+					X: 85
+					Y: 112
+					Width: 120
+					Height: 25
+					Font: Regular
+					Text: 10
+				Label@TECHLEVEL_DESC:
+					Y: 112
+					Width: 80
+					Height: 25
+					Text: Tech Level:
+					Align: Right
 
 Background@FORCE_START_DIALOG:
 	X: 15

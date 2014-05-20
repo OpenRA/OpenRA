@@ -300,6 +300,7 @@
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />
+    <Compile Include="Player\ProvidesTechPrerequisite.cs" />
     <Compile Include="PortableChrono.cs" />
     <Compile Include="World\RadarPings.cs" />
     <Compile Include="Player\TechTree.cs" />

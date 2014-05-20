@@ -18,7 +18,6 @@ namespace OpenRA.Mods.RA
 		public readonly string[] Owner = { };
 
 		public readonly string Queue;
-		public readonly bool Hidden = false;
 		public readonly int BuildLimit = 0;
 
 		// TODO: UI fluff; doesn't belong here
