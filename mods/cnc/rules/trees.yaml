@@ -60,24 +60,42 @@ ROCK7:
 
 T01:
 	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
 
 T02:
 	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
 
 T03:
 	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
 
 T04:
 	Inherits: ^Tree
 
 T05:
 	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
 
 T06:
 	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
 
 T07:
 	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
 
 T08:
 	Inherits: ^Tree
@@ -95,32 +113,48 @@ T10:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ xx
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 T11:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ xx
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 T12:
 	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 T13:
 	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 T14:
 	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 T15:
 	Inherits: ^Tree
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 T16:
 	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 T17:
 	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 T18:
 	Inherits: ^Tree
@@ -130,28 +164,38 @@ TC01:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 TC02:
 	Inherits: ^Tree
 	Building:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 TC03:
 	Inherits: ^Tree
 	Building:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 TC04:
 	Inherits: ^Tree
 	Building:
 		Footprint: ____ xxx_ x___
 		Dimensions: 4,3
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 TC05:
 	Inherits: ^Tree
 	Building:
 		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
