@@ -1,3 +1,23 @@
+function FindMSBuild
+{
+	$msBuildVersions = @("4.0")
+	foreach ($msBuildVersion in $msBuildVersions)
+	{
+		$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\{0}" -f $msBuildVersion
+		$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
+		if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
+		{
+			continue
+		}
+		$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
+		if (Test-Path $path)
+		{
+			return $path
+		}
+	}
+	return $null
+}
+
 if ($args.Length -eq 0)
 {
 	echo "Command list:"
@@ -19,22 +39,14 @@ else
 
 if ($command -eq "all")
 {
-	$msBuildVersions = @("4.0")
-	foreach ($msBuildVersion in $msBuildVersions)
+	$msBuild = FindMSBuild
+	if ($msBuild -eq $null)
 	{
-		$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\{0}" -f $msBuildVersion
-		$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
-		if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
-		{
-			continue
-		}
-		$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
-		if (-not (Test-Path $path))
-		{
-			continue
-		}
-		$proc = Start-Process $path /t:Rebuild -NoNewWindow -PassThru -Wait
-		$proc.WaitForExit()
+		echo "Unable to locate an appropriate version of MSBuild."
+	}
+	else
+	{
+		$proc = Start-Process $msBuild /t:Rebuild -NoNewWindow -PassThru -Wait
 		if ($proc.ExitCode -ne 0)
 		{
 			echo "Build failed. If just the development tools failed to build, try installing Visual Studio. You may also still be able to run the game."
@@ -43,21 +55,23 @@ if ($command -eq "all")
 		{
 			echo "Build succeeded."
 		}
-		break
-	}
-	if ($proc -eq $null)
-	{
-		echo "Unable to locate an appropriate version of MSBuild."
 	}
 }
 elseif ($command -eq "clean")
 {
-	rm *.pdb
-	rm *.config
-	rm *.exe
-	rm *.dll
-	rm mods/*/*.dll
-	echo "Clean complete."
+	$msBuild = FindMSBuild
+	if ($msBuild -eq $null)
+	{
+		echo "Unable to locate an appropriate version of MSBuild."
+	}
+	else
+	{
+		$proc = Start-Process $msBuild /t:Clean -NoNewWindow -PassThru -Wait
+		rm *.dll # delete third party dependencies
+		rm *.config
+		rm mods/*/*.dll
+		echo "Clean complete."
+	}
 }
 elseif ($command -eq "version")
 {
