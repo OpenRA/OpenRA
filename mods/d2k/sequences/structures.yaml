@@ -309,19 +309,24 @@ starporta:
 		Start: 2671
 		ZOffset: -1c511
 		Offset: -48,64
-	active: DATA
-		Start: 2671
-		Length: 1
-		ZOffset: -1c511
-		Offset: -48,64
 	damaged-idle: DATA
 		Start: 2672
 		ZOffset: -1c511
 		Offset: -48,64
-	damaged-active: DATA
-		Start: 2672
+	active: DATA
+		Start: 4723
+		Length: 23
 		ZOffset: -1c511
 		Offset: -48,64
+		BlendMode: Alpha
+		Tick: 200
+	damaged-active: DATA
+		Start: 4723
+		Length: 23
+		ZOffset: -1c511
+		Offset: -48,64
+		BlendMode: Alpha
+		Tick: 200
 	make: DATA
 		Start: 4347
 		Length: 11
@@ -806,19 +811,24 @@ starporth:
 		Start: 2831
 		ZOffset: -1c511
 		Offset: -48,64
-	active: DATA
-		Start: 2831
-		Length: 1
-		Offset: -48,64
-		ZOffset: -1c511
 	damaged-idle: DATA
 		Start: 2832
 		Offset: -48,64
 		ZOffset: -1c511
-	damaged-active: DATA
-		Start: 2832
-		Offset: -48,64
+	active: DATA
+		Start: 4723
+		Length: 23
 		ZOffset: -1c511
+		Offset: -48,64
+		BlendMode: Alpha
+		Tick: 200
+	damaged-active: DATA
+		Start: 4723
+		Length: 23
+		ZOffset: -1c511
+		Offset: -48,64
+		BlendMode: Alpha
+		Tick: 200
 	make: DATA
 		Start: 4347
 		Length: 11
@@ -1212,19 +1222,24 @@ starporto:
 		Start: 2991
 		Offset: -48,64
 		ZOffset: -1c511
-	active: DATA
-		Start: 2991
-		Length: 1
-		Offset: -48,64
-		ZOffset: -1c511
 	damaged-idle: DATA
 		Start: 2992
 		Offset: -48,64
 		ZOffset: -1c511
-	damaged-active: DATA
-		Start: 2992
-		Offset: -48,64
+	active: DATA
+		Start: 4723
+		Length: 23
 		ZOffset: -1c511
+		Offset: -48,64
+		BlendMode: Alpha
+		Tick: 200
+	damaged-active: DATA
+		Start: 4723
+		Length: 23
+		ZOffset: -1c511
+		Offset: -48,64
+		BlendMode: Alpha
+		Tick: 200
 	make: DATA
 		Start: 4347
 		Length: 11
@@ -1600,19 +1615,24 @@ starportc: # TODO: unused
 		Start: 2999
 		Offset: -48,64
 		ZOffset: -1c511
-	active: DATA
-		Start: 2999
-		Length: 1
-		Offset: -48,64
-		ZOffset: -1c511
 	damaged-idle: DATA
 		Start: 3000
 		Offset: -48,64
 		ZOffset: -1c511
-	damaged-active: DATA
-		Start: 3000
-		Offset: -48,64
+	active: DATA
+		Start: 4723
+		Length: 23
 		ZOffset: -1c511
+		Offset: -48,64
+		BlendMode: Alpha
+		Tick: 200
+	damaged-active: DATA
+		Start: 4723
+		Length: 23
+		ZOffset: -1c511
+		Offset: -48,64
+		BlendMode: Alpha
+		Tick: 200
 	make: DATA
 		Start: 4347
 		Length: 11

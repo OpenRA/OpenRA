@@ -90,6 +90,7 @@
     <Compile Include="Render\WithBuildingPlacedOverlayInfo.cs" />
     <Compile Include="Render\WithProductionOverlay.cs" />
     <Compile Include="Render\WithDockingOverlay.cs" />
+    <Compile Include="Render\WithDeliveryOverlay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

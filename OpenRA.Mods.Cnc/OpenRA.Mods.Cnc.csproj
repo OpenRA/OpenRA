@@ -102,6 +102,7 @@
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
     <Compile Include="Widgets\ProductionTypeButtonWidget.cs" />
     <Compile Include="Widgets\Logic\CncInstallMusicLogic.cs" />
+    <Compile Include="WithDeliveryAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

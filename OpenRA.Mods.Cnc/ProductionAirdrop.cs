@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Cnc
 			// Assume a single exit point for simplicity
 			var exit = self.Info.Traits.WithInterface<ExitInfo>().First();
 
-			var rb = self.Trait<RenderBuilding>();
-			rb.PlayCustomAnimRepeating(self, "active");
+			foreach (var tower in self.TraitsImplementing<INotifyDelivery>())
+				tower.IncomingDelivery(self);
 
 			var actorType = (Info as ProductionAirdropInfo).ActorType;
 
@@ -67,7 +67,8 @@ namespace OpenRA.Mods.Cnc
 					if (!self.IsInWorld || self.IsDead())
 						return;
 
-					rb.PlayCustomAnimRepeating(self, "idle");
+					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
+						cargo.Delivered(self);
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit));
 					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", (Info as ProductionAirdropInfo).ReadyAudio, self.Owner.Country.Race);
 				}));
