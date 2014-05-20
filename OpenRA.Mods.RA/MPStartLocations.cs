@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 				var client = world.LobbyInfo.ClientInSlot(kv.Key);
 				var spid = (client == null || client.SpawnPoint == 0)
 					? ChooseSpawnPoint(world, available, taken)
-				    : spawns[client.SpawnPoint-1];
+					: spawns[client.SpawnPoint-1];
 
 				Start.Add(player, spid);
 

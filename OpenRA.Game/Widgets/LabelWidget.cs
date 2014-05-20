@@ -58,7 +58,7 @@ namespace OpenRA.Widgets
 		{
 			SpriteFont font;
 			if (!Game.Renderer.Fonts.TryGetValue(Font, out font))
-				throw new ArgumentException("Request font '{0}' was not found.".F(Font));
+				throw new ArgumentException("Requested font '{0}' was not found.".F(Font));
 
 			var text = GetText();
 			if (text == null)

@@ -23,7 +23,7 @@ using OpenRA.Traits;
 namespace OpenRA
 {
 	public enum PowerState { Normal, Low, Critical };
-	public enum WinState { Won, Lost, Undefined };
+	public enum WinState { Undefined, Won, Lost };
 
 	public class Player :  IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{

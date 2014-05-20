@@ -308,9 +308,7 @@ namespace OpenRA
 			var pi = gameInfo.GetPlayer(player);
 			if (pi != null)
 			{
-				pi.Outcome = player.WinState == WinState.Lost ? GameInformation.GameOutcome.Defeat
-							: player.WinState == WinState.Won ? GameInformation.GameOutcome.Victory
-							: GameInformation.GameOutcome.Undefined;
+				pi.Outcome = player.WinState;
 				pi.OutcomeTimestampUtc = DateTime.UtcNow;
 			}
 		}

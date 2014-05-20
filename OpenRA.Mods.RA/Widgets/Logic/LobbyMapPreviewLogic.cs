@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var preview = available.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Preview = () => lobby.Map;
 				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
-				preview.SpawnOccupants = () => LobbyUtils.GetSpawnClients(orderManager.LobbyInfo, lobby.Map);
+				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
 
 				var title = available.GetOrNull<LabelWidget>("MAP_TITLE");
 				if (title != null)
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var preview = invalid.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Preview = () => lobby.Map;
 				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
-				preview.SpawnClients = () => LobbyUtils.GetSpawnClients(orderManager.LobbyInfo, lobby.Map);
+				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
 
 				var title = invalid.GetOrNull<LabelWidget>("MAP_TITLE");
 				if (title != null)
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var preview = download.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Preview = () => lobby.Map;
 				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
-				preview.SpawnOccupants = () => LobbyUtils.GetSpawnClients(orderManager.LobbyInfo, lobby.Map);
+				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
 
 				var title = download.GetOrNull<LabelWidget>("MAP_TITLE");
 				if (title != null)
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var preview = progress.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Preview = () => lobby.Map;
 				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
-				preview.SpawnOccupants = () => LobbyUtils.GetSpawnClients(orderManager.LobbyInfo, lobby.Map);
+				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
 
 				var title = progress.GetOrNull<LabelWidget>("MAP_TITLE");
 				if (title != null)
