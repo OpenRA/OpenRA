@@ -515,6 +515,32 @@ GASPOT:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 
+GALITE:
+	Inherits: ^Building
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 10
+		Owner: gdi, nod
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Lamp
+	Building:
+		Power: 0
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+		HasMakeAnimation: no
+		Palette: terrain
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 0c0
+#	WithIdleOverlay@LIGHTING:
+#		Sequence: lighting
+
 GARADR:
 	Inherits: ^Building
 	Buildable:
