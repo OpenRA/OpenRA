@@ -33,21 +33,21 @@ namespace OpenRA.FileFormats
 			GameInfo = info;
 		}
 
-		ReplayMetadata(BinaryReader reader, string path)
+		ReplayMetadata(FileStream fs, string path)
 		{
 			FilePath = path;
 
 			// Read start marker
-			if (reader.ReadInt32() != MetaStartMarker)
+			if (fs.ReadInt32() != MetaStartMarker)
 				throw new InvalidOperationException("Expected MetaStartMarker but found an invalid value.");
 
 			// Read version
-			var version = reader.ReadInt32();
+			var version = fs.ReadInt32();
 			if (version != MetaVersion)
 				throw new NotSupportedException("Metadata version {0} is not supported".F(version));
 
 			// Read game info (max 100K limit as a safeguard against corrupted files)
-			string data = ReadUtf8String(reader, 1024 * 100);
+			string data = fs.ReadString(Encoding.UTF8, 1024 * 100);
 			GameInfo = GameInformation.Deserialize(data);
 		}
 
@@ -61,7 +61,8 @@ namespace OpenRA.FileFormats
 			int dataLength = 0;
 			{
 				// Write lobby info data
-				dataLength += WriteUtf8String(writer, GameInfo.Serialize());
+				writer.Flush();
+				dataLength += writer.BaseStream.WriteString(Encoding.UTF8, GameInfo.Serialize());
 			}
 
 			// Write total length & end marker
@@ -93,25 +94,22 @@ namespace OpenRA.FileFormats
 			try
 			{
 				fs.Seek(-(4 + 4), SeekOrigin.End);
-				using (var reader = new BinaryReader(fs))
+				var dataLength = fs.ReadInt32();
+				if (fs.ReadInt32() == MetaEndMarker)
 				{
-					var dataLength = reader.ReadInt32();
-					if (reader.ReadInt32() == MetaEndMarker)
+					// go back by (end marker + length storage + data + version + start marker) bytes
+					fs.Seek(-(4 + 4 + dataLength + 4 + 4), SeekOrigin.Current);
+					try
 					{
-						// go back by (end marker + length storage + data + version + start marker) bytes
-						fs.Seek(-(4 + 4 + dataLength + 4 + 4), SeekOrigin.Current);
-						try
-						{
-							return new ReplayMetadata(reader, path);
-						}
-						catch (InvalidOperationException ex)
-						{
-							Log.Write("debug", ex.ToString());
-						}
-						catch (NotSupportedException ex)
-						{
-							Log.Write("debug", ex.ToString());
-						}
+						return new ReplayMetadata(fs, path);
+					}
+					catch (InvalidOperationException ex)
+					{
+						Log.Write("debug", ex.ToString());
+					}
+					catch (NotSupportedException ex)
+					{
+						Log.Write("debug", ex.ToString());
 					}
 				}
 			}
@@ -121,30 +119,6 @@ namespace OpenRA.FileFormats
 			}
 
 			return null;
-		}
-
-		static int WriteUtf8String(BinaryWriter writer, string text)
-		{
-			byte[] bytes;
-
-			if (!string.IsNullOrEmpty(text))
-				bytes = Encoding.UTF8.GetBytes(text);
-			else
-				bytes = new byte[0];
-
-			writer.Write(bytes.Length);
-			writer.Write(bytes);
-
-			return 4 + bytes.Length;
-		}
-
-		static string ReadUtf8String(BinaryReader reader, int maxLength)
-		{
-			var length = reader.ReadInt32();
-			if (length > maxLength)
-				throw new InvalidOperationException("The length of the string ({0}) is longer than the maximum allowed ({1}).".F(length, maxLength));
-
-			return Encoding.UTF8.GetString(reader.ReadBytes(length));
 		}
 	}
 }

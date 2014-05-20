@@ -64,6 +64,11 @@ namespace OpenRA
 			return BitConverter.ToInt32(s.ReadBytes(4), 0);
 		}
 
+		public static void Write(this Stream s, int value)
+		{
+			s.Write(BitConverter.GetBytes(value));
+		}
+
 		public static float ReadFloat(this Stream s)
 		{
 			return BitConverter.ToSingle(s.ReadBytes(4), 0);
@@ -133,6 +138,33 @@ namespace OpenRA
 						yield return line;
 				}
 			}
+		}
+
+		// The string is assumed to be length-prefixed, as written by WriteString()
+		public static string ReadString(this Stream s, Encoding encoding, int maxLength)
+		{
+			var length = s.ReadInt32();
+			if (length > maxLength)
+				throw new InvalidOperationException("The length of the string ({0}) is longer than the maximum allowed ({1}).".F(length, maxLength));
+
+			return encoding.GetString(s.ReadBytes(length));
+		}
+
+		// Writes a length-prefixed string using the specified encoding and returns
+		// the number of bytes written.
+		public static int WriteString(this Stream s, Encoding encoding, string text)
+		{
+			byte[] bytes;
+
+			if (!string.IsNullOrEmpty(text))
+				bytes = encoding.GetBytes(text);
+			else
+				bytes = new byte[0];
+
+			s.Write(bytes.Length);
+			s.Write(bytes);
+
+			return 4 + bytes.Length;
 		}
 	}
 }
