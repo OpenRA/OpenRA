@@ -48,13 +48,15 @@ namespace OpenRA.Mods.RA
 		[Desc("Amount of time after detonation to remove the camera")]
 		public readonly int CameraRemoveDelay = 25;
 
-		public WRange SmudgeRange;
-
-		protected readonly double[] DamagePercentages = { 0.5, 0.25, 0.125, 0.0625 };
+		public readonly string DisplayRing = "0";
 
 		public override object Create(ActorInitializer init) {
-			DisplayRanges = Combat.FindDamageThresholds(Rules.Weapons[MissileWeapon.ToLowerInvariant()].Warheads, DamagePercentages).ToArray();
-			SmudgeRange = Combat.FindSmudgeRange(Rules.Weapons[MissileWeapon.ToLowerInvariant()].Warheads);
+			double damage;
+			if (DisplayRing == "Smudge")
+				RingRangeP = Combat.FindSmudgeRange(init.self.World.Map.Rules.Weapons[MissileWeapon.ToLowerInvariant()].Warheads);
+			else if (!WRange.TryParse(DisplayRing, out RingRangeP))
+				if (DisplayRing.Contains('%') && double.TryParse(DisplayRing.TrimEnd(new char[] { '%' }), out damage))
+					RingRangeP = Combat.FindDamageRange(init.self.World.Map.Rules.Weapons[MissileWeapon.ToLowerInvariant()].Warheads, damage / 100);
 			return new NukePower(init.self, this);
 		}
 	}
@@ -161,19 +163,13 @@ namespace OpenRA.Mods.RA
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
-				(power.Info as NukePowerInfo).DisplayRanges.Do(range => wr.DrawRangeCircleWithContrast(
-					xy.CenterPosition,
-					range,
-					System.Drawing.Color.FromArgb(128, System.Drawing.Color.Red),
-					System.Drawing.Color.FromArgb(96, System.Drawing.Color.Black)
-				));
-				wr.DrawRangeCircleWithContrast(
-					xy.CenterPosition,
-					(power.Info as NukePowerInfo).SmudgeRange,
-					System.Drawing.Color.FromArgb(128, System.Drawing.Color.Yellow),
-					System.Drawing.Color.FromArgb(96, System.Drawing.Color.Black)
-				);
+				if (power.Info.RingRange.Range > 0)
+					wr.DrawRangeCircleWithContrast(
+						wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos().CenterPosition,
+						power.Info.RingRange,
+						System.Drawing.Color.FromArgb(128, System.Drawing.Color.Red),
+						System.Drawing.Color.FromArgb(96, System.Drawing.Color.Black)
+					);
 			}
 			public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 		}
