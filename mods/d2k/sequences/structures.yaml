@@ -219,17 +219,17 @@ repaira:
 		Start: 2571
 		Offset: -48,48
 		ZOffset: -1c511
-#	active: DATA # TODO: overlay
-#		Start: 4746
-#		Length: 14
-#		Offset: -48,48
-#		ZOffset: -1c511
-#	damaged-active: DATA # TODO: overlay
-#		Start: 4746
-#		Length: 14
-#		Tick: 60
-#		Offset: -48,48
-#		ZOffset: -1c511
+	active: DATA
+		Start: 4746
+		Length: 14
+		Offset: -48,48
+		ZOffset: -1c511
+	damaged-active: DATA
+		Start: 4746
+		Length: 14
+		Tick: 60
+		Offset: -48,48
+		ZOffset: -1c511
 	damaged-idle: DATA
 		Start: 2572
 		Offset: -48,48
@@ -252,17 +252,17 @@ repairh:
 		Start: 2731
 		Offset: -48,48
 		ZOffset: -1c511
-#	active: DATA # TODO: overlay
-#		Start: 4746
-#		Length: 14
-#		Offset: -48,48
-#		ZOffset: -1c511
-#	damaged-active: DATA # TODO: overlay
-#		Start: 4746
-#		Length: 14
-#		Tick: 60
-#		Offset: -48,48
-#		ZOffset: -1c511
+	active: DATA
+		Start: 4746
+		Length: 14
+		Offset: -48,48
+		ZOffset: -1c511
+	damaged-active: DATA
+		Start: 4746
+		Length: 14
+		Tick: 60
+		Offset: -48,48
+		ZOffset: -1c511
 	damaged-idle: DATA
 		Start: 2732
 		Offset: -48,48
@@ -285,17 +285,17 @@ repairo:
 		Start: 2891
 		Offset: -48,48
 		ZOffset: -1c511
-#	active: DATA # TODO: overlay
-#		Start: 4746
-#		Length: 14
-#		Offset: -48,48
-#		ZOffset: -1c511
-#	damaged-active: DATA # TODO: overlay
-#		Start: 4746
-#		Length: 14
-#		Tick: 60
-#		Offset: -48,48
-#		ZOffset: -1c511
+	active: DATA
+		Start: 4746
+		Length: 14
+		Offset: -48,48
+		ZOffset: -1c511
+	damaged-active: DATA
+		Start: 4746
+		Length: 14
+		Tick: 60
+		Offset: -48,48
+		ZOffset: -1c511
 	damaged-idle: DATA
 		Start: 2892
 		Offset: -48,48
