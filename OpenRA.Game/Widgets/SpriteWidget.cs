@@ -30,8 +30,8 @@ namespace OpenRA.Widgets
 		}
 
 		protected SpriteWidget(SpriteWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			Palette = other.Palette;
 			GetPalette = other.GetPalette;
 			GetSprite = other.GetSprite;

@@ -20,8 +20,8 @@ namespace OpenRA.Widgets
 		public RGBASpriteWidget() { }
 
 		protected RGBASpriteWidget(RGBASpriteWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			GetSprite = other.GetSprite;
 		}
 

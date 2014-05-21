@@ -35,8 +35,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public ColorMixerWidget() {}
 		public ColorMixerWidget(ColorMixerWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			OnChange = other.OnChange;
 			H = other.H;
 			S = other.S;

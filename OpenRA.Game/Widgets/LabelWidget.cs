@@ -40,8 +40,8 @@ namespace OpenRA.Widgets
 		}
 
 		protected LabelWidget(LabelWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			Text = other.Text;
 			Align = other.Align;
 			Font = other.Font;

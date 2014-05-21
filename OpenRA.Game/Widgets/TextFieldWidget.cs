@@ -42,16 +42,16 @@ namespace OpenRA.Widgets
 		public Color TextColorInvalid = ChromeMetrics.Get<Color>("TextfieldColorInvalid");
 
 		public TextFieldWidget() {}
-		protected TextFieldWidget(TextFieldWidget widget)
-			: base(widget)
+		protected TextFieldWidget(TextFieldWidget other)
 		{
-			Text = widget.Text;
-			MaxLength = widget.MaxLength;
-			Font = widget.Font;
-			TextColor = widget.TextColor;
-			TextColorDisabled = widget.TextColorDisabled;
-			TextColorInvalid = widget.TextColorInvalid;
-			VisualHeight = widget.VisualHeight;
+			CopyOf(this, other);
+			Text = other.Text;
+			MaxLength = other.MaxLength;
+			Font = other.Font;
+			TextColor = other.TextColor;
+			TextColorDisabled = other.TextColorDisabled;
+			TextColorInvalid = other.TextColorInvalid;
+			VisualHeight = other.VisualHeight;
 		}
 
 		public override bool YieldKeyboardFocus()

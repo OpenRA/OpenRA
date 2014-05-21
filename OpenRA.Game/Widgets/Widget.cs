@@ -147,24 +147,25 @@ namespace OpenRA.Widgets
 		public Widget() { IsVisible = () => Visible; }
 		public readonly List<Widget> Children = new List<Widget>();
 
-		public Widget(Widget widget)
+		protected static void CopyOf(Widget target, Widget source)
 		{
-			Id = widget.Id;
-			X = widget.X;
-			Y = widget.Y;
-			Width = widget.Width;
-			Height = widget.Height;
-			Logic = widget.Logic;
-			Visible = widget.Visible;
+			target.Id = source.Id;
+			target.X = source.X;
+			target.Y = source.Y;
+			target.Width = source.Width;
+			target.Height = source.Height;
+			target.Logic = source.Logic;
+			target.Visible = source.Visible;
 
-			Bounds = widget.Bounds;
-			Parent = widget.Parent;
+			target.Bounds = source.Bounds;
+			target.Parent = source.Parent;
 
-			IsVisible = widget.IsVisible;
-			IgnoreChildMouseOver = widget.IgnoreChildMouseOver;
+			target.IsVisible = source.IsVisible;
+			target.IgnoreChildMouseOver = source.IgnoreChildMouseOver;
 
-			foreach (var child in widget.Children)
-				AddChild(child.Clone());
+			target.RemoveChildren();
+			foreach (var child in source.Children)
+				target.AddChild(child.Clone());
 		}
 
 		public virtual Widget Clone()
@@ -467,7 +468,10 @@ namespace OpenRA.Widgets
 	{
 		public ContainerWidget() { IgnoreMouseOver = true; }
 		public ContainerWidget(ContainerWidget other)
-			: base(other) { IgnoreMouseOver = true; }
+		{
+			CopyOf(this, other);
+			IgnoreMouseOver = true;
+		}
 
 		public override string GetCursor(int2 pos) { return null; }
 		public override Widget Clone() { return new ContainerWidget(this); }

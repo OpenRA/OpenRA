@@ -38,8 +38,8 @@ namespace OpenRA.Mods.RA.Widgets
 		}
 
 		protected ObserverProductionIconsWidget(ObserverProductionIconsWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			GetPlayer = other.GetPlayer;
 			world = other.world;
 			worldRenderer = other.worldRenderer;

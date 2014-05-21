@@ -152,8 +152,8 @@ namespace OpenRA.Widgets
 		public event Action<MouseInput> OnMouseDown = _ => {};
 		public MaskWidget() { }
 		public MaskWidget(MaskWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			OnMouseDown = other.OnMouseDown;
 		}
 
