@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 		{
 			var srcOverride = info.Value;
 			Name = name;
-			var d = info.NodesDict;
+			var d = info.ToDictionary();
 			var offset = float2.Zero;
 			var blendMode = BlendMode.Alpha;
 

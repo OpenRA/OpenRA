@@ -56,9 +56,9 @@ namespace OpenRA
 
 		static object LoadTiles(MiniYaml y)
 		{
-			return y.NodesDict["Tiles"].NodesDict.ToDictionary(
-				t => byte.Parse(t.Key),
-				t => t.Value.Value);
+			return y.ToDictionary()["Tiles"].ToDictionary(
+				name => byte.Parse(name),
+				my => my.Value);
 		}
 
 		static readonly string[] Fields = { "Id", "Image", "Frames", "Size", "PickAny" };
@@ -105,11 +105,11 @@ namespace OpenRA
 			FieldLoader.Load(this, yaml["General"]);
 
 			// TerrainTypes
-			Terrain = yaml["Terrain"].NodesDict.Values
+			Terrain = yaml["Terrain"].ToDictionary().Values
 				.Select(y => new TerrainTypeInfo(y)).ToDictionary(t => t.Type);
 
 			// Templates
-			Templates = yaml["Templates"].NodesDict.Values
+			Templates = yaml["Templates"].ToDictionary().Values
 				.Select(y => new TileTemplate(y)).ToDictionary(t => t.Id);
 		}
 

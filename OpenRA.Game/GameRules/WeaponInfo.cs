@@ -73,10 +73,9 @@ namespace OpenRA.GameRules
 
 		static object LoadVersus(MiniYaml y)
 		{
-			return y.NodesDict.ContainsKey("Versus")
-				? y.NodesDict["Versus"].NodesDict.ToDictionary(
-					a => a.Key,
-					a => FieldLoader.GetValue<float>("(value)", a.Value.Value))
+			var nd = y.ToDictionary();
+			return nd.ContainsKey("Versus")
+				? nd["Versus"].ToDictionary(my => FieldLoader.GetValue<float>("(value)", my.Value))
 				: new Dictionary<string, float>();
 		}
 	}
@@ -126,7 +125,7 @@ namespace OpenRA.GameRules
 		static object LoadProjectile(MiniYaml yaml)
 		{
 			MiniYaml proj;
-			if (!yaml.NodesDict.TryGetValue("Projectile", out proj))
+			if (!yaml.ToDictionary().TryGetValue("Projectile", out proj))
 				return null;
 			var ret = Game.CreateObject<IProjectileInfo>(proj.Value + "Info");
 			FieldLoader.Load(ret, proj);

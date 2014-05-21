@@ -34,10 +34,11 @@ namespace OpenRA
 					continue;
 
 				var yaml = new MiniYaml(null, MiniYaml.FromFile(yamlPath));
-				if (!yaml.NodesDict.ContainsKey("Metadata"))
+				var nd = yaml.ToDictionary();
+				if (!nd.ContainsKey("Metadata"))
 					continue;
 
-				var mod = FieldLoader.Load<ModMetadata>(yaml.NodesDict["Metadata"]);
+				var mod = FieldLoader.Load<ModMetadata>(nd["Metadata"]);
 				mod.Id = m;
 
 				ret.Add(m, mod);
