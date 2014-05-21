@@ -122,21 +122,26 @@ namespace OpenRA.Mods.RA.Move
 			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
 				return true;
 
-			var blockingActors = world.ActorMap.GetUnitsAt(cell)
-				.Where(x => x != ignoreActor)
-				// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-				.Where(x => blockedByMovers || (self == null || self.Owner.Stances[x.Owner] != Stance.Ally || !IsMovingInMyDirection(self, x)))
-				.ToList();
-
-			if (checkTransientActors && blockingActors.Count > 0)
+			if (checkTransientActors)
 			{
-				// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
-				if (self == null || Crushes == null)
-					return false;
+				var blockingActorsQuery = world.ActorMap.GetUnitsAt(cell)
+					.Where(x => x != ignoreActor);
+				// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
+				if (!blockedByMovers && self != null)
+					blockingActorsQuery = blockingActorsQuery
+						.Where(x => self.Owner.Stances[x.Owner] != Stance.Ally || !IsMovingInMyDirection(self, x));
+				var blockingActors = blockingActorsQuery.ToList();
 
-				if (blockingActors.Any(a => !(a.HasTrait<ICrushable>() &&
-											 a.TraitsImplementing<ICrushable>().Any(b => b.CrushableBy(Crushes, self.Owner)))))
-					return false;
+				if (blockingActors.Count > 0)
+				{
+					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
+					if (self == null || Crushes == null)
+						return false;
+
+					if (blockingActors.Any(a => !(a.HasTrait<ICrushable>() &&
+												 a.TraitsImplementing<ICrushable>().Any(b => b.CrushableBy(Crushes, self.Owner)))))
+						return false;
+				}
 			}
 
 			return true;

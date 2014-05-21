@@ -22,7 +22,7 @@ namespace OpenRA.Traits
 
 	public class FrozenActor
 	{
-		public readonly IEnumerable<CPos> Footprint;
+		public readonly CPos[] Footprint;
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
 		readonly Actor actor;
@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 		public FrozenActor(Actor self, IEnumerable<CPos> footprint)
 		{
 			actor = self;
-			Footprint = footprint;
+			Footprint = footprint.ToArray();
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds.Value;
 		}
