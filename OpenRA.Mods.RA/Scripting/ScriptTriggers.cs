@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		bool disposed;
 
-		protected void Dispose(bool disposing)
+		protected virtual void Dispose(bool disposing)
 		{
 			if (disposed)
 				return;
@@ -125,12 +125,6 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
-		}
-
-		~ScriptTriggers()
-		{
-			// Dispose unmanaged resources only
-			Dispose(false);
 		}
 	}
 }

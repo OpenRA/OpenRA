@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Network
 {
-	class ReplayRecorderConnection : IConnection
+	sealed class ReplayRecorderConnection : IConnection
 	{
 		public ReplayMetadata Metadata;
 

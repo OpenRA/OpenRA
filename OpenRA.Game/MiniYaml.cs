@@ -174,13 +174,11 @@ namespace OpenRA
 
 		public static List<MiniYamlNode> FromFileInPackage(string path)
 		{
-			StreamReader reader = new StreamReader(GlobalFileSystem.Open(path));
 			List<string> lines = new List<string>();
-
-			while (!reader.EndOfStream)
-				lines.Add(reader.ReadLine());
-			reader.Close();
-
+			using (var stream = GlobalFileSystem.Open(path))
+			using (var reader = new StreamReader(stream))
+				while (!reader.EndOfStream)
+					lines.Add(reader.ReadLine());
 			return FromLines(lines.ToArray(), path);
 		}
 

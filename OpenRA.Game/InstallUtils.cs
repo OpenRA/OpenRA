@@ -93,8 +93,11 @@ namespace OpenRA
 			List<string> extracted = new List<string>();
 			try
 			{
-				var z = new ZipInputStream(File.OpenRead(zipFile));
-				z.ExtractZip(dest, extracted, s => onProgress("Extracting " + s));
+				using (var stream = File.OpenRead(zipFile))
+				{
+					var z = new ZipInputStream(stream);
+					z.ExtractZip(dest, extracted, s => onProgress("Extracting " + s));
+				}
 			}
 			catch (SharpZipBaseException)
 			{

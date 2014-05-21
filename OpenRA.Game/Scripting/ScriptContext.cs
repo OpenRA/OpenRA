@@ -196,7 +196,7 @@ namespace OpenRA.Scripting
 				tick.Call().Dispose();
 		}
 
-		protected void Dispose(bool disposing)
+		protected virtual void Dispose(bool disposing)
 		{
 			if (disposed)
 				return;
@@ -211,12 +211,6 @@ namespace OpenRA.Scripting
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
-		}
-
-		~ScriptContext()
-		{
-			// Dispose unmanaged resources only
-			Dispose(false);
 		}
 
 		static Type[] ExtractRequiredTypes(Type t)

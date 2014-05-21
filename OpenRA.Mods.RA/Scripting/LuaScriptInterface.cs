@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public object Create(ActorInitializer init) { return new LuaScriptInterface(this); }
 	}
 
-	public class LuaScriptInterface : IWorldLoaded, ITick
+	public class LuaScriptInterface : IWorldLoaded, ITick, IDisposable
 	{
 		World world;
 		SpawnMapActors sma;
@@ -89,6 +89,20 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			using (new PerfSample("tick_lua"))
 				context.InvokeLuaFunction("Tick");
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				context.Dispose();
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		[LuaGlobal]
