@@ -37,6 +37,7 @@ return {
   end,
   isfndef = isfndef,
   isdecindent = function(str)
+    str = str:gsub('%-%-%[=*%[.*%]=*%]',''):gsub('%-%-.*','')
     -- this handles three different cases:
     local term = str:match("^%s*(%w+)%s*$") or str:match("^%s*(elseif)%s")
     -- (1) 'end', 'elseif', 'else'
@@ -49,6 +50,9 @@ return {
     return match and 1 or 0, match and term and 1 or 0
   end,
   isincindent = function(str)
+    str = (str:gsub('%-%-%[=*%[.*%]=*%]',''):gsub('%-%-.*','')
+      :gsub("'.-\\'","'"):gsub("'.-'","")
+      :gsub('".-\\"','"'):gsub('".-"',''))
     local term = str:match("^%s*(%w+)%W*")
     term = term and incindent[term] and 1 or 0
     str = str:gsub("'.-'",""):gsub('".-"','')
