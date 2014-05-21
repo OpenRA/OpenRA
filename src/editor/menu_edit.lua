@@ -23,27 +23,23 @@ local editMenu = wx.wxMenu{
   { ID_AUTOCOMPLETE, TR("Complete &Identifier")..KSC(ID_AUTOCOMPLETE), TR("Complete the current identifier") },
   { ID_AUTOCOMPLETEENABLE, TR("Auto Complete Identifiers")..KSC(ID_AUTOCOMPLETEENABLE), TR("Auto complete while typing"), wx.wxITEM_CHECK },
   { },
-  { },
+}
+
+editMenu:Append(ID_SOURCE, TR("Source"), wx.wxMenu{
   { ID_COMMENT, TR("C&omment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
   { ID_FOLD, TR("&Fold/Unfold All")..KSC(ID_FOLD), TR("Fold or unfold all code folds") },
   { ID_SORT, TR("&Sort")..KSC(ID_SORT), TR("Sort selected lines") },
-  { },
-}
-
-local bookmarkmenu = wx.wxMenu{
-  {ID_BOOKMARKTOGGLE, TR("Toggle Bookmark")..KSC(ID_BOOKMARKTOGGLE)},
-  {ID_BOOKMARKNEXT, TR("Go To Next Bookmark")..KSC(ID_BOOKMARKNEXT)},
-  {ID_BOOKMARKPREV, TR("Go To Previous Bookmark")..KSC(ID_BOOKMARKPREV)},
-}
-local bookmark = wx.wxMenuItem(editMenu, ID_BOOKMARK,
-  TR("Bookmark")..KSC(ID_BOOKMARK), TR("Bookmark"), wx.wxITEM_NORMAL, bookmarkmenu)
-editMenu:Insert(12, bookmark)
-
-local preferencesMenu = wx.wxMenu{
-  {ID_PREFERENCESSYSTEM, TR("Settings: System")..KSC(ID_PREFERENCESSYSTEM)},
-  {ID_PREFERENCESUSER, TR("Settings: User")..KSC(ID_PREFERENCESUSER)},
-}
-editMenu:Append(ID_PREFERENCES, TR("Preferences"), preferencesMenu)
+})
+editMenu:Append(ID_BOOKMARK, TR("Bookmark"), wx.wxMenu{
+  { ID_BOOKMARKTOGGLE, TR("Toggle Bookmark")..KSC(ID_BOOKMARKTOGGLE) },
+  { ID_BOOKMARKNEXT, TR("Go To Next Bookmark")..KSC(ID_BOOKMARKNEXT) },
+  { ID_BOOKMARKPREV, TR("Go To Previous Bookmark")..KSC(ID_BOOKMARKPREV) },
+})
+editMenu:AppendSeparator()
+editMenu:Append(ID_PREFERENCES, TR("Preferences"), wx.wxMenu {
+  { ID_PREFERENCESSYSTEM, TR("Settings: System")..KSC(ID_PREFERENCESSYSTEM) },
+  { ID_PREFERENCESUSER, TR("Settings: User")..KSC(ID_PREFERENCESUSER) },
+})
 menuBar:Append(editMenu, TR("&Edit"))
 
 editMenu:Check(ID_AUTOCOMPLETEENABLE, ide.config.autocomplete)
