@@ -144,15 +144,11 @@ frame:Connect(ID_SHOWTOOLTIP, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_SHOWTOOLTIP, wx.wxEVT_UPDATE_UI, onUpdateUIisEditor)
 
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    EditorAutoComplete(GetEditor())
-  end)
+  function (event) EditorAutoComplete(GetEditor()) end)
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 frame:Connect(ID_AUTOCOMPLETEENABLE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    ide.config.autocomplete = event:IsChecked()
-  end)
+  function (event) ide.config.autocomplete = event:IsChecked() end)
 
 frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
@@ -216,28 +212,27 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
   end)
 frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
+local function processSelection(editor, func)
+  local text = editor:GetSelectedText()
+  local wholeline = text:find('\n$')
+  local buf = {}
+  for line in string.gmatch(text..(wholeline and '' or '\n'), "(.-\r?\n)") do
+    table.insert(buf, line)
+  end
+  if #buf > 0 then
+    if func then func(buf) end
+    -- add new line at the end if it was there
+    local text = table.concat(buf, ''):gsub('(\r?\n)$', wholeline and '%1' or '')
+    editor:ReplaceSelection(text)
+  end
+end
+
 frame:Connect(ID_SORT, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    local editor = GetEditor()
-    local buf = {}
-    for line in string.gmatch(editor:GetSelectedText()..'\n', "(.-)\r?\n") do
-      table.insert(buf, line)
-    end
-    if #buf > 0 then
-      local newline
-      if #(buf[#buf]) == 0 then newline = table.remove(buf) end
-      table.sort(buf)
-      -- add new line at the end if it was there
-      if newline then table.insert(buf, newline) end
-      editor:ReplaceSelection(table.concat(buf,"\n"))
-    end
-  end)
+  function (event) processSelection(GetEditor(), table.sort) end)
 frame:Connect(ID_SORT, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 frame:Connect(ID_FOLD, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    FoldSome()
-  end)
+  function (event) FoldSome() end)
 frame:Connect(ID_FOLD, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 local BOOKMARK_MARKER = StylesGetMarker("bookmark")
