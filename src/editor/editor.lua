@@ -88,8 +88,8 @@ local function updateBraceMatch(editor)
   if (pos) then
     -- don't match brackets in markup comments
     local style = bit.band(editor:GetStyleAt(pos), 31)
-    if MarkupIsSpecial and MarkupIsSpecial(style)
-      or editor.spec.iscomment[style] then return end
+    if (MarkupIsSpecial and MarkupIsSpecial(style)
+      or editor.spec.iscomment[style]) then return end
 
     local pos2 = editor:BraceMatch(pos)
     if (pos2 == wxstc.wxSTC_INVALID_POSITION) then
@@ -484,7 +484,8 @@ local function indicateFindInstances(editor, name, pos)
       if this and token.fpos > pos and this == token.at+1 then break end
 
       if #instances > 1 and instances[#instances][-1] == token.at+1 then
-        table.remove(instances) end
+        table.remove(instances)
+      end
     elseif token.name == name then
       if op == 'Id' then
         table.insert(instances[#instances], token.fpos)
@@ -643,7 +644,8 @@ function IndicateAll(editor, lines, linee)
 end
 
 if ide.wxver < "2.9.5" or not ide.config.autoanalyzer then
-  IndicateAll = indicateFunctionsOnly end
+  IndicateAll = indicateFunctionsOnly
+end
 
 -- ----------------------------------------------------------------------------
 -- Create an editor
@@ -841,7 +843,6 @@ function CreateEditor()
 
   editor:Connect(wxstc.wxEVT_STC_CHARADDED,
     function (event)
-      -- auto-indent
       local LF = string.byte("\n")
       local ch = event:GetKey()
       local pos = editor:GetCurrentPos()
@@ -854,6 +855,7 @@ function CreateEditor()
       if PackageEventHandle("onEditorCharAdded", editor, event) == false then
         -- this event has already been handled
       elseif (ch == LF) then
+        -- auto-indent
         if (line > 0) then
           local indent = editor:GetLineIndentation(line - 1)
           local linedone = editor:GetLine(line - 1)

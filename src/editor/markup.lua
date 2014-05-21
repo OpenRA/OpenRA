@@ -32,7 +32,8 @@ function MarkupAddStyles(styles)
     local style = styles[key] or {}
     -- copy all style features by value
     for feature in pairs(value) do
-      style[feature] = style[feature] or value[feature] end
+      style[feature] = style[feature] or value[feature]
+    end
     style.fg = style.fg or comment.fg
     style.bg = style.bg or comment.bg
     styles[key] = style

@@ -430,7 +430,8 @@ debugger.shell = function(expression, isstatement)
 
         -- refresh Stack and Watch windows if executed a statement (and no err)
         if isstatement and not err and not addedret and #values == 0 then
-          updateStackSync() updateWatchesSync() end
+          updateStackSync() updateWatchesSync()
+        end
       end)
   end
 end
@@ -492,7 +493,8 @@ debugger.listen = function(start)
       if not options.allowediting then options.allowediting = ide.config.debugger.allowediting end
 
       if not debugger.scratchpad and not options.allowediting then
-        SetAllEditorsReadOnly(true) end
+        SetAllEditorsReadOnly(true)
+      end
 
       debugger.server = copas.wrap(skt)
       debugger.socket = skt
@@ -680,7 +682,9 @@ debugger.handle = function(command, server, options)
   local verbose = ide.config.debugger.verbose
   local osexit, gprint
   osexit, os.exit = os.exit, function () end
-  gprint, _G.print = _G.print, function (...) if verbose then DisplayOutputLn(...) end end
+  gprint, _G.print = _G.print, function (...)
+    if verbose then DisplayOutputLn(...) end
+  end
 
   debugger.running = true
   if verbose then DisplayOutputLn("Debugger sent (command):", command) end

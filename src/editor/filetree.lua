@@ -55,8 +55,9 @@ local function treeAddDir(tree,parent_id,rootdir)
     if item then -- existing item
       -- keep deleting items until we find item
       while true do
-        local next = curr and tree:GetNextSibling(curr)
-                           or tree:GetFirstChild(parent_id)
+        local next = (curr
+          and tree:GetNextSibling(curr)
+          or tree:GetFirstChild(parent_id))
         if not next:IsOk() or name == tree:GetItemText(next) then
           curr = next
           break
@@ -64,8 +65,9 @@ local function treeAddDir(tree,parent_id,rootdir)
         tree:Delete(next)
       end
     else -- new item
-      curr = curr and tree:InsertItem(parent_id, curr, name, icon)
-                   or tree:PrependItem(parent_id, name, icon)
+      curr = (curr
+        and tree:InsertItem(parent_id, curr, name, icon)
+        or tree:PrependItem(parent_id, name, icon))
       if #dir>0 then tree:SetItemHasChildren(curr, FileSysHasContent(file)) end
     end
     if curr:IsOk() then cache[iscaseinsensitive and name:lower() or name] = curr end
@@ -73,8 +75,9 @@ local function treeAddDir(tree,parent_id,rootdir)
 
   -- delete any leftovers (something that exists in the tree, but not on disk)
   while true do
-    local next = curr and tree:GetNextSibling(curr)
-                       or tree:GetFirstChild(parent_id)
+    local next = (curr
+      and tree:GetNextSibling(curr)
+      or tree:GetFirstChild(parent_id))
     if not next:IsOk() then break end
     tree:Delete(next)
   end
@@ -206,9 +209,9 @@ local function treeSetConnectorsAndIcons(tree)
 
     local docs = {}
     if not isnew then -- find if source is already opened in the editor
-      docs = isdir
+      docs = (isdir
         and ide:FindDocumentsByPartialPath(source)
-        or {ide:FindDocument(source)}
+        or {ide:FindDocument(source)})
       for _, doc in ipairs(docs) do
         if SaveModifiedDialog(doc.editor, true) == wx.wxID_CANCEL then return end
       end
@@ -357,8 +360,9 @@ local function treeSetConnectorsAndIcons(tree)
       local item_id = event:GetItem()
       tree:SelectItem(item_id)
 
-      local renamelabel = tree:IsRoot(item_id) and
-        TR("&Edit Project Directory") or TR("&Rename")
+      local renamelabel = (tree:IsRoot(item_id)
+        and TR("&Edit Project Directory")
+        or TR("&Rename"))
       local menu = wx.wxMenu {
         { ID_NEWFILE, TR("New &File") },
         { ID_NEWDIRECTORY, TR("&New Directory") },
@@ -370,10 +374,10 @@ local function treeSetConnectorsAndIcons(tree)
         { ID_COPYFULLPATH, TR("Copy Full Path") },
         { ID_SHOWLOCATION, TR("Show Location") },
       }
-      local projectdirectorymenu = wx.wxMenu({
+      local projectdirectorymenu = wx.wxMenu {
         { },
         {ID_PROJECTDIRCHOOSE, TR("Choose...")..KSC(ID_PROJECTDIRCHOOSE), TR("Choose a project directory")},
-      })
+      }
       local projectdirectory = wx.wxMenuItem(menu, ID_PROJECTDIR,
         TR("Project Directory"), TR("Set the project directory to be used"),
         wx.wxITEM_NORMAL, projectdirectorymenu)
@@ -412,8 +416,8 @@ local function treeSetConnectorsAndIcons(tree)
     function (event)
       -- only toggle if this is a folder and the click is on the item line
       -- (exclude the label as it's used for renaming and dragging)
-      local mask = wx.wxTREE_HITTEST_ONITEMINDENT
-        + wx.wxTREE_HITTEST_ONITEMICON + wx.wxTREE_HITTEST_ONITEMRIGHT
+      local mask = (wx.wxTREE_HITTEST_ONITEMINDENT
+        + wx.wxTREE_HITTEST_ONITEMICON + wx.wxTREE_HITTEST_ONITEMRIGHT)
       local item_id, flags = tree:HitTest(event:GetPosition())
 
       if PackageEventHandle("onFiletreeLDown", tree, event, item_id) == false then
@@ -521,7 +525,9 @@ function filetree:updateProjectDir(newdir)
   local newdir = dirname:GetPath(wx.wxPATH_GET_VOLUME)
 
   if filetree.projdir and #filetree.projdir > 0 then
-    PackageEventHandle("onProjectClose", filetree.projdir) end
+    PackageEventHandle("onProjectClose", filetree.projdir)
+  end
+
 
   PackageEventHandle("onProjectPreLoad", newdir)
 
@@ -557,8 +563,8 @@ function filetree:updateProjectDir(newdir)
 end
 
 function FileTreeGetDir()
-  return filetree.projdir and #filetree.projdir > 0
-    and wx.wxFileName.DirName(filetree.projdir):GetFullPath() or nil
+  return (filetree.projdir and #filetree.projdir > 0
+    and wx.wxFileName.DirName(filetree.projdir):GetFullPath() or nil)
 end
 
 function FileTreeSetProjects(tab)
@@ -581,9 +587,9 @@ local function getProjectLabels()
     local interpreter = intfname and ide.interpreters[intfname]
     local parts = wx.wxFileName(proj..pathsep):GetDirs()
     table.insert(labels, (fmt
-      :gsub('%%f', proj)
-      :gsub('%%i', interpreter and interpreter:GetName() or '?')
-      :gsub('%%s', parts[#parts] or '')))
+        :gsub('%%f', proj)
+        :gsub('%%i', interpreter and interpreter:GetName() or '?')
+        :gsub('%%s', parts[#parts] or '')))
   end
   return labels
 end
@@ -604,7 +610,8 @@ function FileTreeProjectListUpdate(menu, items)
       local item = wx.wxMenuItem(menu, id, label, "")
       menu:Insert(items, item)
       ide.frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, function()
-        ProjectUpdateProjectDir(FileTreeGetProjects()[i]) end)
+          ProjectUpdateProjectDir(FileTreeGetProjects()[i])
+        end)
     end
     -- disable the currently selected project
     if i == 1 then menu:Enable(id, false) end
@@ -639,7 +646,8 @@ function FileTreeMarkSelected(file)
     end
     curr_file = file
     if ide.wxver < "2.9.5" and ide.osname == 'Macintosh' then
-      projtree:Refresh() end
+      projtree:Refresh()
+    end
   end
 end
 

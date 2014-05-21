@@ -51,7 +51,8 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
       if not skipselection and doc.index ~= notebook:GetSelection() then
         -- selecting the same tab doesn't trigger PAGE_CHANGE event,
         -- but moves the focus to the tab bar, which needs to be avoided.
-        notebook:SetSelection(doc.index) end
+        notebook:SetSelection(doc.index)
+      end
       return doc.editor
     end
   end
@@ -523,13 +524,16 @@ function FoldSome()
 
     if foldall then
       if foldHdr and editor:GetFoldExpanded(ln) then
-        editor:ToggleFold(ln) end
+        editor:ToggleFold(ln)
+      end
     elseif hidebase then
       if not foldHdr and (foldLvl == wxstc.wxSTC_FOLDLEVELBASE) then
-        editor:HideLines(ln, ln) end
+        editor:HideLines(ln, ln)
+      end
     else -- unfold all
       if foldHdr and not editor:GetFoldExpanded(ln) then
-        editor:ToggleFold(ln) end
+        editor:ToggleFold(ln)
+      end
     end
   end
   editor:EnsureCaretVisible()
@@ -604,7 +608,8 @@ function CompileProgram(editor, params)
       end
     end
     if line and params.jumponerror and line-1 ~= editor:GetCurrentLine() then
-      editor:GotoLine(line-1) end
+      editor:GotoLine(line-1)
+    end
   end
 
   return func ~= nil -- return true if it compiled ok
