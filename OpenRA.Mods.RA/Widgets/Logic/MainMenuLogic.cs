@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		string GetNewsCacheFile()
+		static string GetNewsCacheFile()
 		{
 			var cacheDir = Path.Combine(Platform.SupportDir, "cache", Game.modData.Manifest.Mod.Id);
 			Directory.CreateDirectory(cacheDir);
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			public string Content;
 		}
 
-		IEnumerable<NewsItem> ReadNews(byte[] bytes)
+		static IEnumerable<NewsItem> ReadNews(byte[] bytes)
 		{
 			var str = Encoding.UTF8.GetString(bytes);
 

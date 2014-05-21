@@ -171,7 +171,7 @@ namespace OpenRA.Mods.RA.Move
 				throw new InvalidOperationException("(Move) Sanity check failed");
 		}
 
-		void NotifyBlocker(Actor self, CPos nextCell)
+		static void NotifyBlocker(Actor self, CPos nextCell)
 		{
 			foreach (var blocker in self.World.ActorMap.GetUnitsAt(nextCell))
 			{

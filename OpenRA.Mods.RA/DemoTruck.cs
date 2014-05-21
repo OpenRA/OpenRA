@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 
 	class DemoTruck : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		void Explode(Actor self)
+		static void Explode(Actor self)
 		{
 			self.World.AddFrameEndTask(w =>
 			{

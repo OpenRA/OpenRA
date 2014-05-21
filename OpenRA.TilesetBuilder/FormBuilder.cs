@@ -31,10 +31,10 @@ namespace OpenRA.TilesetBuilder
 		public string ImageFile = "";
 		public int TileSize = 24;
 
-	private int ColorDiff(Color color, Color curr)
-	{
-		return Math.Abs(color.R - curr.R) + Math.Abs(color.G - curr.G) + Math.Abs(color.B - curr.B);
-	}
+		private static int ColorDiff(Color color, Color curr)
+		{
+			return Math.Abs(color.R - curr.R) + Math.Abs(color.G - curr.G) + Math.Abs(color.B - curr.B);
+		}
 
 	public void CreateNewTileset()
 	{
@@ -243,7 +243,7 @@ namespace OpenRA.TilesetBuilder
 			ExportTemplateToTileNumberMapping();
 		}
 
-		string ExportPalette(List<Color> p, string file)
+		static string ExportPalette(List<Color> p, string file)
 		{
 			while (p.Count < 256) p.Add(Color.Black); // pad the palette out with extra blacks
 			var paletteData = p.Take(256).SelectMany(

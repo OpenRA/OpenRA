@@ -42,7 +42,7 @@ namespace OpenRA.Graphics
 		int totalVertexCount;
 		int cachedVertexCount;
 
-		SheetBuilder CreateSheetBuilder()
+		static SheetBuilder CreateSheetBuilder()
 		{
 			var allocated = false;
 			Func<Sheet> allocate = () =>

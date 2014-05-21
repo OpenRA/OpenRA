@@ -127,7 +127,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			});
 		}
 
-		string SongLengthLabel(MusicInfo song)
+		static string SongLengthLabel(MusicInfo song)
 		{
 			return "{0:D1}:{1:D2}".F(song.Length / 60, song.Length % 60);
 		}

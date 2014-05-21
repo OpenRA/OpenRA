@@ -102,6 +102,6 @@ namespace OpenRA
 		}
 
 		[AttributeUsage(AttributeTargets.Constructor)]
-		public class UseCtorAttribute : Attribute { }
+		public sealed class UseCtorAttribute : Attribute { }
 	}
 }

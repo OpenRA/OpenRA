@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA.Scripting
 			return Activator.CreateInstance(type, argsArray);
 		}
 
-		object[] ConvertArgs(LuaTable args)
+		static object[] ConvertArgs(LuaTable args)
 		{
 			var argsArray = new object[args.Keys.Count];
 			for (var i = 1; i <= args.Keys.Count; i++)

@@ -96,7 +96,7 @@ namespace OpenRA.Graphics
 			return j < 0 ? j + trail.Length : j;
 		}
 
-		WPos Average(params WPos[] list)
+		static WPos Average(params WPos[] list)
 		{
 			return list.Average();
 		}

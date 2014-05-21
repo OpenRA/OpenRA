@@ -22,7 +22,7 @@ using OpenRA.Support;
 
 namespace OpenRA.Mods.RA.AI
 {
-	public class HackyAIInfo : IBotInfo, ITraitInfo
+	public sealed class HackyAIInfo : IBotInfo, ITraitInfo
 	{
 		public readonly string Name = "Unnamed Bot";
 		public readonly int SquadSize = 8;
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA.AI
 
 	public enum BuildingType { Building, Defense, Refinery }
 
-	public class HackyAI : ITick, IBot, INotifyDamage
+	public sealed class HackyAI : ITick, IBot, INotifyDamage
 	{
 		bool enabled;
 		public int ticks;
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA.AI
 				.Select(t => t.TerrainType).ToArray();
 		}
 
-		int GetPowerProvidedBy(ActorInfo building)
+		static int GetPowerProvidedBy(ActorInfo building)
 		{
 			var bi = building.Traits.GetOrDefault<BuildingInfo>();
 			return bi != null ? bi.Power : 0;

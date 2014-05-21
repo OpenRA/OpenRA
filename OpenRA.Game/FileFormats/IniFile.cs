@@ -66,7 +66,7 @@ namespace OpenRA.FileFormats
 			return ret;
 		}
 
-		bool ProcessEntry(string line, IniSection currentSection)
+		static bool ProcessEntry(string line, IniSection currentSection)
 		{
 			var comment = line.IndexOf(';');
 			if (comment >= 0)

@@ -450,7 +450,7 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 		}
 
-		void DrawRightAligned(string text, int2 pos, Color c)
+		static void DrawRightAligned(string text, int2 pos, Color c)
 		{
 			var font = Game.Renderer.Fonts["Bold"];
 			font.DrawText(text, pos - new int2(font.Measure(text).X, 0), c);

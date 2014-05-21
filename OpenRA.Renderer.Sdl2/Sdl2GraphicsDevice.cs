@@ -105,7 +105,7 @@ namespace OpenRA.Renderer.Sdl2
 			SDL.SDL_Quit();
 		}
 
-		BeginMode ModeFromPrimitiveType(PrimitiveType pt)
+		static BeginMode ModeFromPrimitiveType(PrimitiveType pt)
 		{
 			switch (pt)
 			{

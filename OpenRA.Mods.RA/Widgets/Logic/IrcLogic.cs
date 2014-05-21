@@ -152,7 +152,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 		}
 
-		string ChooseNickname(string nickname)
+		static string ChooseNickname(string nickname)
 		{
 			if (!IrcUtils.IsNickname(nickname))
 			{
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			IrcClient.Instance.Connect(s.Hostname, s.Port, s.ConnectionTimeout, nickname, s.Username ?? nickname, s.Realname ?? nickname);
 		}
 
-		Widget MakeLabelWidget(LabelWidget template, object item)
+		static Widget MakeLabelWidget(LabelWidget template, object item)
 		{
 			var itemString = item.ToString();
 			var widget = (LabelWidget)template.Clone();

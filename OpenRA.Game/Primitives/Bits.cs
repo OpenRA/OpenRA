@@ -17,9 +17,7 @@ namespace OpenRA.Primitives
 	static class BitAllocator<T> where T : struct
 	{
 		static int nextVal = 1;
-		static Cache<string,int> bits;
-
-		static BitAllocator() {	bits = new Cache<string, int>( _ => Allocate() ); }
+		static Cache<string, int> bits = new Cache<string, int>(_ => Allocate());
 
 		static int Allocate()
 		{
@@ -48,7 +46,7 @@ namespace OpenRA.Primitives
 		}
 	}
 
-	public struct Bits<T> where T : struct
+	public struct Bits<T> : IEquatable<Bits<T>> where T : struct
 	{
 		public int Value;
 
@@ -60,6 +58,11 @@ namespace OpenRA.Primitives
 			return BitAllocator<T>.GetStrings(Value).JoinWith(",");
 		}
 
+		public static bool operator ==(Bits<T> me, Bits<T> other) { return (me.Value == other.Value); }
+		public static bool operator !=(Bits<T> me, Bits<T> other) { return !(me == other); }
+
+		public bool Equals(Bits<T> other) { return other == this; }
+		public override bool Equals(object obj) { return obj is Bits<T> && Equals((Bits<T>)obj); }
 		public override int GetHashCode() { return Value.GetHashCode(); }
 	}
 }

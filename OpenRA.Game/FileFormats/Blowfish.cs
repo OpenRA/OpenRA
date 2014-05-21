@@ -47,7 +47,7 @@ namespace OpenRA.FileFormats
 
 		delegate void CipherFunc( ref uint a, ref uint b );
 
-		uint[] RunCipher(uint[] data, CipherFunc f)
+		static uint[] RunCipher(uint[] data, CipherFunc f)
 		{
 			uint[] result = new uint[data.Length];
 
@@ -120,7 +120,7 @@ namespace OpenRA.FileFormats
 			a ^= bf_f(b) ^ m_p[n];
 		}
 
-		uint SwapBytes(uint i)
+		static uint SwapBytes(uint i)
 		{
 			i = (i << 16) | (i >> 16);
 			i = ((i << 8) & 0xff00ff00) | ((i >> 8) & 0x00ff00ff);
