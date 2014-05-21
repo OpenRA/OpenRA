@@ -17,7 +17,7 @@ namespace OpenRA
 	/// <summary>
 	/// 1d world distance - 1024 units = 1 cell.
 	/// </summary>
-	public struct WRange : IComparable, IComparable<WRange>
+	public struct WRange : IComparable, IComparable<WRange>, IEquatable<WRange>
 	{
 		public readonly int Range;
 
@@ -31,6 +31,10 @@ namespace OpenRA
 		public static WRange operator /(WRange a, int b) { return new WRange(a.Range / b); }
 		public static WRange operator *(WRange a, int b) { return new WRange(a.Range * b); }
 		public static WRange operator *(int a, WRange b) { return new WRange(a * b.Range); }
+		public static bool operator <(WRange a, WRange b) { return a.Range < b.Range; }
+		public static bool operator >(WRange a, WRange b) { return a.Range > b.Range; }
+		public static bool operator <=(WRange a, WRange b) { return a.Range <= b.Range; }
+		public static bool operator >=(WRange a, WRange b) { return a.Range >= b.Range; }
 
 		public static bool operator ==(WRange me, WRange other) { return (me.Range == other.Range); }
 		public static bool operator !=(WRange me, WRange other) { return !(me == other); }
@@ -78,23 +82,17 @@ namespace OpenRA
 
 		public override int GetHashCode() { return Range.GetHashCode(); }
 
-		public override bool Equals(object obj)
-		{
-			var o = obj as WRange?;
-			return o != null && o == this;
-		}
+		public bool Equals(WRange other) { return other == this; }
+		public override bool Equals(object obj) { return obj is WRange && Equals((WRange)obj); }
 
 		public int CompareTo(object obj)
 		{
-			var o = obj as WRange?;
-			if (o == null)
+			if (!(obj is WRange))
 				return 1;
-
-			return Range.CompareTo(o.Value.Range);
+			return Range.CompareTo(((WRange)obj).Range);
 		}
-
 		public int CompareTo(WRange other) { return Range.CompareTo(other.Range); }
 
-		public override string ToString() { return "{0}".F(Range); }
+		public override string ToString() { return Range.ToString(); }
 	}
 }

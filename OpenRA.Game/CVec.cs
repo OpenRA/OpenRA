@@ -16,7 +16,7 @@ using OpenRA.Scripting;
 
 namespace OpenRA
 {
-	public struct CVec : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding
+	public struct CVec : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<CVec>
 	{
 		public readonly int X, Y;
 
@@ -63,13 +63,10 @@ namespace OpenRA
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
-		public override bool Equals(object obj)
-		{
-			var o = obj as CVec?;
-			return o != null && o == this;
-		}
+		public bool Equals(CVec other) { return other == this; }
+		public override bool Equals(object obj) { return obj is CVec && Equals((CVec)obj); }
 
-		public override string ToString() { return "{0},{1}".F(X, Y); }
+		public override string ToString() { return X + "," + Y; }
 
 		public static readonly CVec[] directions =
 		{
