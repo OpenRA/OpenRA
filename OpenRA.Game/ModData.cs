@@ -134,8 +134,10 @@ namespace OpenRA
 			// Mount map package so custom assets can be used. TODO: check priority.
 			GlobalFileSystem.Mount(GlobalFileSystem.OpenPackage(map.Path, null, int.MaxValue));
 
-			using (new Support.PerfTimer("Map.LoadRules"))
+			using (new Support.PerfTimer("Map.PreloadRules"))
 				map.PreloadRules();
+			using (new Support.PerfTimer("Map.SequenceProvider.Preload"))
+				map.SequenceProvider.Preload();
 
 			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
 

@@ -58,6 +58,21 @@ namespace OpenRA.Graphics
 
 			return unitSeq.Value.Keys;
 		}
+
+		public void Preload()
+		{
+			foreach (var unitSeq in sequences.Value.Values)
+			{
+				try
+				{
+					foreach (var seq in unitSeq.Value.Values);
+				}
+				catch (FileNotFoundException ex)
+				{
+					Log.Write("debug", ex.Message);
+				}
+			}
+		}
 	}
 
 	public class SequenceCache
@@ -100,8 +115,11 @@ namespace OpenRA.Graphics
 				else
 				{
 					t = Exts.Lazy(() => (IReadOnlyDictionary<string, Sequence>)new ReadOnlyDictionary<string, Sequence>(
-						node.Value.NodesDict.ToDictionary(x => x.Key, x => 
-							new Sequence(spriteLoader.Value, node.Key, x.Key, x.Value))));
+						node.Value.NodesDict.ToDictionary(x => x.Key, x =>
+						{
+							using (new Support.PerfTimer("new Sequence(\"{0}\")".F(node.Key), 20))
+								return new Sequence(spriteLoader.Value, node.Key, x.Key, x.Value);
+						})));
 					sequenceCache.Add(key, t);
 					items.Add(node.Key, t);
 				}
