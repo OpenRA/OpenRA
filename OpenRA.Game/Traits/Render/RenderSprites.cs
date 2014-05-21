@@ -162,8 +162,8 @@ namespace OpenRA.Traits
 			};
 
 			foreach (var s in states)
-				if (state >= s.First && anim.HasSequence(s.Second+baseSequence))
-				    return s.Second+baseSequence;
+				if (state >= s.First && anim.HasSequence(s.Second + baseSequence))
+					return s.Second + baseSequence;
 
 			return baseSequence;
 		}

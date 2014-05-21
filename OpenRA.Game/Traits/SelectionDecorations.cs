@@ -113,7 +113,7 @@ namespace OpenRA.Traits
 		void DrawTags(WorldRenderer wr, Actor self, int2 basePosition)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
-			    return;
+				return;
 
 			var tagImages = new Animation(self.World, "pips");
 			var pal = wr.Palette(Info.Palette);

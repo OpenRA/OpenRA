@@ -69,7 +69,7 @@ namespace OpenRA.FileSystem
 
 			index = entries.ToDictionaryWithConflictLog(x => x.Hash,
 				"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, (isCncMix ? "C&C" : "RA/TS/RA2"), isEncrypted, dataStart),
-			    null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)
+				null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)
 			);
 		}
 

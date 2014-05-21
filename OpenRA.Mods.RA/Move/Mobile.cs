@@ -220,7 +220,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public void SetPosition(Actor self, CPos cell)
 		{
-			SetLocation(cell,fromSubCell, cell,fromSubCell);
+			SetLocation(cell, fromSubCell, cell, fromSubCell);
 			SetVisualPosition(self, fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
 			FinishedMoving(self);
 		}
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.RA.Move
 		public void SetPosition(Actor self, WPos pos)
 		{
 			var cell = pos.ToCPos();
-			SetLocation(cell,fromSubCell, cell,fromSubCell);
+			SetLocation(cell, fromSubCell, cell, fromSubCell);
 			SetVisualPosition(self, pos);
 			FinishedMoving(self);
 		}
@@ -358,14 +358,14 @@ namespace OpenRA.Mods.RA.Move
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			switch( order.OrderString )
+			switch (order.OrderString)
 			{
-			case "Move":
-			case "Scatter":
-			case "Stop":
-				return "Move";
-			default:
-				return null;
+				case "Move":
+				case "Scatter":
+				case "Stop":
+					return "Move";
+				default:
+					return null;
 			}
 		}
 
@@ -393,7 +393,7 @@ namespace OpenRA.Mods.RA.Move
 			return new[]{ fromSubCell, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
 				SubCell.BottomLeft, SubCell.BottomRight}.First(b =>
 			{
-				var blockingActors = self.World.ActorMap.GetUnitsAt(a,b).Where(c => c != ignoreActor);
+				var blockingActors = self.World.ActorMap.GetUnitsAt(a, b).Where(c => c != ignoreActor);
 				if (blockingActors.Any())
 				{
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
@@ -580,5 +580,5 @@ namespace OpenRA.Mods.RA.Move
 			var facing = Util.GetFacing(toPos - fromPos, Facing);
 			return Util.SequenceActivities(new Turn(facing), new Drag(fromPos, toPos, length));
 		}
-    }
+	}
 }

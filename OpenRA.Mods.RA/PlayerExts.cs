@@ -14,7 +14,7 @@ namespace OpenRA.Mods.RA
 	{
 		public static bool HasFogVisibility( this Player a )
 		{
-		    var gpsWatcher = a.PlayerActor.TraitOrDefault<GpsWatcher>();
+			var gpsWatcher = a.PlayerActor.TraitOrDefault<GpsWatcher>();
 			return gpsWatcher != null && (gpsWatcher.Granted || gpsWatcher.GrantedAllies);
 		}
 

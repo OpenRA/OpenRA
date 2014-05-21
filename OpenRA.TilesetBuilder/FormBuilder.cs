@@ -36,43 +36,43 @@ namespace OpenRA.TilesetBuilder
 			return Math.Abs(color.R - curr.R) + Math.Abs(color.G - curr.G) + Math.Abs(color.B - curr.B);
 		}
 
-	public void CreateNewTileset()
-	{
-		this.Show();
-		using (var formNew = new FormNew { })
-		if (DialogResult.OK == formNew.ShowDialog())
+		public void CreateNewTileset()
 		{
-			PaletteFromImage = formNew.PaletteFromImage;
-			PaletteFile = formNew.PaletteFile;
-			ImageFile = formNew.ImageFile;
-			TileSize = formNew.TileSize;
-
-			srcfile = ImageFile;
-			this.size = TileSize;
-			surface1.TileSize = TileSize;
-
-			Bitmap fbitmap = new Bitmap(ImageFile);
-			Bitmap rbitmap = fbitmap.Clone(new Rectangle(0, 0, fbitmap.Width, fbitmap.Height),
-					fbitmap.PixelFormat);
-
-			int[] shadowIndex = { };
-
-			if (!PaletteFromImage)
+			this.Show();
+			using (var formNew = new FormNew { })
+			if (DialogResult.OK == formNew.ShowDialog())
 			{
-				TerrainPalette = Palette.Load(PaletteFile, shadowIndex);
-				rbitmap.Palette = TerrainPalette.AsSystemPalette();
-			}
+				PaletteFromImage = formNew.PaletteFromImage;
+				PaletteFile = formNew.PaletteFile;
+				ImageFile = formNew.ImageFile;
+				TileSize = formNew.TileSize;
+
+				srcfile = ImageFile;
+				this.size = TileSize;
+				surface1.TileSize = TileSize;
+
+				Bitmap fbitmap = new Bitmap(ImageFile);
+				Bitmap rbitmap = fbitmap.Clone(new Rectangle(0, 0, fbitmap.Width, fbitmap.Height),
+						fbitmap.PixelFormat);
+
+				int[] shadowIndex = { };
+
+				if (!PaletteFromImage)
+				{
+					TerrainPalette = Palette.Load(PaletteFile, shadowIndex);
+					rbitmap.Palette = TerrainPalette.AsSystemPalette();
+				}
 			
-			surface1.Image = (Bitmap)rbitmap;
-			surface1.TilesPerRow = surface1.Image.Size.Width / surface1.TileSize;
-			surface1.Image.SetResolution(96, 96); // people keep being noobs about DPI, and GDI+ cares.
-			surface1.TerrainTypes = new int[surface1.Image.Width / size, surface1.Image.Height / size];		/* all passable by default */
-			surface1.Templates = new List<Template>();
-			surface1.Size = surface1.Image.Size;
-			surface1.Enabled = true;
-			Load();
+				surface1.Image = (Bitmap)rbitmap;
+				surface1.TilesPerRow = surface1.Image.Size.Width / surface1.TileSize;
+				surface1.Image.SetResolution(96, 96); // people keep being noobs about DPI, and GDI+ cares.
+				surface1.TerrainTypes = new int[surface1.Image.Width / size, surface1.Image.Height / size];		/* all passable by default */
+				surface1.Templates = new List<Template>();
+				surface1.Size = surface1.Image.Size;
+				surface1.Enabled = true;
+				Load();
+			}
 		}
-	}
 
 		public FormBuilder(string src, string tsize, bool autoExport, string outputDir)
 		{
@@ -426,13 +426,13 @@ namespace OpenRA.TilesetBuilder
 
 					// TemplateID CellID tilenr TemplateW TemplateH XinTilesPNG YinTilesPNG
 					Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", 
-		                  cur, 
-		                  idx,
-		                  ((t.Key.Y * surface1.TilesPerRow) + t.Key.X),
-		                  tp.Width, 
-					      tp.Height,
-					      t.Key.X,
-					      t.Key.Y);
+						  cur, 
+						  idx,
+						  ((t.Key.Y * surface1.TilesPerRow) + t.Key.X),
+						  tp.Width, 
+						  tp.Height,
+						  t.Key.X,
+						  t.Key.Y);
 				}
 
 				cur++;

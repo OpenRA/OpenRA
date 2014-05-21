@@ -882,7 +882,7 @@ namespace OpenRA.Mods.RA.AI
 
 			// Protected harvesters or building
 			if ((self.HasTrait<Harvester>() || self.HasTrait<Building>()) &&
-			    p.Stances[e.Attacker.Owner] == Stance.Enemy)
+				p.Stances[e.Attacker.Owner] == Stance.Enemy)
 			{
 				defenseCenter = e.Attacker.Location;
 				ProtectOwn(e.Attacker);
