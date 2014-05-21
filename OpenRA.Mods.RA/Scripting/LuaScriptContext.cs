@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.RA.Scripting
 {
-	public class LuaScriptContext : IDisposable
+	public sealed class LuaScriptContext : IDisposable
 	{
 		public Lua Lua { get; private set; }
 		readonly Cache<string, LuaFunction> functionCache;
@@ -134,18 +134,8 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public void Dispose()
 		{
-			if (Lua == null)
-				return;
-
-			GC.SuppressFinalize(this);
-			Lua.Dispose();
-			Lua = null;
-		}
-
-		~LuaScriptContext()
-		{
 			if (Lua != null)
-				Game.RunAfterTick(Dispose);
+				Lua.Dispose();
 		}
 	}
 }

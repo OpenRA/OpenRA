@@ -14,7 +14,7 @@ using System.Net.Sockets;
 
 namespace OpenRA.Irc
 {
-	public class IrcConnection : IDisposable
+	public sealed class IrcConnection : IDisposable
 	{
 		TcpClient socket;
 		Stream stream;
@@ -49,14 +49,8 @@ namespace OpenRA.Irc
 
 		public void Close()
 		{
-			CloseImpl();
-			GC.SuppressFinalize(this);
-		}
-
-		void CloseImpl()
-		{
-			if (disposed) return;
-
+			if (disposed)
+				return;
 			disposed = true;
 			if (socket != null) socket.Close();
 			if (stream != null) stream.Close();
@@ -64,14 +58,9 @@ namespace OpenRA.Irc
 			if (reader != null) reader.Close();
 		}
 
-		void IDisposable.Dispose()
+		public void Dispose()
 		{
 			Close();
-		}
-
-		~IrcConnection()
-		{
-			CloseImpl();
 		}
 
 		void CheckDisposed()

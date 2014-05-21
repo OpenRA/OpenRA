@@ -31,7 +31,8 @@ namespace OpenRA.GameRules
 				return;
 
 			Exists = true;
-			Length = (int)AudLoader.SoundLength(GlobalFileSystem.Open(Filename));
+			using (var s = GlobalFileSystem.Open(Filename))
+				Length = (int)AudLoader.SoundLength(s);
 		}
 
 		public void Reload()
@@ -40,7 +41,8 @@ namespace OpenRA.GameRules
 				return;
 
 			Exists = true;
-			Length = (int)AudLoader.SoundLength(GlobalFileSystem.Open(Filename));
+			using (var s = GlobalFileSystem.Open(Filename))
+				Length = (int)AudLoader.SoundLength(s);
 		}
 	}
 }

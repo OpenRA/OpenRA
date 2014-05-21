@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.RA.Move
 {
-	public class PathSearch : IDisposable
+	public sealed class PathSearch : IDisposable
 	{
 		World world;
 		public CellInfo[,] cellInfo;
@@ -291,11 +291,12 @@ namespace OpenRA.Mods.RA.Move
 		{
 			if (disposed)
 				return;
-
 			disposed = true;
-			GC.SuppressFinalize(this);
+
 			PutBackIntoPool(cellInfo);
 			cellInfo = null;
+
+			GC.SuppressFinalize(this);
 		}
 
 		~PathSearch() { Dispose(); }

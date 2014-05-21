@@ -12,7 +12,7 @@ using System;
 
 namespace OpenRA.Primitives
 {
-	public class DisposableAction : IDisposable
+	public sealed class DisposableAction : IDisposable
 	{
 		public DisposableAction(Action onDispose, Action onFinalize)
 		{
@@ -26,7 +26,8 @@ namespace OpenRA.Primitives
 
 		public void Dispose()
 		{
-			if (disposed) return;
+			if (disposed)
+				return;
 			disposed = true;
 			onDispose();
 			GC.SuppressFinalize(this);

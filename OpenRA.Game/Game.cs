@@ -504,6 +504,8 @@ namespace OpenRA
 			// Ensure that the active replay is properly saved
 			if (orderManager != null)
 				orderManager.Dispose();
+				
+			Renderer.Device.Dispose();
 
 			OnQuit();
 		}

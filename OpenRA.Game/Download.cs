@@ -70,6 +70,7 @@ namespace OpenRA
 		{
 			Game.OnQuit -= Cancel;
 			wc.CancelAsync();
+			wc.Dispose();
 			cancelled = true;
 		}
 	}

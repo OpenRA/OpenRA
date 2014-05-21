@@ -25,7 +25,7 @@ namespace OpenRA.Renderer.Null
 		}
 	}
 
-	public class NullGraphicsDevice : IGraphicsDevice
+	public sealed class NullGraphicsDevice : IGraphicsDevice
 	{
 		public Size WindowSize { get; internal set; }
 
@@ -35,7 +35,7 @@ namespace OpenRA.Renderer.Null
 			WindowSize = size;
 		}
 
-		public void Quit() { }
+		public void Dispose() { }
 
 		public void EnableScissor(int left, int top, int width, int height) { }
 		public void DisableScissor() { }

@@ -17,7 +17,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.FileSystem
 {
-	public class MixFile : IFolder
+	public sealed class MixFile : IFolder, IDisposable
 	{
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly long dataStart;
@@ -257,6 +257,12 @@ namespace OpenRA.FileSystem
 				foreach (var file in contents)
 					s.Write(file.Value);
 			}
+		}
+
+		public void Dispose()
+		{
+			if (s != null)
+				s.Dispose();
 		}
 	}
 }

@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace OpenRA.Support
 {
-	public class PerfTimer : IDisposable
+	public sealed class PerfTimer : IDisposable
 	{
 		readonly string name;
 		readonly float thresholdMs;

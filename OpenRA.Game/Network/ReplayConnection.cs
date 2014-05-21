@@ -16,7 +16,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
-	public class ReplayConnection : IConnection
+	public sealed class ReplayConnection : IConnection
 	{
 		class Chunk
 		{

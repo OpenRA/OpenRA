@@ -18,7 +18,6 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	public class HueSliderWidget : SliderWidget
 	{
-		Bitmap hueBitmap;
 		Sprite hueSprite;
 
 		public HueSliderWidget() {}
@@ -28,20 +27,22 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			base.Initialize(args);
 
-			hueBitmap = new Bitmap(256, 256);
-			hueSprite = new Sprite(new Sheet(new Size(256, 256)), new Rectangle(0, 0, 256, 1), TextureChannel.Alpha);
-
-			var bitmapData = hueBitmap.LockBits(hueBitmap.Bounds(),
-				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-			unsafe
+			using (var hueBitmap = new Bitmap(256, 256))
 			{
-				int* c = (int*)bitmapData.Scan0;
-				for (var h = 0; h < 256; h++)
-					*(c + h) = HSLColor.FromHSV(h/255f, 1, 1).RGB.ToArgb();
-			}
-			hueBitmap.UnlockBits(bitmapData);
+				hueSprite = new Sprite(new Sheet(new Size(256, 256)), new Rectangle(0, 0, 256, 1), TextureChannel.Alpha);
 
-			hueSprite.sheet.Texture.SetData(hueBitmap);
+				var bitmapData = hueBitmap.LockBits(hueBitmap.Bounds(),
+					ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+				unsafe
+				{
+					int* c = (int*)bitmapData.Scan0;
+					for (var h = 0; h < 256; h++)
+						*(c + h) = HSLColor.FromHSV(h / 255f, 1, 1).RGB.ToArgb();
+				}
+				hueBitmap.UnlockBits(bitmapData);
+
+				hueSprite.sheet.Texture.SetData(hueBitmap);
+			}
 		}
 
 		public override void Draw()

@@ -29,11 +29,12 @@ namespace OpenRA.Renderer.Sdl2
 		}
 	}
 
-	public class Sdl2GraphicsDevice : IGraphicsDevice
+	public sealed class Sdl2GraphicsDevice : IGraphicsDevice
 	{
 		Size size;
 		Sdl2Input input;
 		IntPtr context, window;
+		bool disposed;
 
 		public Size WindowSize { get { return size; } }
 
@@ -98,10 +99,21 @@ namespace OpenRA.Renderer.Sdl2
 			input = new Sdl2Input();
 		}
 
-		public virtual void Quit()
+		public void Dispose()
 		{
-			SDL.SDL_GL_DeleteContext(context);
-			SDL.SDL_DestroyWindow(window);
+			if (disposed)
+				return;
+			disposed = true;
+			if (context != IntPtr.Zero)
+			{
+				SDL.SDL_GL_DeleteContext(context);
+				context = IntPtr.Zero;
+			}
+			if (window != IntPtr.Zero)
+			{
+				SDL.SDL_DestroyWindow(window);
+				window = IntPtr.Zero;
+			}
 			SDL.SDL_Quit();
 		}
 

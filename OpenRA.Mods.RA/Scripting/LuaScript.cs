@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Graphics;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public object Create(ActorInitializer init) { return new LuaScript(this); }
 	}
 
-	public class LuaScript : ITick, IWorldLoaded
+	public sealed class LuaScript : ITick, IWorldLoaded, IDisposable
 	{
 		readonly LuaScriptInfo info;
 		ScriptContext context;
@@ -41,6 +42,12 @@ namespace OpenRA.Mods.RA.Scripting
 		public void Tick(Actor self)
 		{
 			context.Tick(self);
+		}
+
+		public void Dispose()
+		{
+			if (context != null)
+				context.Dispose();
 		}
 	}
 }

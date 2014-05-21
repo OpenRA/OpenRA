@@ -108,27 +108,29 @@ namespace OpenRA.Graphics
 				Offset = { X = face.Glyph.BitmapLeft, Y = -face.Glyph.BitmapTop }
 			};
 
-			unsafe
-			{
-				var p = (byte*)face.Glyph.Bitmap.Buffer;
-				var dest = s.sheet.Data;
-				var destStride = s.sheet.Size.Width * 4;
-
-				for (var j = 0; j < s.size.Y; j++)
+			// A new bitmap is generated each time this property is accessed, so we do need to dispose it.
+			using (var bitmap = face.Glyph.Bitmap)
+				unsafe
 				{
-					for (var i = 0; i < s.size.X; i++)
-						if (p[i] != 0)
-						{
-							var q = destStride * (j + s.bounds.Top) + 4 * (i + s.bounds.Left);
-							dest[q] = c.Second.B;
-							dest[q + 1] = c.Second.G;
-							dest[q + 2] = c.Second.R;
-							dest[q + 3] = p[i];
-						}
+					var p = (byte*)bitmap.Buffer;
+					var dest = s.sheet.Data;
+					var destStride = s.sheet.Size.Width * 4;
 
-					p += face.Glyph.Bitmap.Pitch;
+					for (var j = 0; j < s.size.Y; j++)
+					{
+						for (var i = 0; i < s.size.X; i++)
+							if (p[i] != 0)
+							{
+								var q = destStride * (j + s.bounds.Top) + 4 * (i + s.bounds.Left);
+								dest[q] = c.Second.B;
+								dest[q + 1] = c.Second.G;
+								dest[q + 2] = c.Second.R;
+								dest[q + 3] = p[i];
+							}
+
+						p += bitmap.Pitch;
+					}
 				}
-			}
 			s.sheet.CommitData();
 
 			return g;

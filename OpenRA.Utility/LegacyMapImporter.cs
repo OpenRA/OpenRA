@@ -162,7 +162,8 @@ namespace OpenRA.Utility
 			else
 			{
 				// CnC
-				UnpackCncTileData(GlobalFileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"));
+				using (var s = GlobalFileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"))
+					UnpackCncTileData(s);
 				ReadCncOverlay(file);
 				ReadCncTrees(file);
 			}

@@ -86,7 +86,7 @@ namespace OpenRA.Network
 			if (packet.Length == 0)
 				throw new NotImplementedException();
 			lock (this)
-				receivedPackets.Add(new ReceivedPacket { FromClient = LocalClientId, Data = packet } );
+				receivedPackets.Add(new ReceivedPacket { FromClient = LocalClientId, Data = packet });
 		}
 
 		public virtual void Receive(Action<int, byte[]> packetFn)
@@ -102,10 +102,16 @@ namespace OpenRA.Network
 				packetFn(p.FromClient, p.Data);
 		}
 
-		public virtual void Dispose() { }
+		protected virtual void Dispose(bool disposing) { }
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 	}
 
-	class NetworkConnection : EchoConnection
+	sealed class NetworkConnection : EchoConnection
 	{
 		TcpClient socket;
 		int clientId;
@@ -193,22 +199,27 @@ namespace OpenRA.Network
 
 		bool disposed = false;
 
-		public override void Dispose()
+		protected override void Dispose(bool disposing)
 		{
-			if (disposed) return;
+			if (disposed)
+				return;
 			disposed = true;
-			GC.SuppressFinalize(this);
 
 			t.Abort();
-			if (socket != null)
-				socket.Client.Close();
+			if (disposing)
+				if (socket != null)
+					socket.Client.Close();
 			using (new PerfSample("Thread.Join"))
 			{
 				if (!t.Join(1000))
 					return;
 			}
+			base.Dispose(disposing);
 		}
 
-		~NetworkConnection() { Dispose(); }
+		~NetworkConnection()
+		{
+			Dispose(false);
+		}
 	}
 }

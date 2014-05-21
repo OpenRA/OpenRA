@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Scripting
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
 	public class ScriptTriggersInfo : TraitInfo<ScriptTriggers> { }
 
-	public class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, IDisposable
+	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, IDisposable
 	{
 		public event Action<Actor> OnKilledInternal = _ => {};
 
@@ -100,37 +100,11 @@ namespace OpenRA.Mods.RA.Scripting
 			}
 		}
 
-		bool disposed;
-
-		protected void Dispose(bool disposing)
-		{
-			if (disposed)
-				return;
-
-			if (disposing)
-			{
-				var toDispose = new [] { onIdle, onDamaged, onKilled, onProduction };
-
-				foreach (var f in toDispose.SelectMany(f => f))
-					f.First.Dispose();
-
-				foreach (var l in toDispose)
-					l.Clear();
-			}
-
-			disposed = true;
-		}
-
 		public void Dispose()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		~ScriptTriggers()
-		{
-			// Dispose unmanaged resources only
-			Dispose(false);
+			var pairs = new[] { onIdle, onDamaged, onKilled, onProduction };
+			pairs.SelectMany(l => l).Select(p => p.First).Do(f => f.Dispose());
+			pairs.Do(l => l.Clear());
 		}
 	}
 }
