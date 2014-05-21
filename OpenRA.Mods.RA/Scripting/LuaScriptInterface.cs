@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using NLua;
 using OpenRA.Effects;
@@ -109,7 +110,7 @@ namespace OpenRA.Mods.RA.Scripting
 			{
 				var arg = args[i] as LuaTable;
 				if (arg != null && arg[1] != null && arg[2] != null)
-					argsArray[i - 1] = Convert.ChangeType(arg[1], Enum<TypeCode>.Parse(arg[2].ToString()));
+					argsArray[i - 1] = Convert.ChangeType(arg[1], Enum<TypeCode>.Parse(arg[2].ToString()), CultureInfo.InvariantCulture);
 				else
 					argsArray[i - 1] = args[i];
 			}

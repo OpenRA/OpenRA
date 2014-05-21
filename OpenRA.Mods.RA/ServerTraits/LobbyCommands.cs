@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Server
 				server.SendOrderTo(conn, "Message", "Cannot change state when game started. ({0})".F(cmd));
 				return false;
 			}
-			else if (client.State == Session.ClientState.Ready && !(cmd.StartsWith("state") || cmd == "startgame"))
+			else if (client.State == Session.ClientState.Ready && !(cmd.StartsWith("state", StringComparison.Ordinal) || cmd == "startgame"))
 			{
 				server.SendOrderTo(conn, "Message", "Cannot change state when marked as ready.");
 				return false;

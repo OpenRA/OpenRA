@@ -38,7 +38,7 @@ namespace OpenRA
 				return null;
 			}
 
-			if (filename.ToLowerInvariant().EndsWith("wav"))
+			if (filename.EndsWith("wav", StringComparison.OrdinalIgnoreCase))
 				return LoadWave(new WavLoader(GlobalFileSystem.Open(filename)));
 
 			return LoadSoundRaw(AudLoader.LoadSound(GlobalFileSystem.Open(filename)));

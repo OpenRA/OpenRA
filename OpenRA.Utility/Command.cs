@@ -319,7 +319,7 @@ namespace OpenRA.Utility
 				if (t.ContainsGenericParameters || t.IsAbstract)
 					continue; // skip helpers like TraitInfo<T>
 
-				var traitName = t.Name.EndsWith("Info") ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
+				var traitName = t.Name.EndsWith("Info", StringComparison.Ordinal) ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
 				toc.AppendLine("* [{0}](#{1})".F(traitName, traitName.ToLowerInvariant()));
 				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
 				doc.AppendLine();
@@ -362,7 +362,7 @@ namespace OpenRA.Utility
 
 			// Remove the namespace and the trailing "Info"
 			return inner.Select(i => i.Name.Split(new [] { '.' }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault())
-				.Select(s => s.EndsWith("Info") ? s.Remove(s.Length - 4, 4) : s)
+				.Select(s => s.EndsWith("Info", StringComparison.Ordinal) ? s.Remove(s.Length - 4, 4) : s)
 				.ToArray();
 		}
 

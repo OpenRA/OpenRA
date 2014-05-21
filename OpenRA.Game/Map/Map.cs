@@ -468,7 +468,7 @@ namespace OpenRA
 				// Take the SHA1
 				ms.Seek(0, SeekOrigin.Begin);
 				using (var csp = SHA1.Create())
-					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToString("x2")).ToArray());
+					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToStringInvariant("x2")).ToArray());
 			}
 		}
 

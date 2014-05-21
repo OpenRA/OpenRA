@@ -60,17 +60,17 @@ namespace OpenRA.FileSystem
 
 		public static IFolder CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
 		{
-			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
+			if (filename.EndsWith(".mix", StringComparison.OrdinalIgnoreCase))
 				return new MixFile(filename, order, content);
-			else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+			else if (filename.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
 				return new ZipFile(filename, order, content);
-			else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+			else if (filename.EndsWith(".oramap", StringComparison.OrdinalIgnoreCase))
 				return new ZipFile(filename, order, content);
-			else if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
+			else if (filename.EndsWith(".RS", StringComparison.OrdinalIgnoreCase))
 				throw new NotImplementedException("Creating .RS archives is unsupported");
-			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
+			else if (filename.EndsWith(".Z", StringComparison.OrdinalIgnoreCase))
 				throw new NotImplementedException("Creating .Z archives is unsupported");
-			else if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
+			else if (filename.EndsWith(".PAK", StringComparison.OrdinalIgnoreCase))
 				throw new NotImplementedException("Creating .PAK archives is unsupported");
 			else
 				return new Folder(filename, order, content);
@@ -78,21 +78,21 @@ namespace OpenRA.FileSystem
 
 		public static IFolder OpenPackage(string filename, string annotation, int order)
 		{
-			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
+			if (filename.EndsWith(".mix", StringComparison.OrdinalIgnoreCase))
 			{
 				var type = string.IsNullOrEmpty(annotation) ? PackageHashType.Classic :
 					FieldLoader.GetValue<PackageHashType>("(value)", annotation);
 				return new MixFile(filename, type, order);
 			}
-			else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+			else if (filename.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
 				return new ZipFile(filename, order);
-			else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+			else if (filename.EndsWith(".oramap", StringComparison.OrdinalIgnoreCase))
 				return new ZipFile(filename, order);
-			else if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
+			else if (filename.EndsWith(".RS", StringComparison.OrdinalIgnoreCase))
 				return new D2kSoundResources(filename, order);
-			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
+			else if (filename.EndsWith(".Z", StringComparison.OrdinalIgnoreCase))
 				return new InstallShieldPackage(filename, order);
-			else if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
+			else if (filename.EndsWith(".PAK", StringComparison.OrdinalIgnoreCase))
 				return new PakFile(filename, order);
 			else
 				return new Folder(filename, order);
@@ -105,12 +105,12 @@ namespace OpenRA.FileSystem
 
 		public static void Mount(string name, string annotation)
 		{
-			var optional = name.StartsWith("~");
+			var optional = name.StartsWith("~", StringComparison.Ordinal);
 			if (optional)
 				name = name.Substring(1);
 
 			// paths starting with ^ are relative to the support dir
-			if (name.StartsWith("^"))
+			if (name.StartsWith("^", StringComparison.Ordinal))
 				name = Platform.SupportDir + name.Substring(1);
 
 			FolderPaths.Add(name);

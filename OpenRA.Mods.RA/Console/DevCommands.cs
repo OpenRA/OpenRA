@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 					if (int.TryParse(arg, out cash))
 						order.ExtraData = (uint)cash;
 
-					Game.Debug("Giving {0} credits to player {1}.", (cash == 0 ? "cheat default" : cash.ToString()), world.LocalPlayer.PlayerName);
+					Game.Debug("Giving {0} credits to player {1}.", (cash == 0 ? "cheat default" : cash.ToStringInvariant()), world.LocalPlayer.PlayerName);
 					world.IssueOrder(order);
 
 					break;

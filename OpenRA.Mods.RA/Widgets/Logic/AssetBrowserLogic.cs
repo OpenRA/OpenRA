@@ -238,7 +238,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var files = assetSource.AllFileNames().OrderBy(s => s);
 			foreach (var file in files)
 			{
-				if (AllowedExtensions.Any(ext => file.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+				if (AllowedExtensions.Any(ext => file.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
 				{
 					AddAsset(assetList, file, template);
 					availableShps.Add(file);

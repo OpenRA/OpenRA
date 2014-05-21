@@ -263,6 +263,26 @@ namespace OpenRA
 		{
 			return int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
 		}
+
+		public static string ToStringInvariant(this byte i)
+		{
+			return i.ToString(NumberFormatInfo.InvariantInfo);
+		}
+
+		public static string ToStringInvariant(this byte i, string format)
+		{
+			return i.ToString(format, NumberFormatInfo.InvariantInfo);
+		}
+
+		public static string ToStringInvariant(this int i)
+		{
+			return i.ToString(NumberFormatInfo.InvariantInfo);
+		}
+
+		public static string ToStringInvariant(this int i, string format)
+		{
+			return i.ToString(format, NumberFormatInfo.InvariantInfo);
+		}
 	}
 
 	public static class Enum<T>

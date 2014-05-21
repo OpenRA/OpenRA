@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -111,12 +112,15 @@ namespace OpenRA.Mods.RA
 
 			bool HasPrerequisites(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.Keys.Contains(p.Replace("!", "").Replace("~", ""))));
+				return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!", StringComparison.Ordinal) ^ !ownedPrerequisites.Keys.Contains(p.Replace("!", "").Replace("~", ""))));
 			}
 
 			bool IsHidden(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				return prerequisites.Any(prereq => prereq.StartsWith("~") && (prereq.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.Keys.Contains(prereq.Replace("~", "").Replace("!", ""))));
+                return prerequisites.Any(prereq => 
+                    prereq.StartsWith("~", StringComparison.Ordinal) && 
+                    (prereq.Replace("~", "").StartsWith("!", StringComparison.Ordinal) ^ 
+                    !ownedPrerequisites.Keys.Contains(prereq.Replace("~", "").Replace("!", ""))));
 			}
 
 			public void Update(Cache<string, List<Actor>> ownedPrerequisites)

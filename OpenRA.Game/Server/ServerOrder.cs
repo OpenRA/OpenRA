@@ -42,7 +42,7 @@ namespace OpenRA.Server
 					}
 
 				default:
-					throw new NotImplementedException(b.ToString("x2"));
+					throw new NotImplementedException(b.ToStringInvariant("x2"));
 			}
 		}
 

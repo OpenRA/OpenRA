@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Graphics;
@@ -57,7 +58,7 @@ namespace OpenRA
 		static object LoadTiles(MiniYaml y)
 		{
 			return y.GetNodesDict()["Tiles"].GetNodesDict().ToDictionary(
-				t => byte.Parse(t.Key),
+				t => byte.Parse(t.Key, NumberFormatInfo.InvariantInfo),
 				t => t.Value.Value);
 		}
 
@@ -76,7 +77,7 @@ namespace OpenRA
 			}
 
 			root.Add(new MiniYamlNode("Tiles", null,
-				Tiles.Select(x => new MiniYamlNode(x.Key.ToString(), x.Value)).ToList()));
+				Tiles.Select(x => new MiniYamlNode(x.Key.ToStringInvariant(), x.Value)).ToList()));
 
 			return new MiniYaml(null, root);
 		}

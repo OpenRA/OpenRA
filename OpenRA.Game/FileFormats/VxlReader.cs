@@ -9,6 +9,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -105,7 +106,7 @@ namespace OpenRA.FileFormats
 		public VxlReader(Stream s)
 		{
 
-			if (!s.ReadASCII(16).StartsWith("Voxel Animation"))
+			if (!s.ReadASCII(16).StartsWith("Voxel Animation", StringComparison.Ordinal))
 				throw new InvalidDataException("Invalid vxl header");
 
 			s.ReadUInt32();

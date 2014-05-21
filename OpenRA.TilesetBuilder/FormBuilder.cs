@@ -157,14 +157,14 @@ namespace OpenRA.TilesetBuilder
 				txtTilesetName.Text = e.GetAttribute("value");
 		
 			foreach (var e in doc.SelectNodes("//terrain").OfType<XmlElement>())
-				surface1.TerrainTypes[int.Parse(e.GetAttribute("x")),
-					int.Parse(e.GetAttribute("y"))] = int.Parse(e.GetAttribute("t"));
+				surface1.TerrainTypes[Exts.ParseIntegerInvariant(e.GetAttribute("x")),
+					Exts.ParseIntegerInvariant(e.GetAttribute("y"))] = Exts.ParseIntegerInvariant(e.GetAttribute("t"));
 
 				foreach (var e in doc.SelectNodes("//template").OfType<XmlElement>())
 					surface1.Templates.Add(new Template
 					{
 						Cells = e.SelectNodes("./cell").OfType<XmlElement>()
-							.Select(f => new int2(int.Parse(f.GetAttribute("x")), int.Parse(f.GetAttribute("y"))))
+							.Select(f => new int2(Exts.ParseIntegerInvariant(f.GetAttribute("x")), Exts.ParseIntegerInvariant(f.GetAttribute("y"))))
 							.ToDictionary(a => a, a => true)
 					});
 		}
@@ -192,9 +192,9 @@ namespace OpenRA.TilesetBuilder
 						if (surface1.TerrainTypes[i, j] != 0)
 						{
 							w.WriteStartElement("terrain");
-							w.WriteAttributeString("x", i.ToString());
-							w.WriteAttributeString("y", j.ToString());
-							w.WriteAttributeString("t", surface1.TerrainTypes[i, j].ToString());
+							w.WriteAttributeString("x", i.ToStringInvariant());
+							w.WriteAttributeString("y", j.ToStringInvariant());
+							w.WriteAttributeString("t", surface1.TerrainTypes[i, j].ToStringInvariant());
 							w.WriteEndElement();
 						}
 
@@ -205,8 +205,8 @@ namespace OpenRA.TilesetBuilder
 					foreach (var c in t.Cells.Keys)
 					{
 						w.WriteStartElement("cell");
-						w.WriteAttributeString("x", c.X.ToString());
-						w.WriteAttributeString("y", c.Y.ToString());
+						w.WriteAttributeString("x", c.X.ToStringInvariant());
+						w.WriteAttributeString("y", c.Y.ToStringInvariant());
 						w.WriteEndElement();
 					}
 
@@ -354,17 +354,17 @@ namespace OpenRA.TilesetBuilder
 			// Create a Tileset definition
 			// TODO: Pull this info from the GUI
 			var tilesetFile = "";
-			tilesetFile = tilesetName.ToLower();
+			tilesetFile = tilesetName.ToLowerInvariant();
 			if (tilesetFile.Length < 8)
-				tilesetFile = tilesetName.ToLower() + ".yaml";
+				tilesetFile = tilesetName.ToLowerInvariant() + ".yaml";
 			else
-				tilesetFile = tilesetName.ToLower().Substring(0, 8) + ".yaml";
+				tilesetFile = tilesetName.ToLowerInvariant().Substring(0, 8) + ".yaml";
 
 			var ext = tilesetExt.Split(',');
 			var tileset = new TileSet(
 				name: tilesetName,
-				id: tilesetID.ToUpper(),
-				palette: tilesetPalette.ToLower(),
+				id: tilesetID.ToUpperInvariant(),
+				palette: tilesetPalette.ToLowerInvariant(),
 				extensions: new string[] { ext[0], ext[1] }
 			);
 
@@ -445,18 +445,18 @@ namespace OpenRA.TilesetBuilder
 			var tilesetFile = txtTilesetName.Text;
 			if (tilesetFile.Length > 8)
 			{
-				tilesetFile = tilesetFile.ToLower().Substring(0, 8);
+				tilesetFile = tilesetFile.ToLowerInvariant().Substring(0, 8);
 			}
 
-			txtID.Text = tilesetFile.ToUpper();
-			txtPal.Text = tilesetFile.ToLower() + ".pal";
+			txtID.Text = tilesetFile.ToUpperInvariant();
+			txtPal.Text = tilesetFile.ToLowerInvariant() + ".pal";
 			if (tilesetFile.Length < 3)
 			{
 				txtExt.Text = ".tem,.shp";
 			}
 			else
 			{
-				txtExt.Text = "." + tilesetFile.ToLower().Substring(0, 3) + ",.shp";
+				txtExt.Text = "." + tilesetFile.ToLowerInvariant().Substring(0, 3) + ",.shp";
 			}
 		}
 

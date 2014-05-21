@@ -44,7 +44,7 @@ namespace OpenRA.Lint
 			{
 				Log.AddChannel("perf", null);
 
-				var options = args.Where(a => a.StartsWith("-"));
+				var options = args.Where(a => a.StartsWith("-", StringComparison.Ordinal));
 				var mod = args.Where(a => !options.Contains(a)).First();
 				var map = args.Where(a => !options.Contains(a)).Skip(1).FirstOrDefault();
 				var verbose = options.Contains("-v") || options.Contains("--verbose");

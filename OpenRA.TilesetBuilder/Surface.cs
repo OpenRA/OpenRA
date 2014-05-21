@@ -113,7 +113,7 @@ namespace OpenRA.TilesetBuilder
 			}
 			else
 			{
-				TerrainTypes[pos.X, pos.Y] = int.Parse(InputMode);
+				TerrainTypes[pos.X, pos.Y] = Exts.ParseIntegerInvariant(InputMode);
 				Invalidate();
 			}
 		}
