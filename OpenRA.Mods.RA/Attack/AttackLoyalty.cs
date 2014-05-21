@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			foreach (var a in Armaments)
-				a.CheckFire(self, facing.Value, target);
+				a.CheckFire(self, target);
 
 			if (target.Actor != null)
 				target.Actor.ChangeOwner(self.Owner);

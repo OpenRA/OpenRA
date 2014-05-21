@@ -191,8 +191,8 @@ namespace OpenRA.Mods.RA.Widgets
 			if (!IsVisible()) return;
 			// TODO: fix
 
-			int paletteHeight = DrawPalette(CurrentQueue);
-			DrawBuildTabs(world, paletteHeight);
+			DrawPalette(CurrentQueue);
+			DrawBuildTabs(world);
 		}
 
 		int numActualRows = 5;
@@ -413,7 +413,7 @@ namespace OpenRA.Mods.RA.Widgets
 				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}
 
-		void DrawBuildTabs(World world, int paletteHeight)
+		void DrawBuildTabs(World world)
 		{
 			const int tabWidth = 24;
 			const int tabHeight = 40;

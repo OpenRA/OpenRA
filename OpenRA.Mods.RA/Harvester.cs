@@ -137,11 +137,8 @@ namespace OpenRA.Mods.RA
 					})
 			);
 
-			// Reverse the found-path to find the refinery location instead of our location:
-			path.Reverse();
-
 			if (path.Count != 0)
-				return refs[path[0]].Actor;
+				return refs[path.Last()].Actor;
 
 			return null;
 		}

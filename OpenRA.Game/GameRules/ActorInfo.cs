@@ -111,14 +111,13 @@ namespace OpenRA
 			return ret;
 		}
 
-		static List<Type> PrerequisitesOf(ITraitInfo info)
+		static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)
 		{
 			return info
 				.GetType()
 				.GetInterfaces()
-				.Where( t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof( Requires<> ) )
-				.Select( t => t.GetGenericArguments()[ 0 ] )
-				.ToList();
+				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Requires<>))
+				.Select(t => t.GetGenericArguments()[0]);
 		}
 
 		public IEnumerable<Pair<string, Type>> GetInitKeys()

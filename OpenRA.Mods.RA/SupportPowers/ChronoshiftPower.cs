@@ -195,7 +195,7 @@ namespace OpenRA.Mods.RA
 					yield break;
 				}
 
-				var ret = OrderInner( world, xy, mi ).FirstOrDefault();
+				var ret = OrderInner(xy).FirstOrDefault();
 				if (ret == null)
 					yield break;
 
@@ -203,7 +203,7 @@ namespace OpenRA.Mods.RA
 				yield return ret;
 			}
 
-			IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
+			IEnumerable<Order> OrderInner(CPos xy)
 			{
 				// Cannot chronoshift into unexplored location
 				if (IsValidTarget(xy))

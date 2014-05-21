@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			foreach (var a in Armaments)
-				a.CheckFire(self, facing.Value, target);
+				a.CheckFire(self, target);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders

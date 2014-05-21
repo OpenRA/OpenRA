@@ -101,10 +101,21 @@ namespace OpenRA
 			return ret;
 		}
 
+		public static bool Any<T>(this T[] ts, Func<T, bool> predicate)
+		{
+			foreach (var t in ts)
+				if (predicate(t))
+					return true;
+			return false;
+		}
+
 		public static T Random<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
-			var xs = ts.ToArray();
-			return xs[r.Next(xs.Length)];
+			var xs = ts as ICollection<T>;
+			if (xs != null)
+				return xs.ElementAt(r.Next(xs.Count));
+			var ys = ts.ToArray();
+			return ys[r.Next(ys.Length)];
 		}
 
 		public static T RandomOrDefault<T>(this IEnumerable<T> ts, MersenneTwister r)
@@ -238,7 +249,7 @@ namespace OpenRA
 			return result;
 		}
 
-		public static Rectangle Bounds(this Bitmap b) { return new Rectangle(0, 0, b.Width, b.Height); }
+		public static Rectangle Bounds(this Image b) { return new Rectangle(0, 0, b.Width, b.Height); }
 
 		public static int ToBits(this IEnumerable<bool> bits)
 		{

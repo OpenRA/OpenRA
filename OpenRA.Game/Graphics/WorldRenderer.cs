@@ -76,12 +76,11 @@ namespace OpenRA.Graphics
 		{
 			var comparer = new RenderableComparer(this);
 			var actors = world.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
-				.Append(world.WorldActor)
-				.ToList();
+				.Append(world.WorldActor);
 
 			// Include player actor for the rendered player
 			if (world.RenderPlayer != null)
-				actors.Add(world.RenderPlayer.PlayerActor);
+				actors.Append(world.RenderPlayer.PlayerActor);
 
 			var worldRenderables = actors.SelectMany(a => a.Render(this));
 			if (world.OrderGenerator != null)

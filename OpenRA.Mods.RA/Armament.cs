@@ -129,9 +129,7 @@ namespace OpenRA.Mods.RA
 				a();
 		}
 
-		// Note: facing is only used by the legacy positioning code
-		// The world coordinate model uses Actor.Orientation
-		public Barrel CheckFire(Actor self, IFacing facing, Target target)
+		public Barrel CheckFire(Actor self, Target target)
 		{
 			if (FireDelay > 0)
 				return null;

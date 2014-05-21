@@ -119,7 +119,7 @@ namespace OpenRA.GameRules
 		[FieldLoader.LoadUsing("LoadProjectile")] public IProjectileInfo Projectile;
 		[FieldLoader.LoadUsing("LoadWarheads")] public List<WarheadInfo> Warheads;
 
-		public WeaponInfo(string name, MiniYaml content)
+		public WeaponInfo(MiniYaml content)
 		{
 			FieldLoader.Load(this, content);
 		}

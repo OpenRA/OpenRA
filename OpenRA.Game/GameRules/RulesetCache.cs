@@ -63,7 +63,7 @@ namespace OpenRA
 			using (new PerfTimer("Actors"))
 				actors = LoadYamlRules(actorCache, m.Rules, map.RuleDefinitions, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
 			using (new PerfTimer("Weapons"))
-				weapons = LoadYamlRules(weaponCache, m.Weapons, map.WeaponDefinitions, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
+				weapons = LoadYamlRules(weaponCache, m.Weapons, map.WeaponDefinitions, (k, _) => new WeaponInfo(k.Value));
 			using (new PerfTimer("Voices"))
 				voices = LoadYamlRules(voiceCache, m.Voices, map.VoiceDefinitions, (k, _) => new SoundInfo(k.Value));
 			using (new PerfTimer("Notifications"))
@@ -125,7 +125,7 @@ namespace OpenRA
 					items.Add(t.Id, t);
 				else
 				{
-					t = new TileSet(modData, file);
+					t = new TileSet(file);
 					itemCache.Add(file, t);
 
 					// every time we load a tile set, we create a sequence cache for it

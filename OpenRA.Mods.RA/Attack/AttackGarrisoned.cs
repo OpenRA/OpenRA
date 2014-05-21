@@ -153,7 +153,7 @@ namespace OpenRA.Mods.RA
 				paxFacing[a.Actor].Facing = muzzleFacing;
 				paxPos[a.Actor].SetVisualPosition(a.Actor, pos + PortOffset(self, port));
 
-				var barrel = a.CheckFire(a.Actor, facing.Value, target);
+				var barrel = a.CheckFire(a.Actor, target);
 				if (barrel != null && a.Info.MuzzleSequence != null)
 				{
 					// Muzzle facing is fixed once the firing starts
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.RA
 					var sequence = a.Info.MuzzleSequence;
 
 					if (a.Info.MuzzleSplitFacings > 0)
-						sequence += Traits.Util.QuantizeFacing(muzzleFacing, a.Info.MuzzleSplitFacings).ToString();
+						sequence += Traits.Util.QuantizeFacing(muzzleFacing, a.Info.MuzzleSplitFacings).ToStringInvariant();
 
 					var muzzleFlash = new AnimationWithOffset(muzzleAnim,
 						() => PortOffset(self, port),

@@ -98,7 +98,7 @@ namespace OpenRA
 
 		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "Extensions" };
 
-		public TileSet(ModData modData, string filepath)
+		public TileSet(string filepath)
 		{
 			var yaml = MiniYaml.DictFromFile(filepath);
 

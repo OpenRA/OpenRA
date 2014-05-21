@@ -220,16 +220,17 @@ namespace OpenRA.TilesetBuilder
 
 		void TerrainTypeSelectorClicked(object sender, EventArgs e)
 		{
-			surface1.InputMode = (sender as ToolStripButton).Tag as string;
-			foreach (var tsb in (sender as ToolStripButton).Owner.Items.OfType<ToolStripButton>())
-				tsb.Checked = false;
-			(sender as ToolStripButton).Checked = true;
+			var tsb = (ToolStripButton)sender;
+			surface1.InputMode = tsb.Tag as string;
+			foreach (var innerTsb in tsb.Owner.Items.OfType<ToolStripButton>())
+				innerTsb.Checked = false;
+			tsb.Checked = true;
 		}
 		
 		void SaveClicked(object sender, EventArgs e) { Save(); }
 		void ShowOverlaysClicked(object sender, EventArgs e) 
 		{
-			surface1.ShowTerrainTypes = (sender as ToolStripButton).Checked;
+			surface1.ShowTerrainTypes = ((ToolStripButton)sender).Checked;
 			surface1.Invalidate();
 		}
 
