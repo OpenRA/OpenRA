@@ -10,7 +10,7 @@ local ide = ide
 local frame = ide.frame
 local menuBar = frame.menuBar
 
-local editMenu = wx.wxMenu{
+local editMenu = wx.wxMenu {
   { ID_CUT, TR("Cu&t")..KSC(ID_CUT), TR("Cut selected text to clipboard") },
   { ID_COPY, TR("&Copy")..KSC(ID_COPY), TR("Copy selected text to clipboard") },
   { ID_PASTE, TR("&Paste")..KSC(ID_PASTE), TR("Paste text from the clipboard") },
@@ -25,12 +25,13 @@ local editMenu = wx.wxMenu{
   { },
 }
 
-editMenu:Append(ID_SOURCE, TR("Source"), wx.wxMenu{
-  { ID_COMMENT, TR("C&omment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
+editMenu:Append(ID_SOURCE, TR("Source"), wx.wxMenu {
+  { ID_COMMENT, TR("&Comment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
+  { ID_REINDENT, TR("Correct &Indentation")..KSC(ID_REINDENT), TR("Re-indent selected lines") },
   { ID_FOLD, TR("&Fold/Unfold All")..KSC(ID_FOLD), TR("Fold or unfold all code folds") },
   { ID_SORT, TR("&Sort")..KSC(ID_SORT), TR("Sort selected lines") },
 })
-editMenu:Append(ID_BOOKMARK, TR("Bookmark"), wx.wxMenu{
+editMenu:Append(ID_BOOKMARK, TR("Bookmark"), wx.wxMenu {
   { ID_BOOKMARKTOGGLE, TR("Toggle Bookmark")..KSC(ID_BOOKMARKTOGGLE) },
   { ID_BOOKMARKNEXT, TR("Go To Next Bookmark")..KSC(ID_BOOKMARKNEXT) },
   { ID_BOOKMARKPREV, TR("Go To Previous Bookmark")..KSC(ID_BOOKMARKPREV) },
@@ -50,10 +51,13 @@ local function onUpdateUIEditMenu(event)
 
   local cancomment = pcall(function() return editor.spec end) and editor.spec
     and editor.spec.linecomment and true or false
-  local alwaysOn = { [ID_SELECTALL] = true, [ID_FOLD] = ide.config.editor.fold,
+  local alwaysOn = {
+    [ID_SELECTALL] = true, [ID_FOLD] = ide.config.editor.fold,
     -- allow Cut and Copy commands as these work on a line if no selection
     [ID_COPY] = true, [ID_CUT] = true,
-    [ID_COMMENT] = cancomment, [ID_AUTOCOMPLETE] = true, [ID_SORT] = true}
+    [ID_COMMENT] = cancomment, [ID_AUTOCOMPLETE] = true, [ID_SORT] = true,
+    [ID_REINDENT] = true,
+  }
   local menu_id = event:GetId()
   local enable =
     menu_id == ID_PASTE and editor:CanPaste() or
@@ -241,6 +245,56 @@ end
 frame:Connect(ID_SORT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) processSelection(GetEditor(), table.sort) end)
 frame:Connect(ID_SORT, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
+
+local function reIndent(editor, buf)
+  local decindent, incindent = editor.spec.isdecindent, editor.spec.isincindent
+  if not (decindent and incindent) then return end
+
+  local line = editor:LineFromPosition(editor:GetSelectionStart())
+  local indent = 0
+  local text = ''
+  -- find the last non-empty line in the previous block (if any)
+  for n = line-1, 1, -1 do
+    indent = editor:GetLineIndentation(n)
+    text = editor:GetLine(n)
+    if text:match('[^\r\n]') then break end
+  end
+
+  local ut = editor:GetUseTabs()
+  local tw = ut and editor:GetTabWidth() or editor:GetIndent()
+
+  local indents = {}
+  for line = 1, #buf+1 do
+    local closed, blockend = decindent(text)
+    local opened = incindent(text)
+
+    -- ignore impact from initial block endings as they are already indented
+    if line == 1 then blockend = 0 end
+
+    -- this only needs to be done for 2, #buf+1; do it and get out when done
+    if line > 1 then indents[line-1] = indents[line-1] - tw * closed end
+    if line > #buf then break end
+
+    indent = indent + tw * (opened - blockend)
+    if indent < 0 then indent = 0 end
+
+    indents[line] = indent
+    text = buf[line]
+  end
+
+  for line = 1, #buf do
+    buf[line] = buf[line]:gsub("^[ \t]*",
+      not buf[line]:match('%S') and ''
+      or ut and ("\t"):rep(indents[line] / tw) or (" "):rep(indents[line]))
+  end
+end
+
+frame:Connect(ID_REINDENT, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event)
+    local editor = GetEditor()
+    processSelection(editor, function(buf) reIndent(editor, buf) end)
+  end)
+frame:Connect(ID_REINDENT, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 frame:Connect(ID_FOLD, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) FoldSome() end)

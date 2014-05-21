@@ -49,6 +49,7 @@ ide.config.keymap = {
   [ID_COMMENT]          = "Ctrl-U",
   [ID_FOLD]             = "F12",
   [ID_CLEARDYNAMICWORDS] = "",
+  [ID_REINDENT]         = "Ctrl-I",
   [ID_BOOKMARKTOGGLE]   = "Ctrl-F2",
   [ID_BOOKMARKNEXT]     = "F2",
   [ID_BOOKMARKPREV]     = "Shift-F2",
