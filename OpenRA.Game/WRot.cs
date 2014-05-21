@@ -8,12 +8,14 @@
  */
 #endregion
 
+using System;
+
 namespace OpenRA
 {
 	/// <summary>
 	/// 3d World rotation.
 	/// </summary>
-	public struct WRot
+	public struct WRot : IEquatable<WRot>
 	{
 		public readonly WAngle Roll, Pitch, Yaw;
 
@@ -92,12 +94,9 @@ namespace OpenRA
 
 		public override int GetHashCode() { return Roll.GetHashCode() ^ Pitch.GetHashCode() ^ Yaw.GetHashCode(); }
 
-		public override bool Equals(object obj)
-		{
-			var o = obj as WRot?;
-			return o != null && o == this;
-		}
+		public bool Equals(WRot other) { return other == this; }
+		public override bool Equals(object obj) { return obj is WRot && Equals((WRot)obj); }
 
-		public override string ToString() { return "{0},{1},{2}".F(Roll, Pitch, Yaw); }
+		public override string ToString() { return Roll + "," + Pitch + "," + Yaw; }
 	}
 }
