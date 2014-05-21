@@ -174,15 +174,10 @@ namespace OpenRA
 
 		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text, TimeSpan time)
 		{
-			var sw = Stopwatch.StartNew();
-
 			e.Do(x =>
 			{
-				var t = sw.Elapsed;
-				a(x);
-				var dt = sw.Elapsed - t;
-				if (dt > time)
-					Log.Write("perf", text, x, dt.TotalMilliseconds, Game.LocalTick);
+				using (new PerfTimer("[{0}] {1}: {2}".F(Game.LocalTick, text, x), (int)time.TotalMilliseconds))
+					a(x);
 			});
 		}
 
