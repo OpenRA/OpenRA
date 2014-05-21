@@ -39,7 +39,10 @@ return {
   isdecindent = function(str)
     str = str:gsub('%-%-%[=*%[.*%]=*%]',''):gsub('%-%-.*','')
     -- this handles three different cases:
-    local term = str:match("^%s*(%w+)%s*$") or str:match("^%s*(elseif)%s")
+    local term = (str:match("^%s*(%w+)%s*$")
+      or str:match("^%s*(elseif)[%s%(]")
+      or str:match("^%s*(else)%f[%W]")
+    )
     -- (1) 'end', 'elseif', 'else'
     local match = term and decindent[term]
     -- (2) 'end)' and 'end}'
@@ -52,18 +55,30 @@ return {
   isincindent = function(str)
     str = (str:gsub('%-%-%[=*%[.*%]=*%]',''):gsub('%-%-.*','')
       :gsub("'.-\\'","'"):gsub("'.-'","")
-      :gsub('".-\\"','"'):gsub('".-"',''))
+      :gsub('".-\\"','"'):gsub('".-"','')
+      :gsub("%b()","()") -- remove all function calls
+    )
     local term = str:match("^%s*(%w+)%W*")
-    term = term and incindent[term] and 1 or 0
-    str = str:gsub("'.-'",""):gsub('".-"','')
+    local terminc = term and incindent[term] and 1 or 0
+    -- fix 'if' not terminated with 'then'
+    -- or 'then' not started with 'if'
+    if (term == 'if' or term == 'elseif') and not str:match("%f[%w]then%f[%W]")
+    or (term == 'for') and not str:match("%S%s+do%f[%W]")
+    or (term == 'while') and not str:match("%f[%w]do%f[%W]") then
+      terminc = 0
+    elseif not (term == 'if' or term == 'elseif') and str:match("%f[%w]then%f[%W]")
+    or not (term == 'for') and str:match("%S%s+do%f[%W]")
+    or not (term == 'while') and str:match("%f[%w]do%f[%W]") then
+      terminc = 1
+    end
     local _, opened = str:gsub("([%{%(])", "%1")
     local _, closed = str:gsub("([%}%)])", "%1")
     local func = (isfndef(str) or str:match("%W+function%s*%(")) and 1 or 0
     -- ended should only be used to negate term and func effects
     local anon = str:match("%W+function%s*%(.+%Wend%W")
-    local ended = (term + func > 0) and (str:match("%W+end%s*$") or anon) and 1 or 0
+    local ended = (terminc + func > 0) and (str:match("%W+end%s*$") or anon) and 1 or 0
 
-    return opened - closed + func + term - ended
+    return opened - closed + func + terminc - ended
   end,
   markvars = function(code, pos, vars)
     local PARSE = require 'lua_parser_loose'
