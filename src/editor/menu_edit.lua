@@ -214,6 +214,10 @@ frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 local function processSelection(editor, func)
   local text = editor:GetSelectedText()
+  if #text == 0 then
+    editor:SelectAll()
+    text = editor:GetSelectedText()
+  end
   local wholeline = text:find('\n$')
   local buf = {}
   for line in string.gmatch(text..(wholeline and '' or '\n'), "(.-\r?\n)") do
@@ -223,7 +227,14 @@ local function processSelection(editor, func)
     if func then func(buf) end
     -- add new line at the end if it was there
     local text = table.concat(buf, ''):gsub('(\r?\n)$', wholeline and '%1' or '')
-    editor:ReplaceSelection(text)
+    -- straightforward editor:ReplaceSelection() doesn't work reliably as
+    -- it sometimes doubles the context when the entire file is selected.
+    -- this seems like Scintilla issue, so use ReplaceTarget instead.
+    -- Since this doesn't work with rectangular selection, which
+    -- ReplaceSelection should handle (after wxwidgets 3.x upgrade), this
+    -- will need to be revisited when ReplaceSelection is updated.
+    editor:TargetFromSelection()
+    editor:ReplaceTarget(text)
   end
 end
 
