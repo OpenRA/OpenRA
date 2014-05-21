@@ -33,7 +33,7 @@ namespace OpenRA
 		{
 			try
 			{
-				var mergedNode = MergeWithParent(node, allUnits).NodesDict;
+				var mergedNode = MergeWithParent(node, allUnits).GetNodesDict();
 
 				Name = name;
 				foreach (var t in mergedNode)
@@ -49,7 +49,7 @@ namespace OpenRA
 		static MiniYaml GetParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
 			MiniYaml inherits;
-			node.NodesDict.TryGetValue( "Inherits", out inherits );
+			node.GetNodesDict().TryGetValue( "Inherits", out inherits );
 			if( inherits == null || string.IsNullOrEmpty( inherits.Value ) )
 				return null;
 

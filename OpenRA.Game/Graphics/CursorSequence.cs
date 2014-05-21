@@ -28,7 +28,7 @@ namespace OpenRA.Graphics
 		public CursorSequence(SpriteLoader loader, string cursorSrc, string palette, MiniYaml info)
 		{
 			sprites = loader.LoadAllSprites(cursorSrc);
-			var d = info.NodesDict;
+			var d = info.GetNodesDict();
 
 			start = Exts.ParseIntegerInvariant(d["start"].Value);
 			this.palette = palette;

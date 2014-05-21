@@ -68,8 +68,9 @@ namespace OpenRA.Mods.RA.AI
 
 		static object LoadList<T>(MiniYaml y, string field)
 		{
-			return y.NodesDict.ContainsKey(field)
-				? y.NodesDict[field].NodesDict.ToDictionary(
+			var nd = y.GetNodesDict();
+			return nd.ContainsKey(field)
+				? nd[field].GetNodesDict().ToDictionary(
 					a => a.Key,
 					a => FieldLoader.GetValue<T>(field, a.Value.Value))
 				: new Dictionary<string, T>();

@@ -41,11 +41,12 @@ namespace OpenRA.Mods.RA.Move
 		static object LoadSpeeds(MiniYaml y)
 		{
 			Dictionary<string, TerrainInfo> ret = new Dictionary<string, TerrainInfo>();
-			foreach (var t in y.NodesDict["TerrainSpeeds"].Nodes)
+			foreach (var t in y.GetNodesDict()["TerrainSpeeds"].Nodes)
 			{
 				var speed = FieldLoader.GetValue<decimal>("speed", t.Value.Value);
-				var cost = t.Value.NodesDict.ContainsKey("PathingCost")
-					? FieldLoader.GetValue<int>("cost", t.Value.NodesDict["PathingCost"].Value)
+				var nodesDict = t.Value.GetNodesDict();
+				var cost = nodesDict.ContainsKey("PathingCost")
+					? FieldLoader.GetValue<int>("cost", nodesDict["PathingCost"].Value)
 					: (int)(10000 / speed);
 				ret.Add(t.Key, new TerrainInfo { Speed = speed, Cost = cost });
 			}

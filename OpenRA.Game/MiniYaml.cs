@@ -86,20 +86,21 @@ namespace OpenRA
 		public string Value;
 		public List<MiniYamlNode> Nodes;
 
-		public Dictionary<string, MiniYaml> NodesDict
+		public Dictionary<string, MiniYaml> GetNodesDict()
 		{
-			get
+			var ret = new Dictionary<string, MiniYaml>();
+			foreach (var y in Nodes)
 			{
-				var ret = new Dictionary<string, MiniYaml>();
-				foreach (var y in Nodes)
+				try
 				{
-					if (ret.ContainsKey(y.Key))
-						throw new InvalidDataException("Duplicate key `{0}' in {1}".F(y.Key, y.Location));
 					ret.Add(y.Key, y.Value);
 				}
-
-				return ret;
+				catch (ArgumentException ex)
+				{
+					throw new InvalidDataException("Duplicate key `{0}' in {1}".F(y.Key, y.Location), ex);
+				}
 			}
+			return ret;
 		}
 
 		public MiniYaml(string value) : this(value, null) { }
@@ -122,7 +123,8 @@ namespace OpenRA
 
 		public static List<MiniYamlNode> NodesOrEmpty(MiniYaml y, string s)
 		{
-			return y.NodesDict.ContainsKey(s) ? y.NodesDict[s].Nodes : new List<MiniYamlNode>();
+			var nd = y.GetNodesDict();
+			return nd.ContainsKey(s) ? nd[s].Nodes : new List<MiniYamlNode>();
 		}
 
 		static List<MiniYamlNode> FromLines(string[] lines, string filename)

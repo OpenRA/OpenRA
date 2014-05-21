@@ -31,20 +31,20 @@ namespace OpenRA.Graphics
 			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
 			var shadowIndex = new int[] { };
 
-			if (sequences.NodesDict.ContainsKey("ShadowIndex"))
+			var nodesDict = sequences.GetNodesDict();
+			if (nodesDict.ContainsKey("ShadowIndex"))
 			{
 				Array.Resize(ref shadowIndex, shadowIndex.Length + 1);
-				Exts.TryParseIntegerInvariant(sequences.NodesDict["ShadowIndex"].Value,
+				Exts.TryParseIntegerInvariant(nodesDict["ShadowIndex"].Value,
 					out shadowIndex[shadowIndex.Length - 1]);
 			}
 
 			palette = new HardwarePalette();
-			foreach (var p in sequences.NodesDict["Palettes"].Nodes)
+			foreach (var p in nodesDict["Palettes"].Nodes)
 				palette.AddPalette(p.Key, new Palette(GlobalFileSystem.Open(p.Value.Value), shadowIndex), false);
 
-
 			var spriteLoader = new SpriteLoader(new string[0], new SheetBuilder(SheetType.Indexed));
-			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
+			foreach (var s in nodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(spriteLoader, s.Key, s.Value);
 
 			palette.Initialize();

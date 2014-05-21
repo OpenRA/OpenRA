@@ -115,7 +115,7 @@ namespace OpenRA.Graphics
 				else
 				{
 					t = Exts.Lazy(() => (IReadOnlyDictionary<string, Sequence>)new ReadOnlyDictionary<string, Sequence>(
-						node.Value.NodesDict.ToDictionary(x => x.Key, x =>
+						node.Value.GetNodesDict().ToDictionary(x => x.Key, x => 
 						{
 							using (new Support.PerfTimer("new Sequence(\"{0}\")".F(node.Key), 20))
 								return new Sequence(spriteLoader.Value, node.Key, x.Key, x.Value);

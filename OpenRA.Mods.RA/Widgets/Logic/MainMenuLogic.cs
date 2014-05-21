@@ -204,12 +204,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		IEnumerable<NewsItem> ReadNews(byte[] bytes)
 		{
 			var str = Encoding.UTF8.GetString(bytes);
-			return MiniYaml.FromString(str).Select(node => new NewsItem
+
+			return MiniYaml.FromString(str).Select(node =>
 			{
-				Title = node.Value.NodesDict["Title"].Value,
-				Author = node.Value.NodesDict["Author"].Value,
-				DateTime = FieldLoader.GetValue<DateTime>("DateTime", node.Key),
-				Content = node.Value.NodesDict["Content"].Value
+				var nodesDict = node.Value.GetNodesDict();
+				return new NewsItem
+					{
+						Title = nodesDict["Title"].Value,
+						Author = nodesDict["Author"].Value,
+						DateTime = FieldLoader.GetValue<DateTime>("DateTime", node.Key),
+						Content = nodesDict["Content"].Value
+					};
 			});
 		}
 
