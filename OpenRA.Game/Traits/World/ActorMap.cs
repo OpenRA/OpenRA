@@ -49,8 +49,8 @@ namespace OpenRA.Traits
 
 		// Position updates are done in one pass
 		// to ensure consistency during a tick
-		List<Actor> addActorPosition;
-		List<Actor> removeActorPosition;
+		readonly List<Actor> addActorPosition = new List<Actor>();
+		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
 
 		public ActorMap(World world, ActorMapInfo info)
 		{
@@ -64,9 +64,6 @@ namespace OpenRA.Traits
 			for (var j = 0; j < rows; j++)
 				for (var i = 0; i < cols; i++)
 					actors[j * cols + i] = new List<Actor>();
-
-			addActorPosition = new List<Actor>();
-			removeActorPosition = new List<Actor>();
 		}
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a)
