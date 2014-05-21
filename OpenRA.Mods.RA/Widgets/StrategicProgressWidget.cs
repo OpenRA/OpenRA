@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "critical_unowned"), offset + new float2(rb.Left + curX, rb.Top));
 
-				if (WorldUtils.AreMutualAllies(a.Actor.Owner, world.LocalPlayer))
+				if (world.LocalPlayer != null && WorldUtils.AreMutualAllies(a.Actor.Owner, world.LocalPlayer))
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(rb.Left + curX, rb.Top));
 				else if (!a.Actor.Owner.NonCombatant)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(rb.Left + curX, rb.Top));
