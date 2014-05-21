@@ -85,7 +85,7 @@ namespace OpenRA
 		public bool Contains<T>(Actor actor)
 		{
 			CheckDestroyed(actor);
-			return ((TraitContainer<T>)InnerGet(typeof(T))).GetMultiple(actor.ActorID).Count() != 0;
+			return ((TraitContainer<T>)InnerGet(typeof(T))).GetMultiple(actor.ActorID).Any();
 		}
 
 		public T Get<T>(Actor actor)
