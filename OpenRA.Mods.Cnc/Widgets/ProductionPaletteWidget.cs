@@ -183,8 +183,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var x = i % Columns;
 				var y = i / Columns;
 				var rect = new Rectangle(rb.X + x * 64 + 1, rb.Y + y * 48 + 1, 64, 48);
-				var icon = new Animation(World, RenderSimple.GetImage(item));
-				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
+				var icon = new Animation(World, item.Traits.Get<TooltipInfo>().Icon);
+				icon.Play(item.Traits.Get<BuildableInfo>().Icon);
 				var pi = new ProductionIcon()
 				{
 					Name = item.Name,
