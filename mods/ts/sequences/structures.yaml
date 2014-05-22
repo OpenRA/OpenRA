@@ -646,3 +646,60 @@ proc: # TODO: unused narefn_a, narefn_b
 #		Length: *
 	icon: reficon
 		Start: 0
+
+gadept:
+	idle:
+		Start: 0
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	critical-idle:
+		Start: 2
+		ShadowStart: 5
+	ground: gadeptbb
+		Start: 0
+		ShadowStart: 3
+		ZOffset: -1c611
+	damaged-ground: gadeptbb
+		Start: 1
+		ShadowStart: 4
+		ZOffset: -1c611
+	critical-ground: gadeptbb
+		Start: 2
+		ShadowStart: 5
+		ZOffset: -1c611
+	idle-light: gadept_b
+		Start: 0
+		Length: 7
+		Tick: 120
+	damaged-idle-light: gadept_b
+		Start: 7
+		Length: 7
+		Tick: 120
+	circuits: gadept_a
+		Start: 0
+		Length: 5
+		ZOffset: -1c511
+	damaged-circuits: gadept_a
+		Start: 5
+		Length: 5
+		ZOffset: -1c511
+	crane: gadept_c
+		Start: 0
+		Length: 16
+	platform: gadept_d
+		Start: 0
+		Length: 7
+		ZOffset: -1c511
+	damaged-platform: gadept_d
+		Start: 7
+		Length: 7
+		ZOffset: -1c511
+	make: gadeptmk
+		Start: 0
+		Length: 10
+		Tick: 60
+		ShadowStart: 10
+	icon: fixicon
+		Start: 0

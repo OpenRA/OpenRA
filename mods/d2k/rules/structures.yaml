@@ -578,6 +578,7 @@ WALL:
 		RallyPoint: 1,3
 	ProvidesCustomPrerequisite:
 		Prerequisite: Repair
+	WithRepairOverlay:
 
 ^HIGHTECH:
 	Inherits: ^Building

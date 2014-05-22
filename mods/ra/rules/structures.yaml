@@ -1197,6 +1197,7 @@ FIX:
 	IronCurtainable:
 	RepairsUnits:
 		Interval: 10
+	WithRepairAnimation:
 
 FACF:
 	Inherits: ^Building

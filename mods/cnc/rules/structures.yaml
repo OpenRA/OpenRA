@@ -341,6 +341,7 @@ HPAD:
 		Produces: Aircraft
 	Reservable:
 	RepairsUnits:
+	WithRepairAnimation:
 	RallyPoint:
 	ProductionQueue:
 		Type: Aircraft
@@ -423,6 +424,7 @@ FIX:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
+	WithRepairAnimation:
 
 EYE:
 	Inherits: ^BaseBuilding

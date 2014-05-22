@@ -189,6 +189,7 @@
 	TargetableUnit:
 		TargetTypes: Ground
 	Repairable:
+		RepairBuildings: gadept
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:

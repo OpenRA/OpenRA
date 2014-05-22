@@ -709,6 +709,40 @@ NAHPAD:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 
+GADEPT:
+	Inherits: ^Building
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Service Depot
+		Description: Repairs vehicles
+	Buildable:
+		BuildPaletteOrder: 80
+		Prerequisites: factory
+		Owner: gdi
+		Queue: Building
+	Building:
+		Power: -30
+		Footprint: _x_ xxx _x_
+		Dimensions: 3,3
+	Health:
+		HP: 1100
+	RevealsShroud:
+		Range: 5c0
+	Reservable:
+	RepairsUnits:
+	RallyPoint:
+	WithIdleOverlay@LIGHT:
+		Sequence: idle-light
+	WithIdleOverlay@GROUND:
+		Sequence: ground
+	WithRepairOverlay@CIRCUITS:
+		Sequence: circuits
+	WithRepairOverlay@CRANE:
+		Sequence: crane
+	WithRepairOverlay@PLATFORM:
+		Sequence: platform
+
 ANYPOWER:
 	Tooltip:
 		Name: Power Plant

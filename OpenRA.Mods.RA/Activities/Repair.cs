@@ -63,9 +63,8 @@ namespace OpenRA.Mods.RA.Activities
 
 				self.InflictDamage(self, -hpToRepair, null);
 
-				if (host != null)
-					host.Trait<RenderBuilding>()
-						.PlayCustomAnim(host, "active");
+				foreach (var depot in host.TraitsImplementing<INotifyRepair>())
+					depot.Repairing(self, host);
 
 				remainingTicks = repairsUnits.Interval;
 			}
