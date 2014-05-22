@@ -124,23 +124,19 @@ namespace OpenRA.Mods.RA.Move
 
 			if (checkTransientActors)
 			{
-				var blockingActorsQuery = world.ActorMap.GetUnitsAt(cell)
-					.Where(x => x != ignoreActor);
-				// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-				if (!blockedByMovers && self != null)
-					blockingActorsQuery = blockingActorsQuery
-						.Where(x => self.Owner.Stances[x.Owner] != Stance.Ally || !IsMovingInMyDirection(self, x));
-				var blockingActors = blockingActorsQuery.ToList();
-
-				if (blockingActors.Count > 0)
+				bool canIgnoreMovingAllies = self != null && !blockedByMovers;
+				bool needsCellExclusively = self == null || Crushes == null;
+				foreach(var a in world.ActorMap.GetUnitsAt(cell))
 				{
-					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
-					if (self == null || Crushes == null)
-						return false;
-
-					if (blockingActors.Any(a => !(a.HasTrait<ICrushable>() &&
-												 a.TraitsImplementing<ICrushable>().Any(b => b.CrushableBy(Crushes, self.Owner)))))
-						return false;
+					if (a == ignoreActor) continue;
+					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
+					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) continue;
+					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
+					if (needsCellExclusively) return false;
+					if (!a.HasTrait<ICrushable>()) return false;
+					foreach (var crushable in a.TraitsImplementing<ICrushable>())
+						if (!crushable.CrushableBy(Crushes, self.Owner))
+							return false;
 				}
 			}
 

@@ -246,18 +246,21 @@ namespace OpenRA.Graphics
 			return new int2((int)Math.Round(px.X), (int)Math.Round(px.Y));
 		}
 
+		float ScreenVectorX(WVec vec) { return Game.modData.Manifest.TileSize.Width * vec.X / 1024f; }
+		float ScreenVectorY(WVec vec) { return Game.modData.Manifest.TileSize.Width * vec.Y / 1024f; }
+		float ScreenVectorZ(WVec vec) { return Game.modData.Manifest.TileSize.Width * vec.Z / 1024f; }
+
 		// For scaling vectors to pixel sizes in the voxel renderer
 		public float[] ScreenVector(WVec vec)
 		{
 			var ts = Game.modData.Manifest.TileSize;
-			return new float[] { ts.Width * vec.X / 1024f, ts.Height * vec.Y / 1024f, ts.Height * vec.Z / 1024f, 1 };
+			return new float[] { ScreenVectorX(vec), ScreenVectorY(vec), ScreenVectorZ(vec), 1 };
 		}
 
 		public int2 ScreenPxOffset(WVec vec)
 		{
 			// Round to nearest pixel
-			var px = ScreenVector(vec);
-			return new int2((int)Math.Round(px[0]), (int)Math.Round(px[1] - px[2]));
+			return new int2((int)Math.Round(ScreenVectorX(vec)), (int)Math.Round(ScreenVectorY(vec) - ScreenVectorZ(vec)));
 		}
 
 		public float ScreenZPosition(WPos pos, int offset)

@@ -64,7 +64,13 @@ namespace OpenRA.Mods.RA
 			VisibilityHash = 0;
 			foreach (var p in self.World.Players)
 			{
-				var isVisible = footprint.Any(c => p.Shroud.IsVisible(c));
+				var isVisible = false;
+				foreach (var pos in footprint)
+					if (p.Shroud.IsVisible(pos))
+					{
+						isVisible = true;
+						break;
+					}
 				visible[p] = isVisible;
 				if (isVisible)
 					VisibilityHash += p.ClientIndex;
