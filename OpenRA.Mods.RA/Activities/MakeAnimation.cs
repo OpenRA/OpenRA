@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (started)
 			{
 				// Don't break the actor if someone has overriden the animation prematurely
-				if (rb.anim.CurrentSequence.Name != "make")
+				if (rb.DefaultAnimation.CurrentSequence.Name != "make")
 				{
 					complete = true;
 					OnComplete();

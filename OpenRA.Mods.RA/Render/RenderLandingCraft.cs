@@ -51,20 +51,20 @@ namespace OpenRA.Mods.RA.Render
 
 		void Open()
 		{
-			if (open || !anim.HasSequence(info.OpenAnim))
+			if (open || !DefaultAnimation.HasSequence(info.OpenAnim))
 				return;
 
 			open = true;
 			PlayCustomAnimation(self, info.OpenAnim, () =>
 			{
-				if (anim.HasSequence(info.UnloadAnim))
+				if (DefaultAnimation.HasSequence(info.UnloadAnim))
 					PlayCustomAnimRepeating(self, info.UnloadAnim);
 			});
 		}
 
 		void Close()
 		{
-			if (!open || !anim.HasSequence(info.OpenAnim))
+			if (!open || !DefaultAnimation.HasSequence(info.OpenAnim))
 				return;
 
 			open = false;

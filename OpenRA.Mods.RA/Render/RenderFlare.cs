@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 		public RenderFlare(Actor self)
 			: base(self, () => 0)
 		{
-			anim.PlayThen("open", () => anim.PlayRepeating("idle"));
+			DefaultAnimation.PlayThen("open", () => DefaultAnimation.PlayRepeating("idle"));
 		}
 	}
 }

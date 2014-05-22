@@ -35,8 +35,8 @@ namespace OpenRA.Mods.RA.Render
 		public void PlayCharge(Actor self)
 		{
 			Sound.Play(info.ChargeAudio, self.CenterPosition);
-			anim.PlayThen(NormalizeSequence(self, info.ChargeSequence),
-				() => anim.PlayRepeating(NormalizeSequence(self, "idle")));
+			DefaultAnimation.PlayThen(NormalizeSequence(self, info.ChargeSequence),
+				() => DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle")));
 		}
 	}
 }

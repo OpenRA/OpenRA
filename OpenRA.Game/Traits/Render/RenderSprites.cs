@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.FileFormats;
 using OpenRA.Primitives;
@@ -33,20 +34,13 @@ namespace OpenRA.Traits
 
 	public class RenderSprites : IRender, ITick, INotifyOwnerChanged
 	{
-		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
+		Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 
 		public static Func<int> MakeFacingFunc(Actor self)
 		{
 			var facing = self.TraitOrDefault<IFacing>();
 			if (facing == null) return () => 0;
 			return () => facing.Facing;
-		}
-
-		public Animation anim
-		{
-			get { return anims[""].Animation; }
-			protected set { anims[""] = new AnimationWithOffset(value,
-				anims[""].OffsetFunc, anims[""].DisableFunc, anims[""].Paused, anims[""].ZOffset); }
 		}
 
 		RenderSpritesInfo Info;
@@ -130,6 +124,15 @@ namespace OpenRA.Traits
 				    return s.Second+baseSequence;
 
 			return baseSequence;
+		}
+
+		// Required by RenderSimple
+		protected int2 AutoSelectionSize(Actor self)
+		{
+			return anims.Values.Where(b => (b.DisableFunc == null || !b.DisableFunc())
+				&& b.Animation.CurrentSequence != null)
+					.Select(a => (a.Animation.Image.size*Info.Scale).ToInt2())
+					.FirstOrDefault();
 		}
 	}
 }
