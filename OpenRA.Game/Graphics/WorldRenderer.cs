@@ -57,7 +57,7 @@ namespace OpenRA.Graphics
 			Theater = new Theater(world.TileSet);
 			terrainRenderer = new TerrainRenderer(world, this);
 
-			devTrait = new Lazy<DeveloperMode>(() => world.LocalPlayer != null ? world.LocalPlayer.PlayerActor.Trait<DeveloperMode>() : null);
+			devTrait = Exts.Lazy(() => world.LocalPlayer != null ? world.LocalPlayer.PlayerActor.Trait<DeveloperMode>() : null);
 		}
 
 		PaletteReference CreatePaletteReference(string name)
