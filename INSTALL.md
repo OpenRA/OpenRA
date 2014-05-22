@@ -15,7 +15,7 @@ Windows
 To compile OpenRA, open the `OpenRA.sln` solution in the main folder,
 or build it from the command-line with MSBuild.
 
-Copy both the native DLLs from `.\packaging\windows`
+Copy both the native DLLs from `.\thirdparty\windows`
 and the CLI images from `.\thirdparty` to the main folder.
 
 Run the game with `OpenRA.Game.exe Game.Mod=ra` for Red Alert
