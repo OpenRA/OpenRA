@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
 
-			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
+			var dest = Game.Settings.Locations.GetContentPath("cnc");
 			var extractPackage = "INSTALL/SETUP.Z";
 
 			var installCounter = 0;

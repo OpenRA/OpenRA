@@ -47,14 +47,9 @@ namespace OpenRA
 		public static OrderManager JoinServer(string host, int port, string password)
 		{
 			var om = new OrderManager(host, port, password,
-				new ReplayRecorderConnection(new NetworkConnection(host, port), ChooseReplayFilename));
+				new ReplayRecorderConnection(new NetworkConnection(host, port)));
 			JoinInner(om);
 			return om;
-		}
-
-		static string ChooseReplayFilename()
-		{
-			return DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssZ");
 		}
 
 		static void JoinInner(OrderManager om)
@@ -297,7 +292,7 @@ namespace OpenRA
 
 			Settings = new Settings(Platform.SupportDir + "settings.yaml", args);
 
-			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
+			Log.LogPath = Settings.Locations.GetLogsPath();
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
 			Log.AddChannel("sync", "syncreport.log");

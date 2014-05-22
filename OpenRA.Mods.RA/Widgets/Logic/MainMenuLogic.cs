@@ -182,7 +182,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		string GetNewsCacheFile()
 		{
-			var cacheDir = Path.Combine(Platform.SupportDir, "cache", Game.modData.Manifest.Mod.Id);
+			var cacheDir = Game.Settings.Locations.GetBasePath("cache", Game.modData.Manifest.Mod.Id);
 			Directory.CreateDirectory(cacheDir);
 			return Path.Combine(cacheDir, "news.yaml");
 		}

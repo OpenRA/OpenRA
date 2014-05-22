@@ -112,7 +112,10 @@ namespace OpenRA
 
 			// Paths starting with ^ are relative to the user directory
 			if (dir.StartsWith("^"))
-				dir = Platform.SupportDir + dir.Substring(1);
+			{
+				var loc = Game.Settings != null ? Game.Settings.Locations : new LocationSettings();
+				dir = loc.GetBasePath(dir.Substring(1));
+			}
 
 			if (!Directory.Exists(dir))
 				return noMaps;

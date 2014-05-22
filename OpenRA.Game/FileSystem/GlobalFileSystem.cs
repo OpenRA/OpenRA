@@ -111,7 +111,10 @@ namespace OpenRA.FileSystem
 
 			// paths starting with ^ are relative to the support dir
 			if (name.StartsWith("^"))
-				name = Platform.SupportDir + name.Substring(1);
+			{
+				var loc = Game.Settings != null ? Game.Settings.Locations : new LocationSettings();
+				name = loc.GetBasePath(name.Substring(1));
+			}
 
 			FolderPaths.Add(name);
 			Action a = () => MountInner(OpenPackage(name, annotation, order++));

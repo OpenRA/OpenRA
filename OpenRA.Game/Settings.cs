@@ -193,6 +193,54 @@ namespace OpenRA
 		public bool ConnectAutomatically = false;
 	}
 
+	public class LocationSettings
+	{
+		public string Base;
+		public string Logs;
+		public string Replays;
+
+		string GetPath(string defaultValue, string overrideValue = null, string modId = null, string modVersion = null)
+		{
+			var path = defaultValue;
+
+			if (!string.IsNullOrWhiteSpace(overrideValue))
+				path = overrideValue.Trim();
+
+			if (modId != null)
+				path = Path.Combine(path, modId);
+
+			if (modVersion != null)
+				path = Path.Combine(path, modVersion);
+
+			return path;
+		}
+
+		public string GetBasePath(params string[] paths)
+		{
+			var basePath = GetPath(Platform.SupportDir, Base);
+			if (paths.Length == 0)
+				return basePath;
+
+			return Path.Combine(basePath, Path.Combine(paths));
+		}
+		public string GetLogsPath()
+		{
+			return GetPath(GetBasePath("Logs"), Logs);
+		}
+		public string GetReplaysPath(ModMetadata mm)
+		{
+			return GetPath(GetBasePath("Replays"), Replays, mm.Id, mm.Version);
+		}
+		public string GetContentPath(string modId)
+		{
+			return GetBasePath("Content");
+		}
+		public string GetContentPath(string modId, string path1)
+		{
+			return GetBasePath("Content", path1);
+		}
+	}
+
 	public class Settings
 	{
 		string settingsFile;
@@ -205,6 +253,7 @@ namespace OpenRA
 		public DebugSettings Debug = new DebugSettings();
 		public KeySettings Keys = new KeySettings();
 		public IrcSettings Irc = new IrcSettings();
+		public LocationSettings Locations = new LocationSettings();
 
 		public Dictionary<string, object> Sections;
 
@@ -220,7 +269,8 @@ namespace OpenRA
 				{ "Server", Server },
 				{ "Debug", Debug },
 				{ "Keys", Keys },
-				{ "Irc", Irc }
+				{ "Irc", Irc },
+				{ "Locations", Locations }
 			};
 
 			// Override fieldloader to ignore invalid entries
