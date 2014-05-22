@@ -258,13 +258,11 @@ discus:
 		Start: 0
 		Length: *
 
-# TODO: needs unit*.pal
 canister:
 	idle:
 		Start: 0
 		Length: *
 
-# TODO: needs unit*.pal + ShadowIndex: 4
 dragon:
 	idle:
 		Start: 0
@@ -282,6 +280,19 @@ crystal4:
 
 torpedo:
 	idle:
+		Start: 0
+		Length: *
+
+flameall:
+	idle:
+		Start: 0
+		Length: 19
+		Facings: -8
+		Tick: 160
+
+#TODO: placeholder to fix crashes related to smoke
+smoke_m:
+	idle: fire3
 		Start: 0
 		Length: *
 
@@ -374,5 +385,33 @@ resources:
 		ShadowStart: 12
 
 shroud:
-	shroud: shadow
+	shroud: shadow #TODO: use shroud.shp
+		Length: *
+
+scorches: #TODO: make use of 07-12 as well
+	sc1: burnt01
+		Length: *
+	sc2: burnt02
+		Length: *
+	sc3: burnt03
+		Length: *
+	sc4: burnt04
+		Length: *
+	sc5: burnt05
+		Length: *
+	sc6: burnt06
+		Length: *
+
+craters: #TODO: make use of 07-12 as well
+	cr1: crater01
+		Length: *
+	cr2: crater02
+		Length: *
+	cr3: crater03
+		Length: *
+	cr4: crater04
+		Length: *
+	cr5: crater05
+		Length: *
+	cr6: crater06
 		Length: *
