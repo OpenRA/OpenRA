@@ -215,6 +215,9 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 ^Helicopter:
 	AppearsOnRadar:
