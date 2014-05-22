@@ -47,9 +47,12 @@ namespace OpenRA.Mods.RA.Air
 
 			var res = dest.TraitOrDefault<Reservable>();
 			var heli = self.Trait<Helicopter>();
-			if (res != null)
-				heli.Reservation = res.Reserve(dest, self, heli);
 
+			if (res != null)
+			{
+				heli.UnReserve();
+				heli.Reservation = res.Reserve(dest, self, heli);
+			}
 			var exit = dest.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
 			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 

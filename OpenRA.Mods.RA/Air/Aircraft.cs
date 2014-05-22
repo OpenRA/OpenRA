@@ -80,8 +80,12 @@ namespace OpenRA.Mods.RA.Air
 				return;
 
 			var res = afld.Trait<Reservable>();
+
 			if (res != null)
+			{
+				UnReserve();
 				Reservation = res.Reserve(afld, self, this);
+			}
 		}
 
 		public void UnReserve()
