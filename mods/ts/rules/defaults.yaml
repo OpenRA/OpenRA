@@ -177,10 +177,10 @@
 		Crushes: crate
 		TerrainSpeeds:
 			Clear: 80
-			Rough: 40
+			Rough: 60
 			Road: 100
-			Beach: 40
-			Tiberium: 40
+			Beach: 60
+			Tiberium: 60
 		ROT: 5
 	SelectionDecorations:
 		Palette: pips
