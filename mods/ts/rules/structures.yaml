@@ -809,6 +809,7 @@ GADEPT:
 	WithRepairOverlay@PLATFORM:
 		Sequence: platform
 
+#TODO: Placeholder, replace with Component Tower + Vulcan Upgrade
 GAVULC:
 	Inherits: ^Building
 	Valued:
@@ -860,6 +861,7 @@ GAVULC:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 
+#TODO: Placeholder, replace with Component Tower + RPG Upgrade
 GAROCK:
 	Inherits: ^Building
 	Valued:
@@ -902,6 +904,7 @@ GAROCK:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 
+#TODO: Placeholder, replace with Component Tower + SAM Upgrade
 GACSAM:
 	Inherits: ^Building
 	Valued:
