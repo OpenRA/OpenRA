@@ -77,9 +77,7 @@ namespace OpenRA.Mods.RA
 				? world.SharedRandom.Next(available.Count)
 				: available			// pick the most distant spawnpoint from everyone else
 					.Select((k, i) => Pair.New(k, i))
-					.OrderByDescending(a => taken.Sum(t => (t - a.First).LengthSquared))
-					.Select(a => a.Second)
-					.First();
+					.MaxBy(a => taken.Sum(t => (t - a.First).LengthSquared)).Second;
 
 			var sp = available[n];
 			available.RemoveAt(n);

@@ -535,7 +535,7 @@ namespace OpenRA.Server
 					LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
 
 					var nextAdmin = LobbyInfo.Clients.Where(c1 => c1.Bot == null)
-						.OrderBy(c => c.Index).FirstOrDefault();
+						.MinByOrDefault(c => c.Index);
 
 					if (nextAdmin != null)
 					{

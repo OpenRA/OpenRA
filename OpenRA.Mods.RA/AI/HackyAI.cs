@@ -299,7 +299,7 @@ namespace OpenRA.Mods.RA.AI
 				// Try to maintain 20% excess power
 				if (!HasAdequatePower())
 					return buildableThings.Where(a => GetPowerProvidedBy(a) > 0)
-						.OrderByDescending(a => GetPowerProvidedBy(a)).FirstOrDefault();
+						.MaxByOrDefault(a => GetPowerProvidedBy(a));
 
 				if (playerResource.AlertSilo)
 					return GetBuildingInfoByCommonName("Silo", p);
@@ -366,9 +366,13 @@ namespace OpenRA.Mods.RA.AI
 
 				case BuildingType.Refinery:
 					var tilesPos = world.FindTilesInCircle(baseCenter, MaxBaseDistance)
-						.Where(a => resourceTypes.Contains(world.GetTerrainType(new CPos(a.X, a.Y))))
-						.OrderBy(a => (a.CenterPosition - baseCenter.CenterPosition).LengthSquared);
-					return tilesPos.Any() ? findPos(tilesPos.First().CenterPosition, baseCenter) : null;
+						.Where(a => resourceTypes.Contains(world.GetTerrainType(new CPos(a.X, a.Y))));
+					if (tilesPos.Any())
+					{
+						var pos = tilesPos.MinBy(a => (a.CenterPosition - baseCenter.CenterPosition).LengthSquared);
+						return findPos(pos.CenterPosition, baseCenter);
+					}
+					return null;
 
 				case BuildingType.Building:
 					for (var k = 0; k < maxBaseDistance; k++)
@@ -427,8 +431,7 @@ namespace OpenRA.Mods.RA.AI
 
 			var leastLikedEnemies = liveEnemies
 				.GroupBy(e => aggro[e].Aggro)
-				.OrderByDescending(g => g.Key)
-				.FirstOrDefault();
+				.MaxByOrDefault(g => g.Key);
 
 			var enemy = (leastLikedEnemies != null) ?
 				leastLikedEnemies.Random(random) : liveEnemies.FirstOrDefault();
@@ -458,12 +461,9 @@ namespace OpenRA.Mods.RA.AI
 		{
 			var allEnemyUnits = world.Actors
 				.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>() &&
-					unit.HasTrait<ITargetable>()).ToList();
+					unit.HasTrait<ITargetable>());
 
-			if (allEnemyUnits.Count > 0)
-				return allEnemyUnits.ClosestTo(pos);
-
-			return null;
+			return allEnemyUnits.ClosestTo(pos);
 		}
 
 		internal Actor FindClosestEnemy(WPos pos, WRange radius)
