@@ -291,7 +291,7 @@ fix:
 		Start: 0
 		Length: 14
 		Tick: 60
-	bib: mbFIX
+	bib: mb3x1
 		Start: 0
 		Length: *
 		Offset: 0,-9
@@ -592,7 +592,7 @@ miss:
 		Length: *
 		Tick: 80
 		Offset: 0,-1
-	bib: mbMISS
+	bib: mb3x1
 		Start: 0
 		Length: *
 		Offset: 0,1
