@@ -251,7 +251,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 
 ########################## MAKE/INSTALL RULES ##########################
 #
-default: dependencies core
+default: core
 
 core: game renderers mods utility ralint
 
@@ -261,7 +261,7 @@ package: dependencies core editor crashdialog docs version
 
 mods: mod_ra mod_cnc mod_d2k mod_ts
 
-all: dependencies core tools
+all: core tools
 
 clean:
 	@-$(RM_F) *.exe *.dll ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
@@ -274,8 +274,13 @@ ifeq ($(shell uname),Darwin)
 	platformdeps = "osx"
 endif
 
-dependencies:
-	@ $(CP_R) thirdparty/*.dl* .
+dependencies: cli-dependencies native-dependencies
+
+cli-dependencies:
+	@ $(CP_R) thirdparty/*.dll .
+	@ $(CP_R) thirdparty/*.dll.config .
+
+native-dependencies:
 	@ $(CP_R) thirdparty/${platformdeps}/* .
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
