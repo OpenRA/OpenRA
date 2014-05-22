@@ -361,6 +361,7 @@ BRIDGEHUT:
 	Selectable:
 		Selectable: false
 		Bounds: 48,48
+		Priority: 2
 	BridgeHut:
 	TargetableBuilding:
 		TargetTypes: BridgeHut, C4
