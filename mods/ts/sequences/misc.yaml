@@ -54,10 +54,33 @@ beacon:
 		BlendMode: Additive
 
 crate-effects:
-	levelup: levelup
+	dollar: money
 		Start: 0
 		Length: *
-		Tick: 200
+	reveal-map: reveal
+		Start: 0
+		Length: *
+	hide-map: shroudx
+		Start: 0
+		Length: *
+	fpower: firepowr
+		Start: 0
+		Length: *
+	armor: armor
+		Start: 0
+		Length: *
+	stealth: cloak
+		Start: 0
+		Length: *
+	heal: healall
+		Start: 0
+		Length: *
+	nuke: mltimisl
+		Start: 0
+		Length: *
+	levelup: veteran
+		Start: 0
+		Length: *
 
 rank:
 	rank: pips
