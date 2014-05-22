@@ -379,6 +379,7 @@ CONCRETEB:
 	ProductionAirdrop:
 		Produces: Starport
 		ActorType: frigate
+	WithDeliveryOverlay:
 	ProductionBar:
 	PrimaryBuilding:
 	RequiresPower:

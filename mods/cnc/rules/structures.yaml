@@ -269,6 +269,7 @@ AFLD:
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle
+	WithDeliveryAnimation:
 	ProductionQueue:
 		Type: Vehicle
 		Group: Vehicle
