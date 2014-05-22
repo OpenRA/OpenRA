@@ -21,12 +21,13 @@ namespace OpenRA
 	{
 		public readonly ModMetadata Mod;
 		public readonly string[]
-			Folders, MapFolders, Rules, ServerTraits,
+			Folders, Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Movies, Translations, TileSets,
 			ChromeMetrics, PackageContents, LuaScripts, MapCompatibility, Missions;
 
-		public readonly Dictionary<string, string> Packages;
+		public readonly IReadOnlyDictionary<string, string> Packages;
+		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
 		public readonly MiniYaml LobbyDefaults;
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
@@ -43,8 +44,8 @@ namespace OpenRA
 
 			// TODO: Use fieldloader
 			Folders = YamlList(yaml, "Folders");
-			MapFolders = YamlList(yaml, "MapFolders");
-			Packages = yaml["Packages"].NodesDict.ToDictionary(x => x.Key, x => x.Value.Value);
+			MapFolders = YamlDictionary(yaml, "MapFolders");
+			Packages = YamlDictionary(yaml, "Packages");
 			Rules = YamlList(yaml, "Rules");
 			ServerTraits = YamlList(yaml, "ServerTraits");
 			Sequences = YamlList(yaml, "Sequences");
@@ -94,6 +95,15 @@ namespace OpenRA
 				return new string[] { };
 
 			return yaml[key].NodesDict.Keys.ToArray();
+		}
+
+		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)
+		{
+			if (!yaml.ContainsKey(key))
+				return new ReadOnlyDictionary<string, string>();
+
+			var inner = yaml[key].NodesDict.ToDictionary(x => x.Key, x => x.Value.Value);
+			return new ReadOnlyDictionary<string, string>(inner);
 		}
 	}
 }

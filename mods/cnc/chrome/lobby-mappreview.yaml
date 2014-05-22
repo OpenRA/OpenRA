@@ -38,6 +38,41 @@ Container@LOBBY_MAP_PREVIEW:
 					Height: 25
 					Font: Tiny
 					Align: Center
+		Container@MAP_INVALID:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_RIGHT
+					Height: 194
+					Background: panel-gray
+					Children:
+						MapPreview@MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							TooltipContainer: TOOLTIP_CONTAINER
+				Label@MAP_TITLE:
+					Y: 197
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+				Label@MAP_STATUS_A:
+					Y: 212
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: This map is not compatible
+				Label@MAP_STATUS_B:
+					Y: 225
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: with this version of OpenRA
 		Container@MAP_DOWNLOADABLE:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM

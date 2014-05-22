@@ -15,8 +15,8 @@ Folders:
 	./mods/ra/uibits
 
 MapFolders:
-	./mods/ts/maps
-	~^maps/ts
+	./mods/ts/maps: System
+	~^maps/ts: User
 
 Packages:
 # Tiberian Sun

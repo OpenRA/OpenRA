@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Traits;
@@ -170,7 +171,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (slotsButton != null)
 			{
 				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||
-					!orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots || !s.LockTeam);
+					Map.RuleStatus != MapRuleStatus.Cached || !orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots || !s.LockTeam);
 
 				var botNames = modRules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
 				slotsButton.OnMouseDown = _ =>
@@ -264,7 +265,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			optionsBin.IsVisible = () => panel == PanelType.Options;
 
 			var optionsButton = lobby.Get<ButtonWidget>("OPTIONS_BUTTON");
-			optionsButton.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
+			optionsButton.IsDisabled = () => Map.RuleStatus != MapRuleStatus.Cached || panel == PanelType.Kick || panel == PanelType.ForceStart;
 			optionsButton.GetText = () => panel == PanelType.Options ? "Players" : "Options";
 			optionsButton.OnClick = () => panel = (panel == PanelType.Options) ? PanelType.Players : PanelType.Options;
 
@@ -278,7 +279,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var startGameButton = lobby.GetOrNull<ButtonWidget>("START_GAME_BUTTON");
 			if (startGameButton != null)
 			{
-				startGameButton.IsDisabled = () => configurationDisabled() ||
+				startGameButton.IsDisabled = () => configurationDisabled() || Map.RuleStatus != MapRuleStatus.Cached ||
 					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null);
 				startGameButton.OnClick = () =>
 				{
@@ -582,16 +583,31 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return;
 
 			Map = Game.modData.MapCache[uid];
-
 			if (Map.Status == MapStatus.Available)
 			{
-				// Tell the server that we have the map
-				orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
+				// Maps need to be validated and pre-loaded before they can be accessed
+				new Thread(_ => 
+				{
+					var map = Map;
+					map.CacheRules();
+					Game.RunAfterTick(() =>
+					{
+						// Map may have changed in the meantime
+						if (map != Map)
+							return;
 
-				// Restore default starting cash if the last map set it to something invalid
-				var pri = modRules.Actors["player"].Traits.Get<PlayerResourcesInfo>();
-				if (!Map.Map.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
-					orderManager.IssueOrder(Order.Command("startingcash {0}".F(pri.DefaultCash)));
+						if (map.RuleStatus != MapRuleStatus.Invalid)
+						{
+							// Tell the server that we have the map
+							orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
+
+							// Restore default starting cash if the last map set it to something invalid
+							var pri = modRules.Actors["player"].Traits.Get<PlayerResourcesInfo>();
+							if (!Map.Map.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
+								orderManager.IssueOrder(Order.Command("startingcash {0}".F(pri.DefaultCash)));
+						}
+					});
+				}).Start();
 			}
 			else if (Game.Settings.Game.AllowDownloading)
 				Game.modData.MapCache.QueryRemoteMapDetails(new [] { uid });
