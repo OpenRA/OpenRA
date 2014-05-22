@@ -69,8 +69,7 @@ namespace OpenRA.Mods.RA.Air
 			var side = new WVec(-fwd.Y, fwd.X, fwd.Z);
 			var approachDelta = self.CenterPosition - approachStart;
 			var sideTowardBase = new[] { side, -side }
-				.OrderBy(a => WVec.Dot(a, approachDelta))
-				.First();
+				.MinBy(a => WVec.Dot(a, approachDelta));
 
 			// Calculate the tangent line that joins the turning circles at the current and approach positions
 			var cp = self.CenterPosition + turnRadius * sideTowardBase / 1024;

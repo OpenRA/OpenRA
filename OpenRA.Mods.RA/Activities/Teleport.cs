@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA.Activities
 			var restrictTo = maximumDistance == null ? null : self.World.FindTilesInCircle(self.Location, maximumDistance.Value);
 
 			if (maximumDistance != null)
-				destination = restrictTo.OrderBy(x => (x - destination).Length).First();
+				destination = restrictTo.MinBy(x => (x - destination).LengthSquared);
 
 			var pos = self.Trait<IPositionable>();
 			if (pos.CanEnterCell(destination) && self.Owner.Shroud.IsExplored(destination))

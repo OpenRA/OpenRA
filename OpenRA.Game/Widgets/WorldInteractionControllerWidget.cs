@@ -93,8 +93,7 @@ namespace OpenRA.Widgets
 					if (multiClick)
 					{
 						var unit = World.ScreenMap.ActorsAt(xy)
-							.OrderByDescending(a => a.Info.SelectionPriority())
-							.FirstOrDefault();
+							.WithHighestSelectionPriority();
 
 						var newSelection2 = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight, 
 							a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);

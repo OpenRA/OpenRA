@@ -35,13 +35,12 @@ namespace OpenRA
 
 		public static Actor ClosestTo(this IEnumerable<Actor> actors, Actor a)
 		{
-			var pos = a.CenterPosition;
-			return actors.OrderBy(b => (b.CenterPosition - pos).LengthSquared).FirstOrDefault();
+			return actors.ClosestTo(a.CenterPosition);
 		}
 
 		public static Actor ClosestTo(this IEnumerable<Actor> actors, WPos pos)
 		{
-			return actors.OrderBy(a => (a.CenterPosition - pos).LengthSquared).FirstOrDefault();
+			return actors.MinByOrDefault(a => (a.CenterPosition - pos).LengthSquared);
 		}
 
 		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WRange r)
