@@ -169,17 +169,26 @@ namespace OpenRA.FileSystem
 
 		public static Stream OpenWithExts(string filename, params string[] exts)
 		{
+			Stream s;
+			if (!TryOpenWithExts(filename, exts, out s))
+				throw new FileNotFoundException("File not found: {0}".F(filename), filename);
+
+			return s;
+		}
+
+		public static bool TryOpenWithExts(string filename, string[] exts, out Stream s)
+		{
 			if (filename.IndexOfAny(new char[] { '/', '\\' }) == -1)
 			{
 				foreach (var ext in exts)
 				{
-					var s = GetFromCache(PackageHashType.Classic, filename + ext);
+					s = GetFromCache(PackageHashType.Classic, filename + ext);
 					if (s != null)
-						return s;
+						return true;
 
 					s = GetFromCache(PackageHashType.CRC32, filename + ext);
 					if (s != null)
-						return s;
+						return true;
 				}
 			}
 
@@ -191,10 +200,14 @@ namespace OpenRA.FileSystem
 					.FirstOrDefault();
 
 				if (folder != null)
-					return folder.GetContent(filename + ext);
+				{
+					s = folder.GetContent(filename + ext);
+					return true;
+				}
 			}
 
-			throw new FileNotFoundException("File not found: {0}".F(filename), filename);
+			s = null;
+			return false;
 		}
 
 		public static bool Exists(string filename) { return MountedFolders.Any(f => f.Exists(filename)); }

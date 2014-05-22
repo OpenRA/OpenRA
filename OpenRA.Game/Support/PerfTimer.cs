@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -17,52 +18,65 @@ namespace OpenRA.Support
 {
 	public class PerfTimer : IDisposable
 	{
-		readonly Stopwatch sw = Stopwatch.StartNew();
-		readonly string Name;
+		readonly Stopwatch sw;
+		readonly string name;
+		readonly int thresholdMs;
+		readonly int depth;
+		readonly PerfTimer parent;
+		List<PerfTimer> children;
 
-		//
-		// Hacks to give the output a tree-like structure
-		//
-		static ThreadLocal<int> depth = new ThreadLocal<int>();
-		static ThreadLocal<string> prevHeader = new ThreadLocal<string>();
+		static ThreadLocal<PerfTimer> Parent = new ThreadLocal<PerfTimer>();
+
+		// Tree settings
 		const int MaxWidth = 60, Digits = 6;
 		const int MaxIndentedLabel = MaxWidth - Digits;
 		const string IndentationString = "|   ";
-		readonly string FormatString = "{0," + MaxIndentedLabel + "} {1," + Digits + "} ms";
+		static readonly string FormatString = "{0," + MaxIndentedLabel + "} {1," + Digits + "} ms";
 
-		public PerfTimer(string name)
+		public PerfTimer(string name, int thresholdMs = 0)
 		{
-			if (prevHeader.Value != null)
-			{
-				Log.Write("perf", prevHeader.Value);
-				prevHeader.Value = null;
-			}
+			this.name = name;
+			this.thresholdMs = thresholdMs;
 
-			this.Name = name;
+			parent = Parent.Value;
+			depth = parent == null ? 0 : parent.depth + 1;
+			Parent.Value = this;
 
-			prevHeader.Value = GetHeader(Indentation, this.Name);
-			depth.Value++;
+			sw = Stopwatch.StartNew();
 		}
 
 		public void Dispose()
 		{
-			depth.Value--;
+			sw.Stop();
 
-			string s;
+			Parent.Value = parent;
 
-			if (prevHeader.Value == null)
+			if (parent == null)
+				Write();
+			else if (sw.Elapsed.TotalMilliseconds > thresholdMs)
 			{
-				s = GetFooter(Indentation);
+				if (parent.children == null)
+					parent.children = new List<PerfTimer>();
+				parent.children.Add(this);
 			}
-			else
-			{
-				s = GetOneLiner(Indentation, this.Name);
-				prevHeader.Value = null;
-			}
-
-			Log.Write("perf", FormatString, s, Math.Round(this.sw.Elapsed.TotalMilliseconds));
 		}
 
+		void Write()
+		{
+			var elapsedMs = Math.Round(this.sw.Elapsed.TotalMilliseconds);
+
+			if (children != null)
+			{
+				Log.Write("perf", GetHeader(Indentation, this.name));
+				foreach (var child in children)
+					child.Write();
+				Log.Write("perf", FormatString, GetFooter(Indentation), elapsedMs);
+			}
+			else if (elapsedMs >= thresholdMs)
+				Log.Write("perf", FormatString, GetOneLiner(Indentation, this.name), elapsedMs);
+		}
+
+		#region Formatting helpers
 		static string GetHeader(string indentation, string label)
 		{
 			return string.Concat(indentation, LimitLength(label, MaxIndentedLabel - indentation.Length));
@@ -101,18 +115,20 @@ namespace OpenRA.Support
 			return s.Substring(0, length);
 		}
 
-		static string Indentation
+		string Indentation
 		{
 			get
 			{
-				var d = depth.Value;
-				if (d == 1)
-					return IndentationString;
-				else if (d <= 0)
+				if (depth <= 0)
 					return string.Empty;
+				else if (depth == 1)
+					return IndentationString;
+				else if (depth == 2)
+					return string.Concat(IndentationString, IndentationString);
 				else
-					return string.Concat(Enumerable.Repeat(IndentationString, depth.Value));
+					return string.Concat(Enumerable.Repeat(IndentationString, depth));
 			}
 		}
+		#endregion
 	}
 }

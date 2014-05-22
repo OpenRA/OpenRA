@@ -82,11 +82,8 @@ namespace OpenRA.Traits
 			{
 				var prev = act;
 
-				var sw = Stopwatch.StartNew();
-				act = act.Tick(self);
-				var dt = sw.Elapsed;
-				if (dt > Game.Settings.Debug.LongTickThreshold)
-					Log.Write("perf", "[{2}] Activity: {0} ({1:0.000} ms)", prev, dt.TotalMilliseconds, Game.LocalTick);
+				using (new PerfTimer("[{0}] Activity: {1}".F(Game.LocalTick, prev), (int)Game.Settings.Debug.LongTickThreshold.TotalMilliseconds))
+					act = act.Tick(self);
 
 				if (prev == act)
 					break;
