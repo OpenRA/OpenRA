@@ -222,6 +222,35 @@ napowr:
 	icon: npwricon
 		Start: 0
 
+naapwr:
+	idle: ntapwr
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: ntapwr
+		Start: 1
+		ShadowStart: 4
+	critical-idle: ntapwr
+		Start: 2
+		ShadowStart: 5
+	idle-lights: ntapwr_a
+		Start: 0
+		Length: 9
+		Tick: 200
+	damaged-idle-lights: ntapwr_a
+		Start: 9
+		Length: 9
+		Tick: 200
+	critical-idle-lights: ntapwr_a
+		Start: 9
+		Length: 9
+		Tick: 200
+	make: ntapwrmk
+		Start: 0
+		Length: 19
+		ShadowStart: 19
+	icon: apwricon
+		Start: 0
+
 nahand:
 	idle: nthand
 		Start: 0
@@ -303,9 +332,9 @@ naradr:
 	damaged-idle: ntradr
 		Start: 1
 		ShadowStart: 4
-	critical-idle: ntradr
-		Start: 2
-		ShadowStart: 5
+#	critical-idle: ntradr	#shows a destroyed dish
+#		Start: 2
+#		ShadowStart: 5
 	idle-dish: ntradr_a
 		Start: 0
 		Length: 24
@@ -357,17 +386,17 @@ garadr:
 	damaged-idle: gtradr
 		Start: 1
 		ShadowStart: 4
-	critical-idle: gtradr
-		Start: 2
-		ShadowStart: 5
-	idle-dish: gtradr_a # TODO: needs to ping-pong
-		Start: 0
-		Length: 15
-		Tick: 120
-	damaged-idle-dish: gtradr_a # TODO: needs to ping-pong
-		Start: 15
-		Length: 15
-		Tick: 160
+#	critical-idle: gtradr	#shows a destroyed radar dish
+#		Start: 2
+#		ShadowStart: 5
+	idle-dish: gtradr_a
+		Frames: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+		Length: 28
+		Tick: 200
+	damaged-idle-dish: gtradr_a
+		Frames: 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16
+		Length: 28
+		Tick: 240
 	make: gtradrmk
 		Start: 0
 		Length: 20
@@ -453,14 +482,20 @@ gatick:
 		Start: 0
 		Facings: 1
 		ShadowStart: 3
+		Offset: 0,-13
 	damaged-idle:
 		Start: 1
 		Facings: 1
 		ShadowStart: 4
+		Offset: 0,-13
+	muzzle: gunfire
+		Start: 0
+		Length: *
 	make: gatickmk
 		Start: 0
 		Length: 24
 		ShadowStart: 24
+		Offset: 0,-13
 
 gaicbm:
 	idle:
@@ -495,14 +530,207 @@ gaarty:
 		Start: 0
 		Facings: 1
 		ShadowStart: 3
+		Offset: 0,-12
 	damaged-idle:
 		Start: 1
 		Facings: 1
 		ShadowStart: 4
+		Offset: 0,-12
+	muzzle: gunfire
+		Start: 0
+		Length: *
 	make: gaartymk
 		Start: 0
 		Length: 16
 		ShadowStart: 16
+		Offset: 0,-12
+
+naobel:
+	idle: ntobel
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: ntobel
+		Start: 1
+		ShadowStart: 4
+	critical-idle: ntobel
+		Start: 2
+		ShadowStart: 5
+	active: ntobel #placeholder until Charge supports overlays
+		Start: 0
+		Length: 1
+		ShadowStart: 3
+#	active: ntobel_b
+#		Start: 0
+#		Length: 12
+#		Tick: 240
+	idle-lights: ntobel_a
+		Start: 0
+		Length: 12
+		Tick: 80
+	make: ntobelmk
+		Start: 0
+		Length: 19
+		ShadowStart: 19
+	icon: obliicon
+		Start: 0
+
+nalasr:
+	idle: ntlasr
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: ntlasr
+		Start: 1
+		ShadowStart: 4
+	critical-idle: ntlasr
+		Start: 2
+		ShadowStart: 5
+	make: ntlasrmk
+		Start: 0
+		Length: 21
+		ShadowStart: 21
+	icon: plticon
+		Start: 0
+
+nasam:
+	idle: ntsam
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: ntsam
+		Start: 1
+		ShadowStart: 4
+	critical-idle: ntsam
+		Start: 2
+		ShadowStart: 5
+	turret: gtctwr_d
+		Start: 0
+		Facings: 32
+		Offset: 0,20
+	make: ntsammk
+		Start: 0
+		Length: 8
+		ShadowStart: 8
+	icon: samicon
+		Start: 0
+
+gavulc:
+	idle: gtctwr
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: gtctwr
+		Start: 1
+		ShadowStart: 4
+	critical-idle: gtctwr
+		Start: 2
+		ShadowStart: 5
+	turret: gtctwr_b
+		Start: 0
+		Facings: 32
+	muzzle0: mgun-n
+		Start: 0
+		Length: *
+	muzzle1: mgun-nw
+		Start: 0
+		Length: *
+	muzzle2: mgun-w
+		Start: 0
+		Length: *
+	muzzle3: mgun-sw
+		Start: 0
+		Length: *
+	muzzle4: mgun-s
+		Start: 0
+		Length: *
+	muzzle5: mgun-se
+		Start: 0
+		Length: *
+	muzzle6: mgun-e
+		Start: 0
+		Length: *
+	muzzle7: mgun-ne
+		Start: 0
+		Length: *
+	idle-lights: gtctwr_a
+		Start: 0
+		Length: 6
+		Tick: 200
+	damaged-idle-lights: gtctwr_a
+		Start: 0
+		Length: 6
+		Tick: 200
+	critical-idle-lights: gtctwr_a
+		Start: 6
+		Length: 6
+		Tick: 200
+	make: gtctwrmk
+		Start: 0
+		Length: 11
+		ShadowStart: 11
+	icon: twr1icon
+		Start: 0
+
+garock:
+	idle: gtctwr
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: gtctwr
+		Start: 1
+		ShadowStart: 4
+	critical-idle: gtctwr
+		Start: 2
+		ShadowStart: 5
+	turret: gtctwr_c
+		Start: 0
+		Facings: 32
+	idle-lights: gtctwr_a
+		Start: 0
+		Length: 6
+		Tick: 200
+	damaged-idle-lights: gtctwr_a
+		Start: 0
+		Length: 6
+		Tick: 200
+	critical-idle-lights: gtctwr_a
+		Start: 6
+		Length: 6
+		Tick: 200
+	make: gtctwrmk
+		Start: 0
+		Length: 11
+		ShadowStart: 11
+	icon: twr2icon
+		Start: 0
+
+gacsam:
+	idle: gtctwr
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: gtctwr
+		Start: 1
+		ShadowStart: 4
+	critical-idle: gtctwr
+		Start: 2
+		ShadowStart: 5
+	turret: gtctwr_d
+		Start: 0
+		Facings: 32
+	idle-lights: gtctwr_a
+		Start: 0
+		Length: 6
+		Tick: 200
+	damaged-idle-lights: gtctwr_a
+		Start: 0
+		Length: 6
+		Tick: 200
+	critical-idle-lights: gtctwr_a
+		Start: 6
+		Length: 6
+		Tick: 200
+	make: gtctwrmk
+		Start: 0
+		Length: 11
+		ShadowStart: 11
+	icon: twr3icon
+		Start: 0
 
 gaspot:
 	idle:
@@ -660,6 +888,7 @@ galite:
 #		BlendMode: Alpha
 	icon: liteicon
 		Start: 0
+
 gadept:
 	idle:
 		Start: 0

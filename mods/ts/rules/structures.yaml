@@ -212,6 +212,34 @@ NAPOWR:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 
+NAAPWR:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 5
+		Prerequisites: factory
+		Owner: nod
+		Hotkey: p
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Advanced Power Plant
+		Description: Provides more power for structures
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
+	Building:
+		Power: 200
+		Footprint: xxx xxx
+		Dimensions: 2,3
+	Health:
+		HP: 900
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+
 NAHAND:
 	Inherits: ^Building
 	Buildable:
@@ -380,23 +408,29 @@ GATICK:
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
+		Offset: 170,0,213
 	Armament:
 		Weapon: 90mm
+		LocalOffset: 384,0,128
+		MuzzleSequence: muzzle
 	AttackTurreted:
+	BodyOrientation:
+		QuantizedFacings: 32
 	AutoTarget:
 	RenderRangeCircle:
 	DrawLineToTarget:
 	RenderBuilding:
 	RenderVoxels:
-		Image: ttnk
 	WithVoxelBarrel:
+		LocalOffset: 170,0,0
 	WithVoxelTurret:
 	Transforms:
 		IntoActor: ttnk
 		Offset: 1,1
 		Facing: 96
-		TransformSounds:
+		TransformSounds: place2.aud
 		NoTransformSounds:
+	WithMuzzleFlash:
 
 GAICBM:
 	Inherits: ^Building
@@ -419,7 +453,7 @@ GAICBM:
 		IntoActor: icbm
 		Offset: 1,1
 		Facing: 96
-		TransformSounds:
+		TransformSounds: place2.aud
 		NoTransformSounds:
 
 GADPSA:
@@ -443,7 +477,7 @@ GADPSA:
 		IntoActor: lpst
 		Offset: 1,1
 		Facing: 96
-		TransformSounds:
+		TransformSounds: place2.aud
 		NoTransformSounds:
 	RenderDetectionCircle:
 	DetectCloaked:
@@ -471,23 +505,29 @@ GAARTY:
 	Turreted:
 		ROT: 5
 		InitialFacing: 128
+		Offset: 0,0,171
 	Armament:
 		Weapon: 155mm
+		LocalOffset: 811,0,0
+		MuzzleSequence: muzzle
 	AttackTurreted:
+	BodyOrientation:
+		QuantizedFacings: 32
 	AutoTarget:
 	RenderRangeCircle:
 	DrawLineToTarget:
 	RenderBuilding:
 	RenderVoxels:
-		Image: art2
 	WithVoxelBarrel:
+		LocalOffset: 0,0,-512
 	WithVoxelTurret:
 	Transforms:
 		IntoActor: art2
 		Offset: 1,1
 		Facing: 96
-		TransformSounds:
+		TransformSounds: place2.aud
 		NoTransformSounds:
+	WithMuzzleFlash:
 
 GASPOT:
 	Inherits: ^Building
@@ -768,6 +808,260 @@ GADEPT:
 		Sequence: crane
 	WithRepairOverlay@PLATFORM:
 		Sequence: platform
+
+GAVULC:
+	Inherits: ^Building
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Vulcan Tower
+		Description: Basic base defense. \nRequires no power to operate.\n  Strong vs infantry and light armor\n  Cannot target Aircraft
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 30
+		Owner: gdi
+	Building:
+		Power: -20
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6c0
+	BodyOrientation:
+		QuantizedFacings: 32
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 5
+	AutoTarget:
+	Turreted:
+		ROT: 10
+		InitialFacing: 50
+	AttackTurreted:
+	WithTurret:
+		Recoils: no
+	Armament@PRIMARY:
+		Weapon: VulcanTower
+		LocalOffset: 768,85,512
+		Recoil: 0
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: VulcanTower
+		LocalOffset: 768,-85,512
+		Recoil: 0
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
+	WithMuzzleFlash:
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+
+GAROCK:
+	Inherits: ^Building
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: RPG Tower
+		Description: GDI Advanced base defense.\nRequires power to operate.\n  Strong vs armored ground units\n  Cannot target Aircraft
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 40
+		Owner: gdi
+	Building:
+		Power: -50
+	RequiresPower:
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6c0
+	BodyOrientation:
+		QuantizedFacings: 32
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 5
+	AutoTarget:
+	Turreted:
+		ROT: 10
+		InitialFacing: 50
+	AttackTurreted:
+	WithTurret:
+		Recoils: no
+	Armament:
+		Weapon: RPGTower
+		LocalOffset: 512,-128,512
+		Recoil: 0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+
+GACSAM:
+	Inherits: ^Building
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: S.A.M. Tower
+		Description: GDI Anti-Air base defense. \nRequires power to operate.\n  Strong vs all Aircraft\n  Cannot target ground units
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 60
+		Owner: gdi
+	Building:
+		Power: -30
+	RequiresPower:
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6c0
+	BodyOrientation:
+		QuantizedFacings: 32
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 5
+	AutoTarget:
+	Turreted:
+		ROT: 10
+		InitialFacing: 50
+	AttackTurreted:
+	WithTurret:
+		Recoils: no
+	Armament:
+		Weapon: SAMTower
+		LocalOffset: 512,0,512
+		Recoil: 0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+
+NASAM:
+	Inherits: ^Building
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: S.A.M. Site
+		Description: Nod Anti-Air base defense. \nRequires power to operate.\n  Strong vs all Aircraft\n  Cannot target ground units
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 60
+		Owner: nod
+	Building:
+		Power: -30
+	RequiresPower:
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6c0
+	BodyOrientation:
+		QuantizedFacings: 32
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 5
+	AutoTarget:
+	Turreted:
+		ROT: 10
+		InitialFacing: 50
+	AttackTurreted:
+	WithTurret:
+		Recoils: no
+	Armament:
+		Weapon: SAMTower
+		LocalOffset: 512,0,512
+		Recoil: 0
+
+NALASR:
+	Inherits: ^Building
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Laser Turret
+		Description: Basic base defense. \nRequires power to operate.\n  Strong vs all ground units\n  Cannot target Aircraft
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 50
+		Owner: nod
+	Building:
+		Power: -40
+	RequiresPower:
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 400
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 3
+	Turreted:
+		ROT: 10
+		InitialFacing: 300
+		Offset: 298,-171,256
+	AttackTurreted:
+	Armament:
+		Weapon: TurretLaser
+	RenderVoxels:
+	WithVoxelTurret:
+	AutoTarget:
+
+NAOBEL:
+	Inherits: ^Building
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Obelisk of Light
+		Description: Advanced base defense. \nRequires power to operate.\n  Strong vs all ground units\n  Cannot target Aircraft
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 90
+		Prerequisites: tech
+		Owner: nod
+	Building:
+		Power: -150
+		Footprint: xx xx
+		Dimensions: 2,2
+	RequiresPower:
+	DisabledOverlay:
+	-GivesBuildableArea:
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 8c0
+	RenderBuildingCharge:
+		ChargeAudio: obelpowr.aud
+	Armament:
+		Weapon: ObeliskLaser
+		LocalOffset: 0,0,725
+	AttackCharge:
+		ReloadTime: 50
+		InitialChargeDelay: 50
+	AutoTarget:
+	-RenderBuilding:
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 5
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 
 ANYPOWER:
 	Tooltip:

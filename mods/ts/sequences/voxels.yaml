@@ -12,6 +12,8 @@ apc: # TODO apcw in water
 
 art2:
 	idle:
+
+gaarty:
 	turret: art2tur
 	barrel: art2barl
 
@@ -20,7 +22,9 @@ subtank:
 
 bggy:
 	idle:
-#	muzzle: # TODO: use MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-NW
+
+nalasr:
+	turret: laser
 
 sapc:
 	idle:
@@ -30,6 +34,8 @@ bike:
 
 ttnk:
 	idle:
+
+gatick:
 	turret: ttnktur
 	barrel: ttnkbarl
 
