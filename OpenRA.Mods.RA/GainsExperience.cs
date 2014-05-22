@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
 		public readonly decimal[] SpeedModifier = { 1.1m, 1.15m, 1.2m, 1.5m };
 		public readonly string ChevronPalette = "effect";
+		public readonly string LevelUpPalette = "effect";
 		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 	}
 
@@ -71,7 +72,7 @@ namespace OpenRA.Mods.RA
 				Level++;
 
 				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "LevelUp", self.Owner.Country.Race);
-				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.ChevronPalette)));
+				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.LevelUpPalette)));
 				if (Level == 1)
 					self.World.AddFrameEndTask(w =>
 					{
