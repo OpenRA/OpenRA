@@ -333,6 +333,15 @@ ifeq ($(shell uname),Linux)
 	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
 endif
 
+install-tools: tools
+	@-echo "Installing OpenRA tools to $(DATA_INSTALL_DIR)"
+	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(foreach prog,$(TOOLS),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
+
+install-shortcuts:
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
+	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
+
 	@echo "#!/bin/sh" > openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra
 	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' >> openra
@@ -343,10 +352,8 @@ endif
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra
 
-install-tools: tools
-	@-echo "Installing OpenRA tools to $(DATA_INSTALL_DIR)"
-	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) $(foreach prog,$(TOOLS),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
 
 	@echo "#!/bin/sh" >  openra-editor
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra-editor
@@ -357,13 +364,6 @@ install-tools: tools
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra-editor "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra-editor
-
-install-shortcuts:
-	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
-	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
-
-	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
-	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
 
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
 	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
