@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				sourceDropdown.OnMouseDown = _ => ShowSourceDropdown(sourceDropdown);
 				sourceDropdown.GetText = () =>
 				{
-					var name = assetSource != null ? assetSource.Name.Replace(Platform.SupportDir, "^") : "All Packages";
+					var name = assetSource != null ? assetSource.Name.Replace(Platform.GetFolderPath(UserFolder.Base), "^") : "All Packages";
 					if (name.Length > 15)
 						name = "..." + name.Substring(name.Length - 15);
 
@@ -210,7 +210,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 				                                  () => assetSource == source,
 				                                  () => { assetSource = source;	PopulateAssetList(); });
-				item.Get<LabelWidget>("LABEL").GetText = () => source != null ? source.Name.Replace(Platform.SupportDir, "^") : "All Packages";
+				item.Get<LabelWidget>("LABEL").GetText = () => source != null ? source.Name.Replace(Platform.GetFolderPath(UserFolder.Base), "^") : "All Packages";
 				return item;
 			};
 

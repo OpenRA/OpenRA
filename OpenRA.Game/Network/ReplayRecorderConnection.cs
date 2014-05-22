@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Network
 {
@@ -22,12 +23,10 @@ namespace OpenRA.Network
 
 		IConnection inner;
 		BinaryWriter writer;
-		Func<string> chooseFilename;
 		MemoryStream preStartBuffer = new MemoryStream();
 
-		public ReplayRecorderConnection(IConnection inner, Func<string> chooseFilename)
+		public ReplayRecorderConnection(IConnection inner)
 		{
-			this.chooseFilename = chooseFilename;
 			this.inner = inner;
 
 			writer = new BinaryWriter(preStartBuffer);
@@ -35,26 +34,7 @@ namespace OpenRA.Network
 
 		void StartSavingReplay(byte[] initialContent)
 		{
-			var filename = chooseFilename();
-			var mod = Game.modData.Manifest.Mod;
-			var dir = new[] { Platform.SupportDir, "Replays", mod.Id, mod.Version }.Aggregate(Path.Combine);
-
-			if (!Directory.Exists(dir))
-				Directory.CreateDirectory(dir);
-
-			FileStream file = null;
-			var id = -1;
-			while (file == null)
-			{
-				var fullFilename = Path.Combine(dir, id < 0 ? "{0}.rep".F(filename) : "{0}-{1}.rep".F(filename, id));
-				id++;
-				try
-				{
-					file = File.Create(fullFilename);
-				}
-				catch (IOException) { }
-			}
-
+			var file = Folder.CreateTimestampedFile(Platform.GetFolderPath(UserFolder.ModReplays), "OpenRA-", ".rep");
 			file.Write(initialContent);
 			this.writer = new BinaryWriter(file);
 		}

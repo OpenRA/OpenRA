@@ -51,9 +51,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var cancelButton = panel.Get<ButtonWidget>("CANCEL_BUTTON");
 
-			var mirrorsFile = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id, "mirrors.txt" }.Aggregate(Path.Combine);
+			var mirrorsFile = Platform.GetFilePath(UserFile.ModMirrors, createFolder: true);
 			var file = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-			var dest = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
+			var dest = Platform.GetFolderPath(UserFolder.ModContent);
 
 			Action<DownloadProgressChangedEventArgs> onDownloadProgress = i =>
 			{

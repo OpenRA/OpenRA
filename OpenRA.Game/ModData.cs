@@ -46,6 +46,7 @@ namespace OpenRA
 			MapCache = new MapCache(this);
 
 			// HACK: Mount only local folders so we have a half-working environment for the asset installer
+			Game.CurrentModMetadata = Manifest.Mod;
 			GlobalFileSystem.UnmountAll();
 			foreach (var dir in Manifest.Folders)
 				GlobalFileSystem.Mount(dir);

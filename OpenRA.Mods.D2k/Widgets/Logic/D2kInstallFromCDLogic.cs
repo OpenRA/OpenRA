@@ -75,9 +75,9 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
 
-			var destMusic = new string[] { Platform.SupportDir, "Content", "d2k", "Music" }.Aggregate(Path.Combine);
-			var destData = new[] { Platform.SupportDir, "Content", "d2k" }.Aggregate(Path.Combine);
-			var destSound = new[] { destData, "GAMESFX" }.Aggregate(Path.Combine);
+			var destDir = Platform.GetFolderPath(UserFolder.ModContent);
+			var destMusic = Path.Combine(destDir, "Music");
+			var destSound = Path.Combine(destDir, "GAMESFX");
 			var copyFiles = new string[] { "music/ambush.aud", "music/arakatak.aud", "music/atregain.aud", "music/entordos.aud", "music/fightpwr.aud", "music/fremen.aud", "music/hark_bat.aud", "music/landsand.aud", "music/options.aud", "music/plotting.aud", "music/risehark.aud", "music/robotix.aud", "music/score.aud", "music/soldappr.aud", "music/spicesct.aud", "music/undercon.aud", "music/waitgame.aud" };
 
 			var extractPackage = "setup/setup.z";
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 					if (!InstallUtils.CopyFiles(source, copyFiles, destMusic, onProgress, onError))
 						return;
 
-					if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, destData, onProgress, onError))
+					if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, destDir, onProgress, onError))
 						return;
 
 					if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractAudio, destSound, onProgress, onError))

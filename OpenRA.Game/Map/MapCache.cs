@@ -110,13 +110,7 @@ namespace OpenRA
 		{
 			string[] noMaps = { };
 
-			// Ignore optional flag
-			if (dir.StartsWith("~"))
-				dir = dir.Substring(1);
-
-			// Paths starting with ^ are relative to the user directory
-			if (dir.StartsWith("^"))
-				dir = Platform.SupportDir + dir.Substring(1);
+			dir = Platform.ResolvePath(dir);
 
 			if (!Directory.Exists(dir))
 				return noMaps;

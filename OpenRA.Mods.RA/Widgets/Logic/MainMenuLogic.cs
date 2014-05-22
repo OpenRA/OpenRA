@@ -149,7 +149,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				if (Game.modData.Manifest.NewsUrl != null)
 				{
-					var cacheFile = GetNewsCacheFile();
+					var cacheFile = Platform.GetFilePath(UserFile.ModNews, createFolder: true);
 					var cacheValid = File.Exists(cacheFile) && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
 
 					if (cacheValid)
@@ -167,13 +167,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				newsButton.IsHighlighted = () => newsHighlighted && Game.LocalTick % 50 < 25;
 			}
-		}
-
-		static string GetNewsCacheFile()
-		{
-			var cacheDir = Path.Combine(Platform.SupportDir, "Cache", Game.modData.Manifest.Mod.Id);
-			Directory.CreateDirectory(cacheDir);
-			return Path.Combine(cacheDir, "news.yaml");
 		}
 
 		void SetNewsStatus(string message)
@@ -262,7 +255,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.Settings.Game.NewsFetchedDate = DateTime.Today.ToUniversalTime();
 				Game.Settings.Save();
 
-				var cacheFile = GetNewsCacheFile();
+				var cacheFile = Platform.GetFilePath(UserFile.ModNews, createFolder: true);
 				if (File.Exists(cacheFile))
 				{
 					var oldNews = ReadNews(File.ReadAllBytes(cacheFile));
