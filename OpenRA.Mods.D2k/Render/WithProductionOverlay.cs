@@ -26,6 +26,12 @@ namespace OpenRA.Mods.RA.Render
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
+		[Desc("Custom palette name")]
+		public readonly string Palette = null;
+
+		[Desc("Custom palette is a player palette BaseName")]
+		public readonly bool IsPlayerPalette = false;
+
 		public object Create(ActorInitializer init) { return new WithProductionOverlay(init.self, this); }
 	}
 
@@ -52,7 +58,8 @@ namespace OpenRA.Mods.RA.Render
 			rs.Add("production_overlay_{0}".F(info.Sequence),
 				new AnimationWithOffset(overlay,
 					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-					() => !IsProducing || !buildComplete));
+					() => !IsProducing || !buildComplete),
+				info.Palette, info.IsPlayerPalette);
 		}
 
 		public void Tick(Actor self)
