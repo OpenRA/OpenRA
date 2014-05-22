@@ -251,7 +251,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 
 ########################## MAKE/INSTALL RULES ##########################
 #
-default: dependencies core
+default: cli-dependencies core
 
 core: game renderers mods utility ralint
 
@@ -261,7 +261,7 @@ package: dependencies core editor crashdialog docs version
 
 mods: mod_ra mod_cnc mod_d2k mod_ts
 
-all: dependencies core tools
+all: cli-dependencies core tools
 
 clean:
 	@-$(RM_F) *.exe *.dll ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
@@ -274,8 +274,13 @@ ifeq ($(shell uname),Darwin)
 	platformdeps = "osx"
 endif
 
-dependencies:
-	@ $(CP_R) thirdparty/*.dl* .
+dependencies: cli-dependencies native-dependencies
+
+cli-dependencies:
+	@ $(CP_R) thirdparty/*.dll .
+	@ $(CP_R) thirdparty/*.dll.config .
+
+native-dependencies:
 	@ $(CP_R) thirdparty/${platformdeps}/* .
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
@@ -314,20 +319,19 @@ install-core: default
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
 	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/SDL2-CS* "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/Eluant* "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/SharpFont.dll.config "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/KopiLua.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/NLua.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/RestSharp.dll "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/${platformdeps}/* "$(DATA_INSTALL_DIR)"
+	@$(CP) SDL2-CS* "$(DATA_INSTALL_DIR)"
+	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) SharpFont.dll "$(DATA_INSTALL_DIR)"
+	@$(CP) SharpFont.dll.config "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) Mono.Nat.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) KopiLua.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) NLua.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) RestSharp.dll "$(DATA_INSTALL_DIR)"
 
 ifeq ($(shell uname),Linux)
 	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
