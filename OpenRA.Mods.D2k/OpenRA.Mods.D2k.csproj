@@ -91,6 +91,7 @@
     <Compile Include="Render\WithProductionOverlay.cs" />
     <Compile Include="Render\WithDockingOverlay.cs" />
     <Compile Include="Render\WithDeliveryOverlay.cs" />
+    <Compile Include="PaletteFromScaledPalette.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

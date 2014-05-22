@@ -219,21 +219,23 @@ repaira:
 		Start: 2571
 		Offset: -48,48
 		ZOffset: -1c511
+	damaged-idle: DATA
+		Start: 2572
+		Offset: -48,48
+		ZOffset: -1c511
 	active: DATA
 		Start: 4746
 		Length: 14
 		Offset: -48,48
 		ZOffset: -1c511
+		BlendMode: Additive
 	damaged-active: DATA
 		Start: 4746
 		Length: 14
 		Tick: 60
 		Offset: -48,48
 		ZOffset: -1c511
-	damaged-idle: DATA
-		Start: 2572
-		Offset: -48,48
-		ZOffset: -1c511
+		BlendMode: Additive
 	icon: DATA
 		Start: 4096
 		Offset: -30,-24
@@ -252,21 +254,23 @@ repairh:
 		Start: 2731
 		Offset: -48,48
 		ZOffset: -1c511
+	damaged-idle: DATA
+		Start: 2732
+		Offset: -48,48
+		ZOffset: -1c511
 	active: DATA
 		Start: 4746
 		Length: 14
 		Offset: -48,48
 		ZOffset: -1c511
+		BlendMode: Additive
 	damaged-active: DATA
 		Start: 4746
 		Length: 14
 		Tick: 60
 		Offset: -48,48
 		ZOffset: -1c511
-	damaged-idle: DATA
-		Start: 2732
-		Offset: -48,48
-		ZOffset: -1c511
+		BlendMode: Additive
 	icon: DATA
 		Start: 4097
 		Offset: -30,-24
@@ -285,21 +289,23 @@ repairo:
 		Start: 2891
 		Offset: -48,48
 		ZOffset: -1c511
+	damaged-idle: DATA
+		Start: 2892
+		Offset: -48,48
+		ZOffset: -1c511
 	active: DATA
 		Start: 4746
 		Length: 14
 		Offset: -48,48
 		ZOffset: -1c511
+		BlendMode: Additive
 	damaged-active: DATA
 		Start: 4746
 		Length: 14
 		Tick: 60
 		Offset: -48,48
 		ZOffset: -1c511
-	damaged-idle: DATA
-		Start: 2892
-		Offset: -48,48
-		ZOffset: -1c511
+		BlendMode: Additive
 	icon: DATA
 		Start: 4098
 		Offset: -30,-24
@@ -318,14 +324,14 @@ starporta:
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,64
-		BlendMode: Alpha
+		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,64
-		BlendMode: Alpha
+		BlendMode: Additive
 		Tick: 200
 	make: DATA
 		Start: 4347
@@ -820,14 +826,14 @@ starporth:
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,64
-		BlendMode: Alpha
+		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,64
-		BlendMode: Alpha
+		BlendMode: Additive
 		Tick: 200
 	make: DATA
 		Start: 4347
@@ -1231,14 +1237,14 @@ starporto:
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,64
-		BlendMode: Alpha
+		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,64
-		BlendMode: Alpha
+		BlendMode: Additive
 		Tick: 200
 	make: DATA
 		Start: 4347
@@ -1624,14 +1630,14 @@ starportc: # TODO: unused
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,64
-		BlendMode: Alpha
+		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA
 		Start: 4723
 		Length: 23
 		ZOffset: -1c511
 		Offset: -48,64
-		BlendMode: Alpha
+		BlendMode: Additive
 		Tick: 200
 	make: DATA
 		Start: 4347
