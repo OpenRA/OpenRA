@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Render
 
 			anim = new Animation(self.World, rs.GetImage(self), () => t.turretFacing);
 			anim.Play(info.Sequence);
-			rs.anims.Add("turret_{0}".F(info.Turret), new AnimationWithOffset(
+			rs.Add("turret_{0}".F(info.Turret), new AnimationWithOffset(
 				anim, () => TurretOffset(self), null, () => false, p => ZOffsetFromCenter(self, p, 1)));
 
 			// Restrict turret facings to match the sprite
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Render
 				return;
 
 			var sequence = ab.IsAttacking ? info.AimSequence : info.Sequence;
-			rs.anims["turret_{0}".F(info.Turret)].Animation.ReplaceAnim(sequence);
+			anim.ReplaceAnim(sequence);
 		}
 
 		static public int ZOffsetFromCenter(Actor self, WPos pos, int offset)

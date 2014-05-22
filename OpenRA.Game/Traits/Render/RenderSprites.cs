@@ -105,6 +105,16 @@ namespace OpenRA.Traits
 				a.Animation.Tick();
 		}
 
+		public void Add(string key, AnimationWithOffset anim)
+		{
+			anims.Add(key, anim);
+		}
+
+		public void Remove(string key)
+		{
+			anims.Remove(key);
+		}
+
 		public static string NormalizeSequence(Animation anim, DamageState state, string baseSequence)
 		{
 			var states = new Pair<DamageState, string>[]

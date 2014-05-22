@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Render
 			{
 				var overlay = new Animation(init.world, rs.GetImage(init.self));
 				overlay.PlayThen(info.Sequence, () => buildComplete = false);
-				rs.anims.Add("make_overlay_{0}".F(info.Sequence),
+				rs.Add("make_overlay_{0}".F(info.Sequence),
 					new AnimationWithOffset(overlay, null, () => !buildComplete));
 			}
 		}

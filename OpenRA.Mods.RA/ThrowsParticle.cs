@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA
 
 			var anim = new Animation(init.world, rs.GetImage(self), () => (int)facing);
 			anim.PlayRepeating(info.Anim);
-			rs.anims.Add(info.Anim, new AnimationWithOffset(anim, () => pos, null));
+			rs.Add(info.Anim, new AnimationWithOffset(anim, () => pos, null));
 		}
 
 		public void Tick(Actor self)

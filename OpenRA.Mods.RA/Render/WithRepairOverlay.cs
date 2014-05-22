@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Render
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 			overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.Play(info.Sequence);
-			rs.anims.Add("repair_{0}".F(info.Sequence),
+			rs.Add("repair_{0}".F(info.Sequence),
 				new AnimationWithOffset(overlay,
 					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 					() => !buildComplete,

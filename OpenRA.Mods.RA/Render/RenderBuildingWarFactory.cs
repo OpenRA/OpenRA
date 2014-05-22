@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Render
 
 			// Additional 512 units move from center -> top of cell
 			var offset = FootprintUtils.CenterOffset(bi).Y + 512;
-			anims.Add("roof", new AnimationWithOffset(roof, null,
+			Add("roof", new AnimationWithOffset(roof, null,
 				() => !buildComplete, offset));
 		}
 
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA.Render
 			roof.PlayThen(NormalizeSequence(self, "build-top"), () => { isOpen = true; openExit = exit; });
 		}
 
-		public void Selling(Actor self) { anims.Remove("roof"); }
+		public void Selling(Actor self) { Remove("roof"); }
 		public void Sold(Actor self) { }
 	}
 }

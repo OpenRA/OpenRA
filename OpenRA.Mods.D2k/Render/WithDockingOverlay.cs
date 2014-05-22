@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Render
 
 			overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.Play(info.Sequence);
-			rs.anims.Add("docking_overlay_{0}".F(info.Sequence),
+			rs.Add("docking_overlay_{0}".F(info.Sequence),
 				new AnimationWithOffset(overlay,
 					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 					() => !buildComplete));
