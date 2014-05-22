@@ -121,6 +121,40 @@ sonic:
 #utnk: # TODO: unused alternative version of Devil's Tongue
 #	idle:
 
+#mrj: # TODO: unused
+#	idle:
+#	turret: mrjtur
+
+#m113: # TODO: unused
+#	idle:
+#	turret: m113tur
+
+#mlrs: # TODO: unused
+#	idle:
+#	turret: mlrstur
+
+#arty: # TODO: unused
+#	idle:
+#	barrel: artybarl
+
+#1tnk: # TODO: unused
+#	idle:
+#	turret: 1tnktur
+#	barrel: 1tnkbarl
+
+#2tnk: # TODO: unused
+#	idle:
+#	turret: 2tnktur
+#	barrel: 2tnkbarl
+
+#3tnk: # TODO: unused
+#	idle:
+#	turret: 3tnktur
+#	barrel: 3tnkbarl
+
+#ftnk: # TODO: unused
+#	idle:
+
 #tire: # TODO: unused debris
 #	idle:
 
