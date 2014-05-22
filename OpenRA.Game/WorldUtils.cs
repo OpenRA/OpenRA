@@ -71,7 +71,7 @@ namespace OpenRA
 			}
 		}
 
-		static List<CVec>[] InitTilesByDistance(int max)
+		static CVec[][] InitTilesByDistance(int max)
 		{
 			var ts = new List<CVec>[max+1];
 			for (var i = 0; i < max+1; i++)
@@ -82,11 +82,15 @@ namespace OpenRA
 					if (max * max >= i * i + j * j)
 						ts[(int)Math.Ceiling(Math.Sqrt(i*i + j*j))].Add(new CVec(i,j));
 
-			return ts;
+			var us = new CVec[max + 1][];
+			for (var i = 0; i < max + 1; i++)
+				us[i] = ts[i].ToArray();
+
+			return us;
 		}
 
 		public const int MaxRange = 50;
-		static List<CVec>[] TilesByDistance = InitTilesByDistance(MaxRange);
+		static CVec[][] TilesByDistance = InitTilesByDistance(MaxRange);
 
 		public static string GetTerrainType(this World world, CPos cell)
 		{
