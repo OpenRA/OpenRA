@@ -34,13 +34,13 @@ namespace OpenRA.Mods.RA.Render
 			: base(init, info, MakeTurretFacingFunc(init.self))
 		{
 			t = init.self.TraitsImplementing<Turreted>().FirstOrDefault();
-			t.QuantizedFacings = anim.CurrentSequence.Facings;
+			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 
 		public override void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			base.DamageStateChanged(self, e);
-			t.QuantizedFacings = anim.CurrentSequence.Facings;
+			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 	}
 }

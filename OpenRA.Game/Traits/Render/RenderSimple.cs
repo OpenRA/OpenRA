@@ -30,40 +30,34 @@ namespace OpenRA.Traits
 
 	public class RenderSimple : RenderSprites, IAutoSelectionSize
 	{
-		RenderSimpleInfo Info;
+		public readonly Animation DefaultAnimation;
 
 		public RenderSimple(Actor self, Func<int> baseFacing)
 			: base(self)
 		{
-			anims.Add("", new Animation(self.World, GetImage(self), baseFacing));
-			Info = self.Info.Traits.Get<RenderSimpleInfo>();
+			DefaultAnimation = new Animation(self.World, GetImage(self), baseFacing);
+			Add("", DefaultAnimation);
 		}
 
 		public RenderSimple(Actor self)
 			: this(self, MakeFacingFunc(self))
 		{
-			anim.PlayRepeating("idle");
-			self.Trait<IBodyOrientation>().SetAutodetectedFacings(anim.CurrentSequence.Facings);
+			DefaultAnimation.PlayRepeating("idle");
+			self.Trait<IBodyOrientation>().SetAutodetectedFacings(DefaultAnimation.CurrentSequence.Facings);
 		}
 
-		public int2 SelectionSize(Actor self)
-		{
-			return anims.Values.Where(b => (b.DisableFunc == null || !b.DisableFunc())
-			                                && b.Animation.CurrentSequence != null)
-				.Select(a => (a.Animation.Image.size*Info.Scale).ToInt2())
-				.FirstOrDefault();
-		}
+		public int2 SelectionSize(Actor self) { return AutoSelectionSize(self); }
 
 		public string NormalizeSequence(Actor self, string baseSequence)
 		{
-			return NormalizeSequence(anim, self.GetDamageState(), baseSequence);
+			return NormalizeSequence(DefaultAnimation, self.GetDamageState(), baseSequence);
 		}
 
 		public void PlayCustomAnim(Actor self, string name)
 		{
-			if (anim.HasSequence(name))
-				anim.PlayThen(NormalizeSequence(self, name),
-					() => anim.PlayRepeating(NormalizeSequence(self, "idle")));
+			if (DefaultAnimation.HasSequence(name))
+				DefaultAnimation.PlayThen(NormalizeSequence(self, name),
+					() => DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle")));
 		}
 	}
 }

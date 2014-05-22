@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Render
 			var images = info.XmasImages.Any() && DateTime.Today.Month == 12 ? info.XmasImages : info.Images;
 			anim = new Animation(self.World, images.Random(Game.CosmeticRandom));
 			anim.Play("idle");
-			rs.anims.Add("", anim);
+			rs.Add("", anim);
 		}
 
 		public void OnLanded()

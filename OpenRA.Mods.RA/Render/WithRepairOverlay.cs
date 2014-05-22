@@ -25,6 +25,12 @@ namespace OpenRA.Mods.RA.Render
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
+		[Desc("Custom palette name")]
+		public readonly string Palette = null;
+
+		[Desc("Custom palette is a player palette BaseName")]
+		public readonly bool IsPlayerPalette = false;
+
 		public readonly bool PauseOnLowPower = false;
 
 		public object Create(ActorInitializer init) { return new WithRepairOverlay(init.self, this); }
@@ -44,12 +50,13 @@ namespace OpenRA.Mods.RA.Render
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 			overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.Play(info.Sequence);
-			rs.anims.Add("repair_{0}".F(info.Sequence),
+			rs.Add("repair_{0}".F(info.Sequence),
 				new AnimationWithOffset(overlay,
 					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 					() => !buildComplete,
 					() => info.PauseOnLowPower && disabled.Any(d => d.Disabled),
-					p => WithTurret.ZOffsetFromCenter(self, p, 1)));
+					p => WithTurret.ZOffsetFromCenter(self, p, 1)),
+				info.Palette, info.IsPlayerPalette);
 		}
 
 		public void BuildingComplete(Actor self)

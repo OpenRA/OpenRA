@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			var prefix = sc != null && sc.Panicking ? "panic-" : "";
 
-			if (anim.HasSequence(prefix + baseSequence))
+			if (DefaultAnimation.HasSequence(prefix + baseSequence))
 				return prefix + baseSequence;
 			else
 				return baseSequence;

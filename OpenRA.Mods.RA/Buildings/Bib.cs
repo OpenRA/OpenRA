@@ -24,29 +24,26 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new Bib(init.self, this); }
 	}
 
-	public class Bib : IRender, INotifyAddedToWorld
+	public class Bib : INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly BibInfo info;
-		List<AnimationWithOffset> tiles;
+		readonly RenderSprites rs;
+		readonly BuildingInfo bi;
 
 		public Bib(Actor self, BibInfo info)
 		{
 			this.info = info;
+			rs = self.Trait<RenderSprites>();
+			bi = self.Info.Traits.Get<BuildingInfo>();
 		}
 
 		public void AddedToWorld(Actor self)
 		{
-			var rs = self.Trait<RenderSprites>();
-			var building = self.Info.Traits.Get<BuildingInfo>();
-			var width = building.Dimensions.X;
-			var bibOffset = building.Dimensions.Y - 1;
-			var centerOffset = FootprintUtils.CenterOffset(building);
+			var width = bi.Dimensions.X;
+			var bibOffset = bi.Dimensions.Y - 1;
+			var centerOffset = FootprintUtils.CenterOffset(bi);
 			var location = self.Location;
-			tiles = new List<AnimationWithOffset>();
-
-			int rows = 2;
-			if (info.HasMinibib)
-				rows = 1;
+			var rows = info.HasMinibib ? 1 : 2;
 
 			for (var i = 0; i < rows * width; i++)
 			{
@@ -63,21 +60,18 @@ namespace OpenRA.Mods.RA.Buildings
 
 				// Z-order is one set to the top of the footprint
 				var offset = cellOffset.ToWVec() - centerOffset;
-				tiles.Add(new AnimationWithOffset(anim, () => offset, null, -(offset.Y + centerOffset.Y + 512)));
+				var awo = new AnimationWithOffset(anim, () => offset, null, -(offset.Y + centerOffset.Y + 512));
+				rs.Add("bib_{0}".F(i), awo, info.Palette);
 			}
 		}
 
-		bool paletteInitialized;
-		PaletteReference palette;
-		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
+		public void RemovedFromWorld(Actor self)
 		{
-			if (!paletteInitialized)
-			{
-				palette = wr.Palette(info.Palette);
-				paletteInitialized = true;
-			}
+			var width = bi.Dimensions.X;
+			var rows = info.HasMinibib ? 1 : 2;
 
-			return tiles.SelectMany(t => t.Render(self, wr, palette, 1f));
+			for (var i = 0; i < rows * width; i++)
+				rs.Remove("bib_{0}".F(i));
 		}
 	}
 }

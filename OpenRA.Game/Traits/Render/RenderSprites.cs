@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.FileFormats;
 using OpenRA.Primitives;
@@ -33,7 +34,42 @@ namespace OpenRA.Traits
 
 	public class RenderSprites : IRender, ITick, INotifyOwnerChanged
 	{
-		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
+		class AnimationWrapper
+		{
+			public readonly AnimationWithOffset Animation;
+			public readonly string Palette;
+			public readonly bool IsPlayerPalette;
+			public PaletteReference PaletteReference { get; private set; }
+
+			public AnimationWrapper(AnimationWithOffset animation, string palette, bool isPlayerPalette)
+			{
+				Animation = animation;
+				Palette = palette;
+				IsPlayerPalette = isPlayerPalette;
+			}
+
+			public void CachePalette(WorldRenderer wr, Player owner)
+			{
+				PaletteReference = wr.Palette(IsPlayerPalette ? Palette + owner.InternalName : Palette);
+			}
+
+			public void OwnerChanged()
+			{
+				// Update the palette reference next time we draw
+				if (IsPlayerPalette)
+					PaletteReference = null;
+			}
+
+			public bool IsVisible
+			{
+				get
+				{
+					return Animation.DisableFunc == null || !Animation.DisableFunc();
+				}
+			}
+		}
+
+		Dictionary<string, AnimationWrapper> anims = new Dictionary<string, AnimationWrapper>();
 
 		public static Func<int> MakeFacingFunc(Actor self)
 		{
@@ -42,17 +78,8 @@ namespace OpenRA.Traits
 			return () => facing.Facing;
 		}
 
-		public Animation anim
-		{
-			get { return anims[""].Animation; }
-			protected set { anims[""] = new AnimationWithOffset(value,
-				anims[""].OffsetFunc, anims[""].DisableFunc, anims[""].Paused, anims[""].ZOffset); }
-		}
-
 		RenderSpritesInfo Info;
 		string cachedImage = null;
-		bool initializePalette = true;
-		protected PaletteReference palette;
 
 		public RenderSprites(Actor self)
 		{
@@ -78,23 +105,25 @@ namespace OpenRA.Traits
 			return Info.Palette ?? Info.PlayerPalette + self.Owner.InternalName;
 		}
 
-		protected void UpdatePalette() { initializePalette = true; }
+		protected void UpdatePalette()
+		{
+			foreach (var anim in anims.Values)
+				anim.OwnerChanged();
+		}
+
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			if (initializePalette)
-			{
-				palette = wr.Palette(PaletteName(self));
-				initializePalette = false;
-			}
-
 			foreach (var a in anims.Values)
 			{
-				if (a.DisableFunc != null && a.DisableFunc())
+				if (!a.IsVisible)
 					continue;
 
-				foreach (var r in a.Render(self, wr, palette, Info.Scale))
+				if (a.PaletteReference == null)
+					a.CachePalette(wr, self.Owner);
+
+				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference, Info.Scale))
 					yield return r;
 			}
 		}
@@ -102,7 +131,24 @@ namespace OpenRA.Traits
 		public virtual void Tick(Actor self)
 		{
 			foreach (var a in anims.Values)
-				a.Animation.Tick();
+				a.Animation.Animation.Tick();
+		}
+
+		public void Add(string key, AnimationWithOffset anim, string palette = null, bool isPlayerPalette = false)
+		{
+			// Use defaults
+			if (palette == null)
+			{
+				palette = Info.Palette ?? Info.PlayerPalette;
+				isPlayerPalette = Info.Palette == null;
+			}
+
+			anims.Add(key, new AnimationWrapper(anim, palette, isPlayerPalette));
+		}
+
+		public void Remove(string key)
+		{
+			anims.Remove(key);
 		}
 
 		public static string NormalizeSequence(Animation anim, DamageState state, string baseSequence)
@@ -120,6 +166,15 @@ namespace OpenRA.Traits
 				    return s.Second+baseSequence;
 
 			return baseSequence;
+		}
+
+		// Required by RenderSimple
+		protected int2 AutoSelectionSize(Actor self)
+		{
+			return anims.Values.Where(b => b.IsVisible
+				&& b.Animation.Animation.CurrentSequence != null)
+					.Select(a => (a.Animation.Animation.Image.size*Info.Scale).ToInt2())
+					.FirstOrDefault();
 		}
 	}
 }

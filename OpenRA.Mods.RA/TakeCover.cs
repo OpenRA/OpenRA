@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA
 		{
 			var prefix = tc != null && tc.IsProne ? "prone-" : "";
 
-			if (anim.HasSequence(prefix + baseSequence))
+			if (DefaultAnimation.HasSequence(prefix + baseSequence))
 				return prefix + baseSequence;
 			else
 				return baseSequence;

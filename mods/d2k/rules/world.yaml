@@ -66,6 +66,16 @@ World:
 		G: 0
 		B: 0
 		A: 180
+	PaletteFromScaledPalette@starportlights:
+		Name: starportlights
+		BasePalette: d2k
+		AllowModifiers: false
+		Offset: -64
+	PaletteFromScaledPalette@repairlights:
+		Name: repairlights
+		BasePalette: d2k
+		AllowModifiers: false
+		Offset: -128
 	PaletteFromR8@shroud:
 		Name: shroud
 		Filename: DATA.R8

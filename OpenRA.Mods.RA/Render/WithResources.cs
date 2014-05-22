@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Render
 			                    ? ((10 * anim.CurrentSequence.Length - 1) * playerResources.Ore) / (10 * playerResources.OreCapacity)
 			                    : 0);
 
-			rs.anims.Add("resources_{0}".F(info.Sequence), new AnimationWithOffset(
+			rs.Add("resources_{0}".F(info.Sequence), new AnimationWithOffset(
 				anim, null, () => !buildComplete, 1024));
 		}
 
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Render
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		public void Selling(Actor self) { rs.anims.Remove("resources_{0}".F(info.Sequence)); }
+		public void Selling(Actor self) { rs.Remove("resources_{0}".F(info.Sequence)); }
 		public void Sold(Actor self) { }
 	}
 }

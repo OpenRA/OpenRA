@@ -35,12 +35,12 @@ namespace OpenRA.Mods.RA.Render
 
 		public void BuildingComplete(Actor self)
 		{
-			anim.PlayFetchIndex(info.Sequence, () => adjacent);
+			DefaultAnimation.PlayFetchIndex(info.Sequence, () => adjacent);
 		}
 
 		public override void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			anim.PlayFetchIndex(NormalizeSequence(anim, e.DamageState, info.Sequence), () => adjacent);
+			DefaultAnimation.PlayFetchIndex(NormalizeSequence(DefaultAnimation, e.DamageState, info.Sequence), () => adjacent);
 		}
 
 		public override void Tick(Actor self)

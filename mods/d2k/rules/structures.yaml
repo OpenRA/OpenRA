@@ -74,6 +74,7 @@ CONCRETEB:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Conyard
 	WithBuildingPlacedOverlay:
+		Palette: d2k
 
 ^POWER:
 	Inherits: ^Building
@@ -380,6 +381,7 @@ CONCRETEB:
 		Produces: Starport
 		ActorType: frigate
 	WithDeliveryOverlay:
+		Palette: starportlights
 	ProductionBar:
 	PrimaryBuilding:
 	RequiresPower:
@@ -579,6 +581,7 @@ WALL:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Repair
 	WithRepairOverlay:
+		Palette: repairlights
 
 ^HIGHTECH:
 	Inherits: ^Building

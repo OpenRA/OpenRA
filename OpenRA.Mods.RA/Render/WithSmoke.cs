@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Render
 			var rs = self.Trait<RenderSprites>();
 
 			anim = new Animation(self.World, "smoke_m");
-			rs.anims.Add("smoke", new AnimationWithOffset(anim, null, () => !isSmoking));
+			rs.Add("smoke", new AnimationWithOffset(anim, null, () => !isSmoking));
 		}
 
 		public void Damaged(Actor self, AttackInfo e)

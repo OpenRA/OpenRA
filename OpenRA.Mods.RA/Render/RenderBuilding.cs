@@ -49,8 +49,8 @@ namespace OpenRA.Mods.RA.Render
 			this.info = info;
 
 			// Work around a bogus crash
-			anim.PlayRepeating(NormalizeSequence(self, "idle"));
-			self.Trait<IBodyOrientation>().SetAutodetectedFacings(anim.CurrentSequence.Facings);
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
+			self.Trait<IBodyOrientation>().SetAutodetectedFacings(DefaultAnimation.CurrentSequence.Facings);
 
 			// Can't call Complete() directly from ctor because other traits haven't been inited yet
 			if (self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation && !init.Contains<SkipMakeAnimsInit>())
@@ -61,45 +61,45 @@ namespace OpenRA.Mods.RA.Render
 
 		void Complete(Actor self)
 		{
-			anim.PlayRepeating(NormalizeSequence(self, "idle"));
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
 			foreach (var x in self.TraitsImplementing<INotifyBuildComplete>())
 				x.BuildingComplete(self);
 
 			if (info.PauseOnLowPower)
 			{
 				var disabled = self.TraitsImplementing<IDisable>();
-				anim.Paused = () => disabled.Any(d => d.Disabled)
-					&& anim.CurrentSequence.Name == NormalizeSequence(self, "idle");
+				DefaultAnimation.Paused = () => disabled.Any(d => d.Disabled)
+					&& DefaultAnimation.CurrentSequence.Name == NormalizeSequence(self, "idle");
 			}
 		}
 
 		public void PlayCustomAnimThen(Actor self, string name, Action a)
 		{
-			anim.PlayThen(NormalizeSequence(self, name),
-				() => { anim.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
+			DefaultAnimation.PlayThen(NormalizeSequence(self, name),
+				() => { DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
 		}
 
 		public void PlayCustomAnimRepeating(Actor self, string name)
 		{
-			anim.PlayThen(NormalizeSequence(self, name),
+			DefaultAnimation.PlayThen(NormalizeSequence(self, name),
 				() => PlayCustomAnimRepeating(self, name));
 		}
 
 		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
 		{
-			anim.PlayBackwardsThen(NormalizeSequence(self, name),
-				() => { anim.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
+			DefaultAnimation.PlayBackwardsThen(NormalizeSequence(self, name),
+				() => { DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
 		}
 
 		public void CancelCustomAnim(Actor self)
 		{
-			anim.PlayRepeating(NormalizeSequence(self, "idle"));
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
 		}
 
 		public virtual void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (anim.CurrentSequence != null)
-				anim.ReplaceAnim(NormalizeSequence(self, "idle"));
+			if (DefaultAnimation.CurrentSequence != null)
+				DefaultAnimation.ReplaceAnim(NormalizeSequence(self, "idle"));
 		}
 	}
 }

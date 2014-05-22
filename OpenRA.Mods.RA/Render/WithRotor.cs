@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Render
 
 			rotorAnim = new Animation(self.World, rs.GetImage(self));
 			rotorAnim.PlayRepeating(info.Sequence);
-			rs.anims.Add(info.Id, new AnimationWithOffset(rotorAnim,
+			rs.Add(info.Id, new AnimationWithOffset(rotorAnim,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				null, () => false, p => WithTurret.ZOffsetFromCenter(self, p, 1)));
 		}

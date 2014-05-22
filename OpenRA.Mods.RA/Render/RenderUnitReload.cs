@@ -38,8 +38,8 @@ namespace OpenRA.Mods.RA.Render
 		public override void Tick(Actor self)
 		{
 			var sequence = (armament.IsReloading ? "empty-" : "") + (attack.IsAttacking ? "aim" : "idle");
-			if (sequence != anim.CurrentSequence.Name)
-				anim.ReplaceAnim(sequence);
+			if (sequence != DefaultAnimation.CurrentSequence.Name)
+				DefaultAnimation.ReplaceAnim(sequence);
 
 			base.Tick(self);
 		}

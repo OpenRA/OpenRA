@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Render
 			if (disguise.AsSprite != intendedSprite)
 			{
 				intendedSprite = disguise.AsSprite;
-				anim.ChangeImage(intendedSprite ?? GetImage(self), info.StandAnimations.Random(Game.CosmeticRandom));
+				DefaultAnimation.ChangeImage(intendedSprite ?? GetImage(self), info.StandAnimations.Random(Game.CosmeticRandom));
 				UpdatePalette();
 			}
 

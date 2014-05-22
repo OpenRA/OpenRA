@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 			var anim = new Animation(self.World, "fire", () => 0);
 			anim.IsDecoration = true;
 			anim.PlayRepeating(Info.Anim);
-			self.Trait<RenderSprites>().anims.Add("fire", anim);
+			self.Trait<RenderSprites>().Add("fire", anim);
 		}
 
 		public void Tick(Actor self)

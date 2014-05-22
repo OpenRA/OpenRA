@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
-	class DeadBuildingStateInfo : ITraitInfo, Requires<HealthInfo>, Requires<RenderSpritesInfo>
+	class DeadBuildingStateInfo : ITraitInfo, Requires<HealthInfo>, Requires<RenderSimpleInfo>
 	{
 		public readonly int LingerTime = 20;
 
@@ -23,23 +23,23 @@ namespace OpenRA.Mods.Cnc
 	class DeadBuildingState : INotifyKilled
 	{
 		DeadBuildingStateInfo info;
-		RenderSprites rs;
+		RenderSimple rs;
 
 		public DeadBuildingState(Actor self, DeadBuildingStateInfo info)
 		{
 			this.info = info;
-			rs = self.Trait<RenderSprites>();
-			self.Trait<Health>().RemoveOnDeath = !rs.anim.HasSequence("dead");
+			rs = self.Trait<RenderSimple>();
+			self.Trait<Health>().RemoveOnDeath = !rs.DefaultAnimation.HasSequence("dead");
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (!rs.anim.HasSequence("dead")) return;
+			if (!rs.DefaultAnimation.HasSequence("dead")) return;
 			
-			if (rs.anim.GetSequence("dead").Length > 1)
-				rs.anim.Play("dead");
+			if (rs.DefaultAnimation.GetSequence("dead").Length > 1)
+				rs.DefaultAnimation.Play("dead");
 			else
-				rs.anim.PlayRepeating("dead");
+				rs.DefaultAnimation.PlayRepeating("dead");
 			
 			self.World.AddFrameEndTask(
 				w => w.Add(
