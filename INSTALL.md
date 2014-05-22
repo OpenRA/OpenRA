@@ -24,7 +24,8 @@ or `OpenRA.Game.exe Game.Mod=cnc` for Tiberian Dawn.
 Linux
 =====
 
-To grab the bundled CLI DLLs type `make dependencies`.
+Run `./configure` to map the native libraries to your system.
+To grab the bundled CLI DLLs type `make cli-dependencies`.
 To compile OpenRA, run `make all` from the command line.
 Run with either `launch-game.sh' or `mono --debug OpenRA.Game.exe'.
 
