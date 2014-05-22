@@ -47,6 +47,7 @@ namespace OpenRA.Renderer.Null
 
 		public void Clear() { }
 		public void Present() { }
+		public Bitmap TakeScreenshot(Rectangle? area) { return new Bitmap(1, 1); }
 
 		public void PumpInput(IInputHandler ih)
 		{

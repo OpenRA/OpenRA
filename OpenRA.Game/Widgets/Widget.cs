@@ -103,6 +103,14 @@ namespace OpenRA.Widgets
 
 		public static bool HandleKeyPress(KeyInput e)
 		{
+			if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.TakeScreenshotKey)
+			{
+				if (e.Event == KeyInputEvent.Down)
+					Game.TakeScreenshot = true;
+
+				return true;
+			}
+
 			if (KeyboardFocusWidget != null)
 				return KeyboardFocusWidget.HandleKeyPressOuter(e);
 

@@ -96,6 +96,12 @@ namespace OpenRA
 
 		public string Language = "english";
 		public string DefaultLanguage = "english";
+
+		// The available options are:
+		// png: slow      / lossless / medium file size
+		// jpg: fast      / lossy    / small file size
+		// bmp: very fast / lossless / large file size
+		public string ScreenshotFormat = "png";
 	}
 
 	public class SoundSettings
@@ -175,6 +181,8 @@ namespace OpenRA
 		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
 
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
+
+		public Hotkey TakeScreenshotKey = new Hotkey(Keycode.P, Modifiers.Ctrl);
 	}
 
 	public class IrcSettings
@@ -198,6 +206,7 @@ namespace OpenRA
 		public string Base;
 		public string Logs;
 		public string Replays;
+		public string Screenshots;
 
 		string GetPath(string defaultValue, string overrideValue = null, string modId = null, string modVersion = null)
 		{
@@ -238,6 +247,10 @@ namespace OpenRA
 		public string GetContentPath(string modId, string path1)
 		{
 			return GetBasePath("Content", path1);
+		}
+		public string GetScreenshotsPath(ModMetadata mm)
+		{
+			return GetPath(GetBasePath("Screenshots"), Screenshots, mm.Id, mm.Version);
 		}
 	}
 

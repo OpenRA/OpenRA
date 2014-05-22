@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using SDI = System.Drawing.Imaging;
 using System.Linq;
 using OpenRA;
 using OpenRA.Graphics;
@@ -208,6 +209,30 @@ namespace OpenRA.Renderer.Sdl2
 		{
 			GL.LineWidth(width);
 			ErrorHandler.CheckGlError();
+		}
+
+		public Bitmap TakeScreenshot(Rectangle? area)
+		{
+			var rect = new Rectangle(Point.Empty, size);
+			if (area.HasValue)
+			{
+				rect.Intersect(area.Value);
+				if (rect.Width == 0 || rect.Height == 0)
+					throw new ArgumentException("The specified area is empty or outside the window", "area");
+			}
+
+			var bitmap = new Bitmap(rect.Width, rect.Height, SDI.PixelFormat.Format32bppArgb);
+			var data = bitmap.LockBits(new Rectangle(Point.Empty, rect.Size), SDI.ImageLockMode.WriteOnly, SDI.PixelFormat.Format32bppArgb);
+			try
+			{
+				GL.ReadPixels(rect.X, rect.Y, rect.Width, rect.Height, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+			}
+			finally
+			{
+				bitmap.UnlockBits(data);
+			}
+			bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
+			return bitmap;
 		}
 
 		public void Present() { SDL.SDL_GL_SwapWindow(window); }

@@ -46,6 +46,7 @@ namespace OpenRA
 
 		void Clear();
 		void Present();
+		Bitmap TakeScreenshot(Rectangle? area);
 		void PumpInput(IInputHandler inputHandler);
 
 		void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices);

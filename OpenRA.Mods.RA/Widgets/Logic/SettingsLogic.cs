@@ -284,6 +284,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{ "ObserverWorldView", "Disable Shroud" }
 			};
 
+			var miscHotkeys = new Dictionary<string, string>()
+			{
+				{ "TakeScreenshotKey", "Take Screenshot" }
+			};
+
 			var gs = Game.Settings.Game;
 			var ks = Game.Settings.Keys;
 
@@ -323,6 +328,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			foreach (var kv in unitHotkeys)
 				BindHotkeyPref(kv, ks, unitTemplate, hotkeyList);
+
+			var miscHeader = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+			miscHeader.Get<LabelWidget>("LABEL").GetText = () => "Miscellaneous";
+			hotkeyList.AddChild(miscHeader);
+
+			foreach (var kv in miscHotkeys)
+				BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
 
 			return () =>
 			{
