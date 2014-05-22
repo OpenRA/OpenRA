@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			var spawns = world.Map.GetSpawnPoints();
+			var spawns = world.Map.GetSpawnPoints().ToList();
 			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != null)
 					.Select(c => spawns[c.SpawnPoint-1]).ToList();
 			var available = spawns.Except(taken).ToList();
@@ -42,9 +42,13 @@ namespace OpenRA.Mods.RA
 				var client = world.LobbyInfo.ClientInSlot(kv.Key);
 				var spid = (client == null || client.SpawnPoint == 0)
 					? ChooseSpawnPoint(world, available, taken)
-					: world.Map.GetSpawnPoints()[client.SpawnPoint-1];
+					: spawns[client.SpawnPoint-1];
 
 				Start.Add(player, spid);
+
+				player.SpawnPoint = (client == null || client.SpawnPoint == 0)
+					? spawns.IndexOf(spid) + 1
+					: client.SpawnPoint;
 			}
 
 			// Explore allied shroud

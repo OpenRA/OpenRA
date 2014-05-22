@@ -248,6 +248,7 @@
     <Compile Include="GameRules\Ruleset.cs" />
     <Compile Include="GameRules\RulesetCache.cs" />
     <Compile Include="Support\MersenneTwister.cs" />
+    <Compile Include="GameInformation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
@@ -330,6 +331,7 @@
     <Compile Include="Graphics\PlayerColorRemap.cs" />
     <Compile Include="Graphics\Palette.cs" />
     <Compile Include="FileSystem\GlobalFileSystem.cs" />
+    <Compile Include="FileFormats\ReplayMetadata.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

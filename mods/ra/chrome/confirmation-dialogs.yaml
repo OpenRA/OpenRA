@@ -32,3 +32,43 @@ Background@CONFIRM_PROMPT:
 			Text: Cancel
 			Font: Bold
 			Key: escape
+
+Background@TEXT_INPUT_PROMPT:
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 370
+	Height: 175
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_RIGHT
+			Y: 20
+			Height: 25
+			Font: Bold
+			Align: Center
+		Label@PROMPT_TEXT:
+			X: 20
+			Y: 50
+			Width: PARENT_RIGHT - 40
+			Height: 25
+			Align: Center
+		TextField@INPUT_TEXT:
+			X: 20
+			Y: 80
+			Width: PARENT_RIGHT - 40
+			Height: 25
+		Button@ACCEPT_BUTTON:
+			X: 20
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: OK
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: PARENT_RIGHT - 180
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape

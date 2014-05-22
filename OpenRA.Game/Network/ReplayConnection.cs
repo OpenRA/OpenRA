@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using OpenRA.FileFormats;
 using OpenRA.Primitives;
 
 namespace OpenRA.Network
@@ -44,6 +45,8 @@ namespace OpenRA.Network
 				while (rs.Position < rs.Length)
 				{
 					var client = rs.ReadInt32();
+					if (client == ReplayMetadata.MetaStartMarker)
+						break;
 					var packetLen = rs.ReadInt32();
 					var packet = rs.ReadBytes(packetLen);
 					var frame = BitConverter.ToInt32(packet, 0);

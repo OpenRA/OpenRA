@@ -31,12 +31,15 @@ namespace OpenRA.Widgets
 		public Func<bool> OnTabKey = () => false;
 		public Func<bool> OnEscKey = () => false;
 		public Action OnLoseFocus = () => { };
+		public Action OnTextEdited = () => { };
 		public int CursorPosition { get; set; }
 
 		public Func<bool> IsDisabled = () => false;
+		public Func<bool> IsValid = () => true;
 		public string Font = ChromeMetrics.Get<string>("TextfieldFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("TextfieldColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("TextfieldColorDisabled");
+		public Color TextColorInvalid = ChromeMetrics.Get<Color>("TextfieldColorInvalid");
 
 		public TextFieldWidget() {}
 		protected TextFieldWidget(TextFieldWidget widget)
@@ -47,6 +50,7 @@ namespace OpenRA.Widgets
 			Font = widget.Font;
 			TextColor = widget.TextColor;
 			TextColorDisabled = widget.TextColorDisabled;
+			TextColorInvalid = widget.TextColorInvalid;
 			VisualHeight = widget.VisualHeight;
 		}
 
@@ -148,7 +152,10 @@ namespace OpenRA.Widgets
 			if (e.Key == Keycode.DELETE)
 			{
 				if (CursorPosition < Text.Length)
+				{
 					Text = Text.Remove(CursorPosition, 1);
+					OnTextEdited();
+				}
 				return true;
 			}
 
@@ -156,6 +163,7 @@ namespace OpenRA.Widgets
 			{
 				CursorPosition--;
 				Text = Text.Remove(CursorPosition, 1);
+				OnTextEdited();
 			}
 
 			return true;
@@ -171,6 +179,7 @@ namespace OpenRA.Widgets
 
 			Text = Text.Insert(CursorPosition, text);
 			CursorPosition++;
+			OnTextEdited();
 
 			return true;
 		}
@@ -228,7 +237,9 @@ namespace OpenRA.Widgets
 					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));
 			}
 
-			var color = disabled ? TextColorDisabled : TextColor;
+			var color = disabled ? TextColorDisabled
+			            : IsValid() ? TextColor
+			            : TextColorInvalid;
 			font.DrawText(apparentText, textPos, color);
 
 			if (showCursor && HasKeyboardFocus)

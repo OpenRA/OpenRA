@@ -85,6 +85,7 @@ namespace OpenRA
 		public readonly TileSet TileSet;
 		public readonly ActorMap ActorMap;
 		public readonly ScreenMap ScreenMap;
+		readonly GameInformation gameInfo;
 
 		public void IssueOrder(Order o) { orderManager.IssueOrder(o); } /* avoid exposing the OM to mod code */
 
@@ -142,6 +143,12 @@ namespace OpenRA
 						p.Stances[q] = Stance.Neutral;
 
 			Sound.SoundVolumeModifier = 1.0f;
+
+			gameInfo = new GameInformation
+			{
+				MapUid = Map.Uid,
+				MapTitle = Map.Title
+			};
 		}
 
 		public void LoadComplete(WorldRenderer wr)
@@ -151,6 +158,14 @@ namespace OpenRA
 				using (new Support.PerfTimer(wlh.GetType().Name + ".WorldLoaded"))
 					wlh.WorldLoaded(this, wr);
 			}
+
+			gameInfo.StartTimeUtc = DateTime.UtcNow;
+			foreach (var player in Players)
+				gameInfo.AddPlayer(player, orderManager.LobbyInfo);
+
+			var rc = orderManager.Connection as ReplayRecorderConnection;
+			if (rc != null)
+				rc.Metadata = new ReplayMetadata(gameInfo);
 		}
 
 		public Actor CreateActor(string name, TypeDictionary initDict)
@@ -286,6 +301,16 @@ namespace OpenRA
 		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
 		{
 			return traitDict.ActorsWithTraitMultiple<T>(this);
+		}
+
+		public void OnPlayerWinStateChanged(Player player)
+		{
+			var pi = gameInfo.GetPlayer(player);
+			if (pi != null)
+			{
+				pi.Outcome = player.WinState;
+				pi.OutcomeTimestampUtc = DateTime.UtcNow;
+			}
 		}
 	}
 

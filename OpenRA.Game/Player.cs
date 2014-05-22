@@ -23,7 +23,7 @@ using OpenRA.Traits;
 namespace OpenRA
 {
 	public enum PowerState { Normal, Low, Critical };
-	public enum WinState { Won, Lost, Undefined };
+	public enum WinState { Undefined, Won, Lost };
 
 	public class Player :  IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{
@@ -41,6 +41,7 @@ namespace OpenRA
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerReference;
 		public bool IsBot;
+		public int SpawnPoint;
 
 		public Shroud Shroud;
 		public World World { get; private set; }

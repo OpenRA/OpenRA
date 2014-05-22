@@ -30,6 +30,7 @@ namespace OpenRA.Widgets
 		public ILayout Layout;
 		public int MinimumThumbSize = 10;
 		public ScrollPanelAlign Align = ScrollPanelAlign.Top;
+		public bool CollapseHiddenChildren = false;
 		protected float ListOffset = 0;
 		protected bool UpPressed = false;
 		protected bool DownPressed = false;
