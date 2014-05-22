@@ -647,6 +647,19 @@ proc: # TODO: unused narefn_a, narefn_b
 	icon: reficon
 		Start: 0
 
+galite:
+	idle:
+		Start: 0
+		ShadowStart: 2
+	damaged-idle:
+		Start: 1
+		ShadowStart: 3
+#	lighting: alphatst
+#		Start: 0
+#		ZOffset: -1c511
+#		BlendMode: Alpha
+	icon: liteicon
+		Start: 0
 gadept:
 	idle:
 		Start: 0
