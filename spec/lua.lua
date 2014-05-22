@@ -45,8 +45,8 @@ return {
     )
     -- (1) 'end', 'elseif', 'else'
     local match = term and decindent[term]
-    -- (2) 'end)' and 'end}'
-    if not term then term, match = str:match("^%s*(end)%s*([%)%}]+)%s*[,;]?") end
+    -- (2) 'end)', 'end}', 'end,', and 'end;'
+    if not term then term, match = str:match("^%s*(end)%s*([%)%}]*)%s*[,;]?") end
     -- (3) '},', '};', '),' and ');'
     if not term then match = str:match("^%s*[%)%}]+%s*[,;]?%s*$") end
 
