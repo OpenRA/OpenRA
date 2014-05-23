@@ -15,7 +15,7 @@ namespace OpenRA
 {
 	public class Group
 	{
-		List<Actor> actors;
+		Actor[] actors;
 		int id;
 
 		static int nextGroup;
@@ -24,7 +24,7 @@ namespace OpenRA
 
 		public Group(IEnumerable<Actor> actors)
 		{
-			this.actors = actors.ToList();
+			this.actors = actors.ToArray();
 
 			foreach (var a in actors)
 				a.Group = this;

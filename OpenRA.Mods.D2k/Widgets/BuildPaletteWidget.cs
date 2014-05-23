@@ -215,12 +215,12 @@ namespace OpenRA.Mods.D2k.Widgets
 
 			if (queue != null)
 			{
-				var buildableItems = queue.BuildableItems().ToArray();
-				var allBuildables = queue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder).ToArray();
+				var buildableItems = queue.BuildableItems().ToList();
+				var allBuildables = queue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder).ToList();
 
 				var overlayBits = new List<Pair<Sprite, float2>>();
 				var textBits = new List<Pair<float2, string>>();
-				numActualRows = Math.Max((allBuildables.Count() + Columns - 1) / Columns, Rows);
+				numActualRows = Math.Max((allBuildables.Count + Columns - 1) / Columns, Rows);
 
 				// Palette Background
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9));

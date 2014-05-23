@@ -46,7 +46,7 @@ namespace OpenRA
 
 	public class MapPreview
 	{
-		static readonly List<CPos> NoSpawns = new List<CPos>();
+		static readonly CPos[] NoSpawns = new CPos[] { };
 		MapCache cache;
 
 		public readonly string Uid;
@@ -54,7 +54,7 @@ namespace OpenRA
 		public string Type { get; private set; }
 		public string Author { get; private set; }
 		public int PlayerCount { get; private set; }
-		public List<CPos> SpawnPoints { get; private set; }
+		public CPos[] SpawnPoints { get; private set; }
 		public Rectangle Bounds { get; private set; }
 		public Bitmap CustomPreview { get; private set; }
 		public Map Map { get; private set; }
@@ -112,7 +112,7 @@ namespace OpenRA
 			Author = m.Author;
 			PlayerCount = m.Players.Count(x => x.Value.Playable);
 			Bounds = m.Bounds;
-			SpawnPoints = m.GetSpawnPoints().ToList();
+			SpawnPoints = m.GetSpawnPoints();
 			CustomPreview = m.CustomPreview;
 			Status = MapStatus.Available;
 			Class = classification;
@@ -143,9 +143,9 @@ namespace OpenRA
 						PlayerCount = r.players;
 						Bounds = r.bounds;
 
-						var spawns = new List<CPos>();
+						var spawns = new CPos[r.spawnpoints.Length / 2];
 						for (var j = 0; j < r.spawnpoints.Length; j += 2)
-							spawns.Add(new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]));
+							spawns[j / 2] = new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]);
 						SpawnPoints = spawns;
 
 						CustomPreview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			dudesValue /= 100;
 
 			var eligibleLocations = FootprintUtils.Tiles(self).ToList();
-			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = self.World.Map.Rules.Actors[a].Traits.Get<ValuedInfo>().Cost }).ToArray();
+			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = self.World.Map.Rules.Actors[a].Traits.Get<ValuedInfo>().Cost }).ToList();
 
 			while (eligibleLocations.Count > 0 && actorTypes.Any(a => a.Cost <= dudesValue))
 			{

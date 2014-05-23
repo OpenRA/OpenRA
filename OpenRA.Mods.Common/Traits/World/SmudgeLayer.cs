@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Add map smudges
-			foreach (var s in w.Map.Smudges.Value.Where(s => smudges.Keys.Contains(s.Type)))
+			foreach (var s in w.Map.Smudges.Value.Where(s => smudges.ContainsKey(s.Type)))
 			{
 				var smudge = new Smudge
 				{

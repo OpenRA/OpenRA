@@ -34,8 +34,8 @@ namespace OpenRA.Mods.RA.AI
 		{
 			var location = squad.Bot.BaseCenter;
 			var buildings = squad.World.ActorsWithTrait<Building>()
-				.Where(a => a.Actor.Owner == squad.Bot.Player).Select(a => a.Actor).ToArray();
-			if (buildings.Length > 0)
+				.Where(a => a.Actor.Owner == squad.Bot.Player).Select(a => a.Actor).ToList();
+			if (buildings.Count > 0)
 				location = buildings.Random(squad.Random).Location;
 			return location;
 		}

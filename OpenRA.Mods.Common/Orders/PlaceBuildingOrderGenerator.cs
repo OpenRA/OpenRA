@@ -47,8 +47,8 @@ namespace OpenRA.Mods.Common.Orders
 			if (mi.Button == MouseButton.Right)
 				world.CancelInputMode();
 
-			var ret = InnerOrder(world, xy, mi).ToList();
-			if (ret.Count > 0)
+			var ret = InnerOrder(world, xy, mi).ToArray();
+			if (ret.Length > 0)
 				world.CancelInputMode();
 
 			return ret;

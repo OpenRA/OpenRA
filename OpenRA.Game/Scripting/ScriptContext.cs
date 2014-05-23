@@ -80,7 +80,7 @@ namespace OpenRA.Scripting
 			// The 'this.' resolves the actual (subclass) type
 			var type = this.GetType();
 			var names = type.GetCustomAttributes<ScriptGlobalAttribute>(true);
-			if (names.Count() != 1)
+			if (names.Length != 1)
 				throw new InvalidOperationException("[LuaGlobal] attribute not found for global table '{0}'".F(type));
 
 			Name = names.First().Name;
@@ -242,13 +242,13 @@ namespace OpenRA.Scripting
 				runtime.Dispose();
 		}
 
-		static Type[] ExtractRequiredTypes(Type t)
+		static IEnumerable<Type> ExtractRequiredTypes(Type t)
 		{
 			// Returns the inner types of all the Requires<T> interfaces on this type
 			var outer = t.GetInterfaces()
 				.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(Requires<>));
 
-			return outer.SelectMany(i => i.GetGenericArguments()).ToArray();
+			return outer.SelectMany(i => i.GetGenericArguments());
 		}
 
 		static readonly object[] NoArguments = new object[0];

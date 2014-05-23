@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_MAPNAME_DROPDOWNBUTTON");
 				if (ddb != null)
 				{
-					var options = new HashSet<string>(replays.Select(r => r.GameInfo.MapTitle), StringComparer.OrdinalIgnoreCase).ToList();
+					var options = replays.Select(r => r.GameInfo.MapTitle).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 					options.Sort(StringComparer.OrdinalIgnoreCase);
 					options.Insert(0, null);	// no filter
 
@@ -231,7 +231,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_PLAYER_DROPDOWNBUTTON");
 				if (ddb != null)
 				{
-					var options = new HashSet<string>(replays.SelectMany(r => r.GameInfo.Players.Select(p => p.Name)), StringComparer.OrdinalIgnoreCase).ToList();
+					var options = replays.SelectMany(r => r.GameInfo.Players.Select(p => p.Name)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 					options.Sort(StringComparer.OrdinalIgnoreCase);
 					options.Insert(0, null);	// no filter
 
@@ -295,7 +295,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					ddb.IsDisabled = () => string.IsNullOrEmpty(filter.PlayerName);
 
-					var options = new HashSet<string>(replays.SelectMany(r => r.GameInfo.Players.Select(p => p.FactionName).Where(n => !string.IsNullOrEmpty(n))), StringComparer.OrdinalIgnoreCase).ToList();
+					var options = replays.SelectMany(r => r.GameInfo.Players.Select(p => p.FactionName).Where(n => !string.IsNullOrEmpty(n))).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 					options.Sort(StringComparer.OrdinalIgnoreCase);
 					options.Insert(0, null);	// no filter
 

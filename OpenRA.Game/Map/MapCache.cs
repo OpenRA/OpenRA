@@ -79,7 +79,7 @@ namespace OpenRA
 			foreach (var p in maps.Values)
 				p.UpdateRemoteSearch(MapStatus.Searching, null);
 
-			var url = Game.Settings.Game.MapRepository + "hash/" + string.Join(",", maps.Keys.ToArray()) + "/yaml";
+			var url = Game.Settings.Game.MapRepository + "hash/" + string.Join(",", maps.Keys) + "/yaml";
 
 			Action<DownloadDataCompletedEventArgs, bool> onInfoComplete = (i, cancelled) =>
 			{

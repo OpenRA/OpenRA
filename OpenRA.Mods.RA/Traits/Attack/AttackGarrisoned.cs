@@ -95,9 +95,9 @@ namespace OpenRA.Mods.RA.Traits
 			paxFacing.Add(passenger, passenger.Trait<IFacing>());
 			paxPos.Add(passenger, passenger.Trait<IPositionable>());
 			paxRender.Add(passenger, passenger.Trait<RenderSprites>());
-			armaments = armaments.Append(passenger.TraitsImplementing<Armament>()
-				.Where(a => info.Armaments.Contains(a.Info.Name))
-				.ToArray()).ToList();
+			armaments.AddRange(
+				passenger.TraitsImplementing<Armament>()
+				.Where(a => info.Armaments.Contains(a.Info.Name)));
 		}
 
 		public void PassengerExited(Actor self, Actor passenger)
@@ -189,7 +189,7 @@ namespace OpenRA.Mods.RA.Traits
 			base.Tick(self);
 
 			// Take a copy so that Tick() can remove animations
-			foreach (var m in muzzles.ToList())
+			foreach (var m in muzzles.ToArray())
 				m.Animation.Tick();
 		}
 	}

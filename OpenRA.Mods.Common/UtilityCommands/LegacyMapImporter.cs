@@ -187,8 +187,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var wps = file.GetSection("Waypoints")
 					.Where(kv => Exts.ParseIntegerInvariant(kv.Value) > 0)
 					.Select(kv => Pair.New(Exts.ParseIntegerInvariant(kv.Key),
-						LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), mapSize)))
-					.ToArray();
+						LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), mapSize)));
 
 			// Add waypoint actors
 			foreach (var kv in wps)

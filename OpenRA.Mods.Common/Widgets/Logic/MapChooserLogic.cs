@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string selectedUid;
 
 		// May be a subset of available maps if a mode filter is active
-		List<string> visibleMaps;
+		string[] visibleMaps;
 
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					selectedUid = uid;
 					scrollpanel.ScrollToItem(uid, smooth: true);
 				};
-				randomMapButton.IsDisabled = () => visibleMaps == null || visibleMaps.Count == 0;
+				randomMapButton.IsDisabled = () => visibleMaps == null || visibleMaps.Length == 0;
 			}
 
 			EnumerateMaps(onSelect, filter);
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				scrollpanel.AddChild(item);
 			}
 
-			visibleMaps = maps.Select(m => m.Uid).ToList();
+			visibleMaps = maps.Select(m => m.Uid).ToArray();
 			if (visibleMaps.Contains(selectedUid))
 				scrollpanel.ScrollToItem(selectedUid);
 		}

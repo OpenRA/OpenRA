@@ -37,7 +37,7 @@ namespace OpenRA.Orders
 			var orders = world.Selection.Actors
 				.Select(a => OrderForUnit(a, target, mi))
 				.Where(o => o != null)
-				.ToArray();
+				.ToList();
 
 			var actorsInvolved = orders.Select(o => o.Actor).Distinct();
 			if (actorsInvolved.Any())
@@ -81,8 +81,7 @@ namespace OpenRA.Orders
 
 			var orders = world.Selection.Actors
 				.Select(a => OrderForUnit(a, target, mi))
-				.Where(o => o != null)
-				.ToArray();
+				.Where(o => o != null);
 
 			var cursorName = orders.Select(o => o.Cursor).FirstOrDefault();
 			return cursorName ?? (useSelect ? "select" : "default");

@@ -57,9 +57,9 @@ namespace OpenRA.Mods.D2k.Traits
 			var types = world.Selection.Actors.Where(a => a.IsInWorld && (a.World.LocalPlayer == a.Owner))
 				.SelectMany(a => a.TraitsImplementing<Production>())
 				.SelectMany(t => t.Info.Produces)
-				.ToArray();
+				.ToHashSet();
 
-			if (types.Length == 0)
+			if (types.Count == 0)
 				return;
 
 			palette.SetCurrentTab(world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()

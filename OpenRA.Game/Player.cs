@@ -50,7 +50,7 @@ namespace OpenRA
 		{
 			var selectableCountries = world.Map.Rules.Actors["world"].Traits
 				.WithInterface<CountryInfo>().Where(c => c.Selectable)
-				.ToArray();
+				.ToList();
 
 			return selectableCountries.FirstOrDefault(c => c.Race == name)
 				?? selectableCountries.Random(world.SharedRandom);

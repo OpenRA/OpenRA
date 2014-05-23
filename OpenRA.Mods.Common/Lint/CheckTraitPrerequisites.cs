@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var actorInfo in map.Rules.Actors.Where(a => !a.Key.StartsWith("^")))
 				try
 				{
-					var traits = actorInfo.Value.TraitsInConstructOrder().ToArray();
-					if (traits.Length == 0)
+					var hasTraits = actorInfo.Value.TraitsInConstructOrder().Any();
+					if (!hasTraits)
 						emitWarning("Actor {0} has no traits. Is this intended?".F(actorInfo.Key));
 				}
 				catch (Exception e)
