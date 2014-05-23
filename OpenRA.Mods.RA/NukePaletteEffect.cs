@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 
 			foreach (var pal in palettes)
 			{
-				for (var x = 0; x < 256; x++)
+				for (var x = 0; x < Palette.Size; x++)
 				{
 					var orig = pal.Value.GetColor(x);
 					var white = Color.FromArgb(orig.A, 255, 255, 255);

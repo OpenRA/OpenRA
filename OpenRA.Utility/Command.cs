@@ -216,9 +216,9 @@ namespace OpenRA.Utility
 			var srcPalette = Palette.Load(args[1].Split(':')[1], shadowIndex);
 			var destPalette = Palette.Load(args[2].Split(':')[1], shadowIndex);
 
-			var fullIndexRange = Exts.MakeArray<int>(256, x => x);
+			var fullIndexRange = Exts.MakeArray<int>(Palette.Size, x => x);
 
-			for (var i = 0; i < 256; i++)
+			for (var i = 0; i < Palette.Size; i++)
 				if (!remap.ContainsKey(i))
 					remap[i] = fullIndexRange
 						.Where(a => !remap.ContainsValue(a))

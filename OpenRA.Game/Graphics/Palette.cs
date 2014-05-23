@@ -17,6 +17,7 @@ namespace OpenRA.Graphics
 {
 	public class Palette
 	{
+		public const int Size = 256;
 		public static Palette Load(string filename, int[] remap)
 		{
 			using (var s = File.OpenRead(filename))
@@ -46,17 +47,17 @@ namespace OpenRA.Graphics
 
 		public void ApplyRemap(IPaletteRemap r)
 		{
-			for (int i = 0; i < 256; i++)
+			for (int i = 0; i < Size; i++)
 				colors[i] = (uint)r.GetRemappedColor(Color.FromArgb((int)colors[i]), i).ToArgb();
 		}
 
 		public Palette(Stream s, int[] remapShadow)
 		{
-			colors = new uint[256];
+			colors = new uint[Size];
 
 			using (BinaryReader reader = new BinaryReader(s))
 			{
-				for (int i = 0; i < 256; i++)
+				for (int i = 0; i < Size; i++)
 				{
 					byte r = (byte)(reader.ReadByte() << 2);
 					byte g = (byte)(reader.ReadByte() << 2);
@@ -83,7 +84,7 @@ namespace OpenRA.Graphics
 
 		public Palette(uint[] data)
 		{
-			if (data.Length != 256)
+			if (data.Length != Size)
 				throw new InvalidDataException("Attempting to create palette with incorrect array size");
 			colors = (uint[])data.Clone();
 		}
@@ -94,7 +95,7 @@ namespace OpenRA.Graphics
 			using (var b = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))
 				pal = b.Palette;
 
-			for (var i = 0; i < 256; i++)
+			for (var i = 0; i < Size; i++)
 				pal.Entries[i] = GetColor(i);
 
 			// hack around a mono bug -- the palette flags get set wrong.
@@ -107,13 +108,13 @@ namespace OpenRA.Graphics
 
 		public Bitmap AsBitmap()
 		{
-			var b = new Bitmap(256, 1, PixelFormat.Format32bppArgb);
+			var b = new Bitmap(Size, 1, PixelFormat.Format32bppArgb);
 			var data = b.LockBits(new Rectangle(0, 0, b.Width, b.Height),
 								  ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 			unsafe
 			{
 				uint* c = (uint*)data.Scan0;
-				for (var x = 0; x < 256; x++)
+				for (var x = 0; x < Size; x++)
 					*(c + x) = colors[x];
 			}
 

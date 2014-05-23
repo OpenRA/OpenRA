@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 		public void InitPalette(WorldRenderer wr)
 		{
 			var c = info.Fog ? Fog : Shroud;
-			wr.AddPalette(info.Name, new Palette(Exts.MakeArray(256, i => (uint)c[i % 8].ToArgb())), false);
+			wr.AddPalette(info.Name, new Palette(Exts.MakeArray(Palette.Size, i => (uint)c[i % 8].ToArgb())), false);
 		}
 
 		static Color[] Fog = new[] {

@@ -246,8 +246,8 @@ namespace OpenRA.TilesetBuilder
 
 		static string ExportPalette(List<Color> p, string file)
 		{
-			while (p.Count < 256) p.Add(Color.Black); // pad the palette out with extra blacks
-			var paletteData = p.Take(256).SelectMany(
+			while (p.Count < Palette.Size) p.Add(Color.Black); // pad the palette out with extra blacks
+			var paletteData = p.Take(Palette.Size).SelectMany(
 				c => new byte[] { (byte)(c.R >> 2), (byte)(c.G >> 2), (byte)(c.B >> 2) }).ToArray();
 			File.WriteAllBytes(file, paletteData);
 			return file;
