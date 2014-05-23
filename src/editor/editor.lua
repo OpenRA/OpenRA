@@ -783,12 +783,14 @@ function CreateEditor()
         else
           redolater = nil
           self:GotoPos(pos)
+          self:EnsureVisibleEnforcePolicy(self:LineFromPosition(pos))
         end
       elseif not badtime and redolater then
         -- reset the left margin first to make sure that the position
         -- is set "from the left" to get the best content displayed.
         self:SetXOffset(0)
         self:GotoPos(redolater)
+        self:EnsureVisibleEnforcePolicy(self:LineFromPosition(redolater))
         redolater = nil
       end
     end
