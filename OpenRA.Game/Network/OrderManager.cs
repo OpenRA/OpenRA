@@ -198,16 +198,21 @@ namespace OpenRA.Network
 		}
 
 		bool disposed;
-		public void Dispose()
+		protected void Dispose(bool disposing)
 		{
-			if (disposed) return;
+			if (disposed)
+				return;
 
-			Connection.Dispose();
+			if (disposing)
+				Connection.Dispose();
 
 			disposed = true;
-			GC.SuppressFinalize(this);
 		}
 
-		~OrderManager() { Dispose(); }
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 	}
 }
