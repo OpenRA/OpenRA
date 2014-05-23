@@ -107,7 +107,7 @@ namespace OpenRA.Widgets
 			if (ps.HasFlags(PanelSides.Center) && ss[8] != null)
 				FillRectWithSprite(new Rectangle(bounds.Left + marginLeft, bounds.Top + marginTop,
 					bounds.Width - marginWidth,	bounds.Height - marginHeight),
-				    ss[8]);
+					ss[8]);
 
 			// Left border
 			if (ps.HasFlags(PanelSides.Left) && ss[2] != null)

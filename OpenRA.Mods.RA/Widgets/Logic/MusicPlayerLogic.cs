@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			panel.Get<LabelWidget>("TIME_LABEL").GetText = () => (currentSong == null) ? "" :
 				"{0:D2}:{1:D2} / {2:D2}:{3:D2}".F((int)Sound.MusicSeekPosition / 60, (int)Sound.MusicSeekPosition % 60,
-				    currentSong.Length / 60, currentSong.Length % 60);
+					currentSong.Length / 60, currentSong.Length % 60);
 
 			var musicSlider = panel.Get<SliderWidget>("MUSIC_SLIDER");
 			musicSlider.OnChange += x => Sound.MusicVolume = x;

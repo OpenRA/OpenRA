@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Air
 				return this;
 
 			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.LandAltitude))
-			    return this;
+				return this;
 
 			return NextActivity;
 		}

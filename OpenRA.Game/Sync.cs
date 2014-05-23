@@ -50,7 +50,7 @@ namespace OpenRA
 		static void EmitSyncOpcodes(Type type, ILGenerator il)
 		{
 			if (hashFunctions.ContainsKey(type))
-			    il.EmitCall(OpCodes.Call, hashFunctions[type], null);
+				il.EmitCall(OpCodes.Call, hashFunctions[type], null);
 			else if (type == typeof(bool))
 			{
 				var l = il.DefineLabel();
