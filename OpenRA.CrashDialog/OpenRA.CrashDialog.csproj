@@ -27,7 +27,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>OpenRA.ico</ApplicationIcon>
+    <ApplicationIcon>..\OpenRA.Game\OpenRA.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -42,9 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="OpenRA.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
