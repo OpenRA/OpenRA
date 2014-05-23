@@ -253,7 +253,6 @@ namespace OpenRA.Graphics
 		// For scaling vectors to pixel sizes in the voxel renderer
 		public float[] ScreenVector(WVec vec)
 		{
-			var ts = Game.modData.Manifest.TileSize;
 			return new float[] { ScreenVectorX(vec), ScreenVectorY(vec), ScreenVectorZ(vec), 1 };
 		}
 
