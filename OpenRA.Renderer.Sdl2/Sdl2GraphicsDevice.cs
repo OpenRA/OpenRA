@@ -114,12 +114,6 @@ namespace OpenRA.Renderer.Sdl2
 				window = IntPtr.Zero;
 			}
 			SDL.SDL_Quit();
-			GC.SuppressFinalize(this);
-		}
-
-		~Sdl2GraphicsDevice()
-		{
-			Dispose();
 		}
 
 		static BeginMode ModeFromPrimitiveType(PrimitiveType pt)
