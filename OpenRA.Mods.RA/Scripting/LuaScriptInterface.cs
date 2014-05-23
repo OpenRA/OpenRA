@@ -369,7 +369,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public Actor[] FindActorsInBox(WPos topLeft, WPos bottomRight)
 		{
-			return world.FindActorsInBox(topLeft, bottomRight).ToArray();
+			return world.ActorMap.ActorsInBox(topLeft, bottomRight).ToArray();
 		}
 
 		[LuaGlobal]

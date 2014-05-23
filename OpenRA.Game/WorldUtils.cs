@@ -20,17 +20,6 @@ namespace OpenRA
 {
 	public static class WorldUtils
 	{
-		public static IEnumerable<Actor> FindActorsInBox(this World world, CPos tl, CPos br)
-		{
-			// TODO: Support diamond boxes for isometric maps?
-			return world.FindActorsInBox(tl.TopLeft, br.BottomRight);
-		}
-
-		public static IEnumerable<Actor> FindActorsInBox(this World world, WPos tl, WPos br)
-		{
-			return world.ActorMap.ActorsInBox(tl, br);
-		}
-
 		public static Actor ClosestTo(this IEnumerable<Actor> actors, Actor a)
 		{
 			return actors.ClosestTo(a.CenterPosition);
@@ -48,7 +37,7 @@ namespace OpenRA
 				// Target ranges are calculated in 2D, so ignore height differences
 				var vec = new WVec(r, r, WRange.Zero);
 				var rSq = r.Range*r.Range;
-				return world.FindActorsInBox(origin - vec, origin + vec).Where(
+				return world.ActorMap.ActorsInBox(origin - vec, origin + vec).Where(
 					a => (a.CenterPosition - origin).HorizontalLengthSquared <= rSq);
 			}
 		}

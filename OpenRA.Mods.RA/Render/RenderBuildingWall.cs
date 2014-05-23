@@ -51,8 +51,8 @@ namespace OpenRA.Mods.RA.Render
 				return;
 
 			// Update connection to neighbours
-			var vec = new CVec(1, 1);
-			var adjacentActors = self.World.FindActorsInBox(self.Location - vec, self.Location + vec);
+			var adjacentActors = CVec.directions.SelectMany(dir =>
+				self.World.ActorMap.GetUnitsAt(self.Location + dir));
 
 			adjacent = 0;
 			foreach (var a in adjacentActors)
@@ -79,12 +79,12 @@ namespace OpenRA.Mods.RA.Render
 
 		static void UpdateNeighbours(Actor self)
 		{
-			var vec = new CVec(1, 1);
-			var neighbours = self.World.FindActorsInBox(self.Location - vec, self.Location + vec)
+			var adjacentActors = CVec.directions.SelectMany(dir =>
+					self.World.ActorMap.GetUnitsAt(self.Location + dir))
 				.Select(a => a.TraitOrDefault<RenderBuildingWall>())
 				.Where(a => a != null);
 
-			foreach (var rb in neighbours)
+			foreach (var rb in adjacentActors)
 				rb.dirty = true;
 		}
 
