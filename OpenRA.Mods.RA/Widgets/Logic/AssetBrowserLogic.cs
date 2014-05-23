@@ -264,7 +264,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		void ShowColorDropDown(DropDownButtonWidget color, ColorPreviewManagerWidget preview, World world)
+		static void ShowColorDropDown(DropDownButtonWidget color, ColorPreviewManagerWidget preview, World world)
 		{
 			Action onExit = () =>
 			{

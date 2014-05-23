@@ -62,7 +62,7 @@ namespace OpenRA.FileSystem
 
 		}
 
-		uint ParseDirectory(BinaryReader reader)
+		static uint ParseDirectory(BinaryReader reader)
 		{
 			// Parse directory header
 			var FileCount = reader.ReadUInt16();

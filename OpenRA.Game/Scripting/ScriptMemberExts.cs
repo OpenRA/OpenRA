@@ -49,23 +49,23 @@ namespace OpenRA.Scripting
 
 		public static string LuaDocString(this MemberInfo mi)
 		{
-			if (mi is MethodInfo)
+			var methodInfo = mi as MethodInfo;
+			if (methodInfo != null)
 			{
-				var methodInfo = mi as MethodInfo;
 				var parameters = methodInfo.GetParameters().Select(pi => pi.LuaDocString());
 				return "{0} {1}({2})".F(methodInfo.ReturnType.LuaDocString(), mi.Name, parameters.JoinWith(", "));
 			}
 
-			if (mi is PropertyInfo)
+			var propertyInfo = mi as PropertyInfo;
+			if (propertyInfo != null)
 			{
-				var pi = mi as PropertyInfo;
 				var types = new List<string>();
-				if (pi.GetGetMethod() != null)
+				if (propertyInfo.GetGetMethod() != null)
 					types.Add("get;");
-				if (pi.GetSetMethod() != null)
+				if (propertyInfo.GetSetMethod() != null)
 					types.Add("set;");
 
-				return "{0} {1} {{ {2} }}".F(pi.PropertyType.LuaDocString(), mi.Name, types.JoinWith(" "));
+				return "{0} {1} {{ {2} }}".F(propertyInfo.PropertyType.LuaDocString(), mi.Name, types.JoinWith(" "));
 			}
 
 			return "Unknown field: {0}".F(mi.Name);

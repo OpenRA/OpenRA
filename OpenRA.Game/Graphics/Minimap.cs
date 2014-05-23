@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
-	public class Minimap
+	public static class Minimap
 	{
 		public static Bitmap TerrainBitmap(TileSet tileset, Map map, bool actualSize = false)
 		{

@@ -40,7 +40,7 @@ namespace OpenRA.Editor
 			};
 		}
 
-		string NextActorName(Surface surface)
+		static string NextActorName(Surface surface)
 		{
 			var id = 0;
 			for (;;)

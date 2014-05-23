@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 				SpawnUnitsForPlayer(world, s.Key, s.Value);
 		}
 
-		void SpawnUnitsForPlayer(World w, Player p, CPos sp)
+		static void SpawnUnitsForPlayer(World w, Player p, CPos sp)
 		{
 			var spawnClass = p.PlayerReference.StartingUnitsClass ?? w.LobbyInfo.GlobalSettings.StartingUnitsClass;
 			var unitGroup = w.Map.Rules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>()

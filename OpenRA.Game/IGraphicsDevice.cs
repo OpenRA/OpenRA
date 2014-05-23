@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 namespace OpenRA
 {
 	[AttributeUsage(AttributeTargets.Assembly)]
-	public class RendererAttribute : Attribute
+	public sealed class RendererAttribute : Attribute
 	{
 		public readonly Type Type;
 

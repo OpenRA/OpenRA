@@ -31,10 +31,10 @@ namespace OpenRA.TilesetBuilder
 		public string ImageFile = "";
 		public int TileSize = 24;
 
-	private int ColorDiff(Color color, Color curr)
-	{
-		return Math.Abs(color.R - curr.R) + Math.Abs(color.G - curr.G) + Math.Abs(color.B - curr.B);
-	}
+		private static int ColorDiff(Color color, Color curr)
+		{
+			return Math.Abs(color.R - curr.R) + Math.Abs(color.G - curr.G) + Math.Abs(color.B - curr.B);
+		}
 
 	public void CreateNewTileset()
 	{
@@ -220,16 +220,17 @@ namespace OpenRA.TilesetBuilder
 
 		void TerrainTypeSelectorClicked(object sender, EventArgs e)
 		{
-			surface1.InputMode = (sender as ToolStripButton).Tag as string;
-			foreach (var tsb in (sender as ToolStripButton).Owner.Items.OfType<ToolStripButton>())
-				tsb.Checked = false;
-			(sender as ToolStripButton).Checked = true;
+			var tsb = (ToolStripButton)sender;
+			surface1.InputMode = tsb.Tag as string;
+			foreach (var innerTsb in tsb.Owner.Items.OfType<ToolStripButton>())
+				innerTsb.Checked = false;
+			tsb.Checked = true;
 		}
 		
 		void SaveClicked(object sender, EventArgs e) { Save(); }
 		void ShowOverlaysClicked(object sender, EventArgs e) 
 		{
-			surface1.ShowTerrainTypes = (sender as ToolStripButton).Checked;
+			surface1.ShowTerrainTypes = ((ToolStripButton)sender).Checked;
 			surface1.Invalidate();
 		}
 
@@ -243,7 +244,7 @@ namespace OpenRA.TilesetBuilder
 			ExportTemplateToTileNumberMapping();
 		}
 
-		string ExportPalette(List<Color> p, string file)
+		static string ExportPalette(List<Color> p, string file)
 		{
 			while (p.Count < 256) p.Add(Color.Black); // pad the palette out with extra blacks
 			var paletteData = p.Take(256).SelectMany(

@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 		}
 
-		bool IsValidOrder(Actor self, Order order)
+		static bool IsValidOrder(Actor self, Order order)
 		{
 			// Not targeting an actor
 			if (order.ExtraData == 0 && order.TargetActor == null)

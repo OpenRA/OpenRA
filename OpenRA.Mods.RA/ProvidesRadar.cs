@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self) { IsActive = UpdateActive(self); }
 
-		bool UpdateActive(Actor self)
+		static bool UpdateActive(Actor self)
 		{
 			// Check if powered
 			if (self.IsDisabled()) return false;

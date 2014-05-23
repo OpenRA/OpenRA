@@ -66,7 +66,7 @@ namespace OpenRA.Editor
 				NewText.Text = MapList.SelectedItems[0].Text;
 				NewText.Tag = MapList.SelectedItems[0].Tag;
 
-				var map = new Map(NewText.Tag as string);
+				var map = new Map((string)NewText.Tag);
 				TitleText.Text = map.Title;
 				AuthorText.Text = map.Author;
 				TheaterText.Text = map.Tileset;

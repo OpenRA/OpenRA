@@ -257,7 +257,7 @@ namespace OpenRA.FileFormats
 
 		int cachedFrame = -1;
 
-		void DecodeFrameData( int frame )
+		void DecodeFrameData()
 		{
 			cachedFrame = currentFrame;
 			for (var y = 0; y < blocks.Y; y++)
@@ -280,7 +280,7 @@ namespace OpenRA.FileFormats
 			get
 			{
 				if (cachedFrame != currentFrame)
-					DecodeFrameData(currentFrame);
+					DecodeFrameData();
 
 				return frameData;
 			}

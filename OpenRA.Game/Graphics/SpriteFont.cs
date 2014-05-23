@@ -134,12 +134,7 @@ namespace OpenRA.Graphics
 			return g;
 		}
 
-		static SpriteFont()
-		{
-			library = new Library();  
-		}
-
-		static Library library;
+		static Library library = new Library();  
 		static SheetBuilder builder;
 	}
 

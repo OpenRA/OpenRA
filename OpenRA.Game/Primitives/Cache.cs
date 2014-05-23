@@ -23,7 +23,7 @@ namespace OpenRA.Primitives
 		{
 			hax = new Dictionary<T, U>(c);
 			if (loader == null)
-				throw new ArgumentNullException();
+				throw new ArgumentNullException("loader");
 
 			this.loader = loader;
 		}

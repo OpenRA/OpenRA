@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 		}
 
-		Action<MouseInput> HandleSupportPower(string key, SupportPowerManager manager)
+		static Action<MouseInput> HandleSupportPower(string key, SupportPowerManager manager)
 		{
 			return mi =>
 			{

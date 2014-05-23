@@ -79,9 +79,9 @@ namespace OpenRA
 
 			sb.AppendFormat("Exception of type `{0}`: {1}", e.GetType().FullName, e.Message);
 
-			if (e is TypeLoadException)
+			var tle = e as TypeLoadException;
+			if (tle != null)
 			{
-				var tle = (TypeLoadException)e;
 				sb.AppendLine();
 				Indent(sb, d);
 				sb.AppendFormat("TypeName=`{0}`", tle.TypeName);

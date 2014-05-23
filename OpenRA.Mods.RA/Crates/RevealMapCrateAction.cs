@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 
 		bool ShouldReveal(Player collectingPlayer)
 		{
-			if ((info as RevealMapCrateActionInfo).IncludeAllies)
+			if (((RevealMapCrateActionInfo)info).IncludeAllies)
 				return collectingPlayer.World.LocalPlayer != null &&
 					collectingPlayer.Stances[collectingPlayer.World.LocalPlayer] == Stance.Ally;
 

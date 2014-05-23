@@ -607,7 +607,7 @@ namespace OpenRA
 			slot.FrameStarted = currFrame;
 			slot.Sound = sound;
 			slot.IsRelative = relative;
-			return new OpenAlSound(source, (sound as OpenAlSoundSource).Buffer, loop, relative, pos, volume * atten);
+			return new OpenAlSound(source, ((OpenAlSoundSource)sound).Buffer, loop, relative, pos, volume * atten);
 		}
 
 		public float Volume

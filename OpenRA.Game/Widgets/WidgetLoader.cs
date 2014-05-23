@@ -71,7 +71,7 @@ namespace OpenRA
 			return widget;
 		}
 
-		Widget NewWidget(string widgetType, WidgetArgs args)
+		static Widget NewWidget(string widgetType, WidgetArgs args)
 		{
 			widgetType = widgetType.Split('@')[0];
 			return Game.modData.ObjectCreator.CreateObject<Widget>(widgetType + "Widget", args);

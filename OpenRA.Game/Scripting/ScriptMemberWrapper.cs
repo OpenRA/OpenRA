@@ -51,7 +51,7 @@ namespace OpenRA.Scripting
 			if (!IsMethod)
 				throw new LuaException("Trying to invoke a ScriptMemberWrapper that isn't a method!");
 
-			var mi = Member as MethodInfo;
+			var mi = (MethodInfo)Member;
 			var pi = mi.GetParameters();
 
 			object[] clrArgs = new object[pi.Length];
@@ -71,7 +71,7 @@ namespace OpenRA.Scripting
 					throw new LuaException("Unable to convert parameter {0} to {1}".F(i, pi[i].ParameterType.Name));
 			}
 
-			var ret = (Member as MethodInfo).Invoke(Target, clrArgs);
+			var ret = (mi.Invoke(Target, clrArgs));
 			return ret.ToLuaValue(context);
 		}
 

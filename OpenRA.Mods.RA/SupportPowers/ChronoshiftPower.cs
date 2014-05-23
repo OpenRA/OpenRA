@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
-			var range = (Info as ChronoshiftPowerInfo).Range;
+			var range = ((ChronoshiftPowerInfo)Info).Range;
 			var tiles = self.World.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 			if (!self.Owner.Shroud.IsExplored(xy))
 				return false;
 
-			var range = (Info as ChronoshiftPowerInfo).Range;
+			var range = ((ChronoshiftPowerInfo)Info).Range;
 			var sourceTiles = self.World.FindTilesInCircle(xy, range);
 			var destTiles = self.World.FindTilesInCircle(sourceLocation, range);
 			var sourceTerrain = new List<string>();
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.RA
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
-				this.range = (power.Info as ChronoshiftPowerInfo).Range;
+				this.range = ((ChronoshiftPowerInfo)power.Info).Range;
 				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
@@ -179,7 +179,7 @@ namespace OpenRA.Mods.RA
 				this.order = order;
 				this.power = power;
 				this.sourceLocation = sourceLocation;
-				this.range = (power.Info as ChronoshiftPowerInfo).Range;
+				this.range = ((ChronoshiftPowerInfo)power.Info).Range;
 
 				var tileset = manager.self.World.TileSet.Id.ToLower();
 				validTile = world.Map.SequenceProvider.GetSequence("overlay", "target-valid-{0}".F(tileset)).GetSprite(0);
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.RA
 					yield break;
 				}
 
-				var ret = OrderInner( world, xy, mi ).FirstOrDefault();
+				var ret = OrderInner(xy).FirstOrDefault();
 				if (ret == null)
 					yield break;
 
@@ -203,7 +203,7 @@ namespace OpenRA.Mods.RA
 				yield return ret;
 			}
 
-			IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
+			IEnumerable<Order> OrderInner(CPos xy)
 			{
 				// Cannot chronoshift into unexplored location
 				if (IsValidTarget(xy))

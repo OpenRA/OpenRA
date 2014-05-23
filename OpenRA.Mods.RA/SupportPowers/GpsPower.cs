@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 
 		public void Launch(Actor atek, SupportPowerInfo info)
 		{
-			atek.World.Add(new DelayedAction((info as GpsPowerInfo).RevealDelay * 25,
+			atek.World.Add(new DelayedAction(((GpsPowerInfo)info).RevealDelay * 25,
 					() =>
 					{
 						Launched = true;

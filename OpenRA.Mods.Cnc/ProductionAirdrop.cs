@@ -48,7 +48,8 @@ namespace OpenRA.Mods.Cnc
 			foreach (var tower in self.TraitsImplementing<INotifyDelivery>())
 				tower.IncomingDelivery(self);
 
-			var actorType = (Info as ProductionAirdropInfo).ActorType;
+			var info = (ProductionAirdropInfo)Info;
+			var actorType = info.ActorType;
 
 			owner.World.AddFrameEndTask(w =>
 			{
@@ -70,7 +71,7 @@ namespace OpenRA.Mods.Cnc
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
 						cargo.Delivered(self);
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit));
-					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", (Info as ProductionAirdropInfo).ReadyAudio, self.Owner.Country.Race);
+					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Country.Race);
 				}));
 
 				a.QueueActivity(new Fly(a, Target.FromCell(endPos)));

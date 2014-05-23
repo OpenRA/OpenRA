@@ -19,7 +19,7 @@ using OpenRA.Primitives;
 namespace OpenRA
 {
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-	public class SyncAttribute : Attribute { }
+	public sealed class SyncAttribute : Attribute { }
 	public interface ISync { }	/* marker interface */
 
 	public static class Sync

@@ -40,7 +40,7 @@ namespace OpenRA.FileFormats
 
 		uint BodySize;
 
-		void ReadVoxelData(Stream s, VxlLimb l)
+		static void ReadVoxelData(Stream s, VxlLimb l)
 		{
 			var baseSize = l.Size[0]*l.Size[1];
 			var colStart = new int[baseSize];

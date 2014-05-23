@@ -17,9 +17,7 @@ namespace OpenRA.Primitives
 	static class BitAllocator<T> where T : struct
 	{
 		static int nextVal = 1;
-		static Cache<string,int> bits;
-
-		static BitAllocator() {	bits = new Cache<string, int>( _ => Allocate() ); }
+		static Cache<string, int> bits = new Cache<string, int>(_ => Allocate());
 
 		static int Allocate()
 		{

@@ -169,7 +169,7 @@ namespace OpenRA.Mods.RA.AI
 			return !double.IsNaN(attackChance) && attackChance < 30.0;
 		}
 
-		protected float NormalizedHealth(IEnumerable<Actor> actors, float normalizeByValue)
+		protected static float NormalizedHealth(IEnumerable<Actor> actors, float normalizeByValue)
 		{
 			var sumOfMaxHp = 0;
 			var sumOfHp = 0;
@@ -206,7 +206,7 @@ namespace OpenRA.Mods.RA.AI
 			return RelativeValue(own, enemy, 100, Average<Mobile>, (Actor a) => a.Trait<Mobile>().Info.Speed);
 		}
 
-		protected float RelativeValue(IEnumerable<Actor> own, IEnumerable<Actor> enemy, float normalizeByValue, 
+		protected static float RelativeValue(IEnumerable<Actor> own, IEnumerable<Actor> enemy, float normalizeByValue, 
 					Func<IEnumerable<Actor>, Func<Actor, int>, float> relativeFunc, Func<Actor, int> getValue)
 		{
 			if (!enemy.Any())

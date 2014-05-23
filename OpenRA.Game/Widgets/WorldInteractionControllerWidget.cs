@@ -229,7 +229,7 @@ namespace OpenRA.Widgets
 			return false;
 		}
 
-		IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b, Func<Actor, bool> cond)
+		static IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b, Func<Actor, bool> cond)
 		{
 			return world.ScreenMap.ActorsInBox(a, b)
 				.Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable && !world.FogObscures(x) && cond(x))

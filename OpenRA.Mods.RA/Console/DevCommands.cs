@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		void IssueDevCommand(World world, string command)
+		static void IssueDevCommand(World world, string command)
 		{
 			world.IssueOrder(new Order(command, world.LocalPlayer.PlayerActor, false));
 		}
