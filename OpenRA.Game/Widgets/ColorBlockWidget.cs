@@ -23,9 +23,9 @@ namespace OpenRA.Widgets
 		}
 
 		protected ColorBlockWidget(ColorBlockWidget other)
-        {
-            CopyOf(this, other);
-            GetColor = other.GetColor;
+		{
+			CopyOf(this, other);
+			GetColor = other.GetColor;
 		}
 
 		public override Widget Clone()

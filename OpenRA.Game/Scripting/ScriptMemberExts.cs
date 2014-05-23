@@ -49,14 +49,14 @@ namespace OpenRA.Scripting
 
 		public static string LuaDocString(this MemberInfo mi)
 		{
-			MethodInfo methodInfo = mi as MethodInfo;
+			var methodInfo = mi as MethodInfo;
 			if (methodInfo != null)
 			{
 				var parameters = methodInfo.GetParameters().Select(pi => pi.LuaDocString());
 				return "{0} {1}({2})".F(methodInfo.ReturnType.LuaDocString(), mi.Name, parameters.JoinWith(", "));
 			}
 
-			PropertyInfo propertyInfo = mi as PropertyInfo;
+			var propertyInfo = mi as PropertyInfo;
 			if (propertyInfo != null)
 			{
 				var types = new List<string>();

@@ -129,8 +129,10 @@ namespace OpenRA.Mods.RA.Move
 				foreach(var a in world.ActorMap.GetUnitsAt(cell))
 				{
 					if (a == ignoreActor) continue;
+
 					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
 					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) continue;
+					
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
 					if (needsCellExclusively) return false;
 					if (!a.HasTrait<ICrushable>()) return false;
