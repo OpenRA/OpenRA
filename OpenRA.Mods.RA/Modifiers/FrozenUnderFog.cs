@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 		[Sync] public int VisibilityHash;
 
 		bool initialized, startsRevealed;
-		IEnumerable<CPos> footprint;
+		readonly CPos[] footprint;
 		Lazy<IToolTip> tooltip;
 		Lazy<Health> health;
 
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 		{
 			// Spawned actors (e.g. building husks) shouldn't be revealed
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
-			footprint = FootprintUtils.Tiles(init.self);
+			footprint = FootprintUtils.Tiles(init.self).ToArray();
 			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			health = Exts.Lazy(() => init.self.TraitOrDefault<Health>());
@@ -63,8 +63,15 @@ namespace OpenRA.Mods.RA
 			VisibilityHash = 0;
 			foreach (var p in self.World.Players)
 			{
-				visible[p] = footprint.Any(c => p.Shroud.IsVisible(c));
-				if (visible[p])
+				var isVisible = false;
+				foreach (var pos in footprint)
+					if (p.Shroud.IsVisible(pos))
+					{
+						isVisible = true;
+						break;
+					}
+				visible[p] = isVisible;
+				if (isVisible)
 					VisibilityHash += p.ClientIndex;
 			}
 
@@ -106,11 +113,15 @@ namespace OpenRA.Mods.RA
 			if (self.Destroyed || !initialized || !visible.Any(v => v.Value))
 				return;
 
-			// Force a copy of the underlying data
-			var renderables = self.Render(wr).Select(rr => rr).ToArray();
+			IRenderable[] renderables = null;
 			foreach (var player in self.World.Players)
 				if (visible[player])
+				{
+					// Lazily generate a copy of the underlying data.
+					if (renderables == null)
+						renderables = self.Render(wr).ToArray();
 					frozen[player].Renderables = renderables;
+				}
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
