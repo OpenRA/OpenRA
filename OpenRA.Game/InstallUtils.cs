@@ -94,10 +94,8 @@ namespace OpenRA
 			try
 			{
 				using (var stream = File.OpenRead(zipFile))
-				{
-					var z = new ZipInputStream(stream);
+				using (var z = new ZipInputStream(stream))
 					z.ExtractZip(dest, extracted, s => onProgress("Extracting " + s));
-				}
 			}
 			catch (SharpZipBaseException)
 			{
