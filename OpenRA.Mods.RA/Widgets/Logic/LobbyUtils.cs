@@ -422,7 +422,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN");
 			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady;
-			dropdown.OnMouseDown = _ => ShowSpawnDropDown(dropdown, c, orderManager, Enumerable.Range(0, map.PlayerCount + 1)
+			dropdown.OnMouseDown = _ => ShowSpawnDropDown(dropdown, c, orderManager, Enumerable.Range(0, map.SpawnPoints.Count + 1)
 					.Except(orderManager.LobbyInfo.Clients.Where(client => client != c && client.SpawnPoint != 0).Select(client => client.SpawnPoint)));
 			dropdown.GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
 		}
