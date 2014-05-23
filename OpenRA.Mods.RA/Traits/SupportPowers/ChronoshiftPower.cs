@@ -57,11 +57,11 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			var range = ((ChronoshiftPowerInfo)Info).Range;
 			var tiles = Self.World.Map.FindTilesInCircle(xy, range);
-			var units = new List<Actor>();
+			var units = new HashSet<Actor>();
 			foreach (var t in tiles)
-				units.AddRange(Self.World.ActorMap.GetUnitsAt(t));
+				units.UnionWith(Self.World.ActorMap.GetUnitsAt(t));
 
-			return units.Distinct().Where(a => a.HasTrait<Chronoshiftable>() &&
+			return units.Where(a => a.HasTrait<Chronoshiftable>() &&
 				!a.TraitsImplementing<IPreventsTeleport>().Any(condition => condition.PreventsTeleport(a)));
 		}
 

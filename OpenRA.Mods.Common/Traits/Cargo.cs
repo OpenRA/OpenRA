@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly CargoInfo Info;
 		readonly Actor self;
-		readonly List<Actor> cargo = new List<Actor>();
+		readonly Stack<Actor> cargo = new Stack<Actor>();
 		readonly HashSet<Actor> reserves = new HashSet<Actor>();
 		readonly Lazy<IFacing> facing;
 
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (init.Contains<RuntimeCargoInit>())
 			{
-				cargo = init.Get<RuntimeCargoInit, Actor[]>().ToList();
+				cargo = new Stack<Actor>(init.Get<RuntimeCargoInit, Actor[]>());
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
 			else if (init.Contains<CargoInit>())
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
 						new TypeDictionary { new OwnerInit(self.Owner) });
 
-					cargo.Add(unit);
+					cargo.Push(unit);
 				}
 
 				totalWeight = cargo.Sum(c => GetWeight(c));
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
 						new TypeDictionary { new OwnerInit(self.Owner) });
 
-					cargo.Add(unit);
+					cargo.Push(unit);
 				}
 
 				totalWeight = cargo.Sum(c => GetWeight(c));
@@ -185,13 +185,12 @@ namespace OpenRA.Mods.Common.Traits
 		public bool HasSpace(int weight) { return totalWeight + reservedWeight + weight <= Info.MaxWeight; }
 		public bool IsEmpty(Actor self) { return cargo.Count == 0; }
 
-		public Actor Peek(Actor self) { return cargo[0]; }
+		public Actor Peek(Actor self) { return cargo.Peek(); }
 
 		public Actor Unload(Actor self)
 		{
-			var a = cargo[0];
+			var a = cargo.Pop();
 
-			cargo.RemoveAt(0);
 			totalWeight -= GetWeight(a);
 
 			SetPassengerFacing(a);
@@ -248,7 +247,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Load(Actor self, Actor a)
 		{
-			cargo.Add(a);
+			cargo.Push(a);
 			var w = GetWeight(a);
 			totalWeight += w;
 			if (reserves.Contains(a))

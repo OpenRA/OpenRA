@@ -80,12 +80,11 @@ namespace OpenRA.Graphics
 		List<IRenderable> GenerateRenderables()
 		{
 			var actors = World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
-				.Append(World.WorldActor)
-				.ToList();
+				.Append(World.WorldActor);
 
 			// Include player actor for the rendered player
 			if (World.RenderPlayer != null)
-				actors.Add(World.RenderPlayer.PlayerActor);
+				actors = actors.Append(World.RenderPlayer.PlayerActor);
 
 			var worldRenderables = actors.SelectMany(a => a.Render(this));
 			if (World.OrderGenerator != null)

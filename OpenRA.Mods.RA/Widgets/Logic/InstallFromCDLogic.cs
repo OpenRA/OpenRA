@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var extractFiles = Game.ModData.Manifest.ContentInstaller.ExtractFilesFromCD;
 
 			var installCounter = 0;
-			var installTotal = copyFiles.Count() + extractFiles.Count();
+			var installTotal = copyFiles.Length + extractFiles.Length;
 			var onProgress = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
 				progressBar.Percentage = installCounter * 100 / installTotal;

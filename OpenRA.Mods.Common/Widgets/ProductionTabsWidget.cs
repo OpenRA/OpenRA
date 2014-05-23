@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var allQueues = a.World.ActorsWithTrait<ProductionQueue>()
 					.Where(p => p.Actor.Owner == p.Actor.World.LocalPlayer && p.Actor.IsInWorld && p.Trait.Enabled)
-					.Select(p => p.Trait).ToArray();
+					.Select(p => p.Trait).ToList();
 
 				foreach (var g in Groups.Values)
 					g.Update(allQueues);

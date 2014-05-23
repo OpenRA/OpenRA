@@ -106,6 +106,11 @@ namespace OpenRA
 			return ret;
 		}
 
+		public static int IndexOf<T>(this T[] array, T value)
+		{
+			return Array.IndexOf(array, value);
+		}
+
 		public static T Random<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
 			var xs = ts as ICollection<T>;
@@ -299,6 +304,11 @@ namespace OpenRA
 			return ts.Concat(moreTs);
 		}
 
+		public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source)
+		{
+			return new HashSet<T>(source);
+		}
+
 		public static Dictionary<TKey, TSource> ToDictionaryWithConflictLog<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, string debugName, Func<TKey, string> logKey, Func<TSource, string> logValue)
 		{
 			return ToDictionaryWithConflictLog(source, keySelector, x => x, debugName, logKey, logValue);
@@ -341,7 +351,7 @@ namespace OpenRA
 			// If any duplicates were found, throw a descriptive error
 			if (dupKeys.Count > 0)
 			{
-				var badKeysFormatted = string.Join(", ", dupKeys.Select(p => "{0}: [{1}]".F(logKey(p.Key), string.Join(",", p.Value.ToArray()))).ToArray());
+				var badKeysFormatted = string.Join(", ", dupKeys.Select(p => "{0}: [{1}]".F(logKey(p.Key), string.Join(",", p.Value))));
 				var msg = "{0}, duplicate values found for the following keys: {1}".F(debugName, badKeysFormatted);
 				throw new ArgumentException(msg);
 			}

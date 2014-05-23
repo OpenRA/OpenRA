@@ -170,7 +170,7 @@ namespace OpenRA.Editor
 			foreach (var p in palettes) { p.Visible = false; p.SuspendLayout(); }
 
 			var templateOrder = tileset.EditorTemplateOrder ?? new string[] { };
-			foreach (var tc in tileset.Templates.GroupBy(t => t.Value.Category).OrderBy(t => Array.IndexOf(templateOrder, t.Key)))
+			foreach (var tc in tileset.Templates.GroupBy(t => t.Value.Category).OrderBy(t => templateOrder.IndexOf(t.Key)))
 			{
 				var category = tc.Key ?? "(Uncategorized)";
 				var categoryHeader = new Label

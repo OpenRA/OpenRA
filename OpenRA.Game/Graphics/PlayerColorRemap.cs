@@ -32,14 +32,14 @@ namespace OpenRA.Graphics
 			var c1 = new HSLColor(c.H, c.S, (byte)Math.Max(rampRange, c.L)).RGB;
 			var c2 = new HSLColor(c.H, c.S, (byte)Math.Max(0, c.L - rampRange)).RGB;
 			var baseIndex = ramp[0];
-			var remapRamp = ramp.Select(r => r - ramp[0]).ToArray();
+			var remapRamp = ramp.Select(r => r - ramp[0]);
 
 			// reversed remapping
 			if (ramp[0] > ramp[15])
 			{
 				baseIndex = ramp[15];
 				for (var i = 15; i > 0; i--)
-					remapRamp = ramp.Select(r => r - ramp[15]).ToArray();
+					remapRamp = ramp.Select(r => r - ramp[15]);
 			}
 
 			remapColors = remapRamp.Select((x, i) => Pair.New(baseIndex + i, Exts.ColorLerp(x / 16f, c1, c2)))

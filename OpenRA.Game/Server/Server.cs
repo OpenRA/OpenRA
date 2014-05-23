@@ -406,7 +406,7 @@ namespace OpenRA.Server
 		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
 		{
 			var from = conn != null ? conn.PlayerIndex : 0;
-			foreach (var c in Conns.Except(conn).ToArray())
+			foreach (var c in Conns.Except(conn).ToList())
 				DispatchOrdersToClient(c, from, frame, data);
 		}
 
@@ -517,9 +517,7 @@ namespace OpenRA.Server
 
 		public void DropClient(Connection toDrop, int frame)
 		{
-			if (PreConns.Contains(toDrop))
-				PreConns.Remove(toDrop);
-			else
+			if (!PreConns.Remove(toDrop))
 			{
 				Conns.Remove(toDrop);
 

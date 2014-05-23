@@ -25,8 +25,11 @@ namespace OpenRA.Effects
 			this.target = target;
 			player = asPlayer;
 			remainingTicks = ticks;
-			foreach (var e in target.World.Effects.OfType<FlashTarget>().Where(a => a.target == target).ToArray())
-				target.World.Remove(e);
+			target.World.RemoveAll(effect =>
+			{
+				var flashTarget = effect as FlashTarget;
+				return flashTarget != null && flashTarget.target == target;
+			});
 		}
 
 		public void Tick(World world)
