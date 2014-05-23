@@ -244,9 +244,9 @@ namespace OpenRA
 					foreach (var a in actors)
 						a.Tick();
 
-				ActorsWithTrait<ITick>().DoTimed(x => x.Trait.Tick(x.Actor), "Trait", Game.Settings.Debug.LongTickThreshold);
+				ActorsWithTrait<ITick>().DoTimed(x => x.Trait.Tick(x.Actor), "Trait");
 
-				effects.DoTimed(e => e.Tick(this), "Effect", Game.Settings.Debug.LongTickThreshold);
+				effects.DoTimed(e => e.Tick(this), "Effect");
 			}
 
 			while (frameEndActions.Count != 0)
