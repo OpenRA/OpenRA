@@ -82,7 +82,7 @@ namespace OpenRA.Traits
 			{
 				var prev = act;
 
-				using (new PerfTimer("[{0}] Activity: {1}".F(Game.LocalTick, prev), (int)Game.Settings.Debug.LongTickThreshold.TotalMilliseconds))
+				using (PerfTimer.TimeUsingLongTickThreshold("Activity", prev))
 					act = act.Tick(self);
 
 				if (prev == act)

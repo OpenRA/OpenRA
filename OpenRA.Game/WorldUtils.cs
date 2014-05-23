@@ -175,11 +175,11 @@ namespace OpenRA
 			}
 		}
 
-		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text, TimeSpan time)
+		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text)
 		{
 			e.Do(x =>
 			{
-				using (new PerfTimer("[{0}] {1}: {2}".F(Game.LocalTick, text, x), (int)time.TotalMilliseconds))
+				using (PerfTimer.TimeUsingLongTickThreshold(text, x))
 					a(x);
 			});
 		}
