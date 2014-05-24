@@ -9,7 +9,7 @@ Terrain:
 	TerrainType@Clear:
 		Type: Clear
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 25, 94, 87
+		Color: 40, 92, 48
 		TargetTypes: Ground
 	TerrainType@Water:
 		Type: Water
