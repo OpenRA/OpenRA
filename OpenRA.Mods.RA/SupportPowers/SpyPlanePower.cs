@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 						new OwnerInit( self.Owner ),
 					});
 
-					camera.QueueActivity(new Wait(25 * (Info as SpyPlanePowerInfo).RevealTime));
+					camera.QueueActivity(new Wait(25 * ((SpyPlanePowerInfo)Info).RevealTime));
 					camera.QueueActivity(new RemoveSelf());
 				})));
 			plane.QueueActivity(new FlyOffMap());

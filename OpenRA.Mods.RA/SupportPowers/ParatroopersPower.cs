@@ -37,12 +37,12 @@ namespace OpenRA.Mods.RA
 		{
 			base.Activate(self, order, manager);
 
-			var items = (Info as ParatroopersPowerInfo).DropItems;
+			var info = (ParatroopersPowerInfo)Info;
+			var items = info.DropItems;
 			var startPos = self.World.ChooseRandomEdgeCell();
 
 			self.World.AddFrameEndTask(w =>
 			{
-				var info = (Info as ParatroopersPowerInfo);
 				var flare = info.FlareType != null ? w.CreateActor(info.FlareType, new TypeDictionary
 				{
 					new LocationInit( order.TargetLocation ),

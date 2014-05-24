@@ -34,13 +34,13 @@ namespace OpenRA.Scripting
 	}
 
 	// For traitinfos that provide actor / player commands
-	public class ScriptPropertyGroupAttribute : Attribute
+	public sealed class ScriptPropertyGroupAttribute : Attribute
 	{
 		public readonly string Category;
 		public ScriptPropertyGroupAttribute(string category) { Category = category; }
 	}
 
-	public class ScriptActorPropertyActivityAttribute : Attribute { }
+	public sealed class ScriptActorPropertyActivityAttribute : Attribute { }
 
 	public abstract class ScriptActorProperties
 	{
@@ -75,7 +75,7 @@ namespace OpenRA.Scripting
 		}
 	}
 
-	public class ScriptGlobalAttribute : Attribute
+	public sealed class ScriptGlobalAttribute : Attribute
 	{
 		public readonly string Name;
 		public ScriptGlobalAttribute(string name) { Name = name; }

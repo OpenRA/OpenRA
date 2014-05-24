@@ -54,12 +54,12 @@ namespace OpenRA.Mods.RA
 
 			foreach (var target in UnitsInRange(order.TargetLocation)
 				.Where(a => a.Owner.Stances[self.Owner] == Stance.Ally))
-				target.Trait<IronCurtainable>().Activate(target, (Info as IronCurtainPowerInfo).Duration * 25);
+				target.Trait<IronCurtainable>().Activate(target, ((IronCurtainPowerInfo)Info).Duration * 25);
 		}
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
-			int range = (Info as IronCurtainPowerInfo).Range;
+			int range = ((IronCurtainPowerInfo)Info).Range;
 			var tiles = self.World.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
-				this.range = (power.Info as IronCurtainPowerInfo).Range;
+				this.range = ((IronCurtainPowerInfo)power.Info).Range;
 				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 

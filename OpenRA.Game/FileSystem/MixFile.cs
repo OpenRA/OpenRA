@@ -73,7 +73,7 @@ namespace OpenRA.FileSystem
 			);
 		}
 
-		List<PackageEntry> ParseHeader(Stream s, long offset, out long headerEnd)
+		static List<PackageEntry> ParseHeader(Stream s, long offset, out long headerEnd)
 		{
 			s.Seek(offset, SeekOrigin.Begin);
 			var numFiles = s.ReadUInt16();
@@ -87,7 +87,7 @@ namespace OpenRA.FileSystem
 			return items;
 		}
 
-		MemoryStream DecryptHeader(Stream s, long offset, out long headerEnd)
+		static MemoryStream DecryptHeader(Stream s, long offset, out long headerEnd)
 		{
 			s.Seek(offset, SeekOrigin.Begin);
 
@@ -121,7 +121,7 @@ namespace OpenRA.FileSystem
 			return ms;
 		}
 
-		uint[] ReadBlocks(Stream s, long offset, int count)
+		static uint[] ReadBlocks(Stream s, long offset, int count)
 		{
 			s.Seek(offset, SeekOrigin.Begin);
 

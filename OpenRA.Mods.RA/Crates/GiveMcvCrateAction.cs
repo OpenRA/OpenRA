@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Crates
 				.Any(a => a.Actor.Owner == collector.Owner);
 
 			return hasBase ? info.SelectionShares :
-				(info as GiveMcvCrateActionInfo).NoBaseSelectionShares;
+				((GiveMcvCrateActionInfo)info).NoBaseSelectionShares;
 		}
 	}
 }

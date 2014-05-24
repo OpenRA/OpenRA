@@ -278,7 +278,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			});
 		}
 
-		string MapControl(double control)
+		static string MapControl(double control)
 		{
 			return (control * 100).ToString("F1") + "%";
 		}

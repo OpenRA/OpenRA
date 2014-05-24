@@ -349,7 +349,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		CPos? FindNextResourceForBot(Actor self)
+		static CPos? FindNextResourceForBot(Actor self)
 		{
 			// NOTE: This is only used for the AI to find the next available resource to harvest.
 			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();

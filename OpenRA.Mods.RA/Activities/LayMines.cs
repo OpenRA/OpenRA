@@ -65,13 +65,13 @@ namespace OpenRA.Mods.RA.Activities
 			return new Wait(20);	// nothing to do here
 		}
 
-		bool ShouldLayMine(Actor self, CPos p)
+		static bool ShouldLayMine(Actor self, CPos p)
 		{
 			// if there is no unit (other than me) here, we want to place a mine here
 			return !self.World.ActorMap.GetUnitsAt(p).Any(a => a != self);
 		}
 
-		void LayMine(Actor self)
+		static void LayMine(Actor self)
 		{
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null)

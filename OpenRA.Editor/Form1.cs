@@ -307,7 +307,7 @@ namespace OpenRA.Editor
 			actorOwnerChooser.Items.Clear();
 			actorOwnerChooser.Items.AddRange(surface1.Map.Players.Values.ToArray());
 			actorOwnerChooser.SelectedIndex = 0;
-			surface1.NewActorOwner = (actorOwnerChooser.SelectedItem as PlayerReference).Name;
+			surface1.NewActorOwner = ((PlayerReference)actorOwnerChooser.SelectedItem).Name;
 		}
 
 		void ResizeClicked(object sender, EventArgs e)
@@ -381,7 +381,7 @@ namespace OpenRA.Editor
 				nms.ButtonOkay.Text = "Open";
 
 				if (DialogResult.OK == nms.ShowDialog())
-					LoadMap(nms.NewText.Tag as string);
+					LoadMap((string)nms.NewText.Tag);
 			}
 		}
 
@@ -507,7 +507,7 @@ namespace OpenRA.Editor
 		void DrawPlayerListItem(object sender, DrawItemEventArgs e)
 		{
 			// color block
-			var player = e.Index >= 0 ? (PlayerReference)(sender as ComboBox).Items[e.Index] : null;
+			var player = e.Index >= 0 ? (PlayerReference)((ComboBox)sender).Items[e.Index] : null;
 
 			e.DrawBackground();
 			e.DrawFocusRectangle();

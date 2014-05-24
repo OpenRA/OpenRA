@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 			{
 				var gainsExperience = collector.TraitOrDefault<GainsExperience>();
 				if (gainsExperience != null)
-					gainsExperience.GiveLevels((info as LevelUpCrateActionInfo).Levels);
+					gainsExperience.GiveLevels(((LevelUpCrateActionInfo)info).Levels);
 			});
 
 			base.Activate(collector);

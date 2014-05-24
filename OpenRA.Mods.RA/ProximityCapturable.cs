@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		void ChangeOwnership(Actor self, Actor captor)
+		static void ChangeOwnership(Actor self, Actor captor)
 		{
 			self.World.AddFrameEndTask(w =>
 			{

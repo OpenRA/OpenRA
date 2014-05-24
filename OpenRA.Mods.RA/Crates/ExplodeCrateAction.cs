@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 
 		public override void Activate(Actor collector)
 		{
-			Combat.DoExplosion(self, (info as ExplodeCrateActionInfo).Weapon, collector.CenterPosition);
+			Combat.DoExplosion(self, ((ExplodeCrateActionInfo)info).Weapon, collector.CenterPosition);
 			base.Activate(collector);
 		}
 	}

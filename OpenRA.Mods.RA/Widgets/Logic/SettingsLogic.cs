@@ -211,7 +211,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			soundDevice = devices.FirstOrDefault(d => d.Engine == ss.Engine && d.Device == ss.Device) ?? devices.First();
 
 			var audioDeviceDropdown = panel.Get<DropDownButtonWidget>("AUDIO_DEVICE");
-			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, ss, devices);
+			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, devices);
 			audioDeviceDropdown.GetText = () => soundDevice.Label;
 
 			return () =>
@@ -400,7 +400,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 		}
 
-		bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		static bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
@@ -422,7 +422,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		bool ShowAudioDeviceDropdown(DropDownButtonWidget dropdown, SoundSettings s, SoundDevice[] devices)
+		bool ShowAudioDeviceDropdown(DropDownButtonWidget dropdown, SoundDevice[] devices)
 		{
 			var i = 0;
 			var options = devices.ToDictionary(d => (i++).ToString(), d => d);
@@ -441,7 +441,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		bool ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		static bool ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
@@ -464,7 +464,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		bool ShowLanguageDropdown(DropDownButtonWidget dropdown)
+		static bool ShowLanguageDropdown(DropDownButtonWidget dropdown)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{

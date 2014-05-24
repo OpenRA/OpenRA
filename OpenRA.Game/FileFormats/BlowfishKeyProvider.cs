@@ -35,13 +35,13 @@ namespace OpenRA.FileFormats
 		uint glob1_hi_bitlen;
 		uint glob1_hi_inv_lo, glob1_hi_inv_hi;
 
-		void init_bignum(uint[] n, uint val, uint len)
+		static void init_bignum(uint[] n, uint val, uint len)
 		{
 			for (int i = 0; i < len; i++) n[i] = 0;
 			n[0] = val;
 		}
 
-		void move_key_to_big(uint[] n, byte[] key, uint klen, uint blen)
+		static void move_key_to_big(uint[] n, byte[] key, uint klen, uint blen)
 		{
 			byte sign;
 
@@ -60,7 +60,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		void key_to_bignum(uint[] n, byte[] key, uint len)
+		static void key_to_bignum(uint[] n, byte[] key, uint len)
 		{
 			uint keylen;
 			int i;
@@ -85,7 +85,7 @@ namespace OpenRA.FileFormats
 				move_key_to_big(n, key.Skip(j).ToArray(), keylen, len);
 		}
 
-		uint len_bignum(uint[] n, uint len)
+		static uint len_bignum(uint[] n, uint len)
 		{
 			uint i;
 			i = len - 1;
@@ -93,7 +93,7 @@ namespace OpenRA.FileFormats
 			return i + 1;
 		}
 
-		uint bitlen_bignum(uint[] n, uint len)
+		static uint bitlen_bignum(uint[] n, uint len)
 		{
 			uint ddlen, bitlen, mask;
 			ddlen = len_bignum(n, len);
@@ -122,7 +122,7 @@ namespace OpenRA.FileFormats
 			return (55 / a + 1) * (a + 1);
 		}
 
-		int cmp_bignum(uint[] n1, uint[] n2, uint len)
+		static int cmp_bignum(uint[] n1, uint[] n2, uint len)
 		{
 
 			while (len > 0)
@@ -134,12 +134,12 @@ namespace OpenRA.FileFormats
 			return 0;
 		}
 
-		void mov_bignum(uint[] dest, uint[] src, uint len)
+		static void mov_bignum(uint[] dest, uint[] src, uint len)
 		{
 			Array.Copy(src, dest, len);
 		}
 
-		void shr_bignum(uint[] n, int bits, int len)
+		static void shr_bignum(uint[] n, int bits, int len)
 		{
 			int i; int i2 = bits / 32;
 
@@ -155,7 +155,7 @@ namespace OpenRA.FileFormats
 			n[i] = n[i] >> bits;
 		}
 
-		void shl_bignum(uint[] n, int bits, int len)
+		static void shl_bignum(uint[] n, int bits, int len)
 		{
 			int i, i2;
 
@@ -172,7 +172,7 @@ namespace OpenRA.FileFormats
 			n[0] <<= bits;
 		}
 
-		uint sub_bignum(uint[] dest, uint[] src1, uint[] src2, uint carry, int len)
+		static uint sub_bignum(uint[] dest, uint[] src1, uint[] src2, uint carry, int len)
 		{
 			uint i1, i2;
 
@@ -199,7 +199,7 @@ namespace OpenRA.FileFormats
 			return carry;
 		}
 
-		unsafe uint sub_bignum(uint* dest, uint* src1, uint* src2, uint carry, int len)
+		static unsafe uint sub_bignum(uint* dest, uint* src1, uint* src2, uint carry, int len)
 		{
 			uint i1, i2;
 
@@ -220,7 +220,7 @@ namespace OpenRA.FileFormats
 			return carry;
 		}
 
-		void inv_bignum(uint[] n1, uint[] n2, uint len)
+		static void inv_bignum(uint[] n1, uint[] n2, uint len)
 		{
 			uint[] n_tmp = new uint[64];
 			uint n2_bytelen, bit;
@@ -255,7 +255,7 @@ namespace OpenRA.FileFormats
 			init_bignum(n_tmp, 0, len);
 		}
 
-		void inc_bignum(uint[] n, uint len)
+		static void inc_bignum(uint[] n, uint len)
 		{
 			int i = 0;
 			while ((++n[i] == 0) && (--len > 0)) i++;
@@ -282,7 +282,7 @@ namespace OpenRA.FileFormats
 			glob1_hi_inv_hi = (ushort)(glob1_hi_inv[0] >> 16);
 		}
 
-		unsafe void mul_bignum_word(ushort *pn1, uint[] n2, uint mul, uint len)
+		static unsafe void mul_bignum_word(ushort* pn1, uint[] n2, uint mul, uint len)
 		{
 			uint i, tmp;
 			unsafe
@@ -305,7 +305,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		void mul_bignum(uint[] dest, uint[] src1, uint[] src2, uint len)
+		static void mul_bignum(uint[] dest, uint[] src1, uint[] src2, uint len)
 		{
 		  uint i;
 
@@ -324,13 +324,13 @@ namespace OpenRA.FileFormats
 		  }
 		}
 
-		void not_bignum(uint[] n, uint len)
+		static void not_bignum(uint[] n, uint len)
 		{
 		  uint i;
 		  for (i = 0; i < len; i++) n[i] = ~n[i];
 		}
 
-		void neg_bignum(uint[] n, uint len)
+		static void neg_bignum(uint[] n, uint len)
 		{
 		  not_bignum(n, len);
 		  inc_bignum(n, len);
@@ -348,7 +348,7 @@ namespace OpenRA.FileFormats
 			return i & 0xffff;
 		}
 
-		void dec_bignum(uint[] n, uint len)
+		static void dec_bignum(uint[] n, uint len)
 		{
 			int i = 0;
 			while ((--n[i] == 0xffffffff) && (--len > 0))
@@ -450,7 +450,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		unsafe void memcpy(byte* dest, byte* src, int len)
+		static unsafe void memcpy(byte* dest, byte* src, int len)
 		{
 			while (len-- != 0) *dest++ = *src++;
 		}

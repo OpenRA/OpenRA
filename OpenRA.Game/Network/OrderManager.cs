@@ -145,12 +145,12 @@ namespace OpenRA.Network
 			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}\n Compare syncreport.log with other players.".F(frame, orders.ElementAt(index).Order.ToString()));
 		}
 
-		void OutOfSync(int frame)
+		static void OutOfSync(int frame)
 		{
 			throw new InvalidOperationException("Out of sync in frame {0}.\n Compare syncreport.log with other players.".F(frame));
 		}
 
-		void OutOfSync(int frame, string blame)
+		static void OutOfSync(int frame, string blame)
 		{
 			throw new InvalidOperationException("Out of sync in frame {0}: Blame {1}.\n Compare syncreport.log with other players.".F(frame, blame));
 		}

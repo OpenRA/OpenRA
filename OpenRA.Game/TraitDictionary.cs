@@ -76,7 +76,7 @@ namespace OpenRA
 			InnerGet(t).Add(actor, val);
 		}
 
-		void CheckDestroyed(Actor actor)
+		static void CheckDestroyed(Actor actor)
 		{
 			if (actor.Destroyed)
 				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));

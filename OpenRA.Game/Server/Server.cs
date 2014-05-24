@@ -687,7 +687,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		void SendData(Socket s, byte[] data)
+		static void SendData(Socket s, byte[] data)
 		{
 			var start = 0;
 			var length = data.Length;

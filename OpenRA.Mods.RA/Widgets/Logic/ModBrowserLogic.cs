@@ -157,7 +157,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				modOffset = selectedIndex - 4;
 		}
 
-		void LoadMod(ModMetadata mod)
+		static void LoadMod(ModMetadata mod)
 		{
 			Game.RunAfterTick(() =>
 			{

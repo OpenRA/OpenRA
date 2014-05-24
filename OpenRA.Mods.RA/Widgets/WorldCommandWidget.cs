@@ -251,7 +251,7 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 
-		bool ToggleStatusBars()
+		static bool ToggleStatusBars()
 		{
 			Game.Settings.Game.AlwaysShowStatusBars ^= true;
 			return true;

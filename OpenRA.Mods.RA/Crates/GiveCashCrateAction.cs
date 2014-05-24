@@ -30,10 +30,11 @@ namespace OpenRA.Mods.RA
 		{
 			collector.World.AddFrameEndTask(w =>
 			{
-				var amount = (info as GiveCashCrateActionInfo).Amount;
+				var crateInfo = (GiveCashCrateActionInfo)info;
+				var amount = crateInfo.Amount;
 				collector.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(amount);
 
-				if ((info as GiveCashCrateActionInfo).UseCashTick)
+				if (crateInfo.UseCashTick)
 					w.Add(new CashTick(collector.CenterPosition, collector.Owner.Color.RGB, amount));
 			});
 

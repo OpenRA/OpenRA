@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 				remainingFrames--;
 		}
 
-		Color ColorForEffect(EffectType t, Color orig)
+		static Color ColorForEffect(EffectType t, Color orig)
 		{
 			switch (t)
 			{

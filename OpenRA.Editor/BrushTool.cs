@@ -109,7 +109,7 @@ namespace OpenRA.Editor
 			s.Chunks.Clear();
 		}
 
-		CPos FindEdge(Surface s, CPos p, CVec d, TileReference<ushort, byte> replace)
+		static CPos FindEdge(Surface s, CPos p, CVec d, TileReference<ushort, byte> replace)
 		{
 			for (;;)
 			{
