@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.Render
 			dirty = false;
 		}
 
-		void UpdateNeighbours(Actor self)
+		static void UpdateNeighbours(Actor self)
 		{
 			var vec = new CVec(1, 1);
 			var neighbours = self.World.FindActorsInBox(self.Location - vec, self.Location + vec)

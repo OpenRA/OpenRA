@@ -32,8 +32,8 @@ namespace OpenRA.Widgets
 		}
 
 		protected ProgressBarWidget(ProgressBarWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			Percentage = other.Percentage;
 			GetPercentage = other.GetPercentage;
 			IsIndeterminate = other.IsIndeterminate;

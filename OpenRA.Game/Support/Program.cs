@@ -11,7 +11,9 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace OpenRA
@@ -57,7 +59,7 @@ namespace OpenRA
 
 			if (Game.Settings.Debug.ShowFatalErrorDialog && !Game.Settings.Server.Dedicated)
 			{
-				Game.Renderer.Device.Quit();
+				Game.Renderer.Device.Dispose();
 				Platform.ShowFatalErrorDialog();
 			}
 		}
@@ -79,9 +81,9 @@ namespace OpenRA
 
 			sb.AppendFormat("Exception of type `{0}`: {1}", e.GetType().FullName, e.Message);
 
-			if (e is TypeLoadException)
+			var tle = e as TypeLoadException;
+			if (tle != null)
 			{
-				var tle = (TypeLoadException)e;
 				sb.AppendLine();
 				Indent(sb, d);
 				sb.AppendFormat("TypeName=`{0}`", tle.TypeName);
@@ -105,6 +107,7 @@ namespace OpenRA
 
 		static void Run(string[] args)
 		{
+			Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
 			Game.Initialize(new Arguments(args));
 			GC.Collect();
 			Game.Run();

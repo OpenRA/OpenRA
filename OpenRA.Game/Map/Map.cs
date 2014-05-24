@@ -80,8 +80,9 @@ namespace OpenRA
 		static object LoadOptions(MiniYaml y)
 		{
 			var options = new MapOptions();
-			if (y.NodesDict.ContainsKey("Options"))
-				FieldLoader.Load(options, y.NodesDict["Options"]);
+			var nodesDict = y.GetNodesDict();
+			if (nodesDict.ContainsKey("Options"))
+				FieldLoader.Load(options, nodesDict["Options"]);
 
 			return options;
 		}
@@ -185,8 +186,10 @@ namespace OpenRA
 				RequiresMod = upgradeForMod;
 			}
 
+			var nd = yaml.GetNodesDict();
+
 			// Load players
-			foreach (var kv in yaml.NodesDict["Players"].NodesDict)
+			foreach (var kv in nd["Players"].GetNodesDict())
 			{
 				var player = new PlayerReference(kv.Value);
 				Players.Add(player.Name, player);
@@ -195,8 +198,8 @@ namespace OpenRA
 			Actors = Exts.Lazy(() =>
 			{
 				var ret = new Dictionary<string, ActorReference>();
-				foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
-					ret.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
+				foreach (var kv in nd["Actors"].GetNodesDict())
+					ret.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.GetNodesDict()));
 				return ret;
 			});
 
@@ -204,7 +207,7 @@ namespace OpenRA
 			Smudges = Exts.Lazy(() =>
 			{
 				var ret = new List<SmudgeReference>();
-				foreach (var kv in yaml.NodesDict["Smudges"].NodesDict)
+				foreach (var kv in nd["Smudges"].GetNodesDict())
 				{
 					var vals = kv.Key.Split(' ');
 					var loc = vals[1].Split(',');
@@ -465,7 +468,7 @@ namespace OpenRA
 				// Take the SHA1
 				ms.Seek(0, SeekOrigin.Begin);
 				using (var csp = SHA1.Create())
-					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToString("x2")).ToArray());
+					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToStringInvariant("x2")).ToArray());
 			}
 		}
 

@@ -191,8 +191,8 @@ namespace OpenRA.Mods.RA.Widgets
 			if (!IsVisible()) return;
 			// TODO: fix
 
-			int paletteHeight = DrawPalette(CurrentQueue);
-			DrawBuildTabs(world, paletteHeight);
+			DrawPalette(CurrentQueue);
+			DrawBuildTabs(world);
 		}
 
 		int numActualRows = 5;
@@ -413,7 +413,7 @@ namespace OpenRA.Mods.RA.Widgets
 				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}
 
-		void DrawBuildTabs(World world, int paletteHeight)
+		void DrawBuildTabs(World world)
 		{
 			const int tabWidth = 24;
 			const int tabHeight = 40;
@@ -450,7 +450,7 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 		}
 
-		void DrawRightAligned(string text, int2 pos, Color c)
+		static void DrawRightAligned(string text, int2 pos, Color c)
 		{
 			var font = Game.Renderer.Fonts["Bold"];
 			font.DrawText(text, pos - new int2(font.Measure(text).X, 0), c);
@@ -500,7 +500,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var prereqs = buildable.Prerequisites.Select(s => Description(world.Map.Rules, s));
 				if (prereqs.Any())
 				{
-					Game.Renderer.Fonts["Regular"].DrawText(RequiresText.F(prereqs.Where(s => !s.StartsWith("~")).JoinWith(", ")), p.ToInt2(), Color.White);
+					Game.Renderer.Fonts["Regular"].DrawText(RequiresText.F(prereqs.Where(s => !s.StartsWith("~", StringComparison.Ordinal)).JoinWith(", ")), p.ToInt2(), Color.White);
 
 					p += new int2(0, 8);
 				}

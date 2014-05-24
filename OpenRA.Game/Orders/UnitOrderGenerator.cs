@@ -21,8 +21,7 @@ namespace OpenRA.Orders
 		{
 			var underCursor = world.ScreenMap.ActorsAt(mi)
 				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
-				.OrderByDescending(a => a.Info.SelectionPriority())
-				.FirstOrDefault();
+				.WithHighestSelectionPriority();
 
 			Target target;
 			if (underCursor != null)
@@ -31,8 +30,7 @@ namespace OpenRA.Orders
 			{
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
 					.Where(a => a.Info.Traits.Contains<ITargetableInfo>())
-					.OrderByDescending(a => a.Info.SelectionPriority())
-					.FirstOrDefault();
+					.WithHighestSelectionPriority();
 				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(xy);
 			}
 
@@ -61,8 +59,7 @@ namespace OpenRA.Orders
 			var useSelect = false;
 			var underCursor = world.ScreenMap.ActorsAt(mi)
 				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
-				.OrderByDescending(a => a.Info.SelectionPriority())
-				.FirstOrDefault();
+				.WithHighestSelectionPriority();
 
 			if (underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
 			{
@@ -78,8 +75,7 @@ namespace OpenRA.Orders
 			{
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
 					.Where(a => a.Info.Traits.Contains<ITargetableInfo>())
-					.OrderByDescending(a => a.Info.SelectionPriority())
-					.FirstOrDefault();
+					.WithHighestSelectionPriority();
 				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(xy);
 			}
 
@@ -160,6 +156,16 @@ namespace OpenRA.Orders
 		{
 			var selectableInfo = a.Traits.GetOrDefault<SelectableInfo>();
 			return selectableInfo != null ? selectableInfo.Priority : int.MinValue;
+		}
+
+		public static Actor WithHighestSelectionPriority(this IEnumerable<Actor> actors)
+		{
+			return actors.MaxByOrDefault(a => a.Info.SelectionPriority());
+		}
+
+		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors)
+		{
+			return actors.MaxByOrDefault(a => a.Info.SelectionPriority());
 		}
 	}
 }

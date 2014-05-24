@@ -73,8 +73,8 @@ namespace OpenRA.Widgets
 		}
 
 		protected MapPreviewWidget(MapPreviewWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			Preview = other.Preview;
 			SpawnOccupants = other.SpawnOccupants;
 			ShowSpawnPoints = other.ShowSpawnPoints;

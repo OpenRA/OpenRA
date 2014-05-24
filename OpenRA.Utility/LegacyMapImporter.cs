@@ -189,7 +189,7 @@ namespace OpenRA.Utility
 					var a = new ActorReference("mpspawn");
 					a.Add(new LocationInit((CPos)kv.Second));
 					a.Add(new OwnerInit("Neutral"));
-					map.Actors.Value.Add("Actor" + map.Actors.Value.Count.ToString(), a);
+					map.Actors.Value.Add("Actor" + map.Actors.Value.Count.ToStringInvariant(), a);
 				}
 				else
 				{
@@ -211,7 +211,7 @@ namespace OpenRA.Utility
 			var sb = new StringBuilder();
 			for (int i = 1;; i++)
 			{
-				var line = mapPackSection.GetValue(i.ToString(), null);
+				var line = mapPackSection.GetValue(i.ToStringInvariant(), null);
 				if (line == null)
 					break;
 
@@ -338,14 +338,15 @@ namespace OpenRA.Utility
 				var cell = new CPos(loc % mapSize, loc / mapSize);
 
 				var res = Pair.New((byte)0, (byte)0);
-				if (overlayResourceMapping.ContainsKey(kv.Value.ToLower()))
-					res = overlayResourceMapping[kv.Value.ToLower()];
+				var valueLower = kv.Value.ToLowerInvariant();
+				if (overlayResourceMapping.ContainsKey(valueLower))
+					res = overlayResourceMapping[valueLower];
 
 				map.MapResources.Value[cell.X, cell.Y] = new TileReference<byte, byte>(res.First, res.Second);
 
-				if (overlayActorMapping.ContainsKey(kv.Value.ToLower()))
+				if (overlayActorMapping.ContainsKey(valueLower))
 					map.Actors.Value.Add("Actor" + actorCount++,
-						new ActorReference(overlayActorMapping[kv.Value.ToLower()])
+						new ActorReference(overlayActorMapping[valueLower])
 						{
 							new LocationInit(cell),
 							new OwnerInit("Neutral")

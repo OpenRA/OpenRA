@@ -36,12 +36,12 @@ namespace OpenRA.Mods.RA
 
 		public void InitPalette(WorldRenderer wr)
 		{
-			var colors = new uint[256];
+			var colors = new uint[Palette.Size];
 			using (var s = GlobalFileSystem.Open(info.Filename))
 			{
 				s.Seek(info.Offset, SeekOrigin.Begin);
 
-				for (var i = 0; i < 256; i++)
+				for (var i = 0; i < Palette.Size; i++)
 				{
 					var packed = s.ReadUInt16();
 					colors[i] = (uint)((255 << 24) | ((packed & 0xF800) << 8) | ((packed & 0x7E0) << 5) | ((packed & 0x1f) << 3));

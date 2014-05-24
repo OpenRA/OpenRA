@@ -459,7 +459,7 @@ namespace OpenRA.Editor
 
 			if (ShowActorNames)
 				foreach (var ar in Map.Actors.Value)
-					if (!ar.Key.StartsWith("Actor"))	// if it has a custom name
+					if (!ar.Key.StartsWith("Actor", StringComparison.Ordinal))	// if it has a custom name
 						e.Graphics.DrawStringContrast(Font, ar.Key,
 							(int)(ar.Value.Location().X * TileSetRenderer.TileSize * Zoom + Offset.X),
 							(int)(ar.Value.Location().Y * TileSetRenderer.TileSize * Zoom + Offset.Y),

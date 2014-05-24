@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 			// Steal and reset the owners exploration
 			infiltrator.Owner.Shroud.Explore(self.Owner.Shroud);
 			if (!self.Owner.HasFogVisibility())
-			    self.Owner.Shroud.ResetExploration();
+				self.Owner.Shroud.ResetExploration();
 		}
 	}
 }

@@ -58,12 +58,12 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		bool IsSuitableCell(Actor actorToDrop, CPos p)
+		static bool IsSuitableCell(Actor actorToDrop, CPos p)
 		{
 			return actorToDrop.Trait<IPositionable>().CanEnterCell(p);
 		}
 
-		void FinishedDropping(Actor self)
+		static void FinishedDropping(Actor self)
 		{
 			self.CancelActivity();
 			self.QueueActivity(new FlyOffMap());

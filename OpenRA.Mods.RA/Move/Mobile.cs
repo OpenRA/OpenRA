@@ -41,11 +41,12 @@ namespace OpenRA.Mods.RA.Move
 		static object LoadSpeeds(MiniYaml y)
 		{
 			Dictionary<string, TerrainInfo> ret = new Dictionary<string, TerrainInfo>();
-			foreach (var t in y.NodesDict["TerrainSpeeds"].Nodes)
+			foreach (var t in y.GetNodesDict()["TerrainSpeeds"].Nodes)
 			{
 				var speed = FieldLoader.GetValue<decimal>("speed", t.Value.Value);
-				var cost = t.Value.NodesDict.ContainsKey("PathingCost")
-					? FieldLoader.GetValue<int>("cost", t.Value.NodesDict["PathingCost"].Value)
+				var nodesDict = t.Value.GetNodesDict();
+				var cost = nodesDict.ContainsKey("PathingCost")
+					? FieldLoader.GetValue<int>("cost", nodesDict["PathingCost"].Value)
 					: (int)(10000 / speed);
 				ret.Add(t.Key, new TerrainInfo { Speed = speed, Cost = cost });
 			}
@@ -121,21 +122,24 @@ namespace OpenRA.Mods.RA.Move
 			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
 				return true;
 
-			var blockingActors = world.ActorMap.GetUnitsAt(cell)
-				.Where(x => x != ignoreActor)
-				// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-				.Where(x => blockedByMovers || (self == null || self.Owner.Stances[x.Owner] != Stance.Ally || !IsMovingInMyDirection(self, x)))
-				.ToList();
-
-			if (checkTransientActors && blockingActors.Count > 0)
+			if (checkTransientActors)
 			{
-				// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
-				if (self == null || Crushes == null)
-					return false;
+				bool canIgnoreMovingAllies = self != null && !blockedByMovers;
+				bool needsCellExclusively = self == null || Crushes == null;
+				foreach(var a in world.ActorMap.GetUnitsAt(cell))
+				{
+					if (a == ignoreActor) continue;
 
-				if (blockingActors.Any(a => !(a.HasTrait<ICrushable>() &&
-											 a.TraitsImplementing<ICrushable>().Any(b => b.CrushableBy(Crushes, self.Owner)))))
-					return false;
+					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
+					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) continue;
+					
+					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
+					if (needsCellExclusively) return false;
+					if (!a.HasTrait<ICrushable>()) return false;
+					foreach (var crushable in a.TraitsImplementing<ICrushable>())
+						if (!crushable.CrushableBy(Crushes, self.Owner))
+							return false;
+				}
 			}
 
 			return true;
@@ -214,7 +218,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public void SetPosition(Actor self, CPos cell)
 		{
-			SetLocation(cell,fromSubCell, cell,fromSubCell);
+			SetLocation(cell, fromSubCell, cell, fromSubCell);
 			SetVisualPosition(self, fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
 			FinishedMoving(self);
 		}
@@ -222,7 +226,7 @@ namespace OpenRA.Mods.RA.Move
 		public void SetPosition(Actor self, WPos pos)
 		{
 			var cell = pos.ToCPos();
-			SetLocation(cell,fromSubCell, cell,fromSubCell);
+			SetLocation(cell, fromSubCell, cell, fromSubCell);
 			SetVisualPosition(self, pos);
 			FinishedMoving(self);
 		}
@@ -352,14 +356,14 @@ namespace OpenRA.Mods.RA.Move
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			switch( order.OrderString )
+			switch (order.OrderString)
 			{
-			case "Move":
-			case "Scatter":
-			case "Stop":
-				return "Move";
-			default:
-				return null;
+				case "Move":
+				case "Scatter":
+				case "Stop":
+					return "Move";
+				default:
+					return null;
 			}
 		}
 
@@ -387,7 +391,7 @@ namespace OpenRA.Mods.RA.Move
 			return new[]{ fromSubCell, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
 				SubCell.BottomLeft, SubCell.BottomRight}.First(b =>
 			{
-				var blockingActors = self.World.ActorMap.GetUnitsAt(a,b).Where(c => c != ignoreActor);
+				var blockingActors = self.World.ActorMap.GetUnitsAt(a, b).Where(c => c != ignoreActor);
 				if (blockingActors.Any())
 				{
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
@@ -574,5 +578,5 @@ namespace OpenRA.Mods.RA.Move
 			var facing = Util.GetFacing(toPos - fromPos, Facing);
 			return Util.SequenceActivities(new Turn(facing), new Drag(fromPos, toPos, length));
 		}
-    }
+	}
 }

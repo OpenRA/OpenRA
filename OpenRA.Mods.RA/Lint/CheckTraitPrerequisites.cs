@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			foreach (var actorInfo in map.Rules.Actors.Where(a => !a.Key.StartsWith("^")))
+			foreach (var actorInfo in map.Rules.Actors.Where(a => !a.Key.StartsWith("^", StringComparison.Ordinal)))
 				try
 				{
 					var traits = actorInfo.Value.TraitsInConstructOrder().ToArray();

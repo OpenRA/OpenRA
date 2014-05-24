@@ -30,13 +30,13 @@ namespace OpenRA.Widgets
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("HotkeyColorDisabled");
 
 		public HotkeyEntryWidget() {}
-		protected HotkeyEntryWidget(HotkeyEntryWidget widget)
-			: base(widget)
+		protected HotkeyEntryWidget(HotkeyEntryWidget other)
 		{
-			Font = widget.Font;
-			TextColor = widget.TextColor;
-			TextColorDisabled = widget.TextColorDisabled;
-			VisualHeight = widget.VisualHeight;
+			CopyOf(this, other);
+			Font = other.Font;
+			TextColor = other.TextColor;
+			TextColorDisabled = other.TextColorDisabled;
+			VisualHeight = other.VisualHeight;
 		}
 
 		public override bool YieldKeyboardFocus()

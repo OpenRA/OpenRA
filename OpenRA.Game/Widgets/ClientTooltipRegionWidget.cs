@@ -28,8 +28,8 @@ namespace OpenRA.Widgets
 		}
 
 		protected ClientTooltipRegionWidget(ClientTooltipRegionWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			Template = other.Template;
 			TooltipContainer = other.TooltipContainer;
 			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));

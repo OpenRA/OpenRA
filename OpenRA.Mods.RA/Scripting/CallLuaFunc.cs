@@ -39,15 +39,15 @@ namespace OpenRA.Mods.RA.Activities
 			base.Cancel(self);
 		}
 
-		protected void Dispose(bool disposing)
+		protected virtual void Dispose(bool disposing)
 		{
-			if (function == null)
-				return;
-
 			if (disposing)
 			{
-				function.Dispose();
-				function = null;
+				if (function != null)
+				{
+					function.Dispose();
+					function = null;
+				}
 			}
 		}
 
@@ -55,12 +55,6 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
-		}
-
-		~CallLuaFunc()
-		{
-			// Dispose unmanaged resources only
-			Dispose(false);
 		}
 	}
 }

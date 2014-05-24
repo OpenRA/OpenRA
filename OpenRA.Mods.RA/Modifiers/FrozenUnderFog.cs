@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.RA
 		[Sync] public int VisibilityHash;
 
 		bool initialized, startsRevealed;
-		IEnumerable<CPos> footprint;
+		readonly CPos[] footprint;
 		Lazy<IToolTip> tooltip;
 		Lazy<Health> health;
 
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.RA
 		{
 			// Spawned actors (e.g. building husks) shouldn't be revealed
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
-			footprint = FootprintUtils.Tiles(init.self);
+			footprint = FootprintUtils.Tiles(init.self).ToArray();
 			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			health = Exts.Lazy(() => init.self.TraitOrDefault<Health>());
@@ -63,8 +64,15 @@ namespace OpenRA.Mods.RA
 			VisibilityHash = 0;
 			foreach (var p in self.World.Players)
 			{
-				visible[p] = footprint.Any(c => p.Shroud.IsVisible(c));
-				if (visible[p])
+				var isVisible = false;
+				foreach (var pos in footprint)
+					if (p.Shroud.IsVisible(pos))
+					{
+						isVisible = true;
+						break;
+					}
+				visible[p] = isVisible;
+				if (isVisible)
 					VisibilityHash += p.ClientIndex;
 			}
 
@@ -73,8 +81,7 @@ namespace OpenRA.Mods.RA
 				foreach (var p in self.World.Players)
 				{
 					visible[p] |= startsRevealed;
-					frozen[p] = new FrozenActor(self, footprint);
-					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p]);
+					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p] = new FrozenActor(self, footprint));
 				}
 
 				initialized = true;
@@ -85,18 +92,19 @@ namespace OpenRA.Mods.RA
 				if (!visible[player])
 					continue;
 
-				frozen[player].Owner = self.Owner;
+				var a = frozen[player];
+				a.Owner = self.Owner;
 
 				if (health.Value != null)
 				{
-					frozen[player].HP = health.Value.HP;
-					frozen[player].DamageState = health.Value.DamageState;
+					a.HP = health.Value.HP;
+					a.DamageState = health.Value.DamageState;
 				}
 
 				if (tooltip.Value != null)
 				{
-					frozen[player].TooltipName = tooltip.Value.Name();
-					frozen[player].TooltipOwner = tooltip.Value.Owner();
+					a.TooltipName = tooltip.Value.Name();
+					a.TooltipOwner = tooltip.Value.Owner();
 				}
 			}
 		}
@@ -106,11 +114,15 @@ namespace OpenRA.Mods.RA
 			if (self.Destroyed || !initialized || !visible.Any(v => v.Value))
 				return;
 
-			// Force a copy of the underlying data
-			var renderables = self.Render(wr).Select(rr => rr).ToArray();
+			IRenderable[] renderables = null;
 			foreach (var player in self.World.Players)
 				if (visible[player])
+				{
+					// Lazily generate a copy of the underlying data.
+					if (renderables == null)
+						renderables = self.Render(wr).ToArray();
 					frozen[player].Renderables = renderables;
+				}
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)

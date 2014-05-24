@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,7 +23,6 @@ using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;
-
 using XTimer = System.Timers.Timer;
 
 namespace OpenRA.Server
@@ -234,7 +234,7 @@ namespace OpenRA.Server
 			catch (Exception e)
 			{
 				DropClient(newConn);
-				Log.Write("server", "Dropping client {0} because handshake failed: {1}", newConn.PlayerIndex.ToString(), e);
+				Log.Write("server", "Dropping client {0} because handshake failed: {1}", newConn.PlayerIndex.ToStringInvariant(), e);
 			}
 		}
 
@@ -337,7 +337,7 @@ namespace OpenRA.Server
 				SendMessage("{0} has joined the server.".F(client.Name));
 
 				// Send initial ping
-				SendOrderTo(newConn, "Ping", Environment.TickCount.ToString());
+				SendOrderTo(newConn, "Ping", Environment.TickCount.ToStringInvariant());
 
 				if (Settings.Dedicated)
 				{
@@ -394,7 +394,7 @@ namespace OpenRA.Server
 			catch (Exception e)
 			{
 				DropClient(c);
-				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}", client.ToString(), e);
+				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}", client.ToStringInvariant(), e);
 			}
 		}
 
@@ -535,7 +535,7 @@ namespace OpenRA.Server
 					LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
 
 					var nextAdmin = LobbyInfo.Clients.Where(c1 => c1.Bot == null)
-						.OrderBy(c => c.Index).FirstOrDefault();
+						.MinByOrDefault(c => c.Index);
 
 					if (nextAdmin != null)
 					{
@@ -687,7 +687,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		void SendData(Socket s, byte[] data)
+		static void SendData(Socket s, byte[] data)
 		{
 			var start = 0;
 			var length = data.Length;

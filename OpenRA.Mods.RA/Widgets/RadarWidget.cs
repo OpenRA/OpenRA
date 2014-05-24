@@ -68,16 +68,18 @@ namespace OpenRA.Mods.RA.Widgets
 			mapRect = new Rectangle(previewOrigin.X, previewOrigin.Y, (int)(previewScale * width), (int)(previewScale * height));
 
 			// Only needs to be done once
-			var terrainBitmap = Minimap.TerrainBitmap(world.Map.Rules.TileSets[world.Map.Tileset], world.Map);
-			var r = new Rectangle(0, 0, width, height);
-			var s = new Size(terrainBitmap.Width, terrainBitmap.Height);
-			terrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
-			terrainSprite.sheet.Texture.SetData(terrainBitmap);
-
-			// Data is set in Tick()
-			customTerrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
-			actorSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
-			shroudSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+			using(var terrainBitmap = Minimap.TerrainBitmap(world.Map.Rules.TileSets[world.Map.Tileset], world.Map))
+			{
+				var r = new Rectangle(0, 0, width, height);
+				var s = new Size(terrainBitmap.Width, terrainBitmap.Height);
+				terrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+				terrainSprite.sheet.Texture.SetData(terrainBitmap);
+			
+				// Data is set in Tick()
+				customTerrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+				actorSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+				shroudSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
+			}
 		}
 
 		public override string GetCursor(int2 pos)
@@ -197,14 +199,17 @@ namespace OpenRA.Mods.RA.Widgets
 			if (updateTicks <= 0)
 			{
 				updateTicks = 12;
-				customTerrainSprite.sheet.Texture.SetData(Minimap.CustomTerrainBitmap(world));
+				using (var bitmap = Minimap.CustomTerrainBitmap(world))
+					customTerrainSprite.sheet.Texture.SetData(bitmap);
 			}
 
 			if (updateTicks == 8)
-				actorSprite.sheet.Texture.SetData(Minimap.ActorsBitmap(world));
+				using (var bitmap = Minimap.ActorsBitmap(world))
+					actorSprite.sheet.Texture.SetData(bitmap);
 
 			if (updateTicks == 4)
-				shroudSprite.sheet.Texture.SetData(Minimap.ShroudBitmap(world));
+				using (var bitmap = Minimap.ShroudBitmap(world))
+					shroudSprite.sheet.Texture.SetData(bitmap);
 
 			// Enable/Disable the radar
 			var enabled = IsEnabled();

@@ -73,8 +73,8 @@ namespace OpenRA.Widgets
 		}
 
 		protected ButtonWidget(ButtonWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			this.modRules = other.modRules;
 
 			Text = other.Text;

@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.RA.Move
 {
-	public class PathSearch : IDisposable
+	public sealed class PathSearch : IDisposable
 	{
 		World world;
 		public CellInfo[,] cellInfo;

@@ -82,7 +82,7 @@ namespace OpenRA.Traits
 			{
 				var prev = act;
 
-				using (new PerfTimer("[{0}] Activity: {1}".F(Game.LocalTick, prev), (int)Game.Settings.Debug.LongTickThreshold.TotalMilliseconds))
+				using (PerfTimer.TimeUsingLongTickThreshold("Activity", prev))
 					act = act.Tick(self);
 
 				if (prev == act)
@@ -123,10 +123,7 @@ namespace OpenRA.Traits
 
 		public static IEnumerable<CPos> ExpandFootprint(IEnumerable<CPos> cells, bool allowDiagonal)
 		{
-			var result = new Dictionary<CPos, bool>();
-			foreach (var c in cells.SelectMany(c => Neighbours(c, allowDiagonal)))
-				result[c] = true;
-			return result.Keys;
+			return cells.SelectMany(c => Neighbours(c, allowDiagonal)).Distinct();
 		}
 
 		public static IEnumerable<CPos> AdjacentCells(Target target)

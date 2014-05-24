@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.RA.Scripting
 {
-	public class LuaScriptContext : IDisposable
+	public sealed class LuaScriptContext : IDisposable
 	{
 		public Lua Lua { get; private set; }
 		readonly Cache<string, LuaFunction> functionCache;

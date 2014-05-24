@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using NLua;
 using OpenRA.Effects;
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public object Create(ActorInitializer init) { return new LuaScriptInterface(this); }
 	}
 
-	public class LuaScriptInterface : IWorldLoaded, ITick
+	public class LuaScriptInterface : IWorldLoaded, ITick, IDisposable
 	{
 		World world;
 		SpawnMapActors sma;
@@ -90,6 +91,20 @@ namespace OpenRA.Mods.RA.Scripting
 				context.InvokeLuaFunction("Tick");
 		}
 
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				context.Dispose();
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
 		[LuaGlobal]
 		public object New(string typeName, LuaTable args)
 		{
@@ -102,14 +117,14 @@ namespace OpenRA.Mods.RA.Scripting
 			return Activator.CreateInstance(type, argsArray);
 		}
 
-		object[] ConvertArgs(LuaTable args)
+		static object[] ConvertArgs(LuaTable args)
 		{
 			var argsArray = new object[args.Keys.Count];
 			for (var i = 1; i <= args.Keys.Count; i++)
 			{
 				var arg = args[i] as LuaTable;
 				if (arg != null && arg[1] != null && arg[2] != null)
-					argsArray[i - 1] = Convert.ChangeType(arg[1], Enum<TypeCode>.Parse(arg[2].ToString()));
+					argsArray[i - 1] = Convert.ChangeType(arg[1], Enum<TypeCode>.Parse(arg[2].ToString()), CultureInfo.InvariantCulture);
 				else
 					argsArray[i - 1] = args[i];
 			}

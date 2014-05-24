@@ -213,7 +213,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (CurrentQueue == null)
 				return;
 
-			var buildableItems = CurrentQueue.BuildableItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
+			var buildableItems = CurrentQueue.BuildableItems();
 
 			// Background
 			foreach (var rect in icons.Keys)

@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Scripting
 {
-	public class Media
+	public static class Media
 	{
 		public static void PlayFMVFullscreen(World w, string movie, Action onComplete)
 		{

@@ -260,7 +260,7 @@ namespace OpenRA
 			root.WriteToFile(settingsFile);
 		}
 
-		void LoadSectionYaml(MiniYaml yaml, object section)
+		static void LoadSectionYaml(MiniYaml yaml, object section)
 		{
 			var defaults = Activator.CreateInstance(section.GetType());
 			FieldLoader.InvalidValueAction = (s, t, f) =>

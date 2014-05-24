@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -81,8 +82,7 @@ namespace OpenRA.Mods.RA
 			// Add buildables that have a build limit set and are not already in the list
 			player.World.ActorsWithTrait<Buildable>()
 				  .Where(a => a.Actor.Info.Traits.Get<BuildableInfo>().BuildLimit > 0 && !a.Actor.IsDead() && a.Actor.IsInWorld && a.Actor.Owner == player && ret.Keys.All(k => k != a.Actor.Info.Name))
-				  .ToList()
-				  .ForEach(b => ret[b.Actor.Info.Name].Add(b.Actor));
+				  .Do(b => ret[b.Actor.Info.Name].Add(b.Actor));
 
 			return ret;
 		}
@@ -111,12 +111,15 @@ namespace OpenRA.Mods.RA
 
 			bool HasPrerequisites(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.Keys.Contains(p.Replace("!", "").Replace("~", ""))));
+				return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!", StringComparison.Ordinal) ^ !ownedPrerequisites.Keys.Contains(p.Replace("!", "").Replace("~", ""))));
 			}
 
 			bool IsHidden(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				return prerequisites.Any(prereq => prereq.StartsWith("~") && (prereq.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.Keys.Contains(prereq.Replace("~", "").Replace("!", ""))));
+                return prerequisites.Any(prereq => 
+                    prereq.StartsWith("~", StringComparison.Ordinal) && 
+                    (prereq.Replace("~", "").StartsWith("!", StringComparison.Ordinal) ^ 
+                    !ownedPrerequisites.Keys.Contains(prereq.Replace("~", "").Replace("!", ""))));
 			}
 
 			public void Update(Cache<string, List<Actor>> ownedPrerequisites)

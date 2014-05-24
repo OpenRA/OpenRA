@@ -402,10 +402,10 @@ namespace OpenRA
 		}
 
 		[AttributeUsage(AttributeTargets.Field)]
-		public class IgnoreAttribute : Attribute { }
+		public sealed class IgnoreAttribute : Attribute { }
 
 		[AttributeUsage(AttributeTargets.Field)]
-		public class LoadUsingAttribute : Attribute
+		public sealed class LoadUsingAttribute : Attribute
 		{
 			Func<MiniYaml, object> loaderFuncCache;
 			public readonly string Loader;
@@ -440,12 +440,12 @@ namespace OpenRA
 	}
 
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-	public class TranslateAttribute : Attribute { }
+	public sealed class TranslateAttribute : Attribute { }
 
-	public class FieldFromYamlKeyAttribute : Attribute { }
+	public sealed class FieldFromYamlKeyAttribute : Attribute { }
 
 	// mirrors DescriptionAttribute from System.ComponentModel but we dont want to have to use that everywhere.
-	public class DescAttribute : Attribute
+	public sealed class DescAttribute : Attribute
 	{
 		public readonly string[] Lines;
 		public DescAttribute(params string[] lines) { Lines = lines; }

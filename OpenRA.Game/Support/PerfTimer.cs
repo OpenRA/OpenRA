@@ -16,14 +16,15 @@ using System.Threading;
 
 namespace OpenRA.Support
 {
-	public class PerfTimer : IDisposable
+	public sealed class PerfTimer : IDisposable
 	{
-		readonly Stopwatch sw;
 		readonly string name;
-		readonly int thresholdMs;
-		readonly int depth;
+		readonly object item;
+		readonly float thresholdMs;
+		readonly byte depth;
 		readonly PerfTimer parent;
 		List<PerfTimer> children;
+		long ticks;
 
 		static ThreadLocal<PerfTimer> Parent = new ThreadLocal<PerfTimer>();
 
@@ -31,29 +32,40 @@ namespace OpenRA.Support
 		const int MaxWidth = 60, Digits = 6;
 		const int MaxIndentedLabel = MaxWidth - Digits;
 		const string IndentationString = "|   ";
-		static readonly string FormatString = "{0," + MaxIndentedLabel + "} {1," + Digits + "} ms";
+		static readonly string FormatString = "{0," + MaxIndentedLabel + "} {1," + Digits + ":0} ms";
 
-		public PerfTimer(string name, int thresholdMs = 0)
+		public PerfTimer(string name, float thresholdMs = 0)
 		{
 			this.name = name;
 			this.thresholdMs = thresholdMs;
 
 			parent = Parent.Value;
-			depth = parent == null ? 0 : parent.depth + 1;
+			depth = parent == null ? (byte)0 : (byte)(parent.depth + 1);
 			Parent.Value = this;
 
-			sw = Stopwatch.StartNew();
+			ticks = Stopwatch.GetTimestamp();
+		}
+
+		private PerfTimer(string name, object item, float thresholdMs)
+			: this(name, thresholdMs)
+		{
+			this.item = item;
+		}
+
+		public static PerfTimer TimeUsingLongTickThreshold(string name, object item)
+		{
+			return new PerfTimer(name, item, (float)Game.Settings.Debug.LongTickThreshold.TotalMilliseconds);
 		}
 
 		public void Dispose()
 		{
-			sw.Stop();
+			ticks = Stopwatch.GetTimestamp() - ticks;
 
 			Parent.Value = parent;
 
 			if (parent == null)
 				Write();
-			else if (sw.Elapsed.TotalMilliseconds > thresholdMs)
+			else if (elapsedMs > thresholdMs)
 			{
 				if (parent.children == null)
 					parent.children = new List<PerfTimer>();
@@ -63,18 +75,19 @@ namespace OpenRA.Support
 
 		void Write()
 		{
-			var elapsedMs = Math.Round(this.sw.Elapsed.TotalMilliseconds);
-
 			if (children != null)
 			{
-				Log.Write("perf", GetHeader(Indentation, this.name));
+				Log.Write("perf", GetHeader(Indentation, output));
 				foreach (var child in children)
 					child.Write();
 				Log.Write("perf", FormatString, GetFooter(Indentation), elapsedMs);
 			}
 			else if (elapsedMs >= thresholdMs)
-				Log.Write("perf", FormatString, GetOneLiner(Indentation, this.name), elapsedMs);
+				Log.Write("perf", FormatString, GetOneLiner(Indentation, output), elapsedMs);
 		}
+
+		float elapsedMs { get { return (float)ticks / Stopwatch.Frequency; } }
+		string output { get { return item != null ? "[{0}] {1}: {2}".F(Game.LocalTick, name, item) : name; } }
 
 		#region Formatting helpers
 		static string GetHeader(string indentation, string label)

@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void Selling(Actor self) { }
 
-		void Emit(Actor self)
+		static void Emit(Actor self)
 		{
 			var info = self.Info.Traits.Get<EmitInfantryOnSellInfo>();
 			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();

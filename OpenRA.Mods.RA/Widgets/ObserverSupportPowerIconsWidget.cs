@@ -40,8 +40,8 @@ namespace OpenRA.Mods.RA.Widgets
 		}
 
 		protected ObserverSupportPowerIconsWidget(ObserverSupportPowerIconsWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			GetPlayer = other.GetPlayer;
 			icon = other.icon;
 			world = other.world;

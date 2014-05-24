@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var c = (uint)((info.A << 24) | (info.R << 16) | (info.G << 8) | info.B);
-			wr.AddPalette(info.Name, new Palette(Exts.MakeArray(256, i => (i == 0) ? 0 : c)), info.AllowModifiers);
+			wr.AddPalette(info.Name, new Palette(Exts.MakeArray(Palette.Size, i => (i == 0) ? 0 : c)), info.AllowModifiers);
 		}
 	}
 }

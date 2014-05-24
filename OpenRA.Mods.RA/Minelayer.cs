@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = self;
 
-			var tileset = self.World.TileSet.Id.ToLower();
+			var tileset = self.World.TileSet.Id.ToLowerInvariant();
 			tile = self.World.Map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 		}
 
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.RA
 				minelayer = self;
 				minefieldStart = xy;
 
-				var tileset = self.World.TileSet.Id.ToLower();
+				var tileset = self.World.TileSet.Id.ToLowerInvariant();
 				tileOk = self.World.Map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 				tileBlocked = self.World.Map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
 			}
@@ -134,9 +134,8 @@ namespace OpenRA.Mods.RA
 
 				var underCursor = world.ScreenMap.ActorsAt(mi)
 					.Where(a => !world.FogObscures(a))
-					.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>()
-						? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
-					.FirstOrDefault();
+					.MaxByOrDefault(a => a.Info.Traits.Contains<SelectableInfo>()
+						? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue);
 
 				if (mi.Button == Game.mouseButtonPreference.Action && underCursor == null)
 				{

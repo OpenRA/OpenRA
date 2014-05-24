@@ -22,9 +22,10 @@ namespace OpenRA.CrashDialog
 	class FatalErrorDialog
 	{
 		static Settings settings;
+		[STAThread]
 		public static void Main(string[] args)
 		{
-			settings = new Settings(Platform.SupportDir + "settings.yaml", new Arguments());
+			settings = new Settings(Platform.SupportDir + "settings.yaml", new Arguments(args));
 
 			var form = new Form
 			{

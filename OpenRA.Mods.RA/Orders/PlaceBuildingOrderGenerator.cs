@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Orders
 		{
 			Producer = producer;
 			Building = name;
-			var tileset = producer.World.TileSet.Id.ToLower();
+			var tileset = producer.World.TileSet.Id.ToLowerInvariant();
 			BuildingInfo = producer.World.Map.Rules.Actors[Building].Traits.Get<BuildingInfo>();
 
 			buildOk = producer.World.Map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);

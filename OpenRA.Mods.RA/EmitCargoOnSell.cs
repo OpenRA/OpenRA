@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 
 	class EmitCargoOnSell : INotifySold
 	{
-		void Emit(Actor self)
+		static void Emit(Actor self)
 		{
 			// TODO: would like to spill all actors out similar to how we call Unload
 		}

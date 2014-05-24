@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 				new TypeDictionary { new OwnerInit(self.Owner), new LocationInit(self.Location) });
 
 
-			if (IsSuitableCell(self, pilot, self.Location))
+			if (IsSuitableCell(self, pilot))
 			{
 				if (cp.Z > 0)
 				{
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA
 				pilot.Destroy();
 		}
 
-		bool IsSuitableCell(Actor self, Actor actorToDrop, CPos p)
+		static bool IsSuitableCell(Actor self, Actor actorToDrop)
 		{
 			return actorToDrop.Trait<IPositionable>().CanEnterCell(self.Location, self, true);
 		}

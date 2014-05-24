@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA
 					continue;
 
 				inAttackRange = true;
-				a.CheckFire(self, facing.Value, bombTarget);
+				a.CheckFire(self, bombTarget);
 			}
 
 			// Guns only fire when approaching the target
@@ -68,11 +68,11 @@ namespace OpenRA.Mods.RA
 				foreach (var a in Armaments.Where(a => a.Info.Name == info.Guns))
 				{
 					if (!target.IsInRange(self.CenterPosition, a.Weapon.Range))
-					    continue;
+						continue;
 
 					var t = Target.FromPos(cp - new WVec(0, a.Weapon.Range.Range / 2, cp.Z).Rotate(WRot.FromFacing(f)));
 					inAttackRange = true;
-					a.CheckFire(self, facing.Value, t);
+					a.CheckFire(self, t);
 				}
 			}
 

@@ -35,13 +35,12 @@ namespace OpenRA
 
 		public static Actor ClosestTo(this IEnumerable<Actor> actors, Actor a)
 		{
-			var pos = a.CenterPosition;
-			return actors.OrderBy(b => (b.CenterPosition - pos).LengthSquared).FirstOrDefault();
+			return actors.ClosestTo(a.CenterPosition);
 		}
 
 		public static Actor ClosestTo(this IEnumerable<Actor> actors, WPos pos)
 		{
-			return actors.OrderBy(a => (a.CenterPosition - pos).LengthSquared).FirstOrDefault();
+			return actors.MinByOrDefault(a => (a.CenterPosition - pos).LengthSquared);
 		}
 
 		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WRange r)
@@ -72,7 +71,7 @@ namespace OpenRA
 			}
 		}
 
-		static List<CVec>[] InitTilesByDistance(int max)
+		static CVec[][] InitTilesByDistance(int max)
 		{
 			var ts = new List<CVec>[max+1];
 			for (var i = 0; i < max+1; i++)
@@ -83,11 +82,15 @@ namespace OpenRA
 					if (max * max >= i * i + j * j)
 						ts[(int)Math.Ceiling(Math.Sqrt(i*i + j*j))].Add(new CVec(i,j));
 
-			return ts;
+			var us = new CVec[max + 1][];
+			for (var i = 0; i < max + 1; i++)
+				us[i] = ts[i].ToArray();
+
+			return us;
 		}
 
 		public const int MaxRange = 50;
-		static List<CVec>[] TilesByDistance = InitTilesByDistance(MaxRange);
+		static CVec[][] TilesByDistance = InitTilesByDistance(MaxRange);
 
 		public static string GetTerrainType(this World world, CPos cell)
 		{
@@ -172,11 +175,11 @@ namespace OpenRA
 			}
 		}
 
-		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text, TimeSpan time)
+		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text)
 		{
 			e.Do(x =>
 			{
-				using (new PerfTimer("[{0}] {1}: {2}".F(Game.LocalTick, text, x), (int)time.TotalMilliseconds))
+				using (PerfTimer.TimeUsingLongTickThreshold(text, x))
 					a(x);
 			});
 		}

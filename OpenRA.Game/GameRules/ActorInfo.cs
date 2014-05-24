@@ -33,11 +33,11 @@ namespace OpenRA
 		{
 			try
 			{
-				var mergedNode = MergeWithParent(node, allUnits).NodesDict;
+				var mergedNode = MergeWithParent(node, allUnits).GetNodesDict();
 
 				Name = name;
 				foreach (var t in mergedNode)
-					if (t.Key != "Inherits" && !t.Key.StartsWith("-"))
+					if (t.Key != "Inherits" && !t.Key.StartsWith("-", StringComparison.Ordinal))
 						Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
 			}
 			catch (YamlException e)
@@ -49,7 +49,7 @@ namespace OpenRA
 		static MiniYaml GetParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
 			MiniYaml inherits;
-			node.NodesDict.TryGetValue( "Inherits", out inherits );
+			node.GetNodesDict().TryGetValue( "Inherits", out inherits );
 			if( inherits == null || string.IsNullOrEmpty( inherits.Value ) )
 				return null;
 
@@ -70,7 +70,7 @@ namespace OpenRA
 				var result = MiniYaml.MergeStrict(node, MergeWithParent(parent, allUnits));
 
 				// strip the '-'
-				result.Nodes.RemoveAll(a => a.Key.StartsWith("-"));
+				result.Nodes.RemoveAll(a => a.Key.StartsWith("-", StringComparison.Ordinal));
 				return result;
 			}
 			return node;
@@ -111,14 +111,13 @@ namespace OpenRA
 			return ret;
 		}
 
-		static List<Type> PrerequisitesOf(ITraitInfo info)
+		static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)
 		{
 			return info
 				.GetType()
 				.GetInterfaces()
-				.Where( t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof( Requires<> ) )
-				.Select( t => t.GetGenericArguments()[ 0 ] )
-				.ToList();
+				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Requires<>))
+				.Select(t => t.GetGenericArguments()[0]);
 		}
 
 		public IEnumerable<Pair<string, Type>> GetInitKeys()

@@ -17,7 +17,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.FileSystem
 {
-	public class MixFile : IFolder
+	public sealed class MixFile : IFolder, IDisposable
 	{
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly long dataStart;
@@ -69,11 +69,11 @@ namespace OpenRA.FileSystem
 
 			index = entries.ToDictionaryWithConflictLog(x => x.Hash,
 				"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, (isCncMix ? "C&C" : "RA/TS/RA2"), isEncrypted, dataStart),
-			    null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)
+				null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)
 			);
 		}
 
-		List<PackageEntry> ParseHeader(Stream s, long offset, out long headerEnd)
+		static List<PackageEntry> ParseHeader(Stream s, long offset, out long headerEnd)
 		{
 			s.Seek(offset, SeekOrigin.Begin);
 			var numFiles = s.ReadUInt16();
@@ -87,7 +87,7 @@ namespace OpenRA.FileSystem
 			return items;
 		}
 
-		MemoryStream DecryptHeader(Stream s, long offset, out long headerEnd)
+		static MemoryStream DecryptHeader(Stream s, long offset, out long headerEnd)
 		{
 			s.Seek(offset, SeekOrigin.Begin);
 
@@ -121,7 +121,7 @@ namespace OpenRA.FileSystem
 			return ms;
 		}
 
-		uint[] ReadBlocks(Stream s, long offset, int count)
+		static uint[] ReadBlocks(Stream s, long offset, int count)
 		{
 			s.Seek(offset, SeekOrigin.Begin);
 
@@ -258,6 +258,11 @@ namespace OpenRA.FileSystem
 				foreach (var file in contents)
 					s.Write(file.Value);
 			}
+		}
+
+		public void Dispose()
+		{
+			s.Dispose();
 		}
 	}
 }

@@ -40,7 +40,7 @@ namespace OpenRA.Irc
 
 		public static string FromCtcp(string message)
 		{
-			if (message.Length < 2 || !message.StartsWith("\x0001") || !message.EndsWith("\x0001"))
+			if (message.Length < 2 || !message.StartsWith("\x0001", StringComparison.Ordinal) || !message.EndsWith("\x0001", StringComparison.Ordinal))
 				return null;
 
 			return message.Substring(1, message.Length - 2);
@@ -53,7 +53,7 @@ namespace OpenRA.Irc
 
 		public static string FromAction(string message)
 		{
-			if (!message.StartsWith("\x0001ACTION ") || !message.EndsWith("\x0001"))
+			if (!message.StartsWith("\x0001ACTION ", StringComparison.Ordinal) || !message.EndsWith("\x0001", StringComparison.Ordinal))
 				return null;
 		
 			return message.Substring(8, message.Length - 8 - 1);

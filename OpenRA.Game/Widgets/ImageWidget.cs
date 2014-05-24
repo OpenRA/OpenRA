@@ -27,8 +27,8 @@ namespace OpenRA.Widgets
 		}
 
 		protected ImageWidget(ImageWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			ImageName = other.ImageName;
 			GetImageName = other.GetImageName;
 			ImageCollection = other.ImageCollection;

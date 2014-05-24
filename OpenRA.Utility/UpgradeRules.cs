@@ -179,8 +179,8 @@ namespace OpenRA.Utility
 				{
 					if (depth == 0)
 					{
-						var muzzles = node.Value.Nodes.Where(n => n.Key.StartsWith("WithMuzzleFlash"));
-						var armaments = node.Value.Nodes.Where(n => n.Key.StartsWith("Armament"));
+						var muzzles = node.Value.Nodes.Where(n => n.Key.StartsWith("WithMuzzleFlash", StringComparison.Ordinal));
+						var armaments = node.Value.Nodes.Where(n => n.Key.StartsWith("Armament", StringComparison.Ordinal));
 
 						// Shift muzzle flash definitions to Armament
 						foreach (var m in muzzles)
@@ -204,7 +204,7 @@ namespace OpenRA.Utility
 								{
 									a.Value.Nodes.Add(new MiniYamlNode("MuzzleSequence", muzzleSequence));
 									if (muzzleSplitFacings)
-										a.Value.Nodes.Add(new MiniYamlNode("MuzzleSplitFacings", muzzleFacingsCount.ToString()));
+										a.Value.Nodes.Add(new MiniYamlNode("MuzzleSplitFacings", muzzleFacingsCount.ToStringInvariant()));
 								}
 							}
 						}
@@ -214,7 +214,7 @@ namespace OpenRA.Utility
 					}
 
 					// Remove all but the first muzzle flash definition
-					if (depth == 1 && node.Key.StartsWith("WithMuzzleFlash"))
+					if (depth == 1 && node.Key.StartsWith("WithMuzzleFlash", StringComparison.Ordinal))
 					{
 						node.Key = "WithMuzzleFlash";
 						node.Value.Nodes.RemoveAll(n => n.Key == "Armament");
@@ -225,8 +225,8 @@ namespace OpenRA.Utility
 				// "disabled" palette overlay has been moved into it's own DisabledOverlay trait
 				if (engineVersion < 20140305)
 				{
-					if (node.Value.Nodes.Any(n => n.Key.StartsWith("RequiresPower"))
-						&& !node.Value.Nodes.Any(n => n.Key.StartsWith("DisabledOverlay")))
+					if (node.Value.Nodes.Any(n => n.Key.StartsWith("RequiresPower", StringComparison.Ordinal))
+						&& !node.Value.Nodes.Any(n => n.Key.StartsWith("DisabledOverlay", StringComparison.Ordinal)))
 					{
 						node.Value.Nodes.Add(new MiniYamlNode("DisabledOverlay", new MiniYaml("")));
 					}

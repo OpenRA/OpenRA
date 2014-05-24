@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Render
 				return;
 
 			if (a.Info.MuzzleSplitFacings > 0)
-				sequence += Traits.Util.QuantizeFacing(getFacing(), a.Info.MuzzleSplitFacings).ToString();
+				sequence += Traits.Util.QuantizeFacing(getFacing(), a.Info.MuzzleSplitFacings).ToStringInvariant();
 
 			visible[barrel] = true;
 			anims[barrel].Animation.PlayThen(sequence, () => visible[barrel] = false);

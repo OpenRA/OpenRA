@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		string GetNewsCacheFile()
+		static string GetNewsCacheFile()
 		{
 			var cacheDir = Path.Combine(Platform.SupportDir, "cache", Game.modData.Manifest.Mod.Id);
 			Directory.CreateDirectory(cacheDir);
@@ -201,15 +201,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			public string Content;
 		}
 
-		IEnumerable<NewsItem> ReadNews(byte[] bytes)
+		static IEnumerable<NewsItem> ReadNews(byte[] bytes)
 		{
 			var str = Encoding.UTF8.GetString(bytes);
-			return MiniYaml.FromString(str).Select(node => new NewsItem
+
+			return MiniYaml.FromString(str).Select(node =>
 			{
-				Title = node.Value.NodesDict["Title"].Value,
-				Author = node.Value.NodesDict["Author"].Value,
-				DateTime = FieldLoader.GetValue<DateTime>("DateTime", node.Key),
-				Content = node.Value.NodesDict["Content"].Value
+				var nodesDict = node.Value.GetNodesDict();
+				return new NewsItem
+					{
+						Title = nodesDict["Title"].Value,
+						Author = nodesDict["Author"].Value,
+						DateTime = FieldLoader.GetValue<DateTime>("DateTime", node.Key),
+						Content = nodesDict["Content"].Value
+					};
 			});
 		}
 

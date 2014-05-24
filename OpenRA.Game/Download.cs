@@ -47,7 +47,7 @@ namespace OpenRA
 			wc.DownloadFileCompleted += (_, a) => onComplete(a, cancelled);
 
 			Game.OnQuit += Cancel;
-			wc.DownloadFileCompleted += (_, a) => { Game.OnQuit -= Cancel; };
+			wc.DownloadFileCompleted += (_, a) => { Game.OnQuit -= Cancel; wc.Dispose(); };
 
 			wc.DownloadFileAsync(new Uri(url), path);
 		}
@@ -61,7 +61,7 @@ namespace OpenRA
 			wc.DownloadDataCompleted += (_, a) => onComplete(a, cancelled);
 
 			Game.OnQuit += Cancel;
-			wc.DownloadDataCompleted += (_, a) => { Game.OnQuit -= Cancel; };
+			wc.DownloadDataCompleted += (_, a) => { Game.OnQuit -= Cancel; wc.Dispose(); };
 
 			wc.DownloadDataAsync(new Uri(url));
 		}
@@ -70,6 +70,7 @@ namespace OpenRA
 		{
 			Game.OnQuit -= Cancel;
 			wc.CancelAsync();
+			wc.Dispose();
 			cancelled = true;
 		}
 	}

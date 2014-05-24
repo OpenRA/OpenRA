@@ -101,10 +101,21 @@ namespace OpenRA
 			return ret;
 		}
 
+		public static bool Any<T>(this T[] ts, Func<T, bool> predicate)
+		{
+			foreach (var t in ts)
+				if (predicate(t))
+					return true;
+			return false;
+		}
+
 		public static T Random<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
-			var xs = ts.ToArray();
-			return xs[r.Next(xs.Length)];
+			var xs = ts as ICollection<T>;
+			if (xs != null)
+				return xs.ElementAt(r.Next(xs.Count));
+			var ys = ts.ToArray();
+			return ys[r.Next(ys.Length)];
 		}
 
 		public static T RandomOrDefault<T>(this IEnumerable<T> ts, MersenneTwister r)
@@ -129,6 +140,54 @@ namespace OpenRA
 		public static IEnumerable<T> Iterate<T>(this T t, Func<T, T> f)
 		{
 			for (;;) { yield return t; t = f(t); }
+		}
+
+		public static T MinBy<T, U>(this IEnumerable<T> ts, Func<T, U> selector)
+		{
+			return ts.CompareBy(selector, 1, true);
+		}
+
+		public static T MaxBy<T, U>(this IEnumerable<T> ts, Func<T, U> selector)
+		{
+			return ts.CompareBy(selector, -1, true);
+		}
+
+		public static T MinByOrDefault<T, U>(this IEnumerable<T> ts, Func<T, U> selector)
+		{
+			return ts.CompareBy(selector, 1, false);
+		}
+
+		public static T MaxByOrDefault<T, U>(this IEnumerable<T> ts, Func<T, U> selector)
+		{
+			return ts.CompareBy(selector, -1, false);
+		}
+
+		static T CompareBy<T, U>(this IEnumerable<T> ts, Func<T, U> selector, int modifier, bool throws)
+		{
+			var comparer = Comparer<U>.Default;
+			T t;
+			U u;
+			using (var e = ts.GetEnumerator())
+			{
+				if (!e.MoveNext())
+					if (throws)
+						throw new ArgumentException("Collection must not be empty.", "ts");
+					else
+						return default(T);
+				t = e.Current;
+				u = selector(t);
+				while (e.MoveNext())
+				{
+					T nextT = e.Current;
+					U nextU = selector(nextT);
+					if (comparer.Compare(nextU, u) * modifier < 0)
+					{
+						t = nextT;
+						u = nextU;
+					}
+				}
+				return t;
+			}
 		}
 
 		public static int NextPowerOf2(int v)
@@ -238,7 +297,7 @@ namespace OpenRA
 			return result;
 		}
 
-		public static Rectangle Bounds(this Bitmap b) { return new Rectangle(0, 0, b.Width, b.Height); }
+		public static Rectangle Bounds(this Image b) { return new Rectangle(0, 0, b.Width, b.Height); }
 
 		public static int ToBits(this IEnumerable<bool> bits)
 		{
@@ -262,6 +321,26 @@ namespace OpenRA
 		public static bool TryParseIntegerInvariant(string s, out int i)
 		{
 			return int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
+		}
+
+		public static string ToStringInvariant(this byte i)
+		{
+			return i.ToString(NumberFormatInfo.InvariantInfo);
+		}
+
+		public static string ToStringInvariant(this byte i, string format)
+		{
+			return i.ToString(format, NumberFormatInfo.InvariantInfo);
+		}
+
+		public static string ToStringInvariant(this int i)
+		{
+			return i.ToString(NumberFormatInfo.InvariantInfo);
+		}
+
+		public static string ToStringInvariant(this int i, string format)
+		{
+			return i.ToString(format, NumberFormatInfo.InvariantInfo);
 		}
 	}
 

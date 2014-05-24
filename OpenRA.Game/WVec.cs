@@ -16,7 +16,7 @@ using OpenRA.Support;
 
 namespace OpenRA
 {
-	public struct WVec : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding
+	public struct WVec : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<WVec>
 	{
 		public readonly int X, Y, Z;
 
@@ -81,13 +81,10 @@ namespace OpenRA
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 
-		public override bool Equals(object obj)
-		{
-			var o = obj as WVec?;
-			return o != null && o == this;
-		}
+		public bool Equals(WVec other) { return other == this; }
+		public override bool Equals(object obj) { return obj is WVec && Equals((WVec)obj); }
 
-		public override string ToString() { return "{0},{1},{2}".F(X, Y, Z); }
+		public override string ToString() { return X + "," + Y + "," + Z; }
 
 		#region Scripting interface
 

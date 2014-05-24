@@ -37,7 +37,7 @@ namespace OpenRA
 		public Manifest(string mod)
 		{
 			var path = new[] { "mods", mod, "mod.yaml" }.Aggregate(Path.Combine);
-			var yaml = new MiniYaml(null, MiniYaml.FromFile(path)).NodesDict;
+			var yaml = new MiniYaml(null, MiniYaml.FromFile(path)).GetNodesDict();
 
 			Mod = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
 			Mod.Id = mod;
@@ -68,9 +68,12 @@ namespace OpenRA
 
 			LoadScreen = yaml["LoadScreen"];
 			LobbyDefaults = yaml["LobbyDefaults"];
-			Fonts = yaml["Fonts"].NodesDict.ToDictionary(x => x.Key,
-				x => Pair.New(x.Value.NodesDict["Font"].Value,
-					Exts.ParseIntegerInvariant(x.Value.NodesDict["Size"].Value)));
+			Fonts = yaml["Fonts"].GetNodesDict().ToDictionary(x => x.Key,
+				x =>
+				{
+					var nd = x.Value.GetNodesDict();
+					return Pair.New(nd["Font"].Value, Exts.ParseIntegerInvariant(nd["Size"].Value));
+				});
 
 			if (yaml.ContainsKey("TileSize"))
 				TileSize = FieldLoader.GetValue<Size>("TileSize", yaml["TileSize"].Value);
@@ -94,7 +97,7 @@ namespace OpenRA
 			if (!yaml.ContainsKey(key))
 				return new string[] { };
 
-			return yaml[key].NodesDict.Keys.ToArray();
+			return yaml[key].GetNodesDict().Keys.ToArray();
 		}
 
 		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)
@@ -102,7 +105,7 @@ namespace OpenRA
 			if (!yaml.ContainsKey(key))
 				return new ReadOnlyDictionary<string, string>();
 
-			var inner = yaml[key].NodesDict.ToDictionary(x => x.Key, x => x.Value.Value);
+			var inner = yaml[key].GetNodesDict().ToDictionary(x => x.Key, x => x.Value.Value);
 			return new ReadOnlyDictionary<string, string>(inner);
 		}
 	}

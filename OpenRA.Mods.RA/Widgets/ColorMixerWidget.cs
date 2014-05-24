@@ -35,8 +35,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public ColorMixerWidget() {}
 		public ColorMixerWidget(ColorMixerWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			OnChange = other.OnChange;
 			H = other.H;
 			S = other.S;
@@ -119,17 +119,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void Draw()
 		{
-			if (Monitor.TryEnter(front))
-			{
-				try
-				{
-					mixerSprite.sheet.Texture.SetData(front, 256, 256);
-				}
-				finally
-				{
-					Monitor.Exit(front);
-				}
-			}
+			lock (front)
+				mixerSprite.sheet.Texture.SetData(front, 256, 256);
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(mixerSprite, RenderOrigin, new float2(RenderBounds.Size));
 

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 
 namespace OpenRA.Irc
@@ -123,7 +124,7 @@ namespace OpenRA.Irc
 		{
 			if (!IrcUtils.IsChannel(Target))
 			{
-				var numericParts = line.RawStringParts.Skip(1).TakeWhile(p => !p.StartsWith(":"));
+				var numericParts = line.RawStringParts.Skip(1).TakeWhile(p => !p.StartsWith(":", StringComparison.Ordinal));
 				AltTarget = numericParts.LastOrDefault(IrcUtils.IsChannel);
 				if (AltTarget == null)
 					AltTarget = numericParts.LastOrDefault();

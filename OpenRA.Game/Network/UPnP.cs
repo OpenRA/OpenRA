@@ -14,7 +14,7 @@ using Mono.Nat;
 
 namespace OpenRA.Network
 {
-	public class UPnP
+	public static class UPnP
 	{
 		public static INatDevice NatDevice;
 

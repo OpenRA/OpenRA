@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Network
 {
-	class ReplayRecorderConnection : IConnection
+	sealed class ReplayRecorderConnection : IConnection
 	{
 		public ReplayMetadata Metadata;
 
@@ -86,7 +86,7 @@ namespace OpenRA.Network
 				});
 		}
 
-		bool IsGameStart(byte[] data)
+		static bool IsGameStart(byte[] data)
 		{
 			if (data.Length == 5 && data[4] == 0xbf)
 				return false;

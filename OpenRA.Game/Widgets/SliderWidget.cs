@@ -34,8 +34,8 @@ namespace OpenRA.Widgets
 		}
 
 		public SliderWidget(SliderWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			OnChange = other.OnChange;
 			Ticks = other.Ticks;
 			MinimumValue = other.MinimumValue;

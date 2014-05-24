@@ -228,7 +228,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						{
 							Title = "{0} Teams".F(d),
 							IsSelected = () => false,
-							OnClick = () => orderManager.IssueOrder(Order.Command("assignteams {0}".F(d.ToString())))
+							OnClick = () => orderManager.IssueOrder(Order.Command("assignteams {0}".F(d.ToStringInvariant())))
 						}).ToList();
 
 						if (orderManager.LobbyInfo.Slots.Any(s => s.Value.AllowBots))

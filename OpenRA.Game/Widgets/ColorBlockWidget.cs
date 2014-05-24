@@ -22,10 +22,10 @@ namespace OpenRA.Widgets
 			GetColor = () => Color.White;
 		}
 
-		protected ColorBlockWidget(ColorBlockWidget widget)
-			: base(widget)
+		protected ColorBlockWidget(ColorBlockWidget other)
 		{
-			GetColor = widget.GetColor;
+			CopyOf(this, other);
+			GetColor = other.GetColor;
 		}
 
 		public override Widget Clone()

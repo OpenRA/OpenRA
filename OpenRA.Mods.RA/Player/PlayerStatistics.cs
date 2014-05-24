@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
@@ -100,7 +101,7 @@ namespace OpenRA.Mods.RA
 				case "Pong":
 					return;
 			}
-			if (order.OrderString.StartsWith("Dev"))
+			if (order.OrderString.StartsWith("Dev", StringComparison.Ordinal))
 				return;
 			OrderCount++;
 		}

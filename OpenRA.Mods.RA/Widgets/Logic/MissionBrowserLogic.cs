@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			description = widget.Get<LabelWidget>("MISSION_DESCRIPTION");
 			descriptionFont = Game.Renderer.Fonts[description.Font];
 
-			var yaml = new MiniYaml(null, Game.modData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal)).NodesDict;
+			var yaml = new MiniYaml(null, Game.modData.Manifest.Missions.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal)).GetNodesDict();
 
 			var missionMapPaths = yaml["Missions"].Nodes.Select(n => Path.GetFullPath(n.Key));
 

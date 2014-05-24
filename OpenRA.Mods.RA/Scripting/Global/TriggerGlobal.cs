@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Scripting
 	{
 		public TriggerGlobal(ScriptContext context) : base(context) { }
 
-		ScriptTriggers GetScriptTriggers(Actor a)
+		static ScriptTriggers GetScriptTriggers(Actor a)
 		{
 			var events = a.TraitOrDefault<ScriptTriggers>();
 			if (events == null)

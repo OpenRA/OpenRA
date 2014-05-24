@@ -22,9 +22,9 @@ namespace OpenRA.Renderer.Sdl2
 		{
 			var version = GL.GetString(StringName.Version).Split(' ')[0].Split('.');
 			int major;
-			int.TryParse(version[0], out major);
+			Exts.TryParseIntegerInvariant(version[0], out major);
 			int minor;
-			int.TryParse(version[1], out minor);
+            Exts.TryParseIntegerInvariant(version[1], out minor);
 			Console.WriteLine("Detected OpenGL version: {0}.{1}".F(major, minor));
 			OpenGLversion = new Version(major, minor);
 			if (major < 2)

@@ -19,7 +19,7 @@ using OpenRA.Primitives;
 namespace OpenRA
 {
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-	public class SyncAttribute : Attribute { }
+	public sealed class SyncAttribute : Attribute { }
 	public interface ISync { }	/* marker interface */
 
 	public static class Sync
@@ -50,7 +50,7 @@ namespace OpenRA
 		static void EmitSyncOpcodes(Type type, ILGenerator il)
 		{
 			if (hashFunctions.ContainsKey(type))
-			    il.EmitCall(OpCodes.Call, hashFunctions[type], null);
+				il.EmitCall(OpCodes.Call, hashFunctions[type], null);
 			else if (type == typeof(bool))
 			{
 				var l = il.DefineLabel();

@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Server
 				server.SendOrderTo(conn, "Message", "Cannot change state when game started. ({0})".F(cmd));
 				return false;
 			}
-			else if (client.State == Session.ClientState.Ready && !(cmd.StartsWith("state") || cmd == "startgame"))
+			else if (client.State == Session.ClientState.Ready && !(cmd.StartsWith("state", StringComparison.Ordinal) || cmd == "startgame"))
 			{
 				server.SendOrderTo(conn, "Message", "Cannot change state when marked as ready.");
 				return false;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Server
 			return true;
 		}
 
-		void CheckAutoStart(S server, Connection conn, Session.Client client)
+		static void CheckAutoStart(S server)
 		{
 			var playerClients = server.LobbyInfo.Clients.Where(c => c.Bot == null && c.Slot != null);
 
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA.Server
 
 						server.SyncLobbyClients();
 
-						CheckAutoStart(server, conn, client);
+						CheckAutoStart(server);
 
 						return true;
 					}},
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.RA.Server
 						client.Slot = s;
 						S.SyncClientToPlayerReference(client, server.Map.Players[s]);
 						server.SyncLobbyClients();
-						CheckAutoStart(server, conn, client);
+						CheckAutoStart(server);
 
 						return true;
 					}},

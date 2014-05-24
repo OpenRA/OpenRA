@@ -49,8 +49,8 @@ namespace OpenRA.Traits
 
 		// Position updates are done in one pass
 		// to ensure consistency during a tick
-		List<Actor> addActorPosition;
-		List<Actor> removeActorPosition;
+		readonly List<Actor> addActorPosition = new List<Actor>();
+		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
 
 		public ActorMap(World world, ActorMapInfo info)
 		{
@@ -64,9 +64,6 @@ namespace OpenRA.Traits
 			for (var j = 0; j < rows; j++)
 				for (var i = 0; i < cols; i++)
 					actors[j * cols + i] = new List<Actor>();
-
-			addActorPosition = new List<Actor>();
-			removeActorPosition = new List<Actor>();
 		}
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a)
@@ -189,7 +186,7 @@ namespace OpenRA.Traits
 			var j1 = (top / info.BinSize).Clamp(0, rows - 1);
 			var j2 = (bottom / info.BinSize).Clamp(0, rows - 1);
 
-			var actorsInBox = new List<Actor>();
+			var actorsInBox = new HashSet<Actor>();
 			for (var j = j1; j <= j2; j++)
 			{
 				for (var i = i1; i <= i2; i++)
@@ -198,12 +195,11 @@ namespace OpenRA.Traits
 					{
 						var c = actor.CenterPosition;
 						if (actor.IsInWorld && left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom)
-							actorsInBox.Add(actor);
+							if (actorsInBox.Add(actor))
+								yield return actor;
 					}
 				}
 			}
-
-			return actorsInBox.Distinct();
 		}
 	}
 }

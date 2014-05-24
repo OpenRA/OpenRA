@@ -289,7 +289,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			ConnectionLogic.Connect(host, port, "", OpenLobby, DoNothing);
 		}
 
-		string GetPlayersLabel(GameServer game)
+		static string GetPlayersLabel(GameServer game)
 		{
 			if (game == null || game.Players == 0)
 				return "";
@@ -298,7 +298,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return "{0} / {1}".F(game.Players, map.PlayerCount == 0 ? "?" : map.PlayerCount.ToString());
 		}
 
-		string GetStateLabel(GameServer game)
+		static string GetStateLabel(GameServer game)
 		{
 			if (game == null)
 				return "";

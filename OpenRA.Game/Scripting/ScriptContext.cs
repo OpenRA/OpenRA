@@ -34,13 +34,13 @@ namespace OpenRA.Scripting
 	}
 
 	// For traitinfos that provide actor / player commands
-	public class ScriptPropertyGroupAttribute : Attribute
+	public sealed class ScriptPropertyGroupAttribute : Attribute
 	{
 		public readonly string Category;
 		public ScriptPropertyGroupAttribute(string category) { Category = category; }
 	}
 
-	public class ScriptActorPropertyActivityAttribute : Attribute { }
+	public sealed class ScriptActorPropertyActivityAttribute : Attribute { }
 
 	public abstract class ScriptActorProperties
 	{
@@ -71,11 +71,11 @@ namespace OpenRA.Scripting
 				throw new InvalidOperationException("[LuaGlobal] attribute not found for global table '{0}'".F(type));
 
 			Name = names.First().Name;
-			Bind(new [] { this });
+			Bind(new[] { this });
 		}
 	}
 
-	public class ScriptGlobalAttribute : Attribute
+	public sealed class ScriptGlobalAttribute : Attribute
 	{
 		public readonly string Name;
 		public ScriptGlobalAttribute(string name) { Name = name; }
@@ -143,7 +143,7 @@ namespace OpenRA.Scripting
 					if (ctor == null)
 						throw new InvalidOperationException("{0} must define a constructor that takes a ScriptContext context parameter".F(b.Name));
 
-					var binding = (ScriptGlobal)ctor.Invoke(new [] { this });
+					var binding = (ScriptGlobal)ctor.Invoke(new[] { this });
 					using (var obj = binding.ToLuaValue(this))
 						registerGlobal.Call(binding.Name, obj).Dispose();
 				}
@@ -196,7 +196,7 @@ namespace OpenRA.Scripting
 				tick.Call().Dispose();
 		}
 
-		protected void Dispose(bool disposing)
+		protected virtual void Dispose(bool disposing)
 		{
 			if (disposed)
 				return;
@@ -211,12 +211,6 @@ namespace OpenRA.Scripting
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
-		}
-
-		~ScriptContext()
-		{
-			// Dispose unmanaged resources only
-			Dispose(false);
 		}
 
 		static Type[] ExtractRequiredTypes(Type t)

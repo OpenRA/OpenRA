@@ -38,7 +38,7 @@ namespace OpenRA
 			Manifest = new Manifest(mod);
 			ObjectCreator = new ObjectCreator(Manifest);
 			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
-			LoadScreen.Init(Manifest, Manifest.LoadScreen.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value));
+			LoadScreen.Init(Manifest, Manifest.LoadScreen.GetNodesDict().ToDictionary(x => x.Key, x => x.Value.Value));
 			LoadScreen.Display();
 			WidgetLoader = new WidgetLoader(this);
 			RulesetCache = new RulesetCache(this);
@@ -96,9 +96,9 @@ namespace OpenRA
 			foreach (var y in yaml)
 			{
 				if (y.Key == Game.Settings.Graphics.Language)
-					selectedTranslations = y.Value.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value ?? "");
-				if (y.Key == Game.Settings.Graphics.DefaultLanguage)
-					defaultTranslations = y.Value.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value ?? "");
+					selectedTranslations = y.Value.GetNodesDict().ToDictionary(x => x.Key, x => x.Value.Value ?? "");
+				else if (y.Key == Game.Settings.Graphics.DefaultLanguage)
+					defaultTranslations = y.Value.GetNodesDict().ToDictionary(x => x.Key, x => x.Value.Value ?? "");
 			}
 			
 			var translations = new Dictionary<string, string>();

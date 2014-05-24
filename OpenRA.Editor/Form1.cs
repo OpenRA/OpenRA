@@ -88,7 +88,11 @@ namespace OpenRA.Editor
 				foreach (var init in Program.Rules.Actors[kv.Value.Type].GetInitKeys())
 					apd.AddRow(init.First,
 						apd.MakeEditorControl(init.Second,
-							() => objSaved.NodesDict.ContainsKey(init.First) ? objSaved.NodesDict[init.First].Value : null,
+							() =>
+							{
+								var nodesDict = objSaved.GetNodesDict();
+								return nodesDict.ContainsKey(init.First) ? nodesDict[init.First].Value : null;
+							},
 							_ => { }));
 
 				apd.ShowDialog();
@@ -162,7 +166,7 @@ namespace OpenRA.Editor
 			foreach (var p in palettes) { p.Visible = false; p.SuspendLayout(); }
 
 			var templateOrder = tileset.EditorTemplateOrder ?? new string[] { };
-			foreach (var tc in tileset.Templates.GroupBy(t => t.Value.Category).OrderBy(t => templateOrder.ToList().IndexOf(t.Key)))
+			foreach (var tc in tileset.Templates.GroupBy(t => t.Value.Category).OrderBy(t => Array.IndexOf(templateOrder, t.Key)))
 			{
 				var category = tc.Key ?? "(Uncategorized)";
 				var categoryHeader = new Label

@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 namespace OpenRA
 {
 	[AttributeUsage(AttributeTargets.Assembly)]
-	public class RendererAttribute : Attribute
+	public sealed class RendererAttribute : Attribute
 	{
 		public readonly Type Type;
 
@@ -34,7 +34,7 @@ namespace OpenRA
 
 	public enum BlendMode { None, Alpha, Additive, Subtractive, Multiply }
 
-	public interface IGraphicsDevice
+	public interface IGraphicsDevice : IDisposable
 	{
 		IVertexBuffer<Vertex> CreateVertexBuffer(int length);
 		ITexture CreateTexture(Bitmap bitmap);
@@ -58,8 +58,6 @@ namespace OpenRA
 		void DisableDepthBuffer();
 
 		void SetBlendMode(BlendMode mode);
-
-		void Quit();
 	}
 
 	public interface IVertexBuffer<T>

@@ -37,7 +37,7 @@ namespace OpenRA.Irc
 		public User(string prefix)
 		{
 			if (string.IsNullOrEmpty(prefix))
-				throw new ArgumentException();
+				throw new ArgumentException("prefix");
 
 			var ex = prefix.IndexOf('!');
 			var at = prefix.IndexOf('@');

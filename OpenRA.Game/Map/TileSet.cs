@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Graphics;
@@ -56,8 +57,8 @@ namespace OpenRA
 
 		static object LoadTiles(MiniYaml y)
 		{
-			return y.NodesDict["Tiles"].NodesDict.ToDictionary(
-				t => byte.Parse(t.Key),
+			return y.GetNodesDict()["Tiles"].GetNodesDict().ToDictionary(
+				t => byte.Parse(t.Key, NumberFormatInfo.InvariantInfo),
 				t => t.Value.Value);
 		}
 
@@ -76,7 +77,7 @@ namespace OpenRA
 			}
 
 			root.Add(new MiniYamlNode("Tiles", null,
-				Tiles.Select(x => new MiniYamlNode(x.Key.ToString(), x.Value)).ToList()));
+				Tiles.Select(x => new MiniYamlNode(x.Key.ToStringInvariant(), x.Value)).ToList()));
 
 			return new MiniYaml(null, root);
 		}
@@ -97,7 +98,7 @@ namespace OpenRA
 
 		static readonly string[] Fields = { "Name", "Id", "SheetSize", "Palette", "Extensions" };
 
-		public TileSet(ModData modData, string filepath)
+		public TileSet(string filepath)
 		{
 			var yaml = MiniYaml.DictFromFile(filepath);
 
@@ -105,11 +106,11 @@ namespace OpenRA
 			FieldLoader.Load(this, yaml["General"]);
 
 			// TerrainTypes
-			Terrain = yaml["Terrain"].NodesDict.Values
+			Terrain = yaml["Terrain"].GetNodesDict().Values
 				.Select(y => new TerrainTypeInfo(y)).ToDictionary(t => t.Type);
 
 			// Templates
-			Templates = yaml["Templates"].NodesDict.Values
+			Templates = yaml["Templates"].GetNodesDict().Values
 				.Select(y => new TileTemplate(y)).ToDictionary(t => t.Id);
 		}
 

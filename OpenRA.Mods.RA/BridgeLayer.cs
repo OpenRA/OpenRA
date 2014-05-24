@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA
 
 				// This isn't the bridge you're looking for
 				if (!w.Map.IsInMap(x, y) || w.Map.MapTiles.Value[x, y].Type != tile ||
-				    w.Map.MapTiles.Value[x, y].Index != ind)
+					w.Map.MapTiles.Value[x, y].Index != ind)
 					continue;
 
 				subTiles.Add(new CPos(x, y), ind);

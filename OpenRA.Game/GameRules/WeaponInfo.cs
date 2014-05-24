@@ -73,8 +73,9 @@ namespace OpenRA.GameRules
 
 		static object LoadVersus(MiniYaml y)
 		{
-			return y.NodesDict.ContainsKey("Versus")
-				? y.NodesDict["Versus"].NodesDict.ToDictionary(
+			var nd = y.GetNodesDict();
+			return nd.ContainsKey("Versus")
+				? nd["Versus"].GetNodesDict().ToDictionary(
 					a => a.Key,
 					a => FieldLoader.GetValue<float>("(value)", a.Value.Value))
 				: new Dictionary<string, float>();
@@ -118,7 +119,7 @@ namespace OpenRA.GameRules
 		[FieldLoader.LoadUsing("LoadProjectile")] public IProjectileInfo Projectile;
 		[FieldLoader.LoadUsing("LoadWarheads")] public List<WarheadInfo> Warheads;
 
-		public WeaponInfo(string name, MiniYaml content)
+		public WeaponInfo(MiniYaml content)
 		{
 			FieldLoader.Load(this, content);
 		}
@@ -126,7 +127,7 @@ namespace OpenRA.GameRules
 		static object LoadProjectile(MiniYaml yaml)
 		{
 			MiniYaml proj;
-			if (!yaml.NodesDict.TryGetValue("Projectile", out proj))
+			if (!yaml.GetNodesDict().TryGetValue("Projectile", out proj))
 				return null;
 			var ret = Game.CreateObject<IProjectileInfo>(proj.Value + "Info");
 			FieldLoader.Load(ret, proj);
@@ -185,7 +186,7 @@ namespace OpenRA.GameRules
 
 				var cellInfo = world.GetTerrainInfo(cell);
 				if (!ValidTargets.Intersect(cellInfo.TargetTypes).Any()
-				    || InvalidTargets.Intersect(cellInfo.TargetTypes).Any())
+					|| InvalidTargets.Intersect(cellInfo.TargetTypes).Any())
 					return false;
 
 				return true;

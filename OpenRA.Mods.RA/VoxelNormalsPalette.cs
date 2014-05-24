@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 
 			// Map normals into color range
 			// Introduces a maximum error of ~0.5%
-			var data = new uint[256];
+			var data = new uint[Palette.Size];
 			for (var i = 0; i < n.Length / 3; i++)
 			{
 				data[i] = 0xFF000000;

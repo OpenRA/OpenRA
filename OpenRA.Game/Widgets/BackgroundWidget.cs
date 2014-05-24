@@ -60,8 +60,8 @@ namespace OpenRA.Widgets
 		}
 
 		protected BackgroundWidget(BackgroundWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			Background = other.Background;
 			ClickThrough = other.ClickThrough;
 			Draggable = other.Draggable;

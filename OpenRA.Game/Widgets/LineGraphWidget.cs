@@ -54,8 +54,8 @@ namespace OpenRA.Widgets
 		}
 
 		protected LineGraphWidget(LineGraphWidget other)
-			: base(other)
 		{
+			CopyOf(this, other);
 			GetSeries = other.GetSeries;
 			GetValueFormat = other.GetValueFormat;
 			GetXAxisValueFormat = other.GetXAxisValueFormat;

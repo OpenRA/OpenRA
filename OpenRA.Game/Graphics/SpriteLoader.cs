@@ -33,10 +33,10 @@ namespace OpenRA.Graphics
 
 		Sprite[] CacheSpriteFrames(string filename)
 		{
-			var stream = GlobalFileSystem.OpenWithExts(filename, exts);
-			return SpriteSource.LoadSpriteSource(stream, filename).Frames
-				.Select(a => SheetBuilder.Add(a))
-				.ToArray();
+			using (var stream = GlobalFileSystem.OpenWithExts(filename, exts))
+				return SpriteSource.LoadSpriteSource(stream, filename).Frames
+					.Select(a => SheetBuilder.Add(a))
+					.ToArray();
 		}
 
 		public Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }
