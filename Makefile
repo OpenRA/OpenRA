@@ -66,8 +66,8 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rsdl2 rnull game utility irc
-TOOLS = editor tsbuild ralint
+CORE = rsdl2 rnull game utility irc ralint
+TOOLS = editor tsbuild crashdialog
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
