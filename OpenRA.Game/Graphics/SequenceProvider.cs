@@ -105,8 +105,11 @@ namespace OpenRA.Graphics
 				.Aggregate(sequenceNodes, MiniYaml.MergeLiberal);
 
 			var items = new Dictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>();
-			foreach (var node in nodes)
+			foreach (var n in nodes)
 			{
+				// Work around the loop closure issue in older versions of C#
+				var node = n;
+
 				var key = node.Value.ToLines(node.Key).JoinWith("|");
 
 				Lazy<IReadOnlyDictionary<string, Sequence>> t;
