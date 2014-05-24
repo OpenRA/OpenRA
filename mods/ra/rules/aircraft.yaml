@@ -114,7 +114,7 @@ MIG:
 	IronCurtainable:
 	ReturnOnIdle:
 	Selectable:
-		Bounds: 44,40,0,0
+		Bounds: 40,29,0,1
 	Contrail@1:
 		Offset: -598,-683,0
 	Contrail@2:
@@ -173,6 +173,8 @@ YAK:
 		ReloadTicks: 11
 	IronCurtainable:
 	ReturnOnIdle:
+	Selectable:
+		Bounds: 30,28,0,2
 	WithMuzzleFlash:
 	Contrail:
 		Offset: -853,0,0
@@ -268,6 +270,8 @@ HELI:
 	LimitedAmmo:
 		Ammo: 8
 	IronCurtainable:
+	Selectable:
+		Bounds: 36,28,0,0
 	LeavesHusk:
 		HuskActor: HELI.Husk
 	SmokeTrailWhenDamaged:
