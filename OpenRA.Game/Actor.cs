@@ -81,9 +81,6 @@ namespace OpenRA
 			health = Exts.Lazy(() => TraitOrDefault<Health>());
 			effectiveOwner = Exts.Lazy(() => TraitOrDefault<IEffectiveOwner>());
 
-			applyIRender = (x, wr) => x.Render(this, wr);
-			applyRenderModifier = (m, p, wr) => p.ModifyRender(this, wr, m);
-
 			Bounds = Exts.Lazy(() =>
 			{
 				var si = Info.Traits.GetOrDefault<SelectableInfo>();
@@ -112,14 +109,19 @@ namespace OpenRA
 			get { return currentActivity == null; }
 		}
 
-		// note: these delegates are cached to avoid massive allocation.
-		Func<IRender, WorldRenderer, IEnumerable<IRenderable>> applyIRender;
-		Func<IEnumerable<IRenderable>, IRenderModifier, WorldRenderer, IEnumerable<IRenderable>> applyRenderModifier;
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			var mods = TraitsImplementing<IRenderModifier>();
-			var sprites = TraitsImplementing<IRender>().SelectMany(x => applyIRender(x, wr));
-			return mods.Aggregate(sprites, (m, p) => applyRenderModifier(m, p, wr));
+			var renderables = Renderables(wr);
+			foreach (var modifier in TraitsImplementing<IRenderModifier>())
+				renderables = modifier.ModifyRender(this, wr, renderables);
+			return renderables;
+		}
+
+		IEnumerable<IRenderable> Renderables(WorldRenderer wr)
+		{
+			foreach (var render in TraitsImplementing<IRender>())
+				foreach (var renderable in render.Render(this, wr))
+					yield return renderable;
 		}
 
 		public bool IsInWorld { get; internal set; }

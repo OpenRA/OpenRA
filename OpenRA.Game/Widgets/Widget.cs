@@ -237,10 +237,11 @@ namespace OpenRA.Widgets
 
 		public virtual Rectangle GetEventBounds()
 		{
-			return Children
-				.Where(c => c.IsVisible())
-				.Select(c => c.GetEventBounds())
-				.Aggregate(EventBounds, Rectangle.Union);
+			var bounds = EventBounds;
+			foreach (var child in Children)
+				if (child.IsVisible())
+					bounds = Rectangle.Union(bounds, child.GetEventBounds());
+			return bounds;
 		}
 
 		public bool HasMouseFocus { get { return Ui.MouseFocusWidget == this; } }
