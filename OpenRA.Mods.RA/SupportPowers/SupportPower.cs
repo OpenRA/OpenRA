@@ -37,6 +37,7 @@ namespace OpenRA.Mods.RA
 		public readonly string BeaconPoster = null;
 		public readonly string BeaconPosterPalette = "chrome";
 		public readonly bool DisplayRadarPing = false;
+		public readonly int RadarPingDuration = 5 * 25;
 
 		public readonly string OrderName;
 		public abstract object Create(ActorInitializer init);
@@ -49,6 +50,7 @@ namespace OpenRA.Mods.RA
 		public readonly Actor self;
 		public readonly SupportPowerInfo Info;
 		protected Beacon beacon;
+		protected RadarPing ping;
 
 		public SupportPower(Actor self, SupportPowerInfo info)
 		{
@@ -82,11 +84,11 @@ namespace OpenRA.Mods.RA
 			}
 
 			if (Info.DisplayRadarPing && manager.RadarPings != null)
-				manager.RadarPings.Value.Add(
+				ping = manager.RadarPings.Value.Add(
 					() => order.Player.IsAlliedWith(self.World.RenderPlayer),
 					order.TargetLocation.CenterPosition,
 					order.Player.Color.RGB,
-					Info.BeaconDuration);
+					Info.RadarPingDuration);
 		}
 
 		public virtual IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
