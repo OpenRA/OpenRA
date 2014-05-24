@@ -69,6 +69,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				ApplyFilter();
 			}
+			else
+				replays = new List<ReplayMetadata>();
 
 			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
 			watch.IsDisabled = () => selectedReplay == null || selectedReplay.GameInfo.MapPreview.Status != MapStatus.Available;
