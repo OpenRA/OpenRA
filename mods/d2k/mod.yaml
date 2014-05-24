@@ -38,6 +38,7 @@ Rules:
 	mods/d2k/rules/ordos.yaml
 
 Sequences:
+	mods/d2k/sequences/icon.yaml
 	mods/d2k/sequences/aircraft.yaml
 	mods/d2k/sequences/vehicles.yaml
 	mods/d2k/sequences/infantry.yaml

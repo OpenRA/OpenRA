@@ -74,6 +74,7 @@ Rules:
 	mods/ts/rules/vehicles.yaml
 
 Sequences:
+	mods/ts/sequences/icon.yaml
 	mods/ts/sequences/aircraft.yaml
 	mods/ts/sequences/infantry.yaml
 	mods/ts/sequences/misc.yaml
