@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 # Use Linux system dependencies where possible, but take into account different .so names.
 
 os=`uname`
-if [[ $os == 'Linux' ]]; then
+if [ $os == 'Linux' ]; then
 	declare -r distro="$(lsb_release -is)"
 	if [ -n "${distro}" ]; then
 		case "${distro}" in
