@@ -27,8 +27,6 @@ ZSU-23:
 	Projectile: Bullet
 		Speed: 1c682
 		High: true
-		ContrailDelay: 0
-		ContrailLength: 5
 	Warhead:
 		Spread: 213
 		Versus:
@@ -1267,7 +1265,6 @@ Sniper:
 	Range: 10c0
 	Projectile: Bullet
 		Speed: 1c682
-		ContrailLength: 16
 	Warhead:
 		Damage: 140
 		Spread: 42
