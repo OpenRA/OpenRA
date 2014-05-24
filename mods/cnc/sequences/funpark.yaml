@@ -134,13 +134,3 @@ rapt:
 		Start: 144
 		Length: 40
 
-icon:
-	steg: stegicnh
-		Start: 0
-	trex: trexicnh
-		Start: 0
-	tric: tricicnh
-		Start: 0
-	rapt: rapticnh
-		Start: 0
-

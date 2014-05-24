@@ -48,17 +48,3 @@ msub:
 		Start: 0
 		Facings: 16
 
-icon:
-	ss: ssicon
-		Start: 0
-	ca: caicon
-		Start: 0
-	dd: ddicon
-		Start: 0
-	pt: pticon
-		Start: 0
-	lst: lsticon
-		Start: 0
-	msub: msubicon
-		Start: 0
-

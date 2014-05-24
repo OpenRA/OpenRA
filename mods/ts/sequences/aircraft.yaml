@@ -6,21 +6,3 @@ apache:
 		Start: 4
 		Length: 8
 
-icon:
-	dpod: podsicon
-		Start: 0
-	dshp: xxicon
-		Start: 0
-	orca: orcaicon
-		Start: 0
-	orcab: obmbicon
-		Start: 0
-	orcatran: crryicon
-		Start: 0
-	trnsport: otrnicon
-		Start: 0
-	scrin: proicon
-		Start: 0
-	apache: apchicon
-		Start: 0
-

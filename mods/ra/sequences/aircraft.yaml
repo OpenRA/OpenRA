@@ -80,15 +80,3 @@ badr:
 		Start: 0
 		Facings: 16
 
-icon:
-	mig: migicon
-		Start: 0
-	yak: yakicon
-		Start: 0
-	heli: heliicon
-		Start: 0
-	hind: hindicon
-		Start: 0
-	tran: tranicon
-		Start: 0
-

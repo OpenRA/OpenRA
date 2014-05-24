@@ -57,15 +57,3 @@ a10:
 		Length: 6
 		Facings: 8
 
-icon:
-	c17: c17icnh
-		Start: 0
-	tran: tranicnh
-		Start: 0
-	heli: heliicnh
-		Start: 0
-	orca: orcaicnh
-		Start: 0
-	a10: a10icnh
-		Start: 0
-

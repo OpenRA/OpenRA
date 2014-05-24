@@ -750,23 +750,3 @@ rmbo:
 		Length: 4
 		Tick: 1600
 
-icon:
-	vice: viceicnh
-		Start: 0
-	pvice: viceicnh
-		Start: 0
-	e1: e1icnh
-		Start: 0
-	e2: e2icnh
-		Start: 0
-	e3: e3icnh
-		Start: 0
-	e4: e4icnh
-		Start: 0
-	e5: e5icnh
-		Start: 0
-	e6: e6icnh
-		Start: 0
-	rmbo: rmboicnh
-		Start: 0
-

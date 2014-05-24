@@ -473,31 +473,3 @@ grenadier: # 2502 - 2749 in 1.06 DATA.R8
 		Facings: 8
 		Tick: 120
 
-icon:
-	rifle: DATA
-		Start: 4011
-		Offset: -30,-24
-	bazooka: DATA
-		Start: 4012
-		Offset: -30,-24
-	engineer: DATA
-		Start: 4013
-		Offset: -30,-24
-	medic: DATA
-		Start: 4014
-		Offset: -30,-24
-	thumping: DATA
-		Frames: 4014
-		Offset: -30,-24
-	fremen: DATA
-		Start: 4032
-		Offset: -30,-24
-	saboteur: DATA
-		Start: 4034
-		Offset: -30,-24
-	sardaukar: DATA
-		Start: 4015
-		Offset: -30,-24
-	grenadier: grenadiericon
-		Start: 0
-

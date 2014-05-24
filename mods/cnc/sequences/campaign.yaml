@@ -37,9 +37,3 @@ boat:
 		Length: 6
 		Offset: -1,2
 
-icon:
-	lst: lsticnh
-		Start: 0
-	boat: boaticnh
-		Start: 0
-

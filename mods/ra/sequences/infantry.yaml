@@ -1224,37 +1224,3 @@ ant:
 		Length: 8
 		Tick: 300
 
-icon:
-	e1: e1icon
-		Start: 0
-	sniper: snipericon
-		Start: 0
-	e3: e3icon
-		Start: 0
-	e6: e6icon
-		Start: 0
-	medi: mediicon
-		Start: 0
-	mech: mechicon
-		Start: 0
-	e2: e2icon
-		Start: 0
-	dog: dogicon
-		Start: 0
-	spy: spyicon
-		Start: 0
-	thf: thficon
-		Start: 0
-	hijacker: hijackericon
-		Start: 0
-	e7: e7icon
-		Start: 0
-	e4: e4icon
-		Start: 0
-	shok: shokicon
-		Start: 0
-	zombie: zombicon
-		Start: 0
-	ant: anticon
-		Start: 0
-

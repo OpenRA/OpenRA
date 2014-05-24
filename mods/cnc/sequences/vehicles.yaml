@@ -185,35 +185,3 @@ apc:
 	unload:
 		Start: 32
 
-icon:
-	mcv: mcvicnh
-		Start: 0
-	harv: harvicnh
-		Start: 0
-	bggy: bggyicnh
-		Start: 0
-	mtnk: mtnkicnh
-		Start: 0
-	ltnk: ltnkicnh
-		Start: 0
-	htnk: htnkicnh
-		Start: 0
-	jeep: jeepicnh
-		Start: 0
-	bike: bikeicnh
-		Start: 0
-	ftnk: ftnkicnh
-		Start: 0
-	mhq: mhqicnh
-		Start: 0
-	msam: msamicnh
-		Start: 0
-	mlrs: mlrsicnh
-		Start: 0
-	stnk: stnkicnh
-		Start: 0
-	arty: artyicnh
-		Start: 0
-	apc: apcicnh
-		Start: 0
-

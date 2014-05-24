@@ -19,11 +19,3 @@ frigate:
 		Start: 2517
 		Facings: 1
 
-icon:
-	carryall: DATA
-		Start: 4029
-		Offset: -30,-24
-	orni: DATA
-		Start: 4031
-		Offset: -30,-24
-
