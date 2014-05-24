@@ -118,6 +118,7 @@ HVR:
 		Weapon: HoverMissile
 	Turreted:
 		ROT: 7
+		Offset: -128,0,0
 	AttackTurreted:
 	AutoTarget:
 	RenderSprites:
@@ -149,8 +150,11 @@ HVR:
 		ROT: 3
 	Armament@PRIMARY:
 		Weapon: 120mmx
+		LocalOffset: 640,85,384, 640,-85,384
+		MuzzleSequence: muzzle
 	Armament@SECONDARY:
 		Weapon: MammothTusk
+		LocalOffset: 0,256,426, 0,-256,426
 	AttackTurreted:
 	AutoTarget:
 	SelfHealing:
@@ -162,6 +166,7 @@ HVR:
 	WithVoxelBody:
 	WithVoxelTurret:
 	WithVoxelBarrel:
+	WithMuzzleFlash:
 
 TRUCKB:
 	Inherits: ^Vehicle
@@ -482,6 +487,7 @@ MMCH:
 	RenderInfantry:
 		SpawnsCorpse: false
 	Turreted:
+		ROT: 5
 	AttackTurreted:
 	WithTurret:
 		Recoils: no
@@ -491,7 +497,7 @@ MMCH:
 		RecoilRecovery: 26
 	RenderVoxels:
 	WithVoxelBarrel:
-		LocalOffset: -128, 128, 213
+		LocalOffset: -128, 85, 256
 	AutoTarget:
 
 HMEC:
@@ -519,9 +525,10 @@ HMEC:
 	AutoTarget:
 	Armament@MISSILES:
 		Weapon: MammothTusk
+		LocalOffset: -128,-384,980, -128,384,980
 	Armament@RAILGUN:
 		Weapon: MechRailgun
-		LocalOffset: 640,-640,980, 640,640,980
+		LocalOffset: 640,-384,980, 640,384,980
 	RenderVoxels:
 	WithVoxelWalkerBody:
 
@@ -606,11 +613,15 @@ BGGY:
 		Range: 6c0
 	Armament:
 		Weapon: RaiderCannon
+		LocalOffset: 0,-43,384, 0,43,384
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
 	AttackFrontal:
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	WithMuzzleFlash:
 
 SAPC:
 	Inherits: ^Vehicle
@@ -691,6 +702,8 @@ SONIC:
 		Weapon: SonicZap
 	AttackTurreted:
 	Turreted:
+		ROT: 5
+		Offset: -170,0,0
 	AutoTarget:
 	RenderSprites:
 	RenderVoxels:
@@ -749,8 +762,8 @@ STNK:
 	Cloak:
 		InitialDelay: 90
 		CloakDelay: 90
-		CloakSound:
-		UncloakSound:
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
 	Armament:
 		Weapon: Dragon
 		LocalOffset: 213,43,128, 213,-43,128

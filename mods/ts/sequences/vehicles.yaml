@@ -15,6 +15,9 @@ hvr:
 		Start: 0
 
 4tnk:
+	muzzle: gunfire
+		Start: 0
+		Length: *
 	icon: xxicon
 		Start: 0
 
@@ -67,6 +70,30 @@ bike:
 		Start: 0
 
 bggy:
+	muzzle0: mgun-n
+		Start: 0
+		Length: *
+	muzzle1: mgun-nw
+		Start: 0
+		Length: *
+	muzzle2: mgun-w
+		Start: 0
+		Length: *
+	muzzle3: mgun-sw
+		Start: 0
+		Length: *
+	muzzle4: mgun-s
+		Start: 0
+		Length: *
+	muzzle5: mgun-se
+		Start: 0
+		Length: *
+	muzzle6: mgun-e
+		Start: 0
+		Length: *
+	muzzle7: mgun-ne
+		Start: 0
+		Length: *
 	icon: bggyicon
 		Start: 0
 
@@ -83,6 +110,9 @@ sonic:
 		Start: 0
 
 ttnk:
+	muzzle: gunfire
+		Start: 0
+		Length: *
 	icon: tickicon
 		Start: 0
 
@@ -104,6 +134,9 @@ mmch:
 	turret:
 		Start: 120
 		Facings: -32
+	muzzle: gunfire
+		Start: 0
+		Length: *
 	icon: mmchicon
 		Start: 0
 

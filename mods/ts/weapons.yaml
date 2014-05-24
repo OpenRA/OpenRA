@@ -1,3 +1,29 @@
+UnitExplode:
+	Warhead:
+		Damage: 500
+		Spread: 426
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: large_twlt
+		InfDeath: 2
+		ImpactSound: expnew09.aud
+
+UnitExplodeSmall:
+	Warhead:
+		Damage: 40
+		Spread: 426
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: medium_brnl
+		InfDeath: 2
+		ImpactSound: expnew13.aud
+
 Minigun:
 	ROF: 21
 	Range: 4c0
@@ -7,13 +33,13 @@ Minigun:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
+			Wood: 60%
+			Light: 40%
+			Heavy: 25%
 			Concrete: 10%
 		Explosion: piffpiff
 		InfDeath: 1
-		Damage: 15
+		Damage: 12
 
 Grenade:
 	ROF: 60
@@ -26,12 +52,13 @@ Grenade:
 		Inaccuracy: 554
 		Image: DISCUS
 	Warhead:
-		Spread: 256
+		Spread: 171
 		Versus:
-			None: 50%
-			Wood: 100%
-			Light: 25%
-			Heavy: 5%
+			None: 100%
+			Wood: 85%
+			Light: 70%
+			Heavy: 35%
+			Concrete: 28%
 		InfDeath: 3
 		Damage: 40
 		Explosion: large_grey_explosion
@@ -55,10 +82,11 @@ Bazooka:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 10%
-			Wood: 75%
-			Light: 35%
-			Concrete: 20%
+			None: 25%
+			Wood: 65%
+			Light: 75%
+			Heavy: 100%
+			Concrete: 60%
 		InfDeath: 2
 		Damage: 25
 		Explosion: small_clsn
@@ -82,10 +110,11 @@ MultiCluster:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 10%
-			Wood: 75%
-			Light: 35%
-			Concrete: 20%
+			None: 25%
+			Wood: 65%
+			Light: 75%
+			Heavy: 100%
+			Concrete: 60%
 		InfDeath: 3
 		Damage: 65
 		Explosion: large_explosion
@@ -118,9 +147,10 @@ Sniper:
 		Spread: 42
 		Versus:
 			None: 100%
-			Wood: 5%
-			Light: 5%
-			Heavy: 5%
+			Wood: 0%
+			Light: 0%
+			Heavy: 0%
+			Concrete: 0%
 		InfDeath: 1
 
 M1Carbine:
@@ -132,10 +162,10 @@ M1Carbine:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 100%
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
+			Wood: 60%
+			Light: 40%
+			Heavy: 25%
+			Concrete: 10%
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 15
@@ -144,17 +174,44 @@ LtRail:
 	ROF: 60
 	Range: 6c0
 	Report: BIGGGUN1.AUD
-	Projectile: Bullet
+	Projectile: LaserZap
 		Speed: 1c682
+		BeamWidth: 1
+		BeamDuration: 10
+		Color: 200,0,128,255
 	Warhead:
 		Damage: 150
 		Spread: 42
 		Versus:
 			None: 100%
-			Wood: 5%
-			Light: 5%
-			Heavy: 5%
+			Wood: 130%
+			Light: 150%
+			Heavy: 110%
+			Concrete: 5%
 		InfDeath: 2
+
+CyCannon:
+	ROF: 50
+	Range: 7c0
+	Report: SCRIN5B.AUD
+	ValidTargets: Ground
+	Projectile: Bullet
+		Speed: 192
+		High: yes
+		Shadow: yes
+		Image: TORPEDO
+	Warhead:
+		Spread: 256
+		Versus:
+			None: 100%
+			Wood: 65%
+			Light: 75%
+			Heavy: 50%
+			Concrete: 40%
+		InfDeath: 6
+		Damage: 120
+		Explosion: large_bang
+		ImpactSound: expnew12.aud
 
 Vulcan3:
 	ROF: 30
@@ -166,9 +223,9 @@ Vulcan3:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
+			Wood: 60%
+			Light: 40%
+			Heavy: 25%
 			Concrete: 10%
 		Explosion: piffpiff
 		InfDeath: 1
@@ -200,10 +257,11 @@ Vulcan:
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead:
+		Spread: 128
 		Versus:
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
+			Wood: 60%
+			Light: 40%
+			Heavy: 25%
 			Concrete: 10%
 		Explosion: piffpiff
 		InfDeath: 1
@@ -221,9 +279,9 @@ FiendShard:
 		Angle: 88
 	Warhead:
 		Versus:
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
+			Wood: 60%
+			Light: 40%
+			Heavy: 25%
 			Concrete: 10%
 		InfDeath: 1
 		Damage: 35
@@ -236,10 +294,11 @@ JumpCannon:
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead:
+		Spread: 128
 		Versus:
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
+			Wood: 60%
+			Light: 40%
+			Heavy: 25%
 			Concrete: 10%
 		Explosion: piffpiff
 		InfDeath: 1
@@ -264,10 +323,11 @@ HoverMissile:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 10%
-			Wood: 75%
-			Light: 35%
-			Concrete: 20%
+			None: 25%
+			Wood: 65%
+			Light: 75%
+			Heavy: 100%
+			Concrete: 60%
 		InfDeath: 2
 		Damage: 30
 		Explosion: small_clsn
@@ -288,11 +348,11 @@ HoverMissile:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 100%
+			None: 25%
+			Wood: 65%
+			Light: 75%
 			Heavy: 100%
-			Concrete: 100%
+			Concrete: 60%
 		InfDeath: 2
 		Damage: 50
 		Explosion: medium_clsn
@@ -315,12 +375,13 @@ MammothTusk:
 		Speed: 170
 		RangeLimit: 35
 	Warhead:
-		Spread: 256
+		Spread: 171
 		Versus:
-			None: 40%
-			Wood: 75%
-			Light: 75%
-			Heavy: 50%
+			None: 100%
+			Wood: 85%
+			Light: 70%
+			Heavy: 35%
+			Concrete: 28%
 		InfDeath: 3
 		Damage: 40
 		Explosion: medium_bang
@@ -383,11 +444,11 @@ SuicideBomb:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 100%
+			None: 25%
+			Wood: 65%
+			Light: 75%
 			Heavy: 100%
-			Concrete: 100%
+			Concrete: 60%
 		InfDeath: 2
 		Damage: 70
 		Explosion: large_clsn
@@ -398,13 +459,18 @@ MechRailgun:
 	Range: 8c0
 	Burst: 2
 	BurstDelay: 10
-	Charges: yes
 	Report: RAILUSE5.AUD
 	Projectile: LaserZap
 		Color: 200,0,255,255
-		BeamWidth: 2
+		BeamWidth: 3
 	Warhead:
 		Spread: 42
+		Versus:
+			None: 200%
+			Wood: 175%
+			Light: 160%
+			Heavy: 100%
+			Concrete: 25%
 		InfDeath: 5
 		Damage: 200
 
@@ -417,9 +483,9 @@ AssaultCannon:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 100%
-			Light: 60%
-			Heavy: 40%
+			Wood: 60%
+			Light: 40%
+			Heavy: 25%
 			Concrete: 10%
 		Explosion: piffpiff
 		InfDeath: 1
@@ -445,10 +511,11 @@ BikeMissile:
 	Warhead:
 		Spread: 256
 		Versus:
-			None: 40%
-			Wood: 75%
+			None: 25%
+			Wood: 65%
 			Light: 75%
-			Heavy: 50%
+			Heavy: 100%
+			Concrete: 60%
 		InfDeath: 2
 		Damage: 40
 		Explosion: small_clsn
@@ -457,15 +524,17 @@ BikeMissile:
 RaiderCannon:
 	ROF: 55
 	Range: 4c0
+	Burst: 2	#purely cosmetical, for alternate muzzle position
+	BurstDelay: 55
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
+			Wood: 60%
+			Light: 40%
+			Heavy: 25%
 			Concrete: 10%
 		Explosion: piffpiff
 		InfDeath: 1
@@ -476,32 +545,36 @@ FireballLauncher:
 	Range: 4c256
 	Report: FLAMTNK1.AUD
 	Projectile: Bullet
-		Speed: 341
-	Burst: 2
-	BurstDelay: 25
+		Speed: 64
+		Image: FLAMEALL
+		Inacuracy: 384
+	Burst: 5
+	BurstDelay: 5
 	Warhead:
 		Spread: 341
 		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 50%
-			Heavy: 25%
-			Concrete: 20%
+			None: 600%
+			Wood: 148%
+			Light: 59%
+			Heavy: 6%
+			Concrete: 2%
 		InfDeath: 5
-		Damage: 90
+		Damage: 25
 
 SonicZap:
 	ROF: 120
 	Range: 6c0
-	Burst: 2
-	BurstDelay: 10
 	Charges: yes
 	Report: SONIC4.AUD
 	Projectile: LaserZap
 		Color: 200,0,255,255
-		BeamWidth: 10
+		BeamWidth: 12
+		BeamDuration: 50
 	Warhead:
 		Spread: 42
+		Versus:
+			Heavy: 80%
+			Concrete: 60%
 		InfDeath: 5
 		Damage: 100
 
@@ -524,10 +597,11 @@ Dragon:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 10%
-			Wood: 75%
-			Light: 35%
-			Concrete: 20%
+			None: 25%
+			Wood: 65%
+			Light: 75%
+			Heavy: 100%
+			Concrete: 60%
 		InfDeath: 2
 		Damage: 30
 		Explosion: small_clsn
@@ -546,11 +620,11 @@ Dragon:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 100%
+			None: 25%
+			Wood: 65%
+			Light: 75%
 			Heavy: 100%
-			Concrete: 100%
+			Concrete: 60%
 		InfDeath: 2
 		Damage: 36
 		Explosion: medium_clsn
@@ -668,9 +742,9 @@ HarpyClaw:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
+			Wood: 60%
+			Light: 40%
+			Heavy: 25%
 			Concrete: 10%
 		Explosion: piffpiff
 		InfDeath: 1
@@ -685,10 +759,10 @@ Pistola:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 50%
-			Light: 60%
+			Wood: 60%
+			Light: 40%
 			Heavy: 25%
-			Concrete: 25%
+			Concrete: 10%
 		Explosion: piff
 		InfDeath: 1
 		Damage: 2
@@ -701,3 +775,105 @@ Tiberium:
 		Damage: 2
 		PreventProne: yes
 
+IonCannon:
+	ValidTargets: Ground, Air
+	Warhead@impact:
+		Damage: 1000
+		Spread: 1c0
+		InfDeath: 5
+		Explosion: ring1
+	Warhead@area:
+		DamageModel: PerCell
+		Damage: 250
+		SmudgeType: Scorch
+		Size: 2,1
+		Delay: 3
+		InfDeath: 5
+
+VulcanTower:
+	ROF: 26
+	Range: 6c0
+	Report: CHAINGN1.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead:
+		Spread: 128
+		Versus:
+			Wood: 60%
+			Light: 40%
+			Heavy: 25%
+			Concrete: 10%
+		Explosion: piffpiff
+		InfDeath: 1
+		Damage: 18
+
+RPGTower:
+	ROF: 80
+	Range: 8c0
+	Report: GLNCH4.AUD
+	Palette: player
+	Projectile: Bullet
+		Speed: 384
+		Image: canister
+		Shadow: yes
+		Angle: 62
+	Warhead:
+		Spread: 128
+		Versus:
+			None: 30%
+			Wood: 75%
+			Light: 90%
+			Heavy: 100%
+			Concrete: 70%
+		InfDeath: 2
+		Damage: 110
+		Explosion: large_clsn
+		ImpactSound: expnew14.aud
+
+SAMTower:
+	ROF: 55
+	Range: 15c0
+	Report: SAMSHOT1.AUD
+	ValidTargets: Air
+	Palette: ra
+	Projectile: Missile
+		Speed: 298
+		Arm: 2
+		High: yes
+		Shadow: yes
+		Inaccuracy: 128
+		Image: DRAGON
+		ROT: 5
+		RangeLimit: 60
+	Warhead:
+		Spread: 128
+		InfDeath: 2
+		Damage: 33
+		Explosion: small_clsn
+		ImpactSound: expnew12.aud
+
+ObeliskLaser:
+	ROF: 120
+	Range: 10c512
+	Charges: true
+	Report: OBELRAY1.AUD
+	Projectile: LaserZap
+		BeamWidth: 4
+	Warhead:
+		Spread: 42
+		InfDeath: 5
+		SmudgeType: Scorch
+		Damage: 250
+
+TurretLaser:
+	ROF: 40
+	Range: 5c512
+	Report: LASTUR1.AUD
+	Projectile: LaserZap
+		BeamWidth: 2
+		BeamDuration: 5
+	Warhead:
+		Spread: 42
+		InfDeath: 5
+		SmudgeType: Scorch
+		Damage: 30

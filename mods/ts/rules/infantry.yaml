@@ -45,7 +45,7 @@ E2:
 	Armament:
 		Weapon: Grenade
 		LocalOffset: 0,0,555
-		FireDelay: 15
+		FireDelay: 5
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:
@@ -73,7 +73,7 @@ E3:
 		Speed: 42
 	Armament@PRIMARY:
 		Weapon: Bazooka
-		LocalOffset: 0,0,555
+		LocalOffset: 128,0,640
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:
@@ -101,9 +101,8 @@ WEEDGUY:
 	CrushableInfantry:
 		CrushSound: squish2.aud
 	Armament:
-		Weapon: MultiCluster
+		Weapon: FireballLauncher
 		LocalOffset: 85,0,384
-		FireDelay: 3
 	AttackFrontal:
 	-RenderInfantry:
 	RenderInfantryProne:
@@ -224,6 +223,7 @@ GHOST:
 		Range: 6c0
 	Armament:
 		Weapon: LtRail
+		LocalOffset: 85,0,384
 	CrushableInfantry:
 		CrushSound: squish2.aud
 	AttackFrontal:
@@ -311,7 +311,7 @@ CYBORG:
 	-CrushableInfantry:
 		CrushSound: squish2.aud
 	Selectable:
-		Bounds: 12,17,0,-6
+		Bounds: 14,30,0,-7
 		Voice: Cyborg
 	Mobile:
 		Speed: 56
@@ -344,7 +344,7 @@ CYC2:
 	-CrushableInfantry:
 		CrushSound: squish2.aud
 	Selectable:
-		Bounds: 12,17,0,-6
+		Bounds: 14,30,0,-7
 		Voice: CyborgCommando
 	Mobile:
 		Speed: 56
@@ -354,7 +354,8 @@ CYC2:
 	RevealsShroud:
 		Range: 7c0
 	Armament:
-		Weapon: Sniper
+		Weapon: CyCannon
+		LocalOffset: 170,85,683
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:

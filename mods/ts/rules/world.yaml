@@ -104,12 +104,26 @@ World:
 		AllowedTerrainTypes: Clear
 		AllowUnderActors: false
 		TerrainType: Tiberium
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
 	PathfinderDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
-	MPStartUnits:
+	MPStartUnits@MCV:
 		Races: gdi, nod
 		BaseActor: mcv
+	MPStartUnits@TEST:
+		Class: heavy
+		Races: gdi,nod
+		BaseActor: mcv
+		SupportActors: e1,e2,e3,cyborg,cyc2,jumpjet,umagon,ghost,mmch,smech,hmec,bggy,bike,art2,ttnk,hvr,sonic,subtank,repair,4tnk
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
 	MPStartLocations:
 	SpawnMPUnits:
 	PathFinder:
