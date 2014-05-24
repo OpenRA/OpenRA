@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Network
 {
-	class ReplayRecorderConnection : IConnection
+	class ReplayRecorderConnection : IConnection, IDisposable
 	{
 		public ReplayMetadata Metadata;
 
@@ -98,27 +98,30 @@ namespace OpenRA.Network
 		}
 
 		bool disposed;
-
-		public void Dispose()
+		protected void Dispose(bool disposing)
 		{
 			if (disposed)
 				return;
 
-			if (Metadata != null)
+			if (disposing)
 			{
-				if (Metadata.GameInfo != null)
-					Metadata.GameInfo.EndTimeUtc = DateTime.UtcNow;
-				Metadata.Write(writer);
+				if (Metadata != null)
+				{
+					if (Metadata.GameInfo != null)
+						Metadata.GameInfo.EndTimeUtc = DateTime.UtcNow;
+					Metadata.Write(writer);
+				}
+				writer.Close();
+				inner.Dispose();
 			}
 
-			writer.Close();
-			inner.Dispose();
 			disposed = true;
 		}
 
-		~ReplayRecorderConnection()
+		public void Dispose()
 		{
-			Dispose();
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 	}
 }
