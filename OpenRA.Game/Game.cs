@@ -501,6 +501,10 @@ namespace OpenRA
 					Tick(orderManager);
 			}
 
+			// Ensure that the active replay is properly saved
+			if (orderManager != null)
+				orderManager.Dispose();
+
 			OnQuit();
 		}
 
