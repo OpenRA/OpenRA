@@ -201,3 +201,38 @@ Container@TEXT_INPUT_PROMPT:
 			Text: Cancel
 			Font: Bold
 			Key: escape
+
+ScrollPanel@NEWS_PANEL:
+	Width: 400
+	Height: 265
+	Background: panel-black
+	ItemSpacing: 5
+	Children:
+		Container@NEWS_ITEM_TEMPLATE:
+			X: 10
+			Y: 5
+			Width: PARENT_RIGHT - 40
+			Height: 45
+			Children:
+				Label@TITLE:
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+					Font: Bold
+				Label@AUTHOR_DATETIME:
+					Y: 25
+					Width: PARENT_RIGHT
+					Height: 15
+					Align: Center
+					Text: by {0} at {1}
+					Font: TinyBold
+				Label@CONTENT:
+					Y: 45
+					Width: PARENT_RIGHT
+		Label@NEWS_STATUS:
+			X: 80
+			Y: 0
+			Width: PARENT_RIGHT - 80 - 80 - 24
+			Height: PARENT_BOTTOM
+			Align: Center
+			VAlign: Middle

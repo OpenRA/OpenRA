@@ -23,14 +23,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		protected enum MenuType { Main, Singleplayer, Extras, None }
 
 		protected MenuType menuType = MenuType.Main;
-		Widget rootMenu;
-
-		protected readonly Widget newsBG;
+		readonly Widget rootMenu;
 		readonly ScrollPanelWidget newsPanel;
-		readonly Widget newsItemTemplate;
+		readonly Widget newsTemplate;
 		readonly LabelWidget newsStatus;
-		readonly ButtonWidget showNewsButton;
-		bool newsExpanded = false;
+		bool newsHighlighted = false;
 
 		[ObjectCreator.UseCtor]
 		public MainMenuLogic(Widget widget, World world)
@@ -138,51 +135,43 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			extrasMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Main;
 
-			newsBG = widget.GetOrNull("NEWS_BG");
+			var newsBG = widget.GetOrNull("NEWS_BG");
 			if (newsBG != null)
 			{
-				var collapsedNewsBG = widget.Get("COLLAPSED_NEWS_BG");
+				newsBG.IsVisible = () => Game.Settings.Game.FetchNews && menuType != MenuType.None;
 
-				if (!Game.Settings.Game.FetchNews)
-					collapsedNewsBG.Visible = false;
-				else
+				newsPanel = Ui.LoadWidget<ScrollPanelWidget>("NEWS_PANEL", null, new WidgetArgs());
+				newsTemplate = newsPanel.Get("NEWS_ITEM_TEMPLATE");
+				newsPanel.RemoveChild(newsTemplate);
+
+				newsStatus = newsPanel.Get<LabelWidget>("NEWS_STATUS");
+				SetNewsStatus("Loading news");
+
+				if (Game.modData.Manifest.NewsUrl != null)
 				{
-					newsPanel = widget.Get<ScrollPanelWidget>("NEWS_PANEL");
-					newsItemTemplate = widget.Get("NEWS_ITEM_TEMPLATE");
-					newsStatus = widget.Get<LabelWidget>("NEWS_STATUS");
-					showNewsButton = widget.Get<ButtonWidget>("SHOW_NEWS_BUTTON");
+					var cacheFile = GetNewsCacheFile();
+					var cacheValid = File.Exists(cacheFile) && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
 
-					newsPanel.RemoveChildren();
-
-					newsBG.IsVisible = () => newsExpanded && menuType != MenuType.None;
-					collapsedNewsBG.IsVisible = () => !newsExpanded && menuType != MenuType.None;
-
-					newsBG.Get<DropDownButtonWidget>("HIDE_NEWS_BUTTON").OnMouseDown = mi => newsExpanded = false;
-					collapsedNewsBG.Get<DropDownButtonWidget>("SHOW_NEWS_BUTTON").OnMouseDown = mi =>
-					{
-						showNewsButton.IsHighlighted = () => false;
-						newsExpanded = true;
-					};
-
-					SetNewsStatus("Loading news");
-
-					if (Game.modData.Manifest.NewsUrl != null)
-					{
-						var cacheFile = GetNewsCacheFile();
-						var cacheValid = File.Exists(cacheFile) && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
-
-						if (cacheValid)
-							DisplayNews(ReadNews(File.ReadAllBytes(cacheFile)));
-						else
-							new Download(Game.modData.Manifest.NewsUrl, e => { }, NewsDownloadComplete);
-					}
+					if (cacheValid)
+						DisplayNews(ReadNews(File.ReadAllBytes(cacheFile)));
+					else
+						new Download(Game.modData.Manifest.NewsUrl, e => { }, NewsDownloadComplete);
 				}
+
+				var newsButton = newsBG.GetOrNull<DropDownButtonWidget>("NEWS_BUTTON");
+				newsButton.OnClick = () =>
+				{
+					newsButton.AttachPanel(newsPanel);
+					newsHighlighted = false;
+				};
+
+				newsButton.IsHighlighted = () => newsHighlighted && Game.LocalTick % 50 < 25;;
 			}
 		}
 
 		string GetNewsCacheFile()
 		{
-			var cacheDir = Path.Combine(Platform.SupportDir, "cache", Game.modData.Manifest.Mod.Id);
+			var cacheDir = Path.Combine(Platform.SupportDir, "Cache", Game.modData.Manifest.Mod.Id);
 			Directory.CreateDirectory(cacheDir);
 			return Path.Combine(cacheDir, "news.yaml");
 		}
@@ -222,7 +211,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var item = i;
 
-				var newsItem = newsItemTemplate.Clone();
+				var newsItem = newsTemplate.Clone();
 
 				var titleLabel = newsItem.Get<LabelWidget>("TITLE");
 				titleLabel.GetText = () => item.Title;
@@ -273,10 +262,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var oldNews = ReadNews(File.ReadAllBytes(cacheFile));
 					if (newNews.Any(n => !oldNews.Select(c => c.DateTime).Contains(n.DateTime)))
-						showNewsButton.IsHighlighted = () => Game.LocalTick % 50 < 25;
+						newsHighlighted = true;
 				}
 				else
-					showNewsButton.IsHighlighted = () => Game.LocalTick % 50 < 25;
+					newsHighlighted = true;
 
 				File.WriteAllBytes(cacheFile, e.Result);
 			});

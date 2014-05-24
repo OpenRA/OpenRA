@@ -184,81 +184,15 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Back
-		Container@COLLAPSED_NEWS_BG:
-			X: WINDOW_RIGHT - WIDTH - 55
-			Y: 136
-			Width: 140
-			Height: 45
+		Container@NEWS_BG:
 			Children:
-				DropDownButton@SHOW_NEWS_BUTTON:
-					X: PARENT_RIGHT - WIDTH
-					Y: 10
-					Width: 120
+				DropDownButton@NEWS_BUTTON:
+					X: (WINDOW_RIGHT - WIDTH)/2
+					Y: 50
+					Width: 400
 					Height: 25
-					Text: Show News
+					Text: Battlefield News
 					Font: Bold
-		Background@NEWS_BG:
-			X: WINDOW_RIGHT - WIDTH - 55
-			Y: 170
-			Width: 500
-			Height: 265
-			Background: panel-black
-			Children:
-				Label@NEWS_TITLE:
-					X: 0
-					Y: 0 - 40
-					Width: PARENT_RIGHT
-					Height: 30
-					Text: News
-					Align: Center
-					Font: BigBold
-					Contrast: True
-				DropDownButton@HIDE_NEWS_BUTTON:
-					X: PARENT_RIGHT - WIDTH
-					Y: 0 - 24
-					Width: 120
-					Height: 25
-					Text: Hide News
-					Font: Bold
-				ScrollPanel@NEWS_PANEL:
-					X: 15
-					Y: 15
-					Width: PARENT_RIGHT - 30
-					Height: 235
-					ItemSpacing: 5
-					Children:
-						Container@NEWS_ITEM_TEMPLATE:
-							X: 5
-							Y: 5
-							Width: PARENT_RIGHT - 30
-							Height: 45
-							Children:
-								Label@TITLE:
-									X: 0
-									Y: 0
-									Width: PARENT_RIGHT
-									Height: 25
-									Align: Center
-									Font: Bold
-								Label@AUTHOR_DATETIME:
-									X: 0
-									Y: 25
-									Width: PARENT_RIGHT
-									Height: 15
-									Align: Center
-									Text: by {0} at {1}
-									Font: TinyBold
-								Label@CONTENT:
-									X: 0
-									Y: 45
-									Width: PARENT_RIGHT
-				Label@NEWS_STATUS:
-					X: 80
-					Y: 0
-					Width: PARENT_RIGHT - 80 - 80 - 24
-					Height: PARENT_BOTTOM
-					Align: Center
-					VAlign: Middle
 		Container@PERFORMANCE_INFO:
 			Logic: PerfDebugLogic
 			Children:
