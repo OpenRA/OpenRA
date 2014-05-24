@@ -210,4 +210,4 @@ LuaScripts:
 
 SupportsMapsFrom: ts
 
-NewsUrl: https://raw.githubusercontent.com/OpenRA/OpenRAWeb/master/content/news/ingame-news.yaml
+NewsUrl: http://open-ra.org/gamenews
