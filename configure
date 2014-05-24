@@ -15,6 +15,9 @@ if [[ $os == 'Linux' ]]; then
 			"openSUSE project" )
 			sed 's/@LIBLUA51@/liblua.so.5.1/' thirdparty/Eluant.dll.config.in > Eluant.dll.config
 			;;
+			"Fedora" )
+			sed 's/@LIBLUA51@/liblua-5.1.so/' thirdparty/Eluant.dll.config.in > Eluant.dll.config
+			;;
 			*)
 			sed 's/@LIBLUA51@/liblua5.1.so/' thirdparty/Eluant.dll.config.in > Eluant.dll.config
 			;;
