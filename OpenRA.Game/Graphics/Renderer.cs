@@ -101,6 +101,11 @@ namespace OpenRA.Graphics
 			device.Present();
 		}
 
+		public Bitmap TakeScreenshot(Rectangle? area = null)
+		{
+			return device.TakeScreenshot(area);
+		}
+
 		public void DrawBatch<T>(IVertexBuffer<T> vertices,
 			int firstVertex, int numVertices, PrimitiveType type)
 			where T : struct

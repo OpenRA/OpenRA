@@ -341,7 +341,7 @@ namespace OpenRA.Server
 
 				if (Settings.Dedicated)
 				{
-					var motdFile = Path.Combine(Platform.SupportDir, "motd.txt");
+					var motdFile = Game.Settings.Locations.GetBasePath("motd.txt");
 					if (!File.Exists(motdFile))
 						System.IO.File.WriteAllText(motdFile, "Welcome, have fun and good luck!");
 					var motd = System.IO.File.ReadAllText(motdFile);

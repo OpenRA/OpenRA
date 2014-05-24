@@ -96,6 +96,12 @@ namespace OpenRA
 
 		public string Language = "english";
 		public string DefaultLanguage = "english";
+
+		// The available options are:
+		// png: slow      / lossless / medium file size
+		// jpg: fast      / lossy    / small file size
+		// bmp: very fast / lossless / large file size
+		public string ScreenshotFormat = "png";
 	}
 
 	public class SoundSettings
@@ -175,6 +181,8 @@ namespace OpenRA
 		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
 
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
+
+		public Hotkey TakeScreenshotKey = new Hotkey(Keycode.P, Modifiers.Ctrl);
 	}
 
 	public class IrcSettings
@@ -193,6 +201,59 @@ namespace OpenRA
 		public bool ConnectAutomatically = false;
 	}
 
+	public class LocationSettings
+	{
+		public string Base;
+		public string Logs;
+		public string Replays;
+		public string Screenshots;
+
+		string GetPath(string defaultValue, string overrideValue = null, string modId = null, string modVersion = null)
+		{
+			var path = defaultValue;
+
+			if (!string.IsNullOrWhiteSpace(overrideValue))
+				path = overrideValue.Trim();
+
+			if (modId != null)
+				path = Path.Combine(path, modId);
+
+			if (modVersion != null)
+				path = Path.Combine(path, modVersion);
+
+			return path;
+		}
+
+		public string GetBasePath(params string[] paths)
+		{
+			var basePath = GetPath(Platform.SupportDir, Base);
+			if (paths.Length == 0)
+				return basePath;
+
+			return Path.Combine(basePath, Path.Combine(paths));
+		}
+		public string GetLogsPath()
+		{
+			return GetPath(GetBasePath("Logs"), Logs);
+		}
+		public string GetReplaysPath(ModMetadata mm)
+		{
+			return GetPath(GetBasePath("Replays"), Replays, mm.Id, mm.Version);
+		}
+		public string GetContentPath(string modId)
+		{
+			return GetBasePath("Content");
+		}
+		public string GetContentPath(string modId, string path1)
+		{
+			return GetBasePath("Content", path1);
+		}
+		public string GetScreenshotsPath(ModMetadata mm)
+		{
+			return GetPath(GetBasePath("Screenshots"), Screenshots, mm.Id, mm.Version);
+		}
+	}
+
 	public class Settings
 	{
 		string settingsFile;
@@ -205,6 +266,7 @@ namespace OpenRA
 		public DebugSettings Debug = new DebugSettings();
 		public KeySettings Keys = new KeySettings();
 		public IrcSettings Irc = new IrcSettings();
+		public LocationSettings Locations = new LocationSettings();
 
 		public Dictionary<string, object> Sections;
 
@@ -220,7 +282,8 @@ namespace OpenRA
 				{ "Server", Server },
 				{ "Debug", Debug },
 				{ "Keys", Keys },
-				{ "Irc", Irc }
+				{ "Irc", Irc },
+				{ "Locations", Locations }
 			};
 
 			// Override fieldloader to ignore invalid entries

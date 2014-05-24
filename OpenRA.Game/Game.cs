@@ -12,9 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using OpenRA.FileSystem;
 using MaxMind.GeoIP2;
 using OpenRA.GameRules;
@@ -47,14 +49,9 @@ namespace OpenRA
 		public static OrderManager JoinServer(string host, int port, string password)
 		{
 			var om = new OrderManager(host, port, password,
-				new ReplayRecorderConnection(new NetworkConnection(host, port), ChooseReplayFilename));
+				new ReplayRecorderConnection(new NetworkConnection(host, port)));
 			JoinInner(om);
 			return om;
-		}
-
-		static string ChooseReplayFilename()
-		{
-			return DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssZ");
 		}
 
 		static void JoinInner(OrderManager om)
@@ -121,6 +118,9 @@ namespace OpenRA
 		public static void RunAfterTick(Action a) { delayedActions.Add(a); }
 		public static void RunAfterDelay(int delay, Action a) { delayedActions.Add(a, delay); }
 
+		public static bool TakeScreenshot = false;
+		static int pendingScreenshots;
+
 		static float cursorFrame = 0f;
 		static void Tick(OrderManager orderManager)
 		{
@@ -162,6 +162,13 @@ namespace OpenRA
 				{
 					Renderer.EndFrame(new DefaultInputHandler(orderManager.world));
 				}
+
+				if (TakeScreenshot)
+				{
+					TakeScreenshot = false;
+
+					TakeScreenshotInner();
+				}
 			}
 
 			PerfHistory.items["render"].Tick();
@@ -170,6 +177,58 @@ namespace OpenRA
 			PerfHistory.items["render_flip"].Tick();
 
 			delayedActions.PerformActions();
+		}
+
+		static void TakeScreenshotInner()
+		{
+			if (Interlocked.Increment(ref pendingScreenshots) < 3)
+			{
+				Bitmap bitmap;
+				try
+				{
+					Log.Write("debug", "Taking screenshot");
+
+					using (new PerfTimer("Renderer.TakeScreenshot"))
+						bitmap = Renderer.TakeScreenshot();
+				}
+				catch
+				{
+					Interlocked.Decrement(ref pendingScreenshots);
+					throw;
+				}
+
+				ThreadPool.QueueUserWorkItem((o) =>
+					{
+						try
+						{
+							var ext = ".png";
+							var fmt = ImageFormat.Png;
+
+							switch (Game.Settings.Graphics.ScreenshotFormat)
+							{
+								case "jpg":
+									ext = ".jpg";
+									fmt = ImageFormat.Jpeg;
+									break;
+
+								case "bmp":
+									ext = ".bmp";
+									fmt = ImageFormat.Bmp;
+									break;
+							}
+
+							using (var fs = Folder.CreateTimestampedFile(Game.Settings.Locations.GetScreenshotsPath(modData.Manifest.Mod), "OpenRA-", ext))
+								using (new PerfTimer("Save Screenshot ({0})".F(fmt)))
+									bitmap.Save(fs, fmt);
+						}
+						finally
+						{
+							Interlocked.Decrement(ref pendingScreenshots);
+						}
+					});
+			}
+			else
+				Interlocked.Decrement(ref pendingScreenshots);
 		}
 
 		static void TickInner(OrderManager orderManager)
@@ -297,7 +356,7 @@ namespace OpenRA
 
 			Settings = new Settings(Platform.SupportDir + "settings.yaml", args);
 
-			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
+			Log.LogPath = Settings.Locations.GetLogsPath();
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
 			Log.AddChannel("sync", "syncreport.log");

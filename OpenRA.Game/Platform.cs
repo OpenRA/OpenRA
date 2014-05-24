@@ -110,7 +110,7 @@ namespace OpenRA
 				var message = "OpenRA has encountered a fatal error.\nRefer to the crash logs and FAQ for more information.";
 
 				var faqPath = Game.Settings.Debug.FatalErrorDialogFaq;
-				var logsPath = "file://" + Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
+				var logsPath = "file://" + Game.Settings.Locations.GetLogsPath();
 
 				var iconPath = new [] { "./OpenRA.icns", "./packaging/osx/template.app/Contents/Resources/OpenRA.icns" }.FirstOrDefault(f => File.Exists(f));
 				var icon = iconPath != null ? "with icon alias (POSIX file \\\"file://{0}\\\")".F(Environment.CurrentDirectory + "/" + iconPath) : "";
