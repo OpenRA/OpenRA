@@ -8,6 +8,7 @@ E1:
 	Buildable:
 		BuildPaletteOrder: 10
 		Owner: gdi, nod
+		Icon: e1
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -32,6 +33,7 @@ E2:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq
 		Owner: gdi
+		Icon: e2
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -61,6 +63,7 @@ E3:
 	Buildable:
 		BuildPaletteOrder: 20
 		Owner: nod, gdi
+		Icon: e3
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -89,6 +92,7 @@ E4:
 		BuildPaletteOrder: 40
 		Owner: nod
 		Prerequisites: anyhq
+		Icon: e4
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -119,6 +123,7 @@ E5:
 		BuildPaletteOrder: 50
 		Owner: nod
 		Prerequisites: tmpl
+		Icon: e5
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -154,6 +159,7 @@ E6:
 	Buildable:
 		BuildPaletteOrder: 30
 		Owner: gdi,nod
+		Icon: e6
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -183,6 +189,7 @@ RMBO:
 		BuildPaletteOrder: 50
 		Owner: gdi
 		Prerequisites: eye
+		Icon: rmbo
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: CommandoVoice
@@ -216,6 +223,7 @@ PVICE:
 		Queue: Biolab
 		BuildPaletteOrder: 40
 		Owner: gdi, nod
+		Icon: pvice
 	Tooltip:
 		Description: Mutated abomination that spits liquid tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	DrawLineToTarget:

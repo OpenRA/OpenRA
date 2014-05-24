@@ -9,6 +9,7 @@ GACNST:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Owner: None
+		Icon: gacnst
 	Health:
 		HP: 1500
 	Armor:
@@ -49,6 +50,7 @@ GAPOWR:
 		BuildPaletteOrder: 0
 		Owner: gdi
 		Hotkey: p
+		Icon: gapowr
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -79,6 +81,7 @@ GAPILE:
 		Prerequisites: anypower
 		Owner: gdi
 		Hotkey: b
+		Icon: gapile
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -123,6 +126,7 @@ PROC:
 		BuildPaletteOrder: 20
 		Prerequisites: anypower
 		Owner: gdi,nod
+		Icon: proc
 	Building:
 		Power: -30
 		Footprint: xxx xxx x==
@@ -159,6 +163,7 @@ GAWEAP:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Owner: gdi
+		Icon: gaweap
 	Building:
 		Power: -30
 		Footprint: ___ xxx ===
@@ -192,6 +197,7 @@ NAPOWR:
 		BuildPaletteOrder: 0
 		Owner: nod
 		Hotkey: p
+		Icon: napowr
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -220,6 +226,7 @@ NAAPWR:
 		Prerequisites: factory
 		Owner: nod
 		Hotkey: p
+		Icon: naapwr
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -248,6 +255,7 @@ NAHAND:
 		Prerequisites: anypower
 		Owner: nod
 		Hotkey: b
+		Icon: nahand
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -291,6 +299,7 @@ NAWEAP:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Owner: nod
+		Icon: naweap
 	Building:
 		Power: -30
 		Footprint: ___ xxx ===
@@ -321,6 +330,7 @@ GASAND:
 		Prerequisites: gacnst
 		Owner: gdi
 		Hotkey: b
+		Icon: gasand
 	SoundOnDamageTransition:
 		DamagedSound: sandbag1.aud
 		DestroyedSound: sandbag1.aud
@@ -350,6 +360,7 @@ GAWALL:
 		Prerequisites: gacnst
 		Owner: gdi
 		Hotkey: b
+		Icon: gawall
 	SoundOnDamageTransition:
 		DamagedSound:
 		DestroyedSound:
@@ -373,6 +384,7 @@ NAWALL:
 		Prerequisites: gacnst
 		Owner: nod
 		Hotkey: b
+		Icon: nawall
 	SoundOnDamageTransition:
 		DamagedSound:
 		DestroyedSound:
@@ -535,6 +547,7 @@ GASPOT:
 		Queue: Defense
 		BuildPaletteOrder: 10
 		Owner: gdi, nod
+		Icon: gaspot
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -561,6 +574,7 @@ GALITE:
 		Queue: Defense
 		BuildPaletteOrder: 10
 		Owner: gdi, nod
+		Icon: galite
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -588,6 +602,7 @@ GARADR:
 		BuildPaletteOrder: 90
 		Owner: gdi
 		Prerequisites: anypower, factory
+		Icon: garadr
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -625,6 +640,7 @@ NARADR:
 		BuildPaletteOrder: 90
 		Owner: nod
 		Prerequisites: anypower, factory
+		Icon: naradr
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -662,6 +678,7 @@ GATECH:
 		BuildPaletteOrder: 100
 		Owner: gdi
 		Prerequisites: garadr
+		Icon: gatech
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -689,6 +706,7 @@ NATECH:
 		BuildPaletteOrder: 100
 		Owner: nod
 		Prerequisites: naradr
+		Icon: natech
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -720,6 +738,7 @@ GAHPAD:
 		BuildPaletteOrder: 60
 		Owner: gdi
 		Queue: Building
+		Icon: gahpad
 	Building:
 		Power: -10
 		Footprint: xx xx
@@ -753,6 +772,7 @@ NAHPAD:
 		BuildPaletteOrder: 60
 		Owner: nod
 		Queue: Building
+		Icon: nahpad
 	Building:
 		Power: -10
 		Footprint: xx xx
@@ -787,6 +807,7 @@ GADEPT:
 		Prerequisites: factory
 		Owner: gdi
 		Queue: Building
+		Icon: gadept
 	Building:
 		Power: -30
 		Footprint: _x_ xxx _x_
@@ -821,6 +842,7 @@ GAVULC:
 		Queue: Defense
 		BuildPaletteOrder: 30
 		Owner: gdi
+		Icon: gavulc
 	Building:
 		Power: -20
 	DisabledOverlay:
@@ -873,6 +895,7 @@ GAROCK:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Owner: gdi
+		Icon: garock
 	Building:
 		Power: -50
 	RequiresPower:
@@ -916,6 +939,7 @@ GACSAM:
 		Queue: Defense
 		BuildPaletteOrder: 60
 		Owner: gdi
+		Icon: gacsam
 	Building:
 		Power: -30
 	RequiresPower:
@@ -958,6 +982,7 @@ NASAM:
 		Queue: Defense
 		BuildPaletteOrder: 60
 		Owner: nod
+		Icon: nasam
 	Building:
 		Power: -30
 	RequiresPower:
@@ -998,6 +1023,7 @@ NALASR:
 		Queue: Defense
 		BuildPaletteOrder: 50
 		Owner: nod
+		Icon: nalasr
 	Building:
 		Power: -40
 	RequiresPower:
@@ -1036,6 +1062,7 @@ NAOBEL:
 		BuildPaletteOrder: 90
 		Prerequisites: tech
 		Owner: nod
+		Icon: naobel
 	Building:
 		Power: -150
 		Footprint: xx xx

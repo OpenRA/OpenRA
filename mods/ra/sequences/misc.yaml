@@ -493,6 +493,10 @@ icon:
 		Start: 0
 	sonar: sonricon
 		Start: 0
+	minp: jmin
+		Start: 0
+	minv: jmin
+		Start: 0
 
 quee:
 	idle:
@@ -515,13 +519,9 @@ lar2:
 minp:
 	idle:
 		Start: 0
-	icon: jmin
-		Start: 0
 
 minv:
 	idle:
-		Start: 0
-	icon: jmin
 		Start: 0
 
 overlay:

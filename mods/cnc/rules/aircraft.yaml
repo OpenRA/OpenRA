@@ -9,6 +9,7 @@ TRAN:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
 		Owner: gdi,nod
+		Icon: tran
 	Selectable:
 		Bounds: 41,41
 	Helicopter:
@@ -53,6 +54,7 @@ HELI:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq
 		Owner: nod
+		Icon: heli
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
@@ -105,6 +107,7 @@ ORCA:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq
 		Owner: gdi
+		Icon: orca
 	Selectable:
 		Bounds: 30,24
 	Helicopter:

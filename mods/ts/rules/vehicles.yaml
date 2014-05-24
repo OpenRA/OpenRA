@@ -5,6 +5,7 @@ MCV:
 		BuildPaletteOrder: 110
 		Owner: gdi,nod
 		Hotkey: b
+		Icon: mcv
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -45,6 +46,7 @@ APC:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: gdi
+		Icon: apc
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -75,6 +77,7 @@ HARV:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Owner: gdi,nod
+		Icon: harv
 	Selectable:
 		Priority: 7
 		Bounds: 36,36
@@ -106,6 +109,7 @@ HVR:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Owner: gdi
+		Icon: hvr
 	Mobile:
 		Speed: 99
 	Health:
@@ -137,6 +141,7 @@ HVR:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
 		Owner: gdi
+		Icon: 4tnk
 	Mobile:
 		Speed: 56
 		ROT: 5
@@ -174,6 +179,7 @@ TRUCKB:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
 		Owner: gdi, nod
+		Icon: truckb
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -203,6 +209,7 @@ LPST:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Owner: gdi, nod
+		Icon: lpst
 	Health:
 		HP: 600
 	Armor:
@@ -232,6 +239,7 @@ ICBM:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Owner: gdi
+		Icon: icbm
 	Health:
 		HP: 500
 	Armor:
@@ -257,6 +265,7 @@ REPAIR:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Owner: nod
+		Icon: repair
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -288,6 +297,7 @@ ART2:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Owner: nod
+		Icon: art2
 	Health:
 		HP: 300
 	Armor:
@@ -318,6 +328,7 @@ WEED:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Owner: nod
+		Icon: weed
 	Mobile:
 		Speed: 71
 		ROT: 5
@@ -342,6 +353,7 @@ BUS:
 		Queue: Vehicle
 		BuildPaletteOrder: 300
 		Owner: gdi
+		Icon: bus
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -369,6 +381,7 @@ PICK:
 		Queue: Vehicle
 		BuildPaletteOrder: 300
 		Owner: gdi
+		Icon: pick
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -396,6 +409,7 @@ CAR:
 		Queue: Vehicle
 		BuildPaletteOrder: 300
 		Owner: gdi
+		Icon: car
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -423,6 +437,7 @@ GGHUNT:
 		BuildPaletteOrder: 20
 		Owner: gdi, nod
 		Queue: Vehicle
+		Icon: gghunt
 	Mobile:
 		ROT: 16
 		Speed: 355
@@ -448,6 +463,7 @@ WINI:
 		Queue: Vehicle
 		BuildPaletteOrder: 300
 		Owner: gdi
+		Icon: wini
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -475,6 +491,7 @@ MMCH:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: gdi
+		Icon: mmch
 	Mobile:
 		ROT: 5
 		Speed: 56
@@ -510,6 +527,7 @@ HMEC:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
 		Owner: gdi
+		Icon: hmec
 	Mobile:
 		ROT: 3
 		Speed: 42
@@ -543,6 +561,7 @@ SMECH:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Owner: gdi
+		Icon: smech
 	Mobile:
 		ROT: 5
 		Speed: 99
@@ -572,6 +591,7 @@ BIKE:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: nod
+		Icon: bike
 	Mobile:
 		ROT: 8
 		Speed: 170
@@ -602,6 +622,7 @@ BGGY:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Owner: nod
+		Icon: bggy
 	Mobile:
 		ROT: 8
 		Speed: 142
@@ -634,6 +655,7 @@ SAPC:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: nod
+		Icon: sapc
 	Mobile:
 		ROT: 5
 		Speed: 71
@@ -662,6 +684,7 @@ SUBTANK:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Owner: nod
+		Icon: subtank
 	Mobile:
 		ROT: 6
 		Speed: 71
@@ -689,6 +712,7 @@ SONIC:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Owner: gdi
+		Icon: sonic
 	Mobile:
 		ROT: 4
 		Speed: 56
@@ -720,6 +744,7 @@ TTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
 		Owner: nod
+		Icon: ttnk
 	Mobile:
 		ROT: 5
 		Speed: 85
@@ -750,6 +775,7 @@ STNK:
 		BuildPaletteOrder: 90
 		Queue: Vehicle
 		Owner: nod
+		Icon: stnk
 	Mobile:
 		ROT: 5
 		Speed: 85

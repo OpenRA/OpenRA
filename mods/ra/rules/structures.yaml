@@ -12,6 +12,7 @@ MSLO:
 		Owner: soviet,allies
 		BuildLimit: 1
 		Hotkey: m
+		Icon: mslo
 	Building:
 		Power: -100
 		Footprint: xx
@@ -60,6 +61,7 @@ GAP:
 		Prerequisites: atek
 		Owner: allies
 		Hotkey: g
+		Icon: gap
 	Building:
 		Power: -60
 		Footprint: _ x
@@ -99,6 +101,7 @@ SPEN:
 		Prerequisites: anypower
 		Owner: soviet
 		Hotkey: y
+		Icon: spen
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
@@ -151,6 +154,7 @@ SYRD:
 		Prerequisites: anypower
 		Owner: allies
 		Hotkey: y
+		Icon: syrd
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -205,6 +209,7 @@ IRON:
 		Owner: soviet
 		BuildLimit: 1
 		Hotkey: c
+		Icon: iron
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -250,6 +255,7 @@ PDOX:
 		Owner: allies
 		BuildLimit: 1
 		Hotkey: o
+		Icon: pdox
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -294,6 +300,7 @@ TSLA:
 		Prerequisites: weap
 		Owner: soviet
 		Hotkey: u
+		Icon: tsla
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -338,6 +345,7 @@ AGUN:
 		Prerequisites: dome
 		Owner: allies
 		Hotkey: y
+		Icon: agun
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -385,6 +393,7 @@ DOME:
 		Prerequisites: proc
 		Owner: allies,soviet
 		Hotkey: r
+		Icon: dome
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -426,6 +435,7 @@ PBOX:
 		Prerequisites: tent
 		Owner: allies
 		Hotkey: p
+		Icon: pbox
 	-GivesBuildableArea:
 	Valued:
 		Cost: 400
@@ -509,6 +519,7 @@ HBOX:
 		Prerequisites: tent
 		Owner: allies
 		Hotkey: l
+		Icon: hbox
 	-GivesBuildableArea:
 	Valued:
 		Cost: 600
@@ -590,6 +601,7 @@ GUN:
 		Prerequisites: tent
 		Owner: allies
 		Hotkey: t
+		Icon: gun
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -631,6 +643,7 @@ FTUR:
 		Prerequisites: barr
 		Owner: soviet
 		Hotkey: t
+		Icon: ftur
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -670,6 +683,7 @@ SAM:
 		Prerequisites: dome
 		Owner: soviet
 		Hotkey: y
+		Icon: sam
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -716,6 +730,7 @@ ATEK:
 		Prerequisites: weap,dome
 		Owner: allies
 		Hotkey: t
+		Icon: atek
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -756,6 +771,7 @@ WEAP:
 		Prerequisites: proc
 		Owner: soviet,allies
 		Hotkey: w
+		Icon: weap
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -794,6 +810,7 @@ FACT:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Owner: None
+		Icon: fact
 	Health:
 		HP: 1500
 	Armor:
@@ -833,6 +850,7 @@ PROC:
 		Prerequisites: anypower
 		Owner: allies,soviet
 		Hotkey: e
+		Icon: proc
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -880,6 +898,7 @@ SILO:
 		Prerequisites: proc
 		Owner: allies,soviet
 		Hotkey: o
+		Icon: silo
 	Valued:
 		Cost: 150
 	Tooltip:
@@ -912,6 +931,7 @@ HPAD:
 		Prerequisites: dome
 		Owner: allies
 		Hotkey: i
+		Icon: hpad
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -948,6 +968,7 @@ AFLD:
 		Prerequisites: dome
 		Owner: soviet
 		Hotkey: i
+		Icon: afld
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -998,6 +1019,7 @@ POWR:
 		BuildPaletteOrder: 0
 		Owner: allies,soviet
 		Hotkey: p
+		Icon: powr
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -1027,6 +1049,7 @@ APWR:
 		Prerequisites: dome
 		Owner: allies,soviet
 		Hotkey: l
+		Icon: apwr
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -1056,6 +1079,7 @@ STEK:
 		Prerequisites: weap,dome
 		Owner: soviet
 		Hotkey: t
+		Icon: stek
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -1084,6 +1108,7 @@ BARR:
 		Prerequisites: anypower
 		Owner: soviet
 		Hotkey: b
+		Icon: barr
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -1121,6 +1146,7 @@ TENT:
 		Prerequisites: anypower
 		Owner: allies
 		Hotkey: b
+		Icon: tent
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -1175,6 +1201,7 @@ FIX:
 		Prerequisites: weap
 		Owner: allies,soviet
 		Hotkey: m
+		Icon: fix
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -1208,8 +1235,8 @@ FACF:
 		Owner: None
 		Hotkey: c
 		Queue: Defense
+		Icon: facf
 	Tooltip:
-		Icon: fake-icon
 		Name: Fake Construction Yard
 		Description: Looks like a Construction Yard.
 	Building:
@@ -1238,8 +1265,8 @@ WEAF:
 		Owner: None
 		Hotkey: x
 		Queue: Defense
+		Icon: weaf
 	Tooltip:
-		Icon: fake-icon
 		Name: Fake War Factory
 		Description: Looks like a War Factory.
 	Building:
@@ -1269,8 +1296,8 @@ SYRF:
 		Owner: None
 		Hotkey: z
 		Queue: Defense
+		Icon: syrf
 	Tooltip:
-		Icon: fake-icon
 		Name: Fake Shipyard
 		Description: Looks like a Shipyard.
 	TargetableBuilding:
@@ -1303,8 +1330,8 @@ SPEF:
 		Owner: None
 		Hotkey: z
 		Queue: Defense
+		Icon: spef
 	Tooltip:
-		Icon: fake-icon
 		Name: Fake Sub Pen
 		Description: Looks like a Sub Pen.
 	Building:
@@ -1328,7 +1355,6 @@ DOMF:
 	Valued:
 		Cost: 50
 	Tooltip:
-		Icon: fake-icon
 		Name: Fake Radar Dome
 		Description: Looks like a Radar Dome.
 	Buildable:
@@ -1337,6 +1363,7 @@ DOMF:
 		Owner: None
 		Hotkey: v
 		Queue: Defense
+		Icon: domf
 	Building:
 		Power: -2
 		Footprint: xx xx
@@ -1360,6 +1387,7 @@ SBAG:
 		Prerequisites: fact
 		Owner: allies
 		Hotkey: b
+		Icon: sbag
 	Valued:
 		Cost: 25
 	CustomSellValue:
@@ -1387,6 +1415,7 @@ FENC:
 		Prerequisites: fact
 		Owner: soviet
 		Hotkey: n
+		Icon: fenc
 	Valued:
 		Cost: 25
 	CustomSellValue:
@@ -1414,6 +1443,7 @@ BRIK:
 		Prerequisites: fact
 		Owner: allies,soviet
 		Hotkey: w
+		Icon: brik
 	Valued:
 		Cost: 100
 	CustomSellValue:

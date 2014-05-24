@@ -951,14 +951,14 @@ Sequences:
 		damaged-build:
 			Start: 1
 			Length: *
-		icon: jmin
-			Start: 0
-	mnlyr:
-		icon: mnlyicon
 	brick:
 		idle:
 			Start: 0
 			Length: *
+	icon:
+		miner: jmin
+			Start: 0
+		mnlyr: mnlyicon
 
 VoxelSequences:
 

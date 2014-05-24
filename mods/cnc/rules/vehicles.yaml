@@ -9,6 +9,7 @@ MCV:
 		BuildPaletteOrder: 100
 		Prerequisites: anyhq
 		Owner: gdi,nod
+		Icon: mcv
 	Selectable:
 		Priority: 3
 	Mobile:
@@ -48,6 +49,7 @@ HARV:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Owner: gdi,nod
+		Icon: harv
 	Selectable:
 		Priority: 7
 		Bounds: 36,36
@@ -83,6 +85,7 @@ APC:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
 		Owner: gdi
+		Icon: apc
 	Mobile:
 		ROT: 8
 		Speed: 128
@@ -130,6 +133,7 @@ ARTY:
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq
 		Owner: nod
+		Icon: arty
 	Mobile:
 		ROT: 2
 		Speed: 85
@@ -166,6 +170,7 @@ FTNK:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq
 		Owner: nod
+		Icon: ftnk
 	Mobile:
 		ROT: 7
 		Speed: 113
@@ -202,6 +207,7 @@ BGGY:
 		BuildPaletteOrder: 20
 		Prerequisites: afld
 		Owner: nod
+		Icon: bggy
 	Mobile:
 		ROT: 10
 		Speed: 170
@@ -237,6 +243,7 @@ BIKE:
 		BuildPaletteOrder: 30
 		Prerequisites: afld
 		Owner: nod
+		Icon: bike
 	Mobile:
 		ROT: 10
 		Speed: 213
@@ -274,6 +281,7 @@ JEEP:
 		BuildPaletteOrder: 20
 		Prerequisites: weap
 		Owner: gdi
+		Icon: jeep
 	Mobile:
 		ROT: 10
 		Speed: 156
@@ -309,6 +317,7 @@ LTNK:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq
 		Owner: nod
+		Icon: ltnk
 	Mobile:
 		ROT: 7
 		Speed: 113
@@ -348,6 +357,7 @@ MTNK:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq
 		Owner: gdi
+		Icon: mtnk
 	Mobile:
 		Speed: 85
 	Health:
@@ -388,6 +398,7 @@ HTNK:
 		BuildPaletteOrder: 60
 		Prerequisites: eye
 		Owner: gdi
+		Icon: htnk
 	Mobile:
 		Crushes: wall, heavywall, crate, infantry
 		Speed: 56
@@ -441,6 +452,7 @@ MSAM:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq
 		Owner: gdi
+		Icon: msam
 	Mobile:
 		Speed: 85
 		ROT: 4
@@ -478,6 +490,7 @@ MLRS:
 		BuildPaletteOrder: 70
 		Prerequisites: anyhq
 		Owner: nod
+		Icon: mlrs
 	Mobile:
 		Speed: 99
 		ROT: 7
@@ -518,6 +531,7 @@ STNK:
 		BuildPaletteOrder: 90
 		Prerequisites: tmpl
 		Owner: nod
+		Icon: stnk
 	Mobile:
 		ROT: 10
 		Speed: 142

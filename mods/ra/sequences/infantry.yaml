@@ -68,8 +68,6 @@ e1:
 		Start: 0
 		Length: 6
 		Facings: 8
-	icon: e1icon
-		Start: 0
 
 sniper:
 	stand:
@@ -141,8 +139,6 @@ sniper:
 		Length: 3
 		Stride: 6
 		Facings: 8
-	icon: snipericon
-		Start: 0
 
 e3:
 	stand:
@@ -203,8 +199,6 @@ e3:
 		Start: 192
 		Length: 10
 		Facings: 8
-	icon: e3icon
-		Start: 0
 
 e6:
 	stand:
@@ -257,8 +251,6 @@ e6:
 		Length: 4
 		Facings: 8
 		Tick: 100
-	icon: e6icon
-		Start: 0
 
 medi:
 	stand:
@@ -319,8 +311,6 @@ medi:
 		Length: 4
 		Facings: 8
 		Tick: 100
-	icon: mediicon
-		Start: 0
 		
 mech:
 	stand:
@@ -381,8 +371,6 @@ mech:
 		Length: 4
 		Facings: 8
 		Tick: 100
-	icon: mechicon
-		Start: 0
 
 e2:
 	stand:
@@ -443,8 +431,6 @@ e2:
 		Start: 288
 		Length: 12
 		Facings: 8
-	icon: e2icon
-		Start: 0
 
 dog:
 	stand:
@@ -492,8 +478,6 @@ dog:
 		Start: 0
 		Length: 4
 		Facings: 8
-	icon: dogicon
-		Start: 0
 
 spy:
 	stand:
@@ -554,8 +538,6 @@ spy:
 		Start: 192
 		Length: 8
 		Facings: 8
-	icon: spyicon
-		Start: 0
 
 thf:
 	stand:
@@ -595,8 +577,6 @@ thf:
 		Start: 72
 		Length: 4
 		Facings: 8
-	icon: thficon
-		Start: 0
 
 hijacker:
 	stand: thf
@@ -636,8 +616,6 @@ hijacker:
 		Start: 72
 		Length: 4
 		Facings: 8
-	icon: hijackericon
-		Start: 0
 
 e7:
 	stand:
@@ -703,8 +681,6 @@ e7:
 		Length: 3
 		Stride: 6
 		Facings: 8
-	icon: e7icon
-		Start: 0
 
 e4:
 	stand:
@@ -765,8 +741,6 @@ e4:
 		Start: 256
 		Length: 16
 		Facings: 8
-	icon: e4icon
-		Start: 0
 
 gnrl:
 	stand:
@@ -893,8 +867,6 @@ shok:
 		Start: 0
 		Length: 6
 		Tick: 1600
-	icon: shokicon
-		Start: 0
 
 c1:
 	stand:
@@ -1207,8 +1179,6 @@ zombie:
 		Start: 0
 		Length: 6
 		Tick: 1600
-	icon: zombicon
-		Start: 0
 
 ant:
 	stand:
@@ -1253,5 +1223,38 @@ ant:
 		Start: 104
 		Length: 8
 		Tick: 300
-	icon: anticon
+
+icon:
+	e1: e1icon
 		Start: 0
+	sniper: snipericon
+		Start: 0
+	e3: e3icon
+		Start: 0
+	e6: e6icon
+		Start: 0
+	medi: mediicon
+		Start: 0
+	mech: mechicon
+		Start: 0
+	e2: e2icon
+		Start: 0
+	dog: dogicon
+		Start: 0
+	spy: spyicon
+		Start: 0
+	thf: thficon
+		Start: 0
+	hijacker: hijackericon
+		Start: 0
+	e7: e7icon
+		Start: 0
+	e4: e4icon
+		Start: 0
+	shok: shokicon
+		Start: 0
+	zombie: zombicon
+		Start: 0
+	ant: anticon
+		Start: 0
+

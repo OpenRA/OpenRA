@@ -5,26 +5,31 @@ PWRA:
 	Inherits: ^POWER
 	Buildable:
 		Owner: atreides
+		Icon: pwra
 
 WALLA:
 	Inherits: ^WALL
 	Buildable:
 		Owner: atreides
+		Icon: walla
 
 GUNTOWERA:
 	Inherits: ^GUNTOWER
 	Buildable:
 		Owner: atreides
+		Icon: guntowera
 
 ROCKETTOWERA:
 	Inherits: ^ROCKETTOWER
 	Buildable:
 		Owner: atreides
+		Icon: rockettowera
 
 REFA:
 	Inherits: ^REFINERY
 	Buildable:
 		Owner: atreides
+		Icon: refa
 	RenderBuildingWarFactory:
 		Image: REFA
 
@@ -32,26 +37,31 @@ BARRA:
 	Inherits: ^BARRACKS
 	Buildable:
 		Owner: atreides
+		Icon: barra
 
 REPAIRA:
 	Inherits: ^REPAIR
 	Buildable:
 		Owner: atreides
+		Icon: repaira
 
 RESEARCHA:
 	Inherits: ^RESEARCH
 	Buildable:
 		Owner: atreides
+		Icon: researcha
 
 HIGHTECHA:
 	Inherits: ^HIGHTECH
 	Buildable:
 		Owner: atreides
+		Icon: hightecha
 
 PALACEA:
 	Inherits: ^PALACE
 	Buildable:
 		Owner: atreides
+		Icon: palacea
 	AirstrikePower:
 		Icon: ornistrike
 		Description: Air Strike
@@ -71,11 +81,13 @@ SILOA:
 	Inherits: ^SILO
 	Buildable:
 		Owner: atreides
+		Icon: siloa
 
 LIGHTA:
 	Inherits: ^LIGHT
 	Buildable:
 		Owner: atreides
+		Icon: lighta
 	RenderBuildingWarFactory:
 		Image: LIGHTA
 
@@ -83,6 +95,7 @@ HEAVYA:
 	Inherits: ^HEAVY
 	Buildable:
 		Owner: atreides
+		Icon: heavya
 	RenderBuildingWarFactory:
 		Image: HEAVYA
 
@@ -90,16 +103,19 @@ RADARA:
 	Inherits: ^RADAR
 	Buildable:
 		Owner: atreides
+		Icon: radara
 
 STARPORTA:
 	Inherits: ^STARPORT
 	Buildable:
 		Owner: atreides
+		Icon: starporta
 
 MCVA:
 	Inherits: ^MCV
 	Buildable:
 		Owner: atreides
+		Icon: mcva
 	Transforms:
 		Facing: 16
 		IntoActor: conyarda
@@ -112,6 +128,7 @@ MCVA.starport:
 	Inherits: MCVA
 	Buildable:
 		Queue: Starport
+		Icon: mcva
 	Valued:
 		Cost: 2500
 
@@ -129,6 +146,7 @@ COMBATA:
 	Inherits: ^COMBAT
 	Buildable:
 		Owner: atreides
+		Icon: combata
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
@@ -156,6 +174,7 @@ COMBATA.starport:
 	Inherits: COMBATA
 	Buildable:
 		Queue: Starport
+		Icon: combata
 	Valued:
 		Cost: 875
 
@@ -167,6 +186,7 @@ SONICTANK:
 		Prerequisites: heavya, researcha
 		Owner: atreides
 		Hotkey: o
+		Icon: sonictank
 	Valued:
 		Cost: 1250
 	Tooltip:
@@ -216,6 +236,7 @@ FREMEN:
 		Owner: atreides
 		Prerequisites: palacea
 		Hotkey: f
+		Icon: fremen
 	Selectable:
 		Bounds: 12,17,0,0
 		Voice: FremenVoice
@@ -250,6 +271,7 @@ GRENADIER:
 		BuildPaletteOrder: 10
 		Owner: atreides
 		Hotkey: g
+		Icon: grenadier
 	Valued:
 		Cost: 160
 	Tooltip:

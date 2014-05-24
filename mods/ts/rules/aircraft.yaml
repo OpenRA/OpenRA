@@ -8,6 +8,7 @@ DPOD:
 		Queue: Air
 		BuildPaletteOrder: 10
 		Owner: gdi
+		Icon: dpod
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -48,6 +49,7 @@ DSHP:
 		BuildPaletteOrder: 10
 		Owner: gdi
 		Prerequisites: gaweap
+		Icon: dshp
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -80,6 +82,7 @@ ORCA:
 		BuildPaletteOrder: 20
 		Prerequisites: gahpad
 		Owner: gdi
+		Icon: orca
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
@@ -117,6 +120,7 @@ ORCAB:
 		BuildPaletteOrder: 20
 		Prerequisites: gahpad
 		Owner: gdi
+		Icon: orcab
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
@@ -154,6 +158,7 @@ ORCATRAN:
 		BuildPaletteOrder: 10
 		Owner: gdi
 		Prerequisites: gahpad
+		Icon: orcatran
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -185,6 +190,7 @@ TRNSPORT:
 		BuildPaletteOrder: 10
 		Owner: gdi
 		Prerequisites: gahpad
+		Icon: trnsport
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
@@ -212,6 +218,7 @@ SCRIN:
 		BuildPaletteOrder: 20
 		Prerequisites: nahpad
 		Owner: nod
+		Icon: scrin
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
@@ -249,6 +256,7 @@ APACHE:
 		BuildPaletteOrder: 20
 		Prerequisites: nahpad
 		Owner: nod
+		Icon: apache
 	Selectable:
 		Bounds: 30,24
 	Helicopter:

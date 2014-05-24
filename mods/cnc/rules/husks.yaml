@@ -2,7 +2,6 @@ MCV.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Mobile Construction Vehicle (Destroyed)
-		Icon: mcvicnh
 	RenderUnit:
 		Image: mcv
 	TransformOnCapture:
@@ -12,7 +11,6 @@ HARV.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Harvester (Destroyed)
-		Icon: harvicnh
 	RenderUnit:
 		Image: harv
 	TransformOnCapture:
@@ -22,7 +20,6 @@ APC.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: APC (Destroyed)
-		Icon: apcicnh
 	RenderUnit:
 		Image: apc
 	TransformOnCapture:
@@ -32,7 +29,6 @@ FTNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Flame Tank (Destroyed)
-		Icon: ftnkicnh
 	RenderUnit:
 		Image: ftnk
 	TransformOnCapture:
@@ -42,7 +38,6 @@ ARTY.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Artillery (Destroyed)
-		Icon: artyicnh
 	RenderUnit:
 		Image: arty
 	TransformOnCapture:
@@ -52,7 +47,6 @@ BGGY.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Nod Buggy (Destroyed)
-		Icon: bggyicnh
 	RenderUnit:
 		Image: bggy
 	TransformOnCapture:
@@ -62,7 +56,6 @@ BIKE.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Recon Bike (Destroyed)
-		Icon: bikeicnh
 	RenderUnit:
 		Image: bike
 	TransformOnCapture:
@@ -72,7 +65,6 @@ JEEP.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Hum-Vee (Destroyed)
-		Icon: jeepicnh
 	RenderUnit:
 		Image: jeep
 	TransformOnCapture:
@@ -82,7 +74,6 @@ LTNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Light Tank (Destroyed)
-		Icon: ltnkicnh
 	RenderUnit:
 		Image: ltnk
 	ThrowsParticle@turret:
@@ -94,7 +85,6 @@ MTNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Medium Tank (Destroyed)
-		Icon: mtnkicnh
 	RenderUnit:
 		Image: mtnk
 	ThrowsParticle@turret:
@@ -106,7 +96,6 @@ HTNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Mammoth Tank (Destroyed)
-		Icon: htnkicnh
 	RenderUnit:
 		Image: htnk
 	ThrowsParticle@turret:
@@ -118,7 +107,6 @@ MSAM.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Rocket Launcher (Destroyed)
-		Icon: msamicnh
 	RenderUnit:
 		Image: msam
 	ThrowsParticle@turret:
@@ -130,7 +118,6 @@ MLRS.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Mobile S.A.M. (Destroyed)
-		Icon: mlrsicnh
 	RenderUnit:
 		Image: mlrs
 	ThrowsParticle@turret:
@@ -142,7 +129,6 @@ STNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Stealth Tank (Destroyed)
-		Icon: stnkicnh
 	RenderUnit:
 		Image: stnk
 	TransformOnCapture:

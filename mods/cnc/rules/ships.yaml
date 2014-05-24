@@ -40,6 +40,7 @@ LST:
 		Queue: Vehicle
 		BuildPaletteOrder: 1000
 		Owner: None
+		Icon: lst
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:

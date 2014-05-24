@@ -2,8 +2,6 @@ mig:
 	idle:
 		Start: 0
 		Facings: 16
-	icon: migicon
-		Start: 0
 
 yak:
 	idle:
@@ -13,8 +11,6 @@ yak:
 		Start: 0
 		Length: 6
 		Facings: 8
-	icon: yakicon
-		Start: 0
 
 heli:
 	idle:
@@ -26,8 +22,6 @@ heli:
 	slow-rotor: lrotor
 		Start: 4
 		Length: 8
-	icon: heliicon
-		Start: 0
 
 hind:
 	idle:
@@ -43,8 +37,6 @@ hind:
 		Start: 0
 		Length: 6
 		Facings: 8
-	icon: hindicon
-		Start: 0
 
 tran:
 	idle: tran2
@@ -67,8 +59,6 @@ tran:
 		Length: 4
 	unload: tran2
 		Start: 35
-	icon: tranicon
-		Start: 0
 		
 tran1husk:
 	idle:
@@ -89,3 +79,16 @@ badr:
 	idle:
 		Start: 0
 		Facings: 16
+
+icon:
+	mig: migicon
+		Start: 0
+	yak: yakicon
+		Start: 0
+	heli: heliicon
+		Start: 0
+	hind: hindicon
+		Start: 0
+	tran: tranicon
+		Start: 0
+

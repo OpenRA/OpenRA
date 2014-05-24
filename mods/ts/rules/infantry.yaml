@@ -5,6 +5,7 @@ E1:
 		BuildPaletteOrder: 10
 		Owner: gdi,nod
 		Hotkey: i
+		Icon: e1
 	Valued:
 		Cost: 120
 	Tooltip:
@@ -31,6 +32,7 @@ E2:
 		BuildPaletteOrder: 10
 		Owner: gdi
 		Hotkey: n
+		Icon: e2
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -59,6 +61,7 @@ E3:
 		BuildPaletteOrder: 20
 		Owner: nod
 		Hotkey: r
+		Icon: e3
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -91,6 +94,7 @@ WEEDGUY:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: gdi
+		Icon: weedguy
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Weed
@@ -119,6 +123,7 @@ MEDIC:
 		Queue: Infantry
 		BuildPaletteOrder: 60
 		Owner: gdi
+		Icon: medic
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Medic
@@ -150,6 +155,7 @@ ENGINEER:
 		Queue: Infantry
 		BuildPaletteOrder: 30
 		Owner: gdi,nod
+		Icon: engineer
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Engineer
@@ -181,6 +187,7 @@ UMAGON:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: gdi
+		Icon: umagon
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Umagon
@@ -211,6 +218,7 @@ GHOST:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: gdi
+		Icon: ghost
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Ghost
@@ -244,6 +252,7 @@ JUMPJET:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: gdi
+		Icon: jumpjet
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: JumpJet
@@ -271,6 +280,7 @@ CHAMSPY:
 		BuildPaletteOrder: 60
 		Owner: nod
 		Hotkey: p
+		Icon: chamspy
 	Valued:
 		Cost: 700
 	DisguiseToolTip:
@@ -308,6 +318,7 @@ CYBORG:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: nod
+		Icon: cyborg
 	-CrushableInfantry:
 		CrushSound: squish2.aud
 	Selectable:
@@ -341,6 +352,7 @@ CYC2:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: nod
+		Icon: cyc2
 	-CrushableInfantry:
 		CrushSound: squish2.aud
 	Selectable:
@@ -368,6 +380,7 @@ MUTANT:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: forgotten
+		Icon: mutant
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -396,6 +409,7 @@ MWMN:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: forgotten
+		Icon: mwmn
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -424,6 +438,7 @@ MUTANT3:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: forgotten
+		Icon: mutant3
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -452,6 +467,7 @@ MHIJACK:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: forgotten
+		Icon: mhijack
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -478,6 +494,7 @@ TRATOS:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: forgotten
+		Icon: tratos
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -503,6 +520,7 @@ OXANNA:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: forgotten
+		Icon: oxanna
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -528,6 +546,7 @@ SLAV:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: forgotten
+		Icon: slav
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -555,6 +574,7 @@ DOGGIE:
 		Queue: Infantry
 		BuildPaletteOrder: 100
 		Owner: None
+		Icon: doggie
 	Health:
 		Radius: 128
 		HP: 250
@@ -583,6 +603,7 @@ VISSML:
 		Queue: Infantry
 		BuildPaletteOrder: 100
 		Owner: None
+		Icon: vissml
 	Health:
 		HP: 200
 	Valued:
@@ -611,6 +632,7 @@ VISLRG:
 		Queue: Infantry
 		BuildPaletteOrder: 100
 		Owner: None
+		Icon: vislrg
 	Health:
 		HP: 500
 	Valued:

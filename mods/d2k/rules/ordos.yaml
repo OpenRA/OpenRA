@@ -5,26 +5,31 @@ PWRO:
 	Inherits: ^POWER
 	Buildable:
 		Owner: ordos
+		Icon: pwro
 
 WALLO:
 	Inherits: ^WALL
 	Buildable:
 		Owner: ordos
+		Icon: wallo
 
 GUNTOWERO:
 	Inherits: ^GUNTOWER
 	Buildable:
 		Owner: ordos
+		Icon: guntowero
 
 ROCKETTOWERO:
 	Inherits: ^ROCKETTOWER
 	Buildable:
 		Owner: ordos
+		Icon: rockettowero
 
 REFO:
 	Inherits: ^REFINERY
 	Buildable:
 		Owner: ordos
+		Icon: refo
 	RenderBuildingWarFactory:
 		Image: REFO
 
@@ -32,26 +37,31 @@ BARRO:
 	Inherits: ^BARRACKS
 	Buildable:
 		Owner: ordos
+		Icon: barro
 
 REPAIRO:
 	Inherits: ^REPAIR
 	Buildable:
 		Owner: ordos
+		Icon: repairo
 
 RESEARCHO:
 	Inherits: ^RESEARCH
 	Buildable:
 		Owner: ordos
+		Icon: researcho
 
 SILOO:
 	Inherits: ^SILO
 	Buildable:
 		Owner: ordos
+		Icon: siloo
 
 LIGHTO:
 	Inherits: ^LIGHT
 	Buildable:
 		Owner: ordos
+		Icon: lighto
 	RenderBuildingWarFactory:
 		Image: LIGHTO
 
@@ -59,6 +69,7 @@ HEAVYO:
 	Inherits: ^HEAVY
 	Buildable:
 		Owner: ordos
+		Icon: heavyo
 	RenderBuildingWarFactory:
 		Image: HEAVYO
 
@@ -66,21 +77,25 @@ RADARO:
 	Inherits: ^RADAR
 	Buildable:
 		Owner: ordos
+		Icon: radaro
 
 STARPORTO:
 	Inherits: ^STARPORT
 	Buildable:
 		Owner: ordos
+		Icon: starporto
 
 HIGHTECHO:
 	Inherits: ^HIGHTECH
 	Buildable:
 		Owner: ordos
+		Icon: hightecho
 
 PALACEO:
 	Inherits: ^PALACE
 	Buildable:
 		Owner: ordos
+		Icon: palaceo
 	AirstrikePower:
 		Icon: ornistrike
 		Description: Air Strike
@@ -100,6 +115,7 @@ MCVO:
 	Inherits: ^MCV
 	Buildable:
 		Owner: ordos
+		Icon: mcvo
 	Transforms:
 		Facing: 16
 		IntoActor: conyardo
@@ -112,6 +128,7 @@ MCVO.starport:
 	Inherits: MCVO
 	Buildable:
 		Queue: Starport
+		Icon: mcvo
 	Valued:
 		Cost: 2500
 
@@ -119,6 +136,7 @@ COMBATO:
 	Inherits: ^COMBAT
 	Buildable:
 		Owner: ordos
+		Icon: combato
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
@@ -144,6 +162,7 @@ COMBATO.starport:
 	Inherits: COMBATO
 	Buildable:
 		Queue: Starport
+		Icon: combato
 	Valued:
 		Cost: 875
 
@@ -154,6 +173,7 @@ RAIDER:
 		BuildPaletteOrder: 10
 		Hotkey: w
 		Owner: ordos
+		Icon: raider
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -189,6 +209,7 @@ STEALTHRAIDER:
 		Prerequisites: Hitech
 		Owner: ordos
 		BuildPaletteOrder: 30
+		Icon: stealthraider
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -246,6 +267,7 @@ DEVIATORTANK:
 		Prerequisites: heavyo, researcho
 		Owner: ordos
 		Hotkey: d
+		Icon: deviatortank
 	Mobile:
 		ROT: 3
 		Speed: 64
@@ -285,6 +307,7 @@ SABOTEUR:
 		Prerequisites: palaceo
 		Owner: ordos
 		Hotkey: b
+		Icon: saboteur
 	Valued:
 		Cost: 800
 	Tooltip:

@@ -282,7 +282,6 @@ BARB:
 		Type: Light
 	Tooltip:
 		Name: Wire Fence
-		Icon: barbicnh
 
 WOOD:
 	Inherits: ^Wall

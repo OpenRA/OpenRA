@@ -1,73 +1,7 @@
-mcv:
-	icon: mcvicon
-		Start: 0
-
-apc:
-	icon: apcicon
-		Start: 0
-
-harv:
-	icon: harvicon
-		Start: 0
-
-hvr:
-	icon: hovricon
-		Start: 0
-
 4tnk:
 	muzzle: gunfire
 		Start: 0
 		Length: *
-	icon: xxicon
-		Start: 0
-
-truckb:
-	icon: xxicon
-		Start: 0
-
-lpst:
-	icon: lpsticon
-		Start: 0
-
-icbm:
-	icon: xxicon
-		Start: 0
-
-repair:
-	icon: rboticon
-		Start: 0
-
-art2:
-	icon: artyicon
-		Start: 0
-
-weed:
-	icon: weedicon
-		Start: 0
-
-bus:
-	icon: xxicon
-		Start: 0
-
-pick:
-	icon: xxicon
-		Start: 0
-
-car:
-	icon: xxicon
-		Start: 0
-
-wini:
-	icon: xxicon
-		Start: 0
-
-hmec:
-	icon: hmecicon
-		Start: 0
-
-bike:
-	icon: cyclicon
-		Start: 0
 
 bggy:
 	muzzle0: mgun-n
@@ -94,31 +28,11 @@ bggy:
 	muzzle7: mgun-ne
 		Start: 0
 		Length: *
-	icon: bggyicon
-		Start: 0
-
-sapc:
-	icon: sapcicon
-		Start: 0
-
-subtank:
-	icon: subticon
-		Start: 0
-
-sonic:
-	icon: soniicon
-		Start: 0
 
 ttnk:
 	muzzle: gunfire
 		Start: 0
 		Length: *
-	icon: tickicon
-		Start: 0
-
-stnk:
-	icon: stnkicon
-		Start: 0
 
 mmch:
 	stand:
@@ -137,8 +51,6 @@ mmch:
 	muzzle: gunfire
 		Start: 0
 		Length: *
-	icon: mmchicon
-		Start: 0
 
 gghunt:
 	idle:
@@ -146,8 +58,6 @@ gghunt:
 		Facings: 1
 		Length: 8
 		ShadowStart: 8
-	icon: seekicon
-		Start: 0
 
 smech:
 	stand:
@@ -165,5 +75,58 @@ smech:
 		Facings: -8
 		ShadowStart: 240
 		Tick: 100
-	icon: smchicon
+
+icon:
+	mcv: mcvicon
 		Start: 0
+	apc: apcicon
+		Start: 0
+	harv: harvicon
+		Start: 0
+	hvr: hovricon
+		Start: 0
+	4tnk: xxicon
+		Start: 0
+	truckb: xxicon
+		Start: 0
+	lpst: lpsticon
+		Start: 0
+	icbm: xxicon
+		Start: 0
+	repair: rboticon
+		Start: 0
+	art2: artyicon
+		Start: 0
+	weed: weedicon
+		Start: 0
+	bus: xxicon
+		Start: 0
+	pick: xxicon
+		Start: 0
+	car: xxicon
+		Start: 0
+	wini: xxicon
+		Start: 0
+	hmec: hmecicon
+		Start: 0
+	bike: cyclicon
+		Start: 0
+	bggy: bggyicon
+		Start: 0
+	sapc: sapcicon
+		Start: 0
+	subtank: subticon
+		Start: 0
+	sonic: soniicon
+		Start: 0
+	ttnk: tickicon
+		Start: 0
+	stnk: stnkicon
+		Start: 0
+	mmch: mmchicon
+		Start: 0
+	gghunt: seekicon
+		Start: 0
+	smech: smchicon
+		Start: 0
+
