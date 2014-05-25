@@ -2366,7 +2366,7 @@ Templates:
 	Template@116:
 		Id: 116
 		Image: rv05
-		Size: 3,2
+		Size: 3,3
 		Category: River
 		Tiles:
 			0: Clear
