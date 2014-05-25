@@ -196,9 +196,16 @@ Container@MENU_BACKGROUND:
 		Container@PERFORMANCE_INFO:
 			Logic: PerfDebugLogic
 			Children:
-				Background@GRAPH_BG:
+				Label@PERF_TEXT:
 					X: 40
 					Y: 40
+					Width: 170
+					Height: 40
+					Contrast: true
+					VAlign: Top
+				Background@GRAPH_BG:
+					X: WINDOW_RIGHT-WIDTH-31
+					Y: 31
 					Width: 220
 					Height: 220
 					Background: panel-black
@@ -208,11 +215,4 @@ Container@MENU_BACKGROUND:
 							Y: 10
 							Width: 200
 							Height: 200
-				Label@PERF_TEXT:
-					X: 40
-					Y: 270
-					Width: 170
-					Height: 40
-					Contrast: true
-					VAlign: Top
 
