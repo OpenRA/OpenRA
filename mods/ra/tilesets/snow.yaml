@@ -2488,7 +2488,6 @@ Templates:
 		Tiles:
 			0: Rock
 			1: River
-			2: Rock
 	Template@230:
 		Id: 230
 		Image: rv15
@@ -2497,7 +2496,6 @@ Templates:
 		Tiles:
 			0: Rock
 			1: River
-			2: Rock
 	Template@235:
 		Id: 235
 		Image: br1a
