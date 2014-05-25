@@ -74,6 +74,7 @@ Templates:
 		Image: clear1
 		Size: 1,1
 		Category: Terrain
+		PickAny: True
 		Tiles:
 			0: Clear
 			1: Clear
@@ -96,6 +97,7 @@ Templates:
 		Image: clear1
 		Size: 1,1
 		Category: Terrain
+		PickAny: True
 		Tiles:
 			0: Clear
 			1: Clear
