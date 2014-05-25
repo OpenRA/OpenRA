@@ -367,7 +367,8 @@ namespace OpenRA.TilesetBuilder
 				name: tilesetName,
 				id: tilesetID.ToUpper(),
 				palette: tilesetPalette.ToLower(),
-				extensions: new string[] { ext[0], ext[1] }
+				extensions: new string[] { ext[0], ext[1] },
+				terrainInfo: TerrainType
 			);
 
 			// List of files to add to the mix file
@@ -381,29 +382,24 @@ namespace OpenRA.TilesetBuilder
 			foreach (var t in surface1.Templates)
 				fileList.Add(ExportTemplate(t, surface1.Templates.IndexOf(t), tileset.Extensions.First(), dir));
 
-			// Add the terraintypes
-			foreach (var tt in TerrainType)
-			{
-				tileset.Terrain.Add(tt.Type, tt);
-			}
-
 			// Add the templates
 			ushort cur = 0;
 			foreach (var tp in surface1.Templates)
 			{
+				var tiles = new int[tp.Width * tp.Height];
+				foreach (var t in tp.Cells)
+				{
+					string ttype = TerrainType[surface1.TerrainTypes[t.Key.X, t.Key.Y]].Type;
+					var idx = (t.Key.X - tp.Left) + tp.Width * (t.Key.Y - tp.Top);
+					tiles[idx] = tileset.GetTerrainIndex(ttype);
+				}
+
 				var template = new TileTemplate(
 					id: cur,
 					image: "{0}{1:00}".F(txtTilesetName.Text, cur),
-					size: new int2(tp.Width, tp.Height)
+					size: new int2(tp.Width, tp.Height),
+					tiles: tiles
 				);
-
-				foreach (var t in tp.Cells)
-				{
-					string ttype = "Clear";
-					ttype = TerrainType[surface1.TerrainTypes[t.Key.X, t.Key.Y]].Type;
-					var idx = (t.Key.X - tp.Left) + tp.Width * (t.Key.Y - tp.Top);
-					template.Tiles.Add((byte)idx, ttype);
-				}
 
 				tileset.Templates.Add(cur, template);
 				cur++;

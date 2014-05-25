@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			if (!self.World.Map.IsInMap(cell.X, cell.Y))
 				return false;
 
-			if (!info.AllowedTerrain.Contains(self.World.GetTerrainType(cell)))
+			if (!info.AllowedTerrain.Contains(self.World.GetTerrainInfo(cell).Type))
 				return false;
 
 			if (!checkTransientActors)

@@ -59,24 +59,12 @@ namespace OpenRA.Mods.RA
 		int[,] domains;
 		Dictionary<int, HashSet<int>> transientConnections;
 
-		// Each terrain has an offset corresponding to its location in a
-		// movement class bitmask.  This caches each offset.
-		Dictionary<string, int> terrainOffsets;
-
 		public MovementClassDomainIndex(World world, uint movementClass)
 		{
 			bounds = world.Map.Bounds;
 			this.movementClass = movementClass;
 			domains = new int[(bounds.Width + bounds.X), (bounds.Height + bounds.Y)];
 			transientConnections = new Dictionary<int, HashSet<int>>();
-
-			terrainOffsets = new Dictionary<string, int>();
-			var terrains = world.TileSet.Terrain.OrderBy(t => t.Key).ToList();
-			foreach (var terrain in terrains)
-			{
-				var terrainOffset = terrains.FindIndex(x => x.Key == terrain.Key);
-				terrainOffsets[terrain.Key] = terrainOffset;
-			}
 
 			BuildDomains(world);
 		}
@@ -181,8 +169,7 @@ namespace OpenRA.Mods.RA
 
 		bool CanTraverseTile(World world, CPos p)
 		{
-			var currentTileType = WorldUtils.GetTerrainType(world, p);
-			var terrainOffset = terrainOffsets[currentTileType];
+			var terrainOffset = world.GetTerrainIndex(p);
 			return (movementClass & (1 << terrainOffset)) > 0;
 		}
 

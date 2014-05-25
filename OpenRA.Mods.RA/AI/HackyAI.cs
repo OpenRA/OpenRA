@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA.AI
 		BuildingInfo rallypointTestBuilding;
 		internal readonly HackyAIInfo Info;
 
-		string[] resourceTypes;
+		HashSet<int> resourceTypeIndices;
 
 		RushFuzzy rushFuzzy = new RushFuzzy();
 
@@ -152,8 +152,10 @@ namespace OpenRA.Mods.RA.AI
 
 			random = new MersenneTwister((int)p.PlayerActor.ActorID);
 
-			resourceTypes = Map.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
-				.Select(t => t.TerrainType).ToArray();
+			resourceTypeIndices = new HashSet<int>(
+				Map.Rules.Actors["world"].Traits
+				.WithInterface<ResourceTypeInfo>()
+				.Select(t => world.TileSet.GetTerrainIndex(t.TerrainType)));
 		}
 
 		static int GetPowerProvidedBy(ActorInfo building)
@@ -364,7 +366,7 @@ namespace OpenRA.Mods.RA.AI
 
 				case BuildingType.Refinery:
 					var tilesPos = world.FindTilesInCircle(baseCenter, MaxBaseDistance)
-						.Where(a => resourceTypes.Contains(world.GetTerrainType(new CPos(a.X, a.Y))));
+						.Where(a => resourceTypeIndices.Contains(world.GetTerrainIndex(new CPos(a.X, a.Y))));
 					if (tilesPos.Any())
 					{
 						var pos = tilesPos.MinBy(a => (a.CenterPosition - baseCenter.CenterPosition).LengthSquared);

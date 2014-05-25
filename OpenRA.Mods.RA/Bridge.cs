@@ -94,11 +94,11 @@ namespace OpenRA.Mods.RA
 				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
 		}
 
-		string GetTerrainType(CPos cell)
+		int GetTerrainType(CPos cell)
 		{
 			var dx = cell - self.Location;
 			var index = dx.X + self.World.TileSet.Templates[template].Size.X * dx.Y;
-			return self.World.TileSet.GetTerrainType(new TileReference<ushort, byte>(template, (byte)index));
+			return self.World.TileSet.GetTerrainIndex(new TileReference<ushort, byte>(template, (byte)index));
 		}
 
 		public void LinkNeighbouringBridges(World world, BridgeLayer bridges)

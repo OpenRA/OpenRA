@@ -111,7 +111,7 @@ namespace OpenRA
 
 		[FieldLoader.Ignore] public Lazy<TileReference<ushort, byte>[,]> MapTiles;
 		[FieldLoader.Ignore] public Lazy<TileReference<byte, byte>[,]> MapResources;
-		[FieldLoader.Ignore] public string[,] CustomTerrain;
+		[FieldLoader.Ignore] public int[,] CustomTerrain;
 
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
@@ -228,7 +228,10 @@ namespace OpenRA
 			NotificationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Notifications");
 			TranslationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Translations");
 
-			CustomTerrain = new string[MapSize.X, MapSize.Y];
+			CustomTerrain = new int[MapSize.X, MapSize.Y];
+			for (var x = 0; x < MapSize.X; x++)
+				for (var y = 0; y < MapSize.Y; y++)
+					CustomTerrain[x, y] = -1;
 
 			MapTiles = Exts.Lazy(() => LoadMapTiles());
 			MapResources = Exts.Lazy(() => LoadResourceTiles());
@@ -529,7 +532,7 @@ namespace OpenRA
 					var template = tileset.Templates[tr.Type];
 					if (!template.PickAny)
 						continue;
-					tr.Index = (byte)r.Next(0, template.Tiles.Count);
+					tr.Index = (byte)r.Next(0, template.TilesCount);
 					MapTiles.Value[i, j] = tr;
 				}
 			}

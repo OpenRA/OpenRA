@@ -32,6 +32,8 @@ namespace OpenRA.Graphics
 			var bitmapData = terrain.LockBits(terrain.Bounds(),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
+			var mapTiles = map.MapTiles.Value;
+
 			unsafe
 			{
 				int* c = (int*)bitmapData.Scan0;
@@ -41,11 +43,9 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + map.Bounds.Left;
 						var mapY = y + map.Bounds.Top;
-						var type = tileset.GetTerrainType(map.MapTiles.Value[mapX, mapY]);
-						if (!tileset.Terrain.ContainsKey(type))
-							throw new InvalidDataException("Tileset {0} lacks terraintype {1}".F(tileset.Id, type));
+						var type = tileset.GetTerrainInfo(mapTiles[mapX, mapY]);
 
-						*(c + (y * bitmapData.Stride >> 2) + x) = tileset.Terrain[type].Color.ToArgb();
+						*(c + (y * bitmapData.Stride >> 2) + x) = type.Color.ToArgb();
 					}
 			}
 
@@ -80,7 +80,7 @@ namespace OpenRA.Graphics
 						if (res == null)
 							continue;
 
-						*(c + (y * bitmapData.Stride >> 2) + x) = tileset.Terrain[res].Color.ToArgb();
+						*(c + (y * bitmapData.Stride >> 2) + x) = tileset[tileset.GetTerrainIndex(res)].Color.ToArgb();
 					}
 			}
 
@@ -107,9 +107,9 @@ namespace OpenRA.Graphics
 						var mapX = x + map.Bounds.Left;
 						var mapY = y + map.Bounds.Top;
 						var custom = map.CustomTerrain[mapX, mapY];
-						if (custom == null)
+						if (custom == -1)
 							continue;
-						*(c + (y * bitmapData.Stride >> 2) + x) = world.TileSet.Terrain[custom].Color.ToArgb();
+						*(c + (y * bitmapData.Stride >> 2) + x) = world.TileSet[custom].Color.ToArgb();
 					}
 			}
 

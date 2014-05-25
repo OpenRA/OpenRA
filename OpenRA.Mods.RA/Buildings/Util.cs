@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Buildings
 			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(a) != null) return false;
 			if (world.ActorMap.GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 
-			return world.Map.IsInMap(a) && bi.TerrainTypes.Contains(world.GetTerrainType(a));
+			return world.Map.IsInMap(a) && bi.TerrainTypes.Contains(world.GetTerrainInfo(a).Type);
 		}
 
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, CPos topLeft, Actor toIgnore)

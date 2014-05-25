@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Buildings
 				var cellOffset = new CVec(i % width, i / width + bibOffset);
 
 				// Some mods may define terrain-specific bibs
-				var terrain = self.World.GetTerrainType(location + cellOffset);
+				var terrain = self.World.GetTerrainInfo(location + cellOffset).Type;
 				var testSequence = info.Sequence + "-" + terrain;
 				var sequence = anim.HasSequence(testSequence) ? testSequence : info.Sequence;
 				anim.PlayFetchIndex(sequence, () => index);
