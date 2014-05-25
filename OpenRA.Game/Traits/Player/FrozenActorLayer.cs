@@ -54,13 +54,15 @@ namespace OpenRA.Traits
 		int flashTicks;
 		public void Tick(World world, Shroud shroud)
 		{
-			Visible = false;
+			Visible = true;
 			foreach (var pos in Footprint)
+			{
 				if (shroud.IsVisible(pos))
 				{
-					Visible = true;
+					Visible = false;
 					break;
 				}
+			}
 
 			if (flashTicks > 0)
 				flashTicks--;
