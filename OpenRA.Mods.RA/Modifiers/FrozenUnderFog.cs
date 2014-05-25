@@ -65,11 +65,13 @@ namespace OpenRA.Mods.RA
 			{
 				var isVisible = false;
 				foreach (var pos in footprint)
+				{
 					if (p.Shroud.IsVisible(pos))
 					{
 						isVisible = true;
 						break;
 					}
+				}
 				visible[p] = isVisible;
 				if (isVisible)
 					VisibilityHash += p.ClientIndex;
