@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc
 			r = Game.Renderer;
 			if (r == null) return;
 
-			var s = new Sheet("mods/cnc/uibits/chrome.png");
+			var s = new Sheet(loadInfo["Image"]);
 			var res = r.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
 
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Cnc
 			if (!setup && r.Fonts != null)
 			{
 				loadingFont = r.Fonts["BigBold"];
-				loadingText = "Loading";
+				loadingText = loadInfo["Text"];
 				loadingPos = new float2((bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
 
 				versionFont = r.Fonts["Regular"];
@@ -127,15 +127,16 @@ namespace OpenRA.Mods.Cnc
 		void TestAndContinue()
 		{
 			Ui.ResetAll();
-			if (!loadInfo["TestFiles"].Split(',').All(f => GlobalFileSystem.Exists(f.Trim())))
+			var installData = Game.modData.Manifest.ContentInstaller;
+			if (!installData["TestFiles"].Split(',').All(f => GlobalFileSystem.Exists(f.Trim())))
 			{
 				var args = new WidgetArgs()
 				{
 					{ "continueLoading", () => TestAndContinue() },
-					{ "installData", loadInfo }
+					{ "installData", installData }
 				};
-				Ui.LoadWidget(loadInfo["InstallerBackgroundWidget"], Ui.Root, args);
-				Ui.OpenWindow(loadInfo["InstallerMenuWidget"], args);
+				Ui.LoadWidget(installData["InstallerBackgroundWidget"], Ui.Root, args);
+				Ui.OpenWindow(installData["InstallerMenuWidget"], args);
 			}
 			else
 				Game.LoadShellMap();

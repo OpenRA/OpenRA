@@ -20,7 +20,6 @@ namespace OpenRA.Mods.RA
 {
 	public class DefaultLoadScreen : ILoadScreen
 	{
-		Dictionary<string, string> info;
 		Stopwatch lastUpdate = Stopwatch.StartNew();
 		Renderer r;
 
@@ -31,8 +30,6 @@ namespace OpenRA.Mods.RA
 
 		public void Init(Manifest m, Dictionary<string, string> info)
 		{
-			this.info = info;
-
 			// Avoid standard loading mechanisms so we
 			// can display the loadscreen as early as possible
 			r = Game.Renderer;
@@ -78,14 +75,15 @@ namespace OpenRA.Mods.RA
 		void TestAndContinue()
 		{
 			Ui.ResetAll();
-			if (!info["TestFiles"].Split(',').All(f => GlobalFileSystem.Exists(f.Trim())))
+			var installData = Game.modData.Manifest.ContentInstaller;
+			if (!installData["TestFiles"].Split(',').All(f => GlobalFileSystem.Exists(f.Trim())))
 			{
 				var args = new WidgetArgs()
 				{
 					{ "continueLoading", () => TestAndContinue() },
-					{ "installData", info }
+					{ "installData", installData }
 				};
-				Ui.OpenWindow(info["InstallerMenuWidget"], args);
+				Ui.OpenWindow(installData["InstallerMenuWidget"], args);
 			}
 			else
 				Game.LoadShellMap();

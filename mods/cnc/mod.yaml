@@ -127,11 +127,15 @@ TileSets:
 	mods/cnc/tilesets/jungle.yaml
 
 LoadScreen: CncLoadScreen
+	Image: mods/cnc/uibits/chrome.png
+	Text: Loading
+
+ContentInstaller:
+	TestFiles: conquer.mix, desert.mix, general.mix, sounds.mix, speech.mix, temperat.mix, tempicnh.mix, winter.mix
+	InstallerBackgroundWidget: INSTALL_BACKGROUND
 	InstallerMenuWidget: INSTALL_PANEL
 	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
 	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
-	InstallerBackgroundWidget: INSTALL_BACKGROUND
-	TestFiles: conquer.mix, desert.mix, general.mix, sounds.mix, speech.mix, temperat.mix, tempicnh.mix, winter.mix
 	PackageMirrorList: http://openra.net/packages/cnc-mirrors.txt
 
 ServerTraits:

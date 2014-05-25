@@ -22,14 +22,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class DownloadPackagesLogic
 	{
 		Widget panel;
-		Dictionary<string, string> installData;
+		IReadOnlyDictionary<string, string> installData;
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
 		Action afterInstall;
 		string mirror;
 
 		[ObjectCreator.UseCtor]
-		public DownloadPackagesLogic(Widget widget, Dictionary<string, string> installData, Action afterInstall)
+		public DownloadPackagesLogic(Widget widget, IReadOnlyDictionary<string, string> installData, Action afterInstall)
 		{
 			this.installData = installData;
 			this.afterInstall = afterInstall;
