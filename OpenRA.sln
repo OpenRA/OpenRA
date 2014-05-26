@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common Lua scripts", "Commo
 		mods\common\lua\supportpowers.lua = mods\common\lua\supportpowers.lua
 		mods\common\lua\team.lua = mods\common\lua\team.lua
 		mods\common\lua\utils.lua = mods\common\lua\utils.lua
+		mods\common\lua\facing.lua = mods\common\lua\facing.lua
+		mods\common\lua\production.lua = mods\common\lua\production.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts", "Tiberian Dawn Lua scripts", "{62FCD0D0-6D24-435D-9DD8-3CCADCF7ECAB}"
@@ -48,6 +50,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts",
 		mods\cnc\maps\nod03a\nod03a.lua = mods\cnc\maps\nod03a\nod03a.lua
 		mods\cnc\maps\nod03b\nod03b.lua = mods\cnc\maps\nod03b\nod03b.lua
 		mods\cnc\maps\shellmap\shellmap.lua = mods\cnc\maps\shellmap\shellmap.lua
+		mods\cnc\maps\gdi04a\gdi04a.lua = mods\cnc\maps\gdi04a\gdi04a.lua
+		mods\cnc\maps\gdi04b\gdi04b.lua = mods\cnc\maps\gdi04b\gdi04b.lua
+		mods\cnc\maps\gdi04c\gdi04c.lua = mods\cnc\maps\gdi04c\gdi04c.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Red Alert Lua scripts", "{B35D533F-BEB6-4674-A466-324EEFD97259}"
+	ProjectSection(SolutionItems) = preProject
+		mods\ra\maps\allies-01-classic\allies01.lua = mods\ra\maps\allies-01-classic\allies01.lua
+		mods\ra\maps\allies-02-classic\allies02.lua = mods\ra\maps\allies-02-classic\allies02.lua
+		mods\ra\maps\desert-shellmap\desert-shellmap.lua = mods\ra\maps\desert-shellmap\desert-shellmap.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "System Lua scripts", "{A4D6AEA4-8009-4256-903B-8D227E50452B}"
+	ProjectSection(SolutionItems) = preProject
+		lua\sandbox.lua = lua\sandbox.lua
+		lua\scriptwrapper.lua = lua\scriptwrapper.lua
+		lua\stacktraceplus.lua = lua\stacktraceplus.lua
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.CrashDialog", "OpenRA.CrashDialog\OpenRA.CrashDialog.csproj", "{47F1B0EE-EB35-47F2-93E4-273C70909157}"
