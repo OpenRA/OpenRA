@@ -213,6 +213,7 @@ namespace OpenRA.Mods.RA.Air
 			case "Move":
 			case "Enter":
 			case "ReturnToBase":
+			case "Stop":
 				return "Move";
 			default: return null;
 			}
