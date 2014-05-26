@@ -25,7 +25,8 @@ namespace OpenRA.Network
 				NatUtility.Logger = Log.Channels["server"].Writer;
 				NatUtility.Verbose = Game.Settings.Server.VerboseNatDiscovery;
 				NatUtility.DeviceFound += DeviceFound;
-				NatUtility.DeviceLost += DeviceLost;
+				// Mono.Nat never raises the DeviceLost event
+				//NatUtility.DeviceLost += DeviceLost;
 				Game.Settings.Server.NatDeviceAvailable = false;
 				NatUtility.StartDiscovery();
 				Log.Write("server", "NAT discovery started.");
@@ -44,6 +45,8 @@ namespace OpenRA.Network
 
 			try
 			{
+				// Mono.Nat.StopDiscovery method never fails because it just
+				// reset an ManualEvent. This try-catch statement could be removed.
 				NatUtility.StopDiscovery();
 			}
 			catch (Exception e)
@@ -53,7 +56,10 @@ namespace OpenRA.Network
 				Game.Settings.Server.AllowPortForward = false;
 			}
 				
-			if (NatDevice == null)
+			// The discovered NAT device/service can be UpnpNatDevice or PmpNatDevice
+			// OpenRA only supports Upnp because it uses NatDevice.GetAllMappings method
+			// that is not supported by PMP (it throws a NotSupportedException)
+			if (NatDevice == null || NatDevice.GetType().Name != "UpnpNatDevice")
 			{
 				Log.Write("server", "No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Game.Settings.Server.NatDiscoveryTimeout));
 				Game.Settings.Server.NatDeviceAvailable = false;
@@ -63,8 +69,8 @@ namespace OpenRA.Network
 
 		public static void DeviceFound(object sender, DeviceEventArgs args)
 		{
-			if (args.Device == null)
-				return;
+			if (args.Device == null) // ?? it should never happen
+				return; 
 			
 			Log.Write("server", "NAT device discovered.");
 			
@@ -90,33 +96,28 @@ namespace OpenRA.Network
 			}
 		}
 		
-		public static void DeviceLost(object sender, DeviceEventArgs args)
-		{
-			Log.Write("server", "NAT device lost.");
-			
-			if (args.Device == null)
-				return;
-			
-			try
-			{
-				NatDevice = args.Device;
-				Log.Write("server", "Type: {0}", NatDevice.GetType());
-			}
-			catch (Exception e)
-			{
-				Log.Write("server", "Can't fetch type from lost NAT device: {0}", e);
-			}
-			
-			Game.Settings.Server.NatDeviceAvailable = false;
-			Game.Settings.Server.AllowPortForward = false;
-		}
 
 		public static void ForwardPort()
 		{
 			try
 			{
-				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort);
+				// Here OpenRA is using Permanent portmapping.
+				// Permanent portmappings never expire and given a program can finish unexpectly (because someone unplug the PC, for example)
+				// This mapping remains opened. 
+				// A different approach is to specify a Lifetime and use a Timer (or similar) to renew the mapping periodically
+				// then, if RemovePortforward method is not invoked the NAT will remove it automatically.
+				// In those cases when the NAT fails with Only OnlyPermanentLeasesSupported (errCode: 725)
+				// you can retry without lifetime.
+				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort /*lifetime*/);
+				//try{
 				NatDevice.CreatePortMap(mapping);
+				//}catch(MappingException e){
+				//	if(e.ErrorCode == 725 /*OnlyPermanentLeasesSupported*/){
+				//		mapping.Lifetime = 0;
+				//		NatDevice.CreatePortMap(mapping);
+				//	}
+				//	throws;
+				//}
 				Log.Write("server", "Create port mapping: protocol={0}, public={1}, private={2}", mapping.Protocol, mapping.PublicPort, mapping.PrivatePort);
 			}
 			catch (Exception e)
