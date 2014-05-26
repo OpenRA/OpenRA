@@ -2,7 +2,7 @@
 # Use Linux system dependencies where possible, but take into account different .so names.
 
 os=`uname`
-if [ $os == 'Linux' ]; then
+if [ "$os" == 'Linux' ]; then
 	locations=(/usr/lib /usr/lib64 /usr/local/lib /opt/lib)
 	sonames=(liblua5.1.so.5.1 liblua5.1.so.0 liblua.so.5.1 liblua-5.1.so liblua5.1.so)
 	for location in "${locations[@]}" ; do
@@ -10,11 +10,11 @@ if [ $os == 'Linux' ]; then
 			if [ -f $location/$soname ]; then
 				liblua51=$soname
 				echo "Detected Lua 5.1 library at "$location/$soname
-				break
+				break 2
 			fi
 		done
 	done
-	if [ -z $liblua51 ]; then
+	if [ -z "$liblua51" ]; then
 		echo "Lua 5.1 library detection failed."
 		exit 1
 	else
