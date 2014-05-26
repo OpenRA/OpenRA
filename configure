@@ -1,0 +1,17 @@
+#!/bin/bash
+# Use Linux system dependencies where possible, but take into account different .so names.
+
+os=`uname`
+if [ $os == 'Linux' ]; then
+	locations=(/usr/lib /usr/lib64)
+	sonames=(liblua5.1.so.5.1 liblua5.1.so.0 liblua.so.5.1 liblua-5.1.so liblua5.1.so)
+	for location in "${locations[@]}" ; do
+		for soname in ${sonames[@]} ; do
+			if [ -f $location/$soname ]; then
+				liblua51=$soname
+				break
+			fi
+		done
+	done
+	sed "s/@LIBLUA51@/${liblua51}/" thirdparty/Eluant.dll.config.in > Eluant.dll.config
+fi
