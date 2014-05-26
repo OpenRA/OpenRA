@@ -16,9 +16,11 @@ script:
  - make all
  - make test
 
-# Only watch the development branch.
+# Only watch the development and release branches.
 branches:
  only:
+   - master
+   - next
    - bleed
 
 # Notify developers when build passed/failed.
