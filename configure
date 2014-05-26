@@ -9,9 +9,16 @@ if [ $os == 'Linux' ]; then
 		for soname in ${sonames[@]} ; do
 			if [ -f $location/$soname ]; then
 				liblua51=$soname
+				echo "Detected Lua 5.1 library at "$location/$soname
 				break
 			fi
 		done
 	done
-	sed "s/@LIBLUA51@/${liblua51}/" thirdparty/Eluant.dll.config.in > Eluant.dll.config
+	if [ -z $liblua51 ]; then
+		echo "Lua 5.1 library detection failed."
+		exit 1
+	else
+		sed "s/@LIBLUA51@/${liblua51}/" thirdparty/Eluant.dll.config.in > Eluant.dll.config
+		echo "Eluant.dll.config has been created successfully."
+	fi
 fi
