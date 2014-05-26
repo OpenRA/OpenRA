@@ -284,7 +284,7 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
           if replace then
             -- check if anything replaced, store changed content, make .bak
             if findReplace:ReplaceString(true,onFileRegister)
-            and findReplace.fMakeBak and FileWrite(file..".bak",filetext) then
+            and (not findReplace.fMakeBak or FileWrite(file..".bak",filetext)) then
               FileWrite(file,findReplace.oveditor:GetText())
             end
           else
