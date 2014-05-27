@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]
 		public readonly string[] Produces = { };
 
-		public virtual object Create(ActorInitializer init) { return new Production(this); }
+		public virtual object Create(ActorInitializer init) { return new Production(this, init.self); }
 	}
 
 	[Desc("Where the unit should leave the building. Multiples are allowed if IDs are added: Exit@2, ...")]
@@ -41,10 +41,13 @@ namespace OpenRA.Mods.RA
 
 	public class Production
 	{
+		RallyPoint rp;
+
 		public ProductionInfo Info;
-		public Production(ProductionInfo info)
+		public Production(ProductionInfo info, Actor self)
 		{
 			Info = info;
+			rp = self.TraitOrDefault<RallyPoint>();
 		}
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo)
@@ -77,9 +80,8 @@ namespace OpenRA.Mods.RA
 			});
 		}
 
-		static CPos MoveToRallyPoint(Actor self, Actor newUnit, CPos exitLocation)
+		CPos MoveToRallyPoint(Actor self, Actor newUnit, CPos exitLocation)
 		{
-			var rp = self.TraitOrDefault<RallyPoint>();
 			if (rp == null)
 				return exitLocation;
 
