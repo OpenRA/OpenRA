@@ -63,6 +63,7 @@ Section "Game" GAME
 	File /r "${SRCDIR}\mods\d2k"
 	File /r "${SRCDIR}\mods\ra"
 	File /r "${SRCDIR}\mods\modchooser"
+
 	SetOutPath "$INSTDIR"
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
@@ -97,8 +98,6 @@ Section "Game" GAME
 	File "${DEPSDIR}\freetype6.dll"
 	File "${DEPSDIR}\zlib1.dll"
 	File "${DEPSDIR}\lua51.dll"
-	SetOutPath "$INSTDIR\lua"
-	File "${SRCDIR}\lua\*.lua"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -107,6 +106,9 @@ Section "Game" GAME
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.lnk" $OUTDIR\README.html "" \
 			"$OUTDIR\README.html" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
+
+	SetOutPath "$INSTDIR\lua"
+	File "${SRCDIR}\lua\*.lua"
 
 	SetOutPath "$INSTDIR\glsl"
 	File "${SRCDIR}\glsl\*.frag"
