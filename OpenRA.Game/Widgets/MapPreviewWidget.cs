@@ -149,19 +149,19 @@ namespace OpenRA.Widgets
 					var owned = colors.ContainsKey(p);
 					var pos = ConvertToPreview(p);
 					var sprite = ChromeProvider.GetImage("lobby-bits", owned ? "spawn-claimed" : "spawn-unclaimed");
-					var offset = new int2(sprite.bounds.Width, sprite.bounds.Height) / 2;
+					var offset = new int2(sprite.bounds.Width / 2, sprite.bounds.Height / 2);
 
 					if (owned)
 						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, sprite.bounds.Width - 2, sprite.bounds.Height - 2), colors[p]);
 
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos - offset);
-					var fonts = Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")];
+					var font = Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")];
 					var number = Convert.ToChar('A' + spawnPoints.IndexOf(p)).ToString();
-					offset = fonts.Measure(number) / 2;
-					offset.Y += 1; // Does not center well vertically for some reason
-					fonts.DrawTextWithContrast(number, pos - offset, ChromeMetrics.Get<Color>("SpawnColor"), ChromeMetrics.Get<Color>("SpawnContrastColor"), 1);
+					var textOffset = font.Measure(number) / 2;
+					textOffset.Y += 1; // Does not center well vertically for some reason
+					font.DrawTextWithContrast(number, pos - textOffset, ChromeMetrics.Get<Color>("SpawnColor"), ChromeMetrics.Get<Color>("SpawnContrastColor"), 1);
 
-					if (((pos - Viewport.LastMousePos).ToFloat2() * offset.ToFloat2()).LengthSquared < 1)
+					if (((pos - Viewport.LastMousePos).ToFloat2() / offset.ToFloat2()).LengthSquared <= 1)
 						TooltipSpawnIndex = spawnPoints.IndexOf(p) + 1;
 				}
 			}

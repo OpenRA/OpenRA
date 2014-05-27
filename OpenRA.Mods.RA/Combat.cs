@@ -184,11 +184,17 @@ namespace OpenRA.Mods.RA
 			radii.Do(radius => damage[radius] = 0);
 			foreach (var wh in warheads)
 				steps.Do(j => radii.Where(radius => ((j - 1) * wh.Spread.Range <= radius) && (radius < j * wh.Spread.Range))
-					.Do(radius => damage[radius] += wh.Damage * (Combat.falloff[j] * (radius - (j - 1) * wh.Spread.Range) + Combat.falloff[j - 1] * (j * wh.Spread.Range - radius)) / Convert.ToDouble(wh.Spread.Range)));
+					.Do(radius => damage[radius] += wh.Damage *
+						(Combat.falloff[j] * (radius - (j - 1) * wh.Spread.Range) + Combat.falloff[j - 1] * (j * wh.Spread.Range - radius)) /
+						Convert.ToDouble(wh.Spread.Range)
+					));
 
 			var radiusUp = damage.Where(radius => radius.Value >= damagePercentage * damage.Values.Max()).ToDictionary(radius => radius.Key).Keys.Max();
 			var radiusDown = damage.Keys.Where(radius => radius > radiusUp).Min();
-			return new WRange(Convert.ToInt32((damagePercentage * damage.Values.Max() * (radiusDown - radiusUp) - damage[radiusUp] * radiusDown + damage[radiusDown] * radiusUp) / (damage[radiusDown] - damage[radiusUp])));
+			return new WRange(Convert.ToInt32(
+					(damagePercentage * damage.Values.Max() * (radiusDown - radiusUp) - damage[radiusUp] * radiusDown + damage[radiusDown] * radiusUp)
+					/ (damage[radiusDown] - damage[radiusUp])
+				));
 		}
 
 		static readonly float[] falloff =

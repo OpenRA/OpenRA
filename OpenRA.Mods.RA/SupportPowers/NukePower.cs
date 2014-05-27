@@ -50,7 +50,8 @@ namespace OpenRA.Mods.RA
 
 		public readonly string DisplayRing = "0";
 
-		public override object Create(ActorInitializer init) {
+		public override object Create(ActorInitializer init)
+		{
 			double damage;
 			if (DisplayRing == "Smudge")
 				RingRangeP = Combat.FindSmudgeRange(init.self.World.Map.Rules.Weapons[MissileWeapon.ToLowerInvariant()].Warheads);

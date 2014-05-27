@@ -93,16 +93,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
-				var spawnPoint = spawnPoints.ToList()[ii];
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => client.SpawnPoint == spawnPoint,
-					() => SetSpawnPoint(orderManager, client, spawnPoint));
-				item.Get<LabelWidget>("LABEL").GetText = () => spawnPoint == 0 ? "-" : Convert.ToChar('A' - 1 + spawnPoint).ToString();
+					() => client.SpawnPoint == ii,
+					() => SetSpawnPoint(orderManager, client, ii));
+				item.Get<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : Convert.ToChar('A' - 1 + ii).ToString();
 				return item;
 			};
 
-			var options = Exts.MakeArray(spawnPoints.Count(), i => i).ToList();
-			dropdown.ShowDropDown("SPAWN_DROPDOWN_TEMPLATE", 150, options, setupItem);
+			dropdown.ShowDropDown("SPAWN_DROPDOWN_TEMPLATE", 150, spawnPoints, setupItem);
 		}
 
 		public static void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client,
@@ -167,14 +165,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static void SelectSpawnPoint(OrderManager orderManager, MapPreviewWidget mapPreview, MapPreview preview, MouseInput mi)
 		{
 			if (mi.Button != MouseButton.Left)
-				return; 
+				return;
 
 			if (!orderManager.LocalClient.IsObserver && orderManager.LocalClient.State == Session.ClientState.Ready)
 				return;
 
 			var selectedSpawn = preview.SpawnPoints
 				.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp), i))
-				.Where(a => ((a.First - mi.Location).ToFloat2() / new float2(ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").bounds.Width / 2, ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").bounds.Height / 2)).LengthSquared <= 1)
+				.Where(a => ((a.First - mi.Location).ToFloat2() / new float2(ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").bounds.Size) * 2).LengthSquared <= 1)
 				.Select(a => a.Second + 1)
 				.FirstOrDefault();
 
@@ -422,7 +420,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN");
 			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady;
-			dropdown.OnMouseDown = _ => ShowSpawnDropDown(dropdown, c, orderManager, Enumerable.Range(0, map.SpawnPoints.Count + 1)
+			dropdown.OnMouseDown = _ => ShowSpawnDropDown(dropdown, c, orderManager, Enumerable.Range(0, map.PlayerCount + 1)
 					.Except(orderManager.LobbyInfo.Clients.Where(client => client != c && client.SpawnPoint != 0).Select(client => client.SpawnPoint)));
 			dropdown.GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
 		}
