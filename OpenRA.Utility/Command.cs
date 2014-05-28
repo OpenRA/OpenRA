@@ -552,8 +552,25 @@ namespace OpenRA.Utility
 			var mod = args[1];
 			Game.modData = new ModData(mod);
 			var rules = Game.modData.RulesetCache.LoadDefaultRules();
+
+			var armorList = new List<string>();
+			foreach (var actorInfo in rules.Actors.Values)
+			{
+				var armor = actorInfo.Traits.GetOrDefault<ArmorInfo>();
+				if (armor != null)
+					if (!armorList.Contains(armor.Type))
+						armorList.Add(armor.Type);
+			}
+
+			armorList.Sort();
+			var vsArmor = "";
+			foreach (var armorType in armorList)
+				vsArmor = vsArmor + ";vs. " + armorType;
+
 			var dump = new StringBuilder();
-			dump.AppendLine("Name;Faction;Health;Cost;Damage per Second"); 
+			dump.AppendLine("Name;Faction;Health;Cost;Damage;Burst;Rate of Fire;Damage per Second" + vsArmor);
+
+			var line = 1;
 			foreach (var actorInfo in rules.Actors.Values)
 			{
 				if (actorInfo.Name.StartsWith("^"))
@@ -562,22 +579,13 @@ namespace OpenRA.Utility
 				var buildable = actorInfo.Traits.GetOrDefault<BuildableInfo>();
 				if (buildable == null)
 					continue;
-				var faction = FieldSaver.FormatValue(buildable.Owner, buildable.Owner.GetType());
 
-				var damagePerSecond = 0f;
-				var armaments = actorInfo.Traits.WithInterface<ArmamentInfo>();
-				if (armaments.Any())
-				{
-					var weapons = armaments.Select(a => a.Weapon).Select(w => rules.Weapons[w.ToLowerInvariant()]);
-					if (weapons.Any())
-					{
-						var damage = weapons.Select(w => new { ROF = w.ROF > 0 ? w.ROF : 1, Damage = w.Burst * w.Warheads.Sum(z => z.Damage) });
-						damagePerSecond = damage.Sum(d => (float)d.Damage / d.ROF * 25);
-					}
-				}
+				line++;
 
 				var tooltip = actorInfo.Traits.GetOrDefault<TooltipInfo>();
 				var name = tooltip != null ? tooltip.Name : actorInfo.Name;
+
+				var faction = FieldSaver.FormatValue(buildable.Owner, buildable.Owner.GetType());
 
 				var health = actorInfo.Traits.GetOrDefault<HealthInfo>();
 				var hp = health != null ? health.HP : 0;
@@ -585,7 +593,40 @@ namespace OpenRA.Utility
 				var value = actorInfo.Traits.GetOrDefault<ValuedInfo>();
 				var cost = value != null ? value.Cost : 0;
 
-				dump.AppendLine("{0};{1};{2};{3};{4}".F(name, faction, hp, cost, damagePerSecond));
+				dump.Append("{0};{1};{2};{3}".F(name, faction, hp, cost));
+
+				var armaments = actorInfo.Traits.WithInterface<ArmamentInfo>();
+				if (armaments.Any())
+				{
+					var weapons = armaments.Select(a => a.Weapon).Select(w => rules.Weapons[w.ToLowerInvariant()]);
+					var weaponCount = 0;
+					foreach (var weapon in weapons)
+					{
+						weaponCount++;
+						if (weaponCount > 1)
+						{
+							line++;
+							dump.AppendLine();
+							dump.Append(" ; ; ; ");
+						}
+
+						var rateOfFire = (weapon.ROF > 1 ? weapon.ROF : 1).ToString();
+						var burst = weapon.Burst.ToString();
+						var warhead = weapon.Warheads.First(); // TODO
+						var damage = warhead.Damage.ToString();
+						var damagePerSecond = "=(E{0}*F{0})/G{0}*25".F(line);
+
+						var versus = "";
+						foreach (var armorType in armorList)
+						{
+							var vs = warhead.Versus.ContainsKey(armorType) ? warhead.Versus[armorType] : 1f;
+							versus = versus + "=H{0}*{1};".F(line, vs);
+						}
+
+						dump.Append(";{0};{1};{2};{3};{4}".F(damage, burst, rateOfFire, damagePerSecond, versus));
+					}
+				}
+				dump.AppendLine();
 			}
 
 			var filename = "{0}-mod-rules.csv".F(mod);
