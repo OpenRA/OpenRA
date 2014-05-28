@@ -449,17 +449,23 @@ end
 
 function EscapeMagic(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
-function GetEditorWithFocus()
-  local editor = GetEditor()
+local function isCtrlFocused(e)
+  local ctrl = e:FindFocus()
+  return ctrl and
+    (ctrl:GetId() == e:GetId()
+     or ide.osname == 'Macintosh' and
+       ctrl:GetParent():GetId() == e:GetId()) and ctrl or nil
+end
+
+function GetEditorWithFocus(ed)
+  if ed then return isCtrlFocused(ed) end
+
   local bnb = ide.frame.bottomnotebook
-  for _,e in pairs({bnb.shellbox, bnb.errorlog}) do
-    local ctrl = e:FindFocus()
-    if ctrl and
-      (ctrl:GetId() == e:GetId()
-       or ide.osname == 'Macintosh' and
-         ctrl:GetParent():GetId() == e:GetId()) then editor = e end
+  for _, e in pairs({bnb.shellbox, bnb.errorlog}) do
+    if isCtrlFocused(e) then return e end
   end
-  return editor or nil
+  local editor = GetEditor()
+  return isCtrlFocused(editor) and editor or nil
 end
 
 function GenerateProgramFilesPath(exec, sep)

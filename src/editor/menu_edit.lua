@@ -45,18 +45,18 @@ menuBar:Append(editMenu, TR("&Edit"))
 
 editMenu:Check(ID_AUTOCOMPLETEENABLE, ide.config.autocomplete)
 
+local function onUpdateUIEditorInFocus(event)
+  event:Enable(GetEditorWithFocus(GetEditor()) ~= nil)
+end
+
 local function onUpdateUIEditMenu(event)
   local editor = GetEditorWithFocus()
   if editor == nil then event:Enable(false); return end
 
-  local cancomment = pcall(function() return editor.spec end) and editor.spec
-    and editor.spec.linecomment and true or false
   local alwaysOn = {
-    [ID_SELECTALL] = true, [ID_FOLD] = ide.config.editor.fold,
+    [ID_SELECTALL] = true,
     -- allow Cut and Copy commands as these work on a line if no selection
     [ID_COPY] = true, [ID_CUT] = true,
-    [ID_COMMENT] = cancomment, [ID_AUTOCOMPLETE] = true, [ID_SORT] = true,
-    [ID_REINDENT] = true,
   }
   local menu_id = event:GetId()
   local enable =
@@ -67,17 +67,9 @@ local function onUpdateUIEditMenu(event)
   event:Enable(enable)
 end
 
-local function onUpdateUIisEditor(event) event:Enable(GetEditor() ~= nil) end
-
 local function onEditMenu(event)
   local editor = GetEditorWithFocus()
-
-  -- if there is no editor, or if it's not the editor we care about,
-  -- then allow normal processing to take place
-  if editor == nil or
-     (editor:FindFocus() and editor:FindFocus():GetId() ~= editor:GetId()) or
-     editor:GetClassInfo():GetClassName() ~= 'wxStyledTextCtrl'
-    then event:Skip(); return end
+  if editor == nil then event:Skip(); return end
 
   local menu_id = event:GetId()
   if menu_id == ID_CUT then
@@ -97,6 +89,27 @@ for _, event in pairs({ID_CUT, ID_COPY, ID_PASTE, ID_SELECTALL, ID_UNDO, ID_REDO
   frame:Connect(event, wx.wxEVT_COMMAND_MENU_SELECTED, onEditMenu)
   frame:Connect(event, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 end
+
+for _, event in pairs({
+    ID_BOOKMARKTOGGLE, ID_BOOKMARKNEXT, ID_BOOKMARKPREV,
+    ID_AUTOCOMPLETE, ID_SORT, ID_REINDENT, ID_SHOWTOOLTIP,
+}) do
+  frame:Connect(event, wx.wxEVT_UPDATE_UI, onUpdateUIEditorInFocus)
+end
+
+frame:Connect(ID_FOLD, wx.wxEVT_UPDATE_UI,
+  function(event)
+    local editor = GetEditorWithFocus(GetEditor())
+    event:Enable(ide.config.editor.fold and editor ~= nil)
+  end)
+
+frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI,
+  function(event)
+    local editor = GetEditorWithFocus(GetEditor())
+    event:Enable(editor ~= nil
+      and pcall(function() return editor.spec end) and editor.spec
+      and editor.spec.linecomment and true or false)
+  end)
 
 local function generateConfigMessage(type)
   return ([==[--[[--
@@ -138,11 +151,9 @@ frame:Connect(ID_SHOWTOOLTIP, wx.wxEVT_COMMAND_MENU_SELECTED,
 
     EditorCallTip(editor, editor:GetCurrentPos())
   end)
-frame:Connect(ID_SHOWTOOLTIP, wx.wxEVT_UPDATE_UI, onUpdateUIisEditor)
 
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) EditorAutoComplete(GetEditor()) end)
-frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 frame:Connect(ID_AUTOCOMPLETEENABLE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) ide.config.autocomplete = event:IsChecked() end)
@@ -207,7 +218,6 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
         + math.max(0, curpos+#editor:GetLine(curline)-curlen))
     end
   end)
-frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 local function processSelection(editor, func)
   local text = editor:GetSelectedText()
@@ -237,7 +247,6 @@ end
 
 frame:Connect(ID_SORT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) processSelection(GetEditor(), table.sort) end)
-frame:Connect(ID_SORT, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 local function reIndent(editor, buf)
   local decindent, incindent = editor.spec.isdecindent, editor.spec.isincindent
@@ -287,11 +296,9 @@ frame:Connect(ID_REINDENT, wx.wxEVT_COMMAND_MENU_SELECTED,
     local editor = GetEditor()
     processSelection(editor, function(buf) reIndent(editor, buf) end)
   end)
-frame:Connect(ID_REINDENT, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 frame:Connect(ID_FOLD, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) FoldSome() end)
-frame:Connect(ID_FOLD, wx.wxEVT_UPDATE_UI, onUpdateUIEditMenu)
 
 local BOOKMARK_MARKER = StylesGetMarker("bookmark")
 local BOOKMARK_MARKER_VALUE = 2^BOOKMARK_MARKER
@@ -325,10 +332,6 @@ local function bookmarkPrev()
     editor:GotoLine(line)
     editor:EnsureVisibleEnforcePolicy(line)
   end
-end
-
-for _, event in pairs({ID_BOOKMARKTOGGLE, ID_BOOKMARKNEXT, ID_BOOKMARKPREV}) do
-  frame:Connect(event, wx.wxEVT_UPDATE_UI, onUpdateUIisEditor)
 end
 
 frame:Connect(ID_BOOKMARKTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkToggle)
