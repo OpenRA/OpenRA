@@ -482,12 +482,6 @@ end
 
 if app.postinit then app.postinit() end
 
-if ide.osname == 'Macintosh' then
-  ide.frame:SetAcceleratorTable(wx.wxAcceleratorTable({
-     wx.wxAcceleratorEntry(wx.wxACCEL_CTRL, ('M'):byte(), ID_VIEWMINIMIZE)
-  }))
-end
-
 -- this is a workaround for a conflict between global shortcuts and local
 -- shortcuts (like F2) used in the file tree or a watch panel.
 -- because of several issues on OSX (as described in details in this thread:
@@ -518,18 +512,48 @@ local function remapkey(event)
 end
 ide:GetWatch():Connect(wx.wxEVT_KEY_DOWN, remapkey)
 ide:GetProjectTree():Connect(wx.wxEVT_KEY_DOWN, remapkey)
-ide.frame:Connect(wx.wxID_ANY, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function(event)
-    local shortcut = ide.config.keymap[event:GetId()]
+
+local function resolveConflict(localid, globalid)
+  return function(event)
+    local shortcut = ide.config.keymap[localid]
     for id, obj in pairs(remap) do
-      if ide.config.keymap[id] == shortcut
-      and obj:FindFocus():GetId() == obj:GetId() then
-        obj:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, id))
-        return
+      if ide.config.keymap[id]:lower() == shortcut:lower() then
+        local focus = obj:FindFocus()
+        if focus and focus:GetId() == obj:GetId() then
+          obj:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, id))
+          return
+        -- also need to check for children of objects
+        -- to avoid re-triggering events when labels are being edited
+        elseif focus and focus:GetParent():GetId() == obj:GetId() then
+          return
+        end
       end
     end
-    event:Skip()
-  end)
+    ide.frame:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, globalid))
+  end
+end
+
+local at = {}
+for lid in pairs(remap) do
+  local shortcut = ide.config.keymap[lid]
+  -- find a (potential) conflict for this shortcut (if any)
+  for gid, ksc in pairs(ide.config.keymap) do
+    -- if the same shortcut is used elsewhere (not one of IDs being checked)
+    if shortcut:lower() == ksc:lower() and not remap[gid] then
+      local fakeid = NewID()
+      ide.frame:Connect(fakeid, wx.wxEVT_COMMAND_MENU_SELECTED,
+        resolveConflict(lid, gid))
+
+      local ae = wx.wxAcceleratorEntry(); ae:FromString(ksc)
+      table.insert(at, wx.wxAcceleratorEntry(ae:GetFlags(), ae:GetKeyCode(), fakeid))
+    end
+  end
+end
+
+if ide.osname == 'Macintosh' then
+  table.insert(at, wx.wxAcceleratorEntry(wx.wxACCEL_CTRL, ('M'):byte(), ID_VIEWMINIMIZE))
+end
+ide.frame:SetAcceleratorTable(wx.wxAcceleratorTable(at))
 
 -- only set menu bar *after* postinit handler as it may include adding
 -- app-specific menus (Help/About), which are not recognized by MacOS
