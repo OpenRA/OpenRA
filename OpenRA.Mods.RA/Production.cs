@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.RA.Move;
@@ -41,13 +42,13 @@ namespace OpenRA.Mods.RA
 
 	public class Production
 	{
-		RallyPoint rp;
+		Lazy<RallyPoint> rp;
 
 		public ProductionInfo Info;
 		public Production(ProductionInfo info, Actor self)
 		{
 			Info = info;
-			rp = self.TraitOrDefault<RallyPoint>();
+			rp = Exts.Lazy(() => self.TraitOrDefault<RallyPoint>());
 		}
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo)
@@ -82,15 +83,15 @@ namespace OpenRA.Mods.RA
 
 		CPos MoveToRallyPoint(Actor self, Actor newUnit, CPos exitLocation)
 		{
-			if (rp == null)
+			if (self.IsDead() || rp.Value == null)
 				return exitLocation;
 
 			var move = newUnit.TraitOrDefault<IMove>();
 			if (move != null)
 			{
 				newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
-					newUnit, move.MoveTo(rp.rallyPoint, rp.nearEnough)));
-				return rp.rallyPoint;
+					newUnit, move.MoveTo(rp.Value.rallyPoint, rp.Value.nearEnough)));
+				return rp.Value.rallyPoint;
 			}
 
 			return exitLocation;
