@@ -295,7 +295,7 @@ docs: utility
 
 install: install-core
 
-install-all: install-core install-tools
+install-all: install-core install-tools install-icons install-desktop install-shortcuts
 
 install-core: default
 	@-echo "Installing OpenRA to $(DATA_INSTALL_DIR)"
@@ -342,10 +342,16 @@ install-tools: tools
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) $(foreach prog,$(TOOLS),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
 
-install-shortcuts:
+install-icons:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
 	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
 
+install-desktop:
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
+
+install-shortcuts:
 	@echo "#!/bin/sh" > openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra
 	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' >> openra
@@ -356,9 +362,6 @@ install-shortcuts:
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra
 
-	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
-	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
-
 	@echo "#!/bin/sh" >  openra-editor
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra-editor
 	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' >> openra-editor
@@ -368,9 +371,6 @@ install-shortcuts:
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra-editor "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra-editor
-
-	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
-	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
 
 uninstall:
 	@-$(RM_R) "$(DATA_INSTALL_DIR)"
