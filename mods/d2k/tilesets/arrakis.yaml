@@ -46,7 +46,7 @@ Terrain:
 		Type: Concrete
 		AcceptsSmudgeType:
 		IsWater: False
-		Color: 255,208,192,160
+		Color: 232,196,152
 		TargetTypes: Ground
 	TerrainType@Dune:
 		Type: Dune
