@@ -31,10 +31,11 @@ namespace OpenRA.Mods.RA.Effects
 			this.cargo = cargo;
 
 			var pai = cargo.Info.Traits.GetOrDefault<ParachuteAttachmentInfo>();
+			cargo.Trait<ParachuteAttachment>().Activated = true;
 			paraAnim = new Animation(cargo.World, pai != null ? pai.ParachuteSprite : "parach");
 			paraAnim.PlayThen("open", () => paraAnim.PlayRepeating("idle"));
 
-			paraShadow = new Animation("parach-shadow");
+			paraShadow = new Animation(cargo.World, pai != null ? pai.ShadowSprite : "parach-shadow");
 			paraShadow.PlayRepeating("idle");
 
 			if (pai != null)
@@ -42,10 +43,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			// Adjust x,y to match the target subcell
 			cargo.Trait<IPositionable>().SetPosition(cargo, dropPosition.ToCPos());
-			var cp = cargo.CenterPosition;
-			pos = new WPos(cp.X, cp.Y, dropPosition.Z);
-			this.dropPosition = cp;
-			cargo.Trait<IPositionable>().SetPosition(cargo, pos);
+			this.dropPosition = cargo.CenterPosition;
+			pos = new WPos(cargo.CenterPosition.X, cargo.CenterPosition.Y, dropPosition.Z);
 		}
 
 		public void Tick(World world)
@@ -53,13 +52,13 @@ namespace OpenRA.Mods.RA.Effects
 			paraAnim.Tick();
 
 			pos -= fallRate;
-			cargo.Trait<IPositionable>().SetPosition(cargo, pos);
 
 			if (pos.Z <= 0)
 			{
 				world.AddFrameEndTask(w =>
 				{
 					w.Remove(this);
+					cargo.Trait<ParachuteAttachment>().Activated = false;
 					cargo.CancelActivity();
 					w.Add(cargo);
 
@@ -77,15 +76,11 @@ namespace OpenRA.Mods.RA.Effects
 			if (!rc.Any())
 				yield break;
 
-			var shadow = wr.Palette("shadow");
 			foreach (var c in rc)
-			{
-				if (!c.IsDecoration)
-					foreach (var r in paraShadow.Render(dropPosition, shadow))
-						yield return r;
+				yield return c.OffsetBy(pos - dropPosition);
 
-				yield return c;
-			}
+			foreach (var r in paraShadow.Render(dropPosition, wr.Palette("shadow")))
+				yield return r;
 
 			foreach (var r in paraAnim.Render(pos, parachuteOffset, 1, rc.First().Palette, 1f))
 				yield return r;

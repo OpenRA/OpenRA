@@ -15,8 +15,12 @@ namespace OpenRA.Mods.RA
 	class ParachuteAttachmentInfo : TraitInfo<ParachuteAttachment>
 	{
 		public readonly string ParachuteSprite = "parach";
+		public readonly string ShadowSprite = "parach-shadow";
 		public readonly WVec Offset = WVec.Zero;
 	}
 
-	class ParachuteAttachment {}
+	class ParachuteAttachment
+	{
+		public bool Activated = false;
+	}
 }
