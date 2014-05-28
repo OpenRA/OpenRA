@@ -13,10 +13,15 @@ using OpenRA.Effects;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Orders;
+using OpenRA.Mods.RA.Widgets;
 
 namespace OpenRA.Mods.RA
 {
-	class PlaceBuildingInfo : TraitInfo<PlaceBuilding> { }
+	class PlaceBuildingInfo : TraitInfo<PlaceBuilding>
+	{
+		public static bool shiftWasPressed;
+	}
 
 	class PlaceBuilding : IResolveOrder
 	{
@@ -26,6 +31,8 @@ namespace OpenRA.Mods.RA
 			{
 				self.World.AddFrameEndTask(w =>
 				{
+					Actor building = null;
+
 					var prevItems = GetNumBuildables(self.Owner);
 
 					// Find the queue with the target actor
@@ -48,7 +55,7 @@ namespace OpenRA.Mods.RA
 						bool playSounds = true;
 						foreach (var t in BuildingUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))
 						{
-							var building = w.CreateActor(order.TargetString, new TypeDictionary
+							building = w.CreateActor(order.TargetString, new TypeDictionary
 							{
 								new LocationInit(t),
 								new OwnerInit(order.Player),
@@ -68,7 +75,7 @@ namespace OpenRA.Mods.RA
 							return;
 						}
 
-						var building = w.CreateActor(order.TargetString, new TypeDictionary
+						building = w.CreateActor(order.TargetString, new TypeDictionary
 						{
 							new LocationInit(order.TargetLocation),
 							new OwnerInit(order.Player),
@@ -76,6 +83,10 @@ namespace OpenRA.Mods.RA
 						foreach (var s in buildingInfo.BuildSounds)
 							Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
 					}
+
+					var pb = building.TraitOrDefault<PrimaryBuilding>();
+					if (pb != null && PlaceBuildingInfo.shiftWasPressed && building.Owner == building.World.LocalPlayer)
+						building.World.IssueOrder(new Order("PrimaryProducer", building, false));
 
 					PlayBuildAnim(self, unit);
 

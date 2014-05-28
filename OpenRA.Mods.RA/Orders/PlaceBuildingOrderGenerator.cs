@@ -39,6 +39,8 @@ namespace OpenRA.Mods.RA.Orders
 
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
+			PlaceBuildingInfo.shiftWasPressed = Game.GetModifierKeys().HasModifier(Modifiers.Shift);
+
 			if (mi.Button == MouseButton.Right)
 				world.CancelInputMode();
 
