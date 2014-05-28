@@ -3,7 +3,7 @@
 
 os=`uname`
 if [ "$os" == 'Linux' ]; then
-	locations=(/usr/lib /usr/lib64 /usr/local/lib /opt/lib)
+	locations=(/usr/lib /usr/lib64 /usr/lib/i386-linux-gnu /usr/lib/x86_64-linux-gnu /usr/local/lib /opt/lib)
 	sonames=(liblua5.1.so.5.1 liblua5.1.so.0 liblua.so.5.1 liblua-5.1.so liblua5.1.so)
 	for location in "${locations[@]}" ; do
 		for soname in ${sonames[@]} ; do
