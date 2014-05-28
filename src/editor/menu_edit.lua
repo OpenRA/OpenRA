@@ -64,13 +64,6 @@ local function onUpdateUIEditMenu(event)
     menu_id == ID_UNDO and editor:CanUndo() or
     menu_id == ID_REDO and editor:CanRedo() or
     alwaysOn[menu_id]
-  -- wxComboBox doesn't have SELECT ALL, so disable it
-  -- editor:GetClassInfo mysteriously fails on Ubuntu 13.10 (earlier versions
-  -- are okay), which indicates that the menu item is checked after editor
-  -- is already closed, so the first pcall() check should protect against that.
-  if pcall(function() editor:GetId() end)
-  and editor:GetClassInfo():GetClassName() == 'wxComboBox'
-  and menu_id == ID_SELECTALL then enable = false end
   event:Enable(enable)
 end
 
