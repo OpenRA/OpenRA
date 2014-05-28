@@ -25,8 +25,8 @@ namespace OpenRA
 	{
 		int Count { get; }
 		TValue this[TKey key] { get; }
-		IEnumerable<TKey> Keys { get; }
-		IEnumerable<TValue> Values { get; }
+		ICollection<TKey> Keys { get; }
+		ICollection<TValue> Values { get; }
 
 		bool ContainsKey(TKey key);
 		bool TryGetValue(TKey key, out TValue value);
@@ -68,9 +68,9 @@ namespace OpenRA
 
 		public TValue this[TKey key] { get { return dict[key]; } }
 
-		public IEnumerable<TKey> Keys { get { return dict.Keys; } }
+		public ICollection<TKey> Keys { get { return dict.Keys; } }
 
-		public IEnumerable<TValue> Values { get { return dict.Values; } }
+		public ICollection<TValue> Values { get { return dict.Values; } }
 		#endregion
 
 		#region IEnumerable implementation

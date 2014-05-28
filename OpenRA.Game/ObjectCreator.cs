@@ -19,10 +19,15 @@ namespace OpenRA
 {
 	public class ObjectCreator
 	{
-		Pair<Assembly, string>[] assemblies;
+		readonly Cache<string, Type> typeCache;
+		readonly Cache<Type, ConstructorInfo> ctorCache;
+		readonly Pair<Assembly, string>[] assemblies;
 
 		public ObjectCreator(Manifest manifest)
 		{
+			typeCache = new Cache<string, Type>(FindType);
+			ctorCache = new Cache<Type, ConstructorInfo>(GetCtor);
+
 			// All the core namespaces
 			var asms = typeof(Game).Assembly.GetNamespaces() // Game
 				.Select(c => Pair.New(typeof(Game).Assembly, c))
@@ -48,23 +53,18 @@ namespace OpenRA
 
 		public T CreateObject<T>(string className, Dictionary<string, object> args)
 		{
-			var type = FindType(className);
+			var type = typeCache[className];
 			if (type == null)
 			{
 				MissingTypeAction(className);
 				return default(T);
 			}
 
-			var flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-			var ctors = type.GetConstructors(flags)
-				.Where(x => x.HasAttribute<UseCtorAttribute>()).ToList();
-
-			if (ctors.Count == 0)
+			var ctor = ctorCache[type];
+			if (ctor == null)
 				return (T)CreateBasic(type);
-			else if (ctors.Count == 1)
-				return (T)CreateUsingArgs(ctors[0], args);
 			else
-				throw new InvalidOperationException("ObjectCreator: UseCtor on multiple constructors; invalid.");
+				return (T)CreateUsingArgs(ctor, args);
 		}
 
 		public Type FindType(string className)
@@ -72,6 +72,21 @@ namespace OpenRA
 			return assemblies
 				.Select(pair => pair.First.GetType(pair.Second + "." + className, false))
 				.FirstOrDefault(t => t != null);
+		}
+
+		public ConstructorInfo GetCtor(Type type)
+		{
+			var flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+			var ctors = type.GetConstructors(flags).Where(x => x.HasAttribute<UseCtorAttribute>());
+			using (var e = ctors.GetEnumerator())
+			{
+				if (!e.MoveNext())
+					return null;
+				var ctor = e.Current;
+				if (!e.MoveNext())
+					return ctor;
+			}
+			throw new InvalidOperationException("ObjectCreator: UseCtor on multiple constructors; invalid.");
 		}
 
 		public object CreateBasic(Type type)

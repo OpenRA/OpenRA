@@ -14,18 +14,17 @@ using System.Collections.Generic;
 
 namespace OpenRA.Primitives
 {
-	public class Cache<T, U> : IEnumerable<KeyValuePair<T, U>>
+	public class Cache<T, U> : IReadOnlyDictionary<T, U>
 	{
-		Dictionary<T, U> hax;
-		Func<T,U> loader;
+		readonly Dictionary<T, U> cache;
+		readonly Func<T, U> loader;
 
-		public Cache(Func<T,U> loader, IEqualityComparer<T> c)
+		public Cache(Func<T, U> loader, IEqualityComparer<T> c)
 		{
-			hax = new Dictionary<T, U>(c);
 			if (loader == null)
 				throw new ArgumentNullException("loader");
-
 			this.loader = loader;
+			cache = new Dictionary<T, U>(c);
 		}
 
 		public Cache(Func<T, U> loader)
@@ -36,18 +35,17 @@ namespace OpenRA.Primitives
 			get
 			{
 				U result;
-				if (!hax.TryGetValue(key, out result))
-					hax.Add(key, result = loader(key));
-
+				if (!cache.TryGetValue(key, out result))
+					cache.Add(key, result = loader(key));
 				return result;
 			}
 		}
-
-		public IEnumerator<KeyValuePair<T, U>> GetEnumerator() { return hax.GetEnumerator(); }
-
+		public bool ContainsKey(T key) { return cache.ContainsKey(key); }
+		public bool TryGetValue(T key, out U value) { return cache.TryGetValue(key, out value); }
+		public int Count { get { return cache.Count; } }
+		public ICollection<T> Keys { get { return cache.Keys; } }
+		public ICollection<U> Values { get { return cache.Values; } }
+		public IEnumerator<KeyValuePair<T, U>> GetEnumerator() { return cache.GetEnumerator(); }
 		IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
-
-		public IEnumerable<T> Keys { get { return hax.Keys; } }
-		public IEnumerable<U> Values { get { return hax.Values; } }
 	}
 }
