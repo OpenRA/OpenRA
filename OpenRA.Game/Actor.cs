@@ -85,7 +85,7 @@ namespace OpenRA
 			{
 				var si = Info.Traits.GetOrDefault<SelectableInfo>();
 				var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
-				    TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+					TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
 
 				var offset = -size / 2;
 				if (si != null && si.Bounds != null && si.Bounds.Length > 2)

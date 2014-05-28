@@ -71,7 +71,7 @@ namespace OpenRA.Scripting
 				throw new InvalidOperationException("[LuaGlobal] attribute not found for global table '{0}'".F(type));
 
 			Name = names.First().Name;
-			Bind(new [] { this });
+			Bind(new[] { this });
 		}
 	}
 
@@ -143,7 +143,7 @@ namespace OpenRA.Scripting
 					if (ctor == null)
 						throw new InvalidOperationException("{0} must define a constructor that takes a ScriptContext context parameter".F(b.Name));
 
-					var binding = (ScriptGlobal)ctor.Invoke(new [] { this });
+					var binding = (ScriptGlobal)ctor.Invoke(new[] { this });
 					using (var obj = binding.ToLuaValue(this))
 						registerGlobal.Call(binding.Name, obj).Dispose();
 				}
