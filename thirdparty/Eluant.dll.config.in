@@ -1,4 +1,3 @@
 <configuration>
   <dllmap os="linux" dll="lua51.dll" target="@LIBLUA51@" />
-  <dllmap os="osx" dll="lua51.dll" target="liblua.5.1.dylib" />
 </configuration>
