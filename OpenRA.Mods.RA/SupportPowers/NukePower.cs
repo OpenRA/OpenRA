@@ -8,7 +8,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System;
+using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Effects;
@@ -45,7 +48,18 @@ namespace OpenRA.Mods.RA
 		[Desc("Amount of time after detonation to remove the camera")]
 		public readonly int CameraRemoveDelay = 25;
 
-		public override object Create(ActorInitializer init) { return new NukePower(init.self, this); }
+		public readonly string DisplayRing = "0";
+
+		public override object Create(ActorInitializer init)
+		{
+			double damage;
+			if (DisplayRing == "Smudge")
+				RingRangeP = Combat.FindSmudgeRange(init.self.World.Map.Rules.Weapons[MissileWeapon.ToLowerInvariant()].Warheads);
+			else if (!WRange.TryParse(DisplayRing, out RingRangeP))
+				if (DisplayRing.Contains('%') && double.TryParse(DisplayRing.TrimEnd(new char[] { '%' }), out damage))
+					RingRangeP = Combat.FindDamageRange(init.self.World.Map.Rules.Weapons[MissileWeapon.ToLowerInvariant()].Warheads, damage / 100);
+			return new NukePower(init.self, this);
+		}
 	}
 
 	class NukePower : SupportPower
@@ -61,19 +75,37 @@ namespace OpenRA.Mods.RA
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
-			return new SelectGenericPowerTarget(order, manager, "nuke", MouseButton.Left);
+			return new SelectTarget(order, manager, this);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
-			base.Activate(self, order, manager);
+			var npi = Info as NukePowerInfo;
+			if (Info.DisplayBeacon)
+			{
+				beacon = new Beacon(
+					order.Player,
+					order.TargetLocation.CenterPosition,
+					Info.BeaconDuration == -1 ? npi.FlightDelay - npi.BeaconRemoveAdvance : Info.BeaconDuration,
+					Info.BeaconPalettePrefix,
+					Info.BeaconPoster,
+					Info.BeaconPosterPalette);
+
+				self.World.Add(beacon);
+			}
+
+			if (Info.DisplayRadarPing && manager.RadarPings != null)
+				manager.RadarPings.Value.Add(
+					() => order.Player.IsAlliedWith(self.World.RenderPlayer),
+					order.TargetLocation.CenterPosition,
+					order.Player.Color.RGB,
+					Info.BeaconDuration == -1 ? npi.FlightDelay - npi.BeaconRemoveAdvance : Info.BeaconDuration);
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				Sound.Play(Info.LaunchSound);
 			else
 				Sound.Play(Info.IncomingSound);
 
-			var npi = Info as NukePowerInfo;
 			var rb = self.Trait<RenderSimple>();
 			rb.PlayCustomAnim(self, "active");
 
@@ -96,17 +128,51 @@ namespace OpenRA.Mods.RA
 				Action addCamera = () => self.World.AddFrameEndTask(w => w.Add(camera));
 				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(npi.FlightDelay - npi.CameraSpawnAdvance, addCamera)));
 			}
+		}
 
-			if (beacon != null)
+		class SelectTarget : IOrderGenerator
+		{
+			readonly NukePower power;
+			readonly SupportPowerManager manager;
+			readonly string order;
+			readonly string cursor;
+			readonly MouseButton expectedButton;
+
+			public SelectTarget(string order, SupportPowerManager manager, NukePower power)
 			{
-				Action removeBeacon = () => self.World.AddFrameEndTask(w =>
-				{
-					w.Remove(beacon);
-					beacon = null;
-				});
-
-				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(npi.FlightDelay - npi.BeaconRemoveAdvance, removeBeacon)));
+				this.manager = manager;
+				this.order = order;
+				this.power = power;
+				this.cursor = "nuke";
+				expectedButton = MouseButton.Left;
 			}
+
+			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+			{
+				world.CancelInputMode();
+				if (mi.Button == expectedButton && world.Map.IsInMap(xy))
+					yield return new Order(order, manager.self, false) { TargetLocation = xy };
+			}
+
+			public virtual void Tick(World world)
+			{
+				// Cancel the OG if we can't use the power
+				if (!manager.Powers.ContainsKey(order))
+					world.CancelInputMode();
+			}
+
+			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
+			public void RenderAfterWorld(WorldRenderer wr, World world)
+			{
+				if (power.Info.RingRange.Range > 0)
+					wr.DrawRangeCircleWithContrast(
+						wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos().CenterPosition,
+						power.Info.RingRange,
+						System.Drawing.Color.FromArgb(128, System.Drawing.Color.Red),
+						System.Drawing.Color.FromArgb(96, System.Drawing.Color.Black)
+					);
+			}
+			public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 		}
 	}
 }

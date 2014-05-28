@@ -50,7 +50,7 @@ namespace OpenRA
 			{
 				// Target ranges are calculated in 2D, so ignore height differences
 				var vec = new WVec(r, r, WRange.Zero);
-				var rSq = r.Range*r.Range;
+				var rSq = Convert.ToInt64(r.Range)*r.Range;
 				return world.FindActorsInBox(origin - vec, origin + vec).Where(
 					a => (a.CenterPosition - origin).HorizontalLengthSquared <= rSq);
 			}

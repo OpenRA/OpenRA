@@ -42,6 +42,7 @@ MSLO:
 		DisplayRadarPing: True
 		BeaconPoster: atomicon
 		CameraActor: camera
+		DisplayRing: Smudge
 	CanPowerDown:
 	RequiresPower:
 	DisabledOverlay:

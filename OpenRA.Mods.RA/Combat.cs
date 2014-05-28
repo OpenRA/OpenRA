@@ -165,6 +165,50 @@ namespace OpenRA.Mods.RA
 			DoImpacts(pos, attacker, weapon, 1f);
 		}
 
+		public static WRange FindSmudgeRange(IEnumerable<WarheadInfo> warheads)
+		{
+			int smudge = 0;
+			foreach (var wh in warheads)
+				smudge = Math.Max(wh.Size[0], smudge);
+			return WRange.FromCells(smudge);
+		}
+
+		public static WRange FindDamageRange(IEnumerable<WarheadInfo> warheads, double damagePercentage)
+		{
+			var radii = new HashSet<int>() { 0 };
+			var steps = Enumerable.Range(1, falloff.Length - 1);
+			foreach (var wh in warheads)
+				steps.Do(j => radii.Add(j * wh.Spread.Range));
+
+			// Damage inflicted by the atom bomb, as a function of distance from the target position,
+			// is a monotonically decreasing piecewise linear function. Let's call this function phi.
+			// Dictionary<int, double> damage will be populated with pairs (radius, damage) where
+			// radius is the distance at which there is a kink in the function phi and
+			// damage is the value of phi at that distance.
+			var damage = new Dictionary<int, double>();
+			radii.Do(radius => damage[radius] = 0);
+			foreach (var wh in warheads)
+				steps.Do(j => radii.Where(radius => ((j - 1) * wh.Spread.Range <= radius) && (radius < j * wh.Spread.Range))
+					.Do(radius => damage[radius] += wh.Damage *
+						(Combat.falloff[j] * (radius - (j - 1) * wh.Spread.Range) + Combat.falloff[j - 1] * (j * wh.Spread.Range - radius)) /
+						Convert.ToDouble(wh.Spread.Range)
+					));
+
+			// In order to find the exact distance at which phi = damagePercentage * damage.Values.Max(),
+			// find the two kinks in phi at distances radiusUp and radiusDown such that
+			// phi(radiusDown) <= damagePercentage * damage.Values.Max() <= phi(radiusUp)
+			var radiusUp = damage.Where(radius => radius.Value >= damagePercentage * damage.Values.Max())
+				.ToDictionary(radius => radius.Key).Keys.Max();
+			var radiusDown = damage.Keys.Where(radius => radius > radiusUp).Min();
+
+			// Since phi is linear between radiusDown and radiusUp,
+			// the location where phi = damagePercentage * damage.Values.Max() is easily computable.
+			return new WRange(Convert.ToInt32(
+					(damagePercentage * damage.Values.Max() * (radiusDown - radiusUp) - damage[radiusUp] * radiusDown + damage[radiusDown] * radiusUp)
+					/ (damage[radiusDown] - damage[radiusUp])
+				));
+		}
+
 		static readonly float[] falloff =
 		{
 			1f, 0.3678795f, 0.1353353f, 0.04978707f,
