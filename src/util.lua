@@ -458,7 +458,7 @@ local function isCtrlFocused(e)
 end
 
 function GetEditorWithFocus(ed)
-  if ed then return isCtrlFocused(ed) end
+  if ed then return isCtrlFocused(ed) and ed or nil end
 
   local bnb = ide.frame.bottomnotebook
   for _, e in pairs({bnb.shellbox, bnb.errorlog}) do
