@@ -610,6 +610,7 @@ function FileTreeProjectListUpdate(menu, items)
       local item = wx.wxMenuItem(menu, id, label, "")
       menu:Insert(items, item)
       ide.frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+          wx.wxSafeYield() -- let the menu on screen (if any) disappear
           ProjectUpdateProjectDir(FileTreeGetProjects()[i])
         end)
     end
