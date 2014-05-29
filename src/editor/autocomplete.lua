@@ -558,8 +558,7 @@ function CreateAutoCompList(editor,key)
         end
       end
   
-      local res = table.concat(list," ")
-      dw = res ~= "" and " "..res or ""
+      dw = table.concat(list," ")
     end
   end
 
@@ -638,7 +637,7 @@ function CreateAutoCompList(editor,key)
   end
 
   -- concat final, list complete first
-  local li = (compstr .. dw)
+  local li = compstr .. (#compstr > 0 and #dw > 0 and " " or "") .. dw
   
   return li ~= "" and (#li > 1024 and li:sub(1,1024).."..." or li) or nil
 end
