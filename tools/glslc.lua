@@ -321,11 +321,11 @@ return binpath and {
           domain = 1
         elseif (fname:match("%.f")) then
           domain = 2
-        elseif (fname:match("%.g")) then
+        elseif (fname:match("%.ge")) then
           domain = 3
         elseif (fname:match("%.t.*c")) then
           domain = 4
-        elseif (fname:match("%.t.*v")) then
+        elseif (fname:match("%.t.*e")) then
           domain = 5
         elseif (fname:match("%.c")) then
           domain = 6
