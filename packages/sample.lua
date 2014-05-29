@@ -29,6 +29,7 @@ local events = {
   onEditorAction =     function(self, editor, event) end, -- return false
   onEditorKeyDown =    function(self, editor, event) end, -- return false
   onEditorCharAdded =  function(self, editor, event) end, -- return false
+  onEditorUserlistSelection = function(self, editor, event) end, -- return false
   onFiletreeActivate = function(self, tree, event, item) end, -- return false
   onFiletreeLDown =    function(self, tree, event, item) end,
   onFiletreeRDown =    function(self, tree, event, item) end,

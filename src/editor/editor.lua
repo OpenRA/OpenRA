@@ -952,6 +952,10 @@ function CreateEditor()
 
   editor:Connect(wxstc.wxEVT_STC_USERLISTSELECTION,
     function (event)
+      if PackageEventHandle("onEditorUserlistSelection", editor, event) == false then
+        return
+      end
+
       if ide.wxver >= "2.9.5" and editor:GetSelections() > 1 then
         local text = event:GetText()
         -- capture all positions as the selection may change
