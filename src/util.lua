@@ -450,7 +450,7 @@ end
 function EscapeMagic(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local function isCtrlFocused(e)
-  local ctrl = e:FindFocus()
+  local ctrl = e and e:FindFocus()
   return ctrl and
     (ctrl:GetId() == e:GetId()
      or ide.osname == 'Macintosh' and
