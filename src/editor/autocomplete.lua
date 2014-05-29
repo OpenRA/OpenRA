@@ -154,11 +154,11 @@ local function fillTips(api,apibasename)
         local description = formatUpToX(info.description or "", tipwidth)
 
         -- build info
-        local inf = (info.type == "value" and "" or frontname.."\n")
-          ..description
+        local inf = ((info.type == "value" and "" or frontname.."\n")
+          ..description)
         local sentence = description:match("^(.-)%. ?\n")
-        local infshort = (info.type == "value" and "" or frontname.."\n")
-          ..(sentence and sentence.."..." or description)
+        local infshort = ((info.type == "value" and "" or frontname.."\n")
+          ..(sentence and sentence.."..." or description))
         local infshortbatch = (info.returns and info.args) and frontname or infshort
 
         -- add to infoclass
@@ -338,13 +338,13 @@ local function addDynamicWord (api,word)
   if api.tip.keys[word] or api.tip.staticnames[word] then return end
   local cnt = dywordentries[word]
   if cnt then
-    dywordentries[word] = cnt +1
+    dywordentries[word] = cnt + 1
     return
   end
   dywordentries[word] = 1
   local wlow = word:lower()
   for i=0,#word do
-    local k = wlow : sub (1,i)
+    local k = wlow:sub(1,i)
     dynamicwords[k] = dynamicwords[k] or {}
     table.insert(dynamicwords[k], word)
   end
@@ -436,8 +436,8 @@ local function getAutoCompApiList(childs,fragment,method)
         -- if a:b typed, then value (type == "value") not allowed
         -- if a.b typed, then method (type == "method") not allowed
         if type(v) ~= 'table' or (v.type and
-           ((method and v.type ~= "value")
-         or (not method and v.type ~= "method"))) then
+          ((method and v.type ~= "value")
+            or (not method and v.type ~= "method"))) then
           wlist = wlist..i.." "
         end
       end
@@ -471,8 +471,8 @@ local function getAutoCompApiList(childs,fragment,method)
     -- if a:b typed, then value (type == "value") not allowed
     -- if a.b typed, then method (type == "method") not allowed
     if type(v) ~= 'table' or (v.type and
-       ((method and v.type ~= "value")
-     or (not method and v.type ~= "method"))) then
+      ((method and v.type ~= "value")
+        or (not method and v.type ~= "method"))) then
       local used = {}
       --
       local kl = key:lower()
@@ -557,7 +557,7 @@ function CreateAutoCompList(editor,key)
           break
         end
       end
-  
+
       dw = table.concat(list," ")
     end
   end
@@ -638,6 +638,6 @@ function CreateAutoCompList(editor,key)
 
   -- concat final, list complete first
   local li = compstr .. (#compstr > 0 and #dw > 0 and " " or "") .. dw
-  
+
   return li ~= "" and (#li > 1024 and li:sub(1,1024).."..." or li) or nil
 end

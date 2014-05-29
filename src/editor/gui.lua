@@ -53,11 +53,11 @@ local function createFrame()
   local statusBar = frame:CreateStatusBar(6)
   local section_width = statusBar:GetTextExtent("OVRW")
   statusBar:SetStatusStyles({wx.wxSB_FLAT, wx.wxSB_FLAT, wx.wxSB_FLAT,
-    wx.wxSB_FLAT, wx.wxSB_FLAT, wx.wxSB_FLAT})
+      wx.wxSB_FLAT, wx.wxSB_FLAT, wx.wxSB_FLAT})
   statusBar:SetStatusWidths(
     {-1, section_width*6, section_width, section_width, section_width*5, section_width*4})
   statusBar:SetStatusText(GetIDEString("statuswelcome"))
-  
+
   local mgr = wxaui.wxAuiManager()
   mgr:SetManagedWindow(frame)
 
@@ -85,10 +85,10 @@ local function createToolBar(frame)
   -- wxChoice is a bit too narrow on Linux, so make it a bit larger
   local funclist = wx.wxChoice.new(toolBar, ID "toolBar.funclist",
     wx.wxDefaultPosition, wx.wxSize.new(240, ide.osname == 'Unix' and 28 or 24))
-  
+
   -- there are two sets of icons: use 24 on OSX and 16 on others.
-  local toolBmpSize =
-    ide.osname == 'Macintosh' and wx.wxSize(24, 24) or wx.wxSize(16, 16)
+  local toolBmpSize = (
+    ide.osname == 'Macintosh' and wx.wxSize(24, 24) or wx.wxSize(16, 16))
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   toolBar:AddTool(ID_NEW, "New", getBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), TR("Create an empty document")..SCinB(ID_NEW))
   toolBar:AddTool(ID_OPEN, "Open", getBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), TR("Open an existing document")..SCinB(ID_OPEN))
@@ -119,25 +119,25 @@ local function createToolBar(frame)
 
   toolBar:SetToolDropDown(ID_OPEN, true)
   toolBar:Connect(ID_OPEN, wxaui.wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, function(event)
-    if event:IsDropDownClicked() then
-      local menu = wx.wxMenu()
-      FileRecentListUpdate(menu)
-      toolBar:PopupMenu(menu, menuDropDownPosition(event))
-    else
-      event:Skip()
-    end
-  end)
+      if event:IsDropDownClicked() then
+        local menu = wx.wxMenu()
+        FileRecentListUpdate(menu)
+        toolBar:PopupMenu(menu, menuDropDownPosition(event))
+      else
+        event:Skip()
+      end
+    end)
 
   toolBar:SetToolDropDown(ID_PROJECTDIRCHOOSE, true)
   toolBar:Connect(ID_PROJECTDIRCHOOSE, wxaui.wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, function(event)
-    if event:IsDropDownClicked() then
-      local menu = wx.wxMenu()
-      FileTreeProjectListUpdate(menu, 0)
-      toolBar:PopupMenu(menu, menuDropDownPosition(event))
-    else
-      event:Skip()
-    end
-  end)
+      if event:IsDropDownClicked() then
+        local menu = wx.wxMenu()
+        FileTreeProjectListUpdate(menu, 0)
+        toolBar:PopupMenu(menu, menuDropDownPosition(event))
+      else
+        event:Skip()
+      end
+    end)
 
   toolBar:GetArtProvider():SetElementSize(wxaui.wxAUI_TBART_GRIPPER_SIZE, 0)
   toolBar:Realize()
@@ -150,9 +150,9 @@ end
 local function createNotebook(frame)
   -- notebook for editors
   local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
-  wx.wxDefaultPosition, wx.wxDefaultSize,
-  wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-  + wxaui.wxAUI_NB_WINDOWLIST_BUTTON + wx.wxNO_BORDER)
+    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
+    + wxaui.wxAUI_NB_WINDOWLIST_BUTTON + wx.wxNO_BORDER)
 
   -- wxEVT_SET_FOCUS could be used, but it only works on Windows with wx2.9.5+
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED,
@@ -197,8 +197,8 @@ local function createNotebook(frame)
       local tabctrl = event:GetEventObject():DynamicCast("wxAuiTabCtrl")
       -- check if the active page is in the current control
       local active = tabctrl:GetActivePage()
-      if active >= 0 and tabctrl:GetPage(active).window
-        ~= notebook:GetPage(notebook:GetSelection()) then
+      if (active >= 0 and tabctrl:GetPage(active).window
+        ~= notebook:GetPage(notebook:GetSelection())) then
         -- if not, need to activate the control that was clicked on;
         -- find the last window and switch to it (assuming there is always one)
         assert(tabctrl:GetPageCount() >= 1, "Expected at least one page in a notebook tab control.")
@@ -257,7 +257,7 @@ local function createNotebook(frame)
   local function IfAtLeastOneTab(event)
     event:Enable(notebook:GetPageCount() > 0)
     if ide.osname == 'Macintosh' and (event:GetId() == ID_CLOSEALL
-    or event:GetId() == ID_CLOSE and notebook:GetPageCount() <= 1)
+      or event:GetId() == ID_CLOSE and notebook:GetPageCount() <= 1)
     then event:Enable(false) end
   end
   local function IfModified(event) event:Enable(EditorIsModified(GetEditor(selection))) end
@@ -289,13 +289,13 @@ local function createNotebook(frame)
       ShowLocation(ide:GetDocument(GetEditor(selection)):GetFilePath())
     end)
   notebook:Connect(ID_SHOWLOCATION, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
-  
+
   notebook:Connect(ID_COPYFULLPATH, wx.wxEVT_COMMAND_MENU_SELECTED, function()
-		local tdo = wx.wxTextDataObject(ide:GetDocument(GetEditor(selection)):GetFilePath())
-		if wx.wxClipboard:Get():Open() then
-			wx.wxClipboard:Get():SetData(tdo)
-			wx.wxClipboard:Get():Close()
-		end
+      local tdo = wx.wxTextDataObject(ide:GetDocument(GetEditor(selection)):GetFilePath())
+      if wx.wxClipboard:Get():Open() then
+        wx.wxClipboard:Get():SetData(tdo)
+        wx.wxClipboard:Get():Close()
+      end
     end)
 
   frame.notebook = notebook
@@ -330,7 +330,7 @@ local function createBottomNotebook(frame)
         local mouse = wx.wxGetMouseState()
         local mouseatpoint = wx.wxPoint(mouse:GetX(), mouse:GetY())
         local ok, tabs = pcall(function() return wx.wxFindWindowAtPoint(mouseatpoint):DynamicCast("wxAuiTabCtrl") end)
-        tabs:SetNoneActive()
+        if ok then tabs:SetNoneActive() end
 
         event:Allow()
       end
@@ -392,8 +392,10 @@ local function createBottomNotebook(frame)
       local label = bottomnotebook:GetPageText(selection)
 
       -- names are translated on labels, so need to translate here as well
-      local dragout = ({[TR("Watch")] = DebuggerAddWatchWindow,
-                        [TR("Stack")] = DebuggerAddStackWindow})[label]
+      local dragout = ({
+          [TR("Watch")] = DebuggerAddWatchWindow,
+          [TR("Stack")] = DebuggerAddStackWindow,
+          })[label]
       if not dragout then return end
 
       bottomnotebook:RemovePage(selection)
@@ -410,38 +412,38 @@ local function createBottomNotebook(frame)
 
   local errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_NONE)
-	
-	errorlog:Connect(wx.wxEVT_CONTEXT_MENU,
-		function (event)
-			errorlog:PopupMenu(
-				wx.wxMenu {
-					{ ID_UNDO, TR("&Undo") },
-					{ ID_REDO, TR("&Redo") },
-					{ },
-					{ ID_CUT, TR("Cu&t") },
-					{ ID_COPY, TR("&Copy") },
-					{ ID_PASTE, TR("&Paste") },
-					{ ID_SELECTALL, TR("Select &All") },
-					{ },
-					{ ID_CLEAROUTPUT, TR("C&lear Output Window") },
-				}
-			)
-		end)
-	
-	errorlog:Connect(ID_CLEAROUTPUT, wx.wxEVT_COMMAND_MENU_SELECTED,
-		function(event)
-			ClearOutput()
-		end)
+
+  errorlog:Connect(wx.wxEVT_CONTEXT_MENU,
+    function (event)
+      errorlog:PopupMenu(
+        wx.wxMenu {
+          { ID_UNDO, TR("&Undo") },
+          { ID_REDO, TR("&Redo") },
+          { },
+          { ID_CUT, TR("Cu&t") },
+          { ID_COPY, TR("&Copy") },
+          { ID_PASTE, TR("&Paste") },
+          { ID_SELECTALL, TR("Select &All") },
+          { },
+          { ID_CLEAROUTPUT, TR("C&lear Output Window") },
+        }
+      )
+    end)
+
+  errorlog:Connect(ID_CLEAROUTPUT, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function(event)
+      ClearOutput()
+    end)
 
   local shellbox = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_NONE)
 
   bottomnotebook:AddPage(errorlog, TR("Output"), true)
   bottomnotebook:AddPage(shellbox, TR("Local console"), false)
-  
+
   bottomnotebook.errorlog = errorlog
   bottomnotebook.shellbox = shellbox
-  
+
   frame.bottomnotebook = bottomnotebook
   return bottomnotebook
 end
@@ -475,23 +477,23 @@ do
   local mgr = frame.uimgr
 
   mgr:AddPane(frame.toolBar, wxaui.wxAuiPaneInfo():
-              Name("toolbar"):Caption("Toolbar"):
-              MinSize(300,16):FloatingSize(800,48):
-              ToolbarPane():Top():CloseButton(false):PaneBorder(false):
-              LeftDockable(false):RightDockable(false))
+    Name("toolbar"):Caption("Toolbar"):
+    MinSize(300,16):FloatingSize(800,48):
+    ToolbarPane():Top():CloseButton(false):PaneBorder(false):
+    LeftDockable(false):RightDockable(false))
   mgr:AddPane(frame.notebook, wxaui.wxAuiPaneInfo():
-              Name("notebook"):
-              CenterPane():PaneBorder(false))
+    Name("notebook"):
+    CenterPane():PaneBorder(false))
   mgr:AddPane(frame.projnotebook, wxaui.wxAuiPaneInfo():
-              Name("projpanel"):CaptionVisible(false):Caption(TR("Project")):
-              MinSize(200,200):FloatingSize(200,400):
-              Left():Layer(1):Position(1):PaneBorder(false):
-              CloseButton(true):MaximizeButton(false):PinButton(true))
+    Name("projpanel"):CaptionVisible(false):Caption(TR("Project")):
+    MinSize(200,200):FloatingSize(200,400):
+    Left():Layer(1):Position(1):PaneBorder(false):
+    CloseButton(true):MaximizeButton(false):PinButton(true))
   mgr:AddPane(frame.bottomnotebook, wxaui.wxAuiPaneInfo():
-              Name("bottomnotebook"):CaptionVisible(false):
-              MinSize(100,100):BestSize(200,200):FloatingSize(400,200):
-              Bottom():Layer(1):Position(1):PaneBorder(false):
-              CloseButton(true):MaximizeButton(false):PinButton(true))
+    Name("bottomnotebook"):CaptionVisible(false):
+    MinSize(100,100):BestSize(200,200):FloatingSize(400,200):
+    Bottom():Layer(1):Position(1):PaneBorder(false):
+    CloseButton(true):MaximizeButton(false):PinButton(true))
 
   for _, uimgr in pairs {mgr, frame.notebook:GetAuiManager(),
     frame.bottomnotebook:GetAuiManager(), frame.projnotebook:GetAuiManager()} do
