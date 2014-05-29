@@ -71,6 +71,10 @@ local function onEditMenu(event)
   local editor = GetEditorWithFocus()
   if editor == nil then event:Skip(); return end
 
+  if PackageEventHandle("onEditorAction", editor, event) == false then
+    return
+  end
+
   local menu_id = event:GetId()
   if menu_id == ID_CUT then
     if editor:GetSelectionStart() == editor:GetSelectionEnd()
