@@ -93,10 +93,16 @@ namespace OpenRA
 				}
 
 				var data = Encoding.UTF8.GetString(i.Result);
-				var yaml = MiniYaml.FromString(data);
-
-				foreach (var kv in yaml)
-					maps[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value);
+				try
+				{
+					var yaml = MiniYaml.FromString(data);
+					foreach (var kv in yaml)
+						maps[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value);
+				}
+				catch
+				{
+					Log.Write("debug", "Can't parse remote map search data:\n{0}", data);
+				}
 			};
 
 			new Download(url, _ => { }, onInfoComplete);
