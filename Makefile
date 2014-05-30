@@ -19,7 +19,7 @@
 #   make [prefix=/foo] [bindir=/bar/bin] install-all
 #
 # to install Linux desktop files and icons:
-#   make install-shortcuts
+#   make install-startup-scripts
 #
 # to uninstall, run:
 #   make uninstall
@@ -294,7 +294,9 @@ docs: utility
 
 install: install-core
 
-install-all: install-core install-tools install-icons install-desktop install-shortcuts
+install-all: install-core install-tools install-startup-scripts
+
+install-shortcuts: install-icons install-desktop
 
 install-core: default
 	@-echo "Installing OpenRA to $(DATA_INSTALL_DIR)"
@@ -350,7 +352,7 @@ install-desktop:
 	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
 	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
 
-install-shortcuts:
+install-startup-scripts:
 	@echo "#!/bin/sh" > openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra
 	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' >> openra
@@ -405,7 +407,7 @@ help:
 	@echo \ \ make \[prefix=/foo\] \[bindir=/bar/bin\] install-all
 	@echo
 	@echo to install Linux desktop files and icons
-	@echo \ \ make install-shortcuts
+	@echo \ \ make install-startup-scripts
 	@echo
 	@echo to uninstall, run:
 	@echo \ \ make uninstall
