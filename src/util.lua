@@ -477,3 +477,37 @@ function GenerateProgramFilesPath(exec, sep)
     [[C:\Program Files (x86)\]]..exec..sep..
     [[D:\Program Files (x86)\]]..exec
 end
+
+--[[ format placeholders
+    - %f -- full project name (project path)
+    - %s -- short project name (directory name)
+    - %i -- interpreter name
+    - %S -- file name
+    - %F -- file path
+    - %n -- line number
+    - %c -- line content
+    - %T -- application title
+    - %v -- application version
+    - %t -- current tab name
+--]]
+function ExpandPlaceholders(msg, ph)
+  if type(msg) == 'function' then return msg(ph) end
+  local editor = ide:GetEditor()
+  local proj = ide:GetProject() or ""
+  local dirs = wx.wxFileName(proj):GetDirs()
+  local doc = editor and ide:GetDocument(editor)
+  local nb = ide:GetEditorNotebook()
+  local def = {
+    f = proj,
+    s = dirs[#dirs] or "",
+    i = ide:GetInterpreter():GetName() or "",
+    S = doc and doc:GetFileName() or "",
+    F = doc and doc:GetFilePath() or "",
+    n = editor and editor:GetCurrentLine()+1 or 0,
+    c = editor and editor:GetLine(editor:GetCurrentLine()) or "",
+    T = GetIDEString("editor") or "",
+    v = ide.VERSION,
+    t = editor and nb:GetPageText(nb:GetPageIndex(editor)) or "",
+  }
+  return(msg:gsub('%%(%w)', function(p) return ph[p] or def[p] or '?' end))
+end

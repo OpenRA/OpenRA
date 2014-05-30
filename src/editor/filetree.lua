@@ -586,10 +586,11 @@ local function getProjectLabels()
     local intfname = config and config[2] and config[2].interpreter or ide.interpreter:GetFileName()
     local interpreter = intfname and ide.interpreters[intfname]
     local parts = wx.wxFileName(proj..pathsep):GetDirs()
-    table.insert(labels, (fmt
-        :gsub('%%f', proj)
-        :gsub('%%i', interpreter and interpreter:GetName() or '?')
-        :gsub('%%s', parts[#parts] or '')))
+    table.insert(labels, ExpandPlaceholders(fmt, {
+        f = proj,
+        i = interpreter and interpreter:GetName() or '?',
+        s = parts[#parts] or '',
+    }))
   end
   return labels
 end
