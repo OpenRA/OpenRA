@@ -83,8 +83,12 @@ namespace OpenRA.Mods.RA
 				var weapon = attack.ChooseArmamentForTarget(target);
 				if (weapon != null)
 				{
-					// Try and sit at least one cell closer than the max range to give some leeway if the target stars moving.
-					var maxRange = new WRange(Math.Max(weapon.Weapon.MinRange.Range, weapon.Weapon.Range.Range - 1024));
+					var targetIsMobile = (target.Type == TargetType.Actor && target.Actor.HasTrait<IMove>())
+						|| (target.Type == TargetType.FrozenActor && target.FrozenActor.Info.Traits.Contains<IMove>());
+
+					// Try and sit at least one cell closer than the max range to give some leeway if the target starts moving.
+					var maxRange = targetIsMobile ? new WRange(Math.Max(weapon.Weapon.MinRange.Range, weapon.Weapon.Range.Range - 1024))
+						: weapon.Weapon.Range;
 
 					attack.Target = target;
 
