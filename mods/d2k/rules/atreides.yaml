@@ -209,7 +209,7 @@ FREMEN:
 		Cost: 800
 	Tooltip:
 		Name: Fremen
-		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisible
+		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisibility
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 85
