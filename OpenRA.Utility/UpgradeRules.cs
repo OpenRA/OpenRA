@@ -71,6 +71,28 @@ namespace OpenRA.Utility
 
 			foreach (var node in nodes)
 			{
+				// instant/external capture traits were renamed
+				if (engineVersion < 20131028)
+				{
+					if (depth == 1)
+					{
+						if (node.Key == "Captures")
+							node.Key = "ExternalCaptures";
+
+						if (node.Key == "LegacyCaptures")
+							node.Key = "Captures";
+
+						if (node.Key == "Capturable")
+							node.Key = "ExternalCapturable";
+
+						if (node.Key == "LegacyCapturable")
+							node.Key = "Capturable";
+
+						if (node.Key == "CapturableBar")
+							node.Key = "ExternalCapturableBar";
+					}
+				}
+
 				// Weapon definitions were converted to world coordinates
 				if (engineVersion < 20131226)
 				{
