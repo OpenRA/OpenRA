@@ -48,10 +48,9 @@ prefix ?= /usr/local
 datarootdir ?= $(prefix)/share
 datadir ?= $(datarootdir)
 bindir ?= $(prefix)/bin
-libexecdir ?= $(prefix)/lib
+libdir ?= $(prefix)/lib
 BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
-# TODO: separate data and binaries properly
-DATA_INSTALL_DIR = $(DESTDIR)$(libexecdir)/openra
+DATA_INSTALL_DIR = $(DESTDIR)$(libdir)/openra
 
 # install tools
 RM = rm
@@ -355,7 +354,7 @@ install-shortcuts:
 	@echo "#!/bin/sh" > openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra
 	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' >> openra
-	@echo 'EXECDIR="$${ROOTDIR}'"$(libexecdir)"'"' >> openra
+	@echo 'EXECDIR="$${ROOTDIR}'"$(libdir)"'"' >> openra
 	@echo 'cd "$${EXECDIR}/openra"' >> openra
 	@echo 'exec mono OpenRA.Game.exe "$$@"' >> openra
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
@@ -365,7 +364,7 @@ install-shortcuts:
 	@echo "#!/bin/sh" >  openra-editor
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra-editor
 	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' >> openra-editor
-	@echo 'EXECDIR="$${ROOTDIR}'"$(libexecdir)"'"' >> openra-editor
+	@echo 'EXECDIR="$${ROOTDIR}'"$(libdir)"'"' >> openra-editor
 	@echo 'cd "$${EXECDIR}/openra"' >> openra-editor
 	@echo 'exec mono OpenRA.Editor.exe "$$@"' >> openra-editor
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
