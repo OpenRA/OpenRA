@@ -580,7 +580,7 @@ end
 
 local function getProjectLabels()
   local labels = {}
-  local fmt = ide.config.menuformatrecentprojects or '%f'
+  local fmt = ide.config.format.menurecentprojects or '%f'
   for _, proj in ipairs(FileTreeGetProjects()) do
     local config = ide.session.projects[proj]
     local intfname = config and config[2] and config[2].interpreter or ide.interpreter:GetFileName()

@@ -135,6 +135,10 @@ config = {
     fontsize = nil, -- no default size as it is system dependent
   },
 
+  format = { -- various formatting strings
+    menurecentprojects = nil,
+  },
+
   keymap = {}, -- mapping of menu IDs to hot keys
   messages = {}, -- list of messages in a particular language
   language = "en", -- current UI language
