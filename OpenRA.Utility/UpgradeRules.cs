@@ -93,6 +93,17 @@ namespace OpenRA.Utility
 					}
 				}
 
+				// CarpetBomb was recreated as AttackBomber
+				if (engineVersion < 20131031)
+				{
+					if (depth == 1 && node.Key == "CarpetBomb")
+					{
+						node.Key = "Armament";
+						node.Value.Nodes.RemoveAll(n => n.Key == "Range");
+						parent.Value.Nodes.Add(new MiniYamlNode("AttackBomber", ""));
+					}
+				}
+
 				// Weapon definitions were converted to world coordinates
 				if (engineVersion < 20131226)
 				{
