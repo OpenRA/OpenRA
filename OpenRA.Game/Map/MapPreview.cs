@@ -132,12 +132,18 @@ namespace OpenRA
 					{
 						var r = FieldLoader.Load<RemoteMapData>(yaml);
 
-						// Map is not useable by the current version
-						if (!r.downloading || r.requires_upgrade)
+						// Map download has been disabled server side
+						if (!r.downloading)
 						{
 							Status = MapStatus.Unavailable;
 							return;
 						}
+
+						// Map is not useable by the current version
+						if (r.requires_upgrade)
+							RuleStatus = MapRuleStatus.Invalid;
+						else
+							RuleStatus = MapRuleStatus.Cached;
 
 						Title = r.title;
 						Type = r.map_type;
