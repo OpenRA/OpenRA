@@ -528,7 +528,6 @@ function filetree:updateProjectDir(newdir)
     PackageEventHandle("onProjectClose", filetree.projdir)
   end
 
-
   PackageEventHandle("onProjectPreLoad", newdir)
 
   if ide.config.projectautoopen and filetree.projdir then
@@ -549,12 +548,7 @@ function filetree:updateProjectDir(newdir)
 
   -- sync with the current editor window and activate selected file
   local editor = GetEditor()
-  if (editor) then
-    local id = GetEditor():GetId()
-    if ide.openDocuments[id] then
-      FileTreeMarkSelected(ide.openDocuments[id].filePath)
-    end
-  end
+  if editor then FileTreeMarkSelected(ide:GetDocument(editor):GetFilePath()) end
 
   -- refresh Recent Projects menu item
   ide.frame:AddPendingEvent(wx.wxUpdateUIEvent(ID_RECENTPROJECTS))
@@ -587,10 +581,10 @@ local function getProjectLabels()
     local interpreter = intfname and ide.interpreters[intfname]
     local parts = wx.wxFileName(proj..pathsep):GetDirs()
     table.insert(labels, ExpandPlaceholders(fmt, {
-        f = proj,
-        i = interpreter and interpreter:GetName() or '?',
-        s = parts[#parts] or '',
-    }))
+          f = proj,
+          i = interpreter and interpreter:GetName() or '?',
+          s = parts[#parts] or '',
+        }))
   end
   return labels
 end
