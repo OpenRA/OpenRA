@@ -18,8 +18,8 @@
 # to install with development tools, run:
 #   make [prefix=/foo] [bindir=/bar/bin] install-all
 #
-# to install Linux desktop files and icons:
-#   make install-startup-scripts
+# to install Linux startup scripts, desktop files and icons:
+#   make install-linux-shortcuts
 #
 # to uninstall, run:
 #   make uninstall
@@ -296,9 +296,9 @@ docs: utility
 
 install: install-core
 
-install-all: install-core install-tools install-startup-scripts
+install-all: install-core install-tools
 
-install-shortcuts: install-icons install-desktop
+install-linux-shortcuts: install-linux-scripts install-linux-icons install-linux-desktop
 
 install-core: default
 	@-echo "Installing OpenRA to $(DATA_INSTALL_DIR)"
@@ -345,16 +345,16 @@ install-tools: tools
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) $(foreach prog,$(TOOLS),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
 
-install-icons:
+install-linux-icons:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
 	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
 
-install-desktop:
+install-linux-desktop:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
 	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
 	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
 
-install-startup-scripts:
+install-linux-scripts:
 	@echo "#!/bin/sh" > openra
 	@echo 'cd "$(gameinstalldir)"' >> openra
 	@echo 'exec mono OpenRA.Game.exe "$$@"' >> openra
@@ -402,8 +402,8 @@ help:
 	@echo to install with development tools, run:
 	@echo \ \ make \[prefix=/foo\] \[bindir=/bar/bin\] install-all
 	@echo
-	@echo to install Linux desktop files and icons
-	@echo \ \ make install-startup-scripts
+	@echo to install Linux startup scripts, desktop files and icons
+	@echo \ \ make install-linux-shortcuts
 	@echo
 	@echo to uninstall, run:
 	@echo \ \ make uninstall

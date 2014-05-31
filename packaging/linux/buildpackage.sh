@@ -23,8 +23,8 @@ make install-all prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
 cp $DEPSDIR/* $PWD/packaging/linux/$ROOTDIR/usr/lib/openra/
 
-# Icons and .desktop files
-make install-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
+# Install startup scripts, desktop files and icons
+make install-linux-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
 # Remove the WinForms dialog which is replaced with a native one provided by zenity
 rm $PWD/packaging/linux/$ROOTDIR/usr/lib/openra/OpenRA.CrashDialog.exe
