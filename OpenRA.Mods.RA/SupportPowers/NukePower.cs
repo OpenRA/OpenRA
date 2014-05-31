@@ -77,10 +77,12 @@ namespace OpenRA.Mods.RA
 			var rb = self.Trait<RenderSimple>();
 			rb.PlayCustomAnim(self, "active");
 
-			self.World.AddFrameEndTask(w => w.Add(new NukeLaunch(self.Owner, npi.MissileWeapon,
+			var missile = new NukeLaunch(self.Owner, npi.MissileWeapon,
 				self.CenterPosition + body.LocalToWorld(npi.SpawnOffset),
 				order.TargetLocation.CenterPosition,
-				npi.FlightVelocity, npi.FlightDelay, npi.SkipAscent)));
+				npi.FlightVelocity, npi.FlightDelay, npi.SkipAscent);
+
+			self.World.AddFrameEndTask(w => w.Add(missile));
 
 			if (npi.CameraActor != null)
 			{
@@ -97,15 +99,29 @@ namespace OpenRA.Mods.RA
 				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(npi.FlightDelay - npi.CameraSpawnAdvance, addCamera)));
 			}
 
-			if (beacon != null)
+			if (Info.DisplayBeacon)
 			{
+				var beacon = new Beacon(
+					order.Player,
+					order.TargetLocation.CenterPosition,
+					Info.BeaconPalettePrefix,
+					Info.BeaconPoster,
+					Info.BeaconPosterPalette,
+					() => missile.FractionComplete
+				);
+
+
 				Action removeBeacon = () => self.World.AddFrameEndTask(w =>
 				{
 					w.Remove(beacon);
 					beacon = null;
 				});
 
-				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(npi.FlightDelay - npi.BeaconRemoveAdvance, removeBeacon)));
+				self.World.AddFrameEndTask(w =>
+				{
+					w.Add(beacon);
+					w.Add(new DelayedAction(npi.FlightDelay - npi.BeaconRemoveAdvance, removeBeacon));
+				});
 			}
 		}
 	}

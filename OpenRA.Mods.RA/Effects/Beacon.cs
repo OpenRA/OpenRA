@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
@@ -24,16 +25,18 @@ namespace OpenRA.Mods.RA.Effects
 		readonly Animation arrow;
 		readonly Animation circles;
 		readonly Animation poster;
+		readonly Animation clock;
+
 		static readonly int maxArrowHeight = 512;
 		int arrowHeight = maxArrowHeight;
 		int arrowSpeed = 50;
 
-		public Beacon(Player owner, WPos position, int duration, string palettePrefix, string posterType, string posterPalette)
+		// Player-placed beacons are removed after a delay
+		public Beacon(Player owner, WPos position, int duration, string palettePrefix)
 		{
 			this.owner = owner;
 			this.position = position;
 			this.palettePrefix = palettePrefix;
-			this.posterPalette = posterPalette;
 
 			arrow = new Animation(owner.World, "beacon");
 			circles = new Animation(owner.World, "beacon");
@@ -41,14 +44,27 @@ namespace OpenRA.Mods.RA.Effects
 			arrow.Play("arrow");
 			circles.Play("circles");
 
+			if (duration > 0)
+				owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
+		}
+
+		// Support power beacons are expected to clean themselves up
+		public Beacon(Player owner, WPos position, string palettePrefix, string posterType, string posterPalette, Func<float> clockFraction)
+			: this(owner, position, -1, palettePrefix)
+		{
+			this.posterPalette = posterPalette;
+
 			if (posterType != null)
 			{
 				poster = new Animation(owner.World, "beacon");
 				poster.Play(posterType);
-			}
 
-			if (duration > 0)
-				owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
+				if (clockFraction != null)
+				{
+					clock = new Animation(owner.World, "beacon");
+					clock.PlayFetchIndex("clock", () => Exts.Clamp((int)(clockFraction() * (clock.CurrentSequence.Length - 1)), 0, clock.CurrentSequence.Length - 1));
+				}
+			}
 		}
 
 		public void Tick(World world)
@@ -63,6 +79,9 @@ namespace OpenRA.Mods.RA.Effects
 
 			arrow.Tick();
 			circles.Tick();
+
+			if (clock != null)
+				clock.Tick();
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer r)
@@ -78,8 +97,14 @@ namespace OpenRA.Mods.RA.Effects
 				yield return a;
 
 			if (poster != null)
+			{
 				foreach (var a in poster.Render(position, r.Palette(posterPalette)))
 					yield return a;
+
+				if (clock != null)
+					foreach (var a in clock.Render(position, r.Palette(posterPalette)))
+						yield return a;
+			}
 		}
 	}
 }

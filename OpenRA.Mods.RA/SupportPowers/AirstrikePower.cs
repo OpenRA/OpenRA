@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -42,6 +43,9 @@ namespace OpenRA.Mods.RA
 		[Desc("Amount of time to keep the camera alive after the aircraft have finished attacking")]
 		public readonly int CameraRemoveDelay = 25;
 
+		[Desc("Weapon range offset to apply during the beacon clock calculation")]
+		public readonly WRange BeaconDistanceOffset = WRange.FromCells(6);
+
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.self, this); }
 	}
 
@@ -66,6 +70,7 @@ namespace OpenRA.Mods.RA
 
 			Actor flare = null;
 			Actor camera = null;
+			Beacon beacon = null;
 			Dictionary<Actor, bool> aircraftInRange = new Dictionary<Actor, bool>();
 
 			Action<Actor> onEnterRange = a =>
@@ -132,6 +137,7 @@ namespace OpenRA.Mods.RA
 				var notification = self.Owner.IsAlliedWith(self.World.RenderPlayer) ? Info.LaunchSound : Info.IncomingSound;
 				Sound.Play(notification);
 
+				Actor distanceTestActor = null;
 				for (var i = -info.SquadSize / 2; i <= info.SquadSize / 2; i++)
 				{
 					// Even-sized squads skip the lead plane
@@ -159,6 +165,23 @@ namespace OpenRA.Mods.RA
 					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset)));
 					a.QueueActivity(new RemoveSelf());
 					aircraftInRange.Add(a, false);
+					distanceTestActor = a;
+				}
+
+				if (Info.DisplayBeacon)
+				{
+					var distance = (target - startEdge).HorizontalLength;
+
+					beacon = new Beacon(
+						order.Player,
+						order.TargetLocation.CenterPosition,
+						Info.BeaconPalettePrefix,
+						Info.BeaconPoster,
+						Info.BeaconPosterPalette,
+						() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Range) * 1f / distance
+					);
+
+					w.Add(beacon);
 				}
 			});
 		}
