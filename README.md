@@ -2,11 +2,11 @@
 
 A Libre/Free Real Time Strategy game engine supporting early Westwood classics.
 
-* Website: [http://www.open-ra.org](http://www.open-ra.org)
+* Website: [http://www.openra.net](http://www.openra.net)
 * IRC: \#openra on irc.freenode.net
-* Repository: [https://github.com/openra/openra](https://github.com/openra/openra) [![Build Status](https://travis-ci.org/OpenRA/OpenRA.svg?branch=bleed)](https://travis-ci.org/OpenRA/OpenRA)
+* Repository: [https://github.com/OpenRA/OpenRA](https://github.com/OpenRA/OpenRA) [![Build Status](https://travis-ci.org/OpenRA/OpenRA.svg?branch=bleed)](https://travis-ci.org/OpenRA/OpenRA)
 
-Please read the [FAQ](https://github.com/OpenRA/OpenRA/wiki/FAQ) in our [Wiki](https://github.com/OpenRA/OpenRA/wiki) and report problems at [http://bugs.open-ra.org](http://bugs.open-ra.org).
+Please read the [FAQ](http://wiki.openra.net/FAQ) in our [Wiki](http://wiki.openra.net) and report problems at [http://bugs.openra.net](http://bugs.openra.net).
 
 Join the [Forums](http://www.sleipnirstuff.com/forum/viewforum.php?f=80) for discussion.
 
@@ -21,26 +21,27 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 
 ## Contribute
 
-* Please read [INSTALL.md](https://github.com/OpenRA/OpenRA/blob/bleed/INSTALL.md) and [Compiling](https://github.com/OpenRA/OpenRA/wiki/Compiling) on how to set up an OpenRA development environment.
-* See [Hacking](https://github.com/OpenRA/OpenRA/wiki/Hacking) for an overview of the engine.
+* Please read [INSTALL.md](https://github.com/OpenRA/OpenRA/blob/bleed/INSTALL.md) and [Compiling](http://wiki.openra.net/Compiling) on how to set up an OpenRA development environment.
+* See [Hacking](http://wiki.openra.net/Hacking) for an overview of the engine.
 * To get your patches merged, please adhere to the [Contributing](https://github.com/OpenRA/OpenRA/blob/bleed/CONTRIBUTING.md) guidelines.
 
 ## Mapping
 
-* We offer a [Mapping](https://github.com/OpenRA/OpenRA/wiki/Mapping) Tutorial as you can change gameplay drastically with custom maps.
+* We offer a [Mapping](http://wiki.openra.net/Mapping) Tutorial as you can change gameplay drastically with custom rules.
+* For scripted mission have a look at the [Lua API](http://wiki.openra.net/New-Lua-API).
 * If you want to share your maps with the community, upload them at the [OpenRA Resource Center](http://resource.openra.net).
 
 ## Modding
 
-* There exists an auto-generated [Trait documentation](https://github.com/OpenRA/OpenRA/wiki/Traits) to get started with yaml files.
-* Check the [Modding Guide](https://github.com/OpenRA/OpenRA/wiki/Modding%20Guide) to create your own classic RTS.
-* Some hints on how to create new OpenRA compatible [Pixelart](https://github.com/OpenRA/OpenRA/wiki/Pixelart).
+* There exists an auto-generated [Trait documentation](http://wiki.openra.net/Traits) to get started with yaml files.
+* Check the [Modding Guide](http://wiki.openra.net/Modding-Guide) to create your own classic RTS.
+* Some hints on how to create new OpenRA compatible [Pixelart](http://wiki.openra.net/Pixelart).
 * Upload total conversions at [our ModDB profile](http://www.moddb.com/games/openra/mods).
 
 ## Support
 
 * Sponsor a [mirror server](https://github.com/OpenRA/OpenRAWeb/tree/master/content/packages) if you have some bandwidth to spare.
-* You can immediately set up a [Dedicated](https://github.com/OpenRA/OpenRA/wiki/Dedicated) Game Server.
+* You can immediately set up a [Dedicated](http://wiki.openra.net/Dedicated) Game Server.
 * Fund development by creating [Bounties](https://www.bountysource.com/trackers/36085-openra) on specific tasks.
 
 ## License
