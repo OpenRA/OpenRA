@@ -230,8 +230,7 @@ namespace OpenRA.FileSystem
 			if (Exists(filename))
 				using (var s = Open(filename))
 				{
-					var buf = new byte[s.Length];
-					s.Read(buf, 0, buf.Length);
+					var buf = s.ReadBytes((int)s.Length);
 					a = Assembly.Load(buf);
 					assemblyCache.Add(filename, a);
 					return a;

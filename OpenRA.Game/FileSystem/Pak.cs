@@ -59,8 +59,7 @@ namespace OpenRA.FileSystem
 				return null;
 
 			stream.Seek(entry.Offset, SeekOrigin.Begin);
-			var data = new byte[entry.Length];
-			stream.Read(data, 0, (int)entry.Length);
+			var data = stream.ReadBytes((int)entry.Length);
 			return new MemoryStream(data);
 		}
 

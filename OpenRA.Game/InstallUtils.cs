@@ -122,12 +122,7 @@ namespace OpenRA
 				extracted.Add(path);
 
 				using (var f = File.Create(path))
-				{
-					int bufSize = 2048;
-					byte[] buf = new byte[bufSize];
-					while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
-					f.Write(buf, 0, bufSize);
-				}
+					z.CopyTo(f);
 			}
 
 			z.Close();

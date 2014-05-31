@@ -81,7 +81,8 @@ namespace OpenRA.FileFormats
 					for (var j = 0; j < f.Size.Height; j++)
 					{
 						var length = stream.ReadUInt16() - 2;
-						stream.Read(f.Data, f.Size.Width * j, length);
+						var offset = f.Size.Width * j;
+						stream.ReadBytes(f.Data, offset, length);
 					}
 				}
 
