@@ -105,15 +105,6 @@ local function updateBraceMatch(editor)
   end
 end
 
-local function getFileTitle (editor)
-  if not editor or not openDocuments[editor:GetId()] then return GetIDEString("editor") end
-  local id = editor:GetId()
-  local filePath = openDocuments[id].filePath
-  local fileName = openDocuments[id].fileName
-  if not filePath or not fileName then return GetIDEString("editor") end
-  return GetIDEString("editor").." ["..filePath.."]"
-end
-
 -- Check if file is altered, show dialog to reload it
 local function isFileAlteredOnDisk(editor)
   if not editor then return end
@@ -182,7 +173,7 @@ function SetEditorSelection(selection)
   local editor = GetEditor(selection)
   updateStatusText(editor) -- update even if nil
   statusBar:SetStatusText("",1)
-  ide.frame:SetTitle(getFileTitle(editor))
+  ide.frame:SetTitle(ExpandPlaceholders(ide.config.format.apptitle))
 
   if editor then
     if funclist:IsEmpty() then funclist:Append(TR("Jump to a function definition..."), 0) end

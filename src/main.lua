@@ -76,7 +76,10 @@ ide = {
     },
     arg = {}, -- command line arguments
 
-    format = {}, -- various formatting strings
+    format = { -- various formatting strings
+      menurecentprojects = "%f | %i",
+      apptitle = "%T - %F",
+    },
 
     activateoutput = false, -- activate output/console on Run/Debug/Compile
     unhidewindow = false, -- to unhide a gui window

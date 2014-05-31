@@ -130,6 +130,7 @@ function ProjectUpdateProjectDir(projdir,skiptree)
 
   ide.config.path.projectdir = projdir ~= "" and projdir or nil
   frame:SetStatusText(projdir)
+  frame:SetTitle(ExpandPlaceholders(ide.config.format.apptitle))
   if (not skiptree) then
     ide.filetree:updateProjectDir(projdir)
   end

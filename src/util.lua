@@ -491,6 +491,7 @@ end
     - %t -- current tab name
 --]]
 function ExpandPlaceholders(msg, ph)
+  ph = ph or {}
   if type(msg) == 'function' then return msg(ph) end
   local editor = ide:GetEditor()
   local proj = ide:GetProject() or ""
