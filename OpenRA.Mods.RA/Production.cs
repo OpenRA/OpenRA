@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 		public Production(ProductionInfo info, Actor self)
 		{
 			Info = info;
-			rp = Exts.Lazy(() => self.TraitOrDefault<RallyPoint>());
+			rp = Exts.Lazy(() => self.IsDead() ? null : self.TraitOrDefault<RallyPoint>());
 		}
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo)
@@ -60,6 +60,10 @@ namespace OpenRA.Mods.RA
 			var fi = producee.Traits.Get<IFacingInfo>();
 			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi.GetInitialFacing()) : exitinfo.Facing;
 
+			var exitLocation = rp.Value != null ? rp.Value.rallyPoint : exit;
+			var target = Target.FromCell(exitLocation);
+			var nearEnough = rp.Value != null ? WRange.FromCells(rp.Value.nearEnough) : WRange.Zero;
+
 			self.World.AddFrameEndTask(w =>
 			{
 				var newUnit = self.World.CreateActor(producee.Name, new TypeDictionary
@@ -70,31 +74,22 @@ namespace OpenRA.Mods.RA
 					new FacingInit(initialFacing)
 				});
 
-				var move = newUnit.Trait<IMove>();
-				if (exitinfo.MoveIntoWorld)
-					newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
+				var move = newUnit.TraitOrDefault<IMove>();
+				if (move != null)
+				{
+					if (exitinfo.MoveIntoWorld)
+						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
 
-				var target = MoveToRallyPoint(self, newUnit, exit);
-				newUnit.SetTargetLine(Target.FromCell(target), Color.Green, false);
-				foreach (var t in self.TraitsImplementing<INotifyProduction>())
-					t.UnitProduced(self, newUnit, exit);
+					newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
+						newUnit, move.MoveWithinRange(target, nearEnough)));
+				}
+
+				newUnit.SetTargetLine(target, Color.Green, false);
+
+				if (!self.IsDead())
+					foreach (var t in self.TraitsImplementing<INotifyProduction>())
+						t.UnitProduced(self, newUnit, exit);
 			});
-		}
-
-		CPos MoveToRallyPoint(Actor self, Actor newUnit, CPos exitLocation)
-		{
-			if (self.IsDead() || rp.Value == null)
-				return exitLocation;
-
-			var move = newUnit.TraitOrDefault<IMove>();
-			if (move != null)
-			{
-				newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
-					newUnit, move.MoveTo(rp.Value.rallyPoint, rp.Value.nearEnough)));
-				return rp.Value.rallyPoint;
-			}
-
-			return exitLocation;
 		}
 
 		public virtual bool Produce(Actor self, ActorInfo producee)
