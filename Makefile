@@ -293,6 +293,7 @@ version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mo
 # Documentation (d2k depends on all mod libraries)
 docs: utility
 	@mono --debug OpenRA.Utility.exe --docs d2k > DOCUMENTATION.md
+	@mono --debug OpenRA.Utility.exe --lua-docs ra > Lua-API.md
 
 install: install-core
 
