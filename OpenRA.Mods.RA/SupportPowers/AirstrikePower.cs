@@ -43,6 +43,9 @@ namespace OpenRA.Mods.RA
 		[Desc("Amount of time to keep the camera alive after the aircraft have finished attacking")]
 		public readonly int CameraRemoveDelay = 25;
 
+		[Desc("Weapon range offset to apply during the beacon clock calculation")]
+		public readonly WRange BeaconDistanceOffset = WRange.FromCells(6);
+
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.self, this); }
 	}
 
@@ -54,20 +57,6 @@ namespace OpenRA.Mods.RA
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);
-
-			Beacon beacon = null;
-			if (Info.DisplayBeacon)
-			{
-				beacon = new Beacon(
-					order.Player,
-					order.TargetLocation.CenterPosition,
-					-1,
-					Info.BeaconPalettePrefix,
-					Info.BeaconPoster,
-					Info.BeaconPosterPalette);
-
-				self.World.Add(beacon);
-			}
 
 			var info = Info as AirstrikePowerInfo;
 			var attackFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
@@ -81,6 +70,7 @@ namespace OpenRA.Mods.RA
 
 			Actor flare = null;
 			Actor camera = null;
+			Beacon beacon = null;
 			Dictionary<Actor, bool> aircraftInRange = new Dictionary<Actor, bool>();
 
 			Action<Actor> onEnterRange = a =>
@@ -147,6 +137,7 @@ namespace OpenRA.Mods.RA
 				var notification = self.Owner.IsAlliedWith(self.World.RenderPlayer) ? Info.LaunchSound : Info.IncomingSound;
 				Sound.Play(notification);
 
+				Actor distanceTestActor = null;
 				for (var i = -info.SquadSize / 2; i <= info.SquadSize / 2; i++)
 				{
 					// Even-sized squads skip the lead plane
@@ -174,6 +165,23 @@ namespace OpenRA.Mods.RA
 					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset)));
 					a.QueueActivity(new RemoveSelf());
 					aircraftInRange.Add(a, false);
+					distanceTestActor = a;
+				}
+
+				if (Info.DisplayBeacon)
+				{
+					var distance = (target - startEdge).HorizontalLength;
+
+					beacon = new Beacon(
+						order.Player,
+						order.TargetLocation.CenterPosition,
+						Info.BeaconPalettePrefix,
+						Info.BeaconPoster,
+						Info.BeaconPosterPalette,
+						() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Range) * 1f / distance
+					);
+
+					w.Add(beacon);
 				}
 			});
 		}

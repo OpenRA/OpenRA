@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 				if (playerBeacon != null)
 					self.World.Remove(playerBeacon);
 
-				playerBeacon = new Beacon(self.Owner, pos, info.Duration, info.PalettePrefix, null, null);
+				playerBeacon = new Beacon(self.Owner, pos, info.Duration, info.PalettePrefix);
 				self.World.Add(playerBeacon);
 
 				if (self.Owner.IsAlliedWith(self.World.RenderPlayer))

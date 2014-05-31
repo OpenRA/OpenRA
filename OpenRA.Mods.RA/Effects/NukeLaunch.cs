@@ -90,5 +90,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			return anim.Render(pos, wr.Palette("effect"));
 		}
+
+		public float FractionComplete { get { return ticks * 1f / delay; } }
 	}
 }
