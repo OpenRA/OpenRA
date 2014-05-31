@@ -355,14 +355,16 @@ namespace OpenRA
 					throw new InvalidDataException("Invalid tile data");
 
 				// Load tile data
+				var data = dataStream.ReadBytes(MapSize.X * MapSize.Y * 3);
+				var d = 0;
 				for (int i = 0; i < MapSize.X; i++)
 					for (int j = 0; j < MapSize.Y; j++)
 					{
-						var tile = dataStream.ReadUInt16();
-						var index = dataStream.ReadUInt8();
+						var tile = BitConverter.ToUInt16(data, d);
+						d += 2;
+						var index = data[d++];
 						if (index == byte.MaxValue)
 							index = (byte)(i % 4 + (j % 4) * 4);
-
 						tiles[i, j] = new TileReference<ushort, byte>(tile, index);
 					}
 			}
@@ -389,14 +391,12 @@ namespace OpenRA
 				// Skip past tile data
 				dataStream.Seek(3 * MapSize.X * MapSize.Y, SeekOrigin.Current);
 
+				var data = dataStream.ReadBytes(MapSize.X * MapSize.Y * 2);
+				var d = 0;
 				// Load resource data
 				for (var i = 0; i < MapSize.X; i++)
 					for (var j = 0; j < MapSize.Y; j++)
-				{
-					var type = dataStream.ReadUInt8();
-					var index = dataStream.ReadUInt8();
-					resources[i, j] = new TileReference<byte, byte>(type, index);
-				}
+						resources[i, j] = new TileReference<byte, byte>(data[d++], data[d++]);
 			}
 
 			return resources;

@@ -124,7 +124,7 @@ namespace OpenRA.Widgets
 
 			// Stash a copy of the minimap to ensure consistency
 			// (it may be modified by another thread)
-			minimap = preview.Minimap;
+			minimap = preview.GetMinimap();
 			if (minimap == null)
 				return;
 

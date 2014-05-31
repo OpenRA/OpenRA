@@ -69,27 +69,24 @@ namespace OpenRA
 
 		Sprite minimap;
 		bool generatingMinimap;
-		public Sprite Minimap
+		public Sprite GetMinimap()
 		{
-			get
+			if (minimap != null)
+				return minimap;
+
+			if (!generatingMinimap && Status == MapStatus.Available)
 			{
-				if (minimap != null)
-					return minimap;
-
-				if (!generatingMinimap && Status == MapStatus.Available)
-				{
-					generatingMinimap = true;
-					cache.CacheMinimap(this);
-				}
-
-				return null;
+				generatingMinimap = true;
+				cache.CacheMinimap(this);
 			}
 
-			set
-			{
-				minimap = value;
-				generatingMinimap = false;
-			}
+			return null;
+		}
+
+		public void SetMinimap(Sprite minimap)
+		{
+			this.minimap = minimap;
+			generatingMinimap = false;
 		}
 
 		public MapPreview(string uid, MapCache cache)
