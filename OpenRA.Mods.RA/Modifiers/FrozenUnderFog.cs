@@ -82,8 +82,7 @@ namespace OpenRA.Mods.RA
 				foreach (var p in self.World.Players)
 				{
 					visible[p] |= startsRevealed;
-					frozen[p] = new FrozenActor(self, footprint);
-					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p]);
+					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p] = new FrozenActor(self, footprint));
 				}
 
 				initialized = true;
@@ -94,18 +93,19 @@ namespace OpenRA.Mods.RA
 				if (!visible[player])
 					continue;
 
-				frozen[player].Owner = self.Owner;
+				var actor = frozen[player];
+				actor.Owner = self.Owner;
 
 				if (health.Value != null)
 				{
-					frozen[player].HP = health.Value.HP;
-					frozen[player].DamageState = health.Value.DamageState;
+					actor.HP = health.Value.HP;
+					actor.DamageState = health.Value.DamageState;
 				}
 
 				if (tooltip.Value != null)
 				{
-					frozen[player].TooltipName = tooltip.Value.Name();
-					frozen[player].TooltipOwner = tooltip.Value.Owner();
+					actor.TooltipName = tooltip.Value.Name();
+					actor.TooltipOwner = tooltip.Value.Owner();
 				}
 			}
 		}
