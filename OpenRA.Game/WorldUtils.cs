@@ -172,13 +172,28 @@ namespace OpenRA
 			}
 		}
 
-		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text, TimeSpan time)
+		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text)
 		{
-			e.Do(x =>
+			// Note - manual enumeration here for performance due to high call volume.
+			var longTickThresholdInStopwatchTicks = PerfTimer.LongTickThresholdInStopwatchTicks;
+			using (var enumerator = e.GetEnumerator())
 			{
-				using (new PerfTimer("[{0}] {1}: {2}".F(Game.LocalTick, text, x), (int)time.TotalMilliseconds))
-					a(x);
-			});
+				var start = Stopwatch.GetTimestamp();
+				while (enumerator.MoveNext())
+				{
+					a(enumerator.Current);
+					var current = Stopwatch.GetTimestamp();
+					if (current - start > longTickThresholdInStopwatchTicks)
+					{
+						PerfTimer.LogLongTick(start, current, text, enumerator.Current);
+						start = Stopwatch.GetTimestamp();
+					}
+					else
+					{
+						start = current;
+					}
+				}
+			}
 		}
 
 		public static bool AreMutualAllies( Player a, Player b )

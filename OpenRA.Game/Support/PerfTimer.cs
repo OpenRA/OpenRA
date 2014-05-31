@@ -18,42 +18,42 @@ namespace OpenRA.Support
 {
 	public class PerfTimer : IDisposable
 	{
-		readonly Stopwatch sw;
 		readonly string name;
-		readonly int thresholdMs;
-		readonly int depth;
+		readonly float thresholdMs;
+		readonly byte depth;
 		readonly PerfTimer parent;
 		List<PerfTimer> children;
+		long ticks;
 
 		static ThreadLocal<PerfTimer> Parent = new ThreadLocal<PerfTimer>();
 
 		// Tree settings
-		const int MaxWidth = 60, Digits = 6;
-		const int MaxIndentedLabel = MaxWidth - Digits;
+		const int Digits = 6;
 		const string IndentationString = "|   ";
-		static readonly string FormatString = "{0," + MaxIndentedLabel + "} {1," + Digits + "} ms";
+		const string FormatSeperation = " ms ";
+		static readonly string FormatString = "{0," + Digits + ":0}" + FormatSeperation + "{1}";
 
-		public PerfTimer(string name, int thresholdMs = 0)
+		public PerfTimer(string name, float thresholdMs = 0)
 		{
 			this.name = name;
 			this.thresholdMs = thresholdMs;
 
 			parent = Parent.Value;
-			depth = parent == null ? 0 : parent.depth + 1;
+			depth = parent == null ? (byte)0 : (byte)(parent.depth + 1);
 			Parent.Value = this;
 
-			sw = Stopwatch.StartNew();
+			ticks = Stopwatch.GetTimestamp();
 		}
 
 		public void Dispose()
 		{
-			sw.Stop();
+			ticks = Stopwatch.GetTimestamp() - ticks;
 
 			Parent.Value = parent;
 
 			if (parent == null)
 				Write();
-			else if (sw.Elapsed.TotalMilliseconds > thresholdMs)
+			else if (ElapsedMs > thresholdMs)
 			{
 				if (parent.children == null)
 					parent.children = new List<PerfTimer>();
@@ -63,56 +63,45 @@ namespace OpenRA.Support
 
 		void Write()
 		{
-			var elapsedMs = Math.Round(this.sw.Elapsed.TotalMilliseconds);
-
 			if (children != null)
 			{
-				Log.Write("perf", GetHeader(Indentation, this.name));
+				Log.Write("perf", GetHeader(Indentation, name));
 				foreach (var child in children)
 					child.Write();
-				Log.Write("perf", FormatString, GetFooter(Indentation), elapsedMs);
+				Log.Write("perf", FormatString, ElapsedMs, GetFooter(Indentation));
 			}
-			else if (elapsedMs >= thresholdMs)
-				Log.Write("perf", FormatString, GetOneLiner(Indentation, this.name), elapsedMs);
+			else if (ElapsedMs >= thresholdMs)
+				Log.Write("perf", FormatString, ElapsedMs, Indentation + name);
+		}
+
+		float ElapsedMs { get { return 1000f * ticks / Stopwatch.Frequency; } }
+
+		public static void LogLongTick(long startStopwatchTicks, long endStopwatchTicks, string name, object item)
+		{
+			var type = item.GetType();
+			var label = type == typeof(string) || type.IsGenericType ? item.ToString() : type.Name;
+			Log.Write("perf", FormatString,
+				1000f * (endStopwatchTicks - startStopwatchTicks) / Stopwatch.Frequency,
+				"[{0}] {1}: {2}".F(Game.LocalTick, name, label));
+		}
+
+		public static long LongTickThresholdInStopwatchTicks
+		{
+			get
+			{
+				return (long)(Stopwatch.Frequency * Game.Settings.Debug.LongTickThresholdMs / 1000f);
+			}
 		}
 
 		#region Formatting helpers
 		static string GetHeader(string indentation, string label)
 		{
-			return string.Concat(indentation, LimitLength(label, MaxIndentedLabel - indentation.Length));
-		}
-
-		static string GetOneLiner(string indentation, string label)
-		{
-			return string.Concat(indentation, SetLength(label, MaxIndentedLabel - indentation.Length));
+			return string.Concat(new string(' ', Digits + FormatSeperation.Length), indentation, label);
 		}
 
 		static string GetFooter(string indentation)
 		{
-			return string.Concat(indentation, new string('-', MaxIndentedLabel - indentation.Length));
-		}
-
-		static string LimitLength(string s, int length, int minLength = 8)
-		{
-			length = Math.Max(length, minLength);
-
-			if (s == null || s.Length <= length)
-				return s;
-
-			return s.Substring(0, length);
-		}
-
-		static string SetLength(string s, int length, int minLength = 8)
-		{
-			length = Math.Max(length, minLength);
-
-			if (s == null || s.Length == length)
-				return s;
-
-			if (s.Length < length)
-				return s.PadRight(length);
-
-			return s.Substring(0, length);
+			return string.Concat(indentation, new string('-', Math.Max(15, 50 - indentation.Length)));
 		}
 
 		string Indentation

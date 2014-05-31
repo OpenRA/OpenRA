@@ -78,17 +78,26 @@ namespace OpenRA.Traits
 
 		public static Activity RunActivity(Actor self, Activity act)
 		{
+			// Note - manual iteration here for performance due to high call volume.
+			var longTickThresholdInStopwatchTicks = PerfTimer.LongTickThresholdInStopwatchTicks;
+			var start = Stopwatch.GetTimestamp();
 			while (act != null)
 			{
 				var prev = act;
-
-				using (new PerfTimer("[{0}] Activity: {1}".F(Game.LocalTick, prev), (int)Game.Settings.Debug.LongTickThreshold.TotalMilliseconds))
-					act = act.Tick(self);
-
+				act = act.Tick(self);
+				var current = Stopwatch.GetTimestamp();
+				if (current - start > longTickThresholdInStopwatchTicks)
+				{
+					PerfTimer.LogLongTick(start, current, "Activity", prev);
+					start = Stopwatch.GetTimestamp();
+				}
+				else
+				{
+					start = current;
+				}
 				if (prev == act)
 					break;
 			}
-
 			return act;
 		}
 

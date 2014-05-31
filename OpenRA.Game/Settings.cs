@@ -71,7 +71,7 @@ namespace OpenRA
 		public bool BotDebug = false;
 		public bool PerfText = false;
 		public bool PerfGraph = false;
-		public TimeSpan LongTickThreshold = TimeSpan.FromMilliseconds(1d);
+		public float LongTickThresholdMs = 1;
 		public bool SanityCheckUnsyncedCode = false;
 		public int Samples = 25;
 		public bool IgnoreVersionMismatch = false;
