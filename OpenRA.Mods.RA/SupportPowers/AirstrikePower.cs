@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -53,6 +54,20 @@ namespace OpenRA.Mods.RA
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);
+
+			Beacon beacon = null;
+			if (Info.DisplayBeacon)
+			{
+				beacon = new Beacon(
+					order.Player,
+					order.TargetLocation.CenterPosition,
+					-1,
+					Info.BeaconPalettePrefix,
+					Info.BeaconPoster,
+					Info.BeaconPosterPalette);
+
+				self.World.Add(beacon);
+			}
 
 			var info = Info as AirstrikePowerInfo;
 			var attackFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);

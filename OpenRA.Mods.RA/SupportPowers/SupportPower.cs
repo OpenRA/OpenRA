@@ -31,11 +31,12 @@ namespace OpenRA.Mods.RA
 
 		public readonly bool DisplayTimer = false;
 
+		[Desc("Beacons are only supported on the Airstrike and Nuke powers")]
 		public readonly bool DisplayBeacon = false;
-		public readonly int BeaconDuration = 10 * 25;
 		public readonly string BeaconPalettePrefix = "player";
 		public readonly string BeaconPoster = null;
 		public readonly string BeaconPosterPalette = "chrome";
+
 		public readonly bool DisplayRadarPing = false;
 		public readonly int RadarPingDuration = 5 * 25;
 
@@ -49,7 +50,6 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly Actor self;
 		public readonly SupportPowerInfo Info;
-		protected Beacon beacon;
 		protected RadarPing ping;
 
 		public SupportPower(Actor self, SupportPowerInfo info)
@@ -70,25 +70,14 @@ namespace OpenRA.Mods.RA
 
 		public virtual void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
-			if (Info.DisplayBeacon)
-			{
-				beacon = new Beacon(
-					order.Player,
-					order.TargetLocation.CenterPosition,
-					Info.BeaconDuration,
-					Info.BeaconPalettePrefix,
-					Info.BeaconPoster,
-					Info.BeaconPosterPalette);
-
-				self.World.Add(beacon);
-			}
-
 			if (Info.DisplayRadarPing && manager.RadarPings != null)
+			{
 				ping = manager.RadarPings.Value.Add(
 					() => order.Player.IsAlliedWith(self.World.RenderPlayer),
 					order.TargetLocation.CenterPosition,
 					order.Player.Color.RGB,
 					Info.RadarPingDuration);
+			}
 		}
 
 		public virtual IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)

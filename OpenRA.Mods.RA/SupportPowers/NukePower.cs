@@ -68,6 +68,20 @@ namespace OpenRA.Mods.RA
 		{
 			base.Activate(self, order, manager);
 
+			Beacon beacon = null;
+			if (Info.DisplayBeacon)
+			{
+				beacon = new Beacon(
+					order.Player,
+					order.TargetLocation.CenterPosition,
+					-1,
+					Info.BeaconPalettePrefix,
+					Info.BeaconPoster,
+					Info.BeaconPosterPalette);
+
+				self.World.Add(beacon);
+			}
+
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				Sound.Play(Info.LaunchSound);
 			else
