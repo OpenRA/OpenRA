@@ -27,6 +27,7 @@ markdown Changelog.md > CHANGELOG.html
 markdown README.md > README.html
 markdown CONTRIBUTING.md > CONTRIBUTING.html
 markdown DOCUMENTATION.md > DOCUMENTATION.html
+markdown Lua-API.md > Lua-API.html
 
 # List of files that are packaged on all platforms
 FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' 'OpenRA.CrashDialog.exe' \

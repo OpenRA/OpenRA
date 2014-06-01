@@ -18,8 +18,8 @@
 # to install with development tools, run:
 #   make [prefix=/foo] [bindir=/bar/bin] install-all
 #
-# to install Linux desktop files and icons:
-#   make install-shortcuts
+# to install Linux startup scripts, desktop files and icons:
+#   make install-linux-shortcuts
 #
 # to uninstall, run:
 #   make uninstall
@@ -48,10 +48,11 @@ prefix ?= /usr/local
 datarootdir ?= $(prefix)/share
 datadir ?= $(datarootdir)
 bindir ?= $(prefix)/bin
-libexecdir ?= $(prefix)/lib
+libdir ?= $(prefix)/lib
+gameinstalldir ?= $(libdir)/openra
+
 BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
-# TODO: separate data and binaries properly
-DATA_INSTALL_DIR = $(DESTDIR)$(libexecdir)/openra
+DATA_INSTALL_DIR = $(DESTDIR)$(gameinstalldir)
 
 # install tools
 RM = rm
@@ -66,8 +67,8 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rsdl2 rnull game utility irc
-TOOLS = editor tsbuild ralint
+CORE = rsdl2 rnull game utility irc ralint
+TOOLS = editor tsbuild crashdialog
 
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
@@ -251,7 +252,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 
 ########################## MAKE/INSTALL RULES ##########################
 #
-default: dependencies core
+default: cli-dependencies core
 
 core: game renderers mods utility ralint
 
@@ -261,7 +262,7 @@ package: dependencies core editor crashdialog docs version
 
 mods: mod_ra mod_cnc mod_d2k mod_ts
 
-all: dependencies core tools
+all: cli-dependencies core tools
 
 clean:
 	@-$(RM_F) *.exe *.dll ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
@@ -274,8 +275,13 @@ ifeq ($(shell uname),Darwin)
 	platformdeps = "osx"
 endif
 
-dependencies:
-	@ $(CP_R) thirdparty/*.dl* .
+dependencies: cli-dependencies native-dependencies
+
+cli-dependencies:
+	@ $(CP_R) thirdparty/*.dll .
+	@ $(CP_R) thirdparty/*.dll.config .
+
+native-dependencies:
 	@ $(CP_R) thirdparty/${platformdeps}/* .
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
@@ -287,10 +293,13 @@ version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mo
 # Documentation (d2k depends on all mod libraries)
 docs: utility
 	@mono --debug OpenRA.Utility.exe --docs d2k > DOCUMENTATION.md
+	@mono --debug OpenRA.Utility.exe --lua-docs ra > Lua-API.md
 
 install: install-core
 
 install-all: install-core install-tools
+
+install-linux-shortcuts: install-linux-scripts install-linux-icons install-linux-desktop
 
 install-core: default
 	@-echo "Installing OpenRA to $(DATA_INSTALL_DIR)"
@@ -314,20 +323,19 @@ install-core: default
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
 	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/SDL2-CS* "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/Eluant* "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/SharpFont.dll.config "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/KopiLua.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/NLua.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) thirdparty/RestSharp.dll "$(DATA_INSTALL_DIR)"
-	@$(CP) thirdparty/${platformdeps}/* "$(DATA_INSTALL_DIR)"
+	@$(CP) SDL2-CS* "$(DATA_INSTALL_DIR)"
+	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) SharpFont.dll "$(DATA_INSTALL_DIR)"
+	@$(CP) SharpFont.dll.config "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) Mono.Nat.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) KopiLua.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) NLua.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) RestSharp.dll "$(DATA_INSTALL_DIR)"
 
 ifeq ($(shell uname),Linux)
 	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
@@ -338,35 +346,29 @@ install-tools: tools
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) $(foreach prog,$(TOOLS),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
 
-install-shortcuts:
+install-linux-icons:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
 	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
 
+install-linux-desktop:
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
+
+install-linux-scripts:
 	@echo "#!/bin/sh" > openra
-	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra
-	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' >> openra
-	@echo 'EXECDIR="$${ROOTDIR}'"$(libexecdir)"'"' >> openra
-	@echo 'cd "$${EXECDIR}/openra"' >> openra
+	@echo 'cd "$(gameinstalldir)"' >> openra
 	@echo 'exec mono OpenRA.Game.exe "$$@"' >> openra
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra
 
-	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
-	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
-
 	@echo "#!/bin/sh" >  openra-editor
-	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))' >> openra-editor
-	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' >> openra-editor
-	@echo 'EXECDIR="$${ROOTDIR}'"$(libexecdir)"'"' >> openra-editor
-	@echo 'cd "$${EXECDIR}/openra"' >> openra-editor
+	@echo 'cd "$(gameinstalldir)"' >> openra-editor
 	@echo 'exec mono OpenRA.Editor.exe "$$@"' >> openra-editor
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra-editor "$(BIN_INSTALL_DIR)"
 	@-$(RM) openra-editor
-
-	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
-	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
 
 uninstall:
 	@-$(RM_R) "$(DATA_INSTALL_DIR)"
@@ -401,8 +403,8 @@ help:
 	@echo to install with development tools, run:
 	@echo \ \ make \[prefix=/foo\] \[bindir=/bar/bin\] install-all
 	@echo
-	@echo to install Linux desktop files and icons
-	@echo \ \ make install-shortcuts
+	@echo to install Linux startup scripts, desktop files and icons
+	@echo \ \ make install-linux-shortcuts
 	@echo
 	@echo to uninstall, run:
 	@echo \ \ make uninstall

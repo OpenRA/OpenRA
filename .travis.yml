@@ -11,8 +11,8 @@ cache: apt
 
 # Run the build script
 # call RALint to check for YAML errors
-# Test run the packaging scripts for all platforms
 script:
+ - make dependencies
  - make all
  - make test
 

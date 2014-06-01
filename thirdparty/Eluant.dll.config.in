@@ -1,0 +1,3 @@
+<configuration>
+  <dllmap os="linux" dll="lua51.dll" target="@LIBLUA51@" />
+</configuration>
