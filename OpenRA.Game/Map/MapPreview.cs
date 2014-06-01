@@ -143,7 +143,7 @@ namespace OpenRA
 						if (r.requires_upgrade)
 							RuleStatus = MapRuleStatus.Invalid;
 						else
-							RuleStatus = MapRuleStatus.Cached;
+							RuleStatus = MapRuleStatus.Unknown;
 
 						Title = r.title;
 						Type = r.map_type;
@@ -217,7 +217,11 @@ namespace OpenRA
 						}
 
 						Log.Write("debug", "Downloaded map to '{0}'", mapPath);
-						Game.RunAfterTick(() => UpdateFromMap(new Map(mapPath), MapClassification.User));
+						Game.RunAfterTick(() =>
+						{
+							UpdateFromMap(new Map(mapPath), MapClassification.User);
+							CacheRules();
+						});
 					};
 
 					download = new Download(mapUrl, mapPath, onDownloadProgress, onDownloadComplete);
