@@ -181,7 +181,7 @@ namespace OpenRA.Mods.RA
 				this.sourceLocation = sourceLocation;
 				this.range = ((ChronoshiftPowerInfo)power.Info).Range;
 
-				var tileset = manager.self.World.TileSet.Id.ToLower();
+				var tileset = manager.self.World.TileSet.Id.ToLowerInvariant();
 				validTile = world.Map.SequenceProvider.GetSequence("overlay", "target-valid-{0}".F(tileset)).GetSprite(0);
 				invalidTile = world.Map.SequenceProvider.GetSequence("overlay", "target-invalid").GetSprite(0);
 				sourceTile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
