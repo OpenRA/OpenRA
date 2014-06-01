@@ -53,8 +53,11 @@ namespace OpenRA.Mods.RA.Buildings
 						Repairer = p;
 						Sound.PlayNotification(self.World.Map.Rules, Repairer, "Speech", "Repairing", self.Owner.Country.Race);
 
-						self.World.AddFrameEndTask(
-							w => w.Add(new RepairIndicator(self, Info.IndicatorPalettePrefix, p)));
+						self.World.AddFrameEndTask(w =>
+						{
+							if (!self.IsDead())
+								w.Add(new RepairIndicator(self, Info.IndicatorPalettePrefix, p));
+						});
 					}
 				}
 			}
