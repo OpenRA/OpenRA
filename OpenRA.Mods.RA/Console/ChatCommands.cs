@@ -29,11 +29,11 @@ namespace OpenRA.Mods.RA
 		{
 			if (message.StartsWith("/"))
 			{
-				var name = message.Substring(1).Split(' ')[0].ToLower();
+				var name = message.Substring(1).Split(' ')[0].ToLowerInvariant();
 				var command = Commands.FirstOrDefault(x => x.Key == name);
 
 				if (command.Value != null)
-					command.Value.InvokeCommand(name.ToLower(), message.Substring(1 + name.Length));
+					command.Value.InvokeCommand(name.ToLowerInvariant(), message.Substring(1 + name.Length));
 				else
 					Game.Debug("{0} is not a valid command.", name);
 
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 
 		public void RegisterCommand(string name, IChatCommand command)
 		{
-			Commands.Add(name.ToLower(), command);
+			Commands.Add(name.ToLowerInvariant(), command);
 		}
 	}
 
