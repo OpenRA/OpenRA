@@ -16,11 +16,11 @@ script:
  - make all
  - make test
 
-# Only watch the development and release branches.
+# Only watch the development branch and tagged release.
 branches:
  only:
-   - master
-   - next
+   - /^release-.*$/
+   - /^playtest-.*$/
    - bleed
 
 # Notify developers when build passed/failed.
@@ -34,7 +34,6 @@ notifications:
     skip_join: true
 
 before_deploy:
- - env
  - echo $TRAVIS_TAG
  - cd packaging
  - mkdir build
