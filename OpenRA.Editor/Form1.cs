@@ -535,17 +535,17 @@ namespace OpenRA.Editor
 
 		void OpenRAWebsiteToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start("http://www.open-ra.org");
+			System.Diagnostics.Process.Start("http://www.openra.net");
 		}
 
 		void OpenRAResourcesToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start("http://content.open-ra.org");
+			System.Diagnostics.Process.Start("http://resource.openra.net");
 		}
 
 		void WikiDocumentationToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start("http://github.com/OpenRA/OpenRA/wiki");
+			System.Diagnostics.Process.Start("http://wiki.openra.net");
 		}
 
 		void DiscussionForumsToolStripMenuItemClick(object sender, EventArgs e)
@@ -555,7 +555,7 @@ namespace OpenRA.Editor
 
 		void IssueTrackerToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start("http://github.com/OpenRA/OpenRA/issues");
+			System.Diagnostics.Process.Start("http://bugs.openra.net");
 		}
 
 		void DeveloperBountiesToolStripMenuItemClick(object sender, EventArgs e)
@@ -578,7 +578,7 @@ namespace OpenRA.Editor
 
 		void HelpToolStripButton_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start("http://github.com/OpenRA/OpenRA/wiki/Mapping");
+			System.Diagnostics.Process.Start("http://wiki.openra.net/Mapping");
 		}
 
 		void ToolStripMenuItemNewClick(object sender, EventArgs e)

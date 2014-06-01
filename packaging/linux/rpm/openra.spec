@@ -9,7 +9,7 @@ Version: %{version}
 Release: 1
 Summary: Open Source rebuild of the Red Alert game engine using Mono/OpenGL.
 License: GPL-3.0
-Url: http://open-ra.org
+Url: http://openra.net
 Group: Amusements/Games
 Packager: Matthias Mailänder <matthias@mailaender.name>
 Requires: mono-core

@@ -77,7 +77,7 @@ namespace OpenRA
 		public bool IgnoreVersionMismatch = false;
 
 		public bool ShowFatalErrorDialog = true;
-		public string FatalErrorDialogFaq = "http://github.com/OpenRA/OpenRA/wiki/FAQ";
+		public string FatalErrorDialogFaq = "http://wiki.openra.net/FAQ";
 	}
 
 	public class GraphicSettings
@@ -179,7 +179,7 @@ namespace OpenRA
 
 	public class IrcSettings
 	{
-		public string Hostname = "irc.open-ra.org";
+		public string Hostname = "irc.openra.net";
 		public int Port = 6667;
 		public string Nickname = null;
 		public string Username = "openra";

@@ -155,7 +155,7 @@ LoadScreen: DefaultLoadScreen
 	Image: mods/ts/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFiles: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
-	PackageMirrorList: http://open-ra.org/packages/ts-mirrors.txt
+	PackageMirrorList: http://openra.net/packages/ts-mirrors.txt
 	Text: Updating EVA installation..., Changing perspective...
 
 ServerTraits:
@@ -210,4 +210,4 @@ LuaScripts:
 
 SupportsMapsFrom: ts
 
-NewsUrl: http://open-ra.org/gamenews
+NewsUrl: http://openra.net/gamenews
