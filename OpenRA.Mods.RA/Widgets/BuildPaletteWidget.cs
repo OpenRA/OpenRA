@@ -274,9 +274,18 @@ namespace OpenRA.Mods.RA.Widgets
 				var font = Game.Renderer.Fonts["TinyBold"];
 				foreach (var tb in textBits)
 				{
-					var size = font.Measure(tb.Second);
-					font.DrawTextWithContrast(tb.Second, tb.First - new float2(size.X / 2, 0),
-						Color.White, Color.Black, 1);
+					if(tb.Second.Contains("_"))
+					{	
+						var size = font.Measure(tb.Second.Substring(1));
+						font.DrawTextWithContrast(tb.Second.Substring(1), tb.First - new float2(size.X / 2, 0),
+							Color.Red, Color.Black, 1);					
+					}
+					else
+					{
+						var size = font.Measure(tb.Second);
+						font.DrawTextWithContrast(tb.Second, tb.First - new float2(size.X / 2, 0),
+							Color.White, Color.Black, 1);
+					}
 				}
 
 				// Tooltip
@@ -305,7 +314,7 @@ namespace OpenRA.Mods.RA.Widgets
 				return HoldText;
 
 			if (item.Done)
-				return orderManager.LocalFrameNumber / 9 % 2 == 0 ? ReadyText : "";
+				return orderManager.LocalFrameNumber / 9 % 2 == 0 ? ReadyText : "_" + ReadyText;
 
 			return WidgetUtils.FormatTime(item.RemainingTimeActual);
 		}

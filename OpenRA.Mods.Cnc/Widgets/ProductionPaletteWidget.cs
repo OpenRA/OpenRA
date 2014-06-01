@@ -253,6 +253,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 							overlayFont.DrawTextWithContrast(ReadyText,
 															 icon.Pos + readyOffset,
 															 Color.White, Color.Black, 1);
+						else
+							overlayFont.DrawTextWithContrast(ReadyText,
+															 icon.Pos + readyOffset,
+															 Color.Red, Color.Black, 1);
 					}
 					else if (first.Paused)
 						overlayFont.DrawTextWithContrast(HoldText,
