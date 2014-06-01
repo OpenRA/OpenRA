@@ -5919,7 +5919,7 @@ Templates:
 		Id: 830
 		Image: t830
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5985,7 +5985,7 @@ Templates:
 		Id: 836
 		Image: t836
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			0: Cliff
@@ -5996,7 +5996,7 @@ Templates:
 		Id: 837
 		Image: t837
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Rock-Cliff-Rock
 		PickAny: False
 		Tiles:
 			3: Cliff
