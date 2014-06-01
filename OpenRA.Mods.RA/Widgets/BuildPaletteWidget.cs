@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public int Columns = 3;
 		public int Rows = 5;
 
-		[Translate] public string ReadyText, ReadyText_alt = "";
+		[Translate] public string ReadyText = "";
 		[Translate] public string HoldText = "";
 		[Translate] public string RequiresText = "";
 
@@ -272,14 +272,12 @@ namespace OpenRA.Mods.RA.Widgets
 					WidgetUtils.DrawSHPCentered(ob.First, ob.Second + iconOffset, worldRenderer);
 
 				var font = Game.Renderer.Fonts["TinyBold"];
-				string textBit_temp;
 				foreach (var tb in textBits)
 				{
 					if(tb.Second.Contains("_"))
 					{	
-						textBit_temp = tb.Second.Substring(0, tb.Second.IndexOf("_"));
-						var size = font.Measure(textBit_temp);
-						font.DrawTextWithContrast(textBit_temp, tb.First - new float2(size.X / 2, 0),
+						var size = font.Measure(tb.Second.Substring(1));
+						font.DrawTextWithContrast(tb.Second.Substring(1), tb.First - new float2(size.X / 2, 0),
 							Color.Red, Color.Black, 1);					
 					}
 					else
@@ -316,7 +314,7 @@ namespace OpenRA.Mods.RA.Widgets
 				return HoldText;
 
 			if (item.Done)
-				return orderManager.LocalFrameNumber / 9 % 2 == 0 ? ReadyText : ReadyText + "_alt";
+				return orderManager.LocalFrameNumber / 9 % 2 == 0 ? ReadyText : "_" + ReadyText;
 
 			return WidgetUtils.FormatTime(item.RemainingTimeActual);
 		}
