@@ -33,7 +33,12 @@ notifications:
     use_notice: true
     skip_join: true
 
-before_deploy: cd packaging && mkdir build && ./package-all.sh $TRAVIS_TAG build
+before_deploy:
+ - env
+ - echo $TRAVIS_TAG
+ - cd packaging
+ - mkdir build
+ - ./package-all.sh $TRAVIS_TAG build
 deploy:
   provider: releases
   api_key:
