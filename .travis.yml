@@ -34,7 +34,6 @@ notifications:
     skip_join: true
 
 before_deploy:
- - env
  - echo $TRAVIS_TAG
  - cd packaging
  - mkdir build
