@@ -1311,6 +1311,7 @@ end
 -- ----------------------------------------------------------------------------
 -- Add an editor to the notebook
 function AddEditor(editor, name)
+  assert(notebook:GetPageIndex(editor) == -1, "Editor being added is not in the notebook: failed")
   if notebook:AddPage(editor, name, true) then
     local id = editor:GetId()
     local document = setmetatable({}, ide.proto.Document)
