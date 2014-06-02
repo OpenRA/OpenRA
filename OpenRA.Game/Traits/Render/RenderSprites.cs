@@ -32,7 +32,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new RenderSprites(init.self); }
 	}
 
-	public class RenderSprites : IRender, ITick, INotifyOwnerChanged
+	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged
 	{
 		class AnimationWrapper
 		{
@@ -78,12 +78,12 @@ namespace OpenRA.Traits
 			return () => facing.Facing;
 		}
 
-		RenderSpritesInfo Info;
+		readonly RenderSpritesInfo info;
 		string cachedImage = null;
 
 		public RenderSprites(Actor self)
 		{
-			Info = self.Info.Traits.Get<RenderSpritesInfo>();
+			info = self.Info.Traits.Get<RenderSpritesInfo>();
 		}
 
 		public static string GetImage(ActorInfo actor)
@@ -100,11 +100,6 @@ namespace OpenRA.Traits
 			return cachedImage = GetImage(self.Info);
 		}
 
-		protected virtual string PaletteName(Actor self)
-		{
-			return Info.Palette ?? Info.PlayerPalette + self.Owner.InternalName;
-		}
-
 		protected void UpdatePalette()
 		{
 			foreach (var anim in anims.Values)
@@ -112,6 +107,7 @@ namespace OpenRA.Traits
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
+		public void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner) { UpdatePalette(); }
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
@@ -121,9 +117,12 @@ namespace OpenRA.Traits
 					continue;
 
 				if (a.PaletteReference == null)
-					a.CachePalette(wr, self.Owner);
+				{
+					var owner = self.EffectiveOwner != null && self.EffectiveOwner.Disguised ? self.EffectiveOwner.Owner : self.Owner;
+					a.CachePalette(wr, owner);
+				}
 
-				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference, Info.Scale))
+				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference, info.Scale))
 					yield return r;
 			}
 		}
@@ -139,8 +138,8 @@ namespace OpenRA.Traits
 			// Use defaults
 			if (palette == null)
 			{
-				palette = Info.Palette ?? Info.PlayerPalette;
-				isPlayerPalette = Info.Palette == null;
+				palette = info.Palette ?? info.PlayerPalette;
+				isPlayerPalette = info.Palette == null;
 			}
 
 			anims.Add(key, new AnimationWrapper(anim, palette, isPlayerPalette));
@@ -173,7 +172,7 @@ namespace OpenRA.Traits
 		{
 			return anims.Values.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)
-					.Select(a => (a.Animation.Animation.Image.size*Info.Scale).ToInt2())
+					.Select(a => (a.Animation.Animation.Image.size*info.Scale).ToInt2())
 					.FirstOrDefault();
 		}
 	}

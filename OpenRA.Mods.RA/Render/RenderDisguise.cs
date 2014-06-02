@@ -8,9 +8,11 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.RA.Render
 {
-	class RenderDisguiseInfo : RenderInfantryProneInfo
+	class RenderDisguiseInfo : RenderInfantryProneInfo, Requires<DisguiseInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderDisguise(init.self, this); }
 	}
@@ -27,12 +29,6 @@ namespace OpenRA.Mods.RA.Render
 			this.info = info;
 			disguise = self.Trait<Disguise>();
 			intendedSprite = disguise.AsSprite;
-		}
-
-		protected override string PaletteName(Actor self)
-		{
-			var player = disguise.AsPlayer ?? self.Owner;
-			return info.Palette ?? info.PlayerPalette + player.InternalName;
 		}
 
 		public override void Tick(Actor self)
