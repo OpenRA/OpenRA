@@ -108,7 +108,7 @@ namespace OpenRA.Mods.RA
 		bool CanUnload()
 		{
 			return !IsEmpty(self) && self.CenterPosition.Z == 0
-				&& CurrentAdjacentCells.Any(c => Passengers.Any(p => p.Trait<IPositionable>().CanEnterCell(c)));
+				&& CurrentAdjacentCells != null && CurrentAdjacentCells.Any(c => Passengers.Any(p => p.Trait<IPositionable>().CanEnterCell(c)));
 		}
 
 		public bool CanLoad(Actor self, Actor a)
