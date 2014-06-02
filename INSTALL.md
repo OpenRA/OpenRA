@@ -40,14 +40,6 @@ Debian/Ubuntu
 * freetype
 * openal
 
-Slackware
----------
-
-The following packages from slackbuilds.org are required, on 13.37 32-bit:
-* libgdiplus
-* mono
-* openAL
-
 openSUSE
 --------
 
