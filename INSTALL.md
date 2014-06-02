@@ -61,4 +61,11 @@ Gentoo
 
 * dev-lang/mono
 * dev-dotnet/libgdiplus
+* media-libs/freetype:2
+* media-libs/libsdl2
 * media-libs/openal
+* virtual/jpeg
+* virtual/opengl
+* dev-lang/lua-5.1.5
+* x11-misc/xdg-utils
+* gnome-extra/zenity
