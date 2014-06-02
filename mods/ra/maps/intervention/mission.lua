@@ -192,8 +192,10 @@ SetupWorld = function()
 	Utils.Do(SovietHarvesters, function(harvester)
 		Actor.OnDamaged(harvester, function(h)
 			Team.Do(harvesterGuard, function(g)
-				Actor.Stop(g)
-				Actor.AttackMove(g, h.Location, 3)
+				if not Actor.IsDead(g) then
+					Actor.Stop(g)
+					Actor.AttackMove(g, h.Location, 3)
+				end
 			end)
 		end)
 	end)
