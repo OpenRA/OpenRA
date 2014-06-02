@@ -11,6 +11,7 @@ Windows
 * [FreeType (included)](http://gnuwin32.sourceforge.net/packages/freetype.htm)
 * [zlib (included)](http://gnuwin32.sourceforge.net/packages/zlib.htm)
 * [OpenAL (included)](http://kcat.strangesoft.net/openal.html)
+* [liblua 5.1 (included)](http://luabinaries.sourceforge.net/download.html)
 
 To compile OpenRA, open the `OpenRA.sln` solution in the main folder,
 or build it from the command-line with MSBuild.
