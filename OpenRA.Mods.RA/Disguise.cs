@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == "Disguise")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
@@ -90,12 +90,8 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "Disguise")
 			{
-				var target = order.TargetActor == self ? null : order.TargetActor;
-
-				if (target != null && target.IsInWorld)
-					DisguiseAs(target);
-				else
-					DropDisguise();
+				var target = order.TargetActor != self && order.TargetActor.IsInWorld ? order.TargetActor : null;
+				DisguiseAs(self, target);
 			}
 		}
 
@@ -112,22 +108,29 @@ namespace OpenRA.Mods.RA
 			return AsPlayer.Color.RGB;
 		}
 
-		void DisguiseAs(Actor target)
+		void DisguiseAs(Actor self, Actor target)
 		{
-			var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
-			AsName = tooltip.Name();
-			AsPlayer = tooltip.Owner();
-			AsSprite = target.Trait<RenderSprites>().GetImage(target);
+			var oldEffectiveOwner = AsPlayer;
+
+			if (target != null)
+			{
+				var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
+				AsName = tooltip.Name();
+				AsPlayer = tooltip.Owner();
+				AsSprite = target.Trait<RenderSprites>().GetImage(target);
+			}
+			else
+			{
+				AsName = null;
+				AsPlayer = null;
+				AsSprite = null;
+			}
+
+			foreach (var t in self.TraitsImplementing<INotifyEffectiveOwnerChanged>())
+				t.OnEffectiveOwnerChanged(self, oldEffectiveOwner, AsPlayer);
 		}
 
-		void DropDisguise()
-		{
-			AsName = null;
-			AsPlayer = null;
-			AsSprite = null;
-		}
-
-		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { DropDisguise(); }
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { DisguiseAs(self, null); }
 	}
 
 	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> {}
