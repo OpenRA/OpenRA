@@ -37,8 +37,12 @@ Debian/Ubuntu
 * mono-dmcs
 * libmono-winforms4.0-cil
 * cli-common-dev (>= 2.10)
-* freetype
-* openal
+* libfreetype6
+* libopenal1
+* liblua5.1-0
+* libsdl2-2.0-0
+* xdg-utils
+* zenity
 
 openSUSE
 --------
@@ -47,6 +51,9 @@ openSUSE
 * openal
 * freetype2
 * SDL2
+* lua51
+* xdg-utils
+* zenity
 
 Gentoo
 ------
