@@ -2261,6 +2261,8 @@ Rules:
 	SAM:
 		Building:
 			Power: -5
+		RevealsShroud:
+			Range: 7c0
 	TSLA:
 		Building:
 			Power: -50
@@ -2328,6 +2330,8 @@ Sequences:
 VoxelSequences:
 
 Weapons:
+	Nike:
+		Range: 9c0
 	Maverick:
 		Warhead:
 			Damage: 175
