@@ -38,11 +38,7 @@ end
 
 Build = function(template, repeats, func)
 	Production.BuildTeamFromTemplate(nod, template, function(team)
-		Team.Do(team, function(actor)
-			if not Actor.IsDead(actor) then
-				func(actor)
-			end
-		end)
+		Team.Do(team, func)
 		if repeats then
 			Team.AddEventHandler(team.OnAllKilled, function()
 				Build(template, repeats, func)
