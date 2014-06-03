@@ -45,7 +45,6 @@ deploy:
   file:
     - packaging/build/OpenRA-$TRAVIS_TAG.exe
     - packaging/build/OpenRA-$TRAVIS_TAG.zip
-    - packaging/build/openra-$TRAVIS_TAG-1-any.pkg.tar.xz
     - packaging/build/openra-$TRAVIS_TAG-1-i586.rpm
     - packaging/build/openra_$TRAVIS_TAG_i386.deb
   skip_cleanup: true
