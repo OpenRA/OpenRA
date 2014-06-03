@@ -22,21 +22,22 @@ namespace OpenRA.Traits
 
 	public class Shroud
 	{
-		[Sync] public bool Disabled = false;
+		[Sync] public bool Disabled;
 
-		Actor self;
-		Map map;
+		readonly Actor self;
+		readonly Map map;
 
-		int[,] visibleCount;
-		int[,] generatedShroudCount;
-		bool[,] explored;
+		readonly short[] visibleCount;
+		readonly short[] generatedShroudCount;
+		readonly bool[] explored;
+		readonly int stride;
 
 		readonly Lazy<IFogVisibilityModifier[]> fogVisibilities;
 
 		// Cache of visibility that was added, so no matter what crazy trait code does, it
 		// can't make us invalid.
-		Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
-		Dictionary<Actor, CPos[]> generation = new Dictionary<Actor, CPos[]>();
+		readonly Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
+		readonly Dictionary<Actor, CPos[]> generation = new Dictionary<Actor, CPos[]>();
 
 		public Rectangle ExploredBounds { get; private set; }
 
@@ -47,9 +48,11 @@ namespace OpenRA.Traits
 			this.self = self;
 			map = self.World.Map;
 
-			visibleCount = new int[map.MapSize.X, map.MapSize.Y];
-			generatedShroudCount = new int[map.MapSize.X, map.MapSize.Y];
-			explored = new bool[map.MapSize.X, map.MapSize.Y];
+			var mapArea = map.MapSize.X * map.MapSize.Y;
+			stride = map.MapSize.X;
+			visibleCount = new short[mapArea];
+			generatedShroudCount = new short[mapArea];
+			explored = new bool[mapArea];
 
 			self.World.ActorAdded += AddVisibility;
 			self.World.ActorRemoved += RemoveVisibility;
@@ -76,10 +79,20 @@ namespace OpenRA.Traits
 
 			var circleArea = radius.Range * radius.Range;
 			var pos = position.CenterPosition;
-			for (var j = min.Y; j <= max.Y; j++)
-				for (var i = min.X; i <= max.X; i++)
-					if (circleArea >= (new CPos(i, j).CenterPosition - pos).LengthSquared)
-						yield return new CPos(i, j);
+			for (var y = min.Y; y < max.Y; y++)
+				for (var x = min.X; x < max.X; x++)
+					if (circleArea >= (new CPos(x, y).CenterPosition - pos).LengthSquared)
+						yield return new CPos(x, y);
+		}
+
+		int CPosToIndex(CPos c)
+		{
+			return PosToIndex(c.X, c.Y);
+		}
+
+		int PosToIndex(int x, int y)
+		{
+			return y * stride + x;
 		}
 
 		void AddVisibility(Actor a)
@@ -104,8 +117,9 @@ namespace OpenRA.Traits
 			// Update visibility
 			foreach (var c in visible)
 			{
-				visibleCount[c.X, c.Y]++;
-				explored[c.X, c.Y] = true;
+				var index = CPosToIndex(c);
+				visibleCount[index]++;
+				explored[index] = true;
 			}
 
 			if (visibility.ContainsKey(a))
@@ -122,7 +136,7 @@ namespace OpenRA.Traits
 				return;
 
 			foreach (var c in visible)
-				visibleCount[c.X, c.Y]--;
+				visibleCount[CPosToIndex(c)]--;
 
 			visibility.Remove(a);
 			Invalidate();
@@ -147,7 +161,7 @@ namespace OpenRA.Traits
 			var shrouded = GetVisOrigins(a).SelectMany(o => FindVisibleTiles(a.World, o, cs.Range))
 				.Distinct().ToArray();
 			foreach (var c in shrouded)
-				generatedShroudCount[c.X, c.Y]++;
+				generatedShroudCount[CPosToIndex(c)]++;
 
 			if (generation.ContainsKey(a))
 				throw new InvalidOperationException("Attempting to add duplicate shroud generation");
@@ -163,7 +177,7 @@ namespace OpenRA.Traits
 				return;
 
 			foreach (var c in shrouded)
-				generatedShroudCount[c.X, c.Y]--;
+				generatedShroudCount[CPosToIndex(c)]--;
 
 			generation.Remove(a);
 			Invalidate();
@@ -202,8 +216,8 @@ namespace OpenRA.Traits
 
 		public void Explore(World world, CPos center, WRange range)
 		{
-			foreach (var q in FindVisibleTiles(world, center, range))
-				explored[q.X, q.Y] = true;
+			foreach (var c in FindVisibleTiles(world, center, range))
+				explored[CPosToIndex(c)] = true;
 
 			var r = (range.Range + 1023) / 1024;
 			var box = new Rectangle(center.X - r, center.Y - r, 2 * r + 1, 2 * r + 1);
@@ -214,19 +228,34 @@ namespace OpenRA.Traits
 
 		public void Explore(Shroud s)
 		{
-			for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
-				for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-					if (s.explored[i,j] == true)
-						explored[i, j] = true;
+			if (map.Bounds != s.map.Bounds)
+				throw new ArgumentException("The map bounds of these shrouds do not match.", "s");
+
+			for (var y = map.Bounds.Top; y < map.Bounds.Bottom; y++)
+			{
+				var rowIndex = y * stride;
+				for (var x = map.Bounds.Left; x < map.Bounds.Right; x++)
+				{
+					var index = rowIndex + x;
+					if (s.explored[index])
+						explored[index] = true;
+				}
+			}
 
 			ExploredBounds = Rectangle.Union(ExploredBounds, s.ExploredBounds);
 		}
 
 		public void ExploreAll(World world)
 		{
-			for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
-				for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-					explored[i, j] = true;
+			if (map.Bounds != world.Map.Bounds)
+				throw new ArgumentException("The map bounds of the world does not match this shroud.", "world");
+
+			for (var y = map.Bounds.Top; y < map.Bounds.Bottom; y++)
+			{
+				var rowIndex = y * stride;
+				for (var x = map.Bounds.Left; x < map.Bounds.Right; x++)
+					explored[rowIndex + x] = true;
+			}
 
 			ExploredBounds = world.Map.Bounds;
 
@@ -235,9 +264,15 @@ namespace OpenRA.Traits
 
 		public void ResetExploration()
 		{
-			for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
-				for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-					explored[i, j] = visibleCount[i, j] > 0;
+			for (var y = map.Bounds.Top; y < map.Bounds.Bottom; y++)
+			{
+				var rowIndex = y * stride;
+				for (var x = map.Bounds.Left; x < map.Bounds.Right; x++)
+				{
+					var index = rowIndex + x;
+					explored[index] = visibleCount[index] > 0;
+				}
+			}
 
 			Invalidate();
 		}
@@ -251,7 +286,8 @@ namespace OpenRA.Traits
 			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Shroud)
 				return true;
 
-			return explored[x, y] && (generatedShroudCount[x, y] == 0 || visibleCount[x, y] > 0);
+			var index = PosToIndex(x, y);
+			return explored[index] && (generatedShroudCount[index] == 0 || visibleCount[index] > 0);
 		}
 
 		public bool IsExplored(Actor a)
@@ -268,7 +304,8 @@ namespace OpenRA.Traits
 			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Fog)
 				return true;
 
-			return visibleCount[x, y] > 0;
+			var index = PosToIndex(x, y);
+			return visibleCount[index] > 0;
 		}
 
 		// Actors are hidden under shroud, but not under fog by default
