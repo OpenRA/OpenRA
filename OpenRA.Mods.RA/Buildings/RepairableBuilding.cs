@@ -32,6 +32,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		Health Health;
 		RepairableBuildingInfo Info;
+		public bool RepairActive = true;
 
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
 		{
@@ -81,7 +82,8 @@ namespace OpenRA.Mods.RA.Buildings
 
 				var hpToRepair = Math.Min(Info.RepairStep, Health.MaxHP - Health.HP);
 				var cost = Math.Max(1, (hpToRepair * Info.RepairPercent * buildingValue) / (Health.MaxHP * 100));
-				if (!Repairer.PlayerActor.Trait<PlayerResources>().TakeCash(cost))
+				RepairActive = Repairer.PlayerActor.Trait<PlayerResources>().TakeCash(cost);
+				if (!RepairActive)
 				{
 					remainingTicks = 1;
 					return;
