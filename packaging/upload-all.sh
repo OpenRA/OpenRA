@@ -17,7 +17,7 @@ LINUXVERSION=`echo ${TAG} | sed "s/-/\\./g"`
 cd ${PKGDIR}
 upload windows OpenRA-${TAG}.exe
 upload mac OpenRA-${TAG}.zip
-upload linux/deb openra_${LINUXVERSION}_all.deb
-upload linux/rpm openra-${LINUXVERSION}-1.noarch.rpm
-upload linux/arch openra-${LINUXVERSION}-1-any.pkg.tar.xz
+upload linux/deb openra_${LINUXVERSION}_i386.deb
+upload linux/rpm openra-${LINUXVERSION}-1.i586.rpm
+upload linux/arch openra-${LINUXVERSION}-1-i686.pkg.tar.xz
 upload source ${TAG}.tar.gz
