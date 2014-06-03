@@ -23,7 +23,7 @@ cp openra.spec "$3/SPECS/"
 
 cd "$3"
 
-rpmbuild --target noarch --buildroot /tmp/openra/ -bb SPECS/openra.spec
+rpmbuild --target i586 --buildroot /tmp/openra/ -bb SPECS/openra.spec
 if [ $? -ne 0 ]; then
   exit 1
 fi
