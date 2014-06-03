@@ -88,10 +88,11 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				if (!Armaments.Any())
+				var armament = Armaments.FirstOrDefault();
+				if (armament == null)
 					yield break;
 
-				var negativeDamage = Armaments.First().Weapon.Warheads[0].Damage < 0;
+				var negativeDamage = armament.Weapon.Warheads[0].Damage < 0;
 				yield return new AttackOrderTargeter(this, "Attack", 6, negativeDamage);
 			}
 		}
@@ -137,10 +138,7 @@ namespace OpenRA.Mods.RA
 		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World)); }
 		public WRange GetMaximumRange()
 		{
-			if (!Armaments.Any())
-				return WRange.Zero;
-
-			return Armaments.Max(a => a.Weapon.Range);
+			return Armaments.Select(a => a.Weapon.Range).Append(WRange.Zero).Max();
 		}
 
 		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World)); }
