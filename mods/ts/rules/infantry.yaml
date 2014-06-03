@@ -275,7 +275,7 @@ CHAMSPY:
 		Cost: 700
 	DisguiseToolTip:
 		Name: Chameleon Spy
-		Description: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
+		Description: Cloaked infantry that infiltrates enemy structures to \ngather intelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Stealthed
 	Selectable:
 		Voice: Spy
 		Bounds: 12,17,0,-9
@@ -287,13 +287,15 @@ CHAMSPY:
 		Range: 9c0
 	Passenger:
 	TakeCover:
-	Disguise:
+	Cloak:
+		InitialDelay: 90
+		CloakDelay: 90
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
 	Infiltrates:
 		Types: Cash, SupportPower, Exploration
 	-AutoTarget:
 	-RenderInfantry:
-	RenderDisguise:
-		IdleAnimations: idle1,idle2
 
 CYBORG:
 	Inherits: ^Infantry
