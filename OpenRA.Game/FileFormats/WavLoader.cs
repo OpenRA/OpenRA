@@ -26,8 +26,12 @@ namespace OpenRA.FileFormats
 		public readonly int BlockAlign;
 		public readonly int BitsPerSample;
 
+		public readonly int UncompressedSize;
 		public readonly int DataSize;
 		public readonly byte[] RawOutput;
+
+		const int WAVE_FORMAT_PCM = 0x0001;
+		const int WAVE_FORMAT_IMA_ADPCM = 0x0011;
 
 		public WavLoader(Stream s)
 		{
@@ -47,16 +51,23 @@ namespace OpenRA.FileFormats
 						break;
 					case "fmt ":
 						FmtChunkSize = s.ReadInt32();
-						if (FmtChunkSize != 16)
-							throw new NotSupportedException("{0} fmt chunk size is not a supported encoding scheme.".F(FmtChunkSize));
 						AudioFormat = s.ReadInt16();
-						if (AudioFormat != 1)
-							throw new NotSupportedException("Non-PCM compression is not supported.");
+						if (AudioFormat != WAVE_FORMAT_PCM && AudioFormat != WAVE_FORMAT_IMA_ADPCM)
+							throw new NotSupportedException("Compression type is not supported.");
 						Channels = s.ReadInt16();
 						SampleRate = s.ReadInt32();
 						ByteRate = s.ReadInt32();
 						BlockAlign = s.ReadInt16();
 						BitsPerSample = s.ReadInt16();
+
+						s.ReadBytes(FmtChunkSize - 16);
+						break;
+					case "fact":
+						{
+							var chunkSize = s.ReadInt32();
+							UncompressedSize = s.ReadInt32();
+							s.ReadBytes(chunkSize - 4);
+						}
 						break;
 					case "data":
 						DataSize = s.ReadInt32();
@@ -64,11 +75,84 @@ namespace OpenRA.FileFormats
 						break;
 					default:
 						// Ignore unknown chunks
-						var chunkSize = s.ReadInt32();
-						s.ReadBytes(chunkSize);
+						{
+							var chunkSize = s.ReadInt32();
+							s.ReadBytes(chunkSize);
+						}
 						break;
 				}
 			}
+
+			if (AudioFormat == WAVE_FORMAT_IMA_ADPCM)
+			{
+				RawOutput = DecodeAdpcmData();
+				BitsPerSample = 16;
+			}
+		}
+
+		private byte[] DecodeAdpcmData()
+		{
+			var s = new MemoryStream(RawOutput);
+
+			int numBlocks = DataSize / BlockAlign;
+			int blockDataSize = BlockAlign - (Channels * 4);
+			int outputSize = UncompressedSize * Channels * 2;
+
+			int outOffset = 0;
+			byte[] output = new byte[outputSize];
+
+			int[] predictor = new int[Channels];
+			int[] index = new int[Channels];
+
+			// Decode each block of ADPCM data in RawOutput
+			for (var block = 0; block < numBlocks; block++)
+			{
+				// Each block starts with a initial state per-channel 
+				for (var c = 0; c < Channels; c++)
+				{
+					predictor[c] = s.ReadInt16();
+					index[c] = s.ReadUInt8();
+					/* unknown/reserved */ s.ReadUInt8();
+
+					// Output first sample from input
+					output[outOffset++] = (byte)predictor[c];
+					output[outOffset++] = (byte)(predictor[c] >> 8);
+
+					if (outOffset >= outputSize)
+						return output;
+				}
+
+				// Decode and output remaining data in this block
+				var blockOffset = 0;
+				while (blockOffset < blockDataSize)
+				{
+					for (var c = 0; c < Channels; c++)
+					{
+						// Decode 4 bytes (to 16 bytes of output) per channel
+						byte[] chunk = s.ReadBytes(4);
+						byte[] decoded = AudLoader.LoadSound(chunk, ref index[c], ref predictor[c]);
+
+						// Interleave output, one sample per channel
+						var outOffsetChannel = outOffset + (2 * c);
+						for (var i = 0; i < decoded.Length; i += 2)
+						{
+							var outOffsetSample = outOffsetChannel + i;
+							if (outOffsetSample >= outputSize)
+								return output;
+
+							output[outOffsetSample] = decoded[i];
+							output[outOffsetSample + 1] = decoded[i + 1];
+							outOffsetChannel += 2 * (Channels - 1);
+						}
+
+						blockOffset += 4;
+					}
+
+					outOffset += 16 * Channels;
+				}
+			}
+
+			return output;
 		}
 	}
 }

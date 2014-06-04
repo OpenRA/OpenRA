@@ -78,13 +78,18 @@ namespace OpenRA.FileFormats
 
 		public static byte[] LoadSound(byte[] raw, ref int index)
 		{
+			var currentSample = 0;
+			return LoadSound(raw, ref index, ref currentSample);
+		}
+
+		public static byte[] LoadSound(byte[] raw, ref int index, ref int currentSample)
+		{
 			var s = new MemoryStream(raw);
 			var dataSize = raw.Length;
 			var outputSize = raw.Length * 4;
 
 			var output = new byte[outputSize];
 			var offset = 0;
-			var currentSample = 0;
 
 			while (dataSize-- > 0)
 			{
