@@ -77,12 +77,10 @@ FollowWaypoints = function(team, waypoints)
 end
 
 PlaneExitMap = function(actor, exitPoint)
-	if not Actor.IsDead(actor) then
-		Actor.Stop(actor)
-		Actor.Fly(actor, exitPoint.CenterPosition)
-		Actor.FlyOffMap(actor)
-		Actor.RemoveSelf(actor)
-	end
+	Actor.Stop(actor)
+	Actor.Fly(actor, exitPoint.CenterPosition)
+	Actor.FlyOffMap(actor)
+	Actor.RemoveSelf(actor)
 end
 
 BaseRaid = function()
@@ -192,10 +190,8 @@ SetupWorld = function()
 	Utils.Do(SovietHarvesters, function(harvester)
 		Actor.OnDamaged(harvester, function(h)
 			Team.Do(harvesterGuard, function(g)
-				if not Actor.IsDead(g) then
-					Actor.Stop(g)
-					Actor.AttackMove(g, h.Location, 3)
-				end
+				Actor.Stop(g)
+				Actor.AttackMove(g, h.Location, 3)
 			end)
 		end)
 	end)

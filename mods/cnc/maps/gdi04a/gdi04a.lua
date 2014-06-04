@@ -43,10 +43,8 @@ end
 BuildNod1 = function()
 	Production.BuildTeamFromTemplate(nod, Nod1Template, function(team)
 		Team.Do(team, function(actor)
-			if not Actor.IsDead(actor) then
-				Actor.OnIdle(actor, Actor.Hunt)
-				Actor.OnKilled(actor, KillCounter)
-			end
+			Actor.OnIdle(actor, Actor.Hunt)
+			Actor.OnKilled(actor, KillCounter)
 		end)
 		Team.AddEventHandler(team.OnAllKilled, BuildNod1)
 	end)
@@ -55,10 +53,8 @@ end
 BuildAuto1 = function()
 	Production.BuildTeamFromTemplate(nod, Auto1Template, function(team)
 		Team.Do(team, function(actor)
-			if not Actor.IsDead(actor) then
-				Actor.OnIdle(actor, Actor.Hunt)
-				Actor.OnKilled(actor, KillCounter)
-			end
+			Actor.OnIdle(actor, Actor.Hunt)
+			Actor.OnKilled(actor, KillCounter)
 		end)
 	end)
 end

@@ -57,7 +57,11 @@ Team.Contains = function(team, actor)
 end
 
 Team.Do = function(team, func)
-	Utils.Do(team.Actors, func)
+	Utils.Do(team.Actors, function(actor)
+		if not Actor.IsDead(actor) then
+			func(actor)
+		end
+	end)
 end
 
 Team.Patrol = function(team, waypoints, wait, loop)
