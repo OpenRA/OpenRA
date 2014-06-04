@@ -19,7 +19,7 @@ namespace OpenRA.Widgets
 {
 	public static class Ui
 	{
-		public static Widget Root = new ContainerWidget();
+		public static Widget Root = new RootWidget();
 
 		public static int LastTickTime = Environment.TickCount;
 
