@@ -20,7 +20,7 @@ Distributed mods include a reimagining of
 Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-game) Guide to win multiplayer matches.
 
 ## Contribute
-
+[![Bountysource](https://api.bountysource.com/badge/team?team_id=528&style=bounties_received)](https://www.bountysource.com/teams/openra/issues?utm_source=OpenRA&utm_medium=shield&utm_campaign=bounties_received)
 * Please read [INSTALL.md](https://github.com/OpenRA/OpenRA/blob/bleed/INSTALL.md) and [Compiling](http://wiki.openra.net/Compiling) on how to set up an OpenRA development environment.
 * See [Hacking](http://wiki.openra.net/Hacking) for an overview of the engine.
 * To get your patches merged, please adhere to the [Contributing](https://github.com/OpenRA/OpenRA/blob/bleed/CONTRIBUTING.md) guidelines.
