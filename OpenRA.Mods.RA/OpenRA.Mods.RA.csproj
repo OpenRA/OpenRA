@@ -528,6 +528,9 @@
     <Compile Include="Console\PlayerCommands.cs" />
     <Compile Include="Render\WithRepairAnimation.cs" />
     <Compile Include="Render\WithRepairOverlay.cs" />
+    <Compile Include="Buildings\UpgradeModule.cs" />
+    <Compile Include="Buildings\Modular.cs" />
+    <Compile Include="Orders\PlaceModuleOrderGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

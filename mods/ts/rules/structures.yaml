@@ -70,6 +70,37 @@ GAPOWR:
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
 		Sequence: idle-plug
+	Modular@1:
+		Types: powrturb
+		CellOffset: 1,1
+	Modular@2:
+		Types: powrturb
+		CellOffset: 0,1
+
+GAPOWRUP:
+	Inherits: ^UpgradeModule
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 10
+		Prerequisites: gapowr
+		Owner: gdi
+		Hotkey: t
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Power Turbine
+		Description: Increases power output
+	Building:
+		Power: 50
+	Health:
+		HP: 100
+	Armor:
+		Type: Wood
+	UpgradeModule:
+		Type: powrturb
+		DestroyOrSell: Sell
+	RenderBuilding:
+		Image: gapowr_b
 
 GAPILE:
 	Inherits: ^Building

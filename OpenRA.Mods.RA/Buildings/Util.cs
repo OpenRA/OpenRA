@@ -29,6 +29,29 @@ namespace OpenRA.Mods.RA.Buildings
 			return world.Map.IsInMap(a) && bi.TerrainTypes.Contains(world.GetTerrainType(a));
 		}
 
+		public static bool CanPlaceModule(this World world, Actor existing, ActorInfo toPlaceInfo, CPos placeLocation)
+		{
+			if (existing == null)
+				return false;
+
+			var existingMods = existing.TraitsImplementing<Modular>();
+			if (!existingMods.Any())
+				return false;
+
+			var toPlaceMod = toPlaceInfo.Traits.GetOrDefault<UpgradeModuleInfo>();
+			if (toPlaceMod == null)
+				return false;
+
+			var topleft = existing.Location;
+			var existingMIs = existing.Info.Traits.WithInterface<ModularInfo>();
+			var freeSpace = existingMods.Where(p => !p.IsUpgraded);
+
+			if (!freeSpace.Any(fs => placeLocation == topleft + fs.Info.CellOffset))
+				return false;
+
+			return existingMIs.Any(api => placeLocation == topleft + api.CellOffset && api.Types.Contains(toPlaceMod.Type));
+		}
+
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, CPos topLeft, Actor toIgnore)
 		{
 			if (building.AllowInvalidPlacement)
