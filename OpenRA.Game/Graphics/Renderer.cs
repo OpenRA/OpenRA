@@ -65,17 +65,34 @@ namespace OpenRA.Graphics
 
 		internal IGraphicsDevice Device { get { return device; } }
 
-		public void BeginFrame(float2 scroll, float zoom)
+		Size? lastResolution;
+		int2? lastScroll;
+		float? lastZoom;
+
+		public void BeginFrame(int2 scroll, float zoom)
 		{
 			device.Clear();
-			WorldSpriteRenderer.SetViewportParams(Resolution, zoom, scroll);
-			WorldRgbaSpriteRenderer.SetViewportParams(Resolution, zoom, scroll);
-			SpriteRenderer.SetViewportParams(Resolution, 1f, float2.Zero);
-			RgbaSpriteRenderer.SetViewportParams(Resolution, 1f, float2.Zero);
-			WorldLineRenderer.SetViewportParams(Resolution, zoom, scroll);
-			WorldQuadRenderer.SetViewportParams(Resolution, zoom, scroll);
-			LineRenderer.SetViewportParams(Resolution, 1f, float2.Zero);
-			WorldVoxelRenderer.SetViewportParams(Resolution, zoom, scroll);
+
+			var resolutionChanged = lastResolution != Resolution;
+			if (resolutionChanged)
+			{
+				lastResolution = Resolution;
+				RgbaSpriteRenderer.SetViewportParams(Resolution, 1f, int2.Zero);
+				SpriteRenderer.SetViewportParams(Resolution, 1f, int2.Zero);
+				LineRenderer.SetViewportParams(Resolution, 1f, int2.Zero);
+			}
+
+			// If zoom evaluates as different due to floating point weirdness that's OK, setting the parameters again is harmless.
+			if (resolutionChanged || lastScroll != scroll || lastZoom != zoom)
+			{
+				lastScroll = scroll;
+				lastZoom = zoom;
+				WorldRgbaSpriteRenderer.SetViewportParams(Resolution, zoom, scroll);
+				WorldSpriteRenderer.SetViewportParams(Resolution, zoom, scroll);
+				WorldVoxelRenderer.SetViewportParams(Resolution, zoom, scroll);
+				WorldLineRenderer.SetViewportParams(Resolution, zoom, scroll);
+				WorldQuadRenderer.SetViewportParams(Resolution, zoom, scroll);
+			}
 		}
 
 		ITexture currentPaletteTexture;

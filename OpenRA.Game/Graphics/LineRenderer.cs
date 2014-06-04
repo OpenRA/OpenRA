@@ -103,9 +103,9 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void SetViewportParams(Size screen, float zoom, float2 scroll)
+		public void SetViewportParams(Size screen, float zoom, int2 scroll)
 		{
-			shader.SetVec("Scroll", (int)scroll.X, (int)scroll.Y);
+			shader.SetVec("Scroll", scroll.X, scroll.Y);
 			shader.SetVec("r1", zoom*2f/screen.Width, -zoom*2f/screen.Height);
 			shader.SetVec("r2", -1, 1);
 		}
