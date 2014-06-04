@@ -908,18 +908,32 @@ frame:Connect(wx.wxEVT_CLOSE_WINDOW, closeWindow)
 
 frame:Connect(wx.wxEVT_TIMER, saveAutoRecovery)
 
+-- in the presence of wxAuiToolbar, the focus is always on
+-- the toolbar when the app gets focus, so to restore the focus
+-- correctly, need to track where the control is and to set the
+-- focus to the last element that had focus.
+-- it would be easier to track KILL_FOCUS events, but controls on OSX
+-- don't always generate KILL_FOCUS events (see relevant wxwidgets
+-- tickets: http://trac.wxwidgets.org/ticket/14142
+-- and http://trac.wxwidgets.org/ticket/14269)
+
+local infocus
+if ide.osname == 'Macintosh' then
+  ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
+    local win = ide.frame:FindFocus()
+    if win then infocus = win end
+    event:Skip()
+  end)
+end
+
 ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
   function(event)
     if not ide.exitingProgram then
-      -- wxSTC controls on OSX don't generate KILL_FOCUS events
-      -- when focus is switched between controls in the app;
-      -- manually kill focus when the app is deactivated
-      if ide.osname == 'Macintosh' and not event:GetActive() then
-        local ntbk = frame.bottomnotebook
-        for _,win in ipairs({ntbk.errorlog, ntbk.shellbox, GetEditor()}) do
-          local ev = wx.wxFocusEvent(wx.wxEVT_KILL_FOCUS)
-          win:GetEventHandler():ProcessEvent(ev)
-        end
+      if ide.osname == 'Macintosh' and infocus and event:GetActive() then
+        -- restore focus to the last element that received it;
+        -- wrap into pcall in case the element has disappeared
+        -- while the application was out of focus
+        pcall(function() infocus:SetFocus() end)
       end
 
       local event = event:GetActive() and "onAppFocusSet" or "onAppFocusLost"
