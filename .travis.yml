@@ -47,10 +47,10 @@ deploy:
   file:
     - build/OpenRA-$TRAVIS_TAG.exe
     - build/OpenRA-$TRAVIS_TAG.zip
-    - build/openra-$DOTVERSION-1-noarch.rpm
+    - build/openra-$DOTVERSION-1.noarch.rpm
     - build/openra_$DOTVERSION_all.deb
   skip_cleanup: true
   on:
-    all_branches: false
+    all_branches: true
     tags: true
     repo: OpenRA/OpenRA

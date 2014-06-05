@@ -7,6 +7,7 @@ then
 fi
 
 mkdir ~/rpmbuild/
+mkdir ~/rpmbuild/SPECS
 
 # Replace any dashes in the version string with periods
 PKGVERSION=`echo $1 | sed "s/-/\\./g"`
