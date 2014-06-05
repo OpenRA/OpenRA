@@ -457,8 +457,13 @@ local function isCtrlFocused(e)
        ctrl:GetParent():GetId() == e:GetId()) and ctrl or nil
 end
 
-function GetEditorWithFocus(ed)
-  if ed then return isCtrlFocused(ed) and ed or nil end
+function GetEditorWithFocus(...)
+  -- need to distinguish GetEditorWithFocus() and GetEditorWithFocus(nil)
+  -- as the latter may happen when GetEditor() is passed and returns `nil`
+  if select('#', ...) > 0 then
+    local ed = ...
+    return isCtrlFocused(ed) and ed or nil
+  end
 
   local bnb = ide.frame.bottomnotebook
   for _, e in pairs({bnb.shellbox, bnb.errorlog}) do
