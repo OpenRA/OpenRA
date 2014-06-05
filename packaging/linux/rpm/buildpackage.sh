@@ -6,6 +6,8 @@ then
     exit $E_BADARGS
 fi
 
+mkdir ~/rpmbuild/
+
 # Replace any dashes in the version string with periods
 PKGVERSION=`echo $1 | sed "s/-/\\./g"`
 

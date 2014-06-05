@@ -6,7 +6,7 @@ language: c
 
 # Make sure build dependencies are installed.
 install:
- - sudo apt-get install mono-gmcs cli-common-dev libgl1-mesa-glx libopenal1 libfreetype6 dpkg rpm nsis markdown
+ - sudo apt-get install mono-gmcs cli-common-dev libgl1-mesa-glx libopenal1 libfreetype6
 cache: apt
 
 # Run the build script
@@ -35,10 +35,11 @@ notifications:
     skip_join: true
 
 before_deploy:
+ - sudo apt-get install nsis markdown dpkg rpm
  - DOTVERSION=`echo $TRAVIS_TAG | sed "s/-/\\./g"`
  - cd packaging
  - mkdir build
- - ./package-all.sh $TRAVIS_TAG build
+ - ./package-all.sh $TRAVIS_TAG $PWD/build/
 deploy:
   provider: releases
   api_key:
@@ -50,6 +51,6 @@ deploy:
     - build/openra_$DOTVERSION_all.deb
   skip_cleanup: true
   on:
-    all_branches: true
+    all_branches: false
     tags: true
     repo: OpenRA/OpenRA

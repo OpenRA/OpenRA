@@ -89,7 +89,7 @@ popd
 
 pushd osx
 echo "Zipping OS X package"
-sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/osx" "$OUTPUTDIR"
+bash buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/osx" "$OUTPUTDIR"
 if [ $? -ne 0 ]; then
     echo "OS X package build failed."
 fi
@@ -97,7 +97,7 @@ popd
 
 pushd linux
 echo "Building Linux packages"
-sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/linux" "$OUTPUTDIR"
+bash buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/linux" "$OUTPUTDIR"
 if [ $? -ne 0 ]; then
     echo "Linux package build failed."
 fi
