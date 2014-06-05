@@ -47,6 +47,7 @@ rm -rf %{buildroot}
 %files
 /usr/bin/openra
 /usr/bin/openra-editor
+/usr/lib/openra/
 /usr/share/applications/*.desktop
 /usr/share/doc/openra/*
 /usr/share/icons/hicolor/*/apps/*.png
