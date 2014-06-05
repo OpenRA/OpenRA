@@ -50,6 +50,6 @@ deploy:
     - build/openra_$DOTVERSION_all.deb
   skip_cleanup: true
   on:
-    all_branches: true
+    all_branches: false
     tags: true
     repo: OpenRA/OpenRA
