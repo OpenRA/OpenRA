@@ -23,6 +23,6 @@ rm OpenRA.app/Contents/Resources/OpenRA.Editor.exe
 rm OpenRA.app/Contents/Resources/OpenRA.CrashDialog.exe
 
 # Package app bundle into a zip and clean up
-zip OpenRA-$1 -r -9 OpenRA.app
+zip OpenRA-$1 -r -9 OpenRA.app --quiet
 mv OpenRA-$1.zip $4
 rm -rf OpenRA.app
