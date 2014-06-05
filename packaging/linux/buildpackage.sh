@@ -40,7 +40,7 @@ cd packaging/linux
 
 pushd deb
 echo "Building Debian package."
-./buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
+bash buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
 if [ $? -ne 0 ]; then
     echo "Debian package build failed."
 fi
@@ -48,7 +48,7 @@ popd
 
 pushd pkgbuild
 echo "Building Arch-Linux package."
-sh buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
+bash buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
 if [ $? -ne 0 ]; then
     echo "Arch-Linux package build failed."
 fi
@@ -56,7 +56,7 @@ popd
 
 pushd rpm
 echo "Building RPM package."
-sh buildpackage.sh "$TAG" ../$ROOTDIR ~/rpmbuild "$PACKAGEDIR"
+bash buildpackage.sh "$TAG" ../$ROOTDIR ~/rpmbuild "$PACKAGEDIR"
 if [ $? -ne 0 ]; then
     echo "RPM package build failed."
 fi
