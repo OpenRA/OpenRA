@@ -908,23 +908,36 @@ frame:Connect(wx.wxEVT_CLOSE_WINDOW, closeWindow)
 
 frame:Connect(wx.wxEVT_TIMER, saveAutoRecovery)
 
--- in the presence of wxAuiToolbar, the focus is always on
--- the toolbar when the app gets focus, so to restore the focus
--- correctly, need to track where the control is and to set the
--- focus to the last element that had focus.
+-- in the presence of wxAuiToolbar, when (1) the app gets focus,
+-- (2) a floating panel is closed or (3) a toolbar dropdown is closed,
+-- the focus is always on the toolbar when the app gets focus,
+-- so to restore the focus correctly, need to track where the control is
+-- and to set the focus to the last element that had focus.
 -- it would be easier to track KILL_FOCUS events, but controls on OSX
 -- don't always generate KILL_FOCUS events (see relevant wxwidgets
 -- tickets: http://trac.wxwidgets.org/ticket/14142
 -- and http://trac.wxwidgets.org/ticket/14269)
 
 local infocus
-if ide.osname == 'Macintosh' then
-  ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
-    local win = ide.frame:FindFocus()
-    if win then infocus = win end
-    event:Skip()
-  end)
-end
+ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
+  local win = ide.frame:FindFocus()
+  if win then
+    local class = win:GetClassInfo():GetClassName()
+    -- don't set focus on the main frame or toolbar
+    if infocus and (class == 'wxAuiToolBar' or class == 'wxFrame') then
+      infocus:SetFocus()
+      return
+    end
+
+    -- keep track of the current control in focus, but only on the main frame
+    local grandparent = win:GetGrandParent()
+    if grandparent and grandparent:GetId() == ide.frame:GetId() then
+      infocus = win
+    end
+  end
+
+  event:Skip()
+end)
 
 ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
   function(event)
