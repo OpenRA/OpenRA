@@ -21,7 +21,7 @@ make package
 # Remove the mdb files that are created during `make`
 find . -path "*.mdb" -delete
 
-rm Changelog.md
+test -e Changelog.md && rm Changelog.md
 wget https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
 markdown Changelog.md > CHANGELOG.html
 markdown README.md > README.html
@@ -74,40 +74,35 @@ cp thirdparty/RestSharp.dll packaging/built
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built
 
-#
-# Change into packaging directory and run the 
-# platform-dependant packaging in parallel
-#
 cd packaging
 echo "Creating packages..."
 
-(
-    cd windows
-    makensis -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/windows" OpenRA.nsi &> package.log
-    if [ $? -eq 0 ]; then
-        mv OpenRA.exe "$OUTPUTDIR"/OpenRA-$TAG.exe
-    else
-        echo "Windows package build failed, refer to windows/package.log."
-    fi
-) &
+pushd windows
+echo "Building Windows setup.exe"
+makensis -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/windows" OpenRA.nsi
+if [ $? -eq 0 ]; then
+    mv OpenRA.exe "$OUTPUTDIR"/OpenRA-$TAG.exe
+else
+    echo "Windows package build failed."
+fi
+popd
 
-(
-    cd osx
-    sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/osx" "$OUTPUTDIR" &> package.log
-    if [ $? -ne 0 ]; then
-        echo "OS X package build failed, refer to osx/package.log."
-    fi
-) &
+pushd osx
+echo "Zipping OS X package"
+sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/osx" "$OUTPUTDIR"
+if [ $? -ne 0 ]; then
+    echo "OS X package build failed."
+fi
+popd
 
-(
-    cd linux
-    sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/linux" "$OUTPUTDIR" &> package.log
-    if [ $? -ne 0 ]; then
-        echo "Linux package build failed, refer to linux/package.log."
-    fi
-) &
+pushd linux
+echo "Building Linux packages"
+sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/linux" "$OUTPUTDIR"
+if [ $? -ne 0 ]; then
+    echo "Linux package build failed."
+fi
+popd
 
-wait
 echo "Package build done."
 
 rm -rf $BUILTDIR

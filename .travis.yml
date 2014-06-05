@@ -35,7 +35,7 @@ notifications:
     skip_join: true
 
 before_deploy:
- - echo $TRAVIS_TAG
+ - DOTVERSION=`echo $TRAVIS_TAG | sed "s/-/\\./g"`
  - cd packaging
  - mkdir build
  - ./package-all.sh $TRAVIS_TAG build
@@ -44,10 +44,10 @@ deploy:
   api_key:
     secure: "cMC68erxuf0jb4Pe0sOH4m1f7I2LWPUatD9BC0WeZ9PwTnWOzrm0hnjZIES4TTKVo8WIfZIiCfxpdAFeoh6bomG2MsKwSKMc8qHGhfNGqPnyzYh6zdPZaA+4Q3TDQI3DrziyDnQUFeH1h/7UZLDLxtDrOtcYcGdNg5VjvV9fJ7g="
   file:
-    - packaging/build/OpenRA-$TRAVIS_TAG.exe
-    - packaging/build/OpenRA-$TRAVIS_TAG.zip
-    - packaging/build/openra-$TRAVIS_TAG-1-noarch.rpm
-    - packaging/build/openra_$TRAVIS_TAG_all.deb
+    - build/OpenRA-$TRAVIS_TAG.exe
+    - build/OpenRA-$TRAVIS_TAG.zip
+    - build/openra-$DOTVERSION-1-noarch.rpm
+    - build/openra_$DOTVERSION_all.deb
   skip_cleanup: true
   on:
     all_branches: true
