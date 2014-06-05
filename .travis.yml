@@ -42,7 +42,7 @@ before_deploy:
 deploy:
   provider: releases
   api_key:
-    secure: VizNS/u8rEr+dT8vvERCv2LU9ia/fJsnyGwVK5bQGWq+9M9HdSJLpC0j5zjezQs7pVYeH0IPkV2tP6wTHxSIXNfAyrGxLx9VJv85AN0FMUvxX8+JAVxIovMBsqIUTMKlCvSaywnlVnn67XSmt13DKjQQeM2hZNjBob/UeOrywb4=
+    secure: "cMC68erxuf0jb4Pe0sOH4m1f7I2LWPUatD9BC0WeZ9PwTnWOzrm0hnjZIES4TTKVo8WIfZIiCfxpdAFeoh6bomG2MsKwSKMc8qHGhfNGqPnyzYh6zdPZaA+4Q3TDQI3DrziyDnQUFeH1h/7UZLDLxtDrOtcYcGdNg5VjvV9fJ7g="
   file:
     - packaging/build/OpenRA-$TRAVIS_TAG.exe
     - packaging/build/OpenRA-$TRAVIS_TAG.zip
