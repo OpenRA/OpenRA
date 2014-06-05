@@ -39,7 +39,7 @@ before_deploy:
  - DOTVERSION=`echo $TRAVIS_TAG | sed "s/-/\\./g"`
  - cd packaging
  - mkdir build
- - ./package-all.sh $TRAVIS_TAG build
+ - ./package-all.sh $TRAVIS_TAG $PWD/build/
 deploy:
   provider: releases
   api_key:
