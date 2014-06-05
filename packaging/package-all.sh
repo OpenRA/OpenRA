@@ -21,7 +21,7 @@ make package
 # Remove the mdb files that are created during `make`
 find . -path "*.mdb" -delete
 
-rm Changelog.md
+test -e Changelog.md && rm Changelog.md
 wget https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
 markdown Changelog.md > CHANGELOG.html
 markdown README.md > README.html
