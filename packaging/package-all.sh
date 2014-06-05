@@ -83,27 +83,27 @@ echo "Creating packages..."
 
 (
     cd windows
-    makensis -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/windows" OpenRA.nsi &> package.log
+    makensis -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/windows" OpenRA.nsi
     if [ $? -eq 0 ]; then
         mv OpenRA.exe "$OUTPUTDIR"/OpenRA-$TAG.exe
     else
-        echo "Windows package build failed, refer to windows/package.log."
+        echo "Windows package build failed."
     fi
 ) &
 
 (
     cd osx
-    sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/osx" "$OUTPUTDIR" &> package.log
+    sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/osx" "$OUTPUTDIR"
     if [ $? -ne 0 ]; then
-        echo "OS X package build failed, refer to osx/package.log."
+        echo "OS X package build failed."
     fi
 ) &
 
 (
     cd linux
-    sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/linux" "$OUTPUTDIR" &> package.log
+    sh buildpackage.sh "$TAG" "$BUILTDIR" "${SRCDIR}/thirdparty/linux" "$OUTPUTDIR"
     if [ $? -ne 0 ]; then
-        echo "Linux package build failed, refer to linux/package.log."
+        echo "Linux package build failed."
     fi
 ) &
 
