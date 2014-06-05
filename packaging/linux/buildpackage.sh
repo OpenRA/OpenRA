@@ -38,32 +38,29 @@ cp *.html $PWD/packaging/linux/$ROOTDIR/usr/share/doc/openra/
 
 cd packaging/linux
 
-(
-    echo "Building Debian package."
-    cd deb
-    ./buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
-    if [ $? -ne 0 ]; then
-        echo "Debian package build failed."
-    fi
-) &
+pushd deb
+echo "Building Debian package."
+./buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
+if [ $? -ne 0 ]; then
+    echo "Debian package build failed."
+fi
+popd
 
-(
-    echo "Building Arch-Linux package."
-    cd pkgbuild
-    sh buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
-    if [ $? -ne 0 ]; then
-        echo "Arch-Linux package build failed."
-    fi
-) &
+pushd pkgbuild
+echo "Building Arch-Linux package."
+sh buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
+if [ $? -ne 0 ]; then
+    echo "Arch-Linux package build failed."
+fi
+popd
 
-(
-    echo "Building RPM package."
-    cd rpm
-    sh buildpackage.sh "$TAG" ../$ROOTDIR ~/rpmbuild "$PACKAGEDIR"
-    if [ $? -ne 0 ]; then
-        echo "RPM package build failed."
-    fi
-) &
+pushd rpm
+echo "Building RPM package."
+sh buildpackage.sh "$TAG" ../$ROOTDIR ~/rpmbuild "$PACKAGEDIR"
+if [ $? -ne 0 ]; then
+    echo "RPM package build failed."
+fi
+popd
 
 wait
 
