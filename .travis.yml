@@ -21,6 +21,7 @@ branches:
  only:
    - /^release-.*$/
    - /^playtest-.*$/
+   - /^pkgtest-.*$/
    - bleed
 
 # Notify developers when build passed/failed.
