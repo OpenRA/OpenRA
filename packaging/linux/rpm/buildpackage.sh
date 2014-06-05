@@ -16,17 +16,11 @@ sed -i "s/{VERSION_FIELD}/$PKGVERSION/" openra.spec
 rootdir=`readlink -f $2`
 sed -i "s|{ROOT_DIR}|$rootdir|" openra.spec
 
-for x in `find $rootdir/usr/lib/openra -type d`
-do
-    y="${x#$rootdir}"
-    sed -i "/%files/ a ${y}" openra.spec
-done
-
 cp openra.spec "$3/SPECS/"
 
 cd "$3"
 
-rpmbuild --target noarch --buildroot /tmp/openra/ -bb SPECS/openra.spec --quiet
+rpmbuild --target noarch --buildroot /tmp/openra/ -bb SPECS/openra.spec
 if [ $? -ne 0 ]; then
   exit 1
 fi
