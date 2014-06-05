@@ -79,7 +79,7 @@ echo "Creating packages..."
 
 pushd windows
 echo "Building Windows setup.exe"
-makensis -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/windows" OpenRA.nsi
+makensis -V2 -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/windows" OpenRA.nsi
 if [ $? -eq 0 ]; then
     mv OpenRA.exe "$OUTPUTDIR"/OpenRA-$TAG.exe
 else
