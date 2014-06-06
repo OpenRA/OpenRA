@@ -947,6 +947,13 @@ ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
       parent = parent:GetParent()
     end
     if mainwin then
+      if infocus and infocus ~= win and ide.osname == 'Macintosh' then
+        -- kill focus on the control that had the focus as wxwidgets on OSX
+        -- doesn't do it: http://trac.wxwidgets.org/ticket/14142;
+        -- wrap into pcall in case the window is already deleted
+        local ev = wx.wxFocusEvent(wx.wxEVT_KILL_FOCUS)
+        pcall(function() infocus:GetEventHandler():ProcessEvent(ev) end)
+      end
       infocus = win
     end
   end
