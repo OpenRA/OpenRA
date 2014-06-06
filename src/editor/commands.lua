@@ -932,8 +932,21 @@ ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
     end
 
     -- keep track of the current control in focus, but only on the main frame
+    -- don't try to "remember" any of the focus changes on various dialog
+    -- windows as those will disappear along with their controls
     local grandparent = win:GetGrandParent()
-    if grandparent and grandparent:GetId() == ide.frame:GetId() then
+    local frameid = ide.frame:GetId()
+    local mainwin = grandparent and grandparent:GetId() == frameid
+    local parent = win:GetParent()
+    while parent do
+      local class = parent:GetClassInfo():GetClassName()
+      if (class == 'wxFrame' or class:find('^wx.*Dialog$'))
+      and parent:GetId() ~= frameid then
+        mainwin = false; break
+      end
+      parent = parent:GetParent()
+    end
+    if mainwin then
       infocus = win
     end
   end
