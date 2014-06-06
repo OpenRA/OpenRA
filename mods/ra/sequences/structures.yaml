@@ -22,6 +22,10 @@ hosp:
 	make: hospmake
 		Start: 0
 		Length: *
+	bib: mbHOSP
+		Start: 0
+		Length: *
+		Offset: 0,1
 	icon: hospicon
 		Start: 0
 

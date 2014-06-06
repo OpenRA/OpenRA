@@ -88,6 +88,8 @@ HOSP:
 		Name: Hospital
 	RevealsShroud:
 		Range: 3c0
+	Bib:
+		HasMinibib: Yes
 	DeadBuildingState:
 
 V01:

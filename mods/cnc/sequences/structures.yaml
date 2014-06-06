@@ -95,7 +95,7 @@ silo:
 		Length: *
 		Tick: 80
 		Offset: 0,-1
-	bib: mb2x1
+	bib: mbSILO
 		Start: 0
 		Length: *
 		Offset: 0,1
@@ -291,7 +291,7 @@ fix:
 		Start: 0
 		Length: 14
 		Tick: 60
-	bib: mb3x1
+	bib: mbFIX
 		Start: 0
 		Length: *
 		Offset: 0,-9
@@ -553,7 +553,7 @@ hosp:
 		Length: *
 		Tick: 80
 		Offset: 0,-2
-	bib: mb2x1
+	bib: mbHOSP
 		Start: 0
 		Length: *
 		Offset: 0,1
@@ -561,7 +561,7 @@ hosp:
 hosp.husk:
 	idle: hosp
 		Start: 8
-	bib: mb2x1
+	bib: mbHOSP
 		Start: 0
 		Length: *
 		Offset: 0,1
@@ -592,7 +592,7 @@ miss:
 		Length: *
 		Tick: 80
 		Offset: 0,-1
-	bib: mb3x1
+	bib: mbMISS
 		Start: 0
 		Length: *
 		Offset: 0,1
