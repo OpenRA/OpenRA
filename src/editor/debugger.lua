@@ -18,7 +18,7 @@ debugger.portnumber = ide.config.debugger.port or mobdebug.port -- the port # to
 debugger.watchCtrl = nil -- the watch ctrl that shows watch information
 debugger.stackCtrl = nil -- the stack ctrl that shows stack information
 debugger.toggleview = {
-  stackpanel = false, watchpanel = false, toolbar = true }
+  stackpanel = false, watchpanel = false, toolbar = false }
 debugger.hostname = ide.config.debugger.hostname or (function()
   local hostname = socket.dns.gethostname()
   return hostname and socket.dns.toip(hostname) and hostname or "localhost"
