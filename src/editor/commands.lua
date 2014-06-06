@@ -920,6 +920,8 @@ frame:Connect(wx.wxEVT_TIMER, saveAutoRecovery)
 
 local infocus
 ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
+  if ide.exitingProgram then return end
+
   local win = ide.frame:FindFocus()
   if win then
     local class = win:GetClassInfo():GetClassName()
