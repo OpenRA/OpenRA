@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Activities
 				return NextActivity;
 
 			// TODO: This is horrible, and probably wrong. Work out what it is trying to solve, then redo it properly.
-			if (type == TargetType.Actor && !self.Owner.HasFogVisibility() && Target.Actor.HasTrait<Mobile>() && !self.Owner.Shroud.IsTargetable(Target.Actor))
+			if (type == TargetType.Actor && Target.Actor.HasTrait<Mobile>() && !self.Owner.Shroud.IsTargetable(Target.Actor))
 				return NextActivity;
 
 			if (!Target.IsInRange(self.CenterPosition, Range))
