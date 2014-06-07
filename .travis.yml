@@ -37,8 +37,10 @@ notifications:
 before_deploy:
  - sudo apt-get install nsis markdown dpkg rpm libarchive-dev m4 fakeroot bsdtar
  - wget ftp://ftp.archlinux.org/other/pacman/pacman-4.0.3.tar.gz -O /tmp/pacman-4.0.3.tar.gz
+ - pushd /tmp
  - tar -xzvf pacman-4.0.3.tar.gz
  - cd pacman-4.0.3 && ./configure --disable-doc --prefix=/usr && make && sudo make install
+ - popd
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging
  - mkdir build
