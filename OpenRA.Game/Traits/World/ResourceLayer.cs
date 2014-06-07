@@ -94,7 +94,7 @@ namespace OpenRA.Traits
 						// Adjacent includes the current cell, so is always >= 1
 						var adjacent = GetAdjacentCellsWith(type, x, y);
 						var density = int2.Lerp(0, type.Info.MaxDensity, adjacent, 9);
-						content[x, y].Density = density;
+						content[x, y].Density = Math.Max(density, 1);
 
 						render[x, y] = content[x, y];
 						UpdateRenderedSprite(new CPos(x, y));
