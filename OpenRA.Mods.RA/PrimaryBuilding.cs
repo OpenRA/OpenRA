@@ -27,7 +27,15 @@ namespace OpenRA.Mods.RA
 	}
 
 	[Desc("Used together with ClassicProductionQueue.")]
-	class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding> { }
+	class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding>
+	{
+		public readonly int OffsetX = 0;
+		public readonly int OffsetY = 7;
+		public readonly int OffsetAirfieldX = -16;
+		public readonly int OffsetAirfieldY = 15;
+		public readonly int OffsetAirfieldDoubleX = 35;
+		public readonly int OffsetAirfieldDoubleY = 72;
+	}
 
 	class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags, IPostRender
 	{
@@ -94,20 +102,20 @@ namespace OpenRA.Mods.RA
 
 				var tagImages = new Animation(self.World, "pips");
 				var pal = wr.Palette("chrome");
-				var tagxyOffset = new int2(0, 7);
+				var tagxyOffset = new int2(OffsetX, OffsetY);
 
 				// Special tag position for airfield
 				if (self.Info.Name == "afld")
 				{
 					if (Game.Settings.Graphics.PixelDouble)
 					{
-						tagxyOffset.X = 35;
-						tagxyOffset.Y = 72;
+						tagxyOffset.X = OffsetAirfieldDoubleX;
+						tagxyOffset.Y = OffsetAirfieldDoubleY;
 					} 
 					else
 					{
-						tagxyOffset.X = -16;
-						tagxyOffset.Y = 15;
+						tagxyOffset.X = OffsetAirfieldX;
+						tagxyOffset.Y = OffsetAirfieldY;
 					}
 				}
 
