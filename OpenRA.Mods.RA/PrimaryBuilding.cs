@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA
 
 				var tagImages = new Animation(self.World, "pips");
 				var pal = wr.Palette("chrome");
-				var tagxyOffset = new int2(0, 0);
+				var tagxyOffset = new int2(0, 7);
 
 				// Special tag position for airfield
 				if (self.Info.Name == "afld")
@@ -110,16 +110,14 @@ namespace OpenRA.Mods.RA
 						tagxyOffset.Y = 15;
 					}
 				}
-				else
-					tagxyOffset.Y = 7;
 
 				var tagBase = wr.Viewport.WorldToViewPx(basePosition);
 
 				if (this.GetTags().Contains(TagType.Primary))
 				{
 					tagImages.PlayRepeating("tag-primary");
-					var pos2 = tagBase + tagxyOffset - (0.5f * tagImages.Image.size).ToInt2();
-					Game.Renderer.SpriteRenderer.DrawSprite(tagImages.Image, pos2, pal);
+					var tagPos = tagBase + tagxyOffset - (0.5f * tagImages.Image.size).ToInt2();
+					Game.Renderer.SpriteRenderer.DrawSprite(tagImages.Image, tagPos, pal);
 				}
 			}
 		}
