@@ -62,11 +62,6 @@ namespace OpenRA.Mods.RA.Widgets
 				if (key == ks.ToSelectionKey)
 					return ToSelection();
 
-				if (key == ks.ToggleStatusBarsKey)
-					return ToggleStatusBars();
-
-				if (key == ks.TogglePixelDoubleKey)
-					return TogglePixelDouble();
 
 				// Put all functions that aren't unit-specific before this line!
 				if (!world.Selection.Actors.Any())
@@ -135,7 +130,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool PerformDeploy()
 		{
-			/* hack: multiple orders here */
+			// HACK: multiple orders here
 			PerformKeyboardOrderOnSelection(a => new Order("ReturnToBase", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("DeployTransform", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
@@ -248,19 +243,6 @@ namespace OpenRA.Mods.RA.Widgets
 		bool ToSelection()
 		{
 			worldRenderer.Viewport.Center(world.Selection.Actors);
-			return true;
-		}
-
-		static bool ToggleStatusBars()
-		{
-			Game.Settings.Game.AlwaysShowStatusBars ^= true;
-			return true;
-		}
-
-		bool TogglePixelDouble()
-		{
-			Game.Settings.Graphics.PixelDouble ^= true;
-			worldRenderer.Viewport.Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 			return true;
 		}
 	}

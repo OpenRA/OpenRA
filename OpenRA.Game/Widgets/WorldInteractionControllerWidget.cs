@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -198,15 +198,17 @@ namespace OpenRA.Widgets
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{
-				if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.PauseKey && World.LocalPlayer != null) // Disable pausing for spectators
+				var key = Hotkey.FromKeyInput(e);
+
+				if (key == Game.Settings.Keys.PauseKey && World.LocalPlayer != null) // Disable pausing for spectators
 					World.SetPauseState(!World.Paused);
-				else if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.SelectAllUnitsKey)
+				else if (key == Game.Settings.Keys.SelectAllUnitsKey)
 				{
 					var ownUnitsOnScreen = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
 						a => a.Owner == World.RenderPlayer);
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
-				else if (Hotkey.FromKeyInput(e) == Game.Settings.Keys.SelectUnitsByTypeKey)
+				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey)
 				{
 					var selectedTypes = World.Selection.Actors.Where(
 						x => x.Owner == World.RenderPlayer).Select(a => a.Info);
@@ -222,8 +224,13 @@ namespace OpenRA.Widgets
 							World.Map.Bounds.BottomRightAsCPos().BottomRight).Where(cond);
 						Game.Debug("Selected across map");
 					}
+
 					World.Selection.Combine(World, newSelection, true, false);
 				}
+				else if (key == Game.Settings.Keys.ToggleStatusBarsKey)
+					return ToggleStatusBars();
+				else if (key == Game.Settings.Keys.TogglePixelDoubleKey)
+					return TogglePixelDouble();
 			}
 
 			return false;
@@ -238,6 +245,19 @@ namespace OpenRA.Widgets
 				.Select(g => g.AsEnumerable())
 				.DefaultIfEmpty(NoActors)
 				.FirstOrDefault();
+		}
+
+		bool ToggleStatusBars()
+		{
+			Game.Settings.Game.AlwaysShowStatusBars ^= true;
+			return true;
+		}
+
+		bool TogglePixelDouble()
+		{
+			Game.Settings.Graphics.PixelDouble ^= true;
+			worldRenderer.Viewport.Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
+			return true;
 		}
 	}
 
