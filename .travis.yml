@@ -35,7 +35,10 @@ notifications:
     skip_join: true
 
 before_deploy:
- - sudo apt-get install nsis markdown dpkg rpm
+ - sudo apt-get install nsis markdown dpkg rpm libarchive-dev m4 fakeroot bsdtar
+ - wget ftp://ftp.archlinux.org/other/pacman/pacman-4.0.3.tar.gz -O /tmp/pacman-4.0.3.tar.gz
+ - tar -xzvf pacman-4.0.3.tar.gz
+ - cd pacman-4.0.3 && ./configure --disable-doc --prefix=/usr && make && sudo make install
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging
  - mkdir build
@@ -47,8 +50,9 @@ deploy:
   file:
     - build/OpenRA-${TRAVIS_TAG}.exe
     - build/OpenRA-${TRAVIS_TAG}.zip
-    - build/openra-${DOTVERSION}-1.noarch.rpm
     - build/openra_${DOTVERSION}_all.deb
+    - build/openra-${DOTVERSION}-1-any.pkg.tar.gz
+    - build/openra-${DOTVERSION}-1.noarch.rpm
   skip_cleanup: true
   on:
     all_branches: true
