@@ -33,10 +33,8 @@ namespace OpenRA.Mods.RA
 		
 		public readonly int OffsetX = 0;
 		public readonly int OffsetY = 7;
-		public readonly int OffsetAirfieldX = -16;
+		public readonly int OffsetAirfieldX = 16;
 		public readonly int OffsetAirfieldY = 15;
-		public readonly int OffsetAirfieldDoubleX = 35;
-		public readonly int OffsetAirfieldDoubleY = 72;
 		
 		public object Create(ActorInitializer init) { return new PrimaryBuilding(this); }
 	}
@@ -118,10 +116,7 @@ namespace OpenRA.Mods.RA
 				if (self.Info.Name == "afld")
 				{
 					if (Game.Settings.Graphics.PixelDouble)
-					{
-						tagxyOffset.X = info.OffsetAirfieldDoubleX;
-						tagxyOffset.Y = info.OffsetAirfieldDoubleY;
-					}
+						tagxyOffset.Y += 4;
 					else
 					{
 						tagxyOffset.X = info.OffsetAirfieldX;
