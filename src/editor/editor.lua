@@ -695,8 +695,16 @@ function CreateEditor()
   if (edcfg.usewrap) then
     editor:SetWrapMode(wxstc.wxSTC_WRAP_WORD)
     editor:SetWrapStartIndent(0)
-    if ide.wxver >= "2.9.5" and edcfg.wrapflags then
-      editor:SetWrapVisualFlags(tonumber(edcfg.wrapflags) or wxstc.wxSTC_WRAPVISUALFLAG_NONE)
+    if ide.wxver >= "2.9.5" then
+      if edcfg.wrapflags then
+        editor:SetWrapVisualFlags(tonumber(edcfg.wrapflags) or wxstc.wxSTC_WRAPVISUALFLAG_NONE)
+      end
+      if edcfg.wrapstartindent then
+        editor:SetWrapStartIndent(tonumber(edcfg.wrapstartindent) or 0)
+      end
+      if edcfg.wrapindentmode then
+        editor:SetWrapIndentMode(edcfg.wrapindentmode)
+      end
     end
   else
     editor:SetScrollWidth(100) -- set default width
