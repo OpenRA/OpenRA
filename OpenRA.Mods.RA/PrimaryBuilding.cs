@@ -27,20 +27,25 @@ namespace OpenRA.Mods.RA
 	}
 
 	[Desc("Used together with ClassicProductionQueue.")]
-	class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding>
+	class PrimaryBuildingInfo : ITraitInfo
 	{
+		public readonly string Palette = "chrome";
+		
 		public readonly int OffsetX = 0;
 		public readonly int OffsetY = 7;
 		public readonly int OffsetAirfieldX = -16;
 		public readonly int OffsetAirfieldY = 15;
 		public readonly int OffsetAirfieldDoubleX = 35;
 		public readonly int OffsetAirfieldDoubleY = 72;
+		
+		public object Create(ActorInitializer init) { return new PrimaryBuilding(this); }
 	}
 
 	class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags, IPostRender
 	{
 		bool isPrimary = false;
 		public bool IsPrimary { get { return isPrimary; } }
+		PrimaryBuildingInfo info;
 
 		public IEnumerable<TagType> GetTags()
 		{
@@ -50,6 +55,11 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new DeployOrderTargeter("PrimaryProducer", 1); }
+		}
+
+		public PrimaryBuilding(PrimaryBuildingInfo info)
+		{
+			this.info = info;
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -101,21 +111,21 @@ namespace OpenRA.Mods.RA
 				int2 basePosition = new int2((bounds.Left + bounds.Right) / 2, bounds.Top);
 
 				var tagImages = new Animation(self.World, "pips");
-				var pal = wr.Palette("chrome");
-				var tagxyOffset = new int2(self.Trait<PrimaryBuildingInfo>().OffsetX, self.Trait<PrimaryBuildingInfo>().OffsetY);
+				var pal = wr.Palette(info.Palette);
+				var tagxyOffset = new int2(info.OffsetX, info.OffsetY);
 
 				// Special tag position for airfield
 				if (self.Info.Name == "afld")
 				{
 					if (Game.Settings.Graphics.PixelDouble)
 					{
-						tagxyOffset.X = self.Trait<PrimaryBuildingInfo>().OffsetAirfieldDoubleX;
-						tagxyOffset.Y = self.Trait<PrimaryBuildingInfo>().OffsetAirfieldDoubleY;
-					} 
+						tagxyOffset.X = info.OffsetAirfieldDoubleX;
+						tagxyOffset.Y = info.OffsetAirfieldDoubleY;
+					}
 					else
 					{
-						tagxyOffset.X = self.Trait<PrimaryBuildingInfo>().OffsetAirfieldX;
-						tagxyOffset.Y = self.Trait<PrimaryBuildingInfo>().OffsetAirfieldY;
+						tagxyOffset.X = info.OffsetAirfieldX;
+						tagxyOffset.Y = info.OffsetAirfieldY;
 					}
 				}
 
