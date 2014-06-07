@@ -123,14 +123,14 @@ tabs-normal: tabs.png
 # Used for the menu
 dialog: dialog.png
 	background: 0,0,480,480
-	border-r: 489,0,9,192
-	border-l: 480,0,9,192
-	border-b: 0,489,191,9
-	border-t: 0,480,191,9
-	corner-tl: 191,480,9,9
-	corner-tr: 200,480,9,9
-	corner-bl: 191,489,9,9
-	corner-br: 200,489,9,9
+	border-r: 637,388,3,120
+	border-l: 512,388,3,120
+	border-b: 516,509,120,3
+	border-t: 516,384,120,3
+	corner-tl: 512,384,4,4
+	corner-tr: 636,384,4,4
+	corner-bl: 512,508,4,4
+	corner-br: 636,508,4,4
 
 # Same as normal button
 dialog2: dialog.png
@@ -158,15 +158,15 @@ dialog3: dialog.png
 
 # Same as the half transparent frame used in the Asset Browser
 dialog4: dialog.png
-	background: 517,392,54,54
-	border-t: 517,387,54,6
-	border-b: 517,446,54,6
-	border-l: 512,392,6,54
-	border-r: 571,392,6,54
-	corner-tl: 512,387,6,6
-	corner-tr: 571,387,6,6
-	corner-bl: 512,446,6,6
-	corner-br: 571,446,6,6
+	background: 527,399,54,54
+	border-t: 527,394,54,6
+	border-b: 527,453,54,6
+	border-l: 522,399,6,54
+	border-r: 581,399,6,54
+	corner-tl: 522,394,6,6
+	corner-tr: 581,394,6,6
+	corner-bl: 522,453,6,6
+	corner-br: 581,453,6,6
 
 lobby-bits: spawnpoints.png
 	spawn-unclaimed: 37,5,22,22
@@ -254,16 +254,16 @@ button: dialog.png
 
 # 5% lighter than a normal button
 button-hover: dialog.png
-	background: 513,129,126,126
-	border-r: 639,129,1,126
-	border-l: 512,129,1,126
-	border-b: 513,255,126,1
-	border-t: 513,128,126,1
-	corner-tl: 512,128,1,1
-	corner-tr: 639,128,1,1
-	corner-bl: 512,255,1,1
-	corner-br: 639,255,1,1
-	
+	background: 514,130,124,124
+	border-r: 638,130,2,124
+	border-l: 512,130,2,124
+	border-b: 514,254,124,2
+	border-t: 514,128,124,2
+	corner-tl: 512,128,2,2
+	corner-tr: 638,128,2,2
+	corner-bl: 512,254,2,2
+	corner-br: 638,254,2,2
+
 # A copy of dialog3 (pressed button)
 button-pressed: dialog.png
 	background: 641,1,126,126
@@ -290,28 +290,28 @@ button-disabled: dialog.png
 
 # 10% darker than a normal button
 button-highlighted: dialog.png
-	background: 769,1,126,126
-	border-r: 895,1,1,126
-	border-l: 768,1,1,126
-	border-b: 769,127,126,1
-	border-t: 769,0,126,1
+	background: 514,130,124,124
+	border-r: 640,128,1,128
+	border-l: 640,128,1,128
+	border-b: 512,384,128,1
+	border-t: 512,384,128,1
 	corner-tl: 768,0,1,1
 	corner-tr: 895,0,1,1
 	corner-bl: 768,127,1,1
 	corner-br: 895,127,1,1
 
-# A copy of button-highlighted
+# A copy of button-hover
 button-highlighted-hover: dialog.png
-	background: 769,1,126,126
-	border-r: 895,1,1,126
-	border-l: 768,1,1,126
-	border-b: 769,127,126,1
-	border-t: 769,0,126,1
-	corner-tl: 768,0,1,1
-	corner-tr: 895,0,1,1
-	corner-bl: 768,127,1,1
-	corner-br: 895,127,1,1
-	
+	background: 514,130,124,124
+	border-r: 638,130,2,124
+	border-l: 512,130,2,124
+	border-b: 514,254,124,2
+	border-t: 514,128,124,2
+	corner-tl: 512,128,2,2
+	corner-tr: 638,128,2,2
+	corner-bl: 512,254,2,2
+	corner-br: 638,254,2,2
+
 button-highlighted-pressed: dialog.png
 	background: 897,1,126,126
 	border-r: 1023,1,1,126
@@ -395,17 +395,17 @@ textfield: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
-# A copy of checkbox-hover
+# A copy of button-hover
 textfield-hover: dialog.png
-	background: 641,129,126,126
-	border-r: 767,129,1,126
-	border-l: 640,129,1,126
-	border-b: 641,255,126,1
-	border-t: 641,128,126,1
-	corner-tl: 640,128,1,1
-	corner-tr: 767,128,1,1
-	corner-bl: 640,255,1,1
-	corner-br: 767,255,1,1
+	background: 514,130,124,124
+	border-r: 638,130,2,124
+	border-l: 512,130,2,124
+	border-b: 514,254,124,2
+	border-t: 514,128,124,2
+	corner-tl: 512,128,2,2
+	corner-tr: 638,128,2,2
+	corner-bl: 512,254,2,2
+	corner-br: 638,254,2,2
 
 # Same as button-disabled-pressed
 textfield-disabled: dialog.png
@@ -422,14 +422,14 @@ textfield-disabled: dialog.png
 # A copy of dialog3 (pressed button)
 textfield-focused: dialog.png
 	background: 641,1,126,126
-	border-r: 767,1,1,126
-	border-l: 640,1,1,126
-	border-b: 641,127,126,1
-	border-t: 641,0,126,1
-	corner-tl: 640,0,1,1
-	corner-tr: 767,0,1,1
-	corner-bl: 640,127,1,1
-	corner-br: 767,127,1,1
+	border-r: 638,130,2,124
+	border-l: 512,130,2,124
+	border-b: 514,254,124,2
+	border-t: 514,128,124,2
+	corner-tl: 512,128,2,2
+	corner-tr: 638,128,2,2
+	corner-bl: 512,254,2,2
+	corner-br: 638,254,2,2
 
 # A copy of dialog3 (pressed button)
 scrollpanel-bg: dialog.png
@@ -473,16 +473,17 @@ checkbox: dialog.png
 checkbox-bits: buttons.png
 	checked: 0,140,16,16
 
+# A copy of button-hover
 checkbox-hover: dialog.png
-	background: 641,129,126,126
-	border-r: 767,129,1,126
-	border-l: 640,129,1,126
-	border-b: 641,255,126,1
-	border-t: 641,128,126,1
-	corner-tl: 640,128,1,1
-	corner-tr: 767,128,1,1
-	corner-bl: 640,255,1,1
-	corner-br: 767,255,1,1
+	background: 514,130,124,124
+	border-r: 638,130,2,124
+	border-l: 512,130,2,124
+	border-b: 514,254,124,2
+	border-t: 514,128,124,2
+	corner-tl: 512,128,2,2
+	corner-tr: 638,128,2,2
+	corner-bl: 512,254,2,2
+	corner-br: 638,254,2,2
 
 # Same as button-disabled-pressed
 checkbox-disabled: dialog.png
@@ -548,12 +549,12 @@ logos: loadscreen.png
 	logo: 0,0,256,256
 
 mainmenu-border: dialog.png
-	background: 688,427,40,40
-	border-r: 728,427,40,40
-	border-l: 648,427,40,40
-	border-b: 688,467,40,40
-	border-t: 688,387,40,40
-	corner-tl: 648,387,40,40
-	corner-tr: 728,387,40,40
-	corner-bl: 648,467,40,40
-	corner-br: 728,467,40,40
+	background: 640,128,40,40
+	border-r: 640,128,40,40
+	border-l: 640,128,40,40
+	border-b: 640,128,40,40
+	border-t: 640,128,40,40
+	corner-tl: 640,128,40,40
+	corner-tr: 640,128,40,40
+	corner-bl: 640,128,40,40
+	corner-br: 640,128,40,40
