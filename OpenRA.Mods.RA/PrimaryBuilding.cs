@@ -102,20 +102,20 @@ namespace OpenRA.Mods.RA
 
 				var tagImages = new Animation(self.World, "pips");
 				var pal = wr.Palette("chrome");
-				var tagxyOffset = new int2(OffsetX, OffsetY);
+				var tagxyOffset = new int2(self.Trait<PrimaryBuildingInfo>().OffsetX, self.Trait<PrimaryBuildingInfo>().OffsetY);
 
 				// Special tag position for airfield
 				if (self.Info.Name == "afld")
 				{
 					if (Game.Settings.Graphics.PixelDouble)
 					{
-						tagxyOffset.X = OffsetAirfieldDoubleX;
-						tagxyOffset.Y = OffsetAirfieldDoubleY;
+						tagxyOffset.X = self.Trait<PrimaryBuildingInfo>().OffsetAirfieldDoubleX;
+						tagxyOffset.Y = self.Trait<PrimaryBuildingInfo>().OffsetAirfieldDoubleY;
 					} 
 					else
 					{
-						tagxyOffset.X = OffsetAirfieldX;
-						tagxyOffset.Y = OffsetAirfieldY;
+						tagxyOffset.X = self.Trait<PrimaryBuildingInfo>().OffsetAirfieldX;
+						tagxyOffset.Y = self.Trait<PrimaryBuildingInfo>().OffsetAirfieldY;
 					}
 				}
 
