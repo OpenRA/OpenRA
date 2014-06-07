@@ -13,10 +13,10 @@ sed -i "s/{VERSION}/$PKGVERSION/" PKGBUILD
 rootdir=`readlink -f $2`
 sed -i "s|{ROOT}|$rootdir|" PKGBUILD
 
-makepkg --holdver -p PKGBUILD
+makepkg --holdver --nodeps -p PKGBUILD
 if [ $? -ne 0 ]; then
   exit 1
 fi
 
-mv openra-$PKGVERSION-1-any.pkg.tar.xz $3
+mv openra-$PKGVERSION-1-any.pkg.tar.gz $3
 
