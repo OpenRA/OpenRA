@@ -24,7 +24,6 @@ namespace OpenRA.Traits
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
-		static readonly string[] tagStrings = { "", "tag-fake", "tag-primary" };
 
 		public SelectionDecorationsInfo Info;
 		Actor self;
@@ -49,7 +48,6 @@ namespace OpenRA.Traits
 
 			DrawControlGroup(wr, self, xy);
 			DrawPips(wr, self, xY);
-			DrawTags(wr, self, new int2((bounds.Left + bounds.Right) / 2, bounds.Top));
 		}
 
 		void DrawControlGroup(WorldRenderer wr, Actor self, int2 basePosition)
@@ -109,34 +107,6 @@ namespace OpenRA.Traits
 				pipxyOffset.Y -= pipSize.Y + 1;
 			}
 		}
-
-		void DrawTags(WorldRenderer wr, Actor self, int2 basePosition)
-		{
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				return;
-
-			var tagImages = new Animation(self.World, "pips");
-			var pal = wr.Palette(Info.Palette);
-			var tagxyOffset = new int2(0, 6);
-			var tagBase = wr.Viewport.WorldToViewPx(basePosition);
-
-			foreach (var tags in self.TraitsImplementing<ITags>())
-			{
-				foreach (var tag in tags.GetTags())
-				{
-					if (tag == TagType.None)
-						continue;
-
-					tagImages.PlayRepeating(tagStrings[(int)tag]);
-					var pos = tagBase + tagxyOffset - (0.5f * tagImages.Image.size).ToInt2();
-					Game.Renderer.SpriteRenderer.DrawSprite(tagImages.Image, pos, pal);
-
-					// Increment row
-					tagxyOffset.Y += 8;
-				}
-			}
-		}
-
 	}
 }
 

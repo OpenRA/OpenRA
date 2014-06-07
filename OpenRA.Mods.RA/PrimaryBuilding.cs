@@ -13,6 +13,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
@@ -28,7 +29,7 @@ namespace OpenRA.Mods.RA
 	[Desc("Used together with ClassicProductionQueue.")]
 	class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding> { }
 
-	class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags
+	class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags, IPostRender
 	{
 		bool isPrimary = false;
 		public bool IsPrimary { get { return isPrimary; } }
@@ -78,6 +79,49 @@ namespace OpenRA.Mods.RA
 			isPrimary = true;
 
 			Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "PrimaryBuildingSelected", self.Owner.Country.Race);
+		}
+
+		// Draw Primary tag
+		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		{
+			if(isPrimary)
+			{
+				var pos = wr.ScreenPxPosition(self.CenterPosition);
+				var bounds = self.Bounds.Value;
+				bounds.Offset(pos.X, pos.Y);
+
+				int2 basePosition = new int2((bounds.Left + bounds.Right) / 2, bounds.Top);
+
+				var tagImages = new Animation(self.World, "pips");
+				var pal = wr.Palette("chrome");
+				var tagxyOffset = new int2(0, 0);
+
+				// Special tag position for airfield
+				if (self.Info.Name == "afld")
+				{
+					if (Game.Settings.Graphics.PixelDouble)
+					{
+						tagxyOffset.X = 35;
+						tagxyOffset.Y = 72;
+					} 
+					else
+					{
+						tagxyOffset.X = -16;
+						tagxyOffset.Y = 15;
+					}
+				}
+				else
+					tagxyOffset.Y = 7;
+
+				var tagBase = wr.Viewport.WorldToViewPx(basePosition);
+
+				if (this.GetTags().Contains(TagType.Primary))
+				{
+					tagImages.PlayRepeating("tag-primary");
+					var pos2 = tagBase + tagxyOffset - (0.5f * tagImages.Image.size).ToInt2();
+					Game.Renderer.SpriteRenderer.DrawSprite(tagImages.Image, pos2, pal);
+				}
+			}
 		}
 	}
 }
