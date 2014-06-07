@@ -78,10 +78,12 @@ namespace OpenRA.Mods.RA
 				if (move != null)
 				{
 					if (exitinfo.MoveIntoWorld)
+					{
 						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
 
-					newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
-						newUnit, move.MoveWithinRange(target, nearEnough)));
+						newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
+							newUnit, move.MoveWithinRange(target, nearEnough)));
+					}
 				}
 
 				newUnit.SetTargetLine(target, Color.Green, false);
