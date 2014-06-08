@@ -40,6 +40,28 @@ Team.AnyAreDead = function(team)
 	return Utils.Any(team.Actors, Actor.IsDead)
 end
 
+Team.OnAllKilled = function(team, func)
+	for i, unit in ipairs(team.Actors) do
+		Actor.OnKilled(unit, function()
+			if Team.AllAreDead(team) then
+				func()
+			end
+		end)
+	end
+end
+
+Team.OnAnyKilled = function(team, func)
+	local provementvar = false
+	for i, unit in ipairs(team.Actors) do
+		Actor.OnKilled(unit, function()
+			if provementvar == false then
+				func()
+				provementvar = true	
+			end
+		end)
+	end
+end
+
 Team.AllAreInWorld = function(team)
 	return Utils.All(team.Actors, Actor.IsInWorld)
 end
