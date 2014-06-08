@@ -256,6 +256,8 @@ V19.Husk:
 	WithFire:
 	-Health:
 	-Selectable:
+	-TargetableBuilding:
+	-Demolishable:
 
 BARL:
 	Inherits: ^TechBuilding
