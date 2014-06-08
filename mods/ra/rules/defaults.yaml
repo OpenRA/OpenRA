@@ -410,7 +410,6 @@
 		Name: Field
 	-TargetableBuilding:
 	-Demolishable:
-	-ProximityCaptor:
 	ProximityCaptor:
 		Types: CivilianField
 
