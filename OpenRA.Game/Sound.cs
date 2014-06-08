@@ -40,6 +40,8 @@ namespace OpenRA
 
 			if (filename.ToLowerInvariant().EndsWith("wav"))
 				return LoadWave(new WavLoader(GlobalFileSystem.Open(filename)));
+			else if (filename.ToLowerInvariant().EndsWith("ogg"))
+				return LoadOggVorbis(new OggVorbisLoader(GlobalFileSystem.Open(filename)));
 
 			return LoadSoundRaw(AudLoader.LoadSound(GlobalFileSystem.Open(filename)));
 		}
@@ -47,6 +49,11 @@ namespace OpenRA
 		static ISoundSource LoadWave(WavLoader wave)
 		{
 			return soundEngine.AddSoundSourceFromMemory(wave.RawOutput, wave.Channels, wave.BitsPerSample, wave.SampleRate);
+		}
+
+		static ISoundSource LoadOggVorbis(OggVorbisLoader loader)
+		{
+			return soundEngine.AddSoundSourceFromMemory(loader.RawData, loader.Channels, loader.BitsPerSample, loader.SampleRate);
 		}
 
 		static ISoundSource LoadSoundRaw(byte[] rawData)
