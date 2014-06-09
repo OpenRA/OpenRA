@@ -106,8 +106,7 @@ namespace OpenRA.Widgets
 
 			var underCursor = world.ScreenMap.ActorsAt(worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
 				.Where(a => !world.FogObscures(a) && a.HasTrait<IToolTip>())
-				.OrderByDescending(a => a.Info.SelectionPriority())
-				.FirstOrDefault();
+				.WithHighestSelectionPriority();
 
 			if (underCursor != null)
 			{
@@ -118,8 +117,7 @@ namespace OpenRA.Widgets
 
 			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
 				.Where(a => a.TooltipName != null)
-				.OrderByDescending(a => a.Info.SelectionPriority())
-				.FirstOrDefault();
+				.WithHighestSelectionPriority();
 
 			if (frozen != null)
 			{

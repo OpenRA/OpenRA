@@ -222,8 +222,7 @@ namespace OpenRA.Utility
 				if (!remap.ContainsKey(i))
 					remap[i] = fullIndexRange
 						.Where(a => !remap.ContainsValue(a))
-						.OrderBy(a => ColorDistance(destPalette.Values[a], srcPalette.Values[i]))
-						.First();
+						.MinBy(a => ColorDistance(destPalette.Values[a], srcPalette.Values[i]));
 
 			var srcImage = ShpReader.Load(args[3]);
 

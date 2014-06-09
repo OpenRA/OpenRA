@@ -156,8 +156,7 @@ namespace OpenRA.FileSystem
 			var index = type == PackageHashType.CRC32 ? crcHashIndex : classicHashIndex;
 			var folder = index[PackageEntry.HashFilename(filename, type)]
 				.Where(x => x.Exists(filename))
-				.OrderBy(x => x.Priority)
-				.FirstOrDefault();
+				.MinByOrDefault(x => x.Priority);
 
 			if (folder != null)
 				return folder.GetContent(filename);
@@ -196,8 +195,7 @@ namespace OpenRA.FileSystem
 			{
 				var folder = MountedFolders
 					.Where(x => x.Exists(filename + ext))
-					.OrderByDescending(x => x.Priority)
-					.FirstOrDefault();
+					.MaxByOrDefault(x => x.Priority);
 
 				if (folder != null)
 				{

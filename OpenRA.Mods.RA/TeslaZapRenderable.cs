@@ -132,7 +132,7 @@ namespace OpenRA.Mods.RA
 			while ((to - z).X > 5 || (to - z).X < -5 || (to - z).Y > 5 || (to - z).Y < -5)
 			{
 				var step = steps.Where(t => (to - (z + new float2(t[0], t[1]))).LengthSquared < (to - z).LengthSquared)
-					.OrderBy(t => Math.Abs(float2.Dot(z + new float2(t[0], t[1]), q) + c)).First();
+					.MinBy(t => Math.Abs(float2.Dot(z + new float2(t[0], t[1]), q) + c));
 
 				var pos = wr.Position((z + new float2(step[2], step[3])).ToInt2());
 				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, pal, 1f, true));
