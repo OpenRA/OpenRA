@@ -105,10 +105,7 @@ namespace OpenRA.FileFormats
 
 			// Actually, far too big. There's no length field with the correct length though :(
 			var compressedLength = (int)(stream.Length - stream.Position);
-			var compressedBytes = new byte[compressedLength];
-			stream.Read(compressedBytes, 0, compressedLength);
-
-			return compressedBytes;
+			return stream.ReadBytes(compressedLength);
 		}
 
 		void Decompress(Stream stream, ImageHeader h)

@@ -157,8 +157,7 @@ namespace OpenRA.FileSystem
 				return null;
 
 			s.Seek(dataStart + e.Offset, SeekOrigin.Begin);
-			var data = new byte[e.Length];
-			s.Read(data, 0, (int)e.Length);
+			var data = s.ReadBytes((int)e.Length);
 			return new MemoryStream(data);
 		}
 

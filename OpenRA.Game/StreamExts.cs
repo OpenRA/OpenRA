@@ -21,27 +21,38 @@ namespace OpenRA
 		{
 			if (count < 0)
 				throw new ArgumentOutOfRangeException("count", "Non-negative number required.");
+			var buffer = new byte[count];
+			s.ReadBytes(buffer, 0, count);
+			return buffer;
+		}
 
-			var buf = new byte[count];
-			if (s.Read(buf, 0, count) < count)
-				throw new EndOfStreamException();
-
-			return buf;
+		public static void ReadBytes(this Stream s, byte[] buffer, int offset, int count)
+		{
+			while (count > 0)
+			{
+				int bytesRead;
+				if ((bytesRead = s.Read(buffer, offset, count)) == 0)
+					throw new EndOfStreamException();
+				offset += bytesRead;
+				count -= bytesRead;
+			}
 		}
 
 		public static int Peek(this Stream s)
 		{
-			var buf = new byte[1];
-			if (s.Read(buf, 0, 1) == 0)
+			var b = s.ReadByte();
+			if (b == -1)
 				return -1;
-
-			s.Seek(s.Position - 1, SeekOrigin.Begin);
-			return buf[0];
+			s.Seek(-1, SeekOrigin.Current);
+			return (byte)b;
 		}
 
 		public static byte ReadUInt8(this Stream s)
 		{
-			return s.ReadBytes(1)[0];
+			var b = s.ReadByte();
+			if (b == -1)
+				throw new EndOfStreamException();
+			return (byte)b;
 		}
 
 		public static ushort ReadUInt16(this Stream s)
@@ -87,19 +98,9 @@ namespace OpenRA
 		public static string ReadASCIIZ(this Stream s)
 		{
 			var bytes = new List<byte>();
-			var buf = new byte[1];
-
-			for (;;)
-			{
-				if (s.Read(buf, 0, 1) < 1)
-					throw new EndOfStreamException();
-
-				if (buf[0] == 0)
-					break;
-
-				bytes.Add(buf[0]);
-			}
-
+			byte b;
+			while ((b = s.ReadUInt8()) != 0)
+				bytes.Add(b);
 			return new string(Encoding.ASCII.GetChars(bytes.ToArray()));
 		}
 
@@ -113,11 +114,7 @@ namespace OpenRA
 		public static byte[] ReadAllBytes(this Stream s)
 		{
 			using (s)
-			{
-				var data = new byte[s.Length - s.Position];
-				s.Read(data, 0, data.Length);
-				return data;
-			}
+				return s.ReadBytes((int)(s.Length - s.Position));
 		}
 
 		public static void Write(this Stream s, byte[] data)
