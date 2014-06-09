@@ -18,7 +18,6 @@ lualibs/lua_lexer_loose.lua
 lualibs/lua_parser_loose.lua
 lualibs/luainspect/*.lua
 lualibs/metalua/*.lua
-lualibs/metalua/metalua/*.lua
 lualibs/mobdebug/mobdebug.lua
 lualibs/ltn12.lua
 lualibs/luadist.lua

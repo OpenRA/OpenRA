@@ -8,7 +8,11 @@ local FAST = true
 local function init()
   if LA then return end
 
-  require "metalua"
+  -- metalua is using 'checks', which noticeably slows the execution
+  -- stab it with out own
+  package.loaded.checks = {}
+  checks = function() end
+
   LA = require "luainspect.ast"
   LI = require "luainspect.init"
   T = require "luainspect.types"
@@ -62,20 +66,19 @@ end
 function M.show_warnings(top_ast, globinit)
   local warnings = {}
   local function warn(msg, linenum, path)
-    warnings[#warnings+1] = (path or "?") .. "(" .. (linenum or 0) .. "): " .. msg
+    warnings[#warnings+1] = (path or "?") .. ":" .. (linenum or 0) .. ": " .. msg
   end
   local function known(o) return not T.istype[o] end
   local function index(f) -- build abc.def.xyz name recursively
     return (f[1].tag == 'Id' and f[1][1] or index(f[1])) .. '.' .. f[2][1] end
   local globseen, isseen, fieldseen = globinit or {}, {}, {}
   LA.walk(top_ast, function(ast)
-    local line = ast.lineinfo and ast.lineinfo.first[1] or 0
-    local path = ast.lineinfo and ast.lineinfo.first[4] or '?'
+    local path, line = tostring(ast.lineinfo):gsub('<C|','<'):match('<([^|]+)|L(%d+)')
     local name = ast[1]
     -- check if we're masking a variable in the same scope
     if ast.localmasking and name ~= '_' and
        ast.level == ast.localmasking.level then
-      local linenum = ast.localmasking.lineinfo.first[1]
+      local linenum = tostring(ast.localmasking.lineinfo.first):match('|L(%d+)')
       local parent = ast.parent and ast.parent.parent
       local func = parent and parent.tag == 'Localrec'
       warn("local " .. (func and 'function' or 'variable') .. " '" ..
@@ -134,7 +137,7 @@ function M.show_warnings(top_ast, globinit)
           and (" in '"..index(ast.parent):gsub("%."..name.."$","").."'")
           or ""
         warn("first use of unknown field '" .. name .."'"..parent,
-          ast.lineinfo.first[1], path)
+          tostring(ast.lineinfo.first):match('|L(%d+)'), path)
       end
     elseif ast.tag == 'Id' and not ast.localdefinition and not ast.definedglobal then
       if not globseen[name] then
