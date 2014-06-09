@@ -357,6 +357,12 @@ errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
         or FileTreeFindByPartialName(fname)
 
       local editor = LoadFile(name or fname,nil,true)
+      if not editor then
+        local ed = GetEditor()
+        if ed and ide:GetDocument(ed):GetFileName() == (name or fname) then
+          editor = ed
+        end
+      end
       if editor then
         jumpline = tonumber(jumpline)
         jumplinepos = tonumber(jumplinepos)
