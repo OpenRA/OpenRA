@@ -173,6 +173,7 @@ function FileSysGetRecursive(path, recursive, spec, skip)
     local dir = wx.wxDir(path)
     if not dir:IsOpened() then return end
 
+    local log = wx.wxLogNull() -- disable error reporting; will report as needed
     local found, file = dir:GetFirst("*", wx.wxDIR_DIRS)
     while found do
       if not skip or not file:find(skip) then
