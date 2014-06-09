@@ -387,11 +387,13 @@ function LoadLuaFileExt(tab, file, proto)
     if not name then return end
 
     -- check if os/arch matches to allow packages for different systems
+    local osvals = {windows = true, unix = true, macintosh = true}
+    local archvals = {x64 = true, x86 = true}
     local os, arch = name:match("-(%w+)-?(%w*)")
-    if os and os:lower() ~= ide.osname:lower()
-    or arch and #arch > 0 and arch:lower() ~= ide.osarch:lower()
+    if os and os:lower() ~= ide.osname:lower() and osvals[os:lower()]
+    or arch and #arch > 0 and arch:lower() ~= ide.osarch:lower() and archvals[arch:lower()]
     then return end
-    if os then name = name:gsub("-.*","") end
+    if os and osvals[os:lower()] then name = name:gsub("-.*","") end
 
     local success, result = pcall(function()return cfgfn(assert(_G or _ENV))end)
     if not success then
