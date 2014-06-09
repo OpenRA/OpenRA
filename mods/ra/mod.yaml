@@ -139,7 +139,7 @@ ContentInstaller:
 	PackageToExtractFromCD: MAIN.MIX
 	ExtractFilesFromCD: conquer.mix, russian.mix, allies.mix, sounds.mix, scores.mix, snow.mix, interior.mix, temperat.mix, general.mix
 	CopyFilesFromCD: INSTALL/REDALERT.MIX
-	ShippedSoundtracks: 1
+	ShippedSoundtracks: 2
 	MusicPackageMirrorList: http://www.openra.net/packages/ra-music-mirrors.txt
 
 ServerTraits:
