@@ -22,6 +22,9 @@ return {
     if rundebug then
       DebuggerAttachDefault({runstart = ide.config.debugger.runonstart == true})
 
+      -- update arg to point to the proper file
+      rundebug = ('if arg then arg[0] = [[%s]] end '):format(filepath)..rundebug
+
       local tmpfile = wx.wxFileName()
       tmpfile:AssignTempFileName(".")
       filepath = tmpfile:GetFullPath()
