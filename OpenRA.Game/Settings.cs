@@ -129,6 +129,7 @@ namespace OpenRA
 		public bool ShowShellmap = true;
 
 		public bool ViewportEdgeScroll = true;
+		public bool LockMouseWindow = true;
 		public MouseScrollType MouseScroll = MouseScrollType.Standard;
 		public float ViewportEdgeScrollStep = 10f;
 		public float UIScrollSpeed = 50f;
