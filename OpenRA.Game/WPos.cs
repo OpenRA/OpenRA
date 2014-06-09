@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Eluant;
@@ -16,7 +17,7 @@ using OpenRA.Scripting;
 
 namespace OpenRA
 {
-	public struct WPos : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding
+	public struct WPos : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<WPos>
 	{
 		public readonly int X, Y, Z;
 
@@ -52,13 +53,10 @@ namespace OpenRA
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 
-		public override bool Equals(object obj)
-		{
-			var o = obj as WPos?;
-			return o != null && o == this;
-		}
+		public bool Equals(WPos other) { return other == this; }
+		public override bool Equals(object obj) { return obj is WPos && Equals((WPos)obj); }
 
-		public override string ToString() { return "{0},{1},{2}".F(X, Y, Z); }
+		public override string ToString() { return X + "," + Y + "," + Z; }
 
 		#region Scripting interface
 

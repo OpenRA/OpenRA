@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
+	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>
 	{
 		public readonly ActorInfo Info;
 
@@ -160,7 +160,12 @@ namespace OpenRA
 		public override bool Equals(object obj)
 		{
 			var o = obj as Actor;
-			return o != null && o.ActorID == ActorID;
+			return o != null && Equals(o);
+		}
+
+		public bool Equals(Actor other)
+		{
+			return ActorID == other.ActorID;
 		}
 
 		public override string ToString()

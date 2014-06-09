@@ -15,7 +15,7 @@ namespace OpenRA
 	/// <summary>
 	/// 1D angle - 1024 units = 360 degrees.
 	/// </summary>
-	public struct WAngle
+	public struct WAngle : IEquatable<WAngle>
 	{
 		public readonly int Angle;
 
@@ -37,11 +37,8 @@ namespace OpenRA
 
 		public override int GetHashCode() { return Angle.GetHashCode(); }
 
-		public override bool Equals(object obj)
-		{
-			var o = obj as WAngle?;
-			return o != null && o == this;
-		}
+		public bool Equals(WAngle other) { return other == this; }
+		public override bool Equals(object obj) { return obj is WAngle && Equals((WAngle)obj); }
 
 		public int Sin() { return new WAngle(Angle - 256).Cos(); }
 
@@ -103,7 +100,7 @@ namespace OpenRA
 		public float RendererRadians() { return (float)(Angle * Math.PI / 512f); }
 		public float RendererDegrees() { return Angle * 0.3515625f; }
 
-		public override string ToString() { return "{0}".F(Angle); }
+		public override string ToString() { return Angle.ToString(); }
 
 		static int[] CosineTable =
 		{
