@@ -31,6 +31,8 @@ namespace OpenRA.Traits
 		int[,] generatedShroudCount;
 		bool[,] explored;
 
+		readonly Lazy<IFogVisibilityModifier[]> fogVisibilities;
+
 		// Cache of visibility that was added, so no matter what crazy trait code does, it
 		// can't make us invalid.
 		Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
@@ -57,6 +59,8 @@ namespace OpenRA.Traits
 
 			if (!self.World.LobbyInfo.GlobalSettings.Shroud)
 				ExploredBounds = map.Bounds;
+
+			fogVisibilities = Exts.Lazy(() => self.TraitsImplementing<IFogVisibilityModifier>().ToArray());
 		}
 
 		void Invalidate()
@@ -278,10 +282,18 @@ namespace OpenRA.Traits
 
 		public bool IsTargetable(Actor a)
 		{
+			if (HasFogVisibility())
+				return true;
+
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, self.Owner)))
 				return false;
 
-			return GetVisOrigins(a).Any(o => IsVisible(o));
+			return GetVisOrigins(a).Any(IsVisible);
+		}
+
+		public bool HasFogVisibility()
+		{
+			return fogVisibilities.Value.Any(f => f.HasFogVisibility(self.Owner));
 		}
 	}
 }

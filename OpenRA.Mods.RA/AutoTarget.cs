@@ -147,23 +147,12 @@ namespace OpenRA.Mods.RA
 			nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
 			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range);
 
-			if (self.Owner.HasFogVisibility())
-			{
-				return inRange
-					.Where(a => a.AppearsHostileTo(self))
-					.Where(a => !a.HasTrait<AutoTargetIgnore>())
-					.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-					.ClosestTo(self);
-			}
-			else
-			{
-				return inRange
-					.Where(a => a.AppearsHostileTo(self))
-					.Where(a => !a.HasTrait<AutoTargetIgnore>())
-					.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-					.Where(a => self.Owner.Shroud.IsTargetable(a))
-					.ClosestTo(self);
-			}
+			return inRange
+				.Where(a => a.AppearsHostileTo(self))
+				.Where(a => !a.HasTrait<AutoTargetIgnore>())
+				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
+				.Where(a => self.Owner.Shroud.IsTargetable(a))
+				.ClosestTo(self);
 		}
 	}
 

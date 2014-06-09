@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public object Create (ActorInitializer init) { return new GpsWatcher(init.self.Owner); }
 	}
 
-	class GpsWatcher : ISync
+	class GpsWatcher : ISync, IFogVisibilityModifier
 	{
 		[Sync] bool Launched = false;
 		[Sync] public bool GrantedAllies = false;
@@ -72,6 +72,11 @@ namespace OpenRA.Mods.RA
 
 			if (Granted || GrantedAllies)
 				owner.Shroud.ExploreAll(owner.World);
+		}
+
+		public bool HasFogVisibility(Player byPlayer)
+		{
+			return Granted || GrantedAllies;
 		}
 	}
 

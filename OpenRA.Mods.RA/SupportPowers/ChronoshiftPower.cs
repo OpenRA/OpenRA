@@ -145,7 +145,7 @@ namespace OpenRA.Mods.RA
 				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
 				var targetUnits = power.UnitsInRange(xy);
 				foreach (var unit in targetUnits)
-					if (manager.self.Owner.Shroud.IsTargetable(unit) || manager.self.Owner.HasFogVisibility())
+					if (manager.self.Owner.Shroud.IsTargetable(unit))
 						wr.DrawSelectionBox(unit, Color.Red);
 			}
 
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.RA
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				foreach (var unit in power.UnitsInRange(sourceLocation))
-					if (manager.self.Owner.Shroud.IsTargetable(unit) || manager.self.Owner.HasFogVisibility())
+					if (manager.self.Owner.Shroud.IsTargetable(unit))
 						wr.DrawSelectionBox(unit, Color.Red);
 			}
 
@@ -256,8 +256,8 @@ namespace OpenRA.Mods.RA
 					if (manager.self.Owner.Shroud.IsTargetable(unit))
 					{
 						var targetCell = unit.Location + (xy - sourceLocation);
-						var canEnter = ((manager.self.Owner.Shroud.IsExplored(targetCell) || manager.self.Owner.HasFogVisibility()) &&
-						                unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell));
+						var canEnter = manager.self.Owner.Shroud.IsExplored(targetCell) &&
+						                unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
 						var tile = canEnter ? validTile : invalidTile;
 						yield return new SpriteRenderable(tile, targetCell.CenterPosition, WVec.Zero, -511, pal, 1f, true);
 					}
