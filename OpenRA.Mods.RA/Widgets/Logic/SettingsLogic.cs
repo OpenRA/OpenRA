@@ -289,6 +289,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			BindCheckboxPref(panel, "CLASSICORDERS_CHECKBOX", gs, "UseClassicMouseStyle");
 			BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
+			BindCheckboxPref(panel, "LOCKMOUSE_CHECKBOX", gs, "LockMouseWindow");
 			BindSliderPref(panel, "SCROLLSPEED_SLIDER", gs, "ViewportEdgeScrollStep");
 			BindSliderPref(panel, "UI_SCROLLSPEED_SLIDER", gs, "UIScrollSpeed");
 
@@ -347,6 +348,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				gs.UseClassicMouseStyle = dgs.UseClassicMouseStyle;
 				gs.MouseScroll = dgs.MouseScroll;
+				gs.LockMouseWindow = dgs.LockMouseWindow;
 				gs.ViewportEdgeScroll = dgs.ViewportEdgeScroll;
 				gs.ViewportEdgeScrollStep = dgs.ViewportEdgeScrollStep;
 				gs.UIScrollSpeed = dgs.UIScrollSpeed;
