@@ -57,3 +57,7 @@ Lua-API.md
 
 # StyleCop
 *.Cache
+
+# SublimeText
+*.sublime-project
+*.sublime-workspace
