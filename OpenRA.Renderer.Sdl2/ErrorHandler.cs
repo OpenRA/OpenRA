@@ -18,7 +18,8 @@ namespace OpenRA.Renderer.Sdl2
 	{
 		public static void CheckGlVersion()
 		{
-			var version = GL.GetString(StringName.Version).Split(' ')[0].Split('.');
+			var versionString = GL.GetString(StringName.Version);
+			var version = versionString.Contains(" ") ? versionString.Split(' ')[0].Split('.') : versionString.Split('.');
 
 			int major = 0;
 			if (version.Length > 0)
