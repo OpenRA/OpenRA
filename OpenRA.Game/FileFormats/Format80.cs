@@ -16,11 +16,12 @@ namespace OpenRA.FileFormats
 	class FastByteReader
 	{
 		readonly byte[] src;
-		int offset = 0;
+		int offset;
 
-		public FastByteReader(byte[] src)
+		public FastByteReader(byte[] src, int offset = 0)
 		{
 			this.src = src;
+			this.offset = offset;
 		}
 
 		public bool Done() { return offset >= src.Length; }
@@ -59,9 +60,9 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public static int DecodeInto(byte[] src, byte[] dest)
+		public static int DecodeInto(byte[] src, byte[] dest, int srcOffset = 0)
 		{
-			var ctx = new FastByteReader(src);
+			var ctx = new FastByteReader(src, srcOffset);
 			var destIndex = 0;
 
 			while (true)

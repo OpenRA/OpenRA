@@ -67,6 +67,9 @@ namespace OpenRA.FileFormats
 		int recurseDepth = 0;
 		readonly int imageCount;
 
+		readonly long shpBytesFileOffset;
+		readonly byte[] shpBytes;
+
 		public ShpReader(Stream stream)
 		{
 			imageCount = stream.ReadUInt16();
@@ -93,22 +96,16 @@ namespace OpenRA.FileFormats
 					throw new InvalidDataException("Reference doesnt point to image data {0}->{1}".F(h.FileOffset, h.RefOffset));
 			}
 
+			shpBytesFileOffset = stream.Position;
+			shpBytes = stream.ReadBytes((int)(stream.Length - stream.Position));
+
 			foreach (var h in headers)
-				Decompress(stream, h);
+				Decompress(h);
 
 			spriteFrames = Exts.Lazy(() => headers.Cast<ISpriteFrame>());
 		}
 
-		static byte[] ReadCompressedData(Stream stream, ImageHeader h)
-		{
-			stream.Position = h.FileOffset;
-
-			// Actually, far too big. There's no length field with the correct length though :(
-			var compressedLength = (int)(stream.Length - stream.Position);
-			return stream.ReadBytes(compressedLength);
-		}
-
-		void Decompress(Stream stream, ImageHeader h)
+		void Decompress(ImageHeader h)
 		{
 			// No extra work is required for empty frames
 			if (h.Size.Width == 0 || h.Size.Height == 0)
@@ -125,19 +122,19 @@ namespace OpenRA.FileFormats
 					if (h.RefImage.Data == null)
 					{
 						++recurseDepth;
-						Decompress(stream, h.RefImage);
+						Decompress(h.RefImage);
 						--recurseDepth;
 					}
 
 					h.Data = CopyImageData(h.RefImage.Data);
-					Format40.DecodeInto(ReadCompressedData(stream, h), h.Data);
+					Format40.DecodeInto(shpBytes, h.Data, (int)(h.FileOffset - shpBytesFileOffset));
 					break;
 				}
 
 				case Format.Format80:
 				{
 					var imageBytes = new byte[Size.Width * Size.Height];
-					Format80.DecodeInto(ReadCompressedData(stream, h), imageBytes);
+					Format80.DecodeInto(shpBytes, imageBytes, (int)(h.FileOffset - shpBytesFileOffset));
 					h.Data = imageBytes;
 					break;
 				}
@@ -150,9 +147,7 @@ namespace OpenRA.FileFormats
 		byte[] CopyImageData(byte[] baseImage)
 		{
 			var imageData = new byte[Size.Width * Size.Height];
-			for (var i = 0; i < Size.Width * Size.Height; i++)
-				imageData[i] = baseImage[i];
-
+			Array.Copy(baseImage, imageData, imageData.Length);
 			return imageData;
 		}
 

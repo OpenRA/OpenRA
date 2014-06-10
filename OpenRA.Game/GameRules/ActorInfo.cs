@@ -94,7 +94,11 @@ namespace OpenRA
 			while (t.Count != 0)
 			{
 				var prereqs = PrerequisitesOf(t[index]);
-				var unsatisfied = prereqs.Where(n => !ret.Any(x => x.GetType() == n || n.IsAssignableFrom(x.GetType())));
+				var unsatisfied = prereqs.Where(n => !ret.Any(x =>
+				{
+					var type = x.GetType();
+					return type == n || n.IsAssignableFrom(type);
+				}));
 				if (!unsatisfied.Any())
 				{
 					ret.Add(t[index]);
@@ -111,14 +115,13 @@ namespace OpenRA
 			return ret;
 		}
 
-		static List<Type> PrerequisitesOf(ITraitInfo info)
+		static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)
 		{
 			return info
 				.GetType()
 				.GetInterfaces()
-				.Where( t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof( Requires<> ) )
-				.Select( t => t.GetGenericArguments()[ 0 ] )
-				.ToList();
+				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Requires<>))
+				.Select(t => t.GetGenericArguments()[0]);
 		}
 
 		public IEnumerable<Pair<string, Type>> GetInitKeys()

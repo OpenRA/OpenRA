@@ -80,9 +80,13 @@ namespace OpenRA.Mods.RA
 
 			// Add buildables that have a build limit set and are not already in the list
 			player.World.ActorsWithTrait<Buildable>()
-				  .Where(a => a.Actor.Info.Traits.Get<BuildableInfo>().BuildLimit > 0 && !a.Actor.IsDead() && a.Actor.IsInWorld && a.Actor.Owner == player && ret.Keys.All(k => k != a.Actor.Info.Name))
-				  .ToList()
-				  .ForEach(b => ret[b.Actor.Info.Name].Add(b.Actor));
+				  .Where(a =>
+					  a.Actor.Owner == player &&
+					  a.Actor.IsInWorld &&
+					  !a.Actor.IsDead() &&
+					  !ret.ContainsKey(a.Actor.Info.Name) &&
+					  a.Actor.Info.Traits.Get<BuildableInfo>().BuildLimit > 0)
+				  .Do(b => ret[b.Actor.Info.Name].Add(b.Actor));
 
 			return ret;
 		}
@@ -111,17 +115,17 @@ namespace OpenRA.Mods.RA
 
 			bool HasPrerequisites(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.Keys.Contains(p.Replace("!", "").Replace("~", ""))));
+				return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.ContainsKey(p.Replace("!", "").Replace("~", ""))));
 			}
 
 			bool IsHidden(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				return prerequisites.Any(prereq => prereq.StartsWith("~") && (prereq.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.Keys.Contains(prereq.Replace("~", "").Replace("!", ""))));
+				return prerequisites.Any(prereq => prereq.StartsWith("~") && (prereq.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.ContainsKey(prereq.Replace("~", "").Replace("!", ""))));
 			}
 
 			public void Update(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				var hasReachedLimit = limit > 0 && ownedPrerequisites.Keys.Contains(Key) && ownedPrerequisites[Key].Count >= limit;
+				var hasReachedLimit = limit > 0 && ownedPrerequisites.ContainsKey(Key) && ownedPrerequisites[Key].Count >= limit;
 				// The '!' annotation inverts prerequisites: "I'm buildable if this prerequisite *isn't* met"
 				var nowHasPrerequisites = HasPrerequisites(ownedPrerequisites) && !hasReachedLimit;
 				var nowHidden = IsHidden(ownedPrerequisites);
