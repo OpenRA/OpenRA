@@ -26,13 +26,6 @@ Background@MAPCHOOSER_PANEL:
 					Y: 0
 					Visible: false
 					Children:
-						Background@PREVIEW_PLACEHOLDER:
-							X: (PARENT_RIGHT - WIDTH)/2
-							Y: 4
-							Width: 184
-							Height: 184
-							Background: dialog3
-							ClickThrough: true
 						MapPreview@PREVIEW:
 							X: (PARENT_RIGHT - WIDTH)/2
 							Y: 4

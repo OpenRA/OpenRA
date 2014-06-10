@@ -96,7 +96,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			foreach (var loop in maps)
 			{
 				var preview = loop;
+
+				// Access the minimap to trigger async generation of the minimap.
+				preview.GetMinimap();
+
 				var item = ScrollItemWidget.Setup(preview.Uid, itemTemplate, () => selectedUid == preview.Uid, () => selectedUid = preview.Uid, () => { Ui.CloseWindow(); onSelect(preview.Uid); });
+				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanel.RenderBounds);
 
 				var titleLabel = item.Get<LabelWidget>("TITLE");
 				titleLabel.GetText = () => preview.Title;
@@ -105,11 +110,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				previewWidget.IgnoreMouseOver = true;
 				previewWidget.IgnoreMouseInput = true;
 				previewWidget.Preview = () => preview;
-				previewWidget.IsVisible = () => previewWidget.RenderBounds.IntersectsWith(scrollpanel.RenderBounds);
-
-				var previewLoadingWidget = item.GetOrNull<BackgroundWidget>("PREVIEW_PLACEHOLDER");
-				if (previewLoadingWidget != null)
-					previewLoadingWidget.IsVisible = () => !previewWidget.Loaded;
 
 				var detailsWidget = item.GetOrNull<LabelWidget>("DETAILS");
 				if (detailsWidget != null)

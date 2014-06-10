@@ -144,7 +144,7 @@ namespace OpenRA
 				List<MapPreview> todo;
 				lock (syncRoot)
 				{
-					todo = generateMinimap.Where(p => p.Minimap == null).ToList();
+					todo = generateMinimap.Where(p => p.GetMinimap() == null).ToList();
 					generateMinimap.Clear();
 				}
 				if (todo.Count == 0)
@@ -168,7 +168,7 @@ namespace OpenRA
 					//       the next render cycle.
 					//   (d) Any partially written bytes from the next minimap is in an
 					//       unallocated area, and will be committed in the next cycle.
-					p.Minimap = sheetBuilder.Add(bitmap);
+					p.SetMinimap(sheetBuilder.Add(bitmap));
 
 					// Yuck... But this helps the UI Jank when opening the map selector significantly.
 					Thread.Sleep(Environment.ProcessorCount == 1 ? 25 : 5);
