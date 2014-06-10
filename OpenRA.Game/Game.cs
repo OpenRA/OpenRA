@@ -14,8 +14,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using OpenRA.FileSystem;
 using MaxMind.GeoIP2;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -464,7 +464,7 @@ namespace OpenRA
 			return shellmaps.Random(CosmeticRandom);
 		}
 
-		static bool quit;
+		static RunStatus state = RunStatus.Running;
 		public static event Action OnQuit = () => { };
 
 		static double idealFrameTime;
@@ -473,7 +473,7 @@ namespace OpenRA
 			idealFrameTime = 1.0 / fps;
 		}
 
-		internal static void Run()
+		internal static RunStatus Run()
 		{
 			if (Settings.Graphics.MaxFramerate < 1)
 			{
@@ -483,7 +483,7 @@ namespace OpenRA
 
 			SetIdealFrameTime(Settings.Graphics.MaxFramerate);
 
-			while (!quit)
+			while (state == RunStatus.Running)
 			{
 				if (Settings.Graphics.CapFramerate)
 				{
@@ -506,9 +506,19 @@ namespace OpenRA
 			Renderer.Device.Dispose();
 
 			OnQuit();
+
+			return state;
 		}
 
-		public static void Exit() { quit = true; }
+		public static void Exit()
+		{
+			state = RunStatus.Success;
+		}
+
+		public static void Restart()
+		{
+			state = RunStatus.Restart;
+		}
 
 		public static Action<Color, string, string> AddChatLine = (c, n, s) => { };
 

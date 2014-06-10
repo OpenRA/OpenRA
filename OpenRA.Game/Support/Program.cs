@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,30 +11,37 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace OpenRA
 {
+	enum RunStatus
+	{
+		Error = -1,
+		Success = 0,
+		Restart = 1,
+		Running = int.MaxValue
+	}
+
 	static class Program
 	{
 		[STAThread]
-		static void Main(string[] args)
+		static int Main(string[] args)
 		{
 			if (Debugger.IsAttached || args.Contains("--just-die"))
-			{
-				Run(args);
-				return;
-			}
+				return (int)Run(args);
 
 			AppDomain.CurrentDomain.UnhandledException += (_, e) => FatalError((Exception)e.ExceptionObject);
 
 			try
 			{
-				Run(args);
+				return (int)Run(args);
 			}
 			catch (Exception e)
 			{
 				FatalError(e);
+				return (int)RunStatus.Error;
 			}
 		}
 
@@ -102,11 +109,25 @@ namespace OpenRA
 			return sb;
 		}
 
-		static void Run(string[] args)
+		static RunStatus Run(string[] args)
 		{
+			if (AppDomain.CurrentDomain.IsDefaultAppDomain())
+			{
+				var name = Assembly.GetEntryAssembly().GetName();
+				int retCode;
+				do
+				{
+					var domain = AppDomain.CreateDomain("Game");
+					retCode = domain.ExecuteAssemblyByName(name, args);
+					AppDomain.Unload(domain);
+				}
+				while (retCode == (int)RunStatus.Restart);
+				return RunStatus.Success;
+			}
+
 			Game.Initialize(new Arguments(args));
 			GC.Collect();
-			Game.Run();
+			return Game.Run();
 		}
 	}
 }
