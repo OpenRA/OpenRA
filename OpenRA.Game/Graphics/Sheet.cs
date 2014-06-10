@@ -21,6 +21,7 @@ namespace OpenRA.Graphics
 		ITexture texture;
 		bool dirty;
 		byte[] data;
+		readonly object dirtyLock = new object();
 
 		public readonly Size Size;
 		public byte[] Data { get { return data ?? texture.GetData(); } }
@@ -68,6 +69,8 @@ namespace OpenRA.Graphics
 
 		public ITexture Texture
 		{
+			// This is only called from the main thread but 'dirty'
+			// is set from other threads too via CommitData().
 			get
 			{
 				if (texture == null)
@@ -76,10 +79,13 @@ namespace OpenRA.Graphics
 					dirty = true;
 				}
 
-				if (dirty)
+				lock (dirtyLock)
 				{
-					texture.SetData(data, Size.Width, Size.Height);
-					dirty = false;
+					if (dirty)
+					{
+						texture.SetData(data, Size.Width, Size.Height);
+						dirty = false;
+					}
 				}
 
 				return texture;
@@ -140,7 +146,10 @@ namespace OpenRA.Graphics
 			if (data == null)
 				throw new InvalidOperationException("Texture-wrappers are read-only");
 
-			dirty = true;
+			lock (dirtyLock)
+			{
+				dirty = true;
+			}
 		}
 	}
 }
