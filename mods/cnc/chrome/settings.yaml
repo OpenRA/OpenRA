@@ -174,7 +174,7 @@ Container@SETTINGS_PANEL:
 							Height: 25
 							Font: Regular
 							Visible: false
-						Label@VIDEO_DESC_A:
+						Label@LANGUAGE_DESC_A:
 							Y: 265
 							Width: PARENT_RIGHT
 							Height: 25
@@ -182,7 +182,7 @@ Container@SETTINGS_PANEL:
 							Align: Center
 							Text: Language changes will be applied after the game is restarted
 							Visible: false
-						Label@VIDEO_DESC_B:
+						Label@LANGUAGE_DESC_B:
 							Y: 280
 							Width: PARENT_RIGHT
 							Height: 25
