@@ -21,15 +21,20 @@ namespace OpenRA.Renderer.Sdl2
 		public static void CheckGlVersion()
 		{
 			var version = GL.GetString(StringName.Version).Split(' ')[0].Split('.');
-			int major;
-			int.TryParse(version[0], out major);
-			int minor;
-			int.TryParse(version[1], out minor);
+
+			int major = 0;
+			if (version.Length > 0)
+				int.TryParse(version[0], out major);
+
+			int minor = 0;
+			if (version.Length > 1)
+				int.TryParse(version[1], out minor);
+
 			Console.WriteLine("Detected OpenGL version: {0}.{1}".F(major, minor));
 			OpenGLversion = new Version(major, minor);
 			if (major < 2)
 			{
-				WriteGraphicsLog("OpenRA requires OpenGL version 2.0 or greater.");
+				WriteGraphicsLog("OpenRA requires OpenGL version 2.0 or greater and detected {0}.{1}".F(major, minor));
 				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
 			}
 		}
