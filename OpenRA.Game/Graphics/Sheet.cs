@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,7 +11,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using OpenRA.FileFormats;
+using System.Runtime.InteropServices;
 using OpenRA.FileSystem;
 
 namespace OpenRA.Graphics
@@ -20,7 +20,7 @@ namespace OpenRA.Graphics
 	{
 		ITexture texture;
 		bool dirty;
-		byte[] data;
+		readonly byte[] data;
 		readonly object dirtyLock = new object();
 
 		public readonly Size Size;
@@ -29,7 +29,7 @@ namespace OpenRA.Graphics
 		public Sheet(Size size)
 		{
 			Size = size;
-			data = new byte[4*Size.Width*Size.Height];
+			data = new byte[4 * Size.Width * Size.Height];
 		}
 
 		public Sheet(ITexture texture)
@@ -45,28 +45,14 @@ namespace OpenRA.Graphics
 			{
 				Size = bitmap.Size;
 
-				data = new byte[4 * Size.Width * Size.Height];
-				var b = bitmap.LockBits(bitmap.Bounds(),
+				var dataStride = 4 * Size.Width;
+				data = new byte[dataStride * Size.Height];
+
+				var bd = bitmap.LockBits(bitmap.Bounds(),
 					ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
-				unsafe
-				{
-					int* c = (int*)b.Scan0;
-
-					for (var x = 0; x < Size.Width; x++)
-						for (var y = 0; y < Size.Height; y++)
-						{
-							var i = 4 * Size.Width * y + 4 * x;
-
-							// Convert argb to bgra
-							var argb = *(c + (y * b.Stride >> 2) + x);
-							data[i++] = (byte)(argb >> 0);
-							data[i++] = (byte)(argb >> 8);
-							data[i++] = (byte)(argb >> 16);
-							data[i++] = (byte)(argb >> 24);
-						}
-				}
-				bitmap.UnlockBits(b);
+				for (var y = 0; y < Size.Height; y++)
+					Marshal.Copy(IntPtr.Add(bd.Scan0, y * bd.Stride), data, y * dataStride, dataStride);
+				bitmap.UnlockBits(bd);
 			}
 		}
 
@@ -98,50 +84,44 @@ namespace OpenRA.Graphics
 		public Bitmap AsBitmap()
 		{
 			var d = Data;
-			var b = new Bitmap(Size.Width, Size.Height);
-			var output = b.LockBits(new Rectangle(0, 0, Size.Width, Size.Height),
+			var dataStride = 4 * Size.Width;
+			var bitmap = new Bitmap(Size.Width, Size.Height);
+
+			var bd = bitmap.LockBits(bitmap.Bounds(),
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+			for (var y = 0; y < Size.Height; y++)
+				Marshal.Copy(d, y * dataStride, IntPtr.Add(bd.Scan0, y * bd.Stride), dataStride);
+			bitmap.UnlockBits(bd);
 
-			unsafe
-			{
-				int* c = (int*)output.Scan0;
-
-				for (var x = 0; x < Size.Width; x++)
-					for (var y = 0; y < Size.Height; y++)
-					{
-						var i = 4*Size.Width*y + 4*x;
-
-						// Convert bgra to argb
-						var argb = (d[i+3] << 24) | (d[i+2] << 16) | (d[i+1] << 8) | d[i];
-						*(c + (y * output.Stride >> 2) + x) = argb;
-					}
-			}
-			b.UnlockBits(output);
-
-			return b;
+			return bitmap;
 		}
 
 		public Bitmap AsBitmap(TextureChannel channel, Palette pal)
 		{
 			var d = Data;
-			var b = new Bitmap(Size.Width, Size.Height);
-			var output = b.LockBits(new Rectangle(0, 0, Size.Width, Size.Height),
-				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+			var dataStride = 4 * Size.Width;
+			var bitmap = new Bitmap(Size.Width, Size.Height);
+			var channelOffset = (int)channel;
 
+			var bd = bitmap.LockBits(bitmap.Bounds(),
+				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 			unsafe
 			{
-				int* c = (int*)output.Scan0;
-
-				for (var x = 0; x < Size.Width; x++)
-					for (var y = 0; y < Size.Height; y++)
+				var colors = (uint*)bd.Scan0;
+				for (var y = 0; y < Size.Height; y++)
 				{
-					var index = d[4*Size.Width*y + 4*x + (int)channel];
-					*(c + (y * output.Stride >> 2) + x) = pal.GetColor(index).ToArgb();
+					var dataRowIndex = y * dataStride + channelOffset;
+					var bdRowIndex = y * bd.Stride / 4;
+					for (var x = 0; x < Size.Width; x++)
+					{
+						var paletteIndex = d[dataRowIndex + 4 * x];
+						colors[bdRowIndex + x] = pal.Values[paletteIndex];
+					}
 				}
 			}
-			b.UnlockBits(output);
+			bitmap.UnlockBits(bd);
 
-			return b;
+			return bitmap;
 		}
 
 		public void CommitData()
@@ -150,9 +130,7 @@ namespace OpenRA.Graphics
 				throw new InvalidOperationException("Texture-wrappers are read-only");
 
 			lock (dirtyLock)
-			{
 				dirty = true;
-			}
 		}
 	}
 }
