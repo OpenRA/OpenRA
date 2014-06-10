@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA
 					}
 				}
 
-				newUnit.SetTargetLine(target, Color.Green, false);
+				newUnit.SetTargetLine(target, rp.Value != null ? Color.Red : Color.Green, false);
 
 				if (!self.IsDead())
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())

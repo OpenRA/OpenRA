@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="Activities\Hunt.cs" />
+    <Compile Include="Air\TakeOff.cs" />
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />

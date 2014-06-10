@@ -39,21 +39,7 @@ namespace OpenRA.Mods.RA.Activities
 					.FirstOrDefault(a => a.HasTrait<RenderBuilding>());
 
 				if (!limitedAmmo.GiveAmmo())
-				{
-					var helicopter = self.TraitOrDefault<Helicopter>();
-					if (helicopter != null)
-					{
-						if (helicopter.Info.RepairBuildings.Contains(hostBuilding.Info.Name) && self.HasTrait<Health>())
-						{
-							if (self.Trait<Health>().DamageState != DamageState.Undamaged)
-								return NextActivity;
-						}
-
-						return helicopter.TakeOff(hostBuilding);
-					}
-
 					return NextActivity;
-				}
 
 				if (hostBuilding != null)
 					hostBuilding.Trait<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
