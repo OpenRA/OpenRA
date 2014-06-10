@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class CallLuaFunc : Activity, IDisposable
+	public sealed class CallLuaFunc : Activity, IDisposable
 	{
 		LuaFunction function;
 
@@ -39,28 +39,11 @@ namespace OpenRA.Mods.RA.Activities
 			base.Cancel(self);
 		}
 
-		protected void Dispose(bool disposing)
-		{
-			if (function == null)
-				return;
-
-			if (disposing)
-			{
-				function.Dispose();
-				function = null;
-			}
-		}
-
 		public void Dispose()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		~CallLuaFunc()
-		{
-			// Dispose unmanaged resources only
-			Dispose(false);
+			if (function == null) return;
+			function.Dispose();
+			function = null;
 		}
 	}
 }

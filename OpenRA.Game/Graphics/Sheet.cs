@@ -40,31 +40,34 @@ namespace OpenRA.Graphics
 
 		public Sheet(string filename)
 		{
-			var bitmap = (Bitmap)Image.FromStream(GlobalFileSystem.Open(filename));
-			Size = bitmap.Size;
-
-			data = new byte[4*Size.Width*Size.Height];
-			var b = bitmap.LockBits(bitmap.Bounds(),
-				ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
-			unsafe
+			using (var stream = GlobalFileSystem.Open(filename))
+			using (var bitmap = (Bitmap)Image.FromStream(stream))
 			{
-				int* c = (int*)b.Scan0;
+				Size = bitmap.Size;
 
-				for (var x = 0; x < Size.Width; x++)
-					for (var y = 0; y < Size.Height; y++)
+				data = new byte[4 * Size.Width * Size.Height];
+				var b = bitmap.LockBits(bitmap.Bounds(),
+					ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+				unsafe
 				{
-					var i = 4*Size.Width*y + 4*x;
+					int* c = (int*)b.Scan0;
 
-					// Convert argb to bgra
-					var argb = *(c + (y * b.Stride >> 2) + x);
-					data[i++] = (byte)(argb >> 0);
-					data[i++] = (byte)(argb >> 8);
-					data[i++] = (byte)(argb >> 16);
-					data[i++] = (byte)(argb >> 24);
+					for (var x = 0; x < Size.Width; x++)
+						for (var y = 0; y < Size.Height; y++)
+						{
+							var i = 4 * Size.Width * y + 4 * x;
+
+							// Convert argb to bgra
+							var argb = *(c + (y * b.Stride >> 2) + x);
+							data[i++] = (byte)(argb >> 0);
+							data[i++] = (byte)(argb >> 8);
+							data[i++] = (byte)(argb >> 16);
+							data[i++] = (byte)(argb >> 24);
+						}
 				}
+				bitmap.UnlockBits(b);
 			}
-			bitmap.UnlockBits(b);
 		}
 
 		public ITexture Texture

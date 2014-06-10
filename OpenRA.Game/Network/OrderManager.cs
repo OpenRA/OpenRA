@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
-	public class OrderManager : IDisposable
+	public sealed class OrderManager : IDisposable
 	{
 		readonly SyncReport syncReport;
 		readonly FrameData frameData = new FrameData();
@@ -197,22 +197,10 @@ namespace OpenRA.Network
 			++NetFrameNumber;
 		}
 
-		bool disposed;
-		protected void Dispose(bool disposing)
-		{
-			if (disposed)
-				return;
-
-			if (disposing)
-				Connection.Dispose();
-
-			disposed = true;
-		}
-
 		public void Dispose()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
+			if (Connection != null)
+				Connection.Dispose();
 		}
 	}
 }

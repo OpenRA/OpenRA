@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Irc
 {
-	public class IrcClient : IDisposable
+	public sealed class IrcClient : IDisposable
 	{
 		public static readonly IrcClient Instance = new IrcClient();
 
@@ -252,14 +252,15 @@ namespace OpenRA.Irc
 
 			ConnectionState = IrcConnectionState.Disconnecting;
 			OnDisconnecting();
-			connection.Close();
+			if (connection != null)
+				connection.Close();
 			ConnectionState = IrcConnectionState.Disconnected;
 			OnDisconnect();
 			LocalUser = null;
 			connection = null;
 		}
 
-		void IDisposable.Dispose()
+		public void Dispose()
 		{
 			Disconnect();
 		}

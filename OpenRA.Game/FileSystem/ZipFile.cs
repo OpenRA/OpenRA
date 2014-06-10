@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -16,7 +17,7 @@ using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
 
 namespace OpenRA.FileSystem
 {
-	public class ZipFile : IFolder
+	public sealed class ZipFile : IFolder, IDisposable
 	{
 		string filename;
 		SZipFile pkg;
@@ -104,6 +105,12 @@ namespace OpenRA.FileSystem
 			pkg.CommitUpdate();
 			pkg.Close();
 			pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(filename)));
+		}
+
+		public void Dispose()
+		{
+			if (pkg != null)
+				pkg.Close();
 		}
 	}
 

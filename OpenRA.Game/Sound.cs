@@ -39,9 +39,11 @@ namespace OpenRA
 			}
 
 			if (filename.ToLowerInvariant().EndsWith("wav"))
-				return LoadWave(new WavLoader(GlobalFileSystem.Open(filename)));
+				using (var s = GlobalFileSystem.Open(filename))
+					return LoadWave(new WavLoader(s));
 
-			return LoadSoundRaw(AudLoader.LoadSound(GlobalFileSystem.Open(filename)));
+			using (var s = GlobalFileSystem.Open(filename))
+				return LoadSoundRaw(AudLoader.LoadSound(s));
 		}
 
 		static ISoundSource LoadWave(WavLoader wave)

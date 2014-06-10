@@ -51,8 +51,9 @@ namespace OpenRA.TilesetBuilder
 				this.size = TileSize;
 				surface1.TileSize = TileSize;
 
-				Bitmap fbitmap = new Bitmap(ImageFile);
-				Bitmap rbitmap = fbitmap.Clone(new Rectangle(0, 0, fbitmap.Width, fbitmap.Height),
+				Bitmap rbitmap;
+				using (var fbitmap = new Bitmap(ImageFile))
+					rbitmap = fbitmap.Clone(new Rectangle(0, 0, fbitmap.Width, fbitmap.Height),
 						fbitmap.PixelFormat);
 
 				int[] shadowIndex = { };

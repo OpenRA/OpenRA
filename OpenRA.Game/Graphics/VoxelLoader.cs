@@ -210,8 +210,12 @@ namespace OpenRA.Graphics
 
 		Voxel LoadFile(Pair<string,string> files)
 		{
-			var vxl = new VxlReader(GlobalFileSystem.OpenWithExts(files.First, ".vxl"));
-			var hva = new HvaReader(GlobalFileSystem.OpenWithExts(files.Second, ".hva"));
+			VxlReader vxl;
+			HvaReader hva;
+			using (var s = GlobalFileSystem.OpenWithExts(files.First, ".vxl"))
+				vxl = new VxlReader(s);
+			using (var s = GlobalFileSystem.OpenWithExts(files.Second, ".hva"))
+				hva = new HvaReader(s);
 			return new Voxel(this, vxl, hva);
 		}
 

@@ -81,12 +81,11 @@ namespace OpenRA.Scripting
 		public ScriptGlobalAttribute(string name) { Name = name; }
 	}
 
-	public class ScriptContext : IDisposable
+	public sealed class ScriptContext : IDisposable
 	{
 		public World World { get; private set; }
 		public WorldRenderer WorldRenderer { get; private set; }
 
-		bool disposed;
 		readonly MemoryConstrainedLuaRuntime runtime;
 		readonly LuaFunction tick;
 
@@ -99,6 +98,8 @@ namespace OpenRA.Scripting
 		readonly Type[] knownActorCommands;
 		public readonly Cache<ActorInfo, Type[]> ActorCommands;
 		public readonly Type[] PlayerCommands;
+
+		bool disposed;
 
 		public ScriptContext(World world, WorldRenderer worldRenderer,
 			IEnumerable<string> scripts)
@@ -196,27 +197,13 @@ namespace OpenRA.Scripting
 				tick.Call().Dispose();
 		}
 
-		protected void Dispose(bool disposing)
+		public void Dispose()
 		{
 			if (disposed)
 				return;
-
-			if (disposing)
-				runtime.Dispose();
-
 			disposed = true;
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		~ScriptContext()
-		{
-			// Dispose unmanaged resources only
-			Dispose(false);
+			if (runtime != null)
+				runtime.Dispose();
 		}
 
 		static Type[] ExtractRequiredTypes(Type t)

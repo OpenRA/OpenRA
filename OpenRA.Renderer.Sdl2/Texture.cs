@@ -106,18 +106,29 @@ namespace OpenRA.Renderer.Sdl2
 
 		public void SetData(Bitmap bitmap)
 		{
+			bool allocatedBitmap = false;
 			if (!Exts.IsPowerOf2(bitmap.Width) || !Exts.IsPowerOf2(bitmap.Height))
+			{
 				bitmap = new Bitmap(bitmap, bitmap.Size.NextPowerOf2());
+				allocatedBitmap = true;
+			}
+			try
+			{
+				size = new Size(bitmap.Width, bitmap.Height);
+				var bits = bitmap.LockBits(bitmap.Bounds(),
+					ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-			size = new Size(bitmap.Width, bitmap.Height);
-			var bits = bitmap.LockBits(bitmap.Bounds(),
-				ImageLockMode.ReadOnly,	System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-			PrepareTexture();
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, bits.Width, bits.Height,
-				0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bits.Scan0); // TODO: weird strides
-			ErrorHandler.CheckGlError();
-			bitmap.UnlockBits(bits);
+				PrepareTexture();
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, bits.Width, bits.Height,
+					0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bits.Scan0); // TODO: weird strides
+				ErrorHandler.CheckGlError();
+				bitmap.UnlockBits(bits);
+			}
+			finally
+			{
+				if (allocatedBitmap)
+					bitmap.Dispose();
+			}
 		}
 
 		public byte[] GetData()
