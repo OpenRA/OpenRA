@@ -63,8 +63,10 @@ namespace OpenRA.Renderer.Sdl2
 
 			window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED, size.Width, size.Height, SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL);
 
-			var lockWindow = Game.Settings.Game.LockMouseWindow ? SDL.SDL_bool.SDL_TRUE : SDL.SDL_bool.SDL_FALSE;
-			SDL.SDL_SetWindowGrab(window, lockWindow);
+			if (Game.Settings.Game.LockMouseWindow)
+				GrabWindowMouseFocus();
+			else
+				ReleaseWindowMouseFocus();
 
 			if (windowMode == WindowMode.Fullscreen)
 				SDL.SDL_SetWindowFullscreen(window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN);
@@ -197,6 +199,16 @@ namespace OpenRA.Renderer.Sdl2
 			}
 
 			ErrorHandler.CheckGlError();
+		}
+
+		public void GrabWindowMouseFocus() 
+		{
+			SDL.SDL_SetWindowGrab(window, SDL.SDL_bool.SDL_TRUE);
+		}
+
+		public void ReleaseWindowMouseFocus()
+		{ 
+			SDL.SDL_SetWindowGrab(window, SDL.SDL_bool.SDL_FALSE);
 		}
 
 		public void EnableScissor(int left, int top, int width, int height)

@@ -322,14 +322,6 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Lock mouse to window
-				Label@LOCKMOUSE_DESC:
-					X: 25
-					Y: 110
-					Width: 130
-					Height: 25
-					Font: Tiny
-					Align: Right
-					Text: (Requires restart)
 				Label@SCROLL_SPEED_LABEL:
 					X: PARENT_RIGHT - WIDTH - 270
 					Y: 67
