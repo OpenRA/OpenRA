@@ -88,6 +88,9 @@
     <Reference Include="SDL2-CS">
       <HintPath>..\thirdparty\SDL2-CS.dll</HintPath>
     </Reference>
+    <Reference Include="csvorbis">
+      <HintPath>..\thirdparty\csvorbis.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
@@ -250,6 +253,7 @@
     <Compile Include="GameRules\RulesetCache.cs" />
     <Compile Include="Support\MersenneTwister.cs" />
     <Compile Include="GameInformation.cs" />
+    <Compile Include="FileFormats\OggVorbisLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
