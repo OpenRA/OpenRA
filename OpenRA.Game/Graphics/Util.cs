@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace OpenRA.Graphics
 {
@@ -62,32 +63,18 @@ namespace OpenRA.Graphics
 
 		public static void FastCopyIntoSprite(Sprite dest, Bitmap src)
 		{
-			var destStride = dest.sheet.Size.Width;
-			var width = dest.bounds.Width;
+			var data = dest.sheet.Data;
+			var dataStride = dest.sheet.Size.Width * 4;
+			var x = dest.bounds.Left * 4;
+			var width = dest.bounds.Width * 4;
+			var y = dest.bounds.Top;
 			var height = dest.bounds.Height;
 
-			var srcData = src.LockBits(src.Bounds(),
+			var bd = src.LockBits(src.Bounds(),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-			unsafe
-			{
-				var c = (int*)srcData.Scan0;
-
-				// Cast the data to an int array so we can copy the src data directly
-				fixed (byte* bd = &dest.sheet.Data[0])
-				{
-					var data = (int*)bd;
-					var x = dest.bounds.Left;
-					var y = dest.bounds.Top;
-
-					for (var j = 0; j < height; j++)
-						for (var i = 0; i < width; i++)
-							data[(y + j) * destStride + x + i] = *(c + (j * srcData.Stride >> 2) + i);
-				}
-			}
-
-			src.UnlockBits(srcData);
-
+			for (var row = 0; row < height; row++)
+				Marshal.Copy(IntPtr.Add(bd.Scan0, row * bd.Stride), data, (y + row) * dataStride + x, width);
+			src.UnlockBits(bd);
 		}
 
 		public static float[] IdentityMatrix()
