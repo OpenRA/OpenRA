@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA
 
 			var producers = self.World.ActorsWithTrait<Production>()
 				.Where(x => x.Actor.Owner == self.Owner
-					&& x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains(bi.Queue))
+					&& x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Intersect(bi.Queue).Any())
 					.ToList();
 			var producer = producers.Where(x => x.Actor.IsPrimaryBuilding()).Concat(producers)
 				.FirstOrDefault();

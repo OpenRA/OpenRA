@@ -1,4 +1,4 @@
-MobileConstructionVehicle = { "mcv" }
+MobileConstructionVehicle = { "mcv.gdi" }
 EngineerReinforcements = { "e6", "e6", "e6" }
 VehicleReinforcements = { "jeep" }
 

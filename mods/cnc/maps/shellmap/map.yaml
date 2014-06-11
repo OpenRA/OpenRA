@@ -161,7 +161,7 @@ Actors:
 	Actor27: tc02
 		Location: 65,42
 		Owner: GDI
-	Actor28: fact
+	Actor28: fact.nod
 		Location: 11,3
 		Owner: Nod
 	Actor29: nuke

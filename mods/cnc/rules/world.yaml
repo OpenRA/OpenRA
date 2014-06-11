@@ -119,54 +119,58 @@ World:
 	SpawnMapActors:
 	MPStartLocations:
 	CreateMPPlayers:
-	MPStartUnits@mcvonly:
+	MPStartUnits@mcvonlygdi:
 		Class: none
-		Races: gdi, nod
-		BaseActor: mcv
+		Races: gdi
+		BaseActor: mcv.gdi
+	MPStartUnits@mcvonlynod:
+		Class: none
+		Races: nod
+		BaseActor: mcv.nod
 	MPStartUnits@defaultgdia:
 		Class: light
 		Races: gdi
-		BaseActor: mcv
+		BaseActor: mcv.gdi
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
 	MPStartUnits@defaultgdib:
 		Class: light
 		Races: gdi
-		BaseActor: mcv
+		BaseActor: mcv.gdi
 		SupportActors: e1,e1,e1,e1,e1,e1,e3,apc
 	MPStartUnits@defaultnoda:
 		Class: light
 		Races: nod
-		BaseActor: mcv
+		BaseActor: mcv.gdi
 		SupportActors: e1,e1,e1,e1,e3,bggy,bike
 	MPStartUnits@defaultnodb:
 		Class: light
 		Races: nod
-		BaseActor: mcv
+		BaseActor: mcv.nod
 		SupportActors: e1,e1,e1,e3,e3,e3,bggy
 	MPStartUnits@defaultnodc:
 		Class: light
 		Races: nod
-		BaseActor: mcv
+		BaseActor: mcv.nod
 		SupportActors: e1,e1,e1,e1,e1,e1,e1,e3,bike
 	MPStartUnits@heavynoda:
 		Class: heavy
 		Races: nod
-		BaseActor: mcv
+		BaseActor: mcv.nod
 		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
 	MPStartUnits@heavynodb:
 		Class: heavy
 		Races: nod
-		BaseActor: mcv
+		BaseActor: mcv.nod
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
 	MPStartUnits@heavygdia:
 		Class: heavy
 		Races: gdi
-		BaseActor: mcv
+		BaseActor: mcv.gdi
 		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
 	MPStartUnits@heavygdib:
 		Class: heavy
 		Races: gdi
-		BaseActor: mcv
+		BaseActor: mcv.gdi
 		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
 	SpawnMPUnits:
 	CrateSpawner:

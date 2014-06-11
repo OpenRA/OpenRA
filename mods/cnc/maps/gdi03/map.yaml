@@ -417,7 +417,7 @@ Actors:
 		Owner: Nod
 		Health: 1
 		Facing: 0
-	Actor116: fact
+	Actor116: fact.nod
 		Location: 26,26
 		Owner: Nod
 		Health: 1
@@ -482,7 +482,7 @@ Actors:
 		Owner: Nod
 		Health: 1
 		Facing: 128
-	Actor130: mcv
+	Actor130: mcv.gdi
 		Location: 9,60
 		Owner: GDI
 		Health: 1
@@ -902,39 +902,55 @@ Rules:
 	^Infantry:
 		MustBeDestroyed:
 	WEAP:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	NUK2:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	FIX:
-		-Buildable:
-	HPAD:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
+	HPAD.GDI:
+		Buildable:
+			Prerequisites: ~disabled
 	EYE:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	GUN:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	ATWR:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E3:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E4:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E5:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	RMBO:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	AFLD:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	TMPL:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	OBLI:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	SAM:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 		Building:
 			Power: -10
 	HQ:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	NOHQ:
 		RequiresPower:
 		CanPowerDown:

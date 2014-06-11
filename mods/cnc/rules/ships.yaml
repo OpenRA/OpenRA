@@ -37,9 +37,9 @@ LST:
 	Tooltip:
 		Name: Landing Craft
 	Buildable:
-		Queue: Vehicle
+		Queue: GDI.Vehicle
 		BuildPaletteOrder: 1000
-		Owner: None
+		Prerequisites: ~disabled
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:

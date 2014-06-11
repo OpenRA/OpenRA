@@ -646,7 +646,7 @@ Rules:
 	AFLD:
 		Buildable:
 			Owner: None
-	HPAD:
+	HPAD.Nod:
 		Buildable:
 			Owner: None
 	FIX:

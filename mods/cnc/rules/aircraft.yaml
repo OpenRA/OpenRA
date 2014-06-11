@@ -7,8 +7,8 @@ TRAN:
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 10
-		Prerequisites: hpad
-		Owner: gdi,nod
+		Prerequisites: anyhpad
+		Queue: GDI.Aircraft, Nod.Aircraft
 	Selectable:
 		Bounds: 41,41
 	Helicopter:
@@ -51,12 +51,12 @@ HELI:
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: hpad, anyhq
-		Owner: nod
+		Prerequisites: anyhpad, anyhq
+		Queue: Nod.Aircraft
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
-		RearmBuildings: hpad
+		RearmBuildings: hpad.gdi, hpad.nod
 		ROT: 4
 		Speed: 186
 	Health:
@@ -103,12 +103,12 @@ ORCA:
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: hpad, anyhq
-		Owner: gdi
+		Prerequisites: anyhpad, anyhq
+		Queue: GDI.Aircraft
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
-		RearmBuildings: hpad
+		RearmBuildings: hpad.gdi, hpad.nod
 		ROT: 4
 		Speed: 186
 	Health:

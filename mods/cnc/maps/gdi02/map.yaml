@@ -310,7 +310,7 @@ Actors:
 		Owner: Nod
 		Health: 1
 		Facing: 0
-	Actor82: fact
+	Actor82: fact.nod
 		Location: 52,32
 		Owner: Nod
 		Health: 1
@@ -739,47 +739,68 @@ Rules:
 	Player:
 		-ConquestVictoryConditions:
 	PROC:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	SILO:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	WEAP:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	HQ:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	NUK2:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	FIX:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	HPAD:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	EYE:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	GUN:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	GTWR:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	ATWR:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E2:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E3:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E4:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E5:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E6:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	RMBO:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	AFLD:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	TMPL:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	OBLI:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	SAM:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	OLDLST:
 		Inherits: LST
 		-WithRoof:

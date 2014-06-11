@@ -325,7 +325,7 @@ Actors:
 		Owner: Nod
 		Health: 0.1875
 		Facing: 160
-	mcv: mcv
+	mcv: mcv.gdi
 		Location: 56,53
 		Owner: GDI
 		Health: 1
@@ -464,36 +464,51 @@ Rules:
 	^Infantry:
 		MustBeDestroyed:
 	PROC:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	SILO:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	WEAP:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	HQ:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	NUK2:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	FIX:
-		-Buildable:
-	HPAD:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
+	HPAD.GDI:
+		Buildable:
+			Prerequisites: ~disabled
 	EYE:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	GUN:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 		MustBeDestroyed:
 	GTWR:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	ATWR:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E2:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E3:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E6:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	RMBO:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	BOAT:
 		Health:
 			HP: 1500

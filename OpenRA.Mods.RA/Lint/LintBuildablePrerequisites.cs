@@ -42,8 +42,9 @@ namespace OpenRA.Mods.RA
 				var bi = i.Value.Traits.GetOrDefault<BuildableInfo>();
 				if (bi != null)
 					foreach (var prereq in bi.Prerequisites)
-						if (!providedPrereqs.Contains(prereq.Replace("!", "").Replace("~", "")))
-							emitError("Buildable actor {0} has prereq {1} not provided by anything.".F(i.Key, prereq));
+						if (!prereq.StartsWith("~disabled"))
+							if (!providedPrereqs.Contains(prereq.Replace("!", "").Replace("~", "")))
+								emitError("Buildable actor {0} has prereq {1} not provided by anything.".F(i.Key, prereq));
 			}
 		}
 	}
