@@ -111,9 +111,13 @@ namespace OpenRA
 		public IEnumerable<Type> GetTypesImplementing<T>()
 		{
 			var it = typeof(T);
+			return GetTypes().Where(t => t != it && it.IsAssignableFrom(t));
+		}
+		
+		public IEnumerable<Type> GetTypes()
+		{
 			return assemblies.Select(ma => ma.First).Distinct()
-				.SelectMany(ma => ma.GetTypes()
-				.Where(t => t != it && it.IsAssignableFrom(t)));
+				.SelectMany(ma => ma.GetTypes());
 		}
 
 		[AttributeUsage(AttributeTargets.Constructor)]
