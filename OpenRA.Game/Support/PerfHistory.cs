@@ -105,19 +105,20 @@ namespace OpenRA.Support
 		}
 	}
 
-	public sealed class PerfSample : IDisposable
+	public struct PerfSample : IDisposable
 	{
-		readonly Stopwatch sw = Stopwatch.StartNew();
-		readonly string Item;
+		readonly string item;
+		readonly long ticks;
 
 		public PerfSample(string item)
 		{
-			Item = item;
+			this.item = item;
+			ticks = Stopwatch.GetTimestamp();
 		}
 
 		public void Dispose()
 		{
-			PerfHistory.Increment(Item, sw.Elapsed.TotalMilliseconds);
+			PerfHistory.Increment(item, 1000.0 * Math.Max(0, Stopwatch.GetTimestamp() - ticks) / Stopwatch.Frequency);
 		}
 	}
 }
