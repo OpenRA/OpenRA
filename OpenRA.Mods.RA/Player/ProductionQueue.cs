@@ -101,14 +101,8 @@ namespace OpenRA.Mods.RA
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 			ClearQueue();
 
-			// Produceable contains the tech from the original owner - this is desired so we don't clear it.
-			Produceable = InitTech(self.Owner.PlayerActor);
-
-			// Force a third(!) tech tree update to ensure that prerequisites are correct.
-			// The first two updates are triggered by adding/removing the actor when
-			// changing ownership, *before* the new techtree watchers have been set up.
-			// This is crap.
-			self.Owner.PlayerActor.Trait<TechTree>().Update();
+			// Update producable to contain the tech from the original owner, based on the new owner's currently built tech.
+			Produceable = InitTech(newOwner.PlayerActor);
 		}
 
 		public void Killed(Actor killed, AttackInfo e) { if (killed == self) ClearQueue(); }
