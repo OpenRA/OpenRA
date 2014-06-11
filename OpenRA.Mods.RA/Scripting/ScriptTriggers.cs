@@ -18,6 +18,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
+	public enum Trigger { OnIdle, OnDamaged, OnKilled, OnProduction };
+
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
 	public class ScriptTriggersInfo : TraitInfo<ScriptTriggers> { }
 
@@ -25,34 +27,22 @@ namespace OpenRA.Mods.RA.Scripting
 	{
 		public event Action<Actor> OnKilledInternal = _ => {};
 
-		List<Pair<LuaFunction, ScriptContext>> onIdle = new List<Pair<LuaFunction, ScriptContext>>();
-		List<Pair<LuaFunction, ScriptContext>> onDamaged = new List<Pair<LuaFunction, ScriptContext>>();
-		List<Pair<LuaFunction, ScriptContext>> onKilled = new List<Pair<LuaFunction, ScriptContext>>();
-		List<Pair<LuaFunction, ScriptContext>> onProduction = new List<Pair<LuaFunction, ScriptContext>>();
+		public Dictionary<Trigger, List<Pair<LuaFunction, ScriptContext>>> Triggers = new Dictionary<Trigger, List<Pair<LuaFunction, ScriptContext>>>();
 
-		public void RegisterIdleCallback(LuaFunction func, ScriptContext context)
+		public ScriptTriggers()
 		{
-			onIdle.Add(Pair.New((LuaFunction)func.CopyReference(), context));
+			foreach (var t in Enum.GetValues(typeof(Trigger)).Cast<Trigger>())
+				Triggers.Add(t, new List<Pair<LuaFunction, ScriptContext>>());
 		}
 
-		public void RegisterDamagedCallback(LuaFunction func, ScriptContext context)
+		public void RegisterCallback(Trigger trigger, LuaFunction func, ScriptContext context)
 		{
-			onDamaged.Add(Pair.New((LuaFunction)func.CopyReference(), context));
-		}
-
-		public void RegisterKilledCallback(LuaFunction func, ScriptContext context)
-		{
-			onKilled.Add(Pair.New((LuaFunction)func.CopyReference(), context));
-		}
-
-		public void RegisterProductionCallback(LuaFunction func, ScriptContext context)
-		{
-			onProduction.Add(Pair.New((LuaFunction)func.CopyReference(), context));
+			Triggers[trigger].Add(Pair.New((LuaFunction)func.CopyReference(), context));
 		}
 
 		public void TickIdle(Actor self)
 		{
-			foreach (var f in onIdle)
+			foreach (var f in Triggers[Trigger.OnIdle])
 			{
 				var a = self.ToLuaValue(f.Second);
 				f.First.Call(a).Dispose();
@@ -62,7 +52,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			foreach (var f in onDamaged)
+			foreach (var f in Triggers[Trigger.OnDamaged])
 			{
 				var a = self.ToLuaValue(f.Second);
 				var b = e.Attacker.ToLuaValue(f.Second);
@@ -75,7 +65,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public void Killed(Actor self, AttackInfo e)
 		{
 			// Run lua callbacks
-			foreach (var f in onKilled)
+			foreach (var f in Triggers[Trigger.OnKilled])
 			{
 				var a = self.ToLuaValue(f.Second);
 				var b = e.Attacker.ToLuaValue(f.Second);
@@ -90,7 +80,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public void UnitProduced(Actor self, Actor other, CPos exit)
 		{
-			foreach (var f in onProduction)
+			foreach (var f in Triggers[Trigger.OnProduction])
 			{
 				var a = self.ToLuaValue(f.Second);
 				var b = other.ToLuaValue(f.Second);
@@ -100,9 +90,20 @@ namespace OpenRA.Mods.RA.Scripting
 			}
 		}
 
+		public void Clear(Trigger trigger)
+		{
+			Triggers[trigger].Clear();
+		}
+
+		public void ClearAll()
+		{
+			foreach (var trigger in Triggers)
+				trigger.Value.Clear();
+		}
+
 		public void Dispose()
 		{
-			var pairs = new[] { onIdle, onDamaged, onKilled, onProduction };
+			var pairs = Triggers.Values;
 			pairs.SelectMany(l => l).Select(p => p.First).Do(f => f.Dispose());
 			pairs.Do(l => l.Clear());
 		}
