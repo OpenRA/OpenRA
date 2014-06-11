@@ -88,7 +88,7 @@ MISS:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
-		Owner: None
+		Prerequisites: ~disabled
 	Valued:
 		Cost: 2000
 	Bib:
