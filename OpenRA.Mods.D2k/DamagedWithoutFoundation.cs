@@ -11,10 +11,10 @@
 using System;
 using System.Linq;
 using OpenRA.GameRules;
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.Common.Buildings;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.D2k
 {
 	class DamagedWithoutFoundationInfo : ITraitInfo, Requires<HealthInfo>
 	{

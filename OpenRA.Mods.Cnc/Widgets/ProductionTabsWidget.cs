@@ -14,7 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA;
+using OpenRA.Mods.Common;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets

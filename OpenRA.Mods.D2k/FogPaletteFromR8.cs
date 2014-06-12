@@ -13,7 +13,7 @@ using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.D2k
 {
 	class FogPaletteFromR8Info : ITraitInfo
 	{

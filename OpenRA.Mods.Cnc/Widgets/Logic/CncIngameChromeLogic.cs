@@ -10,10 +10,10 @@
 
 using System.Drawing;
 using System.Linq;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Orders;
-using OpenRA.Mods.RA.Widgets;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Buildings;
+using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 

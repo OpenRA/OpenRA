@@ -8,8 +8,9 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Air;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 

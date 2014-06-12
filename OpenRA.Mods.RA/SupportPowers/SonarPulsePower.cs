@@ -8,6 +8,8 @@
  */
 #endregion
 
+using OpenRA.Mods.Common;
+
 namespace OpenRA.Mods.RA
 {
 	public class SonarPulsePowerInfo : SupportPowerInfo

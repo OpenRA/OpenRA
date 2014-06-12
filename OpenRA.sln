@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Express 2012 for Windows Desktop
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.RA", "OpenRA.Mods.RA\OpenRA.Mods.RA.csproj", "{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.Common", "OpenRA.Mods.Common\OpenRA.Mods.Common.csproj", "{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.Cnc", "OpenRA.Mods.Cnc\OpenRA.Mods.Cnc.csproj", "{2881135D-4D62-493E-8F83-5EEE92CCC6BE}"
 EndProject
@@ -52,6 +52,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.CrashDialog", "OpenRA.CrashDialog\OpenRA.CrashDialog.csproj", "{47F1B0EE-EB35-47F2-93E4-273C70909157}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.RA", "OpenRA.Mods.RA\OpenRA.Mods.RA.csproj", "{2E14D21C-36CD-42A4-BEAB-C1915DBCDA22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,65 @@ Global
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|x86.ActiveCfg = Debug|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|x86.Build.0 = Debug|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|x86.ActiveCfg = Release|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|x86.Build.0 = Release|x86
+		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|x86.ActiveCfg = Debug|x86
+		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|x86.Build.0 = Debug|x86
+		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Release|x86.ActiveCfg = Release|x86
+		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Release|x86.Build.0 = Release|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Debug|x86.ActiveCfg = Debug|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Debug|x86.Build.0 = Debug|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Release|x86.ActiveCfg = Release|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Release|x86.Build.0 = Release|x86
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Debug|x86.ActiveCfg = Debug|x86
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Debug|x86.Build.0 = Debug|x86
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Release|x86.ActiveCfg = Release|x86
+		{00038B75-405B-44F5-8691-BD2546DBE224}.Release|x86.Build.0 = Release|x86
+		{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}.Debug|x86.ActiveCfg = Debug|x86
+		{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}.Debug|x86.Build.0 = Debug|x86
+		{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}.Release|x86.ActiveCfg = Release|x86
+		{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}.Release|x86.Build.0 = Release|x86
+		{F9FA4D9F-2302-470A-8A07-6E37F488C124}.Debug|x86.ActiveCfg = Debug|x86
+		{F9FA4D9F-2302-470A-8A07-6E37F488C124}.Debug|x86.Build.0 = Debug|x86
+		{F9FA4D9F-2302-470A-8A07-6E37F488C124}.Release|x86.ActiveCfg = Release|x86
+		{F9FA4D9F-2302-470A-8A07-6E37F488C124}.Release|x86.Build.0 = Release|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Debug|x86.ActiveCfg = Debug|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Debug|x86.Build.0 = Debug|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Release|x86.ActiveCfg = Release|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Release|x86.Build.0 = Release|x86
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Debug|x86.ActiveCfg = Debug|x86
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Debug|x86.Build.0 = Debug|x86
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Release|x86.ActiveCfg = Release|x86
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Release|x86.Build.0 = Release|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Debug|x86.ActiveCfg = Debug|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Debug|x86.Build.0 = Debug|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Release|x86.ActiveCfg = Release|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Release|x86.Build.0 = Release|x86
+		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Debug|x86.ActiveCfg = Debug|x86
+		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Debug|x86.Build.0 = Debug|x86
+		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Release|x86.ActiveCfg = Release|x86
+		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Release|x86.Build.0 = Release|x86
+		{85B48234-8B31-4BE6-AF9C-665CC6866841}.Debug|x86.ActiveCfg = Debug|x86
+		{85B48234-8B31-4BE6-AF9C-665CC6866841}.Debug|x86.Build.0 = Debug|x86
+		{85B48234-8B31-4BE6-AF9C-665CC6866841}.Release|x86.ActiveCfg = Release|x86
+		{85B48234-8B31-4BE6-AF9C-665CC6866841}.Release|x86.Build.0 = Release|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.ActiveCfg = Debug|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.Build.0 = Debug|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|x86.ActiveCfg = Release|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|x86.Build.0 = Release|x86
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|x86.ActiveCfg = Debug|x86
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|x86.Build.0 = Debug|x86
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Release|x86.ActiveCfg = Release|x86
+		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Release|x86.Build.0 = Release|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|Any CPU.Build.0 = Debug|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Any CPU.ActiveCfg = Release|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|Mixed Platforms.Build.0 = Release|x86
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -164,8 +225,17 @@ Global
 		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Release|Any CPU.Build.0 = Release|Any CPU
 		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2E14D21C-36CD-42A4-BEAB-C1915DBCDA22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E14D21C-36CD-42A4-BEAB-C1915DBCDA22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E14D21C-36CD-42A4-BEAB-C1915DBCDA22}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2E14D21C-36CD-42A4-BEAB-C1915DBCDA22}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2E14D21C-36CD-42A4-BEAB-C1915DBCDA22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E14D21C-36CD-42A4-BEAB-C1915DBCDA22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E14D21C-36CD-42A4-BEAB-C1915DBCDA22}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2E14D21C-36CD-42A4-BEAB-C1915DBCDA22}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = OpenRA.Game\OpenRA.Game.csproj
@@ -173,7 +243,7 @@ Global
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = None
 		$1.ResourceNamePolicy = FileFormatDefault
-		$0.TextStylePolicy = $2
+		$0.TextStylePolicy = $7
 		$2.TabsToSpaces = False
 		$2.NoTabsAfterNonTabs = True
 		$2.inheritsSet = VisualStudio
@@ -198,27 +268,23 @@ Global
 		$3.inheritsSet = Mono
 		$3.inheritsScope = text/x-csharp
 		$3.scope = text/x-csharp
-		$0.TextStylePolicy = $4
 		$4.TabsToSpaces = False
 		$4.NoTabsAfterNonTabs = True
 		$4.inheritsSet = VisualStudio
 		$4.inheritsScope = text/plain
 		$4.scope = text/plain
-		$0.TextStylePolicy = $5
 		$5.NoTabsAfterNonTabs = True
 		$5.inheritsSet = Mono
 		$5.inheritsScope = text/plain
 		$5.scope = text/microsoft-resx
-		$0.XmlFormattingPolicy = $6
+		$0.XmlFormattingPolicy = $8
 		$6.inheritsSet = Mono
 		$6.inheritsScope = application/xml
 		$6.scope = text/microsoft-resx
-		$0.TextStylePolicy = $7
 		$7.NoTabsAfterNonTabs = True
 		$7.inheritsSet = Mono
 		$7.inheritsScope = text/plain
 		$7.scope = application/xml
-		$0.XmlFormattingPolicy = $8
 		$8.inheritsSet = Mono
 		$8.inheritsScope = application/xml
 		$8.scope = application/xml
@@ -227,21 +293,19 @@ Global
 		$9.IncludeInNewFiles = True
 		$0.NameConventionPolicy = $10
 		$10.Rules = $11
-		$11.NamingRule = $12
+		$11.NamingRule = $31
 		$12.Name = Namespaces
 		$12.AffectedEntity = Namespace
 		$12.VisibilityMask = VisibilityMask
 		$12.NamingStyle = PascalCase
 		$12.IncludeInstanceMembers = True
 		$12.IncludeStaticEntities = True
-		$11.NamingRule = $13
 		$13.Name = Types
 		$13.AffectedEntity = Class, Struct, Enum, Delegate
 		$13.VisibilityMask = Public
 		$13.NamingStyle = PascalCase
 		$13.IncludeInstanceMembers = True
 		$13.IncludeStaticEntities = True
-		$11.NamingRule = $14
 		$14.Name = Interfaces
 		$14.RequiredPrefixes = $15
 		$15.String = I
@@ -250,7 +314,6 @@ Global
 		$14.NamingStyle = PascalCase
 		$14.IncludeInstanceMembers = True
 		$14.IncludeStaticEntities = True
-		$11.NamingRule = $16
 		$16.Name = Attributes
 		$16.RequiredSuffixes = $17
 		$17.String = Attribute
@@ -259,7 +322,6 @@ Global
 		$16.NamingStyle = PascalCase
 		$16.IncludeInstanceMembers = True
 		$16.IncludeStaticEntities = True
-		$11.NamingRule = $18
 		$18.Name = Event Arguments
 		$18.RequiredSuffixes = $19
 		$19.String = EventArgs
@@ -268,7 +330,6 @@ Global
 		$18.NamingStyle = PascalCase
 		$18.IncludeInstanceMembers = True
 		$18.IncludeStaticEntities = True
-		$11.NamingRule = $20
 		$20.Name = Exceptions
 		$20.RequiredSuffixes = $21
 		$21.String = Exception
@@ -277,70 +338,60 @@ Global
 		$20.NamingStyle = PascalCase
 		$20.IncludeInstanceMembers = True
 		$20.IncludeStaticEntities = True
-		$11.NamingRule = $22
 		$22.Name = Methods
 		$22.AffectedEntity = Methods
 		$22.VisibilityMask = Protected, Public
 		$22.NamingStyle = PascalCase
 		$22.IncludeInstanceMembers = True
 		$22.IncludeStaticEntities = True
-		$11.NamingRule = $23
 		$23.Name = Static Readonly Fields
 		$23.AffectedEntity = ReadonlyField
 		$23.VisibilityMask = Protected, Public
 		$23.NamingStyle = PascalCase
 		$23.IncludeInstanceMembers = False
 		$23.IncludeStaticEntities = True
-		$11.NamingRule = $24
 		$24.Name = Fields
 		$24.AffectedEntity = Field
 		$24.VisibilityMask = Protected, Public
 		$24.NamingStyle = PascalCase
 		$24.IncludeInstanceMembers = True
 		$24.IncludeStaticEntities = True
-		$11.NamingRule = $25
 		$25.Name = ReadOnly Fields
 		$25.AffectedEntity = ReadonlyField
 		$25.VisibilityMask = Protected, Public
 		$25.NamingStyle = PascalCase
 		$25.IncludeInstanceMembers = True
 		$25.IncludeStaticEntities = False
-		$11.NamingRule = $26
 		$26.Name = Constant Fields
 		$26.AffectedEntity = ConstantField
 		$26.VisibilityMask = Protected, Public
 		$26.NamingStyle = PascalCase
 		$26.IncludeInstanceMembers = True
 		$26.IncludeStaticEntities = True
-		$11.NamingRule = $27
 		$27.Name = Properties
 		$27.AffectedEntity = Property
 		$27.VisibilityMask = Protected, Public
 		$27.NamingStyle = PascalCase
 		$27.IncludeInstanceMembers = True
 		$27.IncludeStaticEntities = True
-		$11.NamingRule = $28
 		$28.Name = Events
 		$28.AffectedEntity = Event
 		$28.VisibilityMask = Protected, Public
 		$28.NamingStyle = PascalCase
 		$28.IncludeInstanceMembers = True
 		$28.IncludeStaticEntities = True
-		$11.NamingRule = $29
 		$29.Name = Enum Members
 		$29.AffectedEntity = EnumMember
 		$29.VisibilityMask = VisibilityMask
 		$29.NamingStyle = PascalCase
 		$29.IncludeInstanceMembers = True
 		$29.IncludeStaticEntities = True
-		$11.NamingRule = $30
 		$30.Name = Parameters
 		$30.AffectedEntity = Parameter
 		$30.VisibilityMask = VisibilityMask
 		$30.NamingStyle = CamelCase
 		$30.IncludeInstanceMembers = True
 		$30.IncludeStaticEntities = True
-		$11.NamingRule = $31
 		$31.Name = Type Parameters
 		$31.RequiredPrefixes = $32
 		$32.String = T
@@ -357,8 +408,5 @@ Global
 		$35.LineAlign = 0
 		$34.inheritsSet = Mono
 		outputpath = .
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

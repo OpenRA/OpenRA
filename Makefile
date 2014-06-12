@@ -114,12 +114,21 @@ renderers: $(rsdl2_TARGET) $(rnull_TARGET)
 STD_MOD_LIBS	= $(game_TARGET) thirdparty/KopiLua.dll thirdparty/NLua.dll
 STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 
+# Common
+mod_common_SRCS := $(shell find OpenRA.Mods.Common/ -iname '*.cs')
+mod_common_TARGET = mods/common/OpenRA.Mods.Common.dll
+mod_common_KIND = library
+mod_common_DEPS = $(STD_MOD_DEPS) $(irc_TARGET)
+mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(irc_TARGET)
+PROGRAMS += mod_common
+mod_common: $(mod_common_TARGET)
+
 # Red Alert
 mod_ra_SRCS := $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET = mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND = library
-mod_ra_DEPS = $(STD_MOD_DEPS) $(irc_TARGET)
-mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(irc_TARGET)
+mod_ra_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
+mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_ra
 mod_ra: $(mod_ra_TARGET)
 
@@ -127,8 +136,8 @@ mod_ra: $(mod_ra_TARGET)
 mod_cnc_SRCS := $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
 mod_cnc_TARGET = mods/cnc/OpenRA.Mods.Cnc.dll
 mod_cnc_KIND = library
-mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
-mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
+mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_cnc
 mod_cnc: $(mod_cnc_TARGET)
 
@@ -136,8 +145,8 @@ mod_cnc: $(mod_cnc_TARGET)
 mod_d2k_SRCS := $(shell find OpenRA.Mods.D2k/ -iname '*.cs')
 mod_d2k_TARGET = mods/d2k/OpenRA.Mods.D2k.dll
 mod_d2k_KIND = library
-mod_d2k_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET) $(mod_cnc_TARGET)
-mod_d2k_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_d2k_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(mod_cnc_TARGET)
+mod_d2k_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_d2k
 mod_d2k: $(mod_d2k_TARGET)
 
@@ -145,8 +154,8 @@ mod_d2k: $(mod_d2k_TARGET)
 mod_ts_SRCS := $(shell find OpenRA.Mods.TS/ -iname '*.cs')
 mod_ts_TARGET = mods/ts/OpenRA.Mods.TS.dll
 mod_ts_KIND = library
-mod_ts_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
-mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_ts_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
+mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_ts
 mod_ts: $(mod_ts_TARGET)
 
@@ -307,6 +316,7 @@ install-core: default
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
 	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
+	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
 	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/cnc"
 	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"

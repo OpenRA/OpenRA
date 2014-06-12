@@ -81,10 +81,7 @@
     <Compile Include="Effects\IonCannon.cs" />
     <Compile Include="IonCannonPower.cs" />
     <Compile Include="PoisonedByTiberium.cs" />
-    <Compile Include="ProductionAirdrop.cs" />
     <Compile Include="ProductionQueueFromSelection.cs" />
-    <Compile Include="WithCargo.cs" />
-    <Compile Include="RenderGunboat.cs" />
     <Compile Include="SpawnViceroid.cs" />
     <Compile Include="TiberiumRefinery.cs" />
     <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
@@ -97,8 +94,6 @@
     <Compile Include="Widgets\ProductionPaletteWidget.cs" />
     <Compile Include="Widgets\ProductionTabsWidget.cs" />
     <Compile Include="Widgets\SupportPowersWidget.cs" />
-    <Compile Include="WithFire.cs" />
-    <Compile Include="WithRoof.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
     <Compile Include="Widgets\ProductionTypeButtonWidget.cs" />
     <Compile Include="Widgets\Logic\CncInstallMusicLogic.cs" />
@@ -110,9 +105,9 @@
       <Name>OpenRA.Game</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\OpenRA.Mods.RA\OpenRA.Mods.RA.csproj">
+    <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
       <Project>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</Project>
-      <Name>OpenRA.Mods.RA</Name>
+      <Name>OpenRA.Mods.Common</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

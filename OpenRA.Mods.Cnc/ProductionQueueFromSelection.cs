@@ -11,7 +11,7 @@
 using System;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Mods.RA;
+using OpenRA.Mods.Common;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
