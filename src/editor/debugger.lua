@@ -523,6 +523,12 @@ debugger.listen = function(start)
       -- set basedir first, before loading to make sure that the path is correct
       debugger.handle("basedir " .. debugger.basedir)
 
+      local init = options.init or ide.config.debugger.init
+      if init then
+        local _, _, err = debugger.execute(init)
+        if err then DisplayOutputLn(TR("Ignored error in debugger initialization code: %s."):format(err)) end
+      end
+
       reSetBreakpoints()
 
       local redirect = ide.config.debugger.redirect or options.redirect
