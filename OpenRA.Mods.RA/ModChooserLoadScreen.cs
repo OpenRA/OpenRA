@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Cnc
 			if (r == null)
 				return;
 
-			r.BeginFrame(float2.Zero, 1f);
+			r.BeginFrame(int2.Zero, 1f);
 			WidgetUtils.FillRectWithSprite(bounds, sprite);
 			r.EndFrame(new NullInputHandler());
 		}

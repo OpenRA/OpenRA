@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA
 			var text = messages.Random(Game.CosmeticRandom);
 			var textSize = r.Fonts["Bold"].Measure(text);
 
-			r.BeginFrame(float2.Zero, 1f);
+			r.BeginFrame(int2.Zero, 1f);
 			WidgetUtils.FillRectWithSprite(stripeRect, stripe);
 			r.RgbaSpriteRenderer.DrawSprite(logo, logoPos);
 			r.Fonts["Bold"].DrawText(text, new float2(r.Resolution.Width - textSize.X - 20, r.Resolution.Height - textSize.Y - 20), Color.White);

@@ -141,12 +141,12 @@ namespace OpenRA
 				// worldRenderer is null during the initial install/download screen
 				if (worldRenderer != null)
 				{
-					Renderer.BeginFrame(worldRenderer.Viewport.TopLeft.ToFloat2(), worldRenderer.Viewport.Zoom);
+					Renderer.BeginFrame(worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.Zoom);
 					Sound.SetListenerPosition(worldRenderer.Position(worldRenderer.Viewport.CenterLocation));
 					worldRenderer.Draw();
 				}
 				else
-					Renderer.BeginFrame(float2.Zero, 1f);
+					Renderer.BeginFrame(int2.Zero, 1f);
 
 				using (new PerfSample("render_widgets"))
 				{
