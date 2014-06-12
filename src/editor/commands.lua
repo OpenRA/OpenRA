@@ -927,7 +927,7 @@ ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
     local class = win:GetClassInfo():GetClassName()
     -- don't set focus on the main frame or toolbar
     if infocus and (class == 'wxAuiToolBar' or class == 'wxFrame') then
-      infocus:SetFocus()
+      pcall(function() infocus:SetFocus() end)
       return
     end
 
