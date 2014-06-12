@@ -33,8 +33,11 @@ namespace OpenRA.Mods.RA.Activities
 
 			mobile = self.Trait<Mobile>();
 			pathFinder = self.World.WorldActor.Trait<PathFinder>();
-			domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
+			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 			movementClass = (uint)mobile.Info.GetMovementClass(self.World.TileSet);
+
+			if (target.IsValidFor(self))
+				targetPosition = target.CenterPosition.ToCPos();
 
 			repath = true;
 		}
@@ -108,27 +111,18 @@ namespace OpenRA.Mods.RA.Activities
 			var loc = self.Location;
 
 			foreach (var cell in targetCells)
-				if (mobile.CanEnterCell(cell) && (domainIndex == null || domainIndex.IsPassable(loc, cell, movementClass)))
+				if (domainIndex.IsPassable(loc, cell, movementClass) && mobile.CanEnterCell(cell))
 					searchCells.Add(cell);
 
-			if (searchCells.Any())
-			{
-				var ps1 = new PathSearch(self.World, mobile.Info, self)
-				{
-					checkForBlocked = true,
-					heuristic = location => 0,
-					inReverse = true
-				};
+			if (!searchCells.Any())
+				return;
 
-				foreach (var cell in searchCells)
-					ps1.AddInitialCell(cell);
+			var path = pathFinder.FindBidiPath(
+				PathSearch.FromPoints(self.World, mobile.Info, self, searchCells, loc, true),
+				PathSearch.FromPoint(self.World, mobile.Info, self, loc, targetPosition, true).InReverse()
+			);
 
-				ps1.heuristic = PathSearch.DefaultEstimator(mobile.toCell);
-				var ps2 = PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, targetPosition, true);
-				var ret = pathFinder.FindBidiPath(ps1, ps2);
-
-				inner = mobile.MoveTo(() => ret);
-			}
+			inner = mobile.MoveTo(() => path);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
