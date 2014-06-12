@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using OpenRA.Primitives;
 
@@ -88,17 +89,8 @@ namespace OpenRA.Network
 			var values = new string[typeInfo.Names.Length];
 			var index = 0;
 
-			foreach (var field in typeInfo.Fields)
-			{
-				var value = field.GetValue(sync);
-				values[index++] = value != null ? value.ToString() : null;
-			}
-
-			foreach (var prop in typeInfo.Properties)
-			{
-				var value = prop.GetValue(sync, null);
-				values[index++] = value != null ? value.ToString() : null;
-			}
+			foreach (var func in typeInfo.MemberToStringFunctions)
+				values[index++] = func(sync);
 
 			return Pair.New(typeInfo.Names, values);
 		}
@@ -171,21 +163,54 @@ namespace OpenRA.Network
 
 		struct TypeInfo
 		{
-			public readonly FieldInfo[] Fields;
-			public readonly PropertyInfo[] Properties;
+			static ParameterExpression syncParam = Expression.Parameter(typeof(ISync), "sync");
+			static ConstantExpression nullString = Expression.Constant(null, typeof(string));
+
+			public readonly Func<ISync, string>[] MemberToStringFunctions;
 			public readonly string[] Names;
+
 			public TypeInfo(Type type)
 			{
 				const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-				Fields = type.GetFields(Flags).Where(
-					fi => !fi.IsLiteral && !fi.IsStatic && fi.HasAttribute<SyncAttribute>()).ToArray();
-				Properties = type.GetProperties(Flags).Where(pi => pi.HasAttribute<SyncAttribute>()).ToArray();
-				foreach (var prop in Properties)
+				var fields = type.GetFields(Flags).Where(fi => !fi.IsLiteral && !fi.IsStatic && fi.HasAttribute<SyncAttribute>());
+				var properties = type.GetProperties(Flags).Where(pi => pi.HasAttribute<SyncAttribute>());
+
+				foreach (var prop in properties)
 					if (!prop.CanRead || prop.GetIndexParameters().Any())
 						throw new InvalidOperationException(
 							"Properties using the Sync attribute must be readable and must not use index parameters.\n" +
 							"Invalid Property: " + prop.DeclaringType.FullName + "." + prop.Name);
-				Names = Fields.Select(fi => fi.Name).Concat(Properties.Select(pi => pi.Name)).ToArray();
+
+				var sync = Expression.Convert(syncParam, type);
+				MemberToStringFunctions = fields.Select(
+					fi => MemberToString(Expression.Field(sync, fi), fi.FieldType, fi.Name))
+					.Concat(properties.Select(
+					pi => MemberToString(Expression.Property(sync, pi), pi.PropertyType, pi.Name))
+					).ToArray();
+
+				Names = fields.Select(fi => fi.Name).Concat(properties.Select(pi => pi.Name)).ToArray();
+			}
+
+			static Func<ISync, string> MemberToString(MemberExpression getMember, Type memberType, string name)
+			{
+				// The lambda generated is shown below.
+				// TSync is actual type of the ISync object. Foo is a field or property with the Sync attribute applied.
+				var toString = memberType.GetMethod("ToString", Type.EmptyTypes);
+				Expression getString;
+				if (memberType.IsValueType)
+					// (ISync sync) => ((TSync)sync).Foo.ToString()
+					getString = Expression.Call(getMember, toString);
+				else
+				{
+					// (ISync sync) => { var foo = ((TSync)sync).Foo; return foo == null ? null : foo.ToString()); }
+					var memberVariable = Expression.Variable(memberType, getMember.Member.Name);
+					var assignMemberVariable = Expression.Assign(memberVariable, getMember);
+					var member = Expression.Block(new[] { memberVariable }, assignMemberVariable);
+					getString = Expression.Call(member, toString);
+					var nullMember = Expression.Constant(null, memberType);
+					getString = Expression.Condition(Expression.Equal(member, nullMember), nullString, getString);
+				}
+				return Expression.Lambda<Func<ISync, string>>(getString, name, new[] { syncParam }).Compile();
 			}
 		}
 	}
