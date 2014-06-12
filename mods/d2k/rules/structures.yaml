@@ -174,7 +174,7 @@ CONCRETEB:
 	RevealsShroud:
 		Range: 6c0
 	-RenderBuilding:
-	OreRefinery:
+	Refinery:
 		DockOffset: 2,1
 		DockAngle: 160
 		TickRate: 20

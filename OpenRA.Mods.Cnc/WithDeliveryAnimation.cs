@@ -13,10 +13,11 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.Common.Buildings;
+using OpenRA.Mods.Common.Render;
 using OpenRA.Effects;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.Cnc.Render
 {
 	public class WithDeliveryAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>
 	{

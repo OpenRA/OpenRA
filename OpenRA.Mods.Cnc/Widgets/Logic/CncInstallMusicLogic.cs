@@ -12,7 +12,7 @@ using System;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
-using OpenRA.Mods.RA.Widgets.Logic;
+using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic

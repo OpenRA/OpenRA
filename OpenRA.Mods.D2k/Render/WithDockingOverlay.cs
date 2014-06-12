@@ -12,9 +12,9 @@ using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.Common.Buildings;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.D2k.Render
 {
 	public class WithDockingOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{

@@ -87,8 +87,6 @@
     <Compile Include="D2kResourceLayer.cs" />
     <Compile Include="FogPaletteFromR8.cs" />
     <Compile Include="DamagedWithoutFoundation.cs" />
-    <Compile Include="Render\WithBuildingPlacedOverlayInfo.cs" />
-    <Compile Include="Render\WithProductionOverlay.cs" />
     <Compile Include="Render\WithDockingOverlay.cs" />
     <Compile Include="Render\WithDeliveryOverlay.cs" />
     <Compile Include="PaletteFromScaledPalette.cs" />
@@ -104,9 +102,9 @@ cd "$(SolutionDir)"</PostBuildEvent>
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
       <Name>OpenRA.Game</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OpenRA.Mods.RA\OpenRA.Mods.RA.csproj">
+    <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
       <Project>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</Project>
-      <Name>OpenRA.Mods.RA</Name>
+      <Name>OpenRA.Mods.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

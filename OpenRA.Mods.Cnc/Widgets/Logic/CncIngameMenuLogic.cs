@@ -11,8 +11,8 @@
 using System;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Widgets;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 

@@ -11,8 +11,9 @@
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.Common;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.D2k.Render
 {
 	public class WithCrumbleOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{

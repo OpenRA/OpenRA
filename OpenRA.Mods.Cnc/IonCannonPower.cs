@@ -9,8 +9,8 @@
 #endregion
 
 using OpenRA.Mods.Cnc.Effects;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 

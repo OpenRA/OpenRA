@@ -1,0 +1,160 @@
+﻿#region Copyright & License Information
+/*
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System.Collections.Generic;
+using System.Drawing;
+using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Move;
+using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Render;
+using OpenRA.Primitives;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.Common
+{
+	class MadTankInfo : ITraitInfo, Requires<ExplodesInfo>, Requires<RenderUnitInfo>
+	{
+		public readonly string ThumpSequence = "piston";
+		public readonly int ThumpInterval = 8;
+		[WeaponReference]
+		public readonly string ThumpDamageWeapon = "MADTankThump";
+		public readonly int ThumpShakeIntensity = 3;
+		public readonly float2 ThumpShakeMultiplier = new float2(1, 0);
+		public readonly int ThumpShakeTime = 10;
+
+		public readonly int ChargeDelay = 96;
+		public readonly string ChargeSound = "madchrg2.aud";
+
+		public readonly int DetonationDelay = 42;
+		public readonly string DetonationSound = "madexplo.aud";
+		[WeaponReference]
+		public readonly string DetonationWeapon = "MADTankDetonate";
+
+		[ActorReference]
+		public readonly string DriverActor = "e1";
+
+		public object Create(ActorInitializer init) { return new MadTank(init.self, this); }
+	}
+
+	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, ITick
+	{
+		readonly Actor self;
+		readonly MadTankInfo info;
+		readonly RenderUnit renderUnit;
+		readonly ScreenShaker screenShaker;
+		bool deployed;
+		int tick;
+
+		public MadTank(Actor self, MadTankInfo info)
+		{
+			this.self = self;
+			this.info = info;
+			renderUnit = self.Trait<RenderUnit>();
+			screenShaker = self.World.WorldActor.Trait<ScreenShaker>();
+		}
+
+		public void Tick(Actor self)
+		{
+			if (!deployed)
+				return;
+
+			if (++tick >= info.ThumpInterval)
+			{
+				if (info.ThumpDamageWeapon != null)
+					Combat.DoExplosion(self, info.ThumpDamageWeapon, self.CenterPosition);
+				screenShaker.AddEffect(info.ThumpShakeTime, self.CenterPosition, info.ThumpShakeIntensity, info.ThumpShakeMultiplier);
+				tick = 0;
+			}
+		}
+
+		public IEnumerable<IOrderTargeter> Orders
+		{
+			get
+			{
+				yield return new TargetTypeOrderTargeter("DetonateAttack", "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
+				yield return new DeployOrderTargeter("Detonate", 5);
+			}
+		}
+
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		{
+			if (order.OrderID != "DetonateAttack" && order.OrderID != "Detonate")
+				return null;
+
+			if (target.Type == TargetType.FrozenActor)
+				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
+
+			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+		}
+
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return "Attack";
+		}
+
+		void Detonate()
+		{
+			self.World.AddFrameEndTask(w =>
+			{
+				if (info.DetonationWeapon != null)
+					Combat.DoExplosion(self, info.DetonationWeapon, self.CenterPosition);
+				self.Kill(self);
+			});
+		}
+
+		void EjectDriver()
+		{
+			var driver = self.World.CreateActor(info.DriverActor.ToLowerInvariant(), new TypeDictionary
+			{
+				new LocationInit(self.Location),
+				new OwnerInit(self.Owner)
+			});
+			var driverMobile = driver.TraitOrDefault<Mobile>();
+			if (driverMobile != null)
+				driverMobile.Nudge(driver, driver, true);
+		}
+
+		void StartDetonationSequence()
+		{
+			self.World.AddFrameEndTask(w => EjectDriver());
+			if (info.ThumpSequence != null)
+				renderUnit.PlayCustomAnimRepeating(self, info.ThumpSequence);
+			deployed = true;
+			self.QueueActivity(new Wait(info.ChargeDelay, false));
+			self.QueueActivity(new CallFunc(() => Sound.Play(info.ChargeSound, self.CenterPosition)));
+			self.QueueActivity(new Wait(info.DetonationDelay, false));
+			self.QueueActivity(new CallFunc(() => Sound.Play(info.DetonationSound, self.CenterPosition)));
+			self.QueueActivity(new CallFunc(Detonate));
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "DetonateAttack")
+			{
+				var target = self.ResolveFrozenActorOrder(order, Color.Red);
+				if (target.Type != TargetType.Actor)
+					return;
+
+				if (!order.Queued)
+					self.CancelActivity();
+
+				self.SetTargetLine(target, Color.Red);
+				self.QueueActivity(new MoveAdjacentTo(self, target));
+				self.QueueActivity(new CallFunc(StartDetonationSequence));
+			}
+
+			else if (order.OrderString == "Detonate")
+			{
+				self.CancelActivity();
+				self.QueueActivity(new CallFunc(StartDetonationSequence));
+			}
+		}
+	}
+}

@@ -10,8 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Render;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

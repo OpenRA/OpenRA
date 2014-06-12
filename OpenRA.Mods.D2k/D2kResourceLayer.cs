@@ -11,10 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Traits;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.D2k
 {
 	public class D2kResourceLayerInfo : TraitInfo<D2kResourceLayer> { }
 
