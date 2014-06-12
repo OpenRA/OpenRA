@@ -1,5 +1,5 @@
 --
--- MobDebug 0.561
+-- MobDebug 0.563
 -- Copyright 2011-14 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
@@ -18,7 +18,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.561,
+  _VERSION = 0.563,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -245,6 +245,8 @@ end)() ---- end of Serpent module
 
 mobdebug.line = serpent.line
 mobdebug.dump = serpent.dump
+mobdebug.linemap = nil
+mobdebug.loadstring = loadstring
 
 local function removebasedir(path, basedir)
   if iscasepreserving then
@@ -280,6 +282,7 @@ local function stack(start)
   end
 
   local stack = {}
+  local linemap = mobdebug.linemap
   for i = (start or 0), 100 do
     local source = debug.getinfo(i, "Snl")
     if not source then break end
@@ -291,8 +294,10 @@ local function stack(start)
     end
 
     table.insert(stack, { -- remove basedir from source
-      {source.name, removebasedir(src, basedir), source.linedefined,
-       source.currentline, source.what, source.namewhat, source.short_src},
+      {source.name, removebasedir(src, basedir),
+       linemap and linemap(source.linedefined, source.source) or source.linedefined,
+       linemap and linemap(source.currentline, source.source) or source.currentline,
+       source.what, source.namewhat, source.short_src},
       vars(i+1)})
     if source.what == 'main' then break end
   end
@@ -504,6 +509,12 @@ local function debug_hook(event, line)
   elseif event == "return" or event == "tail return" then
     stack_level = stack_level - 1
   elseif event == "line" then
+    if mobdebug.linemap then
+      local ok, mappedline = pcall(mobdebug.linemap, line, debug.getinfo(2, "S").source)
+      if ok then line = mappedline end
+      if not line then return end
+    end
+
     -- may need to fall through because of the following:
     -- (1) step_into
     -- (2) step_over and stack_level <= step_level (need stack_level)
@@ -549,14 +560,19 @@ local function debug_hook(event, line)
         -- set on foo.lua will not work if not converted to the same case.
         if iscasepreserving then file = string.lower(file) end
         if file:find("%./") == 1 then file = file:sub(3)
-        else file = file:gsub('^'..q(basedir), '') end
+        else file = file:gsub("^"..q(basedir), "") end
         -- some file systems allow newlines in file names; remove these.
         file = file:gsub("\n", ' ')
       else
         -- this is either a file name coming from loadstring("chunk", "file"),
         -- or the actual source code that needs to be serialized (as it may
         -- include newlines); assume it's a file name if it's all on one line.
-        file = file:find("[\r\n]") and mobdebug.line(file) or file
+        if file:find("[\r\n]") then
+          file = mobdebug.line(file)
+        else
+          if iscasepreserving then file = string.lower(file) end
+          file = file:gsub("\\", "/"):gsub(file:find("^%./") and "^%./" or "^"..q(basedir), "")
+        end
       end
 
       -- set to true if we got here; this only needs to be done once per
@@ -730,7 +746,7 @@ local function debugger_loop(sev, svars, sfile, sline)
     elseif command == "EXEC" then
       local _, _, chunk = string.find(line, "^[A-Z]+%s+(.+)$")
       if chunk then
-        local func, res = loadstring(chunk)
+        local func, res = mobdebug.loadstring(chunk)
         local status
         if func then
           setfenv(func, eval_env)
@@ -771,7 +787,7 @@ local function debugger_loop(sev, svars, sfile, sline)
           -- receiving 0 bytes blocks (at least in luasocket 2.0.2), so skip reading
           local chunk = size == 0 and "" or server:receive(size)
           if chunk then -- LOAD a new script for debugging
-            local func, res = loadstring(chunk, "@"..name)
+            local func, res = mobdebug.loadstring(chunk, "@"..name)
             if func then
               server:send("200 OK 0\n")
               debugee = func
@@ -788,7 +804,7 @@ local function debugger_loop(sev, svars, sfile, sline)
     elseif command == "SETW" then
       local _, _, exp = string.find(line, "^[A-Z]+%s+(.+)%s*$")
       if exp then
-        local func, res = loadstring("return(" .. exp .. ")")
+        local func, res = mobdebug.loadstring("return(" .. exp .. ")")
         if func then
           watchescnt = watchescnt + 1
           local newidx = #watches + 1
