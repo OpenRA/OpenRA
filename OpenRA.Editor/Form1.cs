@@ -88,7 +88,11 @@ namespace OpenRA.Editor
 				foreach (var init in Program.Rules.Actors[kv.Value.Type].GetInitKeys())
 					apd.AddRow(init.First,
 						apd.MakeEditorControl(init.Second,
-							() => objSaved.NodesDict.ContainsKey(init.First) ? objSaved.NodesDict[init.First].Value : null,
+							() =>
+							{
+								var nodesDict = objSaved.ToDictionary();
+								return nodesDict.ContainsKey(init.First) ? nodesDict[init.First].Value : null;
+							},
 							_ => { }));
 
 				apd.ShowDialog();

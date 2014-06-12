@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 			Game.modData.VoxelLoader.RefreshBuffer();
 		}
 
-		static Voxel LoadVoxel(string unit, string name, MiniYaml info)
+		static Voxel LoadVoxel(string unit, MiniYaml info)
 		{
 			var vxl = unit;
 			var hva = unit;
@@ -55,7 +55,7 @@ namespace OpenRA.Graphics
 			Game.modData.LoadScreen.Display();
 			try
 			{
-				var seq = sequences.NodesDict.ToDictionary(x => x.Key, x => LoadVoxel(unit,x.Key,x.Value));
+				var seq = sequences.ToDictionary(my => LoadVoxel(unit, my));
 				units.Add(unit, seq);
 			}
 			catch (FileNotFoundException) {} // Do nothing; we can crash later if we actually wanted art

@@ -24,7 +24,7 @@ namespace OpenRA.GameRules
 		{
 			Title = value.Value;
 
-			var nd = value.NodesDict;
+			var nd = value.ToDictionary();
 			var ext = nd.ContainsKey("Extension") ? nd["Extension"].Value : "aud";
 			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key)+"."+ext;
 			if (!GlobalFileSystem.Exists(Filename))

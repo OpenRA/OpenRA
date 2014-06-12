@@ -28,10 +28,9 @@ namespace OpenRA.GameRules
 
 		static Dictionary<string, string[]> Load(MiniYaml y, string name)
 		{
-			return y.NodesDict.ContainsKey(name)
-				? y.NodesDict[name].NodesDict.ToDictionary(
-					a => a.Key,
-					a => FieldLoader.GetValue<string[]>("(value)", a.Value.Value))
+			var nd = y.ToDictionary();
+			return nd.ContainsKey(name)
+				? nd[name].ToDictionary(my => FieldLoader.GetValue<string[]>("(value)", my.Value))
 				: new Dictionary<string, string[]>();
 		}
 

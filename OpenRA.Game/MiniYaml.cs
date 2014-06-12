@@ -83,23 +83,39 @@ namespace OpenRA
 
 	public class MiniYaml
 	{
+		static Func<string, string> StringIdentity = s => s;
+		static Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
 		public string Value;
 		public List<MiniYamlNode> Nodes;
 
-		public Dictionary<string, MiniYaml> NodesDict
+		public Dictionary<string, MiniYaml> ToDictionary()
 		{
-			get
-			{
-				var ret = new Dictionary<string, MiniYaml>();
-				foreach (var y in Nodes)
-				{
-					if (ret.ContainsKey(y.Key))
-						throw new InvalidDataException("Duplicate key `{0}' in {1}".F(y.Key, y.Location));
-					ret.Add(y.Key, y.Value);
-				}
+			return ToDictionary(MiniYamlIdentity);
+		}
 
-				return ret;
+		public Dictionary<string, TElement> ToDictionary<TElement>(Func<MiniYaml, TElement> elementSelector)
+		{
+			return ToDictionary(StringIdentity, elementSelector);
+		}
+
+		public Dictionary<TKey, TElement> ToDictionary<TKey, TElement>(
+			Func<string, TKey> keySelector, Func<MiniYaml, TElement> elementSelector)
+		{
+			var ret = new Dictionary<TKey, TElement>();
+			foreach (var y in Nodes)
+			{
+				var key = keySelector(y.Key);
+				var element = elementSelector(y.Value);
+				try
+				{
+					ret.Add(key, element);
+				}
+				catch (ArgumentException ex)
+				{
+					throw new InvalidDataException("Duplicate key `{0}' in {1}".F(y.Key, y.Location), ex);
+				}
 			}
+			return ret;
 		}
 
 		public MiniYaml(string value) : this(value, null) { }
@@ -122,7 +138,8 @@ namespace OpenRA
 
 		public static List<MiniYamlNode> NodesOrEmpty(MiniYaml y, string s)
 		{
-			return y.NodesDict.ContainsKey(s) ? y.NodesDict[s].Nodes : new List<MiniYamlNode>();
+			var nd = y.ToDictionary();
+			return nd.ContainsKey(s) ? nd[s].Nodes : new List<MiniYamlNode>();
 		}
 
 		static List<MiniYamlNode> FromLines(string[] lines, string filename)
