@@ -6,7 +6,8 @@ language: c
 
 # Make sure build dependencies are installed.
 install:
- - sudo apt-get install mono-gmcs cli-common-dev libgl1-mesa-glx libopenal1 libfreetype6
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq mono-gmcs cli-common-dev libgl1-mesa-glx libopenal1 libfreetype6
 cache: apt
 
 # Run the build script
