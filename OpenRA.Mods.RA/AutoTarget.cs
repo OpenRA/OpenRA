@@ -119,10 +119,12 @@ namespace OpenRA.Mods.RA
 
 		public Actor ScanForTarget(Actor self, Actor currentTarget)
 		{
-			var range = info.ScanRadius > 0 ? WRange.FromCells(info.ScanRadius) : attack.GetMaximumRange();
-			if (self.IsIdle || currentTarget == null || !Target.FromActor(currentTarget).IsInRange(self.CenterPosition, range))
-				if (nextScanTime <= 0)
+			if (nextScanTime <= 0)
+			{
+				var range = info.ScanRadius > 0 ? WRange.FromCells(info.ScanRadius) : attack.GetMaximumRange();
+				if (self.IsIdle || currentTarget == null || !Target.FromActor(currentTarget).IsInRange(self.CenterPosition, range))
 					return ChooseTarget(self, range);
+			}
 
 			return currentTarget;
 		}
@@ -148,10 +150,11 @@ namespace OpenRA.Mods.RA
 			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range);
 
 			return inRange
-				.Where(a => a.AppearsHostileTo(self))
-				.Where(a => !a.HasTrait<AutoTargetIgnore>())
-				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-				.Where(a => self.Owner.Shroud.IsTargetable(a))
+				.Where(a =>
+					a.AppearsHostileTo(self) &&
+					!a.HasTrait<AutoTargetIgnore>() &&
+					attack.HasAnyValidWeapons(Target.FromActor(a)) &&
+					self.Owner.Shroud.IsTargetable(a))
 				.ClosestTo(self);
 		}
 	}
