@@ -5,6 +5,8 @@
 local ide = ide
 local statusBar = ide.frame.statusBar
 
+local q = EscapeMagic
+
 -- api loading depends on Lua interpreter
 -- and loaded specs
 
@@ -215,16 +217,18 @@ end
 -- assumes a tidied up string (no spaces, braces..)
 local function resolveAssign(editor,tx)
   local ac = editor.api.ac
+  local sep = editor.spec.sep
+  local anysep = "["..q(sep).."]"
   local assigns = editor.assignscache and editor.assignscache.assigns
   local function getclass(tab,a)
-    local key,rest = a:match("([%w_]+)[%.:](.*)")
+    local key,rest = a:match("([%w_]+)"..anysep.."(.*)")
     key = tonumber(key) or key -- make this work for childs[0]
     if (key and rest and tab.childs and tab.childs[key]) then
       return getclass(tab.childs[key],rest)
     end
     -- process valuetype, but only if it doesn't reference the current tab
     if (tab.valuetype and tab ~= ac.childs[tab.valuetype]) then
-      return getclass(ac,tab.valuetype.."."..a)
+      return getclass(ac,tab.valuetype..sep:sub(1,1)..a)
     end
     return tab,a
   end
@@ -237,7 +241,7 @@ local function resolveAssign(editor,tx)
       local classname = nil
       c = ""
       change = false
-      for w,s in tx:gmatch("([%w_]+)([%.:]?)") do
+      for w,s in tx:gmatch("([%w_]+)("..anysep.."?)") do
         local old = classname
         -- check if what we have so far can be matched with a class name
         -- this can happen if it's a reference to a value with a known type
@@ -254,7 +258,7 @@ local function resolveAssign(editor,tx)
       -- this can happen after typing "smth = smth:new(); smth:" or
       -- "line = line:gsub(...); line:" as the current algorithm attempts to
       -- replace "line" with the value that also includes "line"
-      if change and c:find("^"..(tx:gsub("[.:]","[.:]"))) then break end
+      if change and c:find("^"..(tx:gsub(anysep,anysep))) then break end
       tx = c
     end
   else
@@ -273,10 +277,12 @@ function GetTipInfo(editor, content, short, fullmatch)
   -- try to resolve the class
   content = content:gsub("%b[]",".0")
   local tab = resolveAssign(editor, content)
+  local sep = editor.spec.sep
+  local anysep = "["..q(sep).."]"
 
   local caller = content:match("([%w_]+)%(?%s*$")
   local class = (tab and tab.classname
-    or caller and content:match("([%w_]+)[%.:]"..caller.."%(?%s*$") or "")
+    or caller and content:match("([%w_]+)"..anysep..caller.."%(?%s*$") or "")
   local tip = editor.api.tip
 
   local classtab = short and tip.shortfinfoclass or tip.finfoclass
@@ -391,8 +397,9 @@ end
 function DynamicWordsAdd(editor,content,line,numlines)
   if ide.config.acandtip.nodynwords then return end
   local api = editor.api
+  local anysep = "["..q(editor.spec.sep).."]"
   content = content or getEditorLines(editor,line,numlines)
-  for word in content:gmatch "[%.:]?%s*([a-zA-Z_]+[a-zA-Z_0-9]+)" do
+  for word in content:gmatch(anysep.."?%s*([a-zA-Z_]+[a-zA-Z_0-9]+)") do
     addDynamicWord(api,word)
   end
 end
@@ -400,8 +407,9 @@ end
 function DynamicWordsRem(editor,content,line,numlines)
   if ide.config.acandtip.nodynwords then return end
   local api = editor.api
+  local anysep = "["..q(editor.spec.sep).."]"
   content = content or getEditorLines(editor,line,numlines)
-  for word in content:gmatch "[%.:]?%s*([a-zA-Z_]+[a-zA-Z_0-9]+)" do
+  for word in content:gmatch(anysep.."?%s*([a-zA-Z_]+[a-zA-Z_0-9]+)") do
     removeDynamicWord(api,word)
   end
 end
@@ -511,7 +519,7 @@ function CreateAutoCompList(editor,key)
   local ac = api.ac
   local sep = editor.spec.sep
 
-  local method = key:match(":[^"..sep.."]*$") ~= nil
+  local method = key:match(":[^"..q(sep).."]*$") ~= nil
 
   -- ignore keywords
   if tip.keys[key] then return end
@@ -524,7 +532,7 @@ function CreateAutoCompList(editor,key)
   if not (progress) then return end
 
   if (tab == ac) then
-    local _, krest = rest:match("([%w_]+)["..sep.."]([%w_]*)%s*$")
+    local _, krest = rest:match("([%w_]+)["..q(sep).."]([%w_]*)%s*$")
     if (krest) then
       tab = #krest >= (ide.config.acandtip.startat or 2) and tip.finfo or {}
       rest = krest:gsub("[^%w_]","")
@@ -567,7 +575,7 @@ function CreateAutoCompList(editor,key)
 
   local function addInheritance(tab, apilist, seen)
     if not tab.inherits then return end
-    for base in tab.inherits:gmatch("[%w_"..sep.."]+") do
+    for base in tab.inherits:gmatch("[%w_"..q(sep).."]+") do
       local tab = ac
       -- map "a.b.c" to class hierarchy (a.b.c)
       for class in base:gmatch("[%w_]+") do tab = tab.childs[class] end

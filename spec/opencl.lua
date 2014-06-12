@@ -42,7 +42,7 @@ return {
   exts = {"cl","ocl","clh",},
   lexer = wxstc.wxSTC_LEX_CPP,
   apitype = "opencl",
-  sep = "%.",
+  sep = ".",
   linecomment = "//",
   
   isfncall = function(str)

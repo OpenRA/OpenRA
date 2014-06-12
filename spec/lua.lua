@@ -26,12 +26,14 @@ local function isfndef(str)
   return s,e,cap,l
 end
 
+local q = EscapeMagic
+
 return {
   exts = {"lua", "rockspec", "wlua"},
   lexer = wxstc.wxSTC_LEX_LUA,
   apitype = "lua",
   linecomment = "--",
-  sep = "%.:",
+  sep = ".:",
   isfncall = function(str)
     return string.find(str, funccall .. "[%({'\"]")
   end,
@@ -111,7 +113,7 @@ return {
     local line = editor:GetCurrentLine()-1
     local maxlines = 48 -- scan up to this many lines back
 
-    local scopestart = {"if","do","while","function", "local%s+function", "for", "else", "elseif"}
+    local scopestart = {"if", "do", "while", "function", "local%s+function", "for", "else", "elseif"}
     local scopeend = {"end"}
     local iscomment = editor.spec.iscomment
 
@@ -148,8 +150,9 @@ return {
         local tx = editor:GetLine(line) --= string
 
         -- check for assignments
-        local varname = "([%w_][%w_%.]*)"
-        local identifier = "([%w_][%w_%.:%s]*)"
+        local sep = editor.spec.sep
+        local varname = "([%w_][%w_"..q(sep:sub(1,1)).."]*)"
+        local identifier = "([%w_][%w_"..q(sep).."%s]*)"
 
         -- special hint
         local typ,var = tx:match("%s*%-%-=%s*"..varname.."%s+"..identifier)
@@ -188,7 +191,7 @@ return {
           end
 
           if (var and typ) then
-            class,func = typ:match(varname.."[%.:]"..varname)
+            class,func = typ:match(varname.."["..q(sep).."]"..varname)
             if (assigns[typ]) then
               assigns[var] = assigns[typ]
             elseif (func) then

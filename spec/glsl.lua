@@ -7,7 +7,7 @@ return {
   exts = {"glsl","vert","frag","geom","cont","eval", "glslv", "glslf"},
   lexer = wxstc.wxSTC_LEX_CPP,
   apitype = "glsl",
-  sep = "%.",
+  sep = ".",
   linecomment = "//",
   
   isfncall = function(str)

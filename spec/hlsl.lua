@@ -7,7 +7,7 @@ return {
   exts = {"hlsl","fx","fxh","usf",},
   lexer = wxstc.wxSTC_LEX_CPP,
   apitype = "hlsl",
-  sep = "%.",
+  sep = ".",
   linecomment = "//",
   
   isfncall = function(str)

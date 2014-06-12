@@ -5,7 +5,7 @@ return {
   exts = {"ptx",},
   lexer = wxstc.wxSTC_LEX_CPP,
   apitype = "ptx",
-  sep = "%.",
+  sep = ".",
   linecomment = "//",
 
   isfndef = function(str)
