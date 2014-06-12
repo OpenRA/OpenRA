@@ -51,9 +51,11 @@ Chrome:
 	mods/d2k/chrome.yaml
 
 Assemblies:
-	mods/ra/OpenRA.Mods.RA.dll
+	mods/common/OpenRA.Mods.Common.dll
 	mods/cnc/OpenRA.Mods.Cnc.dll
 	mods/d2k/OpenRA.Mods.D2k.dll
+	mods/ra/OpenRA.Mods.RA.dll
+	mods/ts/OpenRA.Mods.TS.dll
 
 ChromeLayout:
 	mods/d2k/chrome/gameinit.yaml
