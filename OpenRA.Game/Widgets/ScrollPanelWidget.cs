@@ -16,9 +16,17 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Widgets
 {
-	public interface ILayout { void AdjustChild(Widget w); void AdjustChildren(); }
+	public interface ILayout
+	{
+		void AdjustChild(Widget w);
+		void AdjustChildren();
+	}
 
-	public enum ScrollPanelAlign { Bottom, Top }
+	public enum ScrollPanelAlign
+	{
+		Bottom,
+		Top
+	}
 
 	public class ScrollPanelWidget : Widget
 	{
@@ -26,22 +34,47 @@ namespace OpenRA.Widgets
 		public int ItemSpacing = 2;
 		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
 		public string Background = "scrollpanel-bg";
-		public int ContentHeight = 0;
+		public int ContentHeight;
 		public ILayout Layout;
 		public int MinimumThumbSize = 10;
 		public ScrollPanelAlign Align = ScrollPanelAlign.Top;
-		public bool CollapseHiddenChildren = false;
-		protected float ListOffset = 0;
-		protected bool UpPressed = false;
-		protected bool DownPressed = false;
-		protected bool ThumbPressed = false;
+		public bool CollapseHiddenChildren;
+		public float SmoothScrollSpeed = 0.333f;
+
+		protected bool UpPressed;
+		protected bool DownPressed;
+		protected bool ThumbPressed;
 		protected Rectangle upButtonRect;
 		protected Rectangle downButtonRect;
 		protected Rectangle backgroundRect;
 		protected Rectangle scrollbarRect;
 		protected Rectangle thumbRect;
 
-		public ScrollPanelWidget() { Layout = new ListLayout(this); }
+		// The target value is the list offset we're trying to reach
+		float targetListOffset;
+
+		// The current value is the actual list offset at the moment
+		float currentListOffset;
+
+		// Setting "smooth" to true will only update the target list offset.
+		// Setting "smooth" to false will also set the current list offset,
+		// i.e. it will scroll immediately.
+		//
+		// For example, scrolling with the mouse wheel will use smooth
+		// scrolling to give a nice visual effect that makes it easier
+		// for the user to follow. Dragging the scrollbar's thumb, however,
+		// will scroll to the desired position immediately.
+		protected void SetListOffset(float value, bool smooth)
+		{
+			targetListOffset = value;
+			if (!smooth)
+				currentListOffset = value;
+		}
+
+		public ScrollPanelWidget()
+		{
+			Layout = new ListLayout(this);
+		}
 
 		public override void RemoveChildren()
 		{
@@ -81,8 +114,8 @@ namespace OpenRA.Widgets
 
 			var ScrollbarHeight = rb.Height - 2 * ScrollbarWidth;
 
-			var thumbHeight = ContentHeight == 0 ? 0 : Math.Max(MinimumThumbSize, (int)(ScrollbarHeight*Math.Min(rb.Height*1f/ContentHeight, 1f)));
-			var thumbOrigin = rb.Y + ScrollbarWidth + (int)((ScrollbarHeight - thumbHeight)*(-1f*ListOffset/(ContentHeight - rb.Height)));
+			var thumbHeight = ContentHeight == 0 ? 0 : Math.Max(MinimumThumbSize, (int)(ScrollbarHeight * Math.Min(rb.Height * 1f / ContentHeight, 1f)));
+			var thumbOrigin = rb.Y + ScrollbarWidth + (int)((ScrollbarHeight - thumbHeight) * (-1f * currentListOffset / (ContentHeight - rb.Height)));
 			if (thumbHeight == ScrollbarHeight)
 				thumbHeight = 0;
 
@@ -93,10 +126,10 @@ namespace OpenRA.Widgets
 			thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
 
 			var upHover = Ui.MouseOverWidget == this && upButtonRect.Contains(Viewport.LastMousePos);
-			var upDisabled = thumbHeight == 0 || ListOffset >= 0;
+			var upDisabled = thumbHeight == 0 || currentListOffset >= 0;
 
 			var downHover = Ui.MouseOverWidget == this && downButtonRect.Contains(Viewport.LastMousePos);
-			var downDisabled = thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight;
+			var downDisabled = thumbHeight == 0 || currentListOffset <= Bounds.Height - ContentHeight;
 
 			var thumbHover = Ui.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
 			WidgetUtils.DrawPanel(Background, backgroundRect);
@@ -123,38 +156,44 @@ namespace OpenRA.Widgets
 			Game.Renderer.DisableScissor();
 		}
 
-		public override int2 ChildOrigin { get { return RenderOrigin + new int2(0, (int)ListOffset); } }
+		public override int2 ChildOrigin { get { return RenderOrigin + new int2(0, (int)currentListOffset); } }
 
 		public override Rectangle GetEventBounds()
 		{
 			return EventBounds;
 		}
 
-		void Scroll(int amount)
+		void Scroll(int amount, bool smooth = false)
 		{
-			ListOffset += amount * Game.Settings.Game.UIScrollSpeed;
-			ListOffset = Math.Min(0,Math.Max(Bounds.Height - ContentHeight, ListOffset));
+			var newTarget = targetListOffset + amount * Game.Settings.Game.UIScrollSpeed;
+			newTarget = Math.Min(0, Math.Max(Bounds.Height - ContentHeight, newTarget));
+
+			SetListOffset(newTarget, smooth);
 		}
 
-		public void ScrollToBottom()
+		public void ScrollToBottom(bool smooth = false)
 		{
-			ListOffset = Align == ScrollPanelAlign.Top ?
+			var value = Align == ScrollPanelAlign.Top ?
 				Math.Min(0, Bounds.Height - ContentHeight) :
 				Bounds.Height - ContentHeight;
+
+			SetListOffset(value, smooth);
 		}
 
-		public void ScrollToTop()
+		public void ScrollToTop(bool smooth = false)
 		{
-			ListOffset = Align == ScrollPanelAlign.Top ? 0 :
+			var value = Align == ScrollPanelAlign.Top ? 0 :
 				Math.Max(0, Bounds.Height - ContentHeight);
+
+			SetListOffset(value, smooth);
 		}
 
 		public bool ScrolledToBottom
 		{
-			get { return ListOffset == Math.Min(0, Bounds.Height - ContentHeight) || ContentHeight <= Bounds.Height; }
+			get { return targetListOffset == Math.Min(0, Bounds.Height - ContentHeight) || ContentHeight <= Bounds.Height; }
 		}
 
-		public void ScrollToItem(string itemKey)
+		public void ScrollToItem(string itemKey, bool smooth = false)
 		{
 			var item = Children.FirstOrDefault(c =>
 			{
@@ -166,17 +205,31 @@ namespace OpenRA.Widgets
 				return;
 
 			// Scroll the item to be visible
-			if (item.Bounds.Top + ListOffset < 0)
-				ListOffset = ItemSpacing - item.Bounds.Top;
+			float? newOffset = null;
+			if (item.Bounds.Top + currentListOffset < 0)
+				newOffset = ItemSpacing - item.Bounds.Top;
 
-			if (item.Bounds.Bottom + ListOffset > RenderBounds.Height)
-				ListOffset = RenderBounds.Height - item.Bounds.Bottom - ItemSpacing;
+			if (item.Bounds.Bottom + currentListOffset > RenderBounds.Height)
+				newOffset = RenderBounds.Height - item.Bounds.Bottom - ItemSpacing;
+
+			if (newOffset.HasValue)
+				SetListOffset(newOffset.Value, smooth);
 		}
 
-		public override void Tick ()
+		public override void Tick()
 		{
-			if (UpPressed) Scroll(1);
-			if (DownPressed) Scroll(-1);
+			if (UpPressed)
+				Scroll(1);
+
+			if (DownPressed)
+				Scroll(-1);
+
+			var offsetDiff = targetListOffset - currentListOffset;
+			var absOffsetDiff = Math.Abs(offsetDiff);
+			if (absOffsetDiff > 1f)
+				currentListOffset += offsetDiff * SmoothScrollSpeed.Clamp(0.1f, 1.0f);
+			else
+				SetListOffset(targetListOffset, false);
 		}
 
 		public override bool YieldMouseFocus(MouseInput mi)
@@ -186,11 +239,12 @@ namespace OpenRA.Widgets
 		}
 
 		int2 lastMouseLocation;
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Event == MouseInputEvent.Scroll)
 			{
-				Scroll(mi.ScrollDelta);
+				Scroll(mi.ScrollDelta, true);
 				return true;
 			}
 
@@ -210,12 +264,14 @@ namespace OpenRA.Widgets
 			{
 				var rb = RenderBounds;
 				var ScrollbarHeight = rb.Height - 2 * ScrollbarWidth;
-				var thumbHeight = ContentHeight == 0 ? 0 : Math.Max(MinimumThumbSize, (int)(ScrollbarHeight*Math.Min(rb.Height*1f/ContentHeight, 1f)));
-				var oldOffset = ListOffset;
-				ListOffset += (int)((lastMouseLocation.Y - mi.Location.Y)*(ContentHeight - rb.Height)*1f/(ScrollbarHeight - thumbHeight));
-				ListOffset = Math.Min(0,Math.Max(rb.Height - ContentHeight, ListOffset));
+				var thumbHeight = ContentHeight == 0 ? 0 : Math.Max(MinimumThumbSize, (int)(ScrollbarHeight * Math.Min(rb.Height * 1f / ContentHeight, 1f)));
+				var oldOffset = currentListOffset;
 
-				if (oldOffset != ListOffset)
+				var newOffset = currentListOffset + ((int)((lastMouseLocation.Y - mi.Location.Y) * (ContentHeight - rb.Height) * 1f / (ScrollbarHeight - thumbHeight)));
+				newOffset = Math.Min(0, Math.Max(rb.Height - ContentHeight, newOffset));
+				SetListOffset(newOffset, false);
+
+				if (oldOffset != newOffset)
 					lastMouseLocation = mi.Location;
 			}
 			else
