@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					newsHighlighted = false;
 				};
 
-				newsButton.IsHighlighted = () => newsHighlighted && Game.LocalTick % 50 < 25;;
+				newsButton.IsHighlighted = () => newsHighlighted && Game.LocalTick % 50 < 25;
 			}
 		}
 

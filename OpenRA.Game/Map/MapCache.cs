@@ -172,7 +172,7 @@ namespace OpenRA
 
 					// Yuck... But this helps the UI Jank when opening the map selector significantly.
 					Thread.Sleep(Environment.ProcessorCount == 1 ? 25 : 5);
-				};
+				}
 			}
 			Log.Write("debug", "MapCache.LoadAsyncInternal ended");
 		}
