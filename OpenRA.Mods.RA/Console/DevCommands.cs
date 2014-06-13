@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -29,21 +30,20 @@ namespace OpenRA.Mods.RA
 			var console = world.WorldActor.Trait<ChatCommands>();
 			var help = world.WorldActor.Trait<HelpCommand>();
 
-			console.RegisterCommand("disableshroud", this);
-			console.RegisterCommand("givecash", this);
-			console.RegisterCommand("instantbuild", this);
-			console.RegisterCommand("buildanywhere", this);
-			console.RegisterCommand("unlimitedpower", this);
-			console.RegisterCommand("enabletech", this);
-			console.RegisterCommand("instantcharge", this);
+			Action<string, string> register = (name, helpText) =>
+			{
+				console.RegisterCommand(name, this);
+				help.RegisterHelp(name, helpText);
+			};
 
-			help.RegisterHelp("disableshroud", "toggles shroud.");
-			help.RegisterHelp("givecash", "gives the default or specified amount of money.");
-			help.RegisterHelp("instantbuild", "toggles instant building.");
-			help.RegisterHelp("buildanywhere", "toggles you the ability to build anywhere.");
-			help.RegisterHelp("unlimitedpower", "toggles infinite power.");
-			help.RegisterHelp("enabletech", "toggles the ability to build everything.");
-			help.RegisterHelp("instantcharge", "toggles instant support power charging.");
+			register("disableshroud", "toggles shroud.");
+			register("givecash", "gives the default or specified amount of money.");
+			register("instantbuild", "toggles instant building.");
+			register("buildanywhere", "toggles you the ability to build anywhere.");
+			register("unlimitedpower", "toggles infinite power.");
+			register("enabletech", "toggles the ability to build everything.");
+			register("instantcharge", "toggles instant support power charging.");
+			register("all", "toggles all cheats and gives you some cash for your trouble.");
 		}
 
 		public void InvokeCommand(string name, string arg)
@@ -74,6 +74,16 @@ namespace OpenRA.Mods.RA
 				case "unlimitedpower": IssueDevCommand(world, "DevUnlimitedPower"); break;
 				case "enabletech": IssueDevCommand(world, "DevEnableTech"); break;
 				case "instantcharge": IssueDevCommand(world, "DevFastCharge"); break;
+
+				case "all":
+					IssueDevCommand(world, "DevShroudDisable");
+					IssueDevCommand(world, "DevFastBuild");
+					IssueDevCommand(world, "DevBuildAnywhere");
+					IssueDevCommand(world, "DevUnlimitedPower");
+					IssueDevCommand(world, "DevEnableTech");
+					IssueDevCommand(world, "DevFastCharge");
+					IssueDevCommand(world, "DevGiveCash");
+					break;
 			}
 		}
 
