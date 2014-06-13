@@ -397,10 +397,7 @@ debugger.shell = function(expression, isstatement)
         local addedret, forceexpression = true, expression:match("^%s*=%s*")
         expression = expression:gsub("^%s*=%s*","")
         local _, values, err = debugger.evaluate(expression)
-        if not forceexpression and err and
-          (err:find("'?<eof>'? expected near '") or
-           err:find("'%(' expected near") or
-           err:find("unexpected symbol near '")) then
+        if not forceexpression and err then
           _, values, err = debugger.execute(expression)
           addedret = false
         end
