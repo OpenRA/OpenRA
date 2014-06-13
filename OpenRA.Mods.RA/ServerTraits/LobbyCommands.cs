@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Server
 			var playerClients = server.LobbyInfo.Clients.Where(c => c.Bot == null && c.Slot != null);
 
 			// Are all players ready?
-			if (playerClients.Count() == 0 || playerClients.Any(c => c.State != Session.ClientState.Ready))
+			if (!playerClients.Any() || playerClients.Any(c => c.State != Session.ClientState.Ready))
 				return;
 
 			// Are the map conditions satisfied?
