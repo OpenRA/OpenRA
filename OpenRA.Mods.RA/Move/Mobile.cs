@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA.Move
 			if (!world.Map.IsInMap(cell.X, cell.Y))
 				return int.MaxValue;
 
-			var index = world.GetTerrainIndex(cell);
+			var index = world.Map.GetTerrainIndex(cell);
 			if (index == -1)
 				return int.MaxValue;
 
@@ -481,7 +481,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public int MovementSpeedForCell(Actor self, CPos cell)
 		{
-			var index = self.World.GetTerrainIndex(cell);
+			var index = self.World.Map.GetTerrainIndex(cell);
 			if (index == -1)
 				return 0;
 
@@ -574,7 +574,7 @@ namespace OpenRA.Mods.RA.Move
 				cursor = "move";
 
 				if (self.Owner.Shroud.IsExplored(location))
-					cursor = self.World.GetTerrainInfo(location).CustomCursor ?? cursor;
+					cursor = self.World.Map.GetTerrainInfo(location).CustomCursor ?? cursor;
 
 				if (!self.World.Map.IsInMap(location) || (self.Owner.Shroud.IsExplored(location) &&
 						unitType.MovementCostForCell(self.World, location) == int.MaxValue))

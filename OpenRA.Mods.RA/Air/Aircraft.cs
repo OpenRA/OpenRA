@@ -171,7 +171,7 @@ namespace OpenRA.Mods.RA.Air
 			if (self.World.ActorMap.AnyUnitsAt(cell))
 				return false;
 
-			var type = self.World.GetTerrainInfo(cell).Type;
+			var type = self.World.Map.GetTerrainInfo(cell).Type;
 			return info.LandableTerrainTypes.Contains(type);
 		}
 

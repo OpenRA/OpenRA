@@ -537,5 +537,18 @@ namespace OpenRA
 				}
 			}
 		}
+
+		public int GetTerrainIndex(CPos cell)
+		{
+			var custom = CustomTerrain[cell.X, cell.Y];
+			var tileSet = Rules.TileSets[Tileset];
+			return custom != -1 ? custom : tileSet.GetTerrainIndex(MapTiles.Value[cell.X, cell.Y]);
+		}
+
+		public TerrainTypeInfo GetTerrainInfo(CPos cell)
+		{
+			var tileSet = Rules.TileSets[Tileset];
+			return tileSet[GetTerrainIndex(cell)];
+		}
 	}
 }

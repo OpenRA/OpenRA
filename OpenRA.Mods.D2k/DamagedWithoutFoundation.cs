@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc
 			foreach (var kv in self.OccupiesSpace.OccupiedCells())
 			{
 				totalTiles++;
-				if (info.SafeTerrain.Contains(self.World.GetTerrainInfo(kv.First).Type))
+				if (info.SafeTerrain.Contains(self.World.Map.GetTerrainInfo(kv.First).Type))
 					safeTiles++;
 			}
 

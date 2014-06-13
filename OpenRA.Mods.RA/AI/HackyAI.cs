@@ -366,7 +366,7 @@ namespace OpenRA.Mods.RA.AI
 
 				case BuildingType.Refinery:
 					var tilesPos = world.FindTilesInCircle(baseCenter, MaxBaseDistance)
-						.Where(a => resourceTypeIndices.Contains(world.GetTerrainIndex(new CPos(a.X, a.Y))));
+						.Where(a => resourceTypeIndices.Contains(Map.GetTerrainIndex(new CPos(a.X, a.Y))));
 					if (tilesPos.Any())
 					{
 						var pos = tilesPos.MinBy(a => (a.CenterPosition - baseCenter.CenterPosition).LengthSquared);

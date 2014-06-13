@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA
 				if (!self.Owner.Shroud.IsExplored(a) || !self.Owner.Shroud.IsExplored(b))
 					return false;
 
-				if (self.World.GetTerrainIndex(a) != self.World.GetTerrainIndex(b))
+				if (self.World.Map.GetTerrainIndex(a) != self.World.Map.GetTerrainIndex(b))
 					return false;
 			}
 

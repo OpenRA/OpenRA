@@ -160,9 +160,8 @@ namespace OpenRA.Mods.RA.Effects
 			var shouldExplode = (pos.Z < 0) // Hit the ground
 				|| (dist.LengthSquared < MissileCloseEnough.Range * MissileCloseEnough.Range) // Within range
 				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
-				|| (!info.High && world.ActorMap.GetUnitsAt(cell)
-					.Any(a => a.HasTrait<IBlocksBullets>())) // Hit a wall
-				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.GetTerrainInfo(cell).Type != info.BoundToTerrainType); // Hit incompatible terrain
+				|| (!info.High && world.ActorMap.GetUnitsAt(cell).Any(a => a.HasTrait<IBlocksBullets>())) // Hit a wall
+				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType); // Hit incompatible terrain
 
 			if (shouldExplode)
 				Explode(world);

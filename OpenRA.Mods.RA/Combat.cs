@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 			if (!world.Map.IsInMap(targetTile))
 				return;
 
-			var isWater = pos.Z <= 0 && world.GetTerrainInfo(targetTile).IsWater;
+			var isWater = pos.Z <= 0 && world.Map.GetTerrainInfo(targetTile).IsWater;
 			var explosionType = isWater ? warhead.WaterExplosion : warhead.Explosion;
 			var explosionTypePalette = isWater ? warhead.WaterExplosionPalette : warhead.ExplosionPalette;
 
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 				// Draw the smudges:
 				foreach (var sc in smudgeCells)
 				{
-					var smudgeType = world.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
+					var smudgeType = world.Map.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
 					if (smudgeType == null) continue;
 
 					SmudgeLayer smudgeLayer;
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 			}
 			else
 			{
-				var smudgeType = world.GetTerrainInfo(targetTile).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
+				var smudgeType = world.Map.GetTerrainInfo(targetTile).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
 				if (smudgeType != null)
 				{
 					SmudgeLayer smudgeLayer;
