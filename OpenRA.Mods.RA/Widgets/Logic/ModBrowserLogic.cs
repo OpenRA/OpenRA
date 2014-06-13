@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void SelectMod(ModMetadata mod)
 		{
 			selectedMod = mod;
-			selectedAuthor = "By " + mod.Author ?? "unknown author";
+			selectedAuthor = "By " + (mod.Author ?? "unknown author");
 			selectedDescription = (mod.Description ?? "").Replace("\\n", "\n");
 			var selectedIndex = Array.IndexOf(allMods, mod);
 			if (selectedIndex - modOffset > 4)
