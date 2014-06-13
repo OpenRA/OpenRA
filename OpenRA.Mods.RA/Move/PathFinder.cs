@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA.Move
 
 				// Select only the tiles that are within range from the requested SubCell
 				// This assumes that the SubCell does not change during the path traversal
-				var tilesInRange = world.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
+				var tilesInRange = world.Map.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
 					.Where(t => (t.CenterPosition - target).LengthSquared <= rangeSquared
 					       && mi.CanEnterCell(self.World, self, t, null, true, true));
 

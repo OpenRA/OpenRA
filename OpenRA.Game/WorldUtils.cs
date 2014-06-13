@@ -55,39 +55,6 @@ namespace OpenRA
 			}
 		}
 
-		public static IEnumerable<CPos> FindTilesInCircle(this World world, CPos a, int r)
-		{
-			if (r >= TilesByDistance.Length)
-				throw new InvalidOperationException("FindTilesInCircle supports queries for only <= {0}".F(MaxRange));
-
-			for(var i = 0; i <= r; i++)
-			{
-				foreach(var offset in TilesByDistance[i])
-				{
-					var t = offset + a;
-					if (world.Map.Bounds.Contains(t.X, t.Y))
-						yield return t;
-				}
-			}
-		}
-
-		static List<CVec>[] InitTilesByDistance(int max)
-		{
-			var ts = new List<CVec>[max+1];
-			for (var i = 0; i < max+1; i++)
-				ts[i] = new List<CVec>();
-
-			for (var j = -max; j <= max; j++)
-				for (var i = -max; i <= max; i++)
-					if (max * max >= i * i + j * j)
-						ts[(int)Math.Ceiling(Math.Sqrt(i*i + j*j))].Add(new CVec(i,j));
-
-			return ts;
-		}
-
-		public const int MaxRange = 50;
-		static List<CVec>[] TilesByDistance = InitTilesByDistance(MaxRange);
-
 		public static CPos ChooseRandomEdgeCell(this World w)
 		{
 			var isX = w.SharedRandom.Next(2) == 0;

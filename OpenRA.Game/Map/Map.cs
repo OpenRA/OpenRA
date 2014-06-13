@@ -573,5 +573,38 @@ namespace OpenRA
 			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? tl.Y : br.Y) - pos.Y) / dir.Y;
 			return new WRange(Math.Min(x, y) * dir.Length);
 		}
+
+		public const int MaxTilesInCircleRange = 50;
+		static List<CVec>[] TilesByDistance = InitTilesByDistance(MaxTilesInCircleRange);
+
+		static List<CVec>[] InitTilesByDistance(int max)
+		{
+			var ts = new List<CVec>[max + 1];
+			for (var i = 0; i < max + 1; i++)
+				ts [i] = new List<CVec>();
+
+			for (var j = -max; j <= max; j++)
+				for (var i = -max; i <= max; i++)
+					if (max * max >= i * i + j * j)
+						ts [(int)Math.Ceiling(Math.Sqrt(i * i + j * j))].Add(new CVec(i, j));
+
+			return ts;
+		}
+
+		public IEnumerable<CPos> FindTilesInCircle(CPos center, int range)
+		{
+			if (range >= TilesByDistance.Length)
+				throw new InvalidOperationException("FindTilesInCircle supports queries for only <= {0}".F(MaxTilesInCircleRange));
+
+			for(var i = 0; i <= range; i++)
+			{
+				foreach(var offset in TilesByDistance[i])
+				{
+					var t = offset + center;
+					if (Bounds.Contains(t.X, t.Y))
+						yield return t;
+				}
+			}
+		}
 	}
 }

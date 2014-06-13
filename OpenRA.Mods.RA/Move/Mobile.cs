@@ -324,13 +324,15 @@ namespace OpenRA.Mods.RA.Move
 			var searched = new List<CPos>();
 			// Limit search to a radius of 10 tiles
 			for (int r = minRange; r < maxRange; r++)
-				foreach (var tile in self.World.FindTilesInCircle(target, r).Except(searched))
+			{
+				foreach (var tile in self.World.Map.FindTilesInCircle(target, r).Except(searched))
 				{
 					if (CanEnterCell(tile))
 						return tile;
 
 					searched.Add(tile);
 				}
+			}
 
 			// Couldn't find a cell
 			return target;
@@ -343,13 +345,15 @@ namespace OpenRA.Mods.RA.Move
 
 			var searched = new List<CPos>();
 			for (int r = minRange; r < maxRange; r++)
-				foreach (var tile in self.World.FindTilesInCircle(target, r).Except(searched))
+			{
+				foreach (var tile in self.World.Map.FindTilesInCircle(target, r).Except(searched))
 				{
 					if (check(tile))
 						return tile;
 
 					searched.Add(tile);
 				}
+			}
 
 			// Couldn't find a cell
 			return target;

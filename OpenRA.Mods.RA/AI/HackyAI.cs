@@ -345,7 +345,7 @@ namespace OpenRA.Mods.RA.AI
 			{
 				for (var k = MaxBaseDistance; k >= 0; k--)
 				{
-					var tlist = world.FindTilesInCircle(center, k)
+					var tlist = Map.FindTilesInCircle(center, k)
 						.OrderBy(a => (a.CenterPosition - pos).LengthSquared);
 
 					foreach (var t in tlist)
@@ -365,7 +365,7 @@ namespace OpenRA.Mods.RA.AI
 					return enemyBase != null ? findPos(enemyBase.CenterPosition, defenseCenter) : null;
 
 				case BuildingType.Refinery:
-					var tilesPos = world.FindTilesInCircle(baseCenter, MaxBaseDistance)
+					var tilesPos = Map.FindTilesInCircle(baseCenter, MaxBaseDistance)
 						.Where(a => resourceTypeIndices.Contains(Map.GetTerrainIndex(new CPos(a.X, a.Y))));
 					if (tilesPos.Any())
 					{
@@ -377,7 +377,7 @@ namespace OpenRA.Mods.RA.AI
 				case BuildingType.Building:
 					for (var k = 0; k < maxBaseDistance; k++)
 					{
-						foreach (var t in world.FindTilesInCircle(baseCenter, k))
+						foreach (var t in Map.FindTilesInCircle(baseCenter, k))
 						{
 							if (world.CanPlaceBuilding(actorType, bi, t, null))
 							{
@@ -696,7 +696,7 @@ namespace OpenRA.Mods.RA.AI
 		// Won't work for shipyards...
 		CPos ChooseRallyLocationNear(CPos startPos)
 		{
-			var possibleRallyPoints = world.FindTilesInCircle(startPos, Info.RallyPointScanRadius)
+			var possibleRallyPoints = Map.FindTilesInCircle(startPos, Info.RallyPointScanRadius)
 				.Where(IsRallyPointValid);
 
 			if (!possibleRallyPoints.Any())

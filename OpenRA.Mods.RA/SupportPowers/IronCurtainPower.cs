@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
 			int range = ((IronCurtainPowerInfo)Info).Range;
-			var tiles = self.World.FindTilesInCircle(xy, range);
+			var tiles = self.World.Map.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
 				units.AddRange(self.World.ActorMap.GetUnitsAt(t));
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA
 			{
 				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
 				var pal = wr.Palette("terrain");
-				foreach (var t in world.FindTilesInCircle(xy, range))
+				foreach (var t in world.Map.FindTilesInCircle(xy, range))
 					yield return new SpriteRenderable(tile, t.CenterPosition, WVec.Zero, -511, pal, 1f, true);
 			}
 
