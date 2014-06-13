@@ -65,8 +65,8 @@ namespace OpenRA.Mods.RA
 
 			var altitude = self.World.Map.Rules.Actors[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude.Range;
 			var target = order.TargetLocation.CenterPosition + new WVec(0, 0, altitude);
-			var startEdge = target - (self.World.DistanceToMapEdge(target, -delta) + info.Cordon).Range * delta / 1024;
-			var finishEdge = target + (self.World.DistanceToMapEdge(target, delta) + info.Cordon).Range * delta / 1024;
+			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Range * delta / 1024;
+			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Range * delta / 1024;
 
 			Actor flare = null;
 			Actor camera = null;

@@ -564,5 +564,14 @@ namespace OpenRA
 				r.Next(Bounds.Left, Bounds.Right),
 				r.Next(Bounds.Top, Bounds.Bottom));
 		}
+
+		public WRange DistanceToEdge(WPos pos, WVec dir)
+		{
+			var tl = Bounds.TopLeftAsCPos().TopLeft;
+			var br = Bounds.BottomRightAsCPos().BottomRight;
+			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? tl.X : br.X) - pos.X) / dir.X;
+			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? tl.Y : br.Y) - pos.Y) / dir.Y;
+			return new WRange(Math.Min(x, y) * dir.Length);
+		}
 	}
 }
