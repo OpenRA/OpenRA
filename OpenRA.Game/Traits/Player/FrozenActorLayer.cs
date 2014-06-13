@@ -47,7 +47,7 @@ namespace OpenRA.Traits
 		}
 
 		public uint ID { get { return actor.ActorID; } }
-		public bool IsValid { get { return Owner != null; } }
+		public bool IsValid { get { return Owner != null && HasRenderables; } }
 		public ActorInfo Info { get { return actor.Info; } }
 		public Actor Actor { get { return !actor.IsDead() ? actor : null; } }
 
@@ -87,7 +87,7 @@ namespace OpenRA.Traits
 			return Renderables;
 		}
 
-		public bool HasRenderables { get { return Renderables != null; } }
+		public bool HasRenderables { get { return Renderables != null && Renderables.Any(); } }
 
 		public override string ToString()
 		{
