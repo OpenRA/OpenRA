@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Render
 		public void PlayCustomAnimRepeating(Actor self, string name)
 		{
 			DefaultAnimation.PlayThen(name,
-				() => { PlayCustomAnimRepeating(self, name); });
+				() => PlayCustomAnimRepeating(self, name));
 		}
 
 		public void PlayCustomAnimBackwards(Actor self, string name, Action after)

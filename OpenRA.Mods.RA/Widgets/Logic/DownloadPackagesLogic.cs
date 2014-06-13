@@ -65,19 +65,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					mirror != null ? new Uri(mirror).Host : "unknown host");
 			};
 
-			Action<string> onExtractProgress = s =>
-			{
-					Game.RunAfterTick(() => statusLabel.GetText = () => s);
-			};
+			Action<string> onExtractProgress = s => Game.RunAfterTick(() => statusLabel.GetText = () => s);
 
-			Action<string> onError = s =>
+			Action<string> onError = s => Game.RunAfterTick(() =>
 			{
-				Game.RunAfterTick(() =>
-				{
-					statusLabel.GetText = () => "Error: " + s;
-					retryButton.IsVisible = () => true;
-				});
-			};
+				statusLabel.GetText = () => "Error: " + s;
+				retryButton.IsVisible = () => true;
+			});
 
 			Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
 			{

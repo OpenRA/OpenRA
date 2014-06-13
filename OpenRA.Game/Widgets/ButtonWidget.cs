@@ -60,7 +60,7 @@ namespace OpenRA.Widgets
 		{
 			this.modRules = modRules;
 
-			GetText = () => { return Text; };
+			GetText = () => Text;
 			GetColor = () => TextColor;
 			GetColorDisabled = () => TextColorDisabled;
 			GetContrastColor = () => ContrastColor;
