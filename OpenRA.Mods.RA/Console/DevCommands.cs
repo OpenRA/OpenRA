@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 
 		public void InvokeCommand(string name, string arg)
 		{
-			if (!world.LobbyInfo.GlobalSettings.AllowCheats)
+			if (!world.AllowDevCommands)
 			{
 				Game.Debug("Cheats are disabled.");
 				return;

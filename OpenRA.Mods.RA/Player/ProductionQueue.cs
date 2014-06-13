@@ -184,7 +184,7 @@ namespace OpenRA.Mods.RA
 
 		public virtual IEnumerable<ActorInfo> AllItems()
 		{
-			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
+			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
 				return Produceable.Select(a => a.Key);
 
 			return Produceable.Where(a => a.Value.Buildable || a.Value.Visible).Select(a => a.Key);
@@ -192,7 +192,7 @@ namespace OpenRA.Mods.RA
 
 		public virtual IEnumerable<ActorInfo> BuildableItems()
 		{
-			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
+			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
 				return Produceable.Select(a => a.Key);
 
 			return Produceable.Where(a => a.Value.Buildable).Select(a => a.Key);
@@ -289,7 +289,7 @@ namespace OpenRA.Mods.RA
 			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
 				return 0;
 
-			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
+			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
 			var time = unit.GetBuildTime() * Info.BuildSpeed;

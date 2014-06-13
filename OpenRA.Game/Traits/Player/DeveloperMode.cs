@@ -56,7 +56,7 @@ namespace OpenRA.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (!self.World.LobbyInfo.GlobalSettings.AllowCheats)
+			if (!self.World.AllowDevCommands)
 				return;
 
 			switch(order.OrderString)
