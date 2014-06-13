@@ -100,13 +100,6 @@ namespace OpenRA
 					: (edge ? w.Map.Bounds.Top : w.Map.Bounds.Bottom));
 		}
 
-		public static CPos ChooseRandomCell(this World w, MersenneTwister r)
-		{
-			return new CPos(
-				r.Next(w.Map.Bounds.Left, w.Map.Bounds.Right),
-				r.Next(w.Map.Bounds.Top, w.Map.Bounds.Bottom));
-		}
-
 		public static WRange DistanceToMapEdge(this World w, WPos pos, WVec dir)
 		{
 			var tl = w.Map.Bounds.TopLeftAsCPos().TopLeft;

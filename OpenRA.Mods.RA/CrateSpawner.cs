@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA
 		{
 			for (var n = 0; n < maxTries; n++)
 			{
-				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
+				var p = self.World.Map.ChooseRandomCell(self.World.SharedRandom);
 
 				// Is this valid terrain?
 				var terrainType = self.World.Map.GetTerrainInfo(p).Type;

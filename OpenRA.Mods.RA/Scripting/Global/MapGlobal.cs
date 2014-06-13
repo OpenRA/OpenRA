@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Returns a random cell inside the visible region of the map.")]
 		public CPos RandomCell()
 		{
-			return context.World.ChooseRandomCell(context.World.SharedRandom);
+			return context.World.Map.ChooseRandomCell(context.World.SharedRandom);
 		}
 
 		[Desc("Returns a random cell on the visible border of the map.")]

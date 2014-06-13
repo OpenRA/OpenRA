@@ -19,6 +19,7 @@ using OpenRA.FileSystem;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Graphics;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -555,6 +556,13 @@ namespace OpenRA
 		{
 			var r = Bounds;
 			return xy.Clamp(new Rectangle(r.X, r.Y, r.Width - 1, r.Height - 1));
+		}
+
+		public CPos ChooseRandomCell(MersenneTwister r)
+		{
+			return new CPos(
+				r.Next(Bounds.Left, Bounds.Right),
+				r.Next(Bounds.Top, Bounds.Bottom));
 		}
 	}
 }
