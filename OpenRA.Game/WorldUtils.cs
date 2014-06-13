@@ -88,15 +88,15 @@ namespace OpenRA
 		public const int MaxRange = 50;
 		static List<CVec>[] TilesByDistance = InitTilesByDistance(MaxRange);
 
-		public static string GetTerrainType(this World world, CPos cell)
+		public static int GetTerrainIndex(this World world, CPos cell)
 		{
 			var custom = world.Map.CustomTerrain[cell.X, cell.Y];
-			return custom ?? world.TileSet.GetTerrainType(world.Map.MapTiles.Value[cell.X, cell.Y]);
+			return custom != -1 ? custom : world.TileSet.GetTerrainIndex(world.Map.MapTiles.Value[cell.X, cell.Y]);
 		}
 
 		public static TerrainTypeInfo GetTerrainInfo(this World world, CPos cell)
 		{
-			return world.TileSet.Terrain[world.GetTerrainType(cell)];
+			return world.TileSet[world.GetTerrainIndex(cell)];
 		}
 
 		public static CPos ClampToWorld(this World world, CPos xy)

@@ -54,34 +54,34 @@ namespace OpenRA.Mods.RA.Buildings
 				foreach (var c in FootprintUtils.Tiles(self))
 				{
 					// Only place on allowed terrain types
-					if (!info.TerrainTypes.Contains(self.World.GetTerrainType(c)))
+					if (!info.TerrainTypes.Contains(self.World.GetTerrainInfo(c).Type))
 						continue;
 
 					// Don't place under other buildings or custom terrain
-					if (bi.GetBuildingAt(c) != self || self.World.Map.CustomTerrain[c.X, c.Y] != null)
+					if (bi.GetBuildingAt(c) != self || self.World.Map.CustomTerrain[c.X, c.Y] != -1)
 						continue;
 
-					var index = template.Tiles.Keys.Random(Game.CosmeticRandom);
-					layer.AddTile(c, new TileReference<ushort, byte>(template.Id, index));
+					var index = Game.CosmeticRandom.Next(template.TilesCount);
+					layer.AddTile(c, new TileReference<ushort, byte>(template.Id, (byte)index));
 				}
 
 				return;
 			}
 
 			var origin = self.Location + info.Offset;
-			foreach (var i in template.Tiles.Keys)
+			for (var i = 0; i < template.TilesCount; i++)
 			{
 				var c = origin + new CVec(i % template.Size.X, i / template.Size.X);
 
 				// Only place on allowed terrain types
-				if (!info.TerrainTypes.Contains(self.World.GetTerrainType(c)))
+				if (!info.TerrainTypes.Contains(self.World.GetTerrainInfo(c).Type))
 					continue;
 
 				// Don't place under other buildings or custom terrain
-				if (bi.GetBuildingAt(c) != self || self.World.Map.CustomTerrain[c.X, c.Y] != null)
+				if (bi.GetBuildingAt(c) != self || self.World.Map.CustomTerrain[c.X, c.Y] != -1)
 					continue;
 
-				layer.AddTile(c, new TileReference<ushort, byte>(template.Id, i));
+				layer.AddTile(c, new TileReference<ushort, byte>(template.Id, (byte)i));
 			}
 		}
 	}

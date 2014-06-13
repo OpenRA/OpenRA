@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (!self.World.Map.IsInMap(cell.X, cell.Y)) return false;
 
-			var type = self.World.GetTerrainType(cell);
+			var type = self.World.GetTerrainInfo(cell).Type;
 			if (!info.TerrainTypes.Contains(type))
 				return false;
 

@@ -48,16 +48,55 @@ namespace OpenRA.Mods.RA.Move
 				var cost = nodesDict.ContainsKey("PathingCost")
 					? FieldLoader.GetValue<int>("cost", nodesDict["PathingCost"].Value)
 					: (int)(10000 / speed);
-				ret.Add(t.Key, new TerrainInfo { Speed = speed, Cost = cost });
+				ret.Add(t.Key, new TerrainInfo(speed, cost));
 			}
 
 			return ret;
 		}
 
+		TerrainInfo[] LoadTilesetSpeeds(TileSet tileSet)
+		{
+			var info = new TerrainInfo[tileSet.TerrainsCount];
+			for (var i = 0; i < info.Length; i++)
+				info[i] = TerrainInfo.Impassable;
+
+			foreach (var kvp in TerrainSpeeds)
+			{
+				int index;
+				if (tileSet.TryGetTerrainIndex(kvp.Key, out index))
+					info[index] = kvp.Value;
+			}
+
+			return info;
+		}
+
 		public class TerrainInfo
 		{
-			public int Cost = int.MaxValue;
-			public decimal Speed = 0;
+			public static readonly TerrainInfo Impassable = new TerrainInfo();
+
+			public readonly int Cost;
+			public readonly decimal Speed;
+
+			public TerrainInfo()
+			{
+				Cost = int.MaxValue;
+				Speed = 0;
+			}
+
+			public TerrainInfo(decimal speed, int cost)
+			{
+				Speed = speed;
+				Cost = cost;
+			}
+		}
+
+		public readonly Cache<TileSet, TerrainInfo[]> TilesetTerrainInfo;
+		public readonly Cache<TileSet, int> TilesetMovementClass;
+
+		public MobileInfo()
+		{
+			TilesetTerrainInfo = new Cache<TileSet, TerrainInfo[]>(LoadTilesetSpeeds);
+			TilesetMovementClass = new Cache<TileSet, int>(CalculateTilesetMovementClass);
 		}
 
 		public int MovementCostForCell(World world, CPos cell)
@@ -65,20 +104,22 @@ namespace OpenRA.Mods.RA.Move
 			if (!world.Map.IsInMap(cell.X, cell.Y))
 				return int.MaxValue;
 
-			var type = world.GetTerrainType(cell);
-			if (!TerrainSpeeds.ContainsKey(type))
+			var index = world.GetTerrainIndex(cell);
+			if (index == -1)
 				return int.MaxValue;
 
-			return TerrainSpeeds[type].Cost;
+			return TilesetTerrainInfo[world.TileSet][index].Cost;
+		}
+
+		public int CalculateTilesetMovementClass(TileSet tileset)
+		{
+			/* collect our ability to cross *all* terraintypes, in a bitvector */
+			return TilesetTerrainInfo[tileset].Select(ti => ti.Cost < int.MaxValue).ToBits();
 		}
 
 		public int GetMovementClass(TileSet tileset)
 		{
-			/* collect our ability to cross *all* terraintypes, in a bitvector */
-			var passability = tileset.Terrain.OrderBy(t => t.Key)
-				.Select(t => TerrainSpeeds.ContainsKey(t.Key) && TerrainSpeeds[t.Key].Cost < int.MaxValue);
-
-			return passability.ToBits();
+			return TilesetMovementClass[tileset];
 		}
 
 		public static readonly Dictionary<SubCell, WVec> SubCellOffsets = new Dictionary<SubCell, WVec>()
@@ -440,12 +481,15 @@ namespace OpenRA.Mods.RA.Move
 
 		public int MovementSpeedForCell(Actor self, CPos cell)
 		{
-			var type = self.World.GetTerrainType(cell);
-
-			if (!Info.TerrainSpeeds.ContainsKey(type))
+			var index = self.World.GetTerrainIndex(cell);
+			if (index == -1)
 				return 0;
 
-			decimal speed = Info.Speed * Info.TerrainSpeeds[type].Speed;
+			var speed = Info.TilesetTerrainInfo[self.World.TileSet][index].Speed;
+			if (speed == decimal.Zero)
+				return 0;
+
+			speed *= Info.Speed;
 			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
 				speed *= t.GetSpeedModifier();
 			return (int)(speed / 100);

@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA
 				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
 
 				// Is this valid terrain?
-				var terrainType = self.World.GetTerrainType(p);
+				var terrainType = self.World.GetTerrainInfo(p).Type;
 				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType))
 					continue;
 

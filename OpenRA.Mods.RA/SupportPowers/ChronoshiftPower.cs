@@ -71,36 +71,18 @@ namespace OpenRA.Mods.RA
 			var range = ((ChronoshiftPowerInfo)Info).Range;
 			var sourceTiles = self.World.FindTilesInCircle(xy, range);
 			var destTiles = self.World.FindTilesInCircle(sourceLocation, range);
-			var sourceTerrain = new List<string>();
-			var destTerrain = new List<string>();
 
-			int j = 0;
-			foreach (var t in sourceTiles)
+			using (var se = sourceTiles.GetEnumerator())
+			using (var de = destTiles.GetEnumerator())
+			while (se.MoveNext() && de.MoveNext())
 			{
-				j = j + 1;
-				if (!self.Owner.Shroud.IsExplored(t))
-					return false;
-				sourceTerrain.Add(self.World.GetTerrainType(t));
-			}
+				var a = se.Current;
+				var b = de.Current;
 
-			j = 0;
-			foreach (var t in destTiles)
-			{
-				j = j + 1;
-				if (!self.Owner.Shroud.IsExplored(t))
+				if (!self.Owner.Shroud.IsExplored(a) || !self.Owner.Shroud.IsExplored(b))
 					return false;
 
-				self.World.GetTerrainType(t);
-				destTerrain.Add(self.World.GetTerrainType(t));
-			}
-
-			// HACK but I don't want to write a comparison function
-			if (sourceTerrain.Count != destTerrain.Count)
-				return false;
-
-			for (int i = 0; i < sourceTerrain.Count; i++)
-			{
-				if (!sourceTerrain[i].Equals(destTerrain[i]))
+				if (self.World.GetTerrainIndex(a) != self.World.GetTerrainIndex(b))
 					return false;
 			}
 
