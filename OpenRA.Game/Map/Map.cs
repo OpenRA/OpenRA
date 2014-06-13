@@ -558,11 +558,21 @@ namespace OpenRA
 			return xy.Clamp(new Rectangle(r.X, r.Y, r.Width - 1, r.Height - 1));
 		}
 
-		public CPos ChooseRandomCell(MersenneTwister r)
+		public CPos ChooseRandomCell(MersenneTwister rand)
 		{
 			return new CPos(
-				r.Next(Bounds.Left, Bounds.Right),
-				r.Next(Bounds.Top, Bounds.Bottom));
+				rand.Next(Bounds.Left, Bounds.Right),
+				rand.Next(Bounds.Top, Bounds.Bottom));
+		}
+
+		public CPos ChooseRandomEdgeCell(MersenneTwister rand)
+		{
+			var isX = rand.Next(2) == 0;
+			var edge = rand.Next(2) == 0;
+
+			return new CPos(
+				isX ? rand.Next(Bounds.Left, Bounds.Right) : (edge ? Bounds.Left : Bounds.Right),
+				!isX ? rand.Next(Bounds.Top, Bounds.Bottom) : (edge ? Bounds.Top : Bounds.Bottom));
 		}
 
 		public WRange DistanceToEdge(WPos pos, WVec dir)

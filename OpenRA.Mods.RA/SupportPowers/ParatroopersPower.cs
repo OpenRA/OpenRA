@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 
 			var info = (ParatroopersPowerInfo)Info;
 			var items = info.DropItems;
-			var startPos = self.World.ChooseRandomEdgeCell();
+			var startPos = self.World.Map.ChooseRandomEdgeCell(self.World.SharedRandom);
 
 			self.World.AddFrameEndTask(w =>
 			{

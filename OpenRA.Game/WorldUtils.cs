@@ -55,18 +55,6 @@ namespace OpenRA
 			}
 		}
 
-		public static CPos ChooseRandomEdgeCell(this World w)
-		{
-			var isX = w.SharedRandom.Next(2) == 0;
-			var edge = w.SharedRandom.Next(2) == 0;
-
-			return new CPos(
-				isX ? w.SharedRandom.Next(w.Map.Bounds.Left, w.Map.Bounds.Right)
-					: (edge ? w.Map.Bounds.Left : w.Map.Bounds.Right),
-				!isX ? w.SharedRandom.Next(w.Map.Bounds.Top, w.Map.Bounds.Bottom)
-					: (edge ? w.Map.Bounds.Top : w.Map.Bounds.Bottom));
-		}
-
 		public static bool HasVoices(this Actor a)
 		{
 			var selectable = a.Info.Traits.GetOrDefault<SelectableInfo>();

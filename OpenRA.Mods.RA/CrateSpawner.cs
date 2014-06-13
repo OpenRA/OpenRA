@@ -89,8 +89,8 @@ namespace OpenRA.Mods.RA
 				if (info.DeliveryAircraft != null)
 				{
 					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
-					var startPos = w.ChooseRandomEdgeCell();
-					var altitude = self.World.Map.Rules.Actors[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
+					var startPos = w.Map.ChooseRandomEdgeCell(w.SharedRandom);
+					var altitude = w.Map.Rules.Actors[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
 					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
 					{
 						new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),

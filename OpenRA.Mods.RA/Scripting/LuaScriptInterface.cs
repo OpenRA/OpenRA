@@ -345,7 +345,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public CPos GetRandomEdgeCell()
 		{
-			return world.ChooseRandomEdgeCell();
+			return world.Map.ChooseRandomEdgeCell(world.SharedRandom);
 		}
 
 		[LuaGlobal]

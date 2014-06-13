@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Returns a random cell on the visible border of the map.")]
 		public CPos RandomEdgeCell()
 		{
-			return context.World.ChooseRandomEdgeCell();
+			return context.World.Map.ChooseRandomEdgeCell(context.World.SharedRandom);
 		}
 
 		[Desc("Returns true if there is only one human player.")]
