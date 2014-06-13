@@ -22,8 +22,6 @@ namespace OpenRA.Mods.RA
 	{
 		World world;
 
-		public DevCommands() { }
-
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;

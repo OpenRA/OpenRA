@@ -19,8 +19,6 @@ namespace OpenRA.Mods.RA
 	{
 		World world;
 
-		public PlayerCommands() { }
-
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;

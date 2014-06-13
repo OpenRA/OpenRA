@@ -23,8 +23,6 @@ namespace OpenRA.Mods.RA
 
 	public class Demolishable : IDemolishable
 	{
-		public Demolishable() { }
-
 		public void Demolish(Actor self, Actor saboteur)
 		{
 			self.Kill(saboteur);
