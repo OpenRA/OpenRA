@@ -69,8 +69,8 @@ namespace OpenRA.Mods.RA.Buildings
 			if (buildingTraits.Contains<BibInfo>() && !(buildingTraits.Get<BibInfo>().HasMinibib))
 				buildingMaxBounds += new CVec(0, 1);
 
-			var scanStart = world.ClampToWorld(topLeft - new CVec(Adjacent, Adjacent));
-			var scanEnd = world.ClampToWorld(topLeft + buildingMaxBounds + new CVec(Adjacent, Adjacent));
+			var scanStart = world.Map.Clamp(topLeft - new CVec(Adjacent, Adjacent));
+			var scanEnd = world.Map.Clamp(topLeft + buildingMaxBounds + new CVec(Adjacent, Adjacent));
 
 			var nearnessCandidates = new List<CPos>();
 

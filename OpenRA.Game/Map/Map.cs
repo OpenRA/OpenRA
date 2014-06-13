@@ -550,5 +550,11 @@ namespace OpenRA
 			var tileSet = Rules.TileSets[Tileset];
 			return tileSet[GetTerrainIndex(cell)];
 		}
+
+		public CPos Clamp(CPos xy)
+		{
+			var r = Bounds;
+			return xy.Clamp(new Rectangle(r.X, r.Y, r.Width - 1, r.Height - 1));
+		}
 	}
 }

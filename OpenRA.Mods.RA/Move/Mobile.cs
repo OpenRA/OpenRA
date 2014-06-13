@@ -385,7 +385,7 @@ namespace OpenRA.Mods.RA.Move
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Move")
-				PerformMove(self, self.World.ClampToWorld(order.TargetLocation),
+				PerformMove(self, self.World.Map.Clamp(order.TargetLocation),
 					order.Queued && !self.IsIdle);
 
 			if (order.OrderString == "Stop")

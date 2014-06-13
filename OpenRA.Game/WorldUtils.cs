@@ -88,12 +88,6 @@ namespace OpenRA
 		public const int MaxRange = 50;
 		static List<CVec>[] TilesByDistance = InitTilesByDistance(MaxRange);
 
-		public static CPos ClampToWorld(this World world, CPos xy)
-		{
-			var r = world.Map.Bounds;
-			return xy.Clamp(new Rectangle(r.X,r.Y,r.Width-1, r.Height-1));
-		}
-
 		public static CPos ChooseRandomEdgeCell(this World w)
 		{
 			var isX = w.SharedRandom.Next(2) == 0;
