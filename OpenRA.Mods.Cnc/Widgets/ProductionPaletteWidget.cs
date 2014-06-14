@@ -34,8 +34,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 	public class ProductionPaletteWidget : Widget
 	{
 		public enum ReadyTextStyleOptions { Solid, AlternatingColor, Blinking }
-		public readonly ReadyTextStyleOptions ReadyTextStyle = ReadyTextStyleOptions.AlternatingColor;
-		public readonly Color ReadyTextAltColor = Color.LimeGreen;
+		public readonly ReadyTextStyleOptions ReadyTextStyle = ReadyTextStyleOptions.Blinking;
+		public readonly Color ReadyTextAltColor = Color.Red;
 		public readonly int Columns = 3;
 		public readonly string TabClick = null;
 		public readonly string DisabledTabClick = null;

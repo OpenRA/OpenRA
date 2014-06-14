@@ -382,8 +382,6 @@ Container@PLAYER_WIDGETS:
 			Y: 287
 			TooltipContainer: TOOLTIP_CONTAINER
 			ReadyText: Ready
-			ReadyTextStyle: AlternatingColor
-			ReadyTextAltColor: 50,205,50
 			HoldText: On Hold
 
 Background@FMVPLAYER:
