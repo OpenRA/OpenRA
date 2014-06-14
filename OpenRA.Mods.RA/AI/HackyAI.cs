@@ -26,6 +26,9 @@ namespace OpenRA.Mods.RA.AI
 		public readonly string Name = "Unnamed Bot";
 		public readonly int SquadSize = 8;
 
+		public readonly string[] BuildingQueues = { "Building" };
+		public readonly string[] DefenseQueues = { "Defense" };
+
 		public readonly int AssignRolesInterval = 20;
 		public readonly int RushInterval = 600;
 		public readonly int AttackForceInterval = 30;
@@ -106,7 +109,7 @@ namespace OpenRA.Mods.RA.AI
 		RushFuzzy rushFuzzy = new RushFuzzy();
 
 		Cache<Player, Enemy> aggro = new Cache<Player, Enemy>(_ => new Enemy());
-		BaseBuilder[] builders;
+		List<BaseBuilder> builders = new List<BaseBuilder>();
 
 		List<Squad> squads = new List<Squad>();
 		List<Actor> unitsHangingAroundTheBase = new List<Actor>();
@@ -144,10 +147,11 @@ namespace OpenRA.Mods.RA.AI
 			playerPower = p.PlayerActor.Trait<PowerManager>();
 			supportPowerMngr = p.PlayerActor.Trait<SupportPowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
-			builders = new BaseBuilder[] {
-				new BaseBuilder(this, "Building", q => ChooseBuildingToBuild(q, false)),
-				new BaseBuilder(this, "Defense", q => ChooseBuildingToBuild(q, true))
-			};
+
+			foreach (var building in Info.BuildingQueues) 
+				builders.Add(new BaseBuilder(this, building, q => ChooseBuildingToBuild(q, false)));
+			foreach (var defense in Info.DefenseQueues) 
+				builders.Add(new BaseBuilder(this, defense, q => ChooseBuildingToBuild(q, true)));
 
 			random = new MersenneTwister((int)p.PlayerActor.ActorID);
 
@@ -232,8 +236,7 @@ namespace OpenRA.Mods.RA.AI
 			if (!names.Any() || !names.ContainsKey(commonName))
 				return null;
 
-			return Map.Rules.Actors.Where(k => names[commonName].Contains(k.Key) &&
-				k.Value.Traits.Get<BuildableInfo>().Owner.Contains(owner.Country.Race)).Random(random).Value;
+			return Map.Rules.Actors.Where(k => names[commonName].Contains(k.Key)).Random(random).Value;
 		}
 
 		bool HasAdequatePower()
