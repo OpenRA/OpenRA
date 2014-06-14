@@ -16,23 +16,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class SupportPowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>
+	public class SupportPowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>, Requires<TechTreeInfo>
 	{
 		public object Create(ActorInitializer init) { return new SupportPowerManager(init); }
 	}
 
-	public class SupportPowerManager : ITick, IResolveOrder
+	public class SupportPowerManager : ITick, IResolveOrder, ITechTreeElement
 	{
 		public readonly Actor self;
 		public readonly Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
 
 		public readonly DeveloperMode DevMode;
+		public readonly TechTree TechTree;
 		public readonly Lazy<RadarPings> RadarPings;
 
 		public SupportPowerManager(ActorInitializer init)
 		{
 			self = init.self;
-			DevMode = init.self.Trait<DeveloperMode>();
+			DevMode = self.Trait<DeveloperMode>();
+			TechTree = self.Trait<TechTree>();
 			RadarPings = Exts.Lazy(() => init.world.WorldActor.TraitOrDefault<RadarPings>());
 
 			init.world.ActorAdded += ActorAdded;
@@ -46,28 +48,30 @@ namespace OpenRA.Mods.RA
 
 		void ActorAdded(Actor a)
 		{
-			if (a.Owner != self.Owner || !a.HasTrait<SupportPower>())
+			if (a.Owner != self.Owner)
 				return;
 
 			foreach (var t in a.TraitsImplementing<SupportPower>())
 			{
 				var key = MakeKey(t);
 
-				if (Powers.ContainsKey(key))
+				if (!Powers.ContainsKey(key))
 				{
-					Powers[key].Instances.Add(t);
-				}
-				else
-				{
-					var si = new SupportPowerInstance(key, this)
+					Powers.Add(key, new SupportPowerInstance(key, this)
 					{
-						Instances = new List<SupportPower>() { t },
+						Instances = new List<SupportPower>(),
 						RemainingTime = t.Info.ChargeTime * 25,
 						TotalTime = t.Info.ChargeTime * 25,
-					};
+					});
 
-					Powers.Add(key, si);
+					if (t.Info.Prerequisites.Any())
+					{
+						TechTree.Add(key, t.Info.Prerequisites, 0, this);
+						TechTree.Update();
+					}
 				}
+
+				Powers[key].Instances.Add(t);
 			}
 		}
 
@@ -80,8 +84,13 @@ namespace OpenRA.Mods.RA
 			{
 				var key = MakeKey(t);
 				Powers[key].Instances.Remove(t);
+
 				if (Powers[key].Instances.Count == 0 && !Powers[key].Disabled)
+				{
 					Powers.Remove(key);
+					TechTree.Remove(key);
+					TechTree.Update();
+				}
 			}
 		}
 
@@ -114,6 +123,28 @@ namespace OpenRA.Mods.RA
 			return a.TraitsImplementing<SupportPower>()
 				.Select(t => Powers[MakeKey(t)]);
 		}
+
+		public void PrerequisitesAvailable(string key)
+		{
+			SupportPowerInstance sp;
+			if (!Powers.TryGetValue(key, out sp))
+				return;
+
+			sp.Disabled = false;
+		}
+
+		public void PrerequisitesUnavailable(string key)
+		{
+			SupportPowerInstance sp;
+			if (!Powers.TryGetValue(key, out sp))
+				return;
+
+			sp.Disabled = true;
+			sp.RemainingTime = sp.TotalTime;
+		}
+
+		public void PrerequisitesItemHidden(string key) { }
+		public void PrerequisitesItemVisable(string key) { }
 	}
 
 	public class SupportPowerInstance
@@ -125,7 +156,7 @@ namespace OpenRA.Mods.RA
 		public int RemainingTime;
 		public int TotalTime;
 		public bool Active { get; private set; }
-		public bool Disabled { get; private set; }
+		public bool Disabled { get; set; }
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
 		public bool Ready { get { return Active && RemainingTime == 0; } }
