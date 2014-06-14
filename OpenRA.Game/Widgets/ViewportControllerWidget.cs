@@ -116,7 +116,7 @@ namespace OpenRA.Widgets
 			}
 
 			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
-				.Where(a => a.TooltipName != null)
+				.Where(a => a.TooltipName != null && a.IsValid)
 				.WithHighestSelectionPriority();
 
 			if (frozen != null)
