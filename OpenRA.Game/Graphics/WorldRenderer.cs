@@ -48,7 +48,7 @@ namespace OpenRA.Graphics
 			palette = new HardwarePalette();
 
 			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
-			foreach (var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>(world))
+			foreach (var pal in world.traitDict.ActorsWithTrait<IPalette>())
 				pal.Trait.InitPalette(this);
 
 			palette.Initialize();

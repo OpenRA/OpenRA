@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -21,17 +21,14 @@ namespace OpenRA
 		{
 			var start = 0;
 			var end = list.Count;
-			var mid = 0;
 			while (start != end)
 			{
-				mid = (start + end) / 2;
-				var c = list[mid].ActorID.CompareTo(searchFor);
-				if (c < 0)
+				var mid = (start + end) / 2;
+				if (list[mid].ActorID < searchFor)
 					start = mid + 1;
 				else
 					end = mid;
 			}
-
 			return start;
 		}
 	}
@@ -51,6 +48,11 @@ namespace OpenRA
 		ITraitContainer InnerGet(Type t)
 		{
 			return traits.GetOrAdd(t, doCreateTraitContainer);
+		}
+
+		TraitContainer<T> InnerGet<T>()
+		{
+			return (TraitContainer<T>)InnerGet(typeof(T));
 		}
 
 		public void PrintReport()
@@ -84,30 +86,30 @@ namespace OpenRA
 		public bool Contains<T>(Actor actor)
 		{
 			CheckDestroyed(actor);
-			return ((TraitContainer<T>)InnerGet(typeof(T))).GetMultiple(actor.ActorID).Any();
+			return InnerGet<T>().GetMultiple(actor.ActorID).Any();
 		}
 
 		public T Get<T>(Actor actor)
 		{
 			CheckDestroyed(actor);
-			return ((TraitContainer<T>)InnerGet(typeof(T))).Get(actor.ActorID);
+			return InnerGet<T>().Get(actor.ActorID);
 		}
 
 		public T GetOrDefault<T>(Actor actor)
 		{
 			CheckDestroyed(actor);
-			return ((TraitContainer<T>)InnerGet(typeof(T))).GetOrDefault(actor.ActorID);
+			return InnerGet<T>().GetOrDefault(actor.ActorID);
 		}
 
 		public IEnumerable<T> WithInterface<T>(Actor actor)
 		{
 			CheckDestroyed(actor);
-			return ((TraitContainer<T>)InnerGet(typeof(T))).GetMultiple(actor.ActorID);
+			return InnerGet<T>().GetMultiple(actor.ActorID);
 		}
 
-		public IEnumerable<TraitPair<T>> ActorsWithTraitMultiple<T>(World world)
+		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
 		{
-			return ((TraitContainer<T>)InnerGet(typeof(T))).All();
+			return InnerGet<T>().All();
 		}
 
 		public void RemoveActor(Actor a)
@@ -126,11 +128,10 @@ namespace OpenRA
 
 		class TraitContainer<T> : ITraitContainer
 		{
-			List<Actor> actors = new List<Actor>();
-			List<T> traits = new List<T>();
-			int queries;
+			readonly List<Actor> actors = new List<Actor>();
+			readonly List<T> traits = new List<T>();
 
-			public int Queries { get { return queries; } }
+			public int Queries { get; private set; }
 
 			public void Add(Actor actor, object trait)
 			{
@@ -142,14 +143,14 @@ namespace OpenRA
 			public T Get(uint actor)
 			{
 				var result = GetOrDefault(actor);
-				if ((object)result == null)
+				if (result == null)
 					throw new InvalidOperationException("Actor does not have trait of type `{0}`".F(typeof(T)));
 				return result;
 			}
 
 			public T GetOrDefault(uint actor)
 			{
-				++queries;
+				++Queries;
 				var index = actors.BinarySearchMany(actor);
 				if (index >= actors.Count || actors[index].ActorID != actor)
 					return default(T);
@@ -160,7 +161,7 @@ namespace OpenRA
 
 			public IEnumerable<T> GetMultiple(uint actor)
 			{
-				++queries;
+				++Queries;
 				var index = actors.BinarySearchMany(actor);
 				while (index < actors.Count && actors[index].ActorID == actor)
 				{
@@ -171,7 +172,7 @@ namespace OpenRA
 
 			public IEnumerable<TraitPair<T>> All()
 			{
-				++queries;
+				++Queries;
 				for (var i = 0; i < actors.Count; i++)
 					yield return new TraitPair<T> { Actor = actors[i], Trait = traits[i] };
 			}

@@ -69,9 +69,10 @@ namespace OpenRA.Mods.RA
 			foreach (var p in self.Info.Traits.Get<ProductionInfo>().Produces)
 				foreach (var b in self.World
 					.ActorsWithTrait<PrimaryBuilding>()
-					.Where(a => a.Actor.Owner == self.Owner)
-					.Where(x => x.Trait.IsPrimary
-						&& x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains(p)))
+					.Where(a =>
+						a.Actor.Owner == self.Owner &&
+						a.Trait.IsPrimary &&
+						a.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains(p)))
 					b.Trait.SetPrimaryProducer(b.Actor, false);
 
 			isPrimary = true;
