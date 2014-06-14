@@ -504,10 +504,10 @@ namespace OpenRA.Mods.RA.Widgets
 			p += new int2(5, 35);
 			if (!canBuildThis)
 			{
-				var prereqs = buildable.Prerequisites.Select(s => Description(world.Map.Rules, s));
+				var prereqs = buildable.Prerequisites.Select(s => Description(world.Map.Rules, s)).Where(s => !s.StartsWith("~"));
 				if (prereqs.Any())
 				{
-					Game.Renderer.Fonts["Regular"].DrawText(RequiresText.F(prereqs.Where(s => !s.StartsWith("~")).JoinWith(", ")), p.ToInt2(), Color.White);
+					Game.Renderer.Fonts["Regular"].DrawText(RequiresText.F(prereqs.JoinWith(", ")), p.ToInt2(), Color.White);
 
 					p += new int2(0, 8);
 				}
