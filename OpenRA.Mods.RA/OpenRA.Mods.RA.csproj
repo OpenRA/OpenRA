@@ -301,6 +301,7 @@
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />
     <Compile Include="Player\ProvidesTechPrerequisite.cs" />
+    <Compile Include="Player\Upgradable.cs" />
     <Compile Include="PortableChrono.cs" />
     <Compile Include="World\RadarPings.cs" />
     <Compile Include="Player\TechTree.cs" />
@@ -571,4 +572,6 @@ cd "$(SolutionDir)thirdparty/"
 copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup />
 </Project>

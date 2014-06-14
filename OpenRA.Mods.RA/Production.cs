@@ -53,45 +53,71 @@ namespace OpenRA.Mods.RA
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo)
 		{
-			var exit = self.Location + exitinfo.ExitCell;
-			var spawn = self.CenterPosition + exitinfo.SpawnOffset;
-			var to = exit.CenterPosition;
+			var inits = new TypeDictionary { new OwnerInit(self.Owner) };
 
-			var fi = producee.Traits.Get<IFacingInfo>();
-			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi.GetInitialFacing()) : exitinfo.Facing;
-
-			var exitLocation = rp.Value != null ? rp.Value.rallyPoint : exit;
-			var target = Target.FromCell(exitLocation);
-			var nearEnough = rp.Value != null ? WRange.FromCells(rp.Value.nearEnough) : WRange.Zero;
-
-			self.World.AddFrameEndTask(w =>
+			if (self.OccupiesSpace != null && exitinfo != null)
 			{
-				var newUnit = self.World.CreateActor(producee.Name, new TypeDictionary
-				{
-					new OwnerInit(self.Owner),
-					new LocationInit(exit),
-					new CenterPositionInit(spawn),
-					new FacingInit(initialFacing)
-				});
+				var exit = self.Location + exitinfo.ExitCell;
+				var spawn = self.CenterPosition + exitinfo.SpawnOffset;
 
-				var move = newUnit.TraitOrDefault<IMove>();
-				if (move != null)
+				if (producee.Traits.Contains<IFacingInfo>())
 				{
-					if (exitinfo.MoveIntoWorld)
-					{
-						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
+					var to = exit.CenterPosition;
+					var fi = producee.Traits.Get<IFacingInfo>();
+					var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi.GetInitialFacing()) : exitinfo.Facing;
 
-						newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
-							newUnit, move.MoveWithinRange(target, nearEnough)));
-					}
+					inits.Add(new FacingInit(initialFacing));
 				}
 
-				newUnit.SetTargetLine(target, Color.Green, false);
+				inits.Add(new CenterPositionInit(spawn));
+				inits.Add(new LocationInit(exit));
+			}
 
-				if (!self.IsDead())
-					foreach (var t in self.TraitsImplementing<INotifyProduction>())
-						t.UnitProduced(self, newUnit, exit);
-			});
+			self.World.AddFrameEndTask(w =>
+				{
+					var newUnit = self.World.CreateActor(producee.Name, inits);
+					
+					if (exitinfo != null)
+					{
+						var exit = self.Location + exitinfo.ExitCell;
+
+						var exitLocation = rp.Value != null ? rp.Value.rallyPoint : exit;
+						var target = Target.FromCell(exitLocation);
+						var nearEnough = rp.Value != null ? WRange.FromCells(rp.Value.nearEnough) : WRange.Zero;
+
+
+						var move = newUnit.TraitOrDefault<IMove>();
+
+						if (exitinfo.MoveIntoWorld && move != null)
+						{
+							newUnit.QueueActivity(newUnit.Trait<IMove>().MoveIntoWorld(newUnit, exit));
+							newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
+								newUnit, move.MoveWithinRange(target, nearEnough)));
+
+							newUnit.SetTargetLine(target, Color.Green, false);
+						}
+
+						foreach (var t in self.TraitsImplementing<INotifyProduction>())
+							t.UnitProduced(self, newUnit, exit);
+					}
+				});
+		}
+
+		static CPos MoveToRallyPoint(Actor self, Actor newUnit, CPos exitLocation)
+		{
+			var rp = self.TraitOrDefault<RallyPoint>();
+			if (rp == null)
+				return exitLocation;
+
+			var move = newUnit.TraitOrDefault<IMove>();
+			if (move != null)
+			{
+				newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
+					newUnit, move.MoveTo(rp.rallyPoint, rp.nearEnough)));
+				return rp.rallyPoint;
+			}
+
+			return exitLocation;
 		}
 
 		public virtual bool Produce(Actor self, ActorInfo producee)
@@ -103,13 +129,8 @@ namespace OpenRA.Mods.RA
 			var exit = self.Info.Traits.WithInterface<ExitInfo>().Shuffle(self.World.SharedRandom)
 				.FirstOrDefault(e => CanUseExit(self, producee, e));
 
-			if (exit != null)
-			{
-				DoProduction(self, producee, exit);
-				return true;
-			}
-
-			return false;
+			DoProduction(self, producee, exit);
+			return true;
 		}
 
 		static bool CanUseExit(Actor self, ActorInfo producee, ExitInfo s)
