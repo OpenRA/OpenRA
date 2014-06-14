@@ -51,6 +51,7 @@ namespace OpenRA.Traits
 		// to ensure consistency during a tick
 		readonly List<Actor> addActorPosition = new List<Actor>();
 		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
+		readonly Predicate<Actor> actorShouldBeRemoved;
 
 		public ActorMap(World world, ActorMapInfo info)
 		{
@@ -64,6 +65,9 @@ namespace OpenRA.Traits
 			for (var j = 0; j < rows; j++)
 				for (var i = 0; i < cols; i++)
 					actors[j * cols + i] = new List<Actor>();
+
+			// Cache this delegate so it does not have to be allocated repeatedly.
+			actorShouldBeRemoved = removeActorPosition.Contains;
 		}
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a)
@@ -144,7 +148,7 @@ namespace OpenRA.Traits
 			// Position updates are done in one pass
 			// to ensure consistency during a tick
 			foreach (var bin in actors)
-				bin.RemoveAll(removeActorPosition.Contains);
+				bin.RemoveAll(actorShouldBeRemoved);
 
 			removeActorPosition.Clear();
 
