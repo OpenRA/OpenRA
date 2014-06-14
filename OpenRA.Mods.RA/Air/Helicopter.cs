@@ -87,6 +87,7 @@ namespace OpenRA.Mods.RA.Air
 					self.QueueActivity(new Turn(Info.InitialFacing));
 					self.QueueActivity(new HeliLand(false));
 					self.QueueActivity(new ResupplyAircraft());
+					self.QueueActivity(new TakeOff());
 				}
 			}
 
@@ -116,11 +117,11 @@ namespace OpenRA.Mods.RA.Air
 				if (!self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
 					ReserveSpawnBuilding();
 
-				var afld = GetActorBelow();
-				if (afld == null)
+				var host = GetActorBelow();
+				if (host == null)
 					return;
 
-				self.QueueActivity(TakeOff(afld));
+				self.QueueActivity(new TakeOff());
 			}
 
 			// Repulsion only applies when we're flying!
@@ -182,26 +183,6 @@ namespace OpenRA.Mods.RA.Air
 		{
 			foreach (var b in base.GetResupplyActivities(a))
 				yield return b;
-		}
-
-		public Activity TakeOff(Actor a)
-		{
-			self.CancelActivity();
-			if (Reservation != null)
-			{
-				Reservation.Dispose();
-				Reservation = null;
-			}
-
-			if (a != null)
-			{
-				if (a.HasTrait<RallyPoint>())
-					return new HeliFly(self, Target.FromCell(a.Trait<RallyPoint>().rallyPoint));
-
-				return new HeliFly(self, Target.FromPos(a.CenterPosition));
-			}
-
-			return new HeliFly(self, Target.FromPos(self.CenterPosition));
 		}
 	}
 }

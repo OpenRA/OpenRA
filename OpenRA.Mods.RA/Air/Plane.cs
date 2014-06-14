@@ -43,6 +43,12 @@ namespace OpenRA.Mods.RA.Air
 				firstTick = false;
 				if (!self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
 					ReserveSpawnBuilding();
+
+				var host = GetActorBelow();
+				if (host == null)
+					return;
+
+				self.QueueActivity(new TakeOff());
 			}
 		}
 
@@ -86,6 +92,7 @@ namespace OpenRA.Mods.RA.Air
 				self.SetTargetLine(Target.FromActor(airfield), Color.Green);
 				self.QueueActivity(new ReturnToBase(self, airfield));
 				self.QueueActivity(new ResupplyAircraft());
+				self.QueueActivity(new TakeOff());
 			}
 			else
 			{

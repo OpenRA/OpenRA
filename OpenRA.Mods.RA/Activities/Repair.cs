@@ -31,22 +31,9 @@ namespace OpenRA.Mods.RA.Activities
 
 			health = self.TraitOrDefault<Health>();
 			if (health == null) return NextActivity;
+
 			if (health.DamageState == DamageState.Undamaged)
-			{
-				var helicopter = self.TraitOrDefault<Helicopter>();
-				if (helicopter != null)
-				{
-					if (helicopter.Info.RearmBuildings.Contains(host.Info.Name) && self.HasTrait<LimitedAmmo>())
-					{
-						if (self.Trait<LimitedAmmo>().FullAmmo() == false)
-							return NextActivity;
-					}
-
-					return helicopter.TakeOff(host);
-				}
-
 				return NextActivity;
-			}
 
 			if (remainingTicks == 0)
 			{

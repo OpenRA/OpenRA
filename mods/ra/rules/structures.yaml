@@ -968,6 +968,7 @@ AFLD:
 		ExitCell: 1,1
 		Facing: 192
 		MoveIntoWorld: false
+	RallyPoint:
 	Production:
 		Produces: Plane
 	Reservable:
