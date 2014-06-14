@@ -1,5 +1,85 @@
 # ZeroBrane Studio Changelog
 
+## Current master
+
+### Highlights
+  - Added re-indentation of selected fragment or entire file.
+  - Added line mapping support for debugging Lua-based languages (e.g. moonscript).
+  - Added `editor.wrapindentmode` and `editor.wrapstartindent` settings.
+  - Fixed debugger compatibility with Lua 5.2.
+  - Fixed `F2` shortcut not working in file tree and watch panel.
+  - Fixed replace-in-files when saving backup copy is turned off.
+
+### Special thanks
+  - To [sclark39](https://github.com/sclark39) for `format.apptitle` option to format IDE title.
+  - To [Christoph Kubisch](https://github.com/pixeljetstream) for glslc improvements.
+  - To [Yonaba](https://github.com/Yonaba/) for updated French translation.
+
+### Improvements
+  - Added support for custom debugger initializer (global or interpreter-based).
+  - Added line mapping support for debugging Lua-based languages (e.g. moonscript).
+  - Added support to force local execution in console by prepending `!` (#326).
+  - Added setting proper `arg[0]` value during debugging (fixes #329).
+  - Added double click navigation in the Output window for unnamed files.
+  - Added centering of line after double click in the Output window.
+  - Added `editor.wrapindentmode` and `editor.wrapstartindent` settings.
+  - Added a workaround for focus switching between controls on OSX (#89, #327).
+  - Added assertion to ensure inserted editor is not in the notebook already.
+  - Added `format.apptitle` option to format IDE title (thanks to @sclark39).
+  - Added restoring cursor position after sorting/re-indenting.
+  - Added `onEditorUserlistSelection` event for userlist selection (#166).
+  - Added `onEditorAction` event for cut/copy/paste actions (#166).
+  - Added package `GetEditorWithFocus` method (#166).
+  - Added `editor.extradescent` option for line spacing (#305).
+  - Added centering of line on page after re-loading file with a known position.
+  - Added re-indentation of selected fragment or entire file (closes #324).
+  - Added sorting of the entire file if nothing is selected.
+  - Added `Edit | Source` sub-menu.
+  - Added centering line on page after bookmark navigation.
+  - Added `GetProjectTree`, `GetWatch`, and `GetStack` package calls (#166).
+  - Added bookmark-toggle toolbar icon (#233).
+  - Disabled message on failure to read symlinked folder content on Windows.
+  - Disabled breakpoint toggling when editor is not in focus.
+  - Disabled changing toolbar color with `auxwindow` as it only works for the dropdown.
+  - Increase font size for code fragments in markup (#305).
+  - glslc: change domain detection to be compatible with file.comp.glsl and file.tese
+  - Removed checks for specific errors in Local/Remote console.
+  - Removed focus handling workaround for editor tab changes (#89, #327).
+  - Renamed `menuformatrecentprojects` to `format.menurecentprojects` (#305).
+  - Removed handling of project dropdown in menu as it's no longer needed (#305).
+  - Reorganized menu shortcut conflict handling (#233).
+  - simplified glslc usage (compile and link based on file extensions)
+  - treat unreal shaders as hlsl
+  - Updated auto-complete logic to use configured spec separators.
+  - Updated logic for populating placeholders in dropdown menus.
+  - Updated french translation (thanks to @Yonaba)
+  - Updated menu items to stay enabled only when appropriate object has focus.
+  - Updated indentation logic for if/elseif/while/for split into 2+ lines (#324).
+  - Updated indentation logic to ignore comments (#324).
+  - Updated README with supported engines and installation instructions.
+  - Updated breakpoint-toggle toolbar icon to better match other icons (#305).
+  - Updated bookmark navigation to wrap around (#233).
+  - Updating sorting to keep original line endings.
+  - Upgraded metalua to v0.7.2.
+
+### Fixes
+  - Fixed setting control focus when the main frame is hidden.
+  - Fixed loading packages with dashes in filenames (fixes #330).
+  - Fixed toolbar to stay shown after failure to start debugging.
+  - Fixed focus on the editor after closing a dialog on OSX (fixes #328).
+  - Fixed crash on OSX when changing focus while the app is being closed (#327).
+  - Fixed some toolbar buttons being enabled with no editor tab open.
+  - Fixed toolbar stealing focus after closing floating panels and dropdowns (#327).
+  - Fixed restoring control focus when the app gets focus on OSX (fixes #327).
+  - Fixed activating editor when starting the app on OSX (#327).
+  - Fixed auto-complete to not offer the word the cursor is on.
+  - Fixed hiding auto-complete when the only option matches what's typed.
+  - Fixed an error when all editor tabs are closed.
+  - Fixed replace-in-files when saving backup copy is turned off.
+  - Fix re-indenting of anonymous functions in tables (#324).
+  - Fixed `F2` shortcut not working in file tree and watch panel (#233).
+  - Fixed debugger compatibility with Lua 5.2 (Mobdebug 0.561).
+
 ## v0.60 (May 11 2014)
 
 ### Highlights
