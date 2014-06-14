@@ -244,46 +244,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		Action InitInputPanel(Widget panel)
 		{
-			// TODO: Extract these to a yaml file
-			var specialHotkeys = new Dictionary<string, string>()
-			{
-				{ "CycleBaseKey", "Jump to base" },
-				{ "ToLastEventKey", "Jump to last radar event" },
-				{ "ToSelectionKey", "Jump to selection" },
-				{ "SelectAllUnitsKey", "Select all units on screen" },
-				{ "SelectUnitsByTypeKey", "Select units by type" },
-
-				{ "PlaceBeaconKey", "Place beacon" },
-
-				{ "PauseKey", "Pause / Unpause" },
-				{ "SellKey", "Sell mode" },
-				{ "PowerDownKey", "Power-down mode" },
-				{ "RepairKey", "Repair mode" },
-
-				{ "NextProductionTabKey", "Next production tab" },
-				{ "PreviousProductionTabKey", "Previous production tab" },
-				{ "CycleProductionBuildingsKey", "Cycle production facilities" },
-
-				{ "ToggleStatusBarsKey", "Toggle status bars" },
-				{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
-			};
-
-			var unitHotkeys = new Dictionary<string, string>()
-			{
-				{ "AttackMoveKey", "Attack Move" },
-				{ "StopKey", "Stop" },
-				{ "ScatterKey", "Scatter" },
-				{ "StanceCycleKey", "Cycle Stance" },
-				{ "DeployKey", "Deploy" },
-				{ "GuardKey", "Guard" }
-			};
-
-			var observerHotkeys = new Dictionary<string, string>()
-			{
-				{ "ObserverCombinedView", "All Players" },
-				{ "ObserverWorldView", "Disable Shroud" }
-			};
-
 			var gs = Game.Settings.Game;
 			var ks = Game.Settings.Keys;
 
@@ -304,26 +264,89 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var unitTemplate = hotkeyList.Get("UNIT_TEMPLATE");
 			hotkeyList.RemoveChildren();
 
-			var globalHeader = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
-			globalHeader.Get<LabelWidget>("LABEL").GetText = () => "Global Commands";
-			hotkeyList.AddChild(globalHeader);
+			// Game
+			{
+				var hotkeys = new Dictionary<string, string>()
+				{
+					{ "CycleBaseKey", "Jump to base" },
+					{ "ToLastEventKey", "Jump to last radar event" },
+					{ "ToSelectionKey", "Jump to selection" },
+					{ "SelectAllUnitsKey", "Select all units on screen" },
+					{ "SelectUnitsByTypeKey", "Select units by type" },
 
-			foreach (var kv in specialHotkeys)
-				BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
+					{ "PlaceBeaconKey", "Place beacon" },
 
-			var observerHeader = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
-			observerHeader.Get<LabelWidget>("LABEL").GetText = () => "Observer Commands";
-			hotkeyList.AddChild(observerHeader);
+					{ "PauseKey", "Pause / Unpause" },
+					{ "SellKey", "Sell mode" },
+					{ "PowerDownKey", "Power-down mode" },
+					{ "RepairKey", "Repair mode" },
 
-			foreach (var kv in observerHotkeys)
-				BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
+					{ "NextProductionTabKey", "Next production tab" },
+					{ "PreviousProductionTabKey", "Previous production tab" },
+					{ "CycleProductionBuildingsKey", "Cycle production facilities" },
 
-			var unitHeader = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
-			unitHeader.Get<LabelWidget>("LABEL").GetText = () => "Unit Commands";
-			hotkeyList.AddChild(unitHeader);
+					{ "ToggleStatusBarsKey", "Toggle status bars" },
+					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
+				};
 
-			foreach (var kv in unitHotkeys)
-				BindHotkeyPref(kv, ks, unitTemplate, hotkeyList);
+				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				header.Get<LabelWidget>("LABEL").GetText = () => "Game Commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
+			}
+
+			// Observer
+			{
+				var hotkeys = new Dictionary<string, string>()
+				{
+					{ "ObserverCombinedView", "All Players" },
+					{ "ObserverWorldView", "Disable Shroud" }
+				};
+
+				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				header.Get<LabelWidget>("LABEL").GetText = () => "Observer Commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
+			}
+
+			// Unit
+			{
+				var hotkeys = new Dictionary<string, string>()
+				{
+					{ "AttackMoveKey", "Attack Move" },
+					{ "StopKey", "Stop" },
+					{ "ScatterKey", "Scatter" },
+					{ "StanceCycleKey", "Cycle Stance" },
+					{ "DeployKey", "Deploy" },
+					{ "GuardKey", "Guard" }
+				};
+
+				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				header.Get<LabelWidget>("LABEL").GetText = () => "Unit Commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, unitTemplate, hotkeyList);
+			}
+
+			// Developer
+			{
+				var hotkeys = new Dictionary<string, string>()
+				{
+					{ "DevReloadChromeKey", "Reload Chrome" }
+				};
+
+				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				header.Get<LabelWidget>("LABEL").GetText = () => "Developer commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
+			}
 
 			return () =>
 			{
