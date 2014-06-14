@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public void OnLanded()
 		{
-			var seq = self.World.GetTerrainInfo(self.Location).IsWater ? "water" : "land";
+			var seq = self.World.Map.GetTerrainInfo(self.Location).IsWater ? "water" : "land";
 			anim.PlayRepeating(seq);
 		}
 	}

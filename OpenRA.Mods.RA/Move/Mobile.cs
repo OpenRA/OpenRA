@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA.Move
 			if (!world.Map.IsInMap(cell.X, cell.Y))
 				return int.MaxValue;
 
-			var index = world.GetTerrainIndex(cell);
+			var index = world.Map.GetTerrainIndex(cell);
 			if (index == -1)
 				return int.MaxValue;
 
@@ -324,13 +324,15 @@ namespace OpenRA.Mods.RA.Move
 			var searched = new List<CPos>();
 			// Limit search to a radius of 10 tiles
 			for (int r = minRange; r < maxRange; r++)
-				foreach (var tile in self.World.FindTilesInCircle(target, r).Except(searched))
+			{
+				foreach (var tile in self.World.Map.FindTilesInCircle(target, r).Except(searched))
 				{
 					if (CanEnterCell(tile))
 						return tile;
 
 					searched.Add(tile);
 				}
+			}
 
 			// Couldn't find a cell
 			return target;
@@ -343,13 +345,15 @@ namespace OpenRA.Mods.RA.Move
 
 			var searched = new List<CPos>();
 			for (int r = minRange; r < maxRange; r++)
-				foreach (var tile in self.World.FindTilesInCircle(target, r).Except(searched))
+			{
+				foreach (var tile in self.World.Map.FindTilesInCircle(target, r).Except(searched))
 				{
 					if (check(tile))
 						return tile;
 
 					searched.Add(tile);
 				}
+			}
 
 			// Couldn't find a cell
 			return target;
@@ -385,7 +389,7 @@ namespace OpenRA.Mods.RA.Move
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Move")
-				PerformMove(self, self.World.ClampToWorld(order.TargetLocation),
+				PerformMove(self, self.World.Map.Clamp(order.TargetLocation),
 					order.Queued && !self.IsIdle);
 
 			if (order.OrderString == "Stop")
@@ -481,7 +485,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public int MovementSpeedForCell(Actor self, CPos cell)
 		{
-			var index = self.World.GetTerrainIndex(cell);
+			var index = self.World.Map.GetTerrainIndex(cell);
 			if (index == -1)
 				return 0;
 
@@ -574,7 +578,7 @@ namespace OpenRA.Mods.RA.Move
 				cursor = "move";
 
 				if (self.Owner.Shroud.IsExplored(location))
-					cursor = self.World.GetTerrainInfo(location).CustomCursor ?? cursor;
+					cursor = self.World.Map.GetTerrainInfo(location).CustomCursor ?? cursor;
 
 				if (!self.World.Map.IsInMap(location) || (self.Owner.Shroud.IsExplored(location) &&
 						unitType.MovementCostForCell(self.World, location) == int.MaxValue))

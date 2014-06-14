@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		{
 			base.Activate(self, order, manager);
 
-			var enterCell = self.World.ChooseRandomEdgeCell();
+			var enterCell = self.World.Map.ChooseRandomEdgeCell(self.World.SharedRandom);
 			var altitude = self.World.Map.Rules.Actors["u2"].Traits.Get<PlaneInfo>().CruiseAltitude;
 
 			var plane = self.World.CreateActor("u2", new TypeDictionary

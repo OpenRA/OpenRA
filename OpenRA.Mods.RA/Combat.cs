@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 			if (!world.Map.IsInMap(targetTile))
 				return;
 
-			var isWater = pos.Z <= 0 && world.GetTerrainInfo(targetTile).IsWater;
+			var isWater = pos.Z <= 0 && world.Map.GetTerrainInfo(targetTile).IsWater;
 			var explosionType = isWater ? warhead.WaterExplosion : warhead.Explosion;
 			var explosionTypePalette = isWater ? warhead.WaterExplosionPalette : warhead.ExplosionPalette;
 
@@ -53,17 +53,17 @@ namespace OpenRA.Mods.RA
 			if (warhead.Size[0] > 0)
 			{
 				var resLayer = world.WorldActor.Trait<ResourceLayer>();
-				var allCells = world.FindTilesInCircle(targetTile, warhead.Size[0]).ToList();
+				var allCells = world.Map.FindTilesInCircle(targetTile, warhead.Size[0]).ToList();
 
 				// `smudgeCells` might want to just be an outer shell of the cells:
 				IEnumerable<CPos> smudgeCells = allCells;
 				if (warhead.Size.Length == 2)
-					smudgeCells = smudgeCells.Except(world.FindTilesInCircle(targetTile, warhead.Size[1]));
+					smudgeCells = smudgeCells.Except(world.Map.FindTilesInCircle(targetTile, warhead.Size[1]));
 
 				// Draw the smudges:
 				foreach (var sc in smudgeCells)
 				{
-					var smudgeType = world.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
+					var smudgeType = world.Map.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
 					if (smudgeType == null) continue;
 
 					SmudgeLayer smudgeLayer;
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 			}
 			else
 			{
-				var smudgeType = world.GetTerrainInfo(targetTile).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
+				var smudgeType = world.Map.GetTerrainInfo(targetTile).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
 				if (smudgeType != null)
 				{
 					SmudgeLayer smudgeLayer;
@@ -110,17 +110,21 @@ namespace OpenRA.Mods.RA
 							var damage = (int)GetDamageToInflict(pos, victim, warhead, weapon, firepowerModifier, true);
 							victim.InflictDamage(firedBy, damage, warhead);
 						}
-					} break;
+					}
+					break;
 
 				case DamageModel.PerCell:
 					{
-						foreach (var t in world.FindTilesInCircle(targetTile, warhead.Size[0]))
+						foreach (var t in world.Map.FindTilesInCircle(targetTile, warhead.Size[0]))
+						{
 							foreach (var unit in world.ActorMap.GetUnitsAt(t))
 							{
 								var damage = (int)GetDamageToInflict(pos, unit, warhead, weapon, firepowerModifier, false);
 								unit.InflictDamage(firedBy, damage, warhead);
 							}
-					} break;
+						}
+					}
+					break;
 
 				case DamageModel.HealthPercentage:
 					{
@@ -135,9 +139,11 @@ namespace OpenRA.Mods.RA
 								var healthInfo = victim.Info.Traits.Get<HealthInfo>();
 								damage = (float)(damage / 100 * healthInfo.HP);
 							}
+
 							victim.InflictDamage(firedBy, (int)damage, warhead);
 						}
-					} break;
+					}
+					break;
 			}
 		}
 

@@ -44,6 +44,7 @@ namespace OpenRA.Mods.RA.Buildings
 			var centerOffset = FootprintUtils.CenterOffset(bi);
 			var location = self.Location;
 			var rows = info.HasMinibib ? 1 : 2;
+			var map = self.World.Map;
 
 			for (var i = 0; i < rows * width; i++)
 			{
@@ -52,7 +53,7 @@ namespace OpenRA.Mods.RA.Buildings
 				var cellOffset = new CVec(i % width, i / width + bibOffset);
 
 				// Some mods may define terrain-specific bibs
-				var terrain = self.World.GetTerrainInfo(location + cellOffset).Type;
+				var terrain = map.GetTerrainInfo(location + cellOffset).Type;
 				var testSequence = info.Sequence + "-" + terrain;
 				var sequence = anim.HasSequence(testSequence) ? testSequence : info.Sequence;
 				anim.PlayFetchIndex(sequence, () => index);

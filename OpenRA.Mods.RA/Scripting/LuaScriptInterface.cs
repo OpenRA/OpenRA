@@ -339,13 +339,13 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public CPos GetRandomCell()
 		{
-			return world.ChooseRandomCell(world.SharedRandom);
+			return world.Map.ChooseRandomCell(world.SharedRandom);
 		}
 
 		[LuaGlobal]
 		public CPos GetRandomEdgeCell()
 		{
-			return world.ChooseRandomEdgeCell();
+			return world.Map.ChooseRandomEdgeCell(world.SharedRandom);
 		}
 
 		[LuaGlobal]

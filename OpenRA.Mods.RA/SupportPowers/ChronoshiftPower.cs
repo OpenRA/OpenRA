@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
 			var range = ((ChronoshiftPowerInfo)Info).Range;
-			var tiles = self.World.FindTilesInCircle(xy, range);
+			var tiles = self.World.Map.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
 				units.AddRange(self.World.ActorMap.GetUnitsAt(t));
@@ -69,8 +69,8 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			var range = ((ChronoshiftPowerInfo)Info).Range;
-			var sourceTiles = self.World.FindTilesInCircle(xy, range);
-			var destTiles = self.World.FindTilesInCircle(sourceLocation, range);
+			var sourceTiles = self.World.Map.FindTilesInCircle(xy, range);
+			var destTiles = self.World.Map.FindTilesInCircle(sourceLocation, range);
 
 			using (var se = sourceTiles.GetEnumerator())
 			using (var de = destTiles.GetEnumerator())
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA
 				if (!self.Owner.Shroud.IsExplored(a) || !self.Owner.Shroud.IsExplored(b))
 					return false;
 
-				if (self.World.GetTerrainIndex(a) != self.World.GetTerrainIndex(b))
+				if (self.World.Map.GetTerrainIndex(a) != self.World.Map.GetTerrainIndex(b))
 					return false;
 			}
 
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.RA
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
 				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
-				var tiles = world.FindTilesInCircle(xy, range);
+				var tiles = world.Map.FindTilesInCircle(xy, range);
 				var pal = wr.Palette("terrain");
 				foreach (var t in tiles)
 					yield return new SpriteRenderable(tile, t.CenterPosition, WVec.Zero, -511, pal, 1f, true);
@@ -216,11 +216,11 @@ namespace OpenRA.Mods.RA
 				var pal = wr.Palette("terrain");
 
 				// Source tiles
-				foreach (var t in world.FindTilesInCircle(sourceLocation, range))
+				foreach (var t in world.Map.FindTilesInCircle(sourceLocation, range))
 					yield return new SpriteRenderable(sourceTile, t.CenterPosition, WVec.Zero, -511, pal, 1f, true);
 
 				// Destination tiles
-				foreach (var t in world.FindTilesInCircle(xy, range))
+				foreach (var t in world.Map.FindTilesInCircle(xy, range))
 					yield return new SpriteRenderable(sourceTile, t.CenterPosition, WVec.Zero, -511, pal, 1f, true);
 
 				// Unit previews

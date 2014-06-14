@@ -48,17 +48,19 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public void AddedToWorld(Actor self)
 		{
+			var map = self.World.Map;
+
 			if (template.PickAny)
 			{
 				// Fill the footprint with random variants
 				foreach (var c in FootprintUtils.Tiles(self))
 				{
 					// Only place on allowed terrain types
-					if (!info.TerrainTypes.Contains(self.World.GetTerrainInfo(c).Type))
+					if (!info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
 						continue;
 
 					// Don't place under other buildings or custom terrain
-					if (bi.GetBuildingAt(c) != self || self.World.Map.CustomTerrain[c.X, c.Y] != -1)
+					if (bi.GetBuildingAt(c) != self || map.CustomTerrain[c.X, c.Y] != -1)
 						continue;
 
 					var index = Game.CosmeticRandom.Next(template.TilesCount);
@@ -74,11 +76,11 @@ namespace OpenRA.Mods.RA.Buildings
 				var c = origin + new CVec(i % template.Size.X, i / template.Size.X);
 
 				// Only place on allowed terrain types
-				if (!info.TerrainTypes.Contains(self.World.GetTerrainInfo(c).Type))
+				if (!info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
 					continue;
 
 				// Don't place under other buildings or custom terrain
-				if (bi.GetBuildingAt(c) != self || self.World.Map.CustomTerrain[c.X, c.Y] != -1)
+				if (bi.GetBuildingAt(c) != self || map.CustomTerrain[c.X, c.Y] != -1)
 					continue;
 
 				layer.AddTile(c, new TileReference<ushort, byte>(template.Id, (byte)i));

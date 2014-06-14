@@ -19,6 +19,7 @@ using OpenRA.FileSystem;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Graphics;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -534,6 +535,84 @@ namespace OpenRA
 						continue;
 					tr.Index = (byte)r.Next(0, template.TilesCount);
 					MapTiles.Value[i, j] = tr;
+				}
+			}
+		}
+
+		public int GetTerrainIndex(CPos cell)
+		{
+			var custom = CustomTerrain[cell.X, cell.Y];
+			var tileSet = Rules.TileSets[Tileset];
+			return custom != -1 ? custom : tileSet.GetTerrainIndex(MapTiles.Value[cell.X, cell.Y]);
+		}
+
+		public TerrainTypeInfo GetTerrainInfo(CPos cell)
+		{
+			var tileSet = Rules.TileSets[Tileset];
+			return tileSet[GetTerrainIndex(cell)];
+		}
+
+		public CPos Clamp(CPos xy)
+		{
+			var r = Bounds;
+			return xy.Clamp(new Rectangle(r.X, r.Y, r.Width - 1, r.Height - 1));
+		}
+
+		public CPos ChooseRandomCell(MersenneTwister rand)
+		{
+			return new CPos(
+				rand.Next(Bounds.Left, Bounds.Right),
+				rand.Next(Bounds.Top, Bounds.Bottom));
+		}
+
+		public CPos ChooseRandomEdgeCell(MersenneTwister rand)
+		{
+			var isX = rand.Next(2) == 0;
+			var edge = rand.Next(2) == 0;
+
+			return new CPos(
+				isX ? rand.Next(Bounds.Left, Bounds.Right) : (edge ? Bounds.Left : Bounds.Right),
+				!isX ? rand.Next(Bounds.Top, Bounds.Bottom) : (edge ? Bounds.Top : Bounds.Bottom));
+		}
+
+		public WRange DistanceToEdge(WPos pos, WVec dir)
+		{
+			var tl = Bounds.TopLeftAsCPos().TopLeft;
+			var br = Bounds.BottomRightAsCPos().BottomRight;
+			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? tl.X : br.X) - pos.X) / dir.X;
+			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? tl.Y : br.Y) - pos.Y) / dir.Y;
+			return new WRange(Math.Min(x, y) * dir.Length);
+		}
+
+		public const int MaxTilesInCircleRange = 50;
+		static List<CVec>[] TilesByDistance = InitTilesByDistance(MaxTilesInCircleRange);
+
+		static List<CVec>[] InitTilesByDistance(int max)
+		{
+			var ts = new List<CVec>[max + 1];
+			for (var i = 0; i < max + 1; i++)
+				ts [i] = new List<CVec>();
+
+			for (var j = -max; j <= max; j++)
+				for (var i = -max; i <= max; i++)
+					if (max * max >= i * i + j * j)
+						ts [(int)Math.Ceiling(Math.Sqrt(i * i + j * j))].Add(new CVec(i, j));
+
+			return ts;
+		}
+
+		public IEnumerable<CPos> FindTilesInCircle(CPos center, int range)
+		{
+			if (range >= TilesByDistance.Length)
+				throw new InvalidOperationException("FindTilesInCircle supports queries for only <= {0}".F(MaxTilesInCircleRange));
+
+			for(var i = 0; i <= range; i++)
+			{
+				foreach(var offset in TilesByDistance[i])
+				{
+					var t = offset + center;
+					if (Bounds.Contains(t.X, t.Y))
+						yield return t;
 				}
 			}
 		}

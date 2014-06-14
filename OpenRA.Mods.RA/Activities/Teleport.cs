@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Activities
 		bool screenFlash;
 		string sound;
 
-		const int maxCellSearchRange = WorldUtils.MaxRange;
+		const int maxCellSearchRange = Map.MaxTilesInCircleRange;
 
 		public Teleport(Actor chronosphere, CPos destination, int? maximumDistance, bool killCargo, bool screenFlash, string sound)
 		{
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		CPos? ChooseBestDestinationCell(Actor self, CPos destination)
 		{
-			var restrictTo = maximumDistance == null ? null : self.World.FindTilesInCircle(self.Location, maximumDistance.Value);
+			var restrictTo = maximumDistance == null ? null : self.World.Map.FindTilesInCircle(self.Location, maximumDistance.Value);
 
 			if (maximumDistance != null)
 				destination = restrictTo.MinBy(x => (x - destination).LengthSquared);
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA.Activities
 			var searched = new List<CPos>();
 			for (int r = 1; r <= maxCellSearchRange || (maximumDistance != null && r <= maximumDistance); r++)
 			{
-				foreach (var tile in self.World.FindTilesInCircle(destination, r).Except(searched))
+				foreach (var tile in self.World.Map.FindTilesInCircle(destination, r).Except(searched))
 				{
 					if (self.Owner.Shroud.IsExplored(tile)
 						&& (restrictTo == null || (restrictTo != null && restrictTo.Contains(tile)))

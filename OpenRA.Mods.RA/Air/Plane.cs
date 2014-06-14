@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Air
 			{
 				UnReserve();
 
-				var cell = self.World.ClampToWorld(order.TargetLocation);
+				var cell = self.World.Map.Clamp(order.TargetLocation);
 				var t = Target.FromCell(cell);
 				self.SetTargetLine(t, Color.Green);
 				self.CancelActivity();

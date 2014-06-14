@@ -89,8 +89,8 @@ namespace OpenRA.Mods.RA
 				if (info.DeliveryAircraft != null)
 				{
 					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
-					var startPos = w.ChooseRandomEdgeCell();
-					var altitude = self.World.Map.Rules.Actors[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
+					var startPos = w.Map.ChooseRandomEdgeCell(w.SharedRandom);
+					var altitude = w.Map.Rules.Actors[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
 					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
 					{
 						new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
@@ -114,10 +114,10 @@ namespace OpenRA.Mods.RA
 		{
 			for (var n = 0; n < maxTries; n++)
 			{
-				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
+				var p = self.World.Map.ChooseRandomCell(self.World.SharedRandom);
 
 				// Is this valid terrain?
-				var terrainType = self.World.GetTerrainInfo(p).Type;
+				var terrainType = self.World.Map.GetTerrainInfo(p).Type;
 				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType))
 					continue;
 

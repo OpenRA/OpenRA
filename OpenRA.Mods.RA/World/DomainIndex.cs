@@ -169,7 +169,7 @@ namespace OpenRA.Mods.RA
 
 		bool CanTraverseTile(World world, CPos p)
 		{
-			var terrainOffset = world.GetTerrainIndex(p);
+			var terrainOffset = world.Map.GetTerrainIndex(p);
 			return (movementClass & (1 << terrainOffset)) > 0;
 		}
 

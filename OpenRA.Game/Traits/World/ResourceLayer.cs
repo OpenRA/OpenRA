@@ -145,7 +145,7 @@ namespace OpenRA.Traits
 			if (!world.Map.IsInMap(a.X, a.Y))
 				return false;
 
-			if (!rt.Info.AllowedTerrainTypes.Contains(world.GetTerrainInfo(a).Type))
+			if (!rt.Info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(a).Type))
 				return false;
 
 			if (!rt.Info.AllowUnderActors && world.ActorMap.AnyUnitsAt(a))
