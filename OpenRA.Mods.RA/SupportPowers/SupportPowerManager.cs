@@ -144,7 +144,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void PrerequisitesItemHidden(string key) { }
-		public void PrerequisitesItemVisable(string key) { }
+		public void PrerequisitesItemVisible(string key) { }
 	}
 
 	public class SupportPowerInstance

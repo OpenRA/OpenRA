@@ -142,7 +142,7 @@ namespace OpenRA.Mods.RA
 					watcher.PrerequisitesItemHidden(Key);
 
 				if (!nowHidden && hidden)
-					watcher.PrerequisitesItemVisable(Key);
+					watcher.PrerequisitesItemVisible(Key);
 
 				if (nowHasPrerequisites && !hasPrerequisites)
 					watcher.PrerequisitesAvailable(Key);
