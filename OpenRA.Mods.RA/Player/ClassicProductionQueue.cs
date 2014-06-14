@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA
 			if (unit == null || !unit.Traits.Contains<BuildableInfo>())
 				return 0;
 
-			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
+			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
 			var time = (int)(unit.GetBuildTime() * Info.BuildSpeed);
