@@ -24,6 +24,9 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	class BuildPaletteWidget : Widget
 	{
+		public enum ReadyTextStyleOptions { Solid, AlternatingColor, Blinking }
+		public readonly ReadyTextStyleOptions ReadyTextStyle = ReadyTextStyleOptions.AlternatingColor;
+		public readonly Color ReadyTextAltColor = Color.LimeGreen;
 		public int Columns = 3;
 		public int Rows = 5;
 
@@ -275,8 +278,12 @@ namespace OpenRA.Mods.RA.Widgets
 				foreach (var tb in textBits)
 				{
 					var size = font.Measure(tb.Second);
-					font.DrawTextWithContrast(tb.Second, tb.First - new float2(size.X / 2, 0),
-						Color.White, Color.Black, 1);
+					if (ReadyTextStyle == ReadyTextStyleOptions.Solid || orderManager.LocalFrameNumber / 9 % 2 == 0 || tb.Second != ReadyText)
+						font.DrawTextWithContrast(tb.Second, tb.First - new float2(size.X / 2, 0),
+						                          Color.White, Color.Black, 1);
+					else if (ReadyTextStyle == ReadyTextStyleOptions.AlternatingColor)
+						font.DrawTextWithContrast(tb.Second, tb.First - new float2(size.X / 2, 0),
+							                  ReadyTextAltColor, Color.Black, 1);
 				}
 
 				// Tooltip
@@ -305,7 +312,7 @@ namespace OpenRA.Mods.RA.Widgets
 				return HoldText;
 
 			if (item.Done)
-				return orderManager.LocalFrameNumber / 9 % 2 == 0 ? ReadyText : "";
+				return ReadyText;
 
 			return WidgetUtils.FormatTime(item.RemainingTimeActual);
 		}

@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 	public class ProductionPaletteWidget : Widget
 	{
+		public enum ReadyTextStyleOptions { Solid, AlternatingColor, Blinking }
+		public readonly ReadyTextStyleOptions ReadyTextStyle = ReadyTextStyleOptions.AlternatingColor;
+		public readonly Color ReadyTextAltColor = Color.LimeGreen;
 		public readonly int Columns = 3;
 		public readonly string TabClick = null;
 		public readonly string DisabledTabClick = null;
@@ -248,11 +251,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 					var waiting = first != CurrentQueue.CurrentItem() && !first.Done;
 					if (first.Done)
 					{
-						// Blink the ready text
-						if (orderManager.LocalFrameNumber / 9 % 2 == 0)
+						if (ReadyTextStyle == ReadyTextStyleOptions.Solid || orderManager.LocalFrameNumber / 9 % 2 == 0)
 							overlayFont.DrawTextWithContrast(ReadyText,
-															 icon.Pos + readyOffset,
-															 Color.White, Color.Black, 1);
+							                                 icon.Pos + readyOffset,
+							                                 Color.White, Color.Black, 1);
+						else if (ReadyTextStyle == ReadyTextStyleOptions.AlternatingColor)
+								overlayFont.DrawTextWithContrast(ReadyText,
+								                                 icon.Pos + readyOffset,
+								                                 ReadyTextAltColor, Color.Black, 1);
 					}
 					else if (first.Paused)
 						overlayFont.DrawTextWithContrast(HoldText,
