@@ -517,6 +517,7 @@
     <Compile Include="Render\WithRepairOverlay.cs" />
     <Compile Include="Activities\MoveWithinRange.cs" />
     <Compile Include="Lint\CheckPlayers.cs" />
+    <Compile Include="Player\ProvidesCustomPrerequisite.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
