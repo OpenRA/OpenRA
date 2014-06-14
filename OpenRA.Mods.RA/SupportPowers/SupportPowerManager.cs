@@ -23,18 +23,20 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new SupportPowerManager(init); }
 	}
 
-	public class SupportPowerManager : ITick, IResolveOrder
+	public class SupportPowerManager : ITick, IResolveOrder, ITechTreeElement
 	{
 		public readonly Actor self;
 		public readonly Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
 
 		public readonly DeveloperMode DevMode;
+		public readonly Lazy<TechTree> TechTree;
 		public readonly Lazy<RadarPings> RadarPings;
 
 		public SupportPowerManager(ActorInitializer init)
 		{
 			self = init.self;
 			DevMode = init.self.Trait<DeveloperMode>();
+			TechTree = Exts.Lazy(() => self.Owner.PlayerActor.Trait<TechTree>());
 			RadarPings = Exts.Lazy(() => init.world.WorldActor.TraitOrDefault<RadarPings>());
 
 			init.world.ActorAdded += ActorAdded;
@@ -69,6 +71,11 @@ namespace OpenRA.Mods.RA
 					};
 
 					Powers.Add(key, si);
+					if (TechTree.IsValueCreated)
+					{
+						TechTree.Value.Add(key, si.Instances.First().Info.Prerequisites, 0, this);
+						TechTree.Value.Update();
+					}
 				}
 			}
 		}
@@ -83,7 +90,11 @@ namespace OpenRA.Mods.RA
 				var key = MakeKey(t);
 				Powers[key].Instances.Remove(t);
 				if (Powers[key].Instances.Count == 0 && !Powers[key].Disabled)
+				{
 					Powers.Remove(key);
+					TechTree.Value.Remove(key);
+					TechTree.Value.Update();
+				}
 			}
 		}
 
@@ -116,6 +127,29 @@ namespace OpenRA.Mods.RA
 			return a.TraitsImplementing<SupportPower>()
 				.Select(t => Powers[MakeKey(t)]);
 		}
+
+		public void PrerequisitesAvailable(string key)
+		{
+			if (Powers.ContainsKey(key))
+			{
+				Powers[key].Disabled = false;
+				Powers[key].RemainingTime = Powers[key].TotalTime;
+			}
+		}
+
+		public void PrerequisitesUnavailable(string key)
+		{
+			if (Powers.ContainsKey(key))
+			{
+				Powers[key].Disabled = true;
+				Powers[key].RemainingTime = Powers[key].TotalTime;
+			}
+		}
+
+		// Included with interface, not used in this context
+		public void PrerequisitesItemHidden(string key) { }
+
+		public void PrerequisitesItemVisable(string key) { }
 	}
 
 	public class SupportPowerInstance
@@ -127,7 +161,7 @@ namespace OpenRA.Mods.RA
 		public int RemainingTime;
 		public int TotalTime;
 		public bool Active { get; private set; }
-		public bool Disabled { get; private set; }
+		public bool Disabled { get; set; }
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
 		public bool Ready { get { return Active && RemainingTime == 0; } }
