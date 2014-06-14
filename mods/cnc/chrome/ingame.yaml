@@ -383,7 +383,7 @@ Container@PLAYER_WIDGETS:
 			TooltipContainer: TOOLTIP_CONTAINER
 			ReadyText: Ready
 			ReadyTextStyle: AlternatingColor
-			ReadyTextAltColor: 50,205,50
+			ReadyTextAltColor: 255,192,0
 			HoldText: On Hold
 
 Background@FMVPLAYER:
