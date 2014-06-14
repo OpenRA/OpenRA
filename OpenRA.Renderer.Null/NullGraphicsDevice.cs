@@ -45,6 +45,9 @@ namespace OpenRA.Renderer.Null
 
 		public void SetBlendMode(BlendMode mode) { }
 
+		public void GrabWindowMouseFocus() { }
+		public void ReleaseWindowMouseFocus() { }
+
 		public void Clear() { }
 		public void Present() { }
 

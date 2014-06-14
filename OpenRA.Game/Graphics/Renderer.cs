@@ -229,5 +229,15 @@ namespace OpenRA.Graphics
 			Flush();
 			Device.DisableDepthBuffer();
 		}
+
+		public void GrabWindowMouseFocus()
+		{
+			device.GrabWindowMouseFocus();
+		}
+
+		public void ReleaseWindowMouseFocus()
+		{
+			device.ReleaseWindowMouseFocus();
+		}
 	}
 }

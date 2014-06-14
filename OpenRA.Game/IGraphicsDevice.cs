@@ -58,6 +58,9 @@ namespace OpenRA
 		void DisableDepthBuffer();
 
 		void SetBlendMode(BlendMode mode);
+
+		void GrabWindowMouseFocus();
+		void ReleaseWindowMouseFocus();
 	}
 
 	public interface IVertexBuffer<T>

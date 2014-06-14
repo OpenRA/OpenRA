@@ -253,6 +253,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			BindSliderPref(panel, "SCROLLSPEED_SLIDER", gs, "ViewportEdgeScrollStep");
 			BindSliderPref(panel, "UI_SCROLLSPEED_SLIDER", gs, "UIScrollSpeed");
 
+			// Apply mouse focus preferences immediately
+			var lockMouseCheckbox = panel.Get<CheckboxWidget>("LOCKMOUSE_CHECKBOX");
+			var oldOnClick = lockMouseCheckbox.OnClick;
+			lockMouseCheckbox.OnClick = () =>
+			{
+				// Still perform the old behaviour for clicking the checkbox, before
+				// applying the changes live.
+				oldOnClick();
+
+				MakeMouseFocusSettingsLive();
+			};
+
 			var mouseScrollDropdown = panel.Get<DropDownButtonWidget>("MOUSE_SCROLL");
 			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gs);
 			mouseScrollDropdown.GetText = () => gs.MouseScroll.ToString();
@@ -385,6 +397,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				panel.Get<SliderWidget>("SCROLLSPEED_SLIDER").Value = gs.ViewportEdgeScrollStep;
 				panel.Get<SliderWidget>("UI_SCROLLSPEED_SLIDER").Value = gs.UIScrollSpeed;
+
+				MakeMouseFocusSettingsLive();
 			};
 		}
 
@@ -503,6 +517,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.modData.Languages, setupItem);
 			return true;
+		}
+
+		void MakeMouseFocusSettingsLive()
+		{
+			var gameSettings = Game.Settings.Game;
+
+			if (gameSettings.LockMouseWindow)
+				Game.Renderer.GrabWindowMouseFocus();
+			else
+				Game.Renderer.ReleaseWindowMouseFocus();
 		}
 	}
 }
