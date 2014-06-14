@@ -162,19 +162,68 @@ namespace OpenRA
 			public IEnumerable<T> GetMultiple(uint actor)
 			{
 				++Queries;
-				var index = actors.BinarySearchMany(actor);
-				while (index < actors.Count && actors[index].ActorID == actor)
+				return new MultipleEnumerable(this, actor);
+			}
+
+			class MultipleEnumerable : IEnumerable<T>
+			{
+				readonly TraitContainer<T> container;
+				readonly uint actor;
+				public MultipleEnumerable(TraitContainer<T> container, uint actor) { this.container = container; this.actor = actor; }
+				public IEnumerator<T> GetEnumerator() { return new MultipleEnumerator(container, actor); }
+				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
+			}
+
+			class MultipleEnumerator : IEnumerator<T>
+			{
+				readonly List<Actor> actors;
+				readonly List<T> traits;
+				readonly uint actor;
+				int index;
+				public MultipleEnumerator(TraitContainer<T> container, uint actor)
 				{
-					yield return traits[index];
-					++index;
+					actors = container.actors;
+					traits = container.traits;
+					this.actor = actor;
+					Reset();
 				}
+				public void Reset() { index = actors.BinarySearchMany(actor) - 1; }
+				public bool MoveNext() { return ++index < actors.Count && actors[index].ActorID == actor; }
+				public T Current { get { return traits[index]; } }
+				object System.Collections.IEnumerator.Current { get { return Current; } }
+				public void Dispose() { }
 			}
 
 			public IEnumerable<TraitPair<T>> All()
 			{
 				++Queries;
-				for (var i = 0; i < actors.Count; i++)
-					yield return new TraitPair<T> { Actor = actors[i], Trait = traits[i] };
+				return new AllEnumerable(this);
+			}
+
+			class AllEnumerable : IEnumerable<TraitPair<T>>
+			{
+				readonly TraitContainer<T> container;
+				public AllEnumerable(TraitContainer<T> container) { this.container = container; }
+				public IEnumerator<TraitPair<T>> GetEnumerator() { return new AllEnumerator(container); }
+				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
+			}
+
+			class AllEnumerator : IEnumerator<TraitPair<T>>
+			{
+				readonly List<Actor> actors;
+				readonly List<T> traits;
+				int index;
+				public AllEnumerator(TraitContainer<T> container)
+				{
+					actors = container.actors;
+					traits = container.traits;
+					Reset();
+				}
+				public void Reset() { index = -1; }
+				public bool MoveNext() { return ++index < actors.Count; }
+				public TraitPair<T> Current { get { return new TraitPair<T> { Actor = actors[index], Trait = traits[index] }; } }
+				object System.Collections.IEnumerator.Current { get { return Current; } }
+				public void Dispose() { }
 			}
 
 			public void RemoveActor(uint actor)
