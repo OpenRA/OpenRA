@@ -61,6 +61,9 @@ return binpath and {
       local newtx = ""
       local indent = 0
       local maxindent = 0
+      local isbranch = {
+        ["IF"]=true,["REP"]=true,["ELSE"]=true,["LOOP"]=true,
+      }
       local startindent = {
         ["IF"]=true,["REP"]=true,["ELSE"]=true,["LOOP"]=true,["BB"]=true,
       }
@@ -68,7 +71,7 @@ return binpath and {
         ["ENDIF"]=true,["ENDREP"]=true,["ELSE"]=true,["ENDLOOP"]=true,["END"]=true,["RET"]=true,
       }
 
-      local function checknesting(str,tab)
+      local function check(str,tab)
         local res
         local chk = str:match("%s*(BB)%d+.*:")
         chk = chk or str:match("%s*(%w+)")
@@ -84,6 +87,7 @@ return binpath and {
       local registermem = 0
       local registers = 0
       local instructions = 0
+      local branches = 0
 
       local function fixargbuffers()
         if (argbuffersfixed) then return end
@@ -221,8 +225,12 @@ return binpath and {
           if (not w:match("%s*#")) then
             instructions = instructions + 1
           end
+          
+          if (check(w,isbranch)) then
+            branches = branches + 1
+          end
 
-          if (checknesting(w,endindent)) then
+          if (check(w,endindent)) then
             newtx = newtx..outputregisters(indent)
             if (indent == 0) then clearregisters(indent) end
             indent = math.max(0,indent - 1)
@@ -238,7 +246,7 @@ return binpath and {
           newtx = newtx..(argcomment and (indentstr..argcomment.."\n") or "")
           newtx = newtx..linestr
 
-          if (checknesting(w,startindent)) then
+          if (check(w,startindent)) then
             indent = indent + 1
             maxindent = math.max(maxindent,indent)
             clearregisters(indent)
@@ -253,6 +261,7 @@ return binpath and {
       registermem = registermem or 0
       registercc = registercc or 0
       local stats = "# "..instructions.." ~ instructions\n"
+      stats = stats.."# "..branches.." ~ branches\n"
       stats = stats.."# "..registers.." R-regs\n"
       stats = stats.."# "..tostring(registercc).." C-regs, "..tostring(registermem).." L-regs\n"
       stats = stats.."# "..tostring(registercc + registermem + registers).." maximum registers\n"
