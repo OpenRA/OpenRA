@@ -874,7 +874,7 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScriptInterface:
-			LuaScripts: mission.lua
+			LuaScripts: allies02.lua
 	^Infantry:
 		MustBeDestroyed:
 	^Tank:

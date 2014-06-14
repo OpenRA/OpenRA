@@ -579,7 +579,7 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScriptInterface:
-			LuaScripts: mission.lua
+			LuaScripts: allies01.lua
 	TRAN.Extraction:
 		Inherits: TRAN
 		RenderUnit:
