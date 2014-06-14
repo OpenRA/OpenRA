@@ -10,7 +10,7 @@
   - Added showing/hiding toolbar and status bar.
   - Simplified user interface and updated application icons.
   - Updated love2d API for v0.9.1.
-  - Updated Moai API for v1.5 (thanks to @DanielSWolf).
+  - Updated Moai API for v1.5.
   - Added `outputshell.usewrap` to set Output wrapping; on by default.
   - Added `editor.wrapflags` to configure line wrapping indicators.
   - Added `editor.foldflags`; set default to draw one line when folded.
@@ -18,13 +18,13 @@
   - Added `editor.extraascent` option to add line spacing.
 
 ### Special thanks
-  - To @bartoleo for italian translation update.
-  - To @riidom for german translation update.
-  - To @sclark39 for Copy Full Path implementation.
-  - To @DanielSWolf for Moai API update for v1.5.
-  - To @madmaxoft for AnalyzeString patch.
-  - To @crumblingstatue for Zoom update.
-  - To @SiENcE for notepad++ colorscheme update.
+  - To [bartoleo](https://github.com/bartoleo) for italian translation update.
+  - To [riidom](https://github.com/riidom) for german translation update.
+  - To [sclark39](https://github.com/sclark39) for Copy Full Path implementation.
+  - To [DanielSWolf](https://github.com/DanielSWolf) for Moai API update for v1.5.
+  - To [madmaxoft](https://github.com/madmaxoft) for AnalyzeString patch.
+  - To [crumblingstatue](https://github.com/crumblingstatue) for Zoom update.
+  - To [SiENcE](https://github.com/SiENcE) for notepad++ colorscheme update.
 
 ### Improvements
   - Added new italian translations (thanks to @bartoleo)
