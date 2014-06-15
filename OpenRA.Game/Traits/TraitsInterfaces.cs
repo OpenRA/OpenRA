@@ -83,11 +83,14 @@ namespace OpenRA.Traits
 	public interface ISeedableResource { void Seed(Actor self); }
 
 	public interface IAcceptInfiltrator { void OnInfiltrate(Actor self, Actor infiltrator); }
+
+	public interface IDemolishableInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{
 		void Demolish(Actor self, Actor saboteur);
 		bool IsValidTarget(Actor self, Actor saboteur);
 	}
+
 	public interface IStoreOre { int Capacity { get; } }
 	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 	public interface IEffectiveOwner

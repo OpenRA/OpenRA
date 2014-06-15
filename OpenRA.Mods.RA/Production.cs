@@ -35,6 +35,8 @@ namespace OpenRA.Mods.RA
 		[Desc("Cell offset where the exiting actor enters the ActorMap")]
 		public readonly CVec ExitCell = CVec.Zero;
 		public readonly int Facing = -1;
+
+		[Desc("AttackMove to a RallyPoint or stay where you are spawned.")]
 		public readonly bool MoveIntoWorld = true;
 	}
 

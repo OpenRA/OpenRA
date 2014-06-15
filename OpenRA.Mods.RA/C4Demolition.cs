@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
@@ -19,6 +20,7 @@ namespace OpenRA.Mods.RA
 	class C4DemolitionInfo : ITraitInfo
 	{
 		public readonly int C4Delay = 45; // 1.8 seconds
+
 		public object Create(ActorInitializer init) { return new C4Demolition(this); }
 	}
 
@@ -83,20 +85,12 @@ namespace OpenRA.Mods.RA
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;
 
-				var demolishable = target.TraitOrDefault<IDemolishable>();
-				if (demolishable == null || !demolishable.IsValidTarget(target, self))
-					return false;
-
-				return true;
+				return target.TraitsImplementing<IDemolishable>().Any(i => i.IsValidTarget(target, self));
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				// TODO: Bridges don't yet support FrozenUnderFog.
-				if (target.Actor != null && target.Actor.HasTrait<BridgeHut>())
-					return false;
-
-				return true;
+				return target.Info.Traits.WithInterface<IDemolishableInfo>().Any(i => i.IsValidTarget(target.Info, self));
 			}
 		}
 	}
