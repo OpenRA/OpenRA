@@ -173,8 +173,8 @@ namespace OpenRA
 				return fn();
 
 			var shouldCheckSync = Game.Settings.Debug.SanityCheckUnsyncedCode;
-			int sync = shouldCheckSync ? world.SyncHash() : 0;
-			bool prevInUnsyncedCode = inUnsyncedCode;
+			var sync = shouldCheckSync ? world.SyncHash() : 0;
+			var prevInUnsyncedCode = inUnsyncedCode;
 			inUnsyncedCode = true;
 
 			try

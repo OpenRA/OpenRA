@@ -35,7 +35,7 @@ namespace OpenRA
 				}
 		}
 
-		public Widget LoadWidget( WidgetArgs args, Widget parent, string w )
+		public Widget LoadWidget(WidgetArgs args, Widget parent, string w)
 		{
 			MiniYamlNode ret;
 			if (!widgets.TryGetValue(w, out ret))
@@ -44,7 +44,7 @@ namespace OpenRA
 			return LoadWidget( args, parent, ret );
 		}
 
-		public Widget LoadWidget( WidgetArgs args, Widget parent, MiniYamlNode node)
+		public Widget LoadWidget(WidgetArgs args, Widget parent, MiniYamlNode node)
 		{
 			var widget = NewWidget(node.Key, args);
 
@@ -67,7 +67,7 @@ namespace OpenRA
 					foreach (var c in child.Value.Nodes)
 						LoadWidget( args, widget, c);
 
-			widget.PostInit( args );
+			widget.PostInit(args);
 			return widget;
 		}
 
