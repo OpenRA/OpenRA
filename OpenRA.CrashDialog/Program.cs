@@ -15,7 +15,6 @@ using System.IO;
 using System.Media;
 using System.Reflection;
 using System.Windows.Forms;
-using OpenRA;
 
 namespace OpenRA.CrashDialog
 {

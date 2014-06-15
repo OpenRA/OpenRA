@@ -10,11 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 

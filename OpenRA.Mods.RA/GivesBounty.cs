@@ -11,7 +11,6 @@
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Effects;
-using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

@@ -9,11 +9,7 @@
 #endregion
 
 using OpenRA.GameRules;
-using OpenRA.FileFormats;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k

@@ -12,7 +12,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic

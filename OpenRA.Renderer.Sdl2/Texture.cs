@@ -12,7 +12,6 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using OpenRA.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.Sdl2

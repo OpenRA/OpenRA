@@ -8,7 +8,6 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 

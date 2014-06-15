@@ -8,16 +8,11 @@
  */
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Eluant;
-using OpenRA.FileFormats;
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA.Scripting
 {

@@ -9,7 +9,6 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 

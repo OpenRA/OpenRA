@@ -14,7 +14,6 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Move;
-using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

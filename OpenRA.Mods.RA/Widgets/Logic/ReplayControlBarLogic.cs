@@ -8,8 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Linq;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic

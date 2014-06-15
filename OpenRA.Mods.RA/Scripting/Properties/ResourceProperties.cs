@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using OpenRA;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 

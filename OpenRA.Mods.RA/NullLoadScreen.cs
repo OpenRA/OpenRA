@@ -9,7 +9,6 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA

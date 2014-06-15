@@ -9,7 +9,6 @@
 #endregion
 
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Buildings;
 

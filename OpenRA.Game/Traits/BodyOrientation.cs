@@ -8,8 +8,6 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
-
 namespace OpenRA.Traits
 {
 	public class BodyOrientationInfo : ITraitInfo, IBodyOrientationInfo

@@ -8,14 +8,12 @@
  */
 #endregion
 
-using System.Collections;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Editor

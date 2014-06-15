@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using MaxMind.GeoIP2;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;

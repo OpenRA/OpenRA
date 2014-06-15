@@ -9,8 +9,6 @@
 #endregion
 
 using System.Linq;
-using OpenRA.FileFormats;
-
 using SGraphics = System.Drawing.Graphics;
 
 namespace OpenRA.Editor

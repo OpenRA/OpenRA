@@ -8,8 +8,6 @@
  */
 #endregion
 
-using System.Linq;
-
 namespace OpenRA.Mods.RA.Crates
 {
 	public class UnitUpgradeCrateActionInfo : CrateActionInfo

@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,7 +18,6 @@ using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
-using OpenRA.Scripting;
 using OpenRA.Traits;
 
 namespace OpenRA.Scripting

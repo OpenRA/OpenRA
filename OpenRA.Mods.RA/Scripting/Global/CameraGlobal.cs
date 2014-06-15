@@ -8,11 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Eluant;
-using OpenRA.Effects;
 using OpenRA.Scripting;
 
 namespace OpenRA.Mods.RA.Scripting

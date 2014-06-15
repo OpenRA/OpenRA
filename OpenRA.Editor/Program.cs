@@ -10,10 +10,7 @@
 
 using System;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Editor
 {

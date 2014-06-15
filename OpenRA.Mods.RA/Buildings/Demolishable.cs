@@ -7,9 +7,8 @@
  * see COPYING.
  */
 #endregion
-using System;
+
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {

@@ -8,10 +8,8 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.GameRules;
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc

@@ -13,8 +13,6 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Widgets;
-using OpenRA.Traits;
-using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {

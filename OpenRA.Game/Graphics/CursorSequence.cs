@@ -8,8 +8,6 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
-
 namespace OpenRA.Graphics
 {
 	public class CursorSequence

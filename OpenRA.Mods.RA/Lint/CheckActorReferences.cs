@@ -9,9 +9,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using OpenRA;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

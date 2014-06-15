@@ -10,7 +10,6 @@
 
 using System;
 using System.Drawing;
-using System.Linq;
 using OpenRA;
 using OpenRA.Graphics;
 using SDL2;

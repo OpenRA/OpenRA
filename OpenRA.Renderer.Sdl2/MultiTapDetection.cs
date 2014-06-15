@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using OpenRA;
 using OpenRA.Primitives;
 
 namespace OpenRA.Renderer.Sdl2

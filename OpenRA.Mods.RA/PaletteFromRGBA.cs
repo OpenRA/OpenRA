@@ -8,7 +8,6 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.Graphics;
 

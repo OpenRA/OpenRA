@@ -10,17 +10,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using OpenRA.FileFormats;
-using OpenRA.GameRules;
-using OpenRA.Graphics;
-using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA.Utility
 {

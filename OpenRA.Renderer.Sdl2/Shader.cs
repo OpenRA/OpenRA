@@ -13,8 +13,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using OpenRA.FileSystem;
-using OpenRA.Graphics;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.Sdl2

@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -17,7 +16,6 @@ using System.Linq;
 using System.Net;
 using OpenRA.FileSystem;
 using MaxMind.GeoIP2;
-using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;

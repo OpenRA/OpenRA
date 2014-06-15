@@ -10,7 +10,6 @@
 
 using System;
 using System.Net;
-using OpenRA.GameRules;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic

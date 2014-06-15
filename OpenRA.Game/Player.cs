@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
-using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Graphics;
 using OpenRA.Primitives;

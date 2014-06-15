@@ -17,13 +17,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using Eluant;
-using Eluant.ObjectBinding;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
-using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 

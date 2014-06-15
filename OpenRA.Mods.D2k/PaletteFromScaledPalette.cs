@@ -8,11 +8,8 @@
  */
 #endregion
 
-using System;
 using System.Drawing;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k

@@ -8,13 +8,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRA.Primitives;
 using OpenRA.Traits;
-using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.RA
 {

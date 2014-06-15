@@ -11,7 +11,6 @@
 using System;
 using System.IO;
 using System.Text;
-using OpenRA.Network;
 
 namespace OpenRA.FileFormats
 {

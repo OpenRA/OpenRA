@@ -8,8 +8,6 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
-
 namespace OpenRA.Mods.RA.Render
 {
 	public class RenderBuildingChargeInfo : RenderBuildingInfo
