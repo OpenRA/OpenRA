@@ -166,7 +166,7 @@ namespace OpenRA.Mods.RA
 			Produceable[self.World.Map.Rules.Actors[key]].Visible = false;
 		}
 
-		public void PrerequisitesItemVisable(string key)
+		public void PrerequisitesItemVisible(string key)
 		{
 			Produceable[self.World.Map.Rules.Actors[key]].Visible = true;
 		}
