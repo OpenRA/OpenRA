@@ -131,7 +131,7 @@ namespace OpenRA.FileFormats
 			while (dataSize > 0)
 			{
 				var chunk = Chunk.Read(s);
-				for (int n = 0; n < chunk.CompressedSize; n++)
+				for (var n = 0; n < chunk.CompressedSize; n++)
 				{
 					var b = s.ReadUInt8();
 

@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -18,7 +17,6 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using OpenRA.Graphics;
-using OpenRA.Widgets;
 
 namespace OpenRA
 {

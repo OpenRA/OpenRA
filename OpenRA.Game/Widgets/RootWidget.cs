@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets

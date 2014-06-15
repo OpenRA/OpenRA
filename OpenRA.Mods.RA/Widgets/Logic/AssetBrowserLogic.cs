@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic

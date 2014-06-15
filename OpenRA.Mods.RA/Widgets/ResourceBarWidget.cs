@@ -10,7 +10,6 @@
 
 using System;
 using System.Drawing;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 

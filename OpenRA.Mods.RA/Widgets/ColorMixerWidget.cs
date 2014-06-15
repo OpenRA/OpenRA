@@ -11,7 +11,6 @@
 using System;
 using System.Drawing;
 using System.Threading;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 

@@ -44,13 +44,13 @@ namespace OpenRA.Graphics
 			float[] trgb = { h + 1 / 3.0f, h, h - 1 / 3.0f };
 			float[] rgb = { 0, 0, 0 };
 
-			for (int k = 0; k < 3; k++)
+			for (var k = 0; k < 3; k++)
 			{
 				while (trgb[k] < 0) trgb[k] += 1.0f;
 				while (trgb[k] > 1) trgb[k] -= 1.0f;
 			}
 
-			for (int k = 0; k < 3; k++)
+			for (var k = 0; k < 3; k++)
 			{
 				if (trgb[k] < 1 / 6.0f) { rgb[k] = p + ((q - p) * 6 * trgb[k]); }
 				else if (trgb[k] >= 1 / 6.0f && trgb[k] < 0.5) { rgb[k] = q; }

@@ -172,8 +172,8 @@ namespace OpenRA
 				u = selector(t);
 				while (e.MoveNext())
 				{
-					T nextT = e.Current;
-					U nextU = selector(nextT);
+					var nextT = e.Current;
+					var nextU = selector(nextT);
 					if (comparer.Compare(nextU, u) * modifier < 0)
 					{
 						t = nextT;
@@ -228,8 +228,8 @@ namespace OpenRA
 			var d = new Dictionary<TKey, TElement>();
 			foreach (var item in source)
 			{
-				TKey key = keySelector(item);
-				TElement element = elementSelector(item);
+				var key = keySelector(item);
+				var element = elementSelector(item);
 
 				// Check for a key conflict:
 				if (d.ContainsKey(key))
@@ -274,8 +274,8 @@ namespace OpenRA
 
 		public static T[] MakeArray<T>(int count, Func<int, T> f)
 		{
-			T[] result = new T[count];
-			for (int i = 0; i < count; i++)
+			var result = new T[count];
+			for (var i = 0; i < count; i++)
 				result[i] = f(i);
 
 			return result;

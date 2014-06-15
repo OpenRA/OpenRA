@@ -98,8 +98,8 @@ namespace OpenRA.FileFormats
 		/// </returns>
 		public static uint Calculate(byte[] data, uint polynomial)
 		{
-			uint crc = polynomial;
-			for (int i = 0; i < data.Length; i++)
+			var crc = polynomial;
+			for (var i = 0; i < data.Length; i++)
 				crc = (crc >> 8) ^ lookUp[(crc & 0xFF) ^ data[i]];
 			crc ^= polynomial;
 			return crc;
@@ -119,8 +119,8 @@ namespace OpenRA.FileFormats
 		/// <returns>The calculated checksum.</returns>
 		public static unsafe uint Calculate(byte* data, uint len, uint polynomial)
 		{
-			uint crc = polynomial;
-			for (int i = 0; i < len; i++)
+			var crc = polynomial;
+			for (var i = 0; i < len; i++)
 				crc = (crc >> 8) ^ lookUp[(crc & 0xFF) ^ *data++];
 			crc ^= polynomial;
 			return crc;

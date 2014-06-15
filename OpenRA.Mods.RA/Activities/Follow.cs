@@ -9,7 +9,6 @@
 #endregion
 
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Activities
 {

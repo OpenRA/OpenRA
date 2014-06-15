@@ -39,7 +39,7 @@ namespace OpenRA.FileFormats
 
 				Bitmap bitmap = null;
 				Color[] palette = null;
-				List<byte> data = new List<byte>();
+				var data = new List<byte>();
 
 				for (; ; )
 				{

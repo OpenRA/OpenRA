@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using MaxMind.GeoIP2;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -355,7 +354,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				before();
 
-				int spectatorCount = orderManager.LobbyInfo.Clients.Count(c => c.IsObserver);
+				var spectatorCount = orderManager.LobbyInfo.Clients.Count(c => c.IsObserver);
 				if (spectatorCount > 0)
 				{
 					Game.LoadWidget(null, "KICK_SPECTATORS_DIALOG", lobby, new WidgetArgs

@@ -8,10 +8,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileFormats;
-using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings

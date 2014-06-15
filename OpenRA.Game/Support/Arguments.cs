@@ -24,7 +24,7 @@ namespace OpenRA
 			var regex = new Regex("([^=]+)=(.*)");
 			foreach (var s in src)
 			{
-				Match m = regex.Match(s);
+				var m = regex.Match(s);
 				if (!m.Success)
 					continue;
 

@@ -8,15 +8,12 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
-using OpenRA.Support;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA

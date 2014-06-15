@@ -21,11 +21,11 @@ namespace OpenRA.Renderer.Sdl2
 			var versionString = GL.GetString(StringName.Version);
 			var version = versionString.Contains(" ") ? versionString.Split(' ')[0].Split('.') : versionString.Split('.');
 
-			int major = 0;
+			var major = 0;
 			if (version.Length > 0)
 				int.TryParse(version[0], out major);
 
-			int minor = 0;
+			var minor = 0;
 			if (version.Length > 1)
 				int.TryParse(version[1], out minor);
 

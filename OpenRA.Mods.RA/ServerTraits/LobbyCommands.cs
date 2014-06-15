@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Network;
-using OpenRA.Primitives;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
 
@@ -59,7 +58,7 @@ namespace OpenRA.Mods.RA.Server
 			var playerClients = server.LobbyInfo.Clients.Where(c => c.Bot == null && c.Slot != null);
 
 			// Are all players ready?
-			if (playerClients.Count() == 0 || playerClients.Any(c => c.State != Session.ClientState.Ready))
+			if (!playerClients.Any() || playerClients.Any(c => c.State != Session.ClientState.Ready))
 				return;
 
 			// Are the map conditions satisfied?
@@ -315,7 +314,7 @@ namespace OpenRA.Mods.RA.Server
 						//  - Players who now lack a slot are made observers
 						//  - Bots who now lack a slot are dropped
 						var slots = server.LobbyInfo.Slots.Keys.ToArray();
-						int i = 0;
+						var i = 0;
 						foreach (var os in oldSlots)
 						{
 							var c = server.LobbyInfo.ClientInSlot(os);

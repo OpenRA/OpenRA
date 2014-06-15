@@ -12,8 +12,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
-using System;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Network
 {

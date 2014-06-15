@@ -12,7 +12,6 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using OpenRA.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.Sdl2
@@ -72,7 +71,7 @@ namespace OpenRA.Renderer.Sdl2
 			{
 				fixed (byte* ptr = &colors[0])
 				{
-					IntPtr intPtr = new IntPtr((void*)ptr);
+					var intPtr = new IntPtr((void*)ptr);
 					PrepareTexture();
 					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, width, height,
 						0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, intPtr);
@@ -84,8 +83,8 @@ namespace OpenRA.Renderer.Sdl2
 		// An array of RGBA
 		public void SetData(uint[,] colors)
 		{
-			int width = colors.GetUpperBound(1) + 1;
-			int height = colors.GetUpperBound(0) + 1;
+			var width = colors.GetUpperBound(1) + 1;
+			var height = colors.GetUpperBound(0) + 1;
 
 			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
 				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width, height));
@@ -95,7 +94,7 @@ namespace OpenRA.Renderer.Sdl2
 			{
 				fixed (uint* ptr = &colors[0, 0])
 				{
-					IntPtr intPtr = new IntPtr((void*)ptr);
+					var intPtr = new IntPtr((void*)ptr);
 					PrepareTexture();
 					GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, width, height,
 						0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, intPtr);
@@ -106,7 +105,7 @@ namespace OpenRA.Renderer.Sdl2
 
 		public void SetData(Bitmap bitmap)
 		{
-			bool allocatedBitmap = false;
+			var allocatedBitmap = false;
 			if (!Exts.IsPowerOf2(bitmap.Width) || !Exts.IsPowerOf2(bitmap.Height))
 			{
 				bitmap = new Bitmap(bitmap, bitmap.Size.NextPowerOf2());
@@ -141,7 +140,7 @@ namespace OpenRA.Renderer.Sdl2
 			{
 				fixed (byte* ptr = &data[0])
 				{
-					IntPtr intPtr = new IntPtr((void*)ptr);
+					var intPtr = new IntPtr((void*)ptr);
 					GL.GetTexImage(TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, intPtr);
 				}
 			}

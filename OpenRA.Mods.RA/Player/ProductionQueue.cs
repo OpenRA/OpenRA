@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -247,7 +246,7 @@ namespace OpenRA.Mods.RA
 
 					for (var n = 0; n < amountToBuild; n++) // repeat count
 					{
-						bool hasPlayedSound = false;
+						var hasPlayedSound = false;
 						BeginProduction(new ProductionItem(this, order.TargetString, cost, PlayerPower,
 								() => self.World.AddFrameEndTask(_ =>
 								{

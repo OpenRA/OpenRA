@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
@@ -361,7 +360,7 @@ namespace OpenRA.Mods.RA.AI
 			switch (type)
 			{
 				case BuildingType.Defense:
-					Actor enemyBase = FindEnemyBuildingClosestToPos(baseCenter.CenterPosition);
+					var enemyBase = FindEnemyBuildingClosestToPos(baseCenter.CenterPosition);
 					return enemyBase != null ? findPos(enemyBase.CenterPosition, defenseCenter) : null;
 
 				case BuildingType.Refinery:
@@ -505,15 +504,11 @@ namespace OpenRA.Mods.RA.AI
 			return squads.FirstOrDefault(s => s.type == type);
 		}
 
-		Squad RegisterNewSquad(SquadType type, Actor target)
+		Squad RegisterNewSquad(SquadType type, Actor target = null)
 		{
 			var ret = new Squad(this, type, target);
 			squads.Add(ret);
 			return ret;
-		}
-		Squad RegisterNewSquad(SquadType type)
-		{
-			return RegisterNewSquad(type, null);
 		}
 
 		int assignRolesTicks = 0;
@@ -788,9 +783,9 @@ namespace OpenRA.Mods.RA.AI
 			var x = (world.Map.MapSize.X % radiusOfPower) == 0 ? world.Map.MapSize.X : world.Map.MapSize.X + radiusOfPower;
 			var y = (world.Map.MapSize.Y % radiusOfPower) == 0 ? world.Map.MapSize.Y : world.Map.MapSize.Y + radiusOfPower;
 
-			for (int i = 0; i < x; i += radiusOfPower * 2)
+			for (var i = 0; i < x; i += radiusOfPower * 2)
 			{
-				for (int j = 0; j < y; j += radiusOfPower * 2)
+				for (var j = 0; j < y; j += radiusOfPower * 2)
 				{
 					var pos = new CPos(i, j);
 					var targets = world.FindActorsInCircle(pos.CenterPosition, WRange.FromCells(radiusOfPower)).ToList();

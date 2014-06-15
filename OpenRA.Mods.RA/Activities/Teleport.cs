@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA.Activities
 				return destination;
 
 			var searched = new List<CPos>();
-			for (int r = 1; r <= maxCellSearchRange || (maximumDistance != null && r <= maximumDistance); r++)
+			for (var r = 1; r <= maxCellSearchRange || (maximumDistance != null && r <= maximumDistance); r++)
 			{
 				foreach (var tile in self.World.Map.FindTilesInCircle(destination, r).Except(searched))
 				{

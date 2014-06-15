@@ -76,7 +76,7 @@ namespace OpenRA.Widgets
 			if (mi.Event == MouseInputEvent.Move)
 				MouseOverWidget = null;
 
-			bool handled = false;
+			var handled = false;
 			if (MouseFocusWidget != null && MouseFocusWidget.HandleMouseInputOuter(mi))
 				handled = true;
 

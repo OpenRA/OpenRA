@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.IO;
 using OpenRA.Graphics;
 
@@ -54,7 +53,7 @@ namespace OpenRA.FileFormats
 			var indexStart = s.ReadInt32();
 
 			s.Position = indexStart;
-			foreach (byte b in s.ReadBytes(indexEnd - indexStart))
+			foreach (var b in s.ReadBytes(indexEnd - indexStart))
 			{
 				if (b != 255)
 				{

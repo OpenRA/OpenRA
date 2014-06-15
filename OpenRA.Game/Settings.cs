@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -230,10 +229,7 @@ namespace OpenRA
 			var err1 = FieldLoader.UnknownFieldAction;
 			var err2 = FieldLoader.InvalidValueAction;
 
-			FieldLoader.UnknownFieldAction = (s, f) =>
-			{
-				Console.WriteLine("Ignoring unknown field `{0}` on `{1}`".F(s, f.Name));
-			};
+			FieldLoader.UnknownFieldAction = (s, f) => Console.WriteLine("Ignoring unknown field `{0}` on `{1}`".F(s, f.Name));
 
 			if (File.Exists(settingsFile))
 			{

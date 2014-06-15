@@ -203,8 +203,8 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			buttons.Clear();
 
-			string paletteCollection = "palette-" + world.LocalPlayer.Country.Race;
-			float2 origin = new float2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
+			var paletteCollection = "palette-" + world.LocalPlayer.Country.Race;
+			var origin = new float2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
 			var iconOffset = 0.5f * new float2(IconWidth, IconHeight);
 			var x = 0;
 			var y = 0;
@@ -296,7 +296,7 @@ namespace OpenRA.Mods.RA.Widgets
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-top"),
 				new float2(Game.Renderer.Resolution.Width - 14, origin.Y - 23));
 
-			for (int i = 0; i < numActualRows; i++)
+			for (var i = 0; i < numActualRows; i++)
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-" + (i % 4)),
 					new float2(Game.Renderer.Resolution.Width - 14, origin.Y + IconHeight * i));
 
@@ -401,7 +401,7 @@ namespace OpenRA.Mods.RA.Widgets
 					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
 					{
 						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, world.LocalPlayer.Country.Race);
-						int numberToCancel = Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
+						var numberToCancel = Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
 
 						world.IssueOrder(Order.CancelProduction(CurrentQueue.self, item, numberToCancel));
 					}

@@ -9,7 +9,6 @@
 #endregion
 
 using OpenRA.Mods.RA.Air;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities

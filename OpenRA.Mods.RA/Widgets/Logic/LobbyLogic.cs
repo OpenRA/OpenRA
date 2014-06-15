@@ -66,10 +66,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					});
 				};
 
-				Action<string> onRetry = password =>
-				{
-					ConnectionLogic.Connect(om.Host, om.Port, password, onConnect, onExit);
-				};
+				Action<string> onRetry = password => ConnectionLogic.Connect(om.Host, om.Port, password, onConnect, onExit);
 
 				Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 				{
@@ -482,7 +479,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (skirmishMode)
 				disconnectButton.Text = "Cancel";
 
-			bool teamChat = false;
+			var teamChat = false;
 			var chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 

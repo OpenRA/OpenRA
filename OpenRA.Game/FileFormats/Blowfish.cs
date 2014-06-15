@@ -26,15 +26,15 @@ namespace OpenRA.FileFormats
 
 			uint l = 0, r = 0;
 
-			for (int i = 0; i < 18; )
+			for (var i = 0; i < 18; )
 			{
 				Encrypt(ref l, ref r);
 				m_p[i++] = l;
 				m_p[i++] = r;
 			}
 
-			for (int i = 0; i < 4; ++i)
-				for (int j = 0; j < 256; )
+			for (var i = 0; i < 4; ++i)
+				for (var j = 0; j < 256; )
 				{
 					Encrypt(ref l, ref r);
 					m_s[i, j++] = l;
@@ -49,14 +49,14 @@ namespace OpenRA.FileFormats
 
 		static uint[] RunCipher(uint[] data, CipherFunc f)
 		{
-			uint[] result = new uint[data.Length];
+			var result = new uint[data.Length];
 
-			int size = data.Length / 2;
-			int i = 0;
+			var size = data.Length / 2;
+			var i = 0;
 			while (size-- > 0)
 			{
-				uint a = SwapBytes(data[i]);
-				uint b = SwapBytes(data[i+1]);
+				var a = SwapBytes(data[i]);
+				var b = SwapBytes(data[i+1]);
 
 				f(ref a, ref b);
 
@@ -72,8 +72,8 @@ namespace OpenRA.FileFormats
 			uint _a = a, _b = b;
 			_a ^= m_p[0];
 
-			bool x = false;
-			for( int i = 1; i <= 16; i++, x ^= true)
+			var x = false;
+			for( var i = 1; i <= 16; i++, x ^= true)
 			{
 				if (x)
 					Round(ref _a, _b, i);
@@ -91,8 +91,8 @@ namespace OpenRA.FileFormats
 			uint _a = a, _b = b;
 			_a ^= m_p[17];
 
-			bool x = false;
-			for (int i = 16; i >= 1; i--, x ^= true)
+			var x = false;
+			for (var i = 16; i >= 1; i--, x ^= true)
 			{
 				if (x)
 					Round(ref _a, _b, i);

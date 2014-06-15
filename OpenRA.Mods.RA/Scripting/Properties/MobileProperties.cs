@@ -8,9 +8,6 @@
  */
 #endregion
 
-using OpenRA;
-using OpenRA.FileFormats;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Scripting;
 using OpenRA.Traits;

@@ -70,7 +70,7 @@ namespace OpenRA.TilesetBuilder
 			/* draw template outlines */
 			foreach (var t in Templates)
 			{
-				System.Drawing.Pen pen = Pens.White;
+				var pen = Pens.White;
 
 				foreach (var c in t.Cells.Keys)
 				{

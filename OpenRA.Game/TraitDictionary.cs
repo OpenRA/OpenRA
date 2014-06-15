@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -20,9 +19,9 @@ namespace OpenRA
 	{
 		public static int BinarySearchMany(this List<Actor> list, uint searchFor)
 		{
-			int start = 0;
-			int end = list.Count;
-			int mid = 0;
+			var start = 0;
+			var end = list.Count;
+			var mid = 0;
 			while (start != end)
 			{
 				mid = (start + end) / 2;
@@ -173,13 +172,13 @@ namespace OpenRA
 			public IEnumerable<TraitPair<T>> All()
 			{
 				++queries;
-				for (int i = 0; i < actors.Count; i++)
+				for (var i = 0; i < actors.Count; i++)
 					yield return new TraitPair<T> { Actor = actors[i], Trait = traits[i] };
 			}
 
 			public void RemoveActor(uint actor)
 			{
-				for (int i = actors.Count - 1; i >= 0; i--)
+				for (var i = actors.Count - 1; i >= 0; i--)
 				{
 					if (actors[i].ActorID == actor)
 					{

@@ -54,7 +54,7 @@ namespace OpenRA.Graphics
 			RgbaSpriteRenderer = new SpriteRenderer(this, device.CreateShader("rgba"));
 			SpriteRenderer = new SpriteRenderer(this, device.CreateShader("shp"));
 
-			for (int i = 0; i < TempBufferCount; i++)
+			for (var i = 0; i < TempBufferCount; i++)
 				tempBuffers.Enqueue(device.CreateVertexBuffer(TempBufferSize));
 		}
 

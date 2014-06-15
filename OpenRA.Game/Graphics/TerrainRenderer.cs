@@ -26,7 +26,7 @@ namespace OpenRA.Graphics
 
 			var terrainPalette = wr.Palette("terrain").Index;
 			var vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];
-			int nv = 0;
+			var nv = 0;
 
 			for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
 			{

@@ -13,8 +13,6 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Widgets;
-using OpenRA.Traits;
-using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
@@ -160,7 +158,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				template.Bounds.Height += dh;
 			}
 
-			bool scrolledToBottom = chatScrollPanel.ScrolledToBottom;
+			var scrolledToBottom = chatScrollPanel.ScrolledToBottom;
 			chatScrollPanel.AddChild(template);
 			if (scrolledToBottom)
 				chatScrollPanel.ScrollToBottom();

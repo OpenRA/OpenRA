@@ -9,7 +9,6 @@
 #endregion
 
 using OpenRA.Effects;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Buildings;

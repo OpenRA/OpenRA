@@ -22,10 +22,7 @@ namespace OpenRA.Mods.RA
 	{
 		static void Explode(Actor self)
 		{
-			self.World.AddFrameEndTask(w =>
-			{
-				self.InflictDamage(self, int.MaxValue, null);
-			});
+			self.World.AddFrameEndTask(w => self.InflictDamage(self, int.MaxValue, null));
 		}
 
 		public IEnumerable<IOrderTargeter> Orders

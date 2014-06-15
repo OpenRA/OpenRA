@@ -9,8 +9,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -21,8 +19,6 @@ namespace OpenRA.Mods.RA
 	public class DevCommands : IChatCommand, IWorldLoaded
 	{
 		World world;
-
-		public DevCommands() { }
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{

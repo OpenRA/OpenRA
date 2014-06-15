@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using OpenRA.FileFormats;
 using OpenRA.Network;
 
 namespace OpenRA.Widgets

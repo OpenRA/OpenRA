@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA

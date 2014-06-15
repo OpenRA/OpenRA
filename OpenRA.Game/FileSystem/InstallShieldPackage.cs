@@ -32,8 +32,8 @@ namespace OpenRA.FileSystem
 			s = GlobalFileSystem.Open(filename);
 
 			// Parse package header
-			BinaryReader reader = new BinaryReader(s);
-			uint signature = reader.ReadUInt32();
+			var reader = new BinaryReader(s);
+			var signature = reader.ReadUInt32();
 			if (signature != 0x8C655D13)
 				throw new InvalidDataException("Not an Installshield package");
 
@@ -48,7 +48,7 @@ namespace OpenRA.FileSystem
 
 			// Parse the directory list
 			s.Seek(TOCAddress, SeekOrigin.Begin);
-			BinaryReader TOCreader = new BinaryReader(s);
+			var TOCreader = new BinaryReader(s);
 
 			var fileCountInDirs = new List<uint>();
 			// Parse directories

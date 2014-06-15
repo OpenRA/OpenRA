@@ -10,7 +10,6 @@
 
 using System;
 using System.Runtime.InteropServices;
-using OpenRA.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.Sdl2

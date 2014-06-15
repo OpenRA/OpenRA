@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Move
 
 		static object LoadSpeeds(MiniYaml y)
 		{
-			Dictionary<string, TerrainInfo> ret = new Dictionary<string, TerrainInfo>();
+			var ret = new Dictionary<string, TerrainInfo>();
 			foreach (var t in y.ToDictionary()["TerrainSpeeds"].Nodes)
 			{
 				var speed = FieldLoader.GetValue<decimal>("speed", t.Value.Value);
@@ -165,8 +165,8 @@ namespace OpenRA.Mods.RA.Move
 
 			if (checkTransientActors)
 			{
-				bool canIgnoreMovingAllies = self != null && !blockedByMovers;
-				bool needsCellExclusively = self == null || Crushes == null;
+				var canIgnoreMovingAllies = self != null && !blockedByMovers;
+				var needsCellExclusively = self == null || Crushes == null;
 				foreach(var a in world.ActorMap.GetUnitsAt(cell))
 				{
 					if (a == ignoreActor) continue;
@@ -323,7 +323,7 @@ namespace OpenRA.Mods.RA.Move
 
 			var searched = new List<CPos>();
 			// Limit search to a radius of 10 tiles
-			for (int r = minRange; r < maxRange; r++)
+			for (var r = minRange; r < maxRange; r++)
 			{
 				foreach (var tile in self.World.Map.FindTilesInCircle(target, r).Except(searched))
 				{
@@ -344,7 +344,7 @@ namespace OpenRA.Mods.RA.Move
 				return target;
 
 			var searched = new List<CPos>();
-			for (int r = minRange; r < maxRange; r++)
+			for (var r = minRange; r < maxRange; r++)
 			{
 				foreach (var tile in self.World.Map.FindTilesInCircle(target, r).Except(searched))
 				{

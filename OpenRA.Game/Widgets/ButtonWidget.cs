@@ -10,7 +10,6 @@
 
 using System;
 using System.Drawing;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Widgets
 {
@@ -60,7 +59,7 @@ namespace OpenRA.Widgets
 		{
 			this.modRules = modRules;
 
-			GetText = () => { return Text; };
+			GetText = () => Text;
 			GetColor = () => TextColor;
 			GetColorDisabled = () => TextColorDisabled;
 			GetContrastColor = () => ContrastColor;

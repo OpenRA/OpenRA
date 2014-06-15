@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Widgets;
@@ -35,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public void Update(IEnumerable<ProductionQueue> allQueues)
 		{
 			var queues = allQueues.Where(q => q.Info.Group == Group).ToList();
-			List<ProductionTab> tabs = new List<ProductionTab>();
+			var tabs = new List<ProductionTab>();
 
 			// Remove stale queues
 			foreach (var t in Tabs)
@@ -166,7 +165,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			// Draw tab buttons
 			Game.Renderer.EnableScissor(new Rectangle(leftButtonRect.Right, rb.Y + 1, rightButtonRect.Left - leftButtonRect.Right - 1, rb.Height));
 			var origin = new int2(leftButtonRect.Right - 1 + (int)listOffset, leftButtonRect.Y);
-			SpriteFont font = Game.Renderer.Fonts["TinyBold"];
+			var font = Game.Renderer.Fonts["TinyBold"];
 			contentWidth = 0;
 
 			foreach (var tab in Groups[queueGroup].Tabs)
@@ -177,8 +176,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 				ButtonWidget.DrawBackground(baseName, rect, false, false, hover, false);
 				contentWidth += TabWidth - 1;
 
-				int2 textSize = font.Measure(tab.Name);
-				int2 position = new int2(rect.X + (rect.Width - textSize.X) / 2, rect.Y + (rect.Height - textSize.Y) / 2);
+				var textSize = font.Measure(tab.Name);
+				var position = new int2(rect.X + (rect.Width - textSize.X) / 2, rect.Y + (rect.Height - textSize.Y) / 2);
 				font.DrawTextWithContrast(tab.Name, position, tab.Queue.CurrentDone ? Color.Gold : Color.White, Color.Black, 1);
 			}
 

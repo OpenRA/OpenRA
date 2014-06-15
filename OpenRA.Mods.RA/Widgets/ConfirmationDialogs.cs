@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Drawing;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets

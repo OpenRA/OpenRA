@@ -10,11 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -58,8 +56,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					replays = Directory
 						.GetFiles(dir, "*.rep")
-						.Select((filename) => ReplayMetadata.Read(filename))
-						.Where((r) => r != null)
+						.Select(ReplayMetadata.Read)
+						.Where(r => r != null)
 						.OrderByDescending(r => r.GameInfo.StartTimeUtc)
 						.ToList();
 				}
@@ -365,14 +363,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						"Rename Replay",
 						"Enter a new file name:",
 						initialName,
-						onAccept: (newName) =>
-						{
-							RenameReplay(r, newName);
-						},
+						onAccept: newName => RenameReplay(r, newName),
 						onCancel: null,
 						acceptText: "Rename",
 						cancelText: null,
-						inputValidator: (newName) =>
+						inputValidator: newName =>
 						{
 							if (newName == initialName)
 								return false;
@@ -439,7 +434,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						"Delete {0} replays?".F(list.Count),
 						() =>
 						{
-							list.ForEach((r) => DeleteReplay(r));
+							list.ForEach(DeleteReplay);
 							if (selectedReplay == null)
 								SelectFirstVisibleReplay();
 						},

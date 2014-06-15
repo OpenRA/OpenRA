@@ -47,7 +47,7 @@ namespace OpenRA.Editor
 
 			foreach (var map in MapCache.FindMapsIn(MapFolderPath))
 			{
-				ListViewItem map1 = new ListViewItem();
+				var map1 = new ListViewItem();
 				map1.Tag = map;
 				map1.Text = Path.GetFileNameWithoutExtension(map);
 				map1.ImageIndex = 0;

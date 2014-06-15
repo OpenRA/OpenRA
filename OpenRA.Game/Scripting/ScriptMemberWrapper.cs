@@ -9,14 +9,10 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Eluant;
-using Eluant.ObjectBinding;
-using OpenRA.FileFormats;
-using OpenRA.Traits;
 
 namespace OpenRA.Scripting
 {
@@ -54,7 +50,7 @@ namespace OpenRA.Scripting
 			var mi = (MethodInfo)Member;
 			var pi = mi.GetParameters();
 
-			object[] clrArgs = new object[pi.Length];
+			var clrArgs = new object[pi.Length];
 			var argCount = args.Count;
 			for (var i = 0; i < pi.Length; i++)
 			{

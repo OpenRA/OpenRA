@@ -14,7 +14,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -266,7 +265,7 @@ namespace OpenRA.Editor
 
 			unsafe
 			{
-				int* p = (int*)data.Scan0.ToPointer();
+				var p = (int*)data.Scan0.ToPointer();
 				var stride = data.Stride >> 2;
 
 				for (var i = 0; i < ChunkSize; i++)
@@ -286,7 +285,7 @@ namespace OpenRA.Editor
 							var srcdata = resourceImage.LockBits(resourceImage.Bounds(),
 								ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-							int* q = (int*)srcdata.Scan0.ToPointer();
+							var q = (int*)srcdata.Scan0.ToPointer();
 							var srcstride = srcdata.Stride >> 2;
 
 							for (var x = 0; x < TileSetRenderer.TileSize; x++)
@@ -345,10 +344,10 @@ namespace OpenRA.Editor
 		float2 GetDrawPosition(CPos location, Bitmap bmp, bool centered)
 		{
 			float offsetX = centered ? bmp.Width / 2 - TileSetRenderer.TileSize / 2 : 0;
-			float drawX = TileSetRenderer.TileSize * location.X * Zoom + Offset.X - offsetX;
+			var drawX = TileSetRenderer.TileSize * location.X * Zoom + Offset.X - offsetX;
 
 			float offsetY = centered ? bmp.Height / 2 - TileSetRenderer.TileSize / 2 : 0;
-			float drawY = TileSetRenderer.TileSize * location.Y * Zoom + Offset.Y - offsetY;
+			var drawY = TileSetRenderer.TileSize * location.Y * Zoom + Offset.Y - offsetY;
 
 			return new float2(drawX, drawY);
 		}
@@ -418,8 +417,8 @@ namespace OpenRA.Editor
 
 					var drawX = TileSetRenderer.TileSize * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
 					var drawY = TileSetRenderer.TileSize * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
-					RectangleF sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
-					RectangleF destRect = new RectangleF(drawX, drawY, bmp.Width * Zoom, bmp.Height * Zoom);
+					var sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
+					var destRect = new RectangleF(drawX, drawY, bmp.Width * Zoom, bmp.Height * Zoom);
 					e.Graphics.DrawImage(bmp, destRect, sourceRect, GraphicsUnit.Pixel);
 				}
 
@@ -468,20 +467,20 @@ namespace OpenRA.Editor
 
 			if (ShowRuler && Zoom > 0.2)
 			{
-				for (int i = Map.Bounds.Left; i <= Map.Bounds.Right; i += 8)
+				for (var i = Map.Bounds.Left; i <= Map.Bounds.Right; i += 8)
 				{
 					if (i % 8 == 0)
 					{
-						PointF point = new PointF(i * TileSetRenderer.TileSize * Zoom + Offset.X, (Map.Bounds.Top - 8) * TileSetRenderer.TileSize * Zoom + Offset.Y);
+						var point = new PointF(i * TileSetRenderer.TileSize * Zoom + Offset.X, (Map.Bounds.Top - 8) * TileSetRenderer.TileSize * Zoom + Offset.Y);
 						e.Graphics.DrawString((i - Map.Bounds.Left).ToString(), MarkerFont, TextBrush, point);
 					}
 				}
 
-				for (int i = Map.Bounds.Top; i <= Map.Bounds.Bottom; i += 8)
+				for (var i = Map.Bounds.Top; i <= Map.Bounds.Bottom; i += 8)
 				{
 					if (i % 8 == 0)
 					{
-						PointF point = new PointF((Map.Bounds.Left - 8) * TileSetRenderer.TileSize * Zoom + Offset.X, i * TileSetRenderer.TileSize * Zoom + Offset.Y);
+						var point = new PointF((Map.Bounds.Left - 8) * TileSetRenderer.TileSize * Zoom + Offset.X, i * TileSetRenderer.TileSize * Zoom + Offset.Y);
 						e.Graphics.DrawString((i - Map.Bounds.Left).ToString(), MarkerFont, TextBrush, point);
 					}
 				}
@@ -506,15 +505,15 @@ namespace OpenRA.Editor
 
 			if (start == end) return;
 
-			int width = Math.Abs((start - end).X);
-			int height = Math.Abs((start - end).Y);
+			var width = Math.Abs((start - end).X);
+			var height = Math.Abs((start - end).Y);
 
 			TileSelection = new TileReference<ushort, byte>[width, height];
 			ResourceSelection = new TileReference<byte, byte>[width, height];
 
-			for (int x = 0; x < width; x++)
+			for (var x = 0; x < width; x++)
 			{
-				for (int y = 0; y < height; y++)
+				for (var y = 0; y < height; y++)
 				{
 					// TODO: crash prevention
 					TileSelection[x, y] = Map.MapTiles.Value[start.X + x, start.Y + y];
@@ -529,9 +528,9 @@ namespace OpenRA.Editor
 			var width = Math.Abs((SelectionStart - SelectionEnd).X);
 			var height = Math.Abs((SelectionStart - SelectionEnd).Y);
 
-			for (int x = 0; x < width; x++)
+			for (var x = 0; x < width; x++)
 			{
-				for (int y = 0; y < height; y++)
+				for (var y = 0; y < height; y++)
 				{
 					var mapX = loc.X + x;
 					var mapY = loc.Y + y;

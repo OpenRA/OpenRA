@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			menu.Get<LabelWidget>("VERSION_LABEL").Text = Game.modData.Manifest.Mod.Version;
 
-			bool hideButtons = false;
+			var hideButtons = false;
 			menu.Get("MENU_BUTTONS").IsVisible = () => !hideButtons;
 
 			// TODO: Create a mechanism to do things like this cleaner. Also needed for scripted missions
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			// Menu panels - ordered from lowest to highest priority
 			var panelParent = Game.OpenWindow(world, "INGAME_MENU_PANEL");
-			PanelType panelType = PanelType.Objectives;
+			var panelType = PanelType.Objectives;
 			var visibleButtons = 0;
 
 			// Debug / Cheats panel

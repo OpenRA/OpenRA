@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace OpenRA.Network
 {
 	public class GameServer

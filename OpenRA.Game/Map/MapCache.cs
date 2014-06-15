@@ -11,13 +11,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -172,7 +170,7 @@ namespace OpenRA
 
 					// Yuck... But this helps the UI Jank when opening the map selector significantly.
 					Thread.Sleep(Environment.ProcessorCount == 1 ? 25 : 5);
-				};
+				}
 			}
 			Log.Write("debug", "MapCache.LoadAsyncInternal ended");
 		}

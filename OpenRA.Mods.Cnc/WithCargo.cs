@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Traits;
@@ -58,7 +57,7 @@ namespace OpenRA.Mods.Cnc
 
 			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
 			var pos = self.CenterPosition;
-			int i = 0;
+			var i = 0;
 			foreach (var c in cargo.Passengers)
 			{
 				var cargoFacing = c.TraitOrDefault<IFacing>();

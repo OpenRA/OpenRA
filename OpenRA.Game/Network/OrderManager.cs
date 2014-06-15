@@ -116,7 +116,7 @@ namespace OpenRA.Network
 				}
 				else
 				{
-					for (int i = 0; i < packet.Length; i++)
+					for (var i = 0; i < packet.Length; i++)
 					{
 						if (packet[i] != existingSync[i])
 						{

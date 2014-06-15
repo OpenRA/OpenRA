@@ -13,8 +13,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using OpenRA.FileSystem;
-using OpenRA.Graphics;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.Sdl2
@@ -82,7 +80,7 @@ namespace OpenRA.Renderer.Sdl2
 			GL.GetProgram(program, ProgramParameter.ActiveUniforms, out numUniforms);
 			ErrorHandler.CheckGlError();
 
-			int nextTexUnit = 0;
+			var nextTexUnit = 0;
 			for (var i = 0; i < numUniforms; i++)
 			{
 				int length, size;

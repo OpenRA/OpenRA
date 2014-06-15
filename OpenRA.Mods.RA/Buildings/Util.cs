@@ -52,9 +52,9 @@ namespace OpenRA.Mods.RA.Buildings
 			// TODO: First make it work, then make it nice
 			var vecs = new[] { new CVec(1, 0), new CVec(0, 1), new CVec(-1, 0), new CVec(0, -1) };
 			int[] dirs = { 0, 0, 0, 0 };
-			for (int d = 0; d < 4; d++)
+			for (var d = 0; d < 4; d++)
 			{
-				for (int i = 1; i < lbi.Range; i++)
+				for (var i = 1; i < lbi.Range; i++)
 				{
 					if (dirs[d] != 0)
 						continue;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 				// Place intermediate-line sections
 				if (dirs[d] > 0)
-					for (int i = 1; i < dirs[d]; i++)
+					for (var i = 1; i < dirs[d]; i++)
 						yield return topLeft + i * vecs[d];
 			}
 		}

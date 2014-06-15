@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA
 			Actor flare = null;
 			Actor camera = null;
 			Beacon beacon = null;
-			Dictionary<Actor, bool> aircraftInRange = new Dictionary<Actor, bool>();
+			var aircraftInRange = new Dictionary<Actor, bool>();
 
 			Action<Actor> onEnterRange = a =>
 			{

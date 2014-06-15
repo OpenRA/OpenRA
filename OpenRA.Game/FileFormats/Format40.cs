@@ -15,32 +15,32 @@ namespace OpenRA.FileFormats
 		public static int DecodeInto(byte[] src, byte[] dest, int srcOffset)
 		{
 			var ctx = new FastByteReader(src, srcOffset);
-			int destIndex = 0;
+			var destIndex = 0;
 
 			while (true)
 			{
-				byte i = ctx.ReadByte();
+				var i = ctx.ReadByte();
 				if ((i & 0x80) == 0)
 				{
-					int count = i & 0x7F;
+					var count = i & 0x7F;
 					if (count == 0)
 					{
 						// case 6
 						count = ctx.ReadByte();
-						byte value = ctx.ReadByte();
-						for (int end = destIndex + count; destIndex < end; destIndex++)
+						var value = ctx.ReadByte();
+						for (var end = destIndex + count; destIndex < end; destIndex++)
 							dest[destIndex] ^= value;
 					}
 					else
 					{
 						// case 5
-						for (int end = destIndex + count; destIndex < end; destIndex++)
+						for (var end = destIndex + count; destIndex < end; destIndex++)
 							dest[destIndex] ^= ctx.ReadByte();
 					}
 				}
 				else
 				{
-					int count = i & 0x7F;
+					var count = i & 0x7F;
 					if (count == 0)
 					{
 						count = ctx.ReadWord();
@@ -55,14 +55,14 @@ namespace OpenRA.FileFormats
 						else if ((count & 0x4000) == 0)
 						{
 							// case 3
-							for (int end = destIndex + (count & 0x3FFF); destIndex < end; destIndex++)
+							for (var end = destIndex + (count & 0x3FFF); destIndex < end; destIndex++)
 								dest[destIndex] ^= ctx.ReadByte();
 						}
 						else
 						{
 							// case 4
-							byte value = ctx.ReadByte();
-							for (int end = destIndex + (count & 0x3FFF); destIndex < end; destIndex++)
+							var value = ctx.ReadByte();
+							for (var end = destIndex + (count & 0x3FFF); destIndex < end; destIndex++)
 								dest[destIndex] ^= value;
 						}
 					}

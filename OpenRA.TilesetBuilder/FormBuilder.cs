@@ -78,13 +78,13 @@ namespace OpenRA.TilesetBuilder
 		public FormBuilder(string src, string tsize, bool autoExport, string outputDir)
 		{
 			InitializeComponent();
-			Dictionary<string, TerrainTypeInfo> terrainDefinition = new Dictionary<string, TerrainTypeInfo>();
+			var terrainDefinition = new Dictionary<string, TerrainTypeInfo>();
 
-			int size = int.Parse(tsize);
+			var size = int.Parse(tsize);
 
 			var yaml = MiniYaml.DictFromFile("OpenRA.TilesetBuilder/defaults.yaml");
 			terrainDefinition = yaml["Terrain"].ToDictionary().Values.Select(y => new TerrainTypeInfo(y)).ToDictionary(t => t.Type);
-			int i = 0;
+			var i = 0;
 			surface1.Icon = new Bitmap[terrainDefinition.Keys.Count];
 			TerrainType = new TerrainTypeInfo[terrainDefinition.Keys.Count];
 
@@ -104,7 +104,7 @@ namespace OpenRA.TilesetBuilder
 				{
 					for (var y = 0; y < icon.Height; y++)
 					{
-					Color newColor = deftype.Value.Color;
+					var newColor = deftype.Value.Color;
 					icon.SetPixel(x, y, newColor);
 					}
 				}
@@ -277,7 +277,7 @@ namespace OpenRA.TilesetBuilder
 				bw.Write((uint)0);			// walk start
 				bw.Write((uint)0);			// index start
 
-				Bitmap src = surface1.Image.Clone(new Rectangle(0, 0, surface1.Image.Width, surface1.Image.Height),
+				var src = surface1.Image.Clone(new Rectangle(0, 0, surface1.Image.Width, surface1.Image.Height),
 					surface1.Image.PixelFormat);
 
 				var data = src.LockBits(new Rectangle(0, 0, src.Width, src.Height),
@@ -285,14 +285,14 @@ namespace OpenRA.TilesetBuilder
 
 				unsafe
 				{
-					byte* p = (byte*)data.Scan0;
+					var p = (byte*)data.Scan0;
 
 					for (var v = 0; v < t.Height; v++)
 						for (var u = 0; u < t.Width; u++)
 						{
 							if (t.Cells.ContainsKey(new int2(u + t.Left, v + t.Top)))
 							{
-								byte* q = p + data.Stride * tileSize * (v + t.Top) + tileSize * (u + t.Left);
+								var q = p + data.Stride * tileSize * (v + t.Top) + tileSize * (u + t.Left);
 								for (var j = 0; j < tileSize; j++)
 									for (var i = 0; i < tileSize; i++)
 									{
@@ -372,7 +372,7 @@ namespace OpenRA.TilesetBuilder
 			);
 
 			// List of files to add to the mix file
-			List<string> fileList = new List<string>();
+			var fileList = new List<string>();
 
 			// Export palette (use the embedded palette)
 			var p = surface1.Image.Palette.Entries.ToList();
@@ -389,7 +389,7 @@ namespace OpenRA.TilesetBuilder
 				var tiles = new int[tp.Width * tp.Height];
 				foreach (var t in tp.Cells)
 				{
-					string ttype = TerrainType[surface1.TerrainTypes[t.Key.X, t.Key.Y]].Type;
+					var ttype = TerrainType[surface1.TerrainTypes[t.Key.X, t.Key.Y]].Type;
 					var idx = (t.Key.X - tp.Left) + tp.Width * (t.Key.Y - tp.Top);
 					tiles[idx] = tileset.GetTerrainIndex(ttype);
 				}

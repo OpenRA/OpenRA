@@ -10,11 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileFormats;
-using OpenRA.Graphics;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Effects;
 
 namespace OpenRA.Mods.RA.Render
 {

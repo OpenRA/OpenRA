@@ -9,15 +9,12 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
-using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -447,7 +444,7 @@ namespace OpenRA.Server
 			{
 				case "Command":
 				{
-					bool handled = false;
+					var handled = false;
 					foreach (var t in serverTraits.WithInterface<IInterpretCommand>())
 						if (handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data))
 							break;

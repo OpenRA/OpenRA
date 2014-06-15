@@ -24,7 +24,7 @@ namespace OpenRA.Widgets
 		[ObjectCreator.UseCtor]
 		public SpriteWidget(WorldRenderer worldRenderer)
 		{
-			GetPalette = () => { return Palette; };
+			GetPalette = () => Palette;
 
 			this.worldRenderer = worldRenderer;
 		}

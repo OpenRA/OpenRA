@@ -11,7 +11,6 @@
 using System;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Buildings
 {

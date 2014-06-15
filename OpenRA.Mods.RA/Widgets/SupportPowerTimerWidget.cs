@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 

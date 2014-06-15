@@ -48,10 +48,10 @@ namespace OpenRA.Mods.RA.Buildings
 		{
 			if( footprint.Length != dim.X * dim.Y )
 				throw new InvalidOperationException( "Invalid footprint for " + name );
-			int index = 0;
+			var index = 0;
 
-			for( int y = 0 ; y < dim.Y ; y++ )
-				for( int x = 0 ; x < dim.X ; x++ )
+			for( var y = 0 ; y < dim.Y ; y++ )
+				for( var x = 0 ; x < dim.X ; x++ )
 					if( cond( footprint[ index++ ] ) )
 						yield return new CVec(x, y);
 		}

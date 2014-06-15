@@ -26,8 +26,8 @@ namespace OpenRA.Primitives
 
 		public void Add(T item)
 		{
-			int addLevel = level;
-			int addIndex = index;
+			var addLevel = level;
+			var addIndex = index;
 
 			while (addLevel >= 1 && Above(addLevel, addIndex).CompareTo(item) > 0)
 			{
@@ -53,8 +53,8 @@ namespace OpenRA.Primitives
 
 		T Last()
 		{
-			int lastLevel = level;
-			int lastIndex = index;
+			var lastLevel = level;
+			var lastIndex = index;
 
 			if (--lastIndex < 0)
 				lastIndex = (1 << --lastLevel) - 1;
@@ -68,7 +68,7 @@ namespace OpenRA.Primitives
 			if (level == 0 && index == 0)
 				throw new InvalidOperationException("Attempting to pop empty PriorityQueue");
 
-			T ret = At(0, 0);
+			var ret = At(0, 0);
 			BubbleInto(0, 0, Last());
 			if (--index < 0)
 				index = (1 << --level) - 1;
@@ -78,8 +78,8 @@ namespace OpenRA.Primitives
 
 		void BubbleInto(int intoLevel, int intoIndex, T val)
 		{
-			int downLevel = intoLevel + 1;
-			int downIndex = intoIndex << 1;
+			var downLevel = intoLevel + 1;
+			var downIndex = intoIndex << 1;
 
 			if (downLevel > level || (downLevel == level && downIndex >= index))
 			{

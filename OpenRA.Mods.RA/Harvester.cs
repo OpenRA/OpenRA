@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Orders;
@@ -128,7 +127,7 @@ namespace OpenRA.Mods.RA
 					{
 						if (!refs.ContainsKey(loc)) return 0;
 
-						int occupancy = refs[loc].Occupancy;
+						var occupancy = refs[loc].Occupancy;
 						// 4 harvesters clogs up the refinery's delivery location:
 						if (occupancy >= 3) return int.MaxValue;
 
@@ -411,9 +410,9 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			int numPips = Info.PipCount;
+			var numPips = Info.PipCount;
 
-			for (int i = 0; i < numPips; i++)
+			for (var i = 0; i < numPips; i++)
 				yield return GetPipAt(i);
 		}
 

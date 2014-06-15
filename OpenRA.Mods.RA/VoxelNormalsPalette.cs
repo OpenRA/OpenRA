@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 			for (var i = 0; i < n.Length / 3; i++)
 			{
 				data[i] = 0xFF000000;
-				for (int j = 0; j < 3; j++)
+				for (var j = 0; j < 3; j++)
 				{
 					var t = (n[3*i + j] + 1) / 2;
 					data[i] |= (uint)((byte)(t*0xFF + 0.5) << (8*channel[j]));

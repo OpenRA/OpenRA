@@ -7,9 +7,8 @@
  * see COPYING.
  */
 #endregion
-using System;
+
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -23,8 +22,6 @@ namespace OpenRA.Mods.RA
 
 	public class Demolishable : IDemolishable
 	{
-		public Demolishable() { }
-
 		public void Demolish(Actor self, Actor saboteur)
 		{
 			self.Kill(saboteur);
