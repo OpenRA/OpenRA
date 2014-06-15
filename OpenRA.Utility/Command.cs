@@ -546,10 +546,11 @@ namespace OpenRA.Utility
 			Console.WriteLine(dest + " saved.");
 		}
 
-		[Desc("MOD", "Export the game rules into a CSV file to inspect in a spreadheet.")]
+		[Desc("MOD", "[--pure-data]", "Export the game rules into a CSV file for inspection.")]
 		public static void ExportCharacterSeparatedRules(string[] args)
 		{
 			var mod = args[1];
+			var pureData = args.Contains("--pure-data");
 			Game.modData = new ModData(mod);
 			var rules = Game.modData.RulesetCache.LoadDefaultRules();
 
@@ -568,7 +569,10 @@ namespace OpenRA.Utility
 				vsArmor = vsArmor + ";vs. " + armorType;
 
 			var dump = new StringBuilder();
-			dump.AppendLine("Name;Faction;Health;Cost;Weapon;Damage;Burst;Delay;Rate of Fire;Damage per Second" + vsArmor);
+			if (pureData)
+				dump.AppendLine("Name;Faction;Health;Cost;Weapon;Damage;Burst;Delay;Rate of Fire");
+			else
+				dump.AppendLine("Name;Faction;Health;Cost;Weapon;Damage;Burst;Delay;Rate of Fire;Damage per Second" + vsArmor);
 
 			var line = 1;
 			foreach (var actorInfo in rules.Actors.Values)
@@ -625,7 +629,10 @@ namespace OpenRA.Utility
 							versus = versus + "=J{0}*{1};".F(line, vs);
 						}
 
-						dump.Append(";{0};{1};{2};{3};{4};{5};{6}".F(weaponName, damage, burst, delay, rateOfFire, damagePerSecond, versus));
+						if (pureData)
+							dump.Append(";{0};{1};{2};{3};{4}".F(weaponName, damage, burst, delay, rateOfFire));
+						else
+							dump.Append(";{0};{1};{2};{3};{4};{5};{6}".F(weaponName, damage, burst, delay, rateOfFire, damagePerSecond, versus));
 					}
 				}
 				dump.AppendLine();
@@ -634,7 +641,9 @@ namespace OpenRA.Utility
 			var filename = "{0}-mod-rules.csv".F(mod);
 			using (StreamWriter outfile = new StreamWriter(filename))
 				outfile.Write(dump.ToString());
-			Console.WriteLine("{0} has been saved.\nOpen in a spreadsheet application as values separated by semicolon.".F(filename));
+			Console.WriteLine("{0} has been saved.".F(filename));
+			if (!pureData)
+				Console.WriteLine("Open in a spreadsheet application as values separated by semicolon.");
 		}
 	}
 }
