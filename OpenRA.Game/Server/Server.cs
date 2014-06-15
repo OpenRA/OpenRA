@@ -444,7 +444,7 @@ namespace OpenRA.Server
 			{
 				case "Command":
 				{
-					bool handled = false;
+					var handled = false;
 					foreach (var t in serverTraits.WithInterface<IInterpretCommand>())
 						if (handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data))
 							break;

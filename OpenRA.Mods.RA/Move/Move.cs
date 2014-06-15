@@ -93,8 +93,8 @@ namespace OpenRA.Mods.RA.Move
 
 		static int HashList<T>(List<T> xs)
 		{
-			int hash = 0;
-			int n = 0;
+			var hash = 0;
+			var n = 0;
 			foreach (var x in xs)
 				hash += n++ * x.GetHashCode();
 

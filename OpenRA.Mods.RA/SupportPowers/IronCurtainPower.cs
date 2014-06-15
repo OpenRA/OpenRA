@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
-			int range = ((IronCurtainPowerInfo)Info).Range;
+			var range = ((IronCurtainPowerInfo)Info).Range;
 			var tiles = self.World.Map.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)

@@ -479,7 +479,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (skirmishMode)
 				disconnectButton.Text = "Cancel";
 
-			bool teamChat = false;
+			var teamChat = false;
 			var chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 

@@ -46,7 +46,7 @@ namespace OpenRA.Graphics
 
 		public void ApplyRemap(IPaletteRemap r)
 		{
-			for (int i = 0; i < 256; i++)
+			for (var i = 0; i < 256; i++)
 				colors[i] = (uint)r.GetRemappedColor(Color.FromArgb((int)colors[i]), i).ToArgb();
 		}
 
@@ -54,19 +54,19 @@ namespace OpenRA.Graphics
 		{
 			colors = new uint[256];
 
-			using (BinaryReader reader = new BinaryReader(s))
+			using (var reader = new BinaryReader(s))
 			{
-				for (int i = 0; i < 256; i++)
+				for (var i = 0; i < 256; i++)
 				{
-					byte r = (byte)(reader.ReadByte() << 2);
-					byte g = (byte)(reader.ReadByte() << 2);
-					byte b = (byte)(reader.ReadByte() << 2);
+					var r = (byte)(reader.ReadByte() << 2);
+					var g = (byte)(reader.ReadByte() << 2);
+					var b = (byte)(reader.ReadByte() << 2);
 					colors[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
 				}
 			}
 
 			colors[0] = 0; // convert black background to transparency
-			foreach (int i in remapShadow)
+			foreach (var i in remapShadow)
 				colors[i] = 140u << 24;
 		}
 
@@ -112,7 +112,7 @@ namespace OpenRA.Graphics
 								  ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 			unsafe
 			{
-				uint* c = (uint*)data.Scan0;
+				var c = (uint*)data.Scan0;
 				for (var x = 0; x < 256; x++)
 					*(c + x) = colors[x];
 			}

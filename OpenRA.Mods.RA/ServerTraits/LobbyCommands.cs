@@ -314,7 +314,7 @@ namespace OpenRA.Mods.RA.Server
 						//  - Players who now lack a slot are made observers
 						//  - Bots who now lack a slot are dropped
 						var slots = server.LobbyInfo.Slots.Keys.ToArray();
-						int i = 0;
+						var i = 0;
 						foreach (var os in oldSlots)
 						{
 							var c = server.LobbyInfo.ClientInSlot(os);

@@ -47,8 +47,8 @@ namespace OpenRA.Mods.RA.Activities
 
 			// Determine where to search from and how far to search:
 			var searchFromLoc = harv.LastOrderLocation ?? (harv.LastLinkedProc ?? harv.LinkedProc ?? self).Location;
-			int searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
-			int searchRadiusSquared = searchRadius * searchRadius;
+			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
+			var searchRadiusSquared = searchRadius * searchRadius;
 
 			// Find harvestable resources nearby:
 			// Avoid enemy territory:
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Activities
 						if (avoidCell.HasValue && loc == avoidCell.Value) return 1;
 
 						// Don't harvest out of range:
-						int distSquared = (loc - searchFromLoc).LengthSquared;
+						var distSquared = (loc - searchFromLoc).LengthSquared;
 						if (distSquared > searchRadiusSquared)
 							return int.MaxValue;
 
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA.Activities
 				{
 					// Get out of the way if we are:
 					harv.UnblockRefinery(self);
-					int randFrames = 125 + self.World.SharedRandom.Next(-35, 35);
+					var randFrames = 125 + self.World.SharedRandom.Next(-35, 35);
 					if (NextActivity != null)
 						return Util.SequenceActivities(NextActivity, new Wait(randFrames), new FindResources());
 					else

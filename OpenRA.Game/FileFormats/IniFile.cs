@@ -33,7 +33,7 @@ namespace OpenRA.FileFormats
 
 		public void Load(Stream s)
 		{
-			StreamReader reader = new StreamReader(s);
+			var reader = new StreamReader(s);
 			IniSection currentSection = null;
 
 			while (!reader.EndOfStream)
@@ -55,10 +55,10 @@ namespace OpenRA.FileFormats
 
 		IniSection ProcessSection(string line)
 		{
-			Match m = sectionPattern.Match(line);
+			var m = sectionPattern.Match(line);
 			if (!m.Success)
 				return null;
-			string sectionName = m.Groups[1].Value.ToLowerInvariant();
+			var sectionName = m.Groups[1].Value.ToLowerInvariant();
 
 			IniSection ret;
 			if (!sections.TryGetValue(sectionName, out ret))
@@ -78,7 +78,7 @@ namespace OpenRA.FileFormats
 
 			var key = line;
 			var value = "";
-			int eq = line.IndexOf('=');
+			var eq = line.IndexOf('=');
 			if (eq >= 0)
 			{
 				key = line.Substring(0, eq);

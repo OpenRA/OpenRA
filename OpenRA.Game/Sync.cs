@@ -116,7 +116,7 @@ namespace OpenRA
 
 		public static int hash_tdict(TypeDictionary d)
 		{
-			int ret = 0;
+			var ret = 0;
 			foreach (var o in d)
 				ret += CalculateSyncHash(o);
 			return ret;

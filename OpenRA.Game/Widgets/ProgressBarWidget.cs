@@ -45,7 +45,7 @@ namespace OpenRA.Widgets
 			var percentage = GetPercentage();
 			WidgetUtils.DrawPanel("progressbar-bg", rb);
 
-			Rectangle barRect = wasIndeterminate ?
+			var barRect = wasIndeterminate ?
 				new Rectangle(rb.X + 2 + (int)(0.75*offset*(rb.Width - 4)), rb.Y + 2, (rb.Width - 4) / 4, rb.Height - 4) :
 				new Rectangle(rb.X + 2, rb.Y + 2, percentage * (rb.Width - 4) / 100, rb.Height - 4);
 

@@ -108,7 +108,7 @@ namespace OpenRA.Mods.RA.Move
 
 			if (customCost != null)
 			{
-				int c = customCost(p.Location);
+				var c = customCost(p.Location);
 				if (c == int.MaxValue)
 					return p.Location;
 			}
@@ -116,12 +116,12 @@ namespace OpenRA.Mods.RA.Move
 			// This current cell is ok; check all immediate directions:
 			considered.Add(p.Location);
 
-			for (int i = 0; i < nextDirections.Length; ++i)
+			for (var i = 0; i < nextDirections.Length; ++i)
 			{
-				CVec d = nextDirections[i].First;
+				var d = nextDirections[i].First;
 				nextDirections[i].Second = int.MaxValue;
 
-				CPos newHere = p.Location + d;
+				var newHere = p.Location + d;
 
 				// Is this direction flat-out unusable or already seen?
 				if (!world.Map.IsInMap(newHere.X, newHere.Y))
@@ -145,10 +145,10 @@ namespace OpenRA.Mods.RA.Move
 				if (est == int.MaxValue)
 					continue;
 
-				int cellCost = costHere;
+				var cellCost = costHere;
 				if (d.X * d.Y != 0) cellCost = (cellCost * 34) / 24;
 
-				int userCost = 0;
+				var userCost = 0;
 				if (customCost != null)
 				{
 					userCost = customCost(newHere);
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.RA.Move
 					else if (uy == 1 && d.X > 0) cellCost += LaneBias;
 				}
 
-				int newCost = cellInfo[p.Location.X, p.Location.Y].MinCost + cellCost;
+				var newCost = cellInfo[p.Location.X, p.Location.Y].MinCost + cellCost;
 
 				// Cost is even higher; next direction:
 				if (newCost > cellInfo[newHere.X, newHere.Y].MinCost)
@@ -267,8 +267,8 @@ namespace OpenRA.Mods.RA.Move
 			if (result == null)
 				result = new CellInfo[world.Map.MapSize.X, world.Map.MapSize.Y];
 
-			for (int x = 0; x < world.Map.MapSize.X; x++)
-				for (int y = 0; y < world.Map.MapSize.Y; y++)
+			for (var x = 0; x < world.Map.MapSize.X; x++)
+				for (var y = 0; y < world.Map.MapSize.Y; y++)
 					result[ x, y ] = new CellInfo( int.MaxValue, new CPos( x, y ), false );
 
 			return result;
@@ -278,9 +278,9 @@ namespace OpenRA.Mods.RA.Move
 		{
 			return here =>
 			{
-				int diag = Math.Min(Math.Abs(here.X - destination.X), Math.Abs(here.Y - destination.Y));
-				int straight = (Math.Abs(here.X - destination.X) + Math.Abs(here.Y - destination.Y));
-				int h = (3400 * diag / 24) + 100 * (straight - (2 * diag));
+				var diag = Math.Min(Math.Abs(here.X - destination.X), Math.Abs(here.Y - destination.Y));
+				var straight = (Math.Abs(here.X - destination.X) + Math.Abs(here.Y - destination.Y));
+				var h = (3400 * diag / 24) + 100 * (straight - (2 * diag));
 				h = (int)(h * 1.001);
 				return h;
 			};

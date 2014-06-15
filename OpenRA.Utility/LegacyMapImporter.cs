@@ -210,7 +210,7 @@ namespace OpenRA.Utility
 		static MemoryStream ReadPackedSection(IniSection mapPackSection)
 		{
 			var sb = new StringBuilder();
-			for (int i = 1;; i++)
+			for (var i = 1;; i++)
 			{
 				var line = mapPackSection.GetValue(i.ToString(), null);
 				if (line == null)
@@ -250,27 +250,27 @@ namespace OpenRA.Utility
 
 		void UnpackRATileData(MemoryStream ms)
 		{
-			for (int i = 0; i < mapSize; i++)
-				for (int j = 0; j < mapSize; j++)
+			for (var i = 0; i < mapSize; i++)
+				for (var j = 0; j < mapSize; j++)
 					map.MapTiles.Value[i, j] = new TileReference<ushort, byte>();
 
-			for (int j = 0; j < mapSize; j++)
-				for (int i = 0; i < mapSize; i++)
+			for (var j = 0; j < mapSize; j++)
+				for (var i = 0; i < mapSize; i++)
 				{
 					var tileID = ms.ReadUInt16();
 					map.MapTiles.Value[i, j].Type = tileID == (ushort)0 ? (ushort)255 : tileID; // RAED weirdness
 				}
 
-			for (int j = 0; j < mapSize; j++)
-				for (int i = 0; i < mapSize; i++)
+			for (var j = 0; j < mapSize; j++)
+				for (var i = 0; i < mapSize; i++)
 					map.MapTiles.Value[i, j].Index = ms.ReadUInt8();
 		}
 
 		void UnpackRAOverlayData(MemoryStream ms)
 		{
-			for (int j = 0; j < mapSize; j++)
+			for (var j = 0; j < mapSize; j++)
 			{
-				for (int i = 0; i < mapSize; i++)
+				for (var i = 0; i < mapSize; i++)
 				{
 					var o = ms.ReadUInt8();
 					var res = Pair.New((byte)0, (byte)0);
@@ -299,7 +299,7 @@ namespace OpenRA.Utility
 			if (terrain == null)
 				return;
 
-			foreach (KeyValuePair<string, string> kv in terrain)
+			foreach (var kv in terrain)
 			{
 				var loc = Exts.ParseIntegerInvariant(kv.Key);
 				map.Actors.Value.Add("Actor" + actorCount++,
@@ -313,13 +313,13 @@ namespace OpenRA.Utility
 
 		void UnpackCncTileData(Stream ms)
 		{
-			for (int i = 0; i < mapSize; i++)
-				for (int j = 0; j < mapSize; j++)
+			for (var i = 0; i < mapSize; i++)
+				for (var j = 0; j < mapSize; j++)
 					map.MapTiles.Value[i, j] = new TileReference<ushort, byte>();
 
-			for (int j = 0; j < mapSize; j++)
+			for (var j = 0; j < mapSize; j++)
 			{
-				for (int i = 0; i < mapSize; i++)
+				for (var i = 0; i < mapSize; i++)
 				{
 					map.MapTiles.Value[i, j].Type = ms.ReadUInt8();
 					map.MapTiles.Value[i, j].Index = ms.ReadUInt8();
@@ -333,7 +333,7 @@ namespace OpenRA.Utility
 			if (overlay == null)
 				return;
 
-			foreach (KeyValuePair<string, string> kv in overlay)
+			foreach (var kv in overlay)
 			{
 				var loc = Exts.ParseIntegerInvariant(kv.Key);
 				var cell = new CPos(loc % mapSize, loc / mapSize);
@@ -360,7 +360,7 @@ namespace OpenRA.Utility
 			if (terrain == null)
 				return;
 
-			foreach (KeyValuePair<string, string> kv in terrain)
+			foreach (var kv in terrain)
 			{
 				var loc = Exts.ParseIntegerInvariant(kv.Key);
 				map.Actors.Value.Add("Actor" + actorCount++,

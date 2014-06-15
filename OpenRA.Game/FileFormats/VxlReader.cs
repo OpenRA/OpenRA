@@ -79,8 +79,8 @@ namespace OpenRA.FileFormats
 
 				s.Seek(dataStart + colStart[i], SeekOrigin.Begin);
 
-				byte x = (byte)(i % l.Size[0]);
-				byte y = (byte)(i / l.Size[0]);
+				var x = (byte)(i % l.Size[0]);
+				var y = (byte)(i / l.Size[0]);
 				byte z = 0;
 				l.VoxelMap[x,y] = new Dictionary<byte, VxlElement>();
 				do

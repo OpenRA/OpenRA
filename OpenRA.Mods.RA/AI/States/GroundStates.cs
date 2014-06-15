@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA.AI
 				}
 			}
 
-			Actor leader = owner.units.ClosestTo(owner.Target.CenterPosition);
+			var leader = owner.units.ClosestTo(owner.Target.CenterPosition);
 			if (leader == null)
 				return;
 			var ownUnits = owner.world.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(owner.units.Count) / 3)

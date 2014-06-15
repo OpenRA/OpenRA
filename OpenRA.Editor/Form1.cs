@@ -637,9 +637,9 @@ namespace OpenRA.Editor
 		
 		public int CalculateTotalResource()
 		{
-			int totalResource = 0;
-			for (int i = 0; i < surface1.Map.MapSize.X; i++)
-				for (int j = 0; j < surface1.Map.MapSize.Y; j++)
+			var totalResource = 0;
+			for (var i = 0; i < surface1.Map.MapSize.X; i++)
+				for (var j = 0; j < surface1.Map.MapSize.Y; j++)
 				{
 					if (surface1.Map.MapResources.Value[i, j].Type != 0)
 						totalResource += GetResourceValue(i, j);
@@ -650,7 +650,7 @@ namespace OpenRA.Editor
 		
 		int GetAdjecentCellsWith(int resourceType, int x, int y)
 		{
-			int sum = 0;
+			var sum = 0;
 			for (var u = -1; u < 2; u++)
 				for (var v = -1; v < 2; v++)
 				{
@@ -665,15 +665,15 @@ namespace OpenRA.Editor
 
 		int GetResourceValue(int x, int y)
 		{
-			int imageLength = 0;
+			var imageLength = 0;
 			int type = surface1.Map.MapResources.Value[x, y].Type;
 			var template = surface1.ResourceTemplates.FirstOrDefault(a => a.Value.Info.ResourceType == type).Value;
 			if (type == 1)
 				imageLength = 12;
 			else if (type == 2)
 				imageLength = 3;
-			int density = (GetAdjecentCellsWith(type, x, y) * imageLength - 1) / 9;
-			int value = template.Info.ValuePerUnit;
+			var density = (GetAdjecentCellsWith(type, x, y) * imageLength - 1) / 9;
+			var value = template.Info.ValuePerUnit;
 			return density * value;
 		}
 

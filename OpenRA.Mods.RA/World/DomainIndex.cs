@@ -141,7 +141,7 @@ namespace OpenRA.Mods.RA
 				if (!transientConnections.ContainsKey(current))
 					continue;
 
-				foreach (int neighbor in transientConnections[current])
+				foreach (var neighbor in transientConnections[current])
 				{
 					if (neighbor == d2)
 						return true;

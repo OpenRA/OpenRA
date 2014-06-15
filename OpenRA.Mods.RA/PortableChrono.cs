@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			const int numPips = 2;
-			for (int i = 0; i < numPips; i++)
+			for (var i = 0; i < numPips; i++)
 			{
 				if ((1 - chargeTick * 1.0f / (25 * Info.ChargeTime)) * numPips < i + 1)
 				{

@@ -315,7 +315,7 @@ namespace OpenRA.Utility
 		static void UpgradeTileset(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var parentKey = parent != null ? parent.Key.Split('@').First() : null;
-			List<MiniYamlNode> addNodes = new List<MiniYamlNode>();
+			var addNodes = new List<MiniYamlNode>();
 
 			foreach (var node in nodes)
 			{

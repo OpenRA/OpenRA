@@ -52,7 +52,7 @@ namespace OpenRA.Graphics
 			var srcOffset = 0;
 			for (var j = 0; j < height; j++)
 			{
-				for (int i = 0; i < srcStride; i++, srcOffset++)
+				for (var i = 0; i < srcStride; i++, srcOffset++)
 				{
 					data[destOffset] = src[srcOffset];
 					destOffset += 4;

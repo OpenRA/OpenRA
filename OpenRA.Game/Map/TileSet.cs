@@ -119,7 +119,7 @@ namespace OpenRA
 			var root = new List<MiniYamlNode>();
 			foreach (var field in Fields)
 			{
-				FieldInfo f = this.GetType().GetField(field);
+				var f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null)
 					continue;
 

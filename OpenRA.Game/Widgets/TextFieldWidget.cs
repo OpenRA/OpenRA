@@ -90,9 +90,9 @@ namespace OpenRA.Widgets
 			if (textSize.X > Bounds.Width - LeftMargin - RightMargin && HasKeyboardFocus)
 				start += Bounds.Width - LeftMargin - RightMargin - textSize.X;
 
-			int minIndex = -1;
-			int minValue = int.MaxValue;
-			for (int i = 0; i <= apparentText.Length; i++)
+			var minIndex = -1;
+			var minValue = int.MaxValue;
+			for (var i = 0; i <= apparentText.Length; i++)
 			{
 				var dist = Math.Abs(start + font.Measure(apparentText.Substring(0, i)).X - x);
 				if (dist > minValue)

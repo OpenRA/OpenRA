@@ -98,7 +98,7 @@ namespace OpenRA
 		{
 			var p = ctor.GetParameters();
 			var a = new object[p.Length];
-			for (int i = 0; i < p.Length; i++)
+			for (var i = 0; i < p.Length; i++)
 			{
 				var key = p[i].Name;
 				if (!args.ContainsKey(key)) throw new InvalidOperationException("ObjectCreator: key `{0}' not found".F(key));

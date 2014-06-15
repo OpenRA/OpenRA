@@ -92,7 +92,7 @@ namespace OpenRA.FileFormats
 					// Magic number for "done"
 					if (len == 519)
 					{
-						for (int i = 0; i < next; i++)
+						for (var i = 0; i < next; i++)
 							ms.WriteByte(outBuffer[i]);
 						break;
 					}
@@ -135,7 +135,7 @@ namespace OpenRA.FileFormats
 						// Flush window to outstream
 						if (next == MAXWIN)
 						{
-							for (int i = 0; i < next; i++)
+							for (var i = 0; i < next; i++)
 								ms.WriteByte(outBuffer[i]);
 							next = 0;
 							first = false;
@@ -149,7 +149,7 @@ namespace OpenRA.FileFormats
 					outBuffer[next++] = (byte)symbol;
 					if (next == MAXWIN)
 					{
-						for (int i = 0; i < next; i++)
+						for (var i = 0; i < next; i++)
 							ms.WriteByte(outBuffer[i]);
 						next = 0;
 						first = false;
@@ -236,7 +236,7 @@ namespace OpenRA.FileFormats
 			var s = 0; // current symbol
 
 			// convert compact repeat counts into symbol bit length list
-			foreach (byte code in rep)
+			foreach (var code in rep)
 			{
 				var num = (code >> 4) + 1; // Number of codes (top four bits plus 1)
 				var len = (byte)(code & 15); // Code length (low four bits)
@@ -250,7 +250,7 @@ namespace OpenRA.FileFormats
 
 			// count number of codes of each length
 			Count = new short[Blast.MAXBITS + 1];
-			for (int i = 0; i < n; i++)
+			for (var i = 0; i < n; i++)
 				Count[length[i]]++;
 
 			// no codes!
@@ -259,7 +259,7 @@ namespace OpenRA.FileFormats
 
 			// check for an over-subscribed or incomplete set of lengths
 			var left = 1; // one possible code of zero length
-			for (int len = 1; len <= Blast.MAXBITS; len++)
+			for (var len = 1; len <= Blast.MAXBITS; len++)
 			{
 				left <<= 1;	// one more bit, double codes left
 				left -= Count[len];	// deduct count from possible codes
@@ -269,7 +269,7 @@ namespace OpenRA.FileFormats
 
 			// generate offsets into symbol table for each length for sorting
 			var offs = new short[Blast.MAXBITS + 1];
-			for (int len = 1; len < Blast.MAXBITS; len++)
+			for (var len = 1; len < Blast.MAXBITS; len++)
 				offs[len + 1] = (short)(offs[len] + Count[len]);
 
 			// put symbols in table sorted by length, by symbol order within each length

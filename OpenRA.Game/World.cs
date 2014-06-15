@@ -277,8 +277,8 @@ namespace OpenRA
 		{
 			//using (new PerfSample("synchash"))
 			{
-				int n = 0;
-				int ret = 0;
+				var n = 0;
+				var ret = 0;
 
 				// hash all the actors
 				foreach (var a in Actors)

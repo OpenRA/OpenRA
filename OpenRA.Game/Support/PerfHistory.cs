@@ -71,7 +71,7 @@ namespace OpenRA.Support
 
 		public IEnumerable<double> Samples()
 		{
-			int n = head;
+			var n = head;
 			while (n != tail)
 			{
 				--n;
@@ -82,8 +82,8 @@ namespace OpenRA.Support
 
 		public double Average(int count)
 		{
-			int i = 0;
-			int n = head;
+			var i = 0;
+			var n = head;
 			double sum = 0;
 			while (i < count && n != tail)
 			{
@@ -98,7 +98,7 @@ namespace OpenRA.Support
 		{
 			get
 			{
-				int n = head;
+				var n = head;
 				if (--n < 0) n = samples.Length - 1;
 				return samples[n];
 			}

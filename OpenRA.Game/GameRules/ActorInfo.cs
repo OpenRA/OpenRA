@@ -89,7 +89,7 @@ namespace OpenRA
 		{
 			var ret = new List<ITraitInfo>();
 			var t = Traits.WithInterface<ITraitInfo>().ToList();
-			int index = 0;
+			var index = 0;
 			while (t.Count != 0)
 			{
 				var prereqs = PrerequisitesOf(t[index]);

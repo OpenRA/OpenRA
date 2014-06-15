@@ -93,7 +93,7 @@ namespace OpenRA.Graphics
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
 		{
-			uint index = face.GetCharIndex(c.First);
+			var index = face.GetCharIndex(c.First);
 			face.LoadGlyph(index, LoadFlags.Default, LoadTarget.Normal);
 			face.Glyph.RenderGlyph(RenderMode.Normal);
 

@@ -152,7 +152,7 @@ namespace OpenRA.Mods.RA.Move
 		static List<CPos> MakePath(CellInfo[,] cellInfo, CPos destination)
 		{
 			var ret = new List<CPos>();
-			CPos pathNode = destination;
+			var pathNode = destination;
 
 			while (cellInfo[pathNode.X, pathNode.Y].Path != pathNode)
 			{
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.RA.Move
 			if (path.Count == 0)
 				return;
 			var prev = path[0];
-			for (int i = 0; i < path.Count; i++)
+			for (var i = 0; i < path.Count; i++)
 			{
 				var d = path[i] - prev;
 				if (Math.Abs(d.X) > 1 || Math.Abs(d.Y) > 1)

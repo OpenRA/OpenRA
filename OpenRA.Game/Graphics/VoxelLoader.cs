@@ -82,7 +82,7 @@ namespace OpenRA.Graphics
 				c++;
 			}
 
-			Sprite s = sheetBuilder.Allocate(new Size(su, sv));
+			var s = sheetBuilder.Allocate(new Size(su, sv));
 			Util.FastCopyIntoChannel(s, 0, colors);
 			Util.FastCopyIntoChannel(s, 1, normals);
 			s.sheet.CommitData();

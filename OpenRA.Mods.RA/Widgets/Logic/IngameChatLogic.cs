@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				template.Bounds.Height += dh;
 			}
 
-			bool scrolledToBottom = chatScrollPanel.ScrolledToBottom;
+			var scrolledToBottom = chatScrollPanel.ScrolledToBottom;
 			chatScrollPanel.AddChild(template);
 			if (scrolledToBottom)
 				chatScrollPanel.ScrollToBottom();

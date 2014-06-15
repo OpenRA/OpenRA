@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (games == null)
 				return;
 
-			List<Widget> rows = new List<Widget>();
+			var rows = new List<Widget>();
 
 			foreach (var loop in games.OrderByDescending(g => g.CanJoin()).ThenByDescending(g => g.Players))
 			{

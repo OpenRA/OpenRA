@@ -533,8 +533,8 @@ namespace OpenRA
 				}
 			}
 
-			List<int> freeSources = new List<int>();
-			foreach (int key in sourcePool.Keys)
+			var freeSources = new List<int>();
+			foreach (var key in sourcePool.Keys)
 			{
 				int state;
 				AL.GetSource(key, ALGetSourcei.SourceState, out state);
@@ -545,7 +545,7 @@ namespace OpenRA
 			if (freeSources.Count == 0)
 				return -1;
 
-			foreach (int i in freeSources)
+			foreach (var i in freeSources)
 				sourcePool[i].IsActive = false;
 
 			sourcePool[freeSources[0]].IsActive = true;

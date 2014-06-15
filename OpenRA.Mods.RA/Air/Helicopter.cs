@@ -136,7 +136,7 @@ namespace OpenRA.Mods.RA.Air
 				.Select(h => GetRepulseForce(self, h))
 				.Aggregate(WVec.Zero, (a, b) => a + b);
 
-			int repulsionFacing = Util.GetFacing(f, -1);
+			var repulsionFacing = Util.GetFacing(f, -1);
 			if (repulsionFacing != -1)
 				SetPosition(self, CenterPosition + FlyStep(repulsionFacing));
 		}

@@ -193,7 +193,7 @@ namespace OpenRA.Utility
 			GlobalFileSystem.LoadFromManifest(Game.modData.Manifest);
 			var srcRules = Game.modData.RulesetCache.LoadDefaultRules();
 			var srcPaletteInfo = srcRules.Actors["player"].Traits.Get<PlayerColorPaletteInfo>();
-			int[] srcRemapIndex = srcPaletteInfo.RemapIndex;
+			var srcRemapIndex = srcPaletteInfo.RemapIndex;
 
 			var destMod = args[2].Split(':')[0];
 			Game.modData = new ModData(destMod);
@@ -400,7 +400,7 @@ namespace OpenRA.Utility
 				Console.WriteLine("<table align=\"center\" width=\"1024\"><tr><th colspan=\"2\" width=\"1024\">{0}</th></tr>", name);
 				foreach (var m in members.OrderBy(m => m.Name))
 				{
-					string desc = m.HasAttribute<DescAttribute>() ? m.GetCustomAttributes<DescAttribute>(true).First().Lines.JoinWith("\n") : "";
+					var desc = m.HasAttribute<DescAttribute>() ? m.GetCustomAttributes<DescAttribute>(true).First().Lines.JoinWith("\n") : "";
 					Console.WriteLine("<tr><td align=\"right\" width=\"50%\"><strong>{0}</strong></td><td>{1}</td></tr>".F(m.LuaDocString(), desc));
 				}
 				Console.WriteLine("</table>");

@@ -33,7 +33,7 @@ namespace OpenRA.Editor
 
 			unsafe
 			{
-				byte* q = (byte*)data.Scan0.ToPointer();
+				var q = (byte*)data.Scan0.ToPointer();
 				var stride2 = data.Stride;
 
 				for (var i = 0; i < frame.Size.Width; i++)
@@ -92,7 +92,7 @@ namespace OpenRA.Editor
 
 				unsafe
 				{
-					byte* q = (byte*)data.Scan0.ToPointer();
+					var q = (byte*)data.Scan0.ToPointer();
 					var stride = data.Stride;
 
 					for (var i = 0; i < frame.Size.Width; i++)

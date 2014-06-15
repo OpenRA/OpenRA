@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public Player FindFirstWinningPlayer(World world)
 		{
 			// loop through all players, see who is 'winning' and get the one with the shortest 'time to win'
-			int shortest = int.MaxValue;
+			var shortest = int.MaxValue;
 			Player shortestPlayer = null;
 
 			foreach (var p in world.Players.Where(p => !p.NonCombatant))

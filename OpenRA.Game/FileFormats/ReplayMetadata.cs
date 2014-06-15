@@ -46,7 +46,7 @@ namespace OpenRA.FileFormats
 				throw new NotSupportedException("Metadata version {0} is not supported".F(version));
 
 			// Read game info (max 100K limit as a safeguard against corrupted files)
-			string data = fs.ReadString(Encoding.UTF8, 1024 * 100);
+			var data = fs.ReadString(Encoding.UTF8, 1024 * 100);
 			GameInfo = GameInformation.Deserialize(data);
 		}
 
@@ -57,7 +57,7 @@ namespace OpenRA.FileFormats
 			writer.Write(MetaVersion);
 
 			// Write data
-			int dataLength = 0;
+			var dataLength = 0;
 			{
 				// Write lobby info data
 				writer.Flush();

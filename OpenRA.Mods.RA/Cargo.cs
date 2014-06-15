@@ -152,7 +152,7 @@ namespace OpenRA.Mods.RA
 		{
 			var numPips = Info.PipCount;
 
-			for (int i = 0; i < numPips; i++)
+			for (var i = 0; i < numPips; i++)
 				yield return GetPipAt(i);
 		}
 

@@ -297,7 +297,7 @@ namespace OpenRA
 				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
 				var ret = Array.CreateInstance(fieldType.GetElementType(), parts.Length);
-				for (int i = 0; i < parts.Length; i++)
+				for (var i = 0; i < parts.Length; i++)
 					ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i].Trim(), field), i);
 				return ret;
 			}

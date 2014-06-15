@@ -35,7 +35,7 @@ namespace OpenRA.Graphics
 
 			unsafe
 			{
-				int* c = (int*)bitmapData.Scan0;
+				var c = (int*)bitmapData.Scan0;
 
 				for (var x = 0; x < map.Bounds.Width; x++)
 					for (var y = 0; y < map.Bounds.Height; y++)
@@ -56,14 +56,14 @@ namespace OpenRA.Graphics
 		// in a world use AddCustomTerrain instead
 		static Bitmap AddStaticResources(TileSet tileset, Map map, Ruleset resourceRules, Bitmap terrainBitmap)
 		{
-			Bitmap terrain = new Bitmap(terrainBitmap);
+			var terrain = new Bitmap(terrainBitmap);
 
 			var bitmapData = terrain.LockBits(terrain.Bounds(),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
 			unsafe
 			{
-				int* c = (int*)bitmapData.Scan0;
+				var c = (int*)bitmapData.Scan0;
 
 				for (var x = 0; x < map.Bounds.Width; x++)
 					for (var y = 0; y < map.Bounds.Height; y++)
@@ -98,7 +98,7 @@ namespace OpenRA.Graphics
 
 			unsafe
 			{
-				int* c = (int*)bitmapData.Scan0;
+				var c = (int*)bitmapData.Scan0;
 
 				for (var x = 0; x < map.Bounds.Width; x++)
 					for (var y = 0; y < map.Bounds.Height; y++)
@@ -126,7 +126,7 @@ namespace OpenRA.Graphics
 
 			unsafe
 			{
-				int* c = (int*)bitmapData.Scan0;
+				var c = (int*)bitmapData.Scan0;
 
 				foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 				{
@@ -160,7 +160,7 @@ namespace OpenRA.Graphics
 
 			unsafe
 			{
-				int* c = (int*)bitmapData.Scan0;
+				var c = (int*)bitmapData.Scan0;
 
 				for (var x = 0; x < map.Bounds.Width; x++)
 					for (var y = 0; y < map.Bounds.Height; y++)
@@ -184,7 +184,7 @@ namespace OpenRA.Graphics
 
 		public static Bitmap RenderMapPreview(TileSet tileset, Map map, Ruleset resourceRules, bool actualSize)
 		{
-			Bitmap terrain = TerrainBitmap(tileset, map, actualSize);
+			var terrain = TerrainBitmap(tileset, map, actualSize);
 			return AddStaticResources(tileset, map, resourceRules, terrain);
 		}
 	}

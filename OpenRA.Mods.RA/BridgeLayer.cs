@@ -50,8 +50,8 @@ namespace OpenRA.Mods.RA
 			}
 
 			// Loop through the map looking for templates to overlay
-			for (int i = w.Map.Bounds.Left; i < w.Map.Bounds.Right; i++)
-				for (int j = w.Map.Bounds.Top; j < w.Map.Bounds.Bottom; j++)
+			for (var i = w.Map.Bounds.Left; i < w.Map.Bounds.Right; i++)
+				for (var j = w.Map.Bounds.Top; j < w.Map.Bounds.Bottom; j++)
 					if (BridgeTypes.Keys.Contains(w.Map.MapTiles.Value[i, j].Type))
 							ConvertBridgeToActor(w, i, j);
 

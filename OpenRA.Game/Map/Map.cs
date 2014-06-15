@@ -123,7 +123,7 @@ namespace OpenRA
 			var tile = tileset.Templates.First();
 			var tileRef = new TileReference<ushort, byte> { Type = tile.Key, Index = (byte)0 };
 
-			Map map = new Map()
+			var map = new Map()
 			{
 				Title = "Name your map here",
 				Description = "Describe your map here",
@@ -364,8 +364,8 @@ namespace OpenRA
 				// Load tile data
 				var data = dataStream.ReadBytes(MapSize.X * MapSize.Y * 3);
 				var d = 0;
-				for (int i = 0; i < MapSize.X; i++)
-					for (int j = 0; j < MapSize.Y; j++)
+				for (var i = 0; i < MapSize.X; i++)
+					for (var j = 0; j < MapSize.Y; j++)
 					{
 						var tile = BitConverter.ToUInt16(data, d);
 						d += 2;

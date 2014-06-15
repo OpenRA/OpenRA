@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.Scripting
 			"function will be called as func().")]
 		public void OnAllKilled(LuaTable actors, LuaFunction func)
 		{
-			List<Actor> group = new List<Actor>();
+			var group = new List<Actor>();
 			foreach (var kv in actors)
 			{
 				Actor actor;

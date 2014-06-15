@@ -68,7 +68,7 @@ namespace OpenRA.Widgets
 				return;
 
 			overlay = new uint[2*textureSize, 2*textureSize];
-			uint black = (uint)255 << 24;
+			var black = (uint)255 << 24;
 			for (var y = 0; y < video.Height; y++)
 				for (var x = 0; x < video.Width; x++)
 				overlay[2*y,x] = black;

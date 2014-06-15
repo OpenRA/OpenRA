@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 
 					if (order.OrderString == "LineBuild")
 					{
-						bool playSounds = true;
+						var playSounds = true;
 						foreach (var t in BuildingUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))
 						{
 							var building = w.CreateActor(order.TargetString, new TypeDictionary

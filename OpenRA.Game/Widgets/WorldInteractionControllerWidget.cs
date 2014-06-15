@@ -212,7 +212,7 @@ namespace OpenRA.Widgets
 					var selectedTypes = World.Selection.Actors.Where(
 						x => x.Owner == World.RenderPlayer).Select(a => a.Info);
 					Func<Actor, bool> cond = a => a.Owner == World.RenderPlayer && selectedTypes.Contains(a.Info);
-					IEnumerable<Actor> newSelection = SelectActorsInBox(
+					var newSelection = SelectActorsInBox(
 						World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight, cond); 
 					if (newSelection.Count() > selectedTypes.Count())
 						Game.Debug("Selected across screen");

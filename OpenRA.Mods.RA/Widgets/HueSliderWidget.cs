@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Widgets
 					ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 				unsafe
 				{
-					int* c = (int*)bitmapData.Scan0;
+					var c = (int*)bitmapData.Scan0;
 					for (var h = 0; h < 256; h++)
 						*(c + h) = HSLColor.FromHSV(h / 255f, 1, 1).RGB.ToArgb();
 				}

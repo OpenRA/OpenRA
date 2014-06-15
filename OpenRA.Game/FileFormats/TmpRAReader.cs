@@ -35,7 +35,7 @@ namespace OpenRA.FileFormats
 			var indexStart = s.ReadInt32();
 
 			s.Position = indexStart;
-			foreach (byte b in s.ReadBytes(indexEnd - indexStart))
+			foreach (var b in s.ReadBytes(indexEnd - indexStart))
 			{
 				if (b != 255)
 				{

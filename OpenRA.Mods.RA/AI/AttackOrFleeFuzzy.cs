@@ -192,7 +192,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			return RelativeValue(own, enemy, 100, SumOfValues<AttackBase>, (Actor a) =>
 			{
-				int sumOfDamage = 0;
+				var sumOfDamage = 0;
 				var arms = a.TraitsImplementing<Armament>();
 				foreach (var arm in arms)
 					if (arm.Weapon.Warheads[0] != null)

@@ -101,7 +101,7 @@ namespace OpenRA.FileFormats
 
 			// Frame offsets
 			offsets = new UInt32[Frames];
-			for (int i = 0; i < Frames; i++)
+			for (var i = 0; i < Frames; i++)
 			{
 				offsets[i] = stream.ReadUInt32();
 				if (offsets[i] > 0x40000000)
@@ -125,7 +125,7 @@ namespace OpenRA.FileFormats
 			var ms = new MemoryStream();
 			var adpcmIndex = 0;
 
-			bool compressed = false;
+			var compressed = false;
 			for (var i = 0; i < Frames; i++)
 			{
 				stream.Seek(offsets[i], SeekOrigin.Begin);
@@ -201,7 +201,7 @@ namespace OpenRA.FileFormats
 				// Chunks are aligned on even bytes; may be padded with a single null
 				if (s.Peek() == 0) s.ReadByte();
 				var type = s.ReadASCII(4);
-				int subchunkLength = (int)int2.Swap(s.ReadUInt32());
+				var subchunkLength = (int)int2.Swap(s.ReadUInt32());
 
 				switch(type)
 				{
@@ -235,11 +235,11 @@ namespace OpenRA.FileFormats
 
 					// Palette
 					case "CPL0":
-						for (int i = 0; i < numColors; i++)
+						for (var i = 0; i < numColors; i++)
 						{
-							byte r = (byte)(s.ReadUInt8() << 2);
-							byte g = (byte)(s.ReadUInt8() << 2);
-							byte b = (byte)(s.ReadUInt8() << 2);
+							var r = (byte)(s.ReadUInt8() << 2);
+							var g = (byte)(s.ReadUInt8() << 2);
+							var b = (byte)(s.ReadUInt8() << 2);
 							palette[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
 						}
 					break;
@@ -269,7 +269,7 @@ namespace OpenRA.FileFormats
 						for (var i = 0; i < blockWidth; i++)
 						{
 							var cbfi = (mod*256 + px)*8 + j*blockWidth + i;
-							byte color = (mod == 0x0f) ? px : cbf[cbfi];
+							var color = (mod == 0x0f) ? px : cbf[cbfi];
 							frameData[y*blockHeight + j, x*blockWidth + i] = palette[color];
 						}
 				}

@@ -63,8 +63,8 @@ namespace OpenRA.Widgets
 			if (text == null)
 				return;
 
-			int2 textSize = font.Measure(text);
-			int2 position = RenderOrigin;
+			var textSize = font.Measure(text);
+			var position = RenderOrigin;
 
 			if (VAlign == TextVAlign.Middle)
 				position += new int2(0, (Bounds.Height - textSize.Y)/2);

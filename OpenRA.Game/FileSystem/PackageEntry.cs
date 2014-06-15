@@ -64,10 +64,10 @@ namespace OpenRA.FileSystem
 					if (name.Length % 4 != 0)
 						name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
 
-					MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(name));
-					BinaryReader reader = new BinaryReader(ms);
+					var ms = new MemoryStream(Encoding.ASCII.GetBytes(name));
+					var reader = new BinaryReader(ms);
 
-					int len = name.Length >> 2;
+					var len = name.Length >> 2;
 					uint result = 0;
 
 					while (len-- != 0)
@@ -80,11 +80,11 @@ namespace OpenRA.FileSystem
 				{
 					name = name.ToUpperInvariant();
 					var l = name.Length;
-					int a = l >> 2;
+					var a = l >> 2;
 					if ((l & 3) != 0)
 					{
 						name += (char)(l - (a << 2));
-						int i = 3 - (l & 3);
+						var i = 3 - (l & 3);
 						while (i-- != 0)
 							name += name[a << 2];
 					}
@@ -99,9 +99,9 @@ namespace OpenRA.FileSystem
 
 		public static void AddStandardName(string s)
 		{
-			uint hash = HashFilename(s, PackageHashType.Classic); // RA1 and TD
+			var hash = HashFilename(s, PackageHashType.Classic); // RA1 and TD
 			Names.Add(hash, s);
-			uint crcHash = HashFilename(s, PackageHashType.CRC32); // TS
+			var crcHash = HashFilename(s, PackageHashType.CRC32); // TS
 			Names.Add(crcHash, s);
 		}
 

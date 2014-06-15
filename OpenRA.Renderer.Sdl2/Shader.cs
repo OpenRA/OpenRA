@@ -80,7 +80,7 @@ namespace OpenRA.Renderer.Sdl2
 			GL.GetProgram(program, ProgramParameter.ActiveUniforms, out numUniforms);
 			ErrorHandler.CheckGlError();
 
-			int nextTexUnit = 0;
+			var nextTexUnit = 0;
 			for (var i = 0; i < numUniforms; i++)
 			{
 				int length, size;

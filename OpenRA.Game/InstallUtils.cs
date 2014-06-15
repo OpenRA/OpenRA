@@ -49,7 +49,7 @@ namespace OpenRA
 			if (!GlobalFileSystem.Exists(package)) { onError("Cannot find " + package); return false; }
 			GlobalFileSystem.Mount(package);
 
-			foreach (string s in files)
+			foreach (var s in files)
 			{
 				var destFile = Path.Combine(destPath, s);
 				using (var sourceStream = GlobalFileSystem.Open(s))
@@ -90,7 +90,7 @@ namespace OpenRA
 				return false;
 			}
 
-			List<string> extracted = new List<string>();
+			var extracted = new List<string>();
 			try
 			{
 				using (var stream = File.OpenRead(zipFile))

@@ -189,7 +189,7 @@ namespace OpenRA
 
 		public static List<MiniYamlNode> FromFileInPackage(string path)
 		{
-			List<string> lines = new List<string>();
+			var lines = new List<string>();
 			using (var stream = GlobalFileSystem.Open(path))
 			using (var reader = new StreamReader(stream))
 				while (!reader.EndOfStream)

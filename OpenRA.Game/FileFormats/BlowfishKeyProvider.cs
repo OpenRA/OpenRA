@@ -37,7 +37,7 @@ namespace OpenRA.FileFormats
 
 		static void init_bignum(uint[] n, uint val, uint len)
 		{
-			for (int i = 0; i < len; i++) n[i] = 0;
+			for (var i = 0; i < len; i++) n[i] = 0;
 			n[0] = val;
 		}
 
@@ -52,8 +52,8 @@ namespace OpenRA.FileFormats
 			{
 				fixed (uint* _pn = &n[0])
 				{
-					byte* pn = (byte*)_pn;
-					uint i = blen * 4;
+					var pn = (byte*)_pn;
+					var i = blen * 4;
 					for (; i > klen; i--) pn[i - 1] = (byte)sign;
 					for (; i > 0; i--) pn[i - 1] = key[klen - i];
 				}
@@ -65,7 +65,7 @@ namespace OpenRA.FileFormats
 			uint keylen;
 			int i;
 
-			int j = 0;
+			var j = 0;
 
 			if (key[j] != 2) return;
 			j++;
@@ -118,7 +118,7 @@ namespace OpenRA.FileFormats
 
 		uint len_predata()
 		{
-			uint a = (pubkey.len - 1) / 8;
+			var a = (pubkey.len - 1) / 8;
 			return (55 / a + 1) * (a + 1);
 		}
 
@@ -141,7 +141,7 @@ namespace OpenRA.FileFormats
 
 		static void shr_bignum(uint[] n, int bits, int len)
 		{
-			int i; int i2 = bits / 32;
+			int i; var i2 = bits / 32;
 
 			if (i2 > 0)
 			{
@@ -183,9 +183,9 @@ namespace OpenRA.FileFormats
 				fixed (uint* _ps2 = &src2[0])
 				fixed (uint* _pd = &dest[0])
 				{
-					ushort* ps1 = (ushort*)_ps1;
-					ushort* ps2 = (ushort*)_ps2;
-					ushort* pd = (ushort*)_pd;
+					var ps1 = (ushort*)_ps1;
+					var ps2 = (ushort*)_ps2;
+					var pd = (ushort*)_pd;
 
 					while (--len != -1)
 					{
@@ -205,9 +205,9 @@ namespace OpenRA.FileFormats
 
 			len += len;
 
-			ushort* ps1 = (ushort*)src1;
-			ushort* ps2 = (ushort*)src2;
-			ushort* pd = (ushort*)dest;
+			var ps1 = (ushort*)src1;
+			var ps2 = (ushort*)src2;
+			var pd = (ushort*)dest;
 
 			while (--len != -1)
 			{
@@ -222,11 +222,11 @@ namespace OpenRA.FileFormats
 
 		static void inv_bignum(uint[] n1, uint[] n2, uint len)
 		{
-			uint[] n_tmp = new uint[64];
+			var n_tmp = new uint[64];
 			uint n2_bytelen, bit;
 			int n2_bitlen;
 
-			int j = 0;
+			var j = 0;
 
 			init_bignum(n_tmp, 0, len);
 			init_bignum(n1, 0, len);
@@ -257,7 +257,7 @@ namespace OpenRA.FileFormats
 
 		static void inc_bignum(uint[] n, uint len)
 		{
-			int i = 0;
+			var i = 0;
 			while ((++n[i] == 0) && (--len > 0)) i++;
 		}
 
@@ -289,7 +289,7 @@ namespace OpenRA.FileFormats
 			{
 				fixed (uint* _pn2 = &n2[0])
 				{
-					ushort* pn2 = (ushort*)_pn2;
+					var pn2 = (ushort*)_pn2;
 
 					tmp = 0;
 					for (i = 0; i < len; i++)
@@ -314,8 +314,8 @@ namespace OpenRA.FileFormats
 			  fixed( uint * _psrc2 = &src2[0] )
 			  fixed(uint* _pdest = &dest[0])
 			  {
-				  ushort* psrc2 = (ushort*)_psrc2;
-				  ushort* pdest = (ushort*)_pdest;
+				  var psrc2 = (ushort*)_psrc2;
+				  var pdest = (ushort*)_pdest;
 
 				  init_bignum(dest, 0, len * 2);
 				  for (i = 0; i < len * 2; i++)
@@ -338,8 +338,8 @@ namespace OpenRA.FileFormats
 
 		unsafe uint get_mulword(uint* n)
 		{
-			ushort* wn = (ushort*)n;
-			uint i = (uint)((((((((((*(wn - 1) ^ 0xffff) & 0xffff) * glob1_hi_inv_lo + 0x10000) >> 1)
+			var wn = (ushort*)n;
+			var i = (uint)((((((((((*(wn - 1) ^ 0xffff) & 0xffff) * glob1_hi_inv_lo + 0x10000) >> 1)
 				 + (((*(wn - 2) ^ 0xffff) * glob1_hi_inv_hi + glob1_hi_inv_hi) >> 1) + 1)
 				 >> 16) + ((((*(wn - 1) ^ 0xffff) & 0xffff) * glob1_hi_inv_hi) >> 1) +
 				 (((*wn ^ 0xffff) * glob1_hi_inv_lo) >> 1) + 1) >> 14) + glob1_hi_inv_hi
@@ -350,7 +350,7 @@ namespace OpenRA.FileFormats
 
 		static void dec_bignum(uint[] n, uint len)
 		{
-			int i = 0;
+			var i = 0;
 			while ((--n[i] == 0xffffffff) && (--len > 0))
 				i++;
 		}
@@ -371,12 +371,12 @@ namespace OpenRA.FileFormats
 						inc_bignum(glob2, len * 2 + 1);
 						neg_bignum(glob2, len * 2 + 1);
 						len_diff = g2_len_x2 + 1 - glob1_len_x2;
-						ushort* esi = ((ushort*)g2) + (1 + g2_len_x2 - glob1_len_x2);
-						ushort* edi = ((ushort*)g2) + (g2_len_x2 + 1);
+						var esi = ((ushort*)g2) + (1 + g2_len_x2 - glob1_len_x2);
+						var edi = ((ushort*)g2) + (g2_len_x2 + 1);
 						for (; len_diff != 0; len_diff--)
 						{
 							edi--;
-							uint tmp = get_mulword((uint*)edi);
+							var tmp = get_mulword((uint*)edi);
 							esi--;
 							if (tmp > 0)
 							{
@@ -410,7 +410,7 @@ namespace OpenRA.FileFormats
 
 		void calc_a_key(uint[] n1, uint[] n2, uint[] n3, uint[] n4, uint len)
 		{
-			uint[] n_tmp = new uint[64];
+			var n_tmp = new uint[64];
 			uint n3_len, n4_len;
 			int n3_bitlen;
 			uint bit_mask;
@@ -419,7 +419,7 @@ namespace OpenRA.FileFormats
 			{
 				fixed (uint* _pn3 = &n3[0])
 				{
-					uint* pn3 = _pn3;
+					var pn3 = _pn3;
 
 					init_bignum(n1, 1, len);
 					n4_len = len_bignum(n4, len);
@@ -457,10 +457,10 @@ namespace OpenRA.FileFormats
 
 		unsafe void process_predata(byte* pre, uint pre_len, byte *buf)
 		{
-			uint[] n2 = new uint[64];
-			uint[] n3 = new uint[64];
+			var n2 = new uint[64];
+			var n3 = new uint[64];
 
-			uint a = (pubkey.len - 1) / 8;
+			var a = (pubkey.len - 1) / 8;
 			while (a + 1 <= pre_len)
 			{
 				init_bignum(n2, 0, 64);
@@ -480,7 +480,7 @@ namespace OpenRA.FileFormats
 		public byte[] DecryptKey(byte[] src)
 		{
 			init_pubkey();
-			byte[] dest = new byte[256];
+			var dest = new byte[256];
 
 			unsafe
 			{

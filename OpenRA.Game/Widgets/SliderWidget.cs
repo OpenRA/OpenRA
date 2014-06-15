@@ -114,7 +114,7 @@ namespace OpenRA.Widgets
 
 			// Tickmarks
 			var tick = ChromeProvider.GetImage("slider", "tick");
-			for (int i = 0; i < Ticks; i++)
+			for (var i = 0; i < Ticks; i++)
 			{
 				var tickPos = new float2(
 					trackOrigin + (i * (trackRect.Width - (int)tick.size.X) / (Ticks - 1)) - tick.size.X / 2,

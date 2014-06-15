@@ -82,7 +82,7 @@ namespace OpenRA
 
 		public static bool WithinEpsilon(float2 a, float2 b, float e)
 		{
-			float2 d = a - b;
+			var d = a - b;
 			return Math.Abs(d.X) < e && Math.Abs(d.Y) < e;
 		}
 

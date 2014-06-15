@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			});
 			var diplomacyButton = playerWidgets.Get<ButtonWidget>("INGAME_DIPLOMACY_BUTTON");
 			diplomacyButton.OnClick = () => diplomacy.Visible ^= true;
-			int validPlayers = 0;
+			var validPlayers = 0;
 			validPlayers = world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
 			diplomacyButton.IsVisible = () => validPlayers > 0;
 
@@ -111,8 +111,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				objectivesButton.OnClick += () => objectivesWidget.Visible ^= true;
 			}
 
-			bool radarActive = false;
-			RadarBinState binState = RadarBinState.Closed;
+			var radarActive = false;
+			var binState = RadarBinState.Closed;
 			var radarBin = playerWidgets.Get<SlidingContainerWidget>("INGAME_RADAR_BIN");
 			radarBin.IsOpen = () => radarActive || binState > RadarBinState.BinAnimating;
 			radarBin.AfterOpen = () => binState = RadarBinState.RadarAnimating;
