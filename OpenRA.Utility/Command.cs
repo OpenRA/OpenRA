@@ -20,6 +20,7 @@ using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -543,6 +544,54 @@ namespace OpenRA.Utility
 			var dest = map.Title + ".oramap";
 			map.Save(dest);
 			Console.WriteLine(dest + " saved.");
+		}
+
+		[Desc("MOD", "Export the game rules into a CSV file to inspect in a spreadheet.")]
+		public static void ExportCharacterSeparatedRules(string[] args)
+		{
+			var mod = args[1];
+			Game.modData = new ModData(mod);
+			var rules = Game.modData.RulesetCache.LoadDefaultRules();
+			var dump = new StringBuilder();
+			dump.AppendLine("Name;Faction;Health;Cost;Damage per Second"); 
+			foreach (var actorInfo in rules.Actors.Values)
+			{
+				if (actorInfo.Name.StartsWith("^"))
+					continue;
+
+				var buildable = actorInfo.Traits.GetOrDefault<BuildableInfo>();
+				if (buildable == null)
+					continue;
+				var faction = FieldSaver.FormatValue(buildable.Owner, buildable.Owner.GetType());
+
+				var damagePerSecond = 0f;
+				var armaments = actorInfo.Traits.WithInterface<ArmamentInfo>();
+				if (armaments.Any())
+				{
+					var weapons = armaments.Select(a => a.Weapon).Select(w => rules.Weapons[w.ToLowerInvariant()]);
+					if (weapons.Any())
+					{
+						var damage = weapons.Select(w => new { ROF = w.ROF > 0 ? w.ROF : 1, Damage = w.Burst * w.Warheads.Sum(z => z.Damage) });
+						damagePerSecond = damage.Sum(d => (float)d.Damage / d.ROF * 25);
+					}
+				}
+
+				var tooltip = actorInfo.Traits.GetOrDefault<TooltipInfo>();
+				var name = tooltip != null ? tooltip.Name : actorInfo.Name;
+
+				var health = actorInfo.Traits.GetOrDefault<HealthInfo>();
+				var hp = health != null ? health.HP : 0;
+
+				var value = actorInfo.Traits.GetOrDefault<ValuedInfo>();
+				var cost = value != null ? value.Cost : 0;
+
+				dump.AppendLine("{0};{1};{2};{3};{4}".F(name, faction, hp, cost, damagePerSecond));
+			}
+
+			var filename = "{0}-mod-rules.csv".F(mod);
+			using (StreamWriter outfile = new StreamWriter(filename))
+				outfile.Write(dump.ToString());
+			Console.WriteLine("{0} has been saved.\nOpen in a spreadsheet application as values separated by semicolon.".F(filename));
 		}
 	}
 }
