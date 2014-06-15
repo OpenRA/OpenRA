@@ -568,7 +568,7 @@ namespace OpenRA.Utility
 				vsArmor = vsArmor + ";vs. " + armorType;
 
 			var dump = new StringBuilder();
-			dump.AppendLine("Name;Faction;Health;Cost;Damage;Burst;Rate of Fire;Damage per Second" + vsArmor);
+			dump.AppendLine("Name;Faction;Health;Cost;Weapon;Damage;Burst;Rate of Fire;Damage per Second" + vsArmor);
 
 			var line = 1;
 			foreach (var actorInfo in rules.Actors.Values)
@@ -598,10 +598,11 @@ namespace OpenRA.Utility
 				var armaments = actorInfo.Traits.WithInterface<ArmamentInfo>();
 				if (armaments.Any())
 				{
-					var weapons = armaments.Select(a => a.Weapon).Select(w => rules.Weapons[w.ToLowerInvariant()]);
+					var weapons = armaments.Select(a => a.Weapon);
 					var weaponCount = 0;
-					foreach (var weapon in weapons)
+					foreach (var weaponName in weapons)
 					{
+						var weapon = rules.Weapons[weaponName.ToLowerInvariant()];
 						weaponCount++;
 						if (weaponCount > 1)
 						{
@@ -614,16 +615,16 @@ namespace OpenRA.Utility
 						var burst = weapon.Burst.ToString();
 						var warhead = weapon.Warheads.First(); // TODO
 						var damage = warhead.Damage.ToString();
-						var damagePerSecond = "=(E{0}*F{0})/G{0}*25".F(line);
+						var damagePerSecond = "=(F{0}*G{0})/H{0}*25".F(line);
 
 						var versus = "";
 						foreach (var armorType in armorList)
 						{
 							var vs = warhead.Versus.ContainsKey(armorType) ? warhead.Versus[armorType] : 1f;
-							versus = versus + "=H{0}*{1};".F(line, vs);
+							versus = versus + "=I{0}*{1};".F(line, vs);
 						}
 
-						dump.Append(";{0};{1};{2};{3};{4}".F(damage, burst, rateOfFire, damagePerSecond, versus));
+						dump.Append(";{0};{1};{2};{3};{4};{5}".F(weaponName, damage, burst, rateOfFire, damagePerSecond, versus));
 					}
 				}
 				dump.AppendLine();
