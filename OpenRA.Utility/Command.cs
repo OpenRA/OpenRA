@@ -568,7 +568,7 @@ namespace OpenRA.Utility
 				vsArmor = vsArmor + ";vs. " + armorType;
 
 			var dump = new StringBuilder();
-			dump.AppendLine("Name;Faction;Health;Cost;Weapon;Damage;Burst;Rate of Fire;Damage per Second" + vsArmor);
+			dump.AppendLine("Name;Faction;Health;Cost;Weapon;Damage;Burst;Delay;Rate of Fire;Damage per Second" + vsArmor);
 
 			var line = 1;
 			foreach (var actorInfo in rules.Actors.Values)
@@ -615,16 +615,17 @@ namespace OpenRA.Utility
 						var burst = weapon.Burst.ToString();
 						var warhead = weapon.Warheads.First(); // TODO
 						var damage = warhead.Damage.ToString();
-						var damagePerSecond = "=(F{0}*G{0})/H{0}*25".F(line);
+						var delay = weapon.BurstDelay;
+						var damagePerSecond = "=(F{0}*G{0})/(H{0}+G{0}*I{0})*25".F(line);
 
 						var versus = "";
 						foreach (var armorType in armorList)
 						{
 							var vs = warhead.Versus.ContainsKey(armorType) ? warhead.Versus[armorType] : 1f;
-							versus = versus + "=I{0}*{1};".F(line, vs);
+							versus = versus + "=J{0}*{1};".F(line, vs);
 						}
 
-						dump.Append(";{0};{1};{2};{3};{4};{5}".F(weaponName, damage, burst, rateOfFire, damagePerSecond, versus));
+						dump.Append(";{0};{1};{2};{3};{4};{5};{6}".F(weaponName, damage, burst, delay, rateOfFire, damagePerSecond, versus));
 					}
 				}
 				dump.AppendLine();
