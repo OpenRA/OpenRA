@@ -8,9 +8,9 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
-using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {

@@ -8,8 +8,8 @@
  */
 #endregion
 
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace OpenRA.Graphics
 {

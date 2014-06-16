@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Move;
-using OpenRA.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Crates
 {

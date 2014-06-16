@@ -16,10 +16,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using OpenRA.FileSystem;
-using OpenRA.Network;
-using OpenRA.Traits;
 using OpenRA.Graphics;
+using OpenRA.Network;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA
 {

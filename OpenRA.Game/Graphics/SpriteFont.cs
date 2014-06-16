@@ -11,8 +11,8 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using SharpFont;
 using OpenRA.Primitives;
+using SharpFont;
 
 namespace OpenRA.Graphics
 {

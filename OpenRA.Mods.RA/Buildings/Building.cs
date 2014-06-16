@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {

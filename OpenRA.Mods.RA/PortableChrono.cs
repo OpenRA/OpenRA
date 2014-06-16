@@ -10,10 +10,10 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
-using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
