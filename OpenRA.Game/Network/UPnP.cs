@@ -25,7 +25,6 @@ namespace OpenRA.Network
 				NatUtility.Logger = Log.Channels["server"].Writer;
 				NatUtility.Verbose = Game.Settings.Server.VerboseNatDiscovery;
 				NatUtility.DeviceFound += DeviceFound;
-				NatUtility.DeviceLost += DeviceLost;
 				Game.Settings.Server.NatDeviceAvailable = false;
 				NatUtility.StartDiscovery();
 				Log.Write("server", "NAT discovery started.");
@@ -85,27 +84,6 @@ namespace OpenRA.Network
 				Game.Settings.Server.NatDeviceAvailable = false;
 				Game.Settings.Server.AllowPortForward = false;
 			}
-		}
-		
-		public static void DeviceLost(object sender, DeviceEventArgs args)
-		{
-			Log.Write("server", "NAT device lost.");
-			
-			if (args.Device == null)
-				return;
-			
-			try
-			{
-				NatDevice = args.Device;
-				Log.Write("server", "Type: {0}", NatDevice.GetType());
-			}
-			catch (Exception e)
-			{
-				Log.Write("server", "Can't fetch type from lost NAT device: {0}", e);
-			}
-			
-			Game.Settings.Server.NatDeviceAvailable = false;
-			Game.Settings.Server.AllowPortForward = false;
 		}
 
 		public static void ForwardPort()
