@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
@@ -200,7 +200,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
@@ -231,7 +231,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
@@ -262,7 +262,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
@@ -299,7 +299,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
@@ -332,7 +332,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
