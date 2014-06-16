@@ -362,7 +362,7 @@ namespace OpenRA
 			InitializeWithMod(Settings.Game.Mod, args.GetValue("Launch.Replay", null));
 
 			if (Settings.Server.DiscoverNatDevices)
-				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, UPnP.TryStoppingNatDiscovery);
+				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, UPnP.StoppingNatDiscovery);
 		}
 
 		public static void InitializeWithMod(string mod, string replay)

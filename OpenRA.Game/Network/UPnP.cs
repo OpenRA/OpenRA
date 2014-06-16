@@ -37,21 +37,11 @@ namespace OpenRA.Network
 			}
 		}
 
-		public static void TryStoppingNatDiscovery()
+		public static void StoppingNatDiscovery()
 		{
 			Log.Write("server", "Stopping NAT discovery.");
+			NatUtility.StopDiscovery();
 
-			try
-			{
-				NatUtility.StopDiscovery();
-			}
-			catch (Exception e)
-			{
-				Log.Write("server", "Failed to stop NAT device discovery: {0}", e);
-				Game.Settings.Server.NatDeviceAvailable = false;
-				Game.Settings.Server.AllowPortForward = false;
-			}
-				
 			if (NatDevice == null)
 			{
 				Log.Write("server", "No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Game.Settings.Server.NatDiscoveryTimeout));
