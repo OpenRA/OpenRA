@@ -63,14 +63,11 @@ namespace OpenRA.Network
 
 		public static void DeviceFound(object sender, DeviceEventArgs args)
 		{
-			if (args.Device == null)
-				return;
-			
 			Log.Write("server", "NAT device discovered.");
-			
+
 			Game.Settings.Server.NatDeviceAvailable = true;
 			Game.Settings.Server.AllowPortForward = true;
-			
+
 			try
 			{
 				NatDevice = args.Device;
