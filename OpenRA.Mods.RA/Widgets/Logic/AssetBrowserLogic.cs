@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var colorDropdown = panel.GetOrNull<DropDownButtonWidget>("COLOR");
 			if (colorDropdown != null)
 			{
-				colorDropdown.IsDisabled = () => currentPalette != colorPreview.Palette;
+				colorDropdown.IsDisabled = () => currentPalette != colorPreview.PaletteName;
 				colorDropdown.OnMouseDown = _ => ShowColorDropDown(colorDropdown, colorPreview, world);
 				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => Game.Settings.Player.Color.RGB;
 			}

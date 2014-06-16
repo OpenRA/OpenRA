@@ -153,11 +153,11 @@ namespace OpenRA.Editor
 			tileset = Program.Rules.TileSets[map.Tileset];
 			tilesetRenderer = new TileSetRenderer(tileset, modData.Manifest.TileSize);
 			var shadowIndex = new int[] { 3, 4 };
-			var palette = new Palette(GlobalFileSystem.Open(tileset.Palette), shadowIndex);
+			var palette = new ImmutablePalette(GlobalFileSystem.Open(tileset.Palette), shadowIndex);
 
 			// required for desert terrain in RA
 			var playerPalette = tileset.PlayerPalette ?? tileset.Palette;
-			var shadowedPalette = new Palette(GlobalFileSystem.Open(playerPalette), shadowIndex);
+			var shadowedPalette = new ImmutablePalette(GlobalFileSystem.Open(playerPalette), shadowIndex);
 
 			surface1.Bind(map, tileset, tilesetRenderer, palette, shadowedPalette);
 

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new PaletteFromRGBA(init.world, this); }
 	}
 
-	class PaletteFromRGBA : IPalette
+	class PaletteFromRGBA : ILoadsPalettes
 	{
 		readonly World world;
 		readonly PaletteFromRGBAInfo info;
@@ -43,14 +44,14 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public void InitPalette(WorldRenderer wr)
+		public void LoadPalettes(WorldRenderer wr)
 		{
 			// Enable palette only for a specific tileset
 			if (info.Tileset != null && info.Tileset.ToLowerInvariant() != world.Map.Tileset.ToLowerInvariant())
 				return;
 
 			var c = (uint)((info.A << 24) | (info.R << 16) | (info.G << 8) | info.B);
-			wr.AddPalette(info.Name, new Palette(Exts.MakeArray(256, i => (i == 0) ? 0 : c)), info.AllowModifiers);
+			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (i == 0) ? 0 : c)), info.AllowModifiers);
 		}
 	}
 }

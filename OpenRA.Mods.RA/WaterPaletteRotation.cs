@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	[Desc("Palette effect used for sprinkle \"animations\" on terrain tiles.")]
 	class WaterPaletteRotationInfo : ITraitInfo
 	{
-		public readonly string[] ExcludePalettes = {};
+		public readonly string[] ExcludePalettes = { };
 
 		public object Create(ActorInitializer init) { return new WaterPaletteRotation(init.world, this); }
 	}
@@ -38,23 +38,26 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self) { t += .25f; }
 
-		static uint[] temp = new uint[7]; /* allocating this on the fly actually hurts our profile */
+		uint[] temp = new uint[7]; /* allocating this on the fly actually hurts our profile */
 
-		public void AdjustPalette(Dictionary<string,Palette> palettes)
+		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
 		{
-			foreach (var pal in palettes)
+			var rotate = (int)t % 7;
+			if (rotate == 0)
+				return;
+
+			foreach (var kvp in palettes)
 			{
-				if (info.ExcludePalettes.Contains(pal.Key))
+				if (info.ExcludePalettes.Contains(kvp.Key))
 					continue;
 
-				var colors = pal.Value.Values;
-				var rotate = (int)t % 7;
+				var palette = kvp.Value;
 
 				for (var i = 0; i < 7; i++)
-					temp[(rotate + i) % 7] = colors[world.TileSet.WaterPaletteRotationBase + i];
+					temp[(rotate + i) % 7] = palette[world.TileSet.WaterPaletteRotationBase + i];
 
 				for (var i = 0; i < 7; i++)
-					pal.Value.SetColor(world.TileSet.WaterPaletteRotationBase + i, temp[i]);
+					palette[world.TileSet.WaterPaletteRotationBase + i] = temp[i];
 			}
 		}
 	}

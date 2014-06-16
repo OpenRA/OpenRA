@@ -9,8 +9,7 @@
 #endregion
 
 using System;
-using System.Drawing;
-using OpenRA.FileFormats;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -25,13 +24,13 @@ namespace OpenRA.Mods.TS
 		public object Create(ActorInitializer init) { return new TSShroudPalette(this); }
 	}
 
-	class TSShroudPalette : IPalette
+	class TSShroudPalette : ILoadsPalettes
 	{
 		readonly TSShroudPaletteInfo info;
 
 		public TSShroudPalette(TSShroudPaletteInfo info) { this.info = info; }
 
-		public void InitPalette(WorldRenderer wr)
+		public void LoadPalettes(WorldRenderer wr)
 		{
 			Func<int, uint> makeColor = i =>
 			{
@@ -40,7 +39,7 @@ namespace OpenRA.Mods.TS
 				return 0;
 			};
 
-			wr.AddPalette(info.Name, new Palette(Exts.MakeArray(256, i => makeColor(i))), false);
+			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => makeColor(i))));
 		}
 	}
 }

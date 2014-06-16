@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Graphics
@@ -21,8 +20,8 @@ namespace OpenRA.Graphics
 	{
 		public readonly string Name;
 		public readonly int Index;
-		public readonly Palette Palette;
-		public PaletteReference(string name, int index, Palette palette)
+		public IPalette Palette { get; internal set; }
+		public PaletteReference(string name, int index, IPalette palette)
 		{
 			Name = name;
 			Index = index;
@@ -36,10 +35,10 @@ namespace OpenRA.Graphics
 		public readonly Theater Theater;
 		public Viewport Viewport { get; private set; }
 
-		internal readonly TerrainRenderer terrainRenderer;
-		internal readonly HardwarePalette palette;
-		internal Cache<string, PaletteReference> palettes;
-		Lazy<DeveloperMode> devTrait;
+		readonly TerrainRenderer terrainRenderer;
+		readonly HardwarePalette palette;
+		readonly Dictionary<string, PaletteReference> palettes;
+		readonly Lazy<DeveloperMode> devTrait;
 
 		internal WorldRenderer(World world)
 		{
@@ -47,9 +46,9 @@ namespace OpenRA.Graphics
 			Viewport = new Viewport(this, world.Map);
 			palette = new HardwarePalette();
 
-			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
-			foreach (var pal in world.traitDict.ActorsWithTrait<IPalette>())
-				pal.Trait.InitPalette(this);
+			palettes = new Dictionary<string, PaletteReference>();
+			foreach (var pal in world.traitDict.ActorsWithTrait<ILoadsPalettes>())
+				pal.Trait.LoadPalettes(this);
 
 			palette.Initialize();
 
@@ -62,14 +61,13 @@ namespace OpenRA.Graphics
 		PaletteReference CreatePaletteReference(string name)
 		{
 			var pal = palette.GetPalette(name);
-			if (pal == null)
-				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
-
 			return new PaletteReference(name, palette.GetPaletteIndex(name), pal);
 		}
 
-		public PaletteReference Palette(string name) { return palettes[name]; }
-		public void AddPalette(string name, Palette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
+		public PaletteReference Palette(string name) { return palettes.GetOrAdd(name, CreatePaletteReference); }
+		public void AddPalette(string name, ImmutablePalette pal) { palette.AddPalette(name, pal, false); }
+		public void AddPalette(string name, ImmutablePalette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
+		public void ReplacePalette(string name, IPalette pal) { palette.ReplacePalette(name, pal); palettes[name].Palette = pal; }
 
 		List<IRenderable> GenerateRenderables()
 		{

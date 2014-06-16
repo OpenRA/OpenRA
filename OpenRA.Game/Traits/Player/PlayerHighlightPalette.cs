@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 
 namespace OpenRA.Traits
@@ -22,7 +23,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new PlayerHighlightPalette(init.self.Owner, this); }
 	}
 	
-	public class PlayerHighlightPalette : IPalette
+	public class PlayerHighlightPalette : ILoadsPalettes
 	{
 		readonly Player owner;
 		readonly PlayerHighlightPaletteInfo info;
@@ -33,10 +34,10 @@ namespace OpenRA.Traits
 			this.info = info;
 		}
 		
-		public void InitPalette(WorldRenderer wr)
+		public void LoadPalettes(WorldRenderer wr)
 		{
 			var argb = (uint)Color.FromArgb(128, owner.Color.RGB).ToArgb();
-			wr.AddPalette(info.BaseName + owner.InternalName, new Palette(Exts.MakeArray(256, i => i == 0 ? 0 : argb)), false);
+			wr.AddPalette(info.BaseName + owner.InternalName, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => i == 0 ? 0 : argb)));
 		}
 	}
 }

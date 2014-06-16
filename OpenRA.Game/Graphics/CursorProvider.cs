@@ -41,7 +41,7 @@ namespace OpenRA.Graphics
 
 			palette = new HardwarePalette();
 			foreach (var p in nodesDict["Palettes"].Nodes)
-				palette.AddPalette(p.Key, new Palette(GlobalFileSystem.Open(p.Value.Value), shadowIndex), false);
+				palette.AddPalette(p.Key, new ImmutablePalette(GlobalFileSystem.Open(p.Value.Value), shadowIndex), false);
 
 			var spriteLoader = new SpriteLoader(new string[0], new SheetBuilder(SheetType.Indexed));
 			foreach (var s in nodesDict["Cursors"].Nodes)
@@ -53,9 +53,6 @@ namespace OpenRA.Graphics
 		PaletteReference CreatePaletteReference(string name)
 		{
 			var pal = palette.GetPalette(name);
-			if (pal == null)
-				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
-
 			return new PaletteReference(name, palette.GetPaletteIndex(name), pal);
 		}
 

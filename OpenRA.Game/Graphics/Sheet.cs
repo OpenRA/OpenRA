@@ -96,7 +96,7 @@ namespace OpenRA.Graphics
 			return bitmap;
 		}
 
-		public Bitmap AsBitmap(TextureChannel channel, Palette pal)
+		public Bitmap AsBitmap(TextureChannel channel, IPalette pal)
 		{
 			var d = Data;
 			var dataStride = 4 * Size.Width;
@@ -115,7 +115,7 @@ namespace OpenRA.Graphics
 					for (var x = 0; x < Size.Width; x++)
 					{
 						var paletteIndex = d[dataRowIndex + 4 * x];
-						colors[bdRowIndex + x] = pal.Values[paletteIndex];
+						colors[bdRowIndex + x] = pal[paletteIndex];
 					}
 				}
 			}

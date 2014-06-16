@@ -45,8 +45,8 @@ namespace OpenRA.Editor
 		public Map Map { get; private set; }
 		public TileSet TileSet { get; private set; }
 		public TileSetRenderer TileSetRenderer { get; private set; }
-		public Palette Palette { get; private set; }
-		public Palette PlayerPalette { get; private set; }
+		public IPalette Palette { get; private set; }
+		public IPalette PlayerPalette { get; private set; }
 		public int2 Offset;
 
 		public int2 GetOffset() { return Offset; }
@@ -81,7 +81,7 @@ namespace OpenRA.Editor
 
 		public Keys GetModifiers() { return ModifierKeys; }
 
-		public void Bind(Map m, TileSet ts, TileSetRenderer tsr, Palette p, Palette pp)
+		public void Bind(Map m, TileSet ts, TileSetRenderer tsr, IPalette p, IPalette pp)
 		{
 			Map = m;
 			TileSet = ts;
@@ -381,7 +381,7 @@ namespace OpenRA.Editor
 			var pr = Map.Players[name];
 			var pcpi = Program.Rules.Actors["player"].Traits.Get<PlayerColorPaletteInfo>();
 			var remap = new PlayerColorRemap(pcpi.RemapIndex, pr.Color, pcpi.Ramp);
-			return new Palette(PlayerPalette, remap).AsSystemPalette();
+			return new ImmutablePalette(PlayerPalette, remap).AsSystemPalette();
 		}
 
 		Cache<string, ColorPalette> playerPalettes;

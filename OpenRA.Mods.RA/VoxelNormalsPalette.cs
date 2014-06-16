@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new VoxelNormalsPalette(this); }
 	}
 
-	public class VoxelNormalsPalette : IPalette
+	public class VoxelNormalsPalette : ILoadsPalettes
 	{
 		readonly VoxelNormalsPaletteInfo info;
 
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public void InitPalette(WorldRenderer wr)
+		public void LoadPalettes(WorldRenderer wr)
 		{
 			// Rotate vectors to expected orientation
 			// Voxel coordinates are x=forward, y=right, z=up
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 
 			// Map normals into color range
 			// Introduces a maximum error of ~0.5%
-			var data = new uint[256];
+			var data = new uint[Palette.Size];
 			for (var i = 0; i < n.Length / 3; i++)
 			{
 				data[i] = 0xFF000000;
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 				}
 			}
 
-			wr.AddPalette(info.Name, new Palette(data), false);
+			wr.AddPalette(info.Name, new ImmutablePalette(data));
 		}
 
 		// Normal vector tables from http://www.sleipnirstuff.com/forum/viewtopic.php?t=8048

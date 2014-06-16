@@ -82,7 +82,7 @@ namespace OpenRA.Editor
 				templates.Add(t.Key, LoadTemplate(t.Value.Image, tileset.Extensions, sourceCache, t.Value.Frames));
 		}
 
-		public Bitmap RenderTemplate(ushort id, Palette p)
+		public Bitmap RenderTemplate(ushort id, IPalette p)
 		{
 			var template = TileSet.Templates[id];
 			var templateData = templates[id];

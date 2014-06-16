@@ -29,19 +29,19 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new FogPaletteFromR8(this); }
 	}
 
-	class FogPaletteFromR8 : IPalette
+	class FogPaletteFromR8 : ILoadsPalettes
 	{
 		readonly FogPaletteFromR8Info info;
 		public FogPaletteFromR8(FogPaletteFromR8Info info) { this.info = info; }
 
-		public void InitPalette(WorldRenderer wr)
+		public void LoadPalettes(WorldRenderer wr)
 		{
-			var colors = new uint[256];
+			var colors = new uint[Palette.Size];
 			using (var s = GlobalFileSystem.Open(info.Filename))
 			{
 				s.Seek(info.Offset, SeekOrigin.Begin);
 
-				for (var i = 0; i < 256; i++)
+				for (var i = 0; i < Palette.Size; i++)
 				{
 					var packed = s.ReadUInt16();
 
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA
 				}
 			}
 
-			wr.AddPalette(info.Name, new Palette(colors), info.AllowModifiers);
+			wr.AddPalette(info.Name, new ImmutablePalette(colors), info.AllowModifiers);
 		}
 	}
 }

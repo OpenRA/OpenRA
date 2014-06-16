@@ -66,24 +66,24 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public void AdjustPalette(Dictionary<string, Palette> palettes)
+		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
 		{
 			if (to == EffectType.None && remainingFrames == 0)
 				return;
 
-			foreach (var pal in palettes)
+			foreach (var pal in palettes.Values)
 			{
-				for (var x = 0; x < 256; x++)
+				for (var x = 0; x < Palette.Size; x++)
 				{
-					var orig = pal.Value.GetColor(x);
+					var orig = pal.GetColor(x);
 					var t = ColorForEffect(to, orig);
 
 					if (remainingFrames == 0)
-						pal.Value.SetColor(x, t);
+						pal.SetColor(x, t);
 					else
 					{
 						var f = ColorForEffect(from, orig);
-						pal.Value.SetColor(x, Exts.ColorLerp((float)remainingFrames / Info.FadeLength, t, f));
+						pal.SetColor(x, Exts.ColorLerp((float)remainingFrames / Info.FadeLength, t, f));
 					}
 				}
 			}

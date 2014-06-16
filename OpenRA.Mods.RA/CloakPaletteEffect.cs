@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class CloakPaletteEffectInfo : TraitInfo<CloakPaletteEffect> {}
+	public class CloakPaletteEffectInfo : TraitInfo<CloakPaletteEffect> { }
 
 	public class CloakPaletteEffect : IPaletteModifier, ITick
 	{
@@ -29,23 +29,22 @@ namespace OpenRA.Mods.RA
 			Color.FromArgb(178, 205, 250, 220),
 		};
 
-		public void AdjustPalette(Dictionary<string, Palette> b)
+		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b)
 		{
 			var i = (int)t;
 			var p = b[paletteName];
 
-			for (var j = 0; j < colors.Length; j++ )
+			for (var j = 0; j < colors.Length; j++)
 			{
-				var k = (i+j) % 16 + 0xb0;
-					p.SetColor(k, colors[j]);
+				var k = (i + j) % 16 + 0xb0;
+				p.SetColor(k, colors[j]);
 			}
 		}
 
-		public void Tick (Actor self)
+		public void Tick(Actor self)
 		{
 			t += 0.25f;
 			if (t >= 256) t = 0;
 		}
 	}
 }
-

@@ -20,7 +20,7 @@ namespace OpenRA.Editor
 {
 	static class RenderUtils
 	{
-		static Bitmap RenderShp(ISpriteSource shp, Palette p)
+		static Bitmap RenderShp(ISpriteSource shp, IPalette p)
 		{
 			var frame = shp.Frames.First();
 
@@ -45,7 +45,7 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
-		public static ActorTemplate RenderActor(ActorInfo info, TileSet tileset, Palette p)
+		public static ActorTemplate RenderActor(ActorInfo info, TileSet tileset, IPalette p)
 		{
 			var image = RenderSprites.GetImage(info);
 
@@ -76,7 +76,7 @@ namespace OpenRA.Editor
 			}
 		}
 
-		public static ResourceTemplate RenderResourceType(ResourceTypeInfo info, string[] exts, Palette p)
+		public static ResourceTemplate RenderResourceType(ResourceTypeInfo info, string[] exts, IPalette p)
 		{
 			var image = info.EditorSprite;
 			using (var s = GlobalFileSystem.OpenWithExts(image, exts))
