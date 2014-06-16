@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -76,28 +76,38 @@ namespace OpenRA.Network
 			}
 		}
 
-		public static void ForwardPort()
+		public static void ForwardPort(int lifetime)
 		{
 			try
 			{
-				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort);
+				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort, lifetime);
 				NatDevice.CreatePortMap(mapping);
-				Log.Write("server", "Create port mapping: protocol={0}, public={1}, private={2}", mapping.Protocol, mapping.PublicPort, mapping.PrivatePort);
+				Log.Write("server", "Create port mapping: protocol = {0}, public = {1}, private = {2}, lifetime = {3} s",
+					mapping.Protocol, mapping.PublicPort, mapping.PrivatePort, mapping.Lifetime);
 			}
-			catch (Exception e)
+			catch (MappingException e)
 			{
-				Log.Write("server", "Can not forward ports via UPnP: {0}", e);
-				Game.Settings.Server.AllowPortForward = false;
+				if (e.ErrorCode == 725 && lifetime != 0)
+				{
+					Log.Write("server", "NAT device answered with OnlyPermanentLeasesSupported. Retrying...");
+					ForwardPort(0);
+				}
+				else
+				{
+					Log.Write("server", "Can not forward ports via UPnP: {0}", e);
+					Game.Settings.Server.AllowPortForward = false;
+				}
 			}
 		}
-		
+
 		public static void RemovePortforward()
 		{
 			try
 			{
 				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort);
 				NatDevice.DeletePortMap(mapping);
-				Log.Write("server", "Remove port mapping: protocol={0}, public={1}, private={2}", mapping.Protocol, mapping.PublicPort, mapping.PrivatePort);
+				Log.Write("server", "Remove port mapping: protocol = {0}, public = {1}, private = {2}, expiration = {3}",
+					mapping.Protocol, mapping.PublicPort, mapping.PrivatePort, mapping.Expiration);
 			}
 			catch (Exception e)
 			{
