@@ -105,7 +105,7 @@ namespace OpenRA.Mods.RA.Air
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return Util.SequenceActivities(new Fly(self, Target.FromCell(cell)), new FlyCircle()); }
 		public Activity MoveWithinRange(Target target, WRange range) { return Util.SequenceActivities(new Fly(self, target, WRange.Zero, range), new FlyCircle()); }
 		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return Util.SequenceActivities(new Fly(self, target, minRange, maxRange), new FlyCircle()); }
-		public Activity MoveFollow(Actor self, Target target, WRange range) { return new FlyFollow(self, target, range); }
+		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new FlyFollow(self, target, minRange, maxRange); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		public Activity MoveIntoWorld(Actor self, CPos cell) { return new Fly(self, Target.FromCell(cell)); }

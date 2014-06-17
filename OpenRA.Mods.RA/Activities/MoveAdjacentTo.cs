@@ -17,14 +17,14 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class MoveAdjacentTo : Activity
 	{
-		readonly Target target;
+		protected readonly Target target;
 		readonly Mobile mobile;
 		readonly PathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 		readonly uint movementClass;
 
+		protected CPos targetPosition;
 		Activity inner;
-		CPos targetPosition;
 		bool repath;
 
 		public MoveAdjacentTo(Actor self, Target target)
@@ -33,10 +33,23 @@ namespace OpenRA.Mods.RA.Activities
 
 			mobile = self.Trait<Mobile>();
 			pathFinder = self.World.WorldActor.Trait<PathFinder>();
-			domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
+			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 			movementClass = (uint)mobile.Info.GetMovementClass(self.World.TileSet);
 
+			if (target.IsValidFor(self))
+				targetPosition = target.CenterPosition.ToCPos();
+
 			repath = true;
+		}
+
+		protected virtual bool ShouldStop(Actor self, CPos oldTargetPosition)
+		{
+			return false;
+		}
+
+		protected virtual bool ShouldRepath(Actor self, CPos oldTargetPosition)
+		{
+			return targetPosition != oldTargetPosition;
 		}
 
 		public override Activity Tick(Actor self)
@@ -59,15 +72,17 @@ namespace OpenRA.Mods.RA.Activities
 			if (targetIsValid)
 			{
 				// Check if the target has moved
-				var oldPosition = targetPosition;
+				var oldTargetPosition = targetPosition;
 				targetPosition = target.CenterPosition.ToCPos();
-				if (!repath && targetPosition != oldPosition)
+
+				var shroudStop = ShouldStop(self, oldTargetPosition);
+				if (shroudStop || (!repath && ShouldRepath(self, oldTargetPosition)))
 				{
 					// Finish moving into the next cell and then repath.
 					if (inner != null)
 						inner.Cancel(self);
 
-					repath = true;
+					repath = !shroudStop;
 				}
 			}
 			else
@@ -84,34 +99,30 @@ namespace OpenRA.Mods.RA.Activities
 			return this;
 		}
 
+		protected virtual IEnumerable<CPos> CandidateMovementCells(Actor self)
+		{
+			return Util.AdjacentCells(target);
+		}
+
 		void UpdateInnerPath(Actor self)
 		{
-			var targetCells = Util.AdjacentCells(target);
+			var targetCells = CandidateMovementCells(self);
 			var searchCells = new List<CPos>();
 			var loc = self.Location;
 
 			foreach (var cell in targetCells)
-				if (mobile.CanEnterCell(cell) && (domainIndex == null || domainIndex.IsPassable(loc, cell, movementClass)))
+				if (domainIndex.IsPassable(loc, cell, movementClass) && mobile.CanEnterCell(cell))
 					searchCells.Add(cell);
 
-			if (searchCells.Any())
-			{
-				var ps1 = new PathSearch(self.World, mobile.Info, self)
-				{
-					checkForBlocked = true,
-					heuristic = location => 0,
-					inReverse = true
-				};
+			if (!searchCells.Any())
+				return;
 
-				foreach (var cell in searchCells)
-					ps1.AddInitialCell(cell);
+			var path = pathFinder.FindBidiPath(
+				PathSearch.FromPoints(self.World, mobile.Info, self, searchCells, loc, true),
+				PathSearch.FromPoint(self.World, mobile.Info, self, loc, targetPosition, true).InReverse()
+			);
 
-				ps1.heuristic = PathSearch.DefaultEstimator(mobile.toCell);
-				var ps2 = PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, targetPosition, true);
-				var ret = pathFinder.FindBidiPath(ps1, ps2);
-
-				inner = mobile.MoveTo(() => ret);
-			}
+			inner = mobile.MoveTo(() => path);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

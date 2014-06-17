@@ -16,28 +16,27 @@ namespace OpenRA.Mods.RA.Activities
 	/* non-turreted attack */
 	public class Attack : Activity
 	{
-		protected Target Target;
-		WRange Range;
-		bool AllowMovement;
+		protected readonly Target Target;
+		readonly AttackBase attack;
+		readonly IMove move;
+		readonly IFacing facing;
+		readonly WRange minRange;
+		readonly WRange maxRange;
 
-		int nextPathTime;
-
-		const int delayBetweenPathingAttempts = 20;
-		const int delaySpread = 5;
-
-		public Attack(Target target, WRange range)
-			: this(target, range, true) {}
-
-		public Attack(Target target, WRange range, bool allowMovement)
+		public Attack(Actor self, Target target, WRange minRange, WRange maxRange, bool allowMovement)
 		{
 			Target = target;
-			Range = range;
-			AllowMovement = allowMovement;
+			this.minRange = minRange;
+			this.maxRange = maxRange;
+
+			attack = self.Trait<AttackBase>();
+			facing = self.Trait<IFacing>();
+
+			move = allowMovement ? self.TraitOrDefault<IMove>() : null;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			var attack = self.Trait<AttackBase>();
 			var ret = InnerTick(self, attack);
 			attack.IsAttacking = (ret == this);
 			return ret;
@@ -52,27 +51,23 @@ namespace OpenRA.Mods.RA.Activities
 			if (!Target.IsValidFor(self) || type == TargetType.FrozenActor)
 				return NextActivity;
 
-			// TODO: This is horrible, and probably wrong. Work out what it is trying to solve, then redo it properly.
-			if (type == TargetType.Actor && Target.Actor.HasTrait<Mobile>() && !self.Owner.Shroud.IsTargetable(Target.Actor))
+			// Drop the target if it moves under the shroud / fog.
+			// HACK: This would otherwise break targeting frozen actors
+			// The problem is that Shroud.IsTargetable returns false (as it should) for
+			// frozen actors, but we do want to explicitly target the underlying actor here.
+			if (type == TargetType.Actor && !Target.Actor.HasTrait<FrozenUnderFog>() && !self.Owner.Shroud.IsTargetable(Target.Actor))
 				return NextActivity;
 
-			if (!Target.IsInRange(self.CenterPosition, Range))
-			{
-				if (--nextPathTime > 0)
-					return this;
-
-				nextPathTime = self.World.SharedRandom.Next(delayBetweenPathingAttempts - delaySpread,
-					delayBetweenPathingAttempts + delaySpread);
-
-				return (AllowMovement) ? Util.SequenceActivities(self.Trait<IMove>().MoveWithinRange(Target, Range), this) : NextActivity;
-			}
+			// Try to move within range
+			if (move != null && (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)))
+				return Util.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
 
 			var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);
-			var facing = self.Trait<IFacing>();
 			if (facing.Facing != desiredFacing)
 				return Util.SequenceActivities(new Turn(desiredFacing), this);
 
 			attack.DoAttack(self, Target);
+
 			return this;
 		}
 	}
