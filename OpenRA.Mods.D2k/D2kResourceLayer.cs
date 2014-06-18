@@ -16,6 +16,7 @@ namespace OpenRA.Traits
 {
 	public class D2kResourceLayerInfo : TraitInfo<D2kResourceLayer> { }
 
+	[Desc("Used to render spice with round borders.")]
 	public class D2kResourceLayer : ResourceLayer
 	{
 		[Flags] enum ClearSides : byte
