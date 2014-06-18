@@ -111,23 +111,13 @@ namespace OpenRA
 
 		static RunStatus Run(string[] args)
 		{
-			if (AppDomain.CurrentDomain.IsDefaultAppDomain())
-			{
-				var name = Assembly.GetEntryAssembly().GetName();
-				int retCode;
-				do
-				{
-					var domain = AppDomain.CreateDomain("Game");
-					retCode = domain.ExecuteAssemblyByName(name, args);
-					AppDomain.Unload(domain);
-				}
-				while (retCode == (int)RunStatus.Restart);
-				return RunStatus.Success;
-			}
-
 			Game.Initialize(new Arguments(args));
 			GC.Collect();
-			return Game.Run();
+			var status = Game.Run();
+			if (status == RunStatus.Restart)
+				using (var p = Process.GetCurrentProcess())
+					Process.Start(Assembly.GetEntryAssembly().Location, p.StartInfo.Arguments);
+			return status;
 		}
 	}
 }
