@@ -25,17 +25,17 @@ namespace OpenRA
 {
 	public class World
 	{
-		internal TraitDictionary traitDict = new TraitDictionary();
-		HashSet<Actor> actors = new HashSet<Actor>();
-		List<IEffect> effects = new List<IEffect>();
-		Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
+		internal readonly TraitDictionary traitDict = new TraitDictionary();
+		readonly HashSet<Actor> actors = new HashSet<Actor>();
+		readonly List<IEffect> effects = new List<IEffect>();
+		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
 		public int Timestep;
 
 		internal readonly OrderManager orderManager;
 		public Session LobbyInfo { get { return orderManager.LobbyInfo; } }
 
-		public MersenneTwister SharedRandom;
+		public readonly MersenneTwister SharedRandom;
 
 		public readonly List<Player> Players = new List<Player>();
 
@@ -285,7 +285,7 @@ namespace OpenRA
 					ret += n++ * (int)(1 + a.ActorID) * Sync.CalculateSyncHash(a);
 
 				// hash all the traits that tick
-				foreach (var x in traitDict.ActorsWithTraitMultiple<ISync>(this))
+				foreach (var x in ActorsWithTrait<ISync>())
 					ret += n++ * (int)(1 + x.Actor.ActorID) * Sync.CalculateSyncHash(x.Trait);
 
 				// TODO: don't go over all effects
@@ -305,7 +305,7 @@ namespace OpenRA
 
 		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
 		{
-			return traitDict.ActorsWithTraitMultiple<T>(this);
+			return traitDict.ActorsWithTrait<T>();
 		}
 
 		public void OnPlayerWinStateChanged(Player player)

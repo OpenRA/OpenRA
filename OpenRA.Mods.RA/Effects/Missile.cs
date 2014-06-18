@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA.Effects
 			var dist = targetPosition + offset - pos;
 			var desiredFacing = Traits.Util.GetFacing(dist, facing);
 			var desiredAltitude = targetPosition.Z;
-			var jammed = info.Jammable && world.ActorsWithTrait<JamsMissiles>().Any(j => JammedBy(j));
+			var jammed = info.Jammable && world.ActorsWithTrait<JamsMissiles>().Any(JammedBy);
 
 			if (jammed)
 			{
