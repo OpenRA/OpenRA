@@ -1,8 +1,9 @@
 # ZeroBrane Studio Changelog
 
-## Current master
+## v0.70 (Jun 18 2014)
 
 ### Highlights
+  - Added support for OpenResty/Nginx, moonscript, and Lapis debugging.
   - Added re-indentation of selected fragment or entire file.
   - Added line mapping support for debugging Lua-based languages (e.g. moonscript).
   - Added `editor.wrapindentmode` and `editor.wrapstartindent` settings.
@@ -16,6 +17,7 @@
   - To [Yonaba](https://github.com/Yonaba/) for updated French translation.
 
 ### Improvements
+  - Added support for nginx debugging (Mobdebug 0.564).
   - Added support for custom debugger initializer (global or interpreter-based).
   - Added line mapping support for debugging Lua-based languages (e.g. moonscript).
   - Added support to force local execution in console by prepending `!` (#326).
@@ -76,7 +78,7 @@
   - Fixed hiding auto-complete when the only option matches what's typed.
   - Fixed an error when all editor tabs are closed.
   - Fixed replace-in-files when saving backup copy is turned off.
-  - Fix re-indenting of anonymous functions in tables (#324).
+  - Fixed re-indenting of anonymous functions in tables (#324).
   - Fixed `F2` shortcut not working in file tree and watch panel (#233).
   - Fixed debugger compatibility with Lua 5.2 (Mobdebug 0.561).
 
