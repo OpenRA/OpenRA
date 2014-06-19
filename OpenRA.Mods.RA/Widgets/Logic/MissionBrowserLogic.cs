@@ -87,6 +87,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			text = WidgetUtils.WrapText(text, description.Bounds.Width, descriptionFont);
 			description.Text = text;
 			description.Bounds.Height = descriptionFont.Measure(text).Y;
+            descriptionPanel.ScrollToTop();
 			descriptionPanel.Layout.AdjustChildren();
 		}
 
