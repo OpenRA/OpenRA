@@ -21,9 +21,7 @@ local socket = require "socket"
 local port = ide.config.singleinstanceport
 local delay = tonumber(ide.config.singleinstance) or 1000 -- in ms
 local svr = socket.udp()
-
-local success, errmsg = svr:setsockname("127.0.0.1",port) -- bind on local host
-
+local success = svr:setsockname("127.0.0.1",port) -- bind on local host
 local protocol = {client = {}, server = {}}
 
 protocol.client.greeting = "Is this you, my IDE? It's me, a new instance."
@@ -36,15 +34,14 @@ if success then -- ok, server was started, we are solo
   ide.idletimer = wx.wxTimer(wx.wxGetApp())
   ide.idletimer:Start(delay,false)
   svr:settimeout(0) -- don't block
-  wx.wxGetApp():Connect(wx.wxEVT_TIMER,function (evt)
+  wx.wxGetApp():Connect(wx.wxEVT_TIMER, function()
       if ide.exitingProgram then -- if exiting, terminate the timer loop
         wx.wxGetApp():Disconnect(wx.wxEVT_TIMER)
         return
       end
 
-      local msg, err, port = svr:receivefrom() -- receive a msg
+      local msg, ip, port = svr:receivefrom() -- receive a msg
       if msg then
-        local ip = err -- the errmsg is actually the IP
         if msg == protocol.client.greeting then -- just send back hi
           svr:sendto(protocol.server.greeting,ip,port)
         elseif msg:match(protocol.client.requestloading:gsub("%%s",".+$")) then -- ok we need to open something
@@ -73,7 +70,7 @@ else -- something different is running on our port
   cln:settimeout(2)
   cln:send(protocol.client.greeting)
 
-  local msg,err = cln:receive()
+  local msg = cln:receive()
   local arg = ide.arg
   if msg and msg == protocol.server.greeting then
     local failed = false
@@ -84,7 +81,7 @@ else -- something different is running on our port
       and (ide.osname ~= 'Macintosh' or not fileName:find("^-psn")) then
         cln:send(protocol.client.requestloading:format(fileName))
 
-        local msg,err = cln:receive()
+        local msg, err = cln:receive()
         if msg ~= protocol.server.answerok then
           failed = true
           print(err,msg)
