@@ -9,9 +9,9 @@
 #endregion
 
 using System;
+using OpenRA.Support;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using OpenRA.Support;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {

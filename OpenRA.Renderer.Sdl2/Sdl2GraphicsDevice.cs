@@ -12,8 +12,8 @@ using System;
 using System.Drawing;
 using OpenRA;
 using OpenRA.Graphics;
-using SDL2;
 using OpenTK.Graphics.OpenGL;
+using SDL2;
 
 [assembly: Renderer(typeof(OpenRA.Renderer.Sdl2.DeviceFactory))]
 

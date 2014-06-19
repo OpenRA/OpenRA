@@ -8,8 +8,8 @@
  */
 #endregion
 
-using OpenRA.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Crates
 {

@@ -10,8 +10,8 @@
 
 using OpenRA.Effects;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {

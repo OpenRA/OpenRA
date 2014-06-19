@@ -10,8 +10,8 @@
 
 using System;
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Network;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
