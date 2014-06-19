@@ -17,8 +17,7 @@ probably a pitfal: an instance is running but is not visible
 
 if not ide.config.singleinstance then return end
 
-require "socket"
-
+local socket = require "socket"
 local port = ide.config.singleinstanceport
 local delay = tonumber(ide.config.singleinstance) or 1000 -- in ms
 local svr = socket.udp()

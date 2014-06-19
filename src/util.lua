@@ -269,7 +269,8 @@ function FileCopy(file1, file2)
   return wx.wxCopyFile(file1, file2), wx.wxSysErrorMsg()
 end
 
-TimeGet = pcall(require, "socket") and socket.gettime or os.clock
+local ok, socket = pcall(require, "socket")
+TimeGet = ok and socket.gettime or os.clock
 
 function isBinary(text) return text:find("[^\7\8\9\10\12\13\27\32-\255]") end
 
