@@ -96,9 +96,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void SetupFilters()
 		{
-			//
 			// Game type
-			//
 			{
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_GAMETYPE_DROPDOWNBUTTON");
 				if (ddb != null)
@@ -120,20 +118,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							var item = ScrollItemWidget.Setup(
 								tpl,
 								() => filter.Type == option.First,
-								() => { filter.Type = option.First; ApplyFilter(); }
-							);
+								() => { filter.Type = option.First; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option.Second;
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
 
-			//
 			// Date type
-			//
 			{
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_DATE_DROPDOWNBUTTON");
 				if (ddb != null)
@@ -157,20 +152,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							var item = ScrollItemWidget.Setup(
 								tpl,
 								() => filter.Date == option.First,
-								() => { filter.Date = option.First; ApplyFilter(); }
-							);
+								() => { filter.Date = option.First; ApplyFilter(); });
+
 							item.Get<LabelWidget>("LABEL").GetText = () => option.Second;
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
 
-			//
 			// Duration
-			//
 			{
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_DURATION_DROPDOWNBUTTON");
 				if (ddb != null)
@@ -194,20 +187,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							var item = ScrollItemWidget.Setup(
 								tpl,
 								() => filter.Duration == option.First,
-								() => { filter.Duration = option.First; ApplyFilter(); }
-							);
+								() => { filter.Duration = option.First; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option.Second;
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
 
-			//
 			// Map
-			//
 			{
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_MAPNAME_DROPDOWNBUTTON");
 				if (ddb != null)
@@ -225,20 +215,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							var item = ScrollItemWidget.Setup(
 								tpl,
 								() => string.Compare(filter.MapName, option, true) == 0,
-								() => { filter.MapName = option; ApplyFilter(); }
-							);
+								() => { filter.MapName = option; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
 
-			//
 			// Players
-			//
 			{
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_PLAYER_DROPDOWNBUTTON");
 				if (ddb != null)
@@ -256,20 +243,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							var item = ScrollItemWidget.Setup(
 								tpl,
 								() => string.Compare(filter.PlayerName, option, true) == 0,
-								() => { filter.PlayerName = option; ApplyFilter(); }
-							);
+								() => { filter.PlayerName = option; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
 
-			//
 			// Outcome (depends on Player)
-			//
 			{
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_OUTCOME_DROPDOWNBUTTON");
 				if (ddb != null)
@@ -293,20 +277,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							var item = ScrollItemWidget.Setup(
 								tpl,
 								() => filter.Outcome == option.First,
-								() => { filter.Outcome = option.First; ApplyFilter(); }
-							);
+								() => { filter.Outcome = option.First; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option.Second;
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
 
-			//
 			// Faction (depends on Player)
-			//
 			{
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_FACTION_DROPDOWNBUTTON");
 				if (ddb != null)
@@ -326,20 +307,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							var item = ScrollItemWidget.Setup(
 								tpl,
 								() => string.Compare(filter.Faction, option, true) == 0,
-								() => { filter.Faction = option; ApplyFilter(); }
-							);
+								() => { filter.Faction = option; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
 							return item;
 						};
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count * 30, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
 					};
 				}
 			}
 
-			//
 			// Reset button
-			//
 			{
 				var button = panel.Get<ButtonWidget>("FLT_RESET_BUTTON");
 				button.IsDisabled = () => filter.IsEmpty;
@@ -508,6 +486,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						t = TimeSpan.FromDays(30d);
 						break;
 				}
+
 				if (replay.GameInfo.StartTimeUtc < DateTime.UtcNow - t)
 					return false;
 			}
@@ -610,7 +589,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var group = kv.Key;
 					if (group.Length > 0)
 					{
-						var header = ScrollItemWidget.Setup(playerHeader, () => true, () => {});
+						var header = ScrollItemWidget.Setup(playerHeader, () => true, () => { });
 						header.Get<LabelWidget>("LABEL").GetText = () => group;
 						playerList.AddChild(header);
 					}
@@ -700,12 +679,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}
 			}
 		}
+
 		enum GameType
 		{
 			Any,
 			Singleplayer,
 			Multiplayer
 		}
+
 		enum DateType
 		{
 			Any,
@@ -714,6 +695,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			LastFortnight,
 			LastMonth
 		}
+
 		enum DurationType
 		{
 			Any,
