@@ -254,11 +254,6 @@ local function resolveAssign(editor,tx)
           c = c..w..s
         end
       end
-      -- abort if the same or recursive value is returned; no need to continue.
-      -- this can happen after typing "smth = smth:new(); smth:" or
-      -- "line = line:gsub(...); line:" as the current algorithm attempts to
-      -- replace "line" with the value that also includes "line"
-      if change and c:find("^"..(tx:gsub(anysep,anysep))) then break end
       tx = c
     end
   else
