@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -25,7 +25,6 @@ namespace OpenRA.Network
 				NatUtility.Logger = Log.Channels["server"].Writer;
 				NatUtility.Verbose = Game.Settings.Server.VerboseNatDiscovery;
 				NatUtility.DeviceFound += DeviceFound;
-				NatUtility.DeviceLost += DeviceLost;
 				Game.Settings.Server.NatDeviceAvailable = false;
 				NatUtility.StartDiscovery();
 				Log.Write("server", "NAT discovery started.");
@@ -38,22 +37,12 @@ namespace OpenRA.Network
 			}
 		}
 
-		public static void TryStoppingNatDiscovery()
+		public static void StoppingNatDiscovery()
 		{
 			Log.Write("server", "Stopping NAT discovery.");
+			NatUtility.StopDiscovery();
 
-			try
-			{
-				NatUtility.StopDiscovery();
-			}
-			catch (Exception e)
-			{
-				Log.Write("server", "Failed to stop NAT device discovery: {0}", e);
-				Game.Settings.Server.NatDeviceAvailable = false;
-				Game.Settings.Server.AllowPortForward = false;
-			}
-				
-			if (NatDevice == null)
+			if (NatDevice == null || NatDevice.GetType() != typeof(Mono.Nat.Upnp.UpnpNatDevice))
 			{
 				Log.Write("server", "No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Game.Settings.Server.NatDiscoveryTimeout));
 				Game.Settings.Server.NatDeviceAvailable = false;
@@ -63,14 +52,11 @@ namespace OpenRA.Network
 
 		public static void DeviceFound(object sender, DeviceEventArgs args)
 		{
-			if (args.Device == null)
-				return;
-			
 			Log.Write("server", "NAT device discovered.");
-			
+
 			Game.Settings.Server.NatDeviceAvailable = true;
 			Game.Settings.Server.AllowPortForward = true;
-			
+
 			try
 			{
 				NatDevice = args.Device;
@@ -89,50 +75,39 @@ namespace OpenRA.Network
 				Game.Settings.Server.AllowPortForward = false;
 			}
 		}
-		
-		public static void DeviceLost(object sender, DeviceEventArgs args)
+
+		public static void ForwardPort(int lifetime)
 		{
-			Log.Write("server", "NAT device lost.");
-			
-			if (args.Device == null)
-				return;
-			
 			try
 			{
-				NatDevice = args.Device;
-				Log.Write("server", "Type: {0}", NatDevice.GetType());
+				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort, lifetime);
+				NatDevice.CreatePortMap(mapping);
+				Log.Write("server", "Create port mapping: protocol = {0}, public = {1}, private = {2}, lifetime = {3} s",
+					mapping.Protocol, mapping.PublicPort, mapping.PrivatePort, mapping.Lifetime);
 			}
-			catch (Exception e)
+			catch (MappingException e)
 			{
-				Log.Write("server", "Can't fetch type from lost NAT device: {0}", e);
+				if (e.ErrorCode == 725 && lifetime != 0)
+				{
+					Log.Write("server", "NAT device answered with OnlyPermanentLeasesSupported. Retrying...");
+					ForwardPort(0);
+				}
+				else
+				{
+					Log.Write("server", "Can not forward ports via UPnP: {0}", e);
+					Game.Settings.Server.AllowPortForward = false;
+				}
 			}
-			
-			Game.Settings.Server.NatDeviceAvailable = false;
-			Game.Settings.Server.AllowPortForward = false;
 		}
 
-		public static void ForwardPort()
-		{
-			try
-			{
-				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort);
-				NatDevice.CreatePortMap(mapping);
-				Log.Write("server", "Create port mapping: protocol={0}, public={1}, private={2}", mapping.Protocol, mapping.PublicPort, mapping.PrivatePort);
-			}
-			catch (Exception e)
-			{
-				Log.Write("server", "Can not forward ports via UPnP: {0}", e);
-				Game.Settings.Server.AllowPortForward = false;
-			}
-		}
-		
 		public static void RemovePortforward()
 		{
 			try
 			{
 				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort);
 				NatDevice.DeletePortMap(mapping);
-				Log.Write("server", "Remove port mapping: protocol={0}, public={1}, private={2}", mapping.Protocol, mapping.PublicPort, mapping.PrivatePort);
+				Log.Write("server", "Remove port mapping: protocol = {0}, public = {1}, private = {2}, expiration = {3}",
+					mapping.Protocol, mapping.PublicPort, mapping.PrivatePort, mapping.Expiration);
 			}
 			catch (Exception e)
 			{
