@@ -347,8 +347,7 @@ namespace OpenRA.Mods.RA.AI
 			{
 				for (var k = MaxBaseDistance; k >= 0; k--)
 				{
-					var tlist = Map.FindTilesInCircle(center, k)
-						.OrderBy(a => (world.Map.CenterOfCell(a) - pos).LengthSquared);
+					var tlist = Map.FindTilesInCircle(center, k);
 
 					foreach (var t in tlist)
 						if (world.CanPlaceBuilding(actorType, bi, t, null))

@@ -313,6 +313,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public CPos NearestMoveableCell(CPos target)
 		{
+			// Limit search to a radius of 10 tiles
 			return NearestMoveableCell(target, 1, 10);
 		}
 
@@ -321,18 +322,9 @@ namespace OpenRA.Mods.RA.Move
 			if (CanEnterCell(target))
 				return target;
 
-			var searched = new List<CPos>();
-			// Limit search to a radius of 10 tiles
-			for (var r = minRange; r < maxRange; r++)
-			{
-				foreach (var tile in self.World.Map.FindTilesInCircle(target, r).Except(searched))
-				{
-					if (CanEnterCell(tile))
-						return tile;
-
-					searched.Add(tile);
-				}
-			}
+			foreach (var tile in self.World.Map.FindTilesInAnnulus(target, minRange, maxRange))
+				if (CanEnterCell(tile))
+					return tile;
 
 			// Couldn't find a cell
 			return target;
@@ -343,17 +335,9 @@ namespace OpenRA.Mods.RA.Move
 			if (check(target))
 				return target;
 
-			var searched = new List<CPos>();
-			for (var r = minRange; r < maxRange; r++)
-			{
-				foreach (var tile in self.World.Map.FindTilesInCircle(target, r).Except(searched))
-				{
-					if (check(tile))
-						return tile;
-
-					searched.Add(tile);
-				}
-			}
+			foreach (var tile in self.World.Map.FindTilesInAnnulus(target, minRange, maxRange))
+				if (check(tile))
+					return tile;
 
 			// Couldn't find a cell
 			return target;
