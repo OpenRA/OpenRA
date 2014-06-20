@@ -4,6 +4,7 @@ FACT:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Owner: None
+		Icon: fact
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -63,6 +64,7 @@ NUKE:
 		BuildPaletteOrder: 10
 		Owner: gdi,nod
 		Prerequisites: fact
+		Icon: nuke
 	Building:
 		Power: 100
 		Footprint: x_ xx
@@ -86,6 +88,7 @@ NUK2:
 		BuildPaletteOrder: 30
 		Prerequisites: anyhq
 		Owner: gdi,nod
+		Icon: nuk2
 	Building:
 		Power: 200
 		Footprint: xx xx
@@ -107,6 +110,7 @@ PROC:
 		BuildPaletteOrder: 20
 		Prerequisites: anypower
 		Owner: gdi,nod
+		Icon: proc
 	Building:
 		Power: -50
 		Footprint: _x_ xxx ===
@@ -146,6 +150,7 @@ SILO:
 		BuildPaletteOrder: 35
 		Prerequisites: proc
 		Owner: gdi,nod
+		Icon: silo
 	Building:
 		Power: -10
 		Footprint: xx
@@ -180,6 +185,7 @@ PYLE:
 		BuildPaletteOrder: 40
 		Prerequisites: anypower
 		Owner: gdi
+		Icon: pyle
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -218,6 +224,7 @@ HAND:
 		BuildPaletteOrder: 40
 		Prerequisites: anypower
 		Owner: nod
+		Icon: hand
 	Building:
 		Power: -20
 		Footprint: __ xx xx
@@ -253,6 +260,7 @@ AFLD:
 		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Owner: nod
+		Icon: afld
 	Building:
 		Power: -30
 		Footprint: xxxx xxxx
@@ -291,6 +299,7 @@ WEAP:
 		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Owner: gdi
+		Icon: weap
 	Building:
 		Power: -30
 		Footprint: ___ xxx ===
@@ -327,6 +336,7 @@ HPAD:
 		BuildPaletteOrder: 60
 		Prerequisites: proc
 		Owner: gdi,nod
+		Icon: hpad
 	Building:
 		Power: -10
 		Footprint: xx xx
@@ -363,6 +373,7 @@ HQ:
 		BuildPaletteOrder: 70
 		Prerequisites: proc
 		Owner: gdi,nod
+		Icon: hq
 	Building:
 		Power: -40
 		Footprint: x_ xx
@@ -411,6 +422,7 @@ FIX:
 		BuildPaletteOrder: 80
 		Prerequisites: vehicleproduction
 		Owner: gdi,nod
+		Icon: fix
 	Building:
 		Power: -30
 		Footprint: _x_ xxx _x_
@@ -439,6 +451,7 @@ EYE:
 		BuildPaletteOrder: 100
 		Prerequisites: anyhq
 		Owner: gdi
+		Icon: eye
 	Building:
 		Power: -200
 		Footprint: x_ xx
@@ -484,6 +497,7 @@ TMPL:
 		BuildPaletteOrder: 100
 		Prerequisites: anyhq
 		Owner: nod
+		Icon: tmpl
 	Building:
 		Power: -150
 		Footprint: ___ xxx xxx
@@ -529,6 +543,7 @@ GUN:
 		BuildPaletteOrder: 45
 		Prerequisites: barracks
 		Owner: gdi,nod
+		Icon: gun
 	Building:
 		Power: -20
 	-GivesBuildableArea:
@@ -572,6 +587,7 @@ SAM:
 		BuildPaletteOrder: 50
 		Prerequisites: hand
 		Owner: nod
+		Icon: sam
 	Building:
 		Power: -20
 		Footprint: xx
@@ -612,6 +628,7 @@ OBLI:
 		BuildPaletteOrder: 60
 		Prerequisites: tmpl
 		Owner: nod
+		Icon: obli
 	Building:
 		Power: -150
 		Footprint: _ x
@@ -658,6 +675,7 @@ GTWR:
 		BuildPaletteOrder: 40
 		Prerequisites: barracks
 		Owner: gdi,nod
+		Icon: gtwr
 	Building:
 		Power: -10
 	-GivesBuildableArea:
@@ -697,6 +715,7 @@ ATWR:
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq
 		Owner: gdi
+		Icon: atwr
 	Building:
 		Power: -40
 		Footprint: _ x
@@ -746,6 +765,7 @@ SBAG:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Owner: gdi
+		Icon: sbag
 	Health:
 		HP: 100
 	Armor:
@@ -772,6 +792,7 @@ CYCL:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Owner: nod
+		Icon: cycl
 	Health:
 		HP: 100
 	Armor:
@@ -798,6 +819,7 @@ BRIK:
 		BuildPaletteOrder: 30
 		Prerequisites: vehicleproduction
 		Owner: gdi,nod
+		Icon: brik
 	Health:
 		HP: 250
 	Armor:

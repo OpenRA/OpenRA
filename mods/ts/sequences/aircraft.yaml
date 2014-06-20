@@ -1,37 +1,8 @@
-dpod:
-	icon: podsicon
-		Start: 0
-
-dshp:
-	icon: xxicon
-		Start: 0
-
-orca:
-	icon: orcaicon
-		Start: 0
-
-orcab:
-	icon: obmbicon
-		Start: 0
-
-orcatran:
-	icon: crryicon
-		Start: 0
-
-trnsport:
-	icon: otrnicon
-		Start: 0
-
-scrin:
-	icon: proicon
-		Start: 0
-
 apache:
-	icon: apchicon
-		Start: 0
 	rotor: lrotor
 		Start: 0
 		Length: 4
 	slow-rotor: lrotor
 		Start: 4
 		Length: 8
+

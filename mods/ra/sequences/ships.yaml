@@ -2,8 +2,6 @@ ss:
 	idle:
 		Start: 0
 		Facings: 16
-	icon: ssicon
-		Start: 0
 
 ca:
 	idle:
@@ -15,8 +13,6 @@ ca:
 	muzzle: gunfire2
 		Start: 0
 		Length: 5
-	icon: caicon
-		Start: 0
 
 dd:
 	idle:
@@ -25,8 +21,6 @@ dd:
 	turret: ssam
 		Start: 0
 		Facings: 32
-	icon: ddicon
-		Start: 0
 
 pt:
 	idle:
@@ -38,8 +32,6 @@ pt:
 	muzzle: gunfire2
 		Start: 0
 		Length: 5
-	icon: pticon
-		Start: 0
 
 lst:
 	idle:
@@ -50,12 +42,9 @@ lst:
 		Tick: 150
 	unload:
 		Start: 4
-	icon: lsticon
-		Start: 0
 
 msub:
 	idle:
 		Start: 0
 		Facings: 16
-	icon: msubicon
-		Start: 0
+

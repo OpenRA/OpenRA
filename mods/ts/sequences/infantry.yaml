@@ -72,8 +72,6 @@ e1:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: e1icon
-		Start: 0
 
 e2:
 	stand:
@@ -149,8 +147,6 @@ e2:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: e2icon
-		Start: 0
 
 e3:
 	stand:
@@ -226,8 +222,6 @@ e3:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: e4icon
-		Start: 0
 
 weedguy:
 	stand: weed
@@ -296,8 +290,6 @@ weedguy:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: weaticon
-		Start: 0
 
 medic:
 	stand:
@@ -376,8 +368,6 @@ medic:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: mediicon
-		Start: 0
 
 engineer:
 	stand:
@@ -442,8 +432,6 @@ engineer:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: engnicon
-		Start: 0
 
 umagon:
 	stand:
@@ -520,8 +508,6 @@ umagon:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: umagicon
-		Start: 0
 
 ghost: # TODO unused GUNFIRE.SHP
 	stand:
@@ -598,8 +584,6 @@ ghost: # TODO unused GUNFIRE.SHP
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: gosticon
-		Start: 0
 
 jumpjet: # TODO: ShadowStart:
 	stand:
@@ -674,8 +658,6 @@ jumpjet: # TODO: ShadowStart:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: jjeticon
-		Start: 0
 
 mhijack:
 	stand:
@@ -752,8 +734,6 @@ mhijack:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: mutcicon
-		Start: 0
 
 chamspy:
 	stand:
@@ -830,8 +810,6 @@ chamspy:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: chamicon
-		Start: 0
 
 cyc2:
 	stand:
@@ -907,8 +885,6 @@ cyc2:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: cybcicon
-		Start: 0
 
 cyborg:
 	stand:
@@ -985,8 +961,6 @@ cyborg:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: cybiicon
-		Start: 0
 
 mutant:
 	stand:
@@ -1063,8 +1037,6 @@ mutant:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: mutcicon
-		Start: 0
 
 mwmn:
 	stand:
@@ -1141,8 +1113,6 @@ mwmn:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: mutcicon
-		Start: 0
 
 mutant3: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-NW
 	stand:
@@ -1219,8 +1189,6 @@ mutant3: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: mutcicon
-		Start: 0
 
 tratos:
 	stand:
@@ -1297,8 +1265,6 @@ tratos:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: mutcicon
-		Start: 0
 
 oxanna:
 	stand:
@@ -1375,8 +1341,6 @@ oxanna:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: mutcicon
-		Start: 0
 
 slav:
 	stand:
@@ -1453,8 +1417,6 @@ slav:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: mutcicon
-		Start: 0
 
 doggie: # TODO: not sure what frame 88 and following is
 	stand:
@@ -1498,16 +1460,12 @@ doggie: # TODO: not sure what frame 88 and following is
 		Length: 10
 		ShadowStart: 228
 		Tick: 80
-	icon: xxicon
-		Start: 0
 
 vissml:
 	idle:
 		Start: 0
 		Length: 90
 		ShadowStart: 90
-	icon: xxicon
-		Start: 0
 
 vislrg:
 	idle:
@@ -1519,8 +1477,6 @@ vislrg:
 		Length: 5
 		Facings: 8
 		ShadowStart: 40
-	icon: xxicon
-		Start: 0
 
 civ1:
 	stand:
@@ -1575,8 +1531,6 @@ civ1:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: xxicon
-		Start: 0
 
 civ2:
 	stand:
@@ -1631,8 +1585,6 @@ civ2:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: xxicon
-		Start: 0
 
 civ3:
 	stand:
@@ -1687,5 +1639,4 @@ civ3:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: xxicon
-		Start: 0
+

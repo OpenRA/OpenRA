@@ -23,6 +23,7 @@ CONCRETEA:
 		Queue: Building
 		BuildPaletteOrder: 10
 		Owner: atreides, harkonnen, ordos
+		Icon: concretea
 	Valued:
 		Cost: 20
 
@@ -35,6 +36,7 @@ CONCRETEB:
 		Queue: Building
 		BuildPaletteOrder: 10
 		Owner: atreides, harkonnen, ordos
+		Icon: concreteb
 	Valued:
 		Cost: 50
 
@@ -445,6 +447,7 @@ WALL:
 	Inherits: ^WALL
 	Buildable:
 		Owner:
+		Icon: wall
 
 ^GUNTOWER:
 	Inherits: ^Building
@@ -717,6 +720,7 @@ PALACEC:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Owner: None
+		Icon: palacec
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2

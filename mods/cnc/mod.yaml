@@ -51,6 +51,7 @@ Rules:
 	mods/cnc/rules/husks.yaml
 
 Sequences:
+	mods/cnc/sequences/icon.yaml
 	mods/cnc/sequences/structures.yaml
 	mods/cnc/sequences/vehicles.yaml
 	mods/cnc/sequences/infantry.yaml

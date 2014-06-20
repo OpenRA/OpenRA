@@ -49,6 +49,7 @@ HARVESTER:
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 10
 		Hotkey: h
+		Icon: harvester
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -99,6 +100,7 @@ HARVESTER.starport:
 	Buildable:
 		Prerequisites: Starport
 		Queue: Starport
+		Icon: harvester
 	Valued:
 		Cost: 1500
 
@@ -109,6 +111,7 @@ TRIKE:
 		BuildPaletteOrder: 10
 		Hotkey: w
 		Owner: atreides, harkonnen
+		Icon: trike
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -142,6 +145,7 @@ TRIKE.starport:
 	Buildable:
 		Owner: atreides, harkonnen, ordos
 		Queue: Starport
+		Icon: trike
 	Valued:
 		Cost: 315
 	RenderUnit:
@@ -155,6 +159,7 @@ QUAD:
 		Owner: atreides, ordos, harkonnen
 		BuildPaletteOrder: 20
 		Hotkey: q
+		Icon: quad
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -185,6 +190,7 @@ QUAD.starport:
 	Buildable:
 		Prerequisites: Starport
 		Queue: Starport
+		Icon: quad
 	Valued:
 		Cost: 500
 	RenderUnit:
@@ -246,6 +252,7 @@ SIEGETANK:
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 50
 		Hotkey: t
+		Icon: siegetank
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -299,6 +306,7 @@ SIEGETANK.starport:
 	Inherits: SIEGETANK
 	Buildable:
 		Queue: Starport
+		Icon: siegetank
 	Valued:
 		Cost: 1075
 
@@ -315,6 +323,7 @@ MISSILETANK:
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 60
 		Hotkey: r
+		Icon: missiletank
 	Mobile:
 		Speed: 64
 		ROT: 5
@@ -354,6 +363,7 @@ MISSILETANK.starport:
 		Prerequisites: Hitech
 		Queue: Starport
 		Owner: atreides, harkonnen, ordos
+		Icon: missiletank
 	Valued:
 		Cost: 1250
 

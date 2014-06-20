@@ -24,8 +24,6 @@ fact:
 	bib: bib2
 		Start: 0
 		Length: *
-	icon: facticnh
-		Start: 0
 
 nuke:
 	idle:
@@ -46,8 +44,6 @@ nuke:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: nukeicnh
-		Start: 0
 
 proc:
 	idle:
@@ -75,8 +71,6 @@ proc:
 	bib: bib2
 		Start: 0
 		Length: *
-	icon: procicnh
-		Start: 0
 
 silo:
 	idle:
@@ -99,8 +93,6 @@ silo:
 		Start: 0
 		Length: *
 		Offset: 0,1
-	icon: siloicnh
-		Start: 0
 
 hand:
 	idle:
@@ -116,8 +108,6 @@ hand:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: handicnh
-		Start: 0
 
 pyle:
 	idle:
@@ -138,8 +128,6 @@ pyle:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: pyleicnh
-		Start: 0
 
 weap:
 	idle:
@@ -165,8 +153,6 @@ weap:
 	bib: bib2
 		Start: 0
 		Length: *
-	icon: weapicnh
-		Start: 0
 
 afld:
 	idle:
@@ -197,8 +183,6 @@ afld:
 	bib: bib1
 		Start: 0
 		Length: *
-	icon: afldicnh
-		Start: 0
 
 hq:
 	idle:
@@ -218,8 +202,6 @@ hq:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: hqicnh
-		Start: 0
 
 nuk2:
 	idle:
@@ -239,8 +221,6 @@ nuk2:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: nuk2icnh
-		Start: 0
 
 hpad:
 	idle:
@@ -266,8 +246,6 @@ hpad:
 		Start: 0
 		Length: *
 		Tick: 80
-	icon: hpadicnh
-		Start: 0
 
 fix:
 	idle:
@@ -295,8 +273,6 @@ fix:
 		Start: 0
 		Length: *
 		Offset: 0,-9
-	icon: fixicnh
-		Start: 0
 
 eye:
 	idle:
@@ -316,8 +292,6 @@ eye:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: eyeicnh
-		Start: 0
 
 tmpl:
 	idle:
@@ -339,8 +313,6 @@ tmpl:
 	bib: bib2
 		Start: 0
 		Length: *
-	icon: tmplicnh
-		Start: 0
 
 obli:
 	idle:
@@ -365,8 +337,6 @@ obli:
 		Start: 0
 		Length: *
 		Offset: -1,-3
-	icon: obliicnh
-		Start: 0
 
 brik:
 	idle:
@@ -381,8 +351,6 @@ brik:
 	critical-idle:
 		Start: 48
 		Length: 16
-	icon: brikicnh
-		Start: 0
 
 sbag:
 	idle:
@@ -391,8 +359,6 @@ sbag:
 	damaged-idle:
 		Start: 16
 		Length: 16
-	icon: sbagicnh
-		Start: 0
 
 cycl:
 	idle:
@@ -404,8 +370,6 @@ cycl:
 	critical-idle:
 		Start: 32
 		Length: 16
-	icon: cyclicnh
-		Start: 0
 
 barb:
 	idle:
@@ -447,8 +411,6 @@ gun:
 		Start: 0
 		Length: *
 		Offset: -1,-1
-	icon: gunicnh
-		Start: 0
 
 sam:
 	closed-idle:
@@ -487,8 +449,6 @@ sam:
 		Start: 0
 		Length: 18
 		Facings: 8
-	icon: samicnh
-		Start: 0
 
 gtwr:
 	idle:
@@ -509,8 +469,6 @@ gtwr:
 		Start: 0
 		Length: *
 		Offset: 0,-2
-	icon: gtwricnh
-		Start: 0
 
 atwr:
 	idle:
@@ -535,8 +493,6 @@ atwr:
 		Start: 0
 		Length: *
 		Offset: -3,0
-	icon: atwricnh
-		Start: 0
 
 hosp:
 	idle:
@@ -596,8 +552,6 @@ miss:
 		Start: 0
 		Length: *
 		Offset: 0,1
-	icon: missicnh
-		Start: 0
 
 miss.husk:
 	idle: miss
@@ -606,3 +560,4 @@ miss.husk:
 		Start: 0
 		Length: *
 		Offset: 0,1
+

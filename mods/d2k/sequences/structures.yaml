@@ -1,13 +1,3 @@
-concretea:
-	icon: DATA
-		Start:4050
-		Offset: -30,-24
-
-concreteb:
-	icon: DATA
-		Start:4053
-		Offset: -30,-24
-
 walla:
 	idle: DATA
 		Frames: 2527, 2530, 2528, 2538, 2531, 2532, 2542, 2535, 2529, 2539, 2533, 2534, 2540, 2536, 2537, 2541
@@ -17,9 +7,6 @@ walla:
 		Frames: 2543, 2546, 2544, 2554, 2547, 2548, 2558, 2551, 2545, 2555, 2549, 2550, 2556, 2552, 2553, 2557
 		Length: 16
 		Offset: -16,16
-	icon: DATA
-		Start: 4063
-		Offset: -30,-24
 
 wallh:
 	idle: DATA
@@ -30,9 +17,6 @@ wallh:
 		Frames: 2703, 2706, 2704, 2714, 2707, 2708, 2718, 2711, 2705, 2715, 2709, 2710, 2716, 2712, 2713, 2717
 		Length: 16
 		Offset: -16,16
-	icon: DATA
-		Start: 4064
-		Offset: -30,-24
 
 wallo:
 	idle: DATA
@@ -43,9 +27,6 @@ wallo:
 		Frames: 2863, 2866, 2864, 2874, 2867, 2868, 2878, 2871, 2865, 2875, 2869, 2870, 2876, 2872, 2873, 2877
 		Length: 16
 		Offset: -16,16
-	icon: DATA
-		Start: 4065
-		Offset: -30,-24
 
 guntowera:
 	idle: DATA
@@ -66,9 +47,6 @@ guntowera:
 		Length: 2
 		Offset: 0,-12
 		BlendMode: Additive
-	icon: DATA
-		Start: 4069
-		Offset: -30,-24
 
 guntowerh:
 	idle: DATA
@@ -89,9 +67,6 @@ guntowerh:
 		Length: 2
 		Offset: 0,-12
 		BlendMode: Additive
-	icon: DATA
-		Frames: 4070
-		Offset: -30,-24
 
 guntowero:
 	idle: DATA
@@ -112,9 +87,6 @@ guntowero:
 		Length: 2
 		Offset: 0,-12
 		BlendMode: Additive
-	icon: DATA
-		Start: 4071
-		Offset: -30,-24
 
 rockettowera:
 	idle: DATA
@@ -129,9 +101,6 @@ rockettowera:
 		Start: 2637
 		Facings: -32
 		Offset: -24,16
-	icon: DATA
-		Start: 4075
-		Offset: -30,-24
 
 rockettowerh:
 	idle: DATA
@@ -146,9 +115,6 @@ rockettowerh:
 		Start: 2797
 		Facings: -32
 		Offset: -24,16
-	icon: DATA
-		Start: 4076
-		Offset: -30,-24
 
 rockettowero:
 	idle: DATA
@@ -163,9 +129,6 @@ rockettowero:
 		Start: 2957
 		Facings: -32
 		Offset: -24,16
-	icon: DATA
-		Start: 4077
-		Offset: -30,-24
 
 conyarda:
 	idle: DATA
@@ -201,9 +164,6 @@ conyarda:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4046
-		Offset: -30,-24
 
 repaira:
 	make: DATA
@@ -236,9 +196,6 @@ repaira:
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
-	icon: DATA
-		Start: 4096
-		Offset: -30,-24
 
 repairh:
 	make: DATA
@@ -271,9 +228,6 @@ repairh:
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
-	icon: DATA
-		Start: 4097
-		Offset: -30,-24
 
 repairo:
 	make: DATA
@@ -306,9 +260,6 @@ repairo:
 		Offset: -48,48
 		ZOffset: -1c511
 		BlendMode: Additive
-	icon: DATA
-		Start: 4098
-		Offset: -30,-24
 
 starporta:
 	idle: DATA
@@ -350,9 +301,6 @@ starporta:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4092
-		Offset: -30,-24
 
 pwra:
 	idle: DATA
@@ -388,9 +336,6 @@ pwra:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
-		Start: 4056
-		Offset: -30,-24
 
 barra:
 	idle: DATA
@@ -416,9 +361,6 @@ barra:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
-		Start: 4059
-		Offset: -30,-24
 
 radara:
 	idle: DATA
@@ -448,9 +390,6 @@ radara:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4072
-		Offset: -30,-24
 
 refa:
 	idle: DATA
@@ -483,9 +422,6 @@ refa:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4066
-		Offset: -30,-24
 	smoke: DATA
 		Start: 3885
 		Length: 14
@@ -511,9 +447,6 @@ siloa:
 		Length: 7
 		Offset: -16,16
 		Tick: 200
-	icon: DATA
-		Start: 4084
-		Offset: -30,-24
 
 hightecha:
 	idle: DATA
@@ -545,9 +478,6 @@ hightecha:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4078
-		Offset: -30,-24
 
 researcha:
 	idle: DATA
@@ -578,9 +508,6 @@ researcha:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4099
-		Offset: -30,-24
 
 researchh:
 	idle: DATA
@@ -611,9 +538,6 @@ researchh:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4100
-		Offset: -30,-24
 
 researcho:
 	idle: DATA
@@ -644,9 +568,6 @@ researcho:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4101
-		Offset: -30,-24
 
 palacea:
 	idle: DATA
@@ -672,9 +593,6 @@ palacea:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4102
-		Offset: -30,-24
 
 lighta:
 	idle: DATA
@@ -721,9 +639,6 @@ lighta:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4081
-		Offset: -30,-24
 
 heavya:
 	idle: DATA
@@ -770,9 +685,6 @@ heavya:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4087
-		Offset: -30,-24
 
 conyardh:
 	idle: DATA
@@ -808,9 +720,6 @@ conyardh:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4047
-		Offset: -30,-24
 
 starporth:
 	idle: DATA
@@ -852,9 +761,6 @@ starporth:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4093
-		Offset: -30,-24
 
 pwrh:
 	idle: DATA
@@ -890,9 +796,6 @@ pwrh:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
-		Start: 4057
-		Offset: -30,-24
 
 barrh:
 	idle: DATA
@@ -918,9 +821,6 @@ barrh:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
-		Start: 4060
-		Offset: -30,-24
 
 radarh:
 	idle: DATA
@@ -950,9 +850,6 @@ radarh:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4073
-		Offset: -30,-24
 
 refh:
 	idle: DATA
@@ -985,9 +882,6 @@ refh:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4067
-		Offset: -30,-24
 	smoke: DATA
 		Start: 3885
 		Length: 14
@@ -1013,9 +907,6 @@ siloh:
 		Length: 7
 		Offset: -16,16
 		Tick: 200
-	icon: DATA
-		Start: 4085
-		Offset: -30,-24
 
 hightechh:
 	idle: DATA
@@ -1047,9 +938,6 @@ hightechh:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4079
-		Offset: -30,-24
 
 palaceh:
 	idle: DATA
@@ -1067,10 +955,6 @@ palaceh:
 	damaged-idle: DATA
 		Start: 2837
 		Offset: -48,64
-#	active: DATA # TODO: overlay
-#		Start: 4820
-#		Length: 20
-#		Offset: -48,64
 	damaged-active: DATA
 		Start: 4820
 		Length: 20
@@ -1083,9 +967,6 @@ palaceh:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4103
-		Offset: -30,-24
 
 lighth:
 	idle: DATA
@@ -1132,9 +1013,6 @@ lighth:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4082
-		Offset: -30,-24
 
 heavyh:
 	idle: DATA
@@ -1181,9 +1059,6 @@ heavyh:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4088
-		Offset: -30,-24
 
 conyardo:
 	idle: DATA
@@ -1219,9 +1094,6 @@ conyardo:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4048
-		Offset: -30,-24
 
 starporto:
 	idle: DATA
@@ -1263,9 +1135,6 @@ starporto:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4094
-		Offset: -30,-24
 
 pwro:
 	idle: DATA
@@ -1302,9 +1171,6 @@ pwro:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
-		Start: 4058
-		Offset: -30,-24
 
 barro:
 	idle: DATA
@@ -1330,9 +1196,6 @@ barro:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
-	icon: DATA
-		Start: 4061
-		Offset: -30,-24
 
 radaro:
 	idle: DATA
@@ -1362,9 +1225,6 @@ radaro:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4074
-		Offset: -30,-24
 
 refo:
 	idle: DATA
@@ -1397,9 +1257,6 @@ refo:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4068
-		Offset: -30,-24
 	smoke: DATA
 		Start: 3885
 		Length: 14
@@ -1425,9 +1282,6 @@ siloo:
 		Length: 7
 		Offset: -16,16
 		Tick: 200
-	icon: DATA
-		Start: 4086
-		Offset: -30,-24
 
 hightecho:
 	idle: DATA
@@ -1459,9 +1313,6 @@ hightecho:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4080
-		Offset: -30,-24
 
 palaceo:
 	idle: DATA
@@ -1487,9 +1338,6 @@ palaceo:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4104
-		Offset: -30,-24
 
 lighto:
 	idle: DATA
@@ -1536,9 +1384,6 @@ lighto:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4083
-		Offset: -30,-24
 
 heavyo:
 	idle: DATA
@@ -1585,9 +1430,6 @@ heavyo:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4089
-		Offset: -30,-24
 
 palacec: # TODO: unused
 	idle: DATA
@@ -1604,8 +1446,6 @@ palacec: # TODO: unused
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: palacecicon
-		Start: 0
 	make: DATA
 		Start: 4413
 		Length: 11
@@ -1656,9 +1496,6 @@ starportc: # TODO: unused
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA # TODO: blank
-		Start: 4020
-		Offset: -30,-24
 
 heavyc: # TODO: unused
 	idle: DATA
@@ -1705,9 +1542,6 @@ heavyc: # TODO: unused
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA # TODO: blank
-		Start: 4020
-		Offset: -30,-24
 
 conyardc: # TODO: unused
 	idle: DATA
@@ -1743,9 +1577,6 @@ conyardc: # TODO: unused
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA
-		Start: 4049
-		Offset: -30,-24
 
 plates: # TODO: unused
 	idle: DATA
@@ -1757,3 +1588,4 @@ plates: # TODO: unused
 	6-plates-icon: DATA
 		Start: 4053
 		Offset: -30,-24
+

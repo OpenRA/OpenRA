@@ -5,26 +5,31 @@ PWRH:
 	Inherits: ^POWER
 	Buildable:
 		Owner: harkonnen
+		Icon: pwrh
 
 WALLH:
 	Inherits: ^WALL
 	Buildable:
 		Owner: harkonnen
+		Icon: wallh
 
 GUNTOWERH:
 	Inherits: ^GUNTOWER
 	Buildable:
 		Owner: harkonnen
+		Icon: guntowerh
 
 ROCKETTOWERH:
 	Inherits: ^ROCKETTOWER
 	Buildable:
 		Owner: harkonnen
+		Icon: rockettowerh
 
 REFH:
 	Inherits: ^REFINERY
 	Buildable:
 		Owner: harkonnen
+		Icon: refh
 	RenderBuildingWarFactory:
 		Image: REFH
 
@@ -32,27 +37,32 @@ BARRH:
 	Inherits: ^BARRACKS
 	Buildable:
 		Owner: harkonnen
+		Icon: barrh
 	-RepairsUnits:
 
 REPAIRH:
 	Inherits: ^REPAIR
 	Buildable:
 		Owner: harkonnen
+		Icon: repairh
 
 RESEARCHH:
 	Inherits: ^RESEARCH
 	Buildable:
 		Owner: harkonnen
+		Icon: researchh
 
 SILOH:
 	Inherits: ^SILO
 	Buildable:
 		Owner: harkonnen
+		Icon: siloh
 
 LIGHTH:
 	Inherits: ^LIGHT
 	Buildable:
 		Owner: harkonnen
+		Icon: lighth
 	RenderBuildingWarFactory:
 		Image: LIGHTH
 
@@ -60,6 +70,7 @@ HEAVYH:
 	Inherits: ^HEAVY
 	Buildable:
 		Owner: harkonnen
+		Icon: heavyh
 	RenderBuildingWarFactory:
 		Image: HEAVYH
 
@@ -67,21 +78,25 @@ RADARH:
 	Inherits: ^RADAR
 	Buildable:
 		Owner: harkonnen
+		Icon: radarh
 
 STARPORTH:
 	Inherits: ^STARPORT
 	Buildable:
 		Owner: harkonnen
+		Icon: starporth
 
 HIGHTECHH:
 	Inherits: ^HIGHTECH
 	Buildable:
 		Owner: harkonnen
+		Icon: hightechh
 
 PALACEH:
 	Inherits: ^PALACE
 	Buildable:
 		Owner: harkonnen
+		Icon: palaceh
 	Tooltip:
 		Description: Provides elite infantry\n  Special Ability: Death Hand Missile
 	NukePower:
@@ -109,6 +124,7 @@ MCVH:
 	Inherits: ^MCV
 	Buildable:
 		Owner: harkonnen
+		Icon: mcvh
 	Transforms:
 		Facing: 16
 		IntoActor: conyardh
@@ -121,6 +137,7 @@ MCVH.starport:
 	Inherits: MCVH
 	Buildable:
 		Queue: Starport
+		Icon: mcvh
 	Valued:
 		Cost: 2500
 
@@ -138,6 +155,7 @@ COMBATH:
 	Inherits: ^COMBAT
 	Buildable:
 		Owner: harkonnen
+		Icon: combath
 	Mobile:
 		Speed: 53
 		ROT: 4
@@ -162,6 +180,7 @@ COMBATH.starport:
 	Inherits: COMBATH
 	Buildable:
 		Queue: Starport
+		Icon: combath
 	Valued:
 		Cost: 875
 
@@ -173,6 +192,7 @@ DEVAST:
 		Prerequisites: Research
 		Owner: harkonnen
 		Hotkey: d
+		Icon: devast
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -221,6 +241,7 @@ SARDAUKAR:
 		Prerequisites: palaceh
 		Owner: harkonnen
 		Hotkey: d
+		Icon: sardaukar
 	Valued:
 		Cost: 400
 	Tooltip:

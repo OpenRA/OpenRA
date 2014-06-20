@@ -6,6 +6,7 @@ SS:
 		Prerequisites: spen
 		Owner: soviet
 		Hotkey: u
+		Icon: ss
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -59,6 +60,7 @@ MSUB:
 		Prerequisites: spen,stek
 		Owner: soviet
 		Hotkey: m
+		Icon: msub
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -112,6 +114,7 @@ DD:
 		Prerequisites: syrd,dome
 		Owner: allies
 		Hotkey: r
+		Icon: dd
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -162,6 +165,7 @@ CA:
 		Prerequisites: syrd,atek
 		Owner: allies
 		Hotkey: c
+		Icon: ca
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -223,6 +227,7 @@ LST:
 		BuildPaletteOrder: 30
 		Owner: allies,soviet
 		Hotkey: t
+		Icon: lst
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -257,6 +262,7 @@ PT:
 		Prerequisites: syrd
 		Owner: allies
 		Hotkey: b
+		Icon: pt
 	Valued:
 		Cost: 500
 	Tooltip:

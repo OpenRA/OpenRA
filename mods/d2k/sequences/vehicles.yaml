@@ -2,9 +2,6 @@ dmcv:
 	idle: DATA
 		Start: 1795
 		Facings: -32
-	icon: DATA
-		Start: 4023
-		Offset: -30,-24
 
 harvester:
 	idle: DATA
@@ -22,9 +19,6 @@ harvester:
 	dock-loop: DATA
 		Start: 3380
 		Length: 1
-	icon: DATA
-		Start: 4019
-		Offset: -30,-24
 
 trike:
 	idle: DATA
@@ -38,9 +32,6 @@ trike:
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
-		Start: 4041
-		Offset: -30,-24
 
 quad:
 	idle: DATA
@@ -49,9 +40,6 @@ quad:
 	unload: DATA
 		Start: 1667
 		Facings: -32
-	icon: DATA
-		Start: 4018
-		Offset: -30,-24
 
 siegetank:
 	idle: DATA
@@ -64,25 +52,16 @@ siegetank:
 		Start: 3418
 		Length: 3
 		BlendMode: Additive
-	icon: DATA
-		Start: 4026
-		Offset: -30,-24
 
 missiletank:
 	idle: DATA
 		Start: 1603
 		Facings: -32
-	icon: DATA
-		Start: 4024
-		Offset: -30,-24
 
 sonictank:
 	idle: DATA
 		Start: 1827
 		Facings: -32
-	icon: DATA
-		Start: 4027
-		Offset: -30,-24
 
 combata:
 	idle: DATA
@@ -96,9 +75,6 @@ combata:
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
-		Start: 4020
-		Offset: -30,-24
 
 combath:
 	idle: DATA
@@ -112,9 +88,6 @@ combath:
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
-		Start: 4021
-		Offset: -30,-24
 
 devast:
 	idle: DATA
@@ -125,9 +98,6 @@ devast:
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
-		Start: 4028
-		Offset: -30,-24
 
 combato:
 	idle: DATA
@@ -141,9 +111,6 @@ combato:
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
-		Start: 4022
-		Offset: -30,-24
 
 raider:
 	idle: DATA
@@ -157,9 +124,6 @@ raider:
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: DATA
-		Start: 4017
-		Offset: -30,-24
 
 stealthraider:
 	idle: DATA
@@ -173,13 +137,9 @@ stealthraider:
 		Facings: -32
 		Length: 2
 		BlendMode: Additive
-	icon: raidersicon
-		Start: 0 # 4282 in 1.06 DATA.R8
 
 deviatortank:
 	idle: DATA
 		Start: 2389
 		Facings: -32
-	icon: DATA
-		Start: 4025
-		Offset: -30,-24
+

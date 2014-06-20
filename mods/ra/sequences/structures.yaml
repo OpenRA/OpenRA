@@ -26,8 +26,6 @@ hosp:
 		Start: 0
 		Length: *
 		Offset: 0,1
-	icon: hospicon
-		Start: 0
 
 bio:
 	idle:
@@ -70,10 +68,6 @@ fact:
 	bib: bib2
 		Start: 0
 		Length: *
-	icon: facticon
-		Start: 0
-	fake-icon: facficon
-		Start: 0
 
 proc:
 	idle:
@@ -97,8 +91,6 @@ proc:
 	bib: bib2
 		Start: 0
 		Length: *
-	icon: procicon
-		Start: 0
 
 silo:
 	idle: silo2
@@ -116,8 +108,6 @@ silo:
 	bib: mbSILO
 		Start: 0
 		Length: *
-	icon: siloicon
-		Start: 0
 
 powr:
 	idle:
@@ -132,8 +122,6 @@ powr:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: powricon
-		Start: 0
 
 apwr:
 	idle:
@@ -148,8 +136,6 @@ apwr:
 	bib: bib2
 		Start: 0
 		Length: *
-	icon: apwricon
-		Start: 0
 
 barr:
 	idle:
@@ -164,8 +150,6 @@ barr:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: barricon
-		Start: 0
 
 tent:
 	idle:
@@ -180,8 +164,6 @@ tent:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: tenticon
-		Start: 0
 
 kenn:
 	idle:
@@ -191,8 +173,6 @@ kenn:
 	make: kennmake
 		Start: 0
 		Length: *
-	icon: kennicon
-		Start: 0
 
 dome:
 	idle:
@@ -205,10 +185,6 @@ dome:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: domeicon
-		Start: 0
-	fake-icon: domficon
-		Start: 0
 
 atek:
 	idle:
@@ -225,8 +201,6 @@ atek:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: atekicon
-		Start: 0
 
 stek:
 	idle:
@@ -239,8 +213,6 @@ stek:
 	bib: bib2
 		Start: 0
 		Length: *
-	icon: stekicon
-		Start: 0
 
 weap:
 	idle:
@@ -263,10 +235,6 @@ weap:
 	bib: bib2
 		Start: 0
 		Length: *
-	icon: weapicon
-		Start: 0
-	fake-icon: weaficon
-		Start: 0
 
 hpad:
 	idle:
@@ -289,8 +257,6 @@ hpad:
 	bib: bib3
 		Start: 0
 		Length: *
-	icon: hpadicon
-		Start: 0
 
 afld:
 	idle: afldidle
@@ -316,8 +282,6 @@ afld:
 	make: afldmake
 		Start: 0
 		Length: *
-	icon: afldicon
-		Start: 0
 
 spen:
 	idle:
@@ -327,10 +291,6 @@ spen:
 	make: spenmake
 		Start: 0
 		Length: *
-	icon: spenicon
-		Start: 0
-	fake-icon: speficon
-		Start: 0
 
 syrd:
 	idle:
@@ -340,10 +300,6 @@ syrd:
 	make: syrdmake
 		Start: 0
 		Length: *
-	icon: syrdicon
-		Start: 0
-	fake-icon: syrficon
-		Start: 0
 
 fix:
 	idle:
@@ -373,8 +329,6 @@ fix:
 		Length: *
 		ZOffset: -1c511
 		Offset: 0,-4
-	icon: fixicon
-		Start: 0
 
 gun:
 	idle:
@@ -399,8 +353,6 @@ gun:
 		Start: 0
 		Length: *
 		Offset: -1,-1
-	icon: gunicon
-		Start: 0
 
 agun:
 	idle:
@@ -430,8 +382,6 @@ agun:
 	bib: mbAGUN
 		Start: 0
 		Length: *
-	icon: agunicon
-		Start: 0
 
 sam:
 	idle: sam2
@@ -455,8 +405,6 @@ sam:
 		Start: 0
 		Length: *
 		Offset: 0,1
-	icon: samicon
-		Start: 0
 
 ftur:
 	idle:
@@ -472,8 +420,6 @@ ftur:
 	bib: mbFTUR
 		Start: 0
 		Length: *
-	icon: fturicon
-		Start: 0
 
 tsla:
 	idle:
@@ -499,8 +445,6 @@ tsla:
 	bib: mbTSLA
 		Start: 0
 		Length: *
-	icon: tslaicon
-		Start: 0
 
 pbox:
 	idle:
@@ -518,8 +462,6 @@ pbox:
 		Start: 0
 		Length: *
 		Offset: 0,-2
-	icon: pboxicon
-		Start: 0
 
 hbox:
 	damaged-idle:
@@ -533,8 +475,6 @@ hbox:
 		Start: 0
 		Length: 6
 		Facings: 8
-	icon: hboxicon
-		Start: 0
 
 gap:
 	idle:
@@ -552,8 +492,6 @@ gap:
 	bib: mbGAP
 		Start: 0
 		Length: *
-	icon: gapicon
-		Start: 0
 
 iron:
 	idle:
@@ -578,8 +516,6 @@ iron:
 		Start: 0
 		Length: *
 		Offset: 0,2
-	icon: ironicon
-		Start: 0
 
 pdox:
 	idle:
@@ -599,8 +535,6 @@ pdox:
 		Start: 0
 		Length: *
 		Offset: 0,-4
-	icon: pdoxicon
-		Start: 0
 
 mslo:
 	idle:
@@ -617,8 +551,6 @@ mslo:
 	damaged-active:
 		Start: 9
 		Length: 7
-	icon: msloicon2
-		Start: 0
 
 miss:
 	idle:
@@ -647,8 +579,6 @@ brik:
 	critical-idle:
 		Start: 48
 		Length: 16
-	icon: brikicon
-		Start: 0
 
 sbag:
 	idle:
@@ -657,8 +587,6 @@ sbag:
 	damaged-idle:
 		Start: 16
 		Length: 16
-	icon: sbagicon
-		Start: 0
 
 fenc:
 	idle:
@@ -667,8 +595,6 @@ fenc:
 	damaged-idle:
 		Start: 16
 		Length: 16
-	icon: fencicon
-		Start: 0
 
 cycl:
 	idle:
@@ -680,3 +606,4 @@ cycl:
 	critical-idle:
 		Start: 32
 		Length: 16
+

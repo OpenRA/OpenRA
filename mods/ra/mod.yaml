@@ -49,6 +49,7 @@ Rules:
 	mods/ra/rules/ships.yaml
 
 Sequences:
+	mods/ra/sequences/icon.yaml
 	mods/ra/sequences/ships.yaml
 	mods/ra/sequences/vehicles.yaml
 	mods/ra/sequences/structures.yaml

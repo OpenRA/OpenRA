@@ -89,6 +89,7 @@ MISS:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Owner: None
+		Icon: miss
 	Valued:
 		Cost: 2000
 	Bib:

@@ -20,6 +20,8 @@ namespace OpenRA.Mods.RA
 		public readonly string Queue;
 		public readonly int BuildLimit = 0;
 
+		public readonly string Icon = "unknown";
+
 		// TODO: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;
 		public readonly Hotkey Hotkey = Hotkey.Invalid;

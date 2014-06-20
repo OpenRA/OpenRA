@@ -234,8 +234,8 @@ namespace OpenRA.Mods.RA.Widgets
 				{
 					var rect = new RectangleF(origin.X + x * IconWidth, origin.Y + IconHeight * y, IconWidth, IconHeight);
 					var drawPos = new float2(rect.Location);
-					var icon = new Animation(world, RenderSimple.GetImage(item));
-					icon.Play(item.Traits.Get<TooltipInfo>().Icon);
+					var icon = new Animation(world, item.Traits.Get<TooltipInfo>().Icon);
+					icon.Play(item.Traits.Get<BuildableInfo>().Icon);
 					WidgetUtils.DrawSHPCentered(icon.Image, drawPos + iconOffset, worldRenderer);
 
 					var firstOfThis = queue.AllQueued().FirstOrDefault(a => a.Item == item.Name);

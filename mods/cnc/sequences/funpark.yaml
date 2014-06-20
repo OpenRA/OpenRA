@@ -31,8 +31,6 @@ steg:
 	die6:
 		Start: 176
 		Length: 22
-	icon: stegicnh
-		Start: 0
 
 trex:
 	stand:
@@ -67,8 +65,6 @@ trex:
 	die6:
 		Start: 144
 		Length: 40
-	icon: trexicnh
-		Start: 0
 
 tric:
 	stand:
@@ -103,8 +99,6 @@ tric:
 	die6:
 		Start: 176
 		Length: 20
-	icon: tricicnh
-		Start: 0
 
 rapt:
 	stand:
@@ -139,5 +133,4 @@ rapt:
 	die6:
 		Start: 144
 		Length: 40
-	icon: rapticnh
-		Start: 0
+

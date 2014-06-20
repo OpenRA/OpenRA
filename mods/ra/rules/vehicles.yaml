@@ -6,6 +6,7 @@ V2RL:
 		Prerequisites: dome
 		Owner: soviet
 		Hotkey: v
+		Icon: v2rl
 	Valued:
 		Cost: 900
 	Tooltip:
@@ -35,6 +36,7 @@ V2RL:
 		BuildPaletteOrder: 40
 		Owner: allies
 		Hotkey: l
+		Icon: 1tnk
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -75,6 +77,7 @@ V2RL:
 		Prerequisites: fix
 		Owner: allies
 		Hotkey: m
+		Icon: 2tnk
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -118,6 +121,7 @@ V2RL:
 		Prerequisites: fix
 		Owner: soviet
 		Hotkey: h
+		Icon: 3tnk
 	Valued:
 		Cost: 1150
 	Tooltip:
@@ -161,6 +165,7 @@ V2RL:
 		Prerequisites: fix,stek
 		Owner: soviet
 		Hotkey: m
+		Icon: 4tnk
 	Valued:
 		Cost: 2000
 	CustomBuildTimeValue:
@@ -218,6 +223,7 @@ ARTY:
 		Prerequisites: dome
 		Owner: allies
 		Hotkey: r
+		Icon: arty
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -252,6 +258,7 @@ HARV:
 		Prerequisites: proc
 		Owner: allies,soviet
 		Hotkey: e
+		Icon: harv
 	Valued:
 		Cost: 1100
 	Tooltip:
@@ -296,6 +303,7 @@ MCV:
 		Prerequisites: fix
 		Owner: allies,soviet
 		Hotkey: b
+		Icon: mcv
 	CustomBuildTimeValue:
 		Value: 2000
 	Valued:
@@ -337,6 +345,7 @@ JEEP:
 		BuildPaletteOrder: 30
 		Owner: allies
 		Hotkey: n
+		Icon: jeep
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -377,6 +386,7 @@ APC:
 		BuildPaletteOrder: 50
 		Owner: soviet
 		Hotkey: c
+		Icon: apc
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -414,6 +424,7 @@ MNLY.AP:
 		Prerequisites: fix
 		Owner: soviet
 		Hotkey: i
+		Icon: mnly
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -449,6 +460,7 @@ MNLY.AT:
 		Prerequisites: fix
 		Owner: allies
 		Hotkey: i
+		Icon: mnly
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -484,6 +496,7 @@ TRUK:
 		Prerequisites: weap
 		Owner: allies, soviet
 		Hotkey: u
+		Icon: truk
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -512,6 +525,7 @@ MGG:
 		Prerequisites: atek
 		Owner: allies
 		Hotkey: y
+		Icon: mgg
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -551,6 +565,7 @@ MRJ:
 		Prerequisites: atek
 		Owner: allies
 		Hotkey: k
+		Icon: mrj
 	Health:
 		HP: 220
 	Armor:
@@ -583,6 +598,7 @@ TTNK:
 		Prerequisites: tsla,stek
 		Owner: soviet
 		Hotkey: t
+		Icon: ttnk
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -618,6 +634,7 @@ FTRK:
 		BuildPaletteOrder: 30
 		Owner: soviet
 		Hotkey: k
+		Icon: ftrk
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -659,6 +676,7 @@ DTRK:
 		Prerequisites: stek
 		Owner: soviet
 		Hotkey: o
+		Icon: dtrk
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -689,6 +707,7 @@ CTNK:
 		Prerequisites: atek,pdox
 		Owner: allies
 		Hotkey: j
+		Icon: ctnk
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -729,6 +748,7 @@ QTNK:
 		Prerequisites: fix,stek
 		Owner: soviet
 		Hotkey: q
+		Icon: qtnk
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -761,6 +781,7 @@ STNK:
 		Prerequisites: atek
 		Owner: allies
 		Hotkey: p
+		Icon: stnk
 	Valued:
 		Cost: 1350
 	Tooltip:

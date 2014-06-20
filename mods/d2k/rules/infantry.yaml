@@ -5,6 +5,7 @@ RIFLE:
 		BuildPaletteOrder: 10
 		Owner: atreides,harkonnen,ordos
 		Hotkey: r
+		Icon: rifle
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -32,6 +33,7 @@ ENGINEER:
 		BuildPaletteOrder: 50
 		Owner: atreides,harkonnen,ordos
 		Hotkey: e
+		Icon: engineer
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -61,6 +63,7 @@ BAZOOKA:
 		BuildPaletteOrder: 20
 		Owner: atreides,harkonnen,ordos
 		Hotkey: t
+		Icon: bazooka
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -89,6 +92,7 @@ MEDIC:
 		Owner: atreides, ordos
 		Prerequisites: Research
 		Hotkey: m
+		Icon: medic
 	Valued:
 		Cost: 500
 	Tooltip:

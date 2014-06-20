@@ -8,8 +8,6 @@ lst:
 	roof: lstnew2
 		Start: 0
 		Facings: 32
-	icon: lsticnh
-		Start: 0
 
 boat:
 	left:
@@ -38,5 +36,4 @@ boat:
 		Start: 0
 		Length: 6
 		Offset: -1,2
-	icon: boaticnh
-		Start: 0
+

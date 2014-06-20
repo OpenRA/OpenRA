@@ -246,6 +246,16 @@ namespace OpenRA.Utility
 						node.Value.Nodes.RemoveAll(n => n.Key == "TeslaInstantKills");
 				}
 
+				if (engineVersion < 20140524)
+				{
+					if (depth == 0)
+					{
+						if (!node.Value.Nodes.Where(n => n.Key == "Buildable").Any(n => n.Value.Nodes.Any(s => s.Key == "Icon" || node.Key.ToLower().Split('.').First().Contains("^"))))
+							node.Value.Nodes.Where(n => n.Key == "Buildable").Do(n => n.Value.Nodes.Add(new MiniYamlNode("Icon", new MiniYaml(node.Key.ToLower().Split('.').First()))));
+						node.Value.Nodes.Where(n => n.Key == "Tooltip" && n.Value.Nodes.Any(m => m.Key == "Icon")).Do(n => n.Value.Nodes.RemoveAll(m => m.Key == "Icon"));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -312,6 +322,51 @@ namespace OpenRA.Utility
 			}
 		}
 
+		static List<MiniYamlNode> UpgradeSequences(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		{
+			var icons = new List<MiniYamlNode>();
+
+			foreach (var node in nodes)
+			{
+				if (engineVersion < 20140524 && depth == 1)
+				{
+					if (node.Key == "icon")
+					{
+						var newNode = new MiniYamlNode(parent.Key, new MiniYaml(node.Value.Value));
+						newNode.Value.Nodes = newNode.Value.Nodes.Concat(node.Value.Nodes).ToList<MiniYamlNode>();
+						icons.Add(newNode);
+					}
+					else if (node.Key == "fake-icon")
+					{
+						var newNode = new MiniYamlNode(parent.Key.Substring(0, 3) + "f", new MiniYaml(node.Value.Value));
+						newNode.Value.Nodes = newNode.Value.Nodes.Concat(node.Value.Nodes).ToList<MiniYamlNode>();
+						icons.Add(newNode);
+					}
+				}
+
+				icons = icons.Concat(UpgradeSequences(engineVersion, ref node.Value.Nodes, node, depth + 1)).ToList();
+			}
+
+			if (depth == 0 && icons.Count != 0)
+			{
+				nodes.Do(n => n.Value.Nodes.RemoveAll(m => m.Key == "icon"));
+				nodes.Do(n => n.Value.Nodes.RemoveAll(m => m.Key == "fake-icon"));
+				nodes.RemoveAll(n => n.Value.Nodes.Count == 0);
+
+				if (nodes.Any(n => n.Key == "icon"))
+				{
+					var newNode = nodes.Find(n => n.Key == "icon");
+					newNode.Value.Nodes = newNode.Value.Nodes.Concat(icons).ToList<MiniYamlNode>();
+					return null;
+				}
+				var nn = new MiniYamlNode("icon", new MiniYaml(null));
+				nn.Value.Nodes = nn.Value.Nodes.Concat(icons).ToList<MiniYamlNode>();
+				nodes.Add(nn);
+				return null;
+			}
+			return icons;
+		}
+
 		static void UpgradeTileset(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var parentKey = parent != null ? parent.Key.Split('@').First() : null;
@@ -338,6 +393,7 @@ namespace OpenRA.Utility
 
 			Game.modData = new ModData(map.RequiresMod);
 			UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
+			UpgradeSequences(engineDate, ref map.SequenceDefinitions, null, 0);
 			UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
 			map.Save(args[1]);
 		}
@@ -350,6 +406,17 @@ namespace OpenRA.Utility
 
 			Game.modData = new ModData(mod);
 			Game.modData.MapCache.LoadMaps();
+
+			Console.WriteLine("Processing Sequences:");
+			foreach (var filename in Game.modData.Manifest.Sequences)
+			{
+				Console.WriteLine("\t" + filename);
+				var yaml = MiniYaml.FromFile(filename);
+				UpgradeSequences(engineDate, ref yaml, null, 0);
+
+				using (var file = new StreamWriter(filename))
+					file.WriteLine(yaml.WriteToString());
+			}
 
 			Console.WriteLine("Processing Rules:");
 			foreach (var filename in Game.modData.Manifest.Rules)
@@ -392,6 +459,7 @@ namespace OpenRA.Utility
 			foreach (var map in maps)
 			{
 				Console.WriteLine("\t" + map.Path);
+				UpgradeSequences(engineDate, ref map.SequenceDefinitions, null, 0);
 				UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
 				UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
 				map.Save(map.Path);

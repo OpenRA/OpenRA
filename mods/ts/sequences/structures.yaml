@@ -49,8 +49,6 @@ gacnst:
 	critical-idle-front: gtcnst_b
 		Start: 0
 		Length: 10
-	icon: facticon
-		Start: 0
 
 gapowr:
 	idle: gtpowr
@@ -90,8 +88,6 @@ gapowr:
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-	icon: powricon
-		Start: 0
 
 gapile:
 	idle: gtpile
@@ -129,8 +125,6 @@ gapile:
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-	icon: brrkicon
-		Start: 0
 
 gaweap:
 	idle: gtweap
@@ -189,8 +183,6 @@ gaweap:
 		Length: 20
 		Tick: 80
 		ShadowStart: 20
-	icon: weapicon
-		Start: 0
 # TODO: gtweap_1 & gtweapbb & gtweap_a & gtweap_b & gtweap_c are unused
 
 napowr:
@@ -219,8 +211,6 @@ napowr:
 		Start: 0
 		Length: 19
 		ShadowStart: 19
-	icon: npwricon
-		Start: 0
 
 naapwr:
 	idle: ntapwr
@@ -248,8 +238,6 @@ naapwr:
 		Start: 0
 		Length: 19
 		ShadowStart: 19
-	icon: apwricon
-		Start: 0
 
 nahand:
 	idle: nthand
@@ -281,8 +269,6 @@ nahand:
 		Start: 0
 		Length: 15
 		ShadowStart: 15
-	icon: handicon
-		Start: 0
 
 naweap:
 	idle: ntweap
@@ -321,8 +307,6 @@ naweap:
 		Length: 22
 		Tick: 80
 		ShadowStart: 22
-	icon: nwepicon
-		Start: 0
 # TODO: ntweap_1 & ntweapbb & ntweap_b & ntweap_c are unused
 
 naradr:
@@ -347,8 +331,6 @@ naradr:
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-	icon: nradicon
-		Start: 0
 
 natech:
 	idle: nttech
@@ -376,8 +358,6 @@ natech:
 		Start: 0
 		Length: 18
 		ShadowStart: 18
-	icon: ntchicon
-		Start: 0
 
 garadr:
 	idle: gtradr
@@ -401,8 +381,6 @@ garadr:
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-	icon: radricon
-		Start: 0
 
 gatech:
 	idle: gttech
@@ -430,8 +408,6 @@ gatech:
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-	icon: techicon
-		Start: 0
 
 gasand: # TODO frame order (horizontal seems busted)
 	idle: gtsand
@@ -442,8 +418,6 @@ gasand: # TODO frame order (horizontal seems busted)
 		Start: 16
 		Length: 16
 		ShadowStart: 48
-	icon: sbagicon
-		Start: 0
 
 gawall: # TODO frame order (horizontal seems busted)
 	idle: gtwall
@@ -458,8 +432,6 @@ gawall: # TODO frame order (horizontal seems busted)
 		Start: 32
 		Length: 16
 		ShadowStart: 80
-	icon: wallicon
-		Start: 0
 
 nawall: # TODO frame order (horizontal seems busted)
 	idle: ntwall
@@ -474,8 +446,6 @@ nawall: # TODO frame order (horizontal seems busted)
 		Start: 32
 		Length: 16
 		ShadowStart: 80
-	icon: nwalicon
-		Start: 0
 
 gatick:
 	idle:
@@ -571,8 +541,6 @@ naobel:
 		Start: 0
 		Length: 19
 		ShadowStart: 19
-	icon: obliicon
-		Start: 0
 
 nalasr:
 	idle: ntlasr
@@ -588,8 +556,6 @@ nalasr:
 		Start: 0
 		Length: 21
 		ShadowStart: 21
-	icon: plticon
-		Start: 0
 
 nasam:
 	idle: ntsam
@@ -609,8 +575,6 @@ nasam:
 		Start: 0
 		Length: 8
 		ShadowStart: 8
-	icon: samicon
-		Start: 0
 
 gavulc:
 	idle: gtctwr
@@ -665,8 +629,6 @@ gavulc:
 		Start: 0
 		Length: 11
 		ShadowStart: 11
-	icon: twr1icon
-		Start: 0
 
 garock:
 	idle: gtctwr
@@ -697,8 +659,6 @@ garock:
 		Start: 0
 		Length: 11
 		ShadowStart: 11
-	icon: twr2icon
-		Start: 0
 
 gacsam:
 	idle: gtctwr
@@ -729,8 +689,6 @@ gacsam:
 		Start: 0
 		Length: 11
 		ShadowStart: 11
-	icon: twr3icon
-		Start: 0
 
 gaspot:
 	idle:
@@ -758,8 +716,6 @@ gaspot:
 		Start: 0
 		Length: 14
 		ShadowStart: 14
-	icon: spoticon
-		Start: 0
 
 gahpad:
 	idle: gthpad
@@ -799,8 +755,6 @@ gahpad:
 		Start: 0
 		Length: 18
 		ShadowStart: 18
-	icon: heliicon
-		Start: 0
 
 nahpad:
 	idle: nthpad
@@ -840,8 +794,6 @@ nahpad:
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-	icon: nhpdicon
-		Start: 0
 
 proc: # TODO: unused narefn_a, narefn_b
 	idle: narefn
@@ -872,8 +824,6 @@ proc: # TODO: unused narefn_a, narefn_b
 #	bib: narefnbb
 #		Start: 0
 #		Length: *
-	icon: reficon
-		Start: 0
 
 galite:
 	idle:
@@ -886,8 +836,6 @@ galite:
 #		Start: 0
 #		ZOffset: -1c511
 #		BlendMode: Alpha
-	icon: liteicon
-		Start: 0
 
 gadept:
 	idle:
@@ -943,5 +891,4 @@ gadept:
 		Length: 10
 		Tick: 60
 		ShadowStart: 10
-	icon: fixicon
-		Start: 0
+
