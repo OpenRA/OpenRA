@@ -219,10 +219,11 @@ crashdialog: $(crashdialog_TARGET)
 utility_SRCS := $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET = OpenRA.Utility.exe
 utility_KIND = exe
-utility_DEPS = $(game_TARGET)
+utility_DEPS = $(game_TARGET) $(mod_ra_TARGET)
 utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll
 PROGRAMS += utility
 utility: $(utility_TARGET)
+	@$(CP) $(mod_ra_TARGET) .
 
 
 # Patches binary headers to work around a mono bug
