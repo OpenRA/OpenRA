@@ -1,3 +1,6 @@
+git config --global user.email "travis@travis-ci.org"
+git config --global user.name "travis-ci"
+
 echo "Updating https://github.com/OpenRA/OpenRA/wiki/Traits"
 rm -rf openra-wiki
 git clone git@github.com:OpenRA/OpenRA.wiki.git openra-wiki
@@ -8,8 +11,9 @@ pushd .. &> /dev/null
 mono --debug OpenRA.Utility.exe --lua-docs d2k > packaging/openra-wiki/New-Lua-API.md
 popd &> /dev/null
 
-cd openra-wiki
+pushd openra-wiki
 git add Traits.md
 git add New-Lua-API.md
 git commit -m "Update trait and scripting documentation"
 git push origin master
+popd
