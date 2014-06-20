@@ -18,19 +18,22 @@ namespace OpenRA.Mods.RA
 {
 	public class ShroudRendererInfo : ITraitInfo
 	{
-		public string Sequence = "shroud";
-		public string[] Variants = new[] { "shroud" };
+		public readonly string Sequence = "shroud";
+		public readonly string[] Variants = new[] { "shroud" };
+
+		public readonly string ShroudPalette = "shroud";
+		public readonly string FogPalette = "fog";
 
 		[Desc("Bitfield of shroud directions for each frame. Lower four bits are",
 		      "corners clockwise from TL; upper four are edges clockwise from top")]
-		public int[] Index = new[] { 12, 9, 8, 3, 1, 6, 4, 2, 13, 11, 7, 14 };
+		public readonly int[] Index = new[] { 12, 9, 8, 3, 1, 6, 4, 2, 13, 11, 7, 14 };
 
 		[Desc("Use the upper four bits when calculating frame")]
-		public bool UseExtendedIndex = false;
+		public readonly bool UseExtendedIndex = false;
 
 		[Desc("Palette index for synthesized unexplored tile")]
-		public int ShroudColor = 12;
-		public BlendMode ShroudBlend = BlendMode.Alpha;
+		public readonly int ShroudColor = 12;
+		public readonly BlendMode ShroudBlend = BlendMode.Alpha;
 		public object Create(ActorInitializer init) { return new ShroudRenderer(init.world, this); }
 	}
 
@@ -53,17 +56,16 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		ShroudRendererInfo info;
-		Sprite[] sprites;
-		Sprite unexploredTile;
-		int[] spriteMap;
+		readonly ShroudRendererInfo info;
+		readonly Sprite[] sprites;
+		readonly Sprite unexploredTile;
+		readonly int[] spriteMap;
+		readonly CellLayer<ShroudTile> tiles;
+		readonly int variantStride;
+		readonly Map map;
 
-		CellLayer<ShroudTile> tiles;
-		int variantStride;
-
-		int shroudHash;
 		PaletteReference fogPalette, shroudPalette;
-		Map map;
+		int shroudHash;
 
 		public ShroudRenderer(World world, ShroudRendererInfo info)
 		{
@@ -183,8 +185,8 @@ namespace OpenRA.Mods.RA
 				tiles[cell] = new ShroudTile(cell, screen, variant);
 			}
 
-			fogPalette = wr.Palette("fog");
-			shroudPalette = wr.Palette("shroud");
+			fogPalette = wr.Palette(info.FogPalette);
+			shroudPalette = wr.Palette(info.ShroudPalette);
 		}
 
 		Sprite GetTile(int flags, int variant)
