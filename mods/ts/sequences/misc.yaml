@@ -387,6 +387,8 @@ resources:
 shroud:
 	shroud: shadow #TODO: use shroud.shp
 		Length: *
+	fog: shadow
+		Length: *
 
 scorches: #TODO: make use of 07-12 as well
 	sc1: burnt01

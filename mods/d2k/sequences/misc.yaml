@@ -347,6 +347,8 @@ shroud:
 		Length: 14
 		Offset: -16,-16
 		BlendMode: Multiply
+	full: fullshroud
+		BlendMode: Multiply
 
 rockcraters:
 	rockcrater1: DATA
