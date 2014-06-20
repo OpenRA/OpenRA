@@ -66,15 +66,12 @@ namespace OpenRA.Traits
 		static IEnumerable<CPos> FindVisibleTiles(World world, CPos position, WRange radius)
 		{
 			var r = (radius.Range + 1023) / 1024;
-			var min = (position - new CVec(r, r)).Clamp(world.Map.Bounds);
-			var max = (position + new CVec(r, r)).Clamp(world.Map.Bounds);
-
-			var circleArea = radius.Range * radius.Range;
+			var limit = radius.Range * radius.Range;
 			var pos = position.CenterPosition;
-			for (var j = min.Y; j <= max.Y; j++)
-				for (var i = min.X; i <= max.X; i++)
-					if (circleArea >= (new CPos(i, j).CenterPosition - pos).LengthSquared)
-						yield return new CPos(i, j);
+
+			foreach (var cell in world.Map.FindTilesInCircle(position, r))
+				if ((cell.CenterPosition - pos).HorizontalLengthSquared <= limit)
+					yield return cell;
 		}
 
 		void AddVisibility(Actor a)

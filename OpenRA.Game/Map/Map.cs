@@ -633,12 +633,12 @@ namespace OpenRA
 			if (range >= TilesByDistance.Length)
 				throw new InvalidOperationException("FindTilesInCircle supports queries for only <= {0}".F(MaxTilesInCircleRange));
 
-			for(var i = 0; i <= range; i++)
+			for (var i = 0; i <= range; i++)
 			{
-				foreach(var offset in TilesByDistance[i])
+				foreach (var offset in TilesByDistance[i])
 				{
 					var t = offset + center;
-					if (Bounds.Contains(t.X, t.Y))
+					if (IsInMap(t))
 						yield return t;
 				}
 			}
