@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA
 				throw new InvalidOperationException("PortOffsets array length must be a multiple of three");
 
 			if (info.PortYaws.Length * 3 != info.PortOffsets.Length)
-				throw new InvalidOperationException("FireYaw must define an angle for each port");
+				throw new InvalidOperationException("PortYaws must define an angle for each port");
 
 			if (info.PortCones.Length * 3 != info.PortOffsets.Length)
 				throw new InvalidOperationException("PortCones must define an angle for each port");
