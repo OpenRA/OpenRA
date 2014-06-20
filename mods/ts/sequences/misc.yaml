@@ -385,9 +385,9 @@ resources:
 		ShadowStart: 12
 
 shroud:
-	shroud: shadow #TODO: use shroud.shp
+	shroud: shroud
 		Length: *
-	fog: shadow
+	fog: fog
 		Length: *
 
 scorches: #TODO: make use of 07-12 as well
