@@ -47,8 +47,6 @@ namespace OpenRA.Graphics
 		public int2 TopLeft { get { return CenterLocation - viewportSize / 2; } }
 		public int2 BottomRight { get { return CenterLocation + viewportSize / 2; } }
 		int2 viewportSize;
-		bool cellBoundsDirty = true;
-
 		CellRegion cells;
 		bool cellsDirty = true;
 
@@ -64,7 +62,6 @@ namespace OpenRA.Graphics
 			{
 				zoom = value;
 				viewportSize = (1f / zoom * new float2(Game.Renderer.Resolution)).ToInt2();
-				cellBoundsDirty = true;
 				cellsDirty = true;
 			}
 		}
@@ -115,7 +112,6 @@ namespace OpenRA.Graphics
 		public void Center(WPos pos)
 		{
 			CenterLocation = worldRenderer.ScreenPxPosition(pos).Clamp(mapBounds);
-			cellBoundsDirty = true;
 			cellsDirty = true;
 		}
 
@@ -123,7 +119,6 @@ namespace OpenRA.Graphics
 		{
 			// Convert scroll delta from world-px to viewport-px
 			CenterLocation += (1f / Zoom * delta).ToInt2();
-			cellBoundsDirty = true;
 			cellsDirty = true;
 
 			if (!ignoreBorders)
@@ -136,33 +131,11 @@ namespace OpenRA.Graphics
 		{
 			get
 			{
-				var r = CellBounds;
-				var ctl = new CPos(r.Left, r.Top).TopLeft;
-				var cbr = new CPos(r.Right, r.Bottom).TopLeft;
+				var ctl = VisibleCells.TopLeft.TopLeft;
+				var cbr = VisibleCells.BottomRight.BottomRight;
 				var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl)).Clamp(ScreenClip);
 				var br = WorldToViewPx(worldRenderer.ScreenPxPosition(cbr)).Clamp(ScreenClip);
 				return Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
-			}
-		}
-
-		// Rectangle (in cell coords) of cells that are currently visible on the screen
-		Rectangle cachedRect;
-		public Rectangle CellBounds
-		{
-			get
-			{
-				if (cellBoundsDirty)
-				{
-					var boundary = new CVec(1, 1);
-					var tl = worldRenderer.Position(TopLeft).ToCPos() - boundary;
-					var br = worldRenderer.Position(BottomRight).ToCPos() + boundary;
-
-					cachedRect = Rectangle.Intersect(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y), worldRenderer.world.Map.Bounds);
-					cellBoundsDirty = false;
-				}
-
-				var b = worldRenderer.world.VisibleBounds;
-				return b.HasValue ? Rectangle.Intersect(cachedRect, b.Value) : cachedRect;
 			}
 		}
 

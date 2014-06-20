@@ -38,8 +38,6 @@ namespace OpenRA.Traits
 		Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
 		Dictionary<Actor, CPos[]> generation = new Dictionary<Actor, CPos[]>();
 
-		public Rectangle ExploredBounds { get; private set; }
-
 		public int Hash { get; private set; }
 
 		public Shroud(Actor self)
@@ -56,9 +54,6 @@ namespace OpenRA.Traits
 
 			self.World.ActorAdded += AddShroudGeneration;
 			self.World.ActorRemoved += RemoveShroudGeneration;
-
-			if (!self.World.LobbyInfo.GlobalSettings.Shroud)
-				ExploredBounds = map.Bounds;
 
 			fogVisibilities = Exts.Lazy(() => self.TraitsImplementing<IFogVisibilityModifier>().ToArray());
 		}
@@ -91,15 +86,6 @@ namespace OpenRA.Traits
 			var origins = GetVisOrigins(a);
 			var visible = origins.SelectMany(o => FindVisibleTiles(a.World, o, rs.Range))
 				.Distinct().ToArray();
-
-			// Update bounding rect
-			var r = (rs.Range.Range + 1023) / 1024;
-
-			foreach (var o in origins)
-			{
-				var box = new Rectangle(o.X - r, o.Y - r, 2 * r + 1, 2 * r + 1);
-				ExploredBounds = Rectangle.Union(ExploredBounds, box);
-			}
 
 			// Update visibility
 			foreach (var c in visible)
@@ -205,10 +191,6 @@ namespace OpenRA.Traits
 			foreach (var q in FindVisibleTiles(world, center, range))
 				explored[q] = true;
 
-			var r = (range.Range + 1023) / 1024;
-			var box = new Rectangle(center.X - r, center.Y - r, 2 * r + 1, 2 * r + 1);
-			ExploredBounds = Rectangle.Union(ExploredBounds, box);
-
 			Invalidate();
 		}
 
@@ -218,15 +200,12 @@ namespace OpenRA.Traits
 				if (s.explored[cell])
 					explored[cell] = true;
 
-			ExploredBounds = Rectangle.Union(ExploredBounds, s.ExploredBounds);
 			Invalidate();
 		}
 
 		public void ExploreAll(World world)
 		{
 			explored.Clear(true);
-
-			ExploredBounds = world.Map.Bounds;
 
 			Invalidate();
 		}
