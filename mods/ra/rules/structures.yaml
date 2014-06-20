@@ -850,7 +850,7 @@ PROC:
 		Range: 6c0
 	Bib:
 	OreRefinery:
-	StoresOre:
+	StoresResources:
 		PipCount: 17
 		Capacity: 2000
 	IronCurtainable:
@@ -897,7 +897,7 @@ SILO:
 	Bib:
 		HasMinibib: Yes
 	RenderBuildingSilo:
-	StoresOre:
+	StoresResources:
 		PipCount: 5
 		Capacity: 1500
 	IronCurtainable:

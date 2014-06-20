@@ -427,7 +427,7 @@ SuicideBomb:
 	Warhead:
 		Damage: 11000
 		Spread: 256
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%

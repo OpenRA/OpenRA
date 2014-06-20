@@ -18,7 +18,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public static class Combat			/* some utility bits that are shared between various things */
+	// some utility bits that are shared between various things
+	public static class Combat
 	{
 		static string GetImpactSound(WarheadInfo warhead, bool isWater)
 		{
@@ -49,10 +50,10 @@ namespace OpenRA.Mods.RA
 			Sound.Play(GetImpactSound(warhead, isWater), pos);
 
 			var smudgeLayers = world.WorldActor.TraitsImplementing<SmudgeLayer>().ToDictionary(x => x.Info.Type);
+			var resLayer = warhead.DestroyResources || !string.IsNullOrEmpty(warhead.AddsResourceType) ? world.WorldActor.Trait<ResourceLayer>() : null;
 
 			if (warhead.Size[0] > 0)
 			{
-				var resLayer = world.WorldActor.Trait<ResourceLayer>();
 				var allCells = world.Map.FindTilesInCircle(targetTile, warhead.Size[0]).ToList();
 
 				// `smudgeCells` might want to just be an outer shell of the cells:
@@ -71,15 +72,34 @@ namespace OpenRA.Mods.RA
 						throw new NotImplementedException("Unknown smudge type `{0}`".F(smudgeType));
 
 					smudgeLayer.AddSmudge(sc);
-					if (warhead.Ore)
+					if (warhead.DestroyResources)
 						resLayer.Destroy(sc);
 				}
 
 				// Destroy all resources in range, not just the outer shell:
-				foreach (var cell in allCells)
-				{
-					if (warhead.Ore)
+				if (warhead.DestroyResources)
+					foreach (var cell in allCells)
 						resLayer.Destroy(cell);
+
+				// Splatter resources:
+				if (!string.IsNullOrEmpty(warhead.AddsResourceType))
+				{
+					var resourceType = world.WorldActor.TraitsImplementing<ResourceType>()
+						.FirstOrDefault(t => t.Info.Name == warhead.AddsResourceType);
+
+					if (resourceType == null)
+						Log.Write("debug", "Warhead defines an invalid resource type '{0}'".F(warhead.AddsResourceType));
+					else
+					{
+						foreach (var cell in allCells)
+						{
+							if (!resLayer.CanSpawnResourceAt(resourceType, cell))
+								continue;
+
+							var splash = world.SharedRandom.Next(1, resourceType.Info.MaxDensity - resLayer.GetResourceDensity(cell));
+							resLayer.AddResource(resourceType, cell, splash);
+						}
+					}
 				}
 			}
 			else
@@ -95,7 +115,7 @@ namespace OpenRA.Mods.RA
 				}
 			}
 
-			if (warhead.Ore)
+			if (warhead.DestroyResources)
 				world.WorldActor.Trait<ResourceLayer>().Destroy(targetTile);
 
 			switch (warhead.DamageModel)
@@ -202,6 +222,7 @@ namespace OpenRA.Mods.RA
 				var falloff = (float)GetDamageFalloff(distance * 1f / warhead.Spread.Range);
 				rawDamage = (float)(falloff * rawDamage);
 			}
+
 			return (float)(rawDamage * modifier * (float)warhead.EffectivenessAgainst(target.Info));
 		}
 	}

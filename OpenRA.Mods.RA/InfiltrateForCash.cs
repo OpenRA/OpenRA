@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 			var targetResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			var spyResources = infiltrator.Owner.PlayerActor.Trait<PlayerResources>();
 
-			var toTake = (targetResources.Cash + targetResources.Ore) * info.Percentage / 100;
+			var toTake = (targetResources.Cash + targetResources.Resources) * info.Percentage / 100;
 			var toGive = Math.Max(toTake, info.Minimum);
 			
 			targetResources.TakeCash(toTake);

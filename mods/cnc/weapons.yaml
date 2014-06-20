@@ -78,7 +78,7 @@ Atomic:
 		SmudgeType: Scorch
 		Spread: 2c512
 		Size: 3
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 100%
 			Wood: 100%
@@ -92,7 +92,7 @@ Atomic:
 		SmudgeType: Scorch
 		Spread: 3c768
 		Size: 4
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 100%
 			Wood: 100%
@@ -105,7 +105,7 @@ Atomic:
 		SmudgeType: Scorch
 		Spread: 5c0
 		Size: 5
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 100%
 			Wood: 100%
@@ -119,14 +119,14 @@ IonCannon:
 	Warhead@impact:
 		Damage: 900
 		Spread: 853
-		Ore: true
+		DestroyResources: true
 		InfDeath: 5
 	Warhead@area:
 		DamageModel: PerCell
 		Damage: 0
 		SmudgeType: Scorch
 		Size: 2,1
-		Ore: true
+		DestroyResources: true
 		Delay: 3
 		InfDeath: 5
 
@@ -876,6 +876,21 @@ Tiberium:
 		InfDeath: 6
 		Damage: 2
 		PreventProne: yes
+
+TiberiumExplosion:
+	Warhead:
+		Damage: 10
+		Spread: 9
+		Size: 1,1
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: chemball
+		InfDeath: 3
+		ImpactSound: xplosml2.aud
+		AddsResourceType: Tiberium
 
 Heal:
 	ROF: 4

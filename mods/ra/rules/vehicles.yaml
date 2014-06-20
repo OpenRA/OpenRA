@@ -285,7 +285,7 @@ HARV:
 		FullHuskActor: HARV.FullHusk
 		FullnessThreshold: 50
 	Explodes:
-		Weapon: UnitExplodeSmall
+		Weapon: OreExplosion
 		EmptyWeapon: UnitExplodeSmall
 
 MCV:

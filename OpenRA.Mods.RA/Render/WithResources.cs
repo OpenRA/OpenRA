@@ -37,8 +37,8 @@ namespace OpenRA.Mods.RA.Render
 
 			anim = new Animation(self.World, rs.GetImage(self));
 			anim.PlayFetchIndex(info.Sequence,
-			                    () => playerResources.OreCapacity != 0
-			                    ? ((10 * anim.CurrentSequence.Length - 1) * playerResources.Ore) / (10 * playerResources.OreCapacity)
+			                    () => playerResources.ResourceCapacity != 0
+			                    ? ((10 * anim.CurrentSequence.Length - 1) * playerResources.Resources) / (10 * playerResources.ResourceCapacity)
 			                    : 0);
 
 			rs.Add("resources_{0}".F(info.Sequence), new AnimationWithOffset(

@@ -246,6 +246,12 @@ namespace OpenRA.Utility
 						node.Value.Nodes.RemoveAll(n => n.Key == "TeslaInstantKills");
 				}
 
+				if (engineVersion < 20140615)
+				{
+					if (depth == 1 && node.Key == "StoresOre")
+						node.Key = "StoresResources";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -306,6 +312,12 @@ namespace OpenRA.Utility
 								break;
 						}
 					}
+				}
+
+				if (engineVersion < 20140615)
+				{
+					if (depth == 2 && parentKey == "Warhead" && node.Key == "Ore" )
+						node.Key = "DestroyResources";
 				}
 
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

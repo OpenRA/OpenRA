@@ -649,3 +649,18 @@ Shrapnel:
 		Damage: 60
 		ImpactSound: EXPLLG5.WAV
 
+SpiceExplosion:
+	Warhead:
+		Damage: 10
+		Spread: 9
+		Size: 2,2
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: med_explosion
+		InfDeath: 3
+		ImpactSound: EXPLLG5.WAV
+		AddsResourceType: Spice
+

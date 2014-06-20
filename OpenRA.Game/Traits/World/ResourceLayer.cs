@@ -153,6 +153,13 @@ namespace OpenRA.Traits
 			return true;
 		}
 
+		public bool CanSpawnResourceAt(ResourceType newResourceType, CPos cell)
+		{
+			var currentResourceType = GetResource(cell);
+			return currentResourceType == newResourceType
+				|| (currentResourceType == null && AllowResourceAt(newResourceType, cell));
+		}
+
 		CellContents CreateResourceCell(ResourceType t, CPos p)
 		{
 			world.Map.CustomTerrain[p.X, p.Y] = world.TileSet.GetTerrainIndex(t.Info.TerrainType);

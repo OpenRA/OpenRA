@@ -71,6 +71,8 @@ HARV:
 		HuskActor: HARV.Husk
 	-GainsExperience:
 	RenderHarvester:
+	Explodes:
+		Weapon: TiberiumExplosion
 
 APC:
 	Inherits: ^Tank
