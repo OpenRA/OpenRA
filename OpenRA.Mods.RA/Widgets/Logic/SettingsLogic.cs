@@ -28,6 +28,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		WorldRenderer worldRenderer;
 		SoundDevice soundDevice;
 
+		static readonly string originalSoundDevice;
+		static readonly string originalSoundEngine;
+		static readonly WindowMode originalGraphicsMode;
+		static readonly string originalGraphicsRenderer;
+		static readonly int2 originalGraphicsWindowedSize;
+		static readonly int2 originalGraphicsFullscreenSize;
+
+		static SettingsLogic()
+		{
+			var original = Game.Settings;
+			originalSoundDevice = original.Sound.Device;
+			originalSoundEngine = original.Sound.Engine;
+			originalGraphicsMode = original.Graphics.Mode;
+			originalGraphicsRenderer = original.Graphics.Renderer;
+			originalGraphicsWindowedSize = original.Graphics.WindowedSize;
+			originalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
+		}
+
 		[ObjectCreator.UseCtor]
 		public SettingsLogic(Widget widget, Action onExit, WorldRenderer worldRenderer)
 		{
@@ -44,9 +62,25 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			panelContainer.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
 				leavePanelActions[settingsPanel]();
-				Game.Settings.Save();
-				Ui.CloseWindow();
-				onExit();
+				var current = Game.Settings;
+				current.Save();
+
+				Action closeAndExit = () => { Ui.CloseWindow(); onExit(); };
+				if (originalSoundDevice != current.Sound.Device ||
+					originalSoundEngine != current.Sound.Engine ||
+					originalGraphicsMode != current.Graphics.Mode ||
+					originalGraphicsRenderer != current.Graphics.Renderer ||
+					originalGraphicsWindowedSize != current.Graphics.WindowedSize ||
+					originalGraphicsFullscreenSize != current.Graphics.FullscreenSize)
+					ConfirmationDialogs.PromptConfirmAction(
+						"Restart Now?",
+						"Some changes will not be applied until\nthe game is restarted. Restart now?",
+						Game.Restart,
+						closeAndExit,
+						"Restart Now",
+						"Restart Later");
+				else
+					closeAndExit();
 			};
 
 			panelContainer.Get<ButtonWidget>("RESET_BUTTON").OnClick = () =>

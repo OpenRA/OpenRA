@@ -170,9 +170,7 @@ namespace OpenRA.Renderer.Sdl2
 						// Special case workaround for windows users
 						if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
 							Platform.CurrentPlatform == PlatformType.Windows)
-						{
 							Game.Exit();
-						}
 						else
 							inputHandler.OnKeyInput(keyEvent);
 
