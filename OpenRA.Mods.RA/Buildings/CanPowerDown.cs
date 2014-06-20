@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
+	[Desc("The player can disable the power individually on this actor.")]
 	public class CanPowerDownInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new CanPowerDown(init); }

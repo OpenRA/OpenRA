@@ -12,8 +12,10 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
+	[Desc("Can be used to make a unit partly uncontrollable by the player.")]
 	public class RejectsOrdersInfo : ITraitInfo
 	{
+		[Desc("Possible values include Attack, AttackMove, Guard, Move.")]
 		public readonly string[] Except = { };
 
 		public object Create(ActorInitializer init) { return new RejectsOrders(this); }
