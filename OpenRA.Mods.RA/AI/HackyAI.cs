@@ -809,7 +809,7 @@ namespace OpenRA.Mods.RA.AI
 		internal IEnumerable<ProductionQueue> FindQueues(string category)
 		{
 			return world.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == p && a.Trait.Info.Type == category)
+				.Where(a => a.Actor.Owner == p && a.Trait.Info.Type == category && a.Trait.Enabled)
 				.Select(a => a.Trait);
 		}
 

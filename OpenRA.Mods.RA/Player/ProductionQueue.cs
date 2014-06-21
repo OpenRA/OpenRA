@@ -30,6 +30,12 @@ namespace OpenRA.Mods.RA
 		[Desc("Filter buildable items based on their Owner.")]
 		public readonly bool RequireOwner = true;
 
+		[Desc("Only enable this queue for certain factions")]
+		public readonly string[] Race = { };
+
+		[Desc("Should the prerequisite remain enabled if the owner changes?")]
+		public readonly bool Sticky = true;
+
 		[Desc("This value is used to translate the unit cost into build time.")]
 		public readonly float BuildSpeed = 0.4f;
 
@@ -64,11 +70,11 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly ProductionQueueInfo Info;
 		readonly Actor self;
-		readonly string race;
 
-		// Can change if the actor is captured
+		// Will change if the owner changes
 		PowerManager playerPower;
 		PlayerResources playerResources;
+		string race;
 
 		// A list of things we could possibly build
 		Dictionary<ActorInfo, ProductionState> produceable;
@@ -83,6 +89,7 @@ namespace OpenRA.Mods.RA
 		[Sync] public int CurrentSlowdown { get { return QueueLength == 0 ? 0 : queue[0].Slowdown; } }
 		[Sync] public bool CurrentPaused { get { return QueueLength != 0 && queue[0].Paused; } }
 		[Sync] public bool CurrentDone { get { return QueueLength != 0 && queue[0].Done; } }
+		[Sync] public bool Enabled { get; private set; }
 
 		public ProductionQueue(ActorInitializer init, Actor playerActor, ProductionQueueInfo info)
 		{
@@ -91,7 +98,9 @@ namespace OpenRA.Mods.RA
 			playerResources = playerActor.Trait<PlayerResources>();
 			playerPower = playerActor.Trait<PowerManager>();
 
-			race = self.Owner.Country.Race;
+			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.Race;
+			Enabled = !info.Race.Any() || info.Race.Contains(race);
+
 			CacheProduceables(playerActor);
 		}
 
@@ -111,6 +120,12 @@ namespace OpenRA.Mods.RA
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 			ClearQueue();
 
+			if (!Info.Sticky)
+			{
+				race = self.Owner.Country.Race;
+				Enabled = !Info.Race.Any() || Info.Race.Contains(race);
+			}
+
 			// Regenerate the produceables and tech tree state
 			oldOwner.PlayerActor.Trait<TechTree>().Remove(this);
 			CacheProduceables(newOwner.PlayerActor);
@@ -125,6 +140,9 @@ namespace OpenRA.Mods.RA
 		void CacheProduceables(Actor playerActor)
 		{
 			produceable = new Dictionary<ActorInfo, ProductionState>();
+			if (!Enabled)
+				return;
+
 			var ttc = playerActor.Trait<TechTree>();
 
 			foreach (var a in AllBuildables(Info.Type))
@@ -216,6 +234,9 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (!Enabled)
+				return;
+
 			switch (order.OrderString)
 			{
 			case "StartProduction":

@@ -44,6 +44,7 @@ namespace OpenRA.Mods.RA
 				var type = info.ProductionType ?? self.Trait<Production>().Info.Produces.First();
 
 				// Per-actor queue
+				// Note: this includes disabled queues, as each bar must bind to exactly one queue.
 				queue = self.TraitsImplementing<ProductionQueue>()
 					.FirstOrDefault(q => type == null || type == q.Info.Type);
 

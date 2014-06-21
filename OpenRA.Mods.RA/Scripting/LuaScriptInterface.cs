@@ -414,7 +414,8 @@ namespace OpenRA.Mods.RA.Scripting
 			if (bi == null)
 				return;
 
-			var queue = factory.TraitOrDefault<ProductionQueue>();
+			var queue = factory.TraitsImplementing<ProductionQueue>()
+				.FirstOrDefault(q => q.Enabled);
 
 			if (queue != null)
 				queue.ResolveOrder(factory, Order.StartProduction(factory, unit, (int)amount));
@@ -434,7 +435,8 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public bool PerFactoryQueueIsBusy(Actor factory)
 		{
-			var queue = factory.TraitOrDefault<ProductionQueue>();
+			var queue = factory.TraitsImplementing<ProductionQueue>()
+				.FirstOrDefault(q => q.Enabled);
 
 			if (queue == null)
 				return true;
