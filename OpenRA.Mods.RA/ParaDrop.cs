@@ -24,13 +24,15 @@ namespace OpenRA.Mods.RA
 
 	public class ParaDrop : ITick
 	{
+		bool checkForSuitableCell;
 		readonly List<CPos> droppedAt = new List<CPos>();
 		CPos lz;
 
-		public void SetLZ(CPos lz)
+		public void SetLZ(CPos lz, bool checkLandingCell)
 		{
 			this.lz = lz;
 			droppedAt.Clear();
+			checkForSuitableCell = checkLandingCell;
 		}
 
 		public void Tick(Actor self)
@@ -45,7 +47,7 @@ namespace OpenRA.Mods.RA
 					FinishedDropping(self);
 				else
 				{
-					if (!IsSuitableCell(cargo.Peek(self), self.Location))
+					if (checkForSuitableCell && !IsSuitableCell(cargo.Peek(self), self.Location))
 						return;
 
 					// unload a dude here

@@ -43,6 +43,7 @@
 		SuccessRate: 20
 		EjectOnGround: yes
 		EjectInAir: no
+		AllowUnsuitableCell: no
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
@@ -99,6 +100,7 @@
 		SuccessRate: 20
 		EjectOnGround: yes
 		EjectInAir: no
+		AllowUnsuitableCell: no
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
@@ -235,6 +237,7 @@
 		SuccessRate: 50
 		EjectOnGround: no
 		EjectInAir: yes
+		AllowUnsuitableCell: yes
 	GivesBounty:
 	GpsDot:
 		String: Plane

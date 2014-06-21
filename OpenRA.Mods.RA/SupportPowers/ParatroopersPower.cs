@@ -27,6 +27,9 @@ namespace OpenRA.Mods.RA
 		[Desc("In game ticks. Default value equates to 2 minutes.")]
 		public readonly int FlareTime = 25 * 60 * 2;
 
+		[Desc("Risks stuck units when they don't have the Paratrooper trait.")]
+		public readonly bool AllowImpassableCells = false;
+
 		public override object Create(ActorInitializer init) { return new ParatroopersPower(init.self, this); }
 	}
 
@@ -66,7 +69,7 @@ namespace OpenRA.Mods.RA
 
 				a.CancelActivity();
 				a.QueueActivity(new FlyAttack(Target.FromOrder(self.World, order)));
-				a.Trait<ParaDrop>().SetLZ(order.TargetLocation);
+				a.Trait<ParaDrop>().SetLZ(order.TargetLocation, !info.AllowImpassableCells);
 
 				var cargo = a.Trait<Cargo>();
 				foreach (var i in items)
