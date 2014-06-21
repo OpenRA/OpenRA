@@ -51,7 +51,7 @@ OpenRA.GetRandomInteger = function(low, high)
 end
 
 OpenRA.TakeOre = function(player, amount)
-	Actor.Trait(player.PlayerActor, "PlayerResources"):TakeOre(amount)
+	Actor.Trait(player.PlayerActor, "PlayerResources"):TakeResources(amount)
 end
 
 OpenRA.TakeCash = function(player, amount)
@@ -59,7 +59,7 @@ OpenRA.TakeCash = function(player, amount)
 end
 
 OpenRA.GiveOre = function(player, amount)
-	Actor.Trait(player.PlayerActor, "PlayerResources"):GiveOre(amount)
+	Actor.Trait(player.PlayerActor, "PlayerResources"):GiveResources(amount)
 end
 
 OpenRA.GiveCash = function(player, amount)
@@ -67,15 +67,15 @@ OpenRA.GiveCash = function(player, amount)
 end
 
 OpenRA.CanGiveOre = function(player, amount)
-	return Actor.Trait(player.PlayerActor, "PlayerResources"):CanGiveOre(amount)
+	return Actor.Trait(player.PlayerActor, "PlayerResources"):CanGiveResources(amount)
 end
 
 OpenRA.GetOreCapacity = function(player)
-	return Actor.Trait(player.PlayerActor, "PlayerResources").OreCapacity
+	return Actor.Trait(player.PlayerActor, "PlayerResources").ResourceCapacity
 end
 
 OpenRA.GetOre = function(player)
-	return Actor.Trait(player.PlayerActor, "PlayerResources").Ore
+	return Actor.Trait(player.PlayerActor, "PlayerResources").Resources
 end
 
 OpenRA.GetCash = function(player)
