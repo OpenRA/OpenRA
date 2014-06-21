@@ -74,6 +74,7 @@ namespace OpenRA.Mods.RA
 		// Will change if the owner changes
 		PowerManager playerPower;
 		PlayerResources playerResources;
+		DeveloperMode developerMode;
 		string race;
 
 		// A list of things we could possibly build
@@ -97,6 +98,7 @@ namespace OpenRA.Mods.RA
 			Info = info;
 			playerResources = playerActor.Trait<PlayerResources>();
 			playerPower = playerActor.Trait<PowerManager>();
+			developerMode = playerActor.Trait<DeveloperMode>();
 
 			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.Race;
 			Enabled = !info.Race.Any() || info.Race.Contains(race);
@@ -118,6 +120,7 @@ namespace OpenRA.Mods.RA
 		{
 			playerPower = newOwner.PlayerActor.Trait<PowerManager>();
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+			developerMode = newOwner.PlayerActor.Trait<DeveloperMode>();
 			ClearQueue();
 
 			if (!Info.Sticky)
@@ -201,7 +204,7 @@ namespace OpenRA.Mods.RA
 
 		public virtual IEnumerable<ActorInfo> AllItems()
 		{
-			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
+			if (self.World.AllowDevCommands && developerMode.AllTech)
 				return produceable.Select(a => a.Key);
 
 			return produceable.Where(a => a.Value.Buildable || a.Value.Visible).Select(a => a.Key);
@@ -209,7 +212,7 @@ namespace OpenRA.Mods.RA
 
 		public virtual IEnumerable<ActorInfo> BuildableItems()
 		{
-			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
+			if (self.World.AllowDevCommands && developerMode.AllTech)
 				return produceable.Select(a => a.Key);
 
 			return produceable.Where(a => a.Value.Buildable).Select(a => a.Key);
