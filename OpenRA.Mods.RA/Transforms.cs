@@ -22,22 +22,22 @@ namespace OpenRA.Mods.RA
 		[ActorReference] public readonly string IntoActor = null;
 		public readonly int2 Offset = int2.Zero;
 		public readonly int Facing = 96;
-		public readonly string[] TransformSounds = {};
-		public readonly string[] NoTransformSounds = {};
+		public readonly string[] TransformSounds = { };
+		public readonly string[] NoTransformSounds = { };
 
 		public virtual object Create(ActorInitializer init) { return new Transforms(init.self, this); }
 	}
 
 	class Transforms : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		Actor self;
-		TransformsInfo Info;
-		BuildingInfo bi;
+		readonly Actor self;
+		readonly TransformsInfo info;
+		readonly BuildingInfo bi;
 
 		public Transforms(Actor self, TransformsInfo info)
 		{
 			this.self = self;
-			Info = info;
+			this.info = info;
 			bi = self.World.Map.Rules.Actors[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
 		}
 
@@ -52,18 +52,18 @@ namespace OpenRA.Mods.RA
 			if (b != null && b.Locked)
 				return false;
 
-			return (bi == null || self.World.CanPlaceBuilding(Info.IntoActor, bi, self.Location + (CVec)Info.Offset, self));
+			return bi == null || self.World.CanPlaceBuilding(info.IntoActor, bi, self.Location + (CVec)info.Offset, self);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter( "DeployTransform", 5, () => CanDeploy() ); }
+			get { yield return new DeployOrderTargeter("DeployTransform", 5, () => CanDeploy()); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if( order.OrderID == "DeployTransform" )
-				return new Order( order.OrderID, self, queued );
+			if (order.OrderID == "DeployTransform")
+				return new Order(order.OrderID, self, queued);
 
 			return null;
 		}
@@ -74,8 +74,9 @@ namespace OpenRA.Mods.RA
 
 			if (!CanDeploy() || (b != null && !b.Lock()))
 			{
-				foreach (var s in Info.NoTransformSounds)
+				foreach (var s in info.NoTransformSounds)
 					Sound.PlayToPlayer(self.Owner, s);
+
 				return;
 			}
 
@@ -83,16 +84,16 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 
 			if (self.HasTrait<IFacing>())
-				self.QueueActivity(new Turn(Info.Facing));
+				self.QueueActivity(new Turn(info.Facing));
 
 			var rb = self.TraitOrDefault<RenderBuilding>();
 			if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
 				self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
 
-			self.QueueActivity(new Transform(self, Info.IntoActor) { Offset = (CVec)Info.Offset, Facing = Info.Facing, Sounds = Info.TransformSounds });
+			self.QueueActivity(new Transform(self, info.IntoActor) { Offset = (CVec)info.Offset, Facing = info.Facing, Sounds = info.TransformSounds });
 		}
 
-		public void ResolveOrder( Actor self, Order order )
+		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "DeployTransform")
 				DeployTransform(order.Queued);
