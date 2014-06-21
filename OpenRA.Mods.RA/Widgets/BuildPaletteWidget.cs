@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Widgets
 				.Where(p => p.Actor.Owner == world.LocalPlayer)
 				.Select(p => p.Trait);
 
-			if (CurrentQueue != null && CurrentQueue.self.Destroyed)
+			if (CurrentQueue != null && CurrentQueue.Actor.Destroyed)
 				CurrentQueue = null;
 
 			foreach (var queue in queues)
@@ -366,7 +366,7 @@ namespace OpenRA.Mods.RA.Widgets
 					if (producing.Done)
 					{
 						if (unit.Traits.Contains<BuildingInfo>())
-							world.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue.self, item);
+							world.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue.Actor, item);
 						else
 							StartProduction(world, item);
 						return;
@@ -374,7 +374,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 					if (producing.Paused)
 					{
-						world.IssueOrder(Order.PauseProduction(CurrentQueue.self, item, false));
+						world.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, item, false));
 						return;
 					}
 				}
@@ -403,12 +403,12 @@ namespace OpenRA.Mods.RA.Widgets
 						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, world.LocalPlayer.Country.Race);
 						var numberToCancel = Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
 
-						world.IssueOrder(Order.CancelProduction(CurrentQueue.self, item, numberToCancel));
+						world.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, item, numberToCancel));
 					}
 					else
 					{
 						Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, world.LocalPlayer.Country.Race);
-						world.IssueOrder(Order.PauseProduction(CurrentQueue.self, item, true));
+						world.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, item, true));
 					}
 				}
 			}
@@ -416,7 +416,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		void StartProduction(World world, string item)
 		{
-			world.IssueOrder(Order.StartProduction(CurrentQueue.self, item,
+			world.IssueOrder(Order.StartProduction(CurrentQueue.Actor, item,
 				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}
 

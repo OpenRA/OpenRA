@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.AI
 				{
 					HackyAI.BotDebug("AI: Starting production of {0}".F(item.Name));
 					state = BuildState.WaitForProduction;
-					ai.world.IssueOrder(Order.StartProduction(queue.self, item.Name, 1));
+					ai.world.IssueOrder(Order.StartProduction(queue.Actor, item.Name, 1));
 				}
 				break;
 
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.AI
 					return;
 
 				if (currentBuilding.Paused)
-					ai.world.IssueOrder(Order.PauseProduction(queue.self, currentBuilding.Item, false));
+					ai.world.IssueOrder(Order.PauseProduction(queue.Actor, currentBuilding.Item, false));
 				else if (currentBuilding.Done)
 				{
 					state = BuildState.WaitForFeedback;
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.AI
 					if (location == null)
 					{
 						HackyAI.BotDebug("AI: Nowhere to place {0}".F(currentBuilding.Item));
-						ai.world.IssueOrder(Order.CancelProduction(queue.self, currentBuilding.Item, 1));
+						ai.world.IssueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
 					}
 					else
 					{

@@ -402,7 +402,7 @@ namespace OpenRA.Mods.RA.Scripting
 			var queue = GetSharedQueueForUnit(player, unit);
 
 			if (queue != null)
-				queue.ResolveOrder(queue.self, Order.StartProduction(queue.self, unit, (int)amount));
+				queue.ResolveOrder(queue.Actor, Order.StartProduction(queue.Actor, unit, (int)amount));
 		}
 
 		[LuaGlobal]

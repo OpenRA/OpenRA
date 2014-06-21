@@ -839,7 +839,7 @@ namespace OpenRA.Mods.RA.AI
 				ChooseUnitToBuild(queue);
 
 			if (unit != null && Info.UnitsToBuild.Any(u => u.Key == unit.Name))
-				world.IssueOrder(Order.StartProduction(queue.self, unit.Name, 1));
+				world.IssueOrder(Order.StartProduction(queue.Actor, unit.Name, 1));
 		}
 
 		void BuildUnit(string category, string name)
@@ -849,7 +849,7 @@ namespace OpenRA.Mods.RA.AI
 				return;
 
 			if (Map.Rules.Actors[name] != null)
-				world.IssueOrder(Order.StartProduction(queue.self, name, 1));
+				world.IssueOrder(Order.StartProduction(queue.Actor, name, 1));
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
