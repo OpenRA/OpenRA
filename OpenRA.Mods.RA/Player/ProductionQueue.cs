@@ -151,24 +151,14 @@ namespace OpenRA.Mods.RA
 					x.Traits.Get<BuildableInfo>().Queue.Contains(category));
 		}
 
-		public void OverrideProduction(ActorInfo type, bool buildable)
-		{
-			produceable[type].Buildable = buildable;
-			produceable[type].Sticky = true;
-		}
-
 		public void PrerequisitesAvailable(string key)
 		{
-			var ps = produceable[self.World.Map.Rules.Actors[key]];
-			if (!ps.Sticky)
-				ps.Buildable = true;
+			produceable[self.World.Map.Rules.Actors[key]].Buildable = true;
 		}
 
 		public void PrerequisitesUnavailable(string key)
 		{
-			var ps = produceable[self.World.Map.Rules.Actors[key]];
-			if (!ps.Sticky)
-				ps.Buildable = false;
+			produceable[self.World.Map.Rules.Actors[key]].Buildable = false;
 		}
 
 		public void PrerequisitesItemHidden(string key)
@@ -366,7 +356,6 @@ namespace OpenRA.Mods.RA
 	{
 		public bool Visible = false;
 		public bool Buildable = false;
-		public bool Sticky = false;
 	}
 
 	public class ProductionItem
