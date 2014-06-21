@@ -45,56 +45,56 @@ Players:
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi17
+		Enemies: Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi17
+		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi17
+		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi7
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi17
+		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi7
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi17
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi7
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi1,Multi6,Multi17
+		Enemies: Multi0,Multi2,Multi3,Multi4,Multi1,Multi6,Multi7
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi1,Multi17
+		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi1,Multi7
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi11
+		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi1
 
 Actors:
 	Actor0: apc
