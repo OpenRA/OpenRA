@@ -15,8 +15,6 @@
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
-	Buildable:
-		Queue: Vehicle
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -61,8 +59,6 @@
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground, Vehicle
-	Buildable:
-		Queue: Vehicle
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -106,8 +102,6 @@
 		RepairBuildings: hpad
 		RearmBuildings:
 		LandWhenIdle: false
-	Buildable:
-		Queue: Aircraft
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -153,8 +147,6 @@
 		Voice: GenericVoice
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
-	Buildable:
-		Queue: Infantry
 	TakeCover:
 		ProneSpeed: 0.6
 	RenderInfantryProne:
@@ -198,7 +190,6 @@
 
 ^CivInfantry:
 	Inherits: ^Infantry
-	-Buildable:
 	-AutoTarget:
 	-TakeCover:
 	-RenderInfantryProne:
@@ -237,7 +228,6 @@
 	Buildable:
 		Queue: Biolab
 		BuildPaletteOrder: 50
-		Owner: gdi, nod
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -369,8 +359,6 @@
 ^BaseBuilding:
 	Inherits: ^Building
 	MustBeDestroyed:
-	Buildable:
-		Queue: Building
 	RepairableBuilding:
 		RepairPercent: 40
 		RepairStep: 14

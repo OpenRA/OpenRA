@@ -434,9 +434,9 @@ production-icons: chrome.png
 	building: 384,0,16,16
 	building-disabled: 384,16,16,16
 	building-alert: 384,32,16,16
-	defense: 400,0,16,16
-	defense-disabled: 400,16,16,16
-	defense-alert: 400,32,16,16
+	defence: 400,0,16,16
+	defence-disabled: 400,16,16,16
+	defence-alert: 400,32,16,16
 	infantry: 416,0,16,16
 	infantry-disabled: 416,16,16,16
 	infantry-alert: 416,32,16,16
