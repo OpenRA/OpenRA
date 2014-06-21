@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] TransformSounds = { };
 		public readonly string[] NoTransformSounds = { };
 
-		public virtual object Create(ActorInitializer init) { return new Transforms(init.self, this); }
+		public virtual object Create(ActorInitializer init) { return new Transforms(init, this); }
 	}
 
 	class Transforms : IIssueOrder, IResolveOrder, IOrderVoice
@@ -33,12 +33,14 @@ namespace OpenRA.Mods.RA
 		readonly Actor self;
 		readonly TransformsInfo info;
 		readonly BuildingInfo bi;
+		readonly string race;
 
-		public Transforms(Actor self, TransformsInfo info)
+		public Transforms(ActorInitializer init, TransformsInfo info)
 		{
-			this.self = self;
+			self = init.self;
 			this.info = info;
 			bi = self.World.Map.Rules.Actors[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
+			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.Race;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -90,7 +92,7 @@ namespace OpenRA.Mods.RA
 			if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
 				self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
 
-			self.QueueActivity(new Transform(self, info.IntoActor) { Offset = (CVec)info.Offset, Facing = info.Facing, Sounds = info.TransformSounds });
+			self.QueueActivity(new Transform(self, info.IntoActor) { Offset = (CVec)info.Offset, Facing = info.Facing, Sounds = info.TransformSounds, Race = race });
 		}
 
 		public void ResolveOrder(Actor self, Order order)

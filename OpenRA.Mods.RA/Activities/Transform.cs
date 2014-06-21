@@ -22,6 +22,7 @@ namespace OpenRA.Mods.RA.Activities
 		public string[] Sounds = { };
 		public int ForceHealthPercentage = 0;
 		public bool SkipMakeAnims = false;
+		public string Race = null;
 
 		public Transform(Actor self, string toActor)
 		{
@@ -56,6 +57,9 @@ namespace OpenRA.Mods.RA.Activities
 
 				if (SkipMakeAnims)
 					init.Add(new SkipMakeAnimsInit());
+
+				if (Race != null)
+					init.Add(new RaceInit(Race));
 
 				var health = self.TraitOrDefault<Health>();
 				if (health != null)
