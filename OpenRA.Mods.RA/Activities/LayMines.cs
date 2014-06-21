@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Activities
 
 	class LayMines : Activity
 	{
-		public override Activity Tick( Actor self )
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 
@@ -40,21 +40,21 @@ namespace OpenRA.Mods.RA.Activities
 					movement.MoveTo(rearmTarget.CenterPosition.ToCPos(), rearmTarget),
 					new Rearm(self),
 					new Repair(rearmTarget),
-					this );
+					this);
 			}
 
 			var ml = self.Trait<Minelayer>();
-			if (ml.minefield.Contains(self.Location) &&
+			if (ml.Minefield.Contains(self.Location) &&
 				ShouldLayMine(self, self.Location))
 			{
 				LayMine(self);
-				return Util.SequenceActivities( new Wait(20), this ); // a little wait after placing each mine, for show
+				return Util.SequenceActivities(new Wait(20), this); // a little wait after placing each mine, for show
 			}
 
-			if (ml.minefield.Length > 0)
+			if (ml.Minefield.Length > 0)
 				for (var n = 0; n < 20; n++)		// dont get stuck forever here
 				{
-					var p = ml.minefield.Random(self.World.SharedRandom);
+					var p = ml.Minefield.Random(self.World.SharedRandom);
 					if (ShouldLayMine(self, p))
 						return Util.SequenceActivities( movement.MoveTo(p, 0), this );
 				}

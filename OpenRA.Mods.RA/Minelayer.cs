@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync
 	{
 		/* [Sync] when sync can cope with arrays! */
-		public CPos[] minefield = null;
+		public CPos[] Minefield = null;
 		[Sync] CPos minefieldStart;
 		Actor self;
 		Sprite tile;
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 			{
 				var movement = self.Trait<IPositionable>();
 
-				minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
+				Minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
 					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();
 
@@ -98,11 +98,11 @@ namespace OpenRA.Mods.RA
 
 		public void RenderAfterWorld(WorldRenderer wr)
 		{
-			if (self.Owner != self.World.LocalPlayer || minefield == null)
+			if (self.Owner != self.World.LocalPlayer || Minefield == null)
 				return;
 
 			var pal = wr.Palette("terrain");
-			foreach (var c in minefield)
+			foreach (var c in Minefield)
 				new SpriteRenderable(tile, c.CenterPosition,
 					WVec.Zero, -511, pal, 1f, true).Render(wr);
 		}
