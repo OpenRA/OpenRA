@@ -45,10 +45,13 @@ namespace OpenRA.Mods.RA
 
 		public override void Tick(Actor self)
 		{
-			isActive = self.World.ActorsWithTrait<Production>()
-				.Any(x => x.Actor.Owner == self.Owner
-					 && x.Trait.Info.Produces.Contains(Info.Type));
-
+			isActive = false;
+			foreach (var x in self.World.ActorsWithTrait<Production>())
+				if (x.Actor.Owner == self.Owner && x.Trait.Info.Produces.Contains(Info.Type))
+				{
+					isActive = true;
+					break;
+				}
 			base.Tick(self);
 		}
 

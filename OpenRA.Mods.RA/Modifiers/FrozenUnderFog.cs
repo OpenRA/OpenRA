@@ -111,18 +111,13 @@ namespace OpenRA.Mods.RA
 
 		public void TickRender(WorldRenderer wr, Actor self)
 		{
-			if (self.Destroyed || !initialized || !visible.Any(v => v.Value))
+			if (self.Destroyed || !initialized || !visible.Values.Any(v => v))
 				return;
 
-			IRenderable[] renderables = null;
+			var renderables = self.Render(wr).ToArray();
 			foreach (var player in self.World.Players)
 				if (visible[player])
-				{
-					// Lazily generate a copy of the underlying data.
-					if (renderables == null)
-						renderables = self.Render(wr).ToArray();
 					frozen[player].Renderables = renderables;
-				}
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
