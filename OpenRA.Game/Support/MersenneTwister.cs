@@ -12,10 +12,10 @@ using System;
 
 namespace OpenRA.Support
 {
-	// quick & dirty Mersenne Twister [MT19937] implementation
+	// Quick & dirty Mersenne Twister [MT19937] implementation
 	public class MersenneTwister
 	{
-		uint[] mt = new uint[624];
+		readonly uint[] mt = new uint[624];
 		int index = 0;
 
 		public int Last;
@@ -46,9 +46,27 @@ namespace OpenRA.Support
 			return Last;
 		}
 
-		public int Next(int low, int high) { return low + Next() % (high - low); }
-		public int Next(int high) { return Next() % high; }
-		public float NextFloat() { return Math.Abs(Next() / (float)0x7fffffff); }
+		public int Next(int low, int high)
+		{
+			if (high < low)
+				throw new ArgumentOutOfRangeException("high", "Maximum value is less than the minimum value.");
+
+			var diff = high - low;
+			if (diff <= 1)
+				return low;
+
+			return low + Next() % diff;
+		}
+
+		public int Next(int high)
+		{
+			return Next(0, high);
+		}
+
+		public float NextFloat()
+		{
+			return Math.Abs(Next() / (float)0x7fffffff);
+		}
 
 		void Generate()
 		{
