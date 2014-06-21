@@ -220,7 +220,11 @@ namespace OpenRA.Mods.RA
 
 		public bool CanBuild(ActorInfo actor)
 		{
-			return produceable.ContainsKey(actor) && produceable[actor].Buildable;
+			ProductionState ps;
+			if (!produceable.TryGetValue(actor, out ps))
+				return false;
+
+			return ps.Buildable || (self.World.AllowDevCommands && developerMode.AllTech);
 		}
 
 		public virtual void Tick(Actor self)
