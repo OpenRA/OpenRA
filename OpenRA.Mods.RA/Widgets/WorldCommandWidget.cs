@@ -164,8 +164,7 @@ namespace OpenRA.Mods.RA.Widgets
 				if (at != null)
 					at.PredictedStance = nextStance;
 
-				// FIXME: Abuse of the type system here with `CPos`
-				return new Order("SetUnitStance", a, false) { TargetLocation = new CPos((int)nextStance, 0), SuppressVisualFeedback = true };
+				return new Order("SetUnitStance", a, false) { ExtraData = (uint)nextStance };
 			});
 
 			Game.Debug("Unit stance set to: {0}".F(nextStance));

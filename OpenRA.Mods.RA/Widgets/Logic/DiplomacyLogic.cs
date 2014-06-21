@@ -87,9 +87,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (!p.World.LobbyInfo.GlobalSettings.FragileAlliances)
 				return;	// stance changes are banned
 
-			// HACK: Abuse of the type system here with `CPos`
 			world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor, false)
-			{ TargetLocation = new CPos((int)ss, 0), TargetString = p.InternalName, SuppressVisualFeedback = true });
+			{
+				ExtraData = (uint)ss,
+				TargetString = p.InternalName,
+			});
 
 			bw.Text = ss.ToString();
 		}

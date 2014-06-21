@@ -237,7 +237,7 @@ namespace OpenRA.Network
 							return;
 
 						var targetPlayer = order.Player.World.Players.FirstOrDefault(p => p.InternalName == order.TargetString);
-						var newStance = (Stance)order.TargetLocation.X;
+						var newStance = (Stance)order.ExtraData;
 
 						SetPlayerStance(world, order.Player, targetPlayer, newStance);
 

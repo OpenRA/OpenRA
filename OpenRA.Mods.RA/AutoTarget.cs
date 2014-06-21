@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "SetUnitStance" && info.EnableStances)
-				Stance = (UnitStance)order.TargetLocation.X;
+				Stance = (UnitStance)order.ExtraData;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
