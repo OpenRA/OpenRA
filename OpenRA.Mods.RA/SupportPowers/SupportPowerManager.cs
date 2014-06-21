@@ -246,7 +246,7 @@ namespace OpenRA.Mods.RA
 		{
 			world.CancelInputMode();
 			if (mi.Button == expectedButton && world.Map.IsInMap(xy))
-				yield return new Order(order, manager.self, false) { TargetLocation = xy };
+				yield return new Order(order, manager.self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
 		}
 
 		public virtual void Tick(World world)

@@ -62,8 +62,12 @@ namespace OpenRA.Mods.RA.Orders
 				}
 
 				var isLineBuild = world.Map.Rules.Actors[Building].Traits.Contains<LineBuildInfo>();
-				yield return new Order(isLineBuild ? "LineBuild" : "PlaceBuilding",
-					Producer.Owner.PlayerActor, false) { TargetLocation = topLeft, TargetString = Building };
+				yield return new Order(isLineBuild ? "LineBuild" : "PlaceBuilding", Producer.Owner.PlayerActor, false)
+				{
+					TargetLocation = topLeft,
+					TargetString = Building,
+					SuppressVisualFeedback = true
+				};
 			}
 		}
 

@@ -84,7 +84,8 @@ namespace OpenRA.Mods.RA.AI
 						ai.world.IssueOrder(new Order("PlaceBuilding", ai.p.PlayerActor, false)
 						{
 							TargetLocation = location.Value,
-							TargetString = currentBuilding.Item
+							TargetString = currentBuilding.Item,
+							SuppressVisualFeedback = true
 						});
 					}
 				}

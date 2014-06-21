@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			// HACK: Abuse of the type system here with `CPos`
 			world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor, false)
-				{ TargetLocation = new CPos((int)ss, 0), TargetString = p.InternalName });
+			{ TargetLocation = new CPos((int)ss, 0), TargetString = p.InternalName, SuppressVisualFeedback = true });
 
 			bw.Text = ss.ToString();
 		}

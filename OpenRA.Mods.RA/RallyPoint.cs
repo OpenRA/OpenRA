@@ -40,8 +40,8 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
-			if( order.OrderID == "SetRallyPoint" )
-				return new Order(order.OrderID, self, false) { TargetLocation = target.CenterPosition.ToCPos() };
+			if (order.OrderID == "SetRallyPoint")
+				return new Order(order.OrderID, self, false) { TargetLocation = target.CenterPosition.ToCPos(), SuppressVisualFeedback = true };
 
 			return null;
 		}

@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA
 			{
 				world.CancelInputMode();
 				if (mi.Button == MouseButton.Left && power.UnitsInRange(xy).Any())
-					yield return new Order(order, manager.self, false) { TargetLocation = xy };
+					yield return new Order(order, manager.self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
 			}
 
 			public void Tick(World world)

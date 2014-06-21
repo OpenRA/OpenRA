@@ -191,7 +191,8 @@ namespace OpenRA.Mods.RA
 					yield return new Order(order, manager.self, false)
 					{
 						TargetLocation = xy,
-						ExtraLocation = sourceLocation
+						ExtraLocation = sourceLocation,
+						SuppressVisualFeedback = true
 					};
 			}
 

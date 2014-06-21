@@ -688,7 +688,7 @@ namespace OpenRA.Mods.RA.AI
 					p.PlayerName, buildings.Length);
 
 			foreach (var a in buildings)
-				world.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor.Location) });
+				world.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor.Location), SuppressVisualFeedback = true });
 		}
 
 		// Won't work for shipyards...
@@ -773,7 +773,7 @@ namespace OpenRA.Mods.RA.AI
 					if (attackLocation == null)
 						return;
 
-					world.IssueOrder(new Order(sp.Info.OrderName, supportPowerMngr.self, false) { TargetLocation = attackLocation.Value });
+					world.IssueOrder(new Order(sp.Info.OrderName, supportPowerMngr.self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
 				}
 			}
 		}

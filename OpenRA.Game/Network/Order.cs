@@ -45,6 +45,7 @@ namespace OpenRA
 		public CPos ExtraLocation;
 		public uint ExtraData;
 		public bool IsImmediate;
+		public bool SuppressVisualFeedback;
 
 		public Player Player { get { return Subject.Owner; } }
 
