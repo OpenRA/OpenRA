@@ -85,6 +85,7 @@ World:
 	Country@1:
 		Name: Nod
 		Race: nod
+	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:
 	FixedColorPalette@GreenTiberium:
