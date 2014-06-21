@@ -107,8 +107,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				titleLabel.GetText = () => preview.Title;
 
 				var previewWidget = item.Get<MapPreviewWidget>("PREVIEW");
-				previewWidget.IgnoreMouseOver = true;
-				previewWidget.IgnoreMouseInput = true;
 				previewWidget.Preview = () => preview;
 
 				var detailsWidget = item.GetOrNull<LabelWidget>("DETAILS");
