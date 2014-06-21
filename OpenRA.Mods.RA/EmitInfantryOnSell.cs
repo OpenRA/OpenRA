@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] ActorTypes = { "e1" };
 	}
 
-	class EmitInfantryOnSell : INotifySold, INotifyKilled
+	class EmitInfantryOnSell : INotifySold
 	{
 		public void Selling(Actor self) { }
 
@@ -61,10 +61,5 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void Sold(Actor self) { Emit(self); }
-
-		public void Killed(Actor self, AttackInfo e)
-		{
-			Emit(self);
-		}
 	}
 }
