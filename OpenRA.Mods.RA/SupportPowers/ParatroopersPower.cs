@@ -24,7 +24,8 @@ namespace OpenRA.Mods.RA
 		[ActorReference]
 		public string FlareType = "flare";
 
-		public readonly int FlareTime = 25 * 60 * 2;	// 2 minutes
+		[Desc("In game ticks. Default value equates to 2 minutes.")]
+		public readonly int FlareTime = 25 * 60 * 2;
 
 		public override object Create(ActorInitializer init) { return new ParatroopersPower(init.self, this); }
 	}
