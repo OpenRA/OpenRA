@@ -196,7 +196,7 @@ Background@LOBBY_OPTIONS_BIN:
 Background@FORCE_START_DIALOG:
 	X: 20
 	Y: 67
-	Width: 535
+	Width: 593
 	Height: 235
 	Background: dialog3
 	Children:
