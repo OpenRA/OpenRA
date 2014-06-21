@@ -54,8 +54,8 @@ namespace OpenRA.Mods.RA
 
 				self.World.AddFrameEndTask(w => w.CreateActor(at.Name, new TypeDictionary
 				{
-					new LocationInit( loc ),
-					new OwnerInit( self.Owner ),
+					new LocationInit(loc),
+					new OwnerInit(self.Owner),
 				}));
 			}
 		}
