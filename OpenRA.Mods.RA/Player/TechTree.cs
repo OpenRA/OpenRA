@@ -56,6 +56,11 @@ namespace OpenRA.Mods.RA
 			watchers.RemoveAll(x => x.Key == key);
 		}
 
+		public void Remove(ITechTreeElement tte)
+		{
+			watchers.RemoveAll(x => x.RegisteredBy == tte);
+		}
+
 		static Cache<string, List<Actor>> GatherOwnedPrerequisites(Player player)
 		{
 			var ret = new Cache<string, List<Actor>>(x => new List<Actor>());
@@ -94,6 +99,7 @@ namespace OpenRA.Mods.RA
 		class Watcher
 		{
 			public readonly string Key;
+			public ITechTreeElement RegisteredBy { get { return watcher; } }
 
 			// Strings may be either actor type, or "alternate name" key
 			readonly string[] prerequisites;

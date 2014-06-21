@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init, init.self.Owner.PlayerActor, this); }
 	}
 
-	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyCapture, INotifyKilled, INotifySold, ISync, INotifyTransform
+	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyOwnerChanged, INotifyKilled, INotifySold, ISync, INotifyTransform
 	{
 		public readonly ProductionQueueInfo Info;
 		readonly Actor self;
@@ -105,15 +105,16 @@ namespace OpenRA.Mods.RA
 			queue.Clear();
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerPower = newOwner.PlayerActor.Trait<PowerManager>();
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 			ClearQueue();
 
 			// Regenerate the produceables and tech tree state
+			oldOwner.PlayerActor.Trait<TechTree>().Remove(this);
 			CacheProduceables(newOwner.PlayerActor);
-			self.Owner.PlayerActor.Trait<TechTree>().Update();
+			newOwner.PlayerActor.Trait<TechTree>().Update();
 		}
 
 		public void Killed(Actor killed, AttackInfo e) { if (killed == self) ClearQueue(); }
