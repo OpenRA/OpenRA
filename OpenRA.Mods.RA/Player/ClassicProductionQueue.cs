@@ -103,7 +103,7 @@ namespace OpenRA.Mods.RA
 			if (Info.SpeedUp)
 			{
 				var selfsameBuildings = self.World.ActorsWithTrait<Production>()
-					.Where(p => p.Trait.Info.Produces.Contains(unit.Traits.Get<BuildableInfo>().Queue))
+					.Where(p => p.Trait.Info.Produces.Intersect(unit.Traits.Get<BuildableInfo>().Queue).Any())
 						.Where(p => p.Actor.Owner == self.Owner).ToArray();
 
 				var speedModifier = selfsameBuildings.Count().Clamp(1, Info.BuildTimeSpeedReduction.Length) - 1;

@@ -1,12 +1,22 @@
-MCV.Husk:
+MCV.GDI.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Mobile Construction Vehicle (Destroyed)
+		Name: GDI Mobile Construction Vehicle (Destroyed)
 		Icon: mcvicnh
 	RenderUnit:
 		Image: mcv
 	TransformOnCapture:
-		IntoActor: mcv
+		IntoActor: mcv.gdi
+
+MCV.Nod.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Nod Mobile Construction Vehicle (Destroyed)
+		Icon: mcvicnh
+	RenderUnit:
+		Image: mcv
+	TransformOnCapture:
+		IntoActor: mcv.nod
 
 HARV.Husk:
 	Inherits: ^Husk

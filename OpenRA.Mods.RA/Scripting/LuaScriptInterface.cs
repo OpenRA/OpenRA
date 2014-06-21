@@ -378,10 +378,10 @@ namespace OpenRA.Mods.RA.Scripting
 			return world.FindActorsInCircle(location, radius).ToArray();
 		}
 
-		ClassicProductionQueue GetSharedQueueForCategory(Player player, string category)
+		ClassicProductionQueue GetSharedQueueForCategory(Player player, string[] category)
 		{
 			return world.ActorsWithTrait<ClassicProductionQueue>()
-				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category)
+				.Where(a => a.Actor.Owner == player && category.Contains(a.Trait.Info.Type))
 				.Select(a => a.Trait).FirstOrDefault();
 		}
 
@@ -421,7 +421,7 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[LuaGlobal]
-		public bool SharedQueueIsBusy(Player player, string category)
+		public bool SharedQueueIsBusy(Player player, string[] category)
 		{
 			var queue = GetSharedQueueForCategory(player, category);
 

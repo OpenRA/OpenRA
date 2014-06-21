@@ -1,15 +1,19 @@
 Player:
 	HackyAI@Cabal:
 		Name: Cabal
+		RallypointTestBuilding: fact.gdi
 		BuildingCommonNames:
-			ConstructionYard: fact
+			ConstructionYard: fact.nod,fact.gdi
 			Refinery: proc
 			Power: nuke,nuk2
 			Barracks: pyle,hand
 			VehiclesFactory: weap,afld
 			Silo: silo
+		BuildingQueues: Nod.Building, GDI.Building
+		DefenseQueues: Nod.Defense, GDI.Defense
+		UnitQueues: Nod.Vehicle, GDI.Vehicle, Nod.Infantry, GDI.Infantry, Nod.Aircraft, GDI.Aircraft
 		UnitsCommonNames:
-			Mcv: mcv
+			Mcv: mcv.gdi, mcv.nod
 		BuildingLimits:
 			proc: 4
 			pyle: 2
@@ -17,7 +21,8 @@ Player:
 			hq: 1
 			weap: 2
 			afld: 2
-			hpad: 0
+			hpad.gdi: 0
+			hpad.nod: 0
 			eye: 1
 			tmpl: 1
 			fix: 0
@@ -40,7 +45,8 @@ Player:
 			tmpl: 1%
 			silo: 0%
 			fix: 1%
-			hpad: 2%
+			hpad.gdi: 2%
+			hpad.nod: 2%
 		UnitsToBuild:
 			e1: 14%
 			e3: 7%
@@ -63,15 +69,19 @@ Player:
 		SquadSize: 15
 	HackyAI@Watson:
 		Name: Watson
+		RallypointTestBuilding: fact.gdi
 		BuildingCommonNames:
-			ConstructionYard: fact
+			ConstructionYard: fact.nod,fact.gdi
 			Refinery: proc
 			Power: nuke,nuk2
 			Barracks: pyle,hand
 			VehiclesFactory: weap,afld
 			Silo: silo
+		BuildingQueues: Nod.Building, GDI.Building
+		DefenseQueues: Nod.Defense, GDI.Defense
+		UnitQueues: Nod.Vehicle, GDI.Vehicle, Nod.Infantry, GDI.Infantry, Nod.Aircraft, GDI.Aircraft
 		UnitsCommonNames:
-			Mcv: mcv
+			Mcv: mcv.gdi, mcv.nod
 		BuildingLimits:
 			proc: 4
 			pyle: 2
@@ -79,7 +89,8 @@ Player:
 			hq: 1
 			weap: 2
 			afld: 2
-			hpad: 1
+			hpad.gdi: 1
+			hpad.nod: 1
 			eye: 1
 			tmpl: 1
 			fix: 0
@@ -93,7 +104,8 @@ Player:
 			nuk2: 18%
 			weap: 5%
 			afld: 5%
-			hpad: 4%
+			hpad.gdi: 4%
+			hpad.nod: 4%
 			gtwr: 5%
 			gun: 5%
 			atwr: 9%
@@ -125,15 +137,19 @@ Player:
 		SquadSize: 15
 	HackyAI@HAL9001:
 		Name: HAL 9001
+		RallypointTestBuilding: fact.gdi
 		BuildingCommonNames:
-			ConstructionYard: fact
+			ConstructionYard: fact.nod,fact.gdi
 			Refinery: proc
 			Power: nuke,nuk2
 			Barracks: pyle,hand
 			VehiclesFactory: weap,afld
 			Silo: silo
+		BuildingQueues: Nod.Building, GDI.Building
+		DefenseQueues: Nod.Defense, GDI.Defense
+		UnitQueues: Nod.Vehicle, GDI.Vehicle, Nod.Infantry, GDI.Infantry, Nod.Aircraft, GDI.Aircraft
 		UnitsCommonNames:
-			Mcv: mcv
+			Mcv: mcv.gdi, mcv.nod
 		BuildingLimits:
 			proc: 4
 			pyle: 2
@@ -141,7 +157,8 @@ Player:
 			hq: 1
 			weap: 3
 			afld: 2
-			hpad: 1
+			hpad.gdi: 1
+			hpad.nod: 1
 			eye: 1
 			tmpl: 1
 			fix: 0
@@ -155,7 +172,8 @@ Player:
 			nuk2: 18%
 			weap: 8%
 			afld: 6%
-			hpad: 4%
+			hpad.gdi: 4%
+			hpad.nod: 4%
 			gtwr: 5%
 			gun: 5%
 			atwr: 9%

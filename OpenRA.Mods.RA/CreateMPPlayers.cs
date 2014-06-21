@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA
 			if (p.PlayerReference.Enemies.Contains(q.InternalName))
 				return Stance.Enemy;
 
-			// Hack: Map players share a ClientID with the host, so would
+			// HACK: Map players share a ClientID with the host, so would
 			// otherwise take the host's team stance instead of being neutral
 			if (p.PlayerReference.Playable && q.PlayerReference.Playable)
 			{

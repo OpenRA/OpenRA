@@ -25,6 +25,8 @@ namespace OpenRA.Mods.RA
 		public readonly string Type = null;
 		[Desc("Group queues from separate buildings together into the same tab.")]
 		public readonly string Group = null;
+		[Desc("Filter buildable items based on their Owner.")]
+		public readonly bool RequireOwner = true;
 
 		[Desc("This value is used to translate the unit cost into build time.")]
 		public float BuildSpeed = 0.4f;
@@ -99,14 +101,8 @@ namespace OpenRA.Mods.RA
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 			ClearQueue();
 
-			// Produceable contains the tech from the original owner - this is desired so we don't clear it.
-			Produceable = InitTech(self.Owner.PlayerActor);
-
-			// Force a third(!) tech tree update to ensure that prerequisites are correct.
-			// The first two updates are triggered by adding/removing the actor when
-			// changing ownership, *before* the new techtree watchers have been set up.
-			// This is crap.
-			self.Owner.PlayerActor.Trait<TechTree>().Update();
+			// Update producable to contain the tech from the original owner, based on the new owner's currently built tech.
+			Produceable = InitTech(newOwner.PlayerActor);
 		}
 
 		public void Killed(Actor killed, AttackInfo e) { if (killed == self) ClearQueue(); }
@@ -123,7 +119,7 @@ namespace OpenRA.Mods.RA
 			{
 				var bi = a.Traits.Get<BuildableInfo>();
 				// Can our race build this by satisfying normal prerequisites?
-				var buildable = bi.Owner.Contains(Race.Race);
+				var buildable = !Info.RequireOwner || bi.Owner.Contains(Race.Race);
 				// Checks if Prerequisites want to hide the Actor from buildQueue if they are false
 				tech.Add(a, new ProductionState { Visible = buildable });
 				if (buildable)
@@ -136,9 +132,9 @@ namespace OpenRA.Mods.RA
 		IEnumerable<ActorInfo> AllBuildables(string category)
 		{
 			return self.World.Map.Rules.Actors.Values
-				.Where( x => x.Name[ 0 ] != '^' )
-				.Where( x => x.Traits.Contains<BuildableInfo>() )
-				.Where( x => x.Traits.Get<BuildableInfo>().Queue == category );
+				.Where(x => x.Name[0] != '^')
+				.Where(x => x.Traits.Contains<BuildableInfo>())
+				.Where(x => x.Traits.Get<BuildableInfo>().Queue.Contains(category));
 		}
 
 		public void OverrideProduction(ActorInfo type, bool buildable)
@@ -221,7 +217,7 @@ namespace OpenRA.Mods.RA
 				{
 					var unit = self.World.Map.Rules.Actors[order.TargetString];
 					var bi = unit.Traits.Get<BuildableInfo>();
-					if (bi.Queue != Info.Type)
+					if (!bi.Queue.Contains(Info.Type))
 						return; /* Not built by this queue */
 
 					var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;

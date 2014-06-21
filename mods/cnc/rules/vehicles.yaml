@@ -1,4 +1,4 @@
-MCV:
+^MCV:
 	Inherits: ^Vehicle
 	Valued:
 		Cost: 2000
@@ -8,7 +8,6 @@ MCV:
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: anyhq
-		Owner: gdi,nod
 	Selectable:
 		Priority: 3
 	Mobile:
@@ -21,7 +20,6 @@ MCV:
 	RevealsShroud:
 		Range: 8c0
 	Transforms:
-		IntoActor: fact
 		Offset: -1,-1
 		Facing: 108
 		TransformSounds: constru2.aud, hvydoor1.aud
@@ -29,13 +27,37 @@ MCV:
 	RenderUnit:
 	MustBeDestroyed:
 	BaseBuilding:
-	LeavesHusk:
-		HuskActor: MCV.Husk
 	-GainsExperience:
 	-Cloak:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+
+MCV.GDI:
+	Inherits: ^MCV
+	Buildable:
+		Queue: GDI.Vehicle
+	Transforms:
+		IntoActor: fact.gdi
+	RenderUnit:
+		Image: MCV
+	Tooltip:
+		Name: GDI Mobile Construction Vehicle
+	LeavesHusk:
+		HuskActor: MCV.GDI.Husk
+
+MCV.Nod:
+	Inherits: ^MCV
+	Buildable:
+		Queue: Nod.Vehicle
+	Transforms:
+		IntoActor: fact.nod
+	RenderUnit:
+		Image: MCV
+	Tooltip:
+		Name: Nod Mobile Construction Vehicle
+	LeavesHusk:
+		HuskActor: MCV.Nod.Husk
 
 HARV:
 	Inherits: ^Tank
@@ -47,7 +69,7 @@ HARV:
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
-		Owner: gdi,nod
+		Queue: Nod.Vehicle, GDI.Vehicle
 	Selectable:
 		Priority: 7
 		Bounds: 36,36
@@ -84,7 +106,7 @@ APC:
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
-		Owner: gdi
+		Queue: GDI.Vehicle
 	Mobile:
 		ROT: 8
 		Speed: 128
@@ -131,7 +153,7 @@ ARTY:
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq
-		Owner: nod
+		Queue: Nod.Vehicle
 	Mobile:
 		ROT: 2
 		Speed: 85
@@ -167,7 +189,7 @@ FTNK:
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq
-		Owner: nod
+		Queue: Nod.Vehicle
 	Mobile:
 		ROT: 7
 		Speed: 113
@@ -203,7 +225,7 @@ BGGY:
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: afld
-		Owner: nod
+		Queue: Nod.Vehicle
 	Mobile:
 		ROT: 10
 		Speed: 170
@@ -238,7 +260,7 @@ BIKE:
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: afld
-		Owner: nod
+		Queue: Nod.Vehicle
 	Mobile:
 		ROT: 10
 		Speed: 213
@@ -275,7 +297,7 @@ JEEP:
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: weap
-		Owner: gdi
+		Queue: GDI.Vehicle
 	Mobile:
 		ROT: 10
 		Speed: 156
@@ -310,7 +332,7 @@ LTNK:
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq
-		Owner: nod
+		Queue: Nod.Vehicle
 	Mobile:
 		ROT: 7
 		Speed: 113
@@ -349,7 +371,7 @@ MTNK:
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq
-		Owner: gdi
+		Queue: GDI.Vehicle
 	Mobile:
 		Speed: 85
 	Health:
@@ -389,7 +411,7 @@ HTNK:
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: eye
-		Owner: gdi
+		Queue: GDI.Vehicle
 	Mobile:
 		Crushes: wall, heavywall, crate, infantry
 		Speed: 56
@@ -442,7 +464,7 @@ MSAM:
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq
-		Owner: gdi
+		Queue: GDI.Vehicle
 	Mobile:
 		Speed: 85
 		ROT: 4
@@ -479,7 +501,7 @@ MLRS:
 	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: anyhq
-		Owner: nod
+		Queue: Nod.Vehicle
 	Mobile:
 		Speed: 99
 		ROT: 7
@@ -519,7 +541,7 @@ STNK:
 	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: tmpl
-		Owner: nod
+		Queue: Nod.Vehicle
 	Mobile:
 		ROT: 10
 		Speed: 142

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Air
 		[ActorReference]
 		public readonly string[] RepairBuildings = { "fix" };
 		[ActorReference]
-		public readonly string[] RearmBuildings = { "hpad", "afld" };
+		public readonly string[] RearmBuildings = { };
 		public readonly int InitialFacing = 128;
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;

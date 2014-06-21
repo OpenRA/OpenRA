@@ -17,10 +17,14 @@ CRATE:
 	CloakCrateAction:
 		SelectionShares: 5
 		Effect: cloak
-	GiveMcvCrateAction:
+	GiveMcvCrateAction@GDI:
 		SelectionShares: 0
 		NoBaseSelectionShares: 120
-		Unit: mcv
+		Unit: mcv.gdi
+	GiveMcvCrateAction@NOD:
+		SelectionShares: 0
+		NoBaseSelectionShares: 120
+		Unit: mcv.nod
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:

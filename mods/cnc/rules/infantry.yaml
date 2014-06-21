@@ -7,7 +7,7 @@ E1:
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Buildable:
 		BuildPaletteOrder: 10
-		Owner: gdi, nod
+		Queue: Nod.Infantry, GDI.Infantry
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -31,7 +31,7 @@ E2:
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq
-		Owner: gdi
+		Queue: GDI.Infantry
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -60,7 +60,7 @@ E3:
 		Description: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 20
-		Owner: nod, gdi
+		Queue: Nod.Infantry, GDI.Infantry
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -87,8 +87,8 @@ E4:
 		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 40
-		Owner: nod
 		Prerequisites: anyhq
+		Queue: Nod.Infantry
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -117,8 +117,8 @@ E5:
 		Description: Advanced general-purpose infantry.\n  Strong vs all Ground units
 	Buildable:
 		BuildPaletteOrder: 50
-		Owner: nod
 		Prerequisites: tmpl
+		Queue: Nod.Infantry
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -153,7 +153,7 @@ E6:
 		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
 	Buildable:
 		BuildPaletteOrder: 30
-		Owner: gdi,nod
+		Queue: Nod.Infantry, GDI.Infantry
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -181,7 +181,7 @@ RMBO:
 		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Buildable:
 		BuildPaletteOrder: 50
-		Owner: gdi
+		Queue: GDI.Infantry
 		Prerequisites: eye
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -215,7 +215,6 @@ PVICE:
 	Buildable:
 		Queue: Biolab
 		BuildPaletteOrder: 40
-		Owner: gdi, nod
 	Tooltip:
 		Description: Mutated abomination that spits liquid tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	DrawLineToTarget:
