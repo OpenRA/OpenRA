@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init, this); }
 	}
 
-	class RenderBuildingWall : RenderBuilding, INotifyAddedToWorld, INotifyRemovedFromWorld
+	class RenderBuildingWall : RenderBuilding, INotifyAddedToWorld, INotifyRemovedFromWorld, ITick
 	{
 		readonly RenderBuildingWallInfo info;
 		int adjacent = 0;
@@ -48,7 +48,10 @@ namespace OpenRA.Mods.RA.Render
 		public override void TickRender(WorldRenderer wr, Actor self)
 		{
 			base.TickRender(wr, self);
+		}
 
+		public void Tick(Actor self)
+		{
 			if (!dirty)
 				return;
 
