@@ -72,6 +72,10 @@ explosion:
 	small_napalm: napalm1
 		Start: 0
 		Length: *
+	corpse: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600
 
 pips:
 	groups:

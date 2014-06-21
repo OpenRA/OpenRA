@@ -196,6 +196,7 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	DeathSounds:
+	Parachutable:
 
 ^Plane:
 	AppearsOnRadar:

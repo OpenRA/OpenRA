@@ -520,6 +520,7 @@
     <Compile Include="Lint\CheckActors.cs" />
     <Compile Include="Lint\CheckMapCordon.cs" />
     <Compile Include="World\ResourceLayer.cs" />
+    <Compile Include="Parachutable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

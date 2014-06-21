@@ -175,6 +175,7 @@
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
 		InfDeaths: 6
+	Parachutable:
 
 ^Ship:
 	AppearsOnRadar:
