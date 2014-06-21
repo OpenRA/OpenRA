@@ -26,9 +26,6 @@ namespace OpenRA.Widgets
 		public readonly string Country;
 		public readonly int SpawnPoint;
 
-		public SpawnOccupant()
-		{
-		}
 		public SpawnOccupant(Session.Client client)
 		{
 			Color = client.Color;
@@ -38,6 +35,7 @@ namespace OpenRA.Widgets
 			Country = client.Country;
 			SpawnPoint = client.SpawnPoint;
 		}
+
 		public SpawnOccupant(GameInformation.Player player)
 		{
 			Color = player.Color;
@@ -51,34 +49,58 @@ namespace OpenRA.Widgets
 
 	public class MapPreviewWidget : Widget
 	{
-		public Func<MapPreview> Preview = () => null;
-		public Func<Dictionary<CPos, SpawnOccupant>> SpawnOccupants = () => new Dictionary<CPos, SpawnOccupant>();
-		public Action<MouseInput> OnMouseDown = _ => {};
-		public bool IgnoreMouseInput = false;
-		public bool ShowSpawnPoints = true;
+		public readonly bool IgnoreMouseInput = false;
+		public readonly bool ShowSpawnPoints = true;
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SPAWN_TOOLTIP";
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly Lazy<TooltipContainerWidget> tooltipContainer;
+
+		readonly Sprite spawnClaimed, spawnUnclaimed;
+		readonly SpriteFont spawnFont;
+		readonly Color spawnColor, spawnContrastColor;
+		readonly int2 spawnLabelOffset;
+
+		public Func<MapPreview> Preview = () => null;
+		public Func<Dictionary<CPos, SpawnOccupant>> SpawnOccupants = () => new Dictionary<CPos, SpawnOccupant>();
+		public Action<MouseInput> OnMouseDown = _ => { };
 		public int TooltipSpawnIndex = -1;
 
-		Rectangle MapRect;
-		float PreviewScale = 0;
+		Rectangle mapRect;
+		float previewScale = 0;
+		Sprite minimap;
 
 		public MapPreviewWidget()
 		{
 			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+
+			spawnClaimed = ChromeProvider.GetImage("lobby-bits", "spawn-claimed");
+			spawnUnclaimed = ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed");
+			spawnFont = Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")];
+			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
+			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
+			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
 		}
 
 		protected MapPreviewWidget(MapPreviewWidget other)
 			: base(other)
 		{
 			Preview = other.Preview;
-			SpawnOccupants = other.SpawnOccupants;
+
+			IgnoreMouseInput = other.IgnoreMouseInput;
 			ShowSpawnPoints = other.ShowSpawnPoints;
 			TooltipTemplate = other.TooltipTemplate;
 			TooltipContainer = other.TooltipContainer;
+			SpawnOccupants = other.SpawnOccupants;
+
 			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+
+			spawnClaimed = ChromeProvider.GetImage("lobby-bits", "spawn-claimed");
+			spawnUnclaimed = ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed");
+			spawnFont = Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")];
+			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
+			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
+			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
 		}
 
 		public override Widget Clone() { return new MapPreviewWidget(this); }
@@ -98,7 +120,7 @@ namespace OpenRA.Widgets
 		public override void MouseEntered()
 		{
 			if (TooltipContainer != null)
-				tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "preview", this }});
+				tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "preview", this } });
 		}
 
 		public override void MouseExited()
@@ -110,10 +132,11 @@ namespace OpenRA.Widgets
 		public int2 ConvertToPreview(CPos point)
 		{
 			var preview = Preview();
-			return new int2(MapRect.X + (int)(PreviewScale*(point.X - preview.Bounds.Left)) , MapRect.Y + (int)(PreviewScale*(point.Y - preview.Bounds.Top)));
+			var dx = (int)(previewScale * (point.X - preview.Bounds.Left));
+			var dy = (int)(previewScale * (point.Y - preview.Bounds.Top));
+			return new int2(mapRect.X + dx, mapRect.Y + dy);
 		}
 
-		Sprite minimap;
 		public override void Draw()
 		{
 			var preview = Preview();
@@ -127,14 +150,14 @@ namespace OpenRA.Widgets
 				return;
 
 			// Update map rect
-			PreviewScale = Math.Min(RenderBounds.Width / minimap.size.X, RenderBounds.Height / minimap.size.Y);
-			var w = (int)(PreviewScale * minimap.size.X);
-			var h = (int)(PreviewScale * minimap.size.Y);
+			previewScale = Math.Min(RenderBounds.Width / minimap.size.X, RenderBounds.Height / minimap.size.Y);
+			var w = (int)(previewScale * minimap.size.X);
+			var h = (int)(previewScale * minimap.size.Y);
 			var x = RenderBounds.X + (RenderBounds.Width - w) / 2;
 			var y = RenderBounds.Y + (RenderBounds.Height - h) / 2;
-			MapRect = new Rectangle(x, y, w, h);
+			mapRect = new Rectangle(x, y, w, h);
 
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(minimap, new float2(MapRect.Location), new float2(MapRect.Size));
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(minimap, new float2(mapRect.Location), new float2(mapRect.Size));
 
 			TooltipSpawnIndex = -1;
 			if (ShowSpawnPoints)
@@ -146,20 +169,19 @@ namespace OpenRA.Widgets
 				{
 					var owned = colors.ContainsKey(p);
 					var pos = ConvertToPreview(p);
-					var sprite = ChromeProvider.GetImage("lobby-bits", owned ? "spawn-claimed" : "spawn-unclaimed");
+					var sprite = owned ? spawnClaimed : spawnUnclaimed;
 					var offset = new int2(sprite.bounds.Width, sprite.bounds.Height) / 2;
 
 					if (owned)
 						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, sprite.bounds.Width - 2, sprite.bounds.Height - 2), colors[p]);
 
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos - offset);
-					var fonts = Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")];
 					var number = Convert.ToChar('A' + spawnPoints.IndexOf(p)).ToString();
-					offset = fonts.Measure(number) / 2;
-					offset.Y += 1; // Does not center well vertically for some reason
-					fonts.DrawTextWithContrast(number, pos - offset, ChromeMetrics.Get<Color>("SpawnColor"), ChromeMetrics.Get<Color>("SpawnContrastColor"), 1);
+					var textOffset = spawnFont.Measure(number) / 2 + spawnLabelOffset;
 
-					if (((pos - Viewport.LastMousePos).ToFloat2() * offset.ToFloat2()).LengthSquared < 1)
+					spawnFont.DrawTextWithContrast(number, pos - textOffset, spawnColor, spawnContrastColor, 1);
+
+					if (((pos - Viewport.LastMousePos).ToFloat2() / offset.ToFloat2()).LengthSquared <= 1)
 						TooltipSpawnIndex = spawnPoints.IndexOf(p) + 1;
 				}
 			}

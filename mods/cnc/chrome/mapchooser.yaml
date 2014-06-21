@@ -48,6 +48,8 @@ Container@MAPCHOOSER_PANEL:
 									Y: 4
 									Width: 173
 									Height: 173
+									IgnoreMouseOver: true
+									IgnoreMouseInput: true
 								Label@TITLE:
 									X: 2
 									Y: PARENT_BOTTOM-48
