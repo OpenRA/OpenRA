@@ -198,7 +198,7 @@ Background@LOBBY_OPTIONS_BIN:
 Background@FORCE_START_DIALOG:
 	X: 15
 	Y: 30
-	Width: 501
+	Width: 556
 	Height: 219
 	Background: scrollpanel-bg
 	Children:
