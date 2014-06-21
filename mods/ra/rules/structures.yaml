@@ -439,6 +439,7 @@ PBOX:
 		PipCount: 1
 		InitialUnits: e1
 	-EmitInfantryOnSell:
+	EmitCargoOnSell:
 	DrawLineToTarget:
 	AttackGarrisoned:
 		Armaments: garrisoned
@@ -485,6 +486,7 @@ HBOX:
 		PipCount: 1
 		InitialUnits: e1
 	-EmitInfantryOnSell:
+	EmitCargoOnSell:
 	DrawLineToTarget:
 	DetectCloaked:
 		Range: 6
