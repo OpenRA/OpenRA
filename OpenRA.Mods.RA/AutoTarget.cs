@@ -21,7 +21,11 @@ namespace OpenRA.Mods.RA
 		public readonly bool AllowMovement = true;
 		[Desc("Set to a value >1 to override weapons maximum range for this.")]
 		public readonly int ScanRadius = -1;
+
+		[Desc("Possible values are HoldFire, ReturnFire, Defend and AttackAnything.")]
 		public readonly UnitStance InitialStance = UnitStance.AttackAnything;
+		[Desc("Allow the player to change the unit stance.")]
+		public readonly bool EnableStances = true;
 
 		[Desc("Ticks to wait until next AutoTarget: attempt.")]
 		public readonly int MinimumScanTimeInterval = 3;
@@ -30,7 +34,6 @@ namespace OpenRA.Mods.RA
 
 		public readonly bool TargetWhenIdle = true;
 		public readonly bool TargetWhenDamaged = true;
-		public readonly bool EnableStances = true;
 
 		public object Create(ActorInitializer init) { return new AutoTarget(init.self, this); }
 	}
