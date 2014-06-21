@@ -45,8 +45,8 @@ namespace OpenRA.Mods.RA
 			{
 				var flare = info.FlareType != null ? w.CreateActor(info.FlareType, new TypeDictionary
 				{
-					new LocationInit( order.TargetLocation ),
-					new OwnerInit( self.Owner ),
+					new LocationInit(order.TargetLocation),
+					new OwnerInit(self.Owner),
 				}) : null;
 
 				if (flare != null)
