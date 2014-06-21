@@ -75,7 +75,6 @@ namespace OpenRA.Mods.RA
 		PowerManager playerPower;
 		PlayerResources playerResources;
 		DeveloperMode developerMode;
-		string race;
 
 		// A list of things we could possibly build
 		Dictionary<ActorInfo, ProductionState> produceable;
@@ -92,6 +91,8 @@ namespace OpenRA.Mods.RA
 		[Sync] public bool CurrentDone { get { return QueueLength != 0 && queue[0].Done; } }
 		[Sync] public bool Enabled { get; private set; }
 
+		public string Race { get; private set; }
+
 		public ProductionQueue(ActorInitializer init, Actor playerActor, ProductionQueueInfo info)
 		{
 			self = init.self;
@@ -100,8 +101,8 @@ namespace OpenRA.Mods.RA
 			playerPower = playerActor.Trait<PowerManager>();
 			developerMode = playerActor.Trait<DeveloperMode>();
 
-			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.Race;
-			Enabled = !info.Race.Any() || info.Race.Contains(race);
+			Race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.Race;
+			Enabled = !info.Race.Any() || info.Race.Contains(Race);
 
 			CacheProduceables(playerActor);
 		}
@@ -125,8 +126,8 @@ namespace OpenRA.Mods.RA
 
 			if (!Info.Sticky)
 			{
-				race = self.Owner.Country.Race;
-				Enabled = !Info.Race.Any() || Info.Race.Contains(race);
+				Race = self.Owner.Country.Race;
+				Enabled = !Info.Race.Any() || Info.Race.Contains(Race);
 			}
 
 			// Regenerate the produceables and tech tree state
@@ -153,7 +154,7 @@ namespace OpenRA.Mods.RA
 				var bi = a.Traits.Get<BuildableInfo>();
 
 				// Can our race build this by satisfying normal prerequisites?
-				var buildable = !Info.RequireOwner || bi.Owner.Contains(race);
+				var buildable = !Info.RequireOwner || bi.Owner.Contains(Race);
 
 				// Checks if Prerequisites want to hide the Actor from buildQueue if they are false
 				produceable.Add(a, new ProductionState { Visible = buildable });
@@ -370,7 +371,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			if (sp != null && !self.IsDisabled() && sp.Produce(self, self.World.Map.Rules.Actors[name]))
+			if (sp != null && !self.IsDisabled() && sp.Produce(self, self.World.Map.Rules.Actors[name], Race))
 			{
 				FinishProduction();
 				return true;

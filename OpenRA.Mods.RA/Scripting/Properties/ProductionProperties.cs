@@ -28,13 +28,13 @@ namespace OpenRA.Mods.RA.Scripting
 
 		[ScriptActorPropertyActivity]
 		[Desc("Build a unit, ignoring the production queue. The activity will wait if the exit is blocked")]
-		public void Produce(string actorType)
+		public void Produce(string actorType, string raceVariant = null)
 		{
 			ActorInfo actorInfo;
 			if (!self.World.Map.Rules.Actors.TryGetValue(actorType, out actorInfo))
 				throw new LuaException("Unknown actor type '{0}'".F(actorType));
 
-			self.QueueActivity(new WaitFor(() => p.Produce(self, actorInfo)));
+			self.QueueActivity(new WaitFor(() => p.Produce(self, actorInfo, raceVariant)));
 		}
 	}
 }

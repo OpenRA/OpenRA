@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
 			{
-				if (p.Trait.Produce(p.Actor, self.World.Map.Rules.Actors[name]))
+				if (p.Trait.Produce(p.Actor, self.World.Map.Rules.Actors[name], Race))
 				{
 					FinishProduction();
 					return true;

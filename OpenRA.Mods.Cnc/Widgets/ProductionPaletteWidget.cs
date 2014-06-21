@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				if (first != null && first.Done && actor.Traits.Contains<BuildingInfo>())
 				{
 					Sound.Play(TabClick);
-					World.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue.Actor, icon.Name);
+					World.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue, icon.Name);
 				}
 				else if (first != null && first.Paused)
 				{

@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA
 			rp = Exts.Lazy(() => self.IsDead() ? null : self.TraitOrDefault<RallyPoint>());
 		}
 
-		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo)
+		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string raceVariant)
 		{
 			var exit = self.Location + exitinfo.ExitCell;
 			var spawn = self.CenterPosition + exitinfo.SpawnOffset;
@@ -68,13 +68,18 @@ namespace OpenRA.Mods.RA
 
 			self.World.AddFrameEndTask(w =>
 			{
-				var newUnit = self.World.CreateActor(producee.Name, new TypeDictionary
+				var td = new TypeDictionary
 				{
 					new OwnerInit(self.Owner),
 					new LocationInit(exit),
 					new CenterPositionInit(spawn),
 					new FacingInit(initialFacing)
-				});
+				};
+
+				if (raceVariant != null)
+					td.Add(new RaceInit(raceVariant));
+
+				var newUnit = self.World.CreateActor(producee.Name, td);
 
 				var move = newUnit.TraitOrDefault<IMove>();
 				if (move != null)
@@ -96,7 +101,7 @@ namespace OpenRA.Mods.RA
 			});
 		}
 
-		public virtual bool Produce(Actor self, ActorInfo producee)
+		public virtual bool Produce(Actor self, ActorInfo producee, string raceVariant)
 		{
 			if (Reservable.IsReserved(self))
 				return false;
@@ -107,7 +112,7 @@ namespace OpenRA.Mods.RA
 
 			if (exit != null)
 			{
-				DoProduction(self, producee, exit);
+				DoProduction(self, producee, exit, raceVariant);
 				return true;
 			}
 

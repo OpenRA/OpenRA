@@ -85,6 +85,7 @@ namespace OpenRA.Mods.RA.AI
 						{
 							TargetLocation = location.Value,
 							TargetString = currentBuilding.Item,
+							TargetActor = queue.Actor,
 							SuppressVisualFeedback = true
 						});
 					}
