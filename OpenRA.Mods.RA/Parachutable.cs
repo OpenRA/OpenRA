@@ -26,6 +26,9 @@ namespace OpenRA.Mods.RA
 		public readonly string WaterCorpseSequence = "small_splash";
 		public readonly string WaterCorpsePalette = "effect";
 
+		public readonly string ParachuteSprite = "parach";
+		public readonly WVec ParachuteOffset = WVec.Zero;
+
 		public object Create(ActorInitializer init) { return new Parachutable(init, this); }
 	}
 

@@ -28,12 +28,13 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			this.cargo = cargo;
 
-			var pai = cargo.Info.Traits.GetOrDefault<ParachuteAttachmentInfo>();
-			paraAnim = new Animation(cargo.World, pai != null ? pai.ParachuteSprite : "parach");
+			var parachutableInfo = cargo.Info.Traits.GetOrDefault<ParachutableInfo>();
+			var sprite = parachutableInfo != null ? parachutableInfo.ParachuteSprite : "parach";
+			paraAnim = new Animation(cargo.World, sprite);
 			paraAnim.PlayThen("open", () => paraAnim.PlayRepeating("idle"));
 
-			if (pai != null)
-				parachuteOffset = pai.Offset;
+			if (parachutableInfo != null)
+				parachuteOffset = parachutableInfo.ParachuteOffset;
 
 			// Adjust x,y to match the target subcell
 			cargo.Trait<IPositionable>().SetPosition(cargo, cargo.World.Map.CellContaining(dropPosition));

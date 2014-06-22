@@ -151,8 +151,6 @@
 	GivesBounty:
 	GpsDot:
 		String: Infantry
-	ParachuteAttachment:
-		Offset: 0,0,427
 	CrushableInfantry:
 		CrushSound: squishy2.aud
 	UpdatesPlayerStatistics:
@@ -178,6 +176,7 @@
 		DeathSound: Zapped
 		InfDeaths: 6
 	Parachutable:
+		ParachuteOffset: 0,0,427
 
 ^Ship:
 	AppearsOnRadar:
