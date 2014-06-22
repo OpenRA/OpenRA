@@ -599,3 +599,10 @@ craters:
 		Length: *
 	cr6: cr6
 		Length: *
+
+sonar-ripple:
+	idle: ripple
+		Start: 0
+		Length: *
+		Tick: 10
+		BlendMode: Additive

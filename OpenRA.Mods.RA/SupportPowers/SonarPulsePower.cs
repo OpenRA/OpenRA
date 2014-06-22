@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Primitives;
@@ -46,6 +47,7 @@ namespace OpenRA.Mods.RA
 						new OwnerInit(self.Owner),
 					});
 					Sound.Play(info.SonarPing, sonar.CenterPosition);
+					w.Add(new SonarRipple(sonar.CenterPosition, w));
 					sonar.QueueActivity(new Wait(info.SonarDuration));
 					sonar.QueueActivity(new RemoveSelf());
 				});
