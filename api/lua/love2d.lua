@@ -5370,7 +5370,7 @@ local love = {
   },
   update = {
    args = "(dt: number)",
-   description = "Callback function triggered when a key is pressed.",
+   description = "Callback function used to update the state of the game every frame.",
    returns = "()",
    type = "function"
   },
