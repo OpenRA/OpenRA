@@ -49,6 +49,8 @@ return {
     local match = term and decindent[term]
     -- (2) 'end)', 'end}', 'end,', and 'end;'
     if not term then term, match = str:match("^%s*(end)%s*([%)%}]*)%s*[,;]?") end
+    -- endFoo could be captured as well; filter it out
+    if term and str:match("^%s*(end)%w") then term = nil end
     -- (3) '},', '};', '),' and ');'
     if not term then match = str:match("^%s*[%)%}]+%s*[,;]?%s*$") end
 
