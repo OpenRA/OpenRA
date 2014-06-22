@@ -160,7 +160,7 @@ namespace OpenRA.Widgets
 					}
 					else if (o.TargetLocation != CPos.Zero)
 					{
-						world.AddFrameEndTask(w => w.Add(new MoveFlash(worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(mi.Location)), world)));
+						world.AddFrameEndTask(w => w.Add(new SpriteEffect(worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(mi.Location)), world, "moveflsh", "moveflash")));
 						flashed = true;
 					}
 				}
