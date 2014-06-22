@@ -48,7 +48,7 @@ namespace OpenRA
 		static CountryInfo ChooseCountry(World world, string name)
 		{
 			var selectableCountries = world.Map.Rules.Actors["world"].Traits
-				.WithInterface<CountryInfo>().Where( c => c.Selectable )
+				.WithInterface<CountryInfo>().Where(c => c.Selectable)
 				.ToArray();
 
 			return selectableCountries.FirstOrDefault(c => c.Race == name)
