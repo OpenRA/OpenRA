@@ -78,7 +78,6 @@ MIG:
 		Queue: Plane
 		BuildPaletteOrder: 100
 		Prerequisites: afld, stek
-		Owner: soviet
 		Hotkey: m
 	Valued:
 		Cost: 2000
@@ -131,7 +130,6 @@ YAK:
 		Queue: Plane
 		BuildPaletteOrder: 50
 		Prerequisites: afld
-		Owner: soviet
 		Hotkey: y
 	Valued:
 		Cost: 1000
@@ -190,7 +188,6 @@ TRAN:
 		Queue: Helicopter
 		BuildPaletteOrder: 110
 		Prerequisites: hpad
-		Owner: allies
 		Hotkey: t
 	Valued:
 		Cost: 900
@@ -232,7 +229,6 @@ HELI:
 		Queue: Helicopter
 		BuildPaletteOrder: 90
 		Prerequisites: hpad, atek
-		Owner: allies
 		Hotkey: l
 	Valued:
 		Cost: 2000
@@ -283,7 +279,6 @@ HIND:
 		Queue: Helicopter
 		BuildPaletteOrder: 90
 		Prerequisites: hpad
-		Owner: allies
 		Hotkey: h
 	Valued:
 		Cost: 1000

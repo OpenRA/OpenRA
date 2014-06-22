@@ -9,7 +9,6 @@ MSLO:
 		Queue: Defense
 		BuildPaletteOrder: 130
 		Prerequisites: techcenter
-		Owner: soviet,allies
 		BuildLimit: 1
 		Hotkey: m
 	Building:
@@ -57,8 +56,7 @@ GAP:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
-		Prerequisites: atek
-		Owner: allies
+		Prerequisites: atek, ~structures.allies
 		Hotkey: g
 	Building:
 		Power: -60
@@ -96,8 +94,7 @@ SPEN:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Prerequisites: anypower
-		Owner: soviet
+		Prerequisites: anypower, ~structures.soviet
 		Hotkey: y
 	TargetableBuilding:
 		TargetTypes: Ground, Water
@@ -148,8 +145,7 @@ SYRD:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Prerequisites: anypower
-		Owner: allies
+		Prerequisites: anypower, ~structures.allies
 		Hotkey: y
 	Valued:
 		Cost: 1000
@@ -201,8 +197,7 @@ IRON:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
-		Prerequisites: stek
-		Owner: soviet
+		Prerequisites: stek, ~structures.soviet
 		BuildLimit: 1
 		Hotkey: c
 	Valued:
@@ -247,7 +242,6 @@ PDOX:
 		Queue: Defense
 		BuildPaletteOrder: 120
 		Prerequisites: atek
-		Owner: allies
 		BuildLimit: 1
 		Hotkey: o
 	Valued:
@@ -291,8 +285,7 @@ TSLA:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 70
-		Prerequisites: weap
-		Owner: soviet
+		Prerequisites: weap, ~structures.soviet
 		Hotkey: u
 	Valued:
 		Cost: 1200
@@ -335,8 +328,7 @@ AGUN:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 50
-		Prerequisites: dome
-		Owner: allies
+		Prerequisites: dome, ~structures.allies
 		Hotkey: y
 	Valued:
 		Cost: 800
@@ -383,7 +375,6 @@ DOME:
 		Queue: Building
 		BuildPaletteOrder: 80
 		Prerequisites: proc
-		Owner: allies,soviet
 		Hotkey: r
 	Valued:
 		Cost: 1800
@@ -423,8 +414,7 @@ PBOX:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 20
-		Prerequisites: tent
-		Owner: allies
+		Prerequisites: tent, ~structures.allies
 		Hotkey: p
 	-GivesBuildableArea:
 	Valued:
@@ -469,8 +459,7 @@ HBOX:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 20
-		Prerequisites: tent
-		Owner: allies
+		Prerequisites: tent, ~structures.allies
 		Hotkey: l
 	-GivesBuildableArea:
 	Valued:
@@ -513,8 +502,7 @@ GUN:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
-		Prerequisites: tent
-		Owner: allies
+		Prerequisites: tent, ~structures.allies
 		Hotkey: t
 	Valued:
 		Cost: 600
@@ -554,8 +542,7 @@ FTUR:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 20
-		Prerequisites: barr
-		Owner: soviet
+		Prerequisites: barr, ~structures.soviet
 		Hotkey: t
 	Valued:
 		Cost: 600
@@ -593,8 +580,7 @@ SAM:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
-		Prerequisites: dome
-		Owner: soviet
+		Prerequisites: dome, ~structures.soviet
 		Hotkey: y
 	Valued:
 		Cost: 750
@@ -639,8 +625,7 @@ ATEK:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
-		Prerequisites: weap,dome
-		Owner: allies
+		Prerequisites: weap, dome, ~structures.allies
 		Hotkey: t
 	Valued:
 		Cost: 1500
@@ -680,7 +665,6 @@ WEAP:
 		Queue: Building
 		BuildPaletteOrder: 70
 		Prerequisites: proc
-		Owner: soviet,allies
 		Hotkey: w
 	Valued:
 		Cost: 2000
@@ -706,6 +690,12 @@ WEAP:
 		ExitCell: 1,2
 	Production:
 		Produces: Vehicle
+	ProvidesCustomPrerequisite@allies:
+		Race: allies
+		Prerequisite: vehicles.allies
+	ProvidesCustomPrerequisite@soviet:
+		Race: soviet
+		Prerequisite: vehicles.soviet
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
@@ -719,7 +709,13 @@ FACT:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
-		Owner: None
+		Prerequisites: ~disabled
+	ProvidesCustomPrerequisite@allies:
+		Race: allies
+		Prerequisite: structures.allies
+	ProvidesCustomPrerequisite@soviet:
+		Race: soviet
+		Prerequisite: structures.soviet
 	Health:
 		HP: 1500
 	Armor:
@@ -757,7 +753,6 @@ PROC:
 		Queue: Building
 		BuildPaletteOrder: 10
 		Prerequisites: anypower
-		Owner: allies,soviet
 		Hotkey: e
 	Valued:
 		Cost: 1400
@@ -804,7 +799,6 @@ SILO:
 		Queue: Building
 		BuildPaletteOrder: 60
 		Prerequisites: proc
-		Owner: allies,soviet
 		Hotkey: o
 	Valued:
 		Cost: 150
@@ -835,8 +829,7 @@ HPAD:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
-		Prerequisites: dome
-		Owner: allies
+		Prerequisites: dome, ~structures.allies
 		Hotkey: i
 	Valued:
 		Cost: 500
@@ -871,8 +864,7 @@ AFLD:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
-		Prerequisites: dome
-		Owner: soviet
+		Prerequisites: dome, ~structures.soviet
 		Hotkey: i
 	Valued:
 		Cost: 500
@@ -922,7 +914,6 @@ POWR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 0
-		Owner: allies,soviet
 		Hotkey: p
 	Valued:
 		Cost: 300
@@ -951,7 +942,6 @@ APWR:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: dome
-		Owner: allies,soviet
 		Hotkey: l
 	Valued:
 		Cost: 500
@@ -979,8 +969,7 @@ STEK:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
-		Prerequisites: weap,dome
-		Owner: soviet
+		Prerequisites: weap, dome, ~structures.soviet
 		Hotkey: t
 	Valued:
 		Cost: 1500
@@ -1007,8 +996,7 @@ BARR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: anypower
-		Owner: soviet
+		Prerequisites: anypower, ~structures.soviet
 		Hotkey: b
 	Valued:
 		Cost: 400
@@ -1044,8 +1032,7 @@ TENT:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: anypower
-		Owner: allies
+		Prerequisites: anypower, ~structures.allies
 		Hotkey: b
 	Valued:
 		Cost: 400
@@ -1099,7 +1086,6 @@ FIX:
 		Queue: Building
 		BuildPaletteOrder: 40
 		Prerequisites: weap
-		Owner: allies,soviet
 		Hotkey: m
 	Valued:
 		Cost: 1200
@@ -1131,9 +1117,8 @@ FACF:
 		Cost: 50
 	Buildable:
 		BuildPaletteOrder: 900
-		Owner: None
-		Hotkey: c
 		Queue: Defense
+		Prerequisites: ~disabled
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Construction Yard
@@ -1160,9 +1145,7 @@ WEAF:
 		Cost: 50
 	Buildable:
 		BuildPaletteOrder: 900
-		Prerequisites: proc
-		Owner: None
-		Hotkey: x
+		Prerequisites: ~disabled
 		Queue: Defense
 	Tooltip:
 		Icon: fake-icon
@@ -1191,10 +1174,8 @@ SYRF:
 		Cost: 50
 	Buildable:
 		BuildPaletteOrder: 900
-		Prerequisites: anypower
-		Owner: None
-		Hotkey: z
 		Queue: Defense
+		Prerequisites: ~disabled
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Shipyard
@@ -1225,10 +1206,8 @@ SPEF:
 		TargetTypes: Ground, Water
 	Buildable:
 		BuildPaletteOrder: 900
-		Prerequisites: anypower
-		Owner: None
-		Hotkey: z
 		Queue: Defense
+		Prerequisites: ~disabled
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Sub Pen
@@ -1259,10 +1238,8 @@ DOMF:
 		Description: Looks like a Radar Dome.
 	Buildable:
 		BuildPaletteOrder: 900
-		Prerequisites: proc
-		Owner: None
-		Hotkey: v
 		Queue: Defense
+		Prerequisites: ~disabled
 	Building:
 		Power: -2
 		Footprint: xx xx
@@ -1283,8 +1260,7 @@ SBAG:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
-		Prerequisites: fact
-		Owner: allies
+		Prerequisites: fact, ~structures.allies
 		Hotkey: b
 	Valued:
 		Cost: 25
@@ -1310,8 +1286,7 @@ FENC:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
-		Prerequisites: fact
-		Owner: soviet
+		Prerequisites: fact, ~structures.soviet
 		Hotkey: n
 	Valued:
 		Cost: 25
@@ -1338,7 +1313,6 @@ BRIK:
 		Queue: Defense
 		BuildPaletteOrder: 1000
 		Prerequisites: fact
-		Owner: allies,soviet
 		Hotkey: w
 	Valued:
 		Cost: 100

@@ -3,8 +3,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: dome
-		Owner: soviet
+		Prerequisites: dome, ~vehicles.soviet
 		Hotkey: v
 	Valued:
 		Cost: 900
@@ -33,7 +32,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Owner: allies
+		Prerequisites: ~vehicles.allies
 		Hotkey: l
 	Valued:
 		Cost: 700
@@ -72,8 +71,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
-		Prerequisites: fix
-		Owner: allies
+		Prerequisites: fix, ~vehicles.allies
 		Hotkey: m
 	Valued:
 		Cost: 850
@@ -115,8 +113,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: fix
-		Owner: soviet
+		Prerequisites: fix, ~vehicles.soviet
 		Hotkey: h
 	Valued:
 		Cost: 1150
@@ -158,8 +155,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
-		Prerequisites: fix,stek
-		Owner: soviet
+		Prerequisites: fix, stek, ~vehicles.soviet
 		Hotkey: m
 	Valued:
 		Cost: 2000
@@ -215,8 +211,7 @@ ARTY:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
-		Prerequisites: dome
-		Owner: allies
+		Prerequisites: dome, ~vehicles.allies
 		Hotkey: r
 	Valued:
 		Cost: 800
@@ -250,7 +245,6 @@ HARV:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: proc
-		Owner: allies,soviet
 		Hotkey: e
 	Valued:
 		Cost: 1100
@@ -294,7 +288,6 @@ MCV:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
 		Prerequisites: fix
-		Owner: allies,soviet
 		Hotkey: b
 	CustomBuildTimeValue:
 		Value: 2000
@@ -335,7 +328,7 @@ JEEP:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Owner: allies
+		Prerequisites: ~vehicles.allies
 		Hotkey: n
 	Valued:
 		Cost: 500
@@ -375,8 +368,8 @@ APC:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
-		Owner: soviet
 		Hotkey: c
+		Prerequisites: ~vehicles.soviet
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -411,8 +404,7 @@ MNLY.AP:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: fix
-		Owner: soviet
+		Prerequisites: fix, ~vehicles.soviet
 		Hotkey: i
 	Valued:
 		Cost: 800
@@ -446,8 +438,7 @@ MNLY.AT:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: fix
-		Owner: allies
+		Prerequisites: fix, ~vehicles.allies
 		Hotkey: i
 	Valued:
 		Cost: 800
@@ -482,7 +473,6 @@ TRUK:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
 		Prerequisites: weap
-		Owner: allies, soviet
 		Hotkey: u
 	Valued:
 		Cost: 500
@@ -509,8 +499,7 @@ MGG:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 160
-		Prerequisites: atek
-		Owner: allies
+		Prerequisites: atek, ~vehicles.allies
 		Hotkey: y
 	Valued:
 		Cost: 1200
@@ -548,8 +537,7 @@ MRJ:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 150
-		Prerequisites: atek
-		Owner: allies
+		Prerequisites: atek, ~vehicles.allies
 		Hotkey: k
 	Health:
 		HP: 220
@@ -580,8 +568,7 @@ TTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
-		Prerequisites: tsla,stek
-		Owner: soviet
+		Prerequisites: tsla, stek, ~vehicles.soviet
 		Hotkey: t
 	Valued:
 		Cost: 1350
@@ -616,8 +603,8 @@ FTRK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Owner: soviet
 		Hotkey: k
+		Prerequisites: ~vehicles.soviet
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -656,8 +643,7 @@ DTRK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
-		Prerequisites: stek
-		Owner: soviet
+		Prerequisites: stek, ~vehicles.soviet
 		Hotkey: o
 	Valued:
 		Cost: 2500
@@ -686,8 +672,7 @@ CTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
-		Prerequisites: atek,pdox
-		Owner: allies
+		Prerequisites: atek, pdox, ~vehicles.allies
 		Hotkey: j
 	Valued:
 		Cost: 1350
@@ -726,8 +711,7 @@ QTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 150
-		Prerequisites: fix,stek
-		Owner: soviet
+		Prerequisites: fix, stek, ~vehicles.soviet
 		Hotkey: q
 	Valued:
 		Cost: 2500
@@ -758,8 +742,7 @@ STNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 170
-		Prerequisites: atek
-		Owner: allies
+		Prerequisites: atek, ~vehicles.allies
 		Hotkey: p
 	Valued:
 		Cost: 1350
