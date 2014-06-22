@@ -22,11 +22,11 @@ namespace OpenRA.Mods.RA.Air
 		public override Activity Tick(Actor self)
 		{
 			if (!target.IsValidFor(self))
-				Cancel(self);
+				return NextActivity;
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
-				Cancel(self);
+				return NextActivity;
 
 			var attack = self.TraitOrDefault<AttackPlane>();
 			if (attack != null)

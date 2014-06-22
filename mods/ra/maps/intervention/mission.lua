@@ -77,7 +77,6 @@ FollowWaypoints = function(team, waypoints)
 end
 
 PlaneExitMap = function(actor, exitPoint)
-	Actor.Stop(actor)
 	Actor.Fly(actor, exitPoint.CenterPosition)
 	Actor.FlyOffMap(actor)
 	Actor.RemoveSelf(actor)
@@ -94,15 +93,9 @@ BaseRaid = function()
 	local flight = Team.New(Reinforcements.ReinforceAir(soviets, BaseRaidAircraft, BaseRaidEntrypoint, BaseRaidWpts[1], Utils.Seconds(1)))
 	FollowWaypoints(flight, BaseRaidWpts)
 
-	-- this is a workaround for bug #4482
-	Actor.OnDamaged(target, function()
-		Team.Do(flight, function(plane)
-			PlaneExitMap(plane, VillageRaidEntrypoint)
-		end)
-	end)
-
 	Team.Do(flight, function(plane)
 		Actor.FlyAttackActor(plane, target)
+		PlaneExitMap(plane, VillageRaidEntrypoint)
 	end)
 
 	OpenRA.RunAfterDelay(BaseRaidInterval, BaseRaid)
@@ -124,15 +117,9 @@ VillageRaid = function()
 	local flight = Team.New(Reinforcements.ReinforceAir(soviets, VillageRaidAircraft, VillageRaidEntrypoint, VillageRaidWpts[1], Utils.Seconds(1)))
 	FollowWaypoints(flight, VillageRaidWpts)
 
-	-- this is a workaround for bug #4482
-	Actor.OnDamaged(target, function()
-		Team.Do(flight, function(actor)
-			PlaneExitMap(actor, BaseRaidEntrypoint)
-		end)
-	end)
-
 	Team.Do(flight, function(plane)
 		Actor.FlyAttackActor(plane, target)
+		PlaneExitMap(plane, BaseRaidEntrypoint)
 	end)
 
 	OpenRA.RunAfterDelay(VillageRaidInterval, VillageRaid)
@@ -201,7 +188,9 @@ SetupWorld = function()
 	Utils.Do(Actor.ActorsWithTrait("RepairableBuilding"), function(building)
 		if Actor.Owner(building) == soviets then
 			Actor.OnDamaged(building, function(b)
-				Actor.RepairBuilding(b)
+				if Actor.Owner(b) == soviets then
+					Actor.RepairBuilding(b)
+				end
 			end)
 		end
 	end)
