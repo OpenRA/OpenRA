@@ -188,7 +188,9 @@ SetupWorld = function()
 	Utils.Do(Actor.ActorsWithTrait("RepairableBuilding"), function(building)
 		if Actor.Owner(building) == soviets then
 			Actor.OnDamaged(building, function(b)
-				Actor.RepairBuilding(b)
+				if Actor.Owner(b) == soviets then
+					Actor.RepairBuilding(b)
+				end
 			end)
 		end
 	end)
