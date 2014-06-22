@@ -599,3 +599,10 @@ craters:
 		Length: *
 	cr6: cr6
 		Length: *
+
+cracks:
+	idle:
+		Start: 0
+		Length: *
+		Tick: 55
+		ZOffset: -1023
