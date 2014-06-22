@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,7 +17,7 @@ namespace OpenRA.Graphics
 	public class SheetOverflowException : Exception
 	{
 		public SheetOverflowException(string message)
-			: base(message) {}
+			: base(message) { }
 	}
 
 	public enum SheetType
@@ -38,11 +38,11 @@ namespace OpenRA.Graphics
 
 		public static Sheet AllocateSheet()
 		{
-			return new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize));
+			return new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize), true);
 		}
 
 		public SheetBuilder(SheetType t)
-			: this(t, AllocateSheet) {}
+			: this(t, AllocateSheet) { }
 
 		public SheetBuilder(SheetType t, Func<Sheet> allocateSheet)
 		{
@@ -109,6 +109,7 @@ namespace OpenRA.Graphics
 				var next = NextChannel(channel);
 				if (next == null)
 				{
+					current.ReleaseBuffer();
 					current = allocateSheet();
 					channel = TextureChannel.Red;
 				}
@@ -116,7 +117,7 @@ namespace OpenRA.Graphics
 					channel = next.Value;
 
 				rowHeight = imageSize.Height;
-				p = new Point(0,0);
+				p = new Point(0, 0);
 			}
 
 			var rect = new Sprite(current, new Rectangle(p, imageSize), spriteOffset, channel, BlendMode.Alpha);

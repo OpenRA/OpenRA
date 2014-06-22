@@ -18,18 +18,21 @@ namespace OpenRA.Graphics
 {
 	public class Sheet
 	{
-		ITexture texture;
+		readonly object textureLock = new object();
 		bool dirty;
-		readonly byte[] data;
-		readonly object dirtyLock = new object();
+		bool releaseBufferOnCommit;
+		ITexture texture;
+		byte[] data;
 
 		public readonly Size Size;
 		public byte[] Data { get { return data ?? texture.GetData(); } }
+		public bool Buffered { get { return data != null; } }
 
-		public Sheet(Size size)
+		public Sheet(Size size, bool buffered)
 		{
 			Size = size;
-			data = new byte[4 * Size.Width * Size.Height];
+			if (buffered)
+				data = new byte[4 * Size.Width * Size.Height];
 		}
 
 		public Sheet(ITexture texture)
@@ -54,6 +57,8 @@ namespace OpenRA.Graphics
 					Marshal.Copy(IntPtr.Add(bd.Scan0, y * bd.Stride), data, y * dataStride, dataStride);
 				bitmap.UnlockBits(bd);
 			}
+
+			ReleaseBuffer();
 		}
 
 		public ITexture Texture
@@ -62,22 +67,31 @@ namespace OpenRA.Graphics
 			// is set from other threads too via CommitData().
 			get
 			{
-				if (texture == null)
-				{
-					texture = Game.Renderer.Device.CreateTexture();
-					dirty = true;
-				}
+				GenerateTexture();
+				return texture;
+			}
+		}
 
-				lock (dirtyLock)
+		void GenerateTexture()
+		{
+			if (texture == null)
+			{
+				texture = Game.Renderer.Device.CreateTexture();
+				dirty = true;
+			}
+
+			if (Buffered)
+			{
+				lock (textureLock)
 				{
 					if (dirty)
 					{
 						texture.SetData(data, Size.Width, Size.Height);
 						dirty = false;
+						if (releaseBufferOnCommit)
+							data = null;
 					}
 				}
-
-				return texture;
 			}
 		}
 
@@ -119,6 +133,7 @@ namespace OpenRA.Graphics
 					}
 				}
 			}
+
 			bitmap.UnlockBits(bd);
 
 			return bitmap;
@@ -126,11 +141,20 @@ namespace OpenRA.Graphics
 
 		public void CommitData()
 		{
-			if (data == null)
-				throw new InvalidOperationException("Texture-wrappers are read-only");
+			if (!Buffered)
+				throw new InvalidOperationException(
+					"This sheet is unbuffered. You cannot call CommitData on an unbuffered sheet. " +
+					"If you need to completely replace the texture data you should set data into the texture directly. " +
+					"If you need to make only small changes to the texture data consider creating a buffered sheet instead.");
 
-			lock (dirtyLock)
+			lock (textureLock)
 				dirty = true;
+		}
+
+		public void ReleaseBuffer()
+		{
+			lock (textureLock)
+				releaseBufferOnCommit = true;
 		}
 	}
 }

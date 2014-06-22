@@ -46,6 +46,7 @@ namespace OpenRA.Graphics
 			var spriteLoader = new SpriteLoader(new string[0], new SheetBuilder(SheetType.Indexed));
 			foreach (var s in nodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(spriteLoader, s.Key, s.Value);
+			spriteLoader.SheetBuilder.Current.ReleaseBuffer();
 
 			palette.Initialize();
 		}
