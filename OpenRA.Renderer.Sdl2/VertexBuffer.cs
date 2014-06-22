@@ -28,8 +28,7 @@ namespace OpenRA.Renderer.Sdl2
 			GL.BufferData(BufferTarget.ArrayBuffer,
 				new IntPtr(VertexSize * size),
 				new T[size],
-				BufferUsageHint.DynamicDraw
-				);
+				BufferUsageHint.DynamicDraw);
 			ErrorHandler.CheckGlError();
 		}
 

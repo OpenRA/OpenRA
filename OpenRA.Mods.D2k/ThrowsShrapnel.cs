@@ -27,7 +27,7 @@ namespace OpenRA.Mods.D2k
 	{
 		readonly ThrowsShrapnelInfo info;
 
-		public ThrowsShrapnel(ThrowsShrapnelInfo info) 
+		public ThrowsShrapnel(ThrowsShrapnelInfo info)
 		{
 			this.info = info;
 		}
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.D2k
 					var args = new ProjectileArgs
 					{
 						Weapon = wep,
-						Facing = self.World.SharedRandom.Next(-1,255),
+						Facing = self.World.SharedRandom.Next(-1, 255),
 						FirepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
 							.Select(a => a.GetFirepowerModifier())
 							.Product(),

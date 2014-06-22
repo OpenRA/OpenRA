@@ -91,10 +91,10 @@ namespace OpenRA.Utility
 			var shadowIndex = new int[] { };
 			if (args.Contains("--noshadow"))
 			{
-					Array.Resize(ref shadowIndex, shadowIndex.Length + 3);
-					shadowIndex[shadowIndex.Length - 1] = 1;
-					shadowIndex[shadowIndex.Length - 2] = 3;
-					shadowIndex[shadowIndex.Length - 3] = 4;
+				Array.Resize(ref shadowIndex, shadowIndex.Length + 3);
+				shadowIndex[shadowIndex.Length - 1] = 1;
+				shadowIndex[shadowIndex.Length - 2] = 3;
+				shadowIndex[shadowIndex.Length - 3] = 4;
 			}
 
 			var palette = Palette.Load(args[2], shadowIndex);
@@ -357,7 +357,7 @@ namespace OpenRA.Utility
 			var inner = outer.SelectMany(i => i.GetGenericArguments()).ToArray();
 
 			// Remove the namespace and the trailing "Info"
-			return inner.Select(i => i.Name.Split(new [] { '.' }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault())
+			return inner.Select(i => i.Name.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault())
 				.Select(s => s.EndsWith("Info") ? s.Remove(s.Length - 4, 4) : s)
 				.ToArray();
 		}

@@ -37,9 +37,7 @@ namespace OpenRA.Utility
 				yield break;
 			}
 
-			//
 			// Split using DirectorySeparators but keep the separators
-			//
 			var parts = new List<string>();
 
 			for (var startIndex = 0; startIndex < filePath.Length;)

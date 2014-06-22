@@ -33,9 +33,9 @@ namespace OpenRA.Traits
 			BottomRight = 0x80,
 
 			All = 0xFF
-		};
+		}
 
-		static readonly Dictionary<string, int[]> variants = new Dictionary<string, int[]>()
+		static readonly Dictionary<string, int[]> Variants = new Dictionary<string, int[]>()
 		{
 			{ "cleara", new[] { 0, 50 } },
 			{ "clearb", new[] { 1, 51 } },
@@ -43,7 +43,7 @@ namespace OpenRA.Traits
 			{ "cleard", new[] { 0, 53 } },
 		};
 
-		static readonly Dictionary<ClearSides, int> spriteMap = new Dictionary<ClearSides, int>()
+		static readonly Dictionary<ClearSides, int> SpriteMap = new Dictionary<ClearSides, int>()
 		{
 			{ ClearSides.None, 0 },
 			{ ClearSides.Left | ClearSides.Top | ClearSides.TopLeft | ClearSides.TopRight | ClearSides.BottomLeft | ClearSides.BottomRight, 2 },
@@ -111,16 +111,16 @@ namespace OpenRA.Traits
 
 			if (render[p.X - 1, p.Y - 1].Type != t)
 				ret |= ClearSides.TopLeft;
-			
+
 			if (render[p.X + 1, p.Y - 1].Type != t)
 				ret |= ClearSides.TopRight;
-			
+
 			if (render[p.X - 1, p.Y + 1].Type != t)
 				ret |= ClearSides.BottomLeft;
-			
+
 			if (render[p.X + 1, p.Y + 1].Type != t)
 				ret |= ClearSides.BottomRight;
-			
+
 			return ret;
 		}
 
@@ -134,11 +134,11 @@ namespace OpenRA.Traits
 
 				if (clear == ClearSides.None)
 				{
-					var sprites = variants[t.Variant];
+					var sprites = Variants[t.Variant];
 					var frame = t.Density > t.Type.Info.MaxDensity / 2 ? 1 : 0;
 					t.Sprite = t.Type.Variants.First().Value[sprites[frame]];
 				}
-				else if (spriteMap.TryGetValue(clear, out index))
+				else if (SpriteMap.TryGetValue(clear, out index))
 					t.Sprite = t.Type.Variants.First().Value[index];
 				else
 					t.Sprite = null;
@@ -165,7 +165,7 @@ namespace OpenRA.Traits
 
 		protected override string ChooseRandomVariant(ResourceType t)
 		{
-			return variants.Keys.Random(Game.CosmeticRandom);
+			return Variants.Keys.Random(Game.CosmeticRandom);
 		}
 	}
 }

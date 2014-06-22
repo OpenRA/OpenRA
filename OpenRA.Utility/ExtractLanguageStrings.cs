@@ -56,13 +56,12 @@ namespace OpenRA.Utility
 				if (translatables.Contains(node.Key) && !alreadyTranslated)
 				{
 					var translationKey = "{0}-{1}-{2}".F(container.Replace('_', '-'), parentLabel.Replace('_', '-'), node.Key.ToUpper());
-					Console.WriteLine("\t{0}: {1}", translationKey , node.Value.Value);
+					Console.WriteLine("\t{0}: {1}", translationKey, node.Value.Value);
 					node.Value.Value = "@{0}@".F(translationKey);
 				}
 
 				FromChromeLayout(ref node.Value.Nodes, node, translatables, container);
 			}
 		}
-
 	}
 }

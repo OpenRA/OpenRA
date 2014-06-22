@@ -90,7 +90,7 @@ namespace OpenRA.Renderer.Sdl2
 			if (SDL.SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object") == SDL.SDL_bool.SDL_FALSE)
 			{
 				ErrorHandler.WriteGraphicsLog("OpenRA requires the OpenGL extension GL_EXT_framebuffer_object.\n"
-					+"Please try updating your GPU driver to the latest version provided by the manufacturer.");
+					+ "Please try updating your GPU driver to the latest version provided by the manufacturer.");
 				throw new InvalidProgramException("Missing OpenGL extension GL_EXT_framebuffer_object. See graphics.log for details.");
 			}
 
@@ -200,13 +200,13 @@ namespace OpenRA.Renderer.Sdl2
 			ErrorHandler.CheckGlError();
 		}
 
-		public void GrabWindowMouseFocus() 
+		public void GrabWindowMouseFocus()
 		{
 			SDL.SDL_SetWindowGrab(window, SDL.SDL_bool.SDL_TRUE);
 		}
 
 		public void ReleaseWindowMouseFocus()
-		{ 
+		{
 			SDL.SDL_SetWindowGrab(window, SDL.SDL_bool.SDL_FALSE);
 		}
 

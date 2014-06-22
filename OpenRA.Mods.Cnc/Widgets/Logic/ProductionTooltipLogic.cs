@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 				var lowpower = pm.PowerState != PowerState.Normal;
 				var time = palette.CurrentQueue.GetBuildTime(actor)
-					* ((lowpower) ? palette.CurrentQueue.Info.LowPowerSlowdown : 1);
+					* (lowpower ? palette.CurrentQueue.Info.LowPowerSlowdown : 1);
 				var timeString = "T: {0}".F(WidgetUtils.FormatTime(time));
 				timeLabel.GetText = () => timeString;
 				timeLabel.GetColor = () => lowpower ? Color.Red : Color.White;
