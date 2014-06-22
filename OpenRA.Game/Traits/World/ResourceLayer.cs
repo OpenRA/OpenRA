@@ -156,7 +156,7 @@ namespace OpenRA.Traits
 		public bool CanSpawnResourceAt(ResourceType newResourceType, CPos cell)
 		{
 			var currentResourceType = GetResource(cell);
-			return currentResourceType == newResourceType
+			return (currentResourceType == newResourceType && !IsFull(cell))
 				|| (currentResourceType == null && AllowResourceAt(newResourceType, cell));
 		}
 
@@ -186,9 +186,9 @@ namespace OpenRA.Traits
 				dirty.Add(p);
 		}
 
-		public bool IsFull(int i, int j)
+		public bool IsFull(CPos c)
 		{
-			return content[i, j].Density == content[i, j].Type.Info.MaxDensity;
+			return content[c.X, c.Y].Density == content[c.X, c.Y].Type.Info.MaxDensity;
 		}
 
 		public ResourceType Harvest(CPos p)
