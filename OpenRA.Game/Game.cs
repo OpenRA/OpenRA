@@ -467,7 +467,7 @@ namespace OpenRA
 			{
 				var args = new WidgetArgs()
 				{
-					{ "continueLoading", () => TestAndContinue() },
+					{ "continueLoading", () => InitializeMod(Game.Settings.Game.Mod, null) },
 					{ "installData", installData }
 				};
 				if (installData.ContainsKey("InstallerBackgroundWidget"))
