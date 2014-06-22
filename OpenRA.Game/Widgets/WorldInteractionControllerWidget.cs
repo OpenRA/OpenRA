@@ -161,7 +161,7 @@ namespace OpenRA.Widgets
 					}
 					else if (o.Subject != world.LocalPlayer.PlayerActor && o.TargetLocation != CPos.Zero) // TODO: this filters building placement, but also suppport powers :(
 					{
-						world.AddFrameEndTask(w => w.Add(new MoveFlash(worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(mi.Location)), world)));
+						world.AddFrameEndTask(w => w.Add(new SpriteEffect(worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(mi.Location)), world, "moveflsh", "moveflash")));
 						flashed = true;
 					}
 				}

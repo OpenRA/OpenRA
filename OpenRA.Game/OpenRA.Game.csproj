@@ -215,7 +215,6 @@
     <Compile Include="Traits\World\ScreenMap.cs" />
     <Compile Include="Traits\World\ActorMap.cs" />
     <Compile Include="Widgets\HotkeyEntryWidget.cs" />
-    <Compile Include="Effects\MoveFlash.cs" />
     <Compile Include="Widgets\SpriteWidget.cs" />
     <Compile Include="Widgets\SpriteSequenceWidget.cs" />
     <Compile Include="Widgets\RGBASpriteWidget.cs" />
@@ -235,6 +234,7 @@
     <Compile Include="Support\MersenneTwister.cs" />
     <Compile Include="GameInformation.cs" />
     <Compile Include="Widgets\RootWidget.cs" />
+    <Compile Include="Effects\SpriteEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
