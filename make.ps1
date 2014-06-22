@@ -67,8 +67,7 @@ elseif ($command -eq "clean")
 	else
 	{
 		$proc = Start-Process $msBuild /t:Clean -NoNewWindow -PassThru -Wait
-		rm *.dll # delete third party dependencies
-		rm *.config
+		rm bin/*
 		rm mods/*/*.dll
 		echo "Clean complete."
 	}
@@ -90,21 +89,22 @@ elseif ($command -eq "version")
 }
 elseif ($command -eq "dependencies")
 {
-	cp thirdparty/*.dll .
-	cp thirdparty/windows/*.dll .
+	New-Item -ItemType Directory -Force -Path bin
+	cp thirdparty/*.dll bin/
+	cp thirdparty/windows/*.dll bin/
 	echo "Dependencies copied."
 }
 elseif ($command -eq "test")
 {
 	echo "Testing mods..."
 	echo "OpenRA.Lint: checking Red Alert mod MiniYAML..."
-	./OpenRA.Lint.exe --verbose ra
+	./bin/OpenRA.Lint.exe --verbose ra
 	echo "OpenRA.Lint: checking Tiberian Dawn mod MiniYAML..."
-	./OpenRA.Lint.exe --verbose cnc
+	./bin/OpenRA.Lint.exe --verbose cnc
 	echo "OpenRA.Lint: checking Dune 2000 mod MiniYAML..."
-	./OpenRA.Lint.exe --verbose d2k
+	./bin/OpenRA.Lint.exe --verbose d2k
 	echo "OpenRA.Lint: checking Tiberian Sun mod MiniYAML..."
-	./OpenRA.Lint.exe --verbose ts
+	./bin/OpenRA.Lint.exe --verbose ts
 }
 else
 {
