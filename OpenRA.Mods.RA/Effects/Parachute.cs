@@ -21,7 +21,9 @@ namespace OpenRA.Mods.RA.Effects
 		readonly Animation paraAnim;
 		readonly WVec parachuteOffset;
 		readonly Actor cargo;
+		readonly Animation paraShadow;
 		WPos pos;
+		WPos dropPosition;
 		WVec fallRate = new WVec(0, 0, 13);
 
 		public Parachute(Actor cargo, WPos dropPosition)
@@ -29,16 +31,20 @@ namespace OpenRA.Mods.RA.Effects
 			this.cargo = cargo;
 
 			var pai = cargo.Info.Traits.GetOrDefault<ParachuteAttachmentInfo>();
+			cargo.Trait<ParachuteAttachment>().Activated = true;
 			paraAnim = new Animation(cargo.World, pai != null ? pai.ParachuteSprite : "parach");
 			paraAnim.PlayThen("open", () => paraAnim.PlayRepeating("idle"));
+
+			paraShadow = new Animation(cargo.World, pai != null ? pai.ShadowSprite : "parach-shadow");
+			paraShadow.PlayRepeating("idle");
 
 			if (pai != null)
 				parachuteOffset = pai.Offset;
 
 			// Adjust x,y to match the target subcell
 			cargo.Trait<IPositionable>().SetPosition(cargo, dropPosition.ToCPos());
-			var cp = cargo.CenterPosition;
-			pos = new WPos(cp.X, cp.Y, dropPosition.Z);
+			this.dropPosition = cargo.CenterPosition;
+			pos = new WPos(cargo.CenterPosition.X, cargo.CenterPosition.Y, dropPosition.Z);
 		}
 
 		public void Tick(World world)
@@ -52,6 +58,7 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w =>
 				{
 					w.Remove(this);
+					cargo.Trait<ParachuteAttachment>().Activated = false;
 					cargo.CancelActivity();
 					w.Add(cargo);
 
@@ -69,14 +76,11 @@ namespace OpenRA.Mods.RA.Effects
 			if (!rc.Any())
 				yield break;
 
-			var shadow = wr.Palette("shadow");
 			foreach (var c in rc)
-			{
-				if (!c.IsDecoration)
-					yield return c.WithPalette(shadow).WithZOffset(c.ZOffset - 1).AsDecoration();
+				yield return c.OffsetBy(pos - dropPosition);
 
-				yield return c.OffsetBy(pos - c.Pos);
-			}
+			foreach (var r in paraShadow.Render(dropPosition, wr.Palette("shadow")))
+				yield return r;
 
 			foreach (var r in paraAnim.Render(pos, parachuteOffset, 1, rc.First().Palette, 1f))
 				yield return r;

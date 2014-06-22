@@ -49,7 +49,8 @@ namespace OpenRA.Mods.RA.Render
 
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
-			return info.IdleAnimations.Length > 0;
+			var hasParachuteAttachment = self.HasTrait<ParachuteAttachment>();
+			return (info.IdleAnimations.Length > 0 && (!hasParachuteAttachment || (hasParachuteAttachment && !self.Trait<ParachuteAttachment>().Activated)));
 		}
 
 		public AnimationState State { get; private set; }
