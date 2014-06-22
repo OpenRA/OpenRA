@@ -883,58 +883,58 @@ Rules:
 		MustBeDestroyed:
 	APWR:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	FIX:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	SYRD:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	WEAP:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	DOME:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	HPAD:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	ATEK:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	BRIK:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	HBOX.E1:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	GUN:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	AGUN:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	GAP:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	PDOX:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	MSLO:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	E6:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	SPY:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	MECH:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	E7:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 
 Sequences:
 
