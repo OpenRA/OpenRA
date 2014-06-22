@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA
 							if (!resLayer.CanSpawnResourceAt(resourceType, cell))
 								continue;
 
-							var splash = world.SharedRandom.Next(1, resourceType.Info.MaxDensity - resLayer.GetResourceDensity(cell));
+							var splash = world.SharedRandom.Next(1, Math.Max(1, resourceType.Info.MaxDensity - resLayer.GetResourceDensity(cell)));
 							resLayer.AddResource(resourceType, cell, splash);
 						}
 					}
