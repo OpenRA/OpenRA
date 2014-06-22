@@ -26,7 +26,7 @@ Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
-		Race: allies
+		Race: atreides
 
 Actors:
 	Actor0: spicebloom
