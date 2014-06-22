@@ -62,6 +62,39 @@ namespace OpenRA.Utility
 
 			foreach (var node in nodes)
 			{
+				// instant/external capture traits were renamed
+				if (engineVersion < 20131028)
+				{
+					if (depth == 1)
+					{
+						if (node.Key == "Captures")
+							node.Key = "ExternalCaptures";
+
+						if (node.Key == "LegacyCaptures")
+							node.Key = "Captures";
+
+						if (node.Key == "Capturable")
+							node.Key = "ExternalCapturable";
+
+						if (node.Key == "LegacyCapturable")
+							node.Key = "Capturable";
+
+						if (node.Key == "CapturableBar")
+							node.Key = "ExternalCapturableBar";
+					}
+				}
+
+				// CarpetBomb was recreated as AttackBomber
+				if (engineVersion < 20131031)
+				{
+					if (depth == 1 && node.Key == "CarpetBomb")
+					{
+						node.Key = "Armament";
+						node.Value.Nodes.RemoveAll(n => n.Key == "Range");
+						parent.Value.Nodes.Add(new MiniYamlNode("AttackBomber", ""));
+					}
+				}
+
 				// Weapon definitions were converted to world coordinates
 				if (engineVersion < 20131226)
 				{
