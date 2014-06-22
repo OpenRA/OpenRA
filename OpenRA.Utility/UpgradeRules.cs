@@ -263,6 +263,9 @@ namespace OpenRA.Utility
 							if (subnode.Key == "Offset")
 								subnode.Key = "ParachuteOffset";
 					}
+
+					if (depth == 2 && node.Key == "ParachuteSprite")
+						node.Key = "ParachuteSequence";
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

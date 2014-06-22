@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Effects
 {
 	public class Parachute : IEffect
 	{
-		readonly Animation paraAnim;
+		readonly Animation parachute;
 		readonly WVec parachuteOffset;
 		readonly Actor cargo;
 		WPos pos;
@@ -29,9 +29,12 @@ namespace OpenRA.Mods.RA.Effects
 			this.cargo = cargo;
 
 			var parachutableInfo = cargo.Info.Traits.GetOrDefault<ParachutableInfo>();
-			var sprite = parachutableInfo != null ? parachutableInfo.ParachuteSprite : "parach";
-			paraAnim = new Animation(cargo.World, sprite);
-			paraAnim.PlayThen("open", () => paraAnim.PlayRepeating("idle"));
+			var parachuteSprite = parachutableInfo != null ? parachutableInfo.ParachuteSequence : null;
+			if (parachuteSprite != null)
+			{
+				parachute = new Animation(cargo.World, parachuteSprite);
+				parachute.PlayThen("open", () => parachute.PlayRepeating("idle"));
+			}
 
 			if (parachutableInfo != null)
 				parachuteOffset = parachutableInfo.ParachuteOffset;
@@ -44,7 +47,8 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			paraAnim.Tick();
+			if (parachute != null)
+				parachute.Tick();
 
 			pos -= fallRate;
 
@@ -79,8 +83,9 @@ namespace OpenRA.Mods.RA.Effects
 				yield return c.OffsetBy(pos - c.Pos);
 			}
 
-			foreach (var r in paraAnim.Render(pos, parachuteOffset, 1, rc.First().Palette, 1f))
-				yield return r;
+			if (parachute != null)
+				foreach (var r in parachute.Render(pos, parachuteOffset, 1, rc.First().Palette, 1f))
+					yield return r;
 		}
 	}
 }

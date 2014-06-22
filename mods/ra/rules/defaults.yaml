@@ -177,6 +177,8 @@
 		InfDeaths: 6
 	Parachutable:
 		ParachuteOffset: 0,0,427
+		KilledOnImpassableTerrain: true
+		ParachuteSequence: parach
 
 ^Ship:
 	AppearsOnRadar:

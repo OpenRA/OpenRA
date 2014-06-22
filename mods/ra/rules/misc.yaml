@@ -60,6 +60,9 @@ CRATE:
 	Crate:
 		Lifetime: 120
 		TerrainTypes: Clear, Rough, Road, Water, Ore, Beach
+	Parachutable:
+		KilledOnImpassableTerrain: false
+		ParachuteSequence: parach
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 50
