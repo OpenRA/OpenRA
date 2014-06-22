@@ -146,7 +146,7 @@ namespace OpenRA.Graphics
 			var resolution = GetResolution(windowMode);
 
 			var renderer = Game.Settings.Server.Dedicated ? "Null" : Game.Settings.Graphics.Renderer;
-			var rendererPath = Path.GetFullPath("OpenRA.Renderer.{0}.dll".F(renderer));
+			var rendererPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "OpenRA.Renderer.{0}.dll".F(renderer));
 
 			device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, windowMode);
 		}

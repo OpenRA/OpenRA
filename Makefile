@@ -66,6 +66,10 @@ INSTALL_DIR = $(INSTALL) -d
 INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
+# build locations
+OUTPUT_DIR = bin
+ENSURE_OUTPUT_DIR = $(OUTPUT_DIR)/placeholder
+
 # program targets
 CORE = rsdl2 rnull game utility irc ralint
 TOOLS = editor tsbuild crashdialog
@@ -79,7 +83,7 @@ VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev
 # Core binaries
 
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
-game_TARGET = OpenRA.Game.exe
+game_TARGET = $(OUTPUT_DIR)/OpenRA.Game.exe
 game_KIND = winexe
 game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/SDL2-CS.dll thirdparty/SharpFont.dll
 game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
@@ -87,7 +91,7 @@ PROGRAMS += game
 game: $(game_TARGET)
 
 irc_SRCS := $(shell find OpenRA.Irc/ -iname '*.cs')
-irc_TARGET = OpenRA.Irc.dll
+irc_TARGET = $(OUTPUT_DIR)/OpenRA.Irc.dll
 irc_KIND = library
 irc_DEPS = $(game_TARGET)
 irc_LIBS = $(COMMON_LIBS) $(irc_DEPS)
@@ -96,13 +100,13 @@ irc: $(irc_TARGET)
 
 # Renderer dlls
 rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
-rsdl2_TARGET = OpenRA.Renderer.Sdl2.dll
+rsdl2_TARGET = $(OUTPUT_DIR)/OpenRA.Renderer.Sdl2.dll
 rsdl2_KIND = library
 rsdl2_DEPS = $(game_TARGET)
 rsdl2_LIBS = $(COMMON_LIBS) thirdparty/SDL2-CS.dll $(rsdl2_DEPS)
 
 rnull_SRCS := $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
-rnull_TARGET = OpenRA.Renderer.Null.dll
+rnull_TARGET = $(OUTPUT_DIR)/OpenRA.Renderer.Null.dll
 rnull_KIND = library
 rnull_DEPS = $(game_TARGET)
 rnull_LIBS = $(COMMON_LIBS) $(rnull_DEPS)
@@ -116,7 +120,7 @@ STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 
 # Red Alert
 mod_ra_SRCS := $(shell find OpenRA.Mods.RA/ -iname '*.cs')
-mod_ra_TARGET = mods/ra/OpenRA.Mods.RA.dll
+mod_ra_TARGET = $(OUTPUT_DIR)/OpenRA.Mods.RA.dll
 mod_ra_KIND = library
 mod_ra_DEPS = $(STD_MOD_DEPS) $(irc_TARGET)
 mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(irc_TARGET)
@@ -125,7 +129,7 @@ mod_ra: $(mod_ra_TARGET)
 
 # Command and Conquer
 mod_cnc_SRCS := $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
-mod_cnc_TARGET = mods/cnc/OpenRA.Mods.Cnc.dll
+mod_cnc_TARGET = $(OUTPUT_DIR)/OpenRA.Mods.Cnc.dll
 mod_cnc_KIND = library
 mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
 mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
@@ -134,7 +138,7 @@ mod_cnc: $(mod_cnc_TARGET)
 
 # Dune 2000
 mod_d2k_SRCS := $(shell find OpenRA.Mods.D2k/ -iname '*.cs')
-mod_d2k_TARGET = mods/d2k/OpenRA.Mods.D2k.dll
+mod_d2k_TARGET = $(OUTPUT_DIR)/OpenRA.Mods.D2k.dll
 mod_d2k_KIND = library
 mod_d2k_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET) $(mod_cnc_TARGET)
 mod_d2k_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
@@ -143,7 +147,7 @@ mod_d2k: $(mod_d2k_TARGET)
 
 # Tiberian Sun
 mod_ts_SRCS := $(shell find OpenRA.Mods.TS/ -iname '*.cs')
-mod_ts_TARGET = mods/ts/OpenRA.Mods.TS.dll
+mod_ts_TARGET = $(OUTPUT_DIR)/OpenRA.Mods.TS.dll
 mod_ts_KIND = library
 mod_ts_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
 mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
@@ -154,23 +158,23 @@ mod_ts: $(mod_ts_TARGET)
 
 # Map Editor
 editor_SRCS := $(shell find OpenRA.Editor/ -iname '*.cs')
-editor_TARGET = OpenRA.Editor.exe
+editor_TARGET = $(OUTPUT_DIR)/OpenRA.Editor.exe
 editor_KIND = winexe
 editor_DEPS = $(game_TARGET)
 editor_LIBS = System.Windows.Forms.dll System.Data.dll System.Drawing.dll $(editor_DEPS) thirdparty/Eluant.dll
-editor_EXTRA = -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
+editor_EXTRA = -resource:$(OUTPUT_DIR)/OpenRA.Editor.Form1.resources -resource:$(OUTPUT_DIR)/OpenRA.Editor.MapSelect.resources
 editor_FLAGS = -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
 
 PROGRAMS += editor
-OpenRA.Editor.MapSelect.resources:
-	resgen2 OpenRA.Editor/MapSelect.resx OpenRA.Editor.MapSelect.resources 1> /dev/null
-OpenRA.Editor.Form1.resources:
-	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources 1> /dev/null
-editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
+$(OUTPUT_DIR)/OpenRA.Editor.MapSelect.resources:
+	resgen2 OpenRA.Editor/MapSelect.resx $(OUTPUT_DIR)/OpenRA.Editor.MapSelect.resources 1> /dev/null
+$(OUTPUT_DIR)/OpenRA.Editor.Form1.resources:
+	resgen2 OpenRA.Editor/Form1.resx $(OUTPUT_DIR)/OpenRA.Editor.Form1.resources 1> /dev/null
+editor: $(OUTPUT_DIR)/OpenRA.Editor.MapSelect.resources $(OUTPUT_DIR)/OpenRA.Editor.Form1.resources $(editor_TARGET)
 
 # Analyses mod yaml for easy to detect errors
 ralint_SRCS := $(shell find OpenRA.Lint/ -iname '*.cs')
-ralint_TARGET = OpenRA.Lint.exe
+ralint_TARGET = $(OUTPUT_DIR)/OpenRA.Lint.exe
 ralint_KIND = exe
 ralint_DEPS = $(game_TARGET)
 ralint_LIBS = $(COMMON_LIBS) $(ralint_DEPS)
@@ -179,35 +183,35 @@ ralint: $(ralint_TARGET)
 
 test:
 	@echo "OpenRA.Lint: checking Red Alert mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose ra
+	@mono --debug $(OUTPUT_DIR)/OpenRA.Lint.exe --verbose ra
 	@echo "OpenRA.Lint: checking Tiberian Dawn mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose cnc
+	@mono --debug $(OUTPUT_DIR)/OpenRA.Lint.exe --verbose cnc
 	@echo "OpenRA.Lint: checking Dune 2000 mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose d2k
+	@mono --debug $(OUTPUT_DIR)/OpenRA.Lint.exe --verbose d2k
 	@echo "OpenRA.Lint: checking Tiberian Sun mod MiniYAML..."
-	@mono --debug OpenRA.Lint.exe --verbose ts
+	@mono --debug $(OUTPUT_DIR)/OpenRA.Lint.exe --verbose ts
 
 # Builds and exports tilesets from a bitmap
 tsbuild_SRCS := $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
-tsbuild_TARGET = OpenRA.TilesetBuilder.exe
+tsbuild_TARGET = $(OUTPUT_DIR)/OpenRA.TilesetBuilder.exe
 tsbuild_KIND = winexe
 tsbuild_DEPS = $(game_TARGET)
 tsbuild_LIBS = $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
-tsbuild_EXTRA = -resource:OpenRA.TilesetBuilder.FormBuilder.resources -resource:OpenRA.TilesetBuilder.FormNew.resources -resource:OpenRA.TilesetBuilder.Surface.resources
+tsbuild_EXTRA = -resource:$(OUTPUT_DIR)/OpenRA.TilesetBuilder.FormBuilder.resources -resource:$(OUTPUT_DIR)/OpenRA.TilesetBuilder.FormNew.resources -resource:$(OUTPUT_DIR)/OpenRA.TilesetBuilder.Surface.resources
 PROGRAMS += tsbuild
-OpenRA.TilesetBuilder.FormBuilder.resources:
-	resgen2 OpenRA.TilesetBuilder/FormBuilder.resx OpenRA.TilesetBuilder.FormBuilder.resources 1> /dev/null
-OpenRA.TilesetBuilder.FormNew.resources:
-	resgen2 OpenRA.TilesetBuilder/frmNew.resx OpenRA.TilesetBuilder.FormNew.resources 1> /dev/null
-OpenRA.TilesetBuilder.Surface.resources:
-	resgen2 OpenRA.TilesetBuilder/Surface.resx OpenRA.TilesetBuilder.Surface.resources 1> /dev/null
-tsbuild: OpenRA.TilesetBuilder.FormBuilder.resources OpenRA.TilesetBuilder.FormNew.resources OpenRA.TilesetBuilder.Surface.resources $(tsbuild_TARGET)
+$(OUTPUT_DIR)/OpenRA.TilesetBuilder.FormBuilder.resources:
+	resgen2 OpenRA.TilesetBuilder/FormBuilder.resx $(OUTPUT_DIR)/OpenRA.TilesetBuilder.FormBuilder.resources 1> /dev/null
+$(OUTPUT_DIR)/OpenRA.TilesetBuilder.FormNew.resources:
+	resgen2 OpenRA.TilesetBuilder/frmNew.resx $(OUTPUT_DIR)/OpenRA.TilesetBuilder.FormNew.resources 1> /dev/null
+$(OUTPUT_DIR)/OpenRA.TilesetBuilder.Surface.resources:
+	resgen2 OpenRA.TilesetBuilder/Surface.resx $(OUTPUT_DIR)/OpenRA.TilesetBuilder.Surface.resources 1> /dev/null
+tsbuild: $(OUTPUT_DIR)/OpenRA.TilesetBuilder.FormBuilder.resources $(OUTPUT_DIR)/OpenRA.TilesetBuilder.FormNew.resources $(OUTPUT_DIR)/OpenRA.TilesetBuilder.Surface.resources $(tsbuild_TARGET)
 
 
 ##### Launchers / Utilities #####
 
 crashdialog_SRCS := $(shell find OpenRA.CrashDialog/ -iname '*.cs')
-crashdialog_TARGET = OpenRA.CrashDialog.exe
+crashdialog_TARGET = $(OUTPUT_DIR)/OpenRA.CrashDialog.exe
 crashdialog_KIND = exe
 crashdialog_DEPS = $(game_TARGET)
 crashdialog_LIBS = $(COMMON_LIBS) $(crashdialog_DEPS) System.Windows.Forms.dll
@@ -217,24 +221,23 @@ crashdialog: $(crashdialog_TARGET)
 
 # Backend for the launcher apps - queries game/mod info and applies actions to an install
 utility_SRCS := $(shell find OpenRA.Utility/ -iname '*.cs')
-utility_TARGET = OpenRA.Utility.exe
+utility_TARGET = $(OUTPUT_DIR)/OpenRA.Utility.exe
 utility_KIND = exe
 utility_DEPS = $(game_TARGET) $(mod_ra_TARGET)
 utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll
 PROGRAMS += utility
 utility: $(utility_TARGET)
-	@$(CP) $(mod_ra_TARGET) .
 
 
 # Patches binary headers to work around a mono bug
-fixheader.exe: packaging/fixheader.cs
-	@echo CSC fixheader.exe
-	@$(CSC) packaging/fixheader.cs $(CSFLAGS) -out:fixheader.exe -t:exe $(COMMON_LIBS:%=-r:%)
+$(OUTPUT_DIR)/fixheader.exe: $(ENSURE_OUTPUT_DIR) packaging/fixheader.cs
+	@echo CSC $(OUTPUT_DIR)/fixheader.exe
+	@$(CSC) packaging/fixheader.cs $(CSFLAGS) -out:$(OUTPUT_DIR)/fixheader.exe -t:exe $(COMMON_LIBS:%=-r:%)
 
 # Generate build rules for each target defined above in PROGRAMS
 define BUILD_ASSEMBLY
 
-$$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS) fixheader.exe
+$$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS) $(ENSURE_OUTPUT_DIR) $(OUTPUT_DIR)/fixheader.exe
 	@echo CSC $$(@)
 	@$(CSC) $$($(1)_LIBS:%=-r:%) \
 		-out:$$(@) $(CSFLAGS) $$($(1)_FLAGS) \
@@ -242,7 +245,7 @@ $$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS) fixheader.exe
 		-t:"$$($(1)_KIND)" \
 		$$($(1)_EXTRA) \
 		$$($(1)_SRCS)
-	@mono fixheader.exe $$(@) > /dev/null
+	@mono $(OUTPUT_DIR)/fixheader.exe $$(@) > /dev/null
 	@test `echo $$(@) | sed 's/^.*\.//'` = "dll" && chmod a-x $$(@) || ``
 	@$$($(1)_EXTRA_CMDS)
 endef
@@ -266,7 +269,7 @@ mods: mod_ra mod_cnc mod_d2k mod_ts
 all: cli-dependencies core tools
 
 clean:
-	@-$(RM_F) *.exe *.dll ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+	@-$(RM_F) $(OUTPUT_DIR)/* ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
 
 distclean: clean
@@ -278,12 +281,16 @@ endif
 
 dependencies: cli-dependencies native-dependencies
 
-cli-dependencies:
-	@ $(CP_R) thirdparty/*.dll .
-	@ $(CP_R) thirdparty/*.dll.config .
+$(ENSURE_OUTPUT_DIR):
+	@mkdir -p $(OUTPUT_DIR)
+	@touch $(ENSURE_OUTPUT_DIR)
 
-native-dependencies:
-	@ $(CP_R) thirdparty/${platformdeps}/* .
+cli-dependencies: $(ENSURE_OUTPUT_DIR)
+	@ $(CP_R) thirdparty/*.dll $(OUTPUT_DIR)/
+	@ $(CP_R) thirdparty/*.dll.config $(OUTPUT_DIR)/
+
+native-dependencies: $(ENSURE_OUTPUT_DIR)
+	@ $(CP_R) thirdparty/${platformdeps}/*.dll.config $(OUTPUT_DIR)/
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mod.yaml
 	@for i in $? ; do \
@@ -293,8 +300,8 @@ version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/modchooser/mo
 
 # Documentation (d2k depends on all mod libraries)
 docs: utility
-	@mono --debug OpenRA.Utility.exe --docs d2k > DOCUMENTATION.md
-	@mono --debug OpenRA.Utility.exe --lua-docs ra > Lua-API.md
+	@mono --debug $(OUTPUT_DIR)/OpenRA.Utility.exe --docs d2k > DOCUMENTATION.md
+	@mono --debug $(OUTPUT_DIR)/OpenRA.Utility.exe --lua-docs ra > Lua-API.md
 
 install: install-core
 
@@ -324,19 +331,19 @@ install-core: default
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
 	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
-	@$(CP) SDL2-CS* "$(DATA_INSTALL_DIR)"
-	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) SharpFont.dll "$(DATA_INSTALL_DIR)"
-	@$(CP) SharpFont.dll.config "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) Mono.Nat.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) KopiLua.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) NLua.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) RestSharp.dll "$(DATA_INSTALL_DIR)"
+	@$(CP) $(OUTPUT_DIR)/SDL2-CS* "$(DATA_INSTALL_DIR)"
+	@$(CP) $(OUTPUT_DIR)/Eluant* "$(DATA_INSTALL_DIR)"
+	@$(CP) $(OUTPUT_DIR)/SharpFont.dll.config "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(OUTPUT_DIR)/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(OUTPUT_DIR)/FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(OUTPUT_DIR)/SharpFont.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(OUTPUT_DIR)/Mono.Nat.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(OUTPUT_DIR)/KopiLua.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(OUTPUT_DIR)/NLua.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(OUTPUT_DIR)/MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(OUTPUT_DIR)/MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(OUTPUT_DIR)/Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(OUTPUT_DIR)/RestSharp.dll "$(DATA_INSTALL_DIR)"
 
 ifeq ($(shell uname),Linux)
 	@$(CP) *.sh "$(DATA_INSTALL_DIR)"

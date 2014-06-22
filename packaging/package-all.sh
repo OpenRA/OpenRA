@@ -30,8 +30,8 @@ markdown DOCUMENTATION.md > DOCUMENTATION.html
 markdown Lua-API.md > Lua-API.html
 
 # List of files that are packaged on all platforms
-FILES=('OpenRA.Game.exe' 'OpenRA.Editor.exe' 'OpenRA.Utility.exe' 'OpenRA.CrashDialog.exe' \
-'OpenRA.Renderer.Sdl2.dll' 'OpenRA.Renderer.Null.dll' 'OpenRA.Irc.dll' \
+FILES=('bin/OpenRA.Game.exe' 'bin/OpenRA.Editor.exe' 'bin/OpenRA.Utility.exe' 'bin/OpenRA.CrashDialog.exe' \
+'bin/OpenRA.Renderer.Sdl2.dll' 'bin/OpenRA.Renderer.Null.dll' 'bin/OpenRA.Irc.dll' \
 'FreeSans.ttf' 'FreeSansBold.ttf' 'lua' \
 'glsl' 'mods/common' 'mods/ra' 'mods/cnc' 'mods/d2k' 'mods/modchooser' \
 'AUTHORS' 'COPYING' \
@@ -42,6 +42,11 @@ echo "Copying files..."
 for i in "${FILES[@]}"; do
 	cp -R "${i}" "packaging/built/${i}" || exit 3
 done
+
+# Mod binaries
+cp bin/OpenRA.Mods.RA.dll packaging/built/mods/ra
+cp bin/OpenRA.Mods.Cnc.dll packaging/built/mods/cnc
+cp bin/OpenRA.Mods.D2k.dll packaging/built/mods/d2k
 
 # SharpZipLib for zip file support
 cp thirdparty/ICSharpCode.SharpZipLib.dll packaging/built
