@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
@@ -25,12 +26,23 @@ namespace OpenRA.Mods.RA
 	}
 
 	[Desc("Used together with ClassicProductionQueue.")]
-	class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding> { }
+	class PrimaryBuildingInfo : ITraitInfo
+	{
+		public readonly string Palette = "chrome";
+		
+		public readonly int OffsetX = 0;
+		public readonly int OffsetY = 7;
+		public readonly int OffsetAirfieldX = 16;
+		public readonly int OffsetAirfieldY = 15;
+		
+		public object Create(ActorInitializer init) { return new PrimaryBuilding(this); }
+	}
 
-	class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags
+	class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags, IPostRender
 	{
 		bool isPrimary = false;
 		public bool IsPrimary { get { return isPrimary; } }
+		PrimaryBuildingInfo info;
 
 		public IEnumerable<TagType> GetTags()
 		{
@@ -40,6 +52,11 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new DeployOrderTargeter("PrimaryProducer", 1); }
+		}
+
+		public PrimaryBuilding(PrimaryBuildingInfo info)
+		{
+			this.info = info;
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -78,6 +95,44 @@ namespace OpenRA.Mods.RA
 			isPrimary = true;
 
 			Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "PrimaryBuildingSelected", self.Owner.Country.Race);
+		}
+
+		// Draw Primary tag
+		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		{
+			if(isPrimary)
+			{
+				var pos = wr.ScreenPxPosition(self.CenterPosition);
+				var bounds = self.Bounds.Value;
+				bounds.Offset(pos.X, pos.Y);
+
+				int2 basePosition = new int2((bounds.Left + bounds.Right) / 2, bounds.Top);
+
+				var tagImages = new Animation(self.World, "pips");
+				var pal = wr.Palette(info.Palette);
+				var tagxyOffset = new int2(info.OffsetX, info.OffsetY);
+
+				// Special tag position for airfield
+				if (self.Info.Name == "afld")
+				{
+					if (Game.Settings.Graphics.PixelDouble)
+						tagxyOffset.Y += 4;
+					else
+					{
+						tagxyOffset.X = info.OffsetAirfieldX;
+						tagxyOffset.Y = info.OffsetAirfieldY;
+					}
+				}
+
+				var tagBase = wr.Viewport.WorldToViewPx(basePosition);
+
+				if (this.GetTags().Contains(TagType.Primary))
+				{
+					tagImages.PlayRepeating("tag-primary");
+					var tagPos = tagBase + tagxyOffset - (0.5f * tagImages.Image.size).ToInt2();
+					Game.Renderer.SpriteRenderer.DrawSprite(tagImages.Image, tagPos, pal);
+				}
+			}
 		}
 	}
 }
