@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.RA
 	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync
 	{
 		/* [Sync] when sync can cope with arrays! */
-		public CPos[] minefield = null;
+		public CPos[] Minefield = null;
 		[Sync] CPos minefieldStart;
 		Actor self;
 		Sprite tile;
@@ -45,17 +46,26 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new BeginMinefieldOrderTargeter(); }
+			get
+			{
+				yield return new BeginMinefieldOrderTargeter();
+				yield return new DeployOrderTargeter("PlaceMine", 5);
+			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (!(order is BeginMinefieldOrderTargeter))
-				return null;
-
-			var start = target.CenterPosition.ToCPos();
-			self.World.OrderGenerator = new MinefieldOrderGenerator(self, start);
-			return new Order("BeginMinefield", self, false) { TargetLocation = start };
+			switch (order.OrderID)
+			{
+				case "BeginMinefield":
+					var start = target.CenterPosition.ToCPos();
+					self.World.OrderGenerator = new MinefieldOrderGenerator(self, start);
+					return new Order("BeginMinefield", self, false) { TargetLocation = start };
+				case "PlaceMine":
+					return new Order("PlaceMine", self, false) { TargetLocation = self.Location };
+				default:
+					return null;
+			}
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -63,11 +73,19 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "BeginMinefield")
 				minefieldStart = order.TargetLocation;
 
+			if (order.OrderString == "PlaceMine")
+			{
+				minefieldStart = order.TargetLocation;
+				Minefield = new CPos[] { order.TargetLocation };
+				self.CancelActivity();
+				self.QueueActivity(new LayMines());
+			}
+
 			if (order.OrderString == "PlaceMinefield")
 			{
 				var movement = self.Trait<IPositionable>();
 
-				minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
+				Minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
 					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();
 
@@ -98,11 +116,11 @@ namespace OpenRA.Mods.RA
 
 		public void RenderAfterWorld(WorldRenderer wr)
 		{
-			if (self.Owner != self.World.LocalPlayer || minefield == null)
+			if (self.Owner != self.World.LocalPlayer || Minefield == null)
 				return;
 
 			var pal = wr.Palette("terrain");
-			foreach (var c in minefield)
+			foreach (var c in Minefield)
 				new SpriteRenderable(tile, c.CenterPosition,
 					WVec.Zero, -511, pal, 1f, true).Render(wr);
 		}
