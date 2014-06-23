@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Orders;
@@ -21,6 +22,9 @@ namespace OpenRA.Mods.RA
 {
 	class MadTankInfo : ITraitInfo, Requires<ExplodesInfo>, Requires<RenderUnitInfo>
 	{
+		public readonly string CrackSequence = "cracks";
+		public readonly string CrackPalette = "effect";
+
 		public readonly string ThumpSequence = "piston";
 		public readonly int ThumpInterval = 8;
 		[WeaponReference]
@@ -124,8 +128,10 @@ namespace OpenRA.Mods.RA
 		void StartDetonationSequence()
 		{
 			self.World.AddFrameEndTask(w => EjectDriver());
-			if (info.ThumpSequence != null)
+			if (!string.IsNullOrEmpty(info.ThumpSequence))
 				renderUnit.PlayCustomAnimRepeating(self, info.ThumpSequence);
+			if (!string.IsNullOrEmpty(info.CrackSequence) && !string.IsNullOrEmpty(info.CrackPalette))
+				self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.CenterPosition, w, info.CrackSequence, info.CrackPalette)));
 			deployed = true;
 			self.QueueActivity(new Wait(info.ChargeDelay, false));
 			self.QueueActivity(new CallFunc(() => Sound.Play(info.ChargeSound, self.CenterPosition)));

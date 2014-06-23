@@ -1,6 +1,6 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,15 +13,17 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Effects
 {
-	public class MoveFlash : IEffect
+	public class SpriteEffect : IEffect
 	{
+		string palette;
 		Animation anim;
 		WPos pos;
 
-		public MoveFlash(WPos pos, World world)
+		public SpriteEffect(WPos pos, World world, string sprite, string palette)
 		{
 			this.pos = pos;
-			anim = new Animation(world, "moveflsh");
+			this.palette = palette;
+			anim = new Animation(world, sprite);
 			anim.PlayThen("idle", () => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
@@ -32,7 +34,7 @@ namespace OpenRA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return anim.Render(pos, WVec.Zero, 0, wr.Palette("moveflash"), 1f / wr.Viewport.Zoom);
+			return anim.Render(pos, WVec.Zero, 0, wr.Palette(palette), 1f / wr.Viewport.Zoom);
 		}
 	}
 }
