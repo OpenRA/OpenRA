@@ -113,7 +113,7 @@ TRIKE:
 		Cost: 250
 	Tooltip:
 		Name: Scout Trike
-		Description: Fast Scout\n Strong vs Infantry
+		Description: Fast Scout\n Strong vs Infantry\n Weak vs Tanks, Aircraft
 	Selectable:
 		Bounds: 24,24
 	Health:

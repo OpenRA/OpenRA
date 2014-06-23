@@ -36,7 +36,7 @@ ENGINEER:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
-		Description: Infiltrates and captures enemy structures\n  Strong vs Nothing\n  Weak vs Everything
+		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
 	Selectable:
 		Bounds: 12,17,0,0
 		Voice: EngineerVoice
