@@ -40,6 +40,7 @@ namespace OpenRA.Mods.RA
 			register("enabletech", "toggles the ability to build everything.");
 			register("instantcharge", "toggles instant support power charging.");
 			register("all", "toggles all cheats and gives you some cash for your trouble.");
+			register("crash", "crashes the game");
 		}
 
 		public void InvokeCommand(string name, string arg)
@@ -80,6 +81,9 @@ namespace OpenRA.Mods.RA
 					IssueDevCommand(world, "DevFastCharge");
 					IssueDevCommand(world, "DevGiveCash");
 					break;
+
+				case "crash":
+					throw new DevException();
 			}
 		}
 
@@ -87,5 +91,7 @@ namespace OpenRA.Mods.RA
 		{
 			world.IssueOrder(new Order(command, world.LocalPlayer.PlayerActor, false));
 		}
+
+		class DevException : Exception { }
 	}
 }
