@@ -160,6 +160,7 @@ namespace OpenRA.Mods.RA.Effects
 				|| (dist.LengthSquared < MissileCloseEnough.Range * MissileCloseEnough.Range) // Within range
 				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
 				|| (!info.High && world.ActorMap.GetUnitsAt(cell).Any(a => a.HasTrait<IBlocksBullets>())) // Hit a wall
+				|| !world.Map.IsInMap(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
 				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType); // Hit incompatible terrain
 
 			if (shouldExplode)
