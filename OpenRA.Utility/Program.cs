@@ -34,8 +34,7 @@ namespace OpenRA.Utility
 			{ "--upgrade-map", UpgradeRules.UpgradeMap },
 			{ "--upgrade-mod", UpgradeRules.UpgradeMod },
 			{ "--map-import", Command.ImportLegacyMap },
-			{ "--extract-language-strings", ExtractLanguageStrings.FromMod },
-			{ "--csv", Command.ExportCharacterSeparatedRules }
+			{ "--extract-language-strings", ExtractLanguageStrings.FromMod }
 		};
 
 		static void Main(string[] args)
