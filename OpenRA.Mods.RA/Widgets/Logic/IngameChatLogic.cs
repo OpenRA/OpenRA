@@ -161,7 +161,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var scrolledToBottom = chatScrollPanel.ScrolledToBottom;
 			chatScrollPanel.AddChild(template);
 			if (scrolledToBottom)
-				chatScrollPanel.ScrollToBottom();
+				chatScrollPanel.ScrollToBottom(smooth: true);
 
 			Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
 		}

@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var uid = visibleMaps.Random(Game.CosmeticRandom);
 					selectedUid = uid;
-					scrollpanel.ScrollToItem(uid);
+					scrollpanel.ScrollToItem(uid, smooth: true);
 				};
 				randomMapButton.IsDisabled = () => visibleMaps == null || visibleMaps.Count == 0;
 			}
