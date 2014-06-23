@@ -336,6 +336,8 @@ overlay:
 		Start: 0
 	build-valid-winter:
 		Start: 0
+	build-valid-jungle:
+		Start: 0
 	build-invalid:
 		Start: 1
 	target-select:
@@ -347,6 +349,8 @@ overlay:
 	target-valid-temperat:
 		Start: 0
 	target-valid-winter:
+		Start: 0
+	target-valid-jungle:
 		Start: 0
 	target-invalid:
 		Start: 1
