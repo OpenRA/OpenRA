@@ -64,7 +64,7 @@ namespace OpenRA.Lint
 						.Select(m => m.Map);
 				}
 				else
-					maps = new [] { new Map(map) };
+					maps = new[] { new Map(map) };
 
 				foreach (var testMap in maps)
 				{
@@ -87,10 +87,10 @@ namespace OpenRA.Lint
 						{
 							var customPass = (ILintPass)Game.modData.ObjectCreator
 								.CreateBasic(customPassType);
-	
+
 							if (verbose)
 								Console.WriteLine("Pass: {0}".F(customPassType.ToString()));
-	
+
 							customPass.Run(EmitError, EmitWarning, testMap);
 						}
 						catch (Exception e)

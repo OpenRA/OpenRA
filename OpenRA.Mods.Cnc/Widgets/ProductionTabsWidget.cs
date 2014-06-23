@@ -281,7 +281,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			if (hotkey == Game.Settings.Keys.NextProductionTabKey)
 				return SelectNextTab(false);
-			else  if (hotkey == Game.Settings.Keys.PreviousProductionTabKey)
+			else if (hotkey == Game.Settings.Keys.PreviousProductionTabKey)
 				return SelectNextTab(true);
 
 			return false;

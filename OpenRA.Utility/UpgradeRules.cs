@@ -316,7 +316,7 @@ namespace OpenRA.Utility
 
 				if (engineVersion < 20140615)
 				{
-					if (depth == 2 && parentKey == "Warhead" && node.Key == "Ore" )
+					if (depth == 2 && parentKey == "Warhead" && node.Key == "Ore")
 						node.Key = "DestroyResources";
 				}
 

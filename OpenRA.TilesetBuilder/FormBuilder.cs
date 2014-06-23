@@ -40,39 +40,39 @@ namespace OpenRA.TilesetBuilder
 		{
 			this.Show();
 			using (var formNew = new FormNew { })
-			if (DialogResult.OK == formNew.ShowDialog())
-			{
-				PaletteFromImage = formNew.PaletteFromImage;
-				PaletteFile = formNew.PaletteFile;
-				ImageFile = formNew.ImageFile;
-				TileSize = formNew.TileSize;
-
-				srcfile = ImageFile;
-				this.size = TileSize;
-				surface1.TileSize = TileSize;
-
-				Bitmap rbitmap;
-				using (var fbitmap = new Bitmap(ImageFile))
-					rbitmap = fbitmap.Clone(new Rectangle(0, 0, fbitmap.Width, fbitmap.Height),
-						fbitmap.PixelFormat);
-
-				int[] shadowIndex = { };
-
-				if (!PaletteFromImage)
+				if (DialogResult.OK == formNew.ShowDialog())
 				{
-					TerrainPalette = Palette.Load(PaletteFile, shadowIndex);
-					rbitmap.Palette = TerrainPalette.AsSystemPalette();
+					PaletteFromImage = formNew.PaletteFromImage;
+					PaletteFile = formNew.PaletteFile;
+					ImageFile = formNew.ImageFile;
+					TileSize = formNew.TileSize;
+
+					srcfile = ImageFile;
+					this.size = TileSize;
+					surface1.TileSize = TileSize;
+
+					Bitmap rbitmap;
+					using (var fbitmap = new Bitmap(ImageFile))
+						rbitmap = fbitmap.Clone(new Rectangle(0, 0, fbitmap.Width, fbitmap.Height),
+							fbitmap.PixelFormat);
+
+					int[] shadowIndex = { };
+
+					if (!PaletteFromImage)
+					{
+						TerrainPalette = Palette.Load(PaletteFile, shadowIndex);
+						rbitmap.Palette = TerrainPalette.AsSystemPalette();
+					}
+
+					surface1.Image = (Bitmap)rbitmap;
+					surface1.TilesPerRow = surface1.Image.Size.Width / surface1.TileSize;
+					surface1.Image.SetResolution(96, 96); // people keep being noobs about DPI, and GDI+ cares.
+					surface1.TerrainTypes = new int[surface1.Image.Width / size, surface1.Image.Height / size];		/* all passable by default */
+					surface1.Templates = new List<Template>();
+					surface1.Size = surface1.Image.Size;
+					surface1.Enabled = true;
+					Load();
 				}
-			
-				surface1.Image = (Bitmap)rbitmap;
-				surface1.TilesPerRow = surface1.Image.Size.Width / surface1.TileSize;
-				surface1.Image.SetResolution(96, 96); // people keep being noobs about DPI, and GDI+ cares.
-				surface1.TerrainTypes = new int[surface1.Image.Width / size, surface1.Image.Height / size];		/* all passable by default */
-				surface1.Templates = new List<Template>();
-				surface1.Size = surface1.Image.Size;
-				surface1.Enabled = true;
-				Load();
-			}
 		}
 
 		public FormBuilder(string src, string tsize, bool autoExport, string outputDir)
@@ -89,7 +89,7 @@ namespace OpenRA.TilesetBuilder
 			TerrainType = new TerrainTypeInfo[terrainDefinition.Keys.Count];
 
 			var title = this.Text;
-			surface1.UpdateMouseTilePosition += (x, y, tileNr) => 
+			surface1.UpdateMouseTilePosition += (x, y, tileNr) =>
 			{
 				this.Text = "{0} - {1} ({2,3}, {3,3}) tileNr: {4,3}".F(title, txtTilesetName.Text, x, y, tileNr);
 			};
@@ -104,8 +104,8 @@ namespace OpenRA.TilesetBuilder
 				{
 					for (var y = 0; y < icon.Height; y++)
 					{
-					var newColor = deftype.Value.Color;
-					icon.SetPixel(x, y, newColor);
+						var newColor = deftype.Value.Color;
+						icon.SetPixel(x, y, newColor);
 					}
 				}
 
@@ -149,17 +149,17 @@ namespace OpenRA.TilesetBuilder
 
 		public new void Load()
 		{
-		try
-		{
-			var doc = new XmlDocument();
-			doc.Load(Path.ChangeExtension(srcfile, "tsx"));
+			try
+			{
+				var doc = new XmlDocument();
+				doc.Load(Path.ChangeExtension(srcfile, "tsx"));
 
-			foreach (var e in doc.SelectNodes("//name").OfType<XmlElement>())
-				txtTilesetName.Text = e.GetAttribute("value");
-		
-			foreach (var e in doc.SelectNodes("//terrain").OfType<XmlElement>())
-				surface1.TerrainTypes[int.Parse(e.GetAttribute("x")),
-					int.Parse(e.GetAttribute("y"))] = int.Parse(e.GetAttribute("t"));
+				foreach (var e in doc.SelectNodes("//name").OfType<XmlElement>())
+					txtTilesetName.Text = e.GetAttribute("value");
+
+				foreach (var e in doc.SelectNodes("//terrain").OfType<XmlElement>())
+					surface1.TerrainTypes[int.Parse(e.GetAttribute("x")),
+						int.Parse(e.GetAttribute("y"))] = int.Parse(e.GetAttribute("t"));
 
 				foreach (var e in doc.SelectNodes("//template").OfType<XmlElement>())
 					surface1.Templates.Add(new Template
@@ -168,13 +168,13 @@ namespace OpenRA.TilesetBuilder
 							.Select(f => new int2(int.Parse(f.GetAttribute("x")), int.Parse(f.GetAttribute("y"))))
 							.ToDictionary(a => a, a => true)
 					});
-		}
-		catch { }
+			}
+			catch { }
 		}
 
 		public void Save()
 		{
-			using (var w = XmlWriter.Create(Path.ChangeExtension(srcfile, "tsx"), 
+			using (var w = XmlWriter.Create(Path.ChangeExtension(srcfile, "tsx"),
 				new XmlWriterSettings { Indent = true, IndentChars = "  " }))
 			{
 				var tilesetName = txtTilesetName.Text;
@@ -227,9 +227,9 @@ namespace OpenRA.TilesetBuilder
 				innerTsb.Checked = false;
 			tsb.Checked = true;
 		}
-		
+
 		void SaveClicked(object sender, EventArgs e) { Save(); }
-		void ShowOverlaysClicked(object sender, EventArgs e) 
+		void ShowOverlaysClicked(object sender, EventArgs e)
 		{
 			surface1.ShowTerrainTypes = ((ToolStripButton)sender).Checked;
 			surface1.Invalidate();
@@ -296,7 +296,7 @@ namespace OpenRA.TilesetBuilder
 								for (var j = 0; j < tileSize; j++)
 									for (var i = 0; i < tileSize; i++)
 									{
-									bw.Write(q[i + j * data.Stride]);
+										bw.Write(q[i + j * data.Stride]);
 									}
 							}
 							else
@@ -368,8 +368,7 @@ namespace OpenRA.TilesetBuilder
 				id: tilesetID.ToUpper(),
 				palette: tilesetPalette.ToLower(),
 				extensions: new string[] { ext[0], ext[1] },
-				terrainInfo: TerrainType
-			);
+				terrainInfo: TerrainType);
 
 			// List of files to add to the mix file
 			var fileList = new List<string>();
@@ -398,8 +397,7 @@ namespace OpenRA.TilesetBuilder
 					id: cur,
 					image: "{0}{1:00}".F(txtTilesetName.Text, cur),
 					size: new int2(tp.Width, tp.Height),
-					tiles: tiles
-				);
+					tiles: tiles);
 
 				tileset.Templates.Add(cur, template);
 				cur++;
@@ -422,11 +420,11 @@ namespace OpenRA.TilesetBuilder
 					var idx = (t.Key.X - tp.Left) + tp.Width * (t.Key.Y - tp.Top);
 
 					// TemplateID CellID tilenr TemplateW TemplateH XinTilesPNG YinTilesPNG
-					Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", 
-						  cur, 
+					Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}",
+						  cur,
 						  idx,
-						  ((t.Key.Y * surface1.TilesPerRow) + t.Key.X),
-						  tp.Width, 
+						  t.Key.Y * surface1.TilesPerRow + t.Key.X,
+						  tp.Width,
 						  tp.Height,
 						  t.Key.X,
 						  t.Key.Y);

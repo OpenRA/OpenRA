@@ -46,10 +46,10 @@ namespace OpenRA.Mods.TS.Widgets.Logic
 
 		void CheckForDisk()
 		{
-			Func<string, bool> ValidDiskFilter = diskRoot => File.Exists(diskRoot+Path.DirectorySeparatorChar+"multi.mix") &&
+			Func<string, bool> validDiskFilter = diskRoot => File.Exists(diskRoot + Path.DirectorySeparatorChar + "multi.mix") &&
 					File.Exists(new string[] { diskRoot, "install", "tibsun.mix" }.Aggregate(Path.Combine));
 
-			var path = InstallUtils.GetMountedDisk(ValidDiskFilter);
+			var path = InstallUtils.GetMountedDisk(validDiskFilter);
 
 			if (path != null)
 				Install(path);
@@ -68,13 +68,13 @@ namespace OpenRA.Mods.TS.Widgets.Logic
 			installingContainer.IsVisible = () => true;
 
 			var dest = new string[] { Platform.SupportDir, "Content", "ts" }.Aggregate(Path.Combine);
-			var copyFiles = new string[] { "install/tibsun.mix", "scores.mix", "multi.mix"};
+			var copyFiles = new string[] { "install/tibsun.mix", "scores.mix", "multi.mix" };
 
 			var installCounter = 0;
 			var installTotal = copyFiles.Count();
 			var onProgress = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
-				progressBar.Percentage = installCounter*100/installTotal;
+				progressBar.Percentage = installCounter * 100 / installTotal;
 				installCounter++;
 
 				statusLabel.GetText = () => s;
@@ -82,12 +82,12 @@ namespace OpenRA.Mods.TS.Widgets.Logic
 
 			var onError = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
-				statusLabel.GetText = () => "Error: "+s;
+				statusLabel.GetText = () => "Error: " + s;
 				backButton.IsDisabled = () => false;
 				retryButton.IsDisabled = () => false;
 			}));
 
-			var t = new Thread( _ =>
+			var t = new Thread(_ =>
 			{
 				try
 				{
@@ -109,4 +109,3 @@ namespace OpenRA.Mods.TS.Widgets.Logic
 		}
 	}
 }
-

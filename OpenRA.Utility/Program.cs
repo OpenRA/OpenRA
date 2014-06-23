@@ -18,7 +18,7 @@ namespace OpenRA.Utility
 {
 	class Program
 	{
-		static Dictionary<string, Action<string[]>> Actions = new Dictionary<string, Action<string[]>>()
+		static readonly Dictionary<string, Action<string[]>> Actions = new Dictionary<string, Action<string[]>>()
 		{
 			{ "--settings-value", Command.Settings },
 			{ "--shp", Command.ConvertPngToShp },

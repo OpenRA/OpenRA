@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class CncIngameChromeLogic
 	{
-		Widget ingameRoot;
+		readonly Widget ingameRoot;
 		readonly World world;
 
 		[ObjectCreator.UseCtor]
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			powerBar.GetProvided = () => powerManager.PowerProvided;
 			powerBar.GetUsed = () => powerManager.PowerDrained;
 			powerBar.TooltipFormat = "Power Usage: {0}/{1}";
-			powerBar.GetBarColor = () => 
+			powerBar.GetBarColor = () =>
 			{
 				if (powerManager.PowerState == PowerState.Critical)
 					return Color.Red;
