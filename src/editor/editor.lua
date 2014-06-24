@@ -827,26 +827,36 @@ function CreateEditor()
         editor.assignscache = false
       end
       local evtype = event:GetModificationType()
-      if (bit.band(evtype,wxstc.wxSTC_MOD_INSERTTEXT) ~= 0) then
+      local inserted = bit.band(evtype, wxstc.wxSTC_MOD_INSERTTEXT) ~= 0
+      local deleted = bit.band(evtype, wxstc.wxSTC_MOD_DELETETEXT) ~= 0
+      if (inserted or deleted) then
         SetAutoRecoveryMark()
-        table.insert(editor.ev,{event:GetPosition(),event:GetLinesAdded()})
-        DynamicWordsAdd(editor,nil,editor:LineFromPosition(event:GetPosition()),event:GetLinesAdded())
+
+        local firstLine = editor:LineFromPosition(event:GetPosition())
+        local linesChanged = inserted and event:GetLinesAdded() or 0
+        table.insert(editor.ev, {event:GetPosition(), linesChanged})
+        DynamicWordsAdd(editor, nil, firstLine, linesChanged)
       end
-      if (bit.band(evtype,wxstc.wxSTC_MOD_DELETETEXT) ~= 0) then
-        SetAutoRecoveryMark()
-        table.insert(editor.ev,{event:GetPosition(),0})
-        DynamicWordsAdd(editor,nil,editor:LineFromPosition(event:GetPosition()),0)
+
+      local beforeInserted = bit.band(evtype,wxstc.wxSTC_MOD_BEFOREINSERT) ~= 0
+      local beforeDeleted = bit.band(evtype,wxstc.wxSTC_MOD_BEFOREDELETE) ~= 0
+
+      if (beforeInserted or beforeDeleted) then
+        -- unfold the current line being changed if folded
+        local firstLine = editor:LineFromPosition(event:GetPosition())
+        if not editor:GetFoldExpanded(firstLine) then editor:ToggleFold(firstLine) end
       end
       
       if ide.config.acandtip.nodynwords then return end
       -- only required to track changes
-      if (bit.band(evtype,wxstc.wxSTC_MOD_BEFOREDELETE) ~= 0) then
+
+      if beforeDeleted then
         local pos = event:GetPosition()
         local text = editor:GetTextRange(pos, pos+event:GetLength())
         local _, numlines = text:gsub("\r?\n","%1")
         DynamicWordsRem(editor,nil,editor:LineFromPosition(pos), numlines)
       end
-      if (bit.band(evtype,wxstc.wxSTC_MOD_BEFOREINSERT) ~= 0) then
+      if beforeInserted then
         DynamicWordsRem(editor,nil,editor:LineFromPosition(event:GetPosition()), 0)
       end
     end)
