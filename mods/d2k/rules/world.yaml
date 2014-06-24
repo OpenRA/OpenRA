@@ -128,15 +128,39 @@ World:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartLocations:
-	MPStartUnits@atreides:
+	MPStartUnits@mcvatreides:
+		Class: none
 		Races: atreides
 		BaseActor: mcva
-	MPStartUnits@harkonnen:
+	MPStartUnits@mcvharkonnen:
+		Class: none
 		Races: harkonnen
 		BaseActor: mcvh
-	MPStartUnits@ordos:
+	MPStartUnits@mcvordos:
+		Class: none
 		Races: ordos
 		BaseActor: mcvo
+	MPStartUnits@lightatreides:
+		Class: light
+		Races: atreides
+		BaseActor: mcva
+		SupportActors: rifle, rifle, bazooka, trike, quad
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@lightharkonnen:
+		Class: light
+		Races: harkonnen
+		BaseActor: mcvh
+		SupportActors: rifle, bazooka, bazooka, trike, quad
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@lightordos:
+		Class: light
+		Races: ordos
+		BaseActor: mcvo
+		SupportActors: rifle, rifle, engineer, trike, quad
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
 	SpawnMPUnits:
 	PathFinder:
 	ValidateOrder:
