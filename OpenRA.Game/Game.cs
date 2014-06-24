@@ -483,25 +483,30 @@ namespace OpenRA
 
 			SetIdealFrameTime(Settings.Graphics.MaxFramerate);
 
-			while (state == RunStatus.Running)
+			try
 			{
-				if (Settings.Graphics.CapFramerate)
+				while (state == RunStatus.Running)
 				{
-					var sw = Stopwatch.StartNew();
+					if (Settings.Graphics.CapFramerate)
+					{
+						var sw = Stopwatch.StartNew();
 
-					Tick(orderManager);
+						Tick(orderManager);
 
-					var waitTime = Math.Min(idealFrameTime - sw.Elapsed.TotalSeconds, 1);
-					if (waitTime > 0)
-						System.Threading.Thread.Sleep(TimeSpan.FromSeconds(waitTime));
+						var waitTime = Math.Min(idealFrameTime - sw.Elapsed.TotalSeconds, 1);
+						if (waitTime > 0)
+							System.Threading.Thread.Sleep(TimeSpan.FromSeconds(waitTime));
+					}
+					else
+						Tick(orderManager);
 				}
-				else
-					Tick(orderManager);
 			}
-
-			// Ensure that the active replay is properly saved
-			if (orderManager != null)
-				orderManager.Dispose();
+			finally
+			{
+				// Ensure that the active replay is properly saved
+				if (orderManager != null)
+					orderManager.Dispose();
+			}
 				
 			Renderer.Device.Dispose();
 
