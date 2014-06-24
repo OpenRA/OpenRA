@@ -35,25 +35,25 @@ Players:
 		Race: soviet
 		ColorRamp: 3,255,127
 		Allies: BadGuy
-		Enemies: England,Greece
+		Enemies: Greece
 	PlayerReference@France:
 		Name: France
 		Race: allies
 		ColorRamp: 115,115,143
-		Allies: England,Greece
+		Allies: Greece
 		Enemies: USSR,BadGuy
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
 		Race: allies
-		Enemies: England,Greece
+		Enemies: Greece
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Race: soviet
 		ColorRamp: 3,255,127
 		Allies: USSR
-		Enemies: England,Greece
+		Enemies: Greece
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
@@ -65,7 +65,7 @@ Players:
 		ColorRamp: 161,134,200
 		LockSpawn: True
 		LockTeam: True
-		Allies: France,England
+		Allies: France
 		Enemies: USSR,BadGuy
 
 Actors:
