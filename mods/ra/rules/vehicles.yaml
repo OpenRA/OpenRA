@@ -800,25 +800,3 @@ STNK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-
-BOMB:
-	Inherits: ^Vehicle
-	Tooltip:
-		Name: Bomb
-	Health:
-		HP: 50
-	Armor:
-		Type: Light
-	Mobile:
-		Speed: 0
-	RevealsShroud:
-		Range: 2c0
-	RenderUnit:
-	Explodes:
-		Weapon: BarrelExplode
-		EmptyWeapon: BarrelExplode
-	DemoTruck:
-	-IronCurtainable:
-	Chronoshiftable:
-		ExplodeInstead: yes
-
