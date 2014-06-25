@@ -916,7 +916,7 @@ HPAD:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
-		Description: Produces and reloads helicopters.
+		Description: Produces and reloads helicopters. \n  Special Ability: Parabombs
 	Building:
 		Power: -10
 		Footprint: xx xx
@@ -937,6 +937,13 @@ HPAD:
 		Produces: Helicopter
 	Reservable:
 	IronCurtainable:
+	ParatroopersPower:
+		Icon: parabomb
+		ChargeTime: 400
+		Description: Parabomb
+		LongDesc: A Badger drops some bombs\nanywhere on the map.
+		DropItems: Bomb, Bomb, Bomb, Bomb, Bomb
+		SelectTargetSound: slcttgt1.aud
 	ProductionBar:
 	PrimaryBuilding:
 
