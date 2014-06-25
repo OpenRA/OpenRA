@@ -244,7 +244,12 @@ local specialmapping = {
     local panes = uimgr:GetAllPanes()
     for index = 0, panes:GetCount()-1 do
       local wind = uimgr:GetPane(panes:Item(index).name).window
-      local children = wind:GetChildren()
+
+      -- wxlua compiled with STL doesn't provide GetChildren() method
+      -- as per http://sourceforge.net/p/wxlua/mailman/message/32500995/
+      local ok, children = pcall(function() return wind:GetChildren() end)
+      if not ok then break end
+
       for child = 0, children:GetCount()-1 do
         local data = children:Item(child):GetData()
         local _, window = pcall(function() return data:DynamicCast("wxWindow") end)
