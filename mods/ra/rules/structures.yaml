@@ -942,7 +942,7 @@ HPAD:
 		ChargeTime: 480
 		Description: Paratanks
 		LongDesc: A Badger drops some tank\nanywhere on the map.
-		DropItems: 1tnk, 1tnk, apc
+		DropItems: 1tnk, 1tnk, jeep
 		SelectTargetSound: slcttgt1.aud
 	ProductionBar:
 	PrimaryBuilding:
