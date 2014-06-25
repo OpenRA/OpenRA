@@ -939,7 +939,7 @@ HPAD:
 	IronCurtainable:
 	ParatroopersPower:
 		Icon: paratroopers
-		ChargeTime: 480
+		ChargeTime: 440
 		Description: Paratanks
 		LongDesc: A Badger drops some tank\nanywhere on the map.
 		DropItems: 1tnk, jeep, jeep
@@ -989,7 +989,7 @@ AFLD:
 		EndChargeSound: spypln1.aud
 	ParatroopersPower:
 		Icon: paratroopers
-		ChargeTime: 360
+		ChargeTime: 440
 		Description: Paratroopers
 		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
 		DropItems: E1,E1,E2,E3,E3,E3,E6
