@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public bool CanLand(CPos cell)
 		{
-			if (!self.World.Map.IsInMap(cell))
+			if (!self.World.Map.Contains(cell))
 				return false;
 
 			if (self.World.ActorMap.AnyUnitsAt(cell))
@@ -246,7 +246,7 @@ namespace OpenRA.Mods.RA.Air
 				return false;
 
 			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-			cursor = self.World.Map.IsInMap(target.CenterPosition.ToCPos()) ? "move" : "move-blocked";
+			cursor = self.World.Map.Contains(target.CenterPosition.ToCPos()) ? "move" : "move-blocked";
 			return true;
 		}
 

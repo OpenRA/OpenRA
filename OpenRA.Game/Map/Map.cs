@@ -461,7 +461,7 @@ namespace OpenRA
 			return dataStream.ToArray();
 		}
 
-		public bool IsInMap(CPos xy) { return Bounds.Contains(xy.X, xy.Y); }
+		public bool Contains(CPos xy) { return Bounds.Contains(xy.X, xy.Y); }
 
 		public void Resize(int width, int height)		// editor magic.
 		{
@@ -638,7 +638,7 @@ namespace OpenRA
 				foreach (var offset in TilesByDistance[i])
 				{
 					var t = offset + center;
-					if (IsInMap(t))
+					if (Contains(t))
 						yield return t;
 				}
 			}

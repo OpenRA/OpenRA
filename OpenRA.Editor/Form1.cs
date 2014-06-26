@@ -657,7 +657,7 @@ namespace OpenRA.Editor
 				{
 					var cell = new CPos(x + u, y + v);
 
-					if (!surface1.Map.IsInMap(cell))
+					if (!surface1.Map.Contains(cell))
 						continue;
 
 					if (surface1.Map.MapResources.Value[cell].Type == resourceType)

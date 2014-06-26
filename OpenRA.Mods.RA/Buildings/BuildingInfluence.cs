@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Buildings
 					return;
 
 				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b.Info, a.Location))
-					if (map.IsInMap(u) && influence[u] == null)
+					if (map.Contains(u) && influence[u] == null)
 						influence[u] = a;
 			};
 
@@ -46,14 +46,14 @@ namespace OpenRA.Mods.RA.Buildings
 					return;
 
 				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b.Info, a.Location))
-					if (map.IsInMap(u) && influence[u] == a)
+					if (map.Contains(u) && influence[u] == a)
 						influence[u] = null;
 			};
 		}
 
 		public Actor GetBuildingAt(CPos cell)
 		{
-			if (!map.IsInMap(cell))
+			if (!map.Contains(cell))
 				return null;
 
 			return influence[cell];

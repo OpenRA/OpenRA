@@ -130,7 +130,7 @@ namespace OpenRA.Traits
 
 		public bool AllowResourceAt(ResourceType rt, CPos cell)
 		{
-			if (!world.Map.IsInMap(cell))
+			if (!world.Map.Contains(cell))
 				return false;
 
 			if (!rt.Info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type))

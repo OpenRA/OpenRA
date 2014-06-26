@@ -38,7 +38,7 @@ namespace OpenRA.Editor
 				for (var v = 0; v < template.Size.Y; v++)
 				{
 					var cell = pos + new CVec(u, v);
-					if (surface.Map.IsInMap(cell))
+					if (surface.Map.Contains(cell))
 					{
 						var z = u + v * template.Size.X;
 						if (tile[z].Length > 0)
@@ -75,7 +75,7 @@ namespace OpenRA.Editor
 			Action<int, int> maybeEnqueue = (x, y) =>
 			{
 				var c = new CPos(x, y);
-				if (s.Map.IsInMap(c) && !touched[x, y])
+				if (s.Map.Contains(c) && !touched[x, y])
 				{
 					queue.Enqueue(c);
 					touched[x, y] = true;
@@ -112,7 +112,7 @@ namespace OpenRA.Editor
 			for (;;)
 			{
 				var q = p + d;
-				if (!s.Map.IsInMap(q)) return p;
+				if (!s.Map.Contains(q)) return p;
 				if (s.Map.MapTiles.Value[q].Type != replace.Type) return p;
 				p = q;
 			}

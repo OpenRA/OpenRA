@@ -136,7 +136,7 @@ namespace OpenRA.Graphics
 
 					var color = t.Trait.RadarSignatureColor(t.Actor);
 					foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
-						if (world.Map.IsInMap(cell))
+						if (world.Map.Contains(cell))
 							*(c + ((cell.Y - world.Map.Bounds.Top) * bitmapData.Stride >> 2) + cell.X - world.Map.Bounds.Left) = color.ToArgb();
 				}
 			}

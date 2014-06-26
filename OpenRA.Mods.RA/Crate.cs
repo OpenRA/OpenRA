@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
 		{
-			if (!self.World.Map.IsInMap(cell)) return false;
+			if (!self.World.Map.Contains(cell)) return false;
 
 			var type = self.World.Map.GetTerrainInfo(cell).Type;
 			if (!info.TerrainTypes.Contains(type))

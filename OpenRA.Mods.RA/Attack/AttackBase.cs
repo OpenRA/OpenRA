@@ -207,7 +207,7 @@ namespace OpenRA.Mods.RA
 
 			bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!self.World.Map.IsInMap(location))
+				if (!self.World.Map.Contains(location))
 					return false;
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);

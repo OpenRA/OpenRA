@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 					return false;
 
 				var location = target.CenterPosition.ToCPos();
-				if (self.World.Map.IsInMap(location))
+				if (self.World.Map.Contains(location))
 				{
 					cursor = "ability";
 					return true;

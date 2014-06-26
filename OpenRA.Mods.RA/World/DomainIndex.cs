@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA
 
 		public bool IsPassable(CPos p1, CPos p2)
 		{
-			if (!map.IsInMap(p1) || !map.IsInMap(p2))
+			if (!map.Contains(p1) || !map.Contains(p2))
 				return false;
 
 			if (domains[p1] == domains[p2])
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA
 			{
 				// Select all neighbors inside the map boundries
 				var neighbors = CVec.directions.Select(d => d + cell)
-					.Where(c => map.IsInMap(c));
+					.Where(c => map.Contains(c));
 
 				var found = false;
 				foreach (var n in neighbors)
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.RA
 
 					// Don't crawl off the map, or add already-visited cells
 					var neighbors = CVec.directions.Select(d => n + d)
-						.Where(p => map.IsInMap(p) && !visited[p]);
+						.Where(p => map.Contains(p) && !visited[p]);
 
 					foreach (var neighbor in neighbors)
 						domainQueue.Enqueue(neighbor);

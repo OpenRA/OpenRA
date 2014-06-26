@@ -55,7 +55,7 @@ namespace OpenRA.Orders
 
 		IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
 		{
-			if (mi.Button == expectedButton && world.Map.IsInMap(xy))
+			if (mi.Button == expectedButton && world.Map.Contains(xy))
 			{
 				world.CancelInputMode();
 				foreach (var subject in subjects)
@@ -66,6 +66,6 @@ namespace OpenRA.Orders
 		public virtual void Tick(World world) { }
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
-		public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
+		public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.Contains(xy) ? cursor : "generic-blocked"; }
 	}
 }

@@ -71,7 +71,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a)
 		{
-			if (!map.IsInMap(a))
+			if (!map.Contains(a))
 				yield break;
 
 			for (var i = influence[a]; i != null; i = i.Next)
@@ -81,7 +81,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
 		{
-			if (!map.IsInMap(a))
+			if (!map.Contains(a))
 				yield break;
 
 			for (var i = influence[a]; i != null; i = i.Next)

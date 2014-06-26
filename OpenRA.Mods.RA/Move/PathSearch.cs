@@ -178,7 +178,7 @@ namespace OpenRA.Mods.RA.Move
 				var newHere = p.Location + d;
 
 				// Is this direction flat-out unusable or already seen?
-				if (!world.Map.IsInMap(newHere))
+				if (!world.Map.Contains(newHere))
 					continue;
 
 				if (CellInfo[newHere].Seen)
@@ -255,7 +255,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public void AddInitialCell(CPos location)
 		{
-			if (!self.World.Map.IsInMap(location))
+			if (!self.World.Map.Contains(location))
 				return;
 
 			CellInfo[location] = new CellInfo(0, location, false);

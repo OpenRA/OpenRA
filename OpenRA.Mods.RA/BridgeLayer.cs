@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA
 				var subtile = new CPos(ni + ind % template.Size.X, nj + ind / template.Size.X);
 
 				// This isn't the bridge you're looking for
-				if (!w.Map.IsInMap(subtile) || w.Map.MapTiles.Value[subtile].Type != tile ||
+				if (!w.Map.Contains(subtile) || w.Map.MapTiles.Value[subtile].Type != tile ||
 					w.Map.MapTiles.Value[subtile].Index != ind)
 					continue;
 
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA
 		// Used to check for neighbouring bridges
 		public Bridge GetBridge(CPos cell)
 		{
-			if (!world.Map.IsInMap(cell))
+			if (!world.Map.Contains(cell))
 				return null;
 
 			return bridges[cell];

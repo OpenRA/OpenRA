@@ -217,7 +217,7 @@ namespace OpenRA.Traits
 
 		public bool IsExplored(CPos cell)
 		{
-			if (!map.IsInMap(cell))
+			if (!map.Contains(cell))
 				return false;
 
 			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Shroud)
@@ -233,7 +233,7 @@ namespace OpenRA.Traits
 
 		public bool IsVisible(CPos cell)
 		{
-			if (!map.IsInMap(cell))
+			if (!map.Contains(cell))
 				return false;
 
 			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Fog)
