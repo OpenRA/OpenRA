@@ -35,9 +35,23 @@ namespace OpenRA.Mods.RA
 
 	public class ShroudRenderer : IRenderShroud, IWorldLoaded
 	{
+		[Flags]
+		enum Edges
+		{
+			None = 0,
+			TopLeft = 0x01,
+			TopRight = 0x02,
+			BottomRight = 0x04,
+			BottomLeft = 0x08,
+			AllCorners = TopLeft | TopRight | BottomRight | BottomLeft,
+			Top = 0x10 | TopLeft | TopRight,
+			Right = 0x20 | TopRight | BottomRight,
+			Bottom = 0x40 | BottomRight | BottomLeft,
+			Left = 0x80 | TopLeft | BottomLeft
+		}
+
 		struct ShroudTile
 		{
-			public CPos Position;
 			public float2 ScreenPosition;
 			public int Variant;
 
@@ -45,17 +59,20 @@ namespace OpenRA.Mods.RA
 			public Sprite Shroud;
 		}
 
-		Sprite[] sprites;
-		Sprite unexploredTile;
-		int[] spriteMap;
+		readonly Sprite[] sprites;
+		readonly Sprite unexploredTile;
+		readonly int[] spriteMap;
+		readonly bool useExtendedIndex;
 
-		ShroudTile[] tiles;
-		int tileStride, variantStride;
+		readonly Rectangle bounds;
+		readonly ShroudTile[] tiles;
+		readonly int tileStride, variantStride;
 
-		int shroudHash;
+		bool clearedForNullShroud;
+		int lastShroudHash;
+		Rectangle updatedBounds;
+
 		PaletteReference fogPalette, shroudPalette;
-		Rectangle bounds;
-		bool useExtendedIndex;
 
 		public ShroudRenderer(World world, ShroudRendererInfo info)
 		{
@@ -65,9 +82,6 @@ namespace OpenRA.Mods.RA
 
 			tiles = new ShroudTile[map.MapSize.X * map.MapSize.Y];
 			tileStride = map.MapSize.X;
-
-			// Force update on first render
-			shroudHash = -1;
 
 			// Load sprite variants
 			sprites = new Sprite[info.Variants.Length * info.Index.Length];
@@ -100,23 +114,23 @@ namespace OpenRA.Mods.RA
 				unexploredTile = sprites[spriteMap[0]];
 		}
 
-		static int FoggedEdges(Shroud s, CPos p, bool useExtendedIndex)
+		static Edges GetEdges(int x, int y, bool useExtendedIndex, Func<int, int, bool> isVisible)
 		{
-			if (!s.IsVisible(p.X, p.Y))
-				return 15;
+			if (!isVisible(x, y))
+				return Edges.AllCorners;
 
 			// If a side is shrouded then we also count the corners
-			var u = 0;
-			if (!s.IsVisible(p.X, p.Y - 1)) u |= 0x13;
-			if (!s.IsVisible(p.X + 1, p.Y)) u |= 0x26;
-			if (!s.IsVisible(p.X, p.Y + 1)) u |= 0x4C;
-			if (!s.IsVisible(p.X - 1, p.Y)) u |= 0x89;
+			var u = Edges.None;
+			if (!isVisible(x, y - 1)) u |= Edges.Top;
+			if (!isVisible(x + 1, y)) u |= Edges.Right;
+			if (!isVisible(x, y + 1)) u |= Edges.Bottom;
+			if (!isVisible(x - 1, y)) u |= Edges.Left;
 
-			var uside = u & 0x0F;
-			if (!s.IsVisible(p.X - 1, p.Y - 1)) u |= 0x01;
-			if (!s.IsVisible(p.X + 1, p.Y - 1)) u |= 0x02;
-			if (!s.IsVisible(p.X + 1, p.Y + 1)) u |= 0x04;
-			if (!s.IsVisible(p.X - 1, p.Y + 1)) u |= 0x08;
+			var ucorner = u & Edges.AllCorners;
+			if (!isVisible(x - 1, y - 1)) u |= Edges.TopLeft;
+			if (!isVisible(x + 1, y - 1)) u |= Edges.TopRight;
+			if (!isVisible(x + 1, y + 1)) u |= Edges.BottomRight;
+			if (!isVisible(x - 1, y + 1)) u |= Edges.BottomLeft;
 
 			// RA provides a set of frames for tiles with shrouded
 			// corners but unshrouded edges. We want to detect this
@@ -124,134 +138,154 @@ namespace OpenRA.Mods.RA
 			// in other combinations. The XOR turns off the corner
 			// bits that are enabled twice, which gives the behavior
 			// we want here.
-			return useExtendedIndex ? u ^ uside : u & 0x0F;
+			return useExtendedIndex ? u ^ ucorner : u & Edges.AllCorners;
 		}
 
-		static int ShroudedEdges(Shroud s, CPos p, bool useExtendedIndex)
+		static Edges GetObserverEdges(int x, int y, bool useExtendedIndex, Rectangle bounds)
 		{
-			if (!s.IsExplored(p.X, p.Y))
-				return 15;
+			var top = y == bounds.Top;
+			var right = x == bounds.Right - 1;
+			var bottom = y == bounds.Bottom - 1;
+			var left = x == bounds.Left;
 
-			// If a side is shrouded then we also count the corners
-			var u = 0;
-			if (!s.IsExplored(p.X, p.Y - 1)) u |= 0x13;
-			if (!s.IsExplored(p.X + 1, p.Y)) u |= 0x26;
-			if (!s.IsExplored(p.X, p.Y + 1)) u |= 0x4C;
-			if (!s.IsExplored(p.X - 1, p.Y)) u |= 0x89;
+			var u = Edges.None;
+			if (top) u |= Edges.Top;
+			if (right) u |= Edges.Right;
+			if (bottom) u |= Edges.Bottom;
+			if (left) u |= Edges.Left;
 
-			var uside = u & 0x0F;
-			if (!s.IsExplored(p.X - 1, p.Y - 1)) u |= 0x01;
-			if (!s.IsExplored(p.X + 1, p.Y - 1)) u |= 0x02;
-			if (!s.IsExplored(p.X + 1, p.Y + 1)) u |= 0x04;
-			if (!s.IsExplored(p.X - 1, p.Y + 1)) u |= 0x08;
+			var ucorner = u & Edges.AllCorners;
+			if (top && left) u |= Edges.TopLeft;
+			if (top && right) u |= Edges.TopRight;
+			if (bottom && right) u |= Edges.BottomRight;
+			if (bottom && left) u |= Edges.BottomLeft;
 
-			// RA provides a set of frames for tiles with shrouded
-			// corners but unshrouded edges. We want to detect this
-			// situation without breaking the edge -> corner enabling
-			// in other combinations. The XOR turns off the corner
-			// bits that are enabled twice, which gives the behavior
-			// we want here.
-			return useExtendedIndex ? u ^ uside : u & 0x0F;
-		}
-
-		static int ObserverShroudedEdges(CPos p, Rectangle bounds, bool useExtendedIndex)
-		{
-			var u = 0;
-			if (p.Y == bounds.Top) u |= 0x13;
-			if (p.X == bounds.Right - 1) u |= 0x26;
-			if (p.Y == bounds.Bottom - 1) u |= 0x4C;
-			if (p.X == bounds.Left)	u |= 0x89;
-
-			var uside = u & 0x0F;
-			if (p.X == bounds.Left && p.Y == bounds.Top) u |= 0x01;
-			if (p.X == bounds.Right - 1 && p.Y == bounds.Top) u |= 0x02;
-			if (p.X == bounds.Right - 1 && p.Y == bounds.Bottom - 1) u |= 0x04;
-			if (p.X == bounds.Left && p.Y == bounds.Bottom - 1) u |= 0x08;
-
-			return useExtendedIndex ? u ^ uside : u & 0x0F;
+			return useExtendedIndex ? u ^ ucorner : u & Edges.AllCorners;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			// Cache the tile positions to avoid unnecessary calculations
-			for (var i = bounds.Left; i < bounds.Right; i++)
+			var xMin = bounds.Left;
+			var yMin = bounds.Top;
+			var xMax = bounds.Right;
+			var yMax = bounds.Bottom;
+			for (var y = yMin; y < yMax; y++)
 			{
-				for (var j = bounds.Top; j < bounds.Bottom; j++)
-				{
-					var k = j * tileStride + i;
-					tiles[k].Position = new CPos(i, j);
-					tiles[k].ScreenPosition = wr.ScreenPosition(tiles[k].Position.CenterPosition);
-				}
+				var rowIndex = y * tileStride;
+				for (var x = xMin; x < xMax; x++)
+					tiles[rowIndex + x].ScreenPosition = wr.ScreenPosition(new CPos(x, y).CenterPosition);
 			}
 
 			fogPalette = wr.Palette("fog");
 			shroudPalette = wr.Palette("shroud");
 		}
 
-		Sprite GetTile(int flags, int variant)
+		Sprite GetTile(Edges edges, int variant)
 		{
-			if (flags == 0)
+			if (edges == Edges.None)
 				return null;
 
-			if (flags == 15)
+			if (edges == Edges.AllCorners)
 				return unexploredTile;
 
-			return sprites[variant * variantStride + spriteMap[flags]];
+			return sprites[variant * variantStride + spriteMap[(int)edges]];
 		}
 
-		void Update(Shroud shroud)
+		void Update(Shroud shroud, int left, int top, int right, int bottom)
 		{
-			var hash = shroud != null ? shroud.Hash : 0;
-			if (shroudHash == hash)
-				return;
-
-			shroudHash = hash;
-			if (shroud == null)
+			if (shroud != null)
 			{
-				// Players with no shroud see the whole map so we only need to set the edges
-				for (var k = 0; k < tiles.Length; k++)
+				// If the current shroud hasn't changed and we have already updated the specified area, we don't need to do anything.
+				var newBounds = Rectangle.FromLTRB(left, top, right, bottom);
+				if (lastShroudHash == shroud.Hash && !clearedForNullShroud && updatedBounds.Contains(newBounds))
+					return;
+
+				lastShroudHash = shroud.Hash;
+				clearedForNullShroud = false;
+				updatedBounds = newBounds;
+				UpdateShroud(shroud);
+			}
+			else if (!clearedForNullShroud)
+			{
+				// We need to clear any applied shroud.
+				clearedForNullShroud = true;
+				updatedBounds = Rectangle.Empty;
+				UpdateNullShroud();
+			}
+		}
+
+		void UpdateShroud(Shroud shroud)
+		{
+			Func<int, int, bool> visibleUnderShroud = shroud.IsExplored;
+			Func<int, int, bool> visibleUnderFog = shroud.IsVisible;
+			var xMin = updatedBounds.Left;
+			var yMin = updatedBounds.Top;
+			var xMax = updatedBounds.Right;
+			var yMax = updatedBounds.Bottom;
+			for (var y = yMin; y < yMax; y++)
+			{
+				var rowIndex = y * tileStride;
+				for (var x = xMin; x < xMax; x++)
 				{
-					var shrouded = ObserverShroudedEdges(tiles[k].Position, bounds, useExtendedIndex);
-					tiles[k].Shroud = GetTile(shrouded, tiles[k].Variant);
-					tiles[k].Fog = GetTile(shrouded, tiles[k].Variant);
+					var index = rowIndex + x;
+					var shrouded = GetEdges(x, y, useExtendedIndex, visibleUnderShroud);
+					var fogged = GetEdges(x, y, useExtendedIndex, visibleUnderFog);
+					var variant = tiles[index].Variant;
+					tiles[index].Shroud = GetTile(shrouded, variant);
+					tiles[index].Fog = GetTile(fogged, variant);
 				}
 			}
-			else
-			{
-				for (var k = 0; k < tiles.Length; k++)
-				{
-					var shrouded = ShroudedEdges(shroud, tiles[k].Position, useExtendedIndex);
-					var fogged = FoggedEdges(shroud, tiles[k].Position, useExtendedIndex);
+		}
 
-					tiles[k].Shroud = GetTile(shrouded, tiles[k].Variant);
-					tiles[k].Fog = GetTile(fogged, tiles[k].Variant);
+		void UpdateNullShroud()
+		{
+			var xMin = bounds.Left;
+			var yMin = bounds.Top;
+			var xMax = bounds.Right;
+			var yMax = bounds.Bottom;
+			for (var y = yMin; y < yMax; y++)
+			{
+				var rowIndex = y * tileStride;
+				for (var x = xMin; x < xMax; x++)
+				{
+					var index = rowIndex + x;
+					var mask = GetObserverEdges(x, y, useExtendedIndex, bounds);
+					var tile = GetTile(mask, tiles[index].Variant);
+					tiles[index].Shroud = tile;
+					tiles[index].Fog = tile;
 				}
 			}
 		}
 
 		public void RenderShroud(WorldRenderer wr, Shroud shroud)
 		{
-			Update(shroud);
-
 			var clip = wr.Viewport.CellBounds;
-			var width = clip.Width;
-			for (var j = clip.Top; j < clip.Bottom; j++)
+			var top = clip.Top;
+			var bottom = clip.Bottom;
+			var left = clip.Left;
+			var right = clip.Right;
+
+			Update(shroud, left, top, right, bottom);
+
+			for (var y = top; y < bottom; y++)
 			{
-				var start = j * tileStride + clip.Left;
-				for (var k = 0; k < width; k++)
+				var rowIndex = y * tileStride;
+				for (var x = left; x < right; x++)
 				{
-					var s = tiles[start + k].Shroud;
-					var f = tiles[start + k].Fog;
+					var tile = tiles[rowIndex + x];
+					var s = tile.Shroud;
+					var f = tile.Fog;
 
 					if (s != null)
 					{
-						var pos = tiles[start + k].ScreenPosition - 0.5f * s.size;
+						var pos = tile.ScreenPosition - 0.5f * s.size;
 						Game.Renderer.WorldSpriteRenderer.DrawSprite(s, pos, shroudPalette);
 					}
 
 					if (f != null)
 					{
-						var pos = tiles[start + k].ScreenPosition - 0.5f * f.size;
+						var pos = tile.ScreenPosition - 0.5f * f.size;
 						Game.Renderer.WorldSpriteRenderer.DrawSprite(f, pos, fogPalette);
 					}
 				}
