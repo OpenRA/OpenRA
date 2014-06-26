@@ -119,10 +119,11 @@ namespace OpenRA.Mods.RA
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
+			ClearQueue();
+
 			playerPower = newOwner.PlayerActor.Trait<PowerManager>();
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 			developerMode = newOwner.PlayerActor.Trait<DeveloperMode>();
-			ClearQueue();
 
 			if (!Info.Sticky)
 			{
