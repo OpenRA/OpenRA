@@ -323,7 +323,7 @@ GASAND:
 		BuildPaletteOrder: 1000
 		Prerequisites: gacnst
 		Owner: gdi
-		Hotkey: s
+		Hotkey: b
 	SoundOnDamageTransition:
 		DamagedSound: sandbag1.aud
 		DestroyedSound: sandbag1.aud
@@ -352,7 +352,7 @@ GAWALL:
 		BuildPaletteOrder: 1001
 		Prerequisites: gacnst
 		Owner: gdi
-		Hotkey: l
+		Hotkey: w
 	SoundOnDamageTransition:
 		DamagedSound:
 		DestroyedSound:
@@ -538,7 +538,7 @@ GASPOT:
 		Queue: Defense
 		BuildPaletteOrder: 10
 		Owner: gdi, nod
-		Hotkey: o
+		Hotkey: p
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -669,7 +669,7 @@ GATECH:
 		BuildPaletteOrder: 100
 		Owner: gdi
 		Prerequisites: garadr
-		Hoykey: t
+		Hotkey: t
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -833,7 +833,7 @@ GAVULC:
 		Queue: Defense
 		BuildPaletteOrder: 30
 		Owner: gdi
-		Hotkey: f
+		Hotkey: v
 	Building:
 		Power: -20
 	DisabledOverlay:
@@ -886,7 +886,7 @@ GAROCK:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Owner: gdi
-		Hotkey: g
+		Hotkey: r
 	Building:
 		Power: -50
 	RequiresPower:
@@ -930,7 +930,7 @@ GACSAM:
 		Queue: Defense
 		BuildPaletteOrder: 60
 		Owner: gdi
-		Hotkey: u
+		Hotkey: a
 	Building:
 		Power: -30
 	RequiresPower:
@@ -973,7 +973,7 @@ NASAM:
 		Queue: Defense
 		BuildPaletteOrder: 60
 		Owner: nod
-		Hotkey: z
+		Hotkey: s
 	Building:
 		Power: -30
 	RequiresPower:
@@ -1014,7 +1014,7 @@ NALASR:
 		Queue: Defense
 		BuildPaletteOrder: 50
 		Owner: nod
-		Hotkey: y
+		Hotkey: l
 	Building:
 		Power: -40
 	RequiresPower:
@@ -1053,7 +1053,7 @@ NAOBEL:
 		BuildPaletteOrder: 90
 		Prerequisites: tech
 		Owner: nod
-		Hotkey: b
+		Hotkey: o
 	Building:
 		Power: -150
 		Footprint: xx xx
