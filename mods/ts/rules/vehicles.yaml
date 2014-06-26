@@ -78,6 +78,12 @@ HARV:
 	Selectable:
 		Priority: 7
 		Bounds: 36,36
+	Harvester:
+		Capacity: 20
+		Resources: Tiberium
+		UnloadTicksPerBale: 1
+		SearchFromProcRadius: 24
+		SearchFromOrderRadius: 12
 	Mobile:
 		Speed: 71
 	Health:
