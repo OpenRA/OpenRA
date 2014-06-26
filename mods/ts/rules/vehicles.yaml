@@ -45,6 +45,7 @@ APC:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: gdi
+		Hotkey: a
 	Mobile:
 		ROT: 5
 		Speed: 113
@@ -75,6 +76,7 @@ HARV:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Owner: gdi,nod
+		Hotkey: h
 	Selectable:
 		Priority: 7
 		Bounds: 36,36
@@ -112,6 +114,7 @@ HVR:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Owner: gdi
+		Hothey: v
 	Mobile:
 		Speed: 99
 	Health:
@@ -139,6 +142,7 @@ HVR:
 	Tooltip:
 		Name: Mammoth Tank
 		Description: Heavily armored GDI Tank.\n  Strong vs Everything
+		Hotkey: m
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
@@ -180,6 +184,7 @@ TRUCKB:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
 		Owner: gdi, nod
+		Hotkey: t
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -209,6 +214,7 @@ LPST:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Owner: gdi, nod
+		Hotkey: y
 	Health:
 		HP: 600
 	Armor:
@@ -238,6 +244,7 @@ ICBM:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Owner: gdi
+		Hotkey: l
 	Health:
 		HP: 500
 	Armor:
@@ -263,6 +270,7 @@ REPAIR:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Owner: nod
+		Hotkey: r
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -294,6 +302,7 @@ ART2:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Owner: nod
+		Hotkey: i
 	Health:
 		HP: 300
 	Armor:
@@ -324,6 +333,7 @@ WEED:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Owner: nod
+		Hotkey: w
 	Mobile:
 		Speed: 71
 		ROT: 5
@@ -481,6 +491,7 @@ MMCH:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: gdi
+		Hotkey: e
 	Mobile:
 		ROT: 5
 		Speed: 56
@@ -516,6 +527,7 @@ HMEC:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
 		Owner: gdi
+		Hotkey: o
 	Mobile:
 		ROT: 3
 		Speed: 42
@@ -549,6 +561,7 @@ SMECH:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Owner: gdi
+		Hotkey: n
 	Mobile:
 		ROT: 5
 		Speed: 99
@@ -578,6 +591,7 @@ BIKE:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: nod
+		Hotkey: c
 	Mobile:
 		ROT: 8
 		Speed: 170
@@ -608,6 +622,7 @@ BGGY:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Owner: nod
+		Hotkey: g
 	Mobile:
 		ROT: 8
 		Speed: 142
@@ -640,6 +655,7 @@ SAPC:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: nod
+		Hotkey: s
 	Mobile:
 		ROT: 5
 		Speed: 71
@@ -668,6 +684,7 @@ SUBTANK:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Owner: nod
+		Hotkey: d
 	Mobile:
 		ROT: 6
 		Speed: 71
@@ -695,6 +712,7 @@ SONIC:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Owner: gdi
+		Hotkey: p
 	Mobile:
 		ROT: 4
 		Speed: 56
@@ -726,6 +744,7 @@ TTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
 		Owner: nod
+		Hotkey: j
 	Mobile:
 		ROT: 5
 		Speed: 85
@@ -756,6 +775,7 @@ STNK:
 		BuildPaletteOrder: 90
 		Queue: Vehicle
 		Owner: nod
+		Hotkey: q
 	Mobile:
 		ROT: 5
 		Speed: 85
