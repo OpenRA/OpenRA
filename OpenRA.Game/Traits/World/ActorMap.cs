@@ -189,21 +189,22 @@ namespace OpenRA.Traits
 			var j1 = (top / info.BinSize).Clamp(0, rows - 1);
 			var j2 = (bottom / info.BinSize).Clamp(0, rows - 1);
 
-			var actorsInBox = new List<Actor>();
+			var actorsChecked = new HashSet<Actor>();
 			for (var j = j1; j <= j2; j++)
 			{
 				for (var i = i1; i <= i2; i++)
 				{
 					foreach (var actor in actors[j * cols + i])
 					{
-						var c = actor.CenterPosition;
-						if (actor.IsInWorld && left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom)
-							actorsInBox.Add(actor);
+						if (actor.IsInWorld && actorsChecked.Add(actor))
+						{
+							var c = actor.CenterPosition;
+							if (left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom)
+								yield return actor;
+						}
 					}
 				}
 			}
-
-			return actorsInBox.Distinct();
 		}
 	}
 }

@@ -110,32 +110,26 @@ namespace OpenRA.Mods.RA
 		IEnumerable<Actor> UnitsInRange()
 		{
 			return Self.World.FindActorsInCircle(Self.CenterPosition, WRange.FromCells(Info.Range))
-				.Where(a => a.IsInWorld && a != Self && !a.Destroyed)
-				.Where(a => !a.Owner.NonCombatant);
+				.Where(a => a.IsInWorld && a != Self && !a.Destroyed && !a.Owner.NonCombatant);
 		}
 
 		bool IsClear(Actor self, Player currentOwner, Player originalOwner)
 		{
-			return UnitsInRange().Where(a => a.Owner != originalOwner)
-				.Where(a => a.Owner != currentOwner)
-				.Where(a => CanBeCapturedBy(a))
-				.All(a => WorldUtils.AreMutualAllies(a.Owner, currentOwner));
+			return UnitsInRange()
+				.All(a => a.Owner == originalOwner || a.Owner == currentOwner ||
+					WorldUtils.AreMutualAllies(a.Owner, currentOwner) || !CanBeCapturedBy(a));
 		}
 
 		// TODO exclude other NeutralActor that arent permanent
 		bool IsStillInRange(Actor self)
 		{
-			return UnitsInRange()
-				.Where(a => a.Owner == self.Owner)
-				.Where(a => CanBeCapturedBy(a))
-				.Any();
+			return UnitsInRange().Any(a => a.Owner == self.Owner && CanBeCapturedBy(a));
 		}
 
 		IEnumerable<Actor> CaptorsInRange(Actor self)
 		{
 			return UnitsInRange()
-				.Where(a => a.Owner != OriginalOwner)
-				.Where(a => CanBeCapturedBy(a));
+				.Where(a => a.Owner != OriginalOwner && CanBeCapturedBy(a));
 		}
 
 		// TODO exclude other NeutralActor that arent permanent
@@ -146,8 +140,8 @@ namespace OpenRA.Mods.RA
 
 		int CountPlayersNear(Actor self, Player ignoreMe)
 		{
-			return CaptorsInRange(self).Select(a => a.Owner)
-				.Distinct().Count(p => p != ignoreMe);
+			return CaptorsInRange(self).Select(a => a.Owner).Where(p => p != ignoreMe)
+				.Distinct().Count();
 		}
 	}
 }

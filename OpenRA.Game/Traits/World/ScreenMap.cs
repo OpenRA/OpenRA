@@ -153,14 +153,15 @@ namespace OpenRA.Traits
 			var top = (r.Top / info.BinSize).Clamp(0, rows - 1);
 			var bottom = (r.Bottom / info.BinSize).Clamp(0, rows - 1);
 
-			var actorsInBox = new List<Actor>();
+			var actorsChecked = new HashSet<Actor>();
 			for (var j = top; j <= bottom; j++)
 				for (var i = left; i <= right; i++)
-					actorsInBox.AddRange(actors[j * cols + i]
-						.Where(kv => kv.Key.IsInWorld && kv.Value.IntersectsWith(r))
-						.Select(kv => kv.Key));
-
-			return actorsInBox.Distinct();
+					foreach (var kvp in actors[j * cols + i])
+					{
+						var actor = kvp.Key;
+						if (actor.IsInWorld && kvp.Value.IntersectsWith(r) && actorsChecked.Add(actor))
+							yield return actor;
+					}
 		}
 
 		public IEnumerable<FrozenActor> FrozenActorsInBox(Player p, int2 a, int2 b)

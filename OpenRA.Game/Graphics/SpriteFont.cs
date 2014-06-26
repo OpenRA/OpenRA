@@ -85,7 +85,8 @@ namespace OpenRA.Graphics
 
 		public int2 Measure(string text)
 		{
-			return new int2((int)text.Split('\n').Max(s => s.Sum(a => glyphs[Pair.New(a, Color.White)].Advance)), text.Split('\n').Count()*size);
+			var lines = text.Split('\n');
+			return new int2((int)Math.Ceiling(lines.Max(s => s.Sum(a => glyphs[Pair.New(a, Color.White)].Advance))), lines.Length * size);
 		}
 
 		Cache<Pair<char,Color>, GlyphInfo> glyphs;
