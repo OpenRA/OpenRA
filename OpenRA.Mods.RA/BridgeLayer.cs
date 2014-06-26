@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 				for (var j = w.Map.Bounds.Top; j < w.Map.Bounds.Bottom; j++)
 				{
 					var cell = new CPos(i, j);
-					if (bridgeTypes.Keys.Contains(w.Map.MapTiles.Value[cell].Type))
+					if (bridgeTypes.ContainsKey(w.Map.MapTiles.Value[cell].Type))
 						ConvertBridgeToActor(w, cell);
 				}
 			}
