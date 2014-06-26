@@ -284,8 +284,8 @@ namespace OpenRA.Mods.RA.Move
 
 	public struct PathDistance : IComparable<PathDistance>
 	{
-		public int EstTotal;
-		public CPos Location;
+		public readonly int EstTotal;
+		public readonly CPos Location;
 
 		public PathDistance(int estTotal, CPos location)
 		{
