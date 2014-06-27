@@ -245,7 +245,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			world.CancelInputMode();
-			if (mi.Button == expectedButton && world.Map.IsInMap(xy))
+			if (mi.Button == expectedButton && world.Map.Contains(xy))
 				yield return new Order(order, manager.self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
 		}
 
@@ -258,6 +258,6 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
-		public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
+		public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.Contains(xy) ? cursor : "generic-blocked"; }
 	}
 }

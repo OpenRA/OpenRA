@@ -209,18 +209,20 @@ namespace OpenRA.Widgets
 				}
 				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey)
 				{
-					var selectedTypes = World.Selection.Actors.Where(
-						x => x.Owner == World.RenderPlayer).Select(a => a.Info);
+					var selectedTypes = World.Selection.Actors
+						.Where(x => x.Owner == World.RenderPlayer)
+						.Select(a => a.Info);
+
 					Func<Actor, bool> cond = a => a.Owner == World.RenderPlayer && selectedTypes.Contains(a.Info);
-					var newSelection = SelectActorsInBox(
-						World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight, cond); 
+					var tl = worldRenderer.Viewport.TopLeft;
+					var br = worldRenderer.Viewport.BottomRight;
+					var newSelection = SelectActorsInBox(World, tl, br, cond);
+
 					if (newSelection.Count() > selectedTypes.Count())
 						Game.Debug("Selected across screen");
 					else
 					{
-						newSelection = World.ActorMap.ActorsInBox(
-							World.Map.Bounds.TopLeftAsCPos().TopLeft,
-							World.Map.Bounds.BottomRightAsCPos().BottomRight).Where(cond);
+						newSelection = World.ActorMap.ActorsInWorld().Where(cond);
 						Game.Debug("Selected across map");
 					}
 

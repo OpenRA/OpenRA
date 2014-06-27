@@ -93,7 +93,7 @@ namespace OpenRA.Widgets
 		{
 			TooltipType = WorldTooltipType.None;
 			var cell = worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
-			if (!world.Map.IsInMap(cell))
+			if (!world.Map.Contains(cell))
 				return;
 
 			if (world.ShroudObscures(cell))

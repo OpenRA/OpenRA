@@ -55,17 +55,6 @@ namespace OpenRA
 		public bool ShroudObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(a); }
 		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
 
-		public Rectangle? VisibleBounds
-		{
-			get
-			{
-				if (RenderPlayer == null)
-					return null;
-
-				return RenderPlayer.Shroud.ExploredBounds;
-			}
-		}
-
 		public bool IsReplay
 		{
 			get { return orderManager.Connection is ReplayConnection; }

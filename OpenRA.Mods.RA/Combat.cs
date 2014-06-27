@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 			var world = firedBy.World;
 			var targetTile = pos.ToCPos();
 
-			if (!world.Map.IsInMap(targetTile))
+			if (!world.Map.Contains(targetTile))
 				return;
 
 			var isWater = pos.Z <= 0 && world.Map.GetTerrainInfo(targetTile).IsWater;

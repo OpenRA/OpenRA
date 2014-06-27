@@ -641,7 +641,8 @@ namespace OpenRA.Editor
 			for (var i = 0; i < surface1.Map.MapSize.X; i++)
 				for (var j = 0; j < surface1.Map.MapSize.Y; j++)
 				{
-					if (surface1.Map.MapResources.Value[i, j].Type != 0)
+					var cell = new CPos(i, j);
+					if (surface1.Map.MapResources.Value[cell].Type != 0)
 						totalResource += GetResourceValue(i, j);
 				}
 
@@ -654,9 +655,12 @@ namespace OpenRA.Editor
 			for (var u = -1; u < 2; u++)
 				for (var v = -1; v < 2; v++)
 				{
-					if (!surface1.Map.IsInMap(new CPos(x + u, y + v)))
+					var cell = new CPos(x + u, y + v);
+
+					if (!surface1.Map.Contains(cell))
 						continue;
-					if (surface1.Map.MapResources.Value[x + u, y + v].Type == resourceType)
+
+					if (surface1.Map.MapResources.Value[cell].Type == resourceType)
 						++sum;
 				}
 
@@ -666,7 +670,7 @@ namespace OpenRA.Editor
 		int GetResourceValue(int x, int y)
 		{
 			var imageLength = 0;
-			int type = surface1.Map.MapResources.Value[x, y].Type;
+			var type = surface1.Map.MapResources.Value[new CPos(x, y)].Type;
 			var template = surface1.ResourceTemplates.FirstOrDefault(a => a.Value.Info.ResourceType == type).Value;
 			if (type == 1)
 				imageLength = 12;

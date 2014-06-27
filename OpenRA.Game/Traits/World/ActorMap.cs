@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 
 		readonly ActorMapInfo info;
 		readonly Map map;
-		InfluenceNode[,] influence;
+		readonly CellLayer<InfluenceNode> influence;
 
 		List<Actor>[] actors;
 		int rows, cols;
@@ -56,7 +56,7 @@ namespace OpenRA.Traits
 		{
 			this.info = info;
 			map = world.Map;
-			influence = new InfluenceNode[world.Map.MapSize.X, world.Map.MapSize.Y];
+			influence = new CellLayer<InfluenceNode>(world.Map);
 
 			cols = world.Map.MapSize.X / info.BinSize + 1;
 			rows = world.Map.MapSize.Y / info.BinSize + 1;
@@ -71,20 +71,20 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a)
 		{
-			if (!map.IsInMap(a))
+			if (!map.Contains(a))
 				yield break;
 
-			for (var i = influence[a.X, a.Y]; i != null; i = i.Next)
+			for (var i = influence[a]; i != null; i = i.Next)
 				if (!i.Actor.Destroyed)
 					yield return i.Actor;
 		}
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
 		{
-			if (!map.IsInMap(a))
+			if (!map.Contains(a))
 				yield break;
 
-			for (var i = influence[a.X, a.Y]; i != null; i = i.Next)
+			for (var i = influence[a]; i != null; i = i.Next)
 				if (!i.Actor.Destroyed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
 					yield return i.Actor;
 		}
@@ -107,12 +107,12 @@ namespace OpenRA.Traits
 
 		public bool AnyUnitsAt(CPos a)
 		{
-			return influence[a.X, a.Y] != null;
+			return influence[a] != null;
 		}
 
 		public bool AnyUnitsAt(CPos a, SubCell sub)
 		{
-			for (var i = influence[a.X, a.Y]; i != null; i = i.Next)
+			for (var i = influence[a]; i != null; i = i.Next)
 				if (i.SubCell == sub || i.SubCell == SubCell.FullCell)
 					return true;
 
@@ -122,20 +122,25 @@ namespace OpenRA.Traits
 		public void AddInfluence(Actor self, IOccupySpace ios)
 		{
 			foreach (var c in ios.OccupiedCells())
-				influence[c.First.X, c.First.Y] = new InfluenceNode { Next = influence[c.First.X, c.First.Y], SubCell = c.Second, Actor = self };
+				influence[c.First] = new InfluenceNode { Next = influence[c.First], SubCell = c.Second, Actor = self };
 		}
 
 		public void RemoveInfluence(Actor self, IOccupySpace ios)
 		{
 			foreach (var c in ios.OccupiedCells())
-				RemoveInfluenceInner(ref influence[c.First.X, c.First.Y], self);
+			{
+				var temp = influence[c.First];
+				RemoveInfluenceInner(ref temp, self);
+				influence[c.First] = temp;
+			}
 		}
 
 		void RemoveInfluenceInner(ref InfluenceNode influenceNode, Actor toRemove)
 		{
 			if (influenceNode == null)
 				return;
-			else if (influenceNode.Actor == toRemove)
+
+			if (influenceNode.Actor == toRemove)
 				influenceNode = influenceNode.Next;
 
 			if (influenceNode != null)
@@ -205,6 +210,12 @@ namespace OpenRA.Traits
 					}
 				}
 			}
+		}
+
+		public IEnumerable<Actor> ActorsInWorld()
+		{
+			return actors.SelectMany(a => a.Where(b => b.IsInWorld))
+				.Distinct();
 		}
 	}
 }

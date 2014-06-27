@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || !self.World.Map.IsInMap(self.Location))
+			if (IsCanceled || !self.World.Map.Contains(self.Location))
 				return NextActivity;
 
 			var plane = self.Trait<Plane>();

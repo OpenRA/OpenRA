@@ -223,7 +223,7 @@ namespace OpenRA
 			throw new InvalidDataException("Tileset '{0}' lacks terrain type '{1}'".F(Id, type));
 		}
 
-		public int GetTerrainIndex(TileReference<ushort, byte> r)
+		public int GetTerrainIndex(TerrainTile r)
 		{
 			var tpl = Templates[r.Type];
 
@@ -261,7 +261,7 @@ namespace OpenRA
 			root.WriteToFile(filepath);
 		}
 
-		public TerrainTypeInfo GetTerrainInfo(TileReference<ushort, byte> r)
+		public TerrainTypeInfo GetTerrainInfo(TerrainTile r)
 		{
 			return terrainInfo[GetTerrainIndex(r)];
 		}

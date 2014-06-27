@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public int MovementCostForCell(World world, CPos cell)
 		{
-			if (!world.Map.IsInMap(cell.X, cell.Y))
+			if (!world.Map.Contains(cell))
 				return int.MaxValue;
 
 			var index = world.Map.GetTerrainIndex(cell);
@@ -580,7 +580,7 @@ namespace OpenRA.Mods.RA.Move
 				if (self.Owner.Shroud.IsExplored(location))
 					cursor = self.World.Map.GetTerrainInfo(location).CustomCursor ?? cursor;
 
-				if (!self.World.Map.IsInMap(location) || (self.Owner.Shroud.IsExplored(location) &&
+				if (!self.World.Map.Contains(location) || (self.Owner.Shroud.IsExplored(location) &&
 						unitType.MovementCostForCell(self.World, location) == int.MaxValue))
 					cursor = "move-blocked";
 

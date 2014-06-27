@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Buildings
 			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(a) != null) return false;
 			if (world.ActorMap.GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 
-			return world.Map.IsInMap(a) && bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(a).Type);
+			return world.Map.Contains(a) && bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(a).Type);
 		}
 
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, CPos topLeft, Actor toIgnore)
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 			var res = world.WorldActor.Trait<ResourceLayer>();
 			return FootprintUtils.Tiles(world.Map.Rules, name, building, topLeft).All(
-				t => world.Map.IsInMap(t.X, t.Y) && res.GetResource(t) == null &&
+				t => world.Map.Contains(t) && res.GetResource(t) == null &&
 					world.IsCellBuildable(t, building, toIgnore));
 		}
 

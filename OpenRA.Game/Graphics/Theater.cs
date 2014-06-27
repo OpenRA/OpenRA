@@ -71,7 +71,7 @@ namespace OpenRA.Graphics
 			missingTile = sheetBuilder.Add(new byte[1], new Size(1, 1));
 		}
 
-		public Sprite TileSprite(TileReference<ushort, byte> r)
+		public Sprite TileSprite(TerrainTile r)
 		{
 			Sprite[] template;
 			if (!templates.TryGetValue(r.Type, out template))

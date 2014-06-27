@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
 		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
 		{
-			if (!self.World.Map.IsInMap(cell.X, cell.Y))
+			if (!self.World.Map.Contains(cell))
 				return false;
 
 			if (!info.AllowedTerrain.Contains(self.World.Map.GetTerrainInfo(cell).Type))

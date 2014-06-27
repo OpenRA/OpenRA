@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -110,29 +111,38 @@ namespace OpenRA
 		[FieldLoader.Ignore] public byte TileFormat = 1;
 		public int2 MapSize;
 
-		[FieldLoader.Ignore] public Lazy<TileReference<ushort, byte>[,]> MapTiles;
-		[FieldLoader.Ignore] public Lazy<TileReference<byte, byte>[,]> MapResources;
-		[FieldLoader.Ignore] public int[,] CustomTerrain;
+		[FieldLoader.Ignore] public Lazy<CellLayer<TerrainTile>> MapTiles;
+		[FieldLoader.Ignore] public Lazy<CellLayer<ResourceTile>> MapResources;
+		[FieldLoader.Ignore] public CellLayer<int> CustomTerrain;
 
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
 		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
 
+		[FieldLoader.Ignore] public CellRegion Cells;
+
 		public static Map FromTileset(TileSet tileset)
 		{
-			var tile = tileset.Templates.First();
-			var tileRef = new TileReference<ushort, byte> { Type = tile.Key, Index = (byte)0 };
+			var size = new Size(1, 1);
+			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
+
+			var makeMapTiles =  Exts.Lazy(() =>
+			{
+				var ret = new CellLayer<TerrainTile>(size);
+				ret.Clear(tileRef);
+				return ret;
+			});
 
 			var map = new Map()
 			{
 				Title = "Name your map here",
 				Description = "Describe your map here",
 				Author = "Your name here",
-				MapSize = new int2(1, 1),
+				MapSize = new int2(size),
 				Tileset = tileset.Id,
 				Options = new MapOptions(),
-				MapResources = Exts.Lazy(() => new TileReference<byte, byte>[1, 1]),
-				MapTiles = Exts.Lazy(() => new TileReference<ushort, byte>[1, 1] { { tileRef } }),
+				MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(size)),
+				MapTiles = makeMapTiles,
 				Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>()),
 				Smudges = Exts.Lazy(() => new List<SmudgeReference>())
 			};
@@ -229,11 +239,6 @@ namespace OpenRA
 			NotificationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Notifications");
 			TranslationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Translations");
 
-			CustomTerrain = new int[MapSize.X, MapSize.Y];
-			for (var x = 0; x < MapSize.X; x++)
-				for (var y = 0; y < MapSize.Y; y++)
-					CustomTerrain[x, y] = -1;
-
 			MapTiles = Exts.Lazy(() => LoadMapTiles());
 			MapResources = Exts.Lazy(() => LoadResourceTiles());
 
@@ -254,6 +259,14 @@ namespace OpenRA
 		void PostInit()
 		{
 			rules = Exts.Lazy(() => Game.modData.RulesetCache.LoadMapRules(this));
+
+			var tl = new CPos(Bounds.Left, Bounds.Top);
+			var br = new CPos(Bounds.Right - 1, Bounds.Bottom - 1);
+			Cells = new CellRegion(tl, br);
+
+			CustomTerrain = new CellLayer<int>(this);
+			foreach (var cell in Cells)
+				CustomTerrain[cell] = -1;
 		}
 
 		public Ruleset PreloadRules()
@@ -346,9 +359,9 @@ namespace OpenRA
 			Container.Write(entries);
 		}
 
-		public TileReference<ushort, byte>[,] LoadMapTiles()
+		public CellLayer<TerrainTile> LoadMapTiles()
 		{
-			var tiles = new TileReference<ushort, byte>[MapSize.X, MapSize.Y];
+			var tiles = new CellLayer<TerrainTile>(this);
 			using (var dataStream = Container.GetContent("map.bin"))
 			{
 				if (dataStream.ReadUInt8() != 1)
@@ -365,23 +378,27 @@ namespace OpenRA
 				var data = dataStream.ReadBytes(MapSize.X * MapSize.Y * 3);
 				var d = 0;
 				for (var i = 0; i < MapSize.X; i++)
+				{
 					for (var j = 0; j < MapSize.Y; j++)
 					{
 						var tile = BitConverter.ToUInt16(data, d);
 						d += 2;
+
 						var index = data[d++];
 						if (index == byte.MaxValue)
 							index = (byte)(i % 4 + (j % 4) * 4);
-						tiles[i, j] = new TileReference<ushort, byte>(tile, index);
+
+						tiles[i, j] = new TerrainTile(tile, index);
 					}
+				}
 			}
 
 			return tiles;
 		}
 
-		public TileReference<byte, byte>[,] LoadResourceTiles()
+		public CellLayer<ResourceTile> LoadResourceTiles()
 		{
-			var resources = new TileReference<byte, byte>[MapSize.X, MapSize.Y];
+			var resources = new CellLayer<ResourceTile>(this);
 
 			using (var dataStream = Container.GetContent("map.bin"))
 			{
@@ -400,10 +417,11 @@ namespace OpenRA
 
 				var data = dataStream.ReadBytes(MapSize.X * MapSize.Y * 2);
 				var d = 0;
+
 				// Load resource data
 				for (var i = 0; i < MapSize.X; i++)
 					for (var j = 0; j < MapSize.Y; j++)
-						resources[i, j] = new TileReference<byte, byte>(data[d++], data[d++]);
+						resources[i, j] = new ResourceTile(data[d++], data[d++]);
 			}
 
 			return resources;
@@ -423,38 +441,43 @@ namespace OpenRA
 				for (var i = 0; i < MapSize.X; i++)
 					for (var j = 0; j < MapSize.Y; j++)
 					{
-						writer.Write(MapTiles.Value[i, j].Type);
-						writer.Write(MapTiles.Value[i, j].Index);
+						var tile = MapTiles.Value[new CPos(i, j)];
+						writer.Write(tile.Type);
+						writer.Write(tile.Index);
 					}
 
 				// Resource data
 				for (var i = 0; i < MapSize.X; i++)
+				{
 					for (var j = 0; j < MapSize.Y; j++)
 					{
-						writer.Write(MapResources.Value[i, j].Type);
-						writer.Write(MapResources.Value[i, j].Index);
+						var tile = MapResources.Value[new CPos(i, j)];
+						writer.Write(tile.Type);
+						writer.Write(tile.Index);
 					}
+				}
 			}
 
 			return dataStream.ToArray();
 		}
 
-		public bool IsInMap(CPos xy) { return IsInMap(xy.X, xy.Y); }
-		public bool IsInMap(int x, int y) { return Bounds.Contains(x, y); }
+		public bool Contains(CPos xy) { return Bounds.Contains(xy.X, xy.Y); }
 
 		public void Resize(int width, int height)		// editor magic.
 		{
 			var oldMapTiles = MapTiles.Value;
 			var oldMapResources = MapResources.Value;
+			var newSize = new Size(width, height);
 
-			MapTiles = Exts.Lazy(() => Exts.ResizeArray(oldMapTiles, oldMapTiles[0, 0], width, height));
-			MapResources = Exts.Lazy(() => Exts.ResizeArray(oldMapResources, oldMapResources[0, 0], width, height));
-			MapSize = new int2(width, height);
+			MapTiles = Exts.Lazy(() => CellLayer.Resize(oldMapTiles, newSize, oldMapTiles[0, 0]));
+			MapResources = Exts.Lazy(() => CellLayer.Resize(oldMapResources, newSize, oldMapResources[0, 0]));
+			MapSize = new int2(newSize);
 		}
 
 		public void ResizeCordon(int left, int top, int right, int bottom)
 		{
 			Bounds = Rectangle.FromLTRB(left, top, right, bottom);
+			Cells = new CellRegion(new CPos(Bounds.Left, Bounds.Top), new CPos(Bounds.Right - 1, Bounds.Bottom - 1));
 		}
 
 		string ComputeHash()
@@ -524,26 +547,30 @@ namespace OpenRA
 			{
 				for (var i = Bounds.Left; i < Bounds.Right; i++)
 				{
-					var tr = MapTiles.Value[i, j];
-					if (!tileset.Templates.ContainsKey(tr.Type))
+					var cell = new CPos(i, j);
+					var type = MapTiles.Value[cell].Type;
+					var index = MapTiles.Value[cell].Index;
+					if (!tileset.Templates.ContainsKey(type))
 					{
-						Console.WriteLine("Unknown Tile ID {0}".F(tr.Type));
+						Console.WriteLine("Unknown Tile ID {0}".F(type));
 						continue;
 					}
-					var template = tileset.Templates[tr.Type];
+
+					var template = tileset.Templates[type];
 					if (!template.PickAny)
 						continue;
-					tr.Index = (byte)r.Next(0, template.TilesCount);
-					MapTiles.Value[i, j] = tr;
+
+					index = (byte)r.Next(0, template.TilesCount);
+					MapTiles.Value[cell] = new TerrainTile(type, index);
 				}
 			}
 		}
 
 		public int GetTerrainIndex(CPos cell)
 		{
-			var custom = CustomTerrain[cell.X, cell.Y];
+			var custom = CustomTerrain[cell];
 			var tileSet = Rules.TileSets[Tileset];
-			return custom != -1 ? custom : tileSet.GetTerrainIndex(MapTiles.Value[cell.X, cell.Y]);
+			return custom != -1 ? custom : tileSet.GetTerrainIndex(MapTiles.Value[cell]);
 		}
 
 		public TerrainTypeInfo GetTerrainInfo(CPos cell)
@@ -606,12 +633,12 @@ namespace OpenRA
 			if (range >= TilesByDistance.Length)
 				throw new InvalidOperationException("FindTilesInCircle supports queries for only <= {0}".F(MaxTilesInCircleRange));
 
-			for(var i = 0; i <= range; i++)
+			for (var i = 0; i <= range; i++)
 			{
-				foreach(var offset in TilesByDistance[i])
+				foreach (var offset in TilesByDistance[i])
 				{
 					var t = offset + center;
-					if (Bounds.Contains(t.X, t.Y))
+					if (Contains(t))
 						yield return t;
 				}
 			}
