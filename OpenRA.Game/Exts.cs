@@ -202,6 +202,29 @@ namespace OpenRA
 
 		public static Size NextPowerOf2(this Size s) { return new Size(NextPowerOf2(s.Width), NextPowerOf2(s.Height)); }
 
+		// Rounded to the nearest number
+		// Adapted from C
+		public static int ISqrt(uint number, bool round = true) 
+		{
+			var result = 0u;
+			var one = 1u << 30;	// Needs uint for bitshifting
+
+			while (one > number) one >>= 2;
+			while (one != 0) 
+			{
+				if (number >= result + one) 
+				{
+					number -= result + one;
+					result += 2 * one;
+				}
+
+				result >>= 1;
+				one >>= 2;
+			}
+
+			return (int)(round && number > result ? ++result : result);
+		}
+
 		public static string JoinWith<T>(this IEnumerable<T> ts, string j)
 		{
 			return string.Join(j, ts);
