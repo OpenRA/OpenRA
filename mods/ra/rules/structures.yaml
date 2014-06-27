@@ -1364,11 +1364,6 @@ BARRACKS:
 		Name: Infantry Production
 		Description: Infantry Production
 
-VEHICLEPRODUCTION:
-	Tooltip:
-		Name: Vehicle Production
-		Description: Vehicle Production
-
 TECHCENTER:
 	Tooltip:
 		Name: Tech Center
