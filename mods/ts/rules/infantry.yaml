@@ -30,7 +30,7 @@ E2:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: gdi
-		Hotkey: n
+		Hotkey: d
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -91,6 +91,7 @@ WEEDGUY:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: gdi
+		Hothey: c
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Weed
@@ -119,6 +120,7 @@ MEDIC:
 		Queue: Infantry
 		BuildPaletteOrder: 60
 		Owner: gdi
+		Hotkey: m
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Medic
@@ -150,6 +152,7 @@ ENGINEER:
 		Queue: Infantry
 		BuildPaletteOrder: 30
 		Owner: gdi,nod
+		Hotkey: e
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: Engineer
@@ -244,6 +247,7 @@ JUMPJET:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: gdi
+		Hotkey: j
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: JumpJet
@@ -270,7 +274,7 @@ CHAMSPY:
 		Queue: Infantry
 		BuildPaletteOrder: 60
 		Owner: nod
-		Hotkey: p
+		Hotkey: s
 	Valued:
 		Cost: 700
 	DisguiseToolTip:
@@ -308,6 +312,7 @@ CYBORG:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: nod
+		Hotkey: n
 	-CrushableInfantry:
 		CrushSound: squish2.aud
 	Selectable:
@@ -341,6 +346,7 @@ CYC2:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: nod
+		Hotkey: o
 	-CrushableInfantry:
 		CrushSound: squish2.aud
 	Selectable:
