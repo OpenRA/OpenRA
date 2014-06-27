@@ -87,9 +87,11 @@ World:
 		Offset: 12007
 		InvertColor: true
 	ShroudRenderer:
-		Variants: typea, typeb, typec, typed
+		ShroudVariants: typea, typeb, typec, typed
+		FogVariants: typea, typeb, typec, typed
 		Index: 11, 3, 7, 9, 6, 13, 12, 14, 4, 8, 2, 1, 5, 10
-		ShroudColor: 31
+		OverrideFullShroud: full
+		OverrideFullFog: full
 		ShroudBlend: Multiply
 	Country@Atreides:
 		Name: Atreides

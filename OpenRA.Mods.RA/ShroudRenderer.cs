@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA;
@@ -18,19 +19,29 @@ namespace OpenRA.Mods.RA
 {
 	public class ShroudRendererInfo : ITraitInfo
 	{
-		public string Sequence = "shroud";
-		public string[] Variants = new[] { "shroud" };
+		public readonly string Sequence = "shroud";
+		public readonly string[] ShroudVariants = new[] { "shroud" };
+		public readonly string[] FogVariants = new[] { "fog" };
+
+		public readonly string ShroudPalette = "shroud";
+		public readonly string FogPalette = "fog";
 
 		[Desc("Bitfield of shroud directions for each frame. Lower four bits are",
 		      "corners clockwise from TL; upper four are edges clockwise from top")]
-		public int[] Index = new[] { 12, 9, 8, 3, 1, 6, 4, 2, 13, 11, 7, 14 };
+		public readonly int[] Index = new[] { 12, 9, 8, 3, 1, 6, 4, 2, 13, 11, 7, 14 };
 
 		[Desc("Use the upper four bits when calculating frame")]
-		public bool UseExtendedIndex = false;
+		public readonly bool UseExtendedIndex = false;
 
-		[Desc("Palette index for synthesized unexplored tile")]
-		public int ShroudColor = 12;
-		public BlendMode ShroudBlend = BlendMode.Alpha;
+		[Desc("Override for source art that doesn't define a fully shrouded tile")]
+		public readonly string OverrideFullShroud = null;
+		public readonly int OverrideShroudIndex = 15;
+
+		[Desc("Override for source art that doesn't define a fully fogged tile")]
+		public readonly string OverrideFullFog = null;
+		public readonly int OverrideFogIndex = 15;
+
+		public readonly BlendMode ShroudBlend = BlendMode.Alpha;
 		public object Create(ActorInitializer init) { return new ShroudRenderer(init.world, this); }
 	}
 
@@ -53,17 +64,15 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		ShroudRendererInfo info;
-		Sprite[] sprites;
-		Sprite unexploredTile;
-		int[] spriteMap;
+		readonly ShroudRendererInfo info;
+		readonly Sprite[] shroudSprites, fogSprites;
+		readonly int[] spriteMap;
+		readonly CellLayer<ShroudTile> tiles;
+		readonly int variantStride;
+		readonly Map map;
 
-		CellLayer<ShroudTile> tiles;
-		int variantStride;
-
-		int shroudHash;
 		PaletteReference fogPalette, shroudPalette;
-		Map map;
+		int shroudHash;
 
 		public ShroudRenderer(World world, ShroudRendererInfo info)
 		{
@@ -76,13 +85,33 @@ namespace OpenRA.Mods.RA
 			shroudHash = -1;
 
 			// Load sprite variants
-			sprites = new Sprite[info.Variants.Length * info.Index.Length];
-			variantStride = info.Index.Length;
-			for (var j = 0; j < info.Variants.Length; j++)
+			if (info.ShroudVariants.Length != info.FogVariants.Length)
+				throw new InvalidOperationException("ShroudRenderer must define the same number of shroud and fog variants!");
+
+			if ((info.OverrideFullFog == null) ^ (info.OverrideFullShroud == null))
+				throw new InvalidOperationException("ShroudRenderer must cannot define overrides for only one of shroud or fog!");
+
+			var variantCount = info.ShroudVariants.Length;
+			variantStride = info.Index.Length + (info.OverrideFullShroud != null ? 1 : 0);
+			shroudSprites = new Sprite[variantCount * variantStride];
+			fogSprites = new Sprite[variantCount * variantStride];
+
+			for (var j = 0; j < variantCount; j++)
 			{
-				var seq = map.SequenceProvider.GetSequence(info.Sequence, info.Variants[j]);
+				var shroud = map.SequenceProvider.GetSequence(info.Sequence, info.ShroudVariants[j]);
+				var fog = map.SequenceProvider.GetSequence(info.Sequence, info.FogVariants[j]);
 				for (var i = 0; i < info.Index.Length; i++)
-					sprites[j * variantStride + i] = seq.GetSprite(i);
+				{
+					shroudSprites[j * variantStride + i] = shroud.GetSprite(i);
+					fogSprites[j * variantStride + i] = fog.GetSprite(i);
+				}
+
+				if (info.OverrideFullShroud != null)
+				{
+					var i = (j + 1) * variantStride - 1;
+					shroudSprites[i] = map.SequenceProvider.GetSequence(info.Sequence, info.OverrideFullShroud).GetSprite(0);
+					fogSprites[i] = map.SequenceProvider.GetSequence(info.Sequence, info.OverrideFullFog).GetSprite(0);
+				}
 			}
 
 			// Mapping of shrouded directions -> sprite index
@@ -90,22 +119,14 @@ namespace OpenRA.Mods.RA
 			for (var i = 0; i < info.Index.Length; i++)
 				spriteMap[info.Index[i]] = i;
 
-			// Synthesize unexplored tile if it isn't defined
-			if (!info.Index.Contains(0))
-			{
-				var ts = Game.modData.Manifest.TileSize;
-				var data = Exts.MakeArray<byte>(ts.Width * ts.Height, _ => (byte)info.ShroudColor);
-				var s = map.SequenceProvider.SpriteLoader.SheetBuilder.Add(data, ts);
-				unexploredTile = new Sprite(s.sheet, s.bounds, s.offset, s.channel, info.ShroudBlend);
-			}
-			else
-				unexploredTile = sprites[spriteMap[0]];
+			if (info.OverrideFullShroud != null)
+				spriteMap[info.OverrideShroudIndex] = variantStride - 1;
 		}
 
 		static int FoggedEdges(Shroud s, CPos p, bool useExtendedIndex)
 		{
 			if (!s.IsVisible(p))
-				return 15;
+				return useExtendedIndex ? 240 : 15;
 
 			// If a side is shrouded then we also count the corners
 			var u = 0;
@@ -132,7 +153,7 @@ namespace OpenRA.Mods.RA
 		static int ShroudedEdges(Shroud s, CPos p, bool useExtendedIndex)
 		{
 			if (!s.IsExplored(p))
-				return 15;
+				return useExtendedIndex ? 240 : 15;
 
 			// If a side is shrouded then we also count the corners
 			var u = 0;
@@ -179,12 +200,12 @@ namespace OpenRA.Mods.RA
 			foreach (var cell in map.Cells)
 			{
 				var screen = wr.ScreenPosition(cell.CenterPosition);
-				var variant = Game.CosmeticRandom.Next(info.Variants.Length);
+				var variant = Game.CosmeticRandom.Next(info.ShroudVariants.Length);
 				tiles[cell] = new ShroudTile(cell, screen, variant);
 			}
 
-			fogPalette = wr.Palette("fog");
-			shroudPalette = wr.Palette("shroud");
+			fogPalette = wr.Palette(info.FogPalette);
+			shroudPalette = wr.Palette(info.ShroudPalette);
 		}
 
 		Sprite GetTile(int flags, int variant)
@@ -192,10 +213,7 @@ namespace OpenRA.Mods.RA
 			if (flags == 0)
 				return null;
 
-			if (flags == 15)
-				return unexploredTile;
-
-			return sprites[variant * variantStride + spriteMap[flags]];
+			return shroudSprites[variant * variantStride + spriteMap[flags]];
 		}
 
 		void Update(Shroud shroud)
@@ -213,8 +231,8 @@ namespace OpenRA.Mods.RA
 					var t = tiles[cell];
 					var shrouded = ObserverShroudedEdges(t.Position, map.Bounds, info.UseExtendedIndex);
 
-					t.Shroud = GetTile(shrouded, t.Variant);
-					t.Fog = GetTile(shrouded, t.Variant);
+					t.Shroud = shrouded != 0 ? shroudSprites[t.Variant * variantStride + spriteMap[shrouded]] : null;
+					t.Fog = shrouded != 0 ? fogSprites[t.Variant * variantStride + spriteMap[shrouded]] : null;
 				}
 			}
 			else
@@ -225,8 +243,8 @@ namespace OpenRA.Mods.RA
 					var shrouded = ShroudedEdges(shroud, t.Position, info.UseExtendedIndex);
 					var fogged = FoggedEdges(shroud, t.Position, info.UseExtendedIndex);
 
-					t.Shroud = GetTile(shrouded, t.Variant);
-					t.Fog = GetTile(fogged, t.Variant);
+					t.Shroud = shrouded != 0 ? shroudSprites[t.Variant * variantStride + spriteMap[shrouded]] : null;
+					t.Fog = fogged != 0 ? fogSprites[t.Variant * variantStride + spriteMap[fogged]] : null;
 				}
 			}
 		}

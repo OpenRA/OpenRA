@@ -442,6 +442,7 @@ shroud:
 	typed: shadow
 		Start: 36
 		Length: 12
+	full: fullshroud
 
 # Note: The order of smudges and craters determines
 # the index that is mapped to them in maps

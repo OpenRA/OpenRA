@@ -72,7 +72,10 @@ World:
 		Name: fog
 		Fog: true
 	ShroudRenderer:
-		Variants: typea, typeb, typec, typed
+		ShroudVariants: typea, typeb, typec, typed
+		FogVariants: typea, typeb, typec, typed
+		OverrideFullShroud: full
+		OverrideFullFog: full
 	Country@gdi:
 		Name: GDI
 		Race: gdi
