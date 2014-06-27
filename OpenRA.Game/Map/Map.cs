@@ -115,6 +115,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Lazy<CellLayer<ResourceTile>> MapResources;
 		[FieldLoader.Ignore] public CellLayer<int> CustomTerrain;
 
+		[FieldLoader.Ignore] Lazy<TileSet> cachedTileSet;
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
 		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
@@ -259,6 +260,7 @@ namespace OpenRA
 		void PostInit()
 		{
 			rules = Exts.Lazy(() => Game.modData.RulesetCache.LoadMapRules(this));
+			cachedTileSet = Exts.Lazy(() => Rules.TileSets[Tileset]);
 
 			var tl = new CPos(Bounds.Left, Bounds.Top);
 			var br = new CPos(Bounds.Right - 1, Bounds.Bottom - 1);
@@ -569,14 +571,12 @@ namespace OpenRA
 		public int GetTerrainIndex(CPos cell)
 		{
 			var custom = CustomTerrain[cell];
-			var tileSet = Rules.TileSets[Tileset];
-			return custom != -1 ? custom : tileSet.GetTerrainIndex(MapTiles.Value[cell]);
+			return custom != -1 ? custom : cachedTileSet.Value.GetTerrainIndex(MapTiles.Value[cell]);
 		}
 
 		public TerrainTypeInfo GetTerrainInfo(CPos cell)
 		{
-			var tileSet = Rules.TileSets[Tileset];
-			return tileSet[GetTerrainIndex(cell)];
+			return cachedTileSet.Value[GetTerrainIndex(cell)];
 		}
 
 		public CPos Clamp(CPos xy)
