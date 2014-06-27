@@ -334,7 +334,7 @@ namespace OpenRA.Utility
 					doc.Append("<tr><td>{0}</td><td>{1}</td><td>{2}</td>".F(f.Name, defaultValue, fieldType));
 					doc.Append("<td>");
 					foreach (var line in fieldDescLines)
-						doc.Append(line);
+						doc.Append(line + " ");
 					doc.AppendLine("</td></tr>");
 				}
 				doc.AppendLine("</table>");
