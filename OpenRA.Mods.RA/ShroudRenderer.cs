@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA
 				throw new InvalidOperationException("ShroudRenderer must define the same number of shroud and fog variants!");
 
 			if ((info.OverrideFullFog == null) ^ (info.OverrideFullShroud == null))
-				throw new InvalidOperationException("ShroudRenderer must cannot define overrides for only one of shroud or fog!");
+				throw new InvalidOperationException("ShroudRenderer cannot define overrides for only one of shroud or fog!");
 
 			var variantCount = info.ShroudVariants.Length;
 			variantStride = info.Index.Length + (info.OverrideFullShroud != null ? 1 : 0);
