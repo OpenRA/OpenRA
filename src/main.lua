@@ -534,7 +534,13 @@ local function resolveConflict(localid, globalid)
         end
       end
     end
-    ide.frame:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, globalid))
+    -- check if the conflicting shortcut is enabled:
+    -- (1) SetEnabled wasn't called or (2) Enabled was set to `true`.
+    local uievent = wx.wxUpdateUIEvent(globalid)
+    ide.frame:ProcessEvent(uievent)
+    if not uievent:GetSetEnabled() or uievent:GetEnabled() then
+      ide.frame:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, globalid))
+    end
   end
 end
 
