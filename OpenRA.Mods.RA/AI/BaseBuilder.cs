@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.AI
 {

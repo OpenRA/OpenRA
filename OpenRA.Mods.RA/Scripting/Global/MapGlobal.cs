@@ -11,6 +11,7 @@
 using System.Linq;
 using Eluant;
 using OpenRA.Scripting;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {

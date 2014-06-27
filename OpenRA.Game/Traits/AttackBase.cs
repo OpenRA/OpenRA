@@ -12,10 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Traits
 {
 	public abstract class AttackBaseInfo : ITraitInfo
 	{
@@ -30,7 +29,7 @@ namespace OpenRA.Mods.RA
 
 	public abstract class AttackBase : IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
-		[Sync] public bool IsAttacking { get; internal set; }
+		[Sync] public bool IsAttacking { get; set; }
 		public IEnumerable<Armament> Armaments { get { return GetArmaments(); } }
 		protected Lazy<IFacing> facing;
 		protected Lazy<Building> building;

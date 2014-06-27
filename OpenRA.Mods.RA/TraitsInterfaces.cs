@@ -36,11 +36,6 @@ namespace OpenRA.Mods.RA
 		void PrerequisitesItemVisible(string key);
 	}
 
-	public interface ITechTreePrerequisite
-	{
-		IEnumerable<string> ProvidesPrerequisites {get;}
-	}
-
 	public interface INotifyResourceClaimLost
 	{
 		void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer);
@@ -49,6 +44,5 @@ namespace OpenRA.Mods.RA
 	public interface INotifyParachuteLanded { void OnLanded(); }
 	public interface INotifyTransform { void OnTransform(Actor self); }
 	public interface INotifyTransformed { void OnTransformed(Actor toActor); }
-	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 }

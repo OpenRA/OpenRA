@@ -8,9 +8,7 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
-namespace OpenRA.Mods.RA
+namespace OpenRA.Traits
 {
 	public class BuildableInfo : TraitInfo<Buildable>
 	{

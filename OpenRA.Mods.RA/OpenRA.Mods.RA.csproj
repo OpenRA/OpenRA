@@ -113,7 +113,6 @@
     <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
-    <Compile Include="ActorExts.cs" />
     <Compile Include="ActorLostNotification.cs" />
     <Compile Include="Air\Aircraft.cs" />
     <Compile Include="Air\AttackHeli.cs" />
@@ -144,7 +143,6 @@
     <Compile Include="AnnounceOnKill.cs" />
     <Compile Include="AppearsOnRadar.cs" />
     <Compile Include="AttackMove.cs" />
-    <Compile Include="Attack\AttackBase.cs" />
     <Compile Include="Attack\AttackFrontal.cs" />
     <Compile Include="Attack\AttackLeap.cs" />
     <Compile Include="Attack\AttackLoyalty.cs" />
@@ -160,17 +158,12 @@
     <Compile Include="BelowUnits.cs" />
     <Compile Include="Bridge.cs" />
     <Compile Include="BridgeLayer.cs" />
-    <Compile Include="Buildable.cs" />
     <Compile Include="CaptureNotification.cs" />
-    <Compile Include="Buildings\Building.cs" />
-    <Compile Include="Buildings\BuildingInfluence.cs" />
     <Compile Include="Buildings\CanPowerDown.cs" />
     <Compile Include="Buildings\CustomSellValue.cs" />
     <Compile Include="Buildings\CustomBuildTimeValue.cs" />
     <Compile Include="Buildings\DeadBuildingState.cs" />
-    <Compile Include="Buildings\FootprintUtils.cs" />
     <Compile Include="Buildings\LineBuild.cs" />
-    <Compile Include="Buildings\PowerManager.cs" />
     <Compile Include="Buildings\RepairableBuilding.cs" />
     <Compile Include="Buildings\RequiresPower.cs" />
     <Compile Include="Buildings\ShakeOnDeath.cs" />
@@ -250,7 +243,6 @@
     <Compile Include="LeavesHusk.cs" />
     <Compile Include="Captures.cs" />
     <Compile Include="LightPaletteRotator.cs" />
-    <Compile Include="LimitedAmmo.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
@@ -343,7 +335,6 @@
     <Compile Include="ShroudPalette.cs" />
     <Compile Include="SmokeTrailWhenDamaged.cs" />
     <Compile Include="SpawnMPUnits.cs" />
-    <Compile Include="SpawnMapActors.cs" />
     <Compile Include="Disguise.cs" />
     <Compile Include="StoresResources.cs" />
     <Compile Include="StrategicVictoryConditions.cs" />
@@ -368,8 +359,6 @@
     <Compile Include="TransformOnCapture.cs" />
     <Compile Include="TransformOnPassenger.cs" />
     <Compile Include="Transforms.cs" />
-    <Compile Include="Turreted.cs" />
-    <Compile Include="Valued.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\LogicTickerWidget.cs" />
@@ -420,8 +409,6 @@
     <Compile Include="CloakPaletteEffect.cs" />
     <Compile Include="Widgets\ColorPreviewManagerWidget.cs" />
     <Compile Include="Infiltrates.cs" />
-    <Compile Include="Armament.cs" />
-    <Compile Include="Buildings\BaseProvider.cs" />
     <Compile Include="Widgets\Logic\ObserverShroudSelectorLogic.cs" />
     <Compile Include="RepairsBridges.cs" />
     <Compile Include="Activities\RepairBridge.cs" />
@@ -450,10 +437,8 @@
     <Compile Include="MPStartUnits.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="TeslaZapRenderable.cs" />
-    <Compile Include="Buildings\Bib.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Render\WithIdleOverlay.cs" />
-    <Compile Include="Tooltip.cs" />
     <Compile Include="AI\Squad.cs" />
     <Compile Include="AI\States\StateBase.cs" />
     <Compile Include="AI\States\GroundStates.cs" />
@@ -518,6 +503,7 @@
     <Compile Include="Activities\MoveWithinRange.cs" />
     <Compile Include="Lint\CheckPlayers.cs" />
     <Compile Include="Player\ProvidesCustomPrerequisite.cs" />
+    <Compile Include="ActorExts.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

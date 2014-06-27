@@ -544,5 +544,106 @@ namespace OpenRA.Utility
 			map.Save(dest);
 			Console.WriteLine(dest + " saved.");
 		}
+
+		// TODO: flat OpenDocument XML (.fods) may be nicer
+		[Desc("MOD", "[--pure-data]", "Export the game rules into a CSV file for inspection.")]
+		public static void ExportCharacterSeparatedRules(string[] args)
+		{
+			var mod = args[1];
+			var pureData = args.Contains("--pure-data");
+			Game.modData = new ModData(mod);
+			var rules = Game.modData.RulesetCache.LoadDefaultRules();
+
+			var armorList = new List<string>();
+			foreach (var actorInfo in rules.Actors.Values)
+			{
+				var armor = actorInfo.Traits.GetOrDefault<ArmorInfo>();
+				if (armor != null)
+					if (!armorList.Contains(armor.Type))
+						armorList.Add(armor.Type);
+			}
+
+			armorList.Sort();
+			var vsArmor = "";
+			foreach (var armorType in armorList)
+				vsArmor = vsArmor + ";vs. " + armorType;
+
+			var dump = new StringBuilder();
+			if (pureData)
+				dump.AppendLine("Name;Faction;Health;Cost;Weapon;Damage;Burst;Delay;Rate of Fire");
+			else
+				dump.AppendLine("Name;Faction;Health;Cost;Weapon;Damage;Burst;Delay;Rate of Fire;Damage per Second" + vsArmor);
+
+			var line = 1;
+			foreach (var actorInfo in rules.Actors.Values)
+			{
+				if (actorInfo.Name.StartsWith("^"))
+					continue;
+
+				var buildable = actorInfo.Traits.GetOrDefault<BuildableInfo>();
+				if (buildable == null)
+					continue;
+
+				line++;
+
+				var tooltip = actorInfo.Traits.GetOrDefault<TooltipInfo>();
+				var name = tooltip != null ? tooltip.Name : actorInfo.Name;
+
+				var faction = FieldSaver.FormatValue(buildable.Owner, buildable.Owner.GetType());
+
+				var health = actorInfo.Traits.GetOrDefault<HealthInfo>();
+				var hp = health != null ? health.HP : 0;
+
+				var value = actorInfo.Traits.GetOrDefault<ValuedInfo>();
+				var cost = value != null ? value.Cost : 0;
+
+				dump.Append("{0};{1};{2};{3}".F(name, faction, hp, cost));
+
+				var armaments = actorInfo.Traits.WithInterface<ArmamentInfo>();
+				if (armaments.Any())
+				{
+					var weapons = armaments.Select(a => a.Weapon);
+					var weaponCount = 0;
+					foreach (var weaponName in weapons)
+					{
+						var weapon = rules.Weapons[weaponName.ToLowerInvariant()];
+						weaponCount++;
+						if (weaponCount > 1)
+						{
+							line++;
+							dump.AppendLine();
+							dump.Append(" ; ; ; ");
+						}
+
+						var rateOfFire = (weapon.ROF > 1 ? weapon.ROF : 1).ToString();
+						var burst = weapon.Burst.ToString();
+						var warhead = weapon.Warheads.First(); // TODO
+						var damage = warhead.Damage.ToString();
+						var delay = weapon.BurstDelay;
+						var damagePerSecond = "=(F{0}*G{0})/(H{0}+G{0}*I{0})*25".F(line);
+
+						var versus = "";
+						foreach (var armorType in armorList)
+						{
+							var vs = warhead.Versus.ContainsKey(armorType) ? warhead.Versus[armorType] : 1f;
+							versus = versus + "=J{0}*{1};".F(line, vs);
+						}
+
+						if (pureData)
+							dump.Append(";{0};{1};{2};{3};{4}".F(weaponName, damage, burst, delay, rateOfFire));
+						else
+							dump.Append(";{0};{1};{2};{3};{4};{5};{6}".F(weaponName, damage, burst, delay, rateOfFire, damagePerSecond, versus));
+					}
+				}
+				dump.AppendLine();
+			}
+
+			var filename = "{0}-mod-rules.csv".F(mod);
+			using (StreamWriter outfile = new StreamWriter(filename))
+				outfile.Write(dump.ToString());
+			Console.WriteLine("{0} has been saved.".F(filename));
+			if (!pureData)
+				Console.WriteLine("Open in a spreadsheet application as values separated by semicolon.");
+		}
 	}
 }
