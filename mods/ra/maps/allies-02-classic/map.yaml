@@ -905,7 +905,10 @@ Rules:
 	BRIK:
 		Buildable:
 			Prerequisites: ~disabled
-	HBOX.E1:
+	HBOX:
+		Buildable:
+			Prerequisites: ~disabled
+	PBOX:
 		Buildable:
 			Prerequisites: ~disabled
 	GUN:
@@ -933,6 +936,9 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	E7:
+		Buildable:
+			Prerequisites: ~disabled
+	HIJACKER:
 		Buildable:
 			Prerequisites: ~disabled
 
