@@ -73,8 +73,8 @@ namespace OpenRA.FileFormats
 
 							case "PLTE":
 								{
-									palette = new Color[256];
-									for (var i = 0; i < 256; i++)
+									palette = new Color[length / 3];
+									for (var i = 0; i < palette.Length; i++)
 									{
 										var r = cr.ReadByte(); var g = cr.ReadByte(); var b = cr.ReadByte();
 										palette[i] = Color.FromArgb(r, g, b);
@@ -131,7 +131,7 @@ namespace OpenRA.FileFormats
 									using (var temp = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))
 									{
 										var cp = temp.Palette;
-										for (var i = 0; i < 256; i++)
+										for (var i = 0; i < Math.Min(cp.Entries.Length, palette.Length); i++)
 											cp.Entries[i] = palette[i];		// finalize the palette.
 										bitmap.Palette = cp;
 										return bitmap;
