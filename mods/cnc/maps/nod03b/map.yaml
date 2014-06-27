@@ -642,52 +642,55 @@ Rules:
 			LuaScripts: nod03b.lua
 	NUK2:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	AFLD:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	HPAD:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	FIX:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	TMPL:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	GUN:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	SAM:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	OBLI:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	GTWR:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	BRIK:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	WEAP:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	EYE:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	ATWR:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	HQ:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	E4:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	E5:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
+	RMBO:
+		Buildable:
+			Prerequisites: ~disabled
 	MISS:
 		Tooltip:
 			Name: Prison
@@ -706,7 +709,7 @@ Rules:
 		Buildable:
 			BuildPaletteOrder: 70
 			Prerequisites: proc
-			Owner: gdi,nod
+			Queue: Building.GDI, Building.Nod
 		Building:
 			Power: -40
 			Footprint: x_ xx

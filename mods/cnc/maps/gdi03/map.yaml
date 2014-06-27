@@ -965,7 +965,7 @@ Rules:
 		Buildable:
 			BuildPaletteOrder: 70
 			Prerequisites: proc
-			Owner: gdi,nod
+			Queue: Building.GDI
 		Building:
 			Power: -40
 			Footprint: x_ xx
