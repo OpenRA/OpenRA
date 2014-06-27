@@ -39,7 +39,7 @@ LST:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 1000
-		Owner: None
+		Prerequisites: ~disabled
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:

@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (a.HasTrait<ProductionQueue>())
 			{
 				var allQueues = a.World.ActorsWithTrait<ProductionQueue>()
-					.Where(p => p.Actor.Owner == p.Actor.World.LocalPlayer && p.Actor.IsInWorld)
+					.Where(p => p.Actor.Owner == p.Actor.World.LocalPlayer && p.Actor.IsInWorld && p.Trait.Enabled)
 					.Select(p => p.Trait).ToArray();
 
 				foreach (var g in Groups.Values)

@@ -28,19 +28,17 @@ namespace OpenRA.Mods.RA
 				{
 					var prevItems = GetNumBuildables(self.Owner);
 
-					// Find the queue with the target actor
-					var queue = w.ActorsWithTrait<ProductionQueue>()
-						.Where(p => p.Actor.Owner == self.Owner &&
-									 p.Trait.CurrentItem() != null &&
-									 p.Trait.CurrentItem().Item == order.TargetString &&
-									 p.Trait.CurrentItem().RemainingTime == 0)
-						.Select(p => p.Trait)
-						.FirstOrDefault();
+					if (order.TargetActor.IsDead())
+						return;
+
+					var unit = self.World.Map.Rules.Actors[order.TargetString];
+					var queue = order.TargetActor.TraitsImplementing<ProductionQueue>()
+						.FirstOrDefault(q => q.CanBuild(unit));
 
 					if (queue == null)
 						return;
 
-					var unit = self.World.Map.Rules.Actors[order.TargetString];
+
 					var buildingInfo = unit.Traits.Get<BuildingInfo>();
 
 					if (order.OrderString == "LineBuild")
@@ -52,11 +50,13 @@ namespace OpenRA.Mods.RA
 							{
 								new LocationInit(t),
 								new OwnerInit(order.Player),
+								new RaceInit(queue.Race)
 							});
 
 							if (playSounds)
 								foreach (var s in buildingInfo.BuildSounds)
 									Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
+
 							playSounds = false;
 						}
 					}
@@ -72,7 +72,9 @@ namespace OpenRA.Mods.RA
 						{
 							new LocationInit(order.TargetLocation),
 							new OwnerInit(order.Player),
+							new RaceInit(queue.Race),
 						});
+
 						foreach (var s in buildingInfo.BuildSounds)
 							Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
 					}
@@ -106,7 +108,7 @@ namespace OpenRA.Mods.RA
 
 			var producers = self.World.ActorsWithTrait<Production>()
 				.Where(x => x.Actor.Owner == self.Owner
-					&& x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains(bi.Queue))
+					&& x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Intersect(bi.Queue).Any())
 					.ToList();
 			var producer = producers.Where(x => x.Actor.IsPrimaryBuilding()).Concat(producers)
 				.FirstOrDefault();

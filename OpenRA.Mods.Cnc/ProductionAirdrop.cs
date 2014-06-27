@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc
 		public ProductionAirdrop(ProductionAirdropInfo info, Actor self)
 			: base(info, self) { }
 
-		public override bool Produce(Actor self, ActorInfo producee)
+		public override bool Produce(Actor self, ActorInfo producee, string raceVariant)
 		{
 			var owner = self.Owner;
 
@@ -69,7 +69,8 @@ namespace OpenRA.Mods.Cnc
 
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
 						cargo.Delivered(self);
-					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit));
+
+					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, raceVariant));
 					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Country.Race);
 				}));
 

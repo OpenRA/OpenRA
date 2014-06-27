@@ -393,7 +393,7 @@ namespace OpenRA.Mods.RA.Scripting
 			if (bi == null)
 				return null;
 
-			return GetSharedQueueForCategory(player, bi.Queue);
+			return bi.Queue.Select(q => GetSharedQueueForCategory(player, q)).FirstOrDefault();
 		}
 
 		[LuaGlobal]
@@ -402,7 +402,7 @@ namespace OpenRA.Mods.RA.Scripting
 			var queue = GetSharedQueueForUnit(player, unit);
 
 			if (queue != null)
-				queue.ResolveOrder(queue.self, Order.StartProduction(queue.self, unit, (int)amount));
+				queue.ResolveOrder(queue.Actor, Order.StartProduction(queue.Actor, unit, (int)amount));
 		}
 
 		[LuaGlobal]
@@ -414,7 +414,8 @@ namespace OpenRA.Mods.RA.Scripting
 			if (bi == null)
 				return;
 
-			var queue = factory.TraitOrDefault<ProductionQueue>();
+			var queue = factory.TraitsImplementing<ProductionQueue>()
+				.FirstOrDefault(q => q.Enabled);
 
 			if (queue != null)
 				queue.ResolveOrder(factory, Order.StartProduction(factory, unit, (int)amount));
@@ -434,7 +435,8 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public bool PerFactoryQueueIsBusy(Actor factory)
 		{
-			var queue = factory.TraitOrDefault<ProductionQueue>();
+			var queue = factory.TraitsImplementing<ProductionQueue>()
+				.FirstOrDefault(q => q.Enabled);
 
 			if (queue == null)
 				return true;

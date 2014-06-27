@@ -8,7 +8,7 @@ TRAN:
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
-		Owner: gdi,nod
+		Queue: Aircraft.GDI, Aircraft.Nod
 	Selectable:
 		Bounds: 41,41
 	Helicopter:
@@ -52,7 +52,7 @@ HELI:
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq
-		Owner: nod
+		Queue: Aircraft.Nod
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
@@ -104,7 +104,7 @@ ORCA:
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq
-		Owner: gdi
+		Queue: Aircraft.GDI
 	Selectable:
 		Bounds: 30,24
 	Helicopter:

@@ -20,14 +20,20 @@ namespace OpenRA.Mods.RA
 		[ActorReference]
 		public readonly string HuskActor = null;
 
-		public object Create(ActorInitializer init) { return new LeavesHusk(this); }
+		public object Create(ActorInitializer init) { return new LeavesHusk(init, this); }
 	}
 
 	public class LeavesHusk : INotifyKilled
 	{
-		LeavesHuskInfo info;
+		readonly LeavesHuskInfo info;
+		readonly string race;
 
-		public LeavesHusk(LeavesHuskInfo info) { this.info = info; }
+		public LeavesHusk(ActorInitializer init, LeavesHuskInfo info)
+		{
+			this.info = info;
+
+			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.self.Owner.Country.Race;
+		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
@@ -42,6 +48,7 @@ namespace OpenRA.Mods.RA
 					new LocationInit(self.Location),
 					new CenterPositionInit(self.CenterPosition),
 					new OwnerInit(self.Owner),
+					new RaceInit(race),
 					new SkipMakeAnimsInit()
 				};
 

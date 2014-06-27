@@ -36,12 +36,12 @@ namespace OpenRA.Mods.RA
 				return;
 
 			// Queue-per-structure
-			var perqueue = world.Selection.Actors.FirstOrDefault(
-				a => a.IsInWorld && a.World.LocalPlayer == a.Owner && a.HasTrait<ProductionQueue>());
+			var perqueue = world.Selection.Actors.FirstOrDefault(a => a.IsInWorld && a.World.LocalPlayer == a.Owner
+				&& a.TraitsImplementing<ProductionQueue>().Any(q => q.Enabled));
 
 			if (perqueue != null)
 			{
-				palette.SetCurrentTab(perqueue.TraitsImplementing<ProductionQueue>().First());
+				palette.SetCurrentTab(perqueue.TraitsImplementing<ProductionQueue>().First(q => q.Enabled));
 				return;
 			}
 
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			palette.SetCurrentTab(world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
-				.FirstOrDefault(t => types.Contains(t.Info.Type)));
+				.FirstOrDefault(q => q.Enabled && types.Contains(q.Info.Type)));
 		}
 	}
 }

@@ -152,14 +152,14 @@ namespace OpenRA.Widgets
 				if (o == null)
 					continue;
 
-				if (!flashed)
+				if (!flashed && !o.SuppressVisualFeedback)
 				{
 					if (o.TargetActor != null)
 					{
 						world.AddFrameEndTask(w => w.Add(new FlashTarget(o.TargetActor)));
 						flashed = true;
 					}
-					else if (o.Subject != world.LocalPlayer.PlayerActor && o.TargetLocation != CPos.Zero) // TODO: this filters building placement, but also suppport powers :(
+					else if (o.TargetLocation != CPos.Zero)
 					{
 						world.AddFrameEndTask(w => w.Add(new MoveFlash(worldRenderer.Position(worldRenderer.Viewport.ViewToWorldPx(mi.Location)), world)));
 						flashed = true;

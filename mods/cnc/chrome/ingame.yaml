@@ -317,14 +317,14 @@ Container@PLAYER_WIDGETS:
 									X: 7
 									Y: 7
 									ImageCollection: production-icons
-						ProductionTypeButton@DEFENSE:
+						ProductionTypeButton@DEFENCE:
 							X: 35
 							Width: 30
 							Height: 30
 							Key: w
-							TooltipText: Defense
+							TooltipText: Defence
 							TooltipContainer: TOOLTIP_CONTAINER
-							ProductionGroup: Defense
+							ProductionGroup: Defence
 							Children:
 								Image@ICON:
 									X: 7

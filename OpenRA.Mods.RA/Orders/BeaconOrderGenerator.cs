@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Orders
 			if (!world.ShroudObscures(xy))
 			{
 				world.CancelInputMode();
-				yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, false) { TargetLocation = xy };
+				yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, false) { TargetLocation = xy, SuppressVisualFeedback = true };
 			}
 		}
 

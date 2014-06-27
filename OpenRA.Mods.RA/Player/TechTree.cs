@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -56,6 +56,11 @@ namespace OpenRA.Mods.RA
 			watchers.RemoveAll(x => x.Key == key);
 		}
 
+		public void Remove(ITechTreeElement tte)
+		{
+			watchers.RemoveAll(x => x.RegisteredBy == tte);
+		}
+
 		static Cache<string, List<Actor>> GatherOwnedPrerequisites(Player player)
 		{
 			var ret = new Cache<string, List<Actor>>(x => new List<Actor>());
@@ -94,6 +99,7 @@ namespace OpenRA.Mods.RA
 		class Watcher
 		{
 			public readonly string Key;
+			public ITechTreeElement RegisteredBy { get { return watcher; } }
 
 			// Strings may be either actor type, or "alternate name" key
 			readonly string[] prerequisites;
@@ -153,25 +159,6 @@ namespace OpenRA.Mods.RA
 				hidden = nowHidden;
 				hasPrerequisites = nowHasPrerequisites;
 			}
-		}
-	}
-
-	public class ProvidesCustomPrerequisiteInfo : ITraitInfo
-	{
-		public readonly string Prerequisite;
-
-		public object Create(ActorInitializer init) { return new ProvidesCustomPrerequisite(this); }
-	}
-
-	public class ProvidesCustomPrerequisite : ITechTreePrerequisite
-	{
-		ProvidesCustomPrerequisiteInfo info;
-
-		public IEnumerable<string> ProvidesPrerequisites { get { yield return info.Prerequisite; } }
-
-		public ProvidesCustomPrerequisite(ProvidesCustomPrerequisiteInfo info)
-		{
-			this.info = info;
 		}
 	}
 }

@@ -41,10 +41,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			// Find an actor with a queue
 			var producer = world.Selection.Actors.FirstOrDefault(a => a.IsInWorld
 				&& a.World.LocalPlayer == a.Owner
-				&& a.HasTrait<ProductionQueue>());
+				&& a.TraitsImplementing<ProductionQueue>().Any(q => q.Enabled));
 
 			if (producer != null)
-				tabsWidget.Value.CurrentQueue = producer.TraitsImplementing<ProductionQueue>().First();
+				tabsWidget.Value.CurrentQueue = producer.TraitsImplementing<ProductionQueue>().First(q => q.Enabled);
 		}
 	}
 }

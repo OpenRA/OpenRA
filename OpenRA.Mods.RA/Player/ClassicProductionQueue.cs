@@ -23,22 +23,27 @@ namespace OpenRA.Mods.RA
 	{
 		[Desc("If you build more actors of the same type,", "the same queue will get its build time lowered for every actor produced there.")]
 		public readonly bool SpeedUp = false;
+
 		[Desc("Every time another production building of the same queue is",
 			"contructed, the build times of all actors in the queue",
 			"decreased by a percentage of the original time.")]
 		public readonly int[] BuildTimeSpeedReduction = { 100, 85, 75, 65, 60, 55, 50 };
 
-		public override object Create(ActorInitializer init) { return new ClassicProductionQueue(init.self, this); }
+		public override object Create(ActorInitializer init) { return new ClassicProductionQueue(init, this); }
 	}
 
 	public class ClassicProductionQueue : ProductionQueue, ISync
 	{
-		public new ClassicProductionQueueInfo Info;
+		static readonly ActorInfo[] NoItems = { };
 
-		public ClassicProductionQueue(Actor self, ClassicProductionQueueInfo info)
-			: base(self, self, info)
+		readonly Actor self;
+		readonly ClassicProductionQueueInfo info;
+
+		public ClassicProductionQueue(ActorInitializer init, ClassicProductionQueueInfo info)
+			: base(init, init.self, info)
 		{
-			this.Info = info;
+			this.self = init.self;
+			this.info = info;
 		}
 
 		[Sync] bool isActive = false;
@@ -47,23 +52,25 @@ namespace OpenRA.Mods.RA
 		{
 			isActive = false;
 			foreach (var x in self.World.ActorsWithTrait<Production>())
+			{
 				if (x.Actor.Owner == self.Owner && x.Trait.Info.Produces.Contains(Info.Type))
 				{
 					isActive = true;
 					break;
 				}
+			}
+
 			base.Tick(self);
 		}
 
-		static ActorInfo[] None = { };
 		public override IEnumerable<ActorInfo> AllItems()
 		{
-			return isActive ? base.AllItems() : None;
+			return isActive ? base.AllItems() : NoItems;
 		}
 
 		public override IEnumerable<ActorInfo> BuildableItems()
 		{
-			return isActive ? base.BuildableItems() : None;
+			return isActive ? base.BuildableItems() : NoItems;
 		}
 
 		protected override bool BuildUnit(string name)
@@ -83,16 +90,17 @@ namespace OpenRA.Mods.RA
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
 			{
-				if (p.Trait.Produce(p.Actor, self.World.Map.Rules.Actors[name]))
+				if (p.Trait.Produce(p.Actor, self.World.Map.Rules.Actors[name], Race))
 				{
 					FinishProduction();
 					return true;
 				}
 			}
+
 			return false;
 		}
 
-		public override int GetBuildTime(String unitString)
+		public override int GetBuildTime(string unitString)
 		{
 			var unit = self.World.Map.Rules.Actors[unitString];
 			if (unit == null || !unit.Traits.Contains<BuildableInfo>())
@@ -103,14 +111,15 @@ namespace OpenRA.Mods.RA
 
 			var time = (int)(unit.GetBuildTime() * Info.BuildSpeed);
 
-			if (Info.SpeedUp)
+			if (info.SpeedUp)
 			{
+				var queues = unit.Traits.Get<BuildableInfo>().Queue;
 				var selfsameBuildings = self.World.ActorsWithTrait<Production>()
-					.Where(p => p.Trait.Info.Produces.Contains(unit.Traits.Get<BuildableInfo>().Queue))
-						.Where(p => p.Actor.Owner == self.Owner).ToArray();
+					.Where(p => p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Intersect(queues).Any())
+					.ToArray();
 
-				var speedModifier = selfsameBuildings.Count().Clamp(1, Info.BuildTimeSpeedReduction.Length) - 1;
-				time = (time * Info.BuildTimeSpeedReduction[speedModifier]) / 100;
+				var speedModifier = selfsameBuildings.Count().Clamp(1, info.BuildTimeSpeedReduction.Length) - 1;
+				time = (time * info.BuildTimeSpeedReduction[speedModifier]) / 100;
 			}
 
 			return time;

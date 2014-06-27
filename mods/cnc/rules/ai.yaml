@@ -10,6 +10,9 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
 		BuildingLimits:
 			proc: 4
 			pyle: 2
@@ -72,6 +75,9 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
 		BuildingLimits:
 			proc: 4
 			pyle: 2
@@ -134,6 +140,9 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
 		BuildingLimits:
 			proc: 4
 			pyle: 2
@@ -187,4 +196,3 @@ Player:
 			htnk: 50%
 			orca: 10%
 		SquadSize: 8
-

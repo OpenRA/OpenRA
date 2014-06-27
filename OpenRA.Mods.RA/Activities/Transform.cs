@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,21 +16,23 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class Transform : Activity
 	{
-		public readonly string ToActor = null;
-		public CVec Offset = new CVec(0, 0);
+		public readonly string ToActor;
+		public CVec Offset = CVec.Zero;
 		public int Facing = 96;
-		public string[] Sounds = {};
+		public string[] Sounds = { };
 		public int ForceHealthPercentage = 0;
 		public bool SkipMakeAnims = false;
+		public string Race = null;
 
 		public Transform(Actor self, string toActor)
 		{
-			this.ToActor = toActor;
+			ToActor = toActor;
 		}
 
-		public override Activity Tick( Actor self )
+		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled) return NextActivity;
+			if (IsCanceled)
+				return NextActivity;
 
 			self.World.AddFrameEndTask(w =>
 			{
@@ -48,12 +50,16 @@ namespace OpenRA.Mods.RA.Activities
 
 				var init = new TypeDictionary
 				{
-					new LocationInit( self.Location + Offset ),
-					new OwnerInit( self.Owner ),
-					new FacingInit( Facing ),
+					new LocationInit(self.Location + Offset),
+					new OwnerInit(self.Owner),
+					new FacingInit(Facing),
 				};
 
-				if (SkipMakeAnims) init.Add(new SkipMakeAnimsInit());
+				if (SkipMakeAnims)
+					init.Add(new SkipMakeAnimsInit());
+
+				if (Race != null)
+					init.Add(new RaceInit(Race));
 
 				var health = self.TraitOrDefault<Health>();
 				if (health != null)
@@ -62,15 +68,14 @@ namespace OpenRA.Mods.RA.Activities
 						? ForceHealthPercentage / 100f
 						: (float)health.HP / health.MaxHP;
 
-					init.Add( new HealthInit(newHP) );
+					init.Add(new HealthInit(newHP));
 				}
 
 				var cargo = self.TraitOrDefault<Cargo>();
 				if (cargo != null)
-					init.Add( new RuntimeCargoInit( cargo.Passengers.ToArray() ) );
+					init.Add(new RuntimeCargoInit(cargo.Passengers.ToArray()));
 
-				var a = w.CreateActor( ToActor, init );
-
+				var a = w.CreateActor(ToActor, init);
 				foreach (var nt in self.TraitsImplementing<INotifyTransformed>())
 					nt.OnTransformed(a);
 

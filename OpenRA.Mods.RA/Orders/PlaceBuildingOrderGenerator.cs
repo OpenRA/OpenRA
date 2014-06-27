@@ -22,19 +22,22 @@ namespace OpenRA.Mods.RA.Orders
 		readonly Actor Producer;
 		readonly string Building;
 		readonly BuildingInfo BuildingInfo;
+
 		IEnumerable<IRenderable> preview;
 		Sprite buildOk, buildBlocked;
 		bool initialized = false;
 
-		public PlaceBuildingOrderGenerator(Actor producer, string name)
+		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name)
 		{
-			Producer = producer;
+			Producer = queue.Actor;
 			Building = name;
-			var tileset = producer.World.TileSet.Id.ToLowerInvariant();
-			BuildingInfo = producer.World.Map.Rules.Actors[Building].Traits.Get<BuildingInfo>();
 
-			buildOk = producer.World.Map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
-			buildBlocked = producer.World.Map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
+			var map = Producer.World.Map;
+			var tileset = Producer.World.TileSet.Id.ToLowerInvariant();
+			BuildingInfo = map.Rules.Actors[Building].Traits.Get<BuildingInfo>();
+
+			buildOk = map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+			buildBlocked = map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
 		}
 
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
@@ -62,8 +65,13 @@ namespace OpenRA.Mods.RA.Orders
 				}
 
 				var isLineBuild = world.Map.Rules.Actors[Building].Traits.Contains<LineBuildInfo>();
-				yield return new Order(isLineBuild ? "LineBuild" : "PlaceBuilding",
-					Producer.Owner.PlayerActor, false) { TargetLocation = topLeft, TargetString = Building };
+				yield return new Order(isLineBuild ? "LineBuild" : "PlaceBuilding", Producer.Owner.PlayerActor, false)
+				{
+					TargetLocation = topLeft,
+					TargetActor = Producer,
+					TargetString = Building,
+					SuppressVisualFeedback = true
+				};
 			}
 		}
 

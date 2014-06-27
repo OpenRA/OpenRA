@@ -902,39 +902,55 @@ Rules:
 	^Infantry:
 		MustBeDestroyed:
 	WEAP:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	NUK2:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	FIX:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	HPAD:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	EYE:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	GUN:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	ATWR:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E3:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E4:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	E5:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	RMBO:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	AFLD:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	TMPL:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	OBLI:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	SAM:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 		Building:
 			Power: -10
 	HQ:
-		-Buildable:
+		Buildable:
+			Prerequisites: ~disabled
 	NOHQ:
 		RequiresPower:
 		CanPowerDown:

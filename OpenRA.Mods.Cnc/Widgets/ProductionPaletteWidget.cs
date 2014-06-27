@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void Tick()
 		{
-			if (CurrentQueue != null && !CurrentQueue.self.IsInWorld)
+			if (CurrentQueue != null && !CurrentQueue.Actor.IsInWorld)
 				CurrentQueue = null;
 
 			if (CurrentQueue != null)
@@ -125,20 +125,20 @@ namespace OpenRA.Mods.Cnc.Widgets
 				if (first != null && first.Done && actor.Traits.Contains<BuildingInfo>())
 				{
 					Sound.Play(TabClick);
-					World.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue.self, icon.Name);
+					World.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue, icon.Name);
 				}
 				else if (first != null && first.Paused)
 				{
 					// Resume a paused item
 					Sound.Play(TabClick);
-					World.IssueOrder(Order.PauseProduction(CurrentQueue.self, icon.Name, false));
+					World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, icon.Name, false));
 				}
 				else if (CurrentQueue.BuildableItems().Any(a => a.Name == icon.Name))
 				{
 					// Queue a new item
 					Sound.Play(TabClick);
 					Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Country.Race);
-					World.IssueOrder(Order.StartProduction(CurrentQueue.self, icon.Name,
+					World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name,
 						Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 				}
 				else
@@ -155,13 +155,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 					if (first.Paused || first.Done || first.TotalCost == first.RemainingCost)
 					{
 						Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Country.Race);
-						World.IssueOrder(Order.CancelProduction(CurrentQueue.self, icon.Name,
+						World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name,
 							Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 					}
 					else
 					{
 						Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, World.LocalPlayer.Country.Race);
-						World.IssueOrder(Order.PauseProduction(CurrentQueue.self, icon.Name, true));
+						World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, icon.Name, true));
 					}
 				}
 				else

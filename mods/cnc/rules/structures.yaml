@@ -1,9 +1,9 @@
 FACT:
 	Inherits: ^BaseBuilding
 	Buildable:
-		Queue: Building
+		Queue: Building.GDI, Building.Nod
 		BuildPaletteOrder: 1000
-		Owner: None
+		Prerequisites: ~disabled
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -21,30 +21,56 @@ FACT:
 		Range: 10c0
 	Bib:
 	Production:
-		Produces: Building,Defense
+		Produces: Building.GDI, Buildings.Nod, Defence.GDI, Defence.Nod
 	Transforms:
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 108
-	ProductionQueue@Building:
-		Type: Building
+	ProductionQueue@GDIBuilding:
+		Type: Building.GDI
+		Race: gdi
+		RequireOwner: false
 		Group: Building
 		BuildSpeed: .4
 		LowPowerSlowdown: 2
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
-	ProductionQueue@Defense:
-		Type: Defense
-		Group: Defense
+	ProductionQueue@NodBuilding:
+		Type: Building.Nod
+		Race: nod
+		RequireOwner: false
+		Group: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 2
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+	ProductionQueue@GDIDefense:
+		Type: Defence.GDI
+		Race: gdi
+		RequireOwner: false
+		Group: Defence
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+	ProductionQueue@NodDefense:
+		Type: Defence.Nod
+		Race: nod
+		RequireOwner: false
+		Group: Defence
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 	BaseBuilding:
-	ProductionBar@Building:
-		ProductionType: Building
-	ProductionBar@Defense:
-		ProductionType: Defense
+	ProductionBar@BuildingGDI:
+		ProductionType: Building.GDI
+	ProductionBar@BuildingNod:
+		ProductionType: Building.Nod
+	ProductionBar@DefenceGDI:
+		ProductionType: Defence.GDI
+	ProductionBar@DefenceNod:
+		ProductionType: Defence.Nod
 	BaseProvider:
 		Cooldown: 75
 		Range: 14
@@ -61,8 +87,8 @@ NUKE:
 		Prerequisite: anypower
 	Buildable:
 		BuildPaletteOrder: 10
-		Owner: gdi,nod
 		Prerequisites: fact
+		Queue: Building.GDI, Building.Nod
 	Building:
 		Power: 100
 		Footprint: x_ xx
@@ -85,7 +111,7 @@ NUK2:
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: anyhq
-		Owner: gdi,nod
+		Queue: Building.GDI, Building.Nod
 	Building:
 		Power: 200
 		Footprint: xx xx
@@ -106,7 +132,7 @@ PROC:
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: anypower
-		Owner: gdi,nod
+		Queue: Building.GDI, Building.Nod
 	Building:
 		Power: -50
 		Footprint: _x_ xxx ===
@@ -142,10 +168,9 @@ SILO:
 		Name: Tiberium Silo
 		Description: Stores processed Tiberium
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 35
 		Prerequisites: proc
-		Owner: gdi,nod
+		Queue: Defence.GDI, Defence.Nod
 	Building:
 		Power: -10
 		Footprint: xx
@@ -179,7 +204,7 @@ PYLE:
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anypower
-		Owner: gdi
+		Queue: Building.GDI
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -197,10 +222,11 @@ PYLE:
 		SpawnOffset: 298,298,0
 		ExitCell: 1,1
 	Production:
-		Produces: Infantry
+		Produces: Infantry.GDI
 	ProductionQueue:
-		Type: Infantry
+		Type: Infantry.GDI
 		Group: Infantry
+		RequireOwner: false
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	ProductionBar:
@@ -217,7 +243,7 @@ HAND:
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anypower
-		Owner: nod
+		Queue: Building.Nod
 	Building:
 		Power: -20
 		Footprint: __ xx xx
@@ -232,10 +258,11 @@ HAND:
 		SpawnOffset: 512,1024,0
 		ExitCell: 1,2
 	Production:
-		Produces: Infantry
+		Produces: Infantry.Nod
 	ProductionQueue:
-		Type: Infantry
+		Type: Infantry.Nod
 		Group: Infantry
+		RequireOwner: false
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	ProductionBar:
@@ -252,7 +279,7 @@ AFLD:
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: proc
-		Owner: nod
+		Queue: Building.Nod
 	Building:
 		Power: -30
 		Footprint: xxxx xxxx
@@ -268,11 +295,12 @@ AFLD:
 		SpawnOffset: -1024,0,0
 		ExitCell: 3,1
 	ProductionAirdrop:
-		Produces: Vehicle
+		Produces: Vehicle.Nod
 	WithDeliveryAnimation:
 	ProductionQueue:
-		Type: Vehicle
+		Type: Vehicle.Nod
 		Group: Vehicle
+		RequireOwner: false
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		ReadyAudio:
@@ -290,7 +318,7 @@ WEAP:
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: proc
-		Owner: gdi
+		Queue: Building.GDI
 	Building:
 		Power: -30
 		Footprint: ___ xxx ===
@@ -308,9 +336,10 @@ WEAP:
 		SpawnOffset: -341,-341,0
 		ExitCell: 0,2
 	Production:
-		Produces: Vehicle
+		Produces: Vehicle.GDI
 	ProductionQueue:
-		Type: Vehicle
+		Type: Vehicle.GDI
+		RequireOwner: false
 		Group: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
@@ -326,7 +355,7 @@ HPAD:
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: proc
-		Owner: gdi,nod
+		Queue: Building.GDI, Building.Nod
 	Building:
 		Power: -10
 		Footprint: xx xx
@@ -338,17 +367,29 @@ HPAD:
 	Exit@1:
 		SpawnOffset: 0,-256,0
 	Production:
-		Produces: Aircraft
+		Produces: Aircraft.GDI, Aircraft.Nod
 	Reservable:
 	RepairsUnits:
 	WithRepairAnimation:
 	RallyPoint:
-	ProductionQueue:
-		Type: Aircraft
+	ProductionQueue@GDI:
+		Type: Aircraft.GDI
+		Race: gdi
 		Group: Aircraft
+		RequireOwner: false
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-	ProductionBar:
+	ProductionQueue@Nod:
+		Type: Aircraft.Nod
+		Race: nod
+		Group: Aircraft
+		RequireOwner: false
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionBar@GDI:
+		ProductionType: Aircraft.GDI
+	ProductionBar@Nod:
+		ProductionType: Aircraft.Nod
 
 HQ:
 	Inherits: ^BaseBuilding
@@ -362,7 +403,7 @@ HQ:
 	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: proc
-		Owner: gdi,nod
+		Queue: Building.GDI, Building.Nod
 	Building:
 		Power: -40
 		Footprint: x_ xx
@@ -410,7 +451,7 @@ FIX:
 	Buildable:
 		BuildPaletteOrder: 80
 		Prerequisites: vehicleproduction
-		Owner: gdi,nod
+		Queue: Building.GDI, Building.Nod
 	Building:
 		Power: -30
 		Footprint: _x_ xxx _x_
@@ -438,7 +479,7 @@ EYE:
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: anyhq
-		Owner: gdi
+		Queue: Building.GDI
 	Building:
 		Power: -200
 		Footprint: x_ xx
@@ -483,7 +524,7 @@ TMPL:
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: anyhq
-		Owner: nod
+		Queue: Building.Nod
 	Building:
 		Power: -150
 		Footprint: ___ xxx xxx
@@ -525,10 +566,9 @@ GUN:
 		Name: Turret
 		Description: Basic Anti-Tank base defense.\n  Strong vs Tanks, vehicles\n  Weak vs Infantry
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 45
 		Prerequisites: barracks
-		Owner: gdi,nod
+		Queue: Defence.GDI, Defence.Nod
 	Building:
 		Power: -20
 	-GivesBuildableArea:
@@ -568,10 +608,9 @@ SAM:
 		Name: SAM Site
 		Description: Anti-Aircraft base defense.\n  Strong vs Aircraft\n  Cannot target Ground units.
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 50
 		Prerequisites: hand
-		Owner: nod
+		Queue: Defence.Nod
 	Building:
 		Power: -20
 		Footprint: xx
@@ -608,10 +647,9 @@ OBLI:
 		Name: Obelisk of Light
 		Description: Advanced base defense. \nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 60
 		Prerequisites: tmpl
-		Owner: nod
+		Queue: Defence.Nod
 	Building:
 		Power: -150
 		Footprint: _ x
@@ -654,10 +692,9 @@ GTWR:
 		Name: Guard Tower
 		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 40
 		Prerequisites: barracks
-		Owner: gdi,nod
+		Queue: Defence.GDI
 	Building:
 		Power: -10
 	-GivesBuildableArea:
@@ -693,10 +730,9 @@ ATWR:
 		Name: Advanced Guard Tower
 		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Tanks\n  Weak vs Infantry
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq
-		Owner: gdi
+		Queue: Defence.GDI
 	Building:
 		Power: -40
 		Footprint: _ x
@@ -742,10 +778,9 @@ SBAG:
 		Name: Sandbag Barrier
 		Description: Stops infantry & light vehicles. \nCan be crushed by tanks.
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: fact
-		Owner: gdi
+		Queue: Defence.GDI
 	Health:
 		HP: 100
 	Armor:
@@ -768,10 +803,9 @@ CYCL:
 		Name: Chain Link Barrier
 		Description: Stops infantry & light vehicles. \nCan be crushed by tanks.
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: fact
-		Owner: nod
+		Queue: Defence.Nod
 	Health:
 		HP: 100
 	Armor:
@@ -794,10 +828,9 @@ BRIK:
 		Name: Concrete Barrier
 		Description: Stop units.
 	Buildable:
-		Queue: Defense
 		BuildPaletteOrder: 30
 		Prerequisites: vehicleproduction
-		Owner: gdi,nod
+		Queue: Defence.GDI, Defence.Nod
 	Health:
 		HP: 250
 	Armor:
