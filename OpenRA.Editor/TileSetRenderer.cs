@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -20,9 +20,9 @@ namespace OpenRA.Editor
 {
 	public class TileSetRenderer
 	{
+		public readonly int TileSize;
 		public TileSet TileSet;
 		Dictionary<ushort, List<byte[]>> templates;
-		public readonly int TileSize;
 
 		// Extract a square tile that the editor can render
 		byte[] ExtractSquareTile(ISpriteFrame frame)
@@ -61,7 +61,7 @@ namespace OpenRA.Editor
 			if (frames != null)
 			{
 				var ret = new List<byte[]>();
-				var srcFrames = source.Frames.ToArray();
+				var srcFrames = source.Frames;
 				foreach (var i in frames)
 					ret.Add(ExtractSquareTile(srcFrames[i]));
 

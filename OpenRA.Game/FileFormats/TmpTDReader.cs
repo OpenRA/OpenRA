@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using OpenRA.Graphics;
@@ -36,8 +35,7 @@ namespace OpenRA.FileFormats
 
 	public class TmpTDReader : ISpriteSource
 	{
-		readonly List<ISpriteFrame> tiles = new List<ISpriteFrame>();
-		public IEnumerable<ISpriteFrame> Frames { get { return tiles; } }
+		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
 		public bool CacheWhenLoadingTileset { get { return false; } }
 
 		public TmpTDReader(Stream s)
@@ -53,15 +51,19 @@ namespace OpenRA.FileFormats
 			var indexStart = s.ReadInt32();
 
 			s.Position = indexStart;
-			foreach (var b in s.ReadBytes(indexEnd - indexStart))
+			var count = indexEnd - indexStart;
+			var tiles = new TmpTile[count];
+			Frames = tiles.AsReadOnly();
+			var tilesIndex = 0;
+			foreach (var b in s.ReadBytes(count))
 			{
 				if (b != 255)
 				{
 					s.Position = imgStart + b * width * height;
-					tiles.Add(new TmpTile(s.ReadBytes(width * height), size));
+					tiles[tilesIndex++] = new TmpTile(s.ReadBytes(width * height), size);
 				}
 				else
-					tiles.Add(new TmpTile(null, size));
+					tiles[tilesIndex++] = new TmpTile(null, size);
 			}
 		}
 	}

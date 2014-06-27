@@ -233,7 +233,7 @@ namespace OpenRA.Utility
 		{
 			var srcImage = ShpReader.Load(args[1]);
 
-			var srcFrames = srcImage.Frames.ToArray();
+			var srcFrames = srcImage.Frames;
 			var destFrames = srcImage.Frames.ToArray();
 
 			for (var z = 3; z < args.Length - 2; z += 3)
