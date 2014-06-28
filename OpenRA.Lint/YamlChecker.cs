@@ -68,14 +68,6 @@ namespace OpenRA.Lint
 
 				foreach (var testMap in maps)
 				{
-					if (testMap.RuleDefinitions.Count < 1)
-					{
-						if (verbose)
-							Console.WriteLine("No custom rules detected. Omitting Map: {0}".F(testMap.Title));
-
-						continue;
-					}
-
 					if (verbose)
 						Console.WriteLine("Map: {0}".F(testMap.Title));
 					testMap.PreloadRules();
