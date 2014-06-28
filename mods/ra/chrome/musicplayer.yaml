@@ -150,7 +150,6 @@ Background@MUSIC_PANEL:
 			Visible: false
 			Text: No Music Installed
 		Button@INSTALL_BUTTON:
-			Logic: InstallMusicLogic
 			X: 20
 			Y: PARENT_BOTTOM - 45
 			Width: 120

@@ -170,7 +170,6 @@ Container@MUSIC_PANEL:
 			Height: 35
 			Text: Back
 		Button@INSTALL_BUTTON:
-			Logic: InstallMusicLogic
 			X: 220
 			Y: 399
 			Width: 140

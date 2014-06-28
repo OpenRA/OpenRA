@@ -69,24 +69,7 @@ namespace OpenRA.Mods.RA
 
 		public void StartGame()
 		{
-			TestAndContinue();
-		}
-
-		void TestAndContinue()
-		{
-			Ui.ResetAll();
-			var installData = Game.modData.Manifest.ContentInstaller;
-			if (!installData["TestFiles"].Split(',').All(f => GlobalFileSystem.Exists(f.Trim())))
-			{
-				var args = new WidgetArgs()
-				{
-					{ "continueLoading", () => TestAndContinue() },
-					{ "installData", installData }
-				};
-				Ui.OpenWindow(installData["InstallerMenuWidget"], args);
-			}
-			else
-				Game.LoadShellMap();
+			Game.TestAndContinue();
 		}
 	}
 }

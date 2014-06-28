@@ -361,13 +361,13 @@ namespace OpenRA
 			foreach (var mod in ModMetadata.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
-			InitializeWithMod(Settings.Game.Mod, args.GetValue("Launch.Replay", null));
+			InitializeMod(Settings.Game.Mod, args);
 
 			if (Settings.Server.DiscoverNatDevices)
 				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, UPnP.StoppingNatDiscovery);
 		}
 
-		public static void InitializeWithMod(string mod, string replay)
+		public static void InitializeMod(string mod, Arguments args)
 		{
 			// Clear static state if we have switched mods
 			LobbyInfoChanged = () => { };
@@ -439,11 +439,43 @@ namespace OpenRA
 			}
 			else
 			{
-				modData.LoadScreen.StartGame();
-				Settings.Save();
-				if (!string.IsNullOrEmpty(replay))
-					Game.JoinReplay(replay);
+				var window = args != null ? args.GetValue("Launch.Window", null) : null;
+				if (!string.IsNullOrEmpty(window))
+				{
+					var installData = modData.Manifest.ContentInstaller;
+					if (installData.ContainsKey("InstallerBackgroundWidget"))
+						Ui.LoadWidget(installData["InstallerBackgroundWidget"], Ui.Root, new WidgetArgs());
+
+					Widgets.Ui.OpenWindow(window, new WidgetArgs());
+				}
+				else
+				{
+					modData.LoadScreen.StartGame();
+					Settings.Save();
+					var replay = args != null ? args.GetValue("Launch.Replay", null) : null;
+					if (!string.IsNullOrEmpty(replay))
+						Game.JoinReplay(replay);
+				}
 			}
+		}
+
+		public static void TestAndContinue()
+		{
+			Ui.ResetAll();
+			var installData = modData.Manifest.ContentInstaller;
+			if (!installData["TestFiles"].Split(',').All(f => GlobalFileSystem.Exists(f.Trim())))
+			{
+				var args = new WidgetArgs()
+				{
+					{ "continueLoading", () => TestAndContinue() },
+					{ "installData", installData }
+				};
+				if (installData.ContainsKey("InstallerBackgroundWidget"))
+					Ui.LoadWidget(installData["InstallerBackgroundWidget"], Ui.Root, args);
+				Ui.OpenWindow(installData["InstallerMenuWidget"], args);
+			}
+			else
+				LoadShellMap();
 		}
 
 		public static void LoadShellMap()
@@ -471,7 +503,7 @@ namespace OpenRA
 
 		static double idealFrameTime;
 		public static void SetIdealFrameTime(int fps)
-		{ 
+		{
 			idealFrameTime = 1.0 / fps;
 		}
 
