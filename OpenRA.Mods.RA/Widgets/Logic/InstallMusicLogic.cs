@@ -45,15 +45,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (downloadButton != null)
 			{
 				var installData = Game.modData.Manifest.ContentInstaller;
-				downloadButton.IsVisible = () => !string.IsNullOrEmpty(installData["MusicPackageMirrorList"]);
-				var musicInstallData = new Dictionary<string, string> { };
-				musicInstallData["PackageMirrorList"] =  installData["MusicPackageMirrorList"];
-
+				downloadButton.IsVisible = () => !string.IsNullOrEmpty(installData.MusicPackageMirrorList);
 				downloadButton.OnClick = () =>
 				{
 					Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", new WidgetArgs() {
 						{ "afterInstall", () => Game.InitializeMod(Game.Settings.Game.Mod, null) },
-						{ "installData", new ReadOnlyDictionary<string, string>(musicInstallData) },
 					});
 				};
 			}

@@ -32,7 +32,7 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
 		public readonly MiniYaml LobbyDefaults;
-		public readonly IReadOnlyDictionary<string, string> ContentInstaller;
+		public readonly InstallData ContentInstaller;
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
 		public readonly Size TileSize = new Size(24, 24);
 		public readonly string NewsUrl;
@@ -72,7 +72,10 @@ namespace OpenRA
 
 			LoadScreen = yaml["LoadScreen"];
 			LobbyDefaults = yaml["LobbyDefaults"];
-			ContentInstaller = YamlDictionary(yaml, "ContentInstaller");
+
+			if (yaml.ContainsKey("ContentInstaller"))
+				ContentInstaller = FieldLoader.Load<InstallData>(yaml["ContentInstaller"]);
+
 			Fonts = yaml["Fonts"].ToDictionary(my =>
 				{
 					var nd = my.ToDictionary();

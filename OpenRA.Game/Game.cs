@@ -443,8 +443,8 @@ namespace OpenRA
 				if (!string.IsNullOrEmpty(window))
 				{
 					var installData = modData.Manifest.ContentInstaller;
-					if (installData.ContainsKey("InstallerBackgroundWidget"))
-						Ui.LoadWidget(installData["InstallerBackgroundWidget"], Ui.Root, new WidgetArgs());
+					if (installData.InstallerMenuWidget != null)
+						Ui.LoadWidget(installData.InstallerMenuWidget, Ui.Root, new WidgetArgs());
 
 					Widgets.Ui.OpenWindow(window, new WidgetArgs());
 				}
@@ -463,16 +463,17 @@ namespace OpenRA
 		{
 			Ui.ResetAll();
 			var installData = modData.Manifest.ContentInstaller;
-			if (!installData["TestFiles"].Split(',').All(f => GlobalFileSystem.Exists(f.Trim())))
+			if (!installData.TestFiles.All(f => GlobalFileSystem.Exists(f)))
 			{
 				var args = new WidgetArgs()
 				{
 					{ "continueLoading", () => InitializeMod(Game.Settings.Game.Mod, null) },
-					{ "installData", installData }
 				};
-				if (installData.ContainsKey("InstallerBackgroundWidget"))
-					Ui.LoadWidget(installData["InstallerBackgroundWidget"], Ui.Root, args);
-				Ui.OpenWindow(installData["InstallerMenuWidget"], args);
+
+				if (installData.InstallerBackgroundWidget != null)
+					Ui.LoadWidget(installData.InstallerBackgroundWidget, Ui.Root, args);
+
+				Ui.OpenWindow(installData.InstallerMenuWidget, args);
 			}
 			else
 				LoadShellMap();

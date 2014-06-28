@@ -18,6 +18,22 @@ using OpenRA.FileSystem;
 
 namespace OpenRA
 {
+	public class InstallData
+	{
+		public readonly string InstallerMenuWidget = null;
+		public readonly string InstallerBackgroundWidget = null;
+		public readonly string[] TestFiles = {};
+		public readonly string[] DiskTestFiles = {};
+		public readonly string PackageToExtractFromCD = null;
+		public readonly string[] ExtractFilesFromCD = {};
+		public readonly string[] CopyFilesFromCD = {};
+
+		public readonly string PackageMirrorList = null;
+
+		public readonly string MusicPackageMirrorList = null;
+		public readonly int ShippedSoundtracks = 0;
+	}
+
 	public static class InstallUtils
 	{
 		static IEnumerable<ZipEntry> GetEntries(this ZipInputStream z)

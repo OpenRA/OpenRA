@@ -30,11 +30,6 @@ namespace OpenRA
 			return string.Format(fmt, args);
 		}
 
-		public static string TrimOrEmpty(this string input)
-		{
-			return input != null ? input.Trim() : string.Empty;
-		}
-
 		public static T WithDefault<T>(T def, Func<T> f)
 		{
 			try { return f(); }

@@ -17,13 +17,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class InstallLogic : Widget
 	{
 		[ObjectCreator.UseCtor]
-		public InstallLogic(Widget widget, IReadOnlyDictionary<string, string> installData, Action continueLoading)
+		public InstallLogic(Widget widget, Action continueLoading)
 		{
 			var panel = widget.Get("INSTALL_PANEL");
 			var widgetArgs = new WidgetArgs()
 			{
 				{ "afterInstall", () => { Ui.CloseWindow(); continueLoading(); } },
-				{ "installData", installData },
 				{ "continueLoading", continueLoading }
 			};
 

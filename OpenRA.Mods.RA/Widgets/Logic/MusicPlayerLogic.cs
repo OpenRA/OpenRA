@@ -90,9 +90,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					Game.modData.LoadScreen.Display(); // HACK: prevent a flicker when transitioning to the installation dialog
 					Game.InitializeMod(Game.Settings.Game.Mod, new Arguments(args));
 				};
+
 				var installData = Game.modData.Manifest.ContentInstaller;
-				installButton.IsVisible = () =>
-					modRules.InstalledMusic.ToArray().Length <= Exts.ParseIntegerInvariant(installData["ShippedSoundtracks"]);
+				installButton.IsVisible = () => modRules.InstalledMusic.ToArray().Length <= installData.ShippedSoundtracks;
 			}
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Game.Settings.Save(); Ui.CloseWindow(); onExit(); };
