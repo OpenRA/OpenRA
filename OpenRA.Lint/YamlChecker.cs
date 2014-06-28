@@ -20,6 +20,7 @@ namespace OpenRA.Lint
 	{
 		static int errors = 0;
 
+		// mimic Windows compiler error format
 		static void EmitError(string e)
 		{
 			Console.WriteLine("OpenRA.Lint(1,1): Error: {0}", e);
