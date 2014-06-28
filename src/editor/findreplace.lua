@@ -43,8 +43,10 @@ ide.findReplace = {
 }
 local findReplace = ide.findReplace
 
+local lastEditor
 function findReplace:GetEditor()
-  return findReplace.oveditor or GetEditor()
+  lastEditor = findReplace.oveditor or GetEditorWithFocus() or lastEditor
+  return lastEditor or GetEditor()
 end
 
 -------------------- Find replace dialog
@@ -145,7 +147,7 @@ function findReplace:FindString(reverse)
       findReplace.foundString = true
       local start = editor:GetTargetStart()
       local finish = editor:GetTargetEnd()
-      EnsureRangeVisible(start, finish)
+      editor:EnsureVisibleEnforcePolicy(editor:LineFromPosition(start))
       editor:SetSelection(start, finish)
       ide.frame:SetStatusText("")
     end
@@ -190,6 +192,9 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
 
   if findReplace:HasText() then
     local editor = findReplace:GetEditor()
+    -- don't replace in read-only editors
+    if editor:GetReadOnly() then return false end
+
     local endTarget = inFileRegister and setTargetAll(editor) or
       setTarget(editor, findReplace.fDown, fReplaceAll, findReplace.fWrap)
 

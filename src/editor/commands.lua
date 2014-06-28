@@ -539,19 +539,6 @@ function FoldSome()
   editor:EnsureCaretVisible()
 end
 
-function EnsureRangeVisible(posStart, posEnd)
-  local editor = GetEditor()
-  if posStart > posEnd then
-    posStart, posEnd = posEnd, posStart
-  end
-
-  local lineStart = editor:LineFromPosition(posStart)
-  local lineEnd = editor:LineFromPosition(posEnd)
-  for line = lineStart, lineEnd do
-    editor:EnsureVisibleEnforcePolicy(line)
-  end
-end
-
 function SetAllEditorsReadOnly(enable)
   for _, document in pairs(openDocuments) do
     document.editor:SetReadOnly(enable)
