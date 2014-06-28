@@ -203,6 +203,8 @@ namespace OpenRA.Traits
 	public interface Requires<T> where T : class { }
 	public interface UsesInit<T> where T : IActorInit { }
 
+	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }
+
 	public interface INotifySelected { void Selected(Actor self); }
 	public interface INotifySelection { void SelectionChanged(); }
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
@@ -264,5 +266,10 @@ namespace OpenRA.Traits
 		{
 			return a.TraitsImplementing<IDisable>().Any(d => d.Disabled);
 		}
+	}
+
+	public interface ITechTreePrerequisite
+	{
+		IEnumerable<string> ProvidesPrerequisites {get;}
 	}
 }

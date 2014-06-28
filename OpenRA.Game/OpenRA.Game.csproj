@@ -237,6 +237,21 @@
     <Compile Include="Widgets\RootWidget.cs" />
     <Compile Include="Map\CellLayer.cs" />
     <Compile Include="Map\CellRegion.cs" />
+    <Compile Include="Traits\Buildable.cs" />
+    <Compile Include="Traits\Tooltip.cs" />
+    <Compile Include="Traits\Valued.cs" />
+    <Compile Include="Traits\Armament.cs" />
+    <Compile Include="Traits\Turreted.cs" />
+    <Compile Include="Traits\AttackBase.cs" />
+    <Compile Include="Traits\Building.cs" />
+    <Compile Include="Traits\LimitedAmmo.cs" />
+    <Compile Include="Traits\PowerManager.cs" />
+    <Compile Include="Traits\SpawnMapActors.cs" />
+    <Compile Include="ActorExts.cs" />
+    <Compile Include="FootprintUtils.cs" />
+    <Compile Include="Traits\Bib.cs" />
+    <Compile Include="Traits\BaseProvider.cs" />
+    <Compile Include="Traits\BuildingInfluence.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

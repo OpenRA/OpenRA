@@ -14,7 +14,7 @@ using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Traits
 {
 	[Desc("Remove this trait to limit base-walking by cheap or defensive buildings.")]
 	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> {}

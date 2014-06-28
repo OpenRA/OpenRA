@@ -8,9 +8,7 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Traits
 {
 	public class BuildingInfluenceInfo : ITraitInfo
 	{

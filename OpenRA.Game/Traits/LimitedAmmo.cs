@@ -9,9 +9,8 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Traits
 {
 	public class LimitedAmmoInfo : ITraitInfo
 	{
