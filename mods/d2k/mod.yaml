@@ -56,7 +56,7 @@ Assemblies:
 	mods/d2k/OpenRA.Mods.D2k.dll
 
 ChromeLayout:
-	mods/d2k/chrome/gameinit.yaml
+	mods/d2k/chrome/install.yaml
 	mods/d2k/chrome/ingame.yaml
 	mods/ra/chrome/ingame-chat.yaml
 	mods/ra/chrome/ingame-diplomacy.yaml

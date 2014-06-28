@@ -96,7 +96,7 @@ Assemblies:
 	mods/ts/OpenRA.Mods.TS.dll
 
 ChromeLayout:
-	mods/ts/chrome/gameinit.yaml
+	mods/ts/chrome/install.yaml
 	mods/ra/chrome/ingame.yaml
 	mods/ra/chrome/ingame-chat.yaml
 	mods/ra/chrome/ingame-diplomacy.yaml
