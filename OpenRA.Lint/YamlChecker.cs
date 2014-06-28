@@ -69,7 +69,7 @@ namespace OpenRA.Lint
 				foreach (var testMap in maps)
 				{
 					if (verbose)
-						Console.WriteLine("Map: {0}".F(testMap.Title));
+						Console.WriteLine("Testing map: {0}".F(testMap.Title));
 					testMap.PreloadRules();
 
 					foreach (var customPassType in Game.modData.ObjectCreator
