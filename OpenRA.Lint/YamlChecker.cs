@@ -84,7 +84,7 @@ namespace OpenRA.Lint
 						}
 						catch (Exception e)
 						{
-							EmitError("Failed with exception: {0}".F(e));
+							EmitError("{0} failed with exception: {0}".F(customPassType, e));
 						}
 					}
 				}
