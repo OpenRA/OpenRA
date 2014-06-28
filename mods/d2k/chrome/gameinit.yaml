@@ -101,7 +101,7 @@ Background@INSTALL_DOWNLOAD_PANEL:
 			Key: escape
 
 Background@INSTALL_FROMCD_PANEL:
-	Logic: D2kInstallFromCDLogic
+	Logic: InstallFromCDLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Width: 500

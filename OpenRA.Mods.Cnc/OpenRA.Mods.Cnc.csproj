@@ -79,7 +79,6 @@
     <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameChromeLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />
-    <Compile Include="Widgets\Logic\CncInstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />

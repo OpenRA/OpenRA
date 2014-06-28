@@ -67,7 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ThrowsShrapnel.cs" />
-    <Compile Include="Widgets\Logic\D2kInstallFromCDLogic.cs" />
     <Compile Include="Render\WithCrumbleOverlay.cs" />
     <Compile Include="PaletteFromR8.cs" />
     <Compile Include="D2kResourceLayer.cs" />

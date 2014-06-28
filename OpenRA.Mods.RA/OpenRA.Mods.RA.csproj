@@ -391,7 +391,6 @@
     <Compile Include="Widgets\Logic\ObserverStatsLogic.cs" />
     <Compile Include="Widgets\Logic\OrderButtonsChromeLogic.cs" />
     <Compile Include="Widgets\Logic\PerfDebugLogic.cs" />
-    <Compile Include="Widgets\Logic\RAInstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
@@ -519,6 +518,7 @@
     <Compile Include="World\ResourceLayer.cs" />
     <Compile Include="Parachutable.cs" />
     <Compile Include="Render\WithMakeAnimation.cs" />
+    <Compile Include="Widgets\Logic\InstallFromCDLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

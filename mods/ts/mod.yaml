@@ -160,7 +160,10 @@ ContentInstaller:
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFiles: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
 	PackageMirrorList: http://openra.net/packages/ts-mirrors.txt
-	Text: Updating EVA installation..., Changing perspective...
+	DiskTestFiles: multi.mix, install/tibsun.mix
+	PackageToExtractFromCD:
+	ExtractFilesFromCD:
+	CopyFilesFromCD: install/tibsun.mix, scores.mix, multi.mix
 
 ServerTraits:
 	LobbyCommands
