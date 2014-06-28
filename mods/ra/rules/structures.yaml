@@ -459,43 +459,6 @@ PBOX:
 		FallbackRange: 6c0
 	AutoTarget:
 
-# Legacy definitions to keep compatibility with outdated maps
-PBOX.E1:
-	Inherits: PBOX
-	-Buildable:
-	RenderBuilding:
-		Image: PBOX
-
-PBOX.E3:
-	Inherits: PBOX
-	-Buildable:
-	RenderBuilding:
-		Image: PBOX
-
-PBOX.E4:
-	Inherits: PBOX
-	-Buildable:
-	RenderBuilding:
-		Image: PBOX
-
-PBOX.E7:
-	Inherits: PBOX
-	-Buildable:
-	RenderBuilding:
-		Image: PBOX
-
-PBOX.SHOK:
-	Inherits: PBOX
-	-Buildable:
-	RenderBuilding:
-		Image: PBOX
-
-PBOX.SNIPER:
-	Inherits: PBOX
-	-Buildable:
-	RenderBuilding:
-		Image: PBOX
-
 HBOX:
 	Inherits: ^Building
 	Tooltip:
@@ -544,43 +507,6 @@ HBOX:
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
 		PortYaws: 0, 176, 341, 512, 682, 853
 		PortCones: 86, 86, 86, 86, 86, 86
-
-# Legacy definitions to keep compatibility with outdated maps
-HBOX.E1:
-	Inherits: HBOX
-	-Buildable:
-	RenderBuilding:
-		Image: HBOX
-
-HBOX.E3:
-	Inherits: HBOX
-	-Buildable:
-	RenderBuilding:
-		Image: HBOX
-
-HBOX.E4:
-	Inherits: HBOX
-	-Buildable:
-	RenderBuilding:
-		Image: HBOX
-
-HBOX.E7:
-	Inherits: HBOX
-	-Buildable:
-	RenderBuilding:
-		Image: HBOX
-
-HBOX.SHOK:
-	Inherits: HBOX
-	-Buildable:
-	RenderBuilding:
-		Image: HBOX
-
-HBOX.SNIPER:
-	Inherits: HBOX
-	-Buildable:
-	RenderBuilding:
-		Image: HBOX
 
 GUN:
 	Inherits: ^Building
