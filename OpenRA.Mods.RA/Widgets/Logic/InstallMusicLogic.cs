@@ -39,6 +39,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
+		bool previousShowShellSetting;
 		void LoadInstallMusicContainer()
 		{
 			var installMusicContainer = Ui.OpenWindow("INSTALL_MUSIC_PANEL", new WidgetArgs());
@@ -52,6 +53,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var musicPlayerLogic = (MusicPlayerLogic)installButton.Parent.LogicObject;
 					musicPlayerLogic.BuildMusicTable();
 					Ui.CloseWindow();
+					Game.Settings.Game.ShowShellmap = previousShowShellSetting;
 				}
 				catch (Exception e)
 				{
@@ -61,14 +63,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var cancelButton = installMusicContainer.GetOrNull<ButtonWidget>("CANCEL_BUTTON");
 			if (cancelButton != null)
-				cancelButton.OnClick = () => Ui.CloseWindow();
+			{
+				cancelButton.OnClick = () =>
+				{
+					Game.Settings.Game.ShowShellmap = previousShowShellSetting;
+					Ui.CloseWindow();
+				};
+			}
 
 			var copyFromDiscButton = installMusicContainer.GetOrNull<ButtonWidget>("COPY_FROM_CD_BUTTON");
 			if (copyFromDiscButton != null)
 			{
-				copyFromDiscButton.OnClick = () => Ui.OpenWindow("INSTALL_FROMCD_PANEL", new WidgetArgs() {
-					{ "continueLoading", after },
-				});
+				copyFromDiscButton.OnClick = () =>
+				{
+					previousShowShellSetting = Game.Settings.Game.ShowShellmap;
+					Game.Settings.Game.ShowShellmap = false;
+					GlobalFileSystem.UnmountAll();
+					Ui.OpenWindow("INSTALL_FROMCD_PANEL", new WidgetArgs() {
+						{ "continueLoading", after },
+					});
+				};
 			}
 
 			var downloadButton = installMusicContainer.GetOrNull<ButtonWidget>("DOWNLOAD_BUTTON");
@@ -78,10 +92,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var musicInstallData = new Dictionary<string, string> { };
 				musicInstallData["PackageMirrorList"] =  installData["MusicPackageMirrorList"];
 
-				downloadButton.OnClick = () => Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", new WidgetArgs() {
-					{ "afterInstall", after },
-					{ "installData", new ReadOnlyDictionary<string, string>(musicInstallData) },
-				});
+				downloadButton.OnClick = () =>
+				{
+					previousShowShellSetting = Game.Settings.Game.ShowShellmap;
+					Game.Settings.Game.ShowShellmap = false;
+					GlobalFileSystem.UnmountAll();
+					Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", new WidgetArgs() {
+						{ "afterInstall", after },
+						{ "installData", new ReadOnlyDictionary<string, string>(musicInstallData) },
+					});
+				};
 			}
 		}
 	}
