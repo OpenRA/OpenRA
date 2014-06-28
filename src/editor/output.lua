@@ -340,42 +340,41 @@ errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
       if (fname and jumpline) then break end
     end
 
-    if (fname and jumpline) then
-      -- fname may include name of executable, as in "path/to/lua: file.lua";
-      -- strip it and try to find match again if needed.
-      -- try the stripped name first as if it doesn't match, the longer
-      -- name may have parts that may be interpreter as network path and
-      -- may take few seconds to check.
-      local name
-      local fixedname = fname:match(":%s+(.+)")
-      if fixedname then
-        name = GetFullPathIfExists(FileTreeGetDir(), fixedname)
-          or FileTreeFindByPartialName(fixedname)
-      end
-      name = name
-        or GetFullPathIfExists(FileTreeGetDir(), fname)
-        or FileTreeFindByPartialName(fname)
+    if not (fname and jumpline) then return end
 
-      local editor = LoadFile(name or fname,nil,true)
-      if not editor then
-        local ed = GetEditor()
-        if ed and ide:GetDocument(ed):GetFileName() == (name or fname) then
-          editor = ed
-        end
-      end
-      if editor then
-        jumpline = tonumber(jumpline)
-        jumplinepos = tonumber(jumplinepos)
+    -- fname may include name of executable, as in "path/to/lua: file.lua";
+    -- strip it and try to find match again if needed.
+    -- try the stripped name first as if it doesn't match, the longer
+    -- name may have parts that may be interpreter as network path and
+    -- may take few seconds to check.
+    local name
+    local fixedname = fname:match(":%s+(.+)")
+    if fixedname then
+      name = GetFullPathIfExists(FileTreeGetDir(), fixedname)
+        or FileTreeFindByPartialName(fixedname)
+    end
+    name = name
+      or GetFullPathIfExists(FileTreeGetDir(), fname)
+      or FileTreeFindByPartialName(fname)
 
-        editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1))
-          + (jumplinepos and (math.max(0,jumplinepos-1)) or 0))
-        editor:EnsureVisibleEnforcePolicy(jumpline)
-        editor:SetFocus()
+    local editor = LoadFile(name or fname,nil,true)
+    if not editor then
+      local ed = GetEditor()
+      if ed and ide:GetDocument(ed):GetFileName() == (name or fname) then
+        editor = ed
       end
     end
+    if editor then
+      jumpline = tonumber(jumpline)
+      jumplinepos = tonumber(jumplinepos)
 
-    -- doubleclick can set selection, so reset it;
-    -- for consistency, do it even when no pattern is detected.
+      editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1))
+        + (jumplinepos and (math.max(0,jumplinepos-1)) or 0))
+      editor:EnsureVisibleEnforcePolicy(jumpline)
+      editor:SetFocus()
+    end
+
+    -- doubleclick can set selection, so reset it
     local pos = event:GetPosition()
     if pos == -1 then pos = errorlog:GetLineEndPosition(event:GetLine()) end
     errorlog:SetSelection(pos, pos)
