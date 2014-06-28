@@ -25,7 +25,7 @@ namespace OpenRA.TilesetBuilder
 		string srcfile;
 		int size;
 		public TerrainTypeInfo[] TerrainType;
-		public Palette TerrainPalette;
+		public ImmutablePalette TerrainPalette;
 		public bool PaletteFromImage = true;
 		public string PaletteFile = "";
 		public string ImageFile = "";
@@ -60,7 +60,7 @@ namespace OpenRA.TilesetBuilder
 
 					if (!PaletteFromImage)
 					{
-						TerrainPalette = Palette.Load(PaletteFile, shadowIndex);
+						TerrainPalette = new ImmutablePalette(PaletteFile, shadowIndex);
 						rbitmap.Palette = TerrainPalette.AsSystemPalette();
 					}
 
@@ -247,8 +247,8 @@ namespace OpenRA.TilesetBuilder
 
 		static string ExportPalette(List<Color> p, string file)
 		{
-			while (p.Count < 256) p.Add(Color.Black); // pad the palette out with extra blacks
-			var paletteData = p.Take(256).SelectMany(
+			while (p.Count < Palette.Size) p.Add(Color.Black); // pad the palette out with extra blacks
+			var paletteData = p.Take(Palette.Size).SelectMany(
 				c => new byte[] { (byte)(c.R >> 2), (byte)(c.G >> 2), (byte)(c.B >> 2) }).ToArray();
 			File.WriteAllBytes(file, paletteData);
 			return file;

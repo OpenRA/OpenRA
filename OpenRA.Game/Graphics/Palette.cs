@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,94 +8,35 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace OpenRA.Graphics
 {
-	public class Palette
+	public interface IPalette { uint this[int index] { get; } }
+	public interface IPaletteRemap { Color GetRemappedColor(Color original, int index); }
+
+	public static class Palette
 	{
-		public static Palette Load(string filename, int[] remap)
+		public const int Size = 256;
+
+		public static Color GetColor(this IPalette palette, int index)
 		{
-			using (var s = File.OpenRead(filename))
-				return new Palette(s, remap);
+			return Color.FromArgb((int)palette[index]);
 		}
 
-		uint[] colors;
-		public Color GetColor(int index)
-		{
-			return Color.FromArgb((int)colors[index]);
-		}
-
-		public void SetColor(int index, Color color)
-		{
-			colors[index] = (uint)color.ToArgb();
-		}
-
-		public void SetColor(int index, uint color)
-		{
-			colors[index] = (uint)color;
-		}
-
-		public uint[] Values
-		{
-			get { return colors; }
-		}
-
-		public void ApplyRemap(IPaletteRemap r)
-		{
-			for (var i = 0; i < 256; i++)
-				colors[i] = (uint)r.GetRemappedColor(Color.FromArgb((int)colors[i]), i).ToArgb();
-		}
-
-		public Palette(Stream s, int[] remapShadow)
-		{
-			colors = new uint[256];
-
-			using (var reader = new BinaryReader(s))
-			{
-				for (var i = 0; i < 256; i++)
-				{
-					var r = (byte)(reader.ReadByte() << 2);
-					var g = (byte)(reader.ReadByte() << 2);
-					var b = (byte)(reader.ReadByte() << 2);
-					colors[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
-				}
-			}
-
-			colors[0] = 0; // convert black background to transparency
-			foreach (var i in remapShadow)
-				colors[i] = 140u << 24;
-		}
-
-		public Palette(Palette p, IPaletteRemap r)
-		{
-			colors = (uint[])p.colors.Clone();
-			ApplyRemap(r);
-		}
-
-		public Palette(Palette p)
-		{
-			colors = (uint[])p.colors.Clone();
-		}
-
-		public Palette(uint[] data)
-		{
-			if (data.Length != 256)
-				throw new InvalidDataException("Attempting to create palette with incorrect array size");
-			colors = (uint[])data.Clone();
-		}
-
-		public ColorPalette AsSystemPalette()
+		public static ColorPalette AsSystemPalette(this IPalette palette)
 		{
 			ColorPalette pal;
 			using (var b = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))
 				pal = b.Palette;
 
-			for (var i = 0; i < 256; i++)
-				pal.Entries[i] = GetColor(i);
+			for (var i = 0; i < Size; i++)
+				pal.Entries[i] = palette.GetColor(i);
 
 			// hack around a mono bug -- the palette flags get set wrong.
 			if (Platform.CurrentPlatform != PlatformType.Windows)
@@ -105,22 +46,116 @@ namespace OpenRA.Graphics
 			return pal;
 		}
 
-		public Bitmap AsBitmap()
+		public static Bitmap AsBitmap(this IPalette palette)
 		{
-			var b = new Bitmap(256, 1, PixelFormat.Format32bppArgb);
+			var b = new Bitmap(Size, 1, PixelFormat.Format32bppArgb);
 			var data = b.LockBits(new Rectangle(0, 0, b.Width, b.Height),
 								  ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-			unsafe
-			{
-				var c = (uint*)data.Scan0;
-				for (var x = 0; x < 256; x++)
-					*(c + x) = colors[x];
-			}
-
+			var temp = new uint[Palette.Size];
+			for (int i = 0; i < temp.Length; i++)
+				temp[i] = palette[i];
+			Marshal.Copy((int[])(object)temp, 0, data.Scan0, Size);
 			b.UnlockBits(data);
 			return b;
 		}
+
+		public static IPalette AsReadOnly(this IPalette palette)
+		{
+			if (palette is ImmutablePalette)
+				return palette;
+			return new ReadOnlyPalette(palette);
+		}
+
+		class ReadOnlyPalette : IPalette
+		{
+			IPalette palette;
+			public ReadOnlyPalette(IPalette palette) { this.palette = palette; }
+			public uint this[int index] { get { return palette[index]; } }
+		}
 	}
 
-	public interface IPaletteRemap { Color GetRemappedColor(Color original, int index); }
+	public class ImmutablePalette : IPalette
+	{
+		readonly uint[] colors = new uint[Palette.Size];
+
+		public uint this[int index]
+		{
+			get { return colors[index]; }
+		}
+
+		public ImmutablePalette(string filename, int[] remap)
+		{
+			using (var s = File.OpenRead(filename))
+				LoadFromStream(s, remap);
+		}
+
+		public ImmutablePalette(Stream s, int[] remapShadow)
+		{
+			LoadFromStream(s, remapShadow);
+		}
+
+		void LoadFromStream(Stream s, int[] remapShadow)
+		{
+			using (var reader = new BinaryReader(s))
+				for (var i = 0; i < Palette.Size; i++)
+				{
+					var r = (byte)(reader.ReadByte() << 2);
+					var g = (byte)(reader.ReadByte() << 2);
+					var b = (byte)(reader.ReadByte() << 2);
+					colors[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
+				}
+
+			colors[0] = 0; // Convert black background to transparency.
+			foreach (var i in remapShadow)
+				colors[i] = 140u << 24;
+		}
+
+		public ImmutablePalette(IPalette p, IPaletteRemap r)
+			: this(p)
+		{
+			for (var i = 0; i < Palette.Size; i++)
+				colors[i] = (uint)r.GetRemappedColor(this.GetColor(i), i).ToArgb();
+		}
+
+		public ImmutablePalette(IPalette p)
+		{
+			for (int i = 0; i < Palette.Size; i++)
+				colors[i] = p[i];
+		}
+
+		public ImmutablePalette(IEnumerable<uint> sourceColors)
+		{
+			var i = 0;
+			foreach (var sourceColor in sourceColors)
+				colors[i++] = sourceColor;
+		}
+	}
+
+	public class MutablePalette : IPalette
+	{
+		readonly uint[] colors = new uint[Palette.Size];
+
+		public uint this[int index]
+		{
+			get { return colors[index]; }
+			set { colors[index] = value; }
+		}
+
+		public MutablePalette(IPalette p)
+		{
+			for (int i = 0; i < Palette.Size; i++)
+				this[i] = p[i];
+		}
+
+		public void SetColor(int index, Color color)
+		{
+			colors[index] = (uint)color.ToArgb();
+		}
+
+		public void ApplyRemap(IPaletteRemap r)
+		{
+			for (var i = 0; i < Palette.Size; i++)
+				colors[i] = (uint)r.GetRemappedColor(this.GetColor(i), i).ToArgb();
+		}
+	}
 }

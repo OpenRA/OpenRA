@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new PaletteFromCurrentTileset(init.world, this); }
 	}
 
-	class PaletteFromCurrentTileset : IPalette
+	class PaletteFromCurrentTileset : ILoadsPalettes
 	{
 		readonly World world;
 		readonly PaletteFromCurrentTilesetInfo info;
@@ -37,9 +37,9 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public void InitPalette(WorldRenderer wr)
+		public void LoadPalettes(WorldRenderer wr)
 		{
-			wr.AddPalette(info.Name, new Palette(GlobalFileSystem.Open(world.TileSet.Palette), info.ShadowIndex), info.AllowModifiers);
+			wr.AddPalette(info.Name, new ImmutablePalette(GlobalFileSystem.Open(world.TileSet.Palette), info.ShadowIndex), info.AllowModifiers);
 		}
 	}
 }

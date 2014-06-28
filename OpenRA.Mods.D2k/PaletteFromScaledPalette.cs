@@ -35,15 +35,15 @@ namespace OpenRA.Mods.D2k
 		public object Create(ActorInitializer init) { return new PaletteFromScaledPalette(this); }
 	}
 
-	class PaletteFromScaledPalette : IPalette
+	class PaletteFromScaledPalette : ILoadsPalettes
 	{
 		readonly PaletteFromScaledPaletteInfo info;
 		public PaletteFromScaledPalette(PaletteFromScaledPaletteInfo info) { this.info = info; }
 
-		public void InitPalette(WorldRenderer wr)
+		public void LoadPalettes(WorldRenderer wr)
 		{
 			var remap = new ScaledPaletteRemap(info.Scale, info.Offset);
-			wr.AddPalette(info.Name, new Palette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
+			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
 		}
 	}
 

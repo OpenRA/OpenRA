@@ -96,7 +96,7 @@ namespace OpenRA.Utility
 				shadowIndex[shadowIndex.Length - 3] = 4;
 			}
 
-			var palette = Palette.Load(args[2], shadowIndex);
+			var palette = new ImmutablePalette(args[2], shadowIndex);
 
 			ISpriteSource source;
 			using (var stream = File.OpenRead(src))
@@ -209,16 +209,14 @@ namespace OpenRA.Utility
 					= PlayerColorRemap.GetRemapIndex(destRemapIndex, i);
 
 			// map everything else to the best match based on channel-wise distance
-			var srcPalette = Palette.Load(args[1].Split(':')[1], shadowIndex);
-			var destPalette = Palette.Load(args[2].Split(':')[1], shadowIndex);
+			var srcPalette = new ImmutablePalette(args[1].Split(':')[1], shadowIndex);
+			var destPalette = new ImmutablePalette(args[2].Split(':')[1], shadowIndex);
 
-			var fullIndexRange = Exts.MakeArray<int>(256, x => x);
-
-			for (var i = 0; i < 256; i++)
+			for (var i = 0; i < Palette.Size; i++)
 				if (!remap.ContainsKey(i))
-					remap[i] = fullIndexRange
+					remap[i] = Enumerable.Range(0, Palette.Size)
 						.Where(a => !remap.ContainsValue(a))
-						.MinBy(a => ColorDistance(destPalette.Values[a], srcPalette.Values[i]));
+						.MinBy(a => ColorDistance(destPalette[a], srcPalette[i]));
 
 			var srcImage = ShpReader.Load(args[3]);
 

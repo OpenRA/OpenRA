@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new PaletteFromFile(init.world, this); }
 	}
 
-	class PaletteFromFile : IPalette
+	class PaletteFromFile : ILoadsPalettes
 	{
 		readonly World world;
 		readonly PaletteFromFileInfo info;
@@ -39,10 +39,10 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public void InitPalette(WorldRenderer wr)
+		public void LoadPalettes(WorldRenderer wr)
 		{
 			if (info.Tileset == null || info.Tileset.ToLowerInvariant() == world.Map.Tileset.ToLowerInvariant())
-				wr.AddPalette(info.Name, new Palette(GlobalFileSystem.Open(info.Filename), info.ShadowIndex), info.AllowModifiers);
+				wr.AddPalette(info.Name, new ImmutablePalette(GlobalFileSystem.Open(info.Filename), info.ShadowIndex), info.AllowModifiers);
 		}
 
 		public string Filename

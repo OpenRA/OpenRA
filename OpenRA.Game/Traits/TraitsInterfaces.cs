@@ -150,8 +150,8 @@ namespace OpenRA.Traits
 	public interface IDamageModifier { float GetDamageModifier(Actor attacker, WarheadInfo warhead); }
 	public interface ISpeedModifier { decimal GetSpeedModifier(); }
 	public interface IFirepowerModifier { float GetFirepowerModifier(); }
-	public interface IPalette { void InitPalette(WorldRenderer wr); }
-	public interface IPaletteModifier { void AdjustPalette(Dictionary<string, Palette> b); }
+	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
+	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 	public interface ISelectionBar { float GetValue(); Color GetColor(); }

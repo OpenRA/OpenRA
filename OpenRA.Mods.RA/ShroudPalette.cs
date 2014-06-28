@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -26,16 +27,16 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new ShroudPalette(this); }
 	}
 
-	class ShroudPalette : IPalette
+	class ShroudPalette : ILoadsPalettes
 	{
 		readonly ShroudPaletteInfo info;
 
 		public ShroudPalette(ShroudPaletteInfo info) { this.info = info; }
 
-		public void InitPalette(WorldRenderer wr)
+		public void LoadPalettes(WorldRenderer wr)
 		{
 			var c = info.Fog ? Fog : Shroud;
-			wr.AddPalette(info.Name, new Palette(Exts.MakeArray(256, i => (uint)c[i % 8].ToArgb())), false);
+			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (uint)c[i % 8].ToArgb())));
 		}
 
 		static Color[] Fog = new[] {

@@ -31,7 +31,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new FixedColorPalette(this); }
 	}
 
-	public class FixedColorPalette : IPalette
+	public class FixedColorPalette : ILoadsPalettes
 	{
 		readonly FixedColorPaletteInfo info;
 
@@ -40,10 +40,10 @@ namespace OpenRA.Traits
 			this.info = info;
 		}
 
-		public void InitPalette(WorldRenderer wr)
+		public void LoadPalettes(WorldRenderer wr)
 		{
 			var remap = new PlayerColorRemap(info.RemapIndex, info.Color, info.Ramp);
-			wr.AddPalette(info.Name, new Palette(wr.Palette(info.Base).Palette, remap), info.AllowModifiers);
+			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.Base).Palette, remap), info.AllowModifiers);
 		}
 	}
 }

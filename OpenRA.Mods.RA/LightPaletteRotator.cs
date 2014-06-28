@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	[Desc("Palette effect used for blinking \"animations\" on actors.")]
 	class LightPaletteRotatorInfo : ITraitInfo
 	{
-		public readonly string[] ExcludePalettes = {};
+		public readonly string[] ExcludePalettes = { };
 
 		public object Create(ActorInitializer init) { return new LightPaletteRotator(this); }
 	}
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public void AdjustPalette(Dictionary<string,Palette> palettes)
+		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
 		{
 			foreach (var pal in palettes)
 			{
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 				if (rotate > 9)
 					rotate = 18 - rotate;
 
-				pal.Value.SetColor(0x67, pal.Value.GetColor(230+rotate));
+				pal.Value.SetColor(0x67, pal.Value.GetColor(230 + rotate));
 			}
 		}
 	}

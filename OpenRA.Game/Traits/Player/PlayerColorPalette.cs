@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new PlayerColorPalette(init.self.Owner, this); }
 	}
 
-	public class PlayerColorPalette : IPalette
+	public class PlayerColorPalette : ILoadsPalettes
 	{
 		readonly Player owner;
 		readonly PlayerColorPaletteInfo info;
@@ -40,10 +40,10 @@ namespace OpenRA.Traits
 			this.info = info;
 		}
 
-		public void InitPalette(WorldRenderer wr)
+		public void LoadPalettes(WorldRenderer wr)
 		{
 			var remap = new PlayerColorRemap(info.RemapIndex, owner.Color, info.Ramp);
-			wr.AddPalette(info.BaseName + owner.InternalName, new Palette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
+			wr.AddPalette(info.BaseName + owner.InternalName, new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
 		}
 	}
 }

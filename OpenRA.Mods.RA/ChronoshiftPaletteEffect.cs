@@ -33,16 +33,16 @@ namespace OpenRA.Mods.RA
 				remainingFrames--;
 		}
 
-		public void AdjustPalette(Dictionary<string,Palette> palettes)
+		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
 		{
 			if (remainingFrames == 0)
 				return;
 
 			var frac = (float)remainingFrames / chronoEffectLength;
-			
+
 			foreach (var pal in palettes)
 			{
-				for (var x = 0; x < 256; x++)
+				for (var x = 0; x < Palette.Size; x++)
 				{
 					var orig = pal.Value.GetColor(x);
 					var lum = (int)(255 * orig.GetBrightness());

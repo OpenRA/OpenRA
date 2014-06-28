@@ -16,14 +16,14 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	public class ColorPreviewManagerWidget : Widget
 	{
-		public readonly string Palette = "colorpicker";
+		public readonly string PaletteName = "colorpicker";
 		public readonly int[] RemapIndices = ChromeMetrics.Get<int[]>("ColorPickerRemapIndices");
 		public readonly float Ramp = 0.05f;
 		public HSLColor Color;
 
 		HSLColor cachedColor;
 		WorldRenderer worldRenderer;
-		Palette preview;
+		IPalette preview;
 
 		[ObjectCreator.UseCtor]
 		public ColorPreviewManagerWidget(WorldRenderer worldRenderer)
@@ -34,17 +34,18 @@ namespace OpenRA.Mods.RA.Widgets
 		public override void Initialize(WidgetArgs args)
 		{
 			base.Initialize(args);
-			preview = worldRenderer.Palette(Palette).Palette;
+			preview = worldRenderer.Palette(PaletteName).Palette;
 		}
 
 		public override void Tick()
 		{
 			if (cachedColor == Color)
 				return;
-
-			preview.ApplyRemap(new PlayerColorRemap(RemapIndices, Color, Ramp));
 			cachedColor = Color;
+
+			var newPalette = new MutablePalette(preview);
+			newPalette.ApplyRemap(new PlayerColorRemap(RemapIndices, Color, Ramp));
+			worldRenderer.ReplacePalette(PaletteName, newPalette);
 		}
 	}
 }
-

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 				remainingFrames--;
 		}
 
-		public void AdjustPalette(Dictionary<string,Palette> palettes)
+		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
 		{
 			if (remainingFrames == 0)
 				return;
@@ -42,11 +42,11 @@ namespace OpenRA.Mods.RA
 
 			foreach (var pal in palettes)
 			{
-				for (var x = 0; x < 256; x++)
+				for (var x = 0; x < Palette.Size; x++)
 				{
 					var orig = pal.Value.GetColor(x);
 					var white = Color.FromArgb(orig.A, 255, 255, 255);
-					pal.Value.SetColor(x, Exts.ColorLerp(frac,orig,white));
+					pal.Value.SetColor(x, Exts.ColorLerp(frac, orig, white));
 				}
 			}
 		}
