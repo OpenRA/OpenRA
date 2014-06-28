@@ -20,11 +20,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class InstallMusicLogic
 	{
 		ButtonWidget installButton;
-		Dictionary<string, string> installData;
+		Ruleset modRules;
+		IReadOnlyDictionary<string, string> installData;
 
 		[ObjectCreator.UseCtor]
-		public InstallMusicLogic(Widget widget)
+		public InstallMusicLogic(Widget widget, Ruleset modRules)
 		{
+			this.modRules = modRules;
+
 			installData = Game.modData.Manifest.ContentInstaller;
 
 			installButton = widget.GetOrNull<ButtonWidget>("INSTALL_BUTTON");
@@ -32,7 +35,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				installButton.OnClick = () => LoadInstallMusicContainer();
 				installButton.IsVisible = () =>
-					Rules.InstalledMusic.ToArray().Length <= Exts.ParseIntegerInvariant(installData["ShippedSoundtracks"]);
+					modRules.InstalledMusic.ToArray().Length <= Exts.ParseIntegerInvariant(installData["ShippedSoundtracks"]);
 			}
 		}
 
@@ -45,7 +48,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				try
 				{
 					GlobalFileSystem.LoadFromManifest(Game.modData.Manifest);
-					Rules.Music.Do(m => m.Value.Reload());
+					modRules.Music.Do(m => m.Value.Reload());
 					var musicPlayerLogic = (MusicPlayerLogic)installButton.Parent.LogicObject;
 					musicPlayerLogic.BuildMusicTable();
 					Ui.CloseWindow();
