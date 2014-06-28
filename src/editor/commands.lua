@@ -725,17 +725,23 @@ function SetOpenTabs(params)
   end
   DisplayOutputLn(TR("Found auto-recovery record and restored saved session."))
   for _,doc in ipairs(nametab) do
-    local editor = doc.filename and LoadFile(doc.filename,nil,true,true) or NewFile()
-    local opendoc = openDocuments[editor:GetId()]
-    if doc.content then
-      notebook:SetPageText(opendoc.index, doc.tabname)
-      editor:SetText(doc.content)
-      if doc.filename and opendoc.modTime and doc.modified < opendoc.modTime:GetTicks() then
-        DisplayOutputLn(TR("File '%s' has more recent timestamp than restored '%s'; please review before saving.")
-          :format(doc.filename, doc.tabname))
+    -- check for missing file is no content is stored
+    if doc.filename and not doc.content and not wx.wxFileExists(doc.filename) then
+      DisplayOutputLn(TR("File '%s' is missing and can't be recovered.")
+        :format(doc.filename))
+    else
+      local editor = doc.filename and LoadFile(doc.filename,nil,true,true) or NewFile()
+      local opendoc = openDocuments[editor:GetId()]
+      if doc.content then
+        notebook:SetPageText(opendoc.index, doc.tabname)
+        editor:SetText(doc.content)
+        if doc.filename and opendoc.modTime and doc.modified < opendoc.modTime:GetTicks() then
+          DisplayOutputLn(TR("File '%s' has more recent timestamp than restored '%s'; please review before saving.")
+            :format(doc.filename, doc.tabname))
+        end
       end
+      editor:GotoPosDelayed(doc.cursorpos or 0)
     end
-    editor:GotoPosDelayed(doc.cursorpos or 0)
   end
   notebook:SetSelection(params and params.index or 0)
   SetEditorSelection()
