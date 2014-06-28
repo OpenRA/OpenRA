@@ -31,7 +31,7 @@ namespace OpenRA.Orders
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
 					.Where(a => a.Info.Traits.Contains<ITargetableInfo>())
 					.WithHighestSelectionPriority();
-				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(xy);
+				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 			}
 
 			var orders = world.Selection.Actors
@@ -76,7 +76,7 @@ namespace OpenRA.Orders
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
 					.Where(a => a.Info.Traits.Contains<ITargetableInfo>())
 					.WithHighestSelectionPriority();
-				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(xy);
+				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 			}
 
 			var orders = world.Selection.Actors
@@ -103,7 +103,7 @@ namespace OpenRA.Orders
 						.Select(x => new { Trait = trait, Order = x }))
 					.OrderByDescending(x => x.Order.OrderPriority))
 				{
-					var actorsAt = self.World.ActorMap.GetUnitsAt(target.CenterPosition.ToCPos()).ToList();
+					var actorsAt = self.World.ActorMap.GetUnitsAt(self.World.Map.CellContaining(target.CenterPosition)).ToList();
 
 					var modifiers = TargetModifiers.None;
 					if (mi.Modifiers.HasModifier(Modifiers.Ctrl))

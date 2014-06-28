@@ -90,12 +90,19 @@ namespace OpenRA.Graphics
 
 			// Calculate map bounds in world-px
 			var b = map.Bounds;
-			var tl = wr.ScreenPxPosition(new CPos(b.Left, b.Top).TopLeft);
-			var br = wr.ScreenPxPosition(new CPos(b.Right, b.Bottom).BottomRight);
+
+			// Expand to corners of cells
+			var tl = wr.ScreenPxPosition(map.CenterOfCell(new CPos(b.Left, b.Top)) - new WVec(512, 512, 0));
+			var br = wr.ScreenPxPosition(map.CenterOfCell(new CPos(b.Right, b.Bottom)) + new WVec(511, 511, 0));
 			mapBounds = Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 
 			CenterLocation = (tl + br) / 2;
 			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
+		}
+
+		public CPos ViewToWorld(int2 view)
+		{
+			return worldRenderer.world.Map.CellContaining(worldRenderer.Position(ViewToWorldPx(view)));
 		}
 
 		public int2 ViewToWorldPx(int2 view) { return (1f / Zoom * view.ToFloat2()).ToInt2() + TopLeft; }
@@ -131,8 +138,8 @@ namespace OpenRA.Graphics
 		{
 			get
 			{
-				var ctl = VisibleCells.TopLeft.TopLeft;
-				var cbr = VisibleCells.BottomRight.BottomRight;
+				var ctl = worldRenderer.world.Map.CenterOfCell(VisibleCells.TopLeft) - new WVec(512, 512, 0);
+				var cbr = worldRenderer.world.Map.CenterOfCell(VisibleCells.BottomRight) + new WVec(511, 511, 0);
 				var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl)).Clamp(ScreenClip);
 				var br = WorldToViewPx(worldRenderer.ScreenPxPosition(cbr)).Clamp(ScreenClip);
 				return Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
@@ -147,8 +154,8 @@ namespace OpenRA.Graphics
 				{
 					// Calculate the intersection of the visible rectangle and the map.
 					var map = worldRenderer.world.Map;
-					var tl = map.Clamp(worldRenderer.Position(TopLeft).ToCPos() - new CVec(1, 1));
-					var br = map.Clamp(worldRenderer.Position(BottomRight).ToCPos());
+					var tl = map.Clamp(map.CellContaining(worldRenderer.Position(TopLeft)) - new CVec(1, 1));
+					var br = map.Clamp(map.CellContaining(worldRenderer.Position(BottomRight)));
 
 					cells = new CellRegion(tl, br);
 					cellsDirty = false;

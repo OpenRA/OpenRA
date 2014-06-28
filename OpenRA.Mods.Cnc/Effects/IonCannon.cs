@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			this.firedBy = firedBy;
 			this.weapon = weapon;
 			this.palette = palette;
-			target = Target.FromCell(location);
+			target = Target.FromCell(world, location);
 			anim = new Animation(world, effect);
 			anim.PlayThen("idle", () => Finish(world));
 		}

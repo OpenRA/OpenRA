@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		{
 			// Offset effective position to the top of the northernmost occupied cell
 			var bi = self.Info.Traits.GetOrDefault<BuildingInfo>();
-			offset = ((bi != null) ? -FootprintUtils.CenterOffset(bi).Y : 0) - 512;
+			offset = ((bi != null) ? -FootprintUtils.CenterOffset(self.World, bi).Y : 0) - 512;
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)

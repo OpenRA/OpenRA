@@ -113,11 +113,11 @@ namespace OpenRA
 						if (TargetActor != null)
 							w.Write(UIntFromActor(TargetActor));
 						if (TargetLocation != CPos.Zero)
-							w.Write(TargetLocation.ToInt2());
+							w.Write(TargetLocation);
 						if (TargetString != null)
 							w.Write(TargetString);
 						if (ExtraLocation != CPos.Zero)
-							w.Write(ExtraLocation.ToInt2());
+							w.Write(ExtraLocation);
 						if (ExtraData != 0)
 							w.Write(ExtraData);
 

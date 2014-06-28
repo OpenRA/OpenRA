@@ -139,8 +139,7 @@ namespace OpenRA.Mods.RA.Move
 			if (nextCell == null)
 				return this;
 
-			var dir = nextCell.Value.First - mobile.fromCell;
-			var firstFacing = Util.GetFacing(dir, mobile.Facing);
+			var firstFacing = self.World.Map.FacingBetween(mobile.fromCell, nextCell.Value.First, mobile.Facing);
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
@@ -151,8 +150,8 @@ namespace OpenRA.Mods.RA.Move
 				mobile.SetLocation(mobile.fromCell, mobile.fromSubCell, nextCell.Value.First, nextCell.Value.Second);
 				var move = new MoveFirstHalf(
 					this,
-					mobile.fromCell.CenterPosition + MobileInfo.SubCellOffsets[mobile.fromSubCell],
-					Util.BetweenCells(mobile.fromCell, mobile.toCell) + (MobileInfo.SubCellOffsets[mobile.fromSubCell] + MobileInfo.SubCellOffsets[mobile.toSubCell]) / 2,
+					self.World.Map.CenterOfCell(mobile.fromCell) + MobileInfo.SubCellOffsets[mobile.fromSubCell],
+					Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (MobileInfo.SubCellOffsets[mobile.fromSubCell] + MobileInfo.SubCellOffsets[mobile.toSubCell]) / 2,
 					mobile.Facing,
 					mobile.Facing,
 					0);
@@ -251,9 +250,9 @@ namespace OpenRA.Mods.RA.Move
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			if (path != null)
-				return Enumerable.Reverse(path).Select(c => Target.FromCell(c));
+				return Enumerable.Reverse(path).Select(c => Target.FromCell(self.World, c));
 			if (destination != null)
-				return new Target[] { Target.FromCell(destination.Value) };
+				return new Target[] { Target.FromCell(self.World, destination.Value) };
 			return Target.None;
 		}
 
@@ -359,10 +358,10 @@ namespace OpenRA.Mods.RA.Move
 						var nextSubcellOffset = MobileInfo.SubCellOffsets[nextCell.Value.Second];
 						var ret = new MoveFirstHalf(
 							move,
-							Util.BetweenCells(mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
-							Util.BetweenCells(mobile.toCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
+							Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
+							Util.BetweenCells(self.World, mobile.toCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
 							mobile.Facing,
-							Util.GetNearestFacing(mobile.Facing, Util.GetFacing(nextCell.Value.First - mobile.toCell, mobile.Facing)),
+							Util.GetNearestFacing(mobile.Facing, self.World.Map.FacingBetween(mobile.toCell, nextCell.Value.First, mobile.Facing)),
 							moveFraction - moveFractionTotal);
 
 						mobile.SetLocation(mobile.toCell, mobile.toSubCell, nextCell.Value.First, nextCell.Value.Second);
@@ -374,8 +373,8 @@ namespace OpenRA.Mods.RA.Move
 
 				var ret2 = new MoveSecondHalf(
 					move,
-					Util.BetweenCells(mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
-					mobile.toCell.CenterPosition + toSubcellOffset,
+					Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
+					self.World.Map.CenterOfCell(mobile.toCell) + toSubcellOffset,
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - moveFractionTotal);

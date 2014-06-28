@@ -199,7 +199,7 @@ namespace OpenRA.Mods.RA
 			// Initialize tile cache
 			foreach (var cell in map.Cells)
 			{
-				var screen = wr.ScreenPosition(cell.CenterPosition);
+				var screen = wr.ScreenPosition(w.Map.CenterOfCell(cell));
 				var variant = Game.CosmeticRandom.Next(info.ShroudVariants.Length);
 				tiles[cell] = new ShroudTile(cell, screen, variant);
 			}

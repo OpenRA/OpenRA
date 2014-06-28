@@ -246,7 +246,7 @@ namespace OpenRA.Mods.RA.Move
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				SetVisualPosition(self, fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
+				SetVisualPosition(self, init.world.Map.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell]);
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -260,13 +260,13 @@ namespace OpenRA.Mods.RA.Move
 		public void SetPosition(Actor self, CPos cell)
 		{
 			SetLocation(cell, fromSubCell, cell, fromSubCell);
-			SetVisualPosition(self, fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
+			SetVisualPosition(self, self.World.Map.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell]);
 			FinishedMoving(self);
 		}
 
 		public void SetPosition(Actor self, WPos pos)
 		{
-			var cell = pos.ToCPos();
+			var cell = self.World.Map.CellContaining(pos);
 			SetLocation(cell, fromSubCell, cell, fromSubCell);
 			SetVisualPosition(self, pos);
 			FinishedMoving(self);
@@ -306,7 +306,7 @@ namespace OpenRA.Mods.RA.Move
 				if (Info.OnRails)
 					return null;
 
-				return new Order("Move", self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
+				return new Order("Move", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 			}
 			return null;
 		}
@@ -375,7 +375,7 @@ namespace OpenRA.Mods.RA.Move
 
 			self.QueueActivity(new Move(currentLocation, 8));
 
-			self.SetTargetLine(Target.FromCell(currentLocation), Color.Green);
+			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
 		}
 
 		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
@@ -542,7 +542,7 @@ namespace OpenRA.Mods.RA.Move
 			if (moveTo.HasValue)
 			{
 				self.CancelActivity();
-				self.SetTargetLine(Target.FromCell(moveTo.Value), Color.Green, false);
+				self.SetTargetLine(Target.FromCell(self.World, moveTo.Value), Color.Green, false);
 				self.QueueActivity(new Move(moveTo.Value, 0));
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
@@ -573,7 +573,7 @@ namespace OpenRA.Mods.RA.Move
 				if (rejectMove || !target.IsValidFor(self))
 					return false;
 
-				var location = target.CenterPosition.ToCPos();
+				var location = self.World.Map.CellContaining(target.CenterPosition);
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 				cursor = "move";
 
@@ -611,7 +611,7 @@ namespace OpenRA.Mods.RA.Move
 			SetVisualPosition(self, pos);
 
 			// Animate transition
-			var to = cell.CenterPosition;
+			var to = self.World.Map.CenterOfCell(cell);
 			var speed = MovementSpeedForCell(self, cell);
 			var length = speed > 0 ? (to - pos).Length / speed : 0;
 

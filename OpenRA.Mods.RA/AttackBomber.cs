@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA
 				OnExitedAttackRange(self);
 		}
 
-		public void SetTarget(WPos pos) { target = Target.FromPos(pos); }
+		public void SetTarget(World w, WPos pos) { target = Target.FromPos(pos); }
 
 		public void RemovedFromWorld(Actor self)
 		{

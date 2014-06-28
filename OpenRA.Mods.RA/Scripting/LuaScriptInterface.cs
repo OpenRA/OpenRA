@@ -229,7 +229,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public int GetFacing(object vec, double currentFacing)
 		{
 			if (vec is CVec)
-				return Util.GetFacing((CVec)vec, (int)currentFacing);
+				return world.Map.FacingBetween(CPos.Zero, CPos.Zero + (CVec)vec, (int)currentFacing);
 			if (vec is WVec)
 				return Util.GetFacing((WVec)vec, (int)currentFacing);
 			throw new ArgumentException("Unsupported vector type: {0}".F(vec.GetType()));
@@ -298,7 +298,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public void FlyAttackCell(Actor actor, CPos location)
 		{
-			actor.QueueActivity(new FlyAttack(Target.FromCell(location)));
+			actor.QueueActivity(new FlyAttack(Target.FromCell(actor.World, location)));
 		}
 
 		[LuaGlobal]
@@ -369,7 +369,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public Actor[] FindActorsInBox(WPos topLeft, WPos bottomRight)
 		{
-			return world.FindActorsInBox(topLeft, bottomRight).ToArray();
+			return world.ActorMap.ActorsInBox(topLeft, bottomRight).ToArray();
 		}
 
 		[LuaGlobal]

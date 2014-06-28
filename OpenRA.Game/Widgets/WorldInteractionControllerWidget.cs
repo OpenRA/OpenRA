@@ -141,8 +141,7 @@ namespace OpenRA.Widgets
 				return;
 
 			var pos = worldRenderer.Position(xy);
-			var orders = world.OrderGenerator.Order(world, pos.ToCPos(), mi).ToArray();
-
+			var orders = world.OrderGenerator.Order(world, world.Map.CellContaining(pos), mi).ToArray();
 			world.PlayVoiceForOrders(orders);
 
 			var flashed = false;
@@ -180,7 +179,7 @@ namespace OpenRA.Widgets
 
 				var xy = worldRenderer.Viewport.ViewToWorldPx(screenPos);
 				var pos = worldRenderer.Position(xy);
-				var cell = pos.ToCPos();
+				var cell = World.Map.CellContaining(pos);
 
 				var mi = new MouseInput
 				{

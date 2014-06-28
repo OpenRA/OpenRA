@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Render
 			var bi = init.self.Info.Traits.Get<BuildingInfo>();
 
 			// Additional 512 units move from center -> top of cell
-			var offset = FootprintUtils.CenterOffset(bi).Y + 512;
+			var offset = FootprintUtils.CenterOffset(init.world, bi).Y + 512;
 			Add("roof", new AnimationWithOffset(roof, null,
 				() => !buildComplete, offset));
 		}

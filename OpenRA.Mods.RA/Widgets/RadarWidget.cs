@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA.Widgets
 				return null;
 
 			var cell = MinimapPixelToCell(pos);
-			var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(cell.CenterPosition));
+			var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(world.Map.CenterOfCell(cell)));
 
 			var mi = new MouseInput
 			{
@@ -113,9 +113,9 @@ namespace OpenRA.Mods.RA.Widgets
 				return true;
 
 			var cell = MinimapPixelToCell(mi.Location);
-			var pos = cell.CenterPosition;
+			var pos = world.Map.CenterOfCell(cell);
 			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
-				worldRenderer.Viewport.Center(cell.CenterPosition);
+				worldRenderer.Viewport.Center(world.Map.CenterOfCell(cell));
 
 			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Right)
 			{
@@ -158,8 +158,8 @@ namespace OpenRA.Mods.RA.Widgets
 			// Draw viewport rect
 			if (hasRadar)
 			{
-				var tl = CellToMinimapPixel(worldRenderer.Position(worldRenderer.Viewport.TopLeft).ToCPos());
-				var br = CellToMinimapPixel(worldRenderer.Position(worldRenderer.Viewport.BottomRight).ToCPos());
+				var tl = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.Position(worldRenderer.Viewport.TopLeft)));
+				var br = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.Position(worldRenderer.Viewport.BottomRight)));
 
 				Game.Renderer.EnableScissor(mapRect);
 				DrawRadarPings();
@@ -180,7 +180,8 @@ namespace OpenRA.Mods.RA.Widgets
 			foreach (var radarPing in radarPings.Pings.Where(e => e.IsVisible()))
 			{
 				var c = radarPing.Color;
-				var points = radarPing.Points(CellToMinimapPixel(radarPing.Position.ToCPos())).ToArray();
+				var pingCell = world.Map.CellContaining(radarPing.Position);
+				var points = radarPing.Points(CellToMinimapPixel(pingCell)).ToArray();
 
 				lr.DrawLine(points[0], points[1], c, c);
 				lr.DrawLine(points[1], points[2], c, c);
@@ -241,18 +242,18 @@ namespace OpenRA.Mods.RA.Widgets
 
 		int2 CellToMinimapPixel(CPos p)
 		{
-			var viewOrigin = new float2(mapRect.X, mapRect.Y);
 			var mapOrigin = new CPos(world.Map.Bounds.Left, world.Map.Bounds.Top);
+			var mapOffset = p - mapOrigin;
 
-			return (viewOrigin + previewScale * (p - mapOrigin).ToFloat2()).ToInt2();
+			return new int2(mapRect.X, mapRect.Y) + (previewScale * new float2(mapOffset.X, mapOffset.Y)).ToInt2();
 		}
 
 		CPos MinimapPixelToCell(int2 p)
 		{
 			var viewOrigin = new float2(mapRect.X, mapRect.Y);
-			var mapOrigin = new CPos(world.Map.Bounds.Left, world.Map.Bounds.Top);
-
-			return (CPos)(mapOrigin.ToFloat2() + (1f / previewScale) * (p - viewOrigin)).ToInt2();
+			var mapOrigin = new float2(world.Map.Bounds.Left, world.Map.Bounds.Top);
+			var fcell = mapOrigin + (1f / previewScale) * (p - viewOrigin);
+			return new CPos((int)fcell.X, (int)fcell.Y);
 		}
 	}
 }

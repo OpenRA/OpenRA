@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly int Adjacent = 2;
 		[Desc("x means space it blocks, _ is a part that is passable by actors.")]
 		public readonly string Footprint = "x";
-		public readonly int2 Dimensions = new int2(1, 1);
+		public readonly CVec Dimensions = new CVec(1, 1);
 		public readonly bool RequiresBaseProvider = false;
 		public readonly bool AllowInvalidPlacement = false;
 
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public Actor FindBaseProvider(World world, Player p, CPos topLeft)
 		{
-			var center = topLeft.CenterPosition + FootprintUtils.CenterOffset(this);
+			var center = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, this);
 			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
 			{
 				var validOwner = bp.Actor.Owner == p || (world.LobbyInfo.GlobalSettings.AllyBuildRadius && bp.Actor.Owner.Stances[p] == Stance.Ally);
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Buildings
 			if (RequiresBaseProvider && FindBaseProvider(world, p, topLeft) == null)
 				return false;
 
-			var buildingMaxBounds = (CVec)Dimensions;
+			var buildingMaxBounds = Dimensions;
 			var buildingTraits = world.Map.Rules.Actors[buildingName].Traits;
 			if (buildingTraits.Contains<BibInfo>() && !(buildingTraits.Get<BibInfo>().HasMinibib))
 				buildingMaxBounds += new CVec(0, 1);
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA.Buildings
 			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
-			CenterPosition = topLeft.CenterPosition + FootprintUtils.CenterOffset(Info);
+			CenterPosition = init.world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.world, Info);
 			BuildComplete = init.Contains<SkipMakeAnimsInit>();
 		}
 

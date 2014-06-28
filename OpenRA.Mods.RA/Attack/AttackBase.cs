@@ -107,7 +107,7 @@ namespace OpenRA.Mods.RA
 				case TargetType.FrozenActor:
 					return new Order("Attack", self, queued) { ExtraData = target.FrozenActor.ID };
 				case TargetType.Terrain:
-					return new Order("Attack", self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
+					return new Order("Attack", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 				}
 			}
 
@@ -217,13 +217,13 @@ namespace OpenRA.Mods.RA
 				if (negativeDamage)
 					return false;
 
-				if (!ab.HasAnyValidWeapons(Target.FromCell(location)))
+				if (!ab.HasAnyValidWeapons(Target.FromCell(self.World, location)))
 					return false;
 
 				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
 				{
 					var maxRange = ab.GetMaximumRange().Range;
-					var targetRange = (location.CenterPosition - self.CenterPosition).HorizontalLengthSquared;
+					var targetRange = (self.World.Map.CenterOfCell(location) - self.CenterPosition).HorizontalLengthSquared;
 					if (targetRange > maxRange * maxRange)
 						cursor = ab.info.OutsideRangeCursor;
 
@@ -241,7 +241,7 @@ namespace OpenRA.Mods.RA
 				case TargetType.FrozenActor:
 					return CanTargetActor(self, target, modifiers, ref cursor);
 				case TargetType.Terrain:
-					return CanTargetLocation(self, target.CenterPosition.ToCPos(), othersAtTarget, modifiers, ref cursor);
+					return CanTargetLocation(self, self.World.Map.CellContaining(target.CenterPosition), othersAtTarget, modifiers, ref cursor);
 				default:
 					return false;
 				}

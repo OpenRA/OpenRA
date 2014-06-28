@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			switch (order.OrderID)
 			{
 				case "BeginMinefield":
-					var start = target.CenterPosition.ToCPos();
+					var start = self.World.Map.CellContaining(target.CenterPosition);
 					self.World.OrderGenerator = new MinefieldOrderGenerator(self, start);
 					return new Order("BeginMinefield", self, false) { TargetLocation = start };
 				case "PlaceMine":
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA
 			var p = end - start;
 			var q = new float2(p.Y, -p.X);
 			q = (start != end) ? (1 / q.Length) * q : new float2(1, 0);
-			var c = -float2.Dot(q, start.ToInt2());
+			var c = -float2.Dot(q, new float2(start.X, start.Y));
 
 			/* return all points such that |ax + by + c| < depth */
 
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA
 
 			var pal = wr.Palette("terrain");
 			foreach (var c in Minefield)
-				new SpriteRenderable(tile, c.CenterPosition,
+				new SpriteRenderable(tile, self.World.Map.CenterOfCell(c),
 					WVec.Zero, -511, pal, 1f, true).Render(wr);
 		}
 
@@ -183,7 +183,7 @@ namespace OpenRA.Mods.RA
 				foreach (var c in minefield)
 				{
 					var tile = movement.CanEnterCell(c) ? tileOk : tileBlocked;
-					new SpriteRenderable(tile, c.CenterPosition,
+					new SpriteRenderable(tile, world.Map.CenterOfCell(c),
 						WVec.Zero, -511, pal, 1f, true).Render(wr);
 				}
 			}
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.RA
 				if (target.Type != TargetType.Terrain)
 					return false;
 
-				var location = target.CenterPosition.ToCPos();
+				var location = self.World.Map.CellContaining(target.CenterPosition);
 				if (!self.World.Map.Contains(location))
 					return false;
 

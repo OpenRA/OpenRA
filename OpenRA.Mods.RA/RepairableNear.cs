@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "RepairNear" && CanRepairAt(order.TargetActor) && ShouldRepair())
 			{
 				var movement = self.Trait<IMove>();
-				var target = Target.FromOrder(order);
+				var target = Target.FromOrder(self.World, order);
 
 				self.CancelActivity();
 				self.QueueActivity(movement.MoveWithinRange(target, new WRange(1024*info.CloseEnough)));

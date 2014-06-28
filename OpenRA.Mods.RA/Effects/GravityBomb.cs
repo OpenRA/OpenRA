@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			var cell = pos.ToCPos();
+			var cell = wr.world.Map.CellContaining(pos);
 			if (!args.SourceActor.World.FogObscures(cell))
 			{
 				if (info.Shadow)

@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "AttackMove")
 			{
 				TargetLocation = move.NearestMoveableCell(order.TargetLocation);
-				self.SetTargetLine(Target.FromCell(TargetLocation.Value), Color.Red);
+				self.SetTargetLine(Target.FromCell(self.World, TargetLocation.Value), Color.Red);
 				Activate(self);
 			}
 		}

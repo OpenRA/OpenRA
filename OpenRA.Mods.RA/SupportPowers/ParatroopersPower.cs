@@ -58,13 +58,13 @@ namespace OpenRA.Mods.RA
 				var altitude = self.World.Map.Rules.Actors[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude;
 				var a = w.CreateActor(info.UnitType, new TypeDictionary
 				{
-					new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+					new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WRange.Zero, WRange.Zero, altitude)),
 					new OwnerInit(self.Owner),
-					new FacingInit(Util.GetFacing(order.TargetLocation - startPos, 0))
+					new FacingInit(w.Map.FacingBetween(startPos, order.TargetLocation, 0))
 				});
 
 				a.CancelActivity();
-				a.QueueActivity(new FlyAttack(Target.FromOrder(order)));
+				a.QueueActivity(new FlyAttack(Target.FromOrder(self.World, order)));
 				a.Trait<ParaDrop>().SetLZ(order.TargetLocation);
 
 				var cargo = a.Trait<Cargo>();

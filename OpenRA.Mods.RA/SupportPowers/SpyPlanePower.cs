@@ -34,13 +34,13 @@ namespace OpenRA.Mods.RA
 
 			var plane = self.World.CreateActor("u2", new TypeDictionary
 			{
-				new CenterPositionInit(enterCell.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+				new CenterPositionInit(self.World.Map.CenterOfCell(enterCell) + new WVec(WRange.Zero, WRange.Zero, altitude)),
 				new OwnerInit(self.Owner),
-				new FacingInit(Util.GetFacing(order.TargetLocation - enterCell, 0))
+				new FacingInit(self.World.Map.FacingBetween(enterCell, order.TargetLocation, 0))
 			});
 
 			plane.CancelActivity();
-			plane.QueueActivity(new Fly(plane, Target.FromCell(order.TargetLocation)));
+			plane.QueueActivity(new Fly(plane, Target.FromCell(self.World, order.TargetLocation)));
 			plane.QueueActivity(new CallFunc(() => plane.World.AddFrameEndTask( w =>
 				{
 					var camera = w.CreateActor("camera", new TypeDictionary

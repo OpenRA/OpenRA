@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 
-			Sound.Play(info.IronCurtainSound, order.TargetLocation.CenterPosition);
+			Sound.Play(info.IronCurtainSound, self.World.Map.CenterOfCell(order.TargetLocation));
 
 			foreach (var target in UnitsInRange(order.TargetLocation)
 				.Where(a => a.Owner.Stances[self.Owner] == Stance.Ally))
@@ -100,17 +100,18 @@ namespace OpenRA.Mods.RA
 
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
+				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				foreach (var unit in power.UnitsInRange(xy))
 					wr.DrawSelectionBox(unit, Color.Red);
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
-				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
+				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var pal = wr.Palette("terrain");
+
 				foreach (var t in world.Map.FindTilesInCircle(xy, range))
-					yield return new SpriteRenderable(tile, t.CenterPosition, WVec.Zero, -511, pal, 1f, true);
+					yield return new SpriteRenderable(tile, wr.world.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 			}
 
 			public string GetCursor(World world, CPos xy, MouseInput mi)

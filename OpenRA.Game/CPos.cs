@@ -37,13 +37,6 @@ namespace OpenRA
 		public static CPos Max(CPos a, CPos b) { return new CPos(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }
 		public static CPos Min(CPos a, CPos b) { return new CPos(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
 
-		public float2 ToFloat2() { return new float2(X, Y); }
-		public int2 ToInt2() { return new int2(X, Y); }
-
-		public WPos CenterPosition { get { return new WPos(1024 * X + 512, 1024 * Y + 512, 0); } }
-		public WPos TopLeft { get { return new WPos(1024 * X, 1024 * Y, 0); } }
-		public WPos BottomRight { get { return new WPos(1024 * X + 1023, 1024 * Y + 1023, 0); } }
-
 		public CPos Clamp(Rectangle r)
 		{
 			return new CPos(Math.Min(r.Right, Math.Max(X, r.Left)),
@@ -107,17 +100,5 @@ namespace OpenRA
 		}
 
 		#endregion
-	}
-
-	public static class RectangleExtensions
-	{
-		public static CPos TopLeftAsCPos(this Rectangle r) { return new CPos(r.Left, r.Top); }
-		public static CPos BottomRightAsCPos(this Rectangle r) { return new CPos(r.Right, r.Bottom); }
-	}
-
-	public static class WorldCoordinateExtensions
-	{
-		public static CPos ToCPos(this WPos a) { return new CPos(a.X / 1024, a.Y / 1024); }
-		public static CVec ToCVec(this WVec a) { return new CVec(a.X / 1024, a.Y / 1024); }
 	}
 }

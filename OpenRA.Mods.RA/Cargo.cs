@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA
 
 		IEnumerable<CPos> GetAdjacentCells()
 		{
-			return Util.AdjacentCells(Target.FromActor(self)).Where(c => self.Location != c);
+			return Util.AdjacentCells(self.World, Target.FromActor(self)).Where(c => self.Location != c);
 		}
 
 		bool CanUnload()
@@ -218,7 +218,7 @@ namespace OpenRA.Mods.RA
 				initialized = true;
 			}
 
-			var cell = self.CenterPosition.ToCPos();
+			var cell = self.World.Map.CellContaining(self.CenterPosition);
 			if (currentCell != cell)
 			{
 				currentCell = cell;

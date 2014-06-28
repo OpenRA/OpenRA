@@ -57,10 +57,10 @@ namespace OpenRA
 
 	public class LocationInit : IActorInit<CPos>
 	{
-		[FieldFromYamlKey] public readonly int2 value = int2.Zero;
+		[FieldFromYamlKey] public readonly CPos value = CPos.Zero;
 		public LocationInit() { }
-		public LocationInit(CPos init) { value = init.ToInt2(); }
-		public CPos Value(World world) { return (CPos)value; }
+		public LocationInit(CPos init) { value = init; }
+		public CPos Value(World world) { return value; }
 	}
 
 	public class SubCellInit : IActorInit<SubCell>

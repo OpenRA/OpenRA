@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Effects
 				parachuteOffset = pai.Offset;
 
 			// Adjust x,y to match the target subcell
-			cargo.Trait<IPositionable>().SetPosition(cargo, dropPosition.ToCPos());
+			cargo.Trait<IPositionable>().SetPosition(cargo, cargo.World.Map.CellContaining(dropPosition));
 			var cp = cargo.CenterPosition;
 			pos = new WPos(cp.X, cp.Y, dropPosition.Z);
 		}

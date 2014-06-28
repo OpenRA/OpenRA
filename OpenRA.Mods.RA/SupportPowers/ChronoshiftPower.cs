@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA
 
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
+				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var targetUnits = power.UnitsInRange(xy);
 				foreach (var unit in targetUnits)
 					if (manager.self.Owner.Shroud.IsTargetable(unit))
@@ -132,11 +132,11 @@ namespace OpenRA.Mods.RA
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
-				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
+				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var tiles = world.Map.FindTilesInCircle(xy, range);
 				var pal = wr.Palette("terrain");
 				foreach (var t in tiles)
-					yield return new SpriteRenderable(tile, t.CenterPosition, WVec.Zero, -511, pal, 1f, true);
+					yield return new SpriteRenderable(tile, wr.world.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 			}
 
 			public string GetCursor(World world, CPos xy, MouseInput mi)
@@ -212,21 +212,21 @@ namespace OpenRA.Mods.RA
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
-				var xy = wr.Position(wr.Viewport.ViewToWorldPx(Viewport.LastMousePos)).ToCPos();
+				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var pal = wr.Palette("terrain");
 
 				// Source tiles
 				foreach (var t in world.Map.FindTilesInCircle(sourceLocation, range))
-					yield return new SpriteRenderable(sourceTile, t.CenterPosition, WVec.Zero, -511, pal, 1f, true);
+					yield return new SpriteRenderable(sourceTile, wr.world.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 
 				// Destination tiles
 				foreach (var t in world.Map.FindTilesInCircle(xy, range))
-					yield return new SpriteRenderable(sourceTile, t.CenterPosition, WVec.Zero, -511, pal, 1f, true);
+					yield return new SpriteRenderable(sourceTile, wr.world.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 
 				// Unit previews
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					var offset = (xy - sourceLocation).ToWVec();
+					var offset = world.Map.CenterOfCell(xy) - world.Map.CenterOfCell(sourceLocation);
 					if (manager.self.Owner.Shroud.IsTargetable(unit))
 						foreach (var r in unit.Render(wr))
 							yield return r.OffsetBy(offset);
@@ -241,7 +241,7 @@ namespace OpenRA.Mods.RA
 						var canEnter = manager.self.Owner.Shroud.IsExplored(targetCell) &&
 						                unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
 						var tile = canEnter ? validTile : invalidTile;
-						yield return new SpriteRenderable(tile, targetCell.CenterPosition, WVec.Zero, -511, pal, 1f, true);
+						yield return new SpriteRenderable(tile, wr.world.Map.CenterOfCell(targetCell), WVec.Zero, -511, pal, 1f, true);
 					}
 				}
 			}

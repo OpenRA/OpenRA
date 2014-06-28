@@ -55,8 +55,8 @@ namespace OpenRA.Mods.RA.Activities
 			// TODO: calculate weapons ranges of units and factor those in instead of hard-coding 8.
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
 				PathSearch.Search(self.World, mobileInfo, self, true)
-					.WithCustomCost(loc => self.World.FindActorsInCircle(loc.CenterPosition, WRange.FromCells(8))
-						.Where (u => !u.Destroyed && self.Owner.Stances[u.Owner] == Stance.Enemy)
+						.WithCustomCost(loc => self.World.FindActorsInCircle(self.World.Map.CenterOfCell(loc), WRange.FromCells(8))
+						.Where(u => !u.Destroyed && self.Owner.Stances[u.Owner] == Stance.Enemy)
 						.Sum(u => Math.Max(0, 64 - (loc - u.Location).LengthSquared)))
 					.WithHeuristic(loc =>
 					{
@@ -114,13 +114,13 @@ namespace OpenRA.Mods.RA.Activities
 			if (harv.LastOrderLocation == null)
 				harv.LastOrderLocation = path[0];
 
-			self.SetTargetLine(Target.FromCell(path[0]), Color.Red, false);
+			self.SetTargetLine(Target.FromCell(self.World, path[0]), Color.Red, false);
 			return Util.SequenceActivities(mobile.MoveTo(path[0], 1), new HarvestResource(), new FindResources());
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromCell(self.Location);
+			yield return Target.FromCell(self.World, self.Location);
 		}
 	}
 

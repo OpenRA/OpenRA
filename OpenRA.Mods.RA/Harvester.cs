@@ -170,7 +170,7 @@ namespace OpenRA.Mods.RA
 
 					var moveTo = harv.LastHarvestedCell ?? (deliveryLoc + new CVec(0, 4));
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
-					self.SetTargetLine(Target.FromCell(moveTo), Color.Gray, false);
+					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
 					var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 					if (territory != null) territory.ClaimResource(self, moveTo);
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.RA
 				var cell = self.Location;
 				var moveTo = mobile.NearestMoveableCell(cell, 2, 5);
 				self.QueueActivity(mobile.MoveTo(moveTo, 0));
-				self.SetTargetLine(Target.FromCell(moveTo), Color.Gray, false);
+				self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
 				// Find more resources but not at this location:
 				self.QueueActivity(new FindResources(cell));
@@ -260,7 +260,7 @@ namespace OpenRA.Mods.RA
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			if (order.OrderID == "Harvest")
-				return new Order(order.OrderID, self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
+				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 
 			return null;
 		}
@@ -299,7 +299,7 @@ namespace OpenRA.Mods.RA
 					}
 
 					self.QueueActivity(mobile.MoveTo(loc, 0));
-					self.SetTargetLine(Target.FromCell(loc), Color.Red);
+					self.SetTargetLine(Target.FromCell(self.World, loc), Color.Red);
 
 					LastOrderLocation = loc;
 				}
@@ -312,7 +312,7 @@ namespace OpenRA.Mods.RA
 						return;
 
 					self.QueueActivity(mobile.MoveTo(loc.Value, 0));
-					self.SetTargetLine(Target.FromCell(loc.Value), Color.Red);
+					self.SetTargetLine(Target.FromCell(self.World, loc.Value), Color.Red);
 
 					LastOrderLocation = loc;
 				}
@@ -336,7 +336,7 @@ namespace OpenRA.Mods.RA
 
 				idleSmart = true;
 
-				self.SetTargetLine(Target.FromOrder(order), Color.Green);
+				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Green);
 
 				self.CancelActivity();
 				self.QueueActivity(new DeliverResources());
@@ -437,7 +437,7 @@ namespace OpenRA.Mods.RA
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;
 
-				var location = target.CenterPosition.ToCPos();
+				var location = self.World.Map.CellContaining(target.CenterPosition);
 				// Don't leak info about resources under the shroud
 				if (!self.Owner.Shroud.IsExplored(location))
 					return false;

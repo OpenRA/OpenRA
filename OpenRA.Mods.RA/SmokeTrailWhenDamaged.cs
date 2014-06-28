@@ -41,8 +41,7 @@ namespace OpenRA.Mods.RA
 			if (--ticks <= 0)
 			{
 				var position = self.CenterPosition;
-				if (position.Z > 0 && self.GetDamageState() >= info.MinDamage &&
-					!self.World.FogObscures(position.ToCPos()))
+				if (position.Z > 0 && self.GetDamageState() >= info.MinDamage && !self.World.FogObscures(self))
 				{
 					var offset = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
 					var pos = position + body.LocalToWorld(offset);

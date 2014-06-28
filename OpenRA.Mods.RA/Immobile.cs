@@ -23,11 +23,13 @@ namespace OpenRA.Mods.RA
 	class Immobile : IOccupySpace, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		[Sync] readonly CPos location;
+		[Sync] readonly WPos position;
 		readonly IEnumerable<Pair<CPos, SubCell>> occupied;
 
 		public Immobile(ActorInitializer init, ImmobileInfo info)
 		{
-			this.location = init.Get<LocationInit, CPos>();
+			location = init.Get<LocationInit, CPos>();
+			position = init.world.Map.CenterOfCell(location);
 
 			if (info.OccupiesSpace)
 				occupied = new [] { Pair.New(TopLeft, SubCell.FullCell) };
@@ -36,8 +38,8 @@ namespace OpenRA.Mods.RA
 		}
 
 		public CPos TopLeft { get { return location; } }
+		public WPos CenterPosition { get { return position; } }
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupied; }
-		public WPos CenterPosition { get { return location.CenterPosition; } }
 
 		public void AddedToWorld(Actor self)
 		{

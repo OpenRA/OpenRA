@@ -55,12 +55,12 @@ namespace OpenRA.Mods.Cnc
 				var altitude = self.World.Map.Rules.Actors[actorType].Traits.Get<PlaneInfo>().CruiseAltitude;
 				var a = w.CreateActor(actorType, new TypeDictionary
 				{
-					new CenterPositionInit(startPos.CenterPosition + new WVec(WRange.Zero, WRange.Zero, altitude)),
+					new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WRange.Zero, WRange.Zero, altitude)),
 					new OwnerInit(owner),
 					new FacingInit(64)
 				});
 
-				a.QueueActivity(new Fly(a, Target.FromCell(self.Location + new CVec(9, 0))));
+				a.QueueActivity(new Fly(a, Target.FromCell(w, self.Location + new CVec(9, 0))));
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() =>
 				{
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Cnc
 					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Country.Race);
 				}));
 
-				a.QueueActivity(new Fly(a, Target.FromCell(endPos)));
+				a.QueueActivity(new Fly(a, Target.FromCell(w, endPos)));
 				a.QueueActivity(new RemoveSelf());
 			});
 

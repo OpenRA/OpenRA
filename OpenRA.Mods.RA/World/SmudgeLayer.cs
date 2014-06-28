@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA
 		public void AddSmudge(CPos loc)
 		{
 			if (Game.CosmeticRandom.Next(0, 100) <= Info.SmokePercentage)
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, loc.CenterPosition, Info.SmokeType)));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, world.Map.CenterOfCell(loc), Info.SmokeType)));
 
 			if (!dirty.ContainsKey(loc) && !tiles.ContainsKey(loc))
 			{
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.RA
 				if (world.ShroudObscures(kv.Key))
 					continue;
 
-				new SpriteRenderable(kv.Value.Sprite, kv.Key.CenterPosition,
+				new SpriteRenderable(kv.Value.Sprite, world.Map.CenterOfCell(kv.Key),
 					WVec.Zero, -511, pal, 1f, true).Render(wr);
 			}
 		}
