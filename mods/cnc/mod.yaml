@@ -136,7 +136,7 @@ ContentInstaller:
 	InstallerMenuWidget: INSTALL_PANEL
 	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
 	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
-	PackageMirrorList: http://openra.net/packages/cnc-mirrors.txt
+	PackageMirrorList: http://www.openra.net/packages/cnc-mirrors.txt
 	DiskTestFiles: conquer.mix, desert.mix, install/setup.z
 	PackageToExtractFromCD: install/setup.z
 	ExtractFilesFromCD: speech.mix, tempicnh.mix, transit.mix
@@ -202,4 +202,4 @@ Missions:
 
 SupportsMapsFrom: cnc
 
-NewsUrl: http://openra.net/gamenews
+NewsUrl: http://www.openra.net/gamenews

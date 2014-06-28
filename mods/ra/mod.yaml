@@ -134,7 +134,7 @@ LoadScreen: DefaultLoadScreen
 ContentInstaller:
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFiles: allies.mix, conquer.mix, interior.mix, redalert.mix, russian.mix, snow.mix, sounds.mix, temperat.mix
-	PackageMirrorList: http://openra.net/packages/ra-mirrors.txt
+	PackageMirrorList: http://www.openra.net/packages/ra-mirrors.txt
 	DiskTestFiles: MAIN.MIX, INSTALL/REDALERT.MIX
 	PackageToExtractFromCD: MAIN.MIX
 	ExtractFilesFromCD: conquer.mix, russian.mix, allies.mix, sounds.mix, scores.mix, snow.mix, interior.mix, temperat.mix, general.mix
@@ -197,4 +197,4 @@ Missions:
 
 SupportsMapsFrom: ra
 
-NewsUrl: http://openra.net/gamenews
+NewsUrl: http://www.openra.net/gamenews

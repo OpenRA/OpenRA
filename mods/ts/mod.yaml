@@ -159,7 +159,7 @@ LoadScreen: DefaultLoadScreen
 ContentInstaller:
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFiles: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
-	PackageMirrorList: http://openra.net/packages/ts-mirrors.txt
+	PackageMirrorList: http://www.openra.net/packages/ts-mirrors.txt
 	DiskTestFiles: multi.mix, install/tibsun.mix
 	PackageToExtractFromCD:
 	ExtractFilesFromCD:
@@ -219,4 +219,4 @@ LuaScripts:
 
 SupportsMapsFrom: ts
 
-NewsUrl: http://openra.net/gamenews
+NewsUrl: http://www.openra.net/gamenews
