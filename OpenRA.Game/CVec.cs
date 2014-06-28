@@ -47,7 +47,7 @@ namespace OpenRA
 		public CVec Sign() { return new CVec(Math.Sign(X), Math.Sign(Y)); }
 		public CVec Abs() { return new CVec(Math.Abs(X), Math.Abs(Y)); }
 		public int LengthSquared { get { return X * X + Y * Y; } }
-		public int Length { get { return (int)Math.Sqrt(LengthSquared); } }
+		public int Length { get { return Exts.ISqrt(LengthSquared); } }
 
 		public float2 ToFloat2() { return new float2(X, Y); }
 		public int2 ToInt2() { return new int2(X, Y); }

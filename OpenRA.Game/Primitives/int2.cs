@@ -35,7 +35,7 @@ namespace OpenRA
 		public int2 Sign() { return new int2(Math.Sign(X), Math.Sign(Y)); }
 		public int2 Abs() { return new int2(Math.Abs(X), Math.Abs(Y)); }
 		public int LengthSquared { get { return X * X + Y * Y; } }
-		public int Length { get { return (int)Math.Sqrt(LengthSquared); } }
+		public int Length { get { return Exts.ISqrt(LengthSquared); } }
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
 		public static int2 Max(int2 a, int2 b) { return new int2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }

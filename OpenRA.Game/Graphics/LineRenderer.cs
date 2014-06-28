@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 
 namespace OpenRA.Graphics
@@ -98,7 +99,7 @@ namespace OpenRA.Graphics
 			var yc = (r.Bottom + r.Top) / 2;
 			for (var y = r.Top; y <= r.Bottom; y++)
 			{
-				var dx = a * System.Convert.ToSingle(System.Math.Sqrt(1 - (y - yc) * (y - yc) / b / b));
+				var dx = a * (float)(Math.Sqrt(1 - (y - yc) * (y - yc) / b / b));
 				DrawLine(new float2(xc - dx, y), new float2(xc + dx, y), color, color);
 			}
 		}
