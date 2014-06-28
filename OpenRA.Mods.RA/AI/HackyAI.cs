@@ -234,7 +234,7 @@ namespace OpenRA.Mods.RA.AI
 		ActorInfo GetInfoByCommonName(Dictionary<string, string[]> names, string commonName, Player owner)
 		{
 			if (!names.Any() || !names.ContainsKey(commonName))
-				return null;
+				throw new InvalidOperationException("Can't find {0} in the HackyAI UnitsCommonNames definition.".F(commonName));
 
 			return Map.Rules.Actors.Where(k => names[commonName].Contains(k.Key)).Random(random).Value;
 		}
