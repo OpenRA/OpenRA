@@ -169,7 +169,7 @@ Background@INSTALL_MUSIC_PANEL:
 	Logic: InstallMusicLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
-	Width: 510
+	Width: 500
 	Height: 160
 	Children:
 		Label@TITLE:
