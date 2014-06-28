@@ -85,7 +85,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (installButton != null)
 			{
 				var args = new string[] { "Launch.Window=INSTALL_MUSIC_PANEL" };
-				installButton.OnClick = () => Game.InitializeMod(Game.Settings.Game.Mod, new Arguments(args));
+				installButton.OnClick = () =>
+				{
+					Game.modData.LoadScreen.Display(); // HACK: prevent a flicker when transitioning to the installation dialog
+					Game.InitializeMod(Game.Settings.Game.Mod, new Arguments(args));
+				};
 				var installData = Game.modData.Manifest.ContentInstaller;
 				installButton.IsVisible = () =>
 					modRules.InstalledMusic.ToArray().Length <= Exts.ParseIntegerInvariant(installData["ShippedSoundtracks"]);
