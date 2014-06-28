@@ -439,7 +439,7 @@ Actors:
 	Actor167: powr
 		Location: 54,74
 		Owner: Allies
-	Actor39: pbox.e1
+	Actor39: pbox
 		Location: 70,89
 		Owner: Allies
 	AlliedTechnologyCenter: miss
@@ -452,10 +452,10 @@ Actors:
 	Actor150: apwr
 		Location: 94,90
 		Owner: Allies
-	Actor35: pbox.e1
+	Actor35: pbox
 		Location: 68,85
 		Owner: Allies
-	Actor178: pbox.e1
+	Actor178: pbox
 		Location: 77,76
 		Owner: Allies
 	Actor300: brik
@@ -495,7 +495,7 @@ Actors:
 	AlliedWarFactory1: weap
 		Location: 75,81
 		Owner: Allies
-	Actor156: pbox.e1
+	Actor156: pbox
 		Location: 52,71
 		Owner: Allies
 	Actor343: brik
@@ -628,10 +628,10 @@ Actors:
 		Location: 82,69
 		Owner: Allies
 		Facing: 0
-	Actor30: pbox.e1
+	Actor30: pbox
 		Location: 47,77
 		Owner: Allies
-	Actor29: pbox.e1
+	Actor29: pbox
 		Location: 42,75
 		Owner: Allies
 	Actor217: sbag
@@ -1001,7 +1001,7 @@ Actors:
 	Actor212: brik
 		Location: 61,80
 		Owner: Allies
-	Actor361: pbox.e1
+	Actor361: pbox
 		Location: 71,96
 		Owner: Allies
 	Actor365: hpad
@@ -1016,7 +1016,7 @@ Actors:
 	Actor193: fix
 		Location: 69,70
 		Owner: Allies
-	Actor42: pbox.e1
+	Actor42: pbox
 		Location: 67,70
 		Owner: Allies
 	Actor262: fenc
@@ -1217,7 +1217,7 @@ Actors:
 	LstUnload: waypoint
 		Location: 60,93
 		Owner: Neutral
-	Actor184: pbox.e1
+	Actor184: pbox
 		Location: 96,79
 		Owner: Allies
 	Paradrop1: waypoint

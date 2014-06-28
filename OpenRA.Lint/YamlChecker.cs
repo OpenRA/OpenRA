@@ -20,6 +20,7 @@ namespace OpenRA.Lint
 	{
 		static int errors = 0;
 
+		// mimic Windows compiler error format
 		static void EmitError(string e)
 		{
 			Console.WriteLine("OpenRA.Lint(1,1): Error: {0}", e);
@@ -68,16 +69,8 @@ namespace OpenRA.Lint
 
 				foreach (var testMap in maps)
 				{
-					if (testMap.RuleDefinitions.Count < 1)
-					{
-						if (verbose)
-							Console.WriteLine("No custom rules detected. Omitting Map: {0}".F(testMap.Title));
-
-						continue;
-					}
-
 					if (verbose)
-						Console.WriteLine("Map: {0}".F(testMap.Title));
+						Console.WriteLine("Testing map: {0}".F(testMap.Title));
 					testMap.PreloadRules();
 
 					foreach (var customPassType in Game.modData.ObjectCreator
@@ -88,14 +81,11 @@ namespace OpenRA.Lint
 							var customPass = (ILintPass)Game.modData.ObjectCreator
 								.CreateBasic(customPassType);
 
-							if (verbose)
-								Console.WriteLine("Pass: {0}".F(customPassType.ToString()));
-
 							customPass.Run(EmitError, EmitWarning, testMap);
 						}
 						catch (Exception e)
 						{
-							EmitError("Failed with exception: {0}".F(e));
+							EmitError("{0} failed with exception: {0}".F(customPassType, e));
 						}
 					}
 				}

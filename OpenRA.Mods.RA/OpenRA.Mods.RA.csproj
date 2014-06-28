@@ -518,6 +518,7 @@
     <Compile Include="Activities\MoveWithinRange.cs" />
     <Compile Include="Lint\CheckPlayers.cs" />
     <Compile Include="Player\ProvidesCustomPrerequisite.cs" />
+    <Compile Include="Lint\CheckActors.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
