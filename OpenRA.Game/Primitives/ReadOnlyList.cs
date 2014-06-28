@@ -21,10 +21,18 @@ namespace OpenRA
 	/// duplicate it but provide a compatible interface that can be replaced
 	/// when we switch to .NET 4.5 or higher.
 	/// </remarks>
-	public interface IReadOnlyList<T> : IEnumerable<T>
+	public interface IReadOnlyList<out T> : IEnumerable<T>
 	{
 		int Count { get; }
 		T this[int index] { get; }
+	}
+
+	public static class ReadOnlyList
+	{
+		public static IReadOnlyList<T> AsReadOnly<T>(this IList<T> list)
+		{
+			return list as IReadOnlyList<T> ?? new ReadOnlyList<T>(list);
+		}
 	}
 
 	/// <summary>

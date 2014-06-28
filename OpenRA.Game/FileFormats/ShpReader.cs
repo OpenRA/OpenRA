@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,50 +17,49 @@ using OpenRA.Graphics;
 
 namespace OpenRA.FileFormats
 {
-	enum Format { Format20 = 0x20, Format40 = 0x40, Format80 = 0x80 }
-
-	class ImageHeader : ISpriteFrame
-	{
-		public Size Size { get { return reader.Size; } }
-		public Size FrameSize { get { return reader.Size; } }
-		public float2 Offset { get { return float2.Zero; } }
-		public byte[] Data { get; set; }
-
-		public uint FileOffset;
-		public Format Format;
-
-		public uint RefOffset;
-		public Format RefFormat;
-		public ImageHeader RefImage;
-
-		ShpReader reader;
-		// Used by ShpWriter
-		public ImageHeader() { }
-
-		public ImageHeader(Stream stream, ShpReader reader)
-		{
-			this.reader = reader;
-			var data = stream.ReadUInt32();
-			FileOffset = data & 0xffffff;
-			Format = (Format)(data >> 24);
-
-			RefOffset = stream.ReadUInt16();
-			RefFormat = (Format)stream.ReadUInt16();
-		}
-
-		public void WriteTo(BinaryWriter writer)
-		{
-			writer.Write(FileOffset | ((uint)Format << 24));
-			writer.Write((ushort)RefOffset);
-			writer.Write((ushort)RefFormat);
-		}
-	}
-
 	public class ShpReader : ISpriteSource
 	{
-		readonly List<ImageHeader> headers = new List<ImageHeader>();
-		Lazy<IEnumerable<ISpriteFrame>> spriteFrames;
-		public IEnumerable<ISpriteFrame> Frames { get { return spriteFrames.Value; } }
+		enum Format { Format20 = 0x20, Format40 = 0x40, Format80 = 0x80 }
+
+		class ImageHeader : ISpriteFrame
+		{
+			public Size Size { get { return reader.Size; } }
+			public Size FrameSize { get { return reader.Size; } }
+			public float2 Offset { get { return float2.Zero; } }
+			public byte[] Data { get; set; }
+
+			public uint FileOffset;
+			public Format Format;
+
+			public uint RefOffset;
+			public Format RefFormat;
+			public ImageHeader RefImage;
+
+			ShpReader reader;
+
+			// Used by ShpWriter
+			public ImageHeader() { }
+
+			public ImageHeader(Stream stream, ShpReader reader)
+			{
+				this.reader = reader;
+				var data = stream.ReadUInt32();
+				FileOffset = data & 0xffffff;
+				Format = (Format)(data >> 24);
+
+				RefOffset = stream.ReadUInt16();
+				RefFormat = (Format)stream.ReadUInt16();
+			}
+
+			public void WriteTo(BinaryWriter writer)
+			{
+				writer.Write(FileOffset | ((uint)Format << 24));
+				writer.Write((ushort)RefOffset);
+				writer.Write((ushort)RefFormat);
+			}
+		}
+
+		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
 		public bool CacheWhenLoadingTileset { get { return false; } }
 		public readonly Size Size;
 
@@ -79,8 +78,10 @@ namespace OpenRA.FileFormats
 			Size = new Size(width, height);
 
 			stream.Position += 4;
-			for (var i = 0; i < imageCount; i++)
-				headers.Add(new ImageHeader(stream, this));
+			var headers = new ImageHeader[imageCount];
+			Frames = headers.AsReadOnly();
+			for (var i = 0; i < headers.Length; i++)
+				headers[i] = new ImageHeader(stream, this);
 
 			// Skip eof and zero headers
 			stream.Position += 16;
@@ -91,7 +92,6 @@ namespace OpenRA.FileFormats
 				var h = headers[i];
 				if (h.Format == Format.Format20)
 					h.RefImage = headers[i - 1];
-
 				else if (h.Format == Format.Format40 && !offsets.TryGetValue(h.RefOffset, out h.RefImage))
 					throw new InvalidDataException("Reference doesnt point to image data {0}->{1}".F(h.FileOffset, h.RefOffset));
 			}
@@ -101,8 +101,6 @@ namespace OpenRA.FileFormats
 
 			foreach (var h in headers)
 				Decompress(h);
-
-			spriteFrames = Exts.Lazy(() => headers.Cast<ISpriteFrame>());
 		}
 
 		void Decompress(ImageHeader h)
