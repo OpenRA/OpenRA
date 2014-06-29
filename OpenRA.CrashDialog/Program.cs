@@ -95,7 +95,8 @@ namespace OpenRA.CrashDialog
 		{
 			try
 			{
-				Process.Start(Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar);
+				Game.Settings = settings;
+				Process.Start(Platform.GetFolderPath(UserFolder.Logs));
 			}
 			catch { }
 		}

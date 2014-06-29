@@ -195,6 +195,23 @@ namespace OpenRA
 		public bool ConnectAutomatically = false;
 	}
 
+	public class PathSettings
+	{
+		// Directories
+		public string Base = "";
+		public string Logs = "^logs";
+		public string Mods = "^mods";
+		public string ModContent = "@content";
+		public string ModReplays = "@replays";
+		public string ModMaps = "@maps";
+		public string ModCache = "@cache";
+
+		// Files
+		public string Motd = "^motd.txt";
+		public string ModMirrors = "@mirrors.txt";
+		public string ModNews = "$ModCache/news.yaml";
+	}
+
 	public class Settings
 	{
 		string settingsFile;
@@ -207,6 +224,7 @@ namespace OpenRA
 		public DebugSettings Debug = new DebugSettings();
 		public KeySettings Keys = new KeySettings();
 		public IrcSettings Irc = new IrcSettings();
+		public PathSettings Paths = new PathSettings();
 
 		public Dictionary<string, object> Sections;
 
@@ -222,7 +240,8 @@ namespace OpenRA
 				{ "Server", Server },
 				{ "Debug", Debug },
 				{ "Keys", Keys },
-				{ "Irc", Irc }
+				{ "Irc", Irc },
+				{ "Paths", Paths }
 			};
 
 			// Override fieldloader to ignore invalid entries

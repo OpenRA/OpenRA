@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
 
-			var dest = new string[] { Platform.SupportDir, "Content", "ra" }.Aggregate(Path.Combine);
+			var dest = Platform.GetFolderPath(UserFolder.ModContent);
 			var copyFiles = new string[] { "INSTALL/REDALERT.MIX" };
 
 			var extractPackage = "MAIN.MIX";

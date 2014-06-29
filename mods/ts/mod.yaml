@@ -10,13 +10,13 @@ Folders:
 	./mods/ts
 	./mods/ts/bits
 	./mods/ts/uibits
-	~^Content/ts
+	~$ModContent
 # Red Alert
 	./mods/ra/uibits
 
 MapFolders:
 	./mods/ts/maps: System
-	~^maps/ts: User
+	~$ModMaps: User
 
 Packages:
 # Tiberian Sun

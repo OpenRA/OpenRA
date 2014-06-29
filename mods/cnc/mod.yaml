@@ -11,11 +11,11 @@ Folders:
 	./mods/cnc/bits/jungle
 	./mods/cnc/bits/ss
 	./mods/cnc/uibits
-	~^Content/cnc
+	~$ModContent
 
 MapFolders:
 	./mods/cnc/maps: System
-	~^maps/cnc: User
+	~$ModMaps: User
 
 Packages:
 	bluetib.mix

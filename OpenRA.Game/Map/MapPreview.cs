@@ -170,7 +170,7 @@ namespace OpenRA
 				return;
 
 			Status = MapStatus.Downloading;
-			var baseMapPath = new[] { Platform.SupportDir, "maps", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
+			var baseMapPath = Platform.GetFolderPath(UserFolder.ModMaps);
 
 			// Create the map directory if it doesn't exist
 			if (!Directory.Exists(baseMapPath))
@@ -183,7 +183,6 @@ namespace OpenRA
 				var mapUrl = Game.Settings.Game.MapRepository + Uid;
 				try
 				{
-
 					var request = WebRequest.Create(mapUrl);
 					request.Method = "HEAD";
 					var res = request.GetResponse();
@@ -195,7 +194,8 @@ namespace OpenRA
 						return;
 					}
 
-					var mapPath = Path.Combine(baseMapPath, res.Headers["Content-Disposition"].Replace("attachment; filename = ", ""));
+					var fileName = res.Headers["Content-Disposition"].Replace("attachment; filename = ", "");
+					var mapPath = Path.Combine(baseMapPath, Path.GetFileName(fileName));
 
 					Action<DownloadProgressChangedEventArgs> onDownloadProgress = i => { DownloadBytes = i.BytesReceived; DownloadPercentage = i.ProgressPercentage; };
 					Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
