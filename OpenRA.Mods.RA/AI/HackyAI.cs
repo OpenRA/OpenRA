@@ -234,7 +234,7 @@ namespace OpenRA.Mods.RA.AI
 		ActorInfo GetInfoByCommonName(Dictionary<string, string[]> names, string commonName, Player owner)
 		{
 			if (!names.Any() || !names.ContainsKey(commonName))
-				return null;
+				throw new InvalidOperationException("Can't find {0} in the HackyAI UnitsCommonNames definition.".F(commonName));
 
 			return Map.Rules.Actors.Where(k => names[commonName].Contains(k.Key)).Random(random).Value;
 		}
@@ -734,13 +734,6 @@ namespace OpenRA.Mods.RA.AI
 		{
 			var maxBaseDistance = Math.Max(world.Map.MapSize.X, world.Map.MapSize.Y);
 
-			// HACK: Assumes all MCVs deploy into the same construction yard footprint
-			var mcvInfo = GetUnitInfoByCommonName("Mcv", p);
-			if (mcvInfo == null)
-				return;
-
-			var factType = mcvInfo.Traits.Get<TransformsInfo>().IntoActor;
-
 			// HACK: This needs to query against MCVs directly
 			var mcvs = self.World.Actors.Where(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>());
 			if (!mcvs.Any())
@@ -751,6 +744,7 @@ namespace OpenRA.Mods.RA.AI
 				if (mcv.IsMoving())
 					continue;
 
+				var factType = mcv.Info.Traits.Get<TransformsInfo>().IntoActor;
 				var desiredLocation = ChooseBuildLocation(factType, false, maxBaseDistance, BuildingType.Building);
 				if (desiredLocation == null)
 					continue;
