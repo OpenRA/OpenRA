@@ -1,0 +1,85 @@
+Selectable: True
+
+MapFormat: 6
+
+RequiresMod: ts
+
+Title: Blank
+
+Description: Placeholder
+
+Author: Matthias Mailänder
+
+Tileset: INTERIOR
+
+MapSize: 128,128
+
+Bounds: 16,16,96,96
+
+UseAsShellmap: False
+
+Type: Conquest
+
+Options:
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: gdi
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: gdi
+		Enemies: Multi0,Multi1,Multi2,Multi3
+
+Actors:
+	Actor0: mpspawn
+		Location: 23,23
+		Owner: Neutral
+	Actor1: mpspawn
+		Location: 103,23
+		Owner: Neutral
+	Actor2: mpspawn
+		Location: 98,101
+		Owner: Neutral
+	Actor3: mpspawn
+		Location: 25,102
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:
