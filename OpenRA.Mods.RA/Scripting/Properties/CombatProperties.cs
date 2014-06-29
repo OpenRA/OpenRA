@@ -8,6 +8,9 @@
  */
 #endregion
 
+using Eluant;
+using System;
+using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -17,8 +20,13 @@ namespace OpenRA.Mods.RA.Scripting
 	[ScriptPropertyGroup("Combat")]
 	public class CombatProperties : ScriptActorProperties, Requires<AttackBaseInfo>, Requires<IMoveInfo>
 	{
+		readonly IMove move;
+
 		public CombatProperties(ScriptContext context, Actor self)
-			: base(context, self) { }
+			: base(context, self)
+		{
+			move = self.Trait<IMove>();
+		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Seek out and attack nearby targets.")]
@@ -33,11 +41,35 @@ namespace OpenRA.Mods.RA.Scripting
 			"close enough to complete the activity.")]
 		public void AttackMove(CPos cell, int closeEnough = 0)
 		{
-			var move = self.TraitOrDefault<IMove>();
-			if (move == null)
-				return;
-
 			self.QueueActivity(new AttackMove.AttackMoveActivity(self, move.MoveTo(cell, closeEnough)));
+		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Patrol along a set of given waypoints.  The action is repeated by default, " +
+			"and the actor will wait for `wait` ticks at each waypoint.")]
+		public void Patrol(CPos[] waypoints, bool loop = true, int wait = 0)
+		{
+			foreach (var wpt in waypoints)
+			{
+				self.QueueActivity(new AttackMove.AttackMoveActivity(self, move.MoveTo(wpt, 2)));
+				self.QueueActivity(new Wait(wait));
+			}
+
+			if (loop)
+				self.QueueActivity(new CallFunc(() => Patrol(waypoints, loop, wait)));
+		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Patrol along a set of given waypoints until a condition becomes true. " +
+			"The actor will wait for `wait` ticks at each waypoint.")]
+		public void PatrolUntil(CPos[] waypoints, LuaFunction func, int wait = 0)
+		{
+			Patrol(waypoints, false, wait);
+
+			var repeat = func.Call(self.ToLuaValue(context)).First().ToBoolean();
+			if (repeat)
+				using (var f = func.CopyReference() as LuaFunction)
+					self.QueueActivity(new CallFunc(() => PatrolUntil(waypoints, f, wait)));
 		}
 	}
 }
