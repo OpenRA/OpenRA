@@ -20,22 +20,24 @@ namespace OpenRA
 	public class CellLayer<T> : IEnumerable<T>
 	{
 		public readonly Size Size;
+		public readonly TileShape Shape;
 		T[] entries;
 
 		public CellLayer(Map map)
-			: this(new Size(map.MapSize.X, map.MapSize.Y)) { }
+			: this(map.TileShape, new Size(map.MapSize.X, map.MapSize.Y)) { }
 
-		public CellLayer(Size size)
+		public CellLayer(TileShape shape, Size size)
 		{
 			Size = size;
+			Shape = shape;
 			entries = new T[size.Width * size.Height];
 		}
 
 		// Resolve an array index from cell coordinates
 		int Index(CPos cell)
 		{
-			// This will eventually define a distinct case for diagonal cell grids
-			return cell.Y * Size.Width + cell.X;
+			var uv = Map.CellToMap(Shape, cell);
+			return uv.Y * Size.Width + uv.X;
 		}
 
 		/// <summary>Gets or sets the <see cref="OpenRA.CellLayer"/> using cell coordinates</summary>
@@ -90,7 +92,7 @@ namespace OpenRA
 		/// <summary>Create a new layer by resizing another layer.  New cells are filled with defaultValue.</summary>
 		public static CellLayer<T> Resize<T>(CellLayer<T> layer, Size newSize, T defaultValue)
 		{
-			var result = new CellLayer<T>(newSize);
+			var result = new CellLayer<T>(layer.Shape, newSize);
 			var width = Math.Min(layer.Size.Width, newSize.Width);
 			var height = Math.Min(layer.Size.Height, newSize.Height);
 

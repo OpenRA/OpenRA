@@ -44,11 +44,12 @@ namespace OpenRA.Graphics
 		{
 			var verticesPerRow = 4*map.Bounds.Width;
 			var cells = viewport.VisibleCells;
-			var firstRow = cells.TopLeft.Y - map.Bounds.Top;
-			var lastRow = cells.BottomRight.Y - map.Bounds.Top + 1;
+			var shape = wr.world.Map.TileShape;
 
-			if (lastRow < 0 || firstRow > map.Bounds.Height)
-				return;
+			// Only draw the rows that are visible.
+			// VisibleCells is clamped to the map, so additional checks are unnecessary
+			var firstRow = Map.CellToMap(shape, cells.TopLeft).Y - map.Bounds.Top;
+			var lastRow = Map.CellToMap(shape, cells.BottomRight).Y - map.Bounds.Top + 1;
 
 			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
 				vertexBuffer, verticesPerRow * firstRow, verticesPerRow * (lastRow - firstRow),
