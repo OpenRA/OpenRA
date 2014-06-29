@@ -9,22 +9,28 @@
 #endregion
 
 using System;
+using System.Linq;
+using Eluant;
 using OpenRA.Scripting;
+using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Scripting
 {
 	[ScriptPropertyGroup("Player")]
 	public class PlayerProperties : ScriptPlayerProperties
 	{
-		readonly Player p;
-
 		public PlayerProperties(ScriptContext context, Player player)
-			: base(context, player)
-		{
-			p = player;
-		}
+		: base(context, player) { }
 
 		[Desc("The player's name.")]
-		public string PlayerName { get { return p.PlayerName; } }
+		public string Name { get { return player.PlayerName; } }
+
+		[Desc("Returns an array of actors representing all ground attack units of this player.")]
+		public LuaTable GetGroundAttackers()
+		{
+			return player.World.ActorsWithTrait<AttackBase>().Select(a => a.Actor)
+				.Where(a => a.Owner == player && !a.IsDead() && a.IsInWorld && a.HasTrait<Mobile>())
+				.Select(a => a.ToLuaValue(context)).ToLuaTable(context);
+		}
 	}
 }

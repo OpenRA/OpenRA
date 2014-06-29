@@ -65,5 +65,8 @@ namespace OpenRA.Scripting
 
 		[Desc("Create a new WRange.")]
 		public WRange New(int r) { return new WRange(r); }
+
+		[Desc("Create a new WRange by cell distance")]
+		public WRange FromCells(int numCells) { return WRange.FromCells(numCells); }
 	}
 }

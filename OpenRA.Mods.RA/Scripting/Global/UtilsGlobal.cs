@@ -58,6 +58,17 @@ namespace OpenRA.Mods.RA.Scripting
 			return true;
 		}
 
+		[Desc("Skips over the first numElements members of the array and returns the rest")]
+		public LuaTable Skip(LuaTable table, int numElements)
+		{
+			var t = context.CreateTable();
+
+			for (var i = numElements; i <= table.Count; i++)
+				t.Add(t.Count + 1, table[i]);
+
+			return t;
+		}
+
 		[Desc("Returns a random value from table.")]
 		public LuaValue Random(LuaTable table)
 		{
@@ -93,6 +104,18 @@ namespace OpenRA.Mods.RA.Scripting
 		public WPos CenterOfCell(CPos cell)
 		{
 			return context.World.Map.CenterOfCell(cell);
+		}
+
+		[Desc("Converts the number of seconds into game time (ticks).")]
+		public int Seconds(int seconds)
+		{
+			return seconds * 25;
+		}
+
+		[Desc("Converts the number of minutes into game time (ticks).")]
+		public int Minutes(int minutes)
+		{
+			return Seconds(minutes * 60);
 		}
 	}
 }
