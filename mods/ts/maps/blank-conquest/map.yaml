@@ -14,7 +14,7 @@ Tileset: INTERIOR
 
 MapSize: 128,128
 
-Bounds: 16,16,96,96
+Bounds: 32,16,48,96
 
 UseAsShellmap: False
 
@@ -56,16 +56,16 @@ Players:
 
 Actors:
 	Actor0: mpspawn
-		Location: 23,23
+		Location: 50,-24
 		Owner: Neutral
 	Actor1: mpspawn
-		Location: 103,23
+		Location: 126,-24
 		Owner: Neutral
 	Actor2: mpspawn
-		Location: 98,101
+		Location: 88,14
 		Owner: Neutral
 	Actor3: mpspawn
-		Location: 25,102
+		Location: 88,-62
 		Owner: Neutral
 
 Smudges:

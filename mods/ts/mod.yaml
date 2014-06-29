@@ -142,6 +142,7 @@ TileSets:
 	mods/ts/tilesets/interior.yaml
 
 TileSize: 48,24
+TileShape: Diamond
 
 Music:
 	mods/ts/music.yaml

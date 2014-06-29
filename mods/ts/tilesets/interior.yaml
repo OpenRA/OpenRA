@@ -9,7 +9,7 @@ Terrain:
 	TerrainType@Clear:
 		Type: Clear
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 0, 0, 0
+		Color: 116, 85, 55
 		TargetTypes: Ground
 	TerrainType@Tiberium:
 		Type: Tiberium
