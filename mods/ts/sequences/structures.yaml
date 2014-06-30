@@ -844,32 +844,32 @@ nahpad:
 		Start: 0
 
 proc: # TODO: unused narefn_a, narefn_b
-	idle: narefn
+	idle: ntrefn
 		Start: 0
 		ShadowStart: 3
-	damaged-idle: narefn
+	damaged-idle: ntrefn
 		Start: 1
 		ShadowStart: 4
-	critical-idle: narefn
+	critical-idle: ntrefn
 		Start: 2
 		ShadowStart: 5
-	make: narefnmk
+	make: ntrefnmk
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-	idle-redlights: narefn_c
+	idle-redlights: ntrefn_c
 		Start: 0
 		Length: 16
 		Tick: 120
-	damaged-idle-redlights: narefn_c
+	damaged-idle-redlights: ntrefn_c
 		Start: 0
 		Length: 16
 		Tick: 120
-	critical-idle-redlights: narefn_c
+	critical-idle-redlights: ntrefn_c
 		Start: 16
 		Length: 16
 		Tick: 200
-#	bib: narefnbb
+#	bib: ntrefnbb
 #		Start: 0
 #		Length: *
 	icon: reficon
@@ -890,55 +890,55 @@ galite:
 		Start: 0
 
 gadept:
-	idle:
+	idle: gtdept
 		Start: 0
 		ShadowStart: 3
-	damaged-idle:
+	damaged-idle: gtdept
 		Start: 1
 		ShadowStart: 4
-	critical-idle:
+	critical-idle: gtdept
 		Start: 2
 		ShadowStart: 5
-	ground: gadeptbb
+	ground: gtdeptbb
 		Start: 0
 		ShadowStart: 3
 		ZOffset: -1c611
-	damaged-ground: gadeptbb
+	damaged-ground: gtdeptbb
 		Start: 1
 		ShadowStart: 4
 		ZOffset: -1c611
-	critical-ground: gadeptbb
+	critical-ground: gtdeptbb
 		Start: 2
 		ShadowStart: 5
 		ZOffset: -1c611
-	idle-light: gadept_b
+	idle-light: gtdept_b
 		Start: 0
 		Length: 7
 		Tick: 120
-	damaged-idle-light: gadept_b
+	damaged-idle-light: gtdept_b
 		Start: 7
 		Length: 7
 		Tick: 120
-	circuits: gadept_a
+	circuits: gtdept_a
 		Start: 0
 		Length: 5
 		ZOffset: -1c511
-	damaged-circuits: gadept_a
+	damaged-circuits: gtdept_a
 		Start: 5
 		Length: 5
 		ZOffset: -1c511
-	crane: gadept_c
+	crane: gtdept_c
 		Start: 0
 		Length: 16
-	platform: gadept_d
+	platform: gtdept_d
 		Start: 0
 		Length: 7
 		ZOffset: -1c511
-	damaged-platform: gadept_d
+	damaged-platform: gtdept_d
 		Start: 7
 		Length: 7
 		ZOffset: -1c511
-	make: gadeptmk
+	make: gtdeptmk
 		Start: 0
 		Length: 10
 		Tick: 60
