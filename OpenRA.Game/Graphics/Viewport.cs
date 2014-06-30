@@ -139,10 +139,9 @@ namespace OpenRA.Graphics
 			get
 			{
 				// Visible rectangle in world coordinates (expanded to the corners of the cells)
-				// Expand the cordon by an additional cell to account for staggered rows on diamond cell grids.
 				var map = worldRenderer.world.Map;
-				var ctl = map.CenterOfCell(VisibleCells.TopLeft) - new WVec(1536, 1536, 0);
-				var cbr = map.CenterOfCell(VisibleCells.BottomRight) + new WVec(1535, 1535, 0);
+				var ctl = map.CenterOfCell(VisibleCells.TopLeft) - new WVec(512, 512, 0);
+				var cbr = map.CenterOfCell(VisibleCells.BottomRight) + new WVec(512, 512, 0);
 
 				// Convert to screen coordinates
 				var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl)).Clamp(ScreenClip);

@@ -197,11 +197,19 @@ namespace OpenRA.Mods.RA
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			// Initialize tile cache
-			foreach (var cell in map.Cells)
+			// Adds a 1-cell border around the border to cover any sprites peeking outside the map
+			foreach (var cell in CellRegion.Expand(w.Map.Cells, 1))
 			{
 				var screen = wr.ScreenPosition(w.Map.CenterOfCell(cell));
 				var variant = Game.CosmeticRandom.Next(info.ShroudVariants.Length);
 				tiles[cell] = new ShroudTile(cell, screen, variant);
+
+				// Set the cells outside the border so they don't need to be touched again
+				if (!map.Contains(cell))
+				{
+					var index = info.UseExtendedIndex ? 240 : 15;
+					tiles[cell].Shroud = shroudSprites[variant * variantStride + spriteMap[index]];
+				}
 			}
 
 			fogPalette = wr.Palette(info.FogPalette);
@@ -253,7 +261,7 @@ namespace OpenRA.Mods.RA
 		{
 			Update(shroud);
 
-			foreach (var cell in wr.Viewport.VisibleCells)
+			foreach (var cell in CellRegion.Expand(wr.Viewport.VisibleCells, 1))
 			{
 				var t = tiles[cell];
 

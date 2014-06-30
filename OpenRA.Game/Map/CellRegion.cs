@@ -40,6 +40,16 @@ namespace OpenRA
 			mapBottomRight = Map.CellToMap(shape, BottomRight);
 		}
 
+		/// <summary>Expand the specified region with an additional cordon. This may expand the region outside the map borders.</summary>
+		public static CellRegion Expand(CellRegion region, int cordon)
+		{
+			var offset = new CVec(cordon, cordon);
+			var tl = Map.MapToCell(region.shape, Map.CellToMap(region.shape, region.TopLeft) - offset);
+			var br = Map.MapToCell(region.shape, Map.CellToMap(region.shape, region.BottomRight) + offset);
+
+			return new CellRegion(region.shape, tl, br);
+		}
+
 		public bool Contains(CPos cell)
 		{
 			var uv = Map.CellToMap(shape, cell);
