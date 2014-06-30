@@ -519,6 +519,7 @@
     <Compile Include="Lint\CheckPlayers.cs" />
     <Compile Include="Player\ProvidesCustomPrerequisite.cs" />
     <Compile Include="Lint\CheckActors.cs" />
+    <Compile Include="Scripting\Global\MediaGlobal.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
