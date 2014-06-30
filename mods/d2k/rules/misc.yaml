@@ -16,6 +16,8 @@ CRATE:
 		Amount: 1500
 		SelectionShares: 25
 		UseCashTick: yes
+	LevelUpCrateAction:
+		SelectionShares: 40
 	GiveUnitCrateAction@Trike:
 		SelectionShares: 20
 		Unit: trike
