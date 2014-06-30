@@ -68,7 +68,7 @@ local function treeAddDir(tree,parent_id,rootdir)
       curr = (curr
         and tree:InsertItem(parent_id, curr, name, icon)
         or tree:PrependItem(parent_id, name, icon))
-      if #dir>0 then tree:SetItemHasChildren(curr, FileSysHasContent(file)) end
+      if #dir>0 then tree:SetItemHasChildren(curr, FileDirHasContent(file)) end
     end
     if curr:IsOk() then cache[iscaseinsensitive and name:lower() or name] = curr end
   end
@@ -266,14 +266,17 @@ local function treeSetConnectorsAndIcons(tree)
     local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
     local source = tree:GetItemFullName(item_id)
 
-    if isdir and FileSysHasContent(source..pathsep) then return false end
+    if isdir and FileDirHasContent(source..pathsep) then return false end
     if wx.wxMessageBox(
       TR("Do you want to delete '%s'?"):format(source),
       GetIDEString("editormessage"),
       wx.wxYES_NO + wx.wxCENTRE, ide.frame) ~= wx.wxYES then return false end
 
     if isdir then
-      wx.wxRmdir(source)
+      if not wx.wxRmdir(source) then
+        ReportError(TR("Unable to delete directory '%s': %s")
+          :format(source, wx.wxSysErrorMsg()))
+      end
     else
       local doc = ide:FindDocument(source)
       if doc then ClosePage(doc.index) end
@@ -388,7 +391,7 @@ local function treeSetConnectorsAndIcons(tree)
       local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
       if isdir then
         local source = tree:GetItemFullName(item_id)
-        menu:Enable(ID_DELETEFILE, not FileSysHasContent(source..pathsep))
+        menu:Enable(ID_DELETEFILE, not FileDirHasContent(source..pathsep))
         menu:Enable(ID_OPENEXTENSION, false)
       else
         local fname = tree:GetItemText(item_id)

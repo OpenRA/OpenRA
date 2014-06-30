@@ -155,8 +155,8 @@ function GetPathWithSep(wxfn)
   return wxfn:GetPath(bit.bor(wx.wxPATH_GET_VOLUME, wx.wxPATH_GET_SEPARATOR))
 end
 
-function FileSysHasContent(dir)
-  local f = wx.wxFindFirstFile(dir,wx.wxFILE + wx.wxDIR)
+function FileDirHasContent(dir)
+  local f = wx.wxFindFirstFile(dir, wx.wxFILE + wx.wxDIR)
   return #f>0
 end
 
