@@ -24,7 +24,7 @@ namespace OpenRA
 		public int ExternalPort = 1234;
 		public bool AdvertiseOnline = true;
 		public string Password = "";
-		public string MasterServer = "http://master.open-ra.org/";
+		public string MasterServer = "http://master.openra.net/";
 		public bool DiscoverNatDevices = false; // Allow users to disable NAT discovery if problems occur
 		public bool AllowPortForward = true; // let the user disable it even if compatible devices are found
 		public bool NatDeviceAvailable = false; // internal check if discovery succeeded
