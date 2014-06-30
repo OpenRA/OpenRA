@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -126,26 +126,78 @@ namespace OpenRA.FileFormats
 			}
 		}
 
+		static int CountSame(byte[] src, int offset, int maxCount)
+		{
+			maxCount = Math.Min(src.Length - offset, maxCount);
+			if (maxCount <= 0)
+				return 0;
+
+			var first = src[offset++];
+			var count = 1;
+
+			while (count < maxCount && src[offset++] == first)
+				count++;
+
+			return count;
+		}
+
+		static void WriteCopyBlocks(byte[] src, int offset, int count, MemoryStream output)
+		{
+			while (count > 0)
+			{
+				var writeNow = Math.Min(count, 0x3F);
+				output.WriteByte((byte)(0x80 | writeNow));
+				output.Write(src, offset, writeNow);
+
+				count -= writeNow;
+				offset += writeNow;
+			}
+		}
+
+		// Quick and dirty Format80 encoder version 2
+		// Uses raw copy and RLE compression
 		public static byte[] Encode(byte[] src)
 		{
-			/* quick & dirty format80 encoder -- only uses raw copy operator, terminated with a zero-run. */
-			/* this does not produce good compression, but it's valid format80 */
-
-			var ctx = new FastByteReader(src);
-			var ms = new MemoryStream();
-
-			do
+			using (var ms = new MemoryStream())
 			{
-				var len = Math.Min(ctx.Remaining(), 0x3F);
-				ms.WriteByte((byte)(0x80 | len));
-				while (len-- > 0)
-					ms.WriteByte(ctx.ReadByte());
+				var offset = 0;
+				var left = src.Length;
+				var blockStart = 0;
+
+				while (offset < left)
+				{
+					var repeatCount = CountSame(src, offset, 0xFFFF);
+					if (repeatCount >= 4)
+					{
+						// Write what we haven't written up to now
+						WriteCopyBlocks(src, blockStart, offset - blockStart, ms);
+
+						// Command 4: Repeat byte n times
+						ms.WriteByte(0xFE);
+						// Low byte
+						ms.WriteByte((byte)(repeatCount & 0xFF));
+						// High byte
+						ms.WriteByte((byte)(repeatCount >> 8));
+						// Value to repeat
+						ms.WriteByte(src[offset]);
+
+						offset += repeatCount;
+						blockStart = offset;
+					}
+					else
+					{
+						offset++;
+					}
+				}
+
+				// Write what we haven't written up to now
+				WriteCopyBlocks(src, blockStart, offset - blockStart, ms);
+
+				// Write terminator
+				ms.WriteByte(0x80);
+
+				return ms.ToArray();
 			}
-			while (!ctx.Done());
-
-			ms.WriteByte(0x80);	// terminator -- 0-length run.
-
-			return ms.ToArray();
 		}
 	}
 }
