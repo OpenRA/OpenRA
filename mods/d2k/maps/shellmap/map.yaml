@@ -26,7 +26,20 @@ Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
+		NonCombatant: True
 		Race: atreides
+		Allies: Atreides
+	PlayerReference@Atreides:
+		Name: Atreides
+		Race: atreides
+		ColorRamp: 161,134,200
+		Allies: Neutral
+		Enemies: Harkonnen
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Race: harkonnen
+		ColorRamp: 3,255,127
+		Enemies: Atreides
 
 Actors:
 	Actor0: spicebloom
@@ -59,9 +72,6 @@ Actors:
 	Actor13: spicebloom
 		Location: 40,45
 		Owner: Neutral
-	Actor14: spicebloom
-		Location: 52,37
-		Owner: Neutral
 	Actor15: spicebloom
 		Location: 67,34
 		Owner: Neutral
@@ -89,6 +99,37 @@ Actors:
 	Actor25: spicebloom
 		Location: 82,65
 		Owner: Neutral
+	Actor26: concreteb
+		Location: 57,58
+		Owner: Neutral
+	Actor27: refa
+		Location: 57,58
+		Owner: Atreides
+	Actor28: concretea
+		Location: 54,58
+		Owner: Neutral
+	Actor29: concretea
+		Location: 54,59
+		Owner: Neutral
+	Actor30: pwra
+		Location: 54,58
+		Owner: Atreides
+	Actor31: concretea
+		Location: 54,62
+		Owner: Neutral
+	Actor32: siloa
+		Location: 54,62
+		Owner: Atreides
+	Actor33: guntowera
+		Location: 54,63
+		Owner: Atreides
+	Actor34: siegetank
+		Location: 54,56
+		Owner: Atreides
+	Actor35: refh
+		Location: 56,42
+		Owner: Harkonnen
+
 
 Smudges:
 
