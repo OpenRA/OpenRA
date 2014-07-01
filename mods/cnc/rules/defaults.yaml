@@ -506,7 +506,6 @@
 	RadarColorFromTerrain:
 		Terrain: Tiberium
 	EditorAppearance:
-		RelativeToTopLeft: yes
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
