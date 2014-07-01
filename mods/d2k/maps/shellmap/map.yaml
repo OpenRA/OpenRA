@@ -139,7 +139,7 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		ResourceType@spice:
+		ResourceType@Spice:
 			ValuePerUnit: 0
 
 Sequences:
