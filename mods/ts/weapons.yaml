@@ -640,6 +640,7 @@ Dragon:
 		Image: 120mm
 		Angle: 165
 		Shadow: yes
+		High: yes
 	MinRange: 5c0
 	Warhead:
 		Spread: 298
