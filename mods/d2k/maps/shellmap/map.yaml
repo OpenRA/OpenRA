@@ -129,39 +129,6 @@ Actors:
 	Actor35: refh
 		Location: 56,42
 		Owner: Harkonnen
-	Actor36: siloh
-		Location: 0,0
-		Owner: Harkonnen
-	Actor37: siloh
-		Location: 0,1
-		Owner: Harkonnen
-	Actor38: siloh
-		Location: 0,2
-		Owner: Harkonnen
-	Actor39: siloh
-		Location: 1,0
-		Owner: Harkonnen
-	Actor40: siloh
-		Location: 1,1
-		Owner: Harkonnen
-	Actor41: siloh
-		Location: 1,2
-		Owner: Harkonnen
-	Actor42: siloa
-		Location: 5,5
-		Owner: Atreides
-	Actor43: siloa
-		Location: 6,5
-		Owner: Atreides
-	Actor44: siloa
-		Location: 6,6
-		Owner: Atreides
-	Actor45: siloa
-		Location: 5,7
-		Owner: Atreides
-	Actor46: siloa
-		Location: 7,5
-		Owner: Atreides
 
 Smudges:
 
@@ -169,6 +136,11 @@ Rules:
 	World:
 		LoadWidgetAtGameStart:
 			Widget: MAINMENU
+		-CrateSpawner:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		ResourceType@spice:
+			ValuePerUnit: 0
 
 Sequences:
 
