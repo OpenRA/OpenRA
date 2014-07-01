@@ -132,7 +132,6 @@
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\ServerOrder.cs" />
     <Compile Include="Server\TraitInterfaces.cs" />
-    <Compile Include="Sound.cs" />
     <Compile Include="Support\Arguments.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Support\Program.cs" />
@@ -240,6 +239,10 @@
     <Compile Include="Input\Keycode.cs" />
     <Compile Include="Input\Hotkey.cs" />
     <Compile Include="Graphics\IGraphicsDevice.cs" />
+    <Compile Include="Sound\Sound.cs" />
+    <Compile Include="Sound\SoundDevice.cs" />
+    <Compile Include="Sound\OpenAlSound.cs" />
+    <Compile Include="Sound\NullSound.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
