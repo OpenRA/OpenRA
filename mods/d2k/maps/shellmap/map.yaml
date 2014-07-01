@@ -150,16 +150,16 @@ Actors:
 	Actor42: siloa
 		Location: 5,5
 		Owner: Atreides
-	Actor42: siloa
+	Actor43: siloa
 		Location: 6,5
 		Owner: Atreides
-	Actor43: siloa
+	Actor44: siloa
 		Location: 6,6
 		Owner: Atreides
-	Actor44: siloa
+	Actor45: siloa
 		Location: 5,7
 		Owner: Atreides
-	Actor45: siloa
+	Actor46: siloa
 		Location: 7,5
 		Owner: Atreides
 
