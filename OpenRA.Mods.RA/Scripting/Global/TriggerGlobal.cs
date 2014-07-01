@@ -144,6 +144,27 @@ namespace OpenRA.Mods.RA.Scripting
 			GetScriptTriggers(player.PlayerActor).RegisterCallback(Trigger.OnObjectiveFailed, func, context);
 		}
 
+		[Desc("Call a function when this actor is added to the world. " +
+		      "The callback function will be called as func(Actor self).")]
+		public void OnAddedToWorld(Actor a, LuaFunction func)
+		{
+			GetScriptTriggers(a).RegisterCallback(Trigger.OnAddedToWorld, func, context);
+		}
+
+		[Desc("Call a function when this actor is removed from the world. " +
+		      "The callback function will be called as func(Actor self).")]
+		public void OnRemovedFromWorld(Actor a, LuaFunction func)
+		{
+			GetScriptTriggers(a).RegisterCallback(Trigger.OnRemovedFromWorld, func, context);
+		}
+
+		[Desc("Call a function when this actor is captured. The callback function " +
+		      "will be called as func(Actor self, Actor captor, Player oldOwner, Player newOwner).")]
+		public void OnCapture(Actor a, LuaFunction func)
+		{
+			GetScriptTriggers(a).RegisterCallback(Trigger.OnCapture, func, context);
+		}
+
 		[Desc("Removes all triggers from this actor")]
 		public void ClearAll(Actor a)
 		{
