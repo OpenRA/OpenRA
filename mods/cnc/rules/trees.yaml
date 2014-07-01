@@ -6,12 +6,16 @@ SPLIT2:
 
 SPLIT3:
 	Inherits: ^TibTree
+	RenderBuilding:
+		Image: split2
 	SeedsResource:
 		ResourceType: Tiberium
 		Interval: 55
 
 SPLITBLUE:
 	Inherits: ^TibTree
+	RenderBuilding:
+		Image: split3
 	SeedsResource:
 		ResourceType: BlueTiberium
 		Interval: 110
