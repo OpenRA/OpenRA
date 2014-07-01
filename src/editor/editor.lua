@@ -721,6 +721,8 @@ function CreateEditor()
 
   editor:SetVisiblePolicy(wxstc.wxSTC_VISIBLE_STRICT, 3)
 
+  editor:SetMarginType(margin.LINENUMBER, wxstc.wxSTC_MARGIN_NUMBER)
+  editor:SetMarginMask(margin.LINENUMBER, 0)
   editor:SetMarginWidth(margin.LINENUMBER,
     editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, linenummask))
 
