@@ -19,6 +19,11 @@ namespace OpenRA.Mods.RA.Render
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
 
+		public readonly string LeftSequence = "left";
+		public readonly string RightSequence = "right";
+		public readonly string WakeLeftSequence = "wake-left";
+		public readonly string WakeRightSequence = "wake-right";
+
 		public override object Create(ActorInitializer init) { return new RenderGunboat(init.self, this); }
 	}
 
@@ -35,28 +40,28 @@ namespace OpenRA.Mods.RA.Render
 				.First(t => t.Name == info.Turret);
 
 			left = new Animation(self.World, name, () => turret.turretFacing);
-			left.Play("left");
-			Add("left", new AnimationWithOffset(left, null, () => facing.Facing > 128, 0));
+			left.Play(info.LeftSequence);
+			Add(info.LeftSequence, new AnimationWithOffset(left, null, () => facing.Facing > 128, 0));
 
 			right = new Animation(self.World, name, () => turret.turretFacing);
-			right.Play("right");
-			Add("right", new AnimationWithOffset(right, null, () => facing.Facing <= 128, 0));
+			right.Play(info.RightSequence);
+			Add(info.RightSequence, new AnimationWithOffset(right, null, () => facing.Facing <= 128, 0));
 
 			var leftWake = new Animation(self.World, name);
-			leftWake.Play("wake-left");
-			Add("wake-left", new AnimationWithOffset(leftWake, null, () => facing.Facing > 128, -87));
+			leftWake.Play(info.WakeLeftSequence);
+			Add(info.WakeLeftSequence, new AnimationWithOffset(leftWake, null, () => facing.Facing > 128, -87));
 
 			var rightWake = new Animation(self.World, name);
-			rightWake.Play("wake-right");
-			Add("wake-right", new AnimationWithOffset(rightWake, null, () => facing.Facing <= 128, -87));
+			rightWake.Play(info.WakeRightSequence);
+			Add(info.WakeRightSequence, new AnimationWithOffset(rightWake, null, () => facing.Facing <= 128, -87));
 
 			self.Trait<IBodyOrientation>().SetAutodetectedFacings(2);
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			left.ReplaceAnim(NormalizeSequence(left, e.DamageState, "left"));
-			right.ReplaceAnim(NormalizeSequence(right, e.DamageState, "right"));
+			left.ReplaceAnim(NormalizeSequence(left, e.DamageState, left.CurrentSequence.Name));
+			right.ReplaceAnim(NormalizeSequence(right, e.DamageState, right.CurrentSequence.Name));
 		}
 	}
 }

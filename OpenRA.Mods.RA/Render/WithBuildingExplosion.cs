@@ -14,15 +14,32 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class WithBuildingExplosionInfo : TraitInfo<WithBuildingExplosion> { }
+	[Desc("Display explosions over the building footprint when it is destroyed.")]
+	class WithBuildingExplosionInfo : ITraitInfo, Requires<BuildingInfo>
+	{
+		[Desc("Explosion sequence name to use")]
+		public readonly string Sequence = "building";
+
+		[Desc("Custom palette name")]
+		public readonly string Palette = "effect";
+		
+		public object Create(ActorInitializer init) { return new WithBuildingExplosion(this); }
+	}
+
 	class WithBuildingExplosion : INotifyKilled
 	{
+		WithBuildingExplosionInfo info;
+
+		public WithBuildingExplosion(WithBuildingExplosionInfo info)
+		{
+			this.info = info;
+		}
+
 		public void Killed(Actor self, AttackInfo e)
 		{
-			//TODO: Make palette for this customizable as well
-			var bi = self.Info.Traits.Get<BuildingInfo>();
-			FootprintUtils.UnpathableTiles(self.Info.Name, bi, self.Location).Do(
-				t => self.World.AddFrameEndTask(w => w.Add(new Explosion(w, w.Map.CenterOfCell(t), "building", "effect"))));
+			var buildingInfo = self.Info.Traits.Get<BuildingInfo>();
+			FootprintUtils.UnpathableTiles(self.Info.Name, buildingInfo, self.Location).Do(
+				t => self.World.AddFrameEndTask(w => w.Add(new Explosion(w, w.Map.CenterOfCell(t), info.Sequence, info.Palette))));
 		}
 	}
 }

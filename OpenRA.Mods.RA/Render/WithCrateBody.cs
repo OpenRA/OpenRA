@@ -15,9 +15,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
+	[Desc("Renders crates with both water and land variants.")]
 	class WithCrateBodyInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		public readonly string[] Images = { "crate" };
+
+		[Desc("Easteregg sequences to use in december.")]
 		public readonly string[] XmasImages = { };
 
 		public object Create(ActorInitializer init) { return new WithCrateBody(init.self, this); }
@@ -35,7 +38,7 @@ namespace OpenRA.Mods.RA.Render
 			var images = info.XmasImages.Any() && DateTime.Today.Month == 12 ? info.XmasImages : info.Images;
 			anim = new Animation(self.World, images.Random(Game.CosmeticRandom));
 			anim.Play("idle");
-			rs.Add("", anim);
+			rs.Add("crate", anim);
 		}
 
 		public void OnLanded()
