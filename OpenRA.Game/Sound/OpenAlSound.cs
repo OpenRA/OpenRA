@@ -210,7 +210,7 @@ namespace OpenRA
 			AL.GetSource(key, ALGetSourcei.SourceState, out state);
 			if (state == (int)ALSourceState.Playing && paused)
 				AL.SourcePause(key);
-			else if (state ==  (int)ALSourceState.Paused && !paused)
+			else if (state == (int)ALSourceState.Paused && !paused)
 				AL.SourcePlay(key);
 		}
 
@@ -222,7 +222,7 @@ namespace OpenRA
 				AL.GetSource(key, ALGetSourcei.SourceState, out state);
 				if (state == (int)ALSourceState.Playing && paused)
 					AL.SourcePause(key);
-				else if (state ==  (int)ALSourceState.Paused && !paused)
+				else if (state == (int)ALSourceState.Paused && !paused)
 					AL.SourcePlay(key);
 			}
 		}
