@@ -108,7 +108,6 @@
     <Compile Include="Graphics\Viewport.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Group.cs" />
-    <Compile Include="InputHandler.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\FrameData.cs" />
@@ -236,6 +235,11 @@
     <Compile Include="Widgets\RootWidget.cs" />
     <Compile Include="Map\CellLayer.cs" />
     <Compile Include="Map\CellRegion.cs" />
+    <Compile Include="Input\IInputHandler.cs" />
+    <Compile Include="Input\InputHandler.cs" />
+    <Compile Include="Input\Keycode.cs" />
+    <Compile Include="Input\Hotkey.cs" />
+    <Compile Include="Graphics\IGraphicsDevice.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
@@ -252,8 +256,6 @@
     <Compile Include="FieldSaver.cs" />
     <Compile Include="InstallUtils.cs" />
     <Compile Include="Manifest.cs" />
-    <Compile Include="IGraphicsDevice.cs" />
-    <Compile Include="IInputHandler.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="FileFormats\AudLoader.cs" />
     <Compile Include="FileFormats\Blast.cs" />
@@ -292,8 +294,6 @@
     <Compile Include="Support\Log.cs" />
     <Compile Include="Support\PerfTimer.cs" />
     <Compile Include="Exts.cs" />
-    <Compile Include="Hotkey.cs" />
-    <Compile Include="Keycode.cs" />
     <Compile Include="MiniYaml.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="StreamExts.cs" />
