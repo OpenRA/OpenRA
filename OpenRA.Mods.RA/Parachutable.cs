@@ -28,6 +28,8 @@ namespace OpenRA.Mods.RA
 
 		[Desc("Requires the sub-sequences \"open\" and \"idle\".")]
 		public readonly string ParachuteSequence = null;
+		public readonly string ParachutePalette = null;
+		public readonly string ParachuteShadowPalette = "shadow";
 		public readonly WVec ParachuteOffset = WVec.Zero;
 
 		public object Create(ActorInitializer init) { return new Parachutable(init, this); }
