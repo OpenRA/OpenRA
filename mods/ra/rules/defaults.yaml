@@ -179,6 +179,7 @@
 		ParachuteOffset: 0,0,427
 		KilledOnImpassableTerrain: true
 		ParachuteSequence: parach
+		ShadowSequence: parach-shadow
 
 ^Ship:
 	AppearsOnRadar:

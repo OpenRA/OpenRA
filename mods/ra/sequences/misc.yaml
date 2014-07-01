@@ -370,6 +370,11 @@ parach:
 		Start: 5
 		Length: 11
 
+parach-shadow:
+	idle:
+		Start: 0
+		Length: *
+
 atomicup:
 	idle:
 		Start: 0

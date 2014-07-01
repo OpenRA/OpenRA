@@ -28,9 +28,17 @@ namespace OpenRA.Mods.RA
 
 		[Desc("Requires the sub-sequences \"open\" and \"idle\".")]
 		public readonly string ParachuteSequence = null;
+		[Desc("Optional, otherwise defaults to the palette the actor is using.")]
 		public readonly string ParachutePalette = null;
+		[Desc("Used to clone the actor with this palette and render it with a visual offset below.")]
 		public readonly string ParachuteShadowPalette = "shadow";
+
 		public readonly WVec ParachuteOffset = WVec.Zero;
+
+		[Desc("Alternative to ParachuteShadowPalette which disables it and allows to set a custom sprite sequence instead.")]
+		public readonly string ShadowSequence = null;
+		[Desc("Optional, otherwise defaults to the palette the actor is using.")]
+		public readonly string ShadowPalette = null;
 
 		public object Create(ActorInitializer init) { return new Parachutable(init, this); }
 	}

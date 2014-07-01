@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		readonly ParachutableInfo parachutableInfo;
 		readonly Animation parachute;
+		readonly Animation shadow;
 		readonly WVec parachuteOffset;
 		readonly Actor cargo;
 		WPos pos;
@@ -37,6 +38,13 @@ namespace OpenRA.Mods.RA.Effects
 				parachute.PlayThen("open", () => parachute.PlayRepeating("idle"));
 			}
 
+			var shadowSprite = parachutableInfo != null ? parachutableInfo.ShadowSequence : null;
+			if (shadowSprite != null)
+			{
+				shadow = new Animation(cargo.World, shadowSprite);
+				shadow.PlayRepeating("idle");
+			}
+
 			if (parachutableInfo != null)
 				parachuteOffset = parachutableInfo.ParachuteOffset;
 
@@ -50,6 +58,9 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (parachute != null)
 				parachute.Tick();
+
+			if (shadow != null)
+				shadow.Tick();
 
 			pos -= fallRate;
 
@@ -75,18 +86,23 @@ namespace OpenRA.Mods.RA.Effects
 			if (!rc.Any())
 				yield break;
 
-			var shadow = wr.Palette(parachutableInfo.ParachuteShadowPalette);
+			var parachuteShadowPalette = wr.Palette(parachutableInfo.ParachuteShadowPalette);
 			foreach (var c in rc)
 			{
-				if (!c.IsDecoration)
-					yield return c.WithPalette(shadow).WithZOffset(c.ZOffset - 1).AsDecoration();
+				if (!c.IsDecoration && shadow == null)
+					yield return c.WithPalette(parachuteShadowPalette).WithZOffset(c.ZOffset - 1).AsDecoration();
 
 				yield return c.OffsetBy(pos - c.Pos);
 			}
 
-			var palette = !string.IsNullOrEmpty(parachutableInfo.ParachutePalette) ? wr.Palette(parachutableInfo.ParachutePalette) : rc.First().Palette;
+			var shadowPalette = !string.IsNullOrEmpty(parachutableInfo.ShadowPalette) ? wr.Palette(parachutableInfo.ShadowPalette) : rc.First().Palette;
+			if (shadow != null)
+				foreach (var r in shadow.Render(pos, parachuteOffset, 1, shadowPalette, 1f))
+					yield return r;
+
+			var parachutePalette = !string.IsNullOrEmpty(parachutableInfo.ParachutePalette) ? wr.Palette(parachutableInfo.ParachutePalette) : rc.First().Palette;
 			if (parachute != null)
-				foreach (var r in parachute.Render(pos, parachuteOffset, 1, palette, 1f))
+				foreach (var r in parachute.Render(pos, parachuteOffset, 1, parachutePalette, 1f))
 					yield return r;
 		}
 	}
