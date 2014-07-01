@@ -287,7 +287,7 @@ namespace OpenRA.Mods.RA.Move
 			while (CellInfoPool.Count > 0)
 			{
 				var cellInfo = GetFromPool();
-				if (cellInfo.Size != mapSize)
+				if (cellInfo.Size != mapSize || cellInfo.Shape != self.World.Map.TileShape)
 				{
 					Log.Write("debug", "Discarding old pooled CellInfo of wrong size.");
 					continue;

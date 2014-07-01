@@ -4,17 +4,17 @@ MapFormat: 6
 
 RequiresMod: ts
 
-Title: Blank Test Map
+Title: Blank
 
-Description: Test Map
+Description: Placeholder
 
-Author: Reaperrr
+Author: Matthias Mailänder
 
 Tileset: INTERIOR
 
 MapSize: 128,128
 
-Bounds: 16,16,96,96
+Bounds: 32,16,48,96
 
 UseAsShellmap: False
 
@@ -56,53 +56,17 @@ Players:
 
 Actors:
 	Actor0: mpspawn
-		Location: 23,23
+		Location: 50,-24
 		Owner: Neutral
 	Actor1: mpspawn
-		Location: 103,23
+		Location: 126,-24
 		Owner: Neutral
-	Actor2: gatech
-		Location: 90,80
-		Owner: Creeps
-	Actor3: natech
-		Location: 86,80
-		Owner: Creeps
-	Actor4: naradr
-		Location: 82,80
-		Owner: Creeps
-	Actor5: hvr
-		Location: 40,80
-		Owner: Creeps
-	Actor6: cyborg
-		Location: 38,80
-		Owner: Creeps
-	Actor7: cyc2
-		Location: 36,80
-		Owner: Creeps
-	Actor8: bike
-		Location: 34,80
-		Owner: Creeps
-	Actor9: ttnk
-		Location: 32,80
-		Owner: Creeps
-	Actor10: mmch
-		Location: 30,80
-		Owner: Creeps
-	Actor11: gapowr
-		Location: 90,85
-		Owner: Creeps
-	Actor12: gapowr
-		Location: 87,85
-		Owner: Creeps
-	Actor13: napowr
-		Location: 84,85
-		Owner: Creeps
-	Actor14: napowr
-		Location: 81,85
-		Owner: Creeps
-	Actor15: napowr
-		Location: 78,85
-		Owner: Creeps
+	Actor2: mpspawn
+		Location: 88,14
+		Owner: Neutral
+	Actor3: mpspawn
+		Location: 88,-62
+		Owner: Neutral
 
 Smudges:
 

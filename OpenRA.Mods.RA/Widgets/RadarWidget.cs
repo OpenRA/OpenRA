@@ -115,7 +115,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var cell = MinimapPixelToCell(mi.Location);
 			var pos = world.Map.CenterOfCell(cell);
 			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
-				worldRenderer.Viewport.Center(world.Map.CenterOfCell(cell));
+				worldRenderer.Viewport.Center(pos);
 
 			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Right)
 			{
@@ -242,8 +242,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		int2 CellToMinimapPixel(CPos p)
 		{
-			var mapOrigin = new CPos(world.Map.Bounds.Left, world.Map.Bounds.Top);
-			var mapOffset = p - mapOrigin;
+			var mapOrigin = new CVec(world.Map.Bounds.Left, world.Map.Bounds.Top);
+			var mapOffset = Map.CellToMap(world.Map.TileShape, p) - mapOrigin;
 
 			return new int2(mapRect.X, mapRect.Y) + (previewScale * new float2(mapOffset.X, mapOffset.Y)).ToInt2();
 		}
@@ -253,7 +253,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var viewOrigin = new float2(mapRect.X, mapRect.Y);
 			var mapOrigin = new float2(world.Map.Bounds.Left, world.Map.Bounds.Top);
 			var fcell = mapOrigin + (1f / previewScale) * (p - viewOrigin);
-			return new CPos((int)fcell.X, (int)fcell.Y);
+			return Map.MapToCell(world.Map.TileShape, new CPos((int)fcell.X, (int)fcell.Y));
 		}
 	}
 }

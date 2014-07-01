@@ -1,24 +1,24 @@
 overlay:
-	build-valid-interior: cellsel #TODO remove backfall to RA tileset
-		Start: 3
-	build-valid-snow: cellsel
-		Start: 3
-	build-valid-temperat: cellsel
-		Start: 3
-	build-invalid: cellsel
-		Start: 6
-	target-select: cellsel
-		Start: 10
-	target-valid-desert: cellsel
-		Start: 3
-	target-valid-interior: cellsel
-		Start: 3
-	target-valid-snow: cellsel
-		Start: 3
-	target-valid-temperat: cellsel
-		Start: 3
-	target-invalid: cellsel
-		Start: 6
+	build-valid-interior: place
+		Start: 0
+	build-valid-snow: place
+		Start: 0
+	build-valid-temperat: place
+		Start: 0
+	build-invalid: place
+		Start: 1
+	target-select: place
+		Start: 1
+	target-valid-desert: place
+		Start: 1
+	target-valid-interior: place
+		Start: 1
+	target-valid-snow: place
+		Start: 1
+	target-valid-temperat: place
+		Start: 1
+	target-invalid: place
+		Start: 1
 
 poweroff:
 	offline: poweroff

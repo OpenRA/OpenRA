@@ -149,8 +149,8 @@ namespace OpenRA.Utility
 
 			map.Smudges = Exts.Lazy(() => new List<SmudgeReference>());
 			map.Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>());
-			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(size));
-			map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(size));
+			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(TileShape.Rectangle, size));
+			map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(TileShape.Rectangle, size));
 
 			map.Options = new MapOptions();
 

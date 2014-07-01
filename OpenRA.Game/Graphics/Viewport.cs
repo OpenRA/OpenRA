@@ -92,8 +92,8 @@ namespace OpenRA.Graphics
 			var b = map.Bounds;
 
 			// Expand to corners of cells
-			var tl = wr.ScreenPxPosition(map.CenterOfCell(new CPos(b.Left, b.Top)) - new WVec(512, 512, 0));
-			var br = wr.ScreenPxPosition(map.CenterOfCell(new CPos(b.Right, b.Bottom)) + new WVec(511, 511, 0));
+			var tl = wr.ScreenPxPosition(map.CenterOfCell(Map.MapToCell(map.TileShape, new CPos(b.Left, b.Top))) - new WVec(512, 512, 0));
+			var br = wr.ScreenPxPosition(map.CenterOfCell(Map.MapToCell(map.TileShape, new CPos(b.Right, b.Bottom))) + new WVec(511, 511, 0));
 			mapBounds = Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 
 			CenterLocation = (tl + br) / 2;
@@ -138,8 +138,12 @@ namespace OpenRA.Graphics
 		{
 			get
 			{
-				var ctl = worldRenderer.world.Map.CenterOfCell(VisibleCells.TopLeft) - new WVec(512, 512, 0);
-				var cbr = worldRenderer.world.Map.CenterOfCell(VisibleCells.BottomRight) + new WVec(511, 511, 0);
+				// Visible rectangle in world coordinates (expanded to the corners of the cells)
+				var map = worldRenderer.world.Map;
+				var ctl = map.CenterOfCell(VisibleCells.TopLeft) - new WVec(512, 512, 0);
+				var cbr = map.CenterOfCell(VisibleCells.BottomRight) + new WVec(512, 512, 0);
+
+				// Convert to screen coordinates
 				var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl)).Clamp(ScreenClip);
 				var br = WorldToViewPx(worldRenderer.ScreenPxPosition(cbr)).Clamp(ScreenClip);
 				return Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
@@ -152,12 +156,16 @@ namespace OpenRA.Graphics
 			{
 				if (cellsDirty)
 				{
-					// Calculate the intersection of the visible rectangle and the map.
+					// Visible rectangle in map coordinates
 					var map = worldRenderer.world.Map;
-					var tl = map.Clamp(map.CellContaining(worldRenderer.Position(TopLeft)) - new CVec(1, 1));
-					var br = map.Clamp(map.CellContaining(worldRenderer.Position(BottomRight)));
+					var ctl = Map.CellToMap(map.TileShape, map.CellContaining(worldRenderer.Position(TopLeft)));
+					var cbr = Map.CellToMap(map.TileShape, map.CellContaining(worldRenderer.Position(BottomRight)));
 
-					cells = new CellRegion(tl, br);
+					// Add a 2 cell cordon to prevent holes, then convert back to cell coordinates
+					var tl = map.Clamp(Map.MapToCell(map.TileShape, ctl - new CVec(2, 2)));
+					var br = map.Clamp(Map.MapToCell(map.TileShape, cbr + new CVec(2, 2)));
+
+					cells = new CellRegion(map.TileShape, tl, br);
 					cellsDirty = false;
 				}
 

@@ -177,19 +177,19 @@ namespace OpenRA.Mods.RA
 			return useExtendedIndex ? u ^ uside : u & 0x0F;
 		}
 
-		static int ObserverShroudedEdges(CPos p, Rectangle bounds, bool useExtendedIndex)
+		static int ObserverShroudedEdges(Map map, CPos p, bool useExtendedIndex)
 		{
 			var u = 0;
-			if (p.Y == bounds.Top) u |= 0x13;
-			if (p.X == bounds.Right - 1) u |= 0x26;
-			if (p.Y == bounds.Bottom - 1) u |= 0x4C;
-			if (p.X == bounds.Left)	u |= 0x89;
+			if (!map.Contains(p + new CVec(0, -1))) u |= 0x13;
+			if (!map.Contains(p + new CVec(1, 0))) u |= 0x26;
+			if (!map.Contains(p + new CVec(0, 1))) u |= 0x4C;
+			if (!map.Contains(p + new CVec(-1, 0))) u |= 0x89;
 
 			var uside = u & 0x0F;
-			if (p.X == bounds.Left && p.Y == bounds.Top) u |= 0x01;
-			if (p.X == bounds.Right - 1 && p.Y == bounds.Top) u |= 0x02;
-			if (p.X == bounds.Right - 1 && p.Y == bounds.Bottom - 1) u |= 0x04;
-			if (p.X == bounds.Left && p.Y == bounds.Bottom - 1) u |= 0x08;
+			if (!map.Contains(p + new CVec(-1, -1))) u |= 0x01;
+			if (!map.Contains(p + new CVec(1, -1))) u |= 0x02;
+			if (!map.Contains(p + new CVec(1, 1))) u |= 0x04;
+			if (!map.Contains(p + new CVec(-1, 1))) u |= 0x08;
 
 			return useExtendedIndex ? u ^ uside : u & 0x0F;
 		}
@@ -197,11 +197,19 @@ namespace OpenRA.Mods.RA
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			// Initialize tile cache
-			foreach (var cell in map.Cells)
+			// Adds a 1-cell border around the border to cover any sprites peeking outside the map
+			foreach (var cell in CellRegion.Expand(w.Map.Cells, 1))
 			{
 				var screen = wr.ScreenPosition(w.Map.CenterOfCell(cell));
 				var variant = Game.CosmeticRandom.Next(info.ShroudVariants.Length);
 				tiles[cell] = new ShroudTile(cell, screen, variant);
+
+				// Set the cells outside the border so they don't need to be touched again
+				if (!map.Contains(cell))
+				{
+					var index = info.UseExtendedIndex ? 240 : 15;
+					tiles[cell].Shroud = shroudSprites[variant * variantStride + spriteMap[index]];
+				}
 			}
 
 			fogPalette = wr.Palette(info.FogPalette);
@@ -229,7 +237,7 @@ namespace OpenRA.Mods.RA
 				foreach (var cell in map.Cells)
 				{
 					var t = tiles[cell];
-					var shrouded = ObserverShroudedEdges(t.Position, map.Bounds, info.UseExtendedIndex);
+					var shrouded = ObserverShroudedEdges(map, t.Position, info.UseExtendedIndex);
 
 					t.Shroud = shrouded != 0 ? shroudSprites[t.Variant * variantStride + spriteMap[shrouded]] : null;
 					t.Fog = shrouded != 0 ? fogSprites[t.Variant * variantStride + spriteMap[shrouded]] : null;
@@ -253,7 +261,7 @@ namespace OpenRA.Mods.RA
 		{
 			Update(shroud);
 
-			foreach (var cell in wr.Viewport.VisibleCells)
+			foreach (var cell in CellRegion.Expand(wr.Viewport.VisibleCells, 1))
 			{
 				var t = tiles[cell];
 

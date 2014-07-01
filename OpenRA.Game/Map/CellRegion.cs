@@ -23,25 +23,36 @@ namespace OpenRA
 		// Corners of the region
 		public readonly CPos TopLeft;
 		public readonly CPos BottomRight;
+		readonly TileShape shape;
 
 		// Corners in map coordinates
-		// Defined for forward compatibility with diagonal cell grids
+		// These will only equal TopLeft and BottomRight for TileShape.Rectangular
 		readonly CPos mapTopLeft;
 		readonly CPos mapBottomRight;
 
-		public CellRegion(CPos topLeft, CPos bottomRight)
+		public CellRegion(TileShape shape, CPos topLeft, CPos bottomRight)
 		{
+			this.shape = shape;
 			TopLeft = topLeft;
 			BottomRight = bottomRight;
 
-			mapTopLeft = TopLeft;
-			mapBottomRight = BottomRight;
+			mapTopLeft = Map.CellToMap(shape, TopLeft);
+			mapBottomRight = Map.CellToMap(shape, BottomRight);
+		}
+
+		/// <summary>Expand the specified region with an additional cordon. This may expand the region outside the map borders.</summary>
+		public static CellRegion Expand(CellRegion region, int cordon)
+		{
+			var offset = new CVec(cordon, cordon);
+			var tl = Map.MapToCell(region.shape, Map.CellToMap(region.shape, region.TopLeft) - offset);
+			var br = Map.MapToCell(region.shape, Map.CellToMap(region.shape, region.BottomRight) + offset);
+
+			return new CellRegion(region.shape, tl, br);
 		}
 
 		public bool Contains(CPos cell)
 		{
-			// Defined for forward compatibility with diagonal cell grids
-			var uv = cell;
+			var uv = Map.CellToMap(shape, cell);
 			return uv.X >= mapTopLeft.X && uv.X <= mapBottomRight.X && uv.Y >= mapTopLeft.Y && uv.Y <= mapBottomRight.Y;
 		}
 
@@ -93,7 +104,7 @@ namespace OpenRA
 				v = r.mapTopLeft.Y;
 			}
 
-			public CPos Current { get { return new CPos(u, v); } }
+			public CPos Current { get { return Map.MapToCell(r.shape, new CPos(u, v)); } }
 			object IEnumerator.Current { get { return Current; } }
 			public void Dispose() { }
 		}

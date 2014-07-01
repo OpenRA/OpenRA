@@ -76,6 +76,8 @@ namespace OpenRA
 		public bool AllowStartUnitConfig = true;
 		public Bitmap CustomPreview;
 
+		public readonly TileShape TileShape;
+
 		[FieldLoader.LoadUsing("LoadOptions")]
 		public MapOptions Options;
 
@@ -125,11 +127,12 @@ namespace OpenRA
 		public static Map FromTileset(TileSet tileset)
 		{
 			var size = new Size(1, 1);
+			var tileShape = Game.modData.Manifest.TileShape;
 			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
 
 			var makeMapTiles =  Exts.Lazy(() =>
 			{
-				var ret = new CellLayer<TerrainTile>(size);
+				var ret = new CellLayer<TerrainTile>(tileShape, size);
 				ret.Clear(tileRef);
 				return ret;
 			});
@@ -142,7 +145,7 @@ namespace OpenRA
 				MapSize = new int2(size),
 				Tileset = tileset.Id,
 				Options = new MapOptions(),
-				MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(size)),
+				MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(tileShape, size)),
 				MapTiles = makeMapTiles,
 				Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>()),
 				Smudges = Exts.Lazy(() => new List<SmudgeReference>())
@@ -242,6 +245,7 @@ namespace OpenRA
 
 			MapTiles = Exts.Lazy(() => LoadMapTiles());
 			MapResources = Exts.Lazy(() => LoadResourceTiles());
+			TileShape = Game.modData.Manifest.TileShape;
 
 			// The Uid is calculated from the data on-disk, so
 			// format changes must be flushed to disk.
@@ -262,9 +266,9 @@ namespace OpenRA
 			rules = Exts.Lazy(() => Game.modData.RulesetCache.LoadMapRules(this));
 			cachedTileSet = Exts.Lazy(() => Rules.TileSets[Tileset]);
 
-			var tl = new CPos(Bounds.Left, Bounds.Top);
-			var br = new CPos(Bounds.Right - 1, Bounds.Bottom - 1);
-			Cells = new CellRegion(tl, br);
+			var tl = Map.MapToCell(TileShape, new CPos(Bounds.Left, Bounds.Top));
+			var br = Map.MapToCell(TileShape, new CPos(Bounds.Right - 1, Bounds.Bottom - 1));
+			Cells = new CellRegion(TileShape, tl, br);
 
 			CustomTerrain = new CellLayer<int>(this);
 			foreach (var cell in Cells)
@@ -465,17 +469,79 @@ namespace OpenRA
 
 		public bool Contains(CPos cell)
 		{
-			return Bounds.Contains(cell.X, cell.Y);
+			var uv = CellToMap(TileShape, cell);
+			return Bounds.Contains(uv.X, uv.Y);
 		}
 
-		public WPos CenterOfCell(CPos c)
+		public WPos CenterOfCell(CPos cell)
 		{
-			return new WPos(1024 * c.X + 512, 1024 * c.Y + 512, 0);
+			if (TileShape == TileShape.Rectangle)
+				return new WPos(1024 * cell.X + 512, 1024 * cell.Y + 512, 0);
+
+			// Convert from diamond cell position (x, y) to world position (u, v):
+			// (a) Consider the relationships:
+			//  - Center of origin cell is (512, 512)
+			//  - +x adds (512, 512) to world pos
+			//  - +y adds (-512, 512) to world pos
+			// (b) Therefore:
+			//  - ax + by adds (a - b) * 512 + 512 to u
+			//  - ax + by adds (a + b) * 512 + 512 to v
+			return new WPos(512 * (cell.X - cell.Y + 1), 512 * (cell.X + cell.Y + 1), 0);
 		}
 
 		public CPos CellContaining(WPos pos)
 		{
-			return new CPos(pos.X / 1024, pos.Y / 1024);
+			if (TileShape == TileShape.Rectangle)
+				return new CPos(pos.X / 1024, pos.Y / 1024);
+
+			// Convert from world position to diamond cell position:
+			// (a) Subtract (512, 512) to move the rotation center to the middle of the corner cell
+			// (b) Rotate axes by -pi/4
+			// (c) Add 512 to x (but not y) to realign the cell
+			// (d) Divide by 1024 to find final cell coords
+			var u = (pos.Y + pos.X - 512) / 1024;
+			var v = (pos.Y - pos.X) / 1024;
+			return new CPos(u, v);
+		}
+
+		public static CPos MapToCell(TileShape shape, CPos map)
+		{
+			if (shape == TileShape.Rectangle)
+				return map;
+
+			// Convert from rectangular map position to diamond cell position
+			//  - The staggered rows make this fiddly (hint: draw a diagram!)
+			// (a) Consider the relationships:
+			//  - +1u (even -> odd) adds (1, -1) to (x, y)
+			//  - +1v (even -> odd) adds (1, 0) to (x, y)
+			//  - +1v (odd -> even) adds (0, 1) to (x, y)
+			// (b) Therefore:
+			//  - au + 2bv adds (a + b) to (x, y)
+			//  - a correction factor is added if v is odd
+			var offset = (map.Y & 1) == 1 ? 1 : 0;
+			var y = (map.Y - offset) / 2 - map.X;
+			var x = map.Y - y;
+			return new CPos(x, y);
+		}
+
+		public static CPos CellToMap(TileShape shape, CPos cell)
+		{
+			if (shape == TileShape.Rectangle)
+				return cell;
+
+			// Convert from diamond cell (x, y) position to rectangular map position (u, v)
+			//  - The staggered rows make this fiddly (hint: draw a diagram!)
+			// (a) Consider the relationships:
+			//  - +1x (even -> odd) adds (0, 1) to (u, v)
+			//  - +1x (odd -> even) adds (1, 1) to (u, v)
+			//  - +1y (even -> odd) adds (-1, 1) to (u, v)
+			//  - +1y (odd -> even) adds (0, 1) to (u, v)
+			// (b) Therefore:
+			//  - ax + by adds (a - b)/2 to u (only even increments count)
+			//  - ax + by adds a + b to v
+			var u = (cell.X - cell.Y) / 2;
+			var v = cell.X + cell.Y;
+			return new CPos(u, v);
 		}
 
 		public int FacingBetween(CPos cell, CPos towards, int fallbackfacing)
@@ -497,7 +563,10 @@ namespace OpenRA
 		public void ResizeCordon(int left, int top, int right, int bottom)
 		{
 			Bounds = Rectangle.FromLTRB(left, top, right, bottom);
-			Cells = new CellRegion(new CPos(Bounds.Left, Bounds.Top), new CPos(Bounds.Right - 1, Bounds.Bottom - 1));
+
+			var tl = Map.MapToCell(TileShape, new CPos(Bounds.Left, Bounds.Top));
+			var br = Map.MapToCell(TileShape, new CPos(Bounds.Right - 1, Bounds.Bottom - 1));
+			Cells = new CellRegion(TileShape, tl, br);
 		}
 
 		string ComputeHash()
@@ -597,17 +666,18 @@ namespace OpenRA
 			return cachedTileSet.Value[GetTerrainIndex(cell)];
 		}
 
-		public CPos Clamp(CPos xy)
+		public CPos Clamp(CPos cell)
 		{
-			var r = Bounds;
-			return xy.Clamp(new Rectangle(r.X, r.Y, r.Width - 1, r.Height - 1));
+			var bounds = new Rectangle(Bounds.X, Bounds.Y, Bounds.Width - 1, Bounds.Height - 1);
+			return MapToCell(TileShape, CellToMap(TileShape, cell).Clamp(bounds));
 		}
 
 		public CPos ChooseRandomCell(MersenneTwister rand)
 		{
-			return new CPos(
-				rand.Next(Bounds.Left, Bounds.Right),
-				rand.Next(Bounds.Top, Bounds.Bottom));
+			var x = rand.Next(Bounds.Left, Bounds.Right);
+			var y = rand.Next(Bounds.Top, Bounds.Bottom);
+
+			return MapToCell(TileShape, new CPos(x, y));
 		}
 
 		public CPos ChooseRandomEdgeCell(MersenneTwister rand)
@@ -615,15 +685,16 @@ namespace OpenRA
 			var isX = rand.Next(2) == 0;
 			var edge = rand.Next(2) == 0;
 
-			return new CPos(
-				isX ? rand.Next(Bounds.Left, Bounds.Right) : (edge ? Bounds.Left : Bounds.Right),
-				!isX ? rand.Next(Bounds.Top, Bounds.Bottom) : (edge ? Bounds.Top : Bounds.Bottom));
+			var x = isX ? rand.Next(Bounds.Left, Bounds.Right) : (edge ? Bounds.Left : Bounds.Right);
+			var y = !isX ? rand.Next(Bounds.Top, Bounds.Bottom) :  (edge ? Bounds.Top : Bounds.Bottom);
+
+			return MapToCell(TileShape, new CPos(x, y));
 		}
 
 		public WRange DistanceToEdge(WPos pos, WVec dir)
 		{
-			var tl = CenterOfCell(new CPos(Bounds.Left, Bounds.Top)) - new WVec(512, 512, 0);
-			var br = CenterOfCell(new CPos(Bounds.Right, Bounds.Bottom)) + new WVec(511, 511, 0);
+			var tl = CenterOfCell(Cells.TopLeft) - new WVec(512, 512, 0);
+			var br = CenterOfCell(Cells.BottomRight) + new WVec(511, 511, 0);
 			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? tl.X : br.X) - pos.X) / dir.X;
 			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? tl.Y : br.Y) - pos.Y) / dir.Y;
 			return new WRange(Math.Min(x, y) * dir.Length);
