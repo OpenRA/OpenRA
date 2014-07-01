@@ -3,8 +3,7 @@ SS:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 50
-		Prerequisites: spen
-		Owner: soviet
+		Prerequisites: ~spen
 		Hotkey: u
 	Valued:
 		Cost: 950
@@ -56,8 +55,7 @@ MSUB:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 60
-		Prerequisites: spen,stek
-		Owner: soviet
+		Prerequisites: ~spen, stek
 		Hotkey: m
 	Valued:
 		Cost: 2400
@@ -109,8 +107,7 @@ DD:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 70
-		Prerequisites: syrd,dome
-		Owner: allies
+		Prerequisites: ~syrd, dome
 		Hotkey: r
 	Valued:
 		Cost: 1000
@@ -159,8 +156,7 @@ CA:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 100
-		Prerequisites: syrd,atek
-		Owner: allies
+		Prerequisites: ~syrd, atek
 		Hotkey: c
 	Valued:
 		Cost: 2400
@@ -221,7 +217,6 @@ LST:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 30
-		Owner: allies,soviet
 		Hotkey: t
 	Valued:
 		Cost: 700
@@ -254,8 +249,7 @@ PT:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 50
-		Prerequisites: syrd
-		Owner: allies
+		Prerequisites: ~syrd
 		Hotkey: b
 	Valued:
 		Cost: 500

@@ -2278,52 +2278,52 @@ Rules:
 		MustBeDestroyed:
 	ATEK:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	GAP:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	MSLO:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	PDOX:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	E7:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	2TNK:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	ARTY:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	CTNK:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	MGG:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	MNLY.AT:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	MRJ:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	TRUK:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	HIND:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	CA:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	DD:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	STNK:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 
 Sequences:
 

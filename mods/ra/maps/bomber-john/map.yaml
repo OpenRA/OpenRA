@@ -773,37 +773,37 @@ Rules:
 		-SpawnMPUnits:
 	APWR:
 		Buildable:
-			Owner: a
+			Prerequisites: ~disabled
 	STEK:
 		Buildable:
-			Owner: a
+			Prerequisites: ~disabled
 	BARR:
 		Buildable:
-			Owner: a
+			Prerequisites: ~disabled
 	FIX:
 		Buildable:
-			Owner: a
+			Prerequisites: ~disabled
 	POWR:
 		Buildable:
-			Owner: a
+			Prerequisites: ~disabled
 	AFLD:
 		Buildable:
-			Owner: a
+			Prerequisites: ~disabled
 	PROC:
 		Buildable:
-			Owner: a
+			Prerequisites: ~disabled
 	WEAP:
 		Buildable:
-			Owner: a
+			Prerequisites: ~disabled
 	DOME:
 		Buildable:
-			Owner: a
+			Prerequisites: ~disabled
 	SPEN:
 		Buildable:
-			Owner: a
+			Prerequisites: ~disabled
 	SILO:
 		Buildable:
-			Owner: a
+			Prerequisites: ~disabled
 	Player:
 		ClassicProductionQueue@Building:
 			BuildSpeed: 0.4
