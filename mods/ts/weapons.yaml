@@ -818,6 +818,7 @@ RPGTower:
 		Image: canister
 		Shadow: yes
 		Angle: 62
+		High: yes
 	Warhead:
 		Spread: 128
 		Versus:
