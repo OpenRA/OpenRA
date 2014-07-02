@@ -3,9 +3,7 @@ mcv:
 
 harv:
 	idle:
-
-horv:
-	idle:
+	unload: horv
 
 apc: # TODO apcw in water
 	idle:

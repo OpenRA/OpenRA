@@ -18,19 +18,21 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS
 {
-	public class SimpleHarvesterDockSequence : Activity
+	public class VoxelHarvesterDockSequence : Activity
 	{
 		enum State { Turn, Dock, Loop, Undock }
 
 		readonly Actor proc;
 		readonly Harvester harv;
+		readonly WithVoxelUnloadBody body;
 		State state;
 
-		public SimpleHarvesterDockSequence(Actor self, Actor proc)
+		public VoxelHarvesterDockSequence(Actor self, Actor proc)
 		{
 			this.proc = proc;
 			state = State.Turn;
 			harv = self.Trait<Harvester>();
+			body = self.Trait<WithVoxelUnloadBody>();
 		}
 
 		public override Activity Tick(Actor self)
@@ -45,6 +47,7 @@ namespace OpenRA.Mods.TS
 						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
 							nd.Docked(proc, self);
 					state = State.Loop;
+					body.Docked = true;
 					return this;
 				case State.Loop:
 					if (!proc.IsInWorld || proc.IsDead() || harv.TickUnload(self, proc))
@@ -54,6 +57,7 @@ namespace OpenRA.Mods.TS
 					if (proc.IsInWorld && !proc.IsDead())
 						foreach (var nd in proc.TraitsImplementing<INotifyDocking>())
 							nd.Undocked(proc, self);
+					body.Docked = false;
 					return NextActivity;
 			}
 

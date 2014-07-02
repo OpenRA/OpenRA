@@ -24,7 +24,7 @@ namespace OpenRA.Mods.TS
 
 		public override Activity DockSequence(Actor harv, Actor self)
 		{
-			return new SimpleHarvesterDockSequence(harv, self);
+			return new VoxelHarvesterDockSequence(harv, self);
 		}
 	}
 }
