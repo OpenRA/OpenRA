@@ -12,6 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
+	[Desc("A dictionary of buildings placed on the map. Attach this to the world actor.")]
 	public class BuildingInfluenceInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new BuildingInfluence(init.world); }
