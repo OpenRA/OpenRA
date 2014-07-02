@@ -133,7 +133,7 @@ PROC:
 	RevealsShroud:
 		Range: 6
 #	Bib:
-	TiberiumRefinery:
+	TiberianSunRefinery:
 	StoresResources:
 		PipColor: Green
 		PipCount: 15
