@@ -42,62 +42,17 @@ Players:
 		Enemies: Atreides
 
 Actors:
-	Actor0: spicebloom
-		Location: 27,42
-		Owner: Neutral
-	Actor3: spicebloom
-		Location: 43,22
-		Owner: Neutral
 	Actor4: spicebloom
 		Location: 50,53
 		Owner: Neutral
 	Actor5: spicebloom
 		Location: 50,65
 		Owner: Neutral
-	Actor6: spicebloom
-		Location: 45,75
-		Owner: Neutral
 	Actor7: spicebloom
 		Location: 64,52
 		Owner: Neutral
 	Actor8: spicebloom
 		Location: 65,64
-		Owner: Neutral
-	Actor9: spicebloom
-		Location: 65,20
-		Owner: Neutral
-	Actor12: spicebloom
-		Location: 85,42
-		Owner: Neutral
-	Actor13: spicebloom
-		Location: 40,45
-		Owner: Neutral
-	Actor15: spicebloom
-		Location: 67,34
-		Owner: Neutral
-	Actor16: spicebloom
-		Location: 76,43
-		Owner: Neutral
-	Actor17: spicebloom
-		Location: 26,75
-		Owner: Neutral
-	Actor18: spicebloom
-		Location: 48,91
-		Owner: Neutral
-	Actor19: spicebloom
-		Location: 29,61
-		Owner: Neutral
-	Actor22: spicebloom
-		Location: 93,68
-		Owner: Neutral
-	Actor23: spicebloom
-		Location: 71,74
-		Owner: Neutral
-	Actor24: spicebloom
-		Location: 62,92
-		Owner: Neutral
-	Actor25: spicebloom
-		Location: 82,65
 		Owner: Neutral
 	Actor26: concreteb
 		Location: 57,58
