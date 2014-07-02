@@ -33,7 +33,8 @@ namespace OpenRA.FileFormats
 				var width = stream.ReadUInt16();
 				var height = stream.ReadUInt16();
 
-				Offset = new float2(x + 0.5f * (width - frameSize.Width), y + 0.5f * (height - frameSize.Height));
+				// Note: the mixed Integer / fp division is intentional, and required for calculating the correct offset.
+				Offset = new float2(x + width / 2 - 0.5f * frameSize.Width, y + height / 2 - 0.5f * frameSize.Height);
 				Size = new Size(width, height);
 				FrameSize = frameSize;
 
