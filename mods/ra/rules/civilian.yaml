@@ -101,38 +101,6 @@ V01:
 		Name: Church
 	RevealsShroud:
 		Range: 10c0
-	TransformOnCapture:
-		IntoActor: v01.sniper
-		SkipMakeAnims: true
-	Capturable:
-		Type: CivilianBuilding
-		CaptureThreshold: 1
-	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
-
-V01.SNIPER:
-	Inherits: V01
-	RenderBuilding:
-		Image: V01
-	RenderRangeCircle:
-	AutoTarget:
-	Turreted:
-		ROT: 255
-	Armament:
-		Weapon: Sniper
-		LocalOffset: 469,0,0
-	AttackTurreted:
-	Cargo:
-		InitialUnits: sniper
-		Types: Infantry
-		MaxWeight: 1
-		PipCount: 1
-	TransformOnPassenger@Sniper:
-		PassengerTypes: sniper
-		OnExit: v01
-		SkipMakeAnims: true
-		BecomeNeutral: true
-	-Capturable:
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -548,36 +516,6 @@ V25:
 		Name: Church
 	RevealsShroud:
 		Range: 10c0
-	TransformOnCapture:
-		IntoActor: v25.sniper
-		SkipMakeAnims: true
-	Capturable:
-		Type: CivilianBuilding
-		CaptureThreshold: 1
-
-V25.SNIPER:
-	Inherits: V25
-	RenderBuilding:
-		Image: V25
-	RenderRangeCircle:
-	AutoTarget:
-	Turreted:
-		ROT: 255
-	Armament:
-		Weapon: Sniper
-		LocalOffset: 469,0,0
-	AttackTurreted:
-	Cargo:
-		InitialUnits: sniper
-		Types: Infantry
-		MaxWeight: 1
-		PipCount: 1
-	TransformOnPassenger@Sniper:
-		PassengerTypes: sniper
-		OnExit: v25
-		SkipMakeAnims: true
-		BecomeNeutral: true
-	-Capturable:
 
 V26:
 	Inherits: ^DesertCivBuilding

@@ -520,10 +520,6 @@ SNIPER:
 		CloakSound:
 		UncloakSound:
 		UncloakOnMove: yes
-	Captures:
-		CaptureTypes: CivilianBuilding
-		Sabotage: no
-		SabotageHPRemoval: 0
 	DetectCloaked:
 		Range: 6
 

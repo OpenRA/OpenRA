@@ -481,7 +481,7 @@ Actors:
 	Actor87: t02
 		Location: 84,83
 		Owner: Neutral
-	Actor7: v01.sniper
+	Actor7: v01
 		Location: 89,65
 		Owner: Neutral
 	Actor148: tc05
