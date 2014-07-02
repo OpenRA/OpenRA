@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 			influence = new CellLayer<Actor>(map);
 
-			world.ActorAdded +=	a =>
+			world.ActorAdded += a =>
 			{
 				var b = a.TraitOrDefault<Building>();
 				if (b == null)
