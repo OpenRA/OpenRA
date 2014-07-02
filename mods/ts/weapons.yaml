@@ -879,3 +879,18 @@ TurretLaser:
 		InfDeath: 5
 		SmudgeType: Scorch
 		Damage: 30
+
+TiberiumExplosion:
+	Warhead:
+		Damage: 10
+		Spread: 9
+		Size: 1,1
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		InfDeath: 3
+		Explosion: large_explosion
+		ImpactSound: expnew09.aud
+		AddsResourceType: Tiberium
