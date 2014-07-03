@@ -99,9 +99,14 @@ World:
 		PipColor: Green
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
+	FixedColorPalette@BlueTiberium:
+		Base: terrain
+		Name: bluetiberium
+		Color: 152, 255, 196
+		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
 	ResourceType@blue-tib:
 		ResourceType: 2
-		Palette: staticterrain
+		Palette: bluetiberium
 		TerrainType: BlueTiberium
 		EditorSprite: bti1
 		Variants: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
