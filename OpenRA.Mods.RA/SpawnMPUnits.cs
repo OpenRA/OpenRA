@@ -52,8 +52,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			// Spawn support units in an annulus around the base actor
-			var supportSpawnCells = w.Map.FindTilesInCircle(sp, unitGroup.OuterSupportRadius)
-				.Except(w.Map.FindTilesInCircle(sp, unitGroup.InnerSupportRadius));
+			var supportSpawnCells = w.Map.FindTilesInAnnulus(sp, unitGroup.InnerSupportRadius + 1, unitGroup.OuterSupportRadius);
 
 			foreach (var s in unitGroup.SupportActors)
 			{

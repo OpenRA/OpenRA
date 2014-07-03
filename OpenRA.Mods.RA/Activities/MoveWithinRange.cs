@@ -45,16 +45,13 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			var map = self.World.Map;
 			var maxCells = (maxRange.Range + 1023) / 1024;
-			var outerCells = map.FindTilesInCircle(targetPosition, maxCells);
-
 			var minCells = minRange.Range / 1024;
-			var innerCells = map.FindTilesInCircle(targetPosition, minCells);
 
 			var outerSq = maxRange.Range * maxRange.Range;
 			var innerSq = minRange.Range * minRange.Range;
 			var center = target.CenterPosition;
 
-			return outerCells.Except(innerCells).Where(c =>
+			return map.FindTilesInAnnulus(targetPosition, minCells + 1, maxCells).Where(c =>
 			{
 				var dxSq = (map.CenterOfCell(c) - center).HorizontalLengthSquared;
 				return dxSq >= innerSq && dxSq <= outerSq;

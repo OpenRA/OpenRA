@@ -99,18 +99,13 @@ namespace OpenRA.Mods.RA.Activities
 			if (pos.CanEnterCell(destination) && self.Owner.Shroud.IsExplored(destination))
 				return destination;
 
-			var searched = new List<CPos>();
-			for (var r = 1; r <= maxCellSearchRange || (maximumDistance != null && r <= maximumDistance); r++)
+			var max = maximumDistance != null ? maximumDistance.Value : maxCellSearchRange;
+			foreach (var tile in self.World.Map.FindTilesInCircle(destination, max))
 			{
-				foreach (var tile in self.World.Map.FindTilesInCircle(destination, r).Except(searched))
-				{
-					if (self.Owner.Shroud.IsExplored(tile)
-						&& (restrictTo == null || (restrictTo != null && restrictTo.Contains(tile)))
-						&& pos.CanEnterCell(tile))
-						return tile;
-
-					searched.Add(tile);
-				}
+				if (self.Owner.Shroud.IsExplored(tile)
+					&& (restrictTo == null || (restrictTo != null && restrictTo.Contains(tile)))
+					&& pos.CanEnterCell(tile))
+					return tile;
 			}
 
 			return null;

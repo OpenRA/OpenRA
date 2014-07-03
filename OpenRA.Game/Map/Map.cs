@@ -701,9 +701,9 @@ namespace OpenRA
 		}
 
 		public const int MaxTilesInCircleRange = 50;
-		static List<CVec>[] TilesByDistance = InitTilesByDistance(MaxTilesInCircleRange);
+		static CVec[][] TilesByDistance = InitTilesByDistance(MaxTilesInCircleRange);
 
-		static List<CVec>[] InitTilesByDistance(int max)
+		static CVec[][] InitTilesByDistance(int max)
 		{
 			var ts = new List<CVec>[max + 1];
 			for (var i = 0; i < max + 1; i++)
@@ -714,15 +714,26 @@ namespace OpenRA
 					if (max * max >= i * i + j * j)
 						ts [(int)Math.Ceiling(Math.Sqrt(i * i + j * j))].Add(new CVec(i, j));
 
-			return ts;
+			// Sort each integer-distance group by the actual distance
+			foreach (var list in ts)
+				list.Sort((a, b) => a.LengthSquared.CompareTo(b.LengthSquared));
+
+			return ts.Select(list => list.ToArray()).ToArray();
 		}
 
-		public IEnumerable<CPos> FindTilesInCircle(CPos center, int range)
+		// Both ranges are inclusive because everything that calls it is designed for maxRange being inclusive:
+		// it rounds the actual distance up to the next integer so that this call
+		// will return any cells that intersect with the requested range circle.
+		// The returned positions are sorted by distance from the center.
+		public IEnumerable<CPos> FindTilesInAnnulus(CPos center, int minRange, int maxRange)
 		{
-			if (range >= TilesByDistance.Length)
-				throw new InvalidOperationException("FindTilesInCircle supports queries for only <= {0}".F(MaxTilesInCircleRange));
+			if (maxRange < minRange)
+				throw new ArgumentOutOfRangeException("maxRange", "Maximum range is less than the minimum range.");
 
-			for (var i = 0; i <= range; i++)
+			if (maxRange > TilesByDistance.Length)
+				throw new ArgumentOutOfRangeException("maxRange", "The requested range ({0}) exceeds the maximum allowed ({1})".F(maxRange, MaxTilesInCircleRange));
+
+			for (var i = minRange; i <= maxRange; i++)
 			{
 				foreach (var offset in TilesByDistance[i])
 				{
@@ -731,6 +742,11 @@ namespace OpenRA
 						yield return t;
 				}
 			}
+		}
+
+		public IEnumerable<CPos> FindTilesInCircle(CPos center, int maxRange)
+		{
+			return FindTilesInAnnulus(center, 0, maxRange);
 		}
 	}
 }
