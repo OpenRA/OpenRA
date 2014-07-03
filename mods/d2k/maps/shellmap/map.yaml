@@ -26,23 +26,27 @@ Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
+		NonCombatant: True
 		Race: atreides
+		Allies: Atreides
+	PlayerReference@Atreides:
+		Name: Atreides
+		Race: atreides
+		ColorRamp: 161,134,200
+		Allies: Neutral
+		Enemies: Harkonnen
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Race: harkonnen
+		ColorRamp: 3,255,127
+		Enemies: Atreides
 
 Actors:
-	Actor0: spicebloom
-		Location: 27,42
-		Owner: Neutral
-	Actor3: spicebloom
-		Location: 43,22
-		Owner: Neutral
 	Actor4: spicebloom
 		Location: 50,53
 		Owner: Neutral
 	Actor5: spicebloom
 		Location: 50,65
-		Owner: Neutral
-	Actor6: spicebloom
-		Location: 45,75
 		Owner: Neutral
 	Actor7: spicebloom
 		Location: 64,52
@@ -50,45 +54,36 @@ Actors:
 	Actor8: spicebloom
 		Location: 65,64
 		Owner: Neutral
-	Actor9: spicebloom
-		Location: 65,20
+	Actor26: concreteb
+		Location: 57,58
 		Owner: Neutral
-	Actor12: spicebloom
-		Location: 85,42
+	Actor27: refa
+		Location: 57,58
+		Owner: Atreides
+	Actor28: concretea
+		Location: 54,58
 		Owner: Neutral
-	Actor13: spicebloom
-		Location: 40,45
+	Actor29: concretea
+		Location: 54,59
 		Owner: Neutral
-	Actor14: spicebloom
-		Location: 52,37
+	Actor30: pwra
+		Location: 54,58
+		Owner: Atreides
+	Actor31: concretea
+		Location: 54,62
 		Owner: Neutral
-	Actor15: spicebloom
-		Location: 67,34
-		Owner: Neutral
-	Actor16: spicebloom
-		Location: 76,43
-		Owner: Neutral
-	Actor17: spicebloom
-		Location: 26,75
-		Owner: Neutral
-	Actor18: spicebloom
-		Location: 48,91
-		Owner: Neutral
-	Actor19: spicebloom
-		Location: 29,61
-		Owner: Neutral
-	Actor22: spicebloom
-		Location: 93,68
-		Owner: Neutral
-	Actor23: spicebloom
-		Location: 71,74
-		Owner: Neutral
-	Actor24: spicebloom
-		Location: 62,92
-		Owner: Neutral
-	Actor25: spicebloom
-		Location: 82,65
-		Owner: Neutral
+	Actor32: siloa
+		Location: 54,62
+		Owner: Atreides
+	Actor33: guntowera
+		Location: 54,63
+		Owner: Atreides
+	Actor34: siegetank
+		Location: 54,56
+		Owner: Atreides
+	Actor35: refh
+		Location: 56,42
+		Owner: Harkonnen
 
 Smudges:
 
@@ -96,6 +91,11 @@ Rules:
 	World:
 		LoadWidgetAtGameStart:
 			Widget: MAINMENU
+		-CrateSpawner:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		ResourceType@Spice:
+			ValuePerUnit: 0
 
 Sequences:
 
