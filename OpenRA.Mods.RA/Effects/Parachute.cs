@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			var shadowPalette = !string.IsNullOrEmpty(parachutableInfo.ShadowPalette) ? wr.Palette(parachutableInfo.ShadowPalette) : rc.First().Palette;
 			if (shadow != null)
-				foreach (var r in shadow.Render(pos, parachuteOffset, 1, shadowPalette, 1f))
+				foreach (var r in shadow.Render(pos - new WVec(0, 0, pos.Z), WVec.Zero, 1, shadowPalette, 1f))
 					yield return r;
 
 			var parachutePalette = !string.IsNullOrEmpty(parachutableInfo.ParachutePalette) ? wr.Palette(parachutableInfo.ParachutePalette) : rc.First().Palette;
