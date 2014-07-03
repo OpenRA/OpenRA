@@ -97,6 +97,9 @@ namespace OpenRA.Mods.RA.Render
 
 		public void TickRender(WorldRenderer wr, Actor self)
 		{
+			if (wr.world.Paused == World.PauseState.Paused)
+				return;
+
 			foreach (var a in anims.Values)
 				a.Animation.Tick();
 		}

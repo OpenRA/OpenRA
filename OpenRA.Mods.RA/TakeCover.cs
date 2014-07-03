@@ -53,6 +53,7 @@ namespace OpenRA.Mods.RA
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
+
 			if (IsProne && --remainingProneTime == 0)
 				LocalOffset = WVec.Zero;
 		}
@@ -101,10 +102,14 @@ namespace OpenRA.Mods.RA
 
 		public override void TickRender(WorldRenderer wr, Actor self)
 		{
+			if (wr.world.Paused == World.PauseState.Paused)
+				return;
+
 			if (wasProne != tc.IsProne)
 				dirty = true;
 
 			wasProne = tc.IsProne;
+
 			base.TickRender(wr, self);
 		}
 	}

@@ -37,6 +37,9 @@ namespace OpenRA.Mods.RA.Render
 
 		public override void TickRender(WorldRenderer wr, Actor self)
 		{
+			if (wr.world.Paused == World.PauseState.Paused)
+				return;
+
 			var desiredState = harv.Fullness * (info.ImagesByFullness.Length - 1) / 100;
 			var desiredImage = info.ImagesByFullness[desiredState];
 

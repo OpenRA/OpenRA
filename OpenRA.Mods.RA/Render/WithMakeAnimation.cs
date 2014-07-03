@@ -41,6 +41,9 @@ namespace OpenRA.Mods.RA.Render
 
 		public void TickRender(WorldRenderer wr, Actor self)
 		{
+			if (wr.world.Paused == World.PauseState.Paused)
+				return;
+
 			if (self.IsDead() || buildComplete)
 				return;
 
