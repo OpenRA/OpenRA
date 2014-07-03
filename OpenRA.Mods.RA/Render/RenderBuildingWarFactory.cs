@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	class RenderBuildingWarFactory : RenderBuilding, INotifyBuildComplete, ITick, INotifyProduction, INotifySold, ISync
+	class RenderBuildingWarFactory : RenderBuilding, INotifyBuildComplete, ITickRender, INotifyProduction, INotifySold, ISync
 	{
 		Animation roof;
 		[Sync] bool isOpen;
@@ -62,9 +62,9 @@ namespace OpenRA.Mods.RA.Render
 			buildComplete = true;
 		}
 
-		public override void Tick(Actor self)
+		public override void TickRender(WorldRenderer wr, Actor self)
 		{
-			base.Tick(self);
+			base.TickRender(wr, self);
 			if (isOpen && !self.World.ActorMap.GetUnitsAt(openExit).Any( a => a != self ))
 			{
 				isOpen = false;

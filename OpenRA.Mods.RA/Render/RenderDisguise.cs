@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 			intendedSprite = disguise.AsSprite;
 		}
 
-		public override void Tick(Actor self)
+		public override void TickRender(WorldRenderer wr, Actor self)
 		{
 			if (disguise.AsSprite != intendedSprite)
 			{
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.RA.Render
 				UpdatePalette();
 			}
 
-			base.Tick(self);
+			base.TickRender(wr, self);
 		}
 	}
 }

@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new AttackGarrisoned(init.self, this); }
 	}
 
-	public class AttackGarrisoned : AttackFollow, INotifyPassengerEntered, INotifyPassengerExited, IRender
+	public class AttackGarrisoned : AttackFollow, INotifyPassengerEntered, INotifyPassengerExited, IRender, ITickRender
 	{
 		public readonly FirePort[] Ports;
 
@@ -183,10 +183,8 @@ namespace OpenRA.Mods.RA
 					yield return r;
 		}
 
-		public override void Tick(Actor self)
+		public void TickRender(WorldRenderer wr, Actor self)
 		{
-			base.Tick(self);
-
 			// Take a copy so that Tick() can remove animations
 			foreach (var m in muzzles.ToList())
 				m.Animation.Tick();

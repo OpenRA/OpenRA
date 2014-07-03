@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Render
 				new Animation(self.World, image);
 		}
 
-		public override void Tick(Actor self)
+		public override void TickRender(WorldRenderer wr, Actor self)
 		{
 			var desiredState = harv.Fullness * (info.ImagesByFullness.Length - 1) / 100;
 			var desiredImage = info.ImagesByFullness[desiredState];
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Render
 			if (DefaultAnimation.Name != desiredImage)
 				DefaultAnimation.ChangeImage(desiredImage, "idle");
 
-			base.Tick(self);
+			base.TickRender(wr, self);
 		}
 
 		public void Harvested(Actor self, ResourceType resource)

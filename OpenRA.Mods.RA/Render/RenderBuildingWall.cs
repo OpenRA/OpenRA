@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
@@ -43,9 +44,9 @@ namespace OpenRA.Mods.RA.Render
 			DefaultAnimation.PlayFetchIndex(NormalizeSequence(DefaultAnimation, e.DamageState, info.Sequence), () => adjacent);
 		}
 
-		public override void Tick(Actor self)
+		public override void TickRender(WorldRenderer wr, Actor self)
 		{
-			base.Tick(self);
+			base.TickRender(wr, self);
 
 			if (!dirty)
 				return;

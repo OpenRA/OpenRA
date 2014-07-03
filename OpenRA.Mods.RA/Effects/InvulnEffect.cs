@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Effects
 			this.b = a.Trait<IronCurtainable>();
 		}
 
-		public void Tick( World world )
+		public void Tick(World world)
 		{
 			if (a.IsDead() || b.GetDamageModifier(null, null) > 0)
 				world.AddFrameEndTask(w => w.Remove(this));

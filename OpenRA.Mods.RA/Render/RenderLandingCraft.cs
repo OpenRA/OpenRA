@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public bool ShouldBeOpen()
 		{
-			if (self.CenterPosition.Z > 0 || move.IsMoving)
+			if (self.CenterPosition.Z > 0 || move.IsMoving || cargo.CurrentAdjacentCells == null)
 				return false;
 
 			return cargo.CurrentAdjacentCells.Any(c => self.World.Map.Contains(c)
@@ -70,14 +71,14 @@ namespace OpenRA.Mods.RA.Render
 			PlayCustomAnimBackwards(self, info.OpenAnim, null);
 		}
 
-		public override void Tick(Actor self)
+		public override void TickRender(WorldRenderer wr, Actor self)
 		{
 			if (ShouldBeOpen())
 				Open();
 			else
 				Close();
 
-			base.Tick(self);
+			base.TickRender(wr, self);
 		}
 	}
 }

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new WaterPaletteRotation(init.world, this); }
 	}
 
-	class WaterPaletteRotation : ITick, IPaletteModifier
+	class WaterPaletteRotation : ITickRender, IPaletteModifier
 	{
 		float t = 0;
 
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public void Tick(Actor self) { t += .25f; }
+		public void TickRender(WorldRenderer wr, Actor self) { t += .25f; }
 
 		uint[] temp = new uint[7]; /* allocating this on the fly actually hurts our profile */
 
