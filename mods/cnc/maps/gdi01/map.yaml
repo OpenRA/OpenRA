@@ -457,10 +457,8 @@ Rules:
 		PlayMusicOnMapLoad:
 			Music: aoi
 			Loop: false
-		LuaScriptInterface:
-			LuaScripts: gdi01.lua
-	Player:
-		-ConquestVictoryConditions:
+		LuaScript:
+			Scripts: gdi01.lua
 	^Infantry:
 		MustBeDestroyed:
 	PROC:

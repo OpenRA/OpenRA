@@ -14,8 +14,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Attach this to the World: actor.")]
 	class PlayMusicOnMapLoadInfo : ITraitInfo
 	{
+		[Desc("A key listed in music.yaml (no file extension).")]
 		public readonly string Music = null;
 		public readonly bool Loop = false;
 
