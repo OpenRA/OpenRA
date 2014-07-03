@@ -88,11 +88,15 @@ namespace OpenRA.Mods.RA
 			if (self.HasTrait<IFacing>())
 				self.QueueActivity(new Turn(info.Facing));
 
-			var rb = self.TraitOrDefault<RenderBuilding>();
-			if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
-				self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
+			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+				nt.BeforeTransform(self);
 
-			self.QueueActivity(new Transform(self, info.IntoActor) { Offset = info.Offset, Facing = info.Facing, Sounds = info.TransformSounds, Race = race });
+			var transform = new Transform(self, info.IntoActor) { Offset = info.Offset, Facing = info.Facing, Sounds = info.TransformSounds, Race = race };
+			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
+			if (makeAnimation != null)
+				makeAnimation.Reverse(self, transform);
+			else
+				self.QueueActivity(transform);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

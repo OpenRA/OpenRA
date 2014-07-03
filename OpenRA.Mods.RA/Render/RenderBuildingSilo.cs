@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Render
 			playerResources = init.self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		public void BuildingComplete(Actor self)
+		public override void BuildingComplete(Actor self)
 		{
 			var animation = (self.GetDamageState() >= DamageState.Heavy) ? "damaged-idle" : "idle";
 

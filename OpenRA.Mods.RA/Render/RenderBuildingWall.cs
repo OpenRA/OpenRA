@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init, this); }
 	}
 
-	class RenderBuildingWall : RenderBuilding, INotifyBuildComplete, INotifyAddedToWorld, INotifyRemovedFromWorld
+	class RenderBuildingWall : RenderBuilding, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly RenderBuildingWallInfo info;
 		int adjacent = 0;
@@ -34,9 +34,10 @@ namespace OpenRA.Mods.RA.Render
 			this.info = info;
 		}
 
-		public void BuildingComplete(Actor self)
+		public override void BuildingComplete(Actor self)
 		{
 			DefaultAnimation.PlayFetchIndex(info.Sequence, () => adjacent);
+			UpdateNeighbours(self);
 		}
 
 		public override void DamageStateChanged(Actor self, AttackInfo e)

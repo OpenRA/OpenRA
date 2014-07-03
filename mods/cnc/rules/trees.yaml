@@ -67,18 +67,15 @@ T01:
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
-
 T02:
 	Inherits: ^Tree
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
-
 T03:
 	Inherits: ^Tree
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
-
 
 T04:
 	Inherits: ^Tree
@@ -88,18 +85,15 @@ T05:
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
-
 T06:
 	Inherits: ^Tree
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
-
 T07:
 	Inherits: ^Tree
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
-
 
 T08:
 	Inherits: ^Tree

@@ -94,4 +94,5 @@ MISS:
 		Cost: 2000
 	Bib:
 		HasMinibib: Yes
+	WithMakeAnimation:
 

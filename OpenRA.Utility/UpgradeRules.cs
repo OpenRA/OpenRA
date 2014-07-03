@@ -252,6 +252,20 @@ namespace OpenRA.Utility
 						node.Key = "StoresResources";
 				}
 
+				// make animation is now it's own trait
+				if (engineVersion < 20140621)
+				{
+					if (depth == 1 && (node.Key.StartsWith("RenderBuilding")))
+						node.Value.Nodes.RemoveAll(n => n.Key == "HasMakeAnimation");
+
+					if (node.Value.Nodes.Any(n => n.Key.StartsWith("RenderBuilding"))
+						&& !node.Value.Nodes.Any(n => n.Key == "RenderBuildingWall")
+						&& !node.Value.Nodes.Any(n => n.Key == "WithMakeAnimation"))
+					{
+						node.Value.Nodes.Add(new MiniYamlNode("WithMakeAnimation", new MiniYaml("")));
+					}
+				}
+
 				// ParachuteAttachment was merged into Parachutable
 				if (engineVersion < 20140701)
 				{

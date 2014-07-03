@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -34,15 +34,16 @@ namespace OpenRA.Mods.RA
 			if (!self.Trait<Building>().Lock())
 				return;
 
+			self.CancelActivity();
+
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Selling(self);
 
-			self.CancelActivity();
-
-			var rb = self.TraitOrDefault<RenderBuilding>();
-			if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
-				self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
-			self.QueueActivity(new Sell());
+			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
+			if (makeAnimation != null)
+				makeAnimation.Reverse(self, new Sell());
+			else
+				self.QueueActivity(new Sell());
 		}
 	}
 }

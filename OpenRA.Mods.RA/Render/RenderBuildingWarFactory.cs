@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Render
 				() => !buildComplete, offset));
 		}
 
-		public void BuildingComplete( Actor self )
+		public override void BuildingComplete(Actor self)
 		{
 			roof.Play(NormalizeSequence(self,
 				self.GetDamageState() > DamageState.Heavy ? "damaged-idle-top" : "idle-top"));

@@ -76,8 +76,8 @@ namespace OpenRA.Mods.RA.Activities
 					init.Add(new RuntimeCargoInit(cargo.Passengers.ToArray()));
 
 				var a = w.CreateActor(ToActor, init);
-				foreach (var nt in self.TraitsImplementing<INotifyTransformed>())
-					nt.OnTransformed(a);
+				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+					nt.AfterTransform(a);
 
 				if (selected)
 					w.Selection.Add(w, a);

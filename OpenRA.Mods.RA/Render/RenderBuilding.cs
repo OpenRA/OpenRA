@@ -19,7 +19,6 @@ namespace OpenRA.Mods.RA.Render
 {
 	public class RenderBuildingInfo : RenderSimpleInfo, Requires<BuildingInfo>, IPlaceBuildingDecoration
 	{
-		public readonly bool HasMakeAnimation = true;
 		public readonly bool PauseOnLowPower = false;
 
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
@@ -34,9 +33,11 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged
+	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged, INotifyBuildComplete
 	{
 		RenderBuildingInfo info;
+		bool buildComplete;
+		bool skipMakeAnimation;
 
 		public RenderBuilding(ActorInitializer init, RenderBuildingInfo info)
 			: this(init, info, () => 0) { }
@@ -46,24 +47,27 @@ namespace OpenRA.Mods.RA.Render
 		{
 			var self = init.self;
 			this.info = info;
+			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 
-			// Work around a bogus crash
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
 			self.Trait<IBodyOrientation>().SetAutodetectedFacings(DefaultAnimation.CurrentSequence.Facings);
-
-			// Can't call Complete() directly from ctor because other traits haven't been inited yet
-			if (self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation && !init.Contains<SkipMakeAnimsInit>())
-				self.QueueActivity(new MakeAnimation(self, () => Complete(self)));
-			else
-				self.QueueActivity(new CallFunc(() => Complete(self)));
 		}
 
-		void Complete(Actor self)
+		public override void TickRender(WorldRenderer wr, Actor self)
 		{
-			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
-			foreach (var x in self.TraitsImplementing<INotifyBuildComplete>())
-				x.BuildingComplete(self);
+			base.TickRender(wr, self);
 
+			if (buildComplete)
+				return;
+
+			buildComplete = true;
+			if (!self.HasTrait<WithMakeAnimation>() || skipMakeAnimation)
+				foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
+					notify.BuildingComplete(self);
+		}
+
+		public virtual void BuildingComplete(Actor self)
+		{
 			if (info.PauseOnLowPower)
 			{
 				var disabled = self.TraitsImplementing<IDisable>();

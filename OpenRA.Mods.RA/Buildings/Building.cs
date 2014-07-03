@@ -34,8 +34,9 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly bool RequiresBaseProvider = false;
 		public readonly bool AllowInvalidPlacement = false;
 
-		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
-		public readonly string[] SellSounds = {"cashturn.aud"};
+		public readonly string[] BuildSounds = { "placbldg.aud", "build5.aud" };
+		public readonly string[] SellSounds = { "cashturn.aud" };
+		public readonly string[] UndeploySounds = { "cashturn.aud" };
 
 		public object Create(ActorInitializer init) { return new Building(init, this); }
 
@@ -99,7 +100,7 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 	}
 
-	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, INotifyBuildComplete, INotifySold, ISync, ITechTreePrerequisite, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, INotifyBuildComplete, INotifySold, INotifyTransform, ISync, ITechTreePrerequisite, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
@@ -185,7 +186,21 @@ namespace OpenRA.Mods.RA.Buildings
 			Locked = false;
 		}
 
-		public void Selling(Actor self) { BuildComplete = false; }
+		public void Selling(Actor self)
+		{
+			foreach (var s in Info.SellSounds)
+				Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
+
+			BuildComplete = false;
+		}
 		public void Sold(Actor self) { }
+
+		public void BeforeTransform(Actor self)
+		{
+			foreach (var s in Info.UndeploySounds)
+				Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
+		}
+		public void OnTransform(Actor self) { }
+		public void AfterTransform(Actor self) { }
 	}
 }

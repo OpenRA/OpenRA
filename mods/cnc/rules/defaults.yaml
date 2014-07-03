@@ -355,6 +355,7 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	WithMakeAnimation:
 
 ^BaseBuilding:
 	Inherits: ^Building
@@ -395,6 +396,7 @@
 		StartsRevealed: true
 	LuaScriptEvents:
 	ScriptTriggers:
+	WithMakeAnimation:
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
@@ -418,6 +420,7 @@
 		Palette: terrain
 	EditorAppearance:
 		UseTerrainPalette: true
+	WithMakeAnimation:
 
 ^CivFieldHusk:
 	AppearsOnRadar:
@@ -436,6 +439,7 @@
 		StartsRevealed: true
 	LuaScriptEvents:
 	ScriptTriggers:
+	WithMakeAnimation:
 
 ^Wall:
 	AppearsOnRadar:
@@ -456,7 +460,6 @@
 	LineBuildNode:
 		Types: wall
 	RenderBuildingWall:
-		HasMakeAnimation: false
 		Palette: staticterrain
 	GivesExperience:
 	EditorAppearance:
@@ -493,6 +496,7 @@
 		StartsRevealed: true
 	LuaScriptEvents:
 	ScriptTriggers:
+	WithMakeAnimation:
 
 ^TibTree:
 	Tooltip:
@@ -510,6 +514,7 @@
 	FrozenUnderFog:
 		StartsRevealed: true
 	LuaScriptEvents:
+	WithMakeAnimation:
 
 ^Rock:
 	Tooltip:
@@ -529,6 +534,7 @@
 		StartsRevealed: true
 	LuaScriptEvents:
 	ScriptTriggers:
+	WithMakeAnimation:
 
 ^Husk:
 	Health:
