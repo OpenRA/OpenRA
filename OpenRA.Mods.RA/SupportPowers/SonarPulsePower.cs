@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Primitives;
@@ -23,6 +24,9 @@ namespace OpenRA.Mods.RA
 		public readonly int SonarDuration = 250;
 
 		public readonly string SonarPing = "sonpulse.aud";
+
+		public readonly string RippleSequence = "moveflsh";
+		public readonly string RipplePalette = "moveflash";
 
 		public override object Create(ActorInitializer init) { return new SonarPulsePower(init.self, this); }
 	}
@@ -45,7 +49,12 @@ namespace OpenRA.Mods.RA
 						new LocationInit(order.TargetLocation),
 						new OwnerInit(self.Owner),
 					});
+
 					Sound.Play(info.SonarPing, sonar.CenterPosition);
+
+					if (!string.IsNullOrEmpty(info.RippleSequence) && !string.IsNullOrEmpty(info.RipplePalette))
+						w.Add(new SpriteEffect(sonar.CenterPosition, w, info.RippleSequence, info.RipplePalette));
+	
 					sonar.QueueActivity(new Wait(info.SonarDuration));
 					sonar.QueueActivity(new RemoveSelf());
 				});
