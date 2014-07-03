@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				optionsBG.Visible ^= true;
 				if (optionsBG.Visible)
 				{
-					cachedPause = world.PredictedPaused;
+					cachedPause = world.PredictedPaused == World.PauseState.Paused;
 
 					if (world.LobbyInfo.IsSinglePlayer)
 						world.SetPauseState(true);
