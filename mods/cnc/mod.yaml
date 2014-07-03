@@ -18,7 +18,6 @@ MapFolders:
 	~^maps/cnc: User
 
 Packages:
-	bluetib.mix
 	speech.mix
 	conquer.mix
 	sounds.mix
