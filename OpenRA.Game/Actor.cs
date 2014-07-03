@@ -217,6 +217,9 @@ namespace OpenRA
 		{
 			World.AddFrameEndTask(w =>
 			{
+				if (this.Destroyed)
+					return;
+
 				var oldOwner = Owner;
 
 				// momentarily remove from world so the ownership queries don't get confused
