@@ -12,30 +12,17 @@ split2:
 		Offset: 11, -15
 
 split3:
-	make: split2
+	make:
 		Start: 0
 		Length: 30
-		Offset: 11, -15
-	active: split2
+		Offset: 7, -13
+	active:
 		Start: 30
 		Length: 24
-		Offset: 11, -15
-	idle: split2
+		Offset: 7, -13
+	idle:
 		Start: 54
-		Offset: 11, -15
-
-splitblue:
-	make: split3
-		Start: 0
-		Length: 30
-		Offset: 11, -15
-	active: split3
-		Start: 30
-		Length: 24
-		Offset: 11, -15
-	idle: split3
-		Start: 54
-		Offset: 11, -15
+		Offset: 7, -13
 
 rock1:
 	idle:
