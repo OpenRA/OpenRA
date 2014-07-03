@@ -23,13 +23,13 @@ namespace OpenRA.Mods.RA.Buildings
 			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x));
 
 			var buildingTraits = rules.Actors[name].Traits;
-			if (buildingTraits.Contains<BibInfo>() && !(buildingTraits.Get<BibInfo>().HasMinibib))
+			if (buildingTraits.Contains<BibInfo>() && !buildingTraits.Get<BibInfo>().HasMinibib)
 			{
 				dim += new CVec(0, 1);
 				footprint = footprint.Concat(new char[dim.X]);
 			}
 
-			return TilesWhere( name, dim, footprint.ToArray(), a => a != '_' ).Select( t => t + topLeft );
+			return TilesWhere(name, dim, footprint.ToArray(), a => a != '_').Select(t => t + topLeft);
 		}
 
 		public static IEnumerable<CPos> Tiles(Actor a)
@@ -39,20 +39,20 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public static IEnumerable<CPos> UnpathableTiles(string name, BuildingInfo buildingInfo, CPos position)
 		{
-			var footprint = buildingInfo.Footprint.Where( x => !char.IsWhiteSpace( x ) ).ToArray();
-			foreach( var tile in TilesWhere( name, (CVec)buildingInfo.Dimensions, footprint, a => a == 'x' ) )
+			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x)).ToArray();
+			foreach (var tile in TilesWhere(name, (CVec)buildingInfo.Dimensions, footprint, a => a == 'x'))
 				yield return tile + position;
 		}
 
 		static IEnumerable<CVec> TilesWhere(string name, CVec dim, char[] footprint, Func<char, bool> cond)
 		{
-			if( footprint.Length != dim.X * dim.Y )
-				throw new InvalidOperationException( "Invalid footprint for " + name );
+			if (footprint.Length != dim.X * dim.Y)
+				throw new InvalidOperationException("Invalid footprint for " + name);
 			var index = 0;
 
-			for( var y = 0 ; y < dim.Y ; y++ )
-				for( var x = 0 ; x < dim.X ; x++ )
-					if( cond( footprint[ index++ ] ) )
+			for (var y = 0; y < dim.Y; y++)
+				for (var x = 0; x < dim.X; x++)
+					if (cond(footprint[index++]))
 						yield return new CVec(x, y);
 		}
 
