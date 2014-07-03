@@ -710,7 +710,9 @@ function SetOpenTabs(params)
     DisplayOutputLn(TR("Can't process auto-recovery record; invalid format: %s."):format(nametab))
     return
   end
-  DisplayOutputLn(TR("Found auto-recovery record and restored saved session."))
+  if not params.quiet then
+    DisplayOutputLn(TR("Found auto-recovery record and restored saved session."))
+  end
   for _,doc in ipairs(nametab) do
     -- check for missing file is no content is stored
     if doc.filepath and not doc.content and not wx.wxFileExists(doc.filepath) then
@@ -758,6 +760,19 @@ function SetAutoRecoveryMark()
   ide.session.lastupdated = os.time()
 end
 
+local function generateRecoveryRecord(opentabs)
+  return require('mobdebug').line(opentabs, {comment = false})
+end
+
+local function saveHotExit()
+  local opentabs, params = getOpenTabs()
+  if #opentabs > 0 then
+    params.recovery = generateRecoveryRecord(opentabs)
+    params.quiet = true
+    SettingsSaveFileSession({}, params)
+  end
+end
+
 local function saveAutoRecovery(event)
   local lastupdated = ide.session.lastupdated
   if not ide.config.autorecoverinactivity or not lastupdated then return end
@@ -769,7 +784,7 @@ local function saveAutoRecovery(event)
   -- find all open modified files and save them
   local opentabs, params = getOpenTabs()
   if #opentabs > 0 then
-    params.recovery = require('mobdebug').line(opentabs, {comment = false})
+    params.recovery = generateRecoveryRecord(opentabs)
     SettingsSaveAll()
     SettingsSaveFileSession({}, params)
     ide.settings:Flush()
@@ -864,7 +879,7 @@ local function closeWindow(event)
 
   ide.exitingProgram = true -- don't handle focus events
 
-  if not SaveOnExit(event:CanVeto()) then
+  if not ide.config.hotexit and not SaveOnExit(event:CanVeto()) then
     event:Veto()
     ide.exitingProgram = false
     return
@@ -881,6 +896,7 @@ local function closeWindow(event)
   DebuggerShutdown()
 
   SettingsSaveAll()
+  if ide.config.hotexit then saveHotExit() end
   ide.settings:Flush()
 
   do -- hide all floating panes first
