@@ -520,6 +520,7 @@
     <Compile Include="Render\WithMakeAnimation.cs" />
     <Compile Include="Widgets\Logic\InstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\InstallMusicLogic.cs" />
+    <Compile Include="Render\WithActiveAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

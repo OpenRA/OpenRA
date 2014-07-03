@@ -608,3 +608,11 @@ craters:
 		Length: *
 	cr6: cr6
 		Length: *
+
+mine:
+	idle:
+		Start: 0
+
+railmine:
+	idle:
+		Start: 0

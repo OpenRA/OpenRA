@@ -17,47 +17,49 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SeedsResourceInfo : TraitInfo<SeedsResource>
+	[Desc("Lets the actor spread resources around it in a circle.")]
+	class SeedsResourceInfo : ITraitInfo
 	{
 		public readonly int Interval = 75;
 		public readonly string ResourceType = "Ore";
 		public readonly int MaxRange = 100;
-		public readonly int AnimationInterval = 750;
+
+		public object Create(ActorInitializer init) { return new SeedsResource(init.self, this); }
 	}
 
 	class SeedsResource : ITick, ISeedableResource
 	{
+		readonly SeedsResourceInfo info;
+
+		readonly ResourceType resourceType;
+		readonly ResourceLayer resLayer;
+
+		public SeedsResource(Actor self, SeedsResourceInfo info)
+		{
+			this.info = info;
+
+			resourceType = self.World.WorldActor.TraitsImplementing<ResourceType>()
+				.FirstOrDefault(t => t.Info.Name == info.ResourceType);
+
+			if (resourceType == null)
+				throw new InvalidOperationException("No such resource type `{0}`".F(info.ResourceType));
+
+			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+		}
+
 		int ticks;
-		int animationTicks;
 
 		public void Tick(Actor self)
 		{
 			if (--ticks <= 0)
 			{
 				Seed(self);
-				ticks = self.Info.Traits.Get<SeedsResourceInfo>().Interval;
-			}
-
-			if (--animationTicks <= 0)
-			{
-				var info = self.Info.Traits.Get<SeedsResourceInfo>();
-				self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
-				animationTicks = info.AnimationInterval;
+				ticks = info.Interval;
 			}
 		}
 
 		public void Seed(Actor self)
 		{
-			var info = self.Info.Traits.Get<SeedsResourceInfo>();
-			var resourceType = self.World.WorldActor
-				.TraitsImplementing<ResourceType>()
-				.FirstOrDefault(t => t.Info.Name == info.ResourceType);
-
-			if (resourceType == null)
-				throw new InvalidOperationException("No such resource type `{0}`".F(info.ResourceType));
-
-			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-
 			var cell = RandomWalk(self.Location, self.World.SharedRandom)
 				.Take(info.MaxRange)
 				.SkipWhile(p => resLayer.GetResource(p) == resourceType && resLayer.IsFull(p))

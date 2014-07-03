@@ -113,6 +113,7 @@ SPICEBLOOM:
 	SeedsResource:
 		ResourceType: Spice
 		Interval: 75
+	WithActiveAnimation:
 	RadarColorFromTerrain:
 		Terrain: Spice
 	BodyOrientation:
