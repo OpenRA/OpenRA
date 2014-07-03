@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k
 {
+	[Desc("Throws particles when the actor is destroyed that do damage on impact.")]
 	public class ThrowsShrapnelInfo : ITraitInfo
 	{
 		[WeaponReference]

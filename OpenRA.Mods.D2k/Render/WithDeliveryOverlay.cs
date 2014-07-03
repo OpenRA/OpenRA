@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
+	[Desc("Rendered when ProductionAirdrop is in progress.")]
 	public class WithDeliveryOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]

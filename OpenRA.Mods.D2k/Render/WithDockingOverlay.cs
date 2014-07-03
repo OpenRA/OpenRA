@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
+	[Desc("Rendered when a harvester is docked.")]
 	public class WithDockingOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]

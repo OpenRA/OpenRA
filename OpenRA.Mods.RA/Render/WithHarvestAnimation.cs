@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
+	[Desc("Displays an overlay whenever resources are harvested by the actor.")]
 	class WithHarvestAnimationInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]

@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
+	[Desc("Replaces the building animation when it repairs a unit.")]
 	public class WithRepairAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>
 	{
 		[Desc("Sequence name to use")]

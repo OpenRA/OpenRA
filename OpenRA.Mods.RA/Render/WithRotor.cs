@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
+	[Desc("Displays a helicopter rotor overlay.")]
 	public class WithRotorInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use when flying")]
@@ -24,6 +25,7 @@ namespace OpenRA.Mods.RA.Render
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
+		[Desc("Change this when using this trait multiple times on the same actor.")]
 		public readonly string Id = "rotor";
 
 		public object Create(ActorInitializer init) { return new WithRotor(init.self, this); }

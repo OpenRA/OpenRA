@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
+	[Desc("Rendered together with the \"make\" animation.")]
 	public class WithCrumbleOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence name to use")]

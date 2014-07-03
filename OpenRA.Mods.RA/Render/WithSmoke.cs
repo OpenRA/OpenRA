@@ -13,9 +13,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
+	[Desc("Renders an overlay when the actor is taking heavy damage.")]
 	public class WithSmokeInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
-		public object Create(ActorInitializer init) { return new WithSmoke(init.self); }
+		[Desc("Needs to define \"idle\", \"loop\" and \"end\" sub-sequences.")]
+		public readonly string Sequence = "smoke_m";
+
+		public object Create(ActorInitializer init) { return new WithSmoke(init.self, this); }
 	}
 
 	public class WithSmoke : INotifyDamage
@@ -23,11 +27,11 @@ namespace OpenRA.Mods.RA.Render
 		bool isSmoking;
 		Animation anim;
 
-		public WithSmoke(Actor self)
+		public WithSmoke(Actor self, WithSmokeInfo info)
 		{
 			var rs = self.Trait<RenderSprites>();
 
-			anim = new Animation(self.World, "smoke_m");
+			anim = new Animation(self.World, info.Sequence);
 			rs.Add("smoke", new AnimationWithOffset(anim, null, () => !isSmoking));
 		}
 
@@ -38,10 +42,10 @@ namespace OpenRA.Mods.RA.Render
 			if (e.DamageState < DamageState.Heavy) return;
 
 			isSmoking = true;
-			anim.PlayThen( "idle",
-				() => anim.PlayThen( "loop",
-					() => anim.PlayBackwardsThen( "end",
-						() => isSmoking = false ) ) );
+			anim.PlayThen("idle",
+				() => anim.PlayThen("loop",
+					() => anim.PlayBackwardsThen("end",
+						() => isSmoking = false)));
 		}
 	}
 }

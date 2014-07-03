@@ -17,10 +17,23 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class WithShadowInfo : TraitInfo<WithShadow> {}
+	[Desc("Clones the aircraft sprite with another palette below it.")]
+	class WithShadowInfo : ITraitInfo
+	{
+		public readonly string Palette = "shadow";
+
+		public object Create(ActorInitializer init) { return new WithShadow(this); }
+	}
 
 	class WithShadow : IRenderModifier
 	{
+		WithShadowInfo info;
+
+		public WithShadow(WithShadowInfo info)
+		{
+			this.info = info;
+		}
+
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			var ios = self.Trait<IOccupySpace>();
@@ -32,7 +45,7 @@ namespace OpenRA.Mods.RA.Render
 
 			// Contrails shouldn't cast shadows
 			var shadowSprites = r.Where(s => !s.IsDecoration)
-				.Select(a => a.WithPalette(wr.Palette("shadow"))
+				.Select(a => a.WithPalette(wr.Palette(info.Palette))
 				.OffsetBy(new WVec(0, 0, -a.Pos.Z))
 				.WithZOffset(a.ZOffset + a.Pos.Z)
 				.AsDecoration());

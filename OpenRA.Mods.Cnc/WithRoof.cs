@@ -13,18 +13,21 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
+	[Desc("Provides an overlay for the Tiberian Dawn hover craft.")]
 	public class WithRoofInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
-		public object Create(ActorInitializer init) { return new WithRoof(init.self); }
+		public readonly string Sequence = "roof";
+
+		public object Create(ActorInitializer init) { return new WithRoof(init.self, this); }
 	}
 
 	public class WithRoof
 	{
-		public WithRoof(Actor self)
+		public WithRoof(Actor self, WithRoofInfo info)
 		{
 			var rs = self.Trait<RenderSprites>();
 			var roof = new Animation(self.World, rs.GetImage(self), () => self.Trait<IFacing>().Facing);
-			roof.Play("roof");
+			roof.Play(info.Sequence);
 			rs.Add("roof", new AnimationWithOffset(roof, null, null, 1024));
 		}
 	}
