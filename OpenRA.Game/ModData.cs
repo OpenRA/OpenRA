@@ -87,7 +87,7 @@ namespace OpenRA
 				FieldLoader.Translations = new Dictionary<string, string>();
 				return;
 			}
-			
+
 			var yaml = Manifest.Translations.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
 			Languages = yaml.Select(t => t.Key).ToArray();
 
@@ -100,7 +100,7 @@ namespace OpenRA
 				else if (y.Key == Game.Settings.Graphics.DefaultLanguage)
 					defaultTranslations = y.Value.ToDictionary(my => my.Value ?? "");
 			}
-			
+
 			var translations = new Dictionary<string, string>();
 			foreach (var tkv in defaultTranslations.Concat(selectedTranslations))
 			{
@@ -140,6 +140,7 @@ namespace OpenRA
 				map.SequenceProvider.Preload();
 
 			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
+			VoxelLoader.Finish();
 
 			return map;
 		}

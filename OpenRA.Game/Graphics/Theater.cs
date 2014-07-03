@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -58,7 +58,7 @@ namespace OpenRA.Graphics
 					throw new SheetOverflowException("Terrain sheet overflow. Try increasing the tileset SheetSize parameter.");
 				allocated = true;
 
-				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize));
+				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize), true);
 			};
 
 			var sourceCache = new Dictionary<string, ISpriteSource>();
@@ -69,6 +69,8 @@ namespace OpenRA.Graphics
 
 			// 1x1px transparent tile
 			missingTile = sheetBuilder.Add(new byte[1], new Size(1, 1));
+
+			Sheet.ReleaseBuffer();
 		}
 
 		public Sprite TileSprite(TerrainTile r)

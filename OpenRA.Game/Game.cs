@@ -271,6 +271,8 @@ namespace OpenRA
 			orderManager.LastTickTime = Environment.TickCount;
 			orderManager.StartGame();
 			worldRenderer.RefreshPalette();
+
+			GC.Collect();
 		}
 
 		public static bool IsHost
