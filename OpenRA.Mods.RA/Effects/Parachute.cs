@@ -24,13 +24,17 @@ namespace OpenRA.Mods.RA.Effects
 		readonly WVec parachuteOffset;
 		readonly Actor cargo;
 		WPos pos;
-		WVec fallRate = new WVec(0, 0, 13);
+		WVec fallVector;
 
 		public Parachute(Actor cargo, WPos dropPosition)
 		{
 			this.cargo = cargo;
 
 			parachutableInfo = cargo.Info.Traits.GetOrDefault<ParachutableInfo>();
+
+			if (parachutableInfo != null)
+				fallVector = new WVec(0, 0, parachutableInfo.FallRate);
+
 			var parachuteSprite = parachutableInfo != null ? parachutableInfo.ParachuteSequence : null;
 			if (parachuteSprite != null)
 			{
@@ -62,7 +66,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (shadow != null)
 				shadow.Tick();
 
-			pos -= fallRate;
+			pos -= fallVector;
 
 			if (pos.Z <= 0)
 			{

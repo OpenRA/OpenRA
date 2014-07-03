@@ -197,6 +197,7 @@
 	ScriptTriggers:
 	DeathSounds:
 	Parachutable:
+		FallRate: 130
 
 ^Plane:
 	AppearsOnRadar:

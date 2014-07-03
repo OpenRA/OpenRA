@@ -35,6 +35,8 @@ namespace OpenRA.Mods.RA
 
 		public readonly WVec ParachuteOffset = WVec.Zero;
 
+		public readonly int FallRate = 13;
+
 		[Desc("Alternative to ParachuteShadowPalette which disables it and allows to set a custom sprite sequence instead.")]
 		public readonly string ShadowSequence = null;
 		[Desc("Optional, otherwise defaults to the palette the actor is using.")]
