@@ -55,7 +55,7 @@ namespace OpenRA
 		}
 
 		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
-		public static bool ExtractFromPackage(string srcPath, string package, string[] files, string destPath, Action<string> onProgress, Action<string> onError)
+		public static bool ExtractFromPackage(string srcPath, string package, string annotation, string[] files, string destPath, Action<string> onProgress, Action<string> onError)
 		{
 			if (!Directory.Exists(destPath))
 				Directory.CreateDirectory(destPath);
@@ -63,7 +63,7 @@ namespace OpenRA
 			Log.Write("debug", "Mounting {0}".F(srcPath));
 			GlobalFileSystem.Mount(srcPath);
 			Log.Write("debug", "Mounting {0}".F(package));
-			GlobalFileSystem.Mount(package);
+			GlobalFileSystem.Mount(package, annotation);
 
 			foreach (var file in files)
 			{

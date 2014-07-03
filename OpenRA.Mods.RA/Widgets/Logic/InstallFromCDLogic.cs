@@ -72,7 +72,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var dest = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
 			var copyFiles = Game.modData.Manifest.ContentInstaller.CopyFilesFromCD;
 
-			var extractPackage = Game.modData.Manifest.ContentInstaller.PackageToExtractFromCD;
+			var packageToExtract = Game.modData.Manifest.ContentInstaller.PackageToExtractFromCD.Split(':');
+			var extractPackage = packageToExtract.First();
+			var annotation = packageToExtract.Length > 1 ? packageToExtract.Last() : null;
+
 			var extractFiles = Game.modData.Manifest.ContentInstaller.ExtractFilesFromCD;
 
 			var installCounter = 0;
@@ -104,7 +107,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					if (!string.IsNullOrEmpty(extractPackage))
 					{
-						if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest, onProgress, onError))
+						if (!InstallUtils.ExtractFromPackage(source, extractPackage, annotation, extractFiles, dest, onProgress, onError))
 						{
 							onError("Extracting files from CD failed.");
 							return;
