@@ -96,7 +96,8 @@ namespace OpenRA.Mods.RA
 			if (!info.TerrainTypes.Contains(type))
 				return false;
 
-			if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null) return false;
+			if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
+				return false;
 
 			if (!checkTransientActors)
 				return true;
