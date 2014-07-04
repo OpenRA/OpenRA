@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 			var fi = producee.Traits.Get<IFacingInfo>();
 			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi.GetInitialFacing()) : exitinfo.Facing;
 
-			var exitLocation = rp.Value != null ? rp.Value.rallyPoint : exit;
+			var exitLocation = rp.Value != null ? rp.Value.Location : exit;
 			var target = Target.FromCell(self.World, exitLocation);
 
 			self.World.AddFrameEndTask(w =>

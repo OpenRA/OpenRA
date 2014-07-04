@@ -86,8 +86,8 @@ namespace OpenRA.Mods.RA
 				if (rp != null)
 					self.QueueActivity(new CallFunc(() =>
 					{
-						self.SetTargetLine(Target.FromCell(self.World, rp.rallyPoint), Color.Green);
-						self.QueueActivity(movement.MoveTo(rp.rallyPoint, order.TargetActor));
+						self.SetTargetLine(Target.FromCell(self.World, rp.Location), Color.Green);
+						self.QueueActivity(movement.MoveTo(rp.Location, order.TargetActor));
 					}));
 			}
 		}

@@ -674,7 +674,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			var buildings = self.World.ActorsWithTrait<RallyPoint>()
 				.Where(rp => rp.Actor.Owner == p &&
-					!IsRallyPointValid(rp.Trait.rallyPoint, rp.Actor.Info.Traits.GetOrDefault<BuildingInfo>())).ToArray();
+					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.Traits.GetOrDefault<BuildingInfo>())).ToArray();
 
 			if (buildings.Length > 0)
 				BotDebug("Bot {0} needs to find rallypoints for {1} buildings.",

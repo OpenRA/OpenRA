@@ -31,7 +31,7 @@ end
 Production.SetRallyPoint = function(factory, location)
 	local srp = Actor.Trait(factory, "RallyPoint")
 	if srp ~= nil then
-		srp.rallyPoint = location.Location
+		srp.Location = location.Location
 	end
 end
 
