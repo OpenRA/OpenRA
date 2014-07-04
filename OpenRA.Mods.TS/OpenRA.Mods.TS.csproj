@@ -61,6 +61,7 @@
     <Compile Include="Render\WithVoxelWalkerBody.cs" />
     <Compile Include="Render\WithVoxelUnloadBody.cs" />
     <Compile Include="SpriteLoaders\TmpTSLoader.cs" />
+    <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

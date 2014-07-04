@@ -127,9 +127,11 @@ HVR:
 		Speed: 99
 		TerrainSpeeds:
 			Clear: 100
-			Rough: 100
 			Road: 100
-			Beach: 100
+			Rail: 100
+			DirtRoad: 100
+			Rough: 100
+			Water: 100
 			Tiberium: 100
 			BlueTiberium: 100
 	Health:

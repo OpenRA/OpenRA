@@ -10,7 +10,7 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: place2.aud
-		TerrainTypes: Clear, Road
+		TerrainTypes: Clear, Road, DirtRoad, Rough
 		Adjacent: 4
 	FrozenUnderFog:
 	GivesBuildableArea:
@@ -106,11 +106,12 @@
 		SharesCell: yes
 		TerrainSpeeds:
 			Clear: 90
-			Rough: 80
 			Road: 100
+			Rail: 80
+			DirtRoad: 90
+			Rough: 70
 			Tiberium: 80
 			BlueTiberium: 80
-			Beach: 80
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -205,12 +206,13 @@
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Clear: 80
-			Rough: 60
+			Clear: 90
 			Road: 100
-			Beach: 60
-			Tiberium: 60
-			BlueTiberium: 60
+			Rail: 80
+			DirtRoad: 90
+			Rough: 70
+			Tiberium: 80
+			BlueTiberium: 80
 		ROT: 5
 	SelectionDecorations:
 		Palette: pips
@@ -278,9 +280,10 @@
 		Crushes: wall, crate
 		TerrainSpeeds:
 			Clear: 90
-			Rough: 70
 			Road: 100
-			Beach: 80
+			Rail: 80
+			DirtRoad: 90
+			Rough: 70
 			Tiberium: 80
 			BlueTiberium: 80
 		ROT: 5

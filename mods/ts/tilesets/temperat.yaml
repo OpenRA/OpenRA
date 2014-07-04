@@ -3,12 +3,41 @@ General:
 	Id: TEMPERAT
 	Extensions: .tem, .shp
 	Palette: isotem.pal
-	EditorTemplateOrder: Placeholder
+	EditorTemplateOrder: Misc Buildings, Clear, Cliff Pieces, Ice Flow, House, Blank, Ice Ramps, Cliff Set, Civilian Buildings, Shore Pieces, Rough LAT tile, Clear/Rough LAT, Cliff/Water pieces, Bendy Dirt Roads, Dirt Road Junctions, Straight Dirt Roads, Bridges, Paved Roads, Water, Dirt Road Slopes, Slope Set Pieces, Dead Oil Tanker, Ruins, Waterfalls, Ground 01, Ground 02, Sand, Sand/Clear LAT, Rough ground, Paved Road Ends, TrainBridges, Pavement, Pavement/Clear LAT, Paved road bits, Green, Green/Clear LAT, Ramp edge fixup, Water slopes, Pavement (Use for LAT), Paved Road Slopes, Monorail Slopes, Waterfalls-B, Waterfalls-C, Waterfalls-D, Tunnel Floor, Tunnel Side, TrackTunnel Floor, Destroyable Cliffs, Water Caves, Scrin Wreckage, DirtTrackTunnel Floor, DirtTunnel Floor
+	SheetSize: 1024
 
 Terrain:
 	TerrainType@Clear:
 		Type: Clear
 		AcceptsSmudgeType: Crater, Scorch
+		Color: 116, 85, 55
+		TargetTypes: Ground
+	TerrainType@Road:
+		Type: Road
+		Color: 116, 85, 55
+		TargetTypes: Ground
+	TerrainType@Rail:
+		Type: Rail
+		Color: 116, 85, 55
+		TargetTypes: Ground
+	TerrainType@Impassable:
+		Type: Impassable
+		Color: 116, 85, 55
+		TargetTypes: Ground
+	TerrainType@Water:
+		Type: Water
+		Color: 116, 85, 55
+		TargetTypes: Water
+	TerrainType@DirtRoad:
+		Type: DirtRoad
+		Color: 116, 85, 55
+		TargetTypes: Ground
+	TerrainType@Rough:
+		Type: Rough
+		Color: 116, 85, 55
+		TargetTypes: Ground
+	TerrainType@Cliff:
+		Type: Cliff
 		Color: 116, 85, 55
 		TargetTypes: Ground
 	TerrainType@Tiberium:
@@ -22,12 +51,6579 @@ Terrain:
 		Color: 28, 64, 248
 		TargetTypes: Ground
 
+# Automatically generated. DO NOT EDIT!
 Templates:
-	Template@255:
-		Id: 255
-		Image: clear01
-		Size: 1,1
-		Category: Placeholder
+	Template@0:
+		Category: Clear
+		Id: 0
+		Image: Clear01
+		Size: 1, 1
 		Tiles:
 			0: Clear
-
+	Template@1:
+		Category: Misc Buildings
+		Id: 1
+		Image: Bld01
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@2:
+		Category: Misc Buildings
+		Id: 2
+		Image: Bld02
+		Size: 2, 2
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+	Template@3:
+		Category: Misc Buildings
+		Id: 3
+		Image: Bld03
+		Size: 3, 3
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Rough
+			3: Cliff
+			4: Cliff
+			5: Rough
+			6: Rough
+			7: Rough
+			8: Rough
+	Template@4:
+		Category: Clear
+		Id: 4
+		Image: Snow01
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@5:
+		Category: Clear
+		Id: 5
+		Image: Snow02
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@6:
+		Category: Clear
+		Id: 6
+		Image: Snow03
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@7:
+		Category: Clear
+		Id: 7
+		Image: Snow04
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@8:
+		Category: Cliff Pieces
+		Id: 8
+		Image: clif01
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@9:
+		Category: Cliff Pieces
+		Id: 9
+		Image: clif02
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@10:
+		Category: Ice Flow
+		Id: 10
+		Image: flow01
+		Size: 9, 7
+		Tiles:
+			2: Rough
+			3: Rough
+			11: Rough
+			12: Rough
+			13: Rough
+			18: Rough
+			19: Rough
+			20: Rough
+			21: Rough
+			22: Rough
+			23: Rough
+			24: Rough
+			25: Rough
+			26: Rough
+			28: Rough
+			29: Rough
+			30: Rough
+			31: Rough
+			32: Rough
+			33: Rough
+			34: Rough
+			35: Rough
+			38: Rough
+			39: Rough
+			40: Rough
+			41: Rough
+			42: Rough
+			43: Rough
+			44: Rough
+			49: Rough
+			50: Rough
+			51: Rough
+			52: Rough
+			53: Rough
+			60: Rough
+			61: Rough
+	Template@11:
+		Category: House
+		Id: 11
+		Image: house01
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@12:
+		Category: Blank
+		Id: 12
+		Image: blank01
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@40:
+		Category: Ice Ramps
+		Id: 40
+		Image: slope01
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@41:
+		Category: Ice Ramps
+		Id: 41
+		Image: slope02
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@42:
+		Category: Ice Ramps
+		Id: 42
+		Image: slope03
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@43:
+		Category: Ice Ramps
+		Id: 43
+		Image: slope04
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@44:
+		Category: Ice Ramps
+		Id: 44
+		Image: slope05
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@45:
+		Category: Ice Ramps
+		Id: 45
+		Image: slope06
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@46:
+		Category: Ice Ramps
+		Id: 46
+		Image: slope07
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@47:
+		Category: Ice Ramps
+		Id: 47
+		Image: slope08
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@48:
+		Category: Ice Ramps
+		Id: 48
+		Image: slope09
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@49:
+		Category: Ice Ramps
+		Id: 49
+		Image: slope10
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@50:
+		Category: Ice Ramps
+		Id: 50
+		Image: slope11
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@51:
+		Category: Ice Ramps
+		Id: 51
+		Image: slope12
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@52:
+		Category: Ice Ramps
+		Id: 52
+		Image: slope13
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@53:
+		Category: Ice Ramps
+		Id: 53
+		Image: slope14
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@54:
+		Category: Ice Ramps
+		Id: 54
+		Image: slope15
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@55:
+		Category: Ice Ramps
+		Id: 55
+		Image: slope16
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@56:
+		Category: Ice Ramps
+		Id: 56
+		Image: slope17
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@57:
+		Category: Ice Ramps
+		Id: 57
+		Image: slope18
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@58:
+		Category: Ice Ramps
+		Id: 58
+		Image: slope19
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@59:
+		Category: Ice Ramps
+		Id: 59
+		Image: slope20
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@60:
+		Category: Cliff Set
+		Id: 60
+		Image: Cliff01
+		Size: 2, 3
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			5: Cliff
+	Template@61:
+		Category: Cliff Set
+		Id: 61
+		Image: Cliff02
+		Size: 1, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@62:
+		Category: Cliff Set
+		Id: 62
+		Image: Cliff03
+		Size: 2, 3
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			5: Cliff
+	Template@63:
+		Category: Cliff Set
+		Id: 63
+		Image: Cliff04
+		Size: 2, 3
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			5: Cliff
+	Template@64:
+		Category: Cliff Set
+		Id: 64
+		Image: Cliff05
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@65:
+		Category: Cliff Set
+		Id: 65
+		Image: Cliff06
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@66:
+		Category: Cliff Set
+		Id: 66
+		Image: Cliff07
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@67:
+		Category: Cliff Set
+		Id: 67
+		Image: Cliff08
+		Size: 1, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@68:
+		Category: Cliff Set
+		Id: 68
+		Image: Cliff09
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@69:
+		Category: Cliff Set
+		Id: 69
+		Image: Cliff10
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@70:
+		Category: Cliff Set
+		Id: 70
+		Image: Cliff11
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@71:
+		Category: Cliff Set
+		Id: 71
+		Image: Cliff12
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@72:
+		Category: Cliff Set
+		Id: 72
+		Image: Cliff13
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@73:
+		Category: Cliff Set
+		Id: 73
+		Image: Cliff14
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@74:
+		Category: Cliff Set
+		Id: 74
+		Image: Cliff15
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@75:
+		Category: Cliff Set
+		Id: 75
+		Image: Cliff16
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@76:
+		Category: Cliff Set
+		Id: 76
+		Image: Cliff17
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@77:
+		Category: Cliff Set
+		Id: 77
+		Image: Cliff18
+		Size: 2, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@78:
+		Category: Cliff Set
+		Id: 78
+		Image: Cliff19
+		Size: 3, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			4: Cliff
+			5: Cliff
+	Template@79:
+		Category: Cliff Set
+		Id: 79
+		Image: Cliff20
+		Size: 3, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			4: Cliff
+			5: Cliff
+	Template@80:
+		Category: Cliff Set
+		Id: 80
+		Image: Cliff21
+		Size: 3, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			4: Cliff
+			5: Cliff
+	Template@81:
+		Category: Cliff Set
+		Id: 81
+		Image: Cliff22
+		Size: 2, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@82:
+		Category: Cliff Set
+		Id: 82
+		Image: Cliff23
+		Size: 2, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@83:
+		Category: Cliff Set
+		Id: 83
+		Image: Cliff24
+		Size: 2, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@84:
+		Category: Cliff Set
+		Id: 84
+		Image: Cliff25
+		Size: 2, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@85:
+		Category: Cliff Set
+		Id: 85
+		Image: Cliff26
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@86:
+		Category: Cliff Set
+		Id: 86
+		Image: Cliff27
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@87:
+		Category: Cliff Set
+		Id: 87
+		Image: Cliff28
+		Size: 2, 2
+		Tiles:
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@88:
+		Category: Cliff Set
+		Id: 88
+		Image: Cliff29
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@89:
+		Category: Cliff Set
+		Id: 89
+		Image: Cliff30
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@90:
+		Category: Cliff Set
+		Id: 90
+		Image: Cliff31
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@91:
+		Category: Cliff Set
+		Id: 91
+		Image: Cliff32
+		Size: 2, 2
+		Tiles:
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@92:
+		Category: Cliff Set
+		Id: 92
+		Image: Cliff33
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@93:
+		Category: Cliff Set
+		Id: 93
+		Image: Cliff34
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@94:
+		Category: Cliff Set
+		Id: 94
+		Image: Cliff35
+		Size: 1, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@95:
+		Category: Cliff Set
+		Id: 95
+		Image: Cliff36
+		Size: 1, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@96:
+		Category: Cliff Set
+		Id: 96
+		Image: Cliff37
+		Size: 1, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@97:
+		Category: Cliff Set
+		Id: 97
+		Image: Cliff38
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@98:
+		Category: Cliff Set
+		Id: 98
+		Image: Cliff39
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@99:
+		Category: Cliff Set
+		Id: 99
+		Image: Cliff40
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@100:
+		Category: Civilian Buildings
+		Id: 100
+		Image: Civ01
+		Size: 3, 3
+		Tiles:
+			0: Impassable
+			1: Impassable
+			2: Clear
+			3: Impassable
+			4: Impassable
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+	Template@101:
+		Category: Civilian Buildings
+		Id: 101
+		Image: Civ02
+		Size: 1, 2
+		Tiles:
+			0: Impassable
+			1: Impassable
+	Template@102:
+		Category: Civilian Buildings
+		Id: 102
+		Image: Civ03
+		Size: 1, 1
+		Tiles:
+			0: Impassable
+	Template@103:
+		Category: Civilian Buildings
+		Id: 103
+		Image: Civ04
+		Size: 1, 2
+		Tiles:
+			0: Impassable
+			1: Impassable
+	Template@104:
+		Category: Civilian Buildings
+		Id: 104
+		Image: Civ05
+		Size: 2, 2
+		Tiles:
+			1: Impassable
+			2: Impassable
+			3: Impassable
+	Template@105:
+		Category: Civilian Buildings
+		Id: 105
+		Image: Civ06
+		Size: 3, 3
+		Tiles:
+			1: Impassable
+			3: Impassable
+			4: Impassable
+			5: Rough
+			7: Rough
+			8: Rough
+	Template@106:
+		Category: Civilian Buildings
+		Id: 106
+		Image: Civ07
+		Size: 1, 1
+		Tiles:
+			0: Impassable
+	Template@107:
+		Category: Civilian Buildings
+		Id: 107
+		Image: Civ08
+		Size: 1, 2
+		Tiles:
+			0: Impassable
+			1: Impassable
+	Template@108:
+		Category: Shore Pieces
+		Id: 108
+		Image: Shore01
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@109:
+		Category: Shore Pieces
+		Id: 109
+		Image: Shore02
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@110:
+		Category: Shore Pieces
+		Id: 110
+		Image: Shore03
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@111:
+		Category: Shore Pieces
+		Id: 111
+		Image: Shore04
+		Size: 1, 2
+		Tiles:
+			0: Water
+			1: Water
+	Template@112:
+		Category: Shore Pieces
+		Id: 112
+		Image: Shore05
+		Size: 2, 3
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+			4: Water
+			5: Water
+	Template@113:
+		Category: Shore Pieces
+		Id: 113
+		Image: Shore06
+		Size: 2, 3
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+			4: Water
+			5: Water
+	Template@114:
+		Category: Shore Pieces
+		Id: 114
+		Image: Shore07
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@115:
+		Category: Shore Pieces
+		Id: 115
+		Image: Shore08
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@116:
+		Category: Shore Pieces
+		Id: 116
+		Image: Shore09
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@117:
+		Category: Shore Pieces
+		Id: 117
+		Image: Shore10
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@118:
+		Category: Shore Pieces
+		Id: 118
+		Image: Shore11
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Clear
+			3: Water
+	Template@119:
+		Category: Shore Pieces
+		Id: 119
+		Image: Shore12
+		Size: 2, 1
+		Tiles:
+			0: Water
+			1: Water
+	Template@120:
+		Category: Shore Pieces
+		Id: 120
+		Image: Shore13
+		Size: 3, 2
+		Tiles:
+			0: Clear
+			1: Water
+			2: Water
+			3: Water
+			4: Water
+			5: Water
+	Template@121:
+		Category: Shore Pieces
+		Id: 121
+		Image: Shore14
+		Size: 3, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Clear
+			4: Water
+			5: Water
+	Template@122:
+		Category: Shore Pieces
+		Id: 122
+		Image: Shore15
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@123:
+		Category: Shore Pieces
+		Id: 123
+		Image: Shore16
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@124:
+		Category: Shore Pieces
+		Id: 124
+		Image: Shore17
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@125:
+		Category: Shore Pieces
+		Id: 125
+		Image: Shore18
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@126:
+		Category: Shore Pieces
+		Id: 126
+		Image: Shore19
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@127:
+		Category: Shore Pieces
+		Id: 127
+		Image: Shore20
+		Size: 1, 2
+		Tiles:
+			0: Water
+			1: Water
+	Template@128:
+		Category: Shore Pieces
+		Id: 128
+		Image: Shore21
+		Size: 2, 3
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+			4: Water
+			5: Water
+	Template@129:
+		Category: Shore Pieces
+		Id: 129
+		Image: Shore22
+		Size: 2, 3
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+			4: Water
+			5: Water
+	Template@130:
+		Category: Shore Pieces
+		Id: 130
+		Image: Shore23
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@131:
+		Category: Shore Pieces
+		Id: 131
+		Image: Shore24
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@132:
+		Category: Shore Pieces
+		Id: 132
+		Image: Shore25
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@133:
+		Category: Shore Pieces
+		Id: 133
+		Image: Shore26
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@134:
+		Category: Shore Pieces
+		Id: 134
+		Image: Shore27
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@135:
+		Category: Shore Pieces
+		Id: 135
+		Image: Shore28
+		Size: 2, 1
+		Tiles:
+			0: Water
+			1: Water
+	Template@136:
+		Category: Shore Pieces
+		Id: 136
+		Image: Shore29
+		Size: 3, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+			4: Water
+			5: Water
+	Template@137:
+		Category: Shore Pieces
+		Id: 137
+		Image: Shore30
+		Size: 3, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+			4: Water
+			5: Water
+	Template@138:
+		Category: Shore Pieces
+		Id: 138
+		Image: Shore31
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@139:
+		Category: Shore Pieces
+		Id: 139
+		Image: Shore32
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@140:
+		Category: Shore Pieces
+		Id: 140
+		Image: Shore33
+		Size: 2, 2
+		Tiles:
+			0: Clear
+			1: Water
+			2: Water
+			3: Water
+	Template@141:
+		Category: Shore Pieces
+		Id: 141
+		Image: Shore34
+		Size: 2, 2
+		Tiles:
+			0: Clear
+			1: Water
+			2: Water
+			3: Water
+	Template@142:
+		Category: Shore Pieces
+		Id: 142
+		Image: Shore35
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Clear
+			3: Water
+	Template@143:
+		Category: Shore Pieces
+		Id: 143
+		Image: Shore36
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Clear
+			3: Water
+	Template@144:
+		Category: Shore Pieces
+		Id: 144
+		Image: Shore37
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Clear
+	Template@145:
+		Category: Shore Pieces
+		Id: 145
+		Image: Shore38
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@146:
+		Category: Shore Pieces
+		Id: 146
+		Image: Shore39
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Clear
+			2: Water
+			3: Water
+	Template@147:
+		Category: Shore Pieces
+		Id: 147
+		Image: Shore40
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@148:
+		Category: Shore Pieces
+		Id: 148
+		Image: Shore41
+		Size: 6, 4
+		Tiles:
+			1: Clear
+			2: Clear
+			3: Clear
+			6: Clear
+			7: Water
+			8: Water
+			9: Water
+			10: Water
+			11: Water
+			12: Water
+			13: Water
+			14: Water
+			15: Water
+			16: Water
+			17: Water
+			18: Water
+			19: Water
+			20: Water
+			21: Water
+			22: Water
+			23: Water
+	Template@149:
+		Category: Shore Pieces
+		Id: 149
+		Image: Shore42
+		Size: 9, 5
+		Tiles:
+			2: Water
+			3: Water
+			11: Water
+			12: Water
+			13: Clear
+			18: Clear
+			19: Water
+			20: Water
+			21: Water
+			22: Water
+			23: Water
+			24: Water
+			25: Water
+			26: Water
+			28: Water
+			29: Water
+			30: Water
+			31: Water
+			32: Water
+			33: Water
+			34: Water
+			35: Water
+			37: Water
+			38: Water
+			39: Water
+			40: Water
+			41: Water
+			42: Water
+			43: Water
+			44: Water
+	Template@150:
+		Category: Rough LAT tile
+		Id: 150
+		Image: Ruff01
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@151:
+		Category: Clear/Rough LAT
+		Id: 151
+		Image: clat01
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@152:
+		Category: Clear/Rough LAT
+		Id: 152
+		Image: clat02
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@153:
+		Category: Clear/Rough LAT
+		Id: 153
+		Image: clat03
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@154:
+		Category: Clear/Rough LAT
+		Id: 154
+		Image: clat04
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@155:
+		Category: Clear/Rough LAT
+		Id: 155
+		Image: clat05
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@156:
+		Category: Clear/Rough LAT
+		Id: 156
+		Image: clat06
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@157:
+		Category: Clear/Rough LAT
+		Id: 157
+		Image: clat07
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@158:
+		Category: Clear/Rough LAT
+		Id: 158
+		Image: clat08
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@159:
+		Category: Clear/Rough LAT
+		Id: 159
+		Image: clat09
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@160:
+		Category: Clear/Rough LAT
+		Id: 160
+		Image: clat10
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@161:
+		Category: Clear/Rough LAT
+		Id: 161
+		Image: clat11
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@162:
+		Category: Clear/Rough LAT
+		Id: 162
+		Image: clat12
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@163:
+		Category: Clear/Rough LAT
+		Id: 163
+		Image: clat13
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@164:
+		Category: Clear/Rough LAT
+		Id: 164
+		Image: clat14
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@165:
+		Category: Clear/Rough LAT
+		Id: 165
+		Image: clat15
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@166:
+		Category: Clear/Rough LAT
+		Id: 166
+		Image: clat16
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@167:
+		Category: Cliff/Water pieces
+		Id: 167
+		Image: WCliff01
+		Size: 2, 3
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			5: Cliff
+	Template@168:
+		Category: Cliff/Water pieces
+		Id: 168
+		Image: WCliff02
+		Size: 1, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@169:
+		Category: Cliff/Water pieces
+		Id: 169
+		Image: WCliff03
+		Size: 2, 3
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			5: Cliff
+	Template@170:
+		Category: Cliff/Water pieces
+		Id: 170
+		Image: WCliff04
+		Size: 2, 3
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			5: Cliff
+	Template@171:
+		Category: Cliff/Water pieces
+		Id: 171
+		Image: WCliff05
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@172:
+		Category: Cliff/Water pieces
+		Id: 172
+		Image: WCliff06
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@173:
+		Category: Cliff/Water pieces
+		Id: 173
+		Image: WCliff07
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@174:
+		Category: Cliff/Water pieces
+		Id: 174
+		Image: WCliff08
+		Size: 1, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@175:
+		Category: Cliff/Water pieces
+		Id: 175
+		Image: WCliff09
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@176:
+		Category: Cliff/Water pieces
+		Id: 176
+		Image: WCliff10
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@177:
+		Category: Cliff/Water pieces
+		Id: 177
+		Image: WCliff11
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@178:
+		Category: Cliff/Water pieces
+		Id: 178
+		Image: WCliff12
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@179:
+		Category: Cliff/Water pieces
+		Id: 179
+		Image: WCliff13
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@180:
+		Category: Cliff/Water pieces
+		Id: 180
+		Image: WCliff14
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@181:
+		Category: Cliff/Water pieces
+		Id: 181
+		Image: WCliff15
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@182:
+		Category: Cliff/Water pieces
+		Id: 182
+		Image: WCliff16
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@183:
+		Category: Cliff/Water pieces
+		Id: 183
+		Image: WCliff17
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@184:
+		Category: Cliff/Water pieces
+		Id: 184
+		Image: WCliff18
+		Size: 2, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@185:
+		Category: Cliff/Water pieces
+		Id: 185
+		Image: WCliff19
+		Size: 3, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			4: Cliff
+			5: Cliff
+	Template@186:
+		Category: Cliff/Water pieces
+		Id: 186
+		Image: WCliff20
+		Size: 3, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			4: Cliff
+			5: Cliff
+	Template@187:
+		Category: Cliff/Water pieces
+		Id: 187
+		Image: WCliff21
+		Size: 3, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			4: Cliff
+			5: Cliff
+	Template@188:
+		Category: Cliff/Water pieces
+		Id: 188
+		Image: WCliff22
+		Size: 2, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@189:
+		Category: Cliff/Water pieces
+		Id: 189
+		Image: WCliff23
+		Size: 2, 3
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+	Template@190:
+		Category: Cliff/Water pieces
+		Id: 190
+		Image: WCliff24
+		Size: 1, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@191:
+		Category: Cliff/Water pieces
+		Id: 191
+		Image: WCliff25
+		Size: 2, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@192:
+		Category: Cliff/Water pieces
+		Id: 192
+		Image: WCliff26
+		Size: 2, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@193:
+		Category: Cliff/Water pieces
+		Id: 193
+		Image: WCliff27
+		Size: 1, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@194:
+		Category: Cliff/Water pieces
+		Id: 194
+		Image: WCliff28
+		Size: 3, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			4: Cliff
+			5: Cliff
+	Template@195:
+		Category: Bendy Dirt Roads
+		Id: 195
+		Image: Droadc01
+		Size: 3, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@196:
+		Category: Bendy Dirt Roads
+		Id: 196
+		Image: Droadc02
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@197:
+		Category: Bendy Dirt Roads
+		Id: 197
+		Image: Droadc03
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@198:
+		Category: Bendy Dirt Roads
+		Id: 198
+		Image: Droadc04
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			3: DirtRoad
+	Template@199:
+		Category: Bendy Dirt Roads
+		Id: 199
+		Image: Droadc05
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@200:
+		Category: Bendy Dirt Roads
+		Id: 200
+		Image: Droadc06
+		Size: 3, 2
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@201:
+		Category: Bendy Dirt Roads
+		Id: 201
+		Image: Droadc07
+		Size: 2, 3
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			5: DirtRoad
+	Template@202:
+		Category: Bendy Dirt Roads
+		Id: 202
+		Image: Droadc08
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@203:
+		Category: Bendy Dirt Roads
+		Id: 203
+		Image: Droadc09
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@204:
+		Category: Bendy Dirt Roads
+		Id: 204
+		Image: Droadc10
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@205:
+		Category: Bendy Dirt Roads
+		Id: 205
+		Image: Droadc11
+		Size: 3, 2
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@206:
+		Category: Bendy Dirt Roads
+		Id: 206
+		Image: Droadc12
+		Size: 3, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@207:
+		Category: Bendy Dirt Roads
+		Id: 207
+		Image: Droadc13
+		Size: 2, 3
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@208:
+		Category: Bendy Dirt Roads
+		Id: 208
+		Image: Droadc14
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@209:
+		Category: Bendy Dirt Roads
+		Id: 209
+		Image: Droadc15
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			3: DirtRoad
+	Template@210:
+		Category: Bendy Dirt Roads
+		Id: 210
+		Image: Droadc16
+		Size: 2, 2
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@211:
+		Category: Bendy Dirt Roads
+		Id: 211
+		Image: Droadc17
+		Size: 3, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@212:
+		Category: Bendy Dirt Roads
+		Id: 212
+		Image: Droadc18
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			3: DirtRoad
+	Template@213:
+		Category: Bendy Dirt Roads
+		Id: 213
+		Image: Droadc19
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@214:
+		Category: Bendy Dirt Roads
+		Id: 214
+		Image: Droadc20
+		Size: 3, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@215:
+		Category: Bendy Dirt Roads
+		Id: 215
+		Image: Droadc21
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@216:
+		Category: Bendy Dirt Roads
+		Id: 216
+		Image: Droadc22
+		Size: 2, 2
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@217:
+		Category: Bendy Dirt Roads
+		Id: 217
+		Image: Droadc23
+		Size: 2, 3
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			5: DirtRoad
+	Template@218:
+		Category: Bendy Dirt Roads
+		Id: 218
+		Image: Droadc24
+		Size: 2, 3
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@219:
+		Category: Dirt Road Junctions
+		Id: 219
+		Image: Droadj01
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@220:
+		Category: Dirt Road Junctions
+		Id: 220
+		Image: Droadj02
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@221:
+		Category: Dirt Road Junctions
+		Id: 221
+		Image: Droadj03
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@222:
+		Category: Dirt Road Junctions
+		Id: 222
+		Image: Droadj04
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@223:
+		Category: Dirt Road Junctions
+		Id: 223
+		Image: Droadj05
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@224:
+		Category: Dirt Road Junctions
+		Id: 224
+		Image: Droadj06
+		Size: 3, 3
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+	Template@225:
+		Category: Dirt Road Junctions
+		Id: 225
+		Image: Droadj07
+		Size: 3, 3
+		Tiles:
+			1: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+	Template@226:
+		Category: Dirt Road Junctions
+		Id: 226
+		Image: Droadj08
+		Size: 3, 3
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			7: DirtRoad
+	Template@227:
+		Category: Dirt Road Junctions
+		Id: 227
+		Image: Droadj09
+		Size: 3, 3
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+	Template@228:
+		Category: Dirt Road Junctions
+		Id: 228
+		Image: Droadj10
+		Size: 3, 3
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+	Template@229:
+		Category: Dirt Road Junctions
+		Id: 229
+		Image: Droadj11
+		Size: 4, 4
+		Tiles:
+			2: DirtRoad
+			3: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			11: DirtRoad
+			12: DirtRoad
+			13: DirtRoad
+			14: DirtRoad
+			15: DirtRoad
+	Template@230:
+		Category: Straight Dirt Roads
+		Id: 230
+		Image: Droads01
+		Size: 4, 4
+		Tiles:
+			2: DirtRoad
+			3: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			13: DirtRoad
+	Template@231:
+		Category: Straight Dirt Roads
+		Id: 231
+		Image: Droads02
+		Size: 4, 4
+		Tiles:
+			2: DirtRoad
+			3: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			13: DirtRoad
+	Template@232:
+		Category: Straight Dirt Roads
+		Id: 232
+		Image: Droads03
+		Size: 4, 4
+		Tiles:
+			2: DirtRoad
+			3: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			13: DirtRoad
+	Template@233:
+		Category: Straight Dirt Roads
+		Id: 233
+		Image: Droads04
+		Size: 4, 4
+		Tiles:
+			0: Clear
+			1: Clear
+			2: DirtRoad
+			3: DirtRoad
+			4: Clear
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			13: DirtRoad
+	Template@234:
+		Category: Straight Dirt Roads
+		Id: 234
+		Image: Droads05
+		Size: 3, 3
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			7: DirtRoad
+	Template@235:
+		Category: Straight Dirt Roads
+		Id: 235
+		Image: Droads06
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			3: DirtRoad
+	Template@236:
+		Category: Straight Dirt Roads
+		Id: 236
+		Image: Droads07
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			3: DirtRoad
+	Template@237:
+		Category: Straight Dirt Roads
+		Id: 237
+		Image: Droads08
+		Size: 4, 4
+		Tiles:
+			2: Clear
+			5: DirtRoad
+			6: Clear
+			7: Clear
+			8: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			13: DirtRoad
+	Template@238:
+		Category: Straight Dirt Roads
+		Id: 238
+		Image: Droads09
+		Size: 4, 3
+		Tiles:
+			1: Clear
+			2: Clear
+			3: Clear
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			9: DirtRoad
+			10: Clear
+	Template@239:
+		Category: Straight Dirt Roads
+		Id: 239
+		Image: Droads10
+		Size: 3, 3
+		Tiles:
+			1: Clear
+			2: Clear
+			3: DirtRoad
+			4: DirtRoad
+			5: Clear
+			7: DirtRoad
+	Template@240:
+		Category: Straight Dirt Roads
+		Id: 240
+		Image: Droads11
+		Size: 4, 4
+		Tiles:
+			2: DirtRoad
+			3: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			8: Clear
+			9: Clear
+			10: DirtRoad
+			13: Clear
+	Template@241:
+		Category: Straight Dirt Roads
+		Id: 241
+		Image: Droads12
+		Size: 3, 4
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: Clear
+			4: Clear
+			5: DirtRoad
+			6: Clear
+			7: Clear
+			9: Clear
+			10: Clear
+	Template@242:
+		Category: Straight Dirt Roads
+		Id: 242
+		Image: Droads13
+		Size: 3, 3
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: Clear
+			4: DirtRoad
+			5: DirtRoad
+			7: Clear
+	Template@243:
+		Category: Straight Dirt Roads
+		Id: 243
+		Image: Droads14
+		Size: 5, 3
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+			9: DirtRoad
+			11: DirtRoad
+	Template@244:
+		Category: Straight Dirt Roads
+		Id: 244
+		Image: Droads15
+		Size: 3, 5
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			13: DirtRoad
+	Template@245:
+		Category: Straight Dirt Roads
+		Id: 245
+		Image: Droads16
+		Size: 2, 4
+		Tiles:
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+	Template@246:
+		Category: Straight Dirt Roads
+		Id: 246
+		Image: Droads17
+		Size: 4, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+	Template@247:
+		Category: Straight Dirt Roads
+		Id: 247
+		Image: Droads18
+		Size: 4, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+	Template@248:
+		Category: Straight Dirt Roads
+		Id: 248
+		Image: Droads19
+		Size: 4, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+	Template@249:
+		Category: Straight Dirt Roads
+		Id: 249
+		Image: Droads20
+		Size: 4, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+	Template@250:
+		Category: Straight Dirt Roads
+		Id: 250
+		Image: Droads21
+		Size: 3, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@251:
+		Category: Straight Dirt Roads
+		Id: 251
+		Image: Droads22
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@252:
+		Category: Straight Dirt Roads
+		Id: 252
+		Image: Droads23
+		Size: 1, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@253:
+		Category: Straight Dirt Roads
+		Id: 253
+		Image: Droads24
+		Size: 1, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@254:
+		Category: Straight Dirt Roads
+		Id: 254
+		Image: Droads25
+		Size: 3, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: Clear
+			3: DirtRoad
+			4: DirtRoad
+			5: Clear
+	Template@255:
+		Category: Straight Dirt Roads
+		Id: 255
+		Image: Droads26
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: Clear
+			2: DirtRoad
+			3: Clear
+	Template@256:
+		Category: Straight Dirt Roads
+		Id: 256
+		Image: Droads27
+		Size: 3, 3
+		Tiles:
+			1: Clear
+			2: Clear
+			3: DirtRoad
+			4: DirtRoad
+			5: Clear
+			6: DirtRoad
+			7: DirtRoad
+	Template@257:
+		Category: Straight Dirt Roads
+		Id: 257
+		Image: Droads28
+		Size: 3, 2
+		Tiles:
+			0: Clear
+			1: DirtRoad
+			2: DirtRoad
+			3: Clear
+			4: DirtRoad
+			5: DirtRoad
+	Template@258:
+		Category: Straight Dirt Roads
+		Id: 258
+		Image: Droads29
+		Size: 2, 2
+		Tiles:
+			0: Clear
+			1: DirtRoad
+			2: Clear
+			3: DirtRoad
+	Template@259:
+		Category: Straight Dirt Roads
+		Id: 259
+		Image: Droads30
+		Size: 2, 2
+		Tiles:
+			0: Clear
+			1: DirtRoad
+			2: Clear
+			3: DirtRoad
+	Template@260:
+		Category: Straight Dirt Roads
+		Id: 260
+		Image: Droads31
+		Size: 4, 3
+		Tiles:
+			0: DirtRoad
+			1: Clear
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			10: Clear
+			11: DirtRoad
+	Template@261:
+		Category: Straight Dirt Roads
+		Id: 261
+		Image: Droads32
+		Size: 4, 3
+		Tiles:
+			2: Clear
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+			9: Clear
+	Template@262:
+		Category: Straight Dirt Roads
+		Id: 262
+		Image: Droads33
+		Size: 4, 2
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+	Template@263:
+		Category: Straight Dirt Roads
+		Id: 263
+		Image: Droads34
+		Size: 4, 4
+		Tiles:
+			1: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			11: DirtRoad
+			14: DirtRoad
+			15: DirtRoad
+	Template@264:
+		Category: Straight Dirt Roads
+		Id: 264
+		Image: Droads35
+		Size: 4, 4
+		Tiles:
+			1: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			11: DirtRoad
+			14: DirtRoad
+			15: DirtRoad
+	Template@265:
+		Category: Straight Dirt Roads
+		Id: 265
+		Image: Droads36
+		Size: 4, 4
+		Tiles:
+			1: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			11: DirtRoad
+			14: DirtRoad
+			15: DirtRoad
+	Template@266:
+		Category: Straight Dirt Roads
+		Id: 266
+		Image: Droads37
+		Size: 4, 4
+		Tiles:
+			1: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			11: DirtRoad
+			14: DirtRoad
+			15: DirtRoad
+	Template@267:
+		Category: Straight Dirt Roads
+		Id: 267
+		Image: Droads38
+		Size: 3, 3
+		Tiles:
+			1: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+	Template@268:
+		Category: Straight Dirt Roads
+		Id: 268
+		Image: Droads39
+		Size: 2, 2
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@269:
+		Category: Straight Dirt Roads
+		Id: 269
+		Image: Droads40
+		Size: 2, 2
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@270:
+		Category: Straight Dirt Roads
+		Id: 270
+		Image: Droads41
+		Size: 4, 4
+		Tiles:
+			1: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+			11: Clear
+			14: Clear
+			15: Clear
+	Template@271:
+		Category: Straight Dirt Roads
+		Id: 271
+		Image: Droads42
+		Size: 4, 5
+		Tiles:
+			1: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+			13: Clear
+			14: Clear
+			18: Clear
+	Template@272:
+		Category: Straight Dirt Roads
+		Id: 272
+		Image: Droads43
+		Size: 3, 3
+		Tiles:
+			1: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+	Template@273:
+		Category: Straight Dirt Roads
+		Id: 273
+		Image: Droads44
+		Size: 4, 4
+		Tiles:
+			1: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			9: Clear
+			10: DirtRoad
+			11: DirtRoad
+			14: DirtRoad
+			15: DirtRoad
+	Template@274:
+		Category: Straight Dirt Roads
+		Id: 274
+		Image: Droads45
+		Size: 2, 3
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@275:
+		Category: Straight Dirt Roads
+		Id: 275
+		Image: Droads46
+		Size: 3, 3
+		Tiles:
+			1: Clear
+			3: Clear
+			4: Clear
+			5: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+	Template@276:
+		Category: Straight Dirt Roads
+		Id: 276
+		Image: Droads47
+		Size: 5, 3
+		Tiles:
+			1: DirtRoad
+			2: Clear
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			8: DirtRoad
+			9: Clear
+			11: Clear
+			12: DirtRoad
+			13: DirtRoad
+			14: DirtRoad
+	Template@277:
+		Category: Straight Dirt Roads
+		Id: 277
+		Image: Droads48
+		Size: 3, 5
+		Tiles:
+			1: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			6: Clear
+			7: DirtRoad
+			8: Clear
+			10: DirtRoad
+			11: DirtRoad
+			13: Clear
+			14: DirtRoad
+	Template@278:
+		Category: Straight Dirt Roads
+		Id: 278
+		Image: Droads49
+		Size: 4, 4
+		Tiles:
+			1: Clear
+			4: Clear
+			5: DirtRoad
+			6: Clear
+			9: Clear
+			10: DirtRoad
+			11: Clear
+			14: Clear
+			15: Clear
+	Template@279:
+		Category: Straight Dirt Roads
+		Id: 279
+		Image: Droads50
+		Size: 2, 4
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+	Template@280:
+		Category: Straight Dirt Roads
+		Id: 280
+		Image: Droads51
+		Size: 2, 4
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+	Template@281:
+		Category: Straight Dirt Roads
+		Id: 281
+		Image: Droads52
+		Size: 2, 4
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+	Template@282:
+		Category: Straight Dirt Roads
+		Id: 282
+		Image: Droads53
+		Size: 2, 4
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+	Template@283:
+		Category: Straight Dirt Roads
+		Id: 283
+		Image: Droads54
+		Size: 2, 3
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@284:
+		Category: Straight Dirt Roads
+		Id: 284
+		Image: Droads55
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+	Template@285:
+		Category: Straight Dirt Roads
+		Id: 285
+		Image: Droads56
+		Size: 2, 1
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@286:
+		Category: Straight Dirt Roads
+		Id: 286
+		Image: Droads57
+		Size: 2, 1
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@287:
+		Category: Straight Dirt Roads
+		Id: 287
+		Image: Droads58
+		Size: 2, 4
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: DirtRoad
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+	Template@288:
+		Category: Straight Dirt Roads
+		Id: 288
+		Image: Droads59
+		Size: 3, 3
+		Tiles:
+			0: Clear
+			1: Clear
+			3: DirtRoad
+			4: DirtRoad
+			5: Clear
+			6: DirtRoad
+			7: DirtRoad
+	Template@289:
+		Category: Straight Dirt Roads
+		Id: 289
+		Image: Droads60
+		Size: 2, 3
+		Tiles:
+			0: Clear
+			2: Clear
+			3: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+	Template@290:
+		Category: Straight Dirt Roads
+		Id: 290
+		Image: Droads61
+		Size: 2, 4
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: Clear
+			5: Clear
+			6: Clear
+	Template@291:
+		Category: Straight Dirt Roads
+		Id: 291
+		Image: Droads62
+		Size: 2, 4
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: DirtRoad
+			4: DirtRoad
+			5: Clear
+			6: Clear
+			7: Clear
+	Template@292:
+		Category: Straight Dirt Roads
+		Id: 292
+		Image: Droads63
+		Size: 2, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: Clear
+			3: Clear
+	Template@293:
+		Category: Straight Dirt Roads
+		Id: 293
+		Image: Droads64
+		Size: 3, 4
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			4: DirtRoad
+			5: DirtRoad
+			6: Clear
+			7: DirtRoad
+			9: DirtRoad
+			10: DirtRoad
+	Template@294:
+		Category: Straight Dirt Roads
+		Id: 294
+		Image: Droads65
+		Size: 3, 4
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			3: Clear
+			4: DirtRoad
+			7: DirtRoad
+			8: Clear
+			10: DirtRoad
+			11: DirtRoad
+	Template@295:
+		Category: Straight Dirt Roads
+		Id: 295
+		Image: Droads66
+		Size: 2, 3
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			5: Clear
+	Template@296:
+		Category: Bridges
+		Id: 296
+		Image: Ovrps01
+		Size: 3, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Road
+			5: Cliff
+			6: Road
+			7: Road
+			8: Cliff
+			9: Road
+			10: Road
+			11: Cliff
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@297:
+		Category: Bridges
+		Id: 297
+		Image: Ovrps02
+		Size: 3, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Road
+			5: Cliff
+			6: Road
+			7: Road
+			8: Cliff
+			9: Road
+			10: Road
+			11: Cliff
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@298:
+		Category: Bridges
+		Id: 298
+		Image: Ovrps03
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Cliff
+			9: Cliff
+	Template@299:
+		Category: Bridges
+		Id: 299
+		Image: Ovrps04
+		Size: 5, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Road
+			7: Road
+			8: Road
+			9: Cliff
+			10: Cliff
+			11: Cliff
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@300:
+		Category: Bridges
+		Id: 300
+		Image: Ovrps05
+		Size: 5, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Road
+			7: Road
+			8: Road
+			9: Cliff
+			10: Cliff
+			11: Cliff
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@301:
+		Category: Bridges
+		Id: 301
+		Image: Ovrps06
+		Size: 5, 2
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Road
+			7: Road
+			8: Road
+			9: Cliff
+	Template@302:
+		Category: Bridges
+		Id: 302
+		Image: Ovrps07
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Road
+			3: Cliff
+			4: Road
+			5: Cliff
+			6: Road
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@303:
+		Category: Bridges
+		Id: 303
+		Image: Ovrps08
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Road
+			3: Cliff
+			4: Road
+			5: Cliff
+			6: Road
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@304:
+		Category: Bridges
+		Id: 304
+		Image: Ovrps09
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Road
+			3: Cliff
+			4: Road
+			5: Cliff
+			6: Road
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@305:
+		Category: Bridges
+		Id: 305
+		Image: Ovrps10
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Rough
+			3: Cliff
+			4: Rough
+			5: Cliff
+			6: Rough
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@306:
+		Category: Bridges
+		Id: 306
+		Image: Ovrps11
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@307:
+		Category: Bridges
+		Id: 307
+		Image: Ovrps12
+		Size: 5, 2
+		Tiles:
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@308:
+		Category: Bridges
+		Id: 308
+		Image: Ovrps13
+		Size: 5, 2
+		Tiles:
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@309:
+		Category: Bridges
+		Id: 309
+		Image: Ovrps14
+		Size: 5, 2
+		Tiles:
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@310:
+		Category: Bridges
+		Id: 310
+		Image: Ovrps15
+		Size: 5, 2
+		Tiles:
+			1: Rough
+			2: Rough
+			3: Rough
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@311:
+		Category: Bridges
+		Id: 311
+		Image: Ovrps16
+		Size: 5, 2
+		Tiles:
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@312:
+		Category: Paved Roads
+		Id: 312
+		Image: Proad01
+		Size: 1, 3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+	Template@313:
+		Category: Paved Roads
+		Id: 313
+		Image: Proad02
+		Size: 3, 1
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+	Template@314:
+		Category: Paved Roads
+		Id: 314
+		Image: Proad03
+		Size: 3, 3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+	Template@315:
+		Category: Paved Roads
+		Id: 315
+		Image: Proad04
+		Size: 3, 3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+	Template@316:
+		Category: Paved Roads
+		Id: 316
+		Image: Proad05
+		Size: 3, 3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+	Template@317:
+		Category: Paved Roads
+		Id: 317
+		Image: Proad06
+		Size: 3, 3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+	Template@318:
+		Category: Paved Roads
+		Id: 318
+		Image: Proad07
+		Size: 3, 3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+	Template@319:
+		Category: Paved Roads
+		Id: 319
+		Image: Proad08
+		Size: 3, 3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+	Template@320:
+		Category: Paved Roads
+		Id: 320
+		Image: Proad09
+		Size: 3, 3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+	Template@321:
+		Category: Paved Roads
+		Id: 321
+		Image: Proad10
+		Size: 4, 3
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Road
+			4: Clear
+			5: DirtRoad
+			6: DirtRoad
+			7: Road
+			8: Clear
+			9: Clear
+			10: DirtRoad
+			11: Road
+	Template@322:
+		Category: Paved Roads
+		Id: 322
+		Image: Proad11
+		Size: 4, 3
+		Tiles:
+			0: Road
+			1: DirtRoad
+			2: Clear
+			3: Clear
+			4: Road
+			5: DirtRoad
+			6: DirtRoad
+			7: DirtRoad
+			8: Road
+			9: DirtRoad
+			10: Clear
+			11: Clear
+	Template@323:
+		Category: Paved Roads
+		Id: 323
+		Image: Proad12
+		Size: 4, 3
+		Tiles:
+			0: DirtRoad
+			1: Rough
+			2: Rough
+			3: Clear
+			4: Road
+			5: Rough
+			6: Rough
+			7: Road
+			8: DirtRoad
+			9: Clear
+			10: Rough
+			11: Clear
+	Template@324:
+		Category: Paved Roads
+		Id: 324
+		Image: Proad13
+		Size: 3, 4
+		Tiles:
+			0: DirtRoad
+			1: Road
+			2: DirtRoad
+			3: Clear
+			4: DirtRoad
+			5: DirtRoad
+			6: Clear
+			7: DirtRoad
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+	Template@325:
+		Category: Paved Roads
+		Id: 325
+		Image: Proad14
+		Size: 3, 4
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: DirtRoad
+			5: Clear
+			6: DirtRoad
+			7: Road
+			8: DirtRoad
+			9: Road
+			10: Road
+			11: Road
+	Template@326:
+		Category: Paved Roads
+		Id: 326
+		Image: Proad15
+		Size: 3, 4
+		Tiles:
+			0: DirtRoad
+			1: Road
+			2: DirtRoad
+			3: Clear
+			4: Rough
+			5: DirtRoad
+			6: Clear
+			7: Rough
+			8: Clear
+			9: Road
+			10: Road
+			11: Road
+	Template@327:
+		Category: Paved Roads
+		Id: 327
+		Image: Proad16
+		Size: 4, 5
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+			9: Road
+			10: Road
+			11: Road
+			12: DirtRoad
+			13: DirtRoad
+			14: DirtRoad
+			17: DirtRoad
+	Template@328:
+		Category: Paved Roads
+		Id: 328
+		Image: Proad17
+		Size: 4, 4
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+			9: Road
+			10: Road
+			11: Road
+			12: Road
+			13: Road
+			14: Road
+			15: Road
+	Template@329:
+		Category: Paved Roads
+		Id: 329
+		Image: Proad18
+		Size: 4, 5
+		Tiles:
+			1: DirtRoad
+			2: DirtRoad
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+			9: Road
+			10: Road
+			11: Road
+			12: Road
+			13: Road
+			14: Road
+			15: Road
+			17: DirtRoad
+			18: DirtRoad
+	Template@330:
+		Category: Paved Roads
+		Id: 330
+		Image: Proad19
+		Size: 5, 4
+		Tiles:
+			2: Road
+			3: Road
+			4: Road
+			6: DirtRoad
+			7: Road
+			8: Road
+			9: Road
+			10: DirtRoad
+			11: DirtRoad
+			12: Road
+			13: Road
+			14: Road
+			16: DirtRoad
+			17: Road
+			18: Road
+			19: Road
+	Template@331:
+		Category: Paved Roads
+		Id: 331
+		Image: Proad20
+		Size: 4, 4
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			4: Road
+			5: Road
+			6: Road
+			7: DirtRoad
+			8: Road
+			9: Road
+			10: Road
+			11: DirtRoad
+			12: Road
+			13: Road
+			14: Road
+	Template@332:
+		Category: Paved Roads
+		Id: 332
+		Image: Proad21
+		Size: 5, 4
+		Tiles:
+			1: Road
+			2: Road
+			3: Road
+			5: DirtRoad
+			6: Road
+			7: Road
+			8: Road
+			9: DirtRoad
+			10: DirtRoad
+			11: Road
+			12: Road
+			13: Road
+			14: DirtRoad
+			16: Road
+			17: Road
+			18: Road
+	Template@333:
+		Category: Water
+		Id: 333
+		Image: Water01
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@334:
+		Category: Water
+		Id: 334
+		Image: Water02
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@335:
+		Category: Water
+		Id: 335
+		Image: Water03
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@336:
+		Category: Water
+		Id: 336
+		Image: Water04
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@337:
+		Category: Water
+		Id: 337
+		Image: Water05
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@338:
+		Category: Water
+		Id: 338
+		Image: Water06
+		Size: 2, 2
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@339:
+		Category: Water
+		Id: 339
+		Image: Water07
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Water
+			2: Water
+			3: Water
+	Template@340:
+		Category: Water
+		Id: 340
+		Image: Water08
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Water
+			2: Cliff
+			3: Cliff
+	Template@341:
+		Category: Water
+		Id: 341
+		Image: Water09
+		Size: 1, 1
+		Tiles:
+			0: Water
+	Template@342:
+		Category: Water
+		Id: 342
+		Image: Water10
+		Size: 1, 1
+		Tiles:
+			0: Water
+	Template@343:
+		Category: Water
+		Id: 343
+		Image: Water11
+		Size: 1, 1
+		Tiles:
+			0: Water
+	Template@344:
+		Category: Water
+		Id: 344
+		Image: Water12
+		Size: 1, 1
+		Tiles:
+			0: Water
+	Template@345:
+		Category: Water
+		Id: 345
+		Image: Water13
+		Size: 1, 1
+		Tiles:
+			0: Water
+	Template@346:
+		Category: Water
+		Id: 346
+		Image: Water14
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@387:
+		Category: Dirt Road Slopes
+		Id: 387
+		Image: DRSLPE01
+		Size: 1, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@388:
+		Category: Dirt Road Slopes
+		Id: 388
+		Image: DRSLPE02
+		Size: 1, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@389:
+		Category: Dirt Road Slopes
+		Id: 389
+		Image: DRSLPE03
+		Size: 2, 1
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@390:
+		Category: Dirt Road Slopes
+		Id: 390
+		Image: DRSLPE04
+		Size: 2, 1
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@391:
+		Category: Dirt Road Slopes
+		Id: 391
+		Image: DRSLPE05
+		Size: 1, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@392:
+		Category: Dirt Road Slopes
+		Id: 392
+		Image: DRSLPE06
+		Size: 1, 2
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@393:
+		Category: Dirt Road Slopes
+		Id: 393
+		Image: DRSLPE07
+		Size: 2, 1
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@394:
+		Category: Dirt Road Slopes
+		Id: 394
+		Image: DRSLPE08
+		Size: 2, 1
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+	Template@403:
+		Category: Slope Set Pieces
+		Id: 403
+		Image: RAMP01
+		Size: 3, 4
+		Tiles:
+			1: Clear
+			2: Clear
+			3: Cliff
+			4: Cliff
+			5: Clear
+			6: Cliff
+			7: Cliff
+			8: Clear
+			10: Clear
+			11: Clear
+	Template@404:
+		Category: Slope Set Pieces
+		Id: 404
+		Image: RAMP02
+		Size: 3, 4
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			4: Cliff
+			5: Cliff
+			6: Clear
+			7: Cliff
+			8: Cliff
+			9: Clear
+			10: Clear
+	Template@405:
+		Category: Slope Set Pieces
+		Id: 405
+		Image: RAMP03
+		Size: 4, 3
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Cliff
+			6: Cliff
+			7: Clear
+			9: Cliff
+			10: Cliff
+	Template@406:
+		Category: Slope Set Pieces
+		Id: 406
+		Image: RAMP04
+		Size: 4, 3
+		Tiles:
+			1: Cliff
+			2: Cliff
+			4: Clear
+			5: Cliff
+			6: Cliff
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+	Template@407:
+		Category: Slope Set Pieces
+		Id: 407
+		Image: RAMP05
+		Size: 3, 4
+		Tiles:
+			1: Clear
+			2: Clear
+			3: Cliff
+			4: Cliff
+			5: Clear
+			6: Cliff
+			7: Cliff
+			8: Clear
+			10: Clear
+			11: Clear
+	Template@408:
+		Category: Slope Set Pieces
+		Id: 408
+		Image: RAMP06
+		Size: 3, 4
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			4: Cliff
+			5: Cliff
+			6: Clear
+			9: Clear
+	Template@409:
+		Category: Slope Set Pieces
+		Id: 409
+		Image: RAMP07
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Clear
+	Template@410:
+		Category: Slope Set Pieces
+		Id: 410
+		Image: RAMP08
+		Size: 4, 3
+		Tiles:
+			1: Cliff
+			2: Cliff
+			4: Clear
+			5: Cliff
+			6: Cliff
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+	Template@411:
+		Category: Slope Set Pieces
+		Id: 411
+		Image: RAMP09
+		Size: 4, 3
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Cliff
+			9: Cliff
+	Template@412:
+		Category: Slope Set Pieces
+		Id: 412
+		Image: RAMP10
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Clear
+			2: Cliff
+	Template@423:
+		Category: Dead Oil Tanker
+		Id: 423
+		Image: TANKER01
+		Size: 5, 8
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Water
+			3: Water
+			5: Cliff
+			6: Cliff
+			7: Water
+			8: Water
+			10: Water
+			11: Cliff
+			12: Cliff
+			13: Water
+			16: Water
+			17: Cliff
+			18: Water
+			22: Cliff
+			23: Cliff
+			27: Cliff
+			28: Cliff
+			29: Water
+			32: Cliff
+			33: Cliff
+			34: Cliff
+			38: Cliff
+			39: Cliff
+	Template@424:
+		Category: Ruins
+		Id: 424
+		Image: RUIN01
+		Size: 3, 3
+		Tiles:
+			1: Cliff
+			2: Cliff
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+	Template@435:
+		Category: Waterfalls
+		Id: 435
+		Image: W-a-01
+		Size: 2, 4
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			6: Rough
+			7: Cliff
+	Template@436:
+		Category: Waterfalls
+		Id: 436
+		Image: W-a-02
+		Size: 1, 4
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@437:
+		Category: Waterfalls
+		Id: 437
+		Image: W-a-03
+		Size: 2, 4
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+	Template@438:
+		Category: Waterfalls
+		Id: 438
+		Image: W-a-04
+		Size: 2, 4
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Rough
+	Template@439:
+		Category: Ground 01
+		Id: 439
+		Image: Des0101
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@440:
+		Category: Ground 01
+		Id: 440
+		Image: Des0102
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@441:
+		Category: Ground 01
+		Id: 441
+		Image: Des0103
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@442:
+		Category: Ground 01
+		Id: 442
+		Image: Des0104
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@443:
+		Category: Ground 01
+		Id: 443
+		Image: Des0105
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@444:
+		Category: Ground 01
+		Id: 444
+		Image: Des0106
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@445:
+		Category: Ground 01
+		Id: 445
+		Image: Des0107
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@446:
+		Category: Ground 01
+		Id: 446
+		Image: Des0108
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@447:
+		Category: Ground 01
+		Id: 447
+		Image: Des0109
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@448:
+		Category: Ground 01
+		Id: 448
+		Image: Des0110
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@449:
+		Category: Ground 01
+		Id: 449
+		Image: Des0111
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@450:
+		Category: Ground 01
+		Id: 450
+		Image: Des0112
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@451:
+		Category: Ground 01
+		Id: 451
+		Image: Des0113
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@452:
+		Category: Ground 01
+		Id: 452
+		Image: Des0114
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@453:
+		Category: Ground 01
+		Id: 453
+		Image: Des0115
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@454:
+		Category: Ground 01
+		Id: 454
+		Image: Des0116
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@455:
+		Category: Ground 01
+		Id: 455
+		Image: Des0117
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@456:
+		Category: Ground 01
+		Id: 456
+		Image: Des0118
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@457:
+		Category: Ground 01
+		Id: 457
+		Image: Des0119
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@458:
+		Category: Ground 01
+		Id: 458
+		Image: Des0120
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@459:
+		Category: Ground 01
+		Id: 459
+		Image: Des0121
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@460:
+		Category: Ground 01
+		Id: 460
+		Image: Des0122
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@461:
+		Category: Ground 01
+		Id: 461
+		Image: Des0123
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@462:
+		Category: Ground 01
+		Id: 462
+		Image: Des0124
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@463:
+		Category: Ground 01
+		Id: 463
+		Image: Des0125
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@464:
+		Category: Ground 01
+		Id: 464
+		Image: Des0126
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@465:
+		Category: Ground 01
+		Id: 465
+		Image: Des0127
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@466:
+		Category: Ground 01
+		Id: 466
+		Image: Des0128
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@467:
+		Category: Ground 01
+		Id: 467
+		Image: Des0129
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@468:
+		Category: Ground 01
+		Id: 468
+		Image: Des0130
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@469:
+		Category: Ground 01
+		Id: 469
+		Image: Des0131
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@470:
+		Category: Ground 01
+		Id: 470
+		Image: Des0132
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@471:
+		Category: Ground 01
+		Id: 471
+		Image: Des0133
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@472:
+		Category: Ground 01
+		Id: 472
+		Image: Des0134
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@473:
+		Category: Ground 01
+		Id: 473
+		Image: Des0135
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@474:
+		Category: Ground 01
+		Id: 474
+		Image: Des0136
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@475:
+		Category: Ground 01
+		Id: 475
+		Image: Des0137
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@476:
+		Category: Ground 01
+		Id: 476
+		Image: Des0138
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@477:
+		Category: Ground 01
+		Id: 477
+		Image: Des0139
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@478:
+		Category: Ground 01
+		Id: 478
+		Image: Des0140
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@479:
+		Category: Ground 01
+		Id: 479
+		Image: Des0141
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@480:
+		Category: Ground 01
+		Id: 480
+		Image: Des0142
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@481:
+		Category: Ground 01
+		Id: 481
+		Image: Des0143
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@482:
+		Category: Ground 01
+		Id: 482
+		Image: Des0144
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@483:
+		Category: Ground 01
+		Id: 483
+		Image: Des0145
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@484:
+		Category: Ground 01
+		Id: 484
+		Image: Des0146
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@485:
+		Category: Ground 01
+		Id: 485
+		Image: Des0147
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@486:
+		Category: Ground 01
+		Id: 486
+		Image: Des0148
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@487:
+		Category: Ground 02
+		Id: 487
+		Image: Des0201
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@488:
+		Category: Ground 02
+		Id: 488
+		Image: Des0202
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@489:
+		Category: Ground 02
+		Id: 489
+		Image: Des0203
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@490:
+		Category: Ground 02
+		Id: 490
+		Image: Des0204
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@491:
+		Category: Ground 02
+		Id: 491
+		Image: Des0205
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@492:
+		Category: Ground 02
+		Id: 492
+		Image: Des0206
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@493:
+		Category: Ground 02
+		Id: 493
+		Image: Des0207
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@494:
+		Category: Ground 02
+		Id: 494
+		Image: Des0208
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@495:
+		Category: Ground 02
+		Id: 495
+		Image: Des0209
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@496:
+		Category: Ground 02
+		Id: 496
+		Image: Des0210
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@497:
+		Category: Ground 02
+		Id: 497
+		Image: Des0211
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@498:
+		Category: Ground 02
+		Id: 498
+		Image: Des0212
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@499:
+		Category: Ground 02
+		Id: 499
+		Image: Des0213
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@500:
+		Category: Ground 02
+		Id: 500
+		Image: Des0214
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@501:
+		Category: Ground 02
+		Id: 501
+		Image: Des0215
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@502:
+		Category: Ground 02
+		Id: 502
+		Image: Des0216
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@503:
+		Category: Ground 02
+		Id: 503
+		Image: Des0217
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@504:
+		Category: Ground 02
+		Id: 504
+		Image: Des0218
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@505:
+		Category: Ground 02
+		Id: 505
+		Image: Des0219
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@506:
+		Category: Ground 02
+		Id: 506
+		Image: Des0220
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@507:
+		Category: Ground 02
+		Id: 507
+		Image: Des0221
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@508:
+		Category: Ground 02
+		Id: 508
+		Image: Des0222
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@509:
+		Category: Ground 02
+		Id: 509
+		Image: Des0223
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@510:
+		Category: Ground 02
+		Id: 510
+		Image: Des0224
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@511:
+		Category: Ground 02
+		Id: 511
+		Image: Des0225
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@512:
+		Category: Ground 02
+		Id: 512
+		Image: Des0226
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@513:
+		Category: Ground 02
+		Id: 513
+		Image: Des0227
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@514:
+		Category: Ground 02
+		Id: 514
+		Image: Des0228
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@515:
+		Category: Ground 02
+		Id: 515
+		Image: Des0229
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@516:
+		Category: Ground 02
+		Id: 516
+		Image: Des0230
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@517:
+		Category: Ground 02
+		Id: 517
+		Image: Des0231
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@518:
+		Category: Ground 02
+		Id: 518
+		Image: Des0232
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@519:
+		Category: Ground 02
+		Id: 519
+		Image: Des0233
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@520:
+		Category: Ground 02
+		Id: 520
+		Image: Des0234
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@521:
+		Category: Ground 02
+		Id: 521
+		Image: Des0235
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@522:
+		Category: Ground 02
+		Id: 522
+		Image: Des0236
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@523:
+		Category: Ground 02
+		Id: 523
+		Image: Des0237
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@524:
+		Category: Ground 02
+		Id: 524
+		Image: Des0238
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@525:
+		Category: Ground 02
+		Id: 525
+		Image: Des0239
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@526:
+		Category: Ground 02
+		Id: 526
+		Image: Des0240
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@527:
+		Category: Ground 02
+		Id: 527
+		Image: Des0241
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@528:
+		Category: Ground 02
+		Id: 528
+		Image: Des0242
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@529:
+		Category: Ground 02
+		Id: 529
+		Image: Des0243
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@530:
+		Category: Ground 02
+		Id: 530
+		Image: Des0244
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@531:
+		Category: Ground 02
+		Id: 531
+		Image: Des0245
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@532:
+		Category: Ground 02
+		Id: 532
+		Image: Des0246
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@533:
+		Category: Ground 02
+		Id: 533
+		Image: Des0247
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@534:
+		Category: Ground 02
+		Id: 534
+		Image: Des0248
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@535:
+		Category: Sand
+		Id: 535
+		Image: Sandy01
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@536:
+		Category: Sand/Clear LAT
+		Id: 536
+		Image: dlat01
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@537:
+		Category: Sand/Clear LAT
+		Id: 537
+		Image: dlat02
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@538:
+		Category: Sand/Clear LAT
+		Id: 538
+		Image: dlat03
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@539:
+		Category: Sand/Clear LAT
+		Id: 539
+		Image: dlat04
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@540:
+		Category: Sand/Clear LAT
+		Id: 540
+		Image: dlat05
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@541:
+		Category: Sand/Clear LAT
+		Id: 541
+		Image: dlat06
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@542:
+		Category: Sand/Clear LAT
+		Id: 542
+		Image: dlat07
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@543:
+		Category: Sand/Clear LAT
+		Id: 543
+		Image: dlat08
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@544:
+		Category: Sand/Clear LAT
+		Id: 544
+		Image: dlat09
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@545:
+		Category: Sand/Clear LAT
+		Id: 545
+		Image: dlat10
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@546:
+		Category: Sand/Clear LAT
+		Id: 546
+		Image: dlat11
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@547:
+		Category: Sand/Clear LAT
+		Id: 547
+		Image: dlat12
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@548:
+		Category: Sand/Clear LAT
+		Id: 548
+		Image: dlat13
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@549:
+		Category: Sand/Clear LAT
+		Id: 549
+		Image: dlat14
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@550:
+		Category: Sand/Clear LAT
+		Id: 550
+		Image: dlat15
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@551:
+		Category: Sand/Clear LAT
+		Id: 551
+		Image: dlat16
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@552:
+		Category: Rough ground
+		Id: 552
+		Image: Rough01
+		Size: 9, 7
+		Tiles:
+			2: Rough
+			3: Rough
+			11: Rough
+			12: Rough
+			13: Rough
+			18: Rough
+			19: Rough
+			20: Rough
+			21: Rough
+			22: Rough
+			23: Rough
+			24: Rough
+			25: Rough
+			26: Rough
+			28: Rough
+			29: Rough
+			30: Rough
+			31: Rough
+			32: Rough
+			33: Rough
+			34: Rough
+			35: Rough
+			38: Rough
+			39: Rough
+			40: Rough
+			41: Rough
+			42: Rough
+			43: Rough
+			44: Rough
+			49: Rough
+			50: Rough
+			51: Rough
+			52: Rough
+			53: Rough
+			60: Rough
+			61: Rough
+	Template@553:
+		Category: Rough ground
+		Id: 553
+		Image: Rough02
+		Size: 4, 4
+		Tiles:
+			1: Rough
+			2: Rough
+			4: Rough
+			5: Rough
+			6: Rough
+			7: Rough
+			8: Rough
+			9: Rough
+			10: Rough
+			13: Rough
+	Template@554:
+		Category: Rough ground
+		Id: 554
+		Image: Rough03
+		Size: 5, 3
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+			6: Rough
+			7: Rough
+			8: Rough
+			9: Rough
+			12: Rough
+			13: Rough
+			14: Rough
+	Template@555:
+		Category: Rough ground
+		Id: 555
+		Image: Rough04
+		Size: 4, 3
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			5: Rough
+			6: Rough
+			7: Rough
+			10: Rough
+			11: Rough
+	Template@556:
+		Category: Rough ground
+		Id: 556
+		Image: Rough05
+		Size: 3, 5
+		Tiles:
+			1: Rough
+			3: Rough
+			4: Rough
+			5: Rough
+			6: Rough
+			7: Rough
+			8: Rough
+			9: Rough
+			10: Rough
+			11: Rough
+			13: Rough
+			14: Rough
+	Template@557:
+		Category: Rough ground
+		Id: 557
+		Image: Rough06
+		Size: 4, 4
+		Tiles:
+			1: Clear
+			2: Clear
+			4: Clear
+			5: Rough
+			6: Rough
+			7: Rough
+			8: Clear
+			9: Rough
+			10: Rough
+			11: Rough
+			13: Rough
+			14: Rough
+			15: Rough
+	Template@558:
+		Category: Rough ground
+		Id: 558
+		Image: Rough07
+		Size: 3, 3
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+			4: Rough
+			5: Rough
+			7: Rough
+			8: Rough
+	Template@559:
+		Category: Rough ground
+		Id: 559
+		Image: Rough08
+		Size: 6, 10
+		Tiles:
+			1: Rough
+			6: Rough
+			7: Rough
+			12: Rough
+			13: Rough
+			14: Rough
+			15: Rough
+			20: Rough
+			21: Rough
+			22: Rough
+			26: Rough
+			27: Rough
+			28: Rough
+			33: Rough
+			34: Rough
+			35: Rough
+			40: Rough
+			45: Rough
+			46: Rough
+			51: Rough
+			52: Rough
+			57: Rough
+	Template@560:
+		Category: Rough ground
+		Id: 560
+		Image: Rough09
+		Size: 8, 3
+		Tiles:
+			0: Clear
+			1: Rough
+			2: Rough
+			3: Rough
+			4: Rough
+			5: Clear
+			8: Rough
+			9: Clear
+			10: Clear
+			11: Clear
+			12: Rough
+			13: Rough
+			14: Rough
+			15: Rough
+			21: Clear
+			22: Clear
+	Template@561:
+		Category: Rough ground
+		Id: 561
+		Image: Rough10
+		Size: 3, 4
+		Tiles:
+			0: Rough
+			1: Rough
+			3: Rough
+			4: Rough
+			5: Rough
+			7: Rough
+			8: Rough
+			10: Rough
+	Template@562:
+		Category: Paved Road Ends
+		Id: 562
+		Image: p_end01
+		Size: 1, 3
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+	Template@563:
+		Category: Paved Road Ends
+		Id: 563
+		Image: p_end02
+		Size: 3, 1
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+	Template@564:
+		Category: Paved Road Ends
+		Id: 564
+		Image: p_end03
+		Size: 1, 3
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+	Template@565:
+		Category: Paved Road Ends
+		Id: 565
+		Image: p_end04
+		Size: 3, 1
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+	Template@566:
+		Category: TrainBridges
+		Id: 566
+		Image: Tovrps01
+		Size: 3, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Road
+			5: Cliff
+			6: Rail
+			7: Rail
+			8: Cliff
+			9: Road
+			10: Road
+			11: Cliff
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@567:
+		Category: TrainBridges
+		Id: 567
+		Image: Tovrps02
+		Size: 3, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Road
+			5: Cliff
+			6: Rail
+			7: Rail
+			8: Cliff
+			9: Road
+			10: Road
+			11: Cliff
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@568:
+		Category: TrainBridges
+		Id: 568
+		Image: Tovrps03
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Road
+			3: Road
+			4: Rail
+			5: Rail
+			6: Road
+			7: Road
+			8: Cliff
+			9: Cliff
+	Template@569:
+		Category: TrainBridges
+		Id: 569
+		Image: Tovrps04
+		Size: 5, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Rail
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Road
+			7: Rail
+			8: Road
+			9: Cliff
+			10: Cliff
+			11: Cliff
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@570:
+		Category: TrainBridges
+		Id: 570
+		Image: Tovrps05
+		Size: 5, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Rail
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Road
+			7: Rail
+			8: Road
+			9: Cliff
+			10: Cliff
+			11: Cliff
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@571:
+		Category: TrainBridges
+		Id: 571
+		Image: Tovrps06
+		Size: 5, 2
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Rail
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Road
+			7: Rail
+			8: Road
+			9: Cliff
+	Template@572:
+		Category: TrainBridges
+		Id: 572
+		Image: Tovrps07
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Road
+			3: Cliff
+			4: Rail
+			5: Cliff
+			6: Road
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@573:
+		Category: TrainBridges
+		Id: 573
+		Image: Tovrps08
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Road
+			3: Cliff
+			4: Rough
+			5: Cliff
+			6: Road
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@574:
+		Category: TrainBridges
+		Id: 574
+		Image: Tovrps09
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Road
+			3: Cliff
+			4: Rail
+			5: Cliff
+			6: Road
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@575:
+		Category: TrainBridges
+		Id: 575
+		Image: Tovrps10
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Rough
+			3: Cliff
+			4: Rough
+			5: Cliff
+			6: Rough
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@576:
+		Category: TrainBridges
+		Id: 576
+		Image: Tovrps11
+		Size: 2, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@577:
+		Category: TrainBridges
+		Id: 577
+		Image: Tovrps12
+		Size: 5, 2
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Rail
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@578:
+		Category: TrainBridges
+		Id: 578
+		Image: Tovrps13
+		Size: 5, 2
+		Tiles:
+			1: Road
+			2: Rail
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@579:
+		Category: TrainBridges
+		Id: 579
+		Image: Tovrps14
+		Size: 5, 2
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Rail
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@580:
+		Category: TrainBridges
+		Id: 580
+		Image: Tovrps15
+		Size: 5, 2
+		Tiles:
+			1: Rough
+			2: Rough
+			3: Rough
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@581:
+		Category: TrainBridges
+		Id: 581
+		Image: Tovrps16
+		Size: 5, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+	Template@582:
+		Category: Pavement
+		Id: 582
+		Image: Pave01
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@583:
+		Category: Pavement
+		Id: 583
+		Image: Pave02
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@584:
+		Category: Pavement
+		Id: 584
+		Image: Pave03
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@585:
+		Category: Pavement
+		Id: 585
+		Image: Pave04
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@586:
+		Category: Pavement
+		Id: 586
+		Image: Pave05
+		Size: 2, 2
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+	Template@587:
+		Category: Pavement
+		Id: 587
+		Image: Pave06
+		Size: 2, 2
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+	Template@588:
+		Category: Pavement
+		Id: 588
+		Image: Pave07
+		Size: 2, 2
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+	Template@589:
+		Category: Pavement
+		Id: 589
+		Image: Pave08
+		Size: 2, 2
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+	Template@590:
+		Category: Pavement
+		Id: 590
+		Image: Pave09
+		Size: 2, 2
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+	Template@591:
+		Category: Pavement
+		Id: 591
+		Image: Pave10
+		Size: 2, 2
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+	Template@592:
+		Category: Pavement
+		Id: 592
+		Image: Pave11
+		Size: 2, 2
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+	Template@593:
+		Category: Pavement
+		Id: 593
+		Image: Pave12
+		Size: 2, 2
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+	Template@594:
+		Category: Pavement
+		Id: 594
+		Image: Pave13
+		Size: 2, 2
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+	Template@595:
+		Category: Pavement
+		Id: 595
+		Image: Pave14
+		Size: 2, 2
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+	Template@596:
+		Category: Pavement/Clear LAT
+		Id: 596
+		Image: plat01
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@597:
+		Category: Pavement/Clear LAT
+		Id: 597
+		Image: plat02
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@598:
+		Category: Pavement/Clear LAT
+		Id: 598
+		Image: plat03
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@599:
+		Category: Pavement/Clear LAT
+		Id: 599
+		Image: plat04
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@600:
+		Category: Pavement/Clear LAT
+		Id: 600
+		Image: plat05
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@601:
+		Category: Pavement/Clear LAT
+		Id: 601
+		Image: plat06
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@602:
+		Category: Pavement/Clear LAT
+		Id: 602
+		Image: plat07
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@603:
+		Category: Pavement/Clear LAT
+		Id: 603
+		Image: plat08
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@604:
+		Category: Pavement/Clear LAT
+		Id: 604
+		Image: plat09
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@605:
+		Category: Pavement/Clear LAT
+		Id: 605
+		Image: plat10
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@606:
+		Category: Pavement/Clear LAT
+		Id: 606
+		Image: plat11
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@607:
+		Category: Pavement/Clear LAT
+		Id: 607
+		Image: plat12
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@608:
+		Category: Pavement/Clear LAT
+		Id: 608
+		Image: plat13
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@609:
+		Category: Pavement/Clear LAT
+		Id: 609
+		Image: plat14
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@610:
+		Category: Pavement/Clear LAT
+		Id: 610
+		Image: plat15
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@611:
+		Category: Pavement/Clear LAT
+		Id: 611
+		Image: plat16
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@612:
+		Category: Paved road bits
+		Id: 612
+		Image: proadc01
+		Size: 1, 1
+		Tiles:
+			0: DirtRoad
+	Template@613:
+		Category: Paved road bits
+		Id: 613
+		Image: proadc02
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@614:
+		Category: Paved road bits
+		Id: 614
+		Image: proadc03
+		Size: 1, 1
+		Tiles:
+			0: DirtRoad
+	Template@615:
+		Category: Paved road bits
+		Id: 615
+		Image: proadc04
+		Size: 1, 1
+		Tiles:
+			0: DirtRoad
+	Template@616:
+		Category: Paved road bits
+		Id: 616
+		Image: proadc05
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@617:
+		Category: Paved road bits
+		Id: 617
+		Image: proadc06
+		Size: 1, 1
+		Tiles:
+			0: DirtRoad
+	Template@618:
+		Category: Paved road bits
+		Id: 618
+		Image: proadc07
+		Size: 1, 1
+		Tiles:
+			0: DirtRoad
+	Template@619:
+		Category: Paved road bits
+		Id: 619
+		Image: proadc08
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@620:
+		Category: Paved road bits
+		Id: 620
+		Image: proadc09
+		Size: 1, 1
+		Tiles:
+			0: DirtRoad
+	Template@621:
+		Category: Paved road bits
+		Id: 621
+		Image: proadc10
+		Size: 1, 1
+		Tiles:
+			0: DirtRoad
+	Template@622:
+		Category: Paved road bits
+		Id: 622
+		Image: proadc11
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@623:
+		Category: Paved road bits
+		Id: 623
+		Image: proadc12
+		Size: 1, 1
+		Tiles:
+			0: DirtRoad
+	Template@624:
+		Category: Paved road bits
+		Id: 624
+		Image: proadc13
+		Size: 1, 3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+	Template@625:
+		Category: Paved road bits
+		Id: 625
+		Image: proadc14
+		Size: 3, 1
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+	Template@626:
+		Category: Green
+		Id: 626
+		Image: Green01
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@627:
+		Category: Green/Clear LAT
+		Id: 627
+		Image: glat01
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@628:
+		Category: Green/Clear LAT
+		Id: 628
+		Image: glat02
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@629:
+		Category: Green/Clear LAT
+		Id: 629
+		Image: glat03
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@630:
+		Category: Green/Clear LAT
+		Id: 630
+		Image: glat04
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@631:
+		Category: Green/Clear LAT
+		Id: 631
+		Image: glat05
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@632:
+		Category: Green/Clear LAT
+		Id: 632
+		Image: glat06
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@633:
+		Category: Green/Clear LAT
+		Id: 633
+		Image: glat07
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@634:
+		Category: Green/Clear LAT
+		Id: 634
+		Image: glat08
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@635:
+		Category: Green/Clear LAT
+		Id: 635
+		Image: glat09
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@636:
+		Category: Green/Clear LAT
+		Id: 636
+		Image: glat10
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@637:
+		Category: Green/Clear LAT
+		Id: 637
+		Image: glat11
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@638:
+		Category: Green/Clear LAT
+		Id: 638
+		Image: glat12
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@639:
+		Category: Green/Clear LAT
+		Id: 639
+		Image: glat13
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@640:
+		Category: Green/Clear LAT
+		Id: 640
+		Image: glat14
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@641:
+		Category: Green/Clear LAT
+		Id: 641
+		Image: glat15
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@642:
+		Category: Green/Clear LAT
+		Id: 642
+		Image: glat16
+		Size: 1, 1
+		Tiles:
+			0: Rough
+	Template@643:
+		Category: Ramp edge fixup
+		Id: 643
+		Image: Rmpfx01
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@644:
+		Category: Ramp edge fixup
+		Id: 644
+		Image: Rmpfx02
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@645:
+		Category: Ramp edge fixup
+		Id: 645
+		Image: Rmpfx03
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@646:
+		Category: Ramp edge fixup
+		Id: 646
+		Image: Rmpfx04
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@647:
+		Category: Ramp edge fixup
+		Id: 647
+		Image: Rmpfx05
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@648:
+		Category: Ramp edge fixup
+		Id: 648
+		Image: Rmpfx06
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@649:
+		Category: Ramp edge fixup
+		Id: 649
+		Image: Rmpfx07
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@650:
+		Category: Ramp edge fixup
+		Id: 650
+		Image: Rmpfx08
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@651:
+		Category: Ramp edge fixup
+		Id: 651
+		Image: Rmpfx09
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@652:
+		Category: Ramp edge fixup
+		Id: 652
+		Image: Rmpfx10
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@653:
+		Category: Ramp edge fixup
+		Id: 653
+		Image: Rmpfx11
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@654:
+		Category: Ramp edge fixup
+		Id: 654
+		Image: Rmpfx12
+		Size: 1, 1
+		Tiles:
+			0: Clear
+	Template@667:
+		Category: Water slopes
+		Id: 667
+		Image: WSLOPE01
+		Size: 1, 4
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@668:
+		Category: Water slopes
+		Id: 668
+		Image: WSLOPE02
+		Size: 4, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@669:
+		Category: Water slopes
+		Id: 669
+		Image: WSLOPE03
+		Size: 1, 4
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@670:
+		Category: Water slopes
+		Id: 670
+		Image: WSLOPE04
+		Size: 4, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@671:
+		Category: Pavement (Use for LAT)
+		Id: 671
+		Image: Pvclr01
+		Size: 1, 1
+		Tiles:
+			0: Road
+	Template@672:
+		Category: Paved Road Slopes
+		Id: 672
+		Image: Prslpe01
+		Size: 1, 3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+	Template@673:
+		Category: Paved Road Slopes
+		Id: 673
+		Image: Prslpe02
+		Size: 3, 1
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+	Template@674:
+		Category: Paved Road Slopes
+		Id: 674
+		Image: Prslpe03
+		Size: 1, 3
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+	Template@675:
+		Category: Paved Road Slopes
+		Id: 675
+		Image: Prslpe04
+		Size: 3, 1
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+	Template@676:
+		Category: Monorail Slopes
+		Id: 676
+		Image: Tslope01
+		Size: 1, 1
+		Tiles:
+			0: Rail
+	Template@677:
+		Category: Monorail Slopes
+		Id: 677
+		Image: Tslope02
+		Size: 1, 1
+		Tiles:
+			0: Rail
+	Template@678:
+		Category: Monorail Slopes
+		Id: 678
+		Image: Tslope03
+		Size: 1, 1
+		Tiles:
+			0: Rail
+	Template@679:
+		Category: Monorail Slopes
+		Id: 679
+		Image: Tslope04
+		Size: 1, 1
+		Tiles:
+			0: Rail
+	Template@680:
+		Category: Waterfalls-B
+		Id: 680
+		Image: W-b-01
+		Size: 4, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+	Template@681:
+		Category: Waterfalls-B
+		Id: 681
+		Image: W-b-02
+		Size: 4, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@682:
+		Category: Waterfalls-B
+		Id: 682
+		Image: W-b-03
+		Size: 4, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+	Template@683:
+		Category: Waterfalls-B
+		Id: 683
+		Image: W-b-04
+		Size: 4, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Rough
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+	Template@684:
+		Category: Waterfalls-C
+		Id: 684
+		Image: W-c-01
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			2: Rough
+			3: Cliff
+	Template@685:
+		Category: Waterfalls-C
+		Id: 685
+		Image: W-c-02
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@686:
+		Category: Waterfalls-C
+		Id: 686
+		Image: W-c-03
+		Size: 2, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@687:
+		Category: Waterfalls-C
+		Id: 687
+		Image: W-c-04
+		Size: 2, 2
+		Tiles:
+			1: Cliff
+			2: Cliff
+			3: Rough
+	Template@688:
+		Category: Waterfalls-D
+		Id: 688
+		Image: W-d-01
+		Size: 2, 2
+		Tiles:
+			1: Cliff
+			2: Cliff
+			3: Rough
+	Template@689:
+		Category: Waterfalls-D
+		Id: 689
+		Image: W-d-02
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+	Template@690:
+		Category: Waterfalls-D
+		Id: 690
+		Image: W-d-03
+		Size: 1, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@691:
+		Category: Waterfalls-D
+		Id: 691
+		Image: W-d-04
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Rough
+			3: Cliff
+	Template@707:
+		Category: Tunnel Floor
+		Id: 707
+		Image: tunnel01
+		Size: 3, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+			9: Road
+			10: Road
+			11: Road
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@708:
+		Category: Tunnel Floor
+		Id: 708
+		Image: tunnel02
+		Size: 5, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Road
+			7: Road
+			8: Road
+			9: Cliff
+			10: Cliff
+			11: Road
+			12: Road
+			13: Road
+			14: Cliff
+	Template@709:
+		Category: Tunnel Floor
+		Id: 709
+		Image: tunnel03
+		Size: 3, 4
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+			9: Road
+			10: Road
+			11: Road
+	Template@710:
+		Category: Tunnel Floor
+		Id: 710
+		Image: tunnel04
+		Size: 4, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Road
+			6: Road
+			7: Road
+			8: Cliff
+			9: Road
+			10: Road
+			11: Road
+	Template@711:
+		Category: Tunnel Side
+		Id: 711
+		Image: tunnex01
+		Size: 3, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@712:
+		Category: Tunnel Side
+		Id: 712
+		Image: tunnex02
+		Size: 1, 3
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@713:
+		Category: TrackTunnel Floor
+		Id: 713
+		Image: tunnet01
+		Size: 3, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Rail
+			8: Rail
+			9: Road
+			10: Road
+			11: Road
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@714:
+		Category: TrackTunnel Floor
+		Id: 714
+		Image: tunnet02
+		Size: 5, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Road
+			7: Rail
+			8: Road
+			9: Cliff
+			10: Cliff
+			11: Road
+			12: Rail
+			13: Road
+			14: Cliff
+	Template@715:
+		Category: TrackTunnel Floor
+		Id: 715
+		Image: tunnet03
+		Size: 3, 4
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Rail
+			8: Rail
+			9: Road
+			10: Road
+			11: Road
+	Template@716:
+		Category: TrackTunnel Floor
+		Id: 716
+		Image: tunnet04
+		Size: 4, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Road
+			6: Rail
+			7: Road
+			8: Cliff
+			9: Road
+			10: Rail
+			11: Road
+	Template@717:
+		Category: Destroyable Cliffs
+		Id: 717
+		Image: dcliff01
+		Size: 6, 4
+		Tiles:
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+			10: Cliff
+			11: Cliff
+			12: Cliff
+			13: Cliff
+			14: Cliff
+			15: Cliff
+			16: Cliff
+			17: Cliff
+			19: Cliff
+			20: Cliff
+			21: Cliff
+			22: Cliff
+	Template@718:
+		Category: Destroyable Cliffs
+		Id: 718
+		Image: dcliff02
+		Size: 4, 6
+		Tiles:
+			1: Cliff
+			2: Cliff
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+			10: Cliff
+			11: Cliff
+			12: Cliff
+			13: Cliff
+			14: Cliff
+			15: Cliff
+			16: Cliff
+			17: Cliff
+			18: Cliff
+			19: Cliff
+			21: Cliff
+			22: Cliff
+	Template@719:
+		Category: Water Caves
+		Id: 719
+		Image: Wcave01
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@720:
+		Category: Water Caves
+		Id: 720
+		Image: Wcave02
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@721:
+		Category: Water Caves
+		Id: 721
+		Image: Wcave03
+		Size: 1, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@722:
+		Category: Water Caves
+		Id: 722
+		Image: Wcave04
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@723:
+		Category: Water Caves
+		Id: 723
+		Image: Wcave05
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@724:
+		Category: Water Caves
+		Id: 724
+		Image: Wcave06
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@725:
+		Category: Water Caves
+		Id: 725
+		Image: Wcave07
+		Size: 2, 1
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@726:
+		Category: Water Caves
+		Id: 726
+		Image: Wcave08
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@940:
+		Category: Scrin Wreckage
+		Id: 940
+		Image: Scrin01
+		Size: 6, 7
+		Tiles:
+			2: Clear
+			3: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			12: Clear
+			13: Rough
+			14: Rough
+			15: Rough
+			16: Clear
+			18: Clear
+			19: Rough
+			20: Rough
+			21: Rough
+			22: Cliff
+			24: Cliff
+			25: Cliff
+			26: Rough
+			27: Rough
+			28: Cliff
+			32: Cliff
+			33: Cliff
+			34: Cliff
+			35: Cliff
+			39: Cliff
+			40: Cliff
+			41: Cliff
+	Template@941:
+		Category: Scrin Wreckage
+		Id: 941
+		Image: Scrin02
+		Size: 5, 5
+		Tiles:
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			10: Clear
+			11: Rough
+			12: Rough
+			15: Clear
+			16: Clear
+			17: Clear
+			22: Clear
+	Template@942:
+		Category: Scrin Wreckage
+		Id: 942
+		Image: Scrin03
+		Size: 9, 8
+		Tiles:
+			0: DirtRoad
+			1: DirtRoad
+			2: DirtRoad
+			3: Clear
+			9: DirtRoad
+			10: DirtRoad
+			11: DirtRoad
+			12: Clear
+			13: Clear
+			14: Clear
+			19: DirtRoad
+			20: Clear
+			21: DirtRoad
+			22: Clear
+			23: Clear
+			24: Clear
+			28: DirtRoad
+			29: DirtRoad
+			30: Clear
+			31: DirtRoad
+			32: Clear
+			33: Clear
+			38: Clear
+			39: DirtRoad
+			40: DirtRoad
+			41: DirtRoad
+			42: Clear
+			47: Clear
+			48: DirtRoad
+			49: DirtRoad
+			50: DirtRoad
+			51: Rough
+			52: Cliff
+			56: Cliff
+			57: Clear
+			58: Clear
+			59: Clear
+			60: Cliff
+			61: Cliff
+			65: Cliff
+			66: Clear
+			67: Clear
+			68: Clear
+			69: Cliff
+			70: Cliff
+			71: Cliff
+	Template@943:
+		Category: Scrin Wreckage
+		Id: 943
+		Image: Scrin04
+		Size: 8, 6
+		Tiles:
+			0: Rough
+			18: Rough
+			28: Cliff
+			29: Cliff
+			37: Cliff
+			38: Cliff
+			46: Clear
+			47: Cliff
+	Template@944:
+		Category: Scrin Wreckage
+		Id: 944
+		Image: Scrin05
+		Size: 8, 6
+		Tiles:
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			15: Clear
+			16: Cliff
+			17: Cliff
+			18: Cliff
+			19: Clear
+			20: Clear
+			21: Clear
+			22: Clear
+			23: Clear
+			24: Clear
+			25: Clear
+			26: Cliff
+			27: Cliff
+			28: Clear
+			29: Clear
+			30: Cliff
+			31: Cliff
+			34: Clear
+			35: Cliff
+			36: Cliff
+			37: Cliff
+			38: Cliff
+			39: Cliff
+			45: Cliff
+			46: Cliff
+			47: Cliff
+	Template@945:
+		Category: Scrin Wreckage
+		Id: 945
+		Image: Scrin06
+		Size: 7, 10
+		Tiles:
+			0: Cliff
+			7: Cliff
+			8: Cliff
+			14: Cliff
+			15: Cliff
+			16: Cliff
+			17: Rough
+			21: Cliff
+			22: Cliff
+			23: Cliff
+			24: Cliff
+			25: Rough
+			28: Cliff
+			29: Cliff
+			30: Cliff
+			31: Cliff
+			32: Cliff
+			33: Rough
+			34: Clear
+			35: Cliff
+			36: Cliff
+			37: Cliff
+			38: Cliff
+			39: Cliff
+			40: Rough
+			41: Clear
+			42: Cliff
+			43: Cliff
+			44: Cliff
+			45: Cliff
+			46: Cliff
+			47: Rough
+			48: Clear
+			49: Clear
+			50: Clear
+			51: Cliff
+			52: Cliff
+			53: Cliff
+			54: Cliff
+			55: Clear
+			57: Clear
+			58: Clear
+			59: Clear
+			62: Clear
+			64: Clear
+			65: Clear
+			66: Clear
+	Template@952:
+		Category: DirtTrackTunnel Floor
+		Id: 952
+		Image: dtunnt01
+		Size: 3, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Clear
+			5: Clear
+			6: Road
+			7: Rail
+			8: Rail
+			9: Road
+			10: Clear
+			11: Clear
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@953:
+		Category: DirtTrackTunnel Floor
+		Id: 953
+		Image: dtunnt02
+		Size: 5, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Clear
+			7: Rail
+			8: Clear
+			9: Cliff
+			10: Cliff
+			11: Clear
+			12: Rail
+			13: Clear
+			14: Cliff
+	Template@954:
+		Category: DirtTrackTunnel Floor
+		Id: 954
+		Image: dtunnt03
+		Size: 3, 4
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Clear
+			5: Clear
+			6: Road
+			7: Rail
+			8: Rail
+			9: Road
+			10: Clear
+			11: Clear
+	Template@955:
+		Category: DirtTrackTunnel Floor
+		Id: 955
+		Image: dtunnt04
+		Size: 4, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Clear
+			6: Rail
+			7: Clear
+			8: Cliff
+			9: Clear
+			10: Rail
+			11: Clear
+	Template@956:
+		Category: DirtTunnel Floor
+		Id: 956
+		Image: dtunn01
+		Size: 3, 5
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Clear
+			5: Clear
+			6: Road
+			7: Clear
+			8: Clear
+			9: Road
+			10: Clear
+			11: Clear
+			12: Cliff
+			13: Cliff
+			14: Cliff
+	Template@957:
+		Category: DirtTunnel Floor
+		Id: 957
+		Image: dtunn02
+		Size: 5, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Cliff
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Cliff
+			10: Cliff
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Cliff
+	Template@958:
+		Category: DirtTunnel Floor
+		Id: 958
+		Image: dtunn03
+		Size: 3, 4
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Road
+			4: Clear
+			5: Clear
+			6: Road
+			7: Clear
+			8: Clear
+			9: Road
+			10: Clear
+			11: Clear
+	Template@959:
+		Category: DirtTunnel Floor
+		Id: 959
+		Image: dtunn04
+		Size: 4, 3
+		Tiles:
+			0: Cliff
+			1: Road
+			2: Road
+			3: Road
+			4: Cliff
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Cliff
+			9: Clear
+			10: Clear
+			11: Clear

@@ -107,7 +107,7 @@ World:
 		ValuePerUnit: 50
 		Name: Tiberium
 		PipColor: Green
-		AllowedTerrainTypes: Clear
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: false
 		TerrainType: Tiberium
 	FixedColorPalette@BlueTiberium:
@@ -124,7 +124,7 @@ World:
 		ValuePerUnit: 100
 		Name: BlueTiberium
 		PipColor: Blue
-		AllowedTerrainTypes: Clear
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: false
 		TerrainType: BlueTiberium
 	PathfinderDebugOverlay:
