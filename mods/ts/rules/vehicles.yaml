@@ -47,6 +47,10 @@ APC:
 		Owner: gdi
 		Hotkey: a
 	Mobile:
+		TerrainSpeeds:
+			Clear: 100
+			Water: 80
+			Tiberium: 80
 		ROT: 5
 		Speed: 113
 	Health:
@@ -116,6 +120,10 @@ HVR:
 		Owner: gdi
 		Hothey: v
 	Mobile:
+		TerrainSpeeds:
+			Clear: 100
+			Water: 100
+			Tiberium: 100
 		Speed: 99
 	Health:
 		HP: 230
