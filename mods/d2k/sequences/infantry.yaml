@@ -412,7 +412,7 @@ sardaukar:
 	prone-shoot: DATA
 		Start: 1058
 		Length: 6
-		Facings: 8
+		Facings: -8
 		Transpose: true
 	die1: DATA
 		Start: 1106
