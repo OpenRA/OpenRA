@@ -520,6 +520,7 @@
     <Compile Include="Player\ProvidesCustomPrerequisite.cs" />
     <Compile Include="Lint\CheckActors.cs" />
     <Compile Include="Lint\CheckMapCordon.cs" />
+    <Compile Include="World\ResourceLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

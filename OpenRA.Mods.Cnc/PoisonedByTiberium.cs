@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.Cnc
 {

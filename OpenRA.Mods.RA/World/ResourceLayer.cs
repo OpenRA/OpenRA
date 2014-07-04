@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,9 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
+	[Desc("Attach this to the world actor.")]
 	public class ResourceLayerInfo : TraitInfo<ResourceLayer>, Requires<ResourceTypeInfo> { }
 
 	public class ResourceLayer : IRenderOverlay, IWorldLoaded, ITickRender
@@ -22,6 +25,9 @@ namespace OpenRA.Traits
 		static readonly CellContents EmptyCell = new CellContents();
 
 		World world;
+
+		BuildingInfluence buildingInfluence;
+
 		protected CellLayer<CellContents> content;
 		protected CellLayer<CellContents> render;
 		List<CPos> dirty;
@@ -54,6 +60,9 @@ namespace OpenRA.Traits
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			this.world = w;
+
+			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
+
 			content = new CellLayer<CellContents>(w.Map);
 			render = new CellLayer<CellContents>(w.Map);
 			dirty = new List<CPos>();
@@ -137,6 +146,9 @@ namespace OpenRA.Traits
 				return false;
 
 			if (!rt.Info.AllowUnderActors && world.ActorMap.AnyUnitsAt(cell))
+				return false;
+
+			if (!rt.Info.AllowUnderBuildings && buildingInfluence.GetBuildingAt(cell) != null)
 				return false;
 
 			return true;

@@ -159,7 +159,6 @@
     <Compile Include="Traits\Util.cs" />
     <Compile Include="Traits\ValidateOrder.cs" />
     <Compile Include="Traits\World\Country.cs" />
-    <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
