@@ -81,8 +81,26 @@ Actors:
 	Actor34: siegetank
 		Location: 54,56
 		Owner: Atreides
-	Actor35: refh
-		Location: 56,42
+	Actor35: concretea
+		Location: 46,39
+		Owner: Neutral
+	Actor36: concreteb
+		Location: 48,37
+		Owner: Neutral
+	Actor37: concreteb
+		Location: 50,37
+		Owner: Neutral
+	Actor38: refh
+		Location: 50,37
+		Owner: Harkonnen
+	Actor39: pwrh
+		Location: 48,37
+		Owner: Harkonnen
+	Actor40: siloh
+		Location: 47,39
+		Owner: Harkonnen
+	Actor41: guntowera
+		Location: 46,39
 		Owner: Harkonnen
 
 Smudges:
