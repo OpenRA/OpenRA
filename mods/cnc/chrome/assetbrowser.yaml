@@ -39,6 +39,7 @@ Container@ASSETBROWSER_PANEL:
 					Y: 65
 					Width: 160
 					Height: 275
+					CollapseHiddenChildren: True
 					Children:
 						ScrollItem@ASSET_TEMPLATE:
 							Width: PARENT_RIGHT-27
@@ -58,20 +59,12 @@ Container@ASSETBROWSER_PANEL:
 					Height: 25
 					Font: TinyBold
 					Align: Center
-					Text: Search for file
+					Text: Filter by name
 				TextField@FILENAME_INPUT:
 					X: 15
 					Y: 365
 					Width: 160
 					Height: 25
-				Button@LOAD_BUTTON:
-					X: 15
-					Y: 395
-					Width: 160
-					Height: 25
-					Text: Load
-					Font: Bold
-					Key: return
 				Label@PALETTE_DESC:
 					X: PARENT_RIGHT-WIDTH-270
 					Y: 30

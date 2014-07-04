@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
-			filenameInput.OnEnterKey = () => LoadAsset(filenameInput.Text);
+			filenameInput.OnTextEdited = () => ApplyFilter(filenameInput.Text);
 
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
 			if (frameContainer != null)
@@ -148,10 +148,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (prevButton != null)
 				prevButton.OnClick = SelectPreviousFrame;
 
-			var loadButton = panel.GetOrNull<ButtonWidget>("LOAD_BUTTON");
-			if (loadButton != null)
-				loadButton.OnClick = () => LoadAsset(filenameInput.Text);
-
 			assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
 			PopulateAssetList();
@@ -175,13 +171,50 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				currentFrame = currentSprites.Length - 1;
 		}
 
+		Dictionary<string, bool> assetVisByName = new Dictionary<string, bool>();
+
+		bool FilterAsset(string filename)
+		{
+			var filter = filenameInput.Text;
+
+			if (string.IsNullOrWhiteSpace(filter))
+				return true;
+
+			if (filename.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0)
+				return true;
+
+			return false;
+		}
+
+		void ApplyFilter(string filename)
+		{
+			assetVisByName.Clear();
+			assetList.Layout.AdjustChildren();
+			assetList.ScrollToTop();
+
+			// Select the first visible
+			var firstVisible = assetVisByName.FirstOrDefault(kvp => kvp.Value);
+			if (firstVisible.Key != null)
+				LoadAsset(firstVisible.Key);
+		}
+
 		void AddAsset(ScrollPanelWidget list, string filepath, ScrollItemWidget template)
 		{
 			var filename = Path.GetFileName(filepath);
 			var item = ScrollItemWidget.Setup(template,
 				() => currentFilename == filename,
-				() => { filenameInput.Text = filename; LoadAsset(filename); });
+				() => { LoadAsset(filename); });
 			item.Get<LabelWidget>("TITLE").GetText = () => filepath;
+			item.IsVisible = () =>
+			{
+				bool visible;
+				if (assetVisByName.TryGetValue(filepath, out visible))
+					return visible;
+
+				visible = FilterAsset(filepath);
+				assetVisByName.Add(filepath, visible);
+				return visible;
+			};
 
 			list.AddChild(item);
 		}
