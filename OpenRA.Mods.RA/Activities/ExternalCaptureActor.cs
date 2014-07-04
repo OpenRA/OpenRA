@@ -59,6 +59,9 @@ namespace OpenRA.Mods.RA.Activities
 
 					self.World.AddFrameEndTask(w =>
 					{
+						if (target.Actor.IsDead())
+							return;
+
 						var oldOwner = target.Actor.Owner;
 
 						target.Actor.ChangeOwner(self.Owner);

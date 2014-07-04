@@ -39,6 +39,9 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.World.AddFrameEndTask(w =>
 			{
+				if (actor.IsDead())
+					return;
+
 				var lowEnoughHealth = health.HP <= capturableInfo.CaptureThreshold * health.MaxHP;
 				if (!capturesInfo.Sabotage || lowEnoughHealth || actor.Owner.NonCombatant)
 				{
