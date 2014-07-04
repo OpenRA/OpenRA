@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				powerLabel.IsVisible = () => power != 0;
 
 				var lowpower = pm.PowerState != PowerState.Normal;
-				var time = palette.CurrentQueue.GetBuildTime(actor)
+				var time = palette.CurrentQueue == null ? 0 : palette.CurrentQueue.GetBuildTime(actor)
 					* (lowpower ? palette.CurrentQueue.Info.LowPowerSlowdown : 1);
 				var timeString = "T: {0}".F(WidgetUtils.FormatTime(time));
 				timeLabel.GetText = () => timeString;
