@@ -712,7 +712,7 @@ namespace OpenRA
 			for (var j = -max; j <= max; j++)
 				for (var i = -max; i <= max; i++)
 					if (max * max >= i * i + j * j)
-						ts [(int)Math.Ceiling(Math.Sqrt(i * i + j * j))].Add(new CVec(i, j));
+						ts [Exts.ISqrt(i * i + j * j, Exts.ISqrtRoundMode.Ceiling)].Add(new CVec(i, j));
 
 			// Sort each integer-distance group by the actual distance
 			foreach (var list in ts)
