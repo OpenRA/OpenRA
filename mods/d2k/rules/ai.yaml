@@ -2,7 +2,6 @@ Player:
 	HackyAI@Omnius:
 		Name: Omnius
 		UnitQueues: Infantry, Vehicle, Armor, Starport
-		RallypointTestBuilding: conyarda
 		BuildingCommonNames:
 			ConstructionYard: conyarda,conyardh,conyardo
 			Refinery: refa,refh,refo
@@ -104,7 +103,6 @@ Player:
 	HackyAI@Vidius:
 		Name: Vidious
 		UnitQueues: Infantry, Vehicle, Armor, Starport
-		RallypointTestBuilding: conyarda
 		BuildingCommonNames:
 			ConstructionYard: conyarda,conyardh,conyardo
 			Refinery: refa,refh,refo
@@ -207,7 +205,6 @@ Player:
 	HackyAI@Gladius:
 		Name: Gladius
 		UnitQueues: Infantry, Vehicle, Armor, Starport
-		RallypointTestBuilding: conyarda
 		BuildingCommonNames:
 			ConstructionYard: conyarda,conyardh,conyardo
 			Refinery: refa,refh,refo

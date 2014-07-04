@@ -46,8 +46,6 @@ namespace OpenRA.Mods.RA.AI
 		[Desc("Radius in cells around a factory scanned for rally points by the AI.")]
 		public readonly int RallyPointScanRadius = 8;
 
-		// Temporary hack to maintain previous rallypoint behavior.
-		public readonly string RallypointTestBuilding = "fact";
 		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 		public readonly bool ShouldRepairBuildings = true;
 
@@ -101,7 +99,6 @@ namespace OpenRA.Mods.RA.AI
 		PowerManager playerPower;
 		SupportPowerManager supportPowerMngr;
 		PlayerResources playerResource;
-		BuildingInfo rallypointTestBuilding;
 		internal readonly HackyAIInfo Info;
 
 		HashSet<int> resourceTypeIndices;
@@ -128,9 +125,6 @@ namespace OpenRA.Mods.RA.AI
 		{
 			Info = info;
 			world = init.world;
-
-			// Temporary hack.
-			rallypointTestBuilding = Map.Rules.Actors[Info.RallypointTestBuilding].Traits.Get<BuildingInfo>();
 		}
 
 		public static void BotDebug(string s, params object[] args)
@@ -671,37 +665,35 @@ namespace OpenRA.Mods.RA.AI
 			}
 		}
 
-		bool IsRallyPointValid(CPos x)
+		bool IsRallyPointValid(CPos x, BuildingInfo info)
 		{
-			// This is actually WRONG as soon as HackyAI is building units with
-			// a variety of movement capabilities. (has always been wrong)
-			return world.IsCellBuildable(x, rallypointTestBuilding);
+			return info != null && world.IsCellBuildable(x, info);
 		}
 
 		void SetRallyPointsForNewProductionBuildings(Actor self)
 		{
 			var buildings = self.World.ActorsWithTrait<RallyPoint>()
 				.Where(rp => rp.Actor.Owner == p &&
-					!IsRallyPointValid(rp.Trait.rallyPoint)).ToArray();
+					!IsRallyPointValid(rp.Trait.rallyPoint, rp.Actor.Info.Traits.GetOrDefault<BuildingInfo>())).ToArray();
 
 			if (buildings.Length > 0)
 				BotDebug("Bot {0} needs to find rallypoints for {1} buildings.",
 					p.PlayerName, buildings.Length);
 
 			foreach (var a in buildings)
-				world.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor.Location), SuppressVisualFeedback = true });
+				world.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
 		}
 
 		// Won't work for shipyards...
-		CPos ChooseRallyLocationNear(CPos startPos)
+		CPos ChooseRallyLocationNear(Actor producer)
 		{
-			var possibleRallyPoints = Map.FindTilesInCircle(startPos, Info.RallyPointScanRadius)
-				.Where(IsRallyPointValid);
+			var possibleRallyPoints = Map.FindTilesInCircle(producer.Location, Info.RallyPointScanRadius)
+				.Where(c => IsRallyPointValid(c, producer.Info.Traits.GetOrDefault<BuildingInfo>()));
 
 			if (!possibleRallyPoints.Any())
 			{
-				BotDebug("Bot Bug: No possible rallypoint near {0}", startPos);
-				return startPos;
+				BotDebug("Bot Bug: No possible rallypoint near {0}", producer.Location);
+				return producer.Location;
 			}
 
 			return possibleRallyPoints.Random(random);
