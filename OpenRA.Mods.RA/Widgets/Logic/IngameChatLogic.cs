@@ -67,7 +67,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var team = teamChat && !disableTeamChat;
 				if (chatText.Text != "")
-					orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
+					if (!chatText.Text.StartsWith("/"))
+						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
+					else
+						if (chatTraits != null)
+							chatTraits.All(x => x.OnChat(orderManager.LocalClient.Name, chatText.Text.Trim()));
 
 				CloseChat();
 				return true;
@@ -126,9 +130,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public void AddChatLine(Color c, string from, string text)
 		{
-			if (chatTraits != null && !chatTraits.All(x => x.OnChat(from, text)))
-				return;
-			
 			chatOverlayDisplay.AddLine(c, from, text);
 
 			var template = chatTemplate.Clone();
