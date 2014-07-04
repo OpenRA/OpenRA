@@ -64,7 +64,6 @@ namespace OpenRA.Mods.RA
 
 			var exitLocation = rp.Value != null ? rp.Value.rallyPoint : exit;
 			var target = Target.FromCell(self.World, exitLocation);
-			var nearEnough = rp.Value != null ? WRange.FromCells(rp.Value.nearEnough) : WRange.Zero;
 
 			self.World.AddFrameEndTask(w =>
 			{
@@ -88,7 +87,7 @@ namespace OpenRA.Mods.RA
 					{
 						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
 						newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
-							newUnit, move.MoveWithinRange(target, nearEnough)));
+							newUnit, move.MoveTo(exitLocation, 1)));
 					}
 				}
 

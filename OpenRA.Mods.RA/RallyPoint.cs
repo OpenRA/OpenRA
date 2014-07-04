@@ -25,7 +25,6 @@ namespace OpenRA.Mods.RA
 	public class RallyPoint : IIssueOrder, IResolveOrder, ISync
 	{
 		[Sync] public CPos rallyPoint;
-		public int nearEnough = 1;
 
 		public RallyPoint(Actor self, RallyPointInfo info)
 		{
