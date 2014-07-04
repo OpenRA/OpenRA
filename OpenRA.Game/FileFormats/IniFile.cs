@@ -81,8 +81,8 @@ namespace OpenRA.FileFormats
 			var eq = line.IndexOf('=');
 			if (eq >= 0)
 			{
-				key = line.Substring(0, eq);
-				value = line.Substring(eq + 1, line.Length - eq - 1);
+				key = line.Substring(0, eq).Trim();
+				value = line.Substring(eq + 1, line.Length - eq - 1).Trim();
 			}
 
 			if (currentSection == null)
