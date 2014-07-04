@@ -94,7 +94,7 @@ namespace OpenRA.Graphics
 			renderProxy = Game.Renderer.WorldVoxelRenderer.RenderAsync(
 				wr, draw, camera, scale, groundNormal, lightSource,
 				lightAmbientColor, lightDiffuseColor,
-			    palette, normalsPalette, shadowPalette);
+				palette, normalsPalette, shadowPalette);
 		}
 
 		public void Render(WorldRenderer wr)
