@@ -11,6 +11,12 @@ Terrain:
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 116, 85, 55
 		TargetTypes: Ground
+	TerrainType@Water:
+		Type: Water
+		IsWater: true
+		AcceptsSmudgeType:
+		Color: 92, 116, 164
+		TargetTypes: Water
 	TerrainType@Tiberium:
 		Type: Tiberium
 		AcceptsSmudgeType: Crater, Scorch
@@ -25,4 +31,45 @@ Templates:
 		Category: Placeholder
 		Tiles:
 			0: Clear
-
+	Template@1:
+		Id: 1
+		Image: water01
+		Size: 1,1
+		Category: Water
+		Tiles:
+			0: Water
+	Template@2:
+		Id: 2
+		Image: water02
+		Size: 1,1
+		Category: Water
+		Tiles:
+			0: Water
+	Template@3:
+		Id: 3
+		Image: water03
+		Size: 1,1
+		Category: Water
+		Tiles:
+			0: Water
+	Template@4:
+		Id: 4
+		Image: water04
+		Size: 1,1
+		Category: Water
+		Tiles:
+			0: Water
+	Template@5:
+		Id: 5
+		Image: water05
+		Size: 1,1
+		Category: Water
+		Tiles:
+			0: Water
+	Template@6:
+		Id: 6
+		Image: water06
+		Size: 1,1
+		Category: Water
+		Tiles:
+			0: Water
