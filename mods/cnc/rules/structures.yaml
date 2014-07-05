@@ -110,7 +110,7 @@ NUK2:
 		Prerequisite: anypower
 	Buildable:
 		BuildPaletteOrder: 30
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Building.GDI, Building.Nod
 	Building:
 		Power: 200
@@ -402,7 +402,7 @@ HQ:
 		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 70
-		Prerequisites: proc
+		Prerequisites: proc, ~techlevel.medium
 		Queue: Building.GDI, Building.Nod
 	Building:
 		Power: -40
@@ -423,6 +423,7 @@ HQ:
 	DetectCloaked:
 		Range: 5
 	AirstrikePower:
+		Prerequisites: ~techlevel.superweapons
 		Icon: airstrike
 		ChargeTime: 180
 		SquadSize: 3
@@ -477,7 +478,7 @@ EYE:
 		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.high
 		Queue: Building.GDI
 	Building:
 		Power: -200
@@ -498,6 +499,7 @@ EYE:
 	DetectCloaked:
 		Range: 5
 	IonCannonPower:
+		Prerequisites: ~techlevel.superweapons
 		Icon: ioncannon
 		ChargeTime: 180
 		Description: Ion Cannon
@@ -522,7 +524,7 @@ TMPL:
 		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.high
 		Queue: Building.Nod
 	Building:
 		Power: -150
@@ -537,6 +539,7 @@ TMPL:
 		Range: 6c0
 	Bib:
 	NukePower:
+		Prerequisites: ~techlevel.superweapons
 		Icon: abomb
 		ChargeTime: 300
 		Description: Nuclear Strike
@@ -646,7 +649,7 @@ OBLI:
 		Description: Advanced base defense. \nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: tmpl
+		Prerequisites: tmpl, ~techlevel.high
 		Queue: Defence.Nod
 	Building:
 		Power: -150
@@ -729,7 +732,7 @@ ATWR:
 		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Defence.GDI
 	Building:
 		Power: -40
