@@ -232,7 +232,7 @@ STEG:
 TREX:
 	Inherits: ^DINO
 	Tooltip:
-		Name: Tyrannosaurus rex
+		Name: Tyrannosaurus Rex
 		Description: Bipedal carnivore with a massive skull
 	Armament:
 		Weapon: teeth
