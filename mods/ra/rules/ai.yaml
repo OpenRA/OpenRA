@@ -7,6 +7,7 @@ Player:
 			Power: powr,apwr
 			Barracks: barr,tent
 			VehiclesFactory: weap
+			Production: barr,tent,weap,afld,hpad,spen,syrd
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
@@ -29,7 +30,7 @@ Player:
 			barr: 1%
 			tent: 1%
 			weap: 1%
-			pbox.e1: 7%
+			pbox: 7%
 			gun: 7%
 			tsla: 5%
 			ftur: 10%
@@ -59,6 +60,7 @@ Player:
 			Power: powr,apwr
 			Barracks: barr,tent
 			VehiclesFactory: weap
+			Production: barr,tent,weap,afld,hpad,spen,syrd
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
@@ -87,7 +89,7 @@ Player:
 			spen: 1%
 			syrd: 1%
 			afld: 4%
-			pbox.e1: 7%
+			pbox: 7%
 			gun: 7%
 			ftur: 10%
 			tsla: 5%
@@ -125,6 +127,7 @@ Player:
 			Power: powr,apwr
 			Barracks: barr,tent
 			VehiclesFactory: weap
+			Production: barr,tent,weap,afld,hpad,spen,syrd
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
@@ -151,7 +154,7 @@ Player:
 			hpad: 2%
 			spen: 1%
 			syrd: 1%
-			pbox.e1: 7%
+			pbox: 7%
 			gun: 7%
 			ftur: 10%
 			tsla: 5%
@@ -188,6 +191,9 @@ Player:
 			ConstructionYard: fact
 			Refinery: proc
 			Power: powr,apwr
+			Barracks: barr,tent
+			VehiclesFactory: weap
+			Production: barr,tent,weap,afld,hpad,spen,syrd
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
@@ -213,7 +219,7 @@ Player:
 			stek: 1%
 			spen: 1%
 			syrd: 1%
-			pbox.e1: 12%
+			pbox: 12%
 			gun: 12%
 			ftur: 12%
 			tsla: 12%

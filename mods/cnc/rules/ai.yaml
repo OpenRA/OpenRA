@@ -7,6 +7,7 @@ Player:
 			Power: nuke,nuk2
 			Barracks: pyle,hand
 			VehiclesFactory: weap,afld
+			Production: pyle,hand,weap,afld,hpad
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
@@ -15,11 +16,11 @@ Player:
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
 		BuildingLimits:
 			proc: 4
-			pyle: 2
-			hand: 2
+			pyle: 3
+			hand: 3
 			hq: 1
-			weap: 2
-			afld: 2
+			weap: 3
+			afld: 3
 			hpad: 0
 			eye: 1
 			tmpl: 1
@@ -72,6 +73,7 @@ Player:
 			Power: nuke,nuk2
 			Barracks: pyle,hand
 			VehiclesFactory: weap,afld
+			Production: pyle,hand,weap,afld,hpad
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
@@ -80,12 +82,12 @@ Player:
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
 		BuildingLimits:
 			proc: 4
-			pyle: 2
-			hand: 2
+			pyle: 3
+			hand: 3
 			hq: 1
-			weap: 2
-			afld: 2
-			hpad: 1
+			weap: 3
+			afld: 3
+			hpad: 2
 			eye: 1
 			tmpl: 1
 			fix: 0
@@ -137,6 +139,7 @@ Player:
 			Power: nuke,nuk2
 			Barracks: pyle,hand
 			VehiclesFactory: weap,afld
+			Production: pyle,hand,weap,afld,hpad
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
@@ -145,12 +148,12 @@ Player:
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
 		BuildingLimits:
 			proc: 4
-			pyle: 2
+			pyle: 4
 			hand: 4
 			hq: 1
-			weap: 3
-			afld: 2
-			hpad: 1
+			weap: 4
+			afld: 4
+			hpad: 2
 			eye: 1
 			tmpl: 1
 			fix: 0
