@@ -351,7 +351,6 @@
     <Compile Include="SupportPowers\IronCurtainPower.cs" />
     <Compile Include="SupportPowers\NukePower.cs" />
     <Compile Include="SupportPowers\ParatroopersPower.cs" />
-    <Compile Include="SupportPowers\SonarPulsePower.cs" />
     <Compile Include="SupportPowers\SupportPower.cs" />
     <Compile Include="SupportPowers\SupportPowerChargeBar.cs" />
     <Compile Include="SupportPowers\SupportPowerManager.cs" />
@@ -520,6 +519,7 @@
     <Compile Include="Widgets\Logic\InstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\InstallMusicLogic.cs" />
     <Compile Include="Render\WithActiveAnimation.cs" />
+    <Compile Include="SupportPowers\SpawnActorPower.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

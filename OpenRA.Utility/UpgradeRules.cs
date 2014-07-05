@@ -282,6 +282,13 @@ namespace OpenRA.Utility
 						node.Key = "ParachuteSequence";
 				}
 
+				// SonarPulsePower was implemented as a generic SpawnActorPower
+				if (engineVersion < 20140703)
+				{
+					if (depth == 1 && node.Key == "SonarPulsePower")
+						node.Key = "SpawnActorPower";
+				}
+
 				if (engineVersion < 20140707)
 				{
 					// SpyPlanePower was removed (use AirstrikePower instead)

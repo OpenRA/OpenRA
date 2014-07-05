@@ -282,13 +282,18 @@ powerproxy.parabombs:
 		CameraActor: camera
 
 powerproxy.sonarpulse:
-	SonarPulsePower:
+	SpawnActorPower:
 		Icon: sonar
 		Description: Sonar Pulse
 		LongDesc: Reveals all submarines in the vicinity for a \nshort time.
 		ChargeTime: 30
 		EndChargeSound: pulse1.aud
 		SelectTargetSound: slcttgt1.aud
+		Actor: sonar
+		LifeTime: 250
+		DeploySound: sonpulse.aud
+		EffectSequence: moveflsh
+		EffectPalette: moveflash
 
 mpspawn:
 	Immobile:
