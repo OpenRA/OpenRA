@@ -47,11 +47,11 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (building.Destroyed || wr.world.FogObscures(building))
+			if (building.Destroyed || wr.world.FogObscures(building) || rb.Repairers.Count == 0)
 				return SpriteRenderable.None;
 
-			return anim.Render(building.CenterPosition, 
-				wr.Palette(palettePrefix + rb.Repairers[shownPlayer % rb.Repairers.Count].InternalName));
+			var palette = wr.Palette(palettePrefix + rb.Repairers[shownPlayer % rb.Repairers.Count].InternalName);
+			return anim.Render(building.CenterPosition, palette);
 		}
 
 		void CycleRepairer() 
