@@ -26,6 +26,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly int Arm = 0;
 		[Desc("Check for whether an actor with Wall: trait blocks fire")]
 		public readonly bool High = false;
+		public readonly bool Shadow = false;
 		public readonly string Trail = null;
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WRange Inaccuracy = WRange.Zero;
@@ -188,6 +189,13 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!args.SourceActor.World.FogObscures(wr.world.Map.CellContaining(pos)))
 			{
+				if (info.Shadow)
+				{
+					var shadowPos = new WPos(pos.X, pos.Y, 0);
+					foreach (var r in anim.Render(shadowPos, wr.Palette("shadow")))
+						yield return r;
+				}
+
 				var palette = wr.Palette(args.Weapon.Palette);
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
