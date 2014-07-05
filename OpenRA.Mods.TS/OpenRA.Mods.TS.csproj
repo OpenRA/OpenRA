@@ -50,8 +50,8 @@
     <Compile Include="ShroudPalette.cs" />
     <Compile Include="Activities\VoxelHarvesterDockSequence.cs" />
     <Compile Include="TiberianSunRefinery.cs" />
-    <Compile Include="WithVoxelUnloadBody.cs" />
     <Compile Include="Render\WithVoxelWalkerBody.cs" />
+    <Compile Include="Render\WithVoxelUnloadBody.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
