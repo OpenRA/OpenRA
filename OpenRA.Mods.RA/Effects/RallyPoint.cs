@@ -42,9 +42,9 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			flag.Tick();
 			circles.Tick();
-			if (cachedLocation != rp.rallyPoint)
+			if (cachedLocation != rp.Location)
 			{
-				cachedLocation = rp.rallyPoint;
+				cachedLocation = rp.Location;
 				circles.Play("circles");
 			}
 
