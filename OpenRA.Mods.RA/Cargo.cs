@@ -23,11 +23,12 @@ namespace OpenRA.Mods.RA
 		public readonly int PipCount = 0;
 		public readonly string[] Types = { };
 		public readonly string[] InitialUnits = { };
+		public readonly bool EjectOnSell = true;
 
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture, ITick
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture, ITick, INotifySold
 	{
 		readonly Actor self;
 		public readonly CargoInfo Info;
@@ -188,6 +189,26 @@ namespace OpenRA.Mods.RA
 			foreach (var c in cargo)
 				c.Kill(e.Attacker);
 			cargo.Clear();
+		}
+
+		public void Selling(Actor self) { }
+		public void Sold(Actor self)
+		{
+			if (!Info.EjectOnSell || cargo == null)
+				return;
+
+			while (!IsEmpty(self))
+				SpawnPassenger(Unload(self));
+		}
+
+		void SpawnPassenger(Actor passenger)
+		{
+			self.World.AddFrameEndTask(w =>
+			{
+				w.Add(passenger);
+				passenger.Trait<IPositionable>().SetPosition(passenger, self.Location);
+				// TODO: this won't work well for >1 actor as they should move towards the next enterable (sub) cell instead
+			});
 		}
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)

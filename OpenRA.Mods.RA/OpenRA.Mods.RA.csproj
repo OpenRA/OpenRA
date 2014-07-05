@@ -229,7 +229,6 @@
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
-    <Compile Include="EmitCargoOnSell.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
     <Compile Include="EngineerRepair.cs" />
     <Compile Include="Explodes.cs" />
