@@ -70,6 +70,10 @@ Map.ExpandFootprint = function(cells, allowDiagonal)
 	return Utils.EnumerableToTable(Internal.ExpandFootprint(cells, allowDiagonal))
 end
 
+Map.CenterOfCell = function(position)
+	return Internal.CenterOfCell(position)
+end
+
 CPos.New = function(x, y)
 	return OpenRA.New("CPos", { { x, "Int32" }, { y, "Int32" } })
 end

@@ -11,7 +11,7 @@ end
 AttackPlayer = function()
 	if not Actor.IsDead(NodBarracks) then
 		Production.BuildWithPerFactoryQueue(NodBarracks, "e1", 5)
-		attackSquad = Team.New(Map.FindUnitsInCircle(enemy, NodBarracks.location, 3))
+		attackSquad = Team.New(Map.FindUnitsInCircle(enemy, NodBarracks, 3))
 		Team.Do(attackSquad, function(unit)
 			Actor.AttackMove(unit, waypoint9.location)
 			Actor.Hunt(unit)

@@ -18,7 +18,7 @@ HeliAction = function(heliActor, team)
 	Actor.AfterMove(heliActor)
 	Actor.UnloadCargo(heliActor, true)
 	Actor.Wait(heliActor, Utils.Seconds(2))
-	Actor.ScriptedMove(heliActor, HeliEntry)
+	Actor.ScriptedMove(heliActor, HeliEntry.Location)
 	Actor.RemoveSelf(heliActor)
 
 	Team.Do(team, function(actor)

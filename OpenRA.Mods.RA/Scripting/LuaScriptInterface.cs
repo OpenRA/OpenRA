@@ -461,5 +461,11 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			return Util.ExpandFootprint(cells.Values.Cast<CPos>(), allowDiagonal);
 		}
+
+		[LuaGlobal]
+		public WPos CenterOfCell(CPos position)
+		{
+			return world.Map.CenterOfCell(position);
+		}
 	}
 }
