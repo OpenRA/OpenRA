@@ -133,7 +133,8 @@ PROC:
 	RevealsShroud:
 		Range: 6
 #	Bib:
-	TiberiumRefinery:
+	TiberianSunRefinery:
+		DockOffset: 4,3
 	StoresResources:
 		PipColor: Green
 		PipCount: 15
@@ -142,6 +143,7 @@ PROC:
 		Value: 600
 	FreeActor:
 		Actor: HARV
+		InitialActivity: FindResources
 		SpawnOffset: 3,4
 		Facing: 64
 	WithIdleOverlay@REDLIGHTS:

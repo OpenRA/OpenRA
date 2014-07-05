@@ -101,7 +101,7 @@ HARV:
 	-GainsExperience:
 	RenderSprites:
 	RenderVoxels:
-	WithVoxelBody:
+	WithVoxelUnloadBody:
 	Explodes:
 		Weapon: TiberiumExplosion
 
