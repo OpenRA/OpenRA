@@ -252,6 +252,22 @@ namespace OpenRA.Utility
 						node.Key = "StoresResources";
 				}
 
+				// ParachuteAttachment was merged into Parachutable
+				if (engineVersion < 20140701)
+				{
+					if (depth == 1 && node.Key == "ParachuteAttachment")
+					{
+						node.Key = "Parachutable";
+
+						foreach (var subnode in node.Value.Nodes)
+							if (subnode.Key == "Offset")
+								subnode.Key = "ParachuteOffset";
+					}
+
+					if (depth == 2 && node.Key == "ParachuteSprite")
+						node.Key = "ParachuteSequence";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

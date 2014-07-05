@@ -18,22 +18,39 @@ namespace OpenRA.Mods.RA.Effects
 {
 	public class Parachute : IEffect
 	{
-		readonly Animation paraAnim;
+		readonly ParachutableInfo parachutableInfo;
+		readonly Animation parachute;
+		readonly Animation shadow;
 		readonly WVec parachuteOffset;
 		readonly Actor cargo;
 		WPos pos;
-		WVec fallRate = new WVec(0, 0, 13);
+		WVec fallVector;
 
 		public Parachute(Actor cargo, WPos dropPosition)
 		{
 			this.cargo = cargo;
 
-			var pai = cargo.Info.Traits.GetOrDefault<ParachuteAttachmentInfo>();
-			paraAnim = new Animation(cargo.World, pai != null ? pai.ParachuteSprite : "parach");
-			paraAnim.PlayThen("open", () => paraAnim.PlayRepeating("idle"));
+			parachutableInfo = cargo.Info.Traits.GetOrDefault<ParachutableInfo>();
 
-			if (pai != null)
-				parachuteOffset = pai.Offset;
+			if (parachutableInfo != null)
+				fallVector = new WVec(0, 0, parachutableInfo.FallRate);
+
+			var parachuteSprite = parachutableInfo != null ? parachutableInfo.ParachuteSequence : null;
+			if (parachuteSprite != null)
+			{
+				parachute = new Animation(cargo.World, parachuteSprite);
+				parachute.PlayThen("open", () => parachute.PlayRepeating("idle"));
+			}
+
+			var shadowSprite = parachutableInfo != null ? parachutableInfo.ShadowSequence : null;
+			if (shadowSprite != null)
+			{
+				shadow = new Animation(cargo.World, shadowSprite);
+				shadow.PlayRepeating("idle");
+			}
+
+			if (parachutableInfo != null)
+				parachuteOffset = parachutableInfo.ParachuteOffset;
 
 			// Adjust x,y to match the target subcell
 			cargo.Trait<IPositionable>().SetPosition(cargo, cargo.World.Map.CellContaining(dropPosition));
@@ -43,9 +60,13 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			paraAnim.Tick();
+			if (parachute != null)
+				parachute.Tick();
 
-			pos -= fallRate;
+			if (shadow != null)
+				shadow.Tick();
+
+			pos -= fallVector;
 
 			if (pos.Z <= 0)
 			{
@@ -69,17 +90,24 @@ namespace OpenRA.Mods.RA.Effects
 			if (!rc.Any())
 				yield break;
 
-			var shadow = wr.Palette("shadow");
+			var parachuteShadowPalette = wr.Palette(parachutableInfo.ParachuteShadowPalette);
 			foreach (var c in rc)
 			{
-				if (!c.IsDecoration)
-					yield return c.WithPalette(shadow).WithZOffset(c.ZOffset - 1).AsDecoration();
+				if (!c.IsDecoration && shadow == null)
+					yield return c.WithPalette(parachuteShadowPalette).WithZOffset(c.ZOffset - 1).AsDecoration();
 
 				yield return c.OffsetBy(pos - c.Pos);
 			}
 
-			foreach (var r in paraAnim.Render(pos, parachuteOffset, 1, rc.First().Palette, 1f))
-				yield return r;
+			var shadowPalette = !string.IsNullOrEmpty(parachutableInfo.ShadowPalette) ? wr.Palette(parachutableInfo.ShadowPalette) : rc.First().Palette;
+			if (shadow != null)
+				foreach (var r in shadow.Render(pos - new WVec(0, 0, pos.Z), WVec.Zero, 1, shadowPalette, 1f))
+					yield return r;
+
+			var parachutePalette = !string.IsNullOrEmpty(parachutableInfo.ParachutePalette) ? wr.Palette(parachutableInfo.ParachutePalette) : rc.First().Palette;
+			if (parachute != null)
+				foreach (var r in parachute.Render(pos, parachuteOffset, 1, parachutePalette, 1f))
+					yield return r;
 		}
 	}
 }

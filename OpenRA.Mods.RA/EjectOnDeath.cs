@@ -24,6 +24,9 @@ namespace OpenRA.Mods.RA
 		public readonly string ChuteSound = "chute1.aud";
 		public readonly bool EjectInAir = false;
 		public readonly bool EjectOnGround = false;
+
+		[Desc("Risks stuck units when they don't have the Paratrooper trait.")]
+		public readonly bool AllowUnsuitableCell = false;
 	}
 
 	public class EjectOnDeath : INotifyKilled
@@ -47,7 +50,7 @@ namespace OpenRA.Mods.RA
 				new TypeDictionary { new OwnerInit(self.Owner), new LocationInit(self.Location) });
 
 
-			if (IsSuitableCell(self, pilot))
+			if (info.AllowUnsuitableCell || IsSuitableCell(self, pilot))
 			{
 				if (cp.Z > 0)
 				{

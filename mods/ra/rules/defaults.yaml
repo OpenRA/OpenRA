@@ -41,8 +41,9 @@
 	EjectOnDeath:
 		PilotActor: e1
 		SuccessRate: 20
-		EjectOnGround: yes
-		EjectInAir: no
+		EjectOnGround: true
+		EjectInAir: false
+		AllowUnsuitableCell: false
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
@@ -97,8 +98,9 @@
 	EjectOnDeath:
 		PilotActor: e1
 		SuccessRate: 20
-		EjectOnGround: yes
-		EjectInAir: no
+		EjectOnGround: true
+		EjectInAir: false
+		AllowUnsuitableCell: false
 	Huntable:
 	LuaScriptEvents:
 	Demolishable:
@@ -149,8 +151,6 @@
 	GivesBounty:
 	GpsDot:
 		String: Infantry
-	ParachuteAttachment:
-		Offset: 0,0,427
 	CrushableInfantry:
 		CrushSound: squishy2.aud
 	UpdatesPlayerStatistics:
@@ -175,6 +175,11 @@
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
 		InfDeaths: 6
+	Parachutable:
+		ParachuteOffset: 0,0,427
+		KilledOnImpassableTerrain: true
+		ParachuteSequence: parach
+		ShadowSequence: parach-shadow
 
 ^Ship:
 	AppearsOnRadar:
@@ -211,7 +216,7 @@
 
 ^Plane:
 	AppearsOnRadar:
-		UseLocation: yes
+		UseLocation: true
 	SelectionDecorations:
 	Selectable:
 		Voice: GenericVoice
@@ -232,8 +237,9 @@
 	EjectOnDeath:
 		PilotActor: E1
 		SuccessRate: 50
-		EjectOnGround: no
-		EjectInAir: yes
+		EjectOnGround: false
+		EjectInAir: true
+		AllowUnsuitableCell: true
 	GivesBounty:
 	GpsDot:
 		String: Plane
@@ -277,7 +283,7 @@
 	GivesExperience:
 	CaptureNotification:
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types: Building
@@ -322,7 +328,7 @@
 		Palette: terrain
 	GivesExperience:
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 		UseTerrainPalette: true
 	AutoTargetIgnore:
 	ProximityCaptor:
@@ -425,7 +431,7 @@
 	RadarColorFromTerrain:
 		Terrain: Tree
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 		UseTerrainPalette: true
 	ProximityCaptor:
 		Types: Tree
@@ -460,11 +466,11 @@
 	LuaScriptEvents:
 	TargetableUnit:
 		TargetTypes: Ground
-		RequiresForceFire: yes
+		RequiresForceFire: true
 	AutoTargetIgnore:
 	Capturable:
 		Type: husk
-		AllowAllies: yes
+		AllowAllies: true
 		CaptureThreshold: 1.0
 	TransformOnCapture:
 		ForceHealthPercentage: 25
@@ -501,7 +507,7 @@
 	BelowUnits:
 	TargetableBuilding:
 		TargetTypes: Ground, Water
-		RequiresForceFire: yes
+		RequiresForceFire: true
 	Building:
 		Footprint: ____ ____
 		Dimensions: 4,2
@@ -528,7 +534,7 @@
 	RadarColorFromTerrain:
 		Terrain: Tree
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 		UseTerrainPalette: true
 	ProximityCaptor:
 		Types: Tree

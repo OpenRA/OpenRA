@@ -279,7 +279,6 @@
     <Compile Include="PaletteFromFile.cs" />
     <Compile Include="PaletteFromRGBA.cs" />
     <Compile Include="ParaDrop.cs" />
-    <Compile Include="ParachuteAttachment.cs" />
     <Compile Include="Passenger.cs" />
     <Compile Include="Player\PlayerStatistics.cs" />
     <Compile Include="Player\ActorGroupProxy.cs" />
@@ -520,6 +519,7 @@
     <Compile Include="Lint\CheckActors.cs" />
     <Compile Include="Lint\CheckMapCordon.cs" />
     <Compile Include="World\ResourceLayer.cs" />
+    <Compile Include="Parachutable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

@@ -18,8 +18,11 @@ namespace OpenRA.Mods.RA
 {
 	class CrateInfo : ITraitInfo, IOccupySpaceInfo, Requires<RenderSpritesInfo>
 	{
-		public readonly int Lifetime = 5; // Seconds
+		[Desc("Seconds")]
+		public readonly int Lifetime = 5;
+
 		public readonly string[] TerrainTypes = { };
+
 		public object Create(ActorInitializer init) { return new Crate(init, this); }
 	}
 
