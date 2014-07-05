@@ -272,7 +272,7 @@ FiendShard:
 	Burst: 3
 	Range: 5c0
 	Report: FIEND2.AUD
-	Projectile: Missile
+	Projectile: Bullet
 		Speed: 213
 		Image: CRYSTAL4
 		Shadow: yes
