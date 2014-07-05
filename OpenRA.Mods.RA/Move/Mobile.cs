@@ -520,8 +520,8 @@ namespace OpenRA.Mods.RA.Move
 							notStupidCells.Add(p);
 				}
 
-			var moveTo = availCells.Any() ? availCells.Random(self.World.SharedRandom) :
-				notStupidCells.Any() ? notStupidCells.Random(self.World.SharedRandom) : (CPos?)null;
+			var moveTo = notStupidCells.Any() ? notStupidCells.Random(self.World.SharedRandom) :
+				availCells.Any() ? availCells.Random(self.World.SharedRandom) : (CPos?)null;
 
 			if (moveTo.HasValue)
 			{
