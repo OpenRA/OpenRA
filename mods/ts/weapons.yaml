@@ -40,6 +40,7 @@ Minigun:
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 12
+		ProneModifier: 70
 
 Grenade:
 	ROF: 60
@@ -61,6 +62,7 @@ Grenade:
 			Concrete: 28%
 		InfDeath: 3
 		Damage: 40
+		ProneModifier: 70
 		Explosion: large_grey_explosion
 		ImpactSound: expnew13.aud
 
@@ -135,6 +137,7 @@ Heal:
 			Concrete: 0%
 		InfDeath: 1
 		Damage: -50
+		ProneModifier: 100
 
 Sniper:
 	ROF: 60
@@ -144,6 +147,7 @@ Sniper:
 		Speed: 1c682
 	Warhead:
 		Damage: 150
+		ProneModifier: 100
 		Spread: 42
 		Versus:
 			None: 100%
@@ -169,6 +173,7 @@ M1Carbine:
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 15
+		ProneModifier: 70
 
 LtRail:
 	ROF: 60
@@ -181,6 +186,7 @@ LtRail:
 		Color: 200,0,128,255
 	Warhead:
 		Damage: 150
+		ProneModifier: 100
 		Spread: 42
 		Versus:
 			None: 100%
@@ -210,6 +216,7 @@ CyCannon:
 			Concrete: 40%
 		InfDeath: 6
 		Damage: 120
+		ProneModifier: 100
 		Explosion: large_bang
 		ImpactSound: expnew12.aud
 
@@ -230,6 +237,7 @@ Vulcan3:
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 10
+		ProneModifier: 70
 
 Vulcan2:
 	ROF: 50
@@ -249,6 +257,7 @@ Vulcan2:
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 50
+		ProneModifier: 70
 
 Vulcan:
 	ROF: 60
@@ -266,6 +275,7 @@ Vulcan:
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 20
+		ProneModifier: 70
 
 FiendShard:
 	ROF: 30
@@ -287,6 +297,7 @@ FiendShard:
 			Concrete: 10%
 		InfDeath: 1
 		Damage: 35
+		ProneModifier: 100
 
 JumpCannon:
 	ROF: 40
@@ -305,6 +316,7 @@ JumpCannon:
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 15
+		ProneModifier: 70
 
 HoverMissile:
 	ROF: 68
@@ -386,6 +398,7 @@ MammothTusk:
 			Concrete: 28%
 		InfDeath: 3
 		Damage: 40
+		ProneModifier: 70
 		Explosion: medium_bang
 		ImpactSound: expnew12.aud
 
@@ -405,6 +418,7 @@ Repair:
 			Concrete: 0%
 		InfDeath: 1
 		Damage: -50
+		ProneModifier: 100
 
 SlimeAttack:
 	ROF: 80
@@ -421,6 +435,7 @@ SlimeAttack:
 			Concrete: 10%
 		InfDeath: 2
 		Damage: 100
+		ProneModifier: 100
 
 SuicideBomb:
 	ROF: 1
@@ -475,6 +490,7 @@ MechRailgun:
 			Concrete: 25%
 		InfDeath: 5
 		Damage: 200
+		ProneModifier: 100
 
 AssaultCannon:
 	ROF: 50
@@ -492,6 +508,7 @@ AssaultCannon:
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 40
+		ProneModifier: 70
 
 BikeMissile:
 	ROF: 60
@@ -541,6 +558,7 @@ RaiderCannon:
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 40
+		ProneModifier: 70
 
 FireballLauncher:
 	ROF: 50
@@ -562,6 +580,7 @@ FireballLauncher:
 			Concrete: 2%
 		InfDeath: 5
 		Damage: 25
+		ProneModifier: 100
 
 SonicZap:
 	ROF: 120
@@ -654,6 +673,7 @@ Dragon:
 			Concrete: 35%
 		InfDeath: 3
 		Damage: 150
+		ProneModifier: 100
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
 
@@ -704,6 +724,7 @@ Bomb:
 			Concrete: 100%
 		InfDeath: 3
 		Damage: 160
+		ProneModifier: 100
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
 
@@ -752,6 +773,7 @@ HarpyClaw:
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 60
+		ProneModifier: 70
 
 Pistola:
 	ROF: 20
@@ -769,6 +791,7 @@ Pistola:
 		Explosion: piff
 		InfDeath: 1
 		Damage: 2
+		ProneModifier: 70
 
 Tiberium:
 	ROF: 16
@@ -793,6 +816,7 @@ IonCannon:
 		Spread: 1c0
 		InfDeath: 5
 		Explosion: ring1
+		ProneModifier: 100
 	Warhead@area:
 		DamageModel: PerCell
 		Damage: 250
@@ -839,6 +863,7 @@ RPGTower:
 			Concrete: 70%
 		InfDeath: 2
 		Damage: 110
+		ProneModifier: 70
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
 
@@ -876,6 +901,7 @@ ObeliskLaser:
 		InfDeath: 5
 		SmudgeType: Scorch
 		Damage: 250
+		ProneModifier: 60
 
 TurretLaser:
 	ROF: 40
@@ -889,6 +915,7 @@ TurretLaser:
 		InfDeath: 5
 		SmudgeType: Scorch
 		Damage: 30
+		ProneModifier: 60
 
 TiberiumExplosion:
 	Warhead:
