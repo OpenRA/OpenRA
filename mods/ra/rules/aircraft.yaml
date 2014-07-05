@@ -201,7 +201,7 @@ TRAN:
 	RevealsShroud:
 		Range: 12c0
 	Helicopter:
-		RearmBuildings: hpad
+		RearmBuildings: hpad, carrhpad
 		InitialFacing: 0
 		ROT: 5
 		Speed: 112
@@ -251,7 +251,7 @@ HELI:
 	AttackHeli:
 		FacingTolerance: 20
 	Helicopter:
-		RearmBuildings: hpad
+		RearmBuildings: hpad, carrhpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
@@ -304,7 +304,7 @@ HIND:
 	AttackHeli:
 		FacingTolerance: 20
 	Helicopter:
-		RearmBuildings: hpad
+		RearmBuildings: hpad, carrhpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4

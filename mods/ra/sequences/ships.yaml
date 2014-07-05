@@ -59,3 +59,23 @@ msub:
 		Facings: 16
 	icon: msubicon
 		Start: 0
+
+carr:
+	idle:
+		Start: 0
+		Length: 1
+		ZOffset: -1023
+	icon: carricon
+		Start: 0
+
+carrhpad:
+	idle: carr
+		Start: 0
+		Length: 10
+		Tick: 160
+		ZOffset: -1023
+	make: carr
+		Start: 0
+		Length: 10
+		Tick: 160
+		ZOffset: -1023
