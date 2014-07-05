@@ -437,7 +437,6 @@
     <Compile Include="Render\WithVoxelTurret.cs" />
     <Compile Include="Render\WithVoxelBody.cs" />
     <Compile Include="Render\WithVoxelBarrel.cs" />
-    <Compile Include="Render\WithVoxelWalkerBody.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
     <Compile Include="Render\WithResources.cs" />
     <Compile Include="Render\WithHarvestAnimation.cs" />
