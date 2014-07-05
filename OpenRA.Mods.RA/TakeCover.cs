@@ -18,7 +18,6 @@ namespace OpenRA.Mods.RA
 	public class TakeCoverInfo : TurretedInfo
 	{
 		public readonly int ProneTime = 100;	/* ticks, =4s */
-		public readonly float ProneDamage = .5f;
 		public readonly decimal ProneSpeed = .5m;
 		public readonly WVec ProneOffset = new WVec(85, 0, -171);
 
@@ -58,9 +57,10 @@ namespace OpenRA.Mods.RA
 				LocalOffset = WVec.Zero;
 		}
 
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )
+		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
 		{
-			return IsProne ? Info.ProneDamage : 1f;
+			var proneDamage = (warhead.ProneModifier / 100f);
+			return IsProne ? proneDamage : 1f;
 		}
 
 		public decimal GetSpeedModifier()
