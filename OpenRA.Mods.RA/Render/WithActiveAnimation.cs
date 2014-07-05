@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new WithActiveAnimation(init.self, this); }
 	}
 
-	public class WithActiveAnimation : ITickRender, INotifyBuildComplete
+	public class WithActiveAnimation : ITickRender, INotifyBuildComplete, INotifySold
 	{
 		readonly IEnumerable<IDisable> disabled;
 		readonly WithActiveAnimationInfo info;
@@ -61,5 +61,11 @@ namespace OpenRA.Mods.RA.Render
 		{
 			buildComplete = true;
 		}
+
+		public void Selling(Actor self)
+		{
+			buildComplete = false;
+		}
+		public void Sold(Actor self) { }
 	}
 }
