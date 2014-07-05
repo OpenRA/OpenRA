@@ -404,29 +404,29 @@ resources:
 		Length: *
 	ti12: ti12
 		Length: *
-	bti1: bti1
+	bti1: rtib1
 		Length: *
-	bti2: bti2
+	bti2: rtib2
 		Length: *
-	bti3: bti3
+	bti3: rtib3
 		Length: *
-	bti4: bti4
+	bti4: rtib4
 		Length: *
-	bti5: bti5
+	bti5: rtib5
 		Length: *
-	bti6: bti6
+	bti6: rtib6
 		Length: *
-	bti7: bti7
+	bti7: rtib7
 		Length: *
-	bti8: bti8
+	bti8: rtib8
 		Length: *
-	bti9: bti9
+	bti9: rtib9
 		Length: *
-	bti10: bti10
+	bti10: rtib10
 		Length: *
-	bti11: bti11
+	bti11: rtib11
 		Length: *
-	bti12: bti12
+	bti12: rtib12
 		Length: *
 
 shroud:
