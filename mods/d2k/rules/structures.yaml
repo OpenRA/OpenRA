@@ -690,8 +690,6 @@ SIETCH:
 		Footprint: xx xx
 		Dimensions: 2,2
 		TerrainTypes: Cliff
-	Bib:
-		Sprite: bib2x
 	Health:
 		HP: 400
 	Armor:
