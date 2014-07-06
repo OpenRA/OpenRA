@@ -24,6 +24,7 @@ namespace OpenRA
 {
 	public class World
 	{
+		static readonly Func<CPos, bool> FalsePredicate = cell => false;
 		internal readonly TraitDictionary traitDict = new TraitDictionary();
 		readonly HashSet<Actor> actors = new HashSet<Actor>();
 		readonly List<IEffect> effects = new List<IEffect>();
@@ -53,6 +54,24 @@ namespace OpenRA
 		public bool FogObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(p); }
 		public bool ShroudObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(a); }
 		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
+		
+		public Func<CPos, bool> FogObscuresTest(CellRegion region)
+		{
+			var rp = RenderPlayer;
+			if (rp == null)
+				return FalsePredicate;
+			var predicate = rp.Shroud.IsVisibleTest(region);
+			return cell => !predicate(cell);
+		}
+
+		public Func<CPos, bool> ShroudObscuresTest(CellRegion region)
+		{
+			var rp = RenderPlayer;
+			if (rp == null)
+				return FalsePredicate;
+			var predicate = rp.Shroud.IsExploredTest(region);
+			return cell => !predicate(cell);
+		}
 
 		public bool IsReplay
 		{
