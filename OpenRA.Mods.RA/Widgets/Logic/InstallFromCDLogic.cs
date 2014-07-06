@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,27 +14,22 @@ using System.Linq;
 using System.Threading;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
-	public class CncInstallFromCDLogic
+	public class InstallFromCDLogic
 	{
 		Widget panel;
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
-		Action afterInstall;
+		Action continueLoading;
 		ButtonWidget retryButton, backButton;
 		Widget installingContainer, insertDiskContainer;
 
-		string[] filesToCopy, filesToExtract;
-
 		[ObjectCreator.UseCtor]
-		public CncInstallFromCDLogic(Widget widget, Action afterInstall, string[] filesToCopy, string[] filesToExtract)
+		public InstallFromCDLogic(Widget widget, Action continueLoading)
 		{
-			this.afterInstall = afterInstall;
-			this.filesToCopy = filesToCopy;
-			this.filesToExtract = filesToExtract;
-
-			panel = widget;
+			this.continueLoading = continueLoading;
+			panel = widget.Get("INSTALL_FROMCD_PANEL");
 			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
 			statusLabel = panel.Get<LabelWidget>("STATUS_LABEL");
 
@@ -46,19 +41,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			installingContainer = panel.Get("INSTALLING");
 			insertDiskContainer = panel.Get("INSERT_DISK");
-
 			CheckForDisk();
 		}
 
-		public static bool IsValidDisk(string diskRoot)
+		bool IsValidDisk(string diskRoot)
 		{
-			var files = new string[][] {
-				new[] { diskRoot, "CONQUER.MIX" },
-				new[] { diskRoot, "DESERT.MIX" },
-				new[] { diskRoot, "INSTALL", "SETUP.Z" },
-			};
-
-			return files.All(f => File.Exists(f.Aggregate(Path.Combine)));
+			return Game.modData.Manifest.ContentInstaller.DiskTestFiles.All(f => File.Exists(Path.Combine(diskRoot, f)));
 		}
 
 		void CheckForDisk()
@@ -81,11 +69,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
 
-			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
-			var extractPackage = "INSTALL/SETUP.Z";
+			var dest = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mod.Id }.Aggregate(Path.Combine);
+			var copyFiles = Game.modData.Manifest.ContentInstaller.CopyFilesFromCD;
+
+			var packageToExtract = Game.modData.Manifest.ContentInstaller.PackageToExtractFromCD.Split(':');
+			var extractPackage = packageToExtract.First();
+			var annotation = packageToExtract.Length > 1 ? packageToExtract.Last() : null;
+
+			var extractFiles = Game.modData.Manifest.ContentInstaller.ExtractFilesFromCD;
 
 			var installCounter = 0;
-			var installTotal = filesToExtract.Count() + filesToExtract.Count();
+			var installTotal = copyFiles.Count() + extractFiles.Count();
 			var onProgress = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
 				progressBar.Percentage = installCounter * 100 / installTotal;
@@ -96,30 +90,42 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var onError = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
-				statusLabel.GetText = () => "Error: " + s;
+				statusLabel.GetText = () => "Error: "+s;
 				backButton.IsDisabled = () => false;
 				retryButton.IsDisabled = () => false;
 			}));
 
-			new Thread(_ =>
+			new Thread(() =>
 			{
 				try
 				{
-					if (!InstallUtils.CopyFiles(source, filesToCopy, dest, onProgress, onError))
+					if (!InstallUtils.CopyFiles(source, copyFiles, dest, onProgress, onError))
+					{
+						onError("Copying files from CD failed.");
 						return;
+					}
 
-					if (!InstallUtils.ExtractFromPackage(source, extractPackage, filesToExtract, dest, onProgress, onError))
-						return;
+					if (!string.IsNullOrEmpty(extractPackage))
+					{
+						if (!InstallUtils.ExtractFromPackage(source, extractPackage, annotation, extractFiles, dest, onProgress, onError))
+						{
+							onError("Extracting files from CD failed.");
+							return;
+						}
+					}
 
 					Game.RunAfterTick(() =>
 					{
+						statusLabel.GetText = () => "Game assets have been extracted.";
 						Ui.CloseWindow();
-						afterInstall();
+						continueLoading();
 					});
 				}
-				catch
+				catch(Exception e)
 				{
-					onError("Installation failed");
+					onError("Installation failed.\n{0}".F(e.Message));
+					Log.Write("debug", e.ToString());
+					return;
 				}
 			}) { IsBackground = true }.Start();
 		}

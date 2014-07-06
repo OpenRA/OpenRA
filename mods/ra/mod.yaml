@@ -69,7 +69,7 @@ Assemblies:
 	mods/d2k/OpenRA.Mods.D2k.dll
 
 ChromeLayout:
-	mods/ra/chrome/gameinit.yaml
+	mods/ra/chrome/install.yaml
 	mods/ra/chrome/ingame.yaml
 	mods/ra/chrome/ingame-chat.yaml
 	mods/ra/chrome/ingame-diplomacy.yaml
@@ -129,10 +129,18 @@ Translations:
 
 LoadScreen: DefaultLoadScreen
 	Image: mods/ra/uibits/loadscreen.png
-	InstallerMenuWidget: INSTALL_PANEL
-	TestFiles: allies.mix, conquer.mix, general.mix, interior.mix, redalert.mix, russian.mix, scores.mix, snow.mix, sounds.mix, temperat.mix
-	PackageMirrorList: http://openra.net/packages/ra-mirrors.txt
 	Text: Filling Crates..., Charging Capacitors..., Reticulating Splines..., Planting Trees..., Building Bridges..., Aging Empires..., Compiling EVA..., Constructing Pylons..., Activating Skynet..., Splitting Atoms...
+
+ContentInstaller:
+	InstallerMenuWidget: INSTALL_PANEL
+	TestFiles: allies.mix, conquer.mix, interior.mix, redalert.mix, russian.mix, snow.mix, sounds.mix, temperat.mix
+	PackageMirrorList: http://www.openra.net/packages/ra-mirrors.txt
+	DiskTestFiles: MAIN.MIX, INSTALL/REDALERT.MIX
+	PackageToExtractFromCD: MAIN.MIX
+	ExtractFilesFromCD: conquer.mix, russian.mix, allies.mix, sounds.mix, scores.mix, snow.mix, interior.mix, temperat.mix, general.mix
+	CopyFilesFromCD: INSTALL/REDALERT.MIX
+	ShippedSoundtracks: 2
+	MusicPackageMirrorList: http://www.openra.net/packages/ra-music-mirrors.txt
 
 ServerTraits:
 	LobbyCommands
@@ -189,4 +197,4 @@ Missions:
 
 SupportsMapsFrom: ra
 
-NewsUrl: http://openra.net/gamenews
+NewsUrl: http://www.openra.net/gamenews

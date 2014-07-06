@@ -30,7 +30,6 @@ namespace OpenRA.Mods.RA
 		public void StartGame()
 		{
 			Ui.ResetAll();
-			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Ui.Root, "INIT_SETUP" );
 		}
 	}
 }

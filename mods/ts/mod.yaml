@@ -96,7 +96,7 @@ Assemblies:
 	mods/ts/OpenRA.Mods.TS.dll
 
 ChromeLayout:
-	mods/ts/chrome/gameinit.yaml
+	mods/ts/chrome/install.yaml
 	mods/ra/chrome/ingame.yaml
 	mods/ra/chrome/ingame-chat.yaml
 	mods/ra/chrome/ingame-diplomacy.yaml
@@ -154,10 +154,17 @@ Translations:
 
 LoadScreen: DefaultLoadScreen
 	Image: mods/ts/uibits/loadscreen.png
+	Text: Updating EVA installation..., Changing perspective...
+
+ContentInstaller:
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFiles: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
-	PackageMirrorList: http://openra.net/packages/ts-mirrors.txt
-	Text: Updating EVA installation..., Changing perspective...
+	PackageMirrorList: http://www.openra.net/packages/ts-mirrors.txt
+	DiskTestFiles: MULTI.MIX, INSTALL/TIBSUN.MIX
+	CopyFilesFromCD: INSTALL/TIBSUN.MIX, SCORES.MIX, MULTI.MIX
+	PackageToExtractFromCD: INSTALL/TIBSUN.MIX:CRC32
+	ExtractFilesFromCD: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
+	ShippedSoundtracks: 2
 
 ServerTraits:
 	LobbyCommands
@@ -211,4 +218,4 @@ LuaScripts:
 
 SupportsMapsFrom: ts
 
-NewsUrl: http://openra.net/gamenews
+NewsUrl: http://www.openra.net/gamenews

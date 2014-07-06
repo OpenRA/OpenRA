@@ -24,6 +24,7 @@ Notifications:
 	mods/modchooser/notifications.yaml
 
 LoadScreen: ModChooserLoadScreen
+	Image: mods/modchooser/chrome.png
 
 ChromeMetrics:
 	mods/modchooser/metrics.yaml
@@ -47,4 +48,5 @@ Fonts:
 	TinyBold:
 		Font:FreeSansBold.ttf
 		Size:10
+
 LobbyDefaults:

@@ -21,17 +21,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class DownloadPackagesLogic
 	{
-		Widget panel;
-		Dictionary<string, string> installData;
-		ProgressBarWidget progressBar;
-		LabelWidget statusLabel;
-		Action afterInstall;
+		readonly Widget panel;
+		readonly string mirrorListUrl;
+		readonly ProgressBarWidget progressBar;
+		readonly LabelWidget statusLabel;
+		readonly Action afterInstall;
 		string mirror;
 
 		[ObjectCreator.UseCtor]
-		public DownloadPackagesLogic(Widget widget, Dictionary<string, string> installData, Action afterInstall)
+		public DownloadPackagesLogic(Widget widget, Action afterInstall, string mirrorListUrl)
 		{
-			this.installData = installData;
+			this.mirrorListUrl = mirrorListUrl;
 			this.afterInstall = afterInstall;
 
 			panel = widget.Get("INSTALL_DOWNLOAD_PANEL");
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 
 			// Get the list of mirrors
-			var updateMirrors = new Download(installData["PackageMirrorList"], mirrorsFile, onDownloadProgress, onFetchMirrorsComplete);
+			var updateMirrors = new Download(mirrorListUrl, mirrorsFile, onDownloadProgress, onFetchMirrorsComplete);
 			cancelButton.OnClick = () => { updateMirrors.Cancel(); Ui.CloseWindow(); };
 			retryButton.OnClick = () => { updateMirrors.Cancel(); ShowDownloadDialog(); };
 		}

@@ -82,7 +82,7 @@ Container@INSTALL_PANEL:
 			Text: Use CD
 
 Container@INSTALL_FROMCD_PANEL:
-	Logic: CncInstallFromCDLogic
+	Logic: InstallFromCDLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - 150)/2
 	Width: 640

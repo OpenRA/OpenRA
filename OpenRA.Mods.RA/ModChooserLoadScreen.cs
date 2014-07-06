@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Cnc
 
 		public void Init(Manifest m, Dictionary<string, string> info)
 		{
-			var sheet = new Sheet("mods/modchooser/chrome.png");
+			var sheet = new Sheet(info["Image"]);
 			var res = Game.Renderer.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
 			sprite = new Sprite(sheet, new Rectangle(0,0,1024,480), TextureChannel.Alpha);
