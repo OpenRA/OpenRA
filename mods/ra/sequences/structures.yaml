@@ -644,9 +644,6 @@ brik:
 	damaged-idle:
 		Start: 32
 		Length: 16
-	critical-idle:
-		Start: 48
-		Length: 16
 	icon: brikicon
 		Start: 0
 
@@ -654,18 +651,12 @@ sbag:
 	idle:
 		Start: 0
 		Length: 16
-	damaged-idle:
-		Start: 16
-		Length: 16
 	icon: sbagicon
 		Start: 0
 
 fenc:
 	idle:
 		Start: 0
-		Length: 16
-	damaged-idle:
-		Start: 16
 		Length: 16
 	icon: fencicon
 		Start: 0
@@ -676,7 +667,4 @@ cycl:
 		Length: 16
 	damaged-idle:
 		Start: 16
-		Length: 16
-	critical-idle:
-		Start: 32
 		Length: 16
