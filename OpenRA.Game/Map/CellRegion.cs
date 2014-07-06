@@ -8,8 +8,10 @@
  */
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA
 {
@@ -47,15 +49,52 @@ namespace OpenRA
 			return new CellRegion(region.shape, tl, br);
 		}
 
+		/// <summary>Returns the minimal region that covers at least the specified cells.</summary>
+		public static CellRegion BoundingRegion(TileShape shape, IEnumerable<CPos> cells)
+		{
+			if (cells == null || !cells.Any())
+				throw new ArgumentException("cells must not be null or empty.", "cells");
+
+			var minX = int.MaxValue;
+			var minY = int.MaxValue;
+			var maxX = int.MinValue;
+			var maxY = int.MinValue;
+			foreach (var cell in cells)
+			{
+				if (minX > cell.X)
+					minX = cell.X;
+				if (maxX < cell.X)
+					maxX = cell.X;
+				if (minY > cell.Y)
+					minY = cell.Y;
+				if (maxY < cell.Y)
+					maxY = cell.Y;
+			}
+
+			return new CellRegion(shape, new CPos(minX, minY), new CPos(maxX, maxY));
+		}
+
+		public bool Contains(CellRegion region)
+		{
+			return
+				TopLeft.X <= region.TopLeft.X && TopLeft.Y <= region.TopLeft.Y &&
+				BottomRight.X >= region.BottomRight.X && BottomRight.Y >= region.BottomRight.Y;
+		}
+
 		public bool Contains(CPos cell)
 		{
 			var uv = Map.CellToMap(shape, cell);
 			return uv.X >= mapTopLeft.X && uv.X <= mapBottomRight.X && uv.Y >= mapTopLeft.Y && uv.Y <= mapBottomRight.Y;
 		}
 
-		public IEnumerator<CPos> GetEnumerator()
+		public CellRegionEnumerator GetEnumerator()
 		{
 			return new CellRegionEnumerator(this);
+		}
+
+		IEnumerator<CPos> IEnumerable<CPos>.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
@@ -63,12 +102,15 @@ namespace OpenRA
 			return GetEnumerator();
 		}
 
-		class CellRegionEnumerator : IEnumerator<CPos>
+		public class CellRegionEnumerator : IEnumerator<CPos>
 		{
 			readonly CellRegion r;
 
 			// Current position, in map coordinates
 			int u, v;
+
+			// Current position, in cell coordinates
+			CPos current;
 
 			public CellRegionEnumerator(CellRegion region)
 			{
@@ -91,6 +133,7 @@ namespace OpenRA
 						return false;
 				}
 
+				current = Map.MapToCell(r.shape, new CPos(u, v));
 				return true;
 			}
 
@@ -101,7 +144,7 @@ namespace OpenRA
 				v = r.mapTopLeft.Y;
 			}
 
-			public CPos Current { get { return Map.MapToCell(r.shape, new CPos(u, v)); } }
+			public CPos Current { get { return current; } }
 			object IEnumerator.Current { get { return Current; } }
 			public void Dispose() { }
 		}

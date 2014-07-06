@@ -180,12 +180,14 @@ namespace OpenRA.Graphics
 			{
 				var colors = (int*)bitmapData.Scan0;
 				var stride = bitmapData.Stride / 4;
+				var shroudObscured = world.ShroudObscuresTest(map.Cells);
+				var fogObscured = world.FogObscuresTest(map.Cells);
 				foreach (var cell in map.Cells)
 				{
 					var uv = Map.CellToMap(map.TileShape, cell) - offset;
-					if (world.ShroudObscures(cell))
+					if (shroudObscured(cell))
 						colors[uv.Y * stride + uv.X] = shroud;
-					else if (world.FogObscures(cell))
+					else if (fogObscured(cell))
 						colors[uv.Y * stride + uv.X] = fog;
 				}
 			}
