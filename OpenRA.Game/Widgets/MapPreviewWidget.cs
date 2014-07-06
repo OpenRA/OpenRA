@@ -132,7 +132,8 @@ namespace OpenRA.Widgets
 		public int2 ConvertToPreview(CPos cell)
 		{
 			var preview = Preview();
-			var point = Map.CellToMap(preview.Map.TileShape, cell);
+			var tileShape = Game.modData.Manifest.TileShape;
+			var point = Map.CellToMap(tileShape, cell);
 			var dx = (int)(previewScale * (point.X - preview.Bounds.Left));
 			var dy = (int)(previewScale * (point.Y - preview.Bounds.Top));
 			return new int2(mapRect.X + dx, mapRect.Y + dy);
