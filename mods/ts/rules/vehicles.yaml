@@ -127,9 +127,10 @@ HVR:
 		Range: 7c0
 	Armament:
 		Weapon: HoverMissile
+		LocalOffset: 0,171,384, 0,-171,384
 	Turreted:
 		ROT: 7
-		Offset: -128,0,0
+		Offset: -128,0,85
 	AttackTurreted:
 	AutoTarget:
 	RenderSprites:
@@ -605,8 +606,7 @@ BIKE:
 		Range: 5c0
 	Armament:
 		Weapon: BikeMissile
-		LocalOffset: -128, -170, 170, -128, 170, 170
-		LocalYaw: 100, -100
+		LocalOffset: -128,-170,213, -128,170,213
 	AttackFrontal:
 	AutoTarget:
 	RenderSprites:

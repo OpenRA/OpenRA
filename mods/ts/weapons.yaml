@@ -47,7 +47,7 @@ Grenade:
 	Projectile: Bullet
 		Speed: 85
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Angle: 62
 		Inaccuracy: 554
 		Image: DISCUS
@@ -74,7 +74,7 @@ Bazooka:
 		Speed: 213
 		Arm: 2
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
@@ -102,7 +102,7 @@ MultiCluster:
 		Speed: 170
 		Arm: 2
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
@@ -198,7 +198,7 @@ CyCannon:
 	Projectile: Bullet
 		Speed: 192
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Image: TORPEDO
 	Warhead:
 		Spread: 256
@@ -275,7 +275,7 @@ FiendShard:
 	Projectile: Bullet
 		Speed: 213
 		Image: CRYSTAL4
-		Shadow: yes
+		Shadow: true
 		Angle: 88
 	Warhead:
 		Versus:
@@ -312,10 +312,10 @@ HoverMissile:
 	ValidTargets: Ground, Air
 	Palette: ra
 	Projectile: Missile
-		Speed: 256
+		Speed: 213
 		Arm: 2
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
@@ -343,7 +343,7 @@ HoverMissile:
 	Projectile: Bullet
 		Speed: 682
 		Image: 120mm
-		Shadow: yes
+		Shadow: true
 		Angle: 62
 	Warhead:
 		Spread: 128
@@ -368,7 +368,7 @@ MammothTusk:
 	Projectile: Missile
 		Arm: 0
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 10
@@ -502,11 +502,11 @@ BikeMissile:
 	Projectile: Missile
 		Arm: 2
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
-		Speed: 256
+		Speed: 213
 		RangeLimit: 35
 	Warhead:
 		Spread: 256
@@ -589,7 +589,7 @@ Dragon:
 		Speed: 213
 		Arm: 2
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
@@ -615,7 +615,7 @@ Dragon:
 	Projectile: Bullet
 		Speed: 682
 		Image: 120mm
-		Shadow: yes
+		Shadow: true
 		Angle: 62
 	Warhead:
 		Spread: 128
@@ -639,7 +639,7 @@ Dragon:
 		Speed: 170
 		Image: 120mm
 		Angle: 165
-		Shadow: yes
+		Shadow: true
 		High: yes
 	MinRange: 5c0
 	Warhead:
@@ -666,7 +666,7 @@ Hellfire:
 		Speed: 256
 		Arm: 2
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
@@ -691,7 +691,7 @@ Bomb:
 	Projectile: Bullet
 		Speed: 170
 		Image: canister
-		Shadow: yes
+		Shadow: true
 	Warhead:
 		Spread: 298
 		Versus:
@@ -715,7 +715,7 @@ Proton:
 		Speed: 256
 		Arm: 2
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 128
 		Image: TORPEDO
 		ROT: 1
@@ -815,10 +815,10 @@ RPGTower:
 	Palette: player
 	Projectile: Bullet
 		Speed: 384
-		Image: canister
-		Shadow: yes
-		Angle: 62
 		High: yes
+		Shadow: true
+		Angle: 62
+		Image: canister
 	Warhead:
 		Spread: 128
 		Versus:
@@ -842,7 +842,7 @@ SAMTower:
 		Speed: 298
 		Arm: 2
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 5
