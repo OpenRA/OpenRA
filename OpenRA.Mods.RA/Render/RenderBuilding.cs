@@ -49,7 +49,8 @@ namespace OpenRA.Mods.RA.Render
 			this.info = info;
 			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 
-			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
+			DefaultAnimation.Initialize(NormalizeSequence(self, "idle"));
+
 			self.Trait<IBodyOrientation>().SetAutodetectedFacings(DefaultAnimation.CurrentSequence.Facings);
 		}
 
@@ -71,6 +72,8 @@ namespace OpenRA.Mods.RA.Render
 
 		public virtual void BuildingComplete(Actor self)
 		{
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
+
 			if (info.PauseOnLowPower)
 			{
 				var disabled = self.TraitsImplementing<IDisable>();
