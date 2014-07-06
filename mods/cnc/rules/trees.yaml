@@ -3,6 +3,7 @@ SPLIT2:
 	SeedsResource:
 		ResourceType: Tiberium
 		Interval: 55
+	WithActiveAnimation:
 
 SPLIT3:
 	Inherits: ^TibTree
@@ -11,6 +12,7 @@ SPLIT3:
 	SeedsResource:
 		ResourceType: Tiberium
 		Interval: 55
+	WithActiveAnimation:
 
 SPLITBLUE:
 	Inherits: ^TibTree
@@ -19,6 +21,7 @@ SPLITBLUE:
 	SeedsResource:
 		ResourceType: BlueTiberium
 		Interval: 110
+	WithActiveAnimation:
 	Tooltip:
 		Name: Blossom Tree (blue)
 	RadarColorFromTerrain:

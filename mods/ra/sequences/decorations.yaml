@@ -223,18 +223,6 @@ t01:
 		Length: 8
 		Tick: 80
 
-mine:
-	idle:
-		Start: 0
-	active:
-		Start: 0
-
-railmine:
-	idle:
-		Start: 0
-	active:
-		Start: 0
-
 v01:
 	idle:
 		Start: 0
