@@ -334,7 +334,7 @@ namespace OpenRA.Server
 				SendMessage("{0} has joined the server.".F(client.Name));
 
 				// Send initial ping
-				SendOrderTo(newConn, "Ping", Environment.TickCount.ToString());
+				SendOrderTo(newConn, "Ping", Game.RunTime.ToString());
 
 				if (Settings.Dedicated)
 				{
@@ -480,7 +480,7 @@ namespace OpenRA.Server
 						return;
 
 					var history = pingFromClient.LatencyHistory.ToList();
-					history.Add(Environment.TickCount - pingSent);
+					history.Add(Game.RunTime - pingSent);
 
 					// Cap ping history at 5 values (25 seconds)
 					if (history.Count > 5)
