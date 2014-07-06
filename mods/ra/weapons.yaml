@@ -127,7 +127,6 @@ Maverick:
 		Speed: 256
 		Arm: 2
 		High: true
-		Shadow: false
 		ContrailLength: 10
 		Inaccuracy: 512
 		Image: DRAGON
@@ -284,7 +283,6 @@ Dragon:
 		Speed: 213
 		Arm: 2
 		High: true
-		Shadow: false
 		Trail: smokey
 		ContrailLength: 10
 		Inaccuracy: 128
@@ -317,7 +315,6 @@ HellfireAG:
 		Speed: 256
 		Arm: 2
 		High: true
-		Shadow: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
@@ -349,7 +346,6 @@ HellfireAA:
 		Speed: 384
 		Arm: 2
 		High: true
-		Shadow: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
@@ -516,7 +512,6 @@ MammothTusk:
 		Speed: 341
 		Arm: 2
 		High: true
-		Shadow: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
@@ -686,7 +681,6 @@ Nike:
 	Projectile: Missile
 		Arm: 3
 		High: true
-		Shadow: false
 		ContrailLength: 10
 		Image: MISSILE
 		ROT: 25
@@ -714,7 +708,6 @@ RedEye:
 	Projectile: Missile
 		Arm: 3
 		High: true
-		Shadow: false
 		ContrailLength: 10
 		Image: MISSILE
 		ROT: 20
@@ -797,7 +790,6 @@ Stinger:
 	Projectile: Missile
 		Arm: 3
 		High: true
-		Shadow: false
 		ContrailLength: 10
 		Image: DRAGON
 		ROT: 20
@@ -1285,7 +1277,6 @@ APTusk:
 		Speed: 298
 		Arm: 2
 		High: true
-		Shadow: false
 		Trail: smokey
 		ContrailLength: 10
 		Inaccuracy: 128

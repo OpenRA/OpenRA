@@ -27,7 +27,6 @@ Bazooka:
 	Projectile: Missile
 		Speed: 160
 		Arm: 2
-		Shadow: yes
 		ContrailLength: 10
 		Inaccuracy: 96
 		Image: RPG
@@ -171,7 +170,6 @@ QuadRockets:
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Arm: 0
-		Shadow: yes
 		Inaccuracy: 96
 		Image: RPG
 		ROT: 10

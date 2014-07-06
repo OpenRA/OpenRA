@@ -243,7 +243,6 @@ Rockets:
 	Projectile: Missile
 		Arm: 0
 		High: yes
-		Shadow: no
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 15
@@ -275,7 +274,6 @@ BikeRockets:
 	Projectile: Missile
 		Arm: 0
 		High: yes
-		Shadow: no
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 10
@@ -307,7 +305,6 @@ OrcaAGMissiles:
 	Projectile: Missile
 		Arm: 0
 		High: yes
-		Shadow: no
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -338,7 +335,6 @@ OrcaAAMissiles:
 	Projectile: Missile
 		Arm: 0
 		High: yes
-		Shadow: no
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -556,7 +552,6 @@ MammothMissiles:
 	Projectile: Missile
 		Arm: 0
 		High: yes
-		Shadow: no
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -588,7 +583,7 @@ MammothMissiles:
 	Projectile: Bullet
 		Arm: 5
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 853
 		Angle: 62
 		Image: DRAGON
@@ -619,7 +614,6 @@ MammothMissiles:
 	Projectile: Missile
 		Arm: 0
 		High: yes
-		Shadow: yes
 		Inaccuracy: 213
 		Image: DRAGON
 		ROT: 10
@@ -694,7 +688,6 @@ BoatMissile:
 	Projectile: Missile
 		Arm: 0
 		High: yes
-		Shadow: no
 		Inaccuracy: 213
 		Image: DRAGON
 		ROT: 10
@@ -723,7 +716,6 @@ TowerMissle:
 	Projectile: Missile
 		Arm: 0
 		High: yes
-		Shadow: no
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -822,7 +814,6 @@ SAMMissile:
 	Projectile: Missile
 		Arm: 0
 		High: yes
-		Shadow: no
 		Image: MISSILE
 		ROT: 20
 		Speed: 426
@@ -849,7 +840,7 @@ HonestJohn:
 	Projectile: Bullet
 		Arm: 10
 		High: yes
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 213
 		Image: patriot
 		Trail: smokey
@@ -941,7 +932,6 @@ Patriot:
 	ValidTargets: Air
 	Projectile: Missile
 		High: yes
-		Shadow: no
 		Image: patriot
 		Trail: smokey
 		ContrailLength: 8
