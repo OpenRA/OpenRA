@@ -253,3 +253,23 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 
+^BlossomTree:
+	Tooltip:
+		Name: Blossom Tree
+	RenderBuilding:
+		Palette: player
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tiberium
+	BodyOrientation:
+	FrozenUnderFog:
+		StartsRevealed: true
+	LuaScriptEvents:
+	SeedsResource:
+		ResourceType: Tiberium
+		Interval: 55
+	WithActiveAnimation:
+
