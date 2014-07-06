@@ -19,8 +19,15 @@ namespace OpenRA.Mods.RA.Air
 	class HelicopterInfo : AircraftInfo, IMoveInfo
 	{
 		public readonly WRange IdealSeparation = new WRange(1706);
+
+		[Desc("Allow the helicopter land after it has no more commands.")]
 		public readonly bool LandWhenIdle = true;
+
+		[Desc("Allow the helicopter turn before landing.")]
+		public readonly bool TurnToLand = false;
 		public readonly WRange LandAltitude = WRange.Zero;
+
+		[Desc("How fast the helicopter ascends or descends.")]
 		public readonly WRange AltitudeVelocity = new WRange(43);
 
 		public override object Create(ActorInitializer init) { return new Helicopter(init, this); }
@@ -59,7 +66,9 @@ namespace OpenRA.Mods.RA.Air
 
 				if (Info.LandWhenIdle)
 				{
-					self.QueueActivity(new Turn(Info.InitialFacing));
+					if (Info.TurnToLand)
+						self.QueueActivity(new Turn(Info.InitialFacing));
+
 					self.QueueActivity(new HeliLand(true));
 				}
 			}
@@ -103,7 +112,9 @@ namespace OpenRA.Mods.RA.Air
 
 				if (Info.LandWhenIdle)
 				{
-					self.QueueActivity(new Turn(Info.InitialFacing));
+					if (Info.TurnToLand)
+						self.QueueActivity(new Turn(Info.InitialFacing));
+
 					self.QueueActivity(new HeliLand(true));
 				}
 			}
