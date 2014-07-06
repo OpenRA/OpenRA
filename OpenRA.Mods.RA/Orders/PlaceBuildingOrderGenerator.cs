@@ -54,6 +54,9 @@ namespace OpenRA.Mods.RA.Orders
 
 		IEnumerable<Order> InnerOrder(World world, CPos xy, MouseInput mi)
 		{
+			if (world.Paused == World.PauseState.Paused)
+				yield break;
+
 			if (mi.Button == MouseButton.Left)
 			{
 				var topLeft = xy - FootprintUtils.AdjustForBuildingSize(BuildingInfo);
