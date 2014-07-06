@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace OpenRA.Traits
@@ -22,21 +21,21 @@ namespace OpenRA.Traits
 
 	public class Shroud
 	{
-		[Sync] public bool Disabled = false;
+		[Sync] public bool Disabled;
 
-		Actor self;
-		Map map;
+		readonly Actor self;
+		readonly Map map;
 
-		CellLayer<int> visibleCount;
-		CellLayer<int> generatedShroudCount;
-		CellLayer<bool> explored;
+		readonly CellLayer<int> visibleCount;
+		readonly CellLayer<int> generatedShroudCount;
+		readonly CellLayer<bool> explored;
 
 		readonly Lazy<IFogVisibilityModifier[]> fogVisibilities;
 
 		// Cache of visibility that was added, so no matter what crazy trait code does, it
 		// can't make us invalid.
-		Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
-		Dictionary<Actor, CPos[]> generation = new Dictionary<Actor, CPos[]>();
+		readonly Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
+		readonly Dictionary<Actor, CPos[]> generation = new Dictionary<Actor, CPos[]>();
 
 		public int Hash { get; private set; }
 
@@ -186,14 +185,17 @@ namespace OpenRA.Traits
 
 		public void Explore(World world, CPos center, WRange range)
 		{
-			foreach (var q in FindVisibleTiles(world, center, range))
-				explored[q] = true;
+			foreach (var c in FindVisibleTiles(world, center, range))
+				explored[c] = true;
 
 			Invalidate();
 		}
 
 		public void Explore(Shroud s)
 		{
+			if (map.Bounds != s.map.Bounds)
+				throw new ArgumentException("The map bounds of these shrouds do not match.", "s");
+
 			foreach (var cell in map.Cells)
 				if (s.explored[cell])
 					explored[cell] = true;

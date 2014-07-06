@@ -36,17 +36,16 @@ namespace OpenRA.Graphics
 
 			unsafe
 			{
-				var c = (int*)bitmapData.Scan0;
-
-				for (var x = 0; x < b.Width; x++)
+				var colors = (int*)bitmapData.Scan0;
+				var stride = bitmapData.Stride / 4;
+				for (var y = 0; y < b.Height; y++)
 				{
-					for (var y = 0; y < b.Height; y++)
+					for (var x = 0; x < b.Width; x++)
 					{
 						var mapX = x + b.Left;
 						var mapY = y + b.Top;
 						var type = tileset.GetTerrainInfo(mapTiles[mapX, mapY]);
-
-						*(c + (y * bitmapData.Stride >> 2) + x) = type.Color.ToArgb();
+						colors[y * stride + x] = type.Color.ToArgb();
 					}
 				}
 			}
@@ -67,11 +66,11 @@ namespace OpenRA.Graphics
 
 			unsafe
 			{
-				var c = (int*)bitmapData.Scan0;
-
-				for (var x = 0; x < b.Width; x++)
+				var colors = (int*)bitmapData.Scan0;
+				var stride = bitmapData.Stride / 4;
+				for (var y = 0; y < b.Height; y++)
 				{
-					for (var y = 0; y < b.Height; y++)
+					for (var x = 0; x < b.Width; x++)
 					{
 						var mapX = x + b.Left;
 						var mapY = y + b.Top;
@@ -85,7 +84,7 @@ namespace OpenRA.Graphics
 						if (res == null)
 							continue;
 
-						*(c + (y * bitmapData.Stride >> 2) + x) = tileset[tileset.GetTerrainIndex(res)].Color.ToArgb();
+						colors[y * stride + x] = tileset[tileset.GetTerrainIndex(res)].Color.ToArgb();
 					}
 				}
 			}
@@ -107,19 +106,18 @@ namespace OpenRA.Graphics
 
 			unsafe
 			{
-				var c = (int*)bitmapData.Scan0;
-
-				for (var x = 0; x < b.Width; x++)
+				var colors = (int*)bitmapData.Scan0;
+				var stride = bitmapData.Stride / 4;
+				for (var y = 0; y < b.Height; y++)
 				{
-					for (var y = 0; y < b.Height; y++)
+					for (var x = 0; x < b.Width; x++)
 					{
 						var mapX = x + b.Left;
 						var mapY = y + b.Top;
 						var custom = map.CustomTerrain[mapX, mapY];
 						if (custom == -1)
 							continue;
-
-						*(c + (y * bitmapData.Stride >> 2) + x) = world.TileSet[custom].Color.ToArgb();
+						colors[y * stride + x] = world.TileSet[custom].Color.ToArgb();
 					}
 				}
 			}
@@ -140,8 +138,8 @@ namespace OpenRA.Graphics
 
 			unsafe
 			{
-				var c = (int*)bitmapData.Scan0;
-
+				var colors = (int*)bitmapData.Scan0;
+				var stride = bitmapData.Stride / 4;
 				foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 				{
 					if (world.FogObscures(t.Actor))
@@ -152,7 +150,7 @@ namespace OpenRA.Graphics
 					{
 						var uv = Map.CellToMap(map.TileShape, cell);
 						if (b.Contains(uv.X, uv.Y))
-							*(c + ((uv.Y - b.Top) * bitmapData.Stride >> 2) + uv.X - b.Left) = color.ToArgb();
+							colors[(uv.Y - b.Top) * stride + uv.X - b.Left] = color.ToArgb();
 					}
 				}
 			}
@@ -180,15 +178,15 @@ namespace OpenRA.Graphics
 
 			unsafe
 			{
-				var c = (int*)bitmapData.Scan0;
-
+				var colors = (int*)bitmapData.Scan0;
+				var stride = bitmapData.Stride / 4;
 				foreach (var cell in map.Cells)
 				{
 					var uv = Map.CellToMap(map.TileShape, cell) - offset;
 					if (world.ShroudObscures(cell))
-						*(c + (uv.Y * bitmapData.Stride >> 2) + uv.X) = shroud;
+						colors[uv.Y * stride + uv.X] = shroud;
 					else if (world.FogObscures(cell))
-						*(c + (uv.Y * bitmapData.Stride >> 2) + uv.X) = fog;
+						colors[uv.Y * stride + uv.X] = fog;
 				}
 			}
 

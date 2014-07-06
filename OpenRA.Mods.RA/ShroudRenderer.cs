@@ -9,9 +9,6 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Linq;
-using OpenRA;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -47,6 +44,27 @@ namespace OpenRA.Mods.RA
 
 	public class ShroudRenderer : IRenderShroud, IWorldLoaded
 	{
+		[Flags]
+		enum Edges : byte
+		{
+			None = 0,
+			TopLeft = 0x01,
+			TopRight = 0x02,
+			BottomRight = 0x04,
+			BottomLeft = 0x08,
+			AllCorners = TopLeft | TopRight | BottomRight | BottomLeft,
+			TopSide = 0x10,
+			RightSide = 0x20,
+			BottomSide = 0x40,
+			LeftSide = 0x80,
+			AllSides = TopSide | RightSide | BottomSide | LeftSide,
+			Top = TopSide | TopLeft | TopRight,
+			Right = RightSide | TopRight | BottomRight,
+			Bottom = BottomSide | BottomRight | BottomLeft,
+			Left = LeftSide | TopLeft | BottomLeft,
+			All = Top | Right | Bottom | Left
+		}
+
 		class ShroudTile
 		{
 			public readonly CPos Position;
@@ -70,12 +88,19 @@ namespace OpenRA.Mods.RA
 		readonly CellLayer<ShroudTile> tiles;
 		readonly int variantStride;
 		readonly Map map;
+		readonly Edges notVisibleEdges;
 
 		PaletteReference fogPalette, shroudPalette;
 		int shroudHash;
 
 		public ShroudRenderer(World world, ShroudRendererInfo info)
 		{
+			if (info.ShroudVariants.Length != info.FogVariants.Length)
+				throw new ArgumentException("ShroudRenderer must define the same number of shroud and fog variants!", "info");
+
+			if ((info.OverrideFullFog == null) ^ (info.OverrideFullShroud == null))
+				throw new ArgumentException("ShroudRenderer cannot define overrides for only one of shroud or fog!", "info");
+
 			this.info = info;
 			map = world.Map;
 
@@ -85,12 +110,6 @@ namespace OpenRA.Mods.RA
 			shroudHash = -1;
 
 			// Load sprite variants
-			if (info.ShroudVariants.Length != info.FogVariants.Length)
-				throw new InvalidOperationException("ShroudRenderer must define the same number of shroud and fog variants!");
-
-			if ((info.OverrideFullFog == null) ^ (info.OverrideFullShroud == null))
-				throw new InvalidOperationException("ShroudRenderer cannot define overrides for only one of shroud or fog!");
-
 			var variantCount = info.ShroudVariants.Length;
 			variantStride = info.Index.Length + (info.OverrideFullShroud != null ? 1 : 0);
 			shroudSprites = new Sprite[variantCount * variantStride];
@@ -121,25 +140,27 @@ namespace OpenRA.Mods.RA
 
 			if (info.OverrideFullShroud != null)
 				spriteMap[info.OverrideShroudIndex] = variantStride - 1;
+
+			notVisibleEdges = info.UseExtendedIndex ? Edges.AllSides : Edges.AllCorners;
 		}
 
-		static int FoggedEdges(Shroud s, CPos p, bool useExtendedIndex)
+		Edges GetEdges(int x, int y, Func<int, int, bool> isVisible)
 		{
-			if (!s.IsVisible(p))
-				return useExtendedIndex ? 240 : 15;
+			if (!isVisible(x, y))
+				return notVisibleEdges;
 
 			// If a side is shrouded then we also count the corners
-			var u = 0;
-			if (!s.IsVisible(p + new CVec(0, -1))) u |= 0x13;
-			if (!s.IsVisible(p + new CVec(1, 0))) u |= 0x26;
-			if (!s.IsVisible(p + new CVec(0, 1))) u |= 0x4C;
-			if (!s.IsVisible(p + new CVec(-1, 0))) u |= 0x89;
+			var u = Edges.None;
+			if (!isVisible(x, y - 1)) u |= Edges.Top;
+			if (!isVisible(x + 1, y)) u |= Edges.Right;
+			if (!isVisible(x, y + 1)) u |= Edges.Bottom;
+			if (!isVisible(x - 1, y)) u |= Edges.Left;
 
-			var uside = u & 0x0F;
-			if (!s.IsVisible(p + new CVec(-1, -1))) u |= 0x01;
-			if (!s.IsVisible(p + new CVec(1, -1))) u |= 0x02;
-			if (!s.IsVisible(p + new CVec(1, 1))) u |= 0x04;
-			if (!s.IsVisible(p + new CVec(-1, 1))) u |= 0x08;
+			var ucorner = u & Edges.AllCorners;
+			if (!isVisible(x - 1, y - 1)) u |= Edges.TopLeft;
+			if (!isVisible(x + 1, y - 1)) u |= Edges.TopRight;
+			if (!isVisible(x + 1, y + 1)) u |= Edges.BottomRight;
+			if (!isVisible(x - 1, y + 1)) u |= Edges.BottomLeft;
 
 			// RA provides a set of frames for tiles with shrouded
 			// corners but unshrouded edges. We want to detect this
@@ -147,51 +168,24 @@ namespace OpenRA.Mods.RA
 			// in other combinations. The XOR turns off the corner
 			// bits that are enabled twice, which gives the behavior
 			// we want here.
-			return useExtendedIndex ? u ^ uside : u & 0x0F;
+			return info.UseExtendedIndex ? u ^ ucorner : u & Edges.AllCorners;
 		}
 
-		static int ShroudedEdges(Shroud s, CPos p, bool useExtendedIndex)
+		Edges GetObserverEdges(int x, int y)
 		{
-			if (!s.IsExplored(p))
-				return useExtendedIndex ? 240 : 15;
+			var u = Edges.None;
+			if (!map.Contains(new CPos(x, y - 1))) u |= Edges.Top;
+			if (!map.Contains(new CPos(x + 1, y))) u |= Edges.Right;
+			if (!map.Contains(new CPos(x, y + 1))) u |= Edges.Bottom;
+			if (!map.Contains(new CPos(x - 1, y))) u |= Edges.Left;
 
-			// If a side is shrouded then we also count the corners
-			var u = 0;
-			if (!s.IsExplored(p + new CVec(0, -1))) u |= 0x13;
-			if (!s.IsExplored(p + new CVec(1, 0))) u |= 0x26;
-			if (!s.IsExplored(p + new CVec(0, 1))) u |= 0x4C;
-			if (!s.IsExplored(p + new CVec(-1, 0))) u |= 0x89;
+			var ucorner = u & Edges.AllCorners;
+			if (!map.Contains(new CPos(x - 1, y - 1))) u |= Edges.TopLeft;
+			if (!map.Contains(new CPos(x + 1, y - 1))) u |= Edges.TopRight;
+			if (!map.Contains(new CPos(x + 1, y + 1))) u |= Edges.BottomRight;
+			if (!map.Contains(new CPos(x - 1, y + 1))) u |= Edges.BottomLeft;
 
-			var uside = u & 0x0F;
-			if (!s.IsExplored(p + new CVec(-1, -1))) u |= 0x01;
-			if (!s.IsExplored(p + new CVec(1, -1))) u |= 0x02;
-			if (!s.IsExplored(p + new CVec(1, 1))) u |= 0x04;
-			if (!s.IsExplored(p + new CVec(-1, 1))) u |= 0x08;
-
-			// RA provides a set of frames for tiles with shrouded
-			// corners but unshrouded edges. We want to detect this
-			// situation without breaking the edge -> corner enabling
-			// in other combinations. The XOR turns off the corner
-			// bits that are enabled twice, which gives the behavior
-			// we want here.
-			return useExtendedIndex ? u ^ uside : u & 0x0F;
-		}
-
-		static int ObserverShroudedEdges(Map map, CPos p, bool useExtendedIndex)
-		{
-			var u = 0;
-			if (!map.Contains(p + new CVec(0, -1))) u |= 0x13;
-			if (!map.Contains(p + new CVec(1, 0))) u |= 0x26;
-			if (!map.Contains(p + new CVec(0, 1))) u |= 0x4C;
-			if (!map.Contains(p + new CVec(-1, 0))) u |= 0x89;
-
-			var uside = u & 0x0F;
-			if (!map.Contains(p + new CVec(-1, -1))) u |= 0x01;
-			if (!map.Contains(p + new CVec(1, -1))) u |= 0x02;
-			if (!map.Contains(p + new CVec(1, 1))) u |= 0x04;
-			if (!map.Contains(p + new CVec(-1, 1))) u |= 0x08;
-
-			return useExtendedIndex ? u ^ uside : u & 0x0F;
+			return info.UseExtendedIndex ? u ^ ucorner : u & Edges.AllCorners;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -206,22 +200,19 @@ namespace OpenRA.Mods.RA
 
 				// Set the cells outside the border so they don't need to be touched again
 				if (!map.Contains(cell))
-				{
-					var index = info.UseExtendedIndex ? 240 : 15;
-					tiles[cell].Shroud = shroudSprites[variant * variantStride + spriteMap[index]];
-				}
+					tiles[cell].Shroud = GetTile(notVisibleEdges, variant);
 			}
 
 			fogPalette = wr.Palette(info.FogPalette);
 			shroudPalette = wr.Palette(info.ShroudPalette);
 		}
 
-		Sprite GetTile(int flags, int variant)
+		Sprite GetTile(Edges edges, int variant)
 		{
-			if (flags == 0)
+			if (edges == Edges.None)
 				return null;
 
-			return shroudSprites[variant * variantStride + spriteMap[flags]];
+			return shroudSprites[variant * variantStride + spriteMap[(byte)edges]];
 		}
 
 		void Update(Shroud shroud)
@@ -237,22 +228,24 @@ namespace OpenRA.Mods.RA
 				foreach (var cell in map.Cells)
 				{
 					var t = tiles[cell];
-					var shrouded = ObserverShroudedEdges(map, t.Position, info.UseExtendedIndex);
+					var shrouded = GetObserverEdges(cell.X, cell.Y);
 
-					t.Shroud = shrouded != 0 ? shroudSprites[t.Variant * variantStride + spriteMap[shrouded]] : null;
-					t.Fog = shrouded != 0 ? fogSprites[t.Variant * variantStride + spriteMap[shrouded]] : null;
+					t.Shroud = shrouded != 0 ? shroudSprites[t.Variant * variantStride + spriteMap[(byte)shrouded]] : null;
+					t.Fog = shrouded != 0 ? fogSprites[t.Variant * variantStride + spriteMap[(byte)shrouded]] : null;
 				}
 			}
 			else
 			{
 				foreach (var cell in map.Cells)
 				{
+					Func<int, int, bool> visibleUnderShroud = (x, y) => shroud.IsExplored(new CPos(x, y));
+					Func<int, int, bool> visibleUnderFog = (x, y) => shroud.IsVisible(new CPos(x, y));
 					var t = tiles[cell];
-					var shrouded = ShroudedEdges(shroud, t.Position, info.UseExtendedIndex);
-					var fogged = FoggedEdges(shroud, t.Position, info.UseExtendedIndex);
+					var shrouded = GetEdges(cell.X, cell.Y, visibleUnderShroud);
+					var fogged = GetEdges(cell.X, cell.Y, visibleUnderFog);
 
-					t.Shroud = shrouded != 0 ? shroudSprites[t.Variant * variantStride + spriteMap[shrouded]] : null;
-					t.Fog = fogged != 0 ? fogSprites[t.Variant * variantStride + spriteMap[fogged]] : null;
+					t.Shroud = shrouded != 0 ? shroudSprites[t.Variant * variantStride + spriteMap[(byte)shrouded]] : null;
+					t.Fog = fogged != 0 ? fogSprites[t.Variant * variantStride + spriteMap[(byte)fogged]] : null;
 				}
 			}
 		}

@@ -12,7 +12,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRA.Graphics;
 
 namespace OpenRA
 {
@@ -21,7 +20,7 @@ namespace OpenRA
 	{
 		public readonly Size Size;
 		public readonly TileShape Shape;
-		T[] entries;
+		readonly T[] entries;
 
 		public CellLayer(Map map)
 			: this(map.TileShape, new Size(map.MapSize.X, map.MapSize.Y)) { }
@@ -37,35 +36,27 @@ namespace OpenRA
 		int Index(CPos cell)
 		{
 			var uv = Map.CellToMap(Shape, cell);
-			return uv.Y * Size.Width + uv.X;
+			return Index(uv.X, uv.Y);
+		}
+
+		// Resolve an array index from map coordinates
+		int Index(int u, int v)
+		{
+			return v * Size.Width + u;
 		}
 
 		/// <summary>Gets or sets the <see cref="OpenRA.CellLayer"/> using cell coordinates</summary>
 		public T this[CPos cell]
 		{
-			get
-			{
-				return entries[Index(cell)];
-			}
-
-			set
-			{
-				entries[Index(cell)] = value;
-			}
+			get { return entries[Index(cell)]; }
+			set { entries[Index(cell)] = value; }
 		}
 
 		/// <summary>Gets or sets the layer contents using raw map coordinates (not CPos!)</summary>
 		public T this[int u, int v]
 		{
-			get
-			{
-				return entries[v * Size.Width + u];
-			}
-
-			set
-			{
-				entries[v * Size.Width + u] = value;
-			}
+			get { return entries[Index(u, v)]; }
+			set { entries[Index(u, v)] = value; }
 		}
 
 		/// <summary>Clears the layer contents with a known value</summary>
