@@ -38,6 +38,7 @@ Player:
 	PlayerHighlightPalette:
 	GpsWatcher:
 	Shroud:
+	FrozenActorLayer:
 	BaseAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:
