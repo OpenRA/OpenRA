@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 		public readonly Rectangle Bounds;
 		readonly Actor actor;
 
-		public IRenderable[] Renderables { set; private get; }
+		public IRenderable[] Renderables { private get; set; }
 		public Player Owner;
 
 		public string TooltipName;
@@ -85,6 +85,7 @@ namespace OpenRA.Traits
 				return Renderables.Concat(Renderables.Where(r => !r.IsDecoration)
 					.Select(r => r.WithPalette(highlight)));
 			}
+
 			return Renderables;
 		}
 
