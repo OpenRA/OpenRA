@@ -10,6 +10,7 @@
 
 namespace OpenRA.Mods.RA.Render
 {
+	[Desc("Used for tesla coil and obelisk.")]
 	public class RenderBuildingChargeInfo : RenderBuildingInfo
 	{
 		[Desc("Sound to play when building charges.")]
@@ -19,12 +20,11 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderBuildingCharge(init, this); }
 	}
 
-	/* used for tesla and obelisk */
 	public class RenderBuildingCharge : RenderBuilding
 	{
 		RenderBuildingChargeInfo info;
 
-		public RenderBuildingCharge( ActorInitializer init, RenderBuildingChargeInfo info )
+		public RenderBuildingCharge(ActorInitializer init, RenderBuildingChargeInfo info)
 			: base(init, info)
 		{
 			this.info = info;
@@ -33,8 +33,7 @@ namespace OpenRA.Mods.RA.Render
 		public void PlayCharge(Actor self)
 		{
 			Sound.Play(info.ChargeAudio, self.CenterPosition);
-			DefaultAnimation.PlayThen(NormalizeSequence(self, info.ChargeSequence),
-				() => DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle")));
+			PlayCustomAnim(self, info.ChargeSequence);
 		}
 	}
 }
