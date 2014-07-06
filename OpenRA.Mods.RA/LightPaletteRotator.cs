@@ -23,11 +23,14 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new LightPaletteRotator(this); }
 	}
 
-	class LightPaletteRotator : ITick, IPaletteModifier
+	class LightPaletteRotator : ITickRender, IPaletteModifier
 	{
 		float t = 0;
-		public void Tick(Actor self)
+		public void TickRender(WorldRenderer wr, Actor self)
 		{
+			if (wr.world.Paused == World.PauseState.Paused)
+				return;
+
 			t += .5f;
 		}
 

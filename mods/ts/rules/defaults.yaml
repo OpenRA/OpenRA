@@ -40,6 +40,7 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	WithMakeAnimation:
 
 ^Wall:
 	AppearsOnRadar:
@@ -65,7 +66,6 @@
 	TargetableBuilding:
 		TargetTypes: Ground, C4
 	RenderBuildingWall:
-		HasMakeAnimation: no
 	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes

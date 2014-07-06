@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init, this); }
 	}
 
-	class RenderBuildingWall : RenderBuilding, INotifyBuildComplete, INotifyAddedToWorld, INotifyRemovedFromWorld
+	class RenderBuildingWall : RenderBuilding, INotifyAddedToWorld, INotifyRemovedFromWorld, ITick
 	{
 		readonly RenderBuildingWallInfo info;
 		int adjacent = 0;
@@ -33,9 +34,10 @@ namespace OpenRA.Mods.RA.Render
 			this.info = info;
 		}
 
-		public void BuildingComplete(Actor self)
+		public override void BuildingComplete(Actor self)
 		{
 			DefaultAnimation.PlayFetchIndex(info.Sequence, () => adjacent);
+			UpdateNeighbours(self);
 		}
 
 		public override void DamageStateChanged(Actor self, AttackInfo e)
@@ -43,10 +45,16 @@ namespace OpenRA.Mods.RA.Render
 			DefaultAnimation.PlayFetchIndex(NormalizeSequence(DefaultAnimation, e.DamageState, info.Sequence), () => adjacent);
 		}
 
-		public override void Tick(Actor self)
+		public override void TickRender(WorldRenderer wr, Actor self)
 		{
-			base.Tick(self);
+			if (wr.world.Paused == World.PauseState.Paused)
+				return;
 
+			base.TickRender(wr, self);
+		}
+
+		public void Tick(Actor self)
+		{
 			if (!dirty)
 				return;
 

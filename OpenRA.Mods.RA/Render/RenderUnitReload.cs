@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
@@ -34,13 +35,16 @@ namespace OpenRA.Mods.RA.Render
 				.Single(a => a.Info.Name == info.Armament);
 		}
 
-		public override void Tick(Actor self)
+		public override void TickRender(WorldRenderer wr, Actor self)
 		{
+			if (wr.world.Paused == World.PauseState.Paused)
+				return;
+
 			var sequence = (armament.IsReloading ? "empty-" : "") + (attack.IsAttacking ? "aim" : "idle");
 			if (sequence != DefaultAnimation.CurrentSequence.Name)
 				DefaultAnimation.ReplaceAnim(sequence);
 
-			base.Tick(self);
+			base.TickRender(wr, self);
 		}
 	}
 }

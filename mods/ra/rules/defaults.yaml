@@ -274,6 +274,7 @@
 		DamagedSound: kaboom1.aud
 		DestroyedSound: kaboom22.aud
 	RenderBuilding:
+	WithMakeAnimation:
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EngineerRepairable:
@@ -324,7 +325,6 @@
 	TargetableBuilding:
 		TargetTypes: Ground, DetonateAttack
 	RenderBuildingWall:
-		HasMakeAnimation: false
 		Palette: terrain
 	GivesExperience:
 	EditorAppearance:
@@ -352,6 +352,7 @@
 		Name: Civilian Building
 	ProximityCaptor:
 		Types: CivilianBuilding
+	-WithMakeAnimation:
 	-AcceptsSupplies:
 	-GivesBuildableArea:
 	-Sellable:

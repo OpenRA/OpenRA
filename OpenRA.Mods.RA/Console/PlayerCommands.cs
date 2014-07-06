@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 			{
 				case "pause":
 					world.IssueOrder(new Order("PauseGame", null, false)
-						{ TargetString = world.Paused ? "UnPause" : "Pause" });
+						{ TargetString = world.Paused == World.PauseState.Paused ? "UnPause" : "Pause" });
 					break;
 				case "surrender":
 					world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));

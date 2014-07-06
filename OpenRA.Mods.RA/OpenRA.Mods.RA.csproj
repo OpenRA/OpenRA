@@ -100,7 +100,6 @@
     <Compile Include="Activities\Infiltrate.cs" />
     <Compile Include="Activities\LayMines.cs" />
     <Compile Include="Activities\Leap.cs" />
-    <Compile Include="Activities\MakeAnimation.cs" />
     <Compile Include="Activities\MoveAdjacentTo.cs" />
     <Compile Include="Activities\RAHarvesterDockSequence.cs" />
     <Compile Include="Activities\Rearm.cs" />
@@ -519,6 +518,7 @@
     <Compile Include="Lint\CheckMapCordon.cs" />
     <Compile Include="World\ResourceLayer.cs" />
     <Compile Include="Parachutable.cs" />
+    <Compile Include="Render\WithMakeAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

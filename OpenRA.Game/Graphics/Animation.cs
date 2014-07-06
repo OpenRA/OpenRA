@@ -23,8 +23,11 @@ namespace OpenRA.Graphics
 
 		int frame = 0;
 		bool backwards = false;
-		bool tickAlways;
+
 		string name;
+
+		readonly int defaultTick = 40; // 25 fps == 40 ms
+		bool tickAlways;
 
 		public string Name { get { return name; } }
 
@@ -64,6 +67,12 @@ namespace OpenRA.Graphics
 		public IEnumerable<IRenderable> Render(WPos pos, PaletteReference palette)
 		{
 			return Render(pos, WVec.Zero, 0, palette, 1f);
+		}
+
+		public void Initialize(string sequenceName)
+		{
+			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
+			tickAlways = true;
 		}
 
 		public void Play(string sequenceName)
@@ -149,7 +158,7 @@ namespace OpenRA.Graphics
 				while (timeUntilNextFrame <= 0)
 				{
 					tickFunc();
-					timeUntilNextFrame += CurrentSequence != null ? CurrentSequence.Tick : 40; // 25 fps == 40 ms
+					timeUntilNextFrame += CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
 				}
 			}
 		}

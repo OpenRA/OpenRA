@@ -199,7 +199,7 @@ namespace OpenRA.Widgets
 				var key = Hotkey.FromKeyInput(e);
 
 				if (key == Game.Settings.Keys.PauseKey && World.LocalPlayer != null) // Disable pausing for spectators
-					World.SetPauseState(!World.Paused);
+					World.SetPauseState(World.Paused != World.PauseState.Paused);
 				else if (key == Game.Settings.Keys.SelectAllUnitsKey)
 				{
 					var ownUnitsOnScreen = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,

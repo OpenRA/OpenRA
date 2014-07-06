@@ -280,4 +280,5 @@
 		Pieces: 3, 7
 		Range: 2c0, 5c0
 	ScriptTriggers:
+	WithMakeAnimation:
 

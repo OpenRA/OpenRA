@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -47,8 +47,7 @@ namespace OpenRA.Mods.RA
 	}
 
 	public interface INotifyParachuteLanded { void OnLanded(); }
-	public interface INotifyTransform { void OnTransform(Actor self); }
-	public interface INotifyTransformed { void OnTransformed(Actor toActor); }
+	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 }

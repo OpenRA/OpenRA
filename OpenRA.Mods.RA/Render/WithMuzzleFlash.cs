@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self, this); }
 	}
 
-	class WithMuzzleFlash : INotifyAttack, IRender, ITick
+	class WithMuzzleFlash : INotifyAttack, IRender, ITickRender
 	{
 		Dictionary<Barrel, bool> visible = new Dictionary<Barrel, bool>();
 		Dictionary<Barrel, AnimationWithOffset> anims = new Dictionary<Barrel, AnimationWithOffset>();
@@ -95,8 +95,11 @@ namespace OpenRA.Mods.RA.Render
 			}
 		}
 
-		public void Tick(Actor self)
+		public void TickRender(WorldRenderer wr, Actor self)
 		{
+			if (wr.world.Paused == World.PauseState.Paused)
+				return;
+
 			foreach (var a in anims.Values)
 				a.Animation.Tick();
 		}

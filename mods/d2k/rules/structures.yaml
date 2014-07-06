@@ -426,7 +426,6 @@ CONCRETEB:
 	TargetableBuilding:
 		TargetTypes: Ground
 	RenderBuildingWall:
-		HasMakeAnimation: false
 		Image: walla
 	EditorAppearance:
 		RelativeToTopLeft: yes
@@ -476,7 +475,6 @@ WALL:
 	RenderRangeCircle:
 	-RenderBuilding:
 	RenderBuildingWall:
-		HasMakeAnimation: false
 	BodyOrientation:
 		QuantizedFacings: 32
 	WithTurret:
@@ -528,7 +526,6 @@ WALL:
 	RenderRangeCircle:
 	-RenderBuilding:
 	RenderBuildingWall:
-		HasMakeAnimation: false
 	BodyOrientation:
 		QuantizedFacings: 32
 	WithTurret:
@@ -720,7 +717,6 @@ PALACEC:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	RenderBuilding:
-		HasMakeAnimation: false
 
 HEAVYC:
 	Inherits: ^HEAVY

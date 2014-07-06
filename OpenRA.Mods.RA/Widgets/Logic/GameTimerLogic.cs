@@ -27,12 +27,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var startTick = Ui.LastTickTime;
 				// Blink the status line
-				status.IsVisible = () => (world.Paused || world.Timestep != Game.Timestep)
+				status.IsVisible = () => (world.Paused == World.PauseState.Paused || world.Timestep != Game.Timestep)
 					&& (Ui.LastTickTime - startTick) / 1000 % 2 == 0;
 
 				status.GetText = () =>
 				{
-					if (world.Paused || world.Timestep == 0)
+					if (world.Paused == World.PauseState.Paused || world.Timestep == 0)
 						return "Paused";
 
 					if (world.Timestep == 1)

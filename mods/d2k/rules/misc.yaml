@@ -116,6 +116,7 @@ SPICEBLOOM:
 	RadarColorFromTerrain:
 		Terrain: Spice
 	BodyOrientation:
+	WithMakeAnimation:
 
 CAMERA:
 	Immobile:

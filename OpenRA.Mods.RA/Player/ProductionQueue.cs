@@ -140,7 +140,10 @@ namespace OpenRA.Mods.RA
 		public void Killed(Actor killed, AttackInfo e) { if (killed == self) ClearQueue(); }
 		public void Selling(Actor self) { }
 		public void Sold(Actor self) { ClearQueue(); }
+
+		public void BeforeTransform(Actor self) { }
 		public void OnTransform(Actor self) { ClearQueue(); }
+		public void AfterTransform(Actor self) { }
 
 		void CacheProduceables(Actor playerActor)
 		{

@@ -203,8 +203,9 @@ namespace OpenRA
 		public event Action<Actor> ActorAdded = _ => { };
 		public event Action<Actor> ActorRemoved = _ => { };
 
-		public bool Paused { get; internal set; }
-		public bool PredictedPaused { get; internal set; }
+		public enum PauseState { Active, Paused, Editor }
+		public PauseState Paused { get; internal set; }
+		public PauseState PredictedPaused { get; internal set; }
 		public bool PauseStateLocked { get; set; }
 		public bool IsShellmap = false;
 		public int WorldTick { get; private set; }
@@ -215,17 +216,17 @@ namespace OpenRA
 				return;
 
 			IssueOrder(Order.PauseGame(paused));
-			PredictedPaused = paused;
+			PredictedPaused = paused ? PauseState.Paused : PauseState.Active;;
 		}
 
-		public void SetLocalPauseState(bool paused)
+		public void SetLocalPauseState(PauseState paused)
 		{
 			Paused = PredictedPaused = paused;
 		}
 
 		public void Tick()
 		{
-			if (!Paused && (!IsShellmap || Game.Settings.Game.ShowShellmap))
+			if (Paused != PauseState.Paused && (!IsShellmap || Game.Settings.Game.ShowShellmap))
 			{
 				WorldTick++;
 
