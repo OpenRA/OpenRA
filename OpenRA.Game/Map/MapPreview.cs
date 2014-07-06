@@ -39,7 +39,6 @@ namespace OpenRA
 		public readonly int[] spawnpoints = {};
 		public readonly string minimap;
 		public readonly bool downloading;
-		public readonly bool requires_upgrade;
 	}
 
 	public class MapPreview
@@ -131,14 +130,9 @@ namespace OpenRA
 						if (!r.downloading)
 						{
 							Status = MapStatus.Unavailable;
+							RuleStatus = MapRuleStatus.Invalid;
 							return;
 						}
-
-						// Map is not useable by the current version
-						if (r.requires_upgrade)
-							RuleStatus = MapRuleStatus.Invalid;
-						else
-							RuleStatus = MapRuleStatus.Unknown;
 
 						Title = r.title;
 						Type = r.map_type;
