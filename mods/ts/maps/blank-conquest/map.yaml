@@ -67,6 +67,15 @@ Actors:
 	Actor3: mpspawn
 		Location: 88,-62
 		Owner: Neutral
+	Actor4: tibtre01
+		Location: 60,-24
+		Owner: Neutral
+	Actor5: tibtre02
+		Location: 68,-24
+		Owner: Neutral
+	Actor6: tibtre03
+		Location: 106,-24
+		Owner: Neutral
 
 Smudges:
 
