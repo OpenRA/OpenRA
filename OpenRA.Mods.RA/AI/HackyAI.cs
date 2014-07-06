@@ -579,7 +579,6 @@ namespace OpenRA.Mods.RA.AI
 
 			foreach (var a in newUnits)
 			{
-				BotDebug("AI: Found a newly built unit");
 				if (a.HasTrait<Harvester>())
 					world.IssueOrder(new Order("Harvest", a, false));
 				else
@@ -675,10 +674,6 @@ namespace OpenRA.Mods.RA.AI
 			var buildings = self.World.ActorsWithTrait<RallyPoint>()
 				.Where(rp => rp.Actor.Owner == p &&
 					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.Traits.GetOrDefault<BuildingInfo>())).ToArray();
-
-			if (buildings.Length > 0)
-				BotDebug("Bot {0} needs to find rallypoints for {1} buildings.",
-					p.PlayerName, buildings.Length);
 
 			foreach (var a in buildings)
 				world.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
