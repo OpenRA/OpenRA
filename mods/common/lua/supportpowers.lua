@@ -2,10 +2,11 @@ SupportPowers = { }
 
 SupportPowers.Airstrike = function(owner, planeName, enterLocation, bombLocation)
 	local facing = { Map.GetFacing(CPos.op_Subtraction(bombLocation, enterLocation), 0), "Int32" }
-	local center = WPos.op_Addition(enterLocation.CenterPosition, WVec.New(0, 0, Rules.InitialAltitude(planeName)))
+	local center = WPos.op_Addition(Map.CenterOfCell(enterLocation), WVec.New(0, 0, Rules.InitialAltitude(planeName)))
 	local plane = Actor.Create(planeName, { Location = enterLocation, Owner = owner, Facing = facing, CenterPosition = center })
-	Actor.Trait(plane, "AttackBomber"):SetTarget(bombLocation.CenterPosition)
-	Actor.Fly(plane, bombLocation.CenterPosition)
+	local bombLoc = Map.CenterOfCell(bombLocation)
+	Actor.Trait(plane, "AttackBomber"):SetTarget(bombLoc)
+	Actor.Fly(plane, bombLoc)
 	Actor.FlyOffMap(plane)
 	Actor.RemoveSelf(plane)
 	return plane
@@ -13,10 +14,10 @@ end
 
 SupportPowers.Paradrop = function(owner, planeName, passengerNames, enterLocation, dropLocation)
 	local facing = { Map.GetFacing(CPos.op_Subtraction(dropLocation, enterLocation), 0), "Int32" }
-	local center = WPos.op_Addition(enterLocation.CenterPosition, WVec.New(0, 0, Rules.InitialAltitude(planeName)))
+	local center = WPos.op_Addition(Map.CenterOfCell(enterLocation), WVec.New(0, 0, Rules.InitialAltitude(planeName)))
 	local plane = Actor.Create(planeName, { Location = enterLocation, Owner = owner, Facing = facing, CenterPosition = center })
 	Actor.FlyAttackCell(plane, dropLocation)
-	Actor.Trait(plane, "ParaDrop"):SetLZ(dropLocation)
+	Actor.Trait(plane, "ParaDrop"):SetLZ(dropLocation, true)
 	local cargo = Actor.Trait(plane, "Cargo")
 	local passengers = { }
 	for i, passengerName in ipairs(passengerNames) do

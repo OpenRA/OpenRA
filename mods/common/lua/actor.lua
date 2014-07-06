@@ -29,7 +29,7 @@ end
 
 Actor.ScriptedMove = function(actor, location)
 	if Actor.HasTrait(actor, "Helicopter") then
-		Internal.HeliFlyToPos(actor, location.CenterPosition)
+		Internal.HeliFlyToPos(actor, Map.CenterOfCell(location))
 	else
 		actor:QueueActivity(OpenRA.New("Move", { location }))
 	end

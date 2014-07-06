@@ -55,9 +55,8 @@ Reinforcements.ReinforceAir = function(owner, planeNames, entrypoint, rallypoint
 	local flight = { }
 
 	for i, planeName in ipairs(planeNames) do
-		local plane = Actor.Create(planeName, { AddToWorld = false, Location = entrypoint.Location, Owner = owner, Facing = facing })
-		local enterLocation = entrypoint.Location
 		local enterPosition = WPos.op_Addition(entrypoint.CenterPosition, WVec.New(0, 0, Rules.InitialAltitude(planeName)))
+		local plane = Actor.Create(planeName, { AddToWorld = false, Location = entrypoint.Location, CenterPosition = enterPosition, Owner = owner, Facing = facing })
 		flight[i] = plane
 		OpenRA.RunAfterDelay((i - 1) * interval, function()
 			World:Add(plane)
