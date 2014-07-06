@@ -25,12 +25,12 @@ namespace OpenRA.Mods.RA.Server
 		bool isInitialPing = true;
 		public void Tick(S server)
 		{
-			if ((Environment.TickCount - lastPing > PingInterval) || isInitialPing)
+			if ((Game.RunTime - lastPing > PingInterval) || isInitialPing)
 			{
 				isInitialPing = false;
-				lastPing = Environment.TickCount;
+				lastPing = Game.RunTime;
 				foreach (var p in server.Conns)
-					server.SendOrderTo(p, "Ping", Environment.TickCount.ToString());
+					server.SendOrderTo(p, "Ping", Game.RunTime.ToString());
 			}
 		}
 	}

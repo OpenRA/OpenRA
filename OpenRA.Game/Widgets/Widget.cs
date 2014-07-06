@@ -21,7 +21,7 @@ namespace OpenRA.Widgets
 	{
 		public static Widget Root = new RootWidget();
 
-		public static int LastTickTime = Environment.TickCount;
+		public static int LastTickTime = Game.RunTime;
 
 		static Stack<Widget> WindowList = new Stack<Widget>();
 
