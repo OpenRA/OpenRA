@@ -17,6 +17,7 @@ TRAN:
 		Speed: 140
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
+		AltitudeVelocity: 0c100
 	Health:
 		HP: 90
 	Armor:

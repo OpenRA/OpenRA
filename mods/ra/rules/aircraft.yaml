@@ -206,6 +206,7 @@ TRAN:
 		ROT: 5
 		Speed: 112
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
+		AltitudeVelocity: 0c100
 	RenderUnit:
 	WithRotor@PRIMARY:
 		Offset: -597,0,341
