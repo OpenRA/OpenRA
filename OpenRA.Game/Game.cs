@@ -443,8 +443,8 @@ namespace OpenRA
 				if (!string.IsNullOrEmpty(window))
 				{
 					var installData = modData.Manifest.ContentInstaller;
-					if (installData.InstallerMenuWidget != null)
-						Ui.LoadWidget(installData.InstallerMenuWidget, Ui.Root, new WidgetArgs());
+					if (installData.InstallerBackgroundWidget != null)
+						Ui.LoadWidget(installData.InstallerBackgroundWidget, Ui.Root, new WidgetArgs());
 
 					Widgets.Ui.OpenWindow(window, new WidgetArgs());
 				}
