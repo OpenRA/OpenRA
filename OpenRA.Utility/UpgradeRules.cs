@@ -282,9 +282,9 @@ namespace OpenRA.Utility
 						node.Key = "ParachuteSequence";
 				}
 
-				// SpyPlanePower was removed (use AirstrikePower instead)
 				if (engineVersion < 20140707)
 				{
+					// SpyPlanePower was removed (use AirstrikePower instead)
 					if (depth == 1 && node.Key == "SpyPlanePower")
 					{
 						node.Key = "AirstrikePower";
@@ -300,6 +300,12 @@ namespace OpenRA.Utility
 						node.Value.Nodes.Add(new MiniYamlNode("CameraActor", new MiniYaml("camera")));
 						node.Value.Nodes.Add(new MiniYamlNode("CameraRemoveDelay", new MiniYaml(revealTime.ToString())));
 						node.Value.Nodes.Add(new MiniYamlNode("UnitType", new MiniYaml("u2")));
+					}
+
+					if (depth == 2 && node.Key == "LZRange" && parentKey == "ParaDrop")
+					{
+						node.Key = "DropRange";
+						ConvertFloatToRange(ref node.Value.Value);
 					}
 				}
 

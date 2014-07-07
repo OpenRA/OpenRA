@@ -1,6 +1,6 @@
 BADR:
 	ParaDrop:
-		LZRange: 4
+		DropRange: 4c0
 	Inherits: ^Plane
 	Health:
 		HP: 300

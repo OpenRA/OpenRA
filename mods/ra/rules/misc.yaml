@@ -140,6 +140,17 @@ CAMERA:
 	DetectCloaked:
 		Range: 10
 
+camera.paradrop:
+	Immobile:
+		OccupiesSpace: false
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 6c0
+	ProximityCaptor:
+		Types: Camera
+	BodyOrientation:
+
 FLARE:
 	Immobile:
 		OccupiesSpace: false
