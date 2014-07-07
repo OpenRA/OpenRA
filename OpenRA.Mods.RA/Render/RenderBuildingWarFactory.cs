@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingWarFactoryInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingWarFactory( init, this ); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingWarFactory(init, this); }
 
 		/* get around unverifiability */
 		IEnumerable<IRenderable> BaseBuildingPreview(WorldRenderer wr, ActorInfo ai, Player owner)
