@@ -216,12 +216,12 @@ namespace OpenRA
 				return;
 
 			IssueOrder(Order.PauseGame(paused));
-			PredictedPaused = paused ? PauseState.Paused : PauseState.Active;;
+			PredictedPaused = paused ? PauseState.Paused : PauseState.Active;
 		}
 
-		public void SetLocalPauseState(PauseState paused)
+		public void SetLocalPauseState(bool paused)
 		{
-			Paused = PredictedPaused = paused;
+			Paused = PredictedPaused = paused ? PauseState.Paused : PauseState.Active;
 		}
 
 		public void Tick()
