@@ -42,6 +42,7 @@ Player:
 		RequireOwner: false
 	PlaceBuilding:
 	SupportPowerManager:
+	ScriptTriggers:
 	MissionObjectives:
 	ConquestVictoryConditions:
 	PowerManager:

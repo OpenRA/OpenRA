@@ -34,6 +34,7 @@ Player:
 		BlockedAudio: NoRoom
 	PlaceBuilding:
 	SupportPowerManager:
+	ScriptTriggers:
 	MissionObjectives:
 	ConquestVictoryConditions:
 	PowerManager:

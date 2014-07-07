@@ -18,12 +18,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
-	public enum Trigger { OnIdle, OnDamaged, OnKilled, OnProduction };
+	public enum Trigger { OnIdle, OnDamaged, OnKilled, OnProduction, OnPlayerWon, OnPlayerLost, OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed };
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
 	public class ScriptTriggersInfo : TraitInfo<ScriptTriggers> { }
 
-	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, IDisposable
+	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyObjectivesUpdated, IDisposable
 	{
 		public event Action<Actor> OnKilledInternal = _ => {};
 
@@ -84,6 +84,62 @@ namespace OpenRA.Mods.RA.Scripting
 			{
 				var a = self.ToLuaValue(f.Second);
 				var b = other.ToLuaValue(f.Second);
+				f.First.Call(a, b).Dispose();
+				a.Dispose();
+				b.Dispose();
+			}
+		}
+
+		public void OnPlayerWon(Player player)
+		{
+			foreach (var f in Triggers[Trigger.OnPlayerWon])
+			{
+				var a = player.ToLuaValue(f.Second);
+				f.First.Call(a).Dispose();
+				a.Dispose();
+			}
+		}
+
+		public void OnPlayerLost(Player player)
+		{
+			foreach (var f in Triggers[Trigger.OnPlayerLost])
+			{
+				var a = player.ToLuaValue(f.Second);
+				f.First.Call(a).Dispose();
+				a.Dispose();
+			}
+		}
+
+		public void OnObjectiveAdded(Player player, int id)
+		{
+			foreach (var f in Triggers[Trigger.OnObjectiveAdded])
+			{
+				var a = player.ToLuaValue(f.Second);
+				var b = id.ToLuaValue(f.Second);
+				f.First.Call(a, b).Dispose();
+				a.Dispose();
+				b.Dispose();
+			}
+		}
+
+		public void OnObjectiveCompleted(Player player, int id)
+		{
+			foreach (var f in Triggers[Trigger.OnObjectiveCompleted])
+			{
+				var a = player.ToLuaValue(f.Second);
+				var b = id.ToLuaValue(f.Second);
+				f.First.Call(a, b).Dispose();
+				a.Dispose();
+				b.Dispose();
+			}
+		}
+
+		public void OnObjectiveFailed(Player player, int id)
+		{
+			foreach (var f in Triggers[Trigger.OnObjectiveFailed])
+			{
+				var a = player.ToLuaValue(f.Second);
+				var b = id.ToLuaValue(f.Second);
 				f.First.Call(a, b).Dispose();
 				a.Dispose();
 				b.Dispose();
