@@ -11,20 +11,23 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderSimpleInfo : RenderSpritesInfo, IQuantizeBodyOrientationInfo, ILegacyEditorRenderInfo, Requires<IBodyOrientationInfo>
+	public class RenderSimpleInfo : RenderSpritesInfo, IRenderActorPreviewSpritesInfo, IQuantizeBodyOrientationInfo, ILegacyEditorRenderInfo, Requires<IBodyOrientationInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
-		public virtual IEnumerable<IRenderable> RenderPreview(World world, ActorInfo ai, PaletteReference pr)
+		public virtual IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
-			var anim = new Animation(world, RenderSimple.GetImage(ai), () => 0);
-			anim.PlayRepeating("idle");
+			var ifacing = init.Actor.Traits.GetOrDefault<IFacingInfo>();
+			var facing = ifacing != null ? init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing() : 0;
 
-			return anim.Render(WPos.Zero, WVec.Zero, 0, pr, Scale);
+			var anim = new Animation(init.World, image, () => facing);
+			anim.PlayRepeating("idle");
+			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
 
 		public virtual int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai)

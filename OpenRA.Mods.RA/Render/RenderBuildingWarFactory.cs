@@ -12,27 +12,27 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingWarFactoryInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingWarFactory( init, this ); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingWarFactory(init, this); }
 
-		/* get around unverifiability */
-		IEnumerable<IRenderable> BaseBuildingPreview(World world, ActorInfo building, PaletteReference pr)
+		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
-			return base.RenderPreview(world, building, pr);
-		}
+			foreach (var orig in base.RenderPreviewSprites(init, rs, image, facings, p))
+				yield return orig;
 
-		public override IEnumerable<IRenderable> RenderPreview(World world, ActorInfo building, PaletteReference pr)
-		{
-			var p = BaseBuildingPreview(world, building, pr);
-			var anim = new Animation(world, RenderSprites.GetImage(building), () => 0);
+			// Show additional roof overlay
+			var anim = new Animation(init.World, image, () => 0);
 			anim.PlayRepeating("idle-top");
 
-			return p.Concat(anim.Render(WPos.Zero, WVec.Zero, 0, pr, Scale));
+			var bi = init.Actor.Traits.Get<BuildingInfo>();
+			var offset = FootprintUtils.CenterOffset(init.World, bi).Y + 512;
+			yield return new SpriteActorPreview(anim, WVec.Zero, offset, p, rs.Scale);
 		}
 	}
 

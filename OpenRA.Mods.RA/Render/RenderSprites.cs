@@ -12,12 +12,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderSpritesInfo : ITraitInfo
+	public interface IRenderActorPreviewSpritesInfo { IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p); }
+
+	public class RenderSpritesInfo : IRenderActorPreviewInfo, ITraitInfo
 	{
 		[Desc("Defaults to the actor name.")]
 		public readonly string Image = null;
@@ -30,6 +33,23 @@ namespace OpenRA.Mods.RA.Render
 		public readonly float Scale = 1f;
 
 		public virtual object Create(ActorInitializer init) { return new RenderSprites(init.self); }
+
+		public IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
+		{
+			var sequenceProvider = init.World.Map.SequenceProvider;
+			var image = RenderSprites.GetImage(init.Actor);
+			var palette = init.WorldRenderer.Palette(Palette ?? (init.Owner != null ? PlayerPalette + init.Owner.InternalName : null));
+
+			var facings = 0;
+			var body = init.Actor.Traits.GetOrDefault<BodyOrientationInfo>();
+			if (body != null)
+				facings = body.QuantizedFacings == -1 ? init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(sequenceProvider, init.Actor) : body.QuantizedFacings;
+
+			foreach (var spi in init.Actor.Traits.WithInterface<IRenderActorPreviewSpritesInfo>())
+				foreach (var preview in spi.RenderPreviewSprites(init, this, image, facings, palette))
+					yield return preview;
+		}
+
 	}
 
 	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged

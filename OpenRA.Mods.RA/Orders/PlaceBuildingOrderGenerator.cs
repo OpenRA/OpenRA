@@ -13,8 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.RA.Orders
 {
@@ -23,8 +25,8 @@ namespace OpenRA.Mods.RA.Orders
 		readonly Actor Producer;
 		readonly string Building;
 		readonly BuildingInfo BuildingInfo;
+		IActorPreview[] preview;
 
-		IEnumerable<IRenderable> preview;
 		Sprite buildOk, buildBlocked;
 		bool initialized = false;
 
@@ -79,7 +81,15 @@ namespace OpenRA.Mods.RA.Orders
 			}
 		}
 
-		public void Tick(World world) {}
+		public void Tick(World world)
+		{
+			if (preview == null)
+				return;
+
+			foreach (var p in preview)
+				p.Tick();
+		}
+
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 		{
@@ -108,23 +118,22 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				if (!initialized)
 				{
-					var rbi = rules.Actors[Building].Traits.GetOrDefault<RenderBuildingInfo>();
-					if (rbi == null)
-						preview = new IRenderable[0];
-					else
-					{
-						var palette = rbi.Palette ?? (Producer.Owner != null ?
-							rbi.PlayerPalette + Producer.Owner.InternalName : null);
-
-						preview = rbi.RenderPreview(world, rules.Actors[Building], wr.Palette(palette));
-					}
+					var init = new ActorPreviewInitializer(rules.Actors[Building], Producer.Owner, wr, new TypeDictionary());
+					preview = rules.Actors[Building].Traits.WithInterface<IRenderActorPreviewInfo>()
+						.SelectMany(rpi => rpi.RenderPreview(init))
+						.ToArray();
 
 					initialized = true;
 				}
 
-				var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, BuildingInfo) - WPos.Zero;
-				foreach (var r in preview)
-					yield return r.OffsetBy(offset);
+				var comparer = new RenderableComparer(wr);
+				var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, BuildingInfo);
+				var previewRenderables = preview
+					.SelectMany(p => p.Render(wr, offset))
+					.OrderBy(r => r, comparer);
+
+				foreach (var r in previewRenderables)
+					yield return r;
 
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, topLeft);
