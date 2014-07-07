@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Orders
 
 		IEnumerable<Order> InnerOrder(World world, CPos xy, MouseInput mi)
 		{
-			if (world.Paused == World.PauseState.Paused)
+			if (world.Paused)
 				yield break;
 
 			if (mi.Button == MouseButton.Left)

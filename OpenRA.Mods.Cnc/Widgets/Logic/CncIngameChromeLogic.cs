@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		public void OptionsClicked()
 		{
-			var cachedPause = world.PredictedPaused == World.PauseState.Paused;
+			var cachedPause = world.PredictedPaused;
 
 			ingameRoot.IsVisible = () => false;
 			if (world.LobbyInfo.IsSinglePlayer)
