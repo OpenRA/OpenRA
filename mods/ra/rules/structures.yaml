@@ -890,13 +890,16 @@ AFLD:
 		Produces: Plane
 	Reservable:
 	IronCurtainable:
-	SpyPlanePower:
+	AirstrikePower:
 		Icon: spyplane
 		ChargeTime: 180
 		Description: Spy Plane
 		LongDesc: Reveals an area of the map\nand cloaked enemy units.
 		SelectTargetSound: slcttgt1.aud
 		EndChargeSound: spypln1.aud
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		UnitType: u2
 	ParatroopersPower:
 		Icon: paratroopers
 		ChargeTime: 360

@@ -352,7 +352,6 @@
     <Compile Include="SupportPowers\NukePower.cs" />
     <Compile Include="SupportPowers\ParatroopersPower.cs" />
     <Compile Include="SupportPowers\SonarPulsePower.cs" />
-    <Compile Include="SupportPowers\SpyPlanePower.cs" />
     <Compile Include="SupportPowers\SupportPower.cs" />
     <Compile Include="SupportPowers\SupportPowerChargeBar.cs" />
     <Compile Include="SupportPowers\SupportPowerManager.cs" />

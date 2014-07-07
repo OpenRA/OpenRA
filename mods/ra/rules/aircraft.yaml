@@ -341,6 +341,7 @@ U2:
 	RenderUnit:
 	WithShadow:
 	IronCurtainable:
+	AttackBomber:
 	-Selectable:
 	-GainsExperience:
 	Contrail@1:
