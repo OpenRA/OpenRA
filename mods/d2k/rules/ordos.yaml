@@ -6,11 +6,6 @@ PWRO:
 	Buildable:
 		Owner: ordos
 
-WALLO:
-	Inherits: ^WALL
-	Buildable:
-		Owner: ordos
-
 GUNTOWERO:
 	Inherits: ^GUNTOWER
 	Buildable:
