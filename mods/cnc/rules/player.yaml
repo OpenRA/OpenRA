@@ -2,6 +2,7 @@ Player:
 	PlaceBuilding:
 	TechTree:
 	SupportPowerManager:
+	ScriptTriggers:
 	MissionObjectives:
 	ConquestVictoryConditions:
 	PowerManager:
