@@ -164,7 +164,7 @@ CONCRETEB:
 		Description: Harvesters unload Spice here for processing
 	Building:
 		Power: -30
-		Footprint: xxx x==
+		Footprint: =xx xx=
 		Dimensions: 3,2
 	Bib:
 	Health:
@@ -666,7 +666,7 @@ WALL:
 		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
 	Building:
 		Power: -50
-		Footprint: xxx xxx
+		Footprint: xx= xxx
 		Dimensions: 3,2
 	Bib:
 	Health:
