@@ -152,7 +152,7 @@ end
 
 Actor.RepairBuilding = function(actor)
 	local rb = Actor.TraitOrDefault(actor, "RepairableBuilding")
-	if rb ~= nil and rb.Repairer == nil then
+	if rb ~= nil and not rb.RepairActive then
 		rb:RepairBuilding(actor, Actor.Owner(actor))
 	end
 end
