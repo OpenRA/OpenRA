@@ -54,9 +54,9 @@ namespace OpenRA.Mods.RA.Render
 			self.Trait<IBodyOrientation>().SetAutodetectedFacings(DefaultAnimation.CurrentSequence.Facings);
 		}
 
-		public override void TickRender(WorldRenderer wr, Actor self)
+		public override void Tick(Actor self)
 		{
-			base.TickRender(wr, self);
+			base.Tick(self);
 
 			if (buildComplete)
 				return;

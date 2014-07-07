@@ -31,7 +31,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new RenderSprites(init.self); }
 	}
 
-	public class RenderSprites : IRender, ITickRender, INotifyOwnerChanged, INotifyEffectiveOwnerChanged
+	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged
 	{
 		class AnimationWrapper
 		{
@@ -126,7 +126,7 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public virtual void TickRender(WorldRenderer wr, Actor self)
+		public virtual void Tick(Actor self)
 		{
 			foreach (var a in anims.Values)
 				a.Animation.Animation.Tick();

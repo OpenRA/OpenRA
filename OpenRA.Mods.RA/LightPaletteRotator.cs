@@ -23,10 +23,10 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new LightPaletteRotator(this); }
 	}
 
-	class LightPaletteRotator : ITickRender, IPaletteModifier
+	class LightPaletteRotator : ITick, IPaletteModifier
 	{
 		float t = 0;
-		public void TickRender(WorldRenderer wr, Actor self)
+		public void Tick(Actor self)
 		{
 			t += .5f;
 		}

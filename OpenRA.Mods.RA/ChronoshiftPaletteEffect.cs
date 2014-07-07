@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 {
 	class ChronoshiftPaletteEffectInfo : TraitInfo<ChronoshiftPaletteEffect> { }
 
-	public class ChronoshiftPaletteEffect : IPaletteModifier, ITickRender
+	public class ChronoshiftPaletteEffect : IPaletteModifier, ITick
 	{
 		const int chronoEffectLength = 60;
 		int remainingFrames;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 			remainingFrames = chronoEffectLength;
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		public void Tick(Actor self)
 		{
 			if (remainingFrames > 0)
 				remainingFrames--;

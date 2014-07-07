@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
 	}
 
-	public class WithMakeAnimation : ITickRender
+	public class WithMakeAnimation : ITick
 	{
 		WithMakeAnimationInfo info;
 		RenderBuilding building;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Render
 			buildComplete = init.Contains<SkipMakeAnimsInit>();
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		public void Tick(Actor self)
 		{
 			if (self.IsDead() || buildComplete)
 				return;
