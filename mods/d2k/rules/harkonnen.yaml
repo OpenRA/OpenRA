@@ -6,11 +6,6 @@ PWRH:
 	Buildable:
 		Owner: harkonnen
 
-WALLH:
-	Inherits: ^WALL
-	Buildable:
-		Owner: harkonnen
-
 GUNTOWERH:
 	Inherits: ^GUNTOWER
 	Buildable:

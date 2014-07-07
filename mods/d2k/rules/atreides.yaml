@@ -6,11 +6,6 @@ PWRA:
 	Buildable:
 		Owner: atreides
 
-WALLA:
-	Inherits: ^WALL
-	Buildable:
-		Owner: atreides
-
 GUNTOWERA:
 	Inherits: ^GUNTOWER
 	Buildable:
