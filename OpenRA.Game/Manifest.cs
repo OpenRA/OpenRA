@@ -35,7 +35,6 @@ namespace OpenRA
 		public readonly InstallData ContentInstaller;
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
 		public readonly Size TileSize = new Size(24, 24);
-		public readonly string NewsUrl;
 		public readonly TileShape TileShape = TileShape.Rectangle;
 
 		public Manifest(string mod)
@@ -97,9 +96,6 @@ namespace OpenRA
 					compat.Add(c.Trim());
 
 			MapCompatibility = compat.ToArray();
-
-			if (yaml.ContainsKey("NewsUrl"))
-				NewsUrl = yaml["NewsUrl"].Value;
 		}
 
 		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key)

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -147,16 +148,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				newsStatus = newsPanel.Get<LabelWidget>("NEWS_STATUS");
 				SetNewsStatus("Loading news");
 
-				if (Game.modData.Manifest.NewsUrl != null)
-				{
-					var cacheFile = GetNewsCacheFile();
-					var cacheValid = File.Exists(cacheFile) && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
+				var cacheFile = Path.Combine(Platform.SupportDir, "news.yaml");
+				var currentNews = ParseNews(cacheFile);
+				if (currentNews != null)
+					DisplayNews(currentNews);
 
-					if (cacheValid)
-						DisplayNews(ReadNews(File.ReadAllBytes(cacheFile)));
-					else
-						new Download(Game.modData.Manifest.NewsUrl, e => { }, NewsDownloadComplete);
-				}
+				// Only query for new stories once per day
+				var cacheValid = currentNews != null && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
+				if (!cacheValid)
+					new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { }, (e, c) => NewsDownloadComplete(e, c, cacheFile, currentNews));
 
 				var newsButton = newsBG.GetOrNull<DropDownButtonWidget>("NEWS_BUTTON");
 				newsButton.OnClick = () =>
@@ -167,13 +167,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				newsButton.IsHighlighted = () => newsHighlighted && Game.LocalTick % 50 < 25;
 			}
-		}
-
-		static string GetNewsCacheFile()
-		{
-			var cacheDir = Path.Combine(Platform.SupportDir, "Cache", Game.modData.Manifest.Mod.Id);
-			Directory.CreateDirectory(cacheDir);
-			return Path.Combine(cacheDir, "news.yaml");
 		}
 
 		void SetNewsStatus(string message)
@@ -190,20 +183,54 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			public string Content;
 		}
 
-		static IEnumerable<NewsItem> ReadNews(byte[] bytes)
+		NewsItem[] ParseNews(string path)
 		{
-			var str = Encoding.UTF8.GetString(bytes);
+			if (!File.Exists(path))
+				return null;
 
-			return MiniYaml.FromString(str).Select(node =>
+			try
 			{
-				var nodesDict = node.Value.ToDictionary();
-				return new NewsItem
+				return MiniYaml.FromFile(path).Select(node =>
+				{
+					var nodesDict = node.Value.ToDictionary();
+					return new NewsItem
 					{
 						Title = nodesDict["Title"].Value,
 						Author = nodesDict["Author"].Value,
 						DateTime = FieldLoader.GetValue<DateTime>("DateTime", node.Key),
 						Content = nodesDict["Content"].Value
 					};
+				}).ToArray();
+			}
+			catch (Exception ex)
+			{
+				SetNewsStatus("Failed to parse news: {0}".F(ex.Message));
+			}
+
+			return null;
+		}
+
+		void NewsDownloadComplete(AsyncCompletedEventArgs e, bool cancelled, string cacheFile, NewsItem[] oldNews)
+		{
+			Game.RunAfterTick(() => // run on the main thread
+			{
+				if (e.Error != null)
+				{
+					SetNewsStatus("Failed to retrieve news: {0}".F(Download.FormatErrorMessage(e.Error)));
+					return;
+				}
+
+				var newNews = ParseNews(cacheFile);
+				if (newNews == null)
+					return;
+
+				DisplayNews(newNews);
+
+				if (oldNews == null || newNews.Any(n => !oldNews.Select(c => c.DateTime).Contains(n.DateTime)))
+					newsHighlighted = true;
+
+				Game.Settings.Game.NewsFetchedDate = DateTime.Today.ToUniversalTime();
+				Game.Settings.Save();
 			});
 		}
 
@@ -235,45 +262,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				newsPanel.AddChild(newsItem);
 				newsPanel.Layout.AdjustChildren();
 			}
-		}
-
-		void NewsDownloadComplete(DownloadDataCompletedEventArgs e, bool cancelled)
-		{
-			Game.RunAfterTick(() => // run on the main thread
-			{
-				if (e.Error != null)
-				{
-					SetNewsStatus("Failed to retrieve news: {0}".F(Download.FormatErrorMessage(e.Error)));
-					return;
-				}
-
-				IEnumerable<NewsItem> newNews;
-				try
-				{
-					newNews = ReadNews(e.Result);
-					DisplayNews(newNews);
-				}
-				catch (Exception ex)
-				{
-					SetNewsStatus("Failed to retrieve news: {0}".F(ex.Message));
-					return;
-				}
-
-				Game.Settings.Game.NewsFetchedDate = DateTime.Today.ToUniversalTime();
-				Game.Settings.Save();
-
-				var cacheFile = GetNewsCacheFile();
-				if (File.Exists(cacheFile))
-				{
-					var oldNews = ReadNews(File.ReadAllBytes(cacheFile));
-					if (newNews.Any(n => !oldNews.Select(c => c.DateTime).Contains(n.DateTime)))
-						newsHighlighted = true;
-				}
-				else
-					newsHighlighted = true;
-
-				File.WriteAllBytes(cacheFile, e.Result);
-			});
 		}
 
 		void RemoveShellmapUI()
