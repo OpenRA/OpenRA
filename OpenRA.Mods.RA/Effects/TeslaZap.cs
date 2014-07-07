@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly string Palette = "effect";
 		public readonly int BrightZaps = 1;
 		public readonly int DimZaps = 2;
-		public IEffect Create(ProjectileArgs args) { return new TeslaZap(this, args); }
+		public IEffect Create(ProjectileArgs args) { return new TeslaZap( this, args ); }
 	}
 
 	class TeslaZap : IEffect

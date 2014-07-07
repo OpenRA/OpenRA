@@ -82,9 +82,6 @@ namespace OpenRA.Mods.RA.Render
 
 		public override void TickRender(WorldRenderer wr, Actor self)
 		{
-			if (wr.world.Paused == World.PauseState.Paused)
-				return;
-
 			base.TickRender(wr, self);
 
 			if ((State == AnimationState.Moving || dirty) && !move.IsMoving)

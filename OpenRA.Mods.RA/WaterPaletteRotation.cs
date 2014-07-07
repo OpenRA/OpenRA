@@ -36,13 +36,7 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
-		{
-			if (wr.world.Paused == World.PauseState.Paused)
-				return;
-
-			t += .25f;
-		}
+		public void TickRender(WorldRenderer wr, Actor self) { t += .25f; }
 
 		uint[] temp = new uint[7]; /* allocating this on the fly actually hurts our profile */
 

@@ -128,9 +128,6 @@ namespace OpenRA.Traits
 
 		public virtual void TickRender(WorldRenderer wr, Actor self)
 		{
-			if (wr.world.Paused == World.PauseState.Paused)
-				return;
-
 			foreach (var a in anims.Values)
 				a.Animation.Animation.Tick();
 		}

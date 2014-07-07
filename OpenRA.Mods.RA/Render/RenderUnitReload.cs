@@ -37,9 +37,6 @@ namespace OpenRA.Mods.RA.Render
 
 		public override void TickRender(WorldRenderer wr, Actor self)
 		{
-			if (wr.world.Paused == World.PauseState.Paused)
-				return;
-
 			var sequence = (armament.IsReloading ? "empty-" : "") + (attack.IsAttacking ? "aim" : "idle");
 			if (sequence != DefaultAnimation.CurrentSequence.Name)
 				DefaultAnimation.ReplaceAnim(sequence);

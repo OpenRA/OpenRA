@@ -185,9 +185,6 @@ namespace OpenRA.Mods.RA
 
 		public void TickRender(WorldRenderer wr, Actor self)
 		{
-			if (wr.world.Paused == World.PauseState.Paused)
-				return;
-
 			// Take a copy so that Tick() can remove animations
 			foreach (var m in muzzles.ToList())
 				m.Animation.Tick();
