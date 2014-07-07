@@ -217,5 +217,3 @@ LuaScripts:
 	mods/common/lua/facing.lua
 
 SupportsMapsFrom: ts
-
-NewsUrl: http://www.openra.net/gamenews

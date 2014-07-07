@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				newsStatus = newsPanel.Get<LabelWidget>("NEWS_STATUS");
 				SetNewsStatus("Loading news");
 
-				if (Game.modData.Manifest.NewsUrl != null)
+				if (Game.Settings.Game.NewsUrl != null)
 				{
 					var cacheFile = GetNewsCacheFile();
 					var cacheValid = File.Exists(cacheFile) && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
@@ -155,7 +155,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					if (cacheValid)
 						DisplayNews(ReadNews(File.ReadAllBytes(cacheFile)));
 					else
-						new Download(Game.modData.Manifest.NewsUrl, e => { }, NewsDownloadComplete);
+						new Download(Game.Settings.Game.NewsUrl, e => { }, NewsDownloadComplete);
 				}
 
 				var newsButton = newsBG.GetOrNull<DropDownButtonWidget>("NEWS_BUTTON");

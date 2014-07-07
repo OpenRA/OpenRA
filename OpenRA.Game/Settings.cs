@@ -141,6 +141,7 @@ namespace OpenRA
 		public string MapRepository = "http://resource.openra.net/map/";
 
 		public bool FetchNews = true;
+		public string NewsUrl = "http://www.openra.net/gamenews";
 		public DateTime NewsFetchedDate;
 	}
 
