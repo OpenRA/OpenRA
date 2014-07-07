@@ -129,6 +129,10 @@ beacon:
 		Start: 0
 		Length: *
 		Offset: 0,-42
+	pbmbicon: lores-pbmbicon
+		Start: 0
+		Length: *
+		Offset: 0,-42
 	clock: beaconclock
 		Start: 0
 		Length: *
