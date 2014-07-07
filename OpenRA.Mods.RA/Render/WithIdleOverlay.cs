@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
@@ -16,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Render
 {
 	[Desc("Renders a decorative animation on units and buildings.")]
-	public class WithIdleOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithIdleOverlayInfo : ITraitInfo, IRenderPlaceBuildingPreviewInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "idle-overlay";
@@ -31,6 +32,16 @@ namespace OpenRA.Mods.RA.Render
 		public readonly bool IsPlayerPalette = false;
 
 		public readonly bool PauseOnLowPower = false;
+
+		public IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, ActorInfo ai, Player owner)
+		{
+			var rs = ai.Traits.Get<RenderSpritesInfo>();
+			var palette = rs.Palette ?? (owner != null ? rs.PlayerPalette + owner.InternalName : null);
+			var anim = new Animation(wr.world, RenderSprites.GetImage(ai), () => 0);
+			anim.PlayRepeating(Sequence);
+
+			return anim.Render(WPos.Zero, wr.Palette(palette));
+		}
 
 		public object Create(ActorInitializer init) { return new WithIdleOverlay(init.self, this); }
 	}
