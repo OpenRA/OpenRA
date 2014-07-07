@@ -282,6 +282,27 @@ namespace OpenRA.Utility
 						node.Key = "ParachuteSequence";
 				}
 
+				// SpyPlanePower was removed (use AirstrikePower instead)
+				if (engineVersion < 20140707)
+				{
+					if (depth == 1 && node.Key == "SpyPlanePower")
+					{
+						node.Key = "AirstrikePower";
+
+						var revealTime = 6 * 25;
+						var revealNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "RevealTime");
+						if (revealNode != null)
+						{
+							revealTime = int.Parse(revealNode.Value.Value) * 25;
+							node.Value.Nodes.Remove(revealNode);
+						}
+
+						node.Value.Nodes.Add(new MiniYamlNode("CameraActor", new MiniYaml("camera")));
+						node.Value.Nodes.Add(new MiniYamlNode("CameraRemoveDelay", new MiniYaml(revealTime.ToString())));
+						node.Value.Nodes.Add(new MiniYamlNode("UnitType", new MiniYaml("u2")));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

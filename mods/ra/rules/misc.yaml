@@ -251,7 +251,10 @@ powerproxy.parabombs:
 		AllowMultiple: yes
 		UnitType: badr.bomber
 		SelectTargetSound: slcttgt1.aud
-		FlareActor: flare
+		QuantizedFacings: 8
+		DisplayBeacon: True
+		BeaconPoster: pbmbicon
+		CameraActor: camera
 
 powerproxy.sonarpulse:
 	SonarPulsePower:

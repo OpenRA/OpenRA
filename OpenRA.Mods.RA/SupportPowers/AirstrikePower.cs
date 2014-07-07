@@ -30,13 +30,6 @@ namespace OpenRA.Mods.RA
 		public readonly WRange Cordon = new WRange(5120);
 
 		[ActorReference]
-		[Desc("Actor to spawn when the aircraft first enter the map")]
-		public readonly string FlareActor = null;
-
-		[Desc("Amount of time to keep the flare alive after the aircraft have finished attacking")]
-		public readonly int FlareRemoveDelay = 25;
-
-		[ActorReference]
 		[Desc("Actor to spawn when the aircraft start attacking")]
 		public readonly string CameraActor = null;
 
@@ -68,7 +61,6 @@ namespace OpenRA.Mods.RA
 			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Range * delta / 1024;
 			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Range * delta / 1024;
 
-			Actor flare = null;
 			Actor camera = null;
 			Beacon beacon = null;
 			var aircraftInRange = new Dictionary<Actor, bool>();
@@ -104,7 +96,7 @@ namespace OpenRA.Mods.RA
 			{
 				aircraftInRange[a] = false;
 
-				// Remove the camera and flare when the final plane leaves the target area
+				// Remove the camera when the final plane leaves the target area
 				if (!aircraftInRange.Any(kv => kv.Value))
 				{
 					if (camera != null)
@@ -113,27 +105,12 @@ namespace OpenRA.Mods.RA
 						camera.QueueActivity(new RemoveSelf());
 					}
 
-					if (flare != null)
-					{
-						flare.QueueActivity(new Wait(info.FlareRemoveDelay));
-						flare.QueueActivity(new RemoveSelf());
-					}
-
-					camera = flare = null;
+					camera = null;
 				}
 			};
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (info.FlareActor != null)
-				{
-					flare = w.CreateActor(info.FlareActor, new TypeDictionary
-					{
-						new LocationInit(order.TargetLocation),
-						new OwnerInit(self.Owner),
-					});
-				}
-
 				var notification = self.Owner.IsAlliedWith(self.World.RenderPlayer) ? Info.LaunchSound : Info.IncomingSound;
 				Sound.Play(notification);
 

@@ -31,6 +31,7 @@ namespace OpenRA.Mods.RA
 		AttackBomberInfo info;
 		[Sync] Target target;
 		[Sync] bool inAttackRange;
+		[Sync] bool facingTarget = true;
 
 		public event Action<Actor> OnRemovedFromWorld = self => { };
 		public event Action<Actor> OnEnteredAttackRange = self => { };
@@ -47,7 +48,13 @@ namespace OpenRA.Mods.RA
 			var cp = self.CenterPosition;
 			var bombTarget = Target.FromPos(cp - new WVec(0, 0, cp.Z));
 			var wasInAttackRange = inAttackRange;
+			var wasFacingTarget = facingTarget;
+
 			inAttackRange = false;
+
+			var f = facing.Value.Facing;
+			var facingToTarget = Util.GetFacing(target.CenterPosition - self.CenterPosition, f);
+			facingTarget = Math.Abs(facingToTarget - f) % 256 <= info.FacingTolerance;
 
 			// Bombs drop anywhere in range
 			foreach (var a in Armaments.Where(a => a.Info.Name == info.Bombs))
@@ -60,9 +67,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			// Guns only fire when approaching the target
-			var f = facing.Value.Facing;
-			var facingToTarget = Util.GetFacing(target.CenterPosition - self.CenterPosition, f);
-			if (Math.Abs(facingToTarget - f) % 256 <= info.FacingTolerance)
+			if (facingTarget)
 			{
 				foreach (var a in Armaments.Where(a => a.Info.Name == info.Guns))
 				{
@@ -74,6 +79,10 @@ namespace OpenRA.Mods.RA
 					a.CheckFire(self, facing.Value, t);
 				}
 			}
+
+			// Actors without armaments may want to trigger an action when it passes the target
+			if (!Armaments.Any())
+				inAttackRange = !wasInAttackRange && !facingTarget && wasFacingTarget;
 
 			if (inAttackRange && !wasInAttackRange)
 				OnEnteredAttackRange(self);

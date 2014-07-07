@@ -37,7 +37,6 @@ MSLO:
 		SpawnOffset: 0,427,0
 		DisplayTimer: True
 		DisplayBeacon: True
-		BeaconDuration: -1
 		DisplayRadarPing: True
 		BeaconPoster: atomicon
 		CameraActor: camera
@@ -891,13 +890,19 @@ AFLD:
 		Produces: Plane
 	Reservable:
 	IronCurtainable:
-	SpyPlanePower:
+	AirstrikePower:
 		Icon: spyplane
 		ChargeTime: 180
 		Description: Spy Plane
 		LongDesc: Reveals an area of the map\nand cloaked enemy units.
 		SelectTargetSound: slcttgt1.aud
 		EndChargeSound: spypln1.aud
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		UnitType: u2
+		QuantizedFacings: 8
+		DisplayBeacon: True
+		BeaconPoster: camicon
 	ParatroopersPower:
 		Icon: paratroopers
 		ChargeTime: 360
