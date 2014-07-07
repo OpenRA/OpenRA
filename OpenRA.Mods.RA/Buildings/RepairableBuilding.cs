@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		Health Health;
 		RepairableBuildingInfo Info;
-		public bool RepairActive = true;
+		public bool RepairActive = false;
 
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
 		{
@@ -102,6 +102,7 @@ namespace OpenRA.Mods.RA.Buildings
 				if (Health.DamageState == DamageState.Undamaged)
 				{
 					Repairers.Clear();
+					RepairActive = false;
 					return;
 				}
 

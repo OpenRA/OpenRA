@@ -851,9 +851,11 @@ namespace OpenRA.Mods.RA.AI
 			if (!e.Attacker.HasTrait<ITargetable>())
 				return;
 
-			if (Info.ShouldRepairBuildings && self.HasTrait<RepairableBuilding>())
+			var rb = self.TraitOrDefault<RepairableBuilding>();
+
+			if (Info.ShouldRepairBuildings && rb != null)
 			{
-				if (e.DamageState > DamageState.Light && e.PreviousDamageState <= DamageState.Light)
+				if (e.DamageState > DamageState.Light && e.PreviousDamageState <= DamageState.Light && !rb.RepairActive)
 				{
 					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
 						self, e.PreviousDamageState, e.DamageState);
