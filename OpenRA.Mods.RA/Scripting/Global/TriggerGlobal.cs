@@ -109,6 +109,41 @@ namespace OpenRA.Mods.RA.Scripting
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnProduction, func, context);
 		}
 
+		[Desc("Call a function when this player completes all primary objectives. " +
+			"The callback function will be called as func(Player player).")]
+		public void OnPlayerWon(Player player, LuaFunction func)
+		{
+			GetScriptTriggers(player.PlayerActor).RegisterCallback(Trigger.OnPlayerWon, func, context);
+		}
+
+		[Desc("Call a function when this player fails any primary objective. " +
+			"The callback function will be called as func(Player player).")]
+		public void OnPlayerLost(Player player, LuaFunction func)
+		{
+			GetScriptTriggers(player.PlayerActor).RegisterCallback(Trigger.OnPlayerLost, func, context);
+		}
+
+		[Desc("Call a function when this player is assigned a new objective. " +
+			"The callback function will be called as func(Player player, int objectiveID).")]
+		public void OnObjectiveAdded(Player player, LuaFunction func)
+		{
+			GetScriptTriggers(player.PlayerActor).RegisterCallback(Trigger.OnObjectiveAdded, func, context);
+		}
+
+		[Desc("Call a function when this player completes an objective " +
+			"The callback function will be called as func(Player player, int objectiveID).")]
+		public void OnObjectiveCompleted(Player player, LuaFunction func)
+		{
+			GetScriptTriggers(player.PlayerActor).RegisterCallback(Trigger.OnObjectiveCompleted, func, context);
+		}
+
+		[Desc("Call a function when this player fails an objective " +
+			"The callback function will be called as func(Player player, int objectiveID).")]
+		public void OnObjectiveFailed(Player player, LuaFunction func)
+		{
+			GetScriptTriggers(player.PlayerActor).RegisterCallback(Trigger.OnObjectiveFailed, func, context);
+		}
+
 		[Desc("Removes all triggers from this actor")]
 		public void ClearAll(Actor a)
 		{
