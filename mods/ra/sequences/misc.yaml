@@ -133,6 +133,10 @@ beacon:
 		Start: 0
 		Length: *
 		Offset: 0,-42
+	camicon: lores-camicon
+		Start: 0
+		Length: *
+		Offset: 0,-42
 	clock: beaconclock
 		Start: 0
 		Length: *

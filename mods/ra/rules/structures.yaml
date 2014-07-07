@@ -900,6 +900,9 @@ AFLD:
 		CameraActor: camera
 		CameraRemoveDelay: 150
 		UnitType: u2
+		QuantizedFacings: 8
+		DisplayBeacon: True
+		BeaconPoster: camicon
 	ParatroopersPower:
 		Icon: paratroopers
 		ChargeTime: 360
