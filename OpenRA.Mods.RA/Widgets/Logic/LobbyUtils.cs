@@ -148,11 +148,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public static Dictionary<CPos, SpawnOccupant> GetSpawnOccupants(Session lobbyInfo, MapPreview preview)
 		{
+			if (preview.SpawnPoints == null || !preview.SpawnPoints.Any())
+				return null;
+
 			var spawns = preview.SpawnPoints;
 			return lobbyInfo.Clients
 				.Where(c => c.SpawnPoint != 0)
 				.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c));
 		}
+
 		public static Dictionary<CPos, SpawnOccupant> GetSpawnOccupants(IEnumerable<GameInformation.Player> players, MapPreview preview)
 		{
 			var spawns = preview.SpawnPoints;

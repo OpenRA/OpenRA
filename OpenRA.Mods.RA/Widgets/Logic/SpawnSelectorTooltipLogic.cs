@@ -38,7 +38,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			tooltipContainer.BeforeRender = () =>
 			{
-				var occupant = preview.SpawnOccupants().Values.FirstOrDefault(c => c.SpawnPoint == preview.TooltipSpawnIndex);
+				var occupants = preview.SpawnOccupants != null ? preview.SpawnOccupants().Values : null;
+				var occupant = occupants == null ? null : occupants.FirstOrDefault(c => c.SpawnPoint == preview.TooltipSpawnIndex);
 
 				var teamWidth = 0;
 				if (occupant == null)
