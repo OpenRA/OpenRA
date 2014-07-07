@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Primitives;
@@ -21,22 +22,38 @@ namespace OpenRA.Mods.RA
 	{
 		[Desc("Minimum number of crates")]
 		public readonly int Minimum = 1;
+
 		[Desc("Maximum number of crates")]
 		public readonly int Maximum = 255;
+
 		[Desc("Average time (seconds) between crate spawn")]
 		public readonly int SpawnInterval = 180;
+
 		[Desc("Which terrain types can we drop on?")]
 		public readonly string[] ValidGround = { "Clear", "Rough", "Road", "Ore", "Beach" };
+
 		[Desc("Which terrain types count as water?")]
 		public readonly string[] ValidWater = { "Water" };
+
 		[Desc("Chance of generating a water crate instead of a land crate")]
 		public readonly float WaterChance = .2f;
-		[Desc("If a DeliveryAircraft: is specified, then this actor will deliver crates"), ActorReference]
-		public readonly string DeliveryAircraft = null;
-		[Desc("Crate actors to drop"), ActorReference]
+
+		[ActorReference]
+		[Desc("Crate actors to drop")]
 		public readonly string[] CrateActors = { "crate" };
+
 		[Desc("Chance of each crate actor spawning")]
 		public readonly int[] CrateActorShares = { 10 };
+
+		[ActorReference]
+		[Desc("If a DeliveryAircraft: is specified, then this actor will deliver crates")]
+		public readonly string DeliveryAircraft = null;
+
+		[Desc("Number of facings that the delivery aircraft may approach from.")]
+		public readonly int QuantizedFacings = 32;
+
+		[Desc("Spawn and remove the plane this far outside the map.")]
+		public readonly WRange Cordon = new WRange(5120);
 
 		public object Create(ActorInitializer init) { return new CrateSpawner(this, init.self); }
 	}
@@ -88,19 +105,28 @@ namespace OpenRA.Mods.RA
 				if (info.DeliveryAircraft != null)
 				{
 					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
-					var startPos = w.Map.ChooseRandomEdgeCell(w.SharedRandom);
-					var altitude = w.Map.Rules.Actors[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude;
+					var dropFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
+					var delta = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(dropFacing));
+
+					var altitude = self.World.Map.Rules.Actors[info.DeliveryAircraft].Traits.Get<PlaneInfo>().CruiseAltitude.Range;
+					var target = self.World.Map.CenterOfCell(p) + new WVec(0, 0, altitude);
+					var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Range * delta / 1024;
+					var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Range * delta / 1024;
+
 					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
 					{
-						new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WRange.Zero, WRange.Zero, altitude)),
-						new OwnerInit(w.WorldActor.Owner),
-						new FacingInit(w.Map.FacingBetween(startPos, p, 0))
+						new CenterPositionInit(startEdge + new WVec(0, 0, altitude)),
+						new OwnerInit(self.Owner),
+						new FacingInit(dropFacing),
 					});
 
-					plane.CancelActivity();
-					plane.QueueActivity(new FlyAttack(Target.FromCell(w, p)));
-					plane.Trait<ParaDrop>().SetLZ(p, true);
+					var drop = plane.Trait<ParaDrop>();
+					drop.SetLZ(p, true);
 					plane.Trait<Cargo>().Load(plane, crate);
+
+					plane.CancelActivity();
+					plane.QueueActivity(new Fly(plane, Target.FromPos(finishEdge)));
+					plane.QueueActivity(new RemoveSelf());
 				}
 				else
 				{

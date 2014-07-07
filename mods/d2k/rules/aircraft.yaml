@@ -32,7 +32,7 @@
 
 FRIGATE:
 	ParaDrop:
-		LZRange: 1
+		DropRange: 1c0
 	Inherits: ^Plane
 	Tooltip:
 		Name: Frigate
@@ -121,7 +121,7 @@ ORNI.bomber:
 
 CARRYALL.infantry:
 	ParaDrop:
-		LZRange: 5
+		DropRange: 5c0
 		ChuteSound:
 	Inherits: ^Plane
 	Health:
@@ -152,7 +152,7 @@ CARRYALL.infantry:
 BADR:
 	Inherits: CARRYALL.infantry
 	ParaDrop:
-		LZRange: 4
+		DropRange: 4c0
 	Tooltip:
 		Name: Crate Carryall
 	LeavesHusk:
