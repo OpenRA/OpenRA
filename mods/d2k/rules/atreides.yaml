@@ -25,8 +25,6 @@ REFA:
 	Inherits: ^REFINERY
 	Buildable:
 		Owner: atreides
-	RenderBuildingWarFactory:
-		Image: REFA
 
 BARRA:
 	Inherits: ^BARRACKS
@@ -75,15 +73,11 @@ LIGHTA:
 	Inherits: ^LIGHT
 	Buildable:
 		Owner: atreides
-	RenderBuildingWarFactory:
-		Image: LIGHTA
 
 HEAVYA:
 	Inherits: ^HEAVY
 	Buildable:
 		Owner: atreides
-	RenderBuildingWarFactory:
-		Image: HEAVYA
 
 RADARA:
 	Inherits: ^RADAR
