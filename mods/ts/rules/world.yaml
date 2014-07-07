@@ -104,6 +104,23 @@ World:
 		AllowedTerrainTypes: Clear
 		AllowUnderActors: false
 		TerrainType: Tiberium
+	FixedColorPalette@BlueTiberium:
+		Base: player
+		Name: bluetiberium
+		Color: 154, 220, 184
+		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+	ResourceType@BlueTiberium:
+		ResourceType: 2
+		Palette: bluetiberium
+		EditorSprite: waypoint # TODO: editor can't handle the real ones
+		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
+		MaxDensity: 12
+		ValuePerUnit: 100
+		Name: BlueTiberium
+		PipColor: Blue
+		AllowedTerrainTypes: Clear
+		AllowUnderActors: false
+		TerrainType: BlueTiberium
 	SmudgeLayer@SCORCH:
 		Type: Scorch
 		Sequence: scorches

@@ -82,7 +82,7 @@ HARV:
 		Bounds: 36,36
 	Harvester:
 		Capacity: 20
-		Resources: Tiberium
+		Resources: Tiberium, BlueTiberium
 		UnloadTicksPerBale: 1
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
