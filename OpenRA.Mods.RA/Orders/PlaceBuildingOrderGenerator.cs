@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Orders
 		readonly string Building;
 		readonly BuildingInfo BuildingInfo;
 
-		IEnumerable<IRenderable> preview;
+		IRenderable[] preview;
 		Sprite buildOk, buildBlocked;
 		bool initialized = false;
 
@@ -103,16 +103,9 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				if (!initialized)
 				{
-					var rbi = rules.Actors[Building].Traits.GetOrDefault<RenderBuildingInfo>();
-					if (rbi == null)
-						preview = new IRenderable[0];
-					else
-					{
-						var palette = rbi.Palette ?? (Producer.Owner != null ?
-							rbi.PlayerPalette + Producer.Owner.InternalName : null);
-
-						preview = rbi.RenderPreview(world, rules.Actors[Building], wr.Palette(palette));
-					}
+					preview = rules.Actors[Building].Traits.WithInterface<IRenderPlaceBuildingPreviewInfo>()
+						.SelectMany(rpi => rpi.RenderPreview(wr, rules.Actors[Building], Producer.Owner))
+						.ToArray();
 
 					initialized = true;
 				}

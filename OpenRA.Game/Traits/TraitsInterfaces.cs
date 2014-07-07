@@ -146,6 +146,7 @@ namespace OpenRA.Traits
 		}
 	}
 
+	public interface IRenderPlaceBuildingPreviewInfo { IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, ActorInfo ai, Player owner); }
 	public interface IRenderModifier { IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r); }
 	public interface IDamageModifier { float GetDamageModifier(Actor attacker, WarheadInfo warhead); }
 	public interface ISpeedModifier { decimal GetSpeedModifier(); }
