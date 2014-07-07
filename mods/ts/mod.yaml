@@ -141,7 +141,7 @@ Notifications:
 	mods/ts/notifications.yaml
 
 TileSets:
-	mods/ts/tilesets/interior.yaml
+	mods/ts/tilesets/temperat.yaml
 
 TileSize: 48,24
 TileShape: Diamond

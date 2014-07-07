@@ -1,6 +1,6 @@
 General:
-	Name: Interior
-	Id: INTERIOR
+	Name: Temperate
+	Id: TEMPERAT
 	Extensions: .tem, .shp
 	Palette: isotem.pal
 	EditorTemplateOrder: Placeholder
@@ -15,6 +15,11 @@ Terrain:
 		Type: Tiberium
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 161, 226, 28
+		TargetTypes: Ground
+	TerrainType@BlueTiberium:
+		Type: BlueTiberium
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 28, 64, 248
 		TargetTypes: Ground
 
 Templates:
