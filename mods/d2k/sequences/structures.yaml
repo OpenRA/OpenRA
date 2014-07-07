@@ -693,14 +693,6 @@ lighta:
 	damaged-idle: DATA
 		Start: 2673
 		Offset: -48,64
-	build-top: DATA
-		Start: 2674
-		Length: 1
-		Offset: -48,64
-	damaged-build-top: DATA
-		Start: 2675
-		Length: 1
-		Offset: -48,64
 	idle-top: DATA
 		Start: 2674
 		Offset: -48,64
@@ -741,14 +733,6 @@ heavya:
 		Tick: 100
 	damaged-idle: DATA
 		Start: 2518
-		Offset: -48,80
-	build-top: DATA
-		Start: 2519
-		Length: 1
-		Offset: -48,80
-	damaged-build-top: DATA
-		Start: 2520
-		Length: 1
 		Offset: -48,80
 	idle-top: DATA
 		Start: 2519
@@ -1104,14 +1088,6 @@ lighth:
 	damaged-idle: DATA
 		Start: 2833
 		Offset: -48,64
-	build-top: DATA
-		Start: 2834
-		Length: 1
-		Offset: -48,64
-	damaged-build-top: DATA
-		Start: 2835
-		Length: 1
-		Offset: -48,64
 	idle-top: DATA
 		Start: 2834
 		Offset: -48,64
@@ -1152,14 +1128,6 @@ heavyh:
 		Tick: 100
 	damaged-idle: DATA
 		Start: 2678
-		Offset: -48,80
-	build-top: DATA
-		Start: 2679
-		Length: 1
-		Offset: -48,80
-	damaged-build-top: DATA
-		Start: 2680
-		Length: 1
 		Offset: -48,80
 	idle-top: DATA
 		Start: 2679
@@ -1508,14 +1476,6 @@ lighto:
 	damaged-idle: DATA
 		Start: 2993
 		Offset: -48,64
-	build-top: DATA
-		Start: 2994
-		Length: 1
-		Offset: -48,64
-	damaged-build-top: DATA
-		Start: 2995
-		Length: 1
-		Offset: -48,64
 	idle-top: DATA
 		Start: 2994
 		Offset: -48,64
@@ -1556,14 +1516,6 @@ heavyo:
 		Tick: 100
 	damaged-idle: DATA
 		Start: 2838
-		Offset: -48,80
-	build-top: DATA
-		Start: 2839
-		Length: 1
-		Offset: -48,80
-	damaged-build-top: DATA
-		Start: 2840
-		Length: 1
 		Offset: -48,80
 	idle-top: DATA
 		Start: 2839
@@ -1676,14 +1628,6 @@ heavyc: # TODO: unused
 		Tick: 100
 	damaged-idle: DATA
 		Start: 3001
-		Offset: -48,64
-	build-top: DATA
-		Start: 3002
-		Length: 1
-		Offset: -48,64
-	damaged-build-top: DATA
-		Start: 3003
-		Length: 1
 		Offset: -48,64
 	idle-top: DATA
 		Start: 3002
