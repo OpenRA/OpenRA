@@ -176,7 +176,6 @@ CONCRETEB:
 		Type: Wood
 	RevealsShroud:
 		Range: 6c0
-	-RenderBuilding:
 	OreRefinery:
 		DockOffset: 2,1
 		DockAngle: 160
@@ -198,6 +197,8 @@ CONCRETEB:
 		Sequence: smoke
 	Power:
 		Amount: -30
+	WithIdleOverlay@TOP:
+		Sequence: idle-top
 
 ^SILO:
 	Inherits: ^Building
@@ -256,7 +257,6 @@ CONCRETEB:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	-RenderBuilding:
 	RallyPoint:
 		RallyPoint: 2,2
 	Exit@1:
@@ -270,6 +270,8 @@ CONCRETEB:
 		Prerequisite: Light
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
+	WithIdleOverlay@TOP:
+		Sequence: idle-top
 	Power:
 		Amount: -20
 
@@ -297,7 +299,6 @@ CONCRETEB:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	-RenderBuilding:
 	RallyPoint:
 		RallyPoint: 0,3
 	Exit@1:
@@ -311,6 +312,8 @@ CONCRETEB:
 		Prerequisite: Heavy
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
+	WithIdleOverlay@TOP:
+		Sequence: idle-top
 	Power:
 		Amount: -30
 
@@ -739,8 +742,6 @@ PALACEC:
 HEAVYC:
 	Inherits: ^HEAVY
 	-Buildable:
-	RenderBuildingWarFactory:
-		Image: HEAVYC
 
 CONYARD:
 	Tooltip:
