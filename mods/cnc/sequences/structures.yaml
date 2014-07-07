@@ -378,18 +378,12 @@ brik:
 	damaged-idle:
 		Start: 32
 		Length: 16
-	critical-idle:
-		Start: 48
-		Length: 16
 	icon: brikicnh
 		Start: 0
 
 sbag:
 	idle:
 		Start: 0
-		Length: 16
-	damaged-idle:
-		Start: 16
 		Length: 16
 	icon: sbagicnh
 		Start: 0
@@ -400,9 +394,6 @@ cycl:
 		Length: 16
 	damaged-idle:
 		Start: 16
-		Length: 16
-	critical-idle:
-		Start: 32
 		Length: 16
 	icon: cyclicnh
 		Start: 0
