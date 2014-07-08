@@ -39,6 +39,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var author = available.GetOrNull<LabelWidget>("MAP_AUTHOR");
 				if (author != null)
 					author.GetText = () => "Created by {0}".F(lobby.Map.Author);
+
+                var sizeWidget = available.GetOrNull<LabelWidget>("SIZE");
+                if (sizeWidget != null)
+                {
+                    var size = preview.Bounds.Width + "x" + preview.Bounds.Height;
+                    var numberPlayableCells = preview.Bounds.Width * preview.Bounds.Height;
+                    if (numberPlayableCells >= 120 * 120) size += " (Huge)";
+                    else if (numberPlayableCells >= 90 * 90) size += " (Large)";
+                    else if (numberPlayableCells >= 60 * 60) size += " (Medium)";
+                    else size += " (Small)";
+                    sizeWidget.GetText = () => size;
+                }
 			}
 
 			var invalid = widget.GetOrNull("MAP_INVALID");
