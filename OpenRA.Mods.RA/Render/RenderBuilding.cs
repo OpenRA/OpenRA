@@ -36,8 +36,6 @@ namespace OpenRA.Mods.RA.Render
 	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged, INotifyBuildComplete
 	{
 		RenderBuildingInfo info;
-		bool buildComplete;
-		bool skipMakeAnimation;
 
 		public RenderBuilding(ActorInitializer init, RenderBuildingInfo info)
 			: this(init, info, () => 0) { }
@@ -47,24 +45,10 @@ namespace OpenRA.Mods.RA.Render
 		{
 			var self = init.self;
 			this.info = info;
-			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 
-			DefaultAnimation.Initialize(NormalizeSequence(self, "idle"));
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
 
 			self.Trait<IBodyOrientation>().SetAutodetectedFacings(DefaultAnimation.CurrentSequence.Facings);
-		}
-
-		public override void Tick(Actor self)
-		{
-			base.Tick(self);
-
-			if (buildComplete)
-				return;
-
-			buildComplete = true;
-			if (!self.HasTrait<WithMakeAnimation>() || skipMakeAnimation)
-				foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
-					notify.BuildingComplete(self);
 		}
 
 		public virtual void BuildingComplete(Actor self)

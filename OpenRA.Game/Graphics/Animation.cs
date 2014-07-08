@@ -69,12 +69,6 @@ namespace OpenRA.Graphics
 			return Render(pos, WVec.Zero, 0, palette, 1f);
 		}
 
-		public void Initialize(string sequenceName)
-		{
-			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
-			tickAlways = true;
-		}
-
 		public void Play(string sequenceName)
 		{
 			PlayThen(sequenceName, null);

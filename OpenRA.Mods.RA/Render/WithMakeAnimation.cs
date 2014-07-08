@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithMakeAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>
+	public class WithMakeAnimationInfo : ITraitInfo, Requires<BuildingInfo>, Requires<RenderBuildingInfo>
 	{
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "make";
@@ -26,37 +26,35 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
 	}
 
-	public class WithMakeAnimation : ITick
+	public class WithMakeAnimation
 	{
-		WithMakeAnimationInfo info;
-		RenderBuilding building;
-		bool buildComplete;
+		readonly WithMakeAnimationInfo info;
+		readonly RenderBuilding renderBuilding;
 
 		public WithMakeAnimation(ActorInitializer init, WithMakeAnimationInfo info)
 		{
-			building = init.self.Trait<RenderBuilding>();
 			this.info = info;
-			buildComplete = init.Contains<SkipMakeAnimsInit>();
-		}
+			var self = init.self;
+			renderBuilding = self.Trait<RenderBuilding>();
 
-		public void Tick(Actor self)
-		{
-			if (self.IsDead() || buildComplete)
-				return;
-
-			buildComplete = true;
-
-			building.PlayCustomAnimThen(self, info.Sequence, () => 
+			var building = self.Trait<Building>();
+			if (!init.Contains<SkipMakeAnimsInit>())
 			{
-				foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
-					notify.BuildingComplete(self);
-			});
+				renderBuilding.PlayCustomAnimThen(self, info.Sequence, () => 
+				{
+					building.NotifyBuildingComplete(self);
+				});
+			}
+			else
+				building.NotifyBuildingComplete(self);
 		}
 
 		public void Reverse(Actor self, Activity activity)
 		{
-			building.PlayCustomAnimBackwards(self, info.Sequence, () => {
-				building.PlayCustomAnim(self, info.Sequence); // avoids visual glitches as we wait for the actor to get destroyed
+			renderBuilding.PlayCustomAnimBackwards(self, info.Sequence, () =>
+			{
+				// avoids visual glitches as we wait for the actor to get destroyed
+				renderBuilding.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
 				self.QueueActivity(activity);
 			});
 		}
