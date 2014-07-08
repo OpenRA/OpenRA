@@ -7,3 +7,15 @@ TIBTRE02:
 TIBTRE03:
 	Inherits: ^BlossomTree
 
+BIGBLUE:
+	Inherits: ^BlossomTree
+	Tooltip:
+		Name: Large Blue Tiberium Crystal
+	RenderBuilding:
+		Palette: bluetiberium
+	RadarColorFromTerrain:
+		Terrain: BlueTiberium
+	SeedsResource:
+		ResourceType: BlueTiberium
+		Interval: 100
+

@@ -10,7 +10,7 @@ Description: Placeholder
 
 Author: Matthias Mailänder
 
-Tileset: INTERIOR
+Tileset: TEMPERAT
 
 MapSize: 128,128
 
@@ -75,6 +75,12 @@ Actors:
 		Owner: Neutral
 	Actor6: tibtre03
 		Location: 106,-24
+		Owner: Neutral
+	Actor7: bigblue
+		Location: 100,-20
+		Owner: Neutral
+	Actor8: bigblue
+		Location: 80,-40
 		Owner: Neutral
 
 Smudges:

@@ -2,31 +2,42 @@ tibtre01:
 	idle:
 		Start: 0
 		Length: 1
-		ShadowStart: 10
+		ShadowStart: 11
 	active:
 		Start: 1
 		Length: 10
-		ShadowStart: 11
+		ShadowStart: 12
 		Tick: 160
 
 tibtre02:
 	idle:
 		Start: 0
 		Length: 1
-		ShadowStart: 10
+		ShadowStart: 11
 	active:
 		Start: 1
 		Length: 10
-		ShadowStart: 11
+		ShadowStart: 12
 		Tick: 160
 
 tibtre03:
 	idle:
 		Start: 0
 		Length: 1
-		ShadowStart: 10
+		ShadowStart: 11
 	active:
 		Start: 1
 		Length: 10
+		ShadowStart: 12
+		Tick: 160
+
+bigblue:
+	idle:
+		Start: 0
+		Length: 1
+		ShadowStart: 10
+	active:
+		Start: 1
+		Length: 9
 		ShadowStart: 11
 		Tick: 160
