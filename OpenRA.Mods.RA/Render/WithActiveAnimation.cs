@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new WithActiveAnimation(init.self, this); }
 	}
 
-	public class WithActiveAnimation : ITickRender, INotifyBuildComplete, INotifySold
+	public class WithActiveAnimation : ITick, INotifyBuildComplete, INotifySold
 	{
 		readonly IEnumerable<IDisable> disabled;
 		readonly WithActiveAnimationInfo info;
@@ -42,11 +42,8 @@ namespace OpenRA.Mods.RA.Render
 		}
 
 		int ticks;
-		public void TickRender(WorldRenderer wr, Actor self)
+		public void Tick(Actor self)
 		{
-			if (wr.world.Paused == World.PauseState.Paused)
-				return;
-
 			if (!buildComplete)
 				return;
 

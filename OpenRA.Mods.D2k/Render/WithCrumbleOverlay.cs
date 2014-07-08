@@ -34,16 +34,19 @@ namespace OpenRA.Mods.RA.Render
 
 		public WithCrumbleOverlay(ActorInitializer init, WithCrumbleOverlayInfo info)
 		{
+			if (init.Contains<SkipMakeAnimsInit>())
+				return;
+
+			var key = "make_overlay_{0}".F(info.Sequence);
 			var rs = init.self.Trait<RenderSprites>();
 
-			if (!init.Contains<SkipMakeAnimsInit>())
-			{
-				var overlay = new Animation(init.world, rs.GetImage(init.self));
-				overlay.PlayThen(info.Sequence, () => buildComplete = false);
-				rs.Add("make_overlay_{0}".F(info.Sequence),
-					new AnimationWithOffset(overlay, null, () => !buildComplete),
-					info.Palette, info.IsPlayerPalette);
-			}
+			var overlay = new Animation(init.world, rs.GetImage(init.self));
+
+			// Remove the animation once it is complete
+			overlay.PlayThen(info.Sequence, () => init.world.AddFrameEndTask(w => rs.Remove(key)));
+
+			rs.Add(key, new AnimationWithOffset(overlay, null, () => !buildComplete),
+				info.Palette, info.IsPlayerPalette);
 		}
 
 		public void BuildingComplete(Actor self)

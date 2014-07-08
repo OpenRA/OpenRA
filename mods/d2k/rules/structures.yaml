@@ -493,6 +493,7 @@ WALL:
 	DetectCloaked:
 		Range: 5
 	-WithCrumbleOverlay:
+	-WithMakeAnimation:
 	LineBuildNode:
 		Types: turret
 
@@ -544,6 +545,7 @@ WALL:
 	DetectCloaked:
 		Range: 6
 	-WithCrumbleOverlay:
+	-WithMakeAnimation:
 	LineBuildNode:
 		Types: turret
 

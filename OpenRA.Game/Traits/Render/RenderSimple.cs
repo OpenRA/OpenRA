@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 		public RenderSimple(Actor self)
 			: this(self, MakeFacingFunc(self))
 		{
-			DefaultAnimation.PlayRepeating("idle");
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
 			self.Trait<IBodyOrientation>().SetAutodetectedFacings(DefaultAnimation.CurrentSequence.Facings);
 		}
 

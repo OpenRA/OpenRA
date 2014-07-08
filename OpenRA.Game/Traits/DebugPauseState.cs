@@ -18,7 +18,7 @@ namespace OpenRA.Traits
 	public class DebugPauseState : ISync
 	{
 		World world;
-		[Sync] public bool Paused { get { return world.Paused == World.PauseState.Paused; } }
+		[Sync] public bool Paused { get { return world.Paused; } }
 		public DebugPauseState(World world) { this.world = world; }
 	}
 }

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA.Buildings
 {
@@ -100,12 +101,13 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 	}
 
-	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, INotifyBuildComplete, INotifySold, INotifyTransform, ISync, ITechTreePrerequisite, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, ITick, INotifySold, INotifyTransform, ISync, ITechTreePrerequisite, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
 		[Sync] readonly CPos topLeft;
 		readonly Actor self;
+		readonly bool skipMakeAnimation;
 
 		PowerManager PlayerPower;
 
@@ -139,7 +141,7 @@ namespace OpenRA.Mods.RA.Buildings
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
 			CenterPosition = init.world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.world, Info);
-			BuildComplete = init.Contains<SkipMakeAnimsInit>();
+			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
 		public int GetPowerUsage()
@@ -180,10 +182,22 @@ namespace OpenRA.Mods.RA.Buildings
 			self.World.ScreenMap.Remove(self);
 		}
 
-		public void BuildingComplete(Actor self)
+		public void Tick(Actor self)
 		{
+			if (!BuildComplete && (skipMakeAnimation || !self.HasTrait<WithMakeAnimation>()))
+				NotifyBuildingComplete(self);
+		}
+
+		public void NotifyBuildingComplete(Actor self)
+		{
+			if (BuildComplete)
+				return;
+
 			BuildComplete = true;
 			Locked = false;
+
+			foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
+				notify.BuildingComplete(self);
 		}
 
 		public void Selling(Actor self)
@@ -193,6 +207,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 			BuildComplete = false;
 		}
+
 		public void Sold(Actor self) { }
 
 		public void BeforeTransform(Actor self)

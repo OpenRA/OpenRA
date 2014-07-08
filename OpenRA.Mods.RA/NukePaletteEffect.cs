@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 {
 	class NukePaletteEffectInfo : TraitInfo<NukePaletteEffect> { }
 
-	public class NukePaletteEffect : IPaletteModifier, ITickRender
+	public class NukePaletteEffect : IPaletteModifier, ITick
 	{
 		const int nukeEffectLength = 20;
 		int remainingFrames;
@@ -27,11 +27,8 @@ namespace OpenRA.Mods.RA
 			remainingFrames = nukeEffectLength;
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		public void Tick(Actor self)
 		{
-			if (wr.world.Paused == World.PauseState.Paused)
-				return;
-
 			if (remainingFrames > 0)
 				remainingFrames--;
 		}
