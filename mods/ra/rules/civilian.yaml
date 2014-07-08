@@ -299,6 +299,9 @@ BIO:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	ExternalCapturable:
+	ExternalCapturableBar:
+	EngineerRepairable:
 	Tooltip:
 		Name: Biological Lab
 	DeadBuildingState:
