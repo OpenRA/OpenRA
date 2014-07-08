@@ -52,6 +52,8 @@ namespace OpenRA.GameRules
 		public readonly DamageModel DamageModel = DamageModel.Normal;
 		[Desc("Whether we should prevent prone response for infantry.")]
 		public readonly bool PreventProne = false;
+		[Desc("By what percentage should damage be modified against prone infantry.")]
+		public readonly int ProneModifier = 50;
 
 		public float EffectivenessAgainst(ActorInfo ai)
 		{
