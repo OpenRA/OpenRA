@@ -231,7 +231,7 @@ E7:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 110
-		Prerequisites: techcenter
+		Prerequisites: ~tent, atek
 		Hotkey: y
 		BuildLimit: 1
 	Valued:
