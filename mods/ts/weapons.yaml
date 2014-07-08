@@ -272,9 +272,11 @@ FiendShard:
 	Burst: 3
 	Range: 5c0
 	Report: FIEND2.AUD
+	Palette: greentiberium
 	Projectile: Bullet
 		Speed: 213
 		Image: CRYSTAL4
+		Inaccuracy: 512
 		Shadow: true
 		Angle: 88
 	Warhead:
@@ -774,6 +776,14 @@ Tiberium:
 		Spread: 42
 		InfDeath: 6
 		Damage: 2
+		PreventProne: yes
+
+TiberiumHeal:
+	ROF: 16
+	Warhead:
+		Spread: 42
+		InfDeath: 6
+		Damage: -2
 		PreventProne: yes
 
 IonCannon:
