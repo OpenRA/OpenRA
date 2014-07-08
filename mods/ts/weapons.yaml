@@ -778,6 +778,14 @@ Tiberium:
 		Damage: 2
 		PreventProne: yes
 
+TiberiumHeal:
+	ROF: 16
+	Warhead:
+		Spread: 42
+		InfDeath: 6
+		Damage: -2
+		PreventProne: yes
+
 IonCannon:
 	ValidTargets: Ground, Air
 	Warhead@impact:
