@@ -240,7 +240,7 @@ PDOX:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
-		Prerequisites: atek
+		Prerequisites: atek, ~structures.allies
 		BuildLimit: 1
 		Hotkey: o
 	Valued:
