@@ -162,7 +162,7 @@ namespace OpenRA.Widgets
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(minimap, new float2(mapRect.Location), new float2(mapRect.Size));
 
 			TooltipSpawnIndex = -1;
-			if (ShowSpawnPoints)
+			if (ShowSpawnPoints && SpawnOccupants != null)
 			{
 				var colors = SpawnOccupants().ToDictionary(c => c.Key, c => c.Value.Color.RGB);
 
