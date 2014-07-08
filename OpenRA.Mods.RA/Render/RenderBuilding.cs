@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Render
 		public virtual void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			if (DefaultAnimation.CurrentSequence != null)
-				DefaultAnimation.ReplaceAnim(NormalizeSequence(self, "idle"));
+				DefaultAnimation.ReplaceAnim(NormalizeSequence(self, DefaultAnimation.CurrentSequence.Name));
 		}
 	}
 }
