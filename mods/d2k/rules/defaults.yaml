@@ -237,7 +237,7 @@
 	Selectable:
 		Priority: 2
 	TargetableBuilding:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground, C4, Structure
 	Building:
 		Dimensions: 1,1
 		Footprint: x

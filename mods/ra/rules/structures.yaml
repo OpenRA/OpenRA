@@ -276,7 +276,7 @@ PDOX:
 		Amount: -200
 
 TSLA:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 80
@@ -319,7 +319,7 @@ TSLA:
 		Amount: -150
 
 AGUN:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
@@ -400,7 +400,7 @@ DOME:
 		Amount: -40
 
 PBOX:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Tooltip:
 		Name: Pillbox
 		Description: Static defense with a fireport for a\ngarrisoned soldier.
@@ -445,7 +445,7 @@ PBOX:
 		Amount: -15
 
 HBOX:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Tooltip:
 		Name: Camo Pillbox
 		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.
@@ -493,7 +493,7 @@ HBOX:
 		Amount: -15
 
 GUN:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 70
@@ -533,7 +533,7 @@ GUN:
 		Amount: -40
 
 FTUR:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
@@ -571,7 +571,7 @@ FTUR:
 		Amount: -20
 
 SAM:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
