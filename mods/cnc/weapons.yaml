@@ -60,7 +60,7 @@ GrenadierExplode:
 		ImpactSound: xplosml2.aud
 
 Atomic:
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Report: nukemisl.aud
 	Warhead@impact:
 		Damage: 1500	#1000
@@ -115,7 +115,7 @@ Atomic:
 		InfDeath: 5
 
 IonCannon:
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Warhead@impact:
 		Damage: 900
 		Spread: 853
@@ -132,7 +132,7 @@ IonCannon:
 
 Sniper:
 	Report: RAMGUN2.AUD
-	ValidTargets: Infantry
+	ValidTargets: Infantry, Enemy, Neutral, Ally
 	ROF: 40
 	Range: 6c0
 	Projectile: Bullet
@@ -164,7 +164,7 @@ HeliAGGun:
 	Burst: 2
 	BurstDelay: 0
 	Range: 4c0
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Report: gun5.aud
 	Projectile: Bullet
 		Speed: 1c682
@@ -184,7 +184,7 @@ HeliAAGun:
 	Burst: 2
 	BurstDelay: 0
 	Range: 4c0
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Report: gun5.aud
 	Projectile: Bullet
 		Speed: 1c682
@@ -239,7 +239,7 @@ Rockets:
 	ROF: 50
 	Range: 6c0
 	Report: BAZOOK1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -268,7 +268,7 @@ BikeRockets:
 	ROF: 50
 	Range: 6c0
 	Report: BAZOOK1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Burst: 2
 	BurstDelay: 10
 	Projectile: Missile
@@ -301,7 +301,7 @@ OrcaAGMissiles:
 	BurstDelay: 12
 	Range: 5c0
 	Report: BAZOOK1.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -331,7 +331,7 @@ OrcaAAMissiles:
 	BurstDelay: 12
 	Range: 5c0
 	Report: BAZOOK1.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -546,7 +546,7 @@ MammothMissiles:
 	ROF: 45
 	Range: 5c0
 	Report: ROCKET1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Burst: 2
 	BurstDelay: 15
 	Projectile: Missile
@@ -579,7 +579,7 @@ MammothMissiles:
 	Burst: 4
 	BurstDelay: 4
 	Report: ROCKET1.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Arm: 5
 		High: yes
@@ -610,7 +610,7 @@ MammothMissiles:
 	Report: ROCKET1.AUD
 	Burst: 2
 	BurstDelay: 10
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -712,7 +712,7 @@ TowerMissle:
 	ROF: 15
 	Range: 7c0
 	Report: ROCKET2.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -737,7 +737,7 @@ TowerMissle:
 		Damage: 25
 
 Vulcan:
-	ValidTargets: Ground, Water
+	ValidTargets: Ground, Water, Enemy, Neutral, Ally
 	ROF: 2
 	Range: 6c0
 	Report: gun5.aud
@@ -755,7 +755,7 @@ Vulcan:
 		Explosion: piffs
 
 Napalm:
-	ValidTargets: Ground, Water
+	ValidTargets: Ground, Water, Enemy, Neutral, Ally
 	ROF: 4
 	Range: 2c0
 	Burst: 2
@@ -810,7 +810,7 @@ SAMMissile:
 	ROF: 15
 	Range: 8c0
 	Report: ROCKET2.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -894,7 +894,7 @@ APCGun:
 	ROF: 18
 	Range: 5c0
 	Report: gun20.aud
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead:
@@ -911,7 +911,7 @@ APCGun.AA:
 	ROF: 18
 	Range: 7c0
 	Report: gun20.aud
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 1c682
 		High: true
@@ -929,7 +929,7 @@ Patriot:
 	Burst: 2
 	BurstDelay: 15
 	Report: ROCKET2.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		High: yes
 		Image: patriot

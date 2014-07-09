@@ -23,7 +23,7 @@ Bazooka:
 	ROF: 50
 	Range: 5c0
 	Report: BAZOOK1.WAV
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Missile
 		Speed: 160
 		Arm: 2
@@ -71,7 +71,7 @@ Vulcan:
 	ROF: 30
 	Range: 5c768
 	Report: VULCAN.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 1c256
 		ContrailLength: 3
@@ -94,7 +94,7 @@ Slung:
 	Delay: 5
 	Range: 5c512
 	Report: BAZOOK2.WAV
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 320
 		High: true
@@ -167,7 +167,7 @@ QuadRockets:
 	BurstDelay: 25
 	Range: 7c0
 	Report: ROCKET1.WAV
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		Inaccuracy: 96
@@ -217,7 +217,7 @@ TowerMissile:
 	Range: 7c768
 	MinRange: 1c0
 	Report: ROCKET1.WAV
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Burst: 2
 	BurstDelay: 15
 	Projectile: Bullet
@@ -313,7 +313,7 @@ DevBullet:
 	Burst: 4
 	BurstDelay: 15
 	Report: MISSLE1.WAV
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 358
 		Arm: 5

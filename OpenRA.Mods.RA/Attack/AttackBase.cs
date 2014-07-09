@@ -134,13 +134,13 @@ namespace OpenRA.Mods.RA
 
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
 
-		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World)); }
+		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World, self)); }
 		public WRange GetMaximumRange()
 		{
 			return Armaments.Select(a => a.Weapon.Range).Append(WRange.Zero).Max();
 		}
 
-		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World)); }
+		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World, self)); }
 
 		public void AttackTarget(Target target, bool queued, bool allowMove)
 		{

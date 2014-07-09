@@ -127,8 +127,11 @@ namespace OpenRA.Mods.RA
 
 						foreach (var victim in hitActors)
 						{
-							var damage = (int)GetDamageToInflict(pos, victim, warhead, weapon, firepowerModifier, true);
-							victim.InflictDamage(firedBy, damage, warhead);
+							if (warhead.IsValidAgainst(victim, firedBy))
+							{
+								var damage = (int)GetDamageToInflict(pos, victim, warhead, weapon, firepowerModifier, true);
+								victim.InflictDamage(firedBy, damage, warhead);
+							}
 						}
 					}
 					break;
@@ -137,10 +140,13 @@ namespace OpenRA.Mods.RA
 					{
 						foreach (var t in world.Map.FindTilesInCircle(targetTile, warhead.Size[0]))
 						{
-							foreach (var unit in world.ActorMap.GetUnitsAt(t))
+							foreach (var victim in world.ActorMap.GetUnitsAt(t))
 							{
-								var damage = (int)GetDamageToInflict(pos, unit, warhead, weapon, firepowerModifier, false);
-								unit.InflictDamage(firedBy, damage, warhead);
+								if (warhead.IsValidAgainst(victim, firedBy))
+								{
+									var damage = (int)GetDamageToInflict(pos, victim, warhead, weapon, firepowerModifier, false);
+									victim.InflictDamage(firedBy, damage, warhead);
+								}
 							}
 						}
 					}
@@ -153,14 +159,17 @@ namespace OpenRA.Mods.RA
 
 						foreach (var victim in hitActors)
 						{
-							var damage = GetDamageToInflict(pos, victim, warhead, weapon, firepowerModifier, false);
-							if (damage != 0) // will be 0 if the target doesn't have HealthInfo
+							if (warhead.IsValidAgainst(victim, firedBy))
 							{
-								var healthInfo = victim.Info.Traits.Get<HealthInfo>();
-								damage = (float)(damage / 100 * healthInfo.HP);
-							}
+								var damage = GetDamageToInflict(pos, victim, warhead, weapon, firepowerModifier, false);
+								if (damage != 0) // will be 0 if the target doesn't have HealthInfo
+								{
+									var healthInfo = victim.Info.Traits.Get<HealthInfo>();
+									damage = (float)(damage / 100 * healthInfo.HP);
+								}
 
-							victim.InflictDamage(firedBy, (int)damage, warhead);
+								victim.InflictDamage(firedBy, (int)damage, warhead);
+							}
 						}
 					}
 					break;
