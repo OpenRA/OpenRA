@@ -57,8 +57,7 @@ namespace OpenRA.Mods.RA
 
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
 		{
-			var proneDamage = (warhead.ProneModifier / 100f);
-			return IsProne ? proneDamage : 1f;
+			return IsProne && warhead != null ? warhead.ProneModifier / 100f : 1f;
 		}
 
 		public decimal GetSpeedModifier()
