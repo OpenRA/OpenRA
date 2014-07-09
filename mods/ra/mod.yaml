@@ -154,6 +154,7 @@ LobbyDefaults:
 	FragileAlliances: false
 	Shroud: true
 	Fog: true
+	TechLevel: Unrestricted
 
 ChromeMetrics:
 	mods/ra/metrics.yaml

@@ -3,7 +3,7 @@ DOG:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
-		Prerequisites: ~barr
+		Prerequisites: ~barr, ~techlevel.infonly
 		Hotkey: o
 	Valued:
 		Cost: 200
@@ -33,6 +33,7 @@ E1:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
+		Prerequisites: ~techlevel.infonly
 		Hotkey: i
 	Valued:
 		Cost: 100
@@ -63,7 +64,7 @@ E2:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Prerequisites: ~barr
+		Prerequisites: ~barr, ~techlevel.infonly
 		Hotkey: g
 	Valued:
 		Cost: 160
@@ -99,6 +100,7 @@ E3:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
+		Prerequisites: ~techlevel.infonly
 		Hotkey: r
 	Valued:
 		Cost: 300
@@ -132,7 +134,7 @@ E4:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: ~barr, ftur
+		Prerequisites: ~barr, ftur, ~techlevel.low
 		Hotkey: t
 	Valued:
 		Cost: 300
@@ -164,6 +166,7 @@ E6:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
+		Prerequisites: ~techlevel.infonly
 		Hotkey: e
 	Valued:
 		Cost: 500
@@ -195,7 +198,7 @@ SPY:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: dome, ~tent
+		Prerequisites: dome, ~tent, ~techlevel.medium
 		Hotkey: p
 	Valued:
 		Cost: 500
@@ -231,7 +234,7 @@ E7:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 110
-		Prerequisites: ~tent, atek
+		Prerequisites: ~tent, atek, ~techlevel.unrestricted
 		Hotkey: y
 		BuildLimit: 1
 	Valued:
@@ -271,7 +274,7 @@ MEDI:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
-		Prerequisites: ~tent
+		Prerequisites: ~tent, ~techlevel.infonly
 		Hotkey: m
 	Valued:
 		Cost: 200
@@ -306,7 +309,7 @@ MECH:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 70
-		Prerequisites: ~tent, fix
+		Prerequisites: ~tent, fix, ~techlevel.medium
 		Hotkey: c
 	Valued:
 		Cost: 500
@@ -422,7 +425,7 @@ HIJACKER:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 90
-		Prerequisites: ~tent, fix
+		Prerequisites: ~tent, fix, ~techlevel.medium
 		Hotkey: j
 	Valued:
 		Cost: 500
@@ -449,7 +452,7 @@ SHOK:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 70
-		Prerequisites: ~barr, stek, tsla
+		Prerequisites: ~barr, stek, tsla, ~techlevel.unrestricted
 		Hotkey: l
 	Valued:
 		Cost: 400
@@ -488,7 +491,7 @@ SNIPER:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
-		Prerequisites: ~barr, dome
+		Prerequisites: ~barr, dome, ~techlevel.medium
 		Hotkey: h
 	Selectable:
 		Bounds: 12,17,0,-6

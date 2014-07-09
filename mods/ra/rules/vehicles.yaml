@@ -3,7 +3,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: dome, ~vehicles.soviet
+		Prerequisites: dome, ~vehicles.soviet, ~techlevel.medium
 		Hotkey: v
 	Valued:
 		Cost: 900
@@ -32,7 +32,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: ~vehicles.allies
+		Prerequisites: ~vehicles.allies, ~techlevel.low
 		Hotkey: l
 	Valued:
 		Cost: 700
@@ -71,7 +71,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
-		Prerequisites: fix, ~vehicles.allies
+		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
 		Hotkey: m
 	Valued:
 		Cost: 850
@@ -113,7 +113,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: fix, ~vehicles.soviet
+		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
 		Hotkey: h
 	Valued:
 		Cost: 1150
@@ -155,7 +155,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
-		Prerequisites: fix, stek, ~vehicles.soviet
+		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.unrestricted
 		Hotkey: m
 	Valued:
 		Cost: 2000
@@ -211,7 +211,7 @@ ARTY:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
-		Prerequisites: dome, ~vehicles.allies
+		Prerequisites: dome, ~vehicles.allies, ~techlevel.medium
 		Hotkey: r
 	Valued:
 		Cost: 800
@@ -244,7 +244,7 @@ HARV:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Prerequisites: proc
+		Prerequisites: proc, ~techlevel.infonly
 		Hotkey: e
 	Valued:
 		Cost: 1100
@@ -287,7 +287,7 @@ MCV:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
-		Prerequisites: fix
+		Prerequisites: fix, ~techlevel.medium
 		Hotkey: b
 	CustomBuildTimeValue:
 		Value: 2000
@@ -328,7 +328,7 @@ JEEP:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: ~vehicles.allies
+		Prerequisites: ~vehicles.allies, ~techlevel.low
 		Hotkey: n
 	Valued:
 		Cost: 500
@@ -369,7 +369,7 @@ APC:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Hotkey: c
-		Prerequisites: ~vehicles.soviet
+		Prerequisites: ~vehicles.soviet, ~techlevel.low
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -404,7 +404,7 @@ MNLY.AP:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: fix, ~vehicles.soviet
+		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
 		Hotkey: i
 	Valued:
 		Cost: 800
@@ -438,7 +438,7 @@ MNLY.AT:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: fix, ~vehicles.allies
+		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
 		Hotkey: i
 	Valued:
 		Cost: 800
@@ -472,7 +472,7 @@ TRUK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
-		Prerequisites: weap
+		Prerequisites: weap, ~techlevel.low
 		Hotkey: u
 	Valued:
 		Cost: 500
@@ -499,7 +499,7 @@ MGG:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 160
-		Prerequisites: atek, ~vehicles.allies
+		Prerequisites: atek, ~vehicles.allies, ~techlevel.unrestricted
 		Hotkey: y
 	Valued:
 		Cost: 1200
@@ -537,7 +537,7 @@ MRJ:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 150
-		Prerequisites: atek, ~vehicles.allies
+		Prerequisites: atek, ~vehicles.allies, ~techlevel.unrestricted
 		Hotkey: k
 	Health:
 		HP: 220
@@ -568,7 +568,7 @@ TTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
-		Prerequisites: tsla, stek, ~vehicles.soviet
+		Prerequisites: tsla, stek, ~vehicles.soviet, ~techlevel.unrestricted
 		Hotkey: t
 	Valued:
 		Cost: 1350
@@ -604,7 +604,7 @@ FTRK:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Hotkey: k
-		Prerequisites: ~vehicles.soviet
+		Prerequisites: ~vehicles.soviet, ~techlevel.low
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -643,7 +643,7 @@ DTRK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
-		Prerequisites: stek, ~vehicles.soviet
+		Prerequisites: stek, ~vehicles.soviet, ~techlevel.unrestricted
 		Hotkey: o
 	Valued:
 		Cost: 2500
@@ -672,7 +672,7 @@ CTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
-		Prerequisites: atek, pdox, ~vehicles.allies
+		Prerequisites: atek, pdox, ~vehicles.allies, ~techlevel.unrestricted
 		Hotkey: j
 	Valued:
 		Cost: 1350
@@ -711,7 +711,7 @@ QTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 150
-		Prerequisites: fix, stek, ~vehicles.soviet
+		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.unrestricted
 		Hotkey: q
 	Valued:
 		Cost: 2500
@@ -742,7 +742,7 @@ STNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 170
-		Prerequisites: atek, ~vehicles.allies
+		Prerequisites: atek, ~vehicles.allies, ~techlevel.unrestricted
 		Hotkey: p
 	Valued:
 		Cost: 1350
