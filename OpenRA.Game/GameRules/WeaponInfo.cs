@@ -92,6 +92,7 @@ namespace OpenRA.GameRules
 			return retList;
 		}
 
+		///<summary>Checks if the weapon is valid against (can target) the target.</summary>
 		public bool IsValidAgainst(Target target, World world, Actor firedBy)
 		{
 			if (target.Type == TargetType.Actor)
@@ -117,28 +118,29 @@ namespace OpenRA.GameRules
 			return false;
 		}
 
+		///<summary>Checks if the weapon is valid against (can target) the actor.</summary>
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
-			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))
-				return false;
-
 			var targetable = victim.TraitOrDefault<ITargetable>();
 			if (targetable == null || !ValidTargets.Intersect(targetable.TargetTypes).Any()
 				|| InvalidTargets.Intersect(targetable.TargetTypes).Any())
 				return false;
 
-			return true;
-		}
-
-		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
-		{
-			// Frozen Actors are treated slightly differently.
 			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))
 				return false;
 
+			return true;
+		}
+
+		///<summary>Checks if the weapon is valid against (can target) the frozen actor.</summary>
+		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
+		{
 			var targetable = victim.Info.Traits.GetOrDefault<ITargetableInfo>();
 			if (targetable == null || !ValidTargets.Intersect(targetable.GetTargetTypes()).Any()
 				|| InvalidTargets.Intersect(targetable.GetTargetTypes()).Any())
+				return false;
+
+			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))
 				return false;
 
 			return true;
