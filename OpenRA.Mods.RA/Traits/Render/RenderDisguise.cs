@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA.Traits
 {
 	class RenderDisguiseInfo : RenderInfantryInfo, Requires<DisguiseInfo>
 	{
-		public override object Create(ActorInitializer init) { return new RenderDisguise(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderDisguise(init, this); }
 	}
 
 	class RenderDisguise : RenderInfantry
@@ -24,11 +24,11 @@ namespace OpenRA.Mods.RA.Traits
 		string intendedSprite;
 		Disguise disguise;
 
-		public RenderDisguise(Actor self, RenderDisguiseInfo info)
-			: base(self, info)
+		public RenderDisguise(ActorInitializer init, RenderDisguiseInfo info)
+			: base(init, info)
 		{
 			this.info = info;
-			disguise = self.Trait<Disguise>();
+			disguise = init.Self.Trait<Disguise>();
 			intendedSprite = disguise.AsSprite;
 		}
 

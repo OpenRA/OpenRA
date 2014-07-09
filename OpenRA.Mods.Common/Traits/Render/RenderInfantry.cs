@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] IdleAnimations = { };
 		public readonly string[] StandAnimations = { "stand" };
 
-		public override object Create(ActorInitializer init) { return new RenderInfantry(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderInfantry(init, this); }
 
 		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
@@ -58,14 +58,14 @@ namespace OpenRA.Mods.Common.Traits
 		bool IsModifyingSequence { get { return rsm != null && rsm.IsModifyingSequence; } }
 		bool wasModifying;
 
-		public RenderInfantry(Actor self, RenderInfantryInfo info)
-			: base(self, MakeFacingFunc(self))
+		public RenderInfantry(ActorInitializer init, RenderInfantryInfo info)
+			: base(init, info, MakeFacingFunc(init.Self))
 		{
 			this.info = info;
-			DefaultAnimation.PlayFetchIndex(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
+			DefaultAnimation.PlayFetchIndex(NormalizeInfantrySequence(init.Self, info.StandAnimations.Random(Game.CosmeticRandom)), () => 0);
 			state = AnimationState.Waiting;
-			move = self.Trait<IMove>();
-			rsm = self.TraitOrDefault<IRenderInfantrySequenceModifier>();
+			move = init.Self.Trait<IMove>();
+			rsm = init.Self.TraitOrDefault<IRenderInfantrySequenceModifier>();
 		}
 
 		protected virtual string NormalizeInfantrySequence(Actor self, string baseSequence)

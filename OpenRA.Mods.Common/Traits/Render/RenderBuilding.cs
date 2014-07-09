@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			: this(init, info, () => 0) { }
 
 		public RenderBuilding(ActorInitializer init, RenderBuildingInfo info, Func<int> baseFacing)
-			: base(init.Self, baseFacing)
+			: base(init, info, baseFacing)
 		{
 			var self = init.Self;
 			this.info = info;

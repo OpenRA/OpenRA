@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
 
-		public override object Create(ActorInitializer init) { return new RenderUnitReload(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderUnitReload(init, this); }
 	}
 
 	class RenderUnitReload : RenderUnit
@@ -27,11 +27,11 @@ namespace OpenRA.Mods.RA.Traits
 		readonly AttackBase attack;
 		readonly Armament armament;
 
-		public RenderUnitReload(Actor self, RenderUnitReloadInfo info)
-			: base(self)
+		public RenderUnitReload(ActorInitializer init, RenderUnitReloadInfo info)
+			: base(init, info)
 		{
-			attack = self.Trait<AttackBase>();
-			armament = self.TraitsImplementing<Armament>()
+			attack = init.Self.Trait<AttackBase>();
+			armament = init.Self.TraitsImplementing<Armament>()
 				.Single(a => a.Info.Name == info.Armament);
 		}
 
