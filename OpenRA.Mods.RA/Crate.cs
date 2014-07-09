@@ -27,7 +27,6 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Crate(init, this); }
 	}
 
-	// ITeleportable is required for paradrop
 	class Crate : ITick, IPositionable, ICrushable, ISync, INotifyParachuteLanded, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly Actor self;
