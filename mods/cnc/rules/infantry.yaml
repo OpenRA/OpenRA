@@ -30,7 +30,7 @@ E2:
 		Description: Fast infantry armed with grenades. \n  Strong vs Buildings, slow-moving targets
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Infantry.GDI
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -87,7 +87,7 @@ E4:
 		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Infantry.Nod
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -117,7 +117,7 @@ E5:
 		Description: Advanced general-purpose infantry.\n  Strong vs all Ground units
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: tmpl
+		Prerequisites: tmpl, ~techlevel.high
 		Queue: Infantry.Nod
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -181,7 +181,7 @@ RMBO:
 		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: eye
+		Prerequisites: eye, ~techlevel.high
 		Queue: Infantry.GDI
 	Selectable:
 		Bounds: 12,17,0,-6

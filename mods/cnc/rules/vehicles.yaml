@@ -7,7 +7,7 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI, Vehicle.Nod
 	Selectable:
 		Priority: 3
@@ -130,7 +130,7 @@ ARTY:
 		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles & Buildings
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 2
@@ -166,7 +166,7 @@ FTNK:
 		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings & Vehicles\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 7
@@ -309,7 +309,7 @@ LTNK:
 		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 7
@@ -348,7 +348,7 @@ MTNK:
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Vehicles\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI
 	Mobile:
 		Speed: 85
@@ -388,7 +388,7 @@ HTNK:
 		Description: Heavily armored GDI Tank. \nCan attack Aircraft.\n  Strong vs Everything
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: eye
+		Prerequisites: eye, ~techlevel.high
 		Queue: Vehicle.GDI
 	Mobile:
 		Crushes: wall, heavywall, crate, infantry
@@ -441,7 +441,7 @@ MSAM:
 		Description: Long range rocket artillery.\n  Strong vs all Ground units.
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI
 	Mobile:
 		Speed: 85
@@ -478,7 +478,7 @@ MLRS:
 		Description: Powerful anti-air unit. \nCannot attack Ground units.
 	Buildable:
 		BuildPaletteOrder: 70
-		Prerequisites: anyhq
+		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
 		Speed: 99
@@ -518,7 +518,7 @@ STNK:
 		Description: Long-range missile tank that can cloak. \nCan attack Aircraft. \nHas weak armor. Can be spotted by infantry.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry.
 	Buildable:
 		BuildPaletteOrder: 90
-		Prerequisites: tmpl
+		Prerequisites: tmpl, ~techlevel.high
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 10

@@ -6,7 +6,9 @@ Player:
 			ConstructionYard: conyarda,conyardh,conyardo
 			Refinery: refa,refh,refo
 			Power: pwra,pwrh,pwro
+			Barracks: barra,barrh,barro
 			VehiclesFactory: lighta,lighth,lighto,heavya,heavyh,heavyo
+			Production: lighta,lighth,lighto,heavya,heavyh,heavyo,barra,barrh,barro
 			Silo: siloa, siloh, siloo
 		UnitsCommonNames:
 			Mcv: mcva,mcvh,mcvo
@@ -72,9 +74,9 @@ Player:
 			rockettowera: 7%
 			rockettowerh: 7%
 			rockettowero: 7%
-			powra: 10%
-			powrh: 10%
-			powro: 10%
+			pwra: 10%
+			pwrh: 10%
+			pwro: 10%
 		UnitsToBuild:
 			rifle: 6%
 			bazooka: 5%
@@ -100,6 +102,7 @@ Player:
 			combath: 100%
 			combato: 100%
 		SquadSize: 8
+		MaxBaseRadius: 40
 	HackyAI@Vidius:
 		Name: Vidious
 		UnitQueues: Infantry, Vehicle, Armor, Starport
@@ -107,7 +110,9 @@ Player:
 			ConstructionYard: conyarda,conyardh,conyardo
 			Refinery: refa,refh,refo
 			Power: pwra,pwrh,pwro
+			Barracks: barra,barrh,barro
 			VehiclesFactory: lighta,lighth,lighto,heavya,heavyh,heavyo
+			Production: lighta,lighth,lighto,heavya,heavyh,heavyo,barra,barrh,barro
 			Silo: siloa, siloh, siloo
 		UnitsCommonNames:
 			Mcv: mcva,mcvh,mcvo
@@ -173,9 +178,9 @@ Player:
 			rockettowera: 10%
 			rockettowerh: 10%
 			rockettowero: 10%
-			powra: 12%
-			powrh: 12%
-			powro: 12%
+			pwra: 12%
+			pwrh: 12%
+			pwro: 12%
 		UnitsToBuild:
 			rifle: 2%
 			bazooka: 2%
@@ -202,6 +207,7 @@ Player:
 			combath: 100%
 			combato: 100%
 		SquadSize: 6
+		MaxBaseRadius: 40
 	HackyAI@Gladius:
 		Name: Gladius
 		UnitQueues: Infantry, Vehicle, Armor, Starport
@@ -209,7 +215,9 @@ Player:
 			ConstructionYard: conyarda,conyardh,conyardo
 			Refinery: refa,refh,refo
 			Power: pwra,pwrh,pwro
+			Barracks: barra,barrh,barro
 			VehiclesFactory: lighta,lighth,lighto,heavya,heavyh,heavyo
+			Production: lighta,lighth,lighto,heavya,heavyh,heavyo,barra,barrh,barro
 			Silo: siloa, siloh, siloo
 		UnitsCommonNames:
 			Mcv: mcva,mcvh,mcvo
@@ -271,9 +279,9 @@ Player:
 			palaceo: 0.1%
 			guntower: 10%
 			rockettower: 5%
-			powra: 10%
-			powrh: 10%
-			powro: 10%
+			pwra: 10%
+			pwrh: 10%
+			pwro: 10%
 		UnitsToBuild:
 			rifle: 15%
 			bazooka: 13%
@@ -300,4 +308,4 @@ Player:
 			combath: 100%
 			combato: 100%
 		SquadSize: 10
-
+		MaxBaseRadius: 40

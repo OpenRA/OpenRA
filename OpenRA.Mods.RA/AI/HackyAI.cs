@@ -33,18 +33,35 @@ namespace OpenRA.Mods.RA.AI
 		public readonly int RushInterval = 600;
 		public readonly int AttackForceInterval = 30;
 
-		[Desc("By what factor should power output exceed power consumption.")]
-		public readonly float ExcessPowerFactor = 1.2f;
-		[Desc("By what minimum amount should power output exceed power consumption.")]
-		public readonly int MinimumExcessPower = 50;
+		[Desc("How long to wait (in ticks) between structure production checks when there is no active production.")]
+		public readonly int StructureProductionInactiveDelay = 125;
+
+		[Desc("How long to wait (in ticks) between structure production checks ticks when actively building things.")]
+		public readonly int StructureProductionActiveDelay = 10;
+
+		[Desc("Minimum range at which to build defensive structures near a combat hotspot.")]
+		public readonly int MinimumDefenseRadius = 5;
+
+		[Desc("Maximum range at which to build defensive structures near a combat hotspot.")]
+		public readonly int MaximumDefenseRadius = 20;
+
+		[Desc("Try to build another production building if there is too much cash.")]
+		public readonly int NewProductionCashThreshold = 5000;
+
 		[Desc("Only produce units as long as there are less than this amount of units idling inside the base.")]
 		public readonly int IdleBaseUnitsMaximum = 12;
+
 		[Desc("Radius in cells around enemy BaseBuilder (Construction Yard) where AI scans for targets to rush.")]
 		public readonly int RushAttackScanRadius = 15;
+
 		[Desc("Radius in cells around the base that should be scanned for units to be protected.")]
 		public readonly int ProtectUnitScanRadius = 15;
+
 		[Desc("Radius in cells around a factory scanned for rally points by the AI.")]
 		public readonly int RallyPointScanRadius = 8;
+
+		[Desc("Radius in cells around the center of the base to expand.")]
+		public readonly int MaxBaseRadius = 20;
 
 		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 		public readonly bool ShouldRepairBuildings = true;
@@ -91,15 +108,16 @@ namespace OpenRA.Mods.RA.AI
 
 	public sealed class HackyAI : ITick, IBot, INotifyDamage
 	{
-		bool enabled;
-		public int ticks;
-		public Player p;
-		public MersenneTwister random;
-		public CPos baseCenter;
+		public MersenneTwister random { get; private set; }
+		public readonly HackyAIInfo Info;
+		public CPos baseCenter { get; private set; }
+		public Player p { get; private set; }
+
 		PowerManager playerPower;
 		SupportPowerManager supportPowerMngr;
 		PlayerResources playerResource;
-		internal readonly HackyAIInfo Info;
+		bool enabled;
+		int ticks;
 
 		HashSet<int> resourceTypeIndices;
 
@@ -114,7 +132,6 @@ namespace OpenRA.Mods.RA.AI
 		// Units that the ai already knows about. Any unit not on this list needs to be given a role.
 		List<Actor> activeUnits = new List<Actor>();
 
-		const int MaxBaseDistance = 40;
 		public const int feedbackTime = 30;		// ticks; = a bit over 1s. must be >= netlag.
 
 		public readonly World world;
@@ -143,9 +160,9 @@ namespace OpenRA.Mods.RA.AI
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 
 			foreach (var building in Info.BuildingQueues) 
-				builders.Add(new BaseBuilder(this, building, q => ChooseBuildingToBuild(q, false)));
+				builders.Add(new BaseBuilder(this, building, p, playerPower, playerResource));
 			foreach (var defense in Info.DefenseQueues) 
-				builders.Add(new BaseBuilder(this, defense, q => ChooseBuildingToBuild(q, true)));
+				builders.Add(new BaseBuilder(this, defense, p, playerPower, playerResource));
 
 			random = new MersenneTwister((int)p.PlayerActor.ActorID);
 
@@ -153,12 +170,6 @@ namespace OpenRA.Mods.RA.AI
 				Map.Rules.Actors["world"].Traits
 				.WithInterface<ResourceTypeInfo>()
 				.Select(t => world.TileSet.GetTerrainIndex(t.TerrainType)));
-		}
-
-		static int GetPowerProvidedBy(ActorInfo building)
-		{
-			var bi = building.Traits.GetOrDefault<BuildingInfo>();
-			return bi != null ? bi.Power : 0;
 		}
 
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
@@ -182,7 +193,7 @@ namespace OpenRA.Mods.RA.AI
 				.Where(a => a.Actor.Owner == p)
 				.Select(a => a.Actor.Info.Name).ToArray();
 
-			foreach (var unit in Info.UnitsToBuild)
+			foreach (var unit in Info.UnitsToBuild.Shuffle(random))
 				if (buildableThings.Any(b => b.Name == unit.Key))
 					if (myUnits.Count(a => a == unit.Key) < unit.Value * myUnits.Length)
 						if (HasAdequateAirUnits(Map.Rules.Actors[unit.Key]))
@@ -212,7 +223,7 @@ namespace OpenRA.Mods.RA.AI
 				.Count(a => a.Actor.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Actor.Info.Name));
 		}
 
-		ActorInfo GetBuildingInfoByCommonName(string commonName, Player owner)
+		public ActorInfo GetBuildingInfoByCommonName(string commonName, Player owner)
 		{
 			if (commonName == "ConstructionYard")
 				return Map.Rules.Actors.Where(k => Info.BuildingCommonNames[commonName].Contains(k.Key)).Random(random).Value;
@@ -220,12 +231,12 @@ namespace OpenRA.Mods.RA.AI
 			return GetInfoByCommonName(Info.BuildingCommonNames, commonName, owner);
 		}
 
-		ActorInfo GetUnitInfoByCommonName(string commonName, Player owner)
+		public ActorInfo GetUnitInfoByCommonName(string commonName, Player owner)
 		{
 			return GetInfoByCommonName(Info.UnitsCommonNames, commonName, owner);
 		}
 
-		ActorInfo GetInfoByCommonName(Dictionary<string, string[]> names, string commonName, Player owner)
+		public ActorInfo GetInfoByCommonName(Dictionary<string, string[]> names, string commonName, Player owner)
 		{
 			if (!names.Any() || !names.ContainsKey(commonName))
 				throw new InvalidOperationException("Can't find {0} in the HackyAI UnitsCommonNames definition.".F(commonName));
@@ -233,42 +244,27 @@ namespace OpenRA.Mods.RA.AI
 			return Map.Rules.Actors.Where(k => names[commonName].Contains(k.Key)).Random(random).Value;
 		}
 
-		bool HasAdequatePower()
-		{
-			// note: CNC `fact` provides a small amount of power. don't get jammed because of that.
-			return playerPower.PowerProvided > Info.MinimumExcessPower &&
-				playerPower.PowerProvided > playerPower.PowerDrained * Info.ExcessPowerFactor;
-		}
-
-		bool HasAdequateFact()
+		public bool HasAdequateFact()
 		{
 			// Require at least one construction yard, unless we have no vehicles factory (can't build it).
 			return CountBuildingByCommonName("ConstructionYard", p) > 0 ||
 				CountBuildingByCommonName("VehiclesFactory", p) == 0;
 		}
 
-		bool HasAdequateProc()
+		public bool HasAdequateProc()
 		{
 			// Require at least one refinery, unless we have no power (can't build it).
 			return CountBuildingByCommonName("Refinery", p) > 0 ||
 				CountBuildingByCommonName("Power", p) == 0;
 		}
 
-		bool HasMinimumProc()
+		public bool HasMinimumProc()
 		{
 			// Require at least two refineries, unless we have no power (can't build it)
 			// or barracks (higher priority?)
 			return CountBuildingByCommonName("Refinery", p) >= 2 ||
 				CountBuildingByCommonName("Power", p) == 0 ||
 				CountBuildingByCommonName("Barracks", p) == 0;
-		}
-
-		bool HasAdequateNumber(string frac, Player owner)
-		{
-			if (Info.BuildingLimits.ContainsKey(frac))
-				return CountBuilding(frac, owner) < Info.BuildingLimits[frac];
-
-			return true;
 		}
 
 		// For mods like RA (number of building must match the number of aircraft)
@@ -286,108 +282,68 @@ namespace OpenRA.Mods.RA.AI
 			return true;
 		}
 
-		ActorInfo ChooseBuildingToBuild(ProductionQueue queue, bool isDefense)
-		{
-			var buildableThings = queue.BuildableItems();
-
-			if (!isDefense)
-			{
-				// Try to maintain 20% excess power
-				if (!HasAdequatePower())
-					return buildableThings.Where(a => GetPowerProvidedBy(a) > 0)
-						.MaxByOrDefault(a => GetPowerProvidedBy(a));
-
-				if (playerResource.AlertSilo)
-					return GetBuildingInfoByCommonName("Silo", p);
-
-				if (!HasAdequateProc() || !HasMinimumProc())
-					return GetBuildingInfoByCommonName("Refinery", p);
-			}
-
-			var myBuildings = p.World
-				.ActorsWithTrait<Building>()
-				.Where(a => a.Actor.Owner == p)
-				.Select(a => a.Actor.Info.Name)
-				.ToArray();
-
-			foreach (var frac in Info.BuildingFractions)
-				if (buildableThings.Any(b => b.Name == frac.Key))
-					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length && HasAdequateNumber(frac.Key, p) &&
-						playerPower.ExcessPower >= Map.Rules.Actors[frac.Key].Traits.Get<BuildingInfo>().Power)
-						return Map.Rules.Actors[frac.Key];
-
-			return null;
-		}
-
-		bool NoBuildingsUnder(IEnumerable<CPos> cells)
-		{
-			var bi = world.WorldActor.Trait<BuildingInfluence>();
-			return cells.All(c => bi.GetBuildingAt(c) == null);
-		}
-
 		CPos defenseCenter;
-		public CPos? ChooseBuildLocation(string actorType, BuildingType type)
-		{
-			return ChooseBuildLocation(actorType, true, MaxBaseDistance, type);
-		}
-
-		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, int maxBaseDistance, BuildingType type)
+		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
 		{
 			var bi = Map.Rules.Actors[actorType].Traits.GetOrDefault<BuildingInfo>();
 			if (bi == null)
 				return null;
 
-			Func<WPos, CPos, CPos?> findPos = (pos, center) =>
+			// Find the buildable cell that is closest to pos and centered around center
+			Func<CPos, CPos, int, int, CPos?> findPos = (center, target, minRange, maxRange) =>
 			{
-				for (var k = MaxBaseDistance; k >= 0; k--)
-				{
-					var tlist = Map.FindTilesInCircle(center, k);
+				var cells = Map.FindTilesInAnnulus(center, minRange, maxRange);
 
-					foreach (var t in tlist)
-						if (world.CanPlaceBuilding(actorType, bi, t, null))
-							if (bi.IsCloseEnoughToBase(world, p, actorType, t))
-								if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(Map.Rules, actorType, bi, t), false)))
-									return t;
+				// Sort by distance to target if we have one
+				if (center != target)
+					cells = cells.OrderBy(c => (center - target).LengthSquared);
+				else
+					cells = cells.Shuffle(random);
+
+				foreach (var cell in cells)
+				{
+					if (!world.CanPlaceBuilding(actorType, bi, cell, null))
+						continue;
+
+					if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(world, p, actorType, cell))
+						continue;
+
+					return cell;
 				}
 
 				return null;
 			};
 
-			var baseCenterPos = world.Map.CenterOfCell(baseCenter);
 			switch (type)
 			{
 				case BuildingType.Defense:
-					var enemyBase = FindEnemyBuildingClosestToPos(baseCenterPos);
-					return enemyBase != null ? findPos(enemyBase.CenterPosition, defenseCenter) : null;
+
+					// Build near the closest enemy structure
+					var closestEnemy = world.Actors.Where(a => !a.Destroyed && a.HasTrait<Building>() && p.Stances[a.Owner] == Stance.Enemy)
+						.ClosestTo(world.Map.CenterOfCell(defenseCenter));
+
+					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
+					return findPos(defenseCenter, targetCell, Info.MinimumDefenseRadius, Info.MaximumDefenseRadius);
 
 				case BuildingType.Refinery:
-					var tilesPos = Map.FindTilesInCircle(baseCenter, MaxBaseDistance)
-						.Where(a => resourceTypeIndices.Contains(Map.GetTerrainIndex(new CPos(a.X, a.Y))));
-					if (tilesPos.Any())
-					{
-						var pos = tilesPos.MinBy(a => (world.Map.CenterOfCell(a) - baseCenterPos).LengthSquared);
-						return findPos(world.Map.CenterOfCell(pos), baseCenter);
-					}
-					return null;
 
+					// Try and place the refinery near a resource field
+					var nearbyResources = Map.FindTilesInCircle(baseCenter, Info.MaxBaseRadius)
+						.Where(a => resourceTypeIndices.Contains(Map.GetTerrainIndex(a)))
+						.Shuffle(random);
+
+					foreach (var c in nearbyResources)
+					{
+						var found = findPos(c, baseCenter, 0, Info.MaxBaseRadius);
+						if (found != null)
+							return found;
+					}
+
+					// Try and find a free spot somewhere else in the base
+					return findPos(baseCenter, baseCenter, 0, Info.MaxBaseRadius);
 
 				case BuildingType.Building:
-					for (var k = 0; k < maxBaseDistance; k++)
-					{
-						foreach (var t in Map.FindTilesInCircle(baseCenter, k))
-						{
-							if (world.CanPlaceBuilding(actorType, bi, t, null))
-							{
-								if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(world, p, actorType, t))
-									continue;
-
-								if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(Map.Rules, actorType, bi, t), false)))
-									return t;
-							}
-						}
-					}
-
-					break;
+					return findPos(baseCenter, baseCenter, 0, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.MaxTilesInCircleRange);
 			}
 
 			// Can't find a build location
@@ -481,14 +437,6 @@ namespace OpenRA.Mods.RA.AI
 				&& a.HasTrait<BaseBuilding>() && !a.HasTrait<Mobile>()).ToList();
 		}
 
-		Actor FindEnemyBuildingClosestToPos(WPos pos)
-		{
-			var closestBuilding = world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy
-			   && !a.Destroyed && a.HasTrait<Building>()).ClosestTo(pos);
-
-			return closestBuilding;
-		}
-
 		void CleanSquads()
 		{
 			squads.RemoveAll(s => !s.IsValid);
@@ -579,7 +527,6 @@ namespace OpenRA.Mods.RA.AI
 
 			foreach (var a in newUnits)
 			{
-				BotDebug("AI: Found a newly built unit");
 				if (a.HasTrait<Harvester>())
 					world.IssueOrder(new Order("Harvest", a, false));
 				else
@@ -676,10 +623,6 @@ namespace OpenRA.Mods.RA.AI
 				.Where(rp => rp.Actor.Owner == p &&
 					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.Traits.GetOrDefault<BuildingInfo>())).ToArray();
 
-			if (buildings.Length > 0)
-				BotDebug("Bot {0} needs to find rallypoints for {1} buildings.",
-					p.PlayerName, buildings.Length);
-
 			foreach (var a in buildings)
 				world.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
 		}
@@ -723,8 +666,6 @@ namespace OpenRA.Mods.RA.AI
 		// backup location within the main base.
 		void FindAndDeployBackupMcv(Actor self)
 		{
-			var maxBaseDistance = Math.Max(world.Map.MapSize.X, world.Map.MapSize.Y);
-
 			// HACK: This needs to query against MCVs directly
 			var mcvs = self.World.Actors.Where(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>());
 			if (!mcvs.Any())
@@ -736,7 +677,7 @@ namespace OpenRA.Mods.RA.AI
 					continue;
 
 				var factType = mcv.Info.Traits.Get<TransformsInfo>().IntoActor;
-				var desiredLocation = ChooseBuildLocation(factType, false, maxBaseDistance, BuildingType.Building);
+				var desiredLocation = ChooseBuildLocation(factType, false, BuildingType.Building);
 				if (desiredLocation == null)
 					continue;
 

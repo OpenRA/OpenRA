@@ -156,6 +156,7 @@ LobbyDefaults:
 	FragileAlliances: false
 	Shroud: true
 	Fog: true
+	TechLevel: Unrestricted
 
 ChromeMetrics:
 	mods/cnc/metrics.yaml
