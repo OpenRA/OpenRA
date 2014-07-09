@@ -534,6 +534,7 @@ Zombie:
 		Queue: Infantry
 		BuildPaletteOrder: 200
 		Prerequisites: ~bio
+		Hotkey: b
 	Selectable:
 		Voice: AntVoice
 		Bounds: 12,17,0,-9
@@ -558,6 +559,7 @@ Ant:
 		Queue: Infantry
 		BuildPaletteOrder: 1954
 		Prerequisites: ~bio
+		Hotkey: n
 	Selectable:
 		Voice: AntVoice
 		Bounds: 30,30,0,-2
@@ -573,4 +575,43 @@ Ant:
 	AttackFrontal:
 	Armament:
 		Weapon: mandible
+		
+VLKV:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 110
+		Prerequisites: ~barr, stek
+		Hotkey: v
+		BuildLimit: 1
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Volkov
+		Description: Elite commando infantry, armed with \nMP5 rifle and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
+	Selectable:
+		Voice: StavrosVoice
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 100
+	Mobile:
+		Speed: 71
+	RevealsShroud:
+		Range: 6c0
+	C4Demolition:
+		C4Delay: 45
+	Passenger:
+		PipType: Red
+	Armament@PRIMARY:
+		Weapon: MP5
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: MP5
+		MuzzleSequence: garrison-muzzle
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+
 
