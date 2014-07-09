@@ -110,8 +110,6 @@ Container@PLAYER_WIDGETS:
 			Width: 250
 			Height: 500
 			ReadyText: READY
-			ReadyTextStyle: AlternatingColor
-			ReadyTextAltColor: 50,205,50
 			HoldText: ON HOLD
 			RequiresText: Requires {0}
 
