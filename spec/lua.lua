@@ -4,10 +4,10 @@
 local funcdef = "([A-Za-z_][A-Za-z0-9_%.%:]*)%s*"
 local funccall = "([A-Za-z_][A-Za-z0-9_]*)%s*"
 local decindent = {
-  ['else'] = true, ['elseif'] = true, ['end'] = true}
+  ['else'] = true, ['elseif'] = true, ['until'] = true, ['end'] = true}
 local incindent = {
   ['else'] = true, ['elseif'] = true, ['for'] = true, ['do'] = true,
-  ['if'] = true, ['repeat'] = true, ['until'] = true, ['while'] = true}
+  ['if'] = true, ['repeat'] = true, ['while'] = true}
 local function isfndef(str)
   local l
   local s,e,cap,par = string.find(str, "function%s+" .. funcdef .. "(%(.-%))")
@@ -43,9 +43,10 @@ return {
     -- this handles three different cases:
     local term = (str:match("^%s*(%w+)%s*$")
       or str:match("^%s*(elseif)[%s%(]")
+      or str:match("^%s*(until)[%s%(]")
       or str:match("^%s*(else)%f[%W]")
     )
-    -- (1) 'end', 'elseif', 'else'
+    -- (1) 'end', 'elseif', 'else', 'until'
     local match = term and decindent[term]
     -- (2) 'end)', 'end}', 'end,', and 'end;'
     if not term then term, match = str:match("^%s*(end)%s*([%)%}]*)%s*[,;]?") end
