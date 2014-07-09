@@ -20,15 +20,24 @@ namespace OpenRA.Mods.RA
 	{
 		[Desc("XP requirements for each level, as multiples of our own cost.")]
 		public readonly float[] CostThreshold = { 2, 4, 8, 16 };
+
+		[Desc("Effect of this actor's warheads is multiplied by these amounts, if level > 0.")]
 		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
+
+		[Desc("Damage received from DamagerWarheads is multiplied by these amounts, if level > 0.")]
 		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
+
+		[Desc("DisableTicks received from DisablerWarheads is multiplied by these amounts, if level > 0.")]
+		public readonly float[] DisableTicksModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
+
+		[Desc("This actor's movement speed is multiplied by these amounts, if level > 0.")]
 		public readonly decimal[] SpeedModifier = { 1.1m, 1.15m, 1.2m, 1.5m };
 		public readonly string ChevronPalette = "effect";
 		public readonly string LevelUpPalette = "effect";
 		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 	}
 
-	public class GainsExperience : IFirepowerModifier, ISpeedModifier, IDamageModifier, ISync
+	public class GainsExperience : IFirepowerModifier, ISpeedModifier, IDamageModifier, ISync, IDisableTicksModifier
 	{
 		readonly Actor self;
 		readonly int[] levels;
@@ -82,9 +91,14 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		public float GetDamageModifier(Actor attacker, DamagerWarheadInfo warhead)
 		{
 			return Level > 0 ? 1 / info.ArmorModifier[Level - 1] : 1;
+		}
+
+		public float GetDisableTicksModifier(Actor attacker, DisablerWarheadInfo warhead)
+		{
+			return Level > 0 ? 1 / info.DisableTicksModifier[Level - 1] : 1;
 		}
 
 		public float GetFirepowerModifier()

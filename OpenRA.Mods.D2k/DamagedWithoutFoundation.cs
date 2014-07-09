@@ -66,7 +66,8 @@ namespace OpenRA.Mods.D2k
 				return;
 
 			foreach (var w in weapon.Warheads)
-				health.InflictDamage(self, self.World.WorldActor, w.Damage, w, false);
+				if (w is DamagerWarheadInfo)
+					health.InflictDamage(self, self.World.WorldActor, (w as DamagerWarheadInfo).Damage, (w as DamagerWarheadInfo), false);
 
 			damageTicks = weapon.ROF;
 		}

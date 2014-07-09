@@ -8,17 +8,15 @@
  */
 #endregion
 
-using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("This unit cannot be damaged.")]
-	class InvulnerableInfo : TraitInfo<Invulnerable> { }
-
-	class Invulnerable : IDamageModifier, IDisableTicksModifier
+	public class DisableArmorInfo : TraitInfo<DisableArmor>
 	{
-		public float GetDamageModifier(Actor attacker, DamagerWarheadInfo warhead) { return 0.0f; }
-		public float GetDisableTicksModifier(Actor attacker, DisablerWarheadInfo warhead) { return 0.0f; }
+		public readonly string Type = null;
 	}
+
+	public class DisableArmor { }
 }
+

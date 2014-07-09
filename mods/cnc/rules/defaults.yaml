@@ -41,6 +41,8 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	DisabledByWarhead:
+		TargetTypes: EMP
 
 ^Tank:
 	AppearsOnRadar:
@@ -88,6 +90,8 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	DisabledByWarhead:
+		TargetTypes: EMP
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -119,6 +123,8 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	DisabledByWarhead:
+		TargetTypes: EMP
 
 ^Infantry:
 	AppearsOnRadar:
@@ -187,6 +193,8 @@
 	DeathSounds@POISONED:
 		DeathSound: Poisoned
 		InfDeaths: 6
+	DisabledByWarhead:
+		TargetTypes: Paralyze
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -285,6 +293,8 @@
 	AttackMove:
 	LuaScriptEvents:
 	ScriptTriggers:
+	DisabledByWarhead:
+		TargetTypes: EMP
 
 ^Ship:
 	AppearsOnRadar:
@@ -311,6 +321,8 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	DisabledByWarhead:
+		TargetTypes: EMP
 
 ^Building:
 	AppearsOnRadar:
@@ -356,6 +368,8 @@
 	Demolishable:
 	ScriptTriggers:
 	WithMakeAnimation:
+	DisabledByWarhead:
+		TargetTypes: EMP
 
 ^BaseBuilding:
 	Inherits: ^Building

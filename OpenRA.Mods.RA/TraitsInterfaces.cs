@@ -50,4 +50,7 @@ namespace OpenRA.Mods.RA
 	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
+
+	public interface IDisableTicksModifier { float GetDisableTicksModifier(Actor attacker, DisablerWarheadInfo warhead); }
+	public interface INotifyDisabledByWarheadState { void DisabledByWarheadStateChanged(Actor self, bool isNowDisabled); }
 }

@@ -16,11 +16,16 @@ namespace OpenRA.Mods.RA
 	[Desc("Allows map scripts to make this actor invulnerable via actor.Invulnerable = true.")]
 	class ScriptInvulnerableInfo : TraitInfo<ScriptInvulnerable> {}
 
-	class ScriptInvulnerable : IDamageModifier
+	class ScriptInvulnerable : IDamageModifier, IDisableTicksModifier
 	{
 		public bool Invulnerable = false;
 
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		public float GetDamageModifier(Actor attacker, DamagerWarheadInfo warhead)
+		{
+			return Invulnerable ? 0.0f : 1.0f;
+		}
+
+		public float GetDisableTicksModifier(Actor attacker, DisablerWarheadInfo warhead)
 		{
 			return Invulnerable ? 0.0f : 1.0f;
 		}

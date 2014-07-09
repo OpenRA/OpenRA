@@ -8,7 +8,7 @@ LMG:
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
-	Warhead:
+	Warhead: Damager
 		Spread: 96
 		Versus:
 			Wood: 25%
@@ -23,7 +23,7 @@ Bazooka:
 	ROF: 50
 	Range: 5c0
 	Report: BAZOOK1.WAV
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Missile
 		Speed: 160
 		Arm: 2
@@ -32,7 +32,7 @@ Bazooka:
 		Image: RPG
 		ROT: 5
 		RangeLimit: 35
-	Warhead:
+	Warhead: Damager
 		Spread: 96
 		Versus:
 			None: 10%
@@ -56,7 +56,7 @@ Sniper:
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
-	Warhead:
+	Warhead: Damager
 		Damage: 60
 		Spread: 32
 		Versus:
@@ -71,14 +71,14 @@ Vulcan:
 	ROF: 30
 	Range: 5c768
 	Report: VULCAN.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 1c256
 		ContrailLength: 3
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
-	Warhead:
+	Warhead: Damager
 		Spread: 96
 		Versus:
 			Wood: 0%
@@ -94,7 +94,7 @@ Slung:
 	Delay: 5
 	Range: 5c512
 	Report: BAZOOK2.WAV
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 320
 		High: true
@@ -102,7 +102,7 @@ Slung:
 		Angle: 88
 		Inaccuracy: 384
 		Image: MISSILE
-	Warhead:
+	Warhead: Damager
 		Spread: 192
 		Versus:
 			None: 0%
@@ -127,7 +127,7 @@ HMG:
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
-	Warhead:
+	Warhead: Damager
 		Spread: 96
 		Versus:
 			Wood: 15%
@@ -150,7 +150,7 @@ HMGo:
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
-	Warhead:
+	Warhead: Damager
 		Spread: 96
 		Versus:
 			Wood: 15%
@@ -167,7 +167,7 @@ QuadRockets:
 	BurstDelay: 25
 	Range: 7c0
 	Report: ROCKET1.WAV
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		Inaccuracy: 96
@@ -175,7 +175,7 @@ QuadRockets:
 		ROT: 10
 		Speed: 256
 		RangeLimit: 40
-	Warhead:
+	Warhead: Damager
 		Spread: 96
 		Versus:
 			None: 35%
@@ -199,7 +199,7 @@ TurretGun:
 		Shadow: no
 		Inaccuracy: 288
 		Image: 120mm
-	Warhead:
+	Warhead: Damager
 		Spread: 256
 		Versus:
 			None: 50%
@@ -217,7 +217,7 @@ TowerMissile:
 	Range: 7c768
 	MinRange: 1c0
 	Report: ROCKET1.WAV
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Burst: 2
 	BurstDelay: 15
 	Projectile: Bullet
@@ -230,7 +230,7 @@ TowerMissile:
 		Speed: 256
 		RangeLimit: 50
 		Angle: 110
-	Warhead:
+	Warhead: Damager
 		Spread: 384
 		Versus:
 			None: 50%
@@ -252,7 +252,7 @@ TowerMissile:
 		Speed: 640
 		Inaccuracy: 384
 		Image: 120mm
-	Warhead:
+	Warhead: Damager
 		Spread: 256
 		Versus:
 			None: 50%
@@ -273,7 +273,7 @@ TowerMissile:
 		Speed: 704
 		Inaccuracy: 352
 		Image: 120mm
-	Warhead:
+	Warhead: Damager
 		Spread: 256
 		Versus:
 			None: 50%
@@ -293,7 +293,7 @@ DevBullet:
 	Projectile: Bullet
 		Speed: 640
 		Image: doubleblastbullet
-	Warhead:
+	Warhead: Damager
 		Spread: 256
 		Versus:
 			None: 100%
@@ -313,7 +313,7 @@ DevBullet:
 	Burst: 4
 	BurstDelay: 15
 	Report: MISSLE1.WAV
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 358
 		Arm: 5
@@ -324,7 +324,7 @@ DevBullet:
 		Image: MISSILE2
 		ROT: 5
 		ContrailLength: 5
-	Warhead:
+	Warhead: Damager
 		Spread: 384
 		Versus:
 			None: 20%
@@ -352,7 +352,7 @@ FakeMissile:
 		Image: MISSILE
 		ContrailLength: 15
 		ContrailUsePlayerColor: True
-	Warhead:
+	Warhead: Damager
 		Spread: 96
 		Versus:
 			None: 0%
@@ -376,7 +376,7 @@ FakeMissile:
 		Inaccuracy: 1c256
 		ContrailLength: 20
 		Image: 155mm
-	Warhead:
+	Warhead: Damager
 		Spread: 384
 		Versus:
 			None: 100%
@@ -399,7 +399,7 @@ Sound:
 		HitAnim: laserfire
 		BeamDuration: 8
 		UsePlayerColor: true
-	Warhead:
+	Warhead: Damager
 		Spread: 32
 		Versus:
 			None: 60%
@@ -417,7 +417,7 @@ ChainGun:
 	Projectile: Bullet
 		Speed: 1c256
 		High: true
-	Warhead:
+	Warhead: Damager
 		Spread: 96
 		Versus:
 			Wood: 50%
@@ -434,7 +434,7 @@ Heal:
 	Report:
 	Projectile: Bullet
 		Speed: 1c256
-	Warhead:
+	Warhead: Damager
 		Spread: 160
 		Versus:
 			Wood: 0%
@@ -448,7 +448,7 @@ WormJaw:
 	ROF: 10
 	Range: 3c0
 	Report: WORM.WAV
-	Warhead:
+	Warhead: Damager
 		Spread: 160
 		Versus:
 			Wood: 0%
@@ -461,7 +461,7 @@ ParaBomb:
 	Report:
 	Projectile: GravityBomb
 		Image: BOMBS
-	Warhead:
+	Warhead: Damager
 		Spread: 192
 		Versus:
 			None: 30%
@@ -479,7 +479,7 @@ Napalm:
 	Range: 3c0
 	Projectile: GravityBomb
 		Image: BOMBS
-	Warhead:
+	Warhead: Damager
 		Spread: 640
 		Versus:
 			None: 20%
@@ -494,17 +494,17 @@ Napalm:
 		Damage: 300
 
 Crush:
-	Warhead:
+	Warhead: Damager
 		ImpactSound: CRUSH1.WAV
 		Damage: 100
 
 Demolish:
-	Warhead:
+	Warhead: Damager
 		ImpactSound: EXPLLG2.WAV
 		Explosion: building
 
 Atomic:
-	Warhead:
+	Warhead: Damager
 		Damage: 1800
 		Spread: 2c0
 		Versus:
@@ -518,7 +518,7 @@ Atomic:
 		ImpactSound: EXPLLG2.WAV
 
 CrateNuke:
-	Warhead:
+	Warhead: Damager
 		Damage: 800
 		Spread: 1c576
 		Versus:
@@ -532,7 +532,7 @@ CrateNuke:
 		ImpactSound: EXPLLG2.WAV
 
 CrateExplosion:
-	Warhead:
+	Warhead: Damager
 		Damage: 400
 		Spread: 320
 		Versus:
@@ -545,7 +545,7 @@ CrateExplosion:
 		ImpactSound: EXPLSML4.WAV
 
 UnitExplode:
-	Warhead:
+	Warhead: Damager
 		Damage: 500
 		Spread: 320
 		Versus:
@@ -558,7 +558,7 @@ UnitExplode:
 		ImpactSound: EXPLMD1.WAV
 
 UnitExplodeSmall:
-	Warhead:
+	Warhead: Damager
 		Damage: 60
 		Spread: 320
 		Versus:
@@ -571,7 +571,7 @@ UnitExplodeSmall:
 		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
 
 UnitExplodeTiny:
-	Warhead:
+	Warhead: Damager
 		Damage: 30
 		Spread: 224
 		Versus:
@@ -584,7 +584,7 @@ UnitExplodeTiny:
 		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
 
 UnitExplodeScale:
-	Warhead:
+	Warhead: Damager
 		Damage: 90
 		Spread: 416
 		Versus:
@@ -606,7 +606,7 @@ Grenade:
 		Angle: 62
 		Inaccuracy: 416
 		Image: BOMBS
-	Warhead:
+	Warhead: Damager
 		Spread: 192
 		Versus:
 			None: 50%
@@ -621,7 +621,7 @@ Grenade:
 
 Weathering:
 	ROF: 100
-	Warhead:
+	Warhead: Damager
 		Damage: 5
 
 Shrapnel:
@@ -634,7 +634,7 @@ Shrapnel:
 		Angle: 91, 264
 		Inaccuracy: 416
 		Image: bombs
-	Warhead:
+	Warhead: Damager
 		Spread: 192
 		Versus:
 			None: 50%
@@ -648,10 +648,10 @@ Shrapnel:
 		ImpactSound: EXPLLG5.WAV
 
 SpiceExplosion:
-	Warhead:
+	Warhead: Damager
 		Damage: 10
 		Spread: 9
-		Size: 2,2
+		Size: 2
 		Versus:
 			None: 90%
 			Wood: 75%

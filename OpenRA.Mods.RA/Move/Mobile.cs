@@ -478,6 +478,9 @@ namespace OpenRA.Mods.RA.Move
 				return 0;
 
 			speed *= Info.Speed;
+			var disabled = self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+			speed = disabled ? 0 : speed;
+
 			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
 				speed *= t.GetSpeedModifier();
 			return (int)(speed / 100);

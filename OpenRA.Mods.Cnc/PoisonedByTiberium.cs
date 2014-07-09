@@ -11,6 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Mods.RA;
+using OpenRA.GameRules;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Cnc
 
 			var weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 
-			self.InflictDamage(self.World.WorldActor, weapon.Warheads[0].Damage, weapon.Warheads[0]);
+			self.InflictDamage(self.World.WorldActor, (weapon.Warheads.FirstOrDefault(w => (w is DamagerWarheadInfo)) as DamagerWarheadInfo).Damage, (weapon.Warheads.FirstOrDefault(w => (w is DamagerWarheadInfo)) as DamagerWarheadInfo));
 			poisonTicks = weapon.ROF;
 		}
 	}

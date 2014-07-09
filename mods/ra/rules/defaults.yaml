@@ -54,6 +54,9 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	ScriptTriggers:
+	DisabledByWarhead:
+		TargetTypes: EMP
+	WithDisabledOverlay:
 
 ^Tank:
 	AppearsOnRadar:
@@ -111,6 +114,9 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	ScriptTriggers:
+	DisabledByWarhead:
+		TargetTypes: EMP
+	WithDisabledOverlay:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -180,6 +186,8 @@
 		KilledOnImpassableTerrain: true
 		ParachuteSequence: parach
 		ShadowSequence: parach-shadow
+	DisabledByWarhead:
+		TargetTypes: Paralyze
 
 ^Ship:
 	AppearsOnRadar:
@@ -213,6 +221,9 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	DisabledByWarhead:
+		TargetTypes: EMP
+	WithDisabledOverlay:
 
 ^Plane:
 	AppearsOnRadar:
@@ -249,6 +260,9 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	DisabledByWarhead:
+		TargetTypes: EMP
+	WithDisabledOverlay:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -303,6 +317,9 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	DisabledByWarhead:
+		TargetTypes: EMP
+	WithDisabledOverlay:
 
 ^Wall:
 	AppearsOnRadar:
