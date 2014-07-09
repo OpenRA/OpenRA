@@ -1,4 +1,4 @@
-CRATE:
+crate:
 	Tooltip:
 		Name: Crate
 	Crate:
@@ -98,21 +98,10 @@ CRATE:
 		Units: deviatortank
 		ValidRaces: ordos
 		Prerequisites: techlevel.high, Research
-	GiveMcvCrateAction@Atreides:
+	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
-		Units: mcva
-		ValidRaces: atreides
-	GiveMcvCrateAction@Harkonnen:
-		SelectionShares: 0
-		NoBaseSelectionShares: 9001
-		Units: mcvh
-		ValidRaces: harkonnen
-	GiveMcvCrateAction@Ordos:
-		SelectionShares: 0
-		NoBaseSelectionShares: 9001
-		Units: mcvo
-		ValidRaces: ordos
+		Units: mcv
 	GrantUpgradeCrateAction@cloak:
 		SelectionShares: 5
 		Effect: cloak
@@ -141,14 +130,14 @@ waypoint:
 	BodyOrientation:
 
 ^carryall.colorpicker:
-	Inherits: ^CARRYALL
+	Inherits: carryall
 	RenderUnit:
 		Image: carryall
 		Palette: colorpicker
 	Helicopter:
 		InitialFacing: 104
 
-CAMERA:
+camera:
 	Immobile:
 		OccupiesSpace: false
 	Health:

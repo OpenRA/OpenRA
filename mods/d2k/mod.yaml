@@ -30,14 +30,12 @@ Rules:
 	./mods/d2k/rules/world.yaml
 	./mods/d2k/rules/defaults.yaml
 	./mods/d2k/rules/vehicles.yaml
+	./mods/d2k/rules/starport.yaml
+	./mods/d2k/rules/husks.yaml
 	./mods/d2k/rules/structures.yaml
 	./mods/d2k/rules/aircraft.yaml
 	./mods/d2k/rules/infantry.yaml
-	./mods/d2k/rules/atreides.yaml
-	./mods/d2k/rules/harkonnen.yaml
-	./mods/d2k/rules/ordos.yaml
 	./mods/d2k/rules/arrakis.yaml
-	./mods/d2k/rules/corrino.yaml
 
 Sequences:
 	./mods/d2k/sequences/aircraft.yaml

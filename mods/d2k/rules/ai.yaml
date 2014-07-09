@@ -3,84 +3,39 @@ Player:
 		Name: Omnius
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		BuildingCommonNames:
-			ConstructionYard: conyarda,conyardh,conyardo
-			Refinery: refa,refh,refo
-			Power: pwra,pwrh,pwro
-			Barracks: barra,barrh,barro
-			VehiclesFactory: lighta,lighth,lighto,heavya,heavyh,heavyo
-			Production: lighta,lighth,lighto,heavya,heavyh,heavyo,barra,barrh,barro
-			Silo: siloa, siloh, siloo
+			ConstructionYard: conyard
+			Refinery: refinery
+			Power: power
+			VehiclesFactory: light, heavy, starport
+			Production: light, heavy, barracks, starport
+			Silo: silo
 		UnitsCommonNames:
-			Mcv: mcva,mcvh,mcvo
+			Mcv: mcv
 		BuildingLimits:
-			refa: 4
-			refh: 4
-			refo: 4
-			barra: 1
-			barrh: 1
-			barro: 1
-			lighta: 1
-			lighth: 1
-			lighto: 1
-			heavya: 1
-			heavyh: 1
-			heavyo: 1
-			researcha: 1
-			researchh: 1
-			researcho: 1
-			repaira: 1
-			repairh: 1
-			repairo: 1
-			radara: 1
-			radaro: 1
-			radarh: 1
-			hightecha: 1
-			hightechh: 1
-			hightecho: 1
-			palacea: 1
-			palaceh: 1
-			palaceo: 1
+			refinery: 4
+			barracks: 1
+			light: 1
+			heavy: 1
+			research: 1
+			repair: 1
+			radar: 1
+			hightech: 1
+			palace: 1
 		BuildingFractions:
-			refa: 20.1%
-			refh: 20.1%
-			refo: 20.1%
-			barra: 0.1%
-			barrh: 0.1%
-			barro: 0.1%
-			lighta: 0.1%
-			lighth: 0.1%
-			lighto: 0.1%
-			heavya: 0.1%
-			heavyh: 0.1%
-			heavyo: 0.1%
-			radara: 0.1%
-			radaro: 0.1%
-			radarh: 0.1%
-			hightecha: 0.1%
-			hightechh: 0.1%
-			hightecho: 0.1%
-			starporta: 0.1%
-			starporth: 0.1%
-			starporto: 0.1%
-			researcha: 0.1%
-			researchh: 0.1%
-			researcho: 0.1%
-			repaira: 0.1%
-			repairh: 0.1%
-			repairo: 0.1%
-			guntowera: 8%
-			guntowerh: 8%
-			guntowero: 8%
-			rockettowera: 6%
-			rockettowerh: 6%
-			rockettowero: 6%
-			pwra: 10%
-			pwrh: 10%
-			pwro: 10%
+			refinery: 20.1%
+			barracks: 0.1%
+			light: 0.1%
+			heavy: 0.1%
+			radar: 0.1%
+			hightech: 0.1%
+			starport: 0.1%
+			research: 0.1%
+			repair: 0.1%
+			guntower: 8%
+			rockettower: 6%
+			power: 10%
 		UnitsToBuild:
-			carryalla: 1%
-			carryallh: 1%
-			carryallo: 1%
+			carryall: 1%
 			rifle: 6%
 			bazooka: 5%
 			medic: 1%
@@ -165,84 +120,39 @@ Player:
 		Name: Vidious
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		BuildingCommonNames:
-			ConstructionYard: conyarda,conyardh,conyardo
-			Refinery: refa,refh,refo
-			Power: pwra,pwrh,pwro
-			Barracks: barra,barrh,barro
-			VehiclesFactory: lighta,lighth,lighto,heavya,heavyh,heavyo
-			Production: lighta,lighth,lighto,heavya,heavyh,heavyo,barra,barrh,barro
-			Silo: siloa, siloh, siloo
+			ConstructionYard: conyard
+			Refinery: refinery
+			Power: power
+			VehiclesFactory: light, heavy, starport
+			Production: light, heavy, barracks, starport
+			Silo: silo
 		UnitsCommonNames:
-			Mcv: mcva,mcvh,mcvo
+			Mcv: mcv
 		BuildingLimits:
-			refa: 4
-			refh: 4
-			refo: 4
-			barra: 1
-			barrh: 1
-			barro: 1
-			lighta: 1
-			lighth: 1
-			lighto: 1
-			heavya: 1
-			heavyh: 1
-			heavyo: 1
-			researcha: 1
-			researchh: 1
-			researcho: 1
-			repaira: 1
-			repairh: 1
-			repairo: 1
-			radara: 1
-			radaro: 1
-			radarh: 1
-			hightecha: 1
-			hightechh: 1
-			hightecho: 1
-			palacea: 1
-			palaceh: 1
-			palaceo: 1
+			refinery: 4
+			barracks: 1
+			light: 1
+			heavy: 1
+			research: 1
+			repair: 1
+			radar: 1
+			hightech: 1
+			palace: 1
 		BuildingFractions:
-			refa: 20.1%
-			refh: 20.1%
-			refo: 20.1%
-			barra: 0.1%
-			barrh: 0.1%
-			barro: 0.1%
-			lighta: 0.1%
-			lighth: 0.1%
-			lighto: 0.1%
-			heavya: 0.1%
-			heavyh: 0.1%
-			heavyo: 0.1%
-			radara: 0.1%
-			radaro: 0.1%
-			radarh: 0.1%
-			hightecha: 0.1%
-			hightechh: 0.1%
-			hightecho: 0.1%
-			repaira: 0.1%
-			repairh: 0.1%
-			repairo: 0.1%
-			starporta: 0.1%
-			starporth: 0.1%
-			starporto: 0.1%
-			palacea: 0.1%
-			palaceh: 0.1%
-			palaceo: 0.1%
-			guntowera: 5%
-			guntowerh: 5%
-			guntowero: 5%
-			rockettowera: 10%
-			rockettowerh: 10%
-			rockettowero: 10%
-			pwra: 12%
-			pwrh: 12%
-			pwro: 12%
+			refinery: 20.1%
+			barracks: 0.1%
+			light: 0.1%
+			heavy: 0.1%
+			radar: 0.1%
+			hightech: 0.1%
+			repair: 0.1%
+			starport: 0.1%
+			palace: 0.1%
+			guntower: 5%
+			rockettower: 10%
+			power: 12%
 		UnitsToBuild:
-			carryalla: 1%
-			carryallh: 1%
-			carryallo: 1%
+			carryall: 1%
 			rifle: 2%
 			bazooka: 2%
 			medic: 0.5%
@@ -327,84 +237,39 @@ Player:
 		Name: Gladius
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		BuildingCommonNames:
-			ConstructionYard: conyarda,conyardh,conyardo
-			Refinery: refa,refh,refo
-			Power: pwra,pwrh,pwro
-			Barracks: barra,barrh,barro
-			VehiclesFactory: lighta,lighth,lighto,heavya,heavyh,heavyo
-			Production: lighta,lighth,lighto,heavya,heavyh,heavyo,barra,barrh,barro
-			Silo: siloa, siloh, siloo
+			ConstructionYard: conyard
+			Refinery: refinery
+			Power: power
+			VehiclesFactory: light, heavy, starport
+			Production: light, heavy, barracks, starport
+			Silo: silo
 		UnitsCommonNames:
-			Mcv: mcva,mcvh,mcvo
+			Mcv: mcv
 		BuildingLimits:
-			refa: 4
-			refh: 4
-			refo: 4
-			barra: 1
-			barrh: 1
-			barro: 1
-			lighta: 1
-			lighth: 1
-			lighto: 1
-			heavya: 1
-			heavyh: 1
-			heavyo: 1
-			researcha: 1
-			researchh: 1
-			researcho: 1
-			repaira: 1
-			repairh: 1
-			repairo: 1
-			radara: 1
-			radaro: 1
-			radarh: 1
-			hightecha: 1
-			hightechh: 1
-			hightecho: 1
-			palacea: 1
-			palaceh: 1
-			palaceo: 1
+			refinery: 4
+			barracks: 1
+			light: 1
+			heavy: 1
+			research: 1
+			repair: 1
+			radar: 1
+			hightech: 1
+			palace: 1
 		BuildingFractions:
-			refa: 20.1%
-			refh: 20.1%
-			refo: 20.1%
-			barra: 0.1%
-			barrh: 0.1%
-			barro: 0.1%
-			lighta: 0.1%
-			lighth: 0.1%
-			lighto: 0.1%
-			heavya: 0.1%
-			heavyh: 0.1%
-			heavyo: 0.1%
-			repaira: 0.1%
-			repairh: 0.1%
-			repairo: 0.1%
-			radara: 0.1%
-			radaro: 0.1%
-			radarh: 0.1%
-			hightecha: 0.1%
-			hightechh: 0.1%
-			hightecho: 0.1%
-			researcha: 0.1%
-			researchh: 0.1%
-			researcho: 0.1%
-			palacea: 0.1%
-			palaceh: 0.1%
-			palaceo: 0.1%
-			guntowera: 4%
-			guntowerh: 4%
-			guntowero: 4%
-			rockettowera: 12%
-			rockettowerh: 12%
-			rockettowero: 12%
-			pwra: 10%
-			pwrh: 10%
-			pwro: 10%
+			refinery: 20.1%
+			barracks: 0.1%
+			light: 0.1%
+			heavy: 0.1%
+			repair: 0.1%
+			radar: 0.1%
+			hightech: 0.1%
+			research: 0.1%
+			palace: 0.1%
+			guntower: 4%
+			rockettower: 12%
+			power: 10%
 		UnitsToBuild:
-			carryalla: 1%
-			carryallh: 1%
-			carryallo: 1%
+			carryall: 1%
 			rifle: 15%
 			bazooka: 13%
 			medic: 2%
@@ -485,4 +350,3 @@ Player:
 				Attractiveness: -10
 				TargetMetric: Value
 				CheckRadius: 7c0
-

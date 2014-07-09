@@ -28,7 +28,7 @@
 		Types: Vehicle
 	GivesBounty:
 	Repairable:
-		RepairBuildings: repaira,repairo,repairh
+		RepairBuildings: repair
 	CombatDebugOverlay:
 	Guard:
 		Voice: Guard
@@ -83,7 +83,7 @@
 		Types: Tank
 	GivesBounty:
 	Repairable:
-		RepairBuildings: repaira,repairo,repairh
+		RepairBuildings: repair
 	CombatDebugOverlay:
 	Guard:
 		Voice: Guard
@@ -135,6 +135,7 @@
 		ForceHealthPercentage: 25
 	DisabledOverlay:
 	ScriptTriggers:
+	RenderUnit:
 
 ^TowerHusk:
 	Health:
@@ -271,6 +272,7 @@
 	UpgradeManager:
 	AnnounceOnSeen:
 		Notification: EnemyUnitsApproaching
+	RenderUnit:
 
 ^Helicopter:
 	Inherits: ^Plane

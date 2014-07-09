@@ -1,46 +1,98 @@
-^CARRYALL:
+carryall.scripted:
 	Inherits: ^Helicopter
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Carryall
 		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
-	Buildable:
-		Queue: Aircraft
-		BuildPaletteOrder: 120
 	Health:
 		HP: 250
 	Armor:
 		Type: Light
 	Helicopter:
-		CruiseAltitude: 2100
+		CruiseAltitude: 2048
 		InitialFacing: 0
 		ROT: 4
 		Speed: 160
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
-		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: starporta,starporto,starporth
+		RepairBuildings: repair
+		RearmBuildings:
 		Repulsable: False
-		LandAltitude: 100
+		LandAltitude: 512
 		LandWhenIdle: False
+	RenderUnit:
+		Image: carryall
 	WithShadow:
 	LeavesHusk:
-		HuskActor: CARRYALL.Husk
+		HuskActor: carryall.husk
 	-Selectable:
-	AutoCarryall:
 
-FRIGATE:
+carryall:
+	Inherits: carryall.scripted
+	AutoCarryall:
+	Buildable:
+		Queue: Aircraft
+		BuildPaletteOrder: 120
+	Helicopter:
+		CruiseAltitude: 2100
+		LandAltitude: 100
+
+carryall.infantry:
+	Inherits: ^Plane
+	ParaDrop:
+		DropRange: 5c0
+		ChuteSound:
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 12c0
+	Plane:
+		ROT: 4
+		Speed: 280
+		RepairBuildings: repair
+		RearmBuildings:
+		Repulsable: False
+	RenderUnit:
+		Image: carryall
+	WithShadow:
+	Cargo:
+		MaxWeight: 5
+		Types: Infantry
+	-Selectable:
+	-GainsExperience:
+	Tooltip:
+		Name: Carryall
+	LeavesHusk:
+		HuskActor: carryall.infantry.husk
+	RejectsOrders:
+
+carryall.husk:
+	Inherits: ^AircraftHusk
+	Tooltip:
+		Name: Carryall
+	Helicopter:
+		ROT: 4
+		Speed: 210
+		RepairBuildings: repair
+		RearmBuildings:
+	RenderUnit:
+		Image: carryall
+	WithShadow:
+
+frigate:
+	Inherits: ^Plane
 	ParaDrop:
 		DropRange: 1c0
-	Inherits: ^Plane
 	Tooltip:
 		Name: Frigate
 		Description: Supply spacecraft
 	Plane:
 		ROT: 5
 		Speed: 350
-		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: starporta,starporto,starporth
+		RepairBuildings: repair
+		RearmBuildings:
 		Repulsable: False
 	Health:
 		HP: 500
@@ -48,8 +100,6 @@ FRIGATE:
 	-AppearsOnRadar:
 	Armor:
 		Type: Heavy
-	RenderUnit:
-		Image: frigate
 	WithShadow:
 	Cargo:
 		MaxWeight: 20
@@ -60,7 +110,7 @@ FRIGATE:
 	FlyAwayOnIdle:
 	RejectsOrders:
 
-ORNI:
+orni:
 	Inherits: ^Helicopter
 	Valued:
 		Cost: 1000
@@ -83,16 +133,16 @@ ORNI:
 		InitialFacing: 20
 		ROT: 6
 		Speed: 280
-		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: starporta,starporto,starporth
+		RepairBuildings: repair
+		RearmBuildings:
 	RenderUnit:
 	WithShadow:
 	Selectable:
 		Bounds: 38,32,0,0
 	LeavesHusk:
-		HuskActor: ORNI.Husk
+		HuskActor: orni.husk
 
-ORNI.bomber:
+orni.bomber:
 	AttackBomber:
 	Armament:
 		Weapon: Napalm
@@ -104,8 +154,8 @@ ORNI.bomber:
 	Plane:
 		ROT: 5
 		Speed: 350
-		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: starporta,starporto,starporth
+		RepairBuildings: repair
+		RearmBuildings:
 		Repulsable: False
 	LimitedAmmo:
 		Ammo: 5
@@ -117,111 +167,44 @@ ORNI.bomber:
 	Tooltip:
 		Name: Ornithopter
 	LeavesHusk:
-		HuskActor: ORNI.bomber.Husk
+		HuskActor: orni.bomber.husk
 	RejectsOrders:
 
-CARRYALL.infantry:
-	ParaDrop:
-		DropRange: 5c0
-		ChuteSound:
-	Inherits: ^Plane
-	Health:
-		HP: 200
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 12c0
-	Plane:
-		ROT: 4
-		Speed: 280
-		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: starporta,starporto,starporth
-		Repulsable: False
-	RenderUnit:
-		Image: carryall
-	WithShadow:
-	Cargo:
-		MaxWeight: 5
-		Types: Infantry
-	-Selectable:
-	-GainsExperience:
-	Tooltip:
-		Name: Carryall
-	LeavesHusk:
-		HuskActor: CARRYALL.infantry.Husk
-	RejectsOrders:
-
-BADR:
-	Inherits: CARRYALL.infantry
-	ParaDrop:
-		DropRange: 4c0
-	Tooltip:
-		Name: Crate Carryall
-	LeavesHusk:
-		HuskActor: BADR.Husk
-
-CARRYALL.Husk:
-	Inherits: ^AircraftHusk
-	Tooltip:
-		Name: Carryall
-	Helicopter:
-		ROT: 4
-		Speed: 210
-		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: starporta,starporto,starporth
-	RenderUnit:
-		Image: carryall
-	WithShadow:
-
-ORNI.Husk:
+orni.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Ornithopter
 	Helicopter:
 		ROT: 6
 		Speed: 280
-		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: starporta,starporto,starporth
+		RepairBuildings: repair
+		RearmBuildings:
 	RenderUnit:
 		Image: orni
 	WithShadow:
 
-ORNI.bomber.Husk:
+orni.bomber.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Ornithopter
 	Plane:
 		ROT: 5
 		Speed: 350
-		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: starporta,starporto,starporth
+		RepairBuildings: repair
+		RearmBuildings:
 	RenderUnit:
 		Image: orni
 	WithShadow:
 
-CARRYALL.infantry.Husk:
+carryall.infantry.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Carryall
 	Plane:
 		ROT: 4
 		Speed: 280
-		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: starporta,starporto,starporth
+		RepairBuildings: repair
+		RearmBuildings:
 	RenderUnit:
 		Image: carryall
 	WithShadow:
-
-BADR.Husk:
-	Inherits: ^AircraftHusk
-	Tooltip:
-		Name: Crate Carryall
-	Plane:
-		ROT: 4
-		Speed: 280
-		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: starporta,starporto,starporth
-	RenderUnit:
-		Image: carryall
-	WithShadow:
-

@@ -4,7 +4,7 @@ InitializeHarvester = function(harvester)
 end
 
 InsertHarvester = function()
-	local harvesters = Reinforcements.ReinforceWithTransport(atreides, "carryalla", { "harvester" },
+	local harvesters = Reinforcements.ReinforceWithTransport(atreides, "carryall.scripted", { "harvester" },
 		{ Entry.Location, AtreidesSpiceRefinery.Location + CVec.New(2, 3) }, { Entry.Location })[2]
 
 	Utils.Do(harvesters, function(harvester)
