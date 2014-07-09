@@ -4,52 +4,56 @@ CONYARDA:
 PWRA:
 	Inherits: ^POWER
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda
 
 WALLA:
 	Inherits: ^WALL
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, barracks
 
 GUNTOWERA:
 	Inherits: ^GUNTOWER
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, barracks
 
 ROCKETTOWERA:
 	Inherits: ^ROCKETTOWER
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, radar
 
 REFA:
 	Inherits: ^REFINERY
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, power
 
 BARRA:
 	Inherits: ^BARRACKS
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, power
+	ProvidesCustomPrerequisite@MEDICS:
+		Prerequisite: medics
+	ProvidesCustomPrerequisite@BARRACKS:
+		Prerequisite: barracks
 
 REPAIRA:
 	Inherits: ^REPAIR
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, heavy
 
 RESEARCHA:
 	Inherits: ^RESEARCH
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, hightech
 
 HIGHTECHA:
 	Inherits: ^HIGHTECH
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, radar
 
 PALACEA:
 	Inherits: ^PALACE
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, research
 	AirstrikePower:
 		Icon: ornistrike
 		Prerequisites: ~techlevel.superweapons
@@ -68,32 +72,36 @@ PALACEA:
 SILOA:
 	Inherits: ^SILO
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, refinery
 
 LIGHTA:
 	Inherits: ^LIGHT
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, refinery
+	ProvidesCustomPrerequisite@TRIKES:
+		Prerequisite: trikes
+	ProvidesCustomPrerequisite@LIGHT:
+		Prerequisite: light
 
 HEAVYA:
 	Inherits: ^HEAVY
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, refinery
 
 RADARA:
 	Inherits: ^RADAR
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, barracks
 
 STARPORTA:
 	Inherits: ^STARPORT
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~conyarda, radar
 
 MCVA:
 	Inherits: ^MCV
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~heavya, repair
 	Transforms:
 		Facing: 16
 		IntoActor: conyarda
@@ -122,7 +130,7 @@ CARRYALLA.starport:
 COMBATA:
 	Inherits: ^COMBAT
 	Buildable:
-		Owner: atreides
+		Prerequisites: ~heavya
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
@@ -158,8 +166,7 @@ SONICTANK:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: heavya, researcha, ~techlevel.high
-		Owner: atreides
+		Prerequisites: ~heavya, research, ~techlevel.high
 	Valued:
 		Cost: 1250
 	Tooltip:
@@ -206,8 +213,7 @@ FREMEN:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 85
-		Owner: atreides
-		Prerequisites: palacea, ~techlevel.high
+		Prerequisites: ~barra, palace, ~techlevel.high
 	Selectable:
 		Bounds: 12,17,0,0
 		Voice: FremenVoice
@@ -240,8 +246,7 @@ GRENADIER:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: atreides
-		Prerequisites: ~techlevel.medium
+		Prerequisites: ~barra, ~techlevel.medium
 	Valued:
 		Cost: 160
 	Tooltip:

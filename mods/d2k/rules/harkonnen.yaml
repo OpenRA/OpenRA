@@ -4,78 +4,82 @@ CONYARDH:
 PWRH:
 	Inherits: ^POWER
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh
 
 WALLH:
 	Inherits: ^WALL
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, barracks
 
 GUNTOWERH:
 	Inherits: ^GUNTOWER
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, barracks
 
 ROCKETTOWERH:
 	Inherits: ^ROCKETTOWER
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, radar
 
 REFH:
 	Inherits: ^REFINERY
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, power
 
 BARRH:
 	Inherits: ^BARRACKS
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, power
 	-RepairsUnits:
 
 REPAIRH:
 	Inherits: ^REPAIR
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, heavy
 
 RESEARCHH:
 	Inherits: ^RESEARCH
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, hightech
 
 SILOH:
 	Inherits: ^SILO
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, refinery
 
 LIGHTH:
 	Inherits: ^LIGHT
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, refinery
+	ProvidesCustomPrerequisite@TRIKES:
+		Prerequisite: trikes
+	ProvidesCustomPrerequisite@LIGHT:
+		Prerequisite: light
 
 HEAVYH:
 	Inherits: ^HEAVY
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, refinery
 
 RADARH:
 	Inherits: ^RADAR
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, barracks
 
 STARPORTH:
 	Inherits: ^STARPORT
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, radar
 
 HIGHTECHH:
 	Inherits: ^HIGHTECH
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, radar
 
 PALACEH:
 	Inherits: ^PALACE
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~conyardh, research
 	Tooltip:
 		Description: Provides elite infantry\n  Special Ability: Death Hand Missile
 	NukePower:
@@ -102,7 +106,7 @@ PALACEH:
 MCVH:
 	Inherits: ^MCV
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~heavyh, repair
 	Transforms:
 		Facing: 16
 		IntoActor: conyardh
@@ -131,7 +135,7 @@ CARRYALLH.starport:
 COMBATH:
 	Inherits: ^COMBAT
 	Buildable:
-		Owner: harkonnen
+		Prerequisites: ~heavyh
 	Mobile:
 		Speed: 53
 		ROT: 4
@@ -164,8 +168,7 @@ DEVAST:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: Research, ~techlevel.high
-		Owner: harkonnen
+		Prerequisites: ~heavyh, research, ~techlevel.high
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -211,8 +214,7 @@ SARDAUKAR:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
-		Prerequisites: palaceh, ~techlevel.high
-		Owner: harkonnen
+		Prerequisites: ~barrh, palace, ~techlevel.high
 	Valued:
 		Cost: 400
 	Tooltip:
