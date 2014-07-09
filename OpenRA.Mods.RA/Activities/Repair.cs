@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Activities
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
-			if (host != null && !host.IsInWorld) return NextActivity;
+			if (host == null || !host.IsInWorld) return NextActivity;
 
 			health = self.TraitOrDefault<Health>();
 			if (health == null) return NextActivity;

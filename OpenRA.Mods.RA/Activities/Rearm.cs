@@ -37,11 +37,13 @@ namespace OpenRA.Mods.RA.Activities
 				var hostBuilding = self.World.ActorMap.GetUnitsAt(self.Location)
 					.FirstOrDefault(a => a.HasTrait<RenderBuilding>());
 
+				if (hostBuilding == null || !hostBuilding.IsInWorld)
+					return NextActivity;
+
 				if (!limitedAmmo.GiveAmmo())
 					return NextActivity;
 
-				if (hostBuilding != null)
-					hostBuilding.Trait<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
+				hostBuilding.Trait<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
 
 				remainingTicks = limitedAmmo.ReloadTimePerAmmo();
 			}
