@@ -117,6 +117,7 @@
     <Compile Include="Air\Aircraft.cs" />
     <Compile Include="Air\AttackHeli.cs" />
     <Compile Include="Air\AttackPlane.cs" />
+    <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Crates\DuplicateUnitCrateAction.cs" />
     <Compile Include="Power.cs" />
     <Compile Include="Effects\Beacon.cs" />

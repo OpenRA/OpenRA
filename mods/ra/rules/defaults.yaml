@@ -15,7 +15,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground, C4, Repair
+		TargetTypes: Ground, C4, Repair, Vehicle
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -73,7 +73,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground, C4, Repair
+		TargetTypes: Ground, C4, Repair, Tank
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -268,7 +268,7 @@
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
-		TargetTypes: Ground, C4, DetonateAttack
+		TargetTypes: Ground, C4, DetonateAttack, Structure
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -310,6 +310,11 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	
+^Defense:
+	Inherits: ^Building
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
 
 ^Wall:
 	AppearsOnRadar:

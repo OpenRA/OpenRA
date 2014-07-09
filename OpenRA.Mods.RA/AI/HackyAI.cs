@@ -23,14 +23,25 @@ namespace OpenRA.Mods.RA.AI
 {
 	public sealed class HackyAIInfo : IBotInfo, ITraitInfo
 	{
+		[Desc("Ingame name this bot uses.")]
 		public readonly string Name = "Unnamed Bot";
+
+		[Desc("Minimum number of units AI must have before attacking.")]
 		public readonly int SquadSize = 8;
 
+		[Desc("Production queues AI uses for buildings.")]
 		public readonly string[] BuildingQueues = { "Building" };
+
+		[Desc("Production queues AI uses for defenses.")]
 		public readonly string[] DefenseQueues = { "Defense" };
 
+		[Desc("Delay (in ticks) between giving out orders to units.")]
 		public readonly int AssignRolesInterval = 20;
+
+		[Desc("Delay (in ticks) between attempting rush attacks.")]
 		public readonly int RushInterval = 600;
+
+		[Desc("Delay (in ticks) between updating squads.")]
 		public readonly int AttackForceInterval = 30;
 
 		[Desc("How long to wait (in ticks) between structure production checks when there is no active production.")]
@@ -63,25 +74,38 @@ namespace OpenRA.Mods.RA.AI
 		[Desc("Radius in cells around the center of the base to expand.")]
 		public readonly int MaxBaseRadius = 20;
 
+		[Desc("Production queues AI uses for producing units.")]
 		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
+
+		[Desc("Should the AI repair its buildings if damaged?")]
 		public readonly bool ShouldRepairBuildings = true;
 
 		string IBotInfo.Name { get { return this.Name; } }
 
+		[Desc("What units to the AI should build.", "What % of the total army must be this type of unit.")]
 		[FieldLoader.LoadUsing("LoadUnits")]
 		public readonly Dictionary<string, float> UnitsToBuild = null;
 
+		[Desc("What buildings to the AI should build.", "What % of the total base must be this type of building.")]
 		[FieldLoader.LoadUsing("LoadBuildings")]
 		public readonly Dictionary<string, float> BuildingFractions = null;
 
+		[Desc("Tells the AI what unit types fall under the same common name.")]
 		[FieldLoader.LoadUsing("LoadUnitsCommonNames")]
 		public readonly Dictionary<string, string[]> UnitsCommonNames = null;
 
+		[Desc("Tells the AI what building types fall under the same common name.")]
 		[FieldLoader.LoadUsing("LoadBuildingsCommonNames")]
 		public readonly Dictionary<string, string[]> BuildingCommonNames = null;
 
+		[Desc("What buildings should the AI have max limits n.", "What is the limit of the building.")]
 		[FieldLoader.LoadUsing("LoadBuildingLimits")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
+
+		// TODO Update OpenRA.Utility/Command.cs#L300 to first handle lists and also read nested ones
+		[Desc("Tells the AI how to use its support powers.")]
+		[FieldLoader.LoadUsing("LoadDecisions")]
+		public readonly List<SupportPowerDecision> PowerDecisions = new List<SupportPowerDecision>();
 
 		static object LoadList<T>(MiniYaml y, string field)
 		{
@@ -99,6 +123,16 @@ namespace OpenRA.Mods.RA.AI
 
 		static object LoadBuildingLimits(MiniYaml y) { return LoadList<int>(y, "BuildingLimits"); }
 
+		static object LoadDecisions(MiniYaml yaml)
+		{
+			var ret = new List<SupportPowerDecision>();
+			foreach (var d in yaml.Nodes)
+				if (d.Key.Split('@')[0] == "SupportPowerDecision")
+					ret.Add(new SupportPowerDecision(d.Value));
+
+			return ret;
+		}
+
 		public object Create(ActorInitializer init) { return new HackyAI(this, init); }
 	}
 
@@ -112,6 +146,9 @@ namespace OpenRA.Mods.RA.AI
 		public readonly HackyAIInfo Info;
 		public CPos baseCenter { get; private set; }
 		public Player p { get; private set; }
+
+		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
+		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
 		PowerManager playerPower;
 		SupportPowerManager supportPowerMngr;
@@ -142,6 +179,9 @@ namespace OpenRA.Mods.RA.AI
 		{
 			Info = info;
 			world = init.world;
+			
+			foreach (var decision in info.PowerDecisions)
+				powerDecisions.Add(decision.OrderName, decision);
 		}
 
 		public static void BotDebug(string s, params object[] args)
@@ -695,46 +735,120 @@ namespace OpenRA.Mods.RA.AI
 			foreach (var kv in powers)
 			{
 				var sp = kv.Value;
-				if (sp.Ready)
-				{
-					var attackLocation = FindAttackLocationToSupportPower(5);
-					if (attackLocation == null)
-						return;
+				// Add power to dictionary if not in delay dictionary yet
+				if (!waitingPowers.ContainsKey(sp))
+					waitingPowers.Add(sp, 0);
 
+				if (waitingPowers[sp] > 0)
+					waitingPowers[sp]--;
+
+				// If we have recently tried and failed to find a use location for a power, then do not try again until later
+				var isDelayed = (waitingPowers[sp] > 0);
+				if (sp.Ready && !isDelayed && powerDecisions.ContainsKey(sp.Info.OrderName))
+				{
+					var powerDecision = powerDecisions[sp.Info.OrderName];
+					if (powerDecision == null)
+					{
+						BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", sp.Info.OrderName);
+						continue;
+					}
+
+					var attackLocation = FindCoarseAttackLocationToSupportPower(sp);
+					if (attackLocation == null)
+					{
+						BotDebug("AI: {1} can't find suitable coarse attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, p.PlayerName);
+						waitingPowers[sp] += powerDecision.GetNextScanTime(this);
+
+						continue;
+					}
+
+					// Found a target location, check for precise target
+					attackLocation = FindFineAttackLocationToSupportPower(sp, (CPos)attackLocation);
+					if (attackLocation == null)
+					{
+						BotDebug("AI: {1} can't find suitable final attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, p.PlayerName);
+						waitingPowers[sp] += powerDecision.GetNextScanTime(this);
+
+						continue;
+					}
+
+					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
+					BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, p.PlayerName);
+					waitingPowers[sp] += 10;
 					world.IssueOrder(new Order(sp.Info.OrderName, supportPowerMngr.self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
 				}
 			}
 		}
 
-		CPos? FindAttackLocationToSupportPower(int radiusOfPower)
+		///<summary>Scans the map in chunks, evaluating all actors in each.</summary>
+		CPos? FindCoarseAttackLocationToSupportPower(SupportPowerInstance readyPower)
 		{
-			CPos? resLoc = null;
-			var countUnits = 0;
-
-			var x = (world.Map.MapSize.X % radiusOfPower) == 0 ? world.Map.MapSize.X : world.Map.MapSize.X + radiusOfPower;
-			var y = (world.Map.MapSize.Y % radiusOfPower) == 0 ? world.Map.MapSize.Y : world.Map.MapSize.Y + radiusOfPower;
-
-			for (var i = 0; i < x; i += radiusOfPower * 2)
+			CPos? bestLocation = null;
+			var bestAttractiveness = 0;
+			var powerDecision = powerDecisions[readyPower.Info.OrderName];
+			if (powerDecision == null)
 			{
-				for (var j = 0; j < y; j += radiusOfPower * 2)
-				{
-					var pos = world.Map.CenterOfCell(new CPos(i, j));
-					var targets = world.FindActorsInCircle(pos, WRange.FromCells(radiusOfPower)).ToList();
-					var enemies = targets.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
-					var ally = targets.Where(unit => p.Stances[unit.Owner] == Stance.Ally || unit.Owner == p).ToList();
+				BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", readyPower.Info.OrderName);
+				return null;
+			}
 
-					if (enemies.Count < ally.Count || !enemies.Any())
+			var checkRadius = powerDecision.CoarseScanRadius;
+			for (var i = 0; i < world.Map.MapSize.X; i += checkRadius)
+			{
+				for (var j = 0; j < world.Map.MapSize.Y; j += checkRadius)
+				{
+					var consideredAttractiveness = 0;
+
+					var tl = world.Map.CenterOfCell(new CPos(i, j));
+					var br = world.Map.CenterOfCell(new CPos(i + checkRadius, j + checkRadius));
+					var targets = world.ActorMap.ActorsInBox(tl, br);
+					
+					consideredAttractiveness = powerDecision.GetAttractiveness(targets, p);
+					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
 						continue;
 
-					if (enemies.Count > countUnits)
-					{
-						countUnits = enemies.Count;
-						resLoc = enemies.Random(random).Location;
-					}
+					bestAttractiveness = consideredAttractiveness;
+					bestLocation = new CPos(i, j);
 				}
 			}
 
-			return resLoc;
+			return bestLocation;
+		}
+
+		///<summary>Detail scans an area, evaluating positions.</summary>
+		CPos? FindFineAttackLocationToSupportPower(SupportPowerInstance readyPower, CPos checkPos, int extendedRange = 1)
+		{
+			CPos? bestLocation = null;
+			var bestAttractiveness = 0;
+			var powerDecision = powerDecisions[readyPower.Info.OrderName];
+			if (powerDecision == null)
+			{
+				BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", readyPower.Info.OrderName);
+				return null;
+			}
+
+			var checkRadius = powerDecision.CoarseScanRadius;
+			var fineCheck = powerDecision.FineScanRadius;
+			for (var i = (0 - extendedRange); i <= (checkRadius + extendedRange); i += fineCheck)
+			{
+				var x = checkPos.X + i;
+
+				for (var j = (0 - extendedRange); j <= (checkRadius + extendedRange); j += fineCheck)
+				{
+					var y = checkPos.Y + j;
+					var pos = world.Map.CenterOfCell(new CPos(x, y));
+					var consideredAttractiveness = 0;
+					consideredAttractiveness += powerDecision.GetAttractiveness(pos, p);
+
+					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
+						continue;
+
+					bestAttractiveness = consideredAttractiveness;
+					bestLocation = new CPos(x, y);
+				}
+			}
+
+			return bestLocation;
 		}
 
 		internal IEnumerable<ProductionQueue> FindQueues(string category)
