@@ -74,9 +74,9 @@ Player:
 			rockettowera: 7%
 			rockettowerh: 7%
 			rockettowero: 7%
-			powra: 10%
-			powrh: 10%
-			powro: 10%
+			pwra: 10%
+			pwrh: 10%
+			pwro: 10%
 		UnitsToBuild:
 			rifle: 6%
 			bazooka: 5%
@@ -178,9 +178,9 @@ Player:
 			rockettowera: 10%
 			rockettowerh: 10%
 			rockettowero: 10%
-			powra: 12%
-			powrh: 12%
-			powro: 12%
+			pwra: 12%
+			pwrh: 12%
+			pwro: 12%
 		UnitsToBuild:
 			rifle: 2%
 			bazooka: 2%
@@ -279,9 +279,9 @@ Player:
 			palaceo: 0.1%
 			guntower: 10%
 			rockettower: 5%
-			powra: 10%
-			powrh: 10%
-			powro: 10%
+			pwra: 10%
+			pwrh: 10%
+			pwro: 10%
 		UnitsToBuild:
 			rifle: 15%
 			bazooka: 13%
