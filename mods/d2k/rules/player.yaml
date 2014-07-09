@@ -6,20 +6,24 @@ Player:
 		QueuedAudio: Building
 		ReadyAudio: BuildingReady
 		BlockedAudio: NoRoom
+		RequireOwner: false
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		LowPowerSlowdown: 2
 		BlockedAudio: NoRoom
+		RequireOwner: false
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
+		RequireOwner: false
 	ClassicProductionQueue@Armor:
 		Type: Armor
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
+		RequireOwner: false
 	ClassicProductionQueue@Starport:
 		Type: Starport
 		BuildSpeed: .2
@@ -27,11 +31,13 @@ Player:
 		BlockedAudio: NoRoom
 		QueuedAudio: OrderPlaced
 		ReadyAudio:
+		RequireOwner: false
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
+		RequireOwner: false
 	PlaceBuilding:
 	SupportPowerManager:
 	ScriptTriggers:

@@ -4,77 +4,81 @@ CONYARDO:
 PWRO:
 	Inherits: ^POWER
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo
 
 WALLO:
 	Inherits: ^WALL
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, barracks
 
 GUNTOWERO:
 	Inherits: ^GUNTOWER
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, barracks
 
 ROCKETTOWERO:
 	Inherits: ^ROCKETTOWER
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, radar
 
 REFO:
 	Inherits: ^REFINERY
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, power
 
 BARRO:
 	Inherits: ^BARRACKS
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, power
+	ProvidesCustomPrerequisite@MEDICS:
+		Prerequisite: medics
+	ProvidesCustomPrerequisite@BARRACKS:
+		Prerequisite: barracks
 
 REPAIRO:
 	Inherits: ^REPAIR
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, heavy
 
 RESEARCHO:
 	Inherits: ^RESEARCH
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, hightech
 
 SILOO:
 	Inherits: ^SILO
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, refinery
 
 LIGHTO:
 	Inherits: ^LIGHT
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, refinery
 
 HEAVYO:
 	Inherits: ^HEAVY
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, refinery
 
 RADARO:
 	Inherits: ^RADAR
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, barracks
 
 STARPORTO:
 	Inherits: ^STARPORT
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, radar
 
 HIGHTECHO:
 	Inherits: ^HIGHTECH
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, radar
 
 PALACEO:
 	Inherits: ^PALACE
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~conyardo, research
 	AirstrikePower:
 		Icon: ornistrike
 		Prerequisites: ~techlevel.superweapons
@@ -94,7 +98,7 @@ PALACEO:
 MCVO:
 	Inherits: ^MCV
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~heavyo, repair
 	Transforms:
 		Facing: 16
 		IntoActor: conyardo
@@ -113,7 +117,7 @@ MCVO.starport:
 COMBATO:
 	Inherits: ^COMBAT
 	Buildable:
-		Owner: ordos
+		Prerequisites: ~heavyo
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
@@ -147,7 +151,7 @@ RAIDER:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Owner: ordos
+		Prerequisites: ~lighto
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -180,8 +184,7 @@ STEALTHRAIDER:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		Prerequisites: Hitech, ~techlevel.medium
-		Owner: ordos
+		Prerequisites: ~heavyo, hightech, ~techlevel.medium
 		BuildPaletteOrder: 30
 	Valued:
 		Cost: 400
@@ -237,8 +240,7 @@ DEVIATORTANK:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 50
-		Prerequisites: heavyo, researcho, ~techlevel.high
-		Owner: ordos
+		Prerequisites: ~heavyo, research, ~techlevel.high
 	Mobile:
 		ROT: 3
 		Speed: 64
@@ -275,8 +277,7 @@ SABOTEUR:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
-		Prerequisites: palaceo, ~techlevel.high
-		Owner: ordos
+		Prerequisites: ~barro, palace, ~techlevel.high
 	Valued:
 		Cost: 800
 	Tooltip:
