@@ -65,6 +65,10 @@ explosion:
 		Length: 23
 		BlendMode: Additive
 		Tick: 60
+	corpse: DATA
+		Start: 430
+		Length: 12
+		Tick: 1600
 
 laserfire:
 	idle: DATA
