@@ -535,10 +535,10 @@ VoxelSequences:
 
 Weapons:
 	BoatMissile:
-		Warhead:
+		Warhead: SpreadDamage
 			Versus:
 				Heavy: 50%
-		Damage: 50
+			Damage: 50
 
 Voices:
 

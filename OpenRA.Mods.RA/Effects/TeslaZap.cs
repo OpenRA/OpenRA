@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (!doneDamage)
 			{
 				var pos = Args.GuidedTarget.IsValidFor(Args.SourceActor) ? Args.GuidedTarget.CenterPosition : Args.PassiveTarget;
-				Combat.DoImpacts(pos, Args.SourceActor, Args.Weapon, Args.FirepowerModifier);
+				Args.Weapon.Impact(pos, Args.SourceActor, Args.FirepowerModifier);
 				doneDamage = true;
 			}
 		}

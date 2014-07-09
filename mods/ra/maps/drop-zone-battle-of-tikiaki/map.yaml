@@ -364,7 +364,7 @@ Weapons:
 	PortaTesla:
 		ROF: 20
 		Range: 10c0
-		Warhead:
+		Warhead: SpreadDamage
 			Spread: 42
 			InfDeath: 5
 			Damage: 80

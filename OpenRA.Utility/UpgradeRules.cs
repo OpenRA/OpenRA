@@ -396,6 +396,180 @@ namespace OpenRA.Utility
 						node.Key = "DestroyResources";
 				}
 
+				if (engineVersion < 20140720)
+				{
+					// Split out the warheads to individual warhead types.
+					if (depth == 0)
+					{
+						var warheadCounter = 0;
+						foreach(var curNode in node.Value.Nodes.ToArray())
+						{
+							if (curNode.Key.Contains("Warhead") && curNode.Value.Value == null)
+							{
+								var newNodes = new List<MiniYamlNode>();
+								var oldNodeAtName = "";
+								if (curNode.Key.Contains('@'))
+									oldNodeAtName = "_" + curNode.Key.Split('@')[1];
+
+								// Per Cell Damage Model
+								if (curNode.Value.Nodes.Where(n => n.Key.Contains("DamageModel") &&
+										n.Value.Value.Contains("PerCell")).Any())
+								{
+									warheadCounter++;
+
+									var newYaml = new List<MiniYamlNode>();
+
+									var keywords = new List<String>{ "Size","Damage","InfDeath","PreventProne","ProneModifier","Delay","ValidTargets","InvalidTargets" };
+									foreach(var keyword in keywords)
+									{
+										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
+										if (temp != null)
+											newYaml.Add(new MiniYamlNode(keyword, temp.Value.Value));
+									}
+
+									var tempVersus = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Versus");
+									if (tempVersus != null)
+										newYaml.Add(new MiniYamlNode("Versus", tempVersus.Value));
+
+									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Dam" + oldNodeAtName, "PerCellDamage", newYaml));
+								}
+
+								// HealthPercentage damage model
+								if (curNode.Value.Nodes.Where(n => n.Key.Contains("DamageModel") &&
+										n.Value.Value.Contains("HealthPercentage")).Any())
+								{
+									warheadCounter++;
+
+									var newYaml = new List<MiniYamlNode>();
+
+									var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Size"); // New HealthPercentage warhead allows spreads, as opposed to size
+									if (temp != null)
+									{
+										var newValue = temp.Value.Value.Split(',').First() + "c0";
+										if (temp.Value.Value.Contains(','))
+											newValue = newValue + "," + temp.Value.Value.Split(',')[1] + "c0"; ;
+
+										newYaml.Add(new MiniYamlNode("Spread", newValue));
+									}
+
+									var keywords = new List<String>{ "Damage","InfDeath","PreventProne","ProneModifier","Delay","ValidTargets","InvalidTargets" };
+									foreach(var keyword in keywords)
+									{
+										var temp2 = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
+										if (temp2 != null)
+											newYaml.Add(new MiniYamlNode(keyword, temp2.Value.Value));
+									}
+
+									var tempVersus = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Versus");
+									if (tempVersus != null)
+										newYaml.Add(new MiniYamlNode("Versus", tempVersus.Value));
+
+									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Dam" + oldNodeAtName, "HealthPercentageDamage", newYaml));
+								}
+
+								// SpreadDamage
+								{ // Always occurs, since by definition all warheads were SpreadDamage warheads before
+									warheadCounter++;
+
+									var newYaml = new List<MiniYamlNode>();
+
+									var keywords = new List<String>{ "Spread","Damage","InfDeath","PreventProne","ProneModifier","Delay","ValidTargets","InvalidTargets" };
+									foreach(var keyword in keywords)
+									{
+										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
+										if (temp != null)
+											newYaml.Add(new MiniYamlNode(keyword, temp.Value.Value));
+									}
+
+									var tempVersus = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Versus");
+									if (tempVersus != null)
+										newYaml.Add(new MiniYamlNode("Versus", tempVersus.Value));
+
+									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Dam" + oldNodeAtName, "SpreadDamage", newYaml));
+								}
+
+								// DestroyResource
+								if (curNode.Value.Nodes.Where(n => n.Key.Contains("DestroyResources") ||
+										n.Key.Contains("Ore")).Any())
+								{
+									warheadCounter++;
+
+									var newYaml = new List<MiniYamlNode>();
+
+									var keywords = new List<String>{ "Size","Delay","ValidTargets","InvalidTargets" };
+									foreach(var keyword in keywords)
+									{
+										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
+										if (temp != null)
+											newYaml.Add(new MiniYamlNode(keyword, temp.Value.Value));
+									}
+
+									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Res" + oldNodeAtName, "DestroyResource", newYaml));
+								}
+
+								// CreateResource
+								if (curNode.Value.Nodes.Where(n => n.Key.Contains("AddsResourceType")).Any())
+								{
+									warheadCounter++;
+
+									var newYaml = new List<MiniYamlNode>();
+
+									var keywords = new List<String>{ "AddsResourceType","Size","Delay","ValidTargets","InvalidTargets" };
+									foreach(var keyword in keywords)
+									{
+										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
+										if (temp != null)
+											newYaml.Add(new MiniYamlNode(keyword, temp.Value.Value));
+									}
+
+									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Res" + oldNodeAtName, "CreateResource", newYaml));
+								}
+
+								// LeaveSmudge
+								if (curNode.Value.Nodes.Where(n => n.Key.Contains("SmudgeType")).Any())
+								{
+									warheadCounter++;
+
+									var newYaml = new List<MiniYamlNode>();
+
+									var keywords = new List<String>{ "SmudgeType","Size","Delay","ValidTargets","InvalidTargets" };
+									foreach(var keyword in keywords)
+									{
+										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
+										if (temp != null)
+											newYaml.Add(new MiniYamlNode(keyword, temp.Value.Value));
+									}
+
+									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Smu" + oldNodeAtName, "LeaveSmudge", newYaml));
+								}
+
+								// CreateEffect
+								if (curNode.Value.Nodes.Where(n => n.Key.Contains("Explosion") ||
+										n.Key.Contains("WaterExplosion") ||
+										n.Key.Contains("ImpactSound") ||
+										n.Key.Contains("WaterImpactSound")).Any())
+								{
+									warheadCounter++;
+
+									var newYaml = new List<MiniYamlNode>();
+
+									var keywords = new List<String>{ "Explosion","WaterExplosion","ImpactSound","WaterImpactSound","Delay","ValidTargets","InvalidTargets" };
+									foreach(var keyword in keywords)
+									{
+										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
+										if (temp != null)
+											newYaml.Add(new MiniYamlNode(keyword, temp.Value.Value));
+									}
+
+									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Eff" + oldNodeAtName, "CreateEffect", newYaml));
+								}
+								node.Value.Nodes.InsertRange(node.Value.Nodes.IndexOf(curNode),newNodes);
+								node.Value.Nodes.Remove(curNode);
+							}
+						}
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

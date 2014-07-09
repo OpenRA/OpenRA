@@ -75,6 +75,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
+    <Compile Include="GameRules\Warhead.cs" />
+    <Compile Include="GameRules\Warheads\AbsoluteSpreadDamageWarhead.cs" />
+    <Compile Include="GameRules\Warheads\DamageWarhead.cs" />
+    <Compile Include="GameRules\Warheads\HealthPercentageDamageWarhead.cs" />
+    <Compile Include="GameRules\Warheads\PerCellDamageWarhead.cs" />
+    <Compile Include="GameRules\Warheads\SpreadDamageWarhead.cs" />
     <Compile Include="Graphics\QuadRenderer.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="Effects\DelayedAction.cs" />

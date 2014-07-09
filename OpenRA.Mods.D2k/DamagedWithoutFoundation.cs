@@ -65,9 +65,7 @@ namespace OpenRA.Mods.D2k
 			if (health.HP <= damageThreshold || --damageTicks > 0)
 				return;
 
-			foreach (var w in weapon.Warheads)
-				health.InflictDamage(self, self.World.WorldActor, w.Damage, w, false);
-
+			weapon.Impact(self.CenterPosition, self.World.WorldActor, 1f);
 			damageTicks = weapon.ROF;
 		}
 	}

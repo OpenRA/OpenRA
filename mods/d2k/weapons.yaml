@@ -8,16 +8,17 @@ LMG:
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 96
+		Damage: 15
+		InfDeath: 2
 		Versus:
 			Wood: 25%
 			Light: 40%
 			Heavy: 10%
 			Concrete: 20%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffs
-		InfDeath: 2
-		Damage: 15
 
 Bazooka:
 	ROF: 50
@@ -32,18 +33,20 @@ Bazooka:
 		Image: RPG
 		ROT: 5
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 96
+		Damage: 50
+		InfDeath: 4
 		Versus:
 			None: 10%
 			Wood: 75%
 			Light: 60%
 			Heavy: 90%
 			Concrete: 40%
-		Explosion: small_explosion
-		InfDeath: 4
+	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
-		Damage: 50
+	Warhead@3Eff: CreateEffect
+		Explosion: small_explosion
 		ImpactSound: EXPLSML1.WAV
 
 Sniper:
@@ -56,16 +59,16 @@ Sniper:
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
-	Warhead:
-		Damage: 60
+	Warhead@1Dam: SpreadDamage
 		Spread: 32
+		Damage: 60
+		InfDeath: 2
 		Versus:
 			None: 100%
 			Wood: 0%
 			Light: 1%
 			Heavy: 0%
 			Concrete: 0%
-		InfDeath: 2
 
 Vulcan:
 	ROF: 30
@@ -78,16 +81,17 @@ Vulcan:
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 96
+		Damage: 30
+		InfDeath: 2
 		Versus:
 			Wood: 0%
 			Light: 60%
 			Heavy: 10%
 			Concrete: 0%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffs
-		InfDeath: 2
-		Damage: 30
 
 Slung:
 	ROF: 60
@@ -102,17 +106,18 @@ Slung:
 		Angle: 88
 		Inaccuracy: 384
 		Image: MISSILE
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 192
+		Damage: 30
+		InfDeath: 4
 		Versus:
 			None: 0%
 			Wood: 75%
 			Light: 40%
 			Heavy: 90%
 			Concrete: 50%
+	Warhead@2Eff: CreateEffect
 		Explosion: small_explosion
-		InfDeath: 4
-		Damage: 30
 		ImpactSound: EXPLLG5.WAV
 
 HMG:
@@ -127,16 +132,17 @@ HMG:
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 96
+		Damage: 30
+		InfDeath: 2
 		Versus:
 			Wood: 15%
 			Light: 45%
 			Heavy: 20%
 			Concrete: 20%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffs
-		InfDeath: 2
-		Damage: 30
 
 HMGo:
 	ROF: 30
@@ -150,16 +156,17 @@ HMGo:
 		TrailInterval: 1
 		ContrailDelay: 0
 		ContrailUsePlayerColor: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 96
+		Damage: 40
+		InfDeath: 2
 		Versus:
 			Wood: 15%
 			Light: 45%
 			Heavy: 25%
 			Concrete: 20%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffs
-		InfDeath: 2
-		Damage: 40
 
 QuadRockets:
 	ROF: 40
@@ -175,19 +182,21 @@ QuadRockets:
 		ROT: 10
 		Speed: 256
 		RangeLimit: 40
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 96
+		Damage: 25
+		InfDeath: 4
 		Versus:
 			None: 35%
 			Wood: 45%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 35%
-		InfDeath: 4
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 		ImpactSound: EXPLSML1.WAV
-		SmudgeType: SandCrater, RockCrater
-		Damage: 25
 
 TurretGun:
 	ROF: 35
@@ -199,18 +208,20 @@ TurretGun:
 		Shadow: no
 		Inaccuracy: 288
 		Image: 120mm
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
+		Damage: 55
+		InfDeath: 4
 		Versus:
 			None: 50%
 			Wood: 75%
 			Light: 100%
 			Concrete: 65%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
 		Explosion: small_napalm
 		ImpactSound: EXPLSML4.WAV
-		InfDeath: 4
-		SmudgeType: SandCrater, RockCrater
-		Damage: 55
 
 TowerMissile:
 	ROF: 35
@@ -230,19 +241,21 @@ TowerMissile:
 		Speed: 256
 		RangeLimit: 50
 		Angle: 110
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 384
+		Damage: 50
+		InfDeath: 3
 		Versus:
 			None: 50%
 			Wood: 45%
 			Light: 100%
 			Heavy: 50%
 			Concrete: 35%
-		InfDeath: 3
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
 		Explosion: small_explosion
 		ImpactSound: EXPLMD1.WAV
-		SmudgeType: SandCrater, RockCrater
-		Damage: 50
 
 90mm:
 	ROF: 50
@@ -252,18 +265,20 @@ TowerMissile:
 		Speed: 640
 		Inaccuracy: 384
 		Image: 120mm
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
+		Damage: 40
+		InfDeath: 4
 		Versus:
 			None: 50%
 			Wood: 50%
 			Light: 100%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
 		Explosion: small_napalm
 		ImpactSound: EXPLSML4.WAV
-		InfDeath: 4
-		SmudgeType: SandCrater, RockCrater
-		Damage: 40
 
 90mma:
 	ROF: 50
@@ -273,18 +288,20 @@ TowerMissile:
 		Speed: 704
 		Inaccuracy: 352
 		Image: 120mm
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
+		Damage: 40
+		InfDeath: 4
 		Versus:
 			None: 50%
 			Wood: 50%
 			Light: 100%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
 		Explosion: small_napalm
 		ImpactSound: EXPLSML4.WAV
-		InfDeath: 4
-		SmudgeType: SandCrater, RockCrater
-		Damage: 40
 
 DevBullet:
 	ROF: 50
@@ -293,18 +310,20 @@ DevBullet:
 	Projectile: Bullet
 		Speed: 640
 		Image: doubleblastbullet
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
+		Damage: 100
+		InfDeath: 4
 		Versus:
 			None: 100%
 			Wood: 50%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 80%
-		Explosion: shockwave
-		InfDeath: 4
+	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
-		Damage: 100
+	Warhead@3Eff: CreateEffect
+		Explosion: shockwave
 
 227mm:
 	ROF: 100
@@ -324,19 +343,21 @@ DevBullet:
 		Image: MISSILE2
 		ROT: 5
 		ContrailLength: 5
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 384
+		Damage: 60
+		InfDeath: 4
 		Versus:
 			None: 20%
 			Wood: 50%
 			Light: 100%
 			Heavy: 50%
 			Concrete: 80%
-		InfDeath: 4
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
 		Explosion: mini_explosion
 		ImpactSound: EXPLMD3.WAV
-		SmudgeType: SandCrater, RockCrater
-		Damage: 60
 
 FakeMissile:
 	ROF: 120
@@ -352,15 +373,17 @@ FakeMissile:
 		Image: MISSILE
 		ContrailLength: 15
 		ContrailUsePlayerColor: True
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 96
+		Damage: 10
 		Versus:
 			None: 0%
 			Wood: 0%
 			Concrete: 0%
-		Explosion: deviator
+	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
-		Damage: 10
+	Warhead@3Eff: CreateEffect
+		Explosion: deviator
 		ImpactSound: EXPLSML2.WAV
 
 155mm:
@@ -376,19 +399,21 @@ FakeMissile:
 		Inaccuracy: 1c256
 		ContrailLength: 20
 		Image: 155mm
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 384
+		Damage: 100
+		InfDeath: 3
 		Versus:
 			None: 100%
 			Wood: 80%
 			Light: 75%
 			Heavy: 50%
 			Concrete: 100%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: EXPLLG3.WAV
-		InfDeath: 3
-		SmudgeType: SandCrater, RockCrater
-		Damage: 100
 
 Sound:
 	ROF: 100
@@ -399,15 +424,15 @@ Sound:
 		HitAnim: laserfire
 		BeamDuration: 8
 		UsePlayerColor: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 32
+		Damage: 150
+		InfDeath: 6
 		Versus:
 			None: 60%
 			Wood: 85%
 			Light: 80%
 			Concrete: 75%
-		InfDeath: 6
-		Damage: 150
 
 ChainGun:
 	ROF: 10
@@ -417,16 +442,17 @@ ChainGun:
 	Projectile: Bullet
 		Speed: 1c256
 		High: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 96
+		Damage: 20
+		InfDeath: 2
 		Versus:
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffs
-		InfDeath: 2
-		Damage: 20
 
 Heal:
 	ROF: 160
@@ -434,26 +460,26 @@ Heal:
 	Report:
 	Projectile: Bullet
 		Speed: 1c256
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 160
+		Damage: -50
+		InfDeath: 1
 		Versus:
 			Wood: 0%
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-		InfDeath: 1
-		Damage: -50
 
 WormJaw:
 	ROF: 10
 	Range: 3c0
 	Report: WORM.WAV
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 160
+		Damage: 100
 		Versus:
 			Wood: 0%
 			Concrete: 0%
-		Damage: 100
 
 ParaBomb:
 	ROF: 10
@@ -461,17 +487,19 @@ ParaBomb:
 	Report:
 	Projectile: GravityBomb
 		Image: BOMBS
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 192
+		Damage: 500
+		InfDeath: 4
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
-		Explosion: self_destruct
-		InfDeath: 4
+	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-		Damage: 500
+	Warhead@3Eff: CreateEffect
+		Explosion: self_destruct
 		ImpactSound: EXPLLG3.WAV
 
 Napalm:
@@ -479,121 +507,132 @@ Napalm:
 	Range: 3c0
 	Projectile: GravityBomb
 		Image: BOMBS
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 640
+		Damage: 300
+		InfDeath: 4
 		Versus:
 			None: 20%
 			Wood: 100%
 			Light: 30%
 			Heavy: 20%
 			Concrete: 70%
-		InfDeath: 4
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: artillery
 		ImpactSound: NAPALM1.WAV
-		SmudgeType: Crater
-		Damage: 300
 
 Crush:
-	Warhead:
-		ImpactSound: CRUSH1.WAV
+	Warhead@1Dam: SpreadDamage
 		Damage: 100
+	Warhead@2Eff: CreateEffect
+		ImpactSound: CRUSH1.WAV
 
 Demolish:
-	Warhead:
-		ImpactSound: EXPLLG2.WAV
+	Warhead@1Dam: SpreadDamage
+	Warhead@2Eff: CreateEffect
 		Explosion: building
+		ImpactSound: EXPLLG2.WAV
 
 Atomic:
-	Warhead:
-		Damage: 1800
+	Warhead@1Dam: SpreadDamage
 		Spread: 2c0
+		Damage: 1800
+		InfDeath: 5
 		Versus:
 			None: 100%
 			Wood: 100%
 			Light: 100%
 			Heavy: 50%
 			Concrete: 50%
+	Warhead@2Eff: CreateEffect
 		Explosion: nuke
-		InfDeath: 5
 		ImpactSound: EXPLLG2.WAV
 
 CrateNuke:
-	Warhead:
-		Damage: 800
+	Warhead@1Dam: SpreadDamage
 		Spread: 1c576
+		Damage: 800
+		InfDeath: 5
 		Versus:
 			None: 20%
 			Wood: 75%
 			Light: 25%
 			Heavy: 25%
 			Concrete: 50%
+	Warhead@2Eff: CreateEffect
 		Explosion: nuke
-		InfDeath: 5
 		ImpactSound: EXPLLG2.WAV
 
 CrateExplosion:
-	Warhead:
-		Damage: 400
+	Warhead@1Dam: SpreadDamage
 		Spread: 320
+		Damage: 400
+		InfDeath: 4
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: building
-		InfDeath: 4
 		ImpactSound: EXPLSML4.WAV
 
 UnitExplode:
-	Warhead:
-		Damage: 500
+	Warhead@1Dam: SpreadDamage
 		Spread: 320
+		Damage: 500
+		InfDeath: 4
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: building
-		InfDeath: 4
 		ImpactSound: EXPLMD1.WAV
 
 UnitExplodeSmall:
-	Warhead:
-		Damage: 60
+	Warhead@1Dam: SpreadDamage
 		Spread: 320
+		Damage: 60
+		InfDeath: 4
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: self_destruct
-		InfDeath: 4
 		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
 
 UnitExplodeTiny:
-	Warhead:
-		Damage: 30
+	Warhead@1Dam: SpreadDamage
 		Spread: 224
+		Damage: 30
+		InfDeath: 4
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: med_explosion
-		InfDeath: 4
 		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
 
 UnitExplodeScale:
-	Warhead:
-		Damage: 90
+	Warhead@1Dam: SpreadDamage
 		Spread: 416
+		Damage: 90
+		InfDeath: 4
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: building
-		InfDeath: 4
 		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
 
 Grenade:
@@ -606,22 +645,24 @@ Grenade:
 		Angle: 62
 		Inaccuracy: 416
 		Image: BOMBS
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 192
+		Damage: 60
+		InfDeath: 3
 		Versus:
 			None: 50%
 			Wood: 100%
 			Light: 25%
 			Heavy: 5%
-		Explosion: med_explosion
-		InfDeath: 3
+	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
-		Damage: 60
+	Warhead@3Eff: CreateEffect
+		Explosion: med_explosion
 		ImpactSound: EXPLLG5.WAV
 
 Weathering:
 	ROF: 100
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Damage: 5
 
 Shrapnel:
@@ -634,31 +675,35 @@ Shrapnel:
 		Angle: 91, 264
 		Inaccuracy: 416
 		Image: bombs
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 192
+		Damage: 60
+		InfDeath: 3
 		Versus:
 			None: 50%
 			Wood: 100%
 			Light: 25%
 			Heavy: 5%
-		Explosion: med_explosion
-		InfDeath: 3
+	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
-		Damage: 60
+	Warhead@3Eff: CreateEffect
+		Explosion: med_explosion
 		ImpactSound: EXPLLG5.WAV
 
 SpiceExplosion:
-	Warhead:
-		Damage: 10
+	Warhead@1Dam: SpreadDamage
 		Spread: 9
-		Size: 2,2
+		Damage: 10
+		InfDeath: 3
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: med_explosion
-		InfDeath: 3
-		ImpactSound: EXPLLG5.WAV
+	Warhead@2Res: CreateResource
 		AddsResourceType: Spice
+		Size: 2,2
+	Warhead@3Eff: CreateEffect
+		Explosion: med_explosion
+		ImpactSound: EXPLLG5.WAV
 
