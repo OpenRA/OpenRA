@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -28,7 +29,8 @@ namespace OpenRA.Mods.RA
 
 		public override void Activate(Actor collector)
 		{
-			Combat.DoExplosion(self, ((ExplodeCrateActionInfo)info).Weapon, collector.CenterPosition);
+			var weapon = self.World.Map.Rules.Weapons[((ExplodeCrateActionInfo)info).Weapon.ToLowerInvariant()];
+			weapon.Impact(collector.CenterPosition, self, 1f);
 			base.Activate(collector);
 		}
 	}

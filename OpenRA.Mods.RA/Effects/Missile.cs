@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (ticks <= info.Arm)
 				return;
 
-			Combat.DoImpacts(pos, args.SourceActor, args.Weapon, args.FirepowerModifier);
+			args.Weapon.Impact(pos, args.SourceActor, args.FirepowerModifier);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

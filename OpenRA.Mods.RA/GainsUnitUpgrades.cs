@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 			return FirepowerLevel > 0 ? (1 + FirepowerLevel * info.FirepowerModifier) : 1;
 		}
 
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		public float GetDamageModifier(Actor attacker, DamageWarhead warhead)
 		{
 			return ArmorLevel > 0 ? (1 / (1 + ArmorLevel * info.ArmorModifier)) : 1;
 		}

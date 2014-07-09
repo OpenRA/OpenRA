@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -294,7 +295,8 @@ namespace OpenRA.Mods.RA
 			var initialDamage = Health.DamageState;
 			self.World.AddFrameEndTask(w =>
 			{
-				Combat.DoExplosion(saboteur, "Demolish", self.CenterPosition);
+				var weapon = saboteur.World.Map.Rules.Weapons["demolish"];
+				weapon.Impact(self.CenterPosition, saboteur, 1f);
 				self.World.WorldActor.Trait<ScreenShaker>().AddEffect(15, self.CenterPosition, 6);
 				self.Kill(saboteur);
 			});

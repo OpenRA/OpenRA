@@ -4,18 +4,19 @@ Colt45:
 	Report: GUN5.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
+		Damage: 50
+		InfDeath: 2
 		Versus:
 			None: 100%
 			Wood: 0%
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
+	Warhead@2Eff: CreateEffect
 		Explosion: piff
 		WaterExplosion: water_piff
-		InfDeath: 2
-		Damage: 50
 
 ZSU-23:
 	Burst: 2
@@ -27,15 +28,16 @@ ZSU-23:
 	Projectile: Bullet
 		Speed: 1c682
 		High: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
+		Damage: 12
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Eff: CreateEffect
 		Explosion: small_explosion_air
-		Damage: 12
 
 Vulcan:
 	ROF: 30
@@ -43,76 +45,87 @@ Vulcan:
 	Report: GUN13.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead@1:
+	Warhead@1Dam_1: SpreadDamage
 		Spread: 128
+		Damage: 10
+		InfDeath: 2
 		Versus:
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 25%
+	Warhead@2Eff_1: CreateEffect
 		Explosion: piffs
 		WaterExplosion: water_piffs
-		InfDeath: 2
-		Damage: 10
-	Warhead@2:
+	Warhead@3Dam_2: SpreadDamage
 		Spread: 128
-		Versus:
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
-		Explosion: piffs
-		WaterExplosion: water_piffs
-		InfDeath: 2
 		Damage: 10
+		InfDeath: 2
 		Delay: 2
-	Warhead@3:
-		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 25%
+	Warhead@4Eff_2: CreateEffect
 		Explosion: piffs
 		WaterExplosion: water_piffs
-		InfDeath: 2
+		Delay: 2
+	Warhead@5Dam_3: SpreadDamage
+		Spread: 128
 		Damage: 10
+		InfDeath: 2
 		Delay: 4
-	Warhead@4:
-		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 25%
+	Warhead@6Eff_3: CreateEffect
 		Explosion: piffs
 		WaterExplosion: water_piffs
-		InfDeath: 2
+		Delay: 4
+	Warhead@7Dam_4: SpreadDamage
+		Spread: 128
 		Damage: 10
+		InfDeath: 2
 		Delay: 6
-	Warhead@5:
-		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 25%
+	Warhead@8Eff_4: CreateEffect
 		Explosion: piffs
 		WaterExplosion: water_piffs
-		InfDeath: 2
+		Delay: 6
+	Warhead@9Dam_5: SpreadDamage
+		Spread: 128
 		Damage: 10
+		InfDeath: 2
 		Delay: 8
-	Warhead@6:
-		Spread: 128
 		Versus:
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 25%
+	Warhead@10Eff_5: CreateEffect
 		Explosion: piffs
 		WaterExplosion: water_piffs
-		InfDeath: 2
+		Delay: 8
+	Warhead@11Dam_6: SpreadDamage
+		Spread: 128
 		Damage: 10
+		InfDeath: 2
+		Delay: 10
+		Versus:
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
+	Warhead@12Eff_6: CreateEffect
+		Explosion: piffs
+		WaterExplosion: water_piffs
 		Delay: 10
 
 Maverick:
@@ -132,20 +145,22 @@ Maverick:
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 60
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 70
+		InfDeath: 4
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 70
 
 FireballLauncher:
 	ROF: 65
@@ -156,20 +171,22 @@ FireballLauncher:
 		Speed: 204
 		Trail: fb2
 		Image: FB1
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
+		Damage: 150
+		InfDeath: 5
 		Versus:
 			None: 90%
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
 		Explosion: napalm
 		WaterExplosion: napalm
-		InfDeath: 5
-		SmudgeType: Scorch
 		ImpactSound: firebl3.aud
-		Damage: 150
 
 Flamer:
 	ROF: 50
@@ -182,20 +199,22 @@ Flamer:
 		Image: fb3
 		Angle: 62
 		Inaccuracy: 853
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 341
+		Damage: 8
+		InfDeath: 5
 		Versus:
 			None: 90%
 			Wood: 100%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
 		Explosion: small_napalm
 		WaterExplosion: small_napalm
-		InfDeath: 5
-		SmudgeType: Scorch
 		ImpactSound: firebl3.aud
-		Damage: 8
 
 ChainGun:
 	ROF: 10
@@ -205,18 +224,19 @@ ChainGun:
 	Projectile: Bullet
 		Speed: 1c682
 		High: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 30
+		InfDeath: 2
 		Versus:
 			None: 120%
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		WaterExplosion: water_piffs
-		InfDeath: 2
-		Damage: 30
 
 ChainGun.Yak:
 	ROF: 3
@@ -226,17 +246,18 @@ ChainGun.Yak:
 	Projectile: Bullet
 		Speed: 1c682
 		High: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 40
+		InfDeath: 2
 		Versus:
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		WaterExplosion: water_piffs
-		InfDeath: 2
-		Damage: 40
 
 Pistol:
 	ROF: 7
@@ -244,17 +265,18 @@ Pistol:
 	Report: GUN27.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 1
+		InfDeath: 2
 		Versus:
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: piff
 		WaterExplosion: water_piff
-		InfDeath: 2
-		Damage: 1
 
 M1Carbine:
 	ROF: 20
@@ -262,17 +284,18 @@ M1Carbine:
 	Report: GUN11.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 15
+		InfDeath: 2
 		Versus:
 			Wood: 25%
 			Light: 30%
 			Heavy: 10%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		WaterExplosion: water_piffs
-		InfDeath: 2
-		Damage: 15
 
 Dragon:
 	ROF: 50
@@ -289,18 +312,20 @@ Dragon:
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 50
+		InfDeath: 4
 		Versus:
 			None: 10%
 			Wood: 75%
 			Light: 35%
 			Concrete: 20%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 		WaterExplosion: med_splash
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 50
 		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 
@@ -320,18 +345,20 @@ HellfireAG:
 		Image: DRAGON
 		ROT: 10
 		RangeLimit: 20
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 60
+		InfDeath: 4
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 		WaterExplosion: med_splash
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 60
 		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 
@@ -351,19 +378,21 @@ HellfireAA:
 		Image: DRAGON
 		ROT: 10
 		RangeLimit: 20
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 40
+		InfDeath: 4
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion_air
 		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 40
 
 Grenade:
 	ROF: 60
@@ -375,18 +404,20 @@ Grenade:
 		Angle: 62
 		Inaccuracy: 554
 		Image: BOMB
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
+		Damage: 60
+		InfDeath: 3
 		Versus:
 			None: 50%
 			Wood: 100%
 			Light: 25%
 			Heavy: 5%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 		WaterExplosion: small_splash
-		InfDeath: 3
-		SmudgeType: Crater
-		Damage: 60
 		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 
@@ -397,18 +428,20 @@ Grenade:
 	Projectile: Bullet
 		Speed: 853
 		Image: 50CAL
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 16
+		InfDeath: 4
 		Versus:
 			None: 30%
 			Wood: 40%
 			Heavy: 40%
 			Concrete: 30%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: small_explosion
 		WaterExplosion: small_splash
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 16
 
 90mm:
 	ROF: 50
@@ -417,20 +450,22 @@ Grenade:
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 40
+		InfDeath: 4
 		Versus:
 			None: 20%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
 		WaterImpactSound: splash9.aud
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 40
 
 105mm:
 	ROF: 70
@@ -441,20 +476,22 @@ Grenade:
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 40
+		InfDeath: 4
 		Versus:
 			None: 20%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
 		WaterImpactSound: splash9.aud
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 40
 
 120mm:
 	ROF: 90
@@ -465,20 +502,22 @@ Grenade:
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 60
+		InfDeath: 4
 		Versus:
 			None: 20%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
 		WaterImpactSound: splash9.aud
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 60
 
 TurretGun:
 	ROF: 30
@@ -487,20 +526,22 @@ TurretGun:
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 60
+		InfDeath: 4
 		Versus:
 			None: 20%
 			Wood: 50%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
 		WaterImpactSound: splash9.aud
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 60
 
 MammothTusk:
 	ROF: 60
@@ -517,20 +558,22 @@ MammothTusk:
 		Image: DRAGON
 		ROT: 15
 		RangeLimit: 40
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
+		Damage: 50
+		InfDeath: 3
 		Versus:
 			None: 100%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion_air
 		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
-		InfDeath: 3
-		SmudgeType: Crater
-		Damage: 50
 
 155mm:
 	ROF: 85
@@ -544,21 +587,23 @@ MammothTusk:
 		Inaccuracy: 1c682
 		Image: 120MM
 		ContrailLength: 30
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 220
+		InfDeath: 3
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: artillery_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom15.aud
 		WaterImpactSound: splash9.aud
-		InfDeath: 3
-		SmudgeType: Crater
-		Damage: 220
 
 M60mg:
 	ROF: 30
@@ -567,17 +612,18 @@ M60mg:
 	Burst: 5
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 15
+		InfDeath: 2
 		Versus:
 			Wood: 10%
 			Light: 30%
 			Heavy: 10%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		WaterExplosion: water_piffs
-		InfDeath: 2
-		Damage: 15
 
 Napalm:
 	ROF: 20
@@ -586,78 +632,99 @@ Napalm:
 		Image: BOMBLET
 		Speed: 85
 		High: yes
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 170
+		Damage: 100
+		InfDeath: 5
 		Versus:
 			None: 90%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
 		Explosion: napalm
 		WaterExplosion: med_splash
-		InfDeath: 5
-		SmudgeType: Scorch
 		ImpactSound: firebl3.aud
 		WaterImpactSound: splash9.aud
-		Damage: 100
 
 CrateNapalm:
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 170
+		Damage: 600
+		InfDeath: 5
 		Versus:
 			None: 90%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
 		Explosion: napalm
 		WaterExplosion: napalm
-		InfDeath: 5
-		SmudgeType: Scorch
 		ImpactSound: firebl3.aud
-		Damage: 600
 
 CrateExplosion:
-	Warhead:
-		Damage: 500
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 500
+		InfDeath: 4
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: self_destruct
 		WaterExplosion: self_destruct
-		InfDeath: 4
 		ImpactSound: kaboom15.aud
 
 CrateNuke:
-	Warhead@impact:
-		Damage: 1000
+	Warhead@1Dam_impact: SpreadDamage
 		Spread: 256
-		DestroyResources: true
+		Damage: 1000
+		InfDeath: 5
 		Versus:
 			None: 90%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
+	Warhead@2Res_impact: DestroyResource
+	Warhead@3Eff_impact: CreateEffect
 		Explosion: nuke
 		WaterExplosion: nuke
-		InfDeath: 5
 		ImpactSound: kaboom1.aud
-	Warhead@areanuke:
-		DamageModel: PerCell
-		Damage: 250
-		SmudgeType: Scorch
+	Warhead@4Dam_areanuke: PerCellDamage
 		Size: 5,4
-		DestroyResources: true
+		Damage: 250
+		InfDeath: 5
+		Delay: 4
 		Versus:
 			None: 90%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		Delay: 4
+	Warhead@5Dam_areanuke: SpreadDamage
+		Damage: 250
 		InfDeath: 5
+		Delay: 4
+		Versus:
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+	Warhead@6Res_areanuke: DestroyResource
+		Size: 5,4
+		Delay: 4
+	Warhead@7Smu_areanuke: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 5,4
+		Delay: 4
+	Warhead@8Eff_areanuke: CreateEffect
 		ImpactSound: kaboom22.aud
+		Delay: 4
 
 TeslaZap:
 	ROF: 3
@@ -665,10 +732,10 @@ TeslaZap:
 	Range: 8c512
 	Report: TESLA1.AUD
 	Projectile: TeslaZap
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		InfDeath: 6
 		Damage: 100
+		InfDeath: 6
 		Versus:
 			None: 1000%
 			Wood: 60%
@@ -686,19 +753,21 @@ Nike:
 		ROT: 25
 		RangeLimit: 50
 		Speed: 341
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 50
+		InfDeath: 3
 		Versus:
 			None: 90%
 			Wood: 0%
 			Light: 90%
 			Heavy: 50%
 			Concrete: 0%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion_air
 		ImpactSound: kaboom25.aud
-		InfDeath: 3
-		SmudgeType: Crater
-		Damage: 50
 
 RedEye:
 	ROF: 50
@@ -713,18 +782,20 @@ RedEye:
 		ROT: 20
 		RangeLimit: 30
 		Speed: 298
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 40
+		InfDeath: 3
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion_air
 		ImpactSound: kaboom25.aud
-		InfDeath: 3
-		SmudgeType: Crater
-		Damage: 40
 
 8Inch:
 	ROF: 250
@@ -738,18 +809,20 @@ RedEye:
 		Inaccuracy: 2c938
 		Image: 120MM
 		ContrailLength: 30
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
+		Damage: 250
+		InfDeath: 3
 		Versus:
 			None: 60%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: artillery_explosion
 		WaterExplosion: large_splash
-		InfDeath: 3
-		SmudgeType: Crater
-		Damage: 250
 		ImpactSound: kaboom15.aud
 		WaterImpactSound: splash9.aud
 
@@ -766,17 +839,19 @@ SubMissile:
 		Image: MISSILE
 		Trail: smokey
 		ContrailLength: 30
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 300
+		InfDeath: 3
 		Versus:
 			None: 40%
 			Light: 30%
 			Heavy: 30%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: artillery_explosion
 		WaterExplosion: large_splash
-		InfDeath: 3
-		SmudgeType: Crater
-		Damage: 300
 		ImpactSound: kaboom15.aud
 		WaterImpactSound: splash9.aud
 
@@ -796,20 +871,22 @@ Stinger:
 		RangeLimit: 50
 		TurboBoost: true
 		Speed: 170
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 30
+		InfDeath: 4
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 30
 
 TorpTube:
 	ROF: 100
@@ -827,20 +904,22 @@ TorpTube:
 		ROT: 1
 		RangeLimit: 160
 		BoundToTerrainType: Water
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 180
+		InfDeath: 4
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
 			Concrete: 500%
-		WaterExplosion: large_splash
-		WaterImpactSound: splash9.aud
-		Explosion: large_explosion
-		ImpactSound: kaboom12.aud
-		InfDeath: 4
+	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-		Damage: 180
+	Warhead@3Eff: CreateEffect
+		Explosion: large_explosion
+		WaterExplosion: large_splash
+		ImpactSound: kaboom12.aud
+		WaterImpactSound: splash9.aud
 
 2Inch:
 	ROF: 60
@@ -849,20 +928,22 @@ TorpTube:
 	Projectile: Bullet
 		Speed: 426
 		Image: 120MM
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 25
+		InfDeath: 4
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: small_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom12.aud
 		WaterImpactSound: splash9.aud
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 25
 
 DepthCharge:
 	ROF: 60
@@ -874,18 +955,20 @@ DepthCharge:
 		Angle: 62
 		High: true
 		Inaccuracy: 128
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 80
+		InfDeath: 4
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		WaterExplosion: large_splash
 		WaterImpactSound: splash9.aud
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 80
 
 ParaBomb:
 	ROF: 10
@@ -895,18 +978,20 @@ ParaBomb:
 		Image: PARABOMB
 		Velocity: 43
 		Acceleration: 0
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
+		Damage: 500
+		InfDeath: 4
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: self_destruct
 		WaterExplosion: small_splash
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 500
 		ImpactSound: kaboom15.aud
 		WaterImpactSound: splash9.aud
 
@@ -915,15 +1000,15 @@ DogJaw:
 	ROF: 10
 	Range: 3c0
 	Report: DOGG5P.AUD
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
+		Damage: 100
+		InfDeath: 1
 		Versus:
 			Wood: 0%
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-		InfDeath: 1
-		Damage: 100
 
 Heal:
 	ROF: 80
@@ -931,15 +1016,15 @@ Heal:
 	Report: HEAL2.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
+		Damage: -50
+		InfDeath: 1
 		Versus:
 			Wood: 0%
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-		InfDeath: 1
-		Damage: -50
 
 Repair:
 	ROF: 80
@@ -948,16 +1033,16 @@ Repair:
 	ValidTargets: Repair
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
+		Damage: -20
+		InfDeath: 1
 		Versus:
 			None: 0%
 			Wood: 0%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 0%
-		InfDeath: 1
-		Damage: -20
 
 SilencedPPK:
 	ROF: 80
@@ -965,17 +1050,18 @@ SilencedPPK:
 	Report: silppk.aud
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 150
+		InfDeath: 2
 		Versus:
 			Wood: 0%
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		WaterExplosion: water_piffs
-		InfDeath: 2
-		Damage: 150
 
 SCUD:
 	ROF: 240
@@ -991,219 +1077,263 @@ SCUD:
 		Inaccuracy: 213
 		Image: V2
 		Angle: 62
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 341
+		Damage: 450
+		InfDeath: 3
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 70%
 			Heavy: 40%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: napalm
 		WaterExplosion: large_splash
-		InfDeath: 3
-		SmudgeType: Crater
-		Damage: 450
 		ImpactSound: firebl3.aud
 		WaterImpactSound: splash9.aud
 
 Atomic:
 	ValidTargets: Ground, Water, Air
-	Warhead@impact:
-		Damage: 1500
+	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
+		Damage: 1500
+		InfDeath: 5
+		Versus:
+			Concrete: 25%
+	Warhead@2Res_impact: DestroyResource
+		Size: 1
+	Warhead@3Smu_impact: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 1
-		DestroyResources: true
-		Versus:
-			Concrete: 25%
+	Warhead@4Eff_impact: CreateEffect
 		Explosion: nuke
 		WaterExplosion: nuke
-		InfDeath: 5
 		ImpactSound: kaboom1.aud
-	Warhead@areanuke1:
-		Damage: 600
+	Warhead@5Dam_areanuke1: SpreadDamage
 		Spread: 2c0
+		Damage: 600
+		InfDeath: 5
+		Delay: 5
+		Versus:
+			Concrete: 25%
+	Warhead@6Res_areanuke1: DestroyResource
+		Size: 2
+		Delay: 5
+	Warhead@7Smu_areanuke1: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 2
-		DestroyResources: true
+		Delay: 5
+	Warhead@8Eff_areanuke1: CreateEffect
+		ImpactSound: kaboom22.aud
+		Delay: 5
+	Warhead@9Dam_areanuke2: SpreadDamage
+		Spread: 3c0
+		Damage: 600
+		InfDeath: 5
+		Delay: 10
 		Versus:
 			Concrete: 25%
-		Delay: 5
-		InfDeath: 5
-		ImpactSound: kaboom22.aud
-	Warhead@areanuke2:
-		Damage: 600
-		Spread: 3c0
+	Warhead@10Res_areanuke2: DestroyResource
+		Size: 3
+		Delay: 10
+	Warhead@11Smu_areanuke2: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 3
-		DestroyResources: true
+		Delay: 10
+	Warhead@12Dam_areanuke3: SpreadDamage
+		Spread: 4c0
+		Damage: 600
+		InfDeath: 5
+		Delay: 15
 		Versus:
 			Concrete: 25%
-		Delay: 10
-		InfDeath: 5
-	Warhead@areanuke3:
-		Damage: 600
-		Spread: 4c0
+	Warhead@13Res_areanuke3: DestroyResource
+		Size: 4
+		Delay: 15
+	Warhead@14Smu_areanuke3: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 4
-		DestroyResources: true
+		Delay: 15
+	Warhead@15Dam_areanuke4: SpreadDamage
+		Spread: 5c0
+		Damage: 600
+		InfDeath: 5
+		Delay: 20
 		Versus:
 			Concrete: 25%
-		Delay: 15
-		InfDeath: 5
-	Warhead@areanuke4:
-		Damage: 600
-		Spread: 5c0
+	Warhead@16Res_areanuke4: DestroyResource
+		Size: 5
+		Delay: 20
+	Warhead@17Smu_areanuke4: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 5
-		DestroyResources: true
-		Versus:
-			Concrete: 25%
 		Delay: 20
-		InfDeath: 5
 
 MiniNuke:
 	ValidTargets: Ground, Water, Air
-	Warhead@impact:
-		Damage: 1500
+	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Size: 1
-		DestroyResources: true
+		Damage: 1500
+		InfDeath: 5
 		Versus:
 			Concrete: 25%
+	Warhead@2Res_impact: DestroyResource
+		Size: 1
+	Warhead@3Eff_impact: CreateEffect
 		Explosion: nuke
 		WaterExplosion: nuke
-		InfDeath: 5
 		ImpactSound: kaboom1.aud
-	Warhead@areanuke1:
-		Damage: 600
+	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 2c0
-		Size: 2
-		DestroyResources: true
-		Versus:
-			Concrete: 25%
+		Damage: 600
+		InfDeath: 5
 		Delay: 5
-		InfDeath: 5
+		Versus:
+			Concrete: 25%
+	Warhead@5Res_areanuke1: DestroyResource
+		Size: 2
+		Delay: 5
+	Warhead@6Eff_areanuke1: CreateEffect
 		ImpactSound: kaboom22.aud
-	Warhead@areanuke2:
-		Damage: 600
+		Delay: 5
+	Warhead@7Dam_areanuke2: SpreadDamage
 		Spread: 3c0
-		Size: 3
-		DestroyResources: true
-		Versus:
-			Concrete: 25%
-		Delay: 10
-		InfDeath: 5
-	Warhead@areanuke3:
 		Damage: 600
-		Spread: 4c0
-		Size: 4
-		SmudgeType: Scorch
-		DestroyResources: true
+		InfDeath: 5
+		Delay: 10
 		Versus:
 			Concrete: 25%
-		Delay: 15
+	Warhead@8Res_areanuke2: DestroyResource
+		Size: 3
+		Delay: 10
+	Warhead@9Dam_areanuke3: SpreadDamage
+		Spread: 4c0
+		Damage: 600
 		InfDeath: 5
+		Delay: 15
+		Versus:
+			Concrete: 25%
+	Warhead@10Res_areanuke3: DestroyResource
+		Size: 4
+		Delay: 15
+	Warhead@11Smu_areanuke3: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 4
+		Delay: 15
 
 UnitExplode:
-	Warhead:
-		Damage: 500
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 500
+		InfDeath: 4
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: self_destruct
 		WaterExplosion: large_splash
-		InfDeath: 4
 		ImpactSound: kaboom22.aud
 		WaterImpactSound: splash9.aud
 
 UnitExplodeShip:
-	Warhead:
-		Damage: 50
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 50
+		InfDeath: 4
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: building
 		WaterExplosion: building
-		InfDeath: 4
 		ImpactSound: kaboom25.aud
 		WaterImpactSound: kaboom25.aud
 
 UnitExplodeSubmarine:
-	Warhead:
-		Damage: 50
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 50
+		InfDeath: 4
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		WaterExplosion: large_splash
-		InfDeath: 4
 		WaterImpactSound: splash9.aud
 
 UnitExplodeSmall:
-	Warhead:
-		Damage: 40
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 40
+		InfDeath: 4
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		WaterExplosion: large_splash
-		InfDeath: 4
 		ImpactSound: kaboom15.aud
 		WaterImpactSound: splash9.aud
 
 BarrelExplode:
-	Warhead:
-		Damage: 500
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 500
+		InfDeath: 4
+		Delay: 5
 		Versus:
 			None: 120%
 			Wood: 200%
 			Light: 50%
 			Heavy: 25%
 			Concrete: 10%
-		Explosion: napalm
-		InfDeath: 4
-		ImpactSound: firebl3.aud
+	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
-		Delay: 5
 		Size: 2,1
+		Delay: 5
+	Warhead@3Eff: CreateEffect
+		Explosion: napalm
+		ImpactSound: firebl3.aud
+		Delay: 5
 
 Crush:
-	Warhead:
-		ImpactSound: squishy2.aud
+	Warhead@1Dam: SpreadDamage
 		Damage: 100
+	Warhead@2Eff: CreateEffect
+		ImpactSound: squishy2.aud
 
 ATMine:
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 400
-		ImpactSound: mineblo1.aud
+	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
+		ImpactSound: mineblo1.aud
 
 APMine:
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 400
-		ImpactSound: mine1.aud
 		InfDeath: 3
+	Warhead@2Eff: CreateEffect
 		Explosion: napalm
+		ImpactSound: mine1.aud
 
 Demolish:
-	Warhead:
-		ImpactSound: kaboom25.aud
+	Warhead@1Dam: SpreadDamage
+	Warhead@2Eff: CreateEffect
 		Explosion: building
+		ImpactSound: kaboom25.aud
 
 PortaTesla:
 	ROF: 70
@@ -1211,10 +1341,10 @@ PortaTesla:
 	Report: TESLA1.AUD
 	Charges: yes
 	Projectile: TeslaZap
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		InfDeath: 6
 		Damage: 45
+		InfDeath: 6
 		Versus:
 			None: 1000%
 
@@ -1224,10 +1354,10 @@ TTankZap:
 	Report: TESLA1.AUD
 	Charges: yes
 	Projectile: TeslaZap
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		InfDeath: 6
 		Damage: 100
+		InfDeath: 6
 		Versus:
 			None: 1000%
 
@@ -1239,17 +1369,18 @@ FLAK-23:
 	Projectile: Bullet
 		Speed: 1c682
 		High: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
+		Damage: 20
 		Versus:
 			None: 40%
 			Wood: 10%
 			Light: 60%
 			Heavy: 10%
 			Concrete: 20%
+	Warhead@2Eff: CreateEffect
 		Explosion: small_explosion_air
 		WaterExplosion: small_splash
-		Damage: 20
 
 Sniper:
 	Report: GUN5.AUD
@@ -1257,16 +1388,16 @@ Sniper:
 	Range: 10c0
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
-		Damage: 140
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
+		Damage: 140
+		InfDeath: 2
 		Versus:
 			None: 100%
 			Wood: 0%
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-		InfDeath: 2
 
 APTusk:
 	ROF: 60
@@ -1283,86 +1414,99 @@ APTusk:
 		Image: DRAGON
 		ROT: 10
 		RangeLimit: 22
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 30
+		InfDeath: 4
 		Versus:
 			None: 25%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
-		InfDeath: 4
-		SmudgeType: Crater
-		Damage: 30
 
 Claw:
 	ROF: 30
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
+		Damage: 33
+		InfDeath: 1
 		Versus:
 			None: 90%
 			Wood: 10%
 			Light: 30%
 			Heavy: 10%
 			Concrete: 10%
-		InfDeath: 1
-		Damage: 33
 
 Mandible:
 	ROF: 10
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
+		Damage: 60
+		InfDeath: 1
 		Versus:
 			None: 90%
 			Wood: 10%
 			Light: 30%
 			Heavy: 10%
 			Concrete: 10%
-		InfDeath: 1
-		Damage: 60
 
 MADTankThump:
 	InvalidTargets: MADTank
-	Warhead:
-		DamageModel: HealthPercentage
+	Warhead@1Dam: HealthPercentageDamage
+		Spread: 7c0,6c0
 		Damage: 1
 		Versus:
 			None: 0%
-		Size: 7,6
+	Warhead@2Dam: SpreadDamage
+		Damage: 1
+		Versus:
+			None: 0%
 
 MADTankDetonate:
 	InvalidTargets: MADTank
-	Warhead:
-		DamageModel: HealthPercentage
+	Warhead@1Dam: HealthPercentageDamage
+		Spread: 7c0,6c0
 		Damage: 19
 		Versus:
 			None: 0%
+	Warhead@2Dam: SpreadDamage
+		Damage: 19
+		Versus:
+			None: 0%
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Crater
 		Size: 7,6
+	Warhead@4Eff: CreateEffect
 		Explosion: med_explosion
 		ImpactSound: mineblo1.aud
-		SmudgeType: Crater
 
 OreExplosion:
-	Warhead:
-		Damage: 10
+	Warhead@1Dam: SpreadDamage
 		Spread: 9
-		Size: 1,1
+		Damage: 10
+		InfDeath: 3
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: med_explosion
-		InfDeath: 3
-		ImpactSound: kaboom25.aud
+	Warhead@2Res: CreateResource
 		AddsResourceType: Ore
+		Size: 1,1
+	Warhead@3Eff: CreateEffect
+		Explosion: med_explosion
+		ImpactSound: kaboom25.aud
 
