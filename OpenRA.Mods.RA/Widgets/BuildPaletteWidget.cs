@@ -25,8 +25,8 @@ namespace OpenRA.Mods.RA.Widgets
 	class BuildPaletteWidget : Widget
 	{
 		public enum ReadyTextStyleOptions { Solid, AlternatingColor, Blinking }
-		public readonly ReadyTextStyleOptions ReadyTextStyle = ReadyTextStyleOptions.Blinking;
-		public readonly Color ReadyTextAltColor = Color.LimeGreen;
+		public readonly ReadyTextStyleOptions ReadyTextStyle = ReadyTextStyleOptions.AlternatingColor;
+		public readonly Color ReadyTextAltColor = Color.Gold;
 		public int Columns = 3;
 		public int Rows = 5;
 
