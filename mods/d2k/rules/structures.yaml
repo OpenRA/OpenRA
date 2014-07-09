@@ -1,4 +1,4 @@
-^CONCRETE:
+^concrete:
 	Building:
 		Adjacent: 4
 		TerrainTypes: Rock
@@ -13,32 +13,27 @@
 	RenderSprites:
 	KillsSelf:
 		RemoveInstead: true
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 10
 
-CONCRETEA:
-	Inherits: ^CONCRETE
+concretea:
+	Inherits: ^concrete
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 10
-		Prerequisites: ~conyard
 	Valued:
 		Cost: 20
 
-CONCRETEB:
-	Inherits: ^CONCRETE
+concreteb:
+	Inherits: ^concrete
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 10
-		Prerequisites: ~conyard
 	Valued:
 		Cost: 50
 
-^CONYARD:
+conyard:
 	Inherits: ^Building
 	Building:
 		Footprint: xxx xxx
@@ -48,10 +43,6 @@ CONCRETEB:
 		TerrainTypes: Rock
 		Template: 88
 	Bib:
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 1000
-		Prerequisites: ~disabled
 	Selectable:
 		Bounds: 96,64
 	Health:
@@ -70,17 +61,21 @@ CONCRETEB:
 		Value: 2000
 	BaseBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite:
-		Prerequisite: conyard
-	WithBuildingPlacedOverlay:
-		Palette: d2k
 	Power:
 		Amount: 20
+	RenderBuilding:
+		Image: conyard.harkonnen
+		RaceImages:
+			atreides: conyard.atreides
+			ordos: conyard.ordos
+			corrino: conyard.corrino
+	WithBuildingPlacedOverlay:
+		Palette: d2k
+	PrimaryBuilding:
 
-^POWER:
+power:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: ~conyard
 		Queue: Building
 		BuildPaletteOrder: 10
 	Selectable:
@@ -100,18 +95,21 @@ CONCRETEB:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	ProvidesCustomPrerequisite:
-		Prerequisite: power
+	RenderBuilding:
+		Image: power.harkonnen
+		RaceImages:
+			atreides: power.atreides
+			ordos: power.ordos
 	WithIdleOverlay@ZAPS:
 		Sequence: idle-zaps
 	Power:
 		Amount: 100
 	ScalePowerWithHealth:
 
-^BARRACKS:
+barracks:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: ~conyard, power
+		Prerequisites: power
 		Queue: Building
 		BuildPaletteOrder: 40
 	Selectable:
@@ -143,15 +141,30 @@ CONCRETEB:
 		Produces: Infantry
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite:
-		Prerequisite: barracks
+	ProvidesCustomPrerequisite@atreides:
+		Prerequisite: barracks.atreides
+		Race: atreides
+	ProvidesCustomPrerequisite@ordos:
+		Prerequisite: barracks.ordos
+		Race: ordos
+	ProvidesCustomPrerequisite@harkonnen:
+		Prerequisite: barracks.harkonnen
+		Race: harkonnen
+	ProvidesCustomPrerequisite@medics:
+		Prerequisite: barracks.medics
+		Race: atreides, ordos
 	Power:
 		Amount: -20
+	RenderBuilding:
+		Image: barracks.harkonnen
+		RaceImages:
+			atreides: barracks.atreides
+			ordos: barracks.ordos
 
-^REFINERY:
+refinery:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: ~conyard, ~power
+		Prerequisites: power
 		Queue: Building
 		BuildPaletteOrder: 20
 	Selectable:
@@ -182,12 +195,16 @@ CONCRETEB:
 	CustomSellValue:
 		Value: 500
 	FreeActor:
-		Actor: HARVESTER
+		Actor: harvester
 		InitialActivity: FindResources
 		SpawnOffset: 2,1
 		Facing: 160
-	ProvidesCustomPrerequisite:
-		Prerequisite: refinery
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+		Image: refinery.harkonnen
+		RaceImages:
+			atreides: refinery.atreides
+			ordos: refinery.ordos
 	WithDockingOverlay@SMOKE:
 		Sequence: smoke
 	Power:
@@ -195,10 +212,10 @@ CONCRETEB:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 
-^SILO:
+silo:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: ~conyard, refinery
+		Prerequisites: refinery
 		Queue: Building
 		BuildPaletteOrder: 30
 	Selectable:
@@ -219,6 +236,10 @@ CONCRETEB:
 		Range: 4c0
 	-RenderBuilding:
 	RenderBuildingSilo:
+		Image: silo.harkonnen
+		RaceImages:
+			atreides: silo.atreides
+			ordos: silo.ordos
 	StoresResources:
 		PipColor: green
 		PipCount: 5
@@ -229,10 +250,10 @@ CONCRETEB:
 	MustBeDestroyed:
 		RequiredForShortGame: false
 
-^LIGHT:
+light:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: ~conyard, refinery
+		Prerequisites: refinery
 		Queue: Building
 		BuildPaletteOrder: 70
 	Selectable:
@@ -252,6 +273,11 @@ CONCRETEB:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+	RenderBuilding:
+		Image: light.harkonnen
+		RaceImages:
+			atreides: light.atreides
+			ordos: light.ordos
 	RallyPoint:
 		RallyPoint: 2,2
 	Exit@1:
@@ -261,8 +287,18 @@ CONCRETEB:
 		Produces: Vehicle
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite:
-		Prerequisite: light
+	ProvidesCustomPrerequisite@atreides:
+		Prerequisite: light.atreides
+		Race: atreides
+	ProvidesCustomPrerequisite@ordos:
+		Prerequisite: light.ordos
+		Race: ordos
+	ProvidesCustomPrerequisite@harkonnen:
+		Prerequisite: light.harkonnen
+		Race: harkonnen
+	ProvidesCustomPrerequisite@TRIKES:
+		Prerequisite: light.regulartrikes
+		Race: atreides, harkonnen
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	WithIdleOverlay@TOP:
@@ -270,10 +306,10 @@ CONCRETEB:
 	Power:
 		Amount: -20
 
-^HEAVY:
+heavy:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: ~conyard, refinery
+		Prerequisites: refinery
 		Queue: Building
 		BuildPaletteOrder: 100
 	Selectable:
@@ -302,8 +338,21 @@ CONCRETEB:
 		Produces: Armor
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite:
-		Prerequisite: heavy
+	ProvidesCustomPrerequisite@atreides:
+		Prerequisite: heavy.atreides
+		Race: atreides
+	ProvidesCustomPrerequisite@ordos:
+		Prerequisite: heavy.ordos
+		Race: ordos
+	ProvidesCustomPrerequisite@harkonnen:
+		Prerequisite: heavy.harkonnen
+		Race: harkonnen
+	RenderBuilding:
+		Image: heavy.harkonnen
+		RaceImages:
+			atreides: heavy.atreides
+			ordos: heavy.ordos
+			corrino: heavy.corrino
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	WithIdleOverlay@TOP:
@@ -311,13 +360,13 @@ CONCRETEB:
 	Power:
 		Amount: -30
 
-^RADAR:
+radar:
 	Inherits: ^Building
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
 	Buildable:
-		Prerequisites: ~conyard, barracks, ~techlevel.medium
+		Prerequisites: barracks, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 50
 	Selectable:
@@ -341,15 +390,18 @@ CONCRETEB:
 	DetectCloaked:
 		Range: 6
 	RenderDetectionCircle:
-	ProvidesCustomPrerequisite:
-		Prerequisite: radar
+	RenderBuilding:
+		Image: radar.harkonnen
+		RaceImages:
+			atreides: radar.atreides
+			ordos: radar.ordos
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
 	Power:
 		Amount: -40
 
-^STARPORT:
+starport:
 	Inherits: ^Building
 	Valued:
 		Cost: 2000
@@ -357,7 +409,7 @@ CONCRETEB:
 		Name: Starport
 		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Buildable:
-		Prerequisites: ~conyard, radar, ~techlevel.high
+		Prerequisites: radar, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 80
 	Building:
@@ -382,6 +434,12 @@ CONCRETEB:
 	ProductionAirdrop:
 		Produces: Starport
 		ActorType: frigate
+	RenderBuilding:
+		Image: starport.harkonnen
+		RaceImages:
+			atreides: starport.atreides
+			ordos: starport.ordos
+			corrino: starport.corrino
 	WithDeliveryOverlay:
 		Palette: starportlights
 	ProductionBar:
@@ -389,15 +447,22 @@ CONCRETEB:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	ProvidesCustomPrerequisite:
-		Prerequisite: starport
+	ProvidesCustomPrerequisite@atreides:
+		Prerequisite: starport.atreides
+		Race: atreides
+	ProvidesCustomPrerequisite@ordos:
+		Prerequisite: starport.ordos
+		Race: ordos
+	ProvidesCustomPrerequisite@harkonnen:
+		Prerequisite: starport.harkonnen
+		Race: harkonnen
 	Power:
 		Amount: -40
 
-^WALL:
+wall:
 	Buildable:
 		Queue: Building
-		Prerequisites: ~conyard, barracks
+		Prerequisites: barracks
 		BuildPaletteOrder: 60
 	SoundOnDamageTransition:
 		DamagedSound:
@@ -429,7 +494,6 @@ CONCRETEB:
 	TargetableBuilding:
 		TargetTypes: Ground
 	RenderBuildingWall:
-		Image: walla
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
@@ -444,16 +508,11 @@ CONCRETEB:
 		Pieces: 3, 7
 		Range: 2c0, 5c0
 
-WALL:
-	Inherits: ^WALL
-	Buildable:
-		Prerequisites: ~disabled
-
-^GUNTOWER:
+guntower:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: ~conyard, barracks
+		Prerequisites: barracks
 		BuildPaletteOrder: 90
 	Valued:
 		Cost: 650
@@ -504,11 +563,11 @@ WALL:
 	MustBeDestroyed:
 		RequiredForShortGame: false
 
-^ROCKETTOWER:
+rockettower:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: ~conyard, radar, ~techlevel.medium
+		Prerequisites: radar, ~techlevel.medium
 		BuildPaletteOrder: 120
 	Valued:
 		Cost: 850
@@ -559,11 +618,11 @@ WALL:
 	MustBeDestroyed:
 		RequiredForShortGame: false
 
-^REPAIR:
+repair:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: ~conyard, heavy, ~techlevel.medium
+		Prerequisites: heavy, ~techlevel.medium
 		BuildPaletteOrder: 130
 	Valued:
 		Cost: 500
@@ -586,17 +645,20 @@ WALL:
 		FinishRepairingNotification: UnitRepaired
 	RallyPoint:
 		RallyPoint: 1,3
-	ProvidesCustomPrerequisite:
-		Prerequisite: repair
+	RenderBuilding:
+		Image: repair.harkonnen
+		RaceImages:
+			atreides: repair.atreides
+			ordos: repair.ordos
 	WithRepairOverlay:
 		Palette: repairlights
 	Power:
 		Amount: -10
 
-^HIGHTECH:
+hightech:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: ~conyard, radar, ~techlevel.medium
+		Prerequisites: radar, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 110
 	Selectable:
@@ -621,18 +683,21 @@ WALL:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	ProvidesCustomPrerequisite:
-		Prerequisite: hightech
+	RenderBuilding:
+		Image: hightech.harkonnen
+		RaceImages:
+			atreides: hightech.atreides
+			ordos: hightech.ordos
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	Power:
 		Amount: -40
 
-^RESEARCH:
+research:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: ~conyard, hightech, ~techlevel.high
+		Prerequisites: hightech, ~techlevel.high
 		BuildPaletteOrder: 140
 	Selectable:
 		Bounds: 96,64
@@ -662,17 +727,20 @@ WALL:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	ProvidesCustomPrerequisite:
-		Prerequisite: research
+	RenderBuilding:
+		Image: research.harkonnen
+		RaceImages:
+			atreides: research.atreides
+			ordos: research.ordos
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
 		Amount: -40
 
-^PALACE:
+palace:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: ~conyard, research, ~techlevel.high
+		Prerequisites: research, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 150
 	Selectable:
@@ -681,7 +749,7 @@ WALL:
 		Cost: 2000
 	Tooltip:
 		Name: Palace
-		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
+		Description: Unlocks elite infantry and support powers
 	Building:
 		Footprint: xx= xxx =xx
 		Dimensions: 3,3
@@ -693,72 +761,83 @@ WALL:
 		Type: Wood
 	RevealsShroud:
 		Range: 8c0
+	RenderBuilding:
+		Image: palace.harkonnen
+		RaceImages:
+			atreides: palace.atreides
+			ordos: palace.ordos
+			corrino: palace.corrino
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 4
-	ProvidesCustomPrerequisite:
-		Prerequisite: palace
 	Power:
 		Amount: -50
+	ProvidesCustomPrerequisite@airstrike:
+		Prerequisite: palace.airstrike
+		Race: atreides, ordos
+	ProvidesCustomPrerequisite@nuke:
+		Prerequisite: palace.nuke
+		Race: harkonnen
+	AirstrikePower:
+		Icon: ornistrike
+		Prerequisites: ~techlevel.superweapons, ~palace.airstrike
+		Description: Air Strike
+		ChargeTime: 180
+		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target
+		UnitType: orni.bomber
+		SelectTargetSound:
+		DisplayBeacon: True
+		CameraActor: camera
+	NukePower:
+		Icon: deathhand
+		Prerequisites: ~techlevel.superweapons, ~palace.nuke
+		ChargeTime: 300
+		Description: Death Hand
+		LongDesc: Launches a nuclear missile at a target location
+		BeginChargeSound: HI_PREP.AUD
+		EndChargeSound: HI_DHRDY.AUD
+		SelectTargetSound:
+		LaunchSound:
+		IncomingSound:
+		MissileWeapon: atomic
+		SpawnOffset: -512,1c171,0
+		DisplayBeacon: True
+		DisplayRadarPing: True
+		CameraActor: camera
+	CanPowerDown:
+	DisabledOverlay:
+	RequiresPower:
+	SupportPowerChargeBar:
 
-SIETCH:
-	Inherits: ^Building
-	Tooltip:
-		Name: Fremen Sietch
-	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-		TerrainTypes: Cliff
-	Health:
-		HP: 400
-	Armor:
-		Type: Concrete
-	RevealsShroud:
-		Range: 10c0
-	-GivesBuildableArea:
-	-Sellable:
-	-ExternalCapturable:
-	-ExternalCapturableBar:
-	Power:
-		Amount: 0
+conyard.atreides:
+	Inherits: conyard
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+		ForceRace: atreides
+	RenderBuilding:
+		Image: conyard.atreides
+		-RaceImages:
 
-CONYARD:
-	Tooltip:
-		Name: Construction Yard
+conyard.harkonnen:
+	Inherits: conyard
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+		ForceRace: harkonnen
+	RenderBuilding:
+		Image: conyard.harkonnen
+		-RaceImages:
 
-BARRACKS:
-	Tooltip:
-		Name: Barracks
-
-LIGHT:
-	Tooltip:
-		Name: Light Factory
-
-HEAVY:
-	Tooltip:
-		Name: Heavy Factory
-
-HIGHTECH:
-	Tooltip:
-		Name: High-Tech Facility
-
-REPAIR:
-	Tooltip:
-		Name: Repair Pad
-
-RESEARCH:
-	Tooltip:
-		Name: Ix Lab
-
-RADAR:
-	Tooltip:
-		Name: Outpost
-
-POWER:
-	Tooltip:
-		Name: Windtrap
-
-REFINERY:
-	Tooltip:
-		Name: Spice Refinery
-
+conyard.ordos:
+	Inherits: conyard
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+		ForceRace: ordos
+	RenderBuilding:
+		Image: conyard.ordos
+		-RaceImages:

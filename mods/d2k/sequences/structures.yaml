@@ -8,7 +8,7 @@ concreteb:
 		Start:4053
 		Offset: -30,-24
 
-walla:
+wall:
 	idle: DATA
 		Frames: 2527, 2530, 2528, 2538, 2531, 2532, 2542, 2535, 2529, 2539, 2533, 2534, 2540, 2536, 2537, 2541
 		Length: 16
@@ -21,33 +21,7 @@ walla:
 		Start: 4063
 		Offset: -30,-24
 
-wallh:
-	idle: DATA
-		Frames: 2687, 2690, 2688, 2698, 2691, 2692, 2702, 2695, 2689, 2699, 2693, 2694, 2700, 2696, 2697, 2701
-		Length: 16
-		Offset: -16,16
-	damaged-idle: DATA
-		Frames: 2703, 2706, 2704, 2714, 2707, 2708, 2718, 2711, 2705, 2715, 2709, 2710, 2716, 2712, 2713, 2717
-		Length: 16
-		Offset: -16,16
-	icon: DATA
-		Start: 4064
-		Offset: -30,-24
-
-wallo:
-	idle: DATA
-		Frames: 2847, 2850, 2848, 2858, 2851, 2852, 2862, 2855, 2849, 2859, 2853, 2854, 2860, 2856, 2857, 2861
-		Length: 16
-		Offset: -16,16
-	damaged-idle: DATA
-		Frames: 2863, 2866, 2864, 2874, 2867, 2868, 2878, 2871, 2865, 2875, 2869, 2870, 2876, 2872, 2873, 2877
-		Length: 16
-		Offset: -16,16
-	icon: DATA
-		Start: 4065
-		Offset: -30,-24
-
-guntowera:
+guntower:
 	idle: DATA
 		Frames: 2573, 2576, 2574, 2584, 2577, 2578, 2588, 2581, 2575, 2585, 2579, 2580, 2586, 2582, 2583, 2587
 		Length: 16
@@ -70,53 +44,7 @@ guntowera:
 		Start: 4069
 		Offset: -30,-24
 
-guntowerh:
-	idle: DATA
-		Frames: 2733, 2736, 2734, 2744, 2737, 2738, 2748, 2741, 2735, 2745, 2739, 2740, 2746, 2742, 2743, 2747
-		Length: 16
-		Offset: -24,16
-	damaged-idle: DATA
-		Frames: 2781, 2784, 2782, 2792, 2785, 2786, 2796, 2789, 2783, 2793, 2787, 2788, 2794, 2790, 2791, 2795
-		Length: 16
-		Offset: -24,16
-	turret: DATA
-		Start: 2749
-		Facings: -32
-		Offset: -24,16
-	muzzle: DATA
-		Frames: 3839, 3839, 3840, 3840, 3841, 3841, 3842, 3842, 3843, 3843, 3844, 3844, 3845, 3845, 3846, 3846, 3847, 3847, 3848, 3848, 3849, 3849, 3850, 3850, 3851, 3851, 3852, 3852, 3853, 3853, 3854, 3854, 3855, 3855, 3856, 3856, 3857, 3857, 3858, 3858, 3859, 3859, 3860, 3860, 3861, 3861, 3862, 3862, 3863, 3863, 3864, 3864, 3865, 3865, 3866, 3866, 3867, 3867, 3868, 3868, 3869, 3869, 3870, 3870
-		Facings: -32
-		Length: 2
-		Offset: 0,-12
-		BlendMode: Additive
-	icon: DATA
-		Frames: 4070
-		Offset: -30,-24
-
-guntowero:
-	idle: DATA
-		Frames: 2893, 2896, 2894, 2904, 2897, 2898, 2908, 2901, 2895, 2905, 2899, 2900, 2906, 2902, 2903, 2907
-		Length: 16
-		Offset: -24,16
-	damaged-idle: DATA
-		Frames: 2941, 2944, 2942, 2952, 2945, 2946, 2956, 2949, 2943, 2953, 2947, 2948, 2954, 2950, 2951, 2955
-		Length: 16
-		Offset: -24,16
-	turret: DATA
-		Start: 2909
-		Facings: -32
-		Offset: -24,16
-	muzzle: DATA
-		Frames: 3839, 3839, 3840, 3840, 3841, 3841, 3842, 3842, 3843, 3843, 3844, 3844, 3845, 3845, 3846, 3846, 3847, 3847, 3848, 3848, 3849, 3849, 3850, 3850, 3851, 3851, 3852, 3852, 3853, 3853, 3854, 3854, 3855, 3855, 3856, 3856, 3857, 3857, 3858, 3858, 3859, 3859, 3860, 3860, 3861, 3861, 3862, 3862, 3863, 3863, 3864, 3864, 3865, 3865, 3866, 3866, 3867, 3867, 3868, 3868, 3869, 3869, 3870, 3870
-		Facings: -32
-		Length: 2
-		Offset: 0,-12
-		BlendMode: Additive
-	icon: DATA
-		Start: 4071
-		Offset: -30,-24
-
-rockettowera:
+rockettower:
 	idle: DATA
 		Frames: 2573, 2576, 2574, 2584, 2577, 2578, 2588, 2581, 2575, 2585, 2579, 2580, 2586, 2582, 2583, 2587
 		Length: 16
@@ -133,41 +61,7 @@ rockettowera:
 		Start: 4075
 		Offset: -30,-24
 
-rockettowerh:
-	idle: DATA
-		Frames: 2733, 2736, 2734, 2744, 2737, 2738, 2748, 2741, 2735, 2745, 2739, 2740, 2746, 2742, 2743, 2747
-		Length: 16
-		Offset: -24,16
-	damaged-idle: DATA
-		Frames: 2781, 2784, 2782, 2792, 2785, 2786, 2796, 2789, 2783, 2793, 2787, 2788, 2794, 2790, 2791, 2795
-		Length: 16
-		Offset: -24,16
-	turret: DATA
-		Start: 2797
-		Facings: -32
-		Offset: -24,16
-	icon: DATA
-		Start: 4076
-		Offset: -30,-24
-
-rockettowero:
-	idle: DATA
-		Frames: 2893, 2896, 2894, 2904, 2897, 2898, 2908, 2901, 2895, 2905, 2899, 2900, 2906, 2902, 2903, 2907
-		Length: 16
-		Offset: -24,16
-	damaged-idle: DATA
-		Frames: 2941, 2944, 2942, 2952, 2945, 2946, 2956, 2949, 2943, 2953, 2947, 2948, 2954, 2950, 2951, 2955
-		Length: 16
-		Offset: -24,16
-	turret: DATA
-		Start: 2957
-		Facings: -32
-		Offset: -24,16
-	icon: DATA
-		Start: 4077
-		Offset: -30,-24
-
-conyarda:
+conyard.atreides:
 	idle: DATA
 		Start: 2559
 		Offset: -48,64
@@ -205,7 +99,7 @@ conyarda:
 		Start: 4046
 		Offset: -30,-24
 
-repaira:
+repair.atreides:
 	make: DATA
 		Start: 4370
 		Length: 10
@@ -240,7 +134,7 @@ repaira:
 		Start: 4096
 		Offset: -30,-24
 
-repairh:
+repair.harkonnen:
 	make: DATA
 		Start: 4370
 		Length: 10
@@ -275,7 +169,7 @@ repairh:
 		Start: 4097
 		Offset: -30,-24
 
-repairo:
+repair.ordos:
 	make: DATA
 		Start: 4370
 		Length: 10
@@ -310,7 +204,7 @@ repairo:
 		Start: 4098
 		Offset: -30,-24
 
-starporta:
+starport.atreides:
 	idle: DATA
 		Start: 2671
 		ZOffset: -1c511
@@ -354,7 +248,7 @@ starporta:
 		Start: 4092
 		Offset: -30,-24
 
-pwra:
+power.atreides:
 	idle: DATA
 		Start: 2523
 		Offset: -32,64
@@ -392,7 +286,7 @@ pwra:
 		Start: 4056
 		Offset: -30,-24
 
-barra:
+barracks.atreides:
 	idle: DATA
 		Start: 2525
 		Offset: -32,64
@@ -420,7 +314,7 @@ barra:
 		Start: 4059
 		Offset: -30,-24
 
-radara:
+radar.atreides:
 	idle: DATA
 		Start: 2521
 		Offset: -48,80
@@ -452,7 +346,7 @@ radara:
 		Start: 4072
 		Offset: -30,-24
 
-refa:
+refinery.atreides:
 	idle: DATA
 		Start: 2561
 		Length: 1
@@ -493,7 +387,7 @@ refa:
 		Tick: 200
 		BlendMode: Additive
 
-siloa:
+silo.atreides:
 	idle: DATA
 		Start: 2566
 		Length: 4
@@ -515,7 +409,7 @@ siloa:
 		Start: 4084
 		Offset: -30,-24
 
-hightecha:
+hightech.atreides:
 	idle: DATA
 		Start: 2564
 		Offset: -48,80
@@ -549,7 +443,7 @@ hightecha:
 		Start: 4078
 		Offset: -30,-24
 
-researcha:
+research.atreides:
 	idle: DATA
 		Start: 2669
 		Offset: -48,80
@@ -582,7 +476,7 @@ researcha:
 		Start: 4099
 		Offset: -30,-24
 
-researchh:
+research.harkonnen:
 	idle: DATA
 		Start: 2829
 		Offset: -48,80
@@ -615,7 +509,7 @@ researchh:
 		Start: 4100
 		Offset: -30,-24
 
-researcho:
+research.ordos:
 	idle: DATA
 		Start: 2989
 		Offset: -48,80
@@ -648,7 +542,7 @@ researcho:
 		Start: 4101
 		Offset: -30,-24
 
-palacea:
+palace.atreides:
 	idle: DATA
 		Start: 2676
 		Offset: -48,48
@@ -676,7 +570,7 @@ palacea:
 		Start: 4102
 		Offset: -30,-24
 
-lighta:
+light.atreides:
 	idle: DATA
 		Start: 2673
 		Length: 1
@@ -718,7 +612,7 @@ lighta:
 		Start: 4081
 		Offset: -30,-24
 
-heavya:
+heavy.atreides:
 	idle: DATA
 		Start: 2518
 		Length: 1
@@ -761,7 +655,7 @@ heavya:
 		Start: 4087
 		Offset: -30,-24
 
-conyardh:
+conyard.harkonnen:
 	idle: DATA
 		Start: 2719
 		Offset: -48,64
@@ -799,7 +693,7 @@ conyardh:
 		Start: 4047
 		Offset: -30,-24
 
-starporth:
+starport.harkonnen:
 	idle: DATA
 		Start: 2831
 		ZOffset: -1c511
@@ -843,7 +737,7 @@ starporth:
 		Start: 4093
 		Offset: -30,-24
 
-pwrh:
+power.harkonnen:
 	idle: DATA
 		Start: 2683
 		Offset: -32,64
@@ -881,7 +775,7 @@ pwrh:
 		Start: 4057
 		Offset: -30,-24
 
-barrh:
+barracks.harkonnen:
 	idle: DATA
 		Start: 2685
 		Offset: -32,64
@@ -909,7 +803,7 @@ barrh:
 		Start: 4060
 		Offset: -30,-24
 
-radarh:
+radar.harkonnen:
 	idle: DATA
 		Start: 2681
 		Offset: -48,80
@@ -941,7 +835,7 @@ radarh:
 		Start: 4073
 		Offset: -30,-24
 
-refh:
+refinery.harkonnen:
 	idle: DATA
 		Start: 2721
 		Length: 1
@@ -982,7 +876,7 @@ refh:
 		Tick: 200
 		BlendMode: Additive
 
-siloh:
+silo.harkonnen:
 	idle: DATA
 		Start: 2726
 		Length: 4
@@ -1004,7 +898,7 @@ siloh:
 		Start: 4085
 		Offset: -30,-24
 
-hightechh:
+hightech.harkonnen:
 	idle: DATA
 		Start: 2724
 		Offset: -48,80
@@ -1038,7 +932,7 @@ hightechh:
 		Start: 4079
 		Offset: -30,-24
 
-palaceh:
+palace.harkonnen:
 	idle: DATA
 		Start: 2836
 		Offset: -48,48
@@ -1074,7 +968,7 @@ palaceh:
 		Start: 4103
 		Offset: -30,-24
 
-lighth:
+light.harkonnen:
 	idle: DATA
 		Start: 2833
 		Length: 1
@@ -1116,7 +1010,7 @@ lighth:
 		Start: 4082
 		Offset: -30,-24
 
-heavyh:
+heavy.harkonnen:
 	idle: DATA
 		Start: 2678
 		Length: 1
@@ -1159,7 +1053,7 @@ heavyh:
 		Start: 4088
 		Offset: -30,-24
 
-conyardo:
+conyard.ordos:
 	idle: DATA
 		Start: 2879
 		Offset: -48,64
@@ -1197,7 +1091,7 @@ conyardo:
 		Start: 4048
 		Offset: -30,-24
 
-starporto:
+starport.ordos:
 	idle: DATA
 		Start: 2991
 		Offset: -48,48
@@ -1241,7 +1135,7 @@ starporto:
 		Start: 4094
 		Offset: -30,-24
 
-pwro:
+power.ordos:
 	idle: DATA
 		Start: 2843
 		Length: 1
@@ -1280,7 +1174,7 @@ pwro:
 		Start: 4058
 		Offset: -30,-24
 
-barro:
+barracks.ordos:
 	idle: DATA
 		Start: 2845
 		Offset: -32,64
@@ -1308,7 +1202,7 @@ barro:
 		Start: 4061
 		Offset: -30,-24
 
-radaro:
+radar.ordos:
 	idle: DATA
 		Start: 2841
 		Offset: -48,80
@@ -1340,7 +1234,7 @@ radaro:
 		Start: 4074
 		Offset: -30,-24
 
-refo:
+refinery.ordos:
 	idle: DATA
 		Start: 2881
 		Length: 1
@@ -1381,7 +1275,7 @@ refo:
 		Tick: 200
 		BlendMode: Additive
 
-siloo:
+silo.ordos:
 	idle: DATA
 		Start: 2886
 		Length: 4
@@ -1403,7 +1297,7 @@ siloo:
 		Start: 4086
 		Offset: -30,-24
 
-hightecho:
+hightech.ordos:
 	idle: DATA
 		Start: 2884
 		Offset: -48,80
@@ -1437,7 +1331,7 @@ hightecho:
 		Start: 4080
 		Offset: -30,-24
 
-palaceo:
+palace.ordos:
 	idle: DATA
 		Start: 2996
 		Offset: -48,48
@@ -1465,7 +1359,7 @@ palaceo:
 		Start: 4104
 		Offset: -30,-24
 
-lighto:
+light.ordos:
 	idle: DATA
 		Start: 2993
 		Length: 1
@@ -1507,7 +1401,7 @@ lighto:
 		Start: 4083
 		Offset: -30,-24
 
-heavyo:
+heavy.ordos:
 	idle: DATA
 		Start: 2838
 		Length: 1
@@ -1550,7 +1444,7 @@ heavyo:
 		Start: 4089
 		Offset: -30,-24
 
-palacec:
+palace.corrino:
 	idle: DATA
 		Start: 3004
 		Offset: -48,48
@@ -1577,7 +1471,7 @@ palacec:
 		Offset: -48,48
 		Tick: 100
 
-starportc:
+starport.corrino:
 	idle: DATA
 		Start: 2999
 		Offset: -48,48
@@ -1621,7 +1515,7 @@ starportc:
 		Start: 4020
 		Offset: -30,-24
 
-heavyc:
+heavy.corrino:
 	idle: DATA
 		Start: 3001
 		Length: 1
@@ -1662,44 +1556,6 @@ heavyc:
 		Offset: -16,-16
 	icon: DATA # TODO: blank
 		Start: 4020
-		Offset: -30,-24
-
-conyardc:
-	idle: DATA
-		Start: 3006
-		Offset: -48,64
-	make: DATA
-		Start: 4109
-		Length: 30
-		Offset: -48,64
-	crumble-overlay: DATA
-		Start: 4139
-		Length: 12
-		Offset: -48,64
-		Tick: 200
-	damaged-idle: DATA
-		Start: 3007
-		Offset: -48,64
-	crane-overlay: DATA
-		Start: 4478
-		Length: 14
-		Offset: -48,64
-		Tick: 80
-	damaged-crane-overlay: DATA
-		Start: 4478
-		Length: 14
-		Offset: -48,64
-		Tick: 80
-	bib: BLOXBASE
-		Frames: 611, 612, 613, 631, 632, 633
-		Length: 6
-		Offset: -16,-16
-	bib-Concrete: BLOXBASE
-		Frames: 643, 644, 645, 663, 664, 665
-		Length: 6
-		Offset: -16,-16
-	icon: DATA
-		Start: 4049
 		Offset: -30,-24
 
 plates: # TODO: unused
