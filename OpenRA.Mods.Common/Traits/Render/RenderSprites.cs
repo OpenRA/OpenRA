@@ -37,17 +37,23 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
 			var sequenceProvider = init.World.Map.SequenceProvider;
-			var image = RenderSprites.GetImage(init.Actor);
-			var palette = init.WorldRenderer.Palette(Palette ?? (init.Owner != null ? PlayerPalette + init.Owner.InternalName : null));
+			var race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Owner.Country.Race;
+			var image = GetImage(init.Actor, sequenceProvider, race);
+			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + init.Owner.InternalName);
 
 			var facings = 0;
 			var body = init.Actor.Traits.GetOrDefault<BodyOrientationInfo>();
 			if (body != null)
-				facings = body.QuantizedFacings == -1 ? init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(sequenceProvider, init.Actor) : body.QuantizedFacings;
+				facings = body.QuantizedFacings == -1 ? init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequenceProvider, init.Owner.Country.Race) : body.QuantizedFacings;
 
 			foreach (var spi in init.Actor.Traits.WithInterface<IRenderActorPreviewSpritesInfo>())
 				foreach (var preview in spi.RenderPreviewSprites(init, this, image, facings, palette))
 					yield return preview;
+		}
+
+		public string GetImage(ActorInfo actor, SequenceProvider sequenceProvider, string race)
+		{
+			return (Image ?? actor.Name).ToLowerInvariant();
 		}
 	}
 
@@ -88,9 +94,10 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+	    readonly string race;
 		readonly RenderSpritesInfo info;
-		string cachedImage = null;
-		Dictionary<string, AnimationWrapper> anims = new Dictionary<string, AnimationWrapper>();
+	    readonly Dictionary<string, AnimationWrapper> anims = new Dictionary<string, AnimationWrapper>();
+		string cachedImage;
 
 		public static Func<int> MakeFacingFunc(Actor self)
 		{
@@ -102,12 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 		public RenderSprites(ActorInitializer init, RenderSpritesInfo info)
 		{
 			this.info = info;
-		}
-
-		public static string GetImage(ActorInfo actor)
-		{
-			var info = actor.Traits.Get<RenderSpritesInfo>();
-			return (info.Image ?? actor.Name).ToLowerInvariant();
+			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.Race;
 		}
 
 		public string GetImage(Actor self)
@@ -115,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (cachedImage != null)
 				return cachedImage;
 
-			return cachedImage = GetImage(self.Info);
+			return cachedImage = info.GetImage(self.Info, self.World.Map.SequenceProvider, race);
 		}
 
 		protected void UpdatePalette()

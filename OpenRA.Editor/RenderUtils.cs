@@ -46,9 +46,9 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
-		public static ActorTemplate RenderActor(ActorInfo info, TileSet tileset, IPalette p)
+		public static ActorTemplate RenderActor(ActorInfo info, SequenceProvider sequenceProvider, TileSet tileset, IPalette p, string race)
 		{
-			var image = info.Traits.Get<ILegacyEditorRenderInfo>().EditorImage(info);
+			var image = info.Traits.Get<ILegacyEditorRenderInfo>().EditorImage(info, sequenceProvider, race);
 			using (var s = GlobalFileSystem.OpenWithExts(image, tileset.Extensions))
 			{
 				var shp = new ShpTDSprite(s);

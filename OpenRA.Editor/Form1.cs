@@ -238,7 +238,9 @@ namespace OpenRA.Editor
 					if (rsi != null && rsi.EditorPalette != null && rsi.EditorPalette.Contains("terrain"))
 						templatePalette = palette;
 
-					var template = RenderUtils.RenderActor(info, tileset, templatePalette);
+					var race = Program.Rules.Actors["world"].Traits.WithInterface<CountryInfo>().First().Race;
+					var sequenceProvider = Program.Rules.Sequences[tileset.Id];
+					var template = RenderUtils.RenderActor(info, sequenceProvider, tileset, templatePalette, race);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,

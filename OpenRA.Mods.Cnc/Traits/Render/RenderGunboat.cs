@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override object Create(ActorInitializer init) { return new RenderGunboat(init, this); }
 
-		public int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai)
+		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race)
 		{
 			return 2;
 		}
