@@ -571,14 +571,14 @@ GALITE:
 	Valued:
 		Cost: 200
 	Tooltip:
-		Name: Lamp
+		Name: Light Post
 	Building:
 		Power: 0
 		Footprint: x
 		Dimensions: 1,1
 	RenderBuilding:
-		HasMakeAnimation: no
 		Palette: terrain
+	-WithMakeAnimation:
 	Health:
 		HP: 600
 	Armor:
