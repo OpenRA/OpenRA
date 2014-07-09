@@ -57,9 +57,10 @@ return {
     return match and 1 or 0, match and term and 1 or 0
   end,
   isincindent = function(str)
-    str = (str:gsub('%-%-%[=*%[.*%]=*%]',''):gsub('%-%-.*','')
+    str = (str:gsub('%-%-%[=*%[.*%]=*%]','')
       :gsub("'.-\\'","'"):gsub("'.-'","")
       :gsub('".-\\"','"'):gsub('".-"','')
+      :gsub('%-%-.*','') -- strip comments after strings are processed
       :gsub("%b()","()") -- remove all function calls
     )
     local term = str:match("^%s*(%w+)%W*")
