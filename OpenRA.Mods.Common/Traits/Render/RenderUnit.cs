@@ -15,13 +15,13 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class RenderUnitInfo : RenderSimpleInfo, Requires<IFacingInfo>
 	{
-		public override object Create(ActorInitializer init) { return new RenderUnit(init.Self); }
+		public override object Create(ActorInitializer init) { return new RenderUnit(init, this); }
 	}
 
 	public class RenderUnit : RenderSimple
 	{
-		public RenderUnit(Actor self)
-			: base(self) { }
+		public RenderUnit(ActorInitializer init, RenderUnitInfo info)
+			: base(init, info) { }
 
 		public void PlayCustomAnimation(Actor self, string newAnim, Action after)
 		{

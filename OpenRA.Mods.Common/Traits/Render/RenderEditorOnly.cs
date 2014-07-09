@@ -16,12 +16,13 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Invisible during games.")]
 	class RenderEditorOnlyInfo : RenderSimpleInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderEditorOnly(init.Self); }
+		public override object Create(ActorInitializer init) { return new RenderEditorOnly(init, this); }
 	}
 
 	class RenderEditorOnly : RenderSimple
 	{
-		public RenderEditorOnly(Actor self) : base(self, () => 0) { }
+		public RenderEditorOnly(ActorInitializer init, RenderEditorOnlyInfo info)
+			: base(init, info, () => 0) { }
 
 		public override IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr) { return SpriteRenderable.None; }
 	}

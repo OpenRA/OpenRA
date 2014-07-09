@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Change the sprite image size.")]
 		public readonly float Scale = 1f;
 
-		public virtual object Create(ActorInitializer init) { return new RenderSprites(init.Self); }
+		public virtual object Create(ActorInitializer init) { return new RenderSprites(init, this); }
 
 		public IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
@@ -99,9 +99,9 @@ namespace OpenRA.Mods.Common.Traits
 			return () => facing.Facing;
 		}
 
-		public RenderSprites(Actor self)
+		public RenderSprites(ActorInitializer init, RenderSpritesInfo info)
 		{
-			info = self.Info.Traits.Get<RenderSpritesInfo>();
+			this.info = info;
 		}
 
 		public static string GetImage(ActorInfo actor)
