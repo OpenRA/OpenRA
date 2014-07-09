@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.Effects
 				if (hitanim != null)
 					hitanim.PlayThen("idle", () => animationComplete = true);
 
-				Combat.DoImpacts(target, args.SourceActor, args.Weapon, args.FirepowerModifier);
+				args.Weapon.Impact(target, args.SourceActor, args.FirepowerModifier);
 				doneDamage = true;
 			}
 

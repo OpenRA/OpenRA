@@ -1,27 +1,29 @@
 UnitExplode:
-	Warhead:
-		Damage: 500
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 500
+		InfDeath: 2
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: large_twlt
-		InfDeath: 2
 		ImpactSound: expnew09.aud
 
 UnitExplodeSmall:
-	Warhead:
-		Damage: 40
+	Warhead@1Dam: SpreadDamage
 		Spread: 426
+		Damage: 40
+		InfDeath: 2
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+	Warhead@2Eff: CreateEffect
 		Explosion: medium_brnl
-		InfDeath: 2
 		ImpactSound: expnew13.aud
 
 Minigun:
@@ -30,17 +32,18 @@ Minigun:
 	Report: INFGUN3.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 12
+		InfDeath: 1
+		ProneModifier: 70
 		Versus:
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffpiff
-		InfDeath: 1
-		Damage: 12
-		ProneModifier: 70
 
 Grenade:
 	ROF: 60
@@ -52,17 +55,18 @@ Grenade:
 		Angle: 62
 		Inaccuracy: 554
 		Image: DISCUS
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 171
+		Damage: 40
+		InfDeath: 3
+		ProneModifier: 70
 		Versus:
 			None: 100%
 			Wood: 85%
 			Light: 70%
 			Heavy: 35%
 			Concrete: 28%
-		InfDeath: 3
-		Damage: 40
-		ProneModifier: 70
+	Warhead@2Eff: CreateEffect
 		Explosion: large_grey_explosion
 		ImpactSound: expnew13.aud
 
@@ -81,16 +85,17 @@ Bazooka:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 25
+		InfDeath: 2
 		Versus:
 			None: 25%
 			Wood: 65%
 			Light: 75%
 			Heavy: 100%
 			Concrete: 60%
-		InfDeath: 2
-		Damage: 25
+	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
 
@@ -109,16 +114,17 @@ MultiCluster:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 65
+		InfDeath: 3
 		Versus:
 			None: 25%
 			Wood: 65%
 			Light: 75%
 			Heavy: 100%
 			Concrete: 60%
-		InfDeath: 3
-		Damage: 65
+	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
 
@@ -128,16 +134,16 @@ Heal:
 	Report: HEALER1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
+		Damage: -50
+		InfDeath: 1
+		ProneModifier: 100
 		Versus:
 			Wood: 0%
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-		InfDeath: 1
-		Damage: -50
-		ProneModifier: 100
 
 Sniper:
 	ROF: 60
@@ -145,17 +151,17 @@ Sniper:
 	Report: SILENCER.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
-		Damage: 150
-		ProneModifier: 100
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
+		Damage: 150
+		InfDeath: 1
+		ProneModifier: 100
 		Versus:
 			None: 100%
 			Wood: 0%
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-		InfDeath: 1
 
 M1Carbine:
 	ROF: 20
@@ -163,17 +169,18 @@ M1Carbine:
 	Report: INFGUN3.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 15
+		InfDeath: 1
+		ProneModifier: 70
 		Versus:
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffpiff
-		InfDeath: 1
-		Damage: 15
-		ProneModifier: 70
 
 LtRail:
 	ROF: 60
@@ -184,17 +191,17 @@ LtRail:
 		BeamWidth: 1
 		BeamDuration: 10
 		Color: 200,0,128,255
-	Warhead:
-		Damage: 150
-		ProneModifier: 100
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
+		Damage: 150
+		InfDeath: 2
+		ProneModifier: 100
 		Versus:
 			None: 100%
 			Wood: 130%
 			Light: 150%
 			Heavy: 110%
 			Concrete: 5%
-		InfDeath: 2
 
 CyCannon:
 	ROF: 50
@@ -206,17 +213,18 @@ CyCannon:
 		High: yes
 		Shadow: true
 		Image: TORPEDO
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
+		Damage: 120
+		InfDeath: 6
+		ProneModifier: 100
 		Versus:
 			None: 100%
 			Wood: 65%
 			Light: 75%
 			Heavy: 50%
 			Concrete: 40%
-		InfDeath: 6
-		Damage: 120
-		ProneModifier: 100
+	Warhead@2Eff: CreateEffect
 		Explosion: large_bang
 		ImpactSound: expnew12.aud
 
@@ -227,17 +235,18 @@ Vulcan3:
 	Report: CYGUN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 10
+		InfDeath: 1
+		ProneModifier: 70
 		Versus:
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffpiff
-		InfDeath: 1
-		Damage: 10
-		ProneModifier: 70
 
 Vulcan2:
 	ROF: 50
@@ -246,18 +255,19 @@ Vulcan2:
 	Report: TSGUN4.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 50
+		InfDeath: 1
+		ProneModifier: 70
 		Versus:
 			None: 100%
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffpiff
-		InfDeath: 1
-		Damage: 50
-		ProneModifier: 70
 
 Vulcan:
 	ROF: 60
@@ -265,17 +275,18 @@ Vulcan:
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 20
+		InfDeath: 1
+		ProneModifier: 70
 		Versus:
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffpiff
-		InfDeath: 1
-		Damage: 20
-		ProneModifier: 70
 
 FiendShard:
 	ROF: 30
@@ -289,15 +300,15 @@ FiendShard:
 		Inaccuracy: 512
 		Shadow: true
 		Angle: 88
-	Warhead:
+	Warhead@1Dam: SpreadDamage
+		Damage: 35
+		InfDeath: 1
+		ProneModifier: 100
 		Versus:
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
-		InfDeath: 1
-		Damage: 35
-		ProneModifier: 100
 
 JumpCannon:
 	ROF: 40
@@ -306,17 +317,18 @@ JumpCannon:
 	Report: JUMPJET1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 15
+		InfDeath: 1
+		ProneModifier: 70
 		Versus:
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffpiff
-		InfDeath: 1
-		Damage: 15
-		ProneModifier: 70
 
 HoverMissile:
 	ROF: 68
@@ -334,16 +346,17 @@ HoverMissile:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 30
+		InfDeath: 2
 		Versus:
 			None: 25%
 			Wood: 65%
 			Light: 75%
 			Heavy: 100%
 			Concrete: 60%
-		InfDeath: 2
-		Damage: 30
+	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
 
@@ -359,16 +372,17 @@ HoverMissile:
 		Image: 120mm
 		Shadow: true
 		Angle: 62
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 50
+		InfDeath: 2
 		Versus:
 			None: 25%
 			Wood: 65%
 			Light: 75%
 			Heavy: 100%
 			Concrete: 60%
-		InfDeath: 2
-		Damage: 50
+	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
 
@@ -388,17 +402,18 @@ MammothTusk:
 		ROT: 10
 		Speed: 170
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 171
+		Damage: 40
+		InfDeath: 3
+		ProneModifier: 70
 		Versus:
 			None: 100%
 			Wood: 85%
 			Light: 70%
 			Heavy: 35%
 			Concrete: 28%
-		InfDeath: 3
-		Damage: 40
-		ProneModifier: 70
+	Warhead@2Eff: CreateEffect
 		Explosion: medium_bang
 		ImpactSound: expnew12.aud
 
@@ -408,17 +423,17 @@ Repair:
 	Report: REPAIR11.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 213
+		Damage: -50
+		InfDeath: 1
+		ProneModifier: 100
 		Versus:
 			None: 0%
 			Wood: 0%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 0%
-		InfDeath: 1
-		Damage: -50
-		ProneModifier: 100
 
 SlimeAttack:
 	ROF: 80
@@ -427,30 +442,30 @@ SlimeAttack:
 	Report: VICER1.AUD
 	Projectile: Bullet
 		Speed: 426
-	Warhead:
+	Warhead@1Dam: SpreadDamage
+		Damage: 100
+		InfDeath: 2
+		ProneModifier: 100
 		Versus:
 			Wood: 25%
 			Light: 30%
 			Heavy: 10%
 			Concrete: 10%
-		InfDeath: 2
-		Damage: 100
-		ProneModifier: 100
 
 SuicideBomb:
 	ROF: 1
 	Range: 0c512
 	Report: HUNTER2.AUD
-	Warhead:
-		Damage: 11000
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		DestroyResources: true
+		Damage: 11000
+		InfDeath: 5
 		Versus:
 			None: 90%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		InfDeath: 5
+	Warhead@2Res: DestroyResource
 
 120mm:
 	ROF: 80
@@ -458,16 +473,17 @@ SuicideBomb:
 	Report: 120MMF.AUD
 	Projectile: Bullet
 		Speed: 1c512
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 70
+		InfDeath: 2
 		Versus:
 			None: 25%
 			Wood: 65%
 			Light: 75%
 			Heavy: 100%
 			Concrete: 60%
-		InfDeath: 2
-		Damage: 70
+	Warhead@2Eff: CreateEffect
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
 
@@ -480,17 +496,17 @@ MechRailgun:
 	Projectile: LaserZap
 		Color: 200,0,255,255
 		BeamWidth: 3
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
+		Damage: 200
+		InfDeath: 5
+		ProneModifier: 100
 		Versus:
 			None: 200%
 			Wood: 175%
 			Light: 160%
 			Heavy: 100%
 			Concrete: 25%
-		InfDeath: 5
-		Damage: 200
-		ProneModifier: 100
 
 AssaultCannon:
 	ROF: 50
@@ -498,17 +514,18 @@ AssaultCannon:
 	Report: TSGUN4.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 40
+		InfDeath: 1
+		ProneModifier: 70
 		Versus:
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffpiff
-		InfDeath: 1
-		Damage: 40
-		ProneModifier: 70
 
 BikeMissile:
 	ROF: 60
@@ -527,38 +544,40 @@ BikeMissile:
 		ROT: 8
 		Speed: 213
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 256
+		Damage: 40
+		InfDeath: 2
 		Versus:
 			None: 25%
 			Wood: 65%
 			Light: 75%
 			Heavy: 100%
 			Concrete: 60%
-		InfDeath: 2
-		Damage: 40
+	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
 
 RaiderCannon:
 	ROF: 55
 	Range: 4c0
-	Burst: 2	#purely cosmetical, for alternate muzzle position
+	Burst: 2
 	BurstDelay: 55
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 40
+		InfDeath: 1
+		ProneModifier: 70
 		Versus:
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffpiff
-		InfDeath: 1
-		Damage: 40
-		ProneModifier: 70
 
 FireballLauncher:
 	ROF: 50
@@ -570,17 +589,17 @@ FireballLauncher:
 		Inacuracy: 384
 	Burst: 5
 	BurstDelay: 5
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 341
+		Damage: 25
+		InfDeath: 5
+		ProneModifier: 100
 		Versus:
 			None: 600%
 			Wood: 148%
 			Light: 59%
 			Heavy: 6%
 			Concrete: 2%
-		InfDeath: 5
-		Damage: 25
-		ProneModifier: 100
 
 SonicZap:
 	ROF: 120
@@ -591,13 +610,13 @@ SonicZap:
 		Color: 200,0,255,255
 		BeamWidth: 12
 		BeamDuration: 50
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
+		Damage: 100
+		InfDeath: 5
 		Versus:
 			Heavy: 80%
 			Concrete: 60%
-		InfDeath: 5
-		Damage: 100
 
 Dragon:
 	ROF: 50
@@ -615,16 +634,17 @@ Dragon:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 30
+		InfDeath: 2
 		Versus:
 			None: 25%
 			Wood: 65%
 			Light: 75%
 			Heavy: 100%
 			Concrete: 60%
-		InfDeath: 2
-		Damage: 30
+	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
 
@@ -638,16 +658,17 @@ Dragon:
 		Image: 120mm
 		Shadow: true
 		Angle: 62
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 36
+		InfDeath: 2
 		Versus:
 			None: 25%
 			Wood: 65%
 			Light: 75%
 			Heavy: 100%
 			Concrete: 60%
-		InfDeath: 2
-		Damage: 36
+	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
 
@@ -663,17 +684,18 @@ Dragon:
 		Shadow: true
 		High: yes
 	MinRange: 5c0
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 298
+		Damage: 150
+		InfDeath: 3
+		ProneModifier: 100
 		Versus:
 			None: 100%
 			Wood: 85%
 			Light: 68%
 			Heavy: 35%
 			Concrete: 35%
-		InfDeath: 3
-		Damage: 150
-		ProneModifier: 100
+	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
 
@@ -693,16 +715,17 @@ Hellfire:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 85
+		Damage: 30
+		InfDeath: 2
 		Versus:
 			None: 30%
 			Wood: 65%
 			Light: 150%
 			Heavy: 100%
 			Concrete: 30%
-		InfDeath: 2
-		Damage: 30
+	Warhead@2Eff: CreateEffect
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
 
@@ -714,17 +737,18 @@ Bomb:
 		Speed: 170
 		Image: canister
 		Shadow: true
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 298
+		Damage: 160
+		InfDeath: 3
+		ProneModifier: 100
 		Versus:
 			None: 200%
 			Wood: 90%
 			Light: 75%
 			Heavy: 32%
 			Concrete: 100%
-		InfDeath: 3
-		Damage: 160
-		ProneModifier: 100
+	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
 
@@ -743,16 +767,17 @@ Proton:
 		Image: TORPEDO
 		ROT: 1
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 20
+		InfDeath: 3
 		Versus:
 			None: 25%
 			Wood: 65%
 			Light: 75%
 			Heavy: 100%
 			Concrete: 60%
-		InfDeath: 3
-		Damage: 20
+	Warhead@2Eff: CreateEffect
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
 
@@ -763,17 +788,18 @@ HarpyClaw:
 	Projectile: Bullet
 		Speed: 1c682
 	ValidTargets: Ground, Air
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 60
+		InfDeath: 1
+		ProneModifier: 70
 		Versus:
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffpiff
-		InfDeath: 1
-		Damage: 60
-		ProneModifier: 70
 
 Pistola:
 	ROF: 20
@@ -781,49 +807,57 @@ Pistola:
 	Report: GUN18.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 2
+		InfDeath: 1
+		ProneModifier: 70
 		Versus:
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piff
-		InfDeath: 1
-		Damage: 2
-		ProneModifier: 70
 
 Tiberium:
 	ROF: 16
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		InfDeath: 6
 		Damage: 2
+		InfDeath: 6
 		PreventProne: yes
 
 TiberiumHeal:
 	ROF: 16
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		InfDeath: 6
 		Damage: -2
+		InfDeath: 6
 		PreventProne: yes
 
 IonCannon:
 	ValidTargets: Ground, Air
-	Warhead@impact:
-		Damage: 1000
+	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
+		Damage: 1000
 		InfDeath: 5
-		Explosion: ring1
 		ProneModifier: 100
-	Warhead@area:
-		DamageModel: PerCell
+	Warhead@2Eff_impact: CreateEffect
+		Explosion: ring1
+	Warhead@3Dam_area: PerCellDamage
+		Size: 2,1
 		Damage: 250
+		InfDeath: 5
+		Delay: 3
+	Warhead@4Dam_area: SpreadDamage
+		Damage: 250
+		InfDeath: 5
+		Delay: 3
+	Warhead@5Smu_area: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 2,1
 		Delay: 3
-		InfDeath: 5
 
 VulcanTower:
 	ROF: 26
@@ -831,16 +865,17 @@ VulcanTower:
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 18
+		InfDeath: 1
 		Versus:
 			Wood: 60%
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@2Eff: CreateEffect
 		Explosion: piffpiff
-		InfDeath: 1
-		Damage: 18
 
 RPGTower:
 	ROF: 80
@@ -853,17 +888,18 @@ RPGTower:
 		Shadow: true
 		Angle: 62
 		Image: canister
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
+		Damage: 110
+		InfDeath: 2
+		ProneModifier: 70
 		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 90%
 			Heavy: 100%
 			Concrete: 70%
-		InfDeath: 2
-		Damage: 110
-		ProneModifier: 70
+	Warhead@2Eff: CreateEffect
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
 
@@ -882,10 +918,11 @@ SAMTower:
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 60
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		InfDeath: 2
 		Damage: 33
+		InfDeath: 2
+	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
 
@@ -896,12 +933,13 @@ ObeliskLaser:
 	Report: OBELRAY1.AUD
 	Projectile: LaserZap
 		BeamWidth: 4
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		InfDeath: 5
-		SmudgeType: Scorch
 		Damage: 250
+		InfDeath: 5
 		ProneModifier: 60
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
 
 TurretLaser:
 	ROF: 40
@@ -910,24 +948,28 @@ TurretLaser:
 	Projectile: LaserZap
 		BeamWidth: 2
 		BeamDuration: 5
-	Warhead:
+	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		InfDeath: 5
-		SmudgeType: Scorch
 		Damage: 30
+		InfDeath: 5
 		ProneModifier: 60
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
 
 TiberiumExplosion:
-	Warhead:
-		Damage: 10
+	Warhead@1Dam: SpreadDamage
 		Spread: 9
-		Size: 1,1
+		Damage: 10
+		InfDeath: 3
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		InfDeath: 3
+	Warhead@2Res: CreateResource
+		AddsResourceType: Tiberium
+		Size: 1,1
+	Warhead@3Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
-		AddsResourceType: Tiberium
+

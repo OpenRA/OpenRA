@@ -189,7 +189,6 @@
     <Compile Include="ChronoshiftPaletteEffect.cs" />
     <Compile Include="Chronoshiftable.cs" />
     <Compile Include="Cloak.cs" />
-    <Compile Include="Combat.cs" />
     <Compile Include="ConquestVictoryConditions.cs" />
     <Compile Include="ContainsCrate.cs" />
     <Compile Include="Crate.cs" />
@@ -289,6 +288,10 @@
     <Compile Include="Player\ProductionQueue.cs" />
     <Compile Include="Player\ProvidesTechPrerequisite.cs" />
     <Compile Include="PortableChrono.cs" />
+    <Compile Include="Warheads\DestroyResourceWarhead.cs" />
+    <Compile Include="Warheads\CreateEffectWarhead.cs" />
+    <Compile Include="Warheads\CreateResourceWarhead.cs" />
+    <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />
     <Compile Include="World\RadarPings.cs" />
     <Compile Include="Player\TechTree.cs" />
     <Compile Include="PrimaryBuilding.cs" />

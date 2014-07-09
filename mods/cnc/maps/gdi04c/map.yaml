@@ -913,7 +913,7 @@ VoxelSequences:
 
 Weapons:
 	Rockets:
-		Warhead:
+		Warhead: SpreadDamage
 			Versus:
 				None: 20%
 

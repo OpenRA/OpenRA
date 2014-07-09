@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -79,7 +80,8 @@ namespace OpenRA.Mods.RA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoExplosion(firedBy.PlayerActor, weapon, pos);
+			var weapon = world.Map.Rules.Weapons[this.weapon.ToLowerInvariant()];
+			weapon.Impact(pos, firedBy.PlayerActor, 1f);
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 
 			foreach (var a in world.ActorsWithTrait<NukePaletteEffect>())

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 	{
 		public bool Invulnerable = false;
 
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		public float GetDamageModifier(Actor attacker, DamageWarhead warhead)
 		{
 			return Invulnerable ? 0.0f : 1.0f;
 		}

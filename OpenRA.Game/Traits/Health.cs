@@ -98,7 +98,7 @@ namespace OpenRA.Traits
 					nd.AppliedDamage(repairer, self, ai);
 		}
 
-		public void InflictDamage(Actor self, Actor attacker, int damage, WarheadInfo warhead, bool ignoreModifiers)
+		public void InflictDamage(Actor self, Actor attacker, int damage, DamageWarhead warhead, bool ignoreModifiers)
 		{
 			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
 
@@ -177,7 +177,7 @@ namespace OpenRA.Traits
 			return (health == null) ? DamageState.Undamaged : health.DamageState;
 		}
 
-		public static void InflictDamage(this Actor self, Actor attacker, int damage, WarheadInfo warhead)
+		public static void InflictDamage(this Actor self, Actor attacker, int damage, DamageWarhead warhead)
 		{
 			if (self.Destroyed) return;
 			var health = self.TraitOrDefault<Health>();

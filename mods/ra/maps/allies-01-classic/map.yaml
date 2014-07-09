@@ -615,7 +615,7 @@ Weapons:
 		Range: 5c0
 		ROF: 20
 		Burst: 1
-		Warhead:
+		Warhead: SpreadDamage
 			Damage: 20
 
 Voices:

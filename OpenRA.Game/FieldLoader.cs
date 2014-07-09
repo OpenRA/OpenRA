@@ -509,10 +509,16 @@ namespace OpenRA
 
 			internal Func<MiniYaml, object> GetLoader(Type type)
 			{
-				const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+				const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.FlattenHierarchy;
 
 				if (!string.IsNullOrEmpty(Loader))
-					return (Func<MiniYaml, object>)Delegate.CreateDelegate(typeof(Func<MiniYaml, object>), type.GetMethod(Loader, flags));
+				{
+					var method = type.GetMethod(Loader, flags);
+					if (method == null)
+						throw new InvalidOperationException("{0} does not specify a loader function '{1}'".F(type.Name, Loader));
+
+					return (Func<MiniYaml, object>)Delegate.CreateDelegate(typeof(Func<MiniYaml, object>), method);
+				}
 
 				return null;
 			}

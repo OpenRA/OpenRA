@@ -653,7 +653,7 @@ VoxelSequences:
 
 Weapons:
 	Tiberium:
-		Warhead:
+		Warhead: SpreadDamage
 			Damage: 4
 
 Voices:

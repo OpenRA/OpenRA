@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.GameRules;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Orders;
@@ -68,7 +69,10 @@ namespace OpenRA.Mods.RA
 			if (++tick >= info.ThumpInterval)
 			{
 				if (info.ThumpDamageWeapon != null)
-					Combat.DoExplosion(self, info.ThumpDamageWeapon, self.CenterPosition);
+				{
+					var weapon = self.World.Map.Rules.Weapons[info.ThumpDamageWeapon.ToLowerInvariant()];
+					weapon.Impact(self.CenterPosition, self, 1f);
+				}
 				screenShaker.AddEffect(info.ThumpShakeTime, self.CenterPosition, info.ThumpShakeIntensity, info.ThumpShakeMultiplier);
 				tick = 0;
 			}
@@ -104,7 +108,10 @@ namespace OpenRA.Mods.RA
 			self.World.AddFrameEndTask(w =>
 			{
 				if (info.DetonationWeapon != null)
-					Combat.DoExplosion(self, info.DetonationWeapon, self.CenterPosition);
+				{
+					var weapon = self.World.Map.Rules.Weapons[info.DetonationWeapon.ToLowerInvariant()];
+					weapon.Impact(self.CenterPosition, self, 1f);
+				}
 				self.Kill(self);
 			});
 		}
