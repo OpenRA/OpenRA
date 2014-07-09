@@ -150,14 +150,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var spawns = preview.SpawnPoints;
 			return lobbyInfo.Clients
-				.Where(c => c.SpawnPoint != 0)
+				.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Count))
 				.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c));
 		}
+
 		public static Dictionary<CPos, SpawnOccupant> GetSpawnOccupants(IEnumerable<GameInformation.Player> players, MapPreview preview)
 		{
 			var spawns = preview.SpawnPoints;
 			return players
-					.Where(c => c.SpawnPoint != 0)
+					.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Count))
 					.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c));
 		}
 
