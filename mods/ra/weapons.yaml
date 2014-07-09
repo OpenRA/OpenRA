@@ -1374,4 +1374,23 @@ OreExplosion:
 		InfDeath: 3
 		ImpactSound: kaboom25.aud
 		AddsResourceType: Ore
+		
+MP5:
+	ROF: 4
+	Range: 6c0
+	Report: GUN5.AUD
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead:
+		Spread: 42
+		Versus:
+			None: 100%
+			Wood: 0%
+			Light: 0%
+			Heavy: 0%
+			Concrete: 0%
+		Explosion: piff
+		WaterExplosion: water_piff
+		InfDeath: 2
+		Damage: 50
 
