@@ -83,6 +83,7 @@ PALACEO:
 		Owner: ordos
 	AirstrikePower:
 		Icon: ornistrike
+		Prerequisites: ~techlevel.superweapons
 		Description: Air Strike
 		ChargeTime: 180
 		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target
@@ -186,7 +187,7 @@ STEALTHRAIDER:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		Prerequisites: Hitech
+		Prerequisites: Hitech, ~techlevel.medium
 		Owner: ordos
 		BuildPaletteOrder: 30
 	Valued:
@@ -243,7 +244,7 @@ DEVIATORTANK:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 50
-		Prerequisites: heavyo, researcho
+		Prerequisites: heavyo, researcho, ~techlevel.high
 		Owner: ordos
 		Hotkey: d
 	Mobile:
@@ -282,7 +283,7 @@ SABOTEUR:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
-		Prerequisites: palaceo
+		Prerequisites: palaceo, ~techlevel.high
 		Owner: ordos
 		Hotkey: b
 	Valued:

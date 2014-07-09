@@ -27,7 +27,7 @@ RIFLE:
 ENGINEER:
 	Inherits: ^Infantry
 	Buildable:
-		Prerequisites: Outpost
+		Prerequisites: Outpost, ~techlevel.medium
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: atreides,harkonnen,ordos
@@ -56,7 +56,7 @@ ENGINEER:
 BAZOOKA:
 	Inherits: ^Infantry
 	Buildable:
-		Prerequisites: Outpost
+		Prerequisites: Outpost, ~techlevel.medium
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Owner: atreides,harkonnen,ordos
@@ -87,7 +87,7 @@ MEDIC:
 		Queue: Infantry
 		BuildPaletteOrder: 60
 		Owner: atreides, ordos
-		Prerequisites: Research
+		Prerequisites: Research, ~techlevel.high
 		Hotkey: m
 	Valued:
 		Cost: 500

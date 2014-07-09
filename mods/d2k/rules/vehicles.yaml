@@ -1,7 +1,7 @@
 ^MCV:
 	Inherits: ^Vehicle
 	Buildable:
-		Prerequisites: Repair
+		Prerequisites: Repair, ~techlevel.medium
 		Queue: Armor
 		BuildPaletteOrder: 110
 		Hotkey: m
@@ -151,7 +151,7 @@ QUAD:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		Prerequisites: Light,Outpost
+		Prerequisites: Light,Outpost, ~techlevel.medium
 		Owner: atreides, ordos, harkonnen
 		BuildPaletteOrder: 20
 		Hotkey: q
@@ -242,7 +242,7 @@ SIEGETANK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
-		Prerequisites: Outpost
+		Prerequisites: Outpost, ~techlevel.medium
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 50
 		Hotkey: t
@@ -311,7 +311,7 @@ MISSILETANK:
 		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Armor
-		Prerequisites: Hitech
+		Prerequisites: Hitech, ~techlevel.high
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 60
 		Hotkey: r
