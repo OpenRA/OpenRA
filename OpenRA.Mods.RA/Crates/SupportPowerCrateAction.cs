@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Crates
 		public SupportPowerCrateAction(Actor self, SupportPowerCrateActionInfo info)
 			: base(self, info) { Info = info; }
 
-		// The free unit crate requires same race, and the actor to be at least ITeleportable.
+		// The free unit crate requires same race and the actor needs to be mobile.
 		// We want neither of these properties for crate power proxies.
 		public override void Activate(Actor collector)
 		{
