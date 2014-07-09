@@ -534,7 +534,7 @@ Zombie:
 		Queue: Infantry
 		BuildPaletteOrder: 200
 		Prerequisites: ~bio
-		Hotkey: z
+		Hotkey: b
 	Selectable:
 		Voice: AntVoice
 		Bounds: 12,17,0,-9
@@ -559,7 +559,7 @@ Ant:
 		Queue: Infantry
 		BuildPaletteOrder: 1954
 		Prerequisites: ~bio
-		Hotkey: a
+		Hotkey: n
 	Selectable:
 		Voice: AntVoice
 		Bounds: 30,30,0,-2
