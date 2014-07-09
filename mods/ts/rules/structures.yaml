@@ -138,7 +138,7 @@ PROC:
 	StoresResources:
 		PipColor: Green
 		PipCount: 15
-		Capacity: 1500
+		Capacity: 3000
 	CustomSellValue:
 		Value: 600
 	FreeActor:
