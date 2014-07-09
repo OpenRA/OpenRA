@@ -21,18 +21,20 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Uses the \"Cloneable\" trait to determine whether or not we should clone a produced unit.")]
 		public readonly string[] CloneableTypes = { };
 
-		public object Create(ActorInitializer init) { return new ClonesProducedUnits(init.Self, this); }
+		public object Create(ActorInitializer init) { return new ClonesProducedUnits(init, this); }
 	}
 
 	public class ClonesProducedUnits : INotifyOtherProduction
 	{
 		readonly ClonesProducedUnitsInfo info;
 		readonly Production production;
+		readonly string race;
 
-		public ClonesProducedUnits(Actor self, ClonesProducedUnitsInfo info)
+		public ClonesProducedUnits(ActorInitializer init, ClonesProducedUnitsInfo info)
 		{
 			this.info = info;
-			production = self.Trait<Production>();
+			production = init.Self.Trait<Production>();
+			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.Race;
 		}
 
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
@@ -45,7 +47,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (ci == null || !info.CloneableTypes.Intersect(ci.Types).Any())
 				return;
 
-			production.Produce(self, produced.Info, self.Owner.Country.Race);
+			production.Produce(self, produced.Info, race);
 		}
 	}
 }

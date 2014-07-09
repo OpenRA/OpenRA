@@ -30,13 +30,13 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
 
-		public virtual int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai)
+		public virtual int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race)
 		{
-			return sequenceProvider.GetSequence(RenderSprites.GetImage(ai), "idle").Facings;
+			return sequenceProvider.GetSequence(GetImage(ai, sequenceProvider, race), "idle").Facings;
 		}
 
 		public string EditorPalette { get { return Palette; } }
-		public string EditorImage(ActorInfo actor) { return RenderSimple.GetImage(actor); }
+		public string EditorImage(ActorInfo actor, SequenceProvider sequenceProvider, string race) { return GetImage(actor, sequenceProvider, race); }
 	}
 
 	public class RenderSimple : RenderSprites, IAutoSelectionSize

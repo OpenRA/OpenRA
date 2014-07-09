@@ -268,13 +268,16 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var ks = Game.Settings.Keys;
 			var rb = RenderBounds;
+			var race = CurrentQueue.Actor.Owner.Country.Race;
 
 			foreach (var item in AllBuildables.Skip(IconRowOffset * Columns).Take(MaxIconRowOffset * Columns))
 			{
 				var x = DisplayedIconCount % Columns;
 				var y = DisplayedIconCount / Columns;
 				var rect = new Rectangle(rb.X + x * (IconSize.X + IconMargin.X), rb.Y + y * (IconSize.Y + IconMargin.Y), IconSize.X, IconSize.Y);
-				var icon = new Animation(World, RenderSimple.GetImage(item));
+
+				var rsi = item.Traits.Get<RenderSpritesInfo>();
+				var icon = new Animation(World, rsi.GetImage(item, World.Map.SequenceProvider, race));
 				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
 
 				var pi = new ProductionIcon()

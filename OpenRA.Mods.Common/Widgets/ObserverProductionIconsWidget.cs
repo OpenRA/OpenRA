@@ -67,11 +67,13 @@ namespace OpenRA.Mods.Common.Widgets
 				if (current == null)
 					continue;
 
+				var race = queue.Trait.Actor.Owner.Country.Race;
 				var actor = queue.Trait.AllItems().FirstOrDefault(a => a.Name == current.Item);
 				if (actor == null)
 					continue;
 
-				var icon = new Animation(world, RenderSimple.GetImage(actor));
+				var rsi = actor.Traits.Get<RenderSpritesInfo>();
+				var icon = new Animation(world, rsi.GetImage(actor, world.Map.SequenceProvider, race));
 				icon.Play(actor.Traits.Get<TooltipInfo>().Icon);
 				var location = new float2(RenderBounds.Location) + new float2(queue.i * (IconWidth + IconSpacing), 0);
 				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);
