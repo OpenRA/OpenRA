@@ -47,9 +47,9 @@ namespace OpenRA.Traits
 
 		public int2 SelectionSize(Actor self) { return AutoSelectionSize(self); }
 
-		public string NormalizeSequence(Actor self, string baseSequence)
+		public string NormalizeSequence(Actor self, string sequence)
 		{
-			return NormalizeSequence(DefaultAnimation, self.GetDamageState(), baseSequence);
+			return NormalizeSequence(DefaultAnimation, self.GetDamageState(), sequence);
 		}
 
 		public void PlayCustomAnim(Actor self, string name)

@@ -149,7 +149,7 @@ namespace OpenRA.Traits
 			anims.Remove(key);
 		}
 
-		public static string NormalizeSequence(Animation anim, DamageState state, string baseSequence)
+		public static string NormalizeSequence(Animation anim, DamageState state, string sequence)
 		{
 			var states = new Pair<DamageState, string>[]
 			{
@@ -159,11 +159,21 @@ namespace OpenRA.Traits
 				Pair.New(DamageState.Light, "scuffed-")
 			};
 
+			// Remove existing damage prefix
 			foreach (var s in states)
-				if (state >= s.First && anim.HasSequence(s.Second + baseSequence))
-					return s.Second + baseSequence;
+			{
+				if (sequence.StartsWith(s.Second))
+				{
+					sequence = sequence.Substring(s.Second.Length);
+					break;
+				}
+			}
 
-			return baseSequence;
+			foreach (var s in states)
+				if (state >= s.First && anim.HasSequence(s.Second + sequence))
+					return s.Second + sequence;
+
+			return sequence;
 		}
 
 		// Required by RenderSimple
