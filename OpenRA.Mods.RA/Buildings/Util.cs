@@ -16,20 +16,18 @@ namespace OpenRA.Mods.RA.Buildings
 {
 	public static class BuildingUtils
 	{
-		public static bool IsCellBuildable(this World world, CPos a, BuildingInfo bi)
+		public static bool IsCellBuildable(this World world, CPos cell, BuildingInfo bi, Actor toIgnore = null)
 		{
-			return world.IsCellBuildable(a, bi, null);
-		}
-
-		public static bool IsCellBuildable(this World world, CPos a, BuildingInfo bi, Actor toIgnore)
-		{
-			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(a) != null)
+			if (!world.Map.Contains(cell))
 				return false;
 
-			if (!bi.AllowInvalidPlacement && world.ActorMap.GetUnitsAt(a).Any(b => b != toIgnore))
+			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
 				return false;
 
-			return world.Map.Contains(a) && bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(a).Type);
+			if (!bi.AllowInvalidPlacement && world.ActorMap.GetUnitsAt(cell).Any(a => a != toIgnore))
+				return false;
+
+			return bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type);
 		}
 
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, CPos topLeft, Actor toIgnore)
