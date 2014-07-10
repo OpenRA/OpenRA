@@ -186,7 +186,7 @@ TRAN:
 	Inherits: ^Helicopter
 	Buildable:
 		Queue: Helicopter
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 80
 		Prerequisites: hpad
 		Hotkey: t
 	Valued:

@@ -284,7 +284,7 @@ TSLA:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 90
 		Prerequisites: weap, ~structures.soviet
 		Hotkey: u
 	Valued:
@@ -579,7 +579,7 @@ SAM:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 70
 		Prerequisites: dome, ~structures.soviet
 		Hotkey: y
 	Valued:
@@ -663,7 +663,7 @@ WEAP:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 40
 		Prerequisites: proc
 		Hotkey: w
 	Valued:
@@ -1084,7 +1084,7 @@ FIX:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 70
 		Prerequisites: weap
 		Hotkey: m
 	Valued:
@@ -1259,7 +1259,7 @@ SBAG:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1000
+		BuildPaletteOrder: 0
 		Prerequisites: fact, ~structures.allies
 		Hotkey: b
 	Valued:
@@ -1285,7 +1285,7 @@ FENC:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1000
+		BuildPaletteOrder: 0
 		Prerequisites: fact, ~structures.soviet
 		Hotkey: n
 	Valued:
@@ -1311,7 +1311,7 @@ BRIK:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1000
+		BuildPaletteOrder: 10
 		Prerequisites: fact
 		Hotkey: w
 	Valued:
