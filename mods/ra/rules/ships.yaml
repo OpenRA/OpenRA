@@ -3,7 +3,7 @@ SS:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 50
-		Prerequisites: ~spen
+		Prerequisites: ~spen, ~techlevel.medium
 		Hotkey: u
 	Valued:
 		Cost: 950
@@ -55,7 +55,7 @@ MSUB:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 60
-		Prerequisites: ~spen, stek
+		Prerequisites: ~spen, stek, ~techlevel.unrestricted
 		Hotkey: m
 	Valued:
 		Cost: 2400
@@ -107,7 +107,7 @@ DD:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 70
-		Prerequisites: ~syrd, dome
+		Prerequisites: ~syrd, dome, ~techlevel.medium
 		Hotkey: r
 	Valued:
 		Cost: 1000
@@ -156,7 +156,7 @@ CA:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 100
-		Prerequisites: ~syrd, atek
+		Prerequisites: ~syrd, atek, ~techlevel.unrestricted
 		Hotkey: c
 	Valued:
 		Cost: 2400
@@ -217,6 +217,7 @@ LST:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 30
+		Prerequisites: ~techlevel.low
 		Hotkey: t
 	Valued:
 		Cost: 700
@@ -249,7 +250,7 @@ PT:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 50
-		Prerequisites: ~syrd
+		Prerequisites: ~syrd, ~techlevel.medium
 		Hotkey: b
 	Valued:
 		Cost: 500

@@ -8,7 +8,7 @@ MSLO:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
-		Prerequisites: techcenter
+		Prerequisites: techcenter, ~techlevel.unrestricted
 		BuildLimit: 1
 		Hotkey: m
 	Building:
@@ -55,7 +55,7 @@ GAP:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
-		Prerequisites: atek, ~structures.allies
+		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
 		Hotkey: g
 	Building:
 		Power: -60
@@ -93,7 +93,7 @@ SPEN:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Prerequisites: anypower, ~structures.soviet
+		Prerequisites: anypower, ~structures.soviet, ~techlevel.low
 		Hotkey: y
 	TargetableBuilding:
 		TargetTypes: Ground, Water
@@ -144,7 +144,7 @@ SYRD:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Prerequisites: anypower, ~structures.allies
+		Prerequisites: anypower, ~structures.allies, ~techlevel.low
 		Hotkey: y
 	Valued:
 		Cost: 1000
@@ -196,7 +196,7 @@ IRON:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
-		Prerequisites: stek, ~structures.soviet
+		Prerequisites: stek, ~structures.soviet, ~techlevel.unrestricted
 		BuildLimit: 1
 		Hotkey: c
 	Valued:
@@ -240,7 +240,7 @@ PDOX:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
-		Prerequisites: atek, ~structures.allies
+		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
 		BuildLimit: 1
 		Hotkey: o
 	Valued:
@@ -284,7 +284,7 @@ TSLA:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 70
-		Prerequisites: weap, ~structures.soviet
+		Prerequisites: weap, ~structures.soviet, ~techlevel.medium
 		Hotkey: u
 	Valued:
 		Cost: 1200
@@ -327,7 +327,7 @@ AGUN:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 50
-		Prerequisites: dome, ~structures.allies
+		Prerequisites: dome, ~structures.allies, ~techlevel.medium
 		Hotkey: y
 	Valued:
 		Cost: 800
@@ -373,7 +373,7 @@ DOME:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 80
-		Prerequisites: proc
+		Prerequisites: proc, ~techlevel.medium
 		Hotkey: r
 	Valued:
 		Cost: 1800
@@ -413,7 +413,7 @@ PBOX:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 20
-		Prerequisites: tent, ~structures.allies
+		Prerequisites: tent, ~structures.allies, ~techlevel.low
 		Hotkey: p
 	-GivesBuildableArea:
 	Valued:
@@ -458,7 +458,7 @@ HBOX:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 20
-		Prerequisites: tent, ~structures.allies
+		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 		Hotkey: l
 	-GivesBuildableArea:
 	Valued:
@@ -501,7 +501,7 @@ GUN:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
-		Prerequisites: tent, ~structures.allies
+		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 		Hotkey: t
 	Valued:
 		Cost: 600
@@ -541,7 +541,7 @@ FTUR:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 20
-		Prerequisites: barr, ~structures.soviet
+		Prerequisites: barr, ~structures.soviet, ~techlevel.low
 		Hotkey: t
 	Valued:
 		Cost: 600
@@ -579,7 +579,7 @@ SAM:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
-		Prerequisites: dome, ~structures.soviet
+		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
 		Hotkey: y
 	Valued:
 		Cost: 750
@@ -624,7 +624,7 @@ ATEK:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
-		Prerequisites: weap, dome, ~structures.allies
+		Prerequisites: weap, dome, ~structures.allies, ~techlevel.unrestricted
 		Hotkey: t
 	Valued:
 		Cost: 1500
@@ -663,7 +663,7 @@ WEAP:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 70
-		Prerequisites: proc
+		Prerequisites: proc, ~techlevel.low
 		Hotkey: w
 	Valued:
 		Cost: 2000
@@ -751,7 +751,7 @@ PROC:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
-		Prerequisites: anypower
+		Prerequisites: anypower, ~techlevel.infonly
 		Hotkey: e
 	Valued:
 		Cost: 1400
@@ -797,7 +797,7 @@ SILO:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 60
-		Prerequisites: proc
+		Prerequisites: proc, ~techlevel.infonly
 		Hotkey: o
 	Valued:
 		Cost: 150
@@ -828,7 +828,7 @@ HPAD:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
-		Prerequisites: dome, ~structures.allies
+		Prerequisites: dome, ~structures.allies, ~techlevel.medium
 		Hotkey: i
 	Valued:
 		Cost: 500
@@ -863,7 +863,7 @@ AFLD:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
-		Prerequisites: dome, ~structures.soviet
+		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
 		Hotkey: i
 	Valued:
 		Cost: 500
@@ -924,6 +924,7 @@ POWR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 0
+		Prerequisites: ~techlevel.infonly
 		Hotkey: p
 	Valued:
 		Cost: 300
@@ -951,7 +952,7 @@ APWR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 20
-		Prerequisites: dome
+		Prerequisites: dome, ~techlevel.medium
 		Hotkey: l
 	Valued:
 		Cost: 500
@@ -979,7 +980,7 @@ STEK:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
-		Prerequisites: weap, dome, ~structures.soviet
+		Prerequisites: weap, dome, ~structures.soviet, ~techlevel.unrestricted
 		Hotkey: t
 	Valued:
 		Cost: 1500
@@ -1006,7 +1007,7 @@ BARR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: anypower, ~structures.soviet
+		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
 		Hotkey: b
 	Valued:
 		Cost: 400
@@ -1042,7 +1043,7 @@ TENT:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: anypower, ~structures.allies
+		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly
 		Hotkey: b
 	Valued:
 		Cost: 400
@@ -1095,7 +1096,7 @@ FIX:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 40
-		Prerequisites: weap
+		Prerequisites: weap, ~techlevel.medium
 		Hotkey: m
 	Valued:
 		Cost: 1200
@@ -1270,7 +1271,7 @@ SBAG:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
-		Prerequisites: fact, ~structures.allies
+		Prerequisites: fact, ~structures.allies, ~techlevel.low
 		Hotkey: b
 	Valued:
 		Cost: 25
@@ -1296,7 +1297,7 @@ FENC:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
-		Prerequisites: fact, ~structures.soviet
+		Prerequisites: fact, ~structures.soviet, ~techlevel.low
 		Hotkey: n
 	Valued:
 		Cost: 25
@@ -1322,7 +1323,7 @@ BRIK:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
-		Prerequisites: fact
+		Prerequisites: fact, ~techlevel.medium
 		Hotkey: w
 	Valued:
 		Cost: 100
