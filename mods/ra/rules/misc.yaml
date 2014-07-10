@@ -89,31 +89,64 @@ CRATE:
 		SelectionShares: 5
 		Proxy: powerproxy.parabombs
 		Effect: parabombs
+	DuplicateUnitCrateAction:
+		SelectionShares: 10
+		MaxAmount: 5
+		MinAmount: 1
+		MaxDuplicatesWorth: 1500
 	GiveMcvCrateAction:
 		SelectionShares: 2
 		NoBaseSelectionShares: 100
-		Unit: mcv
+		Units: mcv
 	GiveUnitCrateAction@jeep:
 		SelectionShares: 7
-		Unit: jeep
+		Units: jeep
+		ValidRaces: allies
+		TimeDelay: 3000
 	GiveUnitCrateAction@arty:
 		SelectionShares: 6
-		Unit: arty
+		Units: arty
+		ValidRaces: allies
+		TimeDelay: 4500
 	GiveUnitCrateAction@v2rl:
 		SelectionShares: 6
-		Unit: v2rl
+		Units: v2rl
+		ValidRaces: soviet
+		TimeDelay: 4500
 	GiveUnitCrateAction@1tnk:
 		SelectionShares: 5
-		Unit: 1tnk
+		Units: 1tnk
+		ValidRaces: allies
+		TimeDelay: 3000
 	GiveUnitCrateAction@2tnk:
 		SelectionShares: 4
-		Unit: 2tnk
+		Units: 2tnk
+		ValidRaces: allies
+		TimeDelay: 4500
 	GiveUnitCrateAction@3tnk:
 		SelectionShares: 4
-		Unit: 3tnk
+		Units: 3tnk
+		ValidRaces: soviet
+		TimeDelay: 4500
 	GiveUnitCrateAction@4tnk:
 		SelectionShares: 3
-		Unit: 4tnk
+		Units: 4tnk
+		ValidRaces: soviet
+		TimeDelay: 9000
+	GiveUnitCrateAction@squadlight:
+		SelectionShares: 7
+		Units: e1,e1,e1,e3,e3
+		ValidRaces: allies, soviet
+	GiveUnitCrateAction@squadheavyallies:
+		SelectionShares: 7
+		Units: e1,e1,e1,e1,e3,e3,e3,e6,medi
+		ValidRaces: allies
+		TimeDelay: 4500
+	GiveUnitCrateAction@squadheavysoviet:
+		SelectionShares: 7
+		Units: e1,e1,e4,e4,e3,e3,e3
+		ValidRaces: soviet
+		TimeDelay: 4500
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:

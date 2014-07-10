@@ -17,15 +17,22 @@ namespace OpenRA.Mods.RA
 	public class CrateActionInfo : ITraitInfo
 	{
 		[Desc("Chance of getting this crate, assuming the collector is compatible.")]
-		public int SelectionShares = 10;
+		public readonly int SelectionShares = 10;
+
 		[Desc("An animation defined in sequence yaml(s) to draw.")]
-		public string Effect = null;
+		public readonly string Effect = null;
+
 		[Desc("Palette to draw the animation in.")]
-		public string Palette = "effect";
+		public readonly string Palette = "effect";
+
 		[Desc("Audio clip to play when the crate is collected.")]
-		public string Notification = null;
-		[ActorReference]
-		public string[] ExcludedActorTypes = { };
+		public readonly string Notification = null;
+
+		[Desc("The earliest time (in ticks) that this crate action can occur on.")]
+		public readonly int TimeDelay = 0;
+
+		[Desc("Actor types that this crate action will not occur for.")]
+		[ActorReference] public string[] ExcludedActorTypes = { };
 
 		public virtual object Create(ActorInitializer init) { return new CrateAction(init.self, this); }
 	}
@@ -43,6 +50,9 @@ namespace OpenRA.Mods.RA
 
 		public int GetSelectionSharesOuter(Actor collector)
 		{
+			if (self.World.WorldTick < info.TimeDelay)
+				return 0;
+			
 			if (info.ExcludedActorTypes.Contains(collector.Info.Name))
 				return 0;
 

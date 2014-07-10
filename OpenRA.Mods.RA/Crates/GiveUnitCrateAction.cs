@@ -16,36 +16,40 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Crates
 {
+	[Desc("Spawns units when collected.")]
 	class GiveUnitCrateActionInfo : CrateActionInfo
 	{
+		[Desc("The list of units to spawn.")]
 		[ActorReference]
-		[Desc("Unit to give")]
-		public readonly string Unit = null;
-
-		[Desc("Override the owner of the newly spawned unit: e.g Creeps or Neutral")]
-		public readonly string Owner = null;
+		public readonly string[] Units = { };
 
 		[Desc("Races that are allowed to trigger this action")]
-		public readonly string[] Race = null;
+		public readonly string[] Race = { };
+
+		[Desc("Override the owner of the newly spawned unit: e.g. Creeps or Neutral")]
+		public readonly string Owner = null;
 
 		public override object Create(ActorInitializer init) { return new GiveUnitCrateAction(init.self, this); }
 	}
 
 	class GiveUnitCrateAction : CrateAction
 	{
-		GiveUnitCrateActionInfo Info;
+		public readonly GiveUnitCrateActionInfo Info;
+		readonly List<CPos> usedCells = new List<CPos>();
 
 		public GiveUnitCrateAction(Actor self, GiveUnitCrateActionInfo info)
 			: base(self, info) { Info = info; }
 
 		public bool CanGiveTo(Actor collector)
 		{
-			if (Info.Race != null && !Info.Race.Contains(collector.Owner.Country.Race))
+			if (Info.Race.Any() && !Info.Race.Contains(collector.Owner.Country.Race))
 				return false;
 
-			// avoid dumping tanks in the sea, and ships on dry land.
-			if (!GetSuitableCells(collector.Location).Any())
-				return false;
+			foreach (string unit in Info.Units)
+			{
+				// avoid dumping tanks in the sea, and ships on dry land.
+				if (!GetSuitableCells(collector.Location, unit).Any()) return false;
+			}
 
 			return true;
 		}
@@ -58,21 +62,28 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override void Activate(Actor collector)
 		{
-			var location = ChooseEmptyCellNear(collector);
-			if (location != null)
-				collector.World.AddFrameEndTask(
-					w => w.CreateActor(Info.Unit, new TypeDictionary
+			foreach (var u in Info.Units)
+			{
+				var unit = u; // avoiding access to modified closure
+
+				var location = ChooseEmptyCellNear(collector, unit);
+				if (location != null)
+				{
+					usedCells.Add(location.Value);
+					collector.World.AddFrameEndTask(
+					w => w.CreateActor(unit, new TypeDictionary
 					{
-						new LocationInit(location.Value ),
+						new LocationInit(location.Value),
 						new OwnerInit(Info.Owner ?? collector.Owner.InternalName)
 					}));
-
+				}
+			}
 			base.Activate(collector);
 		}
 
-		IEnumerable<CPos> GetSuitableCells(CPos near)
+		IEnumerable<CPos> GetSuitableCells(CPos near, string unitName)
 		{
-			var mi = self.World.Map.Rules.Actors[Info.Unit].Traits.Get<MobileInfo>();
+			var mi = self.World.Map.Rules.Actors[unitName].Traits.Get<MobileInfo>();
 
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
@@ -80,9 +91,9 @@ namespace OpenRA.Mods.RA.Crates
 						yield return near + new CVec(i, j);
 		}
 
-		CPos? ChooseEmptyCellNear(Actor a)
+		CPos? ChooseEmptyCellNear(Actor a, string unit)
 		{
-			var possibleCells = GetSuitableCells(a.Location).ToArray();
+			var possibleCells = GetSuitableCells(a.Location, unit).Where(c => !usedCells.Contains(c)).ToArray();
 			if (possibleCells.Length == 0)
 				return null;
 

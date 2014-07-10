@@ -20,61 +20,75 @@ CRATE:
 		SelectionShares: 40
 	GiveUnitCrateAction@Trike:
 		SelectionShares: 20
-		Unit: trike
+		Units: trike
 	GiveUnitCrateAction@Raider:
 		SelectionShares: 15
-		Unit: raider
+		Units: raider
+		ValidRaces: ordos
 	GiveUnitCrateAction@Quad:
 		SelectionShares: 40
-		Unit: quad
+		Units: quad
 	GiveUnitCrateAction@CombatA:
 		SelectionShares: 10
-		Unit: combata
+		Units: combata
+		ValidRaces: atreides
 	GiveUnitCrateAction@CombatH:
 		SelectionShares: 10
-		Unit: combath
+		Units: combath
+		ValidRaces: harkonnen
 	GiveUnitCrateAction@CombatO:
 		SelectionShares: 10
-		Unit: combato
+		Units: combato
+		ValidRaces: ordos
 	GiveUnitCrateAction@SiegeTank:
 		SelectionShares: 10
-		Unit: siegetank
+		Units: siegetank
 	GiveUnitCrateAction@MissileTank:
 		SelectionShares: 10
-		Unit: missiletank
+		Units: missiletank
 	GiveUnitCrateAction@StealthRaider:
 		SelectionShares: 7
-		Unit: stealthraider
+		Units: stealthraider
+		ValidRaces: ordos
 	GiveUnitCrateAction@Fremen:
 		SelectionShares: 5
-		Unit: fremen
+		Units: fremen,fremen
+		ValidRaces: atreides
 	GiveUnitCrateAction@Sardaukar:
 		SelectionShares: 8
-		Unit: sardaukar
+		Units: sardaukar,sardaukar
+		ValidRaces: harkonnen
 	GiveUnitCrateAction@Saboteur:
 		SelectionShares: 3
-		Unit: saboteur
+		Units: saboteur,saboteur
+		ValidRaces: ordos
 	GiveUnitCrateAction@SonicTank:
 		SelectionShares: 5
-		Unit: sonictank
+		Units: sonictank
+		ValidRaces: atreides
 	GiveUnitCrateAction@Devast:
 		SelectionShares: 2
-		Unit: devast
+		Units: devast
+		ValidRaces: harkonnen
 	GiveUnitCrateAction@DeviatorTank:
 		SelectionShares: 5
-		Unit: deviatortank
+		Units: deviatortank
+		ValidRaces: ordos
 	GiveMcvCrateAction@Atreides:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
-		Unit: mcva
+		Units: mcva
+		ValidRaces: atreides
 	GiveMcvCrateAction@Harkonnen:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
-		Unit: mcvh
+		Units: mcvh
+		ValidRaces: harkonnen
 	GiveMcvCrateAction@Ordos:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
-		Unit: mcvo
+		Units: mcvo
+		ValidRaces: ordos
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:

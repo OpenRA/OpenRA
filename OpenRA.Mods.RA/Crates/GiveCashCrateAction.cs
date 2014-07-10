@@ -13,9 +13,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Gives cash to the collector.")]
 	class GiveCashCrateActionInfo : CrateActionInfo
 	{
+		[Desc("Amount of cash to give.")]
 		public int Amount = 2000;
+
+		[Desc("Should the collected amount be displayed as a cash tick?")]
 		public bool UseCashTick = false;
 
 		public override object Create(ActorInitializer init) { return new GiveCashCrateAction(init.self, this); }
