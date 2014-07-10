@@ -180,6 +180,8 @@
 		KilledOnImpassableTerrain: true
 		ParachuteSequence: parach
 		ShadowSequence: parach-shadow
+	Cloneable:
+		Types: Infantry
 
 ^Ship:
 	AppearsOnRadar:
