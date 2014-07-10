@@ -12,10 +12,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Fires a weapon at the location when collected.")]
 	class ExplodeCrateActionInfo : CrateActionInfo
 	{
-		[WeaponReference]
-		public string Weapon = null;
+		[Desc("The weapon to fire upon collection.")]
+		[WeaponReference] public string Weapon = null;
 
 		public override object Create(ActorInitializer init) { return new ExplodeCrateAction(init.self, this); }
 	}

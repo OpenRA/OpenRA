@@ -12,9 +12,12 @@ using System.Linq;
 
 namespace OpenRA.Mods.RA.Crates
 {
+	[Desc("Spawns units when collected.","Adjust selection shares when player has no base.")]
 	class GiveMcvCrateActionInfo : GiveUnitCrateActionInfo
 	{
+		[Desc("The selection shares to use if the collector has no base.")]
 		public int NoBaseSelectionShares = 1000;
+
 		public override object Create(ActorInitializer init) { return new GiveMcvCrateAction(init.self, this); }
 	}
 

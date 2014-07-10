@@ -10,6 +10,7 @@
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Hides the entire map in shroud.")]
 	class HideMapCrateActionInfo : CrateActionInfo
 	{
 		public override object Create(ActorInitializer init) { return new HideMapCrateAction(init.self, this); }

@@ -12,9 +12,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Reveals the entire map.")]
 	class RevealMapCrateActionInfo : CrateActionInfo
 	{
+		[Desc("Should the map also be revealed for the allies of the collector's owner.")]
 		public readonly bool IncludeAllies = false;
+
 		public override object Create(ActorInitializer init) { return new RevealMapCrateAction(init.self, this); }
 	}
 
