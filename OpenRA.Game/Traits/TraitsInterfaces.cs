@@ -74,6 +74,7 @@ namespace OpenRA.Traits
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
+	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced); }
 	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
