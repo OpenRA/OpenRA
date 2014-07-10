@@ -312,7 +312,7 @@ CONCRETEB:
 	CanPowerDown:
 	DisabledOverlay:
 	Buildable:
-		Prerequisites: Barracks
+		Prerequisites: Barracks, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 50
 		Hotkey: o
@@ -352,7 +352,7 @@ CONCRETEB:
 		Name: Starport
 		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Buildable:
-		Prerequisites: Outpost
+		Prerequisites: Outpost, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 80
 		Hotkey: c
@@ -501,7 +501,7 @@ WALL:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost
+		Prerequisites: Outpost, ~techlevel.medium
 		BuildPaletteOrder: 120
 		Hotkey: m
 	Valued:
@@ -553,7 +553,7 @@ WALL:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Heavy
+		Prerequisites: Heavy, ~techlevel.medium
 		BuildPaletteOrder: 130
 		Hotkey: e
 	Valued:
@@ -585,7 +585,7 @@ WALL:
 ^HIGHTECH:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Outpost
+		Prerequisites: Outpost, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 110
 		Hotkey: t
@@ -616,7 +616,7 @@ WALL:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Hitech
+		Prerequisites: Hitech, ~techlevel.high
 		BuildPaletteOrder: 140
 		Hotkey: v
 	Selectable:
@@ -628,6 +628,7 @@ WALL:
 		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
 	ParatroopersPower:
 		Icon: paratroopers
+		Prerequisites: ~techlevel.superweapons
 		UnitType: carryall.infantry
 		FlareTime: 0
 		ChargeTime: 180
@@ -655,7 +656,7 @@ WALL:
 ^PALACE:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Research
+		Prerequisites: Research, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 150
 		Hotkey: p

@@ -54,6 +54,7 @@ PALACEA:
 		Owner: atreides
 	AirstrikePower:
 		Icon: ornistrike
+		Prerequisites: ~techlevel.superweapons
 		Description: Air Strike
 		ChargeTime: 180
 		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target
@@ -163,7 +164,7 @@ SONICTANK:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: heavya, researcha
+		Prerequisites: heavya, researcha, ~techlevel.high
 		Owner: atreides
 		Hotkey: o
 	Valued:
@@ -213,7 +214,7 @@ FREMEN:
 		Queue: Infantry
 		BuildPaletteOrder: 85
 		Owner: atreides
-		Prerequisites: palacea
+		Prerequisites: palacea, ~techlevel.high
 		Hotkey: f
 	Selectable:
 		Bounds: 12,17,0,0
@@ -248,6 +249,7 @@ GRENADIER:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: atreides
+		Prerequisites: ~techlevel.medium
 		Hotkey: g
 	Valued:
 		Cost: 160

@@ -88,6 +88,7 @@ PALACEH:
 		Icon: deathhand
 		ChargeTime: 300
 		Description: Death Hand
+		Prerequisites: ~techlevel.superweapons
 		LongDesc: Launches a nuclear missile at a target location
 		BeginChargeSound: HI_PREP.AUD
 		EndChargeSound: HI_DHRDY.AUD
@@ -169,7 +170,7 @@ DEVAST:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: Research
+		Prerequisites: Research, ~techlevel.high
 		Owner: harkonnen
 		Hotkey: d
 	Valued:
@@ -217,7 +218,7 @@ SARDAUKAR:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
-		Prerequisites: palaceh
+		Prerequisites: palaceh, ~techlevel.high
 		Owner: harkonnen
 		Hotkey: d
 	Valued:
