@@ -83,11 +83,11 @@ namespace OpenRA.Mods.RA
 				}
 			}
 
-			// Add buildables that have a build limit set and are not already in the list
+			//Add units (Anything that does not have the ITechTreePrerequisite trait) that have a build limit and are not already in the list, including those not in the world.
 			player.World.ActorsWithTrait<Buildable>()
 				  .Where(a =>
+					  !a.Actor.HasTrait<ITechTreePrerequisite>() &&
 					  a.Actor.Owner == player &&
-					  a.Actor.IsInWorld &&
 					  !a.Actor.IsDead() &&
 					  !ret.ContainsKey(a.Actor.Info.Name) &&
 					  a.Actor.Info.Traits.Get<BuildableInfo>().BuildLimit > 0)
