@@ -88,6 +88,14 @@ HARV:
 		SearchFromOrderRadius: 12
 	Mobile:
 		Speed: 71
+		Crushes: wall, crate
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 70
+			Road: 100
+			Beach: 70
+			Tiberium: 80
+			BlueTiberium: 80
 	Health:
 		HP: 1000
 	SelfHealing:
@@ -119,6 +127,13 @@ HVR:
 		Hothey: v
 	Mobile:
 		Speed: 99
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 100
+			Road: 100
+			Beach: 100
+			Tiberium: 100
+			BlueTiberium: 100
 	Health:
 		HP: 230
 	Armor:
@@ -139,7 +154,7 @@ HVR:
 	WithVoxelTurret:
 
 4TNK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Valued:
 		Cost: 1700
 	Tooltip:
@@ -268,7 +283,7 @@ ICBM:
 		NoTransformSounds:
 
 REPAIR:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
@@ -296,7 +311,7 @@ REPAIR:
 	WithVoxelBody:
 
 ART2:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Valued:
 		Cost: 975
 	Tooltip:
@@ -485,7 +500,7 @@ WINI:
 	WithVoxelBody:
 
 MMCH:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -521,7 +536,7 @@ MMCH:
 	AutoTarget:
 
 HMEC:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Valued:
 		Cost: 3000
 	Tooltip:
@@ -554,7 +569,7 @@ HMEC:
 	WithVoxelWalkerBody:
 
 SMECH:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -647,7 +662,7 @@ BGGY:
 	WithMuzzleFlash:
 
 SAPC:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -676,7 +691,7 @@ SAPC:
 	WithVoxelBody:
 
 SUBTANK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -705,7 +720,7 @@ SUBTANK:
 	WithVoxelBody:
 
 SONIC:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Valued:
 		Cost: 1300
 	Tooltip:
@@ -737,7 +752,7 @@ SONIC:
 	WithVoxelTurret:
 
 TTNK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -767,7 +782,7 @@ TTNK:
 		NoTransformSounds:
 
 STNK:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Valued:
 		Cost: 1100
 	Tooltip:

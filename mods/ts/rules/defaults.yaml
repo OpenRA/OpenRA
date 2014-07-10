@@ -221,6 +221,55 @@
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 
+^Tank:
+	AppearsOnRadar:
+	Mobile:
+		Crushes: wall, crate
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 70
+			Road: 100
+			Beach: 80
+			Tiberium: 80
+			BlueTiberium: 80
+		ROT: 5
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+		Voice: Vehicle
+	TargetableUnit:
+		TargetTypes: Ground
+	Repairable:
+		RepairBuildings: gadept
+	Passenger:
+		CargoType: Vehicle
+	AttackMove:
+	HiddenUnderFog:
+	GainsExperience:
+		ChevronPalette: ra
+		CostThreshold: 5, 10
+		FirepowerModifier: 1.2, 1.5
+		ArmorModifier: 1.2, 1.5
+		SpeedModifier: 1.2, 1.5
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+	ProximityCaptor:
+		Types: Vehicle
+	GivesBounty:
+	UpdatesPlayerStatistics:
+	CombatDebugOverlay:
+	Guard:
+	Guardable:
+	BodyOrientation:
+		CameraPitch: 90
+	Huntable:
+	LuaScriptEvents:
+	ScriptTriggers:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+
 ^Helicopter:
 	AppearsOnRadar:
 		UseLocation: yes

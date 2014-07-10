@@ -876,10 +876,10 @@ proc: # TODO: unused narefn_a, narefn_b
 		Start: 0
 
 galite:
-	idle:
+	idle: gtlite
 		Start: 0
 		ShadowStart: 2
-	damaged-idle:
+	damaged-idle: gtlite
 		Start: 1
 		ShadowStart: 3
 #	lighting: alphatst

@@ -7,23 +7,23 @@ e1:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 300
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
@@ -84,23 +84,23 @@ e2:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 300
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
@@ -161,23 +161,23 @@ e3:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 300
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
@@ -238,7 +238,7 @@ weedguy:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 210
 	shoot: weed
 		Start: 56
@@ -259,7 +259,7 @@ weedguy:
 		Start: 86
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 288
 	prone-stand: weed
 		Start: 86
@@ -308,23 +308,23 @@ medic:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 315
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 378
 	prone-run:
 		Start: 86
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
@@ -388,23 +388,23 @@ engineer:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 300
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
@@ -454,23 +454,23 @@ umagon:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 300
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
@@ -532,23 +532,23 @@ ghost: # TODO unused GUNFIRE.SHP
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 300
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
@@ -610,23 +610,23 @@ jumpjet: # TODO: ShadowStart:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 459
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 507
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 523
 	prone-run:
 		Start: 86
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 538
 	prone-stand:
 		Start: 0
@@ -686,23 +686,23 @@ mhijack:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 300
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
@@ -764,23 +764,23 @@ chamspy:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 300
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
 		Length: 6
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 378
 	prone-stand:
 		Start: 86
@@ -842,23 +842,23 @@ cyc2:
 		Start: 8
 		Length: 9
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 316
 	idle1:
 		Start: 80
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 388
 	idle2:
 		Start: 95
 		Length: 15
-		Tick: 120
-		ShadowStart: 413
+		Tick: 80
+		ShadowStart: 403
 	prone-run:
 		Start: 110
 		Length: 9
 		Facings: 8
-		Tick: 100
+		Tick: 80
 		ShadowStart: 418
 	prone-stand:
 		Start: 110
@@ -924,12 +924,12 @@ cyborg:
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 426
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 441
 	prone-run:
 		Start: 86
@@ -1002,12 +1002,12 @@ mutant:
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
@@ -1080,12 +1080,12 @@ mwmn:
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
@@ -1158,12 +1158,12 @@ mutant3: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
@@ -1236,12 +1236,12 @@ tratos:
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
@@ -1314,12 +1314,12 @@ oxanna:
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
@@ -1392,12 +1392,12 @@ slav:
 	idle1:
 		Start: 56
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 348
 	idle2:
 		Start: 71
 		Length: 15
-		Tick: 120
+		Tick: 80
 		ShadowStart: 363
 	prone-run:
 		Start: 86
