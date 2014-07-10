@@ -23,8 +23,11 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public static bool IsCellBuildable(this World world, CPos a, BuildingInfo bi, Actor toIgnore)
 		{
-			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(a) != null) return false;
-			if (world.ActorMap.GetUnitsAt(a).Any(b => b != toIgnore)) return false;
+			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(a) != null)
+				return false;
+
+			if (!bi.AllowInvalidPlacement && world.ActorMap.GetUnitsAt(a).Any(b => b != toIgnore))
+				return false;
 
 			return world.Map.Contains(a) && bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(a).Type);
 		}
