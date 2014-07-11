@@ -117,8 +117,10 @@ Atomic:
 IonCannon:
 	ValidTargets: Ground, Air
 	Warhead@impact:
-		Damage: 900
-		Spread: 853
+		Damage: 1000
+		SmudgeType: Scorch
+		Spread: 1c0
+		MaxSpread: 3c640
 		DestroyResources: true
 		InfDeath: 5
 	Warhead@area:
@@ -126,6 +128,14 @@ IonCannon:
 		Damage: 0
 		SmudgeType: Scorch
 		Size: 2,1
+		DestroyResources: true
+		Delay: 3
+		InfDeath: 5
+	Warhead@area2:
+		DamageModel: PerCell
+		Damage: 0
+		SmudgeType: Scorch
+		Size: 1
 		DestroyResources: true
 		Delay: 3
 		InfDeath: 5
