@@ -1458,14 +1458,14 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Rock
-			1: Transition
+			1: Rock
 			2: Rock
 			5: Cliff
 			8: Cliff
-			7: Sand
+			7: Rough
 			6: Cliff
 			3: Cliff
-			4: Sand
+			4: Rough
 	Template@177:
 		Id: 177
 		Image: BLOXBASE
@@ -3320,12 +3320,12 @@ Templates:
 			2: Rock
 			5: Cliff
 			8: Cliff
-			7: Transition
+			7: Rough
 			6: Cliff
 			3: Cliff
 			0: Rock
 			1: Rock
-			4: Transition
+			4: Rough
 	Template@344:
 		Id: 344
 		Image: BLOXBGBS
@@ -4470,7 +4470,7 @@ Templates:
 		Tiles:
 			5: Sand
 			2: Cliff
-			1: Cliff
+			1: Rough
 			0: Cliff
 			3: Cliff
 			4: Cliff
@@ -5259,13 +5259,13 @@ Templates:
 		Tiles:
 			6: Cliff
 			3: Cliff
-			0: Cliff
-			1: Transition
-			2: Cliff
+			0: Rock
+			1: Rock
+			2: Rock
 			5: Cliff
 			8: Cliff
-			7: Transition
-			4: Transition
+			7: Rough
+			4: Rough
 	Template@613:
 		Id: 613
 		Image: t613
