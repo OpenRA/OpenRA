@@ -274,28 +274,36 @@ local function reIndent(editor, buf)
   local tw = ut and editor:GetTabWidth() or editor:GetIndent()
 
   local indents = {}
+  local isstatic = {}
   for line = 1, #buf+1 do
-    local closed, blockend = decindent(text)
-    local opened = incindent(text)
+    local style = bit.band(editor:GetStyleAt(editor:PositionFromLine(line-1)), 31)
+    -- don't reformat multi-line comments or strings
+    isstatic[line] = editor.spec.iscomment[style] or editor.spec.isstring[style]
+    if not isstatic[line] or line == 1 or not isstatic[line-1] then
+      local closed, blockend = decindent(text)
+      local opened = incindent(text)
 
-    -- ignore impact from initial block endings as they are already indented
-    if line == 1 then blockend = 0 end
+      -- ignore impact from initial block endings as they are already indented
+      if line == 1 then blockend = 0 end
 
-    -- this only needs to be done for 2, #buf+1; do it and get out when done
-    if line > 1 then indents[line-1] = indents[line-1] - tw * closed end
-    if line > #buf then break end
+      -- this only needs to be done for 2, #buf+1; do it and get out when done
+      if line > 1 then indents[line-1] = indents[line-1] - tw * closed end
+      if line > #buf then break end
 
-    indent = indent + tw * (opened - blockend)
-    if indent < 0 then indent = 0 end
+      indent = indent + tw * (opened - blockend)
+      if indent < 0 then indent = 0 end
+    end
 
     indents[line] = indent
     text = buf[line]
   end
 
   for line = 1, #buf do
-    buf[line] = buf[line]:gsub("^[ \t]*",
-      not buf[line]:match('%S') and ''
-      or ut and ("\t"):rep(indents[line] / tw) or (" "):rep(indents[line]))
+    if not isstatic[line] then
+      buf[line] = buf[line]:gsub("^[ \t]*",
+        not buf[line]:match('%S') and ''
+        or ut and ("\t"):rep(indents[line] / tw) or (" "):rep(indents[line]))
+    end
   end
 end
 
