@@ -15,13 +15,15 @@ namespace OpenRA.Graphics
 {
 	public class LineRenderer : Renderer.IBatchRenderer
 	{
-		static float2 offset = new float2(0.5f, 0.5f);
-		float lineWidth = 1f;
-		Renderer renderer;
-		IShader shader;
+		static readonly float2 Offset = new float2(0.5f, 0.5f);
+
+		readonly Renderer renderer;
+		readonly IShader shader;
 
 		readonly Vertex[] vertices;
 		int nv = 0;
+
+		float lineWidth = 1f;
 
 		public LineRenderer(Renderer renderer, IShader shader)
 		{
@@ -30,10 +32,12 @@ namespace OpenRA.Graphics
 			vertices = new Vertex[renderer.TempBufferSize];
 		}
 
-
 		public float LineWidth
 		{
-			get { return lineWidth; }
+			get
+			{
+				return lineWidth;
+			}
 			set
 			{
 				if (LineWidth != value)
@@ -77,11 +81,11 @@ namespace OpenRA.Graphics
 			if (nv + 2 > renderer.TempBufferSize)
 				Flush();
 
-			vertices[nv++] = new Vertex(start + offset,
+			vertices[nv++] = new Vertex(start + Offset,
 				new float2(startColor.R / 255.0f, startColor.G / 255.0f),
 				new float2(startColor.B / 255.0f, startColor.A / 255.0f));
 
-			vertices[nv++] = new Vertex(end + offset,
+			vertices[nv++] = new Vertex(end + Offset,
 				new float2(endColor.R / 255.0f, endColor.G / 255.0f),
 				new float2(endColor.B / 255.0f, endColor.A / 255.0f));
 		}
@@ -100,7 +104,7 @@ namespace OpenRA.Graphics
 			var yc = (r.Bottom + r.Top) / 2;
 			for (var y = r.Top; y <= r.Bottom; y++)
 			{
-				var dx = a * (float)(Math.Sqrt(1 - (y - yc) * (y - yc) / b / b));
+				var dx = a * (float)Math.Sqrt(1 - (y - yc) * (y - yc) / b / b);
 				DrawLine(new float2(xc - dx, y), new float2(xc + dx, y), color, color);
 			}
 		}
@@ -108,7 +112,7 @@ namespace OpenRA.Graphics
 		public void SetViewportParams(Size screen, float zoom, int2 scroll)
 		{
 			shader.SetVec("Scroll", scroll.X, scroll.Y);
-			shader.SetVec("r1", zoom*2f/screen.Width, -zoom*2f/screen.Height);
+			shader.SetVec("r1", zoom * 2f / screen.Width, -zoom * 2f / screen.Height);
 			shader.SetVec("r2", -1, 1);
 		}
 	}

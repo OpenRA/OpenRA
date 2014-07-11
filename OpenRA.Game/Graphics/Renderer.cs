@@ -178,7 +178,8 @@ namespace OpenRA.Graphics
 			}
 			set
 			{
-				if (currentBatchRenderer == value) return;
+				if (currentBatchRenderer == value)
+					return;
 				if (currentBatchRenderer != null)
 					currentBatchRenderer.Flush();
 				currentBatchRenderer = value;

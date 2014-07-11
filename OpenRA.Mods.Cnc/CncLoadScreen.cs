@@ -11,8 +11,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
@@ -29,7 +27,7 @@ namespace OpenRA.Mods.Cnc
 		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
 		Rectangle bounds;
 		Renderer r;
-		NullInputHandler nih = new NullInputHandler();
+		readonly NullInputHandler nih = new NullInputHandler();
 
 		public void Init(Manifest m, Dictionary<string, string> info)
 		{

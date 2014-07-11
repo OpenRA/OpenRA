@@ -20,15 +20,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class ModBrowserLogic
 	{
-		Widget modList;
-		ButtonWidget modTemplate;
-		ModMetadata[] allMods;
+		readonly Widget modList;
+		readonly ButtonWidget modTemplate;
+		readonly ModMetadata[] allMods;
+		readonly Dictionary<string, Sprite> previews = new Dictionary<string, Sprite>();
+		readonly Dictionary<string, Sprite> logos = new Dictionary<string, Sprite>();
 		ModMetadata selectedMod;
 		string selectedAuthor;
 		string selectedDescription;
 		int modOffset = 0;
-		Dictionary<string, Sprite> previews;
-		Dictionary<string, Sprite> logos;
 
 		[ObjectCreator.UseCtor]
 		public ModBrowserLogic(Widget widget)
@@ -64,8 +64,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 
 			var sheetBuilder = new SheetBuilder(SheetType.BGRA);
-			previews = new Dictionary<string, Sprite>();
-			logos = new Dictionary<string, Sprite>();
 			allMods = ModMetadata.AllMods.Values.Where(m => m.Id != "modchooser")
 				.OrderBy(m => m.Title)
 				.ToArray();
@@ -90,12 +88,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				catch (Exception) { }
 			}
 
-
 			ModMetadata initialMod = null;
 			ModMetadata.AllMods.TryGetValue(Game.Settings.Game.PreviousMod, out initialMod);
 			SelectMod(initialMod ?? ModMetadata.AllMods["ra"]);
 
 			RebuildModList();
+		}
+
+		static void LoadMod(ModMetadata mod)
+		{
+			Game.RunAfterTick(() =>
+			{
+				Ui.CloseWindow();
+				Game.InitializeMod(mod.Id, null);
+			});
 		}
 
 		void RebuildModList()
@@ -150,15 +156,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var selectedIndex = Array.IndexOf(allMods, mod);
 			if (selectedIndex - modOffset > 4)
 				modOffset = selectedIndex - 4;
-		}
-
-		static void LoadMod(ModMetadata mod)
-		{
-			Game.RunAfterTick(() =>
-			{
-				Ui.CloseWindow();
-				Game.InitializeMod(mod.Id, null);
-			});
 		}
 	}
 }

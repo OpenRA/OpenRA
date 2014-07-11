@@ -18,16 +18,15 @@ namespace OpenRA.Graphics
 {
 	public sealed class CursorProvider : IDisposable
 	{
-		HardwarePalette palette;
-		Dictionary<string, CursorSequence> cursors;
-		Cache<string, PaletteReference> palettes;
+		readonly HardwarePalette palette = new HardwarePalette();
+		readonly Dictionary<string, CursorSequence> cursors = new Dictionary<string, CursorSequence>();
+		readonly Cache<string, PaletteReference> palettes;
 		readonly SheetBuilder sheetBuilder;
 
 		public CursorProvider(ModData modData)
 		{
 			var sequenceFiles = modData.Manifest.Cursors;
 
-			cursors = new Dictionary<string, CursorSequence>();
 			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
 			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
 			var shadowIndex = new int[] { };
@@ -40,7 +39,6 @@ namespace OpenRA.Graphics
 					out shadowIndex[shadowIndex.Length - 1]);
 			}
 
-			palette = new HardwarePalette();
 			foreach (var p in nodesDict["Palettes"].Nodes)
 				palette.AddPalette(p.Key, new ImmutablePalette(GlobalFileSystem.Open(p.Value.Value), shadowIndex), false);
 

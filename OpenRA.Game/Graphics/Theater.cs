@@ -18,9 +18,9 @@ namespace OpenRA.Graphics
 {
 	public sealed class Theater : IDisposable
 	{
-		SheetBuilder sheetBuilder;
-		Dictionary<ushort, Sprite[]> templates;
-		Sprite missingTile;
+		readonly Dictionary<ushort, Sprite[]> templates = new Dictionary<ushort, Sprite[]>();
+		readonly SheetBuilder sheetBuilder;
+		readonly Sprite missingTile;
 
 		Sprite[] LoadTemplate(string filename, string[] exts, Dictionary<string, ISpriteSource> sourceCache, int[] frames)
 		{
@@ -62,7 +62,6 @@ namespace OpenRA.Graphics
 			};
 
 			var sourceCache = new Dictionary<string, ISpriteSource>();
-			templates = new Dictionary<ushort, Sprite[]>();
 			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
 			foreach (var t in tileset.Templates)
 				templates.Add(t.Value.Id, LoadTemplate(t.Value.Image, tileset.Extensions, sourceCache, t.Value.Frames));

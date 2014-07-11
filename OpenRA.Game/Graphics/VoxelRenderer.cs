@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -34,31 +34,28 @@ namespace OpenRA.Graphics
 
 	public sealed class VoxelRenderer : IDisposable
 	{
-		Renderer renderer;
-		IShader shader;
+		// Static constants
+		static readonly float[] ShadowDiffuse = new float[] { 0, 0, 0 };
+		static readonly float[] ShadowAmbient = new float[] { 1, 1, 1 };
+		static readonly float2 SpritePadding = new float2(2, 2);
+		static readonly float[] ZeroVector = new float[] { 0, 0, 0, 1 };
+		static readonly float[] ZVector = new float[] { 0, 0, 1, 1 };
+		static readonly float[] FlipMtx = Util.ScaleMatrix(1, -1, 1);
+		static readonly float[] ShadowScaleFlipMtx = Util.ScaleMatrix(2, -2, 2);
+
+		readonly Renderer renderer;
+		readonly IShader shader;
+
+		readonly Dictionary<Sheet, IFrameBuffer> mappedBuffers = new Dictionary<Sheet, IFrameBuffer>();
+		readonly Stack<KeyValuePair<Sheet, IFrameBuffer>> unmappedBuffers = new Stack<KeyValuePair<Sheet, IFrameBuffer>>();
+		readonly List<Pair<Sheet, Action>> doRender = new List<Pair<Sheet, Action>>();
 
 		SheetBuilder sheetBuilder;
-		Dictionary<Sheet, IFrameBuffer> mappedBuffers;
-		Stack<KeyValuePair<Sheet, IFrameBuffer>> unmappedBuffers;
-		List<Pair<Sheet, Action>> doRender;
-
-		// Static constants
-		static readonly float[] shadowDiffuse = new float[] {0,0,0};
-		static readonly float[] shadowAmbient = new float[] {1,1,1};
-		static readonly float2 spritePadding = new float2(2, 2);
-		static readonly float[] zeroVector = new float[] {0,0,0,1};
-		static readonly float[] zVector = new float[] {0,0,1,1};
-		static readonly float[] flipMtx = Util.ScaleMatrix(1, -1, 1);
-		static readonly float[] shadowScaleFlipMtx = Util.ScaleMatrix(2, -2, 2);
 
 		public VoxelRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
-
-			mappedBuffers = new Dictionary<Sheet, IFrameBuffer>();
-			unmappedBuffers = new Stack<KeyValuePair<Sheet, IFrameBuffer>>();
-			doRender = new List<Pair<Sheet, Action>>();
 		}
 
 		public void SetPalette(ITexture palette)
@@ -73,7 +70,7 @@ namespace OpenRA.Graphics
 			{
 				a, 0, 0, 0,
 				0, -a, 0, 0,
-				0, 0, -2*a, 0,
+				0, 0, -2 * a, 0,
 				-1, 1, 0, 1
 			};
 
@@ -111,7 +108,7 @@ namespace OpenRA.Graphics
 				var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
 
 				var worldTransform = v.RotationFunc().Aggregate(Util.IdentityMatrix(),
-					(x,y) => Util.MatrixMultiply(Util.MakeFloatMatrix(y.AsMatrix()), x));
+					(x, y) => Util.MatrixMultiply(Util.MakeFloatMatrix(y.AsMatrix()), x));
 				worldTransform = Util.MatrixMultiply(scaleTransform, worldTransform);
 				worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
 
@@ -128,18 +125,18 @@ namespace OpenRA.Graphics
 			}
 
 			// Inflate rects to ensure rendering is within bounds
-			tl -= spritePadding;
-			br += spritePadding;
-			stl -= spritePadding;
-			sbr += spritePadding;
+			tl -= SpritePadding;
+			br += SpritePadding;
+			stl -= SpritePadding;
+			sbr += SpritePadding;
 
 			// Corners of the shadow quad, in shadow-space
 			var corners = new float[][]
 			{
-				new float[] {stl.X, stl.Y, 0, 1},
-				new float[] {sbr.X, sbr.Y, 0, 1},
-				new float[] {sbr.X, stl.Y, 0, 1},
-				new float[] {stl.X, sbr.Y, 0, 1}
+				new[] { stl.X, stl.Y, 0, 1 },
+				new[] { sbr.X, sbr.Y, 0, 1 },
+				new[] { sbr.X, stl.Y, 0, 1 },
+				new[] { stl.X, sbr.Y, 0, 1 }
 			};
 
 			var shadowScreenTransform = Util.MatrixMultiply(cameraTransform, invShadowTransform);
@@ -148,8 +145,8 @@ namespace OpenRA.Graphics
 			for (var j = 0; j < 4; j++)
 			{
 				// Project to ground plane
-				corners[j][2] = -(corners[j][1]*shadowGroundNormal[1]/shadowGroundNormal[2] +
-								  corners[j][0]*shadowGroundNormal[0]/shadowGroundNormal[2]);
+				corners[j][2] = -(corners[j][1] * shadowGroundNormal[1] / shadowGroundNormal[2] +
+								  corners[j][0] * shadowGroundNormal[0] / shadowGroundNormal[2]);
 
 				// Rotate to camera-space
 				corners[j] = Util.MatrixVectorMultiply(shadowScreenTransform, corners[j]);
@@ -171,8 +168,8 @@ namespace OpenRA.Graphics
 
 			var translateMtx = Util.TranslationMatrix(spriteCenter.X - spriteOffset.X, renderer.SheetSize - (spriteCenter.Y - spriteOffset.Y), 0);
 			var shadowTranslateMtx = Util.TranslationMatrix(shadowCenter.X - shadowSpriteOffset.X, renderer.SheetSize - (shadowCenter.Y - shadowSpriteOffset.Y), 0);
-			var correctionTransform = Util.MatrixMultiply(translateMtx, flipMtx);
-			var shadowCorrectionTransform = Util.MatrixMultiply(shadowTranslateMtx, shadowScaleFlipMtx);
+			var correctionTransform = Util.MatrixMultiply(translateMtx, FlipMtx);
+			var shadowCorrectionTransform = Util.MatrixMultiply(shadowTranslateMtx, ShadowScaleFlipMtx);
 
 			doRender.Add(Pair.New<Sheet, Action>(sprite.sheet, () =>
 			{
@@ -183,7 +180,7 @@ namespace OpenRA.Graphics
 					var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
 
 					var rotations = v.RotationFunc().Aggregate(Util.IdentityMatrix(),
-						(x,y) => Util.MatrixMultiply(Util.MakeFloatMatrix(y.AsMatrix()), x));
+						(x, y) => Util.MatrixMultiply(Util.MakeFloatMatrix(y.AsMatrix()), x));
 					var worldTransform = Util.MatrixMultiply(scaleTransform, rotations);
 					worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
 
@@ -209,21 +206,21 @@ namespace OpenRA.Graphics
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
 						Render(rd, Util.MatrixMultiply(shadow, t), lightDirection,
-						       shadowAmbient, shadowDiffuse, shadowPalette.Index, normals.Index);
+							ShadowAmbient, ShadowDiffuse, shadowPalette.Index, normals.Index);
 					}
 				}
 			}));
 
-			var screenLightVector = Util.MatrixVectorMultiply(invShadowTransform, zVector);
+			var screenLightVector = Util.MatrixVectorMultiply(invShadowTransform, ZVector);
 			screenLightVector = Util.MatrixVectorMultiply(cameraTransform, screenLightVector);
-			return new VoxelRenderProxy(sprite, shadowSprite, screenCorners, -screenLightVector[2]/screenLightVector[1]);
+			return new VoxelRenderProxy(sprite, shadowSprite, screenCorners, -screenLightVector[2] / screenLightVector[1]);
 		}
 
 		static void CalculateSpriteGeometry(float2 tl, float2 br, float scale, out Size size, out int2 offset)
 		{
-			var width = (int)(scale*(br.X - tl.X));
-			var height = (int)(scale*(br.Y - tl.Y));
-			offset = (0.5f*scale*(br + tl)).ToInt2();
+			var width = (int)(scale * (br.X - tl.X));
+			var height = (int)(scale * (br.Y - tl.Y));
+			offset = (0.5f * scale * (br + tl)).ToInt2();
 
 			// Width and height must be even to avoid rendering glitches
 			if ((width & 1) == 1)
@@ -236,14 +233,14 @@ namespace OpenRA.Graphics
 
 		static float[] ExtractRotationVector(float[] mtx)
 		{
-			var tVec = Util.MatrixVectorMultiply(mtx, zVector);
-			var tOrigin = Util.MatrixVectorMultiply(mtx, zeroVector);
-			tVec[0] -= tOrigin[0]*tVec[3]/tOrigin[3];
-			tVec[1] -= tOrigin[1]*tVec[3]/tOrigin[3];
-			tVec[2] -= tOrigin[2]*tVec[3]/tOrigin[3];
+			var tVec = Util.MatrixVectorMultiply(mtx, ZVector);
+			var tOrigin = Util.MatrixVectorMultiply(mtx, ZeroVector);
+			tVec[0] -= tOrigin[0] * tVec[3] / tOrigin[3];
+			tVec[1] -= tOrigin[1] * tVec[3] / tOrigin[3];
+			tVec[2] -= tOrigin[2] * tVec[3] / tOrigin[3];
 
 			// Renormalize
-			var w = (float)Math.Sqrt(tVec[0]*tVec[0] + tVec[1]*tVec[1] + tVec[2]*tVec[2]);
+			var w = (float)Math.Sqrt(tVec[0] * tVec[0] + tVec[1] * tVec[1] + tVec[2] * tVec[2]);
 			tVec[0] /= w;
 			tVec[1] /= w;
 			tVec[2] /= w;

@@ -110,6 +110,7 @@ namespace OpenRA.Renderer.Sdl2
 				bitmap = new Bitmap(bitmap, bitmap.Size.NextPowerOf2());
 				allocatedBitmap = true;
 			}
+
 			try
 			{
 				size = new Size(bitmap.Width, bitmap.Height);

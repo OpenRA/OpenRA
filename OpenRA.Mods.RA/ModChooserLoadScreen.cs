@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc
 			var sheet = new Sheet(info["Image"]);
 			var res = Game.Renderer.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
-			sprite = new Sprite(sheet, new Rectangle(0,0,1024,480), TextureChannel.Alpha);
+			sprite = new Sprite(sheet, new Rectangle(0, 0, 1024, 480), TextureChannel.Alpha);
 		}
 
 		public void Display()
