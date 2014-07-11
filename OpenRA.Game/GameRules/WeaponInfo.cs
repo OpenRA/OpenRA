@@ -19,6 +19,8 @@ namespace OpenRA.GameRules
 	{
 		[Desc("Distance from the explosion center at which damage is 1/2.")]
 		public readonly WRange Spread = new WRange(43);
+		[Desc("Maximum Spread. If a value >= Spread is set, this sets a fixed maximum area of damage.")]
+		public readonly WRange MaxSpread = new WRange(0);
 		[FieldLoader.LoadUsing("LoadVersus")]
 		[Desc("Damage vs each armortype. 0% = can't target.")]
 		public readonly Dictionary<string, float> Versus;
