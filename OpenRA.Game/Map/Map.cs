@@ -716,7 +716,28 @@ namespace OpenRA
 
 			// Sort each integer-distance group by the actual distance
 			foreach (var list in ts)
-				list.Sort((a, b) => a.LengthSquared.CompareTo(b.LengthSquared));
+			{
+				list.Sort((a, b) =>
+				{
+					var result = a.LengthSquared.CompareTo(b.LengthSquared);
+					if (result != 0)
+						return result;
+
+					// If the lengths are equal, use other means to sort them.
+					// Try the hashcode first because it gives more
+					// random-appearing results than X or Y that would always
+					// prefer the leftmost/topmost position.
+					result = a.GetHashCode().CompareTo(b.GetHashCode());
+					if (result != 0)
+						return result;
+
+					result = a.X.CompareTo(b.X);
+					if (result != 0)
+						return result;
+
+					return a.Y.CompareTo(b.Y);
+				});
+			}
 
 			return ts.Select(list => list.ToArray()).ToArray();
 		}
