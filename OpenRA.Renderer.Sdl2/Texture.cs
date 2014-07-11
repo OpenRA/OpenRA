@@ -16,13 +16,15 @@ using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Renderer.Sdl2
 {
-	public class Texture : ITexture
+	public sealed class Texture : ITexture
 	{
 		int texture;
 		public int ID { get { return texture; } }
 
 		Size size;
 		public Size Size { get { return size; } }
+
+		bool disposed;
 
 		public Texture()
 		{
@@ -36,9 +38,6 @@ namespace OpenRA.Renderer.Sdl2
 			ErrorHandler.CheckGlError();
 			SetData(bitmap);
 		}
-
-		void FinalizeInner() { GL.DeleteTextures(1, ref texture); }
-		~Texture() { Game.RunAfterTick(FinalizeInner); }
 
 		void PrepareTexture()
 		{
@@ -159,6 +158,25 @@ namespace OpenRA.Renderer.Sdl2
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, width, height,
 				0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
 			ErrorHandler.CheckGlError();
+		}
+
+		~Texture()
+		{
+			Game.RunAfterTick(() => Dispose(false));
+		}
+
+		public void Dispose()
+		{
+			Game.RunAfterTick(() => Dispose(true));
+			GC.SuppressFinalize(this);
+		}
+
+		void Dispose(bool disposing)
+		{
+			if (disposed)
+				return;
+			disposed = true;
+			GL.DeleteTextures(1, ref texture);
 		}
 	}
 }

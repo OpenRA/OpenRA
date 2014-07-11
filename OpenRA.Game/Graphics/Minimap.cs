@@ -203,8 +203,8 @@ namespace OpenRA.Graphics
 
 		public static Bitmap RenderMapPreview(TileSet tileset, Map map, Ruleset resourceRules, bool actualSize)
 		{
-			var terrain = TerrainBitmap(tileset, map, actualSize);
-			return AddStaticResources(tileset, map, resourceRules, terrain);
+			using (var terrain = TerrainBitmap(tileset, map, actualSize))
+				return AddStaticResources(tileset, map, resourceRules, terrain);
 		}
 	}
 }

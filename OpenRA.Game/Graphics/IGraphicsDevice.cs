@@ -63,7 +63,7 @@ namespace OpenRA
 		void ReleaseWindowMouseFocus();
 	}
 
-	public interface IVertexBuffer<T>
+	public interface IVertexBuffer<T> : IDisposable
 	{
 		void Bind();
 		void SetData(T[] vertices, int length);
@@ -79,7 +79,7 @@ namespace OpenRA
 		void Render(Action a);
 	}
 
-	public interface ITexture
+	public interface ITexture : IDisposable
 	{
 		void SetData(Bitmap bitmap);
 		void SetData(uint[,] colors);
@@ -88,7 +88,7 @@ namespace OpenRA
 		Size Size { get; }
 	}
 
-	public interface IFrameBuffer
+	public interface IFrameBuffer : IDisposable
 	{
 		void Bind();
 		void Unbind();

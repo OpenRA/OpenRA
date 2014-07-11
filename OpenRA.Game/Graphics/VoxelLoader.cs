@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	public class VoxelLoader
+	public sealed class VoxelLoader : IDisposable
 	{
 		SheetBuilder sheetBuilder;
 
@@ -50,7 +50,7 @@ namespace OpenRA.Graphics
 				if (allocated)
 					throw new SheetOverflowException("");
 				allocated = true;
-				return SheetBuilder.AllocateSheet();
+				return SheetBuilder.AllocateSheet(Game.Renderer.SheetSize);
 			};
 
 			return new SheetBuilder(SheetType.DualIndexed, allocate);
@@ -194,6 +194,8 @@ namespace OpenRA.Graphics
 
 		public void RefreshBuffer()
 		{
+			if (vertexBuffer != null)
+				vertexBuffer.Dispose();
 			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(totalVertexCount);
 			vertexBuffer.SetData(vertices.SelectMany(v => v).ToArray(), totalVertexCount);
 			cachedVertexCount = totalVertexCount;
@@ -228,6 +230,13 @@ namespace OpenRA.Graphics
 		public void Finish()
 		{
 			sheetBuilder.Current.ReleaseBuffer();
+		}
+
+		public void Dispose()
+		{
+			if (vertexBuffer != null)
+				vertexBuffer.Dispose();
+			sheetBuilder.Dispose();
 		}
 	}
 }

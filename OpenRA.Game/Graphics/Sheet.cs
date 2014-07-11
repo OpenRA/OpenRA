@@ -16,7 +16,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Graphics
 {
-	public class Sheet
+	public sealed class Sheet : IDisposable
 	{
 		readonly object textureLock = new object();
 		bool dirty;
@@ -155,6 +155,12 @@ namespace OpenRA.Graphics
 		{
 			lock (textureLock)
 				releaseBufferOnCommit = true;
+		}
+
+		public void Dispose()
+		{
+			if (texture != null)
+				texture.Dispose();
 		}
 	}
 }

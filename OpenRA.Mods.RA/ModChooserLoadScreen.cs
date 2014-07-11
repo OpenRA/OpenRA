@@ -15,7 +15,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc
 {
-	public class ModChooserLoadScreen : ILoadScreen
+	public sealed class ModChooserLoadScreen : ILoadScreen
 	{
 		Sprite sprite;
 		Rectangle bounds;
@@ -42,6 +42,12 @@ namespace OpenRA.Mods.Cnc
 		public void StartGame()
 		{
 			Ui.LoadWidget("MODCHOOSER", Ui.Root, new WidgetArgs());
+		}
+
+		public void Dispose()
+		{
+			if (sprite != null)
+				sprite.sheet.Dispose();
 		}
 	}
 }

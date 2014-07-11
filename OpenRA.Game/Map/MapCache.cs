@@ -21,7 +21,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
-	public class MapCache : IEnumerable<MapPreview>
+	public sealed class MapCache : IEnumerable<MapPreview>, IDisposable
 	{
 		public static readonly MapPreview UnknownMap = new MapPreview(null, null);
 		readonly Cache<string, MapPreview> previews;
@@ -157,7 +157,13 @@ namespace OpenRA
 				foreach (var p in todo)
 				{
 					// The rendering is thread safe because it only reads from the passed instances and writes to a new bitmap
-					var bitmap = p.CustomPreview ?? Minimap.RenderMapPreview(modData.DefaultRules.TileSets[p.Map.Tileset], p.Map, modData.DefaultRules, true);
+					var createdPreview = false;
+					var bitmap = p.CustomPreview;
+					if (bitmap == null)
+					{
+						createdPreview = true;
+						bitmap = Minimap.RenderMapPreview(modData.DefaultRules.TileSets[p.Map.Tileset], p.Map, modData.DefaultRules, true);
+					}
 					// Note: this is not generally thread-safe, but it works here because:
 					//   (a) This worker is the only thread writing to this sheet
 					//   (b) The main thread is the only thread reading this sheet
@@ -166,7 +172,15 @@ namespace OpenRA
 					//       the next render cycle.
 					//   (d) Any partially written bytes from the next minimap is in an
 					//       unallocated area, and will be committed in the next cycle.
-					p.SetMinimap(sheetBuilder.Add(bitmap));
+					try
+					{
+						p.SetMinimap(sheetBuilder.Add(bitmap));
+					}
+					finally
+					{
+						if (createdPreview)
+							bitmap.Dispose();
+					}
 
 					// Yuck... But this helps the UI Jank when opening the map selector significantly.
 					Thread.Sleep(Environment.ProcessorCount == 1 ? 25 : 5);
@@ -201,6 +215,11 @@ namespace OpenRA
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
+		}
+
+		public void Dispose()
+		{
+			sheetBuilder.Dispose();
 		}
 	}
 }

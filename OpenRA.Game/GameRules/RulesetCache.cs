@@ -17,7 +17,7 @@ using OpenRA.Support;
 
 namespace OpenRA
 {
-	public class RulesetCache
+	public sealed class RulesetCache : IDisposable
 	{
 		readonly ModData modData;
 
@@ -136,6 +136,13 @@ namespace OpenRA
 			}
 
 			return items;
+		}
+
+		public void Dispose()
+		{
+			foreach (var cache in sequenceCaches.Values)
+				cache.Dispose();
+			sequenceCaches.Clear();
 		}
 	}
 }

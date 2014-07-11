@@ -75,21 +75,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				try
 				{
-					var preview = new Bitmap(new[] { "mods", mod.Id, "preview.png" }.Aggregate(Path.Combine));
-					if (preview.Width != 296 || preview.Height != 196)
-						continue;
-
-					previews.Add(mod.Id, sheetBuilder.Add(preview));
+					using (var preview = new Bitmap(new[] { "mods", mod.Id, "preview.png" }.Aggregate(Path.Combine)))
+						if (preview.Width == 296 && preview.Height == 196)
+							previews.Add(mod.Id, sheetBuilder.Add(preview));
 				}
 				catch (Exception) { }
 
 				try
 				{
-					var logo = new Bitmap(new[] { "mods", mod.Id, "logo.png" }.Aggregate(Path.Combine));
-					if (logo.Width != 96 || logo.Height != 96)
-						continue;
-
-					logos.Add(mod.Id, sheetBuilder.Add(logo));
+					using (var logo = new Bitmap(new[] { "mods", mod.Id, "logo.png" }.Aggregate(Path.Combine)))
+						if (logo.Width == 96 && logo.Height == 96)
+							logos.Add(mod.Id, sheetBuilder.Add(logo));
 				}
 				catch (Exception) { }
 			}

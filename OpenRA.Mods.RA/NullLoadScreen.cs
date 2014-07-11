@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA
 {
-	public class NullLoadScreen : ILoadScreen
+	public sealed class NullLoadScreen : ILoadScreen
 	{
 		public void Init(Manifest m, Dictionary<string, string> info) {}
 
@@ -30,6 +30,10 @@ namespace OpenRA.Mods.RA
 		public void StartGame()
 		{
 			Ui.ResetAll();
+		}
+
+		public void Dispose()
+		{
 		}
 	}
 }

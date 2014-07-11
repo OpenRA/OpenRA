@@ -16,7 +16,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Graphics
 {
-	public class Theater
+	public sealed class Theater : IDisposable
 	{
 		SheetBuilder sheetBuilder;
 		Dictionary<ushort, Sprite[]> templates;
@@ -86,5 +86,10 @@ namespace OpenRA.Graphics
 		}
 
 		public Sheet Sheet { get { return sheetBuilder.Current; } }
+
+		public void Dispose()
+		{
+			sheetBuilder.Dispose();
+		}
 	}
 }

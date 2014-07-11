@@ -18,13 +18,14 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA
 {
-	public class DefaultLoadScreen : ILoadScreen
+	public sealed class DefaultLoadScreen : ILoadScreen
 	{
 		Stopwatch lastUpdate = Stopwatch.StartNew();
 		Renderer r;
 
 		Rectangle stripeRect;
 		float2 logoPos;
+		Sheet sheet;
 		Sprite stripe, logo;
 		string[] messages;
 
@@ -37,9 +38,9 @@ namespace OpenRA.Mods.RA
 				return;
 
 			messages = info["Text"].Split(',');
-			var s = new Sheet(info["Image"]);
-			logo = new Sprite(s, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
-			stripe = new Sprite(s, new Rectangle(256, 0, 256, 256), TextureChannel.Alpha);
+			sheet = new Sheet(info["Image"]);
+			logo = new Sprite(sheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
+			stripe = new Sprite(sheet, new Rectangle(256, 0, 256, 256), TextureChannel.Alpha);
 			stripeRect = new Rectangle(0, r.Resolution.Height / 2 - 128, r.Resolution.Width, 256);
 			logoPos = new float2(r.Resolution.Width / 2 - 128, r.Resolution.Height / 2 - 128);
 		}
@@ -70,6 +71,12 @@ namespace OpenRA.Mods.RA
 		public void StartGame()
 		{
 			Game.TestAndContinue();
+		}
+
+		public void Dispose()
+		{
+			if (sheet != null)
+				sheet.Dispose();
 		}
 	}
 }

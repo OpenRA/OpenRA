@@ -17,13 +17,14 @@ namespace OpenRA.Graphics
 		Renderer renderer;
 		IShader shader;
 
-		Vertex[] vertices = new Vertex[Renderer.TempBufferSize];
+		readonly Vertex[] vertices;
 		int nv = 0;
 
 		public QuadRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
+			vertices = new Vertex[renderer.TempBufferSize];
 		}
 
 		public void Flush()
@@ -45,9 +46,9 @@ namespace OpenRA.Graphics
 
 		public void FillRect(RectangleF r, Color color)
 		{
-			Renderer.CurrentBatchRenderer = this;
+			renderer.CurrentBatchRenderer = this;
 
-			if (nv + 4 > Renderer.TempBufferSize)
+			if (nv + 4 > renderer.TempBufferSize)
 				Flush();
 
 			vertices[nv] = new Vertex(new float2(r.Left, r.Top), new float2(color.R / 255.0f, color.G / 255.0f), new float2(color.B / 255.0f, color.A / 255.0f));

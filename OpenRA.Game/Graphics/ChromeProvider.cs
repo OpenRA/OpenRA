@@ -29,6 +29,10 @@ namespace OpenRA.Graphics
 
 		public static void Initialize(params string[] chromeFiles)
 		{
+			if (cachedSheets != null)
+				foreach (var sheet in cachedSheets.Values)
+					sheet.Dispose();
+
 			collections = new Dictionary<string, Collection>();
 			cachedSheets = new Dictionary<string, Sheet>();
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
