@@ -296,7 +296,7 @@ namespace OpenRA.Mods.RA.AI
 
 				// Sort by distance to target if we have one
 				if (center != target)
-					cells = cells.OrderBy(c => (center - target).LengthSquared);
+					cells = cells.OrderBy(c => (c - target).LengthSquared);
 				else
 					cells = cells.Shuffle(random);
 
