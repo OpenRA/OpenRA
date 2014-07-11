@@ -283,7 +283,7 @@ TSLA:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 90
 		Prerequisites: weap, ~structures.soviet, ~techlevel.medium
 		Hotkey: u
 	Valued:
@@ -372,7 +372,7 @@ DOME:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 70
 		Prerequisites: proc, ~techlevel.medium
 		Hotkey: r
 	Valued:
@@ -578,7 +578,7 @@ SAM:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 70
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
 		Hotkey: y
 	Valued:
@@ -662,7 +662,7 @@ WEAP:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 40
 		Prerequisites: proc, ~techlevel.low
 		Hotkey: w
 	Valued:
@@ -796,7 +796,7 @@ SILO:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 20
 		Prerequisites: proc, ~techlevel.infonly
 		Hotkey: o
 	Valued:
@@ -951,7 +951,7 @@ APWR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 80
 		Prerequisites: dome, ~techlevel.medium
 		Hotkey: l
 	Valued:
@@ -1095,7 +1095,7 @@ FIX:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 60
 		Prerequisites: weap, ~techlevel.medium
 		Hotkey: m
 	Valued:
@@ -1270,7 +1270,7 @@ SBAG:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1000
+		BuildPaletteOrder: 0
 		Prerequisites: fact, ~structures.allies, ~techlevel.low
 		Hotkey: b
 	Valued:
@@ -1296,7 +1296,7 @@ FENC:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1000
+		BuildPaletteOrder: 0
 		Prerequisites: fact, ~structures.soviet, ~techlevel.low
 		Hotkey: n
 	Valued:
@@ -1322,7 +1322,7 @@ BRIK:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1000
+		BuildPaletteOrder: 10
 		Prerequisites: fact, ~techlevel.medium
 		Hotkey: w
 	Valued:
