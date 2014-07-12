@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -87,6 +88,19 @@ namespace OpenRA
 
 			if (t == typeof(DateTime))
 				return ((DateTime)v).ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
+
+			// Try the TypeConverter
+			var conv = TypeDescriptor.GetConverter(t);
+			if (conv.CanConvertTo(typeof(string)))
+			{
+				try
+				{
+					return conv.ConvertToInvariantString(v);
+				}
+				catch
+				{
+				}
+			}
 
 			return v.ToString();
 		}

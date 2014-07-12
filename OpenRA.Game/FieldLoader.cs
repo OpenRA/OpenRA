@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -372,6 +373,22 @@ namespace OpenRA
 				if (DateTime.TryParseExact(value, "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out dt))
 					return dt;
 				return InvalidValueAction(value, fieldType, fieldName);
+			}
+
+			else
+			{
+				var conv = TypeDescriptor.GetConverter(fieldType);
+				if (conv.CanConvertFrom(typeof(string)))
+				{
+					try
+					{
+						return conv.ConvertFromInvariantString(value);
+					}
+					catch
+					{
+						return InvalidValueAction(value, fieldType, fieldName);
+					}
+				}
 			}
 
 			UnknownFieldAction("[Type] {0}".F(value), fieldType);
