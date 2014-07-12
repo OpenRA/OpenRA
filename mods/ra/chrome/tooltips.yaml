@@ -108,3 +108,63 @@ Background@CLIENT_TOOLTIP:
 			Height: 10
 			Font: TinyBold
 
+Background@PRODUCTION_TOOLTIP:
+	Logic: ProductionTooltipLogic
+	Background: dialog4
+	Width: 200
+	Height: 65
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 2
+			Height: 23
+			Font: Bold
+		Label@REQUIRES:
+			X: 7
+			Y: 21
+			Height: 23
+			Font: TinyBold
+			Text: Requires {0}
+		Label@DESC:
+			X: 7
+			Y: 41
+			Height: 23
+			Font: TinyBold
+			VAlign: Top
+		Label@COST:
+			Height: 23
+			Font: Bold
+		Label@TIME:
+			Y: 21
+			Height: 23
+			Font: Bold
+		Label@POWER:
+			Y: 41
+			Height: 23
+			Font: Bold
+		Label@TIME:
+			Y: 41
+			Height: 23
+			Font: Bold
+
+Background@SUPPORT_POWER_TOOLTIP:
+	Logic: SupportPowerTooltipLogic
+	Background: dialog4
+	Width: 200
+	Height: 29
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 2
+			Height: 20
+			Font: Bold
+		Label@TIME:
+			X: 20
+			Y: 8
+			Font: TinyBold
+			VAlign: Top
+		Label@DESC:
+			X: 7
+			Y: 22
+			Font: TinyBold
+			VAlign: Top

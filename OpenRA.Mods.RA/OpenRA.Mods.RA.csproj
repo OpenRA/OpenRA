@@ -540,6 +540,7 @@
     <Compile Include="Widgets\Logic\Ingame\IngamePowerBarLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngameSiloBarLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\AddRaceSuffixLogic.cs" />
+    <Compile Include="Widgets\Logic\ClassicProductionLogic.cs" />
     <Compile Include="Widgets\SupportPowersWidget.cs" />
     <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\SupportPowerBinLogic.cs" />
