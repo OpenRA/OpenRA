@@ -37,6 +37,8 @@ namespace OpenRA.Mods.RA.Widgets
 		public readonly ReadyTextStyleOptions ReadyTextStyle = ReadyTextStyleOptions.Blinking;
 		public readonly Color ReadyTextAltColor = Color.Red;
 		public readonly int Columns = 3;
+		public readonly int2 IconSize = new int2(64, 48);
+
 		public readonly string TabClick = null;
 		public readonly string DisabledTabClick = null;
 		public readonly string TooltipContainer;
@@ -44,6 +46,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 		[Translate] public readonly string ReadyText = "";
 		[Translate] public readonly string HoldText = "";
+
+		public int IconCount { get; private set; }
+		public event Action<int, int> OnIconCountChanged = (a, b) => {};
 
 		public string TooltipActor { get; private set; }
 		public readonly World World;
@@ -176,18 +181,30 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			icons = new Dictionary<Rectangle, ProductionIcon>();
 			if (CurrentQueue == null)
+			{
+				if (IconCount != 0)
+				{
+					OnIconCountChanged(IconCount, 0);
+					IconCount = 0;
+				}
+
 				return;
+			}
 
 			var allBuildables = CurrentQueue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
-			var i = 0;
+
+			var oldIconCount = IconCount;
+			IconCount = 0;
+
 			var rb = RenderBounds;
 			foreach (var item in allBuildables)
 			{
-				var x = i % Columns;
-				var y = i / Columns;
-				var rect = new Rectangle(rb.X + x * 64 + 1, rb.Y + y * 48 + 1, 64, 48);
+				var x = IconCount % Columns;
+				var y = IconCount / Columns;
+				var rect = new Rectangle(rb.X + x * IconSize.X + 1, rb.Y + y * IconSize.Y + 1, IconSize.X, IconSize.Y);
 				var icon = new Animation(World, RenderSimple.GetImage(item));
 				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
+
 				var pi = new ProductionIcon()
 				{
 					Name = item.Name,
@@ -195,17 +212,20 @@ namespace OpenRA.Mods.RA.Widgets
 					Pos = new float2(rect.Location),
 					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
 				};
+
 				icons.Add(rect, pi);
-				i++;
+				IconCount++;
 			}
 
 			eventBounds = icons.Any() ? icons.Keys.Aggregate(Rectangle.Union) : Rectangle.Empty;
+
+			if (oldIconCount != IconCount)
+				OnIconCountChanged(oldIconCount, IconCount);
 		}
 
 		public override void Draw()
 		{
-			var iconSize = new float2(64, 48);
-			var iconOffset = 0.5f * iconSize;
+			var iconOffset = 0.5f * IconSize.ToFloat2();
 
 			overlayFont = Game.Renderer.Fonts["TinyBold"];
 			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
@@ -217,10 +237,6 @@ namespace OpenRA.Mods.RA.Widgets
 				return;
 
 			var buildableItems = CurrentQueue.BuildableItems();
-
-			// Background
-			foreach (var rect in icons.Keys)
-				WidgetUtils.DrawPanel("panel-black", rect.InflateBy(1, 1, 1, 1));
 
 			// Icons
 			foreach (var icon in icons.Values)

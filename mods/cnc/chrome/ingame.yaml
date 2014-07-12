@@ -369,21 +369,29 @@ Container@PLAYER_WIDGETS:
 									X: 7
 									Y: 7
 									ImageCollection: production-icons
-		ProductionTabs@PRODUCTION_TABS:
-			Logic: ProductionTabsLogic
-			PaletteWidget: PRODUCTION_PALETTE
-			TypesContainer: PRODUCTION_TYPES
+		Container@PRODUCTION_BACKGROUND:
 			X: WINDOW_RIGHT - 204
-			Y: 268
-			Width: 194
-			Height: 20
+			Y: 287
+			Children:
+				Background@ICON_TEMPLATE:
+					Width: 66
+					Height: 50
+					Background: panel-black
 		ProductionPalette@PRODUCTION_PALETTE:
 			X: WINDOW_RIGHT - 204
 			Y: 287
 			TooltipContainer: TOOLTIP_CONTAINER
 			ReadyText: Ready
 			HoldText: On Hold
-
+		ProductionTabs@PRODUCTION_TABS:
+			Logic: ProductionTabsLogic
+			PaletteWidget: PRODUCTION_PALETTE
+			TypesContainer: PRODUCTION_TYPES
+			BackgroundContainer: PRODUCTION_BACKGROUND
+			X: WINDOW_RIGHT - 204
+			Y: 268
+			Width: 194
+			Height: 20
 Background@FMVPLAYER:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM
