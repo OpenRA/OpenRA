@@ -63,6 +63,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public readonly string PaletteWidget = null;
 		public readonly string TypesContainer = null;
+		public readonly string BackgroundContainer = null;
 
 		public readonly int TabWidth = 30;
 		public readonly int ArrowWidth = 20;
