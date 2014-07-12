@@ -573,34 +573,34 @@ Rules:
 			Power: 0
 	GUN:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	SAM:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	SBAG:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	FENC:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	MSLO:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	GAP:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	IRON:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	PDOX:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	AGUN:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	TSLA:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	DOG:
 		Buildable:
 			Owner: soviet,allies
@@ -655,10 +655,10 @@ Rules:
 			LocalOffset: 0,85,0, 0,-85,0
 	MECH:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	HIJACKER:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	MEDI:
 		Buildable:
 			Owner: soviet,allies
@@ -731,7 +731,7 @@ Rules:
 			DamageCooldown: 150
 	BRIK:
 		Buildable:
-			Owner: None
+			Prerequisites: ~disabled
 	BADR.Bomber:
 		Inherits: ^Plane
 		AttackBomber:
