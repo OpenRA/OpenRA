@@ -6,7 +6,7 @@ LongRange = { "v2rl" }
 Boss = { "4tnk" }
 
 SovietEntryPoints = { Entry1, Entry2, Entry3, Entry4, Entry5, Entry6, Entry7, Entry8 }
-PatrolWaypoints = { Patrol1, Patrol2, Patrol3, Patrol4 }
+PatrolWaypoints = { Entry2, Entry4, Entry6, Entry8 }
 ParadropWaypoints = { Paradrop1, Paradrop2, Paradrop3, Paradrop4 }
 OilDerricks = { OilDerrick1, OilDerrick2, OilDerrick3, OilDerrick4 }
 SpawnPoints = { Spawn1, Spawn2, Spawn3, Spawn4 }
@@ -102,7 +102,13 @@ SendUnits = function(entryCell, unitTypes, interval, targetCell)
 	local i = 0
 	Utils.Do(unitTypes, function(type)
 		local a = Actor.Create(type, false, { Owner = soviets, Location = entryCell })
-		Trigger.OnIdle(a, function(a) a.AttackMove(targetCell) end)
+		Trigger.OnIdle(a, function(a)
+			if a.Location ~= targetCell then
+				a.AttackMove(targetCell)
+			else
+				a.Hunt()
+			end
+		end)
 		Trigger.AfterDelay(i * interval, function() a.IsInWorld = true end)
 		i = i + 1
 	end)
