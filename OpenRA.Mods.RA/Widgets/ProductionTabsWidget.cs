@@ -16,7 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets
+namespace OpenRA.Mods.RA.Widgets
 {
 	public class ProductionTab
 	{
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		}
 	}
 
-	class ProductionTabsWidget : Widget
+	public class ProductionTabsWidget : Widget
 	{
 		readonly World world;
 

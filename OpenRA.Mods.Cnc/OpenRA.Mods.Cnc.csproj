@@ -80,15 +80,11 @@
     <Compile Include="Widgets\Logic\CncIngameChromeLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
-    <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
-    <Compile Include="Widgets\ProductionPaletteWidget.cs" />
-    <Compile Include="Widgets\ProductionTabsWidget.cs" />
     <Compile Include="Widgets\SupportPowersWidget.cs" />
     <Compile Include="WithFire.cs" />
     <Compile Include="WithRoof.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
-    <Compile Include="Widgets\ProductionTypeButtonWidget.cs" />
     <Compile Include="WithDeliveryAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
