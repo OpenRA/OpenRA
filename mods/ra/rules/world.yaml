@@ -16,7 +16,8 @@ World:
 	LightPaletteRotator:
 		ExcludePalettes: terrain, effect
 	BuildingInfluence:
-	ChooseBuildTabOnSelect:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
 	BridgeLayer:
 		Bridges: bridge1, bridge2, br1, br2, br3, sbridge1, sbridge2, sbridge3, sbridge4
 	CrateSpawner:
