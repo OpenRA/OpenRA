@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("This actor's experience increases when it has killed a GivesExperience actor.")]
 	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>
 	{
 		[Desc("XP requirements for each level, as multiples of our own cost.")]

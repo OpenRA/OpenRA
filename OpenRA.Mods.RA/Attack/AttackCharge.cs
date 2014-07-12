@@ -14,15 +14,20 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Charges up before being able to attack.")]
 	class AttackChargeInfo : AttackOmniInfo
 	{
 		public readonly int MaxCharges = 1;
+
 		[Desc("Reload time (for all charges).")]
 		public readonly int ReloadTime = 120;
+
 		[Desc("Delay for first charge. Needs to match FireDelay for Obelisk.")]
 		public readonly int InitialChargeDelay = 22;
+
 		[Desc("Delay for additional charges if MaxCharge is larger than 1.")]
 		public readonly int ChargeDelay = 3;
+
 		public override object Create(ActorInitializer init) { return new AttackCharge(init.self, this); }
 	}
 

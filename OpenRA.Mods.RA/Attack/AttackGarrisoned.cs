@@ -24,15 +24,16 @@ namespace OpenRA.Mods.RA
 		public WAngle Cone;
 	}
 
+	[Desc("Cargo can fire their weapons out of fire ports.")]
 	public class AttackGarrisonedInfo : AttackFollowInfo, Requires<CargoInfo>
 	{
-		[Desc("Fire port offsets in local coordinates")]
+		[Desc("Fire port offsets in local coordinates.")]
 		public readonly WRange[] PortOffsets = {};
 
-		[Desc("Fire port yaw angles")]
+		[Desc("Fire port yaw angles.")]
 		public readonly WAngle[] PortYaws = {};
 
-		[Desc("Fire port yaw cone angle")]
+		[Desc("Fire port yaw cone angle.")]
 		public readonly WAngle[] PortCones = {};
 
 		public readonly string MuzzlePalette = "effect";
@@ -68,13 +69,13 @@ namespace OpenRA.Mods.RA
 
 
 			if (info.PortOffsets.Length % 3 != 0 || info.PortOffsets.Length == 0)
-				throw new InvalidOperationException("PortOffsets array length must be a multiple of three");
+				throw new InvalidOperationException("PortOffsets array length must be a multiple of three.");
 
 			if (info.PortYaws.Length * 3 != info.PortOffsets.Length)
-				throw new InvalidOperationException("PortYaws must define an angle for each port");
+				throw new InvalidOperationException("PortYaws must define an angle for each port.");
 
 			if (info.PortCones.Length * 3 != info.PortOffsets.Length)
-				throw new InvalidOperationException("PortCones must define an angle for each port");
+				throw new InvalidOperationException("PortCones must define an angle for each port.");
 
 			var p = new List<FirePort>();
 			for (var i = 0; i < info.PortOffsets.Length / 3; i++)

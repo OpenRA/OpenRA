@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("This actor has properties that upgrade when a specific criteria is met.")]
 	public class GainsUnitUpgradesInfo : ITraitInfo
 	{
 		public readonly int FirepowerMaxLevel = 15;

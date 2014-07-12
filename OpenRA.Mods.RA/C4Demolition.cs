@@ -19,7 +19,9 @@ namespace OpenRA.Mods.RA
 {
 	class C4DemolitionInfo : ITraitInfo
 	{
-		public readonly int C4Delay = 45; // 1.8 seconds
+		[Desc("Delay to demolish the target once the C4 is planted." +
+			"Measured in game ticks. Default is 1.8 seconds.")]
+		public readonly int C4Delay = 45;
 
 		public object Create(ActorInitializer init) { return new C4Demolition(this); }
 	}

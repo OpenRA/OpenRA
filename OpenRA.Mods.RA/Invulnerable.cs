@@ -13,13 +13,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class InvulnerableInfo : TraitInfo<Invulnerable> {}
+	[Desc("This unit cannot be damaged.")]
+	class InvulnerableInfo : TraitInfo<Invulnerable> { }
 
 	class Invulnerable : IDamageModifier
 	{
-		public float GetDamageModifier( Actor attacker, WarheadInfo warhead )
-		{
-			return 0.0f;
-		}
+		public float GetDamageModifier(Actor attacker, WarheadInfo warhead) { return 0.0f; }
 	}
 }

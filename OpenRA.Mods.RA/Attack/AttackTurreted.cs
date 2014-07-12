@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Actor has a visual turret used to attack.")]
 	class AttackTurretedInfo : AttackFollowInfo, Requires<TurretedInfo>
 	{
 		public override object Create(ActorInitializer init) { return new AttackTurreted(init.self, this); }

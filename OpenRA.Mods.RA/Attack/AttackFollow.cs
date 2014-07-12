@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Actor will follow units until in range to attack them.")]
 	public class AttackFollowInfo : AttackBaseInfo
 	{
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.self, this); }

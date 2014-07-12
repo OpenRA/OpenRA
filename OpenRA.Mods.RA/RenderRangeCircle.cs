@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 		void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
 	}
 
+	[Desc("Draw a circle indicating my weapon's range.")]
 	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecoration, Requires<AttackBaseInfo>
 	{
 		public readonly string RangeCircleType = null;

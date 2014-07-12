@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Used for silos.")]
 	class StoresResourcesInfo : ITraitInfo
 	{
 		[Desc("Number of little squares used to display how filled unit is.")]

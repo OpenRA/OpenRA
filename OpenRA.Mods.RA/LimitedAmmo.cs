@@ -13,13 +13,17 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Actor has a limited amount of ammo, after using it all the actor must reload in some way.")]
 	public class LimitedAmmoInfo : ITraitInfo
 	{
 		public readonly int Ammo = 0;
+
 		[Desc("Defaults to value in Ammo.")]
 		public readonly int PipCount = 0;
+
 		public readonly PipType PipType = PipType.Green;
 		public readonly PipType PipTypeEmpty = PipType.Transparent;
+
 		[Desc("Time to reload measured in ticks.")]
 		public readonly int ReloadTicks = 25 * 2;
 

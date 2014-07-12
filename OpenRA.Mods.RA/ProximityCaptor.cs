@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Actor can capture ProximityCapturable actors.")]
 	public class ProximityCaptorInfo : ITraitInfo
 	{
 		public readonly string[] Types = {};
