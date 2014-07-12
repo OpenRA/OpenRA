@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using OpenRA.Mods.RA.Widgets;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic

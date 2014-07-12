@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class ProductionTooltipLogic
 	{

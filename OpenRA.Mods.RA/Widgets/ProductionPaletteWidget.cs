@@ -21,7 +21,7 @@ using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets
+namespace OpenRA.Mods.RA.Widgets
 {
 	public class ProductionIcon
 	{
