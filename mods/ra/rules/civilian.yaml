@@ -326,6 +326,8 @@ OILB:
 		CaptureAmount: 100
 	Tooltip:
 		Name: Oil Derrick
+	Explodes:
+		Weapon: BarrelExplode
 
 BR1:
 	Inherits: ^Bridge
