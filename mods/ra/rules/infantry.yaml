@@ -425,7 +425,7 @@ HIJACKER:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 90
-		Prerequisites: ~tent, fix, ~techlevel.medium
+		Prerequisites: ~barr, fix, ~techlevel.medium
 		Hotkey: j
 	Valued:
 		Cost: 500
