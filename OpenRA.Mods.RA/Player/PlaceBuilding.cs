@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 
 					var unit = self.World.Map.Rules.Actors[order.TargetString];
 					var queue = order.TargetActor.TraitsImplementing<ProductionQueue>()
-						.FirstOrDefault(q => q.CanBuild(unit));
+						.FirstOrDefault(q => q.CanBuild(unit) && q.CurrentItem() != null && q.CurrentItem().Item == order.TargetString && q.CurrentItem().RemainingTime == 0);
 
 					if (queue == null)
 						return;
