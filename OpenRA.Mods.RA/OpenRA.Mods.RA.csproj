@@ -535,6 +535,13 @@
     <Compile Include="Widgets\ProductionTabsWidget.cs" />
     <Compile Include="Widgets\ProductionTypeButtonWidget.cs" />
     <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngameRadarDisplayLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngameCashCounterLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngamePowerCounterLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngamePowerBarLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngameSiloBarLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
+    <Compile Include="Widgets\MenuButtonWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -579,4 +586,7 @@ cd "$(SolutionDir)thirdparty/"
 copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Widgets\Logic\Ingame\" />
+  </ItemGroup>
 </Project>
