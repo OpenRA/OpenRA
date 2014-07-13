@@ -42,6 +42,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Widget optionsBG = null;
 			optionsBG = Game.LoadWidget(world, "INGAME_OPTIONS_BG", Ui.Root, new WidgetArgs
 			{
+				{ "transient", false },
 				{ "onExit", () =>
 					{
 						optionsBG.Visible = false;
@@ -51,6 +52,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					}
 				}
 			});
+
+			optionsBG.Visible = false;
 
 			gameRoot.Get<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
 			{

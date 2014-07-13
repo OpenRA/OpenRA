@@ -15,9 +15,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class OrderButtonsChromeLogic
 	{
+		readonly World world;
+		readonly Widget ingameRoot;
+		bool disableSystemButtons;
+
 		[ObjectCreator.UseCtor]
 		public OrderButtonsChromeLogic(Widget widget, World world)
 		{
+			this.world = world;
+			ingameRoot = Ui.Root.Get("INGAME_ROOT");
+
+			// Order Buttons
 			var sell = widget.GetOrNull<ButtonWidget>("SELL_BUTTON");
 			if (sell != null)
 			{
@@ -45,6 +53,43 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				power.GetKey = _ => Game.Settings.Keys.PowerDownKey;
 				BindOrderButton<PowerDownOrderGenerator>(world, power, "power");
 			}
+
+			// System buttons
+			var options = widget.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
+			if (options != null)
+			{
+				options.IsDisabled = () => disableSystemButtons;
+				options.OnClick = () => OpenMenuPanel(options);
+			}
+
+		}
+
+		void OpenMenuPanel(MenuButtonWidget button)
+		{
+			disableSystemButtons = true;
+			var cachedPause = world.PredictedPaused;
+
+			if (button.HideIngameUI)
+				ingameRoot.IsVisible = () => false;
+
+			if (button.Pause && world.LobbyInfo.IsSinglePlayer)
+				world.SetPauseState(true);
+
+			Game.LoadWidget(world, button.MenuContainer, Ui.Root, new WidgetArgs()
+			{
+				{ "transient", true },
+				{ "onExit", () =>
+					{
+						if (button.HideIngameUI)
+							ingameRoot.IsVisible = () => true;
+
+						if (button.Pause && world.LobbyInfo.IsSinglePlayer)
+							world.SetPauseState(cachedPause);
+
+						disableSystemButtons = false;
+					}
+				}
+			});
 		}
 
 		static void BindOrderButton<T>(World world, ButtonWidget w, string icon)

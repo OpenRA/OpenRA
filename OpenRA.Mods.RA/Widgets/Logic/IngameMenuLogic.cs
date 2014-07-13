@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	class IngameMenuLogic
 	{
 		[ObjectCreator.UseCtor]
-		public IngameMenuLogic(Widget widget, World world, Action onExit, WorldRenderer worldRenderer)
+		public IngameMenuLogic(Widget widget, World world, Action onExit, WorldRenderer worldRenderer, bool transient)
 		{
 			var resumeDisabled = false;
 			var mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
@@ -71,8 +71,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 
 			var resumeButton = widget.Get<ButtonWidget>("RESUME");
-			resumeButton.OnClick = () => onExit();
 			resumeButton.IsDisabled = () => resumeDisabled;
+			resumeButton.OnClick = () =>
+			{
+				if (transient)
+				{
+					Ui.CloseWindow();
+					Ui.Root.RemoveChild(widget);
+				}
+
+				onExit();
+			};
 
 			widget.Get<ButtonWidget>("SURRENDER").OnClick = () =>
 			{
