@@ -15,12 +15,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Spawn new actors when sold.")]
 	class EmitInfantryOnSellInfo : TraitInfo<EmitInfantryOnSell>
 	{
 		public readonly float ValuePercent = 40;
 		public readonly float MinHpPercent = 30;
 
 		[ActorReference]
+		[Desc("Be sure to use lowercase. Default value is \"e1\".")]
 		public readonly string[] ActorTypes = { "e1" };
 	}
 

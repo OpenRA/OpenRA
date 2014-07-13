@@ -17,6 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("This actor can transport Passenger actors.")]
 	public class CargoInfo : ITraitInfo, Requires<IOccupySpaceInfo>
 	{
 		public readonly int MaxWeight = 0;

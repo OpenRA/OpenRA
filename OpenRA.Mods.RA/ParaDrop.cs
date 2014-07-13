@@ -17,12 +17,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("This unit can spawn and eject other actors while flying.")]
 	public class ParaDropInfo : ITraitInfo, Requires<CargoInfo>
 	{
-		[Desc("Distance around the drop-point to unload troops")]
+		[Desc("Distance around the drop-point to unload troops.")]
 		public readonly WRange DropRange = WRange.FromCells(4);
 
-		[Desc("Sound to play when dropping")]
+		[Desc("Sound to play when dropping.")]
 		public readonly string ChuteSound = "chute1.aud";
 
 		public object Create(ActorInitializer init) { return new ParaDrop(init.self, this); }

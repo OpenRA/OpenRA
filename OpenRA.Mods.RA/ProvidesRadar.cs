@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("This actor provides radar.")]
 	public class ProvidesRadarInfo : TraitInfo<ProvidesRadar> { }
 
 	public class ProvidesRadar : ITick
@@ -33,7 +34,12 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	class JamsRadarInfo : TraitInfo<JamsRadar> { public readonly int Range = 0; }
+	[Desc("Jams radar signal.")]
+	class JamsRadarInfo : TraitInfo<JamsRadar>
+	{
+		[Desc("Range for jamming.")]
+		public readonly int Range = 0;
+	}
 
 	class JamsRadar { }
 }

@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Dogs use this attack model.")]
 	class AttackLeapInfo : AttackFrontalInfo
 	{
 		[Desc("Leap speed (in units/tick).")]

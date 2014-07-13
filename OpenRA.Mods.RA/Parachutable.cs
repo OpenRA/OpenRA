@@ -14,8 +14,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Can be paradropped by a ParaDrop actor.")]
 	class ParachutableInfo : ITraitInfo
 	{
+		[Desc("If we land on invalid terrain for my actor type should we be killed?")]
 		public readonly bool KilledOnImpassableTerrain = true;
 
 		public readonly string GroundImpactSound = "squishy2.aud";
@@ -28,8 +30,10 @@ namespace OpenRA.Mods.RA
 
 		[Desc("Requires the sub-sequences \"open\" and \"idle\".")]
 		public readonly string ParachuteSequence = null;
+
 		[Desc("Optional, otherwise defaults to the palette the actor is using.")]
 		public readonly string ParachutePalette = null;
+
 		[Desc("Used to clone the actor with this palette and render it with a visual offset below.")]
 		public readonly string ParachuteShadowPalette = "shadow";
 
@@ -39,6 +43,7 @@ namespace OpenRA.Mods.RA
 
 		[Desc("Alternative to ParachuteShadowPalette which disables it and allows to set a custom sprite sequence instead.")]
 		public readonly string ShadowSequence = null;
+
 		[Desc("Optional, otherwise defaults to the palette the actor is using.")]
 		public readonly string ShadowPalette = null;
 

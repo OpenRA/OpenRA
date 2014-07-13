@@ -16,8 +16,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Actor's turret rises from the ground before attacking.")]
 	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<RenderBuildingInfo>
 	{
+		[Desc("How many game ticks should pass before closing the actor's turret.")]
 		public int CloseDelay = 125;
 		public int DefaultFacing = 0;
 		public float ClosedDamageMultiplier = 0.5f;

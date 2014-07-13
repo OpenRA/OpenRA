@@ -12,6 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("This actor gives experience to a GainsExperience actor when they are killed.")]
 	class GivesExperienceInfo : TraitInfo<GivesExperience>
 	{
 		[Desc("If -1, use the value of the unit cost.")]
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public void Killed(Actor self, AttackInfo e)
 		{
 			// Prevent TK from giving exp
-			if (e.Attacker == null || e.Attacker.Destroyed || e.Attacker.Owner.Stances[ self.Owner ] == Stance.Ally )
+			if (e.Attacker == null || e.Attacker.Destroyed || e.Attacker.Owner.Stances[self.Owner] == Stance.Ally)
 				return;
 
 			var info = self.Info.Traits.Get<GivesExperienceInfo>();

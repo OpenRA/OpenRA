@@ -14,10 +14,16 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("This actor goes prone in an attempt to reduce damage.")]
 	public class TakeCoverInfo : TurretedInfo
 	{
-		public readonly int ProneTime = 100;	/* ticks, =4s */
+		[Desc("How long should we remain in the prone position?" +
+			"Measured in game ticks. Default is 4 seconds.")]
+		public readonly int ProneTime = 100;
+
+		[Desc("How quickly we should go from standing to prone.")]
 		public readonly decimal ProneSpeed = .5m;
+
 		public readonly WVec ProneOffset = new WVec(85, 0, -171);
 
 		public override object Create(ActorInitializer init) { return new TakeCover(init, this); }

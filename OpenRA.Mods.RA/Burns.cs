@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("This actor will play a fire animation over its body and take damage over time.")]
 	class BurnsInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		public readonly string Anim = "1";

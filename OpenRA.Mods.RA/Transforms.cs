@@ -17,6 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Actor becomes a specified actor type when this trait is triggered.")]
 	class TransformsInfo : ITraitInfo
 	{
 		[ActorReference] public readonly string IntoActor = null;

@@ -13,6 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Sounds to play when killed.")]
 	public class DeathSoundsInfo : ITraitInfo
 	{
 		[Desc("Death notification voice.")]

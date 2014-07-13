@@ -13,8 +13,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Actor can be targeted.")]
 	public class TargetableUnitInfo : ITraitInfo, ITargetableInfo
 	{
+		[Desc("Target type. Used for filtering (in)valid targets.")]
 		public readonly string[] TargetTypes = { };
 		public string[] GetTargetTypes() { return TargetTypes; }
 

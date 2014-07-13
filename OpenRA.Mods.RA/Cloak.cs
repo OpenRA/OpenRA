@@ -17,10 +17,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("This unit can cloak and uncloak in specific situations.")]
 	public class CloakInfo : ITraitInfo
 	{
-		public readonly int InitialDelay = 10; // Ticks
-		public readonly int CloakDelay = 30; // Ticks
+		[Desc("Measured in game ticks.")]
+		public readonly int InitialDelay = 10;
+
+		[Desc("Measured in game ticks.")]
+		public readonly int CloakDelay = 30;
+
 		public readonly bool UncloakOnAttack = true;
 		public readonly bool UncloakOnMove = false;
 		public readonly bool UncloakOnUnload = false;
