@@ -223,23 +223,42 @@ Rules:
 			Range: 40c0
 		MustBeDestroyed:
 		-AttackMove:
+		-GivesBounty:
 	HARV:
+		Buildable:
+			Owner: soviet
 		Tooltip:
 			Name: Bomb Truck
 			Description: Explodes like a damn nuke!
 		Health:
 			HP: 100
-			Explodes:
-				Weapon: CrateNuke
-				EmptyWeapon:
+		Explodes:
+			Weapon: CrateNuke
+			EmptyWeapon: CrateNuke
+		DemoTruck:
+		-GivesBounty:
 	SHOK:
+		Buildable:
+			Owner: soviet
 		Health:
 			HP: 800
+		-GivesBounty:
 	DOG:
+		Buildable:
+			Owner: soviet
 		Health:
 			HP: 120
 		Mobile:
 			Speed: 99
+		-GivesBounty:
+	FTRK:
+		Buildable:
+			Owner: soviet
+		-GivesBounty:
+	TTNK:
+		Buildable:
+			Owner: soviet
+		-GivesBounty:
 
 Sequences:
 
