@@ -50,7 +50,8 @@ namespace OpenRA.Widgets
 			var colordisabled = GetColorDisabled();
 			var contrast = GetContrastColor();
 			var rect = RenderBounds;
-			var textSize = font.Measure(Text);
+			var text = GetText();
+			var textSize = font.Measure(text);
 			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));
 			var state = disabled ? "checkbox-disabled" :
 						highlighted ? "checkbox-highlighted" :
@@ -62,10 +63,10 @@ namespace OpenRA.Widgets
 			var position = new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - BaseLine + (Bounds.Height - textSize.Y)/2);
 
 			if (Contrast)
-				font.DrawTextWithContrast(Text, position,
+				font.DrawTextWithContrast(text, position,
 					disabled ? colordisabled : color, contrast, 2);
 			else
-				font.DrawText(Text, position,
+				font.DrawText(text, position,
 					disabled ? colordisabled : color);
 
 			if (IsChecked() || (Depressed && HasPressedState && !disabled))
