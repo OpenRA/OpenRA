@@ -162,6 +162,7 @@ namespace OpenRA.Widgets
 
 			IsVisible = widget.IsVisible;
 			IgnoreChildMouseOver = widget.IgnoreChildMouseOver;
+			IgnoreMouseOver = widget.IgnoreMouseOver;
 
 			foreach (var child in widget.Children)
 				AddChild(child.Clone());
