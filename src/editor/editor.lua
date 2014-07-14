@@ -892,8 +892,11 @@ function CreateEditor()
 
           local ut = editor:GetUseTabs()
           local tw = ut and editor:GetTabWidth() or editor:GetIndent()
+          local style = bit.band(editor:GetStyleAt(editor:PositionFromLine(line-1)), 31)
 
           if edcfg.smartindent
+          -- don't apply smartindent to multi-line comments or strings
+          and not (editor.spec.iscomment[style] or editor.spec.isstring[style])
           and editor.spec.isdecindent and editor.spec.isincindent then
             local closed, blockend = editor.spec.isdecindent(linedone)
             local opened = editor.spec.isincindent(linedone)
