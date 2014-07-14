@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.RA.Widgets;
 using OpenRA.Widgets;
@@ -21,7 +22,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var radarEnabled = false;
 			var cachedRadarEnabled = false;
-			widget.Get<RadarWidget>("RADAR_MINIMAP").IsEnabled = () => radarEnabled;
+			var blockColor = Color.Transparent;
+			var radar = widget.Get<RadarWidget>("RADAR_MINIMAP");
+			radar.IsEnabled = () => radarEnabled;
 
 			var ticker = widget.Get<LogicTickerWidget>("RADAR_TICKER");
 			ticker.OnTick = () =>
@@ -33,6 +36,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					Sound.PlayNotification(world.Map.Rules, null, "Sounds", radarEnabled ? "RadarUp" : "RadarDown", null);
 				cachedRadarEnabled = radarEnabled;
 			};
+
+			var block = widget.GetOrNull<ColorBlockWidget>("RADAR_FADETOBLACK");
+			if (block != null)
+			{
+				radar.Animating = x => blockColor = Color.FromArgb((int)(255 * x), Color.Black);
+				block.IsVisible = () => blockColor.A != 0;
+				block.GetColor = () => blockColor;
+			}
 		}
 	}
 }

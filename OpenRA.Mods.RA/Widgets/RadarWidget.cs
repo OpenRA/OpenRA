@@ -25,6 +25,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public Func<bool> IsEnabled = () => true;
 		public Action AfterOpen = () => { };
 		public Action AfterClose = () => { };
+		public Action<float> Animating = _ => {};
 
 		float radarMinimapHeight;
 		int frame;
@@ -226,6 +227,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 			frame += enabled ? 1 : -1;
 			radarMinimapHeight = float2.Lerp(0, 1, (float)frame / AnimationLength);
+
+			Animating(frame * 1f / AnimationLength);
 
 			// Update map rectangle for event handling
 			var ro = RenderOrigin;
