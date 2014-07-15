@@ -217,11 +217,8 @@ namespace OpenRA.Mods.RA
 			if (cargo == null)
 				return;
 
-			self.World.AddFrameEndTask(w =>
-			{
-				foreach (var p in Passengers)
-					p.Owner = newOwner;
-			});
+			foreach (var p in Passengers)
+				p.ChangeOwner(newOwner, captor);
 		}
 
 		bool initialized;

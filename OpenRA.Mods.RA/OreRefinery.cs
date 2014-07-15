@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA
 		{
 			// Steal any docked harv too
 			if (dockedHarv != null)
-				dockedHarv.ChangeOwner(newOwner);
+				dockedHarv.ChangeOwner(newOwner, captor);
 
 			// Unlink any non-docked harvs
 			foreach (var harv in GetLinkedHarvesters())
