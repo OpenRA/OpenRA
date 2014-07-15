@@ -539,6 +539,7 @@
     <Compile Include="Widgets\Logic\Ingame\IngamePowerCounterLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngamePowerBarLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngameSiloBarLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\AddRaceSuffixLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
     <Compile Include="Widgets\MenuButtonWidget.cs" />
     <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
