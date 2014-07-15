@@ -75,9 +75,10 @@ BADR.Bomber:
 MIG:
 	Inherits: ^Plane
 	Buildable:
-		Queue: Plane
+		Queue: Aircraft
+		BuildAtProductionType: Plane
 		BuildPaletteOrder: 50
-		Prerequisites: afld, stek, ~techlevel.unrestricted
+		Prerequisites: ~afld, stek, ~techlevel.unrestricted
 		Hotkey: m
 	Valued:
 		Cost: 2000
@@ -127,9 +128,10 @@ MIG:
 YAK:
 	Inherits: ^Plane
 	Buildable:
-		Queue: Plane
+		Queue: Aircraft
+		BuildAtProductionType: Plane
 		BuildPaletteOrder: 30
-		Prerequisites: afld, ~techlevel.medium
+		Prerequisites: ~afld, ~techlevel.medium
 		Hotkey: y
 	Valued:
 		Cost: 1000
@@ -185,9 +187,10 @@ YAK:
 TRAN:
 	Inherits: ^Helicopter
 	Buildable:
-		Queue: Helicopter
+		Queue: Aircraft
+		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 10
-		Prerequisites: hpad, ~techlevel.medium
+		Prerequisites: ~hpad, ~techlevel.medium
 		Hotkey: t
 	Valued:
 		Cost: 900
@@ -227,9 +230,10 @@ TRAN:
 HELI:
 	Inherits: ^Helicopter
 	Buildable:
-		Queue: Helicopter
+		Queue: Aircraft
+		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 40
-		Prerequisites: hpad, atek, ~techlevel.unrestricted
+		Prerequisites: ~hpad, atek, ~techlevel.unrestricted
 		Hotkey: l
 	Valued:
 		Cost: 2000
@@ -277,9 +281,10 @@ HELI:
 HIND:
 	Inherits: ^Helicopter
 	Buildable:
-		Queue: Helicopter
+		Queue: Aircraft
+		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 20
-		Prerequisites: hpad, ~techlevel.medium
+		Prerequisites: ~hpad, ~techlevel.medium
 		Hotkey: h
 	Valued:
 		Cost: 1000
