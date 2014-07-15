@@ -476,7 +476,9 @@ do
         dir:Normalize() -- turn into absolute path if needed
         ProjectUpdateProjectDir(dir:GetFullPath())
       else
-        LoadFile(fileName, nil, true)
+        if not LoadFile(fileName, nil, true) then
+          DisplayOutputLn(TR("Can't open file '%s': %s"):format(fileName, wx.wxSysErrorMsg()))
+        end
       end
     end
   end
