@@ -38,6 +38,8 @@ namespace OpenRA.Mods.RA.Widgets
 		public readonly Color ReadyTextAltColor = Color.Red;
 		public readonly int Columns = 3;
 		public readonly int2 IconSize = new int2(64, 48);
+		public readonly int2 IconMargin = int2.Zero;
+		public readonly int2 IconSpriteOffset = int2.Zero;
 
 		public readonly string TabClick = null;
 		public readonly string DisabledTabClick = null;
@@ -201,7 +203,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				var x = IconCount % Columns;
 				var y = IconCount / Columns;
-				var rect = new Rectangle(rb.X + x * IconSize.X + 1, rb.Y + y * IconSize.Y + 1, IconSize.X, IconSize.Y);
+				var rect = new Rectangle(rb.X + x * (IconSize.X + IconMargin.X), rb.Y + y * (IconSize.Y + IconMargin.Y), IconSize.X, IconSize.Y);
 				var icon = new Animation(World, RenderSimple.GetImage(item));
 				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
 
@@ -225,7 +227,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void Draw()
 		{
-			var iconOffset = 0.5f * IconSize.ToFloat2();
+			var iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
 
 			overlayFont = Game.Renderer.Fonts["TinyBold"];
 			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
@@ -251,6 +253,7 @@ namespace OpenRA.Mods.RA.Widgets
 						() => (first.TotalTime - first.RemainingTime)
 							* (clock.CurrentSequence.Length - 1) / first.TotalTime);
 					clock.Tick();
+
 					WidgetUtils.DrawSHPCentered(clock.Image, icon.Pos + iconOffset, worldRenderer);
 				}
 				else if (!buildableItems.Any(a => a.Name == icon.Name))
