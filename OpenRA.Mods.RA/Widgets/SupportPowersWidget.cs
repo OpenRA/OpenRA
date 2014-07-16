@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,17 +16,22 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets
+namespace OpenRA.Mods.RA.Widgets
 {
 	public class SupportPowersWidget : Widget
 	{
 		[Translate] public readonly string ReadyText = "";
 		[Translate] public readonly string HoldText = "";
 
+		public readonly int2 IconSize = new int2(64, 48);
+		public readonly int IconMargin = 10;
+		public readonly int2 IconSpriteOffset = int2.Zero;
+
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SUPPORT_POWER_TOOLTIP";
 
-		public int Spacing = 10;
+		public int IconCount { get; private set; }
+		public event Action<int, int> OnIconCountChanged = (a, b) => {};
 
 		readonly WorldRenderer worldRenderer;
 		readonly SupportPowerManager spm;
@@ -67,12 +72,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 			icons = new Dictionary<Rectangle, SupportPowerIcon>();
 			var powers = spm.Powers.Values.Where(p => !p.Disabled);
 
-			var i = 0;
+			var oldIconCount = IconCount;
+			IconCount = 0;
+	
 			var rb = RenderBounds;
 			foreach (var p in powers)
 			{
-				var rect = new Rectangle(rb.X + 1, rb.Y + i * (48 + Spacing) + 1, 64, 48);
+				var rect = new Rectangle(rb.X, rb.Y + IconCount * (IconSize.Y + IconMargin), IconSize.X, IconSize.Y);
 				icon.Play(p.Info.Icon);
+
 				var power = new SupportPowerIcon()
 				{
 					Power = p,
@@ -81,25 +89,23 @@ namespace OpenRA.Mods.Cnc.Widgets
 				};
 
 				icons.Add(rect, power);
-				i++;
+				IconCount++;
 			}
 
-			eventBounds = (icons.Count == 0) ? Rectangle.Empty : icons.Keys.Aggregate(Rectangle.Union);
+			eventBounds = icons.Any() ? icons.Keys.Aggregate(Rectangle.Union) : Rectangle.Empty;
+
+			if (oldIconCount != IconCount)
+				OnIconCountChanged(oldIconCount, IconCount);
 		}
 
 		public override void Draw()
 		{
-			var iconSize = new float2(64, 48);
-			var iconOffset = 0.5f * iconSize;
-
+			var iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
 			overlayFont = Game.Renderer.Fonts["TinyBold"];
+
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
 			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
-
-			// Background
-			foreach (var rect in icons.Keys)
-				WidgetUtils.DrawPanel("panel-black", rect.InflateBy(1, 1, 1, 1));
 
 			// Icons
 			foreach (var p in icons.Values)
@@ -110,6 +116,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				clock.PlayFetchIndex("idle",
 					() => (p.Power.TotalTime - p.Power.RemainingTime)
 						* (clock.CurrentSequence.Length - 1) / p.Power.TotalTime);
+
 				clock.Tick();
 				WidgetUtils.DrawSHPCentered(clock.Image, p.Pos + iconOffset, worldRenderer);
 			}
@@ -140,14 +147,18 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void MouseEntered()
 		{
-			if (TooltipContainer == null) return;
+			if (TooltipContainer == null)
+				return;
+
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
 				new WidgetArgs() { { "palette", this } });
 		}
 
 		public override void MouseExited()
 		{
-			if (TooltipContainer == null) return;
+			if (TooltipContainer == null)
+				return;
+
 			tooltipContainer.Value.RemoveTooltip();
 		}
 
@@ -157,7 +168,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				var icon = icons.Where(i => i.Key.Contains(mi.Location))
 					.Select(i => i.Value).FirstOrDefault();
-				TooltipPower = (icon != null) ? icon.Power : null;
+
+				TooltipPower = icon != null ? icon.Power : null;
 				return false;
 			}
 
@@ -171,6 +183,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				if (!clicked.Power.Active)
 					Sound.PlayToPlayer(spm.self.Owner, clicked.Power.Info.InsufficientPowerSound);
+
 				spm.Target(clicked.Power.Info.OrderName);
 			}
 
