@@ -62,12 +62,7 @@ namespace OpenRA.Mods.RA.Activities
 						if (target.Actor.IsDead())
 							return;
 
-						var oldOwner = target.Actor.Owner;
-
-						target.Actor.ChangeOwner(self.Owner);
-
-						foreach (var t in target.Actor.TraitsImplementing<INotifyCapture>())
-							t.OnCapture(target.Actor, self, oldOwner, self.Owner);
+						target.Actor.ChangeOwner(self.Owner, self);
 
 						capturable.EndCapture();
 

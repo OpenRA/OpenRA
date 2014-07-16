@@ -213,7 +213,7 @@ namespace OpenRA
 		}
 
 		// TODO: move elsewhere.
-		public void ChangeOwner(Player newOwner)
+		public void ChangeOwner(Player newOwner, Actor captor = null)
 		{
 			World.AddFrameEndTask(w =>
 			{
@@ -222,14 +222,23 @@ namespace OpenRA
 
 				var oldOwner = Owner;
 
-				// momentarily remove from world so the ownership queries don't get confused
-				w.Remove(this);
+				// momentarily remove from world if present so the ownership queries don't get confused
+				var inWorld = IsInWorld;
+				if (inWorld)
+					w.Remove(this);
 				Owner = newOwner;
 				Generation++;
-				w.Add(this);
+				if (inWorld)
+					w.Add(this);
 
 				foreach (var t in this.TraitsImplementing<INotifyOwnerChanged>())
 					t.OnOwnerChanged(this, oldOwner, newOwner);
+
+				if (captor != null)
+				{
+					foreach (var t in TraitsImplementing<INotifyCapture>())
+						t.OnCapture(this, captor, oldOwner, newOwner);
+				}
 			});
 		}
 

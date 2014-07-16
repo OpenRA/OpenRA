@@ -45,12 +45,7 @@ namespace OpenRA.Mods.RA.Activities
 				var lowEnoughHealth = health.HP <= capturableInfo.CaptureThreshold * health.MaxHP;
 				if (!capturesInfo.Sabotage || lowEnoughHealth || actor.Owner.NonCombatant)
 				{
-					var oldOwner = actor.Owner;
-
-					actor.ChangeOwner(self.Owner);
-
-					foreach (var t in actor.TraitsImplementing<INotifyCapture>())
-						t.OnCapture(actor, self, oldOwner, self.Owner);
+					actor.ChangeOwner(self.Owner, self);
 
 					if (b != null && b.Locked)
 						b.Unlock();
