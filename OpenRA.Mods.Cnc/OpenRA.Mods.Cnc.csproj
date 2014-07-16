@@ -79,8 +79,6 @@
     <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
-    <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
-    <Compile Include="Widgets\SupportPowersWidget.cs" />
     <Compile Include="WithFire.cs" />
     <Compile Include="WithRoof.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />

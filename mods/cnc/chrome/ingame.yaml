@@ -182,12 +182,24 @@ Container@PLAYER_WIDGETS:
 		WorldCommand:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
-		SupportPowers:
-			TooltipContainer: TOOLTIP_CONTAINER
+		Container@SUPPORT_POWERS:
+			Logic: SupportPowerBinLogic
 			X: 10
 			Y: 10
-			ReadyText: Ready
-			HoldText: On Hold
+			Children:
+				Container@PALETTE_BACKGROUND:
+					Children:
+						Background@ICON_TEMPLATE:
+							Width: 66
+							Height: 50
+							ClickThrough: false
+							Background: panel-black
+				SupportPowers@SUPPORT_PALETTE:
+					X: 1
+					Y: 1
+					TooltipContainer: TOOLTIP_CONTAINER
+					ReadyText: Ready
+					HoldText: On Hold
 		Background@SIDEBAR_BACKGROUND:
 			Logic: OrderButtonsChromeLogic
 			X: WINDOW_RIGHT - 204
