@@ -397,8 +397,8 @@ Container@PLAYER_WIDGETS:
 					Height: 50
 					Background: panel-black
 		ProductionPalette@PRODUCTION_PALETTE:
-			X: WINDOW_RIGHT - 204
-			Y: 287
+			X: WINDOW_RIGHT - 203
+			Y: 288
 			TooltipContainer: TOOLTIP_CONTAINER
 			ReadyText: Ready
 			HoldText: On Hold
