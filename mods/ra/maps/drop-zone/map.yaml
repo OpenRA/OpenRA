@@ -204,18 +204,32 @@ Rules:
 		GiveUnitCrateAction@ttnk:
 			SelectionShares: 4
 			Unit: ttnk
+			Owner: soviet
 		GiveUnitCrateAction@ftrk:
 			SelectionShares: 6
 			Unit: ftrk
+			Owner: soviet
 		GiveUnitCrateAction@harv:
 			SelectionShares: 1
 			Unit: harv
+			Owner: soviet
 		GiveUnitCrateAction@shok:
 			SelectionShares: 1
 			Unit: shok
+			Owner: soviet
 		GiveUnitCrateAction@dog:
 			SelectionShares: 1
 			Unit: dog
+			Owner: soviet
+	^Infantry:
+		GivesBounty:
+			Percentage: 0
+	^Tank:
+		GivesBounty:
+			Percentage: 0
+	^Vehicle:
+		GivesBounty:
+			Percentage: 0
 	APC:
 		Health:
 			HP: 1000
@@ -223,10 +237,7 @@ Rules:
 			Range: 40c0
 		MustBeDestroyed:
 		-AttackMove:
-		-GivesBounty:
 	HARV:
-		Buildable:
-			Owner: soviet
 		Tooltip:
 			Name: Bomb Truck
 			Description: Explodes like a damn nuke!
@@ -236,29 +247,14 @@ Rules:
 			Weapon: CrateNuke
 			EmptyWeapon: CrateNuke
 		DemoTruck:
-		-GivesBounty:
 	SHOK:
-		Buildable:
-			Owner: soviet
 		Health:
 			HP: 800
-		-GivesBounty:
 	DOG:
-		Buildable:
-			Owner: soviet
 		Health:
 			HP: 120
 		Mobile:
 			Speed: 99
-		-GivesBounty:
-	FTRK:
-		Buildable:
-			Owner: soviet
-		-GivesBounty:
-	TTNK:
-		Buildable:
-			Owner: soviet
-		-GivesBounty:
 
 Sequences:
 
