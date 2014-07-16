@@ -13,7 +13,7 @@ using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.D2k.Widgets
 {
 	class MoneyBinWidget : Widget
 	{
