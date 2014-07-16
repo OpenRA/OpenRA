@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,6 +18,9 @@ namespace OpenRA.Mods.RA.Render
 		public readonly int MinIdleWaitTicks = 30;
 		public readonly int MaxIdleWaitTicks = 110;
 		public readonly bool SpawnsCorpse = true;
+		public readonly string MoveAnimation = "run";
+		public readonly string AttackAnimation = "shoot";
+		public readonly string DeathAnimationPrefix = "die";
 		public readonly string[] IdleAnimations = { };
 		public readonly string[] StandAnimations = { "stand" };
 
@@ -68,10 +71,8 @@ namespace OpenRA.Mods.RA.Render
 		public void Attacking(Actor self, Target target)
 		{
 			State = AnimationState.Attacking;
-			if (DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, "shoot")))
-				DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, "shoot"), () => State = AnimationState.Idle);
-			else if (DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, "heal")))
-				DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, "heal"), () => State = AnimationState.Idle);
+			if (DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, info.AttackAnimation)))
+				DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, info.AttackAnimation), () => State = AnimationState.Idle);
 		}
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
@@ -91,7 +92,7 @@ namespace OpenRA.Mods.RA.Render
 			else if ((State != AnimationState.Moving || dirty) && move.IsMoving)
 			{
 				State = AnimationState.Moving;
-				DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, "run"));
+				DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, info.MoveAnimation));
 			}
 
 			dirty = false;
@@ -133,7 +134,7 @@ namespace OpenRA.Mods.RA.Render
 
 			if (info.SpawnsCorpse)
 			{
-				SpawnCorpse(self, "die" + (e.Warhead.InfDeath));
+				SpawnCorpse(self, info.DeathAnimationPrefix + (e.Warhead.InfDeath));
 			}	
 		}
 

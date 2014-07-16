@@ -137,6 +137,7 @@ MEDIC:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		AttackAnimation: heal
 	SelfHealing:
 	Passenger:
 		PipType: Red
