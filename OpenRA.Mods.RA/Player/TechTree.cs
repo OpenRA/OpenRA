@@ -61,6 +61,13 @@ namespace OpenRA.Mods.RA
 			watchers.RemoveAll(x => x.RegisteredBy == tte);
 		}
 
+		public bool HasPrerequisites(IEnumerable<string> prerequisites)
+		{
+			var ownedPrereqs = TechTree.GatherOwnedPrerequisites(player);
+			return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!")
+					^ !ownedPrereqs.ContainsKey(p.Replace("!", "").Replace("~", ""))));
+		}
+
 		static Cache<string, List<Actor>> GatherOwnedPrerequisites(Player player)
 		{
 			var ret = new Cache<string, List<Actor>>(x => new List<Actor>());
@@ -69,7 +76,7 @@ namespace OpenRA.Mods.RA
 
 			// Add all actors that provide prerequisites
 			var prerequisites = player.World.ActorsWithTrait<ITechTreePrerequisite>()
-				.Where(a => a.Actor.Owner == player && !a.Actor.IsDead() && a.Actor.IsInWorld);
+				.Where(a => a.Actor.Owner == player && a.Actor.IsInWorld && !a.Actor.IsDead());
 
 			foreach (var b in prerequisites)
 			{
