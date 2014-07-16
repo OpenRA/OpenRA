@@ -195,6 +195,21 @@ function ReLoadFile(filePath, editor, ...)
   return editor
 end
 
+function ActivateFile(filename)
+  local name, suffix, value = filename:match('(.+):([lLpP]?)(%d+)$')
+  if name and not wx.wxFileExists(filename) and wx.wxFileExists(name) then
+    filename = name
+  end
+
+  local opened = LoadFile(filename, nil, true)
+  if opened and value then
+    if suffix:upper() == 'P' then opened:GotoPosDelayed(tonumber(value))
+    else opened:GotoPosDelayed(opened:PositionFromLine(value-1))
+    end
+  end
+  return opened
+end
+
 local function getExtsString()
   local knownexts = ""
   for _,spec in pairs(ide.specs) do

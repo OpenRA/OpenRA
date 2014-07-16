@@ -49,16 +49,12 @@ if success then -- ok, server was started, we are solo
           local filename = msg:match(protocol.client.requestloading:gsub("%%s","(.+)$"))
           if filename then
             RequestAttention()
-            local done = true
             if wx.wxDirExists(filename) then
               local dir = wx.wxFileName.DirName(filename)
               dir:Normalize() -- turn into absolute path if needed
               ProjectUpdateProjectDir(dir:GetFullPath())
-            else
-              done = LoadFile(filename, nil, true)
-            end
-            if not done then
-              DisplayOutputLn("Can't open requested file '"..filename.."'.")
+            elseif not ActivateFile(filename) then
+              DisplayOutputLn(TR("Can't open file '%s': %s"):format(filename, wx.wxSysErrorMsg()))
             end
           end
         end
