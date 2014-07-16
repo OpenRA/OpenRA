@@ -77,6 +77,12 @@
     <Compile Include="Render\WithDockingOverlay.cs" />
     <Compile Include="Render\WithDeliveryOverlay.cs" />
     <Compile Include="PaletteFromScaledPalette.cs" />
+    <Compile Include="Widgets\MoneyBinWidget.cs" />
+    <Compile Include="Widgets\SupportPowerBinWidget.cs" />
+    <Compile Include="Widgets\BuildPaletteWidget.cs" />
+    <Compile Include="Widgets\SlidingContainerWidget.cs" />
+    <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
+    <Compile Include="ChooseBuildTabOnSelect.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -112,4 +118,8 @@ cd "$(SolutionDir)"</PostBuildEvent>
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Widgets\" />
+    <Folder Include="Widgets\Logic\" />
+  </ItemGroup>
 </Project>

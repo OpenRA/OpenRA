@@ -13,15 +13,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Mods.RA.Render;
+using OpenRA.Mods.RA.Widgets;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.D2k.Widgets
 {
 	class BuildPaletteWidget : Widget
 	{

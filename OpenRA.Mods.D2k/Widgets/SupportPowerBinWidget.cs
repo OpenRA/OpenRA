@@ -13,10 +13,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.D2k.Widgets
 {
 	class SupportPowerBinWidget : Widget
 	{
