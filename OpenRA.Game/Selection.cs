@@ -61,7 +61,7 @@ namespace OpenRA
 
 		public void Tick(World world)
 		{
-			actors.RemoveAll(a => !a.IsInWorld || world.FogObscures(a));
+			actors.RemoveAll(a => !a.IsInWorld || (a.Owner != world.LocalPlayer && world.FogObscures(a)));
 
 			foreach (var cg in controlGroups.Values)
 				// note: NOT `!a.IsInWorld`, since that would remove things that are in transports.
@@ -88,7 +88,7 @@ namespace OpenRA
 				return;
 			}
 
-			var groupActors = controlGroups[group].Where(a => !a.IsDead() && !world.FogObscures(a));
+			var groupActors = controlGroups[group].Where(a => !a.IsDead());
 
 			if (mods.HasModifier(Modifiers.Alt) || MultiTapCount >= 2)
 			{
