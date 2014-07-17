@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				panelType = PanelType.Debug;
 				visibleButtons++;
-				var debugPanel = Game.LoadWidget(world, "CHEATS_PANEL", panelParent, new WidgetArgs() { { "onExit", doNothing } });
+				var debugPanel = Game.LoadWidget(world, "DEBUG_PANEL", panelParent, new WidgetArgs() { { "onExit", doNothing }, { "transient", true } });
 				debugPanel.IsVisible = () => panelType == PanelType.Debug;
 				debugButton.IsVisible = () => visibleButtons > 1;
 			}

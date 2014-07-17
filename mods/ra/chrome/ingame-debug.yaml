@@ -1,17 +1,16 @@
-Background@CHEATS_PANEL:
-	Logic: CheatsLogic
+Background@INGAME_DEBUG_BG:
+	Logic: DebugMenuLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Width: 350
 	Height: 475
-	Visible: false
 	Children:
 		Label@LABEL_TITLE:
 			X: (PARENT_RIGHT - WIDTH)/2
 			Y: 20
 			Width: 250
 			Height: 25
-			Text: Cheats
+			Text: Debug Options
 			Align: Center
 			Font: Bold
 		Checkbox@DISABLE_SHROUD:
@@ -107,4 +106,5 @@ Background@CHEATS_PANEL:
 			Height: 25
 			Text: Close
 			Key: escape
+			Font: Bold
 

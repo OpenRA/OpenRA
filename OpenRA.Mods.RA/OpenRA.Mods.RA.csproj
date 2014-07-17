@@ -411,7 +411,6 @@
     <Compile Include="InfiltrateForExploration.cs" />
     <Compile Include="InfiltrateForCash.cs" />
     <Compile Include="RenderShroudCircle.cs" />
-    <Compile Include="Widgets\Logic\CheatsLogic.cs" />
     <Compile Include="CloakPaletteEffect.cs" />
     <Compile Include="Widgets\ColorPreviewManagerWidget.cs" />
     <Compile Include="Infiltrates.cs" />
@@ -542,6 +541,7 @@
     <Compile Include="Widgets\Logic\Ingame\IngameSiloBarLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
     <Compile Include="Widgets\MenuButtonWidget.cs" />
+    <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

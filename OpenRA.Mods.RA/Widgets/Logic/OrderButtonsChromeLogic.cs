@@ -62,6 +62,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				options.OnClick = () => OpenMenuPanel(options);
 			}
 
+			var debug = widget.GetOrNull<MenuButtonWidget>("DEBUG_BUTTON");
+			if (debug != null)
+			{
+				debug.IsVisible = () => world.LobbyInfo.GlobalSettings.AllowCheats;
+				debug.IsDisabled = () => disableSystemButtons;
+				debug.OnClick = () => OpenMenuPanel(debug);
+			}
 		}
 
 		void OpenMenuPanel(MenuButtonWidget button)

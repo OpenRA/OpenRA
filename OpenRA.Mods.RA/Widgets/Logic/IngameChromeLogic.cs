@@ -97,11 +97,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			diplomacyButton.IsVisible = () => validPlayers > 0;
 
 			Widget cheats = null;
-			cheats = Game.LoadWidget(world, "CHEATS_PANEL", playerWidgets, new WidgetArgs
+			cheats = Game.LoadWidget(world, "INGAME_DEBUG_BG", playerWidgets, new WidgetArgs
 			{
+				{ "transient", true },
 				{ "onExit", () => cheats.Visible = false }
 			});
-			var cheatsButton = playerWidgets.Get<ButtonWidget>("CHEATS_BUTTON");
+			cheats.Visible = false;
+
+			var cheatsButton = playerWidgets.Get<ButtonWidget>("INGAME_DEBUG_BUTTON");
 			cheatsButton.OnClick = () => cheats.Visible ^= true;
 			cheatsButton.IsVisible = () => world.LobbyInfo.GlobalSettings.AllowCheats;
 
