@@ -56,6 +56,11 @@ Background@PRODUCTION_TOOLTIP:
 			X: 5
 			Height: 23
 			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Height: 23
+			TextColor: 255,255,0
+			Font: Bold
 		Label@REQUIRES:
 			X: 5
 			Y: 19

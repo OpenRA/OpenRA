@@ -26,6 +26,7 @@ namespace OpenRA.Mods.RA.Widgets
 	public class ProductionIcon
 	{
 		public string Name;
+		public Hotkey Hotkey;
 		public Sprite Sprite;
 		public float2 Pos;
 		public List<ProductionItem> Queued;
@@ -120,14 +121,23 @@ namespace OpenRA.Mods.RA.Widgets
 			if (icon == null)
 				return false;
 
+			// Only support left and right clicks
+			if (mi.Button != MouseButton.Left && mi.Button != MouseButton.Right)
+				return false;
+
 			// Eat mouse-up events
 			if (mi.Event != MouseInputEvent.Down)
 				return true;
 
+			return HandleEvent(icon, mi.Button == MouseButton.Left);
+		}
+
+		bool HandleEvent(ProductionIcon icon, bool isLeftClick)
+		{
 			var actor = World.Map.Rules.Actors[icon.Name];
 			var first = icon.Queued.FirstOrDefault();
 
-			if (mi.Button == MouseButton.Left)
+			if (isLeftClick)
 			{
 				// Pick up a completed building
 				if (first != null && first.Done && actor.Traits.Contains<BuildingInfo>())
@@ -152,7 +162,7 @@ namespace OpenRA.Mods.RA.Widgets
 				else
 					Sound.Play(DisabledTabClick);
 			}
-			else if (mi.Button == MouseButton.Right)
+			else
 			{
 				// Hold/Cancel an existing item
 				if (first != null)
@@ -177,6 +187,16 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 
 			return true;
+		}
+
+		public override bool HandleKeyPress(KeyInput e)
+		{
+			if (e.Event == KeyInputEvent.Up || CurrentQueue == null)
+				return false;
+
+			var hotkey = Hotkey.FromKeyInput(e);
+			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey == hotkey);
+			return toBuild != null ? HandleEvent(toBuild, true) : false;
 		}
 
 		public void RefreshIcons()
@@ -210,6 +230,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var pi = new ProductionIcon()
 				{
 					Name = item.Name,
+					Hotkey = item.Traits.Get<BuildableInfo>().Hotkey,
 					Sprite = icon.Image,
 					Pos = new float2(rect.Location),
 					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
