@@ -11,7 +11,7 @@
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class IngameCashCounterLogic
 	{
@@ -19,10 +19,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public IngameCashCounterLogic(Widget widget, World world)
 		{
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
-			var cash = widget.Get<LabelWidget>("CASH");
+			var cash = widget.Get<LabelWithTooltipWidget>("CASH");
 			var label = cash.Text;
 
 			cash.GetText = () => label.F(playerResources.DisplayCash + playerResources.DisplayResources);
+			cash.GetTooltipText = () => "Silo Usage: {0}/{1}".F(playerResources.Resources, playerResources.ResourceCapacity);
 		}
 	}
 }

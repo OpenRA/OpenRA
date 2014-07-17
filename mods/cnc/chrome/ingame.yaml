@@ -310,7 +310,7 @@ Container@PLAYER_WIDGETS:
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							IndicatorImage: indicator-right
-				Label@CASH:
+				LabelWithTooltip@CASH:
 					Logic: IngameCashCounterLogic
 					Y: 170
 					Width: PARENT_RIGHT
