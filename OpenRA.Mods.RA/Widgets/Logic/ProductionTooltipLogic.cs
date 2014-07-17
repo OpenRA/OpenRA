@@ -32,9 +32,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var hotkeyLabel = widget.Get<LabelWidget>("HOTKEY");
 			var requiresLabel = widget.Get<LabelWidget>("REQUIRES");
 			var powerLabel = widget.Get<LabelWidget>("POWER");
+			var powerIcon = widget.Get<ImageWidget>("POWER_ICON");
 			var timeLabel = widget.Get<LabelWidget>("TIME");
+			var timeIcon = widget.Get<ImageWidget>("TIME_ICON");
 			var costLabel = widget.Get<LabelWidget>("COST");
+			var costIcon = widget.Get<ImageWidget>("COST_ICON");
 			var descLabel = widget.Get<LabelWidget>("DESC");
+
+			var iconMargin = timeIcon.Bounds.X;
 
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var descFont = Game.Renderer.Fonts[descLabel.Font];
@@ -68,20 +73,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				requiresLabel.GetText = () => requiresString;
 
 				var power = bi != null ? bi.Power : 0;
-				var powerString = "P: {0}".F(power);
+				var powerString = power.ToString();
 				powerLabel.GetText = () => powerString;
 				powerLabel.GetColor = () => ((pm.PowerProvided - pm.PowerDrained) >= -power || power > 0)
 					? Color.White : Color.Red;
 				powerLabel.IsVisible = () => power != 0;
+				powerIcon.IsVisible = () => power != 0;
 
 				var lowpower = pm.PowerState != PowerState.Normal;
 				var time = palette.CurrentQueue == null ? 0 : palette.CurrentQueue.GetBuildTime(actor)
 					* (lowpower ? palette.CurrentQueue.Info.LowPowerSlowdown : 1);
-				var timeString = "T: {0}".F(WidgetUtils.FormatTime(time));
+				var timeString = WidgetUtils.FormatTime(time);
 				timeLabel.GetText = () => timeString;
 				timeLabel.GetColor = () => lowpower ? Color.Red : Color.White;
 
-				var costString = "$: {0}".F(cost);
+				var costString = cost.ToString();
 				costLabel.GetText = () => costString;
 				costLabel.GetColor = () => pr.DisplayCash + pr.DisplayResources >= cost
 					? Color.White : Color.Red;
@@ -91,8 +97,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var leftWidth = new[] { nameWidth + hotkeyWidth, requiresFont.Measure(requiresString).X, descFont.Measure(descString).X }.Aggregate(Math.Max);
 				var rightWidth = new[] { font.Measure(powerString).X, font.Measure(timeString).X, font.Measure(costString).X }.Aggregate(Math.Max);
-				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = leftWidth + 2 * nameLabel.Bounds.X;
-				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X;
+
+				timeIcon.Bounds.X = powerIcon.Bounds.X = costIcon.Bounds.X = leftWidth + 2 * nameLabel.Bounds.X;
+				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = timeIcon.Bounds.Right + iconMargin;
+				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X + timeIcon.Bounds.Width + iconMargin;
 
 				var leftHeight = font.Measure(tooltip.Name).Y + requiresFont.Measure(requiresString).Y + descFont.Measure(descString).Y;
 				var rightHeight = font.Measure(powerString).Y + font.Measure(timeString).Y + font.Measure(costString).Y;

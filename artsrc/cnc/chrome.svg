@@ -99,17 +99,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.9999998"
-     inkscape:cx="444.36519"
-     inkscape:cy="396.49296"
+     inkscape:zoom="8"
+     inkscape:cx="468.95592"
+     inkscape:cy="426.49296"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1381"
      inkscape:window-height="856"
      inkscape:window-x="59"
-     inkscape:window-y="1042"
-     inkscape:window-maximized="1"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
      showguides="true"
      inkscape:guide-bbox="true">
     <sodipodi:guide
@@ -1527,7 +1527,7 @@
        sodipodi:cy="98.374992"
        sodipodi:rx="2.625"
        sodipodi:ry="2.3749907"
-       d="m 507.25003,98.374992 a 2.625,2.3749907 0 1 1 -5.25,0 2.625,2.3749907 0 1 1 5.25,0 z"
+       d="m 507.25003,98.374992 c 0,1.311672 -1.17525,2.374988 -2.625,2.374988 -1.44975,0 -2.625,-1.063316 -2.625,-2.374988 0,-1.311671 1.17525,-2.37499 2.625,-2.37499 1.44975,0 2.625,1.063319 2.625,2.37499 z"
        transform="matrix(1.5238095,0,0,1.6842171,-264.88993,475.67736)" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none"
@@ -1537,7 +1537,7 @@
        sodipodi:nodetypes="sssccss" />
     <path
        transform="matrix(1.5238095,0,0,1.6842171,-264.88993,491.67736)"
-       d="m 507.25003,98.374992 a 2.625,2.3749907 0 1 1 -5.25,0 2.625,2.3749907 0 1 1 5.25,0 z"
+       d="m 507.25003,98.374992 c 0,1.311672 -1.17525,2.374988 -2.625,2.374988 -1.44975,0 -2.625,-1.063316 -2.625,-2.374988 0,-1.311671 1.17525,-2.37499 2.625,-2.37499 1.44975,0 2.625,1.063319 2.625,2.37499 z"
        sodipodi:ry="2.3749907"
        sodipodi:rx="2.625"
        sodipodi:cy="98.374992"
@@ -1559,7 +1559,7 @@
        sodipodi:cy="98.374992"
        sodipodi:rx="2.625"
        sodipodi:ry="2.3749907"
-       d="m 507.25003,98.374992 a 2.625,2.3749907 0 1 1 -5.25,0 2.625,2.3749907 0 1 1 5.25,0 z"
+       d="m 507.25003,98.374992 c 0,1.311672 -1.17525,2.374988 -2.625,2.374988 -1.44975,0 -2.625,-1.063316 -2.625,-2.374988 0,-1.311671 1.17525,-2.37499 2.625,-2.37499 1.44975,0 2.625,1.063319 2.625,2.37499 z"
        transform="matrix(1.5238095,0,0,1.6842171,-264.88993,507.67736)" />
     <path
        style="fill:#ffc000;fill-opacity:1;stroke:none"
@@ -1567,6 +1567,48 @@
        id="path4038"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="sssccss" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#ffffff;stroke-width:0.95312506;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path3248"
+       sodipodi:cx="439.81253"
+       sodipodi:cy="88.562477"
+       sodipodi:rx="3.8125002"
+       sodipodi:ry="3.8125002"
+       d="m 443.62503,88.562477 a 3.8125002,3.8125002 0 1 1 -7.625,0 3.8125002,3.8125002 0 1 1 7.625,0 z"
+       transform="matrix(1.5737704,0,0,1.5737704,-252.16394,488.98519)" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 440.0416,625.02887 -0.0412,3.41667 2.87503,1.83333"
+       id="path4030"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4039"
+       style="font-size:6px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:FreeSans;-inkscape-font-specification:FreeSans Bold"
+       transform="matrix(2.6246719,0,0,2.6246719,-764.958,391.85385)"><flowRegion
+         id="flowRegion4041"><rect
+           id="rect4043"
+           width="9.875"
+           height="10.375"
+           x="469.625"
+           y="86.625"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:FreeSans;-inkscape-font-specification:FreeSans Bold" /></flowRegion><flowPara
+         id="flowPara4045">$</flowPara></flowRoot>    <g
+       id="g4047"
+       style="font-size:17.23077011px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
+       transform="matrix(0.87502461,0,0,0.87502461,29.205207,106.53043)">
+      <path
+         id="path4049"
+         d="m 492.54807,592.57371 c 0.11537,0.12822 0.13781,0.26924 0.0673,0.42308 l -5.19231,11.125 c -0.0833,0.16025 -0.21795,0.24038 -0.40385,0.24038 -0.0256,0 -0.0705,-0.006 -0.13461,-0.0192 -0.10898,-0.0321 -0.19231,-0.0929 -0.25,-0.18269 -0.0513,-0.0897 -0.0641,-0.1859 -0.0385,-0.28846 l 1.89424,-7.76923 -3.90385,0.97115 c -0.0256,0.006 -0.0641,0.01 -0.11539,0.01 -0.11538,0 -0.21474,-0.0353 -0.29807,-0.10577 -0.11539,-0.0962 -0.15705,-0.22115 -0.125,-0.375 l 1.93269,-7.9327 c 0.0256,-0.0897 0.0769,-0.16344 0.15385,-0.22115 0.0769,-0.0577 0.16666,-0.0865 0.26923,-0.0865 l 3.15384,0 c 0.12179,2e-5 0.22436,0.0417 0.3077,0.125 0.0833,0.0769 0.12499,0.16989 0.125,0.27885 -1e-5,0.0513 -0.016,0.10899 -0.0481,0.17308 l -1.64423,4.45192 3.80769,-0.94231 c 0.0513,-0.0128 0.0897,-0.0192 0.11538,-0.0192 0.12179,10e-6 0.23077,0.0481 0.32693,0.14423"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:none"
+         d="m 492.54807,592.57371 c 0.11537,0.12822 0.13781,0.26924 0.0673,0.42308 l -5.19231,11.125 c -0.0833,0.16025 -0.21795,0.24038 -0.40385,0.24038 -0.0256,0 -0.0705,-0.006 -0.13461,-0.0192 -0.10898,-0.0321 -0.19231,-0.0929 -0.25,-0.18269 -0.0513,-0.0897 -0.0641,-0.1859 -0.0385,-0.28846 l 1.89424,-7.76923 -3.90385,0.97115 c -0.0256,0.006 -0.0641,0.01 -0.11539,0.01 -0.11538,0 -0.21474,-0.0353 -0.29807,-0.10577 -0.11539,-0.0962 -0.15705,-0.22115 -0.125,-0.375 l 1.93269,-7.9327 c 0.0256,-0.0897 0.0769,-0.16344 0.15385,-0.22115 0.0769,-0.0577 0.16666,-0.0865 0.26923,-0.0865 l 3.15384,0 c 0.12179,2e-5 0.22436,0.0417 0.3077,0.125 0.0833,0.0769 0.12499,0.16989 0.125,0.27885 -1e-5,0.0513 -0.016,0.10899 -0.0481,0.17308 l -1.64423,4.45192 3.80769,-0.94231 c 0.0513,-0.0128 0.0897,-0.0192 0.11538,-0.0192 0.12179,10e-6 0.23077,0.0481 0.32693,0.14423"
+         id="path4051"
+         inkscape:connector-curvature="0" />
+    </g>
   </g>
   <g
      inkscape:groupmode="layer"

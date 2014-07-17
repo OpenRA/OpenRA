@@ -429,6 +429,9 @@ strategic: strategic.png
 sidebar-bits: chrome.png
 	indicator-left: 416,48,16,8
 	indicator-right: 416,56,16,8
+	production-tooltip-time: 432, 80, 16, 16
+	production-tooltip-power: 448, 80, 16, 16
+	production-tooltip-cost: 464, 80, 16, 16
 
 production-icons: chrome.png
 	building: 384,0,16,16
