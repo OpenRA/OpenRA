@@ -8,9 +8,7 @@
  */
 #endregion
 
-using System.Drawing;
 using OpenRA.Mods.RA.Buildings;
-using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -18,15 +16,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class IngamePowerCounterLogic
 	{
 		[ObjectCreator.UseCtor]
-		public IngamePowerCounterLogic(Widget widget, OrderManager orderManager, World world)
+		public IngamePowerCounterLogic(Widget widget, World world)
 		{
 			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
-			var power = widget.Get<LabelWidget>("POWER");
+			var power = widget.Get<LabelWithTooltipWidget>("POWER");
 
-			power.GetText = () => powerManager.PowerProvided == 1000000 ? "inf" : powerManager.ExcessPower.ToString("+#;-#;0");
-
-			// Blink red when low power
-			power.GetColor = () => powerManager.ExcessPower < 0 && orderManager.LocalFrameNumber / 9 % 2 == 0 ? Color.Red : power.TextColor;
+			power.GetText = () => powerManager.PowerProvided == 1000000 ? "inf" : powerManager.ExcessPower.ToString();
+			power.GetTooltipText = () => "Power Usage: " + powerManager.PowerDrained.ToString() + (powerManager.PowerProvided != 1000000 ? "/" + powerManager.PowerProvided.ToString() : "");
 		}
 	}
 }

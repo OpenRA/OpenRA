@@ -174,23 +174,6 @@ Container@PLAYER_WIDGETS:
 							Width: 220
 							Height: 220
 							Children:
-				Label@CASH:
-					Logic: IngameCashCounterLogic
-					X: 35
-					Y: 262
-					Width: 100
-					Height: 22
-					Font: Bold
-					Text: {0}
-				Label@POWER:
-					Logic: IngamePowerCounterLogic
-					X: PARENT_RIGHT - WIDTH - 30
-					Y: 262
-					Width: 100
-					Height: 22
-					Align: Right
-					Font: Bold
-					Text: {0}
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
 					Y: 263
@@ -198,6 +181,27 @@ Container@PLAYER_WIDGETS:
 					Height: 22
 					Align: Center
 					Font: TinyBold
+				LabelWithTooltip@CASH:
+					Logic: IngameCashCounterLogic
+					X: 35
+					Y: 262
+					Width: 50
+					Height: 22
+					Font: Bold
+					Text: {0}
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+				LabelWithTooltip@POWER:
+					Logic: IngamePowerCounterLogic
+					X: PARENT_RIGHT - WIDTH - 30
+					Y: 262
+					Width: 50
+					Height: 22
+					Align: Right
+					Font: Bold
+					Text: {0}
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
 		Container@SIDEBAR_PRODUCTION:
 			Logic: ClassicProductionLogic
 			X: WINDOW_RIGHT - 250
