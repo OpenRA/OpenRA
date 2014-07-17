@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Widgets;
 
@@ -60,6 +61,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				options.IsDisabled = () => disableSystemButtons;
 				options.OnClick = () => OpenMenuPanel(options);
+			}
+
+			var diplomacy = widget.GetOrNull<MenuButtonWidget>("DIPLOMACY_BUTTON");
+			if (diplomacy != null)
+			{
+				diplomacy.Visible = world.Players.Any(a => a != world.LocalPlayer && !a.NonCombatant);
+				diplomacy.IsDisabled = () => disableSystemButtons;
+				diplomacy.OnClick = () => OpenMenuPanel(diplomacy);
 			}
 
 			var debug = widget.GetOrNull<MenuButtonWidget>("DEBUG_BUTTON");
