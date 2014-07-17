@@ -182,3 +182,25 @@ function ide:RemoveConfig(name)
   configcache[name] = nil -- clear the slot after use
   ReApplySpecAndStyles() -- apply current config to the UI
 end
+
+function ide:AddPanel(ctrl, panel, name, conf)
+  local width, height = 360, 200
+  local notebook = wxaui.wxAuiNotebook(ide.frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
+    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+  notebook:AddPage(ctrl, name, true)
+  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_BG_DCLICK,
+    function() PaneFloatToggle(notebook) end)
+
+  local mgr = ide.frame.uimgr
+  mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
+              Name(panel):Float():CaptionVisible(false):PaneBorder(false):
+              MinSize(width/2,height/2):
+              BestSize(width,height):FloatingSize(width,height):
+              PinButton(true):Hide())
+  if type(conf) == "function" then conf(mgr:GetPane(panel)) end
+  mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
+
+  return notebook
+end
