@@ -29,6 +29,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			widget.IsVisible = () => palette.TooltipActor != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
+			var hotkeyLabel = widget.Get<LabelWidget>("HOTKEY");
 			var requiresLabel = widget.Get<LabelWidget>("REQUIRES");
 			var powerLabel = widget.Get<LabelWidget>("POWER");
 			var timeLabel = widget.Get<LabelWidget>("TIME");
@@ -53,6 +54,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var bi = info.Traits.GetOrDefault<BuildingInfo>();
 
 				nameLabel.GetText = () => tooltip.Name;
+
+				var nameWidth = font.Measure(tooltip.Name).X;
+				var hotkeyText = "({0})".F(buildable.Hotkey.DisplayString());
+				var hotkeyWidth = buildable.Hotkey.IsValid() ? font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
+				hotkeyLabel.GetText = () => hotkeyText;
+				hotkeyLabel.Bounds.X = nameWidth + 2 * nameLabel.Bounds.X;
+				hotkeyLabel.Visible = buildable.Hotkey.IsValid();
+
 
 				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a)).Where(s => !s.StartsWith("~"));
 				var requiresString = prereqs.Any() ? requiresLabel.Text.F(prereqs.JoinWith(", ")) : "";
@@ -80,7 +89,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var descString = tooltip.Description.Replace("\\n", "\n");
 				descLabel.GetText = () => descString;
 
-				var leftWidth = new[] { font.Measure(tooltip.Name).X, requiresFont.Measure(requiresString).X, descFont.Measure(descString).X }.Aggregate(Math.Max);
+				var leftWidth = new[] { nameWidth + hotkeyWidth, requiresFont.Measure(requiresString).X, descFont.Measure(descString).X }.Aggregate(Math.Max);
 				var rightWidth = new[] { font.Measure(powerString).X, font.Measure(timeString).X, font.Measure(costString).X }.Aggregate(Math.Max);
 				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = leftWidth + 2 * nameLabel.Bounds.X;
 				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X;
