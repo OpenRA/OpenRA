@@ -4,6 +4,7 @@
 ide.proto.Document = {__index = {
   GetFileName = function(self) return self.fileName end,
   GetFilePath = function(self) return self.filePath end,
+  GetFileExt = function(self) return GetFileExt(self.fileName) end,
   GetModTime = function(self) return self.modTime end,
   GetEditor = function(self) return self.editor end,
   GetTabIndex = function(self) return self.index end,
