@@ -34,8 +34,8 @@ namespace OpenRA.Mods.RA.Widgets
 	public class ProductionPaletteWidget : Widget
 	{
 		public enum ReadyTextStyleOptions { Solid, AlternatingColor, Blinking }
-		public readonly ReadyTextStyleOptions ReadyTextStyle = ReadyTextStyleOptions.Blinking;
-		public readonly Color ReadyTextAltColor = Color.Red;
+		public readonly ReadyTextStyleOptions ReadyTextStyle = ReadyTextStyleOptions.AlternatingColor;
+		public readonly Color ReadyTextAltColor = Color.Gold;
 		public readonly int Columns = 3;
 		public readonly int2 IconSize = new int2(64, 48);
 		public readonly int2 IconMargin = int2.Zero;
