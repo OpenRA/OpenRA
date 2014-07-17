@@ -1033,6 +1033,8 @@ function CreateEditor()
 
   editor:Connect(wxstc.wxEVT_STC_PAINTED,
     function ()
+      PackageEventHandle("onEditorPainted", editor)
+
       if ide.osname == 'Windows' then
         updateStatusText(editor)
 
