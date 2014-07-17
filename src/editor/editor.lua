@@ -804,6 +804,8 @@ function CreateEditor()
     end
   end
 
+  function editor:SetupKeywords(...) return SetupKeywords(self, ...) end
+
   editor.ev = {}
   editor:Connect(wxstc.wxEVT_STC_MARGINCLICK,
     function (event)

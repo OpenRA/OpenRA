@@ -16,7 +16,7 @@ local CURRENT_LINE_MARKER_VALUE = 2^CURRENT_LINE_MARKER
 function NewFile(filename)
   filename = filename or ide.config.default.fullname
   local editor = CreateEditor()
-  SetupKeywords(editor, GetFileExt(filename))
+  editor:SetupKeywords(GetFileExt(filename))
   local doc = AddEditor(editor, filename)
   if doc then
     PackageEventHandle("onEditorNew", editor)
@@ -71,7 +71,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   editor = editor or findUnusedEditor() or CreateEditor()
 
   editor:Freeze()
-  SetupKeywords(editor, GetFileExt(filePath))
+  editor:SetupKeywords(GetFileExt(filePath))
   editor:MarkerDeleteAll(-1)
 
   -- remove BOM from UTF-8 encoded files; store BOM to add back when saving
@@ -338,7 +338,7 @@ function SaveFileAs(editor)
       if ext ~= GetFileExt(filePath) then
         -- new extension, so setup new keywords and re-apply indicators
         editor:ClearDocumentStyle() -- remove styles from the document
-        SetupKeywords(editor, GetFileExt(filePath))
+        editor:SetupKeywords(GetFileExt(filePath))
         IndicateAll(editor)
         MarkupStyle(editor)
       end

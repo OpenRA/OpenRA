@@ -381,7 +381,7 @@ function ReApplySpecAndStyles()
   local openDocuments = ide.openDocuments
   for i,doc in pairs(openDocuments) do
     if (doc.editor.spec) then
-      SetupKeywords(doc.editor,nil,doc.editor.spec)
+      doc.editor:SetupKeywords(nil,doc.editor.spec)
     end
   end
 end
