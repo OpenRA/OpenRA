@@ -1,5 +1,5 @@
-Container@CHEATS_PANEL:
-	Logic: CheatsLogic
+Container@DEBUG_PANEL:
+	Logic: DebugMenuLogic
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
 	Children:

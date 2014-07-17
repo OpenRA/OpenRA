@@ -15,12 +15,10 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
-	public class CheatsLogic
+	public class DebugMenuLogic
 	{
-		public static MersenneTwister CosmeticRandom = new MersenneTwister();
-
 		[ObjectCreator.UseCtor]
-		public CheatsLogic(Widget widget, Action onExit, World world)
+		public DebugMenuLogic(Widget widget, Action onExit, World world, bool transient)
 		{
 			var devTrait = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
 
@@ -117,7 +115,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var close = widget.GetOrNull<ButtonWidget>("CLOSE");
 			if (close != null)
-				close.OnClick = () => { Ui.CloseWindow(); onExit(); };
+			{
+				close.OnClick = () =>
+				{
+					if (transient)
+					{
+						Ui.CloseWindow();
+						Ui.Root.RemoveChild(widget);
+					}
+
+					onExit();
+				};
+			}
 		}
 
 		public void Order(World world, string order)

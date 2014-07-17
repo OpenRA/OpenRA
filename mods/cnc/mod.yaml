@@ -88,11 +88,11 @@ ChromeLayout:
 	mods/cnc/chrome/replaybrowser.yaml
 	mods/cnc/chrome/ingame.yaml
 	mods/cnc/chrome/ingame-chat.yaml
-	mods/cnc/chrome/ingamemenu.yaml
+	mods/cnc/chrome/ingame-debug.yaml
+	mods/cnc/chrome/ingame-menu.yaml
 	mods/cnc/chrome/music.yaml
 	mods/cnc/chrome/settings.yaml
 	mods/cnc/chrome/credits.yaml
-	mods/cnc/chrome/cheats.yaml
 	mods/cnc/chrome/dialogs.yaml
 	mods/cnc/chrome/objectives.yaml
 	mods/cnc/chrome/tooltips.yaml

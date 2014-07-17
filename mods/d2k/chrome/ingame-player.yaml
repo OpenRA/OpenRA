@@ -11,12 +11,12 @@ Container@PLAYER_WIDGETS:
 			Text: Diplomacy (F1)
 			Font: Bold
 			Key: f1
-		Button@CHEATS_BUTTON:
+		Button@INGAME_DEBUG_BUTTON:
 			X: 324
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Cheats (F2)
+			Text: Debug (F2)
 			Visible: false
 			Font: Bold
 			Key: f2
