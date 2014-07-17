@@ -255,7 +255,9 @@ do
   for index = 2, #arg do
     if (arg[index] == "-cfg" and index+1 <= #arg) then
       table.insert(configs,arg[index+1])
-    elseif arg[index-1] ~= "-cfg" then
+    elseif arg[index-1] ~= "-cfg"
+    -- on OSX command line includes -psn... parameter, don't include these
+    and (ide.osname ~= 'Macintosh' or not arg[index]:find("^-psn")) then
       table.insert(filenames,arg[index])
     end
   end
