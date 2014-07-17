@@ -2,7 +2,6 @@ sidebar-allies: chrome.png
 	background-top: 0,167,238,290
 	background-iconrow: 0,457,238,47
 	background-bottom: 0,504,238,8
-	background-iconoverlay: 314,118,238,48
 	background-supportoverlay: 184,118,64,48
 
 sidebar-button-allies: chrome.png
@@ -26,7 +25,6 @@ sidebar-soviet: chrome.png
 	background-top: 274,167,238,290
 	background-iconrow: 274,457,238,47
 	background-bottom: 274,504,238,8
-	background-iconoverlay: 314,118,238,48
 	background-supportoverlay: 249,118,64,48
 
 sidebar-button-soviet: chrome.png
@@ -45,6 +43,12 @@ sidebar-button-soviet-disabled: chrome.png
 	background: 112,0,28,28
 sidebar-button-soviet-highlighted-disabled: chrome.png
 	background: 112,0,28,28
+
+sidebar-bits: chrome.png
+	production-tooltip-time: 416, 80, 16, 16
+	production-tooltip-power: 432, 80, 16, 16
+	production-tooltip-cost: 448, 80, 16, 16
+	production-iconoverlay: 314,118,238,48
 
 production-icons: chrome.png
 	building: 384,0,16,16

@@ -243,8 +243,8 @@ Container@PLAYER_WIDGETS:
 							Width: 238
 							Height: 47
 							IgnoreMouseOver: true
-							ImageCollection: sidebar-soviet
-							ImageName: background-iconoverlay
+							ImageCollection: sidebar-bits
+							ImageName: production-iconoverlay
 				Container@PRODUCTION_TYPES:
 					X: 7
 					Y: 2

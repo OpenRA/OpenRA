@@ -137,18 +137,30 @@ Background@PRODUCTION_TOOLTIP:
 			Height: 23
 			Font: TinyBold
 			VAlign: Top
+		Image@COST_ICON:
+			Y: 5
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-cost
 		Label@COST:
 			Height: 23
 			Font: Bold
+		Image@TIME_ICON:
+			X: 3
+			Y: 26
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-time
 		Label@TIME:
 			Y: 21
 			Height: 23
 			Font: Bold
+		Image@POWER_ICON:
+			Y: 46
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-power
 		Label@POWER:
-			Y: 41
-			Height: 23
-			Font: Bold
-		Label@TIME:
 			Y: 41
 			Height: 23
 			Font: Bold
