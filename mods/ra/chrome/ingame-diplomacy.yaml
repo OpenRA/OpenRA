@@ -1,10 +1,9 @@
-Background@DIPLOMACY:
+Background@INGAME_DIPLOMACY_BG:
 	Logic: DiplomacyLogic
-	X: 25
-	Y: 50
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Width: 490
-	Height: 300
-	Visible: false
+	Height: 355
 	Children:
 		Label@LABEL_TITLE:
 			X: (PARENT_RIGHT - WIDTH)/2
@@ -44,7 +43,7 @@ Background@DIPLOMACY:
 			X: 20
 			Y: 67
 			Width: PARENT_RIGHT-40
-			Height: PARENT_BOTTOM-87
+			Height: PARENT_BOTTOM-87-35
 			ItemSpacing: 5
 			Children:
 				ScrollItem@TEAM_TEMPLATE:
@@ -82,3 +81,11 @@ Background@DIPLOMACY:
 							Width: 100
 							Height: PARENT_BOTTOM
 
+		Button@CLOSE:
+			X: PARENT_RIGHT-145
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Close
+			Key: escape
+			Font: Bold
