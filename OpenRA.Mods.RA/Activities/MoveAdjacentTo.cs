@@ -17,12 +17,12 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class MoveAdjacentTo : Activity
 	{
-		protected readonly Target target;
 		readonly Mobile mobile;
 		readonly PathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 		readonly uint movementClass;
 
+		protected Target target { get; private set; }
 		protected CPos targetPosition;
 		Activity inner;
 		bool repath;
@@ -87,10 +87,8 @@ namespace OpenRA.Mods.RA.Activities
 			}
 			else
 			{
-				// Target became invalid. Cancel the inner order,
-				// and then wait for it to move into the next cell
-				// before finishing this order (handled above).
-				inner.Cancel(self);
+				// Target became invalid. Move to its last known position.
+				target = Target.FromCell(self.World, targetPosition);
 			}
 
 			// Ticks the inner move activity to actually move the actor.
