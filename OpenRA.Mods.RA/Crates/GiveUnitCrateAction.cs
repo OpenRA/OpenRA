@@ -19,8 +19,14 @@ namespace OpenRA.Mods.RA.Crates
 	class GiveUnitCrateActionInfo : CrateActionInfo
 	{
 		[ActorReference]
+		[Desc("Unit to give")]
 		public readonly string Unit = null;
+
+		[Desc("Override the owner of the newly spawned unit: e.g Creeps or Neutral")]
 		public readonly string Owner = null;
+
+		[Desc("Races that are allowed to trigger this action")]
+		public readonly string[] Race = null;
 
 		public override object Create(ActorInitializer init) { return new GiveUnitCrateAction(init.self, this); }
 	}
@@ -34,14 +40,12 @@ namespace OpenRA.Mods.RA.Crates
 
 		public bool CanGiveTo(Actor collector)
 		{
-			var bi = self.World.Map.Rules.Actors[Info.Unit].Traits.GetOrDefault<BuildableInfo>();
-
-			// this unit is not buildable by the collector's country, so
-			// don't give them free ones either.
-			if (Info.Owner == null && bi != null && !bi.Owner.Contains(collector.Owner.Country.Race)) return false;
+			if (Info.Race != null && !Info.Race.Contains(collector.Owner.Country.Race))
+				return false;
 
 			// avoid dumping tanks in the sea, and ships on dry land.
-			if (!GetSuitableCells(collector.Location).Any()) return false;
+			if (!GetSuitableCells(collector.Location).Any())
+				return false;
 
 			return true;
 		}

@@ -321,6 +321,15 @@ Rules:
 		GiveUnitCrateAction@dog:
 			SelectionShares: 1
 			Unit: dog
+	^Infantry:
+		GivesBounty:
+			Percentage: 0
+	^Tank:
+		GivesBounty:
+			Percentage: 0
+	^Vehicle:
+		GivesBounty:
+			Percentage: 0
 	APC:
 		Health:
 			HP: 1000
@@ -334,9 +343,10 @@ Rules:
 			Description: Explodes like a damn nuke!
 		Health:
 			HP: 100
-			Explodes:
-				Weapon: CrateNuke
-				EmptyWeapon:
+		Explodes:
+			Weapon: CrateNuke
+			EmptyWeapon: CrateNuke
+		DemoTruck:
 	SHOK:
 		Health:
 			HP: 800
