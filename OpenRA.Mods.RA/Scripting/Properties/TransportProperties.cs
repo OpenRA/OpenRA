@@ -57,7 +57,9 @@ namespace OpenRA.Mods.RA.Scripting
 		public void Paradrop(CPos cell)
 		{
 			paradrop.SetLZ(cell, true);
-			self.QueueActivity(new FlyAttack(Target.FromCell(self.World, cell)));
+			self.QueueActivity(new Fly(self, Target.FromCell(self.World, cell)));
+			self.QueueActivity(new FlyOffMap());
+			self.QueueActivity(new RemoveSelf());
 		}
 	}
 }
