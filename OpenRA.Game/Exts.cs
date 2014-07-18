@@ -108,8 +108,11 @@ namespace OpenRA
 
 		public static T Random<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
-			var xs = ts.ToArray();
-			return xs[r.Next(xs.Length)];
+			var xs = ts as ICollection<T>;
+			if (xs != null)
+				return xs.ElementAt(r.Next(xs.Count));
+			var ys = ts.ToList();
+			return ys[r.Next(ys.Count)];
 		}
 
 		public static T RandomOrDefault<T>(this IEnumerable<T> ts, MersenneTwister r)
