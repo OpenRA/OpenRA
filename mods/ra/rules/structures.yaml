@@ -695,6 +695,12 @@ WEAP:
 	ProvidesCustomPrerequisite@soviet:
 		Race: soviet
 		Prerequisite: vehicles.soviet
+	ProvidesCustomPrerequisite@alliedstructure:
+		RequiresPrerequisites: structures.allies
+		Prerequisite: vehicles.allies
+	ProvidesCustomPrerequisite@sovietstructure:
+		RequiresPrerequisites: structures.soviet
+		Prerequisite: vehicles.soviet
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:

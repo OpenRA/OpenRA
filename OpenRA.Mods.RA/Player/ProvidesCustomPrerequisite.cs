@@ -20,31 +20,30 @@ namespace OpenRA.Mods.RA
 		[Desc("The prerequisite type that this provides")]
 		public readonly string Prerequisite = null;
 
+		[Desc("Only grant this prerequisite when you have these prerequisites")]
+		public readonly string[] RequiresPrerequisites = { };
+
 		[Desc("Only grant this prerequisite for certain factions")]
 		public readonly string[] Race = { };
 
-		[Desc("Should the prerequisite remain enabled if the owner changes?")]
-		public readonly bool Sticky = true;
+		[Desc("Should it recheck everything when it is captured?")]
+		public readonly bool ResetOnOwnerChange = false;
 		public object Create(ActorInitializer init) { return new ProvidesCustomPrerequisite(init, this); }
 	}
 
 	public class ProvidesCustomPrerequisite : ITechTreePrerequisite, INotifyOwnerChanged
 	{
-		ProvidesCustomPrerequisiteInfo info;
+		readonly ProvidesCustomPrerequisiteInfo info;
+
 		bool enabled = true;
 
 		public ProvidesCustomPrerequisite(ActorInitializer init, ProvidesCustomPrerequisiteInfo info)
 		{
 			this.info = info;
 
-			if (info.Race.Any())
-			{
-				var race = init.self.Owner.Country.Race;
-				if (init.Contains<RaceInit>())
-					race = init.Get<RaceInit, string>();
+			var race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.self.Owner.Country.Race; 
 
-				enabled = info.Race.Contains(race);
-			}
+			Update(init.self.Owner, race);
 		}
 
 		public IEnumerable<string> ProvidesPrerequisites
@@ -60,8 +59,19 @@ namespace OpenRA.Mods.RA
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			if (!info.Sticky && info.Race.Any())
-				enabled = info.Race.Contains(self.Owner.Country.Race);
+			if (info.ResetOnOwnerChange)
+				Update(newOwner, newOwner.Country.Race);
+		}
+
+		void Update(Player owner, string race)
+		{
+			enabled = true;
+
+			if (info.Race.Any())
+				enabled = info.Race.Contains(race);
+
+			if (info.RequiresPrerequisites.Any() && enabled)
+				enabled = owner.PlayerActor.Trait<TechTree>().HasPrerequisites(info.RequiresPrerequisites);
 		}
 	}
 
