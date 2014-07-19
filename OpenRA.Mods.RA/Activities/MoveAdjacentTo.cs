@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Move;
@@ -17,12 +18,14 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class MoveAdjacentTo : Activity
 	{
-		protected readonly Target target;
+		static readonly List<CPos> NoPath = new List<CPos>();
+
 		readonly Mobile mobile;
 		readonly PathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 		readonly uint movementClass;
 
+		protected Target target { get; private set; }
 		protected CPos targetPosition;
 		Activity inner;
 		bool repath;
@@ -52,6 +55,11 @@ namespace OpenRA.Mods.RA.Activities
 			return targetPosition != oldTargetPosition;
 		}
 
+		protected virtual IEnumerable<CPos> CandidateMovementCells(Actor self)
+		{
+			return Util.AdjacentCells(self.World, target);
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			var targetIsValid = target.IsValidFor(self);
@@ -65,7 +73,7 @@ namespace OpenRA.Mods.RA.Activities
 					return NextActivity;
 
 				// Target has moved, and MoveAdjacentTo is still valid.
-				UpdateInnerPath(self);
+				inner = mobile.MoveTo(() => CalculatePathToTarget(self));
 				repath = false;
 			}
 
@@ -75,22 +83,20 @@ namespace OpenRA.Mods.RA.Activities
 				var oldTargetPosition = targetPosition;
 				targetPosition = self.World.Map.CellContaining(target.CenterPosition);
 
-				var shroudStop = ShouldStop(self, oldTargetPosition);
-				if (shroudStop || (!repath && ShouldRepath(self, oldTargetPosition)))
+				var shouldStop = ShouldStop(self, oldTargetPosition);
+				if (shouldStop || (!repath && ShouldRepath(self, oldTargetPosition)))
 				{
 					// Finish moving into the next cell and then repath.
 					if (inner != null)
 						inner.Cancel(self);
 
-					repath = !shroudStop;
+					repath = !shouldStop;
 				}
 			}
 			else
 			{
-				// Target became invalid. Cancel the inner order,
-				// and then wait for it to move into the next cell
-				// before finishing this order (handled above).
-				inner.Cancel(self);
+				// Target became invalid. Move to its last known position.
+				target = Target.FromCell(self.World, targetPosition);
 			}
 
 			// Ticks the inner move activity to actually move the actor.
@@ -99,12 +105,7 @@ namespace OpenRA.Mods.RA.Activities
 			return this;
 		}
 
-		protected virtual IEnumerable<CPos> CandidateMovementCells(Actor self)
-		{
-			return Util.AdjacentCells(self.World, target);
-		}
-
-		void UpdateInnerPath(Actor self)
+		List<CPos> CalculatePathToTarget(Actor self)
 		{
 			var targetCells = CandidateMovementCells(self);
 			var searchCells = new List<CPos>();
@@ -115,14 +116,12 @@ namespace OpenRA.Mods.RA.Activities
 					searchCells.Add(cell);
 
 			if (!searchCells.Any())
-				return;
+				return NoPath;
 
-			var path = pathFinder.FindBidiPath(
-				PathSearch.FromPoints(self.World, mobile.Info, self, searchCells, loc, true),
-				PathSearch.FromPoint(self.World, mobile.Info, self, loc, targetPosition, true).Reverse()
-			);
+			var fromSrc = PathSearch.FromPoints(self.World, mobile.Info, self, searchCells, loc, true);
+			var fromDest = PathSearch.FromPoint(self.World, mobile.Info, self, loc, targetPosition, true).Reverse();
 
-			inner = mobile.MoveTo(() => path);
+			return pathFinder.FindBidiPath(fromSrc, fromDest);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
