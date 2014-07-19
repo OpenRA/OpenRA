@@ -16,8 +16,10 @@ SupportPowers.Paradrop = function(owner, planeName, passengerNames, enterLocatio
 	local facing = { Map.GetFacing(CPos.op_Subtraction(dropLocation, enterLocation), 0), "Int32" }
 	local center = WPos.op_Addition(Map.CenterOfCell(enterLocation), WVec.New(0, 0, Rules.InitialAltitude(planeName)))
 	local plane = Actor.Create(planeName, { Location = enterLocation, Owner = owner, Facing = facing, CenterPosition = center })
-	Actor.FlyAttackCell(plane, dropLocation)
+	Actor.Fly(plane, Map.CenterOfCell(dropLocation))
 	Actor.Trait(plane, "ParaDrop"):SetLZ(dropLocation, true)
+	Actor.FlyOffMap(plane)
+	Actor.RemoveSelf(plane)
 	local cargo = Actor.Trait(plane, "Cargo")
 	local passengers = { }
 	for i, passengerName in ipairs(passengerNames) do
