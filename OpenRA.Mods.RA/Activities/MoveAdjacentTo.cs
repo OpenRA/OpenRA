@@ -83,14 +83,14 @@ namespace OpenRA.Mods.RA.Activities
 				var oldTargetPosition = targetPosition;
 				targetPosition = self.World.Map.CellContaining(target.CenterPosition);
 
-				var shroudStop = ShouldStop(self, oldTargetPosition);
-				if (shroudStop || (!repath && ShouldRepath(self, oldTargetPosition)))
+				var shouldStop = ShouldStop(self, oldTargetPosition);
+				if (shouldStop || (!repath && ShouldRepath(self, oldTargetPosition)))
 				{
 					// Finish moving into the next cell and then repath.
 					if (inner != null)
 						inner.Cancel(self);
 
-					repath = !shroudStop;
+					repath = !shouldStop;
 				}
 			}
 			else
