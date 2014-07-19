@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Buildings
 				if (!Repairers.Remove(player) && Repairers.Count < Info.RepairBonuses.Length) 
 				{
 					Repairers.Add(player);
-					Sound.PlayNotification(self.World.Map.Rules, player, "Speech", "Repairing", self.Owner.Country.Race);
+					Sound.PlayNotification(self.World.Map.Rules, player, "Speech", "Repairing", player.Country.Race);
 
 					self.World.AddFrameEndTask(w =>
 					{
