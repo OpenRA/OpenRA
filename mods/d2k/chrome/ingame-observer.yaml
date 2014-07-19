@@ -1,6 +1,6 @@
 Container@OBSERVER_WIDGETS:
 	Children:
-		Button@INGAME_STATS_BUTTON:
+		Button@OBSERVER_STATS_BUTTON:
 			X: 162
 			Y: 0
 			Width: 160

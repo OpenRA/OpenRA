@@ -59,7 +59,8 @@ Container@INGAME_ROOT:
 
 Container@OBSERVER_WIDGETS:
 	Children:
-		Button@OPTIONS_BUTTON:
+		MenuButton@OPTIONS_BUTTON:
+			Logic: OrderButtonsChromeLogic
 			Key: escape
 			X: WINDOW_RIGHT-202
 			Y: 5
