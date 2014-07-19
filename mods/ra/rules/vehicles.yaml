@@ -403,7 +403,7 @@ MNLY.AP:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 110
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
 		Hotkey: i
 	Valued:
@@ -437,7 +437,7 @@ MNLY.AT:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 100
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
 		Hotkey: i
 	Valued:
