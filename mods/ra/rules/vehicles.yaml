@@ -2,7 +2,7 @@ V2RL:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 80
 		Prerequisites: dome, ~vehicles.soviet, ~techlevel.medium
 		Hotkey: v
 	Valued:
@@ -31,7 +31,7 @@ V2RL:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 50
 		Prerequisites: ~vehicles.allies, ~techlevel.low
 		Hotkey: l
 	Valued:
@@ -70,7 +70,7 @@ V2RL:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 120
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
 		Hotkey: m
 	Valued:
@@ -112,7 +112,7 @@ V2RL:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 130
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
 		Hotkey: h
 	Valued:
@@ -154,7 +154,7 @@ V2RL:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 190
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.unrestricted
 		Hotkey: m
 	Valued:
@@ -210,7 +210,7 @@ ARTY:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 70
 		Prerequisites: dome, ~vehicles.allies, ~techlevel.medium
 		Hotkey: r
 	Valued:
@@ -286,7 +286,7 @@ MCV:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 90
 		Prerequisites: fix, ~techlevel.medium
 		Hotkey: b
 	CustomBuildTimeValue:
@@ -367,7 +367,7 @@ APC:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 40
 		Hotkey: c
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
 	Valued:
@@ -403,7 +403,7 @@ MNLY.AP:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 100
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
 		Hotkey: i
 	Valued:
@@ -437,7 +437,7 @@ MNLY.AT:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 110
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
 		Hotkey: i
 	Valued:
@@ -471,7 +471,7 @@ TRUK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 120
+		BuildPaletteOrder: 20
 		Prerequisites: weap, ~techlevel.low
 		Hotkey: u
 	Valued:
@@ -567,7 +567,7 @@ TTNK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 130
+		BuildPaletteOrder: 180
 		Prerequisites: tsla, stek, ~vehicles.soviet, ~techlevel.unrestricted
 		Hotkey: t
 	Valued:
@@ -602,7 +602,7 @@ FTRK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 60
 		Hotkey: k
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
 	Valued:
@@ -642,7 +642,7 @@ DTRK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 140
+		BuildPaletteOrder: 170
 		Prerequisites: stek, ~vehicles.soviet, ~techlevel.unrestricted
 		Hotkey: o
 	Valued:
@@ -671,7 +671,7 @@ CTNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 140
+		BuildPaletteOrder: 210
 		Prerequisites: atek, pdox, ~vehicles.allies, ~techlevel.unrestricted
 		Hotkey: j
 	Valued:
@@ -710,7 +710,7 @@ QTNK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 150
+		BuildPaletteOrder: 200
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.unrestricted
 		Hotkey: q
 	Valued:
@@ -741,7 +741,7 @@ STNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 170
+		BuildPaletteOrder: 140
 		Prerequisites: atek, ~vehicles.allies, ~techlevel.unrestricted
 		Hotkey: p
 	Valued:

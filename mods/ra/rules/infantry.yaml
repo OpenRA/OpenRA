@@ -2,7 +2,7 @@ DOG:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 50
 		Prerequisites: ~barr, ~techlevel.infonly
 		Hotkey: o
 	Valued:
@@ -63,7 +63,7 @@ E2:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 20
 		Prerequisites: ~barr, ~techlevel.infonly
 		Hotkey: g
 	Valued:
@@ -99,7 +99,7 @@ E3:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 30
 		Prerequisites: ~techlevel.infonly
 		Hotkey: r
 	Valued:
@@ -133,7 +133,7 @@ E4:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 70
 		Prerequisites: ~barr, ftur, ~techlevel.low
 		Hotkey: t
 	Valued:
@@ -165,7 +165,7 @@ E6:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 60
 		Prerequisites: ~techlevel.infonly
 		Hotkey: e
 	Valued:
@@ -197,7 +197,7 @@ SPY:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 90
 		Prerequisites: dome, ~tent, ~techlevel.medium
 		Hotkey: p
 	Valued:
@@ -233,7 +233,7 @@ E7:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 120
 		Prerequisites: ~tent, atek, ~techlevel.unrestricted
 		Hotkey: y
 		BuildLimit: 1
@@ -273,7 +273,7 @@ MEDI:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 40
 		Prerequisites: ~tent, ~techlevel.infonly
 		Hotkey: m
 	Valued:
@@ -308,7 +308,7 @@ MECH:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 100
 		Prerequisites: ~tent, fix, ~techlevel.medium
 		Hotkey: c
 	Valued:
@@ -424,7 +424,7 @@ HIJACKER:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 110
 		Prerequisites: ~barr, fix, ~techlevel.medium
 		Hotkey: j
 	Valued:
@@ -451,7 +451,7 @@ SHOK:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 130
 		Prerequisites: ~barr, stek, tsla, ~techlevel.unrestricted
 		Hotkey: l
 	Valued:
