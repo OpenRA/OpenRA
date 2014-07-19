@@ -204,7 +204,7 @@ RAILMINE:
 	Tooltip:
 		Name: Gem Mine
 	RenderBuilding:
-		Palette: terrain
+		Palette: player
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -213,7 +213,7 @@ RAILMINE:
 		Terrain: Gems
 	EditorAppearance:
 		RelativeToTopLeft: yes
-		UseTerrainPalette: yes
+		UseTerrainPalette: no
 	AutoTargetIgnore:
 	BodyOrientation:
 	SeedsResource:
