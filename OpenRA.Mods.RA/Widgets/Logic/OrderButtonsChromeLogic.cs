@@ -78,6 +78,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				debug.IsDisabled = () => disableSystemButtons;
 				debug.OnClick = () => OpenMenuPanel(debug);
 			}
+
+			var stats = widget.GetOrNull<MenuButtonWidget>("OBSERVER_STATS_BUTTON");
+			if (stats != null)
+			{
+				stats.IsDisabled = () => disableSystemButtons;
+				stats.OnClick = () => OpenMenuPanel(stats);
+			}
 		}
 
 		void OpenMenuPanel(MenuButtonWidget button)

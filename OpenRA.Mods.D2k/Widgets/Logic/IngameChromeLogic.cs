@@ -78,8 +78,16 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 		{
 			var observerWidgets = Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
 
-			Game.LoadWidget(world, "OBSERVER_STATS", observerWidgets, new WidgetArgs());
-			observerWidgets.Get<ButtonWidget>("INGAME_STATS_BUTTON").OnClick = () => gameRoot.Get("OBSERVER_STATS").Visible ^= true;
+			Widget observerstats = null;
+			observerstats = Game.LoadWidget(world, "INGAME_OBSERVERSTATS_BG", observerWidgets, new WidgetArgs
+			{
+				{ "transient", false },
+				{ "onExit", () => observerstats.Visible = false }
+			});
+			observerstats.Visible = false;
+
+			var statsButton = observerWidgets.Get<ButtonWidget>("OBSERVER_STATS_BUTTON");
+			statsButton.OnClick = () => observerstats.Visible ^= true;
 		}
 
 		enum RadarBinState { Closed, BinAnimating, RadarAnimating, Open };
@@ -90,7 +98,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			Widget diplomacy = null;
 			diplomacy = Game.LoadWidget(world, "INGAME_DIPLOMACY_BG", playerWidgets, new WidgetArgs
 			{
-				{ "transient", true },
+				{ "transient", false },
 				{ "onExit", () => diplomacy.Visible = false }
 			});
 			diplomacy.Visible = false;
@@ -104,7 +112,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			Widget cheats = null;
 			cheats = Game.LoadWidget(world, "INGAME_DEBUG_BG", playerWidgets, new WidgetArgs
 			{
-				{ "transient", true },
+				{ "transient", false },
 				{ "onExit", () => cheats.Visible = false }
 			});
 			cheats.Visible = false;

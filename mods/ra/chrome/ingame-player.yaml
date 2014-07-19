@@ -108,6 +108,7 @@ Container@PLAYER_WIDGETS:
 							Logic: AddRaceSuffixLogic
 							MenuContainer: INGAME_DEBUG_BG
 							HideIngameUI: false
+							Pause: false
 							Key: f2
 							X: 128
 							Width: 28
@@ -126,6 +127,7 @@ Container@PLAYER_WIDGETS:
 							Logic: AddRaceSuffixLogic
 							MenuContainer: INGAME_DIPLOMACY_BG
 							HideIngameUI: false
+							Pause: false
 							Key: f1
 							X: 160
 							Width: 28

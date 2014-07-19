@@ -1,4 +1,5 @@
 Container@OBSERVER_WIDGETS:
+	Logic: OrderButtonsChromeLogic
 	Children:
 		Container@GAME_TIMER_BLOCK:
 			Logic: GameTimerLogic
@@ -19,7 +20,10 @@ Container@OBSERVER_WIDGETS:
 					Align: Center
 					Font: Bold
 					Contrast: true
-		Button@INGAME_OPTIONS_BUTTON:
+		MenuButton@OPTIONS_BUTTON:
+			MenuContainer: INGAME_OPTIONS_BG
+			HideIngameUI: false
+			Pause: false
 			X: 0
 			Y: 0
 			Width: 160
@@ -27,7 +31,10 @@ Container@OBSERVER_WIDGETS:
 			Text: Options (ESC)
 			Font: Bold
 			Key: escape
-		Button@INGAME_STATS_BUTTON:
+		MenuButton@OBSERVER_STATS_BUTTON:
+			MenuContainer: INGAME_OBSERVERSTATS_BG
+			HideIngameUI: false
+			Pause: false
 			X: 162
 			Y: 0
 			Width: 160
