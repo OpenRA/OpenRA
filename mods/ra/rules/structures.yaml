@@ -7,7 +7,7 @@ MSLO:
 		Description: Provides an atomic bomb.\nSpecial Ability: Atom Bomb\n\nMaximum 1 can be built
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 130
+		BuildPaletteOrder: 140
 		Prerequisites: techcenter, ~techlevel.unrestricted
 		BuildLimit: 1
 		Hotkey: m
@@ -54,7 +54,7 @@ GAP:
 		Description: Obscures the enemy's view with shroud.
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 110
 		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
 		Hotkey: g
 	Building:
@@ -143,7 +143,7 @@ SYRD:
 		Proxy: powerproxy.sonarpulse
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 40
 		Prerequisites: anypower, ~structures.allies, ~techlevel.low
 		Hotkey: y
 	Valued:
@@ -195,7 +195,7 @@ IRON:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 120
+		BuildPaletteOrder: 130
 		Prerequisites: stek, ~structures.soviet, ~techlevel.unrestricted
 		BuildLimit: 1
 		Hotkey: c
@@ -283,7 +283,7 @@ TSLA:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 80
 		Prerequisites: weap, ~structures.soviet, ~techlevel.medium
 		Hotkey: u
 	Valued:
@@ -326,7 +326,7 @@ AGUN:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 90
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
 		Hotkey: y
 	Valued:
@@ -372,7 +372,7 @@ DOME:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 90
 		Prerequisites: proc, ~techlevel.medium
 		Hotkey: r
 	Valued:
@@ -412,7 +412,7 @@ PBOX:
 		Power: -15
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 40
 		Prerequisites: tent, ~structures.allies, ~techlevel.low
 		Hotkey: p
 	-GivesBuildableArea:
@@ -457,7 +457,7 @@ HBOX:
 		Power: -15
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 50
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 		Hotkey: l
 	-GivesBuildableArea:
@@ -500,7 +500,7 @@ GUN:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 70
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 		Hotkey: t
 	Valued:
@@ -540,7 +540,7 @@ FTUR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 60
 		Prerequisites: barr, ~structures.soviet, ~techlevel.low
 		Hotkey: t
 	Valued:
@@ -578,7 +578,7 @@ SAM:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 100
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
 		Hotkey: y
 	Valued:
@@ -623,7 +623,7 @@ ATEK:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 140
 		Prerequisites: weap, dome, ~structures.allies, ~techlevel.unrestricted
 		Hotkey: t
 	Valued:
@@ -662,7 +662,7 @@ WEAP:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 80
 		Prerequisites: proc, ~techlevel.low
 		Hotkey: w
 	Valued:
@@ -756,7 +756,7 @@ PROC:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 60
 		Prerequisites: anypower, ~techlevel.infonly
 		Hotkey: e
 	Valued:
@@ -802,7 +802,7 @@ SILO:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 70
 		Prerequisites: proc, ~techlevel.infonly
 		Hotkey: o
 	Valued:
@@ -833,7 +833,7 @@ HPAD:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 120
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
 		Hotkey: i
 	Valued:
@@ -868,7 +868,7 @@ AFLD:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 130
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
 		Hotkey: i
 	Valued:
@@ -929,7 +929,7 @@ POWR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 0
+		BuildPaletteOrder: 10
 		Prerequisites: ~techlevel.infonly
 		Hotkey: p
 	Valued:
@@ -957,7 +957,7 @@ APWR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 110
 		Prerequisites: dome, ~techlevel.medium
 		Hotkey: l
 	Valued:
@@ -985,7 +985,7 @@ STEK:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 150
 		Prerequisites: weap, dome, ~structures.soviet, ~techlevel.unrestricted
 		Hotkey: t
 	Valued:
@@ -1048,7 +1048,7 @@ TENT:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly
 		Hotkey: b
 	Valued:
@@ -1101,7 +1101,7 @@ FIX:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 100
 		Prerequisites: weap, ~techlevel.medium
 		Hotkey: m
 	Valued:
@@ -1133,7 +1133,7 @@ FACF:
 	Valued:
 		Cost: 50
 	Buildable:
-		BuildPaletteOrder: 900
+		BuildPaletteOrder: 940
 		Queue: Defense
 		Prerequisites: ~disabled
 	Tooltip:
@@ -1161,7 +1161,7 @@ WEAF:
 	Valued:
 		Cost: 50
 	Buildable:
-		BuildPaletteOrder: 900
+		BuildPaletteOrder: 920
 		Prerequisites: ~disabled
 		Queue: Defense
 	Tooltip:
@@ -1222,7 +1222,7 @@ SPEF:
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Buildable:
-		BuildPaletteOrder: 900
+		BuildPaletteOrder: 910
 		Queue: Defense
 		Prerequisites: ~disabled
 	Tooltip:
@@ -1254,7 +1254,7 @@ DOMF:
 		Name: Fake Radar Dome
 		Description: Looks like a Radar Dome.
 	Buildable:
-		BuildPaletteOrder: 900
+		BuildPaletteOrder: 930
 		Queue: Defense
 		Prerequisites: ~disabled
 	Building:
@@ -1276,7 +1276,7 @@ SBAG:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 0
+		BuildPaletteOrder: 10
 		Prerequisites: fact, ~structures.allies, ~techlevel.low
 		Hotkey: b
 	Valued:
@@ -1302,7 +1302,7 @@ FENC:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 0
+		BuildPaletteOrder: 20
 		Prerequisites: fact, ~structures.soviet, ~techlevel.low
 		Hotkey: n
 	Valued:
@@ -1328,7 +1328,7 @@ BRIK:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 30
 		Prerequisites: fact, ~techlevel.medium
 		Hotkey: w
 	Valued:

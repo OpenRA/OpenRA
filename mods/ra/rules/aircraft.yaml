@@ -76,7 +76,7 @@ MIG:
 	Inherits: ^Plane
 	Buildable:
 		Queue: Plane
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 50
 		Prerequisites: afld, stek, ~techlevel.unrestricted
 		Hotkey: m
 	Valued:
@@ -128,7 +128,7 @@ YAK:
 	Inherits: ^Plane
 	Buildable:
 		Queue: Plane
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 30
 		Prerequisites: afld, ~techlevel.medium
 		Hotkey: y
 	Valued:
@@ -186,7 +186,7 @@ TRAN:
 	Inherits: ^Helicopter
 	Buildable:
 		Queue: Helicopter
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 10
 		Prerequisites: hpad, ~techlevel.medium
 		Hotkey: t
 	Valued:
@@ -228,7 +228,7 @@ HELI:
 	Inherits: ^Helicopter
 	Buildable:
 		Queue: Helicopter
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 40
 		Prerequisites: hpad, atek, ~techlevel.unrestricted
 		Hotkey: l
 	Valued:
@@ -278,7 +278,7 @@ HIND:
 	Inherits: ^Helicopter
 	Buildable:
 		Queue: Helicopter
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 20
 		Prerequisites: hpad, ~techlevel.medium
 		Hotkey: h
 	Valued:
