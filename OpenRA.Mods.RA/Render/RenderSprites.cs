@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Render
 		public static string GetImage(ActorInfo actor)
 		{
 			var Info = actor.Traits.Get<RenderSpritesInfo>();
-			return Info.Image ?? actor.Name;
+			return (Info.Image ?? actor.Name).ToLowerInvariant();
 		}
 
 		public string GetImage(Actor self)
