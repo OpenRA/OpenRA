@@ -1076,7 +1076,7 @@ VoxelSequences:
 
 Weapons:
 	CrateNuke:
-		Warhead@areanuke2:
+		Warhead@areanuke2: Damager
 			DamageModel: PerCell
 			Damage: 250
 			Size: 4
@@ -1098,7 +1098,7 @@ Weapons:
 		Warhead@areanuke2Eff: EffectCreator
 			ImpactSound: kaboom22
 			Delay: 12
-		Warhead@areanuke3:
+		Warhead@areanuke3: Damager
 			DamageModel: PerCell
 			Damage: 250
 			Size: 3
@@ -1120,7 +1120,7 @@ Weapons:
 		Warhead@areanuke3Eff: EffectCreator
 			ImpactSound: kaboom22
 			Delay: 24
-		Warhead@areanuke4:
+		Warhead@areanuke4: Damager
 			DamageModel: PerCell
 			Damage: 250
 			Versus:
