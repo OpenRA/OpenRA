@@ -1034,8 +1034,8 @@ function CreateEditor()
   -- where refresh of R/W and R/O status in the status bar is delayed.
 
   editor:Connect(wxstc.wxEVT_STC_PAINTED,
-    function ()
-      PackageEventHandle("onEditorPainted", editor)
+    function (event)
+      PackageEventHandle("onEditorPainted", editor, event)
 
       if ide.osname == 'Windows' then
         updateStatusText(editor)
@@ -1051,7 +1051,9 @@ function CreateEditor()
     end)
 
   editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
-    function ()
+    function (event)
+      PackageEventHandle("onEditorUpdateUI", editor, event)
+
       if ide.osname ~= 'Windows' then updateStatusText(editor) end
 
       editor:GotoPosDelayed()
