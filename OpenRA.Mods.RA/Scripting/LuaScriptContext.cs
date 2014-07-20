@@ -18,6 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.RA.Scripting
 {
+	[Desc("Part of the legacy Lua API.")]
 	public sealed class LuaScriptContext : IDisposable
 	{
 		public Lua Lua { get; private set; }
