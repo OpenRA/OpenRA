@@ -61,7 +61,7 @@ namespace OpenRA
 
 		public void Tick(World world)
 		{
-			actors.RemoveAll(a => !a.IsInWorld || (a.Owner != world.LocalPlayer && world.FogObscures(a)));
+			actors.RemoveAll(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(world.LocalPlayer) && world.FogObscures(a)));
 
 			foreach (var cg in controlGroups.Values)
 				// note: NOT `!a.IsInWorld`, since that would remove things that are in transports.
