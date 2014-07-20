@@ -11,12 +11,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
 	[Desc("Renders barrels for units with the Turreted trait.")]
-	class WithTurretInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<IBodyOrientationInfo>
+	class WithTurretInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "turret";
@@ -31,6 +32,20 @@ namespace OpenRA.Mods.RA.Render
 		public readonly bool Recoils = true;
 
 		public object Create(ActorInitializer init) { return new WithTurret(init.self, this); }
+
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		{
+			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
+				.First(tt => tt.Turret == Turret);
+
+			var anim = new Animation(init.World, image, () => t.InitialFacing);
+			anim.Play(Sequence);
+
+			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(t.InitialFacing)), facings);
+			var offset = body.LocalToWorld(t.Offset.Rotate(orientation));
+			yield return new SpriteActorPreview(anim, offset, offset.Y + offset.Z + 1, p, rs.Scale);
+		}
 	}
 
 	class WithTurret : ITick
