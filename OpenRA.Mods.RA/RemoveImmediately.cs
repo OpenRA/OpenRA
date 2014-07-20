@@ -12,6 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Destroy the actor right after being added to the game world.")]
 	public class RemoveImmediatelyInfo : TraitInfo<RemoveImmediately> {}
 
 	public class RemoveImmediately : INotifyAddedToWorld

@@ -4,9 +4,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public sealed class ResourceClaimLayerInfo : TraitInfo<ResourceClaimLayer>
-	{
-	}
+	[Desc("Allows harvesters to coordinate their operations. Attach this to the world actor.")]
+	public sealed class ResourceClaimLayerInfo : TraitInfo<ResourceClaimLayer> { }
 
 	public sealed class ResourceClaimLayer : IWorldLoaded
 	{
