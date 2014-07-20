@@ -68,12 +68,12 @@ Player:
 			repaira: 0.1%
 			repairh: 0.1%
 			repairo: 0.1%
-			guntowera: 7%
-			guntowerh: 7%
-			guntowero: 7%
-			rockettowera: 7%
-			rockettowerh: 7%
-			rockettowero: 7%
+			guntowera: 8%
+			guntowerh: 8%
+			guntowero: 8%
+			rockettowera: 6%
+			rockettowerh: 6%
+			rockettowero: 6%
 			pwra: 10%
 			pwrh: 10%
 			pwro: 10%
@@ -83,7 +83,9 @@ Player:
 			medic: 1%
 			fremen: 0.5%
 			sardaukar: 1.5%
+			saboteur: 0.5%
 			harvester: 0.1%
+			grenadier: 1%
 			trike.starport: 5%
 			quad.starport: 7.5%
 			siegetank.starport: 5%
@@ -95,9 +97,11 @@ Player:
 			devast: 10%
 			deviatortank: 7.5%
 			trike: 10%
+			raider: 10%
 			quad: 15%
 			siegetank: 10%
 			missiletank: 15%
+			stealthraider: 5%
 			combata: 100%
 			combath: 100%
 			combato: 100%
@@ -187,6 +191,8 @@ Player:
 			medic: 0.5%
 			fremen: 0.25%
 			sardaukar: 1%
+			saboteur: 0.5%
+			grenadier: 1%
 			harvester: 0.1%
 			trike.starport: 7.5%
 			quad.starport: 12.5%
@@ -203,6 +209,7 @@ Player:
 			quad: 25%
 			siegetank: 10%
 			missiletank: 15%
+			stealthraider: 5%
 			combata: 100%
 			combath: 100%
 			combato: 100%
@@ -277,8 +284,12 @@ Player:
 			palacea: 0.1%
 			palaceh: 0.1%
 			palaceo: 0.1%
-			guntower: 10%
-			rockettower: 5%
+			guntowera: 4%
+			guntowerh: 4%
+			guntowero: 4%
+			rockettowera: 12%
+			rockettowerh: 12%
+			rockettowero: 12%
 			pwra: 10%
 			pwrh: 10%
 			pwro: 10%
@@ -288,6 +299,8 @@ Player:
 			medic: 2%
 			fremen: 1%
 			sardaukar: 3%
+			saboteur: 1%
+			grenadier: 2%
 			harvester: 0.1%
 			trike.starport: 5%
 			quad.starport: 7.5%
@@ -304,6 +317,7 @@ Player:
 			quad: 15%
 			siegetank: 10%
 			missiletank: 15%
+			stealthraider: 7.5%
 			combata: 100%
 			combath: 100%
 			combato: 100%
