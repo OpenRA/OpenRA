@@ -72,6 +72,8 @@ namespace OpenRA.Widgets
 
 		public static void Tick() { Root.TickOuter(); }
 
+		public static void PrepareRenderables() { Root.PrepareRenderablesOuter(); }
+
 		public static void Draw() { Root.DrawOuter(); }
 
 		public static bool HandleInput(MouseInput mi)
@@ -385,6 +387,18 @@ namespace OpenRA.Widgets
 			var handled = HandleTextInput(text);
 
 			return handled;
+		}
+
+		public virtual void PrepareRenderables() { }
+
+		public virtual void PrepareRenderablesOuter()
+		{
+			if (IsVisible())
+			{
+				PrepareRenderables();
+				foreach (var child in Children)
+					child.PrepareRenderablesOuter();
+			}
 		}
 
 		public virtual void Draw() { }
