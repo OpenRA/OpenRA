@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,19 +14,27 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Display the time remaining until the super weapon attached to the actor is ready to the player and his allies.")]
 	class SupportPowerChargeBarInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new SupportPowerChargeBar(init.self); }
+		public readonly Color Color = Color.Magenta;
+
+		public object Create(ActorInitializer init) { return new SupportPowerChargeBar(init.self, this); }
 	}
 
 	class SupportPowerChargeBar : ISelectionBar
 	{
-		Actor self;
-		public SupportPowerChargeBar(Actor self) { this.self = self; }
+		readonly Actor self;
+		readonly SupportPowerChargeBarInfo info;
+
+		public SupportPowerChargeBar(Actor self, SupportPowerChargeBarInfo info)
+		{
+			this.self = self;
+			this.info = info;
+		}
 
 		public float GetValue()
 		{
-			// only people we like should see our charge status.
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return 0;
 
@@ -38,6 +46,6 @@ namespace OpenRA.Mods.RA
 			return 1 - (float)power.RemainingTime / power.TotalTime;
 		}
 
-		public Color GetColor() { return Color.Magenta; }
+		public Color GetColor() { return info.Color; }
 	}
 }
