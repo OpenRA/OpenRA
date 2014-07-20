@@ -15,10 +15,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithVoxelWalkerBodyInfo : ITraitInfo, Requires<RenderVoxelsInfo>, Requires<IMoveInfo>
+	public class WithVoxelWalkerBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, Requires<RenderVoxelsInfo>, Requires<IMoveInfo>
 	{
 		public readonly int TickRate = 5;
 		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.self, this); }
+
+		public int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai) { return 0; }
 	}
 
 	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick

@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithVoxelUnloadBodyInfo : ITraitInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelUnloadBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, Requires<RenderVoxelsInfo>
 	{
 		[Desc("Voxel sequence name to use when docked to a refinery.")]
 		public readonly string UnloadSequence = "unload";
@@ -25,6 +25,8 @@ namespace OpenRA.Mods.RA.Render
 		public readonly string IdleSequence = "idle";
 
 		public object Create(ActorInitializer init) { return new WithVoxelUnloadBody(init.self, this); }
+
+		public int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai) { return 0; }
 	}
 
 	public class WithVoxelUnloadBody : IAutoSelectionSize
