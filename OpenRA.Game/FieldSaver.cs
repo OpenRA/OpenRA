@@ -79,7 +79,7 @@ namespace OpenRA
 			if (t.IsArray)
 			{
 				var elems = ((Array)v).OfType<object>();
-				return elems.JoinWith(",");
+				return elems.JoinWith(", ");
 			}
 
 			if (t == typeof(DateTime))
