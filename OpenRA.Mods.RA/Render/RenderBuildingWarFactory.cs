@@ -18,21 +18,23 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingWarFactoryInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingWarFactory( init, this ); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingWarFactory(init, this); }
 
 		/* get around unverifiability */
-		IEnumerable<IRenderable> BaseBuildingPreview(World world, ActorInfo building, PaletteReference pr)
+		IEnumerable<IRenderable> BaseBuildingPreview(WorldRenderer wr, ActorInfo ai, Player owner)
 		{
-			return base.RenderPreview(world, building, pr);
+			return base.RenderPreview(wr, ai, owner);
 		}
 
-		public override IEnumerable<IRenderable> RenderPreview(World world, ActorInfo building, PaletteReference pr)
+		public override IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, ActorInfo ai, Player owner)
 		{
-			var p = BaseBuildingPreview(world, building, pr);
-			var anim = new Animation(world, RenderSprites.GetImage(building), () => 0);
+			var p = BaseBuildingPreview(wr, ai, owner);
+
+			var palette = Palette ?? (owner != null ? PlayerPalette + owner.InternalName : null);
+			var anim = new Animation(wr.world, RenderSprites.GetImage(ai), () => 0);
 			anim.PlayRepeating("idle-top");
 
-			return p.Concat(anim.Render(WPos.Zero, WVec.Zero, 0, pr, Scale));
+			return p.Concat(anim.Render(WPos.Zero, WVec.Zero, 0, wr.Palette(palette), Scale));
 		}
 	}
 

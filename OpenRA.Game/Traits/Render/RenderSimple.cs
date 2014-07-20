@@ -14,16 +14,18 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	public class RenderSimpleInfo : RenderSpritesInfo, Requires<IBodyOrientationInfo>
+	public class RenderSimpleInfo : RenderSpritesInfo, IRenderPlaceBuildingPreviewInfo, Requires<IBodyOrientationInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
-		public virtual IEnumerable<IRenderable> RenderPreview(World world, ActorInfo ai, PaletteReference pr)
+		public virtual IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, ActorInfo ai, Player owner)
 		{
-			var anim = new Animation(world, RenderSimple.GetImage(ai), () => 0);
+			var palette = Palette ?? (owner != null ? PlayerPalette + owner.InternalName : null);
+
+			var anim = new Animation(wr.world, RenderSimple.GetImage(ai), () => 0);
 			anim.PlayRepeating("idle");
 
-			return anim.Render(WPos.Zero, WVec.Zero, 0, pr, Scale);
+			return anim.Render(WPos.Zero, WVec.Zero, 0, wr.Palette(palette), Scale);
 		}
 	}
 
