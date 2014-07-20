@@ -15,9 +15,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
+	[Desc("Displays the player name above the unit")]
 	class RenderNameTagInfo : ITraitInfo
 	{
 		public readonly int MaxLength = 10;
+
+		public readonly string Font = "TinyBold";
+
 		public object Create(ActorInitializer init) { return new RenderNameTag(init.self, this); }
 	}
 
@@ -29,7 +33,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public RenderNameTag(Actor self, RenderNameTagInfo info)
 		{
-			font = Game.Renderer.Fonts["TinyBold"];
+			font = Game.Renderer.Fonts[info.Font];
 			color = self.Owner.Color.RGB;
 
 			if (self.Owner.PlayerName.Length > info.MaxLength)
