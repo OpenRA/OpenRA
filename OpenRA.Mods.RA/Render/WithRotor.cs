@@ -8,13 +8,16 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
 	[Desc("Displays a helicopter rotor overlay.")]
-	public class WithRotorInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithRotorInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use when flying")]
 		public readonly string Sequence = "rotor";
@@ -29,6 +32,18 @@ namespace OpenRA.Mods.RA.Render
 		public readonly string Id = "rotor";
 
 		public object Create(ActorInitializer init) { return new WithRotor(init.self, this); }
+
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		{
+			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
+			var anim = new Animation(init.World, image, () => facing);
+			anim.PlayRepeating(Sequence);
+
+			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)), facings);
+			var offset = body.LocalToWorld(Offset.Rotate(orientation));
+			yield return new SpriteActorPreview(anim, offset, offset.Y + offset.Z + 1, p, rs.Scale);
+		}
 	}
 
 	public class WithRotor : ITick
