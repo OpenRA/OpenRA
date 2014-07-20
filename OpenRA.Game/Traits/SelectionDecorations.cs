@@ -38,7 +38,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			if (self.World.FogObscures(self))
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer) && self.World.FogObscures(self))
 				yield break;
 
 			var b = self.Bounds.Value;
@@ -74,9 +74,6 @@ namespace OpenRA.Traits
 
 		IEnumerable<IRenderable> DrawPips(WorldRenderer wr, Actor self, int2 basePosition)
 		{
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				yield break;
-
 			var pipSources = self.TraitsImplementing<IPips>();
 			if (!pipSources.Any())
 				yield break;
@@ -118,9 +115,6 @@ namespace OpenRA.Traits
 
 		IEnumerable<IRenderable> DrawTags(WorldRenderer wr, Actor self, int2 basePosition)
 		{
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				yield break;
-
 			var tagImages = new Animation(self.World, "pips");
 			var pal = wr.Palette(Info.Palette);
 			var tagxyOffset = new int2(0, 6);
