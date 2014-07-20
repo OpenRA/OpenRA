@@ -8,15 +8,17 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
 	[Desc("Renders a decorative animation on units and buildings.")]
-	public class WithIdleOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithIdleOverlayInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "idle-overlay";
@@ -33,6 +35,18 @@ namespace OpenRA.Mods.RA.Render
 		public readonly bool PauseOnLowPower = false;
 
 		public object Create(ActorInitializer init) { return new WithIdleOverlay(init.self, this); }
+
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		{
+			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
+			var anim = new Animation(init.World, image, () => facing);
+			anim.PlayRepeating(Sequence);
+
+			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)), facings);
+			var offset = body.LocalToWorld(Offset.Rotate(orientation));
+			yield return new SpriteActorPreview(anim, offset, offset.Y + offset.Z + 1, p, rs.Scale);
+		}
 	}
 
 	public class WithIdleOverlay : INotifyDamageStateChanged, INotifyBuildComplete, INotifySold
