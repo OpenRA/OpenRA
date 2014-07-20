@@ -771,24 +771,26 @@ Weapons:
 			Inaccuracy: 1c682
 			Image: 120MM
 			ContrailLength: 50
-		Warhead:
+		Warhead: Damager
 			Spread: 256
 			Versus:
 				None: 75%
 				Wood: 75%
 				Light: 75%
 				Concrete: 100%
+			InfDeath: 4
+			Damage: 150
+		Warhead@2Smu: Smudger
+			SmudgeType: Crater
+		Warhead@3Eff: EffectCreator
 			Explosion: self_destruct
 			WaterExplosion: self_destruct
-			InfDeath: 4
-			SmudgeType: Crater
-			Damage: 150
 	MammothTusk:
 		ROF: 300
 		Range: 10c0
 		Report: MISSILE6.AUD
 		Burst: 2
-		ValidTargets: Ground, Air
+		ValidTargets: Ground, Air, Enemy, Neutral, Ally
 		Projectile: Missile
 			Speed: 128
 			Arm: 2
@@ -801,7 +803,7 @@ Weapons:
 			Image: DRAGON
 			ROT: 10
 			RangeLimit: 80
-		Warhead:
+		Warhead: Damager
 			Spread: 640
 			Versus:
 				None: 125%
@@ -809,16 +811,18 @@ Weapons:
 				Light: 110%
 				Heavy: 100%
 				Concrete: 200%
+			InfDeath: 3
+			Damage: 250
+		Warhead@2Smu: Smudger
+			SmudgeType: Crater
+		Warhead@3Eff: EffectCreator
 			Explosion: nuke
 			WaterExplosion: nuke
-			InfDeath: 3
-			SmudgeType: Crater
-			Damage: 250
 	TankNapalm:
 		ROF: 40
 		Range: 8c0
 		Report: AACANON3.AUD
-		ValidTargets: Ground
+		ValidTargets: Ground, Enemy, Neutral, Ally
 		Burst: 6
 		BurstDelay: 1
 		Projectile: Bullet
@@ -827,7 +831,7 @@ Weapons:
 			Inaccuracy: 2c512
 			Trail: smokey
 			ContrailLength: 2
-		Warhead:
+		Warhead: Damager
 			Spread: 341
 			Versus:
 				None: 90%
@@ -835,31 +839,35 @@ Weapons:
 				Light: 100%
 				Heavy: 100%
 				Concrete: 100%
+			InfDeath: 4
+			Damage: 15
+		Warhead@2Smu: Smudger
+			SmudgeType: Scorch
+		Warhead@3Eff: EffectCreator
 			Explosion: small_explosion
 			WaterExplosion: small_explosion
-			InfDeath: 4
-			SmudgeType: Scorch
 			ImpactSound: firebl3.aud
-			Damage: 15
 	ParaBomb:
 		ROF: 5
 		Range: 5c0
 		Report: CHUTE1.AUD
 		Projectile: GravityBomb
 			Image: BOMBLET
-		Warhead:
+		Warhead: Damager
 			Spread: 426
 			Versus:
 				None: 125%
 				Wood: 100%
 				Light: 60%
 				Concrete: 25%
+			InfDeath: 5
+			Damage: 200
+		Warhead@2Smu: Smudger
+			SmudgeType: Crater
+		Warhead@3Eff: EffectCreator
 			Explosion: napalm
 			ImpactSound: firebl3.aud
 			WaterExplosion: napalm
-			InfDeath: 5
-			SmudgeType: Crater
-			Damage: 200
 	155mm:
 		ROF: 10
 		Range: 7c5
@@ -874,7 +882,7 @@ Weapons:
 			Angle: 30
 			Inaccuracy: 1c682
 			ContrailLength: 2
-		Warhead:
+		Warhead: Damager
 			Spread: 426
 			Versus:
 				None: 80%
@@ -882,21 +890,23 @@ Weapons:
 				Light: 60%
 				Heavy: 75%
 				Concrete: 35%
+			InfDeath: 5
+			Damage: 10
+		Warhead@2Smu: Smudger
+			SmudgeType: Scorch
+		Warhead@3Eff: EffectCreator
 			Explosion: small_napalm
 			WaterExplosion: small_napalm
-			InfDeath: 5
-			SmudgeType: Scorch
 			ImpactSound: firebl3.aud
-			Damage: 10
 	FLAK-23:
 		ROF: 10
 		Range: 8c0
 		Report: AACANON3.AUD
-		ValidTargets: Air,Ground
+		ValidTargets: Air, Ground, Enemy, Neutral, Ally
 		Projectile: Bullet
 			Speed: 1c682
 			High: true
-		Warhead:
+		Warhead: Damager
 			Spread: 213
 			Versus:
 				None: 35%
@@ -904,8 +914,11 @@ Weapons:
 				Light: 30%
 				Heavy: 40%
 				Concrete: 30%
-			Explosion: med_explosion
 			Damage: 25
+		Warhead@2Smu: Smudger
+			SmudgeType: Scorch
+		Warhead@3Eff: EffectCreator
+			Explosion: med_explosion
 	SCUD:
 		ROF: 280
 		Range: 7c0
@@ -921,18 +934,20 @@ Weapons:
 			Inaccuracy: 426
 			Image: V2
 			Angle: 216
-		Warhead:
+		Warhead: Damager
 			Spread: 853
 			Versus:
 				None: 100%
 				Wood: 90%
 				Light: 80%
 				Heavy: 70%
+			InfDeath: 3
+			Damage: 500
+		Warhead@2Smu: Smudger
+			SmudgeType: Crater
+		Warhead@3Eff: EffectCreator
 			Explosion: nuke
 			WaterExplosion: large_splash
-			InfDeath: 3
-			SmudgeType: Crater
-			Damage: 500
 			ImpactSound: kaboom1.aud
 			WaterImpactSound: kaboom1.aud
 	SilencedPPK:
@@ -941,16 +956,17 @@ Weapons:
 		Report: silppk.aud
 		Projectile: Bullet
 			Speed: 1c682
-		Warhead:
+		Warhead: Damager
 			Spread: 128
 			Versus:
 				Wood: 0%
 				Light: 0%
 				Heavy: 50%
 				Concrete: 0%
-			Explosion: piffs
 			InfDeath: 2
 			Damage: 150
+		Warhead@2Eff: EffectCreator
+			Explosion: piffs
 
 Voices:
 

@@ -313,20 +313,22 @@ Weapons:
 			Inaccuracy: 3c341
 			Image: 120MM
 			ContrailLength: 30
-		Warhead:
+		Warhead: Damager
 			Spread: 128
 			Versus:
 				None: 60%
 				Wood: 75%
 				Light: 60%
 				Heavy: 25%
+			InfDeath: 2
+			Damage: 250
+		Warhead@1Eff: EffectCreator
 			Explosion: large_explosion
 			WaterExplosion: large_splash
-			InfDeath: 2
-			SmudgeType: Crater
-			Damage: 250
 			ImpactSound: kaboom12.aud
 			WaterImpactSound: splash9.aud
+		Warhead@2Smu: Smudger
+			SmudgeType: Crater
 	SubMissile:
 		ROF: 250
 		Range: 32c0
@@ -346,13 +348,15 @@ Weapons:
 				None: 40%
 				Light: 30%
 				Heavy: 30%
+			InfDeath: blownaway
+			Damage: 400
+		Warhead@1Eff: EffectCreator
 			Explosion: large_explosion
 			WaterExplosion: large_splash
-			InfDeath: blownaway
-			SmudgeType: Crater
-			Damage: 400
 			ImpactSound: kaboom12.aud
 			WaterImpactSound: splash9.aud
+		Warhead@2Smu: Smudger
+			SmudgeType: Crater
 
 Voices:
 

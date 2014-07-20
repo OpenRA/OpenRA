@@ -1079,9 +1079,7 @@ Weapons:
 		Warhead@areanuke2:
 			DamageModel: PerCell
 			Damage: 250
-			SmudgeType: Scorch
-			Size: 4,3
-			Ore: true
+			Size: 4
 			Versus:
 				None: 90%
 				Light: 60%
@@ -1089,13 +1087,21 @@ Weapons:
 				Concrete: 50%
 			Delay: 12
 			InfDeath: 4
+		Warhead@areanuke2Smu: Smudger
+			SmudgeType: Scorch
+			Size: 4,3
+			Delay: 12
+		Warhead@areanuke2Res: Resourcer
+			DestroyResources: true
+			Size: 4,3
+			Delay: 12
+		Warhead@areanuke2Eff: EffectCreator
 			ImpactSound: kaboom22
+			Delay: 12
 		Warhead@areanuke3:
 			DamageModel: PerCell
 			Damage: 250
-			SmudgeType: Scorch
-			Size: 3,2
-			Ore: true
+			Size: 3
 			Versus:
 				None: 90%
 				Light: 60%
@@ -1103,13 +1109,20 @@ Weapons:
 				Concrete: 50%
 			Delay: 24
 			InfDeath: 4
+		Warhead@areanuke3Smu: Smudger
+			SmudgeType: Scorch
+			Size: 3,2
+			Delay: 24
+		Warhead@areanuke3Res: Resourcer
+			DestroyResources: true
+			Size: 3,2
+			Delay: 24
+		Warhead@areanuke3Eff: EffectCreator
 			ImpactSound: kaboom22
+			Delay: 24
 		Warhead@areanuke4:
 			DamageModel: PerCell
 			Damage: 250
-			SmudgeType: Scorch
-			Size: 2,1
-			Ore: true
 			Versus:
 				None: 90%
 				Light: 60%
@@ -1117,7 +1130,17 @@ Weapons:
 				Concrete: 50%
 			Delay: 36
 			InfDeath: 4
+		Warhead@areanuke3Smu: Smudger
+			SmudgeType: Scorch
+			Size: 2,1
+			Delay: 36
+		Warhead@areanuke3Res: Resourcer
+			DestroyResources: true
+			Size: 2,1
+			Delay: 36
+		Warhead@areanuke3Eff: EffectCreator
 			ImpactSound: kaboom22
+			Delay: 36
 
 Voices:
 

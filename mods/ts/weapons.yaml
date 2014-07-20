@@ -811,16 +811,19 @@ TiberiumHeal:
 
 IonCannon:
 	ValidTargets: Ground, Air, Enemy, Neutral, Ally
-	Warhead@impact:
+	Warhead@1Eff: EffectCreator
+		Explosion: ring1
+	Warhead@impact: Damager
 		Damage: 1000
 		Spread: 1c0
 		InfDeath: 5
-		Explosion: ring1
 		ProneModifier: 100
-	Warhead@area:
+	Warhead@2Smu: Smudger
+		SmudgeType: Scorch
+		Size: 2
+	Warhead@area: Damager
 		DamageModel: PerCell
 		Damage: 250
-		SmudgeType: Scorch
 		Size: 2
 		Delay: 3
 		InfDeath: 5
@@ -931,3 +934,4 @@ TiberiumExplosion:
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
 		AddsResourceType: Tiberium
+

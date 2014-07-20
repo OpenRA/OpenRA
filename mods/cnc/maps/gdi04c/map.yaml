@@ -913,7 +913,7 @@ VoxelSequences:
 
 Weapons:
 	Rockets:
-		Warhead:
+		Warhead: Damager
 			Versus:
 				None: 20%
 
