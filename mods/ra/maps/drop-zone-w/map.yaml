@@ -342,7 +342,7 @@ Weapons:
 			Image: MISSILE
 			Trail: smokey
 			ContrailLength: 30
-		Warhead:
+		Warhead: Damager
 			Spread: 426
 			Versus:
 				None: 40%
