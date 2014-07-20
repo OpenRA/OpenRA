@@ -27,12 +27,13 @@ namespace OpenRA.GameRules
 		int DelayTicks { get; }
 	}
 
+	[Desc("Base warhead class. This can be used to derive other warheads from.")]
 	public class BaseWarhead : IWarheadInfo
 	{
-		[Desc("What types of targets are affected.", "Diplomacy keywords: Ally, Neutral, Enemy")]
+		[Desc("What types of targets are affected.", "Diplomacy keywords: Ally, Neutral, Enemy","Actor keyword: Self")]
 		public readonly string[] ValidTargets = { "Air", "Ground", "Water", "Ally", "Neutral", "Enemy" };
 
-		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.", "Diplomacy keywords: Ally, Neutral, Enemy")]
+		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.", "Diplomacy keywords: Ally, Neutral, Enemy", "Actor keyword: Self")]
 		public readonly string[] InvalidTargets = { };
 
 		[Desc("Delay in ticks before applying the warhead effect.","0 = instant (old model).")]
@@ -100,12 +101,17 @@ namespace OpenRA.GameRules
 			if (!targetList.Intersect(targetable.GetTargetTypes()).Any())
 				return false;
 			
+			//Keywords checks
+			//Diplomacy
 			var stance = firedBy.Owner.Stances[victim.Owner];
 			if (targetList.Contains("Ally") && (stance == Stance.Ally))
 				return true;
 			if (targetList.Contains("Neutral") && (stance == Stance.Neutral))
 				return true;
 			if (targetList.Contains("Enemy") && (stance == Stance.Enemy))
+				return true;
+			//Check for self
+			if (targetList.Contains("Self") && (victim == firedBy))
 				return true;
 			return false;
 		}
