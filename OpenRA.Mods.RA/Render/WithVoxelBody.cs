@@ -16,11 +16,13 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Render
 {
 	[Desc("Also returns a default selection size that is calculated automatically from the voxel dimensions.")]
-	public class WithVoxelBodyInfo : ITraitInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, Requires<RenderVoxelsInfo>
 	{
 		public readonly string Sequence = "idle";
 
 		public object Create(ActorInitializer init) { return new WithVoxelBody(init.self, this); }
+
+		public int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai) { return 0; }
 	}
 
 	public class WithVoxelBody : IAutoSelectionSize
