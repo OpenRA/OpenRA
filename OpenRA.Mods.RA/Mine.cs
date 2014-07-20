@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	/* tag trait for stuff that shouldnt trigger mines */
+	[Desc("Tag trait for stuff that should not trigger mines.")]
 	class MineImmuneInfo : TraitInfo<MineImmune> { }
 	class MineImmune { }
 }

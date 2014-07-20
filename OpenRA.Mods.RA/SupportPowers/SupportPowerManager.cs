@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Attach this to the player actor.")]
 	public class SupportPowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>, Requires<TechTreeInfo>
 	{
 		public object Create(ActorInitializer init) { return new SupportPowerManager(init); }

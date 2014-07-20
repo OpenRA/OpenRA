@@ -10,6 +10,7 @@
 
 namespace OpenRA.Traits
 {
+	[Desc("Attach this to the player actor.")]
 	public class DeveloperModeInfo : ITraitInfo
 	{
 		public int Cash = 20000;

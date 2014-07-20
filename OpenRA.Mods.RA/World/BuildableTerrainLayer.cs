@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Attach this to the world actor. Required for LaysTerrain to work.")]
 	public class BuildableTerrainLayerInfo : TraitInfo<BuildableTerrainLayer> { }
 	public class BuildableTerrainLayer : IRenderOverlay, IWorldLoaded, ITickRender
 	{
