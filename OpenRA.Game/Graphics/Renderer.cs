@@ -108,7 +108,11 @@ namespace OpenRA.Graphics
 		public void BeginFrame(int2 scroll, float zoom)
 		{
 			Device.Clear();
+			SetViewportParams(scroll, zoom);
+		}
 
+		public void SetViewportParams(int2 scroll, float zoom)
+		{
 			var resolutionChanged = lastResolution != Resolution;
 			if (resolutionChanged)
 			{

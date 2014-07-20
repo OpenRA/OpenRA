@@ -525,6 +525,7 @@
     <Compile Include="SpriteLoaders\TmpRALoader.cs" />
     <Compile Include="SpriteLoaders\TmpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpD2Loader.cs" />
+    <Compile Include="Widgets\ActorPreviewWidget.cs" />
     <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
     <Compile Include="LoadScreens\LogoStripeLoadScreen.cs" />
     <Compile Include="LoadScreens\BlankLoadScreen.cs" />
