@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Crates
 		public readonly string[] Units = { };
 
 		[Desc("Races that are allowed to trigger this action")]
-		public readonly string[] Race = { };
+		public readonly string[] ValidRaces = { };
 
 		[Desc("Override the owner of the newly spawned unit: e.g. Creeps or Neutral")]
 		public readonly string Owner = null;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Crates
 
 		public bool CanGiveTo(Actor collector)
 		{
-			if (Info.Race.Any() && !Info.Race.Contains(collector.Owner.Country.Race))
+			if (Info.ValidRaces.Any() && !Info.ValidRaces.Contains(collector.Owner.Country.Race))
 				return false;
 
 			foreach (string unit in Info.Units)
