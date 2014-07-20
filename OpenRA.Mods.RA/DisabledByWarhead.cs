@@ -21,8 +21,8 @@ namespace OpenRA.Mods.RA
 		[Desc("The hitbox radius of the actor. A DisablerWarhead impact must touch this hitbox in order to affect the actor.")]
 		public readonly WRange Radius = new WRange(426);
 
-		[Desc("What types does this actor count as.", "Diplomacy keywords: Ally, Neutral, Enemy")]
-		public readonly string[] TargetTypes = { "EMP", "Ally", "Neutral", "Enemy" };
+		[Desc("What types does this actor count as.")]
+		public readonly string[] TargetTypes = { "EMP" };
 
 		public object Create(ActorInitializer init) { return new DisabledByWarhead(init.self, this); }
 	}

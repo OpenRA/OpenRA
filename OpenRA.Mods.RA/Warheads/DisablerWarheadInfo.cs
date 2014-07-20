@@ -24,6 +24,9 @@ namespace OpenRA.Mods.RA
 		[Desc("What factor to multiply the DisableTicks by for this spread range.", "Each factor specified must have an associated Spread defined.")]
 		public readonly float[] SpreadFactor = { 1f };
 
+		[Desc("What types of targets are affected.", "Diplomacy keywords: Ally, Neutral, Enemy", "Actor keyword: Self")]
+		public new readonly string[] ValidTargets = { "EMP", "Ally", "Neutral", "Enemy" };
+
 		[FieldLoader.LoadUsing("LoadVersus")]
 		[Desc("Damage vs each disablearmortype. 0% = can't target.")]
 		public readonly Dictionary<string, float> Versus;
@@ -95,7 +98,7 @@ namespace OpenRA.Mods.RA
 
 		public new bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
-			var disablerTrait = victim.TraitOrDefault<DisabledByWarhead>();
+			var disablerTrait = victim.Info.Traits.GetOrDefault<DisabledByWarheadInfo>();
 			if (disablerTrait == null)
 				return false;
 
@@ -121,6 +124,43 @@ namespace OpenRA.Mods.RA
 			if (targetList.Contains("Neutral") && (stance == Stance.Neutral))
 				return true;
 			if (targetList.Contains("Enemy") && (stance == Stance.Enemy))
+				return true;
+			//Check for self
+			if (targetList.Contains("Self") && (victim == firedBy))
+				return true;
+			return false;
+		}
+
+		public new bool IsValidAgainst(FrozenActor victim, Actor firedBy)
+		{
+			var disablerTrait = victim.Info.Traits.GetOrDefault<DisabledByWarheadInfo>();
+			if (disablerTrait == null)
+				return false;
+
+			//A target type is valid if it is in the valid targets list, and not in the invalid targets list.
+			return CheckTargetList(victim, firedBy, this.ValidTargets) &&
+				!CheckTargetList(victim, firedBy, this.InvalidTargets);
+		}
+
+		public new static bool CheckTargetList(FrozenActor victim, Actor firedBy, string[] targetList)
+		{
+			if (targetList.Length < 1)
+				return false;
+
+			var targetable = victim.Info.Traits.GetOrDefault<DisabledByWarheadInfo>();
+			if (targetable == null)
+				return false;
+			if (!targetList.Intersect(targetable.TargetTypes).Any())
+				return false;
+
+			var stance = firedBy.Owner.Stances[victim.Owner];
+			if (targetList.Contains("Ally") && (stance == Stance.Ally))
+				return true;
+			if (targetList.Contains("Neutral") && (stance == Stance.Neutral))
+				return true;
+			if (targetList.Contains("Enemy") && (stance == Stance.Enemy))
+				return true;
+			//Self check does not make sense for FrozenActor
 				return true;
 			return false;
 		}

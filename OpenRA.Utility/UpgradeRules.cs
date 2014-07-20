@@ -421,6 +421,10 @@ namespace OpenRA.Utility
 								if (temp != null)
 									newYaml.Add(new MiniYamlNode("Size",temp.Value));
 
+								temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Delay");
+								if (temp != null)
+									newYaml.Add(new MiniYamlNode("Delay", temp.Value));
+
 								newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Res", "Resourcer", newYaml));
 							}
 							//Resourcer
@@ -436,6 +440,10 @@ namespace OpenRA.Utility
 								if (temp != null)
 									newYaml.Add(new MiniYamlNode("Size", temp.Value));
 
+								temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Delay");
+								if (temp != null)
+									newYaml.Add(new MiniYamlNode("Delay", temp.Value));
+
 								newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Res", "Resourcer", newYaml));
 							}
 							//Smudger
@@ -450,6 +458,10 @@ namespace OpenRA.Utility
 								var temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Size");
 								if (temp != null)
 									newYaml.Add(new MiniYamlNode("Size", temp.Value));
+
+								temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Delay");
+								if (temp != null)
+									newYaml.Add(new MiniYamlNode("Delay", temp.Value));
 
 								newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Smu", "Smudger", newYaml));
 							}
@@ -489,6 +501,10 @@ namespace OpenRA.Utility
 									temp.Key = "KILLME!";
 								}
 
+								temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Delay");
+								if (temp != null)
+									newYaml.Add(new MiniYamlNode("Delay", temp.Value));
+
 								newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Eff", "EffectCreator", newYaml));
 							}
 						}
@@ -497,16 +513,17 @@ namespace OpenRA.Utility
 						if (temp2 != null)
 							temp2.Value.Value = temp2.Value.Value.Split(',')[0];
 					}
+
+					if (node.Key != "KILLME!")
+					{
+						newNodes.Add(node);
+					}
 				}
 
-				if (node.Key != "KILLME!")
-				{
-					newNodes.Add(node);
-				}
-
-				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1, warheadCounter);
+				warheadCounter = UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1, warheadCounter);
 			}
-			nodes = newNodes;
+			if (newNodes.Any())
+				nodes = newNodes;
 
 			return warheadCounter;
 		}

@@ -53,18 +53,6 @@ namespace OpenRA.GameRules
 
 		public float EffectivenessAgainst(ActorInfo ai) { return 1f; }
 
-		public bool IsValidAgainst(Actor victim, Actor firedBy)
-		{
-			//A target type is valid if it is in the valid targets list, and not in the invalid targets list.
-			return CheckTargetList(victim, firedBy, this.ValidTargets) &&
-				!CheckTargetList(victim, firedBy, this.InvalidTargets);
-		}
-
-		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
-		{
-			return IsValidAgainst(victim.Actor, firedBy);
-		}
-
 		public bool IsValidAgainst(Target target, World world, Actor firedBy)
 		{
 			if (target.Type == TargetType.Actor)
@@ -90,8 +78,49 @@ namespace OpenRA.GameRules
 			return false;
 		}
 
+		public bool IsValidAgainst(Actor victim, Actor firedBy)
+		{
+			//A target type is valid if it is in the valid targets list, and not in the invalid targets list.
+			return CheckTargetList(victim, firedBy, this.ValidTargets) &&
+				!CheckTargetList(victim, firedBy, this.InvalidTargets);
+		}
+
 		public static bool CheckTargetList(Actor victim, Actor firedBy, string[] targetList)
 		{
+			if (targetList.Length < 1)
+				return false;
+
+			var targetable = victim.TraitOrDefault<ITargetable>();
+			if (targetable == null)
+				return false;
+			if (!targetList.Intersect(targetable.TargetTypes).Any())
+				return false;
+
+			//Keywords checks
+			//Diplomacy
+			var stance = firedBy.Owner.Stances[victim.Owner];
+			if (targetList.Contains("Ally") && (stance == Stance.Ally))
+				return true;
+			if (targetList.Contains("Neutral") && (stance == Stance.Neutral))
+				return true;
+			if (targetList.Contains("Enemy") && (stance == Stance.Enemy))
+				return true;
+			//Check for self
+			if (targetList.Contains("Self") && (victim == firedBy))
+				return true;
+			return false;
+		}
+
+		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
+		{
+			//A target type is valid if it is in the valid targets list, and not in the invalid targets list.
+			return CheckTargetList(victim, firedBy, this.ValidTargets) &&
+				!CheckTargetList(victim, firedBy, this.InvalidTargets);
+		}
+
+		public static bool CheckTargetList(FrozenActor victim, Actor firedBy, string[] targetList)
+		{
+			//Frozen Actors need to be handled slightly differently. Since FrozenActor.Actor can be null if the Actor is dead.
 			if (targetList.Length < 1)
 				return false;
 
@@ -110,9 +139,7 @@ namespace OpenRA.GameRules
 				return true;
 			if (targetList.Contains("Enemy") && (stance == Stance.Enemy))
 				return true;
-			//Check for self
-			if (targetList.Contains("Self") && (victim == firedBy))
-				return true;
+			//Self makes no sense for FrozenActors, so we do not check it.
 			return false;
 		}
 
