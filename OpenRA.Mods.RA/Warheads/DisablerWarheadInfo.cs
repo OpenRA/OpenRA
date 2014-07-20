@@ -47,7 +47,6 @@ namespace OpenRA.Mods.RA
 		public new void DoImpact(WPos pos, WeaponInfo weapon, Actor firedBy, float firepowerModifier)
 		{
 			var world = firedBy.World;
-			var targetTile = world.Map.CellContaining(pos);
 
 			for (int i = 0; i < Spread.Length; i++)
 			{
@@ -73,7 +72,7 @@ namespace OpenRA.Mods.RA
 							.Concat(victim.Owner.PlayerActor.TraitsImplementing<IDisableTicksModifier>())
 							.Select(t => t.GetDisableTicksModifier(firedBy, this)).Product();
 
-						var ticksLength = (int)((float)DisableTicks * modifier * (float)EffectivenessAgainst(victim.Info));
+						var ticksLength = (int)((float)DisableTicks * modifier * currentFactor * (float)EffectivenessAgainst(victim.Info));
 						disablerTrait.SufferDisableImpact(victim, firedBy, ticksLength);
 					}
 				}
