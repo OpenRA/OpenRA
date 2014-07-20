@@ -132,7 +132,6 @@ PROC:
 		HP: 900
 	RevealsShroud:
 		Range: 6
-#	Bib:
 	TiberianSunRefinery:
 		DockOffset: 4,3
 	StoresResources:
@@ -148,6 +147,8 @@ PROC:
 		Facing: 64
 	WithIdleOverlay@REDLIGHTS:
 		Sequence: idle-redlights
+	WithIdleOverlay@BIB:
+		Sequence: bib
 
 GAWEAP:
 	Inherits: ^Building
@@ -188,6 +189,8 @@ GAWEAP:
 		Sequence: production-lights-red
 	WithIdleOverlay@TURBINES:
 		Sequence: idle-turbines
+	WithIdleOverlay@BIB:
+		Sequence: bib
 
 NAPOWR:
 	Inherits: ^Building
@@ -317,6 +320,8 @@ NAWEAP:
 	ProductionBar:
 	WithProductionOverlay@LIGHTS:
 		Sequence: production-lights
+	WithIdleOverlay@BIB:
+		Sequence: bib
 
 GASAND:
 	Inherits: ^Wall

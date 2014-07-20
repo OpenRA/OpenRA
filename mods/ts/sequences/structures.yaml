@@ -191,7 +191,16 @@ gaweap:
 		ShadowStart: 20
 	icon: weapicon
 		Start: 0
-# TODO: gtweap_1 & gtweapbb & gtweap_a & gtweap_b & gtweap_c are unused
+	bib: gtweapbb
+		Start: 0
+		Length: 1
+	damaged-bib: gtweapbb
+		Start: 1
+		Length: 1
+	critical-bib: gtweapbb
+		Start: 2
+		Length: 1
+# TODO: gtweap_1 & gtweap_a & gtweap_b & gtweap_c are unused
 
 napowr:
 	idle: ntpowr
@@ -323,7 +332,16 @@ naweap:
 		ShadowStart: 22
 	icon: nwepicon
 		Start: 0
-# TODO: ntweap_1 & ntweapbb & ntweap_b & ntweap_c are unused
+	bib: ntweapbb
+		Start: 0
+		Length: 1
+	damaged-bib: ntweapbb
+		Start: 1
+		Length: 1
+	critical-bib: ntweapbb
+		Start: 2
+		Length: 1
+# TODO: ntweap_1 & ntweap_b & ntweap_c are unused
 
 naradr:
 	idle: ntradr
@@ -869,9 +887,15 @@ proc: # TODO: unused narefn_a, narefn_b
 		Start: 16
 		Length: 16
 		Tick: 200
-#	bib: ntrefnbb
-#		Start: 0
-#		Length: *
+	bib: ntrefnbb
+		Start: 0
+		Length: 1
+	damaged-bib: ntrefnbb
+		Start: 1
+		Length: 1
+	critical-bib: ntrefnbb
+		Start: 2
+		Length: 1
 	icon: reficon
 		Start: 0
 
