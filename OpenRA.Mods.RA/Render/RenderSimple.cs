@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderSimpleInfo : RenderSpritesInfo, ILegacyEditorRenderInfo, Requires<IBodyOrientationInfo>
+	public class RenderSimpleInfo : RenderSpritesInfo, IQuantizeBodyOrientationInfo, ILegacyEditorRenderInfo, Requires<IBodyOrientationInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
@@ -25,6 +25,11 @@ namespace OpenRA.Mods.RA.Render
 			anim.PlayRepeating("idle");
 
 			return anim.Render(WPos.Zero, WVec.Zero, 0, pr, Scale);
+		}
+
+		public virtual int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai)
+		{
+			return sequenceProvider.GetSequence(RenderSprites.GetImage(ai), "idle").Facings;
 		}
 
 		public string EditorPalette { get { return Palette; } }
@@ -46,7 +51,6 @@ namespace OpenRA.Mods.RA.Render
 			: this(self, MakeFacingFunc(self))
 		{
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
-			self.Trait<IBodyOrientation>().SetAutodetectedFacings(DefaultAnimation.CurrentSequence.Facings);
 		}
 
 		public int2 SelectionSize(Actor self) { return AutoSelectionSize(self); }
