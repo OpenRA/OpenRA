@@ -1130,15 +1130,15 @@ Weapons:
 				Concrete: 50%
 			Delay: 36
 			InfDeath: 4
-		Warhead@areanuke3Smu: Smudger
+		Warhead@areanuke4Smu: Smudger
 			SmudgeType: Scorch
 			Size: 2,1
 			Delay: 36
-		Warhead@areanuke3Res: Resourcer
+		Warhead@areanuke4Res: Resourcer
 			DestroyResources: true
 			Size: 2,1
 			Delay: 36
-		Warhead@areanuke3Eff: EffectCreator
+		Warhead@areanuke4Eff: EffectCreator
 			ImpactSound: kaboom22
 			Delay: 36
 
