@@ -121,13 +121,14 @@ namespace OpenRA.Mods.RA
 					world.CancelInputMode();
 			}
 
-			public void RenderAfterWorld(WorldRenderer wr, World world)
+			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var targetUnits = power.UnitsInRange(xy);
+
 				foreach (var unit in targetUnits)
 					if (manager.self.Owner.Shroud.IsTargetable(unit))
-						new SelectionBoxRenderable(unit, Color.Red).Render(wr);
+						yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
@@ -203,11 +204,11 @@ namespace OpenRA.Mods.RA
 					world.CancelInputMode();
 			}
 
-			public void RenderAfterWorld(WorldRenderer wr, World world)
+			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 					if (manager.self.Owner.Shroud.IsTargetable(unit))
-						new SelectionBoxRenderable(unit, Color.Red).Render(wr);
+						yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)

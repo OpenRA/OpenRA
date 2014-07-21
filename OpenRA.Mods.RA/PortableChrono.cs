@@ -173,21 +173,21 @@ namespace OpenRA.Mods.RA
 			yield break;
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, World world)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 		{
 			if (!self.IsInWorld || self.Owner != self.World.LocalPlayer)
-				return;
+				yield break;
 
 			if (!self.Trait<PortableChrono>().Info.HasDistanceLimit)
-				return;
+				yield break;
 
-			new RangeCircleRenderable(
+			yield return new RangeCircleRenderable(
 				self.CenterPosition,
 				WRange.FromCells(self.Trait<PortableChrono>().Info.MaxDistance),
 				0,
 				Color.FromArgb(128, Color.LawnGreen),
 				Color.FromArgb(96, Color.Black)
-			).Render(wr);
+			);
 		}
 
 		public string GetCursor(World world, CPos xy, MouseInput mi)

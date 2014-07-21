@@ -91,6 +91,9 @@ namespace OpenRA.Graphics
 			var effectRenderables = world.Effects
 				.SelectMany(e => e.Render(this));
 
+			if (world.OrderGenerator != null)
+				effectRenderables = effectRenderables.Concat(world.OrderGenerator.RenderAfterWorld(this, world));
+
 			// Iterating via foreach() copies the structs, so enumerate by index
 			var renderables = worldRenderables.Concat(effectRenderables).ToList();
 
@@ -123,9 +126,6 @@ namespace OpenRA.Graphics
 			foreach (var a in world.ActorsWithTrait<IPostRender>())
 				if (a.Actor.IsInWorld && !a.Actor.Destroyed)
 					a.Trait.RenderAfterWorld(this, a.Actor);
-
-			if (world.OrderGenerator != null)
-				world.OrderGenerator.RenderAfterWorld(this, world);
 
 			var renderShroud = world.RenderPlayer != null ? world.RenderPlayer.Shroud : null;
 
