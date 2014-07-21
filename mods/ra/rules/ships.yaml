@@ -2,7 +2,7 @@ SS:
 	Inherits: ^Ship
 	Buildable:
 		Queue: Ship
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 30
 		Prerequisites: ~spen, ~techlevel.medium
 		Hotkey: u
 	Valued:
@@ -106,7 +106,7 @@ DD:
 	Inherits: ^Ship
 	Buildable:
 		Queue: Ship
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 40
 		Prerequisites: ~syrd, dome, ~techlevel.medium
 		Hotkey: r
 	Valued:
@@ -155,7 +155,7 @@ CA:
 	Inherits: ^Ship
 	Buildable:
 		Queue: Ship
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 50
 		Prerequisites: ~syrd, atek, ~techlevel.unrestricted
 		Hotkey: c
 	Valued:
@@ -216,7 +216,7 @@ LST:
 	Inherits: ^Ship
 	Buildable:
 		Queue: Ship
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 10
 		Prerequisites: ~techlevel.low
 		Hotkey: t
 	Valued:
@@ -249,7 +249,7 @@ PT:
 	Inherits: ^Ship
 	Buildable:
 		Queue: Ship
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 20
 		Prerequisites: ~syrd, ~techlevel.medium
 		Hotkey: b
 	Valued:
