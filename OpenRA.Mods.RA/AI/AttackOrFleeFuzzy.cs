@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AI.Fuzzy.Library;
 using OpenRA.Mods.RA.Move;
+using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.AI
@@ -195,8 +196,8 @@ namespace OpenRA.Mods.RA.AI
 				var sumOfDamage = 0;
 				var arms = a.TraitsImplementing<Armament>();
 				foreach (var arm in arms)
-					if (arm.Weapon.Warheads[0] != null)
-						sumOfDamage += arm.Weapon.Warheads[0].Damage;
+					if ((arm.Weapon.Warheads.FirstOrDefault(w => (w is DamagerWarheadInfo)) as DamagerWarheadInfo) != null)
+						sumOfDamage += (arm.Weapon.Warheads.FirstOrDefault(w => (w is DamagerWarheadInfo)) as DamagerWarheadInfo).Damage;
 				return sumOfDamage;
 			});
 		}

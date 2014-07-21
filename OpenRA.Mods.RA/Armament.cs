@@ -145,7 +145,7 @@ namespace OpenRA.Mods.RA
 			if (Weapon.MinRange != WRange.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
 				return null;
 
-			if (!Weapon.IsValidAgainst(target, self.World))
+			if (!Weapon.IsValidAgainst(target, self.World, self))
 				return null;
 
 			var barrel = Barrels[Burst % Barrels.Length];

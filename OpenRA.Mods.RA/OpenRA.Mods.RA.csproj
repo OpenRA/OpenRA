@@ -117,6 +117,8 @@
     <Compile Include="Air\Aircraft.cs" />
     <Compile Include="Air\AttackHeli.cs" />
     <Compile Include="Air\AttackPlane.cs" />
+    <Compile Include="DisableArmor.cs" />
+    <Compile Include="DisabledByWarhead.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Player\PlaceBeacon.cs" />
     <Compile Include="MenuPaletteEffect.cs" />
@@ -287,6 +289,11 @@
     <Compile Include="Player\ProductionQueue.cs" />
     <Compile Include="Player\ProvidesTechPrerequisite.cs" />
     <Compile Include="PortableChrono.cs" />
+    <Compile Include="Render\WithDisabledOverlay.cs" />
+    <Compile Include="Warheads\DisablerWarheadInfo.cs" />
+    <Compile Include="Warheads\EffectCreatorWarheadInfo.cs" />
+    <Compile Include="Warheads\ResourcerWarheadInfo.cs" />
+    <Compile Include="Warheads\SmudgerWarheadInfo.cs" />
     <Compile Include="World\RadarPings.cs" />
     <Compile Include="Player\TechTree.cs" />
     <Compile Include="PrimaryBuilding.cs" />

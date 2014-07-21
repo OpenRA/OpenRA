@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 	}
 
 	// Infantry prone behavior
-	public class TakeCover : Turreted, ITick, INotifyDamage, IDamageModifier, ISpeedModifier, ISync
+	public class TakeCover : Turreted, ITick, INotifyDamage, IDamageModifier, ISpeedModifier, ISync, IDisableTicksModifier
 	{
 		TakeCoverInfo Info;
 		[Sync] int remainingProneTime = 0;
@@ -61,7 +61,12 @@ namespace OpenRA.Mods.RA
 				LocalOffset = WVec.Zero;
 		}
 
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		public float GetDamageModifier(Actor attacker, DamagerWarheadInfo warhead)
+		{
+			return IsProne && warhead != null ? warhead.ProneModifier / 100f : 1f;
+		}
+
+		public float GetDisableTicksModifier(Actor attacker, DisablerWarheadInfo warhead)
 		{
 			return IsProne && warhead != null ? warhead.ProneModifier / 100f : 1f;
 		}

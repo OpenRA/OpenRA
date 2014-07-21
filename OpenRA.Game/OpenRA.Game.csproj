@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -75,6 +75,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
+    <Compile Include="GameRules\Warheads\DamagerWarheadInfo.cs" />
+    <Compile Include="GameRules\WarheadInfo.cs" />
     <Compile Include="Graphics\QuadRenderer.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="Effects\DelayedAction.cs" />

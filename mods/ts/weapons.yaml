@@ -1,5 +1,5 @@
 UnitExplode:
-	Warhead:
+	Warhead: Damager
 		Damage: 500
 		Spread: 426
 		Versus:
@@ -12,7 +12,7 @@ UnitExplode:
 		ImpactSound: expnew09.aud
 
 UnitExplodeSmall:
-	Warhead:
+	Warhead: Damager
 		Damage: 40
 		Spread: 426
 		Versus:
@@ -30,7 +30,7 @@ Minigun:
 	Report: INFGUN3.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Wood: 60%
@@ -52,7 +52,7 @@ Grenade:
 		Angle: 62
 		Inaccuracy: 554
 		Image: DISCUS
-	Warhead:
+	Warhead: Damager
 		Spread: 171
 		Versus:
 			None: 100%
@@ -70,7 +70,7 @@ Bazooka:
 	ROF: 60
 	Range: 6c0
 	Report: RKETINF1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 213
@@ -81,7 +81,7 @@ Bazooka:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -98,7 +98,7 @@ MultiCluster:
 	ROF: 80
 	Range: 6c0
 	Report: MISL1.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 170
@@ -109,7 +109,7 @@ MultiCluster:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -128,7 +128,7 @@ Heal:
 	Report: HEALER1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 213
 		Versus:
 			Wood: 0%
@@ -145,7 +145,7 @@ Sniper:
 	Report: SILENCER.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Damage: 150
 		ProneModifier: 100
 		Spread: 42
@@ -163,7 +163,7 @@ M1Carbine:
 	Report: INFGUN3.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Wood: 60%
@@ -184,7 +184,7 @@ LtRail:
 		BeamWidth: 1
 		BeamDuration: 10
 		Color: 200,0,128,255
-	Warhead:
+	Warhead: Damager
 		Damage: 150
 		ProneModifier: 100
 		Spread: 42
@@ -200,13 +200,13 @@ CyCannon:
 	ROF: 50
 	Range: 7c0
 	Report: SCRIN5B.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 192
 		High: yes
 		Shadow: true
 		Image: TORPEDO
-	Warhead:
+	Warhead: Damager
 		Spread: 256
 		Versus:
 			None: 100%
@@ -227,7 +227,7 @@ Vulcan3:
 	Report: CYGUN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Wood: 60%
@@ -246,7 +246,7 @@ Vulcan2:
 	Report: TSGUN4.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 100%
@@ -265,7 +265,7 @@ Vulcan:
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Wood: 60%
@@ -289,7 +289,7 @@ FiendShard:
 		Inaccuracy: 512
 		Shadow: true
 		Angle: 88
-	Warhead:
+	Warhead: Damager
 		Versus:
 			Wood: 60%
 			Light: 40%
@@ -306,7 +306,7 @@ JumpCannon:
 	Report: JUMPJET1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Wood: 60%
@@ -323,7 +323,7 @@ HoverMissile:
 	Burst: 2
 	Range: 8c0
 	Report: HOVRMIS1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 213
@@ -334,7 +334,7 @@ HoverMissile:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -359,7 +359,7 @@ HoverMissile:
 		Image: 120mm
 		Shadow: true
 		Angle: 62
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -376,7 +376,7 @@ MammothTusk:
 	ROF: 80
 	Range: 6c0
 	Report: MISL1.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Burst: 2
 	Palette: ra
 	Projectile: Missile
@@ -388,7 +388,7 @@ MammothTusk:
 		ROT: 10
 		Speed: 170
 		RangeLimit: 35
-	Warhead:
+	Warhead: Damager
 		Spread: 171
 		Versus:
 			None: 100%
@@ -408,7 +408,7 @@ Repair:
 	Report: REPAIR11.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 213
 		Versus:
 			None: 0%
@@ -427,7 +427,7 @@ SlimeAttack:
 	Report: VICER1.AUD
 	Projectile: Bullet
 		Speed: 426
-	Warhead:
+	Warhead: Damager
 		Versus:
 			Wood: 25%
 			Light: 30%
@@ -441,7 +441,7 @@ SuicideBomb:
 	ROF: 1
 	Range: 0c512
 	Report: HUNTER2.AUD
-	Warhead:
+	Warhead: Damager
 		Damage: 11000
 		Spread: 256
 		DestroyResources: true
@@ -458,7 +458,7 @@ SuicideBomb:
 	Report: 120MMF.AUD
 	Projectile: Bullet
 		Speed: 1c512
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -480,7 +480,7 @@ MechRailgun:
 	Projectile: LaserZap
 		Color: 200,0,255,255
 		BeamWidth: 3
-	Warhead:
+	Warhead: Damager
 		Spread: 42
 		Versus:
 			None: 200%
@@ -498,7 +498,7 @@ AssaultCannon:
 	Report: TSGUN4.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Wood: 60%
@@ -516,7 +516,7 @@ BikeMissile:
 	BurstDelay: 60
 	Range: 5c0
 	Report: MISL1.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Arm: 2
@@ -527,7 +527,7 @@ BikeMissile:
 		ROT: 8
 		Speed: 213
 		RangeLimit: 35
-	Warhead:
+	Warhead: Damager
 		Spread: 256
 		Versus:
 			None: 25%
@@ -548,7 +548,7 @@ RaiderCannon:
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Wood: 60%
@@ -570,7 +570,7 @@ FireballLauncher:
 		Inacuracy: 384
 	Burst: 5
 	BurstDelay: 5
-	Warhead:
+	Warhead: Damager
 		Spread: 341
 		Versus:
 			None: 600%
@@ -591,7 +591,7 @@ SonicZap:
 		Color: 200,0,255,255
 		BeamWidth: 12
 		BeamDuration: 50
-	Warhead:
+	Warhead: Damager
 		Spread: 42
 		Versus:
 			Heavy: 80%
@@ -604,7 +604,7 @@ Dragon:
 	Range: 6c0
 	Burst: 2
 	Report: MISL1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 213
@@ -615,7 +615,7 @@ Dragon:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -638,7 +638,7 @@ Dragon:
 		Image: 120mm
 		Shadow: true
 		Angle: 62
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -663,7 +663,7 @@ Dragon:
 		Shadow: true
 		High: yes
 	MinRange: 5c0
-	Warhead:
+	Warhead: Damager
 		Spread: 298
 		Versus:
 			None: 100%
@@ -682,7 +682,7 @@ Hellfire:
 	Range: 6c0
 	Report: ORCAMIS1.AUD
 	Burst: 2
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 256
@@ -693,7 +693,7 @@ Hellfire:
 		Image: DRAGON
 		ROT: 8
 		RangeLimit: 35
-	Warhead:
+	Warhead: Damager
 		Spread: 85
 		Versus:
 			None: 30%
@@ -714,7 +714,7 @@ Bomb:
 		Speed: 170
 		Image: canister
 		Shadow: true
-	Warhead:
+	Warhead: Damager
 		Spread: 298
 		Versus:
 			None: 200%
@@ -733,7 +733,7 @@ Proton:
 	Range: 5c0
 	Report: SCRIN5B.AUD
 	Burst: 2
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
@@ -743,7 +743,7 @@ Proton:
 		Image: TORPEDO
 		ROT: 1
 		RangeLimit: 35
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -762,8 +762,8 @@ HarpyClaw:
 	Report: CYGUN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	ValidTargets: Ground, Air
-	Warhead:
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Wood: 60%
@@ -781,7 +781,7 @@ Pistola:
 	Report: GUN18.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Wood: 60%
@@ -795,7 +795,7 @@ Pistola:
 
 Tiberium:
 	ROF: 16
-	Warhead:
+	Warhead: Damager
 		Spread: 42
 		InfDeath: 6
 		Damage: 2
@@ -803,25 +803,28 @@ Tiberium:
 
 TiberiumHeal:
 	ROF: 16
-	Warhead:
+	Warhead: Damager
 		Spread: 42
 		InfDeath: 6
 		Damage: -2
 		PreventProne: yes
 
 IonCannon:
-	ValidTargets: Ground, Air
-	Warhead@impact:
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
+	Warhead@1Eff: EffectCreator
+		Explosion: ring1
+	Warhead@impact: Damager
 		Damage: 1000
 		Spread: 1c0
 		InfDeath: 5
-		Explosion: ring1
 		ProneModifier: 100
-	Warhead@area:
+	Warhead@2Smu: Smudger
+		SmudgeType: Scorch
+		Size: 2
+	Warhead@area: Damager
 		DamageModel: PerCell
 		Damage: 250
-		SmudgeType: Scorch
-		Size: 2,1
+		Size: 2
 		Delay: 3
 		InfDeath: 5
 
@@ -831,7 +834,7 @@ VulcanTower:
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Wood: 60%
@@ -853,7 +856,7 @@ RPGTower:
 		Shadow: true
 		Angle: 62
 		Image: canister
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 30%
@@ -871,7 +874,7 @@ SAMTower:
 	ROF: 55
 	Range: 15c0
 	Report: SAMSHOT1.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 298
@@ -882,7 +885,7 @@ SAMTower:
 		Image: DRAGON
 		ROT: 5
 		RangeLimit: 60
-	Warhead:
+	Warhead: Damager
 		Spread: 128
 		InfDeath: 2
 		Damage: 33
@@ -896,7 +899,7 @@ ObeliskLaser:
 	Report: OBELRAY1.AUD
 	Projectile: LaserZap
 		BeamWidth: 4
-	Warhead:
+	Warhead: Damager
 		Spread: 42
 		InfDeath: 5
 		SmudgeType: Scorch
@@ -910,7 +913,7 @@ TurretLaser:
 	Projectile: LaserZap
 		BeamWidth: 2
 		BeamDuration: 5
-	Warhead:
+	Warhead: Damager
 		Spread: 42
 		InfDeath: 5
 		SmudgeType: Scorch
@@ -918,10 +921,10 @@ TurretLaser:
 		ProneModifier: 60
 
 TiberiumExplosion:
-	Warhead:
+	Warhead: Damager
 		Damage: 10
 		Spread: 9
-		Size: 1,1
+		Size: 1
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -931,3 +934,4 @@ TiberiumExplosion:
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
 		AddsResourceType: Tiberium
+

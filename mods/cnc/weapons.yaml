@@ -1,27 +1,33 @@
 FlametankExplode:
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: big_napalm
+		ImpactSound: xplobig6.aud
+	Warhead: Damager
 		Damage: 100
 		Spread: 1c0
-		Explosion: big_napalm
 		InfDeath: 5
-		ImpactSound: xplobig6.aud
 
 HeliCrash:
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: poof
+		ImpactSound: xplos.aud
+	Warhead: Damager
 		Damage: 40
 		Spread: 426
-		Explosion: poof
 		InfDeath: 4
-		ImpactSound: xplos.aud
 
 HeliExplode:
-	Warhead:
+	Warhead@1Eff: EffectCreator
 		Explosion: small_building
-		InfDeath: 4
 		ImpactSound: xplos.aud
+	Warhead: Damager
+		InfDeath: 4
 
 UnitExplode:
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: poof
+		ImpactSound: xplobig6.aud
+	Warhead: Damager
 		Damage: 500
 		Spread: 426
 		Versus:
@@ -29,12 +35,13 @@ UnitExplode:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: poof
 		InfDeath: 4
-		ImpactSound: xplobig6.aud
 
 UnitExplodeSmall:
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: big_frag
+		ImpactSound: xplobig4.aud
+	Warhead: Damager
 		Damage: 40
 		Spread: 426
 		Versus:
@@ -42,12 +49,13 @@ UnitExplodeSmall:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: big_frag
 		InfDeath: 4
-		ImpactSound: xplobig4.aud
 
 GrenadierExplode:
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: poof
+		ImpactSound: xplosml2.aud
+	Warhead: Damager
 		Damage: 10
 		Spread: 256
 		Versus:
@@ -55,30 +63,35 @@ GrenadierExplode:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: poof
 		InfDeath: 3
-		ImpactSound: xplosml2.aud
 
 Atomic:
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Report: nukemisl.aud
-	Warhead@impact:
-		Damage: 1500	#1000
+	Warhead@1Eff: EffectCreator
+		Explosion: 6
+		ImpactSound: nukexplo.aud
+	Warhead@impact: Damager
+		Damage: 1500
 		Spread: 1c0
 		Versus:
 			None: 100%
 			Wood: 100%
 			Light: 60%
 			Heavy: 50%
-		Explosion: 6
 		InfDeath: 5
-		ImpactSound: nukexplo.aud
-	Warhead@areanukea:
-		Damage: 1000	#200
+	Warhead@2Smu: Smudger
 		SmudgeType: Scorch
+		Size: 3
+	Warhead@3Res: Resourcer
+		DestroyResources: true
+		Size: 3
+	Warhead@4Eff: EffectCreator
+		ImpactSound: xplobig4.aud
+	Warhead@areanukea: Damager
+		Damage: 1000
 		Spread: 2c512
 		Size: 3
-		DestroyResources: true
 		Versus:
 			None: 100%
 			Wood: 100%
@@ -86,13 +99,16 @@ Atomic:
 			Heavy: 50%
 		Delay: 3
 		InfDeath: 5
-		ImpactSound: xplobig4.aud
-	Warhead@areanukeb:
-		Damage: 500	#200
+	Warhead@5Smu: Smudger
 		SmudgeType: Scorch
+		Size: 4
+	Warhead@6Res: Resourcer
+		DestroyResources: true
+		Size: 4
+	Warhead@areanukeb: Damager
+		Damage: 500
 		Spread: 3c768
 		Size: 4
-		DestroyResources: true
 		Versus:
 			None: 100%
 			Wood: 100%
@@ -100,12 +116,16 @@ Atomic:
 			Heavy: 50%
 		Delay: 6
 		InfDeath: 5
-	Warhead@areanukec:
-		Damage: 200
+	Warhead@7Smu: Smudger
 		SmudgeType: Scorch
+		Size: 5
+	Warhead@8Res: Resourcer
+		DestroyResources: true
+		Size: 5
+	Warhead@areanukec: Damager
+		Damage: 200
 		Spread: 5c0
 		Size: 5
-		DestroyResources: true
 		Versus:
 			None: 100%
 			Wood: 100%
@@ -115,29 +135,39 @@ Atomic:
 		InfDeath: 5
 
 IonCannon:
-	ValidTargets: Ground, Air
-	Warhead@impact:
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
+	Warhead@impact: Damager
 		Damage: 900
 		Spread: 853
-		DestroyResources: true
 		InfDeath: 5
-	Warhead@area:
-		DamageModel: PerCell
-		Damage: 0
+	Warhead@impactDis: Disabler
+		ValidTargets: EMP, Enemy, Neutral
+		Spread: 1c0
+		SpreadFactor: 100%
+		DisableTicks: 1500
+	Warhead@areaSmu: Smudger
 		SmudgeType: Scorch
-		Size: 2,1
-		DestroyResources: true
+		Size: 2
 		Delay: 3
-		InfDeath: 5
+	Warhead@areaRes: Resourcer
+		DestroyResources: true
+		Size: 2
+		Delay: 3
+	Warhead@areaDis: Disabler
+		ValidTargets: EMP, Enemy, Neutral
+		Spread: 1c0, 2c0
+		SpreadFactor: 0%, 100%
+		DisableTicks: 250
+		Delay: 3
 
 Sniper:
 	Report: RAMGUN2.AUD
-	ValidTargets: Infantry
+	ValidTargets: Infantry, Enemy, Neutral, Ally
 	ROF: 40
 	Range: 6c0
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Damage: 100
 		Spread: 42
 		InfDeath: 2
@@ -148,7 +178,9 @@ HighV:
 	Report: GUN8.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: piffs
+	Warhead: Damager
 		Damage: 30
 		Spread: 683
 		Versus:
@@ -157,18 +189,19 @@ HighV:
 			Light: 70%
 			Heavy: 35%
 		InfDeath: 2
-		Explosion: piffs
 
 HeliAGGun:
 	ROF: 20
 	Burst: 2
 	BurstDelay: 0
 	Range: 4c0
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Report: gun5.aud
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: piffs
+	Warhead: Damager
 		Damage: 20
 		Spread: 256
 		Versus:
@@ -177,18 +210,19 @@ HeliAGGun:
 			Light: 75%
 			Heavy: 25%
 		InfDeath: 2
-		Explosion: piffs
 
 HeliAAGun:
 	ROF: 20
 	Burst: 2
 	BurstDelay: 0
 	Range: 4c0
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Report: gun5.aud
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: piffs
+	Warhead: Damager
 		Damage: 20
 		Spread: 128
 		Versus:
@@ -197,7 +231,6 @@ HeliAAGun:
 			Light: 50%
 			Heavy: 25%
 		InfDeath: 2
-		Explosion: piffs
 
 Pistol:
 	ROF: 7
@@ -206,7 +239,9 @@ Pistol:
 	Report: GUN18.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: piff
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 100%
@@ -214,7 +249,6 @@ Pistol:
 			Light: 50%
 			Heavy: 25%
 		InfDeath: 2
-		Explosion: piff
 		Damage: 1
 
 M16:
@@ -224,14 +258,15 @@ M16:
 	Report: MGUN2.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: piff
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 100%
 			Wood: 25%
 			Light: 30%
 			Heavy: 10%
-		Explosion: piff
 		InfDeath: 2
 		Damage: 15
 
@@ -239,7 +274,7 @@ Rockets:
 	ROF: 50
 	Range: 6c0
 	Report: BAZOOK1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -250,7 +285,12 @@ Rockets:
 		ContrailLength: 8
 		Speed: 298
 		RangeLimit: 20
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 50%
@@ -259,16 +299,13 @@ Rockets:
 			Heavy: 100%
 			Concrete: 25%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 30
 
 BikeRockets:
 	ROF: 50
 	Range: 6c0
 	Report: BAZOOK1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Burst: 2
 	BurstDelay: 10
 	Projectile: Missile
@@ -281,7 +318,12 @@ BikeRockets:
 		ContrailLength: 8
 		Speed: 298
 		RangeLimit: 20
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -290,9 +332,6 @@ BikeRockets:
 			Heavy: 100%
 			Concrete: 50%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 30
 
 OrcaAGMissiles:
@@ -301,7 +340,7 @@ OrcaAGMissiles:
 	BurstDelay: 12
 	Range: 5c0
 	Report: BAZOOK1.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -312,7 +351,12 @@ OrcaAGMissiles:
 		ContrailLength: 8
 		Speed: 298
 		RangeLimit: 30
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 50%
@@ -320,9 +364,6 @@ OrcaAGMissiles:
 			Light: 100%
 			Heavy: 75%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 25
 
 OrcaAAMissiles:
@@ -331,7 +372,7 @@ OrcaAAMissiles:
 	BurstDelay: 12
 	Range: 5c0
 	Report: BAZOOK1.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -342,15 +383,17 @@ OrcaAAMissiles:
 		ContrailLength: 8
 		Speed: 298
 		RangeLimit: 30
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Light: 75%
 			Heavy: 50%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 25
 
 Flamethrower:
@@ -360,17 +403,19 @@ Flamethrower:
 	Report: FLAMER2.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_napalm
+		ImpactSound: flamer2.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Scorch
+	Warhead: Damager
 		Spread: 341
 		Versus:
 			None: 100%
 			Wood: 100%
 			Light: 100%
 			Heavy: 20%
-		Explosion: small_napalm
 		InfDeath: 5
-		ImpactSound: flamer2.aud
-		SmudgeType: Scorch
 		Damage: 40
 
 BigFlamer:
@@ -382,7 +427,12 @@ BigFlamer:
 		Speed: 341
 	Burst: 2
 	BurstDelay: 25
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: med_napalm
+		ImpactSound: flamer2.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Scorch
+	Warhead: Damager
 		Spread: 341
 		Versus:
 			None: 100%
@@ -390,9 +440,6 @@ BigFlamer:
 			Light: 67%
 			Heavy: 25%
 		InfDeath: 5
-		Explosion: med_napalm
-		ImpactSound: flamer2.aud
-		SmudgeType: Scorch
 		Damage: 90
 
 Chemspray:
@@ -401,7 +448,12 @@ Chemspray:
 	Report: FLAMER2.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: chemball
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Scorch
+	Warhead: Damager
 		Damage: 80
 		Spread: 256
 		Versus:
@@ -410,9 +462,6 @@ Chemspray:
 			Light: 75%
 			Heavy: 50%
 		InfDeath: 6
-		Explosion: chemball
-		SmudgeType: Scorch
-		ImpactSound: xplos.aud
 
 Grenade:
 	ROF: 50
@@ -424,7 +473,12 @@ Grenade:
 		Angle: 62
 		Inaccuracy: 213
 		Image: BOMB
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_poof
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 341
 		Versus:
 			None: 100%
@@ -432,9 +486,6 @@ Grenade:
 			Light: 75%
 			Heavy: 35%
 		InfDeath: 3
-		Explosion: small_poof
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 50
 
 70mm:
@@ -444,7 +495,12 @@ Grenade:
 	Projectile: Bullet
 		Image: 120MM
 		Speed: 853
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -453,9 +509,6 @@ Grenade:
 			Heavy: 100%
 			Concrete: 50%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 25
 
 105mm:
@@ -465,7 +518,12 @@ Grenade:
 	Projectile: Bullet
 		Image: 120MM
 		Speed: 682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 30%
@@ -473,9 +531,6 @@ Grenade:
 			Light: 75%
 			Heavy: 100%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 30
 
 120mm:
@@ -485,7 +540,12 @@ Grenade:
 	Projectile: Bullet
 		Image: 120MM
 		Speed: 682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -494,9 +554,6 @@ Grenade:
 			Heavy: 100%
 			Concrete: 50%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 40
 
 120mmDual:
@@ -508,7 +565,12 @@ Grenade:
 	Projectile: Bullet
 		Image: 120MM
 		Speed: 682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 25%
@@ -517,9 +579,6 @@ Grenade:
 			Heavy: 100%
 			Concrete: 100%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 40
 
 TurretGun:
@@ -529,7 +588,12 @@ TurretGun:
 	Projectile: Bullet
 		Image: 120MM
 		Speed: 853
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 20%
@@ -537,16 +601,13 @@ TurretGun:
 			Light: 100%
 			Heavy: 100%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 40
 
 MammothMissiles:
 	ROF: 45
 	Range: 5c0
 	Report: ROCKET1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Burst: 2
 	BurstDelay: 15
 	Projectile: Missile
@@ -559,7 +620,12 @@ MammothMissiles:
 		ContrailLength: 8
 		Speed: 341
 		RangeLimit: 35
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 298
 		Versus:
 			None: 50%
@@ -567,9 +633,6 @@ MammothMissiles:
 			Light: 100%
 			Heavy: 50%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 45
 
 227mm:
@@ -579,7 +642,7 @@ MammothMissiles:
 	Burst: 4
 	BurstDelay: 4
 	Report: ROCKET1.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Arm: 5
 		High: yes
@@ -591,7 +654,12 @@ MammothMissiles:
 		ContrailLength: 10
 		Trail: smokey
 		Speed: 341
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: med_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 683
 		Versus:
 			None: 35%
@@ -599,9 +667,6 @@ MammothMissiles:
 			Light: 100%
 			Heavy: 50%
 		InfDeath: 4
-		Explosion: med_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 25
 
 227mm.stnk:
@@ -610,7 +675,7 @@ MammothMissiles:
 	Report: ROCKET1.AUD
 	Burst: 2
 	BurstDelay: 10
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -621,7 +686,12 @@ MammothMissiles:
 		ContrailLength: 8
 		Speed: 213
 		RangeLimit: 55
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 35%
@@ -629,9 +699,6 @@ MammothMissiles:
 			Light: 100%
 			Heavy: 90%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 60
 
 ArtilleryShell:
@@ -646,7 +713,12 @@ ArtilleryShell:
 		Inaccuracy: 1c256
 		ContrailLength: 30
 		Image: 120MM
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: poof
+		ImpactSound: XPLOSML2.AUD
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Damage: 150
 		Spread: 341
 		Versus:
@@ -655,9 +727,6 @@ ArtilleryShell:
 			Light: 75%
 			Heavy: 50%
 		InfDeath: 3
-		Explosion: poof
-		SmudgeType: Crater
-		ImpactSound: XPLOSML2.AUD
 
 MachineGun:
 	ROF: 20
@@ -667,7 +736,9 @@ MachineGun:
 	Report: MGUN11.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: piffs
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 100%
@@ -676,7 +747,6 @@ MachineGun:
 			Heavy: 20%
 			Concrete: 10%
 		InfDeath: 2
-		Explosion: piffs
 		Damage: 15
 
 BoatMissile:
@@ -695,7 +765,12 @@ BoatMissile:
 		ContrailLength: 8
 		Speed: 170
 		RangeLimit: 60
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_poof
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 256
 		Versus:
 			None: 90%
@@ -703,16 +778,13 @@ BoatMissile:
 			Light: 60%
 			Heavy: 25%
 		InfDeath: 3
-		Explosion: small_poof
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 60
 
 TowerMissle:
 	ROF: 15
 	Range: 7c0
 	Report: ROCKET2.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -723,7 +795,12 @@ TowerMissle:
 		ContrailLength: 8
 		Speed: 298
 		RangeLimit: 40
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: med_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 683
 		Versus:
 			None: 50%
@@ -731,19 +808,18 @@ TowerMissle:
 			Light: 100%
 			Heavy: 100%
 		InfDeath: 3
-		Explosion: med_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 25
 
 Vulcan:
-	ValidTargets: Ground, Water
+	ValidTargets: Ground, Water, Enemy, Neutral, Ally
 	ROF: 2
 	Range: 6c0
 	Report: gun5.aud
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: piffs
+	Warhead: Damager
 		Damage: 100
 		Spread: 426
 		Versus:
@@ -752,17 +828,22 @@ Vulcan:
 			Light: 100%
 			Heavy: 35%
 		InfDeath: 2
-		Explosion: piffs
 
 Napalm:
-	ValidTargets: Ground, Water
+	ValidTargets: Ground, Water, Enemy, Neutral, Ally
 	ROF: 4
 	Range: 2c0
 	Burst: 2
 	BurstDelay: 2
 	Projectile: GravityBomb
 		Image: BOMBLET
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: med_napalm
+		WaterExplosion: med_napalm
+		ImpactSound: flamer2.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Scorch
+	Warhead: Damager
 		Spread: 341
 		Versus:
 			None: 100%
@@ -770,14 +851,15 @@ Napalm:
 			Light: 100%
 			Heavy: 80%
 		InfDeath: 5
-		Explosion: med_napalm
-		WaterExplosion: med_napalm
-		ImpactSound: flamer2.aud
-		SmudgeType: Scorch
 		Damage: 300
 
 Napalm.Crate:
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: med_napalm
+		ImpactSound: flamer2.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Scorch
+	Warhead: Damager
 		Spread: 170
 		Versus:
 			None: 90%
@@ -785,9 +867,6 @@ Napalm.Crate:
 			Light: 60%
 			Heavy: 25%
 		InfDeath: 5
-		Explosion: med_napalm
-		ImpactSound: flamer2.aud
-		SmudgeType: Scorch
 		Damage: 500
 
 Laser:
@@ -798,19 +877,20 @@ Laser:
 	Projectile: LaserZap
 		BeamWidth: 2
 		HitAnim: laserfire
-	Warhead:
+	Warhead@1Smu: Smudger
+		SmudgeType: Scorch
+	Warhead: Damager
 		Spread: 42
 		Versus:
 			Wood: 50%
 		InfDeath: 5
-		SmudgeType: Scorch
 		Damage: 360
 
 SAMMissile:
 	ROF: 15
 	Range: 8c0
 	Report: ROCKET2.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -820,7 +900,12 @@ SAMMissile:
 		RangeLimit: 35
 		Trail: smokey
 		ContrailLength: 8
-	Warhead: AP
+	Warhead@1Eff: EffectCreator
+		Explosion: small_frag
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 682
 		Versus:
 			None: 100%
@@ -828,9 +913,6 @@ SAMMissile:
 			Light: 100%
 			Heavy: 75%
 		InfDeath: 4
-		Explosion: small_frag
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 30
 
 HonestJohn:
@@ -847,7 +929,12 @@ HonestJohn:
 		Speed: 187
 		RangeLimit: 35
 		Angle: 88
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_poof
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 256
 		Versus:
 			None: 90%
@@ -855,37 +942,37 @@ HonestJohn:
 			Light: 60%
 			Heavy: 25%
 		InfDeath: 3
-		Explosion: small_poof
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 100
 
 Tiberium:
 	ROF: 16
-	Warhead:
+	Warhead: Damager
 		Spread: 42
 		InfDeath: 6
 		Damage: 2
 		PreventProne: yes
 
 TiberiumExplosion:
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: chemball
+		ImpactSound: xplosml2.aud
+	Warhead@2Res: Resourcer
+		AddsResourceType: Tiberium
+		Size: 1
+	Warhead: Damager
 		Damage: 10
 		Spread: 9
-		Size: 1,1
+		Size: 1
 		Versus:
 			None: 90%
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: chemball
 		InfDeath: 3
-		ImpactSound: xplosml2.aud
-		AddsResourceType: Tiberium
 
 Heal:
 	ROF: 4
-	Warhead:
+	Warhead: Damager
 		Spread: 42
 		Damage: -1
 		PreventProne: yes
@@ -894,32 +981,34 @@ APCGun:
 	ROF: 18
 	Range: 5c0
 	Report: gun20.aud
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_poof
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			None: 50%
 			Wood: 50%
 			Light: 100%
 			Heavy: 50%
-		Explosion: small_poof
 		Damage: 15
 
 APCGun.AA:
 	ROF: 18
 	Range: 7c0
 	Report: gun20.aud
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 1c682
 		High: true
-	Warhead:
+	Warhead@1Eff: EffectCreator
+		Explosion: small_poof
+	Warhead: Damager
 		Spread: 128
 		Versus:
 			Heavy: 50%
-		Explosion: small_poof
 		Damage: 25
 
 Patriot:
@@ -929,7 +1018,7 @@ Patriot:
 	Burst: 2
 	BurstDelay: 15
 	Report: ROCKET2.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		High: yes
 		Image: patriot
@@ -939,7 +1028,12 @@ Patriot:
 		Speed: 426
 		RangeLimit: 30
 		Angle: 88
-	Warhead: AP
+	Warhead@1Eff: EffectCreator
+		Explosion: poof
+		ImpactSound: xplos.aud
+	Warhead@2Smu: Smudger
+		SmudgeType: Crater
+	Warhead: Damager
 		Spread: 682
 		Versus:
 			None: 100%
@@ -947,9 +1041,6 @@ Patriot:
 			Light: 100%
 			Heavy: 75%
 		InfDeath: 4
-		Explosion: poof
-		ImpactSound: xplos.aud
-		SmudgeType: Crater
 		Damage: 40
 
 Tail:
@@ -957,7 +1048,7 @@ Tail:
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 213
 		Versus:
 			None: 90%
@@ -973,7 +1064,7 @@ Horn:
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 213
 		Versus:
 			None: 90%
@@ -989,7 +1080,7 @@ Teeth:
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 213
 		Versus:
 			None: 90%
@@ -1005,7 +1096,7 @@ Claw:
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead:
+	Warhead: Damager
 		Spread: 213
 		Versus:
 			None: 90%
@@ -1017,7 +1108,8 @@ Claw:
 		Damage: 60
 
 Demolish:
-	Warhead:
-		ImpactSound: xplobig6.aud
+	Warhead@1Eff: EffectCreator
 		Explosion: building
+		ImpactSound: xplobig6.aud
+	Warhead: Damager
 

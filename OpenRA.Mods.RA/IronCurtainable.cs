@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 {
 	class IronCurtainableInfo : TraitInfo<IronCurtainable> { }
 
-	class IronCurtainable : IDamageModifier, ITick, ISync, ISelectionBar
+	class IronCurtainable : IDamageModifier, ITick, ISync, ISelectionBar, IDisableTicksModifier
 	{
 		[Sync] int RemainingTicks = 0;
 		int TotalTicks;
@@ -28,7 +28,12 @@ namespace OpenRA.Mods.RA
 				RemainingTicks--;
 		}
 
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		public float GetDamageModifier(Actor attacker, DamagerWarheadInfo warhead)
+		{
+			return (RemainingTicks > 0) ? 0.0f : 1.0f;
+		}
+
+		public float GetDisableTicksModifier(Actor attacker, DisablerWarheadInfo warhead)
 		{
 			return (RemainingTicks > 0) ? 0.0f : 1.0f;
 		}

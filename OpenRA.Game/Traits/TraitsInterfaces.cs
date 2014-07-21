@@ -27,7 +27,7 @@ namespace OpenRA.Traits
 	public class AttackInfo
 	{
 		public Actor Attacker;
-		public WarheadInfo Warhead;
+		public DamagerWarheadInfo Warhead;
 		public int Damage;
 		public DamageState DamageState;
 		public DamageState PreviousDamageState;
@@ -147,7 +147,7 @@ namespace OpenRA.Traits
 	}
 
 	public interface IRenderModifier { IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r); }
-	public interface IDamageModifier { float GetDamageModifier(Actor attacker, WarheadInfo warhead); }
+	public interface IDamageModifier { float GetDamageModifier(Actor attacker, DamagerWarheadInfo warhead); }
 	public interface ISpeedModifier { decimal GetSpeedModifier(); }
 	public interface IFirepowerModifier { float GetFirepowerModifier(); }
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }

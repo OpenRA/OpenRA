@@ -320,9 +320,12 @@ namespace OpenRA.Utility
 			}
 		}
 
-		static void UpgradeWeaponRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		static int UpgradeWeaponRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth, int warheadCounter = 0)
 		{
 			var parentKey = parent != null ? parent.Key.Split('@').First() : null;
+			var newNodes = new List<MiniYamlNode>();
+
+			if (depth == 0) warheadCounter = 0;
 
 			foreach (var node in nodes)
 			{
@@ -384,8 +387,145 @@ namespace OpenRA.Utility
 						node.Key = "DestroyResources";
 				}
 
-				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
+				if (engineVersion < 20140720)
+				{
+					//Update diplomacy target rules
+					if (depth == 1 && node.Key.Contains("ValidTargets") &&
+						!node.Value.Value.Contains("Enemy") &&
+						!node.Value.Value.Contains("Neutral") &&
+						!node.Value.Value.Contains("Ally"))
+					{
+						node.Value.Value = node.Value.Value + ", Enemy, Neutral, Ally";
+					}
+
+					//Split out the warheads to Damager, Smudger, Resourcer, EffectCreator.
+					if (depth == 1 && node.Key.Contains("Warhead") && node.Value.Value == null)
+					{
+						node.Value.Value = "Damager";
+
+						for (int i = 0; i < node.Value.Nodes.Count; i++)
+						{
+							var currentNode = node.Value.Nodes[i];
+
+							//Resourcer
+							if (currentNode.Key.Contains("DestroyResources") ||
+								currentNode.Key.Contains("Ore"))
+							{
+								warheadCounter++;
+								currentNode.Key = "KILLME!";
+
+								var newYaml = new List<MiniYamlNode>();
+								newYaml.Add(new MiniYamlNode("DestroyResources", currentNode.Value.Value));
+
+								var temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Size");
+								if (temp != null)
+									newYaml.Add(new MiniYamlNode("Size",temp.Value));
+
+								temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Delay");
+								if (temp != null)
+									newYaml.Add(new MiniYamlNode("Delay", temp.Value));
+
+								newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Res", "Resourcer", newYaml));
+							}
+							//Resourcer
+							if (currentNode.Key.Contains("AddsResourceType"))
+							{
+								warheadCounter++;
+								currentNode.Key = "KILLME!";
+
+								var newYaml = new List<MiniYamlNode>();
+								newYaml.Add(new MiniYamlNode("AddsResourceType", currentNode.Value.Value));
+
+								var temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Size");
+								if (temp != null)
+									newYaml.Add(new MiniYamlNode("Size", temp.Value));
+
+								temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Delay");
+								if (temp != null)
+									newYaml.Add(new MiniYamlNode("Delay", temp.Value));
+
+								newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Res", "Resourcer", newYaml));
+							}
+							//Smudger
+							if (currentNode.Key.Contains("SmudgeType"))
+							{
+								warheadCounter++;
+								currentNode.Key = "KILLME!";
+
+								var newYaml = new List<MiniYamlNode>();
+								newYaml.Add(new MiniYamlNode("SmudgeType", currentNode.Value.Value));
+
+								var temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Size");
+								if (temp != null)
+									newYaml.Add(new MiniYamlNode("Size", temp.Value));
+
+								temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Delay");
+								if (temp != null)
+									newYaml.Add(new MiniYamlNode("Delay", temp.Value));
+
+								newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Smu", "Smudger", newYaml));
+							}
+							//EffectCreator
+							if (currentNode.Key.Contains("Explosion") ||
+								currentNode.Key.Contains("WaterExplosion") ||
+								currentNode.Key.Contains("ImpactSound") ||
+								currentNode.Key.Contains("WaterImpactSound"))
+							{
+								warheadCounter++;
+
+								var newYaml = new List<MiniYamlNode>();
+
+								var temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Explosion");
+								if (temp != null)
+								{
+									newYaml.Add(new MiniYamlNode("Explosion", temp.Value));
+									temp.Key = "KILLME!";
+								}
+								temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "WaterExplosion");
+								if (temp != null)
+								{
+									newYaml.Add(new MiniYamlNode("WaterExplosion", temp.Value));
+									temp.Key = "KILLME!";
+								}
+
+								temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "ImpactSound");
+								if (temp != null)
+								{
+									newYaml.Add(new MiniYamlNode("ImpactSound", temp.Value));
+									temp.Key = "KILLME!";
+								}
+								temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "WaterImpactSound");
+								if (temp != null)
+								{
+									newYaml.Add(new MiniYamlNode("WaterImpactSound", temp.Value));
+									temp.Key = "KILLME!";
+								}
+
+								temp = node.Value.Nodes.FirstOrDefault(n => n.Key == "Delay");
+								if (temp != null)
+									newYaml.Add(new MiniYamlNode("Delay", temp.Value));
+
+								newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Eff", "EffectCreator", newYaml));
+							}
+						}
+
+						var temp2 = node.Value.Nodes.FirstOrDefault(n => n.Key == "Size");
+						if (temp2 != null)
+							temp2.Value.Value = temp2.Value.Value.Split(',')[0];
+					}
+
+					if (node.Key != "KILLME!")
+					{
+						newNodes.Add(node);
+					}
+				}
+
+				warheadCounter = UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1, warheadCounter);
 			}
+			if (newNodes.Any())
+				nodes = newNodes;
+
+			return warheadCounter;
 		}
 
 		static void UpgradeTileset(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
