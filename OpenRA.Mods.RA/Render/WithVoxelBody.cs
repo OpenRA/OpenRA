@@ -9,18 +9,30 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
 	[Desc("Also returns a default selection size that is calculated automatically from the voxel dimensions.")]
-	public class WithVoxelBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		public readonly string Sequence = "idle";
 
 		public object Create(ActorInitializer init) { return new WithVoxelBody(init.self, this); }
+
+		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
+		{
+			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var voxel = VoxelProvider.GetVoxel(image, "idle");
+			var bodyOrientation = new[] { body.QuantizeOrientation(orientation, facings) };
+			yield return new VoxelAnimation(voxel, () => WVec.Zero,
+				() => bodyOrientation,
+				() => false, () => 0);
+		}
 
 		public int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai) { return 0; }
 	}
