@@ -11,11 +11,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithVoxelBarrelInfo : ITraitInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelBarrelInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		[Desc("Voxel sequence name to use")]
 		public readonly string Sequence = "barrel";
@@ -25,6 +26,22 @@ namespace OpenRA.Mods.RA.Render
 		public readonly WVec LocalOffset = WVec.Zero;
 
 		public object Create(ActorInitializer init) { return new WithVoxelBarrel(init.self, this); }
+
+		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
+		{
+			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var armament = init.Actor.Traits.WithInterface<ArmamentInfo>()
+				.First(a => a.Name == Armament);
+			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
+				.First(tt => tt.Turret == armament.Turret);
+
+			var voxel = VoxelProvider.GetVoxel(image, Sequence);
+			var turretOrientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(t.InitialFacing) - orientation.Yaw), facings);
+			var turretOffset = body.LocalToWorld(t.Offset.Rotate(orientation));
+
+			yield return new VoxelAnimation(voxel, () => turretOffset, () => new [] { turretOrientation, orientation },
+				() => false, () => 0);
+		}
 	}
 
 	public class WithVoxelBarrel
