@@ -695,7 +695,7 @@ GTWR:
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: barracks
-		Queue: Defence.GDI
+		Queue: Defence.GDI, Defence.Nod
 	Building:
 		Power: -10
 	-GivesBuildableArea:
