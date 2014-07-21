@@ -172,7 +172,7 @@ FTNK:
 		ROT: 7
 		Speed: 99
 	Health:
-		HP: 300
+		HP: 270
 	Armor:
 		Type: Heavy
 	RevealsShroud:
