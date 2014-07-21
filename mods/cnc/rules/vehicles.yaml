@@ -170,7 +170,7 @@ FTNK:
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 7
-		Speed: 113
+		Speed: 99
 	Health:
 		HP: 300
 	Armor:
