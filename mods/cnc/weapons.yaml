@@ -393,7 +393,7 @@ BigFlamer:
 		Explosion: med_napalm
 		ImpactSound: flamer2.aud
 		SmudgeType: Scorch
-		Damage: 90
+		Damage: 75
 
 Chemspray:
 	ROF: 70
