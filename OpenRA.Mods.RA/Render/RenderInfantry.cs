@@ -8,8 +8,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -27,6 +29,18 @@ namespace OpenRA.Mods.RA.Render
 		public readonly string[] StandAnimations = { "stand" };
 
 		public override object Create(ActorInitializer init) { return new RenderInfantry(init.self, this); }
+
+		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		{
+			var facing = 0;
+			var ifacing = init.Actor.Traits.GetOrDefault<IFacingInfo>();
+			if (ifacing != null)
+				facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing();
+
+			var anim = new Animation(init.World, image, () => facing);
+			anim.PlayRepeating(StandAnimations.First());
+			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
+		}
 
 		public override int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai)
 		{
