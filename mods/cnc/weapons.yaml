@@ -620,7 +620,7 @@ MammothMissiles:
 		Trail: smokey
 		ContrailLength: 8
 		Speed: 213
-		RangeLimit: 55
+		RangeLimit: 40
 	Warhead:
 		Spread: 128
 		Versus:
