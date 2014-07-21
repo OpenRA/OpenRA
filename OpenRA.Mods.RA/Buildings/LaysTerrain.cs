@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
-	public class LaysTerrainInfo : ITraitInfo, Requires<BuildingInfo>, Requires<RenderSpritesInfo>
+	public class LaysTerrainInfo : ITraitInfo, Requires<BuildingInfo>
 	{
 		[Desc("The terrain template to place. If the template is PickAny, then" +
 			"the actor footprint will be filled with this tile.")]
