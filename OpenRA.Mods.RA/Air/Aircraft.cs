@@ -37,6 +37,9 @@ namespace OpenRA.Mods.RA.Air
 		public readonly int Speed = 1;
 		public readonly string[] LandableTerrainTypes = { };
 
+		[Desc("Can the actor be ordered to move in to shroud?")]
+		public readonly bool MoveIntoShroud = true;
+
 		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
 		public int GetInitialFacing() { return InitialFacing; }
 	}
@@ -248,7 +251,7 @@ namespace OpenRA.Mods.RA.Air
 				yield return new EnterAlliedActorTargeter<Building>("Enter", 5,
 					target => AircraftCanEnter(target), target => !Reservable.IsReserved(target));
 
-				yield return new AircraftMoveOrderTargeter();
+				yield return new AircraftMoveOrderTargeter(info);
 			}
 		}
 
@@ -297,13 +300,26 @@ namespace OpenRA.Mods.RA.Air
 		public string OrderID { get { return "Move"; } }
 		public int OrderPriority { get { return 4; } }
 
+		readonly AircraftInfo info;
+
+		public AircraftMoveOrderTargeter(AircraftInfo info) { this.info = info; }
+
 		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 		{
 			if (target.Type != TargetType.Terrain)
 				return false;
 
+			var location = self.World.Map.CellContaining(target.CenterPosition);
+			var explored = self.Owner.Shroud.IsExplored(location);
+			cursor = self.World.Map.Contains(location) ?
+				(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") :
+				"move-blocked";
+
 			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-			cursor = self.World.Map.Contains(self.World.Map.CellContaining(target.CenterPosition)) ? "move" : "move-blocked";
+
+			if (!explored && !info.MoveIntoShroud)
+				cursor = "move-blocked";
+
 			return true;
 		}
 
