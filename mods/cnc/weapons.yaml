@@ -279,8 +279,8 @@ BikeRockets:
 		ROT: 10
 		Trail: smokey
 		ContrailLength: 8
-		Speed: 298
-		RangeLimit: 20
+		Speed: 213
+		RangeLimit: 30
 	Warhead:
 		Spread: 128
 		Versus:
