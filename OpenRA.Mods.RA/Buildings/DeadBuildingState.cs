@@ -10,6 +10,7 @@
 
 using OpenRA.Effects;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.Cnc
 {
