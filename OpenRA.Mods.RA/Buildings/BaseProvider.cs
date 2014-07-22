@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
@@ -68,12 +69,13 @@ namespace OpenRA.Mods.RA.Buildings
 			if (!ValidRenderPlayer())
 				return;
 
-			wr.DrawRangeCircleWithContrast(
+			new RangeCircleRenderable(
 				self.CenterPosition,
 				WRange.FromCells(Info.Range),
+				0,
 				Color.FromArgb(128, Ready() ? Color.White : Color.Red),
 				Color.FromArgb(96, Color.Black)
-			);
+			).Render(wr);
 		}
 
 		// Selection bar

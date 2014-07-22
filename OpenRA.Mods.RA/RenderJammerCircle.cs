@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -57,12 +58,13 @@ namespace OpenRA.Mods.RA
 
 		public static void DrawRangeCircle(WorldRenderer wr, WPos pos, int range, Color color)
 		{
-			wr.DrawRangeCircleWithContrast(
+			new RangeCircleRenderable(
 				pos,
 				WRange.FromCells(range),
+				0,
 				Color.FromArgb(128, color),
 				Color.FromArgb(96, Color.Black)
-			);
+			).Render(wr);
 		}
 	}
 }

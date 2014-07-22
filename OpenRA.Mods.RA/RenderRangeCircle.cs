@@ -11,6 +11,7 @@
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -39,12 +40,13 @@ namespace OpenRA.Mods.RA
 			if (range == WRange.Zero)
 				return;
 
-			wr.DrawRangeCircleWithContrast(
+			new RangeCircleRenderable(
 				centerPosition,
 				range,
+				0,
 				Color.FromArgb(128, Color.Yellow),
 				Color.FromArgb(96, Color.Black)
-			);
+			).Render(wr);
 
 			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
@@ -71,12 +73,13 @@ namespace OpenRA.Mods.RA
 			if (self.Owner != self.World.LocalPlayer)
 				return;
 
-			wr.DrawRangeCircleWithContrast(
+			new RangeCircleRenderable(
 				self.CenterPosition,
 				attack.GetMaximumRange(),
+				0,
 				Color.FromArgb(128, Color.Yellow),
 				Color.FromArgb(96, Color.Black)
-			);
+			).Render(wr);
 		}
 	}
 }

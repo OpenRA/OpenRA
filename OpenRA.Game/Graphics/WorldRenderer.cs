@@ -199,17 +199,6 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawRangeCircleWithContrast(WPos pos, WRange range, Color fg, Color bg)
-		{
-			var wlr = Game.Renderer.WorldLineRenderer;
-			var oldWidth = wlr.LineWidth;
-			wlr.LineWidth = 3;
-			DrawRangeCircle(pos, range, bg);
-			wlr.LineWidth = 1;
-			DrawRangeCircle(pos, range, fg);
-			wlr.LineWidth = oldWidth;
-		}
-
 		public void DrawTargetMarker(Color c, float2 location)
 		{
 			var tl = new float2(-1 / Viewport.Zoom, -1 / Viewport.Zoom);

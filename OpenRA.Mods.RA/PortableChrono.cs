@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 
@@ -180,12 +181,13 @@ namespace OpenRA.Mods.RA
 			if (!self.Trait<PortableChrono>().Info.HasDistanceLimit)
 				return;
 
-			wr.DrawRangeCircleWithContrast(
+			new RangeCircleRenderable(
 				self.CenterPosition,
 				WRange.FromCells(self.Trait<PortableChrono>().Info.MaxDistance),
+				0,
 				Color.FromArgb(128, Color.LawnGreen),
 				Color.FromArgb(96, Color.Black)
-			);
+			).Render(wr);
 		}
 
 		public string GetCursor(World world, CPos xy, MouseInput mi)
