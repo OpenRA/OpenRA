@@ -240,6 +240,7 @@
     <Compile Include="Graphics\SelectionBoxRenderable.cs" />
     <Compile Include="Graphics\SelectionBarsRenderable.cs" />
     <Compile Include="Graphics\TargetLineRenderable.cs" />
+    <Compile Include="Graphics\UISpriteRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
