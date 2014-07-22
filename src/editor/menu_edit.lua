@@ -225,7 +225,8 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
 
 local function processSelection(editor, func)
   local text = editor:GetSelectedText()
-  local pos = editor:GetCurrentPos()
+  local line = editor:GetCurrentLine()
+  local posinline = editor:GetCurrentPos() - editor:PositionFromLine(line)
   if #text == 0 then
     editor:SelectAll()
     text = editor:GetSelectedText()
@@ -250,7 +251,8 @@ local function processSelection(editor, func)
       editor:ReplaceTarget(newtext)
     end
   end
-  editor:GotoPos(pos)
+  editor:GotoPos(math.min(
+      editor:PositionFromLine(line)+posinline, editor:GetLineEndPosition(line)))
 end
 
 frame:Connect(ID_SORT, wx.wxEVT_COMMAND_MENU_SELECTED,
