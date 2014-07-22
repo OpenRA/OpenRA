@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderSimpleInfo : RenderSpritesInfo, Requires<IBodyOrientationInfo>
+	public class RenderSimpleInfo : RenderSpritesInfo, ILegacyEditorRenderInfo, Requires<IBodyOrientationInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
@@ -26,6 +26,9 @@ namespace OpenRA.Mods.RA.Render
 
 			return anim.Render(WPos.Zero, WVec.Zero, 0, pr, Scale);
 		}
+
+		public string EditorPalette { get { return Palette; } }
+		public string EditorImage(ActorInfo actor) { return RenderSimple.GetImage(actor); }
 	}
 
 	public class RenderSimple : RenderSprites, IAutoSelectionSize

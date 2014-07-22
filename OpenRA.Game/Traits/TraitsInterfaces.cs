@@ -265,4 +265,10 @@ namespace OpenRA.Traits
 			return a.TraitsImplementing<IDisable>().Any(d => d.Disabled);
 		}
 	}
+
+	public interface ILegacyEditorRenderInfo
+	{
+		string EditorPalette { get; }
+		string EditorImage(ActorInfo actor);
+	}
 }

@@ -47,8 +47,7 @@ namespace OpenRA.Editor
 
 		public static ActorTemplate RenderActor(ActorInfo info, TileSet tileset, IPalette p)
 		{
-			var image = RenderSprites.GetImage(info);
-
+			var image = info.Traits.Get<ILegacyEditorRenderInfo>().EditorImage(info);
 			using (var s = GlobalFileSystem.OpenWithExts(image, tileset.Extensions))
 			{
 				var shp = new ShpReader(s);

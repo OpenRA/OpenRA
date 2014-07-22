@@ -219,7 +219,7 @@ namespace OpenRA.Editor
 				try
 				{
 					var info = Program.Rules.Actors[a];
-					if (!info.Traits.Contains<RenderSimpleInfo>()) continue;
+					if (!info.Traits.Contains<ILegacyEditorRenderInfo>()) continue;
 
 					var etf = info.Traits.GetOrDefault<EditorTilesetFilterInfo>();
 					if (etf != null && etf.ExcludeTilesets != null
@@ -228,10 +228,10 @@ namespace OpenRA.Editor
 						&& !etf.RequireTilesets.Contains(tileset.Id)) continue;
 
 					var templatePalette = shadowedPalette;
-					var rsi = info.Traits.GetOrDefault<RenderSimpleInfo>();
+					var rsi = info.Traits.GetOrDefault<ILegacyEditorRenderInfo>();
 
 					// exception for desert buildings
-					if (rsi != null && rsi.Palette != null && rsi.Palette.Contains("terrain"))
+					if (rsi != null && rsi.EditorPalette != null && rsi.EditorPalette.Contains("terrain"))
 						templatePalette = palette;
 
 					var template = RenderUtils.RenderActor(info, tileset, templatePalette);
