@@ -16,13 +16,21 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class Demolish : Activity
 	{
-		Target target;
-		int delay;
+		readonly Target target;
+		readonly int delay;
+		readonly int flashes;
+		readonly int flashesDelay;
+		readonly int flashInterval;
+		readonly int flashDuration;
 
-		public Demolish(Actor target, int delay)
+		public Demolish(Actor target, int delay, int flashes, int flashesDelay, int flashInterval, int flashDuration)
 		{
 			this.target = Target.FromActor(target);
 			this.delay = delay;
+			this.flashes = flashes;
+			this.flashesDelay = flashesDelay;
+			this.flashInterval = flashInterval;
+			this.flashDuration = flashDuration;
 		}
 
 		public override Activity Tick(Actor self)
@@ -30,24 +38,31 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
-			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
+			self.World.AddFrameEndTask(w =>
 			{
-				// Can't demolish an already dead actor
-				if (target.Type != TargetType.Actor)
-					return;
+				for (var f = 0; f < flashes; f++)
+					w.Add(new DelayedAction(flashesDelay + f * flashInterval, () =>
+						w.Add(new FlashTarget(target.Actor, ticks: flashDuration))));
 
-				// Invulnerable actors can't be demolished
-				var modifier = (float)target.Actor.TraitsImplementing<IDamageModifier>()
-					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
-					.Select(t => t.GetDamageModifier(self, null)).Product();
+				w.Add(new DelayedAction(delay, () =>
+				{
+					// Can't demolish an already dead actor
+					if (target.Type != TargetType.Actor)
+						return;
 
-				var demolishable = target.Actor.TraitOrDefault<IDemolishable>();
+					// Invulnerable actors can't be demolished
+					var modifier = (float)target.Actor.TraitsImplementing<IDamageModifier>()
+						.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
+						.Select(t => t.GetDamageModifier(self, null)).Product();
+
+					var demolishable = target.Actor.TraitOrDefault<IDemolishable>();
 					if (demolishable == null || !demolishable.IsValidTarget(target.Actor, self))
-					return;
+						return;
 
-				if (modifier > 0)
-					demolishable.Demolish(target.Actor, self);
-			})));
+					if (modifier > 0)
+						demolishable.Demolish(target.Actor, self);
+				}));
+			});
 
 			return NextActivity;
 		}
