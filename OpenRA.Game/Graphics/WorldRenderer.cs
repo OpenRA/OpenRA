@@ -157,35 +157,14 @@ namespace OpenRA.Graphics
 			Game.Renderer.Flush();
 		}
 
-		public void DrawSelectionBox(Actor a, Color c)
-		{
-			var pos = ScreenPxPosition(a.CenterPosition);
-			var bounds = a.Bounds.Value;
-
-			var tl = pos + new float2(bounds.Left, bounds.Top);
-			var br = pos + new float2(bounds.Right, bounds.Bottom);
-			var tr = new float2(br.X, tl.Y);
-			var bl = new float2(tl.X, br.Y);
-			var u = new float2(4f / Viewport.Zoom, 0);
-			var v = new float2(0, 4f / Viewport.Zoom);
-
-			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(tl + u, tl, c, c);
-			wlr.DrawLine(tl, tl + v, c, c);
-			wlr.DrawLine(tr, tr - u, c, c);
-			wlr.DrawLine(tr, tr + v, c, c);
-
-			wlr.DrawLine(bl, bl + u, c, c);
-			wlr.DrawLine(bl, bl - v, c, c);
-			wlr.DrawLine(br, br - u, c, c);
-			wlr.DrawLine(br, br - v, c, c);
-		}
-
 		public void DrawRollover(Actor unit)
 		{
 			var selectable = unit.TraitOrDefault<Selectable>();
 			if (selectable != null)
-				selectable.DrawRollover(this);
+			{
+				if (selectable.Info.Selectable)
+					new SelectionBarsRenderable(unit).Render(this);
+			}
 		}
 
 		public void DrawRangeCircle(WPos pos, WRange range, Color c)
