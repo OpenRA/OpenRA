@@ -295,3 +295,61 @@ PT:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
 
+CARR:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildPaletteOrder: 90
+		Prerequisites: ~syrd, hpad
+		Hotkey: h
+	Valued:
+		Cost: 700
+	Tooltip:
+		Name: Heli carrier
+		Description: Deploys into a water-borne helipad.\n  Unarmed
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	Mobile:
+		ROT: 8
+		Speed: 88
+	RevealsShroud:
+		Range: 6c0
+	IronCurtainable:
+	RepairableNear:
+	Explodes:
+		Weapon: UnitExplodeShip
+		EmptyWeapon: UnitExplodeShip
+	Transforms:
+		IntoActor: carrhpad
+	RenderUnit:
+
+CARRHPAD:
+	Inherits: ^Building
+	Valued:
+		Cost: 700
+	Tooltip:
+		Name: Helipad
+		Description: Reloads helicopters.
+	Building:
+		Power: -10
+		TerrainTypes: Water
+	TargetableBuilding:
+		TargetTypes: Ground, Water
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 6c0
+	Exit@1:
+		SpawnOffset: 0,-256,0
+		ExitCell: 0,0
+		MoveIntoWorld: false
+	RallyPoint:
+	Reservable:
+	IronCurtainable:
+	Transforms:
+		IntoActor: carr
+
