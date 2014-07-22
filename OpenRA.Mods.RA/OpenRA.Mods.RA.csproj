@@ -530,6 +530,7 @@
     <Compile Include="Air\FlyAwayOnIdle.cs" />
     <Compile Include="Buildings\ClonesProducedUnits.cs" />
     <Compile Include="Cloneable.cs" />
+    <Compile Include="Graphics\RangeCircleRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

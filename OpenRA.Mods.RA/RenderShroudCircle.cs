@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -18,12 +19,13 @@ namespace OpenRA.Mods.RA
 	{
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
-			wr.DrawRangeCircleWithContrast(
+			new RangeCircleRenderable(
 				centerPosition,
 				ai.Traits.Get<CreatesShroudInfo>().Range,
+				0,
 				Color.FromArgb(128, Color.Cyan),
 				Color.FromArgb(96, Color.Black)
-			);
+			).Render(wr);
 
 			foreach (var a in w.ActorsWithTrait<RenderShroudCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
@@ -44,12 +46,13 @@ namespace OpenRA.Mods.RA
 			if (self.Owner != self.World.LocalPlayer)
 				return;
 
-			wr.DrawRangeCircleWithContrast(
+			new RangeCircleRenderable(
 				self.CenterPosition,
 				self.Info.Traits.Get<CreatesShroudInfo>().Range,
+				0,
 				Color.FromArgb(128, Color.Cyan),
 				Color.FromArgb(96, Color.Black)
-			);
+			).Render(wr);
 		}
 	}
 }

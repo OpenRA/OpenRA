@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -30,11 +31,13 @@ namespace OpenRA.Mods.RA
 			if (self.Owner != self.World.LocalPlayer)
 				return;
 
-			wr.DrawRangeCircleWithContrast(
+			new RangeCircleRenderable(
 				self.CenterPosition,
 				WRange.FromCells(self.Info.Traits.Get<DetectCloakedInfo>().Range),
+				0,
 				Color.FromArgb(128, Color.LimeGreen),
-				Color.FromArgb(96, Color.Black));
+				Color.FromArgb(96, Color.Black)
+			).Render(wr);
 		}
 	}
 }
