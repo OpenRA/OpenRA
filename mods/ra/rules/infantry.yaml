@@ -303,6 +303,7 @@ MEDI:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		AttackAnimation: heal
 
 MECH:
 	Inherits: ^Infantry
@@ -340,6 +341,7 @@ MECH:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		AttackAnimation: heal
 
 EINSTEIN:
 	Inherits: ^Infantry

@@ -107,6 +107,8 @@ MEDIC:
 	AttackMedic:
 		Cursor: ability
 		OutsideRangeCursor: ability
+	RenderInfantry:
+		AttackAnimation: heal
 	Passenger:
 		PipType: Blue
 	-AutoTarget:
