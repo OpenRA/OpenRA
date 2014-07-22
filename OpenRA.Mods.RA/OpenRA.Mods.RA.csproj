@@ -523,6 +523,7 @@
     <Compile Include="Render\RenderSimple.cs" />
     <Compile Include="Render\RenderSprites.cs" />
     <Compile Include="Graphics\BeamRenderable.cs" />
+    <Compile Include="Graphics\ContrailRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
