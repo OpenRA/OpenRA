@@ -525,6 +525,7 @@
     <Compile Include="Graphics\BeamRenderable.cs" />
     <Compile Include="Graphics\ContrailRenderable.cs" />
     <Compile Include="Graphics\TextRenderable.cs" />
+    <Compile Include="Graphics\VoxelRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
