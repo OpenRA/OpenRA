@@ -114,15 +114,15 @@ namespace OpenRA.Mods.RA
 						yield return new CPos(i, j);
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			if (self.Owner != self.World.LocalPlayer || Minefield == null)
-				return;
+				yield break;
 
 			var pal = wr.Palette("terrain");
 			foreach (var c in Minefield)
-				new SpriteRenderable(tile, self.World.Map.CenterOfCell(c),
-					WVec.Zero, -511, pal, 1f, true).Render(wr);
+				yield return new SpriteRenderable(tile, self.World.Map.CenterOfCell(c),
+					WVec.Zero, -511, pal, 1f, true);
 		}
 
 		class MinefieldOrderGenerator : IOrderGenerator

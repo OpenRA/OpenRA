@@ -225,7 +225,7 @@ namespace OpenRA.Traits
 	public interface IPostRender { void RenderAfterWorld(WorldRenderer wr, Actor self); }
 	public interface IRenderShroud { void RenderShroud(WorldRenderer wr, Shroud shroud); }
 
-	public interface IPostRenderSelection { void RenderAfterWorld(WorldRenderer wr); }
+	public interface IPostRenderSelection { IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr); }
 	public interface IBodyOrientation
 	{
 		WAngle CameraPitch { get; }

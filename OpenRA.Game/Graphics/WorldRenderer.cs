@@ -87,7 +87,7 @@ namespace OpenRA.Graphics
 			worldRenderables = worldRenderables.OrderBy(r => r, comparer);
 
 			// Effects are drawn on top of all actors
-			// TODO: Allow effects to be interleaved with actors
+			// HACK: Effects aren't interleaved with actors.
 			var effectRenderables = world.Effects
 				.SelectMany(e => e.Render(this));
 
@@ -138,11 +138,25 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.DisableScissor();
 
-			foreach (var g in world.Selection.Actors.Where(a => !a.Destroyed)
+			var overlayRenderables = world.Selection.Actors.Where(a => !a.Destroyed)
 				.SelectMany(a => a.TraitsImplementing<IPostRenderSelection>())
-				.GroupBy(prs => prs.GetType()))
-				foreach (var t in g)
-					t.RenderAfterWorld(this);
+				.SelectMany(t => t.RenderAfterWorld(this))
+				.ToList();
+
+			Game.Renderer.WorldVoxelRenderer.BeginFrame();
+			for (var i = 0; i < overlayRenderables.Count; i++)
+				overlayRenderables[i].BeforeRender(this);
+			Game.Renderer.WorldVoxelRenderer.EndFrame();
+
+			// HACK: Keep old grouping behaviour
+			foreach (var g in overlayRenderables.GroupBy(prs => prs.GetType()))
+				foreach (var r in g)
+					r.Render(this);
+
+			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
+				foreach (var g in overlayRenderables.GroupBy(prs => prs.GetType()))
+					foreach (var r in g)
+						r.RenderDebugGeometry(this);
 
 			if (!world.IsShellmap && Game.Settings.Game.AlwaysShowStatusBars)
 			{

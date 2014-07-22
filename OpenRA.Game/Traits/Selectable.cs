@@ -52,16 +52,16 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			if (!Info.Selectable)
-				return;
+				yield break;
 
-			new SelectionBoxRenderable(self, Color.White).Render(wr);
-			new SelectionBarsRenderable(self).Render(wr);
+			yield return new SelectionBoxRenderable(self, Color.White);
+			yield return new SelectionBarsRenderable(self);
 
 			if (self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
-				new TargetLineRenderable(ActivityTargetPath(), Color.Green).Render(wr);
+				yield return new TargetLineRenderable(ActivityTargetPath(), Color.Green);
 		}
 	}
 }

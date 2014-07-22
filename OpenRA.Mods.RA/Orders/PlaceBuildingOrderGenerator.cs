@@ -89,7 +89,8 @@ namespace OpenRA.Mods.RA.Orders
 
 			var actorInfo = rules.Actors[Building];
 			foreach (var dec in actorInfo.Traits.WithInterface<IPlaceBuildingDecoration>())
-				dec.Render(wr, world, actorInfo, world.Map.CenterOfCell(xy));
+				foreach (var r in dec.Render(wr, world, actorInfo, world.Map.CenterOfCell(xy)))
+					r.Render(wr);
 
 			var cells = new Dictionary<CPos, bool>();
 			// Linebuild for walls.
