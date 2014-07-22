@@ -200,7 +200,6 @@
     <Compile Include="Graphics\VoxelAnimation.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
     <Compile Include="Graphics\TextRenderable.cs" />
-    <Compile Include="Graphics\BeamRenderable.cs" />
     <Compile Include="Graphics\ContrailRenderable.cs" />
     <Compile Include="Widgets\ViewportControllerWidget.cs" />
     <Compile Include="Traits\Player\FrozenActorLayer.cs" />
