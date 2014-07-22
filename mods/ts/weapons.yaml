@@ -70,7 +70,7 @@ Bazooka:
 	ROF: 60
 	Range: 6c0
 	Report: RKETINF1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 213
@@ -98,7 +98,7 @@ MultiCluster:
 	ROF: 80
 	Range: 6c0
 	Report: MISL1.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 170
@@ -200,7 +200,7 @@ CyCannon:
 	ROF: 50
 	Range: 7c0
 	Report: SCRIN5B.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 192
 		High: yes
@@ -323,7 +323,7 @@ HoverMissile:
 	Burst: 2
 	Range: 8c0
 	Report: HOVRMIS1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 213
@@ -376,7 +376,7 @@ MammothTusk:
 	ROF: 80
 	Range: 6c0
 	Report: MISL1.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Burst: 2
 	Palette: ra
 	Projectile: Missile
@@ -516,7 +516,7 @@ BikeMissile:
 	BurstDelay: 60
 	Range: 5c0
 	Report: MISL1.AUD
-	ValidTargets: Ground
+	ValidTargets: Ground, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Arm: 2
@@ -604,7 +604,7 @@ Dragon:
 	Range: 6c0
 	Burst: 2
 	Report: MISL1.AUD
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 213
@@ -682,7 +682,7 @@ Hellfire:
 	Range: 6c0
 	Report: ORCAMIS1.AUD
 	Burst: 2
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 256
@@ -733,7 +733,7 @@ Proton:
 	Range: 5c0
 	Report: SCRIN5B.AUD
 	Burst: 2
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
@@ -762,7 +762,7 @@ HarpyClaw:
 	Report: CYGUN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Warhead:
 		Spread: 128
 		Versus:
@@ -810,7 +810,7 @@ TiberiumHeal:
 		PreventProne: yes
 
 IonCannon:
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Enemy, Neutral, Ally
 	Warhead@impact:
 		Damage: 1000
 		Spread: 1c0
@@ -871,7 +871,7 @@ SAMTower:
 	ROF: 55
 	Range: 15c0
 	Report: SAMSHOT1.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Palette: ra
 	Projectile: Missile
 		Speed: 298

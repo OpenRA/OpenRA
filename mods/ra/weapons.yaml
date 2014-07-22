@@ -23,7 +23,7 @@ ZSU-23:
 	ROF: 0
 	Range: 10c0
 	Report: AACANON3.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 1c682
 		High: true
@@ -122,7 +122,7 @@ Maverick:
 	Report: MISSILE7.AUD
 	Burst: 2
 	BurstDelay: 7
-	ValidTargets: Ground, Water
+	ValidTargets: Ground, Water, Enemy, Neutral, Ally
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
@@ -278,7 +278,7 @@ Dragon:
 	ROF: 50
 	Range: 5c0
 	Report: MISSILE6.AUD
-	ValidTargets: Ground, Water
+	ValidTargets: Ground, Water, Enemy, Neutral, Ally
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
@@ -310,7 +310,7 @@ HellfireAG:
 	Report: MISSILE6.AUD
 	Burst: 2
 	BurstDelay: 10
-	ValidTargets: Ground, Water
+	ValidTargets: Ground, Water, Enemy, Neutral, Ally
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
@@ -341,7 +341,7 @@ HellfireAA:
 	Report: MISSILE6.AUD
 	Burst: 2
 	BurstDelay: 10
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Speed: 384
 		Arm: 2
@@ -461,7 +461,7 @@ Grenade:
 	Range: 4c768
 	Report: CANNON1.AUD
 	Burst: 2
-	InvalidTargets: Air, Infantry
+	InvalidTargets: Air, Infantry, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
@@ -507,7 +507,7 @@ MammothTusk:
 	Range: 8c0
 	Report: MISSILE6.AUD
 	Burst: 2
-	ValidTargets: Air, Infantry
+	ValidTargets: Air, Infantry, Enemy, Neutral, Ally
 	Projectile: Missile
 		Speed: 341
 		Arm: 2
@@ -677,7 +677,7 @@ Nike:
 	ROF: 15
 	Range: 7c512
 	Report: MISSILE1.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 3
 		High: true
@@ -704,7 +704,7 @@ RedEye:
 	ROF: 50
 	Range: 7c512
 	Report: MISSILE1.AUD
-	ValidTargets: Air
+	ValidTargets: Air, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 3
 		High: true
@@ -786,7 +786,7 @@ Stinger:
 	Report: MISSILE6.AUD
 	Burst: 2
 	BurstDelay: 0
-	ValidTargets: Air, Ground, Water
+	ValidTargets: Air, Ground, Water, Enemy, Neutral, Ally
 	Projectile: Missile
 		Arm: 3
 		High: true
@@ -815,7 +815,7 @@ TorpTube:
 	ROF: 100
 	Range: 9c0
 	Report: TORPEDO1.AUD
-	ValidTargets: Water, Underwater, Bridge
+	ValidTargets: Water, Underwater, Bridge, Enemy, Neutral, Ally
 	Palette: shadow
 	Burst: 2
 	BurstDelay: 20
@@ -867,7 +867,7 @@ TorpTube:
 DepthCharge:
 	ROF: 60
 	Range: 5c0
-	ValidTargets: Underwater
+	ValidTargets: Underwater, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 85
 		Image: BOMB
@@ -911,7 +911,7 @@ ParaBomb:
 		WaterImpactSound: splash9.aud
 
 DogJaw:
-	ValidTargets: Infantry
+	ValidTargets: Infantry, Enemy, Neutral, Ally
 	ROF: 10
 	Range: 3c0
 	Report: DOGG5P.AUD
@@ -945,7 +945,7 @@ Repair:
 	ROF: 80
 	Range: 4c0
 	Report: FIXIT1.AUD
-	ValidTargets: Repair
+	ValidTargets: Repair, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead:
@@ -1007,7 +1007,7 @@ SCUD:
 		WaterImpactSound: splash9.aud
 
 Atomic:
-	ValidTargets: Ground, Water, Air
+	ValidTargets: Ground, Water, Air, Enemy, Neutral, Ally
 	Warhead@impact:
 		Damage: 1500
 		Spread: 1c0
@@ -1063,7 +1063,7 @@ Atomic:
 		InfDeath: 5
 
 MiniNuke:
-	ValidTargets: Ground, Water, Air
+	ValidTargets: Ground, Water, Air, Enemy, Neutral, Ally
 	Warhead@impact:
 		Damage: 1500
 		Spread: 1c0
@@ -1235,7 +1235,7 @@ FLAK-23:
 	ROF: 10
 	Range: 8c0
 	Report: AACANON3.AUD
-	ValidTargets: Air, Ground, Water
+	ValidTargets: Air, Ground, Water, Enemy, Neutral, Ally
 	Projectile: Bullet
 		Speed: 1c682
 		High: true
@@ -1272,7 +1272,7 @@ APTusk:
 	ROF: 60
 	Range: 6c0
 	Report: MISSILE6.AUD
-	ValidTargets: Ground, Water
+	ValidTargets: Ground, Water, Enemy, Neutral, Ally
 	Projectile: Missile
 		Speed: 298
 		Arm: 2
@@ -1331,7 +1331,7 @@ Mandible:
 		Damage: 60
 
 MADTankThump:
-	InvalidTargets: MADTank
+	InvalidTargets: MADTank, Enemy, Neutral, Ally
 	Warhead:
 		DamageModel: HealthPercentage
 		Damage: 1
@@ -1340,7 +1340,7 @@ MADTankThump:
 		Size: 7,6
 
 MADTankDetonate:
-	InvalidTargets: MADTank
+	InvalidTargets: MADTank, Enemy, Neutral, Ally
 	Warhead:
 		DamageModel: HealthPercentage
 		Damage: 19
