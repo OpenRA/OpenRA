@@ -127,7 +127,7 @@ namespace OpenRA.Mods.RA
 				var targetUnits = power.UnitsInRange(xy);
 				foreach (var unit in targetUnits)
 					if (manager.self.Owner.Shroud.IsTargetable(unit))
-						wr.DrawSelectionBox(unit, Color.Red);
+						new SelectionBoxRenderable(unit, Color.Red).Render(wr);
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
@@ -207,7 +207,7 @@ namespace OpenRA.Mods.RA
 			{
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 					if (manager.self.Owner.Shroud.IsTargetable(unit))
-						wr.DrawSelectionBox(unit, Color.Red);
+						new SelectionBoxRenderable(unit, Color.Red).Render(wr);
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)

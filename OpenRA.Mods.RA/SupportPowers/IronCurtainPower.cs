@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				foreach (var unit in power.UnitsInRange(xy))
-					wr.DrawSelectionBox(unit, Color.Red);
+					new SelectionBoxRenderable(unit, Color.Red).Render(wr);
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
