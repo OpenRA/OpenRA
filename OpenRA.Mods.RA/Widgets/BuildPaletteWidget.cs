@@ -523,7 +523,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (!paletteOpen) return false;
 			if (CurrentQueue == null) return false;
 
-			var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey.Key == Hotkey.FromKeyInput(e).Key);
+			var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == Hotkey.FromKeyInput(e));
 
 			if (toBuild != null)
 			{
