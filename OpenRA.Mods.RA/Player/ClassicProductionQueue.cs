@@ -76,9 +76,15 @@ namespace OpenRA.Mods.RA
 		protected override bool BuildUnit(string name)
 		{
 			// Find a production structure to build this actor
+			var info = self.World.Map.Rules.Actors[name];
+			var bi = info.Traits.GetOrDefault<BuildableInfo>();
+
+			// Some units may request a specific production type, which is ignored if the AllTech cheat is enabled
+			var type = bi == null || developerMode.AllTech ? Info.Type : bi.BuildAtProductionType ?? Info.Type;
+
 			var producers = self.World.ActorsWithTrait<Production>()
 				.Where(x => x.Actor.Owner == self.Owner
-					&& x.Trait.Info.Produces.Contains(Info.Type))
+					&& x.Trait.Info.Produces.Contains(type))
 					.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
 					.ThenByDescending(x => x.Actor.ActorID);
 
@@ -90,7 +96,7 @@ namespace OpenRA.Mods.RA
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
 			{
-				if (p.Trait.Produce(p.Actor, self.World.Map.Rules.Actors[name], Race))
+				if (p.Trait.Produce(p.Actor, info, Race))
 				{
 					FinishProduction();
 					return true;
