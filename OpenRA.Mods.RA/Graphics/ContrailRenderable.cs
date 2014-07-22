@@ -10,8 +10,9 @@
 
 using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.RA.Graphics
 {
 	public struct ContrailRenderable : IRenderable
 	{
