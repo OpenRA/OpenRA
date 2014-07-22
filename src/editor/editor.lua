@@ -884,11 +884,12 @@ function CreateEditor()
           local indent = editor:GetLineIndentation(line - 1)
           local linedone = editor:GetLine(line - 1)
 
-          -- if the indentation is 0 and the current line is not empty
-          -- then take indentation from the current line (instead of the
-          -- previous one). This may happen when CR is hit at the beginning
-          -- of a line (rather than at the end).
-          if indent == 0 and not linetx:match("^[\010\013]*$") then
+          -- if the indentation is 0 and the current line is not empty,
+          -- but the previous line is empty, then take indentation from the
+          -- current line (instead of the previous one). This may happen when
+          -- CR is hit at the beginning of a line (rather than at the end).
+          if indent == 0 and not linetx:match("^[\010\013]*$")
+          and linedone:match("^[\010\013]*$") then
             indent = editor:GetLineIndentation(line)
           end
 
