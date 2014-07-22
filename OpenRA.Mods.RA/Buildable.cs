@@ -27,6 +27,9 @@ namespace OpenRA.Mods.RA
 		[Desc("Production queue(s) that can produce this.")]
 		public readonly string[] Queue = { };
 
+		[Desc("Override the production structure type (from the Production Produces list) that this unit should be built at.")]
+		public readonly string BuildAtProductionType = null;
+
 		[Desc("Disable production when there are more than this many of this actor on the battlefield. Set to 0 to disable.")]
 		public readonly int BuildLimit = 0;
 

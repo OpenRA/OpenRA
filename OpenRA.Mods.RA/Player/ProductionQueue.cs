@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 		// Will change if the owner changes
 		PowerManager playerPower;
 		PlayerResources playerResources;
-		DeveloperMode developerMode;
+		protected DeveloperMode developerMode;
 
 		// A list of things we could possibly build
 		Dictionary<ActorInfo, ProductionState> produceable;
