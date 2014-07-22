@@ -279,8 +279,8 @@ BikeRockets:
 		ROT: 10
 		Trail: smokey
 		ContrailLength: 8
-		Speed: 298
-		RangeLimit: 20
+		Speed: 213
+		RangeLimit: 30
 	Warhead:
 		Spread: 128
 		Versus:
@@ -620,11 +620,11 @@ MammothMissiles:
 		Trail: smokey
 		ContrailLength: 8
 		Speed: 213
-		RangeLimit: 55
+		RangeLimit: 40
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 35%
+			None: 25%
 			Wood: 75%
 			Light: 100%
 			Heavy: 90%
@@ -923,11 +923,9 @@ APCGun.AA:
 		Damage: 25
 
 Patriot:
-	ROF: 30
+	ROF: 25
 	Range: 9c0
 	MinRange: 1c0
-	Burst: 2
-	BurstDelay: 15
 	Report: ROCKET2.AUD
 	ValidTargets: Air
 	Projectile: Missile
@@ -936,7 +934,7 @@ Patriot:
 		Trail: smokey
 		ContrailLength: 8
 		ROT: 20
-		Speed: 426
+		Speed: 341
 		RangeLimit: 30
 		Angle: 88
 	Warhead: AP
@@ -950,7 +948,7 @@ Patriot:
 		Explosion: poof
 		ImpactSound: xplos.aud
 		SmudgeType: Crater
-		Damage: 40
+		Damage: 32
 
 Tail:
 	ROF: 30
