@@ -29,19 +29,24 @@ namespace OpenRA.Mods.RA
 	{
 		[Sync] public int VisibilityHash;
 
-		bool initialized, startsRevealed;
+		readonly bool startsRevealed;
 		readonly CPos[] footprint;
-		Lazy<IToolTip> tooltip;
-		Lazy<Health> health;
+		readonly CellRegion footprintRegion;
 
-		Dictionary<Player, bool> visible;
-		Dictionary<Player, FrozenActor> frozen;
+		readonly Lazy<IToolTip> tooltip;
+		readonly Lazy<Health> health;
+
+		readonly Dictionary<Player, bool> visible;
+		readonly Dictionary<Player, FrozenActor> frozen;
+
+		bool initialized;
 
 		public FrozenUnderFog(ActorInitializer init, FrozenUnderFogInfo info)
 		{
 			// Spawned actors (e.g. building husks) shouldn't be revealed
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
 			footprint = FootprintUtils.Tiles(init.self).ToArray();
+			footprintRegion = CellRegion.BoundingRegion(init.world.Map.TileShape, footprint);
 			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			tooltip = Exts.Lazy(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
 			health = Exts.Lazy(() => init.self.TraitOrDefault<Health>());
@@ -63,15 +68,7 @@ namespace OpenRA.Mods.RA
 			VisibilityHash = 0;
 			foreach (var p in self.World.Players)
 			{
-				var isVisible = false;
-				foreach (var pos in footprint)
-				{
-					if (p.Shroud.IsVisible(pos))
-					{
-						isVisible = true;
-						break;
-					}
-				}
+				var isVisible = footprint.Any(p.Shroud.IsVisibleTest(footprintRegion));
 				visible[p] = isVisible;
 				if (isVisible)
 					VisibilityHash += p.ClientIndex;
@@ -82,7 +79,7 @@ namespace OpenRA.Mods.RA
 				foreach (var p in self.World.Players)
 				{
 					visible[p] |= startsRevealed;
-					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p] = new FrozenActor(self, footprint));
+					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p] = new FrozenActor(self, footprint, footprintRegion));
 				}
 
 				initialized = true;

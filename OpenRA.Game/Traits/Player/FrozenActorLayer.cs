@@ -24,11 +24,12 @@ namespace OpenRA.Traits
 	public class FrozenActor
 	{
 		public readonly CPos[] Footprint;
+		public readonly CellRegion FootprintRegion;
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
 		readonly Actor actor;
 
-		public IRenderable[] Renderables { set; private get; }
+		public IRenderable[] Renderables { private get; set; }
 		public Player Owner;
 
 		public string TooltipName;
@@ -39,10 +40,12 @@ namespace OpenRA.Traits
 
 		public bool Visible;
 
-		public FrozenActor(Actor self, IEnumerable<CPos> footprint)
+		public FrozenActor(Actor self, CPos[] footprint, CellRegion footprintRegion)
 		{
 			actor = self;
-			Footprint = footprint.ToArray();
+			Footprint = footprint;
+			FootprintRegion = footprintRegion;
+
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds.Value;
 		}
@@ -55,16 +58,7 @@ namespace OpenRA.Traits
 		int flashTicks;
 		public void Tick(World world, Shroud shroud)
 		{
-			Visible = true;
-			foreach (var pos in Footprint)
-			{
-				if (shroud.IsVisible(pos))
-				{
-					Visible = false;
-					break;
-				}
-			}
-
+			Visible = !Footprint.Any(shroud.IsVisibleTest(FootprintRegion));
 			if (flashTicks > 0)
 				flashTicks--;
 		}
@@ -85,6 +79,7 @@ namespace OpenRA.Traits
 				return Renderables.Concat(Renderables.Where(r => !r.IsDecoration)
 					.Select(r => r.WithPalette(highlight)));
 			}
+
 			return Renderables;
 		}
 
