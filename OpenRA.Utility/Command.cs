@@ -257,6 +257,9 @@ namespace OpenRA.Utility
 			if (t.IsSubclassOf(typeof(Array)))
 				return "Multiple {0}".F(FriendlyTypeName(t.GetElementType()));
 
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(OpenRA.Primitives.Cache<,>))
+				return "Cached<{0},{1}>".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
+
 			if (t == typeof(int) || t == typeof(uint))
 				return "Integer";
 

@@ -79,8 +79,11 @@ namespace OpenRA
 			if (t.IsArray)
 			{
 				var elems = ((Array)v).OfType<object>();
-				return elems.JoinWith(",");
+				return elems.JoinWith(", ");
 			}
+
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(OpenRA.Primitives.Cache<,>))
+				return ""; // TODO
 
 			if (t == typeof(DateTime))
 				return ((DateTime)v).ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
