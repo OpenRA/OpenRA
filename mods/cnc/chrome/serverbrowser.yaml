@@ -71,7 +71,7 @@ Container@SERVERBROWSER_PANEL:
 									Y: 2
 									Width: 64
 									Height: 64
-									ShowSpawnPoints: no
+									ShowSpawnPoints: false
 								Label@TITLE:
 									X: 70
 									Width: 200

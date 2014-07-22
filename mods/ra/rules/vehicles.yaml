@@ -653,7 +653,7 @@ DTRK:
 	DemoTruck:
 	-IronCurtainable:
 	Chronoshiftable:
-		ExplodeInstead: yes
+		ExplodeInstead: true
 
 CTNK:
 	Inherits: ^Vehicle

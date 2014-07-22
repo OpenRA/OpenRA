@@ -9,7 +9,7 @@ DPOD:
 		BuildPaletteOrder: 10
 		Owner: gdi
 	Helicopter:
-		LandWhenIdle: yes
+		LandWhenIdle: true
 		ROT: 5
 		Speed: 149
 		InitialFacing: 0
@@ -49,7 +49,7 @@ DSHP:
 		Owner: gdi
 		Prerequisites: gaweap
 	Helicopter:
-		LandWhenIdle: yes
+		LandWhenIdle: true
 		ROT: 5
 		Speed: 168
 		InitialFacing: 0
@@ -155,7 +155,7 @@ ORCATRAN:
 		Owner: gdi
 		Prerequisites: gahpad
 	Helicopter:
-		LandWhenIdle: yes
+		LandWhenIdle: true
 		ROT: 5
 		Speed: 84
 		InitialFacing: 0
@@ -186,7 +186,7 @@ TRNSPORT:
 		Owner: gdi
 		Prerequisites: gahpad
 	Helicopter:
-		LandWhenIdle: yes
+		LandWhenIdle: true
 		ROT: 5
 		Speed: 149
 		InitialFacing: 0

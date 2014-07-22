@@ -93,7 +93,7 @@
 
 ^Helicopter:
 	AppearsOnRadar:
-		UseLocation: yes
+		UseLocation: true
 	TargetableAircraft:
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
@@ -272,7 +272,7 @@
 
 ^Plane:
 	AppearsOnRadar:
-		UseLocation: yes
+		UseLocation: true
 	SelectionDecorations:
 	Selectable:
 		Voice: GenericVoice
@@ -345,11 +345,11 @@
 	GivesExperience:
 	CaptureNotification:
 		Notification: BuildingCaptured
-		NewOwnerVoice: no
+		NewOwnerVoice: false
 	ActorLostNotification:
 		Notification: BuildingLost
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 	ShakeOnDeath:
 	CombatDebugOverlay:
 	Guardable:
@@ -394,7 +394,7 @@
 		Footprint: x
 	RenderBuilding:
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 	Tooltip:
 		Name: Civilian Building (Destroyed)
 	BodyOrientation:
@@ -434,7 +434,7 @@
 		Dimensions: 1,1
 		Footprint: _
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 	Tooltip:
 		Name: Field (Destroyed)
 	BelowUnits:
@@ -469,7 +469,7 @@
 		Palette: staticterrain
 	GivesExperience:
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 	AutoTargetIgnore:
 	Sellable:
 	Guardable:
@@ -490,7 +490,7 @@
 	RadarColorFromTerrain:
 		Terrain: Tree
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 	Health:
 		HP: 500
 	DeadBuildingState:
@@ -534,7 +534,7 @@
 	RadarColorFromTerrain:
 		Terrain: Tree
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
@@ -553,12 +553,12 @@
 	Burns:
 		Interval: 2
 	TargetableUnit:
-		RequiresForceFire: yes
+		RequiresForceFire: true
 		TargetTypes: Ground
 	AutoTargetIgnore:
 	Capturable:
 		Type: husk
-		AllowAllies: yes
+		AllowAllies: true
 		CaptureThreshold: 1.0
 	TransformOnCapture:
 		ForceHealthPercentage: 25
@@ -585,7 +585,7 @@
 	Tooltip:
 		Name: Bridge
 	TargetableBuilding:
-		RequiresForceFire: yes
+		RequiresForceFire: true
 		TargetTypes: Ground, Water
 	BelowUnits:
 	Health:

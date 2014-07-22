@@ -7,7 +7,7 @@ CRATE:
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 20
-		UseCashTick: yes
+		UseCashTick: true
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map

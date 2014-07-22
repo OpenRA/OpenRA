@@ -102,11 +102,11 @@
 	LuaScriptEvents:
 	TargetableUnit:
 		TargetTypes: Ground
-		RequiresForceFire: yes
+		RequiresForceFire: true
 	AutoTargetIgnore:
 	Capturable:
 		Type: husk
-		AllowAllies: yes
+		AllowAllies: true
 		CaptureThreshold: 1.0
 	TransformOnCapture:
 		ForceHealthPercentage: 25
@@ -124,7 +124,7 @@
 	Burns:
 		Interval: 2
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 	Tooltip:
 		Name: Destroyed Tower
 	ProximityCaptor:
@@ -204,7 +204,7 @@
 
 ^Plane:
 	AppearsOnRadar:
-		UseLocation: yes
+		UseLocation: true
 	SelectionDecorations:
 	Selectable:
 		Voice: GenericVoice
@@ -263,7 +263,7 @@
 	ActorLostNotification:
 		Notification: BuildingLost
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types: Building

@@ -514,7 +514,7 @@ MMCH:
 		ROT: 5
 	AttackTurreted:
 	WithTurret:
-		Recoils: no
+		Recoils: false
 	Armament:
 		Weapon: 120mm
 		Recoil: 127

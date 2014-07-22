@@ -102,7 +102,7 @@ Slung:
 	Projectile: Bullet
 		Speed: 320
 		High: true
-		Shadow: yes
+		Shadow: true
 		Angle: 88
 		Inaccuracy: 384
 		Image: MISSILE
@@ -204,8 +204,8 @@ TurretGun:
 	Report: TURRET1.WAV
 	Projectile: Bullet
 		Speed: 704
-		High: yes
-		Shadow: no
+		High: true
+		Shadow: false
 		Inaccuracy: 288
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
@@ -233,8 +233,8 @@ TowerMissile:
 	BurstDelay: 15
 	Projectile: Bullet
 		Arm: 0
-		High: yes
-		Shadow: yes
+		High: true
+		Shadow: true
 		Inaccuracy: 384
 		Image: MISSILE2
 		ROT: 10
@@ -336,8 +336,8 @@ DevBullet:
 	Projectile: Bullet
 		Speed: 358
 		Arm: 5
-		High: yes
-		Shadow: yes
+		High: true
+		Shadow: true
 		Inaccuracy: 1c416
 		Angle: 110
 		Image: MISSILE2
@@ -367,7 +367,7 @@ FakeMissile:
 	Projectile: Bullet
 		Speed: 448
 		High: true
-		Shadow: yes
+		Shadow: true
 		Angle: 110
 		Inaccuracy: 1c96
 		Image: MISSILE
@@ -394,7 +394,7 @@ FakeMissile:
 	Projectile: Bullet
 		Speed: 256
 		High: true
-		Shadow: yes
+		Shadow: true
 		Angle: 62
 		Inaccuracy: 1c256
 		ContrailLength: 20

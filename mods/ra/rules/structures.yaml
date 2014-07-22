@@ -63,7 +63,7 @@ GAP:
 	CanPowerDown:
 	DisabledOverlay:
 	RenderBuilding:
-		PauseOnLowPower: yes
+		PauseOnLowPower: true
 	Health:
 		HP: 1000
 	Armor:
@@ -71,7 +71,7 @@ GAP:
 	RevealsShroud:
 		Range: 6c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	CreatesShroud:
 		Range: 6c0
 	IronCurtainable:
@@ -214,7 +214,7 @@ IRON:
 	RevealsShroud:
 		Range: 10c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	IronCurtainable:
 	IronCurtainPower:
 		Icon: invuln
@@ -256,7 +256,7 @@ PDOX:
 	RevealsShroud:
 		Range: 10c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	IronCurtainable:
 	ChronoshiftPower:
 		Icon: chrono
@@ -268,7 +268,7 @@ PDOX:
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
 		Duration: 20
-		KillCargo: yes
+		KillCargo: true
 		DisplayRadarPing: True
 	SupportPowerChargeBar:
 	-AcceptsSupplies:
@@ -300,7 +300,7 @@ TSLA:
 	RevealsShroud:
 		Range: 8c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	RenderBuildingCharge:
 		ChargeAudio: tslachg2.aud
 	Armament:
@@ -343,7 +343,7 @@ AGUN:
 	RevealsShroud:
 		Range: 6c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Turreted:
 		ROT: 15
 		InitialFacing: 224
@@ -419,7 +419,7 @@ PBOX:
 	RevealsShroud:
 		Range: 6c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	IronCurtainable:
 	-AcceptsSupplies:
 	Turreted:
@@ -512,7 +512,7 @@ GUN:
 	RevealsShroud:
 		Range: 7c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -552,7 +552,7 @@ FTUR:
 	RevealsShroud:
 		Range: 6c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Turreted:
 		ROT: 255
 		Offset: 0,0,112
@@ -595,7 +595,7 @@ SAM:
 	RevealsShroud:
 		Range: 5c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Turreted:
 		ROT: 30
 		InitialFacing: 0
@@ -641,7 +641,7 @@ ATEK:
 	IronCurtainable:
 	GpsPower:
 		Icon: gps
-		OneShot: yes
+		OneShot: true
 		ChargeTime: 480
 		Description: GPS Satellite
 		LongDesc: Reveals map terrain and provides tactical\ninformation.
@@ -815,7 +815,7 @@ SILO:
 	RevealsShroud:
 		Range: 4c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	RenderBuildingSilo:
 	StoresResources:
 		PipCount: 5
@@ -1139,7 +1139,7 @@ FIX:
 	RevealsShroud:
 		Range: 5c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Reservable:
 	RallyPoint:
 	IronCurtainable:

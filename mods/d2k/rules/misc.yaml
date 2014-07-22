@@ -7,15 +7,15 @@ CRATE:
 	GiveCashCrateAction@1:
 		Amount: 750
 		SelectionShares: 25
-		UseCashTick: yes
+		UseCashTick: true
 	GiveCashCrateAction@2:
 		Amount: 1000
 		SelectionShares: 50
-		UseCashTick: yes
+		UseCashTick: true
 	GiveCashCrateAction@3:
 		Amount: 1500
 		SelectionShares: 25
-		UseCashTick: yes
+		UseCashTick: true
 	LevelUpCrateAction:
 		SelectionShares: 40
 	GiveUnitCrateAction@Trike:
@@ -134,7 +134,7 @@ SPICEBLOOM:
 		Dimensions: 1,1
 	AppearsOnRadar:
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 	ProximityCaptor:
 		Types: Tree
 	Tooltip:

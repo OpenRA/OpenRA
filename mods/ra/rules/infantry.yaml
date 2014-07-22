@@ -524,7 +524,7 @@ SNIPER:
 		CloakDelay: 120
 		CloakSound:
 		UncloakSound:
-		UncloakOnMove: yes
+		UncloakOnMove: true
 	DetectCloaked:
 		Range: 6
 
@@ -572,7 +572,7 @@ Ant:
 	Mobile:
 		Speed: 99
 		ROT: 12
-		SharesCell: no
+		SharesCell: false
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:

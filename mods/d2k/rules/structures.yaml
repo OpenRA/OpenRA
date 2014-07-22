@@ -345,7 +345,7 @@ CONCRETEB:
 		Prerequisite: Outpost
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: yes
+		PauseOnLowPower: true
 	Power:
 		Amount: -40
 
@@ -432,7 +432,7 @@ CONCRETEB:
 	RenderBuildingWall:
 		Image: walla
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 	AutoTargetIgnore:
 	ProximityCaptor:
 		Types: Wall

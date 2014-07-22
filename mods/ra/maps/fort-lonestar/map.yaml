@@ -507,7 +507,7 @@ Rules:
 			SelectionShares: 30
 		GiveCashCrateAction:
 			Amount: 400
-			UseCashTick: yes
+			UseCashTick: true
 			SelectionShares: 30
 		GiveUnitCrateAction@e7:
 			Unit: e7

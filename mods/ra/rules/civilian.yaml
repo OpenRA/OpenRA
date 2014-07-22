@@ -90,7 +90,7 @@ HOSP:
 	RevealsShroud:
 		Range: 3c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	DeadBuildingState:
 
 V01:
@@ -355,7 +355,7 @@ BR2:
 BR3:
 	Inherits: ^Bridge
 	Bridge:
-		Long: yes
+		Long: true
 		ShorePieces: br1,br2
 		Template: 241
 		DamagedTemplate: 242
