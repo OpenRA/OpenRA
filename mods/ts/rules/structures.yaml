@@ -886,6 +886,9 @@ GAVULC:
 		Sequence: idle-lights
 	LineBuildNode:
 		Types: turret
+	-RenderBuilding:
+	RenderBuildingWall:
+		Type: wall
 
 #TODO: Placeholder, replace with Component Tower + RPG Upgrade
 GAROCK:
@@ -932,6 +935,9 @@ GAROCK:
 		Sequence: idle-lights
 	LineBuildNode:
 		Types: turret
+	-RenderBuilding:
+	RenderBuildingWall:
+		Type: wall
 
 #TODO: Placeholder, replace with Component Tower + SAM Upgrade
 GACSAM:
@@ -978,6 +984,9 @@ GACSAM:
 		Sequence: idle-lights
 	LineBuildNode:
 		Types: turret
+	-RenderBuilding:
+	RenderBuildingWall:
+		Type: wall
 
 NASAM:
 	Inherits: ^Building
