@@ -59,15 +59,4 @@ namespace OpenRA.Mods.RA.Air
 			}
 		}
 	}
-
-	class FlyAwayOnIdleInfo : TraitInfo<FlyAwayOnIdle> { }
-
-	class FlyAwayOnIdle : INotifyIdle
-	{
-		public void TickIdle(Actor self)
-		{
-			self.QueueActivity(new FlyOffMap());
-			self.QueueActivity(new RemoveSelf());
-		}
-	}
 }
