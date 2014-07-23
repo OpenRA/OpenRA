@@ -148,7 +148,6 @@
     <Compile Include="Traits\RejectsOrders.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
-    <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\SelectionDecorations.cs" />
@@ -193,17 +192,12 @@
     <Compile Include="Network\UPnP.cs" />
     <Compile Include="Widgets\ClientTooltipRegionWidget.cs" />
     <Compile Include="Graphics\Renderable.cs" />
-    <Compile Include="Traits\Render\RenderSprites.cs" />
     <Compile Include="Graphics\Voxel.cs" />
     <Compile Include="Graphics\VoxelRenderer.cs" />
     <Compile Include="Graphics\VoxelLoader.cs" />
     <Compile Include="Graphics\VoxelProvider.cs" />
     <Compile Include="Traits\BodyOrientation.cs" />
     <Compile Include="Graphics\VoxelAnimation.cs" />
-    <Compile Include="Graphics\VoxelRenderable.cs" />
-    <Compile Include="Graphics\TextRenderable.cs" />
-    <Compile Include="Graphics\BeamRenderable.cs" />
-    <Compile Include="Graphics\ContrailRenderable.cs" />
     <Compile Include="Widgets\ViewportControllerWidget.cs" />
     <Compile Include="Traits\Player\FrozenActorLayer.cs" />
     <Compile Include="Graphics\Theater.cs" />

@@ -521,6 +521,12 @@
     <Compile Include="Widgets\Logic\InstallMusicLogic.cs" />
     <Compile Include="Render\WithActiveAnimation.cs" />
     <Compile Include="SupportPowers\SpawnActorPower.cs" />
+    <Compile Include="Render\RenderSimple.cs" />
+    <Compile Include="Render\RenderSprites.cs" />
+    <Compile Include="Graphics\BeamRenderable.cs" />
+    <Compile Include="Graphics\ContrailRenderable.cs" />
+    <Compile Include="Graphics\TextRenderable.cs" />
+    <Compile Include="Graphics\VoxelRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

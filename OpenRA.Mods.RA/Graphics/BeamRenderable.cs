@@ -9,8 +9,9 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Graphics;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.RA.Graphics
 {
 	public struct BeamRenderable : IRenderable
 	{
