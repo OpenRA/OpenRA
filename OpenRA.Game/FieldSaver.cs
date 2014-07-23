@@ -69,6 +69,8 @@ namespace OpenRA
 			// Don't save floats in settings.yaml using country-specific decimal separators which can be misunderstood as group seperators.
 			if (t == typeof(float))
 				return ((float)v).ToString(CultureInfo.InvariantCulture);
+			if (t == typeof(decimal))
+				return ((decimal)v).ToString(CultureInfo.InvariantCulture);
 
 			if (t == typeof(Rectangle))
 			{
