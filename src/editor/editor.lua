@@ -1484,5 +1484,6 @@ funclist:Connect(wx.wxEVT_COMMAND_CHOICE_SELECTED,
       editor:GotoLine(l)
       editor:SetFocus()
       editor:SetSTCFocus(true)
+      editor:EnsureVisibleEnforcePolicy(l)
     end
   end)
