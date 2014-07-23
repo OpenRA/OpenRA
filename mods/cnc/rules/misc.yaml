@@ -17,10 +17,15 @@ CRATE:
 	CloakCrateAction:
 		SelectionShares: 5
 		Effect: cloak
+	DuplicateUnitCrateAction:
+		SelectionShares: 10
+		MaxAmount: 5
+		MinAmount: 1
+		MaxDuplicatesWorth: 1250
 	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 120
-		Unit: mcv
+		Units: mcv
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:

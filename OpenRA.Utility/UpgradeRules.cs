@@ -316,6 +316,18 @@ namespace OpenRA.Utility
 					}
 				}
 
+				// GiveUnitCrateAction and GiveMcvCrateAction were updated to allow multiple units
+				if (engineVersion < 20140723)
+				{
+					if (depth == 2 && parentKey.Contains("GiveMcvCrateAction"))
+						if (node.Key == "Unit")
+							node.Key = "Units";
+
+					if (depth == 2 && parentKey.Contains("GiveUnitCrateAction"))
+						if (node.Key == "Unit")
+							node.Key = "Units";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
