@@ -66,6 +66,7 @@
 	TargetableBuilding:
 		TargetTypes: Ground, C4
 	RenderBuildingWall:
+		Type: wall
 	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
