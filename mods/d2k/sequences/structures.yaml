@@ -397,11 +397,11 @@ barra:
 		Start: 2525
 		Offset: -32,64
 	make: DATA
-		Start: 4213
+		Start: 4176
 		Length: 8
 		Offset: -32,64
 	crumble-overlay: DATA
-		Start: 4221
+		Start: 4184
 		Length: 9
 		Offset: -32,64
 		Tick: 100
