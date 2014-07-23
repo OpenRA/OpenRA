@@ -141,7 +141,7 @@ local function findItem(tree, match)
 end
 
 local function treeSetConnectorsAndIcons(tree)
-  tree:SetImageList(filetree.imglist)
+  tree:AssignImageList(filetree.imglist)
 
   local function isIt(item, imgtype) return tree:GetItemImage(item) == imgtype end
 

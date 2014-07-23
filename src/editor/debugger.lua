@@ -24,6 +24,19 @@ debugger.hostname = ide.config.debugger.hostname or (function()
   return hostname and socket.dns.toip(hostname) and hostname or "localhost"
 end)()
 
+do
+  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
+  local size = wx.wxSize(16,16)
+  imglist = wx.wxImageList(16,16)
+  -- 0 = stack call
+  imglist:Add(getBitmap(wx.wxART_GO_FORWARD, wx.wxART_OTHER, size))
+  -- 1 = local variables
+  imglist:Add(getBitmap(wx.wxART_LIST_VIEW, wx.wxART_OTHER, size))
+  -- 2 = upvalues
+  imglist:Add(getBitmap(wx.wxART_REPORT_VIEW, wx.wxART_OTHER, size))
+  debugger.imglist = imglist
+end
+
 local notebook = ide.frame.notebook
 
 local CURRENT_LINE_MARKER = StylesGetMarker("currentline")
@@ -893,20 +906,6 @@ debugger.quickeval = function(var, callback)
   end
 end
 
--- need imglist to be a file local variable as SetImageList takes ownership
--- of it and if done inside a function, icons do not work as expected
-local imglist = wx.wxImageList(16,16)
-do
-  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
-  local size = wx.wxSize(16,16)
-  -- 0 = stack call
-  imglist:Add(getBitmap(wx.wxART_GO_FORWARD, wx.wxART_OTHER, size))
-  -- 1 = local variables
-  imglist:Add(getBitmap(wx.wxART_LIST_VIEW, wx.wxART_OTHER, size))
-  -- 2 = upvalues
-  imglist:Add(getBitmap(wx.wxART_REPORT_VIEW, wx.wxART_OTHER, size))
-end
-
 function DebuggerAddStackWindow()
   return ide:AddPanel(debugger.stackCtrl, "stackpanel", TR("Stack"))
 end
@@ -924,7 +923,7 @@ local function debuggerCreateStackWindow()
 
   debugger.stackCtrl = stackCtrl
 
-  stackCtrl:SetImageList(imglist)
+  stackCtrl:AssignImageList(debugger.imglist)
 
   stackCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
