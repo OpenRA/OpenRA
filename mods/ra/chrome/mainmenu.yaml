@@ -191,6 +191,7 @@ Container@MAINMENU:
 			Height: 55
 			Children:
 				DropDownButton@NEWS_BUTTON:
+					Background: newsbutton
 					X: 15
 					Y: 15
 					Width: 370
