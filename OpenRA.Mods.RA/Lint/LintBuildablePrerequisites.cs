@@ -33,8 +33,12 @@ namespace OpenRA.Mods.RA
 			var techPrereqs = map.Rules.Actors.SelectMany(a => a.Value.Traits
 				.WithInterface<ProvidesTechPrerequisiteInfo>())
 				.SelectMany(p => p.Prerequisites);
-
-			var providedPrereqs = buildingPrereqs.Concat(customPrereqs).Concat(techPrereqs);
+				
+			var engineerPrereqs = map.Rules.Actors.SelectMany(a => a.Value.Traits
+				.WithInterface<EngineerPrerequisiteInfo>())
+				.SelectMany(p => p.Prerequisites);
+				
+			var providedPrereqs = buildingPrereqs.Concat(customPrereqs).Concat(techPrereqs).Concat(engineerPrereqs);
 
 			// TODO: this check is case insensitive while the real check in-game is not
 			foreach (var i in map.Rules.Actors)

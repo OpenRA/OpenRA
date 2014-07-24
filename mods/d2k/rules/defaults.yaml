@@ -251,7 +251,7 @@
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer
+		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer1
 	MustBeDestroyed:
 	GivesExperience:
 	FrozenUnderFog:
@@ -281,4 +281,3 @@
 		Range: 2c0, 5c0
 	ScriptTriggers:
 	WithMakeAnimation:
-

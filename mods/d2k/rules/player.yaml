@@ -64,3 +64,9 @@ Player:
 	ProvidesTechPrerequisite@all:
 		Name: Unrestricted
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
+	EngineerPrerequisite@1:
+		Name: Intenial
+		Prerequisites: engineer.internal
+	EngineerPrerequisite@2:
+		Name: External
+		Prerequisites: engineer.external

@@ -283,6 +283,7 @@
     <Compile Include="Player\PlayerStatistics.cs" />
     <Compile Include="Player\ActorGroupProxy.cs" />
     <Compile Include="Player\AllyRepair.cs" />
+    <Compile Include="Player\EngineerPrerequisite.cs" />
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />

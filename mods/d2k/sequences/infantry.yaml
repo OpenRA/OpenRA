@@ -140,7 +140,48 @@ bazooka:
 		Start: 4012
 		Offset: -30,-24
 
-engineer:
+engineer1:
+	stand: DATA
+		Start: 1166
+		Facings: -8
+		Transpose: true
+	stand2: DATA
+		Start: 1166
+		Facings: -8
+		Transpose: true
+	run: DATA
+		Start: 1174
+		Length: 6
+		Facings: -8
+		Transpose: true
+		Tick: 120
+	die1: DATA
+		Start: 1342
+		Length: 5
+	die2: DATA
+		Start: 1347
+		Length: 7
+	die3: DATA
+		Start: 1354
+		Length: 7
+	die4: DATA
+		Start: 1361
+		Length: 7
+	die5: DATA
+		Start: 1368
+		Length: 7
+	die6: DATA
+		Start: 1368
+		Length: 7
+	die-crushed: DATA
+		Start: 1376
+		Length: 26
+		Tick: 1600
+	icon: DATA
+		Start: 4013
+		Offset: -30,-24
+		
+engineer2:
 	stand: DATA
 		Start: 1166
 		Facings: -8

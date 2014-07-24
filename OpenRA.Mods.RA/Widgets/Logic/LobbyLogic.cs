@@ -455,6 +455,33 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				};
 			}
 
+			var engineer = optionsBin.GetOrNull<DropDownButtonWidget>("ENGINEER_DROPDOWNBUTTON");
+			if (engineer != null)
+			{
+				var techTraits = modRules.Actors["player"].Traits.WithInterface<EngineerPrerequisiteInfo>().ToArray();
+				engineer.IsVisible = () => techTraits.Length > 0;
+				optionsBin.GetOrNull<LabelWidget>("ENGINEER_DESC").IsVisible = () => techTraits.Length > 0;
+				engineer.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Engineer != null || configurationDisabled() || techTraits.Length <= 1;
+				engineer.GetText = () => Map.Status != MapStatus.Available || Map.Map.Options.Engineer != null ? "Not Available" : "{0}".F(orderManager.LobbyInfo.GlobalSettings.Engineer);
+				engineer.OnMouseDown = _ =>
+				{
+					var options = techTraits.Select(c => new DropDownOption
+					{
+						Title = "{0}".F(c.Name),
+						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Engineer == c.Name,
+						OnClick = () => orderManager.IssueOrder(Order.Command("engineer {0}".F(c.Name)))
+					});
+
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+
+					engineer.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+				};
+			}
 			var enableShroud = optionsBin.GetOrNull<CheckboxWidget>("SHROUD_CHECKBOX");
 			if (enableShroud != null)
 			{
