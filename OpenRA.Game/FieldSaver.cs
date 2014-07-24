@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -19,31 +20,34 @@ namespace OpenRA
 {
 	public static class FieldSaver
 	{
-		public static MiniYaml Save(object o)
+		public static MiniYaml Save(object o, bool includePrivateByDefault = false)
 		{
 			var nodes = new List<MiniYamlNode>();
 			string root = null;
 
-			foreach (var f in o.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
+			foreach (var info in FieldLoader.GetTypeLoadInfo(o.GetType(), includePrivateByDefault))
 			{
-				if (f.HasAttribute<FieldFromYamlKeyAttribute>())
-					root = FormatValue(o, f);
+				if (info.Attribute.FromYamlKey)
+					root = FormatValue(o, info.Field);
 				else
-					nodes.Add(new MiniYamlNode(f.Name, FormatValue(o, f)));
+					nodes.Add(new MiniYamlNode(info.YamlName, FormatValue(o, info.Field)));
 			}
 
 			return new MiniYaml(root, nodes);
 		}
 
-		public static MiniYaml SaveDifferences(object o, object from)
+		public static MiniYaml SaveDifferences(object o, object from, bool includePrivateByDefault = false)
 		{
 			if (o.GetType() != from.GetType())
 				throw new InvalidOperationException("FieldLoader: can't diff objects of different types");
 
-			var fields = o.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)
-				.Where(f => FormatValue(o, f) != FormatValue(from, f));
+			var fields = FieldLoader.GetTypeLoadInfo(o.GetType(), includePrivateByDefault)
+				.Where(info => FormatValue(o, info.Field) != FormatValue(from, info.Field));
 
-			return new MiniYaml(null, fields.Select(f => new MiniYamlNode(f.Name, FormatValue(o, f))).ToList());
+			return new MiniYaml(
+				null,
+				fields.Select(info => new MiniYamlNode(info.YamlName, FormatValue(o, info.Field))).ToList()
+			);
 		}
 
 		public static MiniYamlNode SaveField(object o, string field)
@@ -87,6 +91,19 @@ namespace OpenRA
 
 			if (t == typeof(DateTime))
 				return ((DateTime)v).ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
+
+			// Try the TypeConverter
+			var conv = TypeDescriptor.GetConverter(t);
+			if (conv.CanConvertTo(typeof(string)))
+			{
+				try
+				{
+					return conv.ConvertToInvariantString(v);
+				}
+				catch
+				{
+				}
+			}
 
 			return v.ToString();
 		}

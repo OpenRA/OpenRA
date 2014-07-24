@@ -323,18 +323,18 @@ namespace OpenRA.Utility
 				foreach (var line in traitDescLines)
 					doc.AppendLine(line);
 
-				var fields = t.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
-				if (!fields.Any())
+				var infos = FieldLoader.GetTypeLoadInfo(t);
+				if (!infos.Any())
 					continue;
 				doc.AppendLine("<table>");
 				doc.AppendLine("<tr><th>Property</th><th>Default Value</th><th>Type</th><th>Description</th></tr>");
 				var liveTraitInfo = Game.modData.ObjectCreator.CreateBasic(t);
-				foreach (var f in fields)
+				foreach (var info in infos)
 				{
-					var fieldDescLines = f.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
-					var fieldType = FriendlyTypeName(f.FieldType);
-					var defaultValue = FieldSaver.SaveField(liveTraitInfo, f.Name).Value.Value;
-					doc.Append("<tr><td>{0}</td><td>{1}</td><td>{2}</td>".F(f.Name, defaultValue, fieldType));
+					var fieldDescLines = info.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
+					var fieldType = FriendlyTypeName(info.Field.FieldType);
+					var defaultValue = FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
+					doc.Append("<tr><td>{0}</td><td>{1}</td><td>{2}</td>".F(info.YamlName, defaultValue, fieldType));
 					doc.Append("<td>");
 					foreach (var line in fieldDescLines)
 						doc.Append(line + " ");
