@@ -54,14 +54,16 @@ namespace OpenRA.Mods.RA.Server
 
 			// important to grab these on the main server thread, not in the worker we're about to spawn -- they may be modified
 			// by the main thread as clients join and leave.
-			var numPlayers = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null).Count();
+			var numPlayers = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null && c1.Slot != null).Count();
 			var numBots = server.LobbyInfo.Clients.Where(c1 => c1.Bot != null).Count();
+			var numSpectators = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null && c1.Slot == null).Count();
+			var passwordProtected = string.IsNullOrEmpty(server.Settings.Password) ? 0 : 1;
 
 			Action a = () =>
 				{
 					try
 					{
-						var url = "ping.php?port={0}&name={1}&state={2}&players={3}&bots={4}&mods={5}&map={6}&maxplayers={7}";
+						var url = "ping.php?port={0}&name={1}&state={2}&players={3}&bots={4}&mods={5}&map={6}&maxplayers={7}&spectators={8}&protected={9}";
 						if (isInitialPing) url += "&new=1";
 
 						using (var wc = new WebClient())
@@ -75,7 +77,9 @@ namespace OpenRA.Mods.RA.Server
 								numBots,
 								"{0}@{1}".F(mod.Id, mod.Version),
 								server.LobbyInfo.GlobalSettings.Map,
-								server.Map.PlayerCount));
+								server.Map.PlayerCount,
+								numSpectators,
+								passwordProtected));
 
 							if (isInitialPing)
 							{
