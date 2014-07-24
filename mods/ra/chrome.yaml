@@ -335,9 +335,34 @@ settingsbutton-disabled: dialog.png
 	corner-tr: 895,128,1,1
 	corner-bl: 768,255,1,1
 	corner-br: 895,255,1,1
-    
+	
+	
+	
+	
 # vivid red - Used for the Battlefields News button
 newsbutton: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+newsbutton-hover: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+	
+newsbutton-highlighted: dialog.png
 	background: 769,1,126,126
 	border-r: 895,1,1,126
 	border-l: 768,1,1,126
@@ -347,8 +372,8 @@ newsbutton: dialog.png
 	corner-tr: 895,0,1,1
 	corner-bl: 768,127,1,1
 	corner-br: 895,127,1,1
-
-newsbutton-hover: dialog.png
+    
+newsbutton-highlighted-hover: dialog.png
 	background: 769,1,126,126
 	border-r: 895,1,1,126
 	border-l: 768,1,1,126
@@ -357,29 +382,19 @@ newsbutton-hover: dialog.png
 	corner-tl: 768,0,1,1
 	corner-tr: 895,0,1,1
 	corner-bl: 768,127,1,1
-	corner-br: 895,127,1,1	
+	corner-br: 895,127,1,1    
 	
 newsbutton-pressed: dialog.png
-	background: 897,1,126,126
-	border-r: 1023,1,1,126
-	border-l: 896,1,1,126
-	border-b: 897,127,126,1
-	border-t: 897,0,126,1
-	corner-tl: 896,0,1,1
-	corner-tr: 1023,0,1,1
-	corner-bl: 896,127,1,1
-	corner-br: 1023,127,1,1
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
 
-newsbutton-disabled: dialog.png
-	background: 769,1,126,126
-	border-r: 639,1,1,126
-	border-l: 768,1,1,126
-	border-b: 769,127,126,1
-	border-t: 769,0,126,1
-	corner-tl: 768,0,1,1
-	corner-tr: 639,0,1,1
-	corner-bl: 768,127,1,1
-	corner-br: 639,127,1,1  
 	
 # A copy of dialog2 (normal button)
 scrollthumb: dialog.png
