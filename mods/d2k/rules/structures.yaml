@@ -75,6 +75,7 @@ CONCRETEB:
 		Prerequisite: Conyard
 	WithBuildingPlacedOverlay:
 		Palette: d2k
+	Capturable:
 
 ^POWER:
 	Inherits: ^Building
@@ -105,6 +106,7 @@ CONCRETEB:
 		Prerequisite: Power
 	WithIdleOverlay@ZAPS:
 		Sequence: idle-zaps
+	Capturable:
 
 ^BARRACKS:
 	Inherits: ^Building
@@ -147,6 +149,7 @@ CONCRETEB:
 		ValuePercentage: 0
 	ProvidesCustomPrerequisite:
 		Prerequisite: Barracks
+	Capturable:
 
 ^REFINERY:
 	Inherits: ^Building
@@ -193,6 +196,7 @@ CONCRETEB:
 		Prerequisite: Refinery
 	WithDockingOverlay@SMOKE:
 		Sequence: smoke
+	Capturable:
 
 ^SILO:
 	Inherits: ^Building
@@ -225,6 +229,7 @@ CONCRETEB:
 		PipCount: 5
 		Capacity: 2000
 	-EmitInfantryOnSell:
+	Capturable:
 
 ^LIGHT:
 	Inherits: ^Building
@@ -265,6 +270,7 @@ CONCRETEB:
 		Prerequisite: Light
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
+	Capturable:
 
 ^HEAVY:
 	Inherits: ^Building
@@ -305,6 +311,7 @@ CONCRETEB:
 		Prerequisite: Heavy
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
+	Capturable:
 
 ^RADAR:
 	Inherits: ^Building
@@ -343,6 +350,7 @@ CONCRETEB:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
+	Capturable:
 
 ^STARPORT:
 	Inherits: ^Building
@@ -389,6 +397,7 @@ CONCRETEB:
 	DisabledOverlay:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Starport
+	Capturable:
 
 ^WALL:
 	Buildable:
@@ -496,6 +505,7 @@ WALL:
 	-WithMakeAnimation:
 	LineBuildNode:
 		Types: turret
+	Capturable:
 
 ^ROCKETTOWER:
 	Inherits: ^Building
@@ -548,6 +558,7 @@ WALL:
 	-WithMakeAnimation:
 	LineBuildNode:
 		Types: turret
+	Capturable:
 
 ^REPAIR:
 	Inherits: ^Building
@@ -581,6 +592,7 @@ WALL:
 		Prerequisite: Repair
 	WithRepairOverlay:
 		Palette: repairlights
+	Capturable:
 
 ^HIGHTECH:
 	Inherits: ^Building
@@ -609,6 +621,7 @@ WALL:
 		Range: 4c0
 	ProvidesCustomPrerequisite:
 		Prerequisite: Hitech
+	Capturable:
 #	WithProductionOverlay@WELDING:
 #		Sequence: production-welding
 
@@ -634,7 +647,7 @@ WALL:
 		ChargeTime: 180
 		Description: Paratroopers
 		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
-		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, ENGINEER, BAZOOKA, RIFLE, RIFLE
+		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, ENGINEER1, BAZOOKA, RIFLE, RIFLE
 		SelectTargetSound:
 		FlareType:
 	Building:
@@ -652,6 +665,7 @@ WALL:
 		Prerequisite: Research
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Capturable:
 
 ^PALACE:
 	Inherits: ^Building
@@ -683,6 +697,7 @@ WALL:
 		Range: 4
 	ProvidesCustomPrerequisite:
 		Prerequisite: Palace
+	Capturable:
 
 SIETCH:
 	Inherits: ^Building
