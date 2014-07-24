@@ -10,7 +10,7 @@ MCV:
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI, Vehicle.Nod
 	Selectable:
-		Priority: 3
+		Priority: 4
 	Mobile:
 		Speed: 71
 		Crushes: crate, infantry
