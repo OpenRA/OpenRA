@@ -127,7 +127,7 @@ SPEN:
 		Facing: 224
 		ExitCell: 2,0
 	Production:
-		Produces: Ship
+		Produces: Ship, Submarine
 	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
@@ -183,7 +183,7 @@ SYRD:
 		Facing: 32
 		ExitCell: 2,0
 	Production:
-		Produces: Ship
+		Produces: Ship, Boat
 	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
