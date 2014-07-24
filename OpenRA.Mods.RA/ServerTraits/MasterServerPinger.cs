@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Server
 
 		public void Tick(S server)
 		{
-			if ((Environment.TickCount - lastPing > MasterPingInterval * 1000) || isInitialPing)
+			if ((Game.RunTime - lastPing > MasterPingInterval * 1000) || isInitialPing)
 				PingMasterServer(server);
 			else
 				lock (masterServerMessages)
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Server
 		{
 			if (isBusy || !server.Settings.AdvertiseOnline) return;
 
-			lastPing = Environment.TickCount;
+			lastPing = Game.RunTime;
 			isBusy = true;
 
 			var mod = server.ModData.Manifest.Mod;

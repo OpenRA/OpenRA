@@ -24,7 +24,7 @@ namespace OpenRA.Primitives
 		public void Add(Action a, int delay)
 		{
 			lock (syncRoot)
-				actions.Add(new DelayedAction(a, Environment.TickCount + delay));
+				actions.Add(new DelayedAction(a, Game.RunTime + delay));
 		}
 
 		public void PerformActions()
@@ -32,7 +32,7 @@ namespace OpenRA.Primitives
 			Action a = () => {};
 			lock (syncRoot)
 			{
-				var t = Environment.TickCount;
+				var t = Game.RunTime;
 				while (!actions.Empty && actions.Peek().Time <= t)
 				{
 					var da = actions.Pop();
