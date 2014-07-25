@@ -139,7 +139,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
-			currentQuery = new Download(Game.Settings.Server.MasterServer + "list.php", _ => {}, onComplete);
+			currentQuery = new Download(Game.Settings.Server.MasterServer + "list", _ => {}, onComplete);
 		}
 
 		public void RefreshServerListInner(IEnumerable<GameServer> games)
