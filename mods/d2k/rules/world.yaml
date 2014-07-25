@@ -153,7 +153,7 @@ World:
 		Class: light
 		Races: harkonnen
 		BaseActor: mcvh
-		SupportActors: rifle, bazooka, bazooka, trike, quad
+		SupportActors: rifle, bazooka, grenadier, trike, quad
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@lightordos:
@@ -167,7 +167,7 @@ World:
 		Class: heavy
 		Races: atreides
 		BaseActor: mcva
-		SupportActors: rifle, bazooka, bazooka, trike, combata, missiletank
+		SupportActors: rifle, bazooka, grenadier, trike, combata, missiletank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@heavyharkonnen:
