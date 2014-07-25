@@ -101,13 +101,13 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 	}
 
-	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, ITick, INotifySold, INotifyTransform, ISync, ITechTreePrerequisite, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, INotifySold, INotifyTransform, ISync, ITechTreePrerequisite, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
 		[Sync] readonly CPos topLeft;
 		readonly Actor self;
-		readonly bool skipMakeAnimation;
+		public readonly bool UseMakeAnimation;
 
 		PowerManager PlayerPower;
 
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.RA.Buildings
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
 			CenterPosition = init.world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.world, Info);
-			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
+			UseMakeAnimation = !init.Contains<SkipMakeAnimsInit>();
 		}
 
 		public int GetPowerUsage()
@@ -168,6 +168,12 @@ namespace OpenRA.Mods.RA.Buildings
 			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 
+		public void Created(Actor self)
+		{
+			if (!UseMakeAnimation)
+				NotifyBuildingComplete(self);
+		}
+
 		public void AddedToWorld(Actor self)
 		{
 			self.World.ActorMap.AddInfluence(self, this);
@@ -180,12 +186,6 @@ namespace OpenRA.Mods.RA.Buildings
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
 			self.World.ScreenMap.Remove(self);
-		}
-
-		public void Tick(Actor self)
-		{
-			if (!BuildComplete && (skipMakeAnimation || !self.HasTrait<WithMakeAnimation>()))
-				NotifyBuildingComplete(self);
 		}
 
 		public void NotifyBuildingComplete(Actor self)
