@@ -63,6 +63,7 @@ namespace OpenRA.Traits
 	public interface IValidateOrder { bool OrderValidation(OrderManager orderManager, World world, int clientId, Order order); }
 	public interface IOrderVoice { string VoicePhraseForOrder(Actor self, Order order); }
 	public interface INotify { void Play(Player p, string notification); }
+	public interface INotifyCreated { void Created(Actor self); }
 	public interface INotifyAddedToWorld { void AddedToWorld(Actor self); }
 	public interface INotifyRemovedFromWorld { void RemovedFromWorld(Actor self); }
 	public interface INotifySold { void Selling(Actor self); void Sold(Actor self); }
