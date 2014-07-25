@@ -319,7 +319,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[LuaGlobal]
 		public bool RequiredUnitsAreDestroyed(Player player)
 		{
-			return world.ActorsWithTrait<MustBeDestroyed>().All(p => p.Actor.Owner != player);
+			return player.HasNoRequiredUnits();
 		}
 
 		[LuaGlobal]
