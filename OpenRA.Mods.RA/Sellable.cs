@@ -31,7 +31,8 @@ namespace OpenRA.Mods.RA
 
 		public void Sell(Actor self)
 		{
-			if (!self.Trait<Building>().Lock())
+			var building = self.TraitOrDefault<Building>();
+			if (building != null && !building.Lock())
 				return;
 
 			self.CancelActivity();
