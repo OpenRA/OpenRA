@@ -30,16 +30,6 @@ namespace OpenRA.Mods.RA.Activities
 			this.unloadAll = unloadAll;
 		}
 
-		public CPos? ChooseExitCell(Actor passenger)
-		{
-			var pos = passenger.Trait<IPositionable>();
-
-			return cargo.CurrentAdjacentCells
-				.Shuffle(self.World.SharedRandom)
-				.Cast<CPos?>()
-				.FirstOrDefault(c => pos.CanEnterCell(c.Value));
-		}
-
 		IEnumerable<CPos> BlockedExitCells(Actor passenger)
 		{
 			var pos = passenger.Trait<IPositionable>();
@@ -60,7 +50,7 @@ namespace OpenRA.Mods.RA.Activities
 			var actor = cargo.Peek(self);
 			var spawn = self.CenterPosition;
 
-			var exitCell = ChooseExitCell(actor);
+			var exitCell = cargo.ChooseExitCell(actor);
 			if (exitCell == null)
 			{
 				foreach (var blocker in BlockedExitCells(actor).SelectMany(self.World.ActorMap.GetUnitsAt))

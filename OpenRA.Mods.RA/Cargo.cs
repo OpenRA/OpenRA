@@ -202,13 +202,29 @@ namespace OpenRA.Mods.RA
 				SpawnPassenger(Unload(self));
 		}
 
+		public CPos? ChooseExitCell(Actor passenger)
+		{
+			var pos = passenger.Trait<IPositionable>();
+
+			return CurrentAdjacentCells
+				.Shuffle(self.World.SharedRandom)
+					.Cast<CPos?>()
+					.FirstOrDefault(c => pos.CanEnterCell(c.Value));
+		}
+
 		void SpawnPassenger(Actor passenger)
 		{
 			self.World.AddFrameEndTask(w =>
 			{
 				w.Add(passenger);
+				var exitCell = ChooseExitCell(passenger);
+				var move = passenger.Trait<IMove>();
 				passenger.Trait<IPositionable>().SetPosition(passenger, self.Location);
-				// TODO: this won't work well for >1 actor as they should move towards the next enterable (sub) cell instead
+				passenger.Trait<IPositionable>().SetVisualPosition(passenger, w.Map.CenterOfCell(self.Location));
+				passenger.QueueActivity(move.MoveIntoWorld(passenger, self.Location));
+				if (exitCell.HasValue)
+					passenger.QueueActivity(new AttackMove.AttackMoveActivity(
+						passenger, move.MoveTo(exitCell.Value, 1)));
 			});
 		}
 
