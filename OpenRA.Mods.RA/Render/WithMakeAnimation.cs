@@ -26,10 +26,12 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
 	}
 
-	public class WithMakeAnimation
+	public class WithMakeAnimation : ICustomBuild
 	{
 		readonly WithMakeAnimationInfo info;
 		readonly RenderBuilding renderBuilding;
+		bool skipMakeAnimation;
+		bool done = false;
 
 		public WithMakeAnimation(ActorInitializer init, WithMakeAnimationInfo info)
 		{
@@ -37,16 +39,26 @@ namespace OpenRA.Mods.RA.Render
 			var self = init.self;
 			renderBuilding = self.Trait<RenderBuilding>();
 
-			var building = self.Trait<Building>();
-			if (!init.Contains<SkipMakeAnimsInit>())
+			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
+		}
+
+		public void CustomBuild(Actor self)
+		{
+			if (skipMakeAnimation)
 			{
-				renderBuilding.PlayCustomAnimThen(self, info.Sequence, () => 
-				{
-					building.NotifyBuildingComplete(self);
-				});
+				done = true;
+				return;
 			}
-			else
-				building.NotifyBuildingComplete(self);
+			renderBuilding.PlayCustomAnimThen(self, info.Sequence, () => 
+			{
+				done = true;
+				self.Trait<Building>().NotifyBuildingComplete(self);
+			});
+		}
+
+		public bool IsCustomBuildComplete(Actor self)
+		{
+			return done;
 		}
 
 		public void Reverse(Actor self, Activity activity)
