@@ -546,6 +546,8 @@
     <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
     <Compile Include="Widgets\MenuButtonWidget.cs" />
     <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
+    <Compile Include="Widgets\LabelWithTooltipWidget.cs" />
+    <Compile Include="ProductionQueueFromSelection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

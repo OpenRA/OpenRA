@@ -71,7 +71,6 @@
     <Compile Include="IonCannonPower.cs" />
     <Compile Include="PoisonedByTiberium.cs" />
     <Compile Include="ProductionAirdrop.cs" />
-    <Compile Include="ProductionQueueFromSelection.cs" />
     <Compile Include="WithCargo.cs" />
     <Compile Include="RenderGunboat.cs" />
     <Compile Include="SpawnViceroid.cs" />
