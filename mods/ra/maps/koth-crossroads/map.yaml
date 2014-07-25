@@ -264,6 +264,7 @@ Rules:
 		-Selectable:
 		-TargetableBuilding:
 	Player:
+		-ConquestVictoryConditions:
 		StrategicVictoryConditions:
 			TicksToHold: 3000
 			ResetOnHoldLost: true
