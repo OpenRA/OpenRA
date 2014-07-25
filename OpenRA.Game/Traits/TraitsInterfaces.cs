@@ -63,6 +63,7 @@ namespace OpenRA.Traits
 	public interface IValidateOrder { bool OrderValidation(OrderManager orderManager, World world, int clientId, Order order); }
 	public interface IOrderVoice { string VoicePhraseForOrder(Actor self, Order order); }
 	public interface INotify { void Play(Player p, string notification); }
+	public interface INotifyCreated { void Created(Actor self); }
 	public interface INotifyAddedToWorld { void AddedToWorld(Actor self); }
 	public interface INotifyRemovedFromWorld { void RemovedFromWorld(Actor self); }
 	public interface INotifySold { void Selling(Actor self); void Sold(Actor self); }
@@ -72,6 +73,11 @@ namespace OpenRA.Traits
 	public interface INotifyKilled { void Killed(Actor self, AttackInfo e); }
 	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
+	public interface ICustomBuild
+	{
+		void CustomBuild(Actor self);
+		bool IsCustomBuildComplete(Actor self);
+	}
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
 	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced); }
