@@ -98,11 +98,11 @@ namespace OpenRA.Mods.RA
 					world.CancelInputMode();
 			}
 
-			public void RenderAfterWorld(WorldRenderer wr, World world)
+			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				foreach (var unit in power.UnitsInRange(xy))
-					wr.DrawSelectionBox(unit, Color.Red);
+					yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 
@@ -172,17 +173,18 @@ namespace OpenRA.Mods.RA
 			yield break;
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, World world)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 		{
 			if (!self.IsInWorld || self.Owner != self.World.LocalPlayer)
-				return;
+				yield break;
 
 			if (!self.Trait<PortableChrono>().Info.HasDistanceLimit)
-				return;
+				yield break;
 
-			wr.DrawRangeCircleWithContrast(
+			yield return new RangeCircleRenderable(
 				self.CenterPosition,
 				WRange.FromCells(self.Trait<PortableChrono>().Info.MaxDistance),
+				0,
 				Color.FromArgb(128, Color.LawnGreen),
 				Color.FromArgb(96, Color.Black)
 			);

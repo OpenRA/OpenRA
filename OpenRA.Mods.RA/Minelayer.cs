@@ -114,15 +114,15 @@ namespace OpenRA.Mods.RA
 						yield return new CPos(i, j);
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			if (self.Owner != self.World.LocalPlayer || Minefield == null)
-				return;
+				yield break;
 
 			var pal = wr.Palette("terrain");
 			foreach (var c in Minefield)
-				new SpriteRenderable(tile, self.World.Map.CenterOfCell(c),
-					WVec.Zero, -511, pal, 1f, true).Render(wr);
+				yield return new SpriteRenderable(tile, self.World.Map.CenterOfCell(c),
+					WVec.Zero, -511, pal, 1f, true);
 		}
 
 		class MinefieldOrderGenerator : IOrderGenerator
@@ -170,10 +170,10 @@ namespace OpenRA.Mods.RA
 
 			CPos lastMousePos;
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-			public void RenderAfterWorld(WorldRenderer wr, World world)
+			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				if (!minelayer.IsInWorld)
-					return;
+					yield break;
 
 				var movement = minelayer.Trait<IPositionable>();
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
@@ -183,8 +183,8 @@ namespace OpenRA.Mods.RA
 				foreach (var c in minefield)
 				{
 					var tile = movement.CanEnterCell(c) ? tileOk : tileBlocked;
-					new SpriteRenderable(tile, world.Map.CenterOfCell(c),
-						WVec.Zero, -511, pal, 1f, true).Render(wr);
+					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c),
+						WVec.Zero, -511, pal, 1f, true);
 				}
 			}
 

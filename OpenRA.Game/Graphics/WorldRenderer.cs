@@ -87,9 +87,12 @@ namespace OpenRA.Graphics
 			worldRenderables = worldRenderables.OrderBy(r => r, comparer);
 
 			// Effects are drawn on top of all actors
-			// TODO: Allow effects to be interleaved with actors
+			// HACK: Effects aren't interleaved with actors.
 			var effectRenderables = world.Effects
 				.SelectMany(e => e.Render(this));
+
+			if (world.OrderGenerator != null)
+				effectRenderables = effectRenderables.Concat(world.OrderGenerator.RenderAfterWorld(this, world));
 
 			// Iterating via foreach() copies the structs, so enumerate by index
 			var renderables = worldRenderables.Concat(effectRenderables).ToList();
@@ -124,9 +127,6 @@ namespace OpenRA.Graphics
 				if (a.Actor.IsInWorld && !a.Actor.Destroyed)
 					a.Trait.RenderAfterWorld(this, a.Actor);
 
-			if (world.OrderGenerator != null)
-				world.OrderGenerator.RenderAfterWorld(this, world);
-
 			var renderShroud = world.RenderPlayer != null ? world.RenderPlayer.Shroud : null;
 
 			foreach (var a in world.ActorsWithTrait<IRenderShroud>())
@@ -138,11 +138,25 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.DisableScissor();
 
-			foreach (var g in world.Selection.Actors.Where(a => !a.Destroyed)
+			var overlayRenderables = world.Selection.Actors.Where(a => !a.Destroyed)
 				.SelectMany(a => a.TraitsImplementing<IPostRenderSelection>())
-				.GroupBy(prs => prs.GetType()))
-				foreach (var t in g)
-					t.RenderAfterWorld(this);
+				.SelectMany(t => t.RenderAfterWorld(this))
+				.ToList();
+
+			Game.Renderer.WorldVoxelRenderer.BeginFrame();
+			for (var i = 0; i < overlayRenderables.Count; i++)
+				overlayRenderables[i].BeforeRender(this);
+			Game.Renderer.WorldVoxelRenderer.EndFrame();
+
+			// HACK: Keep old grouping behaviour
+			foreach (var g in overlayRenderables.GroupBy(prs => prs.GetType()))
+				foreach (var r in g)
+					r.Render(this);
+
+			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
+				foreach (var g in overlayRenderables.GroupBy(prs => prs.GetType()))
+					foreach (var r in g)
+						r.RenderDebugGeometry(this);
 
 			if (!world.IsShellmap && Game.Settings.Game.AlwaysShowStatusBars)
 			{
@@ -157,35 +171,14 @@ namespace OpenRA.Graphics
 			Game.Renderer.Flush();
 		}
 
-		public void DrawSelectionBox(Actor a, Color c)
-		{
-			var pos = ScreenPxPosition(a.CenterPosition);
-			var bounds = a.Bounds.Value;
-
-			var tl = pos + new float2(bounds.Left, bounds.Top);
-			var br = pos + new float2(bounds.Right, bounds.Bottom);
-			var tr = new float2(br.X, tl.Y);
-			var bl = new float2(tl.X, br.Y);
-			var u = new float2(4f / Viewport.Zoom, 0);
-			var v = new float2(0, 4f / Viewport.Zoom);
-
-			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(tl + u, tl, c, c);
-			wlr.DrawLine(tl, tl + v, c, c);
-			wlr.DrawLine(tr, tr - u, c, c);
-			wlr.DrawLine(tr, tr + v, c, c);
-
-			wlr.DrawLine(bl, bl + u, c, c);
-			wlr.DrawLine(bl, bl - v, c, c);
-			wlr.DrawLine(br, br - u, c, c);
-			wlr.DrawLine(br, br - v, c, c);
-		}
-
 		public void DrawRollover(Actor unit)
 		{
 			var selectable = unit.TraitOrDefault<Selectable>();
 			if (selectable != null)
-				selectable.DrawRollover(this);
+			{
+				if (selectable.Info.Selectable)
+					new SelectionBarsRenderable(unit).Render(this);
+			}
 		}
 
 		public void DrawRangeCircle(WPos pos, WRange range, Color c)
@@ -197,17 +190,6 @@ namespace OpenRA.Graphics
 				var pb = pos + offset.Rotate(WRot.FromFacing(8 * i + 6));
 				Game.Renderer.WorldLineRenderer.DrawLine(ScreenPosition(pa), ScreenPosition(pb), c, c);
 			}
-		}
-
-		public void DrawRangeCircleWithContrast(WPos pos, WRange range, Color fg, Color bg)
-		{
-			var wlr = Game.Renderer.WorldLineRenderer;
-			var oldWidth = wlr.LineWidth;
-			wlr.LineWidth = 3;
-			DrawRangeCircle(pos, range, bg);
-			wlr.LineWidth = 1;
-			DrawRangeCircle(pos, range, fg);
-			wlr.LineWidth = oldWidth;
 		}
 
 		public void DrawTargetMarker(Color c, float2 location)
