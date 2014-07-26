@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Render
 			renderBuilding = self.Trait<RenderBuilding>();
 
 			var building = self.Trait<Building>();
-			if (building.UseMakeAnimation)
+			if (!building.SkipMakeAnimation)
 			{
 				renderBuilding.PlayCustomAnimThen(self, info.Sequence, () => 
 				{
