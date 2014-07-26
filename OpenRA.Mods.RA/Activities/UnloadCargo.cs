@@ -83,8 +83,9 @@ namespace OpenRA.Mods.RA.Activities
 				w.Add(actor);
 				actor.CancelActivity();
 				pos.SetVisualPosition(actor, spawn);
-				actor.QueueActivity(move.MoveIntoWorld(actor, exitCell.Value));
-				actor.SetTargetLine(Target.FromCell(w, exitCell.Value), Color.Green, false);
+				actor.QueueActivity(move.MoveIntoWorld(actor, self.Location));
+				actor.QueueActivity(new AttackMove.AttackMoveActivity(
+					actor, move.MoveTo(exitCell.Value, 1)));
 			});
 
 			if (!unloadAll || cargo.IsEmpty(self))
