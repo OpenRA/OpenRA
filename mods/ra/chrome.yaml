@@ -144,7 +144,7 @@ dialog2: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
-# Used for Hotkeys or Asset Browser frames (pressed button)
+# It's a Container, used in various places, like Hotkeys, ColorPicker, Asset Browser frames (looks like a pressed button)
 dialog3: dialog.png
 	background: 641,1,126,126
 	border-r: 767,1,1,126
@@ -156,7 +156,7 @@ dialog3: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
-# Used for the half transparent frame in the Asset Browser (not in current builds, it seems)
+# Used for tooltips and the video player
 dialog4: dialog.png
 	background: 517,392,54,54
 	border-t: 517,387,54,6
@@ -286,10 +286,10 @@ button-disabled: dialog.png
 	corner-tl: 512,256,1,1
 	corner-tr: 639,256,1,1
 	corner-bl: 512,383,1,1
-	corner-br: 639,383,1,1
-
+	corner-br: 639,383,1,1  
+    
 # 10% darker than a normal button - Used in Settings when you select Display Audio Input or Advanced
-settingsbutton: dialog.png
+button-highlighted: dialog.png
 	background: 769,129,126,126
 	border-r: 895,129,1,126
 	border-l: 768,129,1,126
@@ -301,7 +301,7 @@ settingsbutton: dialog.png
 	corner-br: 895,255,1,1
 
 # A copy of button-highlighted - Used in Settings when you select Display Audio Input or Advanced
-settingsbutton-hover: dialog.png
+button-highlighted-hover: dialog.png
 	background: 769,129,126,126
 	border-r: 895,129,1,126
 	border-l: 768,129,1,126
@@ -313,7 +313,7 @@ settingsbutton-hover: dialog.png
 	corner-br: 895,255,1,1
 
 #  Used in Settings when you select Display Audio Input or Advanced
-settingsbutton-pressed: dialog.png
+button-highlighted-pressed: dialog.png
 	background: 897,129,126,126
 	border-r: 1023,129,1,126
 	border-l: 896,129,1,126
@@ -325,7 +325,7 @@ settingsbutton-pressed: dialog.png
 	corner-br: 1023,255,1,1
 
 # A copy of button-highlighted - Used in Settings when you select Display Audio Input or Advanced
-settingsbutton-disabled: dialog.png
+button-highlighted-disabled: dialog.png
 	background: 769,129,126,126
 	border-r: 895,129,1,126
 	border-l: 768,129,1,126
@@ -335,9 +335,6 @@ settingsbutton-disabled: dialog.png
 	corner-tr: 895,128,1,1
 	corner-bl: 768,255,1,1
 	corner-br: 895,255,1,1
-	
-	
-	
 	
 # vivid red - Used for the Battlefields News button
 newsbutton: dialog.png
@@ -382,8 +379,19 @@ newsbutton-highlighted-hover: dialog.png
 	corner-tl: 768,0,1,1
 	corner-tr: 895,0,1,1
 	corner-bl: 768,127,1,1
-	corner-br: 895,127,1,1    
+	corner-br: 895,127,1,1
 	
+newsbutton-highlighted-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
 newsbutton-pressed: dialog.png
 	background: 641,1,126,126
 	border-r: 767,1,1,126
@@ -395,7 +403,6 @@ newsbutton-pressed: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
-	
 # A copy of dialog2 (normal button)
 scrollthumb: dialog.png
 	background: 513,1,126,126
