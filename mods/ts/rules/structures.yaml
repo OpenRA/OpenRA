@@ -429,6 +429,8 @@ NAPOST:
 		SegmentType: nafnce
 	LineBuildNode:
 		Types: laserfence
+	RenderBuildingWall:
+		Type: laserfence
 
 NAFNCE:
 	Inherits: ^Wall
@@ -449,6 +451,8 @@ NAFNCE:
 		NodeTypes: laserfence
 	LineBuildNode:
 		Types: laserfence
+	RenderBuildingWall:
+		Type: laserfence
 
 FSNODE:
 	Inherits: ^Wall
@@ -476,6 +480,8 @@ FSNODE:
 		SegmentType: fsseg
 	LineBuildNode:
 		Types: firestorm
+	RenderBuildingWall:
+		Type: firestorm
 
 FSSEG:
 	Inherits: ^Wall
@@ -496,6 +502,8 @@ FSSEG:
 		NodeTypes: firestorm
 	LineBuildNode:
 		Types: firestorm
+	RenderBuildingWall:
+		Type: firestorm
 
 
 GATICK:
