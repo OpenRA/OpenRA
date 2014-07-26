@@ -18,19 +18,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public ButtonTooltipLogic(Widget widget, ButtonWidget button)
 		{
 			var label = widget.Get<LabelWidget>("LABEL");
-			var hotkey = widget.Get<LabelWidget>("HOTKEY");
+			var font = Game.Renderer.Fonts[label.Font];
+			var labelWidth = font.Measure(button.TooltipText).X;
 
 			label.GetText = () => button.TooltipText;
-			var labelWidth = Game.Renderer.Fonts[label.Font].Measure(button.TooltipText).X;
 			label.Bounds.Width = labelWidth;
+			widget.Bounds.Width = 2 * label.Bounds.X + labelWidth;
 
-			var hotkeyLabel = "({0})".F(button.Key.DisplayString());
-			hotkey.GetText = () => hotkeyLabel;
-			hotkey.Bounds.X = labelWidth + 2 * label.Bounds.X;
+			if (button.Key.IsValid())
+			{
+				var hotkey = widget.Get<LabelWidget>("HOTKEY");
+				hotkey.Visible = true;
 
-			var panelWidth = hotkey.Bounds.X + label.Bounds.X
-				+ Game.Renderer.Fonts[label.Font].Measure(hotkeyLabel).X;
-			widget.Bounds.Width = panelWidth;
+				var hotkeyLabel = "({0})".F(button.Key.DisplayString());
+				hotkey.GetText = () => hotkeyLabel;
+				hotkey.Bounds.X = labelWidth + 2 * label.Bounds.X;
+
+				widget.Bounds.Width = hotkey.Bounds.X + label.Bounds.X + font.Measure(hotkeyLabel).X;
+			}
 		}
 	}
 }

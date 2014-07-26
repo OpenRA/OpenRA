@@ -30,7 +30,7 @@ namespace OpenRA.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (ClickThrough || !Bounds.Contains(mi.Location))
+			if (ClickThrough || !RenderBounds.Contains(mi.Location))
 				return false;
 
 			if (!Draggable || moving && (!TakeMouseFocus(mi) || mi.Button != MouseButton.Left))

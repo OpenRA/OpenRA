@@ -1,5 +1,5 @@
 Container@INGAME_ROOT:
-	Logic: CncIngameChromeLogic
+	Logic: LoadIngamePlayerOrObserverUILogic
 	Children:
 		LogicTicker@DISCONNECT_WATCHER:
 			Logic: DisconnectWatcherLogic
@@ -59,7 +59,8 @@ Container@INGAME_ROOT:
 
 Container@OBSERVER_WIDGETS:
 	Children:
-		Button@OPTIONS_BUTTON:
+		MenuButton@OPTIONS_BUTTON:
+			Logic: OrderButtonsChromeLogic
 			Key: escape
 			X: WINDOW_RIGHT-202
 			Y: 5
@@ -182,12 +183,24 @@ Container@PLAYER_WIDGETS:
 		WorldCommand:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
-		SupportPowers:
-			TooltipContainer: TOOLTIP_CONTAINER
+		Container@SUPPORT_POWERS:
+			Logic: SupportPowerBinLogic
 			X: 10
 			Y: 10
-			ReadyText: Ready
-			HoldText: On Hold
+			Children:
+				Container@PALETTE_BACKGROUND:
+					Children:
+						Background@ICON_TEMPLATE:
+							Width: 66
+							Height: 50
+							ClickThrough: false
+							Background: panel-black
+				SupportPowers@SUPPORT_PALETTE:
+					X: 1
+					Y: 1
+					TooltipContainer: TOOLTIP_CONTAINER
+					ReadyText: Ready
+					HoldText: On Hold
 		Background@SIDEBAR_BACKGROUND:
 			Logic: OrderButtonsChromeLogic
 			X: WINDOW_RIGHT - 204
@@ -196,7 +209,7 @@ Container@PLAYER_WIDGETS:
 			Height: 240
 			Background: panel-black
 			Children:
-				Button@OPTIONS_BUTTON:
+				MenuButton@OPTIONS_BUTTON:
 					Key: escape
 					X: 22
 					Y: 0-24
@@ -258,12 +271,16 @@ Container@PLAYER_WIDGETS:
 					Background: panel-gray
 					Children:
 						Radar@RADAR_MINIMAP:
+							Logic: IngameRadarDisplayLogic
 							X: 1
 							Y: 1
 							Width: PARENT_RIGHT-2
 							Height: PARENT_BOTTOM-2
 							WorldInteractionController: INTERACTION_CONTROLLER
+							Children:
+								LogicTicker@RADAR_TICKER:
 				Background@POWERBAR_PANEL:
+					Logic: IngamePowerBarLogic
 					X: 4
 					Y: 5
 					Width: 10
@@ -279,6 +296,7 @@ Container@PLAYER_WIDGETS:
 							TooltipTemplate: SIMPLE_TOOLTIP
 							IndicatorImage: indicator-left
 				Background@SILOBAR_PANEL:
+					Logic: IngameSiloBarLogic
 					X: 180
 					Y: 5
 					Width: 10
@@ -293,12 +311,14 @@ Container@PLAYER_WIDGETS:
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							IndicatorImage: indicator-right
-				Label@CASH:
+				LabelWithTooltip@CASH:
+					Logic: IngameCashCounterLogic
 					Y: 170
 					Width: PARENT_RIGHT
 					Height: 25
 					Align: Center
 					Font: Bold
+					Text: ${0}
 				Container@PRODUCTION_TYPES:
 					X: 12
 					Y: 197
@@ -369,21 +389,29 @@ Container@PLAYER_WIDGETS:
 									X: 7
 									Y: 7
 									ImageCollection: production-icons
+		Container@PRODUCTION_BACKGROUND:
+			X: WINDOW_RIGHT - 204
+			Y: 287
+			Children:
+				Background@ICON_TEMPLATE:
+					Width: 66
+					Height: 50
+					Background: panel-black
+		ProductionPalette@PRODUCTION_PALETTE:
+			X: WINDOW_RIGHT - 203
+			Y: 288
+			TooltipContainer: TOOLTIP_CONTAINER
+			ReadyText: Ready
+			HoldText: On Hold
 		ProductionTabs@PRODUCTION_TABS:
 			Logic: ProductionTabsLogic
 			PaletteWidget: PRODUCTION_PALETTE
 			TypesContainer: PRODUCTION_TYPES
+			BackgroundContainer: PRODUCTION_BACKGROUND
 			X: WINDOW_RIGHT - 204
 			Y: 268
 			Width: 194
 			Height: 20
-		ProductionPalette@PRODUCTION_PALETTE:
-			X: WINDOW_RIGHT - 204
-			Y: 287
-			TooltipContainer: TOOLTIP_CONTAINER
-			ReadyText: Ready
-			HoldText: On Hold
-
 Background@FMVPLAYER:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM

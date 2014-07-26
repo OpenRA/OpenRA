@@ -20,6 +20,7 @@ Background@BUTTON_TOOLTIP:
 			Height: 23
 			Font: Bold
 		Label@HOTKEY:
+			Visible: false
 			Y: 2
 			Height: 23
 			TextColor: 255,255,0
@@ -107,3 +108,81 @@ Background@CLIENT_TOOLTIP:
 			Height: 10
 			Font: TinyBold
 
+Background@PRODUCTION_TOOLTIP:
+	Logic: ProductionTooltipLogic
+	Background: dialog4
+	Width: 200
+	Height: 65
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 2
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Y: 2
+			Height: 23
+			TextColor: 255,255,0
+			Font: Bold
+		Label@REQUIRES:
+			X: 7
+			Y: 21
+			Height: 23
+			Font: TinyBold
+			Text: Requires {0}
+		Label@DESC:
+			X: 7
+			Y: 41
+			Height: 23
+			Font: TinyBold
+			VAlign: Top
+		Image@COST_ICON:
+			Y: 5
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-cost
+		Label@COST:
+			Height: 23
+			Font: Bold
+		Image@TIME_ICON:
+			X: 3
+			Y: 26
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-time
+		Label@TIME:
+			Y: 21
+			Height: 23
+			Font: Bold
+		Image@POWER_ICON:
+			Y: 46
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-power
+		Label@POWER:
+			Y: 41
+			Height: 23
+			Font: Bold
+
+Background@SUPPORT_POWER_TOOLTIP:
+	Logic: SupportPowerTooltipLogic
+	Background: dialog4
+	Width: 200
+	Height: 29
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 2
+			Height: 20
+			Font: Bold
+		Label@TIME:
+			X: 20
+			Y: 8
+			Font: TinyBold
+			VAlign: Top
+		Label@DESC:
+			X: 7
+			Y: 22
+			Font: TinyBold
+			VAlign: Top
