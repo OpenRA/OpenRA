@@ -44,9 +44,12 @@ namespace OpenRA.Mods.RA
 					if (order.OrderString == "LineBuild")
 					{
 						var playSounds = true;
+						var segmentType = unit.Traits.Get<LineBuildInfo>().SegmentType;
+						if (segmentType == null || segmentType.Length == 0)
+							segmentType = order.TargetString;
 						foreach (var t in BuildingUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))
 						{
-							var building = w.CreateActor(order.TargetString, new TypeDictionary
+							var building = w.CreateActor(t == order.TargetLocation ? order.TargetString : segmentType, new TypeDictionary
 							{
 								new LocationInit(t),
 								new OwnerInit(order.Player),

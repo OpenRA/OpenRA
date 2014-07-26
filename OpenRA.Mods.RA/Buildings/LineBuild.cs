@@ -20,6 +20,9 @@ namespace OpenRA.Mods.RA.Buildings
 
 		[Desc("LineBuildNode 'Types' to attach to.")]
 		public readonly string[] NodeTypes = { "wall" };
+
+		[Desc("Type of actor to use as segments between nodes (empty means same as this).")]
+		public readonly string SegmentType = null;
 	}
 
 	public class LineBuild {}
