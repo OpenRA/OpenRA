@@ -449,8 +449,6 @@ NAFNCE:
 		Type: Concrete
 	LineBuild:
 		NodeTypes: laserfence
-	LineBuildNode:
-		Types: laserfence
 	RenderBuildingWall:
 		Type: laserfence
 
@@ -500,8 +498,6 @@ FSSEG:
 		Type: Concrete
 	LineBuild:
 		NodeTypes: firestorm
-	LineBuildNode:
-		Types: firestorm
 	RenderBuildingWall:
 		Type: firestorm
 
