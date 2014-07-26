@@ -328,6 +328,19 @@ namespace OpenRA.Utility
 							node.Key = "Units";
 				}
 
+				// RemoveImmediately was replaced with DestroyAfterDelay
+				if (engineVersion < 20140726)
+				{
+					if (depth == 1)
+					{
+						if (node.Key == "RemoveImmediately")
+							node.Key = "DestroyAfterDelay";
+
+						if (node.Key == "-RemoveImmediately")
+							node.Key = "-DestroyAfterDelay";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

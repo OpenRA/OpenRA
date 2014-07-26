@@ -12,7 +12,7 @@
 		Name: Concrete
 		Description: Provides a strong foundation that prevents\ndamage from the terrain.
 	RenderSprites:
-	RemoveImmediately:
+	DestroyAfterDelay:
 
 CONCRETEA:
 	Inherits: ^CONCRETE
