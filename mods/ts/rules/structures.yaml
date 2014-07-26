@@ -403,6 +403,101 @@ NAWALL:
 	LineBuild:
 		NodeTypes: wall, turret
 
+NAPOST:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1001
+		Prerequisites: naapwr
+		Owner: nod
+	SoundOnDamageTransition:
+		DamagedSound:
+		DestroyedSound:
+	Valued:
+		Cost: 200
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Laser Fence
+		Description: Laser barrier.
+	Health:
+		HP: 300
+	Armor:
+		Type: Concrete
+	LineBuild:
+		NodeTypes: laserfence
+		SegmentType: nafnce
+	LineBuildNode:
+		Types: laserfence
+
+NAFNCE:
+	Inherits: ^Wall
+	Building:
+		Footprint: x
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Laser Fence
+		Description: Laser barrier.
+	Health:
+		HP: 300
+	Armor:
+		Type: Concrete
+	LineBuild:
+		NodeTypes: laserfence
+	LineBuildNode:
+		Types: laserfence
+
+FSNODE:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1001
+		Prerequisites: gacnst
+		Owner: gdi
+	SoundOnDamageTransition:
+		DamagedSound:
+		DestroyedSound:
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Firestorm Wall
+		Description: Stops almost everything when the Firestorm generator is active.
+	Health:
+		HP: 200
+	Armor:
+		Type: Concrete
+	LineBuild:
+		NodeTypes: firestorm
+		SegmentType: fsseg
+	LineBuildNode:
+		Types: firestorm
+
+FSSEG:
+	Inherits: ^Wall
+	Building:
+		Footprint: x
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Firestorm Wall
+		Description: Stops almost everything when the Firestorm generator is active.
+	Health:
+		HP: 200
+	Armor:
+		Type: Concrete
+	LineBuild:
+		NodeTypes: firestorm
+	LineBuildNode:
+		Types: firestorm
+
+
 GATICK:
 	Inherits: ^Building
 	Valued:
