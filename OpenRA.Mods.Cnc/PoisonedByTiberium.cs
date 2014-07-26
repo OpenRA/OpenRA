@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Cnc
 
 			var weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			weapon.Impact(self.CenterPosition, self.World.WorldActor, 1f);
-			poisonTicks = weapon.ROF;
+			poisonTicks = weapon.ReloadDelay;
 		}
 	}
 }

@@ -43,10 +43,10 @@ namespace OpenRA.Mods.RA
 			{
 				return new Dictionary<int, string[]>()
 				{
-					{ 200, new[] { "firepower", "armor", "speed" } },
-					{ 400, new[] { "firepower", "armor", "speed" } },
-					{ 800, new[] { "firepower", "armor", "speed" } },
-					{ 1600, new[] { "firepower", "armor", "speed" } }
+					{ 200, new[] { "firepower", "armor", "speed", "reload" } },
+					{ 400, new[] { "firepower", "armor", "speed", "reload" } },
+					{ 800, new[] { "firepower", "armor", "speed", "reload" } },
+					{ 1600, new[] { "firepower", "armor", "speed", "reload" } }
 				};
 			}
 

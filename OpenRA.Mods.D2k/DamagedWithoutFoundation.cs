@@ -66,7 +66,7 @@ namespace OpenRA.Mods.D2k
 				return;
 
 			weapon.Impact(self.CenterPosition, self.World.WorldActor, 1f);
-			damageTicks = weapon.ROF;
+			damageTicks = weapon.ReloadDelay;
 		}
 	}
 }

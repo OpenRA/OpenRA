@@ -187,7 +187,9 @@ namespace OpenRA.Mods.RA
 				FireDelay = Weapon.BurstDelay;
 			else
 			{
-				FireDelay = Weapon.ROF;
+				var modifiers = self.TraitsImplementing<IReloadModifier>()
+					.Select(m => m.GetReloadModifier());
+				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
 				Burst = Weapon.Burst;
 			}
 
