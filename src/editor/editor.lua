@@ -142,6 +142,7 @@ end
 local function navigateToPosition(editor, fromPosition, toPosition, length)
   table.insert(editor.jumpstack, fromPosition)
   editor:GotoPos(toPosition)
+  editor:EnsureVisibleEnforcePolicy(editor:LineFromPosition(toPosition))
   if length then
     editor:SetAnchor(toPosition + length)
   end
@@ -151,6 +152,7 @@ local function navigateBack(editor)
   if #editor.jumpstack == 0 then return end
   local pos = table.remove(editor.jumpstack)
   editor:GotoPos(pos)
+  editor:EnsureVisibleEnforcePolicy(editor:LineFromPosition(pos))
   return true
 end
 
