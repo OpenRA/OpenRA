@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -94,9 +95,12 @@ namespace OpenRA.Mods.RA.Orders
 
 			var cells = new Dictionary<CPos, bool>();
 			// Linebuild for walls.
-			// Assumes a 1x1 footprint; weird things will happen for other footprints
+			// Requires a 1x1 footprint
 			if (rules.Actors[Building].Traits.Contains<LineBuildInfo>())
 			{
+				if (BuildingInfo.Dimensions.X != 1 || BuildingInfo.Dimensions.Y != 1)
+					throw new InvalidOperationException("LineBuild requires a 1x1 sized Building");
+
 				foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, Building, BuildingInfo))
 					cells.Add(t, BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, t));
 			}
