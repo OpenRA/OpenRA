@@ -571,6 +571,25 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
+				{ "engineer",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							return true;
+						}
+
+						if (server.Map.Options.Engineer != null)
+						{
+							server.SendOrderTo(conn, "Message", "Map has disabled Engineer configuration");
+							return true;
+						}
+
+						server.LobbyInfo.GlobalSettings.Engineer = s;
+						server.SyncLobbyInfo();
+						return true;
+					}},
 				{ "kick",
 					s =>
 					{

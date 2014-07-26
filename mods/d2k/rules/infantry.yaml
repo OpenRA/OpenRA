@@ -24,7 +24,7 @@ RIFLE:
 	RenderInfantryProne:
 		IdleAnimations: stand,stand2
 
-ENGINEER:
+^ENGINEER:
 	Inherits: ^Infantry
 	Buildable:
 		Prerequisites: Outpost, ~techlevel.medium
@@ -47,12 +47,25 @@ ENGINEER:
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
-	ExternalCaptures:
-		Type: building
 	Captures:
 		CaptureTypes: husk
 	-AutoTarget:
+	-GainsExperience:
 
+ENGINEER1:
+	Inherits: ^ENGINEER
+	Buildable:
+		Prerequisites: Outpost, ~techlevel.medium, ~engineer.fromout
+	ExternalCaptures:
+		Type: building
+		
+ENGINEER2:
+	Inherits: ^ENGINEER
+	Buildable:
+		Prerequisites: Outpost, ~techlevel.medium, ~engineer.enter
+	Captures:
+		CaptureTypes: building, husk
+		
 BAZOOKA:
 	Inherits: ^Infantry
 	Buildable:

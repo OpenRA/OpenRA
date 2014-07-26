@@ -64,3 +64,9 @@ Player:
 	ProvidesTechPrerequisite@all:
 		Name: Unrestricted
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
+	EngineerPrerequisite@1:
+		Name: Enters
+		Prerequisites: engineer.enter
+	EngineerPrerequisite@2:
+		Name: From Out
+		Prerequisites: engineer.fromout

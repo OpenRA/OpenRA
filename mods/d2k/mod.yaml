@@ -138,6 +138,7 @@ LobbyDefaults:
 	Shroud: true
 	Fog: true
 	TechLevel: Unrestricted
+	Engineer: From Out
 
 ChromeMetrics:
 	mods/d2k/metrics.yaml

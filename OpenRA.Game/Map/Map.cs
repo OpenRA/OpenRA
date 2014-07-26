@@ -34,6 +34,7 @@ namespace OpenRA
 		public bool? FragileAlliances;
 		public int? StartingCash;
 		public string TechLevel;
+		public string Engineer;
 		public bool ConfigurableStartingUnits = true;
 		public string[] Difficulties = { };
 
