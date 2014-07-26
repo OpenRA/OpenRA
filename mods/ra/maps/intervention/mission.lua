@@ -45,7 +45,7 @@ HunterSubs		= { { SubPen, {"ss", "ss"} } }
 
 GroundPatrolWpts	= { PatrolWpt1, PatrolWpt2 }
 GroundPatrolUnits	= {
-				{ { Barracks, {"e1", "e1", "e1", "e3", "e3", "dog"} } },
+				{ { Barracks, {"e1", "e1", "e1", "e3", "e3"} }, { Kennel, {"dog"} } },
 				{ { WarFactory, {"apc", "apc", "ftrk"} } },
 				{ { WarFactory, {"3tnk", "3tnk"} } }
 			  }
