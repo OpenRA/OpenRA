@@ -191,6 +191,9 @@ kenn:
 	make: kennmake
 		Start: 0
 		Length: *
+	bib: mbSILO
+		Start: 0
+		Length: *
 	icon: kennicon
 		Start: 0
 
