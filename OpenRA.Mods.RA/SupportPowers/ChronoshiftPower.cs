@@ -124,7 +124,7 @@ namespace OpenRA.Mods.RA
 			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-				var targetUnits = power.UnitsInRange(xy);
+				var targetUnits = power.UnitsInRange(xy).Where(a => !world.FogObscures(a));
 
 				foreach (var unit in targetUnits)
 					if (manager.self.Owner.Shroud.IsTargetable(unit))
