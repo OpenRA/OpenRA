@@ -27,7 +27,8 @@ Speech:
 		BuildingLost: strclost
 		CivilianKilled: civdead1
 		BuildingCaptured: capt1
-	DisablePrefixes: Repairing, LowPower, SilosNeeded, PrimaryBuildingSelected, BuildingCannotPlaceAudio, NewOptions, AbilityInsufficientPower, Win, Lose, BaseAttack, HarvesterAttack, Leave, UnitReady, NoBuild, Training, OnHold, Cancelled, Building, ConstructionComplete, Reinforce, UnitLost, BuildingLost, CivilianKilled
+		CivilianBuildingCaptured: civcapt1
+	DisablePrefixes: Repairing, LowPower, SilosNeeded, PrimaryBuildingSelected, BuildingCannotPlaceAudio, NewOptions, AbilityInsufficientPower, Win, Lose, BaseAttack, HarvesterAttack, Leave, UnitReady, NoBuild, Training, OnHold, Cancelled, Building, ConstructionComplete, Reinforce, UnitLost, BuildingLost, CivilianKilled, CivilianBuildingCaptured
 
 Sounds:
 	Notifications:

@@ -410,6 +410,8 @@
 ^TechBuilding:
 	Inherits: ^CivBuilding
 	Capturable:
+	CaptureNotification:
+		Notification: CivilianBuildingCaptured
 	RepairableBuilding:
 		RepairPercent: 40
 		RepairStep: 14
