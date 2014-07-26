@@ -107,7 +107,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public bool BuildComplete { get; private set; }
 		[Sync] readonly CPos topLeft;
 		readonly Actor self;
-		public readonly bool UseMakeAnimation;
+		public readonly bool SkipMakeAnimation;
 
 		PowerManager PlayerPower;
 
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.RA.Buildings
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
 			CenterPosition = init.world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.world, Info);
-			UseMakeAnimation = !init.Contains<SkipMakeAnimsInit>();
+			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
 		public int GetPowerUsage()
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public void Created(Actor self)
 		{
-			if (!UseMakeAnimation)
+			if (SkipMakeAnimation || !self.HasTrait<WithMakeAnimation>())
 				NotifyBuildingComplete(self);
 		}
 
