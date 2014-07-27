@@ -90,6 +90,25 @@ namespace OpenRA.FileFormats
 				BitsPerSample = 16;
 			}
 		}
+		
+		public static float WaveLength(Stream s)
+		{
+			s.Position = 12;
+			var fmt = s.ReadASCII(4);
+
+			if (fmt != "fmt ")
+				return 0;
+
+			s.Position = 22;
+			var channels = s.ReadInt16();
+			var sampleRate = s.ReadInt32();
+
+			s.Position = 34;
+			var bitsPerSample = s.ReadInt16();
+			var length = s.Length * 8;
+
+			return length / (channels * sampleRate * bitsPerSample);
+		}
 
 		public byte[] DecodeAdpcmData()
 		{

@@ -32,7 +32,10 @@ namespace OpenRA.GameRules
 
 			Exists = true;
 			using (var s = GlobalFileSystem.Open(Filename))
-				Length = (int)AudLoader.SoundLength(s);
+				if (Filename.ToLowerInvariant().EndsWith("wav"))
+					Length = (int)WavLoader.WaveLength(s);
+				else
+					Length = (int)AudLoader.SoundLength(s);
 		}
 
 		public void Reload()
@@ -42,7 +45,10 @@ namespace OpenRA.GameRules
 
 			Exists = true;
 			using (var s = GlobalFileSystem.Open(Filename))
-				Length = (int)AudLoader.SoundLength(s);
+				if (Filename.ToLowerInvariant().EndsWith("wav"))
+					Length = (int)WavLoader.WaveLength(s);
+				else
+					Length = (int)AudLoader.SoundLength(s);
 		}
 	}
 }
