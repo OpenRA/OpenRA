@@ -22,6 +22,11 @@ namespace OpenRA.Mods.RA.Air
 	public class AircraftInfo : ITraitInfo, IFacingInfo, IOccupySpaceInfo, UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
 		public readonly WRange CruiseAltitude = new WRange(1280);
+		public readonly WRange IdealSeparation = new WRange(1706);
+		[Desc("Whether the aircraft can be repulsed.")]
+		public readonly bool Repulsable = true;
+		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
+		public readonly int RepulsionSpeed = -1;
 
 		[ActorReference]
 		public readonly string[] RepairBuildings = { "fix" };
@@ -38,7 +43,7 @@ namespace OpenRA.Mods.RA.Air
 
 	public class Aircraft : IFacing, IPositionable, ISync, INotifyKilled, IIssueOrder, IOrderVoice, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		static readonly Pair<CPos, SubCell>[] NoCells = new Pair<CPos, SubCell>[] { };
+		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
 		readonly AircraftInfo info;
 		readonly Actor self;
@@ -60,13 +65,61 @@ namespace OpenRA.Mods.RA.Air
 			if (init.Contains<CenterPositionInit>())
 				SetPosition(self, init.Get<CenterPositionInit, WPos>());
 
-			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
+			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
+		}
+
+		public void Repulse()
+		{
+			var repulsionForce = GetRepulsionForce();
+
+			var repulsionFacing = Util.GetFacing(repulsionForce, -1);
+			if (repulsionFacing == -1)
+				return;
+
+			var speed = info.RepulsionSpeed != -1 ? info.RepulsionSpeed : MovementSpeed;
+			SetPosition(self, CenterPosition + FlyStep(speed, repulsionFacing));
+		}
+
+		public virtual WVec GetRepulsionForce()
+		{
+			if (!info.Repulsable)
+				return WVec.Zero;
+
+			// Repulsion only applies when we're flying!
+			var altitude = CenterPosition.Z;
+			if (altitude != info.CruiseAltitude.Range)
+				return WVec.Zero;
+
+			return self.World.FindActorsInCircle(self.CenterPosition, info.IdealSeparation)
+				.Where(a => !a.IsDead() && a.HasTrait<Aircraft>())
+				.Select(GetRepulsionForce)
+				.Aggregate(WVec.Zero, (a, b) => a + b);
+		}
+
+		public WVec GetRepulsionForce(Actor other)
+		{
+			if (self == other || other.CenterPosition.Z < self.CenterPosition.Z)
+				return WVec.Zero;
+
+			var d = self.CenterPosition - other.CenterPosition;
+			var distSq = d.HorizontalLengthSquared;
+			if (distSq > info.IdealSeparation.Range * info.IdealSeparation.Range)
+				return WVec.Zero;
+
+			if (distSq < 1)
+			{
+				var yaw = self.World.SharedRandom.Next(0, 1023);
+				var rot = new WRot(WAngle.Zero, WAngle.Zero, new WAngle(yaw));
+				return new WVec(1024, 0, 0).Rotate(rot);
+			}
+
+			return (d * 1024 * 8) / (int)distSq;
 		}
 
 		public Actor GetActorBelow()
 		{
 			if (self.CenterPosition.Z != 0)
-				return null;	// not on the ground.
+				return null; // not on the ground.
 
 			return self.World.ActorMap.GetUnitsAt(self.Location)
 				.FirstOrDefault(a => a.HasTrait<Reservable>());
@@ -158,7 +211,11 @@ namespace OpenRA.Mods.RA.Air
 
 		public WVec FlyStep(int facing)
 		{
-			var speed = MovementSpeed;
+			return FlyStep(MovementSpeed, facing);
+		}
+
+		public WVec FlyStep(int speed, int facing)
+		{
 			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing));
 			return speed * dir / 1024;
 		}
