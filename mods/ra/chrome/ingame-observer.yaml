@@ -21,8 +21,8 @@ Container@OBSERVER_WIDGETS:
 					Font: Bold
 					Contrast: true
 		MenuButton@OPTIONS_BUTTON:
-			MenuContainer: INGAME_OPTIONS_BG
-			HideIngameUI: false
+			MenuContainer: INGAME_MENU
+			HideIngameUI: true
 			Pause: false
 			X: 0
 			Y: 0

@@ -3,7 +3,10 @@ Container@PLAYER_WIDGETS:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
-		Button@INGAME_DIPLOMACY_BUTTON:
+		MenuButton@DIPLOMACY_BUTTON:
+			Logic: OrderButtonsChromeLogic
+			MenuContainer: INGAME_DIPLOMACY_BG
+			HideIngameUI: False
 			X: 162
 			Y: 0
 			Width: 160
@@ -11,7 +14,9 @@ Container@PLAYER_WIDGETS:
 			Text: Diplomacy (P)
 			Font: Bold
 			Key: p
-		Button@INGAME_DEBUG_BUTTON:
+		MenuButton@DEBUG_BUTTON:
+			Logic: OrderButtonsChromeLogic
+			MenuContainer: INGAME_MENU
 			X: 324
 			Y: 0
 			Width: 160
@@ -20,15 +25,6 @@ Container@PLAYER_WIDGETS:
 			Visible: false
 			Font: Bold
 			Key: escape Shift
-		Button@OBJECTIVES_BUTTON:
-			X: 486
-			Y: 0
-			Width: 160
-			Height: 25
-			Text: Objectives (O)
-			Visible: false
-			Font: Bold
-			Key: o
 		SlidingContainer@INGAME_RADAR_BIN:
 			X: WINDOW_RIGHT-215
 			Y: 0

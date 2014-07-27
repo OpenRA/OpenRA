@@ -373,6 +373,10 @@
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\GameInfoLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\GameInfoBriefingLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\GameInfoObjectivesLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\GameInfoStatsLogic.cs" />
     <Compile Include="Widgets\Logic\IrcLogic.cs" />
     <Compile Include="Widgets\Logic\KickClientLogic.cs" />
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />

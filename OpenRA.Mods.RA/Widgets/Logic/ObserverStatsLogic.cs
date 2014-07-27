@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public ObserverStatsLogic(World world, WorldRenderer worldRenderer, Widget widget, Action onExit, bool transient)
+		public ObserverStatsLogic(World world, WorldRenderer worldRenderer, Widget widget, Action onExit)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
@@ -139,18 +139,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var close = widget.GetOrNull<ButtonWidget>("CLOSE");
 			if (close != null)
-			{
 				close.OnClick = () =>
 				{
-					if (transient)
-					{
-						Ui.CloseWindow();
-						Ui.Root.RemoveChild(widget);
-					}
-
+					Ui.CloseWindow();
+					Ui.Root.RemoveChild(widget);
 					onExit();
 				};
-			}
 		}
 
 		void ClearStats()

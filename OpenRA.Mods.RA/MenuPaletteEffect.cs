@@ -21,8 +21,11 @@ namespace OpenRA.Mods.RA
 		[Desc("Time (in ticks) to fade between states")]
 		public readonly int FadeLength = 10;
 
-		[Desc("Effect style to fade to. Accepts values of None or Desaturated")]
+		[Desc("Effect style to fade to during gameplay. Accepts values of None or Desaturated.")]
 		public readonly MenuPaletteEffect.EffectType Effect = MenuPaletteEffect.EffectType.None;
+
+		[Desc("Effect style to fade to when opening the in-game menu. Accepts values of None, Black or Desaturated.")]
+		public readonly MenuPaletteEffect.EffectType MenuEffect = MenuPaletteEffect.EffectType.None;
 
 		public object Create(ActorInitializer init) { return new MenuPaletteEffect(this); }
 	}

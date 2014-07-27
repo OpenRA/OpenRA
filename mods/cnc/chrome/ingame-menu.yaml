@@ -1,27 +1,7 @@
-Container@INGAME_MENU_PANEL:
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
-	Width: 512
-	Height: 370
-	Children:
-		Button@OBJECTIVES_BUTTON:
-			Y: PARENT_BOTTOM - 1
-			Width: 140
-			Height: 35
-			Text: Objectives
-			Visible: false
-		Button@DEBUG_BUTTON:
-			X: 150
-			Y: PARENT_BOTTOM - 1
-			Width: 140
-			Height: 35
-			Text: Debug
-			Visible: false
-
 Container@INGAME_MENU:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM
-	Logic: CncIngameMenuLogic
+	Logic: IngameMenuLogic
 	Children:
 		Image@EVA:
 			X: WINDOW_RIGHT-128-43
@@ -46,31 +26,31 @@ Container@INGAME_MENU:
 			Width: 740
 			Height: 35
 			Children:
-				Button@QUIT_BUTTON:
+				Button@ABORT_MISSION:
 					X: 0
 					Y: 0
 					Width: 140
 					Height: 35
 					Text: Abort Mission
-				Button@SURRENDER_BUTTON:
+				Button@SURRENDER:
 					X: 150
 					Y: 0
 					Width: 140
 					Height: 35
 					Text: Surrender
-				Button@MUSIC_BUTTON:
+				Button@MUSIC:
 					X: 300
 					Y: 0
 					Width: 140
 					Height: 35
 					Text: Music
-				Button@SETTINGS_BUTTON:
+				Button@SETTINGS:
 					X: 450
 					Y: 0
 					Width: 140
 					Height: 35
 					Text: Settings
-				Button@RESUME_BUTTON:
+				Button@RESUME:
 					Key: escape
 					X: 600
 					Y: 0

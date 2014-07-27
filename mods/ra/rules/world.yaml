@@ -174,4 +174,6 @@ World:
 	DebugPauseState:
 	RadarPings:
 	StartGameNotification:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
 

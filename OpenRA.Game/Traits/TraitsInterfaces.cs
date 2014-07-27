@@ -271,7 +271,7 @@ namespace OpenRA.Traits
 
 	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning, Map map); }
 
-	public interface IObjectivesPanel { string ObjectivesPanel { get; } }
+	public interface IObjectivesPanel { string PanelName { get; } }
 
 	public interface INotifyObjectivesUpdated
 	{

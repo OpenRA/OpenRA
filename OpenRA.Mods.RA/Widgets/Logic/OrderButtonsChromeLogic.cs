@@ -8,9 +8,11 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Widgets;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
@@ -59,8 +61,32 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var options = widget.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
 			if (options != null)
 			{
+				var blinking = false;
+				var lp = world.LocalPlayer;
 				options.IsDisabled = () => disableSystemButtons;
-				options.OnClick = () => OpenMenuPanel(options);
+				options.OnClick = () =>
+				{
+					blinking = false;
+					OpenMenuPanel(options, new WidgetArgs()
+					{
+						{ "activePanel", IngameInfoPanel.AutoSelect }
+					});
+				};
+				options.IsHighlighted = () => blinking && Game.LocalTick % 50 < 25;
+
+				if (lp != null)
+				{
+					Action<Player> StartBlinking = player =>
+					{
+						if (player == world.LocalPlayer)
+							blinking = true;
+					};
+
+					var mo = lp.PlayerActor.TraitOrDefault<MissionObjectives>();
+
+					if (mo != null)
+						mo.ObjectiveAdded += StartBlinking;
+				}
 			}
 
 			var diplomacy = widget.GetOrNull<MenuButtonWidget>("DIPLOMACY_BUTTON");
@@ -76,7 +102,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				debug.IsVisible = () => world.LobbyInfo.GlobalSettings.AllowCheats;
 				debug.IsDisabled = () => disableSystemButtons;
-				debug.OnClick = () => OpenMenuPanel(debug);
+				debug.OnClick = () => OpenMenuPanel(debug, new WidgetArgs()
+				{
+					{ "activePanel", IngameInfoPanel.Debug }
+				});
 			}
 
 			var stats = widget.GetOrNull<MenuButtonWidget>("OBSERVER_STATS_BUTTON");
@@ -87,7 +116,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		void OpenMenuPanel(MenuButtonWidget button)
+		void OpenMenuPanel(MenuButtonWidget button, WidgetArgs widgetArgs = null)
 		{
 			disableSystemButtons = true;
 			var cachedPause = world.PredictedPaused;
@@ -98,21 +127,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (button.Pause && world.LobbyInfo.IsSinglePlayer)
 				world.SetPauseState(true);
 
-			Game.LoadWidget(world, button.MenuContainer, Ui.Root, new WidgetArgs()
+			widgetArgs = widgetArgs ?? new WidgetArgs();
+			widgetArgs.Add("onExit", () =>
 			{
-				{ "transient", true },
-				{ "onExit", () =>
-					{
-						if (button.HideIngameUI)
-							ingameRoot.IsVisible = () => true;
+				if (button.HideIngameUI)
+					ingameRoot.IsVisible = () => true;
 
-						if (button.Pause && world.LobbyInfo.IsSinglePlayer)
-							world.SetPauseState(cachedPause);
+				if (button.Pause && world.LobbyInfo.IsSinglePlayer)
+					world.SetPauseState(cachedPause);
 
-						disableSystemButtons = false;
-					}
-				}
+				disableSystemButtons = false;
 			});
+
+			Game.LoadWidget(world, button.MenuContainer, Ui.Root, widgetArgs);
 		}
 
 		static void BindOrderButton<T>(World world, ButtonWidget w, string icon)
