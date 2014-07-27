@@ -8,6 +8,7 @@ World:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	MenuPaletteEffect:
+		MenuEffect: Desaturated
 	CloakPaletteEffect:
 	ScreenShaker:
 	NukePaletteEffect:
@@ -185,7 +186,7 @@ World:
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
-	ConquestObjectivesPanel:
-		ObjectivesPanel: CONQUEST_OBJECTIVES
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
 	RadarPings:
 

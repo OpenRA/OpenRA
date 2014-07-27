@@ -189,4 +189,6 @@ World:
 	ValidateOrder:
 	DebugPauseState:
 	RadarPings:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
 

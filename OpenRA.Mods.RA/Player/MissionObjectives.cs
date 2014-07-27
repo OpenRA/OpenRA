@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -77,6 +78,7 @@ namespace OpenRA.Mods.RA
 
 			objectives.Insert(newID, new MissionObjective(type, description));
 
+			ObjectiveAdded(player);
 			foreach (var imo in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
 				imo.OnObjectiveAdded(player, newID);
 
@@ -195,8 +197,26 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
+		public event Action<Player> ObjectiveAdded = player => { };
+
 		public void OnObjectiveAdded(Player player, int id) {}
 		public void OnObjectiveCompleted(Player player, int id) {}
 		public void OnObjectiveFailed(Player player, int id) {}
+	}
+
+	[Desc("Provides game mode progress information for players.",
+	      "Goes on WorldActor - observers don't have a player it can live on.",
+	      "Current options for PanelName are 'SKIRMISH_STATS' and 'MISSION_OBJECTIVES'.")]
+	public class ObjectivesPanelInfo : ITraitInfo
+	{
+		public string PanelName = null;
+		public object Create(ActorInitializer init) { return new ObjectivesPanel(this); }
+	}
+
+	public class ObjectivesPanel : IObjectivesPanel
+	{
+		ObjectivesPanelInfo info;
+		public ObjectivesPanel(ObjectivesPanelInfo info) { this.info = info; }
+		public string PanelName { get { return info.PanelName; } }
 	}
 }

@@ -91,19 +91,4 @@ namespace OpenRA.Mods.RA
 	[Desc("Tag trait for things that must be destroyed for a short game to end.")]
 	public class MustBeDestroyedInfo : TraitInfo<MustBeDestroyed> { }
 	public class MustBeDestroyed { }
-
-	[Desc("Provides game mode information for players/observers.",
-	      "Goes on WorldActor - observers don't have a player it can live on.")]
-	public class ConquestObjectivesPanelInfo : ITraitInfo
-	{
-		public string ObjectivesPanel = null;
-		public object Create(ActorInitializer init) { return new ConquestObjectivesPanel(this); }
-	}
-
-	public class ConquestObjectivesPanel : IObjectivesPanel
-	{
-		ConquestObjectivesPanelInfo info;
-		public ConquestObjectivesPanel(ConquestObjectivesPanelInfo info) { this.info = info; }
-		public string ObjectivesPanel { get { return info.ObjectivesPanel; } }
-	}
 }

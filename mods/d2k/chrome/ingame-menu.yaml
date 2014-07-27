@@ -3,23 +3,10 @@ Container@INGAME_MENU:
 	Height: WINDOW_BOTTOM
 	Logic: IngameMenuLogic
 	Children:
-		Background@BORDER:
-			X: 0 - 15
-			Y: 0 - 15
-			Width: WINDOW_RIGHT + 30
-			Height: WINDOW_BOTTOM + 30
-			Background: mainmenu-border
-		Image@LOGO:
-			X: WINDOW_RIGHT - 296
-			Y: 30
-			ImageCollection: logos
-			ImageName: logo
 		Label@VERSION_LABEL:
-			X: WINDOW_RIGHT - 296
-			Y: 296 - 20
-			Width: 296 - 20
-			Height: 25
-			Align: Center
+			X: WINDOW_RIGHT - 10
+			Y: WINDOW_BOTTOM - 20
+			Align: Right
 			Font: Regular
 			Contrast: True
 		Background@MENU_BUTTONS:
