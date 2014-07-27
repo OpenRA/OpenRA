@@ -212,7 +212,6 @@ namespace OpenRA.Mods.RA
 				passenger.Trait<IPositionable>().SetPosition(passenger, self.Location);
 				passenger.QueueActivity(passenger.Trait<Mobile>().MoveIntoWorld(passenger, self.Location));
 				passenger.SetTargetLine(Target.FromCell(w, self.Location), Color.Green, false);
-				// TODO: this won't work well for >1 actor as they should move towards the next enterable (sub) cell instead
 			});
 		}
 
