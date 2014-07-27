@@ -2,6 +2,7 @@ Player:
 	PlaceBuilding:
 	TechTree:
 	SupportPowerManager:
+	MissionObjectives:
 	ConquestVictoryConditions:
 	PowerManager:
 	AllyRepair:
