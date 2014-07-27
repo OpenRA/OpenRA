@@ -210,7 +210,7 @@ namespace OpenRA.Mods.RA
 			{
 				w.Add(passenger);
 				passenger.Trait<IPositionable>().SetPosition(passenger, self.Location);
-				passenger.QueueActivity(passenger.Trait<Mobile>().MoveIntoWorld(passenger, self.Location));
+				passenger.QueueActivity(passenger.Trait<IMove>().MoveIntoWorld(passenger, self.Location));
 				passenger.SetTargetLine(Target.FromCell(w, self.Location), Color.Green, false);
 			});
 		}
