@@ -42,8 +42,19 @@ namespace OpenRA
 		public void AddPlayer(Player p) { Players.Add(p); }
 		public Player LocalPlayer { get; private set; }
 
-		Player renderPlayer;
+		public event Action GameOver = () => { };
+		bool gameOver;
+		public void EndGame()
+		{
+			if (!gameOver)
+			{
+				gameOver = true;
+				GameOver();
+			}
+		}
+
 		public bool ObserveAfterWinOrLose;
+		Player renderPlayer;
 		public Player RenderPlayer
 		{
 			get { return renderPlayer == null || (ObserveAfterWinOrLose && renderPlayer.WinState != WinState.Undefined) ? null : renderPlayer; }

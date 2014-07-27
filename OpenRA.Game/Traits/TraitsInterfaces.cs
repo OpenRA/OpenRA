@@ -273,6 +273,15 @@ namespace OpenRA.Traits
 
 	public interface IObjectivesPanel { string ObjectivesPanel { get; } }
 
+	public interface INotifyObjectivesUpdated
+	{
+		void OnPlayerWon(Player winner);
+		void OnPlayerLost(Player loser);
+		void OnObjectiveAdded(Player player, int objectiveID);
+		void OnObjectiveCompleted(Player player, int objectiveID);
+		void OnObjectiveFailed(Player player, int objectiveID);
+	}
+
 	public static class DisableExts
 	{
 		public static bool IsDisabled(this Actor a)
