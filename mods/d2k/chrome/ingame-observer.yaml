@@ -1,6 +1,10 @@
 Container@OBSERVER_WIDGETS:
 	Children:
-		Button@OBSERVER_STATS_BUTTON:
+		MenuButton@OBSERVER_STATS_BUTTON:
+			Logic: OrderButtonsChromeLogic
+			MenuContainer: INGAME_OBSERVERSTATS_BG
+			HideIngameUI: False
+			Pause: False
 			X: 162
 			Y: 0
 			Width: 160
