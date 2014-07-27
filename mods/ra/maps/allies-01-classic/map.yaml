@@ -574,12 +574,16 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScriptInterface:
 			LuaScripts: allies01.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	TRAN.Extraction:
 		Inherits: TRAN
 		RenderUnit:

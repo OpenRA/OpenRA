@@ -3,12 +3,12 @@ SecondAttackWave = { "e1", "e1", "e1", }
 ThirdAttackWave = { "e1", "e1", "e1", "e2", }
 
 MissionAccomplished = function()
-	Mission.MissionOver({ player }, nil, false)
+	Mission.MissionOver({ player }, nil, true)
 	Media.PlayMovieFullscreen("desflees.vqa")
 end
 
 MissionFailed = function()
-	Mission.MissionOver(nil, { player }, false)
+	Mission.MissionOver(nil, { player }, true)
 	Media.PlayMovieFullscreen("flag.vqa")
 end
 

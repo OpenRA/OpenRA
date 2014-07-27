@@ -270,6 +270,9 @@ Rules:
 			ResetOnHoldLost: true
 			RatioRequired: 1
 			CriticalRatioRequired: 1
+	World:
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 
 Sequences:
 

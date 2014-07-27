@@ -869,12 +869,16 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScriptInterface:
 			LuaScripts: allies02.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	^Infantry:
 		MustBeDestroyed:
 	^Tank:

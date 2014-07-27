@@ -459,8 +459,12 @@ Rules:
 			Loop: false
 		LuaScriptInterface:
 			LuaScripts: gdi01.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	^Infantry:
 		MustBeDestroyed:
 	PROC:

@@ -897,8 +897,12 @@ Rules:
 		-CrateSpawner:
 		LuaScriptInterface:
 			LuaScripts: gdi03.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	^Infantry:
 		MustBeDestroyed:
 	WEAP:

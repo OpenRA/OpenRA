@@ -2,11 +2,11 @@ RifleInfantryReinforcements = { "e1", "e1", }
 RocketInfantryReinforcements = { "e3", "e3", "e3" }
 
 MissionAccomplished = function()
-	Mission.MissionOver({ player }, nil, false)
+	Mission.MissionOver({ player }, nil, true)
 end
 
 MissionFailed = function()
-	Mission.MissionOver(nil, { player }, false)
+	Mission.MissionOver(nil, { player }, true)
 	Media.PlayMovieFullscreen("nodlose.vqa")
 end
 
