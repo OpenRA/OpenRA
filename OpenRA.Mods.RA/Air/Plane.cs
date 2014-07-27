@@ -50,6 +50,21 @@ namespace OpenRA.Mods.RA.Air
 
 				self.QueueActivity(new TakeOff());
 			}
+
+			Repulse();
+		}
+
+		public override WVec GetRepulsionForce()
+		{
+			var repulsionForce = base.GetRepulsionForce();
+			if (repulsionForce == WVec.Zero)
+				return WVec.Zero;
+
+			var currentDir = FlyStep(Facing);
+
+			var dot = WVec.Dot(currentDir, repulsionForce) / (currentDir.HorizontalLength * repulsionForce.HorizontalLength);
+			// avoid stalling the plane
+			return dot >= 0 ? repulsionForce : WVec.Zero;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
