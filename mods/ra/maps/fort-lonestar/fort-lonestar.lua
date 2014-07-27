@@ -117,6 +117,7 @@ SendUnits = function(entryCell, unitTypes, interval, targetCell)
 		SendWave()
 	else
 		Trigger.AfterDelay(3000, SovietsRetreating)
+		Media.DisplayMessage("You survived the onslaught!")
 	end
 end
 
@@ -128,6 +129,8 @@ SendWave = function()
 	local entry = Utils.Random(wave[2]).Location
 	local units = wave[3]
 	local target = Utils.Random(wave[4]).Location
+
+	Media.DisplayMessage("Defend Fort Lonestar at all costs!")
 
 	print(string.format("Sending wave %i in %i.", Wave, delay))
 	Trigger.AfterDelay(delay, function() SendUnits(entry, units, 40, target) end)
