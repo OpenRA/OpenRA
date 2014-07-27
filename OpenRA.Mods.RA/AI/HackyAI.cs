@@ -785,11 +785,7 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			// TODO: Surely we want to do this even if their destroyer died?
-			if (!enabled || e.Attacker.Destroyed)
-				return;
-
-			if (!e.Attacker.HasTrait<ITargetable>())
+			if (!enabled)
 				return;
 
 			var rb = self.TraitOrDefault<RepairableBuilding>();
@@ -804,6 +800,12 @@ namespace OpenRA.Mods.RA.AI
 						{ TargetActor = self });
 				}
 			}
+
+			if (e.Attacker.Destroyed)
+				return;
+
+			if (!e.Attacker.HasTrait<ITargetable>())
+				return;
 
 			if (e.Attacker != null && e.Damage > 0)
 				aggro[e.Attacker.Owner].Aggro += e.Damage;
