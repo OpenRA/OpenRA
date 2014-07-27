@@ -109,11 +109,11 @@ WorldLoaded = function()
 end
 
 MissionAccomplished = function()
-	Mission.MissionOver({ player }, nil, false)
+	Mission.MissionOver({ player }, nil, true)
 	Media.PlayMovieFullscreen("burdet1.vqa")
 end
 
 MissionFailed = function()
-	Mission.MissionOver(nil, { player }, false)
+	Mission.MissionOver(nil, { player }, true)
 	Media.PlayMovieFullscreen("gameover.vqa")
 end
