@@ -299,12 +299,16 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScriptInterface:
 			LuaScripts: nod01.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	C10:
 		Tooltip:
 			Name: Nikoomba

@@ -2214,12 +2214,16 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScriptInterface:
 			LuaScripts: mission.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	CAMERA:
 		RevealsShroud:
 			Range: 18c0

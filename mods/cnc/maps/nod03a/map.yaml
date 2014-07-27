@@ -565,12 +565,16 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScriptInterface:
 			LuaScripts: nod03a.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	NUK2:
 		Buildable:
 			Prerequisites: ~disabled
