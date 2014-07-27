@@ -465,7 +465,10 @@ checkbox: dialog.png
 	corner-br: 767,127,1,1
 
 checkbox-bits: buttons.png
-	checked: 0,140,16,16
+	checked: 0,157,16,16
+	checked-disabled: 0,173,16,16
+	crossed: 16,157,16,16
+	crossed-disabled: 16,173,16,16
 
 checkbox-hover: dialog.png
 	background: 641,129,126,126
