@@ -9,6 +9,7 @@ BADR:
 	Plane:
 		ROT: 5
 		Speed: 149
+		Repulsable: False
 	RenderUnit:
 	WithShadow:
 	IronCurtainable:
@@ -46,6 +47,7 @@ BADR.Bomber:
 	Plane:
 		ROT: 5
 		Speed: 149
+		Repulsable: False
 	LimitedAmmo:
 		Ammo: 7
 	RenderUnit:
@@ -99,9 +101,10 @@ MIG:
 		FacingTolerance: 20
 	Plane:
 		InitialFacing: 192
-		ROT: 5
-		Speed: 186
+		ROT: 4
+		Speed: 223
 		RearmBuildings: afld
+		RepulsionSpeed: 40
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
@@ -158,8 +161,9 @@ YAK:
 	Plane:
 		RearmBuildings: afld
 		InitialFacing: 192
-		ROT: 5
-		Speed: 149
+		ROT: 4
+		Speed: 178
+		RepulsionSpeed: 40
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
@@ -343,6 +347,7 @@ U2:
 	Plane:
 		ROT: 7
 		Speed: 373
+		Repulsable: False
 	RenderUnit:
 	WithShadow:
 	IronCurtainable:
