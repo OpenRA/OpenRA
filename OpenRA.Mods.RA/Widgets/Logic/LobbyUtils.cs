@@ -457,5 +457,75 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			playerName.GetText = () => player.PlayerName + (player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")");
 			playerName.GetColor = () => player.Color.RGB;
 		}
+
+		public static void SetupEditableProdModWidget(Widget parent, Session.Client c, OrderManager orderManager)
+		{
+			var dropdown = parent.Get<DropDownButtonWidget>("PRODMOD");
+			// Equal in both directions. Negatives = 100 - (100 / Postive)
+			var choices = new int[] { -90, -80, -75, -71, -67, -60, -50, -43, -33, -20, -9, 0, 10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500 };
+			dropdown.IsDisabled = () => !Game.IsHost;
+			dropdown.OnMouseDown = _ => ShowProdModDropDown(dropdown, c, orderManager, choices.AsEnumerable());
+			dropdown.GetText = () => (c.ModifierProduction < 0) ? c.ModifierProduction.ToString() + "%" : "+" + c.ModifierProduction.ToString() + "%";
+		}
+
+		public static void ShowProdModDropDown(DropDownButtonWidget dropdown, Session.Client client,
+			OrderManager orderManager, IEnumerable<int> choices)
+		{
+			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => client.ModifierProduction == ii,
+					() => SetProdMod(orderManager, client, ii));
+				item.Get<LabelWidget>("LABEL").GetText = () => (ii < 0) ? ii.ToString() + "%" : "+" + ii.ToString() + "%";
+				return item;
+			};
+
+			dropdown.ShowDropDown("MOD_DROPDOWN_TEMPLATE", 150, choices, setupItem);
+		}
+
+		private static void SetProdMod(OrderManager orderManager, Session.Client c, int modValue)
+		{
+			orderManager.IssueOrder(Order.Command("changeattribute {0} {1} {2}".F(c.Index, "production", modValue)));
+		}
+
+		public static void SetupProdModWidget(Widget parent, Session.Client c)
+		{
+			parent.Get<LabelWidget>("PRODMOD").GetText = () => (c.ModifierIncome < 0) ? c.ModifierIncome.ToString() + "%" : "+" + c.ModifierIncome.ToString() + "%";
+		}
+
+		public static void SetupEditableIncModWidget(Widget parent, Session.Client c, OrderManager orderManager)
+		{
+			var dropdown = parent.Get<DropDownButtonWidget>("INCMOD");
+			// Equal in both directions. Negatives = 100 - (100 / Postive)
+			var choices = new int[] { -90, -80, -75, -71, -67, -60, -50, -43, -33, -20, -9, 0, 10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500 };
+			dropdown.IsDisabled = () => !Game.IsHost;
+			dropdown.OnMouseDown = _ => ShowIncModDropDown(dropdown, c, orderManager, choices.AsEnumerable());
+			dropdown.GetText = () => (c.ModifierIncome < 0) ? c.ModifierIncome.ToString() + "%" : "+" + c.ModifierIncome.ToString() + "%";
+		}
+
+		public static void ShowIncModDropDown(DropDownButtonWidget dropdown, Session.Client client,
+			OrderManager orderManager, IEnumerable<int> choices)
+		{
+			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => client.ModifierIncome == ii,
+					() => SetIncMod(orderManager, client, ii));
+				item.Get<LabelWidget>("LABEL").GetText = () => (ii < 0) ? ii.ToString() + "%" : "+" + ii.ToString() + "%";
+				return item;
+			};
+
+			dropdown.ShowDropDown("MOD_DROPDOWN_TEMPLATE", 150, choices, setupItem);
+		}
+
+		private static void SetIncMod(OrderManager orderManager, Session.Client c, int modValue)
+		{
+			orderManager.IssueOrder(Order.Command("changeattribute {0} {1} {2}".F(c.Index, "income", modValue)));
+		}
+
+		public static void SetupIncModWidget(Widget parent, Session.Client c)
+		{
+			parent.Get<LabelWidget>("INCMOD").GetText = () => (c.ModifierIncome < 0) ? c.ModifierIncome.ToString() + "%" : "+" + c.ModifierIncome.ToString() + "%";
+		}
 	}
 }

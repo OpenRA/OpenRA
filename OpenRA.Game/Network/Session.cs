@@ -112,6 +112,8 @@ namespace OpenRA.Network
 			public bool IsReady { get { return State == ClientState.Ready; } }
 			public bool IsInvalid { get { return State == ClientState.Invalid; } }
 			public bool IsObserver { get { return Slot == null; } }
+			public int ModifierProduction = 0;
+			public int ModifierIncome = 0;
 
 			public MiniYamlNode Serialize()
 			{

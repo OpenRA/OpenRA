@@ -753,6 +753,29 @@ namespace OpenRA.Mods.RA.Server
 						targetClient.Color = targetClient.PreferredColor = new HSLColor((byte)ci[0], (byte)ci[1], (byte)ci[2]);
 						server.SyncLobbyClients();
 						return true;
+					}},
+				{ "changeattribute",
+					s =>
+					{
+						var parts = s.Split(' ');
+						var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
+						var targetAttribute = parts[1];
+						var targetValue = Int32.Parse(parts[2]);
+
+						// Only the host can change other client's info
+						if (targetClient.Index != client.Index && !client.IsAdmin)
+							return true;
+
+						// Map has disabled player attribute modifiers
+						if (server.Map.Options.AttributeModifiers == false) // TODO Set this up on the map side
+							return true;
+
+						if (targetAttribute == "production")
+							targetClient.ModifierProduction = targetValue;
+						else if (targetAttribute == "income")
+							targetClient.ModifierIncome = targetValue;
+						server.SyncLobbyClients();
+						return true;
 					}}
 			};
 

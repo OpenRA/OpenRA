@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
@@ -18,12 +19,18 @@ namespace OpenRA.Mods.RA
 	{
 		[Desc("Number of ticks to wait between giving money.")]
 		public readonly int Period = 50;
+
 		[Desc("Amount of money to give each time.")]
 		public readonly int Amount = 15;
+
 		[Desc("Whether to show the cash tick indicators (+$15 rising from actor).")]
 		public readonly bool ShowTicks = true;
+
 		[Desc("Amount of money awarded for capturing the actor.")]
 		public readonly int CaptureAmount = 0;
+
+		[Desc("Type of income this source falls under.")]
+		public readonly string IncomeType = "CashTrickler";
 
 		public object Create (ActorInitializer init) { return new CashTrickler(this); }
 	}
@@ -32,6 +39,7 @@ namespace OpenRA.Mods.RA
 	{
 		[Sync] int ticks;
 		CashTricklerInfo Info;
+
 		public CashTrickler(CashTricklerInfo info)
 		{
 			Info = info;
@@ -42,8 +50,21 @@ namespace OpenRA.Mods.RA
 			if (--ticks < 0)
 			{
 				ticks = Info.Period;
-				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(Info.Amount);
-				MaybeAddCashTick(self, Info.Amount);
+
+				var incomeMultModifier = 0;
+				if (self.Owner != null)
+					if (self.Owner.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income).Any())
+						incomeMultModifier += self.Owner.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income)
+						.Select(t => t.GetModifier(ModifierType.Income, Info.IncomeType)).Sum();
+	
+				if (self.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income).Any())
+					incomeMultModifier += self.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income)
+					.Select(t => t.GetModifier(ModifierType.Income, Info.IncomeType)).Sum();
+	
+				var incomeAmount = Info.Amount * (100 + incomeMultModifier) / 100;
+
+				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(incomeAmount);
+				MaybeAddCashTick(self, incomeAmount);
 			}
 		}
 

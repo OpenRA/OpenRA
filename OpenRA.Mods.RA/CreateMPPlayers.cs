@@ -42,6 +42,14 @@ namespace OpenRA.Mods.RA
 
 				if (client.Index == Game.LocalClientId)
 					w.SetLocalPlayer(player.InternalName);
+
+				var managers = player.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Production);
+				foreach (var manager in managers)
+					manager.Register(ModifierType.Production, player.PlayerActor.ActorID.ToString() + "PlayerMod", new string[] { "Any" }, player.ProductionModifier);
+	
+				var incomeManagers = player.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income);
+				foreach (var manager in incomeManagers)
+					manager.Register(ModifierType.Income, player.PlayerActor.ActorID.ToString() + "PlayerMod", new string[] { "Any" }, player.IncomeModifier);
 			}
 
 			// create a player that is allied with everyone for shared observer shroud

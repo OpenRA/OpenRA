@@ -27,6 +27,9 @@ namespace OpenRA.Mods.RA
 		public readonly int TickRate = 10;
 		public readonly int DockAngle = 64;
 
+		[Desc("Type of income this source falls under.")]
+		public readonly string IncomeType = "Harvester";
+
 		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
 
@@ -66,9 +69,23 @@ namespace OpenRA.Mods.RA
 
 		public void GiveOre(int amount)
 		{
-			PlayerResources.GiveResources(amount);
+			var incomeMultModifier = 0;
+			if (self.Owner != null)
+				if (self.Owner.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income).Any())
+					incomeMultModifier += self.Owner.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income)
+					.Select(t => t.GetModifier(ModifierType.Income, Info.IncomeType)).Sum();
+
+			if (self.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income).Any())
+				incomeMultModifier += self.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income)
+				.Select(t => t.GetModifier(ModifierType.Income, Info.IncomeType)).Sum();
+
+			var incomeAmount = amount * (100 + incomeMultModifier) / 100;
+			if (incomeAmount > PlayerResources.GetSpareCapacity())
+				incomeAmount = PlayerResources.GetSpareCapacity();
+
+			PlayerResources.GiveResources(incomeAmount);
 			if (Info.ShowTicks)
-				currentDisplayValue += amount;
+				currentDisplayValue += incomeAmount;
 		}
 
 		void CancelDock(Actor self)

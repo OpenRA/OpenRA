@@ -41,6 +41,8 @@ namespace OpenRA
 		public readonly PlayerReference PlayerReference;
 		public bool IsBot;
 		public int SpawnPoint;
+		public int ProductionModifier = 0;
+		public int IncomeModifier = 0;
 
 		public Shroud Shroud;
 		public World World { get; private set; }
@@ -70,6 +72,8 @@ namespace OpenRA
 				PlayerName = client.Name;
 				botType = client.Bot;
 				Country = ChooseCountry(world, client.Country);
+				ProductionModifier = client.ModifierProduction;
+				IncomeModifier = client.ModifierIncome;
 			}
 			else
 			{
@@ -82,6 +86,8 @@ namespace OpenRA
 				Spectating = pr.Spectating;
 				botType = pr.Bot;
 				Country = ChooseCountry(world, pr.Race);
+				ProductionModifier = 0;
+				IncomeModifier = 0;
 			}
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
 			Shroud = PlayerActor.Trait<Shroud>();
