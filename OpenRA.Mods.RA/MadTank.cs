@@ -123,6 +123,9 @@ namespace OpenRA.Mods.RA
 
 		void StartDetonationSequence()
 		{
+			if (deployed)
+				return;
+
 			self.World.AddFrameEndTask(w => EjectDriver());
 			if (info.ThumpSequence != null)
 				renderUnit.PlayCustomAnimRepeating(self, info.ThumpSequence);
