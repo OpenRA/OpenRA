@@ -167,6 +167,15 @@ namespace OpenRA.Traits
 		void SetVisualPosition(Actor self, WPos pos);
 	}
 
+	public enum ModifierType { Production, Income };
+	public interface IAttributeModManager
+	{
+		ModifierType ModType { get; }
+		int GetModifier(ModifierType modType, string Type);
+		void Register(ModifierType modType, string id, string[] types, int mod);
+		void Unregister(ModifierType modType, string id, int mod);
+	}
+
 	public interface IMoveInfo : ITraitInfo { }
 	public interface IMove
 	{

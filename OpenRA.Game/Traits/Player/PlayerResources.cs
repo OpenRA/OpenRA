@@ -75,6 +75,12 @@ namespace OpenRA.Traits
 			return true;
 		}
 
+		public int GetSpareCapacity()
+		{
+			// If we are overfull (somehow) then just return no spare capacity
+			return Math.Max(ResourceCapacity - Resources, 0);
+		}
+
 		public void GiveCash(int num)
 		{
 			Cash += num;

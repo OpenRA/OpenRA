@@ -327,7 +327,16 @@ namespace OpenRA.Mods.RA
 			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
-			var time = unit.GetBuildTime() * Info.BuildSpeed;
+			var productionRateModifier = 0;
+			if (self.Owner != null && self.Owner.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Production).Any())
+				productionRateModifier += self.Owner.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Production)
+				.Select(t => t.GetModifier(ModifierType.Production, Info.Type)).Sum();
+
+			if (self.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Production).Any())
+				productionRateModifier += self.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Production)
+				.Select(t => t.GetModifier(ModifierType.Production, Info.Type)).Sum();
+
+			var time = unit.GetBuildTime() * Info.BuildSpeed * (100 + productionRateModifier) / 100;
 
 			return (int)time;
 		}
