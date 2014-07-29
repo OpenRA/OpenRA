@@ -35,7 +35,6 @@ else
 end
 
 outputshell.usewrap = true
-filehistorylength = 20
 
 hidpi = mac -- support Retina displays by default (OSX)
 
