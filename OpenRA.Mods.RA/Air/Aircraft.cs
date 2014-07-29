@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Air
 
 	public class Aircraft : IFacing, IPositionable, ISync, INotifyKilled, IIssueOrder, IOrderVoice, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		static readonly Pair<CPos, SubCell>[] NoCells = { };
+		static readonly Pair<CPos, int>[] NoCells = { };
 
 		readonly AircraftInfo info;
 		readonly Actor self;
@@ -210,7 +210,7 @@ namespace OpenRA.Mods.RA.Air
 			}
 		}
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return NoCells; }
+		public IEnumerable<Pair<CPos, int>> OccupiedCells() { return NoCells; }
 
 		public WVec FlyStep(int facing)
 		{
