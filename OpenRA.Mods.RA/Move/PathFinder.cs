@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Move
 				var rangeSquared = range.Range*range.Range;
 
 				// Correct for SubCell offset
-				target -= MobileInfo.SubCellOffsets[srcSub];
+				target -= self.World.Map.SubCellOffsets[srcSub];
 
 				// Select only the tiles that are within range from the requested SubCell
 				// This assumes that the SubCell does not change during the path traversal

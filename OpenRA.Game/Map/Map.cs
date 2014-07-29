@@ -77,6 +77,17 @@ namespace OpenRA
 		public Bitmap CustomPreview;
 
 		public readonly TileShape TileShape;
+		[FieldLoader.Ignore]
+		public readonly WVec[] SubCellOffsets = 
+		{
+			new WVec(0, 0, 0),
+			new WVec(-299, -256, 0),
+			new WVec(256, -256, 0),
+			new WVec(0, 0, 0),
+			new WVec(-299, 256, 0),
+			new WVec(256, 256, 0),
+		};
+		public readonly int SubCellsDefaultIndex = 3;
 
 		[FieldLoader.LoadUsing("LoadOptions")]
 		public MapOptions Options;
