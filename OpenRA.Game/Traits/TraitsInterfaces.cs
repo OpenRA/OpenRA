@@ -126,7 +126,7 @@ namespace OpenRA.Traits
 	{
 		WPos CenterPosition { get; }
 		CPos TopLeft { get; }
-		IEnumerable<Pair<CPos, SubCell>> OccupiedCells();
+		IEnumerable<Pair<CPos, int>> OccupiedCells();
 	}
 
 	public static class IOccupySpaceExts

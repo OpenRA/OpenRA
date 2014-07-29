@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 	{
 		[Sync] readonly CPos location;
 		[Sync] readonly WPos position;
-		readonly IEnumerable<Pair<CPos, SubCell>> occupied;
+		readonly IEnumerable<Pair<CPos, int>> occupied;
 
 		public Immobile(ActorInitializer init, ImmobileInfo info)
 		{
@@ -32,14 +32,14 @@ namespace OpenRA.Mods.RA
 			position = init.world.Map.CenterOfCell(location);
 
 			if (info.OccupiesSpace)
-				occupied = new [] { Pair.New(TopLeft, SubCell.FullCell) };
+				occupied = new [] { Pair.New(TopLeft, 0) };
 			else
-				occupied = new Pair<CPos, SubCell>[0];
+				occupied = new Pair<CPos, int>[0];
 		}
 
 		public CPos TopLeft { get { return location; } }
 		public WPos CenterPosition { get { return position; } }
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupied; }
+		public IEnumerable<Pair<CPos, int>> OccupiedCells() { return occupied; }
 
 		public void AddedToWorld(Actor self)
 		{

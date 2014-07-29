@@ -29,15 +29,11 @@ namespace OpenRA.Traits
 		class InfluenceNode
 		{
 			public InfluenceNode Next;
-			public SubCell SubCell;
+			public int SubCell;
 			public Actor Actor;
 		}
 
-		static readonly SubCell[] SubCells =
-		{
-			SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
-			SubCell.BottomLeft, SubCell.BottomRight
-		};
+		static readonly int[] SubCells = { 1, 2, 3, 4, 5 };
 
 		readonly ActorMapInfo info;
 		readonly Map map;
@@ -79,13 +75,13 @@ namespace OpenRA.Traits
 					yield return i.Actor;
 		}
 
-		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
+		public IEnumerable<Actor> GetUnitsAt(CPos a, int sub)
 		{
 			if (!map.Contains(a))
 				yield break;
 
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (!i.Actor.Destroyed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
+				if (!i.Actor.Destroyed && (i.SubCell == sub || i.SubCell == 0))
 					yield return i.Actor;
 		}
 
@@ -97,7 +93,7 @@ namespace OpenRA.Traits
 			return SubCells.Any(b => !AnyUnitsAt(a, b));
 		}
 
-		public SubCell? FreeSubCell(CPos a)
+		public int? FreeSubCell(CPos a)
 		{
 			if (!HasFreeSubCell(a))
 				return null;
@@ -110,10 +106,10 @@ namespace OpenRA.Traits
 			return influence[a] != null;
 		}
 
-		public bool AnyUnitsAt(CPos a, SubCell sub)
+		public bool AnyUnitsAt(CPos a, int sub)
 		{
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (i.SubCell == sub || i.SubCell == SubCell.FullCell)
+				if (i.SubCell == sub || i.SubCell == 0)
 					return true;
 
 			return false;
