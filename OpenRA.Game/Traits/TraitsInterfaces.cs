@@ -150,7 +150,7 @@ namespace OpenRA.Traits
 
 	public interface IRenderModifier { IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r); }
 	public interface IDamageModifier { float GetDamageModifier(Actor attacker, WarheadInfo warhead); }
-	public interface ISpeedModifier { decimal GetSpeedModifier(); }
+	public interface ISpeedModifier { int GetSpeedModifier(); }
 	public interface IFirepowerModifier { float GetFirepowerModifier(); }
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }

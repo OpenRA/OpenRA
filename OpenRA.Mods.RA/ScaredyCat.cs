@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 	class ScaredyCatInfo : ITraitInfo
 	{
 		public readonly int PanicLength = 25 * 10;
-		public readonly decimal PanicSpeedModifier = 2;
+		public readonly int PanicSpeedModifier = 200;
 		public readonly int AttackPanicChance = 20;
 
 		public object Create(ActorInitializer init) { return new ScaredyCat(init.self, this); }
@@ -74,9 +74,9 @@ namespace OpenRA.Mods.RA
 				Panic();
 		}
 
-		public decimal GetSpeedModifier()
+		public int GetSpeedModifier()
 		{
-			return Panicking ? Info.PanicSpeedModifier : 1;
+			return Panicking ? Info.PanicSpeedModifier : 100;
 		}
 	}
 }

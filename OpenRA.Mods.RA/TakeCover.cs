@@ -21,8 +21,8 @@ namespace OpenRA.Mods.RA
 			"Measured in game ticks. Default is 4 seconds.")]
 		public readonly int ProneTime = 100;
 
-		[Desc("How quickly we should go from standing to prone.")]
-		public readonly decimal ProneSpeed = .5m;
+		[Desc("Percentage of moving speed while prone.")]
+		public readonly int ProneSpeed = 50;
 
 		public readonly WVec ProneOffset = new WVec(85, 0, -171);
 
@@ -66,9 +66,9 @@ namespace OpenRA.Mods.RA
 			return IsProne && warhead != null ? warhead.ProneModifier / 100f : 1f;
 		}
 
-		public decimal GetSpeedModifier()
+		public int GetSpeedModifier()
 		{
-			return IsProne ? Info.ProneSpeed : 1m;
+			return IsProne ? Info.ProneSpeed : 100;
 		}
 	}
 

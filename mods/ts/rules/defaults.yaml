@@ -116,7 +116,7 @@
 		CostThreshold: 5, 10
 		FirepowerModifier: 1.2, 1.5
 		ArmorModifier: 1.2, 1.5
-		SpeedModifier: 1.2, 1.5
+		SpeedModifier: 120, 150
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -202,7 +202,7 @@
 		CostThreshold: 5, 10
 		FirepowerModifier: 1.2, 1.5
 		ArmorModifier: 1.2, 1.5
-		SpeedModifier: 1.2, 1.5
+		SpeedModifier: 120, 150
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -251,7 +251,7 @@
 		CostThreshold: 5, 10
 		FirepowerModifier: 1.2, 1.5
 		ArmorModifier: 1.2, 1.5
-		SpeedModifier: 1.2, 1.5
+		SpeedModifier: 120, 150
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -294,7 +294,7 @@
 		CostThreshold: 5, 10
 		FirepowerModifier: 1.2, 1.5
 		ArmorModifier: 1.2, 1.5
-		SpeedModifier: 1.2, 1.5
+		SpeedModifier: 120, 150
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public readonly int ArmorMaxLevel = 15;
 		public readonly float ArmorModifier = .2f;
 		public readonly int SpeedMaxLevel = 15;
-		public readonly decimal SpeedModifier = .2m;
+		public readonly int SpeedModifier = 20;
 		// TODO: weapon range, rate of fire modifiers. potentially a vision modifier.
 
 		public object Create(ActorInitializer init) { return new GainsUnitUpgrades(this); }
@@ -72,9 +72,9 @@ namespace OpenRA.Mods.RA
 			return ArmorLevel > 0 ? (1 / (1 + ArmorLevel * info.ArmorModifier)) : 1;
 		}
 
-		public decimal GetSpeedModifier()
+		public int GetSpeedModifier()
 		{
-			return SpeedLevel > 0 ? (1m + SpeedLevel * info.SpeedModifier) : 1m;
+			return SpeedLevel > 0 ? (100 + SpeedLevel * info.SpeedModifier) : 100;
 		}
 	}
 
