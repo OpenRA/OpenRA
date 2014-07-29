@@ -182,7 +182,7 @@ namespace OpenRA.Traits
 	{
 		bool CanEnterCell(CPos location);
 		bool CanEnterCell(CPos location, Actor ignoreActor, bool checkTransientActors);
-		void SetPosition(Actor self, CPos cell);
+		void SetPosition(Actor self, CPos cell, int subCell = -1);
 		void SetPosition(Actor self, WPos pos);
 		void SetVisualPosition(Actor self, WPos pos);
 	}
@@ -195,7 +195,7 @@ namespace OpenRA.Traits
 		Activity MoveWithinRange(Target target, WRange range);
 		Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange);
 		Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange);
-		Activity MoveIntoWorld(Actor self, CPos cell);
+		Activity MoveIntoWorld(Actor self, CPos cell, int subCell = -1);
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
 		bool IsMoving { get; set; }

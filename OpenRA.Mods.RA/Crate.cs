@@ -116,7 +116,7 @@ namespace OpenRA.Mods.RA
 
 		public bool CanEnterCell(CPos cell) { return CanEnterCell(cell, null, true); }
 
-		public void SetPosition(Actor self, CPos cell)
+		public void SetPosition(Actor self, CPos cell, int subCell = -1)
 		{
 			self.World.ActorMap.RemoveInfluence(self, this);
 			Location = cell;

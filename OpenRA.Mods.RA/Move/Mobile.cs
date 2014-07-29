@@ -258,10 +258,11 @@ namespace OpenRA.Mods.RA.Move
 				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
 		}
 
-		public void SetPosition(Actor self, CPos cell)
+		public void SetPosition(Actor self, CPos cell, int subCell = -1)
 		{
 			SetLocation(cell, fromSubCell, cell, fromSubCell);
-			SetVisualPosition(self, self.World.Map.CenterOfCell(fromCell) + self.World.Map.SubCellOffsets[fromSubCell]);
+			SetVisualPosition(self, self.World.Map.CenterOfCell(fromCell)
+				+ self.World.Map.SubCellOffsets[subCell >= 0 ? subCell : fromSubCell]);
 			FinishedMoving(self);
 		}
 
@@ -603,9 +604,15 @@ namespace OpenRA.Mods.RA.Move
 				Nudge(self, blocking, true);
 		}
 
-		public Activity MoveIntoWorld(Actor self, CPos cell)
+		public Activity MoveIntoWorld(Actor self, CPos cell, int subCell = -1)
 		{
 			var pos = self.CenterPosition;
+
+			subCell = self.World.ActorMap.FreeSubCell(cell, subCell);
+
+			// TODO: solve/reduce cell is full problem
+			if (subCell < 0)
+				subCell = self.World.Map.SubCellDefaultIndex;
 
 			// Reserve the exit cell
 			SetPosition(self, cell);

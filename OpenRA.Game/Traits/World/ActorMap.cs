@@ -88,8 +88,11 @@ namespace OpenRA.Traits
 			return FreeSubCell(a) >= 0;
 		}
 
-		public int FreeSubCell(CPos a)
+		public int FreeSubCell(CPos a, int preferredSubCell = -1)
 		{
+			if (preferredSubCell >= 0 && !AnyUnitsAt(a, preferredSubCell))
+				return preferredSubCell;
+
 			if (!AnyUnitsAt(a))
 				return map.SubCellDefaultIndex;
 
