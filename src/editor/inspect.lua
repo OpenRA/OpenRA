@@ -47,20 +47,18 @@ function M.warnings_from_string(src, file)
   return M.show_warnings(ast, globinit)
 end
 
+local function cleanError(err)
+  return err and err:gsub(".-:%d+: file%s+",""):gsub(", line (%d+), char %d+", ":%1")
+end
+
 function AnalyzeFile(file)
   local warn, err, line, pos = M.warnings_from_string(FileRead(file), file)
-  if err then
-    err = err:gsub("line %d+, char %d+", "syntax error")
-  end
-  return warn, err, line, pos
+  return warn, cleanError(err), line, pos
 end
 
 function AnalyzeString(src)
-  local warn, err, line, pos = M.warnings_from_string(src, "src")
-  if err then
-    err = err:gsub("line %d+, char %d+", "syntax error")
-  end
-  return warn, err, line, pos
+  local warn, err, line, pos = M.warnings_from_string(src, "<string>")
+  return warn, cleanError(err), line, pos
 end
 
 function M.show_warnings(top_ast, globinit)
@@ -200,7 +198,7 @@ local function analyzeProgram(editor)
 
   local warn, err = M.warnings_from_string(editorText, filePath)
   if err then -- report compilation error
-    DisplayOutput(": not completed\n")
+    DisplayOutput((": not completed.\n%s\n"):format(cleanError(err)))
     return false
   end
 
@@ -215,7 +213,9 @@ frame:Connect(ID_ANALYZE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
     ActivateOutput()
     local editor = GetEditor()
-    if not analyzeProgram(editor) then CompileProgram(editor, { reportstats = false }) end
+    if not analyzeProgram(editor) then
+      CompileProgram(editor, { reportstats = false, keepoutput = true })
+    end
   end)
 frame:Connect(ID_ANALYZE, wx.wxEVT_UPDATE_UI,
   function (event)

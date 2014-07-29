@@ -576,14 +576,19 @@ function StripShebang(code) return (code:gsub("^#!.-\n", "\n")) end
 
 local compileOk, compileTotal = 0, 0
 function CompileProgram(editor, params)
-  local params = { jumponerror = (params or {}).jumponerror ~= false,
-    reportstats = (params or {}).reportstats ~= false }
+  local params = {
+    jumponerror = (params or {}).jumponerror ~= false,
+    reportstats = (params or {}).reportstats ~= false,
+    keepoutput = (params or {}).keepoutput,
+  }
   local id = editor:GetId()
   local filePath = DebuggerMakeFileName(editor, openDocuments[id].filePath)
   local func, err = loadstring(StripShebang(editor:GetText()), '@'..filePath)
   local line = not func and tonumber(err:match(":(%d+)%s*:")) or nil
 
-  if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
+  if not params.keepoutput and ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then
+    ClearOutput()
+  end
 
   compileTotal = compileTotal + 1
   if func then
