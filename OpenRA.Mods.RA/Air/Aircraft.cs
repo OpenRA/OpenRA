@@ -170,7 +170,10 @@ namespace OpenRA.Mods.RA.Air
 		}
 
 		// Changes position, but not altitude
-		public void SetPosition(Actor self, CPos cell) { SetPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(0, 0, CenterPosition.Z)); }
+		public void SetPosition(Actor self, CPos cell, int subCell = -1)
+		{
+			SetPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(0, 0, CenterPosition.Z));
+		}
 		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos); }
 
 		public void AddedToWorld(Actor self)

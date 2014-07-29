@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public bool CanEnterCell(CPos cell) { return CanEnterCell(cell, null, true); }
-		public void SetPosition(Actor self, CPos cell) { SetPosition(self, self.World.Map.CenterOfCell(cell)); }
+		public void SetPosition(Actor self, CPos cell, int subCell = -1) { SetPosition(self, self.World.Map.CenterOfCell(cell)); }
 
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
