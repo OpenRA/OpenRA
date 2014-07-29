@@ -133,16 +133,6 @@ namespace OpenRA.Mods.RA.Move
 			return TilesetMovementClass[tileset];
 		}
 
-		public static readonly WVec[] SubCellOffsets = 
-		{
-			new WVec(0, 0, 0),
-			new WVec(-299, -256, 0),
-			new WVec(256, -256, 0),
-			new WVec(0, 0, 0),
-			new WVec(-299, 256, 0),
-			new WVec(256, 256, 0),
-		};
-
 		static bool IsMovingInMyDirection(Actor self, Actor other)
 		{
 			if (!other.IsMoving()) return false;
@@ -248,8 +238,7 @@ namespace OpenRA.Mods.RA.Move
 			this.self = init.self;
 			this.Info = info;
 
-			// TODO replace 3 w/ SubCellDefaultIndex
-			toSubCell = fromSubCell = info.SharesCell ? 3 : 0;
+			toSubCell = fromSubCell = info.SharesCell ? init.world.Map.SubCellsDefaultIndex : 0;
 			if (init.Contains<SubCellInit>())
 			{
 				this.fromSubCell = this.toSubCell = init.Get<SubCellInit, int>();
@@ -258,7 +247,7 @@ namespace OpenRA.Mods.RA.Move
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				SetVisualPosition(self, init.world.Map.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell]);
+				SetVisualPosition(self, init.world.Map.CenterOfCell(fromCell) + self.World.Map.SubCellOffsets[fromSubCell]);
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -272,7 +261,7 @@ namespace OpenRA.Mods.RA.Move
 		public void SetPosition(Actor self, CPos cell)
 		{
 			SetLocation(cell, fromSubCell, cell, fromSubCell);
-			SetVisualPosition(self, self.World.Map.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell]);
+			SetVisualPosition(self, self.World.Map.CenterOfCell(fromCell) + self.World.Map.SubCellOffsets[fromSubCell]);
 			FinishedMoving(self);
 		}
 
