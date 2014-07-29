@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		Pair<CPos, SubCell>? PopPath(Actor self, Mobile mobile)
+		Pair<CPos, int>? PopPath(Actor self, Mobile mobile)
 		{
 			if (path.Count == 0)
 				return null;

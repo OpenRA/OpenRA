@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos src, SubCell srcSub, WPos target, WRange range, Actor self)
+		public List<CPos> FindUnitPathToRange(CPos src, int srcSub, WPos target, WRange range, Actor self)
 		{
 			using (new PerfSample("Pathfinder"))
 			{

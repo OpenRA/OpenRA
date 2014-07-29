@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new Drag(CenterPosition, finalPos, distance / speed));
 		}
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
+		public IEnumerable<Pair<CPos, int>> OccupiedCells() { yield return Pair.New(TopLeft, 0); }
 		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
 		{
 			if (!self.World.Map.Contains(cell))

@@ -133,14 +133,14 @@ namespace OpenRA.Mods.RA.Move
 			return TilesetMovementClass[tileset];
 		}
 
-		public static readonly Dictionary<SubCell, WVec> SubCellOffsets = new Dictionary<SubCell, WVec>()
+		public static readonly WVec[] SubCellOffsets = 
 		{
-			{SubCell.TopLeft, new WVec(-299, -256, 0)},
-			{SubCell.TopRight, new WVec(256, -256, 0)},
-			{SubCell.Center, new WVec(0, 0, 0)},
-			{SubCell.BottomLeft, new WVec(-299, 256, 0)},
-			{SubCell.BottomRight, new WVec(256, 256, 0)},
-			{SubCell.FullCell, new WVec(0, 0, 0)},
+			new WVec(0, 0, 0),
+			new WVec(-299, -256, 0),
+			new WVec(256, -256, 0),
+			new WVec(0, 0, 0),
+			new WVec(-299, 256, 0),
+			new WVec(256, 256, 0),
 		};
 
 		static bool IsMovingInMyDirection(Actor self, Actor other)
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.RA.Move
 
 		int __facing;
 		CPos __fromCell, __toCell;
-		public SubCell fromSubCell, toSubCell;
+		public int fromSubCell, toSubCell;
 
 		//int __altitude;
 
@@ -226,7 +226,7 @@ namespace OpenRA.Mods.RA.Move
 
 		[Sync] public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
-		public void SetLocation(CPos from, SubCell fromSub, CPos to, SubCell toSub)
+		public void SetLocation(CPos from, int fromSub, CPos to, int toSub)
 		{
 			if (fromCell == from && toCell == to && fromSubCell == fromSub && toSubCell == toSub)
 				return;
@@ -248,10 +248,11 @@ namespace OpenRA.Mods.RA.Move
 			this.self = init.self;
 			this.Info = info;
 
-			toSubCell = fromSubCell = info.SharesCell ? SubCell.Center : SubCell.FullCell;
+			// TODO replace 3 w/ SubCellDefaultIndex
+			toSubCell = fromSubCell = info.SharesCell ? 3 : 0;
 			if (init.Contains<SubCellInit>())
 			{
-				this.fromSubCell = this.toSubCell = init.Get<SubCellInit, SubCell>();
+				this.fromSubCell = this.toSubCell = init.Get<SubCellInit, int>();
 			}
 
 			if (init.Contains<LocationInit>())
@@ -414,7 +415,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public CPos TopLeft { get { return toCell; } }
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells()
+		public IEnumerable<Pair<CPos, int>> OccupiedCells()
 		{
 			if (fromCell == toCell)
 				yield return Pair.New(fromCell, fromSubCell);
@@ -427,14 +428,13 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public SubCell GetDesiredSubcell(CPos a, Actor ignoreActor)
+		public int GetDesiredSubcell(CPos a, Actor ignoreActor)
 		{
 			if (!Info.SharesCell)
-				return SubCell.FullCell;
+				return 0;
 
 			// Prioritise the current subcell
-			return new[]{ fromSubCell, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
-				SubCell.BottomLeft, SubCell.BottomRight}.First(b =>
+			return new[]{ fromSubCell, 1, 2, 3, 4, 5}.First(b =>
 			{
 				var blockingActors = self.World.ActorMap.GetUnitsAt(a, b).Where(c => c != ignoreActor);
 				if (blockingActors.Any())

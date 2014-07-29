@@ -133,14 +133,14 @@ namespace OpenRA.Mods.RA.Buildings
 			this.Info = info;
 
 			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
-				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
+				.Select(c => Pair.New(c, 0)).ToArray();
 
 			CenterPosition = init.world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.world, Info);
 			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
-		Pair<CPos, SubCell>[] occupiedCells;
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupiedCells; }
+		Pair<CPos, int>[] occupiedCells;
+		public IEnumerable<Pair<CPos, int>> OccupiedCells() { return occupiedCells; }
 
 		public void Created(Actor self)
 		{
