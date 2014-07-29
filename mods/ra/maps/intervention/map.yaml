@@ -1280,7 +1280,7 @@ Actors:
 		Location: 73,63
 		Owner: Soviets
 		FreeActor: False
-	Actor397: kenn
+	Kennel: kenn
 		Location: 64,61
 		Owner: Soviets
 	Actor484: silo

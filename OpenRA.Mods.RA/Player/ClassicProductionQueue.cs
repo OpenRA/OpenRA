@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
@@ -76,8 +75,8 @@ namespace OpenRA.Mods.RA
 		protected override bool BuildUnit(string name)
 		{
 			// Find a production structure to build this actor
-			var info = self.World.Map.Rules.Actors[name];
-			var bi = info.Traits.GetOrDefault<BuildableInfo>();
+			var ai = self.World.Map.Rules.Actors[name];
+			var bi = ai.Traits.GetOrDefault<BuildableInfo>();
 
 			// Some units may request a specific production type, which is ignored if the AllTech cheat is enabled
 			var type = bi == null || developerMode.AllTech ? Info.Type : bi.BuildAtProductionType ?? Info.Type;
@@ -96,7 +95,7 @@ namespace OpenRA.Mods.RA
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
 			{
-				if (p.Trait.Produce(p.Actor, info, Race))
+				if (p.Trait.Produce(p.Actor, ai, Race))
 				{
 					FinishProduction();
 					return true;
@@ -108,23 +107,24 @@ namespace OpenRA.Mods.RA
 
 		public override int GetBuildTime(string unitString)
 		{
-			var unit = self.World.Map.Rules.Actors[unitString];
-			if (unit == null || !unit.Traits.Contains<BuildableInfo>())
+			var ai = self.World.Map.Rules.Actors[unitString];
+			var bi = ai.Traits.GetOrDefault<BuildableInfo>();
+			if (bi == null)
 				return 0;
 
 			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
-			var time = (int)(unit.GetBuildTime() * Info.BuildSpeed);
+			var time = (int)(ai.GetBuildTime() * Info.BuildSpeed);
 
 			if (info.SpeedUp)
 			{
-				var queues = unit.Traits.Get<BuildableInfo>().Queue;
-				var selfsameBuildings = self.World.ActorsWithTrait<Production>()
-					.Where(p => p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Intersect(queues).Any())
-					.ToArray();
+				var type = bi.BuildAtProductionType ?? info.Type;
 
-				var speedModifier = selfsameBuildings.Count().Clamp(1, info.BuildTimeSpeedReduction.Length) - 1;
+				var selfsameBuildingsCount = self.World.ActorsWithTrait<Production>()
+					.Count(p => p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));
+
+				var speedModifier = selfsameBuildingsCount.Clamp(1, info.BuildTimeSpeedReduction.Length) - 1;
 				time = (time * info.BuildTimeSpeedReduction[speedModifier]) / 100;
 			}
 
