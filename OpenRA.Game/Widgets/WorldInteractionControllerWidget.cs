@@ -200,19 +200,19 @@ namespace OpenRA.Widgets
 
 				if (key == Game.Settings.Keys.PauseKey && World.LocalPlayer != null) // Disable pausing for spectators
 					World.SetPauseState(!World.Paused);
-				else if (key == Game.Settings.Keys.SelectAllUnitsKey)
+				else if (key == Game.Settings.Keys.SelectAllUnitsKey && World.LocalPlayer != null)
 				{
 					var ownUnitsOnScreen = SelectActorsInBox(World, worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.BottomRight,
-						a => a.Owner == World.RenderPlayer);
+						a => a.Owner == World.LocalPlayer);
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
-				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey)
+				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey && World.LocalPlayer != null)
 				{
 					var selectedTypes = World.Selection.Actors
-						.Where(x => x.Owner == World.RenderPlayer)
+						.Where(x => x.Owner == World.LocalPlayer)
 						.Select(a => a.Info);
 
-					Func<Actor, bool> cond = a => a.Owner == World.RenderPlayer && selectedTypes.Contains(a.Info);
+					Func<Actor, bool> cond = a => a.Owner == World.LocalPlayer && selectedTypes.Contains(a.Info);
 					var tl = worldRenderer.Viewport.TopLeft;
 					var br = worldRenderer.Viewport.BottomRight;
 					var newSelection = SelectActorsInBox(World, tl, br, cond);
@@ -239,7 +239,7 @@ namespace OpenRA.Widgets
 		static IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b, Func<Actor, bool> cond)
 		{
 			return world.ScreenMap.ActorsInBox(a, b)
-				.Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)) && cond(x))
+				.Where(x => x.HasTrait<Selectable>() && x.Trait<Selectable>().Info.Selectable && (x.Owner.IsAlliedWith(world.LocalPlayer) || !world.FogObscures(x)) && cond(x))
 				.GroupBy(x => x.GetSelectionPriority())
 				.OrderByDescending(g => g.Key)
 				.Select(g => g.AsEnumerable())
