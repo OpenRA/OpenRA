@@ -1293,28 +1293,19 @@ Rules:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
-			CostThreshold:
-			FirepowerModifier:
-			ArmorModifier:
-			SpeedModifier:
+			Upgrades:
 	^Tank:
 		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
-			CostThreshold:
-			FirepowerModifier:
-			ArmorModifier:
-			SpeedModifier:
+			Upgrades:
 	^Infantry:
 		ScriptInvulnerable:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
-			CostThreshold:
-			FirepowerModifier:
-			ArmorModifier:
-			SpeedModifier:
+			Upgrades:
 		DeathSounds@NORMAL:
 			VolumeMultiplier: 0.1
 		DeathSounds@BURNED:
@@ -1326,10 +1317,7 @@ Rules:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
-			CostThreshold:
-			FirepowerModifier:
-			ArmorModifier:
-			SpeedModifier:
+			Upgrades:
 	^Plane:
 		ScriptInvulnerable:
 		GivesBounty:
