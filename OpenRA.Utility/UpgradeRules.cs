@@ -437,6 +437,20 @@ namespace OpenRA.Utility
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
+
+				// RemoveImmediately was replaced with RemoveOnConditions
+ 				if (engineVersion < 20140821)
+ 				{
+ 					if (depth == 1)
+ 					{
+ 						if (node.Key == "RemoveImmediately")
+							node.Key = "RemoveOnConditions";
+ 
+ 						if (node.Key == "-RemoveImmediately")
+							node.Key = "-RemoveOnConditions";
+ 					}
+ 				}
+ 
 			}
 		}
 
