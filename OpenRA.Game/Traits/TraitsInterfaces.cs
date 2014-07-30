@@ -83,6 +83,12 @@ namespace OpenRA.Traits
 	public interface INotifyHarvest { void Harvested(Actor self, ResourceType resource); }
 	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
 
+	public interface IUpgradable
+	{
+		bool AcceptsUpgrade(string type);
+		void UpgradeAvailable(Actor self, string type, bool available);
+	}
+
 	public interface ISeedableResource { void Seed(Actor self); }
 
 	public interface IDemolishableInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
