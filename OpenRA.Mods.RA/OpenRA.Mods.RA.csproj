@@ -550,6 +550,8 @@
     <Compile Include="Graphics\ActorPreview.cs" />
     <Compile Include="Graphics\SpriteActorPreview.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
+    <Compile Include="GlobalUpgradable.cs" />
+    <Compile Include="Player\GlobalUpgradeManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
