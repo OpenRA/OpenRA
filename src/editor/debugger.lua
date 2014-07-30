@@ -479,7 +479,7 @@ local function mapRemotePath(basedir, file, line, method)
   end
 
   -- if found a local mapping under basedir
-  activated = longestpath and activateDocument(longestpath, line, method or activate.NOREPORT)
+  local activated = longestpath and activateDocument(longestpath, line, method or activate.NOREPORT)
   if activated then
     -- find remote basedir by removing the tail from remote file
     debugger.handle("basedir " .. debugger.basedir .. "\t" .. remotedir)
