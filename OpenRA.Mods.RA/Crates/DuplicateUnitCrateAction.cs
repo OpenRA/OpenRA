@@ -105,7 +105,7 @@ namespace OpenRA.Mods.RA.Crates
 
 			for (var i = -3; i < 4; i++)
 				for (var j = -3; j < 4; j++)
-					if (mi.CanEnterCell(self.World, self, near + new CVec(i, j), null, true, true))
+					if (mi.CanEnterCell(self.World, self, near + new CVec(i, j)))
 						yield return near + new CVec(i, j);
 		}
 

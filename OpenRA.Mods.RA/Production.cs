@@ -136,7 +136,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			return mobileInfo == null ||
-				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, self, true, true);
+				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, self);
 		}
 	}
 }
