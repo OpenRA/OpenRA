@@ -29,7 +29,9 @@ namespace OpenRA.Mods.RA
 		public readonly bool UncloakOnAttack = true;
 		public readonly bool UncloakOnMove = false;
 		public readonly bool UncloakOnUnload = false;
-		public readonly bool RequiresCrate = false;
+
+		[Desc("Enable only if this upgrade is enabled.")]
+		public readonly string RequiresUpgrade = null;
 
 		public readonly string CloakSound = null;
 		public readonly string UncloakSound = null;
@@ -40,11 +42,11 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Cloak(init.self, this); }
 	}
 
-	public class Cloak : IRenderModifier, INotifyDamageStateChanged, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, ISync
+	public class Cloak : IUpgradable, IRenderModifier, INotifyDamageStateChanged, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, ISync
 	{
 		[Sync] int remainingTime;
 		[Sync] bool damageDisabled;
-		[Sync] bool crateDisabled;
+		[Sync] bool disabled;
 
 		Actor self;
 		public readonly CloakInfo Info;
@@ -56,7 +58,20 @@ namespace OpenRA.Mods.RA
 			Info = info;
 
 			remainingTime = info.InitialDelay;
-			crateDisabled = info.RequiresCrate;
+
+			// Disable if an upgrade is required
+			disabled = info.RequiresUpgrade != null;
+		}
+
+		public bool AcceptsUpgrade(string type)
+		{
+			return type == Info.RequiresUpgrade;
+		}
+
+		public void UpgradeAvailable(Actor self, string type, bool available)
+		{
+			if (type == Info.RequiresUpgrade)
+				disabled = !available;
 		}
 
 		public void Uncloak() { Uncloak(Info.CloakDelay); }
@@ -96,7 +111,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (remainingTime > 0 && !crateDisabled && !damageDisabled && --remainingTime <= 0)
+			if (remainingTime > 0 && !disabled && !damageDisabled && --remainingTime <= 0)
 				Sound.Play(Info.CloakSound, self.CenterPosition);
 
 			if (self.IsDisabled())
@@ -130,13 +145,6 @@ namespace OpenRA.Mods.RA
 			if (self.Owner == self.World.LocalPlayer && Cloaked)
 				c = Color.FromArgb(128, c);
 			return c;
-		}
-
-		public bool AcceptsCloakCrate { get { return Info.RequiresCrate && crateDisabled; } }
-
-		public void ReceivedCloakCrate(Actor self)
-		{
-			crateDisabled = false;
 		}
 	}
 }

@@ -33,7 +33,7 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Cloak:
-		RequiresCrate: true
+		RequiresUpgrade: cloak
 		InitialDelay: 15
 		CloakDelay: 90
 		CloakSound: trans1.aud
@@ -81,7 +81,7 @@
 	BodyOrientation:
 	UpdatesPlayerStatistics:
 	Cloak:
-		RequiresCrate: true
+		RequiresUpgrade: cloak
 		InitialDelay: 15
 		CloakDelay: 90
 		CloakSound: trans1.aud

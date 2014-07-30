@@ -645,7 +645,7 @@ Rules:
 		-GiveMcvCrateAction:
 		-GiveCashCrateAction:
 		-ExplodeCrateAction@fire:
-		-CloakCrateAction:
+		-UnitUpgradeCrateAction@cloak:
 
 Sequences:
 

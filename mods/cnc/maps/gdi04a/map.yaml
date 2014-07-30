@@ -563,7 +563,7 @@ Rules:
 		-GiveMcvCrateAction:
 		-GiveCashCrateAction:
 		-ExplodeCrateAction@fire:
-		-CloakCrateAction:
+		-UnitUpgradeCrateAction@cloak:
 		ScriptTriggers:
 
 Sequences:
