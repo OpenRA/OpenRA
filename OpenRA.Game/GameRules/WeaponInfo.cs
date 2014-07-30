@@ -23,7 +23,7 @@ namespace OpenRA.GameRules
 		public readonly WRange MaxSpread = new WRange(0);
 		[FieldLoader.LoadUsing("LoadVersus")]
 		[Desc("Damage vs each armortype. 0% = can't target.")]
-		public readonly Dictionary<string, float> Versus;
+		public readonly Dictionary<string, int> Versus;
 		[Desc("Can this damage resource patches?")]
 		public readonly bool DestroyResources = false;
 		[Desc("Will this splatter resources and which?")]
@@ -57,18 +57,18 @@ namespace OpenRA.GameRules
 		[Desc("By what percentage should damage be modified against prone infantry.")]
 		public readonly int ProneModifier = 50;
 
-		public float EffectivenessAgainst(ActorInfo ai)
+		public int EffectivenessAgainst(ActorInfo ai)
 		{
 			var health = ai.Traits.GetOrDefault<HealthInfo>();
 			if (health == null)
-				return 0f;
+				return 0;
 
 			var armor = ai.Traits.GetOrDefault<ArmorInfo>();
 			if (armor == null || armor.Type == null)
 				return 1;
 
-			float versus;
-			return Versus.TryGetValue(armor.Type, out versus) ? versus : 1;
+			int versus;
+			return Versus.TryGetValue(armor.Type, out versus) ? versus : 100;
 		}
 
 		public WarheadInfo(MiniYaml yaml)
@@ -80,8 +80,8 @@ namespace OpenRA.GameRules
 		{
 			var nd = y.ToDictionary();
 			return nd.ContainsKey("Versus")
-				? nd["Versus"].ToDictionary(my => FieldLoader.GetValue<float>("(value)", my.Value))
-				: new Dictionary<string, float>();
+				? nd["Versus"].ToDictionary(my => FieldLoader.GetValue<int>("(value)", my.Value))
+				: new Dictionary<string, int>();
 		}
 	}
 
@@ -95,7 +95,7 @@ namespace OpenRA.GameRules
 	public class ProjectileArgs
 	{
 		public WeaponInfo Weapon;
-		public float FirepowerModifier = 1.0f;
+		public int FirepowerModifier = 100;
 		public int Facing;
 		public WPos Source;
 		public Actor SourceActor;

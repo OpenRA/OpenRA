@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA
 				Facing = legacyFacing,
 				FirepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
 					.Select(a => a.GetFirepowerModifier())
-					.Product(),
+					.Sum(),
 
 				Source = muzzlePosition,
 				SourceActor = self,

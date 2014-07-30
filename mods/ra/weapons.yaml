@@ -7,11 +7,11 @@ Colt45:
 	Warhead:
 		Spread: 42
 		Versus:
-			None: 100%
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
+			None: 100
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 		Explosion: piff
 		WaterExplosion: water_piff
 		InfDeath: 2
@@ -30,10 +30,10 @@ ZSU-23:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		Explosion: small_explosion_air
 		Damage: 12
 
@@ -46,10 +46,10 @@ Vulcan:
 	Warhead@1:
 		Spread: 128
 		Versus:
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
@@ -57,10 +57,10 @@ Vulcan:
 	Warhead@2:
 		Spread: 128
 		Versus:
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
@@ -69,10 +69,10 @@ Vulcan:
 	Warhead@3:
 		Spread: 128
 		Versus:
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
@@ -81,10 +81,10 @@ Vulcan:
 	Warhead@4:
 		Spread: 128
 		Versus:
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
@@ -93,10 +93,10 @@ Vulcan:
 	Warhead@5:
 		Spread: 128
 		Versus:
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
@@ -105,10 +105,10 @@ Vulcan:
 	Warhead@6:
 		Spread: 128
 		Versus:
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
@@ -135,10 +135,10 @@ Maverick:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
@@ -159,11 +159,11 @@ FireballLauncher:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 90%
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			None: 90
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 50
 		Explosion: napalm
 		WaterExplosion: napalm
 		InfDeath: 5
@@ -185,11 +185,11 @@ Flamer:
 	Warhead:
 		Spread: 341
 		Versus:
-			None: 90%
-			Wood: 100%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			None: 90
+			Wood: 100
+			Light: 60
+			Heavy: 25
+			Concrete: 50
 		Explosion: small_napalm
 		WaterExplosion: small_napalm
 		InfDeath: 5
@@ -208,11 +208,11 @@ ChainGun:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 120%
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
+			None: 120
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
@@ -229,10 +229,10 @@ ChainGun.Yak:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
@@ -247,10 +247,10 @@ Pistol:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
 		Explosion: piff
 		WaterExplosion: water_piff
 		InfDeath: 2
@@ -265,10 +265,10 @@ M1Carbine:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
-			Concrete: 10%
+			Wood: 25
+			Light: 30
+			Heavy: 10
+			Concrete: 10
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
@@ -292,10 +292,10 @@ Dragon:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 10%
-			Wood: 75%
-			Light: 35%
-			Concrete: 20%
+			None: 10
+			Wood: 75
+			Light: 35
+			Concrete: 20
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 4
@@ -323,10 +323,10 @@ HellfireAG:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 4
@@ -354,10 +354,10 @@ HellfireAA:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		Explosion: med_explosion_air
 		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
@@ -378,10 +378,10 @@ Grenade:
 	Warhead:
 		Spread: 256
 		Versus:
-			None: 50%
-			Wood: 100%
-			Light: 25%
-			Heavy: 5%
+			None: 50
+			Wood: 100
+			Light: 25
+			Heavy: 5
 		Explosion: med_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
@@ -400,10 +400,10 @@ Grenade:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 40%
-			Heavy: 40%
-			Concrete: 30%
+			None: 30
+			Wood: 40
+			Heavy: 40
+			Concrete: 30
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 4
@@ -420,10 +420,10 @@ Grenade:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 20%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 20
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
@@ -444,10 +444,10 @@ Grenade:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 20%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 20
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
@@ -468,10 +468,10 @@ Grenade:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 20%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 20
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
@@ -490,10 +490,10 @@ TurretGun:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 20%
-			Wood: 50%
-			Light: 75%
-			Concrete: 50%
+			None: 20
+			Wood: 50
+			Light: 75
+			Concrete: 50
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
@@ -520,10 +520,10 @@ MammothTusk:
 	Warhead:
 		Spread: 256
 		Versus:
-			None: 100%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 100
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: med_explosion_air
 		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
@@ -547,11 +547,11 @@ MammothTusk:
 	Warhead:
 		Spread: 426
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+			Concrete: 50
 		Explosion: artillery_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom15.aud
@@ -570,10 +570,10 @@ M60mg:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 10%
-			Light: 30%
-			Heavy: 10%
-			Concrete: 10%
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
@@ -589,10 +589,10 @@ Napalm:
 	Warhead:
 		Spread: 170
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			None: 90
+			Light: 60
+			Heavy: 25
+			Concrete: 50
 		Explosion: napalm
 		WaterExplosion: med_splash
 		InfDeath: 5
@@ -605,10 +605,10 @@ CrateNapalm:
 	Warhead:
 		Spread: 170
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			None: 90
+			Light: 60
+			Heavy: 25
+			Concrete: 50
 		Explosion: napalm
 		WaterExplosion: napalm
 		InfDeath: 5
@@ -621,10 +621,10 @@ CrateExplosion:
 		Damage: 500
 		Spread: 426
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: self_destruct
 		WaterExplosion: self_destruct
 		InfDeath: 4
@@ -636,10 +636,10 @@ CrateNuke:
 		Spread: 256
 		DestroyResources: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			None: 90
+			Light: 60
+			Heavy: 25
+			Concrete: 50
 		Explosion: nuke
 		WaterExplosion: nuke
 		InfDeath: 5
@@ -651,10 +651,10 @@ CrateNuke:
 		Size: 5,4
 		DestroyResources: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			None: 90
+			Light: 60
+			Heavy: 25
+			Concrete: 50
 		Delay: 4
 		InfDeath: 5
 		ImpactSound: kaboom22.aud
@@ -670,8 +670,8 @@ TeslaZap:
 		InfDeath: 6
 		Damage: 100
 		Versus:
-			None: 1000%
-			Wood: 60%
+			None: 1000
+			Wood: 60
 
 Nike:
 	ROF: 15
@@ -689,11 +689,11 @@ Nike:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 90%
-			Wood: 0%
-			Light: 90%
-			Heavy: 50%
-			Concrete: 0%
+			None: 90
+			Wood: 0
+			Light: 90
+			Heavy: 50
+			Concrete: 0
 		Explosion: med_explosion_air
 		ImpactSound: kaboom25.aud
 		InfDeath: 3
@@ -716,10 +716,10 @@ RedEye:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: med_explosion_air
 		ImpactSound: kaboom25.aud
 		InfDeath: 3
@@ -741,10 +741,10 @@ RedEye:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 60%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 60
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: artillery_explosion
 		WaterExplosion: large_splash
 		InfDeath: 3
@@ -769,9 +769,9 @@ SubMissile:
 	Warhead:
 		Spread: 426
 		Versus:
-			None: 40%
-			Light: 30%
-			Heavy: 30%
+			None: 40
+			Light: 30
+			Heavy: 30
 		Explosion: artillery_explosion
 		WaterExplosion: large_splash
 		InfDeath: 3
@@ -799,10 +799,10 @@ Stinger:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
@@ -830,10 +830,10 @@ TorpTube:
 	Warhead:
 		Spread: 426
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Concrete: 500%
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 500
 		WaterExplosion: large_splash
 		WaterImpactSound: splash9.aud
 		Explosion: large_explosion
@@ -852,10 +852,10 @@ TorpTube:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		Explosion: small_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom12.aud
@@ -877,10 +877,10 @@ DepthCharge:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		WaterExplosion: large_splash
 		WaterImpactSound: splash9.aud
 		InfDeath: 4
@@ -898,10 +898,10 @@ ParaBomb:
 	Warhead:
 		Spread: 256
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		Explosion: self_destruct
 		WaterExplosion: small_splash
 		InfDeath: 4
@@ -918,10 +918,10 @@ DogJaw:
 	Warhead:
 		Spread: 213
 		Versus:
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 		InfDeath: 1
 		Damage: 100
 
@@ -934,10 +934,10 @@ Heal:
 	Warhead:
 		Spread: 213
 		Versus:
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 		InfDeath: 1
 		Damage: -50
 
@@ -951,11 +951,11 @@ Repair:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 0%
-			Wood: 0%
-			Light: 100%
-			Heavy: 100%
-			Concrete: 0%
+			None: 0
+			Wood: 0
+			Light: 100
+			Heavy: 100
+			Concrete: 0
 		InfDeath: 1
 		Damage: -20
 
@@ -968,10 +968,10 @@ SilencedPPK:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 		Explosion: piffs
 		WaterExplosion: water_piffs
 		InfDeath: 2
@@ -994,10 +994,10 @@ SCUD:
 	Warhead:
 		Spread: 341
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 70%
-			Heavy: 40%
+			None: 90
+			Wood: 75
+			Light: 70
+			Heavy: 40
 		Explosion: napalm
 		WaterExplosion: large_splash
 		InfDeath: 3
@@ -1015,7 +1015,7 @@ Atomic:
 		Size: 1
 		DestroyResources: true
 		Versus:
-			Concrete: 25%
+			Concrete: 25
 		Explosion: nuke
 		WaterExplosion: nuke
 		InfDeath: 5
@@ -1027,7 +1027,7 @@ Atomic:
 		Size: 2
 		DestroyResources: true
 		Versus:
-			Concrete: 25%
+			Concrete: 25
 		Delay: 5
 		InfDeath: 5
 		ImpactSound: kaboom22.aud
@@ -1038,7 +1038,7 @@ Atomic:
 		Size: 3
 		DestroyResources: true
 		Versus:
-			Concrete: 25%
+			Concrete: 25
 		Delay: 10
 		InfDeath: 5
 	Warhead@areanuke3:
@@ -1048,7 +1048,7 @@ Atomic:
 		Size: 4
 		DestroyResources: true
 		Versus:
-			Concrete: 25%
+			Concrete: 25
 		Delay: 15
 		InfDeath: 5
 	Warhead@areanuke4:
@@ -1058,7 +1058,7 @@ Atomic:
 		Size: 5
 		DestroyResources: true
 		Versus:
-			Concrete: 25%
+			Concrete: 25
 		Delay: 20
 		InfDeath: 5
 
@@ -1070,7 +1070,7 @@ MiniNuke:
 		Size: 1
 		DestroyResources: true
 		Versus:
-			Concrete: 25%
+			Concrete: 25
 		Explosion: nuke
 		WaterExplosion: nuke
 		InfDeath: 5
@@ -1081,7 +1081,7 @@ MiniNuke:
 		Size: 2
 		DestroyResources: true
 		Versus:
-			Concrete: 25%
+			Concrete: 25
 		Delay: 5
 		InfDeath: 5
 		ImpactSound: kaboom22.aud
@@ -1091,7 +1091,7 @@ MiniNuke:
 		Size: 3
 		DestroyResources: true
 		Versus:
-			Concrete: 25%
+			Concrete: 25
 		Delay: 10
 		InfDeath: 5
 	Warhead@areanuke3:
@@ -1101,7 +1101,7 @@ MiniNuke:
 		SmudgeType: Scorch
 		DestroyResources: true
 		Versus:
-			Concrete: 25%
+			Concrete: 25
 		Delay: 15
 		InfDeath: 5
 
@@ -1110,10 +1110,10 @@ UnitExplode:
 		Damage: 500
 		Spread: 426
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: self_destruct
 		WaterExplosion: large_splash
 		InfDeath: 4
@@ -1125,10 +1125,10 @@ UnitExplodeShip:
 		Damage: 50
 		Spread: 426
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: building
 		WaterExplosion: building
 		InfDeath: 4
@@ -1140,10 +1140,10 @@ UnitExplodeSubmarine:
 		Damage: 50
 		Spread: 426
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		WaterExplosion: large_splash
 		InfDeath: 4
 		WaterImpactSound: splash9.aud
@@ -1153,10 +1153,10 @@ UnitExplodeSmall:
 		Damage: 40
 		Spread: 426
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: large_explosion
 		WaterExplosion: large_splash
 		InfDeath: 4
@@ -1168,11 +1168,11 @@ BarrelExplode:
 		Damage: 500
 		Spread: 426
 		Versus:
-			None: 120%
-			Wood: 200%
-			Light: 50%
-			Heavy: 25%
-			Concrete: 10%
+			None: 120
+			Wood: 200
+			Light: 50
+			Heavy: 25
+			Concrete: 10
 		Explosion: napalm
 		InfDeath: 4
 		ImpactSound: firebl3.aud
@@ -1216,7 +1216,7 @@ PortaTesla:
 		InfDeath: 6
 		Damage: 45
 		Versus:
-			None: 1000%
+			None: 1000
 
 TTankZap:
 	ROF: 120
@@ -1229,7 +1229,7 @@ TTankZap:
 		InfDeath: 6
 		Damage: 100
 		Versus:
-			None: 1000%
+			None: 1000
 
 FLAK-23:
 	ROF: 10
@@ -1242,11 +1242,11 @@ FLAK-23:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 40%
-			Wood: 10%
-			Light: 60%
-			Heavy: 10%
-			Concrete: 20%
+			None: 40
+			Wood: 10
+			Light: 60
+			Heavy: 10
+			Concrete: 20
 		Explosion: small_explosion_air
 		WaterExplosion: small_splash
 		Damage: 20
@@ -1261,11 +1261,11 @@ Sniper:
 		Damage: 140
 		Spread: 42
 		Versus:
-			None: 100%
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
+			None: 100
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 		InfDeath: 2
 
 APTusk:
@@ -1286,10 +1286,10 @@ APTusk:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 25
+			Wood: 75
+			Light: 75
+			Concrete: 50
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
@@ -1306,11 +1306,11 @@ Claw:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 90%
-			Wood: 10%
-			Light: 30%
-			Heavy: 10%
-			Concrete: 10%
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
 		InfDeath: 1
 		Damage: 33
 
@@ -1322,11 +1322,11 @@ Mandible:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 90%
-			Wood: 10%
-			Light: 30%
-			Heavy: 10%
-			Concrete: 10%
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
 		InfDeath: 1
 		Damage: 60
 
@@ -1336,7 +1336,7 @@ MADTankThump:
 		DamageModel: HealthPercentage
 		Damage: 1
 		Versus:
-			None: 0%
+			None: 0
 		Size: 7,6
 
 MADTankDetonate:
@@ -1345,7 +1345,7 @@ MADTankDetonate:
 		DamageModel: HealthPercentage
 		Damage: 19
 		Versus:
-			None: 0%
+			None: 0
 		Size: 7,6
 		Explosion: med_explosion
 		ImpactSound: mineblo1.aud
@@ -1357,10 +1357,10 @@ OreExplosion:
 		Spread: 9
 		Size: 1,1
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: med_explosion
 		InfDeath: 3
 		ImpactSound: kaboom25.aud

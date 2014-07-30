@@ -50,7 +50,7 @@ namespace OpenRA.Mods.D2k
 						Facing = self.World.SharedRandom.Next(-1, 255),
 						FirepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
 							.Select(a => a.GetFirepowerModifier())
-							.Product(),
+							.Sum(),
 
 						Source = self.CenterPosition,
 						SourceActor = self,

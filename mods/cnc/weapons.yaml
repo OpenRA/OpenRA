@@ -25,10 +25,10 @@ UnitExplode:
 		Damage: 500
 		Spread: 426
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: poof
 		InfDeath: 4
 		ImpactSound: xplobig6.aud
@@ -38,10 +38,10 @@ UnitExplodeSmall:
 		Damage: 40
 		Spread: 426
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: big_frag
 		InfDeath: 4
 		ImpactSound: xplobig4.aud
@@ -51,10 +51,10 @@ GrenadierExplode:
 		Damage: 10
 		Spread: 256
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: poof
 		InfDeath: 3
 		ImpactSound: xplosml2.aud
@@ -66,10 +66,10 @@ Atomic:
 		Damage: 1500	#1000
 		Spread: 1c0
 		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 60%
-			Heavy: 50%
+			None: 100
+			Wood: 100
+			Light: 60
+			Heavy: 50
 		Explosion: 6
 		InfDeath: 5
 		ImpactSound: nukexplo.aud
@@ -80,10 +80,10 @@ Atomic:
 		Size: 3
 		DestroyResources: true
 		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 60%
-			Heavy: 50%
+			None: 100
+			Wood: 100
+			Light: 60
+			Heavy: 50
 		Delay: 3
 		InfDeath: 5
 		ImpactSound: xplobig4.aud
@@ -94,10 +94,10 @@ Atomic:
 		Size: 4
 		DestroyResources: true
 		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 60%
-			Heavy: 50%
+			None: 100
+			Wood: 100
+			Light: 60
+			Heavy: 50
 		Delay: 6
 		InfDeath: 5
 	Warhead@areanukec:
@@ -107,10 +107,10 @@ Atomic:
 		Size: 5
 		DestroyResources: true
 		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 60%
-			Heavy: 50%
+			None: 100
+			Wood: 100
+			Light: 60
+			Heavy: 50
 		Delay: 9
 		InfDeath: 5
 
@@ -162,10 +162,10 @@ HighV:
 		Damage: 30
 		Spread: 683
 		Versus:
-			None: 100%
-			Wood: 50%
-			Light: 70%
-			Heavy: 35%
+			None: 100
+			Wood: 50
+			Light: 70
+			Heavy: 35
 		InfDeath: 2
 		Explosion: piffs
 
@@ -182,10 +182,10 @@ HeliAGGun:
 		Damage: 20
 		Spread: 256
 		Versus:
-			None: 100%
-			Wood: 50%
-			Light: 75%
-			Heavy: 25%
+			None: 100
+			Wood: 50
+			Light: 75
+			Heavy: 25
 		InfDeath: 2
 		Explosion: piffs
 
@@ -202,10 +202,10 @@ HeliAAGun:
 		Damage: 20
 		Spread: 128
 		Versus:
-			None: 100%
-			Wood: 50%
-			Light: 50%
-			Heavy: 25%
+			None: 100
+			Wood: 50
+			Light: 50
+			Heavy: 25
 		InfDeath: 2
 		Explosion: piffs
 
@@ -219,10 +219,10 @@ Pistol:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 100%
-			Wood: 50%
-			Light: 50%
-			Heavy: 25%
+			None: 100
+			Wood: 50
+			Light: 50
+			Heavy: 25
 		InfDeath: 2
 		Explosion: piff
 		Damage: 1
@@ -237,10 +237,10 @@ M16:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 100%
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
+			None: 100
+			Wood: 25
+			Light: 30
+			Heavy: 10
 		Explosion: piff
 		InfDeath: 2
 		Damage: 15
@@ -263,11 +263,11 @@ Rockets:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 50%
-			Wood: 85%
-			Light: 100%
-			Heavy: 100%
-			Concrete: 25%
+			None: 50
+			Wood: 85
+			Light: 100
+			Heavy: 100
+			Concrete: 25
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -294,11 +294,11 @@ BikeRockets:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 75%
-			Light: 100%
-			Heavy: 100%
-			Concrete: 50%
+			None: 25
+			Wood: 75
+			Light: 100
+			Heavy: 100
+			Concrete: 50
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -325,10 +325,10 @@ OrcaAGMissiles:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 50%
-			Wood: 100%
-			Light: 100%
-			Heavy: 75%
+			None: 50
+			Wood: 100
+			Light: 100
+			Heavy: 75
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -355,8 +355,8 @@ OrcaAAMissiles:
 	Warhead:
 		Spread: 128
 		Versus:
-			Light: 75%
-			Heavy: 50%
+			Light: 75
+			Heavy: 50
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -373,10 +373,10 @@ Flamethrower:
 	Warhead:
 		Spread: 341
 		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 100%
-			Heavy: 20%
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 20
 		Explosion: small_napalm
 		InfDeath: 5
 		ImpactSound: flamer2.aud
@@ -395,10 +395,10 @@ BigFlamer:
 	Warhead:
 		Spread: 341
 		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 67%
-			Heavy: 25%
+			None: 100
+			Wood: 100
+			Light: 67
+			Heavy: 25
 		InfDeath: 5
 		Explosion: med_napalm
 		ImpactSound: flamer2.aud
@@ -415,10 +415,10 @@ Chemspray:
 		Damage: 80
 		Spread: 256
 		Versus:
-			None: 100%
-			Wood: 35%
-			Light: 75%
-			Heavy: 50%
+			None: 100
+			Wood: 35
+			Light: 75
+			Heavy: 50
 		InfDeath: 6
 		Explosion: chemball
 		SmudgeType: Scorch
@@ -437,10 +437,10 @@ Grenade:
 	Warhead:
 		Spread: 341
 		Versus:
-			None: 100%
-			Wood: 50%
-			Light: 75%
-			Heavy: 35%
+			None: 100
+			Wood: 50
+			Light: 75
+			Heavy: 35
 		InfDeath: 3
 		Explosion: small_poof
 		ImpactSound: xplos.aud
@@ -457,11 +457,11 @@ Grenade:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 75%
-			Light: 100%
-			Heavy: 100%
-			Concrete: 50%
+			None: 25
+			Wood: 75
+			Light: 100
+			Heavy: 100
+			Concrete: 50
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -478,10 +478,10 @@ Grenade:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Heavy: 100%
+			None: 30
+			Wood: 75
+			Light: 75
+			Heavy: 100
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -498,11 +498,11 @@ Grenade:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 100%
-			Light: 100%
-			Heavy: 100%
-			Concrete: 50%
+			None: 25
+			Wood: 100
+			Light: 100
+			Heavy: 100
+			Concrete: 50
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -521,11 +521,11 @@ Grenade:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 100%
-			Light: 100%
-			Heavy: 100%
-			Concrete: 100%
+			None: 25
+			Wood: 100
+			Light: 100
+			Heavy: 100
+			Concrete: 100
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -542,10 +542,10 @@ TurretGun:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 20%
-			Wood: 25%
-			Light: 100%
-			Heavy: 100%
+			None: 20
+			Wood: 25
+			Light: 100
+			Heavy: 100
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -572,10 +572,10 @@ MammothMissiles:
 	Warhead:
 		Spread: 298
 		Versus:
-			None: 50%
-			Wood: 75%
-			Light: 100%
-			Heavy: 50%
+			None: 50
+			Wood: 75
+			Light: 100
+			Heavy: 50
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -604,10 +604,10 @@ MammothMissiles:
 	Warhead:
 		Spread: 683
 		Versus:
-			None: 35%
-			Wood: 60%
-			Light: 100%
-			Heavy: 50%
+			None: 35
+			Wood: 60
+			Light: 100
+			Heavy: 50
 		InfDeath: 4
 		Explosion: med_frag
 		ImpactSound: xplos.aud
@@ -634,10 +634,10 @@ MammothMissiles:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 75%
-			Light: 100%
-			Heavy: 90%
+			None: 25
+			Wood: 75
+			Light: 100
+			Heavy: 90
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -660,10 +660,10 @@ ArtilleryShell:
 		Damage: 150
 		Spread: 341
 		Versus:
-			None: 100%
-			Wood: 80%
-			Light: 75%
-			Heavy: 50%
+			None: 100
+			Wood: 80
+			Light: 75
+			Heavy: 50
 		InfDeath: 3
 		Explosion: poof
 		SmudgeType: Crater
@@ -680,11 +680,11 @@ MachineGun:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 100%
-			Wood: 20%
-			Light: 50%
-			Heavy: 20%
-			Concrete: 10%
+			None: 100
+			Wood: 20
+			Light: 50
+			Heavy: 20
+			Concrete: 10
 		InfDeath: 2
 		Explosion: piffs
 		Damage: 15
@@ -708,10 +708,10 @@ BoatMissile:
 	Warhead:
 		Spread: 256
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		InfDeath: 3
 		Explosion: small_poof
 		ImpactSound: xplos.aud
@@ -736,10 +736,10 @@ TowerMissle:
 	Warhead:
 		Spread: 683
 		Versus:
-			None: 50%
-			Wood: 25%
-			Light: 100%
-			Heavy: 100%
+			None: 50
+			Wood: 25
+			Light: 100
+			Heavy: 100
 		InfDeath: 3
 		Explosion: med_frag
 		ImpactSound: xplos.aud
@@ -757,10 +757,10 @@ Vulcan:
 		Damage: 100
 		Spread: 426
 		Versus:
-			None: 100%
-			Wood: 25%
-			Light: 100%
-			Heavy: 35%
+			None: 100
+			Wood: 25
+			Light: 100
+			Heavy: 35
 		InfDeath: 2
 		Explosion: piffs
 
@@ -775,10 +775,10 @@ Napalm:
 	Warhead:
 		Spread: 341
 		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 100%
-			Heavy: 80%
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 80
 		InfDeath: 5
 		Explosion: med_napalm
 		WaterExplosion: med_napalm
@@ -790,10 +790,10 @@ Napalm.Crate:
 	Warhead:
 		Spread: 170
 		Versus:
-			None: 90%
-			Wood: 100%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 100
+			Light: 60
+			Heavy: 25
 		InfDeath: 5
 		Explosion: med_napalm
 		ImpactSound: flamer2.aud
@@ -811,7 +811,7 @@ Laser:
 	Warhead:
 		Spread: 42
 		Versus:
-			Wood: 50%
+			Wood: 50
 		InfDeath: 5
 		SmudgeType: Scorch
 		Damage: 360
@@ -833,10 +833,10 @@ SAMMissile:
 	Warhead: AP
 		Spread: 682
 		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 100%
-			Heavy: 75%
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 75
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos.aud
@@ -860,10 +860,10 @@ HonestJohn:
 	Warhead:
 		Spread: 256
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		InfDeath: 3
 		Explosion: small_poof
 		ImpactSound: xplos.aud
@@ -884,10 +884,10 @@ TiberiumExplosion:
 		Spread: 9
 		Size: 1,1
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: chemball
 		InfDeath: 3
 		ImpactSound: xplosml2.aud
@@ -910,10 +910,10 @@ APCGun:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 50%
-			Wood: 50%
-			Light: 100%
-			Heavy: 50%
+			None: 50
+			Wood: 50
+			Light: 100
+			Heavy: 50
 		Explosion: small_poof
 		Damage: 15
 
@@ -928,7 +928,7 @@ APCGun.AA:
 	Warhead:
 		Spread: 128
 		Versus:
-			Heavy: 50%
+			Heavy: 50
 		Explosion: small_poof
 		Damage: 25
 
@@ -950,10 +950,10 @@ Patriot:
 	Warhead: AP
 		Spread: 682
 		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 100%
-			Heavy: 75%
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 75
 		InfDeath: 4
 		Explosion: poof
 		ImpactSound: xplos.aud
@@ -968,11 +968,11 @@ Tail:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 90%
-			Wood: 10%
-			Light: 30%
-			Heavy: 10%
-			Concrete: 10%
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
 		InfDeath: 1
 		Damage: 180
 
@@ -984,11 +984,11 @@ Horn:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 90%
-			Wood: 10%
-			Light: 30%
-			Heavy: 10%
-			Concrete: 10%
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
 		InfDeath: 1
 		Damage: 120
 
@@ -1000,11 +1000,11 @@ Teeth:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 90%
-			Wood: 10%
-			Light: 30%
-			Heavy: 10%
-			Concrete: 10%
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
 		InfDeath: 1
 		Damage: 180
 
@@ -1016,11 +1016,11 @@ Claw:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 90%
-			Wood: 10%
-			Light: 30%
-			Heavy: 10%
-			Concrete: 10%
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
 		InfDeath: 1
 		Damage: 60
 

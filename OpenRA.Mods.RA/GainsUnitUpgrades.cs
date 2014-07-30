@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	public class GainsUnitUpgradesInfo : ITraitInfo
 	{
 		public readonly int FirepowerMaxLevel = 15;
-		public readonly float FirepowerModifier = .2f;
+		public readonly int FirepowerModifier = 20;
 		public readonly int ArmorMaxLevel = 8;
 		public readonly int ArmorModifier = 10;
 		public readonly int SpeedMaxLevel = 15;
@@ -62,9 +62,9 @@ namespace OpenRA.Mods.RA
 				SpeedLevel = Math.Min(SpeedLevel + numLevels, info.SpeedMaxLevel);
 		}
 
-		public float GetFirepowerModifier()
+		public int GetFirepowerModifier()
 		{
-			return FirepowerLevel > 0 ? (1 + FirepowerLevel * info.FirepowerModifier) : 1;
+			return FirepowerLevel > 0 ? FirepowerLevel * info.FirepowerModifier : 100;
 		}
 
 		public int GetDamageModifier(Actor attacker, WarheadInfo warhead)
