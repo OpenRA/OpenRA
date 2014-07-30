@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -9,24 +9,25 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace OpenRA.Primitives
 {
-	public class Cache<T, U> : IReadOnlyDictionary<T, U>
+	public class ConcurrentCache<T, U> : IReadOnlyDictionary<T, U>
 	{
-		readonly Dictionary<T, U> cache;
+		readonly ConcurrentDictionary<T, U> cache;
 		readonly Func<T, U> loader;
 
-		public Cache(Func<T, U> loader, IEqualityComparer<T> c)
+		public ConcurrentCache(Func<T, U> loader, IEqualityComparer<T> c)
 		{
 			if (loader == null)
 				throw new ArgumentNullException("loader");
 			this.loader = loader;
-			cache = new Dictionary<T, U>(c);
+			cache = new ConcurrentDictionary<T, U>(c);
 		}
 
-		public Cache(Func<T, U> loader)
+		public ConcurrentCache(Func<T, U> loader)
 			: this(loader, EqualityComparer<T>.Default) { }
 
 		public U this[T key]

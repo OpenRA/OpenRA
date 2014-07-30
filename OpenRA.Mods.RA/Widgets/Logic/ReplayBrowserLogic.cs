@@ -56,6 +56,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					replays = Directory
 						.GetFiles(dir, "*.rep")
+						.AsParallel()
 						.Select(ReplayMetadata.Read)
 						.Where(r => r != null)
 						.OrderByDescending(r => r.GameInfo.StartTimeUtc)
