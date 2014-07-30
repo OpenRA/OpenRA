@@ -115,7 +115,7 @@
 		ChevronPalette: ra
 		CostThreshold: 5, 10
 		FirepowerModifier: 1.2, 1.5
-		ArmorModifier: 1.2, 1.5
+		ArmorModifier: 120, 150
 		SpeedModifier: 120, 150
 	GivesExperience:
 	DrawLineToTarget:
@@ -201,7 +201,7 @@
 		ChevronPalette: ra
 		CostThreshold: 5, 10
 		FirepowerModifier: 1.2, 1.5
-		ArmorModifier: 1.2, 1.5
+		ArmorModifier: 120, 150
 		SpeedModifier: 120, 150
 	GivesExperience:
 	DrawLineToTarget:
@@ -250,7 +250,7 @@
 		ChevronPalette: ra
 		CostThreshold: 5, 10
 		FirepowerModifier: 1.2, 1.5
-		ArmorModifier: 1.2, 1.5
+		ArmorModifier: 120, 150
 		SpeedModifier: 120, 150
 	GivesExperience:
 	DrawLineToTarget:
@@ -293,7 +293,7 @@
 		ChevronPalette: ra
 		CostThreshold: 5, 10
 		FirepowerModifier: 1.2, 1.5
-		ArmorModifier: 1.2, 1.5
+		ArmorModifier: 120, 150
 		SpeedModifier: 120, 150
 	GivesExperience:
 	DrawLineToTarget:

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		[Desc("How many game ticks should pass before closing the actor's turret.")]
 		public int CloseDelay = 125;
 		public int DefaultFacing = 0;
-		public float ClosedDamageMultiplier = 0.5f;
+		public int ClosedDamageMultiplier = 50;
 
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted(init, this); }
 	}
@@ -103,9 +103,9 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		public int GetDamageModifier(Actor attacker, WarheadInfo warhead)
 		{
-			return state == PopupState.Closed ? info.ClosedDamageMultiplier : 1f;
+			return state == PopupState.Closed ? info.ClosedDamageMultiplier : 100;
 		}
 	}
 }

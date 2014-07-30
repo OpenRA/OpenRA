@@ -51,9 +51,9 @@ namespace OpenRA.Mods.RA.Activities
 						return;
 
 					// Invulnerable actors can't be demolished
-					var modifier = (float)target.Actor.TraitsImplementing<IDamageModifier>()
+					var modifier = (int)target.Actor.TraitsImplementing<IDamageModifier>()
 						.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
-						.Select(t => t.GetDamageModifier(self, null)).Product();
+						.Select(t => t.GetDamageModifier(self, null)).Sum();
 
 					var demolishable = target.Actor.TraitOrDefault<IDemolishable>();
 					if (demolishable == null || !demolishable.IsValidTarget(target.Actor, self))
