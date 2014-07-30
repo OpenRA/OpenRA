@@ -33,6 +33,12 @@ namespace OpenRA
 			throw new NotImplementedException("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 		};
 
+		static readonly ConcurrentCache<MemberInfo, bool> MemberHasTranslateAttribute =
+			new ConcurrentCache<MemberInfo, bool>(member => member.HasAttribute<TranslateAttribute>());
+
+		static readonly object TranslationsLock = new object();
+		static Dictionary<string, string> translations;
+
 		public static void Load(object self, MiniYaml my)
 		{
 			var loadInfo = typeLoadInfo[self.GetType()];
@@ -166,7 +172,7 @@ namespace OpenRA
 
 			else if (fieldType == typeof(string))
 			{
-				if (field != null && field.HasAttribute<TranslateAttribute>())
+				if (field != null && MemberHasTranslateAttribute[field])
 					return Regex.Replace(value, "@[^@]+@", m => Translate(m.Value.Substring(1, m.Value.Length - 2)), RegexOptions.Compiled);
 				return value;
 			}
@@ -426,9 +432,10 @@ namespace OpenRA
 			return typeLoadInfo[type].Where(fli => includePrivateByDefault || fli.Field.IsPublic || (fli.Attribute.Serialize && !fli.Attribute.IsDefault));
 		}
 
-		static Cache<Type, List<FieldLoadInfo>> typeLoadInfo = new Cache<Type, List<FieldLoadInfo>>(BuildTypeLoadInfo);
+		static ConcurrentCache<Type, FieldLoadInfo[]> typeLoadInfo =
+			new ConcurrentCache<Type, FieldLoadInfo[]>(BuildTypeLoadInfo);
 
-		static List<FieldLoadInfo> BuildTypeLoadInfo(Type type)
+		static FieldLoadInfo[] BuildTypeLoadInfo(Type type)
 		{
 			var ret = new List<FieldLoadInfo>();
 
@@ -450,7 +457,7 @@ namespace OpenRA
 				ret.Add(fli);
 			}
 
-			return ret;
+			return ret.ToArray();
 		}
 
 		[AttributeUsage(AttributeTargets.Field)]
@@ -499,17 +506,27 @@ namespace OpenRA
 
 		public static string Translate(string key)
 		{
-			if (Translations == null || string.IsNullOrEmpty(key))
+			if (string.IsNullOrEmpty(key))
 				return key;
 
-			string value;
-			if (!Translations.TryGetValue(key, out value))
-				return key;
+			lock (TranslationsLock)
+			{
+				if (translations == null)
+					return key;
 
-			return value;
+				string value;
+				if (!translations.TryGetValue(key, out value))
+					return key;
+
+				return value;
+			}
 		}
 
-		public static Dictionary<string, string> Translations = new Dictionary<string, string>();
+		public static void SetTranslations(IDictionary<string, string> translations)
+		{
+			lock (TranslationsLock)
+				FieldLoader.translations = new Dictionary<string, string>(translations);
+		}
 	}
 
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
@@ -525,6 +542,7 @@ namespace OpenRA
 	}
 
 	// mirrors DescriptionAttribute from System.ComponentModel but we dont want to have to use that everywhere.
+	[AttributeUsage(AttributeTargets.All)]
 	public sealed class DescAttribute : Attribute
 	{
 		public readonly string[] Lines;

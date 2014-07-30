@@ -125,6 +125,7 @@
     <Compile Include="Orders\IOrderGenerator.cs" />
     <Compile Include="Orders\UnitOrderGenerator.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Primitives\ConcurrentCache.cs" />
     <Compile Include="Selection.cs" />
     <Compile Include="Server\Connection.cs" />
     <Compile Include="Server\Exts.cs" />

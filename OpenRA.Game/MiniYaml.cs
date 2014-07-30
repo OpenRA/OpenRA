@@ -142,7 +142,7 @@ namespace OpenRA
 			return nd.ContainsKey(s) ? nd[s].Nodes : new List<MiniYamlNode>();
 		}
 
-		static List<MiniYamlNode> FromLines(string[] lines, string filename)
+		static List<MiniYamlNode> FromLines(IEnumerable<string> lines, string filename)
 		{
 			var levels = new List<List<MiniYamlNode>>();
 			levels.Add(new List<MiniYamlNode>());
@@ -152,8 +152,9 @@ namespace OpenRA
 			{
 				var line = ll;
 				++lineNo;
-				if (line.Contains('#'))
-					line = line.Substring(0, line.IndexOf('#')).TrimEnd(' ', '\t');
+				var commentIndex = line.IndexOf('#');
+				if (commentIndex != -1)
+					line = line.Substring(0, commentIndex).TrimEnd(' ', '\t');
 				var t = line.TrimStart(' ', '\t');
 				if (t.Length == 0)
 					continue;
@@ -189,12 +190,8 @@ namespace OpenRA
 
 		public static List<MiniYamlNode> FromFileInPackage(string path)
 		{
-			var lines = new List<string>();
 			using (var stream = GlobalFileSystem.Open(path))
-			using (var reader = new StreamReader(stream))
-				while (!reader.EndOfStream)
-					lines.Add(reader.ReadLine());
-			return FromLines(lines.ToArray(), path);
+				return FromLines(stream.ReadAllLines(), path);
 		}
 
 		public static Dictionary<string, MiniYaml> DictFromFile(string path)
