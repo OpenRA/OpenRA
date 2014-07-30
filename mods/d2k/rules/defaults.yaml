@@ -39,6 +39,7 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Tank:
 	AppearsOnRadar:
@@ -81,6 +82,7 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Husk:
 	Health:
@@ -198,6 +200,7 @@
 	DeathSounds:
 	Parachutable:
 		FallRate: 130
+	GainsStatUpgrades:
 
 ^Plane:
 	AppearsOnRadar:
@@ -223,6 +226,7 @@
 	AttackMove:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Helicopter:
 	Inherits: ^Plane

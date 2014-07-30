@@ -54,6 +54,7 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Tank:
 	AppearsOnRadar:
@@ -111,6 +112,7 @@
 	CaptureNotification:
 		Notification: UnitStolen
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -182,6 +184,7 @@
 		ShadowSequence: parach-shadow
 	Cloneable:
 		Types: Infantry
+	GainsStatUpgrades:
 
 ^Ship:
 	AppearsOnRadar:
@@ -215,6 +218,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Plane:
 	AppearsOnRadar:
@@ -251,6 +255,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Helicopter:
 	Inherits: ^Plane

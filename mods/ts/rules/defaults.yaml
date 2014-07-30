@@ -113,7 +113,10 @@
 	HiddenUnderFog:
 	GainsExperience:
 		ChevronPalette: ra
-		CostThreshold: 5, 10
+		Upgrades:
+			500: firepower, armor, speed
+			1000: firepower, armor, speed
+	GainsStatUpgrades:
 		FirepowerModifier: 1.2, 1.5
 		ArmorModifier: 1.2, 1.5
 		SpeedModifier: 1.2, 1.5
@@ -199,7 +202,10 @@
 	HiddenUnderFog:
 	GainsExperience:
 		ChevronPalette: ra
-		CostThreshold: 5, 10
+		Upgrades:
+			500: firepower, armor, speed
+			1000: firepower, armor, speed
+	GainsStatUpgrades:
 		FirepowerModifier: 1.2, 1.5
 		ArmorModifier: 1.2, 1.5
 		SpeedModifier: 1.2, 1.5
@@ -248,7 +254,10 @@
 	HiddenUnderFog:
 	GainsExperience:
 		ChevronPalette: ra
-		CostThreshold: 5, 10
+		Upgrades:
+			500: firepower, armor, speed
+			1000: firepower, armor, speed
+	GainsStatUpgrades:
 		FirepowerModifier: 1.2, 1.5
 		ArmorModifier: 1.2, 1.5
 		SpeedModifier: 1.2, 1.5
@@ -291,7 +300,10 @@
 	AttackMove:
 	GainsExperience:
 		ChevronPalette: ra
-		CostThreshold: 5, 10
+		Upgrades:
+			500: firepower, armor, speed
+			1000: firepower, armor, speed
+	GainsStatUpgrades:
 		FirepowerModifier: 1.2, 1.5
 		ArmorModifier: 1.2, 1.5
 		SpeedModifier: 1.2, 1.5

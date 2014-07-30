@@ -364,6 +364,13 @@ namespace OpenRA.Utility
 					}
 				}
 
+				// Veterancy was changed to use the upgrades system
+				if (engineVersion < 20140807)
+				{
+					if (depth == 0 && node.Value.Nodes.Any(n => n.Key.StartsWith("GainsExperience")))
+						node.Value.Nodes.Add(new MiniYamlNode("GainsStatUpgrades", new MiniYaml("")));
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

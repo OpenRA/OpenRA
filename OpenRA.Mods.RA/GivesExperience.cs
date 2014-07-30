@@ -30,9 +30,10 @@ namespace OpenRA.Mods.RA
 			var info = self.Info.Traits.Get<GivesExperienceInfo>();
 			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
 
+			// Default experience is 100 times our value
 			var exp = info.Experience >= 0
 				? info.Experience
-				: valued != null ? valued.Cost : 0;
+				: valued != null ? valued.Cost * 100 : 0;
 
 			var killer = e.Attacker.TraitOrDefault<GainsExperience>();
 			if (killer != null)
