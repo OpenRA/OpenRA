@@ -354,6 +354,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.FragileAlliances);
 						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} modified <Diplomacy Changes> to {1}.".F(client.Name, s));
+
 						return true;
 					}},
 				{ "allowcheats",
@@ -373,6 +375,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllowCheats);
 						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} modified <Allow Cheats> to {1}.".F(client.Name, s));
+
 						return true;
 					}},
 				{ "shroud",
@@ -392,6 +396,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Shroud);
 						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} modified <Shroud> to {1}.".F(client.Name, s));
+
 						return true;
 					}},
 				{ "fog",
@@ -412,6 +418,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Fog);
 						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} modified <Fog of War> to {1}.".F(client.Name, s));
+
 						return true;
 					}},
 				{ "assignteams",
@@ -472,6 +480,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Crates);
 						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} modified <Crates Appear> to {1}.".F(client.Name, s));
+
 						return true;
 					}},
 				{ "allybuildradius",
@@ -491,6 +501,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllyBuildRadius);
 						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} modified <Build off Ally ConYards> to {1}.".F(client.Name, s));
+
 						return true;
 					}},
 				{ "difficulty",
@@ -530,6 +542,8 @@ namespace OpenRA.Mods.RA.Server
 
 						server.LobbyInfo.GlobalSettings.StartingUnitsClass = s;
 						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} modified <Starting Units> to {1}.".F(client.Name, s));
+
 						return true;
 					}},
 				{ "startingcash",
@@ -549,6 +563,7 @@ namespace OpenRA.Mods.RA.Server
 
 						server.LobbyInfo.GlobalSettings.StartingCash = Exts.ParseIntegerInvariant(s);
 						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} modified <Starting Cash> to ${1}.".F(client.Name, s));
 
 						return true;
 					}},
@@ -569,6 +584,8 @@ namespace OpenRA.Mods.RA.Server
 
 						server.LobbyInfo.GlobalSettings.TechLevel = s;
 						server.SyncLobbyInfo();
+						server.SendMessage("{0} modified <Tech Level> to {1}.".F(client.Name, s));
+
 						return true;
 					}},
 				{ "kick",
