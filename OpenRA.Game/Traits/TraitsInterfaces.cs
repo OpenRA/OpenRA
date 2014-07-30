@@ -81,6 +81,12 @@ namespace OpenRA.Traits
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
 	public interface INotifyHarvest { void Harvested(Actor self, ResourceType resource); }
+	public interface INotifyUpgrade
+	{
+		string UpgradeKey { get; }
+		string[] UpgradePrerequisites { get; }
+		void OnUpgrade(string key, bool isUpgrade);
+	}
 	public interface ISeedableResource { void Seed(Actor self); }
 
 	public interface IAcceptInfiltrator { void OnInfiltrate(Actor self, Actor infiltrator); }
