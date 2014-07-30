@@ -233,6 +233,27 @@ namespace OpenRA
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 
+			else if (fieldType == typeof(WVec[]))
+			{
+				var parts = value.Split(',');
+
+				if (parts.Length % 3 != 0)
+					return InvalidValueAction(value, fieldType, fieldName);
+
+				var vecs = new WVec[parts.Length / 3];
+
+				for (var i = 0; i < vecs.Length; ++i)
+				{
+					WRange rx, ry, rz;
+					if (WRange.TryParse(parts[3 * i], out rx)
+							&& WRange.TryParse(parts[3 * i + 1], out ry)
+							&& WRange.TryParse(parts[3 * i + 2], out rz))
+						vecs[i] = new WVec(rx, ry, rz);
+				}
+
+				return vecs;
+			}
+
 			else if (fieldType == typeof(WPos))
 			{
 				var parts = value.Split(',');
