@@ -83,6 +83,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				onExit();
 			};
 
+            widget.Get<ButtonWidget>("SURRENDER").IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined || world.LobbyInfo.IsSinglePlayer);
 			widget.Get<ButtonWidget>("SURRENDER").OnClick = () =>
 			{
 				widget.Visible = false;
@@ -93,7 +94,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					() => widget.Visible = true,
 					"Surrender");
 			};
-			widget.Get("SURRENDER").IsVisible = () => world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined;
 		}
 	}
 }

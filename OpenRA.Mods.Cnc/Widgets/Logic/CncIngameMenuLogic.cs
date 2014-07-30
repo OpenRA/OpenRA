@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			Action onSurrender = () => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 			var surrenderButton = menu.Get<ButtonWidget>("SURRENDER_BUTTON");
-			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined);
+			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined || world.LobbyInfo.IsSinglePlayer);
 			surrenderButton.OnClick = () =>
 				ConfirmationDialogs.PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
 
