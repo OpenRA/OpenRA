@@ -18,6 +18,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Move
 {
+	[Flags]
+	public enum CellConditions
+	{
+		None = 0,
+		TransientActors,
+		BlockedByMovers,
+		All = TransientActors | BlockedByMovers
+	};
+
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, IMoveInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
@@ -151,12 +160,22 @@ namespace OpenRA.Mods.RA.Move
 			return true;
 		}
 
-		public bool CanEnterCell(World world, CPos cell)
+		public bool CanEnterCell(World world, CPos cell, int subCell = -1, CellConditions check = CellConditions.All)
 		{
-			return CanEnterCell(world, null, cell, null, true, true);
+			return CanEnterCell(world, null, cell, subCell, null, check);
 		}
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor, bool checkTransientActors, bool blockedByMovers)
+		public bool CanEnterCell(World world, Actor self, CPos cell, int subCell, CellConditions check)
+		{
+			return CanEnterCell(world, self, cell, subCell, null, check);
+		}
+
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor, CellConditions check = CellConditions.All)
+		{
+			return CanEnterCell(world, self, cell, -1, ignoreActor, check);
+		}
+
+		public bool CanEnterCell(World world, Actor self, CPos cell, int subCell = -1, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
 			if (MovementCostForCell(world, cell) == int.MaxValue)
 				return false;
@@ -164,9 +183,9 @@ namespace OpenRA.Mods.RA.Move
 			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
 				return true;
 
-			if (checkTransientActors)
+			if (check.HasFlag(CellConditions.TransientActors))
 			{
-				var canIgnoreMovingAllies = self != null && !blockedByMovers;
+				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
 				var needsCellExclusively = self == null || Crushes == null;
 				foreach(var a in world.ActorMap.GetUnitsAt(cell))
 				{
@@ -457,7 +476,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
 		{
-			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors, true);
+			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers);
 		}
 
 		public void EnteringCell(Actor self)
