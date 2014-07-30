@@ -40,7 +40,8 @@ namespace OpenRA.Mods.RA
 		public ProvidesTechPrerequisite(ProvidesTechPrerequisiteInfo info, ActorInitializer init)
 		{
 			this.info = info;
-			this.enabled = info.Name == init.world.LobbyInfo.GlobalSettings.TechLevel;
+			var tech = init.world.Map.Options.TechLevel ?? init.world.LobbyInfo.GlobalSettings.TechLevel;
+			this.enabled = info.Name == tech;
 		}
 	}
 }
