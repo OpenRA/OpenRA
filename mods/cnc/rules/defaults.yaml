@@ -41,6 +41,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Tank:
 	AppearsOnRadar:
@@ -88,6 +89,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -119,6 +121,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -187,6 +190,7 @@
 	DeathSounds@POISONED:
 		DeathSound: Poisoned
 		InfDeaths: 6
+	GainsStatUpgrades:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -285,6 +289,7 @@
 	AttackMove:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Ship:
 	AppearsOnRadar:
@@ -311,6 +316,7 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	GainsStatUpgrades:
 
 ^Building:
 	AppearsOnRadar:
