@@ -336,6 +336,10 @@ namespace OpenRA.Server
 				// Send initial ping
 				SendOrderTo(newConn, "Ping", Game.RunTime.ToString());
 
+				// Send Lobby info to newly connected client
+				if (!client.IsAdmin)
+					NotifyNewClientOfLobbyInfo(newConn);
+
 				if (Settings.Dedicated)
 				{
 					var motdFile = Path.Combine(Platform.SupportDir, "motd.txt");
@@ -353,6 +357,19 @@ namespace OpenRA.Server
 				SetOrderLag();
 			}
 			catch (Exception) { DropClient(newConn); }
+		}
+
+		void NotifyNewClientOfLobbyInfo(Connection newConn)
+		{
+			SendOrderTo(newConn, "Message", "Diplomacy Changes: {0}".F(LobbyInfo.GlobalSettings.FragileAlliances));
+			SendOrderTo(newConn, "Message", "Allow Cheats: {0}".F(LobbyInfo.GlobalSettings.AllowCheats));
+			SendOrderTo(newConn, "Message", "Shroud: {0}".F(LobbyInfo.GlobalSettings.Shroud));
+			SendOrderTo(newConn, "Message", "Fog of war: {0}".F(LobbyInfo.GlobalSettings.Fog));
+			SendOrderTo(newConn, "Message", "Crates Appear: {0}".F(LobbyInfo.GlobalSettings.Crates));
+			SendOrderTo(newConn, "Message", "Build off Ally ConYards: {0}".F(LobbyInfo.GlobalSettings.AllyBuildRadius));
+			SendOrderTo(newConn, "Message", "Starting Units: {0}".F(LobbyInfo.GlobalSettings.StartingUnitsClass));
+			SendOrderTo(newConn, "Message", "Starting Cash: ${0}".F(LobbyInfo.GlobalSettings.StartingCash));
+			SendOrderTo(newConn, "Message", "Tech Level: {0}".F(LobbyInfo.GlobalSettings.TechLevel));
 		}
 
 		void SetOrderLag()
