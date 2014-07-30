@@ -292,6 +292,7 @@
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />
+    <Compile Include="RemoveOnConditions.cs" />
     <Compile Include="World\RadarPings.cs" />
     <Compile Include="Player\TechTree.cs" />
     <Compile Include="PrimaryBuilding.cs" />
@@ -473,7 +474,6 @@
     <Compile Include="Widgets\Logic\ReplayControlBarLogic.cs" />
     <Compile Include="World\BuildableTerrainLayer.cs" />
     <Compile Include="Buildings\LaysTerrain.cs" />
-    <Compile Include="RemoveImmediately.cs" />
     <Compile Include="Attack\AttackFollow.cs" />
     <Compile Include="Attack\AttackGarrisoned.cs" />
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
