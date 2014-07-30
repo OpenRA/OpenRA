@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Crates
 {
@@ -16,15 +17,12 @@ namespace OpenRA.Mods.RA.Crates
 	public class UnitUpgradeCrateActionInfo : CrateActionInfo
 	{
 		[Desc("The upgrade to grant.")]
-		public readonly UnitUpgrade? Upgrade = null;
+		public readonly string[] Upgrades = {};
 
-		[Desc("The number of levels of the upgrade to grant.")]
-		public readonly int Levels = 1;
-
-		[Desc("The range to search for extra collectors in.","Extra collectors will also be granted the crate action.")]
+		[Desc("The range to search for extra collectors in.", "Extra collectors will also be granted the crate action.")]
 		public readonly WRange Range = new WRange(3);
 
-		[Desc("The maximum number of extra collectors to grant the crate action to.","-1 = no limit")]
+		[Desc("The maximum number of extra collectors to grant the crate action to.", "-1 = no limit")]
 		public readonly int MaxExtraCollectors = 4;
 
 		public override object Create(ActorInitializer init) { return new UnitUpgradeCrateAction(init.self, this); }
@@ -32,7 +30,7 @@ namespace OpenRA.Mods.RA.Crates
 
 	public class UnitUpgradeCrateAction : CrateAction
 	{
-		UnitUpgradeCrateActionInfo Info;
+		readonly UnitUpgradeCrateActionInfo Info;
 
 		public UnitUpgradeCrateAction(Actor self, UnitUpgradeCrateActionInfo info)
 			: base(self, info) 
@@ -40,42 +38,45 @@ namespace OpenRA.Mods.RA.Crates
 			Info = info; 
 		}
 
+		bool AcceptsUpgrade(Actor a)
+		{
+			return a.TraitsImplementing<IUpgradable>()
+				.Any(up => Info.Upgrades.Any(u => up.AcceptsUpgrade(u)));
+		}
+
+		void GrantActorUpgrades(Actor a)
+		{
+			foreach (var up in a.TraitsImplementing<IUpgradable>())
+				foreach (var u in Info.Upgrades)
+					if (up.AcceptsUpgrade(u))
+						up.UpgradeAvailable(a, u, true);
+		}
+
 		public override int GetSelectionShares(Actor collector)
 		{
-			var up = collector.TraitOrDefault<GainsUnitUpgrades>();
-			return up != null && up.CanGainUnitUpgrade(Info.Upgrade) ? info.SelectionShares : 0;
+			return AcceptsUpgrade(collector) ? info.SelectionShares : 0;
 		}
 
 		public override void Activate(Actor collector)
 		{
-			collector.World.AddFrameEndTask(w =>
-			{
-				var gainsStatBonuses = collector.TraitOrDefault<GainsUnitUpgrades>();
-				if (gainsStatBonuses != null)
-					gainsStatBonuses.GiveUnitUpgrade(Info.Upgrade, Info.Levels);
-			});
+			collector.World.AddFrameEndTask(w => GrantActorUpgrades(collector));
 
-			var inRange = self.World.FindActorsInCircle(self.CenterPosition, Info.Range);
-			inRange = inRange.Where(a =>
-				(a.Owner == collector.Owner) &&
-				(a != collector) &&
-				(a.TraitOrDefault<GainsUnitUpgrades>() != null) &&
-				(a.TraitOrDefault<GainsUnitUpgrades>().CanGainUnitUpgrade(Info.Upgrade)));
-			if (inRange.Any())
+			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, Info.Range)
+				.Where(a => a != self && a.Owner == collector.Owner && AcceptsUpgrade(a));
+
+			if (actorsInRange.Any())
 			{
 				if (Info.MaxExtraCollectors > -1)
-					inRange = inRange.Take(Info.MaxExtraCollectors);
+					actorsInRange = actorsInRange.Take(Info.MaxExtraCollectors);
 
-				if (inRange.Any())
-					foreach (Actor actor in inRange)
+				collector.World.AddFrameEndTask(w =>
+				{
+					foreach (var a in actorsInRange)
 					{
-						actor.World.AddFrameEndTask(w =>
-						{
-							var gainsStatBonuses = actor.TraitOrDefault<GainsUnitUpgrades>();
-							if (gainsStatBonuses != null)
-								gainsStatBonuses.GiveUnitUpgrade(Info.Upgrade, Info.Levels);
-						});
+						if (!a.IsDead() && a.IsInWorld)
+							GrantActorUpgrades(a);
 					}
+				});
 			}
 
 			base.Activate(collector);

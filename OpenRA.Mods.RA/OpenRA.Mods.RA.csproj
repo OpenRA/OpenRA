@@ -234,7 +234,6 @@
     <Compile Include="Fake.cs" />
     <Compile Include="FreeActor.cs" />
     <Compile Include="GainsExperience.cs" />
-    <Compile Include="GainsUnitUpgrades.cs" />
     <Compile Include="GivesBounty.cs" />
     <Compile Include="GivesExperience.cs" />
     <Compile Include="Guard.cs" />
@@ -552,6 +551,7 @@
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="GlobalUpgradable.cs" />
     <Compile Include="Player\GlobalUpgradeManager.cs" />
+    <Compile Include="GainsStatUpgrades.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
