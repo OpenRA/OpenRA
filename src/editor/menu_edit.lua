@@ -76,6 +76,19 @@ local function onEditMenu(event)
   end
 
   local menu_id = event:GetId()
+  local copytext
+  if (menu_id == ID_CUT or menu_id == ID_COPY)
+  and ide.wxver >= "2.9.5" and editor:GetSelections() > 1 then
+    local main = editor:GetMainSelection()
+    copytext = editor:GetTextRange(editor:GetSelectionNStart(main), editor:GetSelectionNEnd(main))
+    for s = 0, editor:GetSelections()-1 do
+      if copytext ~= editor:GetTextRange(editor:GetSelectionNStart(s), editor:GetSelectionNEnd(s)) then
+        copytext = nil
+        break
+      end
+    end
+  end
+
   if menu_id == ID_CUT then
     if editor:GetSelectionStart() == editor:GetSelectionEnd()
       then editor:LineCut() else editor:Cut() end
@@ -87,6 +100,8 @@ local function onEditMenu(event)
   elseif menu_id == ID_UNDO then editor:Undo()
   elseif menu_id == ID_REDO then editor:Redo()
   end
+
+  if copytext then editor:CopyText(#copytext, copytext) end
 end
 
 for _, event in pairs({ID_CUT, ID_COPY, ID_PASTE, ID_SELECTALL, ID_UNDO, ID_REDO}) do

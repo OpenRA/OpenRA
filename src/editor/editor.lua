@@ -1200,6 +1200,10 @@ function CreateEditor()
         -- if no "jump back" is needed, then do normal processing as this
         -- combination can be mapped to some action
         if not navigateBack(editor) then event:Skip() end
+      elseif (keycode == wx.WXK_DELETE and mod == wx.wxMOD_SHIFT)
+          or (keycode == wx.WXK_INSERT and mod == wx.wxMOD_CONTROL) then
+        ide.frame:AddPendingEvent(wx.wxCommandEvent(
+          wx.wxEVT_COMMAND_MENU_SELECTED, keycode == wx.WXK_INSERT and ID_COPY or ID_CUT))
       elseif ide.osname == "Unix" and ide.wxver >= "2.9.5"
       and mod == wx.wxMOD_CONTROL and editor.ctrlcache[keycode] then
         ide.frame:AddPendingEvent(wx.wxCommandEvent(
