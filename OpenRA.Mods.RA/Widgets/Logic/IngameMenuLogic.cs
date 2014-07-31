@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				onExit();
 			};
 
-			widget.Get<ButtonWidget>("SURRENDER").IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined || world.LobbyInfo.IsSinglePlayer);
+			widget.Get<ButtonWidget>("SURRENDER").IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined || (world.LobbyInfo.IsSinglePlayer && !world.LobbyInfo.IsSkirmishMode));
 			widget.Get<ButtonWidget>("SURRENDER").OnClick = () =>
 			{
 				widget.Visible = false;

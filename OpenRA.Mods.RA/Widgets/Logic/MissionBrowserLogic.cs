@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			Game.LobbyInfoChanged += lobbyReady;
 
-			om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(selectedMapPreview.Uid), "");
+			om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(selectedMapPreview.Uid, "Mission Server"), "");
 		}
 	}
 }
