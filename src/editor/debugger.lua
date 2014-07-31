@@ -27,7 +27,7 @@ end)()
 do
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16,16)
-  imglist = wx.wxImageList(16,16)
+  local imglist = wx.wxImageList(16,16)
   -- 0 = stack call
   imglist:Add(getBitmap(wx.wxART_GO_FORWARD, wx.wxART_OTHER, size))
   -- 1 = local variables
@@ -1040,7 +1040,7 @@ local function debuggerCreateWatchWindow()
   end
 
   watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
-    function (event) watchCtrl:PopupMenu(watchMenu) end)
+    function () watchCtrl:PopupMenu(watchMenu) end)
 
   watchCtrl:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, addWatch)
 
