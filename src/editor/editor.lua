@@ -666,7 +666,7 @@ function CreateEditor()
   -- populate cache with Ctrl-<letter> combinations for workaround on Linux
   -- http://wxwidgets.10942.n7.nabble.com/Menu-shortcuts-inconsistentcy-issue-td85065.html
   for id, shortcut in pairs(ide.config.keymap) do
-    local key = shortcut:match('^Ctrl[-+](%w)$')
+    local key = shortcut:match('^Ctrl[-+](.)$')
     if key then editor.ctrlcache[key:byte()] = id end
   end
 
