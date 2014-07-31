@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 		public readonly int FireDelay = 0;
 
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
-		public readonly WRange[] LocalOffset = {};
+		public readonly WVec[] LocalOffset = {};
 		[Desc("Muzzle yaw relative to turret or body.")]
 		public readonly WAngle[] LocalYaw = {};
 		[Desc("Move the turret backwards when firing.")]
@@ -85,15 +85,12 @@ namespace OpenRA.Mods.RA
 			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;
 
-			if (info.LocalOffset.Length % 3 != 0)
-				throw new InvalidOperationException("Invalid LocalOffset array length");
-
 			var barrels = new List<Barrel>();
-			for (var i = 0; i < info.LocalOffset.Length / 3; i++)
+			for (var i = 0; i < info.LocalOffset.Length; i++)
 			{
 				barrels.Add(new Barrel
 				{
-					Offset = new WVec(info.LocalOffset[3*i], info.LocalOffset[3*i + 1], info.LocalOffset[3*i + 2]),
+					Offset = info.LocalOffset[i],
 					Yaw = info.LocalYaw.Length > i ? info.LocalYaw[i] : WAngle.Zero
 				});
 			}
