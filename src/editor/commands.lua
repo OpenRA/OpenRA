@@ -581,8 +581,8 @@ function CompileProgram(editor, params)
     reportstats = (params or {}).reportstats ~= false,
     keepoutput = (params or {}).keepoutput,
   }
-  local id = editor:GetId()
-  local filePath = DebuggerMakeFileName(editor, openDocuments[id].filePath)
+  local doc = ide:GetDocument(editor)
+  local filePath = doc:GetFilePath() or doc:GetFileName()
   local func, err = loadstring(StripShebang(editor:GetText()), '@'..filePath)
   local line = not func and tonumber(err:match(":(%d+)%s*:")) or nil
 

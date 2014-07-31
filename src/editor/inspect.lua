@@ -188,14 +188,13 @@ local debugger = ide.debugger
 local openDocuments = ide.openDocuments
 
 local function analyzeProgram(editor)
-  local editorText = editor:GetText()
-  local id = editor:GetId()
-  local filePath = DebuggerMakeFileName(editor, openDocuments[id].filePath)
-
   if frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
   DisplayOutput("Analyzing the source code")
   frame:Update()
 
+  local editorText = editor:GetText()
+  local doc = ide:GetDocument(editor)
+  local filePath = doc:GetFilePath() or doc:GetFileName()
   local warn, err = M.warnings_from_string(editorText, filePath)
   if err then -- report compilation error
     DisplayOutput((": not completed.\n%s\n"):format(cleanError(err)))

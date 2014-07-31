@@ -1137,15 +1137,16 @@ function DebuggerStop(resetpid)
   if resetpid then debugger.pid = nil end
 end
 
-function DebuggerMakeFileName(editor, filePath)
-  return filePath or ide.config.default.fullname
+local function debuggerMakeFileName(editor)
+  return ide:GetDocument(editor):GetFilePath()
+  or ide:GetDocument(editor):GetFileName()
+  or ide.config.default.fullname
 end
 
 function DebuggerToggleBreakpoint(editor, line)
   local markers = editor:MarkerGet(line)
-  local id = editor:GetId()
   local filePath = debugger.editormap and debugger.editormap[editor]
-    or DebuggerMakeFileName(editor, ide.openDocuments[id].filePath)
+    or debuggerMakeFileName(editor)
   if bit.band(markers, BREAKPOINT_MARKER_VALUE) > 0 then
     editor:MarkerDelete(line, BREAKPOINT_MARKER)
     if debugger.server then debugger.breakpoint(filePath, line+1, false) end
@@ -1178,8 +1179,7 @@ function DebuggerRefreshScratchpad()
       end
     else
       local clear = ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT)
-      local filePath = DebuggerMakeFileName(scratchpadEditor,
-        ide.openDocuments[scratchpadEditor:GetId()].filePath)
+      local filePath = debuggerMakeFileName(scratchpadEditor)
 
       -- wrap into a function call to make "return" to work with scratchpad
       code = "(function()"..code.."\nend)()"
