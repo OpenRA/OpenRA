@@ -23,12 +23,12 @@ RunInitialActivities = function()
 end
 
 MissionAccomplished = function()
-	Mission.MissionOver({ player }, nil, false)
+	Mission.MissionOver({ player }, nil)
 	Media.PlayMovieFullscreen("montpass.vqa")
 end
 
 MissionFailed = function()
-	Mission.MissionOver(nil, { player }, false)
+	Mission.MissionOver(nil, { player })
 	Media.PlayMovieFullscreen("frozen.vqa")
 end
 
