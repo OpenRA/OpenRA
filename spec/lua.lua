@@ -132,16 +132,16 @@ return {
 
       if (not iscomment[s]) then
         local tx = editor:GetLine(line)
-        local leftscope
+        local sstart, send
 
-        for i,v in ipairs(scopestart) do
-          if (tx:match("^%s*"..v)) then
-            leftscope = true
-          end
+        for _, v in ipairs(scopestart) do
+          if (tx:match("^%s*"..v.."%f[^%w]")) then sstart = true end
         end
-        if (leftscope) then
-          break
+        for _, v in ipairs(scopeend) do
+          if (tx:match("%f[%w]"..v.."%s*$")) then send = true end
         end
+        -- if the scope starts, but doesn't end on one line, stop searching
+        if sstart and not send then break end
       end
       line = line -1
     end
