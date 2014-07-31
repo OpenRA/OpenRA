@@ -91,6 +91,11 @@ namespace OpenRA.Network
 			get { return Clients.Count(c => c.Bot == null) == 1; }
 		}
 
+		public bool IsSkirmishMode
+		{
+			get { return GlobalSettings.ServerName == "Skirmish Server"; }
+		}
+
 		public enum ClientState { NotReady, Invalid, Ready, Disconnected = 1000 }
 
 		public class Client

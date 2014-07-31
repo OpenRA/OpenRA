@@ -682,11 +682,11 @@ namespace OpenRA
 			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, modData);
 		}
 
-		public static int CreateLocalServer(string map)
+		public static int CreateLocalServer(string map, string serverName)
 		{
 			var settings = new ServerSettings()
 			{
-				Name = "Skirmish Game",
+				Name = serverName,
 				Map = map,
 				AdvertiseOnline = false,
 				AllowPortForward = false

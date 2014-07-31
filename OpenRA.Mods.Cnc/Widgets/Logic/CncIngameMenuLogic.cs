@@ -55,10 +55,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			menu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = () =>
 				ConfirmationDialogs.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, doNothing);
-
+			
 			Action onSurrender = () => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 			var surrenderButton = menu.Get<ButtonWidget>("SURRENDER_BUTTON");
-			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined);
+			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined || (world.LobbyInfo.IsSinglePlayer && !world.LobbyInfo.IsSkirmishMode));
 			surrenderButton.OnClick = () =>
 				ConfirmationDialogs.PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
 

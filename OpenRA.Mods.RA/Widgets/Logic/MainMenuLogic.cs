@@ -287,7 +287,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.Settings.Save();
 
 			ConnectionLogic.Connect(IPAddress.Loopback.ToString(),
-				Game.CreateLocalServer(map),
+				Game.CreateLocalServer(map, "Skirmish Server"),
 				"",
 				OpenSkirmishLobbyPanel,
 				() => { Game.CloseServer(); menuType = MenuType.Main; });
