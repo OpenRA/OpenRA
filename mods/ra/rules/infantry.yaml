@@ -226,7 +226,7 @@ SPY:
 	TakeCover:
 	Disguise:
 	Infiltrates:
-		Types: Cash, SupportPower, Exploration
+		Types: SpyInfiltrate
 	-AutoTarget:
 	-RenderInfantry:
 	RenderDisguise:

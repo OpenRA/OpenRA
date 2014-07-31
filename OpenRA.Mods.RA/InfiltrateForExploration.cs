@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class InfiltrateForExplorationInfo : TraitInfo<InfiltrateForExploration>, Requires<InfiltratableInfo> { }
+	class InfiltrateForExplorationInfo : TraitInfo<InfiltrateForExploration> { }
 
 	class InfiltrateForExploration : IAcceptInfiltrator
 	{
