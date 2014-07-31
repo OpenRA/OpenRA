@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Move
 		public readonly int InitialFacing = 128;
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 255;
-		public readonly int Speed = 1;
+		public readonly int Speed = 43;
 		public readonly bool OnRails = false;
 		[Desc("Allow multiple (infantry) units in one cell.")]
 		public readonly bool SharesCell = false;
@@ -43,11 +43,11 @@ namespace OpenRA.Mods.RA.Move
 			var ret = new Dictionary<string, TerrainInfo>();
 			foreach (var t in y.ToDictionary()["TerrainSpeeds"].Nodes)
 			{
-				var speed = FieldLoader.GetValue<decimal>("speed", t.Value.Value);
+				var speed = FieldLoader.GetValue<int>("speed", t.Value.Value);
 				var nodesDict = t.Value.ToDictionary();
 				var cost = nodesDict.ContainsKey("PathingCost")
 					? FieldLoader.GetValue<int>("cost", nodesDict["PathingCost"].Value)
-					: (int)(10000 / speed);
+					: (int)(100 / speed);
 				ret.Add(t.Key, new TerrainInfo(speed, cost));
 			}
 
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Move
 			public static readonly TerrainInfo Impassable = new TerrainInfo();
 
 			public readonly int Cost;
-			public readonly decimal Speed;
+			public readonly int Speed;
 
 			public TerrainInfo()
 			{
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA.Move
 				Speed = 0;
 			}
 
-			public TerrainInfo(decimal speed, int cost)
+			public TerrainInfo(int speed, int cost)
 			{
 				Speed = speed;
 				Cost = cost;
@@ -474,12 +474,12 @@ namespace OpenRA.Mods.RA.Move
 				return 0;
 
 			var speed = Info.TilesetTerrainInfo[self.World.TileSet][index].Speed;
-			if (speed == decimal.Zero)
+			if (speed == 0)
 				return 0;
 
 			speed *= Info.Speed;
 			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
-				speed *= t.GetSpeedModifier();
+				speed = (speed * t.GetSpeedModifier()) / 100;
 			return (int)(speed / 100);
 		}
 

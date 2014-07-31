@@ -106,10 +106,10 @@ namespace OpenRA.Traits
 			/* apply the damage modifiers, if we have any. */
 			var modifier = self.TraitsImplementing<IDamageModifier>()
 				.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
-				.Select(t => t.GetDamageModifier(attacker, warhead)).Product();
+				.Select(t => t.GetDamageModifier(attacker, warhead)).Sum();
 
 			if (!ignoreModifiers)
-				damage = damage > 0 ? (int)(damage * modifier) : damage;
+				damage = damage > 0 ? (int)((damage * modifier) / 100) : damage;
 
 			hp = Exts.Clamp(hp - damage, 0, MaxHP);
 

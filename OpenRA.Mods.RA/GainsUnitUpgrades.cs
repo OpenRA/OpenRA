@@ -18,11 +18,11 @@ namespace OpenRA.Mods.RA
 	public class GainsUnitUpgradesInfo : ITraitInfo
 	{
 		public readonly int FirepowerMaxLevel = 15;
-		public readonly float FirepowerModifier = .2f;
-		public readonly int ArmorMaxLevel = 15;
-		public readonly float ArmorModifier = .2f;
+		public readonly int FirepowerModifier = 20;
+		public readonly int ArmorMaxLevel = 8;
+		public readonly int ArmorModifier = 10;
 		public readonly int SpeedMaxLevel = 15;
-		public readonly decimal SpeedModifier = .2m;
+		public readonly int SpeedModifier = 20;
 		// TODO: weapon range, rate of fire modifiers. potentially a vision modifier.
 
 		public object Create(ActorInitializer init) { return new GainsUnitUpgrades(this); }
@@ -62,19 +62,19 @@ namespace OpenRA.Mods.RA
 				SpeedLevel = Math.Min(SpeedLevel + numLevels, info.SpeedMaxLevel);
 		}
 
-		public float GetFirepowerModifier()
+		public int GetFirepowerModifier()
 		{
-			return FirepowerLevel > 0 ? (1 + FirepowerLevel * info.FirepowerModifier) : 1;
+			return FirepowerLevel > 0 ? FirepowerLevel * info.FirepowerModifier : 100;
 		}
 
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		public int GetDamageModifier(Actor attacker, WarheadInfo warhead)
 		{
-			return ArmorLevel > 0 ? (1 / (1 + ArmorLevel * info.ArmorModifier)) : 1;
+			return ArmorLevel > 0 ? 100 - ArmorLevel * info.ArmorModifier : 100;
 		}
 
-		public decimal GetSpeedModifier()
+		public int GetSpeedModifier()
 		{
-			return SpeedLevel > 0 ? (1m + SpeedLevel * info.SpeedModifier) : 1m;
+			return SpeedLevel > 0 ? (100 + SpeedLevel * info.SpeedModifier) : 100;
 		}
 	}
 

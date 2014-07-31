@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
-		public static void DoImpact(WPos pos, WarheadInfo warhead, WeaponInfo weapon, Actor firedBy, float firepowerModifier)
+		public static void DoImpact(WPos pos, WarheadInfo warhead, WeaponInfo weapon, Actor firedBy, int firepowerModifier)
 		{
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(pos);
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.RA
 							if (damage != 0) // will be 0 if the target doesn't have HealthInfo
 							{
 								var healthInfo = victim.Info.Traits.Get<HealthInfo>();
-								damage = (float)(damage / 100 * healthInfo.HP);
+								damage = (int)(damage * healthInfo.HP / 100);
 							}
 
 							victim.InflictDamage(firedBy, (int)damage, warhead);
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public static void DoImpacts(WPos pos, Actor firedBy, WeaponInfo weapon, float damageModifier)
+		public static void DoImpacts(WPos pos, Actor firedBy, WeaponInfo weapon, int damageModifier)
 		{
 			foreach (var wh in weapon.Warheads)
 			{
@@ -191,7 +191,7 @@ namespace OpenRA.Mods.RA
 			if (weapon.Report != null && weapon.Report.Any())
 				Sound.Play(weapon.Report.Random(attacker.World.SharedRandom), pos);
 
-			DoImpacts(pos, attacker, weapon, 1f);
+			DoImpacts(pos, attacker, weapon, 100);
 		}
 
 		static readonly float[] falloff =
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.RA
 			return (falloff[u] * (1 - t)) + (falloff[u + 1] * t);
 		}
 
-		static float GetDamageToInflict(WPos pos, Actor target, WarheadInfo warhead, WeaponInfo weapon, float modifier, bool withFalloff)
+		static int GetDamageToInflict(WPos pos, Actor target, WarheadInfo warhead, WeaponInfo weapon, int modifier, bool withFalloff)
 		{
 			// don't hit air units with splash from ground explosions, etc
 			if (!weapon.IsValidAgainst(target))
@@ -218,15 +218,15 @@ namespace OpenRA.Mods.RA
 			if (healthInfo == null)
 				return 0;
 
-			var rawDamage = (float)warhead.Damage;
+			var rawDamage = warhead.Damage;
 			if (withFalloff)
 			{
 				var distance = Math.Max(0, (target.CenterPosition - pos).Length - healthInfo.Radius.Range);
-				var falloff = (float)GetDamageFalloff(distance * 1f / warhead.Spread.Range);
-				rawDamage = (float)(falloff * rawDamage);
+				var falloff = (int)GetDamageFalloff(distance * 100 / warhead.Spread.Range);
+				rawDamage = (int)((rawDamage * falloff) / 100);
 			}
 
-			return (float)(rawDamage * modifier * (float)warhead.EffectivenessAgainst(target.Info));
+			return (int)(rawDamage * modifier * warhead.EffectivenessAgainst(target.Info) / 100);
 		}
 	}
 }

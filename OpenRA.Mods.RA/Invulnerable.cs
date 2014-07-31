@@ -18,6 +18,6 @@ namespace OpenRA.Mods.RA
 
 	class Invulnerable : IDamageModifier
 	{
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead) { return 0.0f; }
+		public int GetDamageModifier(Actor attacker, WarheadInfo warhead) { return 0; }
 	}
 }

@@ -3,10 +3,10 @@ UnitExplode:
 		Damage: 500
 		Spread: 426
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: large_twlt
 		InfDeath: 2
 		ImpactSound: expnew09.aud
@@ -16,10 +16,10 @@ UnitExplodeSmall:
 		Damage: 40
 		Spread: 426
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		Explosion: medium_brnl
 		InfDeath: 2
 		ImpactSound: expnew13.aud
@@ -33,10 +33,10 @@ Minigun:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 12
@@ -55,11 +55,11 @@ Grenade:
 	Warhead:
 		Spread: 171
 		Versus:
-			None: 100%
-			Wood: 85%
-			Light: 70%
-			Heavy: 35%
-			Concrete: 28%
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
 		InfDeath: 3
 		Damage: 40
 		ProneModifier: 70
@@ -84,11 +84,11 @@ Bazooka:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 		InfDeath: 2
 		Damage: 25
 		Explosion: small_clsn
@@ -112,11 +112,11 @@ MultiCluster:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 		InfDeath: 3
 		Damage: 65
 		Explosion: large_explosion
@@ -131,10 +131,10 @@ Heal:
 	Warhead:
 		Spread: 213
 		Versus:
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 		InfDeath: 1
 		Damage: -50
 		ProneModifier: 100
@@ -150,11 +150,11 @@ Sniper:
 		ProneModifier: 100
 		Spread: 42
 		Versus:
-			None: 100%
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
+			None: 100
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 		InfDeath: 1
 
 M1Carbine:
@@ -166,10 +166,10 @@ M1Carbine:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 15
@@ -189,11 +189,11 @@ LtRail:
 		ProneModifier: 100
 		Spread: 42
 		Versus:
-			None: 100%
-			Wood: 130%
-			Light: 150%
-			Heavy: 110%
-			Concrete: 5%
+			None: 100
+			Wood: 130
+			Light: 150
+			Heavy: 110
+			Concrete: 5
 		InfDeath: 2
 
 CyCannon:
@@ -209,11 +209,11 @@ CyCannon:
 	Warhead:
 		Spread: 256
 		Versus:
-			None: 100%
-			Wood: 65%
-			Light: 75%
-			Heavy: 50%
-			Concrete: 40%
+			None: 100
+			Wood: 65
+			Light: 75
+			Heavy: 50
+			Concrete: 40
 		InfDeath: 6
 		Damage: 120
 		ProneModifier: 100
@@ -230,10 +230,10 @@ Vulcan3:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 10
@@ -249,11 +249,11 @@ Vulcan2:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 100%
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			None: 100
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 50
@@ -268,10 +268,10 @@ Vulcan:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 20
@@ -291,10 +291,10 @@ FiendShard:
 		Angle: 88
 	Warhead:
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		InfDeath: 1
 		Damage: 35
 		ProneModifier: 100
@@ -309,10 +309,10 @@ JumpCannon:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 15
@@ -337,11 +337,11 @@ HoverMissile:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 		InfDeath: 2
 		Damage: 30
 		Explosion: small_clsn
@@ -362,11 +362,11 @@ HoverMissile:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 		InfDeath: 2
 		Damage: 50
 		Explosion: medium_clsn
@@ -391,11 +391,11 @@ MammothTusk:
 	Warhead:
 		Spread: 171
 		Versus:
-			None: 100%
-			Wood: 85%
-			Light: 70%
-			Heavy: 35%
-			Concrete: 28%
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
 		InfDeath: 3
 		Damage: 40
 		ProneModifier: 70
@@ -411,11 +411,11 @@ Repair:
 	Warhead:
 		Spread: 213
 		Versus:
-			None: 0%
-			Wood: 0%
-			Light: 100%
-			Heavy: 100%
-			Concrete: 0%
+			None: 0
+			Wood: 0
+			Light: 100
+			Heavy: 100
+			Concrete: 0
 		InfDeath: 1
 		Damage: -50
 		ProneModifier: 100
@@ -429,10 +429,10 @@ SlimeAttack:
 		Speed: 426
 	Warhead:
 		Versus:
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
-			Concrete: 10%
+			Wood: 25
+			Light: 30
+			Heavy: 10
+			Concrete: 10
 		InfDeath: 2
 		Damage: 100
 		ProneModifier: 100
@@ -446,10 +446,10 @@ SuicideBomb:
 		Spread: 256
 		DestroyResources: true
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			None: 90
+			Light: 60
+			Heavy: 25
+			Concrete: 50
 		InfDeath: 5
 
 120mm:
@@ -461,11 +461,11 @@ SuicideBomb:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 		InfDeath: 2
 		Damage: 70
 		Explosion: large_clsn
@@ -483,11 +483,11 @@ MechRailgun:
 	Warhead:
 		Spread: 42
 		Versus:
-			None: 200%
-			Wood: 175%
-			Light: 160%
-			Heavy: 100%
-			Concrete: 25%
+			None: 200
+			Wood: 175
+			Light: 160
+			Heavy: 100
+			Concrete: 25
 		InfDeath: 5
 		Damage: 200
 		ProneModifier: 100
@@ -501,10 +501,10 @@ AssaultCannon:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 40
@@ -530,11 +530,11 @@ BikeMissile:
 	Warhead:
 		Spread: 256
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 		InfDeath: 2
 		Damage: 40
 		Explosion: small_clsn
@@ -551,10 +551,10 @@ RaiderCannon:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 40
@@ -573,11 +573,11 @@ FireballLauncher:
 	Warhead:
 		Spread: 341
 		Versus:
-			None: 600%
-			Wood: 148%
-			Light: 59%
-			Heavy: 6%
-			Concrete: 2%
+			None: 600
+			Wood: 148
+			Light: 59
+			Heavy: 6
+			Concrete: 2
 		InfDeath: 5
 		Damage: 25
 		ProneModifier: 100
@@ -594,8 +594,8 @@ SonicZap:
 	Warhead:
 		Spread: 42
 		Versus:
-			Heavy: 80%
-			Concrete: 60%
+			Heavy: 80
+			Concrete: 60
 		InfDeath: 5
 		Damage: 100
 
@@ -618,11 +618,11 @@ Dragon:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 		InfDeath: 2
 		Damage: 30
 		Explosion: small_clsn
@@ -641,11 +641,11 @@ Dragon:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 		InfDeath: 2
 		Damage: 36
 		Explosion: medium_clsn
@@ -666,11 +666,11 @@ Dragon:
 	Warhead:
 		Spread: 298
 		Versus:
-			None: 100%
-			Wood: 85%
-			Light: 68%
-			Heavy: 35%
-			Concrete: 35%
+			None: 100
+			Wood: 85
+			Light: 68
+			Heavy: 35
+			Concrete: 35
 		InfDeath: 3
 		Damage: 150
 		ProneModifier: 100
@@ -696,11 +696,11 @@ Hellfire:
 	Warhead:
 		Spread: 85
 		Versus:
-			None: 30%
-			Wood: 65%
-			Light: 150%
-			Heavy: 100%
-			Concrete: 30%
+			None: 30
+			Wood: 65
+			Light: 150
+			Heavy: 100
+			Concrete: 30
 		InfDeath: 2
 		Damage: 30
 		Explosion: small_bang
@@ -717,11 +717,11 @@ Bomb:
 	Warhead:
 		Spread: 298
 		Versus:
-			None: 200%
-			Wood: 90%
-			Light: 75%
-			Heavy: 32%
-			Concrete: 100%
+			None: 200
+			Wood: 90
+			Light: 75
+			Heavy: 32
+			Concrete: 100
 		InfDeath: 3
 		Damage: 160
 		ProneModifier: 100
@@ -746,11 +746,11 @@ Proton:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 		InfDeath: 3
 		Damage: 20
 		Explosion: small_bang
@@ -766,10 +766,10 @@ HarpyClaw:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 60
@@ -784,10 +784,10 @@ Pistola:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		Explosion: piff
 		InfDeath: 1
 		Damage: 2
@@ -834,10 +834,10 @@ VulcanTower:
 	Warhead:
 		Spread: 128
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 		Explosion: piffpiff
 		InfDeath: 1
 		Damage: 18
@@ -856,11 +856,11 @@ RPGTower:
 	Warhead:
 		Spread: 128
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 90%
-			Heavy: 100%
-			Concrete: 70%
+			None: 30
+			Wood: 75
+			Light: 90
+			Heavy: 100
+			Concrete: 70
 		InfDeath: 2
 		Damage: 110
 		ProneModifier: 70
@@ -923,10 +923,10 @@ TiberiumExplosion:
 		Spread: 9
 		Size: 1,1
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 		InfDeath: 3
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud

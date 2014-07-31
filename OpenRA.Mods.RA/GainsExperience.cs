@@ -20,9 +20,9 @@ namespace OpenRA.Mods.RA
 	{
 		[Desc("XP requirements for each level, as multiples of our own cost.")]
 		public readonly float[] CostThreshold = { 2, 4, 8, 16 };
-		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
-		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
-		public readonly decimal[] SpeedModifier = { 1.1m, 1.15m, 1.2m, 1.5m };
+		public readonly int[] FirepowerModifier = { 110, 115, 120, 150 };
+		public readonly int[] ArmorModifier = { 110, 115, 130, 150 };
+		public readonly int[] SpeedModifier = { 110, 115, 120, 150 };
 		public readonly string ChevronPalette = "effect";
 		public readonly string LevelUpPalette = "effect";
 		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
@@ -82,19 +82,19 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		public int GetDamageModifier(Actor attacker, WarheadInfo warhead)
 		{
-			return Level > 0 ? 1 / info.ArmorModifier[Level - 1] : 1;
+			return Level > 0 ? 100 - (info.ArmorModifier[Level - 1] - 100) : 100;
 		}
 
-		public float GetFirepowerModifier()
+		public int GetFirepowerModifier()
 		{
-			return Level > 0 ? info.FirepowerModifier[Level - 1] : 1;
+			return Level > 0 ? info.FirepowerModifier[Level - 1] : 100;
 		}
 
-		public decimal GetSpeedModifier()
+		public int GetSpeedModifier()
 		{
-			return Level > 0 ? info.SpeedModifier[Level - 1] : 1m;
+			return Level > 0 ? info.SpeedModifier[Level - 1] : 100;
 		}
 	}
 
