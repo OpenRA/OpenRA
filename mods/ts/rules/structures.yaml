@@ -623,8 +623,6 @@ GARADR:
 	RequiresPower:
 	CanPowerDown:
 	ProvidesRadar:
-	Infiltratable:
-		Type: Exploration
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10
@@ -634,6 +632,8 @@ GARADR:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
+	TargetableBuilding:
+		TargetTypes: Ground, C4, SpyInfiltrate
 
 NARADR:
 	Inherits: ^Building
@@ -661,8 +661,6 @@ NARADR:
 	RequiresPower:
 	CanPowerDown:
 	ProvidesRadar:
-	Infiltratable:
-		Type: Exploration
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10
@@ -672,6 +670,8 @@ NARADR:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
+	TargetableBuilding:
+		TargetTypes: Ground, C4, SpyInfiltrate
 
 GATECH:
 	Inherits: ^Building

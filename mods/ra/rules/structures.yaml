@@ -81,8 +81,6 @@ GAP:
 
 SPEN:
 	Inherits: ^Building
-	Infiltratable:
-		Type: SupportPower
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
 	Valued:
@@ -96,7 +94,7 @@ SPEN:
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.low
 		Hotkey: y
 	TargetableBuilding:
-		TargetTypes: Ground, Water
+		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
 	Building:
 		Power: -30
 		Footprint: xxx xxx xxx
@@ -137,8 +135,6 @@ SPEN:
 
 SYRD:
 	Inherits: ^Building
-	Infiltratable:
-		Type: SupportPower
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
 	Buildable:
@@ -152,7 +148,7 @@ SYRD:
 		Name: Shipyard
 		Description: Produces and repairs ships\nand transports.
 	TargetableBuilding:
-		TargetTypes: Ground, Water
+		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
 	Building:
 		Power: -30
 		Footprint: xxx xxx xxx
@@ -384,6 +380,8 @@ DOME:
 		Power: -40
 		Footprint: xx xx
 		Dimensions: 2,2
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -396,8 +394,6 @@ DOME:
 	Bib:
 	ProvidesRadar:
 	IronCurtainable:
-	Infiltratable:
-		Type: Exploration
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10
@@ -768,6 +764,8 @@ PROC:
 		Power: -30
 		Footprint: _x_ xxx x==
 		Dimensions: 3,3
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	Health:
 		HP: 900
 	Armor:
@@ -788,8 +786,6 @@ PROC:
 		InitialActivity: FindResources
 		SpawnOffset: 1,2
 		Facing: 64
-	Infiltratable:
-		Type: Cash
 	InfiltrateForCash:
 		Percentage: 50
 		Minimum: 500

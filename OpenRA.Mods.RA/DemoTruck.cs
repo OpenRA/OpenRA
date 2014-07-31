@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter("DetonateAttack", "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
+				yield return new TargetTypeOrderTargeter(new[] { "DetonateAttack" }, "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
 				yield return new DeployOrderTargeter("Detonate", 5);
 			}
 		}
