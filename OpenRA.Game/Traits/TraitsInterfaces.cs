@@ -121,7 +121,7 @@ namespace OpenRA.Traits
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 
-	public interface IOccupySpaceInfo { }
+	public interface IOccupySpaceInfo : ITraitInfo { }
 	public interface IOccupySpace
 	{
 		WPos CenterPosition { get; }
@@ -167,7 +167,7 @@ namespace OpenRA.Traits
 		void SetVisualPosition(Actor self, WPos pos);
 	}
 
-	public interface IMoveInfo { }
+	public interface IMoveInfo : ITraitInfo { }
 	public interface IMove
 	{
 		Activity MoveTo(CPos cell, int nearEnough);
@@ -189,7 +189,7 @@ namespace OpenRA.Traits
 		int Facing { get; set; }
 	}
 
-	public interface IFacingInfo { int GetInitialFacing(); }
+	public interface IFacingInfo : ITraitInfo { int GetInitialFacing(); }
 
 	public interface ICrushable
 	{
@@ -202,7 +202,7 @@ namespace OpenRA.Traits
 
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
-	public interface Requires<T> where T : class { }
+	public interface Requires<T> where T : class, ITraitInfo { }
 	public interface UsesInit<T> where T : IActorInit { }
 
 	public interface INotifySelected { void Selected(Actor self); }
@@ -235,7 +235,7 @@ namespace OpenRA.Traits
 		WRot QuantizeOrientation(Actor self, WRot orientation);
 		void SetAutodetectedFacings(int facings);
 	}
-	public interface IBodyOrientationInfo {}
+	public interface IBodyOrientationInfo : ITraitInfo { }
 
 	public interface ITargetableInfo
 	{
