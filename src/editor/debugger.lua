@@ -456,6 +456,44 @@ local function stoppedAtBreakpoint(file, line)
   return breakpoint > -1 and breakpoint == current
 end
 
+local function mapRemotePath(basedir, file, line, method)
+  -- file is /foo/bar/my.lua; basedir is d:\local\path\
+  -- check for d:\local\path\my.lua, d:\local\path\bar\my.lua, ...
+  -- wxwidgets on Windows handles \\ and / as separators, but on OSX
+  -- and Linux it only handles 'native' separator;
+  -- need to translate for GetDirs to work.
+  local file = file:gsub("\\", "/")
+  local parts = wx.wxFileName(file):GetDirs()
+  local name = wx.wxFileName(file):GetFullName()
+
+  -- find the longest remote path that can be mapped locally
+  local longestpath, remotedir
+  while true do
+    local mapped = GetFullPathIfExists(basedir, name)
+    if mapped then
+      longestpath = mapped
+      remotedir = file:gsub(q(name):gsub("/", ".").."$", "")
+    end
+    if #parts == 0 then break end
+    name = table.remove(parts, #parts) .. "/" .. name
+  end
+
+  -- if found a local mapping under basedir
+  local activated = longestpath and activateDocument(longestpath, line, method or activate.NOREPORT)
+  if activated then
+    -- find remote basedir by removing the tail from remote file
+    debugger.handle("basedir " .. debugger.basedir .. "\t" .. remotedir)
+    -- reset breakpoints again as remote basedir has changed
+    reSetBreakpoints()
+    DisplayOutputLn(TR("Mapped remote request for '%s' to '%s'.")
+      :format(remotedir, debugger.basedir))
+
+    return longestpath
+  end
+
+  return nil
+end
+
 debugger.listen = function(start)
   if start == false then
     if debugger.listening then
@@ -596,6 +634,8 @@ debugger.listen = function(start)
             ..":\n"..err)
           return debugger.terminate()
         elseif options.runstart then
+          local file = mapRemotePath(basedir, file, line, activate.CHECKONLY) or file
+
           if stoppedAtBreakpoint(file or startfile, line or 0) then
             activateDocument(file or startfile, line or 0)
             options.runstart = false
@@ -620,36 +660,8 @@ debugger.listen = function(start)
           -- when autoactivation is disabled.
           if not activated and (not wx.wxFileName(file):FileExists()
                                 or wx.wxIsAbsolutePath(file)) then
-            -- file is /foo/bar/my.lua; basedir is d:\local\path\
-            -- check for d:\local\path\my.lua, d:\local\path\bar\my.lua, ...
-            -- wxwidgets on Windows handles \\ and / as separators, but on OSX
-            -- and Linux it only handles 'native' separator;
-            -- need to translate for GetDirs to work.
-            local file = file:gsub("\\", "/")
-            local parts = wx.wxFileName(file):GetDirs()
-            local name = wx.wxFileName(file):GetFullName()
-
-            -- find the longest remote path that can be mapped locally
-            local longestpath, remotedir
-            while true do
-              local mapped = GetFullPathIfExists(basedir, name)
-              if mapped then
-                longestpath = mapped
-                remotedir = file:gsub(q(name):gsub("/", ".").."$", "")
-              end
-              if #parts == 0 then break end
-              name = table.remove(parts, #parts) .. "/" .. name
-            end
-
-            -- if found a local mapping under basedir
-            activated = longestpath and activateDocument(longestpath, line, activate.NOREPORT)
-            if activated then
-              -- find remote basedir by removing the tail from remote file
-              debugger.handle("basedir " .. debugger.basedir .. "\t" .. remotedir)
-              -- reset breakpoints again as remote basedir has changed
-              reSetBreakpoints()
-              DisplayOutputLn(TR("Mapped remote request for '%s' to '%s'.")
-                :format(remotedir, debugger.basedir))
+            if mapRemotePath(basedir, file, line, activate.NOREPORT) then
+              activated = true
             end
           end
 
