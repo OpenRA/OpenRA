@@ -117,6 +117,10 @@ TileSets:
 	mods/ra/tilesets/temperat.yaml
 	mods/ra/tilesets/desert.yaml
 
+SubCells:
+	Offsets: 0,0,0, -299,-256,0, 256,-256,0, 0,0,0, -299,256,0, 256,256,0
+	DefaultIndex: 3
+
 Music:
 	mods/ra/music.yaml
 

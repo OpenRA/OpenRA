@@ -33,8 +33,6 @@ namespace OpenRA.Traits
 			public Actor Actor;
 		}
 
-		static readonly int[] SubCells = { 1, 2, 3, 4, 5 };
-
 		readonly ActorMapInfo info;
 		readonly Map map;
 		readonly CellLayer<InfluenceNode> influence;
@@ -87,18 +85,18 @@ namespace OpenRA.Traits
 
 		public bool HasFreeSubCell(CPos a)
 		{
-			if (!AnyUnitsAt(a))
-				return true;
-
-			return SubCells.Any(b => !AnyUnitsAt(a, b));
+			return FreeSubCell(a) >= 0;
 		}
 
-		public int? FreeSubCell(CPos a)
+		public int FreeSubCell(CPos a)
 		{
-			if (!HasFreeSubCell(a))
-				return null;
+			if (!AnyUnitsAt(a))
+				return map.SubCellDefaultIndex;
 
-			return SubCells.First(b => !AnyUnitsAt(a, b));
+			for (var i = 1; i < map.SubCellOffsets.Length; ++i)
+				if (!AnyUnitsAt(a, i))
+					return i;
+			return -1;
 		}
 
 		public bool AnyUnitsAt(CPos a)
