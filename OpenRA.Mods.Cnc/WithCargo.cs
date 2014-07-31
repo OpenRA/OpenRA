@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc
 	public class WithCargoInfo : ITraitInfo, Requires<CargoInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Cargo position relative to turret or body. (forward, right, up) triples")]
-		public readonly WRange[] LocalOffset = { };
+		public readonly WVec[] LocalOffset = { };
 		[Desc("Passenger CargoType to display.")]
 		public readonly string[] DisplayTypes = { };
 
@@ -33,7 +33,6 @@ namespace OpenRA.Mods.Cnc
 		Cargo cargo;
 		IFacing facing;
 		WithCargoInfo cargoInfo;
-		WVec[] positions;
 		IBodyOrientation body;
 
 		public WithCargo(Actor self, WithCargoInfo info)
@@ -44,12 +43,8 @@ namespace OpenRA.Mods.Cnc
 
 			body = self.Trait<IBodyOrientation>();
 
-			if (info.LocalOffset.Length % 3 != 0)
-				throw new InvalidOperationException("Invalid LocalOffset array length");
-
-			positions = new WVec[info.LocalOffset.Length / 3];
-			for (var i = 0; i < info.LocalOffset.Length / 3; i++)
-				positions[i] = new WVec(info.LocalOffset[3 * i], info.LocalOffset[3 * i + 1], info.LocalOffset[3 * i + 2]);
+			if (info.LocalOffset.Length == 0)
+				throw new InvalidOperationException("LocalOffset must have at least one entry");
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
@@ -69,7 +64,7 @@ namespace OpenRA.Mods.Cnc
 				var cargoPassenger = c.Trait<Passenger>();
 				if (cargoInfo.DisplayTypes.Contains(cargoPassenger.info.CargoType))
 				{
-					var offset = pos - c.CenterPosition + body.LocalToWorld(positions[i++ % positions.Length].Rotate(bodyOrientation));
+					var offset = pos - c.CenterPosition + body.LocalToWorld(cargoInfo.LocalOffset[i++ % cargoInfo.LocalOffset.Length].Rotate(bodyOrientation));
 					foreach (var cr in c.Render(wr))
 						yield return cr.OffsetBy(offset).WithZOffset(1);
 				}

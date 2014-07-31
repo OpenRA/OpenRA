@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 	public class AttackGarrisonedInfo : AttackFollowInfo, Requires<CargoInfo>
 	{
 		[Desc("Fire port offsets in local coordinates.")]
-		public readonly WRange[] PortOffsets = {};
+		public readonly WVec[] PortOffsets = {};
 
 		[Desc("Fire port yaw angles.")]
 		public readonly WAngle[] PortYaws = {};
@@ -68,21 +68,21 @@ namespace OpenRA.Mods.RA
 			GetArmaments = () => armaments;
 
 
-			if (info.PortOffsets.Length % 3 != 0 || info.PortOffsets.Length == 0)
-				throw new InvalidOperationException("PortOffsets array length must be a multiple of three.");
+			if (info.PortOffsets.Length == 0)
+				throw new InvalidOperationException("PortOffsets must have at least one entry.");
 
-			if (info.PortYaws.Length * 3 != info.PortOffsets.Length)
+			if (info.PortYaws.Length != info.PortOffsets.Length)
 				throw new InvalidOperationException("PortYaws must define an angle for each port.");
 
-			if (info.PortCones.Length * 3 != info.PortOffsets.Length)
+			if (info.PortCones.Length != info.PortOffsets.Length)
 				throw new InvalidOperationException("PortCones must define an angle for each port.");
 
 			var p = new List<FirePort>();
-			for (var i = 0; i < info.PortOffsets.Length / 3; i++)
+			for (var i = 0; i < info.PortOffsets.Length; i++)
 			{
 				p.Add(new FirePort
 				{
-					Offset = new WVec(info.PortOffsets[3*i], info.PortOffsets[3*i + 1], info.PortOffsets[3*i + 2]),
+					Offset = info.PortOffsets[i],
 					Yaw = info.PortYaws[i],
 					Cone = info.PortCones[i],
 				});
