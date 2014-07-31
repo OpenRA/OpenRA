@@ -145,6 +145,9 @@ TileSets:
 
 TileSize: 48,24
 TileShape: Diamond
+SubCells:
+	Offsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
+	DefaultIndex: 2
 
 Music:
 	mods/ts/music.yaml

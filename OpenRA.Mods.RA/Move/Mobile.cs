@@ -238,7 +238,7 @@ namespace OpenRA.Mods.RA.Move
 			this.self = init.self;
 			this.Info = info;
 
-			toSubCell = fromSubCell = info.SharesCell ? init.world.Map.SubCellsDefaultIndex : 0;
+			toSubCell = fromSubCell = info.SharesCell ? init.world.Map.SubCellDefaultIndex : 0;
 			if (init.Contains<SubCellInit>())
 			{
 				this.fromSubCell = this.toSubCell = init.Get<SubCellInit, int>();
@@ -417,27 +417,36 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
+		bool IsDesiredSubcellNotBlocked(CPos a, int b, Actor ignoreActor)
+		{
+			var blockingActors = self.World.ActorMap.GetUnitsAt(a, b).Where(c => c != ignoreActor);
+			if (blockingActors.Any())
+			{
+				// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
+				if (Info.Crushes == null)
+					return false;
+
+				if (blockingActors.Any(c => !(c.HasTrait<ICrushable>() &&
+						c.TraitsImplementing<ICrushable>().Any(d => d.CrushableBy(Info.Crushes, self.Owner)))))
+					return false;
+			}
+			return true;
+		}
+
 		public int GetDesiredSubcell(CPos a, Actor ignoreActor)
 		{
 			if (!Info.SharesCell)
 				return 0;
 
 			// Prioritise the current subcell
-			return new[]{ fromSubCell, 1, 2, 3, 4, 5}.First(b =>
-			{
-				var blockingActors = self.World.ActorMap.GetUnitsAt(a, b).Where(c => c != ignoreActor);
-				if (blockingActors.Any())
-				{
-					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
-					if (Info.Crushes == null)
-						return false;
+			if (IsDesiredSubcellNotBlocked(a, fromSubCell, ignoreActor))
+				return fromSubCell;
 
-					if (blockingActors.Any(c => !(c.HasTrait<ICrushable>() &&
-												  c.TraitsImplementing<ICrushable>().Any(d => d.CrushableBy(Info.Crushes, self.Owner)))))
-						return false;
-				}
-				return true;
-			});
+			for (var i = 1; i < self.World.Map.SubCellOffsets.Length; ++i)
+				if (IsDesiredSubcellNotBlocked(a, i, ignoreActor))
+					return i;
+
+			return -1;
 		}
 
 		public bool CanEnterCell(CPos p)
