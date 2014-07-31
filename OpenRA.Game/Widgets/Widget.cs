@@ -51,6 +51,11 @@ namespace OpenRA.Widgets
 			return window;
 		}
 
+		public static Widget CurrentWindow()
+		{
+			return WindowList.Count > 0 ? WindowList.Peek() : null;
+		}
+
 		public static T LoadWidget<T>(string id, Widget parent, WidgetArgs args) where T : Widget
 		{
 			var widget = LoadWidget(id, parent, args) as T;

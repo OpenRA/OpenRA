@@ -1,0 +1,98 @@
+Container@LEAVE_RESTART_WIDGET:
+	Logic: LeaveMapLogic
+	Children:
+		Image@EVA:
+			X: WINDOW_RIGHT-128-43
+			Y: 43
+			Width: 128
+			Height: 64
+			ImageCollection: logos
+			ImageName: eva
+		Label@VERSION_LABEL:
+			X: WINDOW_RIGHT-128-43
+			Y: 115
+			Width: 128
+			Align: Center
+			Contrast: true
+		Background@BORDER:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			Background: shellmapborder
+		Container@LEAVE_RESTART_SIMPLE
+			X: (WINDOW_RIGHT - WIDTH) / 2
+			Y: (WINDOW_BOTTOM - HEIGHT) / 2
+			Width: 370
+			Height: 125
+			Visible: False
+			Children:
+				Background@LEAVE_RESTART_SIMPLE_BG:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM - 35
+					Background: panel-black
+					Children:
+						Label@GAME_ENDED_LABEL:
+							X: 0
+							Y: 0 - 25
+							Width: PARENT_RIGHT
+							Font: BigBold
+							Align: Center
+							Text: The game has ended
+							Contrast: True
+						Label@BLURB:
+							X: 15
+							Y: (PARENT_BOTTOM - HEIGHT) / 2
+							Width: PARENT_RIGHT - 30
+							Text: Press 'Leave' to return to the main menu.
+							Align: Center
+						Button@LEAVE_BUTTON:
+							X: 0
+							Y: PARENT_BOTTOM - 1
+							Width: 140
+							Height: 35
+							Font: Bold
+							Text: Leave
+						Button@RESTART_BUTTON:
+							X: 150
+							Y: PARENT_BOTTOM - 1
+							Width: 140
+							Height: 35
+							Font: Bold
+							Text: Restart
+							Visible: false
+		Container@LEAVE_RESTART_FULL:
+			X: (WINDOW_RIGHT - WIDTH) / 2
+			Y: (WINDOW_BOTTOM - HEIGHT) / 2
+			Width: 512
+			Height: 410
+			Visible: False
+			Children:
+				Background@LEAVE_RESTART_BG:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM - 35
+					Background: panel-black
+					Children:
+						Label@GAME_ENDED_LABEL:
+							X: 0
+							Y: 0 - 25
+							Width: PARENT_RIGHT
+							Font: BigBold
+							Align: Center
+							Text: The game has ended
+							Contrast: True
+						Button@LEAVE_BUTTON:
+							X: 0
+							Y: PARENT_BOTTOM - 1
+							Width: 140
+							Height: 35
+							Font: Bold
+							Text: Leave
+						Button@RESTART_BUTTON:
+							X: 150
+							Y: PARENT_BOTTOM - 1
+							Width: 140
+							Height: 35
+							Font: Bold
+							Text: Restart
+							Visible: false
+						Container@OBJECTIVES:
+

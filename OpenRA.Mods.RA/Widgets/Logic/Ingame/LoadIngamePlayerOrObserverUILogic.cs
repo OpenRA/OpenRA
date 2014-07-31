@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -26,6 +27,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
 
 			Game.LoadWidget(world, "CHAT_PANEL", ingameRoot, new WidgetArgs());
+
+			Action ShowLeaveRestartDialog = () =>
+			{
+				ingameRoot.IsVisible = () => false;
+				Game.LoadWidget(world, "LEAVE_RESTART_WIDGET", Ui.Root, new WidgetArgs());
+			};
+			world.GameOver += ShowLeaveRestartDialog;
 		}
 	}
 }

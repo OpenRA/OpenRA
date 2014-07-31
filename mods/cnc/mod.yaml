@@ -94,6 +94,7 @@ ChromeLayout:
 	mods/cnc/chrome/ingame-infobriefing.yaml
 	mods/cnc/chrome/ingame-infoobjectives.yaml
 	mods/cnc/chrome/ingame-infostats.yaml
+	mods/cnc/chrome/ingame-leavemap.yaml
 	mods/cnc/chrome/music.yaml
 	mods/cnc/chrome/settings.yaml
 	mods/cnc/chrome/credits.yaml
