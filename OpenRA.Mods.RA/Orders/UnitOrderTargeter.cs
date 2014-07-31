@@ -66,22 +66,22 @@ namespace OpenRA.Mods.RA.Orders
 
 	public class TargetTypeOrderTargeter : UnitOrderTargeter
 	{
-		string targetType;
+		readonly string[] targetTypes;
 
-		public TargetTypeOrderTargeter(string targetType, string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
+		public TargetTypeOrderTargeter(string[] targetTypes, string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
 			: base(order, priority, cursor, targetEnemyUnits, targetAllyUnits)
 		{
-			this.targetType = targetType;
+			this.targetTypes = targetTypes;
 		}
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			return target.TraitsImplementing<ITargetable>().Any(t => t.TargetTypes.Contains(targetType));
+			return target.TraitsImplementing<ITargetable>().Any(t => t.TargetTypes.Intersect(targetTypes).Any());
 		}
 
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 		{
-			return target.Info.Traits.WithInterface<ITargetableInfo>().Any(t => t.GetTargetTypes().Contains(targetType));
+			return target.Info.Traits.WithInterface<ITargetableInfo>().Any(t => t.GetTargetTypes().Intersect(targetTypes).Any());
 		}
 	}
 }
