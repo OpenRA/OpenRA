@@ -28,7 +28,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 2000
 	ConfigurableStartingUnits: False
-	Difficulties: Medium,Hard
+	Difficulties: Medium, Hard
 
 Players:
 	PlayerReference@Neutral:
@@ -38,10 +38,10 @@ Players:
 		Race: allies
 	PlayerReference@Civilians:
 		Name: Civilians
+		NonCombatant: True
 		Race: allies
 		ColorRamp: 0,0,0
 		Allies: Allies
-		NonCombatant: True
 	PlayerReference@Allies:
 		Name: Allies
 		Playable: True
@@ -59,7 +59,7 @@ Players:
 		Name: Soviets
 		Race: soviet
 		ColorRamp: 3,255,127
-		Enemies: Civilians,Allies
+		Enemies: Civilians, Allies
 
 Actors:
 	EasyMine: mine
@@ -2259,13 +2259,13 @@ Rules:
 		Valued:
 			Cost: 1500
 	SAM:
-		Building:
-			Power: -5
 		RevealsShroud:
 			Range: 7c0
+		Power:
+			Amount: -5
 	TSLA:
-		Building:
-			Power: -50
+		Power:
+			Amount: -50
 	^Vehicles:
 		MustBeDestroyed:
 	^Tank:

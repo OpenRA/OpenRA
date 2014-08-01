@@ -947,7 +947,8 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 		Building:
-			Power: -10
+		Power:
+			Amount: -10
 	HQ:
 		Buildable:
 			Prerequisites: ~disabled
@@ -967,7 +968,6 @@ Rules:
 			Prerequisites: proc
 			Queue: Building.GDI
 		Building:
-			Power: -40
 			Footprint: x_ xx
 			Dimensions: 2,2
 		Health:
@@ -978,6 +978,8 @@ Rules:
 		ProvidesRadar:
 		RenderBuilding:
 			Image: hq
+		Power:
+			Amount: -40
 	PowerProxy.AirSupport:
 		AirstrikePower:
 			Icon: airstrike

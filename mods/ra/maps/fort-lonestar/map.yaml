@@ -39,34 +39,34 @@ Players:
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi1,Multi2,Multi3
+		Allies: Multi1, Multi2, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi0,Multi2,Multi3
+		Allies: Multi0, Multi2, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi0,Multi1,Multi3
+		Allies: Multi0, Multi1, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
 		LockTeam: True
-		Allies: Multi0,Multi1,Multi2
+		Allies: Multi0, Multi1, Multi2
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet
 		ColorRamp: 0,255,128
-		Enemies: Multi0,Multi1,Multi2,Multi3
+		Enemies: Multi0, Multi1, Multi2, Multi3
 
 Actors:
 	Actor76: t11
@@ -543,8 +543,6 @@ Rules:
 	BARR:
 		Buildable:
 			Owner: allies,soviet
-		Building:
-			Power: 0
 		Health:
 			HP: 1000
 		Production:
@@ -552,14 +550,14 @@ Rules:
 		-Sellable:
 		BaseProvider:
 			Range: 12
+		Power:
+			Amount: 0
 	FTUR:
-		Building:
-			Power: 0
 		Valued:
 			Cost: 400
+		Power:
+			Amount: 0
 	PBOX:
-		Building:
-			Power: 0
 		Buildable:
 			Prerequisites: barr,oilb
 		Valued:
@@ -568,9 +566,11 @@ Rules:
 			HP: 200
 		Armor:
 			Type: Heavy
+		Power:
+			Amount: 0
 	HBOX:
-		Building:
-			Power: 0
+		Power:
+			Amount: 0
 	GUN:
 		Buildable:
 			Prerequisites: ~disabled
