@@ -12,7 +12,6 @@ MSLO:
 		BuildLimit: 1
 		Hotkey: m
 	Building:
-		Power: -100
 		Footprint: xx
 		Dimensions: 2,1
 	Health:
@@ -44,6 +43,8 @@ MSLO:
 	RequiresPower:
 	DisabledOverlay:
 	SupportPowerChargeBar:
+	Power:
+		Amount: -100
 
 GAP:
 	Inherits: ^Building
@@ -58,7 +59,6 @@ GAP:
 		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
 		Hotkey: g
 	Building:
-		Power: -60
 		Footprint: _ x
 		Dimensions: 1,2
 	RequiresPower:
@@ -78,6 +78,8 @@ GAP:
 		Range: 6c0
 	IronCurtainable:
 	RenderShroudCircle:
+	Power:
+		Amount: -60
 
 SPEN:
 	Inherits: ^Building
@@ -96,7 +98,6 @@ SPEN:
 	TargetableBuilding:
 		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
 	Building:
-		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
@@ -132,6 +133,8 @@ SPEN:
 	RepairsUnits:
 	RallyPoint:
 	ProductionBar:
+	Power:
+		Amount: -30
 
 SYRD:
 	Inherits: ^Building
@@ -150,7 +153,6 @@ SYRD:
 	TargetableBuilding:
 		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
 	Building:
-		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
@@ -186,6 +188,8 @@ SYRD:
 	RepairsUnits:
 	RallyPoint:
 	ProductionBar:
+	Power:
+		Amount: -30
 
 IRON:
 	Inherits: ^Building
@@ -201,7 +205,6 @@ IRON:
 		Name: Iron Curtain
 		Description: Makes a group of units invulnerable\nfor a short time.\n  Special Ability: Invulnerability\n\nMaximum 1 can be built
 	Building:
-		Power: -200
 		Footprint: xx
 		Dimensions: 2,1
 	RequiresPower:
@@ -230,6 +233,8 @@ IRON:
 		EndChargeSound: ironrdy1.aud
 		DisplayRadarPing: True
 	SupportPowerChargeBar:
+	Power:
+		Amount: -200
 
 PDOX:
 	Inherits: ^Building
@@ -245,7 +250,6 @@ PDOX:
 		Name: Chronosphere
 		Description: Teleports a group of units across the\nmap for a short time.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
 	Building:
-		Power: -200
 		Footprint: xx xx
 		Dimensions: 2,2
 	RequiresPower:
@@ -274,6 +278,8 @@ PDOX:
 		DisplayRadarPing: True
 	SupportPowerChargeBar:
 	-AcceptsSupplies:
+	Power:
+		Amount: -200
 
 TSLA:
 	Inherits: ^Building
@@ -288,7 +294,6 @@ TSLA:
 		Name: Tesla Coil
 		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Building:
-		Power: -150
 		Footprint: _ x
 		Dimensions: 1,2
 	RequiresPower:
@@ -317,6 +322,8 @@ TSLA:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	Power:
+		Amount: -150
 
 AGUN:
 	Inherits: ^Building
@@ -331,7 +338,6 @@ AGUN:
 		Name: AA Gun
 		Description: Anti-Air base defense. Requires power\nto operate.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
-		Power: -50
 		Footprint: _ x
 		Dimensions: 1,2
 	RequiresPower:
@@ -363,6 +369,8 @@ AGUN:
 		RangeCircleType: aa
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	Power:
+		Amount: -50
 
 DOME:
 	Inherits: ^Building
@@ -377,7 +385,6 @@ DOME:
 		Name: Radar Dome
 		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\n  Requires power to operate.
 	Building:
-		Power: -40
 		Footprint: xx xx
 		Dimensions: 2,2
 	TargetableBuilding:
@@ -398,6 +405,8 @@ DOME:
 	DetectCloaked:
 		Range: 10
 	RenderDetectionCircle:
+	Power:
+		Amount: -40
 
 PBOX:
 	Inherits: ^Building
@@ -405,7 +414,6 @@ PBOX:
 		Name: Pillbox
 		Description: Static defense with a fireport for a\ngarrisoned soldier.
 	Building:
-		Power: -15
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
@@ -443,6 +451,8 @@ PBOX:
 	RenderRangeCircle:
 		FallbackRange: 6c0
 	AutoTarget:
+	Power:
+		Amount: -15
 
 HBOX:
 	Inherits: ^Building
@@ -450,7 +460,6 @@ HBOX:
 		Name: Camo Pillbox
 		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.
 	Building:
-		Power: -15
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 50
@@ -491,6 +500,8 @@ HBOX:
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
 		PortYaws: 0, 176, 341, 512, 682, 853
 		PortCones: 86, 86, 86, 86, 86, 86
+	Power:
+		Amount: -15
 
 GUN:
 	Inherits: ^Building
@@ -505,7 +516,6 @@ GUN:
 		Name: Turret
 		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
-		Power: -40
 	-GivesBuildableArea:
 	Health:
 		HP: 400
@@ -531,6 +541,8 @@ GUN:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	Power:
+		Amount: -40
 
 FTUR:
 	Inherits: ^Building
@@ -545,7 +557,6 @@ FTUR:
 		Name: Flame Tower
 		Description: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
 	Building:
-		Power: -20
 	-GivesBuildableArea:
 	Health:
 		HP: 400
@@ -569,6 +580,8 @@ FTUR:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	Power:
+		Amount: -20
 
 SAM:
 	Inherits: ^Building
@@ -583,7 +596,6 @@ SAM:
 		Name: SAM Site
 		Description: Anti-Air base defense. Requires power\nto operate.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
-		Power: -40
 		Footprint: xx
 		Dimensions: 2,1
 	RequiresPower:
@@ -614,6 +626,8 @@ SAM:
 		RangeCircleType: aa
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	Power:
+		Amount: -40
 
 ATEK:
 	Inherits: ^Building
@@ -630,7 +644,6 @@ ATEK:
 	ProvidesCustomPrerequisite:
 		Prerequisite: techcenter
 	Building:
-		Power: -200
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -653,6 +666,8 @@ ATEK:
 	SupportPowerChargeBar:
 	RequiresPower:
 	DisabledOverlay:
+	Power:
+		Amount: -200
 
 WEAP:
 	Inherits: ^Building
@@ -667,7 +682,6 @@ WEAP:
 		Name: War Factory
 		Description: Produces vehicles.
 	Building:
-		Power: -30
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -700,11 +714,12 @@ WEAP:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
+	Power:
+		Amount: -30
 
 FACT:
 	Inherits: ^Building
 	Building:
-		Power: 0
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	Buildable:
@@ -747,6 +762,8 @@ FACT:
 	BaseProvider:
 		Range: 16
 	WithBuildingPlacedAnimation:
+	Power:
+		Amount: 0
 
 PROC:
 	Inherits: ^Building
@@ -761,7 +778,6 @@ PROC:
 		Name: Ore Refinery
 		Description: Refines Ore and Gems into credits.
 	Building:
-		Power: -30
 		Footprint: _x_ xxx x==
 		Dimensions: 3,3
 	TargetableBuilding:
@@ -793,6 +809,8 @@ PROC:
 	DeadBuildingState:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
+	Power:
+		Amount: -30
 
 SILO:
 	Inherits: ^Building
@@ -807,7 +825,6 @@ SILO:
 		Name: Silo
 		Description: Stores excess refined Ore and gems.
 	Building:
-		Power: -10
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -824,6 +841,8 @@ SILO:
 	IronCurtainable:
 	-RenderBuilding:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -10
 
 HPAD:
 	Inherits: ^Building
@@ -838,7 +857,6 @@ HPAD:
 		Name: Helipad
 		Description: Produces and reloads helicopters.
 	Building:
-		Power: -10
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -859,6 +877,8 @@ HPAD:
 	IronCurtainable:
 	ProductionBar:
 	PrimaryBuilding:
+	Power:
+		Amount: -10
 
 AFLD:
 	Inherits: ^Building
@@ -873,7 +893,6 @@ AFLD:
 		Name: Airfield
 		Description: Produces and reloads aircraft.\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Building:
-		Power: -20
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -920,6 +939,8 @@ AFLD:
 	ProductionBar:
 	SupportPowerChargeBar:
 	PrimaryBuilding:
+	Power:
+		Amount: -20
 
 POWR:
 	Inherits: ^Building
@@ -936,7 +957,6 @@ POWR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Power: 100
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -948,6 +968,9 @@ POWR:
 	Bib:
 	IronCurtainable:
 	DeadBuildingState:
+	Power:
+		Amount: 100
+		ScaleWithHealth: True
 
 APWR:
 	Inherits: ^Building
@@ -964,7 +987,6 @@ APWR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Power: 200
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
 	Health:
@@ -976,6 +998,9 @@ APWR:
 	Bib:
 	IronCurtainable:
 	DeadBuildingState:
+	Power:
+		Amount: 200
+		ScaleWithHealth: True
 
 STEK:
 	Inherits: ^Building
@@ -992,7 +1017,6 @@ STEK:
 	ProvidesCustomPrerequisite:
 		Prerequisite: techcenter
 	Building:
-		Power: -100
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -1003,6 +1027,8 @@ STEK:
 		Range: 4c0
 	Bib:
 	IronCurtainable:
+	Power:
+		Amount: -100
 
 BARR:
 	Inherits: ^Building
@@ -1017,7 +1043,6 @@ BARR:
 		Name: Soviet Barracks
 		Description: Trains infantry.
 	Building:
-		Power: -20
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -1041,6 +1066,8 @@ BARR:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
+	Power:
+		Amount: -20
 
 KENN:
 	Inherits: ^Building
@@ -1055,7 +1082,6 @@ KENN:
 		Name: Kennel
 		Description: Trains Attack Dogs.
 	Building:
-		Power: -10
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -1076,6 +1102,8 @@ KENN:
 	IronCurtainable:
 	ProductionBar:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -10
 
 TENT:
 	Inherits: ^Building
@@ -1090,7 +1118,6 @@ TENT:
 		Name: Allied Barracks
 		Description: Trains infantry.
 	Building:
-		Power: -20
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -1114,6 +1141,8 @@ TENT:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
+	Power:
+		Amount: -20
 
 FIX:
 	Inherits: ^Building
@@ -1128,7 +1157,6 @@ FIX:
 		Name: Service Depot
 		Description: Repairs vehicles for credits.
 	Building:
-		Power: -30
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
 	Health:
@@ -1145,6 +1173,8 @@ FIX:
 	RepairsUnits:
 		Interval: 10
 	WithRepairAnimation:
+	Power:
+		Amount: -30
 
 FACF:
 	Inherits: ^Building
@@ -1159,7 +1189,6 @@ FACF:
 		Name: Fake Construction Yard
 		Description: Looks like a Construction Yard.
 	Building:
-		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	-GivesBuildableArea:
@@ -1173,6 +1202,8 @@ FACF:
 	Fake:
 	IronCurtainable:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -2
 
 WEAF:
 	Inherits: ^Building
@@ -1187,7 +1218,6 @@ WEAF:
 		Name: Fake War Factory
 		Description: Looks like a War Factory.
 	Building:
-		Power: -2
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	-GivesBuildableArea:
@@ -1202,6 +1232,8 @@ WEAF:
 	Fake:
 	IronCurtainable:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -2
 
 SYRF:
 	Inherits: ^Building
@@ -1218,7 +1250,6 @@ SYRF:
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
-		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
@@ -1232,6 +1263,8 @@ SYRF:
 		Image: SYRD
 	Fake:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -2
 
 SPEF:
 	Inherits: ^Building
@@ -1248,7 +1281,6 @@ SPEF:
 		Name: Fake Sub Pen
 		Description: Looks like a Sub Pen.
 	Building:
-		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
@@ -1262,6 +1294,8 @@ SPEF:
 		Image: SPEN
 	Fake:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -2
 
 DOMF:
 	Inherits: ^Building
@@ -1276,7 +1310,6 @@ DOMF:
 		Queue: Defense
 		Prerequisites: ~disabled
 	Building:
-		Power: -2
 		Footprint: xx xx
 		Dimensions: 2,2
 	-GivesBuildableArea:
@@ -1289,6 +1322,8 @@ DOMF:
 		Image: DOME
 	Fake:
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -2
 
 SBAG:
 	Inherits: ^Wall
