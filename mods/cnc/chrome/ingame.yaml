@@ -328,7 +328,7 @@ Container@PLAYER_WIDGETS:
 						ProductionTypeButton@BUILDING:
 							Width: 30
 							Height: 30
-							Key: q
+							Key: e
 							TooltipText: Buildings
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Building
@@ -341,7 +341,7 @@ Container@PLAYER_WIDGETS:
 							X: 35
 							Width: 30
 							Height: 30
-							Key: w
+							Key: r
 							TooltipText: Defence
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Defence
@@ -354,7 +354,7 @@ Container@PLAYER_WIDGETS:
 							X: 70
 							Width: 30
 							Height: 30
-							Key: e
+							Key: t
 							TooltipText: Infantry
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Infantry
@@ -367,7 +367,7 @@ Container@PLAYER_WIDGETS:
 							X: 105
 							Width: 30
 							Height: 30
-							Key: r
+							Key: y
 							TooltipText: Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
@@ -380,7 +380,7 @@ Container@PLAYER_WIDGETS:
 							X: 140
 							Width: 30
 							Height: 30
-							Key: t
+							Key: u
 							TooltipText: Aircraft
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Aircraft
