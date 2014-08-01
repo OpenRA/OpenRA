@@ -305,6 +305,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var hotkeyHeader = hotkeyList.Get<ScrollItemWidget>("HEADER");
 			var globalTemplate = hotkeyList.Get("GLOBAL_TEMPLATE");
 			var unitTemplate = hotkeyList.Get("UNIT_TEMPLATE");
+			var productionTemplate = hotkeyList.Get("PRODUCTION_TEMPLATE");
 			hotkeyList.RemoveChildren();
 
 			// Game
@@ -374,6 +375,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				foreach (var kv in hotkeys)
 					BindHotkeyPref(kv, ks, unitTemplate, hotkeyList);
+			}
+
+			// Production
+			{
+				var hotkeys = new Dictionary<string, string>();
+				for (var i = 1; i <= 24; i++)
+					hotkeys.Add("Production{0:D2}Key".F(i), "Slot {0}".F(i));
+
+				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				header.Get<LabelWidget>("LABEL").GetText = () => "Production Commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, productionTemplate, hotkeyList);
 			}
 
 			// Developer
