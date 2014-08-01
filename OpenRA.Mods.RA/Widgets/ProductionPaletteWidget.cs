@@ -25,6 +25,7 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	public class ProductionIcon
 	{
+		public ActorInfo Actor;
 		public string Name;
 		public Hotkey Hotkey;
 		public Sprite Sprite;
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public int IconCount { get; private set; }
 		public event Action<int, int> OnIconCountChanged = (a, b) => {};
 
-		public string TooltipActor { get; private set; }
+		public ProductionIcon TooltipIcon { get; private set; }
 		public readonly World World;
 		readonly OrderManager orderManager;
 
@@ -116,7 +117,7 @@ namespace OpenRA.Mods.RA.Widgets
 				.Select(i => i.Value).FirstOrDefault();
 
 			if (mi.Event == MouseInputEvent.Move)
-				TooltipActor = icon != null ? icon.Name : null;
+				TooltipIcon = icon;
 
 			if (icon == null)
 				return false;
@@ -218,6 +219,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var oldIconCount = IconCount;
 			IconCount = 0;
 
+			var ks = Game.Settings.Keys;
 			var rb = RenderBounds;
 			foreach (var item in allBuildables)
 			{
@@ -229,8 +231,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 				var pi = new ProductionIcon()
 				{
+					Actor = item,
 					Name = item.Name,
-					Hotkey = item.Traits.Get<BuildableInfo>().Hotkey,
+					Hotkey = ks.GetProductionHotkey(IconCount),
 					Sprite = icon.Image,
 					Pos = new float2(rect.Location),
 					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
