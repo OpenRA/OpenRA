@@ -24,13 +24,13 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new InfiltrateForCash(this); }
 	}
 
-	class InfiltrateForCash : IAcceptInfiltrator
+	class InfiltrateForCash : INotifyInfiltrated
 	{
 		readonly InfiltrateForCashInfo info;
 
 		public InfiltrateForCash(InfiltrateForCashInfo info) { this.info = info; }
 
-		public void OnInfiltrate(Actor self, Actor infiltrator)
+		public void Infiltrated(Actor self, Actor infiltrator)
 		{
 			var targetResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			var spyResources = infiltrator.Owner.PlayerActor.Trait<PlayerResources>();
