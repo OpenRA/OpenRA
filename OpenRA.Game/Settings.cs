@@ -178,6 +178,42 @@ namespace OpenRA
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
 
 		public Hotkey DevReloadChromeKey = new Hotkey(Keycode.C, Modifiers.Ctrl | Modifiers.Shift);
+
+		public Hotkey Production01Key = new Hotkey(Keycode.F1, Modifiers.None);
+		public Hotkey Production02Key = new Hotkey(Keycode.F2, Modifiers.None);
+		public Hotkey Production03Key = new Hotkey(Keycode.F3, Modifiers.None);
+		public Hotkey Production04Key = new Hotkey(Keycode.F4, Modifiers.None);
+		public Hotkey Production05Key = new Hotkey(Keycode.F5, Modifiers.None);
+		public Hotkey Production06Key = new Hotkey(Keycode.F6, Modifiers.None);
+		public Hotkey Production07Key = new Hotkey(Keycode.F7, Modifiers.None);
+		public Hotkey Production08Key = new Hotkey(Keycode.F8, Modifiers.None);
+		public Hotkey Production09Key = new Hotkey(Keycode.F9, Modifiers.None);
+		public Hotkey Production10Key = new Hotkey(Keycode.F10, Modifiers.None);
+		public Hotkey Production11Key = new Hotkey(Keycode.F11, Modifiers.None);
+		public Hotkey Production12Key = new Hotkey(Keycode.F12, Modifiers.None);
+
+		public Hotkey Production13Key = new Hotkey(Keycode.F1, Modifiers.Ctrl);
+		public Hotkey Production14Key = new Hotkey(Keycode.F2, Modifiers.Ctrl);
+		public Hotkey Production15Key = new Hotkey(Keycode.F3, Modifiers.Ctrl);
+		public Hotkey Production16Key = new Hotkey(Keycode.F4, Modifiers.Ctrl);
+		public Hotkey Production17Key = new Hotkey(Keycode.F5, Modifiers.Ctrl);
+		public Hotkey Production18Key = new Hotkey(Keycode.F6, Modifiers.Ctrl);
+		public Hotkey Production19Key = new Hotkey(Keycode.F7, Modifiers.Ctrl);
+		public Hotkey Production20Key = new Hotkey(Keycode.F8, Modifiers.Ctrl);
+		public Hotkey Production21Key = new Hotkey(Keycode.F9, Modifiers.Ctrl);
+		public Hotkey Production22Key = new Hotkey(Keycode.F10, Modifiers.Ctrl);
+		public Hotkey Production23Key = new Hotkey(Keycode.F11, Modifiers.Ctrl);
+		public Hotkey Production24Key = new Hotkey(Keycode.F12, Modifiers.Ctrl);
+
+
+		public Hotkey GetProductionHotkey(int index)
+		{
+			var field = GetType().GetField("Production{0:D2}Key".F(index + 1));
+			if (field == null)
+				return Hotkey.Invalid;
+
+			return (Hotkey)field.GetValue(this);
+		}
 	}
 
 	public class IrcSettings

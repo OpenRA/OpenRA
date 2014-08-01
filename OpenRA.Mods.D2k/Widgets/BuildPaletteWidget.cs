@@ -233,6 +233,8 @@ namespace OpenRA.Mods.D2k.Widgets
 
 				// Icons
 				string tooltipItem = null;
+				var tooltipHotkey = Hotkey.Invalid;
+				var i = 0;
 				foreach (var item in allBuildables)
 				{
 					var rect = new RectangleF(origin.X + x * IconWidth, origin.Y + IconHeight * y, IconWidth, IconHeight);
@@ -244,7 +246,10 @@ namespace OpenRA.Mods.D2k.Widgets
 					var firstOfThis = queue.AllQueued().FirstOrDefault(a => a.Item == item.Name);
 
 					if (rect.Contains(Viewport.LastMousePos))
+					{
 						tooltipItem = item.Name;
+						tooltipHotkey = Game.Settings.Keys.GetProductionHotkey(i);
+					}
 
 					var overlayPos = drawPos + new float2(32, 16);
 
@@ -271,6 +276,7 @@ namespace OpenRA.Mods.D2k.Widgets
 					buttons.Add(Pair.New(new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height), HandleClick(closureName, world)));
 
 					if (++x == Columns) { x = 0; y++; }
+					i++;
 				}
 				if (x != 0) y++;
 
@@ -291,7 +297,7 @@ namespace OpenRA.Mods.D2k.Widgets
 
 				// Tooltip
 				if (tooltipItem != null && !paletteAnimating && paletteOpen)
-					DrawProductionTooltip(world, tooltipItem,
+					DrawProductionTooltip(world, tooltipItem, tooltipHotkey,
 						new float2(Game.Renderer.Resolution.Width, origin.Y + numActualRows * IconHeight + 9).ToInt2());
 			}
 
@@ -466,7 +472,7 @@ namespace OpenRA.Mods.D2k.Widgets
 			font.DrawText(text, pos - new int2(font.Measure(text).X, 0), c);
 		}
 
-		void DrawProductionTooltip(World world, string unit, int2 pos)
+		void DrawProductionTooltip(World world, string unit, Hotkey hotkey, int2 pos)
 		{
 			pos.Y += 15;
 
@@ -485,7 +491,7 @@ namespace OpenRA.Mods.D2k.Widgets
 			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.Renderer.Resolution.Width - 300, pos.Y, 300, longDescSize + 65));
 
 			Game.Renderer.Fonts["Bold"].DrawText(
-				tooltip.Name + (buildable.Hotkey.IsValid() ? " ({0})".F(buildable.Hotkey.DisplayString()) : ""),
+				tooltip.Name + (hotkey.IsValid() ? " ({0})".F(hotkey.DisplayString()) : ""),
 												   p.ToInt2() + new int2(5, 5), Color.White);
 
 			var resources = pl.PlayerActor.Trait<PlayerResources>();
@@ -526,8 +532,20 @@ namespace OpenRA.Mods.D2k.Widgets
 			if (!paletteOpen) return false;
 			if (CurrentQueue == null) return false;
 
-			var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == Hotkey.FromKeyInput(e));
+			var key = Hotkey.FromKeyInput(e);
+			var ks = Game.Settings.Keys;
+			var slot = -1;
+			for (var i = 0; i < 24; i++)
+			{
+				if (ks.GetProductionHotkey(i) == key)
+				{
+					slot = i;
+					break;
+				}
+			}
 
+			var allBuildables = CurrentQueue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder).ToArray();
+			var toBuild = allBuildables.ElementAtOrDefault(slot);
 			if (toBuild != null)
 			{
 				Sound.PlayNotification(world.Map.Rules, null, "Sounds", "TabClick", null);
