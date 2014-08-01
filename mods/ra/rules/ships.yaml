@@ -5,7 +5,6 @@ SS:
 		BuildAtProductionType: Submarine
 		BuildPaletteOrder: 30
 		Prerequisites: ~spen, ~techlevel.medium
-		Hotkey: u
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -58,7 +57,6 @@ MSUB:
 		BuildAtProductionType: Submarine
 		BuildPaletteOrder: 60
 		Prerequisites: ~spen, stek, ~techlevel.unrestricted
-		Hotkey: m
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -111,7 +109,6 @@ DD:
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 40
 		Prerequisites: ~syrd, dome, ~techlevel.medium
-		Hotkey: r
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -161,7 +158,6 @@ CA:
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 50
 		Prerequisites: ~syrd, atek, ~techlevel.unrestricted
-		Hotkey: c
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -222,7 +218,6 @@ LST:
 		Queue: Ship
 		BuildPaletteOrder: 10
 		Prerequisites: ~techlevel.low
-		Hotkey: t
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -256,7 +251,6 @@ PT:
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 20
 		Prerequisites: ~syrd, ~techlevel.medium
-		Hotkey: b
 	Valued:
 		Cost: 500
 	Tooltip:
