@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new InfiltrateForSupportPower(this); }
 	}
 
-	class InfiltrateForSupportPower : IAcceptInfiltrator
+	class InfiltrateForSupportPower : INotifyInfiltrated
 	{
 		readonly InfiltrateForSupportPowerInfo info;
 
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public void OnInfiltrate(Actor self, Actor infiltrator)
+		public void Infiltrated(Actor self, Actor infiltrator)
 		{
 			infiltrator.World.AddFrameEndTask(w => w.CreateActor(info.Proxy, new TypeDictionary
 			{

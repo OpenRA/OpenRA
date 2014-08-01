@@ -14,9 +14,9 @@ namespace OpenRA.Mods.RA
 {
 	class InfiltrateForExplorationInfo : TraitInfo<InfiltrateForExploration> { }
 
-	class InfiltrateForExploration : IAcceptInfiltrator
+	class InfiltrateForExploration : INotifyInfiltrated
 	{
-		public void OnInfiltrate(Actor self, Actor infiltrator)
+		public void Infiltrated(Actor self, Actor infiltrator)
 		{
 			// Steal and reset the owners exploration
 			infiltrator.Owner.Shroud.Explore(self.Owner.Shroud);

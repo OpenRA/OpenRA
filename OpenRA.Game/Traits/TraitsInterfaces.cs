@@ -81,9 +81,9 @@ namespace OpenRA.Traits
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
 	public interface INotifyHarvest { void Harvested(Actor self, ResourceType resource); }
-	public interface ISeedableResource { void Seed(Actor self); }
+	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
 
-	public interface IAcceptInfiltrator { void OnInfiltrate(Actor self, Actor infiltrator); }
+	public interface ISeedableResource { void Seed(Actor self); }
 
 	public interface IDemolishableInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
