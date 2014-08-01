@@ -141,8 +141,7 @@ end
 
 local function navigateToPosition(editor, fromPosition, toPosition, length)
   table.insert(editor.jumpstack, fromPosition)
-  editor:GotoPos(toPosition)
-  editor:EnsureVisibleEnforcePolicy(editor:LineFromPosition(toPosition))
+  editor:GotoPosEnforcePolicy(toPosition)
   if length then
     editor:SetAnchor(toPosition + length)
   end
@@ -151,8 +150,7 @@ end
 local function navigateBack(editor)
   if #editor.jumpstack == 0 then return end
   local pos = table.remove(editor.jumpstack)
-  editor:GotoPos(pos)
-  editor:EnsureVisibleEnforcePolicy(editor:LineFromPosition(pos))
+  editor:GotoPosEnforcePolicy(pos)
   return true
 end
 
@@ -776,6 +774,11 @@ function CreateEditor()
     editor:AutoCompStops([[ \n\t=-+():.,;*/!"'$%&~'#°^@?´`<>][|}{]])
   end
 
+  function editor:GotoPosEnforcePolicy(pos)
+    self:GotoPos(pos)
+    self:EnsureVisibleEnforcePolicy(self:LineFromPosition(pos))
+  end
+
   -- GotoPos should work by itself, but it doesn't (wx 2.9.5).
   -- This is likely because the editor window hasn't been refreshed yet,
   -- so its LinesOnScreen method returns 0/-1, which skews the calculations.
@@ -792,15 +795,13 @@ function CreateEditor()
           if ide.osname ~= 'Macintosh' then self:GotoPos(pos) end
         else
           redolater = nil
-          self:GotoPos(pos)
-          self:EnsureVisibleEnforcePolicy(self:LineFromPosition(pos))
+          self:GotoPosEnforcePolicy(pos)
         end
       elseif not badtime and redolater then
         -- reset the left margin first to make sure that the position
         -- is set "from the left" to get the best content displayed.
         self:SetXOffset(0)
-        self:GotoPos(redolater)
-        self:EnsureVisibleEnforcePolicy(self:LineFromPosition(redolater))
+        self:GotoPosEnforcePolicy(redolater)
         redolater = nil
       end
     end

@@ -266,7 +266,7 @@ local function processSelection(editor, func)
       editor:ReplaceTarget(newtext)
     end
   end
-  editor:GotoPos(math.min(
+  editor:GotoPosEnforcePolicy(math.min(
       editor:PositionFromLine(line)+posinline, editor:GetLineEndPosition(line)))
 end
 
