@@ -23,8 +23,8 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled || target.Type != TargetType.Actor || target.Actor.Owner == self.Owner)
 				return NextActivity;
 
-			foreach (var t in target.Actor.TraitsImplementing<IAcceptInfiltrator>())
-				t.OnInfiltrate(target.Actor, self);
+			foreach (var t in target.Actor.TraitsImplementing<INotifyInfiltrated>())
+				t.Infiltrated(target.Actor, self);
 
 			self.Destroy();
 
