@@ -166,7 +166,6 @@ SONICTANK:
 		BuildPaletteOrder: 100
 		Prerequisites: heavya, researcha, ~techlevel.high
 		Owner: atreides
-		Hotkey: o
 	Valued:
 		Cost: 1250
 	Tooltip:
@@ -215,7 +214,6 @@ FREMEN:
 		BuildPaletteOrder: 85
 		Owner: atreides
 		Prerequisites: palacea, ~techlevel.high
-		Hotkey: f
 	Selectable:
 		Bounds: 12,17,0,0
 		Voice: FremenVoice
@@ -250,7 +248,6 @@ GRENADIER:
 		BuildPaletteOrder: 10
 		Owner: atreides
 		Prerequisites: ~techlevel.medium
-		Hotkey: g
 	Valued:
 		Cost: 160
 	Tooltip:

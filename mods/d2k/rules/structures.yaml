@@ -83,7 +83,6 @@ CONCRETEB:
 		Prerequisites: Conyard
 		Queue: Building
 		BuildPaletteOrder: 10
-		Hotkey: w
 	Selectable:
 		Bounds: 64,64
 	Valued:
@@ -115,7 +114,6 @@ CONCRETEB:
 		Prerequisites: Power
 		Queue: Building
 		BuildPaletteOrder: 40
-		Hotkey: b
 	Selectable:
 		Bounds: 64,64
 	Valued:
@@ -158,7 +156,6 @@ CONCRETEB:
 		Prerequisites: Power
 		Queue: Building
 		BuildPaletteOrder: 20
-		Hotkey: r
 	Selectable:
 		Bounds: 96,64
 	Valued:
@@ -205,7 +202,6 @@ CONCRETEB:
 		Prerequisites: Refinery
 		Queue: Building
 		BuildPaletteOrder: 30
-		Hotkey: i
 	Selectable:
 		Bounds: 32,32
 	Valued:
@@ -238,7 +234,6 @@ CONCRETEB:
 		Prerequisites: Refinery
 		Queue: Building
 		BuildPaletteOrder: 70
-		Hotkey: l
 	Selectable:
 		Bounds: 96,64
 	Valued:
@@ -279,7 +274,6 @@ CONCRETEB:
 		Prerequisites: Refinery
 		Queue: Building
 		BuildPaletteOrder: 100
-		Hotkey: h
 	Selectable:
 		Bounds: 96,96
 	Valued:
@@ -323,7 +317,6 @@ CONCRETEB:
 		Prerequisites: Barracks, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 50
-		Hotkey: o
 	Selectable:
 		Bounds: 96,64
 	Valued:
@@ -364,7 +357,6 @@ CONCRETEB:
 		Prerequisites: Outpost, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 80
-		Hotkey: c
 	Building:
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
@@ -415,7 +407,6 @@ CONCRETEB:
 	Tooltip:
 		Name: Concrete Wall
 		Description: Stop units and blocks enemy fire.
-		Hotkey: o
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.WAV
@@ -461,7 +452,6 @@ WALL:
 		Queue: Building
 		Prerequisites: Barracks
 		BuildPaletteOrder: 90
-		Hotkey: g
 	Valued:
 		Cost: 650
 	Tooltip:
@@ -514,7 +504,6 @@ WALL:
 		Queue: Building
 		Prerequisites: Outpost, ~techlevel.medium
 		BuildPaletteOrder: 120
-		Hotkey: m
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -567,7 +556,6 @@ WALL:
 		Queue: Building
 		Prerequisites: Heavy, ~techlevel.medium
 		BuildPaletteOrder: 130
-		Hotkey: e
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -601,7 +589,6 @@ WALL:
 		Prerequisites: Outpost, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 110
-		Hotkey: t
 	Selectable:
 		Bounds: 96,96
 	Valued:
@@ -632,7 +619,6 @@ WALL:
 		Queue: Building
 		Prerequisites: Hitech, ~techlevel.high
 		BuildPaletteOrder: 140
-		Hotkey: v
 	Selectable:
 		Bounds: 96,64
 	Valued:
@@ -674,7 +660,6 @@ WALL:
 		Prerequisites: Research, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 150
-		Hotkey: p
 	Selectable:
 		Bounds: 96,96
 	Valued:

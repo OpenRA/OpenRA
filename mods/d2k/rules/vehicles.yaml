@@ -4,7 +4,6 @@
 		Prerequisites: Repair, ~techlevel.medium
 		Queue: Armor
 		BuildPaletteOrder: 110
-		Hotkey: m
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -48,7 +47,6 @@ HARVESTER:
 		Prerequisites: Heavy,Refinery
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 10
-		Hotkey: h
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -107,7 +105,6 @@ TRIKE:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Hotkey: w
 		Owner: atreides, harkonnen
 	Valued:
 		Cost: 250
@@ -154,7 +151,6 @@ QUAD:
 		Prerequisites: Light,Outpost, ~techlevel.medium
 		Owner: atreides, ordos, harkonnen
 		BuildPaletteOrder: 20
-		Hotkey: q
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -195,7 +191,6 @@ QUAD.starport:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 40
-		Hotkey: c
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -245,7 +240,6 @@ SIEGETANK:
 		Prerequisites: Outpost, ~techlevel.medium
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 50
-		Hotkey: t
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -314,7 +308,6 @@ MISSILETANK:
 		Prerequisites: Hitech, ~techlevel.high
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 60
-		Hotkey: r
 	Mobile:
 		Speed: 64
 		ROT: 5
