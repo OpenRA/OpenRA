@@ -884,7 +884,6 @@ Rules:
 			Queue: Building
 			BuildPaletteOrder: 30
 			Owner: allies, soviet
-			Hotkey: b
 		Valued:
 			Cost: 30
 		Health:

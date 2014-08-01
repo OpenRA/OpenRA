@@ -4,7 +4,6 @@ RIFLE:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: atreides,harkonnen,ordos
-		Hotkey: r
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -31,7 +30,6 @@ ENGINEER:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: atreides,harkonnen,ordos
-		Hotkey: e
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -60,7 +58,6 @@ BAZOOKA:
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Owner: atreides,harkonnen,ordos
-		Hotkey: t
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -88,7 +85,6 @@ MEDIC:
 		BuildPaletteOrder: 60
 		Owner: atreides, ordos
 		Prerequisites: Research, ~techlevel.high
-		Hotkey: m
 	Valued:
 		Cost: 500
 	Tooltip:

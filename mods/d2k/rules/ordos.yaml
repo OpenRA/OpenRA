@@ -152,7 +152,6 @@ RAIDER:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Hotkey: w
 		Owner: ordos
 	Valued:
 		Cost: 300
@@ -245,7 +244,6 @@ DEVIATORTANK:
 		BuildPaletteOrder: 50
 		Prerequisites: heavyo, researcho, ~techlevel.high
 		Owner: ordos
-		Hotkey: d
 	Mobile:
 		ROT: 3
 		Speed: 64
@@ -284,7 +282,6 @@ SABOTEUR:
 		BuildPaletteOrder: 100
 		Prerequisites: palaceo, ~techlevel.high
 		Owner: ordos
-		Hotkey: b
 	Valued:
 		Cost: 800
 	Tooltip:
