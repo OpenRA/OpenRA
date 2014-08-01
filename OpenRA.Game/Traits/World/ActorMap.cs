@@ -93,7 +93,7 @@ namespace OpenRA.Traits
 			if (!AnyUnitsAt(a))
 				return map.SubCellDefaultIndex;
 
-			for (var i = 1; i < map.SubCellOffsets.Length; ++i)
+			for (var i = 1; i < map.SubCellOffsets.Length; i++)
 				if (!AnyUnitsAt(a, i))
 					return i;
 			return -1;

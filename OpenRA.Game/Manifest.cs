@@ -37,7 +37,7 @@ namespace OpenRA
 		public readonly Size TileSize = new Size(24, 24);
 		public readonly TileShape TileShape = TileShape.Rectangle;
 
-		[Desc("(x,y,z) offset of the full cell and each sub-cell", "x & y: -512 ... 512, Z >= 0")]
+		[Desc("(x,y,z) offset of the full cell and each sub-cell", "X & Y should be between -512 ... 512 and Z >= 0")]
 		public readonly WVec[] SubCellOffsets =
 		{
 			new WVec(0, 0, 0),       // full cell - index 0
@@ -101,32 +101,21 @@ namespace OpenRA
 			if (yaml.ContainsKey("TileShape"))
 				TileShape = FieldLoader.GetValue<TileShape>("TileShape", yaml["TileShape"].Value);
 
-			// Read subcell information
-			// sub-cell index 0 is the full cell
 			if (yaml.ContainsKey("SubCells"))
 			{
 				var subcells = yaml["SubCells"].ToDictionary();
 
 				// Read (x,y,z) offset (relative to cell center) pairs for positioning subcells
 				if (subcells.ContainsKey("Offsets"))
-				{
 					SubCellOffsets = FieldLoader.GetValue<WVec[]>("Offsets", subcells["Offsets"].Value);
 
-					foreach (var i in SubCellOffsets)
-						if (i.X < -512 || i.X > 512 || i.Y < -512 || i.Y > 512 || i.Z < 0)
-							throw new InvalidDataException("Subcell offsets must be in bounds (X & Y: -512 ... 512, Z > 0)");
-				}
-
-				// Read default subcell index used when creating actors that share cells without SubCellInit
 				if (subcells.ContainsKey("DefaultIndex"))
-					SubCellDefaultIndex = FieldLoader.GetValue<int>("DefaultIndex", subcells ["DefaultIndex"].Value);
-
-				// Otherwise set the default subcell index to the middle subcell entry
-				else
-					SubCellDefaultIndex = SubCellOffsets.Length / 2; // default is the middle subcell entry
+					SubCellDefaultIndex = FieldLoader.GetValue<int>("DefaultIndex", subcells["DefaultIndex"].Value);
+				else	// Otherwise set the default subcell index to the middle subcell entry
+					SubCellDefaultIndex = SubCellOffsets.Length / 2;
 			}
 
-			// validate default index - 0 for no subcells, otherwise > 1 & <= subcell count (offset triples count - 1)
+			// Validate default index - 0 for no subcells, otherwise > 1 & <= subcell count (offset triples count - 1)
 			if (SubCellDefaultIndex < (SubCellOffsets.Length > 1 ? 1 : 0) || SubCellDefaultIndex >= SubCellOffsets.Length)
 				throw new InvalidDataException("Subcell default index must be a valid index into the offset triples and must be greater than 0 for mods with subcells");
 
