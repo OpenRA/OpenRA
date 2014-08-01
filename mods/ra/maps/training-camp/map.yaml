@@ -45,56 +45,56 @@ Players:
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi2, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi7
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi5, Multi6, Multi7
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi1,Multi6,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi1, Multi6, Multi7
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi1,Multi7
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi1, Multi7
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		AllowBots: False
 		LockRace: True
 		Race: soviet
-		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi1
+		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi1
 
 Actors:
 	Actor93: barr
@@ -825,26 +825,26 @@ Rules:
 	BARR:
 		Buildable:
 			Owner: allies
-		Building:
-			Power: 0
 		Health:
 			HP: 5000
 		Production:
 			Produces: Building,Infantry
 		BaseProvider:
 			Range: 16
+		Power:
+			Amount: 0
 	WEAP:
 		Buildable:
 			Owner: allies
-		Building:
-			Power: 0
 		Health:
 			HP: 10000
 		Valued:
 			Cost: 2000
+		Power:
+			Amount: 0
 	FTUR:
-		Building:
-			Power: 0
+		Power:
+			Amount: 0
 	SPEN:
 		Buildable:
 			Owner: allies
@@ -900,13 +900,13 @@ Rules:
 		Valued:
 			Cost: 200
 	HPAD:
-		Building:
-			Power: 0
 		Buildable:
 			Owner: soviet
 			Prerequisites: barr
 		Valued:
 			Cost: 200
+		Power:
+			Power: 0
 	FENC:
 		Buildable:
 			Queue: Building
@@ -915,13 +915,13 @@ Rules:
 		Valued:
 			Cost: 10
 	AFLD:
-		Building:
-			Power: 0
 		Buildable:
 			Owner: soviet
 			Prerequisites: barr
 		Valued:
 			Cost: 200
+		Power:
+			Power: 0
 	DOG:
 		Buildable:
 			Owner: soviet

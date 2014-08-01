@@ -68,7 +68,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: allies
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5
 
 Actors:
 	Actor0: oilb
@@ -2094,12 +2094,12 @@ Rules:
 			Value: 1000
 		Buildable:
 			BuildLimit: 1
-		Building:
-			Power: -100
 		NukePower:
 			ChargeTime: 600
 			Description: Atom Bomb
 			AllowMultiple: yes
+		Power:
+			Amount: -100
 	MISS:
 		ProximityCapturable:
 			MustBeClear: true

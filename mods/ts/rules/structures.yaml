@@ -1,7 +1,6 @@
 GACNST:
 	Inherits: ^Building
 	Building:
-		Power: 0
 		Footprint: xxx xxx xxx
 		BuildSounds: facbld1.aud
 		Dimensions: 3,3
@@ -41,6 +40,8 @@ GACNST:
 	WithIdleOverlay@FRONT:
 		Sequence: idle-front
 	WithBuildingPlacedOverlay:
+	Power:
+		Amount: 0
 
 GAPOWR:
 	Inherits: ^Building
@@ -57,7 +58,6 @@ GAPOWR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Power: 100
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -70,6 +70,9 @@ GAPOWR:
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
 		Sequence: idle-plug
+	Power:
+		Amount: 100
+		ScaleWithHealth: True
 
 GAPILE:
 	Inherits: ^Building
@@ -87,7 +90,6 @@ GAPILE:
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
 	Building:
-		Power: -20
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -110,6 +112,8 @@ GAPILE:
 		Sequence: idle-light
 	WithIdleOverlay@FLAG:
 		Sequence: idle-flag
+	Power:
+		Amount: -20
 
 PROC:
 	Inherits: ^Building
@@ -125,7 +129,6 @@ PROC:
 		Owner: gdi,nod
 		Hotkey: r
 	Building:
-		Power: -30
 		Footprint: xxx xxx x==
 		Dimensions: 3,3
 	Health:
@@ -149,6 +152,8 @@ PROC:
 		Sequence: idle-redlights
 	WithIdleOverlay@BIB:
 		Sequence: bib
+	Power:
+		Amount: -30
 
 GAWEAP:
 	Inherits: ^Building
@@ -165,7 +170,6 @@ GAWEAP:
 		Owner: gdi
 		Hotkey: w
 	Building:
-		Power: -30
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 	Health:
@@ -191,6 +195,8 @@ GAWEAP:
 		Sequence: idle-turbines
 	WithIdleOverlay@BIB:
 		Sequence: bib
+	Power:
+		Amount: -30
 
 NAPOWR:
 	Inherits: ^Building
@@ -207,7 +213,6 @@ NAPOWR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Power: 100
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -218,6 +223,9 @@ NAPOWR:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: 100
+		ScaleWithHealth: True
 
 NAAPWR:
 	Inherits: ^Building
@@ -235,7 +243,6 @@ NAAPWR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Power: 200
 		Footprint: xxx xxx
 		Dimensions: 2,3
 	Health:
@@ -246,6 +253,9 @@ NAAPWR:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: 200
+		ScaleWithHealth: True
 
 NAHAND:
 	Inherits: ^Building
@@ -263,7 +273,6 @@ NAHAND:
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
 	Building:
-		Power: -20
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
@@ -284,6 +293,8 @@ NAHAND:
 		Sequence: idle-lights
 	WithProductionOverlay@LIGHT:
 		Sequence: production-light
+	Power:
+		Amount: -20
 
 NAWEAP:
 	Inherits: ^Building
@@ -300,7 +311,6 @@ NAWEAP:
 		Owner: nod
 		Hotkey: f
 	Building:
-		Power: -30
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 	Health:
@@ -322,6 +332,8 @@ NAWEAP:
 		Sequence: production-lights
 	WithIdleOverlay@BIB:
 		Sequence: bib
+	Power:
+		Amount: -30
 
 GASAND:
 	Inherits: ^Wall
@@ -555,7 +567,6 @@ GASPOT:
 	Tooltip:
 		Name: Light Tower
 	Building:
-		Power: -10
 		Footprint: x
 		Dimensions: 1,1
 	Health:
@@ -569,6 +580,8 @@ GASPOT:
 		Range: 3
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -10
 
 GALITE:
 	Inherits: ^Building
@@ -582,7 +595,6 @@ GALITE:
 	Tooltip:
 		Name: Light Post
 	Building:
-		Power: 0
 		Footprint: x
 		Dimensions: 1,1
 	RenderBuilding:
@@ -594,6 +606,8 @@ GALITE:
 		Type: Wood
 	RevealsShroud:
 		Range: 0c0
+	Power:
+		Amount: 0
 #	WithIdleOverlay@LIGHTING:
 #		Sequence: lighting
 
@@ -613,7 +627,6 @@ GARADR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: radar
 	Building:
-		Power: -50
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
 	Health:
@@ -634,6 +647,8 @@ GARADR:
 		PauseOnLowPower: yes
 	TargetableBuilding:
 		TargetTypes: Ground, C4, SpyInfiltrate
+	Power:
+		Amount: -50
 
 NARADR:
 	Inherits: ^Building
@@ -651,7 +666,6 @@ NARADR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: radar
 	Building:
-		Power: -50
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -672,6 +686,8 @@ NARADR:
 		PauseOnLowPower: yes
 	TargetableBuilding:
 		TargetTypes: Ground, C4, SpyInfiltrate
+	Power:
+		Amount: -50
 
 GATECH:
 	Inherits: ^Building
@@ -689,7 +705,6 @@ GATECH:
 	ProvidesCustomPrerequisite:
 		Prerequisite: tech
 	Building:
-		Power: -150
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	Health:
@@ -700,6 +715,8 @@ GATECH:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -150
 
 NATECH:
 	Inherits: ^Building
@@ -717,7 +734,6 @@ NATECH:
 	ProvidesCustomPrerequisite:
 		Prerequisite: tech
 	Building:
-		Power: -150
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -728,6 +744,8 @@ NATECH:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -150
 
 GAHPAD:
 	Inherits: ^Building
@@ -742,7 +760,6 @@ GAHPAD:
 		Queue: Building
 		Hotkey: i
 	Building:
-		Power: -10
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -762,6 +779,8 @@ GAHPAD:
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -10
 
 NAHPAD:
 	Inherits: ^Building
@@ -776,7 +795,6 @@ NAHPAD:
 		Queue: Building
 		Hotkey: j
 	Building:
-		Power: -10
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
@@ -796,6 +814,8 @@ NAHPAD:
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -10
 
 GADEPT:
 	Inherits: ^Building
@@ -811,7 +831,6 @@ GADEPT:
 		Queue: Building
 		Hotkey: v
 	Building:
-		Power: -30
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
 	Health:
@@ -831,6 +850,8 @@ GADEPT:
 		Sequence: crane
 	WithRepairOverlay@PLATFORM:
 		Sequence: platform
+	Power:
+		Amount: -30
 
 #TODO: Placeholder, replace with Component Tower + Vulcan Upgrade
 GAVULC:
@@ -846,7 +867,6 @@ GAVULC:
 		Owner: gdi
 		Hotkey: v
 	Building:
-		Power: -20
 	DisabledOverlay:
 	-GivesBuildableArea:
 	Health:
@@ -889,6 +909,8 @@ GAVULC:
 	-RenderBuilding:
 	RenderBuildingWall:
 		Type: wall
+	Power:
+		Amount: -20
 
 #TODO: Placeholder, replace with Component Tower + RPG Upgrade
 GAROCK:
@@ -904,7 +926,6 @@ GAROCK:
 		Owner: gdi
 		Hotkey: r
 	Building:
-		Power: -50
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -938,6 +959,8 @@ GAROCK:
 	-RenderBuilding:
 	RenderBuildingWall:
 		Type: wall
+	Power:
+		Amount: -50
 
 #TODO: Placeholder, replace with Component Tower + SAM Upgrade
 GACSAM:
@@ -953,7 +976,6 @@ GACSAM:
 		Owner: gdi
 		Hotkey: a
 	Building:
-		Power: -30
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -987,6 +1009,8 @@ GACSAM:
 	-RenderBuilding:
 	RenderBuildingWall:
 		Type: wall
+	Power:
+		Amount: -30
 
 NASAM:
 	Inherits: ^Building
@@ -1001,7 +1025,6 @@ NASAM:
 		Owner: nod
 		Hotkey: s
 	Building:
-		Power: -30
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1028,6 +1051,8 @@ NASAM:
 		Weapon: SAMTower
 		LocalOffset: 512,0,512
 		Recoil: 0
+	Power:
+		Amount: -30
 
 NALASR:
 	Inherits: ^Building
@@ -1042,7 +1067,6 @@ NALASR:
 		Owner: nod
 		Hotkey: l
 	Building:
-		Power: -40
 	RequiresPower:
 	DisabledOverlay:
 	-GivesBuildableArea:
@@ -1066,6 +1090,8 @@ NALASR:
 	RenderVoxels:
 	WithVoxelTurret:
 	AutoTarget:
+	Power:
+		Amount: -40
 
 NAOBEL:
 	Inherits: ^Building
@@ -1081,7 +1107,6 @@ NAOBEL:
 		Owner: nod
 		Hotkey: o
 	Building:
-		Power: -150
 		Footprint: xx xx
 		Dimensions: 2,2
 	RequiresPower:
@@ -1109,6 +1134,8 @@ NAOBEL:
 		Range: 5
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -150
 
 ANYPOWER:
 	Tooltip:

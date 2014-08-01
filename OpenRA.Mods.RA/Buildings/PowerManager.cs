@@ -21,11 +21,11 @@ namespace OpenRA.Mods.RA.Buildings
 
 	public class PowerManager : ITick, ISync
 	{
-		PowerManagerInfo Info;
-		Player Player;
-		DeveloperMode devMode;
+		readonly PowerManagerInfo info;
+		readonly Player player;
+		readonly DeveloperMode devMode;
 
-		Dictionary<Actor, int> PowerDrain = new Dictionary<Actor, int>();
+		readonly Dictionary<Actor, int> powerDrain = new Dictionary<Actor, int>();
 		[Sync] int totalProvided;
 		public int PowerProvided { get { return totalProvided; } }
 
@@ -36,8 +36,8 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public PowerManager(ActorInitializer init, PowerManagerInfo info)
 		{
-			Info = info;
-			Player = init.self.Owner;
+			this.info = info;
+			player = init.self.Owner;
 
 			init.world.ActorAdded += ActorAdded;
 			init.world.ActorRemoved += ActorRemoved;
@@ -48,17 +48,22 @@ namespace OpenRA.Mods.RA.Buildings
 
 		void ActorAdded(Actor a)
 		{
-			if (a.Owner != Player || !a.HasTrait<Building>())
+			if (a.Owner != player)
 				return;
-			PowerDrain.Add(a, a.Trait<Building>().GetPowerUsage());
+
+			var power = a.TraitOrDefault<Power>();
+			if (power == null)
+				return;
+
+			powerDrain.Add(a, power.CurrentPower);
 			UpdateTotals();
 		}
 
 		void ActorRemoved(Actor a)
 		{
-			if (a.Owner != Player || !a.HasTrait<Building>())
+			if (a.Owner != player || !a.HasTrait<Power>())
 				return;
-			PowerDrain.Remove(a);
+			powerDrain.Remove(a);
 			UpdateTotals();
 		}
 
@@ -66,7 +71,7 @@ namespace OpenRA.Mods.RA.Buildings
 		{
 			totalProvided = 0;
 			totalDrained = 0;
-			foreach (var kv in PowerDrain)
+			foreach (var kv in powerDrain)
 			{
 				var p = kv.Value;
 				if (p > 0)
@@ -81,10 +86,10 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public void UpdateActor(Actor a, int newPower)
 		{
-			if (a.Owner != Player || !a.HasTrait<Building>())
+			if (a.Owner != player || !a.HasTrait<Power>())
 				return;
 
-			PowerDrain[a] = newPower;
+			powerDrain[a] = newPower;
 			UpdateTotals();
 		}
 
@@ -109,7 +114,7 @@ namespace OpenRA.Mods.RA.Buildings
 			{
 				if (lowPower)
 					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "LowPower", self.Owner.Country.Race);
-				nextPowerAdviceTime = Info.AdviceInterval;
+				nextPowerAdviceTime = info.AdviceInterval;
 			}
 		}
 

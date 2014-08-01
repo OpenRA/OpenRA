@@ -56,7 +56,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Race: allies
-		Enemies: Multi0,Multi1,Multi2,Multi3
+		Enemies: Multi0, Multi1, Multi2, Multi3
 
 Actors:
 	Actor0: mine
@@ -965,12 +965,12 @@ Rules:
 			Value: 1000
 		Buildable:
 			BuildLimit: 1
-		Building:
-			Power: -100
 		NukePower:
 			ChargeTime: 600
 			Description: Atom Bomb
 			AllowMultiple: yes
+		Power:
+			Amount: -100
 
 Sequences:
 

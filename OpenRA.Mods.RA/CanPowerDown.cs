@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Buildings
 {
 	[Desc("The player can disable the power individually on this actor.")]
-	public class CanPowerDownInfo : ITraitInfo
+	public class CanPowerDownInfo : ITraitInfo, Requires<PowerInfo>
 	{
 		public object Create(ActorInitializer init) { return new CanPowerDown(init); }
 	}
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public CanPowerDown(ActorInitializer init)
 		{
 			PowerManager = init.self.Owner.PlayerActor.Trait<PowerManager>();
-			normalPower = init.self.Info.Traits.Get<BuildingInfo>().Power;
+			normalPower = init.self.Info.Traits.Get<PowerInfo>().Amount;
 		}
 
 		public bool Disabled { get { return disabled; } }

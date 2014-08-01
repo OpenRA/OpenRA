@@ -711,7 +711,6 @@ Rules:
 			Prerequisites: proc
 			Queue: Building.GDI, Building.Nod
 		Building:
-			Power: -40
 			Footprint: x_ xx
 			Dimensions: 2,2
 		Health:
@@ -725,6 +724,8 @@ Rules:
 			Range: 8
 		RenderBuilding:
 			Image: hq
+		Power:
+			Amount: -40
 
 Sequences:
 
