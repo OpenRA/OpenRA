@@ -442,7 +442,7 @@ namespace OpenRA.Mods.RA.Move
 			if (IsDesiredSubcellNotBlocked(a, fromSubCell, ignoreActor))
 				return fromSubCell;
 
-			for (var i = 1; i < self.World.Map.SubCellOffsets.Length; ++i)
+			for (var i = 1; i < self.World.Map.SubCellOffsets.Length; i++)
 				if (IsDesiredSubcellNotBlocked(a, i, ignoreActor))
 					return i;
 
