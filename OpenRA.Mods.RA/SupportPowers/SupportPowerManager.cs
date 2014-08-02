@@ -108,6 +108,7 @@ namespace OpenRA.Mods.RA
 				Powers[order.OrderString].Activate(order);
 		}
 
+		// Deprecated. Remove after SupportPowerBinWidget is removed.
 		public void Target(string key)
 		{
 			if (Powers.ContainsKey(key))
