@@ -8,10 +8,10 @@ Container@PLAYER_WIDGETS:
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Objectives (F3)
+			Text: Objectives (O)
 			Visible: false
 			Font: Bold
-			Key: f3
+			Key: o
 		Container@SUPPORT_POWERS:
 			Logic: SupportPowerBinLogic
 			X: 10
@@ -109,7 +109,7 @@ Container@PLAYER_WIDGETS:
 							MenuContainer: INGAME_DEBUG_BG
 							HideIngameUI: false
 							Pause: false
-							Key: f2
+							Key: escape Shift
 							X: 128
 							Width: 28
 							Height: 28
@@ -128,7 +128,7 @@ Container@PLAYER_WIDGETS:
 							MenuContainer: INGAME_DIPLOMACY_BG
 							HideIngameUI: false
 							Pause: false
-							Key: f1
+							Key: P
 							X: 160
 							Width: 28
 							Height: 28
