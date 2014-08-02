@@ -115,7 +115,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
     -- use tabs if they are already used
     -- or if "usetabs" is set and no space indentation is used in a file
     editor:SetUseTabs(string.find(file_text, "\t") ~= nil
-      or edcfg.usetabs and string.find(file_text, "%f[^\r\n] ") == nil)
+      or edcfg.usetabs and (file_text:find("%f[^\r\n] ") or file_text:find("^ ")) == nil)
   end
   
   if (file_text and edcfg.checkeol) then
