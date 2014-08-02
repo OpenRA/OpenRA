@@ -153,6 +153,7 @@ C17:
 	Plane:
 		ROT: 5
 		Speed: 326
+		Repulsable: False
 	Health:
 		HP: 25
 	Armor:
@@ -191,6 +192,7 @@ A10:
 	Plane:
 		ROT: 4
 		Speed: 373
+		Repulsable: False
 	Health:
 		HP: 150
 	Armor:

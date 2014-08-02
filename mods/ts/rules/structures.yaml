@@ -374,6 +374,8 @@ GAWALL:
 		HP: 300
 	Armor:
 		Type: Concrete
+	LineBuild:
+		NodeTypes: wall, turret
 
 NAWALL:
 	Inherits: ^Wall
@@ -397,6 +399,8 @@ NAWALL:
 		HP: 300
 	Armor:
 		Type: Concrete
+	LineBuild:
+		NodeTypes: wall, turret
 
 GATICK:
 	Inherits: ^Building
@@ -880,6 +884,11 @@ GAVULC:
 	WithMuzzleFlash:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	LineBuildNode:
+		Types: turret
+	-RenderBuilding:
+	RenderBuildingWall:
+		Type: wall
 
 #TODO: Placeholder, replace with Component Tower + RPG Upgrade
 GAROCK:
@@ -924,6 +933,11 @@ GAROCK:
 		Recoil: 0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	LineBuildNode:
+		Types: turret
+	-RenderBuilding:
+	RenderBuildingWall:
+		Type: wall
 
 #TODO: Placeholder, replace with Component Tower + SAM Upgrade
 GACSAM:
@@ -968,6 +982,11 @@ GACSAM:
 		Recoil: 0
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	LineBuildNode:
+		Types: turret
+	-RenderBuilding:
+	RenderBuildingWall:
+		Type: wall
 
 NASAM:
 	Inherits: ^Building

@@ -1,15 +1,14 @@
-Container@OBSERVER_STATS:
+Background@INGAME_OBSERVERSTATS_BG:
 	Logic: ObserverStatsLogic
 	X: 25
 	Y: 50
 	Width: 950
 	Height: 500
-	Visible: false
+	Background: dialog
 	Children:
-		Background@BACKGROUND:
+		Container@BACKGROUND:
 			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
-			Background: dialog
+			Height: PARENT_BOTTOM - 35
 			Children:
 				Label@TITLE:
 					X: 0
@@ -486,4 +485,11 @@ Container@OBSERVER_STATS:
 									YAxisLabel: $
 									LabelFont: TinyBold
 									AxisFont: Bold
-
+		Button@CLOSE:
+			X: PARENT_RIGHT - 145
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Close
+			Key: escape
+			Font: Bold

@@ -98,11 +98,12 @@ namespace OpenRA.Mods.RA
 					world.CancelInputMode();
 			}
 
-			public void RenderAfterWorld(WorldRenderer wr, World world)
+			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-				foreach (var unit in power.UnitsInRange(xy))
-					wr.DrawSelectionBox(unit, Color.Red);
+				var targetUnits = power.UnitsInRange(xy).Where(a => a.Owner.Stances[power.self.Owner] == Stance.Ally);
+				foreach (var unit in targetUnits)
+					yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
@@ -116,7 +117,7 @@ namespace OpenRA.Mods.RA
 
 			public string GetCursor(World world, CPos xy, MouseInput mi)
 			{
-				return power.UnitsInRange(xy).Any()	? "ability" : "move-blocked";
+				return power.UnitsInRange(xy).Any(a => a.Owner.Stances[power.self.Owner] == Stance.Ally) ? "ability" : "move-blocked";
 			}
 		}
 	}

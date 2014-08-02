@@ -25,6 +25,7 @@ using WorldRenderer = OpenRA.Graphics.WorldRenderer;
 
 namespace OpenRA.Mods.RA.Scripting
 {
+	[Desc("Part of the legacy Lua API.")]
 	public class LuaScriptInterfaceInfo : ITraitInfo, Requires<SpawnMapActorsInfo>
 	{
 		public readonly string[] LuaScripts = { };

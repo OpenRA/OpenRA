@@ -117,6 +117,7 @@
     <Compile Include="Air\Aircraft.cs" />
     <Compile Include="Air\AttackHeli.cs" />
     <Compile Include="Air\AttackPlane.cs" />
+    <Compile Include="Crates\DuplicateUnitCrateAction.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Player\PlaceBeacon.cs" />
     <Compile Include="MenuPaletteEffect.cs" />
@@ -366,7 +367,6 @@
     <Compile Include="Turreted.cs" />
     <Compile Include="Valued.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
-    <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
@@ -380,7 +380,6 @@
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Widgets\Logic\DownloadPackagesLogic.cs" />
     <Compile Include="Widgets\Logic\IngameChatLogic.cs" />
-    <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
     <Compile Include="Widgets\Logic\LobbyLogic.cs" />
     <Compile Include="Widgets\Logic\LobbyUtils.cs" />
     <Compile Include="Widgets\Logic\MainMenuLogic.cs" />
@@ -392,15 +391,12 @@
     <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
-    <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\ObserverProductionIconsWidget.cs" />
     <Compile Include="Widgets\ObserverSupportPowerIconsWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="Widgets\StrategicProgressWidget.cs" />
     <Compile Include="Widgets\SupportPowerTimerWidget.cs" />
-    <Compile Include="Widgets\SupportPowerBinWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
-    <Compile Include="World\ChooseBuildTabOnSelect.cs" />
     <Compile Include="World\ResourceClaim.cs" />
     <Compile Include="World\ResourceClaimLayer.cs" />
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
@@ -410,7 +406,6 @@
     <Compile Include="InfiltrateForExploration.cs" />
     <Compile Include="InfiltrateForCash.cs" />
     <Compile Include="RenderShroudCircle.cs" />
-    <Compile Include="Widgets\Logic\CheatsLogic.cs" />
     <Compile Include="CloakPaletteEffect.cs" />
     <Compile Include="Widgets\ColorPreviewManagerWidget.cs" />
     <Compile Include="Infiltrates.cs" />
@@ -436,7 +431,6 @@
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
     <Compile Include="Render\WithResources.cs" />
     <Compile Include="Render\WithHarvestAnimation.cs" />
-    <Compile Include="Widgets\SlidingContainerWidget.cs" />
     <Compile Include="Widgets\ResourceBarWidget.cs" />
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
     <Compile Include="World\DomainIndex.cs" />
@@ -520,6 +514,36 @@
     <Compile Include="Widgets\Logic\InstallMusicLogic.cs" />
     <Compile Include="Render\WithActiveAnimation.cs" />
     <Compile Include="SupportPowers\SpawnActorPower.cs" />
+    <Compile Include="Render\RenderSimple.cs" />
+    <Compile Include="Render\RenderSprites.cs" />
+    <Compile Include="Graphics\BeamRenderable.cs" />
+    <Compile Include="Graphics\ContrailRenderable.cs" />
+    <Compile Include="Graphics\TextRenderable.cs" />
+    <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="Air\FlyAwayOnIdle.cs" />
+    <Compile Include="Buildings\ClonesProducedUnits.cs" />
+    <Compile Include="Cloneable.cs" />
+    <Compile Include="Graphics\RangeCircleRenderable.cs" />
+    <Compile Include="Widgets\ProductionPaletteWidget.cs" />
+    <Compile Include="Widgets\ProductionTabsWidget.cs" />
+    <Compile Include="Widgets\ProductionTypeButtonWidget.cs" />
+    <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngameRadarDisplayLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngameCashCounterLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngamePowerCounterLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngamePowerBarLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\IngameSiloBarLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\AddRaceSuffixLogic.cs" />
+    <Compile Include="Widgets\Logic\ClassicProductionLogic.cs" />
+    <Compile Include="Widgets\SupportPowersWidget.cs" />
+    <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\SupportPowerBinLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
+    <Compile Include="Widgets\MenuButtonWidget.cs" />
+    <Compile Include="Widgets\Logic\DebugMenuLogic.cs" />
+    <Compile Include="Widgets\LabelWithTooltipWidget.cs" />
+    <Compile Include="ProductionQueueFromSelection.cs" />
+    <Compile Include="Scripting\Global\MediaGlobal.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -564,4 +588,7 @@ cd "$(SolutionDir)thirdparty/"
 copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Widgets\Logic\Ingame\" />
+  </ItemGroup>
 </Project>

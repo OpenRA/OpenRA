@@ -65,6 +65,7 @@ ChromeLayout:
 	mods/d2k/chrome/ingame-observer.yaml
 	mods/ra/chrome/ingame-observerstats.yaml
 	mods/d2k/chrome/ingame-player.yaml
+	mods/ra/chrome/ingame-debug.yaml
 	mods/d2k/chrome/mainmenu.yaml
 	mods/ra/chrome/settings.yaml
 	mods/ra/chrome/credits.yaml
@@ -80,7 +81,6 @@ ChromeLayout:
 	mods/ra/chrome/directconnect.yaml
 	mods/ra/chrome/replaybrowser.yaml
 	mods/d2k/chrome/dropdowns.yaml
-	mods/ra/chrome/cheats.yaml
 	mods/ra/chrome/musicplayer.yaml
 	mods/d2k/chrome/tooltips.yaml
 	mods/ra/chrome/assetbrowser.yaml

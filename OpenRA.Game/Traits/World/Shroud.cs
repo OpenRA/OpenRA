@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,11 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace OpenRA.Traits
 {
+	[Desc("Required for shroud and fog visibility checks. Add this to the player actor.")]
 	public class ShroudInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new Shroud(init.self); }
@@ -22,31 +22,37 @@ namespace OpenRA.Traits
 
 	public class Shroud
 	{
-		[Sync] public bool Disabled = false;
+		[Sync] public bool Disabled;
 
-		Actor self;
-		Map map;
+		readonly Actor self;
+		readonly Map map;
 
-		CellLayer<int> visibleCount;
-		CellLayer<int> generatedShroudCount;
-		CellLayer<bool> explored;
+		readonly CellLayer<short> visibleCount;
+		readonly CellLayer<short> generatedShroudCount;
+		readonly CellLayer<bool> explored;
 
 		readonly Lazy<IFogVisibilityModifier[]> fogVisibilities;
 
 		// Cache of visibility that was added, so no matter what crazy trait code does, it
 		// can't make us invalid.
-		Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
-		Dictionary<Actor, CPos[]> generation = new Dictionary<Actor, CPos[]>();
+		readonly Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
+		readonly Dictionary<Actor, CPos[]> generation = new Dictionary<Actor, CPos[]>();
 
 		public int Hash { get; private set; }
+
+		static readonly Func<CPos, bool> TruthPredicate = cell => true;
+		readonly Func<CPos, bool> fastExploredTest;
+		readonly Func<CPos, bool> slowExploredTest;
+		readonly Func<CPos, bool> fastVisibleTest;
+		readonly Func<CPos, bool> slowVisibleTest;
 
 		public Shroud(Actor self)
 		{
 			this.self = self;
 			map = self.World.Map;
 
-			visibleCount = new CellLayer<int>(map);
-			generatedShroudCount = new CellLayer<int>(map);
+			visibleCount = new CellLayer<short>(map);
+			generatedShroudCount = new CellLayer<short>(map);
 			explored = new CellLayer<bool>(map);
 
 			self.World.ActorAdded += AddVisibility;
@@ -56,6 +62,11 @@ namespace OpenRA.Traits
 			self.World.ActorRemoved += RemoveShroudGeneration;
 
 			fogVisibilities = Exts.Lazy(() => self.TraitsImplementing<IFogVisibilityModifier>().ToArray());
+
+			fastExploredTest = IsExploredCore;
+			slowExploredTest = IsExplored;
+			fastVisibleTest = IsVisibleCore;
+			slowVisibleTest = IsVisible;
 		}
 
 		void Invalidate()
@@ -186,14 +197,17 @@ namespace OpenRA.Traits
 
 		public void Explore(World world, CPos center, WRange range)
 		{
-			foreach (var q in FindVisibleTiles(world, center, range))
-				explored[q] = true;
+			foreach (var c in FindVisibleTiles(world, center, range))
+				explored[c] = true;
 
 			Invalidate();
 		}
 
 		public void Explore(Shroud s)
 		{
+			if (map.Bounds != s.map.Bounds)
+				throw new ArgumentException("The map bounds of these shrouds do not match.", "s");
+
 			foreach (var cell in map.Cells)
 				if (s.explored[cell])
 					explored[cell] = true;
@@ -221,10 +235,32 @@ namespace OpenRA.Traits
 			if (!map.Contains(cell))
 				return false;
 
-			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Shroud)
+			if (!ShroudEnabled)
 				return true;
 
-			return explored[cell] && (generatedShroudCount[cell] == 0 || visibleCount[cell] > 0);
+			return IsExploredCore(cell);
+		}
+
+		bool ShroudEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Shroud; } }
+
+		bool IsExploredCore(CPos cell)
+		{
+			var uv = Map.CellToMap(map.TileShape, cell);
+			return explored[uv.X, uv.Y] && (generatedShroudCount[uv.X, uv.Y] == 0 || visibleCount[uv.X, uv.Y] > 0);
+		}
+
+		public Func<CPos, bool> IsExploredTest(CellRegion region)
+		{
+			// If the region to test extends outside the map we must use the slow test that checks the map boundary every time.
+			if (!map.Cells.Contains(region))
+				return slowExploredTest;
+
+			// If shroud isn't enabled, then we can see everything.
+			if (!ShroudEnabled)
+				return TruthPredicate;
+
+			// If shroud is enabled, we can use the fast test that just does the core check.
+			return fastExploredTest;
 		}
 
 		public bool IsExplored(Actor a)
@@ -237,10 +273,31 @@ namespace OpenRA.Traits
 			if (!map.Contains(cell))
 				return false;
 
-			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Fog)
+			if (!FogEnabled)
 				return true;
 
+			return IsVisibleCore(cell);
+		}
+
+		bool FogEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Fog; } }
+
+		bool IsVisibleCore(CPos cell)
+		{
 			return visibleCount[cell] > 0;
+		}
+
+		public Func<CPos, bool> IsVisibleTest(CellRegion region)
+		{
+			// If the region to test extends outside the map we must use the slow test that checks the map boundary every time.
+			if (!map.Cells.Contains(region))
+				return slowVisibleTest;
+
+			// If fog isn't enabled, then we can see everything.
+			if (!FogEnabled)
+				return TruthPredicate;
+
+			// If fog is enabled, we can use the fast test that just does the core check.
+			return fastVisibleTest;
 		}
 
 		// Actors are hidden under shroud, but not under fog by default

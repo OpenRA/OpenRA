@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Primitives;
@@ -96,6 +97,12 @@ namespace OpenRA.Mods.RA
 				if (!self.IsDead())
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);
+
+				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>()
+					.Where(a => a.Actor.Owner == self.Owner);
+
+				foreach (var notify in notifyOthers)
+					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
 			});
 		}
 

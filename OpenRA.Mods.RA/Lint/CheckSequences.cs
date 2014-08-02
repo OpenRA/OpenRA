@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {

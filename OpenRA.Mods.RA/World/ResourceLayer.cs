@@ -34,9 +34,10 @@ namespace OpenRA.Mods.RA
 
 		public void Render(WorldRenderer wr)
 		{
+			var shroudObscured = world.ShroudObscuresTest(wr.Viewport.VisibleCells);
 			foreach (var cell in wr.Viewport.VisibleCells)
 			{
-				if (world.ShroudObscures(cell))
+				if (shroudObscured(cell))
 					continue;
 
 				var c = render[cell];

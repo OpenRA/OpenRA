@@ -23,13 +23,28 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollPanelWidget diplomacyPanel;
 
 		[ObjectCreator.UseCtor]
-		public DiplomacyLogic(Widget widget, Action onExit, World world)
+		public DiplomacyLogic(Widget widget, Action onExit, World world, bool transient)
 		{
 			this.world = world;
 
 			diplomacyPanel = widget.Get<ScrollPanelWidget>("DIPLOMACY_PANEL");
 
 			LayoutPlayers();
+
+			var close = widget.GetOrNull<ButtonWidget>("CLOSE");
+			if (close != null)
+			{
+				close.OnClick = () =>
+				{
+					if (transient)
+					{
+						Ui.CloseWindow();
+						Ui.Root.RemoveChild(widget);
+					}
+
+					onExit();
+				};
+			}
 		}
 
 		void LayoutPlayers()

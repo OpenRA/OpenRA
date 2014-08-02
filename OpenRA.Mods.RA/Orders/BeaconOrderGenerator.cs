@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Orders
 
 		public virtual void Tick(World world) { }
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		public void RenderAfterWorld(WorldRenderer wr, World world) { }
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world) { yield break; }
 		public string GetCursor(World world, CPos xy, MouseInput mi) { return !world.ShroudObscures(xy) ? "ability" : "generic-blocked"; }
 	}
 }

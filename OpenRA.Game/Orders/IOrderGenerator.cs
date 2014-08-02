@@ -18,7 +18,7 @@ namespace OpenRA
 		IEnumerable<Order> Order(World world, CPos xy, MouseInput mi);
 		void Tick(World world);
 		IEnumerable<IRenderable> Render(WorldRenderer wr, World world);
-		void RenderAfterWorld(WorldRenderer wr, World world);
+		IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world);
 		string GetCursor(World world, CPos xy, MouseInput mi);
 	}
 }

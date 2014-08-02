@@ -2,8 +2,9 @@ DOG:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Dog
 		BuildPaletteOrder: 50
-		Prerequisites: ~barr, ~techlevel.infonly
+		Prerequisites: ~kenn, ~techlevel.infonly
 		Hotkey: o
 	Valued:
 		Cost: 200
@@ -32,8 +33,9 @@ E1:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 10
-		Prerequisites: ~techlevel.infonly
+		Prerequisites: ~barracks, ~techlevel.infonly
 		Hotkey: i
 	Valued:
 		Cost: 100
@@ -63,6 +65,7 @@ E2:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 20
 		Prerequisites: ~barr, ~techlevel.infonly
 		Hotkey: g
@@ -99,8 +102,9 @@ E3:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 30
-		Prerequisites: ~techlevel.infonly
+		Prerequisites: ~barracks, ~techlevel.infonly
 		Hotkey: r
 	Valued:
 		Cost: 300
@@ -133,6 +137,7 @@ E4:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 70
 		Prerequisites: ~barr, ftur, ~techlevel.low
 		Hotkey: t
@@ -165,8 +170,9 @@ E6:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 60
-		Prerequisites: ~techlevel.infonly
+		Prerequisites: ~barracks, ~techlevel.infonly
 		Hotkey: e
 	Valued:
 		Cost: 500
@@ -197,6 +203,7 @@ SPY:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 90
 		Prerequisites: dome, ~tent, ~techlevel.medium
 		Hotkey: p
@@ -233,6 +240,7 @@ E7:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 120
 		Prerequisites: ~tent, atek, ~techlevel.unrestricted
 		Hotkey: y
@@ -273,6 +281,7 @@ MEDI:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 40
 		Prerequisites: ~tent, ~techlevel.infonly
 		Hotkey: m
@@ -303,11 +312,13 @@ MEDI:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		AttackAnimation: heal
 
 MECH:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 100
 		Prerequisites: ~tent, fix, ~techlevel.medium
 		Hotkey: c
@@ -340,6 +351,7 @@ MECH:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+		AttackAnimation: heal
 
 EINSTEIN:
 	Inherits: ^Infantry
@@ -424,6 +436,7 @@ HIJACKER:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 110
 		Prerequisites: ~barr, fix, ~techlevel.medium
 		Hotkey: j
@@ -451,6 +464,7 @@ SHOK:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 130
 		Prerequisites: ~barr, stek, tsla, ~techlevel.unrestricted
 		Hotkey: l
@@ -490,6 +504,7 @@ SNIPER:
 		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Buildable:
 		Queue: Infantry
+		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 80
 		Prerequisites: ~barr, dome, ~techlevel.medium
 		Hotkey: h

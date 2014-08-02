@@ -127,7 +127,7 @@ SPEN:
 		Facing: 224
 		ExitCell: 2,0
 	Production:
-		Produces: Ship
+		Produces: Ship, Submarine
 	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
@@ -183,7 +183,7 @@ SYRD:
 		Facing: 32
 		ExitCell: 2,0
 	Production:
-		Produces: Ship
+		Produces: Ship, Boat
 	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
@@ -858,7 +858,7 @@ HPAD:
 		MoveIntoWorld: false
 	RallyPoint:
 	Production:
-		Produces: Helicopter
+		Produces: Aircraft, Helicopter
 	Reservable:
 	IronCurtainable:
 	ProductionBar:
@@ -893,7 +893,7 @@ AFLD:
 		MoveIntoWorld: false
 	RallyPoint:
 	Production:
-		Produces: Plane
+		Produces: Aircraft, Plane
 	Reservable:
 	IronCurtainable:
 	AirstrikePower:
@@ -1039,10 +1039,47 @@ BARR:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
 	Production:
-		Produces: Infantry
+		Produces: Infantry, Soldier
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
+
+KENN:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 25
+		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
+		Hotkey: k
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Kennel
+		Description: Trains Attack Dogs.
+	Building:
+		Power: -10
+	-GivesBuildableArea:
+	Health:
+		HP: 300
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	Bib:
+		HasMinibib: True
+	RallyPoint:
+		RallyPoint: 0,2
+	Exit:
+		SpawnOffset: -280,400,0
+		ExitCell: 0,1
+	Production:
+		Produces: Infantry, Dog
+	PrimaryBuilding:
+	IronCurtainable:
+	ProductionBar:
+	-EmitInfantryOnSell:
 
 TENT:
 	Inherits: ^Building
@@ -1075,27 +1112,12 @@ TENT:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
 	Production:
-		Produces: Infantry
+		Produces: Infantry, Soldier
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
-
-KENN:
-	Inherits: ^Building
-	Tooltip:
-		Name: Kennel
-	Building:
-		Power: -10
-	-GivesBuildableArea:
-	Health:
-		HP: 300
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4c0
-	IronCurtainable:
-	-EmitInfantryOnSell:
-	-AcceptsSupplies:
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
 
 FIX:
 	Inherits: ^Building

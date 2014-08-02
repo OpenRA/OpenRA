@@ -39,9 +39,6 @@ Sounds:
 		DisablePower: bleep11
 		EnablePower: bleep12
 		ChatLine: scold1
-		BuildPaletteOpen: bleep13
-		BuildPaletteClose: bleep13
-		TabClick: ramenu1
-		ClickSound:
+		ClickSound: ramenu1
 		ClickDisabledSound:
 		Beacon: beepslct

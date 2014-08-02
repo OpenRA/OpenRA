@@ -18,8 +18,6 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HelicopterInfo : AircraftInfo, IMoveInfo
 	{
-		public readonly WRange IdealSeparation = new WRange(1706);
-
 		[Desc("Allow the helicopter land after it has no more commands.")]
 		public readonly bool LandWhenIdle = true;
 
@@ -135,41 +133,7 @@ namespace OpenRA.Mods.RA.Air
 				self.QueueActivity(new TakeOff());
 			}
 
-			// Repulsion only applies when we're flying!
-			var altitude = CenterPosition.Z;
-			if (altitude != Info.CruiseAltitude.Range)
-				return;
-
-			var otherHelis = self.World.FindActorsInCircle(self.CenterPosition, Info.IdealSeparation)
-				.Where(a => a.HasTrait<Helicopter>());
-
-			var f = otherHelis
-				.Select(h => GetRepulseForce(self, h))
-				.Aggregate(WVec.Zero, (a, b) => a + b);
-
-			var repulsionFacing = Util.GetFacing(f, -1);
-			if (repulsionFacing != -1)
-				SetPosition(self, CenterPosition + FlyStep(repulsionFacing));
-		}
-
-		public WVec GetRepulseForce(Actor self, Actor other)
-		{
-			if (self == other || other.CenterPosition.Z < self.CenterPosition.Z)
-				return WVec.Zero;
-
-			var d = self.CenterPosition - other.CenterPosition;
-			var distSq = d.HorizontalLengthSquared;
-			if (distSq > Info.IdealSeparation.Range * Info.IdealSeparation.Range)
-				return WVec.Zero;
-
-			if (distSq < 1)
-			{
-				var yaw = self.World.SharedRandom.Next(0, 1023);
-				var rot = new WRot(WAngle.Zero, WAngle.Zero, new WAngle(yaw));
-				return new WVec(1024, 0, 0).Rotate(rot);
-			}
-
-			return (d * 1024 * 8) / (int)distSq;
+			Repulse();
 		}
 
 		public Activity MoveTo(CPos cell, int nearEnough) { return new HeliFly(self, Target.FromCell(self.World, cell)); }

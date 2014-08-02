@@ -17,6 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Spawn base actor at the spawnpoint and support units in an annulus around the base actor. Both are defined at MPStartUnits. Attach this to the world actor.")]
 	public class SpawnMPUnitsInfo : TraitInfo<SpawnMPUnits>, Requires<MPStartLocationsInfo>, Requires<MPStartUnitsInfo> { }
 
 	public class SpawnMPUnits : IWorldLoaded
@@ -37,7 +38,6 @@ namespace OpenRA.Mods.RA
 			if (unitGroup == null)
 				throw new InvalidOperationException("No starting units defined for country {0} with class {1}".F(p.Country.Race, spawnClass));
 
-			// Spawn base actor at the spawnpoint
 			if (unitGroup.BaseActor != null)
 			{
 				w.CreateActor(unitGroup.BaseActor.ToLowerInvariant(), new TypeDictionary
@@ -51,7 +51,6 @@ namespace OpenRA.Mods.RA
 			if (!unitGroup.SupportActors.Any())
 				return;
 
-			// Spawn support units in an annulus around the base actor
 			var supportSpawnCells = w.Map.FindTilesInAnnulus(sp, unitGroup.InnerSupportRadius + 1, unitGroup.OuterSupportRadius);
 
 			foreach (var s in unitGroup.SupportActors)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -43,12 +43,12 @@ namespace OpenRA.Traits
 		readonly Map map;
 		readonly CellLayer<InfluenceNode> influence;
 
-		List<Actor>[] actors;
-		int rows, cols;
+		readonly List<Actor>[] actors;
+		readonly int rows, cols;
 
 		// Position updates are done in one pass
 		// to ensure consistency during a tick
-		readonly List<Actor> addActorPosition = new List<Actor>();
+		readonly HashSet<Actor> addActorPosition = new HashSet<Actor>();
 		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
 		readonly Predicate<Actor> actorShouldBeRemoved;
 
@@ -169,7 +169,7 @@ namespace OpenRA.Traits
 
 		public void AddPosition(Actor a, IOccupySpace ios)
 		{
-			addActorPosition.Add(a);
+			UpdatePosition(a, ios);
 		}
 
 		public void RemovePosition(Actor a, IOccupySpace ios)
@@ -180,7 +180,7 @@ namespace OpenRA.Traits
 		public void UpdatePosition(Actor a, IOccupySpace ios)
 		{
 			RemovePosition(a, ios);
-			AddPosition(a, ios);
+			addActorPosition.Add(a);
 		}
 
 		public IEnumerable<Actor> ActorsInBox(WPos a, WPos b)
@@ -194,14 +194,13 @@ namespace OpenRA.Traits
 			var j1 = (top / info.BinSize).Clamp(0, rows - 1);
 			var j2 = (bottom / info.BinSize).Clamp(0, rows - 1);
 
-			var actorsChecked = new HashSet<Actor>();
 			for (var j = j1; j <= j2; j++)
 			{
 				for (var i = i1; i <= i2; i++)
 				{
 					foreach (var actor in actors[j * cols + i])
 					{
-						if (actor.IsInWorld && actorsChecked.Add(actor))
+						if (actor.IsInWorld)
 						{
 							var c = actor.CenterPosition;
 							if (left <= c.X && c.X <= right && top <= c.Y && c.Y <= bottom)
@@ -214,8 +213,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> ActorsInWorld()
 		{
-			return actors.SelectMany(a => a.Where(b => b.IsInWorld))
-				.Distinct();
+			return actors.SelectMany(bin => bin.Where(actor => actor.IsInWorld));
 		}
 	}
 }

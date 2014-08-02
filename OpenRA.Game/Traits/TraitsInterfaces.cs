@@ -63,6 +63,7 @@ namespace OpenRA.Traits
 	public interface IValidateOrder { bool OrderValidation(OrderManager orderManager, World world, int clientId, Order order); }
 	public interface IOrderVoice { string VoicePhraseForOrder(Actor self, Order order); }
 	public interface INotify { void Play(Player p, string notification); }
+	public interface INotifyCreated { void Created(Actor self); }
 	public interface INotifyAddedToWorld { void AddedToWorld(Actor self); }
 	public interface INotifyRemovedFromWorld { void RemovedFromWorld(Actor self); }
 	public interface INotifySold { void Selling(Actor self); void Sold(Actor self); }
@@ -74,6 +75,7 @@ namespace OpenRA.Traits
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
+	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced); }
 	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
@@ -119,7 +121,7 @@ namespace OpenRA.Traits
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 
-	public interface IOccupySpaceInfo { }
+	public interface IOccupySpaceInfo : ITraitInfo { }
 	public interface IOccupySpace
 	{
 		WPos CenterPosition { get; }
@@ -165,7 +167,7 @@ namespace OpenRA.Traits
 		void SetVisualPosition(Actor self, WPos pos);
 	}
 
-	public interface IMoveInfo { }
+	public interface IMoveInfo : ITraitInfo { }
 	public interface IMove
 	{
 		Activity MoveTo(CPos cell, int nearEnough);
@@ -187,7 +189,7 @@ namespace OpenRA.Traits
 		int Facing { get; set; }
 	}
 
-	public interface IFacingInfo { int GetInitialFacing(); }
+	public interface IFacingInfo : ITraitInfo { int GetInitialFacing(); }
 
 	public interface ICrushable
 	{
@@ -200,7 +202,7 @@ namespace OpenRA.Traits
 
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
-	public interface Requires<T> where T : class { }
+	public interface Requires<T> where T : class, ITraitInfo { }
 	public interface UsesInit<T> where T : IActorInit { }
 
 	public interface INotifySelected { void Selected(Actor self); }
@@ -224,7 +226,7 @@ namespace OpenRA.Traits
 	public interface IPostRender { void RenderAfterWorld(WorldRenderer wr, Actor self); }
 	public interface IRenderShroud { void RenderShroud(WorldRenderer wr, Shroud shroud); }
 
-	public interface IPostRenderSelection { void RenderAfterWorld(WorldRenderer wr); }
+	public interface IPostRenderSelection { IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr); }
 	public interface IBodyOrientation
 	{
 		WAngle CameraPitch { get; }
@@ -233,7 +235,7 @@ namespace OpenRA.Traits
 		WRot QuantizeOrientation(Actor self, WRot orientation);
 		void SetAutodetectedFacings(int facings);
 	}
-	public interface IBodyOrientationInfo {}
+	public interface IBodyOrientationInfo : ITraitInfo { }
 
 	public interface ITargetableInfo
 	{
@@ -264,5 +266,11 @@ namespace OpenRA.Traits
 		{
 			return a.TraitsImplementing<IDisable>().Any(d => d.Disabled);
 		}
+	}
+
+	public interface ILegacyEditorRenderInfo
+	{
+		string EditorPalette { get; }
+		string EditorImage(ActorInfo actor);
 	}
 }

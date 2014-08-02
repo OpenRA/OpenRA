@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
+	[Desc("Return to a player owned RearmBuildings. If none available, head back to base and circle over it.")]
 	class ReturnOnIdleInfo : TraitInfo<ReturnOnIdle> { }
 
 	class ReturnOnIdle : INotifyIdle
@@ -57,17 +58,6 @@ namespace OpenRA.Mods.RA.Air
 				self.QueueActivity(new Fly(self, Target.FromActor(someBuilding)));
 				self.QueueActivity(new FlyCircle());
 			}
-		}
-	}
-
-	class FlyAwayOnIdleInfo : TraitInfo<FlyAwayOnIdle> { }
-
-	class FlyAwayOnIdle : INotifyIdle
-	{
-		public void TickIdle(Actor self)
-		{
-			self.QueueActivity(new FlyOffMap());
-			self.QueueActivity(new RemoveSelf());
 		}
 	}
 }

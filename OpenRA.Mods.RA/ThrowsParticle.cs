@@ -10,6 +10,7 @@
 
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {
