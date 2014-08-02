@@ -112,7 +112,6 @@ namespace OpenRA.Mods.RA.Air
 				self.SetTargetLine(Target.FromActor(airfield), Color.Green);
 				self.QueueActivity(new ReturnToBase(self, airfield));
 				self.QueueActivity(new ResupplyAircraft());
-				self.QueueActivity(new TakeOff());
 			}
 			else
 			{
