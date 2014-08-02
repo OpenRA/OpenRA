@@ -618,9 +618,10 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						var kickConnIP = server.GetClient(kickConn).IpAddress;
+						var kickClient = server.GetClient(kickConn);
 
 						Log.Write("server", "Kicking client {0} as requested", kickClientID);
+						server.SendMessage("{0} kicked {1} from the server.".F(client.Name, kickClient.Name));
 						server.SendOrderTo(kickConn, "ServerError", "You have been kicked from the server");
 						server.DropClient(kickConn);
 
@@ -629,12 +630,14 @@ namespace OpenRA.Mods.RA.Server
 
 						if (tempBan)
 						{
-							Log.Write("server", "Temporarily banning client {0} ({1}) as requested", kickClientID, kickConnIP);
-							server.TempBans.Add(kickConnIP);
+							Log.Write("server", "Temporarily banning client {0} ({1}) as requested", kickClientID, kickClient.IpAddress);
+							server.SendMessage("{0} temporarily banned {1} from the server.".F(client.Name, kickClient.Name));
+							server.TempBans.Add(kickClient.IpAddress);
 						}
 
 						server.SyncLobbyClients();
 						server.SyncLobbySlots();
+
 						return true;
 					}},
 				{ "name",
