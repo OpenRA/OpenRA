@@ -113,9 +113,10 @@ namespace OpenRA.Mods.RA.Widgets
 				WidgetUtils.DrawSHPCentered(p.Sprite, p.Pos + iconOffset, worldRenderer);
 
 				// Charge progress
+				var sp = p.Power;
 				clock.PlayFetchIndex("idle",
-					() => (p.Power.TotalTime - p.Power.RemainingTime)
-						* (clock.CurrentSequence.Length - 1) / p.Power.TotalTime);
+					() => sp.TotalTime == 0 ? clock.CurrentSequence.Length - 1 : (sp.TotalTime - sp.RemainingTime)
+					* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
 
 				clock.Tick();
 				WidgetUtils.DrawSHPCentered(clock.Image, p.Pos + iconOffset, worldRenderer);
@@ -184,7 +185,7 @@ namespace OpenRA.Mods.RA.Widgets
 				if (!clicked.Power.Active)
 					Sound.PlayToPlayer(spm.self.Owner, clicked.Power.Info.InsufficientPowerSound);
 
-				spm.Target(clicked.Power.Info.OrderName);
+				clicked.Power.Target();
 			}
 
 			return true;
