@@ -8,27 +8,27 @@ Container@PLAYER_WIDGETS:
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Diplomacy (F1)
+			Text: Diplomacy (P)
 			Font: Bold
-			Key: f1
+			Key: p
 		Button@INGAME_DEBUG_BUTTON:
 			X: 324
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Debug (F2)
+			Text: Debug (Shift + Esc)
 			Visible: false
 			Font: Bold
-			Key: f2
+			Key: escape Shift
 		Button@OBJECTIVES_BUTTON:
 			X: 486
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Objectives (F3)
+			Text: Objectives (O)
 			Visible: false
 			Font: Bold
-			Key: f3
+			Key: o
 		SlidingContainer@INGAME_RADAR_BIN:
 			X: WINDOW_RIGHT-215
 			Y: 0

@@ -154,10 +154,10 @@ namespace OpenRA
 		public Hotkey SelectUnitsByTypeKey = new Hotkey(Keycode.T, Modifiers.Ctrl);
 
 		public Hotkey PauseKey = new Hotkey(Keycode.F8, Modifiers.None);
-		public Hotkey PlaceBeaconKey = new Hotkey(Keycode.F9, Modifiers.None);
-		public Hotkey SellKey = new Hotkey(Keycode.F10, Modifiers.None);
-		public Hotkey PowerDownKey = new Hotkey(Keycode.F11, Modifiers.None);
-		public Hotkey RepairKey = new Hotkey(Keycode.F12, Modifiers.None);
+		public Hotkey PlaceBeaconKey = new Hotkey(Keycode.B, Modifiers.None);
+		public Hotkey SellKey = new Hotkey(Keycode.Z, Modifiers.None);
+		public Hotkey PowerDownKey = new Hotkey(Keycode.X, Modifiers.None);
+		public Hotkey RepairKey = new Hotkey(Keycode.C, Modifiers.None);
 
 		public Hotkey NextProductionTabKey = new Hotkey(Keycode.PAGEDOWN, Modifiers.None);
 		public Hotkey PreviousProductionTabKey = new Hotkey(Keycode.PAGEUP, Modifiers.None);
