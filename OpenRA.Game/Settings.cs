@@ -147,13 +147,13 @@ namespace OpenRA
 
 	public class KeySettings
 	{
-		public Hotkey CycleBaseKey = new Hotkey(Keycode.BACKSPACE, Modifiers.None);
+		public Hotkey CycleBaseKey = new Hotkey(Keycode.H, Modifiers.None);
 		public Hotkey ToLastEventKey = new Hotkey(Keycode.SPACE, Modifiers.None);
 		public Hotkey ToSelectionKey = new Hotkey(Keycode.HOME, Modifiers.None);
 		public Hotkey SelectAllUnitsKey = new Hotkey(Keycode.Q, Modifiers.None);
 		public Hotkey SelectUnitsByTypeKey = new Hotkey(Keycode.W, Modifiers.None);
 
-		public Hotkey PauseKey = new Hotkey(Keycode.F8, Modifiers.None);
+		public Hotkey PauseKey = new Hotkey(Keycode.PAUSE, Modifiers.None);
 		public Hotkey PlaceBeaconKey = new Hotkey(Keycode.B, Modifiers.None);
 		public Hotkey SellKey = new Hotkey(Keycode.Z, Modifiers.None);
 		public Hotkey PowerDownKey = new Hotkey(Keycode.X, Modifiers.None);
@@ -163,18 +163,17 @@ namespace OpenRA
 		public Hotkey PreviousProductionTabKey = new Hotkey(Keycode.PAGEUP, Modifiers.None);
 		public Hotkey CycleProductionBuildingsKey = new Hotkey(Keycode.TAB, Modifiers.None);
 
-		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.BACKQUOTE, Modifiers.Ctrl | Modifiers.Shift);
-
 		public Hotkey AttackMoveKey = new Hotkey(Keycode.A, Modifiers.None);
 		public Hotkey StopKey = new Hotkey(Keycode.S, Modifiers.None);
-		public Hotkey ScatterKey = new Hotkey(Keycode.X, Modifiers.None);
+		public Hotkey ScatterKey = new Hotkey(Keycode.X, Modifiers.Ctrl);
 		public Hotkey DeployKey = new Hotkey(Keycode.F, Modifiers.None);
-		public Hotkey StanceCycleKey = new Hotkey(Keycode.Z, Modifiers.None);
+		public Hotkey StanceCycleKey = new Hotkey(Keycode.Z, Modifiers.Ctrl);
 		public Hotkey GuardKey = new Hotkey(Keycode.D, Modifiers.None);
 
 		public Hotkey ObserverCombinedView = new Hotkey(Keycode.MINUS, Modifiers.None);
 		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
 
+		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
 
 		public Hotkey DevReloadChromeKey = new Hotkey(Keycode.C, Modifiers.Ctrl | Modifiers.Shift);
