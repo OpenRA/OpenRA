@@ -150,8 +150,8 @@ namespace OpenRA
 		public Hotkey CycleBaseKey = new Hotkey(Keycode.BACKSPACE, Modifiers.None);
 		public Hotkey ToLastEventKey = new Hotkey(Keycode.SPACE, Modifiers.None);
 		public Hotkey ToSelectionKey = new Hotkey(Keycode.HOME, Modifiers.None);
-		public Hotkey SelectAllUnitsKey = new Hotkey(Keycode.A, Modifiers.Ctrl);
-		public Hotkey SelectUnitsByTypeKey = new Hotkey(Keycode.T, Modifiers.Ctrl);
+		public Hotkey SelectAllUnitsKey = new Hotkey(Keycode.Q, Modifiers.None);
+		public Hotkey SelectUnitsByTypeKey = new Hotkey(Keycode.W, Modifiers.None);
 
 		public Hotkey PauseKey = new Hotkey(Keycode.F8, Modifiers.None);
 		public Hotkey PlaceBeaconKey = new Hotkey(Keycode.B, Modifiers.None);
