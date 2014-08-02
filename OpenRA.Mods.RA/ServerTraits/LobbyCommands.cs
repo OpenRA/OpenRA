@@ -299,6 +299,7 @@ namespace OpenRA.Mods.RA.Server
 							server.SendOrderTo(conn, "Message", "Map was not found on server");
 							return true;
 						}
+
 						server.LobbyInfo.GlobalSettings.Map = s;
 
 						var oldSlots = server.LobbyInfo.Slots.Keys.ToArray();
@@ -335,6 +336,9 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						server.SyncLobbyInfo();
+
+						server.SendMessage("{0} changed the map to {1}.".F(client.Name, server.Map.Title));
+
 						return true;
 					}},
 				{ "fragilealliance",
