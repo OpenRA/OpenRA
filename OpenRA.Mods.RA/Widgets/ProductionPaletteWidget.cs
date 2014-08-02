@@ -130,10 +130,10 @@ namespace OpenRA.Mods.RA.Widgets
 			if (mi.Event != MouseInputEvent.Down)
 				return true;
 
-			return HandleEvent(icon, mi.Button == MouseButton.Left);
+			return HandleEvent(icon, mi.Button == MouseButton.Left, mi.Modifiers.HasModifier(Modifiers.Shift));
 		}
 
-		bool HandleEvent(ProductionIcon icon, bool isLeftClick)
+		bool HandleEvent(ProductionIcon icon, bool isLeftClick, bool handleMultiple)
 		{
 			var actor = World.Map.Rules.Actors[icon.Name];
 			var first = icon.Queued.FirstOrDefault();
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA.Widgets
 					Sound.Play(TabClick);
 					Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Country.Race);
 					World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name,
-						Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
+						handleMultiple ? 5 : 1));
 				}
 				else
 					Sound.Play(DisabledTabClick);
@@ -175,7 +175,7 @@ namespace OpenRA.Mods.RA.Widgets
 					{
 						Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Country.Race);
 						World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name,
-							Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
+							handleMultiple ? 5 : 1));
 					}
 					else
 					{
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			var hotkey = Hotkey.FromKeyInput(e);
 			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey == hotkey);
-			return toBuild != null ? HandleEvent(toBuild, true) : false;
+			return toBuild != null ? HandleEvent(toBuild, true, false) : false;
 		}
 
 		public void RefreshIcons()
