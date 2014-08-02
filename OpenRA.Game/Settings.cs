@@ -163,7 +163,7 @@ namespace OpenRA
 		public Hotkey PreviousProductionTabKey = new Hotkey(Keycode.PAGEUP, Modifiers.None);
 		public Hotkey CycleProductionBuildingsKey = new Hotkey(Keycode.TAB, Modifiers.None);
 
-		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.INSERT, Modifiers.None);
+		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.BACKQUOTE, Modifiers.Ctrl | Modifiers.Shift);
 
 		public Hotkey AttackMoveKey = new Hotkey(Keycode.A, Modifiers.None);
 		public Hotkey StopKey = new Hotkey(Keycode.S, Modifiers.None);
