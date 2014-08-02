@@ -109,13 +109,16 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   editor:Colourise(0, -1)
   editor:Thaw()
 
+  local edcfg = ide.config.editor
   if current then editor:GotoPos(current) end
-  if (file_text and ide.config.editor.autotabs) then
-    local found = string.find(file_text,"\t") ~= nil
-    editor:SetUseTabs(found)
+  if (file_text and edcfg.autotabs) then
+    -- use tabs if they are already used
+    -- or if "usetabs" is set and no space indentation is used in a file
+    editor:SetUseTabs(string.find(file_text, "\t") ~= nil
+      or edcfg.usetabs and string.find(file_text, "%f[^\r\n] ") == nil)
   end
   
-  if (file_text and ide.config.editor.checkeol) then
+  if (file_text and edcfg.checkeol) then
     -- Auto-detect CRLF/LF line-endings
     local foundcrlf = string.find(file_text,"\r\n") ~= nil
     local foundlf = (string.find(file_text,"[^\r]\n") ~= nil)
