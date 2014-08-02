@@ -442,6 +442,24 @@ function SettingsRestoreView()
     end
   end
 
+  -- restore configuration for notebook pages that have been split;
+  -- load saved dock_size values and update current values with saved ones
+  -- where dock_size configuration matches
+  local docksizemask = '(dock_size[^=]+=)(%d+)'
+  for l, m in pairs({
+    nbdocklayout = frame.notebook:GetAuiManager(),
+    nbbtmdocklayout = frame.bottomnotebook:GetAuiManager(),
+  }) do
+    -- ...|dock_size(5,0,0)=20|dock_size(2,1,0)=200|...
+    local prevlayout = settingsReadSafe(settings, l, "")
+    local curlayout = m:SavePerspective()
+    local newlayout = curlayout:gsub('(dock_size[^=]+=)(%d+)', function(t,v)
+        local val = prevlayout:match(EscapeMagic(t)..'(%d+)')
+        return t..(val or v)
+      end)
+    if newlayout ~= curlayour then m:LoadPerspective(newlayout) end
+  end
+
   local editor = GetEditor()
   if editor then editor:SetFocus() end
 
@@ -457,10 +475,12 @@ function SettingsSaveView()
   local frame = ide.frame
   local uimgr = frame.uimgr
   
-  settings:Write("uimgrlayout",uimgr:SavePerspective())
-  settings:Write("nblayout",   saveNotebook(frame.notebook))
-  settings:Write("nbbtmlayout",saveNotebook(frame.bottomnotebook))
-  settings:Write("statusbar",frame:GetStatusBar():IsShown())
+  settings:Write("uimgrlayout", uimgr:SavePerspective())
+  settings:Write("nblayout", saveNotebook(frame.notebook))
+  settings:Write("nbbtmlayout", saveNotebook(frame.bottomnotebook))
+  settings:Write("statusbar", frame:GetStatusBar():IsShown())
+  settings:Write("nbdocklayout", frame.notebook:GetAuiManager():SavePerspective())
+  settings:Write("nbbtmdocklayout", frame.bottomnotebook:GetAuiManager():SavePerspective())
 
   settings:SetPath(path)
 end
