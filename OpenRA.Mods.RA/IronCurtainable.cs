@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 				RemainingTicks--;
 		}
 
-		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		public float GetDamageModifier(Actor attacker, DamageWarhead warhead)
 		{
 			return (RemainingTicks > 0) ? 0.0f : 1.0f;
 		}

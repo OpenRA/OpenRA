@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -43,9 +44,15 @@ namespace OpenRA.Mods.RA
 			if (explodesInfo.InfDeath != null && e.Warhead != null && !explodesInfo.InfDeath.Contains(e.Warhead.InfDeath))
 				return;
 
-			var weapon = ChooseWeaponForExplosion(self);
-			if (weapon != null)
-				Combat.DoExplosion(e.Attacker, weapon, self.CenterPosition);
+			var weaponName = ChooseWeaponForExplosion(self);
+			if (weaponName != null)
+			{
+				var weapon = e.Attacker.World.Map.Rules.Weapons[weaponName.ToLowerInvariant()];
+				if (weapon.Report != null && weapon.Report.Any())
+					Sound.Play(weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
+	
+				weapon.Impact(self.CenterPosition, e.Attacker, 1f);
+			}
 		}
 
 		string ChooseWeaponForExplosion(Actor self)

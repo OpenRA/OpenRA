@@ -11,6 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Mods.RA;
+using OpenRA.GameRules;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -42,8 +43,7 @@ namespace OpenRA.Mods.Cnc
 			if (!info.Resources.Contains(r.Info.Name)) return;
 
 			var weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
-
-			self.InflictDamage(self.World.WorldActor, weapon.Warheads[0].Damage, weapon.Warheads[0]);
+			weapon.Impact(self.CenterPosition, self.World.WorldActor, 1f);
 			poisonTicks = weapon.ROF;
 		}
 	}

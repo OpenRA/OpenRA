@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Effects;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Traits;
@@ -44,7 +45,8 @@ namespace OpenRA.Mods.Cnc.Effects
 		void Finish(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoExplosion(firedBy.PlayerActor, weapon, target.CenterPosition);
+			var weapon = world.Map.Rules.Weapons[this.weapon.ToLowerInvariant()];
+			weapon.Impact(target.CenterPosition, firedBy.PlayerActor, 1f);
 		}
 	}
 }
