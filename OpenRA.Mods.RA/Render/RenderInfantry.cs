@@ -92,6 +92,7 @@ namespace OpenRA.Mods.RA.Render
 			State = AnimationState.Attacking;
 			if (DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, info.AttackAnimation)))
 				DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, info.AttackAnimation), () => State = AnimationState.Idle);
+			State = AnimationState.Waiting;
 		}
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
