@@ -323,6 +323,25 @@ namespace OpenRA.Utility
 				foreach (var line in traitDescLines)
 					doc.AppendLine(line);
 
+				var requires = RequiredTraitTypes(t);
+				var reqCount = requires.Length;
+				if (reqCount > 0)
+				{
+					if (t.HasAttribute<DescAttribute>())
+						doc.AppendLine("\n");
+
+					doc.Append("Requires trait{0}: ".F(reqCount > 1 ? "s" : ""));
+
+					var i = 0;
+					foreach (var require in requires)
+					{
+						var n = require.Name;
+						var name = n.EndsWith("Info") ? n.Remove(n.Length - 4, 4) : n;
+						doc.Append("`{0}`{1}".F(name, i + 1 == reqCount ? ".\n" : ", "));
+						i++;
+					}
+				}
+
 				var infos = FieldLoader.GetTypeLoadInfo(t);
 				if (!infos.Any())
 					continue;
@@ -359,6 +378,16 @@ namespace OpenRA.Utility
 			// Remove the namespace and the trailing "Info"
 			return inner.Select(i => i.Name.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault())
 				.Select(s => s.EndsWith("Info") ? s.Remove(s.Length - 4, 4) : s)
+				.ToArray();
+		}
+
+		static Type[] RequiredTraitTypes(Type t)
+		{
+			return t.GetInterfaces()
+				.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(Requires<>))
+				.SelectMany(i => i.GetGenericArguments())
+				.Where(i => !i.IsInterface && !t.IsSubclassOf(i))
+				.OrderBy(i => i.Name)
 				.ToArray();
 		}
 
