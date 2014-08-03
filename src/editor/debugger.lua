@@ -28,12 +28,9 @@ do
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16,16)
   local imglist = wx.wxImageList(16,16)
-  -- 0 = stack call
-  imglist:Add(getBitmap(wx.wxART_GO_FORWARD, wx.wxART_OTHER, size))
-  -- 1 = local variables
-  imglist:Add(getBitmap(wx.wxART_LIST_VIEW, wx.wxART_OTHER, size))
-  -- 2 = upvalues
-  imglist:Add(getBitmap(wx.wxART_REPORT_VIEW, wx.wxART_OTHER, size))
+  imglist:Add(getBitmap("GO-FORWARD", "OTHER", size)) -- 0 = stack call
+  imglist:Add(getBitmap("LIST-VIEW", "OTHER", size)) -- 1 = local variables
+  imglist:Add(getBitmap("REPORT-VIEW", "OTHER", size)) -- 2 = upvalues
   debugger.imglist = imglist
 end
 

@@ -98,7 +98,7 @@ local function createToolBar(frame)
       local iconmap = ide.config.toolbar.iconmap[id]
       if iconmap then
         local icon, description = unpack(iconmap)
-        local bitmap = getBitmap(icon, wx.wxART_TOOLBAR, toolBmpSize)
+        local bitmap = getBitmap(icon, "TOOLBAR", toolBmpSize)
         toolBar:AddTool(id, "", bitmap, TR(description)..SCinB(id))
       end
     end
