@@ -51,7 +51,7 @@ Container@INGAME_ROOT:
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Options (ESC)
+			Text: Options (Esc)
 			Font: Bold
 			Key: escape
 		Container@PERFORMANCE_INFO:
