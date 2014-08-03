@@ -315,6 +315,14 @@ namespace OpenRA.Mods.RA
 					CancelProduction(order.TargetString, order.ExtraData);
 					break;
 				}
+
+            case "ClearProduction":
+                {
+                    List<ProductionItem> PausedItems = queue.FindAll(a => a.Item == order.TargetString);
+                    CancelProduction(order.TargetString, (uint)PausedItems.Count);           // There won't be more than 255 of the same item. Should be fine
+
+                    break;
+                }
 			}
 		}
 

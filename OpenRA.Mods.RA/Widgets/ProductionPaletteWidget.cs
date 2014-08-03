@@ -41,6 +41,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public readonly int2 IconSize = new int2(64, 48);
 		public readonly int2 IconMargin = int2.Zero;
 		public readonly int2 IconSpriteOffset = int2.Zero;
+        public bool holdCtrl = false;
 
 		public readonly string TabClick = null;
 		public readonly string DisabledTabClick = null;
@@ -164,26 +165,31 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 			else
 			{
-				// Hold/Cancel an existing item
-				if (first != null)
-				{
-					Sound.Play(TabClick);
+                // Hold/Cancel/Clear an existing item
+                if (first != null)
+                {
+                    Sound.Play(TabClick);
 
-					// instant cancel of things we havent started yet and things that are finished
-					if (first.Paused || first.Done || first.TotalCost == first.RemainingCost)
-					{
-						Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Country.Race);
-						World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name,
-							Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
-					}
-					else
-					{
-						Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, World.LocalPlayer.Country.Race);
-						World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, icon.Name, true));
-					}
-				}
-				else
-					Sound.Play(DisabledTabClick);
+                    // instant cancel of things we havent started yet and things that are finished
+                    if (first.Paused || first.Done || first.TotalCost == first.RemainingCost)
+                    {
+                        Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Country.Race);
+
+                        if (holdCtrl == false)
+                            World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name,          // Cancel single item
+                                Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
+                        else
+                            World.IssueOrder(Order.ClearProduction(CurrentQueue.Actor, icon.Name,           // Clear all queued production
+                                Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
+                    }
+                    else
+                    {
+                        Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, World.LocalPlayer.Country.Race);
+                        World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, icon.Name, true));
+                    }
+                }
+                else
+                    Sound.Play(DisabledTabClick);
 			}
 
 			return true;
@@ -191,12 +197,21 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (e.Event == KeyInputEvent.Up || CurrentQueue == null)
-				return false;
+            if (CurrentQueue == null)
+                return false;
 
-			var hotkey = Hotkey.FromKeyInput(e);
-			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey == hotkey);
-			return toBuild != null ? HandleEvent(toBuild, true) : false;
+            var hotkey = Hotkey.FromKeyInput(e);
+            var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey == hotkey);
+
+            if (e.Key == Keycode.LCTRL)
+            {
+                if (e.Event == KeyInputEvent.Down)
+                    holdCtrl = true;
+                else
+                    holdCtrl = false;
+            }
+
+            return toBuild != null ? HandleEvent(toBuild, true) : false;
 		}
 
 		public void RefreshIcons()

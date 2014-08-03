@@ -237,5 +237,10 @@ namespace OpenRA
 		{
 			return new Order("CancelProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
+
+        public static Order ClearProduction(Actor subject, string item, int count)
+        {
+            return new Order("ClearProduction", subject, false) { ExtraData = 0, TargetString = item };
+        }
 	}
 }
