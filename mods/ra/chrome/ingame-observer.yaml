@@ -28,7 +28,7 @@ Container@OBSERVER_WIDGETS:
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Options (ESC)
+			Text: Options (Esc)
 			Font: Bold
 			Key: escape
 		MenuButton@OBSERVER_STATS_BUTTON:

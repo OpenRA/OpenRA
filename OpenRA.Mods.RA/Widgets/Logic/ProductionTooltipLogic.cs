@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var pm = palette.World.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var pr = palette.World.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 
-			widget.IsVisible = () => palette.TooltipActor != null;
+			widget.IsVisible = () => palette.TooltipIcon != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var hotkeyLabel = widget.Get<LabelWidget>("HOTKEY");
 			var requiresLabel = widget.Get<LabelWidget>("REQUIRES");
@@ -44,29 +44,31 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var descFont = Game.Renderer.Fonts[descLabel.Font];
 			var requiresFont = Game.Renderer.Fonts[requiresLabel.Font];
-			string lastActor = null;
+			ActorInfo lastActor = null;
 
 			tooltipContainer.BeforeRender = () =>
 			{
-				var actor = palette.TooltipActor;
+				if (palette.TooltipIcon == null)
+					return;
+
+				var actor = palette.TooltipIcon.Actor;
 				if (actor == null || actor == lastActor)
 					return;
 
-				var info = mapRules.Actors[actor];
-				var tooltip = info.Traits.Get<TooltipInfo>();
-				var buildable = info.Traits.Get<BuildableInfo>();
-				var cost = info.Traits.Get<ValuedInfo>().Cost;
-				var pi = info.Traits.GetOrDefault<PowerInfo>();
+				var tooltip = actor.Traits.Get<TooltipInfo>();
+				var buildable = actor.Traits.Get<BuildableInfo>();
+				var cost = actor.Traits.Get<ValuedInfo>().Cost;
+				var pi = actor.Traits.GetOrDefault<PowerInfo>();
 
 				nameLabel.GetText = () => tooltip.Name;
 
+				var hotkey = palette.TooltipIcon.Hotkey;
 				var nameWidth = font.Measure(tooltip.Name).X;
-				var hotkeyText = "({0})".F(buildable.Hotkey.DisplayString());
-				var hotkeyWidth = buildable.Hotkey.IsValid() ? font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
+				var hotkeyText = "({0})".F(hotkey.DisplayString());
+				var hotkeyWidth = hotkey.IsValid() ? font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
 				hotkeyLabel.GetText = () => hotkeyText;
 				hotkeyLabel.Bounds.X = nameWidth + 2 * nameLabel.Bounds.X;
-				hotkeyLabel.Visible = buildable.Hotkey.IsValid();
-
+				hotkeyLabel.Visible = hotkey.IsValid();
 
 				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a)).Where(s => !s.StartsWith("~"));
 				var requiresString = prereqs.Any() ? requiresLabel.Text.F(prereqs.JoinWith(", ")) : "";
@@ -81,7 +83,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				powerIcon.IsVisible = () => power != 0;
 
 				var lowpower = pm.PowerState != PowerState.Normal;
-				var time = palette.CurrentQueue == null ? 0 : palette.CurrentQueue.GetBuildTime(actor)
+				var time = palette.CurrentQueue == null ? 0 : palette.CurrentQueue.GetBuildTime(actor.Name)
 					* (lowpower ? palette.CurrentQueue.Info.LowPowerSlowdown : 1);
 				var timeString = WidgetUtils.FormatTime(time);
 				timeLabel.GetText = () => timeString;

@@ -172,7 +172,6 @@ DEVAST:
 		BuildPaletteOrder: 100
 		Prerequisites: Research, ~techlevel.high
 		Owner: harkonnen
-		Hotkey: d
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -220,7 +219,6 @@ SARDAUKAR:
 		BuildPaletteOrder: 80
 		Prerequisites: palaceh, ~techlevel.high
 		Owner: harkonnen
-		Hotkey: d
 	Valued:
 		Cost: 400
 	Tooltip:

@@ -8,10 +8,10 @@ Container@PLAYER_WIDGETS:
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Objectives (F3)
+			Text: Objectives (O)
 			Visible: false
 			Font: Bold
-			Key: f3
+			Key: o
 		Container@SUPPORT_POWERS:
 			Logic: SupportPowerBinLogic
 			X: 10
@@ -109,7 +109,7 @@ Container@PLAYER_WIDGETS:
 							MenuContainer: INGAME_DEBUG_BG
 							HideIngameUI: false
 							Pause: false
-							Key: f2
+							Key: escape Shift
 							X: 128
 							Width: 28
 							Height: 28
@@ -128,7 +128,7 @@ Container@PLAYER_WIDGETS:
 							MenuContainer: INGAME_DIPLOMACY_BG
 							HideIngameUI: false
 							Pause: false
-							Key: f1
+							Key: P
 							X: 160
 							Width: 28
 							Height: 28
@@ -255,6 +255,7 @@ Container@PLAYER_WIDGETS:
 					Children:
 						ProductionTypeButton@BUILDING:
 							Logic: AddRaceSuffixLogic
+							Key: e
 							Width: 28
 							Height: 28
 							VisualHeight: 0
@@ -269,6 +270,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@DEFENSE:
 							Logic: AddRaceSuffixLogic
+							Key: r
 							Y: 31
 							Width: 28
 							Height: 28
@@ -284,6 +286,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@INFANTRY:
 							Logic: AddRaceSuffixLogic
+							Key: t
 							Y: 62
 							Width: 28
 							Height: 28
@@ -299,6 +302,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@VEHICLE:
 							Logic: AddRaceSuffixLogic
+							Key: y
 							Y: 93
 							Width: 28
 							Height: 28
@@ -314,6 +318,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: production-icons
 						ProductionTypeButton@AIRCRAFT:
 							Logic: AddRaceSuffixLogic
+							Key: u
 							Y: 124
 							Width: 28
 							Height: 28
@@ -327,8 +332,9 @@ Container@PLAYER_WIDGETS:
 									X: 6
 									Y: 6
 									ImageCollection: production-icons
-						ProductionTypeButton@AIRCRAFT:
+						ProductionTypeButton@NAVAL:
 							Logic: AddRaceSuffixLogic
+							Key: i
 							Y: 155
 							Width: 28
 							Height: 28
