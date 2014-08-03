@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(init.self, this); }
 	}
 
-	public class ConquestVictoryConditions : ITick, IResolveOrder, INotifyObjectivesUpdated
+	public class ConquestVictoryConditions : ITick, INotifyObjectivesUpdated
 	{
 		readonly ConquestVictoryConditionsInfo info;
 		readonly MissionObjectives mo;

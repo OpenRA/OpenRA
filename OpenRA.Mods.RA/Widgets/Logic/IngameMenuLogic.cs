@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				hideMenu = true;
 				ConfirmationDialogs.PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, showMenu);
 			};
-			widget.Get("SURRENDER").IsVisible = () => world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined;
+			surrenderButton.IsDisabled = () => world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined;
 
 			menu.Get<ButtonWidget>("MUSIC").OnClick = () =>
 			{
@@ -97,7 +97,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				});
 			};
 
-			menu.Get<ButtonWidget>("SETTINGS").OnClick = () =>
+			var settingsButton = widget.Get<ButtonWidget>("SETTINGS");
+			settingsButton.OnClick = () =>
 			{
 				hideMenu = true;
 				Ui.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
