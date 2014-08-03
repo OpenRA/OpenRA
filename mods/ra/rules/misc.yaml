@@ -160,6 +160,28 @@ CRATE:
 	Passenger:
 	BodyOrientation:
 
+MONEYCRATE:
+	Tooltip:
+		Name: Money Crate
+	Crate:
+		Lifetime: 180
+		TerrainTypes: Clear, Rough, Road, Ore, Beach
+	GiveCashCrateAction:
+		Amount: 500
+		SelectionShares: 1
+		UseCashTick: true
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+		Images: wcrate
+		XmasImages: xcratea, xcrateb, xcratec, xcrated
+	Selectable:
+		Selectable: false
+		Bounds: 15,15,-1,-1
+	ProximityCaptor:
+		Types: Crate
+	BodyOrientation:
+
 CAMERA:
 	Immobile:
 		OccupiesSpace: false

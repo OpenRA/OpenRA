@@ -480,6 +480,8 @@ TRUK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	LeavesHusk:
+		HuskActor: moneycrate
 
 MGG:
 	Inherits: ^Vehicle
