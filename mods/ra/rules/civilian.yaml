@@ -55,7 +55,6 @@ C10:
 FCOM:
 	Inherits: ^TechBuilding
 	Building:
-		Power: -200
 		Footprint: xx xx
 		Dimensions: 2,2
 	Valued:
@@ -69,6 +68,8 @@ FCOM:
 	RevealsShroud:
 		Range: 10c0
 	Bib:
+	Power:
+		Amount: -200
 
 HOSP:
 	Inherits: ^TechBuilding

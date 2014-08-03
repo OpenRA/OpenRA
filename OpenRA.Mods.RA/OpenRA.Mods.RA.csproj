@@ -118,6 +118,7 @@
     <Compile Include="Air\AttackHeli.cs" />
     <Compile Include="Air\AttackPlane.cs" />
     <Compile Include="Crates\DuplicateUnitCrateAction.cs" />
+    <Compile Include="Power.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Player\PlaceBeacon.cs" />
     <Compile Include="MenuPaletteEffect.cs" />
@@ -164,7 +165,7 @@
     <Compile Include="CaptureNotification.cs" />
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\BuildingInfluence.cs" />
-    <Compile Include="Buildings\CanPowerDown.cs" />
+    <Compile Include="CanPowerDown.cs" />
     <Compile Include="Buildings\CustomSellValue.cs" />
     <Compile Include="Buildings\CustomBuildTimeValue.cs" />
     <Compile Include="Buildings\DeadBuildingState.cs" />
@@ -588,7 +589,5 @@ cd "$(SolutionDir)thirdparty/"
 copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Widgets\Logic\Ingame\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

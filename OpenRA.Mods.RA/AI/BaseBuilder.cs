@@ -138,8 +138,8 @@ namespace OpenRA.Mods.RA.AI
 			// First priority is to get out of a low power situation
 			if (playerPower.ExcessPower < 0)
 			{
-				var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.Get<BuildingInfo>().Power);
-				if (power != null && power.Traits.Get<BuildingInfo>().Power > 0)
+				var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.Get<PowerInfo>().Amount);
+				if (power != null && power.Traits.Get<PowerInfo>().Amount > 0)
 				{
 					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (low power)", queue.Actor.Owner, power.Name);
 					return power;
@@ -198,12 +198,12 @@ namespace OpenRA.Mods.RA.AI
 
 				// Will this put us into low power?
 				var actor = world.Map.Rules.Actors[frac.Key];
-				var bi = actor.Traits.Get<BuildingInfo>();
-				if (playerPower.ExcessPower < 0 || playerPower.ExcessPower < bi.Power)
+				var pi = actor.Traits.GetOrDefault<PowerInfo>();
+				if (playerPower.ExcessPower < 0 || (pi != null && playerPower.ExcessPower < pi.Amount))
 				{
 					// Try building a power plant instead
-					var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.Get<BuildingInfo>().Power);
-					if (power != null && power.Traits.Get<BuildingInfo>().Power > 0)
+					var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.Get<PowerInfo>().Amount);
+					if (power != null && power.Traits.Get<PowerInfo>().Amount > 0)
 					{
 						HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
 						return power;

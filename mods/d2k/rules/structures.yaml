@@ -41,7 +41,6 @@ CONCRETEB:
 ^CONYARD:
 	Inherits: ^Building
 	Building:
-		Power: 20
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Adjacent: 4
@@ -75,6 +74,8 @@ CONCRETEB:
 		Prerequisite: Conyard
 	WithBuildingPlacedOverlay:
 		Palette: d2k
+	Power:
+		Amount: 20
 
 ^POWER:
 	Inherits: ^Building
@@ -91,7 +92,6 @@ CONCRETEB:
 		Name: Windtrap
 		Description: Provides power for other structures
 	Building:
-		Power: 100
 		Footprint: xx xx
 		Dimensions: 2,2
 	Bib:
@@ -105,6 +105,9 @@ CONCRETEB:
 		Prerequisite: Power
 	WithIdleOverlay@ZAPS:
 		Sequence: idle-zaps
+	Power:
+		Amount: 100
+		ScaleWithHealth: True
 
 ^BARRACKS:
 	Inherits: ^Building
@@ -121,7 +124,6 @@ CONCRETEB:
 		Name: Barracks
 		Description: Trains infantry
 	Building:
-		Power: -20
 		Footprint: =x xx
 		Dimensions: 2,2
 	Bib:
@@ -147,6 +149,8 @@ CONCRETEB:
 		ValuePercentage: 0
 	ProvidesCustomPrerequisite:
 		Prerequisite: Barracks
+	Power:
+		Amount: -20
 
 ^REFINERY:
 	Inherits: ^Building
@@ -163,7 +167,6 @@ CONCRETEB:
 		Name: Spice Refinery
 		Description: Harvesters unload Spice here for processing
 	Building:
-		Power: -30
 		Footprint: =xx xx=
 		Dimensions: 3,2
 	Bib:
@@ -193,6 +196,8 @@ CONCRETEB:
 		Prerequisite: Refinery
 	WithDockingOverlay@SMOKE:
 		Sequence: smoke
+	Power:
+		Amount: -30
 
 ^SILO:
 	Inherits: ^Building
@@ -209,7 +214,6 @@ CONCRETEB:
 		Name: Silo
 		Description: Stores excess harvested Spice
 	Building:
-		Power: -5
 		Adjacent: 4
 	-GivesBuildableArea:
 	Health:
@@ -225,6 +229,8 @@ CONCRETEB:
 		PipCount: 5
 		Capacity: 2000
 	-EmitInfantryOnSell:
+	Power:
+		Amount: -5
 
 ^LIGHT:
 	Inherits: ^Building
@@ -241,7 +247,6 @@ CONCRETEB:
 		Name: Light Factory
 		Description: Produces light vehicles
 	Building:
-		Power: -20
 		Footprint: xxx xx=
 		Dimensions: 3,2
 	Bib:
@@ -265,6 +270,8 @@ CONCRETEB:
 		Prerequisite: Light
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
+	Power:
+		Amount: -20
 
 ^HEAVY:
 	Inherits: ^Building
@@ -281,7 +288,6 @@ CONCRETEB:
 		Name: Heavy Factory
 		Description: Produces heavy vehicles
 	Building:
-		Power: -30
 		Footprint: _x_ xxx =xx
 		Dimensions: 3,3
 	Bib:
@@ -305,6 +311,8 @@ CONCRETEB:
 		Prerequisite: Heavy
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
+	Power:
+		Amount: -30
 
 ^RADAR:
 	Inherits: ^Building
@@ -324,7 +332,6 @@ CONCRETEB:
 		Name: Outpost
 		Description: Provides a radar map of the battlefield\n  Requires power to operate
 	Building:
-		Power: -40
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Bib:
@@ -343,6 +350,8 @@ CONCRETEB:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
+	Power:
+		Amount: -40
 
 ^STARPORT:
 	Inherits: ^Building
@@ -357,7 +366,6 @@ CONCRETEB:
 		BuildPaletteOrder: 80
 		Hotkey: c
 	Building:
-		Power: -40
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
 	Selectable:
@@ -389,6 +397,8 @@ CONCRETEB:
 	DisabledOverlay:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Starport
+	Power:
+		Amount: -40
 
 ^WALL:
 	Buildable:
@@ -458,7 +468,6 @@ WALL:
 		Name: Gun Tower
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
-		Power: -20
 		Adjacent: 4
 		BuildSounds: CHUNG.WAV
 		SellSounds: CHUNG.WAV
@@ -496,6 +505,8 @@ WALL:
 	-WithMakeAnimation:
 	LineBuildNode:
 		Types: turret
+	Power:
+		Amount: -20
 
 ^ROCKETTOWER:
 	Inherits: ^Building
@@ -510,7 +521,6 @@ WALL:
 		Name: Rocket Tower
 		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
 	Building:
-		Power: -30
 		Adjacent: 4
 		BuildSounds: CHUNG.WAV
 		SellSounds: CHUNG.WAV
@@ -548,6 +558,8 @@ WALL:
 	-WithMakeAnimation:
 	LineBuildNode:
 		Types: turret
+	Power:
+		Amount: -30
 
 ^REPAIR:
 	Inherits: ^Building
@@ -562,7 +574,6 @@ WALL:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
 	Building:
-		Power: -10
 		Footprint: =x= =x= ===
 		Dimensions: 3,3
 	Health:
@@ -581,6 +592,8 @@ WALL:
 		Prerequisite: Repair
 	WithRepairOverlay:
 		Palette: repairlights
+	Power:
+		Amount: -10
 
 ^HIGHTECH:
 	Inherits: ^Building
@@ -597,7 +610,6 @@ WALL:
 		Name: High Tech Facility
 		Description: Unlocks advanced technology
 	Building:
-		Power: -40
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Bib:
@@ -611,6 +623,8 @@ WALL:
 		Prerequisite: Hitech
 #	WithProductionOverlay@WELDING:
 #		Sequence: production-welding
+	Power:
+		Amount: -40
 
 ^RESEARCH:
 	Inherits: ^Building
@@ -638,7 +652,6 @@ WALL:
 		SelectTargetSound:
 		FlareType:
 	Building:
-		Power: -40
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Bib:
@@ -652,6 +665,8 @@ WALL:
 		Prerequisite: Research
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	Power:
+		Amount: -40
 
 ^PALACE:
 	Inherits: ^Building
@@ -668,7 +683,6 @@ WALL:
 		Name: Palace
 		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
 	Building:
-		Power: -50
 		Footprint: xx= xxx
 		Dimensions: 3,2
 	Bib:
@@ -683,13 +697,14 @@ WALL:
 		Range: 4
 	ProvidesCustomPrerequisite:
 		Prerequisite: Palace
+	Power:
+		Amount: -50
 
 SIETCH:
 	Inherits: ^Building
 	Tooltip:
 		Name: Fremen Sietch
 	Building:
-		Power: 0
 		Footprint: xx xx
 		Dimensions: 2,2
 		TerrainTypes: Cliff
@@ -703,6 +718,8 @@ SIETCH:
 	-Sellable:
 	-ExternalCapturable:
 	-ExternalCapturableBar:
+	Power:
+		Amount: 0
 
 STARPORTC:
 	Inherits: ^STARPORT
