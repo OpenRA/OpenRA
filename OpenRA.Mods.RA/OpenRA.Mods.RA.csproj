@@ -545,6 +545,9 @@
     <Compile Include="Widgets\LabelWithTooltipWidget.cs" />
     <Compile Include="ProductionQueueFromSelection.cs" />
     <Compile Include="Scripting\Global\MediaGlobal.cs" />
+    <Compile Include="Graphics\ActorPreview.cs" />
+    <Compile Include="Graphics\SpriteActorPreview.cs" />
+    <Compile Include="Graphics\VoxelActorPreview.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

@@ -11,11 +11,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithVoxelTurretInfo : ITraitInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelTurretInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<TurretedInfo>
 	{
 		[Desc("Voxel sequence name to use")]
 		public readonly string Sequence = "turret";
@@ -24,6 +25,20 @@ namespace OpenRA.Mods.RA.Render
 		public readonly string Turret = "primary";
 
 		public object Create(ActorInitializer init) { return new WithVoxelTurret(init.self, this); }
+
+		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
+		{
+			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
+				.First(tt => tt.Turret == Turret);
+
+			var voxel = VoxelProvider.GetVoxel(image, Sequence);
+			var turretOffset = body.LocalToWorld(t.Offset.Rotate(orientation));
+
+			var turretBodyOrientation = new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(t.InitialFacing) - orientation.Yaw);
+			var turretOrientation = new[] { turretBodyOrientation, body.QuantizeOrientation(orientation, facings) };
+			yield return new VoxelAnimation(voxel, () => turretOffset, () => turretOrientation, () => false, () => 0);
+		}
 	}
 
 	public class WithVoxelTurret

@@ -227,15 +227,22 @@ namespace OpenRA.Traits
 	public interface IRenderShroud { void RenderShroud(WorldRenderer wr, Shroud shroud); }
 
 	public interface IPostRenderSelection { IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr); }
+
 	public interface IBodyOrientation
 	{
 		WAngle CameraPitch { get; }
 		int QuantizedFacings { get; }
 		WVec LocalToWorld(WVec vec);
 		WRot QuantizeOrientation(Actor self, WRot orientation);
-		void SetAutodetectedFacings(int facings);
 	}
-	public interface IBodyOrientationInfo : ITraitInfo { }
+
+	public interface IBodyOrientationInfo : ITraitInfo
+	{
+		WVec LocalToWorld(WVec vec);
+		WRot QuantizeOrientation(WRot orientation, int facings);
+	}
+
+	public interface IQuantizeBodyOrientationInfo { int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai); }
 
 	public interface ITargetableInfo
 	{

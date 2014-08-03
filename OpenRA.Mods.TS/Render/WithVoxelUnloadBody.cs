@@ -12,11 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithVoxelUnloadBodyInfo : ITraitInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelUnloadBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		[Desc("Voxel sequence name to use when docked to a refinery.")]
 		public readonly string UnloadSequence = "unload";
@@ -25,6 +26,17 @@ namespace OpenRA.Mods.RA.Render
 		public readonly string IdleSequence = "idle";
 
 		public object Create(ActorInitializer init) { return new WithVoxelUnloadBody(init.self, this); }
+
+		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
+		{
+			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var voxel = VoxelProvider.GetVoxel(image, "idle");
+			yield return new VoxelAnimation(voxel, () => WVec.Zero,
+				() => new[]{ body.QuantizeOrientation(orientation, facings) },
+				() => false, () => 0);
+		}
+
+		public int QuantizedBodyFacings(SequenceProvider sequenceProvider, ActorInfo ai) { return 0; }
 	}
 
 	public class WithVoxelUnloadBody : IAutoSelectionSize

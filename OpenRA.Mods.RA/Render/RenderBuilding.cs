@@ -49,8 +49,6 @@ namespace OpenRA.Mods.RA.Render
 			this.info = info;
 
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, "idle"));
-
-			self.Trait<IBodyOrientation>().SetAutodetectedFacings(DefaultAnimation.CurrentSequence.Facings);
 		}
 
 		public virtual void BuildingComplete(Actor self)
