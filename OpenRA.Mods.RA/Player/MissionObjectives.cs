@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new MissionObjectives(init.world, this); }
 	}
 
-	public class MissionObjectives : INotifyObjectivesUpdated, ISync
+	public class MissionObjectives : INotifyObjectivesUpdated, ISync, IResolveOrder
 	{
 		readonly MissionObjectivesInfo info;
 		readonly List<MissionObjective> objectives = new List<MissionObjective>();
@@ -202,6 +202,13 @@ namespace OpenRA.Mods.RA
 		public void OnObjectiveAdded(Player player, int id) {}
 		public void OnObjectiveCompleted(Player player, int id) {}
 		public void OnObjectiveFailed(Player player, int id) {}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "Surrender")
+				for (var id = 0; id < objectives.Count; id++)
+					MarkFailed(self.Owner, id);
+		}
 	}
 
 	[Desc("Provides game mode progress information for players.",
