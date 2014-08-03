@@ -723,6 +723,7 @@ SONIC:
 		Range: 7c0
 	Armament:
 		Weapon: SonicZap
+		LocalOffset: -50,0,410
 	AttackTurreted:
 	Turreted:
 		ROT: 5
