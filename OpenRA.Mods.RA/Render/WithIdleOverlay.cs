@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	public class WithIdleOverlay : INotifyDamageStateChanged, INotifyBuildComplete, INotifySold
+	public class WithIdleOverlay : INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		Animation overlay;
 		bool buildComplete;
@@ -82,6 +82,13 @@ namespace OpenRA.Mods.RA.Render
 		{
 			buildComplete = false;
 		}
+
+		public void BeforeTransform(Actor self)
+		{
+			buildComplete = false;
+		}
+		public void OnTransform(Actor self) { }
+		public void AfterTransform(Actor self) { }
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
