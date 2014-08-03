@@ -53,16 +53,15 @@ namespace OpenRA.Mods.RA.Crates
 				(a != collector) &&
 				(a.TraitOrDefault<Cloak>() != null) &&
 				(a.TraitOrDefault<Cloak>().AcceptsCloakCrate));
+
 			if (inRange.Any())
 			{
 				if (Info.MaxExtraCollectors > -1)
 					inRange = inRange.Take(Info.MaxExtraCollectors);
 
 				if (inRange.Any())
-					foreach (Actor actor in inRange)
-					{
+					foreach (var actor in inRange)
 						actor.Trait<Cloak>().ReceivedCloakCrate(actor);
-					}
 			}
 
 			base.Activate(collector);
