@@ -14,6 +14,7 @@ end
 -- so don't use stock IDs on Linux
 local linux = ide.osname == 'Unix'
 
+ID_SEPARATOR        = NewID()
 -- File menu
 ID_NEW              = linux and NewID() or wx.wxID_NEW
 ID_OPEN             = linux and NewID() or wx.wxID_OPEN

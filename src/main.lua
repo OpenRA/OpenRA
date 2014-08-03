@@ -59,6 +59,11 @@ ide = {
     filetree = {},
     funclist = {},
 
+    toolbar = {
+      icons = {},
+      iconmap = {},
+    },
+
     keymap = {},
     messages = {},
     language = "en",
@@ -180,7 +185,7 @@ end
 
 dofile "src/version.lua"
 
-for _, file in ipairs({"ids", "style", "keymap", "proto"}) do
+for _, file in ipairs({"ids", "style", "keymap", "proto", "toolbar"}) do
   dofile("src/editor/"..file..".lua")
 end
 
