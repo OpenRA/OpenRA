@@ -37,7 +37,7 @@ namespace OpenRA.Mods.D2k
 		{
 			foreach (var name in info.Weapons)
 			{
-				var wep = self.World.Map.Rules.Weapons[name];
+				var wep = self.World.Map.Rules.Weapons[name.ToLowerInvariant()];
 				var pieces = self.World.SharedRandom.Next(info.Pieces[0], info.Pieces[1]);
 				var range = self.World.SharedRandom.Next(info.Range[0].Range, info.Range[1].Range);
 
