@@ -24,17 +24,28 @@ namespace OpenRA.Mods.RA.Move
 		[FieldLoader.LoadUsing("LoadSpeeds")]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
 		public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
+
 		[Desc("e.g. crate, wall, infantry")]
-		public readonly string[] Crushes;
+		public readonly string[] Crushes = { };
+
 		public readonly int WaitAverage = 5;
+
 		public readonly int WaitSpread = 2;
+
 		public readonly int InitialFacing = 128;
+
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 255;
+
 		public readonly int Speed = 1;
+
 		public readonly bool OnRails = false;
+
 		[Desc("Allow multiple (infantry) units in one cell.")]
 		public readonly bool SharesCell = false;
+
+		[Desc("Can the actor be ordered to move in to shroud?")]
+		public readonly bool MoveIntoShroud = true;
 
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -373,8 +384,13 @@ namespace OpenRA.Mods.RA.Move
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Move")
+			{
+				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+					return;
+
 				PerformMove(self, self.World.Map.Clamp(order.TargetLocation),
 					order.Queued && !self.IsIdle);
+			}
 
 			if (order.OrderString == "Stop")
 				self.CancelActivity();
@@ -559,13 +575,14 @@ namespace OpenRA.Mods.RA.Move
 
 				var location = self.World.Map.CellContaining(target.CenterPosition);
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-				cursor = "move";
 
-				if (self.Owner.Shroud.IsExplored(location))
-					cursor = self.World.Map.GetTerrainInfo(location).CustomCursor ?? cursor;
+				var explored = self.Owner.Shroud.IsExplored(location);
+				cursor = self.World.Map.Contains(location) ?
+					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") :
+					"move-blocked";
 
-				if (!self.World.Map.Contains(location) || (self.Owner.Shroud.IsExplored(location) &&
-						unitType.MovementCostForCell(self.World, location) == int.MaxValue))
+				if ((!explored && !unitType.MoveIntoShroud) ||
+					(explored && unitType.MovementCostForCell(self.World, location) == int.MaxValue))
 					cursor = "move-blocked";
 
 				return true;

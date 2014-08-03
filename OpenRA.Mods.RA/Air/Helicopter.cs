@@ -56,11 +56,16 @@ namespace OpenRA.Mods.RA.Air
 			if (order.OrderString == "Move")
 			{
 				var cell = self.World.Map.Clamp(order.TargetLocation);
-				var t = Target.FromCell(self.World, cell);
+				var explored = self.Owner.Shroud.IsExplored(cell);
 
-				self.SetTargetLine(t, Color.Green);
+				if (!explored && !Info.MoveIntoShroud)
+					return;
+
+				var target = Target.FromCell(self.World, cell);
+
+				self.SetTargetLine(target, Color.Green);
 				self.CancelActivity();
-				self.QueueActivity(new HeliFly(self, t));
+				self.QueueActivity(new HeliFly(self, target));
 
 				if (Info.LandWhenIdle)
 				{

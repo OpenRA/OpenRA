@@ -71,13 +71,18 @@ namespace OpenRA.Mods.RA.Air
 		{
 			if (order.OrderString == "Move")
 			{
+				var cell = self.World.Map.Clamp(order.TargetLocation);
+				var explored = self.Owner.Shroud.IsExplored(cell);
+
+				if (!explored && !Info.MoveIntoShroud)
+					return;
+
 				UnReserve();
 
-				var cell = self.World.Map.Clamp(order.TargetLocation);
-				var t = Target.FromCell(self.World, cell);
-				self.SetTargetLine(t, Color.Green);
+				var target = Target.FromCell(self.World, cell);
+				self.SetTargetLine(target, Color.Green);
 				self.CancelActivity();
-				self.QueueActivity(new Fly(self, t));
+				self.QueueActivity(new Fly(self, target));
 				self.QueueActivity(new FlyCircle());
 			}
 			else if (order.OrderString == "Enter")
