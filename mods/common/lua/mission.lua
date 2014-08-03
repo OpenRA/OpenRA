@@ -1,22 +1,18 @@
 Mission = { }
 
-Mission.MissionOver = function(winners, losers, setWinStates)
+Mission.MissionOver = function(winners, losers)
 	World:SetLocalPauseState(true)
 	World:set_PauseStateLocked(true)
 	if winners then
 		for i, player in ipairs(winners) do
 			Media.PlaySpeechNotification("Win", player)
-			if setWinStates then
-				OpenRA.SetWinState(player, "Won")
-			end
+			OpenRA.SetWinState(player, "Won")
 		end
 	end
 	if losers then
 		for i, player in ipairs(losers) do
 			Media.PlaySpeechNotification("Lose", player)
-			if setWinStates then
-				OpenRA.SetWinState(player, "Lost")
-			end
+			OpenRA.SetWinState(player, "Lost")
 		end
 	end
 	Mission.MissionIsOver = true

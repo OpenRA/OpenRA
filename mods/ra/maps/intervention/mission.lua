@@ -264,9 +264,9 @@ WorldLoaded = function()
 end
 
 MissionFailed = function()
-	Mission.MissionOver(nil, { player }, false)
+	Mission.MissionOver(nil, { player })
 end
 
 MissionAccomplished = function()
-	Mission.MissionOver({ player }, nil, false)
+	Mission.MissionOver({ player }, nil)
 end
