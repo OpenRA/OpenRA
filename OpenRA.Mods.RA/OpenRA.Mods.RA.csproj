@@ -190,7 +190,6 @@
     <Compile Include="Chronoshiftable.cs" />
     <Compile Include="Cloak.cs" />
     <Compile Include="ConquestVictoryConditions.cs" />
-    <Compile Include="ContainsCrate.cs" />
     <Compile Include="Crate.cs" />
     <Compile Include="CrateAction.cs" />
     <Compile Include="CrateSpawner.cs" />

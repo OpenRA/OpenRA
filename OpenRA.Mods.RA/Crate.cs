@@ -22,12 +22,15 @@ namespace OpenRA.Mods.RA
 		[Desc("Seconds")]
 		public readonly int Lifetime = 5;
 
+		[Desc("Allowed to land on.")]
 		public readonly string[] TerrainTypes = { };
+
+		[Desc("Define actors that can collect crates by setting this into the Crushes field from the Mobile trait.")]
+		public readonly string CrushClass = "crate";
 
 		public object Create(ActorInitializer init) { return new Crate(init, this); }
 	}
 
-	// ITeleportable is required for paradrop
 	class Crate : ITick, IPositionable, ICrushable, ISync, INotifyParachuteLanded, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly Actor self;
@@ -128,7 +131,7 @@ namespace OpenRA.Mods.RA
 
 		public bool CrushableBy(string[] crushClasses, Player owner)
 		{
-			return crushClasses.Contains("crate");
+			return crushClasses.Contains(info.CrushClass);
 		}
 
 		public void AddedToWorld(Actor self)

@@ -354,6 +354,16 @@ namespace OpenRA.Utility
 					}
 				}
 
+				if (engineVersion < 20140803)
+				{
+					// ContainsCrate was removed (use LeavesHusk instead)
+					if (depth == 1 && node.Key == "ContainsCrate")
+					{
+						node.Key = "LeavesHusk";
+						node.Value.Nodes.Add(new MiniYamlNode("HuskActor", new MiniYaml("crate")));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
