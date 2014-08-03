@@ -533,6 +533,8 @@ namespace OpenRA.Mods.RA.Server
 
 						server.LobbyInfo.GlobalSettings.Difficulty = s;
 						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} changed difficulty to {1}.".F(client.Name, s));
+
 						return true;
 					}},
 				{ "startingunits",
