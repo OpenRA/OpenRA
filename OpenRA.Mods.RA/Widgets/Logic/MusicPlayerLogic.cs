@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollItemWidget itemTemplate;
 
 		[ObjectCreator.UseCtor]
-		public MusicPlayerLogic(Widget widget, Ruleset modRules, Action onExit)
+		public MusicPlayerLogic(Widget widget, Ruleset modRules, World world, Action onExit)
 		{
 			this.modRules = modRules;
 
@@ -84,6 +84,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var installButton = widget.GetOrNull<ButtonWidget>("INSTALL_BUTTON");
 			if (installButton != null)
 			{
+				installButton.IsDisabled = () => !world.IsShellmap;
 				var args = new string[] { "Launch.Window=INSTALL_MUSIC_PANEL" };
 				installButton.OnClick = () =>
 				{

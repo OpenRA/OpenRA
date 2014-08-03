@@ -68,6 +68,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs()
 				{
 					{ "onExit", () => hideButtons = false },
+					{ "world", world }
 				});
 			};
 

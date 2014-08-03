@@ -111,6 +111,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs
 				{
 					{ "onExit", () => menuType = MenuType.Extras },
+					{ "world", world }
 				});
 			};
 
