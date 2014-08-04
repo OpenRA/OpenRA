@@ -37,6 +37,9 @@ namespace OpenRA.Mods.RA
 		public readonly string[] ShorePieces = {"br1", "br2"};
 		public readonly int[] NorthOffset = null;
 		public readonly int[] SouthOffset = null;
+		
+		[Desc("The name of the weapon to use when demolishing the bridge")]
+		public readonly string DemolishWeapon = "Demolish";
 
 		public object Create(ActorInitializer init) { return new Bridge(init.self, this); }
 
@@ -295,7 +298,7 @@ namespace OpenRA.Mods.RA
 			var initialDamage = Health.DamageState;
 			self.World.AddFrameEndTask(w =>
 			{
-				var weapon = saboteur.World.Map.Rules.Weapons["demolish"];
+				var weapon = saboteur.World.Map.Rules.Weapons[Info.DemolishWeapon.ToLowerInvariant()];
 				weapon.Impact(self.CenterPosition, saboteur, 1f);
 				self.World.WorldActor.Trait<ScreenShaker>().AddEffect(15, self.CenterPosition, 6);
 				self.Kill(saboteur);

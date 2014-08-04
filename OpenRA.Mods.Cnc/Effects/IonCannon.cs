@@ -25,17 +25,30 @@ namespace OpenRA.Mods.Cnc.Effects
 		readonly string palette;
 		readonly string weapon;
 
-		public IonCannon(Player firedBy, string weapon, World world, CPos location, string effect, string palette)
+		int weaponDelay;
+		bool impacted = false;
+
+		public IonCannon(Player firedBy, string weapon, World world, CPos location, string effect, string palette, int delay)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
 			this.palette = palette;
+			weaponDelay = delay;
 			target = Target.FromCell(world, location);
 			anim = new Animation(world, effect);
 			anim.PlayThen("idle", () => Finish(world));
 		}
 
-		public void Tick(World world) { anim.Tick(); }
+		public void Tick(World world)
+		{
+			anim.Tick();
+			if (!impacted && weaponDelay-- <= 0)
+			{
+				var weapon = world.Map.Rules.Weapons[this.weapon.ToLowerInvariant()];
+				weapon.Impact(target.CenterPosition, firedBy.PlayerActor, 1f);
+				impacted = true;
+			}
+		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
@@ -45,8 +58,6 @@ namespace OpenRA.Mods.Cnc.Effects
 		void Finish(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			var weapon = world.Map.Rules.Weapons[this.weapon.ToLowerInvariant()];
-			weapon.Impact(target.CenterPosition, firedBy.PlayerActor, 1f);
 		}
 	}
 }
