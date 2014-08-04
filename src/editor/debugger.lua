@@ -454,6 +454,8 @@ local function stoppedAtBreakpoint(file, line)
 end
 
 local function mapRemotePath(basedir, file, line, method)
+  if not file then return end
+
   -- file is /foo/bar/my.lua; basedir is d:\local\path\
   -- check for d:\local\path\my.lua, d:\local\path\bar\my.lua, ...
   -- wxwidgets on Windows handles \\ and / as separators, but on OSX
@@ -631,10 +633,11 @@ debugger.listen = function(start)
             ..":\n"..err)
           return debugger.terminate()
         elseif options.runstart then
-          local file = mapRemotePath(basedir, file, line, activate.CHECKONLY) or file
+          local file = (mapRemotePath(basedir, file, line or 0, activate.CHECKONLY)
+            or file or startfile)
 
-          if stoppedAtBreakpoint(file or startfile, line or 0) then
-            activateDocument(file or startfile, line or 0)
+          if stoppedAtBreakpoint(file, line or 0) then
+            activateDocument(file, line or 0)
             options.runstart = false
           end
         elseif file and line then
