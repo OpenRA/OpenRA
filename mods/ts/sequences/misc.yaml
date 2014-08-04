@@ -159,10 +159,16 @@ explosion:
 	large_watersplash: h2o_exp1
 		Start: 0
 		Length: *
+	water_piff: w_piff
+		Start: 0
+		Length: *
+	water_piffs: w_piffs
+		Start: 0
+		Length: *
 	piff: piff
 		Start: 0
 		Length: *
-	piffpiff: piffpiff
+	piffs: piffpiff
 		Start: 0
 		Length: *
 	small_explosion: explosml

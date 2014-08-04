@@ -16,7 +16,10 @@ Colt45:
 			Concrete: 0%
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
-		WaterExplosion: water_piff
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piff
+		ValidImpactTypes: Water
 
 ZSU-23:
 	Burst: 2
@@ -56,7 +59,10 @@ Vulcan:
 			Concrete: 25%
 	Warhead@2Eff_1: CreateEffect
 		Explosion: piffs
-		WaterExplosion: water_piffs
+		InvalidImpactTypes: Water
+	Warhead@2Eff_1Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 	Warhead@3Dam_2: SpreadDamage
 		Spread: 128
 		Damage: 10
@@ -69,7 +75,11 @@ Vulcan:
 			Concrete: 25%
 	Warhead@4Eff_2: CreateEffect
 		Explosion: piffs
-		WaterExplosion: water_piffs
+		InvalidImpactTypes: Water
+		Delay: 2
+	Warhead@4Eff_2Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 		Delay: 2
 	Warhead@5Dam_3: SpreadDamage
 		Spread: 128
@@ -83,7 +93,11 @@ Vulcan:
 			Concrete: 25%
 	Warhead@6Eff_3: CreateEffect
 		Explosion: piffs
-		WaterExplosion: water_piffs
+		InvalidImpactTypes: Water
+		Delay: 4
+	Warhead@6Eff_3Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 		Delay: 4
 	Warhead@7Dam_4: SpreadDamage
 		Spread: 128
@@ -97,7 +111,11 @@ Vulcan:
 			Concrete: 25%
 	Warhead@8Eff_4: CreateEffect
 		Explosion: piffs
-		WaterExplosion: water_piffs
+		InvalidImpactTypes: Water
+		Delay: 6
+	Warhead@8Eff_4Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 		Delay: 6
 	Warhead@9Dam_5: SpreadDamage
 		Spread: 128
@@ -111,7 +129,11 @@ Vulcan:
 			Concrete: 25%
 	Warhead@10Eff_5: CreateEffect
 		Explosion: piffs
-		WaterExplosion: water_piffs
+		InvalidImpactTypes: Water
+		Delay: 8
+	Warhead@10Eff_5Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 		Delay: 8
 	Warhead@11Dam_6: SpreadDamage
 		Spread: 128
@@ -125,7 +147,11 @@ Vulcan:
 			Concrete: 25%
 	Warhead@12Eff_6: CreateEffect
 		Explosion: piffs
-		WaterExplosion: water_piffs
+		InvalidImpactTypes: Water
+		Delay: 10
+	Warhead@12Eff_6Water: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 		Delay: 10
 
 Maverick:
@@ -158,9 +184,12 @@ Maverick:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
-		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: med_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 FireballLauncher:
 	ROF: 65
@@ -185,7 +214,6 @@ FireballLauncher:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosion: napalm
-		WaterExplosion: napalm
 		ImpactSound: firebl3.aud
 
 Flamer:
@@ -213,7 +241,6 @@ Flamer:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosion: small_napalm
-		WaterExplosion: small_napalm
 		ImpactSound: firebl3.aud
 
 ChainGun:
@@ -236,7 +263,10 @@ ChainGun:
 			Concrete: 25%
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
-		WaterExplosion: water_piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 ChainGun.Yak:
 	ROF: 3
@@ -257,7 +287,10 @@ ChainGun.Yak:
 			Concrete: 25%
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
-		WaterExplosion: water_piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 Pistol:
 	ROF: 7
@@ -276,7 +309,10 @@ Pistol:
 			Concrete: 25%
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
-		WaterExplosion: water_piff
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piff
+		ValidImpactTypes: Water
 
 M1Carbine:
 	ROF: 20
@@ -295,7 +331,10 @@ M1Carbine:
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
-		WaterExplosion: water_piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 Dragon:
 	ROF: 50
@@ -325,9 +364,12 @@ Dragon:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
-		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: med_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 HellfireAG:
 	ROF: 60
@@ -358,9 +400,12 @@ HellfireAG:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
-		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: med_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 HellfireAA:
 	ROF: 60
@@ -391,8 +436,12 @@ HellfireAA:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion_air
-		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: med_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 Grenade:
 	ROF: 60
@@ -417,9 +466,12 @@ Grenade:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
-		WaterExplosion: small_splash
 		ImpactSound: kaboom25.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 25mm:
 	ROF: 13
@@ -439,9 +491,12 @@ Grenade:
 			Concrete: 30%
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-	Warhead@3Eff: CreateEffect
+	Warhead@3EffGround: CreateEffect
 		Explosion: small_explosion
-		WaterExplosion: small_splash
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ValidImpactTypes: Water
 
 90mm:
 	ROF: 50
@@ -461,11 +516,14 @@ Grenade:
 			Concrete: 50%
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-	Warhead@3Eff: CreateEffect
+	Warhead@3EffGround: CreateEffect
 		Explosion: small_explosion
-		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 105mm:
 	ROF: 70
@@ -487,11 +545,14 @@ Grenade:
 			Concrete: 50%
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-	Warhead@3Eff: CreateEffect
+	Warhead@3EffGround: CreateEffect
 		Explosion: small_explosion
-		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 120mm:
 	ROF: 90
@@ -513,11 +574,14 @@ Grenade:
 			Concrete: 50%
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-	Warhead@3Eff: CreateEffect
+	Warhead@3EffGround: CreateEffect
 		Explosion: small_explosion
-		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 TurretGun:
 	ROF: 30
@@ -537,11 +601,14 @@ TurretGun:
 			Concrete: 50%
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-	Warhead@3Eff: CreateEffect
+	Warhead@3EffGround: CreateEffect
 		Explosion: small_explosion
-		WaterExplosion: small_splash
 		ImpactSound: kaboom12.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 MammothTusk:
 	ROF: 60
@@ -569,11 +636,18 @@ MammothTusk:
 			Heavy: 25%
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-	Warhead@3Eff: CreateEffect
+	Warhead@3EffGround: CreateEffect
+		Explosion: med_explosion
+		ImpactSound: kaboom12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
+	Warhead@5EffAir: CreateEffect
 		Explosion: med_explosion_air
-		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
-		WaterImpactSound: splash9.aud
+		ValidImpactTypes: Air, AirHit
 
 155mm:
 	ROF: 85
@@ -601,9 +675,12 @@ MammothTusk:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: artillery_explosion
-		WaterExplosion: med_splash
 		ImpactSound: kaboom15.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: med_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 M60mg:
 	ROF: 30
@@ -623,7 +700,10 @@ M60mg:
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
-		WaterExplosion: water_piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 Napalm:
 	ROF: 20
@@ -645,9 +725,12 @@ Napalm:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosion: napalm
-		WaterExplosion: med_splash
 		ImpactSound: firebl3.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4Eff: CreateEffect
+		Explosion: med_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 CrateNapalm:
 	Warhead@1Dam: SpreadDamage
@@ -663,7 +746,6 @@ CrateNapalm:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosion: napalm
-		WaterExplosion: napalm
 		ImpactSound: firebl3.aud
 
 CrateExplosion:
@@ -678,7 +760,6 @@ CrateExplosion:
 			Heavy: 25%
 	Warhead@2Eff: CreateEffect
 		Explosion: self_destruct
-		WaterExplosion: self_destruct
 		ImpactSound: kaboom15.aud
 
 CrateNuke:
@@ -694,7 +775,6 @@ CrateNuke:
 	Warhead@2Res_impact: DestroyResource
 	Warhead@3Eff_impact: CreateEffect
 		Explosion: nuke
-		WaterExplosion: nuke
 		ImpactSound: kaboom1.aud
 	Warhead@4Dam_areanuke: PerCellDamage
 		Size: 5,4
@@ -822,9 +902,12 @@ RedEye:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: artillery_explosion
-		WaterExplosion: large_splash
 		ImpactSound: kaboom15.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 SubMissile:
 	ROF: 300
@@ -851,9 +934,12 @@ SubMissile:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: artillery_explosion
-		WaterExplosion: large_splash
 		ImpactSound: kaboom15.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 Stinger:
 	ROF: 60
@@ -884,9 +970,16 @@ Stinger:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
-		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@5EffAir: CreateEffect
+		Explosion: med_explosion_air
+		ImpactSound: kaboom25.aud
+		ValidImpactTypes: Air, AirHit
+	Warhead@4EffWater: CreateEffect
+		Explosion: med_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 TorpTube:
 	ROF: 100
@@ -917,9 +1010,16 @@ TorpTube:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: large_explosion
-		WaterExplosion: large_splash
-		ImpactSound: kaboom12.aud
-		WaterImpactSound: splash9.aud
+		ImpactSound: kaboom15.aud
+		InvalidImpactTypes: Water, WaterHit
+	Warhead@4EffWaterHit: CreateEffect
+		Explosion: artillery_explosion
+		ImpactSound: kaboom15.aud
+		ValidImpactTypes: WaterHit
+	Warhead@5EffWater: CreateEffect
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 2Inch:
 	ROF: 60
@@ -941,9 +1041,12 @@ TorpTube:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: small_explosion
-		WaterExplosion: med_splash
 		ImpactSound: kaboom12.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 DepthCharge:
 	ROF: 60
@@ -967,8 +1070,12 @@ DepthCharge:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		WaterExplosion: large_splash
-		WaterImpactSound: splash9.aud
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+	Warhead@4EffHit: CreateEffect
+		Explosion: small_explosion
+		ImpactSound: kaboom15.aud
+		ValidImpactTypes: WaterHit
 
 ParaBomb:
 	ROF: 10
@@ -990,10 +1097,13 @@ ParaBomb:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: self_destruct
-		WaterExplosion: small_splash
+		Explosion: artillery_explosion
 		ImpactSound: kaboom15.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 DogJaw:
 	ValidTargets: Infantry
@@ -1061,7 +1171,10 @@ SilencedPPK:
 			Concrete: 0%
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
-		WaterExplosion: water_piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 SCUD:
 	ROF: 240
@@ -1090,9 +1203,13 @@ SCUD:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: napalm
-		WaterExplosion: large_splash
 		ImpactSound: firebl3.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
+
 
 Atomic:
 	ValidTargets: Ground, Water, Air
@@ -1109,7 +1226,6 @@ Atomic:
 		Size: 1
 	Warhead@4Eff_impact: CreateEffect
 		Explosion: nuke
-		WaterExplosion: nuke
 		ImpactSound: kaboom1.aud
 	Warhead@5Dam_areanuke1: SpreadDamage
 		Spread: 2c0
@@ -1183,7 +1299,6 @@ MiniNuke:
 		Size: 1
 	Warhead@3Eff_impact: CreateEffect
 		Explosion: nuke
-		WaterExplosion: nuke
 		ImpactSound: kaboom1.aud
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 2c0
@@ -1235,9 +1350,12 @@ UnitExplode:
 			Heavy: 25%
 	Warhead@2Eff: CreateEffect
 		Explosion: self_destruct
-		WaterExplosion: large_splash
 		ImpactSound: kaboom22.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 UnitExplodeShip:
 	Warhead@1Dam: SpreadDamage
@@ -1251,9 +1369,7 @@ UnitExplodeShip:
 			Heavy: 25%
 	Warhead@2Eff: CreateEffect
 		Explosion: building
-		WaterExplosion: building
 		ImpactSound: kaboom25.aud
-		WaterImpactSound: kaboom25.aud
 
 UnitExplodeSubmarine:
 	Warhead@1Dam: SpreadDamage
@@ -1266,8 +1382,8 @@ UnitExplodeSubmarine:
 			Light: 60%
 			Heavy: 25%
 	Warhead@2Eff: CreateEffect
-		WaterExplosion: large_splash
-		WaterImpactSound: splash9.aud
+		Explosion: large_splash
+		ImpactSound: splash9.aud
 
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
@@ -1281,9 +1397,12 @@ UnitExplodeSmall:
 			Heavy: 25%
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
-		WaterExplosion: large_splash
 		ImpactSound: kaboom15.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 BarrelExplode:
 	Warhead@1Dam: SpreadDamage
@@ -1379,8 +1498,14 @@ FLAK-23:
 			Heavy: 10%
 			Concrete: 20%
 	Warhead@2Eff: CreateEffect
+		Explosion: small_explosion
+		InvalidImpactTypes: Air, AirHit, Water
+	Warhead@3EffAir: CreateEffect
 		Explosion: small_explosion_air
-		WaterExplosion: small_splash
+		ValidImpactTypes: Air, AirHit
+	Warhead@4EffWater: CreateEffect
+		Explosion: small_splash
+		ValidImpactTypes: Water
 
 Sniper:
 	Report: GUN5.AUD
@@ -1427,9 +1552,12 @@ APTusk:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
-		WaterExplosion: med_splash
 		ImpactSound: kaboom25.aud
-		WaterImpactSound: splash9.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosion: med_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
 
 Claw:
 	ROF: 30
