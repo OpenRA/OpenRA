@@ -126,10 +126,6 @@ TileSets:
 	mods/cnc/tilesets/temperat.yaml
 	mods/cnc/tilesets/jungle.yaml
 
-SubCells:
-	Offsets: 0,0,0, -299,-256,0, 256,-256,0, 0,0,0, -299,256,0, 256,256,0
-	DefaultIndex: 3
-
 LoadScreen: CncLoadScreen
 	Image: mods/cnc/uibits/chrome.png
 	Text: Loading
