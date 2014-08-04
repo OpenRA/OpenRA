@@ -19,9 +19,6 @@ namespace OpenRA.Mods.RA
 {
 	public class CreateEffectWarhead : Warhead
 	{
-		[Desc("Size of the area. An explosion animation will be created in each tile.", "Provide 2 values for a ring effect (outer/inner).")]
-		public readonly int[] Size = { 0, 0 };
-
 		[Desc("Explosion effect to use.")]
 		public readonly string Explosion = null;
 
@@ -53,30 +50,19 @@ namespace OpenRA.Mods.RA
 			if (!world.Map.Contains(targetTile))
 				return;
 
-			var minRange = (Size.Length > 1 && Size[1] > 0) ? Size[1] : 0;
-			var allCells = world.Map.FindTilesInAnnulus(targetTile, minRange, Size[0]);
+			// TODO: #5937 should go in here after rebase.
+			var isWater = pos.Z <= 0 && world.Map.GetTerrainInfo(targetTile).IsWater;
+			var explosionType = isWater ? WaterExplosion : Explosion;
+			var explosionTypePalette = isWater ? WaterExplosionPalette : ExplosionPalette;
 
-			// Draw the effects
-			foreach (var currentCell in allCells)
-			{
-				var currentPos = world.Map.CenterOfCell(currentCell);
-				// TODO: #5937 should go in here after rebase.
-				var isWater = currentPos.Z <= 0 && world.Map.GetTerrainInfo(currentCell).IsWater;
-				var explosionType = isWater ? WaterExplosion : Explosion;
-				var explosionTypePalette = isWater ? WaterExplosionPalette : ExplosionPalette;
+			if (explosionType != null)
+				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, explosionType, explosionTypePalette)));
 
-				if (explosionType != null)
-					world.AddFrameEndTask(w => w.Add(new Explosion(w, currentPos, explosionType, explosionTypePalette)));
-			}
-
-			string sound = null;
+			var sound = ImpactSound;
 
 			var isTargetWater = pos.Z <= 0 && world.Map.GetTerrainInfo(targetTile).IsWater;
 			if (isTargetWater && WaterImpactSound != null)
 				sound = WaterImpactSound;
-
-			if (ImpactSound != null)
-				sound = ImpactSound;
 
 			Sound.Play(sound, pos);
 		}
