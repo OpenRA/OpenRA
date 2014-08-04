@@ -8,7 +8,8 @@ local ide = ide
 -- ----------------------------------------------------------------------------
 -- Initialize the wxConfig for loading/saving the preferences
 
-local settings = wx.wxFileConfig(GetIDEString("settingsapp"),GetIDEString("settingsvendor"))
+local settings = wx.wxFileConfig(GetIDEString("settingsapp"),
+  GetIDEString("settingsvendor"), ide.config.ini or "")
 ide.settings = settings
 
 local function settingsReadSafe(settings,what,default)
