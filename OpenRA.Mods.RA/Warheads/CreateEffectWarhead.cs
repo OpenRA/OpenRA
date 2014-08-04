@@ -25,21 +25,58 @@ namespace OpenRA.Mods.RA
 		[Desc("Palette to use for explosion effect.")]
 		public readonly string ExplosionPalette = "effect";
 
-		[Desc("Explosion effect on hitting water (usually a splash).")]
-		public readonly string WaterExplosion = null;
-
-		[Desc("Palette to use for effect on hitting water (usually a splash).")]
-		public readonly string WaterExplosionPalette = "effect";
-
 		[Desc("Sound to play on impact.")]
 		public readonly string ImpactSound = null;
 
-		[Desc("Sound to play on impact with water")]
-		public readonly string WaterImpactSound = null;
+		[Desc("What diplomatic stances are affected.")]
+		public readonly ImpactType[] ValidImpactTypes = { ImpactType.Ground, ImpactType.Water, ImpactType.Air, ImpactType.GroundHit, ImpactType.WaterHit, ImpactType.AirHit };
+
+		[Desc("What diplomatic stances are affected.")]
+		public readonly ImpactType[] InvalidImpactTypes = { };
 
 		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
 		{
 			DoImpact(target.CenterPosition, firedBy, firepowerModifier);
+		}
+
+		public static ImpactType GetImpactType(World world, CPos cell, WPos pos)
+		{
+			var isAir = pos.Z > 0;
+			var isWater = pos.Z <= 0 && world.Map.GetTerrainInfo(cell).IsWater;
+			var isDirectHit = GetDirectHit(world, cell, pos);
+
+			if (isAir && !isDirectHit)
+				return ImpactType.Air;
+
+			else if (isWater && !isDirectHit)
+				return ImpactType.Water;
+
+			else if (isAir && isDirectHit)
+				return ImpactType.AirHit;
+
+			else if (isWater && isDirectHit)
+				return ImpactType.WaterHit;
+
+			else if (isDirectHit)
+				return ImpactType.GroundHit;
+
+			return ImpactType.Ground;
+		}
+
+		public static bool GetDirectHit(World world, CPos cell, WPos pos)
+		{
+			foreach (var unit in world.ActorMap.GetUnitsAt(cell))
+			{
+				var healthInfo = unit.Info.Traits.GetOrDefault<HealthInfo>();
+				if (healthInfo == null)
+					continue;
+
+				// If the impact position is within any actor's health radius, we have a direct hit
+				if ((unit.CenterPosition - pos).LengthSquared <= healthInfo.Radius.Range * healthInfo.Radius.Range)
+					return true;
+			}
+
+			return false;
 		}
 
 		public void DoImpact(WPos pos, Actor firedBy, float firepowerModifier)
@@ -49,24 +86,27 @@ namespace OpenRA.Mods.RA
 
 			if (!world.Map.Contains(targetTile))
 				return;
+			
+			var isValid = IsValidImpact(pos, firedBy);
 
-			// TODO: #5937 should go in here after rebase.
-			var isWater = pos.Z <= 0 && world.Map.GetTerrainInfo(targetTile).IsWater;
-			var explosionType = isWater ? WaterExplosion : Explosion;
-			var explosionTypePalette = isWater ? WaterExplosionPalette : ExplosionPalette;
+			if ((Explosion != null) && isValid)
+				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, Explosion, ExplosionPalette)));
 
-			if (explosionType != null)
-				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, explosionType, explosionTypePalette)));
-
-			var sound = ImpactSound;
-
-			var isTargetWater = pos.Z <= 0 && world.Map.GetTerrainInfo(targetTile).IsWater;
-			if (isTargetWater && WaterImpactSound != null)
-				sound = WaterImpactSound;
-
-			Sound.Play(sound, pos);
+			if ((ImpactSound != null) && isValid)
+				Sound.Play(ImpactSound, pos);
 		}
 
 		public override float EffectivenessAgainst(ActorInfo ai) { return 1f; }
+
+		public bool IsValidImpact(WPos pos, Actor firedBy)
+		{
+			var world = firedBy.World;
+			var targetTile = world.Map.CellContaining(pos);
+			var impactType = GetImpactType(world, targetTile, pos);
+			if ((!ValidImpactTypes.Contains(impactType)) || (InvalidImpactTypes.Contains(impactType)))
+				return false;
+
+			return true;
+		}
 	}
 }
