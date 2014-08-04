@@ -649,8 +649,13 @@ MammothMissiles:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosion: small_poof
 		ImpactSound: xplos.aud
+		InvalidImpactTypes: Air, AirHit
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_building
+		ImpactSound: xplos.aud
+		ValidImpactTypes: Air, AirHit
 
 227mm:
 	ROF: 140
@@ -796,6 +801,11 @@ BoatMissile:
 	Warhead@3Eff: CreateEffect
 		Explosion: small_poof
 		ImpactSound: xplos.aud
+		InvalidImpactTypes: Air, AirHit
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_building
+		ImpactSound: xplos.aud
+		ValidImpactTypes: Air, AirHit
 
 TowerMissle:
 	ROF: 15
@@ -867,7 +877,6 @@ Napalm:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosion: med_napalm
-		WaterExplosion: med_napalm
 		ImpactSound: flamer2.aud
 
 Napalm.Crate:
@@ -929,7 +938,7 @@ SAMMissile:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosion: small_building
 		ImpactSound: xplos.aud
 
 HonestJohn:
@@ -1025,7 +1034,7 @@ APCGun.AA:
 		Versus:
 			Heavy: 50%
 	Warhead@2Eff: CreateEffect
-		Explosion: small_poof
+		Explosion: small_frag
 
 Patriot:
 	ROF: 25
