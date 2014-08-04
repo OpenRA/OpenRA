@@ -457,8 +457,8 @@ Rules:
 		PlayMusicOnMapLoad:
 			Music: aoi
 			Loop: false
-		LuaScriptInterface:
-			LuaScripts: gdi01.lua
+		LuaScript:
+			Scripts: gdi01.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	Player:
