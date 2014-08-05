@@ -28,10 +28,10 @@ namespace OpenRA.Mods.RA
 		[Desc("Sound to play on impact.")]
 		public readonly string ImpactSound = null;
 
-		[Desc("What diplomatic stances are affected.")]
+		[Desc("What impact types should this effect apply to.")]
 		public readonly ImpactType[] ValidImpactTypes = { ImpactType.Ground, ImpactType.Water, ImpactType.Air, ImpactType.GroundHit, ImpactType.WaterHit, ImpactType.AirHit };
 
-		[Desc("What diplomatic stances are affected.")]
+		[Desc("What impact types should this effect NOT apply to.", "Overrides ValidImpactTypes.")]
 		public readonly ImpactType[] InvalidImpactTypes = { };
 
 		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
