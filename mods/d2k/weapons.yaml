@@ -37,6 +37,7 @@ Bazooka:
 		Spread: 96
 		Damage: 50
 		InfDeath: 4
+		ValidTargets: Ground
 		Versus:
 			None: 10%
 			Wood: 75%
@@ -85,6 +86,7 @@ Vulcan:
 		Spread: 96
 		Damage: 30
 		InfDeath: 2
+		ValidTargets: Ground, Air
 		Versus:
 			Wood: 0%
 			Light: 60%
@@ -110,6 +112,7 @@ Slung:
 		Spread: 192
 		Damage: 30
 		InfDeath: 4
+		ValidTargets: Ground
 		Versus:
 			None: 0%
 			Wood: 75%
@@ -186,6 +189,7 @@ QuadRockets:
 		Spread: 96
 		Damage: 25
 		InfDeath: 4
+		ValidTargets: Ground, Air
 		Versus:
 			None: 35%
 			Wood: 45%
@@ -245,6 +249,7 @@ TowerMissile:
 		Spread: 384
 		Damage: 50
 		InfDeath: 3
+		ValidTargets: Ground, Air
 		Versus:
 			None: 50%
 			Wood: 45%
@@ -347,6 +352,7 @@ DevBullet:
 		Spread: 384
 		Damage: 60
 		InfDeath: 4
+		ValidTargets: Ground
 		Versus:
 			None: 20%
 			Wood: 50%

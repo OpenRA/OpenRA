@@ -34,6 +34,7 @@ ZSU-23:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 12
+		ValidTargets: Air
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -175,6 +176,7 @@ Maverick:
 		Spread: 128
 		Damage: 70
 		InfDeath: 4
+		ValidTargets: Ground, Water
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -355,6 +357,7 @@ Dragon:
 		Spread: 128
 		Damage: 50
 		InfDeath: 4
+		ValidTargets: Ground, Water
 		Versus:
 			None: 10%
 			Wood: 75%
@@ -391,6 +394,7 @@ HellfireAG:
 		Spread: 128
 		Damage: 60
 		InfDeath: 4
+		ValidTargets: Ground, Water
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -427,6 +431,7 @@ HellfireAA:
 		Spread: 128
 		Damage: 40
 		InfDeath: 4
+		ValidTargets: Air
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -567,6 +572,7 @@ Grenade:
 		Spread: 128
 		Damage: 60
 		InfDeath: 4
+		InvalidTargets: Air, Infantry
 		Versus:
 			None: 20%
 			Wood: 75%
@@ -629,6 +635,7 @@ MammothTusk:
 		Spread: 256
 		Damage: 50
 		InfDeath: 3
+		ValidTargets: Air, Infantry
 		Versus:
 			None: 100%
 			Wood: 75%
@@ -777,7 +784,7 @@ CrateNuke:
 		Explosion: nuke
 		ImpactSound: kaboom1.aud
 	Warhead@4Dam_areanuke: PerCellDamage
-		Size: 5,4
+		Size: 5
 		Damage: 250
 		InfDeath: 5
 		Delay: 4
@@ -837,6 +844,7 @@ Nike:
 		Spread: 128
 		Damage: 50
 		InfDeath: 3
+		ValidTargets: Air
 		Versus:
 			None: 90%
 			Wood: 0%
@@ -866,6 +874,7 @@ RedEye:
 		Spread: 128
 		Damage: 40
 		InfDeath: 3
+		ValidTargets: Air
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -961,6 +970,7 @@ Stinger:
 		Spread: 128
 		Damage: 30
 		InfDeath: 4
+		ValidTargets: Air, Ground, Water
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -1001,6 +1011,7 @@ TorpTube:
 		Spread: 426
 		Damage: 180
 		InfDeath: 4
+		ValidTargets: Water, Underwater, Bridge
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -1062,6 +1073,7 @@ DepthCharge:
 		Spread: 128
 		Damage: 80
 		InfDeath: 4
+		ValidTargets: Underwater
 		Versus:
 			None: 30%
 			Wood: 75%
@@ -1114,6 +1126,7 @@ DogJaw:
 		Spread: 213
 		Damage: 100
 		InfDeath: 1
+		ValidTargets: Infantry
 		Versus:
 			Wood: 0%
 			Light: 0%
@@ -1147,6 +1160,7 @@ Repair:
 		Spread: 213
 		Damage: -20
 		InfDeath: 1
+		ValidTargets: Repair
 		Versus:
 			None: 0%
 			Wood: 0%
@@ -1217,6 +1231,7 @@ Atomic:
 		Spread: 1c0
 		Damage: 1500
 		InfDeath: 5
+		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25%
 	Warhead@2Res_impact: DestroyResource
@@ -1232,6 +1247,7 @@ Atomic:
 		Damage: 600
 		InfDeath: 5
 		Delay: 5
+		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25%
 	Warhead@6Res_areanuke1: DestroyResource
@@ -1249,6 +1265,7 @@ Atomic:
 		Damage: 600
 		InfDeath: 5
 		Delay: 10
+		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25%
 	Warhead@10Res_areanuke2: DestroyResource
@@ -1263,6 +1280,7 @@ Atomic:
 		Damage: 600
 		InfDeath: 5
 		Delay: 15
+		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25%
 	Warhead@13Res_areanuke3: DestroyResource
@@ -1277,6 +1295,7 @@ Atomic:
 		Damage: 600
 		InfDeath: 5
 		Delay: 20
+		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25%
 	Warhead@16Res_areanuke4: DestroyResource
@@ -1293,6 +1312,7 @@ MiniNuke:
 		Spread: 1c0
 		Damage: 1500
 		InfDeath: 5
+		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25%
 	Warhead@2Res_impact: DestroyResource
@@ -1305,6 +1325,7 @@ MiniNuke:
 		Damage: 600
 		InfDeath: 5
 		Delay: 5
+		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25%
 	Warhead@5Res_areanuke1: DestroyResource
@@ -1318,6 +1339,7 @@ MiniNuke:
 		Damage: 600
 		InfDeath: 5
 		Delay: 10
+		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25%
 	Warhead@8Res_areanuke2: DestroyResource
@@ -1328,6 +1350,7 @@ MiniNuke:
 		Damage: 600
 		InfDeath: 5
 		Delay: 15
+		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25%
 	Warhead@10Res_areanuke3: DestroyResource
@@ -1491,6 +1514,7 @@ FLAK-23:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 20
+		ValidTargets: Air, Ground, Water
 		Versus:
 			None: 40%
 			Wood: 10%
@@ -1543,6 +1567,7 @@ APTusk:
 		Spread: 128
 		Damage: 30
 		InfDeath: 4
+		ValidTargets: Ground, Water
 		Versus:
 			None: 25%
 			Wood: 75%
@@ -1594,30 +1619,24 @@ Mandible:
 MADTankThump:
 	InvalidTargets: MADTank
 	Warhead@1Dam: HealthPercentageDamage
-		Spread: 7c0,6c0
+		Spread: 7c0
 		Damage: 1
-		Versus:
-			None: 0%
-	Warhead@2Dam: SpreadDamage
-		Damage: 1
+		InvalidTargets: MADTank
 		Versus:
 			None: 0%
 
 MADTankDetonate:
 	InvalidTargets: MADTank
 	Warhead@1Dam: HealthPercentageDamage
-		Spread: 7c0,6c0
+		Spread: 7c0
 		Damage: 19
+		InvalidTargets: MADTank
 		Versus:
 			None: 0%
-	Warhead@2Dam: SpreadDamage
-		Damage: 19
-		Versus:
-			None: 0%
-	Warhead@3Smu: LeaveSmudge
+	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 		Size: 7,6
-	Warhead@4Eff: CreateEffect
+	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 		ImpactSound: mineblo1.aud
 
