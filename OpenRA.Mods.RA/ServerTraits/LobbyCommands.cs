@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -95,7 +96,8 @@ namespace OpenRA.Mods.RA.Server
 						CheckAutoStart(server);
 
 						return true;
-					}},
+					}
+				},
 				{ "startgame",
 					s =>
 					{
@@ -111,17 +113,20 @@ namespace OpenRA.Mods.RA.Server
 							server.SendOrderTo(conn, "Message", "Unable to start the game until required slots are full.");
 							return true;
 						}
+
 						server.StartGame();
 						return true;
-					}},
+					}
+				},
 				{ "slot",
 					s =>
 					{
 						if (!server.LobbyInfo.Slots.ContainsKey(s))
 						{
-							Log.Write("server", "Invalid slot: {0}", s );
+							Log.Write("server", "Invalid slot: {0}", s);
 							return false;
 						}
+
 						var slot = server.LobbyInfo.Slots[s];
 
 						if (slot.Closed || server.LobbyInfo.ClientInSlot(s) != null)
@@ -133,7 +138,8 @@ namespace OpenRA.Mods.RA.Server
 						CheckAutoStart(server);
 
 						return true;
-					}},
+					}
+				},
 				{ "allow_spectators",
 					s =>
 					{
@@ -147,7 +153,8 @@ namespace OpenRA.Mods.RA.Server
 							server.SendOrderTo(conn, "Message", "Malformed allow_spectate command");
 							return true;
 						}
-					}},
+					}
+				},
 				{ "spectate",
 					s =>
 					{
@@ -161,7 +168,8 @@ namespace OpenRA.Mods.RA.Server
 						}
 						else
 							return false;
-					}},
+					}
+				},
 				{ "slot_close",
 					s =>
 					{
@@ -194,11 +202,12 @@ namespace OpenRA.Mods.RA.Server
 						server.LobbyInfo.Slots[s].Closed = true;
 						server.SyncLobbySlots();
 						return true;
-					}},
+					}
+				},
 				{ "slot_open",
 					s =>
 					{
-						if (!ValidateSlotCommand( server, conn, client, s, true ))
+						if (!ValidateSlotCommand(server, conn, client, s, true))
 							return false;
 
 						var slot = server.LobbyInfo.Slots[s];
@@ -213,10 +222,11 @@ namespace OpenRA.Mods.RA.Server
 							var ping = server.LobbyInfo.PingFromClient(occupant);
 							server.LobbyInfo.ClientPings.Remove(ping);
 						}
-						server.SyncLobbyClients();
 
+						server.SyncLobbyClients();
 						return true;
-					}},
+					}
+				},
 				{ "slot_bot",
 					s =>
 					{
@@ -239,6 +249,7 @@ namespace OpenRA.Mods.RA.Server
 							Log.Write("server", "Invalid bot controller client index: {0}", parts[1]);
 							return false;
 						}
+
 						var botType = parts.Skip(2).JoinWith(" ");
 
 						// Invalid slot
@@ -265,11 +276,17 @@ namespace OpenRA.Mods.RA.Server
 								BotControllerClientIndex = controllerClientIndex
 							};
 
-							// pick a random color for the bot
-							var hue = (byte)server.Random.Next(255);
-							var sat = (byte)server.Random.Next(255);
-							var lum = (byte)server.Random.Next(51,255);
-							bot.Color = bot.PreferredColor = new HSLColor(hue, sat, lum);
+							// Pick a random color for the bot
+							HSLColor botColor;
+							do
+							{
+								var hue = (byte)server.Random.Next(255);
+								var sat = (byte)server.Random.Next(255);
+								var lum = (byte)server.Random.Next(51, 255);
+								botColor = new HSLColor(hue, sat, lum);
+							} while (!ColorValidator.ValidatePlayerNewColor(server, botColor.RGB, bot.Index));
+
+							bot.Color = bot.PreferredColor = botColor;
 
 							server.LobbyInfo.Clients.Add(bot);
 						}
@@ -284,7 +301,8 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyClients();
 						server.SyncLobbySlots();
 						return true;
-					}},
+					}
+				},
 				{ "map",
 					s =>
 					{
@@ -335,12 +353,19 @@ namespace OpenRA.Mods.RA.Server
 								server.LobbyInfo.Clients.Remove(c);
 						}
 
+						foreach (var c in server.LobbyInfo.Clients)
+						{
+							// Validate if color is allowed and get an alternative it it isn't
+							c.Color = c.PreferredColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, c.Color, c.Index, conn);
+						}
+
 						server.SyncLobbyInfo();
 
 						server.SendMessage("{0} changed the map to {1}.".F(client.Name, server.Map.Title));
 
 						return true;
-					}},
+					}
+				},
 				{ "fragilealliance",
 					s =>
 					{
@@ -362,7 +387,8 @@ namespace OpenRA.Mods.RA.Server
 							.F(client.Name, server.LobbyInfo.GlobalSettings.FragileAlliances ? "enabled" : "disabled"));
 
 						return true;
-					}},
+					}
+				},
 				{ "allowcheats",
 					s =>
 					{
@@ -384,7 +410,8 @@ namespace OpenRA.Mods.RA.Server
 							.F(client.Name, server.LobbyInfo.GlobalSettings.AllowCheats ? "allowed" : "disallowed"));
 
 						return true;
-					}},
+					}
+				},
 				{ "shroud",
 					s =>
 					{
@@ -406,7 +433,8 @@ namespace OpenRA.Mods.RA.Server
 							.F(client.Name, server.LobbyInfo.GlobalSettings.Shroud ? "enabled" : "disabled"));
 
 						return true;
-					}},
+					}
+				},
 				{ "fog",
 					s =>
 					{
@@ -422,14 +450,14 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Fog);
 						server.SyncLobbyGlobalSettings();
 						server.SendMessage("{0} {1} Fog of War."
 							.F(client.Name, server.LobbyInfo.GlobalSettings.Fog ? "enabled" : "disabled"));
 
 						return true;
-					}},
+					}
+				},
 				{ "assignteams",
 					s =>
 					{
@@ -463,14 +491,14 @@ namespace OpenRA.Mods.RA.Server
 							// Humans vs Bots
 							else if (teamCount == 1)
 								player.Team = player.Bot == null ? 1 : 2;
-
 							else
 								player.Team = assigned++ * teamCount / playerCount + 1;
 						}
 
 						server.SyncLobbyClients();
 						return true;
-					}},
+					}
+				},
 				{ "crates",
 					s =>
 					{
@@ -492,7 +520,8 @@ namespace OpenRA.Mods.RA.Server
 							.F(client.Name, server.LobbyInfo.GlobalSettings.Crates ? "enabled" : "disabled"));
 
 						return true;
-					}},
+					}
+				},
 				{ "allybuildradius",
 					s =>
 					{
@@ -514,7 +543,8 @@ namespace OpenRA.Mods.RA.Server
 							.F(client.Name, server.LobbyInfo.GlobalSettings.AllyBuildRadius ? "enabled" : "disabled"));
 
 						return true;
-					}},
+					}
+				},
 				{ "difficulty",
 					s =>
 					{
@@ -536,7 +566,8 @@ namespace OpenRA.Mods.RA.Server
 						server.SendMessage("{0} changed difficulty to {1}.".F(client.Name, s));
 
 						return true;
-					}},
+					}
+				},
 				{ "startingunits",
 					s =>
 					{
@@ -561,7 +592,8 @@ namespace OpenRA.Mods.RA.Server
 						server.SendMessage("{0} changed Starting Units to {1}.".F(client.Name, className));
 
 						return true;
-					}},
+					}
+				},
 				{ "startingcash",
 					s =>
 					{
@@ -582,7 +614,8 @@ namespace OpenRA.Mods.RA.Server
 						server.SendMessage("{0} changed Starting Cash to ${1}.".F(client.Name, s));
 
 						return true;
-					}},
+					}
+				},
 				{ "techlevel",
 					s =>
 					{
@@ -603,7 +636,8 @@ namespace OpenRA.Mods.RA.Server
 						server.SendMessage("{0} changed Tech Level to {1}.".F(client.Name, s));
 
 						return true;
-					}},
+					}
+				},
 				{ "kick",
 					s =>
 					{
@@ -651,7 +685,8 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbySlots();
 
 						return true;
-					}},
+					}
+				},
 				{ "name",
 					s =>
 					{
@@ -659,7 +694,8 @@ namespace OpenRA.Mods.RA.Server
 						client.Name = s;
 						server.SyncLobbyClients();
 						return true;
-					}},
+					}
+				},
 				{ "race",
 					s =>
 					{
@@ -677,7 +713,8 @@ namespace OpenRA.Mods.RA.Server
 						targetClient.Country = parts[1];
 						server.SyncLobbyClients();
 						return true;
-					}},
+					}
+				},
 				{ "team",
 					s =>
 					{
@@ -695,14 +732,15 @@ namespace OpenRA.Mods.RA.Server
 						int team;
 						if (!Exts.TryParseIntegerInvariant(parts[1], out team))
 						{
-							Log.Write("server", "Invalid team: {0}", s );
+							Log.Write("server", "Invalid team: {0}", s);
 							return false;
 						}
 
 						targetClient.Team = team;
 						server.SyncLobbyClients();
 						return true;
-					}},
+					}
+				},
 				{ "spawn",
 					s =>
 					{
@@ -738,7 +776,8 @@ namespace OpenRA.Mods.RA.Server
 						targetClient.SpawnPoint = spawnPoint;
 						server.SyncLobbyClients();
 						return true;
-					}},
+					}
+				},
 				{ "color",
 					s =>
 					{
@@ -753,11 +792,21 @@ namespace OpenRA.Mods.RA.Server
 						if (targetClient.Slot == null || server.LobbyInfo.Slots[targetClient.Slot].LockColor)
 							return true;
 
-						var ci = parts[1].Split(',').Select(cc => Exts.ParseIntegerInvariant(cc)).ToArray();
-						targetClient.Color = targetClient.PreferredColor = new HSLColor((byte)ci[0], (byte)ci[1], (byte)ci[2]);
+						var newHslColor = FieldLoader.GetValue<HSLColor>("(value)", parts[1]);
+
+						// Validate if color is allowed and get an alternative it it isn't
+						var altHslColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, newHslColor, targetClient.Index, conn);
+
+						targetClient.Color = altHslColor;
+
+						// Only update player's preferred color if new color is valid
+						if (newHslColor == altHslColor)
+							targetClient.PreferredColor = altHslColor;
+
 						server.SyncLobbyClients();
 						return true;
-					}}
+					}
+				}
 			};
 
 			var cmdName = cmd.Split(' ').First();

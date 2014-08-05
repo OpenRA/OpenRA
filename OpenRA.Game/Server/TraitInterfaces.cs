@@ -27,13 +27,13 @@ namespace OpenRA.Server
 		int TickTimeout { get; }
 	}
 
-	public abstract class ServerTrait {}
+	public abstract class ServerTrait { }
 
 	public class DebugServerTrait : ServerTrait, IInterpretCommand, IStartGame, INotifySyncLobbyInfo, INotifyServerStart, INotifyServerShutdown, IEndGame
 	{
 		public bool InterpretCommand(Server server, Connection conn, Session.Client client, string cmd)
 		{
-			Console.WriteLine("Server received command from player {1}: {0}",cmd, conn.PlayerIndex);
+			Console.WriteLine("Server received command from player {1}: {0}", cmd, conn.PlayerIndex);
 			return false;
 		}
 

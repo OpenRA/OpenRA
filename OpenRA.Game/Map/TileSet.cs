@@ -144,7 +144,7 @@ namespace OpenRA
 		public readonly Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
 		public readonly string[] EditorTemplateOrder;
 
-		readonly TerrainTypeInfo[] terrainInfo;
+		public readonly TerrainTypeInfo[] TerrainInfo;
 		readonly Dictionary<string, int> terrainIndexByType = new Dictionary<string, int>();
 		readonly int defaultWalkableTerrainIndex;
 
@@ -158,13 +158,13 @@ namespace OpenRA
 			FieldLoader.Load(this, yaml["General"]);
 
 			// TerrainTypes
-			terrainInfo = yaml["Terrain"].ToDictionary().Values
+			TerrainInfo = yaml["Terrain"].ToDictionary().Values
 				.Select(y => new TerrainTypeInfo(y))
 				.OrderBy(tt => tt.Type)
 				.ToArray();
-			for (var i = 0; i < terrainInfo.Length; i++)
+			for (var i = 0; i < TerrainInfo.Length; i++)
 			{
-				var tt = terrainInfo[i].Type;
+				var tt = TerrainInfo[i].Type;
 
 				if (terrainIndexByType.ContainsKey(tt))
 					throw new InvalidDataException("Duplicate terrain type '{0}' in '{1}'.".F(tt, filepath));
@@ -185,7 +185,7 @@ namespace OpenRA
 			this.Id = id;
 			this.Palette = palette;
 			this.Extensions = extensions;
-			this.terrainInfo = terrainInfo;
+			this.TerrainInfo = terrainInfo;
 
 			for (var i = 0; i < terrainInfo.Length; i++)
 			{
@@ -201,12 +201,12 @@ namespace OpenRA
 
 		public TerrainTypeInfo this[int index]
 		{
-			get { return terrainInfo[index]; }
+			get { return TerrainInfo[index]; }
 		}
 
 		public int TerrainsCount
 		{
-			get { return terrainInfo.Length; }
+			get { return TerrainInfo.Length; }
 		}
 
 		public bool TryGetTerrainIndex(string type, out int index)
@@ -254,7 +254,7 @@ namespace OpenRA
 			root.Add(new MiniYamlNode("General", null, gen));
 
 			root.Add(new MiniYamlNode("Terrain", null,
-				terrainInfo.Select(t => new MiniYamlNode("TerrainType@{0}".F(t.Type), t.Save())).ToList()));
+				TerrainInfo.Select(t => new MiniYamlNode("TerrainType@{0}".F(t.Type), t.Save())).ToList()));
 
 			root.Add(new MiniYamlNode("Templates", null,
 				Templates.Select(t => new MiniYamlNode("Template@{0}".F(t.Value.Id), t.Value.Save(this))).ToList()));
@@ -263,7 +263,7 @@ namespace OpenRA
 
 		public TerrainTypeInfo GetTerrainInfo(TerrainTile r)
 		{
-			return terrainInfo[GetTerrainIndex(r)];
+			return TerrainInfo[GetTerrainIndex(r)];
 		}
 	}
 }

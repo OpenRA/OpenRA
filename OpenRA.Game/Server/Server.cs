@@ -73,6 +73,30 @@ namespace OpenRA.Server
 				c.Team = pr.Team;
 		}
 
+		static void SendData(Socket s, byte[] data)
+		{
+			var start = 0;
+			var length = data.Length;
+			SocketError error;
+
+			// Non-blocking sends are free to send only part of the data
+			while (start < length)
+			{
+				var sent = s.Send(data, start, length - start, SocketFlags.None, out error);
+				if (error == SocketError.WouldBlock)
+				{
+					Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
+					s.Blocking = true;
+					sent = s.Send(data, start, length - start, SocketFlags.None);
+					s.Blocking = false;
+				}
+				else if (error != SocketError.Success)
+					throw new SocketException((int)error);
+
+				start += sent;
+			}
+		}
+
 		protected volatile ServerState internalState = new ServerState();
 		public ServerState State
 		{
@@ -681,30 +705,6 @@ namespace OpenRA.Server
 					Environment.Exit(0);
 				};
 				gameTimeout.Enabled = true;
-			}
-		}
-
-		static void SendData(Socket s, byte[] data)
-		{
-			var start = 0;
-			var length = data.Length;
-			SocketError error;
-
-			// Non-blocking sends are free to send only part of the data
-			while (start < length)
-			{
-				var sent = s.Send(data, start, length - start, SocketFlags.None, out error);
-				if (error == SocketError.WouldBlock)
-				{
-					Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
-					s.Blocking = true;
-					sent = s.Send(data, start, length - start, SocketFlags.None);
-					s.Blocking = false;
-				}
-				else if (error != SocketError.Success)
-					throw new SocketException((int)error);
-
-				start += sent;
 			}
 		}
 	}
