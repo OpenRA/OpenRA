@@ -83,16 +83,15 @@ namespace OpenRA.Mods.RA
 		{
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(pos);
-
-			if (!world.Map.Contains(targetTile))
-				return;
-			
 			var isValid = IsValidImpact(pos, firedBy);
 
-			if ((Explosion != null) && isValid)
+			if ((!world.Map.Contains(targetTile)) || (!isValid))
+				return;
+
+			if (Explosion != null)
 				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, Explosion, ExplosionPalette)));
 
-			if ((ImpactSound != null) && isValid)
+			if (ImpactSound != null)
 				Sound.Play(ImpactSound, pos);
 		}
 
