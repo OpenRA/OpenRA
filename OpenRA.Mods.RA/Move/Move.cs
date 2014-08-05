@@ -150,8 +150,8 @@ namespace OpenRA.Mods.RA.Move
 				mobile.SetLocation(mobile.fromCell, mobile.fromSubCell, nextCell.Value.First, nextCell.Value.Second);
 				var move = new MoveFirstHalf(
 					this,
-					self.World.Map.CenterOfCell(mobile.fromCell) + MobileInfo.SubCellOffsets[mobile.fromSubCell],
-					Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (MobileInfo.SubCellOffsets[mobile.fromSubCell] + MobileInfo.SubCellOffsets[mobile.toSubCell]) / 2,
+					self.World.Map.CenterOfCell(mobile.fromCell) + self.World.Map.SubCellOffsets[mobile.fromSubCell],
+					Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (self.World.Map.SubCellOffsets[mobile.fromSubCell] + self.World.Map.SubCellOffsets[mobile.toSubCell]) / 2,
 					mobile.Facing,
 					mobile.Facing,
 					0);
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		Pair<CPos, SubCell>? PopPath(Actor self, Mobile mobile)
+		Pair<CPos, int>? PopPath(Actor self, Mobile mobile)
 		{
 			if (path.Count == 0)
 				return null;
@@ -347,15 +347,15 @@ namespace OpenRA.Mods.RA.Move
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
-				var fromSubcellOffset = MobileInfo.SubCellOffsets[mobile.fromSubCell];
-				var toSubcellOffset = MobileInfo.SubCellOffsets[mobile.toSubCell];
+				var fromSubcellOffset = self.World.Map.SubCellOffsets[mobile.fromSubCell];
+				var toSubcellOffset = self.World.Map.SubCellOffsets[mobile.toSubCell];
 
 				var nextCell = parent.PopPath(self, mobile);
 				if (nextCell != null)
 				{
 					if (IsTurn(mobile, nextCell.Value.First))
 					{
-						var nextSubcellOffset = MobileInfo.SubCellOffsets[nextCell.Value.Second];
+						var nextSubcellOffset = self.World.Map.SubCellOffsets[nextCell.Value.Second];
 						var ret = new MoveFirstHalf(
 							move,
 							Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,

@@ -77,6 +77,9 @@ namespace OpenRA
 		public Bitmap CustomPreview;
 
 		public readonly TileShape TileShape;
+		[FieldLoader.Ignore]
+		public readonly WVec[] SubCellOffsets;
+		public readonly int SubCellDefaultIndex;
 
 		[FieldLoader.LoadUsing("LoadOptions")]
 		public MapOptions Options;
@@ -246,6 +249,8 @@ namespace OpenRA
 			MapTiles = Exts.Lazy(() => LoadMapTiles());
 			MapResources = Exts.Lazy(() => LoadResourceTiles());
 			TileShape = Game.modData.Manifest.TileShape;
+			SubCellOffsets = Game.modData.Manifest.SubCellOffsets;
+			SubCellDefaultIndex = Game.modData.Manifest.SubCellDefaultIndex;
 
 			// The Uid is calculated from the data on-disk, so
 			// format changes must be flushed to disk.

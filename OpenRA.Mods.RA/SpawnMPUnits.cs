@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA
 					throw new InvalidOperationException("No cells available to spawn starting unit {0}".F(s));
 
 				var cell = validCells.Random(w.SharedRandom);
-				var subCell = mi.SharesCell ? w.ActorMap.FreeSubCell(cell).Value : SubCell.FullCell;
+				var subCell = mi.SharesCell ? w.ActorMap.FreeSubCell(cell) : 0;
 
 				w.CreateActor(s.ToLowerInvariant(), new TypeDictionary
 				{

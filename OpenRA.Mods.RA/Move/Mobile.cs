@@ -133,16 +133,6 @@ namespace OpenRA.Mods.RA.Move
 			return TilesetMovementClass[tileset];
 		}
 
-		public static readonly Dictionary<SubCell, WVec> SubCellOffsets = new Dictionary<SubCell, WVec>()
-		{
-			{SubCell.TopLeft, new WVec(-299, -256, 0)},
-			{SubCell.TopRight, new WVec(256, -256, 0)},
-			{SubCell.Center, new WVec(0, 0, 0)},
-			{SubCell.BottomLeft, new WVec(-299, 256, 0)},
-			{SubCell.BottomRight, new WVec(256, 256, 0)},
-			{SubCell.FullCell, new WVec(0, 0, 0)},
-		};
-
 		static bool IsMovingInMyDirection(Actor self, Actor other)
 		{
 			if (!other.IsMoving()) return false;
@@ -208,7 +198,7 @@ namespace OpenRA.Mods.RA.Move
 
 		int __facing;
 		CPos __fromCell, __toCell;
-		public SubCell fromSubCell, toSubCell;
+		public int fromSubCell, toSubCell;
 
 		//int __altitude;
 
@@ -226,7 +216,7 @@ namespace OpenRA.Mods.RA.Move
 
 		[Sync] public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
-		public void SetLocation(CPos from, SubCell fromSub, CPos to, SubCell toSub)
+		public void SetLocation(CPos from, int fromSub, CPos to, int toSub)
 		{
 			if (fromCell == from && toCell == to && fromSubCell == fromSub && toSubCell == toSub)
 				return;
@@ -248,16 +238,16 @@ namespace OpenRA.Mods.RA.Move
 			this.self = init.self;
 			this.Info = info;
 
-			toSubCell = fromSubCell = info.SharesCell ? SubCell.Center : SubCell.FullCell;
+			toSubCell = fromSubCell = info.SharesCell ? init.world.Map.SubCellDefaultIndex : 0;
 			if (init.Contains<SubCellInit>())
 			{
-				this.fromSubCell = this.toSubCell = init.Get<SubCellInit, SubCell>();
+				this.fromSubCell = this.toSubCell = init.Get<SubCellInit, int>();
 			}
 
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				SetVisualPosition(self, init.world.Map.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell]);
+				SetVisualPosition(self, init.world.Map.CenterOfCell(fromCell) + self.World.Map.SubCellOffsets[fromSubCell]);
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -271,7 +261,7 @@ namespace OpenRA.Mods.RA.Move
 		public void SetPosition(Actor self, CPos cell)
 		{
 			SetLocation(cell, fromSubCell, cell, fromSubCell);
-			SetVisualPosition(self, self.World.Map.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell]);
+			SetVisualPosition(self, self.World.Map.CenterOfCell(fromCell) + self.World.Map.SubCellOffsets[fromSubCell]);
 			FinishedMoving(self);
 		}
 
@@ -414,7 +404,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public CPos TopLeft { get { return toCell; } }
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells()
+		public IEnumerable<Pair<CPos, int>> OccupiedCells()
 		{
 			if (fromCell == toCell)
 				yield return Pair.New(fromCell, fromSubCell);
@@ -427,28 +417,36 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public SubCell GetDesiredSubcell(CPos a, Actor ignoreActor)
+		bool IsDesiredSubcellNotBlocked(CPos a, int b, Actor ignoreActor)
+		{
+			var blockingActors = self.World.ActorMap.GetUnitsAt(a, b).Where(c => c != ignoreActor);
+			if (blockingActors.Any())
+			{
+				// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
+				if (Info.Crushes == null)
+					return false;
+
+				if (blockingActors.Any(c => !(c.HasTrait<ICrushable>() &&
+						c.TraitsImplementing<ICrushable>().Any(d => d.CrushableBy(Info.Crushes, self.Owner)))))
+					return false;
+			}
+			return true;
+		}
+
+		public int GetDesiredSubcell(CPos a, Actor ignoreActor)
 		{
 			if (!Info.SharesCell)
-				return SubCell.FullCell;
+				return 0;
 
 			// Prioritise the current subcell
-			return new[]{ fromSubCell, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
-				SubCell.BottomLeft, SubCell.BottomRight}.First(b =>
-			{
-				var blockingActors = self.World.ActorMap.GetUnitsAt(a, b).Where(c => c != ignoreActor);
-				if (blockingActors.Any())
-				{
-					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
-					if (Info.Crushes == null)
-						return false;
+			if (IsDesiredSubcellNotBlocked(a, fromSubCell, ignoreActor))
+				return fromSubCell;
 
-					if (blockingActors.Any(c => !(c.HasTrait<ICrushable>() &&
-												  c.TraitsImplementing<ICrushable>().Any(d => d.CrushableBy(Info.Crushes, self.Owner)))))
-						return false;
-				}
-				return true;
-			});
+			for (var i = 1; i < self.World.Map.SubCellOffsets.Length; i++)
+				if (IsDesiredSubcellNotBlocked(a, i, ignoreActor))
+					return i;
+
+			return -1;
 		}
 
 		public bool CanEnterCell(CPos p)
