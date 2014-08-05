@@ -98,6 +98,7 @@ Bazooka:
 		Spread: 128
 		Damage: 25
 		InfDeath: 2
+		ValidTargets: Ground, Air
 		Versus:
 			None: 25%
 			Wood: 65%
@@ -136,6 +137,7 @@ MultiCluster:
 		Spread: 128
 		Damage: 65
 		InfDeath: 3
+		ValidTargets: Ground
 		Versus:
 			None: 25%
 			Wood: 65%
@@ -245,6 +247,7 @@ CyCannon:
 		Damage: 120
 		InfDeath: 6
 		ProneModifier: 100
+		ValidTargets: Ground
 		Versus:
 			None: 100%
 			Wood: 65%
@@ -402,6 +405,7 @@ HoverMissile:
 		Spread: 128
 		Damage: 30
 		InfDeath: 2
+		ValidTargets: Ground, Air
 		Versus:
 			None: 25%
 			Wood: 65%
@@ -473,6 +477,7 @@ MammothTusk:
 		Damage: 40
 		InfDeath: 3
 		ProneModifier: 70
+		ValidTargets: Air
 		Versus:
 			None: 100%
 			Wood: 85%
@@ -628,6 +633,7 @@ BikeMissile:
 		Spread: 256
 		Damage: 40
 		InfDeath: 2
+		ValidTargets: Ground
 		Versus:
 			None: 25%
 			Wood: 65%
@@ -727,6 +733,7 @@ Dragon:
 		Spread: 128
 		Damage: 30
 		InfDeath: 2
+		ValidTargets: Ground, Air
 		Versus:
 			None: 25%
 			Wood: 65%
@@ -827,6 +834,7 @@ Hellfire:
 		Spread: 85
 		Damage: 30
 		InfDeath: 2
+		ValidTargets: Ground, Air
 		Versus:
 			None: 30%
 			Wood: 65%
@@ -893,6 +901,7 @@ Proton:
 		Spread: 128
 		Damage: 20
 		InfDeath: 3
+		ValidTargets: Ground, Air
 		Versus:
 			None: 25%
 			Wood: 65%
@@ -920,6 +929,7 @@ HarpyClaw:
 		Damage: 60
 		InfDeath: 1
 		ProneModifier: 70
+		ValidTargets: Ground, Air
 		Versus:
 			Wood: 60%
 			Light: 40%
@@ -978,18 +988,16 @@ IonCannon:
 		Damage: 1000
 		InfDeath: 5
 		ProneModifier: 100
+		ValidTargets: Ground, Air
 	Warhead@2Eff_impact: CreateEffect
 		Explosion: ring1
 	Warhead@3Dam_area: PerCellDamage
-		Size: 2,1
+		Size: 2
 		Damage: 250
 		InfDeath: 5
 		Delay: 3
-	Warhead@4Dam_area: SpreadDamage
-		Damage: 250
-		InfDeath: 5
-		Delay: 3
-	Warhead@5Smu_area: LeaveSmudge
+		ValidTargets: Ground, Air
+	Warhead@4Smu_area: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 2,1
 		Delay: 3
@@ -1066,6 +1074,7 @@ SAMTower:
 		Spread: 128
 		Damage: 33
 		InfDeath: 2
+		ValidTargets: Air
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud

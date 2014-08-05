@@ -19,7 +19,7 @@ namespace OpenRA.GameRules
 	public abstract class Warhead
 	{
 		[Desc("What types of targets are affected.")]
-		public readonly string[] ValidTargets = { "Air", "Ground", "Water" };
+		public readonly string[] ValidTargets = { "Ground", "Water" };
 
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly string[] InvalidTargets = { };
