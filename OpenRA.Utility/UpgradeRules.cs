@@ -509,6 +509,9 @@ namespace OpenRA.Utility
 					// Split out the warheads to individual warhead types.
 					if (depth == 0)
 					{
+						var validTargets = node.Value.Nodes.FirstOrDefault(n => n.Key == "ValidTargets"); // Weapon's ValidTargets need to be copied to the warheads, so find it
+						var invalidTargets = node.Value.Nodes.FirstOrDefault(n => n.Key == "InvalidTargets"); // Weapon's InvalidTargets need to be copied to the warheads, so find it
+
 						var warheadCounter = 0;
 						foreach(var curNode in node.Value.Nodes.ToArray())
 						{
@@ -527,13 +530,26 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<String>{ "Size","Damage","InfDeath","PreventProne","ProneModifier","Delay","ValidTargets","InvalidTargets" };
+									var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Size"); // New PerCell warhead allows 2 sizes, as opposed to 1 size
+									if (temp != null)
+									{
+										var newValue = temp.Value.Value.Split(',').First();
+										newYaml.Add(new MiniYamlNode("Size", newValue));
+									}
+
+									var keywords = new List<string>{ "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
+
 									foreach(var keyword in keywords)
 									{
-										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
-										if (temp != null)
-											newYaml.Add(new MiniYamlNode(keyword, temp.Value.Value));
+										var temp2 = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
+										if (temp2 != null)
+											newYaml.Add(new MiniYamlNode(keyword, temp2.Value.Value));
 									}
+
+									if (validTargets != null)
+										newYaml.Add(validTargets);
+									if (invalidTargets != null)
+										newYaml.Add(invalidTargets);
 
 									var tempVersus = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Versus");
 									if (tempVersus != null)
@@ -550,23 +566,26 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Size"); // New HealthPercentage warhead allows spreads, as opposed to size
+									var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Size"); // New HealthPercentage warhead allows 2 spreads, as opposed to 1 size
 									if (temp != null)
 									{
 										var newValue = temp.Value.Value.Split(',').First() + "c0";
-										if (temp.Value.Value.Contains(','))
-											newValue = newValue + "," + temp.Value.Value.Split(',')[1] + "c0"; ;
-
 										newYaml.Add(new MiniYamlNode("Spread", newValue));
 									}
 
-									var keywords = new List<String>{ "Damage","InfDeath","PreventProne","ProneModifier","Delay","ValidTargets","InvalidTargets" };
+									var keywords = new List<string>{ "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
+
 									foreach(var keyword in keywords)
 									{
 										var temp2 = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
 										if (temp2 != null)
 											newYaml.Add(new MiniYamlNode(keyword, temp2.Value.Value));
 									}
+
+									if (validTargets != null)
+										newYaml.Add(validTargets);
+									if (invalidTargets != null)
+										newYaml.Add(invalidTargets);
 
 									var tempVersus = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Versus");
 									if (tempVersus != null)
@@ -581,13 +600,19 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<String>{ "Spread","Damage","InfDeath","PreventProne","ProneModifier","Delay","ValidTargets","InvalidTargets" };
+									var keywords = new List<string>{ "Spread", "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
+
 									foreach(var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
 										if (temp != null)
 											newYaml.Add(new MiniYamlNode(keyword, temp.Value.Value));
 									}
+
+									if (validTargets != null)
+										newYaml.Add(validTargets);
+									if (invalidTargets != null)
+										newYaml.Add(invalidTargets);
 
 									var tempVersus = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Versus");
 									if (tempVersus != null)
@@ -604,7 +629,7 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<String>{ "Size","Delay","ValidTargets","InvalidTargets" };
+									var keywords = new List<string>{ "Size", "Delay", "ValidTargets", "InvalidTargets" };
 									foreach(var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
@@ -622,7 +647,8 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<String>{ "AddsResourceType","Size","Delay","ValidTargets","InvalidTargets" };
+									var keywords = new List<string>{ "AddsResourceType", "Size", "Delay", "ValidTargets", "InvalidTargets" };
+
 									foreach(var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
@@ -640,7 +666,8 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<String>{ "SmudgeType","Size","Delay","ValidTargets","InvalidTargets" };
+									var keywords = new List<string>{ "SmudgeType", "Size", "Delay", "ValidTargets", "InvalidTargets" };
+
 									foreach(var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
@@ -651,23 +678,50 @@ namespace OpenRA.Utility
 									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Smu" + oldNodeAtName, "LeaveSmudge", newYaml));
 								}
 
-								// CreateEffect
+								// CreateEffect - Explosion
 								if (curNode.Value.Nodes.Where(n => n.Key.Contains("Explosion") ||
-										n.Key.Contains("WaterExplosion") ||
-										n.Key.Contains("ImpactSound") ||
-										n.Key.Contains("WaterImpactSound")).Any())
+										n.Key.Contains("ImpactSound")).Any())
 								{
 									warheadCounter++;
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<String>{ "Explosion","WaterExplosion","ImpactSound","WaterImpactSound","Delay","ValidTargets","InvalidTargets" };
+									var keywords = new List<string>{ "Explosion", "ImpactSound", "Delay", "ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
+
 									foreach(var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
 										if (temp != null)
 											newYaml.Add(new MiniYamlNode(keyword, temp.Value.Value));
 									}
+									newYaml.Add(new MiniYamlNode("InvalidImpactTypes", "Water"));
+
+									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Eff" + oldNodeAtName, "CreateEffect", newYaml));
+								}
+
+								// CreateEffect - Water Explosion
+								if (curNode.Value.Nodes.Where(n => n.Key.Contains("WaterExplosion") ||
+										n.Key.Contains("WaterImpactSound")).Any())
+								{
+									warheadCounter++;
+
+									var newYaml = new List<MiniYamlNode>();
+
+									var keywords = new List<string>{ "WaterExplosion", "WaterImpactSound", "Delay", "ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
+
+									foreach(var keyword in keywords)
+									{
+										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
+										if (temp != null)
+										{
+											if (temp.Key == "WaterExplosion")
+												temp.Key = "Explosion";
+											if (temp.Key == "WaterImpactSound")
+												temp.Key = "ImpactSound";
+											newYaml.Add(new MiniYamlNode(temp.Key, temp.Value.Value));
+										}
+									}
+									newYaml.Add(new MiniYamlNode("ValidImpactTypes", "Water"));
 
 									newNodes.Add(new MiniYamlNode("Warhead@" + warheadCounter.ToString() + "Eff" + oldNodeAtName, "CreateEffect", newYaml));
 								}
