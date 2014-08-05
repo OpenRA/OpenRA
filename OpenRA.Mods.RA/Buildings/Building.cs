@@ -99,7 +99,9 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 	}
 
-	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, ITechTreePrerequisite, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, ITechTreePrerequisite,
+							INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld,
+							IConditionalTarget
 	{
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
@@ -141,6 +143,11 @@ namespace OpenRA.Mods.RA.Buildings
 
 		Pair<CPos, SubCell>[] occupiedCells;
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupiedCells; }
+
+		public bool TargetableBy(Actor self, Actor targeter, object callingTrait)
+		{
+			return callingTrait is AutoTarget ? false : true;
+		}
 
 		public void Created(Actor self)
 		{

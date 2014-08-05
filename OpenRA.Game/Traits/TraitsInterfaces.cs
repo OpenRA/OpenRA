@@ -59,6 +59,9 @@ namespace OpenRA.Traits
 		bool IsQueued { get; }
 	}
 
+	// Check `callingTrait is <type>`
+	public interface IConditionalTarget { bool TargetableBy(Actor self, Actor targeter, object callingTrait); }
+
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
 	public interface IValidateOrder { bool OrderValidation(OrderManager orderManager, World world, int clientId, Order order); }
 	public interface IOrderVoice { string VoicePhraseForOrder(Actor self, Order order); }
