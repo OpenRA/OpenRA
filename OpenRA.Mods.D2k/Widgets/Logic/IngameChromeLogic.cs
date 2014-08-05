@@ -105,7 +105,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				cachedRadarActive = radarActive;
 
 				// Switch to observer mode after win/loss
-				if (world.LocalPlayer.WinState != WinState.Undefined)
+				if (world.ObserveAfterWinOrLose && world.LocalPlayer.WinState != WinState.Undefined)
 					Game.RunAfterTick(() =>
 					{
 						playerRoot.RemoveChildren();
