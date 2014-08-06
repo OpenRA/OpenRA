@@ -666,13 +666,13 @@ namespace OpenRA.Utility
 			nodes.AddRange(addNodes);
 		}
 
-		[Desc("MAP", "CURRENTENGINE", "Upgrade map rules to the latest engine version.")]
+		[Desc("MAP", "CURRENTENGINE", "MOD", "Upgrade map rules to the latest engine version.")]
 		public static void UpgradeMap(string[] args)
 		{
+			Game.modData = new ModData(args[3]);
 			var map = new Map(args[1]);
 			var engineDate = Exts.ParseIntegerInvariant(args[2]);
 
-			Game.modData = new ModData(map.RequiresMod);
 			UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
 			UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
 			map.Save(args[1]);
