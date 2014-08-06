@@ -38,7 +38,12 @@ namespace OpenRA.Mods.RA.Crates
 		readonly List<CPos> usedCells = new List<CPos>();
 
 		public GiveUnitCrateAction(Actor self, GiveUnitCrateActionInfo info)
-			: base(self, info) { Info = info; }
+			: base(self, info)
+		{
+			Info = info;
+			if (!Info.Units.Any())
+				throw new YamlException("A GiveUnitCrateAction does not specify any units to give. This might be because the yaml is referring to 'Unit' rather than 'Units'.");
+		}
 
 		public bool CanGiveTo(Actor collector)
 		{
