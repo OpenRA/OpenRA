@@ -83,7 +83,9 @@ namespace OpenRA.Mods.RA.Crates
 
 		IEnumerable<CPos> GetSuitableCells(CPos near, string unitName)
 		{
-			var mi = self.World.Map.Rules.Actors[unitName].Traits.Get<MobileInfo>();
+			var mi = self.World.Map.Rules.Actors[unitName].Traits.GetOrDefault<MobileInfo>();
+			if (mi == null)
+				yield break;
 
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)

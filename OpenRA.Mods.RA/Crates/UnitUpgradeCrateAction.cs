@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA.Crates
 					inRange = inRange.Take(Info.MaxExtraCollectors);
 
 				if (inRange.Any())
-					foreach (Actor actor in inRange)
+					foreach (var actor in inRange)
 					{
 						actor.World.AddFrameEndTask(w =>
 						{

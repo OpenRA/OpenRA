@@ -71,18 +71,18 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override void Activate(Actor collector)
 		{
-			int AllowedWorthLeft = Info.MaxDuplicatesWorth;
-			int DupesMade = 0;
+			int allowedWorthLeft = Info.MaxDuplicatesWorth;
+			int dupesMade = 0;
 
-			while ((DupesMade < Info.MaxAmount) && (AllowedWorthLeft > 0) || (DupesMade < Info.MinAmount))
+			while ((dupesMade < Info.MaxAmount) && (allowedWorthLeft > 0) || (dupesMade < Info.MinAmount))
 			{
 				//If the collector has a cost, and we have a max duplicate worth, then update how much dupe worth is left
 				var unitCost = collector.Info.Traits.Get<ValuedInfo>().Cost;
-				AllowedWorthLeft -= (Info.MaxDuplicatesWorth > 0) ? unitCost : 0;
-				if ((AllowedWorthLeft < 0) && (DupesMade >= Info.MinAmount))
+				allowedWorthLeft -= (Info.MaxDuplicatesWorth > 0) ? unitCost : 0;
+				if ((allowedWorthLeft < 0) && (dupesMade >= Info.MinAmount))
 					break;
 
-				DupesMade++;
+				dupesMade++;
 
 				var location = ChooseEmptyCellNear(collector, collector.Info.Name);
 				if (location != null)
@@ -101,7 +101,9 @@ namespace OpenRA.Mods.RA.Crates
 
 		IEnumerable<CPos> GetSuitableCells(CPos near, string unitName)
 		{
-			var mi = self.World.Map.Rules.Actors[unitName].Traits.Get<MobileInfo>();
+			var mi = self.World.Map.Rules.Actors[unitName].Traits.GetOrDefault<MobileInfo>();
+			if (mi == null)
+				yield break;
 
 			for (var i = -3; i < 4; i++)
 				for (var j = -3; j < 4; j++)
