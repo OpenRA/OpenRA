@@ -106,7 +106,7 @@ CONCRETEB:
 		Sequence: idle-zaps
 	Power:
 		Amount: 100
-		ScaleWithHealth: True
+	ScalePowerWithHealth:
 
 ^BARRACKS:
 	Inherits: ^Building

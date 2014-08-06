@@ -15,6 +15,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
+using OpenRA.Mods.RA.Power;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;

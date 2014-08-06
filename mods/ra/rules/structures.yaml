@@ -949,7 +949,12 @@ POWR:
 	DeadBuildingState:
 	Power:
 		Amount: 100
-		ScaleWithHealth: True
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	DisabledOverlay:
 
 APWR:
 	Inherits: ^Building
@@ -978,7 +983,12 @@ APWR:
 	DeadBuildingState:
 	Power:
 		Amount: 200
-		ScaleWithHealth: True
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	DisabledOverlay:
 
 STEK:
 	Inherits: ^Building

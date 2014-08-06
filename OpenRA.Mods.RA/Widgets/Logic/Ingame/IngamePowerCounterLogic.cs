@@ -8,7 +8,7 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Power;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic

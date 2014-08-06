@@ -11,7 +11,7 @@
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Infiltration
 {
 	class InfiltrateForSupportPowerInfo : ITraitInfo
 	{

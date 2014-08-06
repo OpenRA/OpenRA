@@ -71,7 +71,12 @@ GAPOWR:
 		Sequence: idle-plug
 	Power:
 		Amount: 100
-		ScaleWithHealth: True
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	DisabledOverlay:
 
 GAPILE:
 	Inherits: ^Building
@@ -222,7 +227,12 @@ NAPOWR:
 		Sequence: idle-lights
 	Power:
 		Amount: 100
-		ScaleWithHealth: True
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	DisabledOverlay:
 
 NAAPWR:
 	Inherits: ^Building
@@ -251,7 +261,12 @@ NAAPWR:
 		Sequence: idle-lights
 	Power:
 		Amount: 200
-		ScaleWithHealth: True
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	DisabledOverlay:
 
 NAHAND:
 	Inherits: ^Building
