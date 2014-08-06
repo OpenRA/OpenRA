@@ -66,6 +66,17 @@ local function trimToMaxLength(...)
   return unpack(t)
 end
 
+-- on some Linux versions using wxwidgets 2.9.5 wxListCtrl doesn't report
+-- background color even after the color being explicitly set
+-- (Linux cipripc 3.13.0-24-generic #47-Ubuntu SMP Fri May 2 23:30:00 UTC 2014 x86_64 GNU/Linux);
+-- check if the fix is needed in this case and use stackCtrl color instead.
+local bgcolorfixneeded
+if ide.osname == 'Unix' then
+  local lc, color = wx.wxListCtrl(), wx.wxRED
+  lc:SetBackgroundColour(color)
+  bgcolorfixneeded = lc:GetBackgroundColour():GetAsString() ~= color:GetAsString()
+end
+
 local q = EscapeMagic
 
 local function updateWatchesSync(num)
@@ -75,6 +86,7 @@ local function updateWatchesSync(num)
   if shown and debugger.server and not debugger.running
   and not debugger.scratchpad and not (debugger.options or {}).noeval then
     local bgcl = watchCtrl:GetBackgroundColour()
+    if bgcolorfixneeded then bgcl = debugger.stackCtrl:GetBackgroundColour() end
     local hicl = wx.wxColour(math.floor(bgcl:Red()*.9),
       math.floor(bgcl:Green()*.9), math.floor(bgcl:Blue()*.9))
     for idx = 0, watchCtrl:GetItemCount() - 1 do
