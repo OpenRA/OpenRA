@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.RA.Power
 {
 	class RequiresPowerInfo : ITraitInfo
 	{
@@ -19,21 +19,21 @@ namespace OpenRA.Mods.RA.Buildings
 
 	class RequiresPower : IDisable, INotifyCapture
 	{
-		PowerManager power;
+		PowerManager playerPower;
 
-		public RequiresPower( Actor self )
+		public RequiresPower(Actor self)
 		{
-			power = self.Owner.PlayerActor.Trait<PowerManager>();
+			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 
 		public bool Disabled
 		{
-			get { return power.PowerProvided < power.PowerDrained; }
+			get { return playerPower.PowerProvided < playerPower.PowerDrained; }
 		}
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			power = newOwner.PlayerActor.Trait<PowerManager>();
+			playerPower = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 	}
 }

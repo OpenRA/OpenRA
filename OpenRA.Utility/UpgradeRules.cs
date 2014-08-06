@@ -334,8 +334,8 @@ namespace OpenRA.Utility
 							node.Key = "Units";
 				}
 
-				// Power from Building was moved out into its own trait
-				if (engineVersion < 20140802)
+				// Power from Building was moved out into Power and ScalePowerWithHealth traits
+				if (engineVersion < 20140823)
 				{
 					if (depth == 0)
 					{
@@ -350,11 +350,10 @@ namespace OpenRA.Utility
 								buildingFields.Remove(power);
 
 								var powerFields = new List<MiniYamlNode> { new MiniYamlNode("Amount", power.Value) };
-
-								if (FieldLoader.GetValue<int>("Power", power.Value.Value) > 0)
-									powerFields.Add(new MiniYamlNode("ScaleWithHealth", "True"));
-
 								actorTraits.Add(new MiniYamlNode("Power", new MiniYaml("", powerFields)));
+								
+								if (FieldLoader.GetValue<int>("Power", power.Value.Value) > 0)
+									actorTraits.Add(new MiniYamlNode("ScaleWithHealth", ""));
 							}
 						}
 					}
