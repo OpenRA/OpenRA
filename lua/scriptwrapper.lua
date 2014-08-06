@@ -31,9 +31,9 @@ Tick = function()
 end
 
 ExecuteSandboxedScript = function(file, contents)
-	local script = loadstring(contents, file)
+	local script, err = loadstring(contents, file)
 	if (script == nil) then
-		FatalError("Error parsing " .. file)
+		FatalError("Error parsing " .. file .. ". Reason: " .. err)
 	else
 		TryRunSandboxed(script)
 	end
