@@ -30,6 +30,9 @@ namespace OpenRA.Mods.RA
 
 		[Desc("The earliest time (in ticks) that this crate action can occur on.")]
 		public readonly int TimeDelay = 0;
+		
+		[Desc("Only allow this crate action when the collector has these prerequisites")]
+		public readonly string[] Prerequisites = { };
 
 		[Desc("Actor types that this crate action will not occur for.")]
 		[ActorReference] public string[] ExcludedActorTypes = { };
@@ -52,8 +55,11 @@ namespace OpenRA.Mods.RA
 		{
 			if (self.World.WorldTick < info.TimeDelay)
 				return 0;
-			
+
 			if (info.ExcludedActorTypes.Contains(collector.Info.Name))
+				return 0;
+
+			if (info.Prerequisites.Any() && !collector.Owner.PlayerActor.Trait<TechTree>().HasPrerequisites(info.Prerequisites))
 				return 0;
 
 			return GetSelectionShares(collector);
