@@ -299,6 +299,7 @@ namespace OpenRA.Mods.RA.Server
 							server.SendOrderTo(conn, "Message", "Map was not found on server");
 							return true;
 						}
+
 						server.LobbyInfo.GlobalSettings.Map = s;
 
 						var oldSlots = server.LobbyInfo.Slots.Keys.ToArray();
@@ -335,6 +336,9 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						server.SyncLobbyInfo();
+
+						server.SendMessage("{0} changed the map to {1}.".F(client.Name, server.Map.Title));
+
 						return true;
 					}},
 				{ "fragilealliance",
@@ -354,7 +358,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.FragileAlliances);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} modified <Diplomacy Changes> to {1}.".F(client.Name, s));
+						server.SendMessage("{0} {1} Diplomacy Changes."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.FragileAlliances ? "enabled" : "disabled"));
 
 						return true;
 					}},
@@ -375,7 +380,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllowCheats);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} modified <Allow Cheats> to {1}.".F(client.Name, s));
+						server.SendMessage("{0} {1} Developer Cheats."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.AllowCheats ? "allowed" : "disallowed"));
 
 						return true;
 					}},
@@ -396,7 +402,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Shroud);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} modified <Shroud> to {1}.".F(client.Name, s));
+						server.SendMessage("{0} {1} Shroud."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.Shroud ? "enabled" : "disabled"));
 
 						return true;
 					}},
@@ -418,7 +425,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Fog);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} modified <Fog of War> to {1}.".F(client.Name, s));
+						server.SendMessage("{0} {1} Fog of War."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.Fog ? "enabled" : "disabled"));
 
 						return true;
 					}},
@@ -480,7 +488,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Crates);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} modified <Crates Appear> to {1}.".F(client.Name, s));
+						server.SendMessage("{0} {1} Crates Appear."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.Crates ? "enabled" : "disabled"));
 
 						return true;
 					}},
@@ -501,7 +510,8 @@ namespace OpenRA.Mods.RA.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllyBuildRadius);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} modified <Build off Ally ConYards> to {1}.".F(client.Name, s));
+						server.SendMessage("{0} {1} Build off Ally ConYards."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.AllyBuildRadius ? "enabled" : "disabled"));
 
 						return true;
 					}},
@@ -523,6 +533,8 @@ namespace OpenRA.Mods.RA.Server
 
 						server.LobbyInfo.GlobalSettings.Difficulty = s;
 						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} changed difficulty to {1}.".F(client.Name, s));
+
 						return true;
 					}},
 				{ "startingunits",
@@ -542,7 +554,7 @@ namespace OpenRA.Mods.RA.Server
 
 						server.LobbyInfo.GlobalSettings.StartingUnitsClass = s;
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} modified <Starting Units> to {1}.".F(client.Name, s));
+						server.SendMessage("{0} changed Starting Units to {1}.".F(client.Name, s));
 
 						return true;
 					}},
@@ -563,7 +575,7 @@ namespace OpenRA.Mods.RA.Server
 
 						server.LobbyInfo.GlobalSettings.StartingCash = Exts.ParseIntegerInvariant(s);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} modified <Starting Cash> to ${1}.".F(client.Name, s));
+						server.SendMessage("{0} changed Starting Cash to ${1}.".F(client.Name, s));
 
 						return true;
 					}},
@@ -584,7 +596,7 @@ namespace OpenRA.Mods.RA.Server
 
 						server.LobbyInfo.GlobalSettings.TechLevel = s;
 						server.SyncLobbyInfo();
-						server.SendMessage("{0} modified <Tech Level> to {1}.".F(client.Name, s));
+						server.SendMessage("{0} changed Tech Level to {1}.".F(client.Name, s));
 
 						return true;
 					}},
@@ -614,9 +626,10 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						var kickConnIP = server.GetClient(kickConn).IpAddress;
+						var kickClient = server.GetClient(kickConn);
 
 						Log.Write("server", "Kicking client {0} as requested", kickClientID);
+						server.SendMessage("{0} kicked {1} from the server.".F(client.Name, kickClient.Name));
 						server.SendOrderTo(kickConn, "ServerError", "You have been kicked from the server");
 						server.DropClient(kickConn);
 
@@ -625,12 +638,14 @@ namespace OpenRA.Mods.RA.Server
 
 						if (tempBan)
 						{
-							Log.Write("server", "Temporarily banning client {0} ({1}) as requested", kickClientID, kickConnIP);
-							server.TempBans.Add(kickConnIP);
+							Log.Write("server", "Temporarily banning client {0} ({1}) as requested", kickClientID, kickClient.IpAddress);
+							server.SendMessage("{0} temporarily banned {1} from the server.".F(client.Name, kickClient.Name));
+							server.TempBans.Add(kickClient.IpAddress);
 						}
 
 						server.SyncLobbyClients();
 						server.SyncLobbySlots();
+
 						return true;
 					}},
 				{ "name",
