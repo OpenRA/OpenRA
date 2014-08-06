@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -162,6 +163,7 @@ namespace OpenRA.Scripting
 		public void FatalError(string message)
 		{
 			Console.WriteLine("Fatal Lua Error: {0}", message);
+			Game.AddChatLine(Color.White, "Fatal Lua Error", message);
 			error = true;
 		}
 
