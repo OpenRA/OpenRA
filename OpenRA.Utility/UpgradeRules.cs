@@ -364,6 +364,22 @@ namespace OpenRA.Utility
 					}
 				}
 
+				if (engineVersion < 20140806)
+				{
+					// remove ConquestVictoryConditions when StrategicVictoryConditions is set
+					if (depth == 0 && node.Key == "Player" && node.Value.Nodes.Any(n => n.Key == "StrategicVictoryConditions"))
+						node.Value.Nodes.Add(new MiniYamlNode("-ConquestVictoryConditions", ""));
+
+					// the objectives panel trait and its properties have been renamed
+					if (depth == 1 && node.Key == "ConquestObjectivesPanel")
+					{
+						node.Key = "ObjectivesPanel";
+						node.Value.Nodes.RemoveAll(_ => true);
+						node.Value.Nodes.Add(new MiniYamlNode("PanelName", new MiniYaml("SKIRMISH_STATS")));
+					}
+
+				}
+
 				// Veterancy was changed to use the upgrades system
 				if (engineVersion < 20140807)
 				{
