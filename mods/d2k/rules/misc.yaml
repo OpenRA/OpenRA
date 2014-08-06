@@ -21,59 +21,74 @@ CRATE:
 	GiveUnitCrateAction@Trike:
 		SelectionShares: 20
 		Units: trike
+		Prerequisites: techlevel.low, Light
 	GiveUnitCrateAction@Raider:
 		SelectionShares: 15
 		Units: raider
 		ValidRaces: ordos
+		Prerequisites: techlevel.low, Light
 	GiveUnitCrateAction@Quad:
 		SelectionShares: 40
 		Units: quad
+		Prerequisites: techlevel.medium, Light, Outpost
 	GiveUnitCrateAction@CombatA:
 		SelectionShares: 10
 		Units: combata
 		ValidRaces: atreides
+		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@CombatH:
 		SelectionShares: 10
 		Units: combath
 		ValidRaces: harkonnen
+		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@CombatO:
 		SelectionShares: 10
 		Units: combato
 		ValidRaces: ordos
+		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@SiegeTank:
 		SelectionShares: 10
 		Units: siegetank
+		Prerequisites: techlevel.medium, Heavy, Outpost
 	GiveUnitCrateAction@MissileTank:
 		SelectionShares: 10
 		Units: missiletank
+		Prerequisites: techlevel.high, Hitech
 	GiveUnitCrateAction@StealthRaider:
 		SelectionShares: 7
 		Units: stealthraider
 		ValidRaces: ordos
+		Prerequisites: techlevel.medium, Hitech
 	GiveUnitCrateAction@Fremen:
 		SelectionShares: 5
 		Units: fremen,fremen
 		ValidRaces: atreides
+		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@Sardaukar:
 		SelectionShares: 8
 		Units: sardaukar,sardaukar
 		ValidRaces: harkonnen
+		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@Saboteur:
 		SelectionShares: 3
 		Units: saboteur,saboteur
 		ValidRaces: ordos
+		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@SonicTank:
 		SelectionShares: 5
 		Units: sonictank
 		ValidRaces: atreides
+		Prerequisites: techlevel.high, Research
 	GiveUnitCrateAction@Devast:
 		SelectionShares: 2
 		Units: devast
 		ValidRaces: harkonnen
+		Prerequisites: techlevel.high, Research
 	GiveUnitCrateAction@DeviatorTank:
 		SelectionShares: 5
 		Units: deviatortank
 		ValidRaces: ordos
+		Prerequisites: techlevel.high, Research
 	GiveMcvCrateAction@Atreides:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
