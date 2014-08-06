@@ -102,37 +102,37 @@ CRATE:
 		SelectionShares: 7
 		Units: jeep
 		ValidRaces: allies
-		TimeDelay: 3000
+		Prerequisites: techlevel.low
 	GiveUnitCrateAction@arty:
 		SelectionShares: 6
 		Units: arty
 		ValidRaces: allies
-		TimeDelay: 4500
+		Prerequisites: techlevel.medium, dome
 	GiveUnitCrateAction@v2rl:
 		SelectionShares: 6
 		Units: v2rl
 		ValidRaces: soviet
-		TimeDelay: 4500
+		Prerequisites: techlevel.medium, dome
 	GiveUnitCrateAction@1tnk:
 		SelectionShares: 5
 		Units: 1tnk
 		ValidRaces: allies
-		TimeDelay: 3000
+		Prerequisites: techlevel.low
 	GiveUnitCrateAction@2tnk:
 		SelectionShares: 4
 		Units: 2tnk
 		ValidRaces: allies
-		TimeDelay: 4500
+		Prerequisites: techlevel.medium, fix
 	GiveUnitCrateAction@3tnk:
 		SelectionShares: 4
 		Units: 3tnk
 		ValidRaces: soviet
-		TimeDelay: 4500
+		Prerequisites: techlevel.medium, fix
 	GiveUnitCrateAction@4tnk:
 		SelectionShares: 3
 		Units: 4tnk
 		ValidRaces: soviet
-		TimeDelay: 9000
+		Prerequisites: techlevel.unrestricted, fix, techcenter
 	GiveUnitCrateAction@squadlight:
 		SelectionShares: 7
 		Units: e1,e1,e1,e3,e3
