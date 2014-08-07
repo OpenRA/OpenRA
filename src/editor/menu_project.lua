@@ -422,5 +422,6 @@ frame:Connect(wx.wxEVT_IDLE,
     if (debugger.scratchpad) then DebuggerRefreshScratchpad() end
     if IndicateIfNeeded() then event:RequestMore(true) end
     PackageEventHandleOnce("onIdleOnce", event)
+    PackageEventHandle("onIdle", event)
     event:Skip() -- let other EVT_IDLE handlers to work on the event
   end)
