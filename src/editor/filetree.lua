@@ -147,6 +147,11 @@ local function treeSetConnectorsAndIcons(tree)
   function tree:IsFileOther(item_id) return isIt(item_id, IMG_FILE_OTHER) end
   function tree:IsRoot(item_id) return not tree:GetItemParent(item_id):IsOk() end
 
+  function tree:FindItem(match)
+    return findItem(self, wx.wxIsAbsolutePath(match) and match
+      or MergeFullPath(ide:GetProject(), match))
+  end
+
   function tree:GetItemFullName(item_id)
     local tree = self
     local str = tree:GetItemText(item_id)
@@ -249,7 +254,7 @@ local function treeSetConnectorsAndIcons(tree)
         LoadFile(fullpath:gsub(q(source), target), doc.editor)
       end
     else -- refresh the tree and select the new item
-      local itemdst = findItem(tree, target)
+      local itemdst = tree:FindItem(target)
       if itemdst then
         refreshAncestors(tree:GetItemParent(itemdst))
         tree:SelectItem(itemdst)
@@ -625,7 +630,7 @@ local curr_file
 function FileTreeMarkSelected(file)
   if not file or not filetree.projdir or #filetree.projdir == 0 then return end
 
-  local item_id = findItem(projtree, file)
+  local item_id = projtree:FindItem(file)
 
   -- if the select item is different from the current one
   -- or the current one is the same, but not bold (which may happen when
@@ -633,7 +638,7 @@ function FileTreeMarkSelected(file)
   if curr_file ~= file
   or item_id and not projtree:IsBold(item_id) then
     if curr_file then
-      local curr_id = findItem(projtree, curr_file)
+      local curr_id = projtree:FindItem(curr_file)
       if curr_id and projtree:IsBold(curr_id) then
         projtree:SetItemBold(curr_id, false)
       end
