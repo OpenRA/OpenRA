@@ -63,6 +63,18 @@ namespace OpenRA.Mods.RA.AI
 		[Desc("Radius in cells around the center of the base to expand.")]
 		public readonly int MaxBaseRadius = 20;
 
+		[Desc("The cheat modifier for the AI to its production time.", "-10 = 90% of normal production time", "10 = 110% of normal production time")]
+		public readonly int ProductionTimeModifier = 0;
+		
+		[Desc("The types of queues affected by the production time modifier.")]
+		public readonly string[] ProductionTimeModifierTypes = { "Building", "Defense", "Infantry", "Vehicle", "Ship", "Aircraft" };
+
+		[Desc("The cheat modifier for the AI to its income rate.", "-10 = 90% of normal income", "10 = 110% of normal income")]
+		public readonly int IncomeMultModifier = 0;
+		
+		[Desc("The types of income the income multiplier applies to.")]
+		public readonly string[] IncomeMultModifierTypes = { "Harvester", "CashTrickler", "Bounty" };
+
 		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 		public readonly bool ShouldRepairBuildings = true;
 
@@ -170,6 +182,14 @@ namespace OpenRA.Mods.RA.AI
 				Map.Rules.Actors["world"].Traits
 				.WithInterface<ResourceTypeInfo>()
 				.Select(t => world.TileSet.GetTerrainIndex(t.TerrainType)));
+
+			var managers = p.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Production);
+			foreach (var manager in managers)
+				manager.Register(ModifierType.Production, p.PlayerActor.ActorID.ToString() + "AICheaty", Info.ProductionTimeModifierTypes, Info.ProductionTimeModifier);
+
+			var incomeManagers = p.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income);
+			foreach (var manager in incomeManagers)
+				manager.Register(ModifierType.Income, p.PlayerActor.ActorID.ToString() + "AICheaty", Info.IncomeMultModifierTypes, Info.IncomeMultModifier);
 		}
 
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)

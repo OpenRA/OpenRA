@@ -238,4 +238,370 @@ Player:
 			ca: 20%
 			pt: 10%
 		SquadSize: 1
+	HackyAI@VeryEasyAI:
+		Name: Very Easy AI
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: powr,apwr
+			Barracks: barr,tent
+			VehiclesFactory: weap
+			Production: barr,tent,weap,afld,hpad,spen,syrd
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 3
+			barr: 1
+			tent: 1
+			dome: 1
+			weap: 1
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 90%
+			powr: 1%
+			apwr: 30%
+			tent: 1%
+			barr: 1%
+			weap: 3%
+			spen: 1%
+			syrd: 1%
+			pbox: 7%
+			gun: 7%
+			ftur: 10%
+			tsla: 5%
+			fix: 0.1%
+			dome: 10%
+			agun: 5%
+			sam: 1%
+		UnitsToBuild:
+			e1: 20%
+			e3: 10%
+			e4: 20%
+			harv: 10%
+			apc: 5%
+			jeep: 10%
+			ftrk: 5%
+			1tnk: 70%
+			2tnk: 25%
+			3tnk: 50%
+			ttnk: 50%
+			ss: 10%
+			dd: 10%
+			pt: 10%
+		SquadSize: 10
+		ProductionTimeModifier: 100
+		ProductionTimeModifierTypes: Any
+		IncomeMultModifier: -50
+		IncomeMultModifierTypes: Any
+	HackyAI@EasyAI:
+		Name: Easy AI
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: powr,apwr
+			Barracks: barr,tent
+			VehiclesFactory: weap
+			Production: barr,tent,weap,afld,hpad,spen,syrd
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 3
+			barr: 1
+			tent: 1
+			dome: 1
+			weap: 1
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 90%
+			powr: 1%
+			apwr: 30%
+			tent: 1%
+			barr: 1%
+			weap: 3%
+			hpad: 2%
+			spen: 1%
+			syrd: 1%
+			pbox: 7%
+			afld: 4%
+			gun: 7%
+			ftur: 10%
+			tsla: 5%
+			fix: 0.1%
+			dome: 10%
+			agun: 5%
+			sam: 1%
+			atek: 1%
+			stek: 1%
+		UnitsToBuild:
+			e1: 20%
+			e3: 10%
+			e4: 20%
+			harv: 10%
+			apc: 5%
+			jeep: 10%
+			ftrk: 5%
+			1tnk: 70%
+			2tnk: 25%
+			3tnk: 50%
+			4tnk: 50%
+			ttnk: 50%
+			arty: 20%
+			v2rl: 40%
+			heli: 30%
+			hind: 30%
+			mig: 30%
+			yak: 30%
+			ss: 10%
+			msub: 10%
+			dd: 10%
+			ca: 10%
+			pt: 10%
+		SquadSize: 10
+		ProductionTimeModifier: 25
+		ProductionTimeModifierTypes: Any
+		IncomeMultModifier: -25
+		IncomeMultModifierTypes: Any
+	HackyAI@MediumAI:
+		Name: Medium AI
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: powr,apwr
+			Barracks: barr,tent
+			VehiclesFactory: weap
+			Production: barr,tent,weap,afld,hpad,spen,syrd
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 4
+			barr: 1
+			tent: 1
+			dome: 1
+			weap: 1
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 90%
+			powr: 1%
+			apwr: 30%
+			tent: 1%
+			barr: 1%
+			weap: 3%
+			hpad: 2%
+			spen: 1%
+			syrd: 1%
+			pbox: 7%
+			afld: 4%
+			gun: 7%
+			ftur: 10%
+			tsla: 5%
+			fix: 0.1%
+			dome: 10%
+			agun: 5%
+			sam: 1%
+			atek: 1%
+			stek: 1%
+			mslo: 1%
+		UnitsToBuild:
+			e1: 20%
+			e3: 10%
+			e4: 20%
+			harv: 10%
+			apc: 5%
+			jeep: 10%
+			ftrk: 5%
+			1tnk: 70%
+			2tnk: 25%
+			3tnk: 50%
+			4tnk: 50%
+			ttnk: 50%
+			arty: 20%
+			v2rl: 40%
+			heli: 30%
+			hind: 30%
+			mig: 30%
+			yak: 30%
+			ss: 10%
+			msub: 10%
+			dd: 10%
+			ca: 10%
+			pt: 10%
+		SquadSize: 10
+		ProductionTimeModifier: 0
+		ProductionTimeModifierTypes: Any
+		IncomeMultModifier: 0
+		IncomeMultModifierTypes: Any
+	HackyAI@HardAI:
+		Name: Hard AI
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: powr,apwr
+			Barracks: barr,tent
+			VehiclesFactory: weap
+			Production: barr,tent,weap,afld,hpad,spen,syrd
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 5
+			barr: 1
+			tent: 1
+			dome: 1
+			weap: 1
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 90%
+			powr: 1%
+			apwr: 30%
+			tent: 1%
+			barr: 1%
+			weap: 3%
+			hpad: 2%
+			spen: 1%
+			syrd: 1%
+			pbox: 7%
+			afld: 4%
+			gun: 7%
+			ftur: 10%
+			tsla: 5%
+			fix: 0.1%
+			dome: 10%
+			agun: 5%
+			sam: 1%
+			atek: 1%
+			stek: 1%
+			mslo: 1%
+		UnitsToBuild:
+			e1: 20%
+			e3: 10%
+			e4: 20%
+			harv: 10%
+			apc: 5%
+			jeep: 10%
+			ftrk: 5%
+			1tnk: 70%
+			2tnk: 25%
+			3tnk: 50%
+			4tnk: 50%
+			ttnk: 50%
+			arty: 20%
+			v2rl: 40%
+			heli: 30%
+			hind: 30%
+			mig: 30%
+			yak: 30%
+			ss: 10%
+			msub: 10%
+			dd: 10%
+			ca: 10%
+			pt: 10%
+		SquadSize: 20
+		ProductionTimeModifier: -25
+		ProductionTimeModifierTypes: Any
+		IncomeMultModifier: 50
+		IncomeMultModifierTypes: Any
+	HackyAI@InsaneAI:
+		Name: Insane AI
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: powr,apwr
+			Barracks: barr,tent
+			VehiclesFactory: weap
+			Production: barr,tent,weap,afld,hpad,spen,syrd
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 5
+			barr: 1
+			tent: 1
+			dome: 1
+			weap: 1
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 90%
+			powr: 1%
+			apwr: 30%
+			tent: 1%
+			barr: 1%
+			weap: 3%
+			hpad: 2%
+			spen: 1%
+			syrd: 1%
+			pbox: 7%
+			afld: 4%
+			gun: 7%
+			ftur: 10%
+			tsla: 5%
+			fix: 0.1%
+			dome: 10%
+			agun: 5%
+			sam: 1%
+			atek: 1%
+			stek: 1%
+			mslo: 1%
+		UnitsToBuild:
+			e1: 20%
+			e3: 10%
+			e4: 20%
+			harv: 10%
+			apc: 5%
+			jeep: 10%
+			ftrk: 5%
+			1tnk: 70%
+			2tnk: 25%
+			3tnk: 50%
+			4tnk: 50%
+			ttnk: 50%
+			arty: 20%
+			v2rl: 40%
+			heli: 30%
+			hind: 30%
+			mig: 30%
+			yak: 30%
+			ss: 10%
+			msub: 10%
+			dd: 10%
+			ca: 10%
+			pt: 10%
+			mcv: 1%
+		SquadSize: 30
+		ProductionTimeModifier: -50
+		ProductionTimeModifierTypes: Any
+		IncomeMultModifier: 100
+		IncomeMultModifierTypes: Any
 

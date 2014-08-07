@@ -20,18 +20,22 @@ namespace OpenRA.Mods.RA
 	{
 		[Desc("Calculated by Cost or CustomSellValue so they have to be set to avoid crashes.")]
 		public readonly int Percentage = 10;
+		
 		[Desc("Higher ranked units give higher bounties.")]
 		public readonly int LevelMod = 125;
+		
 		[Desc("Destroying creeps and enemies is rewarded.")]
 		public readonly Stance[] Stances = {Stance.Neutral, Stance.Enemy};
+
+		[Desc("Type of income this source falls under.")]
+		public readonly string IncomeType = "Bounty";
 	}
 
 	class GivesBounty : INotifyKilled
 	{
-		static int GetMultiplier(Actor self)
+		static int GetMultiplier(Actor self, GivesBountyInfo info)
 		{
 			// returns 100's as 1, so as to keep accuracy for longer.
-			var info = self.Info.Traits.Get<GivesBountyInfo>();
 			var gainsExp = self.TraitOrDefault<GainsExperience>();
 			if (gainsExp == null)
 				return 100;
@@ -50,7 +54,19 @@ namespace OpenRA.Mods.RA
 
 			var cost = self.GetSellValue();
 			// 2 hundreds because of GetMultiplier and info.Percentage.
-			var bounty = cost * GetMultiplier(self) * info.Percentage / 10000;
+			var bounty = cost * GetMultiplier(self, info) * info.Percentage / 10000;
+			
+			var incomeMultModifier = 0;
+			if (self.Owner != null)
+				if (self.Owner.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income).Any())
+					incomeMultModifier += self.Owner.PlayerActor.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income)
+					.Select(t => t.GetModifier(ModifierType.Income, info.IncomeType)).Sum();
+
+			if (self.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income).Any())
+				incomeMultModifier += self.TraitsImplementing<IAttributeModManager>().Where(man => man.ModType == ModifierType.Income)
+				.Select(t => t.GetModifier(ModifierType.Income, info.IncomeType)).Sum();
+
+			bounty = bounty * (100 + incomeMultModifier) / 100;
 
 			if (bounty > 0 && e.Attacker.Owner.IsAlliedWith(self.World.RenderPlayer))
 				e.Attacker.World.AddFrameEndTask(w => w.Add(new CashTick(self.CenterPosition, e.Attacker.Owner.Color.RGB, bounty)));

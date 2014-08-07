@@ -70,3 +70,31 @@ Player:
 	ProvidesTechPrerequisite@unrestricted:
 		Name: Unrestricted
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.unrestricted
+	AttributeModifierManager@ProdBuilding:
+		Type: Building
+		ModType: Production
+	AttributeModifierManager@ProdDefense:
+		Type: Defense
+		ModType: Production
+	AttributeModifierManager@ProdInfantry:
+		Type: Infantry
+		ModType: Production
+	AttributeModifierManager@ProdVehicle:
+		Type: Vehicle
+		ModType: Production
+	AttributeModifierManager@ProdShip:
+		Type: Ship
+		ModType: Production
+	AttributeModifierManager@ProdAircraft:
+		Type: Aircraft
+		ModType: Production
+	AttributeModifierManager@IncHarvester:
+		Type: Harvester
+		ModType: Income
+	AttributeModifierManager@IncCashTrickler:
+		Type: CashTrickler
+		ModType: Income
+	AttributeModifierManager@IncBounty:
+		Type: Bounty
+		ModType: Income
+		
