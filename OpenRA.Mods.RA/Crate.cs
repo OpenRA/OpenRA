@@ -124,13 +124,14 @@ namespace OpenRA.Mods.RA
 
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
+			WPos oldPos = new WPos(CenterPosition.X, CenterPosition.Y, CenterPosition.Z);
 			self.World.ActorMap.RemoveInfluence(self, this);
 			Location = cell;
 			CenterPosition = self.World.Map.CenterOfCell(cell);
 
 			if (self.IsInWorld)
 			{
-				self.World.ActorMap.UpdatePosition(self, this);
+				self.World.ActorMap.UpdatePosition(self, oldPos);
 				self.World.ScreenMap.Update(self);
 			}
 		}
@@ -143,7 +144,7 @@ namespace OpenRA.Mods.RA
 		public void AddedToWorld(Actor self)
 		{
 			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
+			self.World.ActorMap.AddPosition(self);
 			self.World.ScreenMap.Add(self);
 
 			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();
@@ -154,7 +155,7 @@ namespace OpenRA.Mods.RA
 		public void RemovedFromWorld(Actor self)
 		{
 			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
+			self.World.ActorMap.RemovePosition(self);
 			self.World.ScreenMap.Remove(self);
 
 			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();

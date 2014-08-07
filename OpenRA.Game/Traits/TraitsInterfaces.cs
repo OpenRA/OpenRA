@@ -212,6 +212,18 @@ namespace OpenRA.Traits
 
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }
 
+	public interface IMovementListener
+	{
+		void PositionMovementAnnouncement(HashSet<Actor> movedActors);
+		void CellMovementAnnouncement(HashSet<Actor> movedActors);
+	}
+
+	public interface INotifyRegionTrigger
+	{
+		void EnteredRegion(Player owner, Actor self, string region);
+		void LeftRegion(Player owner, Actor self, string region);
+	}
+
 	public interface IFacing
 	{
 		int ROT { get; }

@@ -35,6 +35,7 @@ namespace OpenRA.Traits
 
 		readonly ActorMapInfo info;
 		readonly Map map;
+		readonly World world;
 		readonly CellLayer<InfluenceNode> influence;
 
 		readonly List<Actor>[] actors;
@@ -46,10 +47,14 @@ namespace OpenRA.Traits
 		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
 		readonly Predicate<Actor> actorShouldBeRemoved;
 
+		MovementAnnouncer announcer = null;
+		bool announcerInit = false;
+
 		public ActorMap(World world, ActorMapInfo info)
 		{
 			this.info = info;
 			map = world.Map;
+			this.world = world;
 			influence = new CellLayer<InfluenceNode>(world.Map);
 
 			cols = world.Map.MapSize.X / info.BinSize + 1;
@@ -199,20 +204,27 @@ namespace OpenRA.Traits
 			addActorPosition.Clear();
 		}
 
-		public void AddPosition(Actor a, IOccupySpace ios)
+		public void AddPosition(Actor a)
 		{
-			UpdatePosition(a, ios);
+			UpdatePosition(a, null);
 		}
 
-		public void RemovePosition(Actor a, IOccupySpace ios)
+		public void RemovePosition(Actor a)
 		{
 			removeActorPosition.Add(a);
 		}
 
-		public void UpdatePosition(Actor a, IOccupySpace ios)
+		public void UpdatePosition(Actor a, WPos? oldPos)
 		{
-			RemovePosition(a, ios);
+			// Cannot do this in the constructor, as WorldActor is not setup yet
+			if (!announcerInit)
+				announcer = world.WorldActor.TraitOrDefault<MovementAnnouncer>();
+
+			RemovePosition(a);
 			addActorPosition.Add(a);
+
+			if (announcer != null)
+				announcer.RegisterMovement(a, oldPos);
 		}
 
 		public IEnumerable<Actor> ActorsInBox(WPos a, WPos b)

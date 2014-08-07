@@ -146,6 +146,9 @@
     <Compile Include="Traits\EditorTilesetFilter.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
+    <Compile Include="Traits\Map\MultiCellMapRegion.cs" />
+    <Compile Include="Traits\Map\SquareMapRegion.cs" />
+    <Compile Include="Traits\MovementListener.cs" />
     <Compile Include="Traits\RejectsOrders.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
@@ -157,6 +160,7 @@
     <Compile Include="Traits\Util.cs" />
     <Compile Include="Traits\ValidateOrder.cs" />
     <Compile Include="Traits\World\Country.cs" />
+    <Compile Include="Traits\World\MovementAnnouncer.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
@@ -354,6 +358,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="OpenRA.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Traits\Map" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
