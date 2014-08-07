@@ -84,12 +84,14 @@ function ide:GetDocument(ed) return self.openDocuments[ed:GetId()] end
 function ide:GetDocuments() return self.openDocuments end
 function ide:FindMenuItem(itemid, menu)
   local item, menu = ide:GetMenuBar():FindItem(itemid, menu)
+  if not item then return end
+
   for pos = 0, menu:GetMenuItemCount()-1 do
     if menu:FindItemByPosition(pos):GetId() == itemid then
       return item, menu, pos
     end
   end
-  return nil
+  return
 end
 
 function ide:FindDocument(path)

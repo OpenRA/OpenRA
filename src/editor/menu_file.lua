@@ -131,6 +131,9 @@ do -- recent file history
 
   local items = 0
   updateRecentFiles = function (list)
+    -- protect against recent files menu not being present
+    if not ide:FindMenuItem(ID_RECENTFILES) then return end
+
     for i=1, #list do
       local file = list[i].filename
       local id = ID("file.recentfiles."..i)
@@ -244,6 +247,7 @@ local recentprojects = 0
 frame:Connect(ID_RECENTPROJECTS, wx.wxEVT_UPDATE_UI,
   function (event)
     recentprojects = FileTreeProjectListUpdate(projecthistorymenu, recentprojects)
+    if not recentprojects then return end
     local pos = 1 -- add shortcut for the previous project (if any)
     if recentprojects > pos then
       local item = projecthistorymenu:FindItemByPosition(pos)

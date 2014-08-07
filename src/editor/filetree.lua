@@ -595,6 +595,9 @@ function FileTreeProjectListClear()
 end
 
 function FileTreeProjectListUpdate(menu, items)
+  -- protect against recent project menu not being present
+  if not ide:FindMenuItem(ID_RECENTPROJECTS) then return end
+
   local list = getProjectLabels()
   for i=#list, 1, -1 do
     local id = ID("file.recentprojects."..i)
