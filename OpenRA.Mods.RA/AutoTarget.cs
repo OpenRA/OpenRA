@@ -151,13 +151,17 @@ namespace OpenRA.Mods.RA
 			nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
 			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range);
 
-			return inRange
-				.Where(a =>
-					a.AppearsHostileTo(self) &&
-					!a.HasTrait<AutoTargetIgnore>() &&
-					attack.HasAnyValidWeapons(Target.FromActor(a)) &&
-					self.Owner.Shroud.IsTargetable(a))
-				.ClosestTo(self);
+			return inRange.Where(a =>
+			{
+				foreach (var condition in a.TraitsImplementing<IConditionalTarget>())
+					if (!condition.TargetableBy(a, self, this))
+						return false;
+
+				return a.AppearsHostileTo(self) &&
+				!a.HasTrait<AutoTargetIgnore>() &&
+				attack.HasAnyValidWeapons(Target.FromActor(a)) &&
+				self.Owner.Shroud.IsTargetable(a);
+			}).ClosestTo(self);
 		}
 	}
 
