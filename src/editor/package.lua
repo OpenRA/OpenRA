@@ -138,6 +138,23 @@ function ide:GetSetting(path, setting)
   return ok and value or nil
 end
 
+function ide:RemoveMenuItem(id, menu)
+  local _, menu, pos = ide:FindMenuItem(id, menu)
+  if menu then
+    menu:Disconnect(id, wx.wxID_ANY, wx.wxEVT_COMMAND_MENU_SELECTED)
+    menu:Disconnect(id, wx.wxID_ANY, wx.wxEVT_UPDATE_UI)
+    menu:Remove(id)
+
+    local positem = menu:FindItemByPosition(pos)
+    if (not positem or positem:GetKind() == wx.wxITEM_SEPARATOR)
+    and (menu:FindItemByPosition(pos-1):GetKind() == wx.wxITEM_SEPARATOR) then
+      menu:Destroy(menu:FindItemByPosition(pos-1))
+    end
+    return true
+  end
+  return false
+end
+
 function ide:AddInterpreter(name, interpreter)
   self.interpreters[name] = setmetatable(interpreter, ide.proto.Interpreter)
   UpdateInterpreters()
