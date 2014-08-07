@@ -364,6 +364,28 @@ namespace OpenRA.Utility
 					}
 				}
 
+				// Veterancy was changed to use the upgrades system
+				if (engineVersion < 20140807)
+				{
+					if (depth == 0 && node.Value.Nodes.Any(n => n.Key.StartsWith("GainsExperience")))
+						node.Value.Nodes.Add(new MiniYamlNode("GainsStatUpgrades", new MiniYaml("")));
+
+					if (depth == 1 && node.Key == "-CloakCrateAction")
+						node.Key = "-UnitUpgradeCrateAction@cloak";
+
+					if (depth == 1 && node.Key == "CloakCrateAction")
+					{
+						node.Key = "UnitUpgradeCrateAction@cloak";
+						node.Value.Nodes.Add(new MiniYamlNode("Upgrades", new MiniYaml("cloak")));
+					}
+
+					if (depth == 2 && node.Key == "RequiresCrate" && parentKey == "Cloak")
+					{
+						node.Key = "RequiresUpgrade";
+						node.Value.Value = "cloak";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

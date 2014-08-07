@@ -60,8 +60,8 @@ namespace OpenRA.Mods.RA
 			var spawn = self.CenterPosition + exitinfo.SpawnOffset;
 			var to = self.World.Map.CenterOfCell(exit);
 
-			var fi = producee.Traits.Get<IFacingInfo>();
-			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi.GetInitialFacing()) : exitinfo.Facing;
+			var fi = producee.Traits.GetOrDefault<IFacingInfo>();
+			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi == null ? 0 : fi.GetInitialFacing()) : exitinfo.Facing;
 
 			var exitLocation = rp.Value != null ? rp.Value.Location : exit;
 			var target = Target.FromCell(self.World, exitLocation);

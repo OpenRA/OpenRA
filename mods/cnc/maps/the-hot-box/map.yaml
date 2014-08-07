@@ -211,7 +211,7 @@ Rules:
 		-GiveMcvCrateAction:
 		-RevealMapCrateAction:
 		-HideMapCrateAction:
-		-CloakCrateAction:
+		-UnitUpgradeCrateAction@cloak:
 		-ExplodeCrateAction@nuke:
 		-ExplodeCrateAction@boom:
 		-ExplodeCrateAction@fire:
