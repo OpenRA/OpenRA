@@ -176,10 +176,9 @@ function M.show_warnings(top_ast, globinit)
 end
 
 local frame = ide.frame
-local menu = frame.menuBar:GetMenu(frame.menuBar:FindMenu(TR("&Project")))
 
 -- insert after "Compile" item
-local _, compilepos = ide:FindMenuItem(menu, ID_COMPILE)
+local _, menu, compilepos = ide:FindMenuItem(ID_COMPILE)
 if compilepos then
   menu:Insert(compilepos+1, ID_ANALYZE, TR("Analyze")..KSC(ID_ANALYZE), TR("Analyze the source code"))
 end
@@ -188,7 +187,7 @@ local debugger = ide.debugger
 local openDocuments = ide.openDocuments
 
 local function analyzeProgram(editor)
-  if frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
+  if ide:GetMenuBar():IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
   DisplayOutput("Analyzing the source code")
   frame:Update()
 
