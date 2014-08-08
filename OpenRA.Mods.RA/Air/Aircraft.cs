@@ -198,7 +198,8 @@ namespace OpenRA.Mods.RA.Air
 			return info.RearmBuildings.Contains(a.Info.Name)
 				|| info.RepairBuildings.Contains(a.Info.Name);
 		}
-
+		
+		public int GetDesiredSubcell(CPos a, Actor ignoreActor) { return -1; } // does not use any subcell
 		public bool CanEnterCell(CPos location) { return true; }
 		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors) { return true; }
 

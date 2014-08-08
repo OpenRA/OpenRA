@@ -182,6 +182,7 @@ namespace OpenRA.Traits
 	{
 		bool CanEnterCell(CPos location);
 		bool CanEnterCell(CPos location, Actor ignoreActor, bool checkTransientActors);
+		int GetDesiredSubcell(CPos a, Actor ignoreActor);
 		void SetPosition(Actor self, CPos cell, int subCell = -1);
 		void SetPosition(Actor self, WPos pos);
 		void SetVisualPosition(Actor self, WPos pos);

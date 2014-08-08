@@ -627,18 +627,19 @@ namespace OpenRA.Mods.RA.Move
 		{
 			var pos = self.CenterPosition;
 
-			subCell = self.World.ActorMap.FreeSubCell(cell, subCell);
+			if (subCell == -1)
+				subCell = self.World.ActorMap.FreeSubCell(cell, subCell);
 
 			// TODO: solve/reduce cell is full problem
 			if (subCell < 0)
 				subCell = self.World.Map.SubCellDefaultIndex;
 
 			// Reserve the exit cell
-			SetPosition(self, cell);
+			SetPosition(self, cell, subCell);
 			SetVisualPosition(self, pos);
 
 			// Animate transition
-			var to = self.World.Map.CenterOfCell(cell);
+			var to = self.World.Map.CenterOfCell(cell) + self.World.Map.SubCellOffsets[subCell];
 			var speed = MovementSpeedForCell(self, cell);
 			var length = speed > 0 ? (to - pos).Length / speed : 0;
 

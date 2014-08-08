@@ -11,6 +11,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Mods.RA.Move;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
@@ -30,14 +32,15 @@ namespace OpenRA.Mods.RA.Activities
 			this.unloadAll = unloadAll;
 		}
 
-		public CPos? ChooseExitCell(Actor passenger)
+		public Pair<CPos, int>? ChooseExitSubCell(Actor passenger)
 		{
 			var pos = passenger.Trait<IPositionable>();
 
 			return cargo.CurrentAdjacentCells
 				.Shuffle(self.World.SharedRandom)
-				.Cast<CPos?>()
-				.FirstOrDefault(c => pos.CanEnterCell(c.Value));
+				.Select(c => Pair.New(c, pos.GetDesiredSubcell(c, null)))
+				.Cast<Pair<CPos, int>?>()
+				.FirstOrDefault(s => s.Value.Second >= 0);
 		}
 
 		IEnumerable<CPos> BlockedExitCells(Actor passenger)
@@ -60,8 +63,8 @@ namespace OpenRA.Mods.RA.Activities
 			var actor = cargo.Peek(self);
 			var spawn = self.CenterPosition;
 
-			var exitCell = ChooseExitCell(actor);
-			if (exitCell == null)
+			var exitSubCell = ChooseExitSubCell(actor);
+			if (exitSubCell == null)
 			{
 				foreach (var blocker in BlockedExitCells(actor).SelectMany(p => self.World.ActorMap.GetUnitsAt(p)))
 				{
@@ -83,8 +86,11 @@ namespace OpenRA.Mods.RA.Activities
 				w.Add(actor);
 				actor.CancelActivity();
 				pos.SetVisualPosition(actor, spawn);
-				actor.QueueActivity(move.MoveIntoWorld(actor, exitCell.Value));
-				actor.SetTargetLine(Target.FromCell(w, exitCell.Value), Color.Green, false);
+				var mobile = move as Mobile;
+				if (mobile != null)
+					mobile.SetLocation(exitSubCell.Value.First, exitSubCell.Value.Second, exitSubCell.Value.First, exitSubCell.Value.Second);
+				actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
+				actor.SetTargetLine(Target.FromCell(w, exitSubCell.Value.First, exitSubCell.Value.Second), Color.Green, false);
 			});
 
 			if (!unloadAll || cargo.IsEmpty(self))
