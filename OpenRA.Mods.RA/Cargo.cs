@@ -9,8 +9,10 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -208,7 +210,12 @@ namespace OpenRA.Mods.RA
 			{
 				w.Add(passenger);
 				passenger.Trait<IPositionable>().SetPosition(passenger, self.Location);
-				// TODO: this won't work well for >1 actor as they should move towards the next enterable (sub) cell instead
+				var move = passenger.Trait<IMove>();
+				if (move != null)
+				{
+					passenger.QueueActivity(move.MoveIntoWorld(passenger, self.Location));
+					passenger.SetTargetLine(Target.FromCell(w, self.Location), Color.Green, false);
+				}
 			});
 		}
 

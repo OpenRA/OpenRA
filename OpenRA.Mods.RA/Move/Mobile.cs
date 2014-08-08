@@ -601,6 +601,18 @@ namespace OpenRA.Mods.RA.Move
 				Nudge(self, blocking, true);
 		}
 
+		public Activity NudgeAway(Actor self, CPos cell)
+		{
+			return new CallFunc(() =>
+			{
+				foreach (var other in self.World.ActorMap.GetUnitsAt(cell, toSubCell).Where(a => a != self))
+				{
+					var mobile = other.TraitOrDefault<Mobile>() ?? this;
+					mobile.Nudge(mobile == this ? self : other, self, true);
+				}
+			});
+		}
+
 		public Activity MoveIntoWorld(Actor self, CPos cell)
 		{
 			var pos = self.CenterPosition;
@@ -615,7 +627,10 @@ namespace OpenRA.Mods.RA.Move
 			var length = speed > 0 ? (to - pos).Length / speed : 0;
 
 			var facing = Util.GetFacing(to - pos, Facing);
-			return Util.SequenceActivities(new Turn(facing), new Drag(pos, to, length));
+			return Util.SequenceActivities(
+				new Turn(facing),
+				new Drag(pos, to, length),
+				NudgeAway(self, cell));
 		}
 
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
