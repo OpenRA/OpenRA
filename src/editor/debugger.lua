@@ -720,6 +720,12 @@ debugger.listen = function(start)
   debugger.listening = server
 end
 
+local function nameOutputTab(name)
+  local nbk = ide.frame.bottomnotebook
+  local index = nbk:GetPageIndex(ide:GetOutput())
+  if index then nbk:SetPageText(index, name) end
+end
+
 debugger.handle = function(command, server, options)
   local verbose = ide.config.debugger.verbose
   local osexit, gprint
@@ -728,11 +734,14 @@ debugger.handle = function(command, server, options)
     if verbose then DisplayOutputLn(...) end
   end
 
+  nameOutputTab(TR("Output (running)"))
   debugger.running = true
   if verbose then DisplayOutputLn("Debugger sent (command):", command) end
   local file, line, err = mobdebug.handle(command, server or debugger.server, options)
   if verbose then DisplayOutputLn("Debugger received (file, line, err):", file, line, err) end
   debugger.running = false
+  -- only set suspended if the debugging hasn't been terminated
+  if debugger.server then nameOutputTab(TR("Output (suspended)")) end
 
   os.exit = osexit
   _G.print = gprint
