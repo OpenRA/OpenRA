@@ -186,6 +186,8 @@ SONICTANK:
 		Range: 6c0
 	RenderUnit:
 		Image: SONICTANK
+	TargetableUnit:
+		TargetTypes: Ground, C4, Sonictank
 	Armament:
 		Weapon: Sound
 		LocalOffset: 640,0,427
