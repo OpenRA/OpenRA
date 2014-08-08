@@ -57,6 +57,14 @@ namespace OpenRA.Mods.RA.Move
 			this.nearEnough = nearEnough;
 		}
 
+		public Move(CPos destination, int subCell, WRange nearEnough)
+		{
+			this.getPath = (self, mobile) => self.World.WorldActor.Trait<PathFinder>()
+				.FindUnitPathToRange(mobile.fromCell, subCell, self.World.Map.CenterOfCell(destination) + self.World.Map.SubCellOffsets[subCell], nearEnough, self);
+			this.destination = destination;
+			this.nearEnough = nearEnough;
+		}
+
 		public Move(CPos destination, Actor ignoreBuilding)
 		{
 			this.getPath = (self, mobile) =>

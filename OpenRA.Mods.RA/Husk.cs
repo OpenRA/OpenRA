@@ -69,6 +69,7 @@ namespace OpenRA.Mods.RA
 				.Any();
 		}
 
+		public int GetDesiredSubcell(CPos a, Actor ignoreActor) { return CanEnterCell(a, ignoreActor, true) ? 0 : -1; }
 		public bool CanEnterCell(CPos cell) { return CanEnterCell(cell, null, true); }
 		public void SetPosition(Actor self, CPos cell, int subCell = -1) { SetPosition(self, self.World.Map.CenterOfCell(cell)); }
 
