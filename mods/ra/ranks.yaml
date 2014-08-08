@@ -1,0 +1,9 @@
+Rank@1:
+	Name: Rank 1
+	ExperienceNeeded: 0
+	SciencePointsGranted: 1
+
+Rank@2:
+	Name: Rank 2
+	ExperienceNeeded: 500
+	SciencePointsGranted: 1

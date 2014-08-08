@@ -124,6 +124,9 @@ TileSets:
 Music:
 	mods/ra/music.yaml
 
+Ranks:
+	mods/ra/ranks.yaml
+
 Movies:
 	mods/ra/movies1.yaml
 	mods/ra/movies2.yaml

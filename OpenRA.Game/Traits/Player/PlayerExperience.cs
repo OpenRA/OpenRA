@@ -45,6 +45,7 @@ namespace OpenRA.Traits
 				kv => FieldLoader.GetValue<int>("(key)", kv.Key),
 				kv => FieldLoader.GetValue<int>("(value)", kv.Value.Value));
 		}
+		public object Create(ActorInitializer init) { return new PlayerExperience(init.self, this); }
 	}
 
 	public class PlayerExperience : ISync
@@ -70,6 +71,19 @@ namespace OpenRA.Traits
 		[Sync] public int SciencePoints;
 
 		public readonly int MaxRank;
+		//readonly Player Owner;
+
+		public PlayerExperience(Actor self, PlayerExperienceInfo info)
+		{
+			//Owner = self.Owner;
+
+			Experience = 0;
+			SciencePoints = 0;
+		}
+
+		[Sync] public int Experience;
+
+		[Sync] public int SciencePoints;
 
 
 		public void GiveExperience(int num)
@@ -87,14 +101,14 @@ namespace OpenRA.Traits
 			GiveSciencePoints(num);
 		}
 
-		public void GiveSciencePoints(int num)
+		public void GiveSciencePoint(int num)
 		{
 			SciencePoints += num;
 		}
 
-		public bool UseSciencePoints(int num)
+		public bool UseSciencePoint(int num)
 		{
-			if (num > SciencePoints) return false;
+			if(num > SciencePoints) return false;
 			SciencePoints -= num;
 			return true;
 		}
