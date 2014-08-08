@@ -452,6 +452,8 @@ debugger.shell = function(expression, isstatement)
           updateStackSync() updateWatchesSync()
         end
       end)
+  elseif debugger.server then
+    DisplayShellErr(TR("Can't evaluate the expression while the application is running."))
   end
 end
 
