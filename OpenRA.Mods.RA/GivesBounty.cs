@@ -56,6 +56,7 @@ namespace OpenRA.Mods.RA
 				e.Attacker.World.AddFrameEndTask(w => w.Add(new CashTick(self.CenterPosition, e.Attacker.Owner.Color.RGB, bounty)));
 
 			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(bounty);
+			e.Attacker.Owner.PlayerActor.Trait<PlayerExperience>().GiveExperience(cost);
 		}
 	}
 }
