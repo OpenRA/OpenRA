@@ -106,7 +106,7 @@ namespace OpenRA.Utility
 
 		int mapSize;
 		int actorCount = 0;
-		Map map = new Map();
+		Map map;
 		Ruleset rules;
 		List<string> players = new List<string>();
 		Action<string> errorHandler;
@@ -115,13 +115,17 @@ namespace OpenRA.Utility
 		{
 			this.rules = rules;
 			this.errorHandler = errorHandler;
+
 			ConvertIniMap(filename);
 		}
 
-		public static Map Import(string filename, Ruleset rules, Action<string> errorHandler)
+		public static Map Import(string filename, string mod, Ruleset rules, Action<string> errorHandler)
 		{
-			var converter = new LegacyMapImporter(filename, rules, errorHandler);
-			return converter.map;
+			var map = new LegacyMapImporter(filename, rules, errorHandler).map;
+			map.RequiresMod = mod;
+			map.MakeDefaultPlayers();
+			map.FixOpenAreas(rules);
+			return map;
 		}
 
 		enum IniMapFormat { RedAlert = 3 } // otherwise, cnc (2 variants exist, we don't care to differentiate)
@@ -139,9 +143,10 @@ namespace OpenRA.Utility
 			mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
 			var size = new Size(mapSize, mapSize);
 
+			var tileset = Truncate(mapSection.GetValue("Theater", "TEMPERAT"), 8);
+			map = Map.FromTileset(rules.TileSets[tileset]);
 			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile));
 			map.Author = "Westwood Studios";
-			map.Tileset = Truncate(mapSection.GetValue("Theater", "TEMPERAT"), 8);
 			map.MapSize.X = mapSize;
 			map.MapSize.Y = mapSize;
 			map.Bounds = Rectangle.FromLTRB(offsetX, offsetY, offsetX + width, offsetY + height);

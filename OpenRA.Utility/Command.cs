@@ -566,10 +566,7 @@ namespace OpenRA.Utility
 			var filename = args[2];
 			Game.modData = new ModData(mod);
 			var rules = Game.modData.RulesetCache.LoadDefaultRules();
-			var map = LegacyMapImporter.Import(filename, rules, e => Console.WriteLine(e));
-			map.RequiresMod = mod;
-			map.MakeDefaultPlayers();
-			map.FixOpenAreas(rules);
+			var map = LegacyMapImporter.Import(filename, mod, rules, e => Console.WriteLine(e));
 			var dest = map.Title + ".oramap";
 			map.Save(dest);
 			Console.WriteLine(dest + " saved.");
