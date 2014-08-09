@@ -64,8 +64,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					break;
 				var totalKills = stats.UnitsKilled + stats.BuildingsKilled;
 				var totalDeaths = stats.UnitsDead + stats.BuildingsDead;
+				var totalExperience = stats.ExperienceGained;
 				item.Get<LabelWidget>("KILLS").GetText = () => totalKills.ToString();
 				item.Get<LabelWidget>("DEATHS").GetText = () => totalDeaths.ToString();
+				item.Get<LabelWidget>("EXPERIENCE").GetText = () => totalExperience.ToString();
 			}
 		}
 	}
