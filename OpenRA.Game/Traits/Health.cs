@@ -100,16 +100,21 @@ namespace OpenRA.Traits
 
 		public void InflictDamage(Actor self, Actor attacker, int damage, DamageWarhead warhead, bool ignoreModifiers)
 		{
-			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
+			// Overkill! don't count extra hits as more kills!
+			if (IsDead)
+				return;
 
 			var oldState = this.DamageState;
-			/* apply the damage modifiers, if we have any. */
-			var modifier = self.TraitsImplementing<IDamageModifier>()
-				.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
-				.Select(t => t.GetDamageModifier(attacker, warhead)).Product();
 
-			if (!ignoreModifiers)
-				damage = damage > 0 ? (int)(damage * modifier) : damage;
+			// Apply any damage modifiers
+			if (!ignoreModifiers && damage > 0)
+			{
+				var modifiers = self.TraitsImplementing<IDamageModifier>()
+					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
+					.Select(t => t.GetDamageModifier(attacker, warhead));
+
+				damage = Util.ApplyPercentageModifiers(damage, modifiers);
+			}
 
 			hp = Exts.Clamp(hp - damage, 0, MaxHP);
 

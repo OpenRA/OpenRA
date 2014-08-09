@@ -61,9 +61,9 @@ namespace OpenRA.Mods.RA
 				LocalOffset = WVec.Zero;
 		}
 
-		public float GetDamageModifier(Actor attacker, DamageWarhead warhead)
+		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
 		{
-			return IsProne && warhead != null ? warhead.ProneModifier / 100f : 1f;
+			return IsProne && warhead != null ? warhead.ProneModifier : 100;
 		}
 
 		public decimal GetSpeedModifier()

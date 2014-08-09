@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
 
 		public readonly string ArmorUpgrade = "armor";
-		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
+		public readonly int[] ArmorModifier = { 110, 120, 130, 150 };
 
 		public readonly string SpeedUpgrade = "speed";
 		public readonly decimal[] SpeedModifier = { 1.1m, 1.15m, 1.2m, 1.5m };
@@ -60,9 +60,9 @@ namespace OpenRA.Mods.RA
 				speedLevel = (speedLevel + mod).Clamp(0, info.SpeedModifier.Length);
 		}
 
-		public float GetDamageModifier(Actor attacker, DamageWarhead warhead)
+		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
 		{
-			return armorLevel > 0 ? 1 / info.ArmorModifier[armorLevel - 1] : 1;
+			return armorLevel > 0 ? 1 / info.ArmorModifier[armorLevel - 1] : 100;
 		}
 
 		public float GetFirepowerModifier()
