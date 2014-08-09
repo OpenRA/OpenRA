@@ -392,8 +392,7 @@ end
 -- process config
 
 -- set ide.config environment
-ide.config.os = os
-ide.config.wxstc = wxstc
+setmetatable(ide.config, {__index = {os = os, wxstc = wxstc, wx = wx}})
 ide.config.load = { interpreters = loadInterpreters, specs = loadSpecs,
   tools = loadTools }
 do
