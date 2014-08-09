@@ -479,7 +479,7 @@ local function treeSetConnectorsAndIcons(tree)
   local itemsrc
   tree:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_DRAG,
     function (event)
-      if tree:GetItemParent(event:GetItem()):IsOk() then
+      if ide.config.filetree.mousemove and tree:GetItemParent(event:GetItem()):IsOk() then
         itemsrc = event:GetItem()
         event:Allow()
       end

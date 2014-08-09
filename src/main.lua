@@ -56,7 +56,9 @@ ide = {
       interpreter = 'luadeb',
     },
     outputshell = {},
-    filetree = {},
+    filetree = {
+      mousemove = true,
+    },
     funclist = {},
 
     toolbar = {
