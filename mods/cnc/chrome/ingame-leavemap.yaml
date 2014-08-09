@@ -21,7 +21,7 @@ Container@LEAVE_RESTART_WIDGET:
 		Container@LEAVE_RESTART_SIMPLE
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
-			Width: 370
+			Width: 440
 			Height: 125
 			Visible: False
 			Children:
@@ -62,7 +62,7 @@ Container@LEAVE_RESTART_WIDGET:
 		Container@LEAVE_RESTART_FULL:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
-			Width: 512
+			Width: 582
 			Height: 410
 			Visible: False
 			Children:
