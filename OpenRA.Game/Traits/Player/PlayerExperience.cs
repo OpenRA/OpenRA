@@ -94,7 +94,7 @@ namespace OpenRA.Traits
 
 		public bool UseSciencePoints(int num)
 		{
-			if(num > SciencePoints) return false;
+			if (num > SciencePoints) return false;
 			SciencePoints -= num;
 			return true;
 		}
