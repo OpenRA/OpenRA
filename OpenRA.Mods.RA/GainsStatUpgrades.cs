@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public readonly int[] ArmorModifier = { 110, 120, 130, 150 };
 
 		public readonly string SpeedUpgrade = "speed";
-		public readonly decimal[] SpeedModifier = { 1.1m, 1.15m, 1.2m, 1.5m };
+		public readonly int[] SpeedModifier = { 110, 115, 120, 150 };
 
 		public object Create(ActorInitializer init) { return new GainsStatUpgrades(this); }
 	}
@@ -70,9 +70,9 @@ namespace OpenRA.Mods.RA
 			return firepowerLevel > 0 ? info.FirepowerModifier[firepowerLevel - 1] : 1;
 		}
 
-		public decimal GetSpeedModifier()
+		public int GetSpeedModifier()
 		{
-			return speedLevel > 0 ? info.SpeedModifier[speedLevel - 1] : 1m;
+			return speedLevel > 0 ? info.SpeedModifier[speedLevel - 1] : 100;
 		}
 	}
 }
