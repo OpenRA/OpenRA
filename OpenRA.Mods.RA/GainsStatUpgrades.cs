@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 	public class GainsStatUpgradesInfo : ITraitInfo
 	{
 		public readonly string FirepowerUpgrade = "firepower";
-		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
+		public readonly int[] FirepowerModifier = { 110, 115, 120, 150 };
 
 		public readonly string ArmorUpgrade = "armor";
 		public readonly int[] ArmorModifier = { 110, 120, 130, 150 };
@@ -65,9 +65,9 @@ namespace OpenRA.Mods.RA
 			return armorLevel > 0 ? 1 / info.ArmorModifier[armorLevel - 1] : 100;
 		}
 
-		public float GetFirepowerModifier()
+		public int GetFirepowerModifier()
 		{
-			return firepowerLevel > 0 ? info.FirepowerModifier[firepowerLevel - 1] : 1;
+			return firepowerLevel > 0 ? info.FirepowerModifier[firepowerLevel - 1] : 100;
 		}
 
 		public int GetSpeedModifier()
