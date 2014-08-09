@@ -19,3 +19,5 @@ Don't forget to add youself to [AUTHORS](https://github.com/OpenRA/OpenRA/blob/b
 Please propose a [CHANGELOG](https://github.com/OpenRA/OpenRA/wiki/CHANGELOG) entry in the pull-request comments.
 
 While your pull-request is in review it will be helpful if you join [IRC](irc://chat.freenode.net/openra) to discuss the changes.
+
+See also the in-depth guide on [contributing](https://github.com/OpenRA/OpenRA/wiki/Contributing) to the OpenRA project.
