@@ -43,6 +43,7 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 128
+		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 4c0
 	Turreted:
