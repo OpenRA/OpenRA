@@ -25,7 +25,6 @@ Player:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	PlaceBuilding:
-	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
 	ConquestVictoryConditions:

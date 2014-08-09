@@ -891,31 +891,6 @@ AFLD:
 		Produces: Aircraft, Plane
 	Reservable:
 	IronCurtainable:
-	AirstrikePower:
-		Icon: spyplane
-		ChargeTime: 180
-		Description: Spy Plane
-		LongDesc: Reveals an area of the map\nand cloaked enemy units.
-		SelectTargetSound: slcttgt1.aud
-		EndChargeSound: spypln1.aud
-		CameraActor: camera
-		CameraRemoveDelay: 150
-		UnitType: u2
-		QuantizedFacings: 8
-		DisplayBeacon: true
-		BeaconPoster: camicon
-	ParatroopersPower:
-		Icon: paratroopers
-		ChargeTime: 360
-		Description: Paratroopers
-		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
-		DropItems: E1,E1,E1,E3,E3
-		SelectTargetSound: slcttgt1.aud
-		AllowImpassableCells: false
-		QuantizedFacings: 8
-		CameraActor: camera.paradrop
-		DisplayBeacon: true
-		BeaconPoster: pinficon
 	ProductionBar:
 	SupportPowerChargeBar:
 	PrimaryBuilding:
