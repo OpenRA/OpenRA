@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init, init.self.Owner.PlayerActor, this); }
 	}
 
-	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyOwnerChanged, INotifyKilled, INotifySold, ISync, INotifyTransform
+	public class ProductionQueue : IResolveOrder, ITick, INotifyOwnerChanged, INotifyKilled, INotifySold, ISync, INotifyTransform
 	{
 		public readonly ProductionQueueInfo Info;
 		readonly Actor self;
@@ -132,7 +133,9 @@ namespace OpenRA.Mods.RA
 			}
 
 			// Regenerate the produceables and tech tree state
-			oldOwner.PlayerActor.Trait<TechTree>().Remove(this);
+			var oldtree = oldOwner.PlayerActor.Trait<TechTree>();
+			produceable.Do(p => oldtree.Remove(p.Value));
+			oldtree.Update();
 			CacheProduceables(newOwner.PlayerActor);
 			newOwner.PlayerActor.Trait<TechTree>().Update();
 		}
@@ -160,11 +163,17 @@ namespace OpenRA.Mods.RA
 				// Can our race build this by satisfying normal prerequisites?
 				var buildable = !Info.RequireOwner || bi.Owner.Contains(Race);
 
+				var state = new ProductionState
+					{
+						Visible = buildable,
+						Limit = bi.BuildLimit
+					};
+
 				// Checks if Prerequisites want to hide the Actor from buildQueue if they are false
-				produceable.Add(a, new ProductionState { Visible = buildable });
+				produceable.Add(a, state);
 
 				if (buildable)
-					ttc.Add(a.Name, bi.Prerequisites, bi.BuildLimit, this);
+					ttc.Add(bi.Prerequisites, state);
 			}
 		}
 
@@ -175,26 +184,6 @@ namespace OpenRA.Mods.RA
 					x.Name[0] != '^' &&
 					x.Traits.Contains<BuildableInfo>() &&
 					x.Traits.Get<BuildableInfo>().Queue.Contains(category));
-		}
-
-		public void PrerequisitesAvailable(string key)
-		{
-			produceable[self.World.Map.Rules.Actors[key]].Buildable = true;
-		}
-
-		public void PrerequisitesUnavailable(string key)
-		{
-			produceable[self.World.Map.Rules.Actors[key]].Buildable = false;
-		}
-
-		public void PrerequisitesItemHidden(string key)
-		{
-			produceable[self.World.Map.Rules.Actors[key]].Visible = false;
-		}
-
-		public void PrerequisitesItemVisible(string key)
-		{
-			produceable[self.World.Map.Rules.Actors[key]].Visible = true;
 		}
 
 		public ProductionItem CurrentItem()
@@ -266,7 +255,7 @@ namespace OpenRA.Mods.RA
 
 					// Check if the player is trying to build more units that they are allowed
 					var fromLimit = int.MaxValue;
-					if (bi.BuildLimit > 0)
+					if (bi.BuildLimit > 0 && !developerMode.AllTech)
 					{
 						var inQueue = queue.Count(pi => pi.Item == order.TargetString);
 						var owned = self.Owner.World.ActorsWithTrait<Buildable>().Count(a => a.Actor.Info.Name == order.TargetString && a.Actor.Owner == self.Owner);
@@ -383,12 +372,47 @@ namespace OpenRA.Mods.RA
 
 			return false;
 		}
+
+		public void UpdateBuildLimits(Actor actor)
+		{
+			if (self.Owner == null)
+				return;
+
+			var list = self.Owner.World.ActorsWithTrait<Buildable>()
+				.Where(a =>
+					a.Actor.Info.Name == actor.Info.Name &&
+					a.Actor.Owner == self.Owner &&
+					a.Actor.IsInWorld &&
+					!a.Actor.IsDead());
+
+			produceable.Where(w => w.Key.Name == actor.Info.Name).Do(w => w.Value.CheckBuildLimit(list.Count()));
+		}
 	}
 
-	public class ProductionState
+	public class ProductionState : ITechTreeElement
 	{
 		public bool Visible = false;
 		public bool Buildable = false;
+
+		public bool ReachedLimit
+		{
+			get { return reachedLimit; }
+			set
+			{
+				reachedLimit = value;
+				Buildable = !ReachedLimit;
+			}
+		}
+
+		private bool reachedLimit;
+
+		public void PrerequisitesAvailable() { Buildable = true && !ReachedLimit; }
+		public void PrerequisitesUnavailable() { Buildable = false; }
+		public void PrerequisitesItemVisible() { Visible = true; }
+		public void PrerequisitesItemHidden() { Visible = false; }
+		public void CheckBuildLimit(int num) { ReachedLimit = num >= Limit; }
+
+		public int Limit{ get; set; }
 	}
 
 	public class ProductionItem
