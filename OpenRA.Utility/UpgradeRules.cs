@@ -416,6 +416,18 @@ namespace OpenRA.Utility
 
 					if (depth == 2 && node.Key == "ArmorModifier" && parentKey == "GainsStatUpgrades")
 						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+
+					if (depth == 2 && node.Key == "FullyLoadedSpeed" && parentKey == "Harvester")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+
+					if (depth == 2 && node.Key == "PanicSpeedModifier" && parentKey == "ScaredyCat")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+
+					if (depth == 2 && node.Key == "ProneSpeed" && parentKey == "TakeCover")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+
+					if (depth == 2 && node.Key == "SpeedModifier" && parentKey == "GainsStatUpgrades")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
