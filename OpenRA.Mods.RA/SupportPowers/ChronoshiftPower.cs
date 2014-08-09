@@ -23,22 +23,22 @@ namespace OpenRA.Mods.RA
 		public readonly int Duration = 30;
 		public readonly bool KillCargo = true;
 
-		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.self,this); }
+		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init,this); }
 	}
 
 	class ChronoshiftPower : SupportPower
 	{
-		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info) : base(self, info) { }
+		public ChronoshiftPower(ActorInitializer init, ChronoshiftPowerInfo info) : base(init, info) { }
 
-		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
+		public override IOrderGenerator OrderGenerator(string order)
 		{
-			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
-			return new SelectTarget(self.World, order, manager, this);
+			Sound.PlayToPlayer(this.Self.Owner, Info.SelectTargetSound);
+			return new SelectTarget(Self.World, order, this);
 		}
 
-		public override void Activate(Actor self, Order order, SupportPowerManager manager)
+		public override void Activate(Order order)
 		{
-			base.Activate(self, order, manager);
+			base.Activate(order);
 
 			foreach (var target in UnitsInRange(order.ExtraLocation))
 			{
@@ -46,30 +46,30 @@ namespace OpenRA.Mods.RA
 				var targetCell = target.Location + (order.TargetLocation - order.ExtraLocation);
 				var cpi = Info as ChronoshiftPowerInfo;
 
-				if (self.Owner.Shroud.IsExplored(targetCell) && cs.CanChronoshiftTo(target, targetCell))
-					cs.Teleport(target, targetCell, cpi.Duration * 25, cpi.KillCargo, self);
+				if (Self.Owner.Shroud.IsExplored(targetCell) && cs.CanChronoshiftTo(target, targetCell))
+					cs.Teleport(target, targetCell, cpi.Duration * 25, cpi.KillCargo, Self);
 			}
 		}
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
 			var range = ((ChronoshiftPowerInfo)Info).Range;
-			var tiles = self.World.Map.FindTilesInCircle(xy, range);
+			var tiles = Self.World.Map.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
-				units.AddRange(self.World.ActorMap.GetUnitsAt(t));
+				units.AddRange(Self.World.ActorMap.GetUnitsAt(t));
 
 			return units.Distinct().Where(a => a.HasTrait<Chronoshiftable>());
 		}
 
 		public bool SimilarTerrain(CPos xy, CPos sourceLocation)
 		{
-			if (!self.Owner.Shroud.IsExplored(xy))
+			if (!Self.Owner.Shroud.IsExplored(xy))
 				return false;
 
 			var range = ((ChronoshiftPowerInfo)Info).Range;
-			var sourceTiles = self.World.Map.FindTilesInCircle(xy, range);
-			var destTiles = self.World.Map.FindTilesInCircle(sourceLocation, range);
+			var sourceTiles = Self.World.Map.FindTilesInCircle(xy, range);
+			var destTiles = Self.World.Map.FindTilesInCircle(sourceLocation, range);
 
 			using (var se = sourceTiles.GetEnumerator())
 			using (var de = destTiles.GetEnumerator())
@@ -78,10 +78,10 @@ namespace OpenRA.Mods.RA
 				var a = se.Current;
 				var b = de.Current;
 
-				if (!self.Owner.Shroud.IsExplored(a) || !self.Owner.Shroud.IsExplored(b))
+				if (!Self.Owner.Shroud.IsExplored(a) || !Self.Owner.Shroud.IsExplored(b))
 					return false;
 
-				if (self.World.Map.GetTerrainIndex(a) != self.World.Map.GetTerrainIndex(b))
+				if (Self.World.Map.GetTerrainIndex(a) != Self.World.Map.GetTerrainIndex(b))
 					return false;
 			}
 
@@ -93,12 +93,10 @@ namespace OpenRA.Mods.RA
 			readonly ChronoshiftPower power;
 			readonly int range;
 			readonly Sprite tile;
-			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectTarget(World world, string order, SupportPowerManager manager, ChronoshiftPower power)
+			public SelectTarget(World world, string order, ChronoshiftPower power)
 			{
-				this.manager = manager;
 				this.order = order;
 				this.power = power;
 				this.range = ((ChronoshiftPowerInfo)power.Info).Range;
@@ -109,7 +107,7 @@ namespace OpenRA.Mods.RA
 			{
 				world.CancelInputMode();
 				if (mi.Button == MouseButton.Left)
-					world.OrderGenerator = new SelectDestination(world, order, manager, power, xy);
+					world.OrderGenerator = new SelectDestination(world, order, power, xy);
 
 				yield break;
 			}
@@ -117,7 +115,7 @@ namespace OpenRA.Mods.RA
 			public void Tick(World world)
 			{
 				// Cancel the OG if we can't use the power
-				if (!manager.Powers.ContainsKey(order))
+				if (power.Disabled)
 					world.CancelInputMode();
 			}
 
@@ -127,7 +125,7 @@ namespace OpenRA.Mods.RA
 				var targetUnits = power.UnitsInRange(xy).Where(a => !world.FogObscures(a));
 
 				foreach (var unit in targetUnits)
-					if (manager.self.Owner.Shroud.IsTargetable(unit))
+					if (power.Self.Owner.Shroud.IsTargetable(unit))
 						yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
 
@@ -152,18 +150,16 @@ namespace OpenRA.Mods.RA
 			readonly CPos sourceLocation;
 			readonly int range;
 			readonly Sprite validTile, invalidTile, sourceTile;
-			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectDestination(World world, string order, SupportPowerManager manager, ChronoshiftPower power, CPos sourceLocation)
+			public SelectDestination(World world, string order, ChronoshiftPower power, CPos sourceLocation)
 			{
-				this.manager = manager;
 				this.order = order;
 				this.power = power;
 				this.sourceLocation = sourceLocation;
 				this.range = ((ChronoshiftPowerInfo)power.Info).Range;
 
-				var tileset = manager.self.World.TileSet.Id.ToLowerInvariant();
+				var tileset = power.Self.World.TileSet.Id.ToLowerInvariant();
 				validTile = world.Map.SequenceProvider.GetSequence("overlay", "target-valid-{0}".F(tileset)).GetSprite(0);
 				invalidTile = world.Map.SequenceProvider.GetSequence("overlay", "target-invalid").GetSprite(0);
 				sourceTile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
@@ -189,7 +185,7 @@ namespace OpenRA.Mods.RA
 			{
 				// Cannot chronoshift into unexplored location
 				if (IsValidTarget(xy))
-					yield return new Order(order, manager.self, false)
+					yield return new Order(order, power.Self, false)
 					{
 						TargetLocation = xy,
 						ExtraLocation = sourceLocation,
@@ -200,14 +196,14 @@ namespace OpenRA.Mods.RA
 			public void Tick(World world)
 			{
 				// Cancel the OG if we can't use the power
-				if (!manager.Powers.ContainsKey(order))
+				if (power.Disabled)
 					world.CancelInputMode();
 			}
 
 			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				foreach (var unit in power.UnitsInRange(sourceLocation))
-					if (manager.self.Owner.Shroud.IsTargetable(unit))
+					if (power.Self.Owner.Shroud.IsTargetable(unit))
 						yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
 
@@ -228,7 +224,7 @@ namespace OpenRA.Mods.RA
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					var offset = world.Map.CenterOfCell(xy) - world.Map.CenterOfCell(sourceLocation);
-					if (manager.self.Owner.Shroud.IsTargetable(unit))
+					if (power.Self.Owner.Shroud.IsTargetable(unit))
 						foreach (var r in unit.Render(wr))
 							yield return r.OffsetBy(offset);
 				}
@@ -236,10 +232,10 @@ namespace OpenRA.Mods.RA
 				// Unit tiles
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					if (manager.self.Owner.Shroud.IsTargetable(unit))
+					if (power.Self.Owner.Shroud.IsTargetable(unit))
 					{
 						var targetCell = unit.Location + (xy - sourceLocation);
-						var canEnter = manager.self.Owner.Shroud.IsExplored(targetCell) &&
+						var canEnter = power.Self.Owner.Shroud.IsExplored(targetCell) &&
 						                unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
 						var tile = canEnter ? validTile : invalidTile;
 						yield return new SpriteRenderable(tile, wr.world.Map.CenterOfCell(targetCell), WVec.Zero, -511, pal, 1f, true);
@@ -253,7 +249,7 @@ namespace OpenRA.Mods.RA
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					var targetCell = unit.Location + (xy - sourceLocation);
-					if (manager.self.Owner.Shroud.IsExplored(targetCell) && unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell))
+					if (power.Self.Owner.Shroud.IsExplored(targetCell) && unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell))
 					{
 						canTeleport = true;
 						break;

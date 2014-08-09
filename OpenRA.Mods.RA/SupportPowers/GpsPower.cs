@@ -85,27 +85,30 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int RevealDelay = 0;
 
-		public override object Create(ActorInitializer init) { return new GpsPower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new GpsPower(init, this); }
 	}
 
 	class GpsPower : SupportPower, INotifyKilled, INotifyStanceChanged, INotifySold, INotifyCapture
 	{
+		Actor self;
 		GpsWatcher owner;
 
-		public GpsPower(Actor self, GpsPowerInfo info) : base(self, info)
+		public GpsPower(ActorInitializer init, GpsPowerInfo info)
+			: base(init, info)
 		{
+			self = init.self;
 			owner = self.Owner.PlayerActor.Trait<GpsWatcher>();
-			owner.GpsAdd(self);
+			owner.GpsAdd(init.self);
 		}
 
 		public override void Charged(Actor self, string key)
 		{
-			self.Owner.PlayerActor.Trait<SupportPowerManager>().Powers[key].Activate(new Order());
+			Activate(new Order());
 		}
 
-		public override void Activate(Actor self, Order order, SupportPowerManager manager)
+		public override void Activate(Order order)
 		{
-			base.Activate(self, order, manager);
+			base.Activate(order);
 
 			self.World.AddFrameEndTask(w =>
 			{
