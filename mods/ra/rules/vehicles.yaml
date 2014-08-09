@@ -372,6 +372,7 @@ APC:
 		Type: Heavy
 	Mobile:
 		Speed: 142
+		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
 	Armament:
@@ -407,6 +408,7 @@ MNLY.AP:
 		Type: Heavy
 	Mobile:
 		Speed: 128
+		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
 	RenderUnit:
@@ -440,6 +442,7 @@ MNLY.AT:
 		Type: Heavy
 	Mobile:
 		Speed: 128
+		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
 	RenderUnit:
