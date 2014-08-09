@@ -38,8 +38,7 @@ namespace OpenRA.Mods.RA
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return 0;
 
-			var spm = self.Owner.PlayerActor.Trait<SupportPowerManager>();
-			var power = spm.GetPowersForActor(self).FirstOrDefault(sp => !sp.Disabled);
+			var power = self.TraitsImplementing<SupportPower>().FirstOrDefault(sp => !sp.Disabled);
 
 			if (power == null) return 0;
 

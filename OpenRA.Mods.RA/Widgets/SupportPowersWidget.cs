@@ -33,14 +33,14 @@ namespace OpenRA.Mods.RA.Widgets
 		public int IconCount { get; private set; }
 		public event Action<int, int> OnIconCountChanged = (a, b) => {};
 
+		readonly World world;
 		readonly WorldRenderer worldRenderer;
-		readonly SupportPowerManager spm;
 
 		Animation icon;
 		Animation clock;
 		Dictionary<Rectangle, SupportPowerIcon> icons = new Dictionary<Rectangle, SupportPowerIcon>();
 
-		public SupportPowerInstance TooltipPower { get; private set; }
+		public SupportPower TooltipPower { get; private set; }
 		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		Rectangle eventBounds;
@@ -51,8 +51,8 @@ namespace OpenRA.Mods.RA.Widgets
 		[ObjectCreator.UseCtor]
 		public SupportPowersWidget(World world, WorldRenderer worldRenderer)
 		{
+			this.world = world;
 			this.worldRenderer = worldRenderer;
-			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public class SupportPowerIcon
 		{
-			public SupportPowerInstance Power;
+			public SupportPower Power;
 			public float2 Pos;
 			public Sprite Sprite;
 		}
@@ -70,20 +70,21 @@ namespace OpenRA.Mods.RA.Widgets
 		public void RefreshIcons()
 		{
 			icons = new Dictionary<Rectangle, SupportPowerIcon>();
-			var powers = spm.Powers.Values.Where(p => !p.Disabled);
-
 			var oldIconCount = IconCount;
 			IconCount = 0;
+
 	
 			var rb = RenderBounds;
-			foreach (var p in powers)
+
+			var powers = world.ActorsWithTrait<SupportPower>().Where(s => s.Actor.Owner == world.LocalPlayer && s.Trait.HasPrerequisites);
+			foreach (var sp in powers)
 			{
 				var rect = new Rectangle(rb.X, rb.Y + IconCount * (IconSize.Y + IconMargin), IconSize.X, IconSize.Y);
-				icon.Play(p.Info.Icon);
+				icon.Play(sp.Trait.Info.Icon);
 
 				var power = new SupportPowerIcon()
 				{
-					Power = p,
+					Power = sp.Trait,
 					Pos = new float2(rect.Location),
 					Sprite = icon.Image
 				};
@@ -129,7 +130,7 @@ namespace OpenRA.Mods.RA.Widgets
 					overlayFont.DrawTextWithContrast(ReadyText,
 						p.Pos + readyOffset,
 						Color.White, Color.Black, 1);
-				else if (!p.Power.Active)
+				else if (p.Power.Disabled)
 					overlayFont.DrawTextWithContrast(HoldText,
 						p.Pos + holdOffset,
 						Color.White, Color.Black, 1);
@@ -182,10 +183,10 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if (clicked != null)
 			{
-				if (!clicked.Power.Active)
-					Sound.PlayToPlayer(spm.self.Owner, clicked.Power.Info.InsufficientPowerSound);
+				if (clicked.Power.Disabled)
+					Sound.PlayToPlayer(world.LocalPlayer, clicked.Power.Info.InsufficientPowerSound);
 
-				clicked.Power.Target();
+				clicked.Power.TargetLocation();
 			}
 
 			return true;

@@ -22,16 +22,16 @@ namespace OpenRA.Mods.RA.Widgets
 		public readonly string Format = "{0}: {1}";
 		public readonly TimerOrder Order = TimerOrder.Descending;
 
-		readonly IEnumerable<SupportPowerInstance> powers;
+		readonly IEnumerable<SupportPower> powers;
 		Pair<string, Color>[] texts;
 
 		[ObjectCreator.UseCtor]
 		public SupportPowerTimerWidget(World world)
 		{
-			powers = world.ActorsWithTrait<SupportPowerManager>()
-				.Where(p => !p.Actor.IsDead() && !p.Actor.Owner.NonCombatant)
-				.SelectMany(s => s.Trait.Powers.Values)
-				.Where(p => p.Instances.Any() && p.Info.DisplayTimer && !p.Disabled);
+			powers = world.ActorsWithTrait<SupportPower>()
+				.Where(p => !p.Actor.IsDead() && !p.Actor.Owner.NonCombatant
+					&& p.Trait.Info.DisplayTimer && p.Trait.HasPrerequisites)
+				.Select(s => s.Trait);
 		}
 
 		public override void Tick()
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				var time = WidgetUtils.FormatTime(p.RemainingTime, false);
 				var text = Format.F(p.Info.Description, time);
-				var color = !p.Ready || Game.LocalTick % 50 < 25 ? p.Instances[0].self.Owner.Color.RGB : Color.White;
+				var color = !p.Ready || Game.LocalTick % 50 < 25 ? p.Self.Owner.Color.RGB : Color.White;
 				return Pair.New(text, color);
 			}).ToArray();
 		}

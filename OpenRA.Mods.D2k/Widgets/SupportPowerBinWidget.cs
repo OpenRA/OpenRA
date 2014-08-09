@@ -76,8 +76,7 @@ namespace OpenRA.Mods.D2k.Widgets
 
 			if( world.LocalPlayer == null ) return;
 
-			var manager = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
-			var powers = manager.Powers.Where(p => !p.Value.Disabled);
+			var powers = this.world.ActorsWithTrait<SupportPower>().Where(p => p.Trait.HasPrerequisites);
 			var numPowers = powers.Count();
 			if (numPowers == 0) return;
 
@@ -95,7 +94,7 @@ namespace OpenRA.Mods.D2k.Widgets
 			var iconSize = new float2(IconWidth, IconHeight);
 			foreach (var kv in powers)
 			{
-				var sp = kv.Value;
+				var sp = kv.Trait;
 				icon.Play(sp.Info.Icon);
 
 				var drawPos = new float2(rectBounds.X + 5, y);
@@ -151,7 +150,7 @@ namespace OpenRA.Mods.D2k.Widgets
 
 				WidgetUtils.DrawSHPCentered(clock.Image, drawPos + 0.5f * iconSize, worldRenderer);
 
-				var overlay = sp.Ready ? ReadyText : sp.Active ? null : HoldText;
+				var overlay = sp.Ready ? ReadyText : !sp.Disabled ? null : HoldText;
 				var font = Game.Renderer.Fonts["TinyBold"];
 				if (overlay != null)
 				{
@@ -160,21 +159,21 @@ namespace OpenRA.Mods.D2k.Widgets
 					font.DrawTextWithContrast(overlay, overlayPos - new float2(size.X / 2, 0), Color.White, Color.Black, 1);
 				}
 
-				buttons.Add(Pair.New(rect,HandleSupportPower(kv.Key, manager)));
+				buttons.Add(Pair.New(rect,HandleSupportPower(sp)));
 
 				y += 51;
 			}
 		}
 
-		static Action<MouseInput> HandleSupportPower(string key, SupportPowerManager manager)
+		static Action<MouseInput> HandleSupportPower(SupportPower sp)
 		{
 			return mi =>
 			{
 				if (mi.Button == MouseButton.Left)
 				{
-					if (!manager.Powers[key].Active)
-						Sound.PlayToPlayer(manager.self.Owner, manager.Powers[key].Info.InsufficientPowerSound);
-					manager.Target(key);
+					if (sp.Disabled)
+						Sound.PlayToPlayer(sp.Self.Owner, sp.Info.InsufficientPowerSound);
+					sp.TargetLocation();
 				}
 			};
 		}
