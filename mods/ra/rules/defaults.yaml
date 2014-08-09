@@ -30,6 +30,7 @@
 	ProximityCaptor:
 		Types: Vehicle
 	GivesBounty:
+	GivesPlayerExperience:
 	GpsDot:
 		String: Vehicle
 	WithSmoke:
@@ -88,6 +89,7 @@
 	ProximityCaptor:
 		Types: Tank
 	GivesBounty:
+	GivesPlayerExperience:
 	GpsDot:
 		String: Vehicle
 	WithSmoke:
@@ -151,6 +153,7 @@
 	ProximityCaptor:
 		Types: Infantry
 	GivesBounty:
+	GivesPlayerExperience:
 	GpsDot:
 		String: Infantry
 	CrushableInfantry:
@@ -207,6 +210,7 @@
 	ProximityCaptor:
 		Types: Ship
 	GivesBounty:
+	GivesPlayerExperience:
 	GpsDot:
 		String: Ship
 	WithSmoke:
@@ -247,6 +251,7 @@
 		EjectInAir: true
 		AllowUnsuitableCell: true
 	GivesBounty:
+	GivesPlayerExperience:
 	GpsDot:
 		String: Plane
 	UpdatesPlayerStatistics:
@@ -298,6 +303,7 @@
 	Sellable:
 	AcceptsSupplies:
 	GivesBounty:
+	GivesPlayerExperience:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guardable:

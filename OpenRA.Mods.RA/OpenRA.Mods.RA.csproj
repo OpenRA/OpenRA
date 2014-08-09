@@ -235,6 +235,7 @@
     <Compile Include="GainsExperience.cs" />
     <Compile Include="GivesBounty.cs" />
     <Compile Include="GivesExperience.cs" />
+    <Compile Include="GivesPlayerExperience.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="HarvesterHuskModifier.cs" />

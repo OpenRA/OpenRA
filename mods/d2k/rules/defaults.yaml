@@ -27,6 +27,7 @@
 	ProximityCaptor:
 		Types: Vehicle
 	GivesBounty:
+	GivesPlayerExperience:
 	Repairable:
 		RepairBuildings: repaira,repairo,repairh
 	CombatDebugOverlay:
@@ -70,6 +71,7 @@
 	ProximityCaptor:
 		Types: Tank
 	GivesBounty:
+	GivesPlayerExperience:
 	Repairable:
 		RepairBuildings: repaira,repairo,repairh
 	CombatDebugOverlay:
@@ -184,6 +186,7 @@
 	ProximityCaptor:
 		Types: Infantry
 	GivesBounty:
+	GivesPlayerExperience:
 	CrushableInfantry:
 		CrushSound: CRUSH1.WAV
 	RepairableNear:
@@ -219,6 +222,7 @@
 	ProximityCaptor:
 		Types: Plane
 	GivesBounty:
+	GivesPlayerExperience:
 	CombatDebugOverlay:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
@@ -269,6 +273,7 @@
 		Types: Building
 	Sellable:
 	GivesBounty:
+	GivesPlayerExperience:
 	CombatDebugOverlay:
 	Guardable:
 		Range: 3
