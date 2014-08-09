@@ -25,30 +25,32 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new GlobalUpgradable(init.self, this); }
 	}
 
-	public class GlobalUpgradable : INotifyAddedToWorld
+	public class GlobalUpgradable : INotifyAddedToWorld, INotifyRemovedFromWorld, ITechTreeElement
 	{
 		readonly GlobalUpgradableInfo info;
-		readonly GlobalUpgradeManager manager;
+		readonly TechTree tt;
+		readonly Actor self;
 
 		public GlobalUpgradable(Actor actor, GlobalUpgradableInfo info)
 		{
 			this.info = info;
-			manager = actor.Owner.PlayerActor.Trait<GlobalUpgradeManager>();
+			tt = actor.Owner.PlayerActor.Trait<TechTree>();
+			self = actor;
 		}
 
 		public void AddedToWorld(Actor self)
 		{
 			if (info.Prerequisites.Any())
-				manager.Register(self, this, info.Prerequisites);
+				tt.Add(info.Prerequisites, this);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
 			if (info.Prerequisites.Any())
-				manager.Unregister(self, this, info.Prerequisites);
+				tt.Remove(this);
 		}
 
-		public void PrerequisitesUpdated(Actor self, bool available)
+		public void PrerequisitesUpdated(bool available)
 		{
 			var upgrades = self.TraitsImplementing<IUpgradable>();
 			foreach (var u in upgrades)
@@ -58,5 +60,10 @@ namespace OpenRA.Mods.RA
 						u.UpgradeAvailable(self, t, available);
 			}
 		}
+
+		public void PrerequisitesAvailable() { PrerequisitesUpdated(true); }
+		public void PrerequisitesUnavailable() { PrerequisitesUpdated(false); }
+		public void PrerequisitesItemHidden() { }
+		public void PrerequisitesItemVisible() { }
 	}
 }

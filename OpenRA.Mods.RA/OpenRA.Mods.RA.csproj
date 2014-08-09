@@ -556,7 +556,6 @@
     <Compile Include="Graphics\SpriteActorPreview.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="GlobalUpgradable.cs" />
-    <Compile Include="Player\GlobalUpgradeManager.cs" />
     <Compile Include="GainsStatUpgrades.cs" />
     <Compile Include="Player\Extensions.cs" />
   </ItemGroup>
