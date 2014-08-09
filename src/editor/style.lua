@@ -316,8 +316,8 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
   editor:StyleClearAll()
 
   -- set the default linenumber font size based on the editor font size
-  if styles.linenumber then
-    styles.linenumber.fs = styles.linenumber.fs or ide.config.editor.fontsize - 1
+  if styles.linenumber and not styles.linenumber.fs then
+    styles.linenumber.fs = ide.config.editor.fontsize and (ide.config.editor.fontsize - 1) or nil
   end
 
   for name,style in pairs(styles) do
