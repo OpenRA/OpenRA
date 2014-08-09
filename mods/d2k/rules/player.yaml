@@ -42,6 +42,14 @@ Player:
 	AllyRepair:
 	PlayerResources:
 		AdviceInterval: 650
+	PlayerExperience:
+		Experience:
+			0: 1
+			800: 1
+			1500: 1
+			2500: 1
+			3500: 1
+			5000: 1
 	ActorGroupProxy:
 	DeveloperMode:
 	PlayerColorPalette:
