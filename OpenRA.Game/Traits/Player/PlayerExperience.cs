@@ -100,12 +100,4 @@ namespace OpenRA.Traits
 		}
 
 	}
-
-/*	class PlayerExperienceInit : IActorInit<int>
-	{
-		[FieldFromYamlKey] public readonly int value = 0;
-		public PlayerExperienceInit() { }
-		public PlayerExperienceInit(int init) { value = init; }
-		public int Value(World world) { return value; }
-	}*/
 }
