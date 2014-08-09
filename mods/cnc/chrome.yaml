@@ -360,7 +360,7 @@ panel-gray: chrome.png
 	corner-bl: 64,126,2,2
 	corner-br: 126,126,2,2
 
-panel-scanline: chrome.png
+panel-allblack: chrome.png
 	background: 2,2,60,60
 	border-r: 62,2,2,60
 	border-l: 0,2,2,60
