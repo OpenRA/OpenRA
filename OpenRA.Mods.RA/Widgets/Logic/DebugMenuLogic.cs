@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class DebugMenuLogic
 	{
 		[ObjectCreator.UseCtor]
-		public DebugMenuLogic(Widget widget, Action onExit, World world, bool transient)
+		public DebugMenuLogic(Widget widget, World world)
 		{
 			var devTrait = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
 
@@ -111,21 +111,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				showAstarCostCheckbox.IsChecked = () => dbgOverlay != null ? dbgOverlay.Visible : false;
 				showAstarCostCheckbox.OnClick = () => { if (dbgOverlay != null) dbgOverlay.Visible ^= true; };
-			}
-
-			var close = widget.GetOrNull<ButtonWidget>("CLOSE");
-			if (close != null)
-			{
-				close.OnClick = () =>
-				{
-					if (transient)
-					{
-						Ui.CloseWindow();
-						Ui.Root.RemoveChild(widget);
-					}
-
-					onExit();
-				};
 			}
 		}
 

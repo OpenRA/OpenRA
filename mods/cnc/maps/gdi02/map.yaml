@@ -736,8 +736,12 @@ Rules:
 		-CrateSpawner:
 		LuaScriptInterface:
 			LuaScripts: gdi02.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
 	PROC:
 		Buildable:
 			Prerequisites: ~disabled

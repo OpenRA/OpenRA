@@ -3,15 +3,6 @@ Container@PLAYER_WIDGETS:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
-		Button@OBJECTIVES_BUTTON:
-			X: 486
-			Y: 0
-			Width: 160
-			Height: 25
-			Text: Objectives (O)
-			Visible: false
-			Font: Bold
-			Key: o
 		Container@SUPPORT_POWERS:
 			Logic: SupportPowerBinLogic
 			X: 10
@@ -106,9 +97,6 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: order-icons
 						MenuButton@DEBUG_BUTTON:
 							Logic: AddRaceSuffixLogic
-							MenuContainer: INGAME_DEBUG_BG
-							HideIngameUI: false
-							Pause: false
 							Key: escape Shift
 							X: 128
 							Width: 28
@@ -144,8 +132,6 @@ Container@PLAYER_WIDGETS:
 									ImageName: diplomacy
 						MenuButton@OPTIONS_BUTTON:
 							Logic: AddRaceSuffixLogic
-							MenuContainer: INGAME_OPTIONS_BG
-							HideIngameUI: false
 							Key: escape
 							X: 192
 							Width: 28

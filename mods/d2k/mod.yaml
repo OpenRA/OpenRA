@@ -61,11 +61,16 @@ ChromeLayout:
 	mods/ra/chrome/ingame-chat.yaml
 	mods/ra/chrome/ingame-diplomacy.yaml
 	mods/ra/chrome/ingame-fmvplayer.yaml
-	mods/ra/chrome/ingame-menu.yaml
+	mods/d2k/chrome/ingame-menu.yaml
+	mods/ra/chrome/ingame-info.yaml
+	mods/ra/chrome/ingame-infobriefing.yaml
+	mods/ra/chrome/ingame-infoobjectives.yaml
+	mods/ra/chrome/ingame-infostats.yaml
 	mods/d2k/chrome/ingame-observer.yaml
 	mods/ra/chrome/ingame-observerstats.yaml
 	mods/d2k/chrome/ingame-player.yaml
 	mods/ra/chrome/ingame-debug.yaml
+	mods/d2k/chrome/ingame-leavemap.yaml
 	mods/d2k/chrome/mainmenu.yaml
 	mods/ra/chrome/settings.yaml
 	mods/ra/chrome/credits.yaml
@@ -152,6 +157,9 @@ Fonts:
 	Title:
 		Font:mods/d2k/Dune2k.ttf
 		Size:32
+	MediumBold:
+		Font:FreeSansBold.ttf
+		Size:18
 	BigBold:
 		Font:FreeSansBold.ttf
 		Size:24

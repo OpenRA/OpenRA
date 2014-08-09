@@ -8,11 +8,14 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Widgets;
+using OpenRA.Mods.RA.Widgets.Logic;
+using OpenRA.Mods.D2k.Widgets;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -40,95 +43,25 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 
 		void InitRootWidgets()
 		{
-			var cachedPause = false;
-			Widget optionsBG = null;
-			optionsBG = Game.LoadWidget(world, "INGAME_OPTIONS_BG", Ui.Root, new WidgetArgs
-			{
-				{ "transient", false },
-				{ "onExit", () =>
-					{
-						optionsBG.Visible = false;
-
-						if (world.LobbyInfo.IsSinglePlayer)
-							world.SetPauseState(cachedPause);
-					}
-				}
-			});
-
-			optionsBG.Visible = false;
-
-			gameRoot.Get<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
-			{
-				optionsBG.Visible ^= true;
-				if (optionsBG.Visible)
-				{
-					cachedPause = world.PredictedPaused;
-
-					if (world.LobbyInfo.IsSinglePlayer)
-						world.SetPauseState(true);
-				}
-				else
-					world.SetPauseState(cachedPause);
-			};
-
 			Game.LoadWidget(world, "CHAT_PANEL", gameRoot, new WidgetArgs());
+
+			Action ShowLeaveRestartDialog = () =>
+			{
+				gameRoot.IsVisible = () => false;
+				Game.LoadWidget(world, "LEAVE_RESTART_WIDGET", Ui.Root, new WidgetArgs());
+			};
+			world.GameOver += ShowLeaveRestartDialog;
 		}
 
 		void InitObserverWidgets()
 		{
-			var observerWidgets = Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
-
-			Widget observerstats = null;
-			observerstats = Game.LoadWidget(world, "INGAME_OBSERVERSTATS_BG", observerWidgets, new WidgetArgs
-			{
-				{ "transient", false },
-				{ "onExit", () => observerstats.Visible = false }
-			});
-			observerstats.Visible = false;
-
-			var statsButton = observerWidgets.Get<ButtonWidget>("OBSERVER_STATS_BUTTON");
-			statsButton.OnClick = () => observerstats.Visible ^= true;
+			Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
 		}
 
 		enum RadarBinState { Closed, BinAnimating, RadarAnimating, Open };
 		void InitPlayerWidgets()
 		{
 			var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
-
-			Widget diplomacy = null;
-			diplomacy = Game.LoadWidget(world, "INGAME_DIPLOMACY_BG", playerWidgets, new WidgetArgs
-			{
-				{ "transient", false },
-				{ "onExit", () => diplomacy.Visible = false }
-			});
-			diplomacy.Visible = false;
-
-			var diplomacyButton = playerWidgets.Get<ButtonWidget>("INGAME_DIPLOMACY_BUTTON");
-			diplomacyButton.OnClick = () => diplomacy.Visible ^= true;
-			var validPlayers = 0;
-			validPlayers = world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
-			diplomacyButton.IsVisible = () => validPlayers > 0;
-
-			Widget cheats = null;
-			cheats = Game.LoadWidget(world, "INGAME_DEBUG_BG", playerWidgets, new WidgetArgs
-			{
-				{ "transient", false },
-				{ "onExit", () => cheats.Visible = false }
-			});
-			cheats.Visible = false;
-
-			var cheatsButton = playerWidgets.Get<ButtonWidget>("INGAME_DEBUG_BUTTON");
-			cheatsButton.OnClick = () => cheats.Visible ^= true;
-			cheatsButton.IsVisible = () => world.LobbyInfo.GlobalSettings.AllowCheats;
-
-			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
-			if (iop != null && iop.ObjectivesPanel != null)
-			{
-				var objectivesButton = playerWidgets.Get<ButtonWidget>("OBJECTIVES_BUTTON");
-				var objectivesWidget = Game.LoadWidget(world, iop.ObjectivesPanel, playerWidgets, new WidgetArgs());
-				objectivesButton.Visible = true;
-				objectivesButton.OnClick += () => objectivesWidget.Visible ^= true;
-			}
 
 			var radarActive = false;
 			var binState = RadarBinState.Closed;

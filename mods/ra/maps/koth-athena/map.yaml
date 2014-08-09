@@ -2113,11 +2113,15 @@ Rules:
 		-Selectable:
 		-TargetableBuilding:
 	Player:
+		-ConquestVictoryConditions:
 		StrategicVictoryConditions:
 			TicksToHold: 4500
 			ResetOnHoldLost: true
 			RatioRequired: 1
 			CriticalRatioRequired: 1
+	World:
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
 
 Sequences:
 

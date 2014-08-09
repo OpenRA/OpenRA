@@ -284,6 +284,7 @@
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />
     <Compile Include="Player\ProvidesTechPrerequisite.cs" />
+    <Compile Include="Player\MissionObjectives.cs" />
     <Compile Include="PortableChrono.cs" />
     <Compile Include="Warheads\DestroyResourceWarhead.cs" />
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
@@ -372,6 +373,11 @@
     <Compile Include="Widgets\Logic\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\GameInfoLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\GameInfoBriefingLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\GameInfoObjectivesLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\GameInfoStatsLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\LeaveMapLogic.cs" />
     <Compile Include="Widgets\Logic\IrcLogic.cs" />
     <Compile Include="Widgets\Logic\KickClientLogic.cs" />
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
@@ -484,6 +490,7 @@
     <Compile Include="Scripting\Global\CoordinateGlobals.cs" />
     <Compile Include="Scripting\Properties\ResourceProperties.cs" />
     <Compile Include="Scripting\Properties\ProductionProperties.cs" />
+    <Compile Include="Scripting\Properties\MissionObjectiveProperties.cs" />
     <Compile Include="Scripting\Properties\MobileProperties.cs" />
     <Compile Include="Scripting\Properties\GeneralProperties.cs" />
     <Compile Include="Scripting\Properties\HealthProperties.cs" />
@@ -551,6 +558,7 @@
     <Compile Include="GlobalUpgradable.cs" />
     <Compile Include="Player\GlobalUpgradeManager.cs" />
     <Compile Include="GainsStatUpgrades.cs" />
+    <Compile Include="Player\Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

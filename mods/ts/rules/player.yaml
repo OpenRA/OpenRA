@@ -26,6 +26,8 @@ Player:
 		LowPowerSlowdown: 3
 	PlaceBuilding:
 	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
 	ConquestVictoryConditions:
 	PowerManager:
 	AllyRepair:

@@ -271,7 +271,16 @@ namespace OpenRA.Traits
 
 	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning, Map map); }
 
-	public interface IObjectivesPanel { string ObjectivesPanel { get; } }
+	public interface IObjectivesPanel { string PanelName { get; } }
+
+	public interface INotifyObjectivesUpdated
+	{
+		void OnPlayerWon(Player winner);
+		void OnPlayerLost(Player loser);
+		void OnObjectiveAdded(Player player, int objectiveID);
+		void OnObjectiveCompleted(Player player, int objectiveID);
+		void OnObjectiveFailed(Player player, int objectiveID);
+	}
 
 	public static class DisableExts
 	{
