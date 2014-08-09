@@ -1,7 +1,7 @@
 Background@FMVPLAYER:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM
-	Background: dialog4
+	Background: dialog5
 	Children:
 		VqaPlayer@PLAYER:
 			X: 0

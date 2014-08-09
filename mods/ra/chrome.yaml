@@ -138,6 +138,18 @@ dialog4: dialog.png
 	corner-bl: 512,446,6,6
 	corner-br: 571,446,6,6
 
+# completely black tile
+dialog5: dialog.png
+	background: 579,387,64,64
+	border-t: 579,387,64,1
+	border-b: 579,451,64,1
+	border-l: 579,387,1,64
+	border-r: 643,387,1,64
+	corner-tl: 579,387,1,1
+	corner-tr: 643,387,1,1
+	corner-bl: 579,446,1,1
+	corner-br: 643,446,1,1
+
 lobby-bits: spawnpoints.png
 	spawn-unclaimed: 37,5,22,22
 	spawn-claimed: 5,5,22,22
