@@ -23,8 +23,8 @@ namespace OpenRA.Mods.RA
 		public int CloseDelay = 125;
 		public int DefaultFacing = 0;
 
-		[Desc("The factor damage received is multiplied by while this actor is closed.")]
-		public float ClosedDamageMultiplier = 0.5f;
+		[Desc("The percentage of damage that is received while this actor is closed.")]
+		public int ClosedDamageMultiplier = 50;
 
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted(init, this); }
 	}
@@ -105,9 +105,9 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public float GetDamageModifier(Actor attacker, DamageWarhead warhead)
+		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
 		{
-			return state == PopupState.Closed ? info.ClosedDamageMultiplier : 1f;
+			return state == PopupState.Closed ? info.ClosedDamageMultiplier : 100;
 		}
 	}
 }
