@@ -63,7 +63,7 @@ Container@LEAVE_RESTART_WIDGET:
 		Container@LEAVE_RESTART_FULL:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
-			Width: 522
+			Width: 592 #522
 			Height: 470
 			Visible: False
 			Children:
