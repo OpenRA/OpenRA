@@ -49,6 +49,20 @@ Player:
 	AllyRepair:
 	PlayerResources:
 	PlayerExperience:
+		Experience:
+			0: 1
+			800: 2
+			1500: 3
+			2500: 4
+			3500: 5
+			5000: 6
+		Ranks:
+			1: 1
+			2: 1
+			3: 1
+			4: 1
+			5: 1
+			6: 1
 	ActorGroupProxy:
 	DeveloperMode:
 	PlayerColorPalette:

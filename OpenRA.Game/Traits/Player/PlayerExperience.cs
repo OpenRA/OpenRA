@@ -27,10 +27,12 @@ namespace OpenRA.Traits
 			//Owner = self.Owner;
 
 			Experience = 0;
+			Rank = 0;
 			SciencePoints = 0;
 		}
 
 		[Sync] public int Experience;
+		[Sync] public int Rank;
 
 		[Sync] public int SciencePoints;
 
@@ -38,6 +40,11 @@ namespace OpenRA.Traits
 		public void GiveExperience(int num)
 		{
 			Experience += num;
+		}
+
+		public void LevelUp() 
+		{
+			Rank++;
 		}
 
 		public void GiveSciencePoint(int num)
