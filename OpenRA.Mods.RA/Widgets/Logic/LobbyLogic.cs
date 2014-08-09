@@ -371,16 +371,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var startingUnits = optionsBin.GetOrNull<DropDownButtonWidget>("STARTINGUNITS_DROPDOWNBUTTON");
 			if (startingUnits != null)
 			{
-				var classNames = new Dictionary<string, string>()
+				var startUnitsInfo = modRules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>();
+				var classes = startUnitsInfo.Select(a => a.Class).Distinct();
+				Func<string, string> className = c =>
 				{
-					{ "none", "MCV Only" },
-					{ "light", "Light Support" },
-					{ "heavy", "Heavy Support" },
+					var selectedClass = startUnitsInfo.Where(s => s.Class == c).Select(u => u.ClassName).FirstOrDefault();
+					return selectedClass != null ? selectedClass : c;
 				};
-
-				Func<string, string> className = c => classNames.ContainsKey(c) ? classNames[c] : c;
-				var classes = modRules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>()
-					.Select(a => a.Class).Distinct();
 
 				startingUnits.IsDisabled = () => Map.Status != MapStatus.Available || !Map.Map.Options.ConfigurableStartingUnits || configurationDisabled();
 				startingUnits.GetText = () => Map.Status != MapStatus.Available || !Map.Map.Options.ConfigurableStartingUnits ? "Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
