@@ -58,6 +58,10 @@ namespace OpenRA.GameRules
 
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
+			// If this warhead is ineffective against the target, then it is not a valid target
+			if (EffectivenessAgainst(victim.Info) <= 0f)
+				return false;
+
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
 			return InTargetList(victim, firedBy, ValidTargets) &&
 				!InTargetList(victim, firedBy, InvalidTargets);
@@ -79,6 +83,10 @@ namespace OpenRA.GameRules
 
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
+			// If this warhead is ineffective against the target, then it is not a valid target
+			if (EffectivenessAgainst(victim.Info) <= 0f)
+				return false;
+
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
 			return InTargetList(victim, firedBy, ValidTargets) &&
 				!InTargetList(victim, firedBy, InvalidTargets);
