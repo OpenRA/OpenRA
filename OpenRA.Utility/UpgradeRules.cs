@@ -428,6 +428,9 @@ namespace OpenRA.Utility
 
 					if (depth == 2 && node.Key == "SpeedModifier" && parentKey == "GainsStatUpgrades")
 						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+
+					if (depth == 2 && node.Key == "FirepowerModifier" && parentKey == "GainsStatUpgrades")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
