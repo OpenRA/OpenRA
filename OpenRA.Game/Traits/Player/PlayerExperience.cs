@@ -45,7 +45,6 @@ namespace OpenRA.Traits
 				kv => FieldLoader.GetValue<int>("(key)", kv.Key),
 				kv => FieldLoader.GetValue<int>("(value)", kv.Value.Value));
 		}
-		public object Create(ActorInitializer init) { return new PlayerExperience(init.self, this); }
 	}
 
 	public class PlayerExperience : ISync
@@ -71,21 +70,6 @@ namespace OpenRA.Traits
 		[Sync] public int SciencePoints;
 
 		public readonly int MaxRank;
-		//readonly Player Owner;
-
-		public PlayerExperience(Actor self, PlayerExperienceInfo info)
-		{
-			//Owner = self.Owner;
-
-			Experience = 0;
-			Rank = 0;
-			SciencePoints = 0;
-		}
-
-		[Sync] public int Experience;
-		[Sync] public int Rank;
-
-		[Sync] public int SciencePoints;
 
 
 		public void GiveExperience(int num)
@@ -103,17 +87,12 @@ namespace OpenRA.Traits
 			GiveSciencePoints(num);
 		}
 
-		public void LevelUp() 
-		{
-			Rank++;
-		}
-
-		public void GiveSciencePoint(int num)
+		public void GiveSciencePoints(int num)
 		{
 			SciencePoints += num;
 		}
 
-		public bool UseSciencePoint(int num)
+		public bool UseSciencePoints(int num)
 		{
 			if(num > SciencePoints) return false;
 			SciencePoints -= num;
@@ -121,4 +100,12 @@ namespace OpenRA.Traits
 		}
 
 	}
+
+/*	class PlayerExperienceInit : IActorInit<int>
+	{
+		[FieldFromYamlKey] public readonly int value = 0;
+		public PlayerExperienceInit() { }
+		public PlayerExperienceInit(int init) { value = init; }
+		public int Value(World world) { return value; }
+	}*/
 }
