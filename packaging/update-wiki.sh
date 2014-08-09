@@ -1,7 +1,7 @@
 #!/bin/bash
 
-git config --global user.email "travis@travis-ci.org"
-git config --global user.name "travis-ci"
+git config --global user.email "orabot@users.noreply.github.com"
+git config --global user.name "orabot"
 
 echo "Updating https://github.com/OpenRA/OpenRA/wiki/Traits"
 rm -rf $HOME/openra-wiki
