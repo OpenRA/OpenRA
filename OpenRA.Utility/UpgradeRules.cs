@@ -409,7 +409,7 @@ namespace OpenRA.Utility
 				}
 
 				// Modifiers were changed to integer percentages
-				if (engineVersion < 20140809)
+				if (engineVersion < 20140812)
 				{
 					if (depth == 2 && node.Key == "ClosedDamageMultiplier" && parentKey == "AttackPopupTurreted")
 						ConvertFloatArrayToPercentArray(ref node.Value.Value);

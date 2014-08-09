@@ -151,7 +151,7 @@
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	TakeCover:
-		ProneSpeed: 0.6
+		SpeedModifier: 60
 	RenderInfantryProne:
 	AttackMove:
 	Passenger:
