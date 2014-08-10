@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -32,15 +32,17 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	public class VoxelLoader
+	public sealed class VoxelLoader : IDisposable
 	{
-		SheetBuilder sheetBuilder;
+		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
-		Cache<Pair<string,string>, Voxel> voxels;
+		readonly List<Vertex[]> vertices = new List<Vertex[]>();
+		readonly Cache<Pair<string, string>, Voxel> voxels;
 		IVertexBuffer<Vertex> vertexBuffer;
-		List<Vertex[]> vertices;
 		int totalVertexCount;
 		int cachedVertexCount;
+
+		SheetBuilder sheetBuilder;
 
 		static SheetBuilder CreateSheetBuilder()
 		{
@@ -50,7 +52,7 @@ namespace OpenRA.Graphics
 				if (allocated)
 					throw new SheetOverflowException("");
 				allocated = true;
-				return SheetBuilder.AllocateSheet();
+				return SheetBuilder.AllocateSheet(Game.Renderer.SheetSize);
 			};
 
 			return new SheetBuilder(SheetType.DualIndexed, allocate);
@@ -58,7 +60,7 @@ namespace OpenRA.Graphics
 
 		public VoxelLoader()
 		{
-			voxels = new Cache<Pair<string,string>, Voxel>(LoadFile);
+			voxels = new Cache<Pair<string, string>, Voxel>(LoadFile);
 			vertices = new List<Vertex[]>();
 			totalVertexCount = 0;
 			cachedVertexCount = 0;
@@ -66,28 +68,27 @@ namespace OpenRA.Graphics
 			sheetBuilder = CreateSheetBuilder();
 		}
 
-		static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
-		Vertex[] GenerateSlicePlane(int su, int sv, Func<int,int,VxlElement> first, Func<int,int,VxlElement> second, Func<int, int, float[]> coord)
+		Vertex[] GenerateSlicePlane(int su, int sv, Func<int, int, VxlElement> first, Func<int, int, VxlElement> second, Func<int, int, float[]> coord)
 		{
-			var colors = new byte[su*sv];
-			var normals = new byte[su*sv];
+			var colors = new byte[su * sv];
+			var normals = new byte[su * sv];
 
 			var c = 0;
 			for (var v = 0; v < sv; v++)
 				for (var u = 0; u < su; u++)
-			{
-				var voxel = first(u,v) ?? second(u,v);
-				colors[c] = voxel == null ? (byte)0 : voxel.Color;
-				normals[c] = voxel == null ? (byte)0 : voxel.Normal;
-				c++;
-			}
+				{
+					var voxel = first(u, v) ?? second(u, v);
+					colors[c] = voxel == null ? (byte)0 : voxel.Color;
+					normals[c] = voxel == null ? (byte)0 : voxel.Normal;
+					c++;
+				}
 
 			var s = sheetBuilder.Allocate(new Size(su, sv));
 			Util.FastCopyIntoChannel(s, 0, colors);
 			Util.FastCopyIntoChannel(s, 1, normals);
 			s.sheet.CommitData();
 
-			var channels = new float2(channelSelect[(int)s.channel], channelSelect[(int)s.channel + 1]);
+			var channels = new float2(ChannelSelect[(int)s.channel], ChannelSelect[(int)s.channel + 1]);
 			return new Vertex[4]
 			{
 				new Vertex(coord(0, 0), s.FastMapTextureCoords(0), channels),
@@ -99,7 +100,7 @@ namespace OpenRA.Graphics
 
 		IEnumerable<Vertex[]> GenerateSlicePlanes(VxlLimb l)
 		{
-			Func<int,int,int,VxlElement> get = (x,y,z) =>
+			Func<int, int, int, VxlElement> get = (x, y, z) =>
 			{
 				if (x < 0 || y < 0 || z < 0)
 					return null;
@@ -107,41 +108,41 @@ namespace OpenRA.Graphics
 				if (x >= l.Size[0] || y >= l.Size[1] || z >= l.Size[2])
 					return null;
 
-				var v = l.VoxelMap[(byte)x,(byte)y];
+				var v = l.VoxelMap[(byte)x, (byte)y];
 				if (v == null || !v.ContainsKey((byte)z))
 					return null;
 
-				return l.VoxelMap[(byte)x,(byte)y][(byte)z];
+				return l.VoxelMap[(byte)x, (byte)y][(byte)z];
 			};
 
 			// Cull slices without any visible faces
-			var xPlanes = new bool[l.Size[0]+1];
-			var yPlanes = new bool[l.Size[1]+1];
-			var zPlanes = new bool[l.Size[2]+1];
+			var xPlanes = new bool[l.Size[0] + 1];
+			var yPlanes = new bool[l.Size[1] + 1];
+			var zPlanes = new bool[l.Size[2] + 1];
 			for (var x = 0; x < l.Size[0]; x++)
 			{
 				for (var y = 0; y < l.Size[1]; y++)
 				{
 					for (var z = 0; z < l.Size[2]; z++)
 					{
-						if (get(x,y,z) == null)
+						if (get(x, y, z) == null)
 							continue;
 
 						// Only generate a plane if it is actually visible
-						if (!xPlanes[x] && get(x-1,y,z) == null)
+						if (!xPlanes[x] && get(x - 1, y, z) == null)
 							xPlanes[x] = true;
-						if (!xPlanes[x+1] && get(x+1,y,z) == null)
-							xPlanes[x+1] = true;
+						if (!xPlanes[x + 1] && get(x + 1, y, z) == null)
+							xPlanes[x + 1] = true;
 
-						if (!yPlanes[y] && get(x,y-1,z) == null)
+						if (!yPlanes[y] && get(x, y - 1, z) == null)
 							yPlanes[y] = true;
-						if (!yPlanes[y+1] && get(x,y+1,z) == null)
-							yPlanes[y+1] = true;
+						if (!yPlanes[y + 1] && get(x, y + 1, z) == null)
+							yPlanes[y + 1] = true;
 
-						if (!zPlanes[z] && get(x,y,z-1) == null)
+						if (!zPlanes[z] && get(x, y, z - 1) == null)
 							zPlanes[z] = true;
-						if (!zPlanes[z+1] && get(x,y,z+1) == null)
-							zPlanes[z+1] = true;
+						if (!zPlanes[z + 1] && get(x, y, z + 1) == null)
+							zPlanes[z + 1] = true;
 					}
 				}
 			}
@@ -149,23 +150,23 @@ namespace OpenRA.Graphics
 			for (var x = 0; x <= l.Size[0]; x++)
 				if (xPlanes[x])
 					yield return GenerateSlicePlane(l.Size[1], l.Size[2],
-						(u,v) => get(x, u, v),
-						(u,v) => get(x - 1, u, v),
-						(u,v) => new float[] {x, u, v});
+						(u, v) => get(x, u, v),
+						(u, v) => get(x - 1, u, v),
+						(u, v) => new float[] { x, u, v });
 
 			for (var y = 0; y <= l.Size[1]; y++)
 				if (yPlanes[y])
 					yield return GenerateSlicePlane(l.Size[0], l.Size[2],
-						(u,v) => get(u, y, v),
-						(u,v) => get(u, y - 1, v),
-						(u,v) => new float[] {u, y, v});
+						(u, v) => get(u, y, v),
+						(u, v) => get(u, y - 1, v),
+						(u, v) => new float[] { u, y, v });
 
 			for (var z = 0; z <= l.Size[2]; z++)
 				if (zPlanes[z])
 					yield return GenerateSlicePlane(l.Size[0], l.Size[1],
-						(u,v) => get(u, v, z),
-						(u,v) => get(u, v, z - 1),
-						(u,v) => new float[] {u, v, z});
+						(u, v) => get(u, v, z),
+						(u, v) => get(u, v, z - 1),
+						(u, v) => new float[] { u, v, z });
 		}
 
 		public VoxelRenderData GenerateRenderData(VxlLimb l)
@@ -194,6 +195,8 @@ namespace OpenRA.Graphics
 
 		public void RefreshBuffer()
 		{
+			if (vertexBuffer != null)
+				vertexBuffer.Dispose();
 			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(totalVertexCount);
 			vertexBuffer.SetData(vertices.SelectMany(v => v).ToArray(), totalVertexCount);
 			cachedVertexCount = totalVertexCount;
@@ -209,7 +212,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		Voxel LoadFile(Pair<string,string> files)
+		Voxel LoadFile(Pair<string, string> files)
 		{
 			VxlReader vxl;
 			HvaReader hva;
@@ -228,6 +231,13 @@ namespace OpenRA.Graphics
 		public void Finish()
 		{
 			sheetBuilder.Current.ReleaseBuffer();
+		}
+
+		public void Dispose()
+		{
+			if (vertexBuffer != null)
+				vertexBuffer.Dispose();
+			sheetBuilder.Dispose();
 		}
 	}
 }

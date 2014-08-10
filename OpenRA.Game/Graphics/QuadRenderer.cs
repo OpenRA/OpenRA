@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,16 +14,17 @@ namespace OpenRA.Graphics
 {
 	public class QuadRenderer : Renderer.IBatchRenderer
 	{
-		Renderer renderer;
-		IShader shader;
+		readonly Renderer renderer;
+		readonly IShader shader;
 
-		Vertex[] vertices = new Vertex[Renderer.TempBufferSize];
+		readonly Vertex[] vertices;
 		int nv = 0;
 
 		public QuadRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
+			vertices = new Vertex[renderer.TempBufferSize];
 		}
 
 		public void Flush()
@@ -45,9 +46,9 @@ namespace OpenRA.Graphics
 
 		public void FillRect(RectangleF r, Color color)
 		{
-			Renderer.CurrentBatchRenderer = this;
+			renderer.CurrentBatchRenderer = this;
 
-			if (nv + 4 > Renderer.TempBufferSize)
+			if (nv + 4 > renderer.TempBufferSize)
 				Flush();
 
 			vertices[nv] = new Vertex(new float2(r.Left, r.Top), new float2(color.R / 255.0f, color.G / 255.0f), new float2(color.B / 255.0f, color.A / 255.0f));
@@ -61,7 +62,7 @@ namespace OpenRA.Graphics
 		public void SetViewportParams(Size screen, float zoom, int2 scroll)
 		{
 			shader.SetVec("Scroll", scroll.X, scroll.Y);
-			shader.SetVec("r1", zoom*2f/screen.Width, -zoom*2f/screen.Height);
+			shader.SetVec("r1", zoom * 2f / screen.Width, -zoom * 2f / screen.Height);
 			shader.SetVec("r2", -1, 1);
 		}
 	}

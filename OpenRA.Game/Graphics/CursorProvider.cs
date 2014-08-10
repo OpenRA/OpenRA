@@ -16,17 +16,17 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public class CursorProvider
+	public sealed class CursorProvider : IDisposable
 	{
-		HardwarePalette palette;
-		Dictionary<string, CursorSequence> cursors;
-		Cache<string, PaletteReference> palettes;
+		readonly HardwarePalette palette = new HardwarePalette();
+		readonly Dictionary<string, CursorSequence> cursors = new Dictionary<string, CursorSequence>();
+		readonly Cache<string, PaletteReference> palettes;
+		readonly SheetBuilder sheetBuilder;
 
 		public CursorProvider(ModData modData)
 		{
 			var sequenceFiles = modData.Manifest.Cursors;
 
-			cursors = new Dictionary<string, CursorSequence>();
 			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
 			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
 			var shadowIndex = new int[] { };
@@ -39,14 +39,14 @@ namespace OpenRA.Graphics
 					out shadowIndex[shadowIndex.Length - 1]);
 			}
 
-			palette = new HardwarePalette();
 			foreach (var p in nodesDict["Palettes"].Nodes)
 				palette.AddPalette(p.Key, new ImmutablePalette(GlobalFileSystem.Open(p.Value.Value), shadowIndex), false);
 
-			var spriteLoader = new SpriteLoader(new string[0], new SheetBuilder(SheetType.Indexed));
+			sheetBuilder = new SheetBuilder(SheetType.Indexed);
+			var spriteLoader = new SpriteLoader(new string[0], sheetBuilder);
 			foreach (var s in nodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(spriteLoader, s.Key, s.Value);
-			spriteLoader.SheetBuilder.Current.ReleaseBuffer();
+			sheetBuilder.Current.ReleaseBuffer();
 
 			palette.Initialize();
 		}
@@ -87,6 +87,12 @@ namespace OpenRA.Graphics
 			{
 				throw new InvalidOperationException("Cursor does not have a sequence `{0}`".F(cursor));
 			}
+		}
+
+		public void Dispose()
+		{
+			palette.Dispose();
+			sheetBuilder.Dispose();
 		}
 	}
 }

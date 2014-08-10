@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,16 +8,16 @@
  */
 #endregion
 
+using System;
 using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
-	class TerrainRenderer
+	sealed class TerrainRenderer : IDisposable
 	{
-		IVertexBuffer<Vertex> vertexBuffer;
-
-		World world;
-		Map map;
+		readonly IVertexBuffer<Vertex> vertexBuffer;
+		readonly World world;
+		readonly Map map;
 
 		public TerrainRenderer(World world, WorldRenderer wr)
 		{
@@ -42,7 +42,7 @@ namespace OpenRA.Graphics
 
 		public void Draw(WorldRenderer wr, Viewport viewport)
 		{
-			var verticesPerRow = 4*map.Bounds.Width;
+			var verticesPerRow = 4 * map.Bounds.Width;
 			var cells = viewport.VisibleCells;
 			var shape = wr.world.Map.TileShape;
 
@@ -57,6 +57,11 @@ namespace OpenRA.Graphics
 
 			foreach (var r in world.WorldActor.TraitsImplementing<IRenderOverlay>())
 				r.Render(wr);
+		}
+
+		public void Dispose()
+		{
+			vertexBuffer.Dispose();
 		}
 	}
 }

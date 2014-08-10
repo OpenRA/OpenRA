@@ -11,24 +11,23 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc
 {
-	public class CncLoadScreen : ILoadScreen
+	public sealed class CncLoadScreen : ILoadScreen
 	{
 		Dictionary<string, string> loadInfo;
 		Stopwatch loadTimer = Stopwatch.StartNew();
+		Sheet sheet;
 		Sprite[] ss;
 		int loadTick;
 		float2 nodPos, gdiPos, evaPos;
 		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
 		Rectangle bounds;
 		Renderer r;
-		NullInputHandler nih = new NullInputHandler();
+		readonly NullInputHandler nih = new NullInputHandler();
 
 		public void Init(Manifest m, Dictionary<string, string> info)
 		{
@@ -39,31 +38,31 @@ namespace OpenRA.Mods.Cnc
 			r = Game.Renderer;
 			if (r == null) return;
 
-			var s = new Sheet(loadInfo["Image"]);
+			sheet = new Sheet(loadInfo["Image"]);
 			var res = r.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
 
 			ss = new[]
 			{
-				new Sprite(s, new Rectangle(161, 128, 62, 33), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(161, 223, 62, 33), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(128, 161, 33, 62), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(223, 161, 33, 62), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(128, 128, 33, 33), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(223, 128, 33, 33), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(128, 223, 33, 33), TextureChannel.Alpha),
-				new Sprite(s, new Rectangle(223, 223, 33, 33), TextureChannel.Alpha)
+				new Sprite(sheet, new Rectangle(161, 128, 62, 33), TextureChannel.Alpha),
+				new Sprite(sheet, new Rectangle(161, 223, 62, 33), TextureChannel.Alpha),
+				new Sprite(sheet, new Rectangle(128, 161, 33, 62), TextureChannel.Alpha),
+				new Sprite(sheet, new Rectangle(223, 161, 33, 62), TextureChannel.Alpha),
+				new Sprite(sheet, new Rectangle(128, 128, 33, 33), TextureChannel.Alpha),
+				new Sprite(sheet, new Rectangle(223, 128, 33, 33), TextureChannel.Alpha),
+				new Sprite(sheet, new Rectangle(128, 223, 33, 33), TextureChannel.Alpha),
+				new Sprite(sheet, new Rectangle(223, 223, 33, 33), TextureChannel.Alpha)
 			};
 
-			nodLogo = new Sprite(s, new Rectangle(0, 256, 256, 256), TextureChannel.Alpha);
-			gdiLogo = new Sprite(s, new Rectangle(256, 256, 256, 256), TextureChannel.Alpha);
-			evaLogo = new Sprite(s, new Rectangle(256, 64, 128, 64), TextureChannel.Alpha);
+			nodLogo = new Sprite(sheet, new Rectangle(0, 256, 256, 256), TextureChannel.Alpha);
+			gdiLogo = new Sprite(sheet, new Rectangle(256, 256, 256, 256), TextureChannel.Alpha);
+			evaLogo = new Sprite(sheet, new Rectangle(256, 64, 128, 64), TextureChannel.Alpha);
 			nodPos = new float2(bounds.Width / 2 - 384, bounds.Height / 2 - 128);
 			gdiPos = new float2(bounds.Width / 2 + 128, bounds.Height / 2 - 128);
 			evaPos = new float2(bounds.Width - 43 - 128, 43);
 
-			brightBlock = new Sprite(s, new Rectangle(320, 0, 16, 35), TextureChannel.Alpha);
-			dimBlock = new Sprite(s, new Rectangle(336, 0, 16, 35), TextureChannel.Alpha);
+			brightBlock = new Sprite(sheet, new Rectangle(320, 0, 16, 35), TextureChannel.Alpha);
+			dimBlock = new Sprite(sheet, new Rectangle(336, 0, 16, 35), TextureChannel.Alpha);
 
 			versionText = m.Mod.Version;
 		}
@@ -122,6 +121,12 @@ namespace OpenRA.Mods.Cnc
 		public void StartGame()
 		{
 			Game.TestAndContinue();
+		}
+
+		public void Dispose()
+		{
+			if (sheet != null)
+				sheet.Dispose();
 		}
 	}
 }

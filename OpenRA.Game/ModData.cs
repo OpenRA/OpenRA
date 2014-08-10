@@ -18,28 +18,31 @@ using OpenRA.Widgets;
 
 namespace OpenRA
 {
-	public class ModData
+	public sealed class ModData : IDisposable
 	{
 		public readonly Manifest Manifest;
 		public readonly ObjectCreator ObjectCreator;
 		public readonly WidgetLoader WidgetLoader;
 		public readonly MapCache MapCache;
-		public ILoadScreen LoadScreen = null;
-		public VoxelLoader VoxelLoader;
 		public readonly RulesetCache RulesetCache;
+		public ILoadScreen LoadScreen { get; private set; }
+		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 
 		Lazy<Ruleset> defaultRules;
 		public Ruleset DefaultRules { get { return defaultRules.Value; } }
 
-		public ModData(string mod)
+		public ModData(string mod, bool useLoadScreen = false)
 		{
 			Languages = new string[0];
 			Manifest = new Manifest(mod);
 			ObjectCreator = new ObjectCreator(Manifest);
-			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
-			LoadScreen.Init(Manifest, Manifest.LoadScreen.ToDictionary(my => my.Value));
-			LoadScreen.Display();
+			if (useLoadScreen)
+			{
+				LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
+				LoadScreen.Init(Manifest, Manifest.LoadScreen.ToDictionary(my => my.Value));
+				LoadScreen.Display();
+			}
 			WidgetLoader = new WidgetLoader(this);
 			RulesetCache = new RulesetCache(this);
 			RulesetCache.LoadingProgress += HandleLoadingProgress;
@@ -69,8 +72,13 @@ namespace OpenRA
 			// horribly when you use ModData in unexpected ways.
 			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
 			ChromeProvider.Initialize(Manifest.Chrome);
+
+			if (VoxelLoader != null)
+				VoxelLoader.Dispose();
 			VoxelLoader = new VoxelLoader();
 
+			if (CursorProvider != null)
+				CursorProvider.Dispose();
 			CursorProvider = new CursorProvider(this);
 		}
 
@@ -117,7 +125,8 @@ namespace OpenRA
 
 		public Map PrepareMap(string uid)
 		{
-			LoadScreen.Display();
+			if (LoadScreen != null)
+				LoadScreen.Display();
 
 			if (MapCache[uid].Status != MapStatus.Available)
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
@@ -144,9 +153,21 @@ namespace OpenRA
 
 			return map;
 		}
+
+		public void Dispose()
+		{
+			if (LoadScreen != null)
+				LoadScreen.Dispose();
+			RulesetCache.Dispose();
+			MapCache.Dispose();
+			if (VoxelLoader != null)
+				VoxelLoader.Dispose();
+			if (CursorProvider != null)
+				CursorProvider.Dispose();
+		}
 	}
 
-	public interface ILoadScreen
+	public interface ILoadScreen : IDisposable
 	{
 		void Init(Manifest m, Dictionary<string, string> info);
 		void Display();

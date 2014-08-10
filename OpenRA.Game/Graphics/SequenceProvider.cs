@@ -67,7 +67,7 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	public class SequenceCache
+	public sealed class SequenceCache : IDisposable
 	{
 		readonly ModData modData;
 		readonly Lazy<SpriteLoader> spriteLoader;
@@ -138,6 +138,12 @@ namespace OpenRA.Graphics
 			}
 
 			return new ReadOnlyDictionary<string, Sequence>(unitSequences);
+		}
+
+		public void Dispose()
+		{
+			if (spriteLoader.IsValueCreated)
+				spriteLoader.Value.SheetBuilder.Dispose();
 		}
 	}
 }

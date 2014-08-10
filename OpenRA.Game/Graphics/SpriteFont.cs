@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,7 +18,10 @@ namespace OpenRA.Graphics
 {
 	public class SpriteFont
 	{
-		int size;
+		static Library library = new Library();
+		static SheetBuilder builder;
+
+		readonly int size;
 
 		public SpriteFont(string name, int size)
 		{
@@ -27,8 +30,7 @@ namespace OpenRA.Graphics
 			face = library.NewFace(name, 0);
 			face.SetPixelSizes((uint)size, (uint)size);
 
-			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, 
-			         Pair<char,Color>.EqualityComparer);
+			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
 
 			// setup a SheetBuilder for our private use
 			// TODO: SheetBuilder state is leaked between mod switches
@@ -89,7 +91,7 @@ namespace OpenRA.Graphics
 			return new int2((int)Math.Ceiling(lines.Max(s => s.Sum(a => glyphs[Pair.New(a, Color.White)].Advance))), lines.Length * size);
 		}
 
-		Cache<Pair<char,Color>, GlyphInfo> glyphs;
+		Cache<Pair<char, Color>, GlyphInfo> glyphs;
 		Face face;
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
@@ -131,13 +133,11 @@ namespace OpenRA.Graphics
 						p += bitmap.Pitch;
 					}
 				}
+
 			s.sheet.CommitData();
 
 			return g;
 		}
-
-		static Library library = new Library();  
-		static SheetBuilder builder;
 	}
 
 	class GlyphInfo

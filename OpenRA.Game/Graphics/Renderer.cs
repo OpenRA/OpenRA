@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,12 +18,8 @@ using OpenRA.Support;
 
 namespace OpenRA.Graphics
 {
-	public class Renderer
+	public sealed class Renderer : IDisposable
 	{
-		internal static int SheetSize;
-		internal static int TempBufferSize;
-		internal static int TempBufferCount;
-
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
 		public SpriteRenderer WorldRgbaSpriteRenderer { get; private set; }
 		public QuadRenderer WorldQuadRenderer { get; private set; }
@@ -32,46 +28,75 @@ namespace OpenRA.Graphics
 		public LineRenderer LineRenderer { get; private set; }
 		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public SpriteRenderer SpriteRenderer { get; private set; }
+		public IReadOnlyDictionary<string, SpriteFont> Fonts;
 
-		Queue<IVertexBuffer<Vertex>> tempBuffers = new Queue<IVertexBuffer<Vertex>>();
+		internal IGraphicsDevice Device { get; private set; }
+		internal int SheetSize { get; private set; }
+		internal int TempBufferSize { get; private set; }
+		internal int TempBufferCount { get; private set; }
 
-		public Dictionary<string, SpriteFont> Fonts;
-		Stack<Rectangle> scissorState;
-
-		public Renderer()
-		{
-			TempBufferSize = Game.Settings.Graphics.BatchSize;
-			TempBufferCount = Game.Settings.Graphics.NumTempBuffers;
-			SheetSize = Game.Settings.Graphics.SheetSize;
-			scissorState = new Stack<Rectangle>();
-
-			WorldSpriteRenderer = new SpriteRenderer(this, device.CreateShader("shp"));
-			WorldRgbaSpriteRenderer = new SpriteRenderer(this, device.CreateShader("rgba"));
-			WorldLineRenderer = new LineRenderer(this, device.CreateShader("line"));
-			WorldVoxelRenderer = new VoxelRenderer(this, device.CreateShader("vxl"));
-			LineRenderer = new LineRenderer(this, device.CreateShader("line"));
-			WorldQuadRenderer = new QuadRenderer(this, device.CreateShader("line"));
-			RgbaSpriteRenderer = new SpriteRenderer(this, device.CreateShader("rgba"));
-			SpriteRenderer = new SpriteRenderer(this, device.CreateShader("shp"));
-
-			for (var i = 0; i < TempBufferCount; i++)
-				tempBuffers.Enqueue(device.CreateVertexBuffer(TempBufferSize));
-		}
-
-		public void InitializeFonts(Manifest m)
-		{
-			Fonts = m.Fonts.ToDictionary(x => x.Key, x => new SpriteFont(x.Value.First, x.Value.Second));
-		}
-
-		internal IGraphicsDevice Device { get { return device; } }
+		readonly Queue<IVertexBuffer<Vertex>> tempBuffers = new Queue<IVertexBuffer<Vertex>>();
+		readonly Stack<Rectangle> scissorState = new Stack<Rectangle>();
 
 		Size? lastResolution;
 		int2? lastScroll;
 		float? lastZoom;
+		ITexture currentPaletteTexture;
+		IBatchRenderer currentBatchRenderer;
+
+		public Renderer(GraphicSettings graphicSettings, ServerSettings serverSettings)
+		{
+			var resolution = GetResolution(graphicSettings);
+
+			var rendererName = serverSettings.Dedicated ? "Null" : graphicSettings.Renderer;
+			var rendererPath = Path.GetFullPath("OpenRA.Renderer.{0}.dll".F(rendererName));
+
+			Device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, graphicSettings.Mode);
+
+			TempBufferSize = graphicSettings.BatchSize;
+			TempBufferCount = graphicSettings.NumTempBuffers;
+			SheetSize = graphicSettings.SheetSize;
+
+			WorldSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
+			WorldRgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
+			WorldLineRenderer = new LineRenderer(this, Device.CreateShader("line"));
+			WorldVoxelRenderer = new VoxelRenderer(this, Device.CreateShader("vxl"));
+			LineRenderer = new LineRenderer(this, Device.CreateShader("line"));
+			WorldQuadRenderer = new QuadRenderer(this, Device.CreateShader("line"));
+			RgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
+			SpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
+
+			for (var i = 0; i < TempBufferCount; i++)
+				tempBuffers.Enqueue(Device.CreateVertexBuffer(TempBufferSize));
+		}
+
+		static Size GetResolution(GraphicSettings graphicsSettings)
+		{
+			var size = (graphicsSettings.Mode == WindowMode.Windowed)
+				? graphicsSettings.WindowedSize
+				: graphicsSettings.FullscreenSize;
+			return new Size(size.X, size.Y);
+		}
+
+		static IGraphicsDevice CreateDevice(Assembly rendererDll, int width, int height, WindowMode window)
+		{
+			foreach (RendererAttribute r in rendererDll.GetCustomAttributes(typeof(RendererAttribute), false))
+			{
+				var factory = (IDeviceFactory)r.Type.GetConstructor(Type.EmptyTypes).Invoke(null);
+				return factory.Create(new Size(width, height), window);
+			}
+
+			throw new InvalidOperationException("Renderer DLL is missing RendererAttribute to tell us what type to use!");
+		}
+
+		public void InitializeFonts(Manifest m)
+		{
+			Fonts = m.Fonts.ToDictionary(x => x.Key, x => new SpriteFont(x.Value.First, x.Value.Second)).AsReadOnly();
+		}
 
 		public void BeginFrame(int2 scroll, float zoom)
 		{
-			device.Clear();
+			Device.Clear();
 
 			var resolutionChanged = lastResolution != Resolution;
 			if (resolutionChanged)
@@ -95,7 +120,6 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		ITexture currentPaletteTexture;
 		public void SetPalette(HardwarePalette palette)
 		{
 			if (palette.Texture == currentPaletteTexture)
@@ -114,8 +138,8 @@ namespace OpenRA.Graphics
 		public void EndFrame(IInputHandler inputHandler)
 		{
 			Flush();
-			device.PumpInput(inputHandler);
-			device.Present();
+			Device.PumpInput(inputHandler);
+			Device.Present();
 		}
 
 		public void DrawBatch<T>(IVertexBuffer<T> vertices,
@@ -123,7 +147,7 @@ namespace OpenRA.Graphics
 			where T : struct
 		{
 			vertices.Bind();
-			device.DrawPrimitives(type, firstVertex, numVertices);
+			Device.DrawPrimitives(type, firstVertex, numVertices);
 			PerfHistory.Increment("batches", 1);
 		}
 
@@ -134,58 +158,28 @@ namespace OpenRA.Graphics
 
 		public void SetLineWidth(float width)
 		{
-			device.SetLineWidth(width);
+			Device.SetLineWidth(width);
 		}
 
-		static IGraphicsDevice device;
-
-		public Size Resolution { get { return device.WindowSize; } }
-
-		internal static void Initialize(WindowMode windowMode)
-		{
-			var resolution = GetResolution(windowMode);
-
-			var renderer = Game.Settings.Server.Dedicated ? "Null" : Game.Settings.Graphics.Renderer;
-			var rendererPath = Path.GetFullPath("OpenRA.Renderer.{0}.dll".F(renderer));
-
-			device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, windowMode);
-		}
-
-		static Size GetResolution(WindowMode windowmode)
-		{
-			var size = (windowmode == WindowMode.Windowed)
-				? Game.Settings.Graphics.WindowedSize
-				: Game.Settings.Graphics.FullscreenSize;
-			return new Size(size.X, size.Y);
-		}
-
-		static IGraphicsDevice CreateDevice(Assembly rendererDll, int width, int height, WindowMode window)
-		{
-			foreach (RendererAttribute r in rendererDll.GetCustomAttributes(typeof(RendererAttribute), false))
-			{
-				var factory = (IDeviceFactory)r.Type.GetConstructor(Type.EmptyTypes).Invoke(null);
-				return factory.Create(new Size(width, height), window);
-			}
-
-			throw new InvalidOperationException("Renderer DLL is missing RendererAttribute to tell us what type to use!");
-		}
+		public Size Resolution { get { return Device.WindowSize; } }
 
 		internal IVertexBuffer<Vertex> GetTempVertexBuffer()
 		{
-			var ret = tempBuffers.Dequeue();
-			tempBuffers.Enqueue(ret);
-			return ret;
+			return tempBuffers.Peek();
 		}
 
-		public interface IBatchRenderer	{ void Flush();	}
+		public interface IBatchRenderer { void Flush();	}
 
-		static IBatchRenderer currentBatchRenderer;
-		public static IBatchRenderer CurrentBatchRenderer
+		public IBatchRenderer CurrentBatchRenderer
 		{
-			get { return currentBatchRenderer; }
+			get
+			{
+				return currentBatchRenderer;
+			}
 			set
 			{
-				if (currentBatchRenderer == value) return;
+				if (currentBatchRenderer == value)
+					return;
 				if (currentBatchRenderer != null)
 					currentBatchRenderer.Flush();
 				currentBatchRenderer = value;
@@ -232,12 +226,21 @@ namespace OpenRA.Graphics
 
 		public void GrabWindowMouseFocus()
 		{
-			device.GrabWindowMouseFocus();
+			Device.GrabWindowMouseFocus();
 		}
 
 		public void ReleaseWindowMouseFocus()
 		{
-			device.ReleaseWindowMouseFocus();
+			Device.ReleaseWindowMouseFocus();
+		}
+
+		public void Dispose()
+		{
+			Device.Dispose();
+			WorldVoxelRenderer.Dispose();
+			foreach (var buffer in tempBuffers)
+				buffer.Dispose();
+			tempBuffers.Clear();
 		}
 	}
 }
