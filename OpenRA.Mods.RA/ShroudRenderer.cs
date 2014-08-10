@@ -231,7 +231,7 @@ namespace OpenRA.Mods.RA
 			if (shroud != null)
 			{
 				// If the current shroud hasn't changed and we have already updated the specified area, we don't need to do anything.
-				if (lastShroudHash == shroud.Hash && !clearedForNullShroud && updatedRegion.Contains(region))
+				if (lastShroudHash == shroud.Hash && !clearedForNullShroud && updatedRegion != null && updatedRegion.Contains(region))
 					return;
 
 				lastShroudHash = shroud.Hash;
