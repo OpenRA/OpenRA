@@ -6,11 +6,7 @@ Container@SKIRMISH_STATS:
 		Label@MISSION:
 			X: 20
 			Y: 20
-<<<<<<< HEAD
 			Width: 552 
-=======
-			Width: 552 #482
->>>>>>> c0199c14612df02157eb3cd1de4bf0a3602bcc4e
 			Height: 25
 			Font: MediumBold
 			Text: Mission:
@@ -23,11 +19,7 @@ Container@SKIRMISH_STATS:
 		Checkbox@STATS_CHECKBOX:
 			X: 20
 			Y: 55
-<<<<<<< HEAD
 			Width: 552 
-=======
-			Width: 552 #482
->>>>>>> c0199c14612df02157eb3cd1de4bf0a3602bcc4e
 			Height: 20
 			Font: Bold
 			Text: Destroy all opposition!
@@ -82,11 +74,7 @@ Container@SKIRMISH_STATS:
 		ScrollPanel@PLAYER_LIST:
 			X: 20
 			Y: 105
-<<<<<<< HEAD
 			Width: 552 
-=======
-			Width: 552 #482
->>>>>>> c0199c14612df02157eb3cd1de4bf0a3602bcc4e
 			Height: 265
 			ItemSpacing: 5
 			Children:

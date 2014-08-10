@@ -50,21 +50,12 @@ Player:
 	PlayerResources:
 	PlayerExperience:
 		Experience:
-<<<<<<< HEAD
 			0: sciencerank1, sciencepoint
 			800: sciencerank2, sciencepoint
 			1500: sciencerank3, sciencepoint
 			2500: sciencerank4, sciencepoint
 			3500: sciencerank5, sciencepoint
 			5000: sciencerank6, sciencepoint
-=======
-			0: 1
-			800: 1
-			1500: 1
-			2500: 1
-			3500: 1
-			5000: 1
->>>>>>> c0199c14612df02157eb3cd1de4bf0a3602bcc4e
 	ActorGroupProxy:
 	DeveloperMode:
 	PlayerColorPalette:
