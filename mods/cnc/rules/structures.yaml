@@ -494,19 +494,6 @@ EYE:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5
-	IonCannonPower:
-		Prerequisites: ~techlevel.superweapons
-		Icon: ioncannon
-		ChargeTime: 180
-		Description: Ion Cannon
-		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
-		BeginChargeSound: ionchrg1.aud
-		EndChargeSound: ionredy1.aud
-		LaunchSound: ion1.aud
-		SelectTargetSound: select1.aud
-		InsufficientPowerSound: nopower1.aud
-		DisplayRadarPing: True
-		CameraActor: camera.small
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
@@ -535,23 +522,6 @@ TMPL:
 	RevealsShroud:
 		Range: 6c0
 	Bib:
-	NukePower:
-		Prerequisites: ~techlevel.superweapons
-		Icon: abomb
-		ChargeTime: 300
-		Description: Nuclear Strike
-		LongDesc: Launch a tactical nuke.\nApplies heavy damage over a large area.
-		BeginChargeSound:
-		EndChargeSound: nukavail.aud
-		SelectTargetSound: select1.aud
-		InsufficientPowerSound: nopower1.aud
-		LaunchSound: nuklnch1.aud
-		IncomingSound: nuke1.aud
-		MissileWeapon: atomic
-		DisplayBeacon: True
-		BeaconPoster: atomic
-		DisplayRadarPing: True
-		CameraActor: camera
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150

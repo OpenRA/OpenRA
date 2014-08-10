@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA
 {
@@ -23,6 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
 		public readonly bool OneShot = false;
+		public readonly bool RequiresPower = false;
 		public readonly string[] Prerequisites = {};
 
 		public readonly string BeginChargeSound = null;
@@ -49,7 +51,7 @@ namespace OpenRA.Mods.RA
 		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
 	}
 
-	public class SupportPower : INotifyAddedToWorld, INotifyRemovedFromWorld, ITick, IResolveOrder, ITechTreeElement
+	public class SupportPower : INotifyAddedToWorld, INotifyRemovedFromWorld, ITick, IResolveOrder, ITechTreeElement, INotifyCapture
 	{
 
 		public readonly Actor Self;
@@ -57,13 +59,24 @@ namespace OpenRA.Mods.RA
 		readonly Lazy<RadarPings> RadarPings;
 		readonly DeveloperMode devmode;
 		readonly TechTree tt;
-		protected RadarPing ping;
+		PowerManager power;
+		RadarPing ping;
+
 		public readonly string Key;
 		public int TotalTime;
 		public int RemainingTime;
 		public bool HasPrerequisites { get; private set; }
-		public bool Disabled { get { return !HasPrerequisites || Self.IsDisabled(); } }
 		public bool Ready { get { return !Disabled && RemainingTime == 0; } }
+		public bool Disabled
+		{
+			get
+			{
+				var ret = !HasPrerequisites || Self.IsDisabled();
+				if (Info.RequiresPower)
+					ret = ret || power.PowerProvided < power.PowerDrained;
+				return ret;
+			}
+		}
 
 		bool notifiedCharging;
 		bool notifiedReady;
@@ -73,12 +86,20 @@ namespace OpenRA.Mods.RA
 			Info = info;
 			Self = init.self;
 			Key = info.OrderName + "_" + Self.ActorID;
+
 			var playeractor = Self;
 			if (Self.Owner.PlayerActor != null)
 				playeractor = Self.Owner.PlayerActor;
+
+			power = playeractor.Trait<PowerManager>();
 			devmode = playeractor.Trait<DeveloperMode>();
 			tt = playeractor.Trait<TechTree>();
 			RadarPings = Exts.Lazy(() => init.world.WorldActor.TraitOrDefault<RadarPings>());
+		}
+
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			power = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 
 		public virtual void Charging(Actor self, string key)
@@ -147,7 +168,8 @@ namespace OpenRA.Mods.RA
 
 		public void RemovedFromWorld(Actor self)
 		{
-			tt.Remove(Key);
+			if (Info.Prerequisites.Length != 0)
+				tt.Remove(Key);
 		}
 
 		public void Tick(Actor self)
