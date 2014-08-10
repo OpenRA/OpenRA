@@ -83,7 +83,6 @@
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
-		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
