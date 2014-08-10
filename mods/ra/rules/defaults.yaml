@@ -25,12 +25,12 @@
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Vehicle
 	GivesBounty:
-	GivesPlayerExperience:
 	GpsDot:
 		String: Vehicle
 	WithSmoke:
@@ -84,12 +84,12 @@
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Tank
 	GivesBounty:
-	GivesPlayerExperience:
 	GpsDot:
 		String: Vehicle
 	WithSmoke:
@@ -148,12 +148,12 @@
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Infantry
 	GivesBounty:
-	GivesPlayerExperience:
 	GpsDot:
 		String: Infantry
 	CrushableInfantry:
@@ -204,13 +204,13 @@
 	AttackMove:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: NavalUnitLost
 	ProximityCaptor:
 		Types: Ship
 	GivesBounty:
-	GivesPlayerExperience:
 	GpsDot:
 		String: Ship
 	WithSmoke:
@@ -239,6 +239,7 @@
 	Guardable:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: AirUnitLost
@@ -251,7 +252,6 @@
 		EjectInAir: true
 		AllowUnsuitableCell: true
 	GivesBounty:
-	GivesPlayerExperience:
 	GpsDot:
 		String: Plane
 	UpdatesPlayerStatistics:
@@ -294,6 +294,7 @@
 		ActorTypes: e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e6,e6,e6,e6,e6
 	MustBeDestroyed:
 	GivesExperience:
+		GivesPlayerExperience: true
 	CaptureNotification:
 	EditorAppearance:
 		RelativeToTopLeft: true
@@ -303,7 +304,6 @@
 	Sellable:
 	AcceptsSupplies:
 	GivesBounty:
-	GivesPlayerExperience:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guardable:
@@ -340,6 +340,7 @@
 	RenderBuildingWall:
 		Palette: terrain
 	GivesExperience:
+		GivesPlayerExperience: true
 	EditorAppearance:
 		RelativeToTopLeft: true
 		UseTerrainPalette: true

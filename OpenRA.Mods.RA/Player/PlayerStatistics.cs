@@ -135,9 +135,6 @@ namespace OpenRA.Mods.RA
 				var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
 				attackerStats.KillsCost += cost;
 				defenderStats.DeathsCost += cost;
-			}
-			if (self.HasTrait<GivesPlayerExperience>() && self.HasTrait<Valued>())
-			{
 				var experience = self.Info.Traits.Get<ValuedInfo>().Cost;
 				attackerStats.ExperienceGained += experience;
 			}
