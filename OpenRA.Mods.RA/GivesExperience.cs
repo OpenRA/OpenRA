@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 				killer.GiveExperience(exp);
 
 			if(info.GivesPlayerExperience)			
-				e.Attacker.Owner.PlayerActor.Trait<PlayerExperience>().GiveExperience(exp);
+				e.Attacker.Owner.PlayerActor.Trait<PlayerExperience>().GiveExperience(exp/100);
 		}
 	}
 }

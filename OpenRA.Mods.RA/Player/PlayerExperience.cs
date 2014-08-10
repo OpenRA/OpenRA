@@ -14,8 +14,10 @@ using System.Collections.Generic;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
-namespace OpenRA.Traits
+//namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	public class PlayerExperienceInfo : ITraitInfo
 	{
@@ -47,9 +49,11 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public class PlayerExperience : ISync
+	public class PlayerExperience : ISync, ITechTreeElement
 	{
 		readonly List<Pair<int, string[]>> nextLevel = new List<Pair<int, string[]>>();
+		public readonly	TechTree TechTree;
+		public readonly Actor self;
 
 		public PlayerExperience(Actor self, PlayerExperienceInfo info)
 		{
@@ -58,6 +62,8 @@ namespace OpenRA.Traits
 			SciencePoints = 0;
 
 			MaxRank = info.ExperienceLevels.Count;
+
+			TechTree = self.Trait<TechTree>();
 
 			foreach (var kv in info.ExperienceLevels)
 				nextLevel.Add(Pair.New(kv.Key, kv.Value));
@@ -71,23 +77,41 @@ namespace OpenRA.Traits
 
 		public readonly int MaxRank;
 
-
 		public void GiveExperience(int num)
 		{
 			Experience += num;
 			while (Rank < MaxRank && Experience >= nextLevel[Rank].First)
 			{
-				//Temporary fix until it is implemented properly as upgrades.
-				LevelUp(1);//nextLevel[Rank].Second);
+				LevelUp(nextLevel[Rank].Second);
 			}
 		}
 
-		public void LevelUp(int num) 
+		public void LevelUp(string[] awardedSciences) 
 		{
 			Rank++;
-			GiveSciencePoints(num);
+			foreach (string science in awardedSciences)
+			{
+				//Console.WriteLine(science);
+				if(science == "sciencepoint")
+				{
+					GiveSciencePoints(1); //Move to ScienceManager object
+				} else{
+					//Somehow add this to the techtree.
+					//TechTree.Add(science, t.Info.Prerequisites, 0, this);
+					//ITechTreeElement tte = new ITechTreeElement;
+					TechTree.Add(science, new[] { science }, 0, this);
+					TechTree.Update();
+				}
+			}
 		}
 
+		/* Oh Pasta this feels dirty */
+		public void PrerequisitesAvailable(string key) { }
+		public void PrerequisitesUnavailable(string key) { }
+		public void PrerequisitesItemHidden(string key) { }
+		public void PrerequisitesItemVisible(string key) { }
+
+		/* Move these to seperate trait*/
 		public void GiveSciencePoints(int num)
 		{
 			SciencePoints += num;
