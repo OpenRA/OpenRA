@@ -56,20 +56,20 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				return;
 			}
-			var powers = player.PlayerActor.Trait<SupportPowerManager>().Powers
-				.Select((a, i) => new { a, i });
+			var powers = player.World.ActorsWithTrait<SupportPower>().Where(s => s.Actor.Owner == player)
+				.Select((a, i) => new { a.Trait, i }); ;
 			foreach (var power in powers)
 			{
-				if (!clocks.ContainsKey(power.a.Key))
+				if (!clocks.ContainsKey(power.Trait.Key))
 				{
-					clocks.Add(power.a.Key, new Animation(world, "clock"));
+					clocks.Add(power.Trait.Key, new Animation(world, "clock"));
 				}
 			}
 
 			var iconSize = new float2(IconWidth, IconHeight);
 			foreach (var power in powers)
 			{
-				var item = power.a.Value;
+				var item = power.Trait;
 				if (item == null || item.Info == null || item.Info.Icon == null)
 					continue;
 
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var location = new float2(RenderBounds.Location) + new float2(power.i * (IconWidth + IconSpacing), 0);
 				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);
 
-				var clock = clocks[power.a.Key];
+				var clock = clocks[power.Trait.Key];
 				clock.PlayFetchIndex("idle",
 					() => item.TotalTime == 0 ? 0 : ((item.TotalTime - item.RemainingTime)
 						* (clock.CurrentSequence.Length - 1) / item.TotalTime));
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 		}
 
-		static string GetOverlayForItem(SupportPowerInstance item)
+		static string GetOverlayForItem(SupportPower item)
 		{
 			if (item.Disabled) return "ON HOLD";
 			if (item.Ready) return "READY";

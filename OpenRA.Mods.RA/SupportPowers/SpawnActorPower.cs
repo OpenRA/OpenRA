@@ -29,23 +29,23 @@ namespace OpenRA.Mods.RA
 		public readonly string EffectSequence = null;
 		public readonly string EffectPalette = null;
 
-		public override object Create(ActorInitializer init) { return new SpawnActorPower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new SpawnActorPower(init, this); }
 	}
 
 	public class SpawnActorPower : SupportPower
 	{
-		public SpawnActorPower(Actor self, SpawnActorPowerInfo info) : base(self, info) { }
-		public override void Activate(Actor self, Order order, SupportPowerManager manager)
+		public SpawnActorPower(ActorInitializer init, SpawnActorPowerInfo info) : base(init, info) { }
+		public override void Activate(Order order)
 		{
-			base.Activate(self, order, manager);
+			base.Activate(order);
 
 			var info = Info as SpawnActorPowerInfo;
 
 			if (info.Actor != null)
 			{
-				self.World.AddFrameEndTask(w =>
+				Self.World.AddFrameEndTask(w =>
 				{
-					var location = self.World.Map.CenterOfCell(order.TargetLocation);
+					var location = Self.World.Map.CenterOfCell(order.TargetLocation);
 
 					Sound.Play(info.DeploySound, location);
 
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 					var actor = w.CreateActor(info.Actor, new TypeDictionary
 					{
 						new LocationInit(order.TargetLocation),
-						new OwnerInit(self.Owner),
+						new OwnerInit(Self.Owner),
 					});
 
 					actor.QueueActivity(new Wait(info.LifeTime));

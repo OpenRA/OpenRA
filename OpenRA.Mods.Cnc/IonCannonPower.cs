@@ -35,28 +35,28 @@ namespace OpenRA.Mods.Cnc
 		[Desc("Apply the weapon impact this many ticks into the effect")]
 		public readonly int WeaponDelay = 7;
 
-		public override object Create(ActorInitializer init) { return new IonCannonPower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new IonCannonPower(init, this); }
 	}
 
 	class IonCannonPower : SupportPower
 	{
-		public IonCannonPower(Actor self, IonCannonPowerInfo info) : base(self, info) { }
+		public IonCannonPower(ActorInitializer init, IonCannonPowerInfo info) : base(init, info) { }
 
-		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
+		public override IOrderGenerator OrderGenerator(string order)
 		{
-			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
-			return new SelectGenericPowerTarget(order, manager, "ioncannon", MouseButton.Left);
+			Sound.PlayToPlayer(Self.Owner, Info.SelectTargetSound);
+			return new SelectGenericPowerTarget(order, this, "ioncannon", MouseButton.Left);
 		}
 
-		public override void Activate(Actor self, Order order, SupportPowerManager manager)
+		public override void Activate(Order order)
 		{
-			base.Activate(self, order, manager);
+			base.Activate(order);
 
-			self.World.AddFrameEndTask(w =>
+			Self.World.AddFrameEndTask(w =>
 			{
 				var info = Info as IonCannonPowerInfo;
-				Sound.Play(Info.LaunchSound, self.World.Map.CenterOfCell(order.TargetLocation));
-				w.Add(new IonCannon(self.Owner, info.Weapon, w, order.TargetLocation, info.Effect, info.EffectPalette, info.WeaponDelay));
+				Sound.Play(info.LaunchSound, Self.World.Map.CenterOfCell(order.TargetLocation));
+				w.Add(new IonCannon(Self.Owner, info.Weapon, w, order.TargetLocation, info.Effect, info.EffectPalette, info.WeaponDelay));
 
 				if (info.CameraActor == null)
 					return;
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Cnc
 				var camera = w.CreateActor(info.CameraActor, new TypeDictionary
 				{
 					new LocationInit(order.TargetLocation),
-					new OwnerInit(self.Owner),
+					new OwnerInit(Self.Owner),
 				});
 
 				camera.QueueActivity(new Wait(info.CameraRemoveDelay));

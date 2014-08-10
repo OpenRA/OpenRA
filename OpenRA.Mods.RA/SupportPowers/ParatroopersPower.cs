@@ -49,26 +49,26 @@ namespace OpenRA.Mods.RA
 		[Desc("Weapon range offset to apply during the beacon clock calculation.")]
 		public readonly WRange BeaconDistanceOffset = WRange.FromCells(4);
 
-		public override object Create(ActorInitializer init) { return new ParatroopersPower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new ParatroopersPower(init, this); }
 	}
 
 	public class ParatroopersPower : SupportPower
 	{
-		public ParatroopersPower(Actor self, ParatroopersPowerInfo info) : base(self, info) { }
+		public ParatroopersPower(ActorInitializer init, ParatroopersPowerInfo info) : base(init, info) { }
 
-		public override void Activate(Actor self, Order order, SupportPowerManager manager)
+		public override void Activate(Order order)
 		{
-			base.Activate(self, order, manager);
+			base.Activate(order);
 
-			var info = Info as ParatroopersPowerInfo;
-			var dropFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
+			var info = this.Info as ParatroopersPowerInfo;
+			var dropFacing = Util.QuantizeFacing(Self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
 			var dropRotation = WRot.FromFacing(dropFacing);
 			var delta = new WVec(0, -1024, 0).Rotate(dropRotation);
 
-			var altitude = self.World.Map.Rules.Actors[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude.Range;
-			var target = self.World.Map.CenterOfCell(order.TargetLocation) + new WVec(0, 0, altitude);
-			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Range * delta / 1024;
-			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Range * delta / 1024;
+			var altitude = Self.World.Map.Rules.Actors[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude.Range;
+			var target = Self.World.Map.CenterOfCell(order.TargetLocation) + new WVec(0, 0, altitude);
+			var startEdge = target - (Self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Range * delta / 1024;
+			var finishEdge = target + (Self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Range * delta / 1024;
 
 			Actor camera = null;
 			Beacon beacon = null;
@@ -79,19 +79,19 @@ namespace OpenRA.Mods.RA
 				// Spawn a camera and remove the beacon when the first plane enters the target area
 				if (info.CameraActor != null && !aircraftInRange.Any(kv => kv.Value))
 				{
-					self.World.AddFrameEndTask(w =>
+					Self.World.AddFrameEndTask(w =>
 					{
 						camera = w.CreateActor(info.CameraActor, new TypeDictionary
 						{
 							new LocationInit(order.TargetLocation),
-							new OwnerInit(self.Owner),
+							new OwnerInit(Self.Owner),
 						});
 					});
 				}
 
 				if (beacon != null)
 				{
-					self.World.AddFrameEndTask(w =>
+					Self.World.AddFrameEndTask(w =>
 					{
 						w.Remove(beacon);
 						beacon = null;
@@ -118,9 +118,9 @@ namespace OpenRA.Mods.RA
 				}
 			};
 
-			self.World.AddFrameEndTask(w =>
+			Self.World.AddFrameEndTask(w =>
 			{
-				var notification = self.Owner.IsAlliedWith(self.World.RenderPlayer) ? Info.LaunchSound : Info.IncomingSound;
+				var notification = Self.Owner.IsAlliedWith(Self.World.RenderPlayer) ? info.LaunchSound : info.IncomingSound;
 				Sound.Play(notification);
 
 				Actor distanceTestActor = null;
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.RA
 					var a = w.CreateActor(info.UnitType, new TypeDictionary
 					{
 						new CenterPositionInit(startEdge + spawnOffset),
-						new OwnerInit(self.Owner),
+						new OwnerInit(Self.Owner),
 						new FacingInit(dropFacing),
 					});
 
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.RA
 					added += passengersPerPlane;
 
 					foreach (var p in passengers)
-						cargo.Load(a, self.World.CreateActor(false, p.ToLowerInvariant(),
+						cargo.Load(a, Self.World.CreateActor(false, p.ToLowerInvariant(),
 							new TypeDictionary { new OwnerInit(a.Owner) }));
 
 					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset)));
@@ -165,16 +165,16 @@ namespace OpenRA.Mods.RA
 					distanceTestActor = a;
 				}
 
-				if (Info.DisplayBeacon)
+				if (info.DisplayBeacon)
 				{
 					var distance = (target - startEdge).HorizontalLength;
 
 					beacon = new Beacon(
 						order.Player,
-						self.World.Map.CenterOfCell(order.TargetLocation),
-						Info.BeaconPalettePrefix,
-						Info.BeaconPoster,
-						Info.BeaconPosterPalette,
+						Self.World.Map.CenterOfCell(order.TargetLocation),
+						info.BeaconPalettePrefix,
+						info.BeaconPoster,
+						info.BeaconPosterPalette,
 						() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Range) * 1f / distance
 					);
 

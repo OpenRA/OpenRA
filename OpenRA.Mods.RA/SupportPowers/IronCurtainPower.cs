@@ -25,83 +25,82 @@ namespace OpenRA.Mods.RA
 		public readonly int Range = 1;
 		public readonly string IronCurtainSound = "ironcur9.aud";
 
-		public override object Create(ActorInitializer init) { return new IronCurtainPower(init.self, this); }
+		public override object Create(ActorInitializer init) { return new IronCurtainPower(init, this); }
 	}
 
 	class IronCurtainPower : SupportPower
 	{
 		IronCurtainPowerInfo info;
 
-		public IronCurtainPower(Actor self, IronCurtainPowerInfo info) : base(self, info)
+		public IronCurtainPower(ActorInitializer init, IronCurtainPowerInfo info)
+			: base(init, info)
 		{
 			this.info = info;
 		}
 
-		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
+		public override IOrderGenerator OrderGenerator(string order)
 		{
-			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
-			return new SelectTarget(self.World, order, manager, this);
+			Sound.PlayToPlayer(Self.Owner, info.SelectTargetSound);
+			return new SelectTarget(Self.World, order, this);
 		}
 
-		public override void Activate(Actor self, Order order, SupportPowerManager manager)
+		public override void Activate(Order order)
 		{
-			base.Activate(self, order, manager);
+			base.Activate(order);
 
-			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
+			Self.Trait<RenderBuilding>().PlayCustomAnim(Self, "active");
 
-			Sound.Play(info.IronCurtainSound, self.World.Map.CenterOfCell(order.TargetLocation));
+			Sound.Play(info.IronCurtainSound, Self.World.Map.CenterOfCell(order.TargetLocation));
 
 			foreach (var target in UnitsInRange(order.TargetLocation)
-				.Where(a => a.Owner.Stances[self.Owner] == Stance.Ally))
-				target.Trait<IronCurtainable>().Activate(target, ((IronCurtainPowerInfo)Info).Duration * 25);
+				.Where(a => a.Owner.Stances[Self.Owner] == Stance.Ally))
+				target.Trait<IronCurtainable>().Activate(target, ((IronCurtainPowerInfo)info).Duration * 25);
 		}
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
-			var range = ((IronCurtainPowerInfo)Info).Range;
-			var tiles = self.World.Map.FindTilesInCircle(xy, range);
+			var range = ((IronCurtainPowerInfo)info).Range;
+			var tiles = Self.World.Map.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
-				units.AddRange(self.World.ActorMap.GetUnitsAt(t));
+				units.AddRange(Self.World.ActorMap.GetUnitsAt(t));
 
 			return units.Distinct().Where(a => a.HasTrait<IronCurtainable>());
 		}
 
 		class SelectTarget : IOrderGenerator
 		{
-			readonly IronCurtainPower power;
+			readonly IronCurtainPower sp;
 			readonly int range;
 			readonly Sprite tile;
-			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectTarget(World world, string order, SupportPowerManager manager, IronCurtainPower power)
+			public SelectTarget(World world, string order, IronCurtainPower sp)
 			{
-				this.manager = manager;
 				this.order = order;
-				this.power = power;
-				this.range = ((IronCurtainPowerInfo)power.Info).Range;
+				this.sp = sp;
+				this.range = ((IronCurtainPowerInfo)sp.info).Range;
 				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
 			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 			{
 				world.CancelInputMode();
-				if (mi.Button == MouseButton.Left && power.UnitsInRange(xy).Any())
-					yield return new Order(order, manager.self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
+				if (mi.Button == MouseButton.Left && sp.UnitsInRange(xy).Any())
+					yield return new Order(order, sp.Self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
 			}
 
 			public void Tick(World world)
 			{
 				// Cancel the OG if we can't use the power
-				if (!manager.Powers.ContainsKey(order))
+				if (sp.Disabled)
 					world.CancelInputMode();
 			}
 
 			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-				var targetUnits = power.UnitsInRange(xy).Where(a => a.Owner.Stances[power.self.Owner] == Stance.Ally);
+				var targetUnits = sp.UnitsInRange(xy).Where(a => a.Owner.Stances[sp.Self.Owner] == Stance.Ally);
 				foreach (var unit in targetUnits)
 					yield return new SelectionBoxRenderable(unit, Color.Red);
 			}
@@ -117,7 +116,7 @@ namespace OpenRA.Mods.RA
 
 			public string GetCursor(World world, CPos xy, MouseInput mi)
 			{
-				return power.UnitsInRange(xy).Any(a => a.Owner.Stances[power.self.Owner] == Stance.Ally) ? "ability" : "move-blocked";
+				return sp.UnitsInRange(xy).Any(a => a.Owner.Stances[sp.Self.Owner] == Stance.Ally) ? "ability" : "move-blocked";
 			}
 		}
 	}

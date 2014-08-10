@@ -114,7 +114,6 @@ namespace OpenRA.Mods.RA.AI
 		public Player p { get; private set; }
 
 		PowerManager playerPower;
-		SupportPowerManager supportPowerMngr;
 		PlayerResources playerResource;
 		bool enabled;
 		int ticks;
@@ -156,7 +155,6 @@ namespace OpenRA.Mods.RA.AI
 			this.p = p;
 			enabled = true;
 			playerPower = p.PlayerActor.Trait<PowerManager>();
-			supportPowerMngr = p.PlayerActor.Trait<SupportPowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 
 			foreach (var building in Info.BuildingQueues) 
@@ -688,20 +686,17 @@ namespace OpenRA.Mods.RA.AI
 
 		void TryToUseSupportPower(Actor self)
 		{
-			if (supportPowerMngr == null)
-				return;
-
-			var powers = supportPowerMngr.Powers.Where(p => !p.Value.Disabled);
+			var powers = self.World.ActorsWithTrait<SupportPower>().Where(p => p.Actor.Owner == self.Owner && !p.Trait.Disabled);
 			foreach (var kv in powers)
 			{
-				var sp = kv.Value;
+				var sp = kv.Trait;
 				if (sp.Ready)
 				{
 					var attackLocation = FindAttackLocationToSupportPower(5);
 					if (attackLocation == null)
 						return;
 
-					world.IssueOrder(new Order(sp.Info.OrderName, supportPowerMngr.self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
+					world.IssueOrder(new Order(sp.Info.OrderName, sp.Self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
 				}
 			}
 		}

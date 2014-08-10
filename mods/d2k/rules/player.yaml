@@ -33,7 +33,6 @@ Player:
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
 	PlaceBuilding:
-	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
 	ConquestVictoryConditions:

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var baseHeight = widget.Bounds.Height;
 			var timeOffset = timeLabel.Bounds.X;
 
-			SupportPowerInstance lastPower = null;
+			SupportPower lastPower = null;
 			tooltipContainer.BeforeRender = () =>
 			{
 				var sp = palette.TooltipPower;

@@ -356,7 +356,6 @@
     <Compile Include="SupportPowers\ParatroopersPower.cs" />
     <Compile Include="SupportPowers\SupportPower.cs" />
     <Compile Include="SupportPowers\SupportPowerChargeBar.cs" />
-    <Compile Include="SupportPowers\SupportPowerManager.cs" />
     <Compile Include="TakeCover.cs" />
     <Compile Include="TargetableBuilding.cs" />
     <Compile Include="TargetableSubmarine.cs" />
