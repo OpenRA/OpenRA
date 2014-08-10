@@ -21,7 +21,11 @@ namespace OpenRA.Traits
 	{
 		[FieldLoader.LoadUsing("LoadExperience")]
 		[Desc("At which level should # sciencepoints be bestowed")]
+<<<<<<< HEAD
 		public readonly Dictionary<int, string[]> ExperienceLevels = null;
+=======
+		public readonly Dictionary<int, int> ExperienceLevels = null;
+>>>>>>> c0199c14612df02157eb3cd1de4bf0a3602bcc4e
 
 		public object Create(ActorInitializer init) { return new PlayerExperience(init.self, this); }
 		static object LoadExperience(MiniYaml y)
@@ -30,6 +34,7 @@ namespace OpenRA.Traits
 
 			if (!y.ToDictionary().TryGetValue("Experience", out experienceLevel))
 			{
+<<<<<<< HEAD
 				return new Dictionary<int, string[]>()
 				{
 					{ 0, new[] { "sciencerank1", "sciencepoint" } },
@@ -38,18 +43,36 @@ namespace OpenRA.Traits
 					{ 2500, new[] { "sciencerank4", "sciencepoint" } },
 					{ 3500, new[] { "sciencerank5", "sciencepoint" } },
 					{ 5000, new[] { "sciencerank6", "sciencepoint" } },
+=======
+				return new Dictionary<int, int>()
+				{
+					{ 0, 1 },
+					{ 800, 1 },
+					{ 1500, 1 },
+					{ 2500, 1 },
+					{ 3500, 1 },
+					{ 5000, 1 },
+>>>>>>> c0199c14612df02157eb3cd1de4bf0a3602bcc4e
 				};
 			}
 
 			return experienceLevel.Nodes.ToDictionary(
 				kv => FieldLoader.GetValue<int>("(key)", kv.Key),
+<<<<<<< HEAD
 				kv => FieldLoader.GetValue<string[]>("(value)", kv.Value.Value));
+=======
+				kv => FieldLoader.GetValue<int>("(value)", kv.Value.Value));
+>>>>>>> c0199c14612df02157eb3cd1de4bf0a3602bcc4e
 		}
 	}
 
 	public class PlayerExperience : ISync
 	{
+<<<<<<< HEAD
 		readonly List<Pair<int, string[]>> nextLevel = new List<Pair<int, string[]>>();
+=======
+		readonly List<Pair<int, int>> nextLevel = new List<Pair<int, int>>();
+>>>>>>> c0199c14612df02157eb3cd1de4bf0a3602bcc4e
 
 		public PlayerExperience(Actor self, PlayerExperienceInfo info)
 		{
@@ -77,8 +100,12 @@ namespace OpenRA.Traits
 			Experience += num;
 			while (Rank < MaxRank && Experience >= nextLevel[Rank].First)
 			{
+<<<<<<< HEAD
 				//Temporary fix until it is implemented properly as upgrades.
 				LevelUp(1);//nextLevel[Rank].Second);
+=======
+				LevelUp(nextLevel[Rank].Second);
+>>>>>>> c0199c14612df02157eb3cd1de4bf0a3602bcc4e
 			}
 		}
 

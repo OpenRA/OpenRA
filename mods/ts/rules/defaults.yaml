@@ -32,6 +32,7 @@
 	Sellable:
 	AcceptsSupplies:
 	GivesBounty:
+	GivesPlayerExperience:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guardable:
@@ -129,6 +130,7 @@
 	ProximityCaptor:
 		Types: Infantry
 	GivesBounty:
+	GivesPlayerExperience:
 	CrushableInfantry:
 		CrushSound: squish6.aud
 	PoisonedByTiberium:
@@ -219,6 +221,7 @@
 	ProximityCaptor:
 		Types: Vehicle
 	GivesBounty:
+	GivesPlayerExperience:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guard:
@@ -272,6 +275,7 @@
 	ProximityCaptor:
 		Types: Vehicle
 	GivesBounty:
+	GivesPlayerExperience:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	Guard:

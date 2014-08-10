@@ -138,6 +138,11 @@ namespace OpenRA.Mods.RA
 				var experience = self.Info.Traits.Get<ValuedInfo>().Cost;
 				attackerStats.ExperienceGained += experience;
 			}
+			if (self.HasTrait<GivesPlayerExperience>() && self.HasTrait<Valued>())
+			{
+				var experience = self.Info.Traits.Get<ValuedInfo>().Cost;
+				attackerStats.ExperienceGained += experience;
+			}
 		}
 	}
 }
