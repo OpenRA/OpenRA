@@ -199,7 +199,7 @@ namespace OpenRA.Mods.RA.Air
 				|| info.RepairBuildings.Contains(a.Info.Name);
 		}
 
-		public bool IsMovingFrom(CPos location, int subCell = -1) { return false; } // TODO: handle landing
+		public bool IsLeaving(CPos location, int subCell = -1) { return false; } // TODO: handle landing
 		public int GetAvailableSubcell(CPos a, int preferredSubCell = -1, Actor ignoreActor = null, bool checkTransientActors = true) { return -1; } // does not use any subcell
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true) { return true; }
 

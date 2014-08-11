@@ -14,8 +14,6 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public enum SubCell { FullCell, TopLeft, TopRight, Center, BottomLeft, BottomRight }
-
 	public class ActorMapInfo : ITraitInfo
 	{
 		[Desc("Size of partition bins (cells)")]
@@ -131,7 +129,7 @@ namespace OpenRA.Traits
 					if (checkTransient)
 						return true;
 					var pos = i.Actor.TraitOrDefault<IPositionable>();
-					if (pos == null || !pos.IsMovingFrom(a, i.SubCell))
+					if (pos == null || !pos.IsLeaving(a, i.SubCell))
 						return true;
 				}
 
