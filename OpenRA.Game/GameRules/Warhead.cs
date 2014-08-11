@@ -29,7 +29,7 @@ namespace OpenRA.GameRules
 
 		public abstract void DoImpact(Target target, Actor firedBy, float firepowerModifier);
 
-		public abstract float EffectivenessAgainst(ActorInfo ai);
+		public virtual float EffectivenessAgainst(ActorInfo ai) { return 0f; }
 
 		public bool IsValidAgainst(Target target, World world, Actor firedBy)
 		{
