@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public readonly int ProneTime = 100;
 
 		[Desc("Prone movement speed as a percentage of the normal speed.")]
-		public readonly int ProneSpeed = 50;
+		public readonly int SpeedModifier = 50;
 
 		public readonly WVec ProneOffset = new WVec(85, 0, -171);
 
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 
 		public int GetSpeedModifier()
 		{
-			return IsProne ? Info.ProneSpeed : 100;
+			return IsProne ? Info.SpeedModifier : 100;
 		}
 	}
 
