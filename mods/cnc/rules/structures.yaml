@@ -116,7 +116,7 @@ NUK2:
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Building.GDI, Building.Nod
 	Building:
-		Footprint: xx xx
+		Footprint: x_ xx
 		Dimensions: 2,2
 	Health:
 		HP: 700
