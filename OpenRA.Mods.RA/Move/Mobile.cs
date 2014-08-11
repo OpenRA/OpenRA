@@ -206,6 +206,45 @@ namespace OpenRA.Mods.RA.Move
 			return true;
 		}
 
+		public int GetAvailableSubCell(World world, Actor self, CPos cell, int preferredSubCell = -1, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		{
+			if (MovementCostForCell(world, cell) == int.MaxValue)
+				return -1;
+
+			if (check.HasFlag(CellConditions.TransientActors))
+			{
+				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
+				var needsCellExclusively = self == null || Crushes == null;
+
+				Func<Actor, bool> checkTransient = a =>
+				{
+					if (a == ignoreActor) return false;
+
+					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
+					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) return false;
+					
+					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
+					if (needsCellExclusively) return true;
+					if (!a.HasTrait<ICrushable>()) return true;
+					foreach (var crushable in a.TraitsImplementing<ICrushable>())
+						if (!crushable.CrushableBy(Crushes, self.Owner))
+							return true;
+
+					return false;
+				};
+
+				if (!SharesCell)
+					return world.ActorMap.AnyUnitsAt(cell, 0, checkTransient)? -1 : 0;
+
+				return world.ActorMap.FreeSubCell(cell, preferredSubCell, checkTransient);
+			}
+
+			if (!SharesCell)
+				return world.ActorMap.AnyUnitsAt(cell, 0)? -1 : 0;
+
+			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
+		}
+
 		public int GetInitialFacing() { return InitialFacing; }
 	}
 
@@ -437,44 +476,18 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		bool IsDesiredSubcellNotBlocked(CPos a, int b, Actor ignoreActor)
+		public bool IsMovingFrom(CPos location, int subCell = -1)
 		{
-			var blockingActors = self.World.ActorMap.GetUnitsAt(a, b).Where(c => c != ignoreActor);
-			if (blockingActors.Any())
-			{
-				// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
-				if (Info.Crushes == null)
-					return false;
-
-				if (blockingActors.Any(c => !(c.HasTrait<ICrushable>() &&
-						c.TraitsImplementing<ICrushable>().Any(d => d.CrushableBy(Info.Crushes, self.Owner)))))
-					return false;
-			}
-			return true;
+			return toCell != location && __fromCell == location
+				&& (subCell == -1 || fromSubCell == subCell || subCell == 0 || fromSubCell == 0);
 		}
 
-		public int GetDesiredSubcell(CPos a, Actor ignoreActor)
+		public int GetAvailableSubcell(CPos a, int preferredSubCell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			if (!Info.SharesCell)
-				return 0;
-
-			// Prioritise the current subcell
-			if (IsDesiredSubcellNotBlocked(a, fromSubCell, ignoreActor))
-				return fromSubCell;
-
-			for (var i = 1; i < self.World.Map.SubCellOffsets.Length; i++)
-				if (IsDesiredSubcellNotBlocked(a, i, ignoreActor))
-					return i;
-
-			return -1;
+			return Info.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, checkTransientActors? CellConditions.All : CellConditions.None);
 		}
 
-		public bool CanEnterCell(CPos p)
-		{
-			return CanEnterCell(p, null, true);
-		}
-
-		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
+		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers);
 		}

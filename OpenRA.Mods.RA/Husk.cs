@@ -53,24 +53,28 @@ namespace OpenRA.Mods.RA
 		}
 
 		public IEnumerable<Pair<CPos, int>> OccupiedCells() { yield return Pair.New(TopLeft, 0); }
-		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
+		public bool IsMovingFrom(CPos location, int subCell = -1) { return false; }
+		public int GetAvailableSubcell(CPos cell, int preferredSubCell = -1, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			if (!self.World.Map.Contains(cell))
-				return false;
+				return -1;
 
 			if (!info.AllowedTerrain.Contains(self.World.Map.GetTerrainInfo(cell).Type))
-				return false;
+				return -1;
 
 			if (!checkTransientActors)
-				return true;
+				return 0;
 
 			return !self.World.ActorMap.GetUnitsAt(cell)
 				.Where(x => x != ignoreActor)
-				.Any();
+				.Any() ? 0 : -1;
 		}
 
-		public int GetDesiredSubcell(CPos a, Actor ignoreActor) { return CanEnterCell(a, ignoreActor, true) ? 0 : -1; }
-		public bool CanEnterCell(CPos cell) { return CanEnterCell(cell, null, true); }
+		public bool CanEnterCell(CPos a, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			return GetAvailableSubcell(a, -1, ignoreActor, checkTransientActors) >= 0;
+		}
+
 		public void SetPosition(Actor self, CPos cell, int subCell = -1) { SetPosition(self, self.World.Map.CenterOfCell(cell)); }
 
 		public void SetVisualPosition(Actor self, WPos pos)
