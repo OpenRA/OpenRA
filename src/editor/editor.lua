@@ -1281,6 +1281,7 @@ function CreateEditor()
         or ("  (%d)"):format(#instances+(instances[0] and 1 or 0))
       local line = instances and instances[0] and editor:LineFromPosition(instances[0]-1)+1
       local def =  line and " ("..TR("on line %d"):format(line)..")" or ""
+      local selections = ide.wxver >= "2.9.5" and editor:GetSelections() or 1
 
       local menu = wx.wxMenu {
         { ID_UNDO, TR("&Undo") },
@@ -1293,6 +1294,7 @@ function CreateEditor()
         { },
         { ID_GOTODEFINITION, TR("Go To Definition")..def },
         { ID_RENAMEALLINSTANCES, TR("Rename All Instances")..occurrences },
+        { ID_REPLACEALLSELECTIONS, TR("Replace All Selections") },
         { },
         { ID_QUICKADDWATCH, TR("Add Watch Expression") },
         { ID_QUICKEVAL, TR("Evaluate In Console") },
@@ -1302,6 +1304,7 @@ function CreateEditor()
       menu:Enable(ID_GOTODEFINITION, instances and instances[0])
       menu:Enable(ID_RENAMEALLINSTANCES, instances and (instances[0] or #instances > 0)
         or editor:GetSelectionStart() ~= editor:GetSelectionEnd())
+      menu:Enable(ID_REPLACEALLSELECTIONS, selections > 1)
       menu:Enable(ID_QUICKADDWATCH, value ~= nil)
       menu:Enable(ID_QUICKEVAL, value ~= nil)
 
@@ -1348,6 +1351,29 @@ function CreateEditor()
         end
         selectAllInstances(instances, value, pos)
       end
+    end)
+
+  editor:Connect(ID_REPLACEALLSELECTIONS, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function(event)
+      local main = editor:GetMainSelection()
+      local text = wx.wxGetTextFromUser(
+        TR("Enter replacement text"),
+        TR("Replace All Selections"),
+        editor:GetTextRange(editor:GetSelectionNStart(main), editor:GetSelectionNEnd(main))
+      )
+      if not text or text == "" then return end
+
+      editor:BeginUndoAction()
+      for s = 0, editor:GetSelections()-1 do
+        local selst, selend = editor:GetSelectionNStart(s), editor:GetSelectionNEnd(s)
+        editor:SetTargetStart(selst)
+        editor:SetTargetEnd(selend)
+        editor:ReplaceTarget(text)
+        editor:SetSelectionNStart(s, selst)
+        editor:SetSelectionNEnd(s, selst+#text)
+      end
+      editor:EndUndoAction()
+      editor:SetMainSelection(main)
     end)
 
   editor:Connect(ID_QUICKADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
