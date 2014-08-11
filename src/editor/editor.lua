@@ -1300,7 +1300,8 @@ function CreateEditor()
       }
 
       menu:Enable(ID_GOTODEFINITION, instances and instances[0])
-      menu:Enable(ID_RENAMEALLINSTANCES, instances and (instances[0] or #instances > 0))
+      menu:Enable(ID_RENAMEALLINSTANCES, instances and (instances[0] or #instances > 0)
+        or editor:GetSelectionStart() ~= editor:GetSelectionEnd())
       menu:Enable(ID_QUICKADDWATCH, value ~= nil)
       menu:Enable(ID_QUICKEVAL, value ~= nil)
 
@@ -1331,6 +1332,20 @@ function CreateEditor()
   editor:Connect(ID_RENAMEALLINSTANCES, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event)
       if value and pos then
+        if not (instances and (instances[0] or #instances > 0)) then
+          -- if multiple instances (of a variable) are not detected,
+          -- then simply find all instances of (selected) `value`
+          instances = {}
+          local length, pos = editor:GetLength(), 0
+          while true do
+            editor:SetTargetStart(pos)
+            editor:SetTargetEnd(length)
+            pos = editor:SearchInTarget(value)
+            if pos == -1 then break end
+            table.insert(instances, pos+1)
+            pos = pos + #value
+          end
+        end
         selectAllInstances(instances, value, pos)
       end
     end)
