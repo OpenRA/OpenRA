@@ -424,7 +424,10 @@ namespace OpenRA.Utility
 						ConvertFloatArrayToPercentArray(ref node.Value.Value);
 
 					if (depth == 2 && node.Key == "ProneSpeed" && parentKey == "TakeCover")
+					{
+						node.Key = "SpeedModifier";
 						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+					}
 
 					if (depth == 2 && node.Key == "SpeedModifier" && parentKey == "GainsStatUpgrades")
 						ConvertFloatArrayToPercentArray(ref node.Value.Value);
