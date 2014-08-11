@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA
 		public void SetPosition(Actor self, WPos pos) { SetPosition(self, self.World.Map.CellContaining(pos)); }
 		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, self.World.Map.CellContaining(pos)); }
 
-		public bool IsMovingFrom(CPos location, int subCell = -1) { return false; }
+		public bool IsLeaving(CPos location, int subCell = -1) { return self.Location == location && ticks + 1 == info.Lifetime * 25; }
 		public int GetAvailableSubcell(CPos cell, int preferredSubCell = -1, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			if (!self.World.Map.Contains(cell)) return -1;

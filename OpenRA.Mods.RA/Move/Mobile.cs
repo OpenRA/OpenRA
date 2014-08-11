@@ -160,22 +160,7 @@ namespace OpenRA.Mods.RA.Move
 			return true;
 		}
 
-		public bool CanEnterCell(World world, CPos cell, int subCell = -1, CellConditions check = CellConditions.All)
-		{
-			return CanEnterCell(world, null, cell, subCell, null, check);
-		}
-
-		public bool CanEnterCell(World world, Actor self, CPos cell, int subCell, CellConditions check)
-		{
-			return CanEnterCell(world, self, cell, subCell, null, check);
-		}
-
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor, CellConditions check = CellConditions.All)
-		{
-			return CanEnterCell(world, self, cell, -1, ignoreActor, check);
-		}
-
-		public bool CanEnterCell(World world, Actor self, CPos cell, int subCell = -1, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
 			if (MovementCostForCell(world, cell) == int.MaxValue)
 				return false;
@@ -318,9 +303,17 @@ namespace OpenRA.Mods.RA.Move
 
 		public void SetPosition(Actor self, CPos cell, int subCell = -1)
 		{
-			SetLocation(cell, fromSubCell, cell, fromSubCell);
-			SetVisualPosition(self, self.World.Map.CenterOfCell(fromCell)
-				+ self.World.Map.SubCellOffsets[subCell >= 0 ? subCell : fromSubCell]);
+			// Try same sub-cell
+			if (subCell < 0)
+				subCell = fromSubCell;
+
+			// Fix sub-cell assignment
+			if (Info.SharesCell != (subCell != 0))
+				subCell = Info.SharesCell ? self.World.Map.SubCellDefaultIndex : 0;
+
+			SetLocation(cell, subCell, cell, subCell);
+			SetVisualPosition(self, self.World.Map.CenterOfCell(cell)
+				+ self.World.Map.SubCellOffsets[subCell]);
 			FinishedMoving(self);
 		}
 
@@ -476,7 +469,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public bool IsMovingFrom(CPos location, int subCell = -1)
+		public bool IsLeaving(CPos location, int subCell = -1)
 		{
 			return toCell != location && __fromCell == location
 				&& (subCell == -1 || fromSubCell == subCell || subCell == 0 || fromSubCell == 0);

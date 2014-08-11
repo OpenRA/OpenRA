@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public IEnumerable<Pair<CPos, int>> OccupiedCells() { yield return Pair.New(TopLeft, 0); }
-		public bool IsMovingFrom(CPos location, int subCell = -1) { return false; }
+		public bool IsLeaving(CPos location, int subCell = -1) { return false; }
 		public int GetAvailableSubcell(CPos cell, int preferredSubCell = -1, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			if (!self.World.Map.Contains(cell))
