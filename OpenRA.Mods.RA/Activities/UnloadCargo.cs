@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			return cargo.CurrentAdjacentCells
 				.Shuffle(self.World.SharedRandom)
-				.Select(c => Pair.New(c, pos.GetDesiredSubcell(c, null)))
+				.Select(c => Pair.New(c, pos.GetAvailableSubcell(c, -1, null)))
 				.Cast<Pair<CPos, int>?>()
 				.FirstOrDefault(s => s.Value.Second >= 0);
 		}

@@ -83,35 +83,68 @@ namespace OpenRA.Traits
 					yield return i.Actor;
 		}
 
-		public bool HasFreeSubCell(CPos a)
+		public bool HasFreeSubCell(CPos a, bool checkTransient = true)
 		{
-			return FreeSubCell(a) >= 0;
+			return FreeSubCell(a, -1, checkTransient) >= 0;
 		}
 
-		public int FreeSubCell(CPos a, int preferredSubCell = -1)
+		public int FreeSubCell(CPos a, int preferredSubCell = -1, bool checkTransient = true)
 		{
-			if (preferredSubCell >= 0 && !AnyUnitsAt(a, preferredSubCell))
+			if (preferredSubCell >= 0 && !AnyUnitsAt(a, preferredSubCell, checkTransient))
 				return preferredSubCell;
 
 			if (!AnyUnitsAt(a))
 				return map.SubCellDefaultIndex;
 
 			for (var i = 1; i < map.SubCellOffsets.Length; i++)
-				if (!AnyUnitsAt(a, i))
+				if (i != preferredSubCell && !AnyUnitsAt(a, i, checkTransient))
 					return i;
 			return -1;
 		}
 
+		public int FreeSubCell(CPos a, int preferredSubCell, Func<Actor, bool> checkIfBlocker)
+		{
+			if (preferredSubCell >= 0 && !AnyUnitsAt(a, preferredSubCell, checkIfBlocker))
+				return preferredSubCell;
+
+			if (!AnyUnitsAt(a))
+				return map.SubCellDefaultIndex;
+
+			for (var i = 1; i < map.SubCellOffsets.Length; i++)
+				if (i != preferredSubCell && !AnyUnitsAt(a, i, checkIfBlocker))
+					return i;
+			return -1;
+		}
+
+		// NOTE: does not check transients, but checks aircraft
 		public bool AnyUnitsAt(CPos a)
 		{
 			return influence[a] != null;
 		}
 
-		public bool AnyUnitsAt(CPos a, int sub)
+		// NOTE: can not check aircraft
+		public bool AnyUnitsAt(CPos a, int sub, bool checkTransient = true)
 		{
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (i.SubCell == sub || i.SubCell == 0)
-					return true;
+				if (sub <= 0 || i.SubCell == sub || i.SubCell == 0)
+				{
+					if (checkTransient)
+						return true;
+					var pos = i.Actor.TraitOrDefault<IPositionable>();
+					if (pos == null || !pos.IsMovingFrom(a, i.SubCell))
+						return true;
+				}
+
+			return false;
+		}
+
+		// NOTE: can not check aircraft
+		public bool AnyUnitsAt(CPos a, int sub, Func<Actor, bool> withCondition)
+		{
+			for (var i = influence[a]; i != null; i = i.Next)
+				if (sub <= 0 || i.SubCell == sub || i.SubCell == 0)
+					if (withCondition(i.Actor))
+						return true;
 
 			return false;
 		}
