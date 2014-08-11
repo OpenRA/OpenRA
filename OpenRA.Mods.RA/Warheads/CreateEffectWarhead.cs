@@ -95,8 +95,6 @@ namespace OpenRA.Mods.RA
 				Sound.Play(ImpactSound, pos);
 		}
 
-		public override float EffectivenessAgainst(ActorInfo ai) { return 1f; }
-
 		public bool IsValidImpact(WPos pos, Actor firedBy)
 		{
 			var world = firedBy.World;

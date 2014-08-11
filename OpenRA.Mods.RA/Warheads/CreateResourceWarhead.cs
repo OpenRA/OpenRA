@@ -60,7 +60,5 @@ namespace OpenRA.Mods.RA
 				}
 			}
 		}
-
-		public override float EffectivenessAgainst(ActorInfo ai) { return 1f; }
 	}
 }
