@@ -5,11 +5,12 @@ ide.config.toolbar.icons = {
   ID_SEPARATOR,
   ID_FIND, ID_REPLACE, ID_FINDINFILES,
   ID_SEPARATOR,
-  ID_STARTDEBUG, ID_STOPDEBUG, ID_DETACHDEBUG, ID_BREAK, ID_STEP, ID_STEPOVER, ID_STEPOUT,
+  ID_RUN, ID_STARTDEBUG, ID_STOPDEBUG, ID_DETACHDEBUG, ID_BREAK, ID_STEP, ID_STEPOVER, ID_STEPOUT,
   ID_SEPARATOR,
   ID_TOGGLEBREAKPOINT, ID_BOOKMARKTOGGLE, ID_VIEWCALLSTACK, ID_VIEWWATCHWINDOW,
   ID_SEPARATOR,
   [ID_FINDINFILES] = false,
+  [ID_RUN] = false,
 }
 
 ide.config.toolbar.iconmap = {
@@ -22,6 +23,7 @@ ide.config.toolbar.iconmap = {
   [ID_FIND] = {"FIND", "Find text"},
   [ID_REPLACE] = {"FIND-AND-REPLACE", "Find and replace text"},
   [ID_FINDINFILES] = {"FIND-IN-FILES", "Find in files"},
+  [ID_RUN] = {"RUN", "Run"},
   [ID_STARTDEBUG] = {"DEBUG-START", "Start or Continue debugging"},
   [ID_STOPDEBUG] = {"DEBUG-STOP", "Stop the currently running process"},
   [ID_DETACHDEBUG]= {"DEBUG-DETACH", "Stop debugging and continue running the process"},
