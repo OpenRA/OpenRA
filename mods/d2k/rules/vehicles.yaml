@@ -237,7 +237,7 @@ SIEGETANK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
-		Prerequisites: Outpost, ~techlevel.medium
+		Prerequisites: Outpost, ~techlevel.high
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 50
 	Valued:
@@ -305,7 +305,7 @@ MISSILETANK:
 		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Armor
-		Prerequisites: Hitech, ~techlevel.high
+		Prerequisites: Hitech, ~techlevel.medium
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 60
 	Mobile:
