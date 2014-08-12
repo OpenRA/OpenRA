@@ -20,7 +20,7 @@ namespace OpenRA.Network
 	{
 		public ReplayMetadata Metadata;
 
-		IConnection inner;
+		public IConnection Inner { get; private set; }
 		BinaryWriter writer;
 		Func<string> chooseFilename;
 		MemoryStream preStartBuffer = new MemoryStream();
@@ -28,7 +28,7 @@ namespace OpenRA.Network
 		public ReplayRecorderConnection(IConnection inner, Func<string> chooseFilename)
 		{
 			this.chooseFilename = chooseFilename;
-			this.inner = inner;
+			this.Inner = inner;
 
 			writer = new BinaryWriter(preStartBuffer);
 		}
@@ -59,16 +59,16 @@ namespace OpenRA.Network
 			this.writer = new BinaryWriter(file);
 		}
 
-		public int LocalClientId { get { return inner.LocalClientId; } }
-		public ConnectionState ConnectionState { get { return inner.ConnectionState; } }
+		public int LocalClientId { get { return Inner.LocalClientId; } }
+		public ConnectionState ConnectionState { get { return Inner.ConnectionState; } }
 
-		public void Send(int frame, List<byte[]> orders) { inner.Send(frame, orders); }
-		public void SendImmediate(List<byte[]> orders) { inner.SendImmediate(orders); }
-		public void SendSync(int frame, byte[] syncData) { inner.SendSync(frame, syncData); }
+		public void Send(int frame, List<byte[]> orders) { Inner.Send(frame, orders); }
+		public void SendImmediate(List<byte[]> orders) { Inner.SendImmediate(orders); }
+		public void SendSync(int frame, byte[] syncData) { Inner.SendSync(frame, syncData); }
 
 		public void Receive(Action<int, byte[]> packetFn)
 		{
-			inner.Receive((client, data) =>
+			Inner.Receive((client, data) =>
 				{
 					if (preStartBuffer != null && IsGameStart(data))
 					{
@@ -96,6 +96,7 @@ namespace OpenRA.Network
 			return frame == 0 && data.ToOrderList(null).Any(o => o.OrderString == "StartGame");
 		}
 
+
 		bool disposed;
 
 		public void Dispose()
@@ -114,7 +115,7 @@ namespace OpenRA.Network
 			if (preStartBuffer != null)
 				preStartBuffer.Dispose();
 			writer.Close();
-			inner.Dispose();
+			Inner.Dispose();
 		}
 	}
 }

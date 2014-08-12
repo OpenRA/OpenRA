@@ -40,6 +40,7 @@ namespace OpenRA
 
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;
+		public static bool IsSimulating = false;
 
 		public static DatabaseReader GeoIpDatabase;
 
@@ -51,7 +52,22 @@ namespace OpenRA
 			return om;
 		}
 
-		static string ChooseReplayFilename()
+		public static OrderManager JoinSave(string host, int port, string password, string replayFile)
+		{
+			var om = new OrderManager(host, port, password, new EchoConnection());
+
+			IConnection connection = 
+				new ReplayRecorderConnection(
+				new ReplayConnection(replayFile, om,
+				new NetworkConnection(host, port)), ChooseReplayFilename);
+
+			om.Connection = connection;
+
+			JoinInner(om);
+			return om;
+		}
+
+		public static string ChooseReplayFilename()
 		{
 			return DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssZ");
 		}
@@ -590,8 +606,8 @@ namespace OpenRA
 					var haveSomeTimeUntilNextLogic = now < nextLogic;
 					var isTimeToRender = now >= nextRender;
 					var forceRender = now >= forcedNextRender;
-
-					if ((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender)
+					
+					if (((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender) && !IsSimulating)
 					{
 						nextRender = now + renderInterval;
 
