@@ -790,7 +790,7 @@ Weapons:
 		Range: 10c0
 		Report: MISSILE6.AUD
 		Burst: 2
-		ValidTargets: Ground, Air, Enemy, Neutral, Ally
+		ValidTargets: Ground, Air
 		Projectile: Missile
 			Speed: 128
 			Arm: 2
@@ -805,6 +805,7 @@ Weapons:
 			RangeLimit: 80
 		Warhead: SpreadDamage
 			Spread: 640
+			ValidTargets: Ground, Air
 			Versus:
 				None: 125%
 				Wood: 110%
@@ -822,7 +823,7 @@ Weapons:
 		ROF: 40
 		Range: 8c0
 		Report: AACANON3.AUD
-		ValidTargets: Ground, Enemy, Neutral, Ally
+		ValidTargets: Ground
 		Burst: 6
 		BurstDelay: 1
 		Projectile: Bullet
@@ -833,6 +834,7 @@ Weapons:
 			ContrailLength: 2
 		Warhead: SpreadDamage
 			Spread: 341
+			ValidTargets: Ground
 			Versus:
 				None: 90%
 				Wood: 170%
@@ -902,12 +904,13 @@ Weapons:
 		ROF: 10
 		Range: 8c0
 		Report: AACANON3.AUD
-		ValidTargets: Air, Ground, Enemy, Neutral, Ally
+		ValidTargets: Air, Ground
 		Projectile: Bullet
 			Speed: 1c682
 			High: true
 		Warhead: SpreadDamage
 			Spread: 213
+			ValidTargets: Air, Ground
 			Versus:
 				None: 35%
 				Wood: 30%
