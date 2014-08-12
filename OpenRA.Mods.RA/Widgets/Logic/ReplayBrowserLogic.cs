@@ -12,8 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using OpenRA.FileFormats;
 using OpenRA.Primitives;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -27,6 +29,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollItemWidget playerTemplate, playerHeader;
 		List<ReplayMetadata> replays;
 		Dictionary<ReplayMetadata, ReplayState> replayState = new Dictionary<ReplayMetadata, ReplayState>();
+		Action onStart;
 
 		Dictionary<CPos, SpawnOccupant> selectedSpawns;
 		ReplayMetadata selectedReplay;
@@ -34,6 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ReplayBrowserLogic(Widget widget, Action onExit, Action onStart)
 		{
+			this.onStart = onStart;
 			panel = widget;
 
 			playerList = panel.Get<ScrollPanelWidget>("PLAYER_LIST");
@@ -73,6 +77,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
 			watch.IsDisabled = () => selectedReplay == null || selectedReplay.GameInfo.MapPreview.Status != MapStatus.Available;
 			watch.OnClick = () => { WatchReplay(); onStart(); };
+
+			var resume = panel.Get<ButtonWidget>("RESUME_BUTTON");
+			resume.IsDisabled = () => selectedReplay == null || selectedReplay.GameInfo.MapPreview.Status != MapStatus.Available;
+			resume.OnClick = () => { StartSave(); onStart(); };
 
 			panel.Get("REPLAY_INFO").IsVisible = () => selectedReplay != null;
 
@@ -628,6 +636,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.JoinReplay(selectedReplay.FilePath);
 				Ui.CloseWindow();
 			}
+		}
+
+		void StartSave()
+		{
+			OrderManager om = null;
+
+			Action lobbyReady = null;
+			lobbyReady = () =>
+			{
+				Game.LobbyInfoChanged -= lobbyReady;
+				onStart();
+				om.IssueOrder(Order.Command("state {0}".F(Session.ClientState.Ready)));
+			};
+			Game.LobbyInfoChanged += lobbyReady;
+
+			om = Game.JoinSave(IPAddress.Loopback.ToString(), Game.CreateLocalServer(this.selectedReplay.GameInfo.MapUid), "", selectedReplay.FilePath);
 		}
 
 		void AddReplay(ReplayMetadata replay, ScrollItemWidget template)

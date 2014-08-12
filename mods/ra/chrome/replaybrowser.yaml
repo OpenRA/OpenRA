@@ -268,6 +268,14 @@ Background@REPLAYBROWSER_PANEL:
 									X: 5
 									Width: PARENT_RIGHT
 									Height: 25
+		Button@RESUME_BUTTON:
+			X: PARENT_RIGHT - 140 - 260
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Resume
+			Font: Bold
+			Key: p
 		Button@WATCH_BUTTON:
 			X: PARENT_RIGHT - 140 - 130
 			Y: PARENT_BOTTOM - 45

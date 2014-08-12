@@ -293,5 +293,12 @@ Container@REPLAYBROWSER_PANEL:
 					Width: 140
 					Height: 35
 					Text: Watch
+				Button@RESUME_BUTTON:
+					Key: p
+					X: PARENT_RIGHT - 280
+					Y: PARENT_BOTTOM - 1
+					Width: 140
+					Height: 35
+					Text: Resume
 				TooltipContainer@TOOLTIP_CONTAINER:
 
