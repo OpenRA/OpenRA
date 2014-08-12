@@ -91,17 +91,23 @@ local function createToolBar(frame)
   local toolBmpSize = (
     ide.osname == 'Macintosh' and wx.wxSize(24, 24) or wx.wxSize(16, 16))
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
-  for _, id in ipairs(ide.config.toolbar.icons) do
-    if id == ID_SEPARATOR then
-      toolBar:AddSeparator()
-    else
-      local iconmap = ide.config.toolbar.iconmap[id]
-      if iconmap then
-        local icon, description = unpack(iconmap)
-        local isbitmap = type(icon) == "userdata" and icon:GetClassInfo():GetClassName() == "wxBitmap"
-        local bitmap = isbitmap and icon or getBitmap(icon, "TOOLBAR", toolBmpSize)
-        toolBar:AddTool(id, "", bitmap, TR(description)..SCinB(id))
+  local icons, prev = ide.config.toolbar.icons
+  for _, id in ipairs(icons) do
+    if icons[id] ~= false then -- skip explicitly disabled icons
+      if id == ID_SEPARATOR then
+        -- make sure that there are no two separators next to each other;
+        -- this may happen when some of the icons are disabled.
+        if prev ~= ID_SEPARATOR then toolBar:AddSeparator() end
+      else
+        local iconmap = ide.config.toolbar.iconmap[id]
+        if iconmap then
+          local icon, description = unpack(iconmap)
+          local isbitmap = type(icon) == "userdata" and icon:GetClassInfo():GetClassName() == "wxBitmap"
+          local bitmap = isbitmap and icon or getBitmap(icon, "TOOLBAR", toolBmpSize)
+          toolBar:AddTool(id, "", bitmap, TR(description)..SCinB(id))
+        end
       end
+      prev = id
     end
   end
   toolBar:AddControl(funclist)
