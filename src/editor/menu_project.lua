@@ -285,11 +285,11 @@ frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_RUNNOW, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    if event:IsChecked() then
-      if not DebuggerScratchpadOn(GetEditor()) then
-        menuBar:Check(ID_RUNNOW, false) -- disable if couldn't start scratchpad
-      end
-    else DebuggerScratchpadOff() end
+    if debugger.scratchpad then
+      DebuggerScratchpadOff()
+    else
+      DebuggerScratchpadOn(GetEditor())
+    end
   end)
 frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
   function (event)
@@ -300,6 +300,13 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
                  (ide.interpreter.scratchextloop ~= nil) and -- nil == no scratchpad support
                  (editor ~= nil) and ((debugger.server == nil or debugger.scratchable)
                  and debugger.pid == nil or debugger.scratchpad ~= nil))
+    local isscratchpad = debugger.scratchpad ~= nil
+    menuBar:Check(ID_RUNNOW, isscratchpad)
+    local tool = ide:GetToolBar():FindTool(ID_RUNNOW)
+    if tool and tool:IsSticky() ~= isscratchpad then
+      tool:SetSticky(isscratchpad)
+      ide:GetToolBar():Refresh()
+    end
   end)
 
 frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
