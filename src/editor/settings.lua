@@ -392,7 +392,18 @@ function SettingsRestoreView()
   local layoutcur = uimgr:SavePerspective()
   local layout = settingsReadSafe(settings,"uimgrlayout",layoutcur)
   if (layout ~= layoutcur) then
+    -- save the current toolbar configuration and restore re-apply it
+    -- as it's always correct (to avoid storing minh and minw values)
+    local toolbar = frame.uimgr:GetPane("toolbar")
+    local toolbarlayout = (toolbar:IsOk()
+      -- layout includes bestw that is only as wide as the toolbar size,
+      -- this leaves default background on the right side of the toolbar;
+      -- fix it by explicitly replacing with the screen width
+      and uimgr:SavePaneInfo(toolbar):gsub("(bestw=)[^;]+",
+        function(s) return s..wx.wxSystemSettings.GetMetric(wx.wxSYS_SCREEN_X) end)
+      or nil)
     uimgr:LoadPerspective(layout, false)
+    if toolbarlayout then uimgr:LoadPaneInfo(toolbarlayout, toolbar) end
 
     -- check if debugging panes are not mentioned and float them
     for _, name in pairs({"stackpanel", "watchpanel"}) do

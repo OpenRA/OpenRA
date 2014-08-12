@@ -80,6 +80,13 @@ local function menuDropDownPosition(event)
   return ide.frame:ScreenToClient(tb:ClientToScreen(rect:GetBottomLeft()))
 end
 
+local function tbIconSize()
+  local iconsize = (tonumber(ide.config.toolbar and ide.config.toolbar.iconsize)
+    or (ide.osname == 'Macintosh' and 24 or 16))
+  if iconsize ~= 24 then iconsize = 16 end
+  return iconsize
+end
+
 local function createToolBar(frame)
   local toolBar = wxaui.wxAuiToolBar(frame, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize,
     wxaui.wxAUI_TB_PLAIN_BACKGROUND)
@@ -88,8 +95,8 @@ local function createToolBar(frame)
     wx.wxDefaultPosition, wx.wxSize.new(240, ide.osname == 'Unix' and 28 or 24))
 
   -- there are two sets of icons: use 24 on OSX and 16 on others.
-  local toolBmpSize = (
-    ide.osname == 'Macintosh' and wx.wxSize(24, 24) or wx.wxSize(16, 16))
+  local iconsize = tbIconSize()
+  local toolBmpSize = wx.wxSize(iconsize, iconsize)
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local icons, prev = ide.config.toolbar.icons
   for _, id in ipairs(icons) do
@@ -466,7 +473,6 @@ do
 
   mgr:AddPane(frame.toolBar, wxaui.wxAuiPaneInfo():
     Name("toolbar"):Caption("Toolbar"):
-    MinSize(300,16):FloatingSize(800,48):
     ToolbarPane():Top():CloseButton(false):PaneBorder(false):
     LeftDockable(false):RightDockable(false))
   mgr:AddPane(frame.notebook, wxaui.wxAuiPaneInfo():
