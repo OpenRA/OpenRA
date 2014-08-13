@@ -788,6 +788,9 @@ namespace OpenRA.Mods.RA.AI
 			if (!enabled)
 				return;
 
+			if (e.Attacker.Owner.Stances[self.Owner] == Stance.Neutral)
+				return;
+
 			var rb = self.TraitOrDefault<RepairableBuilding>();
 
 			if (Info.ShouldRepairBuildings && rb != null)
