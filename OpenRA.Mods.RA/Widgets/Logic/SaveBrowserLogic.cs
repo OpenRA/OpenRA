@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				using (new Support.PerfTimer("Load saves"))
 				{
 					saves = Directory
-						.GetFiles(dir, "*.rep")
+						.GetFiles(dir, "*.orasave")
 						.Select(ReplayMetadata.Read)
 						.Where(r => r != null)
 						.OrderByDescending(r => r.GameInfo.StartTimeUtc)

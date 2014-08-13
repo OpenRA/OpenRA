@@ -107,7 +107,7 @@ namespace OpenRA.Network
 			var id = -1;
 			while (file == null)
 			{
-				var fullFilename = Path.Combine(path, id < 0 ? "{0}.rep".F(filename) : "{0}-{1}.rep".F(filename, id));
+				var fullFilename = Path.Combine(path, id < 0 ? "{0}.orasave".F(filename) : "{0}-{1}.orasave".F(filename, id));
 				id++;
 				try
 				{
