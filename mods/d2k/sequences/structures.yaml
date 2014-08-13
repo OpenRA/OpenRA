@@ -737,9 +737,11 @@ heavya:
 	idle-top: DATA
 		Start: 2519
 		Offset: -48,80
+		ZOffset: 1023
 	damaged-idle-top: DATA
 		Start: 2520
 		Offset: -48,80
+		ZOffset: 1023
 	production-welding: DATA
 		Start: 4674
 		Length: 47
@@ -1132,9 +1134,11 @@ heavyh:
 	idle-top: DATA
 		Start: 2679
 		Offset: -48,80
+		ZOffset: 1023
 	damaged-idle-top: DATA
 		Start: 2680
 		Offset: -48,80
+		ZOffset: 1023
 	production-welding: DATA
 		Start: 4674
 		Length: 47
@@ -1520,9 +1524,11 @@ heavyo:
 	idle-top: DATA
 		Start: 2839
 		Offset: -48,80
+		ZOffset: 1023
 	damaged-idle-top: DATA
 		Start: 2840
 		Offset: -48,80
+		ZOffset: 1023
 	production-welding: DATA
 		Start: 4674
 		Length: 47
@@ -1632,9 +1638,11 @@ heavyc: # TODO: unused
 	idle-top: DATA
 		Start: 3002
 		Offset: -48,64
+		ZOffset: 1023
 	damaged-idle-top: DATA
 		Start: 3003
 		Offset: -48,64
+		ZOffset: 1023
 	production-welding: DATA
 		Start: 4674
 		Length: 47
