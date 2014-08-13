@@ -226,6 +226,7 @@ namespace OpenRA.Traits
 	public interface INotifySelected { void Selected(Actor self); }
 	public interface INotifySelection { void SelectionChanged(); }
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
+	public interface ISaveLoaded { void SaveLoaded(World w); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
 	public interface IBotInfo { string Name { get; } }

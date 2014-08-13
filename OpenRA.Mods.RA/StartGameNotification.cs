@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new StartGameNotification(this); }
 	}
 
-	class StartGameNotification : IWorldLoaded
+	class StartGameNotification : IWorldLoaded, ISaveLoaded
 	{
 		StartGameNotificationInfo info;
 		public StartGameNotification(StartGameNotificationInfo info)
@@ -29,6 +29,11 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void WorldLoaded(World world, WorldRenderer wr)
+		{
+			Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, null);
+		}
+
+		public void SaveLoaded(World world)
 		{
 			Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, null);
 		}

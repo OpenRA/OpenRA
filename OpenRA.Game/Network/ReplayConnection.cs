@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using OpenRA.FileFormats;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Network
 {
@@ -147,8 +148,14 @@ namespace OpenRA.Network
 			if (chunks.Count == 0 && ResumeAtEnd && !useInner && inner != null)
 			{
 				useInner = true;
-				orderManager.world.IssueOrder(new Order("PauseGame", null, false) { TargetString = "UnPause" });
-				Game.IsSimulating = false;
+				if (orderManager != null)
+				{
+					orderManager.world.IssueOrder(new Order("PauseGame", null, false) { TargetString = "UnPause" });
+					Game.IsSimulating = false;
+					foreach (var sl in orderManager.world.WorldActor.TraitsImplementing<ISaveLoaded>())
+						using (new Support.PerfTimer(sl.GetType().Name + ".WorldLoaded"))
+							sl.SaveLoaded(orderManager.world);
+				}
 			}
 		}
 
