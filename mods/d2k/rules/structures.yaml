@@ -365,7 +365,6 @@ CONCRETEB:
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 96,64
-	Bib:
 	Health:
 		HP: 1000
 	Armor:
@@ -671,9 +670,10 @@ WALL:
 		Name: Palace
 		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
 	Building:
-		Footprint: xx= xxx
-		Dimensions: 3,2
+		Footprint: xx= xxx =xx
+		Dimensions: 3,3
 	Bib:
+		HasMinibib: True
 	Health:
 		HP: 2000
 	Armor:
@@ -720,8 +720,8 @@ PALACEC:
 		BuildPaletteOrder: 1000
 		Owner: None
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: =x= xxx xxx
+		Dimensions: 3,3
 	RenderBuilding:
 
 HEAVYC:
