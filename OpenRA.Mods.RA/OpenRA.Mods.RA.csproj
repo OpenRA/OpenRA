@@ -292,6 +292,7 @@
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />
+    <Compile Include="Widgets\Logic\SaveBrowserLogic.cs" />
     <Compile Include="World\RadarPings.cs" />
     <Compile Include="Player\TechTree.cs" />
     <Compile Include="PrimaryBuilding.cs" />

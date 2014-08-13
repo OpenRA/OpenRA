@@ -21,6 +21,7 @@ namespace OpenRA.Network
 		public ReplayMetadata Metadata;
 
 		public IConnection Inner { get; private set; }
+		FileStream file;
 		BinaryWriter writer;
 		Func<string> chooseFilename;
 		MemoryStream preStartBuffer = new MemoryStream();
@@ -56,7 +57,8 @@ namespace OpenRA.Network
 			}
 
 			file.Write(initialContent);
-			this.writer = new BinaryWriter(file);
+			this.file = file;
+			this.writer = new BinaryWriter(this.file);
 		}
 
 		public int LocalClientId { get { return Inner.LocalClientId; } }
@@ -96,6 +98,37 @@ namespace OpenRA.Network
 			return frame == 0 && data.ToOrderList(null).Any(o => o.OrderString == "StartGame");
 		}
 
+		public void SaveToFile(string path, string filename)
+		{
+			if (!Directory.Exists(path))
+				Directory.CreateDirectory(path);
+
+			FileStream file = null;
+			var id = -1;
+			while (file == null)
+			{
+				var fullFilename = Path.Combine(path, id < 0 ? "{0}.rep".F(filename) : "{0}-{1}.rep".F(filename, id));
+				id++;
+				try
+				{
+					file = File.Create(fullFilename);
+				}
+				catch (IOException) { }
+			}
+
+			this.file.Position = 0;
+			this.file.CopyTo(file);
+			var writer = new BinaryWriter(file);
+
+			if (Metadata != null)
+			{
+				if (Metadata.GameInfo != null)
+					Metadata.GameInfo.EndTimeUtc = DateTime.UtcNow;
+				Metadata.Write(writer);
+			}
+
+			writer.Close();
+		}
 
 		bool disposed;
 

@@ -98,6 +98,7 @@ ChromeLayout:
 	mods/ra/chrome/connection.yaml
 	mods/ra/chrome/directconnect.yaml
 	mods/ra/chrome/replaybrowser.yaml
+	mods/ra/chrome/savebrowser.yaml
 	mods/ra/chrome/dropdowns.yaml
 	mods/ra/chrome/musicplayer.yaml
 	mods/ra/chrome/tooltips.yaml
