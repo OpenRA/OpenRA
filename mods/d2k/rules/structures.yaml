@@ -365,7 +365,6 @@ CONCRETEB:
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 96,64
-	Bib:
 	Health:
 		HP: 1000
 	Armor:
@@ -660,7 +659,6 @@ WALL:
 ^PALACE:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Research, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 150
 	Selectable:
@@ -671,9 +669,10 @@ WALL:
 		Name: Palace
 		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
 	Building:
-		Footprint: xx= xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx =xx
+		Dimensions: 3,3
 	Bib:
+		HasMinibib: Yes
 	Health:
 		HP: 2000
 	Armor:
@@ -720,8 +719,8 @@ PALACEC:
 		BuildPaletteOrder: 1000
 		Owner: None
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx =xx
+		Dimensions: 3,3
 	RenderBuilding:
 
 HEAVYC:
