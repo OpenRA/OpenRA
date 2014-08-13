@@ -29,10 +29,10 @@ namespace OpenRA.Mods.RA
 		public readonly string ImpactSound = null;
 
 		[Desc("What impact types should this effect apply to.")]
-		public readonly ImpactType[] ValidImpactTypes = { ImpactType.Ground, ImpactType.Water, ImpactType.Air, ImpactType.GroundHit, ImpactType.WaterHit, ImpactType.AirHit };
+		public readonly ImpactType ValidImpactTypes = ImpactType.Ground | ImpactType.Water | ImpactType.Air | ImpactType.GroundHit | ImpactType.WaterHit | ImpactType.AirHit;
 
 		[Desc("What impact types should this effect NOT apply to.", "Overrides ValidImpactTypes.")]
-		public readonly ImpactType[] InvalidImpactTypes = { };
+		public readonly ImpactType InvalidImpactTypes = ImpactType.None;
 
 		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
 		{
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(pos);
 			var impactType = GetImpactType(world, targetTile, pos);
-			if ((!ValidImpactTypes.Contains(impactType)) || (InvalidImpactTypes.Contains(impactType)))
+			if (!ValidImpactTypes.HasFlag(impactType) || InvalidImpactTypes.HasFlag(impactType))
 				return false;
 
 			return true;

@@ -27,12 +27,13 @@ namespace OpenRA.Traits
 	[Flags]
 	public enum ImpactType
 	{
+		None = 0,
 		Ground = 1,
 		Water = 2,
 		Air = 4,
 		GroundHit = 8,
 		WaterHit = 16,
-		AirHit = 32,
+		AirHit = 32
 	}
 
 	public class AttackInfo
