@@ -566,6 +566,7 @@
     <Compile Include="Warheads\HealthPercentageDamageWarhead.cs" />
     <Compile Include="Warheads\PerCellDamageWarhead.cs" />
     <Compile Include="Warheads\SpreadDamageWarhead.cs" />
+    <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
