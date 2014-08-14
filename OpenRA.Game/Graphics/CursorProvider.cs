@@ -68,7 +68,7 @@ namespace OpenRA.Graphics
 			return cursors.ContainsKey(cursor);
 		}
 
-		public void DrawCursor(Renderer renderer, string cursorName, int2 lastMousePos, int cursorFrame)
+		public void DrawCursor(Renderer renderer, string cursorName, int2 lastMousePos, int cursorFrame, float cursorScale)
 		{
 			var cursorSequence = GetCursorSequence(cursorName);
 			var cursorSprite = cursorSequence.GetSprite(cursorFrame);
@@ -77,7 +77,7 @@ namespace OpenRA.Graphics
 			renderer.SpriteRenderer.DrawSprite(cursorSprite,
 			                                   lastMousePos - cursorSequence.Hotspot - (0.5f * cursorSprite.size).ToInt2(),
 			                                   palettes[cursorSequence.Palette],
-			                                   cursorSprite.size);
+                                               cursorSprite.size * cursorScale);
 		}
 
 		public CursorSequence GetCursorSequence(string cursor)

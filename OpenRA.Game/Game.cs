@@ -499,7 +499,7 @@ namespace OpenRA
 					if (modData != null && modData.CursorProvider != null)
 					{
 						var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-						modData.CursorProvider.DrawCursor(Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
+						modData.CursorProvider.DrawCursor(Renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame, worldRenderer.Viewport.Zoom);
 					}
 				}
 
