@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	public class ProvidesCustomPrerequisiteInfo : ITraitInfo
 	{
 		[Desc("The prerequisite type that this provides")]
-		public readonly string Prerequisite = null;
+		public string Prerequisite = null;
 
 		[Desc("Only grant this prerequisite when you have these prerequisites")]
 		public readonly string[] RequiresPrerequisites = { };
@@ -63,6 +63,12 @@ namespace OpenRA.Mods.RA
 				Update(newOwner, newOwner.Country.Race);
 		}
 
+		public void ChangePrerequiristic(Player owner, string newPrerequisite)
+		{
+			info.Prerequisite = newPrerequisite;
+			owner.PlayerActor.Trait<TechTree>().Update();
+		}
+
 		void Update(Player owner, string race)
 		{
 			enabled = true;
@@ -73,6 +79,7 @@ namespace OpenRA.Mods.RA
 			if (info.RequiresPrerequisites.Any() && enabled)
 				enabled = owner.PlayerActor.Trait<TechTree>().HasPrerequisites(info.RequiresPrerequisites);
 		}
+
 	}
 
 	// Allows maps / transformations to specify the race variant of an actor.
