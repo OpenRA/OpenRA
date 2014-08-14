@@ -27,6 +27,8 @@ Player:
 	PlayerStatistics:
 	FrozenActorLayer:
 	PlaceBeacon:
+	ProvidesCustomPrerequisite:
+		Prerequisite: sciencerank1
 	ProvidesTechPrerequisite@low:
 		Name: Low
 		Prerequisites: techlevel.low

@@ -62,6 +62,8 @@ Player:
 	HarvesterAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:
+	ProvidesCustomPrerequisite:
+		Prerequisite: sciencerank1
 	ProvidesTechPrerequisite@low:
 		Name: Low
 		Prerequisites: techlevel.low

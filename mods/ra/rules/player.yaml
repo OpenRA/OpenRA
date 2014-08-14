@@ -68,6 +68,8 @@ Player:
 	BaseAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:
+	ProvidesCustomPrerequisite:
+		Prerequisite: sciencerank1
 	ProvidesTechPrerequisite@infonly:
 		Name: Infantry Only
 		Prerequisites: techlevel.infonly
