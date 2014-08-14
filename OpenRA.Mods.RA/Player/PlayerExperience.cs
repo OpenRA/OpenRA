@@ -49,26 +49,26 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	public class PlayerExperience : ISync, ITechTreeElement
+	public class PlayerExperience : ISync
 	{
 		readonly List<Pair<int, string[]>> nextLevel = new List<Pair<int, string[]>>();
-		public readonly	TechTree TechTree;
-		public readonly Actor self;
+		public readonly Player Owner;
 
 		public PlayerExperience(Actor self, PlayerExperienceInfo info)
 		{
+			Owner = self.Owner;
+
 			Experience = 0;
 			Rank = 0;
-			SciencePoints = 0;
+			SciencePoints = 1;
 
 			MaxRank = info.ExperienceLevels.Count;
 
-			TechTree = self.Trait<TechTree>();
 
 			foreach (var kv in info.ExperienceLevels)
 				nextLevel.Add(Pair.New(kv.Key, kv.Value));
 			/* Init with 0, to advance the first rank, if so defined in player.yaml */
-			GiveExperience(0);
+			//GiveExperience(0);
 		}
 
 		[Sync] public int Experience;
@@ -88,7 +88,10 @@ namespace OpenRA.Mods.RA
 
 		public void LevelUp(string[] awardedSciences) 
 		{
+			
+			//ProvidesCustomPrerequisite scienceAdder;
 			Rank++;
+
 			foreach (string science in awardedSciences)
 			{
 				//Console.WriteLine(science);
@@ -96,20 +99,14 @@ namespace OpenRA.Mods.RA
 				{
 					GiveSciencePoints(1); //Move to ScienceManager object
 				} else{
+
+					var scienceAdder = Owner.PlayerActor.Trait<ProvidesCustomPrerequisite>();
+					//var experience = self.Info.Traits.Get<ValuedInfo>().Cost;
 					//Somehow add this to the techtree.
-					//TechTree.Add(science, t.Info.Prerequisites, 0, this);
-					//ITechTreeElement tte = new ITechTreeElement;
-					TechTree.Add(science, new[] { science }, 0, this);
-					TechTree.Update();
+					scienceAdder.ChangePrerequiristic(Owner, science);
 				}
 			}
 		}
-
-		/* Oh Pasta this feels dirty */
-		public void PrerequisitesAvailable(string key) { }
-		public void PrerequisitesUnavailable(string key) { }
-		public void PrerequisitesItemHidden(string key) { }
-		public void PrerequisitesItemVisible(string key) { }
 
 		/* Move these to seperate trait*/
 		public void GiveSciencePoints(int num)
