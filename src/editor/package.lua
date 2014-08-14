@@ -83,8 +83,10 @@ function ide:GetUIManager() return self.frame.uimgr end
 function ide:GetDocument(ed) return self.openDocuments[ed:GetId()] end
 function ide:GetDocuments() return self.openDocuments end
 function ide:FindMenuItem(itemid, menu)
-  local item, menu = ide:GetMenuBar():FindItem(itemid, menu)
+  local item, imenu = ide:GetMenuBar():FindItem(itemid, menu)
+  if menu and not item then item = menu:FindItem(itemid) end
   if not item then return end
+  menu = menu or imenu
 
   for pos = 0, menu:GetMenuItemCount()-1 do
     if menu:FindItemByPosition(pos):GetId() == itemid then
