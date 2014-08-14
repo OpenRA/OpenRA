@@ -580,6 +580,8 @@ namespace OpenRA
 				var nextUpdate = Math.Min(nextLogic, nextRender);
 				if (now >= nextUpdate)
 				{
+					if (IsHost && server != null)
+						server.Tick(NetFrameNumber);
 					if (now >= nextLogic)
 					{
 						nextLogic += logicInterval;

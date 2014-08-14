@@ -19,6 +19,17 @@ namespace OpenRA.Network
 	sealed class ReplayRecorderConnection : IConnection
 	{
 		public ReplayMetadata Metadata;
+		public bool DisableSend
+		{
+			get
+			{
+				return inner.DisableSend;
+			}
+			set
+			{
+				inner.DisableSend = value;
+			}
+		}
 
 		IConnection inner;
 		BinaryWriter writer;

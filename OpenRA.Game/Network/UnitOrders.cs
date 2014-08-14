@@ -115,6 +115,15 @@ namespace OpenRA.Network
 						break;
 					}
 
+				case "SendPermission":
+					{
+						if (order.TargetString == "Disable")
+							orderManager.Connection.DisableSend = true;
+						else
+							orderManager.Connection.DisableSend = false;
+						break;
+					}
+
 				case "HandshakeRequest":
 					{
 						// TODO: Switch to the server's mod if we have it

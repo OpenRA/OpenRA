@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Traits;
@@ -143,7 +144,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
-			if (mapButton != null)
+			/*if (mapButton != null)
 			{
 				mapButton.IsDisabled = configurationDisabled; 
 				mapButton.OnClick = () =>
@@ -156,6 +157,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 						orderManager.IssueOrder(Order.Command("map " + uid));
 						Game.Settings.Server.Map = uid;
+						Game.Settings.Server.Save = null;
 						Game.Settings.Save();
 					});
 
@@ -164,6 +166,30 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						{ "initialMap", Map.Uid },
 						{ "onExit", DoNothing },
 						{ "onSelect", onSelect }
+					});
+				};
+			}*/
+
+			var loadButton = lobby.GetOrNull<ButtonWidget>("LOAD_BUTTON");
+			if (mapButton != null)
+			{
+				mapButton.IsDisabled = configurationDisabled;
+				mapButton.OnClick = () =>
+				{
+					var onLoad = new Action<ReplayMetadata>(save =>
+					{
+						orderManager.IssueOrder(Order.Command("load " + save.FilePath));
+						//orderManager.IssueOrder(Order.Command("save " + save.FilePath));
+						Game.Settings.Server.Map = save.GameInfo.MapUid;
+						Game.Settings.Server.Replay = new OpenRA.Server.ReplayViewer(save.FilePath);
+						Game.Settings.Save();
+					});
+
+					Ui.OpenWindow("SAVEBROWSER_PANEL", new WidgetArgs
+					{
+						{ "onLoad",  onLoad},
+						{ "onExit",  DoNothing},
+						{ "filter", SaveBrowserLogic.GameType.Any }
 					});
 				};
 			}

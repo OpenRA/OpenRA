@@ -11,15 +11,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Network;
 using OpenRA.Primitives;
 
-namespace OpenRA.Network
+namespace OpenRA.Server
 {
-	public sealed class ReplayConnection : IConnection
+	public class ReplayViewer
 	{
-		public bool DisableSend { get; set; }
-
 		class Chunk
 		{
 			public int Frame;
@@ -27,17 +27,22 @@ namespace OpenRA.Network
 		}
 
 		Queue<Chunk> chunks = new Queue<Chunk>();
-		List<byte[]> sync = new List<byte[]>();
 		int ordersFrame;
 
-		public int LocalClientId { get { return 0; } }
+		public bool ReplayDone { get { return chunks.Count == 0 && IsValid; } }
 		public ConnectionState ConnectionState { get { return ConnectionState.Connected; } }
 		public readonly int TickCount;
 		public readonly bool IsValid;
 		public readonly Session LobbyInfo;
+		public readonly ReplayMetadata Info;
+		public readonly Dictionary<int, int> IndexConverter;
 
-		public ReplayConnection(string replayFilename)
+		public ReplayViewer(string replayFilename)
 		{
+			Info = ReplayMetadata.Read(replayFilename);
+			IndexConverter = new Dictionary<int, int>();
+			Info.GameInfo.Players.Do(p => IndexConverter.Add(p.ClientIndex, p.ClientIndex));
+
 			// Parse replay data into a struct that can be fed to the game in chunks
 			// to avoid issues with all immediate orders being resolved on the first tick.
 			using (var rs = File.OpenRead(replayFilename))
@@ -52,7 +57,29 @@ namespace OpenRA.Network
 					var packetLen = rs.ReadInt32();
 					var packet = rs.ReadBytes(packetLen);
 					var frame = BitConverter.ToInt32(packet, 0);
-					chunk.Packets.Add(Pair.New(client, packet));
+
+					if (chunks.Any() && chunk.Packets.Any(p2 => p2.First == client))
+					{
+						var packet2 = chunk.Packets.First(p2 => p2.First == client);
+
+						if (BitConverter.ToInt32(packet2.Second, 0) == frame)
+						{
+							//Deleting ClientID from the packet since we add a new one on the server
+							byte[] newpacket = new byte[packet.Length - 4];
+							Buffer.BlockCopy(packet, 4, newpacket, 0, newpacket.Length);
+
+							chunk.Packets.Remove(packet2);
+							var array = new byte[packet2.Second.Length + newpacket.Length];
+							Buffer.BlockCopy(packet2.Second, 0, array, 0, packet2.Second.Length);
+							Buffer.BlockCopy(newpacket, 0, array, packet2.Second.Length, newpacket.Length);
+							chunk.Packets.Add(Pair.New(client, array));
+						}
+						else
+							chunk.Packets.Add(Pair.New(client, packet));
+					}
+					else
+						chunk.Packets.Add(Pair.New(client, packet));
+
 
 					if (packet.Length == 5 && packet[4] == 0xBF)
 						continue; // disconnect
@@ -85,34 +112,16 @@ namespace OpenRA.Network
 			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency;
 		}
 
-		// Do nothing: ignore locally generated orders
-		public void Send(int frame, List<byte[]> orders) { }
-		public void SendImmediate(List<byte[]> orders) { }
-
-		public void SendSync(int frame, byte[] syncData)
+		internal List<Pair<int, byte[]>> GetNextData(int frame)
 		{
-			var ms = new MemoryStream();
-			ms.Write(BitConverter.GetBytes(frame));
-			ms.Write(syncData);
-			sync.Add(ms.ToArray());
+			var packets = new List<Pair<int, byte[]>>();
 
-			// Store the current frame so Receive() can return the next chunk of orders.
-			ordersFrame = frame + LobbyInfo.GlobalSettings.OrderLatency;
+			while (chunks.Count != 0 && chunks.Peek().Frame <= frame)
+				packets.AddRange(chunks.Dequeue().Packets);
+
+			packets.Do(pair => pair.First = IndexConverter[pair.First]);
+
+			return packets;
 		}
-
-		public void Receive(Action<int, byte[]> packetFn)
-		{
-			while (sync.Count != 0)
-			{
-				packetFn(LocalClientId, sync[0]);
-				sync.RemoveAt(0);
-			}
-
-			while (chunks.Count != 0 && chunks.Peek().Frame <= ordersFrame)
-				foreach (var o in chunks.Dequeue().Packets)
-					packetFn(o.First, o.Second);
-		}
-
-		public void Dispose() { }
 	}
 }

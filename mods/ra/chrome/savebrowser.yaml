@@ -1,0 +1,196 @@
+Background@SAVEBROWSER_PANEL:
+	Logic: SaveBrowserLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 780
+	Height: 535
+	Children:
+		Container@SAVE_LIST_CONTAINER:
+			X: 20
+			Y: 20
+			Width: 245
+			Height: PARENT_BOTTOM - 20 - 55
+			Children:
+				Label@SAVEBROWSER_LABEL_TITLE:
+					Width: PARENT_RIGHT
+					Height: 25
+					Text: Choose Save
+					Align: Center
+					Font: Bold
+				ScrollPanel@SAVE_LIST:
+					X: 0
+					Y: 30
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM - 110
+					CollapseHiddenChildren: True
+					Children:
+						ScrollItem@SAVE_TEMPLATE:
+							Width: PARENT_RIGHT-27
+							Height: 25
+							X: 2
+							Visible: false
+							Children:
+								Label@TITLE:
+									X: 10
+									Width: PARENT_RIGHT-20
+									Height: 25
+				Container@MANAGEMENT:
+					X: 0
+					Y: PARENT_BOTTOM - 80
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						Label@MANAGE_TITLE:
+							Width: PARENT_RIGHT
+							Height: 25
+							Font: Bold
+							Align: Center
+							Text: Manage
+						Button@MNG_RENSEL_BUTTON:
+							Y: 30
+							Width: PARENT_RIGHT
+							Height: 25
+							Text: Rename
+							Font: Bold
+							Key: F2
+						Button@MNG_DELSEL_BUTTON:
+							Y: 60
+							Width: PARENT_RIGHT
+							Height: 25
+							Text: Delete
+							Font: Bold
+							Key: Delete
+						Button@MNG_DELALL_BUTTON:
+							Y: 90
+							Width: PARENT_RIGHT
+							Height: 25
+							Text: Delete All
+							Font: Bold
+		Container@MAP_BG_CONTAINER:
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: 20
+			Width: 194
+			Height: 30 + 194
+			Children:
+				Label@MAP_BG_TITLE:
+					Width: PARENT_RIGHT
+					Height: 25
+					Text: Preview
+					Align: Center
+					Font: Bold
+				Background@MAP_BG:
+					Y: 30
+					Width: 194
+					Height: 194
+					Background: dialog3
+					Children:
+						MapPreview@MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: 192
+							Height: 192
+							TooltipContainer: TOOLTIP_CONTAINER
+		Container@SAVE_DESCRIPTION:
+			X: PARENT_RIGHT - 224 - WIDTH
+			Y: 20
+			Width: 280
+			Height: PARENT_BOTTOM - 45
+			Children:
+				Label@SAVE_DESCRIPTION_TITLE:
+					Width: PARENT_RIGHT
+					Height: 25
+					Text: Description
+					Align: Center
+					Font: Bold
+				ScrollPanel@SAVE_DESCRIPTION_PANEL:
+					X: 0
+					Y: 30
+					Width: 280
+					Height: PARENT_BOTTOM - 25
+					Children:
+						Label@SAVE_DESCRIPTION:
+							X: 5
+							Y: 5
+							Width: 265
+							VAlign: Top
+		Container@SAVE_INFO:
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: 20 + 30+194 + 10
+			Width: 194
+			Height: PARENT_BOTTOM - 20 - 30-194 - 10 - 55
+			Children:
+				Label@MAP_TITLE:
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: 15
+					Font: Bold
+					Align: Center
+				Label@MAP_TYPE:
+					Y: 15
+					Width: PARENT_RIGHT
+					Height: 15
+					Font: TinyBold
+					Align: Center
+				Label@DURATION:
+					Y: 30
+					Width: PARENT_RIGHT
+					Height: 15
+					Font: Tiny
+					Align: Center
+				ScrollPanel@PLAYER_LIST:
+					Y: 50
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM - 50
+					IgnoreChildMouseOver: true
+					Children:
+						ScrollItem@HEADER:
+							BaseName: scrollheader
+							Width: PARENT_RIGHT-27
+							Height: 13
+							X: 2
+							Y: 0
+							Visible: false
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_RIGHT
+									Height: 10
+									Align: Center
+						ScrollItem@TEMPLATE:
+							Width: PARENT_RIGHT-27
+							Height: 25
+							X: 2
+							Y: 0
+							Visible: false
+							Children:
+								Image@FLAG:
+									X: 4
+									Y: 6
+									Width: 32
+									Height: 16
+								Label@LABEL:
+									X: 40
+									Width: 60
+									Height: 25
+								Label@NOFLAG_LABEL:
+									X: 5
+									Width: PARENT_RIGHT
+									Height: 25
+		Button@LOAD_BUTTON:
+			X: PARENT_RIGHT - 110 - 105
+			Y: PARENT_BOTTOM - 45
+			Width: 90
+			Height: 25
+			Text: Load
+			Font: Bold
+			Key: p
+		Button@CANCEL_BUTTON:
+			X: PARENT_RIGHT - 110
+			Y: PARENT_BOTTOM - 45
+			Width: 90
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape
+		TooltipContainer@TOOLTIP_CONTAINER:
+
