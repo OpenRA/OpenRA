@@ -24,6 +24,18 @@ namespace OpenRA.Traits
 	public enum TagType { None, Fake, Primary };
 	public enum Stance { Enemy, Neutral, Ally };
 
+	[Flags]
+	public enum ImpactType
+	{
+		None = 0,
+		Ground = 1,
+		Water = 2,
+		Air = 4,
+		GroundHit = 8,
+		WaterHit = 16,
+		AirHit = 32
+	}
+
 	public class AttackInfo
 	{
 		public Actor Attacker;

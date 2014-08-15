@@ -43,7 +43,11 @@ Minigun:
 			Heavy: 25%
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
-		Explosion: piffpiff
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 Grenade:
 	ROF: 60
@@ -69,6 +73,11 @@ Grenade:
 	Warhead@2Eff: CreateEffect
 		Explosion: large_grey_explosion
 		ImpactSound: expnew13.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 Bazooka:
 	ROF: 60
@@ -98,6 +107,15 @@ Bazooka:
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
 
 MultiCluster:
 	ROF: 80
@@ -127,6 +145,11 @@ MultiCluster:
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash2.aud
+		ValidImpactTypes: Water
 
 Heal:
 	ROF: 80
@@ -180,7 +203,11 @@ M1Carbine:
 			Heavy: 25%
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
-		Explosion: piffpiff
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 LtRail:
 	ROF: 60
@@ -227,6 +254,11 @@ CyCannon:
 	Warhead@2Eff: CreateEffect
 		Explosion: large_bang
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 Vulcan3:
 	ROF: 30
@@ -246,7 +278,11 @@ Vulcan3:
 			Heavy: 25%
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
-		Explosion: piffpiff
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 Vulcan2:
 	ROF: 50
@@ -267,7 +303,11 @@ Vulcan2:
 			Heavy: 25%
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
-		Explosion: piffpiff
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 Vulcan:
 	ROF: 60
@@ -286,7 +326,11 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
-		Explosion: piffpiff
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 FiendShard:
 	ROF: 30
@@ -309,6 +353,10 @@ FiendShard:
 			Light: 40%
 			Heavy: 25%
 			Concrete: 10%
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 JumpCannon:
 	ROF: 40
@@ -328,7 +376,11 @@ JumpCannon:
 			Heavy: 25%
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
-		Explosion: piffpiff
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 HoverMissile:
 	ROF: 68
@@ -359,6 +411,15 @@ HoverMissile:
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
 
 120mmx:
 	ROF: 80
@@ -385,6 +446,11 @@ HoverMissile:
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 MammothTusk:
 	ROF: 80
@@ -416,6 +482,11 @@ MammothTusk:
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_bang
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 Repair:
 	ROF: 80
@@ -486,6 +557,11 @@ SuicideBomb:
 	Warhead@2Eff: CreateEffect
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 MechRailgun:
 	ROF: 60
@@ -525,7 +601,11 @@ AssaultCannon:
 			Heavy: 25%
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
-		Explosion: piffpiff
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 BikeMissile:
 	ROF: 60
@@ -557,6 +637,11 @@ BikeMissile:
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 RaiderCannon:
 	ROF: 55
@@ -577,7 +662,11 @@ RaiderCannon:
 			Heavy: 25%
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
-		Explosion: piffpiff
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 FireballLauncher:
 	ROF: 50
@@ -647,6 +736,15 @@ Dragon:
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
 
 90mm:
 	ROF: 50
@@ -671,6 +769,11 @@ Dragon:
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 155mm:
 	ROF: 110
@@ -697,7 +800,12 @@ Dragon:
 			Concrete: 35%
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
-		ImpactSound: expnew09.aud
+		ImpactSound: expnew06.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash2.aud
+		ValidImpactTypes: Water
 
 Hellfire:
 	ROF: 50
@@ -728,6 +836,15 @@ Hellfire:
 	Warhead@2Eff: CreateEffect
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water, Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4EffAir: CreateEffect
+		Explosion: small_twlt
+		ImpactSound: expnew12.aud
+		ValidImpactTypes: Air, AirHit
 
 Bomb:
 	ROF: 10
@@ -751,6 +868,11 @@ Bomb:
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 Proton:
 	ROF: 3
@@ -780,6 +902,11 @@ Proton:
 	Warhead@2Eff: CreateEffect
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash3.aud
+		ValidImpactTypes: Water
 
 HarpyClaw:
 	ROF: 36
@@ -799,7 +926,11 @@ HarpyClaw:
 			Heavy: 25%
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
-		Explosion: piffpiff
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 Pistola:
 	ROF: 20
@@ -819,6 +950,10 @@ Pistola:
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piff
+		ValidImpactTypes: Water
 
 Tiberium:
 	ROF: 16
@@ -875,7 +1010,11 @@ VulcanTower:
 			Heavy: 25%
 			Concrete: 10%
 	Warhead@2Eff: CreateEffect
-		Explosion: piffpiff
+		Explosion: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: water_piffs
+		ValidImpactTypes: Water
 
 RPGTower:
 	ROF: 80
@@ -902,6 +1041,11 @@ RPGTower:
 	Warhead@2Eff: CreateEffect
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: small_watersplash
+		ImpactSound: ssplash2.aud
+		ValidImpactTypes: Water
 
 SAMTower:
 	ROF: 55
