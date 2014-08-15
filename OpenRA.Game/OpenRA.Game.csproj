@@ -255,6 +255,7 @@
     <Compile Include="FileSystem\MixFile.cs" />
     <Compile Include="FileSystem\Pak.cs" />
     <Compile Include="FileSystem\ZipFile.cs" />
+    <Compile Include="FileSystem\BigFile.cs" />
     <Compile Include="Map\PlayerReference.cs" />
     <Compile Include="Map\SmudgeReference.cs" />
     <Compile Include="Map\TileReference.cs" />
