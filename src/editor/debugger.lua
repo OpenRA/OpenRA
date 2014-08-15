@@ -66,50 +66,42 @@ local function trimToMaxLength(...)
   return unpack(t)
 end
 
--- on some Linux versions using wxwidgets 2.9.5 wxListCtrl doesn't report
--- background color even after the color being explicitly set
--- (Linux cipripc 3.13.0-24-generic #47-Ubuntu SMP Fri May 2 23:30:00 UTC 2014 x86_64 GNU/Linux);
--- check if the fix is needed in this case and use stackCtrl color instead.
-local bgcolorfixneeded
-if ide.osname == 'Unix' then
-  local lc, color = wx.wxListCtrl(), wx.wxRED
-  lc:SetBackgroundColour(color)
-  bgcolorfixneeded = lc:GetBackgroundColour():GetAsString() ~= color:GetAsString()
-end
-
 local q = EscapeMagic
 
-local function updateWatchesSync(num)
+local function updateWatchesSync(onlyitem)
   local watchCtrl = debugger.watchCtrl
   local pane = ide.frame.uimgr:GetPane("watchpanel")
   local shown = watchCtrl and (pane:IsOk() and pane:IsShown() or not pane:IsOk() and watchCtrl:IsShown())
   if shown and debugger.server and not debugger.running
   and not debugger.scratchpad and not (debugger.options or {}).noeval then
     local bgcl = watchCtrl:GetBackgroundColour()
-    if bgcolorfixneeded then bgcl = debugger.stackCtrl:GetBackgroundColour() end
     local hicl = wx.wxColour(math.floor(bgcl:Red()*.9),
       math.floor(bgcl:Green()*.9), math.floor(bgcl:Blue()*.9))
-    for idx = 0, watchCtrl:GetItemCount() - 1 do
-      if not num or idx == num then
-        local expression = watchCtrl:GetItemText(idx)
-        local _, values, error = debugger.evaluate(expression)
-        if error then error = error:gsub("%[.-%]:%d+:%s+","")
-        elseif #values == 0 then values = {'nil'} end
 
-        local newval = error and ('error: '..error) or values[1]
-        -- get the current value from a list item
-        do local litem = wx.wxListItem()
-          litem:SetMask(wx.wxLIST_MASK_TEXT)
-          litem:SetId(idx)
-          litem:SetColumn(1)
-          watchCtrl:GetItem(litem)
-          watchCtrl:SetItemBackgroundColour(idx,
-            watchCtrl:GetItem(litem) and newval ~= litem:GetText()
-            and hicl or bgcl)
-        end
+    local root = watchCtrl:GetRootItem()
+    if not root or not root:IsOk() then return end
 
-        watchCtrl:SetItem(idx, 1, newval)
-      end
+    local curr
+    while true do
+      local item = onlyitem or (curr
+        and watchCtrl:GetNextSibling(curr)
+        or watchCtrl:GetFirstChild(root))
+      if not item:IsOk() then break end
+
+      local expression = watchCtrl:GetItemData(item):GetData()
+      local _, values, error = debugger.evaluate(expression)
+      if error then error = error:gsub("%[.-%]:%d+:%s+","")
+      elseif #values == 0 then values = {'nil'} end
+
+      local newval = expression .. ' = '.. (error and ('error: '..error) or values[1])
+      local val = watchCtrl:GetItemText(item)
+
+      watchCtrl:SetItemBackgroundColour(item, val ~= newval and hicl or bgcl)
+      watchCtrl:SetItemText(item, newval)
+
+      if onlyitem then break end
+
+      curr = item
     end
   end
 end
@@ -220,12 +212,12 @@ local function updateStackAndWatches()
   end
 end
 
-local function updateWatches(num)
+local function updateWatches(item)
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise updateWatchesSync() does nothing.
   if debugger.running then debugger.update() end
   if debugger.server and not debugger.running then
-    copas.addthread(function() updateWatchesSync(num) end)
+    copas.addthread(function() updateWatchesSync(item) end)
   end
 end
 
@@ -958,7 +950,7 @@ local function debuggerCreateStackWindow()
 
   debugger.stackCtrl = stackCtrl
 
-  stackCtrl:AssignImageList(debugger.imglist)
+  stackCtrl:SetImageList(debugger.imglist)
 
   stackCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
@@ -1010,21 +1002,15 @@ local function debuggerCreateStackWindow()
 end
 
 local function debuggerCreateWatchWindow()
-  local watchCtrl = wx.wxListCtrl(ide.frame, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize,
-    wx.wxLC_REPORT + wx.wxLC_EDIT_LABELS)
+  local watchCtrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxSize(width, height),
+    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE
+    + wx.wxTR_HIDE_ROOT + wx.wxTR_EDIT_LABELS)
 
   debugger.watchCtrl = watchCtrl
 
-  local info = wx.wxListItem()
-  info:SetMask(wx.wxLIST_MASK_TEXT + wx.wxLIST_MASK_WIDTH)
-  info:SetText(TR("Expression"))
-  info:SetWidth(width * 0.32)
-  watchCtrl:InsertColumn(0, info)
-
-  info:SetText(TR("Value"))
-  info:SetWidth(width * 0.56)
-  watchCtrl:InsertColumn(1, info)
+  local root = watchCtrl:AddRoot("Watch")
+  watchCtrl:SetImageList(debugger.imglist)
 
   local watchMenu = wx.wxMenu {
     { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
@@ -1032,62 +1018,64 @@ local function debuggerCreateWatchWindow()
     { ID_DELETEWATCH, TR("&Delete Watch")..KSC(ID_DELETEWATCH) },
   }
 
-  local function findSelectedWatchItem()
-    local count = watchCtrl:GetSelectedItemCount()
-    if count > 0 then
-      for idx = 0, watchCtrl:GetItemCount() - 1 do
-        if watchCtrl:GetItemState(idx, wx.wxLIST_STATE_FOCUSED) ~= 0 then
-          return idx
-        end
-      end
-    end
-    return -1
-  end
-
   local defaultExpr = ""
-  local function addWatch()
-    local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
-    watchCtrl:SetItem(row, 0, defaultExpr)
-    watchCtrl:SetItem(row, 1, TR("Value"))
-    watchCtrl:EditLabel(row)
+
+  function watchCtrl:SetItemExpression(item, expr)
+    local data = wx.wxLuaTreeItemData()
+    data:SetData(expr)
+    self:SetItemData(item, data)
+    self:SetItemText(item, expr .. ' = ?')
+    self:SelectItem(item, true)
+    updateWatches(item)
   end
 
-  local function editWatch()
-    local row = findSelectedWatchItem()
-    if row >= 0 then watchCtrl:EditLabel(row) end
-  end
-
-  local function deleteWatch()
-    local row = findSelectedWatchItem()
-    if row >= 0 then watchCtrl:DeleteItem(row) end
+  function watchCtrl:GetItemExpression(item)
+    local data = self:GetItemData(item)
+    return data and data:GetData() or nil
   end
 
   watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
     function () watchCtrl:PopupMenu(watchMenu) end)
 
-  watchCtrl:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, addWatch)
+  watchCtrl:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function (event) watchCtrl:EditLabel(watchCtrl:AppendItem(root, defaultExpr, 1)) end)
 
-  watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, editWatch)
+  watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function (event) watchCtrl:EditLabel(watchCtrl:GetSelection()) end)
   watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_UPDATE_UI,
-    function (event) event:Enable(watchCtrl:GetSelectedItemCount() > 0) end)
+    function (event) event:Enable(watchCtrl:GetSelection():IsOk()) end)
 
-  watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, deleteWatch)
+  watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function (event) watchCtrl:Delete(watchCtrl:GetSelection()) end)
   watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_UPDATE_UI,
-    function (event) event:Enable(watchCtrl:GetSelectedItemCount() > 0) end)
+    function (event) event:Enable(watchCtrl:GetSelection():IsOk()) end)
 
-  watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
-    function (event) watchCtrl:EditLabel(event:GetIndex()) end)
+  watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
+    function (event) watchCtrl:EditLabel(watchCtrl:GetSelection()) end)
 
-  watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
+  local label
+  watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT,
     function (event)
-      local row = event:GetIndex()
+      local item = event:GetItem()
+      if not item:IsOk() then event:Veto() end
+
+      label = watchCtrl:GetItemText(item)
+      local data = watchCtrl:GetItemData(item)
+      if data then watchCtrl:SetItemText(item, data:GetData()) end
+    end)
+  watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT,
+    function (event)
+      event:Veto()
+
+      local item = event:GetItem()
       if event:IsEditCancelled() then
-        if watchCtrl:GetItemText(row) == defaultExpr then
-          watchCtrl:DeleteItem(row)
+        if watchCtrl:GetItemText(item) == defaultExpr then
+          watchCtrl:Delete(item)
+        else
+          watchCtrl:SetItemText(item, label)
         end
       else
-        watchCtrl:SetItem(row, 0, event:GetText())
-        updateWatches(row)
+        watchCtrl:SetItemExpression(item, event:GetLabel())
       end
       event:Skip()
     end)
@@ -1117,16 +1105,24 @@ function DebuggerAddWatch(watch)
   end
 
   local watchCtrl = debugger.watchCtrl
-  -- check if this expression is already on the list
-  for idx = 0, watchCtrl:GetItemCount() - 1 do
-    if watchCtrl:GetItemText(idx) == watch then return end
+  local root = watchCtrl:GetRootItem()
+  if not root or not root:IsOk() then return end
+
+  local curr
+  while true do
+    local item = (curr
+      and watchCtrl:GetNextSibling(curr)
+      or watchCtrl:GetFirstChild(root))
+    if not item:IsOk() then break end
+    if watchCtrl:GetItemExpression(item) == watch then
+      watchCtrl:SelectItem(item, true)
+      return
+    end
+    curr = item
   end
 
-  local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
-  watchCtrl:SetItem(row, 0, watch)
-  watchCtrl:SetItem(row, 1, TR("Value"))
-
-  updateWatches(row)
+  local item = watchCtrl:AppendItem(root, watch, 1)
+  watchCtrl:SetItemExpression(item, watch)
 end
 
 function DebuggerAttachDefault(options)
