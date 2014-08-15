@@ -23,7 +23,6 @@ namespace OpenRA.Mods.RA.Air
 
 		[Desc("Allow the helicopter turn before landing.")]
 		public readonly bool TurnToLand = false;
-		public readonly WRange LandAltitude = WRange.Zero;
 
 		[Desc("How fast the helicopter ascends or descends.")]
 		public readonly WRange AltitudeVelocity = new WRange(43);
@@ -36,7 +35,6 @@ namespace OpenRA.Mods.RA.Air
 		public HelicopterInfo Info;
 		Actor self;
 		bool firstTick = true;
-		public bool IsMoving { get { return self.CenterPosition.Z > 0; } set { } }
 
 		public Helicopter(ActorInitializer init, HelicopterInfo info)
 			: base(init, info)

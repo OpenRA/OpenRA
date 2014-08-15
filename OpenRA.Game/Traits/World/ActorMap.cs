@@ -123,12 +123,14 @@ namespace OpenRA.Traits
 		}
 
 		// NOTE: can not check aircraft
-		public bool AnyUnitsAt(CPos a, SubCell sub, bool checkTransient = true)
+		public bool AnyUnitsAt(CPos a, SubCell sub, bool checkTransient = true, params Actor[] ignoreActors)
 		{
 			bool always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = influence[a]; i != null; i = i.Next)
 				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
 				{
+					if (ignoreActors.Contains(i.Actor))
+						continue;
 					if (checkTransient)
 						return true;
 					var pos = i.Actor.TraitOrDefault<IPositionable>();
