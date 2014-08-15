@@ -37,7 +37,7 @@ Debian/Ubuntu
 -------------
 
 * mono-dmcs
-* libmono-winforms4.0-cil
+* libmono-system-windows-forms4.0-cil
 * cli-common-dev (>= 2.10)
 * libfreetype6
 * libopenal1
