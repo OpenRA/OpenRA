@@ -411,6 +411,7 @@
     <Compile Include="Player\BaseAttackNotifier.cs" />
     <Compile Include="Player\HarvesterAttackNotifier.cs" />
     <Compile Include="Player\PlayerExperience.cs" />
+    <Compile Include="Player\ProvidesSciencePrerequisite.cs" />
     <Compile Include="InfiltrateForExploration.cs" />
     <Compile Include="InfiltrateForCash.cs" />
     <Compile Include="RenderShroudCircle.cs" />

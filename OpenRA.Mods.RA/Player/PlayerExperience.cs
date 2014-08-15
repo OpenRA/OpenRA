@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 			foreach (var kv in info.ExperienceLevels)
 				nextLevel.Add(Pair.New(kv.Key, kv.Value));
 			/* Init with 0, to advance the first rank, if so defined in player.yaml */
-			//GiveExperience(0);
+			GiveExperience(0);
 		}
 
 		[Sync] public int Experience;
@@ -99,11 +99,11 @@ namespace OpenRA.Mods.RA
 				{
 					GiveSciencePoints(1); //Move to ScienceManager object
 				} else{
-
-					var scienceAdder = Owner.PlayerActor.Trait<ProvidesCustomPrerequisite>();
-					//var experience = self.Info.Traits.Get<ValuedInfo>().Cost;
-					//Somehow add this to the techtree.
-					scienceAdder.ChangePrerequiristic(Owner, science);
+					if(Owner.PlayerActor != null && Owner.PlayerActor.HasTrait<ProvidesSciencePrerequisite>())
+					{
+						var ScienceAdder = Owner.PlayerActor.Trait<ProvidesSciencePrerequisite>();
+						ScienceAdder.AddScience(Owner, science);
+					}
 				}
 			}
 		}
