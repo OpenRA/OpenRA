@@ -40,8 +40,8 @@ Player:
 			2500: sciencerank4, sciencepoint
 			3500: sciencerank5, sciencepoint
 			5000: sciencerank6, sciencepoint
-	ProvidesCustomPrerequisite:
-		Prerequisite: sciencerank1
+	ProvidesSciencePrerequisite:
+		Sciences: sciencerank0
 	ActorGroupProxy:
 	DeveloperMode:
 	PlayerColorPalette:

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	public class ProvidesCustomPrerequisiteInfo : ITraitInfo
 	{
 		[Desc("The prerequisite type that this provides")]
-		public string Prerequisite = null;
+		public readonly string Prerequisite = null;
 
 		[Desc("Only grant this prerequisite when you have these prerequisites")]
 		public readonly string[] RequiresPrerequisites = { };
@@ -61,12 +61,6 @@ namespace OpenRA.Mods.RA
 		{
 			if (info.ResetOnOwnerChange)
 				Update(newOwner, newOwner.Country.Race);
-		}
-
-		public void ChangePrerequiristic(Player owner, string newPrerequisite)
-		{
-			info.Prerequisite = newPrerequisite;
-			owner.PlayerActor.Trait<TechTree>().Update();
 		}
 
 		void Update(Player owner, string race)
