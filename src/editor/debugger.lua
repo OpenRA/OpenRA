@@ -24,6 +24,8 @@ debugger.hostname = ide.config.debugger.hostname or (function()
   return hostname and socket.dns.toip(hostname) and hostname or "localhost"
 end)()
 
+local image = { STACK = 0, LOCAL = 1, UPVALUE = 2 }
+
 do
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16,16)
@@ -129,7 +131,7 @@ local function updateStackSync()
     if not stack or #stack == 0 then
       stackCtrl:DeleteAllItems()
       if err then -- report an error if any
-        stackCtrl:AppendItem(stackCtrl:AddRoot("Stack"), "Error: " .. err, 0)
+        stackCtrl:AppendItem(stackCtrl:AddRoot("Stack"), "Error: " .. err, image.STACK)
       end
       return
     end
@@ -160,7 +162,7 @@ local function updateStackSync()
                           or " (defined in "..call[7]..")"))
 
       -- create the new tree item for this level of the call stack
-      local callitem = stackCtrl:AppendItem(root, text, 0)
+      local callitem = stackCtrl:AppendItem(root, text, image.STACK)
 
       -- register call data to provide stack navigation
       callData[callitem:GetValue()] = { call[2], call[4] }
@@ -176,7 +178,7 @@ local function updateStackSync()
         local text = ("%s = %s%s"):
           format(name, fixUTF8(trimToMaxLength(serialize(value, params))),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
-        local item = stackCtrl:AppendItem(callitem, text, 1)
+        local item = stackCtrl:AppendItem(callitem, text, image.LOCAL)
         if checkIfExpandable(value, item) then
           stackCtrl:SetItemHasChildren(item, true)
         end
@@ -188,7 +190,7 @@ local function updateStackSync()
         local text = ("%s = %s%s"):
           format(name, fixUTF8(trimToMaxLength(serialize(value, params))),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
-        local item = stackCtrl:AppendItem(callitem, text, 2)
+        local item = stackCtrl:AppendItem(callitem, text, image.UPVALUE)
         if checkIfExpandable(value, item) then
           stackCtrl:SetItemHasChildren(item, true)
         end
@@ -1038,7 +1040,7 @@ local function debuggerCreateWatchWindow()
     function () watchCtrl:PopupMenu(watchMenu) end)
 
   watchCtrl:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function (event) watchCtrl:EditLabel(watchCtrl:AppendItem(root, defaultExpr, 1)) end)
+    function (event) watchCtrl:EditLabel(watchCtrl:AppendItem(root, defaultExpr, image.LOCAL)) end)
 
   watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
     function (event) watchCtrl:EditLabel(watchCtrl:GetSelection()) end)
@@ -1121,7 +1123,7 @@ function DebuggerAddWatch(watch)
     curr = item
   end
 
-  local item = watchCtrl:AppendItem(root, watch, 1)
+  local item = watchCtrl:AppendItem(root, watch, image.LOCAL)
   watchCtrl:SetItemExpression(item, watch)
 end
 
