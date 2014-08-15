@@ -65,6 +65,31 @@ Container@SERVER_LOBBY:
 							Text: Ready
 							Align: Left
 							Font: Bold
+				Container@MODIFIERS_LABEL_CONTAINER:
+					X: 25
+					Y: 40
+					Children:
+						Label@LABEL_LOBBY_NAME:
+							X: 0
+							Width: 180
+							Height: 25
+							Text: Name
+							Align: Center
+							Font: Bold
+						Label@LABEL_LOBBY_PROD:
+							X: 180
+							Width: 130
+							Height: 25
+							Text: ProductionTime
+							Align: Center
+							Font: Bold
+						Label@LABEL_LOBBY_INC:
+							X: 380
+							Width: 130
+							Height: 25
+							Text: Income
+							Align: Center
+							Font: Bold
 				Container@PLAYER_BIN_ROOT:
 				DropDownButton@SLOTS_DROPDOWNBUTTON:
 					X: 15
@@ -75,8 +100,15 @@ Container@SERVER_LOBBY:
 				Button@OPTIONS_BUTTON:
 					X: 186
 					Y: 254
-					Width: 125
+					Width: 100
 					Height: 25
+				Button@MODIFIERS_BUTTON:
+					X: 291
+					Y: PARENT_BOTTOM - 291
+					Width: 20
+					Height: 25
+					Font: Bold
+					Text: ...
 				Button@CHANGEMAP_BUTTON:
 					X: 316
 					Y: 254

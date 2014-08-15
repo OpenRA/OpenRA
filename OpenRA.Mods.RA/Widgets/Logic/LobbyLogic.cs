@@ -32,18 +32,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly bool skirmishMode;
 		readonly Ruleset modRules;
 
-		enum PanelType { Players, Options, Kick, ForceStart }
+		enum PanelType { Players, Options, Kick, ForceStart, PlayerModifiers }
 		PanelType panel = PanelType.Players;
 
 		Widget lobby;
 
 		Widget editablePlayerTemplate, nonEditablePlayerTemplate, emptySlotTemplate,
-			editableSpectatorTemplate, nonEditableSpectatorTemplate, newSpectatorTemplate;
+			editableSpectatorTemplate, nonEditableSpectatorTemplate, newSpectatorTemplate,
+			editableModifiersTemplate, nonEditableModifiersTemplate;
 
 		ScrollPanelWidget chatPanel;
 		Widget chatTemplate;
 
 		ScrollPanelWidget players;
+		ScrollPanelWidget playersMods;
 		Dictionary<string, string> countryNames;
 
 		ColorPreviewManagerWidget colorPreview;
@@ -81,6 +83,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			Game.LobbyInfoChanged -= UpdateCurrentMap;
 			Game.LobbyInfoChanged -= UpdatePlayerList;
+			Game.LobbyInfoChanged -= UpdateModifiersPlayerList;
 			Game.BeforeGameStart -= OnGameStart;
 			Game.AddChatLine -= AddChatLine;
 			Game.ConnectionStateChanged -= ConnectionStateChanged;
@@ -101,6 +104,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;
+			Game.LobbyInfoChanged += UpdateModifiersPlayerList;
 			Game.BeforeGameStart += OnGameStart;
 			Game.AddChatLine += AddChatLine;
 			Game.ConnectionStateChanged += ConnectionStateChanged;
@@ -131,6 +135,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			newSpectatorTemplate = players.Get("TEMPLATE_NEW_SPECTATOR");
 			colorPreview = lobby.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = Game.Settings.Player.Color;
+
+			var playerModsBinHeaders = lobby.GetOrNull<ContainerWidget>("MODIFIERS_LABEL_CONTAINER");
+			if (playerModsBinHeaders != null)
+				playerModsBinHeaders.IsVisible = () => panel == PanelType.PlayerModifiers;
+
+			playersMods = Ui.LoadWidget<ScrollPanelWidget>("LOBBY_PLAYERMODIFIERS_BIN", lobby.Get("PLAYER_BIN_ROOT"), new WidgetArgs());
+			playersMods.IsVisible = () => panel == PanelType.PlayerModifiers;
+
+			editableModifiersTemplate = playersMods.Get("TEMPLATE_EDITABLE_PLAYER_MODIFIERS");
+			nonEditableModifiersTemplate = playersMods.Get("TEMPLATE_NONEDITABLE_PLAYER_MODIFIERS");
 
 			countryNames = modRules.Actors["world"].Traits.WithInterface<CountryInfo>()
 				.Where(c => c.Selectable)
@@ -265,6 +279,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			optionsButton.IsDisabled = () => Map.RuleStatus != MapRuleStatus.Cached || panel == PanelType.Kick || panel == PanelType.ForceStart;
 			optionsButton.GetText = () => panel == PanelType.Options ? "Players" : "Options";
 			optionsButton.OnClick = () => panel = (panel == PanelType.Options) ? PanelType.Players : PanelType.Options;
+
+			var modifiersButton = lobby.Get<ButtonWidget>("MODIFIERS_BUTTON");
+			modifiersButton.IsDisabled = () =>  panel == PanelType.Options || panel == PanelType.Kick || panel == PanelType.ForceStart;
+			modifiersButton.GetText = () => panel != PanelType.Players ? ".o." : "...";
+			modifiersButton.OnClick = () => panel = (panel != PanelType.Players) ? PanelType.Players : PanelType.PlayerModifiers;
 
 			// Force start panel
 			Action startGame = () =>
@@ -763,6 +782,57 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			while (players.Children.Count > idx)
 				players.RemoveChild(players.Children[idx]);
+		}
+
+		void UpdateModifiersPlayerList()
+		{
+			var idx = 0;
+			foreach (var kv in orderManager.LobbyInfo.Slots)
+			{
+				var key = kv.Key;
+				var slot = kv.Value;
+				var client = orderManager.LobbyInfo.ClientInSlot(key);
+				Widget template = null;
+
+				// get template for possible reuse
+				if (idx < playersMods.Children.Count)
+					template = playersMods.Children[idx];
+
+				if (client == null)
+				{
+					// Empty slot
+					if (template == null)
+						template = emptySlotTemplate.Clone();
+				}
+				else if (Game.IsHost)
+				{
+					// Editable player in slot
+					template = editableModifiersTemplate.Clone();
+					LobbyUtils.SetupNameWidget(template, slot, client);
+					LobbyUtils.SetupEditableProdModWidget(template, client, orderManager);
+					LobbyUtils.SetupEditableIncModWidget(template, client, orderManager);
+				}
+				else
+				{
+					// Non-editable player in slot
+					template = nonEditableModifiersTemplate.Clone();
+					LobbyUtils.SetupNameWidget(template, slot, client);
+					LobbyUtils.SetupProdModWidget(template, client);
+					LobbyUtils.SetupIncModWidget(template, client);
+				}
+
+				template.IsVisible = () => panel == PanelType.PlayerModifiers;
+
+				if (idx >= playersMods.Children.Count)
+					playersMods.AddChild(template);
+				else
+					playersMods.ReplaceChild(playersMods.Children[idx], template);
+
+				idx++;
+			}
+
+			while (playersMods.Children.Count > idx)
+				playersMods.RemoveChild(playersMods.Children[idx]);
 		}
 
 		void OnGameStart()
