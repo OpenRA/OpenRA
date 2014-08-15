@@ -467,6 +467,8 @@ Rules:
 			EarlyGameOver: true
 	^Infantry:
 		MustBeDestroyed:
+	^Vehicle:
+		MustBeDestroyed:
 	PROC:
 		Buildable:
 			Prerequisites: ~disabled

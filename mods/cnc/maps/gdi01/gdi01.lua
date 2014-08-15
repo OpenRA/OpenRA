@@ -3,9 +3,7 @@ VehicleReinforcements = { "jeep" }
 NodPatrol = { "e1", "e1" }
 
 SendNodPatrol = function()
-	Utils.Do(NodPatrol, function(type)
-		local soldier = Actor.Create(type, true, { Location = nod0.Location, Owner = enemy })
-		soldier.Move(nod1.Location)
+	Reinforcements.Reinforce(enemy, NodPatrol, { nod0.Location, nod1.Location }, 15, function(soldier)
 		soldier.AttackMove(nod2.Location)
 		soldier.Move(nod3.Location)
 		soldier.Hunt()
@@ -17,21 +15,27 @@ SetGunboatPath = function(gunboat)
 	gunboat.AttackMove(gunboatRight.Location)
 end
 
-ReinforceFromSea = function(passengers)
-	local transport = Actor.Create("oldlst", true, { Location = lstStart.Location, Owner = player })
+Reinforce = function(units)
+	Media.PlaySpeechNotification(player, "Reinforce")
+	Reinforcements.ReinforceWithTransport(player, "oldlst", units, { lstStart.Location, lstEnd.Location }, { lstStart.Location })
+end
 
-	Utils.Do(passengers, function(actorType)
-		local passenger = Actor.Create(actorType, false, { Owner = player })
-		transport.LoadPassenger(passenger)
+triggerAdded = false
+CheckForBase = function()
+	baseBuildings = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
+		return actor.Type == "fact" or actor.Type == "pyle" or actor.Type == "nuke"
 	end)
 
-	transport.Move(lstEnd.Location)
-	transport.UnloadPassengers()
-	transport.Wait(50)
-	transport.Move(lstStart.Location)
-	transport.Destroy()
+	Utils.Do(baseBuildings, function(building)
+		if not triggerAdded and building.Type == "fact" then
+			Trigger.OnRemovedFromWorld(building, function()
+				player.MarkFailedObjective(gdiObjective2)
+			end)
+			triggerAdded = true
+		end
+	end)
 
-	Media.PlaySpeechNotification(player, "Reinforce")
+	return #baseBuildings >= 3
 end
 
 WorldLoaded = function()
@@ -40,7 +44,12 @@ WorldLoaded = function()
 	player = Player.GetPlayer("GDI")
 	enemy = Player.GetPlayer("Nod")
 
-	gdiObjective = player.AddPrimaryObjective("Destroy all Nod forces in the area!")
+	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")
+	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
+	gdiObjective2 = player.AddSecondaryObjective("Establish a beachhead")
+
+	Trigger.OnObjectiveCompleted(player, function() Media.DisplayMessage("Objective completed") end)
+	Trigger.OnObjectiveFailed(player, function() Media.DisplayMessage("Objective failed") end)
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
@@ -60,18 +69,26 @@ WorldLoaded = function()
 
 	SendNodPatrol()
 
-	Trigger.AfterDelay(25 * 5, function() ReinforceFromSea(InfantryReinforcements) end)
-	Trigger.AfterDelay(25 * 15, function() ReinforceFromSea(InfantryReinforcements) end)
-	Trigger.AfterDelay(25 * 30, function() ReinforceFromSea(VehicleReinforcements) end)
-	Trigger.AfterDelay(25 * 60, function() ReinforceFromSea(VehicleReinforcements) end)
+	Trigger.AfterDelay(Utils.Seconds(5), function() Reinforce(InfantryReinforcements) end)
+	Trigger.AfterDelay(Utils.Seconds(15), function() Reinforce(InfantryReinforcements) end)
+	Trigger.AfterDelay(Utils.Seconds(30), function() Reinforce(VehicleReinforcements) end)
+	Trigger.AfterDelay(Utils.Seconds(60), function() Reinforce(VehicleReinforcements) end)
 end
 
+tick = 0
+baseEstablished = false
 Tick = function()
+	tick = tick + 1
 	if enemy.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(gdiObjective)
+		player.MarkCompletedObjective(gdiObjective1)
 	end
 
 	if player.HasNoRequiredUnits() then
-		player.MarkFailedObjective(gdiObjective)
+		enemy.MarkCompletedObjective(nodObjective)
+	end
+
+	if not baseEstablished and tick % Utils.Seconds(1) == 0 and CheckForBase() then
+		baseEstablished = true
+		player.MarkCompletedObjective(gdiObjective2)
 	end
 end
