@@ -28,15 +28,18 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Returns a table of all actors within the requested region, filtered using the specified function.")]
-		public LuaTable ActorsInCircle(WPos location, WRange radius, LuaFunction filter)
+		public LuaTable ActorsInCircle(WPos location, WRange radius, LuaFunction filter = null)
 		{
 			var actors = context.World.FindActorsInCircle(location, radius)
-				.Select(a => a.ToLuaValue(context))
-				.Where(a => 
+				.Select(a => a.ToLuaValue(context));
+
+			if (filter != null)
+				actors = actors.Where(a =>
 				{
 					using (var f = filter.Call(a))
 						return f.First().ToBoolean();
 				});
+
 			return actors.ToLuaTable(context);
 		}
 
@@ -72,7 +75,11 @@ namespace OpenRA.Mods.RA.Scripting
 		public Actor NamedActor(string actorName)
 		{
 			Actor ret;
+
 			if (!sma.Actors.TryGetValue(actorName, out ret))
+				return null;
+
+			if (ret.Destroyed)
 				return null;
 
 			return ret;

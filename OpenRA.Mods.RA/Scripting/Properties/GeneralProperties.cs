@@ -56,6 +56,9 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("The player that owns the actor.")]
 		public Player Owner { get { return self.Owner; } }
 
+		[Desc("The type of the actor (e.g. \"e1\").")]
+		public string Type { get { return self.Info.Name; } }
+
 		[Desc("The direction that the actor is facing.")]
 		public int Facing
 		{
