@@ -127,11 +127,6 @@ namespace OpenRA.Network
 						else
 						{
 							orderManager.Connection.DisableSend = false;
-							if (orderManager.world != null)
-							{
-								orderManager.world.Paused = false;
-								orderManager.world.PredictedPaused = false;
-							}
 							Game.IsSimulating = false;
 						}
 						break;

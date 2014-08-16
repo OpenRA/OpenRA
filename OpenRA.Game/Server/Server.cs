@@ -95,7 +95,10 @@ namespace OpenRA.Server
 				if (Settings.Replay.ReplayDone)
 				{
 					foreach (var c in Conns.ToArray())
+					{
 						SendOrderTo(c, "SendPermission", "Enable");
+						SendOrderTo(c, "PauseGame", "UnPause");
+					}
 					Settings.Replay = null;
 					return;
 				}

@@ -37,12 +37,26 @@ namespace OpenRA.Server
 		public readonly ReplayMetadata Info;
 		public readonly Dictionary<int, int> IndexConverter;
 
+		bool CheckIgnore(byte[] ignore, byte[] packet)
+		{
+			if (ignore.Length == packet.Length - 4)
+				for (var i = 4; i < packet.Length; i++)
+				{
+					if (ignore[i - 4] != packet[i])
+						return false;
+				}
+			else
+				return false;
+			return true;
+		}
+
 		public ReplayViewer(string replayFilename)
 		{
 			Info = ReplayMetadata.Read(replayFilename);
 			IndexConverter = new Dictionary<int, int>();
 			Info.GameInfo.Players.Do(p => IndexConverter.Add(p.ClientIndex, p.ClientIndex));
-
+			var ignore = new ServerOrder("SendPermission", "Enable").Serialize();
+			
 			var lastChunk = new Chunk();
 
 			// Parse replay data into a struct that can be fed to the game in chunks
@@ -59,6 +73,9 @@ namespace OpenRA.Server
 					var packetLen = rs.ReadInt32();
 					var packet = rs.ReadBytes(packetLen);
 					var frame = BitConverter.ToInt32(packet, 0);
+
+					if (CheckIgnore(ignore, packet))
+						continue;
 
 					if (chunks.Any() && chunk.Packets.Any(p2 => p2.First == client))
 					{
