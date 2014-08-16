@@ -153,8 +153,10 @@ namespace OpenRA.Mods.RA
 			{
 				Weapon = Weapon,
 				Facing = legacyFacing,
+
+				// TODO: Convert to ints
 				FirepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
-					.Select(a => a.GetFirepowerModifier())
+					.Select(a => a.GetFirepowerModifier() / 100f)
 					.Product(),
 
 				Source = muzzlePosition,

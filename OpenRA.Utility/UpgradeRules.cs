@@ -26,6 +26,12 @@ namespace OpenRA.Utility
 			input = "{0}c{1}".F(cells, subcells);
 		}
 
+		static void ConvertFloatArrayToPercentArray(ref string input)
+		{
+			input = string.Join(", ", input.Split(',')
+				.Select(s => ((int)(float.Parse(s) * 100)).ToString()));
+		}
+
 		static void ConvertPxToRange(ref string input)
 		{
 			ConvertPxToRange(ref input, 1, 1);
@@ -400,6 +406,34 @@ namespace OpenRA.Utility
 						node.Key = "RequiresUpgrade";
 						node.Value.Value = "cloak";
 					}
+				}
+
+				// Modifiers were changed to integer percentages
+				if (engineVersion < 20140812)
+				{
+					if (depth == 2 && node.Key == "ClosedDamageMultiplier" && parentKey == "AttackPopupTurreted")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+
+					if (depth == 2 && node.Key == "ArmorModifier" && parentKey == "GainsStatUpgrades")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+
+					if (depth == 2 && node.Key == "FullyLoadedSpeed" && parentKey == "Harvester")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+
+					if (depth == 2 && node.Key == "PanicSpeedModifier" && parentKey == "ScaredyCat")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+
+					if (depth == 2 && node.Key == "ProneSpeed" && parentKey == "TakeCover")
+					{
+						node.Key = "SpeedModifier";
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+					}
+
+					if (depth == 2 && node.Key == "SpeedModifier" && parentKey == "GainsStatUpgrades")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+
+					if (depth == 2 && node.Key == "FirepowerModifier" && parentKey == "GainsStatUpgrades")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

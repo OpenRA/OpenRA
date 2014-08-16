@@ -203,10 +203,9 @@ namespace OpenRA.Mods.RA.Air
 		{
 			get
 			{
-				decimal ret = info.Speed;
-				foreach (var t in self.TraitsImplementing<ISpeedModifier>())
-					ret *= t.GetSpeedModifier();
-				return (int)ret;
+				var modifiers = self.TraitsImplementing<ISpeedModifier>()
+					.Select(m => m.GetSpeedModifier());
+				return Util.ApplyPercentageModifiers(info.Speed, modifiers);
 			}
 		}
 

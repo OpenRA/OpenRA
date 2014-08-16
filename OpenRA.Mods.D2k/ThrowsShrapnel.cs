@@ -48,8 +48,10 @@ namespace OpenRA.Mods.D2k
 					{
 						Weapon = wep,
 						Facing = self.World.SharedRandom.Next(-1, 255),
+
+						// TODO: Convert to ints
 						FirepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
-							.Select(a => a.GetFirepowerModifier())
+							.Select(a => a.GetFirepowerModifier() / 100f)
 							.Product(),
 
 						Source = self.CenterPosition,

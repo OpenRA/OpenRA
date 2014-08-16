@@ -487,13 +487,15 @@ namespace OpenRA.Mods.RA.Move
 			if (index == -1)
 				return 0;
 
+			// TODO: Convert to integers
 			var speed = Info.TilesetTerrainInfo[self.World.TileSet][index].Speed;
 			if (speed == decimal.Zero)
 				return 0;
 
 			speed *= Info.Speed;
 			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
-				speed *= t.GetSpeedModifier();
+				speed *= t.GetSpeedModifier() / 100m;
+
 			return (int)(speed / 100);
 		}
 
