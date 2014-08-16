@@ -19,7 +19,7 @@ namespace OpenRA.GameRules
 	public abstract class Warhead
 	{
 		[Desc("What types of targets are affected.")]
-		public readonly string[] ValidTargets = { "Air", "Ground", "Water" };
+		public readonly string[] ValidTargets = { "Ground", "Water" };
 
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly string[] InvalidTargets = { };
@@ -29,7 +29,7 @@ namespace OpenRA.GameRules
 
 		public abstract void DoImpact(Target target, Actor firedBy, float firepowerModifier);
 
-		public abstract float EffectivenessAgainst(ActorInfo ai);
+		public virtual float EffectivenessAgainst(ActorInfo ai) { return 0f; }
 
 		public bool IsValidAgainst(Target target, World world, Actor firedBy)
 		{
@@ -58,6 +58,10 @@ namespace OpenRA.GameRules
 
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
+			// If this warhead is ineffective against the target, then it is not a valid target
+			if (EffectivenessAgainst(victim.Info) <= 0f)
+				return false;
+
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
 			return InTargetList(victim, firedBy, ValidTargets) &&
 				!InTargetList(victim, firedBy, InvalidTargets);
@@ -79,6 +83,10 @@ namespace OpenRA.GameRules
 
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
+			// If this warhead is ineffective against the target, then it is not a valid target
+			if (EffectivenessAgainst(victim.Info) <= 0f)
+				return false;
+
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
 			return InTargetList(victim, firedBy, ValidTargets) &&
 				!InTargetList(victim, firedBy, InvalidTargets);

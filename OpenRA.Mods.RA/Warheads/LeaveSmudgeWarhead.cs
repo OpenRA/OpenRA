@@ -52,7 +52,5 @@ namespace OpenRA.Mods.RA
 				smudgeLayer.AddSmudge(sc);
 			}
 		}
-
-		public override float EffectivenessAgainst(ActorInfo ai) { return 1f; }
 	}
 }

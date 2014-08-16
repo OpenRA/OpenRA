@@ -41,7 +41,5 @@ namespace OpenRA.Mods.RA
 			foreach (var cell in allCells)
 				resLayer.Destroy(cell);
 		}
-
-		public override float EffectivenessAgainst(ActorInfo ai) { return 1f; }
 	}
 }
