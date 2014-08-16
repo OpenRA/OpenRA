@@ -1022,20 +1022,21 @@ local function debuggerCreateWatchWindow()
   }
 
   local defaultExpr = ""
+  local expressions = {} -- table to keep track of expressions
 
   function watchCtrl:SetItemExpression(item, expr, value)
-    local data = wx.wxLuaTreeItemData()
-    data:SetData(expr)
-    self:SetItemData(item, data)
+    expressions[item:GetValue()] = expr
     self:SetItemText(item, expr .. ' = ' .. (value or '?'))
     self:SelectItem(item, true)
     if not value then updateWatches(item) end
   end
 
   function watchCtrl:GetItemExpression(item)
-    local data = self:GetItemData(item)
-    return data and data:GetData() or nil
+    return expressions[item:GetValue()]
   end
+
+  watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_DELETE_ITEM,
+    function (event) expressions[event:GetItem():GetValue()] = nil end)
 
   watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
     function () watchCtrl:PopupMenu(watchMenu) end)
