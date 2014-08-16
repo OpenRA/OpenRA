@@ -179,6 +179,7 @@ ServerTraits:
 	LobbyCommands
 	PlayerPinger
 	MasterServerPinger
+	LobbySettingsNotification
 
 LobbyDefaults:
 	AllowCheats: true
