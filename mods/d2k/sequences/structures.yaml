@@ -696,6 +696,7 @@ lighta:
 	idle-top: DATA
 		Start: 2674
 		Offset: -48,64
+		ZOffset: 1023
 	damaged-idle-top: DATA
 		Start: 2675
 		Offset: -48,64
@@ -1093,6 +1094,7 @@ lighth:
 	idle-top: DATA
 		Start: 2834
 		Offset: -48,64
+		ZOffset: 1023
 	damaged-idle-top: DATA
 		Start: 2835
 		Offset: -48,64
@@ -1483,6 +1485,7 @@ lighto:
 	idle-top: DATA
 		Start: 2994
 		Offset: -48,64
+		ZOffset: 1023
 	damaged-idle-top: DATA
 		Start: 2995
 		Offset: -48,64
