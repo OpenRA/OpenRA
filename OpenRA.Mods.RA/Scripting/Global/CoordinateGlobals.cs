@@ -57,4 +57,13 @@ namespace OpenRA.Scripting
 		[Desc("The world zero-vector.")]
 		public WVec Zero { get { return WVec.Zero; } }
 	}
+
+	[ScriptGlobal("WRange")]
+	public class WRangeGlobal : ScriptGlobal
+	{
+		public WRangeGlobal(ScriptContext context) : base(context) { }
+
+		[Desc("Create a new WRange.")]
+		public WRange New(int r) { return new WRange(r); }
+	}
 }

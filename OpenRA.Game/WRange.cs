@@ -10,6 +10,9 @@
 
 using System;
 using System.Linq;
+using Eluant;
+using Eluant.ObjectBinding;
+using OpenRA.Scripting;
 using OpenRA.Support;
 
 namespace OpenRA
@@ -17,7 +20,7 @@ namespace OpenRA
 	/// <summary>
 	/// 1d world distance - 1024 units = 1 cell.
 	/// </summary>
-	public struct WRange : IComparable, IComparable<WRange>, IEquatable<WRange>
+	public struct WRange : IComparable, IComparable<WRange>, IEquatable<WRange>, IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding
 	{
 		public readonly int Range;
 
@@ -94,5 +97,53 @@ namespace OpenRA
 		public int CompareTo(WRange other) { return Range.CompareTo(other.Range); }
 
 		public override string ToString() { return Range.ToString(); }
+
+		#region Scripting interface
+		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			WRange a;
+			WRange b;
+			if (!left.TryGetClrValue<WRange>(out a) || !right.TryGetClrValue<WRange>(out b))
+				throw new LuaException("Attempted to call WRange.Add(WRange, WRange) with invalid arguments.");
+
+			return new LuaCustomClrObject(a + b);
+		}
+
+		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			WRange a;
+			WRange b;
+			if (!left.TryGetClrValue<WRange>(out a) || !right.TryGetClrValue<WRange>(out b))
+				throw new LuaException("Attempted to call WRange.Subtract(WRange, WRange) with invalid arguments.");
+
+			return new LuaCustomClrObject(a - b);
+		}
+
+		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			WRange a;
+			WRange b;
+			if (!left.TryGetClrValue<WRange>(out a) || !right.TryGetClrValue<WRange>(out b))
+				throw new LuaException("Attempted to call WRange.Equals(WRange, WRange) with invalid arguments.");
+
+			return a == b;
+		}
+
+		public LuaValue this[LuaRuntime runtime, LuaValue key]
+		{
+			get
+			{
+				switch (key.ToString())
+				{
+					case "Range": return Range;
+					default: throw new LuaException("WPos does not define a member '{0}'".F(key));
+				}
+			}
+			set
+			{
+				throw new LuaException("WRange is read-only. Use WRange.New to create a new value");
+			}
+		}
+		#endregion
 	}
 }
