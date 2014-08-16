@@ -207,6 +207,8 @@ SONIC:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Prerequisites: ~gaweap, gatech
+	Targetable:
+		TargetTypes: Ground, Vehicle, Repair, Disruptor
 	Mobile:
 		ROT: 4
 		Speed: 56
