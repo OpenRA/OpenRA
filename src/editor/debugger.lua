@@ -83,11 +83,8 @@ local function updateWatchesSync(onlyitem)
     local root = watchCtrl:GetRootItem()
     if not root or not root:IsOk() then return end
 
-    local curr
+    local item = onlyitem or watchCtrl:GetFirstChild(root)
     while true do
-      local item = onlyitem or (curr
-        and watchCtrl:GetNextSibling(curr)
-        or watchCtrl:GetFirstChild(root))
       if not item:IsOk() then break end
 
       local expression = watchCtrl:GetItemExpression(item)
@@ -104,7 +101,7 @@ local function updateWatchesSync(onlyitem)
       end
 
       if onlyitem then break end
-      curr = item
+      item = watchCtrl:GetNextSibling(item)
     end
   end
 end
