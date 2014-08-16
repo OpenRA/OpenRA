@@ -725,6 +725,8 @@ SONIC:
 	Armament:
 		Weapon: SonicZap
 		LocalOffset: -50,0,410
+	TargetableUnit:
+		TargetTypes: Ground, Disruptor
 	AttackTurreted:
 	Turreted:
 		ROT: 5
