@@ -90,19 +90,20 @@ local function updateWatchesSync(onlyitem)
         or watchCtrl:GetFirstChild(root))
       if not item:IsOk() then break end
 
-      local expression = watchCtrl:GetItemData(item):GetData()
-      local _, values, error = debugger.evaluate(expression)
-      if error then error = error:gsub("%[.-%]:%d+:%s+","")
-      elseif #values == 0 then values = {'nil'} end
+      local expression = watchCtrl:GetItemExpression(item)
+      if expression then
+        local _, values, error = debugger.evaluate(expression)
+        if error then error = error:gsub("%[.-%]:%d+:%s+","")
+        elseif #values == 0 then values = {'nil'} end
 
-      local newval = expression .. ' = '.. (error and ('error: '..error) or values[1])
-      local val = watchCtrl:GetItemText(item)
+        local newval = expression .. ' = '.. (error and ('error: '..error) or values[1])
+        local val = watchCtrl:GetItemText(item)
 
-      watchCtrl:SetItemBackgroundColour(item, val ~= newval and hicl or bgcl)
-      watchCtrl:SetItemText(item, newval)
+        watchCtrl:SetItemBackgroundColour(item, val ~= newval and hicl or bgcl)
+        watchCtrl:SetItemText(item, newval)
+      end
 
       if onlyitem then break end
-
       curr = item
     end
   end
@@ -1022,13 +1023,13 @@ local function debuggerCreateWatchWindow()
 
   local defaultExpr = ""
 
-  function watchCtrl:SetItemExpression(item, expr)
+  function watchCtrl:SetItemExpression(item, expr, value)
     local data = wx.wxLuaTreeItemData()
     data:SetData(expr)
     self:SetItemData(item, data)
-    self:SetItemText(item, expr .. ' = ?')
+    self:SetItemText(item, expr .. ' = ' .. (value or '?'))
     self:SelectItem(item, true)
-    updateWatches(item)
+    if not value then updateWatches(item) end
   end
 
   function watchCtrl:GetItemExpression(item)
@@ -1062,8 +1063,8 @@ local function debuggerCreateWatchWindow()
       if not item:IsOk() then event:Veto() end
 
       label = watchCtrl:GetItemText(item)
-      local data = watchCtrl:GetItemData(item)
-      if data then watchCtrl:SetItemText(item, data:GetData()) end
+      local expr = watchCtrl:GetItemExpression(item)
+      if expr then watchCtrl:SetItemText(item, expr) end
     end)
   watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT,
     function (event)
@@ -1097,35 +1098,6 @@ debuggerCreateWatchWindow()
 -- public api
 
 DebuggerRefreshPanels = updateStackAndWatches
-
-function DebuggerAddWatch(watch)
-  local mgr = ide.frame.uimgr
-  local pane = mgr:GetPane("watchpanel")
-  if (pane:IsOk() and not pane:IsShown()) then
-    pane:Show()
-    mgr:Update()
-  end
-
-  local watchCtrl = debugger.watchCtrl
-  local root = watchCtrl:GetRootItem()
-  if not root or not root:IsOk() then return end
-
-  local curr
-  while true do
-    local item = (curr
-      and watchCtrl:GetNextSibling(curr)
-      or watchCtrl:GetFirstChild(root))
-    if not item:IsOk() then break end
-    if watchCtrl:GetItemExpression(item) == watch then
-      watchCtrl:SelectItem(item, true)
-      return
-    end
-    curr = item
-  end
-
-  local item = watchCtrl:AppendItem(root, watch, image.LOCAL)
-  watchCtrl:SetItemExpression(item, watch)
-end
 
 function DebuggerAttachDefault(options)
   debugger.options = options
