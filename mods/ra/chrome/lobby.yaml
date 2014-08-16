@@ -77,6 +77,13 @@ Background@SERVER_LOBBY:
 			Height: 25
 			Font: Bold
 			Text: Game Options
+		Button@LOAD_BUTTON:
+			X: 194
+			Y: PARENT_BOTTOM - 291
+			Width: 135
+			Height: 25
+			Text: Load
+			Font: Bold
 		Button@CHANGEMAP_BUTTON:
 			X: 336
 			Y: PARENT_BOTTOM - 291

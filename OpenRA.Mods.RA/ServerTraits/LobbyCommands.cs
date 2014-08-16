@@ -328,6 +328,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						server.LobbyInfo.GlobalSettings.Map = s;
+						server.Settings.Replay = null;
 
 						var oldSlots = server.LobbyInfo.Slots.Keys.ToArray();
 						LoadMap(server);
