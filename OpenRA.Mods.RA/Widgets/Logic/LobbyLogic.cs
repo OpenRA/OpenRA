@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						orderManager.IssueOrder(Order.Command("load " + save.FilePath));
 						Game.Settings.Server.Map = save.GameInfo.MapUid;
-						Game.Settings.Server.Replay = new OpenRA.Server.ReplayViewer(save.FilePath);
+						Game.Settings.Server.Replay = new OpenRA.Server.ReplayViewer(save.FilePath, true);
 						Game.Settings.Save();
 					});
 

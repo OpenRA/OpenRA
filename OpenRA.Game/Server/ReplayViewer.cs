@@ -27,35 +27,30 @@ namespace OpenRA.Server
 		}
 
 		Queue<Chunk> chunks = new Queue<Chunk>();
-		int ordersFrame;
 
 		public bool ReplayDone { get { return chunks.Count == 0 && IsValid; } }
 		public ConnectionState ConnectionState { get { return ConnectionState.Connected; } }
+
 		public readonly int TickCount;
 		public readonly bool IsValid;
 		public readonly Session LobbyInfo;
 		public readonly ReplayMetadata Info;
 		public readonly Dictionary<int, int> IndexConverter;
+		public readonly bool Resume;
 
-		bool CheckIgnore(byte[] ignore, byte[] packet)
-		{
-			if (ignore.Length == packet.Length - 4)
-				for (var i = 4; i < packet.Length; i++)
-				{
-					if (ignore[i - 4] != packet[i])
-						return false;
-				}
-			else
-				return false;
-			return true;
-		}
-
-		public ReplayViewer(string replayFilename)
+		public ReplayViewer(string replayFilename, bool resume)
 		{
 			Info = ReplayMetadata.Read(replayFilename);
 			IndexConverter = new Dictionary<int, int>();
 			Info.GameInfo.Players.Do(p => IndexConverter.Add(p.ClientIndex, p.ClientIndex));
-			var ignore = new ServerOrder("SendPermission", "Enable").Serialize();
+			Resume = resume;
+
+			var ignore = new byte[][] {
+				new ServerOrder("SendPermission", "Enable").Serialize(),
+				new ServerOrder("SendPermission", "DisableSim").Serialize(),
+				new ServerOrder("SendPermission", "DisableNoSim").Serialize() };
+
+			var clients = new List<int>();
 			
 			var lastChunk = new Chunk();
 
@@ -70,12 +65,14 @@ namespace OpenRA.Server
 					var client = rs.ReadInt32();
 					if (client == ReplayMetadata.MetaStartMarker)
 						break;
+					if (!clients.Contains(client))
+						clients.Add(client);
 					var packetLen = rs.ReadInt32();
 					var packet = rs.ReadBytes(packetLen);
 					var frame = BitConverter.ToInt32(packet, 0);
 
-					if (CheckIgnore(ignore, packet))
-						continue;
+					foreach (var i in ignore)
+						packet = CheckIgnore(i, packet);
 
 					if (chunks.Any() && chunk.Packets.Any(p2 => p2.First == client))
 					{
@@ -88,10 +85,7 @@ namespace OpenRA.Server
 							Buffer.BlockCopy(packet, 4, newpacket, 0, newpacket.Length);
 
 							chunk.Packets.Remove(packet2);
-							var array = new byte[packet2.Second.Length + newpacket.Length];
-							Buffer.BlockCopy(packet2.Second, 0, array, 0, packet2.Second.Length);
-							Buffer.BlockCopy(newpacket, 0, array, packet2.Second.Length, newpacket.Length);
-							chunk.Packets.Add(Pair.New(client, array));
+							chunk.Packets.Add(Pair.New(client, sumArrays(packet2.Second, newpacket)));
 						}
 						else
 							chunk.Packets.Add(Pair.New(client, packet));
@@ -130,10 +124,71 @@ namespace OpenRA.Server
 				}
 			}
 
-			//Remove last ping of replay since we will be sending an order instead
-			lastChunk.Packets.Remove(lastChunk.Packets.First(p => BitConverter.ToInt32(p.Second, 0) == lastChunk.Frame));
+			if (Resume)
+			{
+				//Remove last ping of replay since the ping will come from the client
+				lastChunk.Packets.Remove(lastChunk.Packets.First(p => BitConverter.ToInt32(p.Second, 0) == lastChunk.Frame));
+
+				var newPackets = new List<Pair<int, byte[]>>();
+				var extraOrders = BitConverter.GetBytes(0);
+				extraOrders = sumArrays(extraOrders, new ServerOrder("SendPermission", "Enable").Serialize());
+				extraOrders = sumArrays(extraOrders, new ServerOrder("PauseGame", "UnPause").Serialize());
+
+				clients.Do(c =>
+				{
+					newPackets.Add(new Pair<int, byte[]>(c, extraOrders));
+				});
+
+				newPackets.Do(p => lastChunk.Packets.Add(p));
+			}
+
 			chunks.Enqueue(lastChunk);
-			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency;
+		}
+
+		byte[] CheckIgnore(byte[] ignore, byte[] packet)
+		{
+			var check = false;
+			var startingIndex = 0;
+			var x = 0;
+
+			if (ignore.Length < packet.Length - 4)
+				for (var i = 4; i < packet.Length; i++)
+				{
+					if (x < ignore.Length && i < packet.Length)
+					{
+						if (!check && ignore[x] == packet[i])
+						{
+							startingIndex = i;
+							check = true;
+						}
+						else if (check && ignore[x] != packet[i])
+						{
+							x = 0;
+							check = false;
+						}
+					}
+
+					if (check)
+						x++;
+				}
+
+			if (check)
+			{
+				var newPacket = new byte[packet.Length - ignore.Length];
+				Buffer.BlockCopy(packet, 0, newPacket, 0, startingIndex);
+				Buffer.BlockCopy(packet, startingIndex + ignore.Length, newPacket, startingIndex, packet.Length - (startingIndex + ignore.Length));
+				return newPacket;
+			}
+			else
+				return packet;
+		}
+
+		byte[] sumArrays(byte[] array1, byte[] array2)
+		{
+			var array = new byte[array1.Length + array2.Length];
+			Buffer.BlockCopy(array1, 0, array, 0, array1.Length);
+			Buffer.BlockCopy(array2, 0, array, array1.Length, array2.Length);
+			return array;
 		}
 
 		internal List<Pair<int, byte[]>> GetNextData(int frame)

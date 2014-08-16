@@ -142,16 +142,14 @@ namespace OpenRA.Mods.RA.Server
 							var playerinfo = server.Settings.Replay.Info.GameInfo.Players[index];
 							if (playerinfo == null)
 							{
-								server.SendOrderTo(conn, "Message", "You can't spawn in a spawnpoint that wasnt used in the save");
+								server.SendOrderTo(conn, "Message", "You can't use a slot that wasnt in the replay");
 								return true;
 							}
 
 							server.Settings.Replay.IndexConverter[playerinfo.ClientIndex] = client.Index;
 							client.Country = playerinfo.FactionId;
-							client.Name = playerinfo.Name;
 							client.Team = playerinfo.Team;
 							client.SpawnPoint = playerinfo.SpawnPoint;
-							S.SyncClientToPlayerReference(client, server.Map.Players[s]);
 						}
 
 						client.Slot = s;
@@ -194,6 +192,12 @@ namespace OpenRA.Mods.RA.Server
 					{
 						if (!ValidateSlotCommand(server, conn, client, s, true))
 							return false;
+
+						if (server.Settings.Replay != null)
+						{
+							server.SendOrderTo(conn, "Message", "You can't close a slot which is required for the save to load");
+							return true;
+						}
 
 						// kick any player that's in the slot
 						var occupant = server.LobbyInfo.ClientInSlot(s);
@@ -305,6 +309,29 @@ namespace OpenRA.Mods.RA.Server
 							// Change the type of the existing bot
 							bot.Name = botType;
 							bot.Bot = botType;
+						}
+						
+						if (server.Settings.Replay != null)
+						{
+							var index = 0;
+							foreach (var sl in server.LobbyInfo.Slots.Keys)
+							{
+								if (sl == parts[0])
+									break;
+								index++;
+							}
+
+							var playerinfo = server.Settings.Replay.Info.GameInfo.Players[index];
+							if (playerinfo == null)
+							{
+								server.SendOrderTo(conn, "Message", "You can't use a slot that wasnt in the replay");
+								return true;
+							}
+
+							server.Settings.Replay.IndexConverter[playerinfo.ClientIndex] = bot.Index;
+							bot.Country = playerinfo.FactionId;
+							bot.Team = playerinfo.Team;
+							bot.SpawnPoint = playerinfo.SpawnPoint;
 						}
 
 						S.SyncClientToPlayerReference(bot, server.Map.Players[parts[0]]);
@@ -435,7 +462,7 @@ namespace OpenRA.Mods.RA.Server
 						{
 							if (players.Count() <= id)
 							{
-								var c = server.LobbyInfo.Slots.Remove(slot);
+								server.LobbyInfo.Slots.Remove(slot);
 								continue;
 							}
 

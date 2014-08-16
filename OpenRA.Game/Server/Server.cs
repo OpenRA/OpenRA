@@ -94,18 +94,8 @@ namespace OpenRA.Server
 
 				if (Settings.Replay.ReplayDone)
 				{
-					foreach (var c in Conns.ToArray())
-					{
-						SendOrderTo(c, "SendPermission", "Enable");
-						SendOrderTo(c, "PauseGame", "UnPause");
-					}
 					Settings.Replay = null;
-					return;
 				}
-
-				/*var from = conn != null ? conn.PlayerIndex : 0;
-				foreach (var c in Conns.Except(conn).ToArray())
-					DispatchOrdersToClient(c, from, frame, data);*/
 			}
 		}
 
@@ -708,7 +698,12 @@ namespace OpenRA.Server
 				foreach (var d in Conns)
 					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });
 				if (Settings.Replay != null && !Settings.Replay.ReplayDone)
-					SendOrderTo(c, "SendPermission", "Disable");
+				{
+					if (Settings.Replay.Resume)
+						SendOrderTo(c, "SendPermission", "DisableSim");
+					else
+						SendOrderTo(c, "SendPermission", "DisableNoSim");
+				}
 			}
 
 			DispatchOrders(null, 0,

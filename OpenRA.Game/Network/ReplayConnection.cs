@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using OpenRA.FileFormats;
 using OpenRA.Primitives;
+using OpenRA.Server;
 
 namespace OpenRA.Network
 {
@@ -38,6 +39,11 @@ namespace OpenRA.Network
 
 		public ReplayConnection(string replayFilename)
 		{
+			var ignore = new byte[][] {
+				new ServerOrder("SendPermission", "Enable").Serialize(),
+				new ServerOrder("SendPermission", "DisableSim").Serialize(),
+				new ServerOrder("SendPermission", "DisableNoSim").Serialize() };
+
 			// Parse replay data into a struct that can be fed to the game in chunks
 			// to avoid issues with all immediate orders being resolved on the first tick.
 			using (var rs = File.OpenRead(replayFilename))
@@ -52,6 +58,10 @@ namespace OpenRA.Network
 					var packetLen = rs.ReadInt32();
 					var packet = rs.ReadBytes(packetLen);
 					var frame = BitConverter.ToInt32(packet, 0);
+
+					foreach (var i in ignore)
+						packet = CheckIgnore(i, packet);
+
 					chunk.Packets.Add(Pair.New(client, packet));
 
 					if (packet.Length == 5 && packet[4] == 0xBF)
@@ -83,6 +93,44 @@ namespace OpenRA.Network
 			}
 
 			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency;
+		}
+
+		byte[] CheckIgnore(byte[] ignore, byte[] packet)
+		{
+			var check = false;
+			var startingIndex = 0;
+			var x = 0;
+
+			if (ignore.Length < packet.Length - 4)
+				for (var i = 4; i < packet.Length; i++)
+				{
+					if (x < ignore.Length && i < packet.Length)
+					{
+						if (!check && ignore[x] == packet[i])
+						{
+							startingIndex = i;
+							check = true;
+						}
+						else if (check && ignore[x] != packet[i])
+						{
+							x = 0;
+							check = false;
+						}
+					}
+
+					if (check)
+						x++;
+				}
+
+			if (check)
+			{
+				var newPacket = new byte[packet.Length - ignore.Length];
+				Buffer.BlockCopy(packet, 0, newPacket, 0, startingIndex);
+				Buffer.BlockCopy(packet, startingIndex + ignore.Length, newPacket, startingIndex, packet.Length - (startingIndex + ignore.Length));
+				return newPacket;
+			}
+			else
+				return packet;
 		}
 
 		// Do nothing: ignore locally generated orders
