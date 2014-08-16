@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -39,7 +39,8 @@ namespace OpenRA.Mods.RA.Widgets
 			texts = powers.Select(p =>
 			{
 				var time = WidgetUtils.FormatTime(p.RemainingTime, false);
-				var text = Format.F(p.Info.Description, time);
+				var name = p.Instances[0].self.Owner.PlayerName;
+				var text = "({0}) {1}".F(name, Format.F(p.Info.Description, time));
 				var color = !p.Ready || Game.LocalTick % 50 < 25 ? p.Instances[0].self.Owner.Color.RGB : Color.White;
 				return Pair.New(text, color);
 			}).ToArray();
