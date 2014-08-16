@@ -43,6 +43,8 @@ namespace OpenRA.Server
 			IndexConverter = new Dictionary<int, int>();
 			Info.GameInfo.Players.Do(p => IndexConverter.Add(p.ClientIndex, p.ClientIndex));
 
+			var lastChunk = new Chunk();
+
 			// Parse replay data into a struct that can be fed to the game in chunks
 			// to avoid issues with all immediate orders being resolved on the first tick.
 			using (var rs = File.OpenRead(replayFilename))
@@ -101,7 +103,9 @@ namespace OpenRA.Server
 					{
 						// Regular order - finalize the chunk
 						chunk.Frame = frame;
-						chunks.Enqueue(chunk);
+						if (lastChunk.Packets.Count != 0)
+							chunks.Enqueue(lastChunk);
+						lastChunk = chunk;
 						chunk = new Chunk();
 
 						TickCount = Math.Max(TickCount, frame);
@@ -109,6 +113,9 @@ namespace OpenRA.Server
 				}
 			}
 
+			//Remove last ping of replay since we will be sending an order instead
+			lastChunk.Packets.Remove(lastChunk.Packets.First(p => BitConverter.ToInt32(p.Second, 0) == lastChunk.Frame));
+			chunks.Enqueue(lastChunk);
 			ordersFrame = LobbyInfo.GlobalSettings.OrderLatency;
 		}
 

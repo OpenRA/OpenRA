@@ -118,9 +118,22 @@ namespace OpenRA.Network
 				case "SendPermission":
 					{
 						if (order.TargetString == "Disable")
+						{
 							orderManager.Connection.DisableSend = true;
+							//Disabled for testing
+							//Game.IsSimulating = true;
+							break;
+						}
 						else
+						{
 							orderManager.Connection.DisableSend = false;
+							if (orderManager.world != null)
+							{
+								orderManager.world.Paused = false;
+								orderManager.world.PredictedPaused = false;
+							}
+							Game.IsSimulating = false;
+						}
 						break;
 					}
 

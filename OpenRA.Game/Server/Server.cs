@@ -93,8 +93,12 @@ namespace OpenRA.Server
 						DispatchReplayOrdersToClient(c, r.First, r.Second);
 
 				if (Settings.Replay.ReplayDone)
+				{
 					foreach (var c in Conns.ToArray())
 						SendOrderTo(c, "SendPermission", "Enable");
+					Settings.Replay = null;
+					return;
+				}
 
 				/*var from = conn != null ? conn.PlayerIndex : 0;
 				foreach (var c in Conns.Except(conn).ToArray())

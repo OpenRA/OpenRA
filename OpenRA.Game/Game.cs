@@ -40,6 +40,7 @@ namespace OpenRA
 
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;
+		public static bool IsSimulating = false;
 
 		public static DatabaseReader GeoIpDatabase;
 
@@ -592,8 +593,8 @@ namespace OpenRA
 					var haveSomeTimeUntilNextLogic = now < nextLogic;
 					var isTimeToRender = now >= nextRender;
 					var forceRender = now >= forcedNextRender;
-
-					if ((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender)
+					
+					if (((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender) && !IsSimulating)
 					{
 						nextRender = now + renderInterval;
 
