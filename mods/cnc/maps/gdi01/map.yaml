@@ -461,6 +461,10 @@ Rules:
 			Scripts: gdi01.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		SquareMapRegion:
+			Name: BigBrother
+			UpperNW: 0,0,0
+			LowerSE: 64000,64000,0
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:
