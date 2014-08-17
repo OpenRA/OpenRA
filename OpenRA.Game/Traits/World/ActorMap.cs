@@ -14,6 +14,8 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
+	public enum SubCell { InvalidSubCell = int.MinValue, AnySubCell = int.MinValue / 2, FullCell = 0, FirstSubCell = 1 }
+
 	public class ActorMapInfo : ITraitInfo
 	{
 		[Desc("Size of partition bins (cells)")]
@@ -27,7 +29,7 @@ namespace OpenRA.Traits
 		class InfluenceNode
 		{
 			public InfluenceNode Next;
-			public int SubCell;
+			public SubCell SubCell;
 			public Actor Actor;
 		}
 
@@ -71,47 +73,47 @@ namespace OpenRA.Traits
 					yield return i.Actor;
 		}
 
-		public IEnumerable<Actor> GetUnitsAt(CPos a, int sub)
+		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
 		{
 			if (!map.Contains(a))
 				yield break;
 
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (!i.Actor.Destroyed && (i.SubCell == sub || i.SubCell == 0))
+				if (!i.Actor.Destroyed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
 					yield return i.Actor;
 		}
 
 		public bool HasFreeSubCell(CPos a, bool checkTransient = true)
 		{
-			return FreeSubCell(a, -1, checkTransient) >= 0;
+			return FreeSubCell(a, SubCell.AnySubCell, checkTransient) != SubCell.InvalidSubCell;
 		}
 
-		public int FreeSubCell(CPos a, int preferredSubCell = -1, bool checkTransient = true)
+		public SubCell FreeSubCell(CPos a, SubCell preferredSubCell = SubCell.AnySubCell, bool checkTransient = true)
 		{
-			if (preferredSubCell >= 0 && !AnyUnitsAt(a, preferredSubCell, checkTransient))
+			if (preferredSubCell > SubCell.AnySubCell && !AnyUnitsAt(a, preferredSubCell, checkTransient))
 				return preferredSubCell;
 
 			if (!AnyUnitsAt(a))
-				return map.SubCellDefaultIndex;
+				return map.DefaultSubCell;
 
-			for (var i = 1; i < map.SubCellOffsets.Length; i++)
-				if (i != preferredSubCell && !AnyUnitsAt(a, i, checkTransient))
-					return i;
-			return -1;
+			for (var i = (int)SubCell.FirstSubCell; i < map.SubCellOffsets.Length; i++)
+				if (i != (int)preferredSubCell && !AnyUnitsAt(a, (SubCell)i, checkTransient))
+					return (SubCell)i;
+			return SubCell.InvalidSubCell;
 		}
 
-		public int FreeSubCell(CPos a, int preferredSubCell, Func<Actor, bool> checkIfBlocker)
+		public SubCell FreeSubCell(CPos a, SubCell preferredSubCell, Func<Actor, bool> checkIfBlocker)
 		{
-			if (preferredSubCell >= 0 && !AnyUnitsAt(a, preferredSubCell, checkIfBlocker))
+			if (preferredSubCell > SubCell.AnySubCell && !AnyUnitsAt(a, preferredSubCell, checkIfBlocker))
 				return preferredSubCell;
 
 			if (!AnyUnitsAt(a))
-				return map.SubCellDefaultIndex;
+				return map.DefaultSubCell;
 
-			for (var i = 1; i < map.SubCellOffsets.Length; i++)
-				if (i != preferredSubCell && !AnyUnitsAt(a, i, checkIfBlocker))
-					return i;
-			return -1;
+			for (var i = (int)SubCell.FirstSubCell; i < map.SubCellOffsets.Length; i++)
+				if (i != (int)preferredSubCell && !AnyUnitsAt(a, (SubCell)i, checkIfBlocker))
+					return (SubCell)i;
+			return SubCell.InvalidSubCell;
 		}
 
 		// NOTE: does not check transients, but checks aircraft
@@ -121,10 +123,11 @@ namespace OpenRA.Traits
 		}
 
 		// NOTE: can not check aircraft
-		public bool AnyUnitsAt(CPos a, int sub, bool checkTransient = true)
+		public bool AnyUnitsAt(CPos a, SubCell sub, bool checkTransient = true)
 		{
+			bool always = sub == SubCell.FullCell || sub == SubCell.AnySubCell;
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (sub <= 0 || i.SubCell == sub || i.SubCell == 0)
+				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
 				{
 					if (checkTransient)
 						return true;
@@ -137,10 +140,11 @@ namespace OpenRA.Traits
 		}
 
 		// NOTE: can not check aircraft
-		public bool AnyUnitsAt(CPos a, int sub, Func<Actor, bool> withCondition)
+		public bool AnyUnitsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition)
 		{
+			bool always = sub == SubCell.FullCell || sub == SubCell.AnySubCell;
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (sub <= 0 || i.SubCell == sub || i.SubCell == 0)
+				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
 					if (withCondition(i.Actor))
 						return true;
 

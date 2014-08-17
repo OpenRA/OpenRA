@@ -79,7 +79,9 @@ namespace OpenRA
 		public readonly TileShape TileShape;
 		[FieldLoader.Ignore]
 		public readonly WVec[] SubCellOffsets;
-		public readonly int SubCellDefaultIndex;
+		public readonly SubCell DefaultSubCell;
+
+		public WVec OffsetOf(SubCell subCell) { return SubCellOffsets[(int)subCell]; }
 
 		[FieldLoader.LoadUsing("LoadOptions")]
 		public MapOptions Options;
@@ -250,7 +252,7 @@ namespace OpenRA
 			MapResources = Exts.Lazy(() => LoadResourceTiles());
 			TileShape = Game.modData.Manifest.TileShape;
 			SubCellOffsets = Game.modData.Manifest.SubCellOffsets;
-			SubCellDefaultIndex = Game.modData.Manifest.SubCellDefaultIndex;
+			DefaultSubCell = (SubCell)Game.modData.Manifest.SubCellDefaultIndex;
 
 			// The Uid is calculated from the data on-disk, so
 			// format changes must be flushed to disk.
@@ -492,6 +494,14 @@ namespace OpenRA
 			//  - ax + by adds (a - b) * 512 + 512 to u
 			//  - ax + by adds (a + b) * 512 + 512 to v
 			return new WPos(512 * (cell.X - cell.Y + 1), 512 * (cell.X + cell.Y + 1), 0);
+		}
+
+		public WPos CenterOf(CPos cell, SubCell subCell)
+		{
+			var index = (int)subCell;
+			if (index >= 0 && index <= SubCellOffsets.Length)
+				return CenterOfCell(cell) + SubCellOffsets[index];
+			return CenterOfCell(cell);
 		}
 
 		public CPos CellContaining(WPos pos)

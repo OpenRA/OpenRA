@@ -89,38 +89,38 @@ namespace OpenRA.Mods.RA
 		}
 
 		public CPos TopLeft { get { return Location; } }
-		public IEnumerable<Pair<CPos, int>> OccupiedCells() { yield return Pair.New(Location, 0); }
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(Location, SubCell.FullCell); }
 
 		public WPos CenterPosition { get; private set; }
 		public void SetPosition(Actor self, WPos pos) { SetPosition(self, self.World.Map.CellContaining(pos)); }
 		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, self.World.Map.CellContaining(pos)); }
 
-		public bool IsLeaving(CPos location, int subCell = -1) { return self.Location == location && ticks + 1 == info.Lifetime * 25; }
-		public int GetAvailableSubcell(CPos cell, int preferredSubCell = -1, Actor ignoreActor = null, bool checkTransientActors = true)
+		public bool IsLeaving(CPos location, SubCell subCell = SubCell.AnySubCell) { return self.Location == location && ticks + 1 == info.Lifetime * 25; }
+		public SubCell GetAvailableSubcell(CPos cell, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			if (!self.World.Map.Contains(cell)) return -1;
+			if (!self.World.Map.Contains(cell)) return SubCell.InvalidSubCell;
 
 			var type = self.World.Map.GetTerrainInfo(cell).Type;
 			if (!info.TerrainTypes.Contains(type))
-				return -1;
+				return SubCell.InvalidSubCell;
 
 			if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
-				return -1;
+				return SubCell.InvalidSubCell;
 
 			if (!checkTransientActors)
-				return 0;
+				return SubCell.FullCell;
 
 			return !self.World.ActorMap.GetUnitsAt(cell)
 				.Where(x => x != ignoreActor)
-				.Any() ? 0 : -1;
+				.Any() ? SubCell.FullCell : SubCell.InvalidSubCell;
 		}
 
 		public bool CanEnterCell(CPos a, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return GetAvailableSubcell(a, -1, ignoreActor, checkTransientActors) >= 0;
+			return GetAvailableSubcell(a, SubCell.AnySubCell, ignoreActor, checkTransientActors) != SubCell.InvalidSubCell;
 		}
 
-		public void SetPosition(Actor self, CPos cell, int subCell = -1)
+		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)
 		{
 			self.World.ActorMap.RemoveInfluence(self, this);
 			Location = cell;

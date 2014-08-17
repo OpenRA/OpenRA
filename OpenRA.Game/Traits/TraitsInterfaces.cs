@@ -144,7 +144,7 @@ namespace OpenRA.Traits
 	{
 		WPos CenterPosition { get; }
 		CPos TopLeft { get; }
-		IEnumerable<Pair<CPos, int>> OccupiedCells();
+		IEnumerable<Pair<CPos, SubCell>> OccupiedCells();
 	}
 
 	public static class IOccupySpaceExts
@@ -180,10 +180,10 @@ namespace OpenRA.Traits
 
 	public interface IPositionable : IOccupySpace
 	{
-		bool IsLeaving(CPos location, int subCell = -1);
+		bool IsLeaving(CPos location, SubCell subCell = SubCell.AnySubCell);
 		bool CanEnterCell(CPos location, Actor ignoreActor = null, bool checkTransientActors = true);
-		int GetAvailableSubcell(CPos location, int preferredSubCell = -1, Actor ignoreActor = null, bool checkTransientActors = true);
-		void SetPosition(Actor self, CPos cell, int subCell = -1);
+		SubCell GetAvailableSubcell(CPos location, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true);
+		void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell);
 		void SetPosition(Actor self, WPos pos);
 		void SetVisualPosition(Actor self, WPos pos);
 	}
@@ -196,7 +196,7 @@ namespace OpenRA.Traits
 		Activity MoveWithinRange(Target target, WRange range);
 		Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange);
 		Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange);
-		Activity MoveIntoWorld(Actor self, CPos cell, int subCell = -1);
+		Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell);
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
 		bool IsMoving { get; set; }

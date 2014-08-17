@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Air
 
 	public class Aircraft : IFacing, IPositionable, ISync, INotifyKilled, IIssueOrder, IOrderVoice, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		static readonly Pair<CPos, int>[] NoCells = { };
+		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
 		readonly AircraftInfo info;
 		readonly Actor self;
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.RA.Air
 		}
 
 		// Changes position, but not altitude
-		public void SetPosition(Actor self, CPos cell, int subCell = -1)
+		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)
 		{
 			SetPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(0, 0, CenterPosition.Z));
 		}
@@ -199,8 +199,8 @@ namespace OpenRA.Mods.RA.Air
 				|| info.RepairBuildings.Contains(a.Info.Name);
 		}
 
-		public bool IsLeaving(CPos location, int subCell = -1) { return false; } // TODO: handle landing
-		public int GetAvailableSubcell(CPos a, int preferredSubCell = -1, Actor ignoreActor = null, bool checkTransientActors = true) { return -1; } // does not use any subcell
+		public bool IsLeaving(CPos location, SubCell subCell = SubCell.AnySubCell) { return false; } // TODO: Handle landing
+		public SubCell GetAvailableSubcell(CPos a, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true) { return SubCell.InvalidSubCell; } // Does not use any subcell
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true) { return true; }
 
 		public int MovementSpeed
@@ -213,7 +213,7 @@ namespace OpenRA.Mods.RA.Air
 			}
 		}
 
-		public IEnumerable<Pair<CPos, int>> OccupiedCells() { return NoCells; }
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return NoCells; }
 
 		public WVec FlyStep(int facing)
 		{

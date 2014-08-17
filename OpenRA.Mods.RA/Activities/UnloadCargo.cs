@@ -32,15 +32,15 @@ namespace OpenRA.Mods.RA.Activities
 			this.unloadAll = unloadAll;
 		}
 
-		public Pair<CPos, int>? ChooseExitSubCell(Actor passenger)
+		public Pair<CPos, SubCell>? ChooseExitSubCell(Actor passenger)
 		{
 			var pos = passenger.Trait<IPositionable>();
 
 			return cargo.CurrentAdjacentCells
 				.Shuffle(self.World.SharedRandom)
-				.Select(c => Pair.New(c, pos.GetAvailableSubcell(c, -1, null)))
-				.Cast<Pair<CPos, int>?>()
-				.FirstOrDefault(s => s.Value.Second >= 0);
+				.Select(c => Pair.New(c, pos.GetAvailableSubcell(c, SubCell.AnySubCell, null)))
+				.Cast<Pair<CPos, SubCell>?>()
+				.FirstOrDefault(s => s.Value.Second != SubCell.InvalidSubCell);
 		}
 
 		IEnumerable<CPos> BlockedExitCells(Actor passenger)
@@ -86,9 +86,6 @@ namespace OpenRA.Mods.RA.Activities
 				w.Add(actor);
 				actor.CancelActivity();
 				pos.SetVisualPosition(actor, spawn);
-				var mobile = move as Mobile;
-				if (mobile != null)
-					mobile.SetLocation(exitSubCell.Value.First, exitSubCell.Value.Second, exitSubCell.Value.First, exitSubCell.Value.Second);
 				actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
 				actor.SetTargetLine(Target.FromCell(w, exitSubCell.Value.First, exitSubCell.Value.Second), Color.Green, false);
 			});
