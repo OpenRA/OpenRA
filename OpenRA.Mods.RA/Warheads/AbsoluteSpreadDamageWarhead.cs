@@ -43,36 +43,10 @@ namespace OpenRA.Mods.RA
 				if (previousSpread.Range > 0)
 					hitActors.Except(world.FindActorsInCircle(pos, previousSpread));
 
-				foreach (var victim in hitActors)
-				{
-					if (IsValidAgainst(victim, firedBy))
-					{
-						// TODO: Keep currentFactor as int from the start
-						var damage = GetDamageToInflict(victim, firedBy, damageModifiers.Append((int)(currentFactor * 100)));
-						victim.InflictDamage(firedBy, damage, this);
-					}
-				}
-			}
-		}
-
-		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
-		{
-			if (IsValidAgainst(victim, firedBy))
-			{
 				// TODO: Keep currentFactor as int from the start
-				var currentFactor = SpreadFactor[0];
-				var damage = GetDamageToInflict(victim, firedBy, damageModifiers.Append((int)(currentFactor * 100)));
-				victim.InflictDamage(firedBy, damage, this);
+				foreach (var victim in hitActors)
+					DoImpact(victim, firedBy, damageModifiers.Append((int)(currentFactor * 100)));
 			}
-		}
-
-		public int GetDamageToInflict(Actor target, Actor firedBy, IEnumerable<int> damageModifiers)
-		{
-			var healthInfo = target.Info.Traits.GetOrDefault<HealthInfo>();
-			if (healthInfo == null)
-				return 0;
-
-			return Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(EffectivenessAgainst(target.Info)));
 		}
 	}
 }

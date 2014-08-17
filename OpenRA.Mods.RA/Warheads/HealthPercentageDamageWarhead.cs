@@ -36,26 +36,13 @@ namespace OpenRA.Mods.RA
 
 		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			if (IsValidAgainst(victim, firedBy))
-			{
-				var damage = GetDamageToInflict(victim, firedBy, damageModifiers);
-				if (damage != 0) // will be 0 if the target doesn't have HealthInfo
-				{
-					var healthInfo = victim.Info.Traits.Get<HealthInfo>();
-					damage = (float)(damage / 100 * healthInfo.HP);
-				}
-
-				victim.InflictDamage(firedBy, (int)damage, this);
-			}
-		}
-
-		public float GetDamageToInflict(Actor target, Actor firedBy, IEnumerable<int> damageModifiers)
-		{
-			var healthInfo = target.Info.Traits.GetOrDefault<HealthInfo>();
+			var healthInfo = victim.Info.Traits.GetOrDefault<HealthInfo>();
 			if (healthInfo == null)
-				return 0;
+				return;
 
-			return Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(EffectivenessAgainst(target.Info)));
+			// Damage is measured as a percentage of the target health
+			var damage = Util.ApplyPercentageModifiers(healthInfo.HP, damageModifiers.Append(Damage, DamageVersus(victim.Info)));
+			victim.InflictDamage(firedBy, damage, this);
 		}
 	}
 }
