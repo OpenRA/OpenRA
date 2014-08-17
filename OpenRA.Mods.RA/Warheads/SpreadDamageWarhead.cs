@@ -19,14 +19,37 @@ namespace OpenRA.Mods.RA
 {
 	public class SpreadDamageWarhead : DamageWarhead
 	{
-		[Desc("For Normal DamageModel: Distance from the explosion center at which damage is 1/2.")]
+		[Desc("Range between falloff steps.")]
 		public readonly WRange Spread = new WRange(43);
+
+		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
+		public WRange[] Range = null;
+
+		[Desc("Damage percentage at each range step")]
+		public readonly int[] Falloff = { 100, 37, 14, 5, 2, 1, 0 };
+
+		public void InitializeRange()
+		{
+			if (Range != null)
+			{
+				if (Range.Length != 1 && Range.Length != Falloff.Length)
+					throw new InvalidOperationException("Number of range values must be 1 or equal to the number of Falloff values.");
+
+				for (var i = 0; i < Range.Length - 1; i++)
+					if (Range[i] > Range[i + 1])
+						throw new InvalidOperationException("Range values must be specified in an increasing order.");
+			}
+			else
+				Range = Exts.MakeArray(Falloff.Length, i => i * Spread);
+		}
 
 		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
+			if (Range == null)
+				InitializeRange();
+
 			var world = firedBy.World;
-			var maxSpread = new WRange((int)(Spread.Range * (float)Math.Log(Math.Abs(Damage), 2)));
-			var hitActors = world.FindActorsInCircle(pos, maxSpread);
+			var hitActors = world.FindActorsInCircle(pos, Range[Range.Length - 1]);
 
 			foreach (var victim in hitActors)
 			{
@@ -38,25 +61,26 @@ namespace OpenRA.Mods.RA
 				if (healthInfo != null)
 				{
 					var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Range);
-					localModifiers = localModifiers.Append((int)(100 * GetDamageFalloff(distance * 1f / Spread.Range)));
+					localModifiers = localModifiers.Append(GetDamageFalloff(distance));
 				}
 
 				DoImpact(victim, firedBy, localModifiers);
 			}
 		}
 
-		static readonly float[] falloff =
+		int GetDamageFalloff(int distance)
 		{
-			1f, 0.3678795f, 0.1353353f, 0.04978707f,
-			0.01831564f, 0.006737947f, 0.002478752f, 0.000911882f
-		};
+			var inner = Range[0].Range;
+			for (var i = 1; i < Range.Length; i++)
+			{
+				var outer = Range[i].Range;
+				if (outer > distance)
+					return int2.Lerp(Falloff[i - 1], Falloff[i], distance - inner, outer - inner);
 
-		static float GetDamageFalloff(float x)
-		{
-			var u = (int)x;
-			if (u >= falloff.Length - 1) return 0;
-			var t = x - u;
-			return (falloff[u] * (1 - t)) + (falloff[u + 1] * t);
+				inner = outer;
+			}
+
+			return 0;
 		}
 	}
 }
