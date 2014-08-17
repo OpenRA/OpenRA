@@ -28,16 +28,11 @@ namespace OpenRA.Mods.RA
 
 		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
 		{
-			DoImpact(target.CenterPosition, firedBy, firepowerModifier);
-		}
-
-		public void DoImpact(WPos pos, Actor firedBy, float firepowerModifier)
-		{
 			if (string.IsNullOrEmpty(AddsResourceType))
 				return;
 
 			var world = firedBy.World;
-			var targetTile = world.Map.CellContaining(pos);
+			var targetTile = world.Map.CellContaining(target.CenterPosition);
 			var resLayer =  world.WorldActor.Trait<ResourceLayer>();
 
 			var minRange = (Size.Length > 1 && Size[1] > 0) ? Size[1] : 0;
