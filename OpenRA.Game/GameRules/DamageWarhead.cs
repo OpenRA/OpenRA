@@ -56,13 +56,15 @@ namespace OpenRA.GameRules
 			return 100;
 		}
 
-		public override int EffectivenessAgainst(ActorInfo ai)
+		// TODO: This can be removed after the legacy and redundant 0% = not targetable
+		// assumption has been removed from the yaml definitions
+		public override bool CanTargetActor(ActorInfo victim, Actor firedBy)
 		{
-			var health = ai.Traits.GetOrDefault<HealthInfo>();
+			var health = victim.Traits.GetOrDefault<HealthInfo>();
 			if (health == null)
-				return 0;
+				return false;
 
-			return DamageVersus(ai);
+			return DamageVersus(victim) > 0;
 		}
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)

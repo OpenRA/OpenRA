@@ -29,8 +29,6 @@ namespace OpenRA.GameRules
 
 		public abstract void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
 
-		public virtual int EffectivenessAgainst(ActorInfo ai) { return 0; }
-
 		public bool IsValidAgainst(Target target, World world, Actor firedBy)
 		{
 			if (target.Type == TargetType.Actor)
@@ -56,10 +54,13 @@ namespace OpenRA.GameRules
 			return false;
 		}
 
+		// TODO: This can be removed after the legacy and redundant 0% = not targetable
+		// assumption has been removed from the yaml definitions
+		public virtual bool CanTargetActor(ActorInfo victim, Actor firedBy) { return false; }
+
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
-			// If this warhead is ineffective against the target, then it is not a valid target
-			if (EffectivenessAgainst(victim.Info) <= 0)
+			if (!CanTargetActor(victim.Info, firedBy))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
@@ -83,8 +84,7 @@ namespace OpenRA.GameRules
 
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
-			// If this warhead is ineffective against the target, then it is not a valid target
-			if (EffectivenessAgainst(victim.Info) <= 0)
+			if (!CanTargetActor(victim.Info, firedBy))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
