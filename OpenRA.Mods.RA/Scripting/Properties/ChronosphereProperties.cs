@@ -17,8 +17,8 @@ namespace OpenRA.Mods.RA.Scripting
 	[ScriptPropertyGroup("Support Powers")]
 	public class ChronsphereProperties : ScriptActorProperties, Requires<ChronoshiftPowerInfo>
 	{
-		public ChronsphereProperties(Actor self)
-			: base(self) { }
+		public ChronsphereProperties(ScriptContext context, Actor self)
+			: base(context, self) { }
 
 		[Desc("Chronoshift a group of actors. A duration of 0 will teleport the actors permanently.")]
 		public void Chronoshift(LuaTable unitLocationPairs, int duration = 0, bool killCargo = false)

@@ -25,10 +25,10 @@ namespace OpenRA.Scripting
 		{
 			this.actor = actor;
 
-			var args = new [] { actor };
+			var args = new object[] { context, actor };
 			var objects = context.ActorCommands[actor.Info].Select(cg =>
 			{
-				var groupCtor = cg.GetConstructor(new Type[] { typeof(Actor) });
+				var groupCtor = cg.GetConstructor(new Type[] { typeof(ScriptContext), typeof(Actor) });
 				return groupCtor.Invoke(args);
 			});
 

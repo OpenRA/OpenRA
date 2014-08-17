@@ -19,8 +19,8 @@ namespace OpenRA.Mods.RA.Scripting
 	{
 		readonly PlayerResources pr;
 
-		public ResourceProperties(Player player)
-			: base(player)
+		public ResourceProperties(ScriptContext context, Player player)
+			: base(context, player)
 		{
 			pr = player.PlayerActor.Trait<PlayerResources>();
 		}

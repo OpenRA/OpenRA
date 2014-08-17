@@ -21,8 +21,8 @@ namespace OpenRA.Mods.RA.Scripting
 	{
 		readonly Cargo cargo;
 
-		public TransportProperties(Actor self)
-			: base(self)
+		public TransportProperties(ScriptContext context, Actor self)
+			: base(context, self)
 		{
 			cargo = self.Trait<Cargo>();
 		}
@@ -46,8 +46,8 @@ namespace OpenRA.Mods.RA.Scripting
 	{
 		readonly ParaDrop paradrop;
 
-		public ParadropPowers(Actor self)
-			: base(self)
+		public ParadropPowers(ScriptContext context, Actor self)
+			: base(context, self)
 		{
 			paradrop = self.Trait<ParaDrop>();
 		}
