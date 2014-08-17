@@ -30,33 +30,19 @@ namespace OpenRA.Mods.RA
 
 			foreach (var victim in hitActors)
 			{
-				if (IsValidAgainst(victim, firedBy))
+				if (!IsValidAgainst(victim, firedBy))
+					continue;
+
+				var localModifiers = damageModifiers;
+				var healthInfo = victim.Info.Traits.GetOrDefault<HealthInfo>();
+				if (healthInfo != null)
 				{
-					var damage = (int)GetDamageToInflict(pos, victim, firedBy, damageModifiers);
-					victim.InflictDamage(firedBy, damage, this);
+					var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Range);
+					localModifiers = localModifiers.Append((int)(100 * GetDamageFalloff(distance * 1f / Spread.Range)));
 				}
+
+				DoImpact(victim, firedBy, localModifiers);
 			}
-		}
-
-		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
-		{
-			if (IsValidAgainst(victim, firedBy))
-			{
-				var damage = GetDamageToInflict(victim.CenterPosition, victim, firedBy, damageModifiers);
-				victim.InflictDamage(firedBy, damage, this);
-			}
-		}
-
-		public int GetDamageToInflict(WPos pos, Actor target, Actor firedBy, IEnumerable<int> damageModifiers)
-		{
-			var healthInfo = target.Info.Traits.GetOrDefault<HealthInfo>();
-			if (healthInfo == null)
-				return 0;
-
-			var distance = Math.Max(0, (target.CenterPosition - pos).Length - healthInfo.Radius.Range);
-			var falloff = (int)(100 * GetDamageFalloff(distance * 1f / Spread.Range));
-
-			return Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(EffectivenessAgainst(target.Info), falloff));
 		}
 
 		static readonly float[] falloff =

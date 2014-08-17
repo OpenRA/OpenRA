@@ -42,19 +42,27 @@ namespace OpenRA.GameRules
 				: new Dictionary<string, float>();
 		}
 
+		public int DamageVersus(ActorInfo victim)
+		{
+			var armor = victim.Traits.GetOrDefault<ArmorInfo>();
+			if (armor == null || armor.Type == null)
+				return 100;
+
+			// TODO: Change versus definitions to integer percentages
+			float versus;
+			if (Versus.TryGetValue(armor.Type, out versus))
+				return (int)(versus * 100);
+
+			return 100;
+		}
+
 		public override int EffectivenessAgainst(ActorInfo ai)
 		{
 			var health = ai.Traits.GetOrDefault<HealthInfo>();
 			if (health == null)
 				return 0;
 
-			var armor = ai.Traits.GetOrDefault<ArmorInfo>();
-			if (armor == null || armor.Type == null)
-				return 100;
-
-			// TODO: Change versus definitions to integer percentages
-			float versus;
-			return Versus.TryGetValue(armor.Type, out versus) ? (int)(versus * 100) : 100;
+			return DamageVersus(ai);
 		}
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
@@ -66,7 +74,12 @@ namespace OpenRA.GameRules
 				DoImpact(target.CenterPosition, firedBy, damageModifiers);
 		}
 
-		public abstract void DoImpact(Actor target, Actor firedBy, IEnumerable<int> damageModifiers);
 		public abstract void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers);
+
+		public virtual void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
+		{
+			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim.Info)));
+			victim.InflictDamage(firedBy, damage, this);
+		}
 	}
 }

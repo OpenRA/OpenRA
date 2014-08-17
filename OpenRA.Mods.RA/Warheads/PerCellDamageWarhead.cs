@@ -33,23 +33,5 @@ namespace OpenRA.Mods.RA
 				foreach (var victim in world.ActorMap.GetUnitsAt(t))
 					DoImpact(victim, firedBy, damageModifiers);
 		}
-
-		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
-		{
-			if (IsValidAgainst(victim, firedBy))
-			{
-				var damage = GetDamageToInflict(victim, firedBy, damageModifiers);
-				victim.InflictDamage(firedBy, damage, this);
-			}
-		}
-
-		public int GetDamageToInflict(Actor target, Actor firedBy, IEnumerable<int> damageModifiers)
-		{
-			var healthInfo = target.Info.Traits.GetOrDefault<HealthInfo>();
-			if (healthInfo == null)
-				return 0;
-
-			return Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(EffectivenessAgainst(target.Info)));
-		}
 	}
 }
