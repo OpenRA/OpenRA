@@ -576,10 +576,14 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LuaScriptInterface:
-			LuaScripts: nod03a.lua
+		LuaScript:
+			Scripts: nod03a.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+	^Infantry:
+		MustBeDestroyed:
+	^Vehicle:
+		MustBeDestroyed:
 	NUK2:
 		Buildable:
 			Prerequisites: ~disabled
@@ -635,6 +639,7 @@ Rules:
 		Tooltip:
 			Name: Prison
 		Capturable:
+			CaptureThreshold: 1
 	HQ.NOAIRSTRIKE:
 		RequiresPower:
 		CanPowerDown:
