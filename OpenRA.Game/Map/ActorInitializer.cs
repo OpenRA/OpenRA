@@ -63,12 +63,13 @@ namespace OpenRA
 		public CPos Value(World world) { return value; }
 	}
 
-	public class SubCellInit : IActorInit<int>
+	public class SubCellInit : IActorInit<SubCell>
 	{
-		[FieldFromYamlKey] public readonly int value = 0;
+		[FieldFromYamlKey] public readonly int value = (int)SubCell.FullCell;
 		public SubCellInit() { }
 		public SubCellInit(int init) { value = init; }
-		public int Value(World world) { return value; }
+		public SubCellInit(SubCell init) { value = (int)init; }
+		public SubCell Value(World world) { return (SubCell)value; }
 	}
 
 	public class CenterPositionInit : IActorInit<WPos>

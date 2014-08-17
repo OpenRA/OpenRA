@@ -28,9 +28,9 @@ namespace OpenRA.Traits
 		int generation;
 
 		public static Target FromPos(WPos p) { return new Target { pos = p, type = TargetType.Terrain }; }
-		public static Target FromCell(World w, CPos c, int subCell = 0)
+		public static Target FromCell(World w, CPos c, SubCell subCell = SubCell.FullCell)
 		{
-			return new Target { pos = w.Map.CenterOfCell(c) + w.Map.SubCellOffsets[subCell], type = TargetType.Terrain };
+			return new Target { pos = w.Map.CenterOf(c, subCell), type = TargetType.Terrain };
 		}
 
 		public static Target FromOrder(World w, Order o)

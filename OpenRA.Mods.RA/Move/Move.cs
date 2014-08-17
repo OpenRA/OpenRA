@@ -57,10 +57,10 @@ namespace OpenRA.Mods.RA.Move
 			this.nearEnough = nearEnough;
 		}
 
-		public Move(CPos destination, int subCell, WRange nearEnough)
+		public Move(CPos destination, SubCell subCell, WRange nearEnough)
 		{
 			this.getPath = (self, mobile) => self.World.WorldActor.Trait<PathFinder>()
-				.FindUnitPathToRange(mobile.fromCell, subCell, self.World.Map.CenterOfCell(destination) + self.World.Map.SubCellOffsets[subCell], nearEnough, self);
+				.FindUnitPathToRange(mobile.fromCell, subCell, self.World.Map.CenterOf(destination, subCell), nearEnough, self);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
@@ -158,8 +158,8 @@ namespace OpenRA.Mods.RA.Move
 				mobile.SetLocation(mobile.fromCell, mobile.fromSubCell, nextCell.Value.First, nextCell.Value.Second);
 				var move = new MoveFirstHalf(
 					this,
-					self.World.Map.CenterOfCell(mobile.fromCell) + self.World.Map.SubCellOffsets[mobile.fromSubCell],
-					Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (self.World.Map.SubCellOffsets[mobile.fromSubCell] + self.World.Map.SubCellOffsets[mobile.toSubCell]) / 2,
+					self.World.Map.CenterOf(mobile.fromCell, mobile.fromSubCell),
+					Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (self.World.Map.OffsetOf(mobile.fromSubCell) + self.World.Map.OffsetOf(mobile.toSubCell)) / 2,
 					mobile.Facing,
 					mobile.Facing,
 					0);
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		Pair<CPos, int>? PopPath(Actor self, Mobile mobile)
+		Pair<CPos, SubCell>? PopPath(Actor self, Mobile mobile)
 		{
 			if (path.Count == 0)
 				return null;
@@ -245,7 +245,7 @@ namespace OpenRA.Mods.RA.Move
 			hasWaited = false;
 			path.RemoveAt(path.Count - 1);
 
-			var subCell = mobile.GetAvailableSubcell(nextCell, -1, ignoreBuilding);
+			var subCell = mobile.GetAvailableSubcell(nextCell, SubCell.AnySubCell, ignoreBuilding);
 			return Pair.New(nextCell, subCell);
 		}
 
@@ -355,15 +355,15 @@ namespace OpenRA.Mods.RA.Move
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
-				var fromSubcellOffset = self.World.Map.SubCellOffsets[mobile.fromSubCell];
-				var toSubcellOffset = self.World.Map.SubCellOffsets[mobile.toSubCell];
+				var fromSubcellOffset = self.World.Map.OffsetOf(mobile.fromSubCell);
+				var toSubcellOffset = self.World.Map.OffsetOf(mobile.toSubCell);
 
 				var nextCell = parent.PopPath(self, mobile);
 				if (nextCell != null)
 				{
 					if (IsTurn(mobile, nextCell.Value.First))
 					{
-						var nextSubcellOffset = self.World.Map.SubCellOffsets[nextCell.Value.Second];
+						var nextSubcellOffset = self.World.Map.OffsetOf(nextCell.Value.Second);
 						var ret = new MoveFirstHalf(
 							move,
 							Util.BetweenCells(self.World, mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,

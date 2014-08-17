@@ -191,10 +191,10 @@ namespace OpenRA.Mods.RA.Move
 			return true;
 		}
 
-		public int GetAvailableSubCell(World world, Actor self, CPos cell, int preferredSubCell = -1, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public SubCell GetAvailableSubCell(World world, Actor self, CPos cell, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
 			if (MovementCostForCell(world, cell) == int.MaxValue)
-				return -1;
+				return SubCell.InvalidSubCell;
 
 			if (check.HasFlag(CellConditions.TransientActors))
 			{
@@ -219,13 +219,13 @@ namespace OpenRA.Mods.RA.Move
 				};
 
 				if (!SharesCell)
-					return world.ActorMap.AnyUnitsAt(cell, 0, checkTransient)? -1 : 0;
+					return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell, checkTransient)? SubCell.InvalidSubCell : SubCell.FullCell;
 
 				return world.ActorMap.FreeSubCell(cell, preferredSubCell, checkTransient);
 			}
 
 			if (!SharesCell)
-				return world.ActorMap.AnyUnitsAt(cell, 0)? -1 : 0;
+				return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell)? SubCell.InvalidSubCell : SubCell.FullCell;
 
 			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
 		}
@@ -241,7 +241,7 @@ namespace OpenRA.Mods.RA.Move
 
 		int __facing;
 		CPos __fromCell, __toCell;
-		public int fromSubCell, toSubCell;
+		public SubCell fromSubCell, toSubCell;
 
 		//int __altitude;
 
@@ -259,7 +259,7 @@ namespace OpenRA.Mods.RA.Move
 
 		[Sync] public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
-		public void SetLocation(CPos from, int fromSub, CPos to, int toSub)
+		public void SetLocation(CPos from, SubCell fromSub, CPos to, SubCell toSub)
 		{
 			if (fromCell == from && toCell == to && fromSubCell == fromSub && toSubCell == toSub)
 				return;
@@ -281,16 +281,16 @@ namespace OpenRA.Mods.RA.Move
 			this.self = init.self;
 			this.Info = info;
 
-			toSubCell = fromSubCell = info.SharesCell ? init.world.Map.SubCellDefaultIndex : 0;
+			toSubCell = fromSubCell = info.SharesCell ? init.world.Map.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
 			{
-				this.fromSubCell = this.toSubCell = init.Get<SubCellInit, int>();
+				this.fromSubCell = this.toSubCell = init.Get<SubCellInit, SubCell>();
 			}
 
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				SetVisualPosition(self, init.world.Map.CenterOfCell(fromCell) + self.World.Map.SubCellOffsets[fromSubCell]);
+				SetVisualPosition(self, init.world.Map.CenterOf(fromCell, fromSubCell));
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -301,19 +301,18 @@ namespace OpenRA.Mods.RA.Move
 				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
 		}
 
-		public void SetPosition(Actor self, CPos cell, int subCell = -1)
+		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)
 		{
 			// Try same sub-cell
-			if (subCell < 0)
+			if (subCell == SubCell.AnySubCell)
 				subCell = fromSubCell;
 
 			// Fix sub-cell assignment
-			if (Info.SharesCell != (subCell != 0))
-				subCell = Info.SharesCell ? self.World.Map.SubCellDefaultIndex : 0;
+			if (Info.SharesCell != (subCell != SubCell.FullCell))
+				subCell = Info.SharesCell ? self.World.Map.DefaultSubCell : SubCell.FullCell;
 
 			SetLocation(cell, subCell, cell, subCell);
-			SetVisualPosition(self, self.World.Map.CenterOfCell(cell)
-				+ self.World.Map.SubCellOffsets[subCell]);
+			SetVisualPosition(self, self.World.Map.CenterOf(cell, subCell));
 			FinishedMoving(self);
 		}
 
@@ -456,7 +455,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public CPos TopLeft { get { return toCell; } }
 
-		public IEnumerable<Pair<CPos, int>> OccupiedCells()
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells()
 		{
 			if (fromCell == toCell)
 				yield return Pair.New(fromCell, fromSubCell);
@@ -469,13 +468,13 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public bool IsLeaving(CPos location, int subCell = -1)
+		public bool IsLeaving(CPos location, SubCell subCell = SubCell.AnySubCell)
 		{
 			return toCell != location && __fromCell == location
-				&& (subCell == -1 || fromSubCell == subCell || subCell == 0 || fromSubCell == 0);
+				&& (subCell == SubCell.AnySubCell || fromSubCell == subCell || subCell == SubCell.FullCell || fromSubCell == SubCell.FullCell);
 		}
 
-		public int GetAvailableSubcell(CPos a, int preferredSubCell, Actor ignoreActor = null, bool checkTransientActors = true)
+		public SubCell GetAvailableSubcell(CPos a, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			return Info.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, checkTransientActors? CellConditions.All : CellConditions.None);
 		}
@@ -629,23 +628,23 @@ namespace OpenRA.Mods.RA.Move
 				Nudge(self, blocking, true);
 		}
 
-		public Activity MoveIntoWorld(Actor self, CPos cell, int subCell = -1)
+		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)
 		{
 			var pos = self.CenterPosition;
 
-			if (subCell == -1)
+			if (subCell == SubCell.AnySubCell)
 				subCell = self.World.ActorMap.FreeSubCell(cell, subCell);
 
 			// TODO: solve/reduce cell is full problem
-			if (subCell < 0)
-				subCell = self.World.Map.SubCellDefaultIndex;
+			if (subCell == SubCell.InvalidSubCell)
+				subCell = self.World.Map.DefaultSubCell;
 
 			// Reserve the exit cell
 			SetPosition(self, cell, subCell);
 			SetVisualPosition(self, pos);
 
 			// Animate transition
-			var to = self.World.Map.CenterOfCell(cell) + self.World.Map.SubCellOffsets[subCell];
+			var to = self.World.Map.CenterOf(cell, subCell);
 			var speed = MovementSpeedForCell(self, cell);
 			var length = speed > 0 ? (to - pos).Length / speed : 0;
 
