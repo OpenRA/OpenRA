@@ -562,6 +562,10 @@
     <Compile Include="GainsStatUpgrades.cs" />
     <Compile Include="Player\Extensions.cs" />
     <Compile Include="ServerTraits\LobbySettingsNotification.cs" />
+    <Compile Include="Warheads\AbsoluteSpreadDamageWarhead.cs" />
+    <Compile Include="Warheads\HealthPercentageDamageWarhead.cs" />
+    <Compile Include="Warheads\PerCellDamageWarhead.cs" />
+    <Compile Include="Warheads\SpreadDamageWarhead.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

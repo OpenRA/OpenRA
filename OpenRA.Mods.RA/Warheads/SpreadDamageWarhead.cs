@@ -12,9 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
+using OpenRA.GameRules;
 using OpenRA.Traits;
 
-namespace OpenRA.GameRules
+namespace OpenRA.Mods.RA
 {
 	public class SpreadDamageWarhead : DamageWarhead
 	{
