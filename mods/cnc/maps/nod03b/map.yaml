@@ -539,7 +539,7 @@ Actors:
 		SubCell: 4
 	Actor101: c1
 		Location: 16,36
-		Owner: GDI
+		Owner: Neutral
 		Health: 1
 		Facing: 192
 		SubCell: 4
@@ -645,10 +645,14 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LuaScriptInterface:
-			LuaScripts: nod03b.lua
+		LuaScript:
+			Scripts: nod03b.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+	^Infantry:
+		MustBeDestroyed:
+	^Vehicle:
+		MustBeDestroyed:
 	NUK2:
 		Buildable:
 			Prerequisites: ~disabled
@@ -704,6 +708,7 @@ Rules:
 		Tooltip:
 			Name: Prison
 		Capturable:
+			CaptureThreshold: 1
 	HQ.NOAIRSTRIKE:
 		RequiresPower:
 		CanPowerDown:
