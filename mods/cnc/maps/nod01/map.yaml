@@ -310,8 +310,8 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LuaScriptInterface:
-			LuaScripts: nod01.lua
+		LuaScript:
+			Scripts: nod01.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	C10:
