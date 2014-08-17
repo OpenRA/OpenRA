@@ -13,10 +13,10 @@ LMG:
 		Damage: 15
 		InfDeath: 2
 		Versus:
-			Wood: 25%
-			Light: 40%
-			Heavy: 10%
-			Concrete: 20%
+			Wood: 25
+			Light: 40
+			Heavy: 10
+			Concrete: 20
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -39,11 +39,11 @@ Bazooka:
 		InfDeath: 4
 		ValidTargets: Ground
 		Versus:
-			None: 10%
-			Wood: 75%
-			Light: 60%
-			Heavy: 90%
-			Concrete: 40%
+			None: 10
+			Wood: 75
+			Light: 60
+			Heavy: 90
+			Concrete: 40
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -65,11 +65,11 @@ Sniper:
 		Damage: 60
 		InfDeath: 2
 		Versus:
-			None: 100%
-			Wood: 0%
-			Light: 1%
-			Heavy: 0%
-			Concrete: 0%
+			None: 100
+			Wood: 0
+			Light: 1
+			Heavy: 0
+			Concrete: 0
 
 Vulcan:
 	ReloadDelay: 30
@@ -88,10 +88,10 @@ Vulcan:
 		InfDeath: 2
 		ValidTargets: Ground, Air
 		Versus:
-			Wood: 0%
-			Light: 60%
-			Heavy: 10%
-			Concrete: 0%
+			Wood: 0
+			Light: 60
+			Heavy: 10
+			Concrete: 0
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -114,11 +114,11 @@ Slung:
 		InfDeath: 4
 		ValidTargets: Ground
 		Versus:
-			None: 0%
-			Wood: 75%
-			Light: 40%
-			Heavy: 90%
-			Concrete: 50%
+			None: 0
+			Wood: 75
+			Light: 40
+			Heavy: 90
+			Concrete: 50
 	Warhead@2Eff: CreateEffect
 		Explosion: small_explosion
 		ImpactSound: EXPLLG5.WAV
@@ -140,10 +140,10 @@ HMG:
 		Damage: 30
 		InfDeath: 2
 		Versus:
-			Wood: 15%
-			Light: 45%
-			Heavy: 20%
-			Concrete: 20%
+			Wood: 15
+			Light: 45
+			Heavy: 20
+			Concrete: 20
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -164,10 +164,10 @@ HMGo:
 		Damage: 40
 		InfDeath: 2
 		Versus:
-			Wood: 15%
-			Light: 45%
-			Heavy: 25%
-			Concrete: 20%
+			Wood: 15
+			Light: 45
+			Heavy: 25
+			Concrete: 20
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -191,11 +191,11 @@ QuadRockets:
 		InfDeath: 4
 		ValidTargets: Ground, Air
 		Versus:
-			None: 35%
-			Wood: 45%
-			Light: 100%
-			Heavy: 100%
-			Concrete: 35%
+			None: 35
+			Wood: 45
+			Light: 100
+			Heavy: 100
+			Concrete: 35
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -217,10 +217,10 @@ TurretGun:
 		Damage: 55
 		InfDeath: 4
 		Versus:
-			None: 50%
-			Wood: 75%
-			Light: 100%
-			Concrete: 65%
+			None: 50
+			Wood: 75
+			Light: 100
+			Concrete: 65
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -251,11 +251,11 @@ TowerMissile:
 		InfDeath: 3
 		ValidTargets: Ground, Air
 		Versus:
-			None: 50%
-			Wood: 45%
-			Light: 100%
-			Heavy: 50%
-			Concrete: 35%
+			None: 50
+			Wood: 45
+			Light: 100
+			Heavy: 50
+			Concrete: 35
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -275,10 +275,10 @@ TowerMissile:
 		Damage: 40
 		InfDeath: 4
 		Versus:
-			None: 50%
-			Wood: 50%
-			Light: 100%
-			Concrete: 50%
+			None: 50
+			Wood: 50
+			Light: 100
+			Concrete: 50
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -298,10 +298,10 @@ TowerMissile:
 		Damage: 40
 		InfDeath: 4
 		Versus:
-			None: 50%
-			Wood: 50%
-			Light: 100%
-			Concrete: 50%
+			None: 50
+			Wood: 50
+			Light: 100
+			Concrete: 50
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -320,11 +320,11 @@ DevBullet:
 		Damage: 100
 		InfDeath: 4
 		Versus:
-			None: 100%
-			Wood: 50%
-			Light: 100%
-			Heavy: 100%
-			Concrete: 80%
+			None: 100
+			Wood: 50
+			Light: 100
+			Heavy: 100
+			Concrete: 80
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -354,11 +354,11 @@ DevBullet:
 		InfDeath: 4
 		ValidTargets: Ground
 		Versus:
-			None: 20%
-			Wood: 50%
-			Light: 100%
-			Heavy: 50%
-			Concrete: 80%
+			None: 20
+			Wood: 50
+			Light: 100
+			Heavy: 50
+			Concrete: 80
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -383,9 +383,9 @@ FakeMissile:
 		Spread: 96
 		Damage: 10
 		Versus:
-			None: 0%
-			Wood: 0%
-			Concrete: 0%
+			None: 0
+			Wood: 0
+			Concrete: 0
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -410,11 +410,11 @@ FakeMissile:
 		Damage: 100
 		InfDeath: 3
 		Versus:
-			None: 100%
-			Wood: 80%
-			Light: 75%
-			Heavy: 50%
-			Concrete: 100%
+			None: 100
+			Wood: 80
+			Light: 75
+			Heavy: 50
+			Concrete: 100
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
@@ -435,10 +435,10 @@ Sound:
 		Damage: 150
 		InfDeath: 6
 		Versus:
-			None: 60%
-			Wood: 85%
-			Light: 80%
-			Concrete: 75%
+			None: 60
+			Wood: 85
+			Light: 80
+			Concrete: 75
 
 ChainGun:
 	ReloadDelay: 10
@@ -453,10 +453,10 @@ ChainGun:
 		Damage: 20
 		InfDeath: 2
 		Versus:
-			Wood: 50%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 25%
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
@@ -471,10 +471,10 @@ Heal:
 		Damage: -50
 		InfDeath: 1
 		Versus:
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 
 WormJaw:
 	ReloadDelay: 10
@@ -484,8 +484,8 @@ WormJaw:
 		Spread: 160
 		Damage: 100
 		Versus:
-			Wood: 0%
-			Concrete: 0%
+			Wood: 0
+			Concrete: 0
 
 ParaBomb:
 	ReloadDelay: 10
@@ -498,10 +498,10 @@ ParaBomb:
 		Damage: 500
 		InfDeath: 4
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -518,11 +518,11 @@ Napalm:
 		Damage: 300
 		InfDeath: 4
 		Versus:
-			None: 20%
-			Wood: 100%
-			Light: 30%
-			Heavy: 20%
-			Concrete: 70%
+			None: 20
+			Wood: 100
+			Light: 30
+			Heavy: 20
+			Concrete: 70
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
@@ -547,11 +547,11 @@ Atomic:
 		Damage: 1800
 		InfDeath: 5
 		Versus:
-			None: 100%
-			Wood: 100%
-			Light: 100%
-			Heavy: 50%
-			Concrete: 50%
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 50
+			Concrete: 50
 	Warhead@2Eff: CreateEffect
 		Explosion: nuke
 		ImpactSound: EXPLLG2.WAV
@@ -562,11 +562,11 @@ CrateNuke:
 		Damage: 800
 		InfDeath: 5
 		Versus:
-			None: 20%
-			Wood: 75%
-			Light: 25%
-			Heavy: 25%
-			Concrete: 50%
+			None: 20
+			Wood: 75
+			Light: 25
+			Heavy: 25
+			Concrete: 50
 	Warhead@2Eff: CreateEffect
 		Explosion: nuke
 		ImpactSound: EXPLLG2.WAV
@@ -577,10 +577,10 @@ CrateExplosion:
 		Damage: 400
 		InfDeath: 4
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: EXPLSML4.WAV
@@ -591,10 +591,10 @@ UnitExplode:
 		Damage: 500
 		InfDeath: 4
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: EXPLMD1.WAV
@@ -605,10 +605,10 @@ UnitExplodeSmall:
 		Damage: 60
 		InfDeath: 4
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 	Warhead@2Eff: CreateEffect
 		Explosion: self_destruct
 		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
@@ -619,10 +619,10 @@ UnitExplodeTiny:
 		Damage: 30
 		InfDeath: 4
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 	Warhead@2Eff: CreateEffect
 		Explosion: med_explosion
 		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
@@ -633,10 +633,10 @@ UnitExplodeScale:
 		Damage: 90
 		InfDeath: 4
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
@@ -656,10 +656,10 @@ Grenade:
 		Damage: 60
 		InfDeath: 3
 		Versus:
-			None: 50%
-			Wood: 100%
-			Light: 25%
-			Heavy: 5%
+			None: 50
+			Wood: 100
+			Light: 25
+			Heavy: 5
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
@@ -686,10 +686,10 @@ Shrapnel:
 		Damage: 60
 		InfDeath: 3
 		Versus:
-			None: 50%
-			Wood: 100%
-			Light: 25%
-			Heavy: 5%
+			None: 50
+			Wood: 100
+			Light: 25
+			Heavy: 5
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
@@ -702,10 +702,10 @@ SpiceExplosion:
 		Damage: 10
 		InfDeath: 3
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 	Warhead@2Res: CreateResource
 		AddsResourceType: Spice
 		Size: 2,2

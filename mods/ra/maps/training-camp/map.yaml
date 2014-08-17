@@ -1080,10 +1080,10 @@ Weapons:
 			Damage: 250
 			Size: 4
 			Versus:
-				None: 90%
-				Light: 60%
-				Heavy: 25%
-				Concrete: 50%
+				None: 90
+				Light: 60
+				Heavy: 25
+				Concrete: 50
 			Delay: 12
 			InfDeath: 4
 		Warhead@areanuke2Smu: LeaveSmudge
@@ -1101,10 +1101,10 @@ Weapons:
 			Damage: 250
 			Size: 3
 			Versus:
-				None: 90%
-				Light: 60%
-				Heavy: 25%
-				Concrete: 50%
+				None: 90
+				Light: 60
+				Heavy: 25
+				Concrete: 50
 			Delay: 24
 			InfDeath: 4
 		Warhead@areanuke3Smu: LeaveSmudge
@@ -1121,10 +1121,10 @@ Weapons:
 		Warhead@areanuke4: PerCellDamage
 			Damage: 250
 			Versus:
-				None: 90%
-				Light: 60%
-				Heavy: 25%
-				Concrete: 50%
+				None: 90
+				Light: 60
+				Heavy: 25
+				Concrete: 50
 			Delay: 36
 			InfDeath: 4
 		Warhead@areanuke4Smu: LeaveSmudge

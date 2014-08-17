@@ -31,27 +31,26 @@ namespace OpenRA.GameRules
 		public readonly int ProneModifier = 50;
 
 		[FieldLoader.LoadUsing("LoadVersus")]
-		[Desc("Damage vs each armortype. 0% = can't target.")]
-		public readonly Dictionary<string, float> Versus;
+		[Desc("Damage percentage versus each armortype. 0% = can't target.")]
+		public readonly Dictionary<string, int> Versus;
 
 		public static object LoadVersus(MiniYaml yaml)
 		{
 			var nd = yaml.ToDictionary();
 			return nd.ContainsKey("Versus")
-				? nd["Versus"].ToDictionary(my => FieldLoader.GetValue<float>("(value)", my.Value))
-				: new Dictionary<string, float>();
+				? nd["Versus"].ToDictionary(my => FieldLoader.GetValue<int>("(value)", my.Value))
+				: new Dictionary<string, int>();
 		}
 
 		public int DamageVersus(ActorInfo victim)
 		{
 			var armor = victim.Traits.GetOrDefault<ArmorInfo>();
-			if (armor == null || armor.Type == null)
-				return 100;
-
-			// TODO: Change versus definitions to integer percentages
-			float versus;
-			if (Versus.TryGetValue(armor.Type, out versus))
-				return (int)(versus * 100);
+			if (armor != null && armor.Type != null)
+			{
+				int versus;
+				if (Versus.TryGetValue(armor.Type, out versus))
+					return versus;
+			}
 
 			return 100;
 		}

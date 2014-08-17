@@ -774,10 +774,10 @@ Weapons:
 		Warhead: SpreadDamage
 			Spread: 256
 			Versus:
-				None: 75%
-				Wood: 75%
-				Light: 75%
-				Concrete: 100%
+				None: 75
+				Wood: 75
+				Light: 75
+				Concrete: 100
 			InfDeath: 4
 			Damage: 150
 		Warhead@2Smu: LeaveSmudge
@@ -807,11 +807,11 @@ Weapons:
 			Spread: 640
 			ValidTargets: Ground, Air
 			Versus:
-				None: 125%
-				Wood: 110%
-				Light: 110%
-				Heavy: 100%
-				Concrete: 200%
+				None: 125
+				Wood: 110
+				Light: 110
+				Heavy: 100
+				Concrete: 200
 			InfDeath: 3
 			Damage: 250
 		Warhead@2Smu: LeaveSmudge
@@ -836,11 +836,11 @@ Weapons:
 			Spread: 341
 			ValidTargets: Ground
 			Versus:
-				None: 90%
-				Wood: 170%
-				Light: 100%
-				Heavy: 100%
-				Concrete: 100%
+				None: 90
+				Wood: 170
+				Light: 100
+				Heavy: 100
+				Concrete: 100
 			InfDeath: 4
 			Damage: 15
 		Warhead@2Smu: LeaveSmudge
@@ -858,10 +858,10 @@ Weapons:
 		Warhead: SpreadDamage
 			Spread: 426
 			Versus:
-				None: 125%
-				Wood: 100%
-				Light: 60%
-				Concrete: 25%
+				None: 125
+				Wood: 100
+				Light: 60
+				Concrete: 25
 			InfDeath: 5
 			Damage: 200
 		Warhead@2Smu: LeaveSmudge
@@ -887,11 +887,11 @@ Weapons:
 		Warhead: SpreadDamage
 			Spread: 426
 			Versus:
-				None: 80%
-				Wood: 100%
-				Light: 60%
-				Heavy: 75%
-				Concrete: 35%
+				None: 80
+				Wood: 100
+				Light: 60
+				Heavy: 75
+				Concrete: 35
 			InfDeath: 5
 			Damage: 10
 		Warhead@2Smu: LeaveSmudge
@@ -912,11 +912,11 @@ Weapons:
 			Spread: 213
 			ValidTargets: Air, Ground
 			Versus:
-				None: 35%
-				Wood: 30%
-				Light: 30%
-				Heavy: 40%
-				Concrete: 30%
+				None: 35
+				Wood: 30
+				Light: 30
+				Heavy: 40
+				Concrete: 30
 			Damage: 25
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Scorch
@@ -940,10 +940,10 @@ Weapons:
 		Warhead: SpreadDamage
 			Spread: 853
 			Versus:
-				None: 100%
-				Wood: 90%
-				Light: 80%
-				Heavy: 70%
+				None: 100
+				Wood: 90
+				Light: 80
+				Heavy: 70
 			InfDeath: 3
 			Damage: 500
 		Warhead@2Smu: LeaveSmudge
@@ -962,10 +962,10 @@ Weapons:
 		Warhead: SpreadDamage
 			Spread: 128
 			Versus:
-				Wood: 0%
-				Light: 0%
-				Heavy: 50%
-				Concrete: 0%
+				Wood: 0
+				Light: 0
+				Heavy: 50
+				Concrete: 0
 			InfDeath: 2
 			Damage: 150
 		Warhead@2Eff: CreateEffect
