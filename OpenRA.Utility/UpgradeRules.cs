@@ -29,7 +29,7 @@ namespace OpenRA.Utility
 		static void ConvertFloatArrayToPercentArray(ref string input)
 		{
 			input = string.Join(", ", input.Split(',')
-				.Select(s => ((int)(float.Parse(s) * 100)).ToString()));
+				.Select(s => ((int)Math.Round(FieldLoader.GetValue<float>("(float value)", s) * 100)).ToString()));
 		}
 
 		static void ConvertPxToRange(ref string input)
@@ -753,6 +753,13 @@ namespace OpenRA.Utility
 						if (node.Key == "ROF")
 							node.Key = "ReloadDelay";
 					}
+				}
+
+				if (engineVersion < 20140821)
+				{
+					// Converted versus definitions to integers
+					if (depth == 3 && parentKey == "Versus")
+						ConvertFloatArrayToPercentArray(ref node.Value.Value);
 				}
 
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
