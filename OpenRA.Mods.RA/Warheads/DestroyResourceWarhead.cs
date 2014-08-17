@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 
 		// TODO: Allow maximum resource removal to be defined. (Per tile, and in total).
 
-		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(target.CenterPosition);

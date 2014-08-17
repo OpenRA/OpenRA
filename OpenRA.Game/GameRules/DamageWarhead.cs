@@ -42,30 +42,31 @@ namespace OpenRA.GameRules
 				: new Dictionary<string, float>();
 		}
 
-		public override float EffectivenessAgainst(ActorInfo ai)
+		public override int EffectivenessAgainst(ActorInfo ai)
 		{
 			var health = ai.Traits.GetOrDefault<HealthInfo>();
 			if (health == null)
-				return 0f;
+				return 0;
 
 			var armor = ai.Traits.GetOrDefault<ArmorInfo>();
 			if (armor == null || armor.Type == null)
-				return 1f;
+				return 100;
 
+			// TODO: Change versus definitions to integer percentages
 			float versus;
-			return Versus.TryGetValue(armor.Type, out versus) ? versus : 1f;
+			return Versus.TryGetValue(armor.Type, out versus) ? (int)(versus * 100) : 100;
 		}
 
-		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			// Used by traits that damage a single actor, rather than a position
 			if (target.Type == TargetType.Actor)
-				DoImpact(target.Actor, firedBy, firepowerModifier);
+				DoImpact(target.Actor, firedBy, damageModifiers);
 			else
-				DoImpact(target.CenterPosition, firedBy, firepowerModifier);
+				DoImpact(target.CenterPosition, firedBy, damageModifiers);
 		}
 
-		public abstract void DoImpact(Actor target, Actor firedBy, float firepowerModifier);
-		public abstract void DoImpact(WPos pos, Actor firedBy, float firepowerModifier);
+		public abstract void DoImpact(Actor target, Actor firedBy, IEnumerable<int> damageModifiers);
+		public abstract void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers);
 	}
 }

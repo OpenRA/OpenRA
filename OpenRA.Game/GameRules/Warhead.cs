@@ -27,9 +27,9 @@ namespace OpenRA.GameRules
 		[Desc("Delay in ticks before applying the warhead effect.","0 = instant (old model).")]
 		public readonly int Delay = 0;
 
-		public abstract void DoImpact(Target target, Actor firedBy, float firepowerModifier);
+		public abstract void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
 
-		public virtual float EffectivenessAgainst(ActorInfo ai) { return 0f; }
+		public virtual int EffectivenessAgainst(ActorInfo ai) { return 0; }
 
 		public bool IsValidAgainst(Target target, World world, Actor firedBy)
 		{
@@ -59,7 +59,7 @@ namespace OpenRA.GameRules
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
 			// If this warhead is ineffective against the target, then it is not a valid target
-			if (EffectivenessAgainst(victim.Info) <= 0f)
+			if (EffectivenessAgainst(victim.Info) <= 0)
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
@@ -84,7 +84,7 @@ namespace OpenRA.GameRules
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
 			// If this warhead is ineffective against the target, then it is not a valid target
-			if (EffectivenessAgainst(victim.Info) <= 0f)
+			if (EffectivenessAgainst(victim.Info) <= 0)
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.

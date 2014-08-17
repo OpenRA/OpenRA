@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.RA.Air
 				if (info.Explosion != null)
 				{
 					var weapon = self.World.Map.Rules.Weapons[info.Explosion.ToLowerInvariant()];
-					weapon.Impact(self.CenterPosition, self, 1f);
+					weapon.Impact(self.CenterPosition, self, Enumerable.Empty<int>());
 				}
 
 				self.Destroy();

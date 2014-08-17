@@ -19,7 +19,7 @@ namespace OpenRA.GameRules
 	public class ProjectileArgs
 	{
 		public WeaponInfo Weapon;
-		public float FirepowerModifier = 1.0f;
+		public IEnumerable<int> DamageModifiers;
 		public int Facing;
 		public WPos Source;
 		public Actor SourceActor;
@@ -144,13 +144,13 @@ namespace OpenRA.GameRules
 			return true;
 		}
 
-		public void Impact(WPos pos, Actor firedBy, float damageModifier)
+		public void Impact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			foreach (var wh in Warheads)
 			{
 				Action a;
 
-				a = () => wh.DoImpact(Target.FromPos(pos), firedBy, damageModifier);
+				a = () => wh.DoImpact(Target.FromPos(pos), firedBy, damageModifiers);
 				if (wh.Delay > 0)
 					firedBy.World.AddFrameEndTask(
 						w => w.Add(new DelayedAction(wh.Delay, a)));

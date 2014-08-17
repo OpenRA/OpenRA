@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Type of smudge to apply to terrain.")]
 		public readonly string[] SmudgeType = { };
 
-		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(target.CenterPosition);
