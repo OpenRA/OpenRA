@@ -21,16 +21,7 @@ namespace OpenRA.GameRules
 		[Desc("For Normal DamageModel: Distance from the explosion center at which damage is 1/2.")]
 		public readonly WRange Spread = new WRange(43);
 
-		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
-		{
-			// Used by traits that damage a single actor, rather than a position
-			if (target.Type == TargetType.Actor)
-				DoImpact(target.Actor, firedBy, firepowerModifier);
-			else
-				DoImpact(target.CenterPosition, firedBy, firepowerModifier);
-		}
-
-		public void DoImpact(WPos pos, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(WPos pos, Actor firedBy, float firepowerModifier)
 		{
 			var world = firedBy.World;
 			var maxSpread = new WRange((int)(Spread.Range * (float)Math.Log(Math.Abs(Damage), 2)));
@@ -44,7 +35,7 @@ namespace OpenRA.GameRules
 				}
 		}
 
-		public void DoImpact(Actor victim, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(Actor victim, Actor firedBy, float firepowerModifier)
 		{
 			if (IsValidAgainst(victim, firedBy))
 			{

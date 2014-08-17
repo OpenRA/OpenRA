@@ -55,5 +55,17 @@ namespace OpenRA.GameRules
 			float versus;
 			return Versus.TryGetValue(armor.Type, out versus) ? versus : 1f;
 		}
+
+		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
+		{
+			// Used by traits that damage a single actor, rather than a position
+			if (target.Type == TargetType.Actor)
+				DoImpact(target.Actor, firedBy, firepowerModifier);
+			else
+				DoImpact(target.CenterPosition, firedBy, firepowerModifier);
+		}
+
+		public abstract void DoImpact(Actor target, Actor firedBy, float firepowerModifier);
+		public abstract void DoImpact(WPos pos, Actor firedBy, float firepowerModifier);
 	}
 }

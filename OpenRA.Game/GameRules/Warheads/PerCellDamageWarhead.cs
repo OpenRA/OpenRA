@@ -21,16 +21,7 @@ namespace OpenRA.GameRules
 		[Desc("Size of the area. Damage will be applied to this area.")]
 		public readonly int[] Size = { 0, 0 };
 
-		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
-		{
-			// Used by traits that damage a single actor, rather than a position
-			if (target.Type == TargetType.Actor)
-				DoImpact(target.Actor, firedBy, firepowerModifier);
-			else
-				DoImpact(target.CenterPosition, firedBy, firepowerModifier);
-		}
-
-		public void DoImpact(WPos pos, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(WPos pos, Actor firedBy, float firepowerModifier)
 		{
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(pos);
@@ -42,7 +33,7 @@ namespace OpenRA.GameRules
 					DoImpact(victim, firedBy, firepowerModifier);
 		}
 
-		public void DoImpact(Actor victim, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(Actor victim, Actor firedBy, float firepowerModifier)
 		{
 			if (IsValidAgainst(victim, firedBy))
 			{
