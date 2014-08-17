@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 				if (weapon.Report != null && weapon.Report.Any())
 					Sound.Play(weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
 	
-				weapon.Impact(self.CenterPosition, e.Attacker, 1f);
+				weapon.Impact(self.CenterPosition, e.Attacker, Enumerable.Empty<int>());
 			}
 		}
 

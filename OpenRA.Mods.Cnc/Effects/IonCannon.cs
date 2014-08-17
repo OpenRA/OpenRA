@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			if (!impacted && weaponDelay-- <= 0)
 			{
 				var weapon = world.Map.Rules.Weapons[this.weapon.ToLowerInvariant()];
-				weapon.Impact(target.CenterPosition, firedBy.PlayerActor, 1f);
+				weapon.Impact(target.CenterPosition, firedBy.PlayerActor, Enumerable.Empty<int>());
 				impacted = true;
 			}
 		}

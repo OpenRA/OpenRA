@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Size of the area. Damage will be applied to this area.", "If two spreads are defined, the area of effect is a ring, where the second value is the inner radius.")]
 		public readonly WRange[] Spread = { new WRange(43), WRange.Zero };
 
-		public override void DoImpact(WPos pos, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var world = firedBy.World;
 			var range = Spread[0];
@@ -31,14 +31,14 @@ namespace OpenRA.Mods.RA
 				hitActors.Except(world.FindActorsInCircle(pos, Spread[1]));
 
 			foreach (var victim in hitActors)
-				DoImpact(victim, firedBy, firepowerModifier);
+				DoImpact(victim, firedBy, damageModifiers);
 		}
 
-		public override void DoImpact(Actor victim, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			if (IsValidAgainst(victim, firedBy))
 			{
-				var damage = GetDamageToInflict(victim, firedBy, firepowerModifier);
+				var damage = GetDamageToInflict(victim, firedBy, damageModifiers);
 				if (damage != 0) // will be 0 if the target doesn't have HealthInfo
 				{
 					var healthInfo = victim.Info.Traits.Get<HealthInfo>();
@@ -49,15 +49,13 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public float GetDamageToInflict(Actor target, Actor firedBy, float modifier)
+		public float GetDamageToInflict(Actor target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var healthInfo = target.Info.Traits.GetOrDefault<HealthInfo>();
 			if (healthInfo == null)
 				return 0;
 
-			var rawDamage = (float)Damage;
-
-			return rawDamage * modifier * EffectivenessAgainst(target.Info);
+			return Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(EffectivenessAgainst(target.Info)));
 		}
 	}
 }

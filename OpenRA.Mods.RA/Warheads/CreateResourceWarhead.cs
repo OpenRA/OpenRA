@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 
 		// TODO: Allow maximum resource splatter to be defined. (Per tile, and in total).
 
-		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			if (string.IsNullOrEmpty(AddsResourceType))
 				return;

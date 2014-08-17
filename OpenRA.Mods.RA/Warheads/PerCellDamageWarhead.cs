@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Size of the area. Damage will be applied to this area.")]
 		public readonly int[] Size = { 0, 0 };
 
-		public override void DoImpact(WPos pos, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(pos);
@@ -31,27 +31,25 @@ namespace OpenRA.Mods.RA
 
 			foreach (var t in affectedTiles)
 				foreach (var victim in world.ActorMap.GetUnitsAt(t))
-					DoImpact(victim, firedBy, firepowerModifier);
+					DoImpact(victim, firedBy, damageModifiers);
 		}
 
-		public override void DoImpact(Actor victim, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			if (IsValidAgainst(victim, firedBy))
 			{
-				var damage = GetDamageToInflict(victim, firedBy, firepowerModifier);
+				var damage = GetDamageToInflict(victim, firedBy, damageModifiers);
 				victim.InflictDamage(firedBy, damage, this);
 			}
 		}
 
-		public int GetDamageToInflict(Actor target, Actor firedBy, float modifier)
+		public int GetDamageToInflict(Actor target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var healthInfo = target.Info.Traits.GetOrDefault<HealthInfo>();
 			if (healthInfo == null)
 				return 0;
 
-			var rawDamage = (float)Damage;
-
-			return (int)(rawDamage * modifier * EffectivenessAgainst(target.Info));
+			return Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(EffectivenessAgainst(target.Info)));
 		}
 	}
 }

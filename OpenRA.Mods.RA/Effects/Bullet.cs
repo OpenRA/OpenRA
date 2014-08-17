@@ -172,7 +172,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			world.AddFrameEndTask(w => w.Remove(this));
 
-			args.Weapon.Impact(pos, args.SourceActor, args.FirepowerModifier);
+			args.Weapon.Impact(pos, args.SourceActor, args.DamageModifiers);
 		}
 	}
 }

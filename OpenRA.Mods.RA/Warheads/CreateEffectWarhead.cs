@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 			return false;
 		}
 
-		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var pos = target.CenterPosition;
 			var world = firedBy.World;

@@ -22,40 +22,41 @@ namespace OpenRA.Mods.RA
 		[Desc("For Normal DamageModel: Distance from the explosion center at which damage is 1/2.")]
 		public readonly WRange Spread = new WRange(43);
 
-		public override void DoImpact(WPos pos, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var world = firedBy.World;
 			var maxSpread = new WRange((int)(Spread.Range * (float)Math.Log(Math.Abs(Damage), 2)));
 			var hitActors = world.FindActorsInCircle(pos, maxSpread);
 
 			foreach (var victim in hitActors)
+			{
 				if (IsValidAgainst(victim, firedBy))
 				{
-					var damage = (int)GetDamageToInflict(pos, victim, firedBy, firepowerModifier);
+					var damage = (int)GetDamageToInflict(pos, victim, firedBy, damageModifiers);
 					victim.InflictDamage(firedBy, damage, this);
 				}
+			}
 		}
 
-		public override void DoImpact(Actor victim, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			if (IsValidAgainst(victim, firedBy))
 			{
-				var damage = GetDamageToInflict(victim.CenterPosition, victim, firedBy, firepowerModifier);
+				var damage = GetDamageToInflict(victim.CenterPosition, victim, firedBy, damageModifiers);
 				victim.InflictDamage(firedBy, damage, this);
 			}
 		}
 
-		public int GetDamageToInflict(WPos pos, Actor target, Actor firedBy, float modifier)
+		public int GetDamageToInflict(WPos pos, Actor target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var healthInfo = target.Info.Traits.GetOrDefault<HealthInfo>();
 			if (healthInfo == null)
 				return 0;
 
 			var distance = Math.Max(0, (target.CenterPosition - pos).Length - healthInfo.Radius.Range);
-			var falloff = (float)GetDamageFalloff(distance * 1f / Spread.Range);
-			var rawDamage = (float)(falloff * Damage);
+			var falloff = (int)(100 * GetDamageFalloff(distance * 1f / Spread.Range));
 
-			return (int)(rawDamage * modifier * EffectivenessAgainst(target.Info));
+			return Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(EffectivenessAgainst(target.Info), falloff));
 		}
 
 		static readonly float[] falloff =

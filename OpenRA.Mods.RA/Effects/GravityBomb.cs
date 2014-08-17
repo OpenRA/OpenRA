@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Effects
 			{
 				pos += new WVec(0, 0, args.PassiveTarget.Z - pos.Z);
 				world.AddFrameEndTask(w => w.Remove(this));
-				args.Weapon.Impact(pos, args.SourceActor, args.FirepowerModifier);
+				args.Weapon.Impact(pos, args.SourceActor, args.DamageModifiers);
 			}
 
 			anim.Tick();

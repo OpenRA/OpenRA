@@ -65,7 +65,7 @@ namespace OpenRA.Mods.D2k
 			if (health.HP <= damageThreshold || --damageTicks > 0)
 				return;
 
-			weapon.Impact(self.CenterPosition, self.World.WorldActor, 1f);
+			weapon.Impact(self.CenterPosition, self.World.WorldActor, Enumerable.Empty<int>());
 			damageTicks = weapon.ReloadDelay;
 		}
 	}
