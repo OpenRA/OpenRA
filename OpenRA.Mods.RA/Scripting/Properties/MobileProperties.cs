@@ -17,7 +17,8 @@ namespace OpenRA.Mods.RA.Scripting
 	[ScriptPropertyGroup("Movement")]
 	public class MobileProperties : ScriptActorProperties, Requires<MobileInfo>
 	{
-		public MobileProperties(Actor self) : base(self) { }
+		public MobileProperties(ScriptContext context, Actor self)
+			: base(context, self) { }
 
 		[ScriptActorPropertyActivity]
 		[Desc("Moves within the cell grid. closeEnough defines an optional range " +

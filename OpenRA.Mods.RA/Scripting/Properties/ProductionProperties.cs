@@ -20,8 +20,8 @@ namespace OpenRA.Mods.RA.Scripting
 	{
 		readonly Production p;
 
-		public ProductionProperties(Actor self)
-			: base(self)
+		public ProductionProperties(ScriptContext context, Actor self)
+			: base(context, self)
 		{
 			p = self.Trait<Production>();
 		}

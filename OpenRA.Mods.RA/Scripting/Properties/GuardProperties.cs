@@ -17,8 +17,8 @@ namespace OpenRA.Mods.RA.Scripting
 	public class GuardProperties : ScriptActorProperties, Requires<GuardInfo>, Requires<IMoveInfo>
 	{
 		Guard guard;
-		public GuardProperties(Actor self)
-			: base(self)
+		public GuardProperties(ScriptContext context, Actor self)
+			: base(context, self)
 		{
 			guard = self.Trait<Guard>();
 		}

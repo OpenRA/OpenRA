@@ -17,7 +17,8 @@ namespace OpenRA.Mods.RA.Scripting
 	[ScriptPropertyGroup("Combat")]
 	public class CombatProperties : ScriptActorProperties, Requires<AttackBaseInfo>, Requires<IMoveInfo>
 	{
-		public CombatProperties(Actor self) : base(self) { }
+		public CombatProperties(ScriptContext context, Actor self)
+			: base(context, self) { }
 
 		[ScriptActorPropertyActivity]
 		[Desc("Seek out and attack nearby targets.")]

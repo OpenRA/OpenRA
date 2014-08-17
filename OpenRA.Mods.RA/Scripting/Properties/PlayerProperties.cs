@@ -18,8 +18,8 @@ namespace OpenRA.Mods.RA.Scripting
 	{
 		readonly Player p;
 
-		public PlayerProperties(Player player)
-			: base(player)
+		public PlayerProperties(ScriptContext context, Player player)
+			: base(context, player)
 		{
 			p = player;
 		}

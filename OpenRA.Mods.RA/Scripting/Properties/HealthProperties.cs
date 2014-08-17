@@ -17,8 +17,8 @@ namespace OpenRA.Mods.RA.Scripting
 	public class HealthProperties : ScriptActorProperties, Requires<HealthInfo>
 	{
 		Health health;
-		public HealthProperties(Actor self)
-			: base(self)
+		public HealthProperties(ScriptContext context, Actor self)
+			: base(context, self)
 		{
 			health = self.Trait<Health>();
 		}
@@ -41,8 +41,8 @@ namespace OpenRA.Mods.RA.Scripting
 	public class InvulnerableProperties : ScriptActorProperties, Requires<ScriptInvulnerableInfo>
 	{
 		ScriptInvulnerable invulnerable;
-		public InvulnerableProperties(Actor self)
-			: base(self)
+		public InvulnerableProperties(ScriptContext context, Actor self)
+			: base(context, self)
 		{
 			invulnerable = self.Trait<ScriptInvulnerable>();
 		}
