@@ -27,7 +27,7 @@ UnitExplodeSmall:
 		ImpactSound: expnew13.aud
 
 Minigun:
-	ROF: 21
+	ReloadDelay: 21
 	Range: 4c0
 	Report: INFGUN3.AUD
 	Projectile: Bullet
@@ -50,7 +50,7 @@ Minigun:
 		ValidImpactTypes: Water
 
 Grenade:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 4c512
 	Projectile: Bullet
 		Speed: 85
@@ -80,7 +80,7 @@ Grenade:
 		ValidImpactTypes: Water
 
 Bazooka:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 6c0
 	Report: RKETINF1.AUD
 	ValidTargets: Ground, Air
@@ -119,7 +119,7 @@ Bazooka:
 		ValidImpactTypes: Air, AirHit
 
 MultiCluster:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 6c0
 	Report: MISL1.AUD
 	ValidTargets: Ground
@@ -154,7 +154,7 @@ MultiCluster:
 		ValidImpactTypes: Water
 
 Heal:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 2c849
 	Report: HEALER1.AUD
 	Projectile: Bullet
@@ -171,7 +171,7 @@ Heal:
 			Concrete: 0%
 
 Sniper:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 6c768
 	Report: SILENCER.AUD
 	Projectile: Bullet
@@ -189,7 +189,7 @@ Sniper:
 			Concrete: 0%
 
 M1Carbine:
-	ROF: 20
+	ReloadDelay: 20
 	Range: 4c0
 	Report: INFGUN3.AUD
 	Projectile: Bullet
@@ -212,7 +212,7 @@ M1Carbine:
 		ValidImpactTypes: Water
 
 LtRail:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 6c0
 	Report: BIGGGUN1.AUD
 	Projectile: LaserZap
@@ -233,7 +233,7 @@ LtRail:
 			Concrete: 5%
 
 CyCannon:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 7c0
 	Report: SCRIN5B.AUD
 	ValidTargets: Ground
@@ -264,7 +264,7 @@ CyCannon:
 		ValidImpactTypes: Water
 
 Vulcan3:
-	ROF: 30
+	ReloadDelay: 30
 	Burst: 3
 	Range: 4c0
 	Report: CYGUN1.AUD
@@ -288,7 +288,7 @@ Vulcan3:
 		ValidImpactTypes: Water
 
 Vulcan2:
-	ROF: 50
+	ReloadDelay: 50
 	Burst: 3
 	Range: 6c0
 	Report: TSGUN4.AUD
@@ -313,7 +313,7 @@ Vulcan2:
 		ValidImpactTypes: Water
 
 Vulcan:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 4c0
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
@@ -336,7 +336,7 @@ Vulcan:
 		ValidImpactTypes: Water
 
 FiendShard:
-	ROF: 30
+	ReloadDelay: 30
 	Burst: 3
 	Range: 5c0
 	Report: FIEND2.AUD
@@ -362,7 +362,7 @@ FiendShard:
 		ValidImpactTypes: Water
 
 JumpCannon:
-	ROF: 40
+	ReloadDelay: 40
 	Burst: 2
 	Range: 5c0
 	Report: JUMPJET1.AUD
@@ -386,7 +386,7 @@ JumpCannon:
 		ValidImpactTypes: Water
 
 HoverMissile:
-	ROF: 68
+	ReloadDelay: 68
 	Burst: 2
 	Range: 8c0
 	Report: HOVRMIS1.AUD
@@ -426,7 +426,7 @@ HoverMissile:
 		ValidImpactTypes: Air, AirHit
 
 120mmx:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 6c768
 	Report: 120MMF.AUD
 	Burst: 2
@@ -457,7 +457,7 @@ HoverMissile:
 		ValidImpactTypes: Water
 
 MammothTusk:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 6c0
 	Report: MISL1.AUD
 	ValidTargets: Air
@@ -494,7 +494,7 @@ MammothTusk:
 		ValidImpactTypes: Water
 
 Repair:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 1c819
 	Report: REPAIR11.AUD
 	Projectile: Bullet
@@ -512,7 +512,7 @@ Repair:
 			Concrete: 0%
 
 SlimeAttack:
-	ROF: 80
+	ReloadDelay: 80
 	Burst: 3
 	Range: 5c0
 	Report: VICER1.AUD
@@ -529,7 +529,7 @@ SlimeAttack:
 			Concrete: 10%
 
 SuicideBomb:
-	ROF: 1
+	ReloadDelay: 1
 	Range: 0c512
 	Report: HUNTER2.AUD
 	Warhead@1Dam: SpreadDamage
@@ -544,7 +544,7 @@ SuicideBomb:
 	Warhead@2Res: DestroyResource
 
 120mm:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 6c768
 	Report: 120MMF.AUD
 	Projectile: Bullet
@@ -569,7 +569,7 @@ SuicideBomb:
 		ValidImpactTypes: Water
 
 MechRailgun:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 8c0
 	Burst: 2
 	BurstDelay: 10
@@ -590,7 +590,7 @@ MechRailgun:
 			Concrete: 25%
 
 AssaultCannon:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 5c0
 	Report: TSGUN4.AUD
 	Projectile: Bullet
@@ -613,7 +613,7 @@ AssaultCannon:
 		ValidImpactTypes: Water
 
 BikeMissile:
-	ROF: 60
+	ReloadDelay: 60
 	Burst: 2
 	BurstDelay: 60
 	Range: 5c0
@@ -650,7 +650,7 @@ BikeMissile:
 		ValidImpactTypes: Water
 
 RaiderCannon:
-	ROF: 55
+	ReloadDelay: 55
 	Range: 4c0
 	Burst: 2
 	BurstDelay: 55
@@ -675,7 +675,7 @@ RaiderCannon:
 		ValidImpactTypes: Water
 
 FireballLauncher:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 4c256
 	Report: FLAMTNK1.AUD
 	Projectile: Bullet
@@ -697,7 +697,7 @@ FireballLauncher:
 			Concrete: 2%
 
 SonicZap:
-	ROF: 120
+	ReloadDelay: 120
 	Range: 6c0
 	Charges: yes
 	Report: SONIC4.AUD
@@ -714,7 +714,7 @@ SonicZap:
 			Concrete: 60%
 
 Dragon:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 6c0
 	Burst: 2
 	Report: MISL1.AUD
@@ -754,7 +754,7 @@ Dragon:
 		ValidImpactTypes: Air, AirHit
 
 90mm:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 6c768
 	Report: 120MMF.AUD
 	Palette: ra
@@ -783,7 +783,7 @@ Dragon:
 		ValidImpactTypes: Water
 
 155mm:
-	ROF: 110
+	ReloadDelay: 110
 	Range: 18c0
 	Report: 120MMF.AUD
 	Palette: ra
@@ -815,7 +815,7 @@ Dragon:
 		ValidImpactTypes: Water
 
 Hellfire:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 6c0
 	Report: ORCAMIS1.AUD
 	Burst: 2
@@ -855,7 +855,7 @@ Hellfire:
 		ValidImpactTypes: Air, AirHit
 
 Bomb:
-	ROF: 10
+	ReloadDelay: 10
 	Range: 5c0
 	Palette: player
 	Projectile: Bullet
@@ -883,7 +883,7 @@ Bomb:
 		ValidImpactTypes: Water
 
 Proton:
-	ROF: 3
+	ReloadDelay: 3
 	Range: 5c0
 	Report: SCRIN5B.AUD
 	Burst: 2
@@ -918,7 +918,7 @@ Proton:
 		ValidImpactTypes: Water
 
 HarpyClaw:
-	ROF: 36
+	ReloadDelay: 36
 	Range: 5c0
 	Report: CYGUN1.AUD
 	Projectile: Bullet
@@ -943,7 +943,7 @@ HarpyClaw:
 		ValidImpactTypes: Water
 
 Pistola:
-	ROF: 20
+	ReloadDelay: 20
 	Range: 3c0
 	Report: GUN18.AUD
 	Projectile: Bullet
@@ -966,7 +966,7 @@ Pistola:
 		ValidImpactTypes: Water
 
 Tiberium:
-	ROF: 16
+	ReloadDelay: 16
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 2
@@ -974,7 +974,7 @@ Tiberium:
 		PreventProne: yes
 
 TiberiumHeal:
-	ROF: 16
+	ReloadDelay: 16
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: -2
@@ -1003,7 +1003,7 @@ IonCannon:
 		Delay: 3
 
 VulcanTower:
-	ROF: 26
+	ReloadDelay: 26
 	Range: 6c0
 	Report: CHAINGN1.AUD
 	Projectile: Bullet
@@ -1025,7 +1025,7 @@ VulcanTower:
 		ValidImpactTypes: Water
 
 RPGTower:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 8c0
 	Report: GLNCH4.AUD
 	Palette: player
@@ -1056,7 +1056,7 @@ RPGTower:
 		ValidImpactTypes: Water
 
 SAMTower:
-	ROF: 55
+	ReloadDelay: 55
 	Range: 15c0
 	Report: SAMSHOT1.AUD
 	ValidTargets: Air
@@ -1080,7 +1080,7 @@ SAMTower:
 		ImpactSound: expnew12.aud
 
 ObeliskLaser:
-	ROF: 120
+	ReloadDelay: 120
 	Range: 10c512
 	Charges: true
 	Report: OBELRAY1.AUD
@@ -1095,7 +1095,7 @@ ObeliskLaser:
 		SmudgeType: Scorch
 
 TurretLaser:
-	ROF: 40
+	ReloadDelay: 40
 	Range: 5c512
 	Report: LASTUR1.AUD
 	Projectile: LaserZap
