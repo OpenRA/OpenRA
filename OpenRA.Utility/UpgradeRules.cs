@@ -732,6 +732,15 @@ namespace OpenRA.Utility
 					}
 				}
 
+				if (engineVersion < 20140818)
+				{
+					if (depth == 1)
+					{
+						if (node.Key == "ROF")
+							node.Key = "ReloadDelay";
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
