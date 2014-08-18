@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 	public class HealthPercentageDamageWarhead : DamageWarhead
 	{
 		[Desc("Size of the area. Damage will be applied to this area.", "If two spreads are defined, the area of effect is a ring, where the second value is the inner radius.")]
-		public readonly WRange[] Spread = { new WRange(43), WRange.Zero };
+		public readonly WRange[] Spread = { new WRange(43) };
 
 		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 			var range = Spread[0];
 			var hitActors = world.FindActorsInCircle(pos, range);
 			if (Spread.Length > 1 && Spread[1].Range > 0)
-				hitActors.Except(world.FindActorsInCircle(pos, Spread[1]));
+				hitActors = hitActors.Except(world.FindActorsInCircle(pos, Spread[1]));
 
 			foreach (var victim in hitActors)
 				DoImpact(victim, firedBy, damageModifiers);
