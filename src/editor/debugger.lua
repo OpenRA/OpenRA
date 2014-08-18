@@ -107,17 +107,7 @@ local function updateWatchesSync(onlyitem)
 end
 
 local simpleType = {['nil'] = true, ['string'] = true, ['number'] = true, ['boolean'] = true}
-local stackItemValue = {}
 local callData = {}
-local function checkIfExpandable(value, item)
-  local expandable = type(value) == 'table' and next(value) ~= nil
-    and not stackItemValue[value] -- only expand first time
-  if expandable then -- cache table value to expand when requested
-    stackItemValue[item:GetValue()] = value
-    stackItemValue[value] = item:GetValue() -- to avoid circular refs
-  end
-  return expandable
-end
 
 local function updateStackSync()
   local stackCtrl = debugger.stackCtrl
@@ -127,17 +117,16 @@ local function updateStackSync()
   and not debugger.scratchpad then
     local stack, _, err = debugger.stack()
     if not stack or #stack == 0 then
-      stackCtrl:DeleteAllItems()
+      stackCtrl:DeleteAll()
       if err then -- report an error if any
         stackCtrl:AppendItem(stackCtrl:AddRoot("Stack"), "Error: " .. err, image.STACK)
       end
       return
     end
     stackCtrl:Freeze()
-    stackCtrl:DeleteAllItems()
+    stackCtrl:DeleteAll()
 
     local root = stackCtrl:AddRoot("Stack")
-    stackItemValue = {} -- reset cache of items in the stack
     callData = {} -- reset call cache
     for _,frame in ipairs(stack) do
       -- "main chunk at line 24"
@@ -177,9 +166,7 @@ local function updateStackSync()
           format(name, fixUTF8(trimToMaxLength(serialize(value, params))),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
         local item = stackCtrl:AppendItem(callitem, text, image.LOCAL)
-        if checkIfExpandable(value, item) then
-          stackCtrl:SetItemHasChildren(item, true)
-        end
+        stackCtrl:SetItemValueIfExpandable(item, value)
       end
 
       -- add the upvalues for this call stack level to the tree item
@@ -189,9 +176,7 @@ local function updateStackSync()
           format(name, fixUTF8(trimToMaxLength(serialize(value, params))),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
         local item = stackCtrl:AppendItem(callitem, text, image.UPVALUE)
-        if checkIfExpandable(value, item) then
-          stackCtrl:SetItemHasChildren(item, true)
-        end
+        stackCtrl:SetItemValueIfExpandable(item, value)
       end
 
       stackCtrl:SortChildren(callitem)
@@ -952,6 +937,26 @@ local function debuggerCreateStackWindow()
 
   stackCtrl:SetImageList(debugger.imglist)
 
+  local valuecache = {}
+  function stackCtrl:SetItemValueIfExpandable(item, value)
+    local expandable = type(value) == 'table' and next(value) ~= nil
+      and not valuecache[value] -- only expand first time
+    if expandable then -- cache table value to expand when requested
+      valuecache[item:GetValue()] = value
+      valuecache[value] = item:GetValue() -- to avoid circular refs
+      self:SetItemHasChildren(item, true)
+    end
+  end
+
+  function stackCtrl:DeleteAll()
+    self:DeleteAllItems()
+    valuecache = {}
+  end
+
+  function stackCtrl:GetItemChildren(item)
+    return valuecache[item:GetValue()] or {}
+  end
+
   stackCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
       local item_id = event:GetItem()
@@ -960,15 +965,14 @@ local function debuggerCreateStackWindow()
 
       local image = stackCtrl:GetItemImage(item_id)
       local num = 1
-      for name,value in pairs(stackItemValue[item_id:GetValue()]) do
+      for name,value in pairs(stackCtrl:GetItemChildren(item_id)) do
         local strval = fixUTF8(trimToMaxLength(serialize(value, params)))
         local text = type(name) == "number"
           and (num == name and strval or ("[%s] = %s"):format(name, strval))
           or ("%s = %s"):format(tostring(name), strval)
         local item = stackCtrl:AppendItem(item_id, text, image)
-        if checkIfExpandable(value, item) then
-          stackCtrl:SetItemHasChildren(item, true)
-        end
+        stackCtrl:SetItemValueIfExpandable(item, value)
+
         num = num + 1
         if num > stackmaxnum then break end
       end
