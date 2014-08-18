@@ -1,7 +1,8 @@
 UnitExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 500
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 2
 		Versus:
 			None: 90
@@ -534,7 +535,8 @@ SuicideBomb:
 	Report: HUNTER2.AUD
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 11000
+		Damage: 110
+		Falloff: 10000, 3680, 1350, 500, 180, 70, 0
 		InfDeath: 5
 		Versus:
 			None: 90
@@ -985,7 +987,8 @@ IonCannon:
 	ValidTargets: Ground, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 1000
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		ProneModifier: 100
 		ValidTargets: Ground, Air

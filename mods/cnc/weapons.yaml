@@ -26,7 +26,8 @@ HeliExplode:
 UnitExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 500
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 4
 		Versus:
 			None: 90
@@ -70,7 +71,8 @@ Atomic:
 	Report: nukemisl.aud
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 1500
+		Damage: 150
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		ValidTargets: Ground, Air
 		Versus:
@@ -83,7 +85,8 @@ Atomic:
 		ImpactSound: nukexplo.aud
 	Warhead@3Dam_areanukea: SpreadDamage
 		Spread: 2c512
-		Damage: 1000
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Delay: 3
 		ValidTargets: Ground, Air
@@ -104,7 +107,8 @@ Atomic:
 		Delay: 3
 	Warhead@7Dam_areanukeb: SpreadDamage
 		Spread: 3c768
-		Damage: 500
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Delay: 6
 		ValidTargets: Ground, Air
@@ -122,7 +126,8 @@ Atomic:
 		Delay: 6
 	Warhead@10Dam_areanukec: SpreadDamage
 		Spread: 5c0
-		Damage: 200
+		Damage: 20
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Delay: 9
 		ValidTargets: Ground, Air
@@ -143,7 +148,8 @@ IonCannon:
 	ValidTargets: Ground, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 1000
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		ValidTargets: Ground, Air
 	Warhead@2Res_impact: DestroyResource
@@ -872,7 +878,8 @@ Napalm:
 		Image: BOMBLET
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 300
+		Damage: 30
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		ValidTargets: Ground, Water
 		Versus:
@@ -889,7 +896,8 @@ Napalm:
 Napalm.Crate:
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
-		Damage: 500
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Versus:
 			None: 90

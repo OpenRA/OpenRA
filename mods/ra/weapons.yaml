@@ -742,7 +742,8 @@ Napalm:
 CrateNapalm:
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
-		Damage: 600
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Versus:
 			None: 90
@@ -758,7 +759,8 @@ CrateNapalm:
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 500
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 4
 		Versus:
 			None: 90
@@ -772,7 +774,8 @@ CrateExplosion:
 CrateNuke:
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 256
-		Damage: 1000
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Versus:
 			None: 90
@@ -900,7 +903,8 @@ RedEye:
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 250
+		Damage: 25
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 3
 		Versus:
 			None: 60
@@ -933,7 +937,8 @@ SubMissile:
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 300
+		Damage: 30
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 3
 		Versus:
 			None: 40
@@ -1099,7 +1104,8 @@ ParaBomb:
 		Acceleration: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 500
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 4
 		Versus:
 			None: 30
@@ -1206,7 +1212,8 @@ SCUD:
 		Angle: 62
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 450
+		Damage: 45
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 3
 		Versus:
 			None: 90
@@ -1228,7 +1235,8 @@ Atomic:
 	ValidTargets: Ground, Water, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 1500
+		Damage: 150
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		ValidTargets: Ground, Water, Air
 		Versus:
@@ -1243,7 +1251,8 @@ Atomic:
 		ImpactSound: kaboom1.aud
 	Warhead@5Dam_areanuke1: SpreadDamage
 		Spread: 2c0
-		Damage: 600
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Delay: 5
 		ValidTargets: Ground, Water, Air
@@ -1261,7 +1270,8 @@ Atomic:
 		Delay: 5
 	Warhead@9Dam_areanuke2: SpreadDamage
 		Spread: 3c0
-		Damage: 600
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Delay: 10
 		ValidTargets: Ground, Water, Air
@@ -1276,7 +1286,8 @@ Atomic:
 		Delay: 10
 	Warhead@12Dam_areanuke3: SpreadDamage
 		Spread: 4c0
-		Damage: 600
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Delay: 15
 		ValidTargets: Ground, Water, Air
@@ -1291,7 +1302,8 @@ Atomic:
 		Delay: 15
 	Warhead@15Dam_areanuke4: SpreadDamage
 		Spread: 5c0
-		Damage: 600
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Delay: 20
 		ValidTargets: Ground, Water, Air
@@ -1309,7 +1321,8 @@ MiniNuke:
 	ValidTargets: Ground, Water, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 1500
+		Damage: 150
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		ValidTargets: Ground, Water, Air
 		Versus:
@@ -1321,7 +1334,8 @@ MiniNuke:
 		ImpactSound: kaboom1.aud
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 2c0
-		Damage: 600
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Delay: 5
 		ValidTargets: Ground, Water, Air
@@ -1335,7 +1349,8 @@ MiniNuke:
 		Delay: 5
 	Warhead@7Dam_areanuke2: SpreadDamage
 		Spread: 3c0
-		Damage: 600
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Delay: 10
 		ValidTargets: Ground, Water, Air
@@ -1346,7 +1361,8 @@ MiniNuke:
 		Delay: 10
 	Warhead@9Dam_areanuke3: SpreadDamage
 		Spread: 4c0
-		Damage: 600
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		Delay: 15
 		ValidTargets: Ground, Water, Air
@@ -1363,7 +1379,8 @@ MiniNuke:
 UnitExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 500
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 4
 		Versus:
 			None: 90
@@ -1429,7 +1446,8 @@ UnitExplodeSmall:
 BarrelExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 500
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 4
 		Delay: 5
 		Versus:
