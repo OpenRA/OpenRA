@@ -11,6 +11,7 @@
 using System;
 using System.Globalization;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Commands
@@ -42,7 +43,8 @@ namespace OpenRA.Mods.Common.Commands
 			register("enabletech", "toggles the ability to build everything.");
 			register("instantcharge", "toggles instant support power charging.");
 			register("all", "toggles all cheats and gives you some cash for your trouble.");
-			register("crash", "crashes the game");
+			register("crash", "crashes the game.");
+			register("levelup", "adds a specified number of levels to the selected actors.");
 		}
 
 		public void InvokeCommand(string name, string arg)
@@ -59,14 +61,14 @@ namespace OpenRA.Mods.Common.Commands
 			switch (name)
 			{
 				case "givecash":
-					var order = new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false);
+					var givecashorder = new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false);
 					int cash;
 
 					if (int.TryParse(arg, out cash))
-						order.ExtraData = (uint)cash;
+						givecashorder.ExtraData = (uint)cash;
 
 					Game.Debug("Giving {0} credits to player {1}.", cash == 0 ? "cheat default" : cash.ToString(CultureInfo.InvariantCulture), world.LocalPlayer.PlayerName);
-					world.IssueOrder(order);
+					world.IssueOrder(givecashorder);
 
 					break;
 
@@ -85,10 +87,29 @@ namespace OpenRA.Mods.Common.Commands
 					IssueDevCommand(world, "DevEnableTech");
 					IssueDevCommand(world, "DevFastCharge");
 					IssueDevCommand(world, "DevGiveCash");
+					IssueDevCommand(world, "DevLevelUp");
 					break;
 
 				case "crash":
 					throw new DevException();
+				
+				case "levelup":
+					var level = 0;
+					int.TryParse(arg, out level);
+
+					foreach (var actor in world.Selection.Actors)
+					{
+						if (actor.IsDead || actor.Destroyed)
+							continue;
+
+						var leveluporder = new Order("DevLevelUp", actor, false);
+						leveluporder.ExtraData = (uint)level;
+
+						if (actor.HasTrait<GainsExperience>())
+							world.IssueOrder(leveluporder);
+					}
+
+					break;
 			}
 		}
 
