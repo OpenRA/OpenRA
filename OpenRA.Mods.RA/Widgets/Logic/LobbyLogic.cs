@@ -150,6 +150,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var onSelect = new Action<string>(uid =>
 					{
+						// Don't select the same map again
+						if (uid == Map.Uid)
+							return;
+
 						orderManager.IssueOrder(Order.Command("map " + uid));
 						Game.Settings.Server.Map = uid;
 						Game.Settings.Save();
