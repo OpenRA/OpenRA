@@ -761,7 +761,7 @@ VoxelSequences:
 
 Weapons:
 	120mm:
-		ROF: 150
+		ReloadDelay: 150
 		Range: 10c0
 		Report: CANNON1.AUD
 		Burst: 6
@@ -786,7 +786,7 @@ Weapons:
 			Explosion: self_destruct
 			WaterExplosion: self_destruct
 	MammothTusk:
-		ROF: 300
+		ReloadDelay: 300
 		Range: 10c0
 		Report: MISSILE6.AUD
 		Burst: 2
@@ -820,7 +820,7 @@ Weapons:
 			Explosion: nuke
 			WaterExplosion: nuke
 	TankNapalm:
-		ROF: 40
+		ReloadDelay: 40
 		Range: 8c0
 		Report: AACANON3.AUD
 		ValidTargets: Ground
@@ -850,7 +850,7 @@ Weapons:
 			WaterExplosion: small_explosion
 			ImpactSound: firebl3.aud
 	ParaBomb:
-		ROF: 5
+		ReloadDelay: 5
 		Range: 5c0
 		Report: CHUTE1.AUD
 		Projectile: GravityBomb
@@ -871,7 +871,7 @@ Weapons:
 			ImpactSound: firebl3.aud
 			WaterExplosion: napalm
 	155mm:
-		ROF: 10
+		ReloadDelay: 10
 		Range: 7c5
 		Burst: 20
 		MinRange: 3c0
@@ -901,7 +901,7 @@ Weapons:
 			WaterExplosion: small_napalm
 			ImpactSound: firebl3.aud
 	FLAK-23:
-		ROF: 10
+		ReloadDelay: 10
 		Range: 8c0
 		Report: AACANON3.AUD
 		ValidTargets: Air, Ground
@@ -923,7 +923,7 @@ Weapons:
 		Warhead@3Eff: CreateEffect
 			Explosion: med_explosion
 	SCUD:
-		ROF: 280
+		ReloadDelay: 280
 		Range: 7c0
 		MinRange: 3c0
 		Report: MISSILE1.AUD
@@ -954,7 +954,7 @@ Weapons:
 			ImpactSound: kaboom1.aud
 			WaterImpactSound: kaboom1.aud
 	SilencedPPK:
-		ROF: 80
+		ReloadDelay: 80
 		Range: 25c0
 		Report: silppk.aud
 		Projectile: Bullet

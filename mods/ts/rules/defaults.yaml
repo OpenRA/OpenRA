@@ -114,12 +114,13 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Upgrades:
-			500: firepower, armor, speed
-			1000: firepower, armor, speed
+			500: firepower, armor, speed, reload
+			1000: firepower, armor, speed, reload
 	GainsStatUpgrades:
-		FirepowerModifier: 120, 150
+		FirepowerModifier: 110, 130
 		ArmorModifier: 120, 150
 		SpeedModifier: 120, 150
+		ReloadModifier: 90, 75
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -203,12 +204,13 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Upgrades:
-			500: firepower, armor, speed
-			1000: firepower, armor, speed
+			500: firepower, armor, speed, reload
+			1000: firepower, armor, speed, reload
 	GainsStatUpgrades:
-		FirepowerModifier: 120, 150
+		FirepowerModifier: 110, 130
 		ArmorModifier: 120, 150
 		SpeedModifier: 120, 150
+		ReloadModifier: 90, 75
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -255,12 +257,13 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Upgrades:
-			500: firepower, armor, speed
-			1000: firepower, armor, speed
+			500: firepower, armor, speed, reload
+			1000: firepower, armor, speed, reload
 	GainsStatUpgrades:
-		FirepowerModifier: 120, 150
+		FirepowerModifier: 110, 130
 		ArmorModifier: 120, 150
 		SpeedModifier: 120, 150
+		ReloadModifier: 90, 75
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
@@ -301,12 +304,13 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Upgrades:
-			500: firepower, armor, speed
-			1000: firepower, armor, speed
+			500: firepower, armor, speed, reload
+			1000: firepower, armor, speed, reload
 	GainsStatUpgrades:
-		FirepowerModifier: 120, 150
+		FirepowerModifier: 110, 130
 		ArmorModifier: 120, 150
 		SpeedModifier: 120, 150
+		ReloadModifier: 90, 75
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:

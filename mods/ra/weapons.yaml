@@ -1,5 +1,5 @@
 Colt45:
-	ROF: 5
+	ReloadDelay: 5
 	Range: 7c0
 	Report: GUN5.AUD
 	Projectile: Bullet
@@ -24,7 +24,7 @@ Colt45:
 ZSU-23:
 	Burst: 2
 	BurstDelay: 5
-	ROF: 0
+	ReloadDelay: 0
 	Range: 10c0
 	Report: AACANON3.AUD
 	ValidTargets: Air
@@ -44,7 +44,7 @@ ZSU-23:
 		Explosion: small_explosion_air
 
 Vulcan:
-	ROF: 30
+	ReloadDelay: 30
 	Range: 6c0
 	Report: GUN13.AUD
 	Projectile: Bullet
@@ -156,7 +156,7 @@ Vulcan:
 		Delay: 10
 
 Maverick:
-	ROF: 30
+	ReloadDelay: 30
 	Range: 9c0
 	MinRange: 3c0
 	Report: MISSILE7.AUD
@@ -194,7 +194,7 @@ Maverick:
 		ValidImpactTypes: Water
 
 FireballLauncher:
-	ROF: 65
+	ReloadDelay: 65
 	Range: 5c0
 	Burst: 2
 	BurstDelay: 20
@@ -219,7 +219,7 @@ FireballLauncher:
 		ImpactSound: firebl3.aud
 
 Flamer:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 5c0
 	Burst: 15
 	BurstDelay: 1
@@ -246,7 +246,7 @@ Flamer:
 		ImpactSound: firebl3.aud
 
 ChainGun:
-	ROF: 10
+	ReloadDelay: 10
 	Range: 5c0
 	MinRange: 1c0
 	Report: GUN13.AUD
@@ -271,7 +271,7 @@ ChainGun:
 		ValidImpactTypes: Water
 
 ChainGun.Yak:
-	ROF: 3
+	ReloadDelay: 3
 	Range: 5c0
 	MinRange: 3c0
 	Report: GUN13.AUD
@@ -295,7 +295,7 @@ ChainGun.Yak:
 		ValidImpactTypes: Water
 
 Pistol:
-	ROF: 7
+	ReloadDelay: 7
 	Range: 3c0
 	Report: GUN27.AUD
 	Projectile: Bullet
@@ -317,7 +317,7 @@ Pistol:
 		ValidImpactTypes: Water
 
 M1Carbine:
-	ROF: 20
+	ReloadDelay: 20
 	Range: 5c0
 	Report: GUN11.AUD
 	Projectile: Bullet
@@ -339,7 +339,7 @@ M1Carbine:
 		ValidImpactTypes: Water
 
 Dragon:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 5c0
 	Report: MISSILE6.AUD
 	ValidTargets: Ground, Water
@@ -375,7 +375,7 @@ Dragon:
 		ValidImpactTypes: Water
 
 HellfireAG:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 4c0
 	Report: MISSILE6.AUD
 	Burst: 2
@@ -412,7 +412,7 @@ HellfireAG:
 		ValidImpactTypes: Water
 
 HellfireAA:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 4c0
 	Report: MISSILE6.AUD
 	Burst: 2
@@ -449,7 +449,7 @@ HellfireAA:
 		ValidImpactTypes: Water
 
 Grenade:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 4c0
 	Report: grenade1.aud
 	Projectile: Bullet
@@ -479,7 +479,7 @@ Grenade:
 		ValidImpactTypes: Water
 
 25mm:
-	ROF: 13
+	ReloadDelay: 13
 	Range: 4c0
 	Report: CANNON2.AUD
 	Projectile: Bullet
@@ -504,7 +504,7 @@ Grenade:
 		ValidImpactTypes: Water
 
 90mm:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 4c768
 	Report: CANNON1.AUD
 	Projectile: Bullet
@@ -531,7 +531,7 @@ Grenade:
 		ValidImpactTypes: Water
 
 105mm:
-	ROF: 70
+	ReloadDelay: 70
 	Range: 4c768
 	Report: CANNON1.AUD
 	Burst: 2
@@ -560,7 +560,7 @@ Grenade:
 		ValidImpactTypes: Water
 
 120mm:
-	ROF: 90
+	ReloadDelay: 90
 	Range: 4c768
 	Report: CANNON1.AUD
 	Burst: 2
@@ -590,7 +590,7 @@ Grenade:
 		ValidImpactTypes: Water
 
 TurretGun:
-	ROF: 30
+	ReloadDelay: 30
 	Range: 7c0
 	Report: TURRET1.AUD
 	Projectile: Bullet
@@ -617,7 +617,7 @@ TurretGun:
 		ValidImpactTypes: Water
 
 MammothTusk:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 8c0
 	Report: MISSILE6.AUD
 	Burst: 2
@@ -657,7 +657,7 @@ MammothTusk:
 		ValidImpactTypes: Air, AirHit
 
 155mm:
-	ROF: 85
+	ReloadDelay: 85
 	Range: 14c0
 	MinRange: 3c0
 	Report: TANK5.AUD
@@ -690,7 +690,7 @@ MammothTusk:
 		ValidImpactTypes: Water
 
 M60mg:
-	ROF: 30
+	ReloadDelay: 30
 	Range: 4c0
 	Report: PILLBOX1.AUD
 	Burst: 5
@@ -713,7 +713,7 @@ M60mg:
 		ValidImpactTypes: Water
 
 Napalm:
-	ROF: 20
+	ReloadDelay: 20
 	Range: 4c512
 	Projectile: Bullet
 		Image: BOMBLET
@@ -814,7 +814,7 @@ CrateNuke:
 		Delay: 4
 
 TeslaZap:
-	ROF: 3
+	ReloadDelay: 3
 	Charges: true
 	Range: 8c512
 	Report: TESLA1.AUD
@@ -828,7 +828,7 @@ TeslaZap:
 			Wood: 60%
 
 Nike:
-	ROF: 15
+	ReloadDelay: 15
 	Range: 7c512
 	Report: MISSILE1.AUD
 	ValidTargets: Air
@@ -858,7 +858,7 @@ Nike:
 		ImpactSound: kaboom25.aud
 
 RedEye:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 7c512
 	Report: MISSILE1.AUD
 	ValidTargets: Air
@@ -887,7 +887,7 @@ RedEye:
 		ImpactSound: kaboom25.aud
 
 8Inch:
-	ROF: 250
+	ReloadDelay: 250
 	Range: 16c0
 	Burst: 2
 	Report: TURRET1.AUD
@@ -919,7 +919,7 @@ RedEye:
 		ValidImpactTypes: Water
 
 SubMissile:
-	ROF: 300
+	ReloadDelay: 300
 	Range: 16c0
 	Burst: 2
 	Report: MISSILE6.AUD
@@ -951,7 +951,7 @@ SubMissile:
 		ValidImpactTypes: Water
 
 Stinger:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 9c0
 	Report: MISSILE6.AUD
 	Burst: 2
@@ -992,7 +992,7 @@ Stinger:
 		ValidImpactTypes: Water
 
 TorpTube:
-	ROF: 100
+	ReloadDelay: 100
 	Range: 9c0
 	Report: TORPEDO1.AUD
 	ValidTargets: Water, Underwater, Bridge
@@ -1033,7 +1033,7 @@ TorpTube:
 		ValidImpactTypes: Water
 
 2Inch:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 5c512
 	Report: CANNON2.AUD
 	Projectile: Bullet
@@ -1060,7 +1060,7 @@ TorpTube:
 		ValidImpactTypes: Water
 
 DepthCharge:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 5c0
 	ValidTargets: Underwater
 	Projectile: Bullet
@@ -1090,7 +1090,7 @@ DepthCharge:
 		ValidImpactTypes: WaterHit
 
 ParaBomb:
-	ROF: 10
+	ReloadDelay: 10
 	Range: 3c0
 	Report: CHUTE1.AUD
 	Projectile: GravityBomb
@@ -1119,7 +1119,7 @@ ParaBomb:
 
 DogJaw:
 	ValidTargets: Infantry
-	ROF: 10
+	ReloadDelay: 10
 	Range: 3c0
 	Report: DOGG5P.AUD
 	Warhead@1Dam: SpreadDamage
@@ -1134,7 +1134,7 @@ DogJaw:
 			Concrete: 0%
 
 Heal:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 4c0
 	Report: HEAL2.AUD
 	Projectile: Bullet
@@ -1150,7 +1150,7 @@ Heal:
 			Concrete: 0%
 
 Repair:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 4c0
 	Report: FIXIT1.AUD
 	ValidTargets: Repair
@@ -1169,7 +1169,7 @@ Repair:
 			Concrete: 0%
 
 SilencedPPK:
-	ROF: 80
+	ReloadDelay: 80
 	Range: 2c512
 	Report: silppk.aud
 	Projectile: Bullet
@@ -1191,7 +1191,7 @@ SilencedPPK:
 		ValidImpactTypes: Water
 
 SCUD:
-	ROF: 240
+	ReloadDelay: 240
 	Range: 10c0
 	MinRange: 3c0
 	Report: MISSILE1.AUD
@@ -1478,7 +1478,7 @@ Demolish:
 		ImpactSound: kaboom25.aud
 
 PortaTesla:
-	ROF: 70
+	ReloadDelay: 70
 	Range: 3c512
 	Report: TESLA1.AUD
 	Charges: yes
@@ -1491,7 +1491,7 @@ PortaTesla:
 			None: 1000%
 
 TTankZap:
-	ROF: 120
+	ReloadDelay: 120
 	Range: 7c0
 	Report: TESLA1.AUD
 	Charges: yes
@@ -1504,7 +1504,7 @@ TTankZap:
 			None: 1000%
 
 FLAK-23:
-	ROF: 10
+	ReloadDelay: 10
 	Range: 8c0
 	Report: AACANON3.AUD
 	ValidTargets: Air, Ground, Water
@@ -1533,7 +1533,7 @@ FLAK-23:
 
 Sniper:
 	Report: GUN5.AUD
-	ROF: 70
+	ReloadDelay: 70
 	Range: 10c0
 	Projectile: Bullet
 		Speed: 1c682
@@ -1549,7 +1549,7 @@ Sniper:
 			Concrete: 0%
 
 APTusk:
-	ROF: 60
+	ReloadDelay: 60
 	Range: 6c0
 	Report: MISSILE6.AUD
 	ValidTargets: Ground, Water
@@ -1585,7 +1585,7 @@ APTusk:
 		ValidImpactTypes: Water
 
 Claw:
-	ROF: 30
+	ReloadDelay: 30
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682
@@ -1601,7 +1601,7 @@ Claw:
 			Concrete: 10%
 
 Mandible:
-	ROF: 10
+	ReloadDelay: 10
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682

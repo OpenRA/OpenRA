@@ -302,7 +302,7 @@ VoxelSequences:
 
 Weapons:
 	8Inch:
-		ROF: 200
+		ReloadDelay: 200
 		Range: 32c0
 		Burst: 4
 		Report: TURRET1
@@ -330,7 +330,7 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 	SubMissile:
-		ROF: 250
+		ReloadDelay: 250
 		Range: 32c0
 		Burst: 4
 		Report: MISSILE6

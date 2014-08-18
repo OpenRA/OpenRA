@@ -167,7 +167,7 @@ IonCannon:
 Sniper:
 	Report: RAMGUN2.AUD
 	ValidTargets: Infantry
-	ROF: 40
+	ReloadDelay: 40
 	Range: 6c0
 	Projectile: Bullet
 		Speed: 1c682
@@ -178,7 +178,7 @@ Sniper:
 		ValidTargets: Infantry
 
 HighV:
-	ROF: 25
+	ReloadDelay: 25
 	Range: 6c0
 	Report: GUN8.AUD
 	Projectile: Bullet
@@ -196,7 +196,7 @@ HighV:
 		Explosion: piffs
 
 HeliAGGun:
-	ROF: 20
+	ReloadDelay: 20
 	Burst: 2
 	BurstDelay: 0
 	Range: 4c0
@@ -219,7 +219,7 @@ HeliAGGun:
 		Explosion: piffs
 
 HeliAAGun:
-	ROF: 20
+	ReloadDelay: 20
 	Burst: 2
 	BurstDelay: 0
 	Range: 4c0
@@ -242,7 +242,7 @@ HeliAAGun:
 		Explosion: piffs
 
 Pistol:
-	ROF: 7
+	ReloadDelay: 7
 	Range: 3c0
 	InvalidTargets: Wall
 	Report: GUN18.AUD
@@ -262,7 +262,7 @@ Pistol:
 		Explosion: piff
 
 M16:
-	ROF: 20
+	ReloadDelay: 20
 	Range: 4c0
 	InvalidTargets: Wall
 	Report: MGUN2.AUD
@@ -282,7 +282,7 @@ M16:
 		Explosion: piff
 
 Rockets:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 6c0
 	Report: BAZOOK1.AUD
 	ValidTargets: Ground, Air
@@ -314,7 +314,7 @@ Rockets:
 		ImpactSound: xplos.aud
 
 BikeRockets:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 6c0
 	Report: BAZOOK1.AUD
 	ValidTargets: Ground, Air
@@ -348,7 +348,7 @@ BikeRockets:
 		ImpactSound: xplos.aud
 
 OrcaAGMissiles:
-	ROF: 12
+	ReloadDelay: 12
 	Burst: 2
 	BurstDelay: 12
 	Range: 5c0
@@ -381,7 +381,7 @@ OrcaAGMissiles:
 		ImpactSound: xplos.aud
 
 OrcaAAMissiles:
-	ROF: 12
+	ReloadDelay: 12
 	Burst: 2
 	BurstDelay: 12
 	Range: 5c0
@@ -412,7 +412,7 @@ OrcaAAMissiles:
 		ImpactSound: xplos.aud
 
 Flamethrower:
-	ROF: 55
+	ReloadDelay: 55
 	Range: 2c512
 	InvalidTargets: Wall
 	Report: FLAMER2.AUD
@@ -435,7 +435,7 @@ Flamethrower:
 		ImpactSound: flamer2.aud
 
 BigFlamer:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 3c512
 	InvalidTargets: Wall
 	Report: FLAMER2.AUD
@@ -460,7 +460,7 @@ BigFlamer:
 		ImpactSound: flamer2.aud
 
 Chemspray:
-	ROF: 70
+	ReloadDelay: 70
 	Range: 3c0
 	Report: FLAMER2.AUD
 	Projectile: Bullet
@@ -481,7 +481,7 @@ Chemspray:
 		ImpactSound: xplos.aud
 
 Grenade:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 4c0
 	Report: toss1.aud
 	Projectile: Bullet
@@ -506,7 +506,7 @@ Grenade:
 		ImpactSound: xplos.aud
 
 70mm:
-	ROF: 30
+	ReloadDelay: 30
 	Range: 4c0
 	Report: TNKFIRE3.AUD
 	Projectile: Bullet
@@ -529,7 +529,7 @@ Grenade:
 		ImpactSound: xplos.aud
 
 105mm:
-	ROF: 50
+	ReloadDelay: 50
 	Range: 4c768
 	Report: TNKFIRE4.AUD
 	Projectile: Bullet
@@ -551,7 +551,7 @@ Grenade:
 		ImpactSound: xplos.aud
 
 120mm:
-	ROF: 40
+	ReloadDelay: 40
 	Range: 4c768
 	Report: TNKFIRE6.AUD
 	Projectile: Bullet
@@ -574,7 +574,7 @@ Grenade:
 		ImpactSound: xplos.aud
 
 120mmDual:
-	ROF: 40
+	ReloadDelay: 40
 	Range: 4c768
 	Report: TNKFIRE6.AUD
 	Burst: 2
@@ -599,7 +599,7 @@ Grenade:
 		ImpactSound: xplos.aud
 
 TurretGun:
-	ROF: 20
+	ReloadDelay: 20
 	Range: 6c0
 	Report: TNKFIRE6.AUD
 	Projectile: Bullet
@@ -621,7 +621,7 @@ TurretGun:
 		ImpactSound: xplos.aud
 
 MammothMissiles:
-	ROF: 45
+	ReloadDelay: 45
 	Range: 5c0
 	Report: ROCKET1.AUD
 	ValidTargets: Ground, Air
@@ -659,7 +659,7 @@ MammothMissiles:
 		ValidImpactTypes: Air, AirHit
 
 227mm:
-	ROF: 140
+	ReloadDelay: 140
 	Range: 12c0
 	MinRange: 3c0
 	Burst: 4
@@ -694,7 +694,7 @@ MammothMissiles:
 		ImpactSound: xplos.aud
 
 227mm.stnk:
-	ROF: 70
+	ReloadDelay: 70
 	Range: 7c0
 	Report: ROCKET1.AUD
 	Burst: 2
@@ -727,7 +727,7 @@ MammothMissiles:
 		ImpactSound: xplos.aud
 
 ArtilleryShell:
-	ROF: 65
+	ReloadDelay: 65
 	Range: 11c0
 	MinRange: 2c896
 	Report: TNKFIRE2.AUD
@@ -754,7 +754,7 @@ ArtilleryShell:
 		ImpactSound: XPLOSML2.AUD
 
 MachineGun:
-	ROF: 20
+	ReloadDelay: 20
 	Burst: 5
 	InvalidTargets: Wall
 	Range: 4c0
@@ -776,7 +776,7 @@ MachineGun:
 		Explosion: piffs
 
 BoatMissile:
-	ROF: 35
+	ReloadDelay: 35
 	Range: 8c0
 	Burst: 2
 	BurstDelay: 7
@@ -812,7 +812,7 @@ BoatMissile:
 		ValidImpactTypes: Air, AirHit
 
 TowerMissle:
-	ROF: 15
+	ReloadDelay: 15
 	Range: 7c0
 	Report: ROCKET2.AUD
 	ValidTargets: Ground
@@ -844,7 +844,7 @@ TowerMissle:
 
 Vulcan:
 	ValidTargets: Ground, Water
-	ROF: 2
+	ReloadDelay: 2
 	Range: 6c0
 	Report: gun5.aud
 	Projectile: Bullet
@@ -864,7 +864,7 @@ Vulcan:
 
 Napalm:
 	ValidTargets: Ground, Water
-	ROF: 4
+	ReloadDelay: 4
 	Range: 2c0
 	Burst: 2
 	BurstDelay: 2
@@ -903,7 +903,7 @@ Napalm.Crate:
 		ImpactSound: flamer2.aud
 
 Laser:
-	ROF: 1
+	ReloadDelay: 1
 	Range: 7c512
 	Charges: true
 	Report: OBELRAY1.AUD
@@ -920,7 +920,7 @@ Laser:
 		SmudgeType: Scorch
 
 SAMMissile:
-	ROF: 15
+	ReloadDelay: 15
 	Range: 8c0
 	Report: ROCKET2.AUD
 	ValidTargets: Air
@@ -950,7 +950,7 @@ SAMMissile:
 		ImpactSound: xplos.aud
 
 HonestJohn:
-	ROF: 200
+	ReloadDelay: 200
 	Range: 10c0
 	Report: ROCKET1.AUD
 	Projectile: Bullet
@@ -979,7 +979,7 @@ HonestJohn:
 		ImpactSound: xplos.aud
 
 Tiberium:
-	ROF: 16
+	ReloadDelay: 16
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 2
@@ -1004,14 +1004,14 @@ TiberiumExplosion:
 		ImpactSound: xplosml2.aud
 
 Heal:
-	ROF: 4
+	ReloadDelay: 4
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: -1
 		PreventProne: yes
 
 APCGun:
-	ROF: 18
+	ReloadDelay: 18
 	Range: 5c0
 	Report: gun20.aud
 	ValidTargets: Ground
@@ -1030,7 +1030,7 @@ APCGun:
 		Explosion: small_poof
 
 APCGun.AA:
-	ROF: 18
+	ReloadDelay: 18
 	Range: 7c0
 	Report: gun20.aud
 	ValidTargets: Air
@@ -1047,7 +1047,7 @@ APCGun.AA:
 		Explosion: small_frag
 
 Patriot:
-	ROF: 25
+	ReloadDelay: 25
 	Range: 9c0
 	MinRange: 1c0
 	Report: ROCKET2.AUD
@@ -1078,7 +1078,7 @@ Patriot:
 		ImpactSound: xplos.aud
 
 Tail:
-	ROF: 30
+	ReloadDelay: 30
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682
@@ -1094,7 +1094,7 @@ Tail:
 			Concrete: 10%
 
 Horn:
-	ROF: 20
+	ReloadDelay: 20
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682
@@ -1110,7 +1110,7 @@ Horn:
 			Concrete: 10%
 
 Teeth:
-	ROF: 30
+	ReloadDelay: 30
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682
@@ -1126,7 +1126,7 @@ Teeth:
 			Concrete: 10%
 
 Claw:
-	ROF: 10
+	ReloadDelay: 10
 	Range: 1c0
 	Projectile: Bullet
 		Speed: 1c682
