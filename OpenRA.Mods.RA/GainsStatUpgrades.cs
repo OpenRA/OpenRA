@@ -21,8 +21,8 @@ namespace OpenRA.Mods.RA
 		public readonly string FirepowerUpgrade = "firepower";
 		public readonly int[] FirepowerModifier = { 110, 115, 120, 130 };
 
-		public readonly string ArmorUpgrade = "armor";
-		public readonly int[] ArmorModifier = { 110, 120, 130, 150 };
+		public readonly string DamageUpgrade = "damage";
+		public readonly int[] DamageModifier = { 91, 87, 83, 65 };
 
 		public readonly string SpeedUpgrade = "speed";
 		public readonly int[] SpeedModifier = { 110, 115, 120, 150 };
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 		readonly GainsStatUpgradesInfo info;
 		[Sync] int firepowerLevel = 0;
 		[Sync] int speedLevel = 0;
-		[Sync] int armorLevel = 0;
+		[Sync] int damageLevel = 0;
 		[Sync] int reloadLevel = 0;
 
 		public GainsStatUpgrades(GainsStatUpgradesInfo info)
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 		public bool AcceptsUpgrade(string type)
 		{
 			return (type == info.FirepowerUpgrade && firepowerLevel < info.FirepowerModifier.Length)
-				|| (type == info.ArmorUpgrade && armorLevel < info.ArmorModifier.Length)
+				|| (type == info.DamageUpgrade && damageLevel < info.DamageModifier.Length)
 				|| (type == info.SpeedUpgrade && speedLevel < info.SpeedModifier.Length)
 				|| (type == info.ReloadUpgrade && reloadLevel < info.ReloadModifier.Length);
 		}
@@ -59,8 +59,8 @@ namespace OpenRA.Mods.RA
 			var mod = available ? 1 : -1;
 			if (type == info.FirepowerUpgrade)
 				firepowerLevel = (firepowerLevel + mod).Clamp(0, info.FirepowerModifier.Length);
-			else if (type == info.ArmorUpgrade)
-				armorLevel = (armorLevel + mod).Clamp(0, info.ArmorModifier.Length);
+			else if (type == info.DamageUpgrade)
+				damageLevel = (damageLevel + mod).Clamp(0, info.DamageModifier.Length);
 			else if (type == info.SpeedUpgrade)
 				speedLevel = (speedLevel + mod).Clamp(0, info.SpeedModifier.Length);
 			else if (type == info.ReloadUpgrade)
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA
 
 		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
 		{
-			return armorLevel > 0 ? 1 / info.ArmorModifier[armorLevel - 1] : 100;
+			return damageLevel > 0 ? info.DamageModifier[damageLevel - 1] : 100;
 		}
 
 		public int GetFirepowerModifier()
