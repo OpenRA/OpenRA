@@ -41,7 +41,8 @@ namespace OpenRA.Mods.RA
 			register("enabletech", "toggles the ability to build everything.");
 			register("instantcharge", "toggles instant support power charging.");
 			register("all", "toggles all cheats and gives you some cash for your trouble.");
-			register("crash", "crashes the game");
+			register("crash", "crashes the game.");
+			register("levelup", "adds a specified number of levels to the selected actors.");
 		}
 
 		public void InvokeCommand(string name, string arg)
@@ -85,6 +86,30 @@ namespace OpenRA.Mods.RA
 
 				case "crash":
 					throw new DevException();
+				
+				case "levelup":
+					var level = 0;
+					
+					if (!int.TryParse(arg, out level))
+					{
+						Game.Debug("{0} is not a valid number.", arg);
+						break;
+					}
+
+					foreach (var actor in world.Selection.Actors)
+					{
+						if (actor == null)
+							continue;
+
+						world.AddFrameEndTask(w =>
+						{
+							var gainsExperience = actor.TraitOrDefault<GainsExperience>();
+							if (gainsExperience != null)
+								gainsExperience.GiveLevels(level);
+						});
+					}
+
+					break;
 			}
 		}
 
