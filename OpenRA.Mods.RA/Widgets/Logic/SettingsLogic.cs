@@ -149,6 +149,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var gs = Game.Settings.Game;
 
 			BindCheckboxPref(panel, "PIXELDOUBLE_CHECKBOX", ds, "PixelDouble");
+			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
 			BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
 			BindCheckboxPref(panel, "ALWAYS_SHOW_STATUS_BARS_CHECKBOX", gs, "AlwaysShowStatusBars");
@@ -165,12 +166,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			// Update zoom immediately
 			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
-			var oldOnClick = pixelDoubleCheckbox.OnClick;
+			var pixelDoubleOnClick = pixelDoubleCheckbox.OnClick;
 			pixelDoubleCheckbox.OnClick = () =>
 			{
-				oldOnClick();
+				pixelDoubleOnClick();
 				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
 			};
+
+			var cursorDoubleCheckbox = panel.Get<CheckboxWidget>("CURSORDOUBLE_CHECKBOX");
+			cursorDoubleCheckbox.IsDisabled = () => !ds.PixelDouble;
 
 			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
@@ -218,6 +222,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				ds.WindowedSize = dds.WindowedSize;
 
 				ds.PixelDouble = dds.PixelDouble;
+				ds.CursorDouble = dds.CursorDouble;
 				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
 			};
 		}
