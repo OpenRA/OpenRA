@@ -132,18 +132,22 @@ World:
 	MPStartLocations:
 	MPStartUnits@mcvatreides:
 		Class: none
+		ClassName: MCV Only
 		Races: atreides
 		BaseActor: mcva
 	MPStartUnits@mcvharkonnen:
 		Class: none
 		Races: harkonnen
+		ClassName: MCV Only
 		BaseActor: mcvh
 	MPStartUnits@mcvordos:
 		Class: none
+		ClassName: MCV Only
 		Races: ordos
 		BaseActor: mcvo
 	MPStartUnits@lightatreides:
 		Class: light
+		ClassName: Light Support
 		Races: atreides
 		BaseActor: mcva
 		SupportActors: rifle, rifle, bazooka, trike, quad
@@ -151,6 +155,7 @@ World:
 		OuterSupportRadius: 5
 	MPStartUnits@lightharkonnen:
 		Class: light
+		ClassName: Light Support
 		Races: harkonnen
 		BaseActor: mcvh
 		SupportActors: rifle, bazooka, grenadier, trike, quad
@@ -158,6 +163,7 @@ World:
 		OuterSupportRadius: 5
 	MPStartUnits@lightordos:
 		Class: light
+		ClassName: Light Support
 		Races: ordos
 		BaseActor: mcvo
 		SupportActors: rifle, rifle, engineer, raider, quad
@@ -165,6 +171,7 @@ World:
 		OuterSupportRadius: 5
 	MPStartUnits@heavyatreides:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: atreides
 		BaseActor: mcva
 		SupportActors: rifle, bazooka, grenadier, trike, combata, missiletank
@@ -172,6 +179,7 @@ World:
 		OuterSupportRadius: 5
 	MPStartUnits@heavyharkonnen:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: harkonnen
 		BaseActor: mcvh
 		SupportActors: rifle, bazooka, engineer, quad, combath, siegetank
@@ -179,6 +187,7 @@ World:
 		OuterSupportRadius: 5
 	MPStartUnits@heavyordos:
 		Class: heavy
+		ClassName: Heavy Support
 		Races: ordos
 		BaseActor: mcvo
 		SupportActors: rifle, bazooka, engineer, raider, combato, missiletank

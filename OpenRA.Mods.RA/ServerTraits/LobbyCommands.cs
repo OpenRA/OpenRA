@@ -552,9 +552,13 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
+						var startUnitsInfo = server.Map.Rules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>();
+						var selectedClass = startUnitsInfo.Where(u => u.Class == s).Select(u => u.ClassName).FirstOrDefault();
+						var className = selectedClass != null ? selectedClass : s;
+
 						server.LobbyInfo.GlobalSettings.StartingUnitsClass = s;
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} changed Starting Units to {1}.".F(client.Name, s));
+						server.SendMessage("{0} changed Starting Units to {1}.".F(client.Name, className));
 
 						return true;
 					}},
