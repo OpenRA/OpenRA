@@ -323,7 +323,7 @@ Actors:
 	Actor83: nuke
 		Location: 53,52
 		Owner: GDI
-		Health: 0.0390625
+		Health: 0.025
 		Facing: 0
 	NodRefinery: proc
 		Location: 57,34
@@ -739,14 +739,18 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		LuaScriptInterface:
-			LuaScripts: gdi02.lua
+		LuaScript:
+			Scripts: gdi02.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+	^Infantry:
+		MustBeDestroyed:
+	^Vehicles:
+		MustBeDestroyed:
 	PROC:
 		Buildable:
 			Prerequisites: ~disabled
