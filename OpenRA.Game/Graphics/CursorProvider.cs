@@ -22,6 +22,8 @@ namespace OpenRA.Graphics
 		Dictionary<string, CursorSequence> cursors;
 		Cache<string, PaletteReference> palettes;
 
+		public static bool CursorViewportZoomed { get { return Game.Settings.Graphics.CursorDouble && Game.Settings.Graphics.PixelDouble; } }
+
 		public CursorProvider(ModData modData)
 		{
 			var sequenceFiles = modData.Manifest.Cursors;
@@ -72,12 +74,17 @@ namespace OpenRA.Graphics
 		{
 			var cursorSequence = GetCursorSequence(cursorName);
 			var cursorSprite = cursorSequence.GetSprite(cursorFrame);
+			var cursorSize = CursorViewportZoomed ? 2.0f * cursorSprite.size : cursorSprite.size;
+
+			var cursorOffset = CursorViewportZoomed ?
+				(2 * cursorSequence.Hotspot) + cursorSprite.size.ToInt2() :
+				cursorSequence.Hotspot + (0.5f * cursorSprite.size).ToInt2();
 
 			renderer.SetPalette(palette);
 			renderer.SpriteRenderer.DrawSprite(cursorSprite,
-			                                   lastMousePos - cursorSequence.Hotspot - (0.5f * cursorSprite.size).ToInt2(),
-			                                   palettes[cursorSequence.Palette],
-			                                   cursorSprite.size);
+				lastMousePos - cursorOffset,
+				palettes[cursorSequence.Palette],
+				cursorSize);
 		}
 
 		public CursorSequence GetCursorSequence(string cursor)

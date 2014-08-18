@@ -126,6 +126,13 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Enable Pixel Doubling
+				Checkbox@CURSORDOUBLE_CHECKBOX:
+					X: 355
+					Y: 135
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Also Double Cursor
 				Label@FRAME_LIMIT_DESC_A:
 					X: 45
 					Y: 132
@@ -146,7 +153,7 @@ Background@SETTINGS_PANEL:
 					Text: FPS
 				Checkbox@TEAM_HEALTH_COLORS_CHECKBOX:
 					X: 310
-					Y: 135
+					Y: 170
 					Width: 200
 					Height: 20
 					Font: Regular
@@ -160,7 +167,7 @@ Background@SETTINGS_PANEL:
 					Text: Show Shellmap
 				Checkbox@ALWAYS_SHOW_STATUS_BARS_CHECKBOX:
 					X: 310
-					Y: 170
+					Y: 205
 					Width: 200
 					Height: 20
 					Font: Regular
