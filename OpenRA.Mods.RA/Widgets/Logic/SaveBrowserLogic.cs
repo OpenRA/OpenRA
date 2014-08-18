@@ -28,8 +28,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollItemWidget playerTemplate, playerHeader;
 		List<ReplayMetadata> saves;
 		Dictionary<ReplayMetadata, SaveState> saveState = new Dictionary<ReplayMetadata, SaveState>();
-		Action<ReplayMetadata> onLoad;
 		ScrollPanelWidget descriptionPanel;
+		Action<ReplayMetadata> onLoad;
 		LabelWidget descriptionLabel;
 		SpriteFont descriptionFont;
 
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ReplayMetadata selectedSave;
 
 		[ObjectCreator.UseCtor]
-		public SaveBrowserLogic(Widget widget, Action onExit, Action<ReplayMetadata> onLoad, GameType filter)
+		public SaveBrowserLogic(Widget widget, Action onExit, Action<ReplayMetadata> onLoad)
 		{
 			this.onLoad = onLoad;
 			panel = widget;
@@ -336,7 +336,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var item = ScrollItemWidget.Setup(template,
 				() => selectedSave == save,
 				() => SelectSave(save),
-				() => { onLoad(save); Ui.CloseWindow(); });
+				() => { Ui.CloseWindow(); onLoad(save); });
 
 			saveState[save] = new SaveState
 			{

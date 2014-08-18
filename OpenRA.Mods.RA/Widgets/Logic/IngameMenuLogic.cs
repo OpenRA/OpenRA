@@ -15,6 +15,7 @@ using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Widgets;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using System.IO;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
@@ -107,6 +108,45 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{ "worldRenderer", worldRenderer },
 					{ "onExit", () => hideMenu = false },
 				});
+			};
+
+			Action<string, string> Save = (string dir, string name) =>
+			{
+				world.Save(dir, name);
+			};
+
+			var saveButton = menu.Get<ButtonWidget>("SAVE");
+			saveButton.IsDisabled = () => !world.CanSave();
+			saveButton.OnClick = () =>
+			{
+				var mod = Game.modData.Manifest.Mod;
+				var dir = new[] { Platform.SupportDir, "Saves", mod.Id, mod.Version }.Aggregate(Path.Combine);
+				var invalidChars = Path.GetInvalidFileNameChars();
+
+				ConfirmationDialogs.TextInputPrompt(
+					"Save",
+					"Enter a file name:",
+					"",
+					onAccept: new Action<string>(filename => Save(dir, filename)),
+					onCancel: null,
+					acceptText: "Save",
+					cancelText: "Cancel",
+					inputValidator: filename =>
+					{
+						if (filename == "")
+							return false;
+
+						if (string.IsNullOrWhiteSpace(filename))
+							return false;
+
+						if (filename.IndexOfAny(invalidChars) >= 0)
+							return false;
+
+						if (File.Exists(Path.Combine(dir, filename)))
+							return false;
+
+						return true;
+					});
 			};
 
 			var resumeButton = menu.Get<ButtonWidget>("RESUME");

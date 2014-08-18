@@ -94,6 +94,16 @@ namespace OpenRA
 			get { return orderManager.Connection is ReplayConnection; }
 		}
 
+		public bool CanSave()
+		{
+			return orderManager.Connection is ReplayRecorderConnection;
+		}
+
+		public void Save(string directory, string filename)
+		{
+			this.AddFrameEndTask((w) => ((ReplayRecorderConnection)orderManager.Connection).SaveToFile(directory, filename));
+		}
+
 		public bool AllowDevCommands
 		{
 			get { return LobbyInfo.GlobalSettings.AllowCheats || LobbyInfo.IsSinglePlayer; }

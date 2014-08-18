@@ -23,7 +23,7 @@ Container@INGAME_MENU:
 		Container@MENU_BUTTONS:
 			X: (WINDOW_RIGHT-WIDTH)/2
 			Y: WINDOW_BOTTOM-33-HEIGHT-10
-			Width: 740
+			Width: 890
 			Height: 35
 			Children:
 				Button@ABORT_MISSION:
@@ -50,9 +50,15 @@ Container@INGAME_MENU:
 					Width: 140
 					Height: 35
 					Text: Settings
+				Button@SAVE:
+					X: 600
+					Y: 0
+					Width: 140
+					Height: 35
+					Text: Save
 				Button@RESUME:
 					Key: escape
-					X: 600
+					X: 750
 					Y: 0
 					Width: 140
 					Height: 35
