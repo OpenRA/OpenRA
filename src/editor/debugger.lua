@@ -940,12 +940,10 @@ local function debuggerCreateStackWindow()
   local valuecache = {}
   function stackCtrl:SetItemValueIfExpandable(item, value)
     local expandable = type(value) == 'table' and next(value) ~= nil
-      and not valuecache[value] -- only expand first time
     if expandable then -- cache table value to expand when requested
       valuecache[item:GetValue()] = value
-      valuecache[value] = item:GetValue() -- to avoid circular refs
-      self:SetItemHasChildren(item, true)
     end
+    self:SetItemHasChildren(item, expandable)
   end
 
   function stackCtrl:DeleteAll()
