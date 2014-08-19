@@ -73,7 +73,7 @@ namespace OpenRA.Graphics
 
 			currentBlend = s.blendMode;
 			currentSheet = s.sheet;
-			Util.FastCreateQuad(vertices, location + s.offset, s, paletteIndex, nv, size);
+			Util.FastCreateQuad(vertices, location + s.fractionalOffset * size, s, paletteIndex, nv, size);
 			nv += 4;
 		}
 
