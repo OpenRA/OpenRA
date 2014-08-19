@@ -1037,30 +1037,38 @@ local function debuggerCreateWatchWindow()
   watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_DELETE_ITEM,
     function (event) expressions[event:GetItem():GetValue()] = nil end)
 
+  local item
   watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
-    function () watchCtrl:PopupMenu(watchMenu) end)
+    function (event)
+      -- store the item to be used in edit/delete actions
+      item = watchCtrl:HitTest(watchCtrl:ScreenToClient(wx.wxGetMousePosition()))
+      watchCtrl:PopupMenu(watchMenu)
+    end)
 
   watchCtrl:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
     function (event) watchCtrl:EditLabel(watchCtrl:AppendItem(root, defaultExpr, image.LOCAL)) end)
 
   watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function (event) watchCtrl:EditLabel(watchCtrl:GetSelection()) end)
+    function (event) watchCtrl:EditLabel(item) end)
   watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_UPDATE_UI,
-    function (event) event:Enable(watchCtrl:GetSelection():IsOk()) end)
+    function (event)
+      event:Enable(item:IsOk()
+        and watchCtrl:GetItemParent(item):GetValue() == root:GetValue())
+    end)
 
   watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function (event) watchCtrl:Delete(watchCtrl:GetSelection()) end)
+    function (event) watchCtrl:Delete(item) end)
   watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_UPDATE_UI,
-    function (event) event:Enable(watchCtrl:GetSelection():IsOk()) end)
-
-  watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
-    function (event) watchCtrl:EditLabel(watchCtrl:GetSelection()) end)
+    function (event)
+      event:Enable(item:IsOk()
+        and watchCtrl:GetItemParent(item):GetValue() == root:GetValue())
+    end)
 
   local label
   watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT,
     function (event)
       local item = event:GetItem()
-      if not item:IsOk() then event:Veto() end
+      if not item:IsOk() then event:Veto(); return end
 
       label = watchCtrl:GetItemText(item)
       local expr = watchCtrl:GetItemExpression(item)
