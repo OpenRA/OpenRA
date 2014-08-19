@@ -135,6 +135,7 @@
     <Compile Include="Server\Connection.cs" />
     <Compile Include="Server\Exts.cs" />
     <Compile Include="Server\ProtocolVersion.cs" />
+    <Compile Include="Server\ReplayViewer.cs" />
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\ServerOrder.cs" />
     <Compile Include="Server\TraitInterfaces.cs" />

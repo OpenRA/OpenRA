@@ -115,6 +115,25 @@ namespace OpenRA.Network
 						break;
 					}
 
+				case "SendPermission":
+					{
+						if (order.TargetString == "DisableNoSim")
+						{
+							orderManager.Connection.DisableSend = true;
+						}
+						else if (order.TargetString == "DisableSim")
+						{
+							orderManager.Connection.DisableSend = true;
+							Game.IsSimulating = true;
+						}
+						else
+						{
+							orderManager.Connection.DisableSend = false;
+							Game.IsSimulating = false;
+						}
+						break;
+					}
+
 				case "HandshakeRequest":
 					{
 						// TODO: Switch to the server's mod if we have it

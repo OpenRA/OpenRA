@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Traits;
@@ -22,6 +23,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class LobbyLogic
 	{
+		public enum LobbyType { All, Server, Load };
+
 		static readonly Action DoNothing = () => { };
 
 		public MapPreview Map = MapCache.UnknownMap;
@@ -90,7 +93,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		internal LobbyLogic(Widget widget, WorldRenderer worldRenderer, OrderManager orderManager,
-			Action onExit, Action onStart, bool skirmishMode, Ruleset modRules)
+			Action onExit, Action onStart, LobbyType lobbyType, bool skirmishMode, Ruleset modRules)
 		{
 			lobby = widget;
 			this.orderManager = orderManager;
@@ -145,6 +148,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
 			if (mapButton != null)
 			{
+				mapButton.IsVisible = () => lobbyType == LobbyType.Server || lobbyType == LobbyType.All;
 				mapButton.IsDisabled = configurationDisabled; 
 				mapButton.OnClick = () =>
 				{
@@ -156,6 +160,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 						orderManager.IssueOrder(Order.Command("map " + uid));
 						Game.Settings.Server.Map = uid;
+						Game.Settings.Server.Replay = null;
 						Game.Settings.Save();
 					});
 
@@ -164,6 +169,30 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						{ "initialMap", Map.Uid },
 						{ "onExit", DoNothing },
 						{ "onSelect", onSelect }
+					});
+				};
+			}
+
+			var loadButton = lobby.GetOrNull<ButtonWidget>("LOAD_BUTTON");
+			if (loadButton != null)
+			{
+				loadButton.IsVisible = () => lobbyType == LobbyType.Load || lobbyType == LobbyType.All;
+				loadButton.IsDisabled = configurationDisabled;
+				loadButton.OnClick = () =>
+				{
+					var onLoad = new Action<ReplayMetadata>(save =>
+					{
+						orderManager.IssueOrder(Order.Command("load " + save.FilePath));
+						Game.Settings.Server.Map = save.GameInfo.MapUid;
+						Game.Settings.Server.Replay = new OpenRA.Server.ReplayViewer(save.FilePath, true);
+						Game.Settings.Save();
+					});
+
+					Ui.OpenWindow("SAVEBROWSER_PANEL", new WidgetArgs
+					{
+						{ "onLoad",  onLoad},
+						{ "onExit",  DoNothing},
+						{ "filter", skirmishMode ? SaveBrowserLogic.GameType.Singleplayer : SaveBrowserLogic.GameType.Multiplayer }
 					});
 				};
 			}
@@ -539,6 +568,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					if (slot != null && bot != null)
 						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
 				});
+			}
+
+			if (lobbyType == LobbyType.Load)
+			{
+				/* 
+				 * Needs a way to display an unknown map on startup so we
+				 * dont load a normal game each time, would also like to have
+				 * only spectator slots availible until a save has been chosen.
+				 */
 			}
 		}
 

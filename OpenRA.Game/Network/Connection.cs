@@ -28,6 +28,7 @@ namespace OpenRA.Network
 
 	public interface IConnection : IDisposable
 	{
+		bool DisableSend { get; set; }
 		int LocalClientId { get; }
 		ConnectionState ConnectionState { get; }
 		void Send(int frame, List<byte[]> orders);
@@ -38,6 +39,8 @@ namespace OpenRA.Network
 
 	class EchoConnection : IConnection
 	{
+		public bool DisableSend { get; set; }
+
 		protected struct ReceivedPacket
 		{
 			public int FromClient;
@@ -57,6 +60,9 @@ namespace OpenRA.Network
 
 		public virtual void Send(int frame, List<byte[]> orders)
 		{
+			//Ignore local orders when DisableSend is true
+			if (DisableSend)
+				return;
 			var ms = new MemoryStream();
 			ms.Write(BitConverter.GetBytes(frame));
 			foreach (var o in orders)
@@ -66,6 +72,9 @@ namespace OpenRA.Network
 
 		public virtual void SendImmediate(List<byte[]> orders)
 		{
+			//Ignore local orders when DisableSend is true
+			if (DisableSend)
+				return;
 			var ms = new MemoryStream();
 			ms.Write(BitConverter.GetBytes((int)0));
 			foreach (var o in orders)

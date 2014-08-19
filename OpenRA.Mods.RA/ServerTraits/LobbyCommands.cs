@@ -11,10 +11,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
+using System.IO;
 
 namespace OpenRA.Mods.RA.Server
 {
@@ -127,6 +129,29 @@ namespace OpenRA.Mods.RA.Server
 						if (slot.Closed || server.LobbyInfo.ClientInSlot(s) != null)
 							return false;
 
+						if (server.Settings.Replay != null)
+						{
+							var index = 0;
+							foreach (var sl in server.LobbyInfo.Slots.Keys)
+							{
+								if (sl == s)
+									break;
+								index++;
+							}
+
+							var playerinfo = server.Settings.Replay.Info.GameInfo.Players[index];
+							if (playerinfo == null)
+							{
+								server.SendOrderTo(conn, "Message", "You can't use a slot that wasnt in the replay");
+								return true;
+							}
+
+							server.Settings.Replay.IndexConverter[playerinfo.ClientIndex] = client.Index;
+							client.Country = playerinfo.FactionId;
+							client.Team = playerinfo.Team;
+							client.SpawnPoint = playerinfo.SpawnPoint;
+						}
+
 						client.Slot = s;
 						S.SyncClientToPlayerReference(client, server.Map.Players[s]);
 						server.SyncLobbyClients();
@@ -167,6 +192,12 @@ namespace OpenRA.Mods.RA.Server
 					{
 						if (!ValidateSlotCommand(server, conn, client, s, true))
 							return false;
+
+						if (server.Settings.Replay != null)
+						{
+							server.SendOrderTo(conn, "Message", "You can't close a slot which is required for the save to load");
+							return true;
+						}
 
 						// kick any player that's in the slot
 						var occupant = server.LobbyInfo.ClientInSlot(s);
@@ -279,6 +310,29 @@ namespace OpenRA.Mods.RA.Server
 							bot.Name = botType;
 							bot.Bot = botType;
 						}
+						
+						if (server.Settings.Replay != null)
+						{
+							var index = 0;
+							foreach (var sl in server.LobbyInfo.Slots.Keys)
+							{
+								if (sl == parts[0])
+									break;
+								index++;
+							}
+
+							var playerinfo = server.Settings.Replay.Info.GameInfo.Players[index];
+							if (playerinfo == null)
+							{
+								server.SendOrderTo(conn, "Message", "You can't use a slot that wasnt in the replay");
+								return true;
+							}
+
+							server.Settings.Replay.IndexConverter[playerinfo.ClientIndex] = bot.Index;
+							bot.Country = playerinfo.FactionId;
+							bot.Team = playerinfo.Team;
+							bot.SpawnPoint = playerinfo.SpawnPoint;
+						}
 
 						S.SyncClientToPlayerReference(bot, server.Map.Players[parts[0]]);
 						server.SyncLobbyClients();
@@ -301,6 +355,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						server.LobbyInfo.GlobalSettings.Map = s;
+						server.Settings.Replay = null;
 
 						var oldSlots = server.LobbyInfo.Slots.Keys.ToArray();
 						LoadMap(server);
@@ -341,6 +396,123 @@ namespace OpenRA.Mods.RA.Server
 
 						return true;
 					}},
+				{ "load",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can load a save");
+							return true;
+						}
+
+						var save = ReplayMetadata.Read(s);
+
+						if (server.ModData.MapCache[save.GameInfo.MapUid].Status != MapStatus.Available)
+						{
+							server.SendOrderTo(conn, "Message", "Map for save was not found on server");
+							return true;
+						}
+
+						var oldSlots = server.LobbyInfo.Slots.Keys.ToArray();
+						server.LobbyInfo.GlobalSettings.Map = save.GameInfo.MapUid;
+						server.Settings.Replay = Game.Settings.Server.Replay;
+
+						server.Map = save.GameInfo.MapPreview.Map;
+						server.LobbyInfo.Slots = server.Map.Players
+							.Select(p => MakeSlotFromPlayerReference(p.Value))
+							.Where(sl => sl != null)
+							.ToDictionary(sl => sl.PlayerReference, sl => sl);
+						server.Map.Options.UpdateServerSettings(server.LobbyInfo.GlobalSettings);
+						server.LobbyInfo.GlobalSettings.AllowConfiguration = false;
+
+						SetDefaultDifficulty(server);
+
+						// Reset client states
+						foreach (var c in server.LobbyInfo.Clients)
+							c.State = Session.ClientState.Invalid;
+
+						// Reassign players into new slots based on their old slots:
+						//  - Observers & Players are made observers
+						//  - Bots are dropped
+						var slots = server.LobbyInfo.Slots.Keys.ToArray();
+						var i = 0;
+						foreach (var os in oldSlots)
+						{
+							var c = server.LobbyInfo.ClientInSlot(os);
+							if (c == null)
+								continue;
+
+							c.Slot = i < slots.Length ? slots[i++] : null;
+							if (c.Slot != null && c.Bot == null)
+							{
+								c.Slot = null;
+								c.SpawnPoint = 0;
+							}
+
+							if (c.Bot != null)
+							{
+								server.LobbyInfo.Clients.Remove(c);
+								S.SyncClientToPlayerReference(c, server.Map.Players[c.Slot]);
+							}
+						}
+
+						var id = 0;
+						var players = save.GameInfo.Players.ToArray();
+						foreach (var slot in slots)
+						{
+							if (players.Count() <= id)
+							{
+								server.LobbyInfo.Slots.Remove(slot);
+								continue;
+							}
+
+							server.LobbyInfo.Slots[slot].Required = true;
+							server.LobbyInfo.Slots[slot].LockRace = true;
+							server.LobbyInfo.Slots[slot].LockTeam = true;
+							server.LobbyInfo.Slots[slot].LockSpawn = true;
+
+							if (players[id].IsBot)
+							{
+								server.LobbyInfo.Slots[slot].Closed = false;
+									
+								// Create a new bot from replay reference
+								var bot = new Session.Client()
+								{
+									Index = players[id].ClientIndex,
+									Name = players[id].Name,
+									Bot = players[id].Name,
+									Slot = slot,
+									Country = players[id].FactionId,
+									SpawnPoint = players[id].SpawnPoint,
+									Team = players[id].Team,
+									State = Session.ClientState.NotReady,
+									BotControllerClientIndex = 0
+								};
+
+								// Set the color of the bot according to replay
+								bot.Color = bot.PreferredColor = players[id].Color;
+
+								server.LobbyInfo.Clients.Add(bot);
+
+								S.SyncClientToPlayerReference(bot, server.Map.Players[slot]);
+							}
+
+							id++;
+						}
+
+						//var opt = save.GameInfo.MapPreview.Map.Options;
+						//server.LobbyInfo.GlobalSettings.AllowCheats =  opt.Cheats.Value;
+						//ve.GameInfo.MapPreview.Map.Options;
+
+						
+						server.SyncLobbyClients();
+						server.SyncLobbySlots();
+						server.SyncLobbyInfo();
+
+						server.SendMessage("{0} changed the map to {1}.".F(client.Name, server.Map.Title));
+
+						return true;
+					}},
 				{ "fragilealliance",
 					s =>
 					{
@@ -350,7 +522,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (server.Map.Options.FragileAlliances.HasValue)
+						if (server.Map.Options.FragileAlliances.HasValue && server.LobbyInfo.GlobalSettings.AllowConfiguration)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled alliance configuration");
 							return true;
@@ -372,7 +544,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (server.Map.Options.Cheats.HasValue)
+						if (server.Map.Options.Cheats.HasValue && server.LobbyInfo.GlobalSettings.AllowConfiguration)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled cheat configuration");
 							return true;
@@ -394,7 +566,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (server.Map.Options.Shroud.HasValue)
+						if (server.Map.Options.Shroud.HasValue && server.LobbyInfo.GlobalSettings.AllowConfiguration)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled shroud configuration");
 							return true;
@@ -416,7 +588,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (server.Map.Options.Fog.HasValue)
+						if (server.Map.Options.Fog.HasValue && server.LobbyInfo.GlobalSettings.AllowConfiguration)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled fog configuration");
 							return true;
@@ -480,7 +652,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (server.Map.Options.Crates.HasValue)
+						if (server.Map.Options.Crates.HasValue && server.LobbyInfo.GlobalSettings.AllowConfiguration)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled crate configuration");
 							return true;
@@ -502,7 +674,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (server.Map.Options.AllyBuildRadius.HasValue)
+						if (server.Map.Options.AllyBuildRadius.HasValue && server.LobbyInfo.GlobalSettings.AllowConfiguration)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled ally build radius configuration");
 							return true;
@@ -546,7 +718,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (!server.Map.Options.ConfigurableStartingUnits)
+						if (!server.Map.Options.ConfigurableStartingUnits && server.LobbyInfo.GlobalSettings.AllowConfiguration)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled start unit configuration");
 							return true;
@@ -571,7 +743,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (server.Map.Options.StartingCash.HasValue)
+						if (server.Map.Options.StartingCash.HasValue && server.LobbyInfo.GlobalSettings.AllowConfiguration)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled cash configuration");
 							return true;
@@ -592,7 +764,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (server.Map.Options.TechLevel != null)
+						if (server.Map.Options.TechLevel != null && server.LobbyInfo.GlobalSettings.AllowConfiguration)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled Tech configuration");
 							return true;
@@ -797,6 +969,17 @@ namespace OpenRA.Mods.RA.Server
 		static void LoadMap(S server)
 		{
 			server.Map = server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map].Map;
+			server.LobbyInfo.Slots = server.Map.Players
+				.Select(p => MakeSlotFromPlayerReference(p.Value))
+				.Where(s => s != null)
+				.ToDictionary(s => s.PlayerReference, s => s);
+
+			server.Map.Options.UpdateServerSettings(server.LobbyInfo.GlobalSettings);
+		}
+
+		static void LoadSave(S server, ReplayMetadata save)
+		{
+			server.Map = server.ModData.MapCache[save.GameInfo.MapUid].Map;
 			server.LobbyInfo.Slots = server.Map.Players
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
 				.Where(s => s != null)

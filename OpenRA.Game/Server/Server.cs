@@ -82,6 +82,23 @@ namespace OpenRA.Server
 
 		public List<string> TempBans = new List<string>();
 
+		public void Tick(int frame)
+		{
+			if (Settings.Replay != null && State == ServerState.GameStarted)
+			{
+				var replayData = Settings.Replay.GetNextData(frame + LobbyInfo.GlobalSettings.OrderLatency);
+
+				foreach (var r in replayData)
+					foreach (var c in Conns.ToArray())
+						DispatchReplayOrdersToClient(c, r.First, r.Second);
+
+				if (Settings.Replay.ReplayDone)
+				{
+					Settings.Replay = null;
+				}
+			}
+		}
+
 		public void Shutdown()
 		{
 			State = ServerState.ShuttingDown;
@@ -379,6 +396,21 @@ namespace OpenRA.Server
 				inFlightFrames.Remove(conn.Frame);
 		}
 
+		void DispatchReplayOrdersToClient(Connection c, int client, byte[] data)
+		{
+			try
+			{
+				SendData(c.socket, BitConverter.GetBytes(data.Length));
+				SendData(c.socket, BitConverter.GetBytes(client));
+				SendData(c.socket, data);
+			}
+			catch (Exception e)
+			{
+				DropClient(c);
+				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}", client.ToString(), e);
+			}
+		}
+
 		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
 		{
 			try
@@ -662,8 +694,17 @@ namespace OpenRA.Server
 			State = ServerState.GameStarted;
 
 			foreach (var c in Conns)
+			{
 				foreach (var d in Conns)
 					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });
+				if (Settings.Replay != null && !Settings.Replay.ReplayDone)
+				{
+					if (Settings.Replay.Resume)
+						SendOrderTo(c, "SendPermission", "DisableSim");
+					else
+						SendOrderTo(c, "SendPermission", "DisableNoSim");
+				}
+			}
 
 			DispatchOrders(null, 0,
 				new ServerOrder("StartGame", "").Serialize());
