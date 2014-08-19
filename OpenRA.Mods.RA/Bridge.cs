@@ -299,7 +299,9 @@ namespace OpenRA.Mods.RA
 			self.World.AddFrameEndTask(w =>
 			{
 				var weapon = saboteur.World.Map.Rules.Weapons[Info.DemolishWeapon.ToLowerInvariant()];
-				weapon.Impact(self.CenterPosition, saboteur, Enumerable.Empty<int>());
+				// Use .FromPos since this actor is killed. Cannot use Target.FromActor
+				weapon.Impact(Target.FromPos(self.CenterPosition), saboteur, Enumerable.Empty<int>());
+
 				self.World.WorldActor.Trait<ScreenShaker>().AddEffect(15, self.CenterPosition, 6);
 				self.Kill(saboteur);
 			});

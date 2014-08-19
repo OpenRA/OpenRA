@@ -55,7 +55,8 @@ namespace OpenRA.Mods.RA.Air
 				if (info.Explosion != null)
 				{
 					var weapon = self.World.Map.Rules.Weapons[info.Explosion.ToLowerInvariant()];
-					weapon.Impact(self.CenterPosition, self, Enumerable.Empty<int>());
+					// Use .FromPos since this actor is killed. Cannot use Target.FromActor
+					weapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
 				}
 
 				self.Destroy();

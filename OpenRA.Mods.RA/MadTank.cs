@@ -72,7 +72,8 @@ namespace OpenRA.Mods.RA
 				if (info.ThumpDamageWeapon != null)
 				{
 					var weapon = self.World.Map.Rules.Weapons[info.ThumpDamageWeapon.ToLowerInvariant()];
-					weapon.Impact(self.CenterPosition, self, Enumerable.Empty<int>());
+					// Use .FromPos since this weapon needs to affect more than just the MadTank actor
+					weapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
 				}
 				screenShaker.AddEffect(info.ThumpShakeTime, self.CenterPosition, info.ThumpShakeIntensity, info.ThumpShakeMultiplier);
 				tick = 0;
@@ -111,7 +112,8 @@ namespace OpenRA.Mods.RA
 				if (info.DetonationWeapon != null)
 				{
 					var weapon = self.World.Map.Rules.Weapons[info.DetonationWeapon.ToLowerInvariant()];
-					weapon.Impact(self.CenterPosition, self, Enumerable.Empty<int>());
+					// Use .FromPos since this actor is killed. Cannot use Target.FromActor
+					weapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
 				}
 				self.Kill(self);
 			});
