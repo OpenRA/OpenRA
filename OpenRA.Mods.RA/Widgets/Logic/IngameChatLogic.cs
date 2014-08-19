@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToList();
 
-			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
+			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot).ToList();
 			var disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));
 			teamChat = !disableTeamChat;
 
@@ -78,19 +78,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
 					else
 						if (chatTraits != null)
-							chatTraits.All(x => x.OnChat(orderManager.LocalClient.Name, chatText.Text.Trim()));
+							chatTraits.ForEach(x => x.OnChat(orderManager.LocalClient.Name, chatText.Text.Trim()));
 
 				CloseChat();
 				return true;
 			};
-			chatText.OnTabKey = () => AutoCompleteText();
+			chatText.OnTabKey = AutoCompleteText;
 
 			chatText.OnEscKey = () => { CloseChat(); return true; };
 
 			var chatClose = chatChrome.Get<ButtonWidget>("CHAT_CLOSE");
-			chatClose.OnClick += () => CloseChat();
+			chatClose.OnClick += CloseChat;
 
-			chatPanel.OnKeyPress = (e) =>
+			chatPanel.OnKeyPress = e =>
 			{
 				if (e.Event == KeyInputEvent.Up)
 					return false;
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (string.IsNullOrEmpty(chatText.Text))
 				return false;
 
-			string suggestion;
+			var suggestion = "";
 
 			if (chatText.Text.StartsWith("/"))
 			{
@@ -190,18 +190,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 			else
 			{
-				string toComplete;
-				bool oneWord;
-				if (chatText.Text.Contains(' '))
-				{
-					toComplete = chatText.Text.Substring(chatText.Text.LastIndexOf(' ') + 1);
-					oneWord = false;
-				}
-				else
-				{
-					toComplete = chatText.Text;
-					oneWord = true;
-				}
+				var oneWord = chatText.Text.Contains(' ');
+				var toComplete = oneWord
+					? chatText.Text.Substring(chatText.Text.LastIndexOf(' ') + 1)
+					: chatText.Text;
 
 				suggestion = playerNames.FirstOrDefault(x => x.StartsWith(toComplete, StringComparison.InvariantCultureIgnoreCase));
 				if (suggestion == null)
