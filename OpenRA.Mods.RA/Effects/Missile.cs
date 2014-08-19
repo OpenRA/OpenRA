@@ -85,7 +85,12 @@ namespace OpenRA.Mods.RA.Effects
 			targetPosition = args.PassiveTarget;
 
 			if (info.Inaccuracy.Range > 0)
-				offset = WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * info.Inaccuracy.Range / 1024;
+			{
+				var modifiers = args.SourceActor.TraitsImplementing<IInaccuracyModifier>()
+					.Select(m => m.GetInaccuracyModifier());
+				var inaccuracy = Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, modifiers);
+				offset = WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * inaccuracy / 1024;
+			}
 
 			if (info.Image != null)
 			{

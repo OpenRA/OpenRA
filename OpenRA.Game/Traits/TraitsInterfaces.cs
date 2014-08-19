@@ -178,6 +178,7 @@ namespace OpenRA.Traits
 	public interface ISpeedModifier { int GetSpeedModifier(); }
 	public interface IFirepowerModifier { int GetFirepowerModifier(); }
 	public interface IReloadModifier { int GetReloadModifier(); }
+	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
 	public interface IPowerModifier { int GetPowerModifier(); }
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }

@@ -30,16 +30,20 @@ namespace OpenRA.Mods.RA
 		public readonly string ReloadUpgrade = "reload";
 		public readonly int[] ReloadModifier = { 95, 90, 85, 75 };
 
+		public readonly string InaccuracyUpgrade = "inaccuracy";
+		public readonly int[] InaccuracyModifier = { 90, 80, 70, 50 };
+
 		public object Create(ActorInitializer init) { return new GainsStatUpgrades(this); }
 	}
 
-	public class GainsStatUpgrades : IUpgradable, IFirepowerModifier, IDamageModifier, ISpeedModifier, IReloadModifier
+	public class GainsStatUpgrades : IUpgradable, IFirepowerModifier, IDamageModifier, ISpeedModifier, IReloadModifier, IInaccuracyModifier
 	{
 		readonly GainsStatUpgradesInfo info;
 		[Sync] int firepowerLevel = 0;
 		[Sync] int speedLevel = 0;
 		[Sync] int damageLevel = 0;
 		[Sync] int reloadLevel = 0;
+		[Sync] int inaccuracyLevel = 0;
 
 		public GainsStatUpgrades(GainsStatUpgradesInfo info)
 		{
@@ -51,7 +55,8 @@ namespace OpenRA.Mods.RA
 			return (type == info.FirepowerUpgrade && firepowerLevel < info.FirepowerModifier.Length)
 				|| (type == info.DamageUpgrade && damageLevel < info.DamageModifier.Length)
 				|| (type == info.SpeedUpgrade && speedLevel < info.SpeedModifier.Length)
-				|| (type == info.ReloadUpgrade && reloadLevel < info.ReloadModifier.Length);
+				|| (type == info.ReloadUpgrade && reloadLevel < info.ReloadModifier.Length)
+				|| (type == info.InaccuracyUpgrade && inaccuracyLevel < info.InaccuracyModifier.Length);
 		}
 
 		public void UpgradeAvailable(Actor self, string type, bool available)
@@ -65,6 +70,8 @@ namespace OpenRA.Mods.RA
 				speedLevel = (speedLevel + mod).Clamp(0, info.SpeedModifier.Length);
 			else if (type == info.ReloadUpgrade)
 				reloadLevel = (reloadLevel + mod).Clamp(0, info.ReloadModifier.Length);
+			else if (type == info.InaccuracyUpgrade)
+				inaccuracyLevel = (inaccuracyLevel + mod).Clamp(0, info.InaccuracyModifier.Length);
 		}
 
 		public int GetDamageModifier(Actor attacker, DamageWarhead warhead)
@@ -85,6 +92,11 @@ namespace OpenRA.Mods.RA
 		public int GetReloadModifier()
 		{
 			return reloadLevel > 0 ? info.ReloadModifier[reloadLevel - 1] : 100;
+		}
+
+		public int GetInaccuracyModifier()
+		{
+			return inaccuracyLevel > 0 ? info.InaccuracyModifier[inaccuracyLevel - 1] : 100;
 		}
 	}
 }
