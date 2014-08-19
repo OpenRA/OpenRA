@@ -43,7 +43,8 @@ namespace OpenRA.Mods.Cnc
 			if (!info.Resources.Contains(r.Info.Name)) return;
 
 			var weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
-			weapon.Impact(self.CenterPosition, self.World.WorldActor, Enumerable.Empty<int>());
+
+			weapon.Impact(Target.FromActor(self), self.World.WorldActor, Enumerable.Empty<int>());
 			poisonTicks = weapon.ReloadDelay;
 		}
 	}
