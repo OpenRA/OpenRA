@@ -898,8 +898,8 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		LuaScriptInterface:
-			LuaScripts: gdi04c.lua
+		LuaScript:
+			Scripts: gdi04c.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	Player:
@@ -915,6 +915,8 @@ Rules:
 	^CivInfantry:
 		Health:
 			HP: 125
+	^Bridge:
+		Invulnerable:
 
 Sequences:
 
