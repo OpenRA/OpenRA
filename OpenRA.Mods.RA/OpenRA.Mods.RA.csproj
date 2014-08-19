@@ -440,6 +440,7 @@
     <Compile Include="Widgets\ColorMixerWidget.cs" />
     <Compile Include="Widgets\HueSliderWidget.cs" />
     <Compile Include="Render\WithTurret.cs" />
+    <Compile Include="Render\WithBarrel.cs" />
     <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
     <Compile Include="VoxelNormalsPalette.cs" />
     <Compile Include="Render\RenderVoxels.cs" />
