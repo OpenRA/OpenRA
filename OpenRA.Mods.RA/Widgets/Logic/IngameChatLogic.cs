@@ -190,10 +190,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 			else
 			{
-				var oneWord = chatText.Text.Contains(' ');
+				var oneWord = !chatText.Text.Contains(' ');
 				var toComplete = oneWord
-					? chatText.Text.Substring(chatText.Text.LastIndexOf(' ') + 1)
-					: chatText.Text;
+					? chatText.Text
+					: chatText.Text.Substring(chatText.Text.LastIndexOf(' ') + 1);
 
 				suggestion = playerNames.FirstOrDefault(x => x.StartsWith(toComplete, StringComparison.InvariantCultureIgnoreCase));
 				if (suggestion == null)
