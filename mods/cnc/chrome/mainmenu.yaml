@@ -133,6 +133,12 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Missions
+						Button@LOAD_BUTTON:
+							X: 300
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Load
 						Button@BACK_BUTTON:
 							Key: escape
 							X: 450

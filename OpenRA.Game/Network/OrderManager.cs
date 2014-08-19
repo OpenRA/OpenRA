@@ -38,7 +38,7 @@ namespace OpenRA.Network
 		public int LastTickTime = Game.RunTime;
 
 		public bool GameStarted { get { return NetFrameNumber != 0; } }
-		public IConnection Connection { get; private set; }
+		public IConnection Connection { get; set; }
 
 		public readonly int SyncHeaderSize = 9;
 

@@ -20,7 +20,8 @@ namespace OpenRA.Network
 	{
 		public ReplayMetadata Metadata;
 
-		IConnection inner;
+		public IConnection Inner { get; private set; }
+		FileStream file;
 		BinaryWriter writer;
 		Func<string> chooseFilename;
 		MemoryStream preStartBuffer = new MemoryStream();
@@ -28,7 +29,7 @@ namespace OpenRA.Network
 		public ReplayRecorderConnection(IConnection inner, Func<string> chooseFilename)
 		{
 			this.chooseFilename = chooseFilename;
-			this.inner = inner;
+			this.Inner = inner;
 
 			writer = new BinaryWriter(preStartBuffer);
 		}
@@ -56,19 +57,20 @@ namespace OpenRA.Network
 			}
 
 			file.Write(initialContent);
-			this.writer = new BinaryWriter(file);
+			this.file = file;
+			this.writer = new BinaryWriter(this.file);
 		}
 
-		public int LocalClientId { get { return inner.LocalClientId; } }
-		public ConnectionState ConnectionState { get { return inner.ConnectionState; } }
+		public int LocalClientId { get { return Inner.LocalClientId; } }
+		public ConnectionState ConnectionState { get { return Inner.ConnectionState; } }
 
-		public void Send(int frame, List<byte[]> orders) { inner.Send(frame, orders); }
-		public void SendImmediate(List<byte[]> orders) { inner.SendImmediate(orders); }
-		public void SendSync(int frame, byte[] syncData) { inner.SendSync(frame, syncData); }
+		public void Send(int frame, List<byte[]> orders) { Inner.Send(frame, orders); }
+		public void SendImmediate(List<byte[]> orders) { Inner.SendImmediate(orders); }
+		public void SendSync(int frame, byte[] syncData) { Inner.SendSync(frame, syncData); }
 
 		public void Receive(Action<int, byte[]> packetFn)
 		{
-			inner.Receive((client, data) =>
+			Inner.Receive((client, data) =>
 				{
 					if (preStartBuffer != null && IsGameStart(data))
 					{
@@ -96,6 +98,38 @@ namespace OpenRA.Network
 			return frame == 0 && data.ToOrderList(null).Any(o => o.OrderString == "StartGame");
 		}
 
+		public void SaveToFile(string path, string filename)
+		{
+			if (!Directory.Exists(path))
+				Directory.CreateDirectory(path);
+
+			FileStream file = null;
+			var id = -1;
+			while (file == null)
+			{
+				var fullFilename = Path.Combine(path, id < 0 ? "{0}.orasave".F(filename) : "{0}-{1}.orasave".F(filename, id));
+				id++;
+				try
+				{
+					file = File.Create(fullFilename);
+				}
+				catch (IOException) { }
+			}
+
+			this.file.Position = 0;
+			this.file.CopyTo(file);
+			var writer = new BinaryWriter(file);
+
+			if (Metadata != null)
+			{
+				if (Metadata.GameInfo != null)
+					Metadata.GameInfo.EndTimeUtc = DateTime.UtcNow;
+				Metadata.Write(writer);
+			}
+
+			writer.Close();
+		}
+
 		bool disposed;
 
 		public void Dispose()
@@ -114,7 +148,7 @@ namespace OpenRA.Network
 			if (preStartBuffer != null)
 				preStartBuffer.Dispose();
 			writer.Close();
-			inner.Dispose();
+			Inner.Dispose();
 		}
 	}
 }

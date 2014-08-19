@@ -87,6 +87,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			missionsButton.Disabled = !Game.modData.Manifest.Missions.Any();
 
+			var loadButton = singleplayerMenu.Get<ButtonWidget>("LOAD_BUTTON");
+			loadButton.OnClick = () =>
+			{
+				menuType = MenuType.None;
+				Ui.OpenWindow("SAVEBROWSER_PANEL", new WidgetArgs
+				{
+					{ "onExit", () => menuType = MenuType.Singleplayer },
+					{ "onStart", RemoveShellmapUI }
+				});
+			};
+
 			singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON").OnClick = StartSkirmishGame;
 
 			singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Main;

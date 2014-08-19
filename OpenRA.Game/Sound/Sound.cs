@@ -247,7 +247,7 @@ namespace OpenRA
 		{
 			get
 			{
-				return Game.Settings.Sound.SoundVolume;
+				return Game.IsSimulating ? 0f : Game.Settings.Sound.SoundVolume;
 			}
 
 			set
@@ -261,7 +261,7 @@ namespace OpenRA
 		{
 			get
 			{
-				return Game.Settings.Sound.MusicVolume;
+				return Game.IsSimulating ? 0f : Game.Settings.Sound.MusicVolume;
 			}
 
 			set
@@ -276,7 +276,7 @@ namespace OpenRA
 		{
 			get
 			{
-				return Game.Settings.Sound.VideoVolume;
+				return Game.IsSimulating ? 0f : Game.Settings.Sound.VideoVolume;
 			}
 
 			set
