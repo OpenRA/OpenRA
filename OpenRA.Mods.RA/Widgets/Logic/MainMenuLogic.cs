@@ -21,9 +21,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class MainMenuLogic
 	{
-		protected enum MenuType { Main, Singleplayer, Extras, None }
+		protected enum MenuType { Main, Singleplayer, Multiplayer, Extras, None }
+		protected enum ServerType { Create, Load, Direct, None }
 
 		protected MenuType menuType = MenuType.Main;
+		protected ServerType serverMenu = ServerType.None;
 		readonly Widget rootMenu;
 		readonly ScrollPanelWidget newsPanel;
 		readonly Widget newsTemplate;
@@ -42,15 +44,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			mainMenu.Get<ButtonWidget>("SINGLEPLAYER_BUTTON").OnClick = () => menuType = MenuType.Singleplayer;
 
-			mainMenu.Get<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () =>
-			{
-				menuType = MenuType.None;
-				Ui.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs
-				{
-					{ "onStart", RemoveShellmapUI },
-					{ "onExit", () => menuType = MenuType.Main }
-				});
-			};
+			mainMenu.Get<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () => menuType = MenuType.Multiplayer;
 
 			mainMenu.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
@@ -89,8 +83,47 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON").OnClick = StartSkirmishGame;
 
+			singleplayerMenu.Get<ButtonWidget>("LOAD_BUTTON").OnClick = StartLoadGame;
+
 			singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Main;
 
+			//Multiplayer menu
+			var multiplayerMenu = widget.Get("MULTIPLAYER_MENU");
+			multiplayerMenu.IsVisible = () => menuType == MenuType.Multiplayer;
+
+			var createButton = multiplayerMenu.Get<ButtonWidget>("CREATE_BUTTON");
+			var directButton = multiplayerMenu.Get<ButtonWidget>("DIRECTCONNECT_BUTTON");
+			var loadButton = multiplayerMenu.Get<ButtonWidget>("LOAD_BUTTON");
+
+			createButton.IsHighlighted = () => serverMenu == ServerType.Create;
+			directButton.IsHighlighted = () => serverMenu == ServerType.Direct;
+			loadButton.IsHighlighted = () => serverMenu == ServerType.Load;
+
+			createButton.OnClick = () => { OpenWindow(OpenCreateServerPanel, ServerType.Create); };
+			directButton.OnClick = () => { OpenWindow(OpenDirectConnectPanel, ServerType.Direct); };
+			loadButton.OnClick = () => { OpenWindow(OpenLoadServerPanel, ServerType.Load); };
+
+			multiplayerMenu.Get<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
+			{
+				if (serverMenu != ServerType.None)
+					Ui.CloseWindow();
+				serverMenu = ServerType.None;
+				menuType = MenuType.None;
+				Ui.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs
+				{
+					{ "onStart", RemoveShellmapUI },
+					{ "onExit", () => menuType = MenuType.Multiplayer }
+				});
+			};
+
+			multiplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
+			{
+				if (serverMenu != ServerType.None)
+					Ui.CloseWindow();
+				serverMenu = ServerType.None;
+				menuType = MenuType.Main;
+			};
+			
 			// Extras menu
 			var extrasMenu = widget.Get("EXTRAS_MENU");
 			extrasMenu.IsVisible = () => menuType == MenuType.Extras;
@@ -270,6 +303,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			rootMenu.Parent.RemoveChild(rootMenu);
 		}
 
+		void OpenWindow(Action onConfirm, ServerType type)
+		{
+			if (serverMenu != type)
+			{
+				if (serverMenu != ServerType.None)
+					Ui.CloseWindow();
+				serverMenu = type;
+				onConfirm();
+			}
+		}
+
 		void OpenSkirmishLobbyPanel()
 		{
 			menuType = MenuType.None;
@@ -277,7 +321,71 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				{ "onExit", () => { Game.Disconnect(); menuType = MenuType.Main; } },
 				{ "onStart", RemoveShellmapUI },
+				{ "lobbyType", LobbyLogic.LobbyType.Server },
 				{ "skirmishMode", true }
+			});
+		}
+
+		void OpenSingleLoadLobby()
+		{
+			menuType = MenuType.None;
+			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
+			{
+				{ "onExit", () => { Game.Disconnect(); serverMenu = ServerType.None; menuType = MenuType.Main; } },
+				{ "onStart", RemoveShellmapUI },
+				{ "lobbyType", LobbyLogic.LobbyType.Load },
+				{ "skirmishMode", true }
+			});
+		}
+
+		void OpenLoadLobby()
+		{
+			menuType = MenuType.None;
+			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
+			{
+				{ "onExit", () => { Game.Disconnect(); serverMenu = ServerType.None; menuType = MenuType.Main; } },
+				{ "onStart", RemoveShellmapUI },
+				{ "lobbyType", LobbyLogic.LobbyType.Load },
+				{ "skirmishMode", false }
+			});
+		}
+
+		void OpenLobby()
+		{
+			menuType = MenuType.None;
+			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
+			{
+				{ "onExit", () => { Game.Disconnect(); serverMenu = ServerType.None; menuType = MenuType.Main; } },
+				{ "onStart", RemoveShellmapUI },
+				{ "lobbyType", LobbyLogic.LobbyType.Server },
+				{ "skirmishMode", false }
+			});
+		}
+
+		void OpenLoadServerPanel()
+		{
+			Ui.OpenWindow("LOADSERVER_PANEL", new WidgetArgs
+			{
+				{ "openLobby", OpenLoadLobby },
+				{ "onExit", () => serverMenu = ServerType.None }
+			});
+		}
+
+		void OpenCreateServerPanel()
+		{
+			Ui.OpenWindow("CREATESERVER_PANEL", new WidgetArgs
+			{
+				{ "openLobby", OpenLobby },
+				{ "onExit", () => serverMenu = ServerType.None }
+			});
+		}
+
+		void OpenDirectConnectPanel()
+		{
+			Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
+			{
+				{ "openLobby", OpenLobby },
+				{ "onExit", () => serverMenu = ServerType.None }
 			});
 		}
 
@@ -291,6 +399,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.CreateLocalServer(map),
 				"",
 				OpenSkirmishLobbyPanel,
+				() => { Game.CloseServer(); menuType = MenuType.Main; });
+		}
+
+		void StartLoadGame()
+		{
+			var map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
+			Game.Settings.Server.Map = map;
+			Game.Settings.Save();
+
+			ConnectionLogic.Connect(IPAddress.Loopback.ToString(),
+				Game.CreateLocalServer(map),
+				"",
+				OpenSingleLoadLobby,
 				() => { Game.CloseServer(); menuType = MenuType.Main; });
 		}
 	}

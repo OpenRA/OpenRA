@@ -64,9 +64,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			refreshButton.GetText = () => searchStatus == SearchStatus.Fetching ? "Refreshing..." : "Refresh";
 			refreshButton.OnClick = RefreshServerList;
 
-			panel.Get<ButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = OpenDirectConnectPanel;
-			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = OpenCreateServerPanel;
-
 			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
 			join.OnClick = () => Join(currentServer);
@@ -256,24 +253,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{ "onExit", Game.Disconnect },
 				{ "onStart", onStart },
 				{ "skirmishMode", false }
-			});
-		}
-
-		void OpenDirectConnectPanel()
-		{
-			Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
-			{
-				{ "openLobby", OpenLobby },
-				{ "onExit", DoNothing }
-			});
-		}
-
-		void OpenCreateServerPanel()
-		{
-			Ui.OpenWindow("CREATESERVER_PANEL", new WidgetArgs
-			{
-				{ "openLobby", OpenLobby },
-				{ "onExit", DoNothing }
 			});
 		}
 

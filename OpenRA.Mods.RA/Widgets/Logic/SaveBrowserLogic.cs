@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ReplayMetadata selectedSave;
 
 		[ObjectCreator.UseCtor]
-		public SaveBrowserLogic(Widget widget, Action onExit, Action<ReplayMetadata> onLoad)
+		public SaveBrowserLogic(Widget widget, Action onExit, Action<ReplayMetadata> onLoad, GameType filter)
 		{
 			this.onLoad = onLoad;
 			panel = widget;
@@ -98,6 +98,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				type.GetText = () => selectedSave.GameInfo.MapPreview.Type;
 
 			panel.Get<LabelWidget>("DURATION").GetText = () => WidgetUtils.FormatTimeSeconds((int)selectedSave.GameInfo.Duration.TotalSeconds);
+
+			ApplyFilter(filter);
 
 			SetupManagement();
 		}

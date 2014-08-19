@@ -106,6 +106,61 @@ Container@MAINMENU:
 							Height: 30
 							Text: Missions
 							Font: Bold
+						Button@LOAD_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 140
+							Width: 140
+							Height: 30
+							Text: Load
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Key: escape
+							Y: 260
+							Width: 140
+							Height: 30
+							Text: Back
+							Font: Bold
+				Background@MULTIPLAYER_MENU:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						Label@MULTIPLAYER_MENU_TITLE:
+							X: 0
+							Y: 20
+							Width: 200
+							Height: 30
+							Text: Multiplayer
+							Align: Center
+							Font: Bold
+						Button@CREATE_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 60
+							Width: 140
+							Height: 30
+							Text: Create
+							Font: Bold
+						Button@JOIN_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 100
+							Width: 140
+							Height: 30
+							Text: Join
+							Font: Bold
+						Button@LOAD_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 140
+							Width: 140
+							Height: 30
+							Text: Load
+							Font: Bold
+						Button@DIRECTCONNECT_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 180
+							Width: 140
+							Height: 30
+							Text: Direct Connect
+							Font: Bold
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT/2-WIDTH/2
 							Key: escape
