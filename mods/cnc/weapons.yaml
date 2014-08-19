@@ -288,7 +288,7 @@ Rockets:
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		High: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 15
@@ -322,7 +322,7 @@ BikeRockets:
 	BurstDelay: 10
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		High: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 10
@@ -356,7 +356,7 @@ OrcaAGMissiles:
 	ValidTargets: Ground
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		High: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -389,7 +389,7 @@ OrcaAAMissiles:
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		High: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -486,7 +486,7 @@ Grenade:
 	Report: toss1.aud
 	Projectile: Bullet
 		Speed: 119
-		High: yes
+		High: true
 		Angle: 62
 		Inaccuracy: 213
 		Image: BOMB
@@ -629,7 +629,7 @@ MammothMissiles:
 	BurstDelay: 15
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		High: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -668,7 +668,7 @@ MammothMissiles:
 	ValidTargets: Ground
 	Projectile: Bullet
 		Arm: 5
-		High: yes
+		High: true
 		Shadow: true
 		Inaccuracy: 853
 		Angle: 62
@@ -702,7 +702,7 @@ MammothMissiles:
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		High: true
 		Inaccuracy: 213
 		Image: DRAGON
 		ROT: 10
@@ -733,7 +733,7 @@ ArtilleryShell:
 	Report: TNKFIRE2.AUD
 	Projectile: Bullet
 		Speed: 204
-		High: yes
+		High: true
 		Angle: 56
 		Inaccuracy: 1c256
 		ContrailLength: 30
@@ -783,7 +783,7 @@ BoatMissile:
 	Report: ROCKET2.AUD
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		High: true
 		Inaccuracy: 213
 		Image: DRAGON
 		ROT: 10
@@ -818,7 +818,7 @@ TowerMissle:
 	ValidTargets: Ground
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		High: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 20
@@ -926,7 +926,7 @@ SAMMissile:
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		High: true
 		Image: MISSILE
 		ROT: 20
 		Speed: 426
@@ -955,7 +955,7 @@ HonestJohn:
 	Report: ROCKET1.AUD
 	Projectile: Bullet
 		Arm: 10
-		High: yes
+		High: true
 		Shadow: true
 		Inaccuracy: 213
 		Image: patriot
@@ -984,7 +984,7 @@ Tiberium:
 		Spread: 42
 		Damage: 2
 		InfDeath: 6
-		PreventProne: yes
+		PreventProne: true
 
 TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
@@ -1008,7 +1008,7 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: -1
-		PreventProne: yes
+		PreventProne: true
 
 APCGun:
 	ROF: 18
@@ -1053,7 +1053,7 @@ Patriot:
 	Report: ROCKET2.AUD
 	ValidTargets: Air
 	Projectile: Missile
-		High: yes
+		High: true
 		Image: patriot
 		Trail: smokey
 		ContrailLength: 8

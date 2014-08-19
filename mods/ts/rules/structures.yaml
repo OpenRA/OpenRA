@@ -630,7 +630,7 @@ GARADR:
 		Range: 10c0
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: yes
+		PauseOnLowPower: true
 	TargetableBuilding:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
@@ -668,7 +668,7 @@ NARADR:
 		Range: 10c0
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: yes
+		PauseOnLowPower: true
 	TargetableBuilding:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
@@ -866,7 +866,7 @@ GAVULC:
 		InitialFacing: 50
 	AttackTurreted:
 	WithTurret:
-		Recoils: no
+		Recoils: false
 	Armament@PRIMARY:
 		Weapon: VulcanTower
 		LocalOffset: 768,85,512
@@ -925,7 +925,7 @@ GAROCK:
 		InitialFacing: 50
 	AttackTurreted:
 	WithTurret:
-		Recoils: no
+		Recoils: false
 	Armament:
 		Weapon: RPGTower
 		LocalOffset: 512,-128,512
@@ -974,7 +974,7 @@ GACSAM:
 		InitialFacing: 50
 	AttackTurreted:
 	WithTurret:
-		Recoils: no
+		Recoils: false
 	Armament:
 		Weapon: SAMTower
 		LocalOffset: 512,0,512
@@ -1022,7 +1022,7 @@ NASAM:
 		InitialFacing: 50
 	AttackTurreted:
 	WithTurret:
-		Recoils: no
+		Recoils: false
 	Armament:
 		Weapon: SAMTower
 		LocalOffset: 512,0,512

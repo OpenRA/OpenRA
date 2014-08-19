@@ -2097,7 +2097,7 @@ Rules:
 		NukePower:
 			ChargeTime: 600
 			Description: Atom Bomb
-			AllowMultiple: yes
+			AllowMultiple: true
 		Power:
 			Amount: -100
 	MISS:

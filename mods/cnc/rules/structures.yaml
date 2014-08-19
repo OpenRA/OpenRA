@@ -186,7 +186,7 @@ SILO:
 	RevealsShroud:
 		Range: 4c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	RenderBuildingSilo:
 	StoresResources:
 		PipCount: 10
@@ -423,7 +423,7 @@ HQ:
 	CanPowerDown:
 	DisabledOverlay:
 	RenderBuilding:
-		PauseOnLowPower: yes
+		PauseOnLowPower: true
 	Health:
 		HP: 700
 	RevealsShroud:
@@ -473,7 +473,7 @@ FIX:
 	RevealsShroud:
 		Range: 5c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
@@ -501,7 +501,7 @@ EYE:
 	CanPowerDown:
 	DisabledOverlay:
 	RenderBuilding:
-		PauseOnLowPower: yes
+		PauseOnLowPower: true
 	Health:
 		HP: 1200
 	RevealsShroud:
@@ -595,7 +595,7 @@ GUN:
 	RevealsShroud:
 		Range: 6c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -682,7 +682,7 @@ OBLI:
 	RevealsShroud:
 		Range: 8c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
 	Armament:
@@ -722,7 +722,7 @@ GTWR:
 	RevealsShroud:
 		Range: 7c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Armament:
 		Weapon: HighV
 		LocalOffset: 256,0,256
@@ -767,7 +767,7 @@ ATWR:
 	RevealsShroud:
 		Range: 8c0
 	Bib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Turreted:
 		ROT: 255
 		Offset: 128,128,-85

@@ -322,9 +322,9 @@ namespace OpenRA.Utility
 					}
 				}
 
-				// GiveUnitCrateAction and GiveMcvCrateAction were updated to allow multiple units
 				if (engineVersion < 20140723)
 				{
+					// GiveUnitCrateAction and GiveMcvCrateAction were updated to allow multiple units
 					if (depth == 2 && parentKey.Contains("GiveMcvCrateAction"))
 						if (node.Key == "Unit")
 							node.Key = "Units";
@@ -332,6 +332,17 @@ namespace OpenRA.Utility
 					if (depth == 2 && parentKey.Contains("GiveUnitCrateAction"))
 						if (node.Key == "Unit")
 							node.Key = "Units";
+
+					// Boolean parsing was changed to use only 'true' or 'false'
+					if (node.Value.Value == null)
+						continue;
+
+					var value = node.Value.Value.ToLowerInvariant();
+					if (value == "yes")
+						node.Value.Value = "true";
+
+					if (value == "no")
+						node.Value.Value = "false";
 				}
 
 				// Power from Building was moved out into its own trait
@@ -730,6 +741,20 @@ namespace OpenRA.Utility
 							}
 						}
 					}
+				}
+
+				// Boolean parsing was changed to use only 'true' or 'false'
+				if (engineVersion < 20140723)
+				{
+					if (node.Value.Value == null)
+						continue;
+
+					var value = node.Value.Value.ToLowerInvariant();
+					if (value == "yes")
+						node.Value.Value = "true";
+
+					if (value == "no")
+						node.Value.Value = "false";
 				}
 
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

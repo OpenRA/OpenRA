@@ -2,7 +2,7 @@ MINP:
 	Mine:
 		CrushClasses: mine
 		DetonateClasses: mine
-		AvoidFriendly: no
+		AvoidFriendly: false
 	Explodes:
 		Weapon: APMine
 	Health:
@@ -30,7 +30,7 @@ MINV:
 	Mine:
 		CrushClasses: mine
 		DetonateClasses: mine
-		AvoidFriendly: no
+		AvoidFriendly: false
 	Explodes:
 		Weapon: ATMine
 	Health:
@@ -66,7 +66,7 @@ CRATE:
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 50
-		UseCashTick: yes
+		UseCashTick: true
 	LevelUpCrateAction:
 		SelectionShares: 40
 	ExplodeCrateAction@fire:
@@ -248,8 +248,8 @@ MINE:
 	RadarColorFromTerrain:
 		Terrain: Ore
 	EditorAppearance:
-		RelativeToTopLeft: yes
-		UseTerrainPalette: yes
+		RelativeToTopLeft: true
+		UseTerrainPalette: true
 	AutoTargetIgnore:
 	BodyOrientation:
 	SeedsResource:
@@ -267,8 +267,8 @@ RAILMINE:
 	RadarColorFromTerrain:
 		Terrain: Gems
 	EditorAppearance:
-		RelativeToTopLeft: yes
-		UseTerrainPalette: no
+		RelativeToTopLeft: true
+		UseTerrainPalette: false
 	AutoTargetIgnore:
 	BodyOrientation:
 	SeedsResource:
@@ -287,7 +287,7 @@ QUEE:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 		UseTerrainPalette: true
 
 LAR1:
@@ -303,7 +303,7 @@ LAR1:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 		UseTerrainPalette: true
 
 LAR2:
@@ -319,7 +319,7 @@ LAR2:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
 	EditorAppearance:
-		RelativeToTopLeft: yes
+		RelativeToTopLeft: true
 		UseTerrainPalette: true
 
 powerproxy.parabombs:
@@ -327,8 +327,8 @@ powerproxy.parabombs:
 		Icon: parabombs
 		Description: Parabombs (Single Use)
 		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
-		OneShot: yes
-		AllowMultiple: yes
+		OneShot: true
+		AllowMultiple: true
 		UnitType: badr.bomber
 		SelectTargetSound: slcttgt1.aud
 		QuantizedFacings: 8

@@ -54,7 +54,7 @@ Grenade:
 	Range: 4c512
 	Projectile: Bullet
 		Speed: 85
-		High: yes
+		High: false
 		Shadow: true
 		Angle: 62
 		Inaccuracy: 554
@@ -88,7 +88,7 @@ Bazooka:
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
-		High: yes
+		High: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -127,7 +127,7 @@ MultiCluster:
 	Projectile: Missile
 		Speed: 170
 		Arm: 2
-		High: yes
+		High: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -239,7 +239,7 @@ CyCannon:
 	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 192
-		High: yes
+		High: false
 		Shadow: true
 		Image: TORPEDO
 	Warhead@1Dam: SpreadDamage
@@ -395,7 +395,7 @@ HoverMissile:
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
-		High: yes
+		High: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -465,7 +465,7 @@ MammothTusk:
 	Palette: ra
 	Projectile: Missile
 		Arm: 0
-		High: yes
+		High: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -622,7 +622,7 @@ BikeMissile:
 	Palette: ra
 	Projectile: Missile
 		Arm: 2
-		High: yes
+		High: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -699,7 +699,7 @@ FireballLauncher:
 SonicZap:
 	ROF: 120
 	Range: 6c0
-	Charges: yes
+	Charges: false
 	Report: SONIC4.AUD
 	Projectile: LaserZap
 		Color: 200,0,255,255
@@ -723,7 +723,7 @@ Dragon:
 	Projectile: Missile
 		Speed: 213
 		Arm: 2
-		High: yes
+		High: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -792,7 +792,7 @@ Dragon:
 		Image: 120mm
 		Angle: 165
 		Shadow: true
-		High: yes
+		High: false
 	MinRange: 5c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
@@ -824,7 +824,7 @@ Hellfire:
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
-		High: yes
+		High: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
@@ -891,7 +891,7 @@ Proton:
 	Projectile: Missile
 		Speed: 256
 		Arm: 2
-		High: yes
+		High: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: TORPEDO
@@ -971,7 +971,7 @@ Tiberium:
 		Spread: 42
 		Damage: 2
 		InfDeath: 6
-		PreventProne: yes
+		PreventProne: true
 
 TiberiumHeal:
 	ROF: 16
@@ -979,7 +979,7 @@ TiberiumHeal:
 		Spread: 42
 		Damage: -2
 		InfDeath: 6
-		PreventProne: yes
+		PreventProne: true
 
 IonCannon:
 	ValidTargets: Ground, Air
@@ -1031,7 +1031,7 @@ RPGTower:
 	Palette: player
 	Projectile: Bullet
 		Speed: 384
-		High: yes
+		High: false
 		Shadow: true
 		Angle: 62
 		Image: canister
@@ -1064,7 +1064,7 @@ SAMTower:
 	Projectile: Missile
 		Speed: 298
 		Arm: 2
-		High: yes
+		High: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON

@@ -860,7 +860,7 @@ Rules:
 			BeginChargeSound: chrochr1.aud
 			EndChargeSound: chrordy1.aud
 			Duration: 999999
-			KillCargo: yes
+			KillCargo: true
 			Range: 3
 		IronCurtainPower:
 			Icon: invuln
@@ -926,7 +926,7 @@ Rules:
 			BeginChargeSound: chrochr1.aud
 			EndChargeSound: chrordy1.aud
 			Duration: 999999
-			KillCargo: yes
+			KillCargo: true
 			Range: 3
 		IronCurtainPower:
 			Icon: invuln

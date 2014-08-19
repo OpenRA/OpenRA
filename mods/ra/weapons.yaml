@@ -718,7 +718,7 @@ Napalm:
 	Projectile: Bullet
 		Image: BOMBLET
 		Speed: 85
-		High: yes
+		High: true 
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
 		Damage: 100
@@ -1481,7 +1481,7 @@ PortaTesla:
 	ROF: 70
 	Range: 3c512
 	Report: TESLA1.AUD
-	Charges: yes
+	Charges: true
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
@@ -1494,7 +1494,7 @@ TTankZap:
 	ROF: 120
 	Range: 7c0
 	Report: TESLA1.AUD
-	Charges: yes
+	Charges: true
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
