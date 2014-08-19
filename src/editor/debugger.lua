@@ -90,14 +90,31 @@ local function updateWatchesSync(onlyitem)
       local expression = watchCtrl:GetItemExpression(item)
       if expression then
         local _, values, error = debugger.evaluate(expression)
-        if error then error = error:gsub("%[.-%]:%d+:%s+","")
-        elseif #values == 0 then values = {'nil'} end
+        local curchildren = watchCtrl:GetItemChildren(item)
+        if error then
+          error = error:gsub("%[.-%]:%d+:%s+","")
+          watchCtrl:SetItemValueIfExpandable(item, nil)
+        else
+          if #values == 0 then values = {'nil'} end
+          local ok, res = LoadSafe("return "..values[1])
+          watchCtrl:SetItemValueIfExpandable(item, res)
+        end
 
-        local newval = expression .. ' = '.. (error and ('error: '..error) or values[1])
+        local newval = (expression .. ' = '
+          .. (error and ('error: '..error) or table.concat(values, ", ")))
         local val = watchCtrl:GetItemText(item)
 
         watchCtrl:SetItemBackgroundColour(item, val ~= newval and hicl or bgcl)
         watchCtrl:SetItemText(item, newval)
+
+        if val ~= newval then
+          local newchildren = watchCtrl:GetItemChildren(item)
+          if #curchildren > 0 and #newchildren == 0 then
+            watchCtrl:SetItemHasChildren(item, true)
+            watchCtrl:CollapseAndReset(item)
+            watchCtrl:SetItemHasChildren(item, false)
+          end
+        end
       end
 
       if onlyitem then break end
@@ -1034,8 +1051,44 @@ local function debuggerCreateWatchWindow()
     return expressions[item:GetValue()]
   end
 
+  local valuecache = {}
+  function watchCtrl:SetItemValueIfExpandable(item, value)
+    local expandable = type(value) == 'table' and next(value) ~= nil
+    valuecache[item:GetValue()] = expandable and value or nil
+    self:SetItemHasChildren(item, expandable)
+  end
+
+  function watchCtrl:GetItemChildren(item)
+    return valuecache[item:GetValue()] or {}
+  end
+
+  watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
+    function (event)
+      local item_id = event:GetItem()
+      local count = watchCtrl:GetChildrenCount(item_id, false)
+      if count > 0 then return true end
+
+      local image = watchCtrl:GetItemImage(item_id)
+      local num = 1
+      for name,value in pairs(watchCtrl:GetItemChildren(item_id)) do
+        local strval = fixUTF8(trimToMaxLength(serialize(value, params)))
+        local text = type(name) == "number"
+          and (num == name and strval or ("[%s] = %s"):format(name, strval))
+          or ("%s = %s"):format(tostring(name), strval)
+        local item = watchCtrl:AppendItem(item_id, text, image)
+        watchCtrl:SetItemValueIfExpandable(item, value)
+
+        num = num + 1
+        if num > stackmaxnum then break end
+      end
+      return true
+    end)
+
   watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_DELETE_ITEM,
-    function (event) expressions[event:GetItem():GetValue()] = nil end)
+    function (event)
+      expressions[event:GetItem():GetValue()] = nil
+      valuecache[event:GetItem():GetValue()] = nil
+    end)
 
   local item
   watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
