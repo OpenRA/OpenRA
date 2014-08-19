@@ -30,6 +30,7 @@ namespace OpenRA.Widgets
 		public Func<bool> OnEnterKey = () => false;
 		public Func<bool> OnTabKey = () => false;
 		public Func<bool> OnEscKey = () => false;
+		public Func<bool> OnAltKey = () => false;
 		public Action OnLoseFocus = () => { };
 		public Action OnTextEdited = () => { };
 		public int CursorPosition { get; set; }
@@ -119,6 +120,9 @@ namespace OpenRA.Widgets
 				return true;
 
 			if (e.Key == Keycode.ESCAPE && OnEscKey())
+				return true;
+
+			if (e.Key == Keycode.LALT && OnAltKey())
 				return true;
 
 			if (e.Key == Keycode.LEFT)
