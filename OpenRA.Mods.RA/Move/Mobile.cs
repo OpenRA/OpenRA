@@ -481,9 +481,36 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
+		decimal GetDamageSpeedModifier(DamageState ds)
+		{
+			var dSpeedMod = (decimal)1;
+			//TODO: balance this
+			switch (ds)
+			{
+				case DamageState.Medium:
+					dSpeedMod = (decimal)0.9;
+					break;
+
+				case DamageState.Heavy:
+					dSpeedMod = (decimal)0.6;
+					break;
+
+				case DamageState.Critical:
+					dSpeedMod = (decimal)0.4;
+					break;
+
+				default:
+					dSpeedMod = (decimal)1;
+					break;
+			}
+
+			return dSpeedMod;
+		}
+
 		public int MovementSpeedForCell(Actor self, CPos cell)
 		{
 			var index = self.World.Map.GetTerrainIndex(cell);
+
 			if (index == -1)
 				return 0;
 
@@ -495,6 +522,8 @@ namespace OpenRA.Mods.RA.Move
 			speed *= Info.Speed;
 			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
 				speed *= t.GetSpeedModifier() / 100m;
+
+			speed *= GetDamageSpeedModifier(self.GetDamageState());
 
 			return (int)(speed / 100);
 		}
