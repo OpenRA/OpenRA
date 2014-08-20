@@ -109,6 +109,7 @@
     <Compile Include="Graphics\Viewport.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Group.cs" />
+    <Compile Include="IUtilityCommand.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\FrameData.cs" />
