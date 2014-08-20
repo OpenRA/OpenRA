@@ -22,6 +22,7 @@ namespace OpenRA
 		public bool Spectating = false;
 		public string Bot = null;
 		public string StartingUnitsClass = null;
+		public bool AllowPlayers = true;
 		public bool AllowBots = true;
 		public bool Required = false;
 

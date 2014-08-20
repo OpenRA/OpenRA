@@ -39,11 +39,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static void ShowSlotDropDown(Ruleset rules, DropDownButtonWidget dropdown, Session.Slot slot,
 			Session.Client client, OrderManager orderManager)
 		{
-			var options = new Dictionary<string, IEnumerable<SlotDropDownOption>>() {{"Slot", new List<SlotDropDownOption>()
-			{
-				new SlotDropDownOption("Open", "slot_open "+slot.PlayerReference, () => (!slot.Closed && client == null)),
-				new SlotDropDownOption("Closed", "slot_close "+slot.PlayerReference, () => slot.Closed)
-			}}};
+			var slots = new List<SlotDropDownOption>();
+
+			if (!slot.Required)
+				slots.Add(new SlotDropDownOption("Closed", "slot_close " + slot.PlayerReference, () => slot.Closed));
+			
+			if (slot.AllowPlayers)
+				slots.Add(new SlotDropDownOption("Open", "slot_open " + slot.PlayerReference, () => (!slot.Closed && client == null)));
+
+			var options = new Dictionary<string, IEnumerable<SlotDropDownOption>>();
+			options.Add(slots.Any() ? "Slots" : "Slots Disabled", slots);
 
 			var bots = new List<SlotDropDownOption>();
 			if (slot.AllowBots)
