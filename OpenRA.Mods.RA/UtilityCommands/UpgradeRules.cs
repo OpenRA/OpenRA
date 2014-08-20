@@ -13,11 +13,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace OpenRA.Utility
+namespace OpenRA.Mods.RA.UtilityCommands
 {
-	public static class UpgradeRules
+	static class UpgradeRules
 	{
-		static void ConvertFloatToRange(ref string input)
+		internal static void ConvertFloatToRange(ref string input)
 		{
 			var value = float.Parse(input);
 			var cells = (int)value;
@@ -26,18 +26,18 @@ namespace OpenRA.Utility
 			input = "{0}c{1}".F(cells, subcells);
 		}
 
-		static void ConvertFloatArrayToPercentArray(ref string input)
+		internal static void ConvertFloatArrayToPercentArray(ref string input)
 		{
 			input = string.Join(", ", input.Split(',')
 				.Select(s => ((int)Math.Round(FieldLoader.GetValue<float>("(float value)", s) * 100)).ToString()));
 		}
 
-		static void ConvertPxToRange(ref string input)
+		internal static void ConvertPxToRange(ref string input)
 		{
 			ConvertPxToRange(ref input, 1, 1);
 		}
 
-		static void ConvertPxToRange(ref string input, int scaleMult, int scaleDiv)
+		internal static void ConvertPxToRange(ref string input, int scaleMult, int scaleDiv)
 		{
 			var value = Exts.ParseIntegerInvariant(input);
 			var ts = Game.modData.Manifest.TileSize;
@@ -48,13 +48,13 @@ namespace OpenRA.Utility
 			input = cells != 0 ? "{0}c{1}".F(cells, subcells) : subcells.ToString();
 		}
 
-		static void ConvertAngle(ref string input)
+		internal static void ConvertAngle(ref string input)
 		{
 			var value = float.Parse(input);
 			input = WAngle.ArcTan((int)(value * 4 * 1024), 1024).ToString();
 		}
 
-		static void ConvertInt2ToWVec(ref string input)
+		internal static void ConvertInt2ToWVec(ref string input)
 		{
 			var offset = FieldLoader.GetValue<int2>("(value)", input);
 			var ts = Game.modData.Manifest.TileSize;
@@ -62,7 +62,7 @@ namespace OpenRA.Utility
 			input = world.ToString();
 		}
 
-		static void UpgradeActorRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		internal static void UpgradeActorRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var parentKey = parent != null ? parent.Key.Split('@').First() : null;
 
@@ -477,7 +477,7 @@ namespace OpenRA.Utility
 			}
 		}
 
-		static void UpgradeWeaponRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		internal static void UpgradeWeaponRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var parentKey = parent != null ? parent.Key.Split('@').First() : null;
 
@@ -789,7 +789,7 @@ namespace OpenRA.Utility
 			}
 		}
 
-		static void UpgradeTileset(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		internal static void UpgradeTileset(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var parentKey = parent != null ? parent.Key.Split('@').First() : null;
 			var addNodes = new List<MiniYamlNode>();
@@ -807,72 +807,5 @@ namespace OpenRA.Utility
 			nodes.AddRange(addNodes);
 		}
 
-		[Desc("MAP", "CURRENTENGINE", "MOD", "Upgrade map rules to the latest engine version.")]
-		public static void UpgradeMap(string[] args)
-		{
-			Game.modData = new ModData(args[3]);
-			var map = new Map(args[1]);
-			var engineDate = Exts.ParseIntegerInvariant(args[2]);
-
-			UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
-			UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
-			map.Save(args[1]);
-		}
-
-		[Desc("MOD", "CURRENTENGINE", "Upgrade mod rules to the latest engine version.")]
-		public static void UpgradeMod(string[] args)
-		{
-			var mod = args[1];
-			var engineDate = Exts.ParseIntegerInvariant(args[2]);
-
-			Game.modData = new ModData(mod);
-			Game.modData.MapCache.LoadMaps();
-
-			Console.WriteLine("Processing Rules:");
-			foreach (var filename in Game.modData.Manifest.Rules)
-			{
-				Console.WriteLine("\t" + filename);
-				var yaml = MiniYaml.FromFile(filename);
-				UpgradeActorRules(engineDate, ref yaml, null, 0);
-
-				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
-			}
-
-			Console.WriteLine("Processing Weapons:");
-			foreach (var filename in Game.modData.Manifest.Weapons)
-			{
-				Console.WriteLine("\t" + filename);
-				var yaml = MiniYaml.FromFile(filename);
-				UpgradeWeaponRules(engineDate, ref yaml, null, 0);
-
-				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
-			}
-
-			Console.WriteLine("Processing Tilesets:");
-			foreach (var filename in Game.modData.Manifest.TileSets)
-			{
-				Console.WriteLine("\t" + filename);
-				var yaml = MiniYaml.FromFile(filename);
-				UpgradeTileset(engineDate, ref yaml, null, 0);
-
-				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
-			}
-
-			Console.WriteLine("Processing Maps:");
-			var maps = Game.modData.MapCache
-				.Where(m => m.Status == MapStatus.Available)
-				.Select(m => m.Map);
-
-			foreach (var map in maps)
-			{
-				Console.WriteLine("\t" + map.Path);
-				UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
-				UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
-				map.Save(map.Path);
-			}
-		}
 	}
 }

@@ -18,37 +18,38 @@ namespace OpenRA.Utility
 {
 	class Program
 	{
-		static readonly Dictionary<string, Action<string[]>> Actions = new Dictionary<string, Action<string[]>>()
-		{
-			{ "--settings-value", Command.Settings },
-			{ "--shp", Command.ConvertPngToShp },
-			{ "--png", Command.ConvertSpriteToPng },
-			{ "--extract", Command.ExtractFiles },
-			{ "--remap", Command.RemapShp },
-			{ "--transpose", Command.TransposeShp },
-			{ "--docs", Command.ExtractTraitDocs },
-			{ "--lua-docs", Command.ExtractLuaDocs },
-			{ "--map-hash", Command.GetMapHash },
-			{ "--map-preview", Command.GenerateMinimap },
-			{ "--map-upgrade-v5", Command.UpgradeV5Map },
-			{ "--upgrade-map", UpgradeRules.UpgradeMap },
-			{ "--upgrade-mod", UpgradeRules.UpgradeMod },
-			{ "--map-import", Command.ImportLegacyMap },
-			{ "--extract-language-strings", ExtractLanguageStrings.FromMod }
-		};
-
 		static void Main(string[] args)
 		{
-			if (args.Length == 0) { PrintUsage(); return; }
+			if (args.Length == 0)
+			{
+				PrintUsage(null);
+				return;
+			}
 
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
 			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
 			Log.AddChannel("perf", null);
 
+			var modName = args[0];
+			if (!ModMetadata.AllMods.Keys.Contains(modName))
+			{
+				PrintUsage(null);
+				return;
+			}
+
+			var modData = new ModData(modName);
+			args = args.Skip(1).ToArray();
+			var actions = new Dictionary<string, Action<string[]>>();
+			foreach (var commandType in modData.ObjectCreator.GetTypesImplementing<IUtilityCommand>())
+			{
+				var command = (IUtilityCommand)Activator.CreateInstance(commandType);
+				actions.Add(command.Name, command.Run);
+			}
+
 			try
 			{
-				var action = Exts.WithDefault(_ => PrintUsage(), () => Actions[args[0]]);
+				var action = Exts.WithDefault(_ => PrintUsage(actions), () => actions[args[0]]);
 				action(args);
 			}
 			catch (Exception e)
@@ -62,11 +63,14 @@ namespace OpenRA.Utility
 			}
 		}
 
-		static void PrintUsage()
+		static void PrintUsage(IDictionary<string, Action<string[]>> actions)
 		{
-			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION] [ARGS]");
+			Console.WriteLine("Usage: OpenRA.Utility.exe [MOD] [OPTION] [ARGS]");
 			Console.WriteLine();
-			foreach (var a in Actions)
+
+			if (actions == null)
+				return;
+			foreach (var a in actions)
 			{
 				var descParts = a.Value.Method.GetCustomAttributes<DescAttribute>(true)
 					.SelectMany(d => d.Lines);

@@ -12,13 +12,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
-namespace OpenRA.Utility
+namespace OpenRA.Mods.RA.UtilityCommands
 {
-	public class ExtractLanguageStrings
+	class ExtractLanguageStringsCommand : IUtilityCommand
 	{
+		public string Name { get { return "--extract-language-strings"; } }
+
 		[Desc("MOD", "Extract translatable strings that are not yet localized and update chrome layout.")]
-		public static void FromMod(string[] args)
+		public void Run(string[] args)
 		{
 			var mod = args[1];
 			Game.modData = new ModData(mod);
@@ -32,7 +35,7 @@ namespace OpenRA.Utility
 			{
 				Console.WriteLine("# {0}:", filename);
 				var yaml = MiniYaml.FromFile(filename);
-				ExtractLanguageStrings.FromChromeLayout(ref yaml, null,
+				ExtractLanguageStringsCommand.FromChromeLayout(ref yaml, null,
 					translatableFields.Select(t => t.Name).Distinct(), null);
 				using (var file = new StreamWriter(filename))
 					file.WriteLine(yaml.WriteToString());
@@ -41,7 +44,7 @@ namespace OpenRA.Utility
 			// TODO: Properties can also be translated.
 		}
 
-		public static void FromChromeLayout(ref List<MiniYamlNode> nodes, MiniYamlNode parent, IEnumerable<string> translatables, string container)
+		internal static void FromChromeLayout(ref List<MiniYamlNode> nodes, MiniYamlNode parent, IEnumerable<string> translatables, string container)
 		{
 			var parentNode = parent != null ? parent.Key.Split('@') : null;
 			var parentType = parent != null ? parentNode.First() : null;
