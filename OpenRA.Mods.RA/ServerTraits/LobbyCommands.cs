@@ -481,7 +481,7 @@ namespace OpenRA.Mods.RA.Server
 								// Create a new bot from replay reference
 								var bot = new Session.Client()
 								{
-									Index = players[id].ClientIndex,
+									Index = server.ChooseFreePlayerIndex(),
 									Name = players[id].Name,
 									Bot = players[id].Name,
 									Slot = slot,
@@ -495,6 +495,7 @@ namespace OpenRA.Mods.RA.Server
 								// Set the color of the bot according to replay
 								bot.Color = bot.PreferredColor = players[id].Color;
 
+								server.Settings.Replay.IndexConverter[players[id].ClientIndex] = bot.Index;
 								server.LobbyInfo.Clients.Add(bot);
 
 								S.SyncClientToPlayerReference(bot, server.Map.Players[slot]);

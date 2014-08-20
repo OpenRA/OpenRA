@@ -35,6 +35,7 @@ namespace OpenRA.Network
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
 		public int FramesAhead = 0;
+		bool LocalPrevention = false;
 
 		public int LastTickTime = Game.RunTime;
 
@@ -51,8 +52,10 @@ namespace OpenRA.Network
 			if (GameStarted) return;
 
 			NetFrameNumber = 1;
+			LobbyInfo.Clients.Where(c => c.IsObserver && !c.IsAdmin).Do(c => frameData.ObserverIDs.Add(c.Index));
+			LocalPrevention = LocalClient != null && frameData.ObserverIDs.Contains(LocalClient.Index);
 
-			if (LobbyInfo.GlobalSettings.WaitFrames != -1) return;
+			if (LocalPrevention || LobbyInfo.GlobalSettings.WaitFrames != -1) return;
 
 			for (var i = NetFrameNumber ; i <= FramesAhead ; i++)
 				Connection.Send(i, new List<byte[]>());
@@ -69,7 +72,7 @@ namespace OpenRA.Network
 
 		public bool CanSend()
 		{
-			return LobbyInfo.GlobalSettings.WaitFrames < NetFrameNumber + FramesAhead;
+			return LobbyInfo.GlobalSettings.WaitFrames < NetFrameNumber + FramesAhead && !LocalPrevention;
 		}
 
 		public void IssueOrders(Order[] orders)
@@ -80,8 +83,7 @@ namespace OpenRA.Network
 
 		public void IssueOrder(Order order)
 		{
-			if (CanSend() || order.IsImmediate)
-				localOrders.Add(order);
+			localOrders.Add(order);
 		}
 
 		public void TickImmediate()

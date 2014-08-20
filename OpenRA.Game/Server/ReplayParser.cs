@@ -35,7 +35,6 @@ namespace OpenRA.Server
 		{
 			Info = ReplayMetadata.Read(replayFilename);
 			IndexConverter = new Dictionary<int, int>();
-			Info.GameInfo.Players.Do(p => IndexConverter.Add(p.ClientIndex, p.ClientIndex));
 			Resume = resume;
 
 			var ignore = new List<byte[]> {
@@ -52,8 +51,6 @@ namespace OpenRA.Server
 					var client = rs.ReadInt32();
 					if (client == ReplayMetadata.MetaStartMarker)
 						break;
-					if (!clients.Contains(client))
-						clients.Add(client);
 					var packetLen = rs.ReadInt32();
 					var packet = rs.ReadBytes(packetLen);
 					var frame = BitConverter.ToInt32(packet, 0);
@@ -100,6 +97,12 @@ namespace OpenRA.Server
 						}
 					}
 
+					if (!clients.Contains(client))
+					{
+						IndexConverter.Add(client, client);
+						clients.Add(client);
+					}
+
 					TickCount = Math.Max(TickCount, frame);
 					Packets.Add(Pair.New(client, packet));
 				}
@@ -110,7 +113,7 @@ namespace OpenRA.Server
 			if (Resume)
 			{
 				//Remove last frame of replay since it is unneeded
-				for ( var i = Packets.Count - 1; i >= 0; i-- )
+				for (var i = Packets.Count - 1; i >= 0; i--)
 				{
 					if (BitConverter.ToInt32(Packets[i].Second, 0) != TickCount)
 						break;
@@ -184,6 +187,37 @@ namespace OpenRA.Server
 			return array;
 		}
 
-		internal List<Pair<int, byte[]>> GetData() { return Packets; }
+		internal List<Pair<int, byte[]>> GetData()
+		{
+			var CompressedPackets = new List<Pair<int, byte[]>>();
+
+			for (var i = 0; i < Packets.Count; )
+			{
+				var client = IndexConverter[Packets[i].First];
+				var frame = BitConverter.ToInt32(Packets[i].Second, 0);
+
+				if (frame != 0 && CompressedPackets.Any(p2 => p2.First == client))
+				{
+					var packet2 = CompressedPackets.FirstOrDefault(p2 => p2.First == client && BitConverter.ToInt32(p2.Second, 0) == frame);
+
+					if (packet2.Second != null)
+					{
+						byte[] newpacket = new byte[Packets[i].Second.Length - 4];
+						Buffer.BlockCopy(Packets[i].Second, 4, newpacket, 0, newpacket.Length);
+
+						CompressedPackets.Remove(packet2);
+						CompressedPackets.Add(Pair.New(Packets[i].First, sumArrays(packet2.Second, newpacket)));
+						Packets.Remove(Packets[i]);
+						continue;
+					}
+				}
+
+				CompressedPackets.Add(new Pair<int, byte[]>(client, Packets[i].Second));
+				Packets.Remove(Packets[i]);
+			}
+
+			Packets = CompressedPackets.OrderBy(p => BitConverter.ToInt32(p.Second, 0)).ToList();
+			return Packets;
+		}
 	}
 }
