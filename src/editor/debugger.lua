@@ -948,6 +948,20 @@ end
 
 local width, height = 360, 200
 
+local keyword = {}
+for _,k in ipairs({'and', 'break', 'do', 'else', 'elseif', 'end', 'false',
+  'for', 'function', 'goto', 'if', 'in', 'local', 'nil', 'not', 'or', 'repeat',
+  'return', 'then', 'true', 'until', 'while'}) do keyword[k] = true end
+
+local function stringifyKeyIntoPrefix(name, num)
+  return (type(name) == "number"
+    and (num and num == name and '' or ("[%s] = "):format(name))
+    or type(name) == "string" and (name:match("^[%l%u_][%w_]*$") and not keyword[name]
+      and ("%s = "):format(name)
+      or ("[%q] = "):format(name))
+    or ("[%s] = "):format(tostring(name)))
+end
+
 local function debuggerCreateStackWindow()
   local stackCtrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(width, height),
@@ -985,9 +999,7 @@ local function debuggerCreateStackWindow()
       local num = 1
       for name,value in pairs(stackCtrl:GetItemChildren(item_id)) do
         local strval = fixUTF8(trimToMaxLength(serialize(value, params)))
-        local text = type(name) == "number"
-          and (num == name and strval or ("[%s] = %s"):format(name, strval))
-          or ("%s = %s"):format(tostring(name), strval)
+        local text = stringifyKeyIntoPrefix(name, num)..strval
         local item = stackCtrl:AppendItem(item_id, text, image)
         stackCtrl:SetItemValueIfExpandable(item, value)
 
@@ -1075,9 +1087,7 @@ local function debuggerCreateWatchWindow()
       local num = 1
       for name,value in pairs(watchCtrl:GetItemChildren(item_id)) do
         local strval = fixUTF8(trimToMaxLength(serialize(value, params)))
-        local text = type(name) == "number"
-          and (num == name and strval or ("[%s] = %s"):format(name, strval))
-          or ("%s = %s"):format(tostring(name), strval)
+        local text = stringifyKeyIntoPrefix(name, num)..strval
         local item = watchCtrl:AppendItem(item_id, text, image)
         watchCtrl:SetItemValueIfExpandable(item, value)
 
