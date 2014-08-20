@@ -96,7 +96,7 @@ namespace OpenRA
 
 		public bool CanSave()
 		{
-			return orderManager.Connection is ReplayRecorderConnection;
+			return orderManager.Connection is ReplayRecorderConnection && orderManager.NetFrameNumber != 0;
 		}
 
 		public void Save(string directory, string filename)

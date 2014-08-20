@@ -109,8 +109,13 @@ namespace OpenRA.Server
 
 			if (Resume)
 			{
-				//Remove last ping of replay since it is unneeded
-				Packets.Remove(Packets.Last());
+				//Remove last frame of replay since it is unneeded
+				for ( var i = Packets.Count - 1; i >= 0; i-- )
+				{
+					if (BitConverter.ToInt32(Packets[i].Second, 0) != TickCount)
+						break;
+					Packets.Remove(Packets[i]);
+				}
 
 				var newPackets = new List<Pair<int, byte[]>>();
 

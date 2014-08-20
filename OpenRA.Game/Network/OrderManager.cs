@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
+using System.IO;
 
 namespace OpenRA.Network
 {
@@ -41,6 +42,7 @@ namespace OpenRA.Network
 		public IConnection Connection { get; private set; }
 
 		public readonly int SyncHeaderSize = 9;
+		bool autoSaved = false;
 
 		List<Order> localOrders = new List<Order>();
 
@@ -96,7 +98,16 @@ namespace OpenRA.Network
 				{
 					var frame = BitConverter.ToInt32(packet, 0);
 					if (packet.Length == 5 && packet[4] == 0xBF)
+					{
+						if (!autoSaved && world != null && world.CanSave() && !LobbyInfo.ClientWithIndex(clientId).IsObserver)
+						{
+							autoSaved = true;
+							var mod = Game.modData.Manifest.Mod;
+							var dir = new[] { Platform.SupportDir, "Saves", mod.Id, mod.Version }.Aggregate(Path.Combine);
+							((ReplayRecorderConnection)Connection).SaveToFile(dir, "disconnect-auto");
+						}
 						frameData.ClientQuit(clientId, frame);
+					}
 					else if (packet.Length >= 5 && packet[4] == 0x65)
 						CheckSync(packet);
 					else if (frame == 0)
