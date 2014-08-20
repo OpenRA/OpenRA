@@ -30,7 +30,12 @@ namespace OpenRA
 		readonly List<IEffect> effects = new List<IEffect>();
 		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
-		public int Timestep;
+		int timestep;
+		public int Timestep
+		{
+			get { return Game.IsSimulating ? 1 : timestep; }
+			set { timestep = value; }
+		}
 
 		internal readonly OrderManager orderManager;
 		public Session LobbyInfo { get { return orderManager.LobbyInfo; } }
