@@ -113,6 +113,9 @@ local function updateWatchesSync(onlyitem)
             watchCtrl:SetItemHasChildren(item, true)
             watchCtrl:CollapseAndReset(item)
             watchCtrl:SetItemHasChildren(item, false)
+          elseif #curchildren > 0 and #newchildren > 0 then
+            watchCtrl:CollapseAndReset(item)
+            watchCtrl:Expand(item)
           end
         end
       end
