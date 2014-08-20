@@ -294,6 +294,7 @@
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Scripting\Properties\PlayerProperties.cs" />
     <Compile Include="Power\ScalePowerWithHealth.cs" />
+    <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="Warheads\DestroyResourceWarhead.cs" />
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />

@@ -7,10 +7,7 @@ echo "Updating https://github.com/OpenRA/OpenRA/wiki/Traits"
 rm -rf $HOME/openra-wiki
 git clone git@github.com:OpenRA/OpenRA.wiki.git $HOME/openra-wiki
 cp -fr ../DOCUMENTATION.md $HOME/openra-wiki/Traits.md
-
-pushd .. &> /dev/null
-mono --debug OpenRA.Utility.exe --lua-docs d2k > $HOME/openra-wiki/New-Lua-API.md
-popd &> /dev/null
+cp -fr ../Lua-API.md $HOME/openra-wiki/New-Lua-API.md
 
 pushd $HOME/openra-wiki
 git add Traits.md

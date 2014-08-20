@@ -38,6 +38,22 @@
     <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
     <Compile Include="ServerTraits\PlayerPinger.cs" />
+    <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
+    <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
+    <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />
+    <Compile Include="UtilityCommands\ExtractLanguageStringsCommand.cs" />
+    <Compile Include="UtilityCommands\ExtractLuaDocsCommand.cs" />
+    <Compile Include="UtilityCommands\ExtractTraitDocsCommand.cs" />
+    <Compile Include="UtilityCommands\GenerateMinimapCommand.cs" />
+    <Compile Include="UtilityCommands\GetMapHashCommand.cs" />
+    <Compile Include="UtilityCommands\Glob.cs" />
+    <Compile Include="UtilityCommands\ImportLegacyMapCommand.cs" />
+    <Compile Include="UtilityCommands\LegacyMapImporter.cs" />
+    <Compile Include="UtilityCommands\RemapShpCommand.cs" />
+    <Compile Include="UtilityCommands\TransposeShpCommand.cs" />
+    <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />
+    <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
+    <Compile Include="UtilityCommands\UpgradeRules.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

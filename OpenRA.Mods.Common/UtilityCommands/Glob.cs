@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace OpenRA.Utility
+namespace OpenRA.Mods.Common.UtilityCommands
 {
-	public static class Glob
+	static class Glob
 	{
 		public static bool Enabled = true;
 
