@@ -1124,7 +1124,11 @@ local function debuggerCreateWatchWindow()
   watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT,
     function (event)
       local item = event:GetItem()
-      if not item:IsOk() then event:Veto(); return end
+      if not item:IsOk()
+      or watchCtrl:GetItemParent(item):GetValue() ~= root:GetValue() then
+        event:Veto()
+        return
+      end
 
       label = watchCtrl:GetItemText(item)
       local expr = watchCtrl:GetItemExpression(item)
