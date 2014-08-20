@@ -36,6 +36,8 @@ namespace OpenRA.Mods.Common.Server
 				lastPing = Game.RunTime;
 				foreach (var c in server.Conns.ToList())
 				{
+					if (!c.CanTimeout)
+						continue;
 					if (c.TimeSinceLastResponse < ConnTimeout)
 					{
 						server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
@@ -58,7 +60,7 @@ namespace OpenRA.Mods.Common.Server
 				lastConnReport = Game.RunTime;
 
 				var timeouts = server.Conns
-					.Where(c => c.TimeSinceLastResponse > ConnReportInterval && c.TimeSinceLastResponse < ConnTimeout)
+					.Where(c => c.CanTimeout && c.TimeSinceLastResponse > ConnReportInterval && c.TimeSinceLastResponse < ConnTimeout)
 					.OrderBy(c => c.TimeSinceLastResponse);
 
 				foreach (var c in timeouts)
