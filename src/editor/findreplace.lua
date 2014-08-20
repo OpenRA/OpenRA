@@ -46,7 +46,9 @@ local findReplace = ide.findReplace
 local lastEditor
 function findReplace:GetEditor()
   lastEditor = findReplace.oveditor or GetEditorWithFocus() or lastEditor
-  return lastEditor or GetEditor()
+  -- last editor may already be "userdata" instead of a Scintilla object,
+  -- so check if this is still a valid wxSTC object
+  return pcall(function() lastEditor:GetId() end) and lastEditor or GetEditor()
 end
 
 -------------------- Find replace dialog
