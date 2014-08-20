@@ -49,6 +49,9 @@ namespace OpenRA.Network
 			if (GameStarted) return;
 
 			NetFrameNumber = 1;
+
+			if (LobbyInfo.GlobalSettings.WaitFrames != -1) return;
+
 			for (var i = NetFrameNumber ; i <= FramesAhead ; i++)
 				Connection.Send(i, new List<byte[]>());
 		}
@@ -62,6 +65,11 @@ namespace OpenRA.Network
 			syncReport = new SyncReport(this);
 		}
 
+		public bool CanSend()
+		{
+			return LobbyInfo.GlobalSettings.WaitFrames < NetFrameNumber + FramesAhead;
+		}
+
 		public void IssueOrders(Order[] orders)
 		{
 			foreach (var order in orders)
@@ -70,7 +78,8 @@ namespace OpenRA.Network
 
 		public void IssueOrder(Order order)
 		{
-			localOrders.Add(order);
+			if (CanSend() || order.IsImmediate)
+				localOrders.Add(order);
 		}
 
 		public void TickImmediate()
@@ -177,7 +186,8 @@ namespace OpenRA.Network
 			if (!IsReadyForNextFrame)
 				throw new InvalidOperationException();
 
-			Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
+			if (CanSend())
+				Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
 			localOrders.Clear();
 
 			var sync = new List<int>();

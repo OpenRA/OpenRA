@@ -190,6 +190,7 @@ namespace OpenRA.Network
 			public string StartingUnitsClass = "none";
 			public bool AllowVersionMismatch;
 			public string GameUid;
+			public int WaitFrames = -1;
 
 			public MiniYamlNode Serialize()
 			{

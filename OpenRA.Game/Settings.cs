@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using OpenRA.Graphics;
+using OpenRA.Server;
 
 namespace OpenRA
 {
@@ -32,6 +33,7 @@ namespace OpenRA
 		public bool VerboseNatDiscovery = false; // print very detailed logs for debugging
 		public bool AllowCheats = false;
 		public string Map = null;
+		public ReplayParser Replay = null;
 		public string[] Ban = { };
 		public int TimeOut = 0;
 		public bool Dedicated = false;
