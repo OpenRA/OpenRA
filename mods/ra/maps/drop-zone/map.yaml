@@ -257,7 +257,7 @@ VoxelSequences:
 
 Weapons:
 	PortaTesla:
-		ROF: 20
+		ReloadDelay: 20
 		Range: 10c0
 		Warhead: SpreadDamage
 			Spread: 42

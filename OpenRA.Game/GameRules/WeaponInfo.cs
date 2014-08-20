@@ -37,8 +37,8 @@ namespace OpenRA.GameRules
 		[Desc("The sound played when the weapon is fired.")]
 		public readonly string[] Report = null;
 
-		[Desc("Rate of Fire = Delay in ticks between reloading ammo magazines.")]
-		public readonly int ROF = 1;
+		[Desc("Delay in ticks between reloading ammo magazines.")]
+		public readonly int ReloadDelay = 1;
 
 		[Desc("Number of shots in a single ammo magazine.")]
 		public readonly int Burst = 1;
