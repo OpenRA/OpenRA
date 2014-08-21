@@ -510,7 +510,7 @@ Rules:
 			UseCashTick: yes
 			SelectionShares: 30
 		GiveUnitCrateAction@e7:
-			Unit: e7
+			Units: e7
 			SelectionShares: 10
 	Player:
 		PlayerResources:
