@@ -22,7 +22,7 @@ local q = EscapeMagic
 -- generic tree
 -- ------------
 
-local IMG_DIRECTORY, IMG_FILE_KNOWN, IMG_FILE_OTHER = 0, 1, 2
+local image = { DIRECTORY = 0, FILEKNOWN = 1, FILEOTHER = 2 }
 
 do
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
@@ -47,7 +47,7 @@ local function treeAddDir(tree,parent_id,rootdir)
   for _, file in ipairs(FileSysGetRecursive(rootdir)) do
     local name, dir = file:match("([^"..pathsep.."]+)("..pathsep.."?)$")
     local known = GetSpec(GetFileExt(name))
-    local icon = #dir>0 and IMG_DIRECTORY or known and IMG_FILE_KNOWN or IMG_FILE_OTHER
+    local icon = #dir>0 and image.DIRECTORY or known and image.FILEKNOWN or image.FILEOTHER
     local item = items[name .. icon]
     if item then -- existing item
       -- keep deleting items until we find item
@@ -94,7 +94,7 @@ local function treeSetRoot(tree,rootdir)
   tree:DeleteAllItems()
   if (not wx.wxDirExists(rootdir)) then return end
 
-  local root_id = tree:AddRoot(rootdir, IMG_DIRECTORY)
+  local root_id = tree:AddRoot(rootdir, image.DIRECTORY)
   tree:SetItemHasChildren(root_id, true) -- make sure that the item can expand
   tree:Expand(root_id) -- this will also populate the tree
 end
@@ -142,9 +142,9 @@ local function treeSetConnectorsAndIcons(tree)
 
   local function isIt(item, imgtype) return tree:GetItemImage(item) == imgtype end
 
-  function tree:IsDirectory(item_id) return isIt(item_id, IMG_DIRECTORY) end
-  function tree:IsFileKnown(item_id) return isIt(item_id, IMG_FILE_KNOWN) end
-  function tree:IsFileOther(item_id) return isIt(item_id, IMG_FILE_OTHER) end
+  function tree:IsDirectory(item_id) return isIt(item_id, image.DIRECTORY) end
+  function tree:IsFileKnown(item_id) return isIt(item_id, image.FILEKNOWN) end
+  function tree:IsFileOther(item_id) return isIt(item_id, image.FILEOTHER) end
   function tree:IsRoot(item_id) return not tree:GetItemParent(item_id):IsOk() end
 
   function tree:FindItem(match)
@@ -202,7 +202,7 @@ local function treeSetConnectorsAndIcons(tree)
 
   local empty = ""
   local function renameItem(itemsrc, target)
-    local isdir = tree:GetItemImage(itemsrc) == IMG_DIRECTORY
+    local isdir = tree:GetItemImage(itemsrc) == image.DIRECTORY
     local isnew = tree:GetItemText(itemsrc) == empty
     local source = tree:GetItemFullName(itemsrc)
     local fn = wx.wxFileName(target)
@@ -265,7 +265,7 @@ local function treeSetConnectorsAndIcons(tree)
     return true
   end
   local function deleteItem(item_id)
-    local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
+    local isdir = tree:GetItemImage(item_id) == image.DIRECTORY
     local source = tree:GetItemFullName(item_id)
 
     if isdir and FileDirHasContent(source..pathsep) then return false end
@@ -302,12 +302,12 @@ local function treeSetConnectorsAndIcons(tree)
     end)
 
   -- handle context menu
-  local function addItem(item_id, name, image)
-    local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
+  local function addItem(item_id, name, img)
+    local isdir = tree:GetItemImage(item_id) == image.DIRECTORY
     local parent = isdir and item_id or tree:GetItemParent(item_id)
     if isdir then tree:Expand(item_id) end -- expand to populate if needed
 
-    local item = tree:PrependItem(parent, name, image)
+    local item = tree:PrependItem(parent, name, img)
     tree:SetItemHasChildren(parent, true)
     -- temporarily disable expand as we don't need this node populated
     tree:SetEvtHandlerEnabled(false)
@@ -318,11 +318,11 @@ local function treeSetConnectorsAndIcons(tree)
 
   tree:Connect(ID_NEWFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
-      tree:EditLabel(addItem(tree:GetSelection(), empty, IMG_FILE_OTHER))
+      tree:EditLabel(addItem(tree:GetSelection(), empty, image.FILEOTHER))
     end)
   tree:Connect(ID_NEWDIRECTORY, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
-      tree:EditLabel(addItem(tree:GetSelection(), empty, IMG_DIRECTORY))
+      tree:EditLabel(addItem(tree:GetSelection(), empty, image.DIRECTORY))
     end)
   tree:Connect(ID_RENAMEFILE, wx.wxEVT_COMMAND_MENU_SELECTED,
     function() tree:EditLabel(tree:GetSelection()) end)
@@ -390,7 +390,7 @@ local function treeSetConnectorsAndIcons(tree)
       FileTreeProjectListUpdate(projectdirectorymenu, 0)
 
       -- disable Delete on non-empty directories
-      local isdir = tree:GetItemImage(item_id) == IMG_DIRECTORY
+      local isdir = tree:GetItemImage(item_id) == image.DIRECTORY
       if isdir then
         local source = tree:GetItemFullName(item_id)
         menu:Enable(ID_DELETEFILE, not FileDirHasContent(source..pathsep))
@@ -430,7 +430,7 @@ local function treeSetConnectorsAndIcons(tree)
       end
 
       if item_id and bit.band(flags, mask) > 0 then
-        if tree:GetItemImage(item_id) == IMG_DIRECTORY then
+        if tree:GetItemImage(item_id) == image.DIRECTORY then
           tree:Toggle(item_id)
           tree:SelectItem(item_id)
         else

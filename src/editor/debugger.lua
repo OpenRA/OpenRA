@@ -24,6 +24,8 @@ debugger.hostname = ide.config.debugger.hostname or (function()
   return hostname and socket.dns.toip(hostname) and hostname or "localhost"
 end)()
 
+local image = { STACK = 0, LOCAL = 1, UPVALUE = 2 }
+
 do
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16,16)
@@ -66,66 +68,66 @@ local function trimToMaxLength(...)
   return unpack(t)
 end
 
--- on some Linux versions using wxwidgets 2.9.5 wxListCtrl doesn't report
--- background color even after the color being explicitly set
--- (Linux cipripc 3.13.0-24-generic #47-Ubuntu SMP Fri May 2 23:30:00 UTC 2014 x86_64 GNU/Linux);
--- check if the fix is needed in this case and use stackCtrl color instead.
-local bgcolorfixneeded
-if ide.osname == 'Unix' then
-  local lc, color = wx.wxListCtrl(), wx.wxRED
-  lc:SetBackgroundColour(color)
-  bgcolorfixneeded = lc:GetBackgroundColour():GetAsString() ~= color:GetAsString()
-end
-
 local q = EscapeMagic
 
-local function updateWatchesSync(num)
+local function updateWatchesSync(onlyitem)
   local watchCtrl = debugger.watchCtrl
   local pane = ide.frame.uimgr:GetPane("watchpanel")
   local shown = watchCtrl and (pane:IsOk() and pane:IsShown() or not pane:IsOk() and watchCtrl:IsShown())
   if shown and debugger.server and not debugger.running
   and not debugger.scratchpad and not (debugger.options or {}).noeval then
     local bgcl = watchCtrl:GetBackgroundColour()
-    if bgcolorfixneeded then bgcl = debugger.stackCtrl:GetBackgroundColour() end
     local hicl = wx.wxColour(math.floor(bgcl:Red()*.9),
       math.floor(bgcl:Green()*.9), math.floor(bgcl:Blue()*.9))
-    for idx = 0, watchCtrl:GetItemCount() - 1 do
-      if not num or idx == num then
-        local expression = watchCtrl:GetItemText(idx)
-        local _, values, error = debugger.evaluate(expression)
-        if error then error = error:gsub("%[.-%]:%d+:%s+","")
-        elseif #values == 0 then values = {'nil'} end
 
-        local newval = error and ('error: '..error) or values[1]
-        -- get the current value from a list item
-        do local litem = wx.wxListItem()
-          litem:SetMask(wx.wxLIST_MASK_TEXT)
-          litem:SetId(idx)
-          litem:SetColumn(1)
-          watchCtrl:GetItem(litem)
-          watchCtrl:SetItemBackgroundColour(idx,
-            watchCtrl:GetItem(litem) and newval ~= litem:GetText()
-            and hicl or bgcl)
+    local root = watchCtrl:GetRootItem()
+    if not root or not root:IsOk() then return end
+
+    local item = onlyitem or watchCtrl:GetFirstChild(root)
+    while true do
+      if not item:IsOk() then break end
+
+      local expression = watchCtrl:GetItemExpression(item)
+      if expression then
+        local _, values, error = debugger.evaluate(expression)
+        local curchildren = watchCtrl:GetItemChildren(item)
+        if error then
+          error = error:gsub("%[.-%]:%d+:%s+","")
+          watchCtrl:SetItemValueIfExpandable(item, nil)
+        else
+          if #values == 0 then values = {'nil'} end
+          local ok, res = LoadSafe("return "..values[1])
+          watchCtrl:SetItemValueIfExpandable(item, res)
         end
 
-        watchCtrl:SetItem(idx, 1, newval)
+        local newval = (expression .. ' = '
+          .. (error and ('error: '..error) or table.concat(values, ", ")))
+        local val = watchCtrl:GetItemText(item)
+
+        watchCtrl:SetItemBackgroundColour(item, val ~= newval and hicl or bgcl)
+        watchCtrl:SetItemText(item, newval)
+
+        if onlyitem or val ~= newval then
+          local newchildren = watchCtrl:GetItemChildren(item)
+          if #curchildren > 0 and #newchildren == 0 then
+            watchCtrl:SetItemHasChildren(item, true)
+            watchCtrl:CollapseAndReset(item)
+            watchCtrl:SetItemHasChildren(item, false)
+          elseif #curchildren > 0 and #newchildren > 0 then
+            watchCtrl:CollapseAndReset(item)
+            watchCtrl:Expand(item)
+          end
+        end
       end
+
+      if onlyitem then break end
+      item = watchCtrl:GetNextSibling(item)
     end
   end
 end
 
 local simpleType = {['nil'] = true, ['string'] = true, ['number'] = true, ['boolean'] = true}
-local stackItemValue = {}
 local callData = {}
-local function checkIfExpandable(value, item)
-  local expandable = type(value) == 'table' and next(value) ~= nil
-    and not stackItemValue[value] -- only expand first time
-  if expandable then -- cache table value to expand when requested
-    stackItemValue[item:GetValue()] = value
-    stackItemValue[value] = item:GetValue() -- to avoid circular refs
-  end
-  return expandable
-end
 
 local function updateStackSync()
   local stackCtrl = debugger.stackCtrl
@@ -135,17 +137,16 @@ local function updateStackSync()
   and not debugger.scratchpad then
     local stack, _, err = debugger.stack()
     if not stack or #stack == 0 then
-      stackCtrl:DeleteAllItems()
+      stackCtrl:DeleteAll()
       if err then -- report an error if any
-        stackCtrl:AppendItem(stackCtrl:AddRoot("Stack"), "Error: " .. err, 0)
+        stackCtrl:AppendItem(stackCtrl:AddRoot("Stack"), "Error: " .. err, image.STACK)
       end
       return
     end
     stackCtrl:Freeze()
-    stackCtrl:DeleteAllItems()
+    stackCtrl:DeleteAll()
 
     local root = stackCtrl:AddRoot("Stack")
-    stackItemValue = {} -- reset cache of items in the stack
     callData = {} -- reset call cache
     for _,frame in ipairs(stack) do
       -- "main chunk at line 24"
@@ -168,7 +169,7 @@ local function updateStackSync()
                           or " (defined in "..call[7]..")"))
 
       -- create the new tree item for this level of the call stack
-      local callitem = stackCtrl:AppendItem(root, text, 0)
+      local callitem = stackCtrl:AppendItem(root, text, image.STACK)
 
       -- register call data to provide stack navigation
       callData[callitem:GetValue()] = { call[2], call[4] }
@@ -184,10 +185,8 @@ local function updateStackSync()
         local text = ("%s = %s%s"):
           format(name, fixUTF8(trimToMaxLength(serialize(value, params))),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
-        local item = stackCtrl:AppendItem(callitem, text, 1)
-        if checkIfExpandable(value, item) then
-          stackCtrl:SetItemHasChildren(item, true)
-        end
+        local item = stackCtrl:AppendItem(callitem, text, image.LOCAL)
+        stackCtrl:SetItemValueIfExpandable(item, value)
       end
 
       -- add the upvalues for this call stack level to the tree item
@@ -196,10 +195,8 @@ local function updateStackSync()
         local text = ("%s = %s%s"):
           format(name, fixUTF8(trimToMaxLength(serialize(value, params))),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
-        local item = stackCtrl:AppendItem(callitem, text, 2)
-        if checkIfExpandable(value, item) then
-          stackCtrl:SetItemHasChildren(item, true)
-        end
+        local item = stackCtrl:AppendItem(callitem, text, image.UPVALUE)
+        stackCtrl:SetItemValueIfExpandable(item, value)
       end
 
       stackCtrl:SortChildren(callitem)
@@ -220,12 +217,12 @@ local function updateStackAndWatches()
   end
 end
 
-local function updateWatches(num)
+local function updateWatches(item)
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise updateWatchesSync() does nothing.
   if debugger.running then debugger.update() end
   if debugger.server and not debugger.running then
-    copas.addthread(function() updateWatchesSync(num) end)
+    copas.addthread(function() updateWatchesSync(item) end)
   end
 end
 
@@ -951,6 +948,20 @@ end
 
 local width, height = 360, 200
 
+local keyword = {}
+for _,k in ipairs({'and', 'break', 'do', 'else', 'elseif', 'end', 'false',
+  'for', 'function', 'goto', 'if', 'in', 'local', 'nil', 'not', 'or', 'repeat',
+  'return', 'then', 'true', 'until', 'while'}) do keyword[k] = true end
+
+local function stringifyKeyIntoPrefix(name, num)
+  return (type(name) == "number"
+    and (num and num == name and '' or ("[%s] = "):format(name))
+    or type(name) == "string" and (name:match("^[%l%u_][%w_]*$") and not keyword[name]
+      and ("%s = "):format(name)
+      or ("[%q] = "):format(name))
+    or ("[%s] = "):format(tostring(name)))
+end
+
 local function debuggerCreateStackWindow()
   local stackCtrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(width, height),
@@ -958,7 +969,25 @@ local function debuggerCreateStackWindow()
 
   debugger.stackCtrl = stackCtrl
 
-  stackCtrl:AssignImageList(debugger.imglist)
+  stackCtrl:SetImageList(debugger.imglist)
+
+  local valuecache = {}
+  function stackCtrl:SetItemValueIfExpandable(item, value)
+    local expandable = type(value) == 'table' and next(value) ~= nil
+    if expandable then -- cache table value to expand when requested
+      valuecache[item:GetValue()] = value
+    end
+    self:SetItemHasChildren(item, expandable)
+  end
+
+  function stackCtrl:DeleteAll()
+    self:DeleteAllItems()
+    valuecache = {}
+  end
+
+  function stackCtrl:GetItemChildren(item)
+    return valuecache[item:GetValue()] or {}
+  end
 
   stackCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
@@ -968,15 +997,12 @@ local function debuggerCreateStackWindow()
 
       local image = stackCtrl:GetItemImage(item_id)
       local num = 1
-      for name,value in pairs(stackItemValue[item_id:GetValue()]) do
+      for name,value in pairs(stackCtrl:GetItemChildren(item_id)) do
         local strval = fixUTF8(trimToMaxLength(serialize(value, params)))
-        local text = type(name) == "number"
-          and (num == name and strval or ("[%s] = %s"):format(name, strval))
-          or ("%s = %s"):format(tostring(name), strval)
+        local text = stringifyKeyIntoPrefix(name, num)..strval
         local item = stackCtrl:AppendItem(item_id, text, image)
-        if checkIfExpandable(value, item) then
-          stackCtrl:SetItemHasChildren(item, true)
-        end
+        stackCtrl:SetItemValueIfExpandable(item, value)
+
         num = num + 1
         if num > stackmaxnum then break end
       end
@@ -1010,84 +1036,193 @@ local function debuggerCreateStackWindow()
 end
 
 local function debuggerCreateWatchWindow()
-  local watchCtrl = wx.wxListCtrl(ide.frame, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize,
-    wx.wxLC_REPORT + wx.wxLC_EDIT_LABELS)
+  local watchCtrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxSize(width, height),
+    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE
+    + wx.wxTR_HIDE_ROOT + wx.wxTR_EDIT_LABELS)
 
   debugger.watchCtrl = watchCtrl
 
-  local info = wx.wxListItem()
-  info:SetMask(wx.wxLIST_MASK_TEXT + wx.wxLIST_MASK_WIDTH)
-  info:SetText(TR("Expression"))
-  info:SetWidth(width * 0.32)
-  watchCtrl:InsertColumn(0, info)
+  local root = watchCtrl:AddRoot("Watch")
+  watchCtrl:SetImageList(debugger.imglist)
 
-  info:SetText(TR("Value"))
-  info:SetWidth(width * 0.56)
-  watchCtrl:InsertColumn(1, info)
+  local defaultExpr = "watch expression"
+  local expressions = {} -- table to keep track of expressions
 
-  local watchMenu = wx.wxMenu {
-    { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
-    { ID_EDITWATCH, TR("&Edit Watch")..KSC(ID_EDITWATCH) },
-    { ID_DELETEWATCH, TR("&Delete Watch")..KSC(ID_DELETEWATCH) },
-  }
+  function watchCtrl:SetItemExpression(item, expr, value)
+    expressions[item:GetValue()] = expr
+    self:SetItemText(item, expr .. ' = ' .. (value or '?'))
+    self:SelectItem(item, true)
+    if not value then updateWatches(item) end
+  end
 
-  local function findSelectedWatchItem()
-    local count = watchCtrl:GetSelectedItemCount()
-    if count > 0 then
-      for idx = 0, watchCtrl:GetItemCount() - 1 do
-        if watchCtrl:GetItemState(idx, wx.wxLIST_STATE_FOCUSED) ~= 0 then
-          return idx
-        end
-      end
+  function watchCtrl:GetItemExpression(item)
+    return expressions[item:GetValue()]
+  end
+
+  local names = {}
+  function watchCtrl:SetItemName(item, name)
+    local nametype = type(name)
+    names[item:GetValue()] = (
+      (nametype == 'string' or nametype == 'number' or nametype == 'boolean')
+      and name or nil
+    )
+  end
+
+  function watchCtrl:GetItemName(item)
+    return names[item:GetValue()]
+  end
+
+  local valuecache = {}
+  function watchCtrl:SetItemValueIfExpandable(item, value)
+    local expandable = type(value) == 'table' and next(value) ~= nil
+    valuecache[item:GetValue()] = expandable and value or nil
+    self:SetItemHasChildren(item, expandable)
+  end
+
+  function watchCtrl:GetItemChildren(item)
+    return valuecache[item:GetValue()] or {}
+  end
+
+  function watchCtrl:IsWatch(item)
+    return item:IsOk() and watchCtrl:GetItemParent(item):GetValue() == root:GetValue()
+  end
+
+  function watchCtrl:IsEditable(item)
+    return (item and item:IsOk()
+      and (watchCtrl:IsWatch(item) or watchCtrl:GetItemName(item) ~= nil))
+  end
+
+  function watchCtrl:UpdateItemValue(item, value)
+    local expr = ''
+    local origitem = item
+    while true do
+      local name = watchCtrl:GetItemName(item)
+      expr = (watchCtrl:IsWatch(item)
+        and ('({%s})[1]'):format(watchCtrl:GetItemExpression(item))
+        or (type(name) == 'string' and '[%q]' or '[%s]'):format(tostring(name))
+      )..expr
+      if watchCtrl:IsWatch(item) then break end
+      item = watchCtrl:GetItemParent(item)
+      if not item:IsOk() then break end
     end
-    return -1
+
+    if debugger.running then debugger.update() end
+    if debugger.server and not debugger.running
+    and (not debugger.scratchpad or debugger.scratchpad.paused) then
+      copas.addthread(function ()
+        local _, _, err = debugger.execute(expr..'='..value)
+        if err then
+          watchCtrl:SetItemText(origitem, 'error: '..err:gsub("%[.-%]:%d+:%s+",""))
+        else
+          updateWatchesSync(item)
+        end
+        updateStackSync()
+      end)
+    end
   end
 
-  local defaultExpr = ""
-  local function addWatch()
-    local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
-    watchCtrl:SetItem(row, 0, defaultExpr)
-    watchCtrl:SetItem(row, 1, TR("Value"))
-    watchCtrl:EditLabel(row)
-  end
-
-  local function editWatch()
-    local row = findSelectedWatchItem()
-    if row >= 0 then watchCtrl:EditLabel(row) end
-  end
-
-  local function deleteWatch()
-    local row = findSelectedWatchItem()
-    if row >= 0 then watchCtrl:DeleteItem(row) end
-  end
-
-  watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
-    function () watchCtrl:PopupMenu(watchMenu) end)
-
-  watchCtrl:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, addWatch)
-
-  watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, editWatch)
-  watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_UPDATE_UI,
-    function (event) event:Enable(watchCtrl:GetSelectedItemCount() > 0) end)
-
-  watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, deleteWatch)
-  watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_UPDATE_UI,
-    function (event) event:Enable(watchCtrl:GetSelectedItemCount() > 0) end)
-
-  watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
-    function (event) watchCtrl:EditLabel(event:GetIndex()) end)
-
-  watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
+  watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
-      local row = event:GetIndex()
+      local item_id = event:GetItem()
+      local count = watchCtrl:GetChildrenCount(item_id, false)
+      if count > 0 then return true end
+
+      local image = watchCtrl:GetItemImage(item_id)
+      local num = 1
+      for name,value in pairs(watchCtrl:GetItemChildren(item_id)) do
+        local strval = fixUTF8(trimToMaxLength(serialize(value, params)))
+        local text = stringifyKeyIntoPrefix(name, num)..strval
+        local item = watchCtrl:AppendItem(item_id, text, image)
+        watchCtrl:SetItemValueIfExpandable(item, value)
+        watchCtrl:SetItemName(item, name)
+
+        num = num + 1
+        if num > stackmaxnum then break end
+      end
+      return true
+    end)
+
+  watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_DELETE_ITEM,
+    function (event)
+      local value = event:GetItem():GetValue()
+      expressions[value] = nil
+      valuecache[value] = nil
+      names[value] = nil
+    end)
+
+  local item
+  -- wx.wxEVT_CONTEXT_MENU is only triggered over tree items on OSX,
+  -- but it needs to be also triggered below any item to add a watch,
+  -- so use RIGHT_DOWN instead
+  watchCtrl:Connect(wx.wxEVT_RIGHT_DOWN,
+    function (event)
+      -- store the item to be used in edit/delete actions
+      item = watchCtrl:HitTest(watchCtrl:ScreenToClient(wx.wxGetMousePosition()))
+      local editlabel = watchCtrl:IsWatch(item) and TR("&Edit Watch") or TR("&Edit Value")
+      watchCtrl:PopupMenu(wx.wxMenu {
+        { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
+        { ID_EDITWATCH, editlabel..KSC(ID_EDITWATCH) },
+        { ID_DELETEWATCH, TR("&Delete Watch")..KSC(ID_DELETEWATCH) },
+      })
+      item = nil
+    end)
+
+  watchCtrl:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function (event) watchCtrl:EditLabel(watchCtrl:AppendItem(root, defaultExpr, image.LOCAL)) end)
+
+  watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function (event) watchCtrl:EditLabel(item or watchCtrl:GetSelection()) end)
+  watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_UPDATE_UI,
+    function (event) event:Enable(watchCtrl:IsEditable(item or watchCtrl:GetSelection())) end)
+
+  watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function (event) watchCtrl:Delete(item or watchCtrl:GetSelection()) end)
+  watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_UPDATE_UI,
+    function (event) event:Enable(watchCtrl:IsWatch(item or watchCtrl:GetSelection())) end)
+
+  local label
+  watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT,
+    function (event)
+      local item = event:GetItem()
+      if not (item:IsOk() and watchCtrl:IsEditable(item)) then
+        event:Veto()
+        return
+      end
+
+      label = watchCtrl:GetItemText(item)
+
+      if watchCtrl:IsWatch(item) then
+        local expr = watchCtrl:GetItemExpression(item)
+        if expr then watchCtrl:SetItemText(item, expr) end
+      else
+        local prefix = stringifyKeyIntoPrefix(watchCtrl:GetItemName(item))
+        local val = watchCtrl:GetItemText(item):gsub(q(prefix),'')
+        watchCtrl:SetItemText(item, val)
+      end
+    end)
+  watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT,
+    function (event)
+      event:Veto()
+
+      local item = event:GetItem()
       if event:IsEditCancelled() then
-        if watchCtrl:GetItemText(row) == defaultExpr then
-          watchCtrl:DeleteItem(row)
+        if watchCtrl:GetItemText(item) == defaultExpr then
+          -- when Delete is called from END_EDIT, it causes infinite loop
+          -- on OSX (wxwidgets 2.9.5) as Delete calls END_EDIT again.
+          -- disable handlers during Delete and then enable back.
+          watchCtrl:SetEvtHandlerEnabled(false)
+          watchCtrl:Delete(item)
+          watchCtrl:SetEvtHandlerEnabled(true)
+        else
+          watchCtrl:SetItemText(item, label)
         end
       else
-        watchCtrl:SetItem(row, 0, event:GetText())
-        updateWatches(row)
+        if watchCtrl:IsWatch(item) then
+          watchCtrl:SetItemExpression(item, event:GetLabel())
+        else
+          watchCtrl:UpdateItemValue(item, event:GetLabel())
+        end
       end
       event:Skip()
     end)
@@ -1107,27 +1242,6 @@ debuggerCreateWatchWindow()
 -- public api
 
 DebuggerRefreshPanels = updateStackAndWatches
-
-function DebuggerAddWatch(watch)
-  local mgr = ide.frame.uimgr
-  local pane = mgr:GetPane("watchpanel")
-  if (pane:IsOk() and not pane:IsShown()) then
-    pane:Show()
-    mgr:Update()
-  end
-
-  local watchCtrl = debugger.watchCtrl
-  -- check if this expression is already on the list
-  for idx = 0, watchCtrl:GetItemCount() - 1 do
-    if watchCtrl:GetItemText(idx) == watch then return end
-  end
-
-  local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
-  watchCtrl:SetItem(row, 0, watch)
-  watchCtrl:SetItem(row, 1, TR("Value"))
-
-  updateWatches(row)
-end
 
 function DebuggerAttachDefault(options)
   debugger.options = options

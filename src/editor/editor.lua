@@ -1377,7 +1377,7 @@ function CreateEditor()
     end)
 
   editor:Connect(ID_QUICKADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function(event) DebuggerAddWatch(value) end)
+    function(event) ide:AddWatch(value) end)
 
   editor:Connect(ID_QUICKEVAL, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event) ShellExecuteCode(value) end)

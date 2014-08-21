@@ -160,6 +160,35 @@ function ide:RemoveMenuItem(id, menu)
   return false
 end
 
+function ide:AddWatch(watch, value)
+  local mgr = ide.frame.uimgr
+  local pane = mgr:GetPane("watchpanel")
+  if (pane:IsOk() and not pane:IsShown()) then
+    pane:Show()
+    mgr:Update()
+  end
+
+  local watchCtrl = ide.debugger.watchCtrl
+  if not watchCtrl then return end
+
+  local root = watchCtrl:GetRootItem()
+  if not root or not root:IsOk() then return end
+
+  local item = watchCtrl:GetFirstChild(root)
+  while true do
+    if not item:IsOk() then break end
+    if watchCtrl:GetItemExpression(item) == watch then
+      if value then watchCtrl:SetItemText(item, watch .. ' = ' .. tostring(value)) end
+      return item
+    end
+    item = watchCtrl:GetNextSibling(item)
+  end
+
+  local item = watchCtrl:AppendItem(root, watch, 1)
+  watchCtrl:SetItemExpression(item, watch, value)
+  return item
+end
+
 function ide:AddInterpreter(name, interpreter)
   self.interpreters[name] = setmetatable(interpreter, ide.proto.Interpreter)
   UpdateInterpreters()
