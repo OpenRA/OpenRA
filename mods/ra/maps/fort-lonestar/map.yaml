@@ -553,6 +553,8 @@ Rules:
 		Power:
 			Amount: 0
 	FTUR:
+		Buildable:
+			Prerequisites: barr,oilb
 		Valued:
 			Cost: 400
 		Power:
@@ -569,8 +571,8 @@ Rules:
 		Power:
 			Amount: 0
 	HBOX:
-		Power:
-			Amount: 0
+		Buildable:
+			Prerequisites: ~disabled
 	GUN:
 		Buildable:
 			Prerequisites: ~disabled
