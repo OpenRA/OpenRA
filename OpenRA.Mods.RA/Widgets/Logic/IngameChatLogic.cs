@@ -78,7 +78,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
 					else
 						if (chatTraits != null)
-							chatTraits.ForEach(x => x.OnChat(orderManager.LocalClient.Name, chatText.Text.Trim()));
+						{
+							var text = chatText.Text.Trim();
+							foreach (var trait in chatTraits)
+								trait.OnChat(orderManager.LocalClient.Name, text);
+						}
 
 				CloseChat();
 				return true;
