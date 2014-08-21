@@ -115,6 +115,15 @@ namespace OpenRA.Network
 						break;
 					}
 
+				case "Simulate":
+					{
+						if (order.TargetString == "Enable")
+							Game.IsSimulating = true;
+						else
+							Game.IsSimulating = false;
+						break;
+					}
+
 				case "HandshakeRequest":
 					{
 						// TODO: Switch to the server's mod if we have it

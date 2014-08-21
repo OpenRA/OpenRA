@@ -73,21 +73,28 @@ Background@SERVER_LOBBY:
 		Button@OPTIONS_BUTTON:
 			X: 194
 			Y: PARENT_BOTTOM - 291
-			Width: 135
+			Width: 93
 			Height: 25
 			Font: Bold
 			Text: Game Options
-		Button@CHANGEMAP_BUTTON:
-			X: 336
+		Button@LOAD_BUTTON:
+			X: 294
 			Y: PARENT_BOTTOM - 291
-			Width: 135
+			Width: 85
+			Height: 25
+			Text: Load
+			Font: Bold
+		Button@CHANGEMAP_BUTTON:
+			X: 386
+			Y: PARENT_BOTTOM - 291
+			Width: 115
 			Height: 25
 			Text: Change Map
 			Font: Bold
 		Button@START_GAME_BUTTON:
-			X: 478
+			X: 508
 			Y: PARENT_BOTTOM - 291
-			Width: 135
+			Width: 105
 			Height: 25
 			Text: Start Game
 			Font: Bold

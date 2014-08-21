@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Traits;
@@ -156,6 +157,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 						orderManager.IssueOrder(Order.Command("map " + uid));
 						Game.Settings.Server.Map = uid;
+						Game.Settings.Server.Replay = null;
 						Game.Settings.Save();
 					});
 
@@ -164,6 +166,29 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						{ "initialMap", Map.Uid },
 						{ "onExit", DoNothing },
 						{ "onSelect", onSelect }
+					});
+				};
+			}
+
+			var loadButton = lobby.GetOrNull<ButtonWidget>("LOAD_BUTTON");
+			if (loadButton != null)
+			{
+				loadButton.IsDisabled = configurationDisabled;
+				loadButton.OnClick = () =>
+				{
+					var onLoad = new Action<ReplayMetadata>(save =>
+					{
+						orderManager.IssueOrder(Order.Command("load " + save.FilePath));
+						Game.Settings.Server.Map = save.GameInfo.MapUid;
+						Game.Settings.Server.Replay = new OpenRA.Server.ReplayParser(save.FilePath, true);
+						Game.Settings.Save();
+					});
+
+					Ui.OpenWindow("SAVEBROWSER_PANEL", new WidgetArgs
+					{
+						{ "onLoad",  onLoad},
+						{ "onExit",  DoNothing},
+						{ "filter", SaveBrowserLogic.GameType.Any }
 					});
 				};
 			}
@@ -310,7 +335,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (allowCheats != null)
 			{
 				allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
-				allowCheats.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Cheats.HasValue || configurationDisabled();
+				allowCheats.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Cheats.HasValue || !orderManager.LobbyInfo.GlobalSettings.AllowConfiguration || configurationDisabled();
 				allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 			}
@@ -319,7 +344,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (crates != null)
 			{
 				crates.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Crates;
-				crates.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Crates.HasValue || configurationDisabled();
+				crates.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Crates.HasValue || !orderManager.LobbyInfo.GlobalSettings.AllowConfiguration || configurationDisabled();
 				crates.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"crates {0}".F(!orderManager.LobbyInfo.GlobalSettings.Crates)));
 			}
@@ -328,7 +353,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (allybuildradius != null)
 			{
 				allybuildradius.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllyBuildRadius;
-				allybuildradius.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.AllyBuildRadius.HasValue || configurationDisabled();
+				allybuildradius.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.AllyBuildRadius.HasValue || !orderManager.LobbyInfo.GlobalSettings.AllowConfiguration || configurationDisabled();
 				allybuildradius.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"allybuildradius {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllyBuildRadius)));
 			}
@@ -337,7 +362,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (fragileAlliance != null)
 			{
 				fragileAlliance.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.FragileAlliances;
-				fragileAlliance.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.FragileAlliances.HasValue || configurationDisabled();
+				fragileAlliance.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.FragileAlliances.HasValue || !orderManager.LobbyInfo.GlobalSettings.AllowConfiguration || configurationDisabled();
 				fragileAlliance.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"fragilealliance {0}".F(!orderManager.LobbyInfo.GlobalSettings.FragileAlliances)));
 			}
@@ -346,7 +371,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (difficulty != null)
 			{
 				difficulty.IsVisible = () => Map.Status == MapStatus.Available && Map.Map.Options.Difficulties.Any();
-				difficulty.IsDisabled = () => Map.Status != MapStatus.Available || configurationDisabled();
+				difficulty.IsDisabled = () => Map.Status != MapStatus.Available || !orderManager.LobbyInfo.GlobalSettings.AllowConfiguration || configurationDisabled();
 				difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
 				difficulty.OnMouseDown = _ =>
 				{
@@ -379,7 +404,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					return selectedClass != null ? selectedClass : c;
 				};
 
-				startingUnits.IsDisabled = () => Map.Status != MapStatus.Available || !Map.Map.Options.ConfigurableStartingUnits || configurationDisabled();
+				startingUnits.IsDisabled = () => Map.Status != MapStatus.Available || !Map.Map.Options.ConfigurableStartingUnits || !orderManager.LobbyInfo.GlobalSettings.AllowConfiguration || configurationDisabled();
 				startingUnits.GetText = () => Map.Status != MapStatus.Available || !Map.Map.Options.ConfigurableStartingUnits ? "Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
 				startingUnits.OnMouseDown = _ =>
 				{
@@ -406,7 +431,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var startingCash = optionsBin.GetOrNull<DropDownButtonWidget>("STARTINGCASH_DROPDOWNBUTTON");
 			if (startingCash != null)
 			{
-				startingCash.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.StartingCash.HasValue || configurationDisabled();
+				startingCash.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.StartingCash.HasValue || !orderManager.LobbyInfo.GlobalSettings.AllowConfiguration || configurationDisabled();
 				startingCash.GetText = () => Map.Status != MapStatus.Available || Map.Map.Options.StartingCash.HasValue ? "Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
 				startingCash.OnMouseDown = _ =>
 				{
@@ -434,7 +459,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var techTraits = modRules.Actors["player"].Traits.WithInterface<ProvidesTechPrerequisiteInfo>().ToArray();
 				techLevel.IsVisible = () => techTraits.Length > 0;
 				optionsBin.GetOrNull<LabelWidget>("TECHLEVEL_DESC").IsVisible = () => techTraits.Length > 0;
-				techLevel.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.TechLevel != null || configurationDisabled() || techTraits.Length <= 1;
+				techLevel.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.TechLevel != null || !orderManager.LobbyInfo.GlobalSettings.AllowConfiguration || configurationDisabled() || techTraits.Length <= 1;
 				techLevel.GetText = () => Map.Status != MapStatus.Available || Map.Map.Options.TechLevel != null ? "Not Available" : "{0}".F(orderManager.LobbyInfo.GlobalSettings.TechLevel);
 				techLevel.OnMouseDown = _ =>
 				{
@@ -460,7 +485,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (enableShroud != null)
 			{
 				enableShroud.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Shroud;
-				enableShroud.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Shroud.HasValue || configurationDisabled();
+				enableShroud.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Shroud.HasValue || !orderManager.LobbyInfo.GlobalSettings.AllowConfiguration || configurationDisabled();
 				enableShroud.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"shroud {0}".F(!orderManager.LobbyInfo.GlobalSettings.Shroud)));
 			}
@@ -469,7 +494,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (enableFog != null)
 			{
 				enableFog.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Fog;
-				enableFog.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Fog.HasValue || configurationDisabled();
+				enableFog.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Fog.HasValue || !orderManager.LobbyInfo.GlobalSettings.AllowConfiguration || configurationDisabled();
 				enableFog.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"fog {0}".F(!orderManager.LobbyInfo.GlobalSettings.Fog)));
 			}

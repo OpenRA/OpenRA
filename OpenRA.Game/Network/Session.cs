@@ -78,7 +78,7 @@ namespace OpenRA.Network
 
 		public string FirstEmptySlot()
 		{
-			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null).Key;
+			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null && s.Value.AllowPlayers).Key;
 		}
 
 		public string FirstEmptyBotSlot()
@@ -152,6 +152,7 @@ namespace OpenRA.Network
 			public string PlayerReference;	// playerReference to bind against.
 			public bool Closed;	// host has explicitly closed this slot.
 
+			public bool AllowPlayers;
 			public bool AllowBots;
 			public bool LockRace;
 			public bool LockColor;
@@ -190,6 +191,9 @@ namespace OpenRA.Network
 			public string StartingUnitsClass = "none";
 			public bool AllowVersionMismatch;
 			public string GameUid;
+			public bool AllowConfiguration = true;
+			public int WaitFrames = -1;
+			public bool Simulate = false;
 
 			public MiniYamlNode Serialize()
 			{

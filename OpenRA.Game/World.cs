@@ -30,7 +30,12 @@ namespace OpenRA
 		readonly List<IEffect> effects = new List<IEffect>();
 		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
-		public int Timestep;
+		int timestep;
+		public int Timestep
+		{
+			get { return Game.IsSimulating ? 1 : timestep; }
+			set { timestep = value; }
+		}
 
 		internal readonly OrderManager orderManager;
 		public Session LobbyInfo { get { return orderManager.LobbyInfo; } }
@@ -87,6 +92,16 @@ namespace OpenRA
 		public bool IsReplay
 		{
 			get { return orderManager.Connection is ReplayConnection; }
+		}
+
+		public bool CanSave()
+		{
+			return orderManager.Connection is ReplayRecorderConnection && orderManager.NetFrameNumber != 0;
+		}
+
+		public void Save(string directory, string filename)
+		{
+			this.AddFrameEndTask((w) => ((ReplayRecorderConnection)orderManager.Connection).SaveToFile(directory, filename));
 		}
 
 		public bool AllowDevCommands

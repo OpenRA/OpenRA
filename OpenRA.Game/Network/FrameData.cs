@@ -21,13 +21,14 @@ namespace OpenRA.Network
 			public Order Order;
 		}
 
+		public readonly List<int> ObserverIDs = new List<int>();
 		readonly Dictionary<int, int> clientQuitTimes = new Dictionary<int, int>();
 		readonly Dictionary<int, Dictionary<int, byte[]>> framePackets = new Dictionary<int, Dictionary<int, byte[]>>();
 
 		public IEnumerable<int> ClientsPlayingInFrame( int frame )
 		{
 			return clientQuitTimes
-				.Where( x => frame <= x.Value )
+				.Where(x => !ObserverIDs.Contains(x.Key) && frame <= x.Value)
 				.Select( x => x.Key )
 				.OrderBy( x => x );
 		}
@@ -52,7 +53,7 @@ namespace OpenRA.Network
 		{
 			var frameData = framePackets.GetOrAdd(frame);
 			return ClientsPlayingInFrame(frame)
-				.Where(client => !frameData.ContainsKey(client));
+				.Where(client =>!frameData.ContainsKey(client));
 		}
 
 		public IEnumerable<ClientOrder> OrdersForFrame( World world, int frame )

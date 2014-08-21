@@ -86,6 +86,7 @@ ChromeLayout:
 	mods/cnc/chrome/color-picker.yaml
 	mods/cnc/chrome/mapchooser.yaml
 	mods/cnc/chrome/replaybrowser.yaml
+	mods/cnc/chrome/savebrowser.yaml
 	mods/cnc/chrome/ingame.yaml
 	mods/cnc/chrome/ingame-chat.yaml
 	mods/cnc/chrome/ingame-menu.yaml

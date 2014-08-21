@@ -379,6 +379,21 @@ namespace OpenRA.Server
 				inFlightFrames.Remove(conn.Frame);
 		}
 
+		void DispatchReplayOrdersToClient(Connection c, int client, byte[] data)
+		{
+			try
+			{
+				SendData(c.socket, BitConverter.GetBytes(data.Length));
+				SendData(c.socket, BitConverter.GetBytes(client));
+				SendData(c.socket, data);
+			}
+			catch (Exception e)
+			{
+				DropClient(c);
+				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}", client.ToString(), e);
+			}
+		}
+
 		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
 		{
 			try
@@ -658,6 +673,8 @@ namespace OpenRA.Server
 				}
 			}
 
+			if (Settings.Replay != null)
+				LobbyInfo.GlobalSettings.WaitFrames = Settings.Replay.TickCount;
 			SyncLobbyInfo();
 			State = ServerState.GameStarted;
 
@@ -681,6 +698,15 @@ namespace OpenRA.Server
 					Environment.Exit(0);
 				};
 				gameTimeout.Enabled = true;
+			}
+
+			if (Settings.Replay != null)
+			{
+				var replayData = Settings.Replay.GetData();
+
+				foreach (var r in replayData)
+					foreach (var c in Conns.ToArray())
+						DispatchReplayOrdersToClient(c, Settings.Replay.IndexConverter[r.First], r.Second);
 			}
 		}
 

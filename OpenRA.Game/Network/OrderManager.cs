@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
+using System.IO;
 
 namespace OpenRA.Network
 {
@@ -34,6 +35,7 @@ namespace OpenRA.Network
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
 		public int FramesAhead = 0;
+		bool LocalPrevention = false;
 
 		public int LastTickTime = Game.RunTime;
 
@@ -41,6 +43,7 @@ namespace OpenRA.Network
 		public IConnection Connection { get; private set; }
 
 		public readonly int SyncHeaderSize = 9;
+		bool autoSaved = false;
 
 		List<Order> localOrders = new List<Order>();
 
@@ -49,6 +52,11 @@ namespace OpenRA.Network
 			if (GameStarted) return;
 
 			NetFrameNumber = 1;
+			LobbyInfo.Clients.Where(c => c.IsObserver && !c.IsAdmin).Do(c => frameData.ObserverIDs.Add(c.Index));
+			LocalPrevention = LocalClient != null && frameData.ObserverIDs.Contains(LocalClient.Index);
+
+			if (LocalPrevention || LobbyInfo.GlobalSettings.WaitFrames != -1) return;
+
 			for (var i = NetFrameNumber ; i <= FramesAhead ; i++)
 				Connection.Send(i, new List<byte[]>());
 		}
@@ -60,6 +68,11 @@ namespace OpenRA.Network
 			Password = password;
 			Connection = conn;
 			syncReport = new SyncReport(this);
+		}
+
+		public bool CanSend()
+		{
+			return LobbyInfo.GlobalSettings.WaitFrames < NetFrameNumber + FramesAhead && !LocalPrevention;
 		}
 
 		public void IssueOrders(Order[] orders)
@@ -87,7 +100,16 @@ namespace OpenRA.Network
 				{
 					var frame = BitConverter.ToInt32(packet, 0);
 					if (packet.Length == 5 && packet[4] == 0xBF)
+					{
+						if (!autoSaved && world != null && world.CanSave() && !LobbyInfo.ClientWithIndex(clientId).IsObserver)
+						{
+							autoSaved = true;
+							var mod = Game.modData.Manifest.Mod;
+							var dir = new[] { Platform.SupportDir, "Saves", mod.Id, mod.Version }.Aggregate(Path.Combine);
+							((ReplayRecorderConnection)Connection).SaveToFile(dir, "disconnect-auto");
+						}
 						frameData.ClientQuit(clientId, frame);
+					}
 					else if (packet.Length >= 5 && packet[4] == 0x65)
 						CheckSync(packet);
 					else if (frame == 0)
@@ -177,7 +199,8 @@ namespace OpenRA.Network
 			if (!IsReadyForNextFrame)
 				throw new InvalidOperationException();
 
-			Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
+			if (CanSend())
+				Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
 			localOrders.Clear();
 
 			var sync = new List<int>();
