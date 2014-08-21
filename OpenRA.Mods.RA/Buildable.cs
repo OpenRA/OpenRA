@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class BuildableInfo : TraitInfo<Buildable>
+	public class BuildableInfo : ITraitInfo
 	{
 		[Desc("The prerequisite names that must be available before this can be built.",
 			"This can be prefixed with ! to invert the prerequisite (disabling production if the prerequisite is available)",
@@ -35,7 +35,39 @@ namespace OpenRA.Mods.RA
 
 		// TODO: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;
+
+		public object Create(ActorInitializer init) { return new Buildable(init.self, this); }
 	}
 
-	public class Buildable { }
+	public class Buildable : INotifyAddedToWorld, INotifyRemovedFromWorld
+	{
+		readonly BuildableInfo info;
+
+		public Buildable(Actor self, BuildableInfo info)
+		{
+			this.info = info;
+		}
+
+		void ActorChanged(Actor self)
+		{
+			if (info.BuildLimit > 0)
+			{
+				self.World.ActorsWithTrait<ProductionQueue>().Do(a =>
+				{
+					if (a.Actor.Owner == self.Owner)
+						a.Trait.UpdateBuildLimits(self);
+				});
+			}
+		}
+
+		public void AddedToWorld(Actor self)
+		{
+			ActorChanged(self);
+		}
+
+		public void RemovedFromWorld(Actor self)
+		{
+			ActorChanged(self);
+		}
+	}
 }

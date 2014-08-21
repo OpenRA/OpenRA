@@ -46,16 +46,28 @@ namespace OpenRA.Mods.RA
 		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
 	}
 
-	public class SupportPower
+	public class SupportPower : ITechTreeElement
 	{
 		public readonly Actor self;
 		public readonly SupportPowerInfo Info;
 		protected RadarPing ping;
+		public bool HasPrerequisites { get; private set; }
+		bool disabled = false;
+		public bool Disabled
+		{
+			get { return !HasPrerequisites && !disabled; }
+			set { disabled = value; }
+		}
 
 		public SupportPower(Actor self, SupportPowerInfo info)
 		{
 			Info = info;
 			this.self = self;
+
+			var playerActor = self;
+			if (self.Owner.PlayerActor != null)
+				playerActor = self.Owner.PlayerActor;
+			HasPrerequisites = playerActor.Trait<TechTree>().HasPrerequisites(info.Prerequisites);
 		}
 
 		public virtual void Charging(Actor self, string key)
@@ -85,5 +97,18 @@ namespace OpenRA.Mods.RA
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
 			return new SelectGenericPowerTarget(order, manager, "ability", MouseButton.Left);
 		}
+
+		public void PrerequisitesAvailable()
+		{
+			HasPrerequisites = true;
+		}
+
+		public void PrerequisitesUnavailable()
+		{
+			HasPrerequisites = false;
+		}
+
+		public void PrerequisitesItemHidden() { }
+		public void PrerequisitesItemVisible() { }
 	}
 }

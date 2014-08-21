@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new SupportPowerManager(init); }
 	}
 
-	public class SupportPowerManager : ITick, IResolveOrder, ITechTreeElement
+	public class SupportPowerManager : ITick, IResolveOrder
 	{
 		public readonly Actor self;
 		public readonly Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
@@ -64,12 +64,6 @@ namespace OpenRA.Mods.RA
 						RemainingTime = t.Info.ChargeTime * 25,
 						TotalTime = t.Info.ChargeTime * 25,
 					});
-
-					if (t.Info.Prerequisites.Any())
-					{
-						TechTree.Add(key, t.Info.Prerequisites, 0, this);
-						TechTree.Update();
-					}
 				}
 
 				Powers[key].Instances.Add(t);
@@ -89,8 +83,6 @@ namespace OpenRA.Mods.RA
 				if (Powers[key].Instances.Count == 0 && !Powers[key].Disabled)
 				{
 					Powers.Remove(key);
-					TechTree.Remove(key);
-					TechTree.Update();
 				}
 			}
 		}
@@ -125,28 +117,6 @@ namespace OpenRA.Mods.RA
 			return a.TraitsImplementing<SupportPower>()
 				.Select(t => Powers[MakeKey(t)]);
 		}
-
-		public void PrerequisitesAvailable(string key)
-		{
-			SupportPowerInstance sp;
-			if (!Powers.TryGetValue(key, out sp))
-				return;
-
-			sp.Disabled = false;
-		}
-
-		public void PrerequisitesUnavailable(string key)
-		{
-			SupportPowerInstance sp;
-			if (!Powers.TryGetValue(key, out sp))
-				return;
-
-			sp.Disabled = true;
-			sp.RemainingTime = sp.TotalTime;
-		}
-
-		public void PrerequisitesItemHidden(string key) { }
-		public void PrerequisitesItemVisible(string key) { }
 	}
 
 	public class SupportPowerInstance
@@ -158,7 +128,11 @@ namespace OpenRA.Mods.RA
 		public int RemainingTime;
 		public int TotalTime;
 		public bool Active { get; private set; }
-		public bool Disabled { get; set; }
+		public bool Disabled
+		{
+			get { return Instances.Any() ? Instances.First().Disabled : false; }
+			set { Instances.Do(s => s.Disabled = value); }
+		}
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
 		public bool Ready { get { return Active && RemainingTime == 0; } }
@@ -180,27 +154,28 @@ namespace OpenRA.Mods.RA
 		{
 			Active = !Disabled && Instances.Any(i => !i.self.IsDisabled());
 			if (!Active)
-				return;
-
-			if (Active)
 			{
-				var power = Instances.First();
-				if (Manager.DevMode.FastCharge && RemainingTime > 25)
-					RemainingTime = 25;
+				if (Instances.Any() ? !Instances.First().HasPrerequisites : false)
+					RemainingTime = TotalTime;
+				return;
+			}
 
-				if (RemainingTime > 0) --RemainingTime;
-				if (!notifiedCharging)
-				{
-					power.Charging(power.self, Key);
-					notifiedCharging = true;
-				}
+			var power = Instances.First();
+			if (Manager.DevMode.FastCharge && RemainingTime > 25)
+				RemainingTime = 25;
 
-				if (RemainingTime == 0
-					&& !notifiedReady)
-				{
-					power.Charged(power.self, Key);
-					notifiedReady = true;
-				}
+			if (RemainingTime > 0) --RemainingTime;
+			if (!notifiedCharging)
+			{
+				power.Charging(power.self, Key);
+				notifiedCharging = true;
+			}
+
+			if (RemainingTime == 0
+				&& !notifiedReady)
+			{
+				power.Charged(power.self, Key);
+				notifiedReady = true;
 			}
 		}
 

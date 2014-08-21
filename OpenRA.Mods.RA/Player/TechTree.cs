@@ -34,8 +34,7 @@ namespace OpenRA.Mods.RA
 
 		public void ActorChanged(Actor a)
 		{
-			var bi = a.Info.Traits.GetOrDefault<BuildableInfo>();
-			if (a.Owner == player && (a.HasTrait<ITechTreePrerequisite>() || (bi != null && bi.BuildLimit > 0)))
+			if (a.Owner == player && (a.HasTrait<ITechTreePrerequisite>()))
 				Update();
 		}
 
@@ -46,19 +45,30 @@ namespace OpenRA.Mods.RA
 				w.Update(ownedPrerequisites);
 		}
 
-		public void Add(string key, string[] prerequisites, int limit, ITechTreeElement tte)
+		public void Add(IEnumerable<string> prerequisites, ITechTreeElement tte)
 		{
-			watchers.Add(new Watcher(key, prerequisites, limit, tte));
+			var prereqsOrdered = prerequisites.OrderBy(a => a);
+			var w = watchers.Where(watcher => prereqsOrdered.Count() == watcher.Prerequisites.Count()
+									&& prereqsOrdered.All(p => watcher.Prerequisites.Contains(p)));
+			if (!w.Any())
+			{
+				var watcher = new Watcher(prereqsOrdered);
+				watcher.AddElement(tte);
+				watchers.Add(watcher);
+				return;
+			}
+			w.First().AddElement(tte);
 		}
 
-		public void Remove(string key)
+		public void Remove(IEnumerable<string> prerequisites)
 		{
-			watchers.RemoveAll(x => x.Key == key);
+			var prereqsOrdered = prerequisites.OrderBy(a => a);
+			watchers.RemoveAll(watcher => prereqsOrdered.All(p => watcher.Prerequisites.Contains(p)));
 		}
 
 		public void Remove(ITechTreeElement tte)
 		{
-			watchers.RemoveAll(x => x.RegisteredBy == tte);
+			watchers.Where(w => w.HasElement(tte)).Do(w => w.RemoveElement(tte));
 		}
 
 		public bool HasPrerequisites(IEnumerable<string> prerequisites)
@@ -90,40 +100,37 @@ namespace OpenRA.Mods.RA
 				}
 			}
 
-			// Add buildables that have a build limit set and are not already in the list
-			player.World.ActorsWithTrait<Buildable>()
-				  .Where(a =>
-					  a.Actor.Owner == player &&
-					  a.Actor.IsInWorld &&
-					  !a.Actor.IsDead() &&
-					  !ret.ContainsKey(a.Actor.Info.Name) &&
-					  a.Actor.Info.Traits.Get<BuildableInfo>().BuildLimit > 0)
-				  .Do(b => ret[b.Actor.Info.Name].Add(b.Actor));
-
 			return ret;
 		}
 
 		class Watcher
 		{
-			public readonly string Key;
-			public ITechTreeElement RegisteredBy { get { return watcher; } }
+			public IEnumerable<string> Prerequisites { get { return prerequisites; } }
 
-			// Strings may be either actor type, or "alternate name" key
-			readonly string[] prerequisites;
-			readonly ITechTreeElement watcher;
-			bool hasPrerequisites;
-			int limit;
-			bool hidden;
+			IEnumerable<string> prerequisites;
+			List<ITechTreeElement> watched = new List<ITechTreeElement>();
+			bool hasPrerequisites = false;
+			bool hidden = false;
 			bool initialized = false;
 
-			public Watcher(string key, string[] prerequisites, int limit, ITechTreeElement watcher)
+			public Watcher(IEnumerable<string> prerequisites)
 			{
-				this.Key = key;
 				this.prerequisites = prerequisites;
-				this.watcher = watcher;
-				this.hasPrerequisites = false;
-				this.limit = limit;
-				this.hidden = false;
+			}
+
+			public void AddElement(ITechTreeElement element)
+			{
+				watched.Add(element);
+			}
+
+			public void RemoveElement(ITechTreeElement element)
+			{
+				watched.Remove(element);
+			}
+
+			public bool HasElement(ITechTreeElement element)
+			{
+				return watched.Contains(element);
 			}
 
 			bool HasPrerequisites(Cache<string, List<Actor>> ownedPrerequisites)
@@ -138,9 +145,8 @@ namespace OpenRA.Mods.RA
 
 			public void Update(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				var hasReachedLimit = limit > 0 && ownedPrerequisites.ContainsKey(Key) && ownedPrerequisites[Key].Count >= limit;
 				// The '!' annotation inverts prerequisites: "I'm buildable if this prerequisite *isn't* met"
-				var nowHasPrerequisites = HasPrerequisites(ownedPrerequisites) && !hasReachedLimit;
+				var nowHasPrerequisites = HasPrerequisites(ownedPrerequisites);
 				var nowHidden = IsHidden(ownedPrerequisites);
 
 				if (initialized == false)
@@ -152,16 +158,16 @@ namespace OpenRA.Mods.RA
 
 				// Hide the item from the UI if a prereq annotated with '~' is not met.
 				if (nowHidden && !hidden)
-					watcher.PrerequisitesItemHidden(Key);
+					watched.Do(w => w.PrerequisitesItemHidden());
 
 				if (!nowHidden && hidden)
-					watcher.PrerequisitesItemVisible(Key);
+					watched.Do(w => w.PrerequisitesItemVisible());
 
 				if (nowHasPrerequisites && !hasPrerequisites)
-					watcher.PrerequisitesAvailable(Key);
+					watched.Do(w => w.PrerequisitesAvailable());
 
 				if (!nowHasPrerequisites && hasPrerequisites)
-					watcher.PrerequisitesUnavailable(Key);
+					watched.Do(w => w.PrerequisitesUnavailable());
 
 				hidden = nowHidden;
 				hasPrerequisites = nowHasPrerequisites;
