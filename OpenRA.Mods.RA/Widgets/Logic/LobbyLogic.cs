@@ -785,6 +785,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (chatText == null || string.IsNullOrEmpty(chatText.Text))
 				return false;
 
+			if (chatText.Text.LastOrDefault() == ' ')
+				return false;
+
 			var suggestion = "";
 			var oneWord = !chatText.Text.Contains(' ');
 			var toComplete = oneWord
