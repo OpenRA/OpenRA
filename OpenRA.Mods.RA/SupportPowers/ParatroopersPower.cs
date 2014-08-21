@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -52,8 +52,24 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new ParatroopersPower(init.self, this); }
 	}
 
-	public class ParatroopersPower : SupportPower
+	public class ParatroopersPower : SupportPower, ITick
 	{
+
+		Beacon beacon = null;
+		Actor a = null;
+
+		public void Tick(Actor self)
+		{
+			if (a != null && a.IsDead() && beacon != null)
+			{
+				self.World.AddFrameEndTask(w =>
+				{
+					w.Remove(beacon);
+					beacon = null;
+				});
+			}
+		}
+
 		public ParatroopersPower(Actor self, ParatroopersPowerInfo info) : base(self, info) { }
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -71,7 +87,6 @@ namespace OpenRA.Mods.RA
 			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Range * delta / 1024;
 
 			Actor camera = null;
-			Beacon beacon = null;
 			var aircraftInRange = new Dictionary<Actor, bool>();
 
 			Action<Actor> onEnterRange = a =>
@@ -138,7 +153,7 @@ namespace OpenRA.Mods.RA
 					var spawnOffset = new WVec(i * so.Y, -Math.Abs(i) * so.X, 0).Rotate(dropRotation);
 					var targetOffset = new WVec(i * so.Y, 0, 0).Rotate(dropRotation);
 
-					var a = w.CreateActor(info.UnitType, new TypeDictionary
+					a = w.CreateActor(info.UnitType, new TypeDictionary
 					{
 						new CenterPositionInit(startEdge + spawnOffset),
 						new OwnerInit(self.Owner),
