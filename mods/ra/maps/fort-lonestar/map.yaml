@@ -541,8 +541,6 @@ Rules:
 			Period: 250
 			Amount: 50
 	BARR:
-		Buildable:
-			Owner: allies,soviet
 		Health:
 			HP: 1000
 		Production:
@@ -605,19 +603,16 @@ Rules:
 			Prerequisites: ~disabled
 	DOG:
 		Buildable:
-			Owner: soviet,allies
 			Prerequisites: barr,oilb
 		Valued:
 			Cost: 20
 	E1:
 		Buildable:
-			Owner: soviet,allies
 			Prerequisites: barr,oilb
 		Valued:
 			Cost: 20
 	E2:
 		Buildable:
-			Owner: soviet,allies
 			Prerequisites: barr,oilb
 		Valued:
 			Cost: 40
@@ -626,25 +621,21 @@ Rules:
 			Chance: 20
 	E3:
 		Buildable:
-			Owner: soviet,allies
 			Prerequisites: barr,oilb
 		Valued:
 			Cost: 60
 	E4:
 		Buildable:
-			Owner: soviet,allies
 			Prerequisites: barr,oilb
 		Valued:
 			Cost: 100
 	E6:
 		Buildable:
-			Owner: soviet,allies
 			Prerequisites: barr
 		Valued:
 			Cost: 100
 	E7:
 		Buildable:
-			Owner: soviet,allies
 			Prerequisites: barr,oilb
 		Valued:
 			Cost: 750
@@ -663,13 +654,11 @@ Rules:
 			Prerequisites: ~disabled
 	MEDI:
 		Buildable:
-			Owner: soviet,allies
 			Prerequisites: barr,oilb
 		Valued:
 			Cost: 100
 	SHOK:
 		Buildable:
-			Owner: soviet,allies
 			Prerequisites: barr,oilb
 		Valued:
 			Cost: 150
@@ -677,7 +666,6 @@ Rules:
 		Valued:
 			Cost: 200
 		Buildable:
-			Owner: soviet, allies
 			Prerequisites: barr,oilb
 		Health:
 			HP: 200
@@ -690,7 +678,6 @@ Rules:
 			Queue: Infantry
 			BuildPaletteOrder: 60
 			Prerequisites: barr,oilb
-			Owner: allies, soviet
 		Valued:
 			Cost: 300
 	ARTY:
