@@ -184,6 +184,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (string.IsNullOrEmpty(chatText.Text))
 				return false;
 
+			if (chatText.Text.LastOrDefault() == ' ')
+				return false;
+
 			var suggestion = "";
 
 			if (chatText.Text.StartsWith("/"))
