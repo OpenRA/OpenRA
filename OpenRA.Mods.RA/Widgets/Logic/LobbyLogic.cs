@@ -770,34 +770,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			while (players.Children.Count > idx)
 				players.RemoveChild(players.Children[idx]);
 
-			playerNames = GetPlayerNames().ToList();
+			playerNames = orderManager.LobbyInfo.Clients.Select(c => c.Name).ToList();
 		}
 
 		void OnGameStart()
 		{
 			CloseWindow();
 			onStart();
-		}
-
-		IEnumerable<string> GetPlayerNames()
-		{
-			foreach (var container in players.Children)
-			{
-				if (container.Id == "TEMPLATE_EDITABLE_PLAYER")
-				{
-					var textWidget = container.Children.FirstOrDefault(x => x.Id == "NAME") as TextFieldWidget;
-					if (textWidget == null)
-						continue;
-					yield return textWidget.Text;
-				}
-				else if (container.Id == "TEMPLATE_NONEDITABLE_PLAYER")
-				{
-					var labelWidget = container.Children.FirstOrDefault(x => x.Id == "NAME") as LabelWidget;
-					if (labelWidget == null)
-						continue;
-					yield return labelWidget.GetText();
-				}
-			}
 		}
 
 		bool AutoCompleteText()
