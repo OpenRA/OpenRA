@@ -116,6 +116,9 @@ namespace OpenRA.Mods.RA
 	{
 		public void Killed(Actor self, AttackInfo e)
 		{
+			if (self.Owner.WinState != WinState.Undefined)
+				return;
+
 			var attackerStats = e.Attacker.Owner.PlayerActor.Trait<PlayerStatistics>();
 			var defenderStats = self.Owner.PlayerActor.Trait<PlayerStatistics>();
 			if (self.HasTrait<Building>())
