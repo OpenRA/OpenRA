@@ -107,7 +107,7 @@ local function updateWatchesSync(onlyitem)
         watchCtrl:SetItemBackgroundColour(item, val ~= newval and hicl or bgcl)
         watchCtrl:SetItemText(item, newval)
 
-        if val ~= newval then
+        if onlyitem or val ~= newval then
           local newchildren = watchCtrl:GetItemChildren(item)
           if #curchildren > 0 and #newchildren == 0 then
             watchCtrl:SetItemHasChildren(item, true)
@@ -1046,13 +1046,7 @@ local function debuggerCreateWatchWindow()
   local root = watchCtrl:AddRoot("Watch")
   watchCtrl:SetImageList(debugger.imglist)
 
-  local watchMenu = wx.wxMenu {
-    { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
-    { ID_EDITWATCH, TR("&Edit Watch")..KSC(ID_EDITWATCH) },
-    { ID_DELETEWATCH, TR("&Delete Watch")..KSC(ID_DELETEWATCH) },
-  }
-
-  local defaultExpr = ""
+  local defaultExpr = "watch expression"
   local expressions = {} -- table to keep track of expressions
 
   function watchCtrl:SetItemExpression(item, expr, value)
@@ -1066,6 +1060,19 @@ local function debuggerCreateWatchWindow()
     return expressions[item:GetValue()]
   end
 
+  local names = {}
+  function watchCtrl:SetItemName(item, name)
+    local nametype = type(name)
+    names[item:GetValue()] = (
+      (nametype == 'string' or nametype == 'number' or nametype == 'boolean')
+      and name or nil
+    )
+  end
+
+  function watchCtrl:GetItemName(item)
+    return names[item:GetValue()]
+  end
+
   local valuecache = {}
   function watchCtrl:SetItemValueIfExpandable(item, value)
     local expandable = type(value) == 'table' and next(value) ~= nil
@@ -1075,6 +1082,44 @@ local function debuggerCreateWatchWindow()
 
   function watchCtrl:GetItemChildren(item)
     return valuecache[item:GetValue()] or {}
+  end
+
+  function watchCtrl:IsWatch(item)
+    return item:IsOk() and watchCtrl:GetItemParent(item):GetValue() == root:GetValue()
+  end
+
+  function watchCtrl:IsEditable(item)
+    return (item and item:IsOk()
+      and (watchCtrl:IsWatch(item) or watchCtrl:GetItemName(item) ~= nil))
+  end
+
+  function watchCtrl:UpdateItemValue(item, value)
+    local expr = ''
+    local origitem = item
+    while true do
+      local name = watchCtrl:GetItemName(item)
+      expr = (watchCtrl:IsWatch(item)
+        and ('({%s})[1]'):format(watchCtrl:GetItemExpression(item))
+        or (type(name) == 'string' and '[%q]' or '[%s]'):format(tostring(name))
+      )..expr
+      if watchCtrl:IsWatch(item) then break end
+      item = watchCtrl:GetItemParent(item)
+      if not item:IsOk() then break end
+    end
+
+    if debugger.running then debugger.update() end
+    if debugger.server and not debugger.running
+    and (not debugger.scratchpad or debugger.scratchpad.paused) then
+      copas.addthread(function ()
+        local _, _, err = debugger.execute(expr..'='..value)
+        if err then
+          watchCtrl:SetItemText(origitem, 'error: '..err:gsub("%[.-%]:%d+:%s+",""))
+        else
+          updateWatchesSync(item)
+        end
+        updateStackSync()
+      end)
+    end
   end
 
   watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
@@ -1090,6 +1135,7 @@ local function debuggerCreateWatchWindow()
         local text = stringifyKeyIntoPrefix(name, num)..strval
         local item = watchCtrl:AppendItem(item_id, text, image)
         watchCtrl:SetItemValueIfExpandable(item, value)
+        watchCtrl:SetItemName(item, name)
 
         num = num + 1
         if num > stackmaxnum then break end
@@ -1099,50 +1145,61 @@ local function debuggerCreateWatchWindow()
 
   watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_DELETE_ITEM,
     function (event)
-      expressions[event:GetItem():GetValue()] = nil
-      valuecache[event:GetItem():GetValue()] = nil
+      local value = event:GetItem():GetValue()
+      expressions[value] = nil
+      valuecache[value] = nil
+      names[value] = nil
     end)
 
   local item
-  watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
+  -- wx.wxEVT_CONTEXT_MENU is only triggered over tree items on OSX,
+  -- but it needs to be also triggered below any item to add a watch,
+  -- so use RIGHT_DOWN instead
+  watchCtrl:Connect(wx.wxEVT_RIGHT_DOWN,
     function (event)
       -- store the item to be used in edit/delete actions
       item = watchCtrl:HitTest(watchCtrl:ScreenToClient(wx.wxGetMousePosition()))
-      watchCtrl:PopupMenu(watchMenu)
+      local editlabel = watchCtrl:IsWatch(item) and TR("&Edit Watch") or TR("&Edit Value")
+      watchCtrl:PopupMenu(wx.wxMenu {
+        { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
+        { ID_EDITWATCH, editlabel..KSC(ID_EDITWATCH) },
+        { ID_DELETEWATCH, TR("&Delete Watch")..KSC(ID_DELETEWATCH) },
+      })
+      item = nil
     end)
 
   watchCtrl:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
     function (event) watchCtrl:EditLabel(watchCtrl:AppendItem(root, defaultExpr, image.LOCAL)) end)
 
   watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function (event) watchCtrl:EditLabel(item) end)
+    function (event) watchCtrl:EditLabel(item or watchCtrl:GetSelection()) end)
   watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_UPDATE_UI,
-    function (event)
-      event:Enable(item:IsOk()
-        and watchCtrl:GetItemParent(item):GetValue() == root:GetValue())
-    end)
+    function (event) event:Enable(watchCtrl:IsEditable(item or watchCtrl:GetSelection())) end)
 
   watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function (event) watchCtrl:Delete(item) end)
+    function (event) watchCtrl:Delete(item or watchCtrl:GetSelection()) end)
   watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_UPDATE_UI,
-    function (event)
-      event:Enable(item:IsOk()
-        and watchCtrl:GetItemParent(item):GetValue() == root:GetValue())
-    end)
+    function (event) event:Enable(watchCtrl:IsWatch(item or watchCtrl:GetSelection())) end)
 
   local label
   watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT,
     function (event)
       local item = event:GetItem()
-      if not item:IsOk()
-      or watchCtrl:GetItemParent(item):GetValue() ~= root:GetValue() then
+      if not (item:IsOk() and watchCtrl:IsEditable(item)) then
         event:Veto()
         return
       end
 
       label = watchCtrl:GetItemText(item)
-      local expr = watchCtrl:GetItemExpression(item)
-      if expr then watchCtrl:SetItemText(item, expr) end
+
+      if watchCtrl:IsWatch(item) then
+        local expr = watchCtrl:GetItemExpression(item)
+        if expr then watchCtrl:SetItemText(item, expr) end
+      else
+        local prefix = stringifyKeyIntoPrefix(watchCtrl:GetItemName(item))
+        local val = watchCtrl:GetItemText(item):gsub(q(prefix),'')
+        watchCtrl:SetItemText(item, val)
+      end
     end)
   watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT,
     function (event)
@@ -1151,12 +1208,21 @@ local function debuggerCreateWatchWindow()
       local item = event:GetItem()
       if event:IsEditCancelled() then
         if watchCtrl:GetItemText(item) == defaultExpr then
+          -- when Delete is called from END_EDIT, it causes infinite loop
+          -- on OSX (wxwidgets 2.9.5) as Delete calls END_EDIT again.
+          -- disable handlers during Delete and then enable back.
+          watchCtrl:SetEvtHandlerEnabled(false)
           watchCtrl:Delete(item)
+          watchCtrl:SetEvtHandlerEnabled(true)
         else
           watchCtrl:SetItemText(item, label)
         end
       else
-        watchCtrl:SetItemExpression(item, event:GetLabel())
+        if watchCtrl:IsWatch(item) then
+          watchCtrl:SetItemExpression(item, event:GetLabel())
+        else
+          watchCtrl:UpdateItemValue(item, event:GetLabel())
+        end
       end
       event:Skip()
     end)
