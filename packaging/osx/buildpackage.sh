@@ -22,6 +22,10 @@ rm OpenRA.app/Contents/Resources/OpenRA.ico
 rm OpenRA.app/Contents/Resources/OpenRA.Editor.exe
 rm OpenRA.app/Contents/Resources/OpenRA.CrashDialog.exe
 
+# Set version string
+sed "s/{DEV_VERSION}/${1}/" OpenRA.app/Contents/Info.plist.template > OpenRA.app/Contents/Info.plist
+rm OpenRA.app/Contents/Info.plist.template
+
 # Package app bundle into a zip and clean up
 zip OpenRA-$1 -r -9 OpenRA.app --quiet
 mv OpenRA-$1.zip $4
