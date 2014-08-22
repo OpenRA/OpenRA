@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string>OpenRA.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.open-ra.launcher</string>
+	<string>net.openra.launcher</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>{DEV_VERSION}</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>{DEV_VERSION}</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.5</string>
 	<key>NSMainNibFile</key>
