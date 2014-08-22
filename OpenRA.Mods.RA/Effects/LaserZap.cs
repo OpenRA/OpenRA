@@ -83,6 +83,10 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			if (wr.world.FogObscures(wr.world.Map.CellContaining(target)) &&
+				wr.world.FogObscures(wr.world.Map.CellContaining(args.Source)))
+				yield break;
+
 			if (ticks < info.BeamDuration)
 			{
 				var rc = Color.FromArgb((info.BeamDuration - ticks) * 255 / info.BeamDuration, color);
