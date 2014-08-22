@@ -217,7 +217,8 @@ namespace OpenRA.Traits
 
 		public void ExploreAll(World world)
 		{
-			explored.Clear(true);
+			foreach (var cell in map.Cells)
+				explored[cell] = true;
 
 			Invalidate();
 		}
