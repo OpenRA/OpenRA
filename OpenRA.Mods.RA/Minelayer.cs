@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA
 
 				Minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
 					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
-					.Where(p => movement.CanEnterCell(p)).ToArray();
+					.Where(p => movement.CanEnterCell(p, null, false)).ToArray();
 
 				self.CancelActivity();
 				self.QueueActivity(new LayMines());
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.RA
 				var pal = wr.Palette("terrain");
 				foreach (var c in minefield)
 				{
-					var tile = movement.CanEnterCell(c) ? tileOk : tileBlocked;
+					var tile = movement.CanEnterCell(c, null, false) ? tileOk : tileBlocked;
 					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c),
 						WVec.Zero, -511, pal, 1f, true);
 				}
