@@ -436,6 +436,24 @@ namespace OpenRA.Utility
 						ConvertFloatArrayToPercentArray(ref node.Value.Value);
 				}
 
+				if (engineVersion < 20140819)
+				{
+					if (depth == 2 && node.Key == "ArmorUpgrade" && parentKey == "GainsStatUpgrades")
+					{
+						node.Key = "DamageUpgrade";
+					}
+
+					if (depth == 2 && node.Key == "ArmorModifier" && parentKey == "GainsStatUpgrades")
+					{
+						node.Key = "DamageModifier";
+						foreach (var num in node.Value.Value.Split(','))
+						{
+							node.Value.Value = string.Join(", ", node.Value.Value.Split(',')
+												.Select(s => {var wat = (10000 / int.Parse(s)); Console.Write(wat); return wat;})).ToString();
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 
 				// RemoveImmediately was replaced with RemoveOnConditions
