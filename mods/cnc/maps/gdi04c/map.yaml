@@ -60,6 +60,11 @@ Players:
 		Race: gdi
 		Enemies: Nod
 		NonCombatant: True
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: Nod,GDI
 
 Actors:
 	Actor0: v17

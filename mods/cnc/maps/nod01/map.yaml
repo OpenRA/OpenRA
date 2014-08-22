@@ -57,6 +57,11 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Enemies: GDI,Villagers
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: Nod,GDI
 
 Actors:
 	Actor46: e1
