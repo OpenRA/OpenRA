@@ -97,38 +97,48 @@ gapile:
 	idle: gtpile
 		Start: 0
 		ShadowStart: 3
+		Offset: 0, -12
 	damaged-idle: gtpile
 		Start: 1
 		ShadowStart: 4
+		Offset: 0, -12
 	critical-idle: gtpile
 		Start: 2
 		ShadowStart: 5
+		Offset: 0, -12
 	production-lights: gtpile_a
 		Start: 0
 		Length: 7
 		Tick: 200
+		Offset: 0, -12
 	damaged-production-lights: gtpile_a
 		Start:7
 		Length: 7
 		Tick: 200
+		Offset: 0, -12
 	idle-light: gtpile_b
 		Start: 0
 		Length: 7
 		Tick: 200
+		Offset: 0, -12
 	damaged-idle-light: gtpile_b
 		Start:7
 		Length: 7
 		Tick: 200
+		Offset: 0, -12
 	idle-flag: gtpile_c
 		Start:0
 		Length: 7
+		Offset: 0, -12
 	damaged-idle-flag: gtpile_c
 		Start:7
 		Length: 7
+		Offset: 0, -12
 	make: gtpilemk
 		Start: 0
 		Length: 20
 		ShadowStart: 20
+		Offset: 0, -12
 	icon: brrkicon
 		Start: 0
 
@@ -136,70 +146,87 @@ gaweap:
 	idle: gtweap
 		Start: 0
 		ShadowStart: 3
+		Offset: -12, -28
 	damaged-idle: gtweap
 		Start: 1
 		ShadowStart: 4
+		Offset: -12, -28
 	dead: gtweap
 		Start: 2
 		ShadowStart: 5
+		Offset: -12, -28
 	production-lights-white: gtweap_a
 		Start: 0
 		Length: 8
 		Tick: 100
 		ZOffset: 2048
+		Offset: -12, -28
 	damaged-production-lights-white: gtweap_a
 		Start: 8
 		Length: 8
 		Tick: 100
 		ZOffset: 2048
+		Offset: -12, -28
 	production-lights-red: gtweap_b
 		Start: 0
 		Length: 4
 		Tick: 120
 		ZOffset: 2048
+		Offset: -12, -28
 	damaged-production-lights-red: gtweap_b
 		Start: 4
 		Length: 4
 		Tick: 120
 		ZOffset: 2048
+		Offset: -12, -28
 	idle-turbines: gtweap_c
 		Start: 0
 		Length: 4
 		Tick: 80
 		ZOffset: 2048
+		Offset: -12, -28
 	damaged-idle-turbines: gtweap_c
 		Start: 0
 		Length: 4
 		Tick: 80
 		ZOffset: 2048
+		Offset: -12, -28
 	build-top: gtweap_d
 		Start: 0
 		Length: 9
 		ShadowStart: 9
+		Offset: -12, -28
 	damaged-build-top: gtweap_d
 		Start: 0
 		Length: 9
 		ShadowStart: 9
+		Offset: -12, -28
 	idle-top: gtweap_2
 		Start: 0
+		Offset: -12, -28
 	damaged-idle-top: gtweap_2
 		Start: 1
+		Offset: -12, -28
 	make: gtweapmk
 		Start: 0
 		Length: 20
 		Tick: 80
 		ShadowStart: 20
+		Offset: -12, -28
 	icon: weapicon
 		Start: 0
 	bib: gtweapbb
 		Start: 0
 		Length: 1
+		Offset: -12, -28
 	damaged-bib: gtweapbb
 		Start: 1
 		Length: 1
+		Offset: -12, -28
 	critical-bib: gtweapbb
 		Start: 2
 		Length: 1
+		Offset: -12, -28
 # TODO: gtweap_1 & gtweap_a & gtweap_b & gtweap_c are unused
 
 napowr:
@@ -264,32 +291,40 @@ nahand:
 	idle: nthand
 		Start: 0
 		ShadowStart: 3
+		Offset: -14, -14
 	damaged-idle: nthand
 		Start: 1
 		ShadowStart: 4
+		Offset: -14, -14
 	critical-idle: nthand
 		Start: 2
 		ShadowStart: 5
+		Offset: -14, -14
 	production-light: nthand_a
 		Start: 0
 		Length: 5
 		Tick: 100
+		Offset: -14, -14
 	damaged-production-light: nthand_a
 		Start: 5
 		Length: 5
 		Tick: 100
+		Offset: -14, -14
 	idle-lights: nthand_b
 		Start: 0
 		Length: 8
 		Tick: 200
+		Offset: -14, -14
 	damaged-idle-lights: nthand_b
 		Start: 8
 		Length: 8
 		Tick: 200
+		Offset: -14, -14
 	make: nthandmk
 		Start: 0
 		Length: 15
 		ShadowStart: 15
+		Offset: -14, -14
 	icon: handicon
 		Start: 0
 
@@ -297,50 +332,63 @@ naweap:
 	idle: ntweap
 		Start: 0
 		ShadowStart: 3
+		Offset: -12, -28
 	damaged-idle: ntweap
 		Start: 1
 		ShadowStart: 4
+		Offset: -12, -28
 	dead: ntweap
 		Start: 2
 		ShadowStart: 5
+		Offset: -12, -28
 	production-lights: ntweap_a
 		Start: 0
 		Length: 16
 		Tick: 100
 		ZOffset: 2048
+		Offset: -12, -28
 	damaged-production-lights: ntweap_a
 		Start: 16
 		Length: 16
 		Tick: 100
 		ZOffset: 2048
+		Offset: -12, -28
 	build-top: ntweap_b
 		Start: 0
 		Length: 10
 		ShadowStart: 10
+		Offset: -12, -28
 	damaged-build-top: ntweap_b
 		Start: 10
 		Length: 10
 		ShadowStart: 20
+		Offset: -12, -28
 	idle-top: ntweap_2
 		Start: 0
+		Offset: -12, -28
 	damaged-idle-top: ntweap_2
 		Start: 1
+		Offset: -12, -28
 	make: ntweapmk
 		Start: 0
 		Length: 22
 		Tick: 80
 		ShadowStart: 22
+		Offset: -12, -28
 	icon: nwepicon
 		Start: 0
 	bib: ntweapbb
 		Start: 0
 		Length: 1
+		Offset: -12, -28
 	damaged-bib: ntweapbb
 		Start: 1
 		Length: 1
+		Offset: -12, -28
 	critical-bib: ntweapbb
 		Start: 2
 		Length: 1
+		Offset: -12, -28
 # TODO: ntweap_1 & ntweap_b & ntweap_c are unused
 
 naradr:
@@ -401,24 +449,30 @@ garadr:
 	idle: gtradr
 		Start: 0
 		ShadowStart: 3
+		Offset: 0, -14
 	damaged-idle: gtradr
 		Start: 1
 		ShadowStart: 4
+		Offset: 0, -14
 #	critical-idle: gtradr	#shows a destroyed radar dish
 #		Start: 2
 #		ShadowStart: 5
+#		Offset: 0, -14
 	idle-dish: gtradr_a
 		Frames: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 		Length: 28
 		Tick: 200
+		Offset: 0, -14
 	damaged-idle-dish: gtradr_a
 		Frames: 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16
 		Length: 28
 		Tick: 240
+		Offset: 0, -14
 	make: gtradrmk
 		Start: 0
 		Length: 20
 		ShadowStart: 20
+		Offset: 0, -14
 	icon: radricon
 		Start: 0
 
@@ -783,40 +837,47 @@ gahpad:
 	idle: gthpad
 		Start: 0
 		ShadowStart: 3
+		Offset: 0, -14
 	damaged-idle: gthpad
 		Start: 1
 		ShadowStart: 4
+		Offset: 0, -14
 	critical-idle: gthpad
 		Start: 2
 		ShadowStart: 5
+		Offset: 0, -14
 	idle-platform: gthpadbb
 		Start: 0
 		ShadowStart: 3
+		Offset: 0, -14
 	damaged-idle-platform: gthpadbb
 		Start: 1
 		ShadowStart: 4
+		Offset: 0, -14
 	critical-idle-platform: gthpadbb
 		Start: 2
 		ShadowStart: 5
+		Offset: 0, -14
 	idle-lights: gthpad_a
 		Start: 0
 		Length: 8
-		Offset: 2,-12
+		Offset: 2,-26
 		Tick: 200
 	damaged-idle-lights: gthpad_a
 		Start: 8
 		Length: 8
-		Offset: 16,-16
+		Offset: 16,-30
 		Tick: 200
 	critical-idle-lights: gthpad_a
 		Start: 16
 		Length: 8
-		Offset: 24,-24
+		Offset: 24,-38
 		Tick: 200
 	make: gthpadmk
 		Start: 0
 		Length: 18
 		ShadowStart: 18
+		Offset: 0, -14
 	icon: heliicon
 		Start: 0
 
@@ -865,37 +926,47 @@ proc: # TODO: unused narefn_a, narefn_b
 	idle: ntrefn
 		Start: 0
 		ShadowStart: 3
+		Offset: 0, -14
 	damaged-idle: ntrefn
 		Start: 1
 		ShadowStart: 4
+		Offset: 0, -14
 	critical-idle: ntrefn
 		Start: 2
 		ShadowStart: 5
+		Offset: 0, -14
 	make: ntrefnmk
 		Start: 0
 		Length: 20
 		ShadowStart: 20
+		Offset: 0, -14
 	idle-redlights: ntrefn_c
 		Start: 0
 		Length: 16
 		Tick: 120
+		Offset: 0, -14
 	damaged-idle-redlights: ntrefn_c
 		Start: 0
 		Length: 16
 		Tick: 120
+		Offset: 0, -14
 	critical-idle-redlights: ntrefn_c
 		Start: 16
 		Length: 16
 		Tick: 200
+		Offset: 0, -14
 	bib: ntrefnbb
 		Start: 0
 		Length: 1
+		Offset: 0, -14
 	damaged-bib: ntrefnbb
 		Start: 1
 		Length: 1
+		Offset: 0, -14
 	critical-bib: ntrefnbb
 		Start: 2
 		Length: 1
+		Offset: 0, -14
 	icon: reficon
 		Start: 0
 

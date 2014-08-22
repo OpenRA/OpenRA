@@ -96,9 +96,11 @@ GAPILE:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+	RallyPoint:
+		RallyPoint: 2,3
 	Exit@1:
-		SpawnOffset: -2730,2730,0
-		ExitCell: 0,2
+		SpawnOffset: -256,1051,0
+		ExitCell: 2,3
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
@@ -166,8 +168,8 @@ GAWEAP:
 		BuildPaletteOrder: 50
 		Owner: gdi
 	Building:
-		Footprint: ___ xxx ===
-		Dimensions: 3,3
+		Footprint: xxx= xxx= xxx=
+		Dimensions: 4,3
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -177,8 +179,8 @@ GAWEAP:
 	RallyPoint:
 		RallyPoint: 6,5
 	Exit@1:
-		SpawnOffset: -170,1024,0
-		ExitCell: 3,3
+		SpawnOffset: -170,0,0
+		ExitCell: 4,2
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
@@ -275,8 +277,10 @@ NAHAND:
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
-		SpawnOffset: -2730,2730,0
-		ExitCell: 0,2
+		SpawnOffset: 0,2048,0
+		ExitCell: 3,3
+	RallyPoint:
+		RallyPoint: 3,3
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
@@ -303,8 +307,8 @@ NAWEAP:
 		BuildPaletteOrder: 50
 		Owner: nod
 	Building:
-		Footprint: ___ xxx ===
-		Dimensions: 3,3
+		Footprint: xxx= xxx= xxx=
+		Dimensions: 4,3
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -314,8 +318,8 @@ NAWEAP:
 	RallyPoint:
 		RallyPoint: 6,5
 	Exit@1:
-		SpawnOffset: -170,1024,0
-		ExitCell: 3,3
+		SpawnOffset: -170,0,0
+		ExitCell: 4,2
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
@@ -613,8 +617,8 @@ GARADR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: radar
 	Building:
-		Footprint: ___ xxx xxx
-		Dimensions: 3,3
+		Footprint: xx xx
+		Dimensions: 2,2
 	Health:
 		HP: 800
 	Armor:
