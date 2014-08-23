@@ -494,7 +494,7 @@ MMCH:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Medium Mech
+		Name: Titan
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
@@ -584,6 +584,7 @@ SMECH:
 		SpawnsCorpse: false
 	Selectable:
 		Voices: Mech
+		Bounds: 16, 32
 
 BIKE:
 	Inherits: ^Vehicle
