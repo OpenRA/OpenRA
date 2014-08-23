@@ -222,11 +222,11 @@ end
 
 -- same as above but with special treatment when reading chunks,
 -- unblocks on any data received.
-function copas.receivePartial(client, pattern)
-  local s, err, part
+function copas.receivePartial(client, pattern, part)
+  local s, err
   pattern = pattern or "*l"
   repeat
-    s, err, part = client:receive(pattern)
+    s, err, part = client:receive(pattern, part)
     if s or ( (type(pattern)=="number") and part~="" and part ~=nil ) or
       err ~= "timeout" then
       _reading_log[client] = nil
@@ -310,11 +310,11 @@ local _skt_mt = {__index = {
                             return copas.send (self.socket, data, from, to)
                           end,
 
-                   receive = function (self, pattern)
+                   receive = function (self, pattern, prefix)
                                if (self.timeout==0) then
-                                 return copas.receivePartial(self.socket, pattern)
+                                 return copas.receivePartial(self.socket, pattern, prefix)
                                end
-                               return copas.receive(self.socket, pattern)
+                               return copas.receive(self.socket, pattern, prefix)
                              end,
 
                    flush = function (self)
@@ -323,8 +323,12 @@ local _skt_mt = {__index = {
 
                    settimeout = function (self,time)
                                   self.timeout=time
-                                  return
+                                  return true
                                 end,
+
+                   skip = function(self, ...) return self.socket:skip(...) end,
+
+                   close = function(self, ...) return self.socket:close(...) end,
                }}
 
 -- wraps a UDP socket, copy of TCP one adapted for UDP.
@@ -352,7 +356,7 @@ local _skt_mt_udp = {__index = {
 
                    settimeout = function (self,time)
                                   self.timeout=time
-                                  return
+                                  return true
                                 end,
                }}
 
