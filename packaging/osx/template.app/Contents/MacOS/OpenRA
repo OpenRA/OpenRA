@@ -30,4 +30,5 @@ then
 	exit 1
 fi
 
-cd "$RESOURCES" && mono --debug OpenRA.Game.exe Graphics.Renderer=Sdl2
+# Override fontconfig with our own dummy config that prevents long cache delays
+cd "$RESOURCES" && FONTCONFIG_PATH="." mono --debug OpenRA.Game.exe Graphics.Renderer=Sdl2
