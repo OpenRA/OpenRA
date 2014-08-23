@@ -19,10 +19,16 @@ namespace OpenRA.Mods.RA
 	public class SmudgeLayerInfo : ITraitInfo
 	{
 		public readonly string Type = "Scorch";
+
+		[Desc("Sprite sequence name")]
 		public readonly string Sequence = "scorch";
 
 		public readonly int SmokePercentage = 25;
+
+		[Desc("Sprite sequence name")]
 		public readonly string SmokeType = "smoke_m";
+
+		public readonly string Palette = "terrain";
 
 		public object Create(ActorInitializer init) { return new SmudgeLayer(this); }
 	}
@@ -120,7 +126,7 @@ namespace OpenRA.Mods.RA
 
 		public void Render(WorldRenderer wr)
 		{
-			var pal = wr.Palette("terrain");
+			var pal = wr.Palette(Info.Palette);
 
 			foreach (var kv in tiles)
 			{
