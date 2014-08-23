@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				if (tabs.QueueGroup == button.ProductionGroup)
 					tabs.SelectNextTab(reverse);
 				else
-				tabs.QueueGroup = button.ProductionGroup;
+					tabs.QueueGroup = button.ProductionGroup;
 			};
 
 			button.IsDisabled = () => tabs.Groups[button.ProductionGroup].Tabs.Count == 0;
