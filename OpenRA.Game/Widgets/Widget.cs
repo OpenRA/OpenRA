@@ -417,8 +417,11 @@ namespace OpenRA.Widgets
 
 		public virtual void RemoveChild(Widget child)
 		{
-			Children.Remove(child);
-			child.Removed();
+			if (child != null)
+			{
+				Children.Remove(child);
+				child.Removed();
+			}
 		}
 
 		public virtual void RemoveChildren()
