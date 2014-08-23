@@ -52,12 +52,6 @@ namespace OpenRA.Mods.RA
 				mo.MarkCompleted(self.Owner, objectiveID);
 		}
 
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (order.OrderString == "Surrender")
-				mo.MarkFailed(self.Owner, objectiveID);
-		}
-
 		public void OnPlayerLost(Player player)
 		{
 			Game.Debug("{0} is defeated.".F(player.PlayerName));

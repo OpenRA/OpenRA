@@ -21,7 +21,8 @@ namespace OpenRA.Mods.RA.Scripting
 		readonly IFacing facing;
 		readonly AutoTarget autotarget;
 
-		public GeneralProperties(Actor self) : base(self)
+		public GeneralProperties(ScriptContext context, Actor self)
+			: base(context, self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
 			autotarget = self.TraitOrDefault<AutoTarget>();

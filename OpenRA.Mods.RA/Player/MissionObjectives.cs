@@ -79,8 +79,8 @@ namespace OpenRA.Mods.RA
 			objectives.Insert(newID, new MissionObjective(type, description));
 
 			ObjectiveAdded(player);
-			foreach (var imo in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
-				imo.OnObjectiveAdded(player, newID);
+			foreach (var inou in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
+				inou.OnObjectiveAdded(player, newID);
 
 			return newID;
 		}
@@ -90,22 +90,23 @@ namespace OpenRA.Mods.RA
 			if (objectiveID >= objectives.Count || objectives[objectiveID].State == ObjectiveState.Completed)
 				return;
 
+			var inous = player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>();
+
 			objectives[objectiveID].State = ObjectiveState.Completed;
+			foreach (var inou in inous)
+				inou.OnObjectiveCompleted(player, objectiveID);
 
 			if (objectives[objectiveID].Type == ObjectiveType.Primary)
 			{
 				var playerWon = objectives.Where(o => o.Type == ObjectiveType.Primary).All(o => o.State == ObjectiveState.Completed);
 
-				foreach (var imo in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
-				{
-					imo.OnObjectiveCompleted(player, objectiveID);
-
-					if (playerWon)
-						imo.OnPlayerWon(player);
-				}
-
 				if (playerWon)
+				{
+					foreach (var inou in inous)
+						inou.OnPlayerWon(player);
+
 					CheckIfGameIsOver(player);
+				}
 			}
 		}
 
@@ -114,87 +115,116 @@ namespace OpenRA.Mods.RA
 			if (objectiveID >= objectives.Count || objectives[objectiveID].State == ObjectiveState.Failed)
 				return;
 
+			var inous = player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>();
+
 			objectives[objectiveID].State = ObjectiveState.Failed;
+			foreach (var inou in inous)
+				inou.OnObjectiveFailed(player, objectiveID);
 
 			if (objectives[objectiveID].Type == ObjectiveType.Primary)
 			{
 				var playerLost = objectives.Where(o => o.Type == ObjectiveType.Primary).Any(o => o.State == ObjectiveState.Failed);
 
-				foreach (var imo in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
-				{
-					imo.OnObjectiveFailed(player, objectiveID);
-
-					if (playerLost)
-						imo.OnPlayerLost(player);
-				}
-
 				if (playerLost)
+				{
+					foreach (var inou in inous)
+						inou.OnPlayerLost(player);
+	
 					CheckIfGameIsOver(player);
+				}
 			}
 		}
 
 		void CheckIfGameIsOver(Player player)
 		{
 			var players = player.World.Players.Where(p => !p.NonCombatant);
-			var allies = players.Where(p => p.IsAlliedWith(player));
 
-			var gameOver = ((info.EarlyGameOver && !info.Cooperative && player.WinState != WinState.Undefined) ||
-				(info.EarlyGameOver && info.Cooperative && allies.All(p => p.WinState != WinState.Undefined)) ||
-				players.All(p => p.WinState != WinState.Undefined));
-
+			var gameOver = players.All(p => p.WinState != WinState.Undefined);
 			if (gameOver)
-			{
 				Game.RunAfterDelay(info.GameOverDelay, () =>
 				{
 					player.World.EndGame();
 					player.World.SetPauseState(true);
 					player.World.PauseStateLocked = true;
 				});
-			}
 		}
 
 		public void OnPlayerWon(Player player)
 		{
+			var players = player.World.Players.Where(p => !p.NonCombatant);
+			var enemies = players.Where(p => !p.IsAlliedWith(player));
+
 			if (info.Cooperative)
 			{
 				WinStateCooperative = WinState.Won;
-				var players = player.World.Players.Where(p => !p.NonCombatant);
 				var allies = players.Where(p => p.IsAlliedWith(player));
 
 				if (allies.All(p => p.PlayerActor.Trait<MissionObjectives>().WinStateCooperative == WinState.Won))
+				{
 					foreach (var p in allies)
 					{
 						p.WinState = WinState.Won;
 						p.World.OnPlayerWinStateChanged(p);
 					}
+
+					if (info.EarlyGameOver)
+						foreach (var p in enemies)
+							p.PlayerActor.Trait<MissionObjectives>().ForceDefeat(p);
+				}
 			}
 			else
 			{
 				player.WinState = WinState.Won;
 				player.World.OnPlayerWinStateChanged(player);
+
+				if (info.EarlyGameOver)
+					foreach (var p in enemies)
+						p.PlayerActor.Trait<MissionObjectives>().ForceDefeat(p);
 			}
 		}
 
 		public void OnPlayerLost(Player player)
 		{
+			var players = player.World.Players.Where(p => !p.NonCombatant);
+			var enemies = players.Where(p => !p.IsAlliedWith(player));
+
 			if (info.Cooperative)
 			{
 				WinStateCooperative = WinState.Lost;
-				var players = player.World.Players.Where(p => !p.NonCombatant);
 				var allies = players.Where(p => p.IsAlliedWith(player));
 
 				if (allies.Any(p => p.PlayerActor.Trait<MissionObjectives>().WinStateCooperative == WinState.Lost))
+				{
 					foreach (var p in allies)
 					{
 						p.WinState = WinState.Lost;
 						p.World.OnPlayerWinStateChanged(p);
 					}
+
+					if (info.EarlyGameOver)
+						foreach (var p in enemies)
+							p.PlayerActor.Trait<MissionObjectives>().ForceDefeat(p);
+				}
 			}
 			else
 			{
 				player.WinState = WinState.Lost;
 				player.World.OnPlayerWinStateChanged(player);
+
+				if (info.EarlyGameOver)
+					foreach (var p in enemies)
+					{
+						p.WinState = WinState.Won;
+						p.World.OnPlayerWinStateChanged(p);
+					}
 			}
+		}
+
+		public void ForceDefeat(Player player)
+		{
+			for (var id = 0; id < Objectives.Count; id++)
+				if (Objectives[id].State == ObjectiveState.Incomplete)
+					MarkFailed(player, id);
 		}
 
 		public event Action<Player> ObjectiveAdded = player => { };
@@ -206,8 +236,7 @@ namespace OpenRA.Mods.RA
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Surrender")
-				for (var id = 0; id < objectives.Count; id++)
-					MarkFailed(self.Owner, id);
+				ForceDefeat(self.Owner);
 		}
 	}
 

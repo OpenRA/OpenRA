@@ -44,13 +44,23 @@ namespace OpenRA.Scripting
 	public abstract class ScriptActorProperties
 	{
 		protected readonly Actor self;
-		public ScriptActorProperties(Actor self) { this.self = self; }
+		protected readonly ScriptContext context;
+		public ScriptActorProperties(ScriptContext context, Actor self)
+		{
+			this.self = self;
+			this.context = context;
+		}
 	}
 
 	public abstract class ScriptPlayerProperties
 	{
 		protected readonly Player player;
-		public ScriptPlayerProperties(Player player) { this.player = player; }
+		protected readonly ScriptContext context;
+		public ScriptPlayerProperties(ScriptContext context, Player player)
+		{
+			this.player = player;
+			this.context = context;
+		}
 	}
 
 	// For global-level bindings

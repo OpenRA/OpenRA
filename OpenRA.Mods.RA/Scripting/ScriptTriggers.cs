@@ -18,12 +18,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
-	public enum Trigger { OnIdle, OnDamaged, OnKilled, OnProduction, OnPlayerWon, OnPlayerLost, OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed };
+	public enum Trigger { OnIdle, OnDamaged, OnKilled, OnProduction, OnPlayerWon, OnPlayerLost, OnObjectiveAdded,
+		OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnAddedToWorld, OnRemovedFromWorld };
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
 	public class ScriptTriggersInfo : TraitInfo<ScriptTriggers> { }
 
-	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyObjectivesUpdated, IDisposable
+	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyObjectivesUpdated, INotifyCapture, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable
 	{
 		public event Action<Actor> OnKilledInternal = _ => {};
 
@@ -43,36 +44,25 @@ namespace OpenRA.Mods.RA.Scripting
 		public void TickIdle(Actor self)
 		{
 			foreach (var f in Triggers[Trigger.OnIdle])
-			{
-				var a = self.ToLuaValue(f.Second);
-				f.First.Call(a).Dispose();
-				a.Dispose();
-			}
+				using (var a = self.ToLuaValue(f.Second))
+					f.First.Call(a).Dispose();
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			foreach (var f in Triggers[Trigger.OnDamaged])
-			{
-				var a = self.ToLuaValue(f.Second);
-				var b = e.Attacker.ToLuaValue(f.Second);
-				f.First.Call(a, b).Dispose();
-				a.Dispose();
-				b.Dispose();
-			}
+				using (var a = self.ToLuaValue(f.Second))
+				using (var b = e.Attacker.ToLuaValue(f.Second))
+					f.First.Call(a, b).Dispose();
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
 			// Run lua callbacks
 			foreach (var f in Triggers[Trigger.OnKilled])
-			{
-				var a = self.ToLuaValue(f.Second);
-				var b = e.Attacker.ToLuaValue(f.Second);
-				f.First.Call(a, b).Dispose();
-				a.Dispose();
-				b.Dispose();
-			}
+				using (var a = self.ToLuaValue(f.Second))
+				using (var b = e.Attacker.ToLuaValue(f.Second))
+					f.First.Call(a, b).Dispose();
 
 			// Run any internally bound callbacks
 			OnKilledInternal(self);
@@ -81,69 +71,71 @@ namespace OpenRA.Mods.RA.Scripting
 		public void UnitProduced(Actor self, Actor other, CPos exit)
 		{
 			foreach (var f in Triggers[Trigger.OnProduction])
-			{
-				var a = self.ToLuaValue(f.Second);
-				var b = other.ToLuaValue(f.Second);
-				f.First.Call(a, b).Dispose();
-				a.Dispose();
-				b.Dispose();
-			}
+				using (var a = self.ToLuaValue(f.Second))
+				using (var b = other.ToLuaValue(f.Second))
+					f.First.Call(a, b).Dispose();
 		}
 
 		public void OnPlayerWon(Player player)
 		{
 			foreach (var f in Triggers[Trigger.OnPlayerWon])
-			{
-				var a = player.ToLuaValue(f.Second);
-				f.First.Call(a).Dispose();
-				a.Dispose();
-			}
+				using (var a = player.ToLuaValue(f.Second))
+					f.First.Call(a).Dispose();
 		}
 
 		public void OnPlayerLost(Player player)
 		{
 			foreach (var f in Triggers[Trigger.OnPlayerLost])
-			{
-				var a = player.ToLuaValue(f.Second);
-				f.First.Call(a).Dispose();
-				a.Dispose();
-			}
+				using (var a = player.ToLuaValue(f.Second))
+					f.First.Call(a).Dispose();
 		}
 
 		public void OnObjectiveAdded(Player player, int id)
 		{
 			foreach (var f in Triggers[Trigger.OnObjectiveAdded])
-			{
-				var a = player.ToLuaValue(f.Second);
-				var b = id.ToLuaValue(f.Second);
-				f.First.Call(a, b).Dispose();
-				a.Dispose();
-				b.Dispose();
-			}
+				using (var a = player.ToLuaValue(f.Second))
+				using (var b = id.ToLuaValue(f.Second))
+					f.First.Call(a, b).Dispose();
 		}
 
 		public void OnObjectiveCompleted(Player player, int id)
 		{
 			foreach (var f in Triggers[Trigger.OnObjectiveCompleted])
-			{
-				var a = player.ToLuaValue(f.Second);
-				var b = id.ToLuaValue(f.Second);
-				f.First.Call(a, b).Dispose();
-				a.Dispose();
-				b.Dispose();
-			}
+				using (var a = player.ToLuaValue(f.Second))
+				using (var b = id.ToLuaValue(f.Second))
+					f.First.Call(a, b).Dispose();
 		}
 
 		public void OnObjectiveFailed(Player player, int id)
 		{
 			foreach (var f in Triggers[Trigger.OnObjectiveFailed])
-			{
-				var a = player.ToLuaValue(f.Second);
-				var b = id.ToLuaValue(f.Second);
-				f.First.Call(a, b).Dispose();
-				a.Dispose();
-				b.Dispose();
-			}
+				using (var a = player.ToLuaValue(f.Second))
+				using (var b = id.ToLuaValue(f.Second))
+					f.First.Call(a, b).Dispose();
+		}
+
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			foreach (var f in Triggers[Trigger.OnCapture])
+				using (var a = self.ToLuaValue(f.Second))
+				using (var b = captor.ToLuaValue(f.Second))
+				using (var c = oldOwner.ToLuaValue(f.Second))
+				using (var d = newOwner.ToLuaValue(f.Second))
+					f.First.Call(a, b, c, d).Dispose();
+		}
+
+		public void AddedToWorld(Actor self)
+		{
+			foreach (var f in Triggers[Trigger.OnAddedToWorld])
+				using (var a = self.ToLuaValue(f.Second))
+					f.First.Call(a).Dispose();
+		}
+
+		public void RemovedFromWorld(Actor self)
+		{
+			foreach (var f in Triggers[Trigger.OnRemovedFromWorld])
+				using (var a = self.ToLuaValue(f.Second))
+					f.First.Call(a).Dispose();
 		}
 
 		public void Clear(Trigger trigger)

@@ -20,8 +20,8 @@ namespace OpenRA.Mods.RA.Scripting
 	{
 		readonly MissionObjectives mo;
 
-		public MissionObjectiveProperties(Player player)
-			: base(player)
+		public MissionObjectiveProperties(ScriptContext context, Player player)
+			: base(context, player)
 		{
 			mo = player.PlayerActor.Trait<MissionObjectives>();
 		}
