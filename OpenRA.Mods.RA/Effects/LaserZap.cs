@@ -13,6 +13,7 @@ using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 using OpenRA.Mods.RA.Graphics;
 
 namespace OpenRA.Mods.RA.Effects
@@ -69,7 +70,7 @@ namespace OpenRA.Mods.RA.Effects
 				if (hitanim != null)
 					hitanim.PlayThen("idle", () => animationComplete = true);
 
-				args.Weapon.Impact(target, args.SourceActor, args.DamageModifiers);
+				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
 				doneDamage = true;
 			}
 

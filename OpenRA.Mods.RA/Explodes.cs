@@ -51,7 +51,8 @@ namespace OpenRA.Mods.RA
 				if (weapon.Report != null && weapon.Report.Any())
 					Sound.Play(weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
 	
-				weapon.Impact(self.CenterPosition, e.Attacker, Enumerable.Empty<int>());
+				// Use .FromPos since this actor is killed. Cannot use Target.FromActor
+				weapon.Impact(Target.FromPos(self.CenterPosition), e.Attacker, Enumerable.Empty<int>());
 			}
 		}
 

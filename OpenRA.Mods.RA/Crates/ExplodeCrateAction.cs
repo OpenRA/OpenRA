@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		public override void Activate(Actor collector)
 		{
 			var weapon = self.World.Map.Rules.Weapons[((ExplodeCrateActionInfo)info).Weapon.ToLowerInvariant()];
-			weapon.Impact(collector.CenterPosition, self, Enumerable.Empty<int>());
+			weapon.Impact(Target.FromPos(collector.CenterPosition), self, Enumerable.Empty<int>());
 			base.Activate(collector);
 		}
 	}
