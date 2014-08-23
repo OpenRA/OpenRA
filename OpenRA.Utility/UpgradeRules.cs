@@ -436,21 +436,34 @@ namespace OpenRA.Utility
 						ConvertFloatArrayToPercentArray(ref node.Value.Value);
 				}
 
+				// RemoveImmediately was replaced with RemoveOnConditions
+				if (engineVersion < 20140821)
+				{
+					if (depth == 1)
+					{
+						if (node.Key == "RemoveImmediately")
+							node.Key = "RemoveOnConditions";
+
+						if (node.Key == "-RemoveImmediately")
+							node.Key = "-RemoveOnConditions";
+					}
+				}
+
+				if (engineVersion < 20140823)
+				{
+					if (depth == 2 && node.Key == "ArmorUpgrade" && parentKey == "GainsStatUpgrades")
+						node.Key = "DamageUpgrade";
+
+					if (depth == 2 && node.Key == "ArmorModifier" && parentKey == "GainsStatUpgrades")
+					{
+						node.Key = "DamageModifier";
+						node.Value.Value = string.Join(", ", node.Value.Value.Split(',')
+							.Select(s => ((int)(100 * 100 / float.Parse(s))).ToString()));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 
-				// RemoveImmediately was replaced with RemoveOnConditions
- 				if (engineVersion < 20140821)
- 				{
- 					if (depth == 1)
- 					{
- 						if (node.Key == "RemoveImmediately")
-							node.Key = "RemoveOnConditions";
- 
- 						if (node.Key == "-RemoveImmediately")
-							node.Key = "-RemoveOnConditions";
- 					}
- 				}
- 
 			}
 		}
 

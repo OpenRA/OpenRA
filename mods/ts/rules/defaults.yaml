@@ -118,7 +118,7 @@
 			1000: firepower, armor, speed, reload
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
-		ArmorModifier: 120, 150
+		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
 	GivesExperience:
@@ -208,7 +208,7 @@
 			1000: firepower, armor, speed, reload
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
-		ArmorModifier: 120, 150
+		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
 	GivesExperience:
@@ -261,7 +261,7 @@
 			1000: firepower, armor, speed, reload
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
-		ArmorModifier: 120, 150
+		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
 	GivesExperience:
@@ -308,7 +308,7 @@
 			1000: firepower, armor, speed, reload
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
-		ArmorModifier: 120, 150
+		DamageModifier: 83, 66
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
 	GivesExperience:
