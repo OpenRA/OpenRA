@@ -919,7 +919,7 @@ Weapons:
 	Rockets:
 		Warhead: SpreadDamage
 			Versus:
-				None: 20%
+				None: 20
 
 Voices:
 

@@ -1,13 +1,14 @@
 UnitExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 500
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 2
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 	Warhead@2Eff: CreateEffect
 		Explosion: large_twlt
 		ImpactSound: expnew09.aud
@@ -18,10 +19,10 @@ UnitExplodeSmall:
 		Damage: 40
 		InfDeath: 2
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_brnl
 		ImpactSound: expnew13.aud
@@ -38,10 +39,10 @@ Minigun:
 		InfDeath: 1
 		ProneModifier: 70
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -65,11 +66,11 @@ Grenade:
 		InfDeath: 3
 		ProneModifier: 70
 		Versus:
-			None: 100%
-			Wood: 85%
-			Light: 70%
-			Heavy: 35%
-			Concrete: 28%
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
 	Warhead@2Eff: CreateEffect
 		Explosion: large_grey_explosion
 		ImpactSound: expnew13.aud
@@ -100,11 +101,11 @@ Bazooka:
 		InfDeath: 2
 		ValidTargets: Ground, Air
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
@@ -139,11 +140,11 @@ MultiCluster:
 		InfDeath: 3
 		ValidTargets: Ground
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
@@ -165,10 +166,10 @@ Heal:
 		InfDeath: 1
 		ProneModifier: 100
 		Versus:
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 
 Sniper:
 	ReloadDelay: 60
@@ -182,11 +183,11 @@ Sniper:
 		InfDeath: 1
 		ProneModifier: 100
 		Versus:
-			None: 100%
-			Wood: 0%
-			Light: 0%
-			Heavy: 0%
-			Concrete: 0%
+			None: 100
+			Wood: 0
+			Light: 0
+			Heavy: 0
+			Concrete: 0
 
 M1Carbine:
 	ReloadDelay: 20
@@ -200,10 +201,10 @@ M1Carbine:
 		InfDeath: 1
 		ProneModifier: 70
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -226,11 +227,11 @@ LtRail:
 		InfDeath: 2
 		ProneModifier: 100
 		Versus:
-			None: 100%
-			Wood: 130%
-			Light: 150%
-			Heavy: 110%
-			Concrete: 5%
+			None: 100
+			Wood: 130
+			Light: 150
+			Heavy: 110
+			Concrete: 5
 
 CyCannon:
 	ReloadDelay: 50
@@ -249,11 +250,11 @@ CyCannon:
 		ProneModifier: 100
 		ValidTargets: Ground
 		Versus:
-			None: 100%
-			Wood: 65%
-			Light: 75%
-			Heavy: 50%
-			Concrete: 40%
+			None: 100
+			Wood: 65
+			Light: 75
+			Heavy: 50
+			Concrete: 40
 	Warhead@2Eff: CreateEffect
 		Explosion: large_bang
 		ImpactSound: expnew12.aud
@@ -276,10 +277,10 @@ Vulcan3:
 		InfDeath: 1
 		ProneModifier: 70
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -300,11 +301,11 @@ Vulcan2:
 		InfDeath: 1
 		ProneModifier: 70
 		Versus:
-			None: 100%
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			None: 100
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -324,10 +325,10 @@ Vulcan:
 		InfDeath: 1
 		ProneModifier: 70
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -352,10 +353,10 @@ FiendShard:
 		InfDeath: 1
 		ProneModifier: 100
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
 		ImpactSound: ssplash3.aud
@@ -374,10 +375,10 @@ JumpCannon:
 		InfDeath: 1
 		ProneModifier: 70
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -407,11 +408,11 @@ HoverMissile:
 		InfDeath: 2
 		ValidTargets: Ground, Air
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
@@ -442,11 +443,11 @@ HoverMissile:
 		Damage: 50
 		InfDeath: 2
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
@@ -479,11 +480,11 @@ MammothTusk:
 		ProneModifier: 70
 		ValidTargets: Air
 		Versus:
-			None: 100%
-			Wood: 85%
-			Light: 70%
-			Heavy: 35%
-			Concrete: 28%
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_bang
 		ImpactSound: expnew12.aud
@@ -505,11 +506,11 @@ Repair:
 		InfDeath: 1
 		ProneModifier: 100
 		Versus:
-			None: 0%
-			Wood: 0%
-			Light: 100%
-			Heavy: 100%
-			Concrete: 0%
+			None: 0
+			Wood: 0
+			Light: 100
+			Heavy: 100
+			Concrete: 0
 
 SlimeAttack:
 	ReloadDelay: 80
@@ -523,10 +524,10 @@ SlimeAttack:
 		InfDeath: 2
 		ProneModifier: 100
 		Versus:
-			Wood: 25%
-			Light: 30%
-			Heavy: 10%
-			Concrete: 10%
+			Wood: 25
+			Light: 30
+			Heavy: 10
+			Concrete: 10
 
 SuicideBomb:
 	ReloadDelay: 1
@@ -534,13 +535,14 @@ SuicideBomb:
 	Report: HUNTER2.AUD
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 11000
+		Damage: 110
+		Falloff: 10000, 3680, 1350, 500, 180, 70, 0
 		InfDeath: 5
 		Versus:
-			None: 90%
-			Light: 60%
-			Heavy: 25%
-			Concrete: 50%
+			None: 90
+			Light: 60
+			Heavy: 25
+			Concrete: 50
 	Warhead@2Res: DestroyResource
 
 120mm:
@@ -554,11 +556,11 @@ SuicideBomb:
 		Damage: 70
 		InfDeath: 2
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 	Warhead@2Eff: CreateEffect
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
@@ -583,11 +585,11 @@ MechRailgun:
 		InfDeath: 5
 		ProneModifier: 100
 		Versus:
-			None: 200%
-			Wood: 175%
-			Light: 160%
-			Heavy: 100%
-			Concrete: 25%
+			None: 200
+			Wood: 175
+			Light: 160
+			Heavy: 100
+			Concrete: 25
 
 AssaultCannon:
 	ReloadDelay: 50
@@ -601,10 +603,10 @@ AssaultCannon:
 		InfDeath: 1
 		ProneModifier: 70
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -635,11 +637,11 @@ BikeMissile:
 		InfDeath: 2
 		ValidTargets: Ground
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
@@ -663,10 +665,10 @@ RaiderCannon:
 		InfDeath: 1
 		ProneModifier: 70
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -690,11 +692,11 @@ FireballLauncher:
 		InfDeath: 5
 		ProneModifier: 100
 		Versus:
-			None: 600%
-			Wood: 148%
-			Light: 59%
-			Heavy: 6%
-			Concrete: 2%
+			None: 600
+			Wood: 148
+			Light: 59
+			Heavy: 6
+			Concrete: 2
 
 SonicZap:
 	ReloadDelay: 120
@@ -710,8 +712,8 @@ SonicZap:
 		Damage: 100
 		InfDeath: 5
 		Versus:
-			Heavy: 80%
-			Concrete: 60%
+			Heavy: 80
+			Concrete: 60
 
 Dragon:
 	ReloadDelay: 50
@@ -735,11 +737,11 @@ Dragon:
 		InfDeath: 2
 		ValidTargets: Ground, Air
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
 		ImpactSound: expnew12.aud
@@ -768,11 +770,11 @@ Dragon:
 		Damage: 36
 		InfDeath: 2
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 	Warhead@2Eff: CreateEffect
 		Explosion: medium_clsn
 		ImpactSound: expnew14.aud
@@ -800,11 +802,11 @@ Dragon:
 		InfDeath: 3
 		ProneModifier: 100
 		Versus:
-			None: 100%
-			Wood: 85%
-			Light: 68%
-			Heavy: 35%
-			Concrete: 35%
+			None: 100
+			Wood: 85
+			Light: 68
+			Heavy: 35
+			Concrete: 35
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew06.aud
@@ -836,11 +838,11 @@ Hellfire:
 		InfDeath: 2
 		ValidTargets: Ground, Air
 		Versus:
-			None: 30%
-			Wood: 65%
-			Light: 150%
-			Heavy: 100%
-			Concrete: 30%
+			None: 30
+			Wood: 65
+			Light: 150
+			Heavy: 100
+			Concrete: 30
 	Warhead@2Eff: CreateEffect
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
@@ -868,11 +870,11 @@ Bomb:
 		InfDeath: 3
 		ProneModifier: 100
 		Versus:
-			None: 200%
-			Wood: 90%
-			Light: 75%
-			Heavy: 32%
-			Concrete: 100%
+			None: 200
+			Wood: 90
+			Light: 75
+			Heavy: 32
+			Concrete: 100
 	Warhead@2Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
@@ -903,11 +905,11 @@ Proton:
 		InfDeath: 3
 		ValidTargets: Ground, Air
 		Versus:
-			None: 25%
-			Wood: 65%
-			Light: 75%
-			Heavy: 100%
-			Concrete: 60%
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
 	Warhead@2Eff: CreateEffect
 		Explosion: small_bang
 		ImpactSound: expnew12.aud
@@ -931,10 +933,10 @@ HarpyClaw:
 		ProneModifier: 70
 		ValidTargets: Ground, Air
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -954,10 +956,10 @@ Pistola:
 		InfDeath: 1
 		ProneModifier: 70
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
 		InvalidImpactTypes: Water
@@ -985,7 +987,8 @@ IonCannon:
 	ValidTargets: Ground, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 1000
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		InfDeath: 5
 		ProneModifier: 100
 		ValidTargets: Ground, Air
@@ -1013,10 +1016,10 @@ VulcanTower:
 		Damage: 18
 		InfDeath: 1
 		Versus:
-			Wood: 60%
-			Light: 40%
-			Heavy: 25%
-			Concrete: 10%
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 		InvalidImpactTypes: Water
@@ -1041,11 +1044,11 @@ RPGTower:
 		InfDeath: 2
 		ProneModifier: 70
 		Versus:
-			None: 30%
-			Wood: 75%
-			Light: 90%
-			Heavy: 100%
-			Concrete: 70%
+			None: 30
+			Wood: 75
+			Light: 90
+			Heavy: 100
+			Concrete: 70
 	Warhead@2Eff: CreateEffect
 		Explosion: large_clsn
 		ImpactSound: expnew14.aud
@@ -1115,10 +1118,10 @@ TiberiumExplosion:
 		Damage: 10
 		InfDeath: 3
 		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
 	Warhead@2Res: CreateResource
 		AddsResourceType: Tiberium
 		Size: 1,1

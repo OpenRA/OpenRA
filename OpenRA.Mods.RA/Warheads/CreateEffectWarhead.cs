@@ -34,11 +34,6 @@ namespace OpenRA.Mods.RA
 		[Desc("What impact types should this effect NOT apply to.", "Overrides ValidImpactTypes.")]
 		public readonly ImpactType InvalidImpactTypes = ImpactType.None;
 
-		public override void DoImpact(Target target, Actor firedBy, float firepowerModifier)
-		{
-			DoImpact(target.CenterPosition, firedBy, firepowerModifier);
-		}
-
 		public static ImpactType GetImpactType(World world, CPos cell, WPos pos)
 		{
 			var isAir = pos.Z > 0;
@@ -79,8 +74,9 @@ namespace OpenRA.Mods.RA
 			return false;
 		}
 
-		public void DoImpact(WPos pos, Actor firedBy, float firepowerModifier)
+		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
+			var pos = target.CenterPosition;
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(pos);
 			var isValid = IsValidImpact(pos, firedBy);

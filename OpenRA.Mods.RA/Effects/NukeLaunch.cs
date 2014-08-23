@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
 			var weapon = world.Map.Rules.Weapons[this.weapon.ToLowerInvariant()];
-			weapon.Impact(pos, firedBy.PlayerActor, 1f);
+			weapon.Impact(pos, firedBy.PlayerActor, Enumerable.Empty<int>());
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 
 			foreach (var a in world.ActorsWithTrait<NukePaletteEffect>())

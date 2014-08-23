@@ -541,7 +541,7 @@ Weapons:
 	BoatMissile:
 		Warhead: SpreadDamage
 			Versus:
-				Heavy: 50%
+				Heavy: 50
 			Damage: 50
 
 Voices:
