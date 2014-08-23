@@ -54,6 +54,11 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: gdi
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: Nod,GDI
 
 Actors:
 	Actor0: sbag

@@ -56,6 +56,11 @@ Players:
 		LockTeam: True
 		Allies: Nod
 		Enemies: GDI
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: Nod,GDI
 
 Actors:
 	Actor0: sbag
