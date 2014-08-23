@@ -34,8 +34,11 @@ namespace OpenRA.Primitives
 
 		public event Action<object> OnAdd = k => { };
 		public event Action<object> OnRemove = k => { };
+		// TODO Workaround for https://github.com/OpenRA/OpenRA/issues/6101
+		#pragma warning disable 67
 		public event Action<int> OnRemoveAt = i => { };
 		public event Action<object, object> OnSet = (o, n) => { };
+		#pragma warning restore
 		public event Action OnRefresh = () => { };
 
 		protected void FireOnRefresh()
