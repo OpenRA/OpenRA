@@ -1,5 +1,5 @@
 Container@MISSION_OBJECTIVES:
-	Height:	PARENT_BOTTOM
+	Height: PARENT_BOTTOM
 	Width: PARENT_RIGHT
 	Logic: GameInfoObjectivesLogic
 	Children:
