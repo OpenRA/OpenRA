@@ -21,12 +21,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly World world;
 		readonly Widget ingameRoot;
 		bool disableSystemButtons;
+		Widget currentWidget;
 
 		[ObjectCreator.UseCtor]
 		public OrderButtonsChromeLogic(Widget widget, World world)
 		{
 			this.world = world;
 			ingameRoot = Ui.Root.Get("INGAME_ROOT");
+
+			Action removeCurrentWidget = () => Ui.Root.RemoveChild(currentWidget);
+			world.GameOver += removeCurrentWidget;
 
 			// Order Buttons
 			var sell = widget.GetOrNull<ButtonWidget>("SELL_BUTTON");
@@ -139,7 +143,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				disableSystemButtons = false;
 			});
 
-			Game.LoadWidget(world, button.MenuContainer, Ui.Root, widgetArgs);
+			currentWidget = Game.LoadWidget(world, button.MenuContainer, Ui.Root, widgetArgs);
 		}
 
 		static void BindOrderButton<T>(World world, ButtonWidget w, string icon)

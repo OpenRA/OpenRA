@@ -32,9 +32,8 @@ namespace OpenRA.Mods.RA.Widgets
 				panelName = "LEAVE_RESTART_FULL";
 
 			var dialog = widget.Get<ContainerWidget>(panelName);
-			var fmvPlayer = Ui.Root.GetOrNull<BackgroundWidget>("FMVPLAYER");
 			dialog.IsVisible = () => true;
-			widget.IsVisible = () => fmvPlayer == null || fmvPlayer != Ui.CurrentWindow();
+			widget.IsVisible = () => Ui.CurrentWindow() == null;
 
 			var leaveButton = dialog.Get<ButtonWidget>("LEAVE_BUTTON");
 			leaveButton.OnClick = () =>
