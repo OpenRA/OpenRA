@@ -152,7 +152,7 @@
 		TargetTypes: Ground, Infantry
 	TakeCover:
 		SpeedModifier: 60
-	RenderInfantryProne:
+	RenderInfantry:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
@@ -196,7 +196,7 @@
 	Inherits: ^Infantry
 	-AutoTarget:
 	-TakeCover:
-	-RenderInfantryProne:
+	RenderInfantry:
 	AppearsOnRadar:
 	SelectionDecorations:
 	Selectable:
@@ -219,7 +219,6 @@
 		Notification: CivilianKilled
 		NotifyAll: true
 	ScaredyCat:
-	RenderInfantryPanic:
 	CrushableInfantry:
 
 ^DINO:

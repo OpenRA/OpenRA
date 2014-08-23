@@ -12,12 +12,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class RenderDisguiseInfo : RenderInfantryProneInfo, Requires<DisguiseInfo>
+	class RenderDisguiseInfo : RenderInfantryInfo, Requires<DisguiseInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderDisguise(init.self, this); }
 	}
 
-	class RenderDisguise : RenderInfantryProne
+	class RenderDisguise : RenderInfantry
 	{
 		RenderDisguiseInfo info;
 		string intendedSprite;

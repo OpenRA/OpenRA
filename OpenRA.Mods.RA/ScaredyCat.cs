@@ -16,48 +16,58 @@ namespace OpenRA.Mods.RA
 	[Desc("Makes the unit automatically run around when taking damage.")]
 	class ScaredyCatInfo : ITraitInfo
 	{
+		[Desc("How long (in ticks) the actor should panic for.")]
 		public readonly int PanicLength = 25 * 10;
+
+		[Desc("Panic movement speed as a precentage of the normal speed.")]
 		public readonly int PanicSpeedModifier = 200;
+
+		[Desc("Chance (out of 100) the unit has to enter panic mode when attacked.")]
 		public readonly int AttackPanicChance = 20;
 
 		public object Create(ActorInitializer init) { return new ScaredyCat(init.self, this); }
 	}
 
-	class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, ISync
+	class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
 	{
-		readonly ScaredyCatInfo Info;
-		[Sync] readonly Actor Self;
+		readonly ScaredyCatInfo info;
+		[Sync] readonly Actor self;
+		[Sync] int panicStartedTick;
+		bool panicking { get { return panicStartedTick > 0; } }
 
-		[Sync] public int PanicStartedTick;
-		[Sync] public bool Panicking { get { return PanicStartedTick > 0; } }
+		public bool IsModifyingSequence { get { return panicking; } }
+		public string SequencePrefix { get { return "panic-"; } }
 
 		public ScaredyCat(Actor self, ScaredyCatInfo info)
 		{
-			Self = self;
-			Info = info;
+			this.self = self;
+			this.info = info;
 		}
 
 		public void Panic()
 		{
-			if (!Panicking)
-				Self.CancelActivity();
-			PanicStartedTick = Self.World.WorldTick;
+			if (!panicking)
+				self.CancelActivity();
+
+			panicStartedTick = self.World.WorldTick;
 		}
 
 		public void Tick(Actor self)
 		{
-			if (!Panicking) return;
+			if (!panicking)
+				return;
 
-			if (self.World.WorldTick >= PanicStartedTick + Info.PanicLength)
+			if (self.World.WorldTick >= panicStartedTick + info.PanicLength)
 			{
 				self.CancelActivity();
-				PanicStartedTick = 0;
+				panicStartedTick = 0;
 			}
 		}
 
 		public void TickIdle(Actor self)
 		{
-			if (!Panicking) return;
+			if (!panicking)
+				return;
 
 			self.Trait<Mobile>().Nudge(self, self, true);
 		}
@@ -70,13 +80,13 @@ namespace OpenRA.Mods.RA
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (self.World.SharedRandom.Next(100 / Info.AttackPanicChance) == 0)
+			if (self.World.SharedRandom.Next(100 / info.AttackPanicChance) == 0)
 				Panic();
 		}
 
 		public int GetSpeedModifier()
 		{
-			return Panicking ? Info.PanicSpeedModifier : 100;
+			return panicking ? info.PanicSpeedModifier : 100;
 		}
 	}
 }

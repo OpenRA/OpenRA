@@ -19,8 +19,7 @@ E1:
 		Weapon: Minigun
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 E2:
@@ -46,8 +45,7 @@ E2:
 		FireDelay: 5
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 E3:
@@ -73,8 +71,7 @@ E3:
 		LocalOffset: 128,0,640
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 WEEDGUY:
@@ -102,8 +99,7 @@ WEEDGUY:
 		Weapon: FireballLauncher
 		LocalOffset: 85,0,384
 	AttackFrontal:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 	TakeCover:
 
 MEDIC:
@@ -130,8 +126,7 @@ MEDIC:
 		Weapon: Heal
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 		AttackAnimation: heal
 	SelfHealing:
@@ -163,8 +158,7 @@ ENGINEER:
 	Captures:
 		CaptureTypes: building
 	-AutoTarget:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 	TakeCover:
 	-GainsExperience:
@@ -196,8 +190,7 @@ UMAGON:
 		Weapon: Sniper
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 GHOST:
@@ -233,8 +226,7 @@ GHOST:
 	C4Demolition:
 		C4Delay: 45
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 JUMPJET:
@@ -328,8 +320,7 @@ CYBORG:
 		Weapon: Vulcan3
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 CYC2:
@@ -364,8 +355,7 @@ CYC2:
 		LocalOffset: 170,85,683
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 MUTANT:
@@ -394,8 +384,7 @@ MUTANT:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 MWMN:
@@ -424,8 +413,7 @@ MWMN:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 MUTANT3:
@@ -454,8 +442,7 @@ MUTANT3:
 		Weapon: Vulcan
 	AttackFrontal:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 MHIJACK:
@@ -482,8 +469,7 @@ MHIJACK:
 		Range: 6c0
 	-AutoTarget:
 	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 TRATOS:
@@ -509,8 +495,7 @@ TRATOS:
 		Range: 4c0
 	TakeCover:
 	-AutoTarget:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 OXANNA:
@@ -534,8 +519,7 @@ OXANNA:
 		Range: 4c0
 	TakeCover:
 	-AutoTarget:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 SLAV:
@@ -559,8 +543,7 @@ SLAV:
 		Range: 4c0
 	TakeCover:
 	-AutoTarget:
-	-RenderInfantry:
-	RenderInfantryProne:
+	RenderInfantry:
 		IdleAnimations: idle1,idle2
 
 DOGGIE:
