@@ -44,4 +44,28 @@ Player:
 	BaseAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:
+	AttributeModifierManager@ProdBuilding:
+		Type: Building
+		ModType: Production
+	AttributeModifierManager@ProdDefense:
+		Type: Defense
+		ModType: Production
+	AttributeModifierManager@ProdInfantry:
+		Type: Infantry
+		ModType: Production
+	AttributeModifierManager@ProdVehicle:
+		Type: Vehicle
+		ModType: Production
+	AttributeModifierManager@ProdShip:
+		Type: Air
+		ModType: Production
+	AttributeModifierManager@IncHarvester:
+		Type: Harvester
+		ModType: Income
+	AttributeModifierManager@IncCashTrickler:
+		Type: CashTrickler
+		ModType: Income
+	AttributeModifierManager@IncBounty:
+		Type: Bounty
+		ModType: Income
 

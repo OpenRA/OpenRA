@@ -128,3 +128,18 @@ ScrollPanel@NEWS_PANEL:
 			Height: PARENT_BOTTOM
 			Align: Center
 			VAlign: Middle
+
+ScrollPanel@MOD_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 5
+					Width: 60
+					Height: 25

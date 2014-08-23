@@ -343,3 +343,56 @@ ScrollPanel@RACE_DROPDOWN_TEMPLATE:
 					Width: 70
 					Height: 25
 
+ScrollPanel@LOBBY_PLAYERMODIFIERS_BIN:
+	X: 20
+	Y: 67
+	ItemSpacing: 5
+	Width: 593
+	Height: 235
+	Children:
+		Container@TEMPLATE_EDITABLE_PLAYER_MODIFIERS:
+			X: 5
+			Y: 0
+			Width: 475
+			Height: 25
+			Visible: false
+			Children:
+				Label@NAME:
+					Text: Name
+					X: 15
+					Width: 165
+					Height: 25
+				DropDownButton@PRODMOD:
+					X: 185
+					Width: 85
+					Height: 25
+					Text: Production
+				DropDownButton@INCMOD:
+					X: 275
+					Width: 85
+					Height: 25
+					Text: Income
+		Container@TEMPLATE_NONEDITABLE_PLAYER_MODIFIERS:
+			X: 5
+			Y: 0
+			Width: 475
+			Height: 25
+			Visible: false
+			Children:
+				Label@NAME:
+					Text: Name
+					X: 15
+					Width: 165
+					Height: 25
+				Label@PRODMOD:
+					X: 185
+					Width: 55
+					Height: 25
+					Text: Production
+				Label@INCMOD:
+					Align: Center
+					X: 245
+					Width: 55
+					Height: 25
+					Text: Income
+
