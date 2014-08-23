@@ -11,6 +11,8 @@
 		Footprint: x
 		BuildSounds: place2.aud
 		TerrainTypes: Clear, Road
+		Adjacent: 4
+	FrozenUnderFog:
 	GivesBuildableArea:
 	Capturable:
 	SoundOnDamageTransition:
@@ -62,9 +64,6 @@
 		NodeTypes: wall
 	LineBuildNode:
 		Types: wall
-	SelectionDecorations:
-	Selectable:
-		Priority: 1
 	TargetableBuilding:
 		TargetTypes: Ground, C4
 	RenderBuildingWall:
@@ -323,6 +322,8 @@
 	Huntable:
 	LuaScriptEvents:
 	ScriptTriggers:
+	Guard:
+	Guardable:
 
 ^BlossomTree:
 	Tooltip:

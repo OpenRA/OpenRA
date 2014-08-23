@@ -56,40 +56,50 @@ gapowr:
 	idle: gtpowr
 		Start: 0
 		ShadowStart: 3
+		Offset: 0, -10
 	damaged-idle: gtpowr
 		Start: 1
 		ShadowStart: 4
+		Offset: 0, -10
 	critical-idle: gtpowr
 		Start: 2
 		ShadowStart: 5
+		Offset: 0, -10
 	idle-lights: gtpowr_a
 		Start: 0
 		Length: 12
 		Tick: 200
+		Offset: 0, -10
 	damaged-idle-lights: gtpowr_a
 		Start: 12
 		Length: 12
 		Tick: 200
+		Offset: 0, -10
 	critical-idle-lights: gtpowr_a
 		Start: 24
 		Length: 12
 		Tick: 200
+		Offset: 0, -10
 	idle-plug: gtpowr_b
 		Start: 0
 		Length: 12
 		Tick: 200
+		Offset: 0, -10
 	damaged-idle-plug: gtpowr_b
 		Start: 0
 		Length: 12
 		Tick: 200
+		Offset: 0, -10
 	critical-idle-plug: gtpowr_b
 		Start: 0
 		Length: 12
 		Tick: 200
+		Offset: 0, -10
 	make: gtpowrmk
 		Start: 0
 		Length: 20
 		ShadowStart: 20
+		Offset: 0, -10
 	icon: powricon
 		Start: 0
 
@@ -926,49 +936,63 @@ proc: # TODO: unused narefn_a, narefn_b
 	idle: ntrefn
 		Start: 0
 		ShadowStart: 3
-		Offset: 0, -14
+		Offset: 0, -24
 	damaged-idle: ntrefn
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -14
+		Offset: 0, -24
 	critical-idle: ntrefn
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -14
+		Offset: 0, -24
 	make: ntrefnmk
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-		Offset: 0, -14
+		Offset: 0, -24
 	idle-redlights: ntrefn_c
 		Start: 0
 		Length: 16
 		Tick: 120
-		Offset: 0, -14
+		Offset: 0, -24
 	damaged-idle-redlights: ntrefn_c
 		Start: 0
 		Length: 16
 		Tick: 120
-		Offset: 0, -14
+		Offset: 0, -24
 	critical-idle-redlights: ntrefn_c
 		Start: 16
 		Length: 16
 		Tick: 200
-		Offset: 0, -14
+		Offset: 0, -24
 	bib: ntrefnbb
 		Start: 0
 		Length: 1
-		Offset: 0, -14
+		Offset: 0, -24
 	damaged-bib: ntrefnbb
 		Start: 1
 		Length: 1
-		Offset: 0, -14
+		Offset: 0, -24
 	critical-bib: ntrefnbb
 		Start: 2
 		Length: 1
-		Offset: 0, -14
+		Offset: 0, -24
 	icon: reficon
 		Start: 0
+
+gasilo:
+	idle: gtsilo
+		Start: 0
+		ShadowStart: 4
+	damaged-idle: gtsilo
+		Start: 2
+		ShadowStart: 5
+	icon: siloicon
+		Start: 0
+	make: gtsilomk
+		Start: 0
+		Length: 18
+		ShadowStart: 20
 
 galite:
 	idle: gtlite

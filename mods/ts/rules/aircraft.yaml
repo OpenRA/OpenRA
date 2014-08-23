@@ -19,11 +19,11 @@ DPOD:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 0c0
+		Range: 5c0
 	Cargo:
 		Types: Infantry
-		MaxWeight: 5
-		PipCount: 5
+		MaxWeight: 1
+		PipCount: 1
 	Armament:
 		Weapon: Vulcan2
 	AttackHeli:

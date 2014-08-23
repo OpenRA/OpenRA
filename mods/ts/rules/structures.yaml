@@ -69,6 +69,8 @@ GAPOWR:
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
 		Sequence: idle-plug
+	Selectable:
+		Bounds: 64, 64
 	Power:
 		Amount: 100
 	InfiltrateForPowerOutage:
@@ -133,14 +135,14 @@ PROC:
 		Prerequisites: anypower
 		Owner: gdi,nod
 	Building:
-		Footprint: xxx xxx x==
-		Dimensions: 3,3
+		Footprint: xxx= xxx= xxx=
+		Dimensions: 4,3
 	Health:
 		HP: 900
 	RevealsShroud:
 		Range: 6
 	TiberianSunRefinery:
-		DockOffset: 4,3
+		DockOffset: 3,1
 	StoresResources:
 		PipColor: Green
 		PipCount: 15
@@ -159,6 +161,36 @@ PROC:
 	Power:
 		Amount: -30
 
+GASILO:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 70
+		Prerequisites: proc
+		Owner: gdi, nod
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Silo
+		Description: Stores excess Tiberium.
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	-GivesBuildableArea:
+	Health:
+		HP: 300
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	RenderBuildingSilo:
+	StoresResources:
+		PipCount: 5
+		Capacity: 1500
+	-RenderBuilding:
+	Power:
+		Amount: -10
+
 GAWEAP:
 	Inherits: ^Building
 	Valued:
@@ -172,6 +204,7 @@ GAWEAP:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Owner: gdi
+		Prerequisites: proc
 	Building:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
@@ -321,6 +354,7 @@ NAWEAP:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Owner: nod
+		Prerequisites: proc
 	Building:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
@@ -764,6 +798,7 @@ GAHPAD:
 		BuildPaletteOrder: 60
 		Owner: gdi
 		Queue: Building
+		Prerequisites: garadr
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -773,6 +808,7 @@ GAHPAD:
 		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
+	RallyPoint:
 	Production:
 		Produces: Air
 	PrimaryBuilding:
@@ -807,6 +843,7 @@ NAHPAD:
 		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
+	RallyPoint:
 	Production:
 		Produces: Air
 	PrimaryBuilding:
@@ -834,7 +871,7 @@ GADEPT:
 		Owner: gdi
 		Queue: Building
 	Building:
-		Footprint: _x_ xxx _x_
+		Footprint: =x= xxx =x=
 		Dimensions: 3,3
 	Health:
 		HP: 1100
