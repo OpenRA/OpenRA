@@ -54,6 +54,7 @@ PALACEA:
 		Icon: ornistrike
 		Prerequisites: ~techlevel.superweapons
 		Description: Air Strike
+		SquadSize: 3
 		ChargeTime: 180
 		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target
 		UnitType: orni.bomber
