@@ -462,8 +462,18 @@ namespace OpenRA.Utility
 					}
 				}
 
-				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
+				// RenderInfantryProne and RenderInfantryPanic was merged into RenderInfantry
+				if (engineVersion < 20140824)
+				{
+					var renderInfantryRemoval = node.Value.Nodes.FirstOrDefault(n => n.Key == "-RenderInfantry");
+					if (depth == 0 && renderInfantryRemoval != null && !node.Value.Nodes.Any(n => n.Key == "RenderDisguise"))
+						node.Value.Nodes.Remove(renderInfantryRemoval);
 
+					if (depth == 1 && (node.Key == "RenderInfantryProne" || node.Key == "RenderInfantryPanic"))
+						node.Key = "RenderInfantry";
+				}
+
+				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
 
