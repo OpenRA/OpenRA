@@ -97,8 +97,6 @@ namespace OpenRA.Mods.RA.Widgets
 			if (queueGroup == null)
 				return true;
 
-			Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
-
 			// Prioritize alerted queues
 			var queues = Groups[queueGroup].Tabs.Select(t => t.Queue)
 					.OrderByDescending(q => q.CurrentDone ? 1 : 0)
