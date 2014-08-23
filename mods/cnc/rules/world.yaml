@@ -86,6 +86,13 @@ World:
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
 	DomainIndex:
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
 	ResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@green-tib:
@@ -117,13 +124,6 @@ World:
 		PipColor: Blue
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
-	SmudgeLayer@SCORCH:
-		Type: Scorch
-		Sequence: scorches
-		SmokePercentage: 50
-	SmudgeLayer@CRATER:
-		Type: Crater
-		Sequence: craters
 	PathfinderDebugOverlay:
 	SpawnMapActors:
 	MPStartLocations:
