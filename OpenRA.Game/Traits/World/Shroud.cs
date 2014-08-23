@@ -71,7 +71,12 @@ namespace OpenRA.Traits
 
 		void Invalidate()
 		{
+			var oldHash = Hash;
 			Hash = Sync.hash_player(self.Owner) + self.World.WorldTick * 3;
+
+			// Invalidate may be called multiple times in one world tick, which is decoupled from rendering.
+			if (oldHash == Hash)
+				Hash += 1;
 		}
 
 		static IEnumerable<CPos> FindVisibleTiles(World world, CPos position, WRange radius)
