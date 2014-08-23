@@ -43,12 +43,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToList();
 
-			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot).ToList();
+			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
 			var disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));
 			teamChat = !disableTeamChat;
 
 			commandNames = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).Select(x => "/" + x).ToList();
-			playerNames = players.Select(x => x.PlayerName).ToList();
+			playerNames = orderManager.LobbyInfo.Clients.Select(c => c.Name).ToList();
 
 			var chatPanel = (ContainerWidget)widget;
 			chatOverlay = chatPanel.Get<ContainerWidget>("CHAT_OVERLAY");
