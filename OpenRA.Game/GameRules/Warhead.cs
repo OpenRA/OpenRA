@@ -28,7 +28,7 @@ namespace OpenRA.GameRules
 		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
 		
 		[Desc("Can this warhead affect the actor that fired it.")]
-		public readonly bool AffectsParent = true;
+		public readonly bool AffectsParent = false;
 
 		[Desc("Delay in ticks before applying the warhead effect.","0 = instant (old model).")]
 		public readonly int Delay = 0;
