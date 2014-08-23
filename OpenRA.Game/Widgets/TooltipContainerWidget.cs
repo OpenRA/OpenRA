@@ -47,7 +47,7 @@ namespace OpenRA.Widgets
 		{
 			get
 			{
-				var pos = Viewport.LastMousePos + CursorOffset;
+				var pos = Viewport.LastMousePos + (CursorProvider.CursorViewportZoomed ? CursorOffset * 2 : CursorOffset);
 				if (tooltip != null)
 				{
 					if (pos.X + tooltip.Bounds.Right > Game.Renderer.Resolution.Width)

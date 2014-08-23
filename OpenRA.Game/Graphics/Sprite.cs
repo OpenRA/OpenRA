@@ -20,6 +20,7 @@ namespace OpenRA.Graphics
 		public readonly TextureChannel channel;
 		public readonly float2 size;
 		public readonly float2 offset;
+		public readonly float2 fractionalOffset;
 		readonly float2[] textureCoords;
 
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
@@ -36,6 +37,8 @@ namespace OpenRA.Graphics
 			this.channel = channel;
 			this.size = new float2(bounds.Size);
 			this.blendMode = blendMode;
+
+			this.fractionalOffset = offset / this.size;
 
 			var left = (float)(bounds.Left) / sheet.Size.Width;
 			var top = (float)(bounds.Top) / sheet.Size.Height;

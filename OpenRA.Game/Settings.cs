@@ -86,6 +86,7 @@ namespace OpenRA
 		public int2 FullscreenSize = new int2(0, 0);
 		public int2 WindowedSize = new int2(1024, 768);
 		public bool PixelDouble = false;
+		public bool CursorDouble = false;
 		public bool CapFramerate = true;
 		public int MaxFramerate = 60;
 
