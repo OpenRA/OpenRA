@@ -99,6 +99,13 @@ World:
 		Name: Soviet
 		Race: soviet
 	DomainIndex:
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
 	ResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@ore:
@@ -125,13 +132,6 @@ World:
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
 		TerrainType: Gems
-	SmudgeLayer@SCORCH:
-		Type: Scorch
-		Sequence: scorches
-		SmokePercentage: 50
-	SmudgeLayer@CRATER:
-		Type: Crater
-		Sequence: craters
 	PathfinderDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
