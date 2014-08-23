@@ -41,6 +41,7 @@ namespace OpenRA.Traits
 		public int Hash { get; private set; }
 
 		static readonly Func<CPos, bool> TruthPredicate = cell => true;
+		readonly Func<CPos, bool> shroudEdgeTest;
 		readonly Func<CPos, bool> fastExploredTest;
 		readonly Func<CPos, bool> slowExploredTest;
 		readonly Func<CPos, bool> fastVisibleTest;
@@ -63,6 +64,7 @@ namespace OpenRA.Traits
 
 			fogVisibilities = Exts.Lazy(() => self.TraitsImplementing<IFogVisibilityModifier>().ToArray());
 
+			shroudEdgeTest = cell => map.Contains(cell);
 			fastExploredTest = IsExploredCore;
 			slowExploredTest = IsExplored;
 			fastVisibleTest = IsVisibleCore;
@@ -217,7 +219,8 @@ namespace OpenRA.Traits
 
 		public void ExploreAll(World world)
 		{
-			explored.Clear(true);
+			foreach (var cell in map.Cells)
+				explored[cell] = true;
 
 			Invalidate();
 		}
@@ -255,9 +258,9 @@ namespace OpenRA.Traits
 			if (!map.Cells.Contains(region))
 				return slowExploredTest;
 
-			// If shroud isn't enabled, then we can see everything.
+			// If shroud isn't enabled, then we can see everything inside the map.
 			if (!ShroudEnabled)
-				return TruthPredicate;
+				return shroudEdgeTest;
 
 			// If shroud is enabled, we can use the fast test that just does the core check.
 			return fastExploredTest;
