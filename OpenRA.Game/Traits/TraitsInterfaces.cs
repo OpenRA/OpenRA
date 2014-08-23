@@ -241,6 +241,11 @@ namespace OpenRA.Traits
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IBlocksBullets { }
+	public interface IRenderInfantrySequenceModifier
+	{
+		bool IsModifyingSequence { get; }
+		string SequencePrefix { get; }
+	}
 
 	public interface IPostRender { void RenderAfterWorld(WorldRenderer wr, Actor self); }
 	public interface IRenderShroud { void RenderShroud(WorldRenderer wr, Shroud shroud); }
