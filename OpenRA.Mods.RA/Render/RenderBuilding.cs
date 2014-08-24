@@ -57,8 +57,7 @@ namespace OpenRA.Mods.RA.Render
 
 			if (info.PauseOnLowPower)
 			{
-				var disabled = self.TraitsImplementing<IDisable>();
-				DefaultAnimation.Paused = () => disabled.Any(d => d.Disabled)
+				DefaultAnimation.Paused = () => self.IsDisabled()
 					&& self.Trait<Building>().BuildComplete
 					&& DefaultAnimation.CurrentSequence.Name == NormalizeSequence(self, "idle");
 			}

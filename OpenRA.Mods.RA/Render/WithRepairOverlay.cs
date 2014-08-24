@@ -45,7 +45,6 @@ namespace OpenRA.Mods.RA.Render
 		{
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
-			var disabled = self.TraitsImplementing<IDisable>();
 
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 			overlay = new Animation(self.World, rs.GetImage(self));
@@ -54,7 +53,7 @@ namespace OpenRA.Mods.RA.Render
 				new AnimationWithOffset(overlay,
 					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 					() => !buildComplete,
-					() => info.PauseOnLowPower && disabled.Any(d => d.Disabled),
+					() => info.PauseOnLowPower && self.IsDisabled(),
 					p => WithTurret.ZOffsetFromCenter(self, p, 1)),
 				info.Palette, info.IsPlayerPalette);
 		}

@@ -31,7 +31,7 @@ namespace OpenRA.Traits
 
 		public void Tick(Actor self)
 		{
-			var disabled = self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+			var disabled = self.IsDisabled();
 			if (cachedLocation != self.Location || cachedDisabled != disabled)
 			{
 				cachedLocation = self.Location;
