@@ -227,6 +227,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 			world.Selection.Combine(world, new Actor[] { next }, false, true);
 
+			Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
+
 			return ToSelection();
 		}
 

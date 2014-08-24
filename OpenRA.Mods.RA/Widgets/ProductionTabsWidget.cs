@@ -279,9 +279,15 @@ namespace OpenRA.Mods.RA.Widgets
 			var hotkey = Hotkey.FromKeyInput(e);
 
 			if (hotkey == Game.Settings.Keys.NextProductionTabKey)
+			{
+				Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 				return SelectNextTab(false);
+			}
 			else if (hotkey == Game.Settings.Keys.PreviousProductionTabKey)
+			{
+				Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 				return SelectNextTab(true);
+			}
 
 			return false;
 		}
