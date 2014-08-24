@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new GlobalUpgradable(init.self, this); }
 	}
 
-	public class GlobalUpgradable : INotifyAddedToWorld
+	public class GlobalUpgradable : INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly GlobalUpgradableInfo info;
 		readonly GlobalUpgradeManager manager;
