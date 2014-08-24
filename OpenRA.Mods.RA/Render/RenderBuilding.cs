@@ -59,6 +59,7 @@ namespace OpenRA.Mods.RA.Render
 			{
 				var disabled = self.TraitsImplementing<IDisable>();
 				DefaultAnimation.Paused = () => disabled.Any(d => d.Disabled)
+					&& self.Trait<Building>().BuildComplete
 					&& DefaultAnimation.CurrentSequence.Name == NormalizeSequence(self, "idle");
 			}
 		}
