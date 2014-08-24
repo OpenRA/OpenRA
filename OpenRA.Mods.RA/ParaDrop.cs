@@ -77,6 +77,9 @@ namespace OpenRA.Mods.RA
 			if (droppedAt.Contains(self.Location) || checkForSuitableCell && !IsSuitableCell(cargo.Peek(self), self.Location))
 				return;
 
+			if (!self.World.Map.Contains(self.Location))
+				return;
+
 			// unload a dude here
 			droppedAt.Add(self.Location);
 
