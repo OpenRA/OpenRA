@@ -3,14 +3,6 @@ rifle:
 		Start: 206
 		Facings: -8
 		Transpose: true
-	stand2: DATA
-		Start: 206
-		Facings: -8
-		Transpose: true
-	stand3: DATA
-		Start: 206
-		Facings: -8
-		Transpose: true
 	run: DATA
 		Start: 214
 		Length: 6
@@ -142,10 +134,6 @@ engineer:
 		Start: 1166
 		Facings: -8
 		Transpose: true
-	stand2: DATA
-		Start: 1166
-		Facings: -8
-		Transpose: true
 	run: DATA
 		Start: 1174
 		Length: 6
@@ -179,10 +167,6 @@ engineer:
 
 medic: # actually thumper
 	stand: DATA
-		Start: 1402
-		Facings: -8
-		Transpose: true
-	stand2: DATA
 		Start: 1402
 		Facings: -8
 		Transpose: true
@@ -239,10 +223,6 @@ thumping:
 
 fremen:
 	stand: DATA
-		Start: 694
-		Facings: -8
-		Transpose: true
-	stand2: DATA
 		Start: 694
 		Facings: -8
 		Transpose: true
@@ -309,14 +289,6 @@ saboteur:
 		Start: 2149
 		Facings: -8
 		Transpose: true
-	stand2: DATA
-		Start: 2149
-		Facings: -8
-		Transpose: true
-	stand3: DATA
-		Start: 2149
-		Facings: -8
-		Transpose: true
 	run: DATA
 		Start: 2157
 		Length: 6
@@ -367,10 +339,6 @@ saboteur:
 
 sardaukar:
 	stand: DATA
-		Start: 930
-		Facings: -8
-		Transpose: true
-	stand2: DATA
 		Start: 930
 		Facings: -8
 		Transpose: true
@@ -435,9 +403,6 @@ sardaukar:
 grenadier: # 2502 - 2749 in 1.06 DATA.R8
 	stand:
 		Start: 0
-		Facings: 8
-	stand2:
-		Start: 8
 		Facings: 8
 	idle:
 		Start: 203
