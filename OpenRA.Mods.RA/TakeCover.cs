@@ -24,6 +24,8 @@ namespace OpenRA.Mods.RA
 
 		public readonly WVec ProneOffset = new WVec(85, 0, -171);
 
+		public readonly string ProneSequencePrefix = "prone-";
+
 		public override object Create(ActorInitializer init) { return new TakeCover(init, this); }
 	}
 
@@ -34,7 +36,7 @@ namespace OpenRA.Mods.RA
 		bool isProne { get { return remainingProneTime > 0; } }
 
 		public bool IsModifyingSequence { get { return isProne; } }
-		public string SequencePrefix { get { return "prone-"; } }
+		public string SequencePrefix { get { return info.ProneSequencePrefix ; } }
 
 		public TakeCover(ActorInitializer init, TakeCoverInfo info)
 			: base(init, info)
