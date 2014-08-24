@@ -479,13 +479,15 @@ TRUK:
 	RevealsShroud:
 		Range: 3c0
 	RenderUnit:
-	SupplyTruck:
-		Payload: 500
+	Refundable:
+		RefundType: DonateCash
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: moneycrate
+	CustomRefundValue:
+		Value: 500
 
 MGG:
 	Inherits: ^Vehicle

@@ -300,7 +300,8 @@
 		Types: Building
 	Sellable:
 		SellSounds: cashturn.aud
-	AcceptsSupplies:
+	RefundsUnits:
+		RefundableTypes: DonateCash
 	GivesBounty:
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
@@ -314,7 +315,7 @@
 	LuaScriptEvents:
 	Demolishable:
 	ScriptTriggers:
-	
+
 ^Defense:
 	Inherits: ^Building
 	TargetableBuilding:
@@ -372,7 +373,7 @@
 	ProximityCaptor:
 		Types: CivilianBuilding
 	-WithMakeAnimation:
-	-AcceptsSupplies:
+	-RefundsUnits:
 	-GivesBuildableArea:
 	-Sellable:
 	-ExternalCapturable:

@@ -474,6 +474,40 @@ namespace OpenRA.Utility
 						node.Key = "RenderInfantry";
 				}
 
+				// SupplyTruck was generalized into Refundable and RefundsUnits
+				if (engineVersion < 20140825)
+				{
+					var supplyTruckTrait = node.Value.Nodes.FirstOrDefault(n => n.Key == "SupplyTruck");
+					if (supplyTruckTrait != null)
+					{
+						var payloadProperty = supplyTruckTrait.Value.Nodes.FirstOrDefault(n => n.Key == "Payload");
+						var refund = payloadProperty.Value.Value;
+
+						supplyTruckTrait.Value.Nodes.Remove(payloadProperty);
+
+						supplyTruckTrait.Key = "Refundable";
+						var refundType = new MiniYamlNode("RefundType", "DonateCash");
+						supplyTruckTrait.Value.Nodes.Add(refundType);
+
+						var newTrait = new MiniYamlNode("CustomRefundValue", "");
+						var crvNode = new MiniYamlNode("Value", refund);
+
+						node.Value.Nodes.Add(newTrait);
+						newTrait.Value.Nodes.Add(crvNode);
+					}
+
+					var acceptsSuppliesTrait = node.Value.Nodes.FirstOrDefault(n => n.Key == "AcceptsSupplies");
+					if (acceptsSuppliesTrait != null)
+					{
+						acceptsSuppliesTrait.Key = "RefundsUnits";
+						acceptsSuppliesTrait.Value.Nodes.Add(new MiniYamlNode("RefundableTypes", "DonateCash"));
+					}
+
+					var acceptsSuppliesRemoval = node.Value.Nodes.FirstOrDefault(n => n.Key == "-AcceptsSupplies");
+					if (acceptsSuppliesRemoval != null)
+						acceptsSuppliesRemoval.Key = "-RefundsUnits";
+				}
+
 				// InfDeath was renamed to DeathType
 				if (engineVersion < 20140830)
 				{
