@@ -53,8 +53,9 @@ namespace OpenRA.Mods.RA
 		}
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
-		public bool IsLeaving(CPos location, SubCell subCell = SubCell.AnySubCell) { return false; }
-		public SubCell GetAvailableSubcell(CPos cell, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true)
+		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.AnySubCell) { return false; }
+		public SubCell GetValidSubCell(SubCell preferred = SubCell.AnySubCell) { return SubCell.FullCell; }
+		public SubCell GetAvailableSubCell(CPos cell, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			if (!self.World.Map.Contains(cell))
 				return SubCell.InvalidSubCell;
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.RA
 
 		public bool CanEnterCell(CPos a, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return GetAvailableSubcell(a, SubCell.AnySubCell, ignoreActor, checkTransientActors) != SubCell.InvalidSubCell;
+			return GetAvailableSubCell(a, SubCell.AnySubCell, ignoreActor, checkTransientActors) != SubCell.InvalidSubCell;
 		}
 
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell) { SetPosition(self, self.World.Map.CenterOfCell(cell)); }

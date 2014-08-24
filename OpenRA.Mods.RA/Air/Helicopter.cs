@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)
 		{
-			return new HeliFly(self, Target.FromCell(self.World, cell));
+			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
 		}
 
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)

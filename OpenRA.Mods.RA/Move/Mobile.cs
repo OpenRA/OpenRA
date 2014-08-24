@@ -199,18 +199,22 @@ namespace OpenRA.Mods.RA.Move
 			if (check.HasFlag(CellConditions.TransientActors))
 			{
 				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
-				var needsCellExclusively = self == null || Crushes == null;
+				var needsCellExclusively = self == null || Crushes == null || !Crushes.Any();
 
 				Func<Actor, bool> checkTransient = a =>
 				{
-					if (a == ignoreActor) return false;
+					if (a == ignoreActor)
+						return false;
 
 					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) return false;
+					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a))
+						return false;
 					
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
-					if (needsCellExclusively) return true;
-					if (!a.HasTrait<ICrushable>()) return true;
+					if (needsCellExclusively)
+						return true;
+					if (!a.HasTrait<ICrushable>())
+						return true;
 					foreach (var crushable in a.TraitsImplementing<ICrushable>())
 						if (!crushable.CrushableBy(Crushes, self.Owner))
 							return true;
@@ -219,7 +223,7 @@ namespace OpenRA.Mods.RA.Move
 				};
 
 				if (!SharesCell)
-					return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell, checkTransient)? SubCell.InvalidSubCell : SubCell.FullCell;
+					return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell, checkTransient) ? SubCell.InvalidSubCell : SubCell.FullCell;
 
 				return world.ActorMap.FreeSubCell(cell, preferredSubCell, checkTransient);
 			}
@@ -290,7 +294,7 @@ namespace OpenRA.Mods.RA.Move
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				SetVisualPosition(self, init.world.Map.CenterOf(fromCell, fromSubCell));
+				SetVisualPosition(self, init.world.Map.CenterOfSubCell(fromCell, fromSubCell));
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -301,18 +305,32 @@ namespace OpenRA.Mods.RA.Move
 				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
 		}
 
-		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)
+		// Returns a valid sub-cell
+		public SubCell GetValidSubCell(SubCell preferred = SubCell.AnySubCell)
 		{
 			// Try same sub-cell
-			if (subCell == SubCell.AnySubCell)
-				subCell = fromSubCell;
+			if (preferred == SubCell.AnySubCell)
+				preferred = fromSubCell;
 
 			// Fix sub-cell assignment
-			if (Info.SharesCell != (subCell != SubCell.FullCell))
-				subCell = Info.SharesCell ? self.World.Map.DefaultSubCell : SubCell.FullCell;
+			if (Info.SharesCell)
+			{
+				if (preferred <= SubCell.FullCell)
+					return self.World.Map.DefaultSubCell;
+			}
+			else
+			{
+				if (preferred != SubCell.FullCell)
+					return SubCell.FullCell;
+			}
+			return preferred;
+		}
 
+		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)
+		{
+			subCell = GetValidSubCell(subCell);
 			SetLocation(cell, subCell, cell, subCell);
-			SetVisualPosition(self, self.World.Map.CenterOf(cell, subCell));
+			SetVisualPosition(self, self.World.Map.CenterOfSubCell(cell, subCell));
 			FinishedMoving(self);
 		}
 
@@ -468,13 +486,13 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public bool IsLeaving(CPos location, SubCell subCell = SubCell.AnySubCell)
+		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.AnySubCell)
 		{
 			return toCell != location && __fromCell == location
 				&& (subCell == SubCell.AnySubCell || fromSubCell == subCell || subCell == SubCell.FullCell || fromSubCell == SubCell.FullCell);
 		}
 
-		public SubCell GetAvailableSubcell(CPos a, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true)
+		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			return Info.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, checkTransientActors? CellConditions.All : CellConditions.None);
 		}
@@ -644,7 +662,7 @@ namespace OpenRA.Mods.RA.Move
 			SetVisualPosition(self, pos);
 
 			// Animate transition
-			var to = self.World.Map.CenterOf(cell, subCell);
+			var to = self.World.Map.CenterOfSubCell(cell, subCell);
 			var speed = MovementSpeedForCell(self, cell);
 			var length = speed > 0 ? (to - pos).Length / speed : 0;
 
