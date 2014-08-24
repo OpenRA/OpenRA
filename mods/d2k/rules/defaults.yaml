@@ -171,6 +171,7 @@
 	TargetableUnit:
 		TargetTypes: Ground
 	RenderInfantry:
+	TakeCover:
 	AutoTarget:
 	AttackMove:
 	Passenger:
