@@ -95,10 +95,12 @@ namespace OpenRA.Mods.RA
 		public void SetPosition(Actor self, WPos pos) { SetPosition(self, self.World.Map.CellContaining(pos)); }
 		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, self.World.Map.CellContaining(pos)); }
 
-		public bool IsLeaving(CPos location, SubCell subCell = SubCell.AnySubCell) { return self.Location == location && ticks + 1 == info.Lifetime * 25; }
-		public SubCell GetAvailableSubcell(CPos cell, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true)
+		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.AnySubCell) { return self.Location == location && ticks + 1 == info.Lifetime * 25; }
+		public SubCell GetValidSubCell(SubCell preferred = SubCell.AnySubCell) { return SubCell.FullCell; }
+		public SubCell GetAvailableSubCell(CPos cell, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			if (!self.World.Map.Contains(cell)) return SubCell.InvalidSubCell;
+			if (!self.World.Map.Contains(cell))
+				return SubCell.InvalidSubCell;
 
 			var type = self.World.Map.GetTerrainInfo(cell).Type;
 			if (!info.TerrainTypes.Contains(type))
@@ -117,7 +119,7 @@ namespace OpenRA.Mods.RA
 
 		public bool CanEnterCell(CPos a, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return GetAvailableSubcell(a, SubCell.AnySubCell, ignoreActor, checkTransientActors) != SubCell.InvalidSubCell;
+			return GetAvailableSubCell(a, SubCell.AnySubCell, ignoreActor, checkTransientActors) != SubCell.InvalidSubCell;
 		}
 
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)

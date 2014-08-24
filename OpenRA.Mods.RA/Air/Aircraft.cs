@@ -199,8 +199,9 @@ namespace OpenRA.Mods.RA.Air
 				|| info.RepairBuildings.Contains(a.Info.Name);
 		}
 
-		public bool IsLeaving(CPos location, SubCell subCell = SubCell.AnySubCell) { return false; } // TODO: Handle landing
-		public SubCell GetAvailableSubcell(CPos a, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true) { return SubCell.InvalidSubCell; } // Does not use any subcell
+		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.AnySubCell) { return false; } // TODO: Handle landing
+		public SubCell GetValidSubCell(SubCell preferred) { return SubCell.InvalidSubCell; }
+		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true) { return SubCell.InvalidSubCell; } // Does not use any subcell
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true) { return true; }
 
 		public int MovementSpeed

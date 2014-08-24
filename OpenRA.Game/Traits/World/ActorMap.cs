@@ -116,7 +116,7 @@ namespace OpenRA.Traits
 			return SubCell.InvalidSubCell;
 		}
 
-		// NOTE: does not check transients, but checks aircraft
+		// NOTE: always includes transients with influence
 		public bool AnyUnitsAt(CPos a)
 		{
 			return influence[a] != null;
@@ -132,7 +132,7 @@ namespace OpenRA.Traits
 					if (checkTransient)
 						return true;
 					var pos = i.Actor.TraitOrDefault<IPositionable>();
-					if (pos == null || !pos.IsLeaving(a, i.SubCell))
+					if (pos == null || !pos.IsLeavingCell(a, i.SubCell))
 						return true;
 				}
 

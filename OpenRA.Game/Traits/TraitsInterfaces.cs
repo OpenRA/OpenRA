@@ -180,9 +180,10 @@ namespace OpenRA.Traits
 
 	public interface IPositionable : IOccupySpace
 	{
-		bool IsLeaving(CPos location, SubCell subCell = SubCell.AnySubCell);
+		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.AnySubCell);
 		bool CanEnterCell(CPos location, Actor ignoreActor = null, bool checkTransientActors = true);
-		SubCell GetAvailableSubcell(CPos location, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true);
+		SubCell GetValidSubCell(SubCell preferred = SubCell.AnySubCell);
+		SubCell GetAvailableSubCell(CPos location, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true);
 		void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell);
 		void SetPosition(Actor self, WPos pos);
 		void SetVisualPosition(Actor self, WPos pos);

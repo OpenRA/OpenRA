@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Activities
 			mobile.IsMoving = true;
 
 			from = self.CenterPosition;
-			to = self.World.Map.CenterOf(targetMobile.fromCell, targetMobile.fromSubCell);
+			to = self.World.Map.CenterOfSubCell(targetMobile.fromCell, targetMobile.fromSubCell);
 			length = Math.Max((to - from).Length / speed.Range, 1);
 
 			self.Trait<RenderInfantry>().Attacking(self, Target.FromActor(target));

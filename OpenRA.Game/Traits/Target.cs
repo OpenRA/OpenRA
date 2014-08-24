@@ -30,7 +30,7 @@ namespace OpenRA.Traits
 		public static Target FromPos(WPos p) { return new Target { pos = p, type = TargetType.Terrain }; }
 		public static Target FromCell(World w, CPos c, SubCell subCell = SubCell.FullCell)
 		{
-			return new Target { pos = w.Map.CenterOf(c, subCell), type = TargetType.Terrain };
+			return new Target { pos = w.Map.CenterOfSubCell(c, subCell), type = TargetType.Terrain };
 		}
 
 		public static Target FromOrder(World w, Order o)
