@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
 	public class SmudgeLayerInfo : ITraitInfo
 	{
 		public readonly string Type = "Scorch";
@@ -137,7 +138,7 @@ namespace OpenRA.Mods.RA
 					continue;
 
 				new SpriteRenderable(kv.Value.Sprite, world.Map.CenterOfCell(kv.Key),
-					WVec.Zero, -511, pal, 1f, true).Render(wr);
+					WVec.Zero, -511, pal, 1f, true).Render(wr); // TODO ZOffset is ignored
 			}
 		}
 	}
