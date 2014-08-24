@@ -149,6 +149,11 @@ namespace OpenRA.Mods.RA.Render
 					});
 				}
 			}
+			else
+			{
+				DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
+				state = AnimationState.Waiting;
+			}
 		}
 
 		// TODO: Possibly move this into a separate trait
