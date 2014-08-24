@@ -85,6 +85,13 @@ World:
 		Name: Nod
 		Race: nod
 	DomainIndex:
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
 	ResourceLayer:
 	ResourceClaimLayer:
 	FixedColorPalette@GreenTiberium:
@@ -121,13 +128,6 @@ World:
 		AllowedTerrainTypes: Clear
 		AllowUnderActors: false
 		TerrainType: BlueTiberium
-	SmudgeLayer@SCORCH:
-		Type: Scorch
-		Sequence: scorches
-		SmokePercentage: 50
-	SmudgeLayer@CRATER:
-		Type: Crater
-		Sequence: craters
 	PathfinderDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
