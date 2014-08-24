@@ -161,7 +161,7 @@ namespace OpenRA.Mods.RA.Render
 			if (info.SpawnsCorpse)
 			{
 				SpawnCorpse(self, info.DeathAnimationPrefix + (e.Warhead.DeathType));
-			}	
+			}
 		}
 
 		public void SpawnCorpse(Actor self, string sequence)
