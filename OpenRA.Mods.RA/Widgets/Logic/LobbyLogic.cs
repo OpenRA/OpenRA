@@ -35,18 +35,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		enum PanelType { Players, Options, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
 
-		Widget lobby;
+		readonly Widget lobby;
+		readonly Widget editablePlayerTemplate;
+		readonly Widget nonEditablePlayerTemplate;
+		readonly Widget emptySlotTemplate;
+		readonly Widget editableSpectatorTemplate;
+		readonly Widget nonEditableSpectatorTemplate;
+		readonly Widget newSpectatorTemplate;
 
-		Widget editablePlayerTemplate, nonEditablePlayerTemplate, emptySlotTemplate,
-			editableSpectatorTemplate, nonEditableSpectatorTemplate, newSpectatorTemplate;
+		readonly ScrollPanelWidget chatPanel;
+		readonly Widget chatTemplate;
 
-		ScrollPanelWidget chatPanel;
-		Widget chatTemplate;
+		readonly ScrollPanelWidget players;
+		readonly Dictionary<string, string> countryNames;
 
-		ScrollPanelWidget players;
-		Dictionary<string, string> countryNames;
+		readonly ColorPreviewManagerWidget colorPreview;
 
-		ColorPreviewManagerWidget colorPreview;
+		List<string> playerNames; 
 
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
@@ -498,13 +503,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				chatTextField.Text = "";
 				return true;
 			};
-
-			chatTextField.OnTabKey = () =>
+			chatTextField.OnAltKey = () =>
 			{
 				teamChat ^= true;
 				chatLabel.Text = teamChat ? "Team:" : "Chat:";
 				return true;
 			};
+			chatTextField.OnTabKey = AutoCompleteText;
 
 			chatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = chatPanel.Get("CHAT_TEMPLATE");
@@ -764,12 +769,43 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			while (players.Children.Count > idx)
 				players.RemoveChild(players.Children[idx]);
+
+			playerNames = orderManager.LobbyInfo.Clients.Select(c => c.Name).ToList();
 		}
 
 		void OnGameStart()
 		{
 			CloseWindow();
 			onStart();
+		}
+
+		bool AutoCompleteText()
+		{
+			var chatText = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
+			if (chatText == null || string.IsNullOrEmpty(chatText.Text))
+				return false;
+
+			if (chatText.Text.LastOrDefault() == ' ')
+				return false;
+
+			var suggestion = "";
+			var oneWord = !chatText.Text.Contains(' ');
+			var toComplete = oneWord
+				? chatText.Text
+				: chatText.Text.Substring(chatText.Text.LastIndexOf(' ') + 1);
+
+			suggestion = playerNames.FirstOrDefault(x => x.StartsWith(toComplete, StringComparison.InvariantCultureIgnoreCase));
+			if (suggestion == null)
+				return false;
+
+			if (oneWord)
+				suggestion += ": ";
+			else
+				suggestion = chatText.Text.Substring(0, chatText.Text.Length - toComplete.Length) + suggestion;
+			
+			chatText.Text = suggestion;
+			chatText.CursorPosition = chatText.Text.Length;
+			return true;
 		}
 
 		class DropDownOption

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -30,6 +31,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		readonly List<INotifyChat> chatTraits;
 
+		readonly List<string> commandNames;
+		readonly List<string> playerNames;
+
 		bool teamChat;
 
 		[ObjectCreator.UseCtor]
@@ -42,6 +46,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
 			var disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));
 			teamChat = !disableTeamChat;
+
+			commandNames = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).Select(x => "/" + x).ToList();
+			playerNames = orderManager.LobbyInfo.Clients.Select(c => c.Name).ToList();
 
 			var chatPanel = (ContainerWidget)widget;
 			chatOverlay = chatPanel.Get<ContainerWidget>("CHAT_OVERLAY");
@@ -57,7 +64,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			chatMode.IsDisabled = () => disableTeamChat;
 
 			chatText = chatChrome.Get<TextFieldWidget>("CHAT_TEXTFIELD");
-			chatText.OnTabKey = () =>
+			chatText.OnAltKey = () =>
 			{
 				if (!disableTeamChat)
 					teamChat ^= true;
@@ -71,18 +78,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
 					else
 						if (chatTraits != null)
-							chatTraits.All(x => x.OnChat(orderManager.LocalClient.Name, chatText.Text.Trim()));
+						{
+							var text = chatText.Text.Trim();
+							foreach (var trait in chatTraits)
+								trait.OnChat(orderManager.LocalClient.Name, text);
+						}
 
 				CloseChat();
 				return true;
 			};
+			chatText.OnTabKey = AutoCompleteText;
 
 			chatText.OnEscKey = () => { CloseChat(); return true; };
 
 			var chatClose = chatChrome.Get<ButtonWidget>("CHAT_CLOSE");
-			chatClose.OnClick += () => CloseChat();
+			chatClose.OnClick += CloseChat;
 
-			chatPanel.OnKeyPress = (e) =>
+			chatPanel.OnKeyPress = e =>
 			{
 				if (e.Event == KeyInputEvent.Up)
 					return false;
@@ -165,6 +177,44 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				chatScrollPanel.ScrollToBottom(smooth: true);
 
 			Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
+		}
+
+		bool AutoCompleteText()
+		{
+			if (string.IsNullOrEmpty(chatText.Text))
+				return false;
+
+			if (chatText.Text.LastOrDefault() == ' ')
+				return false;
+
+			var suggestion = "";
+
+			if (chatText.Text.StartsWith("/"))
+			{
+				suggestion = commandNames.FirstOrDefault(x => x.StartsWith(chatText.Text));
+				if (suggestion == null)
+					return false;
+			}
+			else
+			{
+				var oneWord = !chatText.Text.Contains(' ');
+				var toComplete = oneWord
+					? chatText.Text
+					: chatText.Text.Substring(chatText.Text.LastIndexOf(' ') + 1);
+
+				suggestion = playerNames.FirstOrDefault(x => x.StartsWith(toComplete, StringComparison.InvariantCultureIgnoreCase));
+				if (suggestion == null)
+					return false;
+
+				if (oneWord)
+					suggestion += ": ";
+				else
+					suggestion = chatText.Text.Substring(0, chatText.Text.Length - toComplete.Length) + suggestion;
+			}
+
+			chatText.Text = suggestion;
+			chatText.CursorPosition = chatText.Text.Length;
+			return true;
 		}
 	}
 }
