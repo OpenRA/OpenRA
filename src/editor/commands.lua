@@ -797,10 +797,11 @@ local function saveHotExit()
 end
 
 local function saveAutoRecovery(force)
+  if not ide.config.autorecoverinactivity then return end
+
   local lastupdated = ide.session.lastupdated
   if not force then
-    if not ide.config.autorecoverinactivity or not lastupdated then return end
-    if lastupdated < (ide.session.lastsaved or 0) then return end
+    if not lastupdated or lastupdated < (ide.session.lastsaved or 0) then return end
   end
 
   local now = os.time()
