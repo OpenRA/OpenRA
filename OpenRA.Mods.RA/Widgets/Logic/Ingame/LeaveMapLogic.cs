@@ -29,9 +29,21 @@ namespace OpenRA.Mods.RA.Widgets
 			if (showObjectives)
 				panelName = "LEAVE_RESTART_FULL";
 
+			var showStats = false;
+
 			var dialog = widget.Get<ContainerWidget>(panelName);
-			dialog.IsVisible = () => true;
+			dialog.IsVisible = () => !showStats;
 			widget.IsVisible = () => Ui.CurrentWindow() == null;
+
+			var statsButton = dialog.Get<ButtonWidget>("STATS_BUTTON");
+			statsButton.OnClick = () =>
+			{
+				showStats = true;
+				Game.LoadWidget(world, "INGAME_OBSERVERSTATS_BG", Ui.Root, new WidgetArgs()
+				{
+					{ "onExit", () => showStats = false }
+				});
+			};
 
 			var leaveButton = dialog.Get<ButtonWidget>("LEAVE_BUTTON");
 			leaveButton.OnClick = () =>
