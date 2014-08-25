@@ -53,14 +53,19 @@ return {
     -- modify CPATH to work with other Lua versions
     local clibs = ('/clibs%s/'):format(version and tostring(version):gsub('%.','') or '')
     local _, cpath = wx.wxGetEnv("LUA_CPATH")
+    if rundebug and cpath then
+      wx.wxSetEnv("LUA_CPATH", ide.osclibs..';'..cpath)
+    end
     if version and cpath and not cpath:find(clibs, 1, true) then
-      wx.wxSetEnv("LUA_CPATH", cpath:gsub('/clibs/', clibs)) end
+      local _, cpath = wx.wxGetEnv("LUA_CPATH")
+      wx.wxSetEnv("LUA_CPATH", cpath:gsub('/clibs/', clibs))
+    end
 
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     local pid = CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() if rundebug then wx.wxRemoveFile(filepath) end end)
 
-    if version and cpath then wx.wxSetEnv("LUA_CPATH", cpath) end
+    if (rundebug or version) and cpath then wx.wxSetEnv("LUA_CPATH", cpath) end
     return pid
   end,
   fprojdir = function(self,wfilename)
