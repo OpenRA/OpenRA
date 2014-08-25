@@ -68,7 +68,7 @@ Container@SKIRMISH_STATS:
 			X: 15
 			Y: 105
 			Width: 482
-			Height: 250
+			Height: 255
 			ItemSpacing: 5
 			Children:
 				Container@PLAYER_TEMPLATE:

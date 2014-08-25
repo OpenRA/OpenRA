@@ -38,16 +38,15 @@ Container@LEAVE_RESTART_WIDGET:
 							Height: 65
 							Text: Press 'Leave' to return to the main menu.
 							Align: Center
-						Button@RESTART_BUTTON:
+						Button@STATS_BUTTON:
 							X: 20
 							Y: PARENT_BOTTOM - 45
 							Width: 140
 							Height: 25
 							Font: Bold
-							Text: Restart
-							Visible: false
+							Text: Statistics
 						Button@LEAVE_BUTTON:
-							X: (PARENT_RIGHT - WIDTH) / 2
+							X: PARENT_RIGHT - WIDTH - 20
 							Y: PARENT_BOTTOM - 45
 							Width: 140
 							Height: 25
@@ -72,14 +71,13 @@ Container@LEAVE_RESTART_WIDGET:
 							Font: Bold
 							Align: Center
 							Text: The game has ended
-						Button@RESTART_BUTTON:
+						Button@STATS_BUTTON:
 							X: PARENT_RIGHT - 2 * (WIDTH + 20)
 							Y: PARENT_BOTTOM - 45
 							Width: 120
 							Height: 25
 							Font: Bold
-							Text: Restart
-							Visible: false
+							Text: Statistics
 						Button@LEAVE_BUTTON:
 							X: PARENT_RIGHT - WIDTH - 20
 							Y: PARENT_BOTTOM - 45
