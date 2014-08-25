@@ -9,17 +9,15 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.RA.Widgets
 {
 	class LeaveMapLogic
 	{
 		[ObjectCreator.UseCtor]
-		public LeaveMapLogic(Widget widget, OrderManager orderManager, World world)
+		public LeaveMapLogic(Widget widget, World world)
 		{
 			widget.Get<LabelWidget>("VERSION_LABEL").Text = Game.modData.Manifest.Mod.Version;
 
