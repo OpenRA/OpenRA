@@ -306,6 +306,9 @@ Rules:
 		-ExplodeCrateAction@fire:
 		-SupportPowerCrateAction@parabombs:
 		-GiveCashCrateAction:
+		-DuplicateUnitCrateAction:
+		-GiveUnitCrateAction@squadlight:
+		-GiveUnitCrateAction@squadheavysoviet:
 		GiveUnitCrateAction@ttnk:
 			SelectionShares: 4
 			Units: ttnk
