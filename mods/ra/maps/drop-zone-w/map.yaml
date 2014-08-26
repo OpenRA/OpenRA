@@ -243,13 +243,8 @@ Rules:
 		Crate:
 			TerrainTypes: Water
 	LST:
-		Buildable:
-			Queue: Ship
-			BuildPaletteOrder: 30
-			Owner: allies
 		Tooltip:
 			Name: Naval Mobile HQ
-			Description: Naval mobile HQ.\n Protect it at all costs.
 		Health:
 			HP: 1000
 		Mobile:
@@ -268,24 +263,14 @@ Rules:
 		MustBeDestroyed:
 		-GivesBounty:
 	PT:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	DD:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	CA:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	SS:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	MSUB:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 
 Sequences:
