@@ -229,19 +229,19 @@ Rules:
 		-GiveCashCrateAction:
 		GiveUnitCrateAction@pt:
 			SelectionShares: 7
-			Unit: pt
+			Units: pt
 		GiveUnitCrateAction@dd:
 			SelectionShares: 6
-			Unit: dd
+			Units: dd
 		GiveUnitCrateAction@ca:
 			SelectionShares: 4
-			Unit: ca
+			Units: ca
 		GiveUnitCrateAction@ss:
 			SelectionShares: 6
-			Unit: ss
+			Units: ss
 		GiveUnitCrateAction@msub:
 			SelectionShares: 4
-			Unit: msub
+			Units: msub
 	LST:
 		Buildable:
 			Queue: Ship
