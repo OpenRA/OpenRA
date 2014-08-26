@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -37,6 +38,9 @@ namespace OpenRA.Mods.RA
 		[Desc("Actor types that this crate action will not occur for.")]
 		[ActorReference] public string[] ExcludedActorTypes = { };
 
+		[Desc("Must the collector be mobile?")]
+		public bool CollectorMustBeMobile = true;
+
 		public virtual object Create(ActorInitializer init) { return new CrateAction(init.self, this); }
 	}
 
@@ -58,6 +62,9 @@ namespace OpenRA.Mods.RA
 
 			if (info.ExcludedActorTypes.Contains(collector.Info.Name))
 				return 0;
+
+			if (info.CollectorMustBeMobile && !collector.HasTrait<Mobile>())
+					return 0;
 
 			if (info.Prerequisites.Any() && !collector.Owner.PlayerActor.Trait<TechTree>().HasPrerequisites(info.Prerequisites))
 				return 0;

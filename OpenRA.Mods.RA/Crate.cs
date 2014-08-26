@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -79,7 +80,11 @@ namespace OpenRA.Mods.RA
 				.FirstOrDefault(a => a != self);
 
 			if (landedOn != null)
-				OnCrush(landedOn);
+				if (landedOn.HasTrait<MobileInfo>() &&
+					CrushableBy(landedOn.TraitOrDefault<MobileInfo>().Crushes, landedOn.Owner))
+						OnCrush(landedOn);
+				else
+					self.Destroy();
 		}
 
 		public void Tick(Actor self)

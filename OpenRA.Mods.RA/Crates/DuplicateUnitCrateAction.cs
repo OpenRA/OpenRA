@@ -71,18 +71,18 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override void Activate(Actor collector)
 		{
-			int AllowedWorthLeft = Info.MaxDuplicatesWorth;
-			int DupesMade = 0;
+			var allowedWorthLeft = Info.MaxDuplicatesWorth;
+			var dupesMade = 0;
 
-			while ((DupesMade < Info.MaxAmount) && (AllowedWorthLeft > 0) || (DupesMade < Info.MinAmount))
+			while ((dupesMade < Info.MaxAmount && allowedWorthLeft > 0) || dupesMade < Info.MinAmount)
 			{
 				//If the collector has a cost, and we have a max duplicate worth, then update how much dupe worth is left
 				var unitCost = collector.Info.Traits.Get<ValuedInfo>().Cost;
-				AllowedWorthLeft -= (Info.MaxDuplicatesWorth > 0) ? unitCost : 0;
-				if ((AllowedWorthLeft < 0) && (DupesMade >= Info.MinAmount))
+				allowedWorthLeft -= Info.MaxDuplicatesWorth > 0 ? unitCost : 0;
+				if (allowedWorthLeft < 0 && dupesMade >= Info.MinAmount)
 					break;
 
-				DupesMade++;
+				dupesMade++;
 
 				var location = ChooseEmptyCellNear(collector, collector.Info.Name);
 				if (location != null)
