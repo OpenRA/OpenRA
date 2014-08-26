@@ -214,12 +214,7 @@ Rules:
 		-LevelUpCrateAction:
 		-GiveMcvCrateAction:
 		-GiveUnitCrateAction@jeep:
-		-GiveUnitCrateAction@arty:
-		-GiveUnitCrateAction@v2rl:
 		-GiveUnitCrateAction@1tnk:
-		-GiveUnitCrateAction@2tnk:
-		-GiveUnitCrateAction@3tnk:
-		-GiveUnitCrateAction@4tnk:
 		-RevealMapCrateAction:
 		-HideMapCrateAction:
 		-ExplodeCrateAction@nuke:
@@ -227,6 +222,9 @@ Rules:
 		-ExplodeCrateAction@fire:
 		-SupportPowerCrateAction@parabombs:
 		-GiveCashCrateAction:
+		-DuplicateUnitCrateAction:
+		-GiveUnitCrateAction@squadlight:
+		-GiveUnitCrateAction@squadheavyallies:
 		GiveUnitCrateAction@pt:
 			SelectionShares: 7
 			Units: pt
