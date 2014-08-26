@@ -240,6 +240,8 @@ Rules:
 		GiveUnitCrateAction@msub:
 			SelectionShares: 4
 			Units: msub
+		Crate:
+			TerrainTypes: Water
 	LST:
 		Buildable:
 			Queue: Ship
