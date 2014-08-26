@@ -16,13 +16,20 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
 	public class SmudgeLayerInfo : ITraitInfo
 	{
 		public readonly string Type = "Scorch";
+
+		[Desc("Sprite sequence name")]
 		public readonly string Sequence = "scorch";
 
 		public readonly int SmokePercentage = 25;
+
+		[Desc("Sprite sequence name")]
 		public readonly string SmokeType = "smoke_m";
+
+		public readonly string Palette = "terrain";
 
 		public object Create(ActorInitializer init) { return new SmudgeLayer(this); }
 	}
@@ -120,7 +127,7 @@ namespace OpenRA.Mods.RA
 
 		public void Render(WorldRenderer wr)
 		{
-			var pal = wr.Palette("terrain");
+			var pal = wr.Palette(Info.Palette);
 
 			foreach (var kv in tiles)
 			{
@@ -131,7 +138,7 @@ namespace OpenRA.Mods.RA
 					continue;
 
 				new SpriteRenderable(kv.Value.Sprite, world.Map.CenterOfCell(kv.Key),
-					WVec.Zero, -511, pal, 1f, true).Render(wr);
+					WVec.Zero, -511, pal, 1f, true).Render(wr); // TODO ZOffset is ignored
 			}
 		}
 	}
