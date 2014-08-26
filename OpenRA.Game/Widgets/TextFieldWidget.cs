@@ -22,7 +22,7 @@ namespace OpenRA.Widgets
 			set { text = value ?? ""; CursorPosition = CursorPosition.Clamp(0, text.Length); }
 		}
 
-		public int MaxLength = 0;
+		public int MaxLength = 512; // Imago 8/25 - A sane limit (Paste)
 		public int VisualHeight = 1;
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
@@ -31,6 +31,7 @@ namespace OpenRA.Widgets
 		public Func<bool> OnTabKey = () => false;
 		public Func<bool> OnEscKey = () => false;
 		public Func<bool> OnAltKey = () => false;
+        public Func<bool> OnShiftKey = () => false;
 		public Action OnLoseFocus = () => { };
 		public Action OnTextEdited = () => { };
 		public int CursorPosition { get; set; }
@@ -41,6 +42,7 @@ namespace OpenRA.Widgets
 		public Color TextColor = ChromeMetrics.Get<Color>("TextfieldColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("TextfieldColorDisabled");
 		public Color TextColorInvalid = ChromeMetrics.Get<Color>("TextfieldColorInvalid");
+        public Color TextColorSelected = ChromeMetrics.Get<Color>("TextfieldColorSelected");
 
 		public TextFieldWidget() {}
 		protected TextFieldWidget(TextFieldWidget widget)
@@ -52,6 +54,7 @@ namespace OpenRA.Widgets
 			TextColor = widget.TextColor;
 			TextColorDisabled = widget.TextColorDisabled;
 			TextColorInvalid = widget.TextColorInvalid;
+            TextColorSelected = widget.TextColorSelected;
 			VisualHeight = widget.VisualHeight;
 		}
 
@@ -182,7 +185,7 @@ namespace OpenRA.Widgets
 				return true;
 
 			Text = Text.Insert(CursorPosition, text);
-			CursorPosition++;
+			CursorPosition += text.Length; // Imago 8/25 - Don't assume only one charecter (Paste)
 			OnTextEdited();
 
 			return true;
