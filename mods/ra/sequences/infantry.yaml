@@ -64,6 +64,7 @@ e1:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	garrison-muzzle: minigun
 		Start: 0
 		Length: 6
@@ -136,6 +137,7 @@ sniper:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	garrison-muzzle: minigun
 		Start: 0
 		Length: 3
@@ -190,6 +192,7 @@ e3:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	prone-stand:
 		Start: 144
 		Length: 4
@@ -248,6 +251,7 @@ e6:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	prone-stand:
 		Start: 82
 		Length: 4
@@ -310,6 +314,7 @@ medi:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	prone-stand:
 		Start: 130
 		Length: 4
@@ -372,6 +377,7 @@ mech:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	prone-stand:
 		Start: 130
 		Length: 4
@@ -430,6 +436,7 @@ e2:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	prone-stand:
 		Start: 240
 		Length: 4
@@ -488,6 +495,7 @@ dog:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	shoot: dogbullt
 		Start: 0
 		Length: 4
@@ -541,6 +549,7 @@ spy:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	prone-stand:
 		Start: 144
 		Length: 4
@@ -591,6 +600,7 @@ thf:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	crawl:
 		Start: 72
 		Length: 4
@@ -632,6 +642,7 @@ hijacker:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	crawl: thf
 		Start: 72
 		Length: 4
@@ -685,6 +696,7 @@ e7:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	prone-stand:
 		Start: 128
 		Length: 4
@@ -752,6 +764,7 @@ e4:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	prone-stand:
 		Start: 208
 		Length: 4
@@ -826,6 +839,7 @@ gnrl:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 
 shok:
 	stand:
@@ -893,6 +907,7 @@ shok:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	icon: shokicon
 		Start: 0
 
@@ -937,6 +952,7 @@ c1:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	run:
 		Start: 56
 		Length: 6
@@ -984,6 +1000,7 @@ c2:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	run:
 		Start: 56
 		Length: 6
@@ -1031,6 +1048,7 @@ c3:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	run:
 		Start: 56
 		Length: 6
@@ -1079,6 +1097,7 @@ einstein:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 
 delphi:
 	stand:
@@ -1122,6 +1141,7 @@ delphi:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 
 chan:
 	stand:
@@ -1165,6 +1185,7 @@ chan:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 
 zombie:
 	stand:
@@ -1207,6 +1228,7 @@ zombie:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		ZOffset: -511
 	icon: zombicon
 		Start: 0
 
@@ -1252,6 +1274,7 @@ ant:
 	die-crushed:
 		Start: 104
 		Length: 8
-		Tick: 300
+		Tick: 400
+		ZOffset: -511
 	icon: anticon
 		Start: 0

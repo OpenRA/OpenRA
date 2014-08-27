@@ -130,7 +130,7 @@
 	ProximityCaptor:
 		Types: Infantry
 	GivesBounty:
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squish6.aud
 	PoisonedByTiberium:
 	SpawnViceroid:

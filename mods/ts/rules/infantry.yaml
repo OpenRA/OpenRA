@@ -93,7 +93,7 @@ WEEDGUY:
 		Speed: 42
 	Health:
 		HP: 130
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squishy2.aud
 	Armament:
 		Weapon: FireballLauncher
@@ -120,7 +120,7 @@ MEDIC:
 		Speed: 56
 	Health:
 		HP: 125
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squishy2.aud
 	Armament:
 		Weapon: Heal
@@ -220,7 +220,7 @@ GHOST:
 	Armament:
 		Weapon: LtRail
 		LocalOffset: 85,0,384
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squishy2.aud
 	AttackFrontal:
 	C4Demolition:
@@ -254,7 +254,7 @@ JUMPJET:
 		Range: 6c0
 	Armament:
 		Weapon: JumpCannon
-	-CrushableInfantry:
+	-Crushable:
 	AttackFrontal:
 	TakeCover:
 	RenderInfantry:
@@ -302,7 +302,7 @@ CYBORG:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: nod
-	-CrushableInfantry:
+	-Crushable:
 	Selectable:
 		Bounds: 14,30,0,-7
 		Voice: Cyborg
@@ -335,7 +335,7 @@ CYC2:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: nod
-	-CrushableInfantry:
+	-Crushable:
 	Selectable:
 		Bounds: 14,30,0,-7
 		Voice: CyborgCommando
@@ -595,7 +595,7 @@ VISSML:
 	Mobile:
 		Speed: 113
 		ROT: 16
-	-CrushableInfantry:
+	-Crushable:
 	Selectable:
 		Voice: Fiend
 	TargetableUnit:
@@ -625,7 +625,7 @@ VISLRG:
 	Mobile:
 		Speed: 113
 		ROT: 16
-	-CrushableInfantry:
+	-Crushable:
 	Selectable:
 		Voice: Fiend
 	TargetableUnit:
