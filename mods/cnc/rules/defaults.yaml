@@ -153,6 +153,7 @@
 	TakeCover:
 		SpeedModifier: 60
 	RenderInfantry:
+	WithDeathAnimation:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
@@ -197,7 +198,6 @@
 	Inherits: ^Infantry
 	-AutoTarget:
 	-TakeCover:
-	RenderInfantry:
 	AppearsOnRadar:
 	SelectionDecorations:
 	Selectable:
@@ -257,6 +257,7 @@
 	GivesExperience:
 	RenderInfantry:
 		Palette: terrain
+	WithDeathAnimation:
 	EditorAppearance:
 		UseTerrainPalette: true
 	BodyOrientation:
