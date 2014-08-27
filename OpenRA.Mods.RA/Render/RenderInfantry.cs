@@ -21,10 +21,8 @@ namespace OpenRA.Mods.RA.Render
 	{
 		public readonly int MinIdleWaitTicks = 30;
 		public readonly int MaxIdleWaitTicks = 110;
-		public readonly bool SpawnsCorpse = true;
 		public readonly string MoveAnimation = "run";
 		public readonly string AttackAnimation = "shoot";
-		public readonly string DeathAnimationPrefix = "die";
 		public readonly string[] IdleAnimations = { };
 		public readonly string[] StandAnimations = { "stand" };
 
@@ -48,7 +46,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyKilled, INotifyIdle
+	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyIdle
 	{
 		readonly RenderInfantryInfo info;
 		readonly IMove move;
@@ -149,29 +147,6 @@ namespace OpenRA.Mods.RA.Render
 					});
 				}
 			}
-		}
-
-		// TODO: Possibly move this into a separate trait
-		public void Killed(Actor self, AttackInfo e)
-		{
-			// Killed by some non-standard means
-			if (e.Warhead == null)
-				return;
-
-			if (info.SpawnsCorpse)
-			{
-				SpawnCorpse(self, info.DeathAnimationPrefix + (e.Warhead.DeathType));
-			}
-		}
-
-		public void SpawnCorpse(Actor self, string sequence)
-		{
-			self.World.AddFrameEndTask(w =>
-			{
-				if (!self.Destroyed)
-					w.Add(new Corpse(w, self.CenterPosition, GetImage(self),
-						sequence, info.PlayerPalette + self.Owner.InternalName));
-			});
 		}
 
 		enum AnimationState
