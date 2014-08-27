@@ -172,6 +172,7 @@
 		TargetTypes: Ground
 	RenderInfantry:
 	TakeCover:
+	WithDeathAnimation:
 	AutoTarget:
 	AttackMove:
 	Passenger:

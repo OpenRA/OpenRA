@@ -108,6 +108,7 @@
 	TargetableUnit:
 		TargetTypes: Ground
 	RenderInfantry:
+	WithDeathAnimation:
 	AutoTarget:
 	AttackMove:
 	Passenger:
