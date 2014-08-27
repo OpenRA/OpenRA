@@ -165,7 +165,7 @@
 	ActorLostNotification:
 	SpawnViceroid:
 		Probability: 10
-	CrushableInfantry:
+	Crushable:
 		WarnProbability: 67
 		CrushSound: squish2.aud
 	CombatDebugOverlay:
@@ -220,7 +220,7 @@
 		Notification: CivilianKilled
 		NotifyAll: true
 	ScaredyCat:
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squish2.aud
 
 ^DINO:

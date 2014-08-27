@@ -154,7 +154,7 @@
 	GivesBounty:
 	GpsDot:
 		String: Infantry
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squishy2.aud
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:

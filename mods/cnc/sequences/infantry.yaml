@@ -171,6 +171,7 @@ e1:
 		Start: 16
 		Length: 4
 		Tick: 1600
+		ZOffset: -511
 	icon: e1icnh
 		Start: 0
 
@@ -260,6 +261,7 @@ e2:
 		Start: 16
 		Length: 4
 		Tick: 1600
+		ZOffset: -511
 	icon: e2icnh
 		Start: 0
 
@@ -349,6 +351,7 @@ e3:
 		Start: 16
 		Length: 4
 		Tick: 1600
+		ZOffset: -511
 	icon: e3icnh
 		Start: 0
 
@@ -438,6 +441,7 @@ e4:
 		Start: 16
 		Length: 4
 		Tick: 1600
+		ZOffset: -511
 	muzzle0: flame-n
 		Start: 0
 		Length: *
@@ -559,6 +563,7 @@ e5:
 		Start: 16
 		Length: 4
 		Tick: 1600
+		ZOffset: -511
 	muzzle0: chem-n
 		Start: 0
 		Length: *
@@ -672,6 +677,7 @@ e6:
 		Start: 16
 		Length: 4
 		Tick: 1600
+		ZOffset: -511
 	icon: e6icnh
 		Start: 0
 
@@ -765,5 +771,6 @@ rmbo:
 		Start: 16
 		Length: 4
 		Tick: 1600
+		ZOffset: -511
 	icon: rmboicnh
 		Start: 0
