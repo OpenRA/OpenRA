@@ -27,19 +27,17 @@ namespace OpenRA.Mods.RA.Render
 
 	public class WithRepairAnimation : INotifyRepair
 	{
-		IEnumerable<IDisable> disabled;
 		WithRepairAnimationInfo info;
 
 		public WithRepairAnimation(Actor self, WithRepairAnimationInfo info)
 		{
-			disabled = self.TraitsImplementing<IDisable>();
 			this.info = info;
 		}
 
 		public void Repairing(Actor self, Actor host)
 		{
 			var building = host.TraitOrDefault<RenderBuilding>();
-			if (building != null && !(info.PauseOnLowPower && disabled.Any(d => d.Disabled)))
+			if (building != null && !(info.PauseOnLowPower && self.IsDisabled()))
 				building.PlayCustomAnim(host, info.Sequence);
 		}
 	}

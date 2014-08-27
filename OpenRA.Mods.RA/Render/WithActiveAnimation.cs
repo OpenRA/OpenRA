@@ -30,13 +30,11 @@ namespace OpenRA.Mods.RA.Render
 
 	public class WithActiveAnimation : ITick, INotifyBuildComplete, INotifySold
 	{
-		readonly IEnumerable<IDisable> disabled;
 		readonly WithActiveAnimationInfo info;
 		readonly RenderBuilding renderBuilding;
 
 		public WithActiveAnimation(Actor self, WithActiveAnimationInfo info)
 		{
-			disabled = self.TraitsImplementing<IDisable>();
 			renderBuilding = self.Trait<RenderBuilding>();
 			this.info = info;
 		}
@@ -49,7 +47,7 @@ namespace OpenRA.Mods.RA.Render
 
 			if (--ticks <= 0)
 			{
-				if (!(info.PauseOnLowPower && disabled.Any(d => d.Disabled)))
+				if (!(info.PauseOnLowPower && self.IsDisabled()))
 					renderBuilding.PlayCustomAnim(self, info.Sequence);
 				ticks = info.Interval;
 			}
