@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Activities
 
 				return Util.SequenceActivities(
 					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
-					movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget),
+					movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), SubCell.Any, rearmTarget),
 					new Rearm(self),
 					new Repair(rearmTarget),
 					this);
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Activities
 				{
 					var p = ml.Minefield.Random(self.World.SharedRandom);
 					if (ShouldLayMine(self, p))
-						return Util.SequenceActivities( movement.MoveTo(p, 0), this );
+						return Util.SequenceActivities(movement.MoveTo(p, SubCell.Any, WRange.Zero), this);
 				}
 
 			// TODO: return somewhere likely to be safe (near fix) so we're not sitting out in the minefield.

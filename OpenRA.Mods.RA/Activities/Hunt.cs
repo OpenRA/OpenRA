@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.RA.Activities
 				return this;
 
 			return Util.SequenceActivities(
-				new AttackMove.AttackMoveActivity(self, new Move.Move(target.Location, WRange.FromCells(2))),
+				new AttackMove.AttackMoveActivity(self, new Move.Move(self, target.Location, SubCell.Any, WRange.Zero, WRange.FromCells(2))),
 				new Wait(25),
 				this);
 		}

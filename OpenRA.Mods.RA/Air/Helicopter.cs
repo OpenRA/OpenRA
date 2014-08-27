@@ -141,8 +141,8 @@ namespace OpenRA.Mods.RA.Air
 			Repulse();
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough) { return new HeliFly(self, Target.FromCell(self.World, cell)); }
-		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new HeliFly(self, Target.FromCell(self.World, cell)); }
+		public Activity MoveTo(CPos cell, SubCell subCell, WRange nearEnough, WRange awayEnough) { return new HeliFly(self, Target.FromCell(self.World, cell)); }
+		public Activity MoveTo(CPos cell, SubCell subCell, Actor ignoredActor) { return new HeliFly(self, Target.FromCell(self.World, cell)); }
 		public Activity MoveWithinRange(Target target, WRange range) { return new HeliFly(self, target, WRange.Zero, range); }
 		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return new HeliFly(self, target, minRange, maxRange); }
 		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new Follow(self, target, minRange, maxRange); }

@@ -200,15 +200,32 @@ namespace OpenRA.Traits
 	public interface IMoveInfo : ITraitInfo { }
 	public interface IMove
 	{
-		Activity MoveTo(CPos cell, int nearEnough);
-		Activity MoveTo(CPos cell, Actor ignoredActor);
-		Activity MoveWithinRange(Target target, WRange range);
+		Activity MoveTo(CPos cell, SubCell subCell, WRange awayEnough, WRange nearEnough);
+		Activity MoveTo(CPos cell, SubCell subCell, Actor ignoredActor);
 		Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange);
 		Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange);
 		Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any);
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
 		bool IsMoving { get; set; }
+	}
+
+	public static class IMoveExts
+	{
+		public static Activity MoveTo(this IMove move, CPos cell, SubCell subCell = SubCell.Any, WRange nearEnough = default(WRange))
+		{
+			return move.MoveTo(cell, subCell, nearEnough, nearEnough);
+		}
+
+		public static Activity MoveTo(this IMove move, CPos cell, WRange nearEnough)
+		{
+			return move.MoveTo(cell, SubCell.Any, WRange.Zero, nearEnough);
+		}
+
+		public static Activity MoveWithinRange(this IMove move, Target target, WRange range)
+		{
+			return move.MoveWithinRange(target, range / 2, range);
+		}
 	}
 
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }

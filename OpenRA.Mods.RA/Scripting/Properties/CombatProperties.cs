@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -31,9 +32,9 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Move to a cell, but stop and attack anything within range on the way. " +
 			"closeEnough defines an optional range (in cells) that will be considered " +
 			"close enough to complete the activity.")]
-		public void AttackMove(CPos cell, int closeEnough = 0)
+		public void AttackMove(CPos cell, double closeEnough = 0.0)
 		{
-			self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Move.Move(cell, WRange.FromCells(closeEnough))));
+			self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Move.Move(self, cell, SubCell.Any, WRange.Zero, new WRange(closeEnough))));
 		}
 	}
 }

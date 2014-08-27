@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Move
 		TransientActors,
 		BlockedByMovers,
 		All = TransientActors | BlockedByMovers
-	};
+	}
 
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, IMoveInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.RA.Move
 			{
 				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
 				var needsCellExclusively = self == null || Crushes == null || !Crushes.Any();
-				foreach(var a in world.ActorMap.GetUnitsAt(cell))
+				foreach (var a in world.ActorMap.GetUnitsAt(cell))
 				{
 					if (a == ignoreActor)
 						continue;
@@ -234,7 +234,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 
 			if (!SharesCell)
-				return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell)? SubCell.Invalid : SubCell.FullCell;
+				return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell) ? SubCell.Invalid : SubCell.FullCell;
 
 			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
 		}
@@ -328,6 +328,7 @@ namespace OpenRA.Mods.RA.Move
 				if (preferred != SubCell.FullCell)
 					return SubCell.FullCell;
 			}
+
 			return preferred;
 		}
 
@@ -381,8 +382,10 @@ namespace OpenRA.Mods.RA.Move
 				if (Info.OnRails)
 					return null;
 
-				return new Order("Move", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+				var targetCell = self.World.Map.CellContaining(target.CenterPosition);
+				return new Order("Move", self, queued) { TargetLocation = targetCell };
 			}
+
 			return null;
 		}
 
@@ -432,7 +435,7 @@ namespace OpenRA.Mods.RA.Move
 
 			ticksBeforePathing = avgTicksBeforePathing + self.World.SharedRandom.Next(-spreadTicksBeforePathing, spreadTicksBeforePathing);
 
-			self.QueueActivity(new Move(currentLocation, 8));
+			self.QueueActivity(new Move(self, currentLocation, SubCell.Any, WRange.Zero, WRange.FromCells(Info.SharesCell ? 3 : 5)));
 
 			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
 		}
@@ -499,7 +502,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return Info.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, checkTransientActors? CellConditions.All : CellConditions.None);
+			return Info.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.None);
 		}
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
@@ -585,7 +588,7 @@ namespace OpenRA.Mods.RA.Move
 			{
 				self.CancelActivity();
 				self.SetTargetLine(Target.FromCell(self.World, moveTo.Value), Color.Green, false);
-				self.QueueActivity(new Move(moveTo.Value, 0));
+				self.QueueActivity(new Move(self, moveTo.Value, SubCell.Any, WRange.Zero));
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
 					self.ActorID, self.Location, moveTo.Value);
@@ -631,13 +634,13 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public Activity ScriptedMove(CPos cell) { return new Move(cell); }
-		public Activity MoveTo(CPos cell, int nearEnough) { return new Move(cell, nearEnough); }
-		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Move(cell, ignoredActor); }
+		public Activity ScriptedMove(CPos cell, SubCell subCell = SubCell.Any) { return new Move(self, cell, subCell); }
+		public Activity MoveTo(CPos cell, SubCell subCell, WRange awayEnough, WRange nearEnough) { return new Move(self, cell, subCell, awayEnough, nearEnough); }
+		public Activity MoveTo(CPos cell, SubCell subCell, Actor ignoredActor) { return new Move(self, cell, subCell, ignoredActor); }
 		public Activity MoveWithinRange(Target target, WRange range) { return new MoveWithinRange(self, target, WRange.Zero, range); }
 		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return new MoveWithinRange(self, target, minRange, maxRange); }
 		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new Follow(self, target, minRange, maxRange); }
-		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(pathFunc); }
+		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(self, pathFunc); }
 
 		public void OnNotifyBlockingMove(Actor self, Actor blocking)
 		{

@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Air
 			var destination = rp != null ? rp.Location :
 				(hasHost ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
 
-			return new AttackMove.AttackMoveActivity(self, self.Trait<IMove>().MoveTo(destination, 1));
+			return new AttackMove.AttackMoveActivity(self, self.Trait<IMove>().MoveTo(destination, SubCell.Any, WRange.OneCell));
 		}
 	}
 }

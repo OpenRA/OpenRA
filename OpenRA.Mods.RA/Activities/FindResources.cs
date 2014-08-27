@@ -115,7 +115,7 @@ namespace OpenRA.Mods.RA.Activities
 				harv.LastOrderLocation = path[0];
 
 			self.SetTargetLine(Target.FromCell(self.World, path[0]), Color.Red, false);
-			return Util.SequenceActivities(mobile.MoveTo(path[0], 1), new HarvestResource(), new FindResources());
+			return Util.SequenceActivities(mobile.MoveTo(path[0], SubCell.Any, WRange.Zero, WRange.OneCell), new HarvestResource(), new FindResources());
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
