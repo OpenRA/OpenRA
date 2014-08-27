@@ -65,12 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="UpgradeRules.cs" />
-    <Compile Include="LegacyMapImporter.cs" />
-    <Compile Include="Glob.cs" />
-    <Compile Include="ExtractLanguageStrings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
