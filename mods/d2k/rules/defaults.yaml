@@ -22,6 +22,7 @@
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
@@ -65,6 +66,7 @@
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
@@ -179,6 +181,7 @@
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
@@ -214,6 +217,7 @@
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
@@ -258,6 +262,7 @@
 		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer
 	MustBeDestroyed:
 	GivesExperience:
+		GivesPlayerExperience: true
 	FrozenUnderFog:
 	CaptureNotification:
 	ActorLostNotification:

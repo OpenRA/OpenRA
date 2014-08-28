@@ -21,7 +21,7 @@ Container@MAP_PANEL:
 		ScrollPanel@MAP_DESCRIPTION_PANEL:
 			X: 20
 			Y: 195
-			Width: 482
+			Width: 552
 			Height: 175
 			Children:
 				Label@MAP_DESCRIPTION:

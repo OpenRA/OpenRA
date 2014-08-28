@@ -21,6 +21,9 @@ namespace OpenRA.Mods.RA
 		[Desc("Grant experience for team-kills.")]
 		public readonly bool FriendlyFire = false;
 
+		[Desc("Grant player experience for kills.")]
+		public readonly bool GivesPlayerExperience = false;
+
 		public object Create(ActorInitializer init) { return new GivesExperience(init.self, this); }
 	}
 
@@ -49,6 +52,9 @@ namespace OpenRA.Mods.RA
 			var killer = e.Attacker.TraitOrDefault<GainsExperience>();
 			if (killer != null)
 				killer.GiveExperience(exp);
+
+			if(info.GivesPlayerExperience)			
+				e.Attacker.Owner.PlayerActor.Trait<PlayerExperience>().GiveExperience(exp/100);
 		}
 	}
 }

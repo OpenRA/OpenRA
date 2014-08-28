@@ -73,6 +73,7 @@ namespace OpenRA.Mods.RA
 			if (info.RequiresPrerequisites.Any() && enabled)
 				enabled = owner.PlayerActor.Trait<TechTree>().HasPrerequisites(info.RequiresPrerequisites);
 		}
+
 	}
 
 	// Allows maps / transformations to specify the race variant of an actor.

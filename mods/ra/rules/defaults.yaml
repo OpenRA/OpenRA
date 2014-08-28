@@ -83,6 +83,7 @@
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
@@ -146,6 +147,7 @@
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
@@ -201,6 +203,7 @@
 	AttackMove:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: NavalUnitLost
@@ -235,6 +238,7 @@
 	Guardable:
 	GainsExperience:
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: AirUnitLost
@@ -289,6 +293,7 @@
 		ActorTypes: e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e6,e6,e6,e6,e6
 	MustBeDestroyed:
 	GivesExperience:
+		GivesPlayerExperience: true
 	CaptureNotification:
 	EditorAppearance:
 		RelativeToTopLeft: true
@@ -339,6 +344,7 @@
 	RenderBuildingWall:
 		Palette: terrain
 	GivesExperience:
+		GivesPlayerExperience: true
 	EditorAppearance:
 		RelativeToTopLeft: true
 		UseTerrainPalette: true

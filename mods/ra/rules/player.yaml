@@ -48,6 +48,14 @@ Player:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
+	PlayerExperience:
+		Experience:
+			0: sciencerank1, sciencepoint
+			800: sciencerank2, sciencepoint
+			1500: sciencerank3, sciencepoint
+			2500: sciencerank4, sciencepoint
+			3500: sciencerank5, sciencepoint
+			5000: sciencerank6, sciencepoint
 	ActorGroupProxy:
 	DeveloperMode:
 	PlayerColorPalette:
@@ -60,6 +68,8 @@ Player:
 	BaseAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:
+	ProvidesSciencePrerequisite:
+		Sciences: sciencerank0
 	ProvidesTechPrerequisite@infonly:
 		Name: Infantry Only
 		Prerequisites: techlevel.infonly

@@ -90,6 +90,15 @@ namespace OpenRA.Mods.RA
 				}
 			}
 
+			// Add all sciences to the player actor
+			if(player.PlayerActor != null && player.PlayerActor.HasTrait<ProvidesSciencePrerequisite>())
+			{
+				var sciences = player.PlayerActor.Trait<ProvidesSciencePrerequisite>();
+
+				foreach (var p in sciences.Sciences)
+					ret[p].Add(player.PlayerActor);
+			}
+
 			// Add buildables that have a build limit set and are not already in the list
 			player.World.ActorsWithTrait<Buildable>()
 				  .Where(a =>

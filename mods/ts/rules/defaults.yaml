@@ -22,6 +22,7 @@
 	EngineerRepairable:
 	MustBeDestroyed:
 	GivesExperience:
+		GivesPlayerExperience: true
 	CaptureNotification:
 	EditorAppearance:
 		RelativeToTopLeft: yes
@@ -68,6 +69,7 @@
 	RenderBuildingWall:
 		Type: wall
 	GivesExperience:
+		GivesPlayerExperience: true
 	EditorAppearance:
 		RelativeToTopLeft: yes
 		UseTerrainPalette: yes
@@ -122,6 +124,7 @@
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
@@ -211,6 +214,7 @@
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
@@ -264,6 +268,7 @@
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	ProximityCaptor:
@@ -311,6 +316,7 @@
 		SpeedModifier: 120, 150
 		ReloadModifier: 90, 75
 	GivesExperience:
+		GivesPlayerExperience: true
 	DrawLineToTarget:
 	ActorLostNotification:
 	CombatDebugOverlay:
