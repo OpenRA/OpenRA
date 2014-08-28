@@ -14,7 +14,6 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Support;
-using SDL2;
 
 namespace OpenRA.Widgets
 {
@@ -289,7 +288,6 @@ namespace OpenRA.Widgets
 				return false;
 
 			Ui.KeyboardFocusWidget = this;
-            //SDL.SDL_StartTextInput();
             
 			return true;
 		}
@@ -297,10 +295,7 @@ namespace OpenRA.Widgets
 		public virtual bool YieldKeyboardFocus()
 		{
             if (Ui.KeyboardFocusWidget == this)
-            {
                 Ui.KeyboardFocusWidget = null;
-                //SDL.SDL_StopTextInput();
-            }
 
 			return true;
 		}

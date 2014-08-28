@@ -22,7 +22,7 @@ namespace OpenRA.Widgets
 			set { text = value ?? ""; CursorPosition = CursorPosition.Clamp(0, text.Length); }
 		}
 
-		public int MaxLength = 512; // Imago 8/25 - A sane limit (Paste)
+		public int MaxLength = 512; // Imago 8/25 - A sane limit (Paste) - documented in code.
 		public int VisualHeight = 1;
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
