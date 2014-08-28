@@ -762,7 +762,6 @@ STNK:
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 250
-		UncloakOnUnload: True
 	DetectCloaked:
 		Range: 6
 	Explodes:
