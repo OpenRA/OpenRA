@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 
 		public readonly bool UncloakOnAttack = true;
 		public readonly bool UncloakOnMove = false;
-		public readonly bool UncloakOnUnload = false;
+		public readonly bool UncloakOnUnload = true;
 
 		[Desc("Enable only if this upgrade is enabled.")]
 		public readonly string RequiresUpgrade = null;
