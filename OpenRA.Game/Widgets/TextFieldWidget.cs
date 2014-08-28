@@ -42,7 +42,6 @@ namespace OpenRA.Widgets
 		public Color TextColor = ChromeMetrics.Get<Color>("TextfieldColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("TextfieldColorDisabled");
 		public Color TextColorInvalid = ChromeMetrics.Get<Color>("TextfieldColorInvalid");
-        public Color TextColorSelected = ChromeMetrics.Get<Color>("TextfieldColorSelected");
 
 		public TextFieldWidget() {}
 		protected TextFieldWidget(TextFieldWidget widget)
@@ -54,7 +53,6 @@ namespace OpenRA.Widgets
 			TextColor = widget.TextColor;
 			TextColorDisabled = widget.TextColorDisabled;
 			TextColorInvalid = widget.TextColorInvalid;
-            TextColorSelected = widget.TextColorSelected;
 			VisualHeight = widget.VisualHeight;
 		}
 
