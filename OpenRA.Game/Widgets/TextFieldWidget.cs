@@ -31,7 +31,6 @@ namespace OpenRA.Widgets
 		public Func<bool> OnTabKey = () => false;
 		public Func<bool> OnEscKey = () => false;
 		public Func<bool> OnAltKey = () => false;
-        public Func<bool> OnShiftKey = () => false;
 		public Action OnLoseFocus = () => { };
 		public Action OnTextEdited = () => { };
 		public int CursorPosition { get; set; }
