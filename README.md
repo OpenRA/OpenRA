@@ -50,7 +50,3 @@ This file is part of OpenRA, which is free software. It is made
 available to you under the terms of the GNU General Public License
 as published by the Free Software Foundation. For more information,
 see [COPYING](https://github.com/OpenRA/OpenRA/blob/bleed/COPYING).
-
-```html
-<img src="http://c.statcounter.com/10000712/0/f7a85520/1/" style="border:none;">
-```
