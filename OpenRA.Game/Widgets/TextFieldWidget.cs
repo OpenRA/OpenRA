@@ -170,11 +170,12 @@ namespace OpenRA.Widgets
 				return true;
 			}
 
-			if (e.Key == Keycode.V && (e.Modifiers.HasModifier(Modifiers.Ctrl) || e.Modifiers.HasModifier(Modifiers.Meta)))
+			if (e.Key == Keycode.V && (Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl) 
+				|| (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))))
 			{
-				string cliptext = Game.Renderer.Device.GetClipboard();
+				var cliptext = Game.Renderer.Device.GetClipboard();
 				if (cliptext.Length > 0)
-					using (System.IO.StringReader reader = new System.IO.StringReader(cliptext))
+					using (var reader = new System.IO.StringReader(cliptext))
 						HandleTextInput(reader.ReadLine().Trim());
 				return true;
 			}

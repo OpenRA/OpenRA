@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Text;
 using System.Runtime.InteropServices;
 using SDL2;
 
@@ -161,7 +162,7 @@ namespace OpenRA.Renderer.Sdl2
 						{
 							byte[] rawBytes = new byte[SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE];
 							unsafe { Marshal.Copy((IntPtr)e.text.text, rawBytes, 0, SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE); }
-							inputHandler.OnTextInput(System.Text.Encoding.UTF8.GetString(rawBytes, 0, Array.IndexOf(rawBytes, (byte)0)));
+							inputHandler.OnTextInput(Encoding.UTF8.GetString(rawBytes, 0, Array.IndexOf(rawBytes, (byte)0)));
 							break;
 						}
 				}
