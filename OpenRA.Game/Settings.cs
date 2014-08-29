@@ -82,7 +82,7 @@ namespace OpenRA
 	public class GraphicSettings
 	{
 		public string Renderer = "Sdl2";
-		public WindowMode Mode = WindowMode.PseudoFullscreen;
+		public WindowMode Mode = WindowMode.Fullscreen;
 		public int2 FullscreenSize = new int2(0, 0);
 		public int2 WindowedSize = new int2(1024, 768);
 		public bool PixelDouble = false;

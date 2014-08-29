@@ -161,8 +161,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);
-			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
-				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
+			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ? "Windowed" : "Fullscreen";
 
 			// Update zoom immediately
 			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
@@ -535,7 +534,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
-				{ "Pseudo-Fullscreen", WindowMode.PseudoFullscreen },
 				{ "Fullscreen", WindowMode.Fullscreen },
 				{ "Windowed", WindowMode.Windowed },
 			};

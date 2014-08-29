@@ -68,8 +68,6 @@ namespace OpenRA.Renderer.Sdl2
 				ReleaseWindowMouseFocus();
 
 			if (windowMode == WindowMode.Fullscreen)
-				SDL.SDL_SetWindowFullscreen(window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN);
-			else if (windowMode == WindowMode.PseudoFullscreen)
 			{
 				// Work around a visual glitch in OSX: the window is offset
 				// partially offscreen if the dock is at the left of the screen
@@ -77,7 +75,8 @@ namespace OpenRA.Renderer.Sdl2
 					SDL.SDL_SetWindowPosition(window, 0, 0);
 
 				SDL.SDL_SetWindowFullscreen(window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
-				SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
+				if (Platform.CurrentPlatform == PlatformType.OSX || Platform.CurrentPlatform == PlatformType.Windows)
+					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
 			}
 
 			SDL.SDL_ShowCursor(0);

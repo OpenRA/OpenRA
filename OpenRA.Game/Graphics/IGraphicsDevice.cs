@@ -113,6 +113,5 @@ namespace OpenRA
 	{
 		Windowed,
 		Fullscreen,
-		PseudoFullscreen,
 	}
 }
