@@ -21,8 +21,7 @@ namespace OpenRA.Widgets
 			get { return text; }
 			set { text = value ?? ""; CursorPosition = CursorPosition.Clamp(0, text.Length); }
 		}
-
-		public int MaxLength = 512; // Imago 8/25 - A sane limit (Paste) - documented in code.
+		public int MaxLength = 512;
 		public int VisualHeight = 1;
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
@@ -168,6 +167,14 @@ namespace OpenRA.Widgets
 				CursorPosition--;
 				Text = Text.Remove(CursorPosition, 1);
 				OnTextEdited();
+				return true;
+			}
+
+			if (e.Key == Keycode.V && e.Modifiers.HasModifier(Modifiers.Ctrl))
+			{
+				using (System.IO.StringReader reader = new System.IO.StringReader(Game.Renderer.Device.GetClipboard()))
+					HandleTextInput(reader.ReadLine().Trim());
+				return true;
 			}
 
 			return true;
@@ -178,11 +185,11 @@ namespace OpenRA.Widgets
 			if (!HasKeyboardFocus || IsDisabled())
 				return false;
 
-			if (MaxLength > 0 && Text.Length >= MaxLength)
+			if (MaxLength > 0 && (Text.Length >= MaxLength || text.Length >= MaxLength))
 				return true;
 
 			Text = Text.Insert(CursorPosition, text);
-			CursorPosition += text.Length; // Imago 8/25 - Don't assume only one charecter (Paste)
+			CursorPosition += text.Length;
 			OnTextEdited();
 
 			return true;

@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Text;
 using System.Runtime.InteropServices;
 using SDL2;
 
@@ -18,6 +17,8 @@ namespace OpenRA.Renderer.Sdl2
 	public class Sdl2Input
 	{
 		MouseButton lastButtonBits = (MouseButton)0;
+
+		public string GetClipboard() { return SDL.SDL_GetClipboardText(); }
 
 		static MouseButton MakeButton(byte b)
 		{
@@ -145,15 +146,6 @@ namespace OpenRA.Renderer.Sdl2
 							UnicodeChar = (char)e.key.keysym.sym,
 							MultiTapCount = tapCount
 						};
-
-                        // Imago 8/25 - Paste (Ctrl/Cmd + V)
-                        if (type == KeyInputEvent.Down && e.key.keysym.sym == SDL.SDL_Keycode.SDLK_v && (mods.HasModifier(Modifiers.Ctrl) || mods.HasModifier(Modifiers.Meta)))
-                        {
-                            // Only grab the first line
-                            using (System.IO.StringReader reader = new System.IO.StringReader(SDL.SDL_GetClipboardText()))
-                                inputHandler.OnTextInput(reader.ReadLine().Trim());
-                            break;
-                        }
 
 						// Special case workaround for windows users
 						if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
