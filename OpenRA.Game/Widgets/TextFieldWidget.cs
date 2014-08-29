@@ -42,7 +42,7 @@ namespace OpenRA.Widgets
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("TextfieldColorDisabled");
 		public Color TextColorInvalid = ChromeMetrics.Get<Color>("TextfieldColorInvalid");
 
-		public TextFieldWidget() {}
+		public TextFieldWidget() { }
 		protected TextFieldWidget(TextFieldWidget widget)
 			: base(widget)
 		{
@@ -101,6 +101,7 @@ namespace OpenRA.Widgets
 				minValue = dist;
 				minIndex = i;
 			}
+
 			return minIndex;
 		}
 
@@ -135,7 +136,7 @@ namespace OpenRA.Widgets
 
 			if (e.Key == Keycode.RIGHT)
 			{
-				if (CursorPosition <= Text.Length-1)
+				if (CursorPosition <= Text.Length - 1)
 					CursorPosition++;
 
 				return true;
@@ -160,6 +161,7 @@ namespace OpenRA.Widgets
 					Text = Text.Remove(CursorPosition, 1);
 					OnTextEdited();
 				}
+
 				return true;
 			}
 
@@ -168,6 +170,25 @@ namespace OpenRA.Widgets
 				CursorPosition--;
 				Text = Text.Remove(CursorPosition, 1);
 				OnTextEdited();
+				return true;
+			}
+
+			if (e.Key == Keycode.V &&
+				((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+				 (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))))
+			{
+				var clipboardText = Game.Renderer.Device.GetClipboardText();
+
+				// Take only the first line of the clipboard contents
+				var nl = clipboardText.IndexOf('\n');
+				if (nl > 0)
+					clipboardText = clipboardText.Substring(0, nl);
+
+				clipboardText = clipboardText.Trim();
+				if (clipboardText.Length > 0)
+					HandleTextInput(clipboardText);
+
+				return true;
 			}
 
 			return true;
@@ -181,8 +202,14 @@ namespace OpenRA.Widgets
 			if (MaxLength > 0 && Text.Length >= MaxLength)
 				return true;
 
-			Text = Text.Insert(CursorPosition, text);
-			CursorPosition++;
+			var pasteLength = text.Length;
+
+			// Truncate the pasted string if the total length (current + paste) is greater than the maximum.
+			if (MaxLength > 0 && MaxLength > Text.Length)
+				pasteLength = Math.Min(text.Length, MaxLength - Text.Length);
+
+			Text = Text.Insert(CursorPosition, text.Substring(0, pasteLength));
+			CursorPosition += pasteLength;
 			OnTextEdited();
 
 			return true;
