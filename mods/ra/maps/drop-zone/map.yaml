@@ -266,7 +266,7 @@ Weapons:
 		Range: 10c0
 		Warhead: SpreadDamage
 			Spread: 42
-			InfDeath: 5
+			DeathType: 5
 			Damage: 80
 
 Voices:

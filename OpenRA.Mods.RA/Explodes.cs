@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public readonly string EmptyWeapon = "UnitExplode";
 
 		public readonly int Chance = 100;
-		public readonly string[] InfDeath = null;
+		public readonly string[] DeathType = null;
 
 		public object Create(ActorInitializer init) { return new Explodes(this); }
 	}
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 			if (self.World.SharedRandom.Next(100) > explodesInfo.Chance)
 				return;
 
-			if (explodesInfo.InfDeath != null && e.Warhead != null && !explodesInfo.InfDeath.Contains(e.Warhead.InfDeath))
+			if (explodesInfo.DeathType != null && e.Warhead != null && !explodesInfo.DeathType.Contains(e.Warhead.DeathType))
 				return;
 
 			var weaponName = ChooseWeaponForExplosion(self);

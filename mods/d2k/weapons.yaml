@@ -11,7 +11,7 @@ LMG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 15
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			Wood: 25
 			Light: 40
@@ -36,7 +36,7 @@ Bazooka:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 50
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Ground
 		Versus:
 			None: 10
@@ -63,7 +63,7 @@ Sniper:
 	Warhead@1Dam: SpreadDamage
 		Spread: 32
 		Damage: 60
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			None: 100
 			Wood: 0
@@ -85,7 +85,7 @@ Vulcan:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 30
-		InfDeath: 2
+		DeathType: 2
 		ValidTargets: Ground, Air
 		Versus:
 			Wood: 0
@@ -111,7 +111,7 @@ Slung:
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Damage: 30
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Ground
 		Versus:
 			None: 0
@@ -138,7 +138,7 @@ HMG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 30
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			Wood: 15
 			Light: 45
@@ -162,7 +162,7 @@ HMGo:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 40
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			Wood: 15
 			Light: 45
@@ -188,7 +188,7 @@ QuadRockets:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 25
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Ground, Air
 		Versus:
 			None: 35
@@ -215,7 +215,7 @@ TurretGun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 55
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 50
 			Wood: 75
@@ -248,7 +248,7 @@ TowerMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
 		Damage: 50
-		InfDeath: 3
+		DeathType: 3
 		ValidTargets: Ground, Air
 		Versus:
 			None: 50
@@ -273,7 +273,7 @@ TowerMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 40
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 50
 			Wood: 50
@@ -296,7 +296,7 @@ TowerMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 40
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 50
 			Wood: 50
@@ -318,7 +318,7 @@ DevBullet:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 100
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 100
 			Wood: 50
@@ -351,7 +351,7 @@ DevBullet:
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
 		Damage: 60
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Ground
 		Versus:
 			None: 20
@@ -408,7 +408,7 @@ FakeMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
 		Damage: 100
-		InfDeath: 3
+		DeathType: 3
 		Versus:
 			None: 100
 			Wood: 80
@@ -433,7 +433,7 @@ Sound:
 	Warhead@1Dam: SpreadDamage
 		Spread: 32
 		Damage: 150
-		InfDeath: 6
+		DeathType: 6
 		Versus:
 			None: 60
 			Wood: 85
@@ -451,7 +451,7 @@ ChainGun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 20
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			Wood: 50
 			Light: 60
@@ -469,7 +469,7 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Damage: -50
-		InfDeath: 1
+		DeathType: 1
 		Versus:
 			Wood: 0
 			Light: 0
@@ -497,7 +497,7 @@ ParaBomb:
 		Spread: 192
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 30
 			Wood: 75
@@ -518,7 +518,7 @@ Napalm:
 		Spread: 640
 		Damage: 30
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 20
 			Wood: 100
@@ -548,7 +548,7 @@ Atomic:
 		Spread: 2c0
 		Damage: 180
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		Versus:
 			None: 100
 			Wood: 100
@@ -564,7 +564,7 @@ CrateNuke:
 		Spread: 1c576
 		Damage: 80
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		Versus:
 			None: 20
 			Wood: 75
@@ -580,7 +580,7 @@ CrateExplosion:
 		Spread: 320
 		Damage: 40
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
@@ -595,7 +595,7 @@ UnitExplode:
 		Spread: 320
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
@@ -609,7 +609,7 @@ UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Damage: 60
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
@@ -623,7 +623,7 @@ UnitExplodeTiny:
 	Warhead@1Dam: SpreadDamage
 		Spread: 224
 		Damage: 30
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
@@ -637,7 +637,7 @@ UnitExplodeScale:
 	Warhead@1Dam: SpreadDamage
 		Spread: 416
 		Damage: 90
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
@@ -660,7 +660,7 @@ Grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Damage: 60
-		InfDeath: 3
+		DeathType: 3
 		Versus:
 			None: 50
 			Wood: 100
@@ -690,7 +690,7 @@ Shrapnel:
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Damage: 60
-		InfDeath: 3
+		DeathType: 3
 		Versus:
 			None: 50
 			Wood: 100
@@ -706,7 +706,7 @@ SpiceExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
 		Damage: 10
-		InfDeath: 3
+		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
