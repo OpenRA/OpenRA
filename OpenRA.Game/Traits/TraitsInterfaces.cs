@@ -102,6 +102,8 @@ namespace OpenRA.Traits
 	public interface INotifyHarvest { void Harvested(Actor self, ResourceType resource); }
 	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
 
+	public interface IConditionalTeleport { bool CanBeTeleported(Actor self); }
+
 	public interface IUpgradable
 	{
 		bool AcceptsUpgrade(string type);
