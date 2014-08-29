@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using System.Diagnostics;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
@@ -17,6 +18,7 @@ namespace OpenRA.Widgets
 	public enum TextAlign { Left, Center, Right }
 	public enum TextVAlign { Top, Middle, Bottom }
 
+	
 	public class LabelWidget : Widget
 	{
 		[Translate]
@@ -33,11 +35,22 @@ namespace OpenRA.Widgets
 		public Func<Color> GetColor;
 		public Func<Color> GetContrastColor;
 
+		readonly Ruleset modRules;
+
 		public LabelWidget()
 		{
 			GetText = () => Text;
 			GetColor = () => TextColor;
 			GetContrastColor = () => ContrastColor;
+		}
+
+		[ObjectCreator.UseCtor]
+		public LabelWidget(Ruleset modRules)
+		{
+			GetText = () => Text;
+			GetColor = () => TextColor;
+			GetContrastColor = () => ContrastColor;
+			this.modRules = modRules;
 		}
 
 		protected LabelWidget(LabelWidget other)
@@ -54,6 +67,7 @@ namespace OpenRA.Widgets
 			GetColor = other.GetColor;
 			GetContrastColor = other.GetContrastColor;
 			ClickURL = other.ClickURL;
+			this.modRules = other.modRules;
 		}
 
 		public override void Draw()
@@ -91,7 +105,7 @@ namespace OpenRA.Widgets
 			else
 				font.DrawText(text, position, color);
 		}
-
+		
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Up)
@@ -99,12 +113,16 @@ namespace OpenRA.Widgets
 
 			if (mi.Event == MouseInputEvent.Down && ClickURL != null)
 			{
-				System.Diagnostics.Process.Start(ClickURL);
+				Sound.PlayNotification(modRules, null, "Sounds", "ClickSound", null);
+				ProcessStartInfo startInfo = new ProcessStartInfo(ClickURL);
+				startInfo.WindowStyle = ProcessWindowStyle.Maximized;
+				Process.Start(startInfo);
 				return true;
 			}
 			return false;
 		}
 
+		public override string GetCursor(int2 pos) { return (ClickURL != null) ? "default-hand" : "default"; }
 		public override Widget Clone() { return new LabelWidget(this); }
 	}
 }

@@ -1,4 +1,4 @@
-﻿Palettes:
+Palettes:
 	cursor: mousepal.pal
 
 Cursors:
@@ -173,3 +173,9 @@ Cursors:
 		powerdown:
 			start:329
 			length: 15
+	
+	cursor-hand.shp: cursor
+		default-hand:
+			start:0
+			x: -5
+			y: -13

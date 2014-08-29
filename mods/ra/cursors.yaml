@@ -1,4 +1,4 @@
-﻿Palettes:
+Palettes:
 	cursor: cursor.pal
 
 Cursors:
@@ -178,3 +178,10 @@ Cursors:
 		attackmove-minimap:
 			start:4
 			length: 4
+
+	cursor-hand.shp: cursor
+		default-hand:
+			start:0
+			x: -5
+			y: -13
+			
