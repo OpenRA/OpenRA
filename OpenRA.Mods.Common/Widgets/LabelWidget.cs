@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool Shadow = ChromeMetrics.Get<bool>("TextShadow");
 		public Color ContrastColorDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
 		public Color ContrastColorLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
+		public string ClickURL = null;
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
@@ -62,6 +63,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetColor = other.GetColor;
 			GetContrastColorDark = other.GetContrastColorDark;
 			GetContrastColorLight = other.GetContrastColorLight;
+			ClickURL = other.ClickURL;
 		}
 
 		public override void Draw()
@@ -105,6 +107,17 @@ namespace OpenRA.Mods.Common.Widgets
 				font.DrawTextWithShadow(text, position, color, bgDark, bgLight, 1);
 			else
 				font.DrawText(text, position, color);
+		}
+
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Up)
+				return false;
+
+			if (mi.Event == MouseInputEvent.Down && ClickURL != null)
+				System.Diagnostics.Process.Start(ClickURL);
+
+			return true;
 		}
 
 		public override Widget Clone() { return new LabelWidget(this); }
