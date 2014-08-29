@@ -1,3 +1,6 @@
+Palettes:
+	cursor: cursor.pal
+
 Cursors:
 	mouse.shp: cursor
 		scroll-t:
@@ -228,3 +231,9 @@ Cursors:
 			Start: 17
 		assaultmove-blocked-minimap:
 			Start: 19
+
+	cursor-hand.shp: cursor
+		default-hand:
+			Start: 0
+			X: -5
+			Y: -13

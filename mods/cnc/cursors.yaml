@@ -1,3 +1,6 @@
+Palettes:
+	cursor: cursor.pal
+
 Cursors:
 	mouse2.shp: cursor
 		scroll-t:
@@ -148,6 +151,7 @@ Cursors:
 		deploy-blocked:
 			Start: 1
 			Length: 1
+
 	mouse4.shp: cursor
 		move:
 			Start: 0
@@ -232,3 +236,9 @@ Cursors:
 			Length: 8
 		attackoutsiderange-minimap:
 			Start: 8
+
+	cursor-hand.shp: cursor
+		default-hand:
+			Start: 0
+			X: -5
+			Y: -13				

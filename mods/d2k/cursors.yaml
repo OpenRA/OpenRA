@@ -328,3 +328,9 @@ Cursors:
 			Start: 8
 			X: -2
 			Y: -2
+			
+	cursor-hand.shp: cursor
+		default-hand:
+			Start: 0
+			X: -5
+			Y: -13
