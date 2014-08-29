@@ -98,9 +98,11 @@ namespace OpenRA.Widgets
 				return false;
 
 			if (mi.Event == MouseInputEvent.Down && ClickURL != null)
+			{
 				System.Diagnostics.Process.Start(ClickURL);
-
-			return true;
+				return true;
+			}
+			return false;
 		}
 
 		public override Widget Clone() { return new LabelWidget(this); }
