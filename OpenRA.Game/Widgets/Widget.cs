@@ -110,6 +110,7 @@ namespace OpenRA.Widgets
 		{
 			if (KeyboardFocusWidget != null)
 				return KeyboardFocusWidget.HandleKeyPressOuter(e);
+
 			return Root.HandleKeyPressOuter(e);
 		}
 
