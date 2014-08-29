@@ -170,7 +170,7 @@ namespace OpenRA.Widgets
 				return true;
 			}
 
-			if (e.Key == Keycode.V && e.Modifiers.HasModifier(Modifiers.Ctrl))
+			if (e.Key == Keycode.V && (e.Modifiers.HasModifier(Modifiers.Ctrl) || e.Modifiers.HasModifier(Modifiers.Meta)))
 			{
 				using (System.IO.StringReader reader = new System.IO.StringReader(Game.Renderer.Device.GetClipboard()))
 					HandleTextInput(reader.ReadLine().Trim());
