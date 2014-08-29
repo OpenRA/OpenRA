@@ -43,9 +43,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			foreach (var p in world.Players.Where(a => !a.NonCombatant))
 			{
 				var pp = p;
+				var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 				var item = playerTemplate.Clone();
 				var nameLabel = item.Get<LabelWidget>("NAME");
-				nameLabel.GetText = () => pp.WinState == WinState.Lost ? pp.PlayerName + " (Dead)" : pp.PlayerName;
+				nameLabel.GetText = () =>
+				{
+					if (client.State == Network.Session.ClientState.Disconnected)
+						return pp.PlayerName + " (Gone)";
+					return pp.PlayerName + (pp.WinState == WinState.Undefined ? "" : " (" + pp.WinState + ")");
+				};
 				nameLabel.GetColor = () => pp.Color.RGB;
 
 				var flag = item.Get<ImageWidget>("FACTIONFLAG");
@@ -54,7 +60,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				item.Get<LabelWidget>("FACTION").GetText = () => pp.Country.Name;
 
 				var team = item.Get<LabelWidget>("TEAM");
-				var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 				var teamNumber = (client == null) ? 0 : client.Team;
 				team.GetText = () => (teamNumber == 0) ? "-" : teamNumber.ToString();
 				playerPanel.AddChild(item);
