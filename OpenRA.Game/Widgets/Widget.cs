@@ -288,7 +288,6 @@ namespace OpenRA.Widgets
 				return false;
 
 			Ui.KeyboardFocusWidget = this;
-            
 			return true;
 		}
 
