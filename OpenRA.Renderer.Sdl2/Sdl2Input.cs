@@ -8,7 +8,8 @@
 */
 #endregion
 
-using System.Text;
+using System;
+using System.Runtime.InteropServices;
 using SDL2;
 
 namespace OpenRA.Renderer.Sdl2
@@ -16,6 +17,8 @@ namespace OpenRA.Renderer.Sdl2
 	public class Sdl2Input
 	{
 		MouseButton lastButtonBits = (MouseButton)0;
+
+		public string GetClipboard() { return SDL.SDL_GetClipboardText(); }
 
 		static MouseButton MakeButton(byte b)
 		{
@@ -124,29 +127,6 @@ namespace OpenRA.Renderer.Sdl2
 						break;
 					}
 
-					case SDL.SDL_EventType.SDL_TEXTINPUT:
-					{
-						string input;
-						unsafe
-						{
-							var data = new byte[SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE];
-							var i = 0;
-							for (; i < SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE; i++)
-							{
-								var b = e.text.text[i];
-								if (b == '\0')
-									break;
-
-								data[i] = b;
-							}
-
-							input = Encoding.UTF8.GetString(data, 0, i);
-						}
-
-						inputHandler.OnTextInput(input);
-						break;
-					}
-
 					case SDL.SDL_EventType.SDL_KEYDOWN:
 					case SDL.SDL_EventType.SDL_KEYUP:
 					{
@@ -174,8 +154,16 @@ namespace OpenRA.Renderer.Sdl2
 						else
 							inputHandler.OnKeyInput(keyEvent);
 
-						break;
+                        break;
 					}
+
+                    case SDL.SDL_EventType.SDL_TEXTINPUT:
+                    {
+                        byte[] rawBytes = new byte[SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE];
+                        unsafe { Marshal.Copy((IntPtr)e.text.text, rawBytes, 0, SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE); }
+                        inputHandler.OnTextInput(System.Text.Encoding.UTF8.GetString(rawBytes, 0, Array.IndexOf(rawBytes, (byte)0)));
+                        break;
+                    }
 				}
 			}
 
