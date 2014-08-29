@@ -22,8 +22,8 @@ namespace OpenRA.Mods.RA
 		[Desc("Multiply volume with this factor.")]
 		public readonly float VolumeMultiplier = 1f;
 
-		[Desc("InfDeaths that this should be used for. If empty, this will be used as the default sound.")]
-		public readonly string[] InfDeaths = { };
+		[Desc("DeathTypes that this should be used for. If empty, this will be used as the default sound.")]
+		public readonly string[] DeathTypes = { };
 
 		public object Create(ActorInitializer init) { return new DeathSounds(this); }
 	}
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 
 			var cp = self.CenterPosition;
 
-			if (info.InfDeaths.Contains(e.Warhead.InfDeath) || (!info.InfDeaths.Any() && !self.Info.Traits.WithInterface<DeathSoundsInfo>().Any(dsi => dsi.InfDeaths.Contains(e.Warhead.InfDeath))))
+			if (info.DeathTypes.Contains(e.Warhead.DeathType) || (!info.DeathTypes.Any() && !self.Info.Traits.WithInterface<DeathSoundsInfo>().Any(dsi => dsi.DeathTypes.Contains(e.Warhead.DeathType))))
 				Sound.PlayVoiceLocal(info.DeathSound, self, self.Owner.Country.Race, cp, info.VolumeMultiplier);
 		}
 	}

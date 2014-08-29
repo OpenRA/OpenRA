@@ -778,7 +778,7 @@ Weapons:
 				Wood: 75
 				Light: 75
 				Concrete: 100
-			InfDeath: 4
+			DeathType: 4
 			Damage: 150
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
@@ -812,7 +812,7 @@ Weapons:
 				Light: 110
 				Heavy: 100
 				Concrete: 200
-			InfDeath: 3
+			DeathType: 3
 			Damage: 250
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
@@ -841,7 +841,7 @@ Weapons:
 				Light: 100
 				Heavy: 100
 				Concrete: 100
-			InfDeath: 4
+			DeathType: 4
 			Damage: 15
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Scorch
@@ -862,7 +862,7 @@ Weapons:
 				Wood: 100
 				Light: 60
 				Concrete: 25
-			InfDeath: 5
+			DeathType: 5
 			Damage: 200
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
@@ -892,7 +892,7 @@ Weapons:
 				Light: 60
 				Heavy: 75
 				Concrete: 35
-			InfDeath: 5
+			DeathType: 5
 			Damage: 10
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Scorch
@@ -944,7 +944,7 @@ Weapons:
 				Wood: 90
 				Light: 80
 				Heavy: 70
-			InfDeath: 3
+			DeathType: 3
 			Damage: 500
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
@@ -966,7 +966,7 @@ Weapons:
 				Light: 0
 				Heavy: 50
 				Concrete: 0
-			InfDeath: 2
+			DeathType: 2
 			Damage: 150
 		Warhead@2Eff: CreateEffect
 			Explosion: piffs

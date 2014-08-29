@@ -1085,7 +1085,7 @@ Weapons:
 				Heavy: 25
 				Concrete: 50
 			Delay: 12
-			InfDeath: 4
+			DeathType: 4
 		Warhead@areanuke2Smu: LeaveSmudge
 			SmudgeType: Scorch
 			Size: 4,3
@@ -1106,7 +1106,7 @@ Weapons:
 				Heavy: 25
 				Concrete: 50
 			Delay: 24
-			InfDeath: 4
+			DeathType: 4
 		Warhead@areanuke3Smu: LeaveSmudge
 			SmudgeType: Scorch
 			Size: 3,2
@@ -1126,7 +1126,7 @@ Weapons:
 				Heavy: 25
 				Concrete: 50
 			Delay: 36
-			InfDeath: 4
+			DeathType: 4
 		Warhead@areanuke4Smu: LeaveSmudge
 			SmudgeType: Scorch
 			Size: 2,1

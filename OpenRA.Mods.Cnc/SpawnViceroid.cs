@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc
 		[ActorReference] public readonly string ViceroidActor = "vice";
 		public readonly int Probability = 10;
 		public readonly string Owner = "Creeps";
-		public readonly string InfDeath = "6";
+		public readonly string DeathType = "6";
 
 		public object Create(ActorInitializer init) { return new SpawnViceroid(this); }
 	}
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (e.Warhead == null || e.Warhead.InfDeath != spawnViceroidInfo.InfDeath) return;
+			if (e.Warhead == null || e.Warhead.DeathType != spawnViceroidInfo.DeathType) return;
 			if (self.World.SharedRandom.Next(100) > spawnViceroidInfo.Probability) return;
 
 			self.World.AddFrameEndTask(w =>

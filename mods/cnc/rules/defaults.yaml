@@ -184,13 +184,13 @@
 		Range: 1
 	ScriptTriggers:
 	DeathSounds@NORMAL:
-		InfDeaths: 1, 2, 3, 4
+		DeathTypes: 1, 2, 3, 4
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		InfDeaths: 5
+		DeathTypes: 5
 	DeathSounds@POISONED:
 		DeathSound: Poisoned
-		InfDeaths: 6
+		DeathTypes: 6
 	GainsStatUpgrades:
 
 ^CivInfantry:
