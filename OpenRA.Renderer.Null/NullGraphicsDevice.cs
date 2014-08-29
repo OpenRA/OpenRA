@@ -51,7 +51,6 @@ namespace OpenRA.Renderer.Null
 		public void Clear() { }
 		public void Present() { }
 
-		public string GetClipboard() { return ""; }
 		public void PumpInput(IInputHandler ih)
 		{
 			Game.HasInputFocus = false;
