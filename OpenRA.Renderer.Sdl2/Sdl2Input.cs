@@ -8,7 +8,8 @@
 */
 #endregion
 
-using System.Text;
+using System;
+using System.Runtime.InteropServices;
 using SDL2;
 
 namespace OpenRA.Renderer.Sdl2
@@ -16,6 +17,8 @@ namespace OpenRA.Renderer.Sdl2
 	public class Sdl2Input
 	{
 		MouseButton lastButtonBits = (MouseButton)0;
+
+		public string GetClipboard() { return SDL.SDL_GetClipboardText(); }
 
 		static MouseButton MakeButton(byte b)
 		{
@@ -51,131 +54,116 @@ namespace OpenRA.Renderer.Sdl2
 						break;
 
 					case SDL.SDL_EventType.SDL_WINDOWEVENT:
-					{
-						switch (e.window.windowEvent)
 						{
-							case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
-								Game.HasInputFocus = false;
-								break;
-
-							case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
-								Game.HasInputFocus = true;
-								break;
-						}
-
-						break;
-					}
-
-					case SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN:
-					{
-						if (pendingMotion != null)
-						{
-							inputHandler.OnMouseInput(pendingMotion.Value);
-							pendingMotion = null;
-						}
-
-						var button = MakeButton(e.button.button);
-						lastButtonBits |= button;
-
-						var pos = new int2(e.button.x, e.button.y);
-
-						inputHandler.OnMouseInput(new MouseInput(
-							MouseInputEvent.Down, button, scrollDelta, pos, mods,
-							MultiTapDetection.DetectFromMouse(e.button.button, pos)));
-
-						break;
-					}
-
-					case SDL.SDL_EventType.SDL_MOUSEBUTTONUP:
-					{
-						if (pendingMotion != null)
-						{
-							inputHandler.OnMouseInput(pendingMotion.Value);
-							pendingMotion = null;
-						}
-
-						var button = MakeButton(e.button.button);
-						lastButtonBits &= ~button;
-
-						var pos = new int2(e.button.x, e.button.y);
-						inputHandler.OnMouseInput(new MouseInput(
-							MouseInputEvent.Up, button, scrollDelta, pos, mods,
-							MultiTapDetection.InfoFromMouse(e.button.button)));
-
-						break;
-					}
-
-					case SDL.SDL_EventType.SDL_MOUSEMOTION:
-					{
-						pendingMotion = new MouseInput(
-							MouseInputEvent.Move, lastButtonBits, scrollDelta,
-							new int2(e.motion.x, e.motion.y), mods, 0);
-
-						break;
-					}
-
-					case SDL.SDL_EventType.SDL_MOUSEWHEEL:
-					{
-						int x, y;
-						SDL.SDL_GetMouseState(out x, out y);
-						scrollDelta = e.wheel.y;
-						inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, scrollDelta, new int2(x, y), Modifiers.None, 0));
-
-						break;
-					}
-
-					case SDL.SDL_EventType.SDL_TEXTINPUT:
-					{
-						string input;
-						unsafe
-						{
-							var data = new byte[SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE];
-							var i = 0;
-							for (; i < SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE; i++)
+							switch (e.window.windowEvent)
 							{
-								var b = e.text.text[i];
-								if (b == '\0')
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
+									Game.HasInputFocus = false;
 									break;
 
-								data[i] = b;
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
+									Game.HasInputFocus = true;
+									break;
 							}
 
-							input = Encoding.UTF8.GetString(data, 0, i);
+							break;
 						}
 
-						inputHandler.OnTextInput(input);
-						break;
-					}
+					case SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN:
+						{
+							if (pendingMotion != null)
+							{
+								inputHandler.OnMouseInput(pendingMotion.Value);
+								pendingMotion = null;
+							}
+
+							var button = MakeButton(e.button.button);
+							lastButtonBits |= button;
+
+							var pos = new int2(e.button.x, e.button.y);
+
+							inputHandler.OnMouseInput(new MouseInput(
+								MouseInputEvent.Down, button, scrollDelta, pos, mods,
+								MultiTapDetection.DetectFromMouse(e.button.button, pos)));
+
+							break;
+						}
+
+					case SDL.SDL_EventType.SDL_MOUSEBUTTONUP:
+						{
+							if (pendingMotion != null)
+							{
+								inputHandler.OnMouseInput(pendingMotion.Value);
+								pendingMotion = null;
+							}
+
+							var button = MakeButton(e.button.button);
+							lastButtonBits &= ~button;
+
+							var pos = new int2(e.button.x, e.button.y);
+							inputHandler.OnMouseInput(new MouseInput(
+								MouseInputEvent.Up, button, scrollDelta, pos, mods,
+								MultiTapDetection.InfoFromMouse(e.button.button)));
+
+							break;
+						}
+
+					case SDL.SDL_EventType.SDL_MOUSEMOTION:
+						{
+							pendingMotion = new MouseInput(
+								MouseInputEvent.Move, lastButtonBits, scrollDelta,
+								new int2(e.motion.x, e.motion.y), mods, 0);
+
+							break;
+						}
+
+					case SDL.SDL_EventType.SDL_MOUSEWHEEL:
+						{
+							int x, y;
+							SDL.SDL_GetMouseState(out x, out y);
+							scrollDelta = e.wheel.y;
+							inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, scrollDelta, new int2(x, y), Modifiers.None, 0));
+
+							break;
+						}
 
 					case SDL.SDL_EventType.SDL_KEYDOWN:
 					case SDL.SDL_EventType.SDL_KEYUP:
-					{
-						var keyCode = (Keycode)e.key.keysym.sym;
-						var type = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
-							KeyInputEvent.Down : KeyInputEvent.Up;
-
-						var tapCount = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
-							MultiTapDetection.DetectFromKeyboard(keyCode) :
-							MultiTapDetection.InfoFromKeyboard(keyCode);
-
-						var keyEvent = new KeyInput
 						{
-							Event = type,
-							Key = keyCode,
-							Modifiers = mods,
-							UnicodeChar = (char)e.key.keysym.sym,
-							MultiTapCount = tapCount
-						};
+							var keyCode = (Keycode)e.key.keysym.sym;
+							var type = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
+								KeyInputEvent.Down : KeyInputEvent.Up;
 
-						// Special case workaround for windows users
-						if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
-							Platform.CurrentPlatform == PlatformType.Windows)
-							Game.Exit();
-						else
-							inputHandler.OnKeyInput(keyEvent);
+							var tapCount = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
+								MultiTapDetection.DetectFromKeyboard(keyCode) :
+								MultiTapDetection.InfoFromKeyboard(keyCode);
 
-						break;
-					}
+							var keyEvent = new KeyInput
+							{
+								Event = type,
+								Key = keyCode,
+								Modifiers = mods,
+								UnicodeChar = (char)e.key.keysym.sym,
+								MultiTapCount = tapCount
+							};
+
+							// Special case workaround for windows users
+							if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
+								Platform.CurrentPlatform == PlatformType.Windows)
+								Game.Exit();
+							else
+								inputHandler.OnKeyInput(keyEvent);
+
+							break;
+						}
+
+					case SDL.SDL_EventType.SDL_TEXTINPUT:
+						{
+							byte[] rawBytes = new byte[SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE];
+							unsafe { Marshal.Copy((IntPtr)e.text.text, rawBytes, 0, SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE); }
+							inputHandler.OnTextInput(System.Text.Encoding.UTF8.GetString(rawBytes, 0, Array.IndexOf(rawBytes, (byte)0)));
+							break;
+						}
 				}
 			}
 
