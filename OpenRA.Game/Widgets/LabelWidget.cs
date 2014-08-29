@@ -26,6 +26,7 @@ namespace OpenRA.Widgets
 		public Color TextColor = ChromeMetrics.Get<Color>("TextColor");
 		public bool Contrast = ChromeMetrics.Get<bool>("TextContrast");
 		public Color ContrastColor = ChromeMetrics.Get<Color>("TextContrastColor");
+		public string ClickURL = null;
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
@@ -51,6 +52,7 @@ namespace OpenRA.Widgets
 			GetText = other.GetText;
 			GetColor = other.GetColor;
 			GetContrastColor = other.GetContrastColor;
+			ClickURL = other.ClickURL;
 		}
 
 		public override void Draw()
@@ -87,6 +89,19 @@ namespace OpenRA.Widgets
 				font.DrawTextWithContrast(text, position, color, contrast, 2);
 			else
 				font.DrawText(text, position, color);
+		}
+
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Up)
+				return false;
+
+			if (mi.Event == MouseInputEvent.Down && ClickURL != null)
+			{
+				 System.Diagnostics.Process.Start(ClickURL);
+			}
+
+			return true;
 		}
 
 		public override Widget Clone() { return new LabelWidget(this); }

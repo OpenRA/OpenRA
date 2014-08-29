@@ -21,7 +21,8 @@ namespace OpenRA.Widgets
 			get { return text; }
 			set { text = value ?? ""; CursorPosition = CursorPosition.Clamp(0, text.Length); }
 		}
-		public int MaxLength = 512;
+
+		public int MaxLength = 0;
 		public int VisualHeight = 1;
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
@@ -167,14 +168,6 @@ namespace OpenRA.Widgets
 				CursorPosition--;
 				Text = Text.Remove(CursorPosition, 1);
 				OnTextEdited();
-				return true;
-			}
-
-			if (e.Key == Keycode.V && (e.Modifiers.HasModifier(Modifiers.Ctrl) || e.Modifiers.HasModifier(Modifiers.Meta)))
-			{
-				using (System.IO.StringReader reader = new System.IO.StringReader(Game.Renderer.Device.GetClipboard()))
-					HandleTextInput(reader.ReadLine().Trim());
-				return true;
 			}
 
 			return true;
@@ -185,11 +178,11 @@ namespace OpenRA.Widgets
 			if (!HasKeyboardFocus || IsDisabled())
 				return false;
 
-			if (MaxLength > 0 && (Text.Length >= MaxLength || text.Length >= MaxLength))
+			if (MaxLength > 0 && Text.Length >= MaxLength)
 				return true;
 
 			Text = Text.Insert(CursorPosition, text);
-			CursorPosition += text.Length;
+			CursorPosition++;
 			OnTextEdited();
 
 			return true;
