@@ -19,13 +19,15 @@ namespace OpenRA.Widgets
 
 	public class LabelWidget : Widget
 	{
-		[Translate] public string Text = null;
+		[Translate]
+		public string Text = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
 		public string Font = ChromeMetrics.Get<string>("TextFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("TextColor");
 		public bool Contrast = ChromeMetrics.Get<bool>("TextContrast");
 		public Color ContrastColor = ChromeMetrics.Get<Color>("TextContrastColor");
+		public string ClickURL = null;
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
@@ -51,6 +53,7 @@ namespace OpenRA.Widgets
 			GetText = other.GetText;
 			GetColor = other.GetColor;
 			GetContrastColor = other.GetContrastColor;
+			ClickURL = other.ClickURL;
 		}
 
 		public override void Draw()
@@ -67,16 +70,16 @@ namespace OpenRA.Widgets
 			var position = RenderOrigin;
 
 			if (VAlign == TextVAlign.Middle)
-				position += new int2(0, (Bounds.Height - textSize.Y)/2);
+				position += new int2(0, (Bounds.Height - textSize.Y) / 2);
 
 			if (VAlign == TextVAlign.Bottom)
 				position += new int2(0, Bounds.Height - textSize.Y);
 
 			if (Align == TextAlign.Center)
-				position += new int2((Bounds.Width - textSize.X)/2, 0);
+				position += new int2((Bounds.Width - textSize.X) / 2, 0);
 
 			if (Align == TextAlign.Right)
-				position += new int2(Bounds.Width - textSize.X,0);
+				position += new int2(Bounds.Width - textSize.X, 0);
 
 			if (WordWrap)
 				text = WidgetUtils.WrapText(text, Bounds.Width, font);
@@ -87,6 +90,17 @@ namespace OpenRA.Widgets
 				font.DrawTextWithContrast(text, position, color, contrast, 2);
 			else
 				font.DrawText(text, position, color);
+		}
+
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Up)
+				return false;
+
+			if (mi.Event == MouseInputEvent.Down && ClickURL != null)
+				System.Diagnostics.Process.Start(ClickURL);
+
+			return true;
 		}
 
 		public override Widget Clone() { return new LabelWidget(this); }
