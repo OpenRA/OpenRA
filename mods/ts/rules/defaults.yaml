@@ -29,6 +29,7 @@
 	ProximityCaptor:
 		Types: Building
 	Sellable:
+		SellSounds: cashturn.aud
 	AcceptsSupplies:
 	GivesBounty:
 	UpdatesPlayerStatistics:
@@ -75,6 +76,7 @@
 	ProximityCaptor:
 		Types: Wall
 	Sellable:
+		SellSounds: cashturn.aud
 	UpdatesPlayerStatistics:
 	BodyOrientation:
 	LuaScriptEvents:

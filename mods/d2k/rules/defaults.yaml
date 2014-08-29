@@ -243,7 +243,6 @@
 		Footprint: x
 		TerrainTypes: Rock, Concrete
 		BuildSounds: BUILD1.WAV
-		SellSounds: BUILD1.WAV
 		Adjacent: 3
 	GivesBuildableArea:
 	ExternalCapturable:
@@ -268,6 +267,7 @@
 	ProximityCaptor:
 		Types: Building
 	Sellable:
+		SellSounds: BUILD1.WAV
 	GivesBounty:
 	CombatDebugOverlay:
 	Guardable:

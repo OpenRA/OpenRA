@@ -3,7 +3,6 @@
 		Adjacent: 4
 		TerrainTypes: Rock
 		BuildSounds: CHUNG.WAV
-		SellSounds: CHUNG.WAV
 		AllowInvalidPlacement: true
 	LaysTerrain:
 		Template: 88
@@ -412,7 +411,6 @@ CONCRETEB:
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.WAV
-		SellSounds: CHUNG.WAV
 		Adjacent: 7
 		TerrainTypes: Rock, Concrete
 	Health:
@@ -436,6 +434,7 @@ CONCRETEB:
 	ProximityCaptor:
 		Types: Wall
 	Sellable:
+		SellSounds: CHUNG.WAV
 	Guardable:
 	BodyOrientation:
 	ThrowsShrapnel:
@@ -462,6 +461,7 @@ WALL:
 	Building:
 		Adjacent: 4
 		BuildSounds: CHUNG.WAV
+	Sellable:
 		SellSounds: CHUNG.WAV
 	Selectable:
 		Bounds: 32,40,0,-8
@@ -514,6 +514,7 @@ WALL:
 	Building:
 		Adjacent: 4
 		BuildSounds: CHUNG.WAV
+	Sellable:
 		SellSounds: CHUNG.WAV
 	Selectable:
 		Bounds: 32,40,0,-8

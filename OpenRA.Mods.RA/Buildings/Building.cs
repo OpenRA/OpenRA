@@ -34,7 +34,6 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly bool AllowInvalidPlacement = false;
 
 		public readonly string[] BuildSounds = { "placbldg.aud", "build5.aud" };
-		public readonly string[] SellSounds = { "cashturn.aud" };
 		public readonly string[] UndeploySounds = { "cashturn.aud" };
 
 		public object Create(ActorInitializer init) { return new Building(init, this); }
@@ -176,9 +175,6 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public void Selling(Actor self)
 		{
-			foreach (var s in Info.SellSounds)
-				Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
-
 			BuildComplete = false;
 		}
 

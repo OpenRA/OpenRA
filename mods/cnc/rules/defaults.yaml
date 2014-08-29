@@ -334,7 +334,6 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: constru2.aud, hvydoor1.aud
-		SellSounds: cashturn.aud
 		TerrainTypes: Clear,Road
 	SoundOnDamageTransition:
 		DamagedSound: xplos.aud
@@ -374,6 +373,7 @@
 	GivesBuildableArea:
 	EngineerRepairable:
 	Sellable:
+		SellSounds: cashturn.aud
 	Capturable:
 
 ^CivBuilding:
@@ -473,6 +473,7 @@
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
 	Sellable:
+		SellSounds: cashturn.aud
 	Guardable:
 	BodyOrientation:
 	FrozenUnderFog:

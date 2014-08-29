@@ -488,6 +488,33 @@ namespace OpenRA.Utility
 						node.Key = "DeathType";
 				}
 
+				// SellSounds from Building was moved into Sellable
+				if (engineVersion < 20140904)
+				{
+					if (depth == 0)
+					{
+						var actorTraits = node.Value.Nodes;
+						var building = actorTraits.FirstOrDefault(t => t.Key == "Building");
+						if (building != null)
+						{
+							var buildingFields = building.Value.Nodes;
+							var sellSounds = buildingFields.FirstOrDefault(n => n.Key == "SellSounds");
+							if (sellSounds != null)
+							{
+								buildingFields.Remove(sellSounds);
+								var sellable = actorTraits.FirstOrDefault(t => t.Key == "Sellable");
+								if (sellable != null)
+									sellable.Value.Nodes.Add(sellSounds);
+								else
+								{
+									Console.WriteLine("Warning: Adding Sellable trait to {0} in {1}".F(node.Key, node.Location.Filename));
+									actorTraits.Add(new MiniYamlNode("Sellable", new MiniYaml("", new List<MiniYamlNode> { sellSounds })));
+								}
+							}
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
