@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Power;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.AI
@@ -141,8 +142,12 @@ namespace OpenRA.Mods.RA.AI
 				var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.Get<PowerInfo>().Amount);
 				if (power != null && power.Traits.Get<PowerInfo>().Amount > 0)
 				{
-					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (low power)", queue.Actor.Owner, power.Name);
-					return power;
+					// TODO: Handle the case when of when we actually do need a power plant because we don't have enough but are also suffering from a power outage
+					if (playerPower.PowerOutageRemainingTicks <= 0)
+					{
+						HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (low power)", queue.Actor.Owner, power.Name);
+						return power;
+					}
 				}
 			}
 
@@ -205,8 +210,14 @@ namespace OpenRA.Mods.RA.AI
 					var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.Get<PowerInfo>().Amount);
 					if (power != null && power.Traits.Get<PowerInfo>().Amount > 0)
 					{
-						HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
-						return power;
+						// TODO: Handle the case when of when we actually do need a power plant because we don't have enough but are also suffering from a power outage
+						if (playerPower.PowerOutageRemainingTicks > 0)
+							HackyAI.BotDebug("AI: {0} is suffering from a power outage; not going to build {1}", queue.Actor.Owner, power.Name);
+						else
+						{
+							HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+							return power;
+						}
 					}
 				}
 

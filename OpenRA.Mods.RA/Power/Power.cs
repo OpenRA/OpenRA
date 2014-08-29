@@ -9,55 +9,41 @@
 #endregion
 
 using System;
-using OpenRA.Mods.RA.Buildings;
+using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Power
 {
 	public class PowerInfo : ITraitInfo
 	{
 		[Desc("If negative, it will drain power. If positive, it will provide power.")]
 		public readonly int Amount = 0;
 
-		[Desc("Scale power amount with the current health.")]
-		public readonly bool ScaleWithHealth = false;
-
 		public object Create(ActorInitializer init) { return new Power(init.self, this); }
 	}
 
-	public class Power : INotifyDamage, INotifyCapture
+	public class Power : INotifyCapture
 	{
 		readonly PowerInfo info;
-		readonly Lazy<Health> health;
-		PowerManager playerPower;
+		readonly Lazy<IPowerModifier[]> powerModifiers;
 
-		public int CurrentPower
+		public PowerManager PlayerPower { get; private set; }
+
+		public int GetCurrentPower()
 		{
-			get
-			{
-				if (info.Amount <= 0 || health == null || !info.ScaleWithHealth)
-					return info.Amount;
-
-				return info.Amount * health.Value.HP / health.Value.MaxHP;
-			}
+			return Util.ApplyPercentageModifiers(info.Amount, powerModifiers.Value.Select(m => m.GetPowerModifier()));
 		}
 
 		public Power(Actor self, PowerInfo info)
 		{
 			this.info = info;
-			health = Exts.Lazy(self.TraitOrDefault<Health>);
-			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
-		}
-
-		public void Damaged(Actor self, AttackInfo e)
-		{
-			if (info.ScaleWithHealth)
-				playerPower.UpdateActor(self, CurrentPower);
+			PlayerPower = self.Owner.PlayerActor.Trait<PowerManager>();
+			powerModifiers = Exts.Lazy(() => self.TraitsImplementing<IPowerModifier>().ToArray());
 		}
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			 playerPower = newOwner.PlayerActor.Trait<PowerManager>();
+			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 	}
 }

@@ -15,7 +15,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Infiltration
 {
 	class InfiltratesInfo : ITraitInfo
 	{

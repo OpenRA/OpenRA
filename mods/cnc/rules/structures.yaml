@@ -100,7 +100,7 @@ NUKE:
 	Bib:
 	Power:
 		Amount: 100
-		ScaleWithHealth: True
+	ScalePowerWithHealth:
 
 NUK2:
 	Inherits: ^BaseBuilding
@@ -125,7 +125,7 @@ NUK2:
 	Bib:
 	Power:
 		Amount: 200
-		ScaleWithHealth: True
+	ScalePowerWithHealth:
 
 PROC:
 	Inherits: ^BaseBuilding

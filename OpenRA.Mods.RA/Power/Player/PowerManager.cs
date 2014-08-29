@@ -9,20 +9,21 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.RA.Power
 {
 	public class PowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>
 	{
 		public readonly int AdviceInterval = 250;
-		public object Create(ActorInitializer init) { return new PowerManager(init, this); }
+		public object Create(ActorInitializer init) { return new PowerManager(init.self, this); }
 	}
 
 	public class PowerManager : ITick, ISync
 	{
+		readonly Actor self;
 		readonly PowerManagerInfo info;
-		readonly Player player;
 		readonly DeveloperMode devMode;
 
 		readonly Dictionary<Actor, int> powerDrain = new Dictionary<Actor, int>();
@@ -34,43 +35,56 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public int ExcessPower { get { return totalProvided - totalDrained; } }
 
-		public PowerManager(ActorInitializer init, PowerManagerInfo info)
+		public int PowerOutageRemainingTicks { get; private set; }
+		public int PowerOutageTotalTicks { get; private set; }
+
+		public PowerManager(Actor self, PowerManagerInfo info)
 		{
+			this.self = self;
 			this.info = info;
-			player = init.self.Owner;
 
-			init.world.ActorAdded += ActorAdded;
-			init.world.ActorRemoved += ActorRemoved;
+			self.World.ActorAdded += UpdateActor;
+			self.World.ActorRemoved += RemoveActor;
 
-			devMode = init.self.Trait<DeveloperMode>();
+			devMode = self.Trait<DeveloperMode>();
 			wasHackEnabled = devMode.UnlimitedPower;
 		}
 
-		void ActorAdded(Actor a)
+		public void UpdateActor(Actor a)
 		{
-			if (a.Owner != player)
-				return;
+			UpdateActors(new[] { a });
+		}
 
-			var power = a.TraitOrDefault<Power>();
-			if (power == null)
-				return;
+		public void UpdateActors(IEnumerable<Actor> actors)
+		{
+			foreach (var a in actors)
+			{
+				if (a.Owner != self.Owner)
+					return;
 
-			powerDrain.Add(a, power.CurrentPower);
+				var power = a.TraitOrDefault<Power>();
+				if (power == null)
+					return;
+
+				powerDrain[a] = power.GetCurrentPower();
+			}
 			UpdateTotals();
 		}
 
-		void ActorRemoved(Actor a)
+		void RemoveActor(Actor a)
 		{
-			if (a.Owner != player || !a.HasTrait<Power>())
+			if (a.Owner != self.Owner || !a.HasTrait<Power>())
 				return;
+
 			powerDrain.Remove(a);
 			UpdateTotals();
 		}
 
-		void UpdateTotals()
+		public void UpdateTotals()
 		{
 			totalProvided = 0;
 			totalDrained = 0;
+
 			foreach (var kv in powerDrain)
 			{
 				var p = kv.Value;
@@ -82,15 +96,6 @@ namespace OpenRA.Mods.RA.Buildings
 
 			if (devMode.UnlimitedPower)
 				totalProvided = 1000000;
-		}
-
-		public void UpdateActor(Actor a, int newPower)
-		{
-			if (a.Owner != player || !a.HasTrait<Power>())
-				return;
-
-			powerDrain[a] = newPower;
-			UpdateTotals();
 		}
 
 		int nextPowerAdviceTime = 0;
@@ -116,15 +121,34 @@ namespace OpenRA.Mods.RA.Buildings
 					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "LowPower", self.Owner.Country.Race);
 				nextPowerAdviceTime = info.AdviceInterval;
 			}
+
+			if (PowerOutageRemainingTicks > 0 && --PowerOutageRemainingTicks == 0)
+				UpdatePowerOutageActors();
 		}
 
 		public PowerState PowerState
 		{
-			get {
+			get
+			{
 				if (PowerProvided >= PowerDrained) return PowerState.Normal;
 				if (PowerProvided > PowerDrained / 2) return PowerState.Low;
 				return PowerState.Critical;
 			}
+		}
+
+		public void TriggerPowerOutage(int totalTicks)
+		{
+			PowerOutageTotalTicks = PowerOutageRemainingTicks = totalTicks;
+			UpdatePowerOutageActors();
+		}
+
+		void UpdatePowerOutageActors()
+		{
+			var actors = self.World.ActorsWithTrait<AffectedByPowerOutage>()
+				.Select(tp => tp.Actor)
+				.Where(a => !a.IsDead() && a.IsInWorld && a.Owner == self.Owner);
+
+			UpdateActors(actors);
 		}
 	}
 }
