@@ -293,8 +293,8 @@ namespace OpenRA.Widgets
 
 		public virtual bool YieldKeyboardFocus()
 		{
-            if (Ui.KeyboardFocusWidget == this)
-                Ui.KeyboardFocusWidget = null;
+			if (Ui.KeyboardFocusWidget == this)
+				Ui.KeyboardFocusWidget = null;
 
 			return true;
 		}
