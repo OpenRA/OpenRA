@@ -3,7 +3,7 @@ RIFLE:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: atreides,harkonnen,ordos
+		Prerequisites: ~barracks
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -25,10 +25,9 @@ RIFLE:
 ENGINEER:
 	Inherits: ^Infantry
 	Buildable:
-		Prerequisites: Outpost, ~techlevel.medium
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Owner: atreides,harkonnen,ordos
+		Prerequisites: ~barracks, radar, ~techlevel.medium
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -53,10 +52,9 @@ ENGINEER:
 BAZOOKA:
 	Inherits: ^Infantry
 	Buildable:
-		Prerequisites: Outpost, ~techlevel.medium
 		Queue: Infantry
 		BuildPaletteOrder: 20
-		Owner: atreides,harkonnen,ordos
+		Prerequisites: ~barracks, radar, ~techlevel.medium
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -81,8 +79,7 @@ MEDIC:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Owner: atreides, ordos
-		Prerequisites: Research, ~techlevel.high
+		Prerequisites: ~medics, ~techlevel.high
 	Valued:
 		Cost: 500
 	Tooltip:

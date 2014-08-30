@@ -22,7 +22,7 @@ CONCRETEA:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
-		Owner: atreides, harkonnen, ordos
+		Prerequisites: ~conyard
 	Valued:
 		Cost: 20
 
@@ -34,7 +34,7 @@ CONCRETEB:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
-		Owner: atreides, harkonnen, ordos
+		Prerequisites: ~conyard
 	Valued:
 		Cost: 50
 
@@ -51,7 +51,7 @@ CONCRETEB:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
-		Owner: None
+		Prerequisites: ~disabled
 	Selectable:
 		Bounds: 96,64
 	Health:
@@ -71,7 +71,7 @@ CONCRETEB:
 	BaseBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Conyard
+		Prerequisite: conyard
 	WithBuildingPlacedOverlay:
 		Palette: d2k
 	Power:
@@ -80,7 +80,7 @@ CONCRETEB:
 ^POWER:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Conyard
+		Prerequisites: ~conyard
 		Queue: Building
 		BuildPaletteOrder: 10
 	Selectable:
@@ -101,7 +101,7 @@ CONCRETEB:
 	RevealsShroud:
 		Range: 4c0
 	ProvidesCustomPrerequisite:
-		Prerequisite: Power
+		Prerequisite: power
 	WithIdleOverlay@ZAPS:
 		Sequence: idle-zaps
 	Power:
@@ -111,7 +111,7 @@ CONCRETEB:
 ^BARRACKS:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Power
+		Prerequisites: ~conyard, power
 		Queue: Building
 		BuildPaletteOrder: 40
 	Selectable:
@@ -146,14 +146,14 @@ CONCRETEB:
 	RepairsUnits:
 		ValuePercentage: 0
 	ProvidesCustomPrerequisite:
-		Prerequisite: Barracks
+		Prerequisite: barracks
 	Power:
 		Amount: -20
 
 ^REFINERY:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Power
+		Prerequisites: ~conyard, ~power
 		Queue: Building
 		BuildPaletteOrder: 20
 	Selectable:
@@ -189,7 +189,7 @@ CONCRETEB:
 		SpawnOffset: 2,1
 		Facing: 160
 	ProvidesCustomPrerequisite:
-		Prerequisite: Refinery
+		Prerequisite: refinery
 	WithDockingOverlay@SMOKE:
 		Sequence: smoke
 	Power:
@@ -200,7 +200,7 @@ CONCRETEB:
 ^SILO:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Refinery
+		Prerequisites: ~conyard, refinery
 		Queue: Building
 		BuildPaletteOrder: 30
 	Selectable:
@@ -232,7 +232,7 @@ CONCRETEB:
 ^LIGHT:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Refinery
+		Prerequisites: ~conyard, refinery
 		Queue: Building
 		BuildPaletteOrder: 70
 	Selectable:
@@ -262,7 +262,7 @@ CONCRETEB:
 	PrimaryBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Light
+		Prerequisite: light
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	WithIdleOverlay@TOP:
@@ -273,7 +273,7 @@ CONCRETEB:
 ^HEAVY:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Refinery
+		Prerequisites: ~conyard, refinery
 		Queue: Building
 		BuildPaletteOrder: 100
 	Selectable:
@@ -303,7 +303,7 @@ CONCRETEB:
 	PrimaryBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Heavy
+		Prerequisite: heavy
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	WithIdleOverlay@TOP:
@@ -317,7 +317,7 @@ CONCRETEB:
 	CanPowerDown:
 	DisabledOverlay:
 	Buildable:
-		Prerequisites: Barracks, ~techlevel.medium
+		Prerequisites: ~conyard, barracks, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 50
 	Selectable:
@@ -342,7 +342,7 @@ CONCRETEB:
 		Range: 6
 	RenderDetectionCircle:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Outpost
+		Prerequisite: radar
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
@@ -357,7 +357,7 @@ CONCRETEB:
 		Name: Starport
 		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Buildable:
-		Prerequisites: Outpost, ~techlevel.high
+		Prerequisites: ~conyard, radar, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 80
 	Building:
@@ -390,14 +390,14 @@ CONCRETEB:
 	CanPowerDown:
 	DisabledOverlay:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Starport
+		Prerequisite: starport
 	Power:
 		Amount: -40
 
 ^WALL:
 	Buildable:
 		Queue: Building
-		Prerequisites: Barracks
+		Prerequisites: ~conyard, barracks
 		BuildPaletteOrder: 60
 	SoundOnDamageTransition:
 		DamagedSound:
@@ -446,13 +446,13 @@ CONCRETEB:
 WALL:
 	Inherits: ^WALL
 	Buildable:
-		Owner:
+		Prerequisites: ~disabled
 
 ^GUNTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Barracks
+		Prerequisites: ~conyard, barracks
 		BuildPaletteOrder: 90
 	Valued:
 		Cost: 650
@@ -504,7 +504,7 @@ WALL:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost, ~techlevel.medium
+		Prerequisites: ~conyard, radar, ~techlevel.medium
 		BuildPaletteOrder: 120
 	Valued:
 		Cost: 850
@@ -556,7 +556,7 @@ WALL:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Heavy, ~techlevel.medium
+		Prerequisites: ~conyard, heavy, ~techlevel.medium
 		BuildPaletteOrder: 130
 	Valued:
 		Cost: 500
@@ -579,7 +579,7 @@ WALL:
 	RallyPoint:
 		RallyPoint: 1,3
 	ProvidesCustomPrerequisite:
-		Prerequisite: Repair
+		Prerequisite: repair
 	WithRepairOverlay:
 		Palette: repairlights
 	Power:
@@ -588,7 +588,7 @@ WALL:
 ^HIGHTECH:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Outpost, ~techlevel.medium
+		Prerequisites: ~conyard, radar, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 110
 	Selectable:
@@ -609,7 +609,7 @@ WALL:
 	RevealsShroud:
 		Range: 4c0
 	ProvidesCustomPrerequisite:
-		Prerequisite: Hitech
+		Prerequisite: hightech
 #	WithProductionOverlay@WELDING:
 #		Sequence: production-welding
 	Power:
@@ -619,7 +619,7 @@ WALL:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Hitech, ~techlevel.high
+		Prerequisites: ~conyard, hightech, ~techlevel.high
 		BuildPaletteOrder: 140
 	Selectable:
 		Bounds: 96,64
@@ -650,7 +650,7 @@ WALL:
 	RevealsShroud:
 		Range: 4c0
 	ProvidesCustomPrerequisite:
-		Prerequisite: Research
+		Prerequisite: research
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
@@ -659,7 +659,7 @@ WALL:
 ^PALACE:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Research, ~techlevel.high
+		Prerequisites: ~conyard, research, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 150
 	Selectable:
@@ -684,7 +684,7 @@ WALL:
 	DetectCloaked:
 		Range: 4
 	ProvidesCustomPrerequisite:
-		Prerequisite: Palace
+		Prerequisite: palace
 	Power:
 		Amount: -50
 
@@ -718,7 +718,7 @@ PALACEC:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
-		Owner: None
+		Prerequisites: ~disabled
 	Building:
 		Footprint: =x= xxx xxx
 		Dimensions: 3,3
@@ -726,11 +726,18 @@ PALACEC:
 
 HEAVYC:
 	Inherits: ^HEAVY
-	-Buildable:
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1100
+		Prerequisites: ~disabled
 
 CONYARD:
 	Tooltip:
 		Name: Construction Yard
+
+BARRACKS:
+	Tooltip:
+		Name: Barracks
 
 LIGHT:
 	Tooltip:
@@ -740,7 +747,7 @@ HEAVY:
 	Tooltip:
 		Name: Heavy Factory
 
-HITECH:
+HIGHTECH:
 	Tooltip:
 		Name: High-Tech Facility
 
@@ -752,3 +759,14 @@ RESEARCH:
 	Tooltip:
 		Name: Ix Lab
 
+RADAR:
+	Tooltip:
+		Name: Outpost
+
+POWER:
+	Tooltip:
+		Name: Windtrap
+
+REFINERY:
+	Tooltip:
+		Name: Spice Refinery
