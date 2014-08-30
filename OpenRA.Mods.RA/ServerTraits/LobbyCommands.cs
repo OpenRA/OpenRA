@@ -691,6 +691,7 @@ namespace OpenRA.Mods.RA.Server
 					s =>
 					{
 						Log.Write("server", "Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
+						server.SendMessage("{0} is now known as {1}.".F(client.Name, s));
 						client.Name = s;
 						server.SyncLobbyClients();
 						return true;
