@@ -43,28 +43,26 @@ rifle:
 		Facings: -8
 		Transpose: true
 	die1: DATA
-		Start: 382
-		Length: 5
+		Frames: 382, 389, 396, 403, 410, 417, 424, 431, 438, 439, 440, 441
+		Length: 8
+		Tick: 80
 	die2: DATA
-		Start: 387
-		Length: 7
+		Frames: 383, 390, 397, 404, 411, 418, 425, 432
+		Length: 8
 		Tick: 80
 	die3: DATA
-		Start: 394
-		Length: 7
+		Frames: 384, 391, 398, 405, 412, 419, 426, 433
+		Length: 12
+		Tick: 80
 	die4: DATA
-		Start: 401
-		Length: 7
-	die5: DATA
-		Start: 408
-		Length: 7
-	die6: DATA
-		Start: 415
-		Length: 12
+		Frames: 385, 392, 399, 406, 413, 420, 427, 434
+		Length: 8
+		Tick: 80
 	die-crushed: DATA
-		Start: 430
-		Length: 12
-		Tick: 1600
+		Frames: 386, 393, 400, 407, 414, 421, 428, 435
+		Length: 8
+		Tick: 800
+		ZOffset: -511
 	icon: DATA
 		Start: 4011
 		Offset: -30,-24
@@ -115,27 +113,26 @@ bazooka:
 		Facings: -8
 		Transpose: true
 	die1: DATA
-		Start: 634
-		Length: 5
+		Frames: 634, 641, 648, 655, 662, 669, 676, 683, 690, 691, 692, 693
+		Length: 12
+		Tick: 80
 	die2: DATA
-		Start: 639
-		Length: 7
+		Frames: 635, 642, 649, 656, 663, 670, 677, 684
+		Length: 8
+		Tick: 80
 	die3: DATA
-		Start: 646
-		Length: 7
+		Frames: 636, 643, 650, 657, 664, 671, 678, 685
+		Length: 8
+		Tick: 80
 	die4: DATA
-		Start: 653
-		Length: 7
-	die5: DATA
-		Start: 660
-		Length: 7
-	die6: DATA
-		Start: 660
-		Length: 7
+		Frames: 637, 644, 651, 658, 665, 672, 679, 686
+		Length: 8
+		Tick: 80
 	die-crushed: DATA
-		Start: 668
-		Length: 26
-		Tick: 1600
+		Frames: 638, 645, 652, 659, 666, 673, 680, 687
+		Length: 8
+		Tick: 800
+		ZOffset: -511
 	icon: DATA
 		Start: 4012
 		Offset: -30,-24
@@ -156,27 +153,26 @@ engineer:
 		Transpose: true
 		Tick: 120
 	die1: DATA
-		Start: 1342
-		Length: 5
+		Frames: 1342, 1349, 1356, 1363, 1370, 1377, 1384, 1391, 1398, 1399, 1400, 1401
+		Length: 12
+		Tick: 80
 	die2: DATA
-		Start: 1347
-		Length: 7
+		Frames: 1343, 1350, 1357, 1364, 1371, 1378, 1385, 1392
+		Length: 8
+		Tick: 80
 	die3: DATA
-		Start: 1354
-		Length: 7
+		Frames: 1344, 1351, 1358, 1365, 1372, 1379, 1386, 1393
+		Length: 8
+		Tick: 80
 	die4: DATA
-		Start: 1361
-		Length: 7
-	die5: DATA
-		Start: 1368
-		Length: 7
-	die6: DATA
-		Start: 1368
-		Length: 7
+		Frames: 1345, 1352, 1359, 1366, 1373, 1380, 1387, 1394
+		Length: 8
+		Tick: 80
 	die-crushed: DATA
-		Start: 1376
-		Length: 26
-		Tick: 1600
+		Frames: 1346, 1353, 1360, 1367, 1374, 1381, 1388, 1395
+		Length: 8
+		Tick: 800
+		ZOffset: -511
 	icon: DATA
 		Start: 4013
 		Offset: -30,-24
@@ -201,27 +197,26 @@ medic: # actually thumper
 		Length: 5
 		Tick: 480
 	die1: DATA
-		Start: 1543
-		Length: 5
+		Frames: 1543, 1550, 1557, 1564, 1571, 1578, 1585, 1592, 1599, 1600, 1601, 1602
+		Length: 12
+		Tick: 80
 	die2: DATA
-		Start: 1548
-		Length: 7
+		Frames: 1544, 1551, 1558, 1565, 1572, 1579, 1586, 1593
+		Length: 8
+		Tick: 80
 	die3: DATA
-		Start: 1555
-		Length: 7
+		Frames: 1546, 1552, 1559, 1566, 1573, 1580, 1587, 1594
+		Length: 8
+		Tick: 80
 	die4: DATA
-		Start: 1562
-		Length: 7
-	die5: DATA
-		Start: 1569
-		Length: 7
-	die6: DATA
-		Start: 1569
-		Length: 7
+		Frames: 1547, 1553, 1560, 1567, 1574, 1581, 1588, 1595
+		Length: 8
+		Tick: 80
 	die-crushed: DATA
-		Start: 1577
-		Length: 26
-		Tick: 1600
+		Frames: 1548, 1554, 1561, 1568, 1575, 1582, 1589, 1596
+		Length: 8
+		Tick: 800
+		ZOffset: -511
 	icon: DATA
 		Start: 4014
 		Offset: -30,-24
@@ -285,27 +280,26 @@ fremen:
 		Facings: -8
 		Transpose: true
 	die1: DATA
-		Start: 870
-		Length: 5
+		Frames: 870, 877, 884, 891, 898, 905, 912, 919, 926, 933, 940, 947
+		Length: 12
+		Tick: 80
 	die2: DATA
-		Start: 875
-		Length: 7
+		Frames: 871, 878, 885, 892, 899, 906, 913, 920
+		Length: 8
+		Tick: 80
 	die3: DATA
-		Start: 882
-		Length: 7
+		Frames: 872, 879, 886, 893, 900, 907, 914, 921
+		Length: 8
+		Tick: 80
 	die4: DATA
-		Start: 889
-		Length: 7
-	die5: DATA
-		Start: 896
-		Length: 7
-	die6: DATA
-		Start: 896
-		Length: 7
+		Frames: 873, 880, 887, 894, 901, 908, 915, 922
+		Length: 8
+		Tick: 80
 	die-crushed: DATA
-		Start: 904
-		Length: 26
-		Tick: 1600
+		Frames: 874, 881, 888, 895, 902, 909, 916, 923
+		Length: 8
+		Tick: 800
+		ZOffset: -511
 	icon: DATA
 		Start: 4032
 		Offset: -30,-24
@@ -347,27 +341,26 @@ saboteur:
 		Transpose: true
 		Tick: 120
 	die1: DATA
-		Start: 2325
-		Length: 5
+		Frames: 2325, 2332, 2339, 2346, 2353, 2360, 2367, 2374, 2381, 2383, 2385, 2387
+		Length: 12
+		Tick: 80
 	die2: DATA
-		Start: 2330
-		Length: 7
+		Frames: 2326, 2333, 2340, 2347, 2354, 2361, 2368, 2375, 2382, 2384, 2386, 2388
+		Length: 12
+		Tick: 80
 	die3: DATA
-		Start: 2337
-		Length: 7
+		Frames: 2327, 2334, 2341, 2348, 2355, 2362, 2369, 2376
+		Length: 8
+		Tick: 80
 	die4: DATA
-		Start: 2344
-		Length: 7
-	die5: DATA
-		Start: 2351
-		Length: 7
-	die6: DATA
-		Start: 2351
-		Length: 7
+		Frames: 2328, 2335, 2342, 2349, 2356, 2363, 2370, 2377
+		Length: 8
+		Tick: 80
 	die-crushed: DATA
-		Start: 2359
-		Length: 26
-		Tick: 1600
+		Frames: 2329, 2336, 2343, 2350, 2357, 2364, 2371, 2378
+		Length: 8
+		Tick: 800
+		ZOffset: -511
 	icon: DATA
 		Start: 4034
 		Offset: -30,-24
@@ -415,27 +408,26 @@ sardaukar:
 		Facings: -8
 		Transpose: true
 	die1: DATA
-		Start: 1106
-		Length: 5
+		Frames: 1106, 1113, 1120, 1127, 1134, 1141, 1148, 1155, 1162, 1163, 1164, 1165
+		Length: 12
+		Tick: 80
 	die2: DATA
-		Start: 1111
-		Length: 7
+		Frames: 1107, 1114, 1121, 1128, 1135, 1142, 1149, 1156
+		Length: 8
+		Tick: 80
 	die3: DATA
-		Start: 1118
-		Length: 7
+		Frames: 1108, 1115, 1122, 1129, 1136, 1143, 1150, 1157
+		Length: 8
+		Tick: 80
 	die4: DATA
-		Start: 1125
-		Length: 7
-	die5: DATA
-		Start: 1132
-		Length: 7
-	die6: DATA
-		Start: 1132
-		Length: 7
+		Frames: 1109, 1116, 1123, 1130, 1137, 1144, 1151, 1158
+		Length: 8
+		Tick: 80
 	die-crushed: DATA
-		Start: 1140
-		Length: 26
-		Tick: 1600
+		Frames: 1110, 1117, 1124, 1131, 1138, 1145, 1152, 1159
+		Length: 8
+		Tick: 800
+		ZOffset: -511
 	icon: DATA
 		Start: 4015
 		Offset: -30,-24
@@ -462,26 +454,21 @@ grenadier: # 2502 - 2749 in 1.06 DATA.R8
 		Tick: 120
 	die1:
 		Start: 176
-		Length: 20
+		Length: 19
 	die2:
 		Start: 176
-		Length: 20
+		Length: 19
 	die3:
 		Start: 176
-		Length: 20
+		Length: 19
 	die4:
 		Start: 176
-		Length: 20
-	die5:
-		Start: 176
-		Length: 20
-	die6:
-		Start: 176
-		Length: 20
+		Length: 19
 	die-crushed:
 		Start: 195
 		Length: 8
-		Tick: 1600
+		Tick: 800
+		ZOffset: -511
 	prone-stand:
 		Start: 104
 		Length: 4
