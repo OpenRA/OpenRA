@@ -166,6 +166,7 @@
 		Probability: 10
 	CrushableInfantry:
 		WarnProbability: 67
+		CrushSound: squish2.aud
 	CombatDebugOverlay:
 	Guard:
 	Guardable:
@@ -220,6 +221,7 @@
 		NotifyAll: true
 	ScaredyCat:
 	CrushableInfantry:
+		CrushSound: squish2.aud
 
 ^DINO:
 	AppearsOnRadar:
