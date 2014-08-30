@@ -182,6 +182,8 @@
 		KilledOnImpassableTerrain: true
 		ParachuteSequence: parach
 		ShadowSequence: parach-shadow
+		GroundImpactSound: squishy2.aud
+		WaterImpactSound: splash9.aud
 	Cloneable:
 		Types: Infantry
 	GainsStatUpgrades:

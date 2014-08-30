@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 {
 	class CrushableInfantryInfo : ITraitInfo, Requires<MobileInfo>, Requires<RenderInfantryInfo>
 	{
-		public readonly string CrushSound = "squish2.aud";
+		public readonly string CrushSound = null;
 		public readonly string CorpseSequence = "die-crushed";
 		public readonly string[] CrushClasses = { "infantry" };
 		public readonly int WarnProbability = 75;
