@@ -515,14 +515,6 @@ Rules:
 	Player:
 		PlayerResources:
 			InitialCash: 50
-		ClassicProductionQueue@Infantry:
-			Type: Infantry
-			BuildSpeed: 1
-			LowPowerSlowdown: 3
-		ClassicProductionQueue@Defense:
-			Type: Defense
-			BuildSpeed: .4
-			LowPowerSlowdown: 3
 	^Infantry:
 		MustBeDestroyed:
 	^Vehicle:
@@ -544,7 +536,7 @@ Rules:
 		Health:
 			HP: 1000
 		Production:
-			Produces: Defense,Infantry
+			Produces: Defense, Infantry, Soldier
 		-Sellable:
 		BaseProvider:
 			Range: 12
@@ -552,14 +544,14 @@ Rules:
 			Amount: 0
 	FTUR:
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 400
 		Power:
 			Amount: 0
 	PBOX:
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 400
 		Health:
@@ -603,17 +595,17 @@ Rules:
 			Prerequisites: ~disabled
 	DOG:
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 20
 	E1:
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 20
 	E2:
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 40
 		Explodes:
@@ -621,22 +613,22 @@ Rules:
 			Chance: 20
 	E3:
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 60
 	E4:
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	E6:
 		Buildable:
-			Prerequisites: barr
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	E7:
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 750
 	3TNK:
@@ -654,19 +646,19 @@ Rules:
 			Prerequisites: ~disabled
 	MEDI:
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	SHOK:
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 150
 	SNIPER:
 		Valued:
 			Cost: 200
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Health:
 			HP: 200
 		AutoTarget:
@@ -677,7 +669,7 @@ Rules:
 		Buildable:
 			Queue: Infantry
 			BuildPaletteOrder: 60
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 300
 	ARTY:
