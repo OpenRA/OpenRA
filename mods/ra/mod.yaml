@@ -151,6 +151,7 @@ ServerTraits:
 	PlayerPinger
 	MasterServerPinger
 	LobbySettingsNotification
+	ColorValidator
 
 LobbyDefaults:
 	AllowCheats: false
