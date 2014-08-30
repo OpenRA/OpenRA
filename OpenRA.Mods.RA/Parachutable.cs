@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		[Desc("If we land on invalid terrain for my actor type should we be killed?")]
 		public readonly bool KilledOnImpassableTerrain = true;
 
-		public readonly string GroundImpactSound = "squishy2.aud";
+		public readonly string GroundImpactSound = "squish2.aud";
 		public readonly string GroundCorpseSequence = "corpse";
 		public readonly string GroundCorpsePalette = "effect";
 
