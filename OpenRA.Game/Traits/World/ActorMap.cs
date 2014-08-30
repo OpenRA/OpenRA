@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public enum SubCell { InvalidSubCell = int.MinValue, AnySubCell = int.MinValue / 2, FullCell = 0, FirstSubCell = 1 }
+	public enum SubCell { Invalid = int.MinValue, Any = int.MinValue / 2, FullCell = 0, First = 1 }
 
 	public class ActorMapInfo : ITraitInfo
 	{
@@ -85,35 +85,35 @@ namespace OpenRA.Traits
 
 		public bool HasFreeSubCell(CPos a, bool checkTransient = true)
 		{
-			return FreeSubCell(a, SubCell.AnySubCell, checkTransient) != SubCell.InvalidSubCell;
+			return FreeSubCell(a, SubCell.Any, checkTransient) != SubCell.Invalid;
 		}
 
-		public SubCell FreeSubCell(CPos a, SubCell preferredSubCell = SubCell.AnySubCell, bool checkTransient = true)
+		public SubCell FreeSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, bool checkTransient = true)
 		{
-			if (preferredSubCell > SubCell.AnySubCell && !AnyUnitsAt(a, preferredSubCell, checkTransient))
+			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(a, preferredSubCell, checkTransient))
 				return preferredSubCell;
 
 			if (!AnyUnitsAt(a))
 				return map.DefaultSubCell;
 
-			for (var i = (int)SubCell.FirstSubCell; i < map.SubCellOffsets.Length; i++)
+			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
 				if (i != (int)preferredSubCell && !AnyUnitsAt(a, (SubCell)i, checkTransient))
 					return (SubCell)i;
-			return SubCell.InvalidSubCell;
+			return SubCell.Invalid;
 		}
 
 		public SubCell FreeSubCell(CPos a, SubCell preferredSubCell, Func<Actor, bool> checkIfBlocker)
 		{
-			if (preferredSubCell > SubCell.AnySubCell && !AnyUnitsAt(a, preferredSubCell, checkIfBlocker))
+			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(a, preferredSubCell, checkIfBlocker))
 				return preferredSubCell;
 
 			if (!AnyUnitsAt(a))
 				return map.DefaultSubCell;
 
-			for (var i = (int)SubCell.FirstSubCell; i < map.SubCellOffsets.Length; i++)
+			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
 				if (i != (int)preferredSubCell && !AnyUnitsAt(a, (SubCell)i, checkIfBlocker))
 					return (SubCell)i;
-			return SubCell.InvalidSubCell;
+			return SubCell.Invalid;
 		}
 
 		// NOTE: always includes transients with influence
@@ -125,7 +125,7 @@ namespace OpenRA.Traits
 		// NOTE: can not check aircraft
 		public bool AnyUnitsAt(CPos a, SubCell sub, bool checkTransient = true)
 		{
-			bool always = sub == SubCell.FullCell || sub == SubCell.AnySubCell;
+			bool always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = influence[a]; i != null; i = i.Next)
 				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
 				{
@@ -142,7 +142,7 @@ namespace OpenRA.Traits
 		// NOTE: can not check aircraft
 		public bool AnyUnitsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition)
 		{
-			bool always = sub == SubCell.FullCell || sub == SubCell.AnySubCell;
+			bool always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = influence[a]; i != null; i = i.Next)
 				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
 					if (withCondition(i.Actor))

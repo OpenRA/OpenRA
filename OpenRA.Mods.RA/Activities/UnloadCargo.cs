@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 				.Shuffle(self.World.SharedRandom)
 				.Select(c => Pair.New(c, pos.GetAvailableSubCell(c)))
 				.Cast<Pair<CPos, SubCell>?>()
-				.FirstOrDefault(s => s.Value.Second != SubCell.InvalidSubCell);
+				.FirstOrDefault(s => s.Value.Second != SubCell.Invalid);
 		}
 
 		IEnumerable<CPos> BlockedExitCells(Actor passenger)

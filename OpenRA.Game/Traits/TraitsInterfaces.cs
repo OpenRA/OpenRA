@@ -180,11 +180,11 @@ namespace OpenRA.Traits
 
 	public interface IPositionable : IOccupySpace
 	{
-		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.AnySubCell);
+		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any);
 		bool CanEnterCell(CPos location, Actor ignoreActor = null, bool checkTransientActors = true);
-		SubCell GetValidSubCell(SubCell preferred = SubCell.AnySubCell);
-		SubCell GetAvailableSubCell(CPos location, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true);
-		void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell);
+		SubCell GetValidSubCell(SubCell preferred = SubCell.Any);
+		SubCell GetAvailableSubCell(CPos location, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true);
+		void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any);
 		void SetPosition(Actor self, WPos pos);
 		void SetVisualPosition(Actor self, WPos pos);
 	}
@@ -197,7 +197,7 @@ namespace OpenRA.Traits
 		Activity MoveWithinRange(Target target, WRange range);
 		Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange);
 		Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange);
-		Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell);
+		Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any);
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
 		bool IsMoving { get; set; }

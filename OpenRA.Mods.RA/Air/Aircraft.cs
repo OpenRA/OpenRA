@@ -170,7 +170,7 @@ namespace OpenRA.Mods.RA.Air
 		}
 
 		// Changes position, but not altitude
-		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)
+		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
 			SetPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(0, 0, CenterPosition.Z));
 		}
@@ -199,9 +199,9 @@ namespace OpenRA.Mods.RA.Air
 				|| info.RepairBuildings.Contains(a.Info.Name);
 		}
 
-		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.AnySubCell) { return false; } // TODO: Handle landing
-		public SubCell GetValidSubCell(SubCell preferred) { return SubCell.InvalidSubCell; }
-		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true) { return SubCell.InvalidSubCell; } // Does not use any subcell
+		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return false; } // TODO: Handle landing
+		public SubCell GetValidSubCell(SubCell preferred) { return SubCell.Invalid; }
+		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true) { return SubCell.Invalid; } // Does not use any subcell
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true) { return true; }
 
 		public int MovementSpeed

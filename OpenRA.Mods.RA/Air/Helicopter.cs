@@ -148,7 +148,7 @@ namespace OpenRA.Mods.RA.Air
 		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new Follow(self, target, minRange, maxRange); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
-		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)
+		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
 			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
 		}

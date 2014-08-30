@@ -53,30 +53,30 @@ namespace OpenRA.Mods.RA
 		}
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
-		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.AnySubCell) { return false; }
-		public SubCell GetValidSubCell(SubCell preferred = SubCell.AnySubCell) { return SubCell.FullCell; }
-		public SubCell GetAvailableSubCell(CPos cell, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true)
+		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return false; }
+		public SubCell GetValidSubCell(SubCell preferred = SubCell.Any) { return SubCell.FullCell; }
+		public SubCell GetAvailableSubCell(CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			if (!self.World.Map.Contains(cell))
-				return SubCell.InvalidSubCell;
+				return SubCell.Invalid;
 
 			if (!info.AllowedTerrain.Contains(self.World.Map.GetTerrainInfo(cell).Type))
-				return SubCell.InvalidSubCell;
+				return SubCell.Invalid;
 
 			if (!checkTransientActors)
 				return SubCell.FullCell;
 
 			return !self.World.ActorMap.GetUnitsAt(cell)
 				.Where(x => x != ignoreActor)
-				.Any() ? SubCell.FullCell : SubCell.InvalidSubCell;
+				.Any() ? SubCell.FullCell : SubCell.Invalid;
 		}
 
 		public bool CanEnterCell(CPos a, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return GetAvailableSubCell(a, SubCell.AnySubCell, ignoreActor, checkTransientActors) != SubCell.InvalidSubCell;
+			return GetAvailableSubCell(a, SubCell.Any, ignoreActor, checkTransientActors) != SubCell.Invalid;
 		}
 
-		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell) { SetPosition(self, self.World.Map.CenterOfCell(cell)); }
+		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any) { SetPosition(self, self.World.Map.CenterOfCell(cell)); }
 
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
