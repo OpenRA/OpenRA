@@ -7,7 +7,7 @@ Colt45:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 50
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			None: 100
 			Wood: 0
@@ -52,7 +52,7 @@ Vulcan:
 	Warhead@1Dam_1: SpreadDamage
 		Spread: 128
 		Damage: 10
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			Wood: 50
 			Light: 60
@@ -67,7 +67,7 @@ Vulcan:
 	Warhead@3Dam_2: SpreadDamage
 		Spread: 128
 		Damage: 10
-		InfDeath: 2
+		DeathType: 2
 		Delay: 2
 		Versus:
 			Wood: 50
@@ -85,7 +85,7 @@ Vulcan:
 	Warhead@5Dam_3: SpreadDamage
 		Spread: 128
 		Damage: 10
-		InfDeath: 2
+		DeathType: 2
 		Delay: 4
 		Versus:
 			Wood: 50
@@ -103,7 +103,7 @@ Vulcan:
 	Warhead@7Dam_4: SpreadDamage
 		Spread: 128
 		Damage: 10
-		InfDeath: 2
+		DeathType: 2
 		Delay: 6
 		Versus:
 			Wood: 50
@@ -121,7 +121,7 @@ Vulcan:
 	Warhead@9Dam_5: SpreadDamage
 		Spread: 128
 		Damage: 10
-		InfDeath: 2
+		DeathType: 2
 		Delay: 8
 		Versus:
 			Wood: 50
@@ -139,7 +139,7 @@ Vulcan:
 	Warhead@11Dam_6: SpreadDamage
 		Spread: 128
 		Damage: 10
-		InfDeath: 2
+		DeathType: 2
 		Delay: 10
 		Versus:
 			Wood: 50
@@ -175,7 +175,7 @@ Maverick:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 70
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Ground, Water
 		Versus:
 			None: 30
@@ -205,7 +205,7 @@ FireballLauncher:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 150
-		InfDeath: 5
+		DeathType: 5
 		Versus:
 			None: 90
 			Wood: 50
@@ -232,7 +232,7 @@ Flamer:
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 8
-		InfDeath: 5
+		DeathType: 5
 		Versus:
 			None: 90
 			Wood: 100
@@ -256,7 +256,7 @@ ChainGun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			None: 120
 			Wood: 50
@@ -281,7 +281,7 @@ ChainGun.Yak:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			Wood: 50
 			Light: 60
@@ -303,7 +303,7 @@ Pistol:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 1
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			Wood: 50
 			Light: 60
@@ -325,7 +325,7 @@ M1Carbine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 15
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			Wood: 25
 			Light: 30
@@ -356,7 +356,7 @@ Dragon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Ground, Water
 		Versus:
 			None: 10
@@ -393,7 +393,7 @@ HellfireAG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Ground, Water
 		Versus:
 			None: 30
@@ -430,7 +430,7 @@ HellfireAA:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Air
 		Versus:
 			None: 30
@@ -461,7 +461,7 @@ Grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 60
-		InfDeath: 3
+		DeathType: 3
 		Versus:
 			None: 50
 			Wood: 100
@@ -488,7 +488,7 @@ Grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 16
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 30
 			Wood: 40
@@ -513,7 +513,7 @@ Grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 20
 			Wood: 75
@@ -542,7 +542,7 @@ Grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 20
 			Wood: 75
@@ -571,7 +571,7 @@ Grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
-		InfDeath: 4
+		DeathType: 4
 		InvalidTargets: Air, Infantry
 		Versus:
 			None: 20
@@ -599,7 +599,7 @@ TurretGun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 20
 			Wood: 50
@@ -634,7 +634,7 @@ MammothTusk:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 50
-		InfDeath: 3
+		DeathType: 3
 		ValidTargets: Air, Infantry
 		Versus:
 			None: 100
@@ -671,7 +671,7 @@ MammothTusk:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 220
-		InfDeath: 3
+		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
@@ -699,7 +699,7 @@ M60mg:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 15
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			Wood: 10
 			Light: 30
@@ -722,7 +722,7 @@ Napalm:
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
 		Damage: 100
-		InfDeath: 5
+		DeathType: 5
 		Versus:
 			None: 90
 			Light: 60
@@ -744,7 +744,7 @@ CrateNapalm:
 		Spread: 170
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		Versus:
 			None: 90
 			Light: 60
@@ -761,7 +761,7 @@ CrateExplosion:
 		Spread: 426
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
@@ -776,7 +776,7 @@ CrateNuke:
 		Spread: 256
 		Damage: 100
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		Versus:
 			None: 90
 			Light: 60
@@ -789,7 +789,7 @@ CrateNuke:
 	Warhead@4Dam_areanuke: PerCellDamage
 		Size: 5
 		Damage: 250
-		InfDeath: 5
+		DeathType: 5
 		Delay: 4
 		Versus:
 			None: 90
@@ -798,7 +798,7 @@ CrateNuke:
 			Concrete: 50
 	Warhead@5Dam_areanuke: SpreadDamage
 		Damage: 250
-		InfDeath: 5
+		DeathType: 5
 		Delay: 4
 		Versus:
 			None: 90
@@ -825,7 +825,7 @@ TeslaZap:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 100
-		InfDeath: 6
+		DeathType: 6
 		Versus:
 			None: 1000
 			Wood: 60
@@ -846,7 +846,7 @@ Nike:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
-		InfDeath: 3
+		DeathType: 3
 		ValidTargets: Air
 		Versus:
 			None: 90
@@ -876,7 +876,7 @@ RedEye:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		InfDeath: 3
+		DeathType: 3
 		ValidTargets: Air
 		Versus:
 			None: 90
@@ -905,7 +905,7 @@ RedEye:
 		Spread: 213
 		Damage: 25
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 3
+		DeathType: 3
 		Versus:
 			None: 60
 			Wood: 75
@@ -939,7 +939,7 @@ SubMissile:
 		Spread: 426
 		Damage: 30
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 3
+		DeathType: 3
 		Versus:
 			None: 40
 			Light: 30
@@ -974,7 +974,7 @@ Stinger:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Air, Ground, Water
 		Versus:
 			None: 30
@@ -1015,7 +1015,7 @@ TorpTube:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 180
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Water, Underwater, Bridge
 		Versus:
 			None: 30
@@ -1047,7 +1047,7 @@ TorpTube:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 30
 			Wood: 75
@@ -1077,7 +1077,7 @@ DepthCharge:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 80
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Underwater
 		Versus:
 			None: 30
@@ -1106,7 +1106,7 @@ ParaBomb:
 		Spread: 256
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 30
 			Wood: 75
@@ -1131,7 +1131,7 @@ DogJaw:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 100
-		InfDeath: 1
+		DeathType: 1
 		ValidTargets: Infantry
 		Versus:
 			Wood: 0
@@ -1148,7 +1148,7 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -50
-		InfDeath: 1
+		DeathType: 1
 		Versus:
 			Wood: 0
 			Light: 0
@@ -1165,7 +1165,7 @@ Repair:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -20
-		InfDeath: 1
+		DeathType: 1
 		ValidTargets: Repair
 		Versus:
 			None: 0
@@ -1183,7 +1183,7 @@ SilencedPPK:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 150
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			Wood: 0
 			Light: 0
@@ -1214,7 +1214,7 @@ SCUD:
 		Spread: 341
 		Damage: 45
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 3
+		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
@@ -1237,7 +1237,7 @@ Atomic:
 		Spread: 1c0
 		Damage: 150
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
@@ -1253,7 +1253,7 @@ Atomic:
 		Spread: 2c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		Delay: 5
 		ValidTargets: Ground, Water, Air
 		Versus:
@@ -1272,7 +1272,7 @@ Atomic:
 		Spread: 3c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		Delay: 10
 		ValidTargets: Ground, Water, Air
 		Versus:
@@ -1288,7 +1288,7 @@ Atomic:
 		Spread: 4c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		Delay: 15
 		ValidTargets: Ground, Water, Air
 		Versus:
@@ -1304,7 +1304,7 @@ Atomic:
 		Spread: 5c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		Delay: 20
 		ValidTargets: Ground, Water, Air
 		Versus:
@@ -1323,7 +1323,7 @@ MiniNuke:
 		Spread: 1c0
 		Damage: 150
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
@@ -1336,7 +1336,7 @@ MiniNuke:
 		Spread: 2c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		Delay: 5
 		ValidTargets: Ground, Water, Air
 		Versus:
@@ -1351,7 +1351,7 @@ MiniNuke:
 		Spread: 3c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		Delay: 10
 		ValidTargets: Ground, Water, Air
 		Versus:
@@ -1363,7 +1363,7 @@ MiniNuke:
 		Spread: 4c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		Delay: 15
 		ValidTargets: Ground, Water, Air
 		Versus:
@@ -1381,7 +1381,7 @@ UnitExplode:
 		Spread: 426
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
@@ -1400,7 +1400,7 @@ UnitExplodeShip:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 50
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
@@ -1414,7 +1414,7 @@ UnitExplodeSubmarine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 50
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
@@ -1428,7 +1428,7 @@ UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 40
-		InfDeath: 4
+		DeathType: 4
 		Versus:
 			None: 90
 			Wood: 75
@@ -1448,7 +1448,7 @@ BarrelExplode:
 		Spread: 426
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 4
+		DeathType: 4
 		Delay: 5
 		Versus:
 			None: 120
@@ -1483,7 +1483,7 @@ APMine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 400
-		InfDeath: 3
+		DeathType: 3
 	Warhead@2Eff: CreateEffect
 		Explosion: napalm
 		ImpactSound: mine1.aud
@@ -1503,7 +1503,7 @@ PortaTesla:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 45
-		InfDeath: 6
+		DeathType: 6
 		Versus:
 			None: 1000
 
@@ -1516,7 +1516,7 @@ TTankZap:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 100
-		InfDeath: 6
+		DeathType: 6
 		Versus:
 			None: 1000
 
@@ -1557,7 +1557,7 @@ Sniper:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 140
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			None: 100
 			Wood: 0
@@ -1583,7 +1583,7 @@ APTusk:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		InfDeath: 4
+		DeathType: 4
 		ValidTargets: Ground, Water
 		Versus:
 			None: 25
@@ -1609,7 +1609,7 @@ Claw:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 33
-		InfDeath: 1
+		DeathType: 1
 		Versus:
 			None: 90
 			Wood: 10
@@ -1625,7 +1625,7 @@ Mandible:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 60
-		InfDeath: 1
+		DeathType: 1
 		Versus:
 			None: 90
 			Wood: 10
@@ -1661,7 +1661,7 @@ OreExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
 		Damage: 10
-		InfDeath: 3
+		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75

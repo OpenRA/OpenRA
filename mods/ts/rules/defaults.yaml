@@ -141,13 +141,13 @@
 	LuaScriptEvents:
 	ScriptTriggers:
 	DeathSounds@NORMAL:
-		InfDeaths: 1, 2, 3
+		DeathTypes: 1, 2, 3
 	DeathSounds@BURNED:
 		DeathSound: Burned
-		InfDeaths: 5
+		DeathTypes: 5
 	DeathSounds@ZAPPED:
 		DeathSound: Zapped
-		InfDeaths: 6
+		DeathTypes: 6
 
 ^CivilianInfantry:
 	Inherits: ^Infantry

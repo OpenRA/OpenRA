@@ -22,7 +22,7 @@ namespace OpenRA.GameRules
 		public readonly int Damage = 0;
 
 		[Desc("Infantry death animation to use")]
-		public readonly string InfDeath = "1";
+		public readonly string DeathType = "1";
 
 		[Desc("Whether we should prevent prone response for infantry.")]
 		public readonly bool PreventProne = false;

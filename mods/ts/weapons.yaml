@@ -3,7 +3,7 @@ UnitExplode:
 		Spread: 426
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			None: 90
 			Wood: 75
@@ -17,7 +17,7 @@ UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 40
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			None: 90
 			Wood: 75
@@ -36,7 +36,7 @@ Minigun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 12
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 70
 		Versus:
 			Wood: 60
@@ -63,7 +63,7 @@ Grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 171
 		Damage: 40
-		InfDeath: 3
+		DeathType: 3
 		ProneModifier: 70
 		Versus:
 			None: 100
@@ -98,7 +98,7 @@ Bazooka:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25
-		InfDeath: 2
+		DeathType: 2
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
@@ -137,7 +137,7 @@ MultiCluster:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 65
-		InfDeath: 3
+		DeathType: 3
 		ValidTargets: Ground
 		Versus:
 			None: 25
@@ -163,7 +163,7 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -50
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 100
 		Versus:
 			Wood: 0
@@ -180,7 +180,7 @@ Sniper:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 150
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 100
 		Versus:
 			None: 100
@@ -198,7 +198,7 @@ M1Carbine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 15
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 70
 		Versus:
 			Wood: 60
@@ -224,7 +224,7 @@ LtRail:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 150
-		InfDeath: 2
+		DeathType: 2
 		ProneModifier: 100
 		Versus:
 			None: 100
@@ -246,7 +246,7 @@ CyCannon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 120
-		InfDeath: 6
+		DeathType: 6
 		ProneModifier: 100
 		ValidTargets: Ground
 		Versus:
@@ -274,7 +274,7 @@ Vulcan3:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 10
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 70
 		Versus:
 			Wood: 60
@@ -298,7 +298,7 @@ Vulcan2:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 70
 		Versus:
 			None: 100
@@ -322,7 +322,7 @@ Vulcan:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 20
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 70
 		Versus:
 			Wood: 60
@@ -350,7 +350,7 @@ FiendShard:
 		Angle: 88
 	Warhead@1Dam: SpreadDamage
 		Damage: 35
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 100
 		Versus:
 			Wood: 60
@@ -372,7 +372,7 @@ JumpCannon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 15
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 70
 		Versus:
 			Wood: 60
@@ -405,7 +405,7 @@ HoverMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		InfDeath: 2
+		DeathType: 2
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
@@ -441,7 +441,7 @@ HoverMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			None: 25
 			Wood: 65
@@ -476,7 +476,7 @@ MammothTusk:
 	Warhead@1Dam: SpreadDamage
 		Spread: 171
 		Damage: 40
-		InfDeath: 3
+		DeathType: 3
 		ProneModifier: 70
 		ValidTargets: Air
 		Versus:
@@ -503,7 +503,7 @@ Repair:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -50
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 100
 		Versus:
 			None: 0
@@ -521,7 +521,7 @@ SlimeAttack:
 		Speed: 426
 	Warhead@1Dam: SpreadDamage
 		Damage: 100
-		InfDeath: 2
+		DeathType: 2
 		ProneModifier: 100
 		Versus:
 			Wood: 25
@@ -537,7 +537,7 @@ SuicideBomb:
 		Spread: 256
 		Damage: 110
 		Falloff: 10000, 3680, 1350, 500, 180, 70, 0
-		InfDeath: 5
+		DeathType: 5
 		Versus:
 			None: 90
 			Light: 60
@@ -554,7 +554,7 @@ SuicideBomb:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 70
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			None: 25
 			Wood: 65
@@ -582,7 +582,7 @@ MechRailgun:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 200
-		InfDeath: 5
+		DeathType: 5
 		ProneModifier: 100
 		Versus:
 			None: 200
@@ -600,7 +600,7 @@ AssaultCannon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 70
 		Versus:
 			Wood: 60
@@ -634,7 +634,7 @@ BikeMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 40
-		InfDeath: 2
+		DeathType: 2
 		ValidTargets: Ground
 		Versus:
 			None: 25
@@ -662,7 +662,7 @@ RaiderCannon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 70
 		Versus:
 			Wood: 60
@@ -689,7 +689,7 @@ FireballLauncher:
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 25
-		InfDeath: 5
+		DeathType: 5
 		ProneModifier: 100
 		Versus:
 			None: 600
@@ -710,7 +710,7 @@ SonicZap:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 100
-		InfDeath: 5
+		DeathType: 5
 		Versus:
 			Heavy: 80
 			Concrete: 60
@@ -734,7 +734,7 @@ Dragon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		InfDeath: 2
+		DeathType: 2
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
@@ -768,7 +768,7 @@ Dragon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 36
-		InfDeath: 2
+		DeathType: 2
 		Versus:
 			None: 25
 			Wood: 65
@@ -799,7 +799,7 @@ Dragon:
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
 		Damage: 150
-		InfDeath: 3
+		DeathType: 3
 		ProneModifier: 100
 		Versus:
 			None: 100
@@ -835,7 +835,7 @@ Hellfire:
 	Warhead@1Dam: SpreadDamage
 		Spread: 85
 		Damage: 30
-		InfDeath: 2
+		DeathType: 2
 		ValidTargets: Ground, Air
 		Versus:
 			None: 30
@@ -867,7 +867,7 @@ Bomb:
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
 		Damage: 160
-		InfDeath: 3
+		DeathType: 3
 		ProneModifier: 100
 		Versus:
 			None: 200
@@ -902,7 +902,7 @@ Proton:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 20
-		InfDeath: 3
+		DeathType: 3
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
@@ -929,7 +929,7 @@ HarpyClaw:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 70
 		ValidTargets: Ground, Air
 		Versus:
@@ -953,7 +953,7 @@ Pistola:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 2
-		InfDeath: 1
+		DeathType: 1
 		ProneModifier: 70
 		Versus:
 			Wood: 60
@@ -972,7 +972,7 @@ Tiberium:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 2
-		InfDeath: 6
+		DeathType: 6
 		PreventProne: yes
 
 TiberiumHeal:
@@ -980,7 +980,7 @@ TiberiumHeal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: -2
-		InfDeath: 6
+		DeathType: 6
 		PreventProne: yes
 
 IonCannon:
@@ -989,7 +989,7 @@ IonCannon:
 		Spread: 1c0
 		Damage: 100
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		InfDeath: 5
+		DeathType: 5
 		ProneModifier: 100
 		ValidTargets: Ground, Air
 	Warhead@2Eff_impact: CreateEffect
@@ -997,7 +997,7 @@ IonCannon:
 	Warhead@3Dam_area: PerCellDamage
 		Size: 2
 		Damage: 250
-		InfDeath: 5
+		DeathType: 5
 		Delay: 3
 		ValidTargets: Ground, Air
 	Warhead@4Smu_area: LeaveSmudge
@@ -1014,7 +1014,7 @@ VulcanTower:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 18
-		InfDeath: 1
+		DeathType: 1
 		Versus:
 			Wood: 60
 			Light: 40
@@ -1041,7 +1041,7 @@ RPGTower:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 110
-		InfDeath: 2
+		DeathType: 2
 		ProneModifier: 70
 		Versus:
 			None: 30
@@ -1076,7 +1076,7 @@ SAMTower:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 33
-		InfDeath: 2
+		DeathType: 2
 		ValidTargets: Air
 	Warhead@2Eff: CreateEffect
 		Explosion: small_clsn
@@ -1092,7 +1092,7 @@ ObeliskLaser:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 250
-		InfDeath: 5
+		DeathType: 5
 		ProneModifier: 60
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -1107,7 +1107,7 @@ TurretLaser:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 30
-		InfDeath: 5
+		DeathType: 5
 		ProneModifier: 60
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -1116,7 +1116,7 @@ TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
 		Damage: 10
-		InfDeath: 3
+		DeathType: 3
 		Versus:
 			None: 90
 			Wood: 75
