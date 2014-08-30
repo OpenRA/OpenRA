@@ -246,7 +246,7 @@ button: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
-# 5% lighter than a normal button	
+# 5% lighter than a normal button (mouseover)
 button-hover: dialog.png
 	background: 513,129,126,126
 	border-r: 639,129,1,126
@@ -256,7 +256,7 @@ button-hover: dialog.png
 	corner-tl: 512,128,1,1
 	corner-tr: 639,128,1,1
 	corner-bl: 512,255,1,1
-	corner-br: 639,255,1,1		
+	corner-br: 639,255,1,1
 	
 # A copy of dialog3 (pressed button)
 button-pressed: dialog.png
@@ -268,8 +268,8 @@ button-pressed: dialog.png
 	corner-tl: 640,0,1,1
 	corner-tr: 767,0,1,1
 	corner-bl: 640,127,1,1
-	corner-br: 767,127,1,1	
-	
+	corner-br: 767,127,1,1
+
 # 10% darker than a normal button
 button-disabled: dialog.png
 	background: 513,257,126,126
@@ -280,22 +280,80 @@ button-disabled: dialog.png
 	corner-tl: 512,256,1,1
 	corner-tr: 639,256,1,1
 	corner-bl: 512,383,1,1
-	corner-br: 639,383,1,1
-	
-# A yellow (normal) button
+	corner-br: 639,383,1,1  
+    
+# 10% darker than a normal button - Used in Settings when you select Display Audio Input or Advanced
 button-highlighted: dialog.png
-	background: 769,1,126,126
-	border-r: 895,1,1,126
-	border-l: 768,1,1,126
-	border-b: 769,127,126,1
-	border-t: 769,0,126,1
-	corner-tl: 768,0,1,1
-	corner-tr: 895,0,1,1
-	corner-bl: 768,127,1,1
-	corner-br: 895,127,1,1
+	background: 769,129,126,126
+	border-r: 895,129,1,126
+	border-l: 768,129,1,126
+	border-b: 769,255,126,1
+	border-t: 769,128,126,1
+	corner-tl: 768,128,1,1
+	corner-tr: 895,128,1,1
+	corner-bl: 768,255,1,1
+	corner-br: 895,255,1,1
 
-# A copy of button-highlighted
+# A copy of button-highlighted - Used in Settings when you select Display Audio Input or Advanced
 button-highlighted-hover: dialog.png
+	background: 769,129,126,126
+	border-r: 895,129,1,126
+	border-l: 768,129,1,126
+	border-b: 769,255,126,1
+	border-t: 769,128,126,1
+	corner-tl: 768,128,1,1
+	corner-tr: 895,128,1,1
+	corner-bl: 768,255,1,1
+	corner-br: 895,255,1,1
+
+#  Used in Settings when you select Display Audio Input or Advanced
+button-highlighted-pressed: dialog.png
+	background: 897,129,126,126
+	border-r: 1023,129,1,126
+	border-l: 896,129,1,126
+	border-b: 897,255,126,1
+	border-t: 897,128,126,1
+	corner-tl: 896,128,1,1
+	corner-tr: 1023,128,1,1
+	corner-bl: 896,255,1,1
+	corner-br: 1023,255,1,1
+
+# A copy of button-highlighted - Used in Settings when you select Display Audio Input or Advanced
+button-highlighted-disabled: dialog.png
+	background: 769,129,126,126
+	border-r: 895,129,1,126
+	border-l: 768,129,1,126
+	border-b: 769,255,126,1
+	border-t: 769,128,126,1
+	corner-tl: 768,128,1,1
+	corner-tr: 895,128,1,1
+	corner-bl: 768,255,1,1
+	corner-br: 895,255,1,1
+
+# vivid color - Used for the Battlefields News button
+newsbutton: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+newsbutton-hover: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+	
+newsbutton-highlighted: dialog.png
 	background: 769,1,126,126
 	border-r: 895,1,1,126
 	border-l: 768,1,1,126
@@ -305,29 +363,39 @@ button-highlighted-hover: dialog.png
 	corner-tr: 895,0,1,1
 	corner-bl: 768,127,1,1
 	corner-br: 895,127,1,1
-
-button-highlighted-pressed: dialog.png
-	background: 897,1,126,126
-	border-r: 1023,1,1,126
-	border-l: 896,1,1,126
-	border-b: 897,127,126,1
-	border-t: 897,0,126,1
-	corner-tl: 896,0,1,1
-	corner-tr: 1023,0,1,1
-	corner-bl: 896,127,1,1
-	corner-br: 1023,127,1,1
-
-# A copy of button-highlighted
-button-highlighted-disabled: dialog.png
+    
+newsbutton-highlighted-hover: dialog.png
 	background: 769,1,126,126
-	border-r: 639,1,1,126
+	border-r: 895,1,1,126
 	border-l: 768,1,1,126
 	border-b: 769,127,126,1
 	border-t: 769,0,126,1
 	corner-tl: 768,0,1,1
-	corner-tr: 639,0,1,1
+	corner-tr: 895,0,1,1
 	corner-bl: 768,127,1,1
-	corner-br: 639,127,1,1
+	corner-br: 895,127,1,1
+	
+newsbutton-highlighted-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+newsbutton-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
 
 # A copy of dialog2 (normal button)
 scrollthumb: dialog.png
