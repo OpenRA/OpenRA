@@ -22,7 +22,14 @@ namespace OpenRA.Traits
 	// depends on the order of pips in WorldRenderer.cs!
 	public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue, Ammo, AmmoEmpty };
 	public enum TagType { None, Fake, Primary };
-	public enum Stance { Enemy, Neutral, Ally };
+	
+	[Flags]
+	public enum Stance
+	{
+		Enemy = 1,
+		Neutral = 2,
+		Ally = 4,
+	}
 
 	[Flags]
 	public enum ImpactType

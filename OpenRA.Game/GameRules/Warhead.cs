@@ -23,12 +23,20 @@ namespace OpenRA.GameRules
 
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly string[] InvalidTargets = { };
+		
+		[Desc("What diplomatic stances are affected.")]
+		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+		
+		[Desc("Can this warhead affect the actor that fired it.")]
+		public readonly bool AffectsParent = false;
 
 		[Desc("Delay in ticks before applying the warhead effect.","0 = instant (old model).")]
 		public readonly int Delay = 0;
 
+		///<summary>Applies the warhead's effect against the target.</summary>
 		public abstract void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
 
+		///<summary>Checks if the warhead is valid against (can do something to) the target.</summary>
 		public bool IsValidAgainst(Target target, World world, Actor firedBy)
 		{
 			if (target.Type == TargetType.Actor)
@@ -58,53 +66,46 @@ namespace OpenRA.GameRules
 		// assumption has been removed from the yaml definitions
 		public virtual bool CanTargetActor(ActorInfo victim, Actor firedBy) { return false; }
 
+		///<summary>Checks if the warhead is valid against (can do something to) the actor.</summary>
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
 			if (!CanTargetActor(victim.Info, firedBy))
 				return false;
 
+			if (!AffectsParent && victim == firedBy)
+				return false;
+
+			var stance = firedBy.Owner.Stances[victim.Owner];
+			if (!ValidStances.HasFlag(stance))
+				return false;
+
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
-			return InTargetList(victim, firedBy, ValidTargets) &&
-				!InTargetList(victim, firedBy, InvalidTargets);
-		}
-
-		public static bool InTargetList(Actor victim, Actor firedBy, string[] targetList)
-		{
-			if (!targetList.Any())
-				return false;
-
 			var targetable = victim.TraitOrDefault<ITargetable>();
-			if (targetable == null)
-				return false;
-			if (!targetList.Intersect(targetable.TargetTypes).Any())
+			if (targetable == null || !ValidTargets.Intersect(targetable.TargetTypes).Any()
+				|| InvalidTargets.Intersect(targetable.TargetTypes).Any())
 				return false;
 
 			return true;
 		}
 
+		///<summary>Checks if the warhead is valid against (can do something to) the frozen actor.</summary>
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
 			if (!CanTargetActor(victim.Info, firedBy))
 				return false;
 
+			// AffectsParent checks do not make sense for FrozenActors, so skip to stance checks
+			var stance = firedBy.Owner.Stances[victim.Owner];
+			if (!ValidStances.HasFlag(stance))
+				return false;
+
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
-			return InTargetList(victim, firedBy, ValidTargets) &&
-				!InTargetList(victim, firedBy, InvalidTargets);
-		}
-
-		public static bool InTargetList(FrozenActor victim, Actor firedBy, string[] targetList)
-		{
-			// Frozen Actors need to be handled slightly differently. Since FrozenActor.Actor can be null if the Actor is dead.
-			if (!targetList.Any())
-				return false;
-
 			var targetable = victim.Info.Traits.GetOrDefault<ITargetableInfo>();
-			if (targetable == null)
+			if (targetable == null || !ValidTargets.Intersect(targetable.GetTargetTypes()).Any()
+				|| InvalidTargets.Intersect(targetable.GetTargetTypes()).Any())
 				return false;
-			if (!targetList.Intersect(targetable.GetTargetTypes()).Any())
-				return false;
-			
+
 			return true;
 		}
-   }
+	}
 }

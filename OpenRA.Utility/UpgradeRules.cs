@@ -573,7 +573,7 @@ namespace OpenRA.Utility
 										newYaml.Add(new MiniYamlNode("Size", newValue));
 									}
 
-									var keywords = new List<string>{ "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
+									var keywords = new List<string> { "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
 
 									foreach(var keyword in keywords)
 									{
@@ -609,7 +609,7 @@ namespace OpenRA.Utility
 										newYaml.Add(new MiniYamlNode("Spread", newValue));
 									}
 
-									var keywords = new List<string>{ "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
+									var keywords = new List<string> { "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
 
 									foreach(var keyword in keywords)
 									{
@@ -636,7 +636,7 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<string>{ "Spread", "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
+									var keywords = new List<string> { "Spread", "Damage", "InfDeath", "PreventProne", "ProneModifier", "Delay" };
 
 									foreach(var keyword in keywords)
 									{
@@ -665,7 +665,7 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<string>{ "Size", "Delay", "ValidTargets", "InvalidTargets" };
+									var keywords = new List<string> { "Size", "Delay", "ValidTargets", "InvalidTargets" };
 									foreach(var keyword in keywords)
 									{
 										var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == keyword);
@@ -683,7 +683,7 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<string>{ "AddsResourceType", "Size", "Delay", "ValidTargets", "InvalidTargets" };
+									var keywords = new List<string> { "AddsResourceType", "Size", "Delay", "ValidTargets", "InvalidTargets" };
 
 									foreach(var keyword in keywords)
 									{
@@ -702,7 +702,7 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<string>{ "SmudgeType", "Size", "Delay", "ValidTargets", "InvalidTargets" };
+									var keywords = new List<string> { "SmudgeType", "Size", "Delay", "ValidTargets", "InvalidTargets" };
 
 									foreach(var keyword in keywords)
 									{
@@ -722,7 +722,7 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<string>{ "Explosion", "ImpactSound", "Delay", "ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
+									var keywords = new List<string> { "Explosion", "ImpactSound", "Delay", "ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
 
 									foreach(var keyword in keywords)
 									{
@@ -743,7 +743,7 @@ namespace OpenRA.Utility
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var keywords = new List<string>{ "WaterExplosion", "WaterImpactSound", "Delay", "ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
+									var keywords = new List<string> { "WaterExplosion", "WaterImpactSound", "Delay", "ValidTargets", "InvalidTargets", "ValidImpactTypes", "InvalidImpactTypes" };
 
 									foreach(var keyword in keywords)
 									{
