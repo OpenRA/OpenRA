@@ -42,6 +42,7 @@ ide = {
     editor = {
       foldcompact = true,
       checkeol = true,
+      saveallonrun = false,
     },
     debugger = {
       verbose = false,
@@ -99,6 +100,7 @@ ide = {
     -- HiDPI/Retina display support;
     -- `false` by default because of issues with indicators with alpha setting
     hidpi = false,
+    hotexit = false,
   },
   specs = {
     none = {
