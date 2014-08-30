@@ -74,6 +74,8 @@ Loading custom configuration:
   e.g.: zbstudio -cfg cfg/estrela.lua
 ```
 
+If you are loading a file, you can also request the cursor to be set on a particular line or at a particular position by using `filename:<line>` and `filename:p<pos>` syntax (0.71+).
+
 ## Author
 
 ### ZeroBrane Studio and MobDebug
