@@ -515,6 +515,8 @@ Rules:
 	Player:
 		PlayerResources:
 			InitialCash: 50
+		ClassicProductionQueue@Infantry:
+			BuildSpeed: 1
 	^Infantry:
 		MustBeDestroyed:
 	^Vehicle:
