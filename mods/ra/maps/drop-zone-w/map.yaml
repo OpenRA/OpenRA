@@ -214,12 +214,7 @@ Rules:
 		-LevelUpCrateAction:
 		-GiveMcvCrateAction:
 		-GiveUnitCrateAction@jeep:
-		-GiveUnitCrateAction@arty:
-		-GiveUnitCrateAction@v2rl:
 		-GiveUnitCrateAction@1tnk:
-		-GiveUnitCrateAction@2tnk:
-		-GiveUnitCrateAction@3tnk:
-		-GiveUnitCrateAction@4tnk:
 		-RevealMapCrateAction:
 		-HideMapCrateAction:
 		-ExplodeCrateAction@nuke:
@@ -227,29 +222,29 @@ Rules:
 		-ExplodeCrateAction@fire:
 		-SupportPowerCrateAction@parabombs:
 		-GiveCashCrateAction:
+		-DuplicateUnitCrateAction:
+		-GiveUnitCrateAction@squadlight:
+		-GiveUnitCrateAction@squadheavyallies:
 		GiveUnitCrateAction@pt:
 			SelectionShares: 7
-			Unit: pt
+			Units: pt
 		GiveUnitCrateAction@dd:
 			SelectionShares: 6
-			Unit: dd
+			Units: dd
 		GiveUnitCrateAction@ca:
 			SelectionShares: 4
-			Unit: ca
+			Units: ca
 		GiveUnitCrateAction@ss:
 			SelectionShares: 6
-			Unit: ss
+			Units: ss
 		GiveUnitCrateAction@msub:
 			SelectionShares: 4
-			Unit: msub
+			Units: msub
+		Crate:
+			TerrainTypes: Water
 	LST:
-		Buildable:
-			Queue: Ship
-			BuildPaletteOrder: 30
-			Owner: allies
 		Tooltip:
 			Name: Naval Mobile HQ
-			Description: Naval mobile HQ.\n Protect it at all costs.
 		Health:
 			HP: 1000
 		Mobile:
@@ -268,24 +263,14 @@ Rules:
 		MustBeDestroyed:
 		-GivesBounty:
 	PT:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	DD:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	CA:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	SS:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 	MSUB:
-		Buildable:
-			Owner: allies
 		-GivesBounty:
 
 Sequences:
