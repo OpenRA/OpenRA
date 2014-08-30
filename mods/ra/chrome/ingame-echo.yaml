@@ -1,0 +1,8 @@
+ChatDisplay@ECHO_PANEL:
+	Logic: IngameEchoLogic
+	X: 20
+	Y: 20
+	Width: 550
+	Height: 194
+	RemoveTime: 250
+	UseContrast: yes

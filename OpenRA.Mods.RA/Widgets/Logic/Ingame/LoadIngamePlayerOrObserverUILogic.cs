@@ -41,6 +41,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				};
 			}
 
+			Game.LoadWidget(world, "ECHO_PANEL", ingameRoot, new WidgetArgs());
 			Game.LoadWidget(world, "CHAT_PANEL", ingameRoot, new WidgetArgs());
 
 			Action ShowLeaveRestartDialog = () =>

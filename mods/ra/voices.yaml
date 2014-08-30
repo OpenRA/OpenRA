@@ -5,11 +5,11 @@ GenericVoice:
 		soviet: .r01,.r03
 		allies: .v01,.v03
 	Voices:
-		Select: await1,ready,report1,yessir1
-		Move: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
-		Burned: dedman10
-		Zapped: dedman6
+		Select: await1,ready,report1,yessir1,"Yes sir!"
+		Move: ackno,affirm1,noprob,overout,ritaway,roger,ugotit,"Affirmative."
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8,"Ow my life!"
+		Burned: dedman10,"[Tarzan Scream]"
+		Zapped: dedman6,"[BZZZZZZ]"
 	DisableVariants: Die, Burned, Zapped
 
 VehicleVoice:
@@ -56,12 +56,12 @@ TanyaVoice:
 
 DogVoice:
 	Voices:
-		Select: dogw3px
-		Move: dogy1
-		Attack: dogg5p
-		Die: dogw5,dogw7
-		Burned: dogw6
-		Zapped: dogw6
+		Select: dogw3px,"Woof?"
+		Move: dogy1,"Woof!"
+		Attack: dogg5p,"BARK!"
+		Die: dogw5,dogw7,"ARF!"
+		Burned: dogw6,"whimper..."
+		Zapped: dogw6,"bzzzzZZzZzARF"
 
 SpyVoice:
 	Voices:

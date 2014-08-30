@@ -254,6 +254,7 @@ namespace OpenRA
 			// Clear static state if we have switched mods
 			LobbyInfoChanged = () => { };
 			AddChatLine = (a, b, c) => { };
+			AddEchoLine = (a) => { };
 			ConnectionStateChanged = om => { };
 			BeforeGameStart = () => { };
 			Ui.ResetAll();
@@ -650,6 +651,7 @@ namespace OpenRA
 		}
 
 		public static Action<Color, string, string> AddChatLine = (c, n, s) => { };
+		public static Action<string> AddEchoLine = (s) => { };
 
 		public static void Debug(string s, params object[] args)
 		{

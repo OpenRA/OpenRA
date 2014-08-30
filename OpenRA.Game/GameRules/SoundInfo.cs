@@ -52,11 +52,23 @@ namespace OpenRA.GameRules
 	public class SoundPool
 	{
 		readonly string[] clips;
+		public readonly string sub;
 		readonly List<string> liveclips = new List<string>();
 
 		public SoundPool(params string[] clips)
 		{
-			this.clips = clips;
+			var hackyclips = clips.ToList<string>();
+
+			foreach (var c in hackyclips)
+			{
+				if (c.StartsWith("\""))
+				{
+					sub = c;
+					break;
+				}
+			}
+			hackyclips.Remove(sub);
+			this.clips = hackyclips.ToArray<String>();
 		}
 
 		public string GetNext()

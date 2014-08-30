@@ -316,6 +316,7 @@ namespace OpenRA
 			var id = voicedUnit != null ? voicedUnit.ActorID : 0;
 
 			string clip;
+			string sub;
 			var suffix = rules.DefaultVariant;
 			var prefix = rules.DefaultPrefix;
 
@@ -331,6 +332,7 @@ namespace OpenRA
 					throw new InvalidOperationException("Can't find {0} in voice pool.".F(definition));
 
 				clip = rules.VoicePools.Value[definition].GetNext();
+				sub = rules.VoicePools.Value[definition].sub;
 			}
 			else
 			{
@@ -338,6 +340,7 @@ namespace OpenRA
 					throw new InvalidOperationException("Can't find {0} in notification pool.".F(definition));
 
 				clip = rules.NotificationsPools.Value[definition].GetNext();
+				sub = rules.NotificationsPools.Value[definition].sub;
 			}
 
 			if (string.IsNullOrEmpty(clip))
@@ -354,9 +357,13 @@ namespace OpenRA
 			var name = prefix + clip + suffix;
 
 			if (!string.IsNullOrEmpty(name) && (p == null || p == p.World.LocalPlayer))
+			{
 				soundEngine.Play2D(sounds[name],
 					false, relative, pos,
 					(InternalSoundVolume * volumeModifier), attenuateVolume);
+				if (!string.IsNullOrEmpty(sub))
+					Game.AddEchoLine(sub);
+			}
 
 			return true;
 		}
