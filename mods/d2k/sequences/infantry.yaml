@@ -44,7 +44,7 @@ rifle:
 		Transpose: true
 	die1: DATA
 		Frames: 382, 389, 396, 403, 410, 417, 424, 431, 438, 439, 440, 441
-		Length: 8
+		Length: 12
 		Tick: 80
 	die2: DATA
 		Frames: 383, 390, 397, 404, 411, 418, 425, 432
@@ -52,7 +52,7 @@ rifle:
 		Tick: 80
 	die3: DATA
 		Frames: 384, 391, 398, 405, 412, 419, 426, 433
-		Length: 12
+		Length: 8
 		Tick: 80
 	die4: DATA
 		Frames: 385, 392, 399, 406, 413, 420, 427, 434
