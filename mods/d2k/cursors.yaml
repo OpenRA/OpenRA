@@ -273,7 +273,7 @@ Cursors:
 			x: 12
 			y: 12
 			
-	cursor-hand.shp: cursor
+	cursor-hand.shp: mouse
 		default-hand:
 			start:0
 			x: -5
