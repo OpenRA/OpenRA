@@ -258,7 +258,7 @@ namespace OpenRA.Utility
 						node.Key = "StoresResources";
 				}
 
-				// make animation is now it's own trait
+				// make animation is now its own trait
 				if (engineVersion < 20140621)
 				{
 					if (depth == 1 && (node.Key.StartsWith("RenderBuilding")))
@@ -470,6 +470,22 @@ namespace OpenRA.Utility
 
 					if (depth == 1 && (node.Key == "RenderInfantryProne" || node.Key == "RenderInfantryPanic"))
 						node.Key = "RenderInfantry";
+				}
+
+				// InfDeath was renamed to DeathType
+				if (engineVersion < 20140830)
+				{
+					if (depth == 1 && parentKey.StartsWith("DeathSounds"))
+					{
+						if (depth == 2 && node.Key == "InfDeaths")
+							node.Key = "DeathTypes";
+					}
+
+					if (depth == 2 && parentKey == "SpawnsViceroid" && node.Key == "InfDeath")
+						node.Key = "DeathType";
+
+					if (depth == 2 && parentKey == "Explodes" && node.Key == "InfDeath")
+						node.Key = "DeathType";
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
@@ -782,6 +798,15 @@ namespace OpenRA.Utility
 					// Converted versus definitions to integers
 					if (depth == 3 && parentKey == "Versus")
 						ConvertFloatArrayToPercentArray(ref node.Value.Value);
+				}
+
+				if (engineVersion < 20140830)
+				{
+					if (depth == 2)
+					{
+						if (node.Key == "InfDeath")
+							node.Key = "DeathType";
+					}
 				}
 
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
