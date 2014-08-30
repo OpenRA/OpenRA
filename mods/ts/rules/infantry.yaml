@@ -94,7 +94,7 @@ WEEDGUY:
 	Health:
 		HP: 130
 	CrushableInfantry:
-		CrushSound: squish2.aud
+		CrushSound: squishy2.aud
 	Armament:
 		Weapon: FireballLauncher
 		LocalOffset: 85,0,384
@@ -121,7 +121,7 @@ MEDIC:
 	Health:
 		HP: 125
 	CrushableInfantry:
-		CrushSound: squish2.aud
+		CrushSound: squishy2.aud
 	Armament:
 		Weapon: Heal
 	AttackFrontal:
@@ -221,7 +221,7 @@ GHOST:
 		Weapon: LtRail
 		LocalOffset: 85,0,384
 	CrushableInfantry:
-		CrushSound: squish2.aud
+		CrushSound: squishy2.aud
 	AttackFrontal:
 	C4Demolition:
 		C4Delay: 45
@@ -303,7 +303,6 @@ CYBORG:
 		BuildPaletteOrder: 50
 		Owner: nod
 	-CrushableInfantry:
-		CrushSound: squish2.aud
 	Selectable:
 		Bounds: 14,30,0,-7
 		Voice: Cyborg
@@ -337,7 +336,6 @@ CYC2:
 		BuildPaletteOrder: 50
 		Owner: nod
 	-CrushableInfantry:
-		CrushSound: squish2.aud
 	Selectable:
 		Bounds: 14,30,0,-7
 		Voice: CyborgCommando
