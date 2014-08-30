@@ -171,18 +171,22 @@ namespace OpenRA.Mods.RA.Move
 			if (check.HasFlag(CellConditions.TransientActors))
 			{
 				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
-				var needsCellExclusively = self == null || Crushes == null;
+				var needsCellExclusively = self == null || Crushes == null || !Crushes.Any();
 				foreach(var a in world.ActorMap.GetUnitsAt(cell))
 				{
-					if (a == ignoreActor) continue;
+					if (a == ignoreActor)
+						continue;
 
 					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
 					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) continue;
 					
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
-					if (needsCellExclusively) return false;
-					if (!a.HasTrait<ICrushable>()) return false;
-					foreach (var crushable in a.TraitsImplementing<ICrushable>())
+					if (needsCellExclusively)
+						return false;
+					var crushables = a.TraitsImplementing<ICrushable>();
+					if (!crushables.Any())
+						return false;
+					foreach (var crushable in crushables)
 						if (!crushable.CrushableBy(Crushes, self.Owner))
 							return false;
 				}
@@ -191,10 +195,10 @@ namespace OpenRA.Mods.RA.Move
 			return true;
 		}
 
-		public SubCell GetAvailableSubCell(World world, Actor self, CPos cell, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public SubCell GetAvailableSubCell(World world, Actor self, CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
 			if (MovementCostForCell(world, cell) == int.MaxValue)
-				return SubCell.InvalidSubCell;
+				return SubCell.Invalid;
 
 			if (check.HasFlag(CellConditions.TransientActors))
 			{
@@ -213,9 +217,10 @@ namespace OpenRA.Mods.RA.Move
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
 					if (needsCellExclusively)
 						return true;
-					if (!a.HasTrait<ICrushable>())
+					var crushables = a.TraitsImplementing<ICrushable>();
+					if (!crushables.Any())
 						return true;
-					foreach (var crushable in a.TraitsImplementing<ICrushable>())
+					foreach (var crushable in crushables)
 						if (!crushable.CrushableBy(Crushes, self.Owner))
 							return true;
 
@@ -223,13 +228,13 @@ namespace OpenRA.Mods.RA.Move
 				};
 
 				if (!SharesCell)
-					return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell, checkTransient) ? SubCell.InvalidSubCell : SubCell.FullCell;
+					return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell, checkTransient) ? SubCell.Invalid : SubCell.FullCell;
 
 				return world.ActorMap.FreeSubCell(cell, preferredSubCell, checkTransient);
 			}
 
 			if (!SharesCell)
-				return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell)? SubCell.InvalidSubCell : SubCell.FullCell;
+				return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell)? SubCell.Invalid : SubCell.FullCell;
 
 			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
 		}
@@ -306,10 +311,10 @@ namespace OpenRA.Mods.RA.Move
 		}
 
 		// Returns a valid sub-cell
-		public SubCell GetValidSubCell(SubCell preferred = SubCell.AnySubCell)
+		public SubCell GetValidSubCell(SubCell preferred = SubCell.Any)
 		{
 			// Try same sub-cell
-			if (preferred == SubCell.AnySubCell)
+			if (preferred == SubCell.Any)
 				preferred = fromSubCell;
 
 			// Fix sub-cell assignment
@@ -326,7 +331,7 @@ namespace OpenRA.Mods.RA.Move
 			return preferred;
 		}
 
-		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)
+		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
 			subCell = GetValidSubCell(subCell);
 			SetLocation(cell, subCell, cell, subCell);
@@ -486,13 +491,13 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.AnySubCell)
+		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any)
 		{
 			return toCell != location && __fromCell == location
-				&& (subCell == SubCell.AnySubCell || fromSubCell == subCell || subCell == SubCell.FullCell || fromSubCell == SubCell.FullCell);
+				&& (subCell == SubCell.Any || fromSubCell == subCell || subCell == SubCell.FullCell || fromSubCell == SubCell.FullCell);
 		}
 
-		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.AnySubCell, Actor ignoreActor = null, bool checkTransientActors = true)
+		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			return Info.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, checkTransientActors? CellConditions.All : CellConditions.None);
 		}
@@ -504,24 +509,18 @@ namespace OpenRA.Mods.RA.Move
 
 		public void EnteringCell(Actor self)
 		{
-			var crushable = self.World.ActorMap.GetUnitsAt(toCell).Where(a => a != self && a.HasTrait<ICrushable>());
-			foreach (var a in crushable)
-			{
-				var crushActions = a.TraitsImplementing<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner));
-				foreach (var b in crushActions)
-					b.WarnCrush(self);
-			}
+			var crushables = self.World.ActorMap.GetUnitsAt(toCell).Where(a => a != self)
+				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner)));
+			foreach (var crushable in crushables)
+				crushable.WarnCrush(self);
 		}
 
 		public void FinishedMoving(Actor self)
 		{
-			var crushable = self.World.ActorMap.GetUnitsAt(toCell).Where(a => a != self && a.HasTrait<ICrushable>());
-			foreach (var a in crushable)
-			{
-				var crushActions = a.TraitsImplementing<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner));
-				foreach (var b in crushActions)
-					b.OnCrush(self);
-			}
+			var crushables = self.World.ActorMap.GetUnitsAt(toCell).Where(a => a != self)
+				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(c => c.CrushableBy(Info.Crushes, self.Owner)));
+			foreach (var crushable in crushables)
+				crushable.OnCrush(self);
 		}
 
 		public int MovementSpeedForCell(Actor self, CPos cell)
@@ -646,15 +645,15 @@ namespace OpenRA.Mods.RA.Move
 				Nudge(self, blocking, true);
 		}
 
-		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.AnySubCell)
+		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
 			var pos = self.CenterPosition;
 
-			if (subCell == SubCell.AnySubCell)
+			if (subCell == SubCell.Any)
 				subCell = self.World.ActorMap.FreeSubCell(cell, subCell);
 
 			// TODO: solve/reduce cell is full problem
-			if (subCell == SubCell.InvalidSubCell)
+			if (subCell == SubCell.Invalid)
 				subCell = self.World.Map.DefaultSubCell;
 
 			// Reserve the exit cell
