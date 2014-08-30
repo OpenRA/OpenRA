@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public enum SubCell { FullCell, TopLeft, TopRight, Center, BottomLeft, BottomRight }
+	public enum SubCell { Invalid = int.MinValue, Any = int.MinValue / 2, FullCell = 0, First = 1 }
 
 	public class ActorMapInfo : ITraitInfo
 	{
@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 		class InfluenceNode
 		{
 			public InfluenceNode Next;
-			public int SubCell;
+			public SubCell SubCell;
 			public Actor Actor;
 		}
 
@@ -73,42 +73,80 @@ namespace OpenRA.Traits
 					yield return i.Actor;
 		}
 
-		public IEnumerable<Actor> GetUnitsAt(CPos a, int sub)
+		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
 		{
 			if (!map.Contains(a))
 				yield break;
 
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (!i.Actor.Destroyed && (i.SubCell == sub || i.SubCell == 0))
+				if (!i.Actor.Destroyed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
 					yield return i.Actor;
 		}
 
-		public bool HasFreeSubCell(CPos a)
+		public bool HasFreeSubCell(CPos a, bool checkTransient = true)
 		{
-			return FreeSubCell(a) >= 0;
+			return FreeSubCell(a, SubCell.Any, checkTransient) != SubCell.Invalid;
 		}
 
-		public int FreeSubCell(CPos a)
+		public SubCell FreeSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, bool checkTransient = true)
 		{
+			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(a, preferredSubCell, checkTransient))
+				return preferredSubCell;
+
 			if (!AnyUnitsAt(a))
-				return map.SubCellDefaultIndex;
+				return map.DefaultSubCell;
 
-			for (var i = 1; i < map.SubCellOffsets.Length; i++)
-				if (!AnyUnitsAt(a, i))
-					return i;
-			return -1;
+			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
+				if (i != (int)preferredSubCell && !AnyUnitsAt(a, (SubCell)i, checkTransient))
+					return (SubCell)i;
+			return SubCell.Invalid;
 		}
 
+		public SubCell FreeSubCell(CPos a, SubCell preferredSubCell, Func<Actor, bool> checkIfBlocker)
+		{
+			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(a, preferredSubCell, checkIfBlocker))
+				return preferredSubCell;
+
+			if (!AnyUnitsAt(a))
+				return map.DefaultSubCell;
+
+			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
+				if (i != (int)preferredSubCell && !AnyUnitsAt(a, (SubCell)i, checkIfBlocker))
+					return (SubCell)i;
+			return SubCell.Invalid;
+		}
+
+		// NOTE: always includes transients with influence
 		public bool AnyUnitsAt(CPos a)
 		{
 			return influence[a] != null;
 		}
 
-		public bool AnyUnitsAt(CPos a, int sub)
+		// NOTE: can not check aircraft
+		public bool AnyUnitsAt(CPos a, SubCell sub, bool checkTransient = true)
 		{
+			bool always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = influence[a]; i != null; i = i.Next)
-				if (i.SubCell == sub || i.SubCell == 0)
-					return true;
+				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
+				{
+					if (checkTransient)
+						return true;
+					var pos = i.Actor.TraitOrDefault<IPositionable>();
+					if (pos == null || !pos.IsLeavingCell(a, i.SubCell))
+						return true;
+				}
+
+			return false;
+		}
+
+		// NOTE: can not check aircraft
+		public bool AnyUnitsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition)
+		{
+			bool always = sub == SubCell.FullCell || sub == SubCell.Any;
+			for (var i = influence[a]; i != null; i = i.Next)
+				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
+					if (withCondition(i.Actor))
+						return true;
 
 			return false;
 		}

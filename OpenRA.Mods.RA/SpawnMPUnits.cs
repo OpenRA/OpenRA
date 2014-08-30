@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 			foreach (var s in unitGroup.SupportActors)
 			{
 				var mi = w.Map.Rules.Actors[s.ToLowerInvariant()].Traits.Get<MobileInfo>();
-				var validCells = supportSpawnCells.Where(c => mi.CanEnterCell(w, c));
+				var validCells = supportSpawnCells.Where(c => mi.CanEnterCell(w, null, c));
 				if (!validCells.Any())
 					throw new InvalidOperationException("No cells available to spawn starting unit {0}".F(s));
 

@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos src, int srcSub, WPos target, WRange range, Actor self)
+		public List<CPos> FindUnitPathToRange(CPos src, SubCell srcSub, WPos target, WRange range, Actor self)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
@@ -89,13 +89,13 @@ namespace OpenRA.Mods.RA.Move
 				var rangeSquared = range.Range*range.Range;
 
 				// Correct for SubCell offset
-				target -= self.World.Map.SubCellOffsets[srcSub];
+				target -= self.World.Map.OffsetOfSubCell(srcSub);
 
 				// Select only the tiles that are within range from the requested SubCell
 				// This assumes that the SubCell does not change during the path traversal
 				var tilesInRange = world.Map.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
 					.Where(t => (world.Map.CenterOfCell(t) - target).LengthSquared <= rangeSquared
-					       && mi.CanEnterCell(self.World, self, t, null, true, true));
+					       && mi.CanEnterCell(self.World, self, t));
 
 				// See if there is any cell within range that does not involve a cross-domain request
 				// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win

@@ -52,25 +52,31 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new Drag(CenterPosition, finalPos, distance / speed));
 		}
 
-		public IEnumerable<Pair<CPos, int>> OccupiedCells() { yield return Pair.New(TopLeft, 0); }
-		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
+		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return false; }
+		public SubCell GetValidSubCell(SubCell preferred = SubCell.Any) { return SubCell.FullCell; }
+		public SubCell GetAvailableSubCell(CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			if (!self.World.Map.Contains(cell))
-				return false;
+				return SubCell.Invalid;
 
 			if (!info.AllowedTerrain.Contains(self.World.Map.GetTerrainInfo(cell).Type))
-				return false;
+				return SubCell.Invalid;
 
 			if (!checkTransientActors)
-				return true;
+				return SubCell.FullCell;
 
 			return !self.World.ActorMap.GetUnitsAt(cell)
 				.Where(x => x != ignoreActor)
-				.Any();
+				.Any() ? SubCell.FullCell : SubCell.Invalid;
 		}
 
-		public bool CanEnterCell(CPos cell) { return CanEnterCell(cell, null, true); }
-		public void SetPosition(Actor self, CPos cell) { SetPosition(self, self.World.Map.CenterOfCell(cell)); }
+		public bool CanEnterCell(CPos a, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			return GetAvailableSubCell(a, SubCell.Any, ignoreActor, checkTransientActors) != SubCell.Invalid;
+		}
+
+		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any) { SetPosition(self, self.World.Map.CenterOfCell(cell)); }
 
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
