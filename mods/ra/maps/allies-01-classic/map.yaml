@@ -580,8 +580,8 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LuaScriptInterface:
-			LuaScripts: allies01.lua
+		LuaScript:
+			Scripts: allies01.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	TRAN.Extraction:
@@ -607,6 +607,9 @@ Rules:
 	^CivInfantry:
 		RevealsShroud:
 			Range: 0c0
+	JEEP:
+		Cargo:
+			Types: Infantry, Einstein
 
 Sequences:
 

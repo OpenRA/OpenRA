@@ -34,5 +34,12 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			self.QueueActivity(new Move.Move(cell));
 		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Leave the current position in a random direction.")]
+		public void Scatter()
+		{
+			self.Trait<Mobile>().Nudge(self, self, true);
+		}
 	}
 }

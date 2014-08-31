@@ -102,6 +102,38 @@ namespace OpenRA.Mods.RA.Scripting
 				GetScriptTriggers(a).OnKilledInternal += OnMemberKilled;
 		}
 
+		[Desc("Call a function when one of the actors in a group is killed. The callback " +
+			"function will be called as func(Actor killed).")]
+		public void OnAnyKilled(LuaTable actors, LuaFunction func)
+		{
+			var group = new List<Actor>();
+			foreach (var kv in actors)
+			{
+				Actor actor;
+				if (!kv.Value.TryGetClrValue<Actor>(out actor))
+					throw new LuaException("OnAnyKilled requires a table of int,Actor pairs. Recieved {0},{1}".F(kv.Key.GetType().Name, kv.Value.GetType().Name));
+
+				group.Add(actor);
+			}
+
+			var called = false;
+			var copy = (LuaFunction)func.CopyReference();
+			Action<Actor> OnMemberKilled = m =>
+			{
+				if (called)
+					return;
+
+				using (var killed = m.ToLuaValue(context))
+					copy.Call(killed).Dispose();
+
+				copy.Dispose();
+				called = true;
+			};
+
+			foreach (var a in group)
+				GetScriptTriggers(a).OnKilledInternal += OnMemberKilled;
+		}
+
 		[Desc("Call a function when this actor produces another actor. " +
 			"The callback function will be called as func(Actor producer, Actor produced).")]
 		public void OnProduction(Actor a, LuaFunction func)
