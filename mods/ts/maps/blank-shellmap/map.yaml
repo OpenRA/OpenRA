@@ -40,6 +40,8 @@ Rules:
 		-StartGameNotification:
 		-SpawnMPUnits:
 		-MPStartLocations:
+		PlayMusicOnMapLoad:
+			Loop: true
 		LoadWidgetAtGameStart:
 			Widget: MAINMENU
 
