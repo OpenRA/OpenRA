@@ -28,6 +28,12 @@ Speech:
 		SignalFlareNorth: flaren1
 		AlliedReinforcementsArrived: aarrive1
 		ConvoyApproaching: convyap1
+		TargetFreed: targfre1
+		TargetRescued: targres1
+		ObjectiveMet: objmet1
+		ObjectiveNotMet: objnmet1
+		ObjectiveReached: objrch1
+		ObjectiveNotReached: objnrch1
 
 Sounds:
 	Notifications:
@@ -42,3 +48,5 @@ Sounds:
 		ClickSound: ramenu1
 		ClickDisabledSound:
 		Beacon: beepslct
+		AlertBuzzer: buzzy1
+		AlertBleep: bleep6
