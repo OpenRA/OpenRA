@@ -52,34 +52,21 @@ BindActorTriggers = function(a)
 end
 
 SendSovietUnits = function(entryCell, unitTypes, interval)
-	local i = 0
-	team = {}
-
-	Utils.Do(unitTypes, function(type)
-		local a = Actor.Create(type, false, { Owner = soviets, Location = entryCell })
-		BindActorTriggers(a)
-		Trigger.AfterDelay(i * interval, function() a.IsInWorld = true end)
-		table.insert(team, a)
-		i = i + 1
+	local units = Reinforcements.Reinforce(soviets, unitTypes, { entryCell }, interval)
+	Utils.Do(units, function(unit)
+		BindActorTriggers(unit)
 	end)
-
-	Trigger.OnAllKilled(team, function() SendSovietUnits(entryCell, unitTypes, interval) end)
+	Trigger.OnAllKilled(units, function() SendSovietUnits(entryCell, unitTypes, interval) end)
 end
 
 ShipAlliedUnits = function()
-	local transport = Actor.Create("lst", true, { Location = LstEntry.Location, Owner = allies })
+	local units = Reinforcements.ReinforceWithTransport(allies, "lst",
+		ShipUnitTypes, { LstEntry.Location, LstUnload.Location }, { LstEntry.Location })[2]
 
-	Utils.Do(ShipUnitTypes, function(type)
-		local a = Actor.Create(type, false, { Owner = allies })
-		BindActorTriggers(a)
-		transport.LoadPassenger(a)
+	Utils.Do(units, function(unit)
+		BindActorTriggers(unit)
 	end)
 
-	transport.Move(LstUnload.Location)
-	transport.UnloadPassengers()
-	transport.Wait(Utils.Seconds(2))
-	transport.Move(LstEntry.Location)
-	transport.Destroy()
 	Trigger.AfterDelay(Utils.Seconds(60), ShipAlliedUnits)
 end
 
