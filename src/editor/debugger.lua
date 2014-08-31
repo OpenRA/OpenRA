@@ -109,11 +109,11 @@ local function updateWatchesSync(onlyitem)
 
         if onlyitem or val ~= newval then
           local newchildren = watchCtrl:GetItemChildren(item)
-          if #curchildren > 0 and #newchildren == 0 then
+          if next(curchildren) ~= nil and next(newchildren) == nil then
             watchCtrl:SetItemHasChildren(item, true)
             watchCtrl:CollapseAndReset(item)
             watchCtrl:SetItemHasChildren(item, false)
-          elseif #curchildren > 0 and #newchildren > 0 then
+          elseif next(curchildren) ~= nil and next(newchildren) ~= nil then
             watchCtrl:CollapseAndReset(item)
             watchCtrl:Expand(item)
           end
