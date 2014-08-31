@@ -30,6 +30,8 @@ else
 	}
 end
 
+ShipUnitTypes = { "1tnk", "1tnk", "jeep", "2tnk", "2tnk" }
+
 ParadropWaypoints = { Paradrop1, Paradrop2, Paradrop3, Paradrop4, Paradrop5, Paradrop6, Paradrop7, Paradrop8 }
 
 BindActorTriggers = function(a)
@@ -69,7 +71,7 @@ end
 ShipAlliedUnits = function()
 	local transport = Actor.Create("lst", true, { Location = LstEntry.Location, Owner = allies })
 
-	Utils.Do({ "1tnk", "1tnk", "jeep", "2tnk", "2tnk" }, function(type)
+	Utils.Do(ShipUnitTypes, function(type)
 		local a = Actor.Create(type, false, { Owner = allies })
 		BindActorTriggers(a)
 		transport.LoadPassenger(a)
