@@ -561,6 +561,9 @@
     <Compile Include="Warheads\SpreadDamageWarhead.cs" />
     <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
     <Compile Include="Scripting\Global\DateGlobal.cs" />
+    <Compile Include="Scripting\Properties\HarvesterProperties.cs" />
+    <Compile Include="Scripting\Properties\HelicopterProperties.cs" />
+    <Compile Include="Scripting\Properties\PlaneProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

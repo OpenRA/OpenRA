@@ -67,6 +67,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				parent.AddChild(widget);
 			}
-        }
+		}
 	}
 }
