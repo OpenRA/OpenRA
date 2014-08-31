@@ -80,11 +80,11 @@ ShipAlliedUnits = function()
 	transport.Wait(50)
 	transport.Move(LstEntry.Location)
 	transport.Destroy()
- 	Trigger.AfterDelay(60 * 25, ShipAlliedUnits)
+	Trigger.AfterDelay(60 * 25, ShipAlliedUnits)
 end
 
 ParadropSovietUnits = function()
- 	local lz = Utils.Random(ParadropWaypoints).Location
+	local lz = Utils.Random(ParadropWaypoints).Location
 	local start = Utils.CenterOfCell(Map.RandomEdgeCell()) + WVec.New(0, 0, Actor.CruiseAltitude("badr"))
 	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Utils.CenterOfCell(lz) - start).Facing })
 
@@ -95,7 +95,7 @@ ParadropSovietUnits = function()
 	end)
 
 	transport.Paradrop(lz)
- 	Trigger.AfterDelay(35 * 25, ParadropSovietUnits)
+	Trigger.AfterDelay(35 * 25, ParadropSovietUnits)
 end
 
 ProduceUnits = function(t)
@@ -118,9 +118,9 @@ SetupAlliedUnits = function()
 end
 
 SetupFactories = function()
- 	Utils.Do(ProducedUnitTypes, function(pair)
+	Utils.Do(ProducedUnitTypes, function(pair)
 		Trigger.OnProduction(pair[1], function(_, a) BindActorTriggers(a) end)
- 	end)
+	end)
 end
 
 ChronoshiftAlliedUnits = function()
@@ -129,9 +129,9 @@ ChronoshiftAlliedUnits = function()
 	for i = 1, #cells do
 		local unit = Actor.Create("2tnk", true, { Owner = allies, Facing = 0 })
 		BindActorTriggers(unit)
- 		units[unit] = cells[i]
- 	end
- 	Chronosphere.Chronoshift(units)
+		units[unit] = cells[i]
+	end
+	Chronosphere.Chronoshift(units)
 	Trigger.AfterDelay(60 * 25, ChronoshiftAlliedUnits)
 end
 
@@ -155,7 +155,7 @@ WorldLoaded = function()
 	ShipAlliedUnits()
 	ParadropSovietUnits()
 	Trigger.AfterDelay(5 * 25, ChronoshiftAlliedUnits)
- 	Utils.Do(ProducedUnitTypes, ProduceUnits)
+	Utils.Do(ProducedUnitTypes, ProduceUnits)
 
 	SendSovietUnits(Entry1.Location, UnitTypes, 50)
 	SendSovietUnits(Entry2.Location, UnitTypes, 50)
