@@ -1,6 +1,4 @@
-local ants = Utils.RandomInteger(0, 51) == 0
-
-if ants then
+if Date.Halloween then
 	UnitTypes = { "ant", "ant", "ant" }
 	BeachUnitTypes = { "ant", "ant" }
 	ParadropUnitTypes = { "ant", "ant", "ant", "ant", "ant" }
