@@ -510,19 +510,13 @@ Rules:
 			UseCashTick: yes
 			SelectionShares: 30
 		GiveUnitCrateAction@e7:
-			Unit: e7
+			Units: e7
 			SelectionShares: 10
 	Player:
 		PlayerResources:
 			InitialCash: 50
 		ClassicProductionQueue@Infantry:
-			Type: Infantry
 			BuildSpeed: 1
-			LowPowerSlowdown: 3
-		ClassicProductionQueue@Defense:
-			Type: Defense
-			BuildSpeed: .4
-			LowPowerSlowdown: 3
 	^Infantry:
 		MustBeDestroyed:
 	^Vehicle:
@@ -541,25 +535,25 @@ Rules:
 			Period: 250
 			Amount: 50
 	BARR:
-		Buildable:
-			Owner: allies,soviet
 		Health:
 			HP: 1000
 		Production:
-			Produces: Defense,Infantry
+			Produces: Defense, Infantry, Soldier
 		-Sellable:
 		BaseProvider:
 			Range: 12
 		Power:
 			Amount: 0
 	FTUR:
+		Buildable:
+			Prerequisites: barracks
 		Valued:
 			Cost: 400
 		Power:
 			Amount: 0
 	PBOX:
 		Buildable:
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 400
 		Health:
@@ -569,8 +563,8 @@ Rules:
 		Power:
 			Amount: 0
 	HBOX:
-		Power:
-			Amount: 0
+		Buildable:
+			Prerequisites: ~disabled
 	GUN:
 		Buildable:
 			Prerequisites: ~disabled
@@ -603,20 +597,17 @@ Rules:
 			Prerequisites: ~disabled
 	DOG:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 20
 	E1:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 20
 	E2:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 40
 		Explodes:
@@ -624,26 +615,22 @@ Rules:
 			Chance: 20
 	E3:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 60
 	E4:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	E6:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	E7:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 750
 	3TNK:
@@ -661,22 +648,19 @@ Rules:
 			Prerequisites: ~disabled
 	MEDI:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 100
 	SHOK:
 		Buildable:
-			Owner: soviet,allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Valued:
 			Cost: 150
 	SNIPER:
 		Valued:
 			Cost: 200
 		Buildable:
-			Owner: soviet, allies
-			Prerequisites: barr,oilb
+			Prerequisites: barracks
 		Health:
 			HP: 200
 		AutoTarget:
@@ -687,8 +671,7 @@ Rules:
 		Buildable:
 			Queue: Infantry
 			BuildPaletteOrder: 60
-			Prerequisites: barr,oilb
-			Owner: allies, soviet
+			Prerequisites: barracks
 		Valued:
 			Cost: 300
 	ARTY:

@@ -130,8 +130,6 @@ SendWave = function()
 	local units = wave[3]
 	local target = Utils.Random(wave[4]).Location
 
-	Media.DisplayMessage("Defend Fort Lonestar at all costs!")
-
 	print(string.format("Sending wave %i in %i.", Wave, delay))
 	Trigger.AfterDelay(delay, function() SendUnits(entry, units, 40, target) end)
 end
@@ -152,6 +150,8 @@ WorldLoaded = function()
 			a.Invulnerable = true
 		end
 	end)
+
+	Media.DisplayMessage("Defend Fort Lonestar at all costs!")
 
 	SendWave()
 end
