@@ -77,10 +77,10 @@ ShipAlliedUnits = function()
 
 	transport.Move(LstUnload.Location)
 	transport.UnloadPassengers()
-	transport.Wait(50)
+	transport.Wait(Utils.Seconds(2))
 	transport.Move(LstEntry.Location)
 	transport.Destroy()
-	Trigger.AfterDelay(60 * 25, ShipAlliedUnits)
+	Trigger.AfterDelay(Utils.Seconds(60), ShipAlliedUnits)
 end
 
 ParadropSovietUnits = function()
@@ -95,7 +95,7 @@ ParadropSovietUnits = function()
 	end)
 
 	transport.Paradrop(lz)
-	Trigger.AfterDelay(35 * 25, ParadropSovietUnits)
+	Trigger.AfterDelay(Utils.Seconds(35), ParadropSovietUnits)
 end
 
 ProduceUnits = function(t)
@@ -132,7 +132,7 @@ ChronoshiftAlliedUnits = function()
 		units[unit] = cells[i]
 	end
 	Chronosphere.Chronoshift(units)
-	Trigger.AfterDelay(60 * 25, ChronoshiftAlliedUnits)
+	Trigger.AfterDelay(Utils.Seconds(60), ChronoshiftAlliedUnits)
 end
 
 ticks = 0
@@ -154,7 +154,7 @@ WorldLoaded = function()
 	SetupFactories()
 	ShipAlliedUnits()
 	ParadropSovietUnits()
-	Trigger.AfterDelay(5 * 25, ChronoshiftAlliedUnits)
+	Trigger.AfterDelay(Utils.Seconds(5), ChronoshiftAlliedUnits)
 	Utils.Do(ProducedUnitTypes, ProduceUnits)
 
 	SendSovietUnits(Entry1.Location, UnitTypes, 50)
