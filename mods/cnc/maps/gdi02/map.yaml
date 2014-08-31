@@ -749,7 +749,7 @@ Rules:
 			EarlyGameOver: true
 	^Infantry:
 		MustBeDestroyed:
-	^Vehicles:
+	^Vehicle:
 		MustBeDestroyed:
 	PROC:
 		Buildable:
