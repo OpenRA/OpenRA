@@ -29,6 +29,7 @@ else
 end
 
 ShipUnitTypes = { "1tnk", "1tnk", "jeep", "2tnk", "2tnk" }
+HelicopterUnitTypes = { "e1", "e1", "e1", "e1", "e3", "e3" };
 
 ParadropWaypoints = { Paradrop1, Paradrop2, Paradrop3, Paradrop4, Paradrop5, Paradrop6, Paradrop7, Paradrop8 }
 
@@ -68,6 +69,17 @@ ShipAlliedUnits = function()
 	end)
 
 	Trigger.AfterDelay(Utils.Seconds(60), ShipAlliedUnits)
+end
+
+InsertAlliedChinookReinforcements = function(entry, hpad)
+	local units = Reinforcements.ReinforceWithTransport(allies, "tran",
+		HelicopterUnitTypes, { entry.Location, hpad.Location + CVec.New(1, 2) }, { entry.Location })[2]
+
+	Utils.Do(units, function(unit)
+		BindActorTriggers(unit)
+	end)
+
+	Trigger.AfterDelay(Utils.Seconds(60), function() InsertAlliedChinookReinforcements(entry, hpad) end)
 end
 
 ParadropSovietUnits = function()
@@ -140,6 +152,8 @@ WorldLoaded = function()
 	SetupAlliedUnits()
 	SetupFactories()
 	ShipAlliedUnits()
+	InsertAlliedChinookReinforcements(Chinook1Entry, HeliPad1)
+	InsertAlliedChinookReinforcements(Chinook2Entry, HeliPad2)
 	ParadropSovietUnits()
 	Trigger.AfterDelay(Utils.Seconds(5), ChronoshiftAlliedUnits)
 	Utils.Do(ProducedUnitTypes, ProduceUnits)

@@ -947,8 +947,8 @@ Actors:
 	Actor329: mine
 		Location: 90,21
 		Owner: Neutral
-	Actor195: hpad
-		Location: 70,75
+	HeliPad1: hpad
+		Location: 70,76
 		Owner: Allies
 	Actor341: dome
 		Location: 63,73
@@ -1004,7 +1004,7 @@ Actors:
 	Actor361: pbox
 		Location: 71,96
 		Owner: Allies
-	Actor365: hpad
+	HeliPad2: hpad
 		Location: 64,78
 		Owner: Allies
 	Actor221: fenc
@@ -1216,6 +1216,12 @@ Actors:
 		Owner: Neutral
 	LstUnload: waypoint
 		Location: 60,93
+		Owner: Neutral
+	Chinook1Entry: waypoint
+		Location: 44,126
+		Owner: Neutral
+	Chinook2Entry: waypoint
+		Location: 47,126
 		Owner: Neutral
 	Actor184: pbox
 		Location: 96,79
