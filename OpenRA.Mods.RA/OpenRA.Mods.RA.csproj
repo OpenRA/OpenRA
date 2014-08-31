@@ -539,6 +539,7 @@
     <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
     <Compile Include="UpgradeActorsNear.cs" />
     <Compile Include="WithRangeCircle.cs" />
+    <Compile Include="Scripting\Properties\TransformProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

@@ -28,12 +28,22 @@ Speech:
 		SignalFlareNorth: flaren1
 		AlliedReinforcementsArrived: aarrive1
 		ConvoyApproaching: convyap1
+		ConvoyUnitLost: convlst1
 		TargetFreed: targfre1
 		TargetRescued: targres1
 		ObjectiveMet: objmet1
 		ObjectiveNotMet: objnmet1
 		ObjectiveReached: objrch1
 		ObjectiveNotReached: objnrch1
+		TenMinutesRemaining: 10minr
+		TwentyMinutesRemaining: 20minr
+		ThirtyMinutesRemaining: 30minr
+		FourtyMinutesRemaining: 40minr
+		WarningOneMinuteRemaining: 1minr
+		WarningTwoMinutesRemaining: 2minr
+		WarningThreeMinutesRemaining: 3minr
+		WarningFourMinutesRemaining: 4minr
+		WarningFiveMinutesRemaining: 5minr
 
 Sounds:
 	Notifications:

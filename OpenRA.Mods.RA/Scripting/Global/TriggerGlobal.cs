@@ -171,6 +171,27 @@ namespace OpenRA.Mods.RA.Scripting
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnRemovedFromWorld, func, context);
 		}
 
+		[Desc("Call a function when all of the actors in a group have been removed from the world. " +
+			"The callback function will be called as func().")]
+		public void OnAllRemovedFromWorld(Actor[] actors, LuaFunction func)
+		{
+			var group = actors.ToList();
+
+			var copy = (LuaFunction)func.CopyReference();
+			Action<Actor> OnMemberRemoved = m =>
+			{
+				group.Remove(m);
+				if (!group.Any())
+				{
+					copy.Call().Dispose();
+					copy.Dispose();
+				}
+			};
+
+			foreach (var a in group)
+				GetScriptTriggers(a).OnRemovedInternal += OnMemberRemoved;
+		}
+
 		[Desc("Call a function when this actor is captured. The callback function " +
 		      "will be called as func(Actor self, Actor captor, Player oldOwner, Player newOwner).")]
 		public void OnCapture(Actor a, LuaFunction func)

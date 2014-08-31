@@ -1,76 +1,132 @@
-JeepReinforcements = { "e1", "e1", "e1", "jeep" }
-JeepReinforcementsInterval = 15
-TruckNames = { "truk", "truk", "truk" }
-TruckInterval = 25
-TruckDelay = 75
-FirstJeepReinforcementsDelay = 125
-SecondJeepReinforcementsDelay = 250
+ConstructionVehicleReinforcements = { "mcv" }
+ConstructionVehiclePath = { ReinforcementsEntryPoint.Location, DeployPoint.Location }
 
-SendMcvReinforcements = function()
-	Media.PlaySpeechNotification("ReinforcementsArrived")
-	local mcv = Actor.Create("mcv", { Owner = player, Location = ReinforcementsEntryPoint.Location })
-	Actor.Move(mcv, McvDeployPoint.Location)
-	Actor.DeployTransform(mcv)
+JeepReinforcements = { "e1", "e1", "e1", "jeep" }
+JeepPath = { ReinforcementsEntryPoint.Location, ReinforcementsRallyPoint.Location }
+
+TruckReinforcements = { "truk", "truk", "truk" }
+TruckPath = { TruckEntryPoint.Location, TruckRallyPoint.Location }
+
+SendConstructionVehicleReinforcements = function()
+	local mcv = Reinforcements.Reinforce(player, ConstructionVehicleReinforcements, ConstructionVehiclePath)[1]
 end
 
 SendJeepReinforcements = function()
-	Media.PlaySpeechNotification("ReinforcementsArrived")
-	Reinforcements.Reinforce(player, JeepReinforcements, ReinforcementsEntryPoint.Location, ReinforcementsRallyPoint.Location, JeepReinforcementsInterval)
+	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+	Reinforcements.Reinforce(player, JeepReinforcements, JeepPath, Utils.Seconds(1))
 end
 
 RunInitialActivities = function()
-	Actor.Harvest(Harvester)
+	Harvester.FindResources()
 end
 
 MissionAccomplished = function()
-	Mission.MissionOver({ player }, nil, true)
-	Media.PlayMovieFullscreen("montpass.vqa")
+	Media.PlaySpeechNotification(player, "Win")
+	Trigger.AfterDelay(Utils.Seconds(1), function()
+		Media.PlayMovieFullscreen("montpass.vqa")
+	end)
 end
 
 MissionFailed = function()
-	Mission.MissionOver(nil, { player }, true)
-	Media.PlayMovieFullscreen("frozen.vqa")
+	Media.PlaySpeechNotification(player, "Lose")
+	Trigger.AfterDelay(Utils.Seconds(1), function()
+		Media.PlayMovieFullscreen("frozen.vqa")
+	end)
 end
 
 Tick = function()
-	Mission.TickTakeOre(ussr)
+	ussr.Resources = ussr.Resources - (0.01 * ussr.ResourceCapacity / 25)
 
-	if Mission.RequiredUnitsAreDestroyed(player) then
-		MissionFailed()
-	end
-	if not trucksSent and Mission.RequiredUnitsAreDestroyed(ussr) and Mission.RequiredUnitsAreDestroyed(badGuy) then
+	if ukraine.HasNoRequiredUnits() then
 		SendTrucks()
-		trucksSent = true
+		player.MarkCompletedObjective(ConquestObjective)
+	end
+
+	if player.HasNoRequiredUnits() then
+		player.MarkFailedObjective(ConquestObjective)
 	end
 end
 
+ConvoyOnSite = false
 SendTrucks = function()
-	Media.PlaySpeechNotification("ConvoyApproaching")
-	OpenRA.RunAfterDelay(TruckDelay, function()
-		local trucks = Reinforcements.Reinforce(france, TruckNames, TruckEntryPoint.Location, TruckRallyPoint.Location, TruckInterval,
-			function(truck)
-				Actor.Move(truck, TruckExitPoint.Location)
-				Actor.RemoveSelf(truck)
+	if not ConvoyOnSite then
+		ConvoyOnSite = true
+		ConvoyObjective = player.AddPrimaryObjective("Escort the convoy")
+		Media.PlaySpeechNotification(player, "ConvoyApproaching")
+		Trigger.AfterDelay(Utils.Seconds(3), function()
+			ConvoyUnharmed = true
+			local trucks = Reinforcements.Reinforce(france, TruckReinforcements, TruckPath, Utils.Seconds(1),
+				function(truck)
+					Trigger.OnIdle(truck, function() truck.Move(TruckExitPoint.Location) end)
+				end)
+			count = 0
+			Trigger.OnEnteredFootprint( { TruckExitPoint.Location }, function(a, id)
+				if a.Owner == france then
+					count = count + 1
+					a.Destroy()
+					if count == 3 then
+						player.MarkCompletedObjective(ConvoyObjective)
+						Trigger.RemoveFootprintTrigger(id)
+					end
+				end
 			end)
-		local trucksTeam = Team.New(trucks)
-		Team.AddEventHandler(trucksTeam.OnAllRemovedFromWorld, MissionAccomplished)
-		Team.AddEventHandler(trucksTeam.OnAnyKilled, MissionFailed)
+			Trigger.OnAnyKilled(trucks, ConvoyCasualites)
+		end)
+	end
+end
+
+ConvoyCasualites = function()
+	Media.PlaySpeechNotification(player, "ConvoyUnitLost")
+	if ConvoyUnharmed then
+		ConvoyUnharmed = false
+		Trigger.AfterDelay(Utils.Seconds(1), function() player.MarkFailedObjective(ConvoyObjective) end)
+	end
+end
+
+ConvoyTimer = function(delay, notification)
+	Trigger.AfterDelay(delay, function()
+		if not ConvoyOnSite then
+			Media.PlaySpeechNotification(player, notification)
+		end
 	end)
 end
 
 WorldLoaded = function()
-	player = OpenRA.GetPlayer("Greece")
-	france = OpenRA.GetPlayer("France")
-	ussr = OpenRA.GetPlayer("USSR")
-	badGuy = OpenRA.GetPlayer("BadGuy")
-	
+	player = Player.GetPlayer("Greece")
+	france = Player.GetPlayer("France")
+	ussr = Player.GetPlayer("USSR")
+	ukraine = Player.GetPlayer("Ukraine")
+
+	ConquestObjective = player.AddPrimaryObjective("Secure the area.")
+	ussr.AddPrimaryObjective("Defend your base.")
+	ukraine.AddPrimaryObjective("Destroy the convoy.")
+
 	RunInitialActivities()
-	
-	SendMcvReinforcements()
-	OpenRA.RunAfterDelay(FirstJeepReinforcementsDelay, SendJeepReinforcements)
-	OpenRA.RunAfterDelay(SecondJeepReinforcementsDelay, SendJeepReinforcements)
-	
-	OpenRA.SetViewportCenterPosition(ReinforcementsEntryPoint.CenterPosition)
-	
-	Media.PlayMovieFullscreen("ally2.vqa", function() Media.PlayMovieFullscreen("mcv.vqa", Media.PlayRandomMusic) end)
+
+	SendConstructionVehicleReinforcements()
+	Trigger.AfterDelay(Utils.Seconds(5), SendJeepReinforcements)
+	Trigger.AfterDelay(Utils.Seconds(10), SendJeepReinforcements)
+
+	Trigger.AfterDelay(Utils.Minutes(10), SendTrucks)
+
+	Trigger.OnPlayerLost(player, MissionFailed)
+	Trigger.OnPlayerWon(player, MissionAccomplished)
+
+	Trigger.OnObjectiveCompleted(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
+	end)
+	Trigger.OnObjectiveFailed(player, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
+	end)
+
+	Camera.Position = ReinforcementsEntryPoint.CenterPosition
+
+	Media.PlayMovieFullscreen("ally2.vqa", function() Media.PlayMovieFullscreen("mcv.vqa") end)
+
+	ConvoyTimer(Utils.Seconds(3), "TenMinutesRemaining")
+	ConvoyTimer(Utils.Minutes(5), "WarningFiveMinutesRemaining")
+	ConvoyTimer(Utils.Minutes(6), "WarningFourMinutesRemaining")
+	ConvoyTimer(Utils.Minutes(7), "WarningThreeMinutesRemaining")
+	ConvoyTimer(Utils.Minutes(8), "WarningTwoMinutesRemaining")
+	ConvoyTimer(Utils.Minutes(9), "WarningOneMinuteRemaining")
 end
