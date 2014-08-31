@@ -993,7 +993,7 @@ Rules:
 		MenuPaletteEffect:
 			Effect: Desaturated
 		PlayMusicOnMapLoad:
-			Music: map1
+			Song: map1
 			Loop: true
 		LuaScript:
 			Scripts: shellmap.lua

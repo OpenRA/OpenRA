@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -16,8 +17,17 @@ namespace OpenRA.Mods.RA
 {
 	class PlayMusicOnMapLoadInfo : ITraitInfo
 	{
-		public readonly string Music = null;
+		[Desc("Start with this song name from the music YAML definitions.")]
+		public readonly string Song = null;
+
+		[Desc("Don't stop after one song.")]
 		public readonly bool Loop = false;
+
+		[Desc("Play the same song all over again.")]
+		public readonly bool Repeat = false;
+
+		[Desc("Play a random song.")]
+		public readonly bool Shuffle = false;
 
 		public object Create(ActorInitializer init) { return new PlayMusicOnMapLoad(init.world, this); }
 	}
@@ -41,10 +51,19 @@ namespace OpenRA.Mods.RA
 		void PlayMusic()
 		{
 			var onComplete = info.Loop ? (Action)PlayMusic : () => {};
+			var music = world.Map.Rules.InstalledMusic;
+			if (!music.Any())
+				return;
 
-			if (Game.Settings.Sound.MapMusic &&
-				world.Map.Rules.Music.ContainsKey(info.Music))
-				Sound.PlayMusicThen(world.Map.Rules.Music[info.Music], onComplete);
+			var playlist = world.Map.Rules.Music;
+
+			if (Game.Settings.Sound.MapMusic)
+			{
+				if (info.Shuffle || info.Song == null || !playlist.ContainsKey(info.Song) || (!info.Repeat && playlist[info.Song] == Sound.CurrentMusic))
+					Sound.PlayMusicThen(music.Shuffle(Game.CosmeticRandom).First().Value, onComplete);
+				else
+					Sound.PlayMusicThen(playlist[info.Song], onComplete);
+			}
 		}
 	}
 }
