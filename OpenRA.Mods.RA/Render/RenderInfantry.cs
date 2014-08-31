@@ -142,7 +142,7 @@ namespace OpenRA.Mods.RA.Render
 				if (DefaultAnimation.HasSequence(idleSequence))
 				{
 					state = AnimationState.IdleAnimating;
-					DefaultAnimation.PlayThen(idleSequence,	() =>
+					DefaultAnimation.PlayThen(idleSequence, () =>
 					{
 						DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
 						state = AnimationState.Waiting;
