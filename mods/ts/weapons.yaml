@@ -699,21 +699,42 @@ FireballLauncher:
 			Concrete: 2
 
 SonicZap:
-	ReloadDelay: 120
+	ReloadDelay: 48
 	Range: 6c0
 	Charges: yes
 	Report: SONIC4.AUD
-	Projectile: LaserZap
-		Color: 200,0,255,255
-		BeamWidth: 12
-		BeamDuration: 50
+	Projectile: LineImpactProjectile
+		Speed: 1c512
+		RangeBetweenImpacts: 0c256
+		BeyondTargetRange: 0c256
+		MaxTargetRange: 50c0
+		MinRangeSource: 0c0
+		FalloffMaxReduction: 0
+		FalloffStartDistance: 49c0
+		FalloffEndDistance: 50c0
 	Warhead@1Dam: SpreadDamage
-		Spread: 42
-		Damage: 100
-		DeathType: 5
+		Range: 0, 384 # Hits roughly twice.
+		Falloff: 1000, 1000 # Use large factors to avoid int rounding errors. Damage roughly: 80.
+		Damage: 4
+		InfDeath: 6
+		AffectsParent: false
+		ValidStances: Neutral, Enemy
 		Versus:
 			Heavy: 80
 			Concrete: 60
+	Warhead@2Dam: SpreadDamage
+		Range: 0, 384
+		Falloff: 500, 500 # Only does half damage to friendly units
+		Damage: 4
+		InfDeath: 6
+		InvalidTargets: Disruptor # Does not affect friendly disruptors at all
+		AffectsParent: false
+		ValidStances: Ally
+		Versus:
+			Heavy: 80
+			Concrete: 60
+	Warhead@3Eff: CreateEffect
+		Explosion: tiny_grey_explosion
 
 Dragon:
 	ReloadDelay: 50

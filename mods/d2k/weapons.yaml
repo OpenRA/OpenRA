@@ -423,22 +423,44 @@ FakeMissile:
 
 Sound:
 	ReloadDelay: 100
-	Range: 8c512
+	Range: 9c512
 	Report: SONIC1.WAV
-	Projectile: LaserZap
-		BeamWidth: 2
-		HitAnim: laserfire
-		BeamDuration: 8
-		UsePlayerColor: true
+	Projectile: LineImpactProjectile
+		Speed: 0c512
+		RangeBetweenImpacts: 0c512
+		BeyondTargetRange: 1c0
+		MaxTargetRange: 50c0
+		MinRangeSource: 1c0
+		FalloffMaxReduction: 50
+		FalloffStartDistance: 6c0
+		FalloffEndDistance: 11c0
 	Warhead@1Dam: SpreadDamage
-		Spread: 32
-		Damage: 150
-		DeathType: 6
+		Range: 0, 768, 1c256 # Hits roughly 3 + 2 times.
+		Falloff: 1000, 1000, 250 # Use large factors to avoid int rounding errors. Damage roughly: 180 + 30.
+		Damage: 6
+		InfDeath: 6
+		AffectsParent: false
+		ValidStances: Neutral, Enemy
 		Versus:
 			None: 60
 			Wood: 85
 			Light: 80
 			Concrete: 75
+	Warhead@2Dam: SpreadDamage
+		Range: 0, 768
+		Falloff: 500, 500 # Only does half damage to friendly units
+		Damage: 6
+		InfDeath: 6
+		InvalidTargets: Sonictank # Does not affect friendly sonic tanks at all
+		AffectsParent: false
+		ValidStances: Ally
+		Versus:
+			None: 60
+			Wood: 85
+			Light: 80
+			Concrete: 75
+	Warhead@3Eff: CreateEffect
+		Explosion: shockwave
 
 ChainGun:
 	ReloadDelay: 10

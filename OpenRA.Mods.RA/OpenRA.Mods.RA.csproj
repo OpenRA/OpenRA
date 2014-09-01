@@ -122,6 +122,8 @@
     <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
     <Compile Include="Power\AffectedByPowerOutage.cs" />
     <Compile Include="Power\Power.cs" />
+    <Compile Include="Effects\LineImpactProjectile.cs" />
+    <Compile Include="Power.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Player\PlaceBeacon.cs" />
     <Compile Include="MenuPaletteEffect.cs" />
