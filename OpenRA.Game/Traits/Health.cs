@@ -119,7 +119,7 @@ namespace OpenRA.Traits
             //Show damage debug overlay
             if (Game.Settings.Debug.ShowDamageDebugOverlay && damage > 0)
             {
-                string damageText;
+                var damageText;
                 if (Game.Settings.Debug.ShowDamageAbsolute)
                 {
                     damageText = string.Format("-{0}", damage);
