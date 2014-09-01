@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ObserverStatsHotkeyMgr hotkeyManager;
 
 		[ObjectCreator.UseCtor]
-		public ObserverStatsLogic(World world, WorldRenderer worldRenderer, Widget widget, Action onExit)
+		public ObserverStatsLogic(World world, WorldRenderer worldRenderer, Widget widget)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
