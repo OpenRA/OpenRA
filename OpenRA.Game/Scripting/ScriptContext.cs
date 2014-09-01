@@ -216,6 +216,79 @@ namespace OpenRA.Scripting
 				runtime.Dispose();
 		}
 
+		[Desc("Gets a Lua function at the global Lua scope (inside the sandbox).",
+			"Remember to call Dispose() on the function when done.")]
+		public LuaFunction GetGlobalFunction(string name)
+		{
+			LuaValue value;
+			if (!((LuaTable)runtime.Globals["environment"]).TryGetValue(name, out value) || !(value is LuaFunction))
+				return null;
+			return (LuaFunction)value.CopyReference();
+		}
+
+		[Desc("Calls a Lua function at the global Lua scope (inside the sandbox).",
+			"Use this one for a variable number of arguments.",
+			"Remember to call Dispose() on the return value.")]
+		public LuaVararg CallGlobalFunction(string name, IList<LuaValue> args)
+		{
+			LuaValue value;
+			if (!((LuaTable)runtime.Globals["environment"]).TryGetValue(name, out value) || !(value is LuaFunction))
+				return new LuaVararg(new LuaValue[0], false);
+			return (value as LuaFunction).Call(args);
+		}
+
+		[Desc("Calls a Lua function at the global Lua scope (inside the sandbox).",
+			"Use this one for a fixed number of arguments.",
+			"Remember to call Dispose() on the return value.")]
+		public LuaVararg CallGlobalFunction(string name, params LuaValue[] args)
+		{
+			LuaValue value;
+			if (!((LuaTable)runtime.Globals["environment"]).TryGetValue(name, out value) || !(value is LuaFunction))
+				return new LuaVararg(new LuaValue[0], false);
+			return (value as LuaFunction).Call(args);
+		}
+
+		[Desc("Tries to call a Lua function at the global Lua scope (inside the sandbox).",
+			"Use this one for a variable number of arguments.",
+			"Remember to call Dispose() on the return value.")]
+		public bool TryCallGlobalFunction(string name, out LuaVararg results, IList<LuaValue> args)
+		{
+			LuaValue value;
+			if (!((LuaTable)runtime.Globals["environment"]).TryGetValue(name, out value) || !(value is LuaFunction))
+			{
+				results = new LuaVararg(new LuaValue[0], false);
+				return false;
+			}
+
+			results = (value as LuaFunction).Call(args);
+			return true;
+		}
+
+		[Desc("Tries to call a Lua function at the global Lua scope (inside the sandbox).",
+			"Use this one for a fixed number of arguments.",
+			"Remember to call Dispose() on the return value.")]
+		public bool TryCallGlobalFunction(string name, out LuaVararg results, params LuaValue[] args)
+		{
+			LuaValue value;
+			if (!((LuaTable)runtime.Globals["environment"]).TryGetValue(name, out value) || !(value is LuaFunction))
+			{
+				results = new LuaVararg(new LuaValue[0], false);
+				return false;
+			}
+
+			results = (value as LuaFunction).Call(args);
+			return true;
+		}
+
+		[Desc("Executes the code in lua at the global Lua scope (inside the sandbox).",
+			"Set file to something useful for debugging.",
+			"Remember to call Dispose() on the return value.")]
+		public LuaVararg ExecuteLua(string lua, string file = "unknown")
+		{
+			var executeLua = (LuaFunction)runtime.Globals["ExecuteSandboxedScript"];
+			return executeLua.Call(file, lua);
+		}
+
 		static Type[] ExtractRequiredTypes(Type t)
 		{
 			// Returns the inner types of all the Requires<T> interfaces on this type
