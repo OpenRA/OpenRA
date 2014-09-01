@@ -257,9 +257,12 @@ namespace OpenRA
 		#region Scripting interface
 
 		Lazy<ScriptActorInterface> luaInterface;
+		public ScriptContext ScriptContext { get; private set; }
+
 		public void OnScriptBind(ScriptContext context)
 		{
 			luaInterface = Exts.Lazy(() => new ScriptActorInterface(context, this));
+			ScriptContext = context;
 		}
 
 		public LuaValue this[LuaRuntime runtime, LuaValue keyValue]
