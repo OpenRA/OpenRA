@@ -1,5 +1,123 @@
 # ZeroBrane Studio Changelog
 
+## v0.80 (Aug 31 2014)
+
+### Highlights
+  - Added support for expanding table elements in Watch window.
+  - Added editing of values in Watch window.
+  - Added highlighting all instances of selected text.
+  - Added replacing all selected instances using a dialog.
+  - Added saving (one-line) layout for editor tabs.
+  - Added support for `filename:<line>` and `filename:p<pos>` on the command line.
+  - Added search in Console and Output windows.
+  - Improved compatibility with Lua 5.2 to run the IDE.
+
+### Special thanks
+  - To [Li Jia](https://github.com/tiwb) for fixing remote path map when 'runonstart' option is set.
+
+### Improvements
+  - Added default values for `hotexit` and `saveallonrun` settings.
+  - Added debugger `GetHostName` and `GetPortNumber` methods (#166).
+  - Added a check for a local shortcut (F2/Del) being enabled before triggering.
+  - Added refresh of expanded Watch values.
+  - Added support for expanding table elements in Watch window.
+  - Added package `AddWatch` method (#166).
+  - Added `toolbar.iconsize` to configure toolbar icon size.
+  - Added `run-as-scratchpad` toolbar icon (hidden by default).
+  - Added `run` toolbar icon (hidden by default).
+  - Added `find-in-files` toolbar icon (hidden by default).
+  - Added support for disabling individual icons in the toolbar.
+  - Added replacing all selected instances using a dialog (closes #342).
+  - Added highlighting all instances of selected text (closes #344).
+  - Added `filetree.mousemove` option to disable drag-n-drop (closes #351).
+  - Added `suspended` to Output panel title when debugger is stopped (closes #350).
+  - Added a warning when remote console can't evaluate an expression (#350).
+  - Added handling of `osname` to package dependencies (#166).
+  - Added `onIdle` event (#166).
+  - Added `tree:FindItem` method (#166).
+  - Added package `Yield` method (#166).
+  - Added ability to set location of `ini` file from config.
+  - Added ability to load bitmap as toolbar icon.
+  - Added package `RemoveMenuItem` method (#166).
+  - Added ability to customize toolbar.
+  - Added saving (one-line) layout for editor tabs.
+  - Added centering of the screen after re-indenting and sorting (#337).
+  - Added local to variable 'activated' in function mapRemotePath
+  - Added centering of the screen after 'go to definition' and back (#337).
+  - Added centering of the screen after selection from the function list (#337).
+  - Added package `onEditorUpdateUI` event (#166).
+  - Added package `AddPanel` method (#166).
+  - Added package `GetUIManager` method (#166).
+  - Added editor `SetupKeywords` method (#166).
+  - Added document `GetFileExit` method (#166).
+  - Added `onEditorPainted` event (#166).
+  - Added support for `name:<line>` and `name:p<pos>` on the command line.
+  - Added error reporting on failure to load file from the command line.
+  - Added metalua components to MANIFEST (missing in packaging on OSX).
+  - Added saving auto-recovery record on switching from the application.
+  - Added `hotexit` option to exit without forcing to save files.
+  - Added setting of margin properties to support their reordering.
+  - Added error reporting on failure to delete directory from project tree.
+  - Added check for shortcut in conflict being enabled before activating (#233).
+  - Added workaround for missing `GetChildren` call in some wxlua configurations.
+  - Added unfolding modified lines to avoid leaving hidden lines in the editor.
+  - Added search in Console and Output windows (closes #313).
+  - Allowed double-click selection in the Output window (#313).
+  - Avoided system lib conflict when debugging by using bundled libs (fixes #355).
+  - Disabled editing on non-root watch elements.
+  - Disabled smart indentation for multi-line comments and strings (#324).
+  - Disabled re-indentation of multi-line comments/strings (#324).
+  - Disabled `Opt+Shift+Left/Right` shortcut as it conflicts with block selection.
+  - Enabled editing of values in Watch window.
+  - Enabled `editor.autoreload` by default.
+  - Improved config handling when `editor` configuration is removed/empty.
+  - Improved `autotabs` logic when the file starts with indentation.
+  - Improved auto-complete logic that tracks variable assignments (fixes #343).
+  - Improved cursor positioning after re-indenting or sorting.
+  - Improved compatibility with Lua5.2 to run the IDE.
+  - Increased default project history length to 20.
+  - Removed check for multiple references in stack values.
+  - Refactored stack processing to use methods to handle expandable table values.
+  - Refactored file name generation for compilation and static analysis.
+  - Removed erroneous message about failure to open '-psn...' file on OSX.
+  - Renamed all image files to remove cruft from their names.
+  - Simplified logic for watch processing.
+  - Switched from using TreeItemData to Lua tables for watch expressions.
+  - Switched to using tree control for watches.
+  - Updated copas library to support non-blocking requests using socket.http.
+  - Updated Stack and Watch views to better stringify keys.
+  - Updated watch menu to handle item under mouse cursor.
+  - Updated constants for image lists.
+  - Updated `FindMenuItem` method to search in the main and specified menus (#166).
+  - Updated `ide.config` to access wx, wxstc, and os through metatable.
+  - Updated recent projects/files handling to allow menus to be removed.
+  - Updated package `FindMenuItem` method (#166).
+  - Updated `autotabs` to respect `usetabs` when no indentation is present.
+  - Updated copy/cut to capture one instance when all are the same (closes #345).
+  - Updated default marker colors for lighter border (#305).
+  - Updated auto-recovery logic to skip missing files (fixes #323).
+
+### Fixes
+  - Fixed disabling auto-recovery on app switching.
+  - Fixed find-in-files error when used with editor not in focus (fixes #354).
+  - Fixed package `GetStack` method to return proper control (#166).
+  - Fixed Watch window background color on some Mint Linux systems.
+  - Fixed debugging error when `debugger.runonstart` is specified (fixes #348, #341).
+  - Fixed keybinding for `Ctrl-<punctuation>` working on Linux (fixes #346).
+  - Fixed localization based on static analysis.
+  - Fixed remote path map when 'runonstart' option is set.
+  - Fixed error reporting during Analyze (fixes #340).
+  - Fixed using image lists for stack/filetree to keep them in memory.
+  - Fixed indentation when Enter is hit at the middle of a line.
+  - Fixed formatting of `until` statements (fixes #335).
+  - Fixed formatting of strings including comments '--' (#335).
+  - Fixed restoring proper file names for unsaved tabs during auto-recovery.
+  - Fixed deleting 'dynamic words' when multiple lines are removed.
+  - Fixed `love.update` description (#247).
+  - Fixed indentation of strings starting from `endSomething` (#324).
+  - Fixed use of '%' in replacement for Lua5.2 compatibility (#153, #156, #143).
+  - Fixed warnings from static analysis.
+
 ## v0.70 (Jun 18 2014)
 
 ### Highlights
