@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Effects;
 
 namespace OpenRA.Traits
 {
@@ -115,6 +116,21 @@ namespace OpenRA.Traits
 
 				damage = Util.ApplyPercentageModifiers(damage, modifiers);
 			}
+            //Show damage debug overlay
+            if (Game.Settings.Debug.ShowDamageDebugOverlay && damage > 0)
+            {
+                var damageText;
+                if (Game.Settings.Debug.ShowDamageAbsolute)
+                {
+                    damageText = string.Format("-{0}", damage);
+                }
+                else
+                {
+                    damageText = string.Format("-{0:0.00}%", (float)damage / MaxHP);
+                }
+                self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.Owner.Color.RGB, damageText, 30)));
+            }
+                
 
 			hp = Exts.Clamp(hp - damage, 0, MaxHP);
 

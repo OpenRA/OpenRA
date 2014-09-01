@@ -12,7 +12,7 @@ using System;
 using System.Drawing;
 using OpenRA.Graphics;
 
-namespace OpenRA.Mods.RA.Graphics
+namespace OpenRA.Graphics
 {
 	public struct TextRenderable : IRenderable
 	{
