@@ -90,6 +90,7 @@ ChromeLayout:
 	mods/cnc/chrome/ingame-chat.yaml
 	mods/cnc/chrome/ingame-menu.yaml
 	mods/cnc/chrome/ingame-debug.yaml
+	mods/cnc/chrome/ingame-observerstats.yaml
 	mods/cnc/chrome/ingame-info.yaml
 	mods/cnc/chrome/ingame-infobriefing.yaml
 	mods/cnc/chrome/ingame-infoobjectives.yaml

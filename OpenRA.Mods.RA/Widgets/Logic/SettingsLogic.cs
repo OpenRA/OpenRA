@@ -351,7 +351,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var hotkeys = new Dictionary<string, string>()
 				{
 					{ "ObserverCombinedView", "All Players" },
-					{ "ObserverWorldView", "Disable Shroud" }
+					{ "ObserverWorldView", "Disable Shroud" },
+
+					{ "ObserverStatsControl", "Control Stats" },
+					{ "ObserverStatsCombat", "Combat Stats" },
+					{ "ObserverStatsEconomy", "Economy Stats" },
+					{ "ObserverStatsGraph", "Earnings Graph" },
+					{ "ObserverStatsProduction", "Production" },
+					{ "ObserverStatsSupportPowers", "Support powers" },
+					{ "ObserverStatsSummary", "Summary Stats" },
+					{ "ObserverStatsNone", "No Stats"}
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});

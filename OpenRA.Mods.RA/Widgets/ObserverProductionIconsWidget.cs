@@ -26,9 +26,11 @@ namespace OpenRA.Mods.RA.Widgets
 		readonly WorldRenderer worldRenderer;
 		Dictionary<ProductionQueue, Animation> clocks;
 
-		public int IconWidth = 32;
-		public int IconHeight = 24;
+		protected int iconWidth = 64;
+		protected int iconHeight = 48;
 		public int IconSpacing = 8;
+		public float IconScale = 0.5f;
+		public bool ShowTimeLeft = true;
 
 		[ObjectCreator.UseCtor]
 		public ObserverProductionIconsWidget(World world, WorldRenderer worldRenderer)
@@ -65,7 +67,7 @@ namespace OpenRA.Mods.RA.Widgets
 				}
 			}
 
-			var iconSize = new float2(IconWidth, IconHeight);
+			var iconSize = new float2(iconWidth * IconScale, iconHeight * IconScale);
 			foreach (var queue in queues)
 			{
 				var current = queue.Trait.CurrentItem();
@@ -78,21 +80,24 @@ namespace OpenRA.Mods.RA.Widgets
 
 				var icon = new Animation(world, RenderSimple.GetImage(actor));
 				icon.Play(actor.Traits.Get<TooltipInfo>().Icon);
-				var location = new float2(RenderBounds.Location) + new float2(queue.i * (IconWidth + IconSpacing), 0);
-				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);
+				var location = new float2(RenderBounds.Location) + new float2(queue.i * (iconWidth * IconScale + IconSpacing), 0);
+				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer, IconScale);
 
 				var clock = clocks[queue.Trait];
 				clock.PlayFetchIndex("idle",
 					() => current.TotalTime == 0 ? 0 : ((current.TotalTime - current.RemainingTime)
 					* (clock.CurrentSequence.Length - 1) / current.TotalTime));
 				clock.Tick();
-				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer, 0.5f);
+				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer, IconScale);
 
-				var tiny = Game.Renderer.Fonts["Tiny"];
-				var text = GetOverlayForItem(current);
-				tiny.DrawTextWithContrast(text,
-					location + new float2(16, 16) - new float2(tiny.Measure(text).X / 2, 0),
-					Color.White, Color.Black, 1);
+				if (ShowTimeLeft)
+				{
+					var tiny = Game.Renderer.Fonts["Tiny"];
+					var text = GetOverlayForItem(current);
+					tiny.DrawTextWithContrast(text,
+						location + new float2(iconSize.X / 2, iconSize.Y / 2 - 8) - new float2(tiny.Measure(text).X / 2, 0),
+						Color.White, Color.Black, 1);
+				}
 			}
 		}
 

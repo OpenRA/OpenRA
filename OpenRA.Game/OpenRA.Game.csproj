@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -176,9 +176,12 @@
     <Compile Include="Widgets\PasswordFieldWidget.cs" />
     <Compile Include="Widgets\PerfGraphWidget.cs" />
     <Compile Include="Widgets\ProgressBarWidget.cs" />
+    <Compile Include="Widgets\RectangleWidget.cs" />
     <Compile Include="Widgets\ScrollItemWidget.cs" />
     <Compile Include="Widgets\ScrollPanelWidget.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
+    <Compile Include="Widgets\SpacingWidget.cs" />
+    <Compile Include="Widgets\TableWidget.cs" />
     <Compile Include="Widgets\TextFieldWidget.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
     <Compile Include="Widgets\Widget.cs" />

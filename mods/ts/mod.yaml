@@ -109,7 +109,7 @@ ChromeLayout:
 	mods/ra/chrome/ingame-infoobjectives.yaml
 	mods/ra/chrome/ingame-infostats.yaml
 	mods/ra/chrome/ingame-observer.yaml
-	mods/ra/chrome/ingame-observerstats.yaml
+	mods/ts/chrome/ingame-observerstats.yaml
 	mods/ts/chrome/ingame-player.yaml
 	mods/ra/chrome/ingame-debug.yaml
 	mods/ra/chrome/ingame-leavemap.yaml

@@ -13,8 +13,8 @@ ObserverStats@OBSERVER_STATS:
 	DefaultSelectedOption:Summary
 	Children:
 		DropDownButton@STATS_DROPDOWN:
-			X:162
-			Y:0
+			X:15
+			Y:15
 			Width:185
 			Height:25
 			Font:Bold
@@ -24,7 +24,6 @@ ObserverStats@OBSERVER_STATS:
 			Height:20
 			ColumnSpacing:5
 			RowSpacing:2
-			Background:panel-darkred-transparent
 			Children:
 				TableHeader:
 					Children:
@@ -71,7 +70,6 @@ ObserverStats@OBSERVER_STATS:
 			Height:20
 			ColumnSpacing:5
 			RowSpacing:2
-			Background:panel-darkred-transparent
 			Children:
 				TableHeader:
 					Children:
@@ -117,7 +115,6 @@ ObserverStats@OBSERVER_STATS:
 			Height:20
 			ColumnSpacing:5
 			RowSpacing:2
-			Background:panel-darkred-transparent
 			Children:
 				TableHeader:
 					Children:
@@ -252,7 +249,7 @@ ObserverStats@OBSERVER_STATS:
 							Y:0
 							Width:PARENT_RIGHT
 							Height:PARENT_BOTTOM
-							Background:scrollpanel-bg
+							Background:panel-black
 							Children:
 								Label@PLAYER:
 									X:50
@@ -260,8 +257,9 @@ ObserverStats@OBSERVER_STATS:
 									Width:135
 									Height:PARENT_BOTTOM
 									Font:Bold
-								Image@IMAGE_CASH:
-									X:189
+									Align:Left
+								Image:
+									X:185
 									Y:6
 									Width:11
 									Height:14
@@ -273,44 +271,55 @@ ObserverStats@OBSERVER_STATS:
 									Width:100
 									Height:PARENT_BOTTOM
 									Font:Bold
-								Image@IMAGE_ARMYVALUE:
+									Align:Left
+								Image:
 									X:316
-									Y:4
-									Width:16
-									Height:16
+									Y:5
+									Width:34
+									Height:14
 									ImageCollection:production-icons
 									ImageName:vehicle
 								Label@ARMYVALUE:
-									X:350
+									X:340
 									Y:0
 									Width:50
 									Height:PARENT_BOTTOM
 									Font:Bold
+									Align:Left
 								Image:
 									X:400
-									Y:4
-									Width:16
-									Height:16
+									Y:5
+									Width:34
+									Height:14
 									ImageCollection:observericons
-									ImageName:harvesters
+									ImageName:oretruck
 								Label@HARVESTERS:
-									X:434
+									X:420
 									Y:0
 									Width:50
 									Height:PARENT_BOTTOM
 									Font:Bold
-								Label@ACTIONS_MIN_TXT:
+									Align:Left
+								Image:
+									X:480
+									Height:PARENT_BOTTOM
+									Y:5
+									Width:16
+									ImageName:defense
+									ImageCollection:observericons
+								Label@STATICDEFVALUE:
 									X:500
 									Y:0
 									Width:100
 									Height:PARENT_BOTTOM
 									Font:Bold
+									Align:Left
 		Background@EARNED_THIS_MIN_GRAPH_PANEL:
 			X:25
 			Y:50
 			Width:600
 			Height:400
-			Background:panel-darkred-transparent
+			Background:panel-black
 			Children:
 				Background@EARNED_THIS_MIN_GRAPH_CONTAINER:
 					X:10

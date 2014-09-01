@@ -150,6 +150,17 @@ dialog5: dialog.png
 	corner-bl: 579,446,1,1
 	corner-br: 643,446,1,1
 
+panel-darkred-transparent: dialog.png
+	background: 769,129,126,126
+	border-r: 895,129,1,126
+	border-l: 768,129,1,126
+	border-b: 769,255,126,1
+	border-t: 769,128,126,1
+	corner-tl: 768,128,1,1
+	corner-tr: 895,128,1,1
+	corner-bl: 768,255,1,1
+	corner-br: 895,255,1,1
+
 lobby-bits: spawnpoints.png
 	spawn-unclaimed: 37,5,22,22
 	spawn-claimed: 5,5,22,22
@@ -596,3 +607,8 @@ mainmenu-border: dialog.png
 	corner-tr: 728,387,40,40
 	corner-bl: 648,467,40,40
 	corner-br: 728,467,40,40
+
+observericons: observericons.png
+	cash: 0,0,11,14
+	armyvalue: 12,0,34,14
+	harvesters: 50,0,34,14

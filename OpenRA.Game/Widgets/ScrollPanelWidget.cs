@@ -16,30 +16,23 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Widgets
 {
-	public interface ILayout
-	{
-		void AdjustChild(Widget w);
-		void AdjustChildren();
-	}
-
 	public enum ScrollPanelAlign
 	{
 		Bottom,
 		Top
 	}
 
-	public class ScrollPanelWidget : Widget
+	public class ScrollPanelWidget : SpacingWidget
 	{
 		public int ScrollbarWidth = 24;
-		public int ItemSpacing = 2;
 		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
 		public string Background = "scrollpanel-bg";
-		public int ContentHeight;
-		public ILayout Layout;
 		public int MinimumThumbSize = 10;
 		public ScrollPanelAlign Align = ScrollPanelAlign.Top;
-		public bool CollapseHiddenChildren;
 		public float SmoothScrollSpeed = 0.333f;
+
+		protected float targetListOffset = 0;
+		protected float currentListOffset = 0;
 
 		protected bool UpPressed;
 		protected bool DownPressed;
@@ -50,12 +43,13 @@ namespace OpenRA.Widgets
 		protected Rectangle scrollbarRect;
 		protected Rectangle thumbRect;
 
-		// The target value is the list offset we're trying to reach
-		float targetListOffset;
-
-		// The current value is the actual list offset at the moment
-		float currentListOffset;
-
+		public ScrollPanelWidget() : base()
+		{
+			ItemSpacing = 2;
+			Layout = new ListLayout(this);
+			GetContentWidth = () => Bounds.Width - ScrollbarWidth;
+		}
+		
 		// Setting "smooth" to true will only update the target list offset.
 		// Setting "smooth" to false will also set the current list offset,
 		// i.e. it will scroll immediately.
@@ -71,22 +65,10 @@ namespace OpenRA.Widgets
 				currentListOffset = value;
 		}
 
-		public ScrollPanelWidget()
-		{
-			Layout = new ListLayout(this);
-		}
-
 		public override void RemoveChildren()
 		{
 			ContentHeight = 0;
 			base.RemoveChildren();
-		}
-
-		public override void AddChild(Widget child)
-		{
-			// Initial setup of margins/height
-			Layout.AdjustChild(child);
-			base.AddChild(child);
 		}
 
 		public override void RemoveChild(Widget child)

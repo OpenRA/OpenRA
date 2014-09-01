@@ -20,21 +20,21 @@ namespace OpenRA
 
 	public static class MiniYamlExts
 	{
-		public static void WriteToFile(this MiniYamlNodes y, string filename)
+		public static void WriteToFile(this MiniYamlNodes y, string filename, bool addspacetovalue = true)
 		{
-			File.WriteAllLines(filename, y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
+			File.WriteAllLines(filename, y.ToLines(true, addspacetovalue).Select(x => x.TrimEnd()).ToArray());
 		}
 
-		public static string WriteToString(this MiniYamlNodes y)
+		public static string WriteToString(this MiniYamlNodes y, bool addspacetovalue = true)
 		{
-			return y.ToLines(true).Select(x => x.TrimEnd()).JoinWith("\n");
+			return y.ToLines(true, addspacetovalue).Select(x => x.TrimEnd()).JoinWith("\n");
 		}
 
-		public static IEnumerable<string> ToLines(this MiniYamlNodes y, bool lowest)
+		public static IEnumerable<string> ToLines(this MiniYamlNodes y, bool lowest, bool addspacetovalue)
 		{
 			foreach (var kv in y)
 			{
-				foreach (var line in kv.Value.ToLines(kv.Key))
+				foreach (var line in kv.Value.ToLines(kv.Key, addspacetovalue))
 					yield return line;
 				if (lowest)
 					yield return "";
@@ -299,11 +299,11 @@ namespace OpenRA
 			return new MiniYaml(a.Value ?? b.Value, Merge(a.Nodes, b.Nodes, throwErrors));
 		}
 
-		public IEnumerable<string> ToLines(string name)
+		public IEnumerable<string> ToLines(string name, bool addspacetovalue = true)
 		{
-			yield return name + ": " + Value;
+			yield return name + ":" + (addspacetovalue ? " " : "") + Value;
 			if (Nodes != null)
-				foreach (var line in Nodes.ToLines(false))
+				foreach (var line in Nodes.ToLines(false, addspacetovalue))
 					yield return "\t" + line;
 		}
 	}

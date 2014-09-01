@@ -48,6 +48,21 @@ namespace OpenRA.Graphics
 				LoadCollection(c.Key, c.Value);
 		}
 
+		public static void InitializeOutOfGame(params string[] chromeFiles)
+		{
+			collections = new Dictionary<string, Collection>();
+			cachedSheets = new Dictionary<string, Sheet>();
+			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
+
+			if (chromeFiles.Length == 0)
+				return;
+
+			var chrome = chromeFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal);
+
+			foreach (var c in chrome)
+				LoadCollectionWithoutLoadscreen(c.Key, c.Value);
+		}
+
 		public static void Save(string file)
 		{
 			var root = new List<MiniYamlNode>();
@@ -71,6 +86,16 @@ namespace OpenRA.Graphics
 			Game.modData.LoadScreen.Display();
 			var collection = new Collection()
 			{
+				src = yaml.Value,
+				regions = yaml.Nodes.ToDictionary(n => n.Key, n => new MappedImage(yaml.Value, n.Value))
+			};
+
+			collections.Add(name, collection);
+		}
+
+		static void LoadCollectionWithoutLoadscreen(string name, MiniYaml yaml)
+		{
+			var collection = new Collection() {
 				src = yaml.Value,
 				regions = yaml.Nodes.ToDictionary(n => n.Key, n => new MappedImage(yaml.Value, n.Value))
 			};

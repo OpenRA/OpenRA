@@ -466,3 +466,17 @@ order-icons: chrome.png
 	beacon: 400,48,16,16
 	beacon-disabled: 400,64,16,16
 	beacon-active: 400,80,16,16
+
+observericons: observericons.png
+	cash: 0,0,11,14
+	armyvalue: 12,0,34,14
+	harvesters: 50,0,34,14
+	building: 0,16,16,16
+	defense: 16,16,16,16
+	infantry: 32,16,16,16
+	vehicle: 48,16,16,16
+	copter: 64,16,16,16
+	boat: 80,16,16,16
+	aircraft: 96,16,16,16
+	sub: 112,16,16,16
+	oretruck: 128,16,16,16

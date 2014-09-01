@@ -26,6 +26,7 @@ namespace OpenRA.Widgets
 		public Color TextColor = ChromeMetrics.Get<Color>("TextColor");
 		public bool Contrast = ChromeMetrics.Get<bool>("TextContrast");
 		public Color ContrastColor = ChromeMetrics.Get<Color>("TextContrastColor");
+		public Color BackgroundColor = Color.Transparent;
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
@@ -51,6 +52,7 @@ namespace OpenRA.Widgets
 			GetText = other.GetText;
 			GetColor = other.GetColor;
 			GetContrastColor = other.GetContrastColor;
+			BackgroundColor = other.BackgroundColor;
 		}
 
 		public override void Draw()
@@ -80,6 +82,11 @@ namespace OpenRA.Widgets
 
 			if (WordWrap)
 				text = WidgetUtils.WrapText(text, Bounds.Width, font);
+
+			if (BackgroundColor != Color.Transparent)
+			{
+				WidgetUtils.FillRectWithColor(RenderBounds, BackgroundColor);
+			}
 
 			var color = GetColor();
 			var contrast = GetContrastColor();
