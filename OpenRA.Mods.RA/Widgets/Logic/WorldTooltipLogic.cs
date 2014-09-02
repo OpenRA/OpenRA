@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var labeltextWidth = font.Measure(labelText).X;
 				var refundtextWidth = font.Measure(refundText).X;
-				var ownertextWidth = font.Measure(ownerName).X;
+				var ownertextWidth = ownerFont.Measure(ownerName).X;
 
 				label.Bounds.Width = labeltextWidth;
 				refund.Bounds.Width = refundtextWidth;
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						widget.Bounds.Height = doubleHeight;
 
 					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
-						owner.Bounds.X + ownerFont.Measure(ownerName).X + label.Bounds.X);
+						owner.Bounds.X + ownertextWidth + label.Bounds.X);
 				}
 				else
 				{
