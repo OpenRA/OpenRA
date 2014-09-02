@@ -67,6 +67,7 @@ namespace OpenRA.Mods.RA.Widgets
 				}
 			}
 
+			var iconIndex = 0;
 			var iconSize = new float2(iconWidth * IconScale, iconHeight * IconScale);
 			foreach (var queue in queues)
 			{
@@ -80,7 +81,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 				var icon = new Animation(world, RenderSimple.GetImage(actor));
 				icon.Play(actor.Traits.Get<TooltipInfo>().Icon);
-				var location = new float2(RenderBounds.Location) + new float2(queue.i * (iconWidth * IconScale + IconSpacing), 0);
+				var location = new float2(RenderBounds.Location) + new float2(iconIndex * (iconWidth * IconScale + IconSpacing), 0);
 				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer, IconScale);
 
 				var clock = clocks[queue.Trait];
@@ -98,6 +99,8 @@ namespace OpenRA.Mods.RA.Widgets
 						location + new float2(iconSize.X / 2, iconSize.Y / 2 - 8) - new float2(tiny.Measure(text).X / 2, 0),
 						Color.White, Color.Black, 1);
 				}
+
+				iconIndex++;
 			}
 		}
 
