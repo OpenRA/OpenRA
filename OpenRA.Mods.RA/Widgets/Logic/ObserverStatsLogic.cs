@@ -65,7 +65,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		DropDownButtonWidget statsDropDown;
 		IEnumerable<Player> players;
 		World world;
-		WorldRenderer worldRenderer;
 
 		TableWidget ecotable;
 		TableWidget controltable;
@@ -82,7 +81,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public ObserverStatsLogic(World world, WorldRenderer worldRenderer, Widget widget)
 		{
 			this.world = world;
-			this.worldRenderer = worldRenderer;
 			players = world.Players.Where(p => !p.NonCombatant);
 
 			mainWidget = (ObserverStatsWidget)widget;
