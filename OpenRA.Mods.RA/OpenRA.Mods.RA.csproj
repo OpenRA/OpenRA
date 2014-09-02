@@ -42,6 +42,7 @@
       <CustomCommands>
         <Command type="AfterBuild" command="cp ../thirdparty/FuzzyLogicLibrary.dll ../" workingdir="${ProjectDir}" />
         <Command type="AfterBuild" command="cp ${TargetFile} ../mods/ra" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/ra" workingdir="${ProjectDir}" />
       </CustomCommands>
     </CustomCommands>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
