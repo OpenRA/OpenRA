@@ -31,10 +31,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
 				var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
 
-				sidebarTicker.OnTick = () => {
+				sidebarTicker.OnTick = () =>
+				{
 					// Switch to observer mode after win/loss
 					if (world.ObserveAfterWinOrLose && world.LocalPlayer.WinState != WinState.Undefined)
-						Game.RunAfterTick(() => {
+						Game.RunAfterTick(() =>
+						{
 							playerRoot.RemoveChildren();
 							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
 							Game.LoadWidget(world, "OBSERVER_STATS", playerRoot, new WidgetArgs());
