@@ -31,6 +31,8 @@ Background@WORLD_TOOLTIP:
 			Height: 25
 		Container@DOUBLE_HEIGHT:
 			Height: 45
+		Container@TRIPLE_HEIGHT:
+			Height: 65			
 		Label@LABEL:
 			X: 5
 			Height: 23
@@ -45,6 +47,11 @@ Background@WORLD_TOOLTIP:
 			Y: 19
 			Height: 23
 			Font: Bold
+		Label@REFUND:
+			X: 5
+			Y: 38
+			Height: 23
+			Font: Bold			
 
 Background@PRODUCTION_TOOLTIP:
 	Logic: ProductionTooltipLogic

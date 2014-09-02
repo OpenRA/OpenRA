@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Widgets
 {
-	public enum WorldTooltipType { None, Unexplored, Actor, FrozenActor }
+	public enum WorldTooltipType { None, Unexplored, Actor, FrozenActor, SellableActor }
 
 	public class ViewportControllerWidget : Widget
 	{
@@ -28,6 +28,7 @@ namespace OpenRA.Widgets
 		public WorldTooltipType TooltipType { get; private set; }
 		public IToolTip ActorTooltip { get; private set; }
 		public FrozenActor FrozenActorTooltip { get; private set; }
+		public Actor TooltipActor { get; private set; }
 
 		public int EdgeScrollThreshold = 15;
 		public int EdgeCornerScrollThreshold = 35;
@@ -109,7 +110,8 @@ namespace OpenRA.Widgets
 			if (underCursor != null)
 			{
 				ActorTooltip = underCursor.TraitsImplementing<IToolTip>().First();
-				TooltipType = WorldTooltipType.Actor;
+				TooltipActor = underCursor;
+				TooltipType = (underCursor.HasTrait<INotifySold>()) ? WorldTooltipType.SellableActor :  WorldTooltipType.Actor;
 				return;
 			}
 

@@ -34,6 +34,8 @@ Background@WORLD_TOOLTIP:
 			Height: 29
 		Container@DOUBLE_HEIGHT:
 			Height: 50
+		Container@TRIPLE_HEIGHT:
+			Height: 71			
 		Label@LABEL:
 			X: 7
 			Y: 2
@@ -49,6 +51,11 @@ Background@WORLD_TOOLTIP:
 			Y: 22
 			Height: 23
 			Font: Bold
+		Label@REFUND:
+			X: 5
+			Y: 42
+			Height: 23
+			Font: Bold			
 
 Background@SPAWN_TOOLTIP:
 	Logic: SpawnSelectorTooltipLogic
