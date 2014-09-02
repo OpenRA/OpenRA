@@ -1,38 +1,38 @@
 Speech:
 	Notifications:
-		Repairing: repair1
-		LowPower: lopower1
-		SilosNeeded: silond1
-		PrimaryBuildingSelected: pribldg1
-		BuildingCannotPlaceAudio: nodeply1
-		NewOptions: newopt1
-		Win: misnwon1
-		Lose: misnlst1
-		BaseAttack: baseatk1
+		Repairing: repair1, "Repairing..."
+		LowPower: lopower1, "Low power!"
+		SilosNeeded: silond1, "Silos needed."
+		PrimaryBuildingSelected: pribldg1, "Primary building selected."
+		BuildingCannotPlaceAudio: nodeply1, "Cannot build here."
+		NewOptions: newopt1, "New construction options."
+		Win: misnwon1, "A winner is you!"
+		Lose: misnlst1, "Game Over"
+		BaseAttack: baseatk1, "Our base is under attack!"
 		HarvesterAttack:
-		Leave: bct1
-		StartGame: bctrinit
-		UnitReady: unitrdy1
+		Leave: bct1, "Battle control terminated."
+		StartGame: bctrinit, "Battle control initialized."
+		UnitReady: unitrdy1, "Unit ready."
 		NoBuild: nobuild1
-		Training: train1
-		OnHold: onhold1
-		Cancelled: cancld1
-		Building: abldgin1
-		ConstructionComplete: conscmp1
-		UnitLost: unitlst1
-		NavalUnitLost: navylst1
-		AirUnitLost: aunitl1
-		BuildingCaptured: strucap1
-		UnitStolen: unitsto
-		ReinforcementsArrived: reinfor1
-		SignalFlareNorth: flaren1
-		AlliedReinforcementsArrived: aarrive1
-		ConvoyApproaching: convyap1
+		Training: train1, "Training..."
+		OnHold: onhold1, "On hold."
+		Cancelled: cancld1, "Cancelled."
+		Building: abldgin1, "Building..."
+		ConstructionComplete: conscmp1, "Construction complete."
+		UnitLost: unitlst1, "Unit lost."
+		NavalUnitLost: navylst1, "Naval Unit lost."
+		AirUnitLost: aunitl1, "Air Unit lost."
+		BuildingCaptured: strucap1, "Building captured"
+		UnitStolen: unitsto, "Unit stolen"
+		ReinforcementsArrived: reinfor1, "Reinforcements have arrived!"
+		SignalFlareNorth: flaren1, "Signal flare!"
+		AlliedReinforcementsArrived: aarrive1, "Allied reinforcements have arrived!"
+		ConvoyApproaching: convyap1, "Convoy Approaching!"
 
 Sounds:
 	Notifications:
-		RadarUp: radaron2
-		RadarDown: radardn1
+		RadarUp: radaron2, "BeepBeepBeepBeepBEEEEP!"
+		RadarDown: radardn1, "[DOOM's door sound]"
 		CashTickUp: cashup1
 		CashTickDown:cashdn1
 		LevelUp: hydrod1
