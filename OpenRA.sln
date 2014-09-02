@@ -72,8 +72,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "Syste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.CrashDialog", "OpenRA.CrashDialog\OpenRA.CrashDialog.csproj", "{47F1B0EE-EB35-47F2-93E4-273C70909157}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.ObserverUIEditor", "OpenRA.ObserverUIEditor\OpenRA.ObserverUIEditor.csproj", "{818B65DC-C15A-4E82-A2BC-41629F7AEDC8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -132,10 +130,6 @@ Global
 		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Debug|x86.Build.0 = Debug|x86
 		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Release|x86.ActiveCfg = Debug|x86
 		{47F1B0EE-EB35-47F2-93E4-273C70909157}.Release|x86.Build.0 = Debug|x86
-		{818B65DC-C15A-4E82-A2BC-41629F7AEDC8}.Debug|x86.ActiveCfg = Debug|x86
-		{818B65DC-C15A-4E82-A2BC-41629F7AEDC8}.Debug|x86.Build.0 = Debug|x86
-		{818B65DC-C15A-4E82-A2BC-41629F7AEDC8}.Release|x86.ActiveCfg = Release|x86
-		{818B65DC-C15A-4E82-A2BC-41629F7AEDC8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
