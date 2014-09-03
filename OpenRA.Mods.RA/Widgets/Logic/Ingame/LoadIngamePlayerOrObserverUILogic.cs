@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			Action ShowLeaveRestartDialog = () =>
 			{
-				ingameRoot.IsVisible = () => false;
+				ingameRoot.RemoveChildren();
 				Game.LoadWidget(world, "LEAVE_RESTART_WIDGET", Ui.Root, new WidgetArgs());
 			};
 			world.GameOver += ShowLeaveRestartDialog;
