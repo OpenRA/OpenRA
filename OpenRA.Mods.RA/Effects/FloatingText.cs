@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -17,23 +17,24 @@ using OpenRA.Mods.RA.Graphics;
 
 namespace OpenRA.Mods.RA.Effects
 {
-	class CashTick : IEffect
+	public class FloatingText : IEffect
 	{
 		readonly SpriteFont font;
 		readonly string text;
 		Color color;
-		int remaining = 30;
+		int remaining;
 		WPos pos;
 
-		public CashTick(WPos pos, Color color, int value)
+		public FloatingText(WPos pos, Color color, string text, int duration)
 		{
 			this.font = Game.Renderer.Fonts["TinyBold"];
 			this.pos = pos;
 			this.color = color;
-			this.text = "{0}${1}".F(value < 0 ? "-" : "+", Math.Abs(value));
+			this.text = text;
+			this.remaining = duration;
 		}
 
-		static readonly WVec velocity = new WVec(0,0,86);
+		static readonly WVec velocity = new WVec(0, 0, 86);
 		public void Tick(World world)
 		{
 			if (--remaining <= 0)
@@ -48,6 +49,11 @@ namespace OpenRA.Mods.RA.Effects
 				yield break;
 
 			yield return new TextRenderable(font, pos, 0, color, text);
+		}
+
+		public static string FormatCashTick(int cashAmount)
+		{
+			return "{0}${1}".F(cashAmount < 0 ? "-" : "+", Math.Abs(cashAmount));
 		}
 	}
 }

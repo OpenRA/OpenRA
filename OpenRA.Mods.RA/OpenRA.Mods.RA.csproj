@@ -120,6 +120,8 @@
     <Compile Include="Air\AttackPlane.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Crates\DuplicateUnitCrateAction.cs" />
+    <Compile Include="Effects\FloatingText.cs" />
+    <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
     <Compile Include="Power\AffectedByPowerOutage.cs" />
     <Compile Include="Power\Power.cs" />
@@ -212,7 +214,6 @@
     <Compile Include="DemoTruck.cs" />
     <Compile Include="DetectCloaked.cs" />
     <Compile Include="Effects\Bullet.cs" />
-    <Compile Include="Effects\CashTick.cs" />
     <Compile Include="Effects\Contrail.cs" />
     <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
@@ -534,7 +535,6 @@
     <Compile Include="Render\RenderSprites.cs" />
     <Compile Include="Graphics\BeamRenderable.cs" />
     <Compile Include="Graphics\ContrailRenderable.cs" />
-    <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
     <Compile Include="Air\FlyAwayOnIdle.cs" />
     <Compile Include="Buildings\ClonesProducedUnits.cs" />
