@@ -135,7 +135,7 @@ YAK:
 		BuildPaletteOrder: 30
 		Prerequisites: ~afld, ~techlevel.medium
 	Valued:
-		Cost: 1000
+		Cost: 1350
 	Tooltip:
 		Name: Yak Attack Plane
 		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings
@@ -286,7 +286,7 @@ HIND:
 		BuildPaletteOrder: 20
 		Prerequisites: ~hpad, ~techlevel.medium
 	Valued:
-		Cost: 1000
+		Cost: 1350
 	Tooltip:
 		Name: Hind
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
