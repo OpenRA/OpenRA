@@ -569,6 +569,7 @@ end
 function ClearAllCurrentLineMarkers()
   for _, document in pairs(openDocuments) do
     document.editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
+    document.editor:Refresh() -- needed for background markers that don't get refreshed (wx2.9.5)
   end
 end
 

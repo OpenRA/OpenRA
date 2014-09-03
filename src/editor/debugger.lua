@@ -314,6 +314,7 @@ local function activateDocument(file, line, activatehow)
         end
         local line = line - 1 -- editor line operations are zero-based
         editor:MarkerAdd(line, CURRENT_LINE_MARKER)
+        editor:Refresh() -- needed for background markers that don't get refreshed (wx2.9.5)
 
         -- found and marked what we are looking for;
         -- don't need to activate with CHECKONLY (this assumes line is given)
