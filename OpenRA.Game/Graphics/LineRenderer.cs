@@ -66,7 +66,7 @@ namespace OpenRA.Graphics
 			DrawLine(tl, tr, c, c);
 			DrawLine(tl, bl, c, c);
 			DrawLine(tr, br, c, c);
-			DrawLine(bl, br, c, c);
+			DrawLine(bl, new float2(br.X+1,br.Y), c, c);
 		}
 
 		public void DrawLine(float2 start, float2 end, Color startColor, Color endColor)

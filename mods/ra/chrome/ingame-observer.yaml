@@ -31,17 +31,6 @@ Container@OBSERVER_WIDGETS:
 			Text: Options (Esc)
 			Font: Bold
 			Key: escape
-		MenuButton@OBSERVER_STATS_BUTTON:
-			MenuContainer: INGAME_OBSERVERSTATS_BG
-			HideIngameUI: false
-			Pause: false
-			X: 162
-			Y: 0
-			Width: 160
-			Height: 25
-			Text: Statistics (F1)
-			Font: Bold
-			Key: f1
 		Background@RADAR_BG:
 			X: WINDOW_RIGHT-255
 			Y: 5

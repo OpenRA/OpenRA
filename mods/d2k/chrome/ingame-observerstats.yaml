@@ -21,10 +21,9 @@ ObserverStats@OBSERVER_STATS:
 		Table@ECOTABLE:
 			X:25
 			Y:50
-			Height:20
+			Height:22
 			ColumnSpacing:5
-			RowSpacing:2
-			Background:panel-darkred-transparent
+			RowSpacing:1
 			Children:
 				TableHeader:
 					Children:
@@ -50,7 +49,8 @@ ObserverStats@OBSERVER_STATS:
 				TableRow:
 					Children:
 						Image@FLAG:
-							Y:5
+							Y:1
+							X:4
 							ImageName:random
 							ImageCollection:flags
 						Label@CASH:
@@ -68,10 +68,9 @@ ObserverStats@OBSERVER_STATS:
 		Table@CONTROLTABLE:
 			X:25
 			Y:50
-			Height:20
+			Height:22
 			ColumnSpacing:5
-			RowSpacing:2
-			Background:panel-darkred-transparent
+			RowSpacing:1
 			Children:
 				TableHeader:
 					Children:
@@ -96,7 +95,8 @@ ObserverStats@OBSERVER_STATS:
 				TableRow:
 					Children:
 						Image@FLAG:
-							Y:5
+							Y:1
+							X:4
 							ImageName:random
 							ImageCollection:flags
 						Label@ENERGY:
@@ -114,10 +114,9 @@ ObserverStats@OBSERVER_STATS:
 		Table@COMBATTABLE:
 			X:25
 			Y:50
-			Height:20
+			Height:22
 			ColumnSpacing:5
-			RowSpacing:2
-			Background:panel-darkred-transparent
+			RowSpacing:1
 			Children:
 				TableHeader:
 					Children:
@@ -154,7 +153,8 @@ ObserverStats@OBSERVER_STATS:
 				TableRow:
 					Children:
 						Image@FLAG:
-							Y:5
+							Y:1
+							X:4
 							ImageName:random
 							ImageCollection:flags
 						Label@CONTROL:
@@ -286,13 +286,13 @@ ObserverStats@OBSERVER_STATS:
 									Width:50
 									Height:PARENT_BOTTOM
 									Font:Bold
-								Image:
+								Image@IMAGE_HARVESTERS:
 									X:400
 									Y:4
 									Width:16
 									Height:16
-									ImageCollection:observericons
-									ImageName:harvesters
+									ImageCollection:production-icons
+									ImageName:oretruck
 								Label@HARVESTERS:
 									X:434
 									Y:0
@@ -310,7 +310,7 @@ ObserverStats@OBSERVER_STATS:
 			Y:50
 			Width:600
 			Height:400
-			Background:panel-darkred-transparent
+			Background:button
 			Children:
 				Background@EARNED_THIS_MIN_GRAPH_CONTAINER:
 					X:10

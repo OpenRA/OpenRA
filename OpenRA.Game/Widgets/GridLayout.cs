@@ -9,15 +9,22 @@
 #endregion
 
 using System;
+using OpenRA.FileFormats;
+using OpenRA.Support;
 
 namespace OpenRA.Widgets
 {
 	public class GridLayout : ILayout
 	{
-		ScrollPanelWidget widget;
+		SpacingWidget widget;
 		int2 pos;
+		bool adjustAllEnabled = false;
 
-		public GridLayout(ScrollPanelWidget w) { widget = w; }
+		public GridLayout(SpacingWidget w, bool adjustAll = false)
+		{
+			widget = w;
+			adjustAllEnabled = adjustAll;
+		}
 
 		public void AdjustChild(Widget w)
 		{
@@ -27,7 +34,7 @@ namespace OpenRA.Widgets
 				pos = new int2(widget.ItemSpacing, widget.ItemSpacing);
 			}
 
-			if (pos.X + widget.ItemSpacing + w.Bounds.Width > widget.Bounds.Width - widget.ScrollbarWidth)
+			if (pos.X + widget.ItemSpacing + widget.ItemSpacingH + w.Bounds.Width > widget.GetContentWidth())
 			{
 				/* start a new row */
 				pos.X = widget.ItemSpacing;
@@ -37,14 +44,26 @@ namespace OpenRA.Widgets
 			w.Bounds.X += pos.X;
 			w.Bounds.Y += pos.Y;
 
-			pos.X += w.Bounds.Width + widget.ItemSpacing;
+			pos.X += w.Bounds.Width + widget.ItemSpacing + widget.ItemSpacingH;
 
 			widget.ContentHeight = Math.Max(widget.ContentHeight, pos.Y + widget.ItemSpacing + w.Bounds.Height);
 		}
 
 		public void AdjustChildren()
 		{
+			if (adjustAllEnabled)
+			{
+				widget.ContentHeight = widget.ItemSpacing;
+				pos = new int2(widget.ItemSpacing, widget.ItemSpacing);
 
+				foreach (Widget w in widget.Children)
+				{
+					w.Bounds.X = Evaluator.Evaluate(w.X);
+					w.Bounds.Y = Evaluator.Evaluate(w.Y);
+
+					AdjustChild(w);
+				}
+			}
 		}
 	}
 }

@@ -1,17 +1,5 @@
 Container@OBSERVER_WIDGETS:
 	Children:
-		MenuButton@OBSERVER_STATS_BUTTON:
-			Logic: OrderButtonsChromeLogic
-			MenuContainer: INGAME_OBSERVERSTATS_BG
-			HideIngameUI: False
-			Pause: False
-			X: 162
-			Y: 0
-			Width: 160
-			Height: 25
-			Text: Statistics (F1)
-			Font: Bold
-			Key: f1
 		Background@RADAR_BG:
 			X: WINDOW_RIGHT-255
 			Y: 5

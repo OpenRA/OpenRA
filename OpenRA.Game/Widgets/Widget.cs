@@ -154,6 +154,14 @@ namespace OpenRA.Widgets
 
 		public Widget(Widget widget)
 		{
+			CopyValuesFrom(widget);
+
+			foreach (var child in widget.Children)
+				AddChild(child.Clone());
+		}
+
+		protected void CopyValuesFrom(Widget widget)
+		{
 			Id = widget.Id;
 			X = widget.X;
 			Y = widget.Y;
@@ -168,9 +176,6 @@ namespace OpenRA.Widgets
 			IsVisible = widget.IsVisible;
 			IgnoreChildMouseOver = widget.IgnoreChildMouseOver;
 			IgnoreMouseOver = widget.IgnoreMouseOver;
-
-			foreach (var child in widget.Children)
-				AddChild(child.Clone());
 		}
 
 		public virtual Widget Clone()

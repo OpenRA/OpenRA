@@ -56,6 +56,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 		void InitObserverWidgets()
 		{
 			Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
+			Game.LoadWidget(world, "OBSERVER_STATS", playerRoot, new WidgetArgs());
 		}
 
 		enum RadarBinState { Closed, BinAnimating, RadarAnimating, Open };

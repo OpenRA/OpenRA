@@ -22,7 +22,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var playerRoot = ingameRoot.Get("PLAYER_ROOT");
 
 			if (world.LocalPlayer == null)
+			{
 				Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
+				Game.LoadWidget(world, "OBSERVER_STATS", playerRoot, new WidgetArgs());
+			}
 			else
 			{
 				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
@@ -36,6 +39,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						{
 							playerRoot.RemoveChildren();
 							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
+							Game.LoadWidget(world, "OBSERVER_STATS", playerRoot, new WidgetArgs());
 						});
 
 				};

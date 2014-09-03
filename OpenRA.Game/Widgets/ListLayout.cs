@@ -12,9 +12,9 @@ namespace OpenRA.Widgets
 {
 	public class ListLayout : ILayout
 	{
-		ScrollPanelWidget widget;
+		SpacingWidget widget;
 
-		public ListLayout(ScrollPanelWidget w) { widget = w; }
+		public ListLayout(SpacingWidget w) { widget = w; }
 
 		public void AdjustChild(Widget w)
 		{
