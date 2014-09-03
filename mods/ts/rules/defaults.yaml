@@ -116,8 +116,8 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Upgrades:
-			500: firepower, armor, speed, reload
-			1000: firepower, armor, speed, reload
+			500: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
@@ -205,8 +205,8 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Upgrades:
-			500: firepower, armor, speed, reload
-			1000: firepower, armor, speed, reload
+			500: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
@@ -258,8 +258,8 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Upgrades:
-			500: firepower, armor, speed, reload
-			1000: firepower, armor, speed, reload
+			500: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
@@ -305,8 +305,8 @@
 	GainsExperience:
 		ChevronPalette: ra
 		Upgrades:
-			500: firepower, armor, speed, reload
-			1000: firepower, armor, speed, reload
+			500: firepower, damage, speed, reload
+			1000: firepower, damage, speed, reload
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
