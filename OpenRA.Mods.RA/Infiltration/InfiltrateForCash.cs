@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Infiltration
 
 			Sound.PlayToPlayer(self.Owner, info.SoundToVictim);
 
-			self.World.AddFrameEndTask(w => w.Add(new CashTick(self.CenterPosition, infiltrator.Owner.Color.RGB, toGive)));
+			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color.RGB, FloatingText.FormatCashTick(toGive), 30)));
 		}
 	}
 }
