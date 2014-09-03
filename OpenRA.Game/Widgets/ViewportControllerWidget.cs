@@ -111,7 +111,7 @@ namespace OpenRA.Widgets
 			{
 				ActorTooltip = underCursor.TraitsImplementing<IToolTip>().First();
 				TooltipActor = underCursor;
-				TooltipType = (underCursor.HasTrait<INotifySold>()) ? WorldTooltipType.SellableActor :  WorldTooltipType.Actor;
+				TooltipType = (underCursor.HasTrait<INotifySold>() && underCursor.Owner.Playable) ? WorldTooltipType.SellableActor :  WorldTooltipType.Actor;
 				return;
 			}
 
