@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -31,8 +30,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		readonly List<INotifyChat> chatTraits;
 
-		readonly List<string> commandNames;
-		readonly List<string> playerNames;
+		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
 
 		bool teamChat;
 
@@ -47,8 +45,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));
 			teamChat = !disableTeamChat;
 
-			commandNames = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).Select(x => "/" + x).ToList();
-			playerNames = orderManager.LobbyInfo.Clients.Select(c => c.Name).ToList();
+			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).ToList();
+			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
 
 			var chatPanel = (ContainerWidget)widget;
 			chatOverlay = chatPanel.Get<ContainerWidget>("CHAT_OVERLAY");
@@ -87,7 +85,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				CloseChat();
 				return true;
 			};
-			chatText.OnTabKey = AutoCompleteText;
+			chatText.OnTabKey = () =>
+			{
+				chatText.Text = tabCompletion.Complete(chatText.Text);
+				chatText.CursorPosition = chatText.Text.Length;
+				return true;
+			};
 
 			chatText.OnEscKey = () => { CloseChat(); return true; };
 
@@ -177,44 +180,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				chatScrollPanel.ScrollToBottom(smooth: true);
 
 			Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
-		}
-
-		bool AutoCompleteText()
-		{
-			if (string.IsNullOrEmpty(chatText.Text))
-				return false;
-
-			if (chatText.Text.LastOrDefault() == ' ')
-				return false;
-
-			var suggestion = "";
-
-			if (chatText.Text.StartsWith("/"))
-			{
-				suggestion = commandNames.FirstOrDefault(x => x.StartsWith(chatText.Text));
-				if (suggestion == null)
-					return false;
-			}
-			else
-			{
-				var oneWord = !chatText.Text.Contains(' ');
-				var toComplete = oneWord
-					? chatText.Text
-					: chatText.Text.Substring(chatText.Text.LastIndexOf(' ') + 1);
-
-				suggestion = playerNames.FirstOrDefault(x => x.StartsWith(toComplete, StringComparison.InvariantCultureIgnoreCase));
-				if (suggestion == null)
-					return false;
-
-				if (oneWord)
-					suggestion += ": ";
-				else
-					suggestion = chatText.Text.Substring(0, chatText.Text.Length - toComplete.Length) + suggestion;
-			}
-
-			chatText.Text = suggestion;
-			chatText.CursorPosition = chatText.Text.Length;
-			return true;
 		}
 	}
 }
