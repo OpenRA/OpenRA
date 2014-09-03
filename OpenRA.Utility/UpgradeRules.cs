@@ -459,6 +459,8 @@ namespace OpenRA.Utility
 						node.Value.Value = string.Join(", ", node.Value.Value.Split(',')
 							.Select(s => ((int)(100 * 100 / float.Parse(s))).ToString()));
 					}
+					if (depth == 3 && parentKey == "Upgrades")
+						node.Value.Value = node.Value.Value.Replace("armor", "damage");
 				}
 
 				// RenderInfantryProne and RenderInfantryPanic was merged into RenderInfantry
