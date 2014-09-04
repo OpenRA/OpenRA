@@ -29,7 +29,7 @@ ZSU-23:
 	Report: AACANON3.AUD
 	ValidTargets: Air
 	Projectile: Bullet
-		Speed: 1c682
+		Speed: 3c340
 		High: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
