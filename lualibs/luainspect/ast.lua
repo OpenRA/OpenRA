@@ -365,14 +365,14 @@ function M.get_keywords(ast, src)
     -- Get position range [fpos,lpos] between subsequent children.
     local fpos
     if i == 0 then  -- before first child
-      fpos = tostring(ast.lineinfo.first):match('|L(%d+)')
+      fpos = tonumber(tostring(ast.lineinfo.first):match('|L(%d+)'))
     else
       local last = oast[i].lineinfo.last; local c = last.comments
       fpos = (c and #c > 0 and c[#c][3] or tostring(last):match('|L(%d+)')) + 1
     end
     local lpos
     if j == #ast+1 then  -- after last child
-      lpos = tostring(ast.lineinfo.last):match('|L(%d+)')
+      lpos = tonumber(tostring(ast.lineinfo.last):match('|L(%d+)'))
     else
       local first = oast[j].lineinfo.first; local c = first.comments
       lpos = (c and #c > 0 and c[1][2] or tostring(first):match('|L(%d+)')) - 1
@@ -388,7 +388,6 @@ function M.get_keywords(ast, src)
       if mfpos then
         local mlpos = mlppos-1
         if mlpos > lpos then mlpos = lpos end
-      --DEBUG('look', ast.tag, #ast,i,j,'*', mfpos, tok, mlppos, fpos, lpos, src:sub(fpos, fpos+5))
         if mlpos >= mfpos then
           list[#list+1] = mfpos
           list[#list+1] = mlpos
@@ -424,7 +423,9 @@ function M.ast_to_tokenlist(top_ast, src)
     if isterminal[ast.tag] then -- Extract terminal
       local token = ast
       if ast.lineinfo then
-        token.fpos, token.lpos, token.ast = tostring(ast.lineinfo.first):match('|L(%d+)'), tostring(ast.lineinfo.last):match('|L(%d+)'), ast
+        token.fpos = tonumber(tostring(ast.lineinfo.first):match('|L(%d+)'))
+        token.lpos = tonumber(tostring(ast.lineinfo.last):match('|L(%d+)'))
+        token.ast = ast
         table.insert(tokens, token)
       end
     else -- Extract non-terminal
@@ -443,7 +444,9 @@ function M.ast_to_tokenlist(top_ast, src)
         if not isseen[comment] then
           comment.tag = 'Comment'
           local token = comment
-          token.fpos, token.lpos, token.ast = comment[2], comment[3], comment
+          token.fpos = tonumber(tostring(comment.lineinfo.first):match('|L(%d+)'))
+          token.lpos = tonumber(tostring(comment.lineinfo.last):match('|L(%d+)'))
+          token.ast = comment
           table.insert(tokens, token)
           isseen[comment] = true
         end

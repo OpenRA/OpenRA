@@ -330,7 +330,7 @@ function M.related_keywords(ast, top_ast, tokenlist, src)
         end
       elseif grand_ast.tag == 'Localrec' then
         local tidx = LA.ast_idx_range_in_tokenlist(tokenlist, grand_ast)
-        repeat tidx = tidx + 1 until tokenlist[tidx].tag == 'Keyword' and tokenlist[tidx][1] == 'function'
+        repeat tidx = tidx + 1 until not tokenlist[tidx] or (tokenlist[tidx].tag == 'Keyword' and tokenlist[tidx][1] == 'function')
         local token = tokenlist[tidx]
         keywords[#keywords+1] = token
       end
