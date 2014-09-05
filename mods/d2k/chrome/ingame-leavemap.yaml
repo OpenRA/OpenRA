@@ -1,4 +1,4 @@
-Container@LEAVE_RESTART_WIDGET:
+Container@LEAVE_MAP_WIDGET:
 	Logic: LeaveMapLogic
 	Children:
 		Background@BORDER:
@@ -13,14 +13,14 @@ Container@LEAVE_RESTART_WIDGET:
 			Align: Right
 			Font: Regular
 			Contrast: True
-		Container@LEAVE_RESTART_SIMPLE
+		Container@LEAVE_MAP_SIMPLE
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
 			Width: 370
 			Height: 175
 			Visible: False
 			Children:
-				Background@LEAVE_RESTART_SIMPLE_BG:
+				Background@LEAVE_MAP_SIMPLE_BG:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
@@ -52,14 +52,14 @@ Container@LEAVE_RESTART_WIDGET:
 							Height: 25
 							Font: Bold
 							Text: Leave
-		Container@LEAVE_RESTART_FULL:
+		Container@LEAVE_MAP_FULL:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
 			Width: 522
 			Height: 470
 			Visible: False
 			Children:
-				Background@LEAVE_RESTART_BG:
+				Background@LEAVE_MAP_BG:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:

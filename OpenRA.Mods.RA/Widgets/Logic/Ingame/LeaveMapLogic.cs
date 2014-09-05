@@ -21,13 +21,13 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			widget.Get<LabelWidget>("VERSION_LABEL").Text = Game.modData.Manifest.Mod.Version;
 
-			var panelName = "LEAVE_RESTART_SIMPLE";
+			var panelName = "LEAVE_MAP_SIMPLE";
 
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			var showObjectives = iop != null && iop.PanelName != null && world.LocalPlayer != null;
 
 			if (showObjectives)
-				panelName = "LEAVE_RESTART_FULL";
+				panelName = "LEAVE_MAP_FULL";
 
 			var showStats = false;
 
