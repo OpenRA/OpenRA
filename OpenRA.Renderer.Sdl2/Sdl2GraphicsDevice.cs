@@ -75,8 +75,7 @@ namespace OpenRA.Renderer.Sdl2
 					SDL.SDL_SetWindowPosition(window, 0, 0);
 
 				SDL.SDL_SetWindowFullscreen(window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
-				if (Platform.CurrentPlatform == PlatformType.OSX || Platform.CurrentPlatform == PlatformType.Windows)
-					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
+				SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
 			}
 
 			SDL.SDL_ShowCursor(0);
