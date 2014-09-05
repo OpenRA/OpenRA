@@ -19,7 +19,7 @@ namespace OpenRA.Renderer.Sdl2
 	{
 		MouseButton lastButtonBits = (MouseButton)0;
 
-		public string GetClipboard() { return SDL.SDL_GetClipboardText(); }
+		public string GetClipboardText() { return SDL.SDL_GetClipboardText(); }
 
 		static MouseButton MakeButton(byte b)
 		{
