@@ -1,4 +1,4 @@
-if Date.Halloween then
+if Date.IsHalloween then
 	UnitTypes = { "ant", "ant", "ant" }
 	BeachUnitTypes = { "ant", "ant" }
 	ParadropUnitTypes = { "ant", "ant", "ant", "ant", "ant" }
