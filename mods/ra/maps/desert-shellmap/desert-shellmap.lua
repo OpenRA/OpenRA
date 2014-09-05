@@ -1,7 +1,7 @@
 if Date.IsHalloween then
 	UnitTypes = { "ant", "ant", "ant" }
 	BeachUnitTypes = { "ant", "ant" }
-	ParadropUnitTypes = { "ant", "ant", "ant", "ant", "ant" }
+	ParadropUnitTypes = { "zombie", "zombie", "zombie", "zombie", "zombie" }
 	ProducedUnitTypes =
 	{
 		{ AlliedBarracks1, { "e1", "e3" } },
