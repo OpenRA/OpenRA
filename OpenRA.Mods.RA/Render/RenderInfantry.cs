@@ -142,12 +142,17 @@ namespace OpenRA.Mods.RA.Render
 				if (DefaultAnimation.HasSequence(idleSequence))
 				{
 					state = AnimationState.IdleAnimating;
-					DefaultAnimation.PlayThen(idleSequence,	() =>
+					DefaultAnimation.PlayThen(idleSequence, () =>
 					{
 						DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
 						state = AnimationState.Waiting;
 					});
 				}
+			}
+			else
+			{
+				DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, info.StandAnimations.Random(Game.CosmeticRandom)));
+				state = AnimationState.Waiting;
 			}
 		}
 
@@ -161,7 +166,7 @@ namespace OpenRA.Mods.RA.Render
 			if (info.SpawnsCorpse)
 			{
 				SpawnCorpse(self, info.DeathAnimationPrefix + (e.Warhead.DeathType));
-			}	
+			}
 		}
 
 		public void SpawnCorpse(Actor self, string sequence)
