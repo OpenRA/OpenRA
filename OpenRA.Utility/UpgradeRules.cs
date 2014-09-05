@@ -477,11 +477,9 @@ namespace OpenRA.Utility
 				// InfDeath was renamed to DeathType
 				if (engineVersion < 20140830)
 				{
-					if (depth == 1 && parentKey.StartsWith("DeathSounds"))
-					{
-						if (depth == 2 && node.Key == "InfDeaths")
-							node.Key = "DeathTypes";
-					}
+
+					if (depth == 2 && parentKey.StartsWith("DeathSounds") && node.Key == "InfDeaths")
+						node.Key = "DeathTypes";
 
 					if (depth == 2 && parentKey == "SpawnsViceroid" && node.Key == "InfDeath")
 						node.Key = "DeathType";
