@@ -233,7 +233,7 @@ FREMEN:
 		Weapon: Slung
 	AttackFrontal:
 	RenderInfantry:
-		IdleAnimations: stand,stand2
+		IdleAnimations: stand
 	TakeCover:
 	Cloak:
 		InitialDelay: 250
@@ -265,7 +265,7 @@ GRENADIER:
 	AttackFrontal:
 	TakeCover:
 	RenderInfantry:
-		IdleAnimations: stand,stand2
+		IdleAnimations: stand
 	Explodes:
 		Weapon: UnitExplodeSmall
 		Chance: 100

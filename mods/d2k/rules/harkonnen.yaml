@@ -231,7 +231,7 @@ SARDAUKAR:
 		Range: 6c0
 	TakeCover:
 	RenderInfantry:
-		IdleAnimations: stand,stand2
+		IdleAnimations: stand
 	Armament@PRIMARY:
 		Weapon: Vulcan
 	Armament@SECONDARY:

@@ -20,7 +20,7 @@ RIFLE:
 	AttackFrontal:
 	TakeCover:
 	RenderInfantry:
-		IdleAnimations: stand,stand2
+		IdleAnimations: stand
 
 ENGINEER:
 	Inherits: ^Infantry
@@ -72,7 +72,7 @@ BAZOOKA:
 	AttackFrontal:
 	TakeCover:
 	RenderInfantry:
-		IdleAnimations: stand,stand2
+		IdleAnimations: stand
 
 MEDIC:
 	Inherits: ^Infantry
