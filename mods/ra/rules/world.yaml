@@ -5,6 +5,7 @@ World:
 	HelpCommand:
 	ScreenMap:
 	ActorMap:
+	MovementAnnouncer:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	ScreenShaker:

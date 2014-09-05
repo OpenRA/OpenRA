@@ -160,12 +160,13 @@ namespace OpenRA.Mods.RA.Air
 
 		public void SetPosition(Actor self, WPos pos)
 		{
+			WPos oldPos = new WPos(CenterPosition.X, CenterPosition.Y, CenterPosition.Z);
 			CenterPosition = pos;
 
 			if (self.IsInWorld)
 			{
 				self.World.ScreenMap.Update(self);
-				self.World.ActorMap.UpdatePosition(self, this);
+				self.World.ActorMap.UpdatePosition(self, oldPos);
 			}
 		}
 
@@ -179,14 +180,14 @@ namespace OpenRA.Mods.RA.Air
 		public void AddedToWorld(Actor self)
 		{
 			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
+			self.World.ActorMap.AddPosition(self);
 			self.World.ScreenMap.Add(self);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
 			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
+			self.World.ActorMap.RemovePosition(self);
 			self.World.ScreenMap.Remove(self);
 		}
 

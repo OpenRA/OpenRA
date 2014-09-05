@@ -18,13 +18,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
+
 	public enum Trigger { OnIdle, OnDamaged, OnKilled, OnProduction, OnPlayerWon, OnPlayerLost, OnObjectiveAdded,
-		OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnAddedToWorld, OnRemovedFromWorld };
+		OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnAddedToWorld, OnRemovedFromWorld, OnRegionEntered, OnRegionLeft };
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
 	public class ScriptTriggersInfo : TraitInfo<ScriptTriggers> { }
 
-	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyObjectivesUpdated, INotifyCapture, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable
+	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyObjectivesUpdated, INotifyCapture, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable, INotifyRegionTrigger
 	{
 		public event Action<Actor> OnKilledInternal = _ => {};
 
@@ -74,6 +75,34 @@ namespace OpenRA.Mods.RA.Scripting
 				using (var a = self.ToLuaValue(f.Second))
 				using (var b = other.ToLuaValue(f.Second))
 					f.First.Call(a, b).Dispose();
+		}
+
+		public void EnteredRegion(Player owner, Actor self, string region)
+		{
+			foreach (var f in Triggers[Trigger.OnRegionEntered])
+			{
+				var a = self.ToLuaValue(f.Second);
+				var b = owner.ToLuaValue(f.Second);
+				var c = region.ToLuaValue(f.Second);
+				f.First.Call(a, b, c).Dispose();
+				a.Dispose();
+				b.Dispose();
+				c.Dispose();
+			}
+		}
+
+		public void LeftRegion(Player owner, Actor self, string region)
+		{
+			foreach (var f in Triggers[Trigger.OnRegionLeft])
+			{
+				var a = self.ToLuaValue(f.Second);
+				var b = owner.ToLuaValue(f.Second);
+				var c = region.ToLuaValue(f.Second);
+				f.First.Call(a, b, c).Dispose();
+				a.Dispose();
+				b.Dispose();
+				c.Dispose();
+			}
 		}
 
 		public void OnPlayerWon(Player player)

@@ -73,6 +73,10 @@ WorldLoaded = function()
 	Trigger.AfterDelay(Utils.Seconds(15), function() Reinforce(InfantryReinforcements) end)
 	Trigger.AfterDelay(Utils.Seconds(30), function() Reinforce(VehicleReinforcements) end)
 	Trigger.AfterDelay(Utils.Seconds(60), function() Reinforce(VehicleReinforcements) end)
+
+	Trigger.OnEnterRegion(player, function()
+		Media.PlaySpeechNotification(player, "Reinforce")
+	end)
 end
 
 tick = 0

@@ -165,6 +165,20 @@ namespace OpenRA.Mods.RA.Scripting
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnCapture, func, context);
 		}
 
+		[Desc("Call a function when an actor enters a region. The callback " +
+			"function will be called as func(Player owner, Actor self, string region).")]
+		public void OnEnterRegion(Actor a, LuaFunction func)
+		{
+			GetScriptTriggers(a).RegisterCallback(Trigger.OnRegionEntered, func, context);
+		}
+
+		[Desc("Call a function when an actor leaves a region. The callback " +
+			"function will be called as func(Player owner, Actor self, string region).")]
+		public void OnLeaveRegion(Actor a, LuaFunction func)
+		{
+			GetScriptTriggers(a).RegisterCallback(Trigger.OnRegionLeft, func, context);
+		}
+
 		[Desc("Removes all triggers from this actor")]
 		public void ClearAll(Actor a)
 		{
