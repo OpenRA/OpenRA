@@ -527,6 +527,28 @@ namespace OpenRA.Utility
 						node.Key = "ValidTargets";
 				}
 
+				// Added WithDeathAnimation
+				if (engineVersion < 20140913)
+				{
+					var spawnsCorpseRemoval = node.Value.Nodes.FirstOrDefault(n => n.Key == "SpawnsCorpse");
+					
+					if (depth == 0 && node.Value.Nodes.Any(n => n.Key.StartsWith("RenderInfantry")) && spawnsCorpseRemoval == null)
+						node.Value.Nodes.Add(new MiniYamlNode("WithDeathAnimation", new MiniYaml("")));
+
+					if (depth == 2 && node.Key == "SpawnsCorpse" && parentKey == "RenderInfantry")
+						node.Value.Nodes.Remove(spawnsCorpseRemoval);
+
+					// CrushableInfantry renamed to Crushable
+					if (depth == 1)
+					{
+						if (node.Key == "CrushableInfantry")
+							node.Key = "Crushable";
+
+						if (node.Key == "-CrushableInfantry")
+							node.Key = "-Crushable";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
