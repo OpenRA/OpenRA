@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public DateGlobal(ScriptContext context) : base(context) { }
 
 		[Desc("True on the 31st of October.")]
-		public bool Halloween
+		public bool IsHalloween
 		{
 			get { return DateTime.Today.Month == 10 && DateTime.Today.Day == 31; }
 		}
