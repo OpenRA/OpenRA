@@ -262,6 +262,8 @@ GRENADIER:
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
+	RenderInfantry:
+		IdleAnimations: idle
 	Explodes:
 		Weapon: UnitExplodeSmall
 		Chance: 100
