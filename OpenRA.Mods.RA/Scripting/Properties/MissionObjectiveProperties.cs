@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Scripting
 
 		[ScriptActorPropertyActivity]
 		[Desc("Mark an objective as completed.  This needs the objective ID returned " +
-			"by AddObjective as argument.  When the player has completed all primary " +
+			"by AddObjective as argument.  When this player has completed all primary " +
 			"objectives, (s)he has won the game.")]
 		public void MarkCompletedObjective(int id)
 		{
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Returns true if the player has lost all units/actors that have the MustBeDestroyed trait.")]
+		[Desc("Returns true if this player has lost all units/actors that have the MustBeDestroyed trait.")]
 		public bool HasNoRequiredUnits()
 		{
 			return player.HasNoRequiredUnits();
