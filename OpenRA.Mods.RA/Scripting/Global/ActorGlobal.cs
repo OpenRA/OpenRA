@@ -58,7 +58,7 @@ namespace OpenRA.Scripting
 			return a;
 		}
 
-		[Desc("Returns the build time (in ticks) of the requested unit type")]
+		[Desc("Returns the build time (in ticks) of the requested unit type.")]
 		public int BuildTime(string type)
 		{
 			ActorInfo ai;

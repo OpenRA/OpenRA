@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Returns the actor that was specified with a given name in " +
-			"the map file (or nil, if the actor is dead or not found")]
+			"the map file (or nil, if the actor is dead or not found).")]
 		public Actor NamedActor(string actorName)
 		{
 			Actor ret;

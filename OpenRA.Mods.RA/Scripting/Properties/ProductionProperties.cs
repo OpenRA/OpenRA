@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Build a unit, ignoring the production queue. The activity will wait if the exit is blocked")]
+		[Desc("Build a unit, ignoring the production queue. The activity will wait if the exit is blocked.")]
 		public void Produce(string actorType, string raceVariant = null)
 		{
 			ActorInfo actorInfo;

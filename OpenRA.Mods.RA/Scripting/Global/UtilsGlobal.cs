@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Scripting
 			return true;
 		}
 
-		[Desc("Skips over the first numElements members of the array and returns the rest")]
+		[Desc("Skips over the first numElements members of the array and returns the rest.")]
 		public LuaTable Skip(LuaTable table, int numElements)
 		{
 			var t = context.CreateTable();
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Scripting
 			return table.Values.Random<LuaValue>(context.World.SharedRandom);
 		}
 
-		[Desc("Expands the given footprint one step along the coordinate axes, and (if requested) diagonals")]
+		[Desc("Expands the given footprint one step along the coordinate axes, and (if requested) diagonals.")]
 		public LuaTable ExpandFootprint(LuaTable cells, bool allowDiagonal)
 		{
 			var footprint = cells.Values.Select(c =>
