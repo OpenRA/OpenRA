@@ -68,10 +68,10 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Send reinforcements consisting of multiple units. Supports ground-based, naval and air units. " +
-		      "The first member of the 'entryPath' array will be the units' spawnpoint, " +
-		      "while the last one will be their destination.  If 'actionFunc' is given, " +
-		      "it will be executed once a unit has reached its destination. 'actionFunc' " +
-		      "will be called as 'actionFunc(Actor actor)'")]
+		      "The first member of the entryPath array will be the units' spawnpoint, " +
+		      "while the last one will be their destination.  If actionFunc is given, " +
+		      "it will be executed once a unit has reached its destination. actionFunc " +
+		      "will be called as actionFunc(Actor actor)")]
 		public LuaTable Reinforce(Player owner, LuaTable actorTypes, LuaTable entryPath, int interval = 25, LuaFunction actionFunc = null)
 		{
 			var actors = new List<Actor>();
@@ -120,13 +120,13 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[Desc("Send reinforcements in a transport. A transport can be a ground unit (APC etc.), ships and aircraft. " +
-		      "The first member of the 'entryPath' array will be the spawnpoint for the transport, " +
-		      "while the last one will be its destination. The last member of the 'exitPath' array " +
+		      "The first member of the entryPath array will be the spawnpoint for the transport, " +
+		      "while the last one will be its destination. The last member of the exitPath array " +
 		      "is be the place where the transport will be removed from the game. When the transport " +
-		      "has reached the destination, it will unload its cargo unless a custom 'actionFunc' has " +
-		      "been supplied. Afterwards, the transport will follow the 'exitPath' and leave the map, " +
-		      "unless a custom 'exitFunc' has been supplied. 'actionFunc' will be called as " +
-		      "'actionFunc(Actor transport, Actor[] cargo). 'exitFunc' will be called as 'exitFunc(Actor transport)'.")]
+		      "has reached the destination, it will unload its cargo unless a custom actionFunc has " +
+		      "been supplied. Afterwards, the transport will follow the exitPath and leave the map, " +
+		      "unless a custom exitFunc has been supplied. actionFunc will be called as " +
+		      "actionFunc(Actor transport, Actor[] cargo). exitFunc will be called as exitFunc(Actor transport).")]
 		public LuaTable ReinforceWithTransport(Player owner, string actorType, LuaTable cargoTypes, LuaTable entryPath, LuaTable exitPath = null,
 			LuaFunction actionFunc = null, LuaFunction exitFunc = null)
 		{
