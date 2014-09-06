@@ -15,7 +15,7 @@
 	Selectable:
 		Voice: VehicleVoice
 	TargetableUnit:
-		TargetTypes: Ground, C4, Repair, Vehicle
+		TargetTypes: Ground, Repair, Vehicle
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -318,6 +318,7 @@
 	Inherits: ^Building
 	TargetableBuilding:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
+	-MustBeDestroyed:
 
 ^Wall:
 	AppearsOnRadar:

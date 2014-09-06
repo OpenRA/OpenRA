@@ -4,7 +4,7 @@ MSLO:
 		Cost: 2500
 	Tooltip:
 		Name: Missile Silo
-		Description: Provides an atomic bomb.\nSpecial Ability: Atom Bomb\n\nMaximum 1 can be built
+		Description: Provides an atomic bomb.\nRequires power to operate.\n  Special Ability: Atom Bomb\n\nMaximum 1 can be built
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 140
@@ -44,6 +44,7 @@ MSLO:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -100
+	-MustBeDestroyed:
 
 GAP:
 	Inherits: ^Building
@@ -51,7 +52,7 @@ GAP:
 		Cost: 800
 	Tooltip:
 		Name: Gap Generator
-		Description: Obscures the enemy's view with shroud.
+		Description: Obscures the enemy's view with shroud.\nRequires power to operate.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 110
@@ -78,6 +79,7 @@ GAP:
 	RenderShroudCircle:
 	Power:
 		Amount: -60
+	-MustBeDestroyed:
 
 SPEN:
 	Inherits: ^Building
@@ -198,7 +200,7 @@ IRON:
 		Cost: 1500
 	Tooltip:
 		Name: Iron Curtain
-		Description: Makes a group of units invulnerable\nfor a short time.\n  Special Ability: Invulnerability\n\nMaximum 1 can be built
+		Description: Makes a group of units invulnerable\nfor a short time. Requires power to operate.\n  Special Ability: Invulnerability\n\nMaximum 1 can be built
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -230,6 +232,7 @@ IRON:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
+	-MustBeDestroyed:
 
 PDOX:
 	Inherits: ^Building
@@ -242,7 +245,7 @@ PDOX:
 		Cost: 1500
 	Tooltip:
 		Name: Chronosphere
-		Description: Teleports a group of units across the\nmap for a short time.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
+		Description: Teleports a group of units across the\nmap for a short time. Requires power to operate.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -274,6 +277,7 @@ PDOX:
 	-AcceptsSupplies:
 	Power:
 		Amount: -200
+	-MustBeDestroyed:
 
 TSLA:
 	Inherits: ^Defense
@@ -285,7 +289,7 @@ TSLA:
 		Cost: 1200
 	Tooltip:
 		Name: Tesla Coil
-		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+		Description: Advanced base defense. Requires power\nto operate. Can detect cloaked units.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
@@ -317,6 +321,8 @@ TSLA:
 	DrawLineToTarget:
 	Power:
 		Amount: -150
+	DetectCloaked:
+		Range: 8
 
 AGUN:
 	Inherits: ^Defense
@@ -328,7 +334,7 @@ AGUN:
 		Cost: 800
 	Tooltip:
 		Name: AA Gun
-		Description: Anti-Air base defense. Requires power\nto operate.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+		Description: Anti-Air base defense. Requires power\nto operate. Can detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
@@ -363,6 +369,8 @@ AGUN:
 	DrawLineToTarget:
 	Power:
 		Amount: -50
+	DetectCloaked:
+		Range: 6
 
 DOME:
 	Inherits: ^Building
@@ -403,7 +411,7 @@ PBOX:
 	Inherits: ^Defense
 	Tooltip:
 		Name: Pillbox
-		Description: Static defense with a fireport for a\ngarrisoned soldier.
+		Description: Static defense with a fireport for a\ngarrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Building:
 	Buildable:
 		Queue: Defense
@@ -443,12 +451,14 @@ PBOX:
 	AutoTarget:
 	Power:
 		Amount: -15
+	DetectCloaked:
+		Range: 6
 
 HBOX:
 	Inherits: ^Defense
 	Tooltip:
 		Name: Camo Pillbox
-		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.
+		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Building:
 	Buildable:
 		Queue: Defense
@@ -502,7 +512,7 @@ GUN:
 		Cost: 600
 	Tooltip:
 		Name: Turret
-		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Description: Anti-Armor base defense.\nCan detect cloaked units.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
 	-GivesBuildableArea:
 	Health:
@@ -531,6 +541,8 @@ GUN:
 	DrawLineToTarget:
 	Power:
 		Amount: -40
+	DetectCloaked:
+		Range: 7
 
 FTUR:
 	Inherits: ^Defense
@@ -542,7 +554,7 @@ FTUR:
 		Cost: 600
 	Tooltip:
 		Name: Flame Tower
-		Description: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
+		Description: Anti-Infantry base defense.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Aircraft
 	Building:
 	-GivesBuildableArea:
 	Health:
@@ -569,6 +581,8 @@ FTUR:
 	DrawLineToTarget:
 	Power:
 		Amount: -20
+	DetectCloaked:
+		Range: 6
 
 SAM:
 	Inherits: ^Defense
@@ -580,7 +594,7 @@ SAM:
 		Cost: 750
 	Tooltip:
 		Name: SAM Site
-		Description: Anti-Air base defense. Requires power\nto operate.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+		Description: Anti-Air base defense. Requires power\nto operate. Can detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -614,6 +628,8 @@ SAM:
 	DrawLineToTarget:
 	Power:
 		Amount: -40
+	DetectCloaked:
+		Range: 5
 
 ATEK:
 	Inherits: ^Building
@@ -1187,6 +1203,7 @@ FACF:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2
+	-MustBeDestroyed:
 
 WEAF:
 	Inherits: ^Building
@@ -1217,6 +1234,7 @@ WEAF:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2
+	-MustBeDestroyed:
 
 SYRF:
 	Inherits: ^Building
@@ -1248,6 +1266,7 @@ SYRF:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2
+	-MustBeDestroyed:
 
 SPEF:
 	Inherits: ^Building
@@ -1279,6 +1298,7 @@ SPEF:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2
+	-MustBeDestroyed:
 
 DOMF:
 	Inherits: ^Building
@@ -1307,6 +1327,7 @@ DOMF:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2
+	-MustBeDestroyed:
 
 SBAG:
 	Inherits: ^Wall
