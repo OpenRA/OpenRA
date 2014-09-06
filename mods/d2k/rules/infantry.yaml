@@ -19,8 +19,6 @@ RIFLE:
 		Weapon: LMG
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: stand
 
 ENGINEER:
 	Inherits: ^Infantry
@@ -71,8 +69,6 @@ BAZOOKA:
 		LocalOffset: 0,0,555
 	AttackFrontal:
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: stand
 
 MEDIC:
 	Inherits: ^Infantry

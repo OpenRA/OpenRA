@@ -230,8 +230,6 @@ SARDAUKAR:
 	RevealsShroud:
 		Range: 6c0
 	TakeCover:
-	RenderInfantry:
-		IdleAnimations: stand
 	Armament@PRIMARY:
 		Weapon: Vulcan
 	Armament@SECONDARY:
