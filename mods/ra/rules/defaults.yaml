@@ -332,8 +332,9 @@
 	SoundOnDamageTransition:
 		DamagedSound: sandbag2.aud
 		DestroyedSound: sandbag2.aud
-	Wall:
+	Crushable:
 		CrushClasses: wall
+	BlocksBullets:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall

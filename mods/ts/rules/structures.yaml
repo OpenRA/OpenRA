@@ -395,6 +395,8 @@ GAWALL:
 		HP: 300
 	Armor:
 		Type: Concrete
+	Crushable:
+		CrushClasses: heavywall
 	LineBuild:
 		NodeTypes: wall, turret
 
@@ -419,6 +421,8 @@ NAWALL:
 		HP: 300
 	Armor:
 		Type: Concrete
+	Crushable:
+		CrushClasses: heavywall
 	LineBuild:
 		NodeTypes: wall, turret
 

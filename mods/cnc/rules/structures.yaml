@@ -863,7 +863,7 @@ BRIK:
 		HP: 250
 	Armor:
 		Type: Heavy
-	Wall:
+	Crushable:
 		CrushClasses: heavywall
 		-CrushSound:
 	SoundOnDamageTransition:

@@ -54,8 +54,9 @@
 	SoundOnDamageTransition:
 		DamagedSound: expnew01.aud
 		DestroyedSound: crmble2.aud
-	Wall:
+	Crushable:
 		CrushClasses: wall
+	BlocksBullets:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall
