@@ -41,6 +41,7 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="AfterBuild" command="cp ${TargetFile} ../mods/d2k" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/d2k" workingdir="${ProjectDir}" />
       </CustomCommands>
     </CustomCommands>
     <DefineConstants>TRACE;DEBUG;</DefineConstants>
