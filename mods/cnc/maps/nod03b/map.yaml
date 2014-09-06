@@ -457,16 +457,12 @@ Actors:
 		Owner: Neutral
 		Health: 1
 		Facing: 0
-	Actor69: mcv
-		Location: 52,37
-		Owner: Nod
-		Health: 1
-		Facing: 128
-	Actor70: bike
-		Location: 48,39
-		Owner: Nod
-		Health: 1
-		Facing: 128
+	McvEntry: waypoint
+		Location: 54,38
+		Owner: Neutral
+	McvDeploy: waypoint
+		Location: 52,36
+		Owner: Neutral
 	Actor72: jeep
 		Location: 28,21
 		Owner: GDI
@@ -487,56 +483,17 @@ Actors:
 		Owner: GDI
 		Health: 1
 		Facing: 128
-	Actor76: bggy
-		Location: 49,38
-		Owner: Nod
-		Health: 1
-		Facing: 128
+	NodEntry: waypoint
+		Location: 54,40
+		Owner: Neutral
+	NodRallypoint: waypoint
+		Location: 50,42
+		Owner: Neutral
 	Actor77: jeep
 		Location: 47,21
 		Owner: GDI
 		Health: 1
 		Facing: 160
-	Actor78: bike
-		Location: 49,39
-		Owner: Nod
-		Health: 1
-		Facing: 128
-	Actor79: bggy
-		Location: 49,37
-		Owner: Nod
-		Health: 1
-		Facing: 128
-	Actor83: e6
-		Location: 48,40
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 3
-	Actor84: e6
-		Location: 48,40
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 4
-	Actor85: e6
-		Location: 48,41
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 0
-	Actor99: e1
-		Location: 50,41
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 3
-	Actor100: e1
-		Location: 50,41
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 4
 	Actor101: c1
 		Location: 16,36
 		Owner: Neutral
@@ -566,30 +523,6 @@ Actors:
 		Owner: Neutral
 		Health: 1
 		Facing: 224
-		SubCell: 4
-	Actor112: e1
-		Location: 50,40
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 3
-	Actor114: e1
-		Location: 50,40
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 4
-	Actor115: e1
-		Location: 49,40
-		Owner: Nod
-		Health: 1
-		Facing: 128
-		SubCell: 4
-	Actor116: e1
-		Location: 49,41
-		Owner: Nod
-		Health: 1
-		Facing: 128
 		SubCell: 4
 	PlayerBase: waypoint
 		Location: 50,39

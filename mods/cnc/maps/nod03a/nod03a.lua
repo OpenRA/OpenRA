@@ -1,9 +1,17 @@
+NodUnits = { "bike", "e3", "e1", "bggy", "e1", "e3", "bike", "bggy" }
 FirstAttackWave = { "e1", "e1", "e1", "e2", }
 SecondThirdAttackWave = { "e1", "e1", "e2", }
 
 SendAttackWave = function(units, spawnPoint)
 	Reinforcements.Reinforce(enemy, units, { spawnPoint }, Utils.Seconds(1), function(actor)
 		actor.AttackMove(PlayerBase.Location)
+	end)
+end
+
+InsertNodUnits = function()
+	Reinforcements.Reinforce(player, NodUnits, { NodEntry.Location, NodRallyPoint.Location })
+	Trigger.AfterDelay(Utils.Seconds(9), function()
+		Reinforcements.Reinforce(player, { "mcv" }, { NodEntry.Location, PlayerBase.Location })
 	end)
 end
 
@@ -15,6 +23,7 @@ WorldLoaded = function()
 	nodObjective1 = player.AddPrimaryObjective("Capture the prison")
 	nodObjective2 = player.AddSecondaryObjective("Destroy all GDI forces")
 
+	InsertNodUnits()
 	Trigger.AfterDelay(Utils.Seconds(20), function() SendAttackWave(FirstAttackWave, AttackWaveSpawnA.Location) end)
 	Trigger.AfterDelay(Utils.Seconds(50), function() SendAttackWave(SecondThirdAttackWave, AttackWaveSpawnB.Location) end)
 	Trigger.AfterDelay(Utils.Seconds(100), function() SendAttackWave(SecondThirdAttackWave, AttackWaveSpawnC.Location) end)
