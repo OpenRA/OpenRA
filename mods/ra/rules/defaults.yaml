@@ -318,6 +318,7 @@
 	Inherits: ^Building
 	TargetableBuilding:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
+	-MustBeDestroyed:
 
 ^Wall:
 	AppearsOnRadar:

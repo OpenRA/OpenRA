@@ -44,6 +44,7 @@ MSLO:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -100
+	-MustBeDestroyed:
 
 GAP:
 	Inherits: ^Building
@@ -78,6 +79,7 @@ GAP:
 	RenderShroudCircle:
 	Power:
 		Amount: -60
+	-MustBeDestroyed:
 
 SPEN:
 	Inherits: ^Building
@@ -230,6 +232,7 @@ IRON:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
+	-MustBeDestroyed:
 
 PDOX:
 	Inherits: ^Building
@@ -274,6 +277,7 @@ PDOX:
 	-AcceptsSupplies:
 	Power:
 		Amount: -200
+	-MustBeDestroyed:
 
 TSLA:
 	Inherits: ^Defense
@@ -1199,6 +1203,7 @@ FACF:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2
+	-MustBeDestroyed:
 
 WEAF:
 	Inherits: ^Building
@@ -1229,6 +1234,7 @@ WEAF:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2
+	-MustBeDestroyed:
 
 SYRF:
 	Inherits: ^Building
@@ -1260,6 +1266,7 @@ SYRF:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2
+	-MustBeDestroyed:
 
 SPEF:
 	Inherits: ^Building
@@ -1291,6 +1298,7 @@ SPEF:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2
+	-MustBeDestroyed:
 
 DOMF:
 	Inherits: ^Building
@@ -1319,6 +1327,7 @@ DOMF:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -2
+	-MustBeDestroyed:
 
 SBAG:
 	Inherits: ^Wall
