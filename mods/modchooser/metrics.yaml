@@ -19,4 +19,5 @@ Metrics:
 	TextColor: 255,255,255
 	TextContrast: false
 	TextContrastColor: 0,0,0
+	TextURLColor: 50,100,255
 	ColorPickerRemapIndices: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
