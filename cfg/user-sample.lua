@@ -153,3 +153,7 @@ luaspec.keywords[1] = luaspec.keywords[1]:gsub(' return', ''):gsub(' break', '')
 
 -- assign new style to the added slot (starting from 0)
 styles["keywords"..num] = {fg = {240, 0, 0}, b = true}
+
+-- enable `Opt+Shift+Left/Right` shortcut on OSX
+editor.keymap[#editor.keymap+1] = {wxstc.wxSTC_KEY_LEFT, wxstc.wxSTC_SCMOD_ALT+wxstc.wxSTC_SCMOD_SHIFT, wxstc.wxSTC_CMD_WORDLEFTEXTEND, "Macintosh"}
+editor.keymap[#editor.keymap+1] = {wxstc.wxSTC_KEY_RIGHT, wxstc.wxSTC_SCMOD_ALT+wxstc.wxSTC_SCMOD_SHIFT, wxstc.wxSTC_CMD_WORDRIGHTENDEXTEND, "Macintosh"}
