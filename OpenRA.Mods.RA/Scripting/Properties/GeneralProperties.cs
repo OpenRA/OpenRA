@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Run an arbitrary lua function.")]
+		[Desc("Run an arbitrary Lua function.")]
 		public void CallFunc(LuaFunction func)
 		{
 			self.QueueActivity(new CallLuaFunc(func));
