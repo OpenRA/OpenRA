@@ -924,9 +924,12 @@ VoxelSequences:
 
 Weapons:
 	Rockets:
+		Range: 5c0
 		Warhead: SpreadDamage
 			Versus:
-				None: 20
+				None: 10
+				Light: 66
+				Heavy: 66
 
 Voices:
 
