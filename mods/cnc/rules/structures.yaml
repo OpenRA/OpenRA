@@ -198,6 +198,7 @@ SILO:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
+	-MustBeDestroyed:
 
 PYLE:
 	Inherits: ^BaseBuilding
@@ -615,6 +616,7 @@ GUN:
 		Range: 3
 	Power:
 		Amount: -20
+	-MustBeDestroyed:
 
 SAM:
 	Inherits: ^BaseBuilding
@@ -655,6 +657,7 @@ SAM:
 	RenderRangeCircle:
 	Power:
 		Amount: -20
+	-MustBeDestroyed:
 
 OBLI:
 	Inherits: ^BaseBuilding
@@ -701,6 +704,7 @@ OBLI:
 		Range: 5
 	Power:
 		Amount: -150
+	-MustBeDestroyed:
 
 GTWR:
 	Inherits: ^BaseBuilding
@@ -740,6 +744,7 @@ GTWR:
 		ROT: 255
 	Power:
 		Amount: -10
+	-MustBeDestroyed:
 
 ATWR:
 	Inherits: ^BaseBuilding
@@ -789,6 +794,7 @@ ATWR:
 	RenderRangeCircle:
 	Power:
 		Amount: -40
+	-MustBeDestroyed:
 
 SBAG:
 	Inherits: ^Wall
