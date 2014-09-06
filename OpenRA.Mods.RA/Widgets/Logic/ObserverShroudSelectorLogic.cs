@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Color = p.Color.RGB;
 				Race = p.Country.Race;
 				IsSelected = () => p.World.RenderPlayer == p;
-				OnClick = () => { p.World.RenderPlayer = p; logic.selected = this; };
+				OnClick = () => { p.World.RenderPlayer = p; logic.selected = this; p.World.Selection.Clear(); };
 			}
 
 			public CameraOption(ObserverShroudSelectorLogic logic, World w, string label, Player p)
