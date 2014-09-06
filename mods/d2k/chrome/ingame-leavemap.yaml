@@ -1,4 +1,4 @@
-Container@LEAVE_RESTART_WIDGET:
+Container@LEAVE_MAP_WIDGET:
 	Logic: LeaveMapLogic
 	Children:
 		Background@BORDER:
@@ -13,14 +13,14 @@ Container@LEAVE_RESTART_WIDGET:
 			Align: Right
 			Font: Regular
 			Contrast: True
-		Container@LEAVE_RESTART_SIMPLE
+		Container@LEAVE_MAP_SIMPLE
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
 			Width: 370
 			Height: 175
 			Visible: False
 			Children:
-				Background@LEAVE_RESTART_SIMPLE_BG:
+				Background@LEAVE_MAP_SIMPLE_BG:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
@@ -38,29 +38,28 @@ Container@LEAVE_RESTART_WIDGET:
 							Height: 65
 							Text: Press 'Leave' to return to the main menu.
 							Align: Center
-						Button@RESTART_BUTTON:
+						Button@STATS_BUTTON:
 							X: 20
 							Y: PARENT_BOTTOM - 45
 							Width: 140
 							Height: 25
 							Font: Bold
-							Text: Restart
-							Visible: false
+							Text: Statistics
 						Button@LEAVE_BUTTON:
-							X: (PARENT_RIGHT - WIDTH) / 2
+							X: PARENT_RIGHT - WIDTH - 20
 							Y: PARENT_BOTTOM - 45
 							Width: 140
 							Height: 25
 							Font: Bold
 							Text: Leave
-		Container@LEAVE_RESTART_FULL:
+		Container@LEAVE_MAP_FULL:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
 			Width: 522
 			Height: 470
 			Visible: False
 			Children:
-				Background@LEAVE_RESTART_BG:
+				Background@LEAVE_MAP_BG:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
@@ -72,14 +71,13 @@ Container@LEAVE_RESTART_WIDGET:
 							Font: Bold
 							Align: Center
 							Text: The game has ended
-						Button@RESTART_BUTTON:
+						Button@STATS_BUTTON:
 							X: PARENT_RIGHT - 2 * (WIDTH + 20)
 							Y: PARENT_BOTTOM - 45
 							Width: 120
 							Height: 25
 							Font: Bold
-							Text: Restart
-							Visible: false
+							Text: Statistics
 						Button@LEAVE_BUTTON:
 							X: PARENT_RIGHT - WIDTH - 20
 							Y: PARENT_BOTTOM - 45

@@ -48,7 +48,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			Action ShowLeaveRestartDialog = () =>
 			{
 				gameRoot.RemoveChildren();
-				Game.LoadWidget(world, "LEAVE_RESTART_WIDGET", Ui.Root, new WidgetArgs());
+				Game.LoadWidget(world, "LEAVE_MAP_WIDGET", Ui.Root, new WidgetArgs());
 			};
 			world.GameOver += ShowLeaveRestartDialog;
 		}

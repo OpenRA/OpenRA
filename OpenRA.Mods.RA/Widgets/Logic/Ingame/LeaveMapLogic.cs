@@ -9,31 +9,41 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.RA.Widgets
 {
 	class LeaveMapLogic
 	{
 		[ObjectCreator.UseCtor]
-		public LeaveMapLogic(Widget widget, OrderManager orderManager, World world)
+		public LeaveMapLogic(Widget widget, World world)
 		{
 			widget.Get<LabelWidget>("VERSION_LABEL").Text = Game.modData.Manifest.Mod.Version;
 
-			var panelName = "LEAVE_RESTART_SIMPLE";
+			var panelName = "LEAVE_MAP_SIMPLE";
 
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			var showObjectives = iop != null && iop.PanelName != null && world.LocalPlayer != null;
 
 			if (showObjectives)
-				panelName = "LEAVE_RESTART_FULL";
+				panelName = "LEAVE_MAP_FULL";
+
+			var showStats = false;
 
 			var dialog = widget.Get<ContainerWidget>(panelName);
-			dialog.IsVisible = () => true;
+			dialog.IsVisible = () => !showStats;
 			widget.IsVisible = () => Ui.CurrentWindow() == null;
+
+			var statsButton = dialog.Get<ButtonWidget>("STATS_BUTTON");
+			statsButton.OnClick = () =>
+			{
+				showStats = true;
+				Game.LoadWidget(world, "INGAME_OBSERVERSTATS_BG", Ui.Root, new WidgetArgs()
+				{
+					{ "onExit", () => showStats = false }
+				});
+			};
 
 			var leaveButton = dialog.Get<ButtonWidget>("LEAVE_BUTTON");
 			leaveButton.OnClick = () =>

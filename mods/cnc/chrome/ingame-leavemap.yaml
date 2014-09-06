@@ -1,4 +1,4 @@
-Container@LEAVE_RESTART_WIDGET:
+Container@LEAVE_MAP_WIDGET:
 	Logic: LeaveMapLogic
 	Children:
 		Image@EVA:
@@ -18,14 +18,14 @@ Container@LEAVE_RESTART_WIDGET:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 			Background: shellmapborder
-		Container@LEAVE_RESTART_SIMPLE
+		Container@LEAVE_MAP_SIMPLE
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
 			Width: 370
 			Height: 125
 			Visible: False
 			Children:
-				Background@LEAVE_RESTART_SIMPLE_BG:
+				Background@LEAVE_MAP_SIMPLE_BG:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM - 35
 					Background: panel-black
@@ -51,22 +51,21 @@ Container@LEAVE_RESTART_WIDGET:
 							Height: 35
 							Font: Bold
 							Text: Leave
-						Button@RESTART_BUTTON:
-							X: 150
+						Button@STATS_BUTTON:
+							X: PARENT_RIGHT - WIDTH
 							Y: PARENT_BOTTOM - 1
 							Width: 140
 							Height: 35
 							Font: Bold
-							Text: Restart
-							Visible: false
-		Container@LEAVE_RESTART_FULL:
+							Text: Statistics
+		Container@LEAVE_MAP_FULL:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
 			Width: 512
 			Height: 410
 			Visible: False
 			Children:
-				Background@LEAVE_RESTART_BG:
+				Background@LEAVE_MAP_BG:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM - 35
 					Background: panel-black
@@ -86,13 +85,12 @@ Container@LEAVE_RESTART_WIDGET:
 							Height: 35
 							Font: Bold
 							Text: Leave
-						Button@RESTART_BUTTON:
+						Button@STATS_BUTTON:
 							X: 150
 							Y: PARENT_BOTTOM - 1
 							Width: 140
 							Height: 35
 							Font: Bold
-							Text: Restart
-							Visible: false
+							Text: Statistics
 						Container@OBJECTIVES:
 
