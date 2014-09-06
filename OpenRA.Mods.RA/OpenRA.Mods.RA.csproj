@@ -183,7 +183,7 @@
     <Compile Include="Buildings\ShakeOnDeath.cs" />
     <Compile Include="Buildings\SoundOnDamageTransition.cs" />
     <Compile Include="Buildings\Util.cs" />
-    <Compile Include="Buildings\Wall.cs" />
+    <Compile Include="BlocksBullets.cs" />
     <Compile Include="Burns.cs" />
     <Compile Include="C4Demolition.cs" />
     <Compile Include="ExternalCapturable.cs" />
