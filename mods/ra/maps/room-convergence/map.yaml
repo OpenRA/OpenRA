@@ -751,7 +751,7 @@ Rules:
 		SoundOnDamageTransition:
 			DamagedSound:
 			DestroyedSound:
-		Wall:
+		Crushable:
 			CrushClasses: heavywall
 
 Sequences:

@@ -417,8 +417,9 @@ CONCRETEB:
 		HP: 300
 	Armor:
 		Type: Concrete
-	Wall:
+	Crushable:
 		CrushClasses: Concretewall
+	BlocksBullets:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall, turret

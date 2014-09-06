@@ -1399,7 +1399,7 @@ BRIK:
 		HP: 500
 	Armor:
 		Type: Concrete
-	Wall:
+	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
 		Range: 8
