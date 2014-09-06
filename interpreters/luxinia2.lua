@@ -2,7 +2,7 @@
 return {
   name = "Luxinia2",
   description = "Luxinia2",
-  api = {"baselib","glfw","glewgl","assimp20","luxmath","luxscene","luajit2",},
+  api = {"baselib","glfw","glewgl","assimp20","luajit2",},
 
   frun = function(self,wfilename,rundebug)
     local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")

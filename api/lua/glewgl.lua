@@ -32,9 +32,9 @@ typedef ptrdiff_t GLintptrARB;
 typedef ptrdiff_t GLsizeiptrARB;
 typedef unsigned short GLhalf;
 typedef GLintptr GLvdpauSurfaceNV;
-typedef void ( *GLDEBUGPROCAMD)(GLuint id, GLenum category, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam);
-typedef void ( *GLDEBUGPROC)(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam);
-typedef void ( *GLDEBUGPROCARB)(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam);
+typedef void ( *GLDEBUGPROCARB)(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
+typedef void ( *GLDEBUGPROCAMD)(GLuint id, GLenum category, GLenum severity, GLsizei length, const GLchar* message, void* userParam);
+typedef void ( *GLDEBUGPROC)(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
 
 enum {
 GL_ZERO = 0,
@@ -609,7 +609,6 @@ GL_UNSIGNED_SHORT_5_6_5_REV = 0x8364,
 GL_UNSIGNED_SHORT_4_4_4_4_REV = 0x8365,
 GL_UNSIGNED_SHORT_1_5_5_5_REV = 0x8366,
 GL_UNSIGNED_INT_8_8_8_8_REV = 0x8367,
-GL_UNSIGNED_INT_2_10_10_10_REV = 0x8368,
 GL_ALIASED_POINT_SIZE_RANGE = 0x846D,
 GL_ALIASED_LINE_WIDTH_RANGE = 0x846E,
 GL_MULTISAMPLE = 0x809D,
@@ -747,18 +746,18 @@ GL_DEPTH_TEXTURE_MODE = 0x884B,
 GL_TEXTURE_COMPARE_MODE = 0x884C,
 GL_TEXTURE_COMPARE_FUNC = 0x884D,
 GL_COMPARE_R_TO_TEXTURE = 0x884E,
-GL_FOG_COORD_SRC = 0x8450,
+GL_CURRENT_FOG_COORD = 0x8453,
 GL_FOG_COORD = 0x8451,
 GL_FOG_COORD_ARRAY = 0x8457,
-GL_SRC0_RGB = 0x8580,
-GL_FOG_COORD_ARRAY_POINTER = 0x8456,
-GL_FOG_COORD_ARRAY_TYPE = 0x8454,
-GL_SRC1_ALPHA = 0x8589,
-GL_CURRENT_FOG_COORD = 0x8453,
-GL_FOG_COORD_ARRAY_STRIDE = 0x8455,
-GL_SRC0_ALPHA = 0x8588,
-GL_SRC1_RGB = 0x8581,
 GL_FOG_COORD_ARRAY_BUFFER_BINDING = 0x889D,
+GL_FOG_COORD_ARRAY_POINTER = 0x8456,
+GL_FOG_COORD_ARRAY_STRIDE = 0x8455,
+GL_FOG_COORD_ARRAY_TYPE = 0x8454,
+GL_FOG_COORD_SRC = 0x8450,
+GL_SRC0_ALPHA = 0x8588,
+GL_SRC0_RGB = 0x8580,
+GL_SRC1_ALPHA = 0x8589,
+GL_SRC1_RGB = 0x8581,
 GL_SRC2_ALPHA = 0x858A,
 GL_SRC2_RGB = 0x8582,
 GL_BUFFER_SIZE = 0x8764,
@@ -904,14 +903,14 @@ GL_COMPRESSED_SRGB = 0x8C48,
 GL_COMPRESSED_SRGB_ALPHA = 0x8C49,
 GL_COMPRESSED_SLUMINANCE = 0x8C4A,
 GL_COMPRESSED_SLUMINANCE_ALPHA = 0x8C4B,
-GL_MAX_CLIP_DISTANCES = 0x0D32,
-GL_CLIP_DISTANCE5 = 0x3005,
-GL_CLIP_DISTANCE1 = 0x3001,
-GL_CLIP_DISTANCE3 = 0x3003,
-GL_COMPARE_REF_TO_TEXTURE = 0x884E,
 GL_CLIP_DISTANCE0 = 0x3000,
-GL_CLIP_DISTANCE4 = 0x3004,
+GL_CLIP_DISTANCE1 = 0x3001,
 GL_CLIP_DISTANCE2 = 0x3002,
+GL_CLIP_DISTANCE3 = 0x3003,
+GL_CLIP_DISTANCE4 = 0x3004,
+GL_CLIP_DISTANCE5 = 0x3005,
+GL_COMPARE_REF_TO_TEXTURE = 0x884E,
+GL_MAX_CLIP_DISTANCES = 0x0D32,
 GL_MAX_VARYING_COMPONENTS = 0x8B4B,
 GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT = 0x0001,
 GL_MAJOR_VERSION = 0x821B,
@@ -920,8 +919,6 @@ GL_NUM_EXTENSIONS = 0x821D,
 GL_CONTEXT_FLAGS = 0x821E,
 GL_DEPTH_BUFFER = 0x8223,
 GL_STENCIL_BUFFER = 0x8224,
-GL_COMPRESSED_RED = 0x8225,
-GL_COMPRESSED_RG = 0x8226,
 GL_RGBA32F = 0x8814,
 GL_RGB32F = 0x8815,
 GL_RGBA16F = 0x881A,
@@ -1068,19 +1065,9 @@ GL_MAX_GEOMETRY_OUTPUT_COMPONENTS = 0x9124,
 GL_MAX_FRAGMENT_INPUT_COMPONENTS = 0x9125,
 GL_CONTEXT_PROFILE_MASK = 0x9126,
 GL_VERTEX_ATTRIB_ARRAY_DIVISOR = 0x88FE,
-GL_TEXTURE_SWIZZLE_R = 0x8E42,
-GL_TEXTURE_SWIZZLE_G = 0x8E43,
-GL_TEXTURE_SWIZZLE_B = 0x8E44,
-GL_TEXTURE_SWIZZLE_A = 0x8E45,
-GL_TEXTURE_SWIZZLE_RGBA = 0x8E46,
 GL_RGB10_A2UI = 0x906F,
-GL_GEOMETRY_SHADER_INVOCATIONS = 0x887F,
 GL_SAMPLE_SHADING = 0x8C36,
 GL_MIN_SAMPLE_SHADING_VALUE = 0x8C37,
-GL_MAX_GEOMETRY_SHADER_INVOCATIONS = 0x8E5A,
-GL_MIN_FRAGMENT_INTERPOLATION_OFFSET = 0x8E5B,
-GL_MAX_FRAGMENT_INTERPOLATION_OFFSET = 0x8E5C,
-GL_FRAGMENT_INTERPOLATION_OFFSET_BITS = 0x8E5D,
 GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET = 0x8E5E,
 GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET = 0x8E5F,
 GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS = 0x8F9F,
@@ -1097,7 +1084,9 @@ GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT = 0x8E8E,
 GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT = 0x8E8F,
 GL_NUM_SHADING_LANGUAGE_VERSIONS = 0x82E9,
 GL_VERTEX_ATTRIB_ARRAY_LONG = 0x874E,
+GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED = 0x8221,
 GL_MAX_VERTEX_ATTRIB_STRIDE = 0x82E5,
+GL_TEXTURE_BUFFER_BINDING = 0x8C2A,
 GL_FACTOR_MIN_AMD = 0x901C,
 GL_FACTOR_MAX_AMD = 0x901D,
 GL_DEBUG_CATEGORY_API_ERROR_AMD = 0x9149,
@@ -1124,6 +1113,12 @@ GL_PERFORMANCE_MONITOR_AMD = 0x9152,
 GL_QUERY_OBJECT_AMD = 0x9153,
 GL_VERTEX_ARRAY_OBJECT_AMD = 0x9154,
 GL_SAMPLER_OBJECT_AMD = 0x9155,
+GL_QUERY_DEPTH_PASS_EVENT_BIT_AMD = 0x00000001,
+GL_QUERY_DEPTH_FAIL_EVENT_BIT_AMD = 0x00000002,
+GL_QUERY_STENCIL_FAIL_EVENT_BIT_AMD = 0x00000004,
+GL_QUERY_DEPTH_BOUNDS_FAIL_EVENT_BIT_AMD = 0x00000008,
+GL_OCCLUSION_QUERY_EVENT_MASK_AMD = 0x874F,
+GL_QUERY_ALL_EVENT_BITS_AMD = 0xFFFFFFFF,
 GL_COUNTER_TYPE_AMD = 0x8BC0,
 GL_COUNTER_RANGE_AMD = 0x8BC1,
 GL_UNSIGNED_INT64_AMD = 0x8BC2,
@@ -1145,6 +1140,7 @@ GL_MIN_LOD_WARNING_AMD = 0x919C,
 GL_REPLACE_VALUE_AMD = 0x874B,
 GL_STENCIL_OP_VALUE_AMD = 0x874C,
 GL_STENCIL_BACK_OP_VALUE_AMD = 0x874D,
+GL_STREAM_RASTERIZATION_AMD = 0x91A0,
 GL_TESSELLATION_MODE_AMD = 0x9004,
 GL_TESSELLATION_FACTOR_AMD = 0x9005,
 GL_DISCRETE_AMD = 0x9006,
@@ -1196,6 +1192,12 @@ GL_BUFFER_STORAGE_FLAGS = 0x8220,
 GL_SYNC_CL_EVENT_ARB = 0x8240,
 GL_SYNC_CL_EVENT_COMPLETE_ARB = 0x8241,
 GL_CLEAR_TEXTURE = 0x9365,
+//GL_LOWER_LEFT = 0x8CA1,
+//GL_UPPER_LEFT = 0x8CA2,
+GL_CLIP_ORIGIN = 0x935C,
+GL_CLIP_DEPTH_MODE = 0x935D,
+GL_NEGATIVE_ONE_TO_ONE = 0x935E,
+GL_ZERO_TO_ONE = 0x935F,
 GL_RGBA_FLOAT_MODE_ARB = 0x8820,
 GL_UNPACK_COMPRESSED_BLOCK_WIDTH = 0x9127,
 GL_UNPACK_COMPRESSED_BLOCK_HEIGHT = 0x9128,
@@ -1227,12 +1229,21 @@ GL_MAX_COMPUTE_FIXED_GROUP_INVOCATIONS_ARB = 0x90EB,
 GL_MAX_COMPUTE_FIXED_GROUP_SIZE_ARB = 0x91BF,
 GL_MAX_COMPUTE_VARIABLE_GROUP_INVOCATIONS_ARB = 0x9344,
 GL_MAX_COMPUTE_VARIABLE_GROUP_SIZE_ARB = 0x9345,
+GL_QUERY_WAIT_INVERTED = 0x8E17,
+GL_QUERY_NO_WAIT_INVERTED = 0x8E18,
+GL_QUERY_BY_REGION_WAIT_INVERTED = 0x8E19,
+GL_QUERY_BY_REGION_NO_WAIT_INVERTED = 0x8E1A,
 GL_COPY_READ_BUFFER = 0x8F36,
 GL_COPY_WRITE_BUFFER = 0x8F37,
+GL_MAX_CULL_DISTANCES = 0x82F9,
+GL_MAX_COMBINED_CLIP_AND_CULL_DISTANCES = 0x82FA,
 GL_DEPTH_COMPONENT32F = 0x8CAC,
 GL_DEPTH32F_STENCIL8 = 0x8CAD,
 GL_FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD,
 GL_DEPTH_CLAMP = 0x864F,
+GL_TEXTURE_TARGET = 0x1006,
+GL_QUERY_TARGET = 0x82EA,
+GL_TEXTURE_BINDING = 0x82EB,
 GL_DRAW_INDIRECT_BUFFER = 0x8F3F,
 GL_DRAW_INDIRECT_BUFFER_BINDING = 0x8F43,
 GL_LOCATION_COMPONENT = 0x934A,
@@ -1344,11 +1355,11 @@ GL_PROGRAM_BINARY_RETRIEVABLE_HINT = 0x8257,
 GL_PROGRAM_BINARY_LENGTH = 0x8741,
 GL_NUM_PROGRAM_BINARY_FORMATS = 0x87FE,
 GL_PROGRAM_BINARY_FORMATS = 0x87FF,
-//GL_GEOMETRY_SHADER_INVOCATIONS = 0x887F,
-//GL_MAX_GEOMETRY_SHADER_INVOCATIONS = 0x8E5A,
-//GL_MIN_FRAGMENT_INTERPOLATION_OFFSET = 0x8E5B,
-//GL_MAX_FRAGMENT_INTERPOLATION_OFFSET = 0x8E5C,
-//GL_FRAGMENT_INTERPOLATION_OFFSET_BITS = 0x8E5D,
+GL_GEOMETRY_SHADER_INVOCATIONS = 0x887F,
+GL_MAX_GEOMETRY_SHADER_INVOCATIONS = 0x8E5A,
+GL_MIN_FRAGMENT_INTERPOLATION_OFFSET = 0x8E5B,
+GL_MAX_FRAGMENT_INTERPOLATION_OFFSET = 0x8E5C,
+GL_FRAGMENT_INTERPOLATION_OFFSET_BITS = 0x8E5D,
 GL_MAX_VERTEX_STREAMS = 0x8E71,
 GL_DOUBLE_MAT2 = 0x8F46,
 GL_DOUBLE_MAT3 = 0x8F47,
@@ -1560,6 +1571,17 @@ GL_MATRIX_INDEX_ARRAY_TYPE_ARB = 0x8847,
 GL_MATRIX_INDEX_ARRAY_STRIDE_ARB = 0x8848,
 GL_MATRIX_INDEX_ARRAY_POINTER_ARB = 0x8849,
 GL_ANY_SAMPLES_PASSED = 0x8C2F,
+GL_VERTICES_SUBMITTED_ARB = 0x82EE,
+GL_PRIMITIVES_SUBMITTED_ARB = 0x82EF,
+GL_VERTEX_SHADER_INVOCATIONS_ARB = 0x82F0,
+GL_TESS_CONTROL_SHADER_PATCHES_ARB = 0x82F1,
+GL_TESS_EVALUATION_SHADER_INVOCATIONS_ARB = 0x82F2,
+GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED_ARB = 0x82F3,
+GL_FRAGMENT_SHADER_INVOCATIONS_ARB = 0x82F4,
+GL_COMPUTE_SHADER_INVOCATIONS_ARB = 0x82F5,
+GL_CLIPPING_INPUT_PRIMITIVES_ARB = 0x82F6,
+GL_CLIPPING_OUTPUT_PRIMITIVES_ARB = 0x82F7,
+//GL_GEOMETRY_SHADER_INVOCATIONS = 0x887F,
 GL_UNIFORM = 0x92E1,
 GL_UNIFORM_BLOCK = 0x92E2,
 GL_PROGRAM_INPUT = 0x92E3,
@@ -1616,12 +1638,6 @@ GL_QUERY_BUFFER = 0x9192,
 GL_QUERY_BUFFER_BINDING = 0x9193,
 GL_QUERY_RESULT_NO_WAIT = 0x9194,
 GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT_ARB = 0x00000004,
-GL_LOSE_CONTEXT_ON_RESET_ARB = 0x8252,
-GL_GUILTY_CONTEXT_RESET_ARB = 0x8253,
-GL_INNOCENT_CONTEXT_RESET_ARB = 0x8254,
-GL_UNKNOWN_CONTEXT_RESET_ARB = 0x8255,
-GL_RESET_NOTIFICATION_STRATEGY_ARB = 0x8256,
-GL_NO_RESET_NOTIFICATION_ARB = 0x8261,
 GL_SAMPLER_BINDING = 0x8919,
 GL_TEXTURE_CUBE_MAP_SEAMLESS = 0x884F,
 //GL_TEXTURE_CUBE_MAP_SEAMLESS = 0x884F,
@@ -1768,6 +1784,8 @@ GL_SHADER_INCLUDE_ARB = 0x8DAE,
 GL_NAMED_STRING_LENGTH_ARB = 0x8DE9,
 GL_NAMED_STRING_TYPE_ARB = 0x8DEA,
 GL_TEXTURE_COMPARE_FAIL_VALUE_ARB = 0x80BF,
+GL_SPARSE_STORAGE_BIT_ARB = 0x0400,
+GL_SPARSE_BUFFER_PAGE_SIZE_ARB = 0x82F8,
 GL_VIRTUAL_PAGE_SIZE_X_ARB = 0x9195,
 GL_VIRTUAL_PAGE_SIZE_Y_ARB = 0x9196,
 GL_VIRTUAL_PAGE_SIZE_Z_ARB = 0x9197,
@@ -1863,8 +1881,8 @@ GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY = 0x910D,
 GL_MAX_COLOR_TEXTURE_SAMPLES = 0x910E,
 GL_MAX_DEPTH_TEXTURE_SAMPLES = 0x910F,
 GL_MAX_INTEGER_SAMPLES = 0x9110,
-//GL_COMPRESSED_RED = 0x8225,
-//GL_COMPRESSED_RG = 0x8226,
+GL_COMPRESSED_RED = 0x8225,
+GL_COMPRESSED_RG = 0x8226,
 GL_RG = 0x8227,
 GL_RG_INTEGER = 0x8228,
 GL_R8 = 0x8229,
@@ -1891,11 +1909,11 @@ GL_RG32UI = 0x823C,
 //GL_STENCIL_INDEX = 0x1901,
 //GL_STENCIL_INDEX8 = 0x8D48,
 GL_TEXTURE_IMMUTABLE_FORMAT = 0x912F,
-//GL_TEXTURE_SWIZZLE_R = 0x8E42,
-//GL_TEXTURE_SWIZZLE_G = 0x8E43,
-//GL_TEXTURE_SWIZZLE_B = 0x8E44,
-//GL_TEXTURE_SWIZZLE_A = 0x8E45,
-//GL_TEXTURE_SWIZZLE_RGBA = 0x8E46,
+GL_TEXTURE_SWIZZLE_R = 0x8E42,
+GL_TEXTURE_SWIZZLE_G = 0x8E43,
+GL_TEXTURE_SWIZZLE_B = 0x8E44,
+GL_TEXTURE_SWIZZLE_A = 0x8E45,
+GL_TEXTURE_SWIZZLE_RGBA = 0x8E46,
 GL_TEXTURE_VIEW_MIN_LEVEL = 0x82DB,
 GL_TEXTURE_VIEW_NUM_LEVELS = 0x82DC,
 GL_TEXTURE_VIEW_MIN_LAYER = 0x82DD,
@@ -1909,6 +1927,8 @@ GL_TRANSFORM_FEEDBACK_BUFFER_ACTIVE = 0x8E24,
 GL_TRANSFORM_FEEDBACK_BINDING = 0x8E25,
 GL_MAX_TRANSFORM_FEEDBACK_BUFFERS = 0x8E70,
 //GL_MAX_VERTEX_STREAMS = 0x8E71,
+GL_TRANSFORM_FEEDBACK_OVERFLOW_ARB = 0x82EC,
+GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW_ARB = 0x82ED,
 GL_UNIFORM_BUFFER = 0x8A11,
 GL_UNIFORM_BUFFER_BINDING = 0x8A28,
 GL_UNIFORM_BUFFER_START = 0x8A29,
@@ -1951,6 +1971,7 @@ GL_VERTEX_BINDING_OFFSET = 0x82D7,
 GL_VERTEX_BINDING_STRIDE = 0x82D8,
 GL_MAX_VERTEX_ATTRIB_RELATIVE_OFFSET = 0x82D9,
 GL_MAX_VERTEX_ATTRIB_BINDINGS = 0x82DA,
+GL_VERTEX_BINDING_BUFFER = 0x8F4F,
 GL_MODELVIEW0_ARB = 0x1700,
 GL_MODELVIEW1_ARB = 0x850A,
 GL_MAX_VERTEX_UNITS_ARB = 0x86A4,
@@ -2064,7 +2085,7 @@ GL_MATRIX31_ARB = 0x88DF,
 GL_OBJECT_ACTIVE_ATTRIBUTES_ARB = 0x8B89,
 GL_OBJECT_ACTIVE_ATTRIBUTE_MAX_LENGTH_ARB = 0x8B8A,
 //GL_UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B,
-//GL_UNSIGNED_INT_2_10_10_10_REV = 0x8368,
+GL_UNSIGNED_INT_2_10_10_10_REV = 0x8368,
 GL_INT_2_10_10_10_REV = 0x8D9F,
 //GL_DEPTH_RANGE = 0x0B70,
 //GL_VIEWPORT = 0x0BA2,
@@ -2082,6 +2103,22 @@ GL_UNDEFINED_VERTEX = 0x8260,
 GL_PROGRAM_MATRIX_EXT = 0x8E2D,
 GL_TRANSPOSE_PROGRAM_MATRIX_EXT = 0x8E2E,
 GL_PROGRAM_MATRIX_STACK_DEPTH_EXT = 0x8E2F,
+GL_BLEND_ADVANCED_COHERENT_KHR = 0x9285,
+GL_MULTIPLY_KHR = 0x9294,
+GL_SCREEN_KHR = 0x9295,
+GL_OVERLAY_KHR = 0x9296,
+GL_DARKEN_KHR = 0x9297,
+GL_LIGHTEN_KHR = 0x9298,
+GL_COLORDODGE_KHR = 0x9299,
+GL_COLORBURN_KHR = 0x929A,
+GL_HARDLIGHT_KHR = 0x929B,
+GL_SOFTLIGHT_KHR = 0x929C,
+GL_DIFFERENCE_KHR = 0x929E,
+GL_EXCLUSION_KHR = 0x92A0,
+GL_HSL_HUE_KHR = 0x92AD,
+GL_HSL_SATURATION_KHR = 0x92AE,
+GL_HSL_COLOR_KHR = 0x92AF,
+GL_HSL_LUMINOSITY_KHR = 0x92B0,
 GL_CONTEXT_FLAG_DEBUG_BIT = 0x00000002,
 //GL_STACK_OVERFLOW = 0x0503,
 //GL_STACK_UNDERFLOW = 0x0504,
@@ -2122,6 +2159,14 @@ GL_DEBUG_SEVERITY_HIGH = 0x9146,
 GL_DEBUG_SEVERITY_MEDIUM = 0x9147,
 GL_DEBUG_SEVERITY_LOW = 0x9148,
 GL_DEBUG_OUTPUT = 0x92E0,
+GL_CONTEXT_LOST = 0x0507,
+GL_LOSE_CONTEXT_ON_RESET = 0x8252,
+GL_GUILTY_CONTEXT_RESET = 0x8253,
+GL_INNOCENT_CONTEXT_RESET = 0x8254,
+GL_UNKNOWN_CONTEXT_RESET = 0x8255,
+GL_RESET_NOTIFICATION_STRATEGY = 0x8256,
+GL_NO_RESET_NOTIFICATION = 0x8261,
+GL_CONTEXT_ROBUST_ACCESS = 0x90F3,
 GL_COMPRESSED_RGBA_ASTC_4x4_KHR = 0x93B0,
 GL_COMPRESSED_RGBA_ASTC_5x4_KHR = 0x93B1,
 GL_COMPRESSED_RGBA_ASTC_5x5_KHR = 0x93B2,
@@ -2150,6 +2195,34 @@ GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR = 0x93DA,
 GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR = 0x93DB,
 GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR = 0x93DC,
 GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR = 0x93DD,
+//GL_COMPRESSED_RGBA_ASTC_4x4_KHR = 0x93B0,
+//GL_COMPRESSED_RGBA_ASTC_5x4_KHR = 0x93B1,
+//GL_COMPRESSED_RGBA_ASTC_5x5_KHR = 0x93B2,
+//GL_COMPRESSED_RGBA_ASTC_6x5_KHR = 0x93B3,
+//GL_COMPRESSED_RGBA_ASTC_6x6_KHR = 0x93B4,
+//GL_COMPRESSED_RGBA_ASTC_8x5_KHR = 0x93B5,
+//GL_COMPRESSED_RGBA_ASTC_8x6_KHR = 0x93B6,
+//GL_COMPRESSED_RGBA_ASTC_8x8_KHR = 0x93B7,
+//GL_COMPRESSED_RGBA_ASTC_10x5_KHR = 0x93B8,
+//GL_COMPRESSED_RGBA_ASTC_10x6_KHR = 0x93B9,
+//GL_COMPRESSED_RGBA_ASTC_10x8_KHR = 0x93BA,
+//GL_COMPRESSED_RGBA_ASTC_10x10_KHR = 0x93BB,
+//GL_COMPRESSED_RGBA_ASTC_12x10_KHR = 0x93BC,
+//GL_COMPRESSED_RGBA_ASTC_12x12_KHR = 0x93BD,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR = 0x93D0,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR = 0x93D1,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR = 0x93D2,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR = 0x93D3,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR = 0x93D4,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR = 0x93D5,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR = 0x93D6,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR = 0x93D7,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR = 0x93D8,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR = 0x93D9,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR = 0x93DA,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR = 0x93DB,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR = 0x93DC,
+//GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR = 0x93DD,
 GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX = 0x9047,
 GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX = 0x9048,
 GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX = 0x9049,
@@ -2334,8 +2407,8 @@ GL_GLYPH_HEIGHT_BIT_NV = 0x02,
 GL_ITALIC_BIT_NV = 0x02,
 GL_MOVE_TO_NV = 0x02,
 GL_RELATIVE_MOVE_TO_NV = 0x03,
-GL_LINE_TO_NV = 0x04,
 GL_GLYPH_HORIZONTAL_BEARING_X_BIT_NV = 0x04,
+GL_LINE_TO_NV = 0x04,
 GL_RELATIVE_LINE_TO_NV = 0x05,
 GL_HORIZONTAL_LINE_TO_NV = 0x06,
 GL_RELATIVE_HORIZONTAL_LINE_TO_NV = 0x07,
@@ -2522,6 +2595,9 @@ GL_PER_STAGE_CONSTANTS_NV = 0x8535,
 GL_BUFFER_GPU_ADDRESS_NV = 0x8F1D,
 GL_GPU_ADDRESS_NV = 0x8F34,
 GL_MAX_SHADER_BUFFER_ADDRESS_NV = 0x8F35,
+GL_WARP_SIZE_NV = 0x9339,
+GL_WARPS_PER_SM_NV = 0x933A,
+GL_SM_COUNT_NV = 0x933B,
 GL_MAX_PROGRAM_PATCH_ATTRIBS_NV = 0x86D8,
 GL_TESS_CONTROL_PROGRAM_NV = 0x891E,
 GL_TESS_EVALUATION_PROGRAM_NV = 0x891F,
@@ -2553,8 +2629,8 @@ GL_OFFSET_TEXTURE_2D_MATRIX_NV = 0x86E1,
 GL_OFFSET_TEXTURE_MATRIX_NV = 0x86E1,
 GL_OFFSET_TEXTURE_2D_SCALE_NV = 0x86E2,
 GL_OFFSET_TEXTURE_SCALE_NV = 0x86E2,
-GL_OFFSET_TEXTURE_BIAS_NV = 0x86E3,
 GL_OFFSET_TEXTURE_2D_BIAS_NV = 0x86E3,
+GL_OFFSET_TEXTURE_BIAS_NV = 0x86E3,
 GL_PREVIOUS_TEXTURE_INPUT_NV = 0x86E4,
 GL_CONST_EYE_NV = 0x86E5,
 GL_PASS_THROUGH_NV = 0x86E6,
@@ -2667,6 +2743,9 @@ GL_TRANSFORM_FEEDBACK_ATTRIBS_NV = 0x8C7E,
 GL_ACTIVE_VARYINGS_NV = 0x8C81,
 GL_ACTIVE_VARYING_MAX_LENGTH_NV = 0x8C82,
 GL_TRANSFORM_FEEDBACK_RECORD_NV = 0x8C86,
+GL_UNIFORM_BUFFER_UNIFIED_NV = 0x936E,
+GL_UNIFORM_BUFFER_ADDRESS_NV = 0x936F,
+GL_UNIFORM_BUFFER_LENGTH_NV = 0x9370,
 GL_SURFACE_STATE_NV = 0x86EB,
 GL_SURFACE_REGISTERED_NV = 0x86FD,
 GL_SURFACE_MAPPED_NV = 0x8700,
@@ -3156,18 +3235,18 @@ extern void glVertex4sv(const GLshort *v);
 extern void glVertexPointer(GLint size, GLenum type, GLsizei stride, const GLvoid *pointer);
 extern void glViewport(GLint x, GLint y, GLsizei width, GLsizei height);
 extern void glCopyTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height);
-extern void glDrawRangeElements(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const GLvoid *indices);
-extern void glTexImage3D(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
-extern void glTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid *pixels);
+extern void glDrawRangeElements(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void *indices);
+extern void glTexImage3D(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const void *pixels);
+extern void glTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void *pixels);
 extern void glActiveTexture(GLenum texture);
 extern void glClientActiveTexture(GLenum texture);
-extern void glCompressedTexImage1D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedTexImage3D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedTexSubImage1D(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const GLvoid *data);
-extern void glGetCompressedTexImage(GLenum target, GLint lod, GLvoid *img);
+extern void glCompressedTexImage1D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const void *data);
+extern void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void *data);
+extern void glCompressedTexImage3D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const void *data);
+extern void glCompressedTexSubImage1D(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const void *data);
+extern void glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void *data);
+extern void glCompressedTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const void *data);
+extern void glGetCompressedTexImage(GLenum target, GLint lod, void *img);
 extern void glLoadTransposeMatrixd(const GLdouble m[16]);
 extern void glLoadTransposeMatrixf(const GLfloat m[16]);
 extern void glMultTransposeMatrixd(const GLdouble m[16]);
@@ -3208,13 +3287,13 @@ extern void glSampleCoverage(GLclampf value, GLboolean invert);
 extern void glBlendColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
 extern void glBlendEquation(GLenum mode);
 extern void glBlendFuncSeparate(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha);
-extern void glFogCoordPointer(GLenum type, GLsizei stride, const GLvoid *pointer);
+extern void glFogCoordPointer(GLenum type, GLsizei stride, const void *pointer);
 extern void glFogCoordd(GLdouble coord);
 extern void glFogCoorddv(const GLdouble *coord);
 extern void glFogCoordf(GLfloat coord);
 extern void glFogCoordfv(const GLfloat *coord);
 extern void glMultiDrawArrays(GLenum mode, const GLint *first, const GLsizei *count, GLsizei drawcount);
-extern void glMultiDrawElements(GLenum mode, const GLsizei *count, GLenum type, const GLvoid **indices, GLsizei drawcount);
+extern void glMultiDrawElements(GLenum mode, const GLsizei *count, GLenum type, const void *const* indices, GLsizei drawcount);
 extern void glPointParameterf(GLenum pname, GLfloat param);
 extern void glPointParameterfv(GLenum pname, const GLfloat *params);
 extern void glPointParameteri(GLenum pname, GLint param);
@@ -3235,7 +3314,7 @@ extern void glSecondaryColor3ui(GLuint red, GLuint green, GLuint blue);
 extern void glSecondaryColor3uiv(const GLuint *v);
 extern void glSecondaryColor3us(GLushort red, GLushort green, GLushort blue);
 extern void glSecondaryColor3usv(const GLushort *v);
-extern void glSecondaryColorPointer(GLint size, GLenum type, GLsizei stride, const GLvoid *pointer);
+extern void glSecondaryColorPointer(GLint size, GLenum type, GLsizei stride, const void *pointer);
 extern void glWindowPos2d(GLdouble x, GLdouble y);
 extern void glWindowPos2dv(const GLdouble *p);
 extern void glWindowPos2f(GLfloat x, GLfloat y);
@@ -3254,35 +3333,35 @@ extern void glWindowPos3s(GLshort x, GLshort y, GLshort z);
 extern void glWindowPos3sv(const GLshort *p);
 extern void glBeginQuery(GLenum target, GLuint id);
 extern void glBindBuffer(GLenum target, GLuint buffer);
-extern void glBufferData(GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage);
-extern void glBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const GLvoid* data);
+extern void glBufferData(GLenum target, GLsizeiptr size, const void* data, GLenum usage);
+extern void glBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const void* data);
 extern void glDeleteBuffers(GLsizei n, const GLuint* buffers);
 extern void glDeleteQueries(GLsizei n, const GLuint* ids);
 extern void glEndQuery(GLenum target);
 extern void glGenBuffers(GLsizei n, GLuint* buffers);
 extern void glGenQueries(GLsizei n, GLuint* ids);
 extern void glGetBufferParameteriv(GLenum target, GLenum pname, GLint* params);
-extern void glGetBufferPointerv(GLenum target, GLenum pname, GLvoid** params);
-extern void glGetBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, GLvoid* data);
+extern void glGetBufferPointerv(GLenum target, GLenum pname, void** params);
+extern void glGetBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, void* data);
 extern void glGetQueryObjectiv(GLuint id, GLenum pname, GLint* params);
 extern void glGetQueryObjectuiv(GLuint id, GLenum pname, GLuint* params);
 extern void glGetQueryiv(GLenum target, GLenum pname, GLint* params);
 extern GLboolean glIsBuffer(GLuint buffer);
 extern GLboolean glIsQuery(GLuint id);
-extern GLvoid* glMapBuffer(GLenum target, GLenum access);
+extern void* glMapBuffer(GLenum target, GLenum access);
 extern GLboolean glUnmapBuffer(GLenum target);
 extern void glAttachShader(GLuint program, GLuint shader);
 extern void glBindAttribLocation(GLuint program, GLuint index, const GLchar* name);
-extern void glBlendEquationSeparate(GLenum, GLenum);
+extern void glBlendEquationSeparate(GLenum modeRGB, GLenum modeAlpha);
 extern void glCompileShader(GLuint shader);
 extern GLuint glCreateProgram(void);
 extern GLuint glCreateShader(GLenum type);
 extern void glDeleteProgram(GLuint program);
 extern void glDeleteShader(GLuint shader);
 extern void glDetachShader(GLuint program, GLuint shader);
-extern void glDisableVertexAttribArray(GLuint);
+extern void glDisableVertexAttribArray(GLuint index);
 extern void glDrawBuffers(GLsizei n, const GLenum* bufs);
-extern void glEnableVertexAttribArray(GLuint);
+extern void glEnableVertexAttribArray(GLuint index);
 extern void glGetActiveAttrib(GLuint program, GLuint index, GLsizei maxLength, GLsizei* length, GLint* size, GLenum* type, GLchar* name);
 extern void glGetActiveUniform(GLuint program, GLuint index, GLsizei maxLength, GLsizei* length, GLint* size, GLenum* type, GLchar* name);
 extern void glGetAttachedShaders(GLuint program, GLsizei maxCount, GLsizei* count, GLuint* shaders);
@@ -3295,16 +3374,16 @@ extern void glGetShaderiv(GLuint shader, GLenum pname, GLint* param);
 extern GLint glGetUniformLocation(GLuint program, const GLchar* name);
 extern void glGetUniformfv(GLuint program, GLint location, GLfloat* params);
 extern void glGetUniformiv(GLuint program, GLint location, GLint* params);
-extern void glGetVertexAttribPointerv(GLuint, GLenum, GLvoid**);
-extern void glGetVertexAttribdv(GLuint, GLenum, GLdouble*);
-extern void glGetVertexAttribfv(GLuint, GLenum, GLfloat*);
-extern void glGetVertexAttribiv(GLuint, GLenum, GLint*);
+extern void glGetVertexAttribPointerv(GLuint index, GLenum pname, void** pointer);
+extern void glGetVertexAttribdv(GLuint index, GLenum pname, GLdouble* params);
+extern void glGetVertexAttribfv(GLuint index, GLenum pname, GLfloat* params);
+extern void glGetVertexAttribiv(GLuint index, GLenum pname, GLint* params);
 extern GLboolean glIsProgram(GLuint program);
 extern GLboolean glIsShader(GLuint shader);
 extern void glLinkProgram(GLuint program);
-extern void glShaderSource(GLuint shader, GLsizei count, const GLchar** strings, const GLint* lengths);
+extern void glShaderSource(GLuint shader, GLsizei count, const GLchar *const* string, const GLint* length);
 extern void glStencilFuncSeparate(GLenum frontfunc, GLenum backfunc, GLint ref, GLuint mask);
-extern void glStencilMaskSeparate(GLenum, GLuint);
+extern void glStencilMaskSeparate(GLenum face, GLuint mask);
 extern void glStencilOpSeparate(GLenum face, GLenum sfail, GLenum dpfail, GLenum dppass);
 extern void glUniform1f(GLint location, GLfloat v0);
 extern void glUniform1fv(GLint location, GLsizei count, const GLfloat* value);
@@ -3363,75 +3442,75 @@ extern void glVertexAttrib4sv(GLuint index, const GLshort* v);
 extern void glVertexAttrib4ubv(GLuint index, const GLubyte* v);
 extern void glVertexAttrib4uiv(GLuint index, const GLuint* v);
 extern void glVertexAttrib4usv(GLuint index, const GLushort* v);
-extern void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* pointer);
+extern void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer);
 extern void glUniformMatrix2x3fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 extern void glUniformMatrix2x4fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 extern void glUniformMatrix3x2fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 extern void glUniformMatrix3x4fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 extern void glUniformMatrix4x2fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 extern void glUniformMatrix4x3fv(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
-extern void glBeginConditionalRender(GLuint, GLenum);
-extern void glBeginTransformFeedback(GLenum);
-extern void glBindFragDataLocation(GLuint, GLuint, const GLchar*);
-extern void glClampColor(GLenum, GLenum);
-extern void glClearBufferfi(GLenum, GLint, GLfloat, GLint);
-extern void glClearBufferfv(GLenum, GLint, const GLfloat*);
-extern void glClearBufferiv(GLenum, GLint, const GLint*);
-extern void glClearBufferuiv(GLenum, GLint, const GLuint*);
-extern void glColorMaski(GLuint, GLboolean, GLboolean, GLboolean, GLboolean);
-extern void glDisablei(GLenum, GLuint);
-extern void glEnablei(GLenum, GLuint);
+extern void glBeginConditionalRender(GLuint id, GLenum mode);
+extern void glBeginTransformFeedback(GLenum primitiveMode);
+extern void glBindFragDataLocation(GLuint program, GLuint colorNumber, const GLchar* name);
+extern void glClampColor(GLenum target, GLenum clamp);
+extern void glClearBufferfi(GLenum buffer, GLint drawBuffer, GLfloat depth, GLint stencil);
+extern void glClearBufferfv(GLenum buffer, GLint drawBuffer, const GLfloat* value);
+extern void glClearBufferiv(GLenum buffer, GLint drawBuffer, const GLint* value);
+extern void glClearBufferuiv(GLenum buffer, GLint drawBuffer, const GLuint* value);
+extern void glColorMaski(GLuint buf, GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
+extern void glDisablei(GLenum cap, GLuint index);
+extern void glEnablei(GLenum cap, GLuint index);
 extern void glEndConditionalRender(void);
 extern void glEndTransformFeedback(void);
-extern void glGetBooleani_v(GLenum, GLuint, GLboolean*);
-extern GLint glGetFragDataLocation(GLuint, const GLchar*);
-extern const GLubyte* glGetStringi(GLenum, GLuint);
-extern void glGetTexParameterIiv(GLenum, GLenum, GLint*);
-extern void glGetTexParameterIuiv(GLenum, GLenum, GLuint*);
-extern void glGetTransformFeedbackVarying(GLuint, GLuint, GLsizei, GLsizei *, GLsizei *, GLenum *, GLchar *);
-extern void glGetUniformuiv(GLuint, GLint, GLuint*);
-extern void glGetVertexAttribIiv(GLuint, GLenum, GLint*);
-extern void glGetVertexAttribIuiv(GLuint, GLenum, GLuint*);
-extern GLboolean glIsEnabledi(GLenum, GLuint);
-extern void glTexParameterIiv(GLenum, GLenum, const GLint*);
-extern void glTexParameterIuiv(GLenum, GLenum, const GLuint*);
-extern void glTransformFeedbackVaryings(GLuint, GLsizei, const GLchar **, GLenum);
-extern void glUniform1ui(GLint, GLuint);
-extern void glUniform1uiv(GLint, GLsizei, const GLuint*);
-extern void glUniform2ui(GLint, GLuint, GLuint);
-extern void glUniform2uiv(GLint, GLsizei, const GLuint*);
-extern void glUniform3ui(GLint, GLuint, GLuint, GLuint);
-extern void glUniform3uiv(GLint, GLsizei, const GLuint*);
-extern void glUniform4ui(GLint, GLuint, GLuint, GLuint, GLuint);
-extern void glUniform4uiv(GLint, GLsizei, const GLuint*);
-extern void glVertexAttribI1i(GLuint, GLint);
-extern void glVertexAttribI1iv(GLuint, const GLint*);
-extern void glVertexAttribI1ui(GLuint, GLuint);
-extern void glVertexAttribI1uiv(GLuint, const GLuint*);
-extern void glVertexAttribI2i(GLuint, GLint, GLint);
-extern void glVertexAttribI2iv(GLuint, const GLint*);
-extern void glVertexAttribI2ui(GLuint, GLuint, GLuint);
-extern void glVertexAttribI2uiv(GLuint, const GLuint*);
-extern void glVertexAttribI3i(GLuint, GLint, GLint, GLint);
-extern void glVertexAttribI3iv(GLuint, const GLint*);
-extern void glVertexAttribI3ui(GLuint, GLuint, GLuint, GLuint);
-extern void glVertexAttribI3uiv(GLuint, const GLuint*);
-extern void glVertexAttribI4bv(GLuint, const GLbyte*);
-extern void glVertexAttribI4i(GLuint, GLint, GLint, GLint, GLint);
-extern void glVertexAttribI4iv(GLuint, const GLint*);
-extern void glVertexAttribI4sv(GLuint, const GLshort*);
-extern void glVertexAttribI4ubv(GLuint, const GLubyte*);
-extern void glVertexAttribI4ui(GLuint, GLuint, GLuint, GLuint, GLuint);
-extern void glVertexAttribI4uiv(GLuint, const GLuint*);
-extern void glVertexAttribI4usv(GLuint, const GLushort*);
-extern void glVertexAttribIPointer(GLuint, GLint, GLenum, GLsizei, const GLvoid*);
-extern void glDrawArraysInstanced(GLenum, GLint, GLsizei, GLsizei);
-extern void glDrawElementsInstanced(GLenum, GLsizei, GLenum, const GLvoid*, GLsizei);
-extern void glPrimitiveRestartIndex(GLuint);
-extern void glTexBuffer(GLenum, GLenum, GLuint);
-extern void glFramebufferTexture(GLenum, GLenum, GLuint, GLint);
-extern void glGetBufferParameteri64v(GLenum, GLenum, GLint64 *);
-extern void glGetInteger64i_v(GLenum, GLuint, GLint64 *);
+extern void glGetBooleani_v(GLenum pname, GLuint index, GLboolean* data);
+extern GLint glGetFragDataLocation(GLuint program, const GLchar* name);
+extern const GLubyte* glGetStringi(GLenum name, GLuint index);
+extern void glGetTexParameterIiv(GLenum target, GLenum pname, GLint* params);
+extern void glGetTexParameterIuiv(GLenum target, GLenum pname, GLuint* params);
+extern void glGetTransformFeedbackVarying(GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLsizei * size, GLenum * type, GLchar * name);
+extern void glGetUniformuiv(GLuint program, GLint location, GLuint* params);
+extern void glGetVertexAttribIiv(GLuint index, GLenum pname, GLint* params);
+extern void glGetVertexAttribIuiv(GLuint index, GLenum pname, GLuint* params);
+extern GLboolean glIsEnabledi(GLenum cap, GLuint index);
+extern void glTexParameterIiv(GLenum target, GLenum pname, const GLint* params);
+extern void glTexParameterIuiv(GLenum target, GLenum pname, const GLuint* params);
+extern void glTransformFeedbackVaryings(GLuint program, GLsizei count, const GLchar *const* varyings, GLenum bufferMode);
+extern void glUniform1ui(GLint location, GLuint v0);
+extern void glUniform1uiv(GLint location, GLsizei count, const GLuint* value);
+extern void glUniform2ui(GLint location, GLuint v0, GLuint v1);
+extern void glUniform2uiv(GLint location, GLsizei count, const GLuint* value);
+extern void glUniform3ui(GLint location, GLuint v0, GLuint v1, GLuint v2);
+extern void glUniform3uiv(GLint location, GLsizei count, const GLuint* value);
+extern void glUniform4ui(GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3);
+extern void glUniform4uiv(GLint location, GLsizei count, const GLuint* value);
+extern void glVertexAttribI1i(GLuint index, GLint v0);
+extern void glVertexAttribI1iv(GLuint index, const GLint* v0);
+extern void glVertexAttribI1ui(GLuint index, GLuint v0);
+extern void glVertexAttribI1uiv(GLuint index, const GLuint* v0);
+extern void glVertexAttribI2i(GLuint index, GLint v0, GLint v1);
+extern void glVertexAttribI2iv(GLuint index, const GLint* v0);
+extern void glVertexAttribI2ui(GLuint index, GLuint v0, GLuint v1);
+extern void glVertexAttribI2uiv(GLuint index, const GLuint* v0);
+extern void glVertexAttribI3i(GLuint index, GLint v0, GLint v1, GLint v2);
+extern void glVertexAttribI3iv(GLuint index, const GLint* v0);
+extern void glVertexAttribI3ui(GLuint index, GLuint v0, GLuint v1, GLuint v2);
+extern void glVertexAttribI3uiv(GLuint index, const GLuint* v0);
+extern void glVertexAttribI4bv(GLuint index, const GLbyte* v0);
+extern void glVertexAttribI4i(GLuint index, GLint v0, GLint v1, GLint v2, GLint v3);
+extern void glVertexAttribI4iv(GLuint index, const GLint* v0);
+extern void glVertexAttribI4sv(GLuint index, const GLshort* v0);
+extern void glVertexAttribI4ubv(GLuint index, const GLubyte* v0);
+extern void glVertexAttribI4ui(GLuint index, GLuint v0, GLuint v1, GLuint v2, GLuint v3);
+extern void glVertexAttribI4uiv(GLuint index, const GLuint* v0);
+extern void glVertexAttribI4usv(GLuint index, const GLushort* v0);
+extern void glVertexAttribIPointer(GLuint index, GLint size, GLenum type, GLsizei stride, const void*pointer);
+extern void glDrawArraysInstanced(GLenum mode, GLint first, GLsizei count, GLsizei primcount);
+extern void glDrawElementsInstanced(GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei primcount);
+extern void glPrimitiveRestartIndex(GLuint buffer);
+extern void glTexBuffer(GLenum target, GLenum internalFormat, GLuint buffer);
+extern void glFramebufferTexture(GLenum target, GLenum attachment, GLuint texture, GLint level);
+extern void glGetBufferParameteri64v(GLenum target, GLenum value, GLint64 * data);
+extern void glGetInteger64i_v(GLenum pname, GLuint index, GLint64 * data);
 extern void glVertexAttribDivisor(GLuint index, GLuint divisor);
 extern void glBlendEquationSeparatei(GLuint buf, GLenum modeRGB, GLenum modeAlpha);
 extern void glBlendEquationi(GLuint buf, GLenum mode);
@@ -3447,12 +3526,13 @@ extern void glVertexAttribParameteriAMD(GLuint index, GLenum pname, GLint param)
 extern void glDeleteNamesAMD(GLenum identifier, GLuint num, const GLuint* names);
 extern void glGenNamesAMD(GLenum identifier, GLuint num, GLuint* names);
 extern GLboolean glIsNameAMD(GLenum identifier, GLuint name);
+extern void glQueryObjectParameteruiAMD(GLenum target, GLuint id, GLenum pname, GLuint param);
 extern void glBeginPerfMonitorAMD(GLuint monitor);
 extern void glDeletePerfMonitorsAMD(GLsizei n, GLuint* monitors);
 extern void glEndPerfMonitorAMD(GLuint monitor);
 extern void glGenPerfMonitorsAMD(GLsizei n, GLuint* monitors);
 extern void glGetPerfMonitorCounterDataAMD(GLuint monitor, GLenum pname, GLsizei dataSize, GLuint* data, GLint *bytesWritten);
-extern void glGetPerfMonitorCounterInfoAMD(GLuint group, GLuint counter, GLenum pname, void* data);
+extern void glGetPerfMonitorCounterInfoAMD(GLuint group, GLuint counter, GLenum pname, void *data);
 extern void glGetPerfMonitorCounterStringAMD(GLuint group, GLuint counter, GLsizei bufSize, GLsizei* length, GLchar *counterString);
 extern void glGetPerfMonitorCountersAMD(GLuint group, GLint* numCounters, GLint *maxActiveCounters, GLsizei countersSize, GLuint *counters);
 extern void glGetPerfMonitorGroupStringAMD(GLuint group, GLsizei bufSize, GLsizei* length, GLchar *groupString);
@@ -3468,10 +3548,11 @@ extern void glClearDepthf(GLclampf d);
 extern void glDepthRangef(GLclampf n, GLclampf f);
 extern void glGetShaderPrecisionFormat(GLenum shadertype, GLenum precisiontype, GLint* range, GLint *precision);
 extern void glReleaseShaderCompiler(void);
-extern void glShaderBinary(GLsizei count, const GLuint* shaders, GLenum binaryformat, const GLvoid*binary, GLsizei length);
+extern void glShaderBinary(GLsizei count, const GLuint* shaders, GLenum binaryformat, const void*binary, GLsizei length);
+extern void glMemoryBarrierByRegion(GLbitfield barriers);
 extern void glDrawArraysInstancedBaseInstance(GLenum mode, GLint first, GLsizei count, GLsizei primcount, GLuint baseinstance);
-extern void glDrawElementsInstancedBaseInstance(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices, GLsizei primcount, GLuint baseinstance);
-extern void glDrawElementsInstancedBaseVertexBaseInstance(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices, GLsizei primcount, GLint basevertex, GLuint baseinstance);
+extern void glDrawElementsInstancedBaseInstance(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount, GLuint baseinstance);
+extern void glDrawElementsInstancedBaseVertexBaseInstance(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount, GLint basevertex, GLuint baseinstance);
 extern GLuint64 glGetImageHandleARB(GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum format);
 extern GLuint64 glGetTextureHandleARB(GLuint texture);
 extern GLuint64 glGetTextureSamplerHandleARB(GLuint texture, GLuint sampler);
@@ -3490,30 +3571,119 @@ extern void glVertexAttribL1ui64ARB(GLuint index, GLuint64EXT x);
 extern void glVertexAttribL1ui64vARB(GLuint index, const GLuint64EXT* v);
 extern void glBindFragDataLocationIndexed(GLuint program, GLuint colorNumber, GLuint index, const GLchar * name);
 extern GLint glGetFragDataIndex(GLuint program, const GLchar * name);
-extern void glBufferStorage(GLenum target, GLsizeiptr size, const GLvoid* data, GLbitfield flags);
-extern void glNamedBufferStorageEXT(GLuint buffer, GLsizeiptr size, const GLvoid* data, GLbitfield flags);
+extern void glBufferStorage(GLenum target, GLsizeiptr size, const void *data, GLbitfield flags);
 extern GLsync glCreateSyncFromCLeventARB(cl_context context, cl_event event, GLbitfield flags);
-extern void glClearBufferData(GLenum target, GLenum internalformat, GLenum format, GLenum type, const GLvoid* data);
-extern void glClearBufferSubData(GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const GLvoid* data);
-extern void glClearNamedBufferDataEXT(GLuint buffer, GLenum internalformat, GLenum format, GLenum type, const GLvoid* data);
-extern void glClearNamedBufferSubDataEXT(GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const GLvoid* data);
-extern void glClearTexImage(GLuint texture, GLint level, GLenum format, GLenum type, const GLvoid* data);
-extern void glClearTexSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid* data);
+extern void glClearBufferData(GLenum target, GLenum internalformat, GLenum format, GLenum type, const void *data);
+extern void glClearBufferSubData(GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void *data);
+extern void glClearTexImage(GLuint texture, GLint level, GLenum format, GLenum type, const void *data);
+extern void glClearTexSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void *data);
+extern void glClipControl(GLenum origin, GLenum depth);
 extern void glDispatchCompute(GLuint num_groups_x, GLuint num_groups_y, GLuint num_groups_z);
 extern void glDispatchComputeIndirect(GLintptr indirect);
 extern void glDispatchComputeGroupSizeARB(GLuint num_groups_x, GLuint num_groups_y, GLuint num_groups_z, GLuint group_size_x, GLuint group_size_y, GLuint group_size_z);
 extern void glCopyBufferSubData(GLenum readtarget, GLenum writetarget, GLintptr readoffset, GLintptr writeoffset, GLsizeiptr size);
 extern void glCopyImageSubData(GLuint srcName, GLenum srcTarget, GLint srcLevel, GLint srcX, GLint srcY, GLint srcZ, GLuint dstName, GLenum dstTarget, GLint dstLevel, GLint dstX, GLint dstY, GLint dstZ, GLsizei srcWidth, GLsizei srcHeight, GLsizei srcDepth);
-extern void glDrawElementsBaseVertex(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices, GLint basevertex);
-extern void glDrawElementsInstancedBaseVertex(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices, GLsizei primcount, GLint basevertex);
-extern void glDrawRangeElementsBaseVertex(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const GLvoid *indices, GLint basevertex);
-extern void glMultiDrawElementsBaseVertex(GLenum mode, const GLsizei* count, GLenum type, const GLvoid* const *indices, GLsizei primcount, const GLint *basevertex);
-extern void glDrawArraysIndirect(GLenum mode, const GLvoid *indirect);
-extern void glDrawElementsIndirect(GLenum mode, GLenum type, const GLvoid *indirect);
+extern void glBindTextureUnit(GLuint unit, GLuint texture);
+extern void glBlitNamedFramebuffer(GLuint readFramebuffer, GLuint drawFramebuffer, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter);
+extern GLenum glCheckNamedFramebufferStatus(GLuint framebuffer, GLenum target);
+extern void glClearNamedBufferData(GLuint buffer, GLenum internalformat, GLenum format, GLenum type, const void *data);
+extern void glClearNamedBufferSubData(GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void *data);
+extern void glClearNamedFramebufferfi(GLuint framebuffer, GLenum buffer, GLfloat depth, GLint stencil);
+extern void glClearNamedFramebufferfv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLfloat* value);
+extern void glClearNamedFramebufferiv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLint* value);
+extern void glClearNamedFramebufferuiv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLuint* value);
+extern void glCompressedTextureSubImage1D(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const void *data);
+extern void glCompressedTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void *data);
+extern void glCompressedTextureSubImage3D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const void *data);
+extern void glCopyNamedBufferSubData(GLuint readBuffer, GLuint writeBuffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
+extern void glCopyTextureSubImage1D(GLuint texture, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width);
+extern void glCopyTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
+extern void glCopyTextureSubImage3D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height);
+extern void glCreateBuffers(GLsizei n, GLuint* buffers);
+extern void glCreateFramebuffers(GLsizei n, GLuint* framebuffers);
+extern void glCreateProgramPipelines(GLsizei n, GLuint* pipelines);
+extern void glCreateQueries(GLenum target, GLsizei n, GLuint* ids);
+extern void glCreateRenderbuffers(GLsizei n, GLuint* renderbuffers);
+extern void glCreateSamplers(GLsizei n, GLuint* samplers);
+extern void glCreateTextures(GLenum target, GLsizei n, GLuint* textures);
+extern void glCreateTransformFeedbacks(GLsizei n, GLuint* ids);
+extern void glCreateVertexArrays(GLsizei n, GLuint* arrays);
+extern void glDisableVertexArrayAttrib(GLuint vaobj, GLuint index);
+extern void glEnableVertexArrayAttrib(GLuint vaobj, GLuint index);
+extern void glFlushMappedNamedBufferRange(GLuint buffer, GLintptr offset, GLsizeiptr length);
+extern void glGenerateTextureMipmap(GLuint texture);
+extern void glGetCompressedTextureImage(GLuint texture, GLint level, GLsizei bufSize, void *pixels);
+extern void glGetNamedBufferParameteri64v(GLuint buffer, GLenum pname, GLint64* params);
+extern void glGetNamedBufferParameteriv(GLuint buffer, GLenum pname, GLint* params);
+extern void glGetNamedBufferPointerv(GLuint buffer, GLenum pname, void** params);
+extern void glGetNamedBufferSubData(GLuint buffer, GLintptr offset, GLsizeiptr size, void *data);
+extern void glGetNamedFramebufferAttachmentParameteriv(GLuint framebuffer, GLenum attachment, GLenum pname, GLint* params);
+extern void glGetNamedFramebufferParameteriv(GLuint framebuffer, GLenum pname, GLint* param);
+extern void glGetNamedRenderbufferParameteriv(GLuint renderbuffer, GLenum pname, GLint* params);
+extern void glGetTextureImage(GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize, void *pixels);
+extern void glGetTextureLevelParameterfv(GLuint texture, GLint level, GLenum pname, GLfloat* params);
+extern void glGetTextureLevelParameteriv(GLuint texture, GLint level, GLenum pname, GLint* params);
+extern void glGetTextureParameterIiv(GLuint texture, GLenum pname, GLint* params);
+extern void glGetTextureParameterIuiv(GLuint texture, GLenum pname, GLuint* params);
+extern void glGetTextureParameterfv(GLuint texture, GLenum pname, GLfloat* params);
+extern void glGetTextureParameteriv(GLuint texture, GLenum pname, GLint* params);
+extern void glGetTransformFeedbacki64_v(GLuint xfb, GLenum pname, GLuint index, GLint64* param);
+extern void glGetTransformFeedbacki_v(GLuint xfb, GLenum pname, GLuint index, GLint* param);
+extern void glGetTransformFeedbackiv(GLuint xfb, GLenum pname, GLint* param);
+extern void glGetVertexArrayIndexed64iv(GLuint vaobj, GLuint index, GLenum pname, GLint64* param);
+extern void glGetVertexArrayIndexediv(GLuint vaobj, GLuint index, GLenum pname, GLint* param);
+extern void glGetVertexArrayiv(GLuint vaobj, GLenum pname, GLint* param);
+extern void glInvalidateNamedFramebufferData(GLuint framebuffer, GLsizei numAttachments, const GLenum* attachments);
+extern void glInvalidateNamedFramebufferSubData(GLuint framebuffer, GLsizei numAttachments, const GLenum* attachments, GLint x, GLint y, GLsizei width, GLsizei height);
+extern void * glMapNamedBuffer(GLuint buffer, GLenum access);
+extern void * glMapNamedBufferRange(GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access);
+extern void glNamedBufferData(GLuint buffer, GLsizeiptr size, const void *data, GLenum usage);
+extern void glNamedBufferStorage(GLuint buffer, GLsizeiptr size, const void *data, GLbitfield flags);
+extern void glNamedBufferSubData(GLuint buffer, GLintptr offset, GLsizeiptr size, const void *data);
+extern void glNamedFramebufferDrawBuffer(GLuint framebuffer, GLenum mode);
+extern void glNamedFramebufferDrawBuffers(GLuint framebuffer, GLsizei n, const GLenum* bufs);
+extern void glNamedFramebufferParameteri(GLuint framebuffer, GLenum pname, GLint param);
+extern void glNamedFramebufferReadBuffer(GLuint framebuffer, GLenum mode);
+extern void glNamedFramebufferRenderbuffer(GLuint framebuffer, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+extern void glNamedFramebufferTexture(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level);
+extern void glNamedFramebufferTextureLayer(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLint layer);
+extern void glNamedRenderbufferStorage(GLuint renderbuffer, GLenum internalformat, GLsizei width, GLsizei height);
+extern void glNamedRenderbufferStorageMultisample(GLuint renderbuffer, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
+extern void glTextureBuffer(GLuint texture, GLenum internalformat, GLuint buffer);
+extern void glTextureBufferRange(GLuint texture, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size);
+extern void glTextureParameterIiv(GLuint texture, GLenum pname, const GLint* params);
+extern void glTextureParameterIuiv(GLuint texture, GLenum pname, const GLuint* params);
+extern void glTextureParameterf(GLuint texture, GLenum pname, GLfloat param);
+extern void glTextureParameterfv(GLuint texture, GLenum pname, const GLfloat* param);
+extern void glTextureParameteri(GLuint texture, GLenum pname, GLint param);
+extern void glTextureParameteriv(GLuint texture, GLenum pname, const GLint* param);
+extern void glTextureStorage1D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width);
+extern void glTextureStorage2D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height);
+extern void glTextureStorage2DMultisample(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
+extern void glTextureStorage3D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth);
+extern void glTextureStorage3DMultisample(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
+extern void glTextureSubImage1D(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const void *pixels);
+extern void glTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels);
+extern void glTextureSubImage3D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void *pixels);
+extern void glTransformFeedbackBufferBase(GLuint xfb, GLuint index, GLuint buffer);
+extern void glTransformFeedbackBufferRange(GLuint xfb, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size);
+extern GLboolean glUnmapNamedBuffer(GLuint buffer);
+extern void glVertexArrayAttribBinding(GLuint vaobj, GLuint attribindex, GLuint bindingindex);
+extern void glVertexArrayAttribFormat(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
+extern void glVertexArrayAttribIFormat(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
+extern void glVertexArrayAttribLFormat(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
+extern void glVertexArrayBindingDivisor(GLuint vaobj, GLuint bindingindex, GLuint divisor);
+extern void glVertexArrayElementBuffer(GLuint vaobj, GLuint buffer);
+extern void glVertexArrayVertexBuffer(GLuint vaobj, GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride);
+extern void glVertexArrayVertexBuffers(GLuint vaobj, GLuint first, GLsizei count, const GLuint* buffers, const GLintptr *offsets, const GLsizei *strides);
+extern void glDrawElementsBaseVertex(GLenum mode, GLsizei count, GLenum type, const void *indices, GLint basevertex);
+extern void glDrawElementsInstancedBaseVertex(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount, GLint basevertex);
+extern void glDrawRangeElementsBaseVertex(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void *indices, GLint basevertex);
+extern void glMultiDrawElementsBaseVertex(GLenum mode, const GLsizei* count, GLenum type, const void *const *indices, GLsizei primcount, const GLint *basevertex);
+extern void glDrawArraysIndirect(GLenum mode, const void *indirect);
+extern void glDrawElementsIndirect(GLenum mode, GLenum type, const void *indirect);
 extern void glFramebufferParameteri(GLenum target, GLenum pname, GLint param);
 extern void glGetFramebufferParameteriv(GLenum target, GLenum pname, GLint* params);
-extern void glGetNamedFramebufferParameterivEXT(GLuint framebuffer, GLenum pname, GLint* params);
-extern void glNamedFramebufferParameteriEXT(GLuint framebuffer, GLenum pname, GLint param);
 extern void glBindFramebuffer(GLenum target, GLuint framebuffer);
 extern void glBindRenderbuffer(GLenum target, GLuint renderbuffer);
 extern void glBlitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter);
@@ -3535,9 +3705,11 @@ extern GLboolean glIsRenderbuffer(GLuint renderbuffer);
 extern void glRenderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
 extern void glRenderbufferStorageMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
 extern void glFramebufferTextureFaceARB(GLenum target, GLenum attachment, GLuint texture, GLint level, GLenum face);
-extern void glGetProgramBinary(GLuint program, GLsizei bufSize, GLsizei* length, GLenum *binaryFormat, GLvoid*binary);
-extern void glProgramBinary(GLuint program, GLenum binaryFormat, const GLvoid *binary, GLsizei length);
+extern void glGetProgramBinary(GLuint program, GLsizei bufSize, GLsizei* length, GLenum *binaryFormat, void*binary);
+extern void glProgramBinary(GLuint program, GLenum binaryFormat, const void *binary, GLsizei length);
 extern void glProgramParameteri(GLuint program, GLenum pname, GLint value);
+extern void glGetCompressedTextureSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize, void *pixels);
+extern void glGetTextureSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei bufSize, void *pixels);
 extern void glGetUniformdv(GLuint program, GLint location, GLdouble* params);
 extern void glUniform1d(GLint location, GLdouble x);
 extern void glUniform1dv(GLint location, GLsizei count, const GLdouble* value);
@@ -3556,12 +3728,12 @@ extern void glUniformMatrix3x4dv(GLint location, GLsizei count, GLboolean transp
 extern void glUniformMatrix4dv(GLint location, GLsizei count, GLboolean transpose, const GLdouble* value);
 extern void glUniformMatrix4x2dv(GLint location, GLsizei count, GLboolean transpose, const GLdouble* value);
 extern void glUniformMatrix4x3dv(GLint location, GLsizei count, GLboolean transpose, const GLdouble* value);
-extern void glColorSubTable(GLenum target, GLsizei start, GLsizei count, GLenum format, GLenum type, const GLvoid *data);
-extern void glColorTable(GLenum target, GLenum internalformat, GLsizei width, GLenum format, GLenum type, const GLvoid *table);
+extern void glColorSubTable(GLenum target, GLsizei start, GLsizei count, GLenum format, GLenum type, const void *data);
+extern void glColorTable(GLenum target, GLenum internalformat, GLsizei width, GLenum format, GLenum type, const void *table);
 extern void glColorTableParameterfv(GLenum target, GLenum pname, const GLfloat *params);
 extern void glColorTableParameteriv(GLenum target, GLenum pname, const GLint *params);
-extern void glConvolutionFilter1D(GLenum target, GLenum internalformat, GLsizei width, GLenum format, GLenum type, const GLvoid *image);
-extern void glConvolutionFilter2D(GLenum target, GLenum internalformat, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *image);
+extern void glConvolutionFilter1D(GLenum target, GLenum internalformat, GLsizei width, GLenum format, GLenum type, const void *image);
+extern void glConvolutionFilter2D(GLenum target, GLenum internalformat, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *image);
 extern void glConvolutionParameterf(GLenum target, GLenum pname, GLfloat params);
 extern void glConvolutionParameterfv(GLenum target, GLenum pname, const GLfloat *params);
 extern void glConvolutionParameteri(GLenum target, GLenum pname, GLint params);
@@ -3570,26 +3742,26 @@ extern void glCopyColorSubTable(GLenum target, GLsizei start, GLint x, GLint y, 
 extern void glCopyColorTable(GLenum target, GLenum internalformat, GLint x, GLint y, GLsizei width);
 extern void glCopyConvolutionFilter1D(GLenum target, GLenum internalformat, GLint x, GLint y, GLsizei width);
 extern void glCopyConvolutionFilter2D(GLenum target, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height);
-extern void glGetColorTable(GLenum target, GLenum format, GLenum type, GLvoid *table);
+extern void glGetColorTable(GLenum target, GLenum format, GLenum type, void *table);
 extern void glGetColorTableParameterfv(GLenum target, GLenum pname, GLfloat *params);
 extern void glGetColorTableParameteriv(GLenum target, GLenum pname, GLint *params);
-extern void glGetConvolutionFilter(GLenum target, GLenum format, GLenum type, GLvoid *image);
+extern void glGetConvolutionFilter(GLenum target, GLenum format, GLenum type, void *image);
 extern void glGetConvolutionParameterfv(GLenum target, GLenum pname, GLfloat *params);
 extern void glGetConvolutionParameteriv(GLenum target, GLenum pname, GLint *params);
-extern void glGetHistogram(GLenum target, GLboolean reset, GLenum format, GLenum type, GLvoid *values);
+extern void glGetHistogram(GLenum target, GLboolean reset, GLenum format, GLenum type, void *values);
 extern void glGetHistogramParameterfv(GLenum target, GLenum pname, GLfloat *params);
 extern void glGetHistogramParameteriv(GLenum target, GLenum pname, GLint *params);
-extern void glGetMinmax(GLenum target, GLboolean reset, GLenum format, GLenum types, GLvoid *values);
+extern void glGetMinmax(GLenum target, GLboolean reset, GLenum format, GLenum types, void *values);
 extern void glGetMinmaxParameterfv(GLenum target, GLenum pname, GLfloat *params);
 extern void glGetMinmaxParameteriv(GLenum target, GLenum pname, GLint *params);
-extern void glGetSeparableFilter(GLenum target, GLenum format, GLenum type, GLvoid *row, GLvoid *column, GLvoid *span);
+extern void glGetSeparableFilter(GLenum target, GLenum format, GLenum type, void *row, void *column, void *span);
 extern void glHistogram(GLenum target, GLsizei width, GLenum internalformat, GLboolean sink);
 extern void glMinmax(GLenum target, GLenum internalformat, GLboolean sink);
 extern void glResetHistogram(GLenum target);
 extern void glResetMinmax(GLenum target);
-extern void glSeparableFilter2D(GLenum target, GLenum internalformat, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *row, const GLvoid *column);
-extern void glMultiDrawArraysIndirectCountARB(GLenum mode, const GLvoid *indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride);
-extern void glMultiDrawElementsIndirectCountARB(GLenum mode, GLenum type, const GLvoid *indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride);
+extern void glSeparableFilter2D(GLenum target, GLenum internalformat, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *row, const void *column);
+extern void glMultiDrawArraysIndirectCountARB(GLenum mode, const void *indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride);
+extern void glMultiDrawElementsIndirectCountARB(GLenum mode, GLenum type, const void *indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride);
 extern void glGetInternalformativ(GLenum target, GLenum internalformat, GLenum pname, GLsizei bufSize, GLint* params);
 extern void glGetInternalformati64v(GLenum target, GLenum internalformat, GLenum pname, GLsizei bufSize, GLint64* params);
 extern void glInvalidateBufferData(GLuint buffer);
@@ -3599,9 +3771,9 @@ extern void glInvalidateSubFramebuffer(GLenum target, GLsizei numAttachments, co
 extern void glInvalidateTexImage(GLuint texture, GLint level);
 extern void glInvalidateTexSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth);
 extern void glFlushMappedBufferRange(GLenum target, GLintptr offset, GLsizeiptr length);
-extern GLvoid * glMapBufferRange(GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access);
+extern void * glMapBufferRange(GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access);
 extern void glCurrentPaletteMatrixARB(GLint index);
-extern void glMatrixIndexPointerARB(GLint size, GLenum type, GLsizei stride, GLvoid *pointer);
+extern void glMatrixIndexPointerARB(GLint size, GLenum type, GLsizei stride, void *pointer);
 extern void glMatrixIndexubvARB(GLint size, GLubyte *indices);
 extern void glMatrixIndexuivARB(GLint size, GLuint *indices);
 extern void glMatrixIndexusvARB(GLint size, GLushort *indices);
@@ -3611,8 +3783,8 @@ extern void glBindImageTextures(GLuint first, GLsizei count, const GLuint* textu
 extern void glBindSamplers(GLuint first, GLsizei count, const GLuint* samplers);
 extern void glBindTextures(GLuint first, GLsizei count, const GLuint* textures);
 extern void glBindVertexBuffers(GLuint first, GLsizei count, const GLuint* buffers, const GLintptr *offsets, const GLsizei *strides);
-extern void glMultiDrawArraysIndirect(GLenum mode, const GLvoid *indirect, GLsizei primcount, GLsizei stride);
-extern void glMultiDrawElementsIndirect(GLenum mode, GLenum type, const GLvoid *indirect, GLsizei primcount, GLsizei stride);
+extern void glMultiDrawArraysIndirect(GLenum mode, const void *indirect, GLsizei primcount, GLsizei stride);
+extern void glMultiDrawElementsIndirect(GLenum mode, GLenum type, const void *indirect, GLsizei primcount, GLsizei stride);
 extern void glGetProgramInterfaceiv(GLuint program, GLenum programInterface, GLenum pname, GLint* params);
 extern GLuint glGetProgramResourceIndex(GLuint program, GLenum programInterface, const GLchar* name);
 extern GLint glGetProgramResourceLocation(GLuint program, GLenum programInterface, const GLchar* name);
@@ -3633,13 +3805,9 @@ extern void glGetnPixelMapfvARB(GLenum map, GLsizei bufSize, GLfloat* values);
 extern void glGetnPixelMapuivARB(GLenum map, GLsizei bufSize, GLuint* values);
 extern void glGetnPixelMapusvARB(GLenum map, GLsizei bufSize, GLushort* values);
 extern void glGetnPolygonStippleARB(GLsizei bufSize, GLubyte* pattern);
-extern void glGetnSeparableFilterARB(GLenum target, GLenum format, GLenum type, GLsizei rowBufSize, void* row, GLsizei columnBufSize, GLvoid*column, GLvoid*span);
+extern void glGetnSeparableFilterARB(GLenum target, GLenum format, GLenum type, GLsizei rowBufSize, void* row, GLsizei columnBufSize, void*column, void*span);
 extern void glGetnTexImageARB(GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* img);
 extern void glGetnUniformdvARB(GLuint program, GLint location, GLsizei bufSize, GLdouble* params);
-extern void glGetnUniformfvARB(GLuint program, GLint location, GLsizei bufSize, GLfloat* params);
-extern void glGetnUniformivARB(GLuint program, GLint location, GLsizei bufSize, GLint* params);
-extern void glGetnUniformuivARB(GLuint program, GLint location, GLsizei bufSize, GLuint* params);
-extern void glReadnPixelsARB(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void* data);
 extern void glBindSampler(GLuint unit, GLuint sampler);
 extern void glDeleteSamplers(GLsizei count, const GLuint * samplers);
 extern void glGenSamplers(GLsizei count, GLuint* samplers);
@@ -3656,7 +3824,7 @@ extern void glSamplerParameteri(GLuint sampler, GLenum pname, GLint param);
 extern void glSamplerParameteriv(GLuint sampler, GLenum pname, const GLint* params);
 extern void glActiveShaderProgram(GLuint pipeline, GLuint program);
 extern void glBindProgramPipeline(GLuint pipeline);
-extern GLuint glCreateShaderProgramv(GLenum type, GLsizei count, const GLchar ** strings);
+extern GLuint glCreateShaderProgramv(GLenum type, GLsizei count, const GLchar * const * strings);
 extern void glDeleteProgramPipelines(GLsizei n, const GLuint* pipelines);
 extern void glGenProgramPipelines(GLsizei n, GLuint* pipelines);
 extern void glGetProgramPipelineInfoLog(GLuint pipeline, GLsizei bufSize, GLsizei* length, GLchar *infoLog);
@@ -3743,8 +3911,9 @@ extern void glGetNamedStringARB(GLint namelen, const GLchar* name, GLsizei bufSi
 extern void glGetNamedStringivARB(GLint namelen, const GLchar* name, GLenum pname, GLint *params);
 extern GLboolean glIsNamedStringARB(GLint namelen, const GLchar* name);
 extern void glNamedStringARB(GLenum type, GLint namelen, const GLchar* name, GLint stringlen, const GLchar *string);
+extern void glBufferPageCommitmentARB(GLenum target, GLintptr offset, GLsizeiptr size, GLboolean commit);
 extern void glTexPageCommitmentARB(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit);
-extern void glTexturePageCommitmentEXT(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit);
+extern void glTexturePageCommitmentEXT(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit);
 extern GLenum glClientWaitSync(GLsync GLsync,GLbitfield flags,GLuint64 timeout);
 extern void glDeleteSync(GLsync GLsync);
 extern GLsync glFenceSync(GLenum condition,GLbitfield flags);
@@ -3754,22 +3923,17 @@ extern GLboolean glIsSync(GLsync GLsync);
 extern void glWaitSync(GLsync GLsync,GLbitfield flags,GLuint64 timeout);
 extern void glPatchParameterfv(GLenum pname, const GLfloat* values);
 extern void glPatchParameteri(GLenum pname, GLint value);
+extern void glTextureBarrier(void);
 extern void glTexBufferRange(GLenum target, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size);
-extern void glTextureBufferRangeEXT(GLuint texture, GLenum target, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size);
 extern void glGetMultisamplefv(GLenum pname, GLuint index, GLfloat* val);
 extern void glSampleMaski(GLuint index, GLbitfield mask);
-extern void glTexImage2DMultisample(GLenum target, GLsizei samples, GLint internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
-extern void glTexImage3DMultisample(GLenum target, GLsizei samples, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
+extern void glTexImage2DMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
+extern void glTexImage3DMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
 extern void glTexStorage1D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width);
 extern void glTexStorage2D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height);
 extern void glTexStorage3D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth);
-extern void glTextureStorage1DEXT(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width);
-extern void glTextureStorage2DEXT(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height);
-extern void glTextureStorage3DEXT(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth);
 extern void glTexStorage2DMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
 extern void glTexStorage3DMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
-extern void glTextureStorage2DMultisampleEXT(GLuint texture, GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
-extern void glTextureStorage3DMultisampleEXT(GLuint texture, GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
 extern void glTextureView(GLuint texture, GLenum target, GLuint origtexture, GLenum internalformat, GLuint minlevel, GLuint numlevels, GLuint minlayer, GLuint numlayers);
 extern void glGetQueryObjecti64v(GLuint id, GLenum pname, GLint64* params);
 extern void glGetQueryObjectui64v(GLuint id, GLenum pname, GLuint64* params);
@@ -3795,7 +3959,7 @@ extern void glGetActiveUniformName(GLuint program, GLuint uniformIndex, GLsizei 
 extern void glGetActiveUniformsiv(GLuint program, GLsizei uniformCount, const GLuint* uniformIndices, GLenum pname, GLint* params);
 extern void glGetIntegeri_v(GLenum target, GLuint index, GLint* data);
 extern GLuint glGetUniformBlockIndex(GLuint program, const GLchar* uniformBlockName);
-extern void glGetUniformIndices(GLuint program, GLsizei uniformCount, const GLchar** uniformNames, GLuint* uniformIndices);
+extern void glGetUniformIndices(GLuint program, GLsizei uniformCount, const GLchar* const * uniformNames, GLuint* uniformIndices);
 extern void glUniformBlockBinding(GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding);
 extern void glBindVertexArray(GLuint array);
 extern void glDeleteVertexArrays(GLsizei n, const GLuint* arrays);
@@ -3812,13 +3976,19 @@ extern void glVertexAttribL4d(GLuint index, GLdouble x, GLdouble y, GLdouble z, 
 extern void glVertexAttribL4dv(GLuint index, const GLdouble* v);
 extern void glVertexAttribLPointer(GLuint index, GLint size, GLenum type, GLsizei stride, const void* pointer);
 extern void glBindVertexBuffer(GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride);
+extern void glVertexArrayBindVertexBufferEXT(GLuint vaobj, GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride);
+extern void glVertexArrayVertexAttribBindingEXT(GLuint vaobj, GLuint attribindex, GLuint bindingindex);
+extern void glVertexArrayVertexAttribFormatEXT(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
+extern void glVertexArrayVertexAttribIFormatEXT(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
+extern void glVertexArrayVertexAttribLFormatEXT(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
+extern void glVertexArrayVertexBindingDivisorEXT(GLuint vaobj, GLuint bindingindex, GLuint divisor);
 extern void glVertexAttribBinding(GLuint attribindex, GLuint bindingindex);
 extern void glVertexAttribFormat(GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
 extern void glVertexAttribIFormat(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
 extern void glVertexAttribLFormat(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
 extern void glVertexBindingDivisor(GLuint bindingindex, GLuint divisor);
 extern void glVertexBlendARB(GLint count);
-extern void glWeightPointerARB(GLint size, GLenum type, GLsizei stride, GLvoid *pointer);
+extern void glWeightPointerARB(GLint size, GLenum type, GLsizei stride, void *pointer);
 extern void glWeightbvARB(GLint size, GLbyte *weights);
 extern void glWeightdvARB(GLint size, GLdouble *weights);
 extern void glWeightfvARB(GLint size, GLfloat *weights);
@@ -3834,7 +4004,7 @@ extern void glGetProgramEnvParameterdvARB(GLenum target, GLuint index, GLdouble*
 extern void glGetProgramEnvParameterfvARB(GLenum target, GLuint index, GLfloat* params);
 extern void glGetProgramLocalParameterdvARB(GLenum target, GLuint index, GLdouble* params);
 extern void glGetProgramLocalParameterfvARB(GLenum target, GLuint index, GLfloat* params);
-extern void glGetProgramStringARB(GLenum target, GLenum pname, GLvoid *string);
+extern void glGetProgramStringARB(GLenum target, GLenum pname, void *string);
 extern void glProgramEnvParameter4dARB(GLenum target, GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w);
 extern void glProgramEnvParameter4dvARB(GLenum target, GLuint index, const GLdouble* params);
 extern void glProgramEnvParameter4fARB(GLenum target, GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
@@ -3843,7 +4013,7 @@ extern void glProgramLocalParameter4dARB(GLenum target, GLuint index, GLdouble x
 extern void glProgramLocalParameter4dvARB(GLenum target, GLuint index, const GLdouble* params);
 extern void glProgramLocalParameter4fARB(GLenum target, GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
 extern void glProgramLocalParameter4fvARB(GLenum target, GLuint index, const GLfloat* params);
-extern void glProgramStringARB(GLenum target, GLenum format, GLsizei len, const GLvoid *string);
+extern void glProgramStringARB(GLenum target, GLenum format, GLsizei len, const void *string);
 extern void glColorP3ui(GLenum type, GLuint color);
 extern void glColorP3uiv(GLenum type, const GLuint* color);
 extern void glColorP4ui(GLenum type, GLuint color);
@@ -3893,20 +4063,16 @@ extern void glViewportArrayv(GLuint first, GLsizei count, const GLfloat * v);
 extern void glViewportIndexedf(GLuint index, GLfloat x, GLfloat y, GLfloat w, GLfloat h);
 extern void glViewportIndexedfv(GLuint index, const GLfloat * v);
 extern void glBindMultiTextureEXT(GLenum texunit, GLenum target, GLuint texture);
-extern GLenum glCheckNamedFramebufferStatusEXT(GLuint framebuffer, GLenum target);
 extern void glClientAttribDefaultEXT(GLbitfield mask);
-extern void glCompressedMultiTexImage1DEXT(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedMultiTexImage2DEXT(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedMultiTexImage3DEXT(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedMultiTexSubImage1DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedMultiTexSubImage2DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedMultiTexSubImage3DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedTextureImage1DEXT(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedTextureImage2DEXT(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedTextureImage3DEXT(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedTextureSubImage1DEXT(GLuint texture, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedTextureSubImage2DEXT(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const GLvoid *data);
-extern void glCompressedTextureSubImage3DEXT(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const GLvoid *data);
+extern void glCompressedMultiTexImage1DEXT(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const void *data);
+extern void glCompressedMultiTexImage2DEXT(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void *data);
+extern void glCompressedMultiTexImage3DEXT(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const void *data);
+extern void glCompressedMultiTexSubImage1DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const void *data);
+extern void glCompressedMultiTexSubImage2DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void *data);
+extern void glCompressedMultiTexSubImage3DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const void *data);
+extern void glCompressedTextureImage1DEXT(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const void *data);
+extern void glCompressedTextureImage2DEXT(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void *data);
+extern void glCompressedTextureImage3DEXT(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const void *data);
 extern void glCopyMultiTexImage1DEXT(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLint border);
 extern void glCopyMultiTexImage2DEXT(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border);
 extern void glCopyMultiTexSubImage1DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width);
@@ -3914,25 +4080,17 @@ extern void glCopyMultiTexSubImage2DEXT(GLenum texunit, GLenum target, GLint lev
 extern void glCopyMultiTexSubImage3DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height);
 extern void glCopyTextureImage1DEXT(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLint border);
 extern void glCopyTextureImage2DEXT(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border);
-extern void glCopyTextureSubImage1DEXT(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width);
-extern void glCopyTextureSubImage2DEXT(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
-extern void glCopyTextureSubImage3DEXT(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height);
 extern void glDisableClientStateIndexedEXT(GLenum array, GLuint index);
 extern void glDisableClientStateiEXT(GLenum array, GLuint index);
-extern void glDisableVertexArrayAttribEXT(GLuint vaobj, GLuint index);
 extern void glDisableVertexArrayEXT(GLuint vaobj, GLenum array);
 extern void glEnableClientStateIndexedEXT(GLenum array, GLuint index);
 extern void glEnableClientStateiEXT(GLenum array, GLuint index);
-extern void glEnableVertexArrayAttribEXT(GLuint vaobj, GLuint index);
 extern void glEnableVertexArrayEXT(GLuint vaobj, GLenum array);
-extern void glFlushMappedNamedBufferRangeEXT(GLuint buffer, GLintptr offset, GLsizeiptr length);
 extern void glFramebufferDrawBufferEXT(GLuint framebuffer, GLenum mode);
 extern void glFramebufferDrawBuffersEXT(GLuint framebuffer, GLsizei n, const GLenum* bufs);
 extern void glFramebufferReadBufferEXT(GLuint framebuffer, GLenum mode);
 extern void glGenerateMultiTexMipmapEXT(GLenum texunit, GLenum target);
-extern void glGenerateTextureMipmapEXT(GLuint texture, GLenum target);
-extern void glGetCompressedMultiTexImageEXT(GLenum texunit, GLenum target, GLint level, GLvoid *img);
-extern void glGetCompressedTextureImageEXT(GLuint texture, GLenum target, GLint level, GLvoid *img);
+extern void glGetCompressedMultiTexImageEXT(GLenum texunit, GLenum target, GLint level, void *img);
 extern void glGetDoubleIndexedvEXT(GLenum target, GLuint index, GLdouble* params);
 extern void glGetFloatIndexedvEXT(GLenum target, GLuint index, GLfloat* params);
 extern void glGetMultiTexEnvfvEXT(GLenum texunit, GLenum target, GLenum pname, GLfloat* params);
@@ -3940,39 +4098,25 @@ extern void glGetMultiTexEnvivEXT(GLenum texunit, GLenum target, GLenum pname, G
 extern void glGetMultiTexGendvEXT(GLenum texunit, GLenum coord, GLenum pname, GLdouble* params);
 extern void glGetMultiTexGenfvEXT(GLenum texunit, GLenum coord, GLenum pname, GLfloat* params);
 extern void glGetMultiTexGenivEXT(GLenum texunit, GLenum coord, GLenum pname, GLint* params);
-extern void glGetMultiTexImageEXT(GLenum texunit, GLenum target, GLint level, GLenum format, GLenum type, GLvoid *pixels);
+extern void glGetMultiTexImageEXT(GLenum texunit, GLenum target, GLint level, GLenum format, GLenum type, void *pixels);
 extern void glGetMultiTexLevelParameterfvEXT(GLenum texunit, GLenum target, GLint level, GLenum pname, GLfloat* params);
 extern void glGetMultiTexLevelParameterivEXT(GLenum texunit, GLenum target, GLint level, GLenum pname, GLint* params);
 extern void glGetMultiTexParameterIivEXT(GLenum texunit, GLenum target, GLenum pname, GLint* params);
 extern void glGetMultiTexParameterIuivEXT(GLenum texunit, GLenum target, GLenum pname, GLuint* params);
 extern void glGetMultiTexParameterfvEXT(GLenum texunit, GLenum target, GLenum pname, GLfloat* params);
 extern void glGetMultiTexParameterivEXT(GLenum texunit, GLenum target, GLenum pname, GLint* params);
-extern void glGetNamedBufferParameterivEXT(GLuint buffer, GLenum pname, GLint* params);
-extern void glGetNamedBufferPointervEXT(GLuint buffer, GLenum pname, void** params);
-extern void glGetNamedBufferSubDataEXT(GLuint buffer, GLintptr offset, GLsizeiptr size, GLvoid *data);
-extern void glGetNamedFramebufferAttachmentParameterivEXT(GLuint framebuffer, GLenum attachment, GLenum pname, GLint* params);
 extern void glGetNamedProgramLocalParameterIivEXT(GLuint program, GLenum target, GLuint index, GLint* params);
 extern void glGetNamedProgramLocalParameterIuivEXT(GLuint program, GLenum target, GLuint index, GLuint* params);
 extern void glGetNamedProgramLocalParameterdvEXT(GLuint program, GLenum target, GLuint index, GLdouble* params);
 extern void glGetNamedProgramLocalParameterfvEXT(GLuint program, GLenum target, GLuint index, GLfloat* params);
-extern void glGetNamedProgramStringEXT(GLuint program, GLenum target, GLenum pname, GLvoid *string);
+extern void glGetNamedProgramStringEXT(GLuint program, GLenum target, GLenum pname, void *string);
 extern void glGetNamedProgramivEXT(GLuint program, GLenum target, GLenum pname, GLint* params);
-extern void glGetNamedRenderbufferParameterivEXT(GLuint renderbuffer, GLenum pname, GLint* params);
-extern void glGetPointerIndexedvEXT(GLenum target, GLuint index, GLvoid** params);
-extern void glGetPointeri_vEXT(GLenum pname, GLuint index, GLvoid** params);
-extern void glGetTextureImageEXT(GLuint texture, GLenum target, GLint level, GLenum format, GLenum type, GLvoid *pixels);
-extern void glGetTextureLevelParameterfvEXT(GLuint texture, GLenum target, GLint level, GLenum pname, GLfloat* params);
-extern void glGetTextureLevelParameterivEXT(GLuint texture, GLenum target, GLint level, GLenum pname, GLint* params);
-extern void glGetTextureParameterIivEXT(GLuint texture, GLenum target, GLenum pname, GLint* params);
-extern void glGetTextureParameterIuivEXT(GLuint texture, GLenum target, GLenum pname, GLuint* params);
-extern void glGetTextureParameterfvEXT(GLuint texture, GLenum target, GLenum pname, GLfloat* params);
-extern void glGetTextureParameterivEXT(GLuint texture, GLenum target, GLenum pname, GLint* params);
+extern void glGetPointerIndexedvEXT(GLenum target, GLuint index, void** params);
+extern void glGetPointeri_vEXT(GLenum pname, GLuint index, void** params);
 extern void glGetVertexArrayIntegeri_vEXT(GLuint vaobj, GLuint index, GLenum pname, GLint* param);
 extern void glGetVertexArrayIntegervEXT(GLuint vaobj, GLenum pname, GLint* param);
-extern void glGetVertexArrayPointeri_vEXT(GLuint vaobj, GLuint index, GLenum pname, GLvoid** param);
-extern void glGetVertexArrayPointervEXT(GLuint vaobj, GLenum pname, GLvoid** param);
-extern GLvoid * glMapNamedBufferEXT(GLuint buffer, GLenum access);
-extern GLvoid * glMapNamedBufferRangeEXT(GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access);
+extern void glGetVertexArrayPointeri_vEXT(GLuint vaobj, GLuint index, GLenum pname, void** param);
+extern void glGetVertexArrayPointervEXT(GLuint vaobj, GLenum pname, void** param);
 extern void glMatrixFrustumEXT(GLenum matrixMode, GLdouble l, GLdouble r, GLdouble b, GLdouble t, GLdouble n, GLdouble f);
 extern void glMatrixLoadIdentityEXT(GLenum matrixMode);
 extern void glMatrixLoadTransposedEXT(GLenum matrixMode, const GLdouble* m);
@@ -3993,7 +4137,7 @@ extern void glMatrixScalefEXT(GLenum matrixMode, GLfloat x, GLfloat y, GLfloat z
 extern void glMatrixTranslatedEXT(GLenum matrixMode, GLdouble x, GLdouble y, GLdouble z);
 extern void glMatrixTranslatefEXT(GLenum matrixMode, GLfloat x, GLfloat y, GLfloat z);
 extern void glMultiTexBufferEXT(GLenum texunit, GLenum target, GLenum internalformat, GLuint buffer);
-extern void glMultiTexCoordPointerEXT(GLenum texunit, GLint size, GLenum type, GLsizei stride, const GLvoid *pointer);
+extern void glMultiTexCoordPointerEXT(GLenum texunit, GLint size, GLenum type, GLsizei stride, const void *pointer);
 extern void glMultiTexEnvfEXT(GLenum texunit, GLenum target, GLenum pname, GLfloat param);
 extern void glMultiTexEnvfvEXT(GLenum texunit, GLenum target, GLenum pname, const GLfloat* params);
 extern void glMultiTexEnviEXT(GLenum texunit, GLenum target, GLenum pname, GLint param);
@@ -4004,9 +4148,9 @@ extern void glMultiTexGenfEXT(GLenum texunit, GLenum coord, GLenum pname, GLfloa
 extern void glMultiTexGenfvEXT(GLenum texunit, GLenum coord, GLenum pname, const GLfloat* params);
 extern void glMultiTexGeniEXT(GLenum texunit, GLenum coord, GLenum pname, GLint param);
 extern void glMultiTexGenivEXT(GLenum texunit, GLenum coord, GLenum pname, const GLint* params);
-extern void glMultiTexImage1DEXT(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
-extern void glMultiTexImage2DEXT(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
-extern void glMultiTexImage3DEXT(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
+extern void glMultiTexImage1DEXT(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const void *pixels);
+extern void glMultiTexImage2DEXT(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void *pixels);
+extern void glMultiTexImage3DEXT(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const void *pixels);
 extern void glMultiTexParameterIivEXT(GLenum texunit, GLenum target, GLenum pname, const GLint* params);
 extern void glMultiTexParameterIuivEXT(GLenum texunit, GLenum target, GLenum pname, const GLuint* params);
 extern void glMultiTexParameterfEXT(GLenum texunit, GLenum target, GLenum pname, GLfloat param);
@@ -4014,19 +4158,14 @@ extern void glMultiTexParameterfvEXT(GLenum texunit, GLenum target, GLenum pname
 extern void glMultiTexParameteriEXT(GLenum texunit, GLenum target, GLenum pname, GLint param);
 extern void glMultiTexParameterivEXT(GLenum texunit, GLenum target, GLenum pname, const GLint* param);
 extern void glMultiTexRenderbufferEXT(GLenum texunit, GLenum target, GLuint renderbuffer);
-extern void glMultiTexSubImage1DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const GLvoid *pixels);
-extern void glMultiTexSubImage2DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels);
-extern void glMultiTexSubImage3DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid *pixels);
-extern void glNamedBufferDataEXT(GLuint buffer, GLsizeiptr size, const GLvoid *data, GLenum usage);
-extern void glNamedBufferSubDataEXT(GLuint buffer, GLintptr offset, GLsizeiptr size, const GLvoid *data);
+extern void glMultiTexSubImage1DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const void *pixels);
+extern void glMultiTexSubImage2DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels);
+extern void glMultiTexSubImage3DEXT(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void *pixels);
 extern void glNamedCopyBufferSubDataEXT(GLuint readBuffer, GLuint writeBuffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
-extern void glNamedFramebufferRenderbufferEXT(GLuint framebuffer, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
 extern void glNamedFramebufferTexture1DEXT(GLuint framebuffer, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
 extern void glNamedFramebufferTexture2DEXT(GLuint framebuffer, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
 extern void glNamedFramebufferTexture3DEXT(GLuint framebuffer, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset);
-extern void glNamedFramebufferTextureEXT(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level);
 extern void glNamedFramebufferTextureFaceEXT(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLenum face);
-extern void glNamedFramebufferTextureLayerEXT(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLint layer);
 extern void glNamedProgramLocalParameter4dEXT(GLuint program, GLenum target, GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w);
 extern void glNamedProgramLocalParameter4dvEXT(GLuint program, GLenum target, GLuint index, const GLdouble* params);
 extern void glNamedProgramLocalParameter4fEXT(GLuint program, GLenum target, GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
@@ -4038,26 +4177,13 @@ extern void glNamedProgramLocalParameterI4uivEXT(GLuint program, GLenum target, 
 extern void glNamedProgramLocalParameters4fvEXT(GLuint program, GLenum target, GLuint index, GLsizei count, const GLfloat* params);
 extern void glNamedProgramLocalParametersI4ivEXT(GLuint program, GLenum target, GLuint index, GLsizei count, const GLint* params);
 extern void glNamedProgramLocalParametersI4uivEXT(GLuint program, GLenum target, GLuint index, GLsizei count, const GLuint* params);
-extern void glNamedProgramStringEXT(GLuint program, GLenum target, GLenum format, GLsizei len, const GLvoid *string);
-extern void glNamedRenderbufferStorageEXT(GLuint renderbuffer, GLenum internalformat, GLsizei width, GLsizei height);
+extern void glNamedProgramStringEXT(GLuint program, GLenum target, GLenum format, GLsizei len, const void *string);
 extern void glNamedRenderbufferStorageMultisampleCoverageEXT(GLuint renderbuffer, GLsizei coverageSamples, GLsizei colorSamples, GLenum internalformat, GLsizei width, GLsizei height);
-extern void glNamedRenderbufferStorageMultisampleEXT(GLuint renderbuffer, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
 extern void glPushClientAttribDefaultEXT(GLbitfield mask);
-extern void glTextureBufferEXT(GLuint texture, GLenum target, GLenum internalformat, GLuint buffer);
-extern void glTextureImage1DEXT(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
-extern void glTextureImage2DEXT(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
-extern void glTextureImage3DEXT(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
-extern void glTextureParameterIivEXT(GLuint texture, GLenum target, GLenum pname, const GLint* params);
-extern void glTextureParameterIuivEXT(GLuint texture, GLenum target, GLenum pname, const GLuint* params);
-extern void glTextureParameterfEXT(GLuint texture, GLenum target, GLenum pname, GLfloat param);
-extern void glTextureParameterfvEXT(GLuint texture, GLenum target, GLenum pname, const GLfloat* param);
-extern void glTextureParameteriEXT(GLuint texture, GLenum target, GLenum pname, GLint param);
-extern void glTextureParameterivEXT(GLuint texture, GLenum target, GLenum pname, const GLint* param);
+extern void glTextureImage1DEXT(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const void *pixels);
+extern void glTextureImage2DEXT(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void *pixels);
+extern void glTextureImage3DEXT(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const void *pixels);
 extern void glTextureRenderbufferEXT(GLuint texture, GLenum target, GLuint renderbuffer);
-extern void glTextureSubImage1DEXT(GLuint texture, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const GLvoid *pixels);
-extern void glTextureSubImage2DEXT(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels);
-extern void glTextureSubImage3DEXT(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid *pixels);
-extern GLboolean glUnmapNamedBufferEXT(GLuint buffer);
 extern void glVertexArrayColorOffsetEXT(GLuint vaobj, GLuint buffer, GLint size, GLenum type, GLsizei stride, GLintptr offset);
 extern void glVertexArrayEdgeFlagOffsetEXT(GLuint vaobj, GLuint buffer, GLsizei stride, GLintptr offset);
 extern void glVertexArrayFogCoordOffsetEXT(GLuint vaobj, GLuint buffer, GLenum type, GLsizei stride, GLintptr offset);
@@ -4066,21 +4192,29 @@ extern void glVertexArrayMultiTexCoordOffsetEXT(GLuint vaobj, GLuint buffer, GLe
 extern void glVertexArrayNormalOffsetEXT(GLuint vaobj, GLuint buffer, GLenum type, GLsizei stride, GLintptr offset);
 extern void glVertexArraySecondaryColorOffsetEXT(GLuint vaobj, GLuint buffer, GLint size, GLenum type, GLsizei stride, GLintptr offset);
 extern void glVertexArrayTexCoordOffsetEXT(GLuint vaobj, GLuint buffer, GLint size, GLenum type, GLsizei stride, GLintptr offset);
+extern void glVertexArrayVertexAttribDivisorEXT(GLuint vaobj, GLuint index, GLuint divisor);
 extern void glVertexArrayVertexAttribIOffsetEXT(GLuint vaobj, GLuint buffer, GLuint index, GLint size, GLenum type, GLsizei stride, GLintptr offset);
 extern void glVertexArrayVertexAttribOffsetEXT(GLuint vaobj, GLuint buffer, GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, GLintptr offset);
 extern void glVertexArrayVertexOffsetEXT(GLuint vaobj, GLuint buffer, GLint size, GLenum type, GLsizei stride, GLintptr offset);
-extern void glDebugMessageCallback(GLDEBUGPROC callback, const GLvoid *userParam);
+extern void glBlendBarrierKHR(void);
+extern void glDebugMessageCallback(GLDEBUGPROC callback, const void *userParam);
 extern void glDebugMessageControl(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids, GLboolean enabled);
 extern void glDebugMessageInsert(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* buf);
-extern GLuint glGetDebugMessageLog(GLuint count, GLsizei bufsize, GLenum* sources, GLenum* types, GLuint* ids, GLenum* severities, GLsizei* lengths, GLchar* messageLog);
+extern GLuint glGetDebugMessageLog(GLuint count, GLsizei bufSize, GLenum* sources, GLenum* types, GLuint* ids, GLenum* severities, GLsizei* lengths, GLchar* messageLog);
 extern void glGetObjectLabel(GLenum identifier, GLuint name, GLsizei bufSize, GLsizei* length, GLchar *label);
-extern void glGetObjectPtrLabel(void* ptr, GLsizei bufSize, GLsizei* length, GLchar *label);
+extern void glGetObjectPtrLabel(const void *ptr, GLsizei bufSize, GLsizei* length, GLchar *label);
 extern void glObjectLabel(GLenum identifier, GLuint name, GLsizei length, const GLchar* label);
-extern void glObjectPtrLabel(void* ptr, GLsizei length, const GLchar* label);
+extern void glObjectPtrLabel(const void *ptr, GLsizei length, const GLchar* label);
 extern void glPopDebugGroup(void);
 extern void glPushDebugGroup(GLenum source, GLuint id, GLsizei length, const GLchar * message);
-extern void glMultiDrawArraysIndirectBindlessNV(GLenum mode, const GLvoid *indirect, GLsizei drawCount, GLsizei stride, GLint vertexBufferCount);
-extern void glMultiDrawElementsIndirectBindlessNV(GLenum mode, GLenum type, const GLvoid *indirect, GLsizei drawCount, GLsizei stride, GLint vertexBufferCount);
+extern void glGetnUniformfv(GLuint program, GLint location, GLsizei bufSize, GLfloat* params);
+extern void glGetnUniformiv(GLuint program, GLint location, GLsizei bufSize, GLint* params);
+extern void glGetnUniformuiv(GLuint program, GLint location, GLsizei bufSize, GLuint* params);
+extern void glReadnPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void *data);
+extern void glMultiDrawArraysIndirectBindlessNV(GLenum mode, const void *indirect, GLsizei drawCount, GLsizei stride, GLint vertexBufferCount);
+extern void glMultiDrawElementsIndirectBindlessNV(GLenum mode, GLenum type, const void *indirect, GLsizei drawCount, GLsizei stride, GLint vertexBufferCount);
+extern void glMultiDrawArraysIndirectBindlessCountNV(GLenum mode, const void *indirect, GLintptr drawCount, GLsizei maxDrawCount, GLsizei stride, GLint vertexBufferCount);
+extern void glMultiDrawElementsIndirectBindlessCountNV(GLenum mode, GLenum type, const void *indirect, GLintptr drawCount, GLsizei maxDrawCount, GLsizei stride, GLint vertexBufferCount);
 extern GLuint64 glGetImageHandleNV(GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum format);
 extern GLuint64 glGetTextureHandleNV(GLuint texture);
 extern GLuint64 glGetTextureSamplerHandleNV(GLuint texture, GLuint sampler);
@@ -4103,10 +4237,10 @@ extern void glDrawTextureNV(GLuint texture, GLuint sampler, GLfloat x0, GLfloat 
 extern void glEvalMapsNV(GLenum target, GLenum mode);
 extern void glGetMapAttribParameterfvNV(GLenum target, GLuint index, GLenum pname, GLfloat* params);
 extern void glGetMapAttribParameterivNV(GLenum target, GLuint index, GLenum pname, GLint* params);
-extern void glGetMapControlPointsNV(GLenum target, GLuint index, GLenum type, GLsizei ustride, GLsizei vstride, GLboolean packed, GLvoid *points);
+extern void glGetMapControlPointsNV(GLenum target, GLuint index, GLenum type, GLsizei ustride, GLsizei vstride, GLboolean packed, void *points);
 extern void glGetMapParameterfvNV(GLenum target, GLenum pname, GLfloat* params);
 extern void glGetMapParameterivNV(GLenum target, GLenum pname, GLint* params);
-extern void glMapControlPointsNV(GLenum target, GLuint index, GLenum type, GLsizei ustride, GLsizei vstride, GLint uorder, GLint vorder, GLboolean packed, const GLvoid *points);
+extern void glMapControlPointsNV(GLenum target, GLuint index, GLenum type, GLsizei ustride, GLsizei vstride, GLint uorder, GLint vorder, GLboolean packed, const void *points);
 extern void glMapParameterfvNV(GLenum target, GLenum pname, const GLfloat* params);
 extern void glMapParameterivNV(GLenum target, GLenum pname, const GLint* params);
 extern void glSampleMaskIndexedNV(GLuint index, GLbitfield mask);
@@ -4253,13 +4387,13 @@ extern GLboolean glIsPathNV(GLuint path);
 extern GLboolean glIsPointInFillPathNV(GLuint path, GLuint mask, GLfloat x, GLfloat y);
 extern GLboolean glIsPointInStrokePathNV(GLuint path, GLfloat x, GLfloat y);
 extern void glPathColorGenNV(GLenum color, GLenum genMode, GLenum colorFormat, const GLfloat* coeffs);
-extern void glPathCommandsNV(GLuint path, GLsizei numCommands, const GLubyte* commands, GLsizei numCoords, GLenum coordType, const GLvoid*coords);
+extern void glPathCommandsNV(GLuint path, GLsizei numCommands, const GLubyte* commands, GLsizei numCoords, GLenum coordType, const void*coords);
 extern void glPathCoordsNV(GLuint path, GLsizei numCoords, GLenum coordType, const void* coords);
 extern void glPathCoverDepthFuncNV(GLenum zfunc);
 extern void glPathDashArrayNV(GLuint path, GLsizei dashCount, const GLfloat* dashArray);
 extern void glPathFogGenNV(GLenum genMode);
 extern void glPathGlyphRangeNV(GLuint firstPathName, GLenum fontTarget, const void* fontName, GLbitfield fontStyle, GLuint firstGlyph, GLsizei numGlyphs, GLenum handleMissingGlyphs, GLuint pathParameterTemplate, GLfloat emScale);
-extern void glPathGlyphsNV(GLuint firstPathName, GLenum fontTarget, const void* fontName, GLbitfield fontStyle, GLsizei numGlyphs, GLenum type, const GLvoid*charcodes, GLenum handleMissingGlyphs, GLuint pathParameterTemplate, GLfloat emScale);
+extern void glPathGlyphsNV(GLuint firstPathName, GLenum fontTarget, const void* fontName, GLbitfield fontStyle, GLsizei numGlyphs, GLenum type, const void*charcodes, GLenum handleMissingGlyphs, GLuint pathParameterTemplate, GLfloat emScale);
 extern void glPathParameterfNV(GLuint path, GLenum pname, GLfloat value);
 extern void glPathParameterfvNV(GLuint path, GLenum pname, const GLfloat* value);
 extern void glPathParameteriNV(GLuint path, GLenum pname, GLint value);
@@ -4267,7 +4401,7 @@ extern void glPathParameterivNV(GLuint path, GLenum pname, const GLint* value);
 extern void glPathStencilDepthOffsetNV(GLfloat factor, GLfloat units);
 extern void glPathStencilFuncNV(GLenum func, GLint ref, GLuint mask);
 extern void glPathStringNV(GLuint path, GLenum format, GLsizei length, const void* pathString);
-extern void glPathSubCommandsNV(GLuint path, GLsizei commandStart, GLsizei commandsToDelete, GLsizei numCommands, const GLubyte* commands, GLsizei numCoords, GLenum coordType, const GLvoid*coords);
+extern void glPathSubCommandsNV(GLuint path, GLsizei commandStart, GLsizei commandsToDelete, GLsizei numCommands, const GLubyte* commands, GLsizei numCoords, GLenum coordType, const void*coords);
 extern void glPathSubCoordsNV(GLuint path, GLsizei coordStart, GLsizei numCoords, GLenum coordType, const void* coords);
 extern void glPathTexGenNV(GLenum texCoordSet, GLenum genMode, GLint components, const GLfloat* coeffs);
 extern GLboolean glPointAlongPathNV(GLuint path, GLsizei startSegment, GLsizei numSegments, GLfloat distance, GLfloat* x, GLfloat *y, GLfloat *tangentX, GLfloat *tangentY);
@@ -4278,7 +4412,7 @@ extern void glStencilStrokePathNV(GLuint path, GLint reference, GLuint mask);
 extern void glTransformPathNV(GLuint resultPath, GLuint srcPath, GLenum transformType, const GLfloat* transformValues);
 extern void glWeightPathsNV(GLuint resultPath, GLsizei numPaths, const GLuint paths[], const GLfloat weights[]);
 extern void glFlushPixelDataRangeNV(GLenum target);
-extern void glPixelDataRangeNV(GLenum target, GLsizei length, GLvoid *pointer);
+extern void glPixelDataRangeNV(GLenum target, GLsizei length, void *pointer);
 extern void glGetVideoi64vNV(GLuint video_slot, GLenum pname, GLint64EXT* params);
 extern void glGetVideoivNV(GLuint video_slot, GLenum pname, GLint* params);
 extern void glGetVideoui64vNV(GLuint video_slot, GLenum pname, GLuint64EXT* params);
@@ -4314,7 +4448,6 @@ extern void glProgramUniformui64NV(GLuint program, GLint location, GLuint64EXT v
 extern void glProgramUniformui64vNV(GLuint program, GLint location, GLsizei count, const GLuint64EXT* value);
 extern void glUniformui64NV(GLint location, GLuint64EXT value);
 extern void glUniformui64vNV(GLint location, GLsizei count, const GLuint64EXT* value);
-extern void glTextureBarrierNV(void);
 extern void glTexImage2DMultisampleCoverageNV(GLenum target, GLsizei coverageSamples, GLsizei colorSamples, GLint internalFormat, GLsizei width, GLsizei height, GLboolean fixedSampleLocations);
 extern void glTexImage3DMultisampleCoverageNV(GLenum target, GLsizei coverageSamples, GLsizei colorSamples, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedSampleLocations);
 extern void glTextureImage2DMultisampleCoverageNV(GLuint texture, GLenum target, GLsizei coverageSamples, GLsizei colorSamples, GLint internalFormat, GLsizei width, GLsizei height, GLboolean fixedSampleLocations);
@@ -4328,7 +4461,7 @@ extern GLint glGetVaryingLocationNV(GLuint program, const GLchar *name);
 extern void glTransformFeedbackAttribsNV(GLuint count, const GLint *attribs, GLenum bufferMode);
 extern void glVDPAUFiniNV(void);
 extern void glVDPAUGetSurfaceivNV(GLvdpauSurfaceNV surface, GLenum pname, GLsizei bufSize, GLsizei* length, GLint *values);
-extern void glVDPAUInitNV(const void* vdpDevice, const GLvoid*getProcAddress);
+extern void glVDPAUInitNV(const void* vdpDevice, const void*getProcAddress);
 extern void glVDPAUIsSurfaceNV(GLvdpauSurfaceNV surface);
 extern void glVDPAUMapSurfacesNV(GLsizei numSurfaces, const GLvdpauSurfaceNV* surfaces);
 extern GLvdpauSurfaceNV glVDPAURegisterOutputSurfaceNV(const void* vdpSurface, GLenum target, GLsizei numTextureNames, const GLuint *textureNames);
@@ -4337,7 +4470,7 @@ extern void glVDPAUSurfaceAccessNV(GLvdpauSurfaceNV surface, GLenum access);
 extern void glVDPAUUnmapSurfacesNV(GLsizei numSurface, const GLvdpauSurfaceNV* surfaces);
 extern void glVDPAUUnregisterSurfaceNV(GLvdpauSurfaceNV surface);
 extern void glFlushVertexArrayRangeNV(void);
-extern void glVertexArrayRangeNV(GLsizei length, GLvoid *pointer);
+extern void glVertexArrayRangeNV(GLsizei length, void *pointer);
 extern void glGetVertexAttribLi64vNV(GLuint index, GLenum pname, GLint64EXT* params);
 extern void glGetVertexAttribLui64vNV(GLuint index, GLenum pname, GLuint64EXT* params);
 extern void glVertexAttribL1i64NV(GLuint index, GLint64EXT x);
@@ -4433,6 +4566,7 @@ extern GLboolean __GLEW_VERSION_4_1;
 extern GLboolean __GLEW_VERSION_4_2;
 extern GLboolean __GLEW_VERSION_4_3;
 extern GLboolean __GLEW_VERSION_4_4;
+extern GLboolean __GLEW_VERSION_4_5;
 extern GLboolean __GLEW_3DFX_multisample;
 extern GLboolean __GLEW_3DFX_tbuffer;
 extern GLboolean __GLEW_3DFX_texture_compression_FXT1;
@@ -4441,20 +4575,26 @@ extern GLboolean __GLEW_AMD_conservative_depth;
 extern GLboolean __GLEW_AMD_debug_output;
 extern GLboolean __GLEW_AMD_depth_clamp_separate;
 extern GLboolean __GLEW_AMD_draw_buffers_blend;
+extern GLboolean __GLEW_AMD_gcn_shader;
+extern GLboolean __GLEW_AMD_gpu_shader_int64;
 extern GLboolean __GLEW_AMD_interleaved_elements;
 extern GLboolean __GLEW_AMD_multi_draw_indirect;
 extern GLboolean __GLEW_AMD_name_gen_delete;
+extern GLboolean __GLEW_AMD_occlusion_query_event;
 extern GLboolean __GLEW_AMD_performance_monitor;
 extern GLboolean __GLEW_AMD_pinned_memory;
 extern GLboolean __GLEW_AMD_query_buffer_object;
 extern GLboolean __GLEW_AMD_sample_positions;
 extern GLboolean __GLEW_AMD_seamless_cubemap_per_texture;
+extern GLboolean __GLEW_AMD_shader_atomic_counter_ops;
 extern GLboolean __GLEW_AMD_shader_stencil_export;
+extern GLboolean __GLEW_AMD_shader_stencil_value_export;
 extern GLboolean __GLEW_AMD_shader_trinary_minmax;
 extern GLboolean __GLEW_AMD_sparse_texture;
 extern GLboolean __GLEW_AMD_stencil_operation_extended;
 extern GLboolean __GLEW_AMD_texture_texture4;
 extern GLboolean __GLEW_AMD_transform_feedback3_lines_triangles;
+extern GLboolean __GLEW_AMD_transform_feedback4;
 extern GLboolean __GLEW_AMD_vertex_shader_layer;
 extern GLboolean __GLEW_AMD_vertex_shader_tessellator;
 extern GLboolean __GLEW_AMD_vertex_shader_viewport_index;
@@ -4488,6 +4628,7 @@ extern GLboolean __GLEW_APPLE_vertex_array_range;
 extern GLboolean __GLEW_APPLE_vertex_program_evaluators;
 extern GLboolean __GLEW_APPLE_ycbcr_422;
 extern GLboolean __GLEW_ARB_ES2_compatibility;
+extern GLboolean __GLEW_ARB_ES3_1_compatibility;
 extern GLboolean __GLEW_ARB_ES3_compatibility;
 extern GLboolean __GLEW_ARB_arrays_of_arrays;
 extern GLboolean __GLEW_ARB_base_instance;
@@ -4497,18 +4638,23 @@ extern GLboolean __GLEW_ARB_buffer_storage;
 extern GLboolean __GLEW_ARB_cl_event;
 extern GLboolean __GLEW_ARB_clear_buffer_object;
 extern GLboolean __GLEW_ARB_clear_texture;
+extern GLboolean __GLEW_ARB_clip_control;
 extern GLboolean __GLEW_ARB_color_buffer_float;
 extern GLboolean __GLEW_ARB_compatibility;
 extern GLboolean __GLEW_ARB_compressed_texture_pixel_storage;
 extern GLboolean __GLEW_ARB_compute_shader;
 extern GLboolean __GLEW_ARB_compute_variable_group_size;
+extern GLboolean __GLEW_ARB_conditional_render_inverted;
 extern GLboolean __GLEW_ARB_conservative_depth;
 extern GLboolean __GLEW_ARB_copy_buffer;
 extern GLboolean __GLEW_ARB_copy_image;
+extern GLboolean __GLEW_ARB_cull_distance;
 extern GLboolean __GLEW_ARB_debug_output;
 extern GLboolean __GLEW_ARB_depth_buffer_float;
 extern GLboolean __GLEW_ARB_depth_clamp;
 extern GLboolean __GLEW_ARB_depth_texture;
+extern GLboolean __GLEW_ARB_derivative_control;
+extern GLboolean __GLEW_ARB_direct_state_access;
 extern GLboolean __GLEW_ARB_draw_buffers;
 extern GLboolean __GLEW_ARB_draw_buffers_blend;
 extern GLboolean __GLEW_ARB_draw_elements_base_vertex;
@@ -4527,6 +4673,7 @@ extern GLboolean __GLEW_ARB_framebuffer_object;
 extern GLboolean __GLEW_ARB_framebuffer_sRGB;
 extern GLboolean __GLEW_ARB_geometry_shader4;
 extern GLboolean __GLEW_ARB_get_program_binary;
+extern GLboolean __GLEW_ARB_get_texture_sub_image;
 extern GLboolean __GLEW_ARB_gpu_shader5;
 extern GLboolean __GLEW_ARB_gpu_shader_fp64;
 extern GLboolean __GLEW_ARB_half_float_pixel;
@@ -4546,6 +4693,7 @@ extern GLboolean __GLEW_ARB_multisample;
 extern GLboolean __GLEW_ARB_multitexture;
 extern GLboolean __GLEW_ARB_occlusion_query;
 extern GLboolean __GLEW_ARB_occlusion_query2;
+extern GLboolean __GLEW_ARB_pipeline_statistics_query;
 extern GLboolean __GLEW_ARB_pixel_buffer_object;
 extern GLboolean __GLEW_ARB_point_parameters;
 extern GLboolean __GLEW_ARB_point_sprite;
@@ -4572,6 +4720,7 @@ extern GLboolean __GLEW_ARB_shader_precision;
 extern GLboolean __GLEW_ARB_shader_stencil_export;
 extern GLboolean __GLEW_ARB_shader_storage_buffer_object;
 extern GLboolean __GLEW_ARB_shader_subroutine;
+extern GLboolean __GLEW_ARB_shader_texture_image_samples;
 extern GLboolean __GLEW_ARB_shader_texture_lod;
 extern GLboolean __GLEW_ARB_shading_language_100;
 extern GLboolean __GLEW_ARB_shading_language_420pack;
@@ -4579,10 +4728,12 @@ extern GLboolean __GLEW_ARB_shading_language_include;
 extern GLboolean __GLEW_ARB_shading_language_packing;
 extern GLboolean __GLEW_ARB_shadow;
 extern GLboolean __GLEW_ARB_shadow_ambient;
+extern GLboolean __GLEW_ARB_sparse_buffer;
 extern GLboolean __GLEW_ARB_sparse_texture;
 extern GLboolean __GLEW_ARB_stencil_texturing;
 extern GLboolean __GLEW_ARB_sync;
 extern GLboolean __GLEW_ARB_tessellation_shader;
+extern GLboolean __GLEW_ARB_texture_barrier;
 extern GLboolean __GLEW_ARB_texture_border_clamp;
 extern GLboolean __GLEW_ARB_texture_buffer_object;
 extern GLboolean __GLEW_ARB_texture_buffer_object_rgb32;
@@ -4616,6 +4767,7 @@ extern GLboolean __GLEW_ARB_timer_query;
 extern GLboolean __GLEW_ARB_transform_feedback2;
 extern GLboolean __GLEW_ARB_transform_feedback3;
 extern GLboolean __GLEW_ARB_transform_feedback_instanced;
+extern GLboolean __GLEW_ARB_transform_feedback_overflow_query;
 extern GLboolean __GLEW_ARB_transpose_matrix;
 extern GLboolean __GLEW_ARB_uniform_buffer_object;
 extern GLboolean __GLEW_ARB_vertex_array_bgra;
@@ -4670,6 +4822,7 @@ extern GLboolean __GLEW_EXT_convolution;
 extern GLboolean __GLEW_EXT_coordinate_frame;
 extern GLboolean __GLEW_EXT_copy_texture;
 extern GLboolean __GLEW_EXT_cull_vertex;
+extern GLboolean __GLEW_EXT_debug_label;
 extern GLboolean __GLEW_EXT_debug_marker;
 extern GLboolean __GLEW_EXT_depth_bounds_test;
 extern GLboolean __GLEW_EXT_direct_state_access;
@@ -4710,7 +4863,9 @@ extern GLboolean __GLEW_EXT_scene_marker;
 extern GLboolean __GLEW_EXT_secondary_color;
 extern GLboolean __GLEW_EXT_separate_shader_objects;
 extern GLboolean __GLEW_EXT_separate_specular_color;
+extern GLboolean __GLEW_EXT_shader_image_load_formatted;
 extern GLboolean __GLEW_EXT_shader_image_load_store;
+extern GLboolean __GLEW_EXT_shader_integer_mix;
 extern GLboolean __GLEW_EXT_shadow_funcs;
 extern GLboolean __GLEW_EXT_shared_texture_palette;
 extern GLboolean __GLEW_EXT_stencil_clear_tag;
@@ -4765,10 +4920,18 @@ extern GLboolean __GLEW_IBM_texture_mirrored_repeat;
 extern GLboolean __GLEW_IBM_vertex_array_lists;
 extern GLboolean __GLEW_INGR_color_clamp;
 extern GLboolean __GLEW_INGR_interlace_read;
+extern GLboolean __GLEW_INTEL_fragment_shader_ordering;
 extern GLboolean __GLEW_INTEL_map_texture;
 extern GLboolean __GLEW_INTEL_parallel_arrays;
+extern GLboolean __GLEW_INTEL_performance_query;
 extern GLboolean __GLEW_INTEL_texture_scissor;
+extern GLboolean __GLEW_KHR_blend_equation_advanced;
+extern GLboolean __GLEW_KHR_blend_equation_advanced_coherent;
+extern GLboolean __GLEW_KHR_context_flush_control;
 extern GLboolean __GLEW_KHR_debug;
+extern GLboolean __GLEW_KHR_robust_buffer_access_behavior;
+extern GLboolean __GLEW_KHR_robustness;
+extern GLboolean __GLEW_KHR_texture_compression_astc_hdr;
 extern GLboolean __GLEW_KHR_texture_compression_astc_ldr;
 extern GLboolean __GLEW_KTX_buffer_region;
 extern GLboolean __GLEW_MESAX_texture_stack;
@@ -4779,6 +4942,7 @@ extern GLboolean __GLEW_MESA_ycbcr_texture;
 extern GLboolean __GLEW_NVX_conditional_render;
 extern GLboolean __GLEW_NVX_gpu_memory_info;
 extern GLboolean __GLEW_NV_bindless_multi_draw_indirect;
+extern GLboolean __GLEW_NV_bindless_multi_draw_indirect_count;
 extern GLboolean __GLEW_NV_bindless_texture;
 extern GLboolean __GLEW_NV_blend_equation_advanced;
 extern GLboolean __GLEW_NV_blend_equation_advanced_coherent;
@@ -4826,8 +4990,11 @@ extern GLboolean __GLEW_NV_register_combiners;
 extern GLboolean __GLEW_NV_register_combiners2;
 extern GLboolean __GLEW_NV_shader_atomic_counters;
 extern GLboolean __GLEW_NV_shader_atomic_float;
+extern GLboolean __GLEW_NV_shader_atomic_int64;
 extern GLboolean __GLEW_NV_shader_buffer_load;
 extern GLboolean __GLEW_NV_shader_storage_buffer_object;
+extern GLboolean __GLEW_NV_shader_thread_group;
+extern GLboolean __GLEW_NV_shader_thread_shuffle;
 extern GLboolean __GLEW_NV_tessellation_program5;
 extern GLboolean __GLEW_NV_texgen_emboss;
 extern GLboolean __GLEW_NV_texgen_reflection;
@@ -4842,6 +5009,7 @@ extern GLboolean __GLEW_NV_texture_shader2;
 extern GLboolean __GLEW_NV_texture_shader3;
 extern GLboolean __GLEW_NV_transform_feedback;
 extern GLboolean __GLEW_NV_transform_feedback2;
+extern GLboolean __GLEW_NV_uniform_buffer_unified_memory;
 extern GLboolean __GLEW_NV_vdpau_interop;
 extern GLboolean __GLEW_NV_vertex_array_range;
 extern GLboolean __GLEW_NV_vertex_array_range2;
@@ -4869,6 +5037,7 @@ extern GLboolean __GLEW_REGAL_enable;
 extern GLboolean __GLEW_REGAL_error_string;
 extern GLboolean __GLEW_REGAL_extension_query;
 extern GLboolean __GLEW_REGAL_log;
+extern GLboolean __GLEW_REGAL_proc_address;
 extern GLboolean __GLEW_REND_screen_coordinates;
 extern GLboolean __GLEW_S3_s3tc;
 extern GLboolean __GLEW_SGIS_color_range;
@@ -4952,6 +5121,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_VERSION_4_2"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_VERSION_4_3"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_VERSION_4_4"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_VERSION_4_5"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_3DFX_multisample"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_3DFX_tbuffer"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_3DFX_texture_compression_FXT1"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -4960,20 +5130,26 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_AMD_debug_output"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_depth_clamp_separate"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_draw_buffers_blend"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_AMD_gcn_shader"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_AMD_gpu_shader_int64"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_interleaved_elements"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_multi_draw_indirect"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_name_gen_delete"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_AMD_occlusion_query_event"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_performance_monitor"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_pinned_memory"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_query_buffer_object"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_sample_positions"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_seamless_cubemap_per_texture"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_AMD_shader_atomic_counter_ops"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_shader_stencil_export"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_AMD_shader_stencil_value_export"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_shader_trinary_minmax"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_sparse_texture"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_stencil_operation_extended"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_texture_texture4"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_transform_feedback3_lines_triangles"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_AMD_transform_feedback4"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_vertex_shader_layer"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_vertex_shader_tessellator"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_AMD_vertex_shader_viewport_index"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5007,6 +5183,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_APPLE_vertex_program_evaluators"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_APPLE_ycbcr_422"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_ES2_compatibility"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_ES3_1_compatibility"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_ES3_compatibility"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_arrays_of_arrays"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_base_instance"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5016,18 +5193,23 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_ARB_cl_event"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_clear_buffer_object"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_clear_texture"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_clip_control"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_color_buffer_float"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_compatibility"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_compressed_texture_pixel_storage"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_compute_shader"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_compute_variable_group_size"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_conditional_render_inverted"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_conservative_depth"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_copy_buffer"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_copy_image"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_cull_distance"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_debug_output"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_depth_buffer_float"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_depth_clamp"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_depth_texture"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_derivative_control"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_direct_state_access"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_draw_buffers"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_draw_buffers_blend"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_draw_elements_base_vertex"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5046,6 +5228,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_ARB_framebuffer_sRGB"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_geometry_shader4"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_get_program_binary"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_get_texture_sub_image"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_gpu_shader5"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_gpu_shader_fp64"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_half_float_pixel"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5065,6 +5248,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_ARB_multitexture"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_occlusion_query"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_occlusion_query2"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_pipeline_statistics_query"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_pixel_buffer_object"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_point_parameters"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_point_sprite"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5091,6 +5275,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_ARB_shader_stencil_export"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_shader_storage_buffer_object"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_shader_subroutine"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_shader_texture_image_samples"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_shader_texture_lod"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_shading_language_100"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_shading_language_420pack"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5098,10 +5283,12 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_ARB_shading_language_packing"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_shadow"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_shadow_ambient"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_sparse_buffer"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_sparse_texture"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_stencil_texturing"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_sync"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_tessellation_shader"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_texture_barrier"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_texture_border_clamp"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_texture_buffer_object"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_texture_buffer_object_rgb32"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5135,6 +5322,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_ARB_transform_feedback2"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_transform_feedback3"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_transform_feedback_instanced"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_ARB_transform_feedback_overflow_query"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_transpose_matrix"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_uniform_buffer_object"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_ARB_vertex_array_bgra"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5189,6 +5377,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_EXT_coordinate_frame"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_EXT_copy_texture"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_EXT_cull_vertex"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_EXT_debug_label"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_EXT_debug_marker"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_EXT_depth_bounds_test"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_EXT_direct_state_access"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5229,7 +5418,9 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_EXT_secondary_color"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_EXT_separate_shader_objects"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_EXT_separate_specular_color"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_EXT_shader_image_load_formatted"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_EXT_shader_image_load_store"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_EXT_shader_integer_mix"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_EXT_shadow_funcs"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_EXT_shared_texture_palette"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_EXT_stencil_clear_tag"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5284,10 +5475,18 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_IBM_vertex_array_lists"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_INGR_color_clamp"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_INGR_interlace_read"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_INTEL_fragment_shader_ordering"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_INTEL_map_texture"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_INTEL_parallel_arrays"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_INTEL_performance_query"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_INTEL_texture_scissor"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_KHR_blend_equation_advanced"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_KHR_blend_equation_advanced_coherent"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_KHR_context_flush_control"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_KHR_debug"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_KHR_robust_buffer_access_behavior"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_KHR_robustness"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_KHR_texture_compression_astc_hdr"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_KHR_texture_compression_astc_ldr"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_KTX_buffer_region"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_MESAX_texture_stack"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5298,6 +5497,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_NVX_conditional_render"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NVX_gpu_memory_info"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_bindless_multi_draw_indirect"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_NV_bindless_multi_draw_indirect_count"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_bindless_texture"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_blend_equation_advanced"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_blend_equation_advanced_coherent"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5345,8 +5545,11 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_NV_register_combiners2"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_shader_atomic_counters"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_shader_atomic_float"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_NV_shader_atomic_int64"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_shader_buffer_load"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_shader_storage_buffer_object"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_NV_shader_thread_group"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_NV_shader_thread_shuffle"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_tessellation_program5"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_texgen_emboss"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_texgen_reflection"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5361,6 +5564,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_NV_texture_shader3"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_transform_feedback"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_transform_feedback2"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_NV_uniform_buffer_unified_memory"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_vdpau_interop"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_vertex_array_range"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_NV_vertex_array_range2"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -5388,6 +5592,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["__GLEW_REGAL_error_string"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_REGAL_extension_query"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_REGAL_log"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
+       ["__GLEW_REGAL_proc_address"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_REND_screen_coordinates"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_S3_s3tc"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
        ["__GLEW_SGIS_color_range"] = { type ='value', description = "extern GLboolean", valuetype = nil, },
@@ -6022,7 +6227,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_UNSIGNED_SHORT_4_4_4_4_REV"] = { type ='value', },
        ["GL_UNSIGNED_SHORT_1_5_5_5_REV"] = { type ='value', },
        ["GL_UNSIGNED_INT_8_8_8_8_REV"] = { type ='value', },
-       ["GL_UNSIGNED_INT_2_10_10_10_REV"] = { type ='value', },
        ["GL_ALIASED_POINT_SIZE_RANGE"] = { type ='value', },
        ["GL_ALIASED_LINE_WIDTH_RANGE"] = { type ='value', },
        ["GL_MULTISAMPLE"] = { type ='value', },
@@ -6160,18 +6364,18 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_TEXTURE_COMPARE_MODE"] = { type ='value', },
        ["GL_TEXTURE_COMPARE_FUNC"] = { type ='value', },
        ["GL_COMPARE_R_TO_TEXTURE"] = { type ='value', },
-       ["GL_FOG_COORD_SRC"] = { type ='value', },
+       ["GL_CURRENT_FOG_COORD"] = { type ='value', },
        ["GL_FOG_COORD"] = { type ='value', },
        ["GL_FOG_COORD_ARRAY"] = { type ='value', },
-       ["GL_SRC0_RGB"] = { type ='value', },
-       ["GL_FOG_COORD_ARRAY_POINTER"] = { type ='value', },
-       ["GL_FOG_COORD_ARRAY_TYPE"] = { type ='value', },
-       ["GL_SRC1_ALPHA"] = { type ='value', },
-       ["GL_CURRENT_FOG_COORD"] = { type ='value', },
-       ["GL_FOG_COORD_ARRAY_STRIDE"] = { type ='value', },
-       ["GL_SRC0_ALPHA"] = { type ='value', },
-       ["GL_SRC1_RGB"] = { type ='value', },
        ["GL_FOG_COORD_ARRAY_BUFFER_BINDING"] = { type ='value', },
+       ["GL_FOG_COORD_ARRAY_POINTER"] = { type ='value', },
+       ["GL_FOG_COORD_ARRAY_STRIDE"] = { type ='value', },
+       ["GL_FOG_COORD_ARRAY_TYPE"] = { type ='value', },
+       ["GL_FOG_COORD_SRC"] = { type ='value', },
+       ["GL_SRC0_ALPHA"] = { type ='value', },
+       ["GL_SRC0_RGB"] = { type ='value', },
+       ["GL_SRC1_ALPHA"] = { type ='value', },
+       ["GL_SRC1_RGB"] = { type ='value', },
        ["GL_SRC2_ALPHA"] = { type ='value', },
        ["GL_SRC2_RGB"] = { type ='value', },
        ["GL_BUFFER_SIZE"] = { type ='value', },
@@ -6317,14 +6521,14 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_COMPRESSED_SRGB_ALPHA"] = { type ='value', },
        ["GL_COMPRESSED_SLUMINANCE"] = { type ='value', },
        ["GL_COMPRESSED_SLUMINANCE_ALPHA"] = { type ='value', },
-       ["GL_MAX_CLIP_DISTANCES"] = { type ='value', },
-       ["GL_CLIP_DISTANCE5"] = { type ='value', },
-       ["GL_CLIP_DISTANCE1"] = { type ='value', },
-       ["GL_CLIP_DISTANCE3"] = { type ='value', },
-       ["GL_COMPARE_REF_TO_TEXTURE"] = { type ='value', },
        ["GL_CLIP_DISTANCE0"] = { type ='value', },
-       ["GL_CLIP_DISTANCE4"] = { type ='value', },
+       ["GL_CLIP_DISTANCE1"] = { type ='value', },
        ["GL_CLIP_DISTANCE2"] = { type ='value', },
+       ["GL_CLIP_DISTANCE3"] = { type ='value', },
+       ["GL_CLIP_DISTANCE4"] = { type ='value', },
+       ["GL_CLIP_DISTANCE5"] = { type ='value', },
+       ["GL_COMPARE_REF_TO_TEXTURE"] = { type ='value', },
+       ["GL_MAX_CLIP_DISTANCES"] = { type ='value', },
        ["GL_MAX_VARYING_COMPONENTS"] = { type ='value', },
        ["GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT"] = { type ='value', },
        ["GL_MAJOR_VERSION"] = { type ='value', },
@@ -6333,8 +6537,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_CONTEXT_FLAGS"] = { type ='value', },
        ["GL_DEPTH_BUFFER"] = { type ='value', },
        ["GL_STENCIL_BUFFER"] = { type ='value', },
-       ["GL_COMPRESSED_RED"] = { type ='value', },
-       ["GL_COMPRESSED_RG"] = { type ='value', },
        ["GL_RGBA32F"] = { type ='value', },
        ["GL_RGB32F"] = { type ='value', },
        ["GL_RGBA16F"] = { type ='value', },
@@ -6481,19 +6683,9 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_MAX_FRAGMENT_INPUT_COMPONENTS"] = { type ='value', },
        ["GL_CONTEXT_PROFILE_MASK"] = { type ='value', },
        ["GL_VERTEX_ATTRIB_ARRAY_DIVISOR"] = { type ='value', },
-       ["GL_TEXTURE_SWIZZLE_R"] = { type ='value', },
-       ["GL_TEXTURE_SWIZZLE_G"] = { type ='value', },
-       ["GL_TEXTURE_SWIZZLE_B"] = { type ='value', },
-       ["GL_TEXTURE_SWIZZLE_A"] = { type ='value', },
-       ["GL_TEXTURE_SWIZZLE_RGBA"] = { type ='value', },
        ["GL_RGB10_A2UI"] = { type ='value', },
-       ["GL_GEOMETRY_SHADER_INVOCATIONS"] = { type ='value', },
        ["GL_SAMPLE_SHADING"] = { type ='value', },
        ["GL_MIN_SAMPLE_SHADING_VALUE"] = { type ='value', },
-       ["GL_MAX_GEOMETRY_SHADER_INVOCATIONS"] = { type ='value', },
-       ["GL_MIN_FRAGMENT_INTERPOLATION_OFFSET"] = { type ='value', },
-       ["GL_MAX_FRAGMENT_INTERPOLATION_OFFSET"] = { type ='value', },
-       ["GL_FRAGMENT_INTERPOLATION_OFFSET_BITS"] = { type ='value', },
        ["GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET"] = { type ='value', },
        ["GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET"] = { type ='value', },
        ["GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS"] = { type ='value', },
@@ -6510,7 +6702,9 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT"] = { type ='value', },
        ["GL_NUM_SHADING_LANGUAGE_VERSIONS"] = { type ='value', },
        ["GL_VERTEX_ATTRIB_ARRAY_LONG"] = { type ='value', },
+       ["GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED"] = { type ='value', },
        ["GL_MAX_VERTEX_ATTRIB_STRIDE"] = { type ='value', },
+       ["GL_TEXTURE_BUFFER_BINDING"] = { type ='value', },
        ["GL_FACTOR_MIN_AMD"] = { type ='value', },
        ["GL_FACTOR_MAX_AMD"] = { type ='value', },
        ["GL_DEBUG_CATEGORY_API_ERROR_AMD"] = { type ='value', },
@@ -6532,6 +6726,12 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_QUERY_OBJECT_AMD"] = { type ='value', },
        ["GL_VERTEX_ARRAY_OBJECT_AMD"] = { type ='value', },
        ["GL_SAMPLER_OBJECT_AMD"] = { type ='value', },
+       ["GL_QUERY_DEPTH_PASS_EVENT_BIT_AMD"] = { type ='value', },
+       ["GL_QUERY_DEPTH_FAIL_EVENT_BIT_AMD"] = { type ='value', },
+       ["GL_QUERY_STENCIL_FAIL_EVENT_BIT_AMD"] = { type ='value', },
+       ["GL_QUERY_DEPTH_BOUNDS_FAIL_EVENT_BIT_AMD"] = { type ='value', },
+       ["GL_OCCLUSION_QUERY_EVENT_MASK_AMD"] = { type ='value', },
+       ["GL_QUERY_ALL_EVENT_BITS_AMD"] = { type ='value', },
        ["GL_COUNTER_TYPE_AMD"] = { type ='value', },
        ["GL_COUNTER_RANGE_AMD"] = { type ='value', },
        ["GL_UNSIGNED_INT64_AMD"] = { type ='value', },
@@ -6553,6 +6753,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_REPLACE_VALUE_AMD"] = { type ='value', },
        ["GL_STENCIL_OP_VALUE_AMD"] = { type ='value', },
        ["GL_STENCIL_BACK_OP_VALUE_AMD"] = { type ='value', },
+       ["GL_STREAM_RASTERIZATION_AMD"] = { type ='value', },
        ["GL_TESSELLATION_MODE_AMD"] = { type ='value', },
        ["GL_TESSELLATION_FACTOR_AMD"] = { type ='value', },
        ["GL_DISCRETE_AMD"] = { type ='value', },
@@ -6604,6 +6805,10 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_SYNC_CL_EVENT_ARB"] = { type ='value', },
        ["GL_SYNC_CL_EVENT_COMPLETE_ARB"] = { type ='value', },
        ["GL_CLEAR_TEXTURE"] = { type ='value', },
+       ["GL_CLIP_ORIGIN"] = { type ='value', },
+       ["GL_CLIP_DEPTH_MODE"] = { type ='value', },
+       ["GL_NEGATIVE_ONE_TO_ONE"] = { type ='value', },
+       ["GL_ZERO_TO_ONE"] = { type ='value', },
        ["GL_RGBA_FLOAT_MODE_ARB"] = { type ='value', },
        ["GL_UNPACK_COMPRESSED_BLOCK_WIDTH"] = { type ='value', },
        ["GL_UNPACK_COMPRESSED_BLOCK_HEIGHT"] = { type ='value', },
@@ -6635,12 +6840,21 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_MAX_COMPUTE_FIXED_GROUP_SIZE_ARB"] = { type ='value', },
        ["GL_MAX_COMPUTE_VARIABLE_GROUP_INVOCATIONS_ARB"] = { type ='value', },
        ["GL_MAX_COMPUTE_VARIABLE_GROUP_SIZE_ARB"] = { type ='value', },
+       ["GL_QUERY_WAIT_INVERTED"] = { type ='value', },
+       ["GL_QUERY_NO_WAIT_INVERTED"] = { type ='value', },
+       ["GL_QUERY_BY_REGION_WAIT_INVERTED"] = { type ='value', },
+       ["GL_QUERY_BY_REGION_NO_WAIT_INVERTED"] = { type ='value', },
        ["GL_COPY_READ_BUFFER"] = { type ='value', },
        ["GL_COPY_WRITE_BUFFER"] = { type ='value', },
+       ["GL_MAX_CULL_DISTANCES"] = { type ='value', },
+       ["GL_MAX_COMBINED_CLIP_AND_CULL_DISTANCES"] = { type ='value', },
        ["GL_DEPTH_COMPONENT32F"] = { type ='value', },
        ["GL_DEPTH32F_STENCIL8"] = { type ='value', },
        ["GL_FLOAT_32_UNSIGNED_INT_24_8_REV"] = { type ='value', },
        ["GL_DEPTH_CLAMP"] = { type ='value', },
+       ["GL_TEXTURE_TARGET"] = { type ='value', },
+       ["GL_QUERY_TARGET"] = { type ='value', },
+       ["GL_TEXTURE_BINDING"] = { type ='value', },
        ["GL_DRAW_INDIRECT_BUFFER"] = { type ='value', },
        ["GL_DRAW_INDIRECT_BUFFER_BINDING"] = { type ='value', },
        ["GL_LOCATION_COMPONENT"] = { type ='value', },
@@ -6750,6 +6964,11 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_PROGRAM_BINARY_LENGTH"] = { type ='value', },
        ["GL_NUM_PROGRAM_BINARY_FORMATS"] = { type ='value', },
        ["GL_PROGRAM_BINARY_FORMATS"] = { type ='value', },
+       ["GL_GEOMETRY_SHADER_INVOCATIONS"] = { type ='value', },
+       ["GL_MAX_GEOMETRY_SHADER_INVOCATIONS"] = { type ='value', },
+       ["GL_MIN_FRAGMENT_INTERPOLATION_OFFSET"] = { type ='value', },
+       ["GL_MAX_FRAGMENT_INTERPOLATION_OFFSET"] = { type ='value', },
+       ["GL_FRAGMENT_INTERPOLATION_OFFSET_BITS"] = { type ='value', },
        ["GL_MAX_VERTEX_STREAMS"] = { type ='value', },
        ["GL_DOUBLE_MAT2"] = { type ='value', },
        ["GL_DOUBLE_MAT3"] = { type ='value', },
@@ -6959,6 +7178,16 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_MATRIX_INDEX_ARRAY_STRIDE_ARB"] = { type ='value', },
        ["GL_MATRIX_INDEX_ARRAY_POINTER_ARB"] = { type ='value', },
        ["GL_ANY_SAMPLES_PASSED"] = { type ='value', },
+       ["GL_VERTICES_SUBMITTED_ARB"] = { type ='value', },
+       ["GL_PRIMITIVES_SUBMITTED_ARB"] = { type ='value', },
+       ["GL_VERTEX_SHADER_INVOCATIONS_ARB"] = { type ='value', },
+       ["GL_TESS_CONTROL_SHADER_PATCHES_ARB"] = { type ='value', },
+       ["GL_TESS_EVALUATION_SHADER_INVOCATIONS_ARB"] = { type ='value', },
+       ["GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED_ARB"] = { type ='value', },
+       ["GL_FRAGMENT_SHADER_INVOCATIONS_ARB"] = { type ='value', },
+       ["GL_COMPUTE_SHADER_INVOCATIONS_ARB"] = { type ='value', },
+       ["GL_CLIPPING_INPUT_PRIMITIVES_ARB"] = { type ='value', },
+       ["GL_CLIPPING_OUTPUT_PRIMITIVES_ARB"] = { type ='value', },
        ["GL_UNIFORM"] = { type ='value', },
        ["GL_UNIFORM_BLOCK"] = { type ='value', },
        ["GL_PROGRAM_INPUT"] = { type ='value', },
@@ -7015,12 +7244,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_QUERY_BUFFER_BINDING"] = { type ='value', },
        ["GL_QUERY_RESULT_NO_WAIT"] = { type ='value', },
        ["GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT_ARB"] = { type ='value', },
-       ["GL_LOSE_CONTEXT_ON_RESET_ARB"] = { type ='value', },
-       ["GL_GUILTY_CONTEXT_RESET_ARB"] = { type ='value', },
-       ["GL_INNOCENT_CONTEXT_RESET_ARB"] = { type ='value', },
-       ["GL_UNKNOWN_CONTEXT_RESET_ARB"] = { type ='value', },
-       ["GL_RESET_NOTIFICATION_STRATEGY_ARB"] = { type ='value', },
-       ["GL_NO_RESET_NOTIFICATION_ARB"] = { type ='value', },
        ["GL_SAMPLER_BINDING"] = { type ='value', },
        ["GL_TEXTURE_CUBE_MAP_SEAMLESS"] = { type ='value', },
        ["GL_VERTEX_SHADER_BIT"] = { type ='value', },
@@ -7166,6 +7389,8 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_NAMED_STRING_LENGTH_ARB"] = { type ='value', },
        ["GL_NAMED_STRING_TYPE_ARB"] = { type ='value', },
        ["GL_TEXTURE_COMPARE_FAIL_VALUE_ARB"] = { type ='value', },
+       ["GL_SPARSE_STORAGE_BIT_ARB"] = { type ='value', },
+       ["GL_SPARSE_BUFFER_PAGE_SIZE_ARB"] = { type ='value', },
        ["GL_VIRTUAL_PAGE_SIZE_X_ARB"] = { type ='value', },
        ["GL_VIRTUAL_PAGE_SIZE_Y_ARB"] = { type ='value', },
        ["GL_VIRTUAL_PAGE_SIZE_Z_ARB"] = { type ='value', },
@@ -7261,6 +7486,8 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_MAX_COLOR_TEXTURE_SAMPLES"] = { type ='value', },
        ["GL_MAX_DEPTH_TEXTURE_SAMPLES"] = { type ='value', },
        ["GL_MAX_INTEGER_SAMPLES"] = { type ='value', },
+       ["GL_COMPRESSED_RED"] = { type ='value', },
+       ["GL_COMPRESSED_RG"] = { type ='value', },
        ["GL_RG"] = { type ='value', },
        ["GL_RG_INTEGER"] = { type ='value', },
        ["GL_R8"] = { type ='value', },
@@ -7282,6 +7509,11 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_RG32I"] = { type ='value', },
        ["GL_RG32UI"] = { type ='value', },
        ["GL_TEXTURE_IMMUTABLE_FORMAT"] = { type ='value', },
+       ["GL_TEXTURE_SWIZZLE_R"] = { type ='value', },
+       ["GL_TEXTURE_SWIZZLE_G"] = { type ='value', },
+       ["GL_TEXTURE_SWIZZLE_B"] = { type ='value', },
+       ["GL_TEXTURE_SWIZZLE_A"] = { type ='value', },
+       ["GL_TEXTURE_SWIZZLE_RGBA"] = { type ='value', },
        ["GL_TEXTURE_VIEW_MIN_LEVEL"] = { type ='value', },
        ["GL_TEXTURE_VIEW_NUM_LEVELS"] = { type ='value', },
        ["GL_TEXTURE_VIEW_MIN_LAYER"] = { type ='value', },
@@ -7293,6 +7525,8 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_TRANSFORM_FEEDBACK_BUFFER_ACTIVE"] = { type ='value', },
        ["GL_TRANSFORM_FEEDBACK_BINDING"] = { type ='value', },
        ["GL_MAX_TRANSFORM_FEEDBACK_BUFFERS"] = { type ='value', },
+       ["GL_TRANSFORM_FEEDBACK_OVERFLOW_ARB"] = { type ='value', },
+       ["GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW_ARB"] = { type ='value', },
        ["GL_UNIFORM_BUFFER"] = { type ='value', },
        ["GL_UNIFORM_BUFFER_BINDING"] = { type ='value', },
        ["GL_UNIFORM_BUFFER_START"] = { type ='value', },
@@ -7334,6 +7568,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_VERTEX_BINDING_STRIDE"] = { type ='value', },
        ["GL_MAX_VERTEX_ATTRIB_RELATIVE_OFFSET"] = { type ='value', },
        ["GL_MAX_VERTEX_ATTRIB_BINDINGS"] = { type ='value', },
+       ["GL_VERTEX_BINDING_BUFFER"] = { type ='value', },
        ["GL_MODELVIEW0_ARB"] = { type ='value', },
        ["GL_MODELVIEW1_ARB"] = { type ='value', },
        ["GL_MAX_VERTEX_UNITS_ARB"] = { type ='value', },
@@ -7446,6 +7681,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_MATRIX31_ARB"] = { type ='value', },
        ["GL_OBJECT_ACTIVE_ATTRIBUTES_ARB"] = { type ='value', },
        ["GL_OBJECT_ACTIVE_ATTRIBUTE_MAX_LENGTH_ARB"] = { type ='value', },
+       ["GL_UNSIGNED_INT_2_10_10_10_REV"] = { type ='value', },
        ["GL_INT_2_10_10_10_REV"] = { type ='value', },
        ["GL_MAX_VIEWPORTS"] = { type ='value', },
        ["GL_VIEWPORT_SUBPIXEL_BITS"] = { type ='value', },
@@ -7456,6 +7692,22 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_PROGRAM_MATRIX_EXT"] = { type ='value', },
        ["GL_TRANSPOSE_PROGRAM_MATRIX_EXT"] = { type ='value', },
        ["GL_PROGRAM_MATRIX_STACK_DEPTH_EXT"] = { type ='value', },
+       ["GL_BLEND_ADVANCED_COHERENT_KHR"] = { type ='value', },
+       ["GL_MULTIPLY_KHR"] = { type ='value', },
+       ["GL_SCREEN_KHR"] = { type ='value', },
+       ["GL_OVERLAY_KHR"] = { type ='value', },
+       ["GL_DARKEN_KHR"] = { type ='value', },
+       ["GL_LIGHTEN_KHR"] = { type ='value', },
+       ["GL_COLORDODGE_KHR"] = { type ='value', },
+       ["GL_COLORBURN_KHR"] = { type ='value', },
+       ["GL_HARDLIGHT_KHR"] = { type ='value', },
+       ["GL_SOFTLIGHT_KHR"] = { type ='value', },
+       ["GL_DIFFERENCE_KHR"] = { type ='value', },
+       ["GL_EXCLUSION_KHR"] = { type ='value', },
+       ["GL_HSL_HUE_KHR"] = { type ='value', },
+       ["GL_HSL_SATURATION_KHR"] = { type ='value', },
+       ["GL_HSL_COLOR_KHR"] = { type ='value', },
+       ["GL_HSL_LUMINOSITY_KHR"] = { type ='value', },
        ["GL_CONTEXT_FLAG_DEBUG_BIT"] = { type ='value', },
        ["GL_DEBUG_OUTPUT_SYNCHRONOUS"] = { type ='value', },
        ["GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH"] = { type ='value', },
@@ -7494,6 +7746,14 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_DEBUG_SEVERITY_MEDIUM"] = { type ='value', },
        ["GL_DEBUG_SEVERITY_LOW"] = { type ='value', },
        ["GL_DEBUG_OUTPUT"] = { type ='value', },
+       ["GL_CONTEXT_LOST"] = { type ='value', },
+       ["GL_LOSE_CONTEXT_ON_RESET"] = { type ='value', },
+       ["GL_GUILTY_CONTEXT_RESET"] = { type ='value', },
+       ["GL_INNOCENT_CONTEXT_RESET"] = { type ='value', },
+       ["GL_UNKNOWN_CONTEXT_RESET"] = { type ='value', },
+       ["GL_RESET_NOTIFICATION_STRATEGY"] = { type ='value', },
+       ["GL_NO_RESET_NOTIFICATION"] = { type ='value', },
+       ["GL_CONTEXT_ROBUST_ACCESS"] = { type ='value', },
        ["GL_COMPRESSED_RGBA_ASTC_4x4_KHR"] = { type ='value', },
        ["GL_COMPRESSED_RGBA_ASTC_5x4_KHR"] = { type ='value', },
        ["GL_COMPRESSED_RGBA_ASTC_5x5_KHR"] = { type ='value', },
@@ -7706,8 +7966,8 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_ITALIC_BIT_NV"] = { type ='value', },
        ["GL_MOVE_TO_NV"] = { type ='value', },
        ["GL_RELATIVE_MOVE_TO_NV"] = { type ='value', },
-       ["GL_LINE_TO_NV"] = { type ='value', },
        ["GL_GLYPH_HORIZONTAL_BEARING_X_BIT_NV"] = { type ='value', },
+       ["GL_LINE_TO_NV"] = { type ='value', },
        ["GL_RELATIVE_LINE_TO_NV"] = { type ='value', },
        ["GL_HORIZONTAL_LINE_TO_NV"] = { type ='value', },
        ["GL_RELATIVE_HORIZONTAL_LINE_TO_NV"] = { type ='value', },
@@ -7893,6 +8153,9 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_BUFFER_GPU_ADDRESS_NV"] = { type ='value', },
        ["GL_GPU_ADDRESS_NV"] = { type ='value', },
        ["GL_MAX_SHADER_BUFFER_ADDRESS_NV"] = { type ='value', },
+       ["GL_WARP_SIZE_NV"] = { type ='value', },
+       ["GL_WARPS_PER_SM_NV"] = { type ='value', },
+       ["GL_SM_COUNT_NV"] = { type ='value', },
        ["GL_MAX_PROGRAM_PATCH_ATTRIBS_NV"] = { type ='value', },
        ["GL_TESS_CONTROL_PROGRAM_NV"] = { type ='value', },
        ["GL_TESS_EVALUATION_PROGRAM_NV"] = { type ='value', },
@@ -7924,8 +8187,8 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_OFFSET_TEXTURE_MATRIX_NV"] = { type ='value', },
        ["GL_OFFSET_TEXTURE_2D_SCALE_NV"] = { type ='value', },
        ["GL_OFFSET_TEXTURE_SCALE_NV"] = { type ='value', },
-       ["GL_OFFSET_TEXTURE_BIAS_NV"] = { type ='value', },
        ["GL_OFFSET_TEXTURE_2D_BIAS_NV"] = { type ='value', },
+       ["GL_OFFSET_TEXTURE_BIAS_NV"] = { type ='value', },
        ["GL_PREVIOUS_TEXTURE_INPUT_NV"] = { type ='value', },
        ["GL_CONST_EYE_NV"] = { type ='value', },
        ["GL_PASS_THROUGH_NV"] = { type ='value', },
@@ -8011,6 +8274,9 @@ extern GLboolean __GLEW_WIN_swap_hint;
        ["GL_ACTIVE_VARYINGS_NV"] = { type ='value', },
        ["GL_ACTIVE_VARYING_MAX_LENGTH_NV"] = { type ='value', },
        ["GL_TRANSFORM_FEEDBACK_RECORD_NV"] = { type ='value', },
+       ["GL_UNIFORM_BUFFER_UNIFIED_NV"] = { type ='value', },
+       ["GL_UNIFORM_BUFFER_ADDRESS_NV"] = { type ='value', },
+       ["GL_UNIFORM_BUFFER_LENGTH_NV"] = { type ='value', },
        ["GL_SURFACE_STATE_NV"] = { type ='value', },
        ["GL_SURFACE_REGISTERED_NV"] = { type ='value', },
        ["GL_SURFACE_MAPPED_NV"] = { type ='value', },
@@ -9846,17 +10112,17 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const GLvoid *indices)", },
+          args = "(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void *indices)", },
        ["glTexImage3D"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels)", },
+          args = "(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const void *pixels)", },
        ["glTexSubImage3D"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid *pixels)", },
+          args = "(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void *pixels)", },
        ["glActiveTexture"] = { type ='function',
           description = "",
           returns = "()",
@@ -9871,37 +10137,37 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const void *data)", },
        ["glCompressedTexImage2D"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void *data)", },
        ["glCompressedTexImage3D"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const void *data)", },
        ["glCompressedTexSubImage1D"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const void *data)", },
        ["glCompressedTexSubImage2D"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void *data)", },
        ["glCompressedTexSubImage3D"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const void *data)", },
        ["glGetCompressedTexImage"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLint lod, GLvoid *img)", },
+          args = "(GLenum target, GLint lod, void *img)", },
        ["glLoadTransposeMatrixd"] = { type ='function',
           description = "",
           returns = "()",
@@ -10106,7 +10372,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum type, GLsizei stride, const GLvoid *pointer)", },
+          args = "(GLenum type, GLsizei stride, const void *pointer)", },
        ["glFogCoordd"] = { type ='function',
           description = "",
           returns = "()",
@@ -10136,7 +10402,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, const GLsizei *count, GLenum type, const GLvoid **indices, GLsizei drawcount)", },
+          args = "(GLenum mode, const GLsizei *count, GLenum type, const void *const* indices, GLsizei drawcount)", },
        ["glPointParameterf"] = { type ='function',
           description = "",
           returns = "()",
@@ -10241,7 +10507,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLint size, GLenum type, GLsizei stride, const GLvoid *pointer)", },
+          args = "(GLint size, GLenum type, GLsizei stride, const void *pointer)", },
        ["glWindowPos2d"] = { type ='function',
           description = "",
           returns = "()",
@@ -10336,12 +10602,12 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLsizeiptr size, const GLvoid* data, GLenum usage)", },
+          args = "(GLenum target, GLsizeiptr size, const void* data, GLenum usage)", },
        ["glBufferSubData"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLintptr offset, GLsizeiptr size, const GLvoid* data)", },
+          args = "(GLenum target, GLintptr offset, GLsizeiptr size, const void* data)", },
        ["glDeleteBuffers"] = { type ='function',
           description = "",
           returns = "()",
@@ -10376,12 +10642,12 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum pname, GLvoid** params)", },
+          args = "(GLenum target, GLenum pname, void** params)", },
        ["glGetBufferSubData"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLintptr offset, GLsizeiptr size, GLvoid* data)", },
+          args = "(GLenum target, GLintptr offset, GLsizeiptr size, void* data)", },
        ["glGetQueryObjectiv"] = { type ='function',
           description = "",
           returns = "()",
@@ -10409,7 +10675,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           args = "(GLuint id)", },
        ["glMapBuffer"] = { type ='function',
           description = "",
-          returns = "(GLvoid*)",
+          returns = "(void*)",
           valuetype = nil,
           args = "(GLenum target, GLenum access)", },
        ["glUnmapBuffer"] = { type ='function',
@@ -10431,7 +10697,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLenum)", },
+          args = "(GLenum modeRGB, GLenum modeAlpha)", },
        ["glCompileShader"] = { type ='function',
           description = "",
           returns = "()",
@@ -10466,7 +10732,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint)", },
+          args = "(GLuint index)", },
        ["glDrawBuffers"] = { type ='function',
           description = "",
           returns = "()",
@@ -10476,7 +10742,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint)", },
+          args = "(GLuint index)", },
        ["glGetActiveAttrib"] = { type ='function',
           description = "",
           returns = "()",
@@ -10541,22 +10807,22 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLenum, GLvoid**)", },
+          args = "(GLuint index, GLenum pname, void** pointer)", },
        ["glGetVertexAttribdv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLenum, GLdouble*)", },
+          args = "(GLuint index, GLenum pname, GLdouble* params)", },
        ["glGetVertexAttribfv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLenum, GLfloat*)", },
+          args = "(GLuint index, GLenum pname, GLfloat* params)", },
        ["glGetVertexAttribiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLenum, GLint*)", },
+          args = "(GLuint index, GLenum pname, GLint* params)", },
        ["glIsProgram"] = { type ='function',
           description = "",
           returns = "(GLboolean)",
@@ -10576,7 +10842,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint shader, GLsizei count, const GLchar** strings, const GLint* lengths)", },
+          args = "(GLuint shader, GLsizei count, const GLchar *const* string, const GLint* length)", },
        ["glStencilFuncSeparate"] = { type ='function',
           description = "",
           returns = "()",
@@ -10586,7 +10852,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLuint)", },
+          args = "(GLenum face, GLuint mask)", },
        ["glStencilOpSeparate"] = { type ='function',
           description = "",
           returns = "()",
@@ -10881,7 +11147,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* pointer)", },
+          args = "(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer)", },
        ["glUniformMatrix2x3fv"] = { type ='function',
           description = "",
           returns = "()",
@@ -10916,57 +11182,57 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLenum)", },
+          args = "(GLuint id, GLenum mode)", },
        ["glBeginTransformFeedback"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum)", },
+          args = "(GLenum primitiveMode)", },
        ["glBindFragDataLocation"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLuint, const GLchar*)", },
+          args = "(GLuint program, GLuint colorNumber, const GLchar* name)", },
        ["glClampColor"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLenum)", },
+          args = "(GLenum target, GLenum clamp)", },
        ["glClearBufferfi"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLint, GLfloat, GLint)", },
+          args = "(GLenum buffer, GLint drawBuffer, GLfloat depth, GLint stencil)", },
        ["glClearBufferfv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLint, const GLfloat*)", },
+          args = "(GLenum buffer, GLint drawBuffer, const GLfloat* value)", },
        ["glClearBufferiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLint, const GLint*)", },
+          args = "(GLenum buffer, GLint drawBuffer, const GLint* value)", },
        ["glClearBufferuiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLint, const GLuint*)", },
+          args = "(GLenum buffer, GLint drawBuffer, const GLuint* value)", },
        ["glColorMaski"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLboolean, GLboolean, GLboolean, GLboolean)", },
+          args = "(GLuint buf, GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)", },
        ["glDisablei"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLuint)", },
+          args = "(GLenum cap, GLuint index)", },
        ["glEnablei"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLuint)", },
+          args = "(GLenum cap, GLuint index)", },
        ["glEndConditionalRender"] = { type ='function',
           description = "",
           returns = "()",
@@ -10981,247 +11247,247 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLuint, GLboolean*)", },
+          args = "(GLenum pname, GLuint index, GLboolean* data)", },
        ["glGetFragDataLocation"] = { type ='function',
           description = "",
           returns = "(GLint)",
           valuetype = nil,
-          args = "(GLuint, const GLchar*)", },
+          args = "(GLuint program, const GLchar* name)", },
        ["glGetStringi"] = { type ='function',
           description = "",
           returns = "(const GLubyte*)",
           valuetype = nil,
-          args = "(GLenum, GLuint)", },
+          args = "(GLenum name, GLuint index)", },
        ["glGetTexParameterIiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLenum, GLint*)", },
+          args = "(GLenum target, GLenum pname, GLint* params)", },
        ["glGetTexParameterIuiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLenum, GLuint*)", },
+          args = "(GLenum target, GLenum pname, GLuint* params)", },
        ["glGetTransformFeedbackVarying"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLuint, GLsizei, GLsizei *, GLsizei *, GLenum *, GLchar *)", },
+          args = "(GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLsizei * size, GLenum * type, GLchar * name)", },
        ["glGetUniformuiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLint, GLuint*)", },
+          args = "(GLuint program, GLint location, GLuint* params)", },
        ["glGetVertexAttribIiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLenum, GLint*)", },
+          args = "(GLuint index, GLenum pname, GLint* params)", },
        ["glGetVertexAttribIuiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLenum, GLuint*)", },
+          args = "(GLuint index, GLenum pname, GLuint* params)", },
        ["glIsEnabledi"] = { type ='function',
           description = "",
           returns = "(GLboolean)",
           valuetype = nil,
-          args = "(GLenum, GLuint)", },
+          args = "(GLenum cap, GLuint index)", },
        ["glTexParameterIiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLenum, const GLint*)", },
+          args = "(GLenum target, GLenum pname, const GLint* params)", },
        ["glTexParameterIuiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLenum, const GLuint*)", },
+          args = "(GLenum target, GLenum pname, const GLuint* params)", },
        ["glTransformFeedbackVaryings"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLsizei, const GLchar **, GLenum)", },
+          args = "(GLuint program, GLsizei count, const GLchar *const* varyings, GLenum bufferMode)", },
        ["glUniform1ui"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLint, GLuint)", },
+          args = "(GLint location, GLuint v0)", },
        ["glUniform1uiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLint, GLsizei, const GLuint*)", },
+          args = "(GLint location, GLsizei count, const GLuint* value)", },
        ["glUniform2ui"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLint, GLuint, GLuint)", },
+          args = "(GLint location, GLuint v0, GLuint v1)", },
        ["glUniform2uiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLint, GLsizei, const GLuint*)", },
+          args = "(GLint location, GLsizei count, const GLuint* value)", },
        ["glUniform3ui"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLint, GLuint, GLuint, GLuint)", },
+          args = "(GLint location, GLuint v0, GLuint v1, GLuint v2)", },
        ["glUniform3uiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLint, GLsizei, const GLuint*)", },
+          args = "(GLint location, GLsizei count, const GLuint* value)", },
        ["glUniform4ui"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLint, GLuint, GLuint, GLuint, GLuint)", },
+          args = "(GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3)", },
        ["glUniform4uiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLint, GLsizei, const GLuint*)", },
+          args = "(GLint location, GLsizei count, const GLuint* value)", },
        ["glVertexAttribI1i"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLint)", },
+          args = "(GLuint index, GLint v0)", },
        ["glVertexAttribI1iv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLint*)", },
+          args = "(GLuint index, const GLint* v0)", },
        ["glVertexAttribI1ui"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLuint)", },
+          args = "(GLuint index, GLuint v0)", },
        ["glVertexAttribI1uiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLuint*)", },
+          args = "(GLuint index, const GLuint* v0)", },
        ["glVertexAttribI2i"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLint, GLint)", },
+          args = "(GLuint index, GLint v0, GLint v1)", },
        ["glVertexAttribI2iv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLint*)", },
+          args = "(GLuint index, const GLint* v0)", },
        ["glVertexAttribI2ui"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLuint, GLuint)", },
+          args = "(GLuint index, GLuint v0, GLuint v1)", },
        ["glVertexAttribI2uiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLuint*)", },
+          args = "(GLuint index, const GLuint* v0)", },
        ["glVertexAttribI3i"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLint, GLint, GLint)", },
+          args = "(GLuint index, GLint v0, GLint v1, GLint v2)", },
        ["glVertexAttribI3iv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLint*)", },
+          args = "(GLuint index, const GLint* v0)", },
        ["glVertexAttribI3ui"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLuint, GLuint, GLuint)", },
+          args = "(GLuint index, GLuint v0, GLuint v1, GLuint v2)", },
        ["glVertexAttribI3uiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLuint*)", },
+          args = "(GLuint index, const GLuint* v0)", },
        ["glVertexAttribI4bv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLbyte*)", },
+          args = "(GLuint index, const GLbyte* v0)", },
        ["glVertexAttribI4i"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLint, GLint, GLint, GLint)", },
+          args = "(GLuint index, GLint v0, GLint v1, GLint v2, GLint v3)", },
        ["glVertexAttribI4iv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLint*)", },
+          args = "(GLuint index, const GLint* v0)", },
        ["glVertexAttribI4sv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLshort*)", },
+          args = "(GLuint index, const GLshort* v0)", },
        ["glVertexAttribI4ubv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLubyte*)", },
+          args = "(GLuint index, const GLubyte* v0)", },
        ["glVertexAttribI4ui"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLuint, GLuint, GLuint, GLuint)", },
+          args = "(GLuint index, GLuint v0, GLuint v1, GLuint v2, GLuint v3)", },
        ["glVertexAttribI4uiv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLuint*)", },
+          args = "(GLuint index, const GLuint* v0)", },
        ["glVertexAttribI4usv"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, const GLushort*)", },
+          args = "(GLuint index, const GLushort* v0)", },
        ["glVertexAttribIPointer"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint, GLint, GLenum, GLsizei, const GLvoid*)", },
+          args = "(GLuint index, GLint size, GLenum type, GLsizei stride, const void*pointer)", },
        ["glDrawArraysInstanced"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLint, GLsizei, GLsizei)", },
+          args = "(GLenum mode, GLint first, GLsizei count, GLsizei primcount)", },
        ["glDrawElementsInstanced"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLsizei, GLenum, const GLvoid*, GLsizei)", },
+          args = "(GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei primcount)", },
        ["glPrimitiveRestartIndex"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint)", },
+          args = "(GLuint buffer)", },
        ["glTexBuffer"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLenum, GLuint)", },
+          args = "(GLenum target, GLenum internalFormat, GLuint buffer)", },
        ["glFramebufferTexture"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLenum, GLuint, GLint)", },
+          args = "(GLenum target, GLenum attachment, GLuint texture, GLint level)", },
        ["glGetBufferParameteri64v"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLenum, GLint64 *)", },
+          args = "(GLenum target, GLenum value, GLint64 * data)", },
        ["glGetInteger64i_v"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum, GLuint, GLint64 *)", },
+          args = "(GLenum pname, GLuint index, GLint64 * data)", },
        ["glVertexAttribDivisor"] = { type ='function',
           description = "",
           returns = "()",
@@ -11297,6 +11563,11 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "(GLboolean)",
           valuetype = nil,
           args = "(GLenum identifier, GLuint name)", },
+       ["glQueryObjectParameteruiAMD"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLenum target, GLuint id, GLenum pname, GLuint param)", },
        ["glBeginPerfMonitorAMD"] = { type ='function',
           description = "",
           returns = "()",
@@ -11326,7 +11597,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint group, GLuint counter, GLenum pname, void* data)", },
+          args = "(GLuint group, GLuint counter, GLenum pname, void *data)", },
        ["glGetPerfMonitorCounterStringAMD"] = { type ='function',
           description = "",
           returns = "()",
@@ -11406,7 +11677,12 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLsizei count, const GLuint* shaders, GLenum binaryformat, const GLvoid*binary, GLsizei length)", },
+          args = "(GLsizei count, const GLuint* shaders, GLenum binaryformat, const void*binary, GLsizei length)", },
+       ["glMemoryBarrierByRegion"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLbitfield barriers)", },
        ["glDrawArraysInstancedBaseInstance"] = { type ='function',
           description = "",
           returns = "()",
@@ -11416,12 +11692,12 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices, GLsizei primcount, GLuint baseinstance)", },
+          args = "(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount, GLuint baseinstance)", },
        ["glDrawElementsInstancedBaseVertexBaseInstance"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices, GLsizei primcount, GLint basevertex, GLuint baseinstance)", },
+          args = "(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount, GLint basevertex, GLuint baseinstance)", },
        ["glGetImageHandleARB"] = { type ='function',
           description = "",
           returns = "(GLuint64)",
@@ -11516,12 +11792,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLsizeiptr size, const GLvoid* data, GLbitfield flags)", },
-       ["glNamedBufferStorageEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint buffer, GLsizeiptr size, const GLvoid* data, GLbitfield flags)", },
+          args = "(GLenum target, GLsizeiptr size, const void *data, GLbitfield flags)", },
        ["glCreateSyncFromCLeventARB"] = { type ='function',
           description = "",
           returns = "(GLsync)",
@@ -11531,32 +11802,27 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum internalformat, GLenum format, GLenum type, const GLvoid* data)", },
+          args = "(GLenum target, GLenum internalformat, GLenum format, GLenum type, const void *data)", },
        ["glClearBufferSubData"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const GLvoid* data)", },
-       ["glClearNamedBufferDataEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint buffer, GLenum internalformat, GLenum format, GLenum type, const GLvoid* data)", },
-       ["glClearNamedBufferSubDataEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const GLvoid* data)", },
+          args = "(GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void *data)", },
        ["glClearTexImage"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint texture, GLint level, GLenum format, GLenum type, const GLvoid* data)", },
+          args = "(GLuint texture, GLint level, GLenum format, GLenum type, const void *data)", },
        ["glClearTexSubImage"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid* data)", },
+          args = "(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void *data)", },
+       ["glClipControl"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLenum origin, GLenum depth)", },
        ["glDispatchCompute"] = { type ='function',
           description = "",
           returns = "()",
@@ -11582,36 +11848,501 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLuint srcName, GLenum srcTarget, GLint srcLevel, GLint srcX, GLint srcY, GLint srcZ, GLuint dstName, GLenum dstTarget, GLint dstLevel, GLint dstX, GLint dstY, GLint dstZ, GLsizei srcWidth, GLsizei srcHeight, GLsizei srcDepth)", },
+       ["glBindTextureUnit"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint unit, GLuint texture)", },
+       ["glBlitNamedFramebuffer"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint readFramebuffer, GLuint drawFramebuffer, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter)", },
+       ["glCheckNamedFramebufferStatus"] = { type ='function',
+          description = "",
+          returns = "(GLenum)",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum target)", },
+       ["glClearNamedBufferData"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint buffer, GLenum internalformat, GLenum format, GLenum type, const void *data)", },
+       ["glClearNamedBufferSubData"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void *data)", },
+       ["glClearNamedFramebufferfi"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum buffer, GLfloat depth, GLint stencil)", },
+       ["glClearNamedFramebufferfv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLfloat* value)", },
+       ["glClearNamedFramebufferiv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLint* value)", },
+       ["glClearNamedFramebufferuiv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLuint* value)", },
+       ["glCompressedTextureSubImage1D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const void *data)", },
+       ["glCompressedTextureSubImage2D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void *data)", },
+       ["glCompressedTextureSubImage3D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const void *data)", },
+       ["glCopyNamedBufferSubData"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint readBuffer, GLuint writeBuffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)", },
+       ["glCopyTextureSubImage1D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width)", },
+       ["glCopyTextureSubImage2D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height)", },
+       ["glCopyTextureSubImage3D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height)", },
+       ["glCreateBuffers"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLsizei n, GLuint* buffers)", },
+       ["glCreateFramebuffers"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLsizei n, GLuint* framebuffers)", },
+       ["glCreateProgramPipelines"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLsizei n, GLuint* pipelines)", },
+       ["glCreateQueries"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLenum target, GLsizei n, GLuint* ids)", },
+       ["glCreateRenderbuffers"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLsizei n, GLuint* renderbuffers)", },
+       ["glCreateSamplers"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLsizei n, GLuint* samplers)", },
+       ["glCreateTextures"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLenum target, GLsizei n, GLuint* textures)", },
+       ["glCreateTransformFeedbacks"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLsizei n, GLuint* ids)", },
+       ["glCreateVertexArrays"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLsizei n, GLuint* arrays)", },
+       ["glDisableVertexArrayAttrib"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint index)", },
+       ["glEnableVertexArrayAttrib"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint index)", },
+       ["glFlushMappedNamedBufferRange"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint buffer, GLintptr offset, GLsizeiptr length)", },
+       ["glGenerateTextureMipmap"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture)", },
+       ["glGetCompressedTextureImage"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLsizei bufSize, void *pixels)", },
+       ["glGetNamedBufferParameteri64v"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint buffer, GLenum pname, GLint64* params)", },
+       ["glGetNamedBufferParameteriv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint buffer, GLenum pname, GLint* params)", },
+       ["glGetNamedBufferPointerv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint buffer, GLenum pname, void** params)", },
+       ["glGetNamedBufferSubData"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint buffer, GLintptr offset, GLsizeiptr size, void *data)", },
+       ["glGetNamedFramebufferAttachmentParameteriv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum attachment, GLenum pname, GLint* params)", },
+       ["glGetNamedFramebufferParameteriv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum pname, GLint* param)", },
+       ["glGetNamedRenderbufferParameteriv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint renderbuffer, GLenum pname, GLint* params)", },
+       ["glGetTextureImage"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize, void *pixels)", },
+       ["glGetTextureLevelParameterfv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLenum pname, GLfloat* params)", },
+       ["glGetTextureLevelParameteriv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLenum pname, GLint* params)", },
+       ["glGetTextureParameterIiv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum pname, GLint* params)", },
+       ["glGetTextureParameterIuiv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum pname, GLuint* params)", },
+       ["glGetTextureParameterfv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum pname, GLfloat* params)", },
+       ["glGetTextureParameteriv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum pname, GLint* params)", },
+       ["glGetTransformFeedbacki64_v"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint xfb, GLenum pname, GLuint index, GLint64* param)", },
+       ["glGetTransformFeedbacki_v"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint xfb, GLenum pname, GLuint index, GLint* param)", },
+       ["glGetTransformFeedbackiv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint xfb, GLenum pname, GLint* param)", },
+       ["glGetVertexArrayIndexed64iv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint index, GLenum pname, GLint64* param)", },
+       ["glGetVertexArrayIndexediv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint index, GLenum pname, GLint* param)", },
+       ["glGetVertexArrayiv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLenum pname, GLint* param)", },
+       ["glInvalidateNamedFramebufferData"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLsizei numAttachments, const GLenum* attachments)", },
+       ["glInvalidateNamedFramebufferSubData"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLsizei numAttachments, const GLenum* attachments, GLint x, GLint y, GLsizei width, GLsizei height)", },
+       ["glMapNamedBuffer"] = { type ='function',
+          description = "",
+          returns = "(void *)",
+          valuetype = nil,
+          args = "(GLuint buffer, GLenum access)", },
+       ["glMapNamedBufferRange"] = { type ='function',
+          description = "",
+          returns = "(void *)",
+          valuetype = nil,
+          args = "(GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access)", },
+       ["glNamedBufferData"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint buffer, GLsizeiptr size, const void *data, GLenum usage)", },
+       ["glNamedBufferStorage"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint buffer, GLsizeiptr size, const void *data, GLbitfield flags)", },
+       ["glNamedBufferSubData"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint buffer, GLintptr offset, GLsizeiptr size, const void *data)", },
+       ["glNamedFramebufferDrawBuffer"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum mode)", },
+       ["glNamedFramebufferDrawBuffers"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLsizei n, const GLenum* bufs)", },
+       ["glNamedFramebufferParameteri"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum pname, GLint param)", },
+       ["glNamedFramebufferReadBuffer"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum mode)", },
+       ["glNamedFramebufferRenderbuffer"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)", },
+       ["glNamedFramebufferTexture"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level)", },
+       ["glNamedFramebufferTextureLayer"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLint layer)", },
+       ["glNamedRenderbufferStorage"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint renderbuffer, GLenum internalformat, GLsizei width, GLsizei height)", },
+       ["glNamedRenderbufferStorageMultisample"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint renderbuffer, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)", },
+       ["glTextureBuffer"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum internalformat, GLuint buffer)", },
+       ["glTextureBufferRange"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size)", },
+       ["glTextureParameterIiv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum pname, const GLint* params)", },
+       ["glTextureParameterIuiv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum pname, const GLuint* params)", },
+       ["glTextureParameterf"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum pname, GLfloat param)", },
+       ["glTextureParameterfv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum pname, const GLfloat* param)", },
+       ["glTextureParameteri"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum pname, GLint param)", },
+       ["glTextureParameteriv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLenum pname, const GLint* param)", },
+       ["glTextureStorage1D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width)", },
+       ["glTextureStorage2D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height)", },
+       ["glTextureStorage2DMultisample"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations)", },
+       ["glTextureStorage3D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth)", },
+       ["glTextureStorage3DMultisample"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations)", },
+       ["glTextureSubImage1D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const void *pixels)", },
+       ["glTextureSubImage2D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels)", },
+       ["glTextureSubImage3D"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void *pixels)", },
+       ["glTransformFeedbackBufferBase"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint xfb, GLuint index, GLuint buffer)", },
+       ["glTransformFeedbackBufferRange"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint xfb, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size)", },
+       ["glUnmapNamedBuffer"] = { type ='function',
+          description = "",
+          returns = "(GLboolean)",
+          valuetype = nil,
+          args = "(GLuint buffer)", },
+       ["glVertexArrayAttribBinding"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint attribindex, GLuint bindingindex)", },
+       ["glVertexArrayAttribFormat"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset)", },
+       ["glVertexArrayAttribIFormat"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset)", },
+       ["glVertexArrayAttribLFormat"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset)", },
+       ["glVertexArrayBindingDivisor"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint bindingindex, GLuint divisor)", },
+       ["glVertexArrayElementBuffer"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint buffer)", },
+       ["glVertexArrayVertexBuffer"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride)", },
+       ["glVertexArrayVertexBuffers"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint first, GLsizei count, const GLuint* buffers, const GLintptr *offsets, const GLsizei *strides)", },
        ["glDrawElementsBaseVertex"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices, GLint basevertex)", },
+          args = "(GLenum mode, GLsizei count, GLenum type, const void *indices, GLint basevertex)", },
        ["glDrawElementsInstancedBaseVertex"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices, GLsizei primcount, GLint basevertex)", },
+          args = "(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount, GLint basevertex)", },
        ["glDrawRangeElementsBaseVertex"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const GLvoid *indices, GLint basevertex)", },
+          args = "(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void *indices, GLint basevertex)", },
        ["glMultiDrawElementsBaseVertex"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, const GLsizei* count, GLenum type, const GLvoid* const *indices, GLsizei primcount, const GLint *basevertex)", },
+          args = "(GLenum mode, const GLsizei* count, GLenum type, const void *const *indices, GLsizei primcount, const GLint *basevertex)", },
        ["glDrawArraysIndirect"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, const GLvoid *indirect)", },
+          args = "(GLenum mode, const void *indirect)", },
        ["glDrawElementsIndirect"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, GLenum type, const GLvoid *indirect)", },
+          args = "(GLenum mode, GLenum type, const void *indirect)", },
        ["glFramebufferParameteri"] = { type ='function',
           description = "",
           returns = "()",
@@ -11622,16 +12353,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLenum target, GLenum pname, GLint* params)", },
-       ["glGetNamedFramebufferParameterivEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint framebuffer, GLenum pname, GLint* params)", },
-       ["glNamedFramebufferParameteriEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint framebuffer, GLenum pname, GLint param)", },
        ["glBindFramebuffer"] = { type ='function',
           description = "",
           returns = "()",
@@ -11741,17 +12462,27 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint program, GLsizei bufSize, GLsizei* length, GLenum *binaryFormat, GLvoid*binary)", },
+          args = "(GLuint program, GLsizei bufSize, GLsizei* length, GLenum *binaryFormat, void*binary)", },
        ["glProgramBinary"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint program, GLenum binaryFormat, const GLvoid *binary, GLsizei length)", },
+          args = "(GLuint program, GLenum binaryFormat, const void *binary, GLsizei length)", },
        ["glProgramParameteri"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
           args = "(GLuint program, GLenum pname, GLint value)", },
+       ["glGetCompressedTextureSubImage"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize, void *pixels)", },
+       ["glGetTextureSubImage"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei bufSize, void *pixels)", },
        ["glGetUniformdv"] = { type ='function',
           description = "",
           returns = "()",
@@ -11846,12 +12577,12 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLsizei start, GLsizei count, GLenum format, GLenum type, const GLvoid *data)", },
+          args = "(GLenum target, GLsizei start, GLsizei count, GLenum format, GLenum type, const void *data)", },
        ["glColorTable"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum internalformat, GLsizei width, GLenum format, GLenum type, const GLvoid *table)", },
+          args = "(GLenum target, GLenum internalformat, GLsizei width, GLenum format, GLenum type, const void *table)", },
        ["glColorTableParameterfv"] = { type ='function',
           description = "",
           returns = "()",
@@ -11866,12 +12597,12 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum internalformat, GLsizei width, GLenum format, GLenum type, const GLvoid *image)", },
+          args = "(GLenum target, GLenum internalformat, GLsizei width, GLenum format, GLenum type, const void *image)", },
        ["glConvolutionFilter2D"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum internalformat, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *image)", },
+          args = "(GLenum target, GLenum internalformat, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *image)", },
        ["glConvolutionParameterf"] = { type ='function',
           description = "",
           returns = "()",
@@ -11916,7 +12647,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum format, GLenum type, GLvoid *table)", },
+          args = "(GLenum target, GLenum format, GLenum type, void *table)", },
        ["glGetColorTableParameterfv"] = { type ='function',
           description = "",
           returns = "()",
@@ -11931,7 +12662,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum format, GLenum type, GLvoid *image)", },
+          args = "(GLenum target, GLenum format, GLenum type, void *image)", },
        ["glGetConvolutionParameterfv"] = { type ='function',
           description = "",
           returns = "()",
@@ -11946,7 +12677,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLboolean reset, GLenum format, GLenum type, GLvoid *values)", },
+          args = "(GLenum target, GLboolean reset, GLenum format, GLenum type, void *values)", },
        ["glGetHistogramParameterfv"] = { type ='function',
           description = "",
           returns = "()",
@@ -11961,7 +12692,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLboolean reset, GLenum format, GLenum types, GLvoid *values)", },
+          args = "(GLenum target, GLboolean reset, GLenum format, GLenum types, void *values)", },
        ["glGetMinmaxParameterfv"] = { type ='function',
           description = "",
           returns = "()",
@@ -11976,7 +12707,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum format, GLenum type, GLvoid *row, GLvoid *column, GLvoid *span)", },
+          args = "(GLenum target, GLenum format, GLenum type, void *row, void *column, void *span)", },
        ["glHistogram"] = { type ='function',
           description = "",
           returns = "()",
@@ -12001,17 +12732,17 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum internalformat, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *row, const GLvoid *column)", },
+          args = "(GLenum target, GLenum internalformat, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *row, const void *column)", },
        ["glMultiDrawArraysIndirectCountARB"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, const GLvoid *indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride)", },
+          args = "(GLenum mode, const void *indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride)", },
        ["glMultiDrawElementsIndirectCountARB"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, GLenum type, const GLvoid *indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride)", },
+          args = "(GLenum mode, GLenum type, const void *indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride)", },
        ["glGetInternalformativ"] = { type ='function',
           description = "",
           returns = "()",
@@ -12059,7 +12790,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           args = "(GLenum target, GLintptr offset, GLsizeiptr length)", },
        ["glMapBufferRange"] = { type ='function',
           description = "",
-          returns = "(GLvoid *)",
+          returns = "(void *)",
           valuetype = nil,
           args = "(GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access)", },
        ["glCurrentPaletteMatrixARB"] = { type ='function',
@@ -12071,7 +12802,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLint size, GLenum type, GLsizei stride, GLvoid *pointer)", },
+          args = "(GLint size, GLenum type, GLsizei stride, void *pointer)", },
        ["glMatrixIndexubvARB"] = { type ='function',
           description = "",
           returns = "()",
@@ -12121,12 +12852,12 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, const GLvoid *indirect, GLsizei primcount, GLsizei stride)", },
+          args = "(GLenum mode, const void *indirect, GLsizei primcount, GLsizei stride)", },
        ["glMultiDrawElementsIndirect"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, GLenum type, const GLvoid *indirect, GLsizei primcount, GLsizei stride)", },
+          args = "(GLenum mode, GLenum type, const void *indirect, GLsizei primcount, GLsizei stride)", },
        ["glGetProgramInterfaceiv"] = { type ='function',
           description = "",
           returns = "()",
@@ -12231,7 +12962,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum format, GLenum type, GLsizei rowBufSize, void* row, GLsizei columnBufSize, GLvoid*column, GLvoid*span)", },
+          args = "(GLenum target, GLenum format, GLenum type, GLsizei rowBufSize, void* row, GLsizei columnBufSize, void*column, void*span)", },
        ["glGetnTexImageARB"] = { type ='function',
           description = "",
           returns = "()",
@@ -12242,26 +12973,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLuint program, GLint location, GLsizei bufSize, GLdouble* params)", },
-       ["glGetnUniformfvARB"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint program, GLint location, GLsizei bufSize, GLfloat* params)", },
-       ["glGetnUniformivARB"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint program, GLint location, GLsizei bufSize, GLint* params)", },
-       ["glGetnUniformuivARB"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint program, GLint location, GLsizei bufSize, GLuint* params)", },
-       ["glReadnPixelsARB"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void* data)", },
        ["glBindSampler"] = { type ='function',
           description = "",
           returns = "()",
@@ -12346,7 +13057,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "(GLuint)",
           valuetype = nil,
-          args = "(GLenum type, GLsizei count, const GLchar ** strings)", },
+          args = "(GLenum type, GLsizei count, const GLchar * const * strings)", },
        ["glDeleteProgramPipelines"] = { type ='function',
           description = "",
           returns = "()",
@@ -12777,6 +13488,11 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLenum type, GLint namelen, const GLchar* name, GLint stringlen, const GLchar *string)", },
+       ["glBufferPageCommitmentARB"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLenum target, GLintptr offset, GLsizeiptr size, GLboolean commit)", },
        ["glTexPageCommitmentARB"] = { type ='function',
           description = "",
           returns = "()",
@@ -12786,7 +13502,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit)", },
+          args = "(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLboolean commit)", },
        ["glClientWaitSync"] = { type ='function',
           description = "",
           returns = "(GLenum)",
@@ -12832,16 +13548,16 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLenum pname, GLint value)", },
+       ["glTextureBarrier"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(void)", },
        ["glTexBufferRange"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
           args = "(GLenum target, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size)", },
-       ["glTextureBufferRangeEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size)", },
        ["glGetMultisamplefv"] = { type ='function',
           description = "",
           returns = "()",
@@ -12856,12 +13572,12 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLsizei samples, GLint internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations)", },
+          args = "(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations)", },
        ["glTexImage3DMultisample"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLsizei samples, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations)", },
+          args = "(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations)", },
        ["glTexStorage1D"] = { type ='function',
           description = "",
           returns = "()",
@@ -12877,21 +13593,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth)", },
-       ["glTextureStorage1DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width)", },
-       ["glTextureStorage2DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height)", },
-       ["glTextureStorage3DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth)", },
        ["glTexStorage2DMultisample"] = { type ='function',
           description = "",
           returns = "()",
@@ -12902,16 +13603,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations)", },
-       ["glTextureStorage2DMultisampleEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations)", },
-       ["glTextureStorage3DMultisampleEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations)", },
        ["glTextureView"] = { type ='function',
           description = "",
           returns = "()",
@@ -13041,7 +13732,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint program, GLsizei uniformCount, const GLchar** uniformNames, GLuint* uniformIndices)", },
+          args = "(GLuint program, GLsizei uniformCount, const GLchar* const * uniformNames, GLuint* uniformIndices)", },
        ["glUniformBlockBinding"] = { type ='function',
           description = "",
           returns = "()",
@@ -13122,6 +13813,36 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride)", },
+       ["glVertexArrayBindVertexBufferEXT"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride)", },
+       ["glVertexArrayVertexAttribBindingEXT"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint attribindex, GLuint bindingindex)", },
+       ["glVertexArrayVertexAttribFormatEXT"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset)", },
+       ["glVertexArrayVertexAttribIFormatEXT"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset)", },
+       ["glVertexArrayVertexAttribLFormatEXT"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset)", },
+       ["glVertexArrayVertexBindingDivisorEXT"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint bindingindex, GLuint divisor)", },
        ["glVertexAttribBinding"] = { type ='function',
           description = "",
           returns = "()",
@@ -13156,7 +13877,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLint size, GLenum type, GLsizei stride, GLvoid *pointer)", },
+          args = "(GLint size, GLenum type, GLsizei stride, void *pointer)", },
        ["glWeightbvARB"] = { type ='function',
           description = "",
           returns = "()",
@@ -13236,7 +13957,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum pname, GLvoid *string)", },
+          args = "(GLenum target, GLenum pname, void *string)", },
        ["glProgramEnvParameter4dARB"] = { type ='function',
           description = "",
           returns = "()",
@@ -13281,7 +14002,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLenum format, GLsizei len, const GLvoid *string)", },
+          args = "(GLenum target, GLenum format, GLsizei len, const void *string)", },
        ["glColorP3ui"] = { type ='function',
           description = "",
           returns = "()",
@@ -13527,11 +14248,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLenum texunit, GLenum target, GLuint texture)", },
-       ["glCheckNamedFramebufferStatusEXT"] = { type ='function',
-          description = "",
-          returns = "(GLenum)",
-          valuetype = nil,
-          args = "(GLuint framebuffer, GLenum target)", },
        ["glClientAttribDefaultEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -13541,62 +14257,47 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const void *data)", },
        ["glCompressedMultiTexImage2DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void *data)", },
        ["glCompressedMultiTexImage3DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const void *data)", },
        ["glCompressedMultiTexSubImage1DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const void *data)", },
        ["glCompressedMultiTexSubImage2DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void *data)", },
        ["glCompressedMultiTexSubImage3DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const void *data)", },
        ["glCompressedTextureImage1DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const void *data)", },
        ["glCompressedTextureImage2DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void *data)", },
        ["glCompressedTextureImage3DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const GLvoid *data)", },
-       ["glCompressedTextureSubImage1DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const GLvoid *data)", },
-       ["glCompressedTextureSubImage2DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const GLvoid *data)", },
-       ["glCompressedTextureSubImage3DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const GLvoid *data)", },
+          args = "(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const void *data)", },
        ["glCopyMultiTexImage1DEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -13632,21 +14333,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLuint texture, GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border)", },
-       ["glCopyTextureSubImage1DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width)", },
-       ["glCopyTextureSubImage2DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height)", },
-       ["glCopyTextureSubImage3DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height)", },
        ["glDisableClientStateIndexedEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -13657,11 +14343,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLenum array, GLuint index)", },
-       ["glDisableVertexArrayAttribEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint vaobj, GLuint index)", },
        ["glDisableVertexArrayEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -13677,21 +14358,11 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLenum array, GLuint index)", },
-       ["glEnableVertexArrayAttribEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint vaobj, GLuint index)", },
        ["glEnableVertexArrayEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
           args = "(GLuint vaobj, GLenum array)", },
-       ["glFlushMappedNamedBufferRangeEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint buffer, GLintptr offset, GLsizeiptr length)", },
        ["glFramebufferDrawBufferEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -13712,21 +14383,11 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLenum texunit, GLenum target)", },
-       ["glGenerateTextureMipmapEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target)", },
        ["glGetCompressedMultiTexImageEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLvoid *img)", },
-       ["glGetCompressedTextureImageEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLvoid *img)", },
+          args = "(GLenum texunit, GLenum target, GLint level, void *img)", },
        ["glGetDoubleIndexedvEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -13766,7 +14427,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLenum format, GLenum type, GLvoid *pixels)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLenum format, GLenum type, void *pixels)", },
        ["glGetMultiTexLevelParameterfvEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -13797,26 +14458,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLenum texunit, GLenum target, GLenum pname, GLint* params)", },
-       ["glGetNamedBufferParameterivEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint buffer, GLenum pname, GLint* params)", },
-       ["glGetNamedBufferPointervEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint buffer, GLenum pname, void** params)", },
-       ["glGetNamedBufferSubDataEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint buffer, GLintptr offset, GLsizeiptr size, GLvoid *data)", },
-       ["glGetNamedFramebufferAttachmentParameterivEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint framebuffer, GLenum attachment, GLenum pname, GLint* params)", },
        ["glGetNamedProgramLocalParameterIivEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -13841,62 +14482,22 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint program, GLenum target, GLenum pname, GLvoid *string)", },
+          args = "(GLuint program, GLenum target, GLenum pname, void *string)", },
        ["glGetNamedProgramivEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
           args = "(GLuint program, GLenum target, GLenum pname, GLint* params)", },
-       ["glGetNamedRenderbufferParameterivEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint renderbuffer, GLenum pname, GLint* params)", },
        ["glGetPointerIndexedvEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLuint index, GLvoid** params)", },
+          args = "(GLenum target, GLuint index, void** params)", },
        ["glGetPointeri_vEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum pname, GLuint index, GLvoid** params)", },
-       ["glGetTextureImageEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLenum format, GLenum type, GLvoid *pixels)", },
-       ["glGetTextureLevelParameterfvEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLenum pname, GLfloat* params)", },
-       ["glGetTextureLevelParameterivEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLenum pname, GLint* params)", },
-       ["glGetTextureParameterIivEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum pname, GLint* params)", },
-       ["glGetTextureParameterIuivEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum pname, GLuint* params)", },
-       ["glGetTextureParameterfvEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum pname, GLfloat* params)", },
-       ["glGetTextureParameterivEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum pname, GLint* params)", },
+          args = "(GLenum pname, GLuint index, void** params)", },
        ["glGetVertexArrayIntegeri_vEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -13911,22 +14512,12 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint vaobj, GLuint index, GLenum pname, GLvoid** param)", },
+          args = "(GLuint vaobj, GLuint index, GLenum pname, void** param)", },
        ["glGetVertexArrayPointervEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint vaobj, GLenum pname, GLvoid** param)", },
-       ["glMapNamedBufferEXT"] = { type ='function',
-          description = "",
-          returns = "(GLvoid *)",
-          valuetype = nil,
-          args = "(GLuint buffer, GLenum access)", },
-       ["glMapNamedBufferRangeEXT"] = { type ='function',
-          description = "",
-          returns = "(GLvoid *)",
-          valuetype = nil,
-          args = "(GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access)", },
+          args = "(GLuint vaobj, GLenum pname, void** param)", },
        ["glMatrixFrustumEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -14031,7 +14622,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLint size, GLenum type, GLsizei stride, const GLvoid *pointer)", },
+          args = "(GLenum texunit, GLint size, GLenum type, GLsizei stride, const void *pointer)", },
        ["glMultiTexEnvfEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -14086,17 +14677,17 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *pixels)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const void *pixels)", },
        ["glMultiTexImage2DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void *pixels)", },
        ["glMultiTexImage3DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const void *pixels)", },
        ["glMultiTexParameterIivEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -14136,37 +14727,22 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const GLvoid *pixels)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const void *pixels)", },
        ["glMultiTexSubImage2DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels)", },
        ["glMultiTexSubImage3DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid *pixels)", },
-       ["glNamedBufferDataEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint buffer, GLsizeiptr size, const GLvoid *data, GLenum usage)", },
-       ["glNamedBufferSubDataEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint buffer, GLintptr offset, GLsizeiptr size, const GLvoid *data)", },
+          args = "(GLenum texunit, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void *pixels)", },
        ["glNamedCopyBufferSubDataEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
           args = "(GLuint readBuffer, GLuint writeBuffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)", },
-       ["glNamedFramebufferRenderbufferEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint framebuffer, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)", },
        ["glNamedFramebufferTexture1DEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -14182,21 +14758,11 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLuint framebuffer, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset)", },
-       ["glNamedFramebufferTextureEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level)", },
        ["glNamedFramebufferTextureFaceEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
           args = "(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLenum face)", },
-       ["glNamedFramebufferTextureLayerEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLint layer)", },
        ["glNamedProgramLocalParameter4dEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -14256,102 +14822,37 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint program, GLenum target, GLenum format, GLsizei len, const GLvoid *string)", },
-       ["glNamedRenderbufferStorageEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint renderbuffer, GLenum internalformat, GLsizei width, GLsizei height)", },
+          args = "(GLuint program, GLenum target, GLenum format, GLsizei len, const void *string)", },
        ["glNamedRenderbufferStorageMultisampleCoverageEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
           args = "(GLuint renderbuffer, GLsizei coverageSamples, GLsizei colorSamples, GLenum internalformat, GLsizei width, GLsizei height)", },
-       ["glNamedRenderbufferStorageMultisampleEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint renderbuffer, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)", },
        ["glPushClientAttribDefaultEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
           args = "(GLbitfield mask)", },
-       ["glTextureBufferEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum internalformat, GLuint buffer)", },
        ["glTextureImage1DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *pixels)", },
+          args = "(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const void *pixels)", },
        ["glTextureImage2DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels)", },
+          args = "(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void *pixels)", },
        ["glTextureImage3DEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels)", },
-       ["glTextureParameterIivEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum pname, const GLint* params)", },
-       ["glTextureParameterIuivEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum pname, const GLuint* params)", },
-       ["glTextureParameterfEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum pname, GLfloat param)", },
-       ["glTextureParameterfvEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum pname, const GLfloat* param)", },
-       ["glTextureParameteriEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum pname, GLint param)", },
-       ["glTextureParameterivEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLenum pname, const GLint* param)", },
+          args = "(GLuint texture, GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const void *pixels)", },
        ["glTextureRenderbufferEXT"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
           args = "(GLuint texture, GLenum target, GLuint renderbuffer)", },
-       ["glTextureSubImage1DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const GLvoid *pixels)", },
-       ["glTextureSubImage2DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels)", },
-       ["glTextureSubImage3DEXT"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(GLuint texture, GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid *pixels)", },
-       ["glUnmapNamedBufferEXT"] = { type ='function',
-          description = "",
-          returns = "(GLboolean)",
-          valuetype = nil,
-          args = "(GLuint buffer)", },
        ["glVertexArrayColorOffsetEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -14392,6 +14893,11 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLuint vaobj, GLuint buffer, GLint size, GLenum type, GLsizei stride, GLintptr offset)", },
+       ["glVertexArrayVertexAttribDivisorEXT"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint vaobj, GLuint index, GLuint divisor)", },
        ["glVertexArrayVertexAttribIOffsetEXT"] = { type ='function',
           description = "",
           returns = "()",
@@ -14407,11 +14913,16 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLuint vaobj, GLuint buffer, GLint size, GLenum type, GLsizei stride, GLintptr offset)", },
+       ["glBlendBarrierKHR"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(void)", },
        ["glDebugMessageCallback"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLDEBUGPROC callback, const GLvoid *userParam)", },
+          args = "(GLDEBUGPROC callback, const void *userParam)", },
        ["glDebugMessageControl"] = { type ='function',
           description = "",
           returns = "()",
@@ -14426,7 +14937,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "(GLuint)",
           valuetype = nil,
-          args = "(GLuint count, GLsizei bufsize, GLenum* sources, GLenum* types, GLuint* ids, GLenum* severities, GLsizei* lengths, GLchar* messageLog)", },
+          args = "(GLuint count, GLsizei bufSize, GLenum* sources, GLenum* types, GLuint* ids, GLenum* severities, GLsizei* lengths, GLchar* messageLog)", },
        ["glGetObjectLabel"] = { type ='function',
           description = "",
           returns = "()",
@@ -14436,7 +14947,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(void* ptr, GLsizei bufSize, GLsizei* length, GLchar *label)", },
+          args = "(const void *ptr, GLsizei bufSize, GLsizei* length, GLchar *label)", },
        ["glObjectLabel"] = { type ='function',
           description = "",
           returns = "()",
@@ -14446,7 +14957,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(void* ptr, GLsizei length, const GLchar* label)", },
+          args = "(const void *ptr, GLsizei length, const GLchar* label)", },
        ["glPopDebugGroup"] = { type ='function',
           description = "",
           returns = "()",
@@ -14457,16 +14968,46 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLenum source, GLuint id, GLsizei length, const GLchar * message)", },
+       ["glGetnUniformfv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint program, GLint location, GLsizei bufSize, GLfloat* params)", },
+       ["glGetnUniformiv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint program, GLint location, GLsizei bufSize, GLint* params)", },
+       ["glGetnUniformuiv"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLuint program, GLint location, GLsizei bufSize, GLuint* params)", },
+       ["glReadnPixels"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void *data)", },
        ["glMultiDrawArraysIndirectBindlessNV"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, const GLvoid *indirect, GLsizei drawCount, GLsizei stride, GLint vertexBufferCount)", },
+          args = "(GLenum mode, const void *indirect, GLsizei drawCount, GLsizei stride, GLint vertexBufferCount)", },
        ["glMultiDrawElementsIndirectBindlessNV"] = { type ='function',
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum mode, GLenum type, const GLvoid *indirect, GLsizei drawCount, GLsizei stride, GLint vertexBufferCount)", },
+          args = "(GLenum mode, GLenum type, const void *indirect, GLsizei drawCount, GLsizei stride, GLint vertexBufferCount)", },
+       ["glMultiDrawArraysIndirectBindlessCountNV"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLenum mode, const void *indirect, GLintptr drawCount, GLsizei maxDrawCount, GLsizei stride, GLint vertexBufferCount)", },
+       ["glMultiDrawElementsIndirectBindlessCountNV"] = { type ='function',
+          description = "",
+          returns = "()",
+          valuetype = nil,
+          args = "(GLenum mode, GLenum type, const void *indirect, GLintptr drawCount, GLsizei maxDrawCount, GLsizei stride, GLint vertexBufferCount)", },
        ["glGetImageHandleNV"] = { type ='function',
           description = "",
           returns = "(GLuint64)",
@@ -14581,7 +15122,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLuint index, GLenum type, GLsizei ustride, GLsizei vstride, GLboolean packed, GLvoid *points)", },
+          args = "(GLenum target, GLuint index, GLenum type, GLsizei ustride, GLsizei vstride, GLboolean packed, void *points)", },
        ["glGetMapParameterfvNV"] = { type ='function',
           description = "",
           returns = "()",
@@ -14596,7 +15137,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLuint index, GLenum type, GLsizei ustride, GLsizei vstride, GLint uorder, GLint vorder, GLboolean packed, const GLvoid *points)", },
+          args = "(GLenum target, GLuint index, GLenum type, GLsizei ustride, GLsizei vstride, GLint uorder, GLint vorder, GLboolean packed, const void *points)", },
        ["glMapParameterfvNV"] = { type ='function',
           description = "",
           returns = "()",
@@ -15331,7 +15872,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint path, GLsizei numCommands, const GLubyte* commands, GLsizei numCoords, GLenum coordType, const GLvoid*coords)", },
+          args = "(GLuint path, GLsizei numCommands, const GLubyte* commands, GLsizei numCoords, GLenum coordType, const void*coords)", },
        ["glPathCoordsNV"] = { type ='function',
           description = "",
           returns = "()",
@@ -15361,7 +15902,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint firstPathName, GLenum fontTarget, const void* fontName, GLbitfield fontStyle, GLsizei numGlyphs, GLenum type, const GLvoid*charcodes, GLenum handleMissingGlyphs, GLuint pathParameterTemplate, GLfloat emScale)", },
+          args = "(GLuint firstPathName, GLenum fontTarget, const void* fontName, GLbitfield fontStyle, GLsizei numGlyphs, GLenum type, const void*charcodes, GLenum handleMissingGlyphs, GLuint pathParameterTemplate, GLfloat emScale)", },
        ["glPathParameterfNV"] = { type ='function',
           description = "",
           returns = "()",
@@ -15401,7 +15942,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLuint path, GLsizei commandStart, GLsizei commandsToDelete, GLsizei numCommands, const GLubyte* commands, GLsizei numCoords, GLenum coordType, const GLvoid*coords)", },
+          args = "(GLuint path, GLsizei commandStart, GLsizei commandsToDelete, GLsizei numCommands, const GLubyte* commands, GLsizei numCoords, GLenum coordType, const void*coords)", },
        ["glPathSubCoordsNV"] = { type ='function',
           description = "",
           returns = "()",
@@ -15456,7 +15997,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLenum target, GLsizei length, GLvoid *pointer)", },
+          args = "(GLenum target, GLsizei length, void *pointer)", },
        ["glGetVideoi64vNV"] = { type ='function',
           description = "",
           returns = "()",
@@ -15632,11 +16173,6 @@ extern GLboolean __GLEW_WIN_swap_hint;
           returns = "()",
           valuetype = nil,
           args = "(GLint location, GLsizei count, const GLuint64EXT* value)", },
-       ["glTextureBarrierNV"] = { type ='function',
-          description = "",
-          returns = "()",
-          valuetype = nil,
-          args = "(void)", },
        ["glTexImage2DMultisampleCoverageNV"] = { type ='function',
           description = "",
           returns = "()",
@@ -15706,7 +16242,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(const void* vdpDevice, const GLvoid*getProcAddress)", },
+          args = "(const void* vdpDevice, const void*getProcAddress)", },
        ["glVDPAUIsSurfaceNV"] = { type ='function',
           description = "",
           returns = "()",
@@ -15751,7 +16287,7 @@ extern GLboolean __GLEW_WIN_swap_hint;
           description = "",
           returns = "()",
           valuetype = nil,
-          args = "(GLsizei length, GLvoid *pointer)", },
+          args = "(GLsizei length, void *pointer)", },
        ["glGetVertexAttribLi64vNV"] = { type ='function',
           description = "",
           returns = "()",
