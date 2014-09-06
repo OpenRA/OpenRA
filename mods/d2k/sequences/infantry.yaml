@@ -64,14 +64,6 @@ bazooka:
 		Start: 458
 		Facings: -8
 		Transpose: true
-	stand2: DATA
-		Start: 458
-		Facings: -8
-		Transpose: true
-	stand3: DATA
-		Start: 458
-		Facings: -8
-		Transpose: true
 	run: DATA
 		Start: 466
 		Length: 6
