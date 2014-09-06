@@ -34,12 +34,14 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool Shadow = ChromeMetrics.Get<bool>("TextShadow");
 		public Color ContrastColorDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
 		public Color ContrastColorLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
+		public Color URLColor = ChromeMetrics.Get<Color>("TextURLColor");
 		public string ClickURL = null;
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
 		public Func<Color> GetContrastColorDark;
 		public Func<Color> GetContrastColorLight;
+		public Func<Color> GetURLColor;
 
 		readonly Ruleset modRules;
 
@@ -49,6 +51,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetColor = () => TextColor;
 			GetContrastColorDark = () => ContrastColorDark;
 			GetContrastColorLight = () => ContrastColorLight;
+			GetURLColor = () => URLColor;
 		}
 
 		[ObjectCreator.UseCtor]
@@ -57,6 +60,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetText = () => Text;
 			GetColor = () => TextColor;
 			GetContrastColor = () => ContrastColor;
+			GetURLColor = () => URLColor;
 			this.modRules = modRules;
 		}
 
@@ -77,6 +81,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetColor = other.GetColor;
 			GetContrastColorDark = other.GetContrastColorDark;
 			GetContrastColorLight = other.GetContrastColorLight;
+			URLColor = other.URLColor;
 			ClickURL = other.ClickURL;
 			this.modRules = other.modRules;
 		}
