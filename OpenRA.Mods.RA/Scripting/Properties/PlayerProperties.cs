@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public PlayerProperties(ScriptContext context, Player player)
 		: base(context, player) { }
 
-		[Desc("The players name.")]
+		[Desc("The player's name.")]
 		public string Name { get { return player.PlayerName; } }
 
 		[Desc("Returns an array of actors representing all ground attack units of this player.")]

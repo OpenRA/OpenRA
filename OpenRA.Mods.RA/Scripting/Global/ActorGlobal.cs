@@ -21,7 +21,7 @@ namespace OpenRA.Scripting
 	{
 		public ActorGlobal(ScriptContext context) : base(context) { }
 
-		[Desc("Create a new actor. initTable specifies a list of key-value pairs that define initial parameters for the actors traits.")]
+		[Desc("Create a new actor. initTable specifies a list of key-value pairs that define initial parameters for the actor's traits.")]
 		public Actor Create(string type, bool addToWorld, LuaTable initTable)
 		{
 			var initDict = new TypeDictionary();
