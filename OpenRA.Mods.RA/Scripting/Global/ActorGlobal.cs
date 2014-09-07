@@ -21,7 +21,7 @@ namespace OpenRA.Scripting
 	{
 		public ActorGlobal(ScriptContext context) : base(context) { }
 
-		[Desc("Create a new actor. initTable specifies a list of key-value pairs that definite initial parameters for the actor's traits.")]
+		[Desc("Create a new actor. initTable specifies a list of key-value pairs that defines the initial parameters for the actor's traits.")]
 		public Actor Create(string type, bool addToWorld, LuaTable initTable)
 		{
 			var initDict = new TypeDictionary();
@@ -58,7 +58,7 @@ namespace OpenRA.Scripting
 			return a;
 		}
 
-		[Desc("Returns the build time (in ticks) of the requested unit type")]
+		[Desc("Returns the build time (in ticks) of the requested unit type.")]
 		public int BuildTime(string type)
 		{
 			ActorInfo ai;
@@ -68,7 +68,7 @@ namespace OpenRA.Scripting
 			return ai.GetBuildTime();
 		}
 
-		[Desc("Returns the cruise altitude of the requested unit type (zero if it ground-based).")]
+		[Desc("Returns the cruise altitude of the requested unit type (zero if it is ground-based).")]
 		public int CruiseAltitude(string type)
 		{
 			ActorInfo ai;
