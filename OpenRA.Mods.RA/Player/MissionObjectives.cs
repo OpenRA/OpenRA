@@ -137,10 +137,13 @@ namespace OpenRA.Mods.RA
 
 		void CheckIfGameIsOver(Player player)
 		{
-			var players = player.World.Players.Where(p => !p.NonCombatant);
+			var mapType = player.World.Map.Type;
 
+			var players = player.World.Players.Where(p => !p.NonCombatant);
 			var gameOver = players.All(p => p.WinState != WinState.Undefined);
-			if (gameOver)
+
+			if (gameOver && (mapType == "Mission" || mapType == "Campaign"
+			    || players.Where(p => !p.IsBot).Count() <= 1))
 				Game.RunAfterDelay(info.GameOverDelay, () =>
 				{
 					player.World.EndGame();
