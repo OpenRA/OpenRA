@@ -324,6 +324,8 @@ local jumptopatterns = {
   "^%s*(.-)%((%d+).*%)%s*:",
   --[string "<filename>"]:line:
   '^.-%[string "([^"]+)"%]:(%d+)%s*:',
+  -- <filename>:line:linepos
+  "^%s*(.-):(%d+):(%d+):",
   -- <filename>:line:
   "^%s*(.-):(%d+)%s*:",
 }
