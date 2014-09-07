@@ -50,6 +50,7 @@ lst:
 		Tick: 150
 	unload:
 		Start: 4
+		ZOffset: -511
 	icon: lsticon
 		Start: 0
 
