@@ -38,13 +38,6 @@ Container@LEAVE_MAP_WIDGET:
 							Height: 65
 							Text: Press 'Leave' to return to the main menu.
 							Align: Center
-						Button@STATS_BUTTON:
-							X: 20
-							Y: PARENT_BOTTOM - 45
-							Width: 140
-							Height: 25
-							Font: Bold
-							Text: Statistics
 						Button@LEAVE_BUTTON:
 							X: PARENT_RIGHT - WIDTH - 20
 							Y: PARENT_BOTTOM - 45
@@ -71,13 +64,6 @@ Container@LEAVE_MAP_WIDGET:
 							Font: Bold
 							Align: Center
 							Text: The game has ended
-						Button@STATS_BUTTON:
-							X: PARENT_RIGHT - 2 * (WIDTH + 20)
-							Y: PARENT_BOTTOM - 45
-							Width: 120
-							Height: 25
-							Font: Bold
-							Text: Statistics
 						Button@LEAVE_BUTTON:
 							X: PARENT_RIGHT - WIDTH - 20
 							Y: PARENT_BOTTOM - 45

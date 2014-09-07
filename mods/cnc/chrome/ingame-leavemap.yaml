@@ -51,13 +51,6 @@ Container@LEAVE_MAP_WIDGET:
 							Height: 35
 							Font: Bold
 							Text: Leave
-						Button@STATS_BUTTON:
-							X: PARENT_RIGHT - WIDTH
-							Y: PARENT_BOTTOM - 1
-							Width: 140
-							Height: 35
-							Font: Bold
-							Text: Statistics
 		Container@LEAVE_MAP_FULL:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
@@ -85,12 +78,5 @@ Container@LEAVE_MAP_WIDGET:
 							Height: 35
 							Font: Bold
 							Text: Leave
-						Button@STATS_BUTTON:
-							X: 150
-							Y: PARENT_BOTTOM - 1
-							Width: 140
-							Height: 35
-							Font: Bold
-							Text: Statistics
 						Container@OBJECTIVES:
 
