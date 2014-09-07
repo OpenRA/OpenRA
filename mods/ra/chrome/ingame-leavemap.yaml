@@ -1,25 +1,6 @@
 Container@LEAVE_MAP_WIDGET:
 	Logic: LeaveMapLogic
 	Children:
-		Background@BORDER:
-			X: 0 - 15
-			Y: 0 - 15
-			Width: WINDOW_RIGHT + 30
-			Height: WINDOW_BOTTOM + 30
-			Background: mainmenu-border
-		Image@LOGO:
-			X: WINDOW_RIGHT - 296
-			Y: 30
-			ImageCollection: logos
-			ImageName: logo
-		Label@VERSION_LABEL:
-			X: WINDOW_RIGHT - 296
-			Y: 296 - 20
-			Width: 296 - 20
-			Height: 25
-			Align: Center
-			Font: Regular
-			Contrast: True
 		Container@LEAVE_MAP_SIMPLE
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2

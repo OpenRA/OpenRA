@@ -19,8 +19,6 @@ namespace OpenRA.Mods.RA.Widgets
 		[ObjectCreator.UseCtor]
 		public LeaveMapLogic(Widget widget, World world)
 		{
-			widget.Get<LabelWidget>("VERSION_LABEL").Text = Game.modData.Manifest.Mod.Version;
-
 			var panelName = "LEAVE_MAP_SIMPLE";
 
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();

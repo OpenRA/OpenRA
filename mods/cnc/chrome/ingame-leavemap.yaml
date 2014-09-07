@@ -1,23 +1,6 @@
 Container@LEAVE_MAP_WIDGET:
 	Logic: LeaveMapLogic
 	Children:
-		Image@EVA:
-			X: WINDOW_RIGHT-128-43
-			Y: 43
-			Width: 128
-			Height: 64
-			ImageCollection: logos
-			ImageName: eva
-		Label@VERSION_LABEL:
-			X: WINDOW_RIGHT-128-43
-			Y: 115
-			Width: 128
-			Align: Center
-			Contrast: true
-		Background@BORDER:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
-			Background: shellmapborder
 		Container@LEAVE_MAP_SIMPLE
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
