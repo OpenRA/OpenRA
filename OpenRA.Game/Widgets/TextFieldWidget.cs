@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.IO;
 using System.Drawing;
 
 namespace OpenRA.Widgets
@@ -173,9 +174,9 @@ namespace OpenRA.Widgets
 			if (e.Key == Keycode.V && (Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl) 
 				|| (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))))
 			{
-				var ClipboardText = Game.Renderer.Device.GetClipboardText();
-				if (ClipboardText.Length > 0)
-					using (var reader = new System.IO.StringReader(ClipboardText))
+				var clipboardText = Game.Renderer.Device.GetClipboardText();
+				if (clipboardText.Length > 0)
+					using (var reader = new StringReader(clipboardText))
 						HandleTextInput(reader.ReadLine().Trim());
 				return true;
 			}
