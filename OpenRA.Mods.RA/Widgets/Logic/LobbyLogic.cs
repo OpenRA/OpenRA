@@ -578,7 +578,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (matches.Count == 1)
 			{
 				textLabel.Contrast = true;
-				textLabel.GetColor = () => textLabel.GetURLColor();
+				textLabel.GetColor = () => textLabel.URLColor;
 				textLabel.ClickURL = matches[0].Value;
 			}
 
