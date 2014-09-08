@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using System.Diagnostics;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
@@ -17,25 +18,43 @@ namespace OpenRA.Widgets
 	public enum TextAlign { Left, Center, Right }
 	public enum TextVAlign { Top, Middle, Bottom }
 
+	
 	public class LabelWidget : Widget
 	{
-		[Translate] public string Text = null;
+		[Translate]
+		public string Text = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
 		public string Font = ChromeMetrics.Get<string>("TextFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("TextColor");
 		public bool Contrast = ChromeMetrics.Get<bool>("TextContrast");
 		public Color ContrastColor = ChromeMetrics.Get<Color>("TextContrastColor");
+		public Color URLColor = ChromeMetrics.Get<Color>("TextURLColor");
+		public string ClickURL = null;
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
 		public Func<Color> GetContrastColor;
+		public Func<Color> GetURLColor;
+
+		readonly Ruleset modRules;
 
 		public LabelWidget()
 		{
 			GetText = () => Text;
 			GetColor = () => TextColor;
 			GetContrastColor = () => ContrastColor;
+			GetURLColor = () => URLColor;
+		}
+
+		[ObjectCreator.UseCtor]
+		public LabelWidget(Ruleset modRules)
+		{
+			GetText = () => Text;
+			GetColor = () => TextColor;
+			GetContrastColor = () => ContrastColor;
+			GetURLColor = () => URLColor;
+			this.modRules = modRules;
 		}
 
 		protected LabelWidget(LabelWidget other)
@@ -51,6 +70,9 @@ namespace OpenRA.Widgets
 			GetText = other.GetText;
 			GetColor = other.GetColor;
 			GetContrastColor = other.GetContrastColor;
+			URLColor = other.URLColor;
+			ClickURL = other.ClickURL;
+			this.modRules = other.modRules;
 		}
 
 		public override void Draw()
@@ -67,16 +89,16 @@ namespace OpenRA.Widgets
 			var position = RenderOrigin;
 
 			if (VAlign == TextVAlign.Middle)
-				position += new int2(0, (Bounds.Height - textSize.Y)/2);
+				position += new int2(0, (Bounds.Height - textSize.Y) / 2);
 
 			if (VAlign == TextVAlign.Bottom)
 				position += new int2(0, Bounds.Height - textSize.Y);
 
 			if (Align == TextAlign.Center)
-				position += new int2((Bounds.Width - textSize.X)/2, 0);
+				position += new int2((Bounds.Width - textSize.X) / 2, 0);
 
 			if (Align == TextAlign.Right)
-				position += new int2(Bounds.Width - textSize.X,0);
+				position += new int2(Bounds.Width - textSize.X, 0);
 
 			if (WordWrap)
 				text = WidgetUtils.WrapText(text, Bounds.Width, font);
@@ -88,7 +110,24 @@ namespace OpenRA.Widgets
 			else
 				font.DrawText(text, position, color);
 		}
+		
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Up)
+				return false;
 
+			if (mi.Event == MouseInputEvent.Down && ClickURL != null)
+			{
+				Sound.PlayNotification(modRules, null, "Sounds", "ClickSound", null);
+				ProcessStartInfo startInfo = new ProcessStartInfo(ClickURL);
+				startInfo.WindowStyle = ProcessWindowStyle.Maximized;
+				Process.Start(startInfo);
+				return true;
+			}
+			return false;
+		}
+
+		public override string GetCursor(int2 pos) { return (ClickURL != null) ? "default-hand" : "default"; }
 		public override Widget Clone() { return new LabelWidget(this); }
 	}
 }

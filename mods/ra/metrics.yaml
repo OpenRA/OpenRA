@@ -19,6 +19,7 @@ Metrics:
 	TextColor: 255,255,255
 	TextContrast: false
 	TextContrastColor: 0,0,0
+	TextURLColor: 50,100,255
 	ColorPickerRemapIndices: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
 	SpawnFont: TinyBold
 	SpawnColor: 255,255,255
