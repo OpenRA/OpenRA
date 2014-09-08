@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 				collector.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(amount);
 
 				if (crateInfo.UseCashTick)
-					w.Add(new CashTick(collector.CenterPosition, collector.Owner.Color.RGB, amount));
+					w.Add(new FloatingText(collector.CenterPosition, collector.Owner.Color.RGB, FloatingText.FormatCashTick(amount), 30));
 			});
 
 			base.Activate(collector);

@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 		void MaybeAddCashTick(Actor self, int amount)
 		{
 			if (Info.ShowTicks)
-				self.World.AddFrameEndTask(w => w.Add(new CashTick(self.CenterPosition, self.Owner.Color.RGB, amount)));
+				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(amount), 30)));
 		}
 	}
 }
