@@ -26,7 +26,6 @@ namespace OpenRA.Mods.RA.Air
 		public readonly PlaneInfo Info;
 		[Sync] public WPos RTBPathHash;
 		Actor self;
-		public bool IsMoving { get { return self.CenterPosition.Z > 0; } set { } }
 
 		public Plane(ActorInitializer init, PlaneInfo info)
 			: base(init, info)

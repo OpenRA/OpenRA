@@ -36,6 +36,7 @@ namespace OpenRA.Mods.RA.Air
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
 		public readonly string[] LandableTerrainTypes = { };
+		public readonly WRange LandAltitude = WRange.Zero;
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
@@ -50,6 +51,7 @@ namespace OpenRA.Mods.RA.Air
 
 		readonly AircraftInfo info;
 		readonly Actor self;
+		public bool IsMoving { get { return self.CenterPosition.Z > info.LandAltitude.Range; } set { } }
 
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
@@ -121,7 +123,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public Actor GetActorBelow()
 		{
-			if (self.CenterPosition.Z != 0)
+			if (IsMoving)
 				return null; // not on the ground.
 
 			return self.World.ActorMap.GetUnitsAt(self.Location)
@@ -200,9 +202,19 @@ namespace OpenRA.Mods.RA.Air
 		}
 
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return false; } // TODO: Handle landing
-		public SubCell GetValidSubCell(SubCell preferred) { return SubCell.Invalid; }
-		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true) { return SubCell.Invalid; } // Does not use any subcell
-		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true) { return true; }
+		public SubCell GetValidSubCell(SubCell preferred) { return info.LandableTerrainTypes.Length > 0 ? SubCell.FullCell : SubCell.Invalid; }
+
+		public SubCell GetAvailableSubCell(CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			return CanLand(cell, ignoreActor) ? SubCell.FullCell : SubCell.Invalid;
+		}
+
+		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			if (ignoreActor != null)
+				return self.World.ActorMap.AnyUnitsAt(cell, SubCell.FullCell, checkTransientActors, self, ignoreActor);
+			return self.World.ActorMap.AnyUnitsAt(cell, SubCell.FullCell, checkTransientActors, self);
+		}
 
 		public int MovementSpeed
 		{
@@ -227,12 +239,12 @@ namespace OpenRA.Mods.RA.Air
 			return speed * dir / 1024;
 		}
 
-		public bool CanLand(CPos cell)
+		public bool CanLand(CPos cell, Actor ignoreActor = null)
 		{
 			if (!self.World.Map.Contains(cell))
 				return false;
 
-			if (self.World.ActorMap.AnyUnitsAt(cell))
+			if (self.World.ActorMap.AnyUnitsAt(cell, SubCell.FullCell, true, self, ignoreActor))
 				return false;
 
 			var type = self.World.Map.GetTerrainInfo(cell).Type;

@@ -31,6 +31,11 @@ namespace OpenRA.Mods.RA.Air
 			if (requireSpace && !helicopter.CanLand(self.Location))
 				return this;
 
+			var centerOfCell = self.World.Map.CenterOfCell(self.Location);
+			var pos = helicopter.CenterPosition;
+			if ((requireSpace && (pos.X != centerOfCell.X || pos.Y != centerOfCell.Y))) // If requireSpace, then require center of cell
+				return Util.SequenceActivities(new AttackMove.AttackMoveActivity(self, self.Trait<IMove>().MoveTo(self.Location, 1)), this, NextActivity);
+
 			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.LandAltitude))
 				return this;
 
