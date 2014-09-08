@@ -37,7 +37,7 @@ namespace OpenRA.Scripting
 		{
 			var ret = "{0} {1}".F(pi.ParameterType.LuaDocString(), pi.Name);
 			if (pi.IsOptional)
-				ret += " = {0}".F(pi.DefaultValue);
+				ret += " = {0}".F(pi.DefaultValue != null ? pi.DefaultValue : "nil");
 
 			return ret;
 		}
