@@ -40,7 +40,7 @@ return {
 
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({startwith = file, redirect = mac and "r" or "c",
+      DebuggerAttachDefault({startwith = file, redirect = "r",
         runstart = ide.config.debugger.runonstart ~= false})
 
       local function needRefresh(mdbl, mdbc)
@@ -79,13 +79,19 @@ return {
       end
     end
 
+    local cfg = ide.config.corona or {}
     local debugopt = mac and "-debug 1 -project " or "-debug "
-    local skin = ide.config.corona and ide.config.corona.skin
-      and (" -skin "..ide.config.corona.skin) or ""
-    local cmd = ('"%s" %s"%s"%s')
-      :format(corona, rundebug and debugopt or "", file, skin)
+    local skin = cfg.skin and (" -skin "..ide.config.corona.skin) or ""
+    local noconsole = win and not cfg.showconsole and "-no-console " or ""
+    local cmd = ('"%s" %s%s"%s"%s')
+      :format(corona, noconsole, rundebug and debugopt or "", file, skin)
+
+    local uhw = ide.config.unhidewindow
+    local cwc = uhw and uhw.ConsoleWindowClass
+    if uhw and cfg.showconsole then uhw.ConsoleWindowClass = 0 end
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-    return CommandLineRun(cmd,self:fworkdir(wfilename),true,false)
+    return CommandLineRun(cmd,self:fworkdir(wfilename),true,true,nil,nil,
+      function() if uhw and cfg.showconsole then uhw.ConsoleWindowClass = cwc end end)
   end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
