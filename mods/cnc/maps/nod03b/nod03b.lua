@@ -1,3 +1,5 @@
+NodUnits = { "e1", "e1", "bggy", "bike", "e1", "e1", "bike", "bggy", "e1", "e1" }
+Engineers = { "e6", "e6", "e6" }
 FirstAttackWaveUnits  = { "e1", "e1", "e2" }
 SecondAttackWaveUnits = { "e1", "e1", "e1" }
 ThirdAttackWaveUnits = { "e1", "e1", "e1", "e2" }
@@ -21,6 +23,14 @@ SecondAttackWave = function(soldier)
 	soldier.AttackMove(PlayerBase.Location)
 end
 
+InsertNodUnits = function()
+	Reinforcements.Reinforce(player, { "mcv" }, { McvEntry.Location, McvDeploy.Location })
+	Reinforcements.Reinforce(player, NodUnits, { NodEntry.Location, NodRallypoint.Location })
+	Trigger.AfterDelay(Utils.Seconds(15), function()
+		Reinforcements.Reinforce(player, Engineers, { McvEntry.Location, PlayerBase.Location })
+	end)
+end
+
 WorldLoaded = function()
 	player = Player.GetPlayer("Nod")
 	enemy = Player.GetPlayer("GDI")
@@ -29,6 +39,7 @@ WorldLoaded = function()
 	nodObjective1 = player.AddPrimaryObjective("Capture the prison")
 	nodObjective2 = player.AddSecondaryObjective("Destroy all GDI forces")
 
+	InsertNodUnits()
 	Trigger.OnObjectiveCompleted(player, function() Media.DisplayMessage("Objective completed") end)
 	Trigger.OnObjectiveFailed(player, function() Media.DisplayMessage("Objective failed") end)
 
@@ -36,19 +47,23 @@ WorldLoaded = function()
 	Trigger.AfterDelay(Utils.Seconds(80), function() SendAttackWave(SecondAttackWaveUnits, SecondAttackWave) end)
 	Trigger.AfterDelay(Utils.Seconds(140), function() SendAttackWave(ThirdAttackWaveUnits, FirstAttackWave) end)
 
-	Trigger.OnCapture(TechCenter, function() player.MarkCompletedObjective(nodObjective1) end)
 	Trigger.OnKilled(TechCenter, function() player.MarkFailedObjective(nodObjective1) end)
+	Trigger.OnCapture(TechCenter, function()
+		Trigger.AfterDelay(Utils.Seconds(2), function()
+			player.MarkCompletedObjective(nodObjective1)
+		end)
+	end)
 
 	Trigger.OnPlayerWon(player, function()
-		Trigger.AfterDelay(Utils.Seconds(2), function()
-			Media.PlaySpeechNotification(player, "Win")
+		Media.PlaySpeechNotification(player, "Win")
+		Trigger.AfterDelay(Utils.Seconds(1), function()
 			Media.PlayMovieFullscreen("desflees.vqa")
 		end)
 	end)
 
 	Trigger.OnPlayerLost(player, function()
+		Media.PlaySpeechNotification(player, "Lose")
 		Trigger.AfterDelay(Utils.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Lose")
 			Media.PlayMovieFullscreen("flag.vqa")
 		end)
 	end)
