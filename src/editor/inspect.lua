@@ -23,11 +23,15 @@ local function init()
   end
 end
 
+function M.pos2line(pos)
+  return pos and 1 + select(2, M.src:sub(1,pos):gsub(".-\n[^\n]*", ""))
+end
+
 function M.warnings_from_string(src, file)
   init()
 
   local ast, err, linenum, colnum = LA.ast_from_string(src, file)
-  if err then return nil, err, linenum, colnum end
+  if not ast and err then return nil, err, linenum, colnum end
 
   if FAST then
     LI.inspect(ast, nil, src)
@@ -44,6 +48,7 @@ function M.warnings_from_string(src, file)
     globinit[k] = true
   end
 
+  M.src, M.file = src, file
   return M.show_warnings(ast, globinit)
 end
 
@@ -64,19 +69,22 @@ end
 function M.show_warnings(top_ast, globinit)
   local warnings = {}
   local function warn(msg, linenum, path)
-    warnings[#warnings+1] = (path or "?") .. ":" .. (linenum or 0) .. ": " .. msg
+    warnings[#warnings+1] = (path or M.file or "?") .. ":" .. (linenum or M.pos2line(M.ast.pos) or 0) .. ": " .. msg
   end
   local function known(o) return not T.istype[o] end
   local function index(f) -- build abc.def.xyz name recursively
     return (f[1].tag == 'Id' and f[1][1] or index(f[1])) .. '.' .. f[2][1] end
   local globseen, isseen, fieldseen = globinit or {}, {}, {}
   LA.walk(top_ast, function(ast)
+    M.ast = ast
     local path, line = tostring(ast.lineinfo):gsub('<C|','<'):match('<([^|]+)|L(%d+)')
     local name = ast[1]
     -- check if we're masking a variable in the same scope
     if ast.localmasking and name ~= '_' and
        ast.level == ast.localmasking.level then
-      local linenum = tostring(ast.localmasking.lineinfo.first):match('|L(%d+)')
+      local linenum = ast.localmasking.lineinfo
+        and tostring(ast.localmasking.lineinfo.first):match('|L(%d+)')
+        or M.pos2line(ast.localmasking.pos)
       local parent = ast.parent and ast.parent.parent
       local func = parent and parent.tag == 'Localrec'
       warn("local " .. (func and 'function' or 'variable') .. " '" ..
@@ -135,7 +143,7 @@ function M.show_warnings(top_ast, globinit)
           and (" in '"..index(ast.parent):gsub("%."..name.."$","").."'")
           or ""
         warn("first use of unknown field '" .. name .."'"..parent,
-          tostring(ast.lineinfo.first):match('|L(%d+)'), path)
+          ast.lineinfo and tostring(ast.lineinfo.first):match('|L(%d+)'), path)
       end
     elseif ast.tag == 'Id' and not ast.localdefinition and not ast.definedglobal then
       if not globseen[name] then
@@ -184,7 +192,6 @@ if compilepos then
 end
 
 local debugger = ide.debugger
-local openDocuments = ide.openDocuments
 
 local function analyzeProgram(editor)
   if ide:GetMenuBar():IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
