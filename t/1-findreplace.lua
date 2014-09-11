@@ -31,8 +31,19 @@ is(editor:GetSelectionEnd(), selend, "Quick Find works based on previous search.
 ide.frame:ProcessEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, ID_FINDNEXT))
 is(editor:GetSelectionStart(), selend, "Quick Find finds next match.")
 
--- replace the text once
+-- check that text in "find" control is checked against selection with replacing
+findReplace.findText = "something else"
 findReplace.replaceText = replace
+findReplace.foundString = true
+findReplace:ReplaceString()
+is(select(2, editor:GetText():gsub(search, search)), 4, "Replace doesn't replace selection that doesn't match 'find' text.")
+
+-- restore position and selection
+editor:GotoPos(4) -- reset current selection
+findReplace.findText = search
+findReplace:FindString()
+
+-- replace the text once
 findReplace:ReplaceString()
 local _, replacements = editor:GetText():gsub(replace, replace)
 is(replacements, 1, "Replace replaces once.")

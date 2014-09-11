@@ -225,15 +225,14 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
       ide.frame:SetStatusText(("%s %s."):format(
         TR("Replaced"), TR("%d instance", occurrences):format(occurrences)))
     else
+      editor:TargetFromSelection()
       -- check if there is anything selected as well as the user can
       -- move the cursor after successful search
       if findReplace.foundString
-      and editor:GetSelectionStart() ~= editor:GetSelectionEnd() then
+      and editor:GetSelectionStart() ~= editor:GetSelectionEnd()
+      -- check that the current selection matches what's being searched for
+      and editor:SearchInTarget(findReplace.findText) ~= -1 then
         local start = editor:GetSelectionStart()
-
-        -- convert selection to target as we need TargetRE support
-        editor:TargetFromSelection()
-
         local length = editor:GetLength()
         local replaced = findReplace.fRegularExpr
           and editor:ReplaceTargetRE(findReplace.replaceText)
