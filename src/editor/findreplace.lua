@@ -43,6 +43,8 @@ ide.findReplace = {
 }
 local findReplace = ide.findReplace
 
+local NOTFOUND = -1
+
 function findReplace:GetEditor()
   return findReplace.oveditor or GetEditorWithFocus() or GetEditor()
 end
@@ -116,7 +118,7 @@ local function shake(window, shakes, duration, vigour)
   local delay = math.floor(duration/shakes/2)
   local position = window:GetPosition() -- get current position
   local deltax = window:GetSize():GetWidth()*vigour
-  for s = 1, shakes do
+  for _ = 1, shakes do
     window:Move(position:GetX()-deltax, position:GetY())
     wx.wxMilliSleep(delay)
     window:Move(position:GetX()+deltax, position:GetY())
@@ -132,12 +134,12 @@ function findReplace:FindString(reverse)
     setSearchFlags(editor)
     setTarget(editor, fDown)
     local posFind = editor:SearchInTarget(findReplace.findText)
-    if (posFind == -1) and findReplace.fWrap then
+    if (posFind == NOTFOUND) and findReplace.fWrap then
       editor:SetTargetStart(iff(fDown, 0, editor:GetLength()))
       editor:SetTargetEnd(iff(fDown, editor:GetLength(), 0))
       posFind = editor:SearchInTarget(findReplace.findText)
     end
-    if posFind == -1 then
+    if posFind == NOTFOUND then
       findReplace.foundString = false
       ide.frame:SetStatusText(TR("Text not found."))
       shake(findReplace.dialog)
@@ -166,8 +168,8 @@ function findReplace:FindStringAll(inFileRegister)
 
     setSearchFlags(editor)
     local posFind = editor:SearchInTarget(findReplace.findText)
-    if (posFind ~= -1) then
-      while posFind ~= -1 do
+    if (posFind ~= NOTFOUND) then
+      while posFind ~= NOTFOUND do
         inFileRegister(posFind)
         editor:SetTargetStart(posFind + findLen)
         editor:SetTargetEnd(e)
@@ -200,9 +202,9 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
       setSearchFlags(editor)
       local occurrences = 0
       local posFind = editor:SearchInTarget(findReplace.findText)
-      if (posFind ~= -1) then
+      if (posFind ~= NOTFOUND) then
         if (not inFileRegister) then editor:BeginUndoAction() end
-        while posFind ~= -1 do
+        while posFind ~= NOTFOUND do
           if (inFileRegister) then inFileRegister(posFind) end
 
           local length = editor:GetLength()
@@ -231,9 +233,8 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
       if findReplace.foundString
       and editor:GetSelectionStart() ~= editor:GetSelectionEnd()
       -- check that the current selection matches what's being searched for
-      and editor:SearchInTarget(findReplace.findText) ~= -1 then
+      and editor:SearchInTarget(findReplace.findText) ~= NOTFOUND then
         local start = editor:GetSelectionStart()
-        local length = editor:GetLength()
         local replaced = findReplace.fRegularExpr
           and editor:ReplaceTargetRE(findReplace.replaceText)
           or editor:ReplaceTarget(findReplace.replaceText)
@@ -330,9 +331,9 @@ end
 
 local function getExts()
   local knownexts = {}
-  for i,spec in pairs(ide.specs) do
+  for _, spec in pairs(ide.specs) do
     if (spec.exts) then
-      for n,ext in ipairs(spec.exts) do
+      for _, ext in ipairs(spec.exts) do
         table.insert(knownexts, "*."..ext)
       end
     end
