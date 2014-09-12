@@ -22,18 +22,25 @@ namespace OpenRA.Mods.RA.Scripting
 		OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnAddedToWorld, OnRemovedFromWorld };
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
-	public class ScriptTriggersInfo : TraitInfo<ScriptTriggers> { }
+	public class ScriptTriggersInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new ScriptTriggers(init.world); }
+	}
 
 	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyObjectivesUpdated, INotifyCapture, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable
 	{
+		readonly World world;
+
 		public event Action<Actor> OnKilledInternal = _ => { };
 		public event Action<Actor> OnRemovedInternal = _ => { };
 
 		public Dictionary<Trigger, List<Pair<LuaFunction, ScriptContext>>> Triggers = new Dictionary<Trigger, List<Pair<LuaFunction, ScriptContext>>>();
 
-		public ScriptTriggers()
+		public ScriptTriggers(World world)
 		{
-			foreach (var t in Enum.GetValues(typeof(Trigger)).Cast<Trigger>())
+			this.world = world;
+
+			foreach (Trigger t in Enum.GetValues(typeof(Trigger)))
 				Triggers.Add(t, new List<Pair<LuaFunction, ScriptContext>>());
 		}
 
@@ -265,20 +272,22 @@ namespace OpenRA.Mods.RA.Scripting
 
 		public void Clear(Trigger trigger)
 		{
-			Triggers[trigger].Clear();
+			world.AddFrameEndTask(w =>
+			{
+				Triggers[trigger].Select(p => p.First).Do(f => f.Dispose());
+				Triggers[trigger].Clear();
+			});
 		}
 
 		public void ClearAll()
 		{
-			foreach (var trigger in Triggers)
-				trigger.Value.Clear();
+			foreach (Trigger t in Enum.GetValues(typeof(Trigger)))
+				Clear(t);
 		}
 
 		public void Dispose()
 		{
-			var pairs = Triggers.Values;
-			pairs.SelectMany(l => l).Select(p => p.First).Do(f => f.Dispose());
-			pairs.Do(l => l.Clear());
+			ClearAll();
 		}
 	}
 }
