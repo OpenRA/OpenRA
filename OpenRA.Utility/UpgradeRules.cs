@@ -517,6 +517,16 @@ namespace OpenRA.Utility
 					}
 				}
 
+				// DuplicateUnitCrateAction was tidied up
+				if (engineVersion < 20140912)
+				{
+					if (depth == 2 && node.Key == "MaxDuplicatesWorth" && parentKey == "DuplicateUnitCrateAction")
+						node.Key = "MaxDuplicateValue";
+
+					if (depth == 2 && node.Key == "ValidDuplicateTypes" && parentKey == "DuplicateUnitCrateAction")
+						node.Key = "ValidTargets";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
