@@ -23,12 +23,17 @@ namespace OpenRA.Mods.RA
 
 	class RevealMapCrateAction : CrateAction
 	{
+		readonly RevealMapCrateActionInfo info;
+
 		public RevealMapCrateAction(Actor self, RevealMapCrateActionInfo info)
-			: base(self, info) {}
+			: base(self, info)
+		{
+			this.info = info;
+		}
 
 		bool ShouldReveal(Player collectingPlayer)
 		{
-			if (((RevealMapCrateActionInfo)info).IncludeAllies)
+			if (info.IncludeAllies)
 				return collectingPlayer.World.LocalPlayer != null &&
 					collectingPlayer.Stances[collectingPlayer.World.LocalPlayer] == Stance.Ally;
 
@@ -37,10 +42,10 @@ namespace OpenRA.Mods.RA
 
 		public override void Activate(Actor collector)
 		{
-			base.Activate(collector);
-
-			if (ShouldReveal( collector.Owner ))
+			if (ShouldReveal(collector.Owner))
 				collector.Owner.Shroud.ExploreAll(collector.World);
+
+			base.Activate(collector);
 		}
 	}
 }

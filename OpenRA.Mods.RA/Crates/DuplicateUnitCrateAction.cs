@@ -22,10 +22,10 @@ namespace OpenRA.Mods.RA.Crates
 		[Desc("The maximum number of duplicates to make.")]
 		public readonly int MaxAmount = 2;
 
-		[Desc("The minimum number of duplicates to make.","Overrules MaxDuplicatesWorth.")]
+		[Desc("The minimum number of duplicates to make. Overrules MaxDuplicatesWorth.")]
 		public readonly int MinAmount = 1;
 
-		[Desc("The maximum total cost allowed for the duplicates.","Duplication stops if the total worth will exceed this number.","-1 = no limit")]
+		[Desc("The maximum total cost allowed for the duplicates.", "Duplication stops if the total worth will exceed this number.", "-1 = no limit")]
 		public readonly int MaxDuplicatesWorth = -1;
 
 		[Desc("The list of unit types we are allowed to duplicate.")]
@@ -42,47 +42,54 @@ namespace OpenRA.Mods.RA.Crates
 
 	class DuplicateUnitCrateAction : CrateAction
 	{
-		public readonly DuplicateUnitCrateActionInfo Info;
+		readonly DuplicateUnitCrateActionInfo info;
+		readonly Actor self;
 		readonly List<CPos> usedCells = new List<CPos>();
 
 		public DuplicateUnitCrateAction(Actor self, DuplicateUnitCrateActionInfo info)
-			: base(self, info) { Info = info; }
+			: base(self, info)
+		{
+			this.self = self;
+			this.info = info;
+		}
 
 		public bool CanGiveTo(Actor collector)
 		{
-			if (Info.ValidRaces.Any() && !Info.ValidRaces.Contains(collector.Owner.Country.Race))
+			if (info.ValidRaces.Any() && !info.ValidRaces.Contains(collector.Owner.Country.Race))
 				return false;
 
 			var targetable = collector.Info.Traits.GetOrDefault<ITargetableInfo>();
-			if (targetable == null ||
-				!Info.ValidDuplicateTypes.Intersect(targetable.GetTargetTypes()).Any())
+			if (targetable == null || !info.ValidDuplicateTypes.Intersect(targetable.GetTargetTypes()).Any())
 				return false;
 
-			if (!GetSuitableCells(collector.Location, collector.Info.Name).Any()) return false;
+			if (!GetSuitableCells(collector.Location, collector.Info.Name).Any())
+				return false;
 
 			return true;
 		}
 
 		public override int GetSelectionShares(Actor collector)
 		{
-			if (!CanGiveTo(collector)) return 0;
+			if (!CanGiveTo(collector))
+				return 0;
+
 			return base.GetSelectionShares(collector);
 		}
 
 		public override void Activate(Actor collector)
 		{
-			int AllowedWorthLeft = Info.MaxDuplicatesWorth;
-			int DupesMade = 0;
+			var allowedWorthLeft = info.MaxDuplicatesWorth;
+			var dupesMade = 0;
 
-			while ((DupesMade < Info.MaxAmount) && (AllowedWorthLeft > 0) || (DupesMade < Info.MinAmount))
+			while ((dupesMade < info.MaxAmount && allowedWorthLeft > 0) || dupesMade < info.MinAmount)
 			{
-				//If the collector has a cost, and we have a max duplicate worth, then update how much dupe worth is left
+				// If the collector has a cost, and we have a max duplicate worth, then update how much dupe worth is left
 				var unitCost = collector.Info.Traits.Get<ValuedInfo>().Cost;
-				AllowedWorthLeft -= (Info.MaxDuplicatesWorth > 0) ? unitCost : 0;
-				if ((AllowedWorthLeft < 0) && (DupesMade >= Info.MinAmount))
+				allowedWorthLeft -= info.MaxDuplicatesWorth > 0 ? unitCost : 0;
+				if (allowedWorthLeft < 0 && dupesMade >= info.MinAmount)
 					break;
 
-				DupesMade++;
+				dupesMade++;
 
 				var location = ChooseEmptyCellNear(collector, collector.Info.Name);
 				if (location != null)
@@ -92,10 +99,11 @@ namespace OpenRA.Mods.RA.Crates
 					w => w.CreateActor(collector.Info.Name, new TypeDictionary
 					{
 						new LocationInit(location.Value),
-						new OwnerInit(Info.Owner ?? collector.Owner.InternalName)
+						new OwnerInit(info.Owner ?? collector.Owner.InternalName)
 					}));
 				}
 			}
+
 			base.Activate(collector);
 		}
 

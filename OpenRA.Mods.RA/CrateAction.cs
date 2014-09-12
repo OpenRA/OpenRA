@@ -42,8 +42,8 @@ namespace OpenRA.Mods.RA
 
 	public class CrateAction
 	{
-		public Actor self;
-		public CrateActionInfo info;
+		readonly Actor self;
+		readonly CrateActionInfo info;
 
 		public CrateAction(Actor self, CrateActionInfo info)
 		{
@@ -75,8 +75,7 @@ namespace OpenRA.Mods.RA
 			Sound.PlayToPlayer(collector.Owner, info.Notification);
 
 			if (info.Effect != null)
-				collector.World.AddFrameEndTask(
-					w => w.Add(new CrateEffect(collector, info.Effect, info.Palette)));
+				collector.World.AddFrameEndTask(w => w.Add(new CrateEffect(collector, info.Effect, info.Palette)));
 		}
 	}
 }
