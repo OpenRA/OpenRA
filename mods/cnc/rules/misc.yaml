@@ -22,7 +22,7 @@ CRATE:
 		SelectionShares: 10
 		MaxAmount: 5
 		MinAmount: 1
-		MaxDuplicatesWorth: 1250
+		MaxDuplicateValue: 1250
 	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 120
