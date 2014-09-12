@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.RA.Crates
 {
-	[Desc("Spawns units when collected.","Adjust selection shares when player has no base.")]
+	[Desc("Spawns units when collected.", "Adjust selection shares when player has no base.")]
 	class GiveMcvCrateActionInfo : GiveUnitCrateActionInfo
 	{
 		[Desc("The selection shares to use if the collector has no base.")]
@@ -23,19 +23,23 @@ namespace OpenRA.Mods.RA.Crates
 
 	class GiveMcvCrateAction : GiveUnitCrateAction
 	{
+		readonly GiveMcvCrateActionInfo info;
 		public GiveMcvCrateAction(Actor self, GiveMcvCrateActionInfo info)
-			: base(self, info) { }
+			: base(self, info)
+		{
+			this.info = info;
+		}
 
 		public override int GetSelectionShares(Actor collector)
 		{
+			// There's some other really good reason why we shouldn't give this.
 			if (!CanGiveTo(collector))
-				return 0;	// there's some other really good reason why we shouldn't give this.
+				return 0;
 
-			var hasBase = self.World.ActorsWithTrait<BaseBuilding>()
+			var hasBase = collector.World.ActorsWithTrait<BaseBuilding>()
 				.Any(a => a.Actor.Owner == collector.Owner);
 
-			return hasBase ? info.SelectionShares :
-				((GiveMcvCrateActionInfo)info).NoBaseSelectionShares;
+			return hasBase ? info.SelectionShares : info.NoBaseSelectionShares;
 		}
 	}
 }

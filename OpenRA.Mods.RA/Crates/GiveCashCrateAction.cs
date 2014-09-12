@@ -27,19 +27,21 @@ namespace OpenRA.Mods.RA
 
 	class GiveCashCrateAction : CrateAction
 	{
+		readonly GiveCashCrateActionInfo info;
 		public GiveCashCrateAction(Actor self, GiveCashCrateActionInfo info)
-			: base(self, info) {}
+			: base(self, info)
+		{
+			this.info = info;
+		}
 
 		public override void Activate(Actor collector)
 		{
 			collector.World.AddFrameEndTask(w =>
 			{
-				var crateInfo = (GiveCashCrateActionInfo)info;
-				var amount = crateInfo.Amount;
-				collector.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(amount);
+				collector.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(info.Amount);
 
-				if (crateInfo.UseCashTick)
-					w.Add(new FloatingText(collector.CenterPosition, collector.Owner.Color.RGB, FloatingText.FormatCashTick(amount), 30));
+				if (info.UseCashTick)
+					w.Add(new FloatingText(collector.CenterPosition, collector.Owner.Color.RGB, FloatingText.FormatCashTick(info.Amount), 30));
 			});
 
 			base.Activate(collector);

@@ -34,26 +34,29 @@ namespace OpenRA.Mods.RA.Crates
 
 	class GiveUnitCrateAction : CrateAction
 	{
-		public readonly GiveUnitCrateActionInfo Info;
+		readonly Actor self;
+		readonly GiveUnitCrateActionInfo info;
 		readonly List<CPos> usedCells = new List<CPos>();
 
 		public GiveUnitCrateAction(Actor self, GiveUnitCrateActionInfo info)
 			: base(self, info)
 		{
-			Info = info;
-			if (!Info.Units.Any())
+			this.self = self;
+			this.info = info;
+			if (!info.Units.Any())
 				throw new YamlException("A GiveUnitCrateAction does not specify any units to give. This might be because the yaml is referring to 'Unit' rather than 'Units'.");
 		}
 
 		public bool CanGiveTo(Actor collector)
 		{
-			if (Info.ValidRaces.Any() && !Info.ValidRaces.Contains(collector.Owner.Country.Race))
+			if (info.ValidRaces.Any() && !info.ValidRaces.Contains(collector.Owner.Country.Race))
 				return false;
 
-			foreach (string unit in Info.Units)
+			foreach (string unit in info.Units)
 			{
 				// avoid dumping tanks in the sea, and ships on dry land.
-				if (!GetSuitableCells(collector.Location, unit).Any()) return false;
+				if (!GetSuitableCells(collector.Location, unit).Any())
+					return false;
 			}
 
 			return true;
@@ -61,13 +64,15 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override int GetSelectionShares(Actor collector)
 		{
-			if (!CanGiveTo(collector)) return 0;
+			if (!CanGiveTo(collector))
+				return 0;
+
 			return base.GetSelectionShares(collector);
 		}
 
 		public override void Activate(Actor collector)
 		{
-			foreach (var u in Info.Units)
+			foreach (var u in info.Units)
 			{
 				var unit = u; // avoiding access to modified closure
 
@@ -79,10 +84,11 @@ namespace OpenRA.Mods.RA.Crates
 					w => w.CreateActor(unit, new TypeDictionary
 					{
 						new LocationInit(location.Value),
-						new OwnerInit(Info.Owner ?? collector.Owner.InternalName)
+						new OwnerInit(info.Owner ?? collector.Owner.InternalName)
 					}));
 				}
 			}
+
 			base.Activate(collector);
 		}
 
