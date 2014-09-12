@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.IO;
 using System.Drawing;
 
 namespace OpenRA.Widgets
@@ -21,8 +22,7 @@ namespace OpenRA.Widgets
 			get { return text; }
 			set { text = value ?? ""; CursorPosition = CursorPosition.Clamp(0, text.Length); }
 		}
-
-		public int MaxLength = 0;
+		public int MaxLength = 512;
 		public int VisualHeight = 1;
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
@@ -42,7 +42,7 @@ namespace OpenRA.Widgets
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("TextfieldColorDisabled");
 		public Color TextColorInvalid = ChromeMetrics.Get<Color>("TextfieldColorInvalid");
 
-		public TextFieldWidget() {}
+		public TextFieldWidget() { }
 		protected TextFieldWidget(TextFieldWidget widget)
 			: base(widget)
 		{
@@ -135,7 +135,7 @@ namespace OpenRA.Widgets
 
 			if (e.Key == Keycode.RIGHT)
 			{
-				if (CursorPosition <= Text.Length-1)
+				if (CursorPosition <= Text.Length - 1)
 					CursorPosition++;
 
 				return true;
@@ -168,6 +168,17 @@ namespace OpenRA.Widgets
 				CursorPosition--;
 				Text = Text.Remove(CursorPosition, 1);
 				OnTextEdited();
+				return true;
+			}
+
+			if (e.Key == Keycode.V && (Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl) 
+				|| (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))))
+			{
+				var clipboardText = Game.Renderer.Device.GetClipboardText();
+				if (clipboardText.Length > 0)
+					using (var reader = new StringReader(clipboardText))
+						HandleTextInput(reader.ReadLine().Trim());
+				return true;
 			}
 
 			return true;
@@ -178,11 +189,11 @@ namespace OpenRA.Widgets
 			if (!HasKeyboardFocus || IsDisabled())
 				return false;
 
-			if (MaxLength > 0 && Text.Length >= MaxLength)
+			if (MaxLength > 0 && (Text.Length >= MaxLength || text.Length >= MaxLength))
 				return true;
 
 			Text = Text.Insert(CursorPosition, text);
-			CursorPosition++;
+			CursorPosition += text.Length;
 			OnTextEdited();
 
 			return true;
