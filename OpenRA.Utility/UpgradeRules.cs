@@ -547,6 +547,22 @@ namespace OpenRA.Utility
 					}
 				}
 
+				// Replaced Wall with Crushable + BlocksBullets
+				if (engineVersion < 20140914)
+				{
+					if (depth == 0)
+					{
+						var actorTraits = node.Value.Nodes;
+						var wall = actorTraits.FirstOrDefault(t => t.Key == "Wall");
+						if (wall != null)
+							node.Value.Nodes.Add(new MiniYamlNode("BlocksBullets", new MiniYaml("")));
+
+						var blocksBullets = actorTraits.FirstOrDefault(t => t.Key == "BlocksBullets");
+						if (depth == 1 && node.Key == "Wall" && blocksBullets != null)
+							node.Key = "Crushable";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
