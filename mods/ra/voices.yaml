@@ -1,5 +1,3 @@
-# Classic Red Alert Mod -- Package Manifest
-
 GenericVoice:
 	Variants:
 		soviet: .r01,.r03
