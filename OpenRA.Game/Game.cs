@@ -43,10 +43,13 @@ namespace OpenRA
 
 		public static DatabaseReader GeoIpDatabase;
 
-		public static OrderManager JoinServer(string host, int port, string password)
+		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
 		{
-			var om = new OrderManager(host, port, password,
-				new ReplayRecorderConnection(new NetworkConnection(host, port), ChooseReplayFilename));
+			IConnection connection = new NetworkConnection(host, port);
+			if (recordReplay)
+				connection = new ReplayRecorderConnection(connection, ChooseReplayFilename);
+
+			var om = new OrderManager(host, port, password, connection);
 			JoinInner(om);
 			return om;
 		}
