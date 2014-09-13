@@ -209,7 +209,7 @@
     <Compile Include="Crates\RevealMapCrateAction.cs" />
     <Compile Include="Crates\SupportPowerCrateAction.cs" />
     <Compile Include="CreateMPPlayers.cs" />
-    <Compile Include="CrushableInfantry.cs" />
+    <Compile Include="Crushable.cs" />
     <Compile Include="DeathSounds.cs" />
     <Compile Include="DemoTruck.cs" />
     <Compile Include="DetectCloaked.cs" />
@@ -331,6 +331,7 @@
     <Compile Include="Render\RenderUnit.cs" />
     <Compile Include="Render\RenderUnitReload.cs" />
     <Compile Include="Render\WithBuildingExplosion.cs" />
+    <Compile Include="Render\WithDeathAnimation.cs" />
     <Compile Include="Render\WithMuzzleFlash.cs" />
     <Compile Include="Render\RenderNameTag.cs" />
     <Compile Include="Render\WithRotor.cs" />

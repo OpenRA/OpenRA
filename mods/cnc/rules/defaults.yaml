@@ -153,6 +153,7 @@
 	TakeCover:
 		SpeedModifier: 60
 	RenderInfantry:
+	WithDeathAnimation:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
@@ -164,7 +165,7 @@
 	ActorLostNotification:
 	SpawnViceroid:
 		Probability: 10
-	CrushableInfantry:
+	Crushable:
 		WarnProbability: 67
 		CrushSound: squish2.aud
 	CombatDebugOverlay:
@@ -197,7 +198,6 @@
 	Inherits: ^Infantry
 	-AutoTarget:
 	-TakeCover:
-	RenderInfantry:
 	AppearsOnRadar:
 	SelectionDecorations:
 	Selectable:
@@ -220,7 +220,7 @@
 		Notification: CivilianKilled
 		NotifyAll: true
 	ScaredyCat:
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squish2.aud
 
 ^DINO:
@@ -257,6 +257,8 @@
 	GivesExperience:
 	RenderInfantry:
 		Palette: terrain
+	WithDeathAnimation:
+		UseDeathTypeSuffix: false
 	EditorAppearance:
 		UseTerrainPalette: true
 	BodyOrientation:

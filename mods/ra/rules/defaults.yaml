@@ -139,6 +139,7 @@
 	TargetableUnit:
 		TargetTypes: Ground, Infantry, Disguise
 	RenderInfantry:
+	WithDeathAnimation:
 	AutoTarget:
 	AttackMove:
 	Passenger:
@@ -153,7 +154,7 @@
 	GivesBounty:
 	GpsDot:
 		String: Infantry
-	CrushableInfantry:
+	Crushable:
 		CrushSound: squishy2.aud
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
