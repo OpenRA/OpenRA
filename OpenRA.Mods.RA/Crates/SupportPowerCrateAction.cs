@@ -24,20 +24,23 @@ namespace OpenRA.Mods.RA.Crates
 
 	class SupportPowerCrateAction : CrateAction
 	{
-		SupportPowerCrateActionInfo Info;
+		SupportPowerCrateActionInfo info;
 		public SupportPowerCrateAction(Actor self, SupportPowerCrateActionInfo info)
-			: base(self, info) { Info = info; }
+			: base(self, info)
+		{
+			this.info = info;
+		}
 
 		// The free unit crate requires same race and the actor needs to be mobile.
 		// We want neither of these properties for crate power proxies.
 		public override void Activate(Actor collector)
 		{
-			base.Activate(collector);
-
-			collector.World.AddFrameEndTask(w => w.CreateActor(Info.Proxy, new TypeDictionary
+			collector.World.AddFrameEndTask(w => w.CreateActor(info.Proxy, new TypeDictionary
 			{
 				new OwnerInit(collector.Owner)
 			}));
+
+			base.Activate(collector);
 		}
 	}
 }

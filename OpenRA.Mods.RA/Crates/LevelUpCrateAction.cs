@@ -29,12 +29,14 @@ namespace OpenRA.Mods.RA
 
 	class LevelUpCrateAction : CrateAction
 	{
-		LevelUpCrateActionInfo Info;
+		readonly Actor self;
+		readonly LevelUpCrateActionInfo info;
 
 		public LevelUpCrateAction(Actor self, LevelUpCrateActionInfo info)
 			: base(self, info)
 		{
-			Info = info;
+			this.self = self;
+			this.info = info;
 		}
 
 		public override int GetSelectionShares(Actor collector)
@@ -45,34 +47,33 @@ namespace OpenRA.Mods.RA
 
 		public override void Activate(Actor collector)
 		{
-			collector.World.AddFrameEndTask(w =>
+			var inRange = self.World.FindActorsInCircle(self.CenterPosition, info.Range).Where(a =>
 			{
-				var gainsExperience = collector.TraitOrDefault<GainsExperience>();
-				if (gainsExperience != null)
-					gainsExperience.GiveLevels(((LevelUpCrateActionInfo)info).Levels);
+				// Don't upgrade the same unit twice
+				if (a == collector)
+					return false;
+
+				// Only upgrade the collecting player's units
+				// TODO: Also apply to allied units?
+				if (a.Owner != collector.Owner)
+					return false;
+
+				// Ignore units that can't level up
+				var ge = a.TraitOrDefault<GainsExperience>();
+				return ge != null && ge.CanGainLevel;
 			});
 
-			var inRange = self.World.FindActorsInCircle(self.CenterPosition, Info.Range);
-			inRange = inRange.Where(a =>
-				(a.Owner == collector.Owner) &&
-				(a != collector) &&
-				(a.TraitOrDefault<GainsExperience>() != null) &&
-				(a.TraitOrDefault<GainsExperience>().CanGainLevel));
-			if (inRange.Any())
-			{
-				if (Info.MaxExtraCollectors > -1)
-					inRange = inRange.Take(Info.MaxExtraCollectors);
+			if (info.MaxExtraCollectors > -1)
+				inRange = inRange.Take(info.MaxExtraCollectors);
 
-				if (inRange.Any())
-					foreach (Actor actor in inRange)
-					{
-						actor.World.AddFrameEndTask(w =>
-						{
-							var gainsExperience = actor.TraitOrDefault<GainsExperience>();
-							if (gainsExperience != null)
-								gainsExperience.GiveLevels(((LevelUpCrateActionInfo)info).Levels);
-						});
-					}
+			foreach (var actor in inRange.Append(collector))
+			{
+				actor.World.AddFrameEndTask(w =>
+				{
+					var gainsExperience = actor.TraitOrDefault<GainsExperience>();
+					if (gainsExperience != null)
+						gainsExperience.GiveLevels(((LevelUpCrateActionInfo)info).Levels);
+				});
 			}
 
 			base.Activate(collector);

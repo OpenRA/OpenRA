@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Crates
 	public class UnitUpgradeCrateActionInfo : CrateActionInfo
 	{
 		[Desc("The upgrade to grant.")]
-		public readonly string[] Upgrades = {};
+		public readonly string[] Upgrades = { };
 
 		[Desc("The range to search for extra collectors in.", "Extra collectors will also be granted the crate action.")]
 		public readonly WRange Range = new WRange(3);
@@ -30,24 +30,26 @@ namespace OpenRA.Mods.RA.Crates
 
 	public class UnitUpgradeCrateAction : CrateAction
 	{
-		readonly UnitUpgradeCrateActionInfo Info;
+		readonly Actor self;
+		readonly UnitUpgradeCrateActionInfo info;
 
 		public UnitUpgradeCrateAction(Actor self, UnitUpgradeCrateActionInfo info)
 			: base(self, info) 
 		{
-			Info = info; 
+			this.self = self;
+			this.info = info;
 		}
 
 		bool AcceptsUpgrade(Actor a)
 		{
 			return a.TraitsImplementing<IUpgradable>()
-				.Any(up => Info.Upgrades.Any(u => up.AcceptsUpgrade(u)));
+				.Any(up => info.Upgrades.Any(u => up.AcceptsUpgrade(u)));
 		}
 
 		void GrantActorUpgrades(Actor a)
 		{
 			foreach (var up in a.TraitsImplementing<IUpgradable>())
-				foreach (var u in Info.Upgrades)
+				foreach (var u in info.Upgrades)
 					if (up.AcceptsUpgrade(u))
 						up.UpgradeAvailable(a, u, true);
 		}
@@ -61,13 +63,13 @@ namespace OpenRA.Mods.RA.Crates
 		{
 			collector.World.AddFrameEndTask(w => GrantActorUpgrades(collector));
 
-			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, Info.Range)
+			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, info.Range)
 				.Where(a => a != self && a.Owner == collector.Owner && AcceptsUpgrade(a));
 
 			if (actorsInRange.Any())
 			{
-				if (Info.MaxExtraCollectors > -1)
-					actorsInRange = actorsInRange.Take(Info.MaxExtraCollectors);
+				if (info.MaxExtraCollectors > -1)
+					actorsInRange = actorsInRange.Take(info.MaxExtraCollectors);
 
 				collector.World.AddFrameEndTask(w =>
 				{

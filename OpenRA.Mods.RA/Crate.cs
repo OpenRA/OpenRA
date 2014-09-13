@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -53,10 +54,12 @@ namespace OpenRA.Mods.RA
 
 		public void OnCrush(Actor crusher)
 		{
-			if (collected) return;
+			if (collected)
+				return;
 
-			var shares = self.TraitsImplementing<CrateAction>().Select(
-				a => Pair.New(a, a.GetSelectionSharesOuter(crusher)));
+			var shares = self.TraitsImplementing<CrateAction>()
+				.Select(a => Pair.New(a, a.GetSelectionSharesOuter(crusher)));
+
 			var totalShares = shares.Sum(a => a.Second);
 			var n = self.World.SharedRandom.Next(totalShares);
 
@@ -64,6 +67,7 @@ namespace OpenRA.Mods.RA
 			collected = true;
 
 			foreach (var s in shares)
+			{
 				if (n < s.Second)
 				{
 					s.First.Activate(crusher);
@@ -71,15 +75,34 @@ namespace OpenRA.Mods.RA
 				}
 				else
 					n -= s.Second;
+			}
 		}
 
 		public void OnLanded()
 		{
+			// Check whether the crate landed on anything
 			var landedOn = self.World.ActorMap.GetUnitsAt(self.Location)
-				.FirstOrDefault(a => a != self);
+				.Where(a => a != self);
 
-			if (landedOn != null)
-				OnCrush(landedOn);
+			if (!landedOn.Any())
+				return;
+
+			var collector = landedOn.FirstOrDefault(a =>
+			{
+				// Mobile is (currently) the only trait that supports crushing
+				var mi = a.Info.Traits.GetOrDefault<MobileInfo>();
+				if (mi == null)
+					return false;
+
+				// Make sure that the actor can collect this crate type
+				return CrushableBy(mi.Crushes, a.Owner);
+			});
+
+			// Destroy the crate if none of the units in the cell are valid collectors
+			if (collector != null)
+				OnCrush(collector);
+			else
+				self.Destroy();
 		}
 
 		public void Tick(Actor self)
