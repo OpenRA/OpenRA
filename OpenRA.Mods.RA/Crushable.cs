@@ -54,8 +54,8 @@ namespace OpenRA.Mods.RA
 			var wda = self.TraitOrDefault<WithDeathAnimation>();
 			if (wda != null)
 			{
-				var palette = wda.Info.DeathSequencePalette;
-				if (wda.Info.DeathPaletteIsPlayerPalette)
+				var palette = wda.Info.CrushedSequencePalette;
+				if (wda.Info.CrushedPaletteIsPlayerPalette)
 					palette += self.Owner.InternalName;
 
 				wda.SpawnDeathAnimation(self, wda.Info.CrushedSequence, palette);
