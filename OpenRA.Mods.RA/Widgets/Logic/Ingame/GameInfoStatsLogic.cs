@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var nameLabel = item.Get<LabelWidget>("NAME");
 				nameLabel.GetText = () =>
 				{
-					if (client.State == Network.Session.ClientState.Disconnected)
+					if (client != null && client.State == Network.Session.ClientState.Disconnected)
 						return pp.PlayerName + " (Gone)";
 					return pp.PlayerName + (pp.WinState == WinState.Undefined ? "" : " (" + pp.WinState + ")");
 				};
