@@ -355,7 +355,7 @@ namespace OpenRA.Server
 					t.ClientJoined(this, newConn);
 
 				SyncLobbyInfo();
-				SendMessage("{0} has joined the server.".F(client.Name));
+				SendMessage("{0} has joined the game.".F(client.Name));
 
 				// Send initial ping
 				SendOrderTo(newConn, "Ping", Game.RunTime.ToString());
