@@ -457,7 +457,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var client = player.World.LobbyInfo.ClientWithIndex(player.ClientIndex);
 			playerName.GetText = () =>
 			{
-				if (client.State == Network.Session.ClientState.Disconnected)
+				if (client != null && client.State == Network.Session.ClientState.Disconnected)
 					return player.PlayerName + " (Gone)";
 				return player.PlayerName + (player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")");
 			};
