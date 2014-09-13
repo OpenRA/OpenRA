@@ -1247,27 +1247,7 @@ ant:
 		Start: 72
 		Length: 4
 		Facings: 8
-	die1:
-		Start: 104
-		Length: 8
-		Tick: 300
-	die2:
-		Start: 104
-		Length: 8
-		Tick: 300
-	die3:
-		Start: 104
-		Length: 8
-		Tick: 300
-	die4:
-		Start: 104
-		Length: 8
-		Tick: 300
-	die5:
-		Start: 104
-		Length: 8
-		Tick: 300
-	die6:
+	die:
 		Start: 104
 		Length: 8
 		Tick: 300

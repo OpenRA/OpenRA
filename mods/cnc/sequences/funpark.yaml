@@ -13,22 +13,7 @@ steg:
 		Start: 80
 		Length: 12
 		Facings: 8
-	die1:
-		Start: 176
-		Length: 22
-	die2:
-		Start: 176
-		Length: 22
-	die3:
-		Start: 176
-		Length: 22
-	die4:
-		Start: 176
-		Length: 22
-	die5:
-		Start: 176
-		Length: 22
-	die6:
+	die:
 		Start: 176
 		Length: 22
 	icon: stegicnh
@@ -49,22 +34,7 @@ trex:
 		Start: 80
 		Length: 8
 		Facings: 8
-	die1:
-		Start: 144
-		Length: 40
-	die2:
-		Start: 144
-		Length: 40
-	die3:
-		Start: 144
-		Length: 40
-	die4:
-		Start: 144
-		Length: 40
-	die5:
-		Start: 144
-		Length: 40
-	die6:
+	die:
 		Start: 144
 		Length: 40
 	icon: trexicnh
@@ -85,22 +55,7 @@ tric:
 		Start: 80
 		Length: 12
 		Facings: 8
-	die1:
-		Start: 176
-		Length: 20
-	die2:
-		Start: 176
-		Length: 20
-	die3:
-		Start: 176
-		Length: 20
-	die4:
-		Start: 176
-		Length: 20
-	die5:
-		Start: 176
-		Length: 20
-	die6:
+	die:
 		Start: 176
 		Length: 20
 	icon: tricicnh
@@ -121,22 +76,7 @@ rapt:
 		Start: 80
 		Length: 8
 		Facings: 8
-	die1:
-		Start: 144
-		Length: 40
-	die2:
-		Start: 144
-		Length: 40
-	die3:
-		Start: 144
-		Length: 40
-	die4:
-		Start: 144
-		Length: 40
-	die5:
-		Start: 144
-		Length: 40
-	die6:
+	die:
 		Start: 144
 		Length: 40
 	icon: rapticnh

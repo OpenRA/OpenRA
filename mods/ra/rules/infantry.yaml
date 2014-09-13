@@ -566,4 +566,6 @@ Ant:
 	AttackFrontal:
 	Armament:
 		Weapon: mandible
+	WithDeathAnimation:
+		UseDeathTypeSuffix: false
 
