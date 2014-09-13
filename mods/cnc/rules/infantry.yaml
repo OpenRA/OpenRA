@@ -228,6 +228,9 @@ STEG:
 		Description: A large, heavily built, herbivorous quadruped
 	Armament:
 		Weapon: tail
+	WithDeathAnimation:
+		DeathSequencePalette: terrain
+		DeathPaletteIsPlayerPalette: false
 
 TREX:
 	Inherits: ^DINO

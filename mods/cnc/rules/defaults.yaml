@@ -258,6 +258,7 @@
 	RenderInfantry:
 		Palette: terrain
 	WithDeathAnimation:
+		UseDeathTypeSuffix: false
 	EditorAppearance:
 		UseTerrainPalette: true
 	BodyOrientation:
