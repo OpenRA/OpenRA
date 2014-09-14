@@ -462,9 +462,10 @@
 		TerrainTypes: Clear,Road
 	TargetableBuilding:
 		TargetTypes: Ground, Wall
-	Wall:
+	Crushable:
 		CrushClasses: wall
 		CrushSound: sandbag2.aud
+	BlocksBullets:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall
