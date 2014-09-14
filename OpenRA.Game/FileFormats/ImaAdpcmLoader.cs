@@ -13,14 +13,14 @@ using System.IO;
 
 namespace OpenRA.FileFormats
 {
-	struct AdpcmChunk
+	struct ImaAdpcmChunk
 	{
 		public int CompressedSize;
 		public int OutputSize;
 
-		public static AdpcmChunk Read(Stream s)
+		public static ImaAdpcmChunk Read(Stream s)
 		{
-			AdpcmChunk c;
+			ImaAdpcmChunk c;
 			c.CompressedSize = s.ReadUInt16();
 			c.OutputSize = s.ReadUInt16();
 			if (s.ReadUInt32() != 0xdeaf)
@@ -29,7 +29,7 @@ namespace OpenRA.FileFormats
 		}
 	}
 
-	public static class AdpcmLoader
+	public static class ImaAdpcmLoader
 	{
 		static readonly int[] indexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
 		static readonly int[] stepTable = 
@@ -46,7 +46,7 @@ namespace OpenRA.FileFormats
 			16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767 
 		};
 
-		static short DecodeAdpcmSample(byte b, ref int index, ref int current)
+		static short DecodeImaAdpcmSample(byte b, ref int index, ref int current)
 		{
 			var sb = (b & 8) != 0;
 			b &= 7;
@@ -65,13 +65,13 @@ namespace OpenRA.FileFormats
 			return (short)current;
 		}
 
-		public static byte[] LoadAdpcmSound(byte[] raw, ref int index)
+		public static byte[] LoadImaAdpcmSound(byte[] raw, ref int index)
 		{
 			var currentSample = 0;
-			return LoadAdpcmSound(raw, ref index, ref currentSample);
+			return LoadImaAdpcmSound(raw, ref index, ref currentSample);
 		}
 
-		public static byte[] LoadAdpcmSound(byte[] raw, ref int index, ref int currentSample)
+		public static byte[] LoadImaAdpcmSound(byte[] raw, ref int index, ref int currentSample)
 		{
 			var s = new MemoryStream(raw);
 			var dataSize = raw.Length;
@@ -84,11 +84,11 @@ namespace OpenRA.FileFormats
 			{
 				var b = s.ReadUInt8();
 
-				var t = DecodeAdpcmSample(b, ref index, ref currentSample);
+				var t = DecodeImaAdpcmSample(b, ref index, ref currentSample);
 				output[offset++] = (byte)t;
 				output[offset++] = (byte)(t >> 8);
 
-				t = DecodeAdpcmSample((byte)(b >> 4), ref index, ref currentSample);
+				t = DecodeImaAdpcmSample((byte)(b >> 4), ref index, ref currentSample);
 				output[offset++] = (byte)t;
 				output[offset++] = (byte)(t >> 8);
 			}
