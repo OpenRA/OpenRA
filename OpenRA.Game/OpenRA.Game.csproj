@@ -261,7 +261,7 @@
     <Compile Include="InstallUtils.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="Graphics\Vertex.cs" />
-    <Compile Include="FileFormats\AdpcmLoader.cs" />
+    <Compile Include="FileFormats\ImaAdpcmLoader.cs" />
     <Compile Include="FileFormats\AudLoader.cs" />
     <Compile Include="FileFormats\Blast.cs" />
     <Compile Include="FileFormats\Blowfish.cs" />

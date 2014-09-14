@@ -30,7 +30,7 @@ namespace OpenRA.FileFormats
 		public readonly int DataSize;
 		public readonly byte[] RawOutput;
 
-		public enum WaveType { Pcm = 0x1, Adpcm = 0x11 };
+		public enum WaveType { Pcm = 0x1, ImaAdpcm = 0x11 };
 		public static WaveType Type { get; private set; }
 		
 		public WavLoader(Stream s)
@@ -53,7 +53,7 @@ namespace OpenRA.FileFormats
 						FmtChunkSize = s.ReadInt32();
 						AudioFormat = s.ReadInt16();
 						Type = (WaveType)AudioFormat;
-						if (Type != WaveType.Pcm && Type != WaveType.Adpcm)
+						if (Type != WaveType.Pcm && Type != WaveType.ImaAdpcm)
 							throw new NotSupportedException("Compression type is not supported.");
 						Channels = s.ReadInt16();
 						SampleRate = s.ReadInt32();
@@ -84,9 +84,9 @@ namespace OpenRA.FileFormats
 				}
 			}
 
-			if (Type == WaveType.Adpcm)
+			if (Type == WaveType.ImaAdpcm)
 			{
-				RawOutput = DecodeAdpcmData();
+				RawOutput = DecodeImaAdpcmData();
 				BitsPerSample = 16;
 			}
 		}
@@ -110,7 +110,7 @@ namespace OpenRA.FileFormats
 			return length / (channels * sampleRate * bitsPerSample);
 		}
 
-		public byte[] DecodeAdpcmData()
+		public byte[] DecodeImaAdpcmData()
 		{
 			var s = new MemoryStream(RawOutput);
 
@@ -124,7 +124,7 @@ namespace OpenRA.FileFormats
 			var predictor = new int[Channels];
 			var index = new int[Channels];
 
-			// Decode each block of ADPCM data in RawOutput
+			// Decode each block of IMA ADPCM data in RawOutput
 			for (var block = 0; block < numBlocks; block++)
 			{
 				// Each block starts with a initial state per-channel 
@@ -150,7 +150,7 @@ namespace OpenRA.FileFormats
 					{
 						// Decode 4 bytes (to 16 bytes of output) per channel
 						var chunk = s.ReadBytes(4);
-						var decoded = AdpcmLoader.LoadAdpcmSound(chunk, ref index[c], ref predictor[c]);
+						var decoded = ImaAdpcmLoader.LoadImaAdpcmSound(chunk, ref index[c], ref predictor[c]);
 
 						// Interleave output, one sample per channel
 						var outOffsetChannel = outOffset + (2 * c);
