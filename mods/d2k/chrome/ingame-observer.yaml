@@ -54,9 +54,9 @@ Container@OBSERVER_WIDGETS:
 							Height: 25
 				Container@REPLAY_PLAYER:
 					Logic: ReplayControlBarLogic
-					X: PARENT_RIGHT/2 - 80
+					X: PARENT_RIGHT/2 - 120
 					Y: 35
-					Width: 160
+					Width: 240
 					Height: 35
 					Visible: false
 					Children:
@@ -102,8 +102,22 @@ Container@OBSERVER_WIDGETS:
 									Height: 25
 									ImageCollection: music
 									ImageName: play
-						Button@BUTTON_FASTFORWARD:
+						Button@BUTTON_2XSPEED:
 							X: 120
+							Y: 15
+							Width: 25
+							Height: 25
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_2X:
+									X: 4
+									Y: 0
+									Width: 25
+									Height: 25
+									ImageCollection: music
+									ImageName: 2x
+						Button@BUTTON_MAXSPEED:
+							X: 155
 							Y: 15
 							Width: 25
 							Height: 25

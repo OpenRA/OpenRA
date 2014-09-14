@@ -138,14 +138,14 @@ Container@OBSERVER_WIDGETS:
 							Height: 16
 							ImageCollection: music
 							ImageName: play
-				Button@BUTTON_FASTFORWARD:
+				Button@BUTTON_MAXSPEED:
 					X: 14 + 38*3
 					Y: 10
 					Width: 26
 					Height: 26
 					IgnoreChildMouseOver: true
 					Children:
-						Image@IMAGE_FASTFORWARD:
+						Image@IMAGE_MAXSPEED:
 							X: 5
 							Y: 5
 							Width: 16

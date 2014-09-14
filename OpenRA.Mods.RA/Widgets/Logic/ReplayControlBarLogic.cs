@@ -49,9 +49,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					normalSpeedButton.OnClick = () => world.Timestep = Game.Timestep;
 				}
 
-				var fastforwardButton = widget.Get<ButtonWidget>("BUTTON_FASTFORWARD");
-				fastforwardButton.IsHighlighted = () => world.Timestep == 1;
-				fastforwardButton.OnClick = () => world.Timestep = 1;
+				var twoTimesSpeedButton = widget.GetOrNull<ButtonWidget>("BUTTON_2XSPEED");
+				if (twoTimesSpeedButton != null)
+				{
+					twoTimesSpeedButton.IsHighlighted = () => world.Timestep == Game.Timestep / 2;
+					twoTimesSpeedButton.OnClick = () => world.Timestep = Game.Timestep / 2;
+				}
+
+				var tenTimesSpeedButton = widget.GetOrNull<ButtonWidget>("BUTTON_10XSPEED");
+				if (tenTimesSpeedButton != null)
+				{
+					tenTimesSpeedButton.IsHighlighted = () => world.Timestep == Game.Timestep / 10;
+					tenTimesSpeedButton.OnClick = () => world.Timestep = Game.Timestep / 10;
+				}
+
+				var maxSpeedButton = widget.GetOrNull<ButtonWidget>("BUTTON_MAXSPEED");
+				if (maxSpeedButton != null)
+				{
+					maxSpeedButton.IsHighlighted = () => world.Timestep == 1;
+					maxSpeedButton.OnClick = () => world.Timestep = 1;
+				}
 			}
 		}
 	}

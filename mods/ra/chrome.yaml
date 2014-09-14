@@ -177,6 +177,8 @@ music: musicplayer.png
 	prev: 112,0,25,25
 	fastforward: 140,0,25,25
 	slowmo: 168,0,25,25
+	2x: 196,0,25,25
+	accelerate: 224,0,25,25
 
 scrollbar: buttons.png
 	down_arrow: 16,140,16,16
