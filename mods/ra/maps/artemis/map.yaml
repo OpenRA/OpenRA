@@ -2936,8 +2936,6 @@ Rules:
 			Name: Wall Street Speculators
 		Building:
 			BaseNormal: false
-		RenderBuilding:
-			Scale: 0.75
 		RevealsShroud:
 			Range: 20c0
 		Health:
