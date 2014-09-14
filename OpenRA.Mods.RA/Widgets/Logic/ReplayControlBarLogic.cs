@@ -28,17 +28,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				container.Visible = true;
 
-				var pauseButton = widget.Get<ButtonWidget>("BUTTON_PAUSE");
-				pauseButton.IsHighlighted = () => world.Timestep == 0;
-				pauseButton.OnClick = () => world.Timestep = 0;
+				var pauseButton = widget.GetOrNull<ButtonWidget>("BUTTON_PAUSE");
+				if (pauseButton != null)
+				{
+					pauseButton.IsHighlighted = () => world.Timestep == 0;
+					pauseButton.OnClick = () => world.Timestep = 0;
+				}
 
-				var slowButton = widget.Get<ButtonWidget>("BUTTON_SLOW");
-				slowButton.IsHighlighted = () => world.Timestep > Game.Timestep;
-				slowButton.OnClick = () => world.Timestep = Game.Timestep * 2;
+				var slowButton = widget.GetOrNull<ButtonWidget>("BUTTON_SLOW");
+				if (slowButton != null)
+				{
+					slowButton.IsHighlighted = () => world.Timestep > Game.Timestep;
+					slowButton.OnClick = () => world.Timestep = Game.Timestep * 2;
+				}
 
-				var normalSpeedButton = widget.Get<ButtonWidget>("BUTTON_NORMALSPEED");
-				normalSpeedButton.IsHighlighted = () => world.Timestep == Game.Timestep;
-				normalSpeedButton.OnClick = () => world.Timestep = Game.Timestep;
+				var normalSpeedButton = widget.GetOrNull<ButtonWidget>("BUTTON_NORMALSPEED");
+				if (normalSpeedButton != null)
+				{
+					normalSpeedButton.IsHighlighted = () => world.Timestep == Game.Timestep;
+					normalSpeedButton.OnClick = () => world.Timestep = Game.Timestep;
+				}
 
 				var fastforwardButton = widget.Get<ButtonWidget>("BUTTON_FASTFORWARD");
 				fastforwardButton.IsHighlighted = () => world.Timestep == 1;
