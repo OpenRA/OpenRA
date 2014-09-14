@@ -490,7 +490,6 @@
 	Tooltip:
 		Name: Field (Destroyed)
 		GenericVisibility: None
-	BelowUnits:
 	BodyOrientation:
 	RenderBuilding:
 		Palette: terrain
@@ -612,7 +611,6 @@
 		CaptureThreshold: 1.0
 	TransformOnCapture:
 		ForceHealthPercentage: 25
-	BelowUnits:
 	BodyOrientation:
 	Tooltip:
 		GenericName: Destroyed Vehicle
@@ -627,7 +625,6 @@
 		Spins: True
 		Moves: False
 		Explosion: HeliCrash
-	-BelowUnits:
 	-Capturable:
 	-TransformOnCapture:
 	-TargetableUnit:
@@ -638,7 +635,6 @@
 	TargetableBuilding:
 		RequiresForceFire: yes
 		TargetTypes: Ground, Water
-	BelowUnits:
 	Health:
 		HP: 500
 	SoundOnDamageTransition:

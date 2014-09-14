@@ -38,7 +38,7 @@ MCV.Husk:
 	Tooltip:
 		Name: Destroyed Mobile Construction Vehicle
 	RenderUnit:
-		Image: DMCV
+		Image: dmcv.destroyed
 
 HARVESTER:
 	Inherits: ^Vehicle
@@ -88,7 +88,7 @@ HARVESTER.Husk:
 	Tooltip:
 		Name: Destroyed Spice Harvester
 	RenderUnit:
-		Image: HARVESTER
+		Image: harvester.destroyed
 	TransformOnCapture:
 		IntoActor: harvester
 
@@ -283,7 +283,7 @@ SIEGETANK.Husk:
 	ThrowsParticle@turret:
 		Anim: turret
 	RenderUnit:
-		Image: SIEGETANK
+		Image: siegetank.destroyed
 	TransformOnCapture:
 		IntoActor: siegetank
 
@@ -335,7 +335,7 @@ MISSILETANK:
 MISSILETANK.Husk:
 	Inherits: ^Husk
 	RenderUnit:
-		Image: MISSILETANK
+		Image: missiletank.destroyed
 	TransformOnCapture:
 		IntoActor: missiletank
 

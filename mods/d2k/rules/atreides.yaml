@@ -151,7 +151,7 @@ COMBATA:
 COMBATA.Husk:
 	Inherits: ^COMBAT.Husk
 	RenderUnit:
-		Image: COMBATA
+		Image: combata.destroyed
 	TransformOnCapture:
 		IntoActor: combata
 
@@ -200,7 +200,7 @@ SONICTANK:
 SONICTANK.Husk:
 	Inherits: ^Husk
 	RenderUnit:
-		Image: SONICTANK
+		Image: sonictank.destroyed
 	TransformOnCapture:
 		IntoActor: sonictank
 

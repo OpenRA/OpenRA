@@ -90,6 +90,16 @@ hhusk2:
 	icon: 1tnkicon
 		Start: 0
 
+1tnk.destroyed:
+	idle: 1tnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: 1tnk
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
 2tnk:
 	idle:
 		Start: 0
@@ -102,6 +112,16 @@ hhusk2:
 		Length: 5
 	icon: 2tnkicon
 		Start: 0
+
+2tnk.destroyed:
+	idle: 2tnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: 2tnk
+		Start: 32
+		Facings: 32
+		ZOffset: -512
 
 3tnk:
 	idle:
@@ -116,6 +136,16 @@ hhusk2:
 	icon: 3tnkicon
 		Start: 0
 
+3tnk.destroyed:
+	idle: 3tnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: 3tnk
+		Start: 32
+		Facings: 32
+		ZOffset: -512
+
 4tnk:
 	idle:
 		Start: 0
@@ -128,6 +158,16 @@ hhusk2:
 		Length: 5
 	icon: 4tnkicon
 		Start: 0
+
+4tnk.destroyed:
+	idle: 4tnk
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	turret: 4tnk
+		Start: 32
+		Facings: 32
+		ZOffset: -512
 
 v2rl:
 	idle:
@@ -217,6 +257,19 @@ mgg:
 		Length: 1
 	icon: mggicon
 		Start: 0
+
+mgg.destroyed:
+	idle: mgg
+		Start: 0
+		Facings: 32
+		ZOffset: -512
+	spinner: mgg
+		Start: 32
+		Length: 8
+		ZOffset: -512
+	spinner-idle: mgg
+		Start: 32
+		Length: 1
 
 ttnk:
 	idle:

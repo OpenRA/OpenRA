@@ -544,12 +544,14 @@ lar2:
 minp:
 	idle:
 		Start: 0
+		ZOffset: -512
 	icon: jmin
 		Start: 0
 
 minv:
 	idle:
 		Start: 0
+		ZOffset: -512
 	icon: jmin
 		Start: 0
 
@@ -632,7 +634,9 @@ craters:
 mine:
 	idle:
 		Start: 0
+		ZOffset: -512
 
 railmine:
 	idle:
 		Start: 0
+		ZOffset: -512

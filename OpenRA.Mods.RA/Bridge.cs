@@ -14,12 +14,13 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class BridgeInfo : ITraitInfo, Requires<HealthInfo>
+	class BridgeInfo : ITraitInfo, Requires<HealthInfo>, Requires<BuildingInfo>
 	{
 		public readonly bool Long = false;
 
@@ -71,6 +72,8 @@ namespace OpenRA.Mods.RA
 
 	class Bridge : IRender, INotifyDamageStateChanged
 	{
+		readonly Building building;
+
 		readonly Bridge[] neighbours = new Bridge[2];
 		readonly BridgeHut[] huts = new BridgeHut[2]; // Huts before this / first & after this / last
 		public readonly Health Health;
@@ -90,6 +93,7 @@ namespace OpenRA.Mods.RA
 			Health.RemoveOnDeath = false;
 			this.Info = info;
 			this.Type = self.Info.Name;
+			building = self.Trait<Building>();
 		}
 
 		public Bridge Neighbour(int direction) { return neighbours[direction]; }
@@ -163,9 +167,11 @@ namespace OpenRA.Mods.RA
 
 		IRenderable[] TemplateRenderables(WorldRenderer wr, PaletteReference palette, ushort template)
 		{
+			var offset = FootprintUtils.CenterOffset(self.World, building.Info).Y + 1024;
+
 			return footprint.Select(c => (IRenderable)(new SpriteRenderable(
 				wr.Theater.TileSprite(new TerrainTile(template, c.Value)),
-				wr.world.Map.CenterOfCell(c.Key), WVec.Zero, -512, palette, 1f, true))).ToArray();
+				wr.world.Map.CenterOfCell(c.Key), WVec.Zero, -offset, palette, 1f, true))).ToArray();
 		}
 
 		bool initialized;

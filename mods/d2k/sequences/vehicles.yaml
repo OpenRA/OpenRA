@@ -6,6 +6,12 @@ dmcv:
 		Start: 4023
 		Offset: -30,-24
 
+dmcv.destroyed:
+	idle: DATA
+		Start: 1795
+		Facings: -32
+		ZOffset: -1023
+
 harvester:
 	idle: DATA
 		Start: 1699
@@ -25,6 +31,12 @@ harvester:
 	icon: DATA
 		Start: 4019
 		Offset: -30,-24
+
+harvester.destroyed:
+	idle: DATA
+		Start: 1699
+		Facings: -32
+		ZOffset: -1023
 
 trike:
 	idle: DATA
@@ -68,6 +80,16 @@ siegetank:
 		Start: 4026
 		Offset: -30,-24
 
+siegetank.destroyed:
+	idle: DATA
+		Start: 1763
+		Facings: -32
+		ZOffset: -512
+	turret: DATA
+		Start: 1891
+		Facings: -32
+		ZOffset: -512
+
 missiletank:
 	idle: DATA
 		Start: 1603
@@ -76,6 +98,12 @@ missiletank:
 		Start: 4024
 		Offset: -30,-24
 
+missiletank.destroyed:
+	idle: DATA
+		Start: 1603
+		Facings: -32
+		ZOffset: -512
+
 sonictank:
 	idle: DATA
 		Start: 1827
@@ -83,6 +111,12 @@ sonictank:
 	icon: DATA
 		Start: 4027
 		Offset: -30,-24
+
+sonictank.destroyed:
+	idle: DATA
+		Start: 1827
+		Facings: -32
+		ZOffset: -512
 
 combata:
 	idle: DATA
@@ -100,6 +134,16 @@ combata:
 		Start: 4020
 		Offset: -30,-24
 
+combata.destroyed:
+	idle: DATA
+		Start: 1731
+		Facings: -32
+		ZOffset: -512
+	turret: DATA
+		Start: 1859
+		Facings: -32
+		ZOffset: -512
+
 combath:
 	idle: DATA
 		Start: 2051
@@ -116,6 +160,16 @@ combath:
 		Start: 4021
 		Offset: -30,-24
 
+combath.destroyed:
+	idle: DATA
+		Start: 2051
+		Facings: -32
+		ZOffset: -512
+	turret: DATA
+		Start: 2115
+		Facings: -32
+		ZOffset: -512
+
 devast:
 	idle: DATA
 		Start: 2083
@@ -128,6 +182,12 @@ devast:
 	icon: DATA
 		Start: 4028
 		Offset: -30,-24
+
+devast.destroyed:
+	idle: DATA
+		Start: 2083
+		Facings: -32
+		ZOffset: -512
 
 combato:
 	idle: DATA
@@ -144,6 +204,16 @@ combato:
 	icon: DATA
 		Start: 4022
 		Offset: -30,-24
+
+combato.destroyed:
+	idle: DATA
+		Start: 2453
+		Facings: -32
+		ZOffset: -512
+	turret: DATA
+		Start: 2485
+		Facings: -32
+		ZOffset: -512
 
 raider:
 	idle: DATA
@@ -183,3 +253,9 @@ deviatortank:
 	icon: DATA
 		Start: 4025
 		Offset: -30,-24
+
+deviatortank.destroyed:
+	idle: DATA
+		Start: 2389
+		Facings: -32
+		ZOffset: -512
