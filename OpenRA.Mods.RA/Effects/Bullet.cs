@@ -104,6 +104,13 @@ namespace OpenRA.Mods.RA.Effects
 				trail = new ContrailRenderable(args.SourceActor.World, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
 
+			if (!info.High)
+			{
+				var blocker = world.ActorMap.ActorsInBox(pos, target).FirstOrDefault(a => a.HasTrait<IBlocksBullets>());
+				if (blocker != null)
+					target = blocker.CenterPosition;
+			}
+
 			smokeTicks = info.TrailDelay;
 		}
 
@@ -137,11 +144,8 @@ namespace OpenRA.Mods.RA.Effects
 			if (info.ContrailLength > 0)
 				trail.Update(pos);
 
-			if (ticks++ >= length || (!info.High && world.ActorMap
-				.GetUnitsAt(world.Map.CellContaining(pos)).Any(a => a.HasTrait<IBlocksBullets>())))
-			{
+			if (ticks++ >= length)
 				Explode(world);
-			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
