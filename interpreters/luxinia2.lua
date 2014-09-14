@@ -1,12 +1,13 @@
-
 return {
   name = "Luxinia2",
   description = "Luxinia2",
   api = {"baselib","glfw","glewgl","assimp20","luajit2",},
 
   frun = function(self,wfilename,rundebug)
+    if not ide.config.path.luxinia2 then wx.wxMessageBox("Please define 'path.luxinia2' in your cfg/user.lua (see estrela.lua for examples)"); return end
+    
     local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
-    local luxDir = ide.config.path.luxinia2 or os.getenv("LUXINIA2")
+    local luxDir = ide.config.path.luxinia2
     local scratchpad = rundebug and rundebug:match("scratchpad")
     local filename = wfilename:GetFullName()
     
