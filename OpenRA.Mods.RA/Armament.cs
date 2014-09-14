@@ -31,6 +31,11 @@ namespace OpenRA.Mods.RA
 		[WeaponReference]
 		[Desc("Has to be defined here and in weapons.yaml.")]
 		public readonly string Weapon = null;
+		[WeaponReference]
+		[Desc("Use this weapon instead once the actor reaches the highest veterancy level.")]
+		public readonly string EliteWeapon = null;
+		[Desc("Upgrade needed to get elite weapon.")] 
+		public readonly string EliteWeaponRequiresUpgrade = "eliteweapon";
 		public readonly string Turret = "primary";
 		[Desc("Time (in frames) until the weapon can fire again.")] 
 		public readonly int FireDelay = 0;
@@ -56,11 +61,12 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
 	}
 
-	public class Armament : ITick, IExplodeModifier
+	public class Armament : ITick, IUpgradable, IExplodeModifier
 	{
 		public readonly ArmamentInfo Info;
-		public readonly WeaponInfo Weapon;
+		public WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
+		[Sync] bool eliteWeaponDisabled = true;
 
 		public readonly Actor self;
 		Lazy<Turreted> Turret;
@@ -83,6 +89,7 @@ namespace OpenRA.Mods.RA
 			limitedAmmo = Exts.Lazy(() => self.TraitOrDefault<LimitedAmmo>());
 
 			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
+
 			Burst = Weapon.Burst;
 
 			var barrels = new List<Barrel>();
@@ -101,8 +108,22 @@ namespace OpenRA.Mods.RA
 			Barrels = barrels.ToArray();
 		}
 
+		public bool AcceptsUpgrade(string type)
+		{
+			return type == Info.EliteWeaponRequiresUpgrade;
+		}
+
+		public void UpgradeAvailable(Actor self, string type, bool available)
+		{
+			if (type == Info.EliteWeaponRequiresUpgrade)
+				eliteWeaponDisabled = !available;
+		}
+
 		public void Tick(Actor self)
 		{
+			if (Info.EliteWeapon != null && !eliteWeaponDisabled)
+				Weapon = self.World.Map.Rules.Weapons[Info.EliteWeapon.ToLowerInvariant()];
+
 			if (FireDelay > 0)
 				--FireDelay;
 			Recoil = new WRange(Math.Max(0, Recoil.Range - Info.RecoilRecovery.Range));
