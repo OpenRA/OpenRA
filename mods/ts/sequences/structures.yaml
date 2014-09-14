@@ -981,12 +981,36 @@ proc: # TODO: unused narefn_a, narefn_b
 		Start: 0
 
 gasilo:
-	idle: gtsilo
+	idle: gtsilo_a
 		Start: 0
+		Length: 4
+	damaged-idle: gtsilo_a
+		Start: 4
+		Length: 4
+	idle-underlay: gtsilo
+		Start: 0
+		ShadowStart: 3
+		ZOffset: -512
+	damaged-idle-underlay: gtsilo
+		Start: 1
 		ShadowStart: 4
-	damaged-idle: gtsilo
+		ZOffset: -512
+	critical-idle-underlay: gtsilo
 		Start: 2
 		ShadowStart: 5
+		ZOffset: -512
+	idle-lights: gtsilo_b
+		Start: 0
+		Length: 16
+		Tick: 120
+	damaged-idle-lights: gtsilo_b
+		Start: 16
+		Length: 16
+		Tick: 120
+	critical-idle-lights: gtsilo_b
+		Start: 32
+		Length: 16
+		Tick: 200
 	icon: siloicon
 		Start: 0
 	make: gtsilomk

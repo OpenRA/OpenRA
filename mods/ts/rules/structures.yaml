@@ -183,11 +183,15 @@ GASILO:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+	-RenderBuilding:
 	RenderBuildingSilo:
+	WithIdleOverlay@UNDERLAY:
+		Sequence: idle-underlay
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 	StoresResources:
 		PipCount: 5
 		Capacity: 1500
-	-RenderBuilding:
 	Power:
 		Amount: -10
 
