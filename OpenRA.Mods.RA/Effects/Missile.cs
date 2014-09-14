@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly WRange Speed = new WRange(8);
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(30);
 		public readonly int Arm = 0;
-		[Desc("Check for whether an actor with Wall: trait blocks fire")]
+		[Desc("Check for whether an actor with BlocksBullets: trait blocks fire")]
 		public readonly bool High = false;
 		public readonly bool Shadow = false;
 		public readonly string Trail = null;

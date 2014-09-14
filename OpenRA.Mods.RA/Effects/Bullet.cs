@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Effects
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WRange Inaccuracy = WRange.Zero;
 		public readonly string Image = null;
-		[Desc("Check for whether an actor with Wall: trait blocks fire")]
+		[Desc("Check for whether an actor with BlocksBullets: trait blocks fire")]
 		public readonly bool High = false;
 		public readonly bool Shadow = false;
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
