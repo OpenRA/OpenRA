@@ -130,8 +130,14 @@ findMSB = fn "returns bit number of msb. - (intN)(intN)",
 
 discard = fn "conditionally (<0) kill a pixel before output. - ()(vecN)",
 dFdx = fn "returns approximate partial derivative with respect to window-space X. - (vecN)(vecN)",
+dFdxCoarse = fn "returns approximate partial derivative with respect to window-space X. - (vecN)(vecN)",
+dFdxFine = fn "returns approximate partial derivative with respect to window-space X. - (vecN)(vecN)",
 dFdy = fn "returns approximate partial derivative with respect to window-space Y. - (vecN)(vecN)",
-fwidth = fn "returns sum of approximate window-space partial derivatives magnitudes. - (vecN)(vecN)",
+dFdyCoarse = fn "returns approximate partial derivative with respect to window-space Y. - (vecN)(vecN)",
+dFdyFine = fn "returns approximate partial derivative with respect to window-space Y. - (vecN)(vecN)",
+fwidth = fn "returns abs sum of approximate window-space partial derivatives magnitudes. - (vecN)(vecN)",
+fwidthFine = fn "returns abs sum of approximate window-space partial derivatives magnitudes. - (vecN)(vecN)",
+fwidthCoarse = fn "returns abs sum of approximate window-space partial derivatives magnitudes. - (vecN)(vecN)",
 interpolateAtCentroid = fn "Return value of interpolant sampled inside pixel and the primitive. - (floatN)(floatN)",
 interpolateAtSample = fn "Return value of interpolant at the location fo sample. - (floatN)(floatN, int sample)",
 interpolateAtOffset = fn "Return value of interpolant sampled at fixed offset offset from pixel center. - (floatN)(floatN, vec2 offset)",
@@ -166,6 +172,7 @@ imageAtomicCompSwap = fn "performs atomic operation on individual texels returns
 imageStore = fn "stores the texel at the coordinate. - ()(imageN, intN coord, [int sample], vecN data)",
 imageLoad = fn "loads the texel at the coordinate. - (vecN)(imageN, intN coord, [int sample])",
 imageSize = fn "returns the size of the image. - (ivecN)(imageN)",
+imageSamples = fn "returns the samples of the multi-sampled image. - (int)(image2DMSN)",
 
 atomicCounterIncrement = fn "increments counter and returns old value. - (uint)(atomic_uint)",
 atomicCounterDecrement = fn "decrements counter and returns old value. - (uint)(atomic_uint)",
@@ -180,6 +187,7 @@ atomicExchange = fn "performs atomic operation on memory location (ssbo/shared) 
 atomicCompSwap = fn "performs atomic operation on memory location (ssbo/shared) returns old value. - (uint)(inout uint mem, uint data)",
 
 textureSize = fn "returns the size of the texture (no lod required: Rect, MS and Buffer). - (intN)(samplerN, [int lod])",
+textureSamples = fn "returns the samples of the multi-sampled texture. - (int)(texture2DMSN)",
 textureQueryLod = fn "returns the lod values for a given coordinate. - (vec2)(samplerN, vecN coord)",
 texture = fn "performs a texture lookup. Shadow samplers require base N+1 coordinate.  Lod bias is optional (illegal for MS, Buffer, Rect). - (vec4)(samplerN, vecN coord, [float bias])",
 textureProj = fn "performas a projective texture lookup (only Nd samplers + Rect). Shadows require N+1 base coordinate, no Lod bias allowed for Rect. - (vec4)(samplerN, vecN+1 coord, [float bias])",
@@ -248,6 +256,7 @@ local keyw =
     local_size_x local_size_y local_size_z
     gl_BaseVertexARB gl_BaseInstanceARB gl_DrawIDARB
     bindless_sampler bound_sampler bindless_image bound_image early_fragment_tests
+    gl_HelperInvocation gl_CullDistance gl_MaxSamples
 
     coherent volatile restrict readonly writeonly
     image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray

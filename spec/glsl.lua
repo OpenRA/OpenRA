@@ -90,6 +90,7 @@ return {
     local_size_x local_size_y local_size_z
     gl_BaseVertexARB gl_BaseInstanceARB gl_DrawIDARB
     bindless_sampler bound_sampler bindless_image bound_image early_fragment_tests
+    gl_HelperInvocation gl_CullDistance
 
     coherent volatile restrict readonly writeonly
     image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray
@@ -120,16 +121,17 @@ return {
     uaddCarry usubBorrow umulExtended imulExtended
     bitfeldExtract bitfieldInsert bitfeldReverse bitCount
     findLSB findMSB
-    dFdx dFdy fwidth
+    dFdx dFdy fwidth dFdxFine dFdyFine fwidthFine dFdxCoarse dFdyCoarse fwidthCoarse
     interpolateAtCentroid interpolateAtSample interpolateAtOffset
     noise1 noise2 noise3 noise4
     EmitStreamVertex EndStreamPrimitive EmitVertex EndPrimitive
     barrier
-    textureSize textureQueryLod texture textureOffset textureProj
+    textureSize textureSamples textureQueryLod texture textureOffset textureProj
     textureLod textureProjOffset textureLodOffset
     texelFetchOffset texelFetch textureProjLod textureProjLodOffset
     textureGrad textureGradOffset textureProjGrad textureProjGradOffset
     textureGather textureGatherOffset
+    
     texture2D texture1D texture3D textureCube texture2DRect
     texture1DProj texture1DLod texture1DProjLod
     texture2DProj texture2DLod texture2DProjLod
@@ -158,7 +160,7 @@ return {
     imageAtomicAdd imageAtomicMin imageAtomicMax
     imageAtomicIncWrap imageAtomicDecWrap imageAtomicAnd
     imageAtomicOr imageAtomixXor imageAtomicExchange
-    imageAtomicCompSwap imageSize
+    imageAtomicCompSwap imageSize imageSamples
     
     memoryBarrier groupMemoryBarrier memoryBarrierAtomicCounter memoryBarrierShared memoryBarrierBuffer memoryBarrierImage
     
