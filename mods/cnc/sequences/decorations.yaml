@@ -395,72 +395,93 @@ v11.husk:
 v12:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v12.husk:
 	idle: v12
 		Start: 2
+		ZOffset: -512
 
 v13:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v13.husk:
 	idle: v13
 		Start: 2
+		ZOffset: -512
 
 v14:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v14.husk:
 	idle: v14
 		Start: 2
+		ZOffset: -512
 
 v15:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v15.husk:
 	idle: v15
 		Start: 2
+		ZOffset: -512
 
 v16:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v16.husk:
 	idle: v16
 		Start: 2
+		ZOffset: -512
 
 v17:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v17.husk:
 	idle: v17
 		Start: 2
+		ZOffset: -512
 
 v18:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v18.husk:
 	idle: v18
 		Start: 2
+		ZOffset: -512
 
 v19:
 	idle:

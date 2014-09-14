@@ -164,7 +164,6 @@
     <Compile Include="AutoHeal.cs" />
     <Compile Include="AutoTarget.cs" />
     <Compile Include="BaseBuilding.cs" />
-    <Compile Include="BelowUnits.cs" />
     <Compile Include="Bridge.cs" />
     <Compile Include="BridgeLayer.cs" />
     <Compile Include="Buildable.cs" />

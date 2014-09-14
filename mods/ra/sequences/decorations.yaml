@@ -308,38 +308,50 @@ v13:
 v14:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v15:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v16:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v17:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v18:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 rice:
 	idle:
 		Start: 0
+		ZOffset: -512
 	damaged-idle:
 		Start: 1
+		ZOffset: -512
 
 v19:
 	idle:
