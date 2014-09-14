@@ -2941,7 +2941,7 @@ Rules:
 		Health:
 			HP: 1500
 		Armor:
-			Heavy:
+			Type: Heavy
 		ExternalCapturable:
 		CashTrickler:
 			Period: 250
