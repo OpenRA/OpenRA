@@ -74,6 +74,7 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 
 			var statsButton = dialog.Get<ButtonWidget>("STATS_BUTTON");
+			statsButton.IsVisible = () => !(world.Map.Type == "Mission" || world.Map.Type == "Campaign") || world.IsReplay;
 			statsButton.OnClick = () =>
 			{
 				showStats = true;
