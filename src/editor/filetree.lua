@@ -29,8 +29,8 @@ do
   local size = wx.wxSize(16, 16)
   filetree.imglist = wx.wxImageList(16,16)
   filetree.imglist:Add(getBitmap("FOLDER", "OTHER", size)) -- 0 = directory
-  filetree.imglist:Add(getBitmap("HELP-PAGE", "OTHER", size)) -- 1 = file known spec
-  filetree.imglist:Add(getBitmap("NORMAL-FILE", "OTHER", size)) -- 2 = file other
+  filetree.imglist:Add(getBitmap("FILE-KNOWN", "OTHER", size)) -- 1 = file known spec
+  filetree.imglist:Add(getBitmap("FILE-NORMAL", "OTHER", size)) -- 2 = file other
 end
 
 local function treeAddDir(tree,parent_id,rootdir)

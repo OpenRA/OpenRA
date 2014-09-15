@@ -15,11 +15,11 @@ ide.config.toolbar.icons = {
 }
 
 ide.config.toolbar.iconmap = {
-  [ID_NEW] = {"NORMAL-FILE", "Create an empty document"},
+  [ID_NEW] = {"FILE-NEW", "Create an empty document"},
   [ID_OPEN] = {"FILE-OPEN", "Open an existing document"},
   [ID_SAVE] = {"FILE-SAVE", "Save the current document"},
-  [ID_SAVEALL] = {"NEW-DIR", "Save all open documents"},
-  [ID_PROJECTDIRFROMFILE]= {"GO-DIR-UP", "Set project directory from current file"},
+  [ID_SAVEALL] = {"FILE-SAVE-ALL", "Save all open documents"},
+  [ID_PROJECTDIRFROMFILE]= {"DIR-SETUP-FILE", "Set project directory from current file"},
   [ID_PROJECTDIRCHOOSE] = {"DIR-SETUP", "Choose a project directory"},
   [ID_FIND] = {"FIND", "Find text"},
   [ID_REPLACE] = {"FIND-AND-REPLACE", "Find and replace text"},
