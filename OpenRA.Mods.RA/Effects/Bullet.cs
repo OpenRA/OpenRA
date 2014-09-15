@@ -70,8 +70,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (info.Angle.Length > 1 && info.Speed.Length > 1)
 			{
-				angle = new WAngle(args.SourceActor.World.SharedRandom.Next(info.Angle[0].Angle, info.Angle[1].Angle));
-				speed = new WRange(args.SourceActor.World.SharedRandom.Next(info.Speed[0].Range, info.Speed[1].Range));
+				angle = new WAngle(world.SharedRandom.Next(info.Angle[0].Angle, info.Angle[1].Angle));
+				speed = new WRange(world.SharedRandom.Next(info.Speed[0].Range, info.Speed[1].Range));
 			}
 			else
 			{
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA.Effects
 					.Select(m => m.GetInaccuracyModifier());
 				var inaccuracy = Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, modifiers);
 				var maxOffset = inaccuracy * (target - pos).Length / args.Weapon.Range.Range;
-				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
+				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
 
 			facing = Traits.Util.GetFacing(target - pos, 0);
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (info.ContrailLength > 0)
 			{
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
-				trail = new ContrailRenderable(args.SourceActor.World, color, info.ContrailLength, info.ContrailDelay, 0);
+				trail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
 
 			smokeTicks = info.TrailDelay;
