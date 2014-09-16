@@ -509,6 +509,8 @@ MMCH:
 	RevealsShroud:
 		Range: 8c0
 	RenderInfantry:
+	BodyOrientation:
+		QuantizedFacings: 32
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -516,8 +518,10 @@ MMCH:
 		Recoils: no
 	Armament:
 		Weapon: 120mm
+		EliteWeapon: 120mmRailgun
 		Recoil: 127
 		RecoilRecovery: 26
+		LocalOffset: 512, 85, 256
 	RenderVoxels:
 	WithVoxelBarrel:
 		LocalOffset: -128, 85, 256
@@ -606,6 +610,7 @@ BIKE:
 		Range: 5c0
 	Armament:
 		Weapon: BikeMissile
+		EliteWeapon: HoverMissile
 		LocalOffset: -128,-170,213, -128,170,213
 	AttackFrontal:
 	AutoTarget:
@@ -693,8 +698,12 @@ SUBTANK:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
-	Armament:
+	Armament@PRIMARY:
 		Weapon: FireballLauncher
+		LocalOffset: 512,299,85
+	Armament@SECONDARY:
+		Weapon: FireballLauncher
+		LocalOffset: 512,-299,85
 	AttackFrontal:
 	AutoTarget:
 	RenderSprites:
@@ -755,6 +764,12 @@ TTNK:
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:
+	AttackFrontal:
+	Armament:
+		Weapon: 90mm
+		EliteWeapon: 115mm
+		LocalOffset: 256,0,384
+		MuzzleSequence: muzzle
 	Transforms:
 		IntoActor: gatick
 		Offset: -1,-1
