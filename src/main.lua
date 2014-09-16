@@ -43,6 +43,16 @@ ide = {
       foldcompact = true,
       checkeol = true,
       saveallonrun = false,
+      caretline = true,
+      showfncall = true,
+      autotabs = false,
+      usetabs  = false,
+      tabwidth = 2,
+      usewrap = true,
+      calltipdelay = 500,
+      smartindent = true,
+      fold = true,
+      autoreload = true,
     },
     debugger = {
       verbose = false,
@@ -56,7 +66,9 @@ ide = {
       fullname = 'untitled.lua',
       interpreter = 'luadeb',
     },
-    outputshell = {},
+    outputshell = {
+      usewrap = true,
+    },
     filetree = {
       mousemove = true,
     },
@@ -77,7 +89,8 @@ ide = {
     autocomplete = true,
     autoanalyzer = true,
     acandtip = {
-      shorttip = false,
+      shorttip = true,
+      nodynwords = true,
       ignorecase = false,
       strategy = 2,
       width = 60,
@@ -89,17 +102,18 @@ ide = {
       apptitle = "%T - %F",
     },
 
-    activateoutput = false, -- activate output/console on Run/Debug/Compile
+    activateoutput = true, -- activate output/console on Run/Debug/Compile
     unhidewindow = false, -- to unhide a gui window
-    allowinteractivescript = false, -- allow interaction in the output window
+    allowinteractivescript = true, -- allow interaction in the output window
+    projectautoopen = true,
+    autorecoverinactivity = 10,
     filehistorylength = 20,
     projecthistorylength = 20,
     savebak = false,
     singleinstance = false,
     singleinstanceport = 0xe493,
-    -- HiDPI/Retina display support;
-    -- `false` by default because of issues with indicators with alpha setting
-    hidpi = false,
+    interpreter = "luadeb",
+    hidpi = false, -- HiDPI/Retina display support
     hotexit = false,
   },
   specs = {

@@ -1,14 +1,3 @@
-editor.caretline = true
-editor.showfncall = true
-editor.autotabs = false
-editor.usetabs  = false
-editor.tabwidth = 2
-editor.usewrap = true
-editor.calltipdelay = 500
-editor.smartindent = true
-editor.fold = true
-editor.autoreload = true
-
 local G = ... -- this now points to the global environment
 local mac = G.ide.osname == 'Macintosh'
 local win = G.ide.osname == "Windows"
@@ -34,22 +23,9 @@ else
   outputshell.fontname = editor.fontname
 end
 
-outputshell.usewrap = true
-
 hidpi = mac -- support Retina displays by default (OSX)
-
 singleinstance = not mac
-singleinstanceport = 0xe493
 
-acandtip.shorttip = true
-acandtip.nodynwords = true
-
-activateoutput = true
-projectautoopen = true
-autorecoverinactivity = 10
-allowinteractivescript = true -- allow interaction in the output window
-
-interpreter = "luadeb"
 unhidewindow = { -- allow unhiding of GUI windows
   -- 1 - show if hidden, 0 - ignore, 2 -- hide if shown
   ConsoleWindowClass = 2,
