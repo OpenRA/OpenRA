@@ -14,9 +14,8 @@ World:
 		Name: player
 		Filename: unittem.pal
 		ShadowIndex: 1
-	PaletteFromFile@terrain:
+	PaletteFromCurrentTileset:
 		Name: terrain
-		Filename: isotem.pal
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: cameo.pal
