@@ -88,16 +88,18 @@ Bazooka:
 	Palette: ra
 	Projectile: Missile
 		Speed: 213
-		Arm: 2
-		High: yes
+		Arm: 3
+		High: true
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
 		ROT: 8
-		RangeLimit: 35
+		RangeLimit: 50
+		CloseEnough: 256
+		LockOnProbability: 80
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 25
+		Damage: 35
 		DeathType: 2
 		ValidTargets: Ground, Air
 		Versus:
