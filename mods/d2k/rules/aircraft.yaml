@@ -96,6 +96,7 @@ ORNI.bomber:
 	AttackBomber:
 	Armament:
 		Weapon: Napalm
+		LimitedAmmo: 5
 	Inherits: ^Plane
 	Health:
 		HP: 100
@@ -107,8 +108,6 @@ ORNI.bomber:
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 		Repulsable: False
-	LimitedAmmo:
-		Ammo: 5
 	RenderUnit:
 		Image: orni
 	WithShadow:

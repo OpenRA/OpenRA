@@ -54,18 +54,29 @@ namespace OpenRA.Mods.RA
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;
 
+		[Desc("Has this amount of limited ammo if non-zero")]
+		public readonly int LimitedAmmo = 0;
+		[Desc("Defaults to value in LimitedAmmo.")]
+		public readonly int AmmoPipCount = -1;
+		[Desc("Pip type to display for loaded ammo.")]
+		public readonly PipType AmmoPipType = PipType.Green;
+		[Desc("Pip type to display for empty ammo.")]
+		public readonly PipType AmmoPipTypeEmpty = PipType.Transparent;
+		[Desc("Time to reload limited ammo measured in ticks.")]
+		public readonly int AmmoReloadTicks = 25 * 2;
+
 		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
 	}
 
-	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier
+	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier, INotifyAttack, IPips, ISync
 	{
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
+		[Sync] public int Ammo;
 
 		public readonly Actor self;
 		Lazy<Turreted> Turret;
 		Lazy<IBodyOrientation> Coords;
-		Lazy<LimitedAmmo> limitedAmmo;
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public WRange Recoil;
@@ -77,10 +88,11 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = self;
 
+			Ammo = info.LimitedAmmo;
+
 			// We can't resolve these until runtime
 			Turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
 			Coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
-			limitedAmmo = Exts.Lazy(() => self.TraitOrDefault<LimitedAmmo>());
 
 			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;
@@ -130,6 +142,35 @@ namespace OpenRA.Mods.RA
 				a();
 		}
 
+		public bool FullAmmo() { return Ammo == Info.LimitedAmmo; }
+		public bool HasAmmo() { return Ammo > 0; }
+		public bool GiveAmmo()
+		{
+			if (Ammo >= Info.LimitedAmmo) return false;
+			++Ammo;
+			return true;
+		}
+
+		public bool TakeAmmo()
+		{
+			if (Ammo <= 0) return false;
+			--Ammo;
+			return true;
+		}
+
+		public int ReloadTimePerAmmo() { return Info.AmmoReloadTicks; }
+
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { TakeAmmo(); }
+
+		public int GetAmmoCount() { return Ammo; }
+
+		public IEnumerable<PipType> GetPips(Actor self)
+		{
+			var pips = Info.AmmoPipCount > -1 ? Info.AmmoPipCount : Info.LimitedAmmo;
+			return Exts.MakeArray(pips,
+				i => (Ammo * pips) / Info.LimitedAmmo > i ? Info.AmmoPipType : Info.AmmoPipTypeEmpty);
+		}
+
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
 		public Barrel CheckFire(Actor self, IFacing facing, Target target)
@@ -137,7 +178,7 @@ namespace OpenRA.Mods.RA
 			if (IsReloading)
 				return null;
 
-			if (limitedAmmo.Value != null && !limitedAmmo.Value.HasAmmo())
+			if (Info.LimitedAmmo > 0 && !HasAmmo())
 				return null;
 
 			if (!target.IsInRange(self.CenterPosition, Weapon.Range))

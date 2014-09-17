@@ -104,14 +104,22 @@ namespace OpenRA.Mods.RA.AI
 
 		protected static bool FullAmmo(Actor a)
 		{
-			var limitedAmmo = a.TraitOrDefault<LimitedAmmo>();
-			return limitedAmmo != null && limitedAmmo.FullAmmo();
+			foreach (var arm in a.TraitsImplementing<Armament>())
+			{
+				var limitedAmmo = arm.Info.LimitedAmmo > 0;
+				return limitedAmmo && arm.FullAmmo();
+			}
+			return false;
 		}
 
 		protected static bool HasAmmo(Actor a)
 		{
-			var limitedAmmo = a.TraitOrDefault<LimitedAmmo>();
-			return limitedAmmo != null && limitedAmmo.HasAmmo();
+			foreach (var arm in a.TraitsImplementing<Armament>())
+			{
+				var limitedAmmo = arm.Info.LimitedAmmo > 0;
+				return limitedAmmo && arm.HasAmmo();
+			}
+			return false;
 		}
 
 		protected static bool ReloadsAutomatically(Actor a)

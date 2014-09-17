@@ -40,38 +40,38 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new EnterAlliedActorTargeter<Building>("Repair", 5,
-				target => CanRepairAt(target), _ => CanRepair()); }
+				target => CanRepairAt(target), _ => CanRepair(self)); }
 		}
 
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
-			if( order.OrderID == "Repair" )
+			if (order.OrderID == "Repair")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
 		}
 
-		bool CanRepairAt( Actor target )
+		bool CanRepairAt(Actor target)
 		{
 			return self.Info.Traits.Get<RepairableInfo>().RepairBuildings.Contains( target.Info.Name );
 		}
 
-		bool CanRepair()
+		bool CanRepair(Actor self)
 		{
-			var li = self.TraitOrDefault<LimitedAmmo>();
-			return (Health.DamageState > DamageState.Undamaged || (li != null && !li.FullAmmo()) );
+			var ml = self.TraitOrDefault<Minelayer>();
+			return (Health.DamageState > DamageState.Undamaged || (ml != null && !ml.FullPayload()));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Repair" && CanRepair()) ? "Move" : null;
+			return (order.OrderString == "Repair" && CanRepair(self)) ? "Move" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Repair")
 			{
-				if (!CanRepairAt(order.TargetActor) || !CanRepair())
+				if (!CanRepairAt(order.TargetActor) || !CanRepair(self))
 					return;
 
 				var movement = self.Trait<IMove>();

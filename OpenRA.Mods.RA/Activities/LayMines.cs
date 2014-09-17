@@ -23,8 +23,8 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled) return NextActivity;
 
 			var movement = self.Trait<IMove>();
-			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			if (!limitedAmmo.HasAmmo())
+			var payload = self.TraitOrDefault<Minelayer>();
+			if (!payload.HasPayload())
 			{
 				var info = self.Info.Traits.Get<MinelayerInfo>();
 				// rearm & repair at fix, then back out here to refill the minefield some more
@@ -74,9 +74,9 @@ namespace OpenRA.Mods.RA.Activities
 
 		static void LayMine(Actor self)
 		{
-			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			if (limitedAmmo != null)
-				limitedAmmo.TakeAmmo();
+			var payload = self.TraitOrDefault<Minelayer>();
+			if (payload != null)
+				payload.TakePayload();
 
 			self.World.AddFrameEndTask(
 				w => w.CreateActor(self.Info.Traits.Get<MinelayerInfo>().Mine, new TypeDictionary

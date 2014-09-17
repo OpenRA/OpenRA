@@ -27,9 +27,12 @@ namespace OpenRA.Mods.RA.Activities
 			if (!target.IsValidFor(self))
 				return NextActivity;
 
-			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
+			foreach (var arm in self.TraitsImplementing<Armament>())
+			{
+				var reloads = self.TraitOrDefault<Reloads>();
+				if (arm.Info.LimitedAmmo > 0 && !arm.HasAmmo() && reloads == null)
 				return NextActivity;
+			}
 
 			var attack = self.TraitOrDefault<AttackPlane>();
 			if (attack != null)

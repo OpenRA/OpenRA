@@ -417,9 +417,8 @@ MNLY.AP:
 		Image: MNLY
 	Minelayer:
 		Mine: MINP
+		Payload: 3
 	MineImmune:
-	LimitedAmmo:
-		Ammo: 3
 	DetectCloaked:
 		Range: 5
 		CloakTypes: Mine
@@ -451,9 +450,8 @@ MNLY.AT:
 		Image: MNLY
 	Minelayer:
 		Mine: MINV
+		Payload: 3
 	MineImmune:
-	LimitedAmmo:
-		Ammo: 3
 	DetectCloaked:
 		Range: 5
 		CloakTypes: Mine

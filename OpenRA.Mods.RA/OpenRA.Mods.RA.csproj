@@ -198,7 +198,6 @@
     <Compile Include="Infiltration\InfiltrateForSupportPower.cs" />
     <Compile Include="Invulnerable.cs" />
     <Compile Include="Captures.cs" />
-    <Compile Include="LimitedAmmo.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />

@@ -23,10 +23,12 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
-			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			var reloads = self.TraitOrDefault<Reloads>();
-			if (limitedAmmo != null && !limitedAmmo.HasAmmo() && reloads == null)
+			foreach (var arm in self.TraitsImplementing<Armament>())
+			{
+				var reloads = self.TraitOrDefault<Reloads>();
+				if (arm.Info.LimitedAmmo > 0 && !arm.HasAmmo() && reloads == null)
 				return Util.SequenceActivities(new HeliReturn(), NextActivity);
+			}
 
 			var helicopter = self.Trait<Helicopter>();
 			var attack = self.Trait<AttackHeli>();

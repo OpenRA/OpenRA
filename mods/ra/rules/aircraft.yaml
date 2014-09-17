@@ -38,6 +38,7 @@ BADR.Bomber:
 	AttackBomber:
 	Armament:
 		Weapon: ParaBomb
+		LimitedAmmo: 7
 	Health:
 		HP: 300
 	Armor:
@@ -46,8 +47,6 @@ BADR.Bomber:
 		ROT: 5
 		Speed: 149
 		Repulsable: False
-	LimitedAmmo:
-		Ammo: 7
 	RenderUnit:
 		Image: badr
 	-Selectable:
@@ -92,6 +91,8 @@ MIG:
 		Weapon: Maverick
 		LocalOffset: 0,-640,0, 0,640,0
 		LocalYaw: -40, 24
+		LimitedAmmo: 8
+		AmmoPipCount: 8
 	AttackPlane:
 		FacingTolerance: 20
 	Plane:
@@ -106,8 +107,7 @@ MIG:
 		EnableStances: false
 	RenderUnit:
 		CameraPitch: 99
-	LimitedAmmo:
-		Ammo: 8
+	WithShadow:
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 40,29,0,1
@@ -143,11 +143,17 @@ YAK:
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,-213,0
 		MuzzleSequence: muzzle
+		LimitedAmmo: 18
+		AmmoPipCount: 6
+		AmmoReloadTicks: 11
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,213,0
 		MuzzleSequence: muzzle
+		LimitedAmmo: 18
+		AmmoPipCount: 6
+		AmmoReloadTicks: 11
 	AttackPlane:
 		FacingTolerance: 20
 	Plane:
@@ -162,10 +168,7 @@ YAK:
 		EnableStances: false
 	RenderUnit:
 		CameraPitch: 99
-	LimitedAmmo:
-		Ammo: 18
-		PipCount: 6
-		ReloadTicks: 11
+	WithShadow:
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 30,28,0,2
@@ -239,9 +242,11 @@ HELI:
 	Armament@PRIMARY:
 		Weapon: HellfireAA
 		LocalOffset: 0,-213,-85
+		LimitedAmmo: 8
 	Armament@SECONDARY:
 		Weapon: HellfireAG
 		LocalOffset: 0,213,-85
+		LimitedAmmo: 8
 	AttackHeli:
 		FacingTolerance: 20
 	Helicopter:
@@ -257,8 +262,7 @@ HELI:
 	RenderUnit:
 	WithRotor:
 		Offset: 0,0,85
-	LimitedAmmo:
-		Ammo: 8
+	WithShadow:
 	Selectable:
 		Bounds: 36,28,0,0
 	LeavesHusk:
@@ -288,6 +292,9 @@ HIND:
 		Weapon: ChainGun
 		LocalOffset: 85,-213,-85
 		MuzzleSequence: muzzle
+		LimitedAmmo: 24
+		AmmoPipCount: 6
+		AmmoReloadTicks: 8
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun
@@ -307,10 +314,7 @@ HIND:
 		EnableStances: false
 	RenderUnit:
 	WithRotor:
-	LimitedAmmo:
-		Ammo: 24
-		PipCount: 6
-		ReloadTicks: 8
+	WithShadow:
 	Selectable:
 		Bounds: 38,32,0,0
 	WithMuzzleFlash:
