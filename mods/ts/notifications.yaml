@@ -13,7 +13,7 @@ Speech:
 		Leave: 00-i012
 		StartGame: 00-i200
 		UnitReady: 00-i076
-		NoBuild:
+		NoBuild: 00-i064
 		Training: 00-i062
 		OnHold: 00-i218
 		Cancelled: 00-i220
@@ -23,7 +23,7 @@ Speech:
 		NavalUnitLost: 00-i074
 		AirUnitLost: 00-i074
 		BuildingCaptured: 00-i056
-
+		ReinforcementsArrived: 00-i038
 
 Sounds:
 	Notifications:
@@ -32,8 +32,8 @@ Sounds:
 		CashTickUp: credup1
 		CashTickDown: creddwn1
 		LevelUp:
-		DisablePower:
-		EnablePower:
+		DisablePower: 00-i232
+		EnablePower: 00-i230
 		ChatLine:message1
 		BuildPaletteOpen:emblem
 		BuildPaletteClose:emblem
