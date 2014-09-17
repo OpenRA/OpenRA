@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 
 				var checkActors = world.FindActorsInCircle(pos, radiusToUse);
 				foreach (var scrutinized in checkActors)
-					answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner]);
+					answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner], firedBy);
 			}
 
 			return answer;
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA
 
 			foreach (var consideration in Considerations)
 				foreach (var scrutinized in actors)
-					answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner]);
+					answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner], firedBy);
 
 			return answer;
 		}
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			///<summary>Evaluates a single actor according to the rules defined in this consideration</summary>
-			public int GetAttractiveness(Actor a, Stance stance)
+			public int GetAttractiveness(Actor a, Stance stance, Player firedBy)
 			{
 				if (stance != Against)
 					return 0;
@@ -130,6 +130,9 @@ namespace OpenRA.Mods.RA
 
 				var targetable = a.TraitOrDefault<ITargetable>();
 				if (targetable == null)
+					return 0;
+
+				if (!targetable.TargetableBy(a, firedBy.PlayerActor))
 					return 0;
 
 				if (Types.Intersect(targetable.TargetTypes).Any())
