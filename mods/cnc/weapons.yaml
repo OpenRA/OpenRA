@@ -81,7 +81,7 @@ Atomic:
 			Light: 60
 			Heavy: 50
 	Warhead@2Eff_impact: CreateEffect
-		Explosion: 6
+		Explosion: nuke_explosion
 		ImpactSound: nukexplo.aud
 	Warhead@3Dam_areanukea: SpreadDamage
 		Spread: 2c512
