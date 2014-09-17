@@ -74,6 +74,12 @@ end
 function ide:GetApp() return self.editorApp end
 function ide:GetEditor(index) return GetEditor(index) end
 function ide:GetEditorWithFocus(ed) return GetEditorWithFocus(ed) end
+function ide:GetEditorWithLastFocus()
+  -- make sure ide.infocus is still a valid component and not "some" userdata
+  return (pcall(function() ide.infocus:GetId() end)
+    and ide.infocus:GetClassInfo():GetClassName() == "wxStyledTextCtrl"
+    and ide.infocus:DynamicCast("wxStyledTextCtrl") or nil)
+end
 function ide:GetMenuBar() return self.frame.menuBar end
 function ide:GetStatusBar() return self.frame.statusBar end
 function ide:GetToolBar() return self.frame.toolBar end

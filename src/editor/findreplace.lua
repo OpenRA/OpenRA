@@ -46,7 +46,7 @@ local findReplace = ide.findReplace
 local NOTFOUND = -1
 
 function findReplace:GetEditor()
-  return findReplace.oveditor or GetEditorWithFocus() or GetEditor()
+  return findReplace.oveditor or ide:GetEditorWithLastFocus() or GetEditor()
 end
 
 -------------------- Find replace dialog
@@ -128,8 +128,8 @@ local function shake(window, shakes, duration, vigour)
 end
 
 function findReplace:FindString(reverse)
-  if findReplace:HasText() then
-    local editor = findReplace:GetEditor()
+  local editor = findReplace:GetEditor()
+  if editor and findReplace:HasText() then
     local fDown = iff(reverse, not findReplace.fDown, findReplace.fDown)
     setSearchFlags(editor)
     setTarget(editor, fDown)
@@ -161,9 +161,9 @@ end
 
 function findReplace:FindStringAll(inFileRegister)
   local found = false
-  if findReplace:HasText() then
+  local editor = findReplace:GetEditor()
+  if editor and findReplace:HasText() then
     local findLen = string.len(findReplace.findText)
-    local editor = findReplace:GetEditor()
     local e = setTargetAll(editor)
 
     setSearchFlags(editor)
@@ -189,9 +189,8 @@ end
 
 function findReplace:ReplaceString(fReplaceAll, inFileRegister)
   local replaced = false
-
-  if findReplace:HasText() then
-    local editor = findReplace:GetEditor()
+  local editor = findReplace:GetEditor()
+  if editor and findReplace:HasText() then
     -- don't replace in read-only editors
     if editor:GetReadOnly() then return false end
 

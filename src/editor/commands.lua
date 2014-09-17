@@ -955,7 +955,6 @@ frame:Connect(wx.wxEVT_TIMER, function() saveAutoRecovery() end)
 -- tickets: http://trac.wxwidgets.org/ticket/14142
 -- and http://trac.wxwidgets.org/ticket/14269)
 
-local infocus
 ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
   if ide.exitingProgram then return end
 
@@ -963,8 +962,8 @@ ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
   if win then
     local class = win:GetClassInfo():GetClassName()
     -- don't set focus on the main frame or toolbar
-    if infocus and (class == 'wxAuiToolBar' or class == 'wxFrame') then
-      pcall(function() infocus:SetFocus() end)
+    if ide.infocus and (class == 'wxAuiToolBar' or class == 'wxFrame') then
+      pcall(function() ide.infocus:SetFocus() end)
       return
     end
 
@@ -984,14 +983,14 @@ ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
       parent = parent:GetParent()
     end
     if mainwin then
-      if infocus and infocus ~= win and ide.osname == 'Macintosh' then
+      if ide.infocus and ide.infocus ~= win and ide.osname == 'Macintosh' then
         -- kill focus on the control that had the focus as wxwidgets on OSX
         -- doesn't do it: http://trac.wxwidgets.org/ticket/14142;
         -- wrap into pcall in case the window is already deleted
         local ev = wx.wxFocusEvent(wx.wxEVT_KILL_FOCUS)
-        pcall(function() infocus:GetEventHandler():ProcessEvent(ev) end)
+        pcall(function() ide.infocus:GetEventHandler():ProcessEvent(ev) end)
       end
-      infocus = win
+      ide.infocus = win
     end
   end
 
@@ -1001,11 +1000,11 @@ end)
 ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
   function(event)
     if not ide.exitingProgram then
-      if ide.osname == 'Macintosh' and infocus and event:GetActive() then
+      if ide.osname == 'Macintosh' and ide.infocus and event:GetActive() then
         -- restore focus to the last element that received it;
         -- wrap into pcall in case the element has disappeared
         -- while the application was out of focus
-        pcall(function() infocus:SetFocus() end)
+        pcall(function() ide.infocus:SetFocus() end)
       end
 
       -- save auto-recovery record when making the app inactive

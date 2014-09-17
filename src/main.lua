@@ -144,6 +144,7 @@ ide = {
 
   -- misc
   exitingProgram = false, -- are we currently exiting, ID_EXIT
+  infocus = nil, -- last component with a focus
   editorApp = wx.wxGetApp(),
   editorFilename = nil,
   openDocuments = {},-- open notebook editor documents[winId] = {
