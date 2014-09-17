@@ -28,7 +28,9 @@ namespace OpenRA
 			switch (ex.Status)
 			{
 				case WebExceptionStatus.NameResolutionFailure:
+					return "DNS lookup failed";
 				case WebExceptionStatus.Timeout:
+					return "Connection timeout";
 				case WebExceptionStatus.ConnectFailure:
 					return "Cannot connect to remote server";
 				case WebExceptionStatus.ProtocolError:
