@@ -61,43 +61,7 @@ patriot:
 		Facings: 32
 
 explosion:
-	1: piff
-		Start: 0
-		Length: *
-	2: piffpiff
-		Start: 0
-		Length: *
-	3: napalm2
-		Start: 0
-		Length: *
-	4: veh-hit3
-		Start: 0
-		Length: *
-	5: veh-hit2
-		Start: 0
-		Length: *
-	1w: piff
-		Start: 0
-		Length: *
-	2w: piffpiff
-		Start: 0
-		Length: *
-	3w: napalm2
-		Start: 0
-		Length: *
-	4w: veh-hit3
-		Start: 0
-		Length: *
-	5w: veh-hit2
-		Start: 0
-		Length: *
-	8: art-exp1
-		Start: 0
-		Length: *
-	6: atomsfx
-		Start: 0
-		Length: *
-	6w: atomsfx
+	nuke_explosion: atomsfx
 		Start: 0
 		Length: *
 	piff: piff
