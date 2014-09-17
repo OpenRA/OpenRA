@@ -531,7 +531,7 @@ STNK:
 	RevealsShroud:
 		Range: 7c0
 	Cloak:
-		RequiresUpgrade: cloak
+		-RequiresUpgrade:
 		InitialDelay: 90
 		CloakDelay: 90
 		CloakSound: trans1.aud
