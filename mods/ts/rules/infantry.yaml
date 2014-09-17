@@ -603,6 +603,7 @@ VISSML:
 	-AutoTarget:
 	-RenderInfantry:
 	RenderUnit:
+	-WithDeathAnimation:
 
 VISLRG:
 	Inherits: ^Infantry
@@ -636,6 +637,7 @@ VISLRG:
 	AttackWander:
 	-RenderInfantry:
 	RenderUnit:
+	-WithDeathAnimation:
 
 CIV1:
 	Inherits: ^CivilianInfantry
