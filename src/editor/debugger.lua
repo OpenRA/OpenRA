@@ -527,8 +527,11 @@ debugger.listen = function(start)
   end
   DisplayOutputLn(TR("Debugger server started at %s:%d.")
     :format(debugger.hostname, debugger.portnumber))
+
   copas.autoclose = false
   copas.addserver(server, function (skt)
+      -- pull any pending data not processed yet
+      if debugger.running then debugger.update() end
       if debugger.server then
         DisplayOutputLn(TR("Refused a request to start a new debugging session as there is one in progress already."))
         return
