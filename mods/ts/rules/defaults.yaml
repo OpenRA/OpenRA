@@ -45,6 +45,49 @@
 	ScriptTriggers:
 	WithMakeAnimation:
 
+^CivBuilding:
+	AppearsOnRadar:
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+		Priority: 3
+	TargetableBuilding:
+		TargetTypes: Ground, C4
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+		BuildSounds: place2.aud
+		TerrainTypes: Clear
+		Adjacent: 4
+	FrozenUnderFog:
+	SoundOnDamageTransition:
+		DamagedSound: expnew01.aud
+		DestroyedSound: crmble2.aud
+	RenderBuilding:
+	WithBuildingExplosion:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	ShakeOnDeath:
+	ProximityCaptor:
+		Types: Building
+	AcceptsSupplies:
+	Guardable:
+		Range: 3
+	BodyOrientation:
+	Huntable:
+	LuaScriptEvents:
+	Demolishable:
+	ScriptTriggers:
+	Health:
+		HP: 900
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	Tooltip:
+		Description: Civilian Building
+	Valued:
+	
 ^Wall:
 	AppearsOnRadar:
 	Building:
