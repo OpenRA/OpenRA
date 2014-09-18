@@ -1,5 +1,5 @@
 --
--- MobDebug 0.60
+-- MobDebug 0.606
 -- Copyright 2011-14 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
@@ -10,6 +10,7 @@ local io = io or require "io"
 local table = table or require "table"
 local string = string or require "string"
 local coroutine = coroutine or require "coroutine"
+local debug = require "debug"
 -- protect require "os" as it may fail on embedded systems without os module
 local os = os or (function(module)
   local ok, res = pcall(require, module)
@@ -18,12 +19,13 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.60,
+  _VERSION = 0.606,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
   checkcount = 200,
-  yieldtimeout = 0.02,
+  yieldtimeout = 0.02, -- yield timeout (s)
+  connecttimeout = 2, -- connect timeout (s)
 }
 
 local error = error
@@ -95,7 +97,6 @@ local iscasepreserving = win or (mac and io.open('/library') ~= nil)
 if jit and jit.off then jit.off() end
 
 local socket = require "socket"
-local debug = require "debug"
 local coro_debugger
 local coro_debugee
 local coroutines = {}; setmetatable(coroutines, {__mode = "k"}) -- "weak" keys
@@ -640,7 +641,7 @@ local function debug_hook(event, line)
     -- need to recheck once more as resume after 'stack' command may
     -- return something else (for example, 'exit'), which needs to be handled
     if status and res and res ~= 'stack' then
-      if abort == nil and res == "exit" then os.exit(1, true); return end
+      if not abort and res == "exit" then os.exit(1, true); return end
       abort = res
       -- only abort if safe; if not, there is another (earlier) check inside
       -- debug_hook, which will abort execution at the first safe opportunity
@@ -671,7 +672,7 @@ local function stringify_results(status, ...)
 end
 
 local function isrunning()
-  return coro_debugger and corostatus(coro_debugger) == 'suspended'
+  return coro_debugger and (corostatus(coro_debugger) == 'suspended' or corostatus(coro_debugger) == 'running')
 end
 
 -- this is a function that removes all hooks and closes the socket to
@@ -731,7 +732,7 @@ local function debugger_loop(sev, svars, sfile, sline)
         elseif mobdebug.yield then mobdebug.yield()
         end
       elseif not line and err == "closed" then
-        error("Debugger connection unexpectedly closed", 0)
+        error("Debugger connection closed", 0)
       else
         -- if there is something in the pending buffer, prepend it to the line
         if buf then line = buf .. line; buf = nil end
@@ -963,7 +964,15 @@ local function debugger_loop(sev, svars, sfile, sline)
 end
 
 local function connect(controller_host, controller_port)
-  return (socket.connect4 or socket.connect)(controller_host, controller_port)
+  local sock, err = socket.tcp()
+  if not sock then return nil, err end
+
+  if sock.settimeout then sock:settimeout(mobdebug.connecttimeout) end
+  local res, err = sock:connect(controller_host, controller_port)
+  if sock.settimeout then sock:settimeout() end
+
+  if not res then return nil, err end
+  return sock
 end
 
 local lasthost, lastport
@@ -980,7 +989,7 @@ local function start(controller_host, controller_port)
   controller_port = lastport or mobdebug.port
 
   local err
-  server, err = (socket.connect4 or socket.connect)(controller_host, controller_port)
+  server, err = mobdebug.connect(controller_host, controller_port)
   if server then
     -- correct stack depth which already has some calls on it
     -- so it doesn't go into negative when those calls return
@@ -1034,7 +1043,7 @@ local function controller(controller_host, controller_port, scratchpad)
 
   local exitonerror = not scratchpad
   local err
-  server, err = (socket.connect4 or socket.connect)(controller_host, controller_port)
+  server, err = mobdebug.connect(controller_host, controller_port)
   if server then
     local function report(trace, err)
       local msg = err .. "\n" .. trace
@@ -1067,6 +1076,8 @@ local function controller(controller_host, controller_port, scratchpad)
           -- err is not necessarily a string, so convert to string to report
           report(debug.traceback(coro_debugee), tostring(err))
           if exitonerror then break end
+          -- check if the debugging is done (coro_debugger is nil)
+          if not coro_debugger then break end
           -- resume once more to clear the response the debugger wants to send
           -- need to use capture_vars(2) as three would be the level of
           -- the caller for controller(), but because of the tail call,
@@ -1199,7 +1210,7 @@ local function handle(params, client, options)
     if client:receive() ~= "200 OK" then
       print("Unknown error")
       os.exit(1, true)
-      return nil, nil, "Debugger error: unexpected response after 'done'"
+      return nil, nil, "Debugger error: unexpected response after DONE"
     end
   elseif command == "setb" or command == "asetb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
@@ -1451,7 +1462,11 @@ local function handle(params, client, options)
       basedir = dir
 
       client:send("BASEDIR "..(remdir or dir).."\n")
-      local resp = client:receive()
+      local resp, err = client:receive()
+      if not resp then
+        print("Unknown error: "..err)
+        return nil, nil, "Debugger connection closed"
+      end
       local _, _, status = string.find(resp, "^(%d+)%s+%w+%s*$")
       if status == "200" then
         print("New base directory is " .. basedir)
