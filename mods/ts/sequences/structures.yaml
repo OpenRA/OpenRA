@@ -1088,3 +1088,377 @@ gadept:
 		ShadowStart: 10
 	icon: fixicon
 		Start: 0
+
+city01:
+	idle: city01
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city01
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city02:
+	idle: city02
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city02
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city03:
+	idle: city03
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city03
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city04:
+	idle: city04
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city04
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city05:
+	idle: city05
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city05
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city06:
+	idle: city06
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city06
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city07:
+	idle: city07
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city07
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city08:
+	idle: city08
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city08
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city09:
+	idle: city09
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city09
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city10:
+	idle: city10
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city10
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city11:
+	idle: city11
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city11
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city12:
+	idle: city12
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city12
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city13:
+	idle: city13
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city13
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city14:
+	idle: city14
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city14
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city15:
+	idle: city15
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city15
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city16:
+	idle: city16
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city16
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city17:
+	idle: city17
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city17
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city18:
+	idle: city18
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city18
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city19:
+	idle: city19
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city19
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city20:
+	idle: city20
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city20
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city21:
+	idle: city21
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city21
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
+
+city22:
+	idle: city22
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+	damaged-idle:
+		Start: 1
+		Length: 1
+		ShadowStart: 3
+	make: city22
+		Start: 0
+		ShadowStart: 2
+		Length: 1
+		Tick: 80
+	icon: xxicon
+		Start: 0
