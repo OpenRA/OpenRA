@@ -90,7 +90,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				.Where(m => m.Status == MapStatus.Available && m.Map.Selectable)
 				.Where(m => m.Type == gameMode || gameMode == null)
 				.OrderBy(m => m.PlayerCount)
-				.ThenBy(m => m.Title);
+				.ThenBy(m => m.Title)
+				.ThenBy(m => m.Revision);
 
 			scrollpanel.RemoveChildren();
 			foreach (var loop in maps)
@@ -115,7 +116,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var authorWidget = item.GetOrNull<LabelWidget>("AUTHOR");
 				if (authorWidget != null)
-					authorWidget.GetText = () => "Created by {0}".F(preview.Author);
+					authorWidget.GetText = () => (preview.Revision > 0) ?
+						"Rev.{0} by {1}".F(preview.Revision, preview.Author) :
+						"Created by {0}".F(preview.Author);
 
 				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
 				if (sizeWidget != null)

@@ -34,6 +34,7 @@ namespace OpenRA
 		public readonly string title;
 		public readonly string author;
 		public readonly string map_type;
+		public readonly int revision;
 		public readonly int players;
 		public readonly Rectangle bounds;
 		public readonly int[] spawnpoints = {};
@@ -50,6 +51,7 @@ namespace OpenRA
 		public string Title { get; private set; }
 		public string Type { get; private set; }
 		public string Author { get; private set; }
+		public int Revision { get; private set; }
 		public int PlayerCount { get; private set; }
 		public List<CPos> SpawnPoints { get; private set; }
 		public Rectangle Bounds { get; private set; }
@@ -93,6 +95,7 @@ namespace OpenRA
 			Title = "Unknown Map";
 			Type = "Unknown";
 			Author = "Unknown Author";
+			Revision = 0;
 			PlayerCount = 0;
 			Bounds = Rectangle.Empty;
 			SpawnPoints = NoSpawns;
@@ -107,6 +110,7 @@ namespace OpenRA
 			Type = m.Type;
 			Type = m.Type;
 			Author = m.Author;
+			Revision = m.Revision;
 			PlayerCount = m.Players.Count(x => x.Value.Playable);
 			Bounds = m.Bounds;
 			SpawnPoints = m.GetSpawnPoints().ToList();
@@ -137,6 +141,7 @@ namespace OpenRA
 						Title = r.title;
 						Type = r.map_type;
 						Author = r.author;
+						Revision = r.revision;
 						PlayerCount = r.players;
 						Bounds = r.bounds;
 

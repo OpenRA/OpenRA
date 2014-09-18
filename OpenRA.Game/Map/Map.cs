@@ -72,6 +72,7 @@ namespace OpenRA
 		public string Type = "Conquest";
 		public string Description;
 		public string Author;
+		public int Revision = 0;
 		public string Tileset;
 		public bool AllowStartUnitConfig = true;
 		public Bitmap CustomPreview;
@@ -310,6 +311,7 @@ namespace OpenRA
 				"Title",
 				"Description",
 				"Author",
+				"Revision",
 				"Tileset",
 				"MapSize",
 				"Bounds",
