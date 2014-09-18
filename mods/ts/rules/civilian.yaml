@@ -1,0 +1,490 @@
+ABAN01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: WS Logging Company
+
+ABAN02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Panullo Hacienda
+
+ABAN03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Abandoned Factory
+
+ABAN04:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: City Hall
+
+ABAN05:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Hunting Lodge
+
+ABAN06:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Local Inn & Lodging
+
+ABAN07:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Church
+
+ABAN08:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Abandoned Wharehouse
+
+ABAN09:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: WS Logging Company
+
+ABAN10:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Denzil's Last Chance Motel
+
+ABAN11:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Miele Manor
+
+ABAN12:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Kettler's Place
+
+ABAN13:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Long's Home
+
+ABAN14:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Local Store
+
+ABAN15:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Adam's House
+
+ABAN16:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Station
+
+ABAN17:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Pumps
+
+ABAN18:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Station Sign
+
+BBOARD01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Eat at Rade's Roadhouse
+
+BBOARD02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Drink YEO-CA Cola!
+
+BBOARD03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Hamburgers $.99
+
+BBOARD04:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Visit Scenic Las Vegas
+
+BBOARD05:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Rooms $29 a nite
+
+BBOARD06:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Kaspm's Tiberium Warhouse
+
+BBOARD07:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Alkaline's Battery Superstore
+
+BBOARD08:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Alex-gators petshop just ahead!
+
+BBOARD09:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: TacticX games rock!
+
+BBOARD10:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: WW Surf and Turf hits the spot!
+
+BBOARD11:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Only 11 miles to Zydeko's cafe!
+
+BBOARD12:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: No escape from Archer's Asylum!
+
+BBOARD13:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Stop in at Hewitt's hair salon
+
+BBOARD14:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Billy Bob's Harvester school
+
+BBOARD15:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Pannullo's hacienda es bueno
+
+BBOARD16:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Join GDI: We save lives.
+
+CA0001:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Rade's Roadhouse
+
+CA0002:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Sandberg and Son's
+
+CA0003:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Temp Housing
+
+CA0004:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Waystation
+
+CA0005:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Ferbie's 4 Sale
+
+CA0006:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Deluxe Accomodations
+
+CA0007:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Field Generator
+
+CA0008:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Subterranean Dwelling
+
+CA0009:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Subterranean Dwelling
+
+CA0010:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Leary Traveller Inn
+
+CA0011: 					
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Water Tank
+
+CA0012:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Greenhouse
+
+CA0013:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Water Purifier
+
+CA0014:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Observation Tower
+
+CA0015:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Port-A-Shack
+
+CA0016:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Port-A-Shack Deluxe
+
+CA0017:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Energy Transformer
+
+CA0018:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+
+CA0019:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+
+CA0020:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+
+CA0021:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+
+CAARMR:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Civilian Armory
+
+CAARAY:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Civilian Array
+
+CACRSH01: 
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Crash 01
+
+CACRSH02: 
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Crash 02
+
+CACRSH03: 
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Crash 03
+
+CACRSH04: 
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Crash 04
+
+CAHOSP:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Civilian Hospital
+
+CAPYR01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Pyramid
+
+CAPYR02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Pyramid
+
+CAPYR03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Pyramid
+
+CITY01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Connelly Court Apts.
+
+CITY02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Lightner's Luxury Suites.
+
+CITY03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Office Building
+
+CITY04:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Westwood Stock Exchange
+
+CITY05:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Daily Sun Times
+
+CITY06:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: YEO-CA Cola Corp.
+
+CITY07:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Urban Housing
+
+CITY08:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Yee's Discount Liquor
+
+CITY09:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Abandoned Warehouse
+
+CITY10:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Urban Storefront
+
+CITY11:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Ambrose Lounge
+
+CITY12:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Bostic Tower
+
+CITY13:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Hewitt Hair Salon
+
+CITY14:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Business Offices
+
+CITY15:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: 2nd National Bank
+
+CITY16:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Highrise Hotel
+
+CITY17:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: The Projects
+
+CITY18:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Archer Asylum
+
+CITY19:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Fill'er Up-Pump'N'Go
+
+CITY20:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Pump
+
+CITY21:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Station Sign
+
+CITY22:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Church
+
+CTDAM:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Dam
+
+CTVEGA:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Vega's Pyramid
+	
+GAOLDCC1:
+	Inherits: ^CivBuilding	
+	Tooltip:
+		Name: Old Construction Yard
+
+GAOLDCC2:
+	Inherits: ^CivBuilding	
+	Tooltip:
+		Name: Old Temple
+
+GAOLDCC3:
+	Inherits: ^CivBuilding	
+	Tooltip:
+		Name: Old Weapons Factory
+
+GAOLDCC4:
+	Inherits: ^CivBuilding	
+	Tooltip:
+		Name: Old Refinery
+
+GAOLDCC5:
+	Inherits: ^CivBuilding	
+	Tooltip:
+		Name: Old Advanced Power Plant
+
+GAOLDCC6:
+	Inherits: ^CivBuilding	
+	Tooltip:
+		Name: Old Silos
+
+NAMNTK:
+	Inherits: ^CivBuilding	
+	Tooltip:
+		Name: Montauk
+
+NAPYRA:
+	Inherits: ^CivBuilding	
+	Tooltip:
+		Name: Pyramid of Nod
+
+#UFO:
+#	Inherits: ^CivBuilding	
+#	Tooltip:
+#		Name: Crashed Scrin UFO
+#
