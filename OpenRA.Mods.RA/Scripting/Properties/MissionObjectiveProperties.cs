@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using Eluant;
 using OpenRA.Traits;
 using OpenRA.Scripting;
 using OpenRA.Mods.RA;
@@ -48,6 +49,9 @@ namespace OpenRA.Mods.RA.Scripting
 			"objectives, (s)he has won the game.")]
 		public void MarkCompletedObjective(int id)
 		{
+			if (id < 0 || id >= mo.Objectives.Count)
+				throw new LuaException("Objective ID is out of range.");
+
 			mo.MarkCompleted(player, id);
 		}
 
@@ -57,7 +61,40 @@ namespace OpenRA.Mods.RA.Scripting
 			"influence whatsoever on the outcome of the game.")]
 		public void MarkFailedObjective(int id)
 		{
+			if (id < 0 || id >= mo.Objectives.Count)
+				throw new LuaException("Objective ID is out of range.");
+
 			mo.MarkFailed(player, id);
+		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Returns true if the objective has been successfully completed, false otherwise.")]
+		public bool IsObjectiveCompleted(int id)
+		{
+			if (id < 0 || id >= mo.Objectives.Count)
+				throw new LuaException("Objective ID is out of range.");
+
+			return mo.Objectives[id].State == ObjectiveState.Completed;
+		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Returns true if the objective has been failed, false otherwise.")]
+		public bool IsObjectiveFailed(int id)
+		{
+			if (id < 0 || id >= mo.Objectives.Count)
+				throw new LuaException("Objective ID is out of range.");
+
+			return mo.Objectives[id].State == ObjectiveState.Failed;
+		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Returns the description of an objective.")]
+		public string GetObjectiveDescription(int id)
+		{
+			if (id < 0 || id >= mo.Objectives.Count)
+				throw new LuaException("Objective ID is out of range.");
+
+			return mo.Objectives[id].Description;
 		}
 
 		[ScriptActorPropertyActivity]
