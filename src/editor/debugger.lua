@@ -251,7 +251,7 @@ local function debuggerToggleViews(show)
 end
 
 local function killClient()
-  if (debugger.pid) then
+  if (debugger.pid and wx.wxProcess.Exists(debugger.pid)) then
     -- using SIGTERM for some reason kills not only the debugee process,
     -- but also some system processes, which leads to a blue screen crash
     -- (at least on Windows Vista SP2)
@@ -262,8 +262,8 @@ local function killClient()
       DisplayOutputLn(TR("Unable to stop program (pid: %d), code %d.")
         :format(debugger.pid, ret))
     end
-    debugger.pid = nil
   end
+  debugger.pid = nil
 end
 
 local function activateDocument(file, line, activatehow)
