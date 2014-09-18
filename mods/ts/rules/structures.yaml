@@ -140,7 +140,7 @@ PROC:
 	Health:
 		HP: 900
 	RevealsShroud:
-		Range: 6
+		Range: 6c0
 	TiberianSunRefinery:
 		DockOffset: 3,1
 	StoresResources:
@@ -653,7 +653,7 @@ GALITE:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 0c0
+		Range: 2c0
 	Power:
 		Amount: 0
 #	WithIdleOverlay@LIGHTING:
