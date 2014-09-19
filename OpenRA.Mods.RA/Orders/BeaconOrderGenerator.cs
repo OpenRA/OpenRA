@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Orders
 			if (mi.Button != MouseButton.Left)
 				world.CancelInputMode();
 
-			if (!world.ShroudObscures(xy))
+			else if (!world.ShroudObscures(xy))
 			{
 				world.CancelInputMode();
 				yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, false) { TargetLocation = xy, SuppressVisualFeedback = true };
