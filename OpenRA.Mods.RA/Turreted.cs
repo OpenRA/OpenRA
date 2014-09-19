@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -18,7 +19,9 @@ namespace OpenRA.Mods.RA
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 255;
 		public readonly int InitialFacing = 128;
-		public readonly bool AlignWhenIdle = false;
+
+		[Desc("Number of ticks before turret is realigned. (-1 turns off realignment)")]
+		public readonly int RealignDelay = 40;
 
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WVec Offset = WVec.Zero;
@@ -26,13 +29,15 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
-	public class Turreted : ITick, ISync, IResolveOrder
+	public class Turreted : ITick, ISync
 	{
 		[Sync] public int QuantizedFacings = 0;
 		[Sync] public int turretFacing = 0;
 		public int? desiredFacing;
 		TurretedInfo info;
 		IFacing facing;
+		Lazy<AttackTurreted> attack;
+		int realignTick = 0;
 
 		// For subclasses that want to move the turret relative to the body
 		protected WVec LocalOffset = WVec.Zero;
@@ -56,10 +61,21 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 			turretFacing = GetInitialTurretFacing(init, info.InitialFacing);
 			facing = init.self.TraitOrDefault<IFacing>();
+			attack = Exts.Lazy(() => init.self.TraitOrDefault<AttackTurreted>());
 		}
 
 		public virtual void Tick(Actor self)
 		{
+			if (attack.Value != null && !attack.Value.IsAttacking)
+			{
+				if (realignTick < info.RealignDelay)
+					realignTick++;
+				else if (info.RealignDelay > -1)
+					desiredFacing = null;
+			}
+			else
+				realignTick = 0;
+
 			var df = desiredFacing ?? ( facing != null ? facing.Facing : turretFacing );
 			turretFacing = Util.TickFacing(turretFacing, df, info.ROT);
 		}
@@ -68,12 +84,6 @@ namespace OpenRA.Mods.RA
 		{
 			desiredFacing = Util.GetFacing(target.CenterPosition - self.CenterPosition, turretFacing);
 			return turretFacing == desiredFacing;
-		}
-
-		public virtual void ResolveOrder(Actor self, Order order)
-		{
-			if (info.AlignWhenIdle && order.OrderString != "Attack")
-				desiredFacing = null;
 		}
 
 		// Turret offset in world-space
