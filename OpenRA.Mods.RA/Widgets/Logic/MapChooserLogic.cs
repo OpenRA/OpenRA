@@ -25,6 +25,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
+		TextFieldWidget mapfilterInput;
+		string mapFilter;
 		string gameMode;
 
 		[ObjectCreator.UseCtor]
@@ -69,6 +71,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gameModeDropdown.GetText = () => showItem(gameModes.First(m => m.First == gameMode));
 			}
 
+			var mapfilterInput = widget.GetOrNull<TextFieldWidget>("MAPFILTER_INPUT");
+			if (mapfilterInput != null)
+			{
+				mapfilterInput.OnTextEdited = () => { mapFilter = mapfilterInput.Text; EnumerateMaps(onSelect); };
+			}
+
 			var randomMapButton = widget.GetOrNull<ButtonWidget>("RANDOMMAP_BUTTON");
 			if (randomMapButton != null)
 			{
@@ -88,7 +96,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var maps = Game.modData.MapCache
 				.Where(m => m.Status == MapStatus.Available && m.Map.Selectable)
-				.Where(m => m.Type == gameMode || gameMode == null)
+				.Where(m => gameMode == null || m.Type == gameMode)
+				.Where(m => mapFilter == null || m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0 || m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0)
 				.OrderBy(m => m.PlayerCount)
 				.ThenBy(m => m.Title);
 

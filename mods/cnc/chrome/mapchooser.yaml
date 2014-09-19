@@ -17,6 +17,19 @@ Container@MAPCHOOSER_PANEL:
 			Height: 500
 			Background: panel-black
 			Children:
+				Label@SEARCH_DESC:
+					X: PARENT_RIGHT - WIDTH - 471
+					Y: 10
+					Width: 60
+					Height: 25
+					Font: Bold
+					Align: Right
+					Text: Search:
+				TextField@MAPFILTER_INPUT:
+					X: PARENT_RIGHT - WIDTH - 295
+					Y: 10
+					Width: 170
+					Height: 25
 				Label@GAMEMODE_DESC:
 					X: PARENT_RIGHT - WIDTH - 220
 					Y: 10

@@ -68,6 +68,19 @@ Background@MAPCHOOSER_PANEL:
 			Height: 25
 			Text: Random Map
 			Font: Bold
+		Label@FILTER_DESC:
+			X: 185
+			Y: PARENT_BOTTOM - 49
+			Width: 60
+			Height: 25
+			Font: TinyBold
+			Align: Right
+			Text: Find map
+		TextField@MAPFILTER_INPUT:
+			X: 260
+			Y: PARENT_BOTTOM - 49
+			Width: 170
+			Height: 25
 		Button@BUTTON_OK:
 			X: PARENT_RIGHT - 295
 			Y: PARENT_BOTTOM - 49
