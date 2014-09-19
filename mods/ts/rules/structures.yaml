@@ -43,7 +43,7 @@ GACNST:
 	Power:
 		Amount: 0
 	Selectable:
-		Bounds: 120, 90, 0, 20
+		Bounds: 120, 90
 
 GAPOWR:
 	Inherits: ^Building
