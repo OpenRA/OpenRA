@@ -25,7 +25,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
-		TextFieldWidget mapfilterInput;
 		string mapFilter;
 		string gameMode;
 
