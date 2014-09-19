@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gameModeDropdown.GetText = () => showItem(gameModes.First(m => m.First == gameMode));
 			}
 
-			mapfilterInput = widget.GetOrNull<TextFieldWidget>("MAPFILTER_INPUT");
+			var mapfilterInput = widget.GetOrNull<TextFieldWidget>("MAPFILTER_INPUT");
 			if (mapfilterInput != null)
 			{
 				mapfilterInput.OnTextEdited = () => { mapFilter = mapfilterInput.Text; EnumerateMaps(onSelect); };
