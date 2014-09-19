@@ -2,69 +2,53 @@ gacnst:
 	idle: gtcnst
 		Start: 0
 		ShadowStart: 3
-		Offset: 0, -20
 	damaged-idle: gtcnst
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -20
 	critical-idle: gtcnst
 		Start: 2
 		ShadowStart: 5
-		Offset: 0, -20
 	make: gtcnstmk
 		Start: 0
 		Length: 24
 		ShadowStart: 24
-		Offset: 0, -20
 	crane-overlay: gtcnst_d
 		Start: 0
 		Length: 20
-		Offset: 0, -20
 	damaged-crane-overlay: gtcnst_d
 		Start: 0
 		Length: 20
-		Offset: 0, -20	
 	critical-crane-overlay: gtcnst_d
 		Start: 20
 		Length: 20
-		Offset: 0, -20
 	idle-top: gtcnst_c
 		Start: 0
 		Length: 15
 		Tick: 200
-		Offset: 0, -20
 	damaged-idle-top: gtcnst_c
 		Start: 15
 		Length: 15
 		Tick: 200
-		Offset: 0, -20
 	critical-idle-top: gtcnst_c
 		Start: 30
-		Offset: 0, -20
 	idle-side: gtcnst_a
 		Start: 0
 		Length: 10
-		Offset: 0, -20
 	damaged-idle-side: gtcnst_a
 		Start: 10
 		Length: 10
-		Offset: 0, -20
 	critical-idle-side: gtcnst_a
 		Start: 20
 		Length: 10
-		Offset: 0, -20
 	idle-front: gtcnst_b
 		Start: 0
 		Length: 10
-		Offset: 0, -20
 	damaged-idle-front: gtcnst_b
 		Start: 0
 		Length: 10
-		Offset: 0, -20
 	critical-idle-front: gtcnst_b
 		Start: 0
 		Length: 10
-		Offset: 0, -20
 	icon: facticon
 		Start: 0
 
