@@ -115,6 +115,15 @@ namespace OpenRA.Mods.RA
 					}
 
 					camera = null;
+
+					if (beacon != null)
+					{
+						self.World.AddFrameEndTask(w =>
+						{
+							w.Remove(beacon);
+							beacon = null;
+						});
+					}
 				}
 			};
 
