@@ -146,7 +146,7 @@ Notifications:
 
 TileSets:
 	mods/ts/tilesets/temperat.yaml
-
+	mods/ts/tilesets/snow.yaml
 TileSize: 48,24
 TileShape: Diamond
 SubCells:
