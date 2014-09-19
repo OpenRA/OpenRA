@@ -645,6 +645,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20141002)
+				{
+					if (node.Key == "AlignWhenIdle" && parentKey == "Turreted")
+					{
+						node.Key = "RealignDelay";
+						node.Value.Value = "0";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

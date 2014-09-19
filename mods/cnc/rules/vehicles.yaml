@@ -493,7 +493,7 @@ MLRS:
 	Turreted:
 		ROT: 8
 		Offset: -128,0,128
-		AlignWhenIdle: true
+		RealignDelay: 0
 	Armament:
 		Weapon: Patriot
 		LocalOffset: 0,-171,0, 0,171,0
