@@ -63,6 +63,9 @@
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
     </Reference>
+    <Reference Include="LibGit2Sharp">
+      <HintPath>..\thirdparty\LibGit2Sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Command.cs" />
