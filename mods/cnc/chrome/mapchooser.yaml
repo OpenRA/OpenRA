@@ -17,14 +17,27 @@ Container@MAPCHOOSER_PANEL:
 			Height: 500
 			Background: panel-black
 			Children:
-				Label@GAMEMODE_DESC:
-					X: PARENT_RIGHT - WIDTH - 220
+				Label@FILTER_DESC:
+					X: PARENT_RIGHT - WIDTH - 401
 					Y: 10
-					Width: 200
+					Width: 60
 					Height: 25
 					Font: Bold
 					Align: Right
 					Text: Filter:
+				TextField@MAPFILTER_INPUT:
+					X: PARENT_RIGHT - WIDTH - 245
+					Y: 10
+					Width: 150
+					Height: 25
+				Label@FILTER_DESC_JOINER:
+					X: PARENT_RIGHT - WIDTH - 215
+					Y: 10
+					Width: 30
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: in
 				DropDownButton@GAMEMODE_FILTER:
 					X: PARENT_RIGHT - WIDTH - 15
 					Y: 10
