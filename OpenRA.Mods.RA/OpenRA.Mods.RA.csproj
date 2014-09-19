@@ -230,7 +230,6 @@
     <Compile Include="ProximityCaptor.cs" />
     <Compile Include="ProximityCapturable.cs" />
     <Compile Include="RadarColorFromTerrain.cs" />
-    <Compile Include="Reloads.cs" />
     <Compile Include="RenderDetectionCircle.cs" />
     <Compile Include="RenderJammerCircle.cs" />
     <Compile Include="RenderRangeCircle.cs" />

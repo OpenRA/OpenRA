@@ -63,8 +63,15 @@ namespace OpenRA.Mods.RA
 		public readonly PipType AmmoPipType = PipType.Green;
 		[Desc("Pip type to display for empty ammo.")]
 		public readonly PipType AmmoPipTypeEmpty = PipType.Transparent;
-		[Desc("Time to reload limited ammo measured in ticks.")]
+		[Desc("Time to reload limited ammo measured in ticks.", 
+			"Applies to rearming at structure as well as actor reloading itself.")]
 		public readonly int AmmoReloadTicks = 25 * 2;
+		[Desc("How much ammo is reloaded after a certain period (for self-reloading actors).")]
+		public readonly int AmmoReloadCount = 0;
+		[Desc("Does armament reload its limited ammo itself.")]
+		public readonly bool ReloadsAmmo = false;
+		[Desc("Whether or not reload counter should be reset when ammo has been fired (for self-reloading actors).")]
+		public readonly bool ResetAmmoReloadOnFire = false;
 
 		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
 	}
@@ -74,6 +81,8 @@ namespace OpenRA.Mods.RA
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
 		[Sync] public int Ammo;
+		[Sync] int remainingTicks;
+		[Sync] int previousAmmo;
 
 		public readonly Actor self;
 		Lazy<Turreted> Turret;
@@ -112,6 +121,17 @@ namespace OpenRA.Mods.RA
 				barrels.Add(new Barrel { Offset = WVec.Zero, Yaw = WAngle.Zero });
 
 			Barrels = barrels.ToArray();
+
+			if (info.ReloadsAmmo)
+			{
+				remainingTicks = info.AmmoReloadTicks;
+				
+				// Skip armaments that don't define limited ammo
+				if (info.LimitedAmmo <= 0)
+					return;
+
+				previousAmmo = GetAmmoCount();
+			}
 		}
 
 		public void Tick(Actor self)
@@ -121,6 +141,26 @@ namespace OpenRA.Mods.RA
 
 			if (FireDelay > 0)
 				--FireDelay;
+
+			if (Info.ReloadsAmmo)
+			{
+				if (!FullAmmo() && --remainingTicks == 0)
+				{
+					remainingTicks = Info.AmmoReloadTicks;
+
+					for (var i = 0; i < Info.AmmoReloadCount; i++)
+						GiveAmmo();
+
+					previousAmmo = GetAmmoCount();
+				}
+
+				// Resets the tick counter if ammo was fired.
+				if (Info.ResetAmmoReloadOnFire && GetAmmoCount() < previousAmmo)
+				{
+					remainingTicks = Info.AmmoReloadTicks;
+					previousAmmo = GetAmmoCount();
+				}
+			}
 
 			Recoil = new WRange(Math.Max(0, Recoil.Range - Info.RecoilRecovery.Range));
 

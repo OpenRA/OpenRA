@@ -69,19 +69,23 @@ HELI:
 		Weapon: HeliAGGun
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
+		LimitedAmmo: 10
+		AmmoPipCount: 5
+		AmmoReloadCount: 10
+		AmmoReloadTicks: 200
+		ReloadsAmmo: true
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: HeliAAGun
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
+		LimitedAmmo: 10
+		AmmoPipCount: 5
+		AmmoReloadCount: 10
+		AmmoReloadTicks: 200
+		ReloadsAmmo: true
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
-		Ammo: 10
-		PipCount: 5
-	Reloads:
-		Count: 10
-		Period: 200
 	RenderUnit:
 	WithRotor:
 		Offset: 0,0,85
@@ -119,17 +123,21 @@ ORCA:
 	Armament@PRIMARY:
 		Weapon: OrcaAGMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
+		LimitedAmmo: 6
+		AmmoPipCount: 6
+		AmmoReloadCount: 2
+		AmmoReloadTicks: 200
+		ReloadsAmmo: true
 	Armament@SECONDARY:
 		Weapon: OrcaAAMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
+		LimitedAmmo: 6
+		AmmoPipCount: 6
+		AmmoReloadCount: 2
+		AmmoReloadTicks: 200
+		ReloadsAmmo: true
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
-		Ammo: 6
-		PipCount: 6
-	Reloads:
-		Count: 2
-		Period: 100
 	RenderUnit:
 	LeavesHusk:
 		HuskActor: ORCA.Husk

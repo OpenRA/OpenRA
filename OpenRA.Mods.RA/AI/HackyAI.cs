@@ -313,8 +313,8 @@ namespace OpenRA.Mods.RA.AI
 		bool HasAdequateAirUnits(ActorInfo actorInfo)
 		{
 //			var armament = actorInfo.TraitsImplementing<Armament>()
-			//TODO: Implement LimitedAmmo check
-			if (!actorInfo.Traits.Contains<ReloadsInfo>() 
+			//TODO: Implement Armament LimitedAmmo and Reloads check
+			if (actorInfo.Traits.Contains<ArmamentInfo>() 
 				&& actorInfo.Traits.Contains<AircraftInfo>())
 			{
 				var countOwnAir = CountUnits(actorInfo.Name, p);

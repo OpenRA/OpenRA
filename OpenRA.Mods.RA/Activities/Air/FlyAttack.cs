@@ -29,8 +29,8 @@ namespace OpenRA.Mods.RA.Activities
 
 			foreach (var arm in self.TraitsImplementing<Armament>())
 			{
-				var reloads = self.TraitOrDefault<Reloads>();
-				if (arm.Info.LimitedAmmo > 0 && !arm.HasAmmo() && reloads == null)
+				var reloads = arm.Info.ReloadsAmmo == true;
+				if (arm.Info.LimitedAmmo > 0 && !arm.HasAmmo() && reloads)
 				return NextActivity;
 			}
 

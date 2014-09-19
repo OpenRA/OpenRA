@@ -124,7 +124,13 @@ namespace OpenRA.Mods.RA.AI
 
 		protected static bool ReloadsAutomatically(Actor a)
 		{
-			return a.HasTrait<Reloads>();
+			foreach (var arm in a.TraitsImplementing<Armament>())
+			{
+				var reloads = arm.Info.ReloadsAmmo == true;
+				if (reloads)
+					return true;	
+			}
+			return false;
 		}
 
 		protected static bool IsRearm(Actor a)

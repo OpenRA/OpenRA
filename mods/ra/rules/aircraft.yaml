@@ -244,6 +244,7 @@ HELI:
 		LocalOffset: 0,-213,-85
 		LimitedAmmo: 8
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: HellfireAG
 		LocalOffset: 0,213,-85
 		LimitedAmmo: 8
@@ -300,6 +301,9 @@ HIND:
 		Weapon: ChainGun
 		LocalOffset: 85,213,-85
 		MuzzleSequence: muzzle
+		LimitedAmmo: 24
+		AmmoPipCount: 6
+		AmmoReloadTicks: 8
 	AttackHeli:
 		FacingTolerance: 20
 	Helicopter:
