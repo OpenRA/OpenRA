@@ -235,20 +235,22 @@ local function setLuaPaths(mainpath, osname)
   -- if the path has an excamation mark, allow Lua to expand it as this
   -- expansion happens only once.
   if osname == "Windows" and mainpath:find('%!') then mainpath = "!/../" end
-  wx.wxSetEnv("LUA_PATH", package.path .. ";"
+  -- ;; will be replaced with the default (c)path by the Lua interpreter
+  wx.wxSetEnv("LUA_PATH",
+    (os.getenv("LUA_PATH") or "") .. ';'
     .. "./?.lua;./?/init.lua;./lua/?.lua;./lua/?/init.lua" .. ';'
-    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua" .. ';'
+    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua" .. ';;'
     .. luadev_path)
 
-  local clibs =
+  ide.osclibs = -- keep the list to use for other Lua versions
     osname == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
     osname == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
     osname == "Unix" and mainpath..("bin/linux/%s/lib?.so;"):format(arch)
                        ..mainpath..("bin/linux/%s/clibs/?.so"):format(arch) or
-    nil
-  if clibs then wx.wxSetEnv("LUA_CPATH",
-    package.cpath .. ';' .. clibs .. ';' .. luadev_cpath) end
-  ide.osclibs = clibs -- keep the list to use for other Lua versions
+    assert(false, "Unexpected OS name")
+
+  wx.wxSetEnv("LUA_CPATH",
+    (os.getenv("LUA_CPATH") or "") .. ';' .. ide.osclibs .. ';;' .. luadev_cpath)
 end
 
 ---------------

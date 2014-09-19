@@ -51,21 +51,28 @@ return {
     local cmd = '"'..exe..'" '..code..(params and " "..params or "")
 
     -- modify CPATH to work with other Lua versions
-    local clibs = ('/clibs%s/'):format(version and tostring(version):gsub('%.','') or '')
-    local _, cpath = wx.wxGetEnv("LUA_CPATH")
-    if rundebug and cpath then
-      wx.wxSetEnv("LUA_CPATH", ide.osclibs..';'..cpath)
+    local envname = "LUA_CPATH"
+    if version then
+      local env = "LUA_CPATH_"..string.gsub(version, '%.', '_')
+      if os.getenv(env) then envname = env end
     end
-    if version and cpath and not cpath:find(clibs, 1, true) then
-      local _, cpath = wx.wxGetEnv("LUA_CPATH")
-      wx.wxSetEnv("LUA_CPATH", cpath:gsub('/clibs/', clibs))
+
+    local cpath = os.getenv(envname)
+    if rundebug and cpath then
+      wx.wxSetEnv(envname, ide.osclibs..';'..cpath)
+    end
+    if version and cpath then
+      local cpath = os.getenv(envname)
+      local clibs = string.format('/clibs%s/', version):gsub('%.','')
+      if not cpath:find(clibs, 1, true) then cpath = cpath:gsub('/clibs/', clibs) end
+      wx.wxSetEnv(envname, cpath)
     end
 
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     local pid = CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() if rundebug then wx.wxRemoveFile(filepath) end end)
 
-    if (rundebug or version) and cpath then wx.wxSetEnv("LUA_CPATH", cpath) end
+    if (rundebug or version) and cpath then wx.wxSetEnv(envname, cpath) end
     return pid
   end,
   fprojdir = function(self,wfilename)
