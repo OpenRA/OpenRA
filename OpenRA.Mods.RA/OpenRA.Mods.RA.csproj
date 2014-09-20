@@ -388,7 +388,6 @@
     <Compile Include="Widgets\Logic\Ingame\LeaveMapLogic.cs" />
     <Compile Include="Widgets\Logic\IrcLogic.cs" />
     <Compile Include="Widgets\Logic\KickClientLogic.cs" />
-    <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
     <Compile Include="Widgets\Logic\DiplomacyLogic.cs" />
@@ -482,12 +481,10 @@
     <Compile Include="Attack\AttackFollow.cs" />
     <Compile Include="Attack\AttackGarrisoned.cs" />
     <Compile Include="Widgets\Logic\LobbyMapPreviewLogic.cs" />
-    <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Widgets\LogicKeyListenerWidget.cs" />
     <Compile Include="Widgets\Logic\ControlGroupLogic.cs" />
     <Compile Include="Buildings\LineBuildNode.cs" />
-    <Compile Include="ModChooserLoadScreen.cs" />
     <Compile Include="Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="StartGameNotification.cs" />
     <Compile Include="Widgets\ConfirmationDialogs.cs" />
