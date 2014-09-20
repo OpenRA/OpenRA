@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Effects;
-using OpenRA.Mods.RA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 

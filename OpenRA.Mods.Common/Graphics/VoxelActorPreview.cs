@@ -11,31 +11,32 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Render;
-using OpenRA.Primitives;
 
-namespace OpenRA.Mods.RA.Graphics
+namespace OpenRA.Mods.Common.Graphics
 {
 	public class VoxelPreview : IActorPreview
 	{
 		readonly VoxelAnimation[] components;
-		readonly RenderVoxelsInfo rvi;
+		readonly float scale;
+		readonly float[] lightAmbientColor;
+		readonly float[] lightDiffuseColor;
 		readonly WRot lightSource;
 		readonly WRot camera;
-
 		readonly PaletteReference colorPalette;
 		readonly PaletteReference normalsPalette;
 		readonly PaletteReference shadowPalette;
-
 		readonly WVec offset;
 		readonly int zOffset;
 
-		public VoxelPreview(VoxelAnimation[] components, WVec offset, int zOffset, RenderVoxelsInfo rvi, WAngle cameraPitch,
+		public VoxelPreview(VoxelAnimation[] components, WVec offset, int zOffset, float scale, WAngle lightPitch, WAngle lightYaw, float[] lightAmbientColor, float[] lightDiffuseColor, WAngle cameraPitch,
 			PaletteReference colorPalette, PaletteReference normalsPalette, PaletteReference shadowPalette)
 		{
 			this.components = components;
-			this.rvi = rvi;
-			lightSource = new WRot(WAngle.Zero,new WAngle(256) - rvi.LightPitch, rvi.LightYaw);
+			this.scale = scale;
+			this.lightAmbientColor = lightAmbientColor;
+			this.lightDiffuseColor = lightDiffuseColor;
+
+			lightSource = new WRot(WAngle.Zero, new WAngle(256) - lightPitch, lightYaw);
 			camera = new WRot(WAngle.Zero, cameraPitch - new WAngle(256), new WAngle(256));
 
 			this.colorPalette = colorPalette;
@@ -50,8 +51,8 @@ namespace OpenRA.Mods.RA.Graphics
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, WPos pos)
 		{
-			yield return new VoxelRenderable(components, pos + offset, zOffset, camera, rvi.Scale,
-				lightSource, rvi.LightAmbientColor, rvi.LightDiffuseColor,
+			yield return new VoxelRenderable(components, pos + offset, zOffset, camera, this.scale,
+				lightSource, this.lightAmbientColor, this.lightDiffuseColor,
 				colorPalette, normalsPalette, shadowPalette);
 		}
 	}

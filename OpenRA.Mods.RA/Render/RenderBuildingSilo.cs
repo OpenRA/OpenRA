@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 
 namespace OpenRA.Mods.RA.Render
 {

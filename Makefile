@@ -137,8 +137,8 @@ mod_ra: $(mod_ra_TARGET)
 mod_cnc_SRCS := $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
 mod_cnc_TARGET = mods/cnc/OpenRA.Mods.Cnc.dll
 mod_cnc_KIND = library
-mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
-mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(mod_ra_TARGET)
+mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) $(mod_ra_TARGET)
 PROGRAMS += mod_cnc
 mod_cnc: $(mod_cnc_TARGET)
 
@@ -155,8 +155,8 @@ mod_d2k: $(mod_d2k_TARGET)
 mod_ts_SRCS := $(shell find OpenRA.Mods.TS/ -iname '*.cs')
 mod_ts_TARGET = mods/ts/OpenRA.Mods.TS.dll
 mod_ts_KIND = library
-mod_ts_DEPS = $(STD_MOD_DEPS) $(mod_ra_TARGET)
-mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_ts_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(mod_ra_TARGET)
+mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) $(mod_ra_TARGET)
 PROGRAMS += mod_ts
 mod_ts: $(mod_ts_TARGET)
 

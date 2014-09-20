@@ -14,7 +14,7 @@ using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 
 namespace OpenRA.Mods.RA.Effects
 {

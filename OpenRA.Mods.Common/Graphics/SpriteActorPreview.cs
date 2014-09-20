@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.RA.Graphics
+namespace OpenRA.Mods.Common.Graphics
 {
 	public class SpriteActorPreview : IActorPreview
 	{
