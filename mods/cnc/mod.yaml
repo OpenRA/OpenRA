@@ -69,6 +69,7 @@ Chrome:
 
 Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
+	mods/common/OpenRA.Mods.Common.dll
 	mods/cnc/OpenRA.Mods.Cnc.dll
 	mods/d2k/OpenRA.Mods.D2k.dll
 
