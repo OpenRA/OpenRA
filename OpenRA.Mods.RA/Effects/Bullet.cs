@@ -82,9 +82,7 @@ namespace OpenRA.Mods.RA.Effects
 			target = args.PassiveTarget;
 			if (info.Inaccuracy.Range > 0)
 			{
-				var modifiers = args.SourceActor.TraitsImplementing<IInaccuracyModifier>()
-					.Select(m => m.GetInaccuracyModifier());
-				var inaccuracy = Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, modifiers);
+				var inaccuracy = Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
 				var maxOffset = inaccuracy * (target - pos).Length / args.Weapon.Range.Range;
 				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}

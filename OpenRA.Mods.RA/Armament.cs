@@ -157,6 +157,9 @@ namespace OpenRA.Mods.RA
 				DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
 					.Select(a => a.GetFirepowerModifier()),
 
+				InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
+					.Select(a => a.GetInaccuracyModifier()),
+
 				Source = muzzlePosition,
 				SourceActor = self,
 				PassiveTarget = target.CenterPosition,
