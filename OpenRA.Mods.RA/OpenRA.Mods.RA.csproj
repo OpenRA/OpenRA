@@ -294,7 +294,6 @@
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Scripting\Properties\PlayerProperties.cs" />
     <Compile Include="Power\ScalePowerWithHealth.cs" />
-    <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="Warheads\DestroyResourceWarhead.cs" />
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
@@ -350,7 +349,6 @@
     <Compile Include="SelfHealing.cs" />
     <Compile Include="Sellable.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />
-    <Compile Include="ServerTraits\MasterServerPinger.cs" />
     <Compile Include="ShroudPalette.cs" />
     <Compile Include="SmokeTrailWhenDamaged.cs" />
     <Compile Include="SpawnMPUnits.cs" />
@@ -434,7 +432,6 @@
     <Compile Include="Activities\RepairBridge.cs" />
     <Compile Include="BridgeHut.cs" />
     <Compile Include="Lint\CheckSequences.cs" />
-    <Compile Include="ServerTraits\PlayerPinger.cs" />
     <Compile Include="Widgets\Logic\SpawnSelectorTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\ClientTooltipLogic.cs" />
     <Compile Include="Widgets\ColorMixerWidget.cs" />
@@ -585,6 +582,10 @@
     <ProjectReference Include="..\OpenRA.Irc\OpenRA.Irc.csproj">
       <Project>{85B48234-8B31-4BE6-AF9C-665CC6866841}</Project>
       <Name>OpenRA.Irc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
+      <Project>{fe6c8cc0-2f07-442a-b29f-17617b3b7fc6}</Project>
+      <Name>OpenRA.Mods.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

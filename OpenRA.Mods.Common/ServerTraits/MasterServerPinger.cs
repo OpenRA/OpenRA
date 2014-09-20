@@ -16,7 +16,7 @@ using System.Text;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
 
-namespace OpenRA.Mods.RA.Server
+namespace OpenRA.Mods.Common.Server
 {
 	public class MasterServerPinger : ServerTrait, ITick, INotifySyncLobbyInfo, IStartGame, IEndGame
 	{
