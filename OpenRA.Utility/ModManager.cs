@@ -20,9 +20,67 @@ namespace OpenRA.Utility
 	{
 		static bool Confirmation(string message, params object[] fmt)
 		{
-			Console.Write(message, fmt);
+			Console.Write(message + " [y/n]: ", fmt);
 			var input = Console.ReadLine().ToLowerInvariant()[0];
 			return input == 'y';
+		}
+
+		[Desc("PATH NAME", "Copies file structure from PATH into mods/NAME/")]
+		public static void InstallMod(string[] args)
+		{
+			if (args.Length < 3)
+			{
+				Console.WriteLine("Error: Incorrect syntax!");
+				return;
+			}
+
+			var sourcePath = args[1];
+			var modName = args[2];
+			var destPath = "mods/{0}/".F(modName);
+
+			if (!Directory.Exists(sourcePath))
+			{
+				Console.WriteLine("{0} could not be found.", sourcePath);
+				return;
+			}
+
+			if (Directory.Exists(destPath) && !Confirmation("This mod ({0}) is already installed, overwrite?", modName))
+				return;
+
+			if (!Directory.Exists(destPath))
+				Directory.CreateDirectory(destPath);
+
+			Console.Write("Copying files...");
+			RecursiveFileStructureCopy(sourcePath, destPath);
+			Console.WriteLine("\tcomplete!");
+		}
+
+		static void RecursiveFileStructureCopy(string source, string dest)
+		{
+			var sourceDirInfo = new DirectoryInfo(Path.GetFullPath(source));
+			var sourceDirs = sourceDirInfo.GetDirectories();
+
+			foreach (var dir in sourceDirs)
+			{
+				if (dir.Name == ".git")
+					continue;
+
+				var replace = dir.FullName.Replace(source, dest);
+				if (!Directory.Exists(replace))
+					Directory.CreateDirectory(replace);
+
+				var sourceFilesInDirs = new DirectoryInfo(dir.FullName).GetFiles();
+
+				foreach (var file in sourceFilesInDirs)
+					File.Copy(file.FullName, file.FullName.Replace(source, dest), true);
+
+				RecursiveFileStructureCopy(dir.FullName, replace);
+			}
+
+			var sourceFiles = sourceDirInfo.GetFiles();
+
+			foreach (var file in sourceFiles)
+				File.Copy(file.FullName, file.FullName.Replace(source, dest), true);
 		}
 
 		[Desc("MOD", "Deletes MOD and all of its files.")]
@@ -34,12 +92,11 @@ namespace OpenRA.Utility
 				return;
 			}
 
-			var blacklist = new[] { "ra", "cnc", "d2k", "ts" };
+			var blacklist = new[] { "ra", "cnc", "d2k", "ts", "common", "modchooser" };
 
 			var modName = args[1];
 			if (blacklist.Contains(modName))
 			{
-				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine("{0} cannot be uninstalled. It is a protected mod.", modName);
 				return;
 			}
@@ -51,7 +108,10 @@ namespace OpenRA.Utility
 				return;
 			}
 
-			if (!Confirmation("Are you sure you want to delete {0}?\nThis operation cannot be undone. [y/n]: ", modName))
+			if (Repository.IsValid(path))
+				Console.WriteLine("Warning: This is a git mod!");
+
+			if (!Confirmation("Are you sure you want to delete {0}?\nThis operation cannot be undone.", modName))
 				return;
 
 			var dirInfo = new DirectoryInfo(Path.GetFullPath(path));
@@ -121,7 +181,7 @@ namespace OpenRA.Utility
 
 			if (Directory.Exists(modDirectory))
 			{
-				if (!Confirmation("This mod ({0}) is already installed, overwrite? [y/n]: ", modName))
+				if (!Confirmation("This mod ({0}) is already installed, overwrite?", modName))
 					return;
 
 				Console.Write("Purging {0}...", modDirectory);

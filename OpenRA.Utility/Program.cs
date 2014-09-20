@@ -37,6 +37,7 @@ namespace OpenRA.Utility
 			{ "--extract-language-strings", ExtractLanguageStrings.FromMod },
 			{ "--git-mod-install", ModManager.InstallGitMod },
 			{ "--git-mod-upgrade", ModManager.UpdateGitMod },
+			{ "--install-mod", ModManager.InstallMod },
 			{ "--uninstall-mod", ModManager.DeleteMod }
 		};
 
