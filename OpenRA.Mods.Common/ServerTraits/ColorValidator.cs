@@ -26,27 +26,7 @@ namespace OpenRA.Mods.Common.Server
 		const byte ColorLowerBound = 0x33;
 		const byte ColorHigherBound = 0xFF;
 
-		public static bool ValidateColorAgainstOtherPlayers(Color askedColor, int playerIndex, IEnumerable<Session.Client> lobbyClients, out Color forbiddenColor)
-		{
-			// Get lobby players colors, except from the actual target player
-			var playerColors = lobbyClients
-				.Where(lobbyClient => lobbyClient.Index != playerIndex)
-				.Select(lobbyClient => lobbyClient.Color.RGB);
-
-			// Calculate the difference between each player's color and target color and get the closest forbidden color (if invalid)
-			return ValidateColorAgainstForbidden(askedColor, playerColors, out forbiddenColor);
-		}
-
-		public static bool ValidateColorAgainstTileset(Color askedColor, TileSet tileSet, out Color forbiddenColor)
-		{
-			// Get colors from the current map terrain info
-			var forbiddenColors = tileSet.TerrainInfo.Select(terrainInfo => terrainInfo.Color);
-
-			// Calculate the difference between each forbidden color and target color and get the closest forbidden color (if invalid)
-			return ValidateColorAgainstForbidden(askedColor, forbiddenColors, out forbiddenColor);
-		}
-
-		private static bool ValidateColorAgainstForbidden(Color askedColor, IEnumerable<Color> forbiddenColors, out Color forbiddenColor)
+		static bool ValidateColorAgainstForbidden(Color askedColor, IEnumerable<Color> forbiddenColors, out Color forbiddenColor)
 		{
 			var blockingColors =
 				forbiddenColors
@@ -80,6 +60,7 @@ namespace OpenRA.Mods.Common.Server
 			var vectorMax = vector.Max(vv => Math.Abs(vv));
 			if (vectorMax == 0)
 				vectorMax = 1;	// Avoid divison by 0
+
 			vector[0] /= vectorMax;
 			vector[1] /= vectorMax;
 			vector[2] /= vectorMax;
@@ -167,23 +148,47 @@ namespace OpenRA.Mods.Common.Server
 		public static bool ValidatePlayerNewColor(S server, Color askedColor, int playerIndex, out Color forbiddenColor, Connection connectionToEcho = null)
 		{
 			// Validate color against the current map tileset
-			if (!ValidateColorAgainstTileset(askedColor, Game.modData.DefaultRules.TileSets[server.Map.Tileset], out forbiddenColor))
+			var tileset = server.Map.Rules.TileSets[server.Map.Tileset];
+			var forbiddenColors = tileset.TerrainInfo.Select(terrainInfo => terrainInfo.Color);
+
+			if (!ValidateColorAgainstForbidden(askedColor, forbiddenColors, out forbiddenColor))
 			{
 				if (connectionToEcho != null)
-					server.SendOrderTo(connectionToEcho, "Message", "Requested color was too similar to the map terrain, and has been adjusted.");
+					server.SendOrderTo(connectionToEcho, "Message", "Color was too similar to the terrain, and has been adjusted.");
+
 				return false;
 			}
 
-			// Validate color against the other players colors
-			if (!ValidateColorAgainstOtherPlayers(askedColor, playerIndex, server.LobbyInfo.Clients, out forbiddenColor))
+			// Validate color against other clients
+			var playerColors = server.LobbyInfo.Clients
+				.Where(c => c.Index != playerIndex)
+				.ToDictionary(c => c.Color.RGB, c => c.Name);
+
+			if (!ValidateColorAgainstForbidden(askedColor, playerColors.Keys, out forbiddenColor))
 			{
 				if (connectionToEcho != null)
-					server.SendOrderTo(connectionToEcho, "Message", "Requested color was too similar to another player, and has been adjusted.");
+				{
+					var client = playerColors[forbiddenColor];
+					server.SendOrderTo(connectionToEcho, "Message", "Color was too similar to {0}, and has been adjusted.".F(client));
+				}
+
 				return false;
 			}
 
-			// Else is valid!
+			var mapPlayerColors = server.Map.Players.Values
+				.Select(p => p.ColorRamp.RGB);
+
+			if (!ValidateColorAgainstForbidden(askedColor, mapPlayerColors, out forbiddenColor))
+			{
+				if (connectionToEcho != null)
+					server.SendOrderTo(connectionToEcho, "Message", "Color was too similar to a non-combatant player, and has been adjusted.");
+
+				return false;
+			}
+
+			// Color is valid
 			forbiddenColor = default(Color);
+
 			return true;
 		}
 
