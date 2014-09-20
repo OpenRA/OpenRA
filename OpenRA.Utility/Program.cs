@@ -20,7 +20,6 @@ namespace OpenRA.Utility
 	{
 		static readonly Dictionary<string, Action<string[]>> Actions = new Dictionary<string, Action<string[]>>()
 		{
-			{ "--settings-value", Command.Settings },
 			{ "--shp", Command.ConvertPngToShp },
 			{ "--png", Command.ConvertSpriteToPng },
 			{ "--extract", Command.ExtractFiles },
@@ -30,7 +29,6 @@ namespace OpenRA.Utility
 			{ "--lua-docs", Command.ExtractLuaDocs },
 			{ "--map-hash", Command.GetMapHash },
 			{ "--map-preview", Command.GenerateMinimap },
-			{ "--map-upgrade-v5", Command.UpgradeV5Map },
 			{ "--upgrade-map", UpgradeRules.UpgradeMap },
 			{ "--upgrade-mod", UpgradeRules.UpgradeMod },
 			{ "--map-import", Command.ImportLegacyMap },

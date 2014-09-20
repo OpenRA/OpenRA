@@ -34,22 +34,6 @@ namespace OpenRA.Utility
 					yield return path;
 		}
 
-		[Desc("KEY", "Get value of KEY from settings.yaml")]
-		public static void Settings(string[] args)
-		{
-			if (args.Length < 2)
-			{
-				Console.WriteLine("Error: Invalid syntax");
-				return;
-			}
-
-			var section = args[1].Split('.')[0];
-			var field = args[1].Split('.')[1];
-			var settings = new Settings(Platform.SupportDir + "settings.yaml", Arguments.Empty);
-			var result = settings.Sections[section].GetType().GetField(field).GetValue(settings.Sections[section]);
-			Console.WriteLine(result);
-		}
-
 		[Desc("PNGFILE [PNGFILE ...]", "Combine a list of PNG images into a SHP")]
 		public static void ConvertPngToShp(string[] args)
 		{
@@ -548,15 +532,6 @@ namespace OpenRA.Utility
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".png";
 			minimap.Save(dest);
 			Console.WriteLine(dest + " saved.");
-		}
-
-		[Desc("MAPFILE", "MOD", "Upgrade a version 5 map to version 6.")]
-		public static void UpgradeV5Map(string[] args)
-		{
-			var map = args[1];
-			var mod = args[2];
-			Game.modData = new ModData(mod);
-			new Map(map, mod);
 		}
 
 		[Desc("MOD", "FILENAME", "Convert a legacy INI/MPR map to the OpenRA format.")]
