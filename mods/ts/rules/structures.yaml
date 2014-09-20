@@ -1200,3 +1200,401 @@ TECH:
 		Name: Tech Center
 		Description: Tech Center
 
+CITY01:
+	Tooltip:
+		Name: Connelly Court Apts.
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -150
+	Valued:
+		Cost: 0
+
+CITY02:
+	Tooltip:
+		Name: Lightner's Luxury Suites.
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY03:
+	Tooltip:
+		Name: Office Building
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY04:
+	Tooltip:
+		Name: Westwood Stock Exchange
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY05:
+	Tooltip:
+		Name: Daily Sun Times
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY06:
+	Tooltip:
+		Name: YEO-CA Cola Corp.
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY07:
+	Tooltip:
+		Name: Urban Housing
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY08:
+	Tooltip:
+		Name: Yee's Discount Liquor
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 300
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY09:
+	Tooltip:
+		Name: Abandoned Warehouse
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY10:
+	Tooltip:
+		Name: Urban Storefront
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 300
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY11:
+	Tooltip:
+		Name: Ambrose Lounge
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY12:
+	Tooltip:
+		Name: Bostic Tower
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY13:
+	Tooltip:
+		Name: Hewitt Hair Salon
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Concrete
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY14:
+	Tooltip:
+		Name: Business Offices
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY15:
+	Tooltip:
+		Name: 2nd National Bank
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY16:
+	Tooltip:
+		Name: Highrise Hotel
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY17:
+	Tooltip:
+		Name: The Projects
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY18:
+	Tooltip:
+		Name: Archer Asylum
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY19:
+	Tooltip:
+		Name: Fill'er Up-Pump'N'Go
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY20:
+	Tooltip:
+		Name: Gas Pump
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
+
+CITY21:
+	Tooltip:
+		Name: Gas Station Sign
+		Description: Civillan Building
+	Inherits: ^Building
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -1
+	Valued:
+		Cost: 0
