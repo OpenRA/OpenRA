@@ -58,7 +58,9 @@ return {
     end
 
     local cpath = os.getenv(envname)
-    if rundebug and cpath then
+    if rundebug and cpath and not ide.config.path['lua'..(version or "")] then
+      -- prepend osclibs as the libraries may be needed for debugging,
+      -- but only if no path.lua is set as it may conflict with system libs
       wx.wxSetEnv(envname, ide.osclibs..';'..cpath)
     end
     if version and cpath then
