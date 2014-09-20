@@ -52,6 +52,9 @@ namespace OpenRA.Mods.D2k
 						DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
 							.Select(a => a.GetFirepowerModifier()),
 
+						InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
+							.Select(a => a.GetInaccuracyModifier()),
+
 						Source = self.CenterPosition,
 						SourceActor = self,
 						PassiveTarget = self.CenterPosition + new WVec(range, 0, 0).Rotate(rotation)

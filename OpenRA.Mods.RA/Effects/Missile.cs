@@ -96,9 +96,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (info.Inaccuracy.Range > 0)
 			{
-				var modifiers = args.SourceActor.TraitsImplementing<IInaccuracyModifier>()
-					.Select(m => m.GetInaccuracyModifier());
-				var inaccuracy = Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, modifiers);
+				var inaccuracy = Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
 				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
 			}
 
