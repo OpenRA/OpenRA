@@ -29,7 +29,7 @@ namespace OpenRA
 		public static void ReadBytes(this Stream s, byte[] buffer, int offset, int count)
 		{
 			if (s == null)
-			throw new IOException("Can not read from Stream");
+				throw new IOException("Can not read from Stream");
 			
 			while (s.CanRead && count > 0)
 			{
