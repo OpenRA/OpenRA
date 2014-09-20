@@ -35,9 +35,37 @@ namespace OpenRA.Utility
 					yield return path;
 		}
 
+		public static void UpdateGitMod(string[] args)
+		{
+			if (args.Length < 2)
+			{
+				Console.WriteLine("Error: No mod name given!");
+				return;
+			}
+
+			var modName = args[1];
+			var path = "mods/{0}/".F(modName);
+
+			if (!Repository.IsValid(path))
+			{
+				Console.WriteLine("{0} is not a valid git mod.", path);
+				return;
+			}
+
+			using (var repo = new Repository(path))
+			{
+				var origin = repo.Network.Remotes["origin"];
+				repo.Network.Fetch(origin);
+				repo.Reset(ResetMode.Hard, "origin/master");
+			}
+
+			Console.WriteLine("Update complete.");
+		}
+
+		[Desc("PATH", "Install mod from git repo in PATH.")]
 		public static void InstallGitMod(string[] args)
 		{
-			if (!args.Any())
+			if (args.Length < 2)
 			{
 				Console.WriteLine("Error: No path given!");
 				return;
@@ -60,6 +88,11 @@ namespace OpenRA.Utility
 
 			if (Directory.Exists(modDirectory))
 			{
+				Console.Write("This mod ({0}) is already installed, overwrite? [y/n]: ", modName);
+				var input = Console.ReadLine().ToLowerInvariant()[0];
+				if (input != 'y')
+					return;
+
 				Console.Write("Purging {0}...", modDirectory);
 				var dirInfo = new DirectoryInfo(Path.GetFullPath(modDirectory));
 
@@ -72,7 +105,7 @@ namespace OpenRA.Utility
 				Console.WriteLine("\tcomplete!");
 			}
 
-			Console.Write("Installing mod...");
+			Console.Write("Installing {0}...", modName);
 
 			var path = Repository.Clone(url, modDirectory);
 			using (var repo = new Repository(path))

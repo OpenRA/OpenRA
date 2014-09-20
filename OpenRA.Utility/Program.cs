@@ -35,7 +35,8 @@ namespace OpenRA.Utility
 			{ "--upgrade-mod", UpgradeRules.UpgradeMod },
 			{ "--map-import", Command.ImportLegacyMap },
 			{ "--extract-language-strings", ExtractLanguageStrings.FromMod },
-			{ "--git-mod", Command.InstallGitMod }
+			{ "--git-install-mod", Command.InstallGitMod },
+			{ "--git-update-mod", Command.UpdateGitMod }
 		};
 
 		static void Main(string[] args)
