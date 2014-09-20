@@ -13,7 +13,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 
-namespace OpenRA.Mods.RA.Graphics
+namespace OpenRA.Mods.Common.Graphics
 {
 	public struct VoxelRenderable : IRenderable
 	{

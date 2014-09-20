@@ -121,7 +121,6 @@
     <Compile Include="AI\SupportPowerDecision.cs" />
     <Compile Include="Crates\DuplicateUnitCrateAction.cs" />
     <Compile Include="Effects\FloatingText.cs" />
-    <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Infiltration\InfiltrateForPowerOutage.cs" />
     <Compile Include="Power\AffectedByPowerOutage.cs" />
     <Compile Include="Power\Power.cs" />
@@ -294,7 +293,6 @@
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Scripting\Properties\PlayerProperties.cs" />
     <Compile Include="Power\ScalePowerWithHealth.cs" />
-    <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="Warheads\DestroyResourceWarhead.cs" />
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
@@ -533,13 +531,9 @@
     <Compile Include="SupportPowers\SpawnActorPower.cs" />
     <Compile Include="Render\RenderSimple.cs" />
     <Compile Include="Render\RenderSprites.cs" />
-    <Compile Include="Graphics\BeamRenderable.cs" />
-    <Compile Include="Graphics\ContrailRenderable.cs" />
-    <Compile Include="Graphics\VoxelRenderable.cs" />
     <Compile Include="Air\FlyAwayOnIdle.cs" />
     <Compile Include="Buildings\ClonesProducedUnits.cs" />
     <Compile Include="Cloneable.cs" />
-    <Compile Include="Graphics\RangeCircleRenderable.cs" />
     <Compile Include="Widgets\ProductionPaletteWidget.cs" />
     <Compile Include="Widgets\ProductionTabsWidget.cs" />
     <Compile Include="Widgets\ProductionTypeButtonWidget.cs" />
@@ -560,9 +554,6 @@
     <Compile Include="Widgets\LabelWithTooltipWidget.cs" />
     <Compile Include="ProductionQueueFromSelection.cs" />
     <Compile Include="Scripting\Global\MediaGlobal.cs" />
-    <Compile Include="Graphics\ActorPreview.cs" />
-    <Compile Include="Graphics\SpriteActorPreview.cs" />
-    <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="GlobalUpgradable.cs" />
     <Compile Include="Player\GlobalUpgradeManager.cs" />
     <Compile Include="GainsStatUpgrades.cs" />

@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.Common.Graphics;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -54,8 +54,9 @@ namespace OpenRA.Mods.RA.Render
 				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(init, this, image, orientation, facings, palette))
 				.ToArray();
 
-			yield return new VoxelPreview(components, WVec.Zero, 0, this, body.CameraPitch, palette,
-				init.WorldRenderer.Palette(NormalsPalette), init.WorldRenderer.Palette("shadow"));
+			yield return new VoxelPreview(components, WVec.Zero, 0, this.Scale, this.LightPitch, 
+				this.LightYaw, this.LightAmbientColor, this.LightDiffuseColor, body.CameraPitch, 
+				palette, init.WorldRenderer.Palette(NormalsPalette), init.WorldRenderer.Palette("shadow"));
 		}
 
 	}
