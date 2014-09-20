@@ -241,8 +241,8 @@ namespace OpenRA.Network
 
 						SetPlayerStance(world, order.Player, targetPlayer, newStance);
 
-						Game.Debug("{0} has set diplomatic stance vs {1} to {2}".F(
-							order.Player.PlayerName, targetPlayer.PlayerName, newStance));
+						Game.Debug("{0} has set diplomatic stance vs {1} to {2}",
+							order.Player.PlayerName, targetPlayer.PlayerName, newStance);
 
 						// automatically declare war reciprocally
 						if (newStance == Stance.Enemy && targetPlayer.Stances[order.Player] == Stance.Ally)
