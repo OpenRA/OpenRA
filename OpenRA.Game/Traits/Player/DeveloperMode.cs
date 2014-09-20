@@ -140,7 +140,7 @@ namespace OpenRA.Traits
 					return;
 			}
 
-			Game.Debug("Cheat used: {0} by {1}".F(order.OrderString, self.Owner.PlayerName));
+			Game.Debug("Cheat used: {0} by {1}", order.OrderString, self.Owner.PlayerName);
 		}
 	}
 }
