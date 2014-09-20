@@ -42,6 +42,8 @@ GACNST:
 	WithBuildingPlacedOverlay:
 	Power:
 		Amount: 0
+	Selectable:
+		Bounds: 120, 90, 0, 20
 
 GAPOWR:
 	Inherits: ^Building
