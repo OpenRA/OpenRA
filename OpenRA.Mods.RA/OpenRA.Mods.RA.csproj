@@ -356,7 +356,6 @@
     <Compile Include="Disguise.cs" />
     <Compile Include="StoresResources.cs" />
     <Compile Include="StrategicVictoryConditions.cs" />
-    <Compile Include="SupplyTruck.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
     <Compile Include="SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="SupportPowers\GpsPower.cs" />
@@ -572,6 +571,8 @@
     <Compile Include="Warheads\SpreadDamageWarhead.cs" />
     <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
     <Compile Include="Scripting\Global\DateGlobal.cs" />
+    <Compile Include="Refundable.cs" />
+    <Compile Include="Buildings\RefundsUnits.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

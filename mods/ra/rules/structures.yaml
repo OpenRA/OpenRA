@@ -274,7 +274,7 @@ PDOX:
 		KillCargo: yes
 		DisplayRadarPing: True
 	SupportPowerChargeBar:
-	-AcceptsSupplies:
+	-RefundsUnits:
 	Power:
 		Amount: -200
 	-MustBeDestroyed:
@@ -317,7 +317,7 @@ TSLA:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
-	-AcceptsSupplies:
+	-RefundsUnits:
 	DrawLineToTarget:
 	Power:
 		Amount: -150
@@ -365,7 +365,7 @@ AGUN:
 	-RenderBuilding:
 	RenderRangeCircle:
 		RangeCircleType: aa
-	-AcceptsSupplies:
+	-RefundsUnits:
 	DrawLineToTarget:
 	Power:
 		Amount: -50
@@ -429,7 +429,7 @@ PBOX:
 	Bib:
 		HasMinibib: Yes
 	IronCurtainable:
-	-AcceptsSupplies:
+	-RefundsUnits:
 	Turreted:
 		ROT: 255
 	BodyOrientation:
@@ -477,7 +477,7 @@ HBOX:
 		InitialDelay: 125
 		CloakDelay: 60
 	IronCurtainable:
-	-AcceptsSupplies:
+	-RefundsUnits:
 	Turreted:
 		ROT: 255
 	BodyOrientation:
@@ -537,7 +537,7 @@ GUN:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
-	-AcceptsSupplies:
+	-RefundsUnits:
 	DrawLineToTarget:
 	Power:
 		Amount: -40
@@ -577,7 +577,7 @@ FTUR:
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
-	-AcceptsSupplies:
+	-RefundsUnits:
 	DrawLineToTarget:
 	Power:
 		Amount: -20
@@ -624,7 +624,7 @@ SAM:
 	-RenderBuilding:
 	RenderRangeCircle:
 		RangeCircleType: aa
-	-AcceptsSupplies:
+	-RefundsUnits:
 	DrawLineToTarget:
 	Power:
 		Amount: -40
