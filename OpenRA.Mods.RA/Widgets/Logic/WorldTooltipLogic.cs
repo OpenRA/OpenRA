@@ -11,6 +11,8 @@
 using System;
 using System.Drawing;
 using OpenRA.Widgets;
+using OpenRA.Traits;
+using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
@@ -23,18 +25,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var label = widget.Get<LabelWidget>("LABEL");
 			var flag = widget.Get<ImageWidget>("FLAG");
 			var owner = widget.Get<LabelWidget>("OWNER");
+			var refund = widget.Get<LabelWidget>("REFUND");
 
 			var font = Game.Renderer.Fonts[label.Font];
 			var ownerFont = Game.Renderer.Fonts[owner.Font];
-			var cachedWidth = 0;
 			var labelText = "";
+			var refundText = "";
 			var showOwner = false;
+			var showRefund = false;
 			var flagRace = "";
 			var ownerName = "";
 			var ownerColor = Color.White;
 
 			var singleHeight = widget.Get("SINGLE_HEIGHT").Bounds.Height;
 			var doubleHeight = widget.Get("DOUBLE_HEIGHT").Bounds.Height;
+			var tripleHeight = widget.Get("TRIPLE_HEIGHT").Bounds.Height;
 
 			tooltipContainer.BeforeRender = () =>
 			{
@@ -45,24 +50,43 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				switch (viewport.TooltipType)
 				{
 				case WorldTooltipType.Unexplored:
+					showRefund = false;
 					labelText = "Unexplored Terrain";
 					break;
 				case WorldTooltipType.Actor:
 					labelText = viewport.ActorTooltip.Name();
 					o = viewport.ActorTooltip.Owner();
+					showRefund = false;
+					break;
+				case WorldTooltipType.SellableActor:
+					labelText = viewport.ActorTooltip.Name();
+					o = viewport.ActorTooltip.Owner();
+					var TooltipActor = viewport.TooltipActor;
+					var h = TooltipActor.TraitOrDefault<Health>();
+					var si = TooltipActor.Info.Traits.Get<SellableInfo>();
+					var cost = TooltipActor.GetSellValue();
+					var refundamount = (cost * si.RefundPercent * (h == null ? 1 : h.HP)) / (100 * (h == null ? 1 : h.MaxHP));
+					refundText = "Refund: $" + refundamount;
+					showRefund = true;
 					break;
 				case WorldTooltipType.FrozenActor:
 					labelText = viewport.FrozenActorTooltip.TooltipName;
 					o = viewport.FrozenActorTooltip.TooltipOwner;
+					showRefund = false;
 					break;
 				}
 
-				var textWidth = font.Measure(labelText).X;
-				if (textWidth != cachedWidth)
-				{
-					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2*label.Bounds.X + textWidth;
-				}
+				var labeltextWidth = font.Measure(labelText).X;
+				var refundtextWidth = font.Measure(refundText).X;
+				var ownertextWidth = ownerFont.Measure(ownerName).X;
+
+				label.Bounds.Width = labeltextWidth;
+				refund.Bounds.Width = refundtextWidth;
+
+				if (labeltextWidth >= refundtextWidth)
+					widget.Bounds.Width = 2 * label.Bounds.X + labeltextWidth;
+				else
+					widget.Bounds.Width = 2 * refund.Bounds.X + refundtextWidth;
 
 				showOwner = o != null && !o.NonCombatant;
 
@@ -71,21 +95,32 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					flagRace = o.Country.Race;
 					ownerName = o.PlayerName;
 					ownerColor = o.Color.RGB;
-					widget.Bounds.Height = doubleHeight;
+					if (!showRefund)
+						widget.Bounds.Height = doubleHeight;
+
 					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
-						owner.Bounds.X + ownerFont.Measure(ownerName).X + label.Bounds.X);
+						owner.Bounds.X + ownertextWidth + label.Bounds.X);
 				}
 				else
+				{
 					widget.Bounds.Height = singleHeight;
+					showRefund = false;
+				}
+
+				if (showRefund)
+					widget.Bounds.Height = tripleHeight;
 			};
 
 			label.GetText = () => labelText;
 			flag.IsVisible = () => showOwner;
 			flag.GetImageCollection = () => "flags";
 			flag.GetImageName = () => flagRace;
+			refund.IsVisible = () => showRefund;
+			refund.GetText = () => refundText;
 			owner.IsVisible = () => showOwner;
 			owner.GetText = () => ownerName;
 			owner.GetColor = () => ownerColor;
+			owner.Contrast = true;
 		}
 	}
 }
