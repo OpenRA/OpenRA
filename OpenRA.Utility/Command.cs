@@ -22,7 +22,6 @@ using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Scripting;
 using OpenRA.Traits;
-using LibGit2Sharp;
 
 namespace OpenRA.Utility
 {
@@ -33,85 +32,6 @@ namespace OpenRA.Utility
 			for (var i = startIndex; i < args.Length; i++)
 				foreach (var path in Glob.Expand(args[i]))
 					yield return path;
-		}
-
-		public static void UpdateGitMod(string[] args)
-		{
-			if (args.Length < 2)
-			{
-				Console.WriteLine("Error: No mod name given!");
-				return;
-			}
-
-			var modName = args[1];
-			var path = "mods/{0}/".F(modName);
-
-			if (!Repository.IsValid(path))
-			{
-				Console.WriteLine("{0} is not a valid git mod.", path);
-				return;
-			}
-
-			using (var repo = new Repository(path))
-			{
-				var origin = repo.Network.Remotes["origin"];
-				repo.Network.Fetch(origin);
-				repo.Reset(ResetMode.Hard, "origin/master");
-			}
-
-			Console.WriteLine("Update complete.");
-		}
-
-		[Desc("PATH", "Install mod from git repo in PATH.")]
-		public static void InstallGitMod(string[] args)
-		{
-			if (args.Length < 2)
-			{
-				Console.WriteLine("Error: No path given!");
-				return;
-			}
-
-			var url = args[1];
-			var splitOn = "oramod-";
-
-			if (!url.Contains(splitOn))
-			{
-				Console.WriteLine("The given path does not contain `{0}`!", splitOn);
-				return;
-			}
-
-			if (url.EndsWith(".git"))
-				url = url.Substring(0, url.Length - 4);
-
-			var modName = url.Split(new string[] {splitOn}, StringSplitOptions.None)[1];
-			var modDirectory = "mods/{0}/".F(modName);
-
-			if (Directory.Exists(modDirectory))
-			{
-				Console.Write("This mod ({0}) is already installed, overwrite? [y/n]: ", modName);
-				var input = Console.ReadLine().ToLowerInvariant()[0];
-				if (input != 'y')
-					return;
-
-				Console.Write("Purging {0}...", modDirectory);
-				var dirInfo = new DirectoryInfo(Path.GetFullPath(modDirectory));
-
-				foreach (var dir in dirInfo.GetDirectories())
-					Directory.Delete(dir.FullName, true);
-
-				foreach (var file in dirInfo.GetFiles())
-					File.Delete(file.FullName);
-
-				Console.WriteLine("\tcomplete!");
-			}
-
-			Console.Write("Installing {0}...", modName);
-
-			var path = Repository.Clone(url, modDirectory);
-			using (var repo = new Repository(path))
-				repo.Reset(ResetMode.Hard, "origin/master");
-
-			Console.WriteLine("\tcomplete!");
 		}
 
 		[Desc("KEY", "Get value of KEY from settings.yaml")]

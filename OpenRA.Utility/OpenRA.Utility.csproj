@@ -74,6 +74,7 @@
     <Compile Include="LegacyMapImporter.cs" />
     <Compile Include="Glob.cs" />
     <Compile Include="ExtractLanguageStrings.cs" />
+    <Compile Include="ModManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
