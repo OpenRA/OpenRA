@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var installButton = widget.GetOrNull<ButtonWidget>("INSTALL_BUTTON");
 			if (installButton != null)
 			{
-				installButton.IsDisabled = () => !world.IsShellmap;
+				installButton.IsDisabled = () => world == null || !world.IsShellmap;
 				var args = new string[] { "Launch.Window=INSTALL_MUSIC_PANEL" };
 				installButton.OnClick = () =>
 				{
