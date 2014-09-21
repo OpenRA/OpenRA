@@ -36,6 +36,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				pathCheckbox.OnClick = () => Order(world, "DevPathDebug");
 			}
 
+			var cellOverlay = world.WorldActor.TraitOrDefault<CellDebugOverlay>();
+			var cellCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_CELL_OVERLAY");
+			if (cellCheckbox != null)
+			{
+				cellCheckbox.IsChecked = () => cellOverlay != null ? cellOverlay.Visible : false;
+				cellCheckbox.OnClick = () => { if (cellOverlay != null) cellOverlay.Visible ^= true; };
+			}
+
 			var cashButton = widget.GetOrNull<ButtonWidget>("GIVE_CASH");
 			if (cashButton != null)
 				cashButton.OnClick = () =>

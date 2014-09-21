@@ -2,6 +2,7 @@ World:
 	ChatCommands:
 	DevCommands:
 	PlayerCommands:
+	WorldCommands:
 	HelpCommand:
 	ScreenMap:
 	ActorMap:
@@ -104,6 +105,7 @@ World:
 		Race: ordos
 	DomainIndex:
 	PathfinderDebugOverlay:
+	CellDebugOverlay:
 	BuildableTerrainLayer:
 	D2kResourceLayer:
 	ResourceClaimLayer:

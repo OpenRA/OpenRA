@@ -95,6 +95,13 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: Show A* Cost
+		Checkbox@SHOW_CELL_OVERLAY:
+			X: 175
+			Y: 315
+			Height: 20
+			Width: 200
+			Font: Regular
+			Text: Show Cells
 		Checkbox@SHOW_COMBATOVERLAY:
 			X: 290
 			Y: 285

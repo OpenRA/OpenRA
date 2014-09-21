@@ -2,6 +2,7 @@ World:
 	ChatCommands:
 	DevCommands:
 	PlayerCommands:
+	WorldCommands:
 	HelpCommand:
 	ScreenMap:
 	ActorMap:
@@ -125,6 +126,7 @@ World:
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
 	PathfinderDebugOverlay:
+	CellDebugOverlay:
 	SpawnMapActors:
 	MPStartLocations:
 	CreateMPPlayers:
