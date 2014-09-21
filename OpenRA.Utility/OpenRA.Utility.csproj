@@ -63,6 +63,9 @@
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\Eluant.dll</HintPath>
     </Reference>
+    <Reference Include="LibGit2Sharp">
+      <HintPath>..\thirdparty\LibGit2Sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Command.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="LegacyMapImporter.cs" />
     <Compile Include="Glob.cs" />
     <Compile Include="ExtractLanguageStrings.cs" />
+    <Compile Include="ModManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

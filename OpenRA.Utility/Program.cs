@@ -31,10 +31,14 @@ namespace OpenRA.Utility
 			{ "--map-hash", Command.GetMapHash },
 			{ "--map-preview", Command.GenerateMinimap },
 			{ "--map-upgrade-v5", Command.UpgradeV5Map },
+			{ "--map-import", Command.ImportLegacyMap },
 			{ "--upgrade-map", UpgradeRules.UpgradeMap },
 			{ "--upgrade-mod", UpgradeRules.UpgradeMod },
-			{ "--map-import", Command.ImportLegacyMap },
-			{ "--extract-language-strings", ExtractLanguageStrings.FromMod }
+			{ "--extract-language-strings", ExtractLanguageStrings.FromMod },
+			{ "--git-mod-install", ModManager.InstallGitMod },
+			{ "--git-mod-upgrade", ModManager.UpdateGitMod },
+			{ "--install-mod", ModManager.InstallMod },
+			{ "--uninstall-mod", ModManager.DeleteMod }
 		};
 
 		static void Main(string[] args)
