@@ -96,11 +96,11 @@
 		SharesCell: yes
 		TerrainSpeeds:
 			Clear: 90
-			Rough: 80
+			Rough: 75
 			Road: 100
-			Tiberium: 35
-			BlueTiberium: 35
-			Beach: 80
+			Tiberium: 50
+			BlueTiberium: 50
+			Beach: 65
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
