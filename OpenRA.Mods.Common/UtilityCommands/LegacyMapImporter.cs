@@ -21,9 +21,9 @@ using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Utility
+namespace OpenRA.Mods.Common.UtilityCommands
 {
-	public class LegacyMapImporter
+	class LegacyMapImporter
 	{
 		// Mapping from ra overlay index to type string
 		static string[] redAlertOverlayNames =
