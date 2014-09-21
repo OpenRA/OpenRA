@@ -397,10 +397,12 @@ function findReplace:createDialog(replace,infiles)
 
     local fname = GetEditorFileAndCurInfo(true)
     if #(findReplace.filedirText) == 0 then
-      findReplace.filedirText = ide.config.path.projectdir
+      findReplace.filedirText = ide:GetProject()
         or fname and fname:GetPath(wx.wxPATH_GET_VOLUME)
         or ""
     end
+
+    PrependStringToArray(ide.findReplace.filedirTextArray, ide:GetProject())
 
     infilesDirStat = wx.wxStaticText(findDialog, wx.wxID_ANY, TR("Directory")..": ")
     infilesDirCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.filedirText,
