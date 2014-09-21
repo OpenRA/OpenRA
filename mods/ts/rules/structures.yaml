@@ -771,7 +771,7 @@ GATECH:
 	Power:
 		Amount: -150
 	Selectable:
-	Bounds: 80, 60, 0, 10
+		Bounds: 80, 60, 0, 10
 
 NATECH:
 	Inherits: ^Building
