@@ -538,7 +538,7 @@ Rules:
 		Health:
 			HP: 1000
 		Production:
-			Produces: Defense, Infantry, Soldier
+			Produces: Defense, Infantry, Soldier, Dog
 		-Sellable:
 		BaseProvider:
 			Range: 12
