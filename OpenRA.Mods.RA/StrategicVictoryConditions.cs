@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA
 
 		public void OnPlayerLost(Player player)
 		{
-			Game.Debug("{0} is defeated.".F(player.PlayerName));
+			Game.Debug("{0} is defeated.", player.PlayerName);
 
 			foreach (var a in player.World.Actors.Where(a => a.Owner == player))
 				a.Kill(a);
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA
 
 		public void OnPlayerWon(Player player)
 		{
-			Game.Debug("{0} is victorious.".F(player.PlayerName));
+			Game.Debug("{0} is victorious.", player.PlayerName);
 
 			if (player == player.World.LocalPlayer)
 				Game.RunAfterDelay(info.NotificationDelay, () => Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Win", player.Country.Race));
