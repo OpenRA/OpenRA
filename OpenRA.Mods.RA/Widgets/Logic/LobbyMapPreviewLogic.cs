@@ -38,7 +38,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var author = available.GetOrNull<LabelWidget>("MAP_AUTHOR");
 				if (author != null)
-					author.GetText = () => "Created by {0}".F(lobby.Map.Author);
+					author.GetText = () => (lobby.Map.Revision > 0) ?
+						"Rev.{0} by {1}".F(lobby.Map.Revision, lobby.Map.Author) :
+						"Created by {0}".F(lobby.Map.Author);
 			}
 
 			var invalid = widget.GetOrNull("MAP_INVALID");
@@ -80,7 +82,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var author = download.GetOrNull<LabelWidget>("MAP_AUTHOR");
 				if (author != null)
-					author.GetText = () => "Created by {0}".F(lobby.Map.Author);
+					author.GetText = () => (lobby.Map.Revision > 0) ?
+						"Rev.{0} by {1}".F(lobby.Map.Revision, lobby.Map.Author) :
+						"Created by {0}".F(lobby.Map.Author);
 
 				var install = download.GetOrNull<ButtonWidget>("MAP_INSTALL");
 				if (install != null)
