@@ -169,6 +169,8 @@ ide = {
   oshome = os.getenv("HOME") or (iswindows and os.getenv('HOMEDRIVE') and os.getenv('HOMEPATH')
     and (os.getenv('HOMEDRIVE')..os.getenv('HOMEPATH'))),
   wxver = string.match(wx.wxVERSION_STRING, "[%d%.]+"),
+
+  test = {}, -- local functions used for testing
 }
 
 -- add wx.wxMOD_RAW_CONTROL as it's missing in wxlua 2.8.12.3;
@@ -218,11 +220,11 @@ local function setLuaPaths(mainpath, osname)
   local luadev_path = (luadev
     and ('LUA_DEV/?.lua;LUA_DEV/?/init.lua;LUA_DEV/lua/?.lua;LUA_DEV/lua/?/init.lua')
       :gsub('LUA_DEV', (luadev:gsub('[\\/]$','')))
-    or "")
+    or nil)
   local luadev_cpath = (luadev
     and ('LUA_DEV/?.dll;LUA_DEV/?51.dll;LUA_DEV/clibs/?.dll;LUA_DEV/clibs/?51.dll')
       :gsub('LUA_DEV', (luadev:gsub('[\\/]$','')))
-    or "")
+    or nil)
 
   if luadev then
     local path, clibs = os.getenv('PATH'), luadev:gsub('[\\/]$','')..'\\clibs'
@@ -235,12 +237,14 @@ local function setLuaPaths(mainpath, osname)
   -- if the path has an excamation mark, allow Lua to expand it as this
   -- expansion happens only once.
   if osname == "Windows" and mainpath:find('%!') then mainpath = "!/../" end
+
+  -- if LUA_PATH or LUA_CPATH is not specified, then add ;;
   -- ;; will be replaced with the default (c)path by the Lua interpreter
   wx.wxSetEnv("LUA_PATH",
-    (os.getenv("LUA_PATH") or "") .. ';'
+    (os.getenv("LUA_PATH") or ';') .. ';'
     .. "./?.lua;./?/init.lua;./lua/?.lua;./lua/?/init.lua" .. ';'
-    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua" .. ';;'
-    .. luadev_path)
+    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua"
+    .. (luadev_path and (';' .. luadev_path) or ''))
 
   ide.osclibs = -- keep the list to use for other Lua versions
     osname == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
@@ -250,8 +254,11 @@ local function setLuaPaths(mainpath, osname)
     assert(false, "Unexpected OS name")
 
   wx.wxSetEnv("LUA_CPATH",
-    (os.getenv("LUA_CPATH") or "") .. ';' .. ide.osclibs .. ';;' .. luadev_cpath)
+    (os.getenv("LUA_CPATH") or ';') .. ';' .. ide.osclibs
+    .. (luadev_cpath and (';' .. luadev_cpath) or ''))
 end
+
+ide.test.setLuaPaths = setLuaPaths
 
 ---------------
 -- process args
